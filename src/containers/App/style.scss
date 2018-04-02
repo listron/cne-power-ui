@@ -1,0 +1,17 @@
+.pv-app {
+  overflow: hidden;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  &-header {
+    height: 59px;
+    background-color: #06213E;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  &-content {
+    display: flex;
+    flex: 1;
+  }
+}

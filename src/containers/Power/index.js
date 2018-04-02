@@ -1,46 +1,47 @@
 import React, { Component } from 'react';
 import { HashRouter, Switch, Route, Redirect, Link } from 'react-router-dom';
 
-import Sider from '../components/Sider';
+import Sider from '../../components/Asset/Sider';
 import UserList from './UserList';
 import PostList from './PostList';
 
 import { Menu, Icon } from 'antd';
+import './style.scss';
 const SubMenu = Menu.SubMenu;
 
-class App extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {};
-    }
+class Asset extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
 
-    render() {
-        return (
-            <HashRouter basename="/" >
-                <div id="nav">
-                    <Sider />
-                    <div id="rightWrap">
-                        <Menu mode="horizontal">
-                            <SubMenu title={<span><Icon type="user" />{this.state.username}</span>}>
-                                <Menu.Item key="setting:1">退出</Menu.Item>
-                            </SubMenu>
-                        </Menu>
-                        <div className="right-box">
-                            <Switch>
-                                <Route path="/" exact render={() => <h1>Home Page</h1>} />
-                                <Route path="/page1" exact component={UserList}></Route>
-                                <Route path="/page2" exact component={PostList}></Route>
-                                <Route path="/page3" exact render={() => <h1>路由测试</h1>}></Route>
-                                <Route path="/page4" exact render={() => <h1>路由测试</h1>}></Route>
-                                {/* <Route path="/users" component={UserSubLayout} /> */}
-                                <Redirect to="/" />
-                            </Switch>
-                        </div>
-                    </div>
-                </div>
-            </HashRouter>
-        );
-    }
+  render() {
+    return (
+      <HashRouter basename="/" >
+        <div className="pv-asset">
+          <Sider />
+          <div className="pv-asset-right">
+            <Menu mode="horizontal">
+              <SubMenu title={<span><Icon type="user" />{this.state.username}</span>}>
+                <Menu.Item key="setting:1">退出</Menu.Item>
+              </SubMenu>
+            </Menu>
+            <div className="pv-asset-right-content">
+              <Switch>
+                <Route path="/" exact render={() => <h1>Home Page</h1>} />
+                <Route path="/page1" exact component={UserList}></Route>
+                <Route path="/page2" exact component={PostList}></Route>
+                <Route path="/page3" exact render={() => <h1>路由测试</h1>}></Route>
+                <Route path="/page4" exact render={() => <h1>路由测试</h1>}></Route>
+                {/* <Route path="/users" component={UserSubLayout} /> */}
+                <Redirect to="/" />
+              </Switch>
+            </div>
+          </div>
+        </div>
+      </HashRouter>
+    );
+  }
 }
 
 /* const UserSubLayout = (props) => {
@@ -95,4 +96,4 @@ const BrowseUserTable = ({ match }) => {
 
 const UserProfile = ({ userId }) => <div>User: {userId}</div>; */
 
-export default App;
+export default Asset;
