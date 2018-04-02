@@ -4,7 +4,7 @@ import { Link, Route, BrowserRouter, Switch } from 'react-router-dom';
 import { Menu, Icon } from 'antd';
 import { routes } from '../../router';
 import './style.scss';
-import Asset from '../Asset';
+import Power from '../Power';
 
 class App extends Component {
   constructor(props) {
@@ -31,16 +31,16 @@ class App extends Component {
                 <span className="icon-home" />
                 <Link to="/">首页</Link>
               </Menu.Item>
-              <Menu.Item key="asset">
+              <Menu.Item key="power">
                 <span className="icon-asset" />
-                <Link to="/asset">资产</Link>
+                <Link to="/power">电站管理</Link>
               </Menu.Item>
             </Menu>
           </div>
           <div className="pv-app-content">
             <Switch>
-              <Route path="/" exact component={Asset} />
-              <Route path="/asset" exact component={Asset} />
+              <Route path="/" exact component={Power} />
+              <Route path="/power" exact component={Power} />
             </Switch>
           </div>
         </div>
