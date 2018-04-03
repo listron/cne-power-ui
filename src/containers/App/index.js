@@ -32,7 +32,7 @@ class App extends Component {
                 <Link to="/">首页</Link>
               </Menu.Item>
               <Menu.Item key="power">
-                <span className="icon-asset" />
+                <span className="icon-power" />
                 <Link to="/power">电站管理</Link>
               </Menu.Item>
             </Menu>

@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import axios from 'axios';
 
-import UserList from '../../components/Asset/UserList';
+import UserList from '../../components/Power/UserList';
 
 import {
   GET_USERS_SUCESS,

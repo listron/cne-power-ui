@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { HashRouter, Switch, Route, Redirect, Link } from 'react-router-dom';
 
-import Sider from '../../components/Asset/Sider';
+import Sider from '../../components/Power/Sider';
 import UserList from './UserList';
 import PostList from './PostList';
 
@@ -9,7 +9,7 @@ import { Menu, Icon } from 'antd';
 import './style.scss';
 const SubMenu = Menu.SubMenu;
 
-class Asset extends Component {
+class Power extends Component {
   constructor(props) {
     super(props);
     this.state = {};
@@ -18,15 +18,15 @@ class Asset extends Component {
   render() {
     return (
       <HashRouter basename="/" >
-        <div className="pv-asset">
+        <div className="pv-power">
           <Sider />
-          <div className="pv-asset-right">
+          <div className="pv-power-right">
             <Menu mode="horizontal">
               <SubMenu title={<span><Icon type="user" />{this.state.username}</span>}>
                 <Menu.Item key="setting:1">退出</Menu.Item>
               </SubMenu>
             </Menu>
-            <div className="pv-asset-right-content">
+            <div className="pv-power-right-content">
               <Switch>
                 <Route path="/" exact render={() => <h1>Home Page</h1>} />
                 <Route path="/page1" exact component={UserList}></Route>
@@ -96,4 +96,4 @@ const BrowseUserTable = ({ match }) => {
 
 const UserProfile = ({ userId }) => <div>User: {userId}</div>; */
 
-export default Asset;
+export default Power;
