@@ -12,7 +12,7 @@ import thunk from 'redux-thunk';
 import createSagaMiddleware from 'redux-saga';
 import axios from 'axios';
 
-import App from './containers/App';
+import Main from './containers/Main';
 import appReducer from './redux/reducer';
 import rootSaga from './redux/saga';
 // import router from './router';
@@ -37,7 +37,7 @@ sagaMiddleware.run(rootSaga);
 
 ReactDOM.render(
   <Provider store={store}>
-    <App/>
+    <Main />
   </Provider>,
   document.getElementById('app')
 );
