@@ -74,6 +74,12 @@ module.exports = {
     }, {
       test: /\.(png|jpg|gif)$/,
       use: 'file-loader?name=[name].[ext]'
+    }, {
+      test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+      use: 'url-loader?name=[name].[ext]&limit=10000&minetype=application/font-woff'
+    }, {
+      test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+      use: 'file-loader?name=[name].[ext]'
     }]
   },
   plugins: [
