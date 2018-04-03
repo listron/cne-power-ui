@@ -22,7 +22,7 @@ function* showPostsAsync(action) {
   }
 }
 
-// wacther saga
+// watcher saga
 function* watchGetPosts() {
   yield takeLatest(GET_POSTS_SAGA, showPostsAsync);
 }

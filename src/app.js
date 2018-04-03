@@ -14,7 +14,7 @@ import axios from 'axios';
 
 import Main from './containers/Main';
 import appReducer from './redux/reducer';
-import rootSaga from './redux/saga';
+import rootSaga from './redux/sagas';
 // import router from './router';
 
 const sagaMiddleware = createSagaMiddleware();
