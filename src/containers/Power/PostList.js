@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import axios from 'axios';
 
 import { GET_POSTS_SAGA } from '../../constants/actionTypes';
-import PostList from '../../components/Asset/PostList';
+import PostList from '../../components/Power/PostList';
 
 const mapStateToProps = (state) => ({
   // posts: state.posts   // 合并的reducer

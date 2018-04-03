@@ -45,10 +45,9 @@ module.exports = {
     extensions: ['.js', '.jsx'],
     alias: {
       'common': resolve('src/common'),
-      'component': resolve('src/component'),
-      'container': resolve('src/container'),
-      'asset': resolve('asset'),
-      'constant': resolve('src/constant')
+      'components': resolve('src/components'),
+      'containers': resolve('src/containers'),
+      'constants': resolve('src/constants')
     }
   },
   module: {

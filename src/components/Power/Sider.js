@@ -13,7 +13,7 @@ class Sider extends Component {
 
   render() {
     return (
-      <div className="pv-asset-left">
+      <div className="pv-power-left">
         <span className="logo" style={{ marginLeft: '40px' }}>主菜单</span>
         <Menu theme="dark"
           style={{ width: 200 }}

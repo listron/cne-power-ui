@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Route } from 'react-router';
 import App from './containers/App';
-import Asset from './containers/Asset';
+import Power from './containers/Power';
 
 const route = {
   path: '/',
@@ -9,7 +9,7 @@ const route = {
   routes: [
     {
       path: '/home',
-      component: Asset,
+      component: Power,
     },
   ]
 };
