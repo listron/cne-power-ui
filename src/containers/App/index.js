@@ -26,16 +26,19 @@ class App extends Component {
       <BrowserRouter>
         <div className="pv-app">
           <div className="pv-app-header">
-            <Menu onClick={this.handleClick} selectedKeys={[this.state.current]} mode="horizontal" theme="dark">
-              <Menu.Item key="home">
-                <span className="icon-home" />
-                <Link to="/">首页</Link>
-              </Menu.Item>
-              <Menu.Item key="power">
-                <span className="icon-power" />
-                <Link to="/power">电站管理</Link>
-              </Menu.Item>
-            </Menu>
+            <div className="pv-app-header-left">
+              <div className="pv-app-header-logo"></div>
+              <Menu onClick={this.handleClick} selectedKeys={[this.state.current]} mode="horizontal" theme="dark">
+                <Menu.Item key="home" className="pv-app-header-menu">
+                  <span className="iconfont icon-home" />
+                  <Link to="/">首页</Link>
+                </Menu.Item>
+                <Menu.Item key="power" className="pv-app-header-menu">               
+                  <span className="iconfont icon-eye" />
+                  <Link to="/power">电站管理</Link>      
+                </Menu.Item>
+              </Menu>
+            </div>
           </div>
           <div className="pv-app-content">
             <Switch>
