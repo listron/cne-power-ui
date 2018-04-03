@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { Route } from 'react-router';
-import App from './containers/App';
+import Main from './containers/Main';
 import Power from './containers/Power';
 
 const route = {
   path: '/',
-  component: App,
+  component: Main,
   routes: [
     {
       path: '/home',

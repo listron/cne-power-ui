@@ -16,7 +16,7 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
   entry: {
-    index: './src/index.js', // 唯一的入口文件
+    index: './src/app.js', // 唯一的入口文件
     vendor: [   // 这里是依赖的库文件配置，和CommonsChunkPlugin配合使用可以单独打包
       'react',
       'react-dom',
