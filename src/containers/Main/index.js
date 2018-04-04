@@ -37,6 +37,10 @@ class Main extends Component {
                   <span className="iconfont icon-eye" />
                   <Link to="/power">电站管理</Link>      
                 </Menu.Item>
+                <Menu.Item key="system" className="pv-app-header-menu">               
+                  <span className="iconfont icon-list" />
+                  <Link to="/system">系统管理</Link>      
+                </Menu.Item>
               </Menu>
             </div>
           </div>
