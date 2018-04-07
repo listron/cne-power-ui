@@ -9,11 +9,6 @@ module.exports = {
   entry: {
     index: './src/app.js', 
   },
-  output: {
-    path: path.resolve(__dirname, 'dist'),
-    filename: '[name].[hash].js',
-    chunkFilename:'[name].[hash].async.js',
-  },
   module: {
     rules: [{
       test: /\.(js|jsx)$/,
