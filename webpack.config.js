@@ -1,54 +1,23 @@
-/*
- * @Author: Ruth
- * @Date:   2016-11-02 11:25:52
- * @Last Modified time: 2016-11-14 15:33:35
- */
 
-'use strict';
 
-var webpack = require('webpack');
-var path = require('path');
-var resolve = path.resolve;
-
-// css 单独打包，使用该插件后就不需要配置style-loader了
-// 本来是内联在最终的网页里，现在通过外联方式，可以在/dist文件夹下找到单独的css文件
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
+const webpack = require('webpack');
+const path = require('path');
+const resolve = path.resolve;
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
+  mode:'development',
   entry: {
-    index: './src/app.js', // 唯一的入口文件
-    vendor: [   // 这里是依赖的库文件配置，和CommonsChunkPlugin配合使用可以单独打包
-      'react',
-      'react-dom',
-      'react-redux',
-      'react-router-dom',
-      'redux',
-      'redux-logger',
-      'redux-thunk',
-      'redux-saga',
-      'axios',
-      'immutable'
-    ]
+    index: './src/app.js', 
   },
   output: {
-    path: '/dist', //打包后的文件存放的地方
-    filename: 'bundle.js',
-    publicPath: '/dist' //启动本地服务后的根目录
+    path: path.resolve(__dirname, 'dist'),
+    filename: '[name].[hash].js',
+    chunkFilename:'[name].[hash].async.js',
   },
   devServer: {
     historyApiFallback: true,
     hot: true,
-    inline: true,
-    progress: true
-  },
-  resolve: {
-    extensions: ['.js', '.jsx'],
-    alias: {
-      'common': resolve('src/common'),
-      'components': resolve('src/components'),
-      'containers': resolve('src/containers'),
-      'constants': resolve('src/constants')
-    }
   },
   module: {
     rules: [{
@@ -57,20 +26,21 @@ module.exports = {
       exclude: /node_modules/
     }, {
       test: /\.css$/,
-      use: ExtractTextPlugin.extract({
-        fallback: "style-loader",
-        use: "css-loader",
-      }),
+      use: [{
+        loader:'style-loader'
+      },{
+        loader:'css-loader',
+        options: { modules: true }
+      }]
     }, {
       test: /\.scss$/,
-      use: ExtractTextPlugin.extract({
-        use: [{
-            loader: 'css-loader'
-        }, {
-            loader: 'sass-loader'
-        }],
-        fallback: 'style-loader'
-      })
+      use: [{
+        loader: "style-loader" 
+      }, {
+          loader: "css-loader",
+      }, {
+          loader: "sass-loader" 
+      }]
     }, {
       test: /\.(png|jpg|gif)$/,
       use: 'file-loader?name=[name].[ext]'
@@ -83,10 +53,10 @@ module.exports = {
     }]
   },
   plugins: [
-    new ExtractTextPlugin('main.css'),
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'vendor',
-      filename: 'vendor.js'
-    })
+    new HtmlWebpackPlugin({
+      title: 'Donut-UI',
+      template : __dirname + '/index.ejs',
+    }),
+    new webpack.HotModuleReplacementPlugin()
   ]
 };

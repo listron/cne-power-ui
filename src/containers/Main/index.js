@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { RouteWithSubRoutes } from '../../router';
-import { Link, Route, BrowserRouter, Switch } from 'react-router-dom';
+import { Link, Route, BrowserRouter,HashRouter,Redirect, Switch } from 'react-router-dom';
 import { Menu, Icon } from 'antd';
 import { routes } from '../../router';
+import {routerCofig} from '../../common/routerSetting'
+import Loadable from 'react-loadable';
 import './style.scss';
 import Power from '../Power';
-
 class Main extends Component {
   constructor(props) {
     super(props);
@@ -23,7 +24,7 @@ class Main extends Component {
 
   render() {
     return (
-      <BrowserRouter>
+      <HashRouter>
         <div className="pv-app">
           <div className="pv-app-header">
             <div className="pv-app-header-left">
@@ -37,21 +38,20 @@ class Main extends Component {
                   <span className="iconfont icon-eye" />
                   <Link to="/power">电站管理</Link>      
                 </Menu.Item>
-                <Menu.Item key="system" className="pv-app-header-menu">               
-                  <span className="iconfont icon-list" />
-                  <Link to="/system">系统管理</Link>      
-                </Menu.Item>
               </Menu>
             </div>
           </div>
           <div className="pv-app-content">
             <Switch>
-              <Route path="/" exact component={Power} />
-              <Route path="/power" exact component={Power} />
+              {routerCofig.map(e=>{
+                return <Route key={e.path} path={e.path} exact={e.exact} component={Loadable(e.component)} />
+              })}
+                
+              <Redirect to="/" />
             </Switch>
           </div>
         </div>
-      </BrowserRouter>
+      </HashRouter>
     );
   }
 
