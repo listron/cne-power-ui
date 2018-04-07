@@ -28,6 +28,7 @@ class Sider extends Component {
             <Menu.Item key="4"><Link to="/ptwo" >测试ptwo</Link></Menu.Item>
           </SubMenu>
         </Menu>
+        <span className='logo'> this is a test className span </span>
       </div>
     );
   }

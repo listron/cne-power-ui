@@ -24,7 +24,8 @@ class Power extends Component {
               </SubMenu>
             </Menu>
             <div className="pv-power-right-content">
-              this is page of power! DO NOT CALL ME!
+              this is page of power! 
+              DO NOT CALL ME ROUTER! WILL TAKES ERROR WHEN BUILD!
             </div>
           </div>
         </div>

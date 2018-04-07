@@ -23,6 +23,7 @@ class Main extends Component {
   }
 
   render() {
+    console.log('render' )
     return (
       <HashRouter>
         <div className="pv-app">
@@ -44,9 +45,18 @@ class Main extends Component {
           <div className="pv-app-content">
             <Switch>
               {routerCofig.map(e=>{
-                return <Route key={e.path} path={e.path} exact={e.exact} component={Loadable(e.component)} />
+                let Component = Loadable(e.component)
+                return <Route 
+                  key={e.path} 
+                  path={e.path} 
+                  exact={e.exact} 
+                  // component={<Component/>}
+                  render={(props)=>{
+                    console.log(props)
+                    return <Component/>
+                  }}
+                />
               })}
-                
               <Redirect to="/" />
             </Switch>
           </div>
