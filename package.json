@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "set NODE_ENV=development && webpack-dev-server --port 8080 --colors --devtool eval",
-    "build":"set NODE_ENV=production && webpack"
+    "build": "set NODE_ENV=production && webpack"
   },
   "author": "Ruth",
   "license": "ISC",
@@ -28,7 +28,8 @@
     "url-loader": "^0.6.2",
     "webpack": "^4.4.1",
     "webpack-cli": "^2.0.13",
-    "webpack-dev-server": "^3.1.1"
+    "webpack-dev-server": "^3.1.1",
+    "webpack-merge": "^4.1.2"
   },
   "dependencies": {
     "antd": "^3.3.2",

@@ -50,10 +50,9 @@ class Main extends Component {
                   key={e.path} 
                   path={e.path} 
                   exact={e.exact} 
-                  // component={<Component/>}
                   render={(props)=>{
                     console.log(props)
-                    return <Component/>
+                    return <Component {...props}/>
                   }}
                 />
               })}
