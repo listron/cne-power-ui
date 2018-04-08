@@ -4,7 +4,7 @@
   "description": "a demo using react and webpack",
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server --port 8080 --open --config webpack.dev.js",
+    "start": "webpack-dev-server",
     "build": "webpack --config webpack.prod.js"
   },
   "author": "Ruth",
