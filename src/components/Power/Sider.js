@@ -24,10 +24,11 @@ class Sider extends Component {
           <SubMenu key="sub1" title={<span><Icon type="bars" /><span>子菜单</span></span>}>
             <Menu.Item key="1"><Link to="/page1">用redux-thunk获取数据</Link></Menu.Item>
             <Menu.Item key="2"><Link to="/page2">用redux-saga获取数据</Link></Menu.Item>
-            <Menu.Item key="3"><Link to="/users">测试路由1</Link></Menu.Item>
-            <Menu.Item key="4"><Link to="/page4" >测试路由</Link></Menu.Item>
+            <Menu.Item key="3"><Link to="/pone">测试路由pone</Link></Menu.Item>
+            <Menu.Item key="4"><Link to="/ptwo" >测试ptwo</Link></Menu.Item>
           </SubMenu>
         </Menu>
+        <span className='logo'> this is a test className span </span>
       </div>
     );
   }

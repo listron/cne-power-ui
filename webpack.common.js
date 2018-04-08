@@ -6,18 +6,8 @@ const resolve = path.resolve;
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-  mode:'development',
   entry: {
     index: './src/app.js', 
-  },
-  output: {
-    path: path.resolve(__dirname, 'dist'),
-    filename: '[name].[hash].js',
-    chunkFilename:'[name].[hash].async.js',
-  },
-  devServer: {
-    historyApiFallback: true,
-    hot: true,
   },
   module: {
     rules: [{
@@ -54,7 +44,7 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      title: 'Donut-UI',
+      title: 'donut-PV3.0',
       template : __dirname + '/index.ejs',
     }),
     new webpack.HotModuleReplacementPlugin()

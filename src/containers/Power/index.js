@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import { HashRouter, Switch, Route, Redirect, Link } from 'react-router-dom';
 
 import Sider from '../../components/Power/Sider';
-import UserList from './UserList';
-import PostList from './PostList';
 
 import { Menu, Icon } from 'antd';
 import './style.scss';
@@ -17,7 +15,6 @@ class Power extends Component {
 
   render() {
     return (
-      <HashRouter basename="/" >
         <div className="pv-power">
           <Sider />
           <div className="pv-power-right">
@@ -27,19 +24,11 @@ class Power extends Component {
               </SubMenu>
             </Menu>
             <div className="pv-power-right-content">
-              <Switch>
-                <Route path="/" exact render={() => <h1>Home Page</h1>} />
-                <Route path="/page1" exact component={UserList}></Route>
-                <Route path="/page2" exact component={PostList}></Route>
-                <Route path="/page3" exact render={() => <h1>路由测试</h1>}></Route>
-                <Route path="/page4" exact render={() => <h1>路由测试</h1>}></Route>
-                {/* <Route path="/users" component={UserSubLayout} /> */}
-                <Redirect to="/" />
-              </Switch>
+              this is page of power! 
+              DO NOT CALL ME ROUTER! WILL TAKES ERROR WHEN BUILD!
             </div>
           </div>
         </div>
-      </HashRouter>
     );
   }
 }
