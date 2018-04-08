@@ -25,7 +25,7 @@ class Power extends Component {
             </Menu> */}
             <div className={styles.content}>
                 this is page of power! 
-                DO NOT CALL ME ROUTER! WILL TAKES ERROR WHEN BUILD!
+                DO NOT CALL ME ROUTER! WILL TAKES ERROR WHEN BUILD!!!
             </div>
           </div>
         </div>

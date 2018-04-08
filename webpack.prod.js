@@ -2,6 +2,7 @@
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const path = require('path');
 
 module.exports = {
@@ -20,7 +21,10 @@ module.exports = {
         loader:'style-loader'
       },{
         loader:'css-loader',
-        options: { modules: true }
+        options: {
+          modules: true,
+          localIdentName: '[local]__[hash:base64:5]'
+        }
       }]
     }, {
       test: /\.scss$/,
@@ -28,6 +32,10 @@ module.exports = {
         loader: "style-loader" 
       }, {
           loader: "css-loader",
+          options: {
+            modules: true,
+            localIdentName: '[local]__[hash:base64:5]'
+          }
       }, {
           loader: "sass-loader" 
       }]
@@ -48,11 +56,15 @@ module.exports = {
     chunkFilename:'[name].[hash].async.js',
   },
   plugins: [
+    new CleanWebpackPlugin(['dist']),
     new HtmlWebpackPlugin({
       title: 'donut-PV3.0',
       template : __dirname + '/index.ejs',
     }),
-    new CleanWebpackPlugin(['dist']),
+    new CopyWebpackPlugin([{
+      from: __dirname + '/assets',
+      to:__dirname + '/dist'
+    }]),
     new UglifyJSPlugin()
   ]
 };
