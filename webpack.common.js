@@ -1,8 +1,5 @@
 
 
-const webpack = require('webpack');
-const path = require('path');
-const resolve = path.resolve;
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
@@ -46,7 +43,6 @@ module.exports = {
     new HtmlWebpackPlugin({
       title: 'donut-PV3.0',
       template : __dirname + '/index.ejs',
-    }),
-    new webpack.HotModuleReplacementPlugin()
+    })
   ]
 };

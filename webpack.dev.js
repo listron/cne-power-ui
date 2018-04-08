@@ -11,9 +11,13 @@ module.exports = merge(common, {
   devtool: 'inline-source-map',
   output: {
     path: path.resolve(__dirname, 'dist'),
+    filename: '[name].[hash].js',
+    chunkFilename:'[name].[hash].async.js',
   },
   devServer: {
     historyApiFallback: true,
     hot: true,
+    inline:true
   },
+  plugins:[new webpack.HotModuleReplacementPlugin(),]
 });
