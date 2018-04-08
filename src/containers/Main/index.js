@@ -3,7 +3,7 @@ import { RouteWithSubRoutes } from '../../router';
 import { Link, Route, BrowserRouter,HashRouter,Redirect, Switch } from 'react-router-dom';
 import { Menu, Icon } from 'antd';
 import { routes } from '../../router';
-import {routerCofig} from '../../common/routerSetting'
+import {routerConfig} from '../../common/routerSetting';
 import Loadable from 'react-loadable';
 import './style.scss';
 import Power from '../Power';
@@ -44,7 +44,7 @@ class Main extends Component {
           </div>
           <div className="pv-app-content">
             <Switch>
-              {routerCofig.map(e=>{
+              {routerConfig.map(e=>{
                 let Component = Loadable(e.component)
                 return <Route 
                   key={e.path} 
