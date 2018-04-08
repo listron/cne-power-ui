@@ -27,6 +27,10 @@
           loader:'style-loader'
         },{
           loader:'css-loader',
+          options: {
+            modules: true,
+            localIdentName: '[local]__[hash:base64:5]'
+          }
         }]
       }, {
         test: /\.scss$/,
@@ -34,6 +38,10 @@
           loader: "style-loader" 
         }, {
             loader: "css-loader",
+            options: {
+              modules: true,
+              localIdentName: '[local]__[hash:base64:5]'
+            }
         }, {
             loader: "sass-loader" 
         }]
@@ -69,7 +77,6 @@
 //     hot:true
 //   },
 //   plugins: [
-
 //     new webpack.HotModuleReplacementPlugin()
 //   ]
 // };

@@ -1,29 +1,31 @@
-.pv-power {
+
+
+
+.power{
+  width: 100%;
   display: flex;
   flex-direction: row;
-  flex: 1;
-  &-left {
+  .powerLeft{
     background: #333;
     width: 200px;
     box-sizing: border-box;
-    .logo {
+    .logo{
       line-height: 60px;
       font-size: 18px;
       color: white;
     }
   }
-  &-right {
+  .powerRight{
     box-sizing: border-box;
     padding: 20px 20px 0 20px;
     display: flex;
     flex: 1;
     overflow-y: auto;
     flex-direction: column;
-    &-content {
+    .content{
       box-sizing: border-box;
       padding: 20px 20px 0;
       overflow-y: auto;
     }
-
   }
 }

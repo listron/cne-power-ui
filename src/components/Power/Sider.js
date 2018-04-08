@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link, Route } from 'react-router-dom';
+import styles from './sider.scss'
 
 // 引入Antd的导航组件
 import { Menu, Icon } from 'antd';
@@ -13,8 +14,8 @@ class Sider extends Component {
 
   render() {
     return (
-      <div className="pv-power-left">
-        <span className="logo" style={{ marginLeft: '40px' }}>主菜单</span>
+      <div className={styles.powerLeft}>
+        <span className={styles.logo} style={{ marginLeft: '40px' }}>主菜单</span>
         <Menu theme="dark"
           style={{ width: 200 }}
           defaultOpenKeys={['sub1', 'sub2']}
@@ -28,7 +29,6 @@ class Sider extends Component {
             <Menu.Item key="4"><Link to="/ptwo" >测试ptwo</Link></Menu.Item>
           </SubMenu>
         </Menu>
-        <span className='logo'> this is a test className span </span>
       </div>
     );
   }
