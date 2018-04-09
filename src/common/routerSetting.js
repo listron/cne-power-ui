@@ -1,9 +1,5 @@
-
-
-
 import Loadable from 'react-loadable';
 import React from 'react'
-
 
 const getLoadingComponent = ({ isLoading, error }) => {
   // Handle the loading state
@@ -21,6 +17,22 @@ const getLoadingComponent = ({ isLoading, error }) => {
 };
 
 export const routerCofig = [
+  {
+    path:'/login',
+    exact:true,
+    component:{
+      loader: () => import('../containers/Login'),
+      loading: getLoadingComponent
+    }
+  },
+  {
+    path:'/forget',
+    exact:true,
+    component:{
+      loader: () => import('../containers/Forget'),
+      loading: getLoadingComponent
+    }
+  },
   {
     path:'/',
     exact:true,
