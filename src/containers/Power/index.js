@@ -4,7 +4,7 @@ import { HashRouter, Switch, Route, Redirect, Link } from 'react-router-dom';
 import Sider from '../../components/Power/Sider';
 
 import { Menu, Icon } from 'antd';
-import './style.scss';
+import styles from './style.scss';
 const SubMenu = Menu.SubMenu;
 
 class Power extends Component {
@@ -15,17 +15,17 @@ class Power extends Component {
 
   render() {
     return (
-        <div className="pv-power">
+        <div className={styles.power} >
           <Sider />
-          <div className="pv-power-right">
-            <Menu mode="horizontal">
+          <div className={styles.powerRight}>
+            {/* <Menu mode="horizontal">
               <SubMenu title={<span><Icon type="user" />{this.state.username}</span>}>
                 <Menu.Item key="setting:1">退出</Menu.Item>
               </SubMenu>
-            </Menu>
-            <div className="pv-power-right-content">
-              this is page of power! 
-              DO NOT CALL ME ROUTER! WILL TAKES ERROR WHEN BUILD!
+            </Menu> */}
+            <div className={styles.content}>
+                this is page of power! 
+                DO NOT CALL ME ROUTER! WILL TAKES ERROR WHEN BUILD!!!
             </div>
           </div>
         </div>

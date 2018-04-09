@@ -5,7 +5,7 @@ import { Menu, Icon } from 'antd';
 import { routes } from '../../router';
 import {routerCofig} from '../../common/routerSetting'
 import Loadable from 'react-loadable';
-import './style.scss';
+import styles from './style.scss';
 import Power from '../Power';
 class Main extends Component {
   constructor(props) {
@@ -23,26 +23,25 @@ class Main extends Component {
   }
 
   render() {
-    console.log('render' )
     return (
       <HashRouter>
-        <div className="pv-app">
-          <div className="pv-app-header">
-            <div className="pv-app-header-left">
-              <div className="pv-app-header-logo"></div>
-              <Menu onClick={this.handleClick} selectedKeys={[this.state.current]} mode="horizontal" theme="dark">
-                <Menu.Item key="home" className="pv-app-header-menu">
-                  <span className="iconfont icon-home" />
-                  <Link to="/">首页</Link>
-                </Menu.Item>
-                <Menu.Item key="power" className="pv-app-header-menu">               
-                  <span className="iconfont icon-eye" />
-                  <Link to="/power">电站管理</Link>      
-                </Menu.Item>
-              </Menu>
+        <div className={styles.app}>
+          <div className={styles.appHeader}>
+            <div className={styles.headerLeft}>
+              <div className={styles.logo}></div>
             </div>
+            <Menu onClick={this.handleClick} selectedKeys={[this.state.current]} mode="horizontal" theme="dark" className={styles.headerMenu}>
+              <Menu.Item key="home" className={styles.menuItem}>
+                <span className="iconfont icon-home" />
+                <Link to="/">首页</Link>
+              </Menu.Item>
+              <Menu.Item key="power" className={styles.menuItem}>               
+                <span className="iconfont icon-eye" />
+                <Link to="/power">电站管理</Link>      
+              </Menu.Item>
+            </Menu>
           </div>
-          <div className="pv-app-content">
+          <div className={styles.content}>
             <Switch>
               {routerCofig.map(e=>{
                 let Component = Loadable(e.component)
@@ -51,7 +50,6 @@ class Main extends Component {
                   path={e.path} 
                   exact={e.exact} 
                   render={(props)=>{
-                    console.log(props)
                     return <Component {...props}/>
                   }}
                 />
