@@ -26,12 +26,14 @@
         }
       }
       .headerMenu{
-        margin-bottom: 0;
         .menuItem{
-          margin: 0 15px;
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          color: #fff;
           .icon {
             font-size: 14px;
-            color: #fff;
+            margin-right: 6px;
           }
         }
       }

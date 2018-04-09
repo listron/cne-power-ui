@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
-import { RouteWithSubRoutes } from '../../router';
 import { Link, Route, BrowserRouter,HashRouter,Redirect, Switch } from 'react-router-dom';
 import { Menu, Icon } from 'antd';
 import classnames from 'classnames';
-import { routes } from '../../router';
-import {routerConfig} from '../../common/routerSetting';
+import { routerConfig } from '../../common/routerSetting';
 import Loadable from 'react-loadable';
 import styles from './style.scss';
 import Power from '../Power';
@@ -62,12 +60,6 @@ class Main extends Component {
       </HashRouter>
     );
   }
-
-  // render() {
-  //   return this.props.routes.map((route, i) => (
-  //       <RouteWithSubRoutes key={i} {...route}/>
-  //   ));
-  // }
 }
 
 export default Main;

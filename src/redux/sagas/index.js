@@ -1,5 +1,5 @@
-import { takeEvery, takeLatest } from 'redux-saga';
-import { call, put } from 'redux-saga/effects';
+
+import { call, put, takeLatest, all } from 'redux-saga/effects';
 import axios from 'axios';
 
 import {
@@ -37,7 +37,7 @@ function* watchGetPosts() {
 
 // root saga
 export default function* rootSaga() {
-  yield [
+  yield all([
     watchGetPosts()
-  ]
+  ])
 } 
