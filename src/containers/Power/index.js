@@ -26,7 +26,7 @@ class Power extends Component {
             <div className={styles.content}>
                 this is page of power! 
                 DO NOT CALL ME ROUTER! WILL TAKES ERROR WHEN BUILD!!!
-                <Button>按钮antd测试</Button>
+                <Button type='primary'>按钮antd测试</Button>
             </div>
           </div>
         </div>
