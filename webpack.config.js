@@ -3,7 +3,6 @@
   const webpack = require('webpack');
   const path = require('path');
   const HtmlWebpackPlugin = require('html-webpack-plugin');
-  const CleanWebpackPlugin = require('clean-webpack-plugin');
   const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 
@@ -59,7 +58,6 @@
       }]
     },
     plugins: [
-      new CleanWebpackPlugin(['dist']),
       new CopyWebpackPlugin([{
         from: __dirname + '/assets',
         to:__dirname + '/dist'

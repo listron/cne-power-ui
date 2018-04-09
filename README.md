@@ -3,9 +3,13 @@
 
 本项目模块结构进行了优化，分离了业务组件和纯组件，提高组件复用性，模块结构更加清晰。
 ### 一、目录结构：
-
+- /assets    静态文件目录(图片，引用的静态js，字体文件)
+	- /fonts --------------- 字体文件
+	- /img --------------- logo等图片文件夹
+	- /js --------------- echarts,jquery等静态js文件
 - /src
 	- /common --------------- 公用类库
+		- /routerSetting --------------- 路由集中管理
 	- /components ------------ Dumb 组件
     - /Home ------------ 首页
 		- /Power ------------ 电站管理
@@ -27,12 +31,12 @@
     - style.scss ------ 总样式
   - /utils
   - app.js
-  - router.js ------ 以后的路由提取出来集中管理，to do
 - .babelrc
-- index.html
-- package.json
-- README.md
-- webpack.config.js
+- index.ejs     ------ index.html输出模板
+- package.json   ------ 包管理
+- README.md     
+- webpack.config.js  ------ 开发环境webpack配置   
+- webpack.prod.js  ------ 生产环境webpack配置   
 
 ### 二、模块间调用关系
 
