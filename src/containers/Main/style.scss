@@ -19,16 +19,13 @@
           width: 55px;
           height: 33px;
           margin: 0 24px 0 9px;
-          background-image: url('../../theme/img/logo.png');
+          background-image: url('/img/logo.png');
           background-position: 0% 0%;
           background-size: contain;
           background-repeat: no-repeat;
         }
       }
       .headerMenu{
-        display: flex;
-        flex-direction: row;
-        align-items:center;
         margin-bottom: 0;
         .menuItem{
           margin: 0 15px;
@@ -37,7 +34,6 @@
             margin-right: 6px;
           }
         }
-        
       }
     }
     .content{
