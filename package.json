@@ -4,7 +4,7 @@
   "description": "a demo using react and webpack",
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server --port 8080 --open --config webpack.dev.js",
+    "start": "webpack-dev-server",
     "build": "webpack --config webpack.prod.js"
   },
   "author": "Ruth",
@@ -19,6 +19,7 @@
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
     "clean-webpack-plugin": "^0.1.19",
+    "copy-webpack-plugin": "^4.5.1",
     "css-loader": "^0.28.11",
     "extract-text-webpack-plugin": "^2.1.2",
     "file-loader": "^1.1.5",
