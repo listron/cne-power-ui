@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { RouteWithSubRoutes } from '../../router';
 import { Link, Route, BrowserRouter,HashRouter,Redirect, Switch } from 'react-router-dom';
 import { Menu, Icon } from 'antd';
+import classnames from 'classnames';
 import { routes } from '../../router';
 import {routerConfig} from '../../common/routerSetting';
 import Loadable from 'react-loadable';
@@ -32,11 +33,11 @@ class Main extends Component {
             </div>
             <Menu onClick={this.handleClick} selectedKeys={[this.state.current]} mode="horizontal" theme="dark" className={styles.headerMenu}>
               <Menu.Item key="home" className={styles.menuItem}>
-                <span className="iconfont icon-home" />
+                <span className={classnames("iconfont icon-home", styles.icon)} />
                 <Link to="/">首页</Link>
               </Menu.Item>
               <Menu.Item key="power" className={styles.menuItem}>               
-                <span className="iconfont icon-eye" />
+                <span className={classnames("iconfont icon-eye", styles.icon)} />
                 <Link to="/power">电站管理</Link>      
               </Menu.Item>
             </Menu>
