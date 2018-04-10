@@ -39,5 +39,5 @@ function* watchGetPosts() {
 export default function* rootSaga() {
   yield all([
     watchGetPosts()
-  ])
+  ]);
 } 
