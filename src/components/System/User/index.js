@@ -60,11 +60,11 @@ class User extends Component {
   }
 
   _onRoleAuth() {
-
+    this .props.onRoleAuth(this.state.selectedRowKeys);
   }
 
   _onStationAuth() {
-    
+    this.props.onStationAuth(this.state.selectedRowKeys);
   }
 
   _renderList() {
