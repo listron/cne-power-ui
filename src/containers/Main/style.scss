@@ -1,41 +1,43 @@
-.pv-app {
-  overflow: hidden;
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  &-header {
-    height: 59px;
-    background-color: #06213E;
+
+  .app {
+    overflow: hidden;
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    &-left {
+    flex: 1;
+    flex-direction: column;
+    height: 100%;
+    .appHeader{
+      height: 59px;
+      background-color: #06213E;
       display: flex;
       flex-direction: row;
       align-items: center;
-    }
-    &-logo {
-      width: 55px;
-      height: 33px;
-      margin: 0 24px 0 9px;
-      background-image: url(../../theme/img/logo.png);
-      background-position: 0% 0%;
-      background-size: contain;
-      background-repeat: no-repeat;
-    }
-    &-menu {
-      display: flex;
-      flex-direction: row;
-      color: #fff;
-      .iconfont {
-        font-size: 14px;
-        margin-right: 6px;
+      .headerLeft{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        .logo{
+          width: 55px;
+          height: 33px;
+          margin: 0 24px 0 9px;
+          background-image: url('/img/logo.png');
+          background-position: 0% 0%;
+          background-size: contain;
+          background-repeat: no-repeat;
+        }
+      }
+      .headerMenu{
+        margin-bottom: 0;
+        .menuItem{
+          margin: 0 15px;
+          .icon {
+            font-size: 14px;
+            color: #fff;
+          }
+        }
       }
     }
+    .content{
+      display: flex;
+      flex: 1;
+    }
   }
-  &-content {
-    display: flex;
-    flex: 1;
-  }
-}

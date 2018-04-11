@@ -16,7 +16,7 @@ const getLoadingComponent = ({ isLoading, error }) => {
     }
 };
 
-export const routerCofig = [
+export const routerConfig = [
   {
     path:'/login',
     exact:true,

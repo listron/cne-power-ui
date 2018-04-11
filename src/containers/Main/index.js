@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import { RouteWithSubRoutes } from '../../router';
 import { Link, Route, BrowserRouter,HashRouter,Redirect, Switch } from 'react-router-dom';
 import { Menu, Icon } from 'antd';
+import classnames from 'classnames';
 import { routes } from '../../router';
-import {routerCofig} from '../../common/routerSetting'
+import {routerConfig} from '../../common/routerSetting';
 import Loadable from 'react-loadable';
 import './style.scss';
 import {getCookie} from '../../utils/utils.js'
@@ -62,6 +63,16 @@ class Main extends Component {
                 <Redirect to="/" />
               </Switch>
             </div>
+            <Menu onClick={this.handleClick} selectedKeys={[this.state.current]} mode="horizontal" theme="dark" className={styles.headerMenu}>
+              <Menu.Item key="home" className={styles.menuItem}>
+                <span className={classnames("iconfont icon-home", styles.icon)} />
+                <Link to="/">首页</Link>
+              </Menu.Item>
+              <Menu.Item key="power" className={styles.menuItem}>               
+                <span className={classnames("iconfont icon-eye", styles.icon)} />
+                <Link to="/power">电站管理</Link>      
+              </Menu.Item>
+            </Menu>
           </div>
         </HashRouter>
       );
