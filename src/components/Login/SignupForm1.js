@@ -1,19 +1,15 @@
 import React, {Component} from 'react';
 import {Form,Input,Button,notification,Icon,Avatar,message,Row,Col} from 'antd';
-import {hashHistory,Link} from 'react-router';
 import {connect} from 'react-redux'
-import axios from 'axios';
 const api  = "http://10.10.24.56:8080";
-import {axiosPost} from '../utils'
-// import {fetchRegisterForm1,userInfo} from 'actions/common';
-import actions from '../actions/common';
+// import {fetchSignupForm1,userInfo} from 'actions/common';
 const FormItem = Form.Item
-@Form.create()
-@connect((state, props) => ({
-  register: state.Register,
-  // loginResponse: state.tabListResult,
-}))
-class RegisterForm1 extends Component {
+// @Form.create()
+// @connect((state, props) => ({
+//   register: state.Register,
+//   // loginResponse: state.tabListResult,
+// }))
+class SignupForm1 extends Component {
   // 初始化页面常量 绑定事件方法
   constructor(props, context) {
     super(props)
@@ -162,10 +158,10 @@ class RegisterForm1 extends Component {
           <Button type="primary" htmlType="submit" className="loginFormButton"  onClick={this.nextForm} disabled={!this.state.next}>
            下一步
           </Button>
-          <Link className="loginFormForgot" to="/login">已有账号，去登录</Link>
         </FormItem>
       </Form>
     )
   }
 }
-export default RegisterForm1;
+const SignupForms = Form.create()(SignupForm1);
+export default SignupForms;

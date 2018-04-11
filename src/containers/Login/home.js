@@ -3,7 +3,7 @@ import {connect} from 'react-redux'
 import {Alert} from 'antd';
 import {userInfo} from 'actions/common'
 import {hashHistory,Link} from 'react-router'
-import {getCookie,setCookie} from '../utils'
+import {getCookie,setCookie} from '../index'
 import axios from 'axios';
 const api = "http://10.10.24.56:8080";
 @connect((state, props) => ({

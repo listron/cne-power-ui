@@ -34,6 +34,14 @@ export const routerConfig = [
     }
   },
   {
+    path:'/signup',
+    exact:true,
+    component:{
+      loader: () => import('../containers/Signup'),
+      loading: getLoadingComponent
+    }
+  },
+  {
     path:'/',
     exact:true,
     component:{

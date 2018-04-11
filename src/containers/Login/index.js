@@ -1,116 +1,69 @@
-// import React, {Component} from 'react';
-// import axios from 'axios';
-// import {bindActionCreators} from 'redux';
-// import {connect} from 'react-redux';
-// import {hashHistory,Link} from 'react-router';
-// import {message} from 'antd';
-// import {setCookie,axiosPost} from '../utils'
-// import LoginForm from '../components/LoginForm'
-// // import {fetchLogin,userInfo} from 'actions/common';
-// import actions from '../actions/common';
-// const api = "http://10.10.24.56:8080";
-
-// @connect((state, props) => ({
-//   login: state.Login,
-//   // loginResponse: state.tabListResult,
-// }))
-
-// class Login extends Component {
-//   // 初始化页面常量 绑定事件方法
-//   constructor(props, context) {
-//     super(props)
-//     this.state = {
-//       loading: false,
-//       phone:'',
-//     }
-//     this.handleSubmit = this.handleSubmit.bind(this)
-//   }
-
-//   handleSubmit(values) {
-//     this.setState({loading: true,phone:values.phone})
-//     this.props.dispatch(actions.fetchLogin(values));
-//   }
-
-//   // 组件已经加载到dom中
-//   componentDidMount() {
-//     // const domain = document.domain.split('.')[0];
-//     const domian = 'test';
-//     axios.post(api+'/api/v3/enterprise/domainLogin',`domian=${domian}`)
-//     .then((response)=>{
-//       if(response.data.success){
-//       setCookie('enterpriseId',response.data.result.enterpriseId)
-//         this.setState({
-//           company:response.data.result.enterpriseName,
-//           logo:'',
-//         })
-//       }else{
-//       }
-//     })
-//     .catch((error)=>{
-//       message.error(error)
-//     })
-//   }
-//   componentWillReceiveProps(nextProps){
-//     console.log(nextProps.login)
-//     if(nextProps.login.success){
-//       setCookie('phone',this.state.phone)
-//       setCookie('userName',nextProps.login.userName)
-//       setCookie('userId',nextProps.login.userId)
-//       hashHistory.push('/');
-//     }else{
-//       this.setState({loading: false})
-//       message.warning(nextProps.login.msg);
-//       // console.log(nextProps.login.msg)
-//     }
-//   }
-
-//   render() {
-//     return (
-//       <LoginForm handleSubmit={this.handleSubmit} loading={this.state.loading} company={this.state.company}/>
-//     )
-//   }
-// }
-
-// // const mapStateToProps  = (state) => ({
-// //     // posts: state.posts   // 合并的reducer
-// //     login: state.Login    // 单独的reducer
-// // });
-
-// // const mapDispatchToProps = (dispatch) => ({
-// //     fetchLogin: () => dispatch({ type: LoginReducers })
-// // });
-// export default Login;
-// // export default connect(mapStateToProps, mapDispatchToProps)(Login);
 import React, { Component } from 'react';
-import { HashRouter, Switch, Route, Redirect, Link } from 'react-router-dom';
+import PropTypes from "prop-types";
+import {Link,hashHistory, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import {Form} from 'antd';
-import axios from 'axios';
-import { GET_POSTS_SAGA } from '../../constants/actionTypes';
+import {Form,message} from 'antd';
+import { GET_COMINFO_SAGA,GET_LOGIN_SAGA } from '../../constants/actionTypes';
 import LoginForm from '../../components/Login/LoginForm';
+import {setCookie, getCookie} from '../../utils';
 import './base.scss';
 
-const FormItem = Form.Item;
 class Login extends Component {
+
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      phone:'',
+    };
+  }
+
+  componentWillMount() {
+    // const domain = document.domain.split('.')[0];    
+    const domian = 'test';
+    this.props.fetchCompanyInfo(`domian=${domian}`);
+  }
+  componentDidMount(){
+    console.log(this.state);
+  }
+
+
+  handleSubmit = (values) => {
+    this.setState({phone:values.phone});
+    this.props.fetchLogin(values);
   }
 
   render() {
+    const {
+      name,
+      logo
+    }=this.props.domain;
     return (
-      <LoginForm />
+      <div className="loginpagewrap">
+        <img src={logo?logo:"/img/cnelogo.png"} alt="logo"/>
+        <a href="#" className="right">返回官网</a>
+        <div className="box">
+          <div className="title">登录</div>
+          <div className="triangle"></div>
+          <div className="avatar"><span className="icon-user"></span><p>{name&&name}</p></div>
+          <div className="loginWrap">
+            <LoginForm handleSubmit={this.handleSubmit} company={name&&name}/>
+            <Link className="loginFormForgot" to='/forget'>忘记密码</Link>      
+          </div>
+        </div>
+      </div>
     );
   }
 }
 const mapStateToProps = (state) => ({
-  // posts: state.posts   // 合并的reducer
-  // posts: state.posts.posts    // 单独的reducer
+  domain: state.login.domain,
+  // login:state.login.login,
+  error:state.login.error,
+  msg:state.login.msg,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  // fetchPosts: () => dispatch({ type: GET_POSTS_SAGA })
+  fetchCompanyInfo: (parmas) => dispatch({type:'GET_COMINFO_SAGA',parmas:parmas}),
+  fetchLogin:(parmas) => dispatch({type:'GET_LOGIN_SAGA',parmas})
 });
-// const forms = Form.create({})(LoginForm);
-export default Login;
-// export default connect(mapStateToProps, mapDispatchToProps)(Login);
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

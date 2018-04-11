@@ -1,16 +1,13 @@
 import React, {Component} from 'react';
 import {Form,Input,Button,notification,Icon,Avatar,message,Row,Col} from 'antd';
-import {hashHistory,Link} from 'react-router';
-import axios from 'axios';
-import {getCookie,setCookie} from '../utils'
+import {getCookie,setCookie} from '../../utils'
 const api  = "http://10.10.24.56:8080";
 
 // import {fetchRegisterForm2,userInfo} from 'actions/common';
-import actions from '../actions/common';
 
 const FormItem = Form.Item
-@Form.create()
-class RegisterForm2 extends Component {
+// @Form.create()
+class SignupForm2 extends Component {
   // 初始化页面常量 绑定事件方法
   constructor(props, context) {
     super(props)
@@ -18,10 +15,9 @@ class RegisterForm2 extends Component {
       confirmDirty: false,
       autoCompleteResult: [],
     }
-    this.handleSubmit = this.handleSubmit.bind(this)
   }
 
-  handleSubmit(e) {
+  handleSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
@@ -154,4 +150,5 @@ class RegisterForm2 extends Component {
     )
   }
 }
-export default RegisterForm2;
+const SignupForms = Form.create()(SignupForm2);
+export default SignupForms;

@@ -20,7 +20,7 @@ class ForgetForm2 extends Component {
     this.handleSubmit = this.handleSubmit.bind(this)
   }
 
-  handleSubmit(e) {
+  handleSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
@@ -61,11 +61,6 @@ class ForgetForm2 extends Component {
       callback();
     }
   }
-  // 组件已经加载到dom中
-  componentDidMount() {
-  }
-  componentWillReceiveProps(nextProps){
-  }
   hasErrors = (fieldsError) => {
     return Object.keys(fieldsError).some(field => fieldsError[field]);
   }
@@ -96,7 +91,6 @@ class ForgetForm2 extends Component {
         md: {span:16}, lg: {span:16}
       },
     };
-    console.log(this.props)
     return (
       <Form hideRequiredMark={false} onSubmit={this.handleSubmit} className="loginForm"  style={{display:this.props.visible}}>
         <Row>
@@ -135,11 +129,10 @@ class ForgetForm2 extends Component {
           <Button type="primary" htmlType="submit" className="loginFormButton">
            重置密码
           </Button>
-          <Link className="loginFormForgot" to="/login">去登录</Link>
         </FormItem>
       </Form>
     )
   }
 }
-const LoginForms = Form.create()(ForgetForm2);
-export default LoginForms;
+const ForgetForms = Form.create()(ForgetForm2);
+export default ForgetForms;

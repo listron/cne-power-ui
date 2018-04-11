@@ -88,12 +88,13 @@ import {Form,Input,Button,notification,Icon,Avatar,message,} from 'antd';
 import { Link, Route } from 'react-router-dom';
 const FormItem = Form.Item
 
-// const { func } = PropTypes;
 
 class LoginForm extends Component {
-  // static propTypes = {
-  //   fetchPosts: func
-  // }
+  constructor(props) {
+    super(props);
+    this.state = {
+    }
+  }
 
   handleSubmit = (e) => {
     e.preventDefault();
@@ -107,12 +108,6 @@ class LoginForm extends Component {
   hasErrors = (fieldsError) => {
     return Object.keys(fieldsError).some(field => fieldsError[field]);
   }
-  state = {
-
-  };
-
-  componentWillMount() {
-  }
 
   render() {
     const {
@@ -122,41 +117,29 @@ class LoginForm extends Component {
       isFieldTouched
     } = this.props.form
     return (
-      <div className="loginpagewrap">
-        <img src="/cnelogo.png" alt="logo"/>
-        <a href="#" className="right">返回官网</a>
-        <div className="box">
-            <div className="title">登录</div>
-            <div className="triangle"></div>
-            <div className="avatar"><span className="icon-user"></span><p></p></div>
-            <div className="loginWrap">
-              <Form onSubmit={this.handleSubmit} className="loginForm">
-                <FormItem >
-                  {getFieldDecorator('phone', {
-                    validateTrigger:"onBlur",
-                    rules: [{ pattern:/(^1[3|4|5|7|8]\d{9}$)|(^09\d{8}$)/,required: true, message: '请输入有效手机号'}],
-                  })(
-                    <Input prefix={<Icon type="mobile" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="请输入手机号"  />
-                  )}
-                </FormItem>
-                <FormItem>
-                  {getFieldDecorator('password', {
-                    validateTrigger:"onBlur",
-                    rules: [{ required: true, message: '请输入有效密码',pattern:/^[\x21-\x7E]{6,20}$/}],
-                  })(
-                    <Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="请输入密码" />
-                  )}
-                </FormItem>
-                <FormItem>
-                  <Button  type="primary" htmlType="submit" className="loginFormButton" disabled={this.hasErrors(getFieldsError())}>
-                  登录
-                  </Button>
-                  <Link className="loginFormForgot" to='/forget'>忘记密码</Link>
-                </FormItem>
-              </Form>              
-            </div>
-        </div>
-      </div>
+      <Form onSubmit={this.handleSubmit} className="loginForm">
+        <FormItem >
+          {getFieldDecorator('phone', {
+            validateTrigger:"onBlur",
+            rules: [{ pattern:/(^1[3|4|5|7|8]\d{9}$)|(^09\d{8}$)/,required: true, message: '请输入有效手机号'}],
+          })(
+            <Input prefix={<Icon type="mobile" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="请输入手机号"  />
+          )}
+        </FormItem>
+        <FormItem>
+          {getFieldDecorator('password', {
+            validateTrigger:"onBlur",
+            rules: [{ required: true, message: '请输入有效密码',pattern:/^[\x21-\x7E]{6,20}$/}],
+          })(
+            <Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="请输入密码" />
+          )}
+        </FormItem>
+        <FormItem>
+          <Button  type="primary" htmlType="submit" className="loginFormButton" disabled={this.hasErrors(getFieldsError())}>
+          登录
+          </Button>
+        </FormItem>
+      </Form>              
     )
   }
 }

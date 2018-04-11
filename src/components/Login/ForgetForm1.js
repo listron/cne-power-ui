@@ -1,7 +1,5 @@
 import React, {Component} from 'react';
 import {Form,Input,Button,notification,Icon,Avatar,message,Row,Col} from 'antd';
-import {hashHistory,Link} from 'react-router';
-import {connect} from 'react-redux'
 // import axios from 'axios';
 // const api  = "http://10.10.24.56:8080";
 // import {axiosPost} from '../utils'
@@ -26,10 +24,10 @@ class ForgetForm1 extends Component {
       form2: "none",
       next:true,
     }
-    this.handleSubmit = this.handleSubmit.bind(this)
+    // this.handleSubmit = this.handleSubmit.bind(this)
   }
 
-  handleSubmit(e) {
+  handleSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
@@ -97,10 +95,7 @@ class ForgetForm1 extends Component {
       .catch((error) => {message.error(error)})
     })
   }
-  // 组件已经加载到dom中
   componentDidMount() {
-  }
-  componentWillReceiveProps(nextProps){
   }
   hasErrors = (fieldsError) => {
     return Object.keys(fieldsError).some(field => fieldsError[field]);
@@ -165,11 +160,10 @@ class ForgetForm1 extends Component {
           <Button type="primary" htmlType="submit" className="loginFormButton"  onClick={this.nextForm} disabled={!this.state.next}>
            下一步
           </Button>
-          <Link className="loginFormForgot" to="/login">去登录</Link>
         </FormItem>
       </Form>
     )
   }
 }
-const LoginForms = Form.create()(ForgetForm1);
-export default LoginForms;
+const ForgetForms = Form.create()(ForgetForm1);
+export default ForgetForms;

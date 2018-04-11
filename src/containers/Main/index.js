@@ -1,23 +1,39 @@
 import React, { Component } from 'react';
 import { RouteWithSubRoutes } from '../../router';
-import { Link, Route, BrowserRouter,HashRouter,Redirect, Switch } from 'react-router-dom';
+import {hashHistory} from 'React-router'; 
+import { Link, Route, BrowserRouter,HashRouter,Redirect, Switch,withRouter} from 'react-router-dom';
 import { Menu, Icon } from 'antd';
 import classnames from 'classnames';
 import { routes } from '../../router';
 import {routerConfig} from '../../common/routerSetting';
 import Loadable from 'react-loadable';
+import { connect } from 'react-redux';
+import PropTypes from "prop-types";
+
 import './style.scss';
-import {getCookie} from '../../utils/utils.js'
+import styles from './style.scss';
+import {getCookie} from '../../utils/index.js'
 import Power from '../Power';
 import Login from '../Login';
+import Forget from '../Forget';
+import Signup from '../Signup';
 
 class Main extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      current: 'home'
+      current: 'home',
+      logined:false
     };
     this.handleClick = this.handleClick.bind(this);
+  }
+
+  componentWillReceiveProps(nextProps){
+    if(nextProps.login.fetched){
+      this.setState({
+        logined:true
+      })
+    }
   }
 
   handleClick(e) {
@@ -27,9 +43,8 @@ class Main extends Component {
   }
 
   render() {
-    if(getCookie('phone')){
+    if(this.state.logined){
       return (
-        <HashRouter>
           <div className="pv-app">
             <div className="pv-app-header">
               <div className="pv-app-header-left">
@@ -48,39 +63,25 @@ class Main extends Component {
             </div>
             <div className="pv-app-content">
               <Switch>
-                {routerCofig.map(e=>{
+                {routerConfig.map(e=>{
                   let Component = Loadable(e.component)
                   return <Route 
                     key={e.path} 
                     path={e.path} 
                     exact={e.exact} 
                     render={(props)=>{
-                      console.log(props)
                       return <Component {...props}/>
                     }}
                   />
                 })}
-                <Redirect to="/" />
+                <Redirect to="/page2" />
               </Switch>
             </div>
-            <Menu onClick={this.handleClick} selectedKeys={[this.state.current]} mode="horizontal" theme="dark" className={styles.headerMenu}>
-              <Menu.Item key="home" className={styles.menuItem}>
-                <span className={classnames("iconfont icon-home", styles.icon)} />
-                <Link to="/">首页</Link>
-              </Menu.Item>
-              <Menu.Item key="power" className={styles.menuItem}>               
-                <span className={classnames("iconfont icon-eye", styles.icon)} />
-                <Link to="/power">电站管理</Link>      
-              </Menu.Item>
-            </Menu>
           </div>
-        </HashRouter>
       );
     }else{
       return (
-        <HashRouter>        
-          <Login />
-        </HashRouter>          
+        <Login />         
       )
     }
   }
@@ -92,4 +93,8 @@ class Main extends Component {
   // }
 }
 
-export default Main;
+const mapStateToProps = (state) => ({
+  login:state.login.login
+});
+
+export default withRouter(connect(mapStateToProps)(Main));
