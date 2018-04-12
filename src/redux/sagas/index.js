@@ -1,11 +1,11 @@
-
 import { call, put, takeLatest, all } from 'redux-saga/effects';
+import { getComInfo, getLogin, checkPhone, getCode, checkCode} from './login';
 import axios from 'axios';
 
 import {
   GET_POSTS_SAGA,
   GET_POSTS_SUCCESS,
-  GET_POSTS_FAIL
+  GET_POSTS_FAIL,
 } from '../../constants/actionTypes';
 
 import {
@@ -38,6 +38,11 @@ function* watchGetPosts() {
 // root saga
 export default function* rootSaga() {
   yield all([
-    watchGetPosts()
-  ]);
+    watchGetPosts(),
+    getComInfo(),
+    getLogin(),
+    checkPhone(),
+    getCode(),
+    checkCode(),
+  ])
 } 

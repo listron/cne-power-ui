@@ -5,15 +5,16 @@ import Sider from '../../components/Power/Sider';
 
 import { Menu, Icon,Button } from 'antd';
 import styles from './style.scss';
+
 const SubMenu = Menu.SubMenu;
 
 class Power extends Component {
-  constructor(props) {
+  constructor(props,context) {
     super(props);
     this.state = {};
   }
 
-  render() {
+  render() {   
     return (
         <div className={styles.power} >
           <Sider />

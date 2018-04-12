@@ -1,19 +1,34 @@
 import React, { Component } from 'react';
-import { Link, Route, BrowserRouter,HashRouter,Redirect, Switch } from 'react-router-dom';
-import { Menu, Icon } from 'antd';
-import classnames from 'classnames';
-import { routerConfig } from '../../common/routerSetting';
+import { Link, Route,Redirect, Switch,withRouter} from 'react-router-dom';
+import { Menu } from 'antd';
+import {routerConfig} from '../../common/routerSetting';
 import Loadable from 'react-loadable';
 import styles from './style.scss';
+import { connect } from 'react-redux';
+import {getCookie} from '../../utils/index.js'
 import Power from '../Power';
+import Login from '../Login';
+import Forget from '../Forget';
+import Signup from '../Signup';
+
 import TopMenu from '../../components/Layout/Topmenu'
 class Main extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      current: 'home'
+      current: 'home',
+      logined:false
     };
     this.handleClick = this.handleClick.bind(this);
+  }
+
+  componentWillReceiveProps(nextProps){   
+    if(nextProps.login.fetched && !this.props.login.fetched){
+      this.props.history.push('/');
+      this.setState({
+        logined:true
+      })
+    }
   }
 
   handleClick(e) {
@@ -23,8 +38,8 @@ class Main extends Component {
   }
 
   render() {
-    return (
-      <HashRouter>
+    if(this.state.logined || getCookie('phone')){
+      return (
         <div className={styles.app}>
           <div className={styles.appHeader}>
             <div className={styles.headerLeft}>
@@ -49,9 +64,23 @@ class Main extends Component {
             </Switch>
           </div>
         </div>
-      </HashRouter>
-    );
+      );
+    }
+    else{
+      return (
+        <Switch>
+          <Route path='/login' excat component={Login}/>
+          <Route path='/forget' excat component={Forget}/>
+          <Route path='/signup' excat component={Signup}/>
+          <Redirect to="/login" />
+        </Switch>  
+      );
+    }
   }
 }
 
-export default Main;
+const mapStateToProps = (state) => ({
+  login:state.login.login
+});
+
+export default withRouter(connect(mapStateToProps)(Main));
