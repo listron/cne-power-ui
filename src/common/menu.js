@@ -2,90 +2,76 @@ import { isUrl } from '../utils';
 
 const menuData = [
   {
-    name: 'dashboard',
-    icon: 'dashboard',
-    path: 'dashboard',
+    name: '首页',
+    icon: 'home',
+    path: '/',
+  },{
+    name: '电站运维',
+    icon: 'stationOperation',
+    path: 'stationOperation',
     children: [
       {
-        name: '工作台',
-        path: 'workplace',
+        name: '清洗模型',
+        path: 'cleanModel',
         children: [
           {
-            name: '工作台',
-            path: 'workplace',
-          },
+            name: '清洗记录',
+            path: 'cleanLog',
+          },{
+            name: '灰尘影响',
+            path: 'dustEffect',
+          }
         ],
-      },
+      },{
+        name: '缺陷管理',
+        path: 'faultManage',
+        children: [
+          {
+            name: '新建缺陷',
+            path: 'create',
+          },{
+            name: '待办缺陷',
+            path: 'faultTodo',
+          },{
+            name: '缺陷历史',
+            path: 'faultHistory',
+          }
+        ],
+      }
     ],
   },
   {
-    name: '表单页',
-    icon: 'form',
-    path: 'form',
+    name: '系统管理',
+    icon: 'systemManage',
+    path: 'systemManage',
     children: [
       {
-        name: '基础表单',
-        path: 'basic-form',
-      },
-      {
-        name: '分步表单',
-        path: 'step-form',
-      },
-      {
-        name: '高级表单',
-        authority: 'admin',
-        path: 'advanced-form',
-      },
-    ],
-  },
-  {
-    name: '列表页',
-    icon: 'table',
-    path: 'list',
-    children: [
-      {
-        name: '查询表格',
-        path: 'table-list',
-      },
-      {
-        name: '搜索列表',
-        path: 'search',
-        children: [
-          {
-            name: '搜索列表（文章）',
-            path: 'articles',
-          },
-          {
-            name: '搜索列表（项目）',
-            path: 'projects',
-          },
-          {
-            name: '搜索列表（应用）',
-            path: 'applications',
-          },
-        ],
-      },
+        name: '用户管理',
+        path: 'user',
+      },{
+        name: '角色管理',
+        path: 'role',
+      }
     ],
   },
 ];
 
-
-function formatter(data, parentPath = '/', parentAuthority) {
+function formatter(data, parentPath = '/') {
   return data.map(item => {
     let { path } = item;
-    if (!isUrl(path)) {
+    if (!isUrl(path) && path !== '/' ) {
       path = parentPath + item.path;
     }
     const result = {
       ...item,
       path,
-      authority: item.authority || parentAuthority,
     };
     if (item.children) {
-      result.children = formatter(item.children, `${parentPath}${item.path}/`, item.authority);
+      result.children = formatter(item.children, `${parentPath}${item.path}/`);
     }
     return result;
   });
 }
 
-export const getMenuData = () => formatter(menuData);
+export const topMenu = formatter(menuData);
+

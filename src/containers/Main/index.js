@@ -6,6 +6,7 @@ import { routerConfig } from '../../common/routerSetting';
 import Loadable from 'react-loadable';
 import styles from './style.scss';
 import Power from '../Power';
+import TopMenu from '../../components/Layout/Topmenu'
 class Main extends Component {
   constructor(props) {
     super(props);
@@ -29,16 +30,7 @@ class Main extends Component {
             <div className={styles.headerLeft}>
               <div className={styles.logo}></div>
             </div>
-            <Menu onClick={this.handleClick} selectedKeys={[this.state.current]} mode="horizontal" theme="dark" className={styles.headerMenu}>
-              <Menu.Item key="home" className={styles.menuItem}>
-                <span className={classnames("iconfont icon-home", styles.icon)} />
-                <Link to="/">首页</Link>
-              </Menu.Item>
-              <Menu.Item key="power" className={styles.menuItem}>               
-                <span className={classnames("iconfont icon-eye", styles.icon)} />
-                <Link to="/power">电站管理</Link>      
-              </Menu.Item>
-            </Menu>
+            <TopMenu/>
           </div>
           <div className={styles.content}>
             <Switch>
