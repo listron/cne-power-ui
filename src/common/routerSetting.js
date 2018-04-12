@@ -16,54 +16,42 @@ const getLoadingComponent = ({ isLoading, error }) => {
   }
 };
 
-const routers = [{
+const routers = [
+  {
     path:'/login',
     exact:true,
-    component: {
-      loader: () => import('../containers/Login'),
-      loading: getLoadingComponent
-    }
+    loader: () => import('../containers/Login')
   }, {
     path:'/forget',
     exact:true,
-    component: {
-      loader: () => import('../containers/Forget'),
-      loading: getLoadingComponent
-    }
+    loader: () => import('../containers/Forget')
   }, {
     path:'/signup',
     exact:true,
-    component: {
-      loader: () => import('../containers/Signup'),
-      loading: getLoadingComponent
-    }
-  }, {
+    loader: () => import('../containers/Signup')
+  },
+  {
     path:'/',
     exact:true,
-    component: {
-      loader: () => import('../containers/Power'),
-      loading: getLoadingComponent
-    },
-  }, {
+    loader: () => import('../containers/Power')
+  },{
     path:'/page1',
     exact:true,
-    component: {
-      loader: () => import('../containers/Power/UserList'),
-    }
-  }, {
-      path:'/page2',
-      exact:true,
-      loader: () => import('../containers/Power/PostList'),
-  }, {
+    loader: () => import('../containers/Power/UserList'),
+  },{
+    path:'/page2',
+    exact:true,
+    loader: () => import('../containers/Power/PostList'),
+  },{
     path:'/pone',
     exact:true,
     loader: () => import('../containers/TestPages/Pone'),
-  }, {
+  },{
     path:'/ptwo',
     exact:true,
     loader: () => import('../containers/TestPages/Ptwo')
-  }];
-  
+  }
+]
 export const routerConfig = routers.map(e=>{
   return {
     path:e.path,
@@ -74,7 +62,6 @@ export const routerConfig = routers.map(e=>{
     },
   }
 });
-
 
 
 
