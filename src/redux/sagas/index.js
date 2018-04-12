@@ -1,4 +1,4 @@
-import { takeEvery, takeLatest } from 'redux-saga';
+import { takeLatest } from 'redux-saga';
 import { call, put } from 'redux-saga/effects';
 import { getComInfo, getLogin,checkPhone,getCode,checkCode} from './login';
 import axios from 'axios';
@@ -38,12 +38,12 @@ function* watchGetPosts() {
 
 // root saga
 export default function* rootSaga() {
-  yield [
+  yield all([
     watchGetPosts(),
     getComInfo(),
     getLogin(),
     checkPhone(),
     getCode(),
     checkCode(),
-  ]
+  ])
 } 

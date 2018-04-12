@@ -11,6 +11,7 @@ import Login from '../Login';
 import Forget from '../Forget';
 import Signup from '../Signup';
 
+import TopMenu from '../../components/Layout/Topmenu'
 class Main extends Component {
   constructor(props) {
     super(props);
@@ -72,6 +73,23 @@ class Main extends Component {
                 <Redirect to="/" />
               </Switch>
             </div>
+            <TopMenu/>
+          </div>
+          <div className={styles.content}>
+            <Switch>
+              {routerConfig.map(e=>{
+                let Component = Loadable(e.component)
+                return <Route 
+                  key={e.path} 
+                  path={e.path} 
+                  exact={e.exact} 
+                  render={(props)=>{
+                    return <Component {...props}/>
+                  }}
+                />
+              })}
+              <Redirect to="/" />
+            </Switch>
           </div>
       );
     }

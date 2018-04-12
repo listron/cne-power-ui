@@ -3,17 +3,17 @@ import React from 'react'
 
 const getLoadingComponent = ({ isLoading, error }) => {
   // Handle the loading state
-    if (isLoading) {
-        return <div>Loading...</div>;
-    }
-    // Handle the error state
-    else if (error) {
-      console.log(error)
-        return <div>Sorry, there was a problem loading the page.</div>;
-    }
-    else {
-        return null;
-    }
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+  // Handle the error state
+  else if (error) {
+    console.log(error)
+    return <div>Sorry, there was a problem loading the page.</div>;
+  }
+  else {
+    return null;
+  }
 };
 
 export const routerConfig = [
@@ -54,31 +54,34 @@ export const routerConfig = [
     exact:true,
     component:{
       loader: () => import('../containers/Power/UserList'),
-      loading: getLoadingComponent
-    },
+    }
   },{
-    path:'/page2',
-    exact:true,
-    component:{
+      path:'/page2',
+      exact:true,
       loader: () => import('../containers/Power/PostList'),
-      loading: getLoadingComponent
-    },
-  },{
-    path:'/pone',
-    exact:true,
-    component:{
+    },{
+      path:'/pone',
+      exact:true,
       loader: () => import('../containers/TestPages/Pone'),
-      loading: getLoadingComponent
-    },
-  },{
-    path:'/ptwo',
-    exact:true,
-    component:{
-      loader: () => import('../containers/TestPages/Ptwo'),
-      loading: getLoadingComponent
-    },
-  }
-]
+    },{
+      path:'/ptwo',
+      exact:true,
+      loader: () => import('../containers/TestPages/Ptwo')
+    }
+  ]
+  export const routerConfig = routers.map(e=>{
+    return {
+      path:e.path,
+      exact:e.exact,
+      component:{
+        loader: e.loader,
+        loading: getLoadingComponent
+      },
+    }
+  })
+
+
+
 
 
 

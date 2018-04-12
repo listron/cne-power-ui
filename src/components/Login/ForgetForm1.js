@@ -80,6 +80,7 @@ class ForgetForm1 extends Component {
       });
     }
     if(nextProps.code.isRight&&!this.props.code.isRight){//验证码验证成功
+      console.log(this.props,nextProps)
       this.props.nextForm(nextProps.phone.phone);
     }
     if(!nextProps.code.isRight&&nextProps.code.error&&!this.props.code.error){
