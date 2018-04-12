@@ -20,7 +20,9 @@ class Forget extends Component {
       form2: "none",
     }
   }
+
   nextForm = (phone) => {
+    console.log(phone)
     this.setState({
       form1: "none",
       form2: "block",
@@ -28,38 +30,42 @@ class Forget extends Component {
     })
   }
 
-  componentDidMount() {
-    // this.props.dispatch(fetchForget({ currentPage: 1 }))
+  componentWillReceiveProps(nextProps){
+
   }
 
-
-
   render() {
+    const {
+      name,
+      logo
+    }=this.props.domain;
+    console.log(this.state.phone)
     return (
       <div className="loginpagewrap">
-        <img src="/img/cnelogo.png" alt="logo"/>
+        <img src={logo?logo:"/img/cnelogo.png"} alt="logo"/>
         <a href="#" className="right">返回官网</a>
         <div className="box">
           <div className="title2">重置密码</div>
-          <div className="avatar"><span className="icon-user"></span><p>京东方</p></div>
+          <div className="avatar"><span className="icon-user"></span>{name&&name}</div>
           <div className="loginWrap">
-            <ForgetForm1 />
-            <Link className="loginFormForgot" to="/login">去登录</Link>
-            <ForgetForm2 />
+            <ForgetForm1  visible={this.state.form1} nextForm={this.nextForm}/>
+            <Link className="loginFormForgot" to="/login" style={{display:this.state.form1}}>去登录</Link>
+            <ForgetForm2 visible={this.state.form2} phone={this.state.phone}/>
           </div>
         </div>
       </div>
     )
   }
 }
+
 const mapStateToProps = (state) => ({
-  // posts: state.posts   // 合并的reducer
-  // posts: state.posts.posts    // 单独的reducer
+  domain: state.login.domain,
+  error:state.login.error,
+  msg:state.login.msg,
+  phone:state.login.phone,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   // fetchPosts: () => dispatch({ type: GET_POSTS_SAGA })
 });
-// const forms = Form.create({})(LoginForm);
-export default Forget;
-// export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(Forget)

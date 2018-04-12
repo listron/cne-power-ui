@@ -48,7 +48,8 @@ export const routerConfig = [
       loader: () => import('../containers/Power'),
       loading: getLoadingComponent
     },
-  },{
+  },
+  {
     path:'/page1',
     exact:true,
     component:{

@@ -1,16 +1,8 @@
 import React, {Component} from 'react';
+import { connect } from 'react-redux';
+import { CHECK_PHONE_SAGA ,CHECK_CODE_SAGA} from '../../constants/actionTypes';
 import {Form,Input,Button,notification,Icon,Avatar,message,Row,Col} from 'antd';
-// import axios from 'axios';
-// const api  = "http://10.10.24.56:8080";
-// import {axiosPost} from '../utils'
-// import {fetchForgetForm1,userInfo} from 'actions/common';
-// import actions from '../actions/common';
 const FormItem = Form.Item
-// @Form.create()
-// @connect((state, props) => ({
-//   login: state.Login,
-//   // loginResponse: state.tabListResult,
-// }))
 class ForgetForm1 extends Component {
   // 初始化页面常量 绑定事件方法
   constructor(props, context) {
@@ -19,84 +11,87 @@ class ForgetForm1 extends Component {
       loading: false,
       seconds: 59,
       btnText: "点击获取验证码",
-      disabled: true,
+      disabled: false,
       form1: "block",
       form2: "none",
       next:true,
     }
-    // this.handleSubmit = this.handleSubmit.bind(this)
   }
 
   handleSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        this.props.dispatch(()=>{
-          axios.post(api+'/api/v3/user/validateCaptcha',`phone=${values.phone}&captcha=${values.captcha}`)
-          .then((response)=>{
-            if(response.data.success){
-              this.props.nextForm(values.phone);
-            }else{
-              this.props.form.setFields({
-                captcha: {
-                  value: values.captcha,
-                  errors: [new Error(response.data.error)],
-                },
-              });
-            }
-          })
-          .catch((error)=>{
-            message.error(error)
-          })
-        })
+        this.props.checkCode(values);
       }
     })
   }
   //获取验证码
   getCode = (e) => {
-    this.setState({
-      disabled: true,
-    })
     let phone = this.props.form.getFieldValue ('phone');
-    this.props.dispatch(() => {
-      axios.post(api+'/api/v3/user/validateEnterpriseRegPhoneNum',`phone=${phone}`)
-      .then((response) => {
-        if(response.data.success){//未注册
-          this.props.form.setFields({
-            phone: {
-              value: phone,
-              errors: [new Error('手机号未注册')],
-            },
-          });
-        }else{
-          if(response.data.error == '手机号已注册'){
-            axios.post(api+'/api/v3/common/requestSmsCode',`phone=${phone}`)
-            .then((response=>{
-              let siv = setInterval(() => {
-                this.setState({
-                  seconds: this.state.seconds - 1,
-                  btnText: `${this.state.seconds}秒后可重新获取`,
-                }, () => {
-                  if (this.state.seconds == -1) {
-                    this.setState({
-                      seconds: 5,
-                      btnText: "点击获取验证码",
-                      disabled: false,
-                    })
-                    clearInterval(siv);
-                  }
-                });
-                }, 1000);
-              }))
-            .catch((error) => {message.error(error)})
-          }
+    // this.setState({
+    //   phone:phone,
+    // })
+    if(phone){
+      this.props.checkPhone(phone);
+    }else{
+      this.props.form.setFields({
+        phone: {
+          value: phone,
+          errors: [new Error('手机号为空')],
+        },
+      });
+    }
+  }
+
+  componentWillReceiveProps (nextProps,nextState) {
+    if(nextProps.phone.error&&!this.props.phone.error){
+      this.props.form.setFields({
+        phone: {
+          value: nextProps.phone.phone,
+          errors: [new Error(nextProps.phone.msg)],
         }
-      })
-      .catch((error) => {message.error(error)})
-    })
+      });
+    }
+    if(nextProps.code.fetched&&!this.props.code.fetched){//验证码发送成功
+      let siv = setInterval(() => {
+        this.setState({
+          seconds: this.state.seconds - 1,
+          btnText: `${this.state.seconds}秒后可重新获取`,
+          disabled: true,          
+        }, () => {
+          if (this.state.seconds == -1) {
+            this.setState({
+              seconds: 59,
+              btnText: "点击获取验证码",
+              disabled: false,
+            })
+            clearInterval(siv);
+          }
+        });
+      }, 1000);
+    }
+    if(nextProps.code.error&&!this.props.code.error){//验证码发送失败
+      this.props.form.setFields({
+        captcha: {
+          value: nextProps.phone.phone,
+          errors: [new Error(nextProps.phone.msg)],
+        } 
+      });
+    }
+    if(nextProps.code.isRight&&!this.props.code.isRight){//验证码验证成功
+      this.props.nextForm(nextProps.phone.phone);
+    }
+    if(!nextProps.code.isRight&&nextProps.code.error&&!this.props.code.error){
+      this.props.form.setFields({
+        captcha: {
+          value: nextProps.code.code,
+          errors: [new Error(nextProps.code.msg)],
+        },
+      });
+    }
   }
-  componentDidMount() {
-  }
+
   hasErrors = (fieldsError) => {
     return Object.keys(fieldsError).some(field => fieldsError[field]);
   }
@@ -107,29 +102,6 @@ class ForgetForm1 extends Component {
       getFieldError,
       isFieldTouched
     } = this.props.form;
-    const formItemLayout = {
-      labelCol: {
-        xs: {
-          span: 24
-        },
-        sm: {
-          span: 4
-        },
-        md: {span:4}, lg: {span:4}
-      },
-      wrapperCol: {
-        xs: {
-          span: 24
-        },
-        sm: {
-          span: 16
-        },
-        md: {span:16}, lg: {span:16}
-      },
-    };
-    // const access = this.props.login;
-    // const errors = access.success&&access.error?access.msg:'';
-    // console.log(access.success&&errors,errors)
     return (
       <Form hideRequiredMark={false} onSubmit={this.handleSubmit} className="loginForm"  style={{display:this.props.visible}}>
         <FormItem label=""
@@ -166,4 +138,16 @@ class ForgetForm1 extends Component {
   }
 }
 const ForgetForms = Form.create()(ForgetForm1);
-export default ForgetForms;
+// export default ForgetForms;
+const mapStateToProps = (state) => ({
+  phone: state.login.phone,
+  error:state.login.error,
+  msg:state.login.msg,
+  code:state.login.code
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  checkPhone: (parmas) => dispatch({ type: CHECK_PHONE_SAGA,parmas:parmas }),
+  checkCode: (parmas) => dispatch({type: CHECK_CODE_SAGA,parmas:parmas})
+});
+export default connect(mapStateToProps, mapDispatchToProps)(ForgetForms)

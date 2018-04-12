@@ -16,3 +16,14 @@ export const GET_LOGIN_SAGA = 'GET_LOGIN_SAGA';
 export const GET_LOGIN_SUCCESS = 'GET_LOGIN_SUCCESS';
 export const GET_LOGIN_FAIL = 'GET_LOGIN_FAIL';
 
+//forget
+//验证手机号&发送验证码
+export const CHECK_PHONE_SAGA = 'CHECK_PHONE_SAGA';
+export const CHECK_PHONE_SUCCESS = 'CHECK_PHONE_SUCCESS';
+export const CHECK_PHONE_FAIL = 'CHECK_PHONE_FAIL';
+export const GET_CODE_SAGA = 'GET_CODE_SAGA';
+export const GET_CODE_SUCCESS = 'GET_CODE_SUCCESS';
+export const GET_CODE_FAIL = 'GET_CODE_FAIL';
+export const CHECK_CODE_SAGA = 'CHECK_CODE_SAGA';
+export const CHECK_CODE_SUCCESS = 'CHECK_CODE_SUCCESS';
+export const CHECK_CODE_FAIL = 'CHECK_CODE_FAIL';

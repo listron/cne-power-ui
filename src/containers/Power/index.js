@@ -6,8 +6,6 @@ import Sider from '../../components/Power/Sider';
 
 import { Menu, Icon,Button } from 'antd';
 import styles from './style.scss';
-// import { getCookie } from '../../../../distributedPV/app/utils';
-// import Login from '../../../../distributedPV/app/pages/login';
 import {getCookie} from '../../utils';
 import Login from '../Login';
 const SubMenu = Menu.SubMenu;

@@ -1,17 +1,10 @@
 import React, { Component } from 'react';
-import { RouteWithSubRoutes } from '../../router';
-import {hashHistory} from 'React-router'; 
-import { Link, Route, BrowserRouter,HashRouter,Redirect, Switch,withRouter} from 'react-router-dom';
-import { Menu, Icon } from 'antd';
-import classnames from 'classnames';
-import { routes } from '../../router';
+import { Link, Route,Redirect, Switch,withRouter} from 'react-router-dom';
+import { Menu } from 'antd';
 import {routerConfig} from '../../common/routerSetting';
 import Loadable from 'react-loadable';
 import { connect } from 'react-redux';
-import PropTypes from "prop-types";
-
 import './style.scss';
-import styles from './style.scss';
 import {getCookie} from '../../utils/index.js'
 import Power from '../Power';
 import Login from '../Login';
@@ -28,8 +21,9 @@ class Main extends Component {
     this.handleClick = this.handleClick.bind(this);
   }
 
-  componentWillReceiveProps(nextProps){
-    if(nextProps.login.fetched){
+  componentWillReceiveProps(nextProps){   
+    if(nextProps.login.fetched && !this.props.login.fetched){
+      this.props.history.push('/');
       this.setState({
         logined:true
       })
@@ -43,7 +37,8 @@ class Main extends Component {
   }
 
   render() {
-    if(this.state.logined){
+    if(this.state.logined || getCookie('phone')){
+      console.log(this.props)
       return (
           <div className="pv-app">
             <div className="pv-app-header">
@@ -74,23 +69,23 @@ class Main extends Component {
                     }}
                   />
                 })}
-                <Redirect to="/page2" />
+                <Redirect to="/" />
               </Switch>
             </div>
           </div>
       );
-    }else{
+    }
+    else{
       return (
-        <Login />         
+        <Switch>
+          <Route path='/login' excat component={Login}/>
+          <Route path='/forget' excat component={Forget}/>
+          <Route path='/signup' excat component={Signup}/>
+          <Redirect to="/login" />
+        </Switch>  
       )
     }
   }
-
-  // render() {
-  //   return this.props.routes.map((route, i) => (
-  //       <RouteWithSubRoutes key={i} {...route}/>
-  //   ));
-  // }
 }
 
 const mapStateToProps = (state) => ({
