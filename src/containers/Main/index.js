@@ -3,8 +3,8 @@ import { Link, Route,Redirect, Switch,withRouter} from 'react-router-dom';
 import { Menu } from 'antd';
 import {routerConfig} from '../../common/routerSetting';
 import Loadable from 'react-loadable';
+import styles from './style.scss';
 import { connect } from 'react-redux';
-import './style.scss';
 import {getCookie} from '../../utils/index.js'
 import Power from '../Power';
 import Login from '../Login';
@@ -39,39 +39,11 @@ class Main extends Component {
 
   render() {
     if(this.state.logined || getCookie('phone')){
-      console.log(this.props)
       return (
-          <div className="pv-app">
-            <div className="pv-app-header">
-              <div className="pv-app-header-left">
-                <div className="pv-app-header-logo"></div>
-                <Menu onClick={this.handleClick} selectedKeys={[this.state.current]} mode="horizontal" theme="dark">
-                  <Menu.Item key="home" className="pv-app-header-menu">
-                    <span className="iconfont icon-home" />
-                    <Link to="/">首页</Link>
-                  </Menu.Item>
-                  <Menu.Item key="power" className="pv-app-header-menu">               
-                    <span className="iconfont icon-eye" />
-                    <Link to="/power">电站管理</Link>      
-                  </Menu.Item>
-                </Menu>
-              </div>
-            </div>
-            <div className="pv-app-content">
-              <Switch>
-                {routerConfig.map(e=>{
-                  let Component = Loadable(e.component)
-                  return <Route 
-                    key={e.path} 
-                    path={e.path} 
-                    exact={e.exact} 
-                    render={(props)=>{
-                      return <Component {...props}/>
-                    }}
-                  />
-                })}
-                <Redirect to="/" />
-              </Switch>
+        <div className={styles.app}>
+          <div className={styles.appHeader}>
+            <div className={styles.headerLeft}>
+              <div className={styles.logo}></div>
             </div>
             <TopMenu/>
           </div>
@@ -91,6 +63,7 @@ class Main extends Component {
               <Redirect to="/" />
             </Switch>
           </div>
+        </div>
       );
     }
     else{
@@ -101,7 +74,7 @@ class Main extends Component {
           <Route path='/signup' excat component={Signup}/>
           <Redirect to="/login" />
         </Switch>  
-      )
+      );
     }
   }
 }

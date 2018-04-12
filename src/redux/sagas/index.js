@@ -1,6 +1,5 @@
-import { takeLatest } from 'redux-saga';
-import { call, put } from 'redux-saga/effects';
-import { getComInfo, getLogin,checkPhone,getCode,checkCode} from './login';
+import { call, put, takeLatest, all } from 'redux-saga/effects';
+import { getComInfo, getLogin, checkPhone, getCode, checkCode} from './login';
 import axios from 'axios';
 
 import {
