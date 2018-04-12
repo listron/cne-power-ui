@@ -1,29 +1,20 @@
 import React, { Component } from 'react';
 import { HashRouter, Switch, Route, Redirect, Link } from 'react-router-dom';
-import PropTypes from "prop-types";
 
 import Sider from '../../components/Power/Sider';
 
 import { Menu, Icon,Button } from 'antd';
 import styles from './style.scss';
-import {getCookie} from '../../utils';
-import Login from '../Login';
+
 const SubMenu = Menu.SubMenu;
 
 class Power extends Component {
-    static contextTypes = {
-        router: PropTypes.object
-      }
   constructor(props,context) {
     super(props);
     this.state = {};
   }
-  componentWillMount(){
-      
-  }
-  render() {
 
-    
+  render() {   
     return (
         <div className={styles.power} >
           <Sider />
