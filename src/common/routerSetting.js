@@ -29,8 +29,7 @@ const routers = [
     path:'/signup',
     exact:true,
     loader: () => import('../containers/Signup')
-  },
-  {
+  }, {
     path:'/',
     exact:true,
     loader: () => import('../containers/Power')
