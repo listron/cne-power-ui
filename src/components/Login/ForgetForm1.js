@@ -44,6 +44,10 @@ class ForgetForm1 extends Component {
     }
   }
 
+  componentDidMount(){
+    console.log(this.props)
+  }
+
   componentWillReceiveProps (nextProps,nextState) {
     if(nextProps.phone.error&&!this.props.phone.error){
       this.props.form.setFields({
