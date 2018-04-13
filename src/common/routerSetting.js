@@ -33,19 +33,19 @@ const routers = [
     path:'/',
     exact:true,
     loader: () => import('../containers/Power')
-  },{
+  }, {
     path:'/page1',
     exact:true,
     loader: () => import('../containers/Power/UserList'),
-  },{
+  }, {
     path:'/page2',
     exact:true,
     loader: () => import('../containers/Power/PostList'),
-  },{
+  }, {
     path:'/pone',
     exact:true,
     loader: () => import('../containers/TestPages/Pone'),
-  },{
+  }, {
     path:'/ptwo',
     exact:true,
     loader: () => import('../containers/TestPages/Ptwo')
