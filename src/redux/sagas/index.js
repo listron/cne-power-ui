@@ -1,5 +1,5 @@
 import { call, put, takeLatest, all } from 'redux-saga/effects';
-import { getComInfo, getLogin, checkPhone, getCode, checkCode} from './login';
+import { getComInfo, getLogin, checkPhone, getCode, checkCode, changePSW} from './login';
 import axios from 'axios';
 
 import {
@@ -44,5 +44,6 @@ export default function* rootSaga() {
     checkPhone(),
     getCode(),
     checkCode(),
+    changePSW(),
   ])
 } 

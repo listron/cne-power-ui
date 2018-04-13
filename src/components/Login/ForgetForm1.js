@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
-import { CHECK_PHONE_SAGA ,CHECK_CODE_SAGA} from '../../constants/actionTypes';
-import {Form,Input,Button,notification,Icon,Avatar,message,Row,Col} from 'antd';
+import { CHECK_PHONE_SAGA ,CHECK_CODE_SAGA} from '../../constants/actionTypes/Login';
+import {Form,Input,Icon,Button,message,Row,Col} from 'antd';
 const FormItem = Form.Item
 class ForgetForm1 extends Component {
   // 初始化页面常量 绑定事件方法
@@ -44,10 +44,6 @@ class ForgetForm1 extends Component {
     }
   }
 
-  componentDidMount(){
-    console.log(this.props)
-  }
-
   componentWillReceiveProps (nextProps,nextState) {
     if(nextProps.phone.error&&!this.props.phone.error){
       this.props.form.setFields({
@@ -84,8 +80,7 @@ class ForgetForm1 extends Component {
       });
     }
     if(nextProps.code.isRight&&!this.props.code.isRight){//验证码验证成功
-      console.log(this.props,nextProps)
-      this.props.nextForm(nextProps.phone.phone);
+      this.props.nextForm();
     }
     if(!nextProps.code.isRight&&nextProps.code.error&&!this.props.code.error){
       this.props.form.setFields({

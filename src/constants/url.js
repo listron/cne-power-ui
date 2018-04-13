@@ -11,5 +11,4 @@ export const CHECK_CODE_URL = API_URL + '/api/v3/user/validateCaptcha';
 export const LOGOUT_URL = API_URL + "/api/v3/user/logout";
 export const GET_RGLINK_URL = API_URL + "/api/v3/link/createRegisterLink";
 export const GET_COMINFO_BYLINK_URL = API_URL + "/api/v3/link/queryEnterpriseInfoByLinkCode";
-
-
+export const CHANGE_PSW_URL = API_URL +  '/api/v3/user/changeUserPassword';

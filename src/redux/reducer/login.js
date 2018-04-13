@@ -9,7 +9,9 @@ import {
   GET_CODE_FAIL,
   CHECK_CODE_SUCCESS,
   CHECK_CODE_FAIL,
-} from '../../constants/actionTypes';
+  CHANGE_PSW_SUCCESS,
+  CHANGE_PSW_FAIL,
+} from '../../constants/actionTypes/Login';
 
 const loginReducer = (state = {
   login:{
@@ -26,11 +28,16 @@ const loginReducer = (state = {
   },
   phone: {
     fetched:false,
+    phone:'',
   },
   code: {
     fetched:false,
     error:false,
     isRight:false,
+  },
+  psw:{
+    fetched:false,
+    error:false,
   },
   error:null,  
   msg:'',
@@ -109,7 +116,8 @@ const loginReducer = (state = {
         ...state, 
         code: {
           isRight:true,
-          code:action.code.code
+          code:action.code.code,
+          phone:action.code.phone
         } 
       }    
     case CHECK_CODE_FAIL:
@@ -119,6 +127,21 @@ const loginReducer = (state = {
           isRight:false,
           error:true,
           code:action.code.code,         
+          msg:action.code.error_msg,
+        } 
+    }
+    case CHANGE_PSW_SUCCESS:
+      return { 
+        ...state, 
+        psw: {
+          fetched:true
+        } 
+      }    
+    case CHANGE_PSW_FAIL:
+      return { 
+        ...state, 
+        psw: {
+          error:true,
           msg:action.code.error_msg,
         } 
     }

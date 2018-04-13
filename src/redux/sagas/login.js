@@ -18,7 +18,10 @@ import {
   CHECK_CODE_SAGE,
   CHECK_CODE_SUCCESS,
   CHECK_CODE_FAIL,
-} from '../../constants/actionTypes';
+  CHANGE_PSW_SAGA,
+  CHANGE_PSW_SUCCESS,
+  CHANGE_PSW_FAIL,
+} from '../../constants/actionTypes/Login';
 
 import {
   LOGIN_COMINFO,
@@ -29,6 +32,7 @@ import {
   CHECK_CODE_URL,
   GET_RGLINK_URL,
   GET_COMINFO_BYLINK_URL,
+  CHANGE_PSW_URL,
 } from '../../constants/url';
 
 //根据域名获取企业信息
@@ -59,8 +63,7 @@ function* getLoginAsync(action){
       setCookie('userId',response.data.result.userId);
       yield put({ type: GET_LOGIN_SUCCESS, login: response.data.result});
     } else {
-      yield put({ type: GET_LOGIN_FAIL, error_msg:response.data.error});
-      // message.error(response.data.error);                        
+      yield put({ type: GET_LOGIN_FAIL, error_msg:response.data.error});                        
     }
   } catch (e) {
     message.error(e)    
@@ -108,7 +111,7 @@ function* checkCodeAsync(action){
   try{
     const response = yield call(axios.post,CHECK_CODE_URL,`phone=${action.parmas.phone}&captcha=${action.parmas.captcha}`);
     if (response.data.success){
-      yield put({ type: CHECK_CODE_SUCCESS, code:{code:action.parmas.captcha}});      
+      yield put({ type: CHECK_CODE_SUCCESS, code:{code:action.parmas.captcha,phone:action.parmas.phone}});      
     }else{
       yield put({ type: CHECK_CODE_FAIL, code:{error_msg:response.data.error,code:action.parmas.captcha}});      
     }
@@ -118,6 +121,20 @@ function* checkCodeAsync(action){
   }
 }
 
+//修改密码
+function* changePSWAsync(action){
+  try{
+    const response = yield call(axios.post,CHANGE_PSW_URL,`phone=${this.props.phone}&password=${values.password}&confirmPwd=${values.confirmPwd}`);
+    if (response.data.success){
+      yield put({ type: CHANGE_PSW_SUCCESS});      
+    }else{
+      yield put({ type: CHANGE_PSW_FAIL, error_msg:response.data.error});      
+    }
+  }
+  catch (e) {
+    message.error(e)
+  }
+}
 export function* getComInfo() {
   yield takeLatest('GET_COMINFO_SAGA', showLoginAsync);
 }
@@ -132,4 +149,7 @@ export function* getCode(){
 }
 export function* checkCode(){
   yield takeLatest('CHECK_CODE_SAGA',checkCodeAsync);
+}
+export function* changePSW(){
+  yield takeLatest('CHANGE_PSW_SAGA', changePSWAsync);
 }
