@@ -10,6 +10,7 @@ import Power from '../Power';
 import Login from '../Login';
 import Forget from '../Forget';
 import Signup from '../Signup';
+import NotFund from '../Exception/404';
 
 import TopMenu from '../../components/Layout/Topmenu'
 class Main extends Component {
@@ -72,6 +73,7 @@ class Main extends Component {
           <Route path='/login' excat component={Login}/>
           <Route path='/forget' excat component={Forget}/>
           <Route path='/signup' excat component={Signup}/>
+          <Route path='/404' excat component={NotFund}/>          
           <Redirect to="/login" />
         </Switch>  
       );

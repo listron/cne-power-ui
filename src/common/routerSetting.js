@@ -18,6 +18,11 @@ const getLoadingComponent = ({ isLoading, error }) => {
 
 const routers = [
   {
+    path:'/404',
+    exact:true,
+    loader: () => import('../containers/Exception/404.js')
+  },
+  {
     path:'/login',
     exact:true,
     loader: () => import('../containers/Login')

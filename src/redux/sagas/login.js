@@ -21,6 +21,9 @@ import {
   CHANGE_PSW_SAGA,
   CHANGE_PSW_SUCCESS,
   CHANGE_PSW_FAIL,
+  GET_COMINFOSU_SAGA,
+  GET_COMINFOSU_SUCCESS,
+  GET_COMINFOSU_FAIL,
 } from '../../constants/actionTypes/Login';
 
 import {
@@ -79,7 +82,6 @@ function* checkPhoneAsync(action){
     }else{//手机号注册过，可以修改密码
       if(response.data.error == '手机号已注册'){
         yield put({ type: GET_CODE_SAGA, parmas:action.parmas});
-        // getCodeAsync(action.parmas);
       }else{//提示其他错误
         message.error(response.data.error);                        
       }
@@ -98,7 +100,6 @@ function* getCodeAsync(action){
       yield put({ type: GET_CODE_SUCCESS, phone: {phone:action.parmas}});
     } else {
       yield put({ type: GET_CODE_FAIL, phone:{error_msg:response.data.error,phone:action.parmas}});
-      // message.error(response.data.error);                        
     }
   } catch (e) {
     message.error(e)    
@@ -107,7 +108,6 @@ function* getCodeAsync(action){
 
 //验证验证码
 function* checkCodeAsync(action){
-  console.log(action)
   try{
     const response = yield call(axios.post,CHECK_CODE_URL,`phone=${action.parmas.phone}&captcha=${action.parmas.captcha}`);
     if (response.data.success){
@@ -124,11 +124,28 @@ function* checkCodeAsync(action){
 //修改密码
 function* changePSWAsync(action){
   try{
-    const response = yield call(axios.post,CHANGE_PSW_URL,`phone=${this.props.phone}&password=${values.password}&confirmPwd=${values.confirmPwd}`);
+    const response = yield call(axios.post,CHANGE_PSW_URL,`phone=${action.parmas.phone}&password=${action.parmas.password}&confirmPwd=${action.parmas.confirmPwd}`);
     if (response.data.success){
       yield put({ type: CHANGE_PSW_SUCCESS});      
     }else{
-      yield put({ type: CHANGE_PSW_FAIL, error_msg:response.data.error});      
+      yield put({ type: CHANGE_PSW_FAIL, error_msg:response.data.error});            
+    }
+  }
+  catch (e) {
+    message.error(e)
+  }
+}
+
+//通过link获取企业信息
+function* getComInfoSuAsync(action){
+  try{
+    const response = yield call(axios.post,GET_COMINFO_BYLINK_URL,`linkCode=${action.parmas}`);
+    if (response.data.success){
+      yield put({ type: GET_COMINFOSU_SUCCESS,info:response.data.result});
+      yield put({ type: GET_COMINFOSU_SUCCESS,info:{enterpriseName:'test'}});      
+            
+    }else{
+      yield put({ type: GET_COMINFOSU_FAIL, error_msg:"response.data.error"});            
     }
   }
   catch (e) {
@@ -152,4 +169,7 @@ export function* checkCode(){
 }
 export function* changePSW(){
   yield takeLatest('CHANGE_PSW_SAGA', changePSWAsync);
+}
+export function* getComInfoSu(){
+  yield takeLatest('GET_COMINFOSU_SAGA',getComInfoSuAsync)
 }

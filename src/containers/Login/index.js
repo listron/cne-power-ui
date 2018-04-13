@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import {Form,message} from 'antd';
-import { GET_COMINFO_SAGA,GET_LOGIN_SAGA } from '../../constants/actionTypes';
+import { GET_COMINFO_SAGA,GET_LOGIN_SAGA } from '../../constants/actionTypes/Login';
 import LoginForm from '../../components/Login/LoginForm';
 import './base.scss';
 

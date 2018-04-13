@@ -11,6 +11,8 @@ import {
   CHECK_CODE_FAIL,
   CHANGE_PSW_SUCCESS,
   CHANGE_PSW_FAIL,
+  GET_COMINFOSU_SUCCESS,
+  GET_COMINFOSU_FAIL,
 } from '../../constants/actionTypes/Login';
 
 const loginReducer = (state = {
@@ -38,6 +40,12 @@ const loginReducer = (state = {
   psw:{
     fetched:false,
     error:false,
+  },
+  info:{
+    fetched:false,
+    name:'',
+    logo:'',
+    id:'',
   },
   error:null,  
   msg:'',
@@ -142,7 +150,24 @@ const loginReducer = (state = {
         ...state, 
         psw: {
           error:true,
-          msg:action.code.error_msg,
+          msg:action.error_msg,
+        } 
+    }
+    case GET_COMINFOSU_SUCCESS:
+      return { 
+        ...state, 
+        info: {
+          fetched:true,
+          name:action.info.enterpriseName,
+          logo:action.info.enterpriseLogUrl
+        }
+      }    
+    case GET_COMINFOSU_FAIL:
+      return { 
+        ...state, 
+        info: {
+          error:true,
+          msg:action.error_msg,
         } 
     }
   }
