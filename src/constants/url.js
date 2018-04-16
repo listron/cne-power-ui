@@ -1,6 +1,6 @@
 // export const API_URL = 'http://10.10.11.224:8080';
-// export const API_URL = 'http://10.10.24.56:8080';
-export const API_URL = 'http://10.10.11.221:8080';
+// export const API_URL = 'http://10.10.24.56:8080';//本地
+export const API_URL = 'http://10.10.11.221:8080';//服务器
 
 
 
