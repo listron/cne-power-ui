@@ -9,7 +9,14 @@ import {
   GET_CODE_FAIL,
   CHECK_CODE_SUCCESS,
   CHECK_CODE_FAIL,
-} from '../../constants/actionTypes';
+  CHANGE_PSW_SUCCESS,
+  CHANGE_PSW_FAIL,
+  GET_COMINFOSU_SUCCESS,
+  GET_COMINFOSU_FAIL,
+  GET_SIGNUP_SUCCESS,
+  GET_SIGNUP_FAIL,
+  CHECK_PHONESU_FAIL,
+} from '../../constants/actionTypes/Login';
 
 const loginReducer = (state = {
   login:{
@@ -26,11 +33,25 @@ const loginReducer = (state = {
   },
   phone: {
     fetched:false,
+    phone:'',
   },
   code: {
     fetched:false,
     error:false,
     isRight:false,
+  },
+  psw:{
+    fetched:false,
+    error:false,
+  },
+  info:{
+    fetched:false,
+    name:'',
+    logo:'',
+    id:'',
+  },
+  signup:{
+    fetched:false,
   },
   error:null,  
   msg:'',
@@ -109,7 +130,8 @@ const loginReducer = (state = {
         ...state, 
         code: {
           isRight:true,
-          code:action.code.code
+          code:action.code.code,
+          phone:action.code.phone
         } 
       }    
     case CHECK_CODE_FAIL:
@@ -122,6 +144,70 @@ const loginReducer = (state = {
           msg:action.code.error_msg,
         } 
     }
+    case CHANGE_PSW_SUCCESS:
+      return { 
+        ...state, 
+        psw: {
+          fetched:true
+        } 
+      }    
+    case CHANGE_PSW_FAIL:
+      return { 
+        ...state, 
+        psw: {
+          error:true,
+          msg:action.error_msg,
+        } 
+    }
+    case GET_COMINFOSU_SUCCESS:
+      return { 
+        ...state, 
+        info: {
+          fetched:true,
+          name:action.info.enterpriseName,
+          logo:action.info.enterpriseLogUrl,
+          id:action.info.enterpriseId,
+        }
+      }    
+    case GET_COMINFOSU_FAIL:
+      return { 
+        ...state, 
+        info: {
+          error:true,
+          msg:action.error_msg,
+        } 
+    }
+    case GET_SIGNUP_SUCCESS:
+      return { 
+        ...state, 
+        signup: {
+          fetched:true,
+          userId:action.signup.userId,
+          userName:action.signup.userName,
+          phone:action.signup.phone
+        },
+        login:{
+          fetched:true
+        }
+      }    
+    case GET_SIGNUP_FAIL:
+      return { 
+        ...state, 
+        signup: {
+          error:true,
+          msg:action.error_msg,
+        } 
+    }
+    case CHECK_PHONESU_FAIL:
+      return { 
+        ...state, 
+        phone: {
+          fetched:false,
+          error:true,
+          msg:action.phone.error_msg,
+          phone:action.phone.phone          
+        }
+      }
   }
   return state
 }
