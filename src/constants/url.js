@@ -1,4 +1,8 @@
-export const API_URL = 'http://10.10.11.224:8080';
+// export const API_URL = 'http://10.10.11.224:8080';
+// export const API_URL = 'http://10.10.24.56:8080';
+export const API_URL = 'http://10.10.11.221:8080';
+
+
 
 export const GET_USERS_URL = 'https://jsonplaceholder.typicode.com/users';
 export const GET_POSTS_URL = 'https://jsonplaceholder.typicode.com/posts';
@@ -12,3 +16,4 @@ export const LOGOUT_URL = API_URL + "/api/v3/user/logout";
 export const GET_RGLINK_URL = API_URL + "/api/v3/link/createRegisterLink";
 export const GET_COMINFO_BYLINK_URL = API_URL + "/api/v3/link/queryEnterpriseInfoByLinkCode";
 export const CHANGE_PSW_URL = API_URL +  '/api/v3/user/changeUserPassword';
+export const GET_SIGNUP_URL = API_URL + '/api/v3/user/userRegister';

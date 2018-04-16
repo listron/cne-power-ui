@@ -24,6 +24,11 @@ import {
   GET_COMINFOSU_SAGA,
   GET_COMINFOSU_SUCCESS,
   GET_COMINFOSU_FAIL,
+  GET_SIGNUP_SAGA,
+  GET_SIGNUP_SUCCESS,
+  GET_SIGNUP_FAIL,
+  CHECK_PHONE_SU_SAGA,
+  CHECK_PHONESU_FAIL
 } from '../../constants/actionTypes/Login';
 
 import {
@@ -36,6 +41,7 @@ import {
   GET_RGLINK_URL,
   GET_COMINFO_BYLINK_URL,
   CHANGE_PSW_URL,
+  GET_SIGNUP_URL,
 } from '../../constants/url';
 
 //根据域名获取企业信息
@@ -141,14 +147,46 @@ function* getComInfoSuAsync(action){
   try{
     const response = yield call(axios.post,GET_COMINFO_BYLINK_URL,`linkCode=${action.parmas}`);
     if (response.data.success){
-      yield put({ type: GET_COMINFOSU_SUCCESS,info:response.data.result});
-      yield put({ type: GET_COMINFOSU_SUCCESS,info:{enterpriseName:'test'}});      
-            
+      yield put({ type: GET_COMINFOSU_SUCCESS,info:response.data.result});            
     }else{
-      yield put({ type: GET_COMINFOSU_FAIL, error_msg:"response.data.error"});            
+      yield put({ type: GET_COMINFOSU_FAIL, error_msg:response.data.error});            
     }
   }
   catch (e) {
+    message.error(e)
+  }
+}
+//验证手机号(注册)
+function* checkPhoneSUAsync(action){
+  try{
+    const response = yield call(axios.post,CHECK_PHONE_URL,`phone=${action.parmas}`);
+    console.log(response)
+    if (response.data.success){//手机号未注册
+      yield put({ type: GET_CODE_SAGA, parmas:action.parmas});
+    }else{//手机号注册过，可以修改密码
+      yield put({ type: CHECK_PHONESU_FAIL, phone:{phone:action.parmas,error_msg:response.data.error}});      
+    }
+  }
+  catch (e) {
+    message.error(e)
+  }
+}
+
+//注册
+function* getSignupAsync(action){
+  try{
+    const response = yield call(axios.post,GET_SIGNUP_URL,`enterpriseId=${action.parmas.enterpriseId}&phone=${action.parmas.phone}&captcha=${action.parmas.captcha}&realName=${action.parmas.realName}&password=${action.parmas.password}&confirmPwd=${action.parmas.confirmPwd}`);
+    if (response.data.success){
+      yield put({ type: GET_SIGNUP_SUCCESS,signup:response.data.result});
+      setCookie('phone',action.parmas.phone);
+      setCookie('userName',response.data.result.userName);
+      setCookie('userId',response.data.result.userId);
+    }else{
+      yield put({ type: GET_SIGNUP_FAIL, error_msg:response.data.error});            
+    }
+  }
+  catch (e) {
+    consoel.log(e)
     message.error(e)
   }
 }
@@ -172,4 +210,10 @@ export function* changePSW(){
 }
 export function* getComInfoSu(){
   yield takeLatest('GET_COMINFOSU_SAGA',getComInfoSuAsync)
+}
+export function* getSignup(){
+  yield takeLatest('GET_SIGNUP_SAGA',getSignupAsync)
+}
+export function* checkPhoneSU(){
+  yield takeLatest('CHECK_PHONE_SU_SAGA',checkPhoneSUAsync)
 }

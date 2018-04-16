@@ -13,6 +13,9 @@ import {
   CHANGE_PSW_FAIL,
   GET_COMINFOSU_SUCCESS,
   GET_COMINFOSU_FAIL,
+  GET_SIGNUP_SUCCESS,
+  GET_SIGNUP_FAIL,
+  CHECK_PHONESU_FAIL,
 } from '../../constants/actionTypes/Login';
 
 const loginReducer = (state = {
@@ -46,6 +49,9 @@ const loginReducer = (state = {
     name:'',
     logo:'',
     id:'',
+  },
+  signup:{
+    fetched:false,
   },
   error:null,  
   msg:'',
@@ -159,7 +165,8 @@ const loginReducer = (state = {
         info: {
           fetched:true,
           name:action.info.enterpriseName,
-          logo:action.info.enterpriseLogUrl
+          logo:action.info.enterpriseLogUrl,
+          id:action.info.enterpriseId,
         }
       }    
     case GET_COMINFOSU_FAIL:
@@ -170,6 +177,37 @@ const loginReducer = (state = {
           msg:action.error_msg,
         } 
     }
+    case GET_SIGNUP_SUCCESS:
+      return { 
+        ...state, 
+        signup: {
+          fetched:true,
+          userId:action.signup.userId,
+          userName:action.signup.userName,
+          phone:action.signup.phone
+        },
+        login:{
+          fetched:true
+        }
+      }    
+    case GET_SIGNUP_FAIL:
+      return { 
+        ...state, 
+        signup: {
+          error:true,
+          msg:action.error_msg,
+        } 
+    }
+    case CHECK_PHONESU_FAIL:
+      return { 
+        ...state, 
+        phone: {
+          fetched:false,
+          error:true,
+          msg:action.phone.error_msg,
+          phone:action.phone.phone          
+        }
+      }
   }
   return state
 }

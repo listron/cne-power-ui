@@ -19,6 +19,7 @@ class Signup extends Component {
 
   componentDidMount() {
     const linkCode = 'e7228d7fcc2d44a48981923e72bb27f2';
+    // const linkCode ='';
     this.props.fetchcCompanyInfo(linkCode);
   }
 
@@ -26,6 +27,11 @@ class Signup extends Component {
     if(nextProps.info.error&&!this.props.info.error){
       this.props.history.push('/404');      
     }
+    // if(nextProps.info.fetched&&!this.props.info.fetched){
+    //   this.setState({
+
+    //   })
+    // }
   }
 
   nextForm = (phone,captcha) => {
@@ -51,7 +57,7 @@ class Signup extends Component {
           <div className="avatar"><span className="icon-user"></span>{name&&name}</div>
           <div className="loginWrap">
             <SignupForm1 visible={this.state.form1} nextForm={this.nextForm}/>
-            <Link className="loginFormForgot" to="/login">已有账号，去登录</Link>          
+            <Link style={{display:this.state.form1}} className="loginFormForgot" to="/login">已有账号，去登录</Link>          
             <SignupForm2 visible={this.state.form2} phone={this.state.phone} captcha={this.state.captcha}/>
           </div>
         </div>
