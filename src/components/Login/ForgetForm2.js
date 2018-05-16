@@ -1,47 +1,39 @@
-import React, {Component} from 'react';
-import {Form,Input,Button,notification,Icon,Avatar,message,Row,Col} from 'antd';
-import {hashHistory,Link} from 'react-router';
-import axios from 'axios';
-// const api  = "http://10.10.24.56:8080";
-
-// import {fetchForgetForm1,userInfo} from 'actions/common';
-// import actions from '../actions/common';
-
-const FormItem = Form.Item
-// @Form.create()
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { withRouter} from 'react-router-dom';
+import { CHANGE_PSW_SAGA } from '../../constants/actionTypes/Login';
+import { Form, Input, Button, message, Row, Col } from 'antd';
+// import {}
+const FormItem = Form.Item;
 class ForgetForm2 extends Component {
-  // 初始化页面常量 绑定事件方法
-  constructor(props, context) {
+  constructor(props) {
     super(props)
     this.state={
       confirmDirty: false,
       autoCompleteResult: [],
     }
-    this.handleSubmit = this.handleSubmit.bind(this)
+  }
+
+  componentWillReceiveProps(nextProps){
+    if(nextProps.psw.fetched&&!this.props.psw.fetched){
+      this.props.history.push('/login');
+    }
+    if(nextProps.psw.error&&!this.props.psw.error){
+      this.props.form.setFields({
+        confirmPwd: {
+          value: '******',
+          errors: [new Error(nextProps.psw.msg)],
+        } 
+      });
+    }
   }
 
   handleSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        this.props.dispatch(()=>{
-          axios.post(api+'/api/v3/user/changeUserPassword',`phone=${this.props.phone}&password=${values.password}&confirmPwd=${values.confirmPwd}`)
-          .then((response)=>{
-            if(response.data.success){
-              hashHistory.push('/');
-            }else{
-              this.props.form.setFields({
-                password: {
-                  value: values.password,
-                  errors: [new Error(response.data.error)],
-                },
-              });
-            }
-          })
-          .catch((error)=>{
-            message.error(error)
-          })
-        })
+        let parmas={...values,phone:this.props.code.phone}
+        this.props.changePSW(parmas);
       }
     })
   }
@@ -71,6 +63,7 @@ class ForgetForm2 extends Component {
       getFieldError,
       isFieldTouched
     } = this.props.form;
+    const {phone} = this.props.code;
     const formItemLayout = {
       labelCol: {
         xs: {
@@ -91,11 +84,12 @@ class ForgetForm2 extends Component {
         md: {span:16}, lg: {span:16}
       },
     };
+
     return (
       <Form hideRequiredMark={false} onSubmit={this.handleSubmit} className="loginForm"  style={{display:this.props.visible}}>
         <Row>
           <Col span={4} style={{textAlign:"right",color:'rgba(0, 0, 0, 0.85)',marginBottom:"1em"}} className="ant-form-item-required">手机号码：</Col>
-          <Col span={20} style={{color:"#999"}}>{this.props.phone}</Col>
+          <Col span={20} style={{color:"#999"}}>{!!phone?phone:null}</Col>
         </Row>
         <FormItem
             {...formItemLayout}
@@ -124,15 +118,24 @@ class ForgetForm2 extends Component {
             })(
               <Input type="password" onBlur={this.handleConfirmBlur} placeholder="请输入"/>
             )}
-        </FormItem>
-        <FormItem>
-          <Button type="primary" htmlType="submit" className="loginFormButton">
-           重置密码
-          </Button>
-        </FormItem>
-      </Form>
+          </FormItem>
+          <FormItem>
+            <Button type="primary" htmlType="submit" className="loginFormButton">
+            重置密码
+            </Button>
+          </FormItem>
+        </Form>
     )
   }
 }
-const ForgetForms = Form.create()(ForgetForm2);
-export default ForgetForms;
+
+const ForgetFormS = Form.create()(ForgetForm2);
+const mapStateToProps = (state) => ({
+  psw:state.login.psw,
+  code:state.login.code,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  changePSW: (parmas) => dispatch({ type: CHANGE_PSW_SAGA,parmas:parmas }),  
+});
+export default withRouter(connect(mapStateToProps,mapDispatchToProps)(ForgetFormS))

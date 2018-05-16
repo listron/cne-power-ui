@@ -22,16 +22,10 @@ class Forget extends Component {
   }
 
   nextForm = (phone) => {
-    console.log(phone)
     this.setState({
       form1: "none",
       form2: "block",
-      phone:phone,
     })
-  }
-
-  componentWillReceiveProps(nextProps){
-
   }
 
   render() {
@@ -39,7 +33,6 @@ class Forget extends Component {
       name,
       logo
     }=this.props.domain;
-    console.log(this.state.phone)
     return (
       <div className="loginpagewrap">
         <img src={logo?logo:"/img/cnelogo.png"} alt="logo"/>
@@ -50,7 +43,7 @@ class Forget extends Component {
           <div className="loginWrap">
             <ForgetForm1  visible={this.state.form1} nextForm={this.nextForm}/>
             <Link className="loginFormForgot" to="/login" style={{display:this.state.form1}}>去登录</Link>
-            <ForgetForm2 visible={this.state.form2} phone={this.state.phone}/>
+            <ForgetForm2 visible={this.state.form2}/>
           </div>
         </div>
       </div>
@@ -62,7 +55,7 @@ const mapStateToProps = (state) => ({
   domain: state.login.domain,
   error:state.login.error,
   msg:state.login.msg,
-  phone:state.login.phone,
+  // phone:state.login.phone,
 });
 
 const mapDispatchToProps = (dispatch) => ({

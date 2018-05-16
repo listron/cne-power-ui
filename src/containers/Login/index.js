@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { GET_COMINFO_SAGA, GET_LOGIN_SAGA } from '../../constants/actionTypes';
+import {message} from 'antd';
+import { GET_COMINFO_SAGA,GET_LOGIN_SAGA } from '../../constants/actionTypes/Login';
 import LoginForm from '../../components/Login/LoginForm';
 import './base.scss';
 
@@ -18,6 +19,12 @@ class Login extends Component {
     // const domain = document.domain.split('.')[0];    
     const domian = 'test';
     this.props.fetchCompanyInfo(`domian=${domian}`);
+  }
+
+  componentWillReceiveProps(nextProps){
+    if(nextProps.error&&!this.props.error){
+      message.error(nextProps.msg);
+    }
   }
 
   handleSubmit = (values) => {

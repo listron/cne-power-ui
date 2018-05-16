@@ -1,12 +1,9 @@
-import React, {Component} from 'react';
-import {Form,Input,Button,notification,Icon,Avatar,message,Row,Col} from 'antd';
-import {getCookie,setCookie} from '../../utils'
-const api  = "http://10.10.24.56:8080";
-
-// import {fetchRegisterForm2,userInfo} from 'actions/common';
-
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { withRouter} from 'react-router-dom';
+import { GET_SIGNUP_SAGA } from '../../constants/actionTypes/Login';
+import { Form, Input, Button, message, Row, Col } from 'antd';
 const FormItem = Form.Item
-// @Form.create()
 class SignupForm2 extends Component {
   // 初始化页面常量 绑定事件方法
   constructor(props, context) {
@@ -18,31 +15,11 @@ class SignupForm2 extends Component {
   }
 
   handleSubmit = (e) => {
-    e.preventDefault();
+    e.preventDefault();    
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        const enterpriseId = getCookie('enterpriseId');
-        this.props.dispatch(()=>{
-          axios.post(api+'/api/v3/user/userRegister',`enterpriseId=${enterpriseId}&phone=${this.props.phone}&captcha=${this.props.captcha}&realName=${values.realName}&password=${values.password}&confirmPwd=${values.confirmPwd}`)
-          .then((response)=>{
-            if(response.data.success){
-              setCookie('phone',this.props.phone)
-              setCookie('userName',response.data.result.userName)
-              setCookie('userId',response.data.result.userId)
-              hashHistory.push('/');
-            }else{
-              this.props.form.setFields({
-                password: {
-                  value: values.password,
-                  errors: [new Error(response.data.error)],
-                },
-              });
-            }
-          })
-          .catch((error)=>{
-            message.error(error)
-          })
-        })
+        let parmas={...values,phone:this.props.code.phone,captcha:this.props.code.code,enterpriseId:this.props.info.id,}
+        this.props.getSignup(parmas);
       }
     })
   }
@@ -62,11 +39,21 @@ class SignupForm2 extends Component {
       callback();
     }
   }
-  // 组件已经加载到dom中
-  componentDidMount() {
+
+  componentWillReceiveProps(nextProps){    
+    if(nextProps.signup.fetched&&!this.props.signup.fetched){
+      this.props.history.push('/');
+    }
+    if(nextProps.signup.error&&!this.props.signup.error){
+      this.props.form.setFields({
+        confirmPwd: {
+          value: '******',
+          errors: [new Error(nextProps.signup.msg)],
+        } 
+      });
+    }
   }
-  componentWillReceiveProps(nextProps){
-  }
+
   hasErrors = (fieldsError) => {
     return Object.keys(fieldsError).some(field => fieldsError[field]);
   }
@@ -97,7 +84,6 @@ class SignupForm2 extends Component {
         md: {span:16}, lg: {span:16}
       },
     };
-    console.log(this.props)
     return (
       <Form hideRequiredMark={false} onSubmit={this.handleSubmit} className="loginForm"  style={{display:this.props.visible}}>
         <FormItem
@@ -150,5 +136,16 @@ class SignupForm2 extends Component {
     )
   }
 }
-const SignupForms = Form.create()(SignupForm2);
-export default SignupForms;
+
+const SignupFormS = Form.create()(SignupForm2);
+// export default SignupFormS;
+const mapStateToProps = (state) => ({
+  signup:state.login.signup,
+  code:state.login.code,
+  info: state.login.info,  
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  getSignup: (parmas) => dispatch({ type: GET_SIGNUP_SAGA,parmas:parmas }),  
+});
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(SignupFormS));
