@@ -86,7 +86,7 @@ function* checkPhoneAsync(action){
     if (response.data.success){//手机号未注册，不能修改密码
       yield put({ type: CHECK_PHONE_FAIL, phone:{phone:action.parmas,error_msg:response.data.error}});      
     }else{//手机号注册过，可以修改密码
-      if(response.data.error == '手机号已注册'){
+      if(response.data.error === '手机号已注册'){
         yield put({ type: GET_CODE_SAGA, parmas:action.parmas});
       }else{//提示其他错误
         message.error(response.data.error);                        
@@ -161,9 +161,9 @@ function* checkPhoneSUAsync(action){
   try{
     const response = yield call(axios.post,CHECK_PHONE_URL,`phone=${action.parmas}`);
     console.log(response)
-    if (response.data.success){//手机号未注册
+    if (response.data.success){//手机号未注册，可以注册
       yield put({ type: GET_CODE_SAGA, parmas:action.parmas});
-    }else{//手机号注册过，可以修改密码
+    }else{//手机号注册过，不能再次注册
       yield put({ type: CHECK_PHONESU_FAIL, phone:{phone:action.parmas,error_msg:response.data.error}});      
     }
   }
