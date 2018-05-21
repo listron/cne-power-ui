@@ -10,12 +10,11 @@ import {
   GET_LOGIN_SUCCESS,
   GET_LOGIN_FAIL,
   CHECK_PHONE_SAGA,
-  CHECK_PHONE_SUCCESS,
   CHECK_PHONE_FAIL,
   GET_CODE_SAGA,
   GET_CODE_SUCCESS,
   GET_CODE_FAIL,
-  CHECK_CODE_SAGE,
+  CHECK_CODE_SAGA,
   CHECK_CODE_SUCCESS,
   CHECK_CODE_FAIL,
   CHANGE_PSW_SAGA,
@@ -36,9 +35,7 @@ import {
   LOGIN_API_URL,
   CHECK_PHONE_URL,
   GET_CODE_URL,
-  LOGOUT_URL,
   CHECK_CODE_URL,
-  GET_RGLINK_URL,
   GET_COMINFO_BYLINK_URL,
   CHANGE_PSW_URL,
   GET_SIGNUP_URL,
@@ -53,7 +50,7 @@ function* showLoginAsync(action) {
       yield put({ type: GET_COMINFO_SUCCESS, domain: response.data.result });      
       setCookie('enterpriseId',response.data.result.enterpriseId);
     }else{
-      yield put({ type: GET_COMINFO_FAIL, error_msg:response.data.error});    
+      yield put({ type: GET_COMINFO_FAIL, error:response.data.error});    
       message.error(response.data.error);        
     }
   } catch (e) {
@@ -72,7 +69,7 @@ function* getLoginAsync(action){
       setCookie('userId',response.data.result.userId);
       yield put({ type: GET_LOGIN_SUCCESS, login: response.data.result});
     } else {
-      yield put({ type: GET_LOGIN_FAIL, error_msg:response.data.error});                        
+      yield put({ type: GET_LOGIN_FAIL, error:response.data.error});                        
     }
   } catch (e) {
     message.error(e)    
@@ -84,7 +81,7 @@ function* checkPhoneAsync(action){
   try{
     const response = yield call(axios.post,CHECK_PHONE_URL,`phone=${action.parmas}`);
     if (response.data.success){//手机号未注册，不能修改密码
-      yield put({ type: CHECK_PHONE_FAIL, phone:{phone:action.parmas,error_msg:response.data.error}});      
+      yield put({ type: CHECK_PHONE_FAIL, phone:{phone:action.parmas,error:response.data.error}});      
     }else{//手机号注册过，可以修改密码
       if(response.data.error === '手机号已注册'){
         yield put({ type: GET_CODE_SAGA, parmas:action.parmas});
@@ -105,7 +102,7 @@ function* getCodeAsync(action){
     if (response.data.success) {
       yield put({ type: GET_CODE_SUCCESS, phone: {phone:action.parmas}});
     } else {
-      yield put({ type: GET_CODE_FAIL, phone:{error_msg:response.data.error,phone:action.parmas}});
+      yield put({ type: GET_CODE_FAIL, phone:{error:response.data.error,phone:action.parmas}});
     }
   } catch (e) {
     message.error(e)    
@@ -119,7 +116,7 @@ function* checkCodeAsync(action){
     if (response.data.success){
       yield put({ type: CHECK_CODE_SUCCESS, code:{code:action.parmas.captcha,phone:action.parmas.phone}});      
     }else{
-      yield put({ type: CHECK_CODE_FAIL, code:{error_msg:response.data.error,code:action.parmas.captcha}});      
+      yield put({ type: CHECK_CODE_FAIL, code:{error:response.data.error,code:action.parmas.captcha}});      
     }
   }
   catch (e) {
@@ -134,7 +131,7 @@ function* changePSWAsync(action){
     if (response.data.success){
       yield put({ type: CHANGE_PSW_SUCCESS});      
     }else{
-      yield put({ type: CHANGE_PSW_FAIL, error_msg:response.data.error});            
+      yield put({ type: CHANGE_PSW_FAIL, error:response.data.error});            
     }
   }
   catch (e) {
@@ -149,7 +146,7 @@ function* getComInfoSuAsync(action){
     if (response.data.success){
       yield put({ type: GET_COMINFOSU_SUCCESS,info:response.data.result});            
     }else{
-      yield put({ type: GET_COMINFOSU_FAIL, error_msg:response.data.error});            
+      yield put({ type: GET_COMINFOSU_FAIL, error:response.data.error});            
     }
   }
   catch (e) {
@@ -164,7 +161,7 @@ function* checkPhoneSUAsync(action){
     if (response.data.success){//手机号未注册，可以注册
       yield put({ type: GET_CODE_SAGA, parmas:action.parmas});
     }else{//手机号注册过，不能再次注册
-      yield put({ type: CHECK_PHONESU_FAIL, phone:{phone:action.parmas,error_msg:response.data.error}});      
+      yield put({ type: CHECK_PHONESU_FAIL, phone:{phone:action.parmas,error:response.data.error}});      
     }
   }
   catch (e) {
@@ -182,7 +179,7 @@ function* getSignupAsync(action){
       setCookie('userName',response.data.result.userName);
       setCookie('userId',response.data.result.userId);
     }else{
-      yield put({ type: GET_SIGNUP_FAIL, error_msg:response.data.error});            
+      yield put({ type: GET_SIGNUP_FAIL, error:response.data.error});            
     }
   }
   catch (e) {
@@ -191,29 +188,29 @@ function* getSignupAsync(action){
   }
 }
 export function* getComInfo() {
-  yield takeLatest('GET_COMINFO_SAGA', showLoginAsync);
+  yield takeLatest(GET_COMINFO_SAGA, showLoginAsync);
 }
 export function* getLogin(){
-  yield takeLatest('GET_LOGIN_SAGA',getLoginAsync);
+  yield takeLatest(GET_LOGIN_SAGA,getLoginAsync);
 }
 export function* checkPhone(){
-  yield takeLatest('CHECK_PHONE_SAGA',checkPhoneAsync);
+  yield takeLatest(CHECK_PHONE_SAGA,checkPhoneAsync);
 }
 export function* getCode(){
-  yield takeLatest('GET_CODE_SAGA',getCodeAsync);
+  yield takeLatest(GET_CODE_SAGA,getCodeAsync);
 }
 export function* checkCode(){
-  yield takeLatest('CHECK_CODE_SAGA',checkCodeAsync);
+  yield takeLatest(CHECK_CODE_SAGA,checkCodeAsync);
 }
 export function* changePSW(){
-  yield takeLatest('CHANGE_PSW_SAGA', changePSWAsync);
+  yield takeLatest(CHANGE_PSW_SAGA, changePSWAsync);
 }
 export function* getComInfoSu(){
-  yield takeLatest('GET_COMINFOSU_SAGA',getComInfoSuAsync)
+  yield takeLatest(GET_COMINFOSU_SAGA,getComInfoSuAsync)
 }
 export function* getSignup(){
-  yield takeLatest('GET_SIGNUP_SAGA',getSignupAsync)
+  yield takeLatest(GET_SIGNUP_SAGA,getSignupAsync)
 }
 export function* checkPhoneSU(){
-  yield takeLatest('CHECK_PHONE_SU_SAGA',checkPhoneSUAsync)
+  yield takeLatest(CHECK_PHONE_SU_SAGA,checkPhoneSUAsync)
 }

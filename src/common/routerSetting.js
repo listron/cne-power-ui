@@ -1,4 +1,3 @@
-import Loadable from 'react-loadable';
 import React from 'react'
 
 const getLoadingComponent = ({ isLoading, error }) => {

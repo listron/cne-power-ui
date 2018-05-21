@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import { CHECK_PHONE_SAGA ,CHECK_CODE_SAGA} from '../../constants/actionTypes/Login';
-import {Form,Input,Icon,Button,message,Row,Col} from 'antd';
+import {Form,Input,Icon,Button,Row,Col} from 'antd';
 const FormItem = Form.Item
 class ForgetForm1 extends Component {
   // 初始化页面常量 绑定事件方法
