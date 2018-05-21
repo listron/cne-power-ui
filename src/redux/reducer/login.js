@@ -71,7 +71,7 @@ const loginReducer = (state = {
       return { 
         ...state, 
         error:true,
-        msg:action.error_msg,
+        msg:action.error,
       }
     case GET_LOGIN_SUCCESS:
       return { 
@@ -86,7 +86,7 @@ const loginReducer = (state = {
       return { 
         ...state, 
         error:true,
-        msg:action.error_msg,
+        msg:action.error,
       }
     case CHECK_PHONE_SUCCESS:
       return { 
@@ -121,7 +121,7 @@ const loginReducer = (state = {
         code: {
           fetched:false,
           error:true,
-          msg:action.phone.error_msg,
+          msg:action.phone.error,
           phone:action.phone.phone                   
         } 
       }
@@ -141,7 +141,7 @@ const loginReducer = (state = {
           isRight:false,
           error:true,
           code:action.code.code,         
-          msg:action.code.error_msg,
+          msg:action.code.error,
         } 
     }
     case CHANGE_PSW_SUCCESS:
@@ -156,7 +156,7 @@ const loginReducer = (state = {
         ...state, 
         psw: {
           error:true,
-          msg:action.error_msg,
+          msg:action.error,
         } 
     }
     case GET_COMINFOSU_SUCCESS:
@@ -174,7 +174,7 @@ const loginReducer = (state = {
         ...state, 
         info: {
           error:true,
-          msg:action.error_msg,
+          msg:action.error,
         } 
     }
     case GET_SIGNUP_SUCCESS:
@@ -195,7 +195,7 @@ const loginReducer = (state = {
         ...state, 
         signup: {
           error:true,
-          msg:action.error_msg,
+          msg:action.error,
         } 
     }
     case CHECK_PHONESU_FAIL:
@@ -204,7 +204,7 @@ const loginReducer = (state = {
         phone: {
           fetched:false,
           error:true,
-          msg:action.phone.error_msg,
+          msg:action.phone.error,
           phone:action.phone.phone          
         }
       }

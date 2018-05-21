@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import { Link, Route,Redirect, Switch,withRouter} from 'react-router-dom';
-import { Menu } from 'antd';
+import { Route,Redirect, Switch,withRouter} from 'react-router-dom';
+// import { Menu } from 'antd';
 import {routerConfig} from '../../common/routerSetting';
 import Loadable from 'react-loadable';
 import styles from './style.scss';
 import { connect } from 'react-redux';
 import {getCookie} from '../../utils/index.js'
-import Power from '../Power';
+// import Power from '../Power';
 import Login from '../Login';
 import Forget from '../Forget';
 import Signup from '../Signup';
@@ -46,20 +46,22 @@ class Main extends Component {
             <div className={styles.headerLeft}>
               <div className={styles.logo}></div>
             </div>
-            <TopMenu/>
+            <TopMenu />
           </div>
           <div className={styles.content}>
             <Switch>
               {routerConfig.map(e=>{
                 let Component = Loadable(e.component)
-                return <Route 
-                  key={e.path} 
-                  path={e.path} 
-                  exact={e.exact} 
-                  render={(props)=>{
-                    return <Component {...props}/>
-                  }}
-                />
+                return (
+                  <Route 
+                    key={e.path} 
+                    path={e.path} 
+                    exact={e.exact} 
+                    render={(props)=>{
+                      return <Component {...props} />
+                    }}
+                  />
+                );
               })}
               <Redirect to="/" />
             </Switch>
@@ -70,10 +72,10 @@ class Main extends Component {
     else{
       return (
         <Switch>
-          <Route path='/login' excat component={Login}/>
-          <Route path='/forget' excat component={Forget}/>
-          <Route path='/signup' excat component={Signup}/>
-          <Route path='/404' excat component={NotFund}/>          
+          <Route path="login" excat component={Login} />
+          <Route path="/forget" excat component={Forget} />
+          <Route path="/signup" excat component={Signup} />
+          <Route path="/404" excat component={NotFund} />          
           <Redirect to="/login" />
         </Switch>  
       );
