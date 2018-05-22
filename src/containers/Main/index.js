@@ -72,7 +72,7 @@ class Main extends Component {
     else{
       return (
         <Switch>
-          <Route path="login" excat component={Login} />
+          <Route path="/login" excat component={Login} />
           <Route path="/forget" excat component={Forget} />
           <Route path="/signup" excat component={Signup} />
           <Route path="/404" excat component={NotFund} />          
