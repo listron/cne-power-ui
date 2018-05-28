@@ -6,6 +6,9 @@ import ForgetForm2 from '../../components/Login/ForgetForm2'
 import PropTypes from 'prop-types';
 
 class Forget extends Component {
+  static propTypes = {
+    domain:PropTypes.object,
+  }
   constructor(props, context) {
     super(props)
     this.state = {
@@ -43,9 +46,6 @@ class Forget extends Component {
     )
   }
 }
-Forget.propTypes = {
-  domain:PropTypes.object,
-};
 const mapStateToProps = (state) => ({
   domain: state.login.domain,
   error:state.login.error,

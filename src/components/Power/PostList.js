@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-const { func } = PropTypes;
 import { Table } from 'antd';
 
 class PostList extends Component {
   static propTypes = {
-    fetchPosts: func
+    fetchPosts: PropTypes.func,
+    posts: PropTypes.array
   }
 
   static defaultProps = {

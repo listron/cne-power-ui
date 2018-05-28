@@ -8,7 +8,13 @@ import './base.scss';
 import PropTypes from 'prop-types';
 
 class Login extends Component {
-
+  static propTypes = {
+    fetchCompanyInfo: PropTypes.func,
+    error: PropTypes.string,
+    fetchLogin:PropTypes.func,
+    msg: PropTypes.string,
+    domain: PropTypes.object,
+  }
   constructor(props) {
     super(props);
     this.state = {
@@ -55,14 +61,6 @@ class Login extends Component {
     );
   }
 }
-Login.propTypes = {
-  fetchCompanyInfo: PropTypes.func,
-  error: PropTypes.string,
-  fetchLogin:PropTypes.func,
-  msg: PropTypes.string,
-  domain: PropTypes.object,
-  
-};
 const mapStateToProps = (state) => ({
   domain: state.login.domain,
   error:state.login.error,
