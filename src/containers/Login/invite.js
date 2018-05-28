@@ -1,19 +1,17 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import { Alert,Button,Radio,message} from 'antd';
+import { Button,Radio,message} from 'antd';
 import {userInfo} from 'actions/common'
-import {hashHistory,Link} from 'react-router'
 import moment from 'moment';
 import  'moment/locale/zh-cn';
 import copy from 'copy-to-clipboard';
-import {delCookie,getCookie} from '../utils'
+import {getCookie} from '../utils'
 import actions from '../actions/common';
-const api = "http://10.10.24.56:8080";
 moment.locale('zh-cn');
+import PropTypes from 'prop-types';
 
 @connect((state, props) => ({
   register: state.Register,
-  // loginResponse: state.tabListResult,
 }))
 
 export default class Invite extends Component {
@@ -45,10 +43,7 @@ export default class Invite extends Component {
     this.props.dispatch(actions.fetchLink(enterpriseId,'7'));
   }
 
-  copyLink = () => {
-    copy(this.props.register.link);
-    message.success('复制成功');
-  };
+
   getUserInfo = () => {
     this.props.dispatch(userInfo({}, (response) => {
       console.log(response)
@@ -57,6 +52,10 @@ export default class Invite extends Component {
       // message.warning(response)
     }))
   }
+  copyLink = () => {
+    copy(this.props.register.link);
+    message.success('复制成功');
+  };
 
   render() {
     console.log(moment().add(7, 'd').format('YYYY MM DD hh:mm:ss'))
@@ -73,3 +72,8 @@ export default class Invite extends Component {
     )
   }
 }
+
+Invite.propTypes = {
+  dispatch:PropTypes.func,
+  register:PropTypes.object,
+};

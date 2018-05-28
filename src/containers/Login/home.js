@@ -1,11 +1,13 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {Alert} from 'antd';
 import {userInfo} from 'actions/common'
-import {hashHistory,Link} from 'react-router'
-import {getCookie,setCookie} from '../index'
+import {Link} from 'react-router'
+import {getCookie} from '../index'
 import axios from 'axios';
+import {message} from 'antd';
 const api = "http://10.10.24.56:8080";
+import PropTypes from 'prop-types';
+
 @connect((state, props) => ({
   config: state.config,
 }))
@@ -38,13 +40,26 @@ export default class Home extends Component {
             tips: false,
           })
         }
-      }else{
-
       }
     })
     .catch((error)=>{
       message.error(error)
     })
+  }
+  
+  onClose = ()=>{
+    this.setState({
+      tips: false,
+    })
+  }
+
+  getUserInfo = () => {
+    this.props.dispatch(userInfo({}, (response) => {
+      console.log(response)
+    }, (response) => {
+      console.log(response)
+      // message.warning(response)
+    }))
   }
   neverTip = (e) => {
     const userId = getCookie('userId');
@@ -66,21 +81,6 @@ export default class Home extends Component {
       tips: false,
     })
   }
-  onClose = ()=>{
-    this.setState({
-      tips: false,
-    })
-  }
-
-  getUserInfo = () => {
-    this.props.dispatch(userInfo({}, (response) => {
-      console.log(response)
-    }, (response) => {
-      console.log(response)
-      // message.warning(response)
-    }))
-  }
-
   render() {
     return (
       <div className="welcome">
@@ -92,7 +92,8 @@ export default class Home extends Component {
               <Link to="/invite" style={{diplay:this.state.visible}} className="tipLink">去邀请</Link>
               <span style={{diplay:this.state.visible}} className="tip" onClick={this.neverTip}>不再提醒</span>
               <a className="ant-alert-close-icon">
-              <i className="anticon anticon-cross" onClick={this.onClose}></i></a>
+              <i className="anticon anticon-cross" onClick={this.onClose}></i>
+              </a>
             </div>
           }
         </div>
@@ -100,3 +101,7 @@ export default class Home extends Component {
     )
   }
 }
+
+Home.propTypes = {
+  dispatch:PropTypes.func,
+};

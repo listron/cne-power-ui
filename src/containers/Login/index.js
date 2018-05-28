@@ -5,6 +5,7 @@ import { message } from 'antd';
 import { GET_COMINFO_SAGA,GET_LOGIN_SAGA } from '../../constants/actionTypes/Login';
 import LoginForm from '../../components/Login/LoginForm';
 import './base.scss';
+import PropTypes from 'prop-types';
 
 class Login extends Component {
 
@@ -54,6 +55,14 @@ class Login extends Component {
     );
   }
 }
+Login.propTypes = {
+  fetchCompanyInfo: PropTypes.func,
+  error: PropTypes.string,
+  fetchLogin:PropTypes.func,
+  msg: PropTypes.string,
+  domain: PropTypes.object,
+  
+};
 const mapStateToProps = (state) => ({
   domain: state.login.domain,
   error:state.login.error,
