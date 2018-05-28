@@ -2,7 +2,9 @@ import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import { CHECK_PHONE_SAGA ,CHECK_CODE_SAGA} from '../../constants/actionTypes/Login';
 import {Form,Input,Icon,Button,Row,Col} from 'antd';
-const FormItem = Form.Item
+const FormItem = Form.Item;
+import PropTypes from 'prop-types';
+
 class ForgetForm1 extends Component {
   // 初始化页面常量 绑定事件方法
   constructor(props, context) {
@@ -17,33 +19,6 @@ class ForgetForm1 extends Component {
       next:true,
     }
   }
-
-  handleSubmit = (e) => {
-    e.preventDefault();
-    this.props.form.validateFields((err, values) => {
-      if (!err) {
-        this.props.checkCode(values);
-      }
-    })
-  }
-  //获取验证码
-  getCode = (e) => {
-    let phone = this.props.form.getFieldValue ('phone');
-    // this.setState({
-    //   phone:phone,
-    // })
-    if(phone){
-      this.props.checkPhone(phone);
-    }else{
-      this.props.form.setFields({
-        phone: {
-          value: phone,
-          errors: [new Error('手机号为空')],
-        },
-      });
-    }
-  }
-
   componentWillReceiveProps (nextProps,nextState) {
     if(nextProps.phone.error&&!this.props.phone.error){
       this.props.form.setFields({
@@ -60,7 +35,7 @@ class ForgetForm1 extends Component {
           btnText: `${this.state.seconds}秒后可重新获取`,
           disabled: true,          
         }, () => {
-          if (this.state.seconds == -1) {
+          if (this.state.seconds === -1) {
             this.setState({
               seconds: 59,
               btnText: "点击获取验证码",
@@ -91,6 +66,34 @@ class ForgetForm1 extends Component {
       });
     }
   }
+  
+  //获取验证码
+  getCode = (e) => {
+    let phone = this.props.form.getFieldValue ('phone');
+    // this.setState({
+    //   phone:phone,
+    // })
+    if(phone){
+      this.props.checkPhone(phone);
+    }else{
+      this.props.form.setFields({
+        phone: {
+          value: phone,
+          errors: [new Error('手机号为空')],
+        },
+      });
+    }
+  }
+
+  handleSubmit = (e) => {
+    e.preventDefault();
+    this.props.form.validateFields((err, values) => {
+      if (!err) {
+        this.props.checkCode(values);
+      }
+    })
+  }
+  
 
   hasErrors = (fieldsError) => {
     return Object.keys(fieldsError).some(field => fieldsError[field]);
@@ -98,16 +101,10 @@ class ForgetForm1 extends Component {
   render() {
     const {
       getFieldDecorator,
-      getFieldsError,
-      getFieldError,
-      isFieldTouched
     } = this.props.form;
     return (
       <Form hideRequiredMark={false} onSubmit={this.handleSubmit} className="loginForm"  style={{display:this.props.visible}}>
-        <FormItem label=""
-          // validateStatus={errors?'error':''}
-          // help={errors}
-        >
+        <FormItem label="">
           {getFieldDecorator('phone', {
             rules: [{  pattern:/(^1[3|4|5|7|8]\d{9}$)|(^09\d{8}$)/,required: true, message: '请输入有效手机号' }],
           })(
@@ -120,7 +117,7 @@ class ForgetForm1 extends Component {
               {getFieldDecorator('captcha', {
                 rules: [{ required: true, message: '请输入有效验证码' }],
               })(
-                <Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="请输入6位数字验证码"/>
+                <Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="请输入6位数字验证码" />
               )}
             </Col>
             <Col span={6}>
@@ -137,8 +134,17 @@ class ForgetForm1 extends Component {
     )
   }
 }
+ForgetForm1.propTypes = {
+  form:PropTypes.object,
+  checkPhone:PropTypes.func,
+  checkCode:PropTypes.func,
+  phone:PropTypes.object,
+  code:PropTypes.object,
+  nextForm:PropTypes.func,
+  visible:PropTypes.string,
+};
+
 const ForgetForms = Form.create()(ForgetForm1);
-// export default ForgetForms;
 const mapStateToProps = (state) => ({
   phone: state.login.phone,
   error:state.login.error,

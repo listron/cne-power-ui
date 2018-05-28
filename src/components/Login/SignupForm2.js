@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter} from 'react-router-dom';
 import { GET_SIGNUP_SAGA } from '../../constants/actionTypes/Login';
-import { Form, Input, Button, message, Row, Col } from 'antd';
-const FormItem = Form.Item
+import { Form, Input, Button } from 'antd';
+const FormItem = Form.Item;
+import PropTypes from 'prop-types';
+
 class SignupForm2 extends Component {
   // 初始化页面常量 绑定事件方法
   constructor(props, context) {
@@ -11,32 +13,6 @@ class SignupForm2 extends Component {
     this.state={
       confirmDirty: false,
       autoCompleteResult: [],
-    }
-  }
-
-  handleSubmit = (e) => {
-    e.preventDefault();    
-    this.props.form.validateFields((err, values) => {
-      if (!err) {
-        let parmas={...values,phone:this.props.code.phone,captcha:this.props.code.code,enterpriseId:this.props.info.id,}
-        this.props.getSignup(parmas);
-      }
-    })
-  }
-
-  handleConfirmBlur = (e) => {
-    const value = e.target.value;
-    this.setState({
-      confirmDirty: this.state.confirmDirty || !!value
-    });
-  }
-  //比较两次输入密码
-  compareToFirstPassword = (rule, value, callback) => {
-    const form = this.props.form;
-    if (value && value !== form.getFieldValue('password')) {
-      callback('密码不一致');
-    } else {
-      callback();
     }
   }
 
@@ -53,7 +29,30 @@ class SignupForm2 extends Component {
       });
     }
   }
-
+  //比较两次输入密码
+  compareToFirstPassword = (rule, value, callback) => {
+    const form = this.props.form;
+    if (value && value !== form.getFieldValue('password')) {
+      callback('密码不一致');
+    } else {
+      callback();
+    }
+  }
+  handleConfirmBlur = (e) => {
+    const value = e.target.value;
+    this.setState({
+      confirmDirty: this.state.confirmDirty || !!value
+    });
+  }
+  handleSubmit = (e) => {
+    e.preventDefault();    
+    this.props.form.validateFields((err, values) => {
+      if (!err) {
+        let parmas={...values,phone:this.props.code.phone,captcha:this.props.code.code,enterpriseId:this.props.info.id,}
+        this.props.getSignup(parmas);
+      }
+    })
+  }
   hasErrors = (fieldsError) => {
     return Object.keys(fieldsError).some(field => fieldsError[field]);
   }
@@ -61,8 +60,6 @@ class SignupForm2 extends Component {
     const {
       getFieldDecorator,
       getFieldsError,
-      getFieldError,
-      isFieldTouched
     } = this.props.form;
     const formItemLayout = {
       labelCol: {
@@ -96,9 +93,9 @@ class SignupForm2 extends Component {
               required: true, message: '请输入真实姓名',min:2,max:20
             }],
           })(
-            <Input type="text" placeholder="请输入"/>
+            <Input type="text" placeholder="请输入" />
           )}
-      </FormItem>     
+        </FormItem>     
       <FormItem
         {...formItemLayout}
         label="新密码"
@@ -110,13 +107,10 @@ class SignupForm2 extends Component {
             pattern:/^[\x21-\x7E]{6,20}$/,
           }],
         })(
-          <Input type="password" placeholder="请输入"/>
+          <Input type="password" placeholder="请输入" />
         )}
       </FormItem>
-      <FormItem
-          {...formItemLayout}
-          label="确认密码"
-        >
+      <FormItem {...formItemLayout} label="确认密码" >
           {getFieldDecorator('confirmPwd', {
             rules: [{
               required: true, message: '密码不一致',
@@ -124,7 +118,7 @@ class SignupForm2 extends Component {
               validator: this.compareToFirstPassword,
             }],
           })(
-            <Input type="password" onBlur={this.handleConfirmBlur} placeholder="请输入"/>
+            <Input type="password" onBlur={this.handleConfirmBlur} placeholder="请输入" />
           )}
       </FormItem>                    
         <FormItem>
@@ -136,7 +130,15 @@ class SignupForm2 extends Component {
     )
   }
 }
-
+SignupForm2.propTypes = {
+  history:PropTypes.array,
+  form:PropTypes.func,
+  signup:PropTypes.func,
+  info:PropTypes.object,
+  code:PropTypes.object,
+  getSignup:PropTypes.func,
+  visible:PropTypes.sting,
+};
 const SignupFormS = Form.create()(SignupForm2);
 // export default SignupFormS;
 const mapStateToProps = (state) => ({
