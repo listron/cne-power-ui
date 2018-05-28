@@ -39,14 +39,14 @@ function* watchGetPosts() {
 export default function* rootSaga() {
   yield all([
     watchGetPosts(),
-    getComInfo(),
-    getLogin(),
+    // getComInfo(),
+    // getLogin(),
     checkPhone(),
     getCode(),
     checkCode(),
     changePSW(),
-    getComInfoSu(),
+    // getComInfoSu(),
     getSignup(),
-    checkPhoneSU(),
+    // checkPhoneSU(),
   ])
 } 
