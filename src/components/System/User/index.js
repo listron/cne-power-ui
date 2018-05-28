@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Table, Tag, Input, Select, Radio, Button } from 'antd';
 import Immutable from 'immutable';
+import classnames from 'classnames';
 
 const Option = Select.Option;
 const RadioButton = Radio.Button;
@@ -12,6 +13,7 @@ class User extends Component {
     fetchUsers: PropTypes.func,
     onRoleAuth: PropTypes.func,
     onStationAuth: PropTypes.func,
+    users: PropTypes.object
   }
 
   static defaultProps = {
@@ -27,47 +29,51 @@ class User extends Component {
       tab: "all",
       selectedRowKeys: []
     };
-    this._onChangeSearchName = this._onChangeSearchName.bind(this);
-    this._onChangeSearchStatus = this._onChangeSearchStatus.bind(this);
-    this._onChangeTab = this._onChangeTab.bind(this);
-    this._onSelectChange = this. _onSelectChange.bind(this);
-    this._onRoleAuth = this._onRoleAuth.bind(this);
-    this._onStationAuth = this._onStationAuth.bind(this);
+    this.onChangeSearchName = this.onChangeSearchName.bind(this);
+    this.onChangeSearchStatus = this.onChangeSearchStatus.bind(this);
+    this.onChangeTab = this.onChangeTab.bind(this);
+    this.onSelectChange = this. onSelectChange.bind(this);
+    this.onRoleAuth = this.onRoleAuth.bind(this);
+    this.onStationAuth = this.onStationAuth.bind(this);
   }
 
-  _onChangeSearchName(e) {
+  componentWillMount() {
+    this.props.fetchUsers();
+  }
+
+  onChangeSearchName(e) {
     this.setState({
       searchName: e.target.value
     });
   }
 
-  _onChangeSearchStatus(value) {
+  onChangeSearchStatus(value) {
     this.setState({
       searchStatus: value
     });
   }
 
-  _onChangeTab(e) {
+  onChangeTab(e) {
     this.setState({
       tab: e.target.value
     });
   }
 
-  _onSelectChange(selectedRowKeys) {
+  onSelectChange(selectedRowKeys) {
     this.setState({
       selectedRowKeys: selectedRowKeys
     });
   }
 
-  _onRoleAuth() {
+  onRoleAuth() {
     this .props.onRoleAuth(this.state.selectedRowKeys);
   }
 
-  _onStationAuth() {
+  onStationAuth() {
     this.props.onStationAuth(this.state.selectedRowKeys);
   }
 
-  _renderList() {
+  renderList() {
     const users = this.props.users.toJS();
 
     const columns = [{
@@ -101,11 +107,6 @@ class User extends Component {
       key: 'status',
     }];
 
-    const rowSelection = {
-      selectedRowKeys: this.state.selectedRowKeys,
-      onChange: this._onSelectChange,
-    };
-
     const pagination = {
       total: users.length,
       showQuickJumper: true,
@@ -122,43 +123,43 @@ class User extends Component {
         <div>
           <div>
             <Tag color="#7ec5c2">用户列表</Tag>
-            <RadioGroup onChange={this._onChangeTab} defaultValue="all" value={this.state.status}>
+            <RadioGroup onChange={this.onChangeTab} defaultValue="all" value={this.state.status}>
               <RadioButton value="all">全部</RadioButton>
               <RadioButton value="on">已授权</RadioButton>
               <RadioButton value="off">未授权</RadioButton>
             </RadioGroup>
           </div>
           <div>
-            <Button onClick={this._onRoleAuth}>
+            <Button onClick={this.onRoleAuth}>
               <span className={classnames("iconfont icon-user")} /> 
               角色授权
             </Button>
-            <Button onClick={this._onStationAuth}>
+            <Button onClick={this.onStationAuth}>
               <span className={classnames("iconfont icon-power-station")} /> 
               电站授权
             </Button>
           </div>
         </div>
-        <Table rowKey="id" dataSource={posts} columns={columns} pagination={pagination} />
+        <Table rowKey="id" dataSource={users} columns={columns} pagination={pagination} />
       </div>
     );
   }
 
-  componentWillMount() {
-    this.props.fetchUsers();
-  }
+  
 
-  _renderFilter() {
+  renderFilter() {
     return (
       <div>
         <Tag color="#7ec5c2">查询</Tag>
-        <Input id="searchName" 
+        <Input 
+          id="searchName" 
           placeholder="输入手机号/姓名快速查询" 
-          onChange={this._onChangeSearchName}
+          onChange={this.onChangeSearchName}
           value={this.state.searchName} />
-        <Select id="searchStatus"
+        <Select 
+          id="searchStatus"
           placeholder="状态"
-          onChange={this._onChangeSearchStatus}
+          onChange={this.onChangeSearchStatus}
           value={this.state.searchStatus}>
           <Option value="all">全部</Option>
           <Option value="on">正常</Option>
@@ -173,8 +174,8 @@ class User extends Component {
   render() {
     return (
       <div>
-        {this._renderFilter()}
-        {this._renderList()}
+        {this.renderFilter()}
+        {this.renderList()}
       </div>
     );
   }

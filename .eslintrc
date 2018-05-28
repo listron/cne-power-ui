@@ -46,8 +46,6 @@
     "handle-callback-err":0,
     "react/display-name": 0,
     "react/jsx-boolean-value": 0,
-    "react/jsx-closing-bracket-location": [1, "line-aligned"],
-    "react/jsx-closing-tag-location": 1,
     "react/jsx-curly-spacing": 0,
     "react/jsx-no-undef": 1,
     "jsx-quotes": [1, "prefer-double"],
