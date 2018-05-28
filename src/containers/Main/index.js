@@ -1,16 +1,15 @@
 import React, { Component } from 'react';
 import { Route,Redirect, Switch,withRouter} from 'react-router-dom';
-// import { Menu } from 'antd';
 import {routerConfig} from '../../common/routerSetting';
 import Loadable from 'react-loadable';
 import styles from './style.scss';
 import { connect } from 'react-redux';
 import {getCookie} from '../../utils/index.js'
-// import Power from '../Power';
 import Login from '../Login';
 import Forget from '../Forget';
 import Signup from '../Signup';
 import NotFund from '../Exception/404';
+import PropTypes from 'prop-types';
 
 import TopMenu from '../../components/Layout/Topmenu'
 class Main extends Component {
@@ -82,7 +81,10 @@ class Main extends Component {
     }
   }
 }
-
+Main.propTypes = {
+  login: PropTypes.object,
+  history: PropTypes.object,
+};
 const mapStateToProps = (state) => ({
   login:state.login.login
 });

@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter} from 'react-router-dom';
 import { CHANGE_PSW_SAGA } from '../../constants/actionTypes/Login';
-import { Form, Input, Button, message, Row, Col } from 'antd';
-// import {}
+import { Form, Input, Button, Row, Col } from 'antd';
+import PropTypes from 'prop-types';
+
 const FormItem = Form.Item;
 class ForgetForm2 extends Component {
   constructor(props) {
@@ -59,9 +60,6 @@ class ForgetForm2 extends Component {
   render() {
     const {
       getFieldDecorator,
-      getFieldsError,
-      getFieldError,
-      isFieldTouched
     } = this.props.form;
     const {phone} = this.props.code;
     const formItemLayout = {
@@ -91,20 +89,16 @@ class ForgetForm2 extends Component {
           <Col span={4} style={{textAlign:"right",color:'rgba(0, 0, 0, 0.85)',marginBottom:"1em"}} className="ant-form-item-required">手机号码：</Col>
           <Col span={20} style={{color:"#999"}}>{!!phone?phone:null}</Col>
         </Row>
-        <FormItem
-            {...formItemLayout}
-            label="新密码"
-            extra="6~20位英文字符、数字"
-          >
+        <FormItem {...formItemLayout} label="新密码" extra="6~20位英文字符、数字">
             {getFieldDecorator('password', {
               rules: [{
                 required: true, message: '请输入有效密码',
                 pattern:/^[\x21-\x7E]{6,20}$/,
               }],
             })(
-              <Input type="password" placeholder="请输入"/>
+              <Input type="password" placeholder="请输入" />
             )}
-          </FormItem>
+        </FormItem>
           <FormItem
             {...formItemLayout}
             label="确认密码"
@@ -116,7 +110,7 @@ class ForgetForm2 extends Component {
                 validator: this.compareToFirstPassword,
               }],
             })(
-              <Input type="password" onBlur={this.handleConfirmBlur} placeholder="请输入"/>
+              <Input type="password" onBlur={this.handleConfirmBlur} placeholder="请输入" />
             )}
           </FormItem>
           <FormItem>
@@ -124,11 +118,18 @@ class ForgetForm2 extends Component {
             重置密码
             </Button>
           </FormItem>
-        </Form>
+      </Form>
     )
   }
 }
-
+ForgetForm2.propTypes = {
+  psw:PropTypes.object,
+  history:PropTypes.array,
+  form:PropTypes.func,
+  code:PropTypes.object,
+  changePSW:PropTypes.func,
+  visible:PropTypes.string,
+};
 const ForgetFormS = Form.create()(ForgetForm2);
 const mapStateToProps = (state) => ({
   psw:state.login.psw,
