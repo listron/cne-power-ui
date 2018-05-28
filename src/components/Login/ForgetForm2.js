@@ -7,6 +7,14 @@ import PropTypes from 'prop-types';
 
 const FormItem = Form.Item;
 class ForgetForm2 extends Component {
+  static propTypes = {
+    psw:PropTypes.object,
+    history:PropTypes.array,
+    form:PropTypes.func,
+    code:PropTypes.object,
+    changePSW:PropTypes.func,
+    visible:PropTypes.string,
+  }
   constructor(props) {
     super(props)
     this.state={
@@ -122,14 +130,6 @@ class ForgetForm2 extends Component {
     )
   }
 }
-ForgetForm2.propTypes = {
-  psw:PropTypes.object,
-  history:PropTypes.array,
-  form:PropTypes.func,
-  code:PropTypes.object,
-  changePSW:PropTypes.func,
-  visible:PropTypes.string,
-};
 const ForgetFormS = Form.create()(ForgetForm2);
 const mapStateToProps = (state) => ({
   psw:state.login.psw,

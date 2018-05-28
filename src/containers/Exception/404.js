@@ -4,6 +4,9 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 class NotFund extends Component {
+  static propTypes = {
+    info:PropTypes.object,
+  }
   constructor(props) {
     super(props)
   }
@@ -21,7 +24,4 @@ class NotFund extends Component {
 const mapStateToProps = (state) => ({
   info: state.login.info,
 });
-NotFund.propTypes = {
-  info:PropTypes.object,
-};
 export default connect(mapStateToProps)(NotFund)

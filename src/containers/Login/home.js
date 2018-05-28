@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
+import { withRouter} from 'react-router-dom';
 import {userInfo} from 'actions/common'
 import {Link} from 'react-router'
 import {getCookie} from '../index'
@@ -8,11 +9,10 @@ import {message} from 'antd';
 const api = "http://10.10.24.56:8080";
 import PropTypes from 'prop-types';
 
-@connect((state, props) => ({
-  config: state.config,
-}))
-
-export default class Home extends Component {
+class Home extends Component {
+  static propTypes = {
+    dispatch:PropTypes.func,
+  }
   // 初始化页面常量 绑定事件方法
   constructor(props, context) {
     super(props)
@@ -102,6 +102,9 @@ export default class Home extends Component {
   }
 }
 
-Home.propTypes = {
-  dispatch:PropTypes.func,
-};
+const mapStateToProps = (state) => ({
+});
+const mapDispatchToProps = (dispatch) => ({
+  dispatch: dispatch,  
+});
+export default withRouter(connect(mapStateToProps,mapDispatchToProps)(Home))

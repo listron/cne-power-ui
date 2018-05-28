@@ -6,6 +6,15 @@ const FormItem = Form.Item;
 import PropTypes from 'prop-types';
 
 class ForgetForm1 extends Component {
+  static propTypes = {
+    form:PropTypes.object,
+    checkPhone:PropTypes.func,
+    checkCode:PropTypes.func,
+    phone:PropTypes.object,
+    code:PropTypes.object,
+    nextForm:PropTypes.func,
+    visible:PropTypes.string,
+  }
   // 初始化页面常量 绑定事件方法
   constructor(props, context) {
     super(props)
@@ -134,15 +143,6 @@ class ForgetForm1 extends Component {
     )
   }
 }
-ForgetForm1.propTypes = {
-  form:PropTypes.object,
-  checkPhone:PropTypes.func,
-  checkCode:PropTypes.func,
-  phone:PropTypes.object,
-  code:PropTypes.object,
-  nextForm:PropTypes.func,
-  visible:PropTypes.string,
-};
 
 const ForgetForms = Form.create()(ForgetForm1);
 const mapStateToProps = (state) => ({

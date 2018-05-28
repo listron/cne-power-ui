@@ -5,6 +5,10 @@ const FormItem = Form.Item
 
 
 class LoginForm extends Component {
+  static propTypes = {
+    form: PropTypes.object,
+    handleSubmit:PropTypes.func,
+  }
   constructor(props) {
     super(props);
     this.state = {
@@ -57,9 +61,5 @@ class LoginForm extends Component {
   }
 }
 
-LoginForm.propTypes = {
-  form: PropTypes.object,
-  handleSubmit:PropTypes.func,
-};
 const LoginForms = Form.create()(LoginForm);
 export default LoginForms;

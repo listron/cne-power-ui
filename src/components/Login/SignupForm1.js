@@ -6,6 +6,15 @@ const FormItem = Form.Item;
 import PropTypes from 'prop-types';
 
 class SignupForm1 extends Component {
+  static propTypes = {
+    checkCode:PropTypes.func,
+    form:PropTypes.func,
+    checkPhone:PropTypes.func,
+    phone:PropTypes.object,
+    code:PropTypes.object,
+    nextForm:PropTypes.func,
+    visible:PropTypes.sting,
+  }
   // 初始化页面常量 绑定事件方法
   constructor(props, context) {
     super(props)
@@ -130,15 +139,6 @@ class SignupForm1 extends Component {
     )
   }
 }
-SignupForm1.propTypes = {
-  checkCode:PropTypes.func,
-  form:PropTypes.func,
-  checkPhone:PropTypes.func,
-  phone:PropTypes.object,
-  code:PropTypes.object,
-  nextForm:PropTypes.func,
-  visible:PropTypes.sting,
-};
 const SignupForms = Form.create()(SignupForm1);
 const mapStateToProps = (state) => ({
   phone: state.login.phone,

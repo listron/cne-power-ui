@@ -6,6 +6,11 @@ import SignupForm2 from '../../components/Login/SignupForm2';
 import PropTypes from 'prop-types';
 
 class Signup extends Component {
+  static propTypes = {
+    fetchcCompanyInfo: PropTypes.func,
+    info:PropTypes.object,
+    history:PropTypes.object,
+  }
   constructor(props) {
     super(props)
     this.state = {
@@ -56,11 +61,6 @@ class Signup extends Component {
     )
   }
 }
-Signup.propTypes = {
-  fetchcCompanyInfo: PropTypes.func,
-  info:PropTypes.object,
-  history:PropTypes.object,
-};
 
 const mapStateToProps = (state) => ({
   info: state.login.info,
