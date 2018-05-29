@@ -86,7 +86,7 @@ Main.propTypes = {
   history: PropTypes.object,
 };
 const mapStateToProps = (state) => ({
-  login:state.login.login
+  login: state.login
 });
 
 export default withRouter(connect(mapStateToProps)(Main));

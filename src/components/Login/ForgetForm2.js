@@ -11,9 +11,8 @@ class ForgetForm2 extends Component {
     psw:PropTypes.object,
     history:PropTypes.array,
     form:PropTypes.func,
-    code:PropTypes.object,
-    changePSW:PropTypes.func,
-    visible:PropTypes.string,
+    code:PropTypes.string,
+    changePSW:PropTypes.func
   }
   constructor(props) {
     super(props)
@@ -92,7 +91,7 @@ class ForgetForm2 extends Component {
     };
 
     return (
-      <Form hideRequiredMark={false} onSubmit={this.handleSubmit} className="loginForm"  style={{display:this.props.visible}}>
+      <Form hideRequiredMark={false} onSubmit={this.handleSubmit} className="loginForm">
         <Row>
           <Col span={4} style={{textAlign:"right",color:'rgba(0, 0, 0, 0.85)',marginBottom:"1em"}} className="ant-form-item-required">手机号码：</Col>
           <Col span={20} style={{color:"#999"}}>{!!phone?phone:null}</Col>

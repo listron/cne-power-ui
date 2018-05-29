@@ -7,20 +7,19 @@ import PropTypes from 'prop-types';
 
 class Forget extends Component {
   static propTypes = {
-    domain:PropTypes.object,
+    domain: PropTypes.object,
   }
   constructor(props, context) {
     super(props)
     this.state = {
-      form1: "block",
-      form2: "none",
+      showForm1: true
     }
+    this.onNext = this.onNext.bind(this);
   }
 
-  nextForm = (phone) => {
+  onNext() {
     this.setState({
-      form1: "none",
-      form2: "block",
+      showForm1: false
     })
   }
 
@@ -37,9 +36,9 @@ class Forget extends Component {
           <div className="title2">重置密码</div>
           <div className="avatar"><span className="icon-user"></span>{name&&name}</div>
           <div className="loginWrap">
-            <ForgetForm1  visible={this.state.form1} nextForm={this.nextForm} />
+            {this.state.showForm1?<ForgetForm1 onNext={this.onNext} />:null}
             <Link className="loginFormForgot" to="/login" style={{display:this.state.form1}}>去登录</Link>
-            <ForgetForm2 visible={this.state.form2} />
+            {!this.state.showForm1?<ForgetForm2 />:null}
           </div>
         </div>
       </div>
