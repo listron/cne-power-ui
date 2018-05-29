@@ -23,8 +23,6 @@ class ForgetForm1 extends Component {
       seconds: 59,
       btnText: "点击获取验证码",
       disabled: false,
-      form1: "block",
-      form2: "none",
       next:true,
     }
   }
@@ -141,6 +139,21 @@ class ForgetForm1 extends Component {
         </FormItem>
       </Form>
     )
+  }
+}
+
+const options = {
+  mapPropsToFields: (props) => {
+    return {
+      phone: Form.createFormField({
+        value: props.phone.phone,
+        errors: [new Error(props.code.msg)]
+      }),
+      captcha: Form.createFormField({
+        value: props.phone.phone,
+        errors: [new Error(props.phone.msg)],
+      })
+    };
   }
 }
 

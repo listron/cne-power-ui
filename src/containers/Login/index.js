@@ -25,7 +25,7 @@ class Login extends Component {
   componentWillMount() {
     // const domain = document.domain.split('.')[0];    
     const domian = 'test';
-    this.props.fetchCompanyInfo(`domian=${domian}`);
+    this.props.fetchCompanyInfo(domian);
   }
 
   componentWillReceiveProps(nextProps){
