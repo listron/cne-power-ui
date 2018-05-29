@@ -67,6 +67,6 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  fetchcCompanyInfo: (parmas) => dispatch({ type: 'GET_COMINFOSU_SAGA',parmas:parmas })
+  fetchcCompanyInfo: (parmas) => dispatch({ type: 'GET_COMPINFO_SU_SAGA',parmas:parmas })
 });
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Signup))

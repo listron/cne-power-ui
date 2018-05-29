@@ -20,9 +20,10 @@
       rules: [{
         test: /\.(js|jsx)$/,
         use: 'babel-loader',
-        exclude: /node_modules/
+        exclude: /node_modules/        
       }, {
         test: /\.css$/,
+        exclude: /node_modules/,
         use: [{
           loader:'style-loader'
         },{
@@ -32,6 +33,18 @@
             localIdentName: '[local]__[hash:base64:5]'
           }
         }]
+      }, {//antd样式处理
+        test:/\.css$/,
+        exclude:/src/,
+        use:[
+          { loader: "style-loader"},
+          {
+            loader: "css-loader",
+            options:{
+              importLoaders: 1
+            }
+          }
+        ]
       }, {
         test: /\.scss$/,
         use: [{

@@ -1,5 +1,5 @@
 import { call, put, takeLatest, all } from 'redux-saga/effects';
-import { getComInfo, getLogin, checkPhone, getCode, checkCode, changePSW,getComInfoSu,getSignup,checkPhoneSU} from './login';
+import { watchCheckPhone, watchSendCode, watchCheckCode, watchChangePSW, watchSignup } from './login';
 import axios from 'axios';
 
 import {
@@ -26,7 +26,7 @@ function* showPostsAsync(action) {
   } catch (e) {
     yield put({ type: GET_POSTS_FAIL, error: e });
     console.log('=========Dispatch Failure================');
-    console.log(error);
+    console.log(e);
   }
 }
 
@@ -39,14 +39,14 @@ function* watchGetPosts() {
 export default function* rootSaga() {
   yield all([
     watchGetPosts(),
-    // getComInfo(),
-    // getLogin(),
-    checkPhone(),
-    getCode(),
-    checkCode(),
-    changePSW(),
-    // getComInfoSu(),
-    getSignup(),
-    // checkPhoneSU(),
+    // watchGetCompInfo(),
+    // watchLogin(),
+    watchCheckPhone(),
+    watchSendCode(),
+    watchCheckCode(),
+    watchChangePSW(),
+    // watchGetComInfoSu(),
+    watchSignup(),
+    // watchCheckPhoneSU(),
   ])
 } 
