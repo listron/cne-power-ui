@@ -10,10 +10,9 @@ class ForgetForm1 extends Component {
     form:PropTypes.object,
     checkPhone:PropTypes.func,
     checkCode:PropTypes.func,
-    phone:PropTypes.object,
-    code:PropTypes.object,
-    nextForm:PropTypes.func,
-    visible:PropTypes.string,
+    phone:PropTypes.string,
+    code:PropTypes.string,
+    nextForm:PropTypes.func
   }
   // 初始化页面常量 绑定事件方法
   constructor(props, context) {
@@ -110,7 +109,7 @@ class ForgetForm1 extends Component {
       getFieldDecorator,
     } = this.props.form;
     return (
-      <Form hideRequiredMark={false} onSubmit={this.handleSubmit} className="loginForm"  style={{display:this.props.visible}}>
+      <Form hideRequiredMark={false} onSubmit={this.handleSubmit} className="loginForm">
         <FormItem label="">
           {getFieldDecorator('phone', {
             rules: [{  pattern:/(^1[3|4|5|7|8]\d{9}$)|(^09\d{8}$)/,required: true, message: '请输入有效手机号' }],
