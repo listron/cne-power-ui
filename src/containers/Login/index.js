@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { message } from 'antd';
-import { GET_COMINFO_SAGA,GET_LOGIN_SAGA } from '../../constants/actionTypes/Login';
+import { GET_COMPINFO_SAGA,LOGIN_SAGA } from '../../constants/actionTypes/Login';
 import LoginForm from '../../components/Login/LoginForm';
 import './base.scss';
 import PropTypes from 'prop-types';
@@ -68,8 +68,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  fetchCompanyInfo: (parmas) => dispatch({type: GET_COMINFO_SAGA, parmas: parmas}),
-  fetchLogin:(parmas) => dispatch({type: GET_LOGIN_SAGA, parmas: parmas})
+  fetchCompanyInfo: (parmas) => dispatch({type: GET_COMPINFO_SAGA, parmas: parmas}),
+  fetchLogin:(parmas) => dispatch({type: LOGIN_SAGA, parmas: parmas})
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

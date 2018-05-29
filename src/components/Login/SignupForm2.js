@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter} from 'react-router-dom';
-import { GET_SIGNUP_SAGA } from '../../constants/actionTypes/Login';
+import { SIGNUP_SAGA } from '../../constants/actionTypes/Login';
 import { Form, Input, Button } from 'antd';
 const FormItem = Form.Item;
 import PropTypes from 'prop-types';
@@ -148,6 +148,6 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  getSignup: (parmas) => dispatch({ type: GET_SIGNUP_SAGA,parmas:parmas }),  
+  getSignup: (parmas) => dispatch({ type: SIGNUP_SAGA,parmas:parmas }),  
 });
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(SignupFormS));

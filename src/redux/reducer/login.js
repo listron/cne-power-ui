@@ -1,21 +1,21 @@
 import {
-  GET_COMINFO_SUCCESS,
-  GET_COMINFO_FAIL,
-  GET_LOGIN_SUCCESS,
-  GET_LOGIN_FAIL,
+  GET_COMPINFO_SUCCESS,
+  GET_COMPINFO_FAIL,
+  LOGIN_SUCCESS,
+  LOGIN_FAIL,
   CHECK_PHONE_SUCCESS,
   CHECK_PHONE_FAIL,
-  GET_CODE_SUCCESS,
-  GET_CODE_FAIL,
+  SEND_CODE_SUCCESS,
+  SEND_CODE_FAIL,
   CHECK_CODE_SUCCESS,
   CHECK_CODE_FAIL,
   CHANGE_PSW_SUCCESS,
   CHANGE_PSW_FAIL,
-  GET_COMINFOSU_SUCCESS,
-  GET_COMINFOSU_FAIL,
-  GET_SIGNUP_SUCCESS,
-  GET_SIGNUP_FAIL,
-  CHECK_PHONESU_FAIL,
+  GET_COMPINFO_SU_SUCCESS,
+  GET_COMPINFO_SU_FAIL,
+  SIGNUP_SUCCESS,
+  SIGNUP_FAIL,
+  CHECK_PHONE_SU_FAIL,
 } from '../../constants/actionTypes/Login';
 
 const loginReducer = (state = {
@@ -56,9 +56,8 @@ const loginReducer = (state = {
   error:null,  
   msg:'',
 }, action) => {
-  let newState;
   switch (action.type) {
-    case GET_COMINFO_SUCCESS:   
+    case GET_COMPINFO_SUCCESS:   
       return { 
         ...state, 
         domain: {
@@ -67,13 +66,13 @@ const loginReducer = (state = {
           id:action.domain.enterpriseId
         } 
       }
-    case GET_COMINFO_FAIL:
+    case GET_COMPINFO_FAIL:
       return { 
         ...state, 
         error:true,
         msg:action.error,
       }
-    case GET_LOGIN_SUCCESS:
+    case LOGIN_SUCCESS:
       return { 
         ...state, 
         login: {
@@ -82,7 +81,7 @@ const loginReducer = (state = {
           userName:action.login.userName
         } 
       }    
-    case GET_LOGIN_FAIL:
+    case LOGIN_FAIL:
       return { 
         ...state, 
         error:true,
@@ -107,7 +106,7 @@ const loginReducer = (state = {
         } 
       }
 
-    case GET_CODE_SUCCESS:
+    case SEND_CODE_SUCCESS:
       return { 
         ...state, 
         code: {
@@ -115,7 +114,7 @@ const loginReducer = (state = {
           phone:action.phone.phone          
         } 
       }    
-    case GET_CODE_FAIL:
+    case SEND_CODE_FAIL:
       return { 
         ...state, 
         code: {
@@ -159,7 +158,7 @@ const loginReducer = (state = {
           msg:action.error,
         } 
     }
-    case GET_COMINFOSU_SUCCESS:
+    case GET_COMPINFO_SU_SUCCESS:
       return { 
         ...state, 
         info: {
@@ -169,7 +168,7 @@ const loginReducer = (state = {
           id:action.info.enterpriseId,
         }
       }    
-    case GET_COMINFOSU_FAIL:
+    case GET_COMPINFO_SU_FAIL:
       return { 
         ...state, 
         info: {
@@ -177,7 +176,7 @@ const loginReducer = (state = {
           msg:action.error,
         } 
     }
-    case GET_SIGNUP_SUCCESS:
+    case SIGNUP_SUCCESS:
       return { 
         ...state, 
         signup: {
@@ -190,7 +189,7 @@ const loginReducer = (state = {
           fetched:true
         }
       }    
-    case GET_SIGNUP_FAIL:
+    case SIGNUP_FAIL:
       return { 
         ...state, 
         signup: {
@@ -198,7 +197,7 @@ const loginReducer = (state = {
           msg:action.error,
         } 
     }
-    case CHECK_PHONESU_FAIL:
+    case CHECK_PHONE_SU_FAIL:
       return { 
         ...state, 
         phone: {
