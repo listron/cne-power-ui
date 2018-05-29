@@ -17,6 +17,7 @@ module.exports = {
       exclude: /node_modules/
     }, {
       test: /\.css$/,
+      exclude: /node_modules/,
       use: [{
         loader:'style-loader'
       },{
@@ -26,6 +27,18 @@ module.exports = {
           localIdentName: '[local]__[hash:base64:5]'
         }
       }]
+    }, {//antd样式处理
+      test:/\.css$/,
+      exclude:/src/,
+      use:[
+        { loader: "style-loader"},
+        {
+          loader: "css-loader",
+          options:{
+            importLoaders: 1
+          }
+        }
+      ]
     }, {
       test: /\.scss$/,
       use: [{
