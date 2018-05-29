@@ -9,7 +9,6 @@ export const LOGIN_FAIL = 'LOGIN_FAIL';
 //forget
 //验证手机号&发送验证码
 export const CHECK_PHONE_SAGA = 'CHECK_PHONE_SAGA';
-export const CHECK_PHONE_SUCCESS = 'CHECK_PHONE_SUCCESS';
 export const CHECK_PHONE_FAIL = 'CHECK_PHONE_FAIL';
 export const SEND_CODE_SAGA = 'SEND_CODE_SAGA';
 export const SEND_CODE_SUCCESS = 'SEND_CODE_SUCCESS';

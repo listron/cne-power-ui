@@ -1,4 +1,4 @@
-import { call, put, takeLatest } from 'redux-saga/effects';
+import { call, put, takeLatest, take } from 'redux-saga/effects';
 import axios from 'axios';
 import {message} from 'antd';
 import {setCookie} from '../../utils';
@@ -36,9 +36,9 @@ import {
 function* getCompInfo(action) {
   let url = Config.APIBasePath + Path.APISubPaths.getCompInfo;
   try {
-    const response = yield call(axios.post, url, action.parmas);
+    const response = yield call(axios.post, url, {domain: action.params.domain});
     if(response.data.success){
-      yield put({ type: GET_COMPINFO_SUCCESS, domain: response.data.result });      
+      yield put({ type: GET_COMPINFO_SUCCESS, data: response.data.result });      
       setCookie('enterpriseId',response.data.result.enterpriseId);
     }else{
       yield put({ type: GET_COMPINFO_FAIL, error:response.data.error});    
@@ -53,12 +53,12 @@ function* getCompInfo(action) {
 function* login(action){
   let url = Config.APIBasePath + Path.APISubPaths.login;
   try{
-    const response = yield call(axios.post, url, `phone=${action.parmas.phone}&password=${action.parmas.password}`);
+    const response = yield call(axios.post, url, action.parmas);
     if (response.data.success) {
       setCookie('phone',action.parmas.phone);
       setCookie('userName',response.data.result.userName);
       setCookie('userId',response.data.result.userId);
-      yield put({ type: LOGIN_SUCCESS, login: response.data.result});
+      yield put({ type: LOGIN_SUCCESS, data: response.data.result});
     } else {
       yield put({ type: LOGIN_FAIL, error:response.data.error});                        
     }
@@ -71,9 +71,9 @@ function* login(action){
 function* checkPhone(action){
   let url = Config.APIBasePath + Path.APISubPaths.checkPhone;
   try{
-    const response = yield call(axios.post, url, `phone=${action.parmas}`);
+    const response = yield call(axios.post, url, {phone:action.parmas});
     if (response.data.success){//手机号未注册，不能修改密码
-      yield put({ type: CHECK_PHONE_FAIL, phone:{phone:action.parmas,error:response.data.error}});      
+      yield put({ type: CHECK_PHONE_FAIL, phone:action.parmas});      
     }else{//手机号注册过，可以修改密码，发送验证码
       if(response.data.error === '手机号已注册'){
         yield put({ type: SEND_CODE_SAGA, parmas:action.parmas});
@@ -88,14 +88,15 @@ function* checkPhone(action){
 }
 
 //发送验证码
-function* sendCode(action){
+function* sendCode(){
   let url = Config.APIBasePath + Path.APISubPaths.sendCode;
   try{
-    const response = yield call(axios.post, url, `phone=${action.parmas}`);
+    var action = yield take('SEND_CODE_SAGA');
+    const response = yield call(axios.post, url, {phone:action.parmas});
     if (response.data.success) {
-      yield put({ type: SEND_CODE_SUCCESS, phone: {phone:action.parmas}});
+      yield put({ type: SEND_CODE_SUCCESS, phone: action.parmas});
     } else {
-      yield put({ type: SEND_CODE_FAIL, phone:{error:response.data.error,phone:action.parmas}});
+      yield put({ type: SEND_CODE_FAIL, data:{error:response.data.error,phone:action.parmas}});
     }
   } catch (e) {
     message.error(e)    
@@ -105,12 +106,16 @@ function* sendCode(action){
 //验证验证码
 function* checkCode(action){
   let url = Config.APIBasePath + Path.APISubPaths.checkCode;
-  try{
-    const response = yield call(axios.post,url,`phone=${action.parmas.phone}&captcha=${action.parmas.captcha}`);
+  try{    
+    const response = yield call(axios.post,url,action.parmas);
     if (response.data.success){
-      yield put({ type: CHECK_CODE_SUCCESS, code:{code:action.parmas.captcha,phone:action.parmas.phone}});      
+      yield put({ type: CHECK_CODE_SUCCESS, data:{
+        code:action.parmas.captcha,phone:action.parmas.phone
+      }});      
     }else{
-      yield put({ type: CHECK_CODE_FAIL, code:{error:response.data.error,code:action.parmas.captcha}});      
+      yield put({ type: CHECK_CODE_FAIL, data:{
+        error:response.data.error,code:action.parmas.captcha,phone:action.parmas.phone
+      }});      
     }
   }
   catch (e) {
@@ -122,7 +127,7 @@ function* checkCode(action){
 function* changePSW(action){
   let url = Config.APIBasePath + Path.APISubPaths.changePassword;
   try{
-    const response = yield call(axios.post,url,`phone=${action.parmas.phone}&password=${action.parmas.password}&confirmPwd=${action.parmas.confirmPwd}`);
+    const response = yield call(axios.post,url,action.parmas);
     if (response.data.success){
       yield put({ type: CHANGE_PSW_SUCCESS});      
     }else{
@@ -138,9 +143,9 @@ function* changePSW(action){
 function* getComInfoSu(action){
   let url = Config.APIBasePath + Path.APISubPaths.getCompInfoBylink;
   try{
-    const response = yield call(axios.post,url,`linkCode=${action.parmas}`);
+    const response = yield call(axios.post,url,{linkCode:action.parmas});
     if (response.data.success){
-      yield put({ type: GET_COMPINFO_SU_SUCCESS,info:response.data.result});            
+      yield put({ type: GET_COMPINFO_SU_SUCCESS,domain:response.data.result});            
     }else{
       yield put({ type: GET_COMPINFO_SU_FAIL, error:response.data.error});            
     }
@@ -153,12 +158,14 @@ function* getComInfoSu(action){
 function* checkPhoneSU(action){
   let url = Config.APIBasePath + Path.APISubPaths.checkPhone;
   try{
-    const response = yield call(axios.post,url,`phone=${action.parmas}`);
+    const response = yield call(axios.post,url,{phone:action.parmas});
     console.log(response)
     if (response.data.success){//手机号未注册，可以注册，发送验证码
       yield put({ type: SEND_CODE_SAGA, parmas:action.parmas});
     }else{//手机号注册过，不能再次注册
-      yield put({ type: CHECK_PHONE_SU_FAIL, phone:{phone:action.parmas,error:response.data.error}});      
+      yield put({ type: CHECK_PHONE_SU_FAIL, data:{
+        phone:action.parmas,error:response.data.error
+      }});      
     }
   }
   catch (e) {
@@ -170,9 +177,9 @@ function* checkPhoneSU(action){
 function* signup(action){
   let url = Config.APIBasePath + Path.APISubPaths.signup;
   try{
-    const response = yield call(axios.post,url,`enterpriseId=${action.parmas.enterpriseId}&phone=${action.parmas.phone}&captcha=${action.parmas.captcha}&realName=${action.parmas.realName}&password=${action.parmas.password}&confirmPwd=${action.parmas.confirmPwd}`);
+    const response = yield call(axios.post,url,action.parmas);
     if (response.data.success){
-      yield put({ type: SIGNUP_SUCCESS,signup:response.data.result});
+      yield put({ type: SIGNUP_SUCCESS,data:response.data.result});
       setCookie('phone',action.parmas.phone);
       setCookie('userName',response.data.result.userName);
       setCookie('userId',response.data.result.userId);
@@ -194,9 +201,9 @@ export function* watchLogin(){
 export function* watchCheckPhone(){
   yield takeLatest(CHECK_PHONE_SAGA, checkPhone);
 }
-export function* watchSendCode(){
-  yield takeLatest(SEND_CODE_SAGA, sendCode);
-}
+// export function* watchSendCode(){
+//   yield takeLatest(SEND_CODE_SAGA, sendCode);
+// }
 export function* watchCheckCode(){
   yield takeLatest(CHECK_CODE_SAGA, checkCode);
 }
