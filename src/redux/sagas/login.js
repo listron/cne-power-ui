@@ -5,6 +5,7 @@ import {setCookie} from '../../utils';
 import Config from '../../constants/config';
 import Path from '../../constants/path';
 import {
+  BEGIN_FETCH,
   GET_COMPINFO_SAGA,
   GET_COMPINFO_SUCCESS,
   GET_COMPINFO_FAIL,
@@ -28,20 +29,21 @@ import {
   SIGNUP_SAGA,
   SIGNUP_SUCCESS,
   SIGNUP_FAIL,
-  CHECK_PHONE_SU_SAGA,
-  CHECK_PHONE_SU_FAIL
+  // CHECK_PHONE_SU_SAGA,
+  // CHECK_PHONE_SU_FAIL
 } from '../../constants/actionTypes/Login';
 
 //根据域名获取企业信息
 function* getCompInfo(action) {
   let url = Config.APIBasePath + Path.APISubPaths.getCompInfo;
+  yield put({ type: BEGIN_FETCH });
   try {
     const response = yield call(axios.post, url, {domain: action.params.domain});
     if(response.data.success){
       yield put({ type: GET_COMPINFO_SUCCESS, data: response.data.result });      
       setCookie('enterpriseId',response.data.result.enterpriseId);
     }else{
-      yield put({ type: GET_COMPINFO_FAIL, error:response.data.error});    
+      yield put({ type: GET_COMPINFO_FAIL, data:{error:response.data.error}});    
       message.error(response.data.error);        
     }
   } catch (e) {
@@ -52,6 +54,7 @@ function* getCompInfo(action) {
 //登录
 function* login(action){
   let url = Config.APIBasePath + Path.APISubPaths.login;
+  yield put({ type: BEGIN_FETCH });
   try{
     const response = yield call(axios.post, url, action.parmas);
     if (response.data.success) {
@@ -60,43 +63,48 @@ function* login(action){
       setCookie('userId',response.data.result.userId);
       yield put({ type: LOGIN_SUCCESS, data: response.data.result});
     } else {
-      yield put({ type: LOGIN_FAIL, error:response.data.error});                        
+      yield put({ type: LOGIN_FAIL, data:{error:response.data.error}});                        
     }
   } catch (e) {
     message.error(e)    
   }
 }
 
-//验证手机号（修改密码）
-function* checkPhone(action){
-  let url = Config.APIBasePath + Path.APISubPaths.checkPhone;
-  try{
-    const response = yield call(axios.post, url, {phone:action.parmas});
-    if (response.data.success){//手机号未注册，不能修改密码
-      yield put({ type: CHECK_PHONE_FAIL, phone:action.parmas});      
-    }else{//手机号注册过，可以修改密码，发送验证码
-      if(response.data.error === '手机号已注册'){
-        yield put({ type: SEND_CODE_SAGA, parmas:action.parmas});
-      }else{//提示其他错误
-        message.error(response.data.error);                        
-      }
-    }
-  }
-  catch (e) {
-    message.error(e)
-  }
-}
+// //验证手机号（修改密码）
+// function* checkPhone(action){
+//   let url = Config.APIBasePath + Path.APISubPaths.checkPhone;
+//   yield put({ type: BEGIN_FETCH });
+//   try{
+//     const response = yield call(axios.post, url, {phone:action.parmas});
+//     if (response.data.success){//手机号未注册，不能修改密码
+//       yield put({ type: CHECK_PHONE_FAIL, phone:action.parmas});      
+//     }else{//手机号注册过，可以修改密码，发送验证码
+//       if(response.data.error === '手机号已注册'){
+//         yield put({ type: SEND_CODE_SAGA, parmas:action.parmas});
+//       }else{//提示其他错误
+//         message.error(response.data.error);                        
+//       }
+//     }
+//   }
+//   catch (e) {
+//     message.error(e)
+//   }
+// }
 
 //发送验证码
-function* sendCode(){
+function* sendCode(action){
   let url = Config.APIBasePath + Path.APISubPaths.sendCode;
+  yield put({ type: BEGIN_FETCH });
   try{
-    var action = yield take('SEND_CODE_SAGA');
     const response = yield call(axios.post, url, {phone:action.parmas});
     if (response.data.success) {
-      yield put({ type: SEND_CODE_SUCCESS, phone: action.parmas});
+      yield put({ type: SEND_CODE_SUCCESS, data:{
+        phone: action.parmas.phone
+      }});
     } else {
-      yield put({ type: SEND_CODE_FAIL, data:{error:response.data.error,phone:action.parmas}});
+      yield put({ type: SEND_CODE_FAIL, data:{
+        error:response.data.error,phone:action.parmas.phone
+      }});
     }
   } catch (e) {
     message.error(e)    
@@ -106,15 +114,16 @@ function* sendCode(){
 //验证验证码
 function* checkCode(action){
   let url = Config.APIBasePath + Path.APISubPaths.checkCode;
+  yield put({ type: BEGIN_FETCH });
   try{    
     const response = yield call(axios.post,url,action.parmas);
     if (response.data.success){
       yield put({ type: CHECK_CODE_SUCCESS, data:{
-        code:action.parmas.captcha,phone:action.parmas.phone
+        code:action.parmas.captcha
       }});      
     }else{
       yield put({ type: CHECK_CODE_FAIL, data:{
-        error:response.data.error,code:action.parmas.captcha,phone:action.parmas.phone
+        error:response.data.error,code:action.parmas.captcha
       }});      
     }
   }
@@ -126,12 +135,13 @@ function* checkCode(action){
 //修改密码
 function* changePSW(action){
   let url = Config.APIBasePath + Path.APISubPaths.changePassword;
+  yield put({ type: BEGIN_FETCH });
   try{
     const response = yield call(axios.post,url,action.parmas);
     if (response.data.success){
       yield put({ type: CHANGE_PSW_SUCCESS});      
     }else{
-      yield put({ type: CHANGE_PSW_FAIL, error:response.data.error});            
+      yield put({ type: CHANGE_PSW_FAIL, data:{error:response.data.error}});            
     }
   }
   catch (e) {
@@ -142,40 +152,43 @@ function* changePSW(action){
 //通过link获取企业信息
 function* getComInfoSu(action){
   let url = Config.APIBasePath + Path.APISubPaths.getCompInfoBylink;
+  yield put({ type: BEGIN_FETCH });
   try{
     const response = yield call(axios.post,url,{linkCode:action.parmas});
     if (response.data.success){
-      yield put({ type: GET_COMPINFO_SU_SUCCESS,domain:response.data.result});            
+      yield put({ type: GET_COMPINFO_SU_SUCCESS,data:response.data.result});            
     }else{
-      yield put({ type: GET_COMPINFO_SU_FAIL, error:response.data.error});            
+      yield put({ type: GET_COMPINFO_SU_FAIL, data:{error:response.data.erro}});            
     }
   }
   catch (e) {
     message.error(e)
   }
 }
-//验证手机号(注册)
-function* checkPhoneSU(action){
-  let url = Config.APIBasePath + Path.APISubPaths.checkPhone;
-  try{
-    const response = yield call(axios.post,url,{phone:action.parmas});
-    console.log(response)
-    if (response.data.success){//手机号未注册，可以注册，发送验证码
-      yield put({ type: SEND_CODE_SAGA, parmas:action.parmas});
-    }else{//手机号注册过，不能再次注册
-      yield put({ type: CHECK_PHONE_SU_FAIL, data:{
-        phone:action.parmas,error:response.data.error
-      }});      
-    }
-  }
-  catch (e) {
-    message.error(e)
-  }
-}
+// //验证手机号(注册)
+// function* checkPhoneSU(action){
+//   let url = Config.APIBasePath + Path.APISubPaths.checkPhone;
+//   yield put({ type: BEGIN_FETCH });
+//   try{
+//     const response = yield call(axios.post,url,{phone:action.parmas});
+//     console.log(response)
+//     if (response.data.success){//手机号未注册，可以注册，发送验证码
+//       yield put({ type: SEND_CODE_SAGA, parmas:action.parmas});
+//     }else{//手机号注册过，不能再次注册
+//       yield put({ type: CHECK_PHONE_SU_FAIL, data:{
+//         phone:action.parmas,error:response.data.error
+//       }});      
+//     }
+//   }
+//   catch (e) {
+//     message.error(e)
+//   }
+// }
 
 //注册
 function* signup(action){
   let url = Config.APIBasePath + Path.APISubPaths.signup;
+  yield put({ type: BEGIN_FETCH });
   try{
     const response = yield call(axios.post,url,action.parmas);
     if (response.data.success){
@@ -184,7 +197,7 @@ function* signup(action){
       setCookie('userName',response.data.result.userName);
       setCookie('userId',response.data.result.userId);
     }else{
-      yield put({ type: SIGNUP_FAIL, error:response.data.error});            
+      yield put({ type: SIGNUP_FAIL, data:{error:response.data.error}});            
     }
   }
   catch (e) {
@@ -198,12 +211,12 @@ export function* watchGetCompInfo() {
 export function* watchLogin(){
   yield takeLatest(LOGIN_SAGA, login);
 }
-export function* watchCheckPhone(){
-  yield takeLatest(CHECK_PHONE_SAGA, checkPhone);
-}
-// export function* watchSendCode(){
-//   yield takeLatest(SEND_CODE_SAGA, sendCode);
+// export function* watchCheckPhone(){
+//   yield takeLatest(CHECK_PHONE_SAGA, checkPhone);
 // }
+export function* watchSendCode(){
+  yield takeLatest(SEND_CODE_SAGA, sendCode);
+}
 export function* watchCheckCode(){
   yield takeLatest(CHECK_CODE_SAGA, checkCode);
 }
@@ -216,6 +229,6 @@ export function* watchGetComInfoSu(){
 export function* watchSignup(){
   yield takeLatest(SIGNUP_SAGA, signup)
 }
-export function* watchCheckPhoneSU(){
-  yield takeLatest(CHECK_PHONE_SU_SAGA, checkPhoneSU)
-}
+// export function* watchCheckPhoneSU(){
+//   yield takeLatest(CHECK_PHONE_SU_SAGA, checkPhoneSU)
+// }
