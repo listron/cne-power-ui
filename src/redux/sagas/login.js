@@ -1,4 +1,4 @@
-import { call, put, takeLatest, take } from 'redux-saga/effects';
+import { call, put, takeLatest, delay, take, fork, cancel } from 'redux-saga/effects';
 import axios from 'axios';
 import {message} from 'antd';
 import {setCookie} from '../../utils';
@@ -6,14 +6,17 @@ import Config from '../../constants/config';
 import Path from '../../constants/path';
 import {
   BEGIN_FETCH,
+  BEGIN_COUNT,
+  STOP_TASK,
+  UPDATE_COUNT,
   GET_COMPINFO_SAGA,
   GET_COMPINFO_SUCCESS,
   GET_COMPINFO_FAIL,
   LOGIN_SAGA,
   LOGIN_SUCCESS,
   LOGIN_FAIL,
-  CHECK_PHONE_SAGA,
-  CHECK_PHONE_FAIL,
+  // CHECK_PHONE_SAGA,
+  // CHECK_PHONE_FAIL,
   SEND_CODE_SAGA,
   SEND_CODE_SUCCESS,
   SEND_CODE_FAIL,
@@ -120,7 +123,8 @@ function* checkCode(action){
     if (response.data.success){
       yield put({ type: CHECK_CODE_SUCCESS, data:{
         code:action.parmas.captcha
-      }});      
+      }});  
+      yield put({ type: BEGIN_COUNT, payload: 60});     
     }else{
       yield put({ type: CHECK_CODE_FAIL, data:{
         error:response.data.error,code:action.parmas.captcha
@@ -203,6 +207,27 @@ function* signup(action){
   catch (e) {
     console.log(e)
     message.error(e)
+  }
+}
+function* count(number) {
+  let currNum = number;
+
+  while (currNum >= 0) {
+    console.log(currNum--);
+    yield put({ type: UPDATE_COUNT, num:currNum--});
+    yield delay(1000);
+    if(currNum === 0) {
+      yield put({ type: STOP_TASK });
+    }
+  }
+}
+export function* countSaga () {
+  while (true) {
+    const { payload: number } = yield take(BEGIN_COUNT);
+    const countTaskId = yield fork(count, number);
+
+    yield take(STOP_TASK);
+    yield cancel(countTaskId);
   }
 }
 export function* watchGetCompInfo() {

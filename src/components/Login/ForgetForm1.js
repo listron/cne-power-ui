@@ -6,7 +6,8 @@ import PropTypes from 'prop-types';
 class ForgetForm1 extends Component {
   static propTypes = {
     form:PropTypes.object,
-    fetching: PropTypes.bool,
+    isFetching: PropTypes.bool,
+    count: PropTypes.number,
     error: PropTypes.string,
     phone:PropTypes.object,
     code:PropTypes.object,
@@ -16,34 +17,8 @@ class ForgetForm1 extends Component {
   // 初始化页面常量 绑定事件方法
   constructor(props, context) {
     super(props)
-    this.state = {
-      seconds: 59,
-      btnText: "点击获取验证码",
-      disabled: false
-    }
     this.onSubmit = this.onSubmit.bind(this);
     this.sendCode = this.sendCode.bind(this);
-  }
-  
-  componentWillReceiveProps (nextProps,nextState) {
-    if(nextProps.fetched&&!this.props.fetched){//验证码发送成功
-      let siv = setInterval(() => {
-        this.setState({
-          seconds: this.state.seconds - 1,
-          btnText: `${this.state.seconds}秒后可重新获取`,
-          disabled: true,          
-        }, () => {
-          if (this.state.seconds === -1) {
-            this.setState({
-              seconds: 59,
-              btnText: "点击获取验证码",
-              disabled: false,
-            })
-            clearInterval(siv);
-          }
-        });
-      }, 1000);
-    }
   }
 
   onSubmit(e) {
@@ -87,7 +62,9 @@ class ForgetForm1 extends Component {
               )}
             </Col>
             <Col span={6}>
-              <Button className="captcha" type="default" disabled={this.state.disabled} onClick={this.sendCode}>{this.state.btnText}</Button>
+              <Button className="captcha" type="default" disabled={this.props.count !== 0} onClick={this.sendCode}>
+                {this.props.count !== 0 ? `${this.props.count}秒后可重新获取` : "点击获取验证码"}
+              </Button>
             </Col>
           </Row>
         </FormItem>
