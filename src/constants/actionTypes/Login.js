@@ -1,4 +1,7 @@
 export const BEGIN_FETCH = 'BEGIN_FETCH';
+export const UPDATE_COUNT = 'UPDATE_COUNT';
+export const BEGIN_COUNT = 'BEGIN_COUNT';
+export const STOP_TASK = 'BEGIN_COUNT';
 
 //login
 export const GET_COMPINFO_SAGA = 'GET_COMPINFO_SAGA';
