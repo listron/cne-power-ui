@@ -30,8 +30,8 @@ class Forget extends Component {
     if(nextProps.code.get('correct') && !this.props.code.get('correct')) {
       this.props.history.push('/login');
     }
-    if(nextProps.code.get('error') && !this.props.code.get('error')) {
-      message.error(nextProps.code.get('error'));
+    if(nextProps.error && !this.props.error) {
+      message.error(nextProps.error);
     }
   }
 
