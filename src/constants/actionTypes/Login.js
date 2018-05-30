@@ -1,3 +1,5 @@
+export const BEGIN_FETCH = 'BEGIN_FETCH';
+
 //login
 export const GET_COMPINFO_SAGA = 'GET_COMPINFO_SAGA';
 export const GET_COMPINFO_SUCCESS = 'GET_COMPINFO_SUCCESS';
