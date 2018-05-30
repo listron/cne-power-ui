@@ -97,7 +97,6 @@ function* login(action){
 //发送验证码
 function* sendCode(action){
   let url = Config.APIBasePath + Path.APISubPaths.sendCode;
-  yield put({ type: BEGIN_FETCH });
   try{
     const response = yield call(axios.post, url, {phone:action.parmas});
     if (response.data.success) {

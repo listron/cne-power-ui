@@ -19,20 +19,6 @@ class ForgetForm2 extends Component {
     this.onSubmit = this.onSubmit.bind(this);
   }
 
-  componentWillReceiveProps(nextProps){
-    // if(nextProps.psw.fetched&&!this.props.psw.fetched){
-    //   this.props.history.push('/login');
-    // }
-    // if(nextProps.psw.error&&!this.props.psw.error){
-    //   this.props.form.setFields({
-    //     confirmPwd: {
-    //       value: '******',
-    //       errors: [new Error(nextProps.psw.msg)],
-    //     } 
-    //   });
-    // }
-  }
-
   onSubmit(e) {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
@@ -43,14 +29,8 @@ class ForgetForm2 extends Component {
     })
   }
 
-  // handleConfirmBlur = (e) => {
-  //   const value = e.target.value;
-  //   this.setState({
-  //     confirmDirty: this.state.confirmDirty || !!value
-  //   });
-  // }
   //比较两次输入密码
-  compareToFirstPassword = (rule, value, callback) => {
+  compareToFirstPassword(rule, value, callback) {
     const form = this.props.form;
     if (value && value !== form.getFieldValue('password')) {
       callback('密码不一致');
@@ -58,9 +38,7 @@ class ForgetForm2 extends Component {
       callback();
     }
   }
-  hasErrors = (fieldsError) => {
-    return Object.keys(fieldsError).some(field => fieldsError[field]);
-  }
+
   render() {
     const {
       getFieldDecorator,

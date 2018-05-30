@@ -66,14 +66,12 @@ const loginReducer = (state = initState, action) => {
     //     phone:action.phone
     //   }
     case SEND_CODE_SUCCESS:
-      return state.set('isFetching', false)
-                  .set('phone', immutable.fromJS({
+      return state.set('phone', immutable.fromJS({
                     value: action.data.phone,
                     correct: true
                   }));  
     case SEND_CODE_FAIL:
-      return state.set('isFetching', false)
-                  .set('error', action.data.error)
+      return state.set('error', action.data.error)
                   .set('phone', immutable.fromJS({
                     value: action.data.phone,
                     correct: false
