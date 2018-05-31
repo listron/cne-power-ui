@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link,withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { GET_COMPINFO_SU_SAGA, CHECK_PHONE_SU_SAGA, CHECK_CODE_SAGA, SIGNUP_SAGA } from '../../constants/actionTypes/Login';
+import { GET_COMPINFO_SU_SAGA, SEND_CODE_SAGA, CHECK_CODE_SAGA, SIGNUP_SAGA } from '../../constants/actionTypes/Login';
 import SignupForm1 from '../../components/Login/SignupForm1';
 import SignupForm2 from '../../components/Login/SignupForm2';
 import PropTypes from 'prop-types';
@@ -55,7 +55,7 @@ class Signup extends Component {
               error={this.props.error}
               count={this.props.count}
             />:null}
-            {!this.props.phone.get('correct')?<Link style={{display:this.state.form1}} className="loginFormForgot" to="/login">已有账号，去登录</Link>:null }   
+            {!this.props.phone.get('correct')?<Link  className="loginFormForgot" to="/login">已有账号，去登录</Link>:null }   
             {this.props.phone.get('correct')?<SignupForm2 
               error={this.props.error}
               isFetching={this.props.isFetching}
@@ -81,7 +81,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   fetchcCompanyInfo: parmas => dispatch({ type: GET_COMPINFO_SU_SAGA,parmas }),
-  checkPhone: parmas => dispatch({ type: CHECK_PHONE_SU_SAGA,parmas }),
+  checkPhone: parmas => dispatch({ type: SEND_CODE_SAGA,parmas }),
   checkCode: parmas => dispatch({type: CHECK_CODE_SAGA,parmas}),
   getSignup: parmas => dispatch({ type: SIGNUP_SAGA,parmas }),
 });

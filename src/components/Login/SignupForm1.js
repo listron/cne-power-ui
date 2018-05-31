@@ -13,34 +13,20 @@ class SignupForm1 extends Component {
     checkPhone:PropTypes.func,
     phone:PropTypes.object,
     code:PropTypes.object,
+    error: PropTypes.string,
   }
   // 初始化页面常量 绑定事件方法
   constructor(props, context) {
     super(props)
-    this.state = {
-      loading: false,
-      seconds: 59,
-      btnText: "点击获取验证码",
-      disabled: false,
-      form1: "block",
-      form2: "none",
-      next:true,
-    }
   }
   
   //获取验证码
   getCode = (e) => {
-    let phone = this.props.form.getFieldValue ('phone');
-    if(phone){
-      this.props.checkPhone(phone);
-    }else{
-      this.props.form.setFields({
-        phone: {
-          value: phone,
-          errors: [new Error('手机号为空')],
-        },
-      });
-    }
+    this.props.form.validateFields(['phone'], (err, values) => {
+      if (!err && this.props.error === '') {
+        this.props.checkPhone(values);
+      }
+    })
   }
   handleSubmit = (e) => {
     e.preventDefault();
@@ -50,11 +36,7 @@ class SignupForm1 extends Component {
       }
     })
   }
-  
 
-  hasErrors = (fieldsError) => {
-    return Object.keys(fieldsError).some(field => fieldsError[field]);
-  }
   render() {
     const {
       getFieldDecorator,
