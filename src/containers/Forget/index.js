@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {Link, withRouter} from 'react-router-dom';
-
 import { CHECK_CODE_SAGA ,SEND_CODE_SAGA, CHANGE_PSW_SAGA } from '../../constants/actionTypes/Login';
 import ForgetForm1 from '../../components/Login/ForgetForm1';
 import ForgetForm2 from '../../components/Login/ForgetForm2'
