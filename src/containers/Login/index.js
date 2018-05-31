@@ -19,7 +19,6 @@ class Login extends Component {
     this.state = {
       phone: '',
     };
-    //this.onSubmit=this.onSubmit.bind(this);
   }
 
   componentWillMount() {
@@ -33,11 +32,6 @@ class Login extends Component {
       message.error(nextProps.msg);
     }
   }
-
-  // onSubmit(values){
-  //   this.setState({ phone:values.phone });
-  //   this.props.fetchLogin(values);
-  // }
 
   render() {
     let name=this.props.domain.get('name');
