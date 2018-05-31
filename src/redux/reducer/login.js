@@ -17,10 +17,15 @@ import {
   GET_COMPINFO_SU_FAIL,
   SIGNUP_SUCCESS,
   SIGNUP_FAIL,
+  GET_SHOW_STATUS_SUCCESS,
+  GET_SHOW_STATUS_FAIL,
+  CHANGE_SHOW_STATUS_SUCCESS,
+  CHANGE_SHOW_STATUS_FAIL
   // CHECK_PHONE_SU_FAIL
 } from '../../constants/actionTypes/Login';
 
 var initState = immutable.fromJS({
+  status: true,//是否显示邀请链接
   isFetching: false,
   error: '',
   count: 0,
@@ -101,16 +106,21 @@ const loginReducer = (state = initState, action) => {
     //     msg:action.data.error,
     //     phone:action.data.phone  
     //   }
+    case GET_SHOW_STATUS_SUCCESS:
+    case CHANGE_SHOW_STATUS_SUCCESS:
+      return state.set("status", action.data.status);
     case GET_COMPINFO_FAIL:
     case GET_COMPINFO_SU_FAIL:
     case LOGIN_FAIL:
     case SIGNUP_FAIL:
     case CHANGE_PSW_FAIL:
+    case GET_SHOW_STATUS_FAIL:
+    case CHANGE_SHOW_STATUS_FAIL:
       return state.set('isFetching', false)
                   .set('error', action.data.error);
   }
-  return state
+  return state;
 }
 
 
-export default loginReducer
+export default loginReducer;

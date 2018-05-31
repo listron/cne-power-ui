@@ -32,6 +32,12 @@ import {
   SIGNUP_SAGA,
   SIGNUP_SUCCESS,
   SIGNUP_FAIL,
+  GET_SHOW_STATUS_SAGA,
+  GET_SHOW_STATUS_SUCCESS,
+  GET_SHOW_STATUS_FAIL,
+  CHANGE_SHOW_STATUS_SAGA,
+  CHANGE_SHOW_STATUS_SUCCESS,
+  CHANGE_SHOW_STATUS_FAIL,
   // CHECK_PHONE_SU_SAGA,
   // CHECK_PHONE_SU_FAIL
 } from '../../constants/actionTypes/Login';
@@ -204,7 +210,36 @@ function* signup(action){
     }
   }
   catch (e) {
-    console.log(e)
+    message.error(e)
+  }
+}
+function* getShowStatus(action) {
+  let url = Config.APIBasePath + Path.APISubPaths.getShowStatus;
+  yield put({ type: BEGIN_FETCH });
+  try{
+    const response = yield call(axios.post,url,action.parmas);
+    if (response.data.success){
+      yield put({ type: GET_SHOW_STATUS_SUCCESS, data:{status: response.data.result.status} });
+    }else{
+      yield put({ type: GET_SHOW_STATUS_FAIL });            
+    }
+  }
+  catch (e) {
+    message.error(e)
+  }
+}
+function* changeShowStatus(action) {
+  let url = Config.APIBasePath + Path.APISubPaths.changeShowStatus;
+  yield put({ type: BEGIN_FETCH });
+  try{
+    const response = yield call(axios.post,url,action.parmas);
+    if (response.data.success){
+      yield put({ type: CHANGE_SHOW_STATUS_SUCCESS, data:{status: response.data.result.status} });
+    }else{
+      yield put({ type: CHANGE_SHOW_STATUS_FAIL });            
+    }
+  }
+  catch (e) {
     message.error(e)
   }
 }
@@ -256,3 +291,9 @@ export function* watchSignup(){
 // export function* watchCheckPhoneSU(){
 //   yield takeLatest(CHECK_PHONE_SU_SAGA, checkPhoneSU)
 // }
+export function* watchGetShowStatus() {
+  yield takeLatest(GET_SHOW_STATUS_SAGA, getShowStatus)
+}
+export function* watchChangeShowStatus() {
+  yield takeLatest(CHANGE_SHOW_STATUS_SAGA, changeShowStatus)
+}
