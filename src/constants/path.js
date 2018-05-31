@@ -9,6 +9,8 @@ export default {
     createRegister: '/v3/link/createRegisterLink',
     getCompInfoBylink: '/v3/link/queryEnterpriseInfoByLinkCode',
     changePassword: '/v3/user/changeUserPassword',
-    signup: '/v3/user/userRegister'
+    signup: '/v3/user/userRegister',
+    getShowStatus: 'v3/relation/queryShowStatus',
+    changeShowStatus: 'v3/relation/changeShowStatus'
   }
 }
