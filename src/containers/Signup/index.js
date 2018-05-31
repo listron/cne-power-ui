@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link,withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { GET_COMPINFO_SU_SAGA } from '../../constants/actionTypes/Login';
 import SignupForm1 from '../../components/Login/SignupForm1';
 import SignupForm2 from '../../components/Login/SignupForm2';
 import PropTypes from 'prop-types';
@@ -8,7 +9,7 @@ import PropTypes from 'prop-types';
 class Signup extends Component {
   static propTypes = {
     fetchcCompanyInfo: PropTypes.func,
-    info:PropTypes.object,
+    domain:PropTypes.object,
     history:PropTypes.object,
   }
   constructor(props) {
@@ -40,10 +41,8 @@ class Signup extends Component {
   }
   
   render() {
-    const {
-      name,
-      logo
-    }=this.props.info;
+    const name = this.props.domain.get('name');
+    const logo = this.props.domain.get('logo');
     return (
       <div className="loginpagewrap">
         <img src={logo?logo:"/img/cnelogo.png"} alt="logo" />
@@ -63,10 +62,10 @@ class Signup extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  info: state.login.info,
+  domain: state.login.get('domain'),
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  fetchcCompanyInfo: (parmas) => dispatch({ type: 'GET_COMPINFO_SU_SAGA',parmas:parmas })
+  fetchcCompanyInfo: (parmas) => dispatch({ type: GET_COMPINFO_SU_SAGA,parmas:parmas })
 });
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Signup))
