@@ -38,6 +38,9 @@ import {
   CHANGE_SHOW_STATUS_SAGA,
   CHANGE_SHOW_STATUS_SUCCESS,
   CHANGE_SHOW_STATUS_FAIL,
+  CREATE_REGISTER_SAGA,
+  CREATE_REGISTER_SUCCESS,
+  CREATE_REGISTER_FAIL,
   // CHECK_PHONE_SU_SAGA,
   // CHECK_PHONE_SU_FAIL
 } from '../../constants/actionTypes/Login';
@@ -243,6 +246,21 @@ function* changeShowStatus(action) {
     message.error(e)
   }
 }
+function* createRegister(action) {
+  let url = Config.APIBasePath + Path.APISubPaths.createRegister;
+  yield put({ type: BEGIN_FETCH });
+  try{
+    const response = yield call(axios.post,url,action.parmas);
+    if (response.data.success){
+      yield put({ type: CREATE_REGISTER_SUCCESS, data:{link: response.data.result.link} });
+    }else{
+      yield put({ type: CREATE_REGISTER_FAIL });            
+    }
+  }
+  catch (e) {
+    message.error(e)
+  }
+}
 function* count(number) {
   let currNum = number;
 
@@ -296,4 +314,7 @@ export function* watchGetShowStatus() {
 }
 export function* watchChangeShowStatus() {
   yield takeLatest(CHANGE_SHOW_STATUS_SAGA, changeShowStatus)
+}
+export function* watchCreateRegister() {
+  yield takeLatest(CREATE_REGISTER_SAGA, createRegister)
 }

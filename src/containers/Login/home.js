@@ -38,7 +38,7 @@ class Home extends Component {
     });
   }
   
-  neverShowTip(e) {
+  neverShowTip() {
     const userId = getCookie('userId');
     const enterpriseId = getCookie('enterpriseId');
     this.props.changeShowStatus({
