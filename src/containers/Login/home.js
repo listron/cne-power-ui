@@ -1,96 +1,61 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import { withRouter} from 'react-router-dom';
-import {userInfo} from 'actions/common'
 import {Link} from 'react-router'
 import {getCookie} from '../index'
-import axios from 'axios';
-import {message} from 'antd';
-const api = "http://10.10.24.56:8080";
+import { GET_SHOW_STATUS_SAGA, CHANGE_SHOW_STATUS_SAGA } from '../../constants/actionTypes/Login';
 import PropTypes from 'prop-types';
 
 class Home extends Component {
   static propTypes = {
-    dispatch:PropTypes.func,
+    getShowStatus:PropTypes.func,
+    changeShowStatus: PropTypes.func,
+    status: PropTypes.bool
   }
   // 初始化页面常量 绑定事件方法
   constructor(props, context) {
-    super(props)
+    super(props);
     this.state = {
-      tips:true,
-      data: {},
-      visible: "block",
-    }
-    // this.getUserInfo = this.getUserInfo.bind(this)
+      showTips: true
+    };
+    this.neverShowTip = this.neverShowTip.bind(this);
+    this.onClose = this.onClose.bind(this);
   }
 
   // 组件已经加载到dom中
   componentDidMount() {
     const userId = getCookie('userId');
     const enterpriseId = getCookie('enterpriseId');
-    axios.post(api+'/api/v3/relation/queryShowStatus',`userId=${userId}&enterpriseId=${enterpriseId}`)
-    .then((response)=>{
-      if(response.data.success){
-        if(response.data.result.status){
-           this.setState({
-            tips: true,
-          })
-        }else{
-          this.setState({
-            tips: false,
-          })
-        }
-      }
-    })
-    .catch((error)=>{
-      message.error(error)
-    })
+    this.props.getShowStatus({
+      userId: userId,
+      enterpriseId: enterpriseId
+    });
   }
   
-  onClose = ()=>{
+  onClose() {
     this.setState({
-      tips: false,
-    })
+      showTips: false,
+    });
   }
-
-  getUserInfo = () => {
-    this.props.dispatch(userInfo({}, (response) => {
-      console.log(response)
-    }, (response) => {
-      console.log(response)
-      // message.warning(response)
-    }))
-  }
-  neverTip = (e) => {
+  
+  neverShowTip() {
     const userId = getCookie('userId');
     const enterpriseId = getCookie('enterpriseId');
-    axios.post(api+'/api/v3/relation/changeShowStatus',`userId=${userId}&enterpriseId=${enterpriseId}`)
-    .then((response)=>{
-      if(response.data.success){
-        this.setState({
-          tips: false,
-        })
-      }else{
-        message.error(response.data.error)
-      }
-    })
-    .catch((error)=>{
-      message.error(error)
-    })
-    this.setState({
-      tips: false,
-    })
+    this.props.changeShowStatus({
+      userId: userId,
+      enterpriseId: enterpriseId
+    });
   }
   render() {
     return (
       <div className="welcome">
         <div className="content">
           {
-            this.state.tips&&
-            <div style={{display:this.state.tips?'block':'none'}} className="ant-alert ant-alert-warning ant-alert-no-icon ant-alert-banner topTip">
+            this.state.showTips&&this.props.status&&
+            <div className="ant-alert ant-alert-warning ant-alert-no-icon ant-alert-banner topTip">
               <span className="ant-alert-message">企业内还没有用户，可以通过用户管理-&gt;邀请注册 添加用户</span>
               <Link to="/invite" style={{diplay:this.state.visible}} className="tipLink">去邀请</Link>
-              <span style={{diplay:this.state.visible}} className="tip" onClick={this.neverTip}>不再提醒</span>
+              <span className="tip" onClick={this.neverShowTip}>不再提醒</span>
               <a className="ant-alert-close-icon">
               <i className="anticon anticon-cross" onClick={this.onClose}></i>
               </a>
@@ -103,8 +68,10 @@ class Home extends Component {
 }
 
 const mapStateToProps = (state) => ({
+  status: state.login.get('status'),
 });
 const mapDispatchToProps = (dispatch) => ({
-  dispatch: dispatch,  
+  getShowStatus: (parmas) => dispatch({ type: GET_SHOW_STATUS_SAGA,parmas:parmas }),
+  changeShowStatus: (parmas) => dispatch({ type: CHANGE_SHOW_STATUS_SAGA,parmas:parmas })
 });
 export default withRouter(connect(mapStateToProps,mapDispatchToProps)(Home))

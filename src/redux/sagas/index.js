@@ -1,5 +1,5 @@
 import { call, put, takeLatest, all } from 'redux-saga/effects';
-import { watchSendCode, watchLogin, watchCheckCode, watchChangePSW, watchSignup } from './login';
+import { watchSendCode, watchLogin, watchCheckCode, watchChangePSW, watchSignup, watchGetShowStatus, watchChangeShowStatus, watchCreateRegister } from './login';
 import axios from 'axios';
 
 import {
@@ -48,5 +48,8 @@ export default function* rootSaga() {
     // watchGetComInfoSu(),
     watchSignup(),
     // watchCheckPhoneSU(),
+    watchGetShowStatus(),
+    watchChangeShowStatus(),
+    watchCreateRegister()
   ])
 } 
