@@ -19,6 +19,7 @@ class Signup extends Component {
     getSignup:PropTypes.func,
     isFetching: PropTypes.bool,
     count: PropTypes.number,
+    user:PropTypes.object
   }
   constructor(props) {
     super(props)
@@ -61,6 +62,7 @@ class Signup extends Component {
               isFetching={this.props.isFetching}
               phone={this.props.phone}
               code={this.props.code}
+              user={this.props.user}
               getSignup={this.props.getSignup}
             />:null}
           </div>
@@ -72,6 +74,7 @@ class Signup extends Component {
 
 const mapStateToProps = (state) => ({
   domain: state.login.get('domain'),
+  user: state.login.get('user'),
   isFetching: state.login.get('isFetching'),
   error:state.login.get('error'),
   phone: state.login.get('phone'),

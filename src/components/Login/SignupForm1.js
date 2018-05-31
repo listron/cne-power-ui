@@ -1,6 +1,4 @@
 import React, {Component} from 'react';
-import { connect } from 'react-redux';
-import { CHECK_PHONE_SU_SAGA ,CHECK_CODE_SAGA} from '../../constants/actionTypes/Login';
 import {Form,Input,Icon,Button,Row,Col} from 'antd';
 const FormItem = Form.Item;
 import PropTypes from 'prop-types';
@@ -8,7 +6,7 @@ import PropTypes from 'prop-types';
 class SignupForm1 extends Component {
   static propTypes = {
     checkCode:PropTypes.func,
-    form:PropTypes.func,
+    form:PropTypes.object,
     count: PropTypes.number,
     checkPhone:PropTypes.func,
     phone:PropTypes.object,
