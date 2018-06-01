@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { message } from 'antd';
 import { GET_COMPINFO_SAGA,LOGIN_SAGA } from '../../constants/actionTypes/Login';
 import LoginForm from '../../components/Login/LoginForm';
-import './style.scss';
+import styles from './style.scss';
 import PropTypes from 'prop-types';
 
 class Login extends Component {
