@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import { withRouter} from 'react-router-dom';
-import { SIGNUP_SAGA } from '../../constants/actionTypes/Login';
 import { Form, Input, Button } from 'antd';
 const FormItem = Form.Item;
 import PropTypes from 'prop-types';
@@ -9,35 +7,22 @@ import PropTypes from 'prop-types';
 class SignupForm2 extends Component {
   static propTypes = {
     history:PropTypes.array,
-    form:PropTypes.func,
+    form:PropTypes.object,
     signup:PropTypes.func,
     info:PropTypes.object,
     code:PropTypes.object,
     getSignup:PropTypes.func,
-    visible:PropTypes.sting,
+    phone: PropTypes.object,
+    user: PropTypes.object,
   }
   // 初始化页面常量 绑定事件方法
   constructor(props, context) {
     super(props)
     this.state={
-      confirmDirty: false,
       autoCompleteResult: [],
     }
   }
 
-  componentWillReceiveProps(nextProps){    
-    if(nextProps.signup.fetched&&!this.props.signup.fetched){
-      this.props.history.push('/');
-    }
-    if(nextProps.signup.error&&!this.props.signup.error){
-      this.props.form.setFields({
-        confirmPwd: {
-          value: '******',
-          errors: [new Error(nextProps.signup.msg)],
-        } 
-      });
-    }
-  }
   //比较两次输入密码
   compareToFirstPassword = (rule, value, callback) => {
     const form = this.props.form;
@@ -47,28 +32,19 @@ class SignupForm2 extends Component {
       callback();
     }
   }
-  handleConfirmBlur = (e) => {
-    const value = e.target.value;
-    this.setState({
-      confirmDirty: this.state.confirmDirty || !!value
-    });
-  }
   handleSubmit = (e) => {
     e.preventDefault();    
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        let parmas={...values,phone:this.props.code.phone,captcha:this.props.code.code,enterpriseId:this.props.info.id,}
+        let parmas={...values,phone:this.props.phone.get('value'),captcha:this.props.code.get('value'),enterpriseId:this.props.user.get('userId'),}
         this.props.getSignup(parmas);
       }
     })
   }
-  hasErrors = (fieldsError) => {
-    return Object.keys(fieldsError).some(field => fieldsError[field]);
-  }
+  
   render() {
     const {
       getFieldDecorator,
-      getFieldsError,
     } = this.props.form;
     const formItemLayout = {
       labelCol: {
@@ -91,7 +67,7 @@ class SignupForm2 extends Component {
       },
     };
     return (
-      <Form hideRequiredMark={false} onSubmit={this.handleSubmit} className="loginForm"  style={{display:this.props.visible}}>
+      <Form hideRequiredMark={false} onSubmit={this.handleSubmit} className="loginForm">
         <FormItem
           {...formItemLayout}
           label="真实姓名"
@@ -127,11 +103,11 @@ class SignupForm2 extends Component {
               validator: this.compareToFirstPassword,
             }],
           })(
-            <Input type="password" onBlur={this.handleConfirmBlur} placeholder="请输入" />
+            <Input type="password" placeholder="请输入" />
           )}
       </FormItem>                    
         <FormItem>
-          <Button type="primary" htmlType="submit" className="loginFormButton" disabled={this.hasErrors(getFieldsError())}>
+          <Button type="primary" htmlType="submit" className="loginFormButton" >
           完成注册
           </Button>
         </FormItem>
@@ -140,14 +116,5 @@ class SignupForm2 extends Component {
   }
 }
 const SignupFormS = Form.create()(SignupForm2);
-// export default SignupFormS;
-const mapStateToProps = (state) => ({
-  signup:state.login.signup,
-  code:state.login.code,
-  info: state.login.info,  
-});
 
-const mapDispatchToProps = (dispatch) => ({
-  getSignup: (parmas) => dispatch({ type: SIGNUP_SAGA,parmas:parmas }),  
-});
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(SignupFormS));
+export default withRouter(SignupFormS);
