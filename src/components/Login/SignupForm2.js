@@ -17,22 +17,12 @@ class SignupForm2 extends Component {
   }
   // 初始化页面常量 绑定事件方法
   constructor(props, context) {
-    super(props)
-    this.state={
-      autoCompleteResult: [],
-    }
+    super(props);
+    this.compareToFirstPassword = this.compareToFirstPassword.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
   }
 
-  //比较两次输入密码
-  compareToFirstPassword = (rule, value, callback) => {
-    const form = this.props.form;
-    if (value && value !== form.getFieldValue('password')) {
-      callback('密码不一致');
-    } else {
-      callback();
-    }
-  }
-  handleSubmit = (e) => {
+  onSubmit(e) {
     e.preventDefault();    
     this.props.form.validateFields((err, values) => {
       if (!err) {
@@ -40,6 +30,16 @@ class SignupForm2 extends Component {
         this.props.getSignup(parmas);
       }
     })
+  }
+
+  //比较两次输入密码
+  compareToFirstPassword(rule, value, callback) {
+    const form = this.props.form;
+    if (value && value !== form.getFieldValue('password')) {
+      callback('密码不一致');
+    } else {
+      callback();
+    }
   }
   
   render() {
@@ -67,7 +67,7 @@ class SignupForm2 extends Component {
       },
     };
     return (
-      <Form hideRequiredMark={false} onSubmit={this.handleSubmit} className="loginForm">
+      <Form hideRequiredMark={false} onSubmit={this.onSubmit} className="loginForm">
         <FormItem
           {...formItemLayout}
           label="真实姓名"

@@ -34,7 +34,7 @@ class ForgetForm1 extends Component {
   sendCode() {
     this.props.form.validateFields(['phone'], (err, values) => {
       if (!err && this.props.error === '') {
-        this.props.sendCode(values);
+        this.props.sendCode({...values, type:"forget"});
       }
     })
   }

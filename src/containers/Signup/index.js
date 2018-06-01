@@ -22,7 +22,7 @@ class Signup extends Component {
     user:PropTypes.object
   }
   constructor(props) {
-    super(props)
+    super(props);
   }
 
   componentDidMount() {

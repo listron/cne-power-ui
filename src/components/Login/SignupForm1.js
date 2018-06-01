@@ -5,32 +5,36 @@ import PropTypes from 'prop-types';
 
 class SignupForm1 extends Component {
   static propTypes = {
-    checkCode:PropTypes.func,
+    sendCode:PropTypes.func,
     form:PropTypes.object,
     count: PropTypes.number,
-    checkPhone:PropTypes.func,
+    checkCode:PropTypes.func,
     phone:PropTypes.object,
     code:PropTypes.object,
     error: PropTypes.string,
   }
   // 初始化页面常量 绑定事件方法
   constructor(props, context) {
-    super(props)
+    super(props);
+    this.onSubmit = this.onSubmit.bind(this);
+    this.sendCode = this.sendCode.bind(this);
   }
   
-  //获取验证码
-  getCode = (e) => {
-    this.props.form.validateFields(['phone'], (err, values) => {
-      if (!err && this.props.error === '') {
-        this.props.checkPhone(values);
-      }
-    })
-  }
-  handleSubmit = (e) => {
+  
+  onSubmit(e) {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
         this.props.checkCode(values);
+      }
+    })
+  }
+
+  //获取验证码
+  sendCode() {
+    this.props.form.validateFields(['phone'], (err, values) => {
+      if (!err && this.props.error === '') {
+        this.props.sendCode({...values, type:"signup"});
       }
     })
   }
@@ -40,7 +44,7 @@ class SignupForm1 extends Component {
       getFieldDecorator,
     } = this.props.form;
     return (
-      <Form hideRequiredMark={false} onSubmit={this.handleSubmit} className="loginForm">
+      <Form hideRequiredMark={false} onSubmit={this.onSubmit} className="loginForm">
         <FormItem label="" >
           {getFieldDecorator('phone', {
             rules: [{  pattern:/(^1[3|4|5|7|8]\d{9}$)|(^09\d{8}$)/,required: true, message: '请输入有效手机号' }],
@@ -58,7 +62,7 @@ class SignupForm1 extends Component {
               )}
             </Col>
             <Col span={6}>
-              <Button className="captcha" type="default" disabled={this.props.count !== 0} onClick={this.getCode}>{this.props.count !== 0 ? `${this.props.count}秒后可重新获取` : "点击获取验证码"}</Button>
+              <Button className="captcha" type="default" disabled={this.props.count !== 0} onClick={this.sendCode}>{this.props.count !== 0 ? `${this.props.count}秒后可重新获取` : "点击获取验证码"}</Button>
             </Col>
           </Row>
         </FormItem>
@@ -71,7 +75,6 @@ class SignupForm1 extends Component {
     )
   }
 }
-const SignupForms = Form.create(options)(SignupForm1);
 
 const options = {
   mapPropsToFields: (props) => {
@@ -85,5 +88,6 @@ const options = {
     };
   }
 }
+const SignupForms = Form.create(options)(SignupForm1);
 
 export default SignupForms
