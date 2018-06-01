@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { message } from 'antd';
 import { GET_COMPINFO_SAGA,LOGIN_SAGA } from '../../constants/actionTypes/Login';
 import LoginForm from '../../components/Login/LoginForm';
-import styles from './style.scss';
+import './style.scss';
 import PropTypes from 'prop-types';
 
 class Login extends Component {
@@ -45,7 +45,7 @@ class Login extends Component {
           <div className="triangle"></div>
           <div className="avatar"><span className="icon-user"></span><p>{name&&name}</p></div>
           <div className="loginWrap">
-            <LoginForm fetchLogin={this.props.fetchLogin} company={name} />
+            <LoginForm fetchLogin={this.props.fetchLogin} />
             <Link className="loginFormForgot" to="/forget">忘记密码</Link>      
           </div>
         </div>
