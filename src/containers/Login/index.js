@@ -29,7 +29,7 @@ class Login extends Component {
 
   componentWillReceiveProps(nextProps){
     if(nextProps.error&&!this.props.error){
-      message.error(nextProps.msg);
+      message.error(nextProps.error);
     }
   }
 
