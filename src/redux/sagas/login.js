@@ -38,7 +38,7 @@ import {
   CHANGE_SHOW_STATUS_SAGA,
   CHANGE_SHOW_STATUS_SUCCESS,
   CHANGE_SHOW_STATUS_FAIL,
-  CHECK_PHONE_SU_SAGA,
+  // CHECK_PHONE_SU_SAGA,
   CHECK_PHONE_SU_FAIL,
   CREATE_REGISTER_SAGA,
   CREATE_REGISTER_SUCCESS,
@@ -305,9 +305,9 @@ export function* watchGetComInfoSu(){
 export function* watchSignup(){
   yield takeLatest(SIGNUP_SAGA, signup)
 }
-export function* watchCheckPhoneSU(){
-  yield takeLatest(CHECK_PHONE_SU_SAGA, checkPhoneSU)
-}
+// export function* watchCheckPhoneSU(){
+//   yield takeLatest(CHECK_PHONE_SU_SAGA, checkPhoneSU)
+// }
 export function* watchGetShowStatus() {
   yield takeLatest(GET_SHOW_STATUS_SAGA, getShowStatus)
 }
