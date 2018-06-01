@@ -22,7 +22,7 @@ class Forget extends Component {
     changePSW: PropTypes.func,
   }
   constructor(props, context) {
-    super(props)
+    super(props);
   }
 
   componentWillReceiveProps(nextProps,nextState) {

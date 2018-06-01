@@ -5,6 +5,7 @@ import { GET_COMPINFO_SU_SAGA, SEND_CODE_SAGA, CHECK_CODE_SAGA, SIGNUP_SAGA } fr
 import SignupForm1 from '../../components/Login/SignupForm1';
 import SignupForm2 from '../../components/Login/SignupForm2';
 import PropTypes from 'prop-types';
+import {message, Spin} from 'antd';
 
 class Signup extends Component {
   static propTypes = {
@@ -14,7 +15,7 @@ class Signup extends Component {
     code: PropTypes.object,
     error: PropTypes.string,
     history:PropTypes.object,
-    checkPhone:PropTypes.func,
+    sendCode:PropTypes.func,
     checkCode:PropTypes.func,
     getSignup:PropTypes.func,
     isFetching: PropTypes.bool,
@@ -22,7 +23,7 @@ class Signup extends Component {
     user:PropTypes.object
   }
   constructor(props) {
-    super(props)
+    super(props);
   }
 
   componentDidMount() {
@@ -34,40 +35,45 @@ class Signup extends Component {
     if(nextProps.error && !this.props.error){
       this.props.history.push('/404');      
     }
+    if(nextProps.error && !this.props.error) {
+      message.error(nextProps.error);
+    }
   }
   
   render() {
     const name = this.props.domain.get('name');
     const logo = this.props.domain.get('logo');
     return (
-      <div className="loginpagewrap">
-        <img src={logo?logo:"/img/cnelogo.png"} alt="logo" />
-        <a href="#" className="right">返回官网</a>
-        <div className="box">
-          <div className="title2">登录</div>
-          <div className="avatar"><span className="icon-user"></span>{name&&name}</div>
-          <div className="loginWrap">
-            {!this.props.phone.get('correct')?<SignupForm1 
-              checkPhone={this.props.checkPhone}
-              checkCode={this.props.checkCode}
-              phone={this.props.phone}
-              isFetching={this.props.isFetching}
-              code={this.props.code}
-              error={this.props.error}
-              count={this.props.count}
-            />:null}
-            {!this.props.phone.get('correct')?<Link  className="loginFormForgot" to="/login">已有账号，去登录</Link>:null }   
-            {this.props.phone.get('correct')?<SignupForm2 
-              error={this.props.error}
-              isFetching={this.props.isFetching}
-              phone={this.props.phone}
-              code={this.props.code}
-              user={this.props.user}
-              getSignup={this.props.getSignup}
-            />:null}
+      <Spin spinning={this.props.isFetching} size="large">
+        <div className="loginpagewrap">
+          <img src={logo?logo:"/img/cnelogo.png"} alt="logo" />
+          <a href="#" className="right">返回官网</a>
+          <div className="box">
+            <div className="title2">登录</div>
+            <div className="avatar"><span className="icon-user"></span>{name&&name}</div>
+            <div className="loginWrap">
+              {!this.props.phone.get('correct')?<SignupForm1 
+                sendCode={this.props.sendCode}
+                checkCode={this.props.checkCode}
+                phone={this.props.phone}
+                isFetching={this.props.isFetching}
+                code={this.props.code}
+                error={this.props.error}
+                count={this.props.count}
+              />:null}
+              {!this.props.phone.get('correct')?<Link  className="loginFormForgot" to="/login">已有账号，去登录</Link>:null }   
+              {this.props.phone.get('correct')?<SignupForm2 
+                error={this.props.error}
+                isFetching={this.props.isFetching}
+                phone={this.props.phone}
+                code={this.props.code}
+                user={this.props.user}
+                getSignup={this.props.getSignup}
+              />:null}
+            </div>
           </div>
         </div>
-      </div>
+      </Spin>
     )
   }
 }
@@ -84,7 +90,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   fetchcCompanyInfo: parmas => dispatch({ type: GET_COMPINFO_SU_SAGA,parmas }),
-  checkPhone: parmas => dispatch({ type: SEND_CODE_SAGA,parmas }),
+  sendCode: parmas => dispatch({ type: SEND_CODE_SAGA,parmas }),
   checkCode: parmas => dispatch({type: CHECK_CODE_SAGA,parmas}),
   getSignup: parmas => dispatch({ type: SIGNUP_SAGA,parmas }),
 });

@@ -39,7 +39,7 @@ import {
   CHANGE_SHOW_STATUS_SUCCESS,
   CHANGE_SHOW_STATUS_FAIL,
   // CHECK_PHONE_SU_SAGA,
-  CHECK_PHONE_SU_FAIL,
+  // CHECK_PHONE_SU_FAIL,
   CREATE_REGISTER_SAGA,
   CREATE_REGISTER_SUCCESS,
   CREATE_REGISTER_FAIL,
@@ -177,24 +177,24 @@ function* getComInfoSu(action){
     message.error(e)
   }
 }
-// //验证手机号(注册)
-function* checkPhoneSU(action){
-  let url = Config.APIBasePath + Path.APISubPaths.checkPhone;
-  yield put({ type: BEGIN_FETCH });
-  try{
-    const response = yield call(axios.post,url,{phone:action.parmas});
-    if (response.data.success){//手机号未注册，可以注册，发送验证码
-      yield put({ type: SEND_CODE_SAGA, parmas:action.parmas});
-    }else{//手机号注册过，不能再次注册
-      yield put({ type: CHECK_PHONE_SU_FAIL, data:{
-        phone:action.parmas,error:response.data.error
-      }});      
-    }
-  }
-  catch (e) {
-    message.error(e)
-  }
-}
+// // 验证手机号(注册)
+// function* checkPhoneSU(action){
+//   let url = Config.APIBasePath + Path.APISubPaths.checkPhone;
+//   yield put({ type: BEGIN_FETCH });
+//   try{
+//     const response = yield call(axios.post,url,{phone:action.parmas});
+//     if (response.data.success){//手机号未注册，可以注册，发送验证码
+//       yield put({ type: SEND_CODE_SAGA, parmas:action.parmas});
+//     }else{//手机号注册过，不能再次注册
+//       yield put({ type: CHECK_PHONE_SU_FAIL, data:{
+//         phone:action.parmas,error:response.data.error
+//       }});      
+//     }
+//   }
+//   catch (e) {
+//     message.error(e)
+//   }
+// }
 
 //注册
 function* signup(action){
