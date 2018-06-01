@@ -112,6 +112,7 @@ function* sendCode(action){
       yield put({ type: SEND_CODE_SUCCESS, data:{
         phone: action.parmas.phone
       }});
+      yield put({ type: BEGIN_COUNT, payload: 60});
     } else {
       yield put({ type: SEND_CODE_FAIL, data:{
         error:response.data.error,phone:action.parmas.phone
@@ -131,8 +132,7 @@ function* checkCode(action){
     if (response.data.success){
       yield put({ type: CHECK_CODE_SUCCESS, data:{
         code:action.parmas.captcha
-      }});  
-      yield put({ type: BEGIN_COUNT, payload: 60});     
+      }});     
     }else{
       yield put({ type: CHECK_CODE_FAIL, data:{
         error:response.data.error,code:action.parmas.captcha
