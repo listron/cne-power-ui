@@ -3,23 +3,24 @@ import PropTypes from 'prop-types';
 import {Form,Input,Button,Icon,} from 'antd';
 const FormItem = Form.Item
 
-
 class LoginForm extends Component {
   static propTypes = {
     form: PropTypes.object,
-    handleSubmit:PropTypes.func,
+    onSubmit:PropTypes.func,
+    fetchLogin:PropTypes.func,
   }
   constructor(props) {
     super(props);
     this.state = {
     }
+    this.onSubmit = this.onSubmit.bind(this);
   }
 
-  handleSubmit = (e) => {
+  onSubmit(e){
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        this.props.handleSubmit(values)
+        this.props.fetchLogin(values)
       }
     })
   }
@@ -34,7 +35,7 @@ class LoginForm extends Component {
       getFieldsError,
     } = this.props.form
     return (
-      <Form onSubmit={this.handleSubmit} className="loginForm">
+      <Form onSubmit={this.onSubmit} className="loginForm">
         <FormItem >
           {getFieldDecorator('phone', {
             validateTrigger:"onBlur",

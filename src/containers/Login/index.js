@@ -12,7 +12,6 @@ class Login extends Component {
     fetchCompanyInfo: PropTypes.func,
     error: PropTypes.string,
     fetchLogin:PropTypes.func,
-    msg: PropTypes.string,
     domain: PropTypes.object,
   }
   constructor(props) {
@@ -30,20 +29,13 @@ class Login extends Component {
 
   componentWillReceiveProps(nextProps){
     if(nextProps.error&&!this.props.error){
-      message.error(nextProps.msg);
+      message.error(nextProps.error);
     }
   }
 
-  handleSubmit = (values) => {
-    this.setState({phone:values.phone});
-    this.props.fetchLogin(values);
-  }
-
   render() {
-    const {
-      name,
-      logo
-    }=this.props.domain;
+    let name=this.props.domain.get('name');
+    let logo=this.props.domain.get('logo');
     return (
       <div className="loginpagewrap">
         <img src={logo?logo:"/img/cnelogo.png"} alt="logo" />
@@ -53,7 +45,7 @@ class Login extends Component {
           <div className="triangle"></div>
           <div className="avatar"><span className="icon-user"></span><p>{name&&name}</p></div>
           <div className="loginWrap">
-            <LoginForm handleSubmit={this.handleSubmit} company={name&&name} />
+            <LoginForm fetchLogin={this.props.fetchLogin} />
             <Link className="loginFormForgot" to="/forget">忘记密码</Link>      
           </div>
         </div>
@@ -62,9 +54,8 @@ class Login extends Component {
   }
 }
 const mapStateToProps = (state) => ({
-  domain: state.login.domain,
-  error:state.login.error,
-  msg:state.login.msg,
+  domain: state.login.get('domain'),
+  error: state.login.get('error'),
 });
 
 const mapDispatchToProps = (dispatch) => ({
