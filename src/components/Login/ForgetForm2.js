@@ -72,34 +72,31 @@ class ForgetForm2 extends Component {
           <Col span={20} style={{color:"#999"}}>{!!phone?phone:null}</Col>
         </Row>
         <FormItem {...formItemLayout} label="新密码" extra="6~20位英文字符、数字">
-            {getFieldDecorator('password', {
-              rules: [{
-                required: true, message: '请输入有效密码',
-                pattern:/^[\x21-\x7E]{6,20}$/,
-              }],
-            })(
-              <Input type="password" placeholder="请输入" />
-            )}
+          {getFieldDecorator('password', {
+            rules: [{
+              required: true, message: '请输入有效密码',
+              pattern:/^[\x21-\x7E]{6,20}$/,
+            }],
+          })(
+            <Input type="password" placeholder="请输入" />
+          )}
         </FormItem>
-          <FormItem
-            {...formItemLayout}
-            label="确认密码"
-          >
-            {getFieldDecorator('confirmPwd', {
-              rules: [{
-                required: true, message: '密码不一致',
-              }, {
-                validator: this.compareToFirstPassword,
-              }],
-            })(
-              <Input type="password" placeholder="请输入" />
-            )}
-          </FormItem>
-          <FormItem>
-            <Button type="primary" htmlType="submit" className="loginFormButton">
+        <FormItem {...formItemLayout} label="确认密码">
+          {getFieldDecorator('confirmPwd', {
+            rules: [{
+              required: true, message: '密码不一致',
+            }, {
+              validator: this.compareToFirstPassword,
+            }],
+          })(
+            <Input type="password" placeholder="请输入" />
+          )}
+        </FormItem>
+        <FormItem>
+          <Button type="primary" htmlType="submit" className="loginFormButton">
             重置密码
-            </Button>
-          </FormItem>
+          </Button>
+        </FormItem>
       </Form>
     )
   }
