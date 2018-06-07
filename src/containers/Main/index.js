@@ -10,6 +10,7 @@ import Forget from '../Forget';
 import Signup from '../Signup';
 import NotFund from '../Exception/404';
 import PropTypes from 'prop-types';
+import axios from 'axios';
 
 import TopMenu from '../../components/Layout/Topmenu'
 class Main extends Component {
@@ -38,7 +39,11 @@ class Main extends Component {
   }
 
   render() {
-    if(this.state.logined || getCookie('phone')){
+    const authData = getCookie('authData');
+    if (authData.length) {
+      axios.defaults.headers.common['Authorization'] = "Bearer " + JSON.parse(authData).access_token;
+    }
+    if(this.state.logined || getCookie('authData')){
       return (
         <div className={styles.app}>
           <div className={styles.appHeader}>
