@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Table, Radio, Button } from 'antd';
+import {getLevel, getStatus} from '../../../constants/ticket';
 import styles from './list.scss';
 import Immutable from 'immutable';
 
@@ -11,6 +12,7 @@ class List extends Component {
   static propTypes = {
     onChangeTab: PropTypes.func,
     onChangePage: PropTypes.func,
+    onChangePageSize: PropTypes.func,
     onAdd: PropTypes.func,
     onSubmit: PropTypes.func,
     onDelete: PropTypes.func,
@@ -45,6 +47,7 @@ class List extends Component {
     this.onOk = this.onOk.bind(this);
     this.onNotOk = this.onNotOk.bind(this);
     this.onSelectChange = this.onSelectChange.bind(this);
+    this.onChangeTable = this.onChangeTable.bind(this);
   }
 
   onChangeTab(e) {
@@ -81,6 +84,17 @@ class List extends Component {
     });
   }
 
+  onChangeTable(pagination, filters, sorter) {
+
+  }
+
+  getStatus(value) {
+    switch(value) {
+      case 0:
+        return ""
+    }
+  }
+
   render() {
     let tickets = this.props.tickets;
     let waitSubmitNum = tickets.filter((item) => {return item.get("defectStatus") === 0});
@@ -92,59 +106,68 @@ class List extends Component {
       title: '缺陷级别',
       dataIndex: 'defectLevel',
       key: 'defectLevel',
-      render: (value,record,index)=> {
-        switch(value) {
-          case 1:
-            return "一级";
-          case 2:
-            return "二级";
-          case 3:
-            return "三级";
-          case 4:
-            return "四级";
-        }
-      }
+      sorter: true,
+      render: (value,record,index)=> (
+        <span>{getLevel(value)}</span>
+      )
     }, {
       title: '电站名称',
       dataIndex: 'stationName',
       key: 'stationName',
+      sorter: true,
     }, {
       title: '设备名称',
       dataIndex: 'deviceName',
       key: 'deviceName',
+      sorter: true,
     }, {
       title: '缺陷类型',
       dataIndex: 'number',
       key: 'number',
+      sorter: true,
     }, {
       title: '缺陷描述',
       dataIndex: 'defectDescribe',
       key: 'defectDescribe',
+      sorter: true,
     }, {
       title: '发生时间',
       dataIndex: 'startTime',
       key: 'startTime',
+      sorter: true,
     }, {
       title: '截止时间',
       dataIndex: 'startTime',
-      key: 'deadLine'
+      key: 'deadLine',
+      sorter: true,
     }, {
       title: '处理进度',
       dataIndex: 'status',
       key: 'status',
+      render: (value,record,index) => (
+        <div>
+          <span>{getStatus(value)}</span>
+          <div>
+            {record.is_overtime === 0? <span>超时</span> : null}
+            {record.is_overtime === 0? <span>协调</span> : null}
+          </div>
+        </div>
+      ),
     }, {
       title: '查看',
-      render:(text, record) => {
-        return (
-          <span></span>
-        );
-      }
+      render:(text, record) =>(
+        <span></span>
+      )
     }];
 
     const pagination = {
       total: tickets.size,
       showQuickJumper: true,
+      showSizeChanger: true,
       current: this.props.currentPage,
+      onShowSizeChange: (current, pageSize) => {
+        this.props.onChangePageSize(pageSize);
+      },
       onChange: (current) => {
         this.props.onChangePage(current);
       }
@@ -206,6 +229,7 @@ class List extends Component {
           dataSource={tickets.toJS()} 
           columns={columns} 
           pagination={pagination} 
+          onChange={this.onChangeTable}
         />
       </div>
     );
