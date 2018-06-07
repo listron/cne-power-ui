@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Table, Tag, Input, Select, Radio, Button } from 'antd';
+import { Table, Radio, Button } from 'antd';
 import styles from './list.scss';
 import Immutable from 'immutable';
 
-const Option = Select.Option;
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
 
@@ -82,7 +81,7 @@ class List extends Component {
     });
   }
 
-  renderList() {
+  render() {
     let tickets = this.props.tickets;
     let waitSubmitNum = tickets.filter((item) => {return item.get("defectStatus") === 0});
     let waitReviewNum = tickets.filter((item) => {return item.get("defectStatus") === 1});
@@ -201,45 +200,17 @@ class List extends Component {
             }
           </div>
         </div>
-        <Table rowKey={(record)=>{return record.defectId}} rowSelection={rowSelection} dataSource={tickets.toJS()} columns={columns} pagination={pagination} />
+        <Table 
+          rowKey={(record)=>{return record.defectId}} 
+          rowSelection={rowSelection} 
+          dataSource={tickets.toJS()} 
+          columns={columns} 
+          pagination={pagination} 
+        />
       </div>
     );
   }
 
-  
-
-  renderFilter() {
-    return (
-      <div>
-        <Tag color="#7ec5c2">查询</Tag>
-        <Input 
-          id="searchName" 
-          placeholder="输入手机号/姓名快速查询" 
-          onChange={this.onChangeSearchName}
-          value={this.state.searchName} />
-        <Select 
-          id="searchStatus"
-          placeholder="状态"
-          onChange={this.onChangeSearchStatus}
-          value={this.state.searchStatus}>
-          <Option value="all">全部</Option>
-          <Option value="on">正常</Option>
-          <Option value="off">禁用</Option>
-        </Select>
-      </div>
-    );
-  }
-
-
-
-  render() {
-    return (
-      <div>
-        {this.renderFilter()}
-        {this.renderList()}
-      </div>
-    );
-  }
 }
 
 export default List;
