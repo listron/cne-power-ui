@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ImgUploader from '../../components/Common/Uploader/ImgUploader';
 
 import Sider from '../../components/Power/Sider';
 
@@ -26,6 +27,9 @@ class Power extends Component {
                 this is page of power! 
                 DO NOT CALL ME ROUTER! WILL TAKES ERROR WHEN BUILD!!!
                 <Button type="primary">按钮antd测试</Button>
+            </div>
+            <div>
+                <ImgUploader />
             </div>
           </div>
         </div>
