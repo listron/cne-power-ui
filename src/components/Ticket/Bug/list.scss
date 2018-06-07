@@ -1,0 +1,10 @@
+.bugTicket {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  .action {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}

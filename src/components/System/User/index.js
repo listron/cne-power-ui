@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Table, Tag, Input, Select, Radio, Button } from 'antd';
 import Immutable from 'immutable';
-import classnames from 'classnames';
 
 const Option = Select.Option;
 const RadioButton = Radio.Button;
@@ -66,7 +65,7 @@ class User extends Component {
   }
 
   onRoleAuth() {
-    this .props.onRoleAuth(this.state.selectedRowKeys);
+    this.props.onRoleAuth(this.state.selectedRowKeys);
   }
 
   onStationAuth() {
@@ -123,7 +122,7 @@ class User extends Component {
         <div>
           <div>
             <Tag color="#7ec5c2">用户列表</Tag>
-            <RadioGroup onChange={this.onChangeTab} defaultValue="all" value={this.state.status}>
+            <RadioGroup onChange={this.onChangeTab} defaultValue="all" value={this.state.tab}>
               <RadioButton value="all">全部</RadioButton>
               <RadioButton value="on">已授权</RadioButton>
               <RadioButton value="off">未授权</RadioButton>
@@ -131,11 +130,11 @@ class User extends Component {
           </div>
           <div>
             <Button onClick={this.onRoleAuth}>
-              <span className={classnames("iconfont icon-user")} /> 
+              <span className="iconfont icon-user" /> 
               角色授权
             </Button>
             <Button onClick={this.onStationAuth}>
-              <span className={classnames("iconfont icon-power-station")} /> 
+              <span className="iconfont icon-power-station" /> 
               电站授权
             </Button>
           </div>
