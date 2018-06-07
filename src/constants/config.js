@@ -1,5 +1,6 @@
 import * as api from '../config/apiConfig';
 
 export default {
-  APIBasePath: api.apiHostUri
+  APIBasePath: api.apiHostUri,
+  TokenBasePath: api.tokenUri
 }
