@@ -39,7 +39,11 @@ class LoginForm extends Component {
         <FormItem >
           {getFieldDecorator('phone', {
             validateTrigger:"onBlur",
-            rules: [{ pattern:/(^1[3|4|5|7|8]\d{9}$)|(^09\d{8}$)/,required: true, message: '请输入有效手机号'}],
+            rules: [{ 
+              // pattern:/(^1[3|4|5|7|8]\d{9}$)|(^09\d{8}$)/,
+              required: true, 
+              message: '请输入有效手机号'
+            }],
           })(
             <Input prefix={<Icon type="mobile" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="请输入手机号"  />
           )}
