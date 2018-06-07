@@ -1,5 +1,6 @@
 import { call, put, takeLatest, delay, take, fork, cancel } from 'redux-saga/effects';
 import axios from 'axios';
+import { stringify } from 'qs';
 import {message} from 'antd';
 import {setCookie} from '../../utils';
 import Config from '../../constants/config';
@@ -65,11 +66,23 @@ function* getCompInfo(action) {
 
 //登录
 function* login(action){
-  let url = Config.APIBasePath + Path.APISubPaths.login;
+  // let url = Config.APIBasePath + Path.APISubPaths.login;
+  let url = Config.TokenBasePath;
+  // Content-Type: application/x-www-form-urlencoded; charset=UTF-8
   yield put({ type: BEGIN_FETCH });
   try{
-    const response = yield call(axios.post, url, action.parmas);
-    if (response.data.success) {
+    const response = yield call(axios, {
+      method: 'post',
+      url,
+      headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'},
+      data: stringify({
+        'grant_type': "password",
+        username: action.parmas.phone,
+        password: action.parmas.password
+      }),
+    });
+    if (response.data) {
+      setCookie('authData',JSON.stringify(response.data));
       setCookie('phone',action.parmas.phone);
       setCookie('userName',response.data.result.userName);
       setCookie('userId',response.data.result.userId);

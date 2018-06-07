@@ -1,0 +1,12 @@
+.inputLimit {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  .inputCount {
+    display: flex;
+    height: 16px;
+    line-height: 16px;
+    width: 60px;
+    justify-content: center;
+  }
+}
