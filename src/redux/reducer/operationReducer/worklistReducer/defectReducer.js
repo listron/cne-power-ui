@@ -7,6 +7,9 @@ import immutable from 'immutable';
 var initState = immutable.fromJS({
   isFetching: false,
   error: '',
+  fileterAllInfor:[],//顶部筛选所有数据[{stations:[],devices:[]...}]
+  selectedFileterInfor:{},//选中的筛选项{selectedStation:[],selectedDevices:[]}
+  defectList:[],//渲染为table的缺陷列表
 });
 
 const defectReducer = (state = initState, action) => {
