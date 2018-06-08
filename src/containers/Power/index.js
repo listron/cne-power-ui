@@ -5,12 +5,27 @@ import Sider from '../../components/Power/Sider';
 
 import { Button } from 'antd';
 import styles from './style.scss';
-
+import pathConfig from '../../constants/path'
 
 class Power extends Component {
   constructor(props,context) {
     super(props);
-    this.state = {};
+    this.state = {
+        fileList: [{
+            uid: -1,
+            name: 'xxx.png',
+            status: 'done',
+            response:{
+                success: true,
+                result:'12312312',
+            },
+            url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+        }],
+    };
+  }
+
+  uploadImg = (fileList) =>{
+    this.setState({fileList})
   }
 
   render() {   
@@ -29,7 +44,15 @@ class Power extends Component {
                 <Button type="primary">按钮antd测试</Button>
             </div>
             <div>
-                <ImgUploader />
+                <ImgUploader 
+                    value={this.state.fileList} 
+                    editable={true} 
+                    uploadPath={`${pathConfig.basePaths.APIBasePath}${pathConfig.commonPaths.imgUploads}`} 
+                    limitSize={1 * 1024 * 1024}
+                    imgStyle = {{width:'104px',height:'104px'}}
+                    max={4} 
+                    onChange={this.uploadImg} 
+                />
             </div>
           </div>
         </div>
