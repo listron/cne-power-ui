@@ -1,0 +1,27 @@
+.WorkListTimeLine{
+  color:#9b9b9b;
+  font-size: 14px;
+  line-height: 30px;
+  li{
+    padding-bottom: 0;
+    :global{
+      .ant-timeline-item-head{
+        top:0.25em;
+      }
+    }
+    div{
+      b{
+        color: #000;
+        font-weight: normal;
+        margin-right:13px;
+      }
+      span{
+        margin-right: 13px;
+      }
+    }
+    
+  }
+  .processStatus span{
+    color:#7ec5c2;
+  }
+}
