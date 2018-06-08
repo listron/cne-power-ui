@@ -38,13 +38,9 @@ const routers = [
     exact:true,
     loader: () => import('../containers/Power')
   }, {
-    path:'/operation/worklist/defect',
+    path:'/operation/ticket',
     exact:true,
-    loader: () => import('../containers/Operation/Worklist/Defect'),
-  }, {
-    path:'/operation/worklist/inspection',
-    exact:true,
-    loader: () => import('../containers/Operation/Worklist/Inspection'),
+    loader: () => import('../containers/Operation/Ticket'),
   }, {
     path:'/page1',
     exact:true,

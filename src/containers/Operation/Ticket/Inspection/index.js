@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 // import { Button } from 'antd';
 
-class Inspection extends Component {
+class Defect extends Component {
   constructor(props,context) {
     super(props);
     this.state = {};
@@ -10,10 +10,10 @@ class Inspection extends Component {
   render() {   
     return (
         <div>
-          巡检处理页面
+          缺陷处理页面
         </div>
     );
   }
 }
 
-export default Inspection;
+export default Defect;
