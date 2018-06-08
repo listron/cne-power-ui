@@ -16,6 +16,9 @@
       port:8080,
       inline:true,
     },
+    resolve:{
+      extensions:['.js','.jsx','.json']
+    },
     module: {
       rules: [{
         test: /\.(js|jsx)$/,
