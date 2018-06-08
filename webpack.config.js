@@ -3,7 +3,7 @@
   const path = require('path');
   const HtmlWebpackPlugin = require('html-webpack-plugin');
   const CopyWebpackPlugin = require('copy-webpack-plugin');
-
+  const { mockConfig } = require('./mock.config.js')
 
   module.exports = {
     mode:'development',
@@ -15,6 +15,16 @@
       contentBase: './dist',
       port:8080,
       inline:true,
+      before(server) {
+        mockConfig.forEach(e=>{
+          server[e.method](`${e.api}`, (req, res) => {
+            setTimeout(()=>res.json(e.response),e.delay || 2000)
+          });
+        })
+      },
+    },
+    resolve:{
+      extensions: [".js", ".json", ".jsx"]
     },
     module: {
       rules: [{
