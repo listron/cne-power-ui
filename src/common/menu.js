@@ -12,16 +12,7 @@ const menuData = [
     children: [
       {
         name: '工单',
-        path: 'worklist',
-        children: [
-          {
-            name: '缺陷',
-            path: 'defect',
-          },{
-            name: '巡检',
-            path: 'inspection',
-          },
-        ],
+        path: 'ticket'
       },{
         name: '缺陷管理',
         path: 'faultManage',
