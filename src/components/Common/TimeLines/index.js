@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Timeline, Icon } from 'antd';
 import PropTypes from 'prop-types';
-import styles from './WorkListTimeLine.scss';
-class WorkListTimeLine extends Component {
+import styles from './TimeLines.scss';
+class TimeLines extends Component {
   static propTypes = {
     status: PropTypes.number,
     processData: PropTypes.array,
@@ -44,7 +44,7 @@ class WorkListTimeLine extends Component {
         return (<span>所有工单</span>);
     }
   }
-  
+
   getItem(item) {
     switch (item.flowName) {
       case "发现缺陷":
@@ -100,7 +100,7 @@ class WorkListTimeLine extends Component {
     const processData=this.props.processData;
     return (
       <div>
-        <Timeline className={styles.WorkListTimeLine}  >
+        <Timeline className={styles.TimeLines}  >
           {processData.map((item, index)=>{
             return (
               <Timeline.Item key={"timeline"+index}>
@@ -115,4 +115,4 @@ class WorkListTimeLine extends Component {
   }
 }
 
-export default WorkListTimeLine;
+export default TimeLines;
