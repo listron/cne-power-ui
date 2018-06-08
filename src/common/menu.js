@@ -7,20 +7,20 @@ const menuData = [
     path: '/',
   },{
     name: '电站运维',
-    icon: 'stationOperation',
-    path: 'stationOperation',
+    icon: 'operation',
+    path: 'operation',
     children: [
       {
-        name: '清洗模型',
-        path: 'cleanModel',
+        name: '工单',
+        path: 'worklist',
         children: [
           {
-            name: '清洗记录',
-            path: 'cleanLog',
+            name: '缺陷',
+            path: 'defect',
           },{
-            name: '灰尘影响',
-            path: 'dustEffect',
-          }
+            name: '巡检',
+            path: 'inspection',
+          },
         ],
       },{
         name: '缺陷管理',
