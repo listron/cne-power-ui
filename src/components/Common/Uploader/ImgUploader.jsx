@@ -2,18 +2,19 @@ import React, { Component } from 'react';
 import { Upload, Modal, message, Icon } from 'antd';
 import styles from './uploader.scss';
 import PropTypes from 'prop-types';
+import UploadedImgModal from './UploadedImgModal'
 import { getCookie } from '../../../utils/index.js'
 
 //公共组件，通过父组件传输相关配置：图片数量，大小，路径，是否可编辑，默认已有图片。
 
 class ImgUploader extends Component {
   static propTypes = {
-    max: PropTypes.number,//max 图片数量
-    limitSize: PropTypes.number,//图片大小限制。
-    uploadPath: PropTypes.string, //上传的文件路径
-    editable : PropTypes.bool, //是否可编辑组件
-    value: PropTypes.array, //现有文件信息列表
-    onChange: PropTypes.func, //输出上传插件信息
+    max: PropTypes.number,//图片最大数量 
+    limitSize: PropTypes.number,//图片大小限制
+    uploadPath: PropTypes.string, //上传
+    editable : PropTypes.bool, //是否可编辑(右旋+删除)
+    value: PropTypes.array, //输入图片信息列表
+    onChange: PropTypes.func, //输出
   }
   constructor(props) {
     super(props);
@@ -72,10 +73,11 @@ class ImgUploader extends Component {
       </div>
     );
     return (
-      <div className="clearfix">
-        {value.map((e,i)=><div key={i}>这是第{i}个图片，准备渲染！</div>)}
+      <div className={styles.imgUploader}>
+        {value.map((e,i)=><UploadedImgModal key={e.uid} />)}
+        
         <Upload
-          className={styles.imgUploader}
+          className={styles.loaderHandler}
           { ...imageProps }
           fileList={this.state.fileList}
         >
