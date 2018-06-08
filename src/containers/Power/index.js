@@ -15,13 +15,17 @@ class Power extends Component {
             uid: -1,
             name: 'xxx.png',
             status: 'done',
+            response:{
+                success: true,
+                result:'12312312',
+            },
             url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
         }],
     };
   }
 
-  uploadImg = (a,b,c) =>{
-    console.log(a,b,c)
+  uploadImg = (fileList) =>{
+    this.setState({fileList})
   }
 
   render() {   
@@ -45,6 +49,7 @@ class Power extends Component {
                     editable={true} 
                     uploadPath={`${pathConfig.basePaths.APIBasePath}${pathConfig.commonPaths.imgUploads}`} 
                     limitSize={1 * 1024 * 1024}
+                    imgStyle = {{width:'104px',height:'104px'}}
                     max={4} 
                     onChange={this.uploadImg} 
                 />

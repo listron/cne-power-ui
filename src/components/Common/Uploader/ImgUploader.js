@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { Upload, Modal, message, Icon } from 'antd';
+import styles from './uploader.scss';
 import PropTypes from 'prop-types';
 import { getCookie } from '../../../utils/index.js'
-// import config from '../../config/apiConfig';
-// const apiHostUri = config.apiHostUri;
-// const Cookie = require('js-cookie');
+
+//公共组件，通过父组件传输相关配置：图片数量，大小，路径，是否可编辑，默认已有图片。
 
 class ImgUploader extends Component {
   static propTypes = {
@@ -22,6 +22,10 @@ class ImgUploader extends Component {
         uid: -1,
         name: 'xxx.png',
         status: 'done',
+        response:{
+          success: true,
+          result:'12312312',
+        },
         url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
       }],
     };
@@ -34,20 +38,20 @@ class ImgUploader extends Component {
   //     previewVisible: true,
   //   });
   // }
-  handleUpload = (info) => {
-    console.log(info)
-    if (info.file.status !== 'uploading') {
-      console.log(info.file, info.fileList);
+  handleUpload = ({file,fileList}) => {
+    if (file.status !== 'uploading') {
+      console.log(file, fileList);
+      const upLoadfiles = fileList.filter(e=>e.response.success).map(e => ({
+          uid:e.uid,
+          name:e.name,
+          response:e.response.result,
+          thumbUrl:e.thumbUrl,
+          status:e.status
+      }))
+      this.props.onChange(upLoadfiles)
     }
-    if (info.file.status === 'done') {
-      console.log(info)
-    } else if (info.file.status === 'error') {
-      message.error(`${info.file.name} file upload failed.`);
-    }
-    // this.setState({ fileList })
-
     this.setState({
-      fileList: info.fileList
+      fileList
     })
   }
 
@@ -59,7 +63,7 @@ class ImgUploader extends Component {
       onChange: this.handleUpload,
 			multiple: true,
 			listType: 'picture-card',
-			headers:{"Authorization": "Bearer " + (authData ? authData.access_token : "")}
+      headers:{"Authorization": "Bearer " + (authData ? authData.access_token : "")},
 		};
     const uploadButton = (
       <div>
@@ -71,6 +75,7 @@ class ImgUploader extends Component {
       <div className="clearfix">
         {value.map((e,i)=><div key={i}>这是第{i}个图片，准备渲染！</div>)}
         <Upload
+          className={styles.imgUploader}
           { ...imageProps }
           fileList={this.state.fileList}
         >
