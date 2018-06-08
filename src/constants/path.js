@@ -10,7 +10,11 @@ export default {
     getCompInfoBylink: '/v3/link/queryEnterpriseInfoByLinkCode',
     changePassword: '/v3/user/changeUserPassword',
     signup: '/v3/user/userRegister',
-    getShowStatus: 'v3/relation/queryShowStatus',
-    changeShowStatus: 'v3/relation/changeShowStatus'
+    getShowStatus: '/v3/relation/queryShowStatus',
+    changeShowStatus: '/v3/relation/changeShowStatus',
+    ticket: {
+      getDefectList: '/v3/defect/worklist',
+
+    }
   }
 }
