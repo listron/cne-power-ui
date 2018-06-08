@@ -26,9 +26,6 @@
     resolve:{
       extensions: [".js", ".json", ".jsx"]
     },
-    resolve:{
-      extensions:['.js','.jsx','.json']
-    },
     module: {
       rules: [{
         test: /\.(js|jsx)$/,
