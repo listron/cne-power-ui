@@ -10,6 +10,9 @@ module.exports = {
   entry: {
     index: './src/app.js', 
   },
+  resolve:{
+    extensions: [".js", ".json", ".jsx"]
+  },
   module: {
     rules: [{
       test: /\.(js|jsx)$/,
