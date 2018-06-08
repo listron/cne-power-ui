@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {Tabs} from 'antd';
-import Bug from './Bug';
+import Defect from './Defect';
 import Inspection from './Inspection';
 const TabPane = Tabs.TabPane;
 
@@ -9,7 +9,7 @@ class Ticket extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      tab: "bug"
+      tab: "defect"
     };
     this.onChangeTab = this.onChangeTab.bind(this);
   }
@@ -24,7 +24,7 @@ class Ticket extends Component {
     return (
       <div style={{display:"flex", flex: 1}}>
         <Tabs activeKey={this.state.tab} onChange={this.onChangeTab}>
-          <TabPane tab="缺陷" key="bug"><Bug /></TabPane>
+          <TabPane tab="缺陷" key="defect"><Defect /></TabPane>
           <TabPane tab="巡检" key="inspection"><Inspection /></TabPane>
         </Tabs>
       </div>
