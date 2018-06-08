@@ -8,20 +8,43 @@ class UploadedImgModal extends Component {
     thumbUrl: PropTypes.string,
     name: PropTypes.string,
     imgStyle: PropTypes.object,
+    value: PropTypes.array,
+    uid: PropTypes.any,
+    onEdit: PropTypes.func,
+    rotate: PropTypes.number,
   }
   constructor(props) {
     super(props);
   }
+  showImg = () => {
+
+  }
+  rotateImg = () =>{
+    const { rotate, value, uid, onEdit } = this.props;
+    const fileList = value.map(e=>{
+      if(uid === e.uid){
+        e.rotate += rotate
+      }
+      return e
+    })
+    onEdit(fileList)
+  }
+  deleteImg = () => {
+    const { value, uid, onEdit } = this.props
+    const fileList = value.filter(e=>e.uid !== uid)
+    onEdit(fileList)
+  }
   
 
   render() {
-    const { thumbUrl, name, imgStyle  } = this.props
+    const { thumbUrl, name, imgStyle, rotate  } = this.props
+    const imgStyleContr = {...imgStyle,transform:`rotate(${rotate}deg)`}
     return (
       <div className={styles.uploadedImg}>
-        <img src={ thumbUrl } alt={name} style={imgStyle} />
+        <img src={ thumbUrl } alt={name} style={imgStyleContr} onClick={this.showImg}/>
         <span className={styles.bottomHandler}>
-          <span>右旋</span>
-          <span>删除</span>
+          <span className={styles.eachHandler} onClick={this.rotateImg}>右旋</span>
+          <span className={styles.eachHandler} onClick={this.deleteImg}>删除</span>
         </span>
         {/* <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
           <img alt="example" style={{ width: '100%' }} src={previewImage} />

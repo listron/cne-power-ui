@@ -22,6 +22,7 @@ class ImgUploader extends Component {
     this.state = {
       fileList: [{
         uid: -1,
+        rotate: 0,
         name: 'xxx.png',
         status: 'done',
         response:{
@@ -46,6 +47,7 @@ class ImgUploader extends Component {
       const upLoadfiles = fileList.filter(e=>e.response.success).map(e => ({
           uid:e.uid,
           name:e.name,
+          rotate: 0,
           response:e.response.result,
           thumbUrl:e.thumbUrl,
           status:e.status,
@@ -60,7 +62,7 @@ class ImgUploader extends Component {
 
   render() {
     const authData = getCookie('authData');
-    const { uploadPath, max,  value } = this.props;
+    const { uploadPath, max,  value, onChange } = this.props;
 		const imageProps = {
 			action: `${uploadPath}`,
       onChange: this.handleUpload,
@@ -74,9 +76,10 @@ class ImgUploader extends Component {
         <div className="ant-upload-text">Upload</div>
       </div>
     );
+    console.log(value)
     return (
       <div className={styles.imgUploader}>
-        {value.map((e,i)=><UploadedImgModal key={e.uid} {...e} />)}
+        {value.map((e,i)=><UploadedImgModal key={e.uid} {...e} value={value} onEdit={onChange} />)}
         <Upload
           className={styles.loaderHandler}
           { ...imageProps }

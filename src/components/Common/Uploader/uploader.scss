@@ -8,14 +8,27 @@
   .uploadedImg{
     position: relative;
     .bottomHandler{
-      position: relative;
-      top:100%;
+      position: absolute;
+      background-color: rgba(0,0,0,0.2);
+      bottom:0;
+      right: 0;
       width: 100%;
+      font-size: 14px;
+      color:#fff;
+      height: 24px;
+      line-height: 24px;
       display: none;
+      .eachHandler{
+        &:hover{
+          cursor: pointer;
+          background-color: rgba(0,0,0,0.2);
+        }
+      }
     }
-    &::hover{
+    &:hover{
       .bottomHandler{
-        display: block;
+        display: flex;
+        justify-content: space-around;
       }
     }
     

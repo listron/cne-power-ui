@@ -13,6 +13,7 @@ class Power extends Component {
     this.state = {
         fileList: [{
             uid: -1,
+            rotate: 0,
             name: 'xxx.png',
             status: 'done',
             response:{
