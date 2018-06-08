@@ -6,9 +6,19 @@
   justify-content: flex-start;
   flex-wrap: wrap;
   .uploadedImg{
-    .miniHandler{
-      
+    position: relative;
+    .bottomHandler{
+      position: relative;
+      top:100%;
+      width: 100%;
+      display: none;
     }
+    &::hover{
+      .bottomHandler{
+        display: block;
+      }
+    }
+    
   }
   .loaderHandler{
 

@@ -15,6 +15,7 @@ class ImgUploader extends Component {
     editable : PropTypes.bool, //是否可编辑(右旋+删除)
     value: PropTypes.array, //输入图片信息列表
     onChange: PropTypes.func, //输出
+    imgStyle: PropTypes.object, //图片样式
   }
   constructor(props) {
     super(props);
@@ -40,14 +41,15 @@ class ImgUploader extends Component {
   //   });
   // }
   handleUpload = ({file,fileList}) => {
+    const { imgStyle } = this.props
     if (file.status !== 'uploading') {
-      console.log(file, fileList);
       const upLoadfiles = fileList.filter(e=>e.response.success).map(e => ({
           uid:e.uid,
           name:e.name,
           response:e.response.result,
           thumbUrl:e.thumbUrl,
-          status:e.status
+          status:e.status,
+          imgStyle
       }))
       this.props.onChange(upLoadfiles)
     }
@@ -74,8 +76,7 @@ class ImgUploader extends Component {
     );
     return (
       <div className={styles.imgUploader}>
-        {value.map((e,i)=><UploadedImgModal key={e.uid} />)}
-        
+        {value.map((e,i)=><UploadedImgModal key={e.uid} {...e} />)}
         <Upload
           className={styles.loaderHandler}
           { ...imageProps }

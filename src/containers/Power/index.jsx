@@ -19,7 +19,8 @@ class Power extends Component {
                 success: true,
                 result:'12312312',
             },
-            url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+            imgStyle : {width:'104px',height:'104px'},
+            thumbUrl: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
         }],
     };
   }

@@ -5,12 +5,9 @@ import PropTypes from 'prop-types';
 
 class UploadedImgModal extends Component {
   static propTypes = {
-    max: PropTypes.number,//max 图片数量
-    limitSize: PropTypes.number,//图片大小限制。
-    uploadPath: PropTypes.string, //上传的文件路径
-    editable : PropTypes.bool, //是否可编辑组件
-    value: PropTypes.array, //现有文件信息列表
-    onChange: PropTypes.func, //输出上传插件信息
+    thumbUrl: PropTypes.string,
+    name: PropTypes.string,
+    imgStyle: PropTypes.object,
   }
   constructor(props) {
     super(props);
@@ -18,10 +15,11 @@ class UploadedImgModal extends Component {
   
 
   render() {
+    const { thumbUrl, name, imgStyle  } = this.props
     return (
       <div className={styles.uploadedImg}>
-        <img src='www.baidu.com' alt='12'/>
-        <span className={styles.mini}>
+        <img src={ thumbUrl } alt={name} style={imgStyle} />
+        <span className={styles.bottomHandler}>
           <span>右旋</span>
           <span>删除</span>
         </span>
