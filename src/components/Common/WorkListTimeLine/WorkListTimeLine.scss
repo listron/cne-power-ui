@@ -2,6 +2,7 @@
   color:#9b9b9b;
   font-size: 14px;
   line-height: 30px;
+  background-color:#fafafa; 
   li{
     padding-bottom: 0;
     :global{
@@ -9,7 +10,7 @@
         top:0.25em;
       }
     }
-    div{
+    .processWrap{
       b{
         color: #000;
         font-weight: normal;

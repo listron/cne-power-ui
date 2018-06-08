@@ -5,6 +5,19 @@ import styles from './WorkListTimeLine.scss';
 class WorkListTimeLine extends Component {
   static propTypes = {
     status: PropTypes.number,
+    processData: PropTypes.array,
+  }
+
+  static defaultProps={
+    status: 0,
+    processData: [{
+      "flowID": 1,
+      "flowName": "发现缺陷",
+      "operateTime": "2018-03-12 12:00",
+      "operateUser": "李丽",
+      "defectProposal": "来源于创建缺陷的描述来源于创建缺陷的描述",
+      "photoAddress": ["", "", ""]
+    }],
   }
 
   constructor(props) {
@@ -12,7 +25,6 @@ class WorkListTimeLine extends Component {
     this.state = {
 
     }
-
   }
 
   getStatus(){
@@ -32,50 +44,51 @@ class WorkListTimeLine extends Component {
         return (<span>所有工单</span>);
     }
   }
+  
   getItem(item) {
     switch (item.flowName) {
       case "发现缺陷":
         return (
-          <div>
+          <div className={styles.processWrap}>
             <div>
               <b>{item.flowName}</b>
               <span>{item.operateTime}</span>
               {item.operateUser}
             </div>
-            <div><b>处理建议</b>{item.defectProposal}</div>
+            <div><b>处理建议</b>{item.processResult} | {item.defectProposal}</div>
           </div>
           );
       case "审核工单":
         return (
-          <div>
+          <div className={styles.processWrap}>
             <div>
               <b>{item.flowName}</b>
               <span>{item.operateTime}</span>
               {item.operateUser}
             </div>
-            <div><b>处理建议</b>{item.defectProposal}</div>
+            <div><b>处理建议</b>{item.processResult} | {item.defectProposal}</div>
           </div>
           );
       case "执行工单":
         return (
-          <div>
+          <div className={styles.processWrap}>
             <div>
               <b>{item.flowName}</b>
               <span>{item.operateTime}</span>
               {item.operateUser}
             </div>
-            <div><b>处理建议</b>{item.defectProposal}</div>
+            <div><b>处理过程</b>{item.processResult} | {item.defectProposal}</div>
           </div>
           );
       case "验收工单":
         return (
-          <div>
+          <div className={styles.processWrap}>
             <div>
               <b>{item.flowName}</b>
               <span>{item.operateTime}</span>
               {item.operateUser}
             </div>
-            <div><b>处理建议</b>{item.defectProposal}</div>
+            <div><b>处理建议</b>{item.processResult} | {item.defectProposal}</div>
           </div>
           );
       default: 
@@ -84,42 +97,10 @@ class WorkListTimeLine extends Component {
   }
 
   render() {
-    const processData = [{
-      "flowID": 1,
-      "flowName": "发现缺陷",
-      "operateTime": "2018-03-12 12:00",
-      "operateUser": "李丽",
-      "defectProposal": "来源于创建缺陷的描述来源于创建缺陷的描述",
-      "photoAddress": ["", "", ""]
-    },
-    {
-      "flowID": 2,
-      "flowName": "发现缺陷",
-      "operateTime": "2018-03-12 12:00",
-      "operateUser": "李丽",
-      "defectProposal": "来源于创建缺陷的描述来源于创建缺陷的描述",
-      "photoAddress": ["", "", ""]
-    },
-    {
-      "flowID": 3,
-      "flowName": "发现缺陷",
-      "operateTime": "2018-03-12 12:00",
-      "operateUser": "李丽",
-      "defectProposal": "来源于创建缺陷的描述来源于创建缺陷的描述",
-      "photoAddress": ["", "", ""]
-    },
-    {
-      "flowID": 4,
-      "flowName": "发现缺陷",
-      "operateTime": "2018-03-12 12:00",
-      "operateUser": "李丽",
-      "defectProposal": "来源于创建缺陷的描述来源于创建缺陷的描述",
-      "photoAddress": ["", "", ""]
-    }];
-    
+    const processData=this.props.processData;
     return (
       <div>
-        <Timeline className={styles.WorkListTimeLine} >
+        <Timeline className={styles.WorkListTimeLine}  >
           {processData.map((item, index)=>{
             return (
               <Timeline.Item key={"timeline"+index}>
