@@ -38,6 +38,14 @@ const routers = [
     exact:true,
     loader: () => import('../containers/Power')
   }, {
+    path:'/operation/worklist/defect',
+    exact:true,
+    loader: () => import('../containers/Operation/Worklist/Defect'),
+  }, {
+    path:'/operation/worklist/inspection',
+    exact:true,
+    loader: () => import('../containers/Operation/Worklist/Inspection'),
+  }, {
     path:'/page1',
     exact:true,
     loader: () => import('../containers/Power/UserList'),

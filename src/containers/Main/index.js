@@ -40,7 +40,7 @@ class Main extends Component {
 
   render() {
     const authData = getCookie('authData');
-    if (authData.length) {
+    if (authData && authData.length) {
       axios.defaults.headers.common['Authorization'] = "Bearer " + JSON.parse(authData).access_token;
     }
     if(this.state.logined || getCookie('authData')){
