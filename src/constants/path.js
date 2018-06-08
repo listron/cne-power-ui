@@ -1,4 +1,15 @@
+
+
+import config from '../config/apiConfig';
+
 export default {
+  basePaths:{
+    APIBasePath: config.apiHostUri,
+    TokenBasePath: config.tokenUri
+  },
+  commonPaths:{
+    imgUploads:'/Pv/Utils/UploadFiles',
+  },
   APISubPaths: {
     getCompInfo: '/v3/enterprise/domainLogin',
     login: '/v3/user/userLogin',
