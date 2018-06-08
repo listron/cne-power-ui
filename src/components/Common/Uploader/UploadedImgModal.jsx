@@ -20,8 +20,8 @@ class UploadedImgModal extends Component {
   render() {
     return (
       <div className={styles.uploadedImg}>
-        <img src='www.baidu.com' alt='12' style={}/>
-        <span className={miniHandler}>
+        <img src='www.baidu.com' alt='12'/>
+        <span className={styles.mini}>
           <span>右旋</span>
           <span>删除</span>
         </span>
