@@ -1,6 +1,5 @@
 import { call, put, takeLatest, delay, take, fork, cancel } from 'redux-saga/effects';
 import axios from 'axios';
-import Config from '../../../../constants/config';
 import Path from '../../../../constants/path';
 import {
   BEGIN_FETCH, 
@@ -12,10 +11,10 @@ import {
 
 //根据缺陷工单列表
 function* getDefectList(action) {
-  let url = Config.APIBasePath + Path.APISubPaths.ticket.getDefectList;
+  let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.ticket.getDefectList;
   yield put({ type: BEGIN_FETCH });
   try {
-    const response = yield call(axios.post, url, {defectSource: 0});
+    const response = yield call(axios.post, url, {defectSource: 0,stationType:0});
     if(response.data.success){
       yield put({ type: GET_DEFECT_LIST_SUCCESS, data: response.data.data });      
     }else{
