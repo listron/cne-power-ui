@@ -1,11 +1,16 @@
 import React, { Component } from 'react';
-import { Upload, Modal, Icon } from 'antd';
+import { Upload, Modal, message, Icon } from 'antd';
 import PropTypes from 'prop-types';
+import { getCookie } from '../../../utils/index.js'
+// import config from '../../config/apiConfig';
+// const apiHostUri = config.apiHostUri;
+// const Cookie = require('js-cookie');
 
 class ImgUploader extends Component {
   static propTypes = {
     max: PropTypes.number,//max 图片数量
     limitSize: PropTypes.number,//图片大小限制。
+    uploadPath: PropTypes.string, //上传的文件路径
     editable : PropTypes.bool, //是否可编辑组件
     value: PropTypes.array, //现有文件信息列表
     onChange: PropTypes.func, //输出上传插件信息
@@ -13,8 +18,6 @@ class ImgUploader extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      previewVisible: false,
-      previewImage: '',
       fileList: [{
         uid: -1,
         name: 'xxx.png',
@@ -23,17 +26,41 @@ class ImgUploader extends Component {
       }],
     };
   }
-  handleCancel = () => this.setState({ previewVisible: false })
-  handlePreview = (file) => {
+  // handleCancel = () => this.setState({ previewVisible: false })
+  // handlePreview = (file,a,b) => {
+  //   console.log(a,b)
+  //   this.setState({
+  //     previewImage: file.url || file.thumbUrl,
+  //     previewVisible: true,
+  //   });
+  // }
+  handleUpload = (info) => {
+    console.log(info)
+    if (info.file.status !== 'uploading') {
+      console.log(info.file, info.fileList);
+    }
+    if (info.file.status === 'done') {
+      console.log(info)
+    } else if (info.file.status === 'error') {
+      message.error(`${info.file.name} file upload failed.`);
+    }
+    // this.setState({ fileList })
+
     this.setState({
-      previewImage: file.url || file.thumbUrl,
-      previewVisible: true,
-    });
+      fileList: info.fileList
+    })
   }
-  handleChange = ({ fileList }) => this.setState({ fileList })
 
   render() {
-    const { previewVisible, previewImage, fileList } = this.state;
+    const authData = getCookie('authData');
+    const { uploadPath, max,  value } = this.props;
+		const imageProps = {
+			action: `${uploadPath}`,
+      onChange: this.handleUpload,
+			multiple: true,
+			listType: 'picture-card',
+			headers:{"Authorization": "Bearer " + (authData ? authData.access_token : "")}
+		};
     const uploadButton = (
       <div>
         <Icon type="plus" />
@@ -42,18 +69,16 @@ class ImgUploader extends Component {
     );
     return (
       <div className="clearfix">
+        {value.map((e,i)=><div key={i}>这是第{i}个图片，准备渲染！</div>)}
         <Upload
-          action="//jsonplaceholder.typicode.com/posts/"
-          listType="picture-card"
-          fileList={fileList}
-          onPreview={this.handlePreview}
-          onChange={this.handleChange}
+          { ...imageProps }
+          fileList={this.state.fileList}
         >
-          {fileList.length >= 3 ? null : uploadButton}
+          {value.length >= max ? null : uploadButton}
         </Upload>
-        <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
+        {/* <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
           <img alt="example" style={{ width: '100%' }} src={previewImage} />
-        </Modal>
+        </Modal> */}
       </div>
     )
     
