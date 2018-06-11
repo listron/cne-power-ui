@@ -9,9 +9,9 @@ import { getCookie } from '../../../utils/index.js'
 /*
   图片上传共用组件：
   说明： 
-    1. 要求组件必须传输属性：路径
-    2. 选填属性： 图片数量上限(默认为4)，图片大小限制(默认1024*1024)，是否可编辑(默认不可编辑查看状态)，每张图片的缩略展示大小(默认   {width:'104px',height:'104px'})
-    3. 已有图片数组信息（props of value）选填，默认为[],数组中，uid,rotate,thumbUrl必须提供，否则无法正确渲染图片
+    1. 要求组件必须传输属性：路径(uploadPath)
+    2. 选填属性： 图片数量上限(max默认为4)，图片大小限制(limitSize默认1024*1024)，是否可编辑(editable默认不可编辑查看状态)，每张图片的缩略展示大小(imgStyle默认{width:'104px',height:'104px'})
+    3. 已有图片数组信息（value）选填，默认为[],数组中，uid,rotate,thumbUrl必须提供，否则无法正确渲染图片
     props of value: [{   //props of value
       uid: -1,    //必填
       rotate: 0,  //必填
