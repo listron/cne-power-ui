@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Upload, Modal, message, Icon } from 'antd';
+import { Upload, message, Icon } from 'antd';
 import styles from './uploader.scss';
 import PropTypes from 'prop-types';
 import UploadedImg from './UploadedImg';
@@ -42,6 +42,12 @@ class ImgUploader extends Component {
     onChange: PropTypes.func, //输出
     imgStyle: PropTypes.object, //图片样式
   }
+  static defaultProps = {
+    max: 4,
+    limitSize: 2*1024*1024,
+    editable: false,
+    imgStyle: {width:'104px',height:'104px'}
+  }
   constructor(props) {
     super(props);
     this.state = {
@@ -49,6 +55,17 @@ class ImgUploader extends Component {
       currentImgIndex:0,
       fileList: [],
     };
+  }
+  beforeUpload = (file) => {
+    const isIMG = /^image/.test(file.type);
+    const isLimitSize = file.size / 1024 / 1024 > 1;
+    if(!isIMG){
+      message.error('只支持图片上传！')
+    }
+    if(isLimitSize){
+      message.error('图片上传大小不得超过1M！')
+    }
+    return isIMG && !isLimitSize
   }
   handleUpload = ({file,fileList}) => {
     const { imgStyle } = this.props
@@ -62,7 +79,6 @@ class ImgUploader extends Component {
           status:e.status,
           imgStyle
       }))
-      console.log(upLoadfiles)
       this.props.onChange(upLoadfiles)
     }
   }
@@ -86,13 +102,14 @@ class ImgUploader extends Component {
   render() {
     const authData = getCookie('authData');
     const { imageListShow, currentImgIndex } = this.state;
-    const { uploadPath, max,  value, onChange } = this.props;
+    const { uploadPath, max,  value, onChange, editable } = this.props;
 		const imageProps = {
 			action: `${uploadPath}`,
       onChange: this.handleUpload,
 			multiple: true,
 			listType: 'picture-card',
       headers:{"Authorization": "Bearer " + (authData ? authData.access_token : "")},
+      beforeUpload:this.beforeUpload
 		};
     const uploadButton = (
       <div>
@@ -102,13 +119,13 @@ class ImgUploader extends Component {
     );
     return (
       <div className={styles.imgUploader}>
-        {value.map((e,i)=><UploadedImg showImg={this.showImg} key={e.uid} {...e} index={i} value={value} onEdit={onChange} />)}
-        <Upload
+        {value.map((e,i)=><UploadedImg editable={editable} showImg={this.showImg} key={e.uid} {...e} index={i} value={value} onEdit={onChange} />)}
+        {editable && <Upload
           className={styles.loaderHandler}
           { ...imageProps }
         >
           {value.length >= max ? null : uploadButton}
-        </Upload>
+        </Upload>}
         <ImgListModal 
           value={value} 
           imageListShow={imageListShow} 
