@@ -17,9 +17,6 @@ class ImgListModal extends Component {
       imgWidth: 580,
     }
   }
-  componentWillReceiveProps(nextProps){
-    
-  }
   preImg = () => {
     let { currentImgIndex } = this.props
     if(currentImgIndex <= 0){

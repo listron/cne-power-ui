@@ -5,6 +5,13 @@
   display: flex;
   justify-content: flex-start;
   flex-wrap: wrap;
+  .loaderHandler{
+    :global{
+      .ant-upload-list-item-done{
+        display: none;
+      }
+    }
+  }
   .uploadedImg{
     position: relative;
     .bottomHandler{
