@@ -10,6 +10,7 @@ import createSagaMiddleware from 'redux-saga';
 import Main from './containers/Main';
 import appReducer from './redux/reducer';
 import rootSaga from './redux/sagas';
+import './theme/style.scss';
 
 const sagaMiddleware = createSagaMiddleware();
 const middlewares = [thunk, sagaMiddleware, logger];

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Table, Radio, Button } from 'antd';
+import { Table, Radio, Button, Icon } from 'antd';
 import {getLevel, getStatus} from '../../../../constants/ticket';
 import styles from './list.scss';
 import Immutable from 'immutable';
@@ -215,7 +215,8 @@ class List extends Component {
           </div>
           <div>
             <Button onClick={this.onAdd}>
-              <span className="iconfont icon-add" /> 
+              {/* <span className="iconfont icon-add" />  */}
+              <Icon type="plus" />
               新建
             </Button>
             {

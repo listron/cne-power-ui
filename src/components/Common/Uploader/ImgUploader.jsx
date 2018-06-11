@@ -49,8 +49,9 @@ class ImgUploader extends Component {
       currentImgIndex:0,
       fileList: [],
     };
+    this.handleUpload = this.handleUpload.bind(this);
   }
-  handleUpload = ({file,fileList}) => {
+  handleUpload({file,fileList}){
     const { imgStyle } = this.props
     if (file.status !== 'uploading') {
       const upLoadfiles = fileList.filter(e=>(e.response && e.response.success)).map(e => ({
@@ -61,9 +62,9 @@ class ImgUploader extends Component {
           thumbUrl:e.thumbUrl,
           status:e.status,
           imgStyle
-      }))
-      console.log(upLoadfiles)
-      this.props.onChange(upLoadfiles)
+      }));
+      console.log(upLoadfiles);
+      this.props.onChange(upLoadfiles);
     }
   }
   showImg = (index) => {
@@ -80,7 +81,7 @@ class ImgUploader extends Component {
   changeCurrentImgIndex = (index) =>{
     this.setState({
       currentImgIndex:index
-    })
+    });
   }
 
   render() {
@@ -117,7 +118,7 @@ class ImgUploader extends Component {
           changeCurrentImgIndex={this.changeCurrentImgIndex}
         />
       </div>
-    )
+    );
     
   }
 }
