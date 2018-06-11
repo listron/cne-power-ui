@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Upload, Modal, message, Icon } from 'antd';
+import { Upload, Icon } from 'antd';
 import styles from './uploader.scss';
 import PropTypes from 'prop-types';
 import UploadedImg from './UploadedImg';
@@ -42,6 +42,7 @@ class ImgUploader extends Component {
     onChange: PropTypes.func, //输出
     imgStyle: PropTypes.object, //图片样式
   }
+
   constructor(props) {
     super(props);
     this.state = {
@@ -50,35 +51,42 @@ class ImgUploader extends Component {
       fileList: [],
     };
     this.handleUpload = this.handleUpload.bind(this);
+    this.showImg = this.showImg.bind(this);
+    this.hideImg = this.hideImg.bind(this);
+    this.changeCurrentImgIndex = this.changeCurrentImgIndex.bind(this);
   }
-  handleUpload({file,fileList}){
-    const { imgStyle } = this.props
+
+  handleUpload({file,fileList}) {
+    const { imgStyle } = this.props;
     if (file.status !== 'uploading') {
       const upLoadfiles = fileList.filter(e=>(e.response && e.response.success)).map(e => ({
-          uid:e.uid,
-          name:e.name,
-          rotate: 0,
-          response:e.response.result,
-          thumbUrl:e.thumbUrl,
-          status:e.status,
-          imgStyle
+        uid:e.uid,
+        name:e.name,
+        rotate: 0,
+        response:e.response.result,
+        thumbUrl:e.thumbUrl,
+        status:e.status,
+        imgStyle
       }));
       console.log(upLoadfiles);
       this.props.onChange(upLoadfiles);
     }
   }
-  showImg = (index) => {
+
+  showImg(index) {
     this.setState({
       imageListShow: true,
       currentImgIndex:index
-    })
+    });
   }
-  hideImg = () => {
+
+  hideImg() {
     this.setState({
       imageListShow: false
-    })
+    });
   }
-  changeCurrentImgIndex = (index) =>{
+
+  changeCurrentImgIndex(index) {
     this.setState({
       currentImgIndex:index
     });
@@ -103,7 +111,15 @@ class ImgUploader extends Component {
     );
     return (
       <div className={styles.imgUploader}>
-        {value.map((e,i)=><UploadedImg showImg={this.showImg} key={e.uid} {...e} index={i} value={value} onEdit={onChange} />)}
+        {value.map((e,i)=>(
+          <UploadedImg 
+            showImg={this.showImg} 
+            key={e.uid} 
+            {...e} 
+            index={i} 
+            value={value} 
+            onEdit={onChange} />
+          ))}
         <Upload
           className={styles.loaderHandler}
           { ...imageProps }
@@ -118,8 +134,7 @@ class ImgUploader extends Component {
           changeCurrentImgIndex={this.changeCurrentImgIndex}
         />
       </div>
-    );
-    
+    ); 
   }
 }
 export default ImgUploader;
