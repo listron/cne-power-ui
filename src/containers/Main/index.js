@@ -23,7 +23,7 @@ class Main extends Component {
     this.handleClick = this.handleClick.bind(this);
   }
 
-  componentWillReceiveProps(nextProps){   
+  componentWillReceiveProps(nextProps) {   
     if(nextProps.login.fetched && !this.props.login.fetched){
       this.props.history.push('/');
       this.setState({
