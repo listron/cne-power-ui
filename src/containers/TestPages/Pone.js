@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import InputLimit from '../../components/Common/InputLimit/index';
 import PropTypes from 'prop-types';
-import WorkListTimeLine from '../../components/Common/WorkListTimeLine';
+import WorkListTimeLine from '../../components/Common/TimeLines';
 class Pone extends Component {
   static propTypes = {
       placeHolder : PropTypes.string,
