@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import ImgModal from './UploadedImgModal';
 import styles from './uploader.scss';
 import PropTypes from 'prop-types';
 
-class UploadedImgModal extends Component {
+class UploadedImg extends Component {
   static propTypes = {
     thumbUrl: PropTypes.string,
     name: PropTypes.string,
@@ -12,22 +11,18 @@ class UploadedImgModal extends Component {
     uid: PropTypes.any,
     onEdit: PropTypes.func,
     rotate: PropTypes.number,
+    showImg: PropTypes.func,
+    index: PropTypes.number
   }
   constructor(props) {
     super(props);
     this.state={
-      showImg: false
+      imageListShow: false
     }
   }
   showImg = () => {
-    this.setState({
-      showImg: true
-    })
-  }
-  hideImg = () => {
-    this.setState({
-      showImg: false
-    })
+    const { index } = this.props
+    this.props.showImg(index)
   }
   rotateImg = () =>{
     const { value, uid, onEdit } = this.props;
@@ -48,8 +43,7 @@ class UploadedImgModal extends Component {
   
 
   render() {
-    const { thumbUrl, name, imgStyle, rotate, value  } = this.props;
-    const { showImg } = this.state;
+    const { thumbUrl, name, imgStyle, rotate  } = this.props;
     const imgStyleContr = {...imgStyle,transform:`rotate(${rotate}deg)`};
     return (
       <div className={styles.uploadedImg}>
@@ -58,13 +52,9 @@ class UploadedImgModal extends Component {
           <span className={styles.eachHandler} onClick={this.rotateImg}>右旋</span>
           <span className={styles.eachHandler} onClick={this.deleteImg}>删除</span>
         </span>
-        <ImgModal showImg={showImg} value={value} hideImg={this.hideImg} />
-        {/* <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
-          <img alt="example" style={{ width: '100%' }} src={previewImage} />
-        </Modal> */}
       </div>
     )
     
   }
 }
-export default UploadedImgModal;
+export default UploadedImg;

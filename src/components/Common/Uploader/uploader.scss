@@ -31,9 +31,25 @@
         justify-content: space-around;
       }
     }
-    
   }
-  .loaderHandler{
-
+}
+.imgModal{
+  display: flex;
+  align-items: center;
+  .handleButton{
+    width:66px;
+    text-align: center;
+    button {
+      height: 60px;
+      padding: 0 10px;
+      font-size: 24px;
+    }
+  }
+  .imgContainer{
+    overflow: hidden;
+    .imgList{
+      width: 100%;
+      display: flex;
+    }
   }
 }

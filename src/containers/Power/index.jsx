@@ -18,7 +18,7 @@ class Power extends Component {
             status: 'done',
             response:{
                 success: true,
-                result:'12312312',
+                result:'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
             },
             imgStyle : {width:'104px',height:'104px'},
             thumbUrl: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
