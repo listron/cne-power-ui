@@ -6,7 +6,31 @@ import UploadedImg from './UploadedImg';
 import ImgListModal from './ImgListModal'
 import { getCookie } from '../../../utils/index.js'
 
-//图片上传公共组件:父组件传输相关配置：图片数量，大小，路径，是否可编辑，默认已有图片。
+/*
+  图片上传共用组件：
+  说明： 
+    1. 要求组件必须传输属性：路径
+    2. 选填属性： 图片数量上限(默认为4)，图片大小限制(默认1024*1024)，是否可编辑(默认不可编辑查看状态)，每张图片的缩略展示大小(默认   {width:'104px',height:'104px'})
+    3. 已有图片数组信息（props of value）选填，默认为[],数组中，uid,rotate,thumbUrl必须提供，否则无法正确渲染图片
+    props of value: [{   //props of value
+      uid: -1,    //必填
+      rotate: 0,  //必填
+      name: 'xxx.png', 
+      status: 'done',  
+      thumbUrl: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',  //必填
+    }],
+    4. 输出参数为this.props.onChange调用，输入格式同value数组。this.props.onChange([
+      {
+        response:e.response.result,
+        imgStyle,
+        uid: -1,    
+        rotate: 0,  
+        name: 'xxx.png', 
+        status: 'done',   
+        thumbUrl: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',   
+      }
+    ])
+*/
 
 class ImgUploader extends Component {
   static propTypes = {
@@ -23,17 +47,7 @@ class ImgUploader extends Component {
     this.state = {
       imageListShow: false,
       currentImgIndex:0,
-      fileList: [{
-        uid: -1,
-        rotate: 0,
-        name: 'xxx.png',
-        status: 'done',
-        response:{
-          success: true,
-          result:'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-        },
-        thumbUrl: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-      }],
+      fileList: [],
     };
   }
   handleUpload = ({file,fileList}) => {
@@ -48,11 +62,9 @@ class ImgUploader extends Component {
           status:e.status,
           imgStyle
       }))
+      console.log(upLoadfiles)
       this.props.onChange(upLoadfiles)
     }
-    this.setState({
-      fileList
-    })
   }
   showImg = (index) => {
     this.setState({
@@ -94,7 +106,6 @@ class ImgUploader extends Component {
         <Upload
           className={styles.loaderHandler}
           { ...imageProps }
-          fileList={this.state.fileList}
         >
           {value.length >= max ? null : uploadButton}
         </Upload>

@@ -10,10 +10,14 @@
       .ant-upload-list-item-done{
         display: none;
       }
+      .ant-upload-select{
+        margin-bottom: 0;
+      }
     }
   }
   .uploadedImg{
     position: relative;
+    margin-right: 15px;
     .bottomHandler{
       position: absolute;
       background-color: rgba(0,0,0,0.2);

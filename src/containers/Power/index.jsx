@@ -11,18 +11,7 @@ class Power extends Component {
   constructor(props,context) {
     super(props);
     this.state = {
-        fileList: [{
-            uid: -1,
-            rotate: 0,
-            name: 'xxx.png',
-            status: 'done',
-            response:{
-                success: true,
-                result:'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-            },
-            imgStyle : {width:'104px',height:'104px'},
-            thumbUrl: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-        }],
+        fileList: [],
     };
   }
 
