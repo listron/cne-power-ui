@@ -28,9 +28,11 @@ class InputLimit extends Component {
   }
 
   checkWord(e) {
+    const textValue=e.target.value;
     this.setState({
-      current: e.target.value.length,
+      current: textValue.length,
     })
+    this.props.handleInput(textValue);
   }
 
   render() {
@@ -39,9 +41,8 @@ class InputLimit extends Component {
       <div className={styles.inputLimit}>
         <div className={styles.inputCount}>({this.state.current}/{this.props.size})</div>
         <TextArea 
-          placeholder={this.props.placeHolder} 
-          onKeyUp={this.checkWord} 
-          onChange={this.props.handleInput} 
+          placeholder={this.props.placeHolder}
+          onChange={this.checkWord} 
           maxLength={this.props.size} 
           style={{height: this.props.height, width: this.props.width}} />
       </div>
