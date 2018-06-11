@@ -3,8 +3,9 @@ import { combineReducers } from 'redux'
 import users from './users';
 import posts from './posts';
 import login from './login';
+import operation from './operation/operation';
 
-const appReducer = (() => combineReducers({ users, posts,login }))();
+const appReducer = (() => combineReducers({ users, posts,login, operation }))();
 
 // ========================= 单独一个文件的写法 =============================
 /* import { 
