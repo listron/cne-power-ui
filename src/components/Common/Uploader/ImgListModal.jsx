@@ -11,31 +11,36 @@ class ImgListModal extends Component {
     currentImgIndex: PropTypes.number,
     changeCurrentImgIndex: PropTypes.func
   }
+
   constructor(props) {
     super(props);
     this.state = {
       imgWidth: 580,
-    }
+    };
+    this.preImg = this.preImg.bind(this);
+    this.nextImg = this.nextImg.bind(this);
   }
-  preImg = () => {
-    let { currentImgIndex } = this.props
+
+  preImg() {
+    let { currentImgIndex } = this.props;
     if(currentImgIndex <= 0){
-      return
+      return;
     }
-    this.props.changeCurrentImgIndex(currentImgIndex-1)
+    this.props.changeCurrentImgIndex(currentImgIndex-1);
   }
-  nextImg = () => {
-    let { currentImgIndex,value } = this.props
+  
+  nextImg() {
+    let { currentImgIndex,value } = this.props;
     if(currentImgIndex >= value.length - 1){
-      return
+      return;
     }
-    this.props.changeCurrentImgIndex(currentImgIndex + 1)
+    this.props.changeCurrentImgIndex(currentImgIndex + 1);
   }
 
   render() {
     const { imageListShow, hideImg, value, currentImgIndex } = this.props;
-    const { imgWidth } = this.state
-    let listMargin = currentImgIndex*(-imgWidth)
+    const { imgWidth } = this.state;
+    let listMargin = currentImgIndex*(-imgWidth);
     return (
       <Modal
         footer={null}
@@ -45,20 +50,27 @@ class ImgListModal extends Component {
       >
         <div className={styles.imgModal}>
           <div className={styles.handleButton}>
-            <Button onClick={this.preImg} disabled={currentImgIndex===0} ><Icon type="left" /></Button>
+            <Button onClick={this.preImg} disabled={currentImgIndex===0}>
+              <Icon type="left" />
+            </Button>
           </div>
           <div className={styles.imgContainer} style={{width:imgWidth}}>
             <ul className={styles.imgList} style={{marginLeft: `${listMargin}px`}}>
-              {value.map(e=>(<li className={styles.eachImg} key={e.uid}><img src={ e.thumbUrl } alt={e.name} width={imgWidth} /></li>))}
+              {value.map(e=>(
+                <li className={styles.eachImg} key={e.uid}>
+                  <img src={ e.thumbUrl } alt={e.name} width={imgWidth} />
+                </li>
+              ))}
             </ul>
           </div>
           <div className={styles.handleButton}>
-            <Button onClick={this.nextImg} disabled={currentImgIndex===value.length-1}><Icon type="right" /></Button>
+            <Button onClick={this.nextImg} disabled={currentImgIndex===value.length-1}>
+              <Icon type="right" />
+            </Button>
           </div>
         </div>
       </Modal>
-    )
-    
+    );
   }
 }
 export default ImgListModal;

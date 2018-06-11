@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import InputLimit from '../../components/Common/InputLimit/index';
 import PropTypes from 'prop-types';
-// import WorkListTimeLine from '../../components/Common/WorkListTimeLine';
+// import TimeLines from '../../components/Common/TimeLines';
 class Pone extends Component {
   static propTypes = {
       placeHolder : PropTypes.string,
@@ -71,7 +71,7 @@ class Pone extends Component {
       <div style={{width:'80%',margin:'0 auto',}} >
         <InputLimit placeHolder={this.state.placeHolder} width={this.state.width} handleInput={this.handleInput} size={this.state.size}  />
         <p>{this.state.value}</p>
-        {/* <WorkListTimeLine status={this.state.status} processData={this.state.processData} />  */}
+        {/* <TimeLines status={this.state.status} processData={this.state.processData} />  */}
       </div>
     );
   }

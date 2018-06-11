@@ -3,7 +3,6 @@ import { Route,Redirect, Switch,withRouter} from 'react-router-dom';
 import {routerConfig} from '../../common/routerSetting';
 import Loadable from 'react-loadable';
 import styles from './style.scss';
-import './reset.scss';
 import { connect } from 'react-redux';
 import {getCookie} from '../../utils/index.js'
 import Login from '../Login';
@@ -24,7 +23,7 @@ class Main extends Component {
     this.handleClick = this.handleClick.bind(this);
   }
 
-  componentWillReceiveProps(nextProps){   
+  componentWillReceiveProps(nextProps) {   
     if(nextProps.login.fetched && !this.props.login.fetched){
       this.props.history.push('/');
       this.setState({

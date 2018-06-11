@@ -1,0 +1,22 @@
+.unSelectedItem {
+  background-color: #fbfbfb;
+  border-radius: 2px;
+  .itemLabel {
+    color: #ccc;
+    font-size: 14px;
+    padding-left: 8px;
+  }
+  
+}
+.selectedItem {
+  background-color: #7ec5c2;
+  border-radius: 2px;
+  .itemLabel {
+    color: #fff;
+    font-size: 14px;
+    padding-left: 8px;
+  }
+  .icon-right{
+    font-size: 8px;
+  }
+}

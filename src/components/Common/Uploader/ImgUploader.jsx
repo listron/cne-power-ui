@@ -55,8 +55,13 @@ class ImgUploader extends Component {
       currentImgIndex:0,
       fileList: [],
     };
+    this.handleUpload = this.handleUpload.bind(this);
+    this.showImg = this.showImg.bind(this);
+    this.hideImg = this.hideImg.bind(this);
+    this.changeCurrentImgIndex = this.changeCurrentImgIndex.bind(this);
+    this.beforeUpload = this.beforeUpload.bind(this);
   }
-  beforeUpload = (file) => {
+  beforeUpload(file){
     const isIMG = /^image/.test(file.type);
     const isLimitSize = file.size / 1024 / 1024 > 1;
     if(!isIMG){
@@ -67,36 +72,40 @@ class ImgUploader extends Component {
     }
     return isIMG && !isLimitSize
   }
-  handleUpload = ({file,fileList}) => {
-    const { imgStyle } = this.props
+
+  handleUpload({file,fileList}) {
+    const { imgStyle } = this.props;
     if (file.status !== 'uploading') {
       const upLoadfiles = fileList.filter(e=>(e.response && e.response.success)).map(e => ({
-          uid:e.uid,
-          name:e.name,
-          rotate: 0,
-          response:e.response.result,
-          thumbUrl:e.thumbUrl,
-          status:e.status,
-          imgStyle
-      }))
-      this.props.onChange(upLoadfiles)
+        uid:e.uid,
+        name:e.name,
+        rotate: 0,
+        response:e.response.result,
+        thumbUrl:e.thumbUrl,
+        status:e.status,
+        imgStyle
+      }));
+      this.props.onChange(upLoadfiles);
     }
   }
-  showImg = (index) => {
+
+  showImg(index) {
     this.setState({
       imageListShow: true,
       currentImgIndex:index
-    })
+    });
   }
-  hideImg = () => {
+
+  hideImg() {
     this.setState({
       imageListShow: false
-    })
+    });
   }
-  changeCurrentImgIndex = (index) =>{
+
+  changeCurrentImgIndex(index) {
     this.setState({
       currentImgIndex:index
-    })
+    });
   }
 
   render() {
@@ -119,7 +128,16 @@ class ImgUploader extends Component {
     );
     return (
       <div className={styles.imgUploader}>
-        {value.map((e,i)=><UploadedImg editable={editable} showImg={this.showImg} key={e.uid} {...e} index={i} value={value} onEdit={onChange} />)}
+        {value.map((e,i)=>(
+          <UploadedImg 
+            editable={editable}
+            showImg={this.showImg} 
+            key={e.uid} 
+            {...e} 
+            index={i} 
+            value={value} 
+            onEdit={onChange} />
+          ))}
         {editable && <Upload
           className={styles.loaderHandler}
           { ...imageProps }
@@ -134,8 +152,7 @@ class ImgUploader extends Component {
           changeCurrentImgIndex={this.changeCurrentImgIndex}
         />
       </div>
-    )
-    
+    ); 
   }
 }
 export default ImgUploader;

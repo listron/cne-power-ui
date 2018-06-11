@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Timeline, Icon } from 'antd';
 import PropTypes from 'prop-types';
-import styles from './TimeLines.scss';
+import styles from './style.scss';
 class TimeLines extends Component {
   static propTypes = {
     status: PropTypes.number,
