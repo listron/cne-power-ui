@@ -30,6 +30,7 @@ class ImgUploader extends Component {
         url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
       }],
     };
+    this.handleUpload = this.handleUpload.bind(this);
   }
   // handleCancel = () => this.setState({ previewVisible: false })
   // handlePreview = (file,a,b) => {
@@ -39,7 +40,7 @@ class ImgUploader extends Component {
   //     previewVisible: true,
   //   });
   // }
-  handleUpload = ({file,fileList}) => {
+  handleUpload({file,fileList}){
     if (file.status !== 'uploading') {
       console.log(file, fileList);
       const upLoadfiles = fileList.filter(e=>e.response.success).map(e => ({
@@ -48,12 +49,12 @@ class ImgUploader extends Component {
           response:e.response.result,
           thumbUrl:e.thumbUrl,
           status:e.status
-      }))
-      this.props.onChange(upLoadfiles)
+      }));
+      this.props.onChange(upLoadfiles);
     }
     this.setState({
       fileList
-    })
+    });
   }
 
   render() {
@@ -87,7 +88,7 @@ class ImgUploader extends Component {
           <img alt="example" style={{ width: '100%' }} src={previewImage} />
         </Modal> */}
       </div>
-    )
+    );
     
   }
 }
