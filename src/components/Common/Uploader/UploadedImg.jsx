@@ -12,14 +12,12 @@ class UploadedImg extends Component {
     onEdit: PropTypes.func,
     rotate: PropTypes.number,
     showImg: PropTypes.func,
-    index: PropTypes.number
+    index: PropTypes.number,
+    editable: PropTypes.bool
   }
 
   constructor(props) {
     super(props);
-    this.state={
-      imageListShow: false
-    };
     this.showImg = this.showImg.bind(this);
     this.rotateImg = this.rotateImg.bind(this);
     this.deleteImg = this.deleteImg.bind(this);
@@ -49,7 +47,7 @@ class UploadedImg extends Component {
   }
 
   render() {
-    const { thumbUrl, name, imgStyle, rotate  } = this.props;
+    const { thumbUrl, name, imgStyle, rotate, editable  } = this.props;
     const imgStyleContr = {...imgStyle,transform:`rotate(${rotate}deg)`};
     return (
       <div className={styles.uploadedImg}>
@@ -58,10 +56,10 @@ class UploadedImg extends Component {
           alt={name} 
           style={imgStyleContr} 
           onClick={this.showImg} />
-        <span className={styles.bottomHandler}>
+        {editable && <span className={styles.bottomHandler}>
           <span className={styles.eachHandler} onClick={this.rotateImg}>右旋</span>
           <span className={styles.eachHandler} onClick={this.deleteImg}>删除</span>
-        </span>
+        </span>}
       </div>
     );  
   }
