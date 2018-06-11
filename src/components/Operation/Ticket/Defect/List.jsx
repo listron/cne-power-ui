@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Table, Radio, Button } from 'antd';
-import {getLevel, getStatus} from '../../../constants/ticket';
+import {getLevel, getStatus} from '../../../../constants/ticket';
 import styles from './list.scss';
 import Immutable from 'immutable';
 
@@ -14,19 +14,18 @@ class List extends Component {
     onChangePage: PropTypes.func,
     onChangePageSize: PropTypes.func,
     onAdd: PropTypes.func,
-    onSubmit: PropTypes.func,
     onDelete: PropTypes.func,
     onSend: PropTypes.func,
     onReject: PropTypes.func,
     onClose: PropTypes.func,
     onOk: PropTypes.func,
     onNotOk: PropTypes.func,
-    tickets: PropTypes.object,
+    list: PropTypes.object,
     currentPage: PropTypes.number
   }
 
   static defaultProps = {
-    tickets: Immutable.fromJS([]),
+    list: Immutable.fromJS([]),
     currentPage: 1,
     currentSelectedStatus: null
   }
@@ -37,9 +36,8 @@ class List extends Component {
       tab: "5",
       selectedRowKeys: []
     };
-    this.onChangeType = this.onChangeType.bind(this);
+    this.onChangeTab = this.onChangeTab.bind(this);
     this.onAdd = this.onAdd.bind(this);
-    this.onSubmit = this.onSubmit.bind(this);
     this.onDelete = this. onDelete.bind(this);
     this.onSend = this.onSend.bind(this);
     this.onReject = this.onReject.bind(this);
@@ -55,6 +53,34 @@ class List extends Component {
       tab: e.target.value
     });
     this.props.onChangeTab(parseInt(e.target.value));
+  }
+
+  onAdd() {
+
+  }
+
+  onDelete() {
+
+  }
+
+  onSend() {
+
+  }
+
+  onReject() {
+
+  }
+
+  onClose() {
+
+  }
+
+  onOk() {
+
+  }
+
+  onNotOk() {
+
   }
 
   onSelectChange(record, selected, selectedRows) {
@@ -88,19 +114,12 @@ class List extends Component {
 
   }
 
-  getStatus(value) {
-    switch(value) {
-      case 0:
-        return ""
-    }
-  }
-
   render() {
-    let tickets = this.props.tickets;
-    let waitSubmitNum = tickets.filter((item) => {return item.get("defectStatus") === 0});
-    let waitReviewNum = tickets.filter((item) => {return item.get("defectStatus") === 1});
-    let inProcessNum = tickets.filter((item) => {return item.get("defectStatus") === 2});
-    let waitCheckNum = tickets.filter((item) => {return item.get("defectStatus") === 3});
+    let list = this.props.list;
+    let waitSubmitNum = list.filter((item) => {return item.get("defectStatus") === 0}).size;
+    let waitReviewNum = list.filter((item) => {return item.get("defectStatus") === 1}).size;
+    let inProcessNum = list.filter((item) => {return item.get("defectStatus") === 2}).size;
+    let waitCheckNum = list.filter((item) => {return item.get("defectStatus") === 3}).size;
 
     const columns = [{
       title: '缺陷级别',
@@ -161,7 +180,7 @@ class List extends Component {
     }];
 
     const pagination = {
-      total: tickets.size,
+      total: list.size,
       showQuickJumper: true,
       showSizeChanger: true,
       current: this.props.currentPage,
@@ -183,8 +202,8 @@ class List extends Component {
     };
   
     return (
-      <div calssName={styles.bugTicket}>
-        <div calssName={styles.action}>
+      <div className={styles.bugTicket}>
+        <div className={styles.action}>
           <div>
             <RadioGroup onChange={this.onChangeTab} defaultValue="5" value={this.state.tab}>
               <RadioButton value="5">全部</RadioButton>
@@ -202,8 +221,7 @@ class List extends Component {
             {
               this.state.currentSelectedStatus === 0 &&
                 <div>
-                  <Button onClick={this.onSubmit}>提交</Button>
-                  <Button onClick={this.onDelete}>提交</Button>
+                  <Button onClick={this.onDelete}>删除</Button>
                 </div>
             }
             {
@@ -226,7 +244,7 @@ class List extends Component {
         <Table 
           rowKey={(record)=>{return record.defectId}} 
           rowSelection={rowSelection} 
-          dataSource={tickets.toJS()} 
+          dataSource={list.toJS()} 
           columns={columns} 
           pagination={pagination} 
           onChange={this.onChangeTable}
