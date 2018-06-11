@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-// import { Button } from 'antd';
+import InspectionList from '../../../../components/Operation/Ticket/Inspection/InspectionList';
+
 
 class Defect extends Component {
   constructor(props,context) {
@@ -10,7 +11,8 @@ class Defect extends Component {
   render() {   
     return (
         <div>
-          缺陷处理页面
+          <div>巡检处理页面</div>
+          <InspectionList />
         </div>
     );
   }
