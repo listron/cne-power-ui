@@ -11,16 +11,7 @@ class Power extends Component {
   constructor(props,context) {
     super(props);
     this.state = {
-        fileList: [{
-            uid: -1,
-            name: 'xxx.png',
-            status: 'done',
-            response:{
-                success: true,
-                result:'12312312',
-            },
-            url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-        }],
+        fileList: [],
     };
   }
 
