@@ -76,7 +76,6 @@ class ImgUploader extends Component {
         <div className="ant-upload-text">Upload</div>
       </div>
     );
-    console.log(value)
     return (
       <div className={styles.imgUploader}>
         {value.map((e,i)=><UploadedImgModal key={e.uid} {...e} value={value} onEdit={onChange} />)}
