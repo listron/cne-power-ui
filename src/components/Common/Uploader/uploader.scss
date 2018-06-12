@@ -7,10 +7,10 @@
   flex-wrap: wrap;
   .loaderHandler{
     :global{
-      .ant-upload-list-item-done{
+      .ant-upload-list-item {
         display: none;
       }
-      .ant-upload-select{
+      .ant-upload-select {
         margin-bottom: 0;
       }
     }

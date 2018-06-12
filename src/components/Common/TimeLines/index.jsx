@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import { Timeline, Icon } from 'antd';
 import PropTypes from 'prop-types';
-import styles from './TimeLines.scss';
+import styles from './style.scss';
 
 /*
   时间线组件：
   说明：
     1.必须传入属性：流程当前状态status,流程数据progressData
  */
+
 class TimeLines extends Component {
   static propTypes = {
     status: PropTypes.number,

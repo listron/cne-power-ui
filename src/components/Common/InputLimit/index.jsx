@@ -2,7 +2,7 @@ import React,{ Component } from 'react';
 import PropTypes from 'prop-types';
 import { Input } from 'antd';
 const { TextArea } = Input;
-import styles from './InputLimit.scss';
+import styles from './style.scss';
 
 /*
   时间线组件：
