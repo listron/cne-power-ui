@@ -39,7 +39,7 @@ function request(method, url, body) {
     method: method,
     headers,
     mode: 'cors',
-    credentials: 'include',
+    // credentials: 'include',
     body: body
   };
   return new Promise((resolve, reject) => {

@@ -41,7 +41,7 @@ class Main extends Component {
   render() {
     const authData = getCookie('authData');
     if (authData && authData.length) {
-      axios.defaults.headers.common['Authorization'] = "Bearer " + JSON.parse(authData).access_token;
+      axios.defaults.headers.common['Authorization'] = "bearer " + JSON.parse(authData).access_token;
     }
     if(this.state.logined || getCookie('authData')){
       return (
@@ -54,19 +54,7 @@ class Main extends Component {
           </div>
           <div className={styles.content}>
             <Switch>
-              {routerConfig.map(e=>{
-                let Component = Loadable(e.component)
-                return (
-                  <Route 
-                    key={e.path} 
-                    path={e.path} 
-                    exact={e.exact} 
-                    render={(props)=>{
-                      return <Component {...props} />
-                    }}
-                  />
-                );
-              })}
+              {routerConfig}
               <Redirect to="/" />
             </Switch>
           </div>
