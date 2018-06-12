@@ -29,10 +29,6 @@ class SelectedItem extends Component {
     this.props.onSelect(this.props.label);
   }
 
-  onSelectItem() {
-    this.props.onSelect(this.props.label, !this.props.selected);
-  }
-
   render() {
     if(this.props.selected) {
       return (
