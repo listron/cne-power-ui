@@ -37,12 +37,9 @@ class Power extends Component {
             <div>
                 <ImgUploader 
                     value={this.state.fileList} 
-                    editable={true} 
                     uploadPath={`${pathConfig.basePaths.APIBasePath}${pathConfig.commonPaths.imgUploads}`} 
-                    limitSize={1 * 1024 * 1024}
-                    imgStyle = {{width:'104px',height:'104px'}}
-                    max={4} 
                     onChange={this.uploadImg} 
+                    editable={true}
                 />
             </div>
           </div>
