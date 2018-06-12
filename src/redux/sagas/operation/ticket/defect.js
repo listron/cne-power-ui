@@ -7,6 +7,7 @@ import {
   GET_DEFECT_LIST_SUCCESS, 
   GET_DEFECT_LIST_FAIL
 } from '../../../../constants/actionTypes/Ticket';
+import {get, post} from '../../../../utils/request';
 
 
 //根据缺陷工单列表
@@ -14,7 +15,7 @@ function* getDefectList(action) {
   let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.ticket.getDefectList;
   yield put({ type: BEGIN_FETCH });
   try {
-    const response = yield call(axios.post, url, {defectSource: 0,stationType:0});
+    const response = yield call(post, url, {defectSource: 0,stationType:0});
     if(response.data.success){
       yield put({ type: GET_DEFECT_LIST_SUCCESS, data: response.data.data });      
     }else{
