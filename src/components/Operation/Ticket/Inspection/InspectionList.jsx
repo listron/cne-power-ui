@@ -10,7 +10,7 @@ const RadioGroup = Radio.Group;
 
 class List extends Component {  
   static propTypes={
-    tickets: PropTypes.object,
+    inspectionList: PropTypes.object,
     currentPage: PropTypes.number,
     onChangePage: PropTypes.func,
     onChangePageSize: PropTypes.func,
@@ -18,7 +18,7 @@ class List extends Component {
   }
 
   static defaultProps={
-    tickets: Immutable.fromJS([]),
+    inspectionList: Immutable.fromJS([]),
     currentPage:1,
     currentSelectedStatus: null,
 
@@ -61,20 +61,20 @@ class List extends Component {
       currentSelectedStatus: status
     });
   }
+
   onChangeTab(e){
-    console.log(e.target.value);
     this.setState({
       tab: e.target.value,
     })
 
   }
   render(){
-    let tickets = this.props.tickets;
-    let inProcessNum = tickets.filter((item) => { return item.get("defectStatus") === 2 });
-    let waitCheckNum = tickets.filter((item) => { return item.get("defectStatus") === 3 });
+    let inspectionList = this.props.inspectionList;
+    let inProcessNum = inspectionList.filter((item) => { return item.get("defectStatus") === 2 });
+    let waitCheckNum = inspectionList.filter((item) => { return item.get("defectStatus") === 3 });
 
     const pagination={
-      total: tickets.size,
+      total: inspectionList.size,
       showQuickJumper: true,
       showSizeChanger: true,
       current: this.props.currentPage,
@@ -159,7 +159,7 @@ class List extends Component {
           </div>
         </div>
         <Table 
-          dataSource={tickets.toJS()}
+          dataSource={inspectionList.toJS()}
           columns= {columns}
           pagination= {pagination}
           rowSelection={rowSelection}

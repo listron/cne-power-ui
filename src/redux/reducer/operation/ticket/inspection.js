@@ -1,25 +1,24 @@
 import immutable from 'immutable';
-
-// import {
-  
-// } from '../../constants/actionTypes/Login';
+import { BEGIN_FETCH, GET_INSPECTION_LIST_SUCCESS } from '../../../../constants/actionTypes/Ticket';
 
 var initState = immutable.fromJS({
   isFetching: false,
   error: '',
+  inspectionList:[],
+  currentPage: 1,
+  currentPageSize: 10,
 });
 
 const inspectionReducer = (state = initState, action) => {
-  // switch (action.type) {
-  //   case UPDATE_COUNT:
-  //     return state.set('count', action.number)
-  //   case GET_COMPINFO_SU_SUCCESS:  
-  //     return state.set('isFetching', false)
-  //                 .set('domain', immutable.fromJS({
-  //                   name: action.data.enterpriseName,
-  //                   logo: action.data.enterpriseLogUrl
-  //                 })); 
-  // }
+  console.log(action);
+  switch(action.type){
+    case BEGIN_FETCH:
+      return state.set('isFetching',true)
+    case GET_INSPECTION_LIST_SUCCESS:
+      return state.set('isFetching', false)
+                  .set('inspectionList', immutable.fromJS(action.data))
+    
+  }
   return state;
 }
 
