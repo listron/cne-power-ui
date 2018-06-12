@@ -2,7 +2,8 @@ import React,{ Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './style.scss';
 import classnames from 'classnames';
-import {Icon} from 'antd';
+import {Icon, Modal} from 'antd';
+const confirm = Modal.confirm;
 
 class ExceptionItem extends Component {
   static propTypes = {
@@ -36,7 +37,17 @@ class ExceptionItem extends Component {
   }
 
   onDeleteItem() {
-
+    confirm({
+      title: '确认删除异常设备？',
+      content: '点击确认，删除此异常设备信息，记录将无法保存',
+      okText: "确认",
+      onOk() {
+        this.props.onDelete(this.props.label);
+      },
+      onCancel() {
+        console.log('Cancel');
+      },
+    });
   }
 
   render() {
