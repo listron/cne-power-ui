@@ -43,10 +43,15 @@ class ExceptionItem extends Component {
     if(this.props.status === "delete") {
       return (
         <div 
-          className={styles.deleteItem} 
+          onClick={()=>{this.props.onshowDetail(this.props.label)}}
+          className={styles.deleteItem}
+          className={classnames({
+            [styles.deleteItem]: !this.props.selected,
+            [styles.selectedItem]: this.props.selected
+          })}
           style={{height: this.props.height, width: this.props.width}}
         >
-          <Icon style="eye-o" onClick={()=>{this.props.onshowDetail(this.props.label)}} />
+          <Icon style="eye-o" />
           <div className={styles.itemLabel}>{this.props.label}</div>
           <Icon type="close" onClick={this.onDeleteItem} />
         </div>
@@ -55,9 +60,9 @@ class ExceptionItem extends Component {
       return ( 
         <div 
           className={classnames({
-            disabledItem: this.props.disabled,
-            selectedItem: this.props.selected,
-            normalItem: !this.props.disabled && !this.props.selected
+            [styles.disabledItem]: this.props.disabled,
+            [styles.selectedItem]: this.props.selected,
+            [styles.normalItem]: !this.props.disabled && !this.props.selected
           })} 
           style={{height: this.props.height, width: this.props.width}}
           onClick={this.onSelectItem}
@@ -71,8 +76,8 @@ class ExceptionItem extends Component {
       return ( 
         <div 
           className={classnames({
-            disabledItem: this.props.selected,
-            normalItem: !this.props.selected
+            [styles.disabledItem]: this.props.selected,
+            [styles.normalItem]: !this.props.selected
           })} 
           style={{height: this.props.height, width: this.props.width}}
         >
