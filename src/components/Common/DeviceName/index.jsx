@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import SelectItem from '../../Common/SelectItem';
+import SelectItem from '../SelectItem';
 import Immutable from 'immutable';
-import {Select, Button, Modal} from 'antd';
+import {Select, Modal} from 'antd';
 const Option = Select.Option;
-import styles from './deviceName.scss';
+import styles from './style.scss';
 
 
 class DeviceName extends Component {
