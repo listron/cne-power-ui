@@ -18,14 +18,26 @@ class ProvinceItem extends Component {
       indeterminate: false,
     }
   }
-  checkStation = (e) => {
-    console.log(e)
+  checkStation = (station) => {
     const { selectedStation, provinceInfor } = this.props;
-    // const { stationInfo, checked } = this.props
-    // this.props.onCheck({
-    //   addStation: !checked,
-    //   stationInfo
-    // })
+    let cancelCheck = selectedStation.some(e=>e.stationCode===station.stationCode)
+    let newStations = [];
+    let indeterminate = false;
+    let provinceChecked = false;
+    let provinceIndeter = selectedStation.filter(e=>e.provinceCode===provinceInfor.provinceCode);
+    if(cancelCheck){
+      newStations = selectedStation.filter(e=>e.stationCode!==station.stationCode);
+      (provinceIndeter.length > 1) && (indeterminate = true)
+    }else{
+      newStations = [station,...selectedStation];
+      ( provinceIndeter.length < provinceInfor.stations.length - 1 ) && (indeterminate = true);
+      ( provinceIndeter.length === provinceInfor.stations.length - 1 ) && (provinceChecked = true)
+    }
+    this.setState({
+      indeterminate,
+      provinceChecked
+    })
+    this.props.checkStation(newStations)
   }
   checkProvince = (e) => {
     const { checked } = e.target;
@@ -38,17 +50,18 @@ class ProvinceItem extends Component {
       newSelectedStation = selectedStation.filter(e=>e.provinceCode !== provinceInfor.provinceCode)
     }
     this.setState({
-      provinceChecked: !!checked
+      provinceChecked: !!checked,
+      indeterminate: false,
     })
     this.props.checkStation(newSelectedStation)
   }
 
   render() {
     const { provinceInfor, selectedStation } = this.props;
-    const { provinceChecked } = this.state;
+    const { provinceChecked, indeterminate } = this.state;
     return (
       <div>
-        <Checkbox onChange={this.checkProvince} checked={provinceChecked}>{provinceInfor.provinceName}</Checkbox>
+        <Checkbox onChange={this.checkProvince} checked={provinceChecked} indeterminate={indeterminate}>{provinceInfor.provinceName}</Checkbox>
         {provinceInfor.stations.map(m=>{
           let checked = selectedStation.some(e=>e.stationCode===m.stationCode)
           return <div onClick={()=>this.checkStation(m)} key={m.stationCode} style={{'backgroundColor':checked?'yellowgreen':'transparent'}}> <span>{ m.stationName }</span> <Icon type="check-circle-o" /> </div>
