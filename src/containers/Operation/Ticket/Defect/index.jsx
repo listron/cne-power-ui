@@ -9,21 +9,50 @@ class Defect extends Component {
     defectList: PropTypes.object,
     currentPage: PropTypes.number,
     currentPageSize: PropTypes.number,
+    total: PropTypes.number,
     isFetching: PropTypes.bool,
     error: PropTypes.string,
+    status: PropTypes.string,
     getDefectList: PropTypes.func,
   };
   constructor(props,context) {
     super(props);
     this.state = {};
+    this.onChangePage = this.onChangePage.bind(this);
+    this.onChangePageSize = this.onChangePageSize.bind(this);
   }
 
   componentDidMount() {
     var params = {
       defectSource: "0",
       stationType: "2",
-      pageNum: this.props.currentPage,
+      status: this.props.status,
+      pageNum: this.props.currentPage - 1,
       pageSize: this.props.currentPageSize
+    }
+    this.props.getDefectList(params);
+  }
+
+  onChangePage(page) {
+    if(page !== this.currentPage) {
+      let params = {
+        defectSource: "0",
+        stationType: "2",
+        status: this.props.status,
+        pageNum: page - 1,
+        pageSize: this.props.currentPageSize
+      }
+      this.props.getDefectList(params);
+    }
+  }
+
+  onChangePageSize(pageSize) {
+    var params = {
+      defectSource: "0",
+      stationType: "2",
+      status: this.props.status,
+      pageNum: this.props.currentPage - 1,
+      pageSize: pageSize
     }
     this.props.getDefectList(params);
   }
@@ -35,7 +64,12 @@ class Defect extends Component {
           <DefectList 
             list={this.props.defectList} 
             currentPage={this.props.currentPage}
-            currentPageSize={this.props.currentPageSize} />
+            currentPageSize={this.props.currentPageSize}
+            total={this.props.total}
+            status={this.props.status}
+            isFetching={this.props.isFetching}
+            onChangePage={this.onChangePage}
+            onChangePageSize={this.onChangePageSize} />
         </div>
     );
   }
@@ -47,6 +81,8 @@ const mapStateToProps = (state) => ({
   error: state.operation.defect.get('error'),
   currentPage: state.operation.defect.get("currentPage"),
   currentPageSize: state.operation.defect.get("currentPageSize"),
+  total: state.operation.defect.get("total"),
+  status: state.operation.defect.get("status")
 });
 
 const mapDispatchToProps = (dispatch) => ({

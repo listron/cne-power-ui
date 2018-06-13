@@ -22,7 +22,10 @@ class List extends Component {
     onNotOk: PropTypes.func,
     list: PropTypes.object,
     currentPage: PropTypes.number,
-    currentPageSize: PropTypes.number
+    currentPageSize: PropTypes.number,
+    total: PropTypes.number,
+    isFetching: PropTypes.bool,
+    status: PropTypes.string
   }
 
   static defaultProps = {
@@ -34,7 +37,6 @@ class List extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      tab: "5",
       selectedRowKeys: []
     };
     this.onChangeTab = this.onChangeTab.bind(this);
@@ -50,10 +52,7 @@ class List extends Component {
   }
 
   onChangeTab(e) {
-    this.setState({
-      tab: e.target.value
-    });
-    this.props.onChangeTab(parseInt(e.target.value));
+    this.props.onChangeTab(e.target.value);
   }
 
   onAdd() {
@@ -159,7 +158,7 @@ class List extends Component {
       sorter: true,
     }, {
       title: '完成时间',
-      dataIndex: 'startTime',
+      dataIndex: 'deadLine',
       key: 'deadLine',
       sorter: true,
     }, {
@@ -211,7 +210,7 @@ class List extends Component {
       <div className={styles.bugTicket}>
         <div className={styles.action}>
           <div>
-            <RadioGroup onChange={this.onChangeTab} defaultValue="5" value={this.state.tab}>
+            <RadioGroup onChange={this.onChangeTab} defaultValue="5" value={this.props.status}>
               <RadioButton value="5">全部</RadioButton>
               <RadioButton value="0">{`待提交${waitSubmitNum}`}</RadioButton>
               <RadioButton value="1">{`待审核${waitReviewNum}`}</RadioButton>
@@ -254,6 +253,7 @@ class List extends Component {
           dataSource={list.toJS()} 
           columns={columns} 
           pagination={pagination} 
+          loading={this.props.isFetching}
           onChange={this.onChangeTable}
         />
       </div>
