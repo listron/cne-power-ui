@@ -16,7 +16,11 @@ function* getDefectList(action) {
     const response = yield call(axios.post, url, action.params);
     console.log(response);
     if(response.data.code === "10000"){
-      yield put({ type: GET_DEFECT_LIST_SUCCESS, data: response.data.data.data, params: action.params });      
+      yield put({ 
+        type: GET_DEFECT_LIST_SUCCESS, 
+        data: response.data.data.data, 
+        params: action.params 
+      });      
     }else{
       yield put({ type: GET_DEFECT_LIST_FAIL, data: {error:response.data.code}});        
     }
