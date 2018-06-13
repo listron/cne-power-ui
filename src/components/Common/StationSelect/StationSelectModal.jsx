@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import { Icon, Modal, Button, Radio } from 'antd';
+import { Icon, Modal, Button, Radio, Checkbox  } from 'antd';
+import StationItem from './StationItem';
+import ProvinceItem from './ProvinceItem';
 import styles from './style.scss';
 import PropTypes from 'prop-types';
 const RadioButton = Radio.Button;
@@ -22,6 +24,7 @@ class StationSelectModal extends Component {
     this.state = {
       filterStationType: 0,//选中电站类型
       stationType:[0,10,20],//0所有,20光伏，10光伏
+      selectedStation:[], //暂存选中的电站数组
     }
   }
 
@@ -31,17 +34,30 @@ class StationSelectModal extends Component {
     })
   }
 
+  checkStation = ({ addStation, stationInfo }) => {
+    let { selectedStation } = this.state;
+    let newSelectedStation = [];
+    if(addStation){
+      newSelectedStation = [...selectedStation , stationInfo];
+    }else{
+      newSelectedStation = selectedStation.filter(e=>e.stationCode !== stationInfo.stationCode);
+    }
+    this.setState({
+      selectedStation: newSelectedStation
+    })
+  }
+
   filterStation = () => {
     const { value } = this.props;
     const { filterStationType } = this.state;
-    const tmpStations = filterStationType === 0 ? value : value.filter(e=>(e.stationType === filterStationType))
+    const tmpStations = filterStationType === 0 ? value : value.filter(e=>(e.stationType === filterStationType));
     let filteredStation = [];
     tmpStations.forEach(e=>{
       let findExactStation = false;
       filteredStation.forEach(m=>{
         if(m.provinceCode === e.provinceCode){
-          findExactStation = true
-          m.stations.push(e)
+          findExactStation = true;
+          m.stations.push(e);
         }
       })
       if(!findExactStation){
@@ -52,20 +68,14 @@ class StationSelectModal extends Component {
         })
       }
     })
-    filteredStation.map(e=>(
-      <div>
-        <h3>{e.provinceName}</h3>
-        {e.stations.map(m=>(<Button>{m.stationName}</Button>))}
-      </div>
+    return filteredStation.map(e=>(
+      <ProvinceItem key={e.provinceCode} checkStation={this.checkStation} provinceInfor={{...e}} />
     ))
-    return filteredStation
   }
 
   render() {
-    const { stationModalShow, hideStationModal, showStationModal, value } = this.props;
+    const { stationModalShow, hideStationModal, showStationModal } = this.props;
     const { filterStationType, stationType } = this.state;
-    const filteredStation = filterStationType === 0 ? value : value.filter(e=>(e.stationType === filterStationType))
-
     return (
       <div>
         <Icon type="filter" onClick={showStationModal} />
@@ -82,7 +92,7 @@ class StationSelectModal extends Component {
               </RadioGroup>
             </div>
             <div>
-              {filteredStation.map(e=>(<Button key={e.stationCode}>{e.stationName}</Button>))}
+              {this.filterStation()}
             </div>
           </div>
         </Modal>
