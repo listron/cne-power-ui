@@ -10,7 +10,7 @@ const RadioGroup = Radio.Group;
 
 class List extends Component {
   static propTypes = {
-    onChangeTab: PropTypes.func,
+    onChangeStatus: PropTypes.func,
     onChangePage: PropTypes.func,
     onChangePageSize: PropTypes.func,
     onAdd: PropTypes.func,
@@ -52,7 +52,7 @@ class List extends Component {
   }
 
   onChangeTab(e) {
-    this.props.onChangeTab(e.target.value);
+    this.props.onChangeStatus(e.target.value);
   }
 
   onAdd() {

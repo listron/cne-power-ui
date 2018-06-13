@@ -20,6 +20,7 @@ class Defect extends Component {
     this.state = {};
     this.onChangePage = this.onChangePage.bind(this);
     this.onChangePageSize = this.onChangePageSize.bind(this);
+    this.onChangeStatus = this.onChangeStatus.bind(this);
   }
 
   componentDidMount() {
@@ -47,14 +48,29 @@ class Defect extends Component {
   }
 
   onChangePageSize(pageSize) {
-    var params = {
-      defectSource: "0",
-      stationType: "2",
-      status: this.props.status,
-      pageNum: this.props.currentPage - 1,
-      pageSize: pageSize
+    if(pageSize !== this.props.currentPageSize) {
+      let params = {
+        defectSource: "0",
+        stationType: "2",
+        status: this.props.status,
+        pageNum: this.props.currentPage - 1,
+        pageSize: pageSize
+      }
+      this.props.getDefectList(params);
+    } 
+  }
+
+  onChangeStatus(status) {
+    if(status !== this.props.status) {
+      let params = {
+        defectSource: "0",
+        stationType: "2",
+        status: status,
+        pageNum: this.props.currentPage - 1,
+        pageSize: this.props.currentPageSize
+      }
+      this.props.getDefectList(params);
     }
-    this.props.getDefectList(params);
   }
 
   render() {   
@@ -69,7 +85,8 @@ class Defect extends Component {
             status={this.props.status}
             isFetching={this.props.isFetching}
             onChangePage={this.onChangePage}
-            onChangePageSize={this.onChangePageSize} />
+            onChangePageSize={this.onChangePageSize}
+            onChangeStatus={this.onChangeStatus} />
         </div>
     );
   }
