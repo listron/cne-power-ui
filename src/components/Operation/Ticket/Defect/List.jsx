@@ -52,6 +52,9 @@ class List extends Component {
   }
 
   onChangeTab(e) {
+    this.setState({
+      selectedRowKeys: []
+    });
     this.props.onChangeStatus(e.target.value);
   }
 
@@ -83,29 +86,8 @@ class List extends Component {
 
   }
 
-  onSelectChange(record, selected, selectedRows) {
-    let status = this.state.currentSelectedStatus;
-    let selectedRowKeys = this.state.selectedRowKeys;
-    if(selected) {
-      if(selectedRowKeys.length > 0) {
-        if(record.defectStatus === status) {
-          selectedRowKeys.push(record.defectId);
-        } else {
-          message.warning('请选择相同进度的缺陷进行处理！');
-        }
-      } else {
-        selectedRowKeys.push(record.defectId);
-        status = record.defectStatus;
-      }
-    } else {
-      var index = selectedRowKeys.findIndex((item)=> {
-        return item === record.defectId;
-      });
-      selectedRowKeys.splice(index, 1);
-      if(selectedRowKeys.length === 0) {
-        status = null;
-      }
-    }
+  onSelectChange(selectedRowKeys, selectedRows) {
+    let status = this.getSelectedRowsStatus(selectedRows);
     this.setState({
       selectedRowKeys: selectedRowKeys,
       currentSelectedStatus: status
@@ -114,6 +96,28 @@ class List extends Component {
 
   onChangeTable(pagination, filters, sorter) {
 
+  }
+
+  getSelectedRowsStatus(selectedRows) {
+    let map = {};
+    let status;
+    for(var i = 0; i < selectedRows.length; i++) {
+      if(!map[selectedRows[i].defectStatus]) {
+        map[selectedRows[i].defectStatus] = 1;
+      } else {
+        map[selectedRows[i].defectStatus] += 1;
+      }
+    }
+    let values = [];
+    for(var k in map) {
+      values.push(map[k]);
+      status = k;
+    }
+    if(values.length === 1) {
+      return status;
+    } else {
+      return null;
+    }
   }
 
   render() {
@@ -200,10 +204,7 @@ class List extends Component {
 
     const rowSelection = {
       selectedRowKeys,
-      onSelect: this.onSelectChange,
-      getCheckboxProps: (record) => ({
-        disabled: record.defectStatus === 2 || record.defectStatus === 4,
-      })
+      onChange: this.onSelectChange
     };
   
     return (

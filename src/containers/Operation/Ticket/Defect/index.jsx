@@ -76,7 +76,6 @@ class Defect extends Component {
   render() {   
     return (
         <div>
-          缺陷处理页面
           <DefectList 
             list={this.props.defectList} 
             currentPage={this.props.currentPage}
