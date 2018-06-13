@@ -52,6 +52,9 @@ class List extends Component {
   }
 
   onChangeTab(e) {
+    this.setState({
+      selectedRowKeys: []
+    });
     this.props.onChangeStatus(e.target.value);
   }
 
