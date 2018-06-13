@@ -8,15 +8,18 @@ import {
   GET_DEFECT_LIST_FAIL
 } from '../../../../constants/actionTypes/Ticket';
 
-//根据缺陷工单列表
+//获取缺陷工单列表
 function* getDefectList(action) {
   let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.ticket.getDefectList;
   yield put({ type: BEGIN_FETCH });
   try {
-    const response = yield call(axios.post, url, {defectSource: 0,stationType:0});
-    console.log(response);
+    const response = yield call(axios.post, url, action.params);
     if(response.data.code === "10000"){
-      yield put({ type: GET_DEFECT_LIST_SUCCESS, data: response.data.data.data });      
+      yield put({ 
+        type: GET_DEFECT_LIST_SUCCESS, 
+        data: response.data.data.data, 
+        params: action.params 
+      });      
     }else{
       yield put({ type: GET_DEFECT_LIST_FAIL, data: {error:response.data.code}});        
     }
