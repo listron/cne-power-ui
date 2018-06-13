@@ -10,6 +10,8 @@ var initState = immutable.fromJS({
   defectList:[],//渲染为table的缺陷列表
   currentPage: 1,
   currentPageSize: 10,
+  total: 100,
+  status: "5",
   defectDetail: {
     stationName: "",
     deviceName: "",
@@ -33,7 +35,10 @@ const defectReducer = (state = initState, action) => {
       return state.set('isfetching', true)
     case GET_DEFECT_LIST_SUCCESS:  
       return state.set('isFetching', false)
-                  .set('defectList', immutable.fromJS(action.data)); 
+                  .set('defectList', immutable.fromJS(action.data))
+                  .set('currentPage', (action.params.pageNum + 1))
+                  .set('currentPageSize', action.params.pageSize)
+                  .set('status', action.params.status); 
   }
 
   return state;
