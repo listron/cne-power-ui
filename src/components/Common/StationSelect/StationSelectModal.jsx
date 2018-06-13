@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Icon, Modal, Button, Radio, Checkbox  } from 'antd';
-import StationItem from './StationItem';
 import ProvinceItem from './ProvinceItem';
 import styles from './style.scss';
 import PropTypes from 'prop-types';
@@ -34,22 +33,15 @@ class StationSelectModal extends Component {
     })
   }
 
-  checkStation = ({ addStation, stationInfo }) => {
-    let { selectedStation } = this.state;
-    let newSelectedStation = [];
-    if(addStation){
-      newSelectedStation = [...selectedStation , stationInfo];
-    }else{
-      newSelectedStation = selectedStation.filter(e=>e.stationCode !== stationInfo.stationCode);
-    }
+  checkStation = (selectedStation) => {
     this.setState({
-      selectedStation: newSelectedStation
+      selectedStation
     })
   }
 
   filterStation = () => {
     const { value } = this.props;
-    const { filterStationType } = this.state;
+    const { filterStationType, selectedStation } = this.state;
     const tmpStations = filterStationType === 0 ? value : value.filter(e=>(e.stationType === filterStationType));
     let filteredStation = [];
     tmpStations.forEach(e=>{
@@ -69,7 +61,7 @@ class StationSelectModal extends Component {
       }
     })
     return filteredStation.map(e=>(
-      <ProvinceItem key={e.provinceCode} checkStation={this.checkStation} provinceInfor={{...e}} />
+      <ProvinceItem key={e.provinceCode} checkStation={this.checkStation} provinceInfor={{...e}} selectedStation={selectedStation}/>
     ))
   }
 
