@@ -15,7 +15,8 @@ class InspectionList extends Component {
     onChangePage: PropTypes.func,
     onChangePageSize: PropTypes.func,
     getInspectionList: PropTypes.func,
-    
+    loading: PropTypes.bool,
+    onChangeStatus: PropTypes.func,
   }
 
   static defaultProps={
@@ -36,12 +37,10 @@ class InspectionList extends Component {
   }
 
   onChangeTab(e){
-    this.setState({
-      tab: e.target.value,
-    })
-    this.props.getInspectionList({
-      inspectStatus: e.target.value
-    })
+    // this.setState({
+    //   tab: e.target.value,
+    // })
+    this.props.onChangeStatus(e.target.value);
   }
   onChangeTable(selectedRowKeys, selectedRows){
 
@@ -157,6 +156,7 @@ class InspectionList extends Component {
           pagination= {pagination}
           rowSelection={rowSelection}
           onChange={this.onChangeTable}
+          loading={this.props.loading}
         />
       </div>
     )
