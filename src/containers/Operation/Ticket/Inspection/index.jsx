@@ -17,11 +17,17 @@ class Inspection extends Component {
     this.state = {};
   }
 
+  componentDidMount(){
+    this.props.getInspectionList({
+      inspectStatus: 2,
+    });
+  }
+
   render() {   
     return (
         <div>
           <div>巡检处理页面</div>
-          <InspectionList list={this.props.inspectionList} />
+          <InspectionList inspectionList={this.props.inspectionList}  getInspectionList={this.props.getInspectionList} />
         </div>
     );
   }
@@ -29,8 +35,8 @@ class Inspection extends Component {
 
 const mapStateToProps = (state) => ({
   inspectionList: state.operation.inspection.get('inspectionList'),
-  isFetching: state.operation.inspection.get('isFetching'),
-  error: state.operation.inspection.get('error'),
+  isFetching: state.login.get('isFetching'),
+  error: state.login.get('error'),
 })
 
 const mapDispatchToProps = (dispatch) => ({

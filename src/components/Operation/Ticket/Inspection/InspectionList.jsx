@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Table, Button, Radio } from 'antd';
+import { Table, Button, Radio, Icon } from 'antd';
 import { getStatus } from '../../../../constants/ticket';
 import styles from './list.scss';
 import Immutable from 'immutable';
@@ -8,18 +8,19 @@ import Immutable from 'immutable';
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
 
-class List extends Component {  
+class InspectionList extends Component {  
   static propTypes={
     inspectionList: PropTypes.object,
     currentPage: PropTypes.number,
     onChangePage: PropTypes.func,
     onChangePageSize: PropTypes.func,
+    getInspectionList: PropTypes.func,
     
   }
 
   static defaultProps={
     inspectionList: Immutable.fromJS([]),
-    currentPage:1,
+    currentPage: 1,
     currentSelectedStatus: null,
 
   }
@@ -29,49 +30,26 @@ class List extends Component {
     this.state={
       tab: "5",
       selectedRowKeys: [],
-
+      
     }
-    this.onSelectChange = this.onSelectChange.bind(this);
     this.onChangeTab = this.onChangeTab.bind(this);
-  }
-
-  onSelectChange(record, selected, selectedRows) {
-    let status = this.state.currentSelectedStatus;
-    let selectedRowKeys = this.state.selectedRowKeys;
-    if(selected) {
-      if(selectedRowKeys.length > 0) {
-        if(record.defectStatus === selectedRowKeys[0].defectStatus) {
-          selectedRowKeys.push(record.defectId);
-        }
-      } else {
-        selectedRowKeys.push(record.defectId);
-        status = record.defectStatus;
-      }
-    } else {
-      var index = selectedRowKeys.findIndex((item)=> {
-        return item.defectId === record.defectId;
-      });
-      selectedRowKeys.splice(index, 1);
-      if(selectedRowKeys.length === 0) {
-        status = null;
-      }
-    }
-    this.setState({
-      selectedRowKeys: selectedRowKeys,
-      currentSelectedStatus: status
-    });
   }
 
   onChangeTab(e){
     this.setState({
       tab: e.target.value,
     })
+    this.props.getInspectionList({
+      inspectStatus: e.target.value
+    })
+  }
+  onChangeTable(selectedRowKeys, selectedRows){
 
   }
   render(){
     let inspectionList = this.props.inspectionList;
-    let inProcessNum = inspectionList.filter((item) => { return item.get("defectStatus") === 2 });
-    let waitCheckNum = inspectionList.filter((item) => { return item.get("defectStatus") === 3 });
+    let inProcessNum = inspectionList.filter((item) => { return item.get("inspectStatus") === 2 }).size;
+    let waitCheckNum = inspectionList.filter((item) => { return item.get("inspectStatus") === 3 }).size;
 
     const pagination={
       total: inspectionList.size,
@@ -132,15 +110,29 @@ class List extends Component {
     const {selectedRowKeys} = this.state;
     const rowSelection = {
       selectedRowKeys,
-      onSelect: this.onSelectedChange,
+      onChange: (selectedRowKeys, selectedRows) => {
+        let status = this.state.currentSelectedStatus;
+        if(selectedRowKeys.length > 0){
+          selectedRows.forEach((e, i) => {
+            (e.inspectStatus !== selectedRows[0].inspectStatus) && (alert("请选择相同进度的工单进行处理！"))
+          })
+          status = selectedRows[0].inspectStatus;
+        }else{
+          status = null;
+        }
+        this.setState({
+          selectedRowKeys: selectedRowKeys,
+          currentSelectedStatus: status,
+        });
+      },
       getCheckboxProps: (record) => ({
-        disabled: record.defectStatus === 2 || record.defectStatus === 4,
-      })
+        disabled: record.inspectStatus === 2 || record.inspectStatus === 4,
+      }),
     }
 
     return(
-      <div>
-        <div>
+      <div className={styles.bugTicket}>
+        <div className={styles.action}>
           <div>
             <RadioGroup onChange={this.onChangeTab} default="2" value={this.state.tab} >
               <RadioButton value="5">全部</RadioButton>
@@ -148,10 +140,10 @@ class List extends Component {
               <RadioButton value="3">{`待验收${waitCheckNum}`}</RadioButton>
             </RadioGroup>
           </div>
-          <div>
-            <Button>新建</Button>
+          <div className={styles.add}>
+            <Button onClick={this.onAdd}><Icon type="plus" />新建</Button>
             {
-              this.state.currentSelectedStatus === 0 && 
+              this.state.currentSelectedStatus === 3 && 
                 <div>
                   <Button onClick={this.onConfirm}>确认</Button>
                 </div>
@@ -159,14 +151,16 @@ class List extends Component {
           </div>
         </div>
         <Table 
+          rowKey={(record) => { return record.inspectId }}
           dataSource={inspectionList.toJS()}
           columns= {columns}
           pagination= {pagination}
           rowSelection={rowSelection}
+          onChange={this.onChangeTable}
         />
       </div>
     )
   }
 }
 
-export default List;
+export default InspectionList;

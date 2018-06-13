@@ -13,7 +13,7 @@ module.exports = [
           stationName: '山东平原',
           startTime: '2018-03-12',
           deadLine: '2018-04-12',
-          defectStatus: Math.floor(Math.random()*5),
+          status: Math.floor(Math.random()*5),
         })),
       success: true,
     },

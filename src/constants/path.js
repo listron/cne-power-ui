@@ -26,7 +26,7 @@ export default {
     changeShowStatus: '/v3/relation/changeShowStatus',
     ticket: {
       getDefectList: '/v3/defect/worklist',
-
+      getInspectionList: '/v3/inspect/worklist',
     }
   }
 }
