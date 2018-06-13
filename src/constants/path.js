@@ -13,7 +13,7 @@ export default {
   },
   APISubPaths: {
     getCompInfo: '/v3/enterprise/domainLogin',
-    login: '/v3/user/userLogin',
+    login: '/v3/login',
     checkPhone: '/v3/user/validateEnterpriseRegPhoneNum',
     sendCode: '/v3/common/requestSmsCode',
     checkCode: '/v3/user/validateCaptcha',

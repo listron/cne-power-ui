@@ -9,7 +9,22 @@ var initState = immutable.fromJS({
   selectedFileterInfor: {},//选中的筛选项{selectedStation:[],selectedDevices:[]}
   defectList:[],//渲染为table的缺陷列表
   currentPage: 1,
-  currentPageSize: 10
+  currentPageSize: 10,
+  defectDetail: {
+    stationName: "",
+    deviceName: "",
+    defectTypeName: "",
+    defectLevel: 1,
+    defectDescribe: "",
+    images: [],
+    handleData: {
+      defectProposal: "",
+      defectSolveInfo: "",
+      replaceParts: "",
+      defectSolveResult: 0,
+      status: 3
+    }
+  }
 });
 
 const defectReducer = (state = initState, action) => {

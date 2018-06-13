@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Route,Redirect, Switch,withRouter} from 'react-router-dom';
 import {routerConfig} from '../../common/routerSetting';
-import Loadable from 'react-loadable';
 import styles from './style.scss';
 import { connect } from 'react-redux';
 import {getCookie} from '../../utils/index.js'
@@ -41,7 +40,7 @@ class Main extends Component {
   render() {
     const authData = getCookie('authData');
     if (authData && authData.length) {
-      axios.defaults.headers.common['Authorization'] = "Bearer " + JSON.parse(authData).access_token;
+      axios.defaults.headers.common['Authorization'] = "bearer " + JSON.parse(authData).access_token;
     }
     if(this.state.logined || getCookie('authData')){
       return (
@@ -54,19 +53,7 @@ class Main extends Component {
           </div>
           <div className={styles.content}>
             <Switch>
-              {routerConfig.map(e=>{
-                let Component = Loadable(e.component)
-                return (
-                  <Route 
-                    key={e.path} 
-                    path={e.path} 
-                    exact={e.exact} 
-                    render={(props)=>{
-                      return <Component {...props} />
-                    }}
-                  />
-                );
-              })}
+              {routerConfig}
               <Redirect to="/" />
             </Switch>
           </div>

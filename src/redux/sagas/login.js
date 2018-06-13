@@ -66,7 +66,7 @@ function* getCompInfo(action) {
 
 //登录
 function* login(action){
-  // let url = Config.APIBasePath + Path.APISubPaths.login;
+  // let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.login;
   let url = Config.TokenBasePath;
   // Content-Type: application/x-www-form-urlencoded; charset=UTF-8
   yield put({ type: BEGIN_FETCH });
