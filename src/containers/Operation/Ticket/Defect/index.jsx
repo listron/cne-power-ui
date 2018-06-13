@@ -75,18 +75,18 @@ class Defect extends Component {
 
   render() {   
     return (
-        <div>
-          <DefectList 
-            list={this.props.defectList} 
-            currentPage={this.props.currentPage}
-            currentPageSize={this.props.currentPageSize}
-            total={this.props.total}
-            status={this.props.status}
-            isFetching={this.props.isFetching}
-            onChangePage={this.onChangePage}
-            onChangePageSize={this.onChangePageSize}
-            onChangeStatus={this.onChangeStatus} />
-        </div>
+      <div>
+        <DefectList 
+          list={this.props.defectList} 
+          currentPage={this.props.currentPage}
+          currentPageSize={this.props.currentPageSize}
+          total={this.props.total}
+          status={this.props.status}
+          isFetching={this.props.isFetching}
+          onChangePage={this.onChangePage}
+          onChangePageSize={this.onChangePageSize}
+          onChangeStatus={this.onChangeStatus} />
+      </div>
     );
   }
 }
