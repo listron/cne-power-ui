@@ -8,7 +8,7 @@ import {
   GET_DEFECT_LIST_FAIL
 } from '../../../../constants/actionTypes/Ticket';
 
-//根据缺陷工单列表
+//获取缺陷工单列表
 function* getDefectList(action) {
   let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.ticket.getDefectList;
   yield put({ type: BEGIN_FETCH });
