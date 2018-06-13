@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Table, Radio, Button, Icon } from 'antd';
+import { Table, Radio, Button, Icon, message } from 'antd';
 import {getLevel, getStatus} from '../../../../constants/ticket';
 import styles from './list.scss';
 import Immutable from 'immutable';
@@ -21,7 +21,8 @@ class List extends Component {
     onOk: PropTypes.func,
     onNotOk: PropTypes.func,
     list: PropTypes.object,
-    currentPage: PropTypes.number
+    currentPage: PropTypes.number,
+    currentPageSize: PropTypes.number
   }
 
   static defaultProps = {
@@ -88,8 +89,10 @@ class List extends Component {
     let selectedRowKeys = this.state.selectedRowKeys;
     if(selected) {
       if(selectedRowKeys.length > 0) {
-        if(record.defectStatus === selectedRowKeys[0].defectStatus) {
+        if(record.defectStatus === status) {
           selectedRowKeys.push(record.defectId);
+        } else {
+          message.warning('请选择相同进度的缺陷进行处理！');
         }
       } else {
         selectedRowKeys.push(record.defectId);
@@ -97,7 +100,7 @@ class List extends Component {
       }
     } else {
       var index = selectedRowKeys.findIndex((item)=> {
-        return item.defectId === record.defectId;
+        return item === record.defectId;
       });
       selectedRowKeys.splice(index, 1);
       if(selectedRowKeys.length === 0) {
@@ -141,8 +144,8 @@ class List extends Component {
       sorter: true,
     }, {
       title: '缺陷类型',
-      dataIndex: 'number',
-      key: 'number',
+      dataIndex: 'defectTypeName',
+      key: 'defectTypeName',
       sorter: true,
     }, {
       title: '缺陷描述',
@@ -155,14 +158,14 @@ class List extends Component {
       key: 'startTime',
       sorter: true,
     }, {
-      title: '截止时间',
+      title: '完成时间',
       dataIndex: 'startTime',
       key: 'deadLine',
       sorter: true,
     }, {
       title: '处理进度',
-      dataIndex: 'status',
-      key: 'status',
+      dataIndex: 'defectStatus',
+      key: 'defectStatus',
       render: (value,record,index) => (
         <div>
           <span>{getStatus(value)}</span>
@@ -174,8 +177,10 @@ class List extends Component {
       ),
     }, {
       title: '查看',
-      render:(text, record) =>(
-        <span></span>
+      render:(text, record) => (
+        <span>
+          <Icon type="eye-o" />
+        </span>
       )
     }];
 
@@ -184,6 +189,7 @@ class List extends Component {
       showQuickJumper: true,
       showSizeChanger: true,
       current: this.props.currentPage,
+      pageSize: this.props.currentPageSize,
       onShowSizeChange: (current, pageSize) => {
         this.props.onChangePageSize(pageSize);
       },
@@ -213,20 +219,20 @@ class List extends Component {
               <RadioButton value="3">{`待验收${waitCheckNum}`}</RadioButton>
             </RadioGroup>
           </div>
-          <div>
+          <div className={styles.buttonArea}>
             <Button onClick={this.onAdd}>
               {/* <span className="iconfont icon-add" />  */}
               <Icon type="plus" />
               新建
             </Button>
             {
-              this.state.currentSelectedStatus === 0 &&
+              this.state.currentSelectedStatus === "0" &&
                 <div>
                   <Button onClick={this.onDelete}>删除</Button>
                 </div>
             }
             {
-              this.state.currentSelectedStatus === 1 &&
+              this.state.currentSelectedStatus === "1" &&
                 <div>
                   <Button onClick={this.onSend}>下发</Button>
                   <Button onClick={this.onReject}>驳回</Button>
@@ -234,7 +240,7 @@ class List extends Component {
                 </div>
             }
             {
-              this.state.currentSelectedStatus === 3 &&
+              this.state.currentSelectedStatus === "3" &&
                 <div>
                   <Button onClick={this.onOk}>合格</Button>
                   <Button onClick={this.onNotOk}>不合格</Button>
