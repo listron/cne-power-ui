@@ -25,7 +25,7 @@ class Defect extends Component {
 
   componentDidMount() {
     var params = {
-      defectSource: "0",
+      defectSource: "3",
       stationType: "2",
       status: this.props.status,
       pageNum: this.props.currentPage - 1,
@@ -37,7 +37,7 @@ class Defect extends Component {
   onChangePage(page) {
     if(page !== this.currentPage) {
       let params = {
-        defectSource: "0",
+        defectSource: "3",
         stationType: "2",
         status: this.props.status,
         pageNum: page - 1,
@@ -50,7 +50,7 @@ class Defect extends Component {
   onChangePageSize(pageSize) {
     if(pageSize !== this.props.currentPageSize) {
       let params = {
-        defectSource: "0",
+        defectSource: "3",
         stationType: "2",
         status: this.props.status,
         pageNum: this.props.currentPage - 1,
@@ -63,7 +63,7 @@ class Defect extends Component {
   onChangeStatus(status) {
     if(status !== this.props.status) {
       let params = {
-        defectSource: "0",
+        defectSource: "3",
         stationType: "2",
         status: status,
         pageNum: this.props.currentPage - 1,
