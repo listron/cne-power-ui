@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Table, Radio, Button, Icon, message } from 'antd';
+import { Table, Radio, Button, Icon, Modal } from 'antd';
 import {getLevel, getStatus} from '../../../../constants/ticket';
 import styles from './list.scss';
 import Immutable from 'immutable';
 
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
+const confirm = Modal.confirm;
 
 class List extends Component {
   static propTypes = {
@@ -59,11 +60,19 @@ class List extends Component {
   }
 
   onAdd() {
-
+    this.props.onAdd();
   }
 
   onDelete() {
-
+    confirm({
+      title: '确认删除此缺陷',
+      onOk() {
+        this.props.onDelete(this.state.selectedRowKeys);
+      },
+      onCancel() {
+        console.log('Cancel');
+      },
+    });
   }
 
   onSend() {

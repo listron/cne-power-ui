@@ -54,7 +54,6 @@ class ExceptionItem extends Component {
     if(this.props.status === "delete") {
       return (
         <div 
-          onClick={()=>{this.props.onshowDetail(this.props.label)}}
           className={styles.deleteItem}
           className={classnames({
             [styles.deleteItem]: !this.props.selected,
@@ -62,7 +61,7 @@ class ExceptionItem extends Component {
           })}
           style={{height: this.props.height, width: this.props.width}}
         >
-          <Icon style="eye-o" />
+          <Icon style="eye-o" onClick={()=>{this.props.onshowDetail(this.props.label)}} />
           <div className={styles.itemLabel}>{this.props.label}</div>
           <Icon type="close" onClick={this.onDeleteItem} />
         </div>
