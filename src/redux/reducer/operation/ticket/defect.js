@@ -20,19 +20,22 @@ var initState = immutable.fromJS({
   total: 100,
   status: "5",
   defectDetail: {
+    dedectId: "",
     stationName: "",
     deviceName: "",
     defectTypeName: "",
     defectLevel: 1,
     defectDescribe: "",
+    defectStatus: "1",
     images: [],
     handleData: {
       defectProposal: "",
       defectSolveInfo: "",
       replaceParts: "",
       defectSolveResult: 0,
-      status: 3
-    }
+      status: "1"
+    },
+    processData: []
   }
 });
 
