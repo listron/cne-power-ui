@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Table, Radio, Button, Icon, Modal } from 'antd';
-import {getLevel, getStatus} from '../../../../constants/ticket';
-import styles from './list.scss';
+import {getLevel, getStatus} from '../../../../../constants/ticket';
+import styles from './style.scss';
 import Immutable from 'immutable';
 
 const RadioButton = Radio.Button;
