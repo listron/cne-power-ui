@@ -25,6 +25,7 @@ class List extends Component {
     currentPage: PropTypes.number,
     currentPageSize: PropTypes.number,
     total: PropTypes.number,
+    defectStatusStatistics: PropTypes.object,
     isFetching: PropTypes.bool,
     status: PropTypes.string
   }
@@ -131,10 +132,11 @@ class List extends Component {
 
   render() {
     let list = this.props.list;
-    let waitSubmitNum = list.filter((item) => {return item.get("defectStatus") === 0}).size;
-    let waitReviewNum = list.filter((item) => {return item.get("defectStatus") === 1}).size;
-    let inProcessNum = list.filter((item) => {return item.get("defectStatus") === 2}).size;
-    let waitCheckNum = list.filter((item) => {return item.get("defectStatus") === 3}).size;
+    let defectStatusStatistics = this.props.defectStatusStatistics;
+    let waitSubmitNum = defectStatusStatistics.get("submitNum");
+    let waitReviewNum = defectStatusStatistics.get("examineNum");
+    let inProcessNum = defectStatusStatistics.get("executeNum");
+    let waitCheckNum = defectStatusStatistics.get("checkNum");
 
     const columns = [{
       title: '缺陷级别',
@@ -171,8 +173,8 @@ class List extends Component {
       sorter: true,
     }, {
       title: '完成时间',
-      dataIndex: 'deadLine',
-      key: 'deadLine',
+      dataIndex: 'finishTime',
+      key: 'finishTime',
       sorter: true,
     }, {
       title: '处理进度',
@@ -197,7 +199,7 @@ class List extends Component {
     }];
 
     const pagination = {
-      total: list.size,
+      total: this.props.total,
       showQuickJumper: true,
       showSizeChanger: true,
       current: this.props.currentPage,

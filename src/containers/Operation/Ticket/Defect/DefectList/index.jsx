@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { GET_DEFECT_LIST_SAGA, DELETE_BATCH_DEFECT_SAGA } from '../../../../constants/actionTypes/Ticket';
-import DefectList from '../../../../components/Operation/Ticket/Defect/List';
+import { GET_DEFECT_LIST_SAGA, DELETE_BATCH_DEFECT_SAGA } from '../../../../../constants/actionTypes/Ticket';
+import List from '../../../../../components/Operation/Ticket/Defect/List';
 
-class Defect extends Component {
+class DefectList extends Component {
   static propTypes = {
     defectList: PropTypes.object,
     currentPage: PropTypes.number,
     currentPageSize: PropTypes.number,
     total: PropTypes.number,
+    defectStatusStatistics: PropTypes.object,
     isFetching: PropTypes.bool,
     error: PropTypes.string,
     status: PropTypes.string,
@@ -82,11 +83,12 @@ class Defect extends Component {
   render() {   
     return (
       <div>
-        <DefectList 
+        <List 
           list={this.props.defectList} 
           currentPage={this.props.currentPage}
           currentPageSize={this.props.currentPageSize}
           total={this.props.total}
+          defectStatusStatistics={this.props.defectStatusStatistics}
           status={this.props.status}
           isFetching={this.props.isFetching}
           onChangePage={this.onChangePage}
@@ -100,6 +102,7 @@ class Defect extends Component {
 
 const mapStateToProps = (state) => ({
   defectList: state.operation.defect.get('defectList'),
+  defectStatusStatistics: state.operation.defect.get('defectStatusStatistics'),
   isFetching: state.operation.defect.get('isFetching'),
   error: state.operation.defect.get('error'),
   currentPage: state.operation.defect.get("currentPage"),
@@ -113,4 +116,4 @@ const mapDispatchToProps = (dispatch) => ({
   onBatchDelete: params => dispatch({ type: DELETE_BATCH_DEFECT_SAGA, params }),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Defect);
+export default connect(mapStateToProps, mapDispatchToProps)(DefectList);

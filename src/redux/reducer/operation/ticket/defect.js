@@ -15,24 +15,33 @@ var initState = immutable.fromJS({
   fileterAllInfor:[],//顶部筛选所有数据[{stations:[],devices:[]...}]
   selectedFileterInfor: {},//选中的筛选项{selectedStation:[],selectedDevices:[]}
   defectList:[],//渲染为table的缺陷列表
+  defectStatusStatistics:{
+    submitNum: 0,
+    examineNum: 0,
+    executeNum: 0,
+    checkNum: 0,
+  },
   currentPage: 1,
   currentPageSize: 10,
-  total: 100,
+  total: 0,
   status: "5",
-  defectDetail: {
+  defectDetail: {//缺陷详情
+    dedectId: "",
     stationName: "",
     deviceName: "",
     defectTypeName: "",
     defectLevel: 1,
     defectDescribe: "",
+    defectStatus: "1",
     images: [],
     handleData: {
       defectProposal: "",
       defectSolveInfo: "",
       replaceParts: "",
       defectSolveResult: 0,
-      status: 3
-    }
+      status: "1"
+    },
+    processData: []
   }
 });
 
@@ -42,7 +51,9 @@ const defectReducer = (state = initState, action) => {
       return state.set('isfetching', true)
     case GET_DEFECT_LIST_SUCCESS:  
       return state.set('isFetching', false)
-                  .set('defectList', immutable.fromJS(action.data))
+                  .set('total', action.data.total)
+                  .set('defectList', immutable.fromJS(action.data.defectList))
+                  .set('defectStatusStatistics', immutable.fromJS(action.data.defectStatusStatistics))
                   .set('currentPage', (action.params.pageNum + 1))
                   .set('currentPageSize', action.params.pageSize)
                   .set('status', action.params.status);

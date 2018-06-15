@@ -20,7 +20,7 @@ function* getDefectList(action) {
     if(response.data.code === "10000"){
       yield put({ 
         type: GET_DEFECT_LIST_SUCCESS, 
-        data: response.data.data.data, 
+        data: response.data.data, 
         params: action.params 
       });      
     }else{

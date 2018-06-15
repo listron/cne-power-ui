@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {Tabs} from 'antd';
-import Defect from './Defect';
-import Inspection from './Inspection';
+import Defect from './Defect/DefectList';
+import Inspection from './Inspect/InspectList';
 const TabPane = Tabs.TabPane;
 
 

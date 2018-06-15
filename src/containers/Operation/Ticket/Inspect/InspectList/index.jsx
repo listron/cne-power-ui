@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import InspectionList from '../../../../components/Operation/Ticket/Inspection/InspectionList';
+import InspectionList from '../../../../components/Operation/Ticket/Inspect/InspectList';
 import { GET_INSPECTION_LIST_SAGA } from "../../../../constants/actionTypes/Ticket";
 import { connect } from "react-redux";
 import PropTypes from 'prop-types';
-class Inspection extends Component {
+class InspectList extends Component {
   static propTypes={
     inspectionList: PropTypes.object,
     getInspectionList: PropTypes.func,
@@ -77,22 +77,22 @@ class Inspection extends Component {
   render() {   
     console.log(this.props.inspectStatusStatistics)
     return (
-        <div>
-          <div>巡检处理页面</div>
-          <InspectionList 
-          list={this.props.inspectionList} 
-          getInspectionList={this.props.getInspectionList}
-          pageNum={this.props.pageNum}
-          pageSize={this.props.pageSize}
-          total={this.props.total}
-          status={this.props.status}
-          isFetching={this.props.isFetching}
-          onChangePage={this.onChangePage}
-          onChangePageSize={this.onChangePageSize}
-          onChangeStatus={this.onChangeStatus}
-          inspectStatusStatistics={this.props.inspectStatusStatistics}
-           />
-        </div>
+      <div>
+        <div>巡检处理页面</div>
+        <InspectionList 
+        list={this.props.inspectionList} 
+        getInspectionList={this.props.getInspectionList}
+        pageNum={this.props.pageNum}
+        pageSize={this.props.pageSize}
+        total={this.props.total}
+        status={this.props.status}
+        isFetching={this.props.isFetching}
+        onChangePage={this.onChangePage}
+        onChangePageSize={this.onChangePageSize}
+        onChangeStatus={this.onChangeStatus}
+        inspectStatusStatistics={this.props.inspectStatusStatistics}
+          />
+      </div>
     );
   }
 }
@@ -112,4 +112,4 @@ const mapDispatchToProps = (dispatch) => ({
   getInspectionList: params => dispatch({ type: GET_INSPECTION_LIST_SAGA, params }),
 })
 
-export default connect(mapStateToProps,mapDispatchToProps)(Inspection);
+export default connect(mapStateToProps,mapDispatchToProps)(InspectList);
