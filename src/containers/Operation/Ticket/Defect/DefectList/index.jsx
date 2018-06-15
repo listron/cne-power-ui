@@ -56,7 +56,7 @@ class DefectList extends Component {
         defectSource: "3",
         stationType: "2",
         status: this.props.status,
-        pageNum: this.props.currentPage - 1,
+        pageNum: 0,
         pageSize: pageSize
       }
       this.props.getDefectList(params);
@@ -69,7 +69,7 @@ class DefectList extends Component {
         defectSource: "3",
         stationType: "2",
         status: status,
-        pageNum: this.props.currentPage - 1,
+        pageNum: 0,
         pageSize: this.props.currentPageSize
       }
       this.props.getDefectList(params);
