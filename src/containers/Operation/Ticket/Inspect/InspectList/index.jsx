@@ -5,15 +5,15 @@ import { connect } from "react-redux";
 import PropTypes from 'prop-types';
 class InspectList extends Component {
   static propTypes={
-    inspectionList: PropTypes.object,
-    getInspectionList: PropTypes.func,
+    inspectList: PropTypes.object,
+    getInspectList: PropTypes.func,
     pageNum: PropTypes.number,
     pageSize: PropTypes.number,
     total: PropTypes.number,
     isFetching: PropTypes.bool,
     error: PropTypes.object,
-    status: PropTypes.number,
-    inspectStatusStatistics: PropTypes.any,
+    status: PropTypes.string,
+    inspectStatusStatistics: PropTypes.object,
   }
 
   constructor(props,context) {
@@ -32,7 +32,7 @@ class InspectList extends Component {
       pageSize: this.props.pageSize,
       total: this.props.total,
     }
-    this.props.getInspectionList(params);
+    this.props.getInspectList(params);
   }
 
   onChangeStatus(status){
@@ -44,7 +44,7 @@ class InspectList extends Component {
         pageSize: this.props.pageSize,
         total: this.props.total,
       }
-      this.props.getInspectionList(params);
+      this.props.getInspectList(params);
     }
   }
 
@@ -57,7 +57,7 @@ class InspectList extends Component {
         pageSize: this.props.pageSize,
         total: this.props.total,
       }
-      this.props.getInspectionList(params);
+      this.props.getInspectList(params);
     }
   }
 
@@ -70,7 +70,7 @@ class InspectList extends Component {
         pagesize: pagesize,
         total: this.props.total,
       }
-      this.props.getInspectionList(params);
+      this.props.getInspectList(params);
     }
   }
 
@@ -80,8 +80,8 @@ class InspectList extends Component {
       <div>
         <div>巡检处理页面</div>
         <InspectionList 
-        list={this.props.inspectionList} 
-        getInspectionList={this.props.getInspectionList}
+        list={this.props.inspectList} 
+        getInspectionList={this.props.getInspectList}
         pageNum={this.props.pageNum}
         pageSize={this.props.pageSize}
         total={this.props.total}
@@ -98,7 +98,7 @@ class InspectList extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  inspectionList: state.operation.inspection.get('inspectionList'),
+  inspectList: state.operation.inspection.get('inspectionList'),
   isFetching: state.operation.inspection.get('isFetching'),
   error: state.operation.inspection.get('error'),
   pageNum: state.operation.inspection.get('pageNum'),
@@ -109,7 +109,7 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  getInspectionList: params => dispatch({ type: GET_INSPECTION_LIST_SAGA, params }),
+  getInspectList: params => dispatch({ type: GET_INSPECTION_LIST_SAGA, params }),
 })
 
 export default connect(mapStateToProps,mapDispatchToProps)(InspectList);

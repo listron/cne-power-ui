@@ -2,7 +2,7 @@ import immutable from 'immutable';
 import { BEGIN_FETCH, GET_INSPECTION_LIST_SUCCESS ,GET_INSPECTION_LIST_FAIL } from '../../../../constants/actionTypes/Ticket';
 
 var initState = immutable.fromJS({
-  inspectionList:[],
+  inspectList:[],
   pageNum: 1,
   pageSize: 10,
   isFetching: false,
@@ -10,8 +10,9 @@ var initState = immutable.fromJS({
     code: "",
     message: ""
   },
-  status: 5,
+  status: "5",
   stationType: "2",
+  total: 0,
   defectStatusStatistics: {
     "checkNum": 10,
     "executeNum": 110
@@ -24,11 +25,12 @@ const inspectReducer = (state = initState, action) => {
       return state.set('isfetching', true)
     case GET_INSPECTION_LIST_SUCCESS:  
       return state.set('isFetching', false)
-                  .set('inspectionList', immutable.fromJS(action.data))
+                  .set('inspectList', immutable.fromJS(action.data.inspectList))
                   .set('pageNum', action.params.pageNum)
                   .set('pageSize', action.params.pageSize)
+                  .set('total', action.data.total)
                   .set('status', action.params.status)
-                  .set('defectStatusStatistics', action.params.inspectStatusStatistics)
+                  .set('defectStatusStatistics', immutable.fromJS(action.data.inspectStatusStatistics))
     case GET_INSPECTION_LIST_FAIL:
       return state.set('error', immutable.fromJS(action.error))
   }
