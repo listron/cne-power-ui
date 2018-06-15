@@ -23,16 +23,16 @@ export function getStatus(value) {
 export function getLevel(value) {
   var result = "";
   switch(value) {
-    case 1:
+    case "1":
       result = "一级";
       break;
-    case 2:
+    case "2":
       result = "二级";
       break;
-    case 3:
+    case "3":
       result = "三级";
       break;
-    case 4:
+    case "4":
       result = "四级";
       break;
   }
