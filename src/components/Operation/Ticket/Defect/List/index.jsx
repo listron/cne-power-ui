@@ -32,14 +32,14 @@ class List extends Component {
 
   static defaultProps = {
     list: Immutable.fromJS([]),
-    currentPage: 1,
-    currentSelectedStatus: null
+    currentPage: 1
   }
 
   constructor(props) {
     super(props);
     this.state = {
-      selectedRowKeys: []
+      selectedRowKeys: [],
+      currentSelectedStatus: null
     };
     this.onChangeTab = this.onChangeTab.bind(this);
     this.onAdd = this.onAdd.bind(this);
