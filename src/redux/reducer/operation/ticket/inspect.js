@@ -9,7 +9,7 @@ var initState = immutable.fromJS({
   error: '',
 });
 
-const inspectionReducer = (state = initState, action) => {
+const inspectReducer = (state = initState, action) => {
   // switch (action.type) {
   //   case UPDATE_COUNT:
   //     return state.set('count', action.number)
@@ -24,4 +24,4 @@ const inspectionReducer = (state = initState, action) => {
 }
 
 
-export default inspectionReducer;
+export default inspectReducer;
