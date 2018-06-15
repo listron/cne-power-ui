@@ -50,13 +50,9 @@ class List extends Component {
 
   render(){
     let list = this.props.list;
-    console.log(list.toJS());
-    let inspectStatusStatistics = this.props.inspectStatusStatistics;
-    console.log(inspectStatusStatistics);
-    console.log(inspectStatusStatistics.toJS());
-    console.log("--------");
-    let inProcessNum =0// statusStatistics.get("executeNum");
-    let waitCheckNum =0 //statusStatistics.get("checkNum");   
+    let statistics = this.props.inspectStatusStatistics;
+    let inProcessNum = statistics.get("executeNum");
+    let waitCheckNum = statistics.get("checkNum");   
     const pagination={
       total: this.props.total,
       showQuickJumper: true,

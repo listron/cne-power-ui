@@ -36,6 +36,7 @@ class InspectList extends Component {
 
   onChangeStatus(status){
     if(status !== this.props.status){
+      console.log(status);
       let params = {
         stationType: "2",
         status: status,
@@ -70,8 +71,7 @@ class InspectList extends Component {
     }
   }
 
-  render() {   
-    console.log(this.props.inspectStatusStatistics)
+  render() {
     return (
       <div>
         <div>巡检处理页面</div>
