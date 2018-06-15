@@ -11,19 +11,25 @@ import {
 
 //获取巡检列表信息
 function* getInspectionList(action){
-  // let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.ticket.getInspectionList;
-  let url = '/mock/operation/inspectionList';
+  let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.ticket.getInspectionList;
+  // let url = '/mock/operation/inspectionList';
   yield put({ type: BEGIN_FETCH});
   try{
     const response = yield call(axios.post, url, action.params);
     if(response.data.code === "10000"){
       yield put({
         type: GET_INSPECTION_LIST_SUCCESS,
-        data: response.data.data.data,
+        data: response.data.data,
         params: action.params,
       });
     }else{
-      yield put({ type: GET_INSPECTION_LIST_FAIL, data:{error:response.data.code }});
+      yield put({ 
+        type: GET_INSPECTION_LIST_FAIL, 
+        error: {
+          code: response.data.code,
+          message: response.data.message
+        }  
+      });
     }
   }catch(e){
     console.log(e);

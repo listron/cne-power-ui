@@ -1,18 +1,21 @@
 import immutable from 'immutable';
-import { BEGIN_FETCH, GET_INSPECTION_LIST_SUCCESS } from '../../../../constants/actionTypes/Ticket';
+import { BEGIN_FETCH, GET_INSPECTION_LIST_SUCCESS ,GET_INSPECTION_LIST_FAIL } from '../../../../constants/actionTypes/Ticket';
 
 var initState = immutable.fromJS({
   inspectionList:[],
   pageNum: 1,
   pageSize: 10,
   isFetching: false,
-  error: '',
-  fileterAllInfor: [],
-  selectedFileterInfor: {},
-  total: 100,
+  error: {
+    code: "",
+    message: ""
+  },
   status: 5,
   stationType: "2",
-
+  defectStatusStatistics: {
+    "checkNum": 10,
+    "executeNum": 110
+  },
 });
 
 const inspectionReducer = (state = initState, action) => {  
@@ -24,7 +27,10 @@ const inspectionReducer = (state = initState, action) => {
                   .set('inspectionList', immutable.fromJS(action.data))
                   .set('pageNum', action.params.pageNum)
                   .set('pageSize', action.params.pageSize)
-                  .set('status', action.params.status) 
+                  .set('status', action.params.status)
+                  .set('defectStatusStatistics', action.params.inspectStatusStatistics)
+    case GET_INSPECTION_LIST_FAIL:
+      return state.set('error', immutable.fromJS(action.error))
   }
   return state;
 }

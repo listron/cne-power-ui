@@ -17,6 +17,7 @@ class InspectionList extends Component {
     getInspectionList: PropTypes.func,
     loading: PropTypes.bool,
     onChangeStatus: PropTypes.func,
+    inspectStatusStatistics: PropTypes.any,
   }
 
   static defaultProps={
@@ -40,7 +41,7 @@ class InspectionList extends Component {
     this.setState({
       tab: e.target.value,
     })
-    this.props.onChangeStatus(e.target.value);
+    this.props.onChangeStatus(parseInt(e.target.value));
   }
 
   onChangeTable(pagination, filter, sorter){
@@ -49,8 +50,13 @@ class InspectionList extends Component {
 
   render(){
     let list = this.props.list;
-    let inProcessNum = list.filter((item) => { return item.get("inspectStatus") === 2 }).size;
-    let waitCheckNum = list.filter((item) => { return item.get("inspectStatus") === 3 }).size;   
+    console.log(list.toJS());
+    let inspectStatusStatistics = this.props.inspectStatusStatistics;
+    console.log(inspectStatusStatistics);
+    console.log(inspectStatusStatistics.toJS());
+    console.log("--------");
+    let inProcessNum =0// statusStatistics.get("executeNum");
+    let waitCheckNum =0 //statusStatistics.get("checkNum");   
     const pagination={
       total: list.size,
       showQuickJumper: true,

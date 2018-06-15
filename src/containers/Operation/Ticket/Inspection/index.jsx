@@ -11,8 +11,9 @@ class Inspection extends Component {
     pageSize: PropTypes.number,
     total: PropTypes.number,
     isFetching: PropTypes.bool,
-    error: PropTypes.string,
+    error: PropTypes.object,
     status: PropTypes.number,
+    inspectStatusStatistics: PropTypes.any,
   }
 
   constructor(props,context) {
@@ -29,6 +30,7 @@ class Inspection extends Component {
       status: this.props.status,
       pageNum: this.props.pageNum,
       pageSize: this.props.pageSize,
+      total: this.props.total,
     }
     this.props.getInspectionList(params);
   }
@@ -40,6 +42,7 @@ class Inspection extends Component {
         status: status,
         pageNum: this.props.pageNum,
         pageSize: this.props.pageSize,
+        total: this.props.total,
       }
       this.props.getInspectionList(params);
     }
@@ -52,6 +55,7 @@ class Inspection extends Component {
         status: this.props.status,
         pageNum: page,
         pageSize: this.props.pageSize,
+        total: this.props.total,
       }
       this.props.getInspectionList(params);
     }
@@ -64,12 +68,14 @@ class Inspection extends Component {
         status: this.props.status,
         pageNum: 1,
         pagesize: pagesize,
+        total: this.props.total,
       }
       this.props.getInspectionList(params);
     }
   }
 
   render() {   
+    console.log(this.props.inspectStatusStatistics)
     return (
         <div>
           <div>巡检处理页面</div>
@@ -84,6 +90,7 @@ class Inspection extends Component {
           onChangePage={this.onChangePage}
           onChangePageSize={this.onChangePageSize}
           onChangeStatus={this.onChangeStatus}
+          inspectStatusStatistics={this.props.inspectStatusStatistics}
            />
         </div>
     );
@@ -92,12 +99,13 @@ class Inspection extends Component {
 
 const mapStateToProps = (state) => ({
   inspectionList: state.operation.inspection.get('inspectionList'),
-  isFetching: state.login.get('isFetching'),
-  error: state.login.get('error'),
+  isFetching: state.operation.inspection.get('isFetching'),
+  error: state.operation.inspection.get('error'),
   pageNum: state.operation.inspection.get('pageNum'),
   pageSize: state.operation.inspection.get('pageSize'),
   total: state.operation.inspection.get('total'),
   status: state.operation.inspection.get('status'),
+  inspectStatusStatistics: state.operation.inspection.get('defectStatusStatistics'),
 })
 
 const mapDispatchToProps = (dispatch) => ({
