@@ -10,6 +10,7 @@ class Defect extends Component {
     currentPage: PropTypes.number,
     currentPageSize: PropTypes.number,
     total: PropTypes.number,
+    defectStatusStatistics: PropTypes.object,
     isFetching: PropTypes.bool,
     error: PropTypes.string,
     status: PropTypes.string,
@@ -87,6 +88,7 @@ class Defect extends Component {
           currentPage={this.props.currentPage}
           currentPageSize={this.props.currentPageSize}
           total={this.props.total}
+          defectStatusStatistics={this.props.defectStatusStatistics}
           status={this.props.status}
           isFetching={this.props.isFetching}
           onChangePage={this.onChangePage}
@@ -100,6 +102,7 @@ class Defect extends Component {
 
 const mapStateToProps = (state) => ({
   defectList: state.operation.defect.get('defectList'),
+  defectStatusStatistics: state.operation.defect.get('defectStatusStatistics'),
   isFetching: state.operation.defect.get('isFetching'),
   error: state.operation.defect.get('error'),
   currentPage: state.operation.defect.get("currentPage"),

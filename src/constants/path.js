@@ -25,7 +25,7 @@ export default {
     getShowStatus: '/v3/relation/queryShowStatus',
     changeShowStatus: '/v3/relation/changeShowStatus',
     ticket: {
-      getDefectList: '/v3/defect/worklist',
+      getDefectList: '/v3/defect/worklist/pc',
       batchDeleteDefect: '/v3/defect/delete/batch',
     }
   }

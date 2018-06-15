@@ -7,8 +7,9 @@ import styles from './style.scss';
 class InputLimit extends Component {
   static propTypes = {
     placeHolder: PropTypes.string,
+    value: PropTypes.string,
     size: PropTypes.number,
-    handleInput: PropTypes.func,
+    onChange: PropTypes.func,
     width: PropTypes.number,
     height: PropTypes.number,
   }
@@ -28,11 +29,11 @@ class InputLimit extends Component {
   }
 
   checkWord(e) {
-    const textValue=e.target.value;
+    const textValue = e.target.value;
     this.setState({
       current: textValue.length,
     })
-    this.props.handleInput(textValue);
+    this.props.onChange(textValue);
   }
 
   render() {
@@ -41,6 +42,7 @@ class InputLimit extends Component {
       <div className={styles.inputLimit}>
         <div className={styles.inputCount}>({this.state.current}/{this.props.size})</div>
         <TextArea 
+          value={this.props.value}
           placeholder={this.props.placeHolder}
           onChange={this.checkWord} 
           maxLength={this.props.size} 
