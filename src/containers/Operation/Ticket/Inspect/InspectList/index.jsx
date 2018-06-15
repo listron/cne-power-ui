@@ -100,7 +100,7 @@ const mapStateToProps = (state) => ({
   pageSize: state.operation.inspect.get('pageSize'),
   total: state.operation.inspect.get('total'),
   status: state.operation.inspect.get('status'),
-  inspectStatusStatistics: state.operation.inspect.get('defectStatusStatistics'),
+  inspectStatusStatistics: state.operation.inspect.get('inspectStatusStatistics'),
 })
 
 const mapDispatchToProps = (dispatch) => ({

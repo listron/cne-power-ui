@@ -12,7 +12,6 @@ import {
 //获取巡检列表信息
 function* getInspectionList(action){
   let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.ticket.getInspectionList;
-  // let url = '/mock/operation/inspectionList';
   yield put({ type: BEGIN_FETCH});
   try{
     const response = yield call(axios.post, url, action.params);

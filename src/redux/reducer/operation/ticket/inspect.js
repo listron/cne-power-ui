@@ -13,7 +13,7 @@ var initState = immutable.fromJS({
   status: "5",
   stationType: "2",
   total: 0,
-  defectStatusStatistics: {
+  inspectStatusStatistics: {
     "checkNum": 10,
     "executeNum": 110
   },
@@ -30,7 +30,7 @@ const inspectReducer = (state = initState, action) => {
                   .set('pageSize', action.params.pageSize)
                   .set('total', action.data.total)
                   .set('status', action.params.status)
-                  .set('defectStatusStatistics', immutable.fromJS(action.data.inspectStatusStatistics))
+                  .set('inspectStatusStatistics', immutable.fromJS(action.data.inspectStatusStatistics))
     case GET_INSPECT_LIST_FAIL:
       return state.set('error', immutable.fromJS(action.error))
   }
