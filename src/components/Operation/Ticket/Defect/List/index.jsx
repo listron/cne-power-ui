@@ -1,16 +1,17 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Table, Radio, Button, Icon } from 'antd';
-import {getLevel, getStatus} from '../../../../constants/ticket';
-import styles from './list.scss';
+import { Table, Radio, Button, Icon, Modal } from 'antd';
+import {getLevel, getStatus} from '../../../../../constants/ticket';
+import styles from './style.scss';
 import Immutable from 'immutable';
 
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
+const confirm = Modal.confirm;
 
 class List extends Component {
   static propTypes = {
-    onChangeTab: PropTypes.func,
+    onChangeStatus: PropTypes.func,
     onChangePage: PropTypes.func,
     onChangePageSize: PropTypes.func,
     onAdd: PropTypes.func,
@@ -21,7 +22,12 @@ class List extends Component {
     onOk: PropTypes.func,
     onNotOk: PropTypes.func,
     list: PropTypes.object,
-    currentPage: PropTypes.number
+    currentPage: PropTypes.number,
+    currentPageSize: PropTypes.number,
+    total: PropTypes.number,
+    defectStatusStatistics: PropTypes.object,
+    isFetching: PropTypes.bool,
+    status: PropTypes.string
   }
 
   static defaultProps = {
@@ -33,7 +39,6 @@ class List extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      tab: "5",
       selectedRowKeys: []
     };
     this.onChangeTab = this.onChangeTab.bind(this);
@@ -50,17 +55,25 @@ class List extends Component {
 
   onChangeTab(e) {
     this.setState({
-      tab: e.target.value
+      selectedRowKeys: []
     });
-    this.props.onChangeTab(parseInt(e.target.value));
+    this.props.onChangeStatus(e.target.value);
   }
 
   onAdd() {
-
+    this.props.onAdd();
   }
 
   onDelete() {
-
+    confirm({
+      title: '确认删除此缺陷',
+      onOk() {
+        this.props.onDelete(this.state.selectedRowKeys);
+      },
+      onCancel() {
+        console.log('Cancel');
+      },
+    });
   }
 
   onSend() {
@@ -83,27 +96,8 @@ class List extends Component {
 
   }
 
-  onSelectChange(record, selected, selectedRows) {
-    let status = this.state.currentSelectedStatus;
-    let selectedRowKeys = this.state.selectedRowKeys;
-    if(selected) {
-      if(selectedRowKeys.length > 0) {
-        if(record.defectStatus === selectedRowKeys[0].defectStatus) {
-          selectedRowKeys.push(record.defectId);
-        }
-      } else {
-        selectedRowKeys.push(record.defectId);
-        status = record.defectStatus;
-      }
-    } else {
-      var index = selectedRowKeys.findIndex((item)=> {
-        return item.defectId === record.defectId;
-      });
-      selectedRowKeys.splice(index, 1);
-      if(selectedRowKeys.length === 0) {
-        status = null;
-      }
-    }
+  onSelectChange(selectedRowKeys, selectedRows) {
+    let status = this.getSelectedRowsStatus(selectedRows);
     this.setState({
       selectedRowKeys: selectedRowKeys,
       currentSelectedStatus: status
@@ -114,12 +108,35 @@ class List extends Component {
 
   }
 
+  getSelectedRowsStatus(selectedRows) {
+    let map = {};
+    let status;
+    for(var i = 0; i < selectedRows.length; i++) {
+      if(!map[selectedRows[i].defectStatus]) {
+        map[selectedRows[i].defectStatus] = 1;
+      } else {
+        map[selectedRows[i].defectStatus] += 1;
+      }
+    }
+    let values = [];
+    for(var k in map) {
+      values.push(map[k]);
+      status = k;
+    }
+    if(values.length === 1) {
+      return status;
+    } else {
+      return null;
+    }
+  }
+
   render() {
     let list = this.props.list;
-    let waitSubmitNum = list.filter((item) => {return item.get("defectStatus") === 0}).size;
-    let waitReviewNum = list.filter((item) => {return item.get("defectStatus") === 1}).size;
-    let inProcessNum = list.filter((item) => {return item.get("defectStatus") === 2}).size;
-    let waitCheckNum = list.filter((item) => {return item.get("defectStatus") === 3}).size;
+    let defectStatusStatistics = this.props.defectStatusStatistics;
+    let waitSubmitNum = defectStatusStatistics.get("submitNum");
+    let waitReviewNum = defectStatusStatistics.get("examineNum");
+    let inProcessNum = defectStatusStatistics.get("executeNum");
+    let waitCheckNum = defectStatusStatistics.get("checkNum");
 
     const columns = [{
       title: '缺陷级别',
@@ -141,8 +158,8 @@ class List extends Component {
       sorter: true,
     }, {
       title: '缺陷类型',
-      dataIndex: 'number',
-      key: 'number',
+      dataIndex: 'defectTypeName',
+      key: 'defectTypeName',
       sorter: true,
     }, {
       title: '缺陷描述',
@@ -155,14 +172,14 @@ class List extends Component {
       key: 'startTime',
       sorter: true,
     }, {
-      title: '截止时间',
-      dataIndex: 'startTime',
-      key: 'deadLine',
+      title: '完成时间',
+      dataIndex: 'finishTime',
+      key: 'finishTime',
       sorter: true,
     }, {
       title: '处理进度',
-      dataIndex: 'status',
-      key: 'status',
+      dataIndex: 'defectStatus',
+      key: 'defectStatus',
       render: (value,record,index) => (
         <div>
           <span>{getStatus(value)}</span>
@@ -174,16 +191,19 @@ class List extends Component {
       ),
     }, {
       title: '查看',
-      render:(text, record) =>(
-        <span></span>
+      render:(text, record) => (
+        <span>
+          <Icon type="eye-o" />
+        </span>
       )
     }];
 
     const pagination = {
-      total: list.size,
+      total: this.props.total,
       showQuickJumper: true,
       showSizeChanger: true,
       current: this.props.currentPage,
+      pageSize: this.props.currentPageSize,
       onShowSizeChange: (current, pageSize) => {
         this.props.onChangePageSize(pageSize);
       },
@@ -195,17 +215,14 @@ class List extends Component {
 
     const rowSelection = {
       selectedRowKeys,
-      onSelect: this.onSelectChange,
-      getCheckboxProps: (record) => ({
-        disabled: record.defectStatus === 2 || record.defectStatus === 4,
-      })
+      onChange: this.onSelectChange
     };
   
     return (
       <div className={styles.bugTicket}>
         <div className={styles.action}>
           <div>
-            <RadioGroup onChange={this.onChangeTab} defaultValue="5" value={this.state.tab}>
+            <RadioGroup onChange={this.onChangeTab} defaultValue="5" value={this.props.status}>
               <RadioButton value="5">全部</RadioButton>
               <RadioButton value="0">{`待提交${waitSubmitNum}`}</RadioButton>
               <RadioButton value="1">{`待审核${waitReviewNum}`}</RadioButton>
@@ -213,20 +230,20 @@ class List extends Component {
               <RadioButton value="3">{`待验收${waitCheckNum}`}</RadioButton>
             </RadioGroup>
           </div>
-          <div>
+          <div className={styles.buttonArea}>
             <Button onClick={this.onAdd}>
               {/* <span className="iconfont icon-add" />  */}
               <Icon type="plus" />
               新建
             </Button>
             {
-              this.state.currentSelectedStatus === 0 &&
+              this.state.currentSelectedStatus === "0" &&
                 <div>
                   <Button onClick={this.onDelete}>删除</Button>
                 </div>
             }
             {
-              this.state.currentSelectedStatus === 1 &&
+              this.state.currentSelectedStatus === "1" &&
                 <div>
                   <Button onClick={this.onSend}>下发</Button>
                   <Button onClick={this.onReject}>驳回</Button>
@@ -234,7 +251,7 @@ class List extends Component {
                 </div>
             }
             {
-              this.state.currentSelectedStatus === 3 &&
+              this.state.currentSelectedStatus === "3" &&
                 <div>
                   <Button onClick={this.onOk}>合格</Button>
                   <Button onClick={this.onNotOk}>不合格</Button>
@@ -248,6 +265,7 @@ class List extends Component {
           dataSource={list.toJS()} 
           columns={columns} 
           pagination={pagination} 
+          loading={this.props.isFetching}
           onChange={this.onChangeTable}
         />
       </div>

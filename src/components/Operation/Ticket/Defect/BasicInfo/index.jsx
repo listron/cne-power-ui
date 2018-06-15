@@ -1,9 +1,9 @@
 import React,{ Component } from 'react';
 import PropTypes from 'prop-types';
-import styles from './basicInfo.scss';
+import styles from './style.scss';
 import {Card} from 'antd';
-import {getLevel} from '../../../../constants/ticket';
-import ImgUploader from '../../../Common/Uploader/ImgUploader'
+import {getLevel} from '../../../../../constants/ticket';
+import ImgUploader from '../../../../Common/Uploader/ImgUploader';
 
 class BasicInfo extends Component {
   static propTypes = {
@@ -43,16 +43,16 @@ class BasicInfo extends Component {
     return (
       <div>
         <div>
-          {dealData.get("status") === 1 ? "处理建议" : "审核意见"}
+          {dealData.get("status") === "1" ? "处理建议" : "审核意见"}
           <span>{dealData.get("defectProposal")}</span>
           </div>
-        {dealData.get("status") === 3 &&
+        {dealData.get("status") === "3" &&
           <div>处理结果
             <span>{dealData.get("defectSolveResult") === 0 ?"已解决":"未解决"}</span>
           </div>}
-        {dealData.get("status") === 3 &&
+        {dealData.get("status") === "3" &&
           <div>处理过程<span>{dealData.get("defectSolveInfo")}</span></div>}
-        {dealData.get("status") === 3 && dealData.get("replaceParts") !== "" &&
+        {dealData.get("status") === "3" && dealData.get("replaceParts") !== "" &&
           <div>更换备件<span>{dealData.get("replaceParts")}</span></div>}
       </div>
     );
