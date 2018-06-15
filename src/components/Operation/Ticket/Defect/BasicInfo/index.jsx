@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styles from './style.scss';
 import {Card} from 'antd';
 import {getLevel} from '../../../../../constants/ticket';
-import ImgUploader from '../../../../Common/Uploader/ImgUploader'
+import ImgUploader from '../../../../Common/Uploader/ImgUploader';
 
 class BasicInfo extends Component {
   static propTypes = {
