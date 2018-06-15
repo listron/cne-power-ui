@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 // import { Button } from 'antd';
 
-class Defect extends Component {
+class InspectList extends Component {
   constructor(props,context) {
     super(props);
     this.state = {};
@@ -16,4 +16,4 @@ class Defect extends Component {
   }
 }
 
-export default Defect;
+export default InspectList;

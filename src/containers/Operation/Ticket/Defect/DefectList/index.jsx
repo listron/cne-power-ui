@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { GET_DEFECT_LIST_SAGA, DELETE_BATCH_DEFECT_SAGA } from '../../../../constants/actionTypes/Ticket';
-import DefectList from '../../../../components/Operation/Ticket/Defect/List';
+import { GET_DEFECT_LIST_SAGA, DELETE_BATCH_DEFECT_SAGA } from '../../../../../constants/actionTypes/Ticket';
+import List from '../../../../../components/Operation/Ticket/Defect/List';
 
-class Defect extends Component {
+class DefectList extends Component {
   static propTypes = {
     defectList: PropTypes.object,
     currentPage: PropTypes.number,
@@ -83,7 +83,7 @@ class Defect extends Component {
   render() {   
     return (
       <div>
-        <DefectList 
+        <List 
           list={this.props.defectList} 
           currentPage={this.props.currentPage}
           currentPageSize={this.props.currentPageSize}
@@ -116,4 +116,4 @@ const mapDispatchToProps = (dispatch) => ({
   onBatchDelete: params => dispatch({ type: DELETE_BATCH_DEFECT_SAGA, params }),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Defect);
+export default connect(mapStateToProps, mapDispatchToProps)(DefectList);
