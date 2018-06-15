@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import InspectionList from '../../../../../components/Operation/Ticket/Inspect/InspectList';
-import { GET_INSPECTION_LIST_SAGA } from "../../../../../constants/actionTypes/Ticket";
+import { GET_INSPECT_LIST_SAGA } from "../../../../../constants/actionTypes/Ticket";
 import { connect } from "react-redux";
 import PropTypes from 'prop-types';
 class InspectList extends Component {
@@ -28,9 +28,8 @@ class InspectList extends Component {
     var params = {
       stationType: "2",
       status: this.props.status,
-      pageNum: this.props.pageNum,
-      pageSize: this.props.pageSize,
-      total: this.props.total,
+      pageNum: this.props.pageNum - 1,
+      pageSize: this.props.pageSize
     }
     this.props.getInspectList(params);
   }
@@ -40,9 +39,8 @@ class InspectList extends Component {
       let params = {
         stationType: "2",
         status: status,
-        pageNum: this.props.pageNum,
+        pageNum: this.props.pageNum - 1,
         pageSize: this.props.pageSize,
-        total: this.props.total,
       }
       this.props.getInspectList(params);
     }
@@ -53,9 +51,8 @@ class InspectList extends Component {
       let params={
         stationType: "2",
         status: this.props.status,
-        pageNum: page,
+        pageNum: page - 1,
         pageSize: this.props.pageSize,
-        total: this.props.total,
       }
       this.props.getInspectList(params);
     }
@@ -66,9 +63,8 @@ class InspectList extends Component {
       let params = {
         stationType: "2",
         status: this.props.status,
-        pageNum: 1,
+        pageNum: 0,
         pagesize: pagesize,
-        total: this.props.total,
       }
       this.props.getInspectList(params);
     }
@@ -79,18 +75,18 @@ class InspectList extends Component {
     return (
       <div>
         <div>巡检处理页面</div>
-        <InspectionList 
-        list={this.props.inspectList} 
-        getInspectionList={this.props.getInspectList}
-        pageNum={this.props.pageNum}
-        pageSize={this.props.pageSize}
-        total={this.props.total}
-        status={this.props.status}
-        isFetching={this.props.isFetching}
-        onChangePage={this.onChangePage}
-        onChangePageSize={this.onChangePageSize}
-        onChangeStatus={this.onChangeStatus}
-        inspectStatusStatistics={this.props.inspectStatusStatistics}
+          <InspectionList 
+            list={this.props.inspectList} 
+            getInspectionList={this.props.getInspectList}
+            pageNum={this.props.pageNum}
+            pageSize={this.props.pageSize}
+            total={this.props.total}
+            status={this.props.status}
+            isFetching={this.props.isFetching}
+            onChangePage={this.onChangePage}
+            onChangePageSize={this.onChangePageSize}
+            onChangeStatus={this.onChangeStatus}
+            inspectStatusStatistics={this.props.inspectStatusStatistics}
           />
       </div>
     );
@@ -98,18 +94,18 @@ class InspectList extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  inspectList: state.operation.inspection.get('inspectionList'),
-  isFetching: state.operation.inspection.get('isFetching'),
-  error: state.operation.inspection.get('error'),
-  pageNum: state.operation.inspection.get('pageNum'),
-  pageSize: state.operation.inspection.get('pageSize'),
-  total: state.operation.inspection.get('total'),
-  status: state.operation.inspection.get('status'),
-  inspectStatusStatistics: state.operation.inspection.get('defectStatusStatistics'),
+  inspectList: state.operation.inspect.get('inspectList'),
+  isFetching: state.operation.inspect.get('isFetching'),
+  error: state.operation.inspect.get('error'),
+  pageNum: state.operation.inspect.get('pageNum'),
+  pageSize: state.operation.inspect.get('pageSize'),
+  total: state.operation.inspect.get('total'),
+  status: state.operation.inspect.get('status'),
+  inspectStatusStatistics: state.operation.inspect.get('defectStatusStatistics'),
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  getInspectList: params => dispatch({ type: GET_INSPECTION_LIST_SAGA, params }),
+  getInspectList: params => dispatch({ type: GET_INSPECT_LIST_SAGA, params }),
 })
 
 export default connect(mapStateToProps,mapDispatchToProps)(InspectList);

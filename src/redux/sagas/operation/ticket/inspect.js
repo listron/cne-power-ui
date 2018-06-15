@@ -3,9 +3,9 @@ import axios from 'axios';
 import Path from '../../../../constants/path';
 import {
   BEGIN_FETCH, 
-  GET_INSPECTION_LIST_SAGA, 
-  GET_INSPECTION_LIST_SUCCESS, 
-  GET_INSPECTION_LIST_FAIL
+  GET_INSPECT_LIST_SAGA, 
+  GET_INSPECT_LIST_SUCCESS, 
+  GET_INSPECT_LIST_FAIL
 } from '../../../../constants/actionTypes/Ticket';
 
 
@@ -18,13 +18,13 @@ function* getInspectionList(action){
     const response = yield call(axios.post, url, action.params);
     if(response.data.code === "10000"){
       yield put({
-        type: GET_INSPECTION_LIST_SUCCESS,
+        type: GET_INSPECT_LIST_SUCCESS,
         data: response.data.data,
         params: action.params,
       });
     }else{
       yield put({ 
-        type: GET_INSPECTION_LIST_FAIL, 
+        type: GET_INSPECT_LIST_FAIL, 
         error: {
           code: response.data.code,
           message: response.data.message
@@ -37,5 +37,5 @@ function* getInspectionList(action){
 }
 
 export function* watchGetInspectionList() {
-  yield takeLatest(GET_INSPECTION_LIST_SAGA, getInspectionList);
+  yield takeLatest(GET_INSPECT_LIST_SAGA, getInspectionList);
 }

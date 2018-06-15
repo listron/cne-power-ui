@@ -12,6 +12,8 @@ class InspectionList extends Component {
   static propTypes={
     list: PropTypes.object,
     pageNum: PropTypes.number,
+    pageSize: PropTypes.number,
+    total: PropTypes.number,
     onChangePage: PropTypes.func,
     onChangePageSize: PropTypes.func,
     getInspectionList: PropTypes.func,
@@ -41,7 +43,7 @@ class InspectionList extends Component {
     this.setState({
       tab: e.target.value,
     })
-    this.props.onChangeStatus(parseInt(e.target.value));
+    this.props.onChangeStatus(e.target.value);
   }
 
   onChangeTable(pagination, filter, sorter){
@@ -58,10 +60,11 @@ class InspectionList extends Component {
     let inProcessNum =0// statusStatistics.get("executeNum");
     let waitCheckNum =0 //statusStatistics.get("checkNum");   
     const pagination={
-      total: list.size,
+      total: this.props.total,
       showQuickJumper: true,
       showSizeChanger: true,
       current: this.props.pageNum,
+      pageSize: this.props.pageSize,
       onShowSizeChange: (current, pagesize) => {
         this.props.onChangePageSize(pagesize);
       },

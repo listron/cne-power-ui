@@ -16,7 +16,7 @@ import {
 
 import {
   watchGetInspectionList
-} from './operation/ticket/inspection';
+} from './operation/ticket/inspect';
 
 import axios from 'axios';
 

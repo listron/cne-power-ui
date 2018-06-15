@@ -1,5 +1,5 @@
 import immutable from 'immutable';
-import { BEGIN_FETCH, GET_INSPECTION_LIST_SUCCESS ,GET_INSPECTION_LIST_FAIL } from '../../../../constants/actionTypes/Ticket';
+import { BEGIN_FETCH, GET_INSPECT_LIST_SUCCESS ,GET_INSPECT_LIST_FAIL } from '../../../../constants/actionTypes/Ticket';
 
 var initState = immutable.fromJS({
   inspectList:[],
@@ -23,15 +23,15 @@ const inspectReducer = (state = initState, action) => {
   switch (action.type) {
     case BEGIN_FETCH:
       return state.set('isfetching', true)
-    case GET_INSPECTION_LIST_SUCCESS:  
+    case GET_INSPECT_LIST_SUCCESS:  
       return state.set('isFetching', false)
                   .set('inspectList', immutable.fromJS(action.data.inspectList))
-                  .set('pageNum', action.params.pageNum)
+                  .set('pageNum', action.params.pageNum + 1)
                   .set('pageSize', action.params.pageSize)
                   .set('total', action.data.total)
                   .set('status', action.params.status)
                   .set('defectStatusStatistics', immutable.fromJS(action.data.inspectStatusStatistics))
-    case GET_INSPECTION_LIST_FAIL:
+    case GET_INSPECT_LIST_FAIL:
       return state.set('error', immutable.fromJS(action.error))
   }
   return state;
