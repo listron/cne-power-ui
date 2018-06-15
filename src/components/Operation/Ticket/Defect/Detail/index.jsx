@@ -1,10 +1,14 @@
 import React,{ Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './style.scss';
-import {getLevel} from '../../../../../constants/ticket';
 
 class Detail extends Component {
   static propTypes = {
+    detail: PropTypes.object,
+    onClose: PropTypes.func,
+    onSubmit: PropTypes.func,
+    onNext: PropTypes.func,
+    onPrev: PropTypes.func
   }
 
   static defaultProps = {
