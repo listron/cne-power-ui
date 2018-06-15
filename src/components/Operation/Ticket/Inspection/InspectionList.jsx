@@ -10,8 +10,8 @@ const RadioGroup = Radio.Group;
 
 class InspectionList extends Component {  
   static propTypes={
-    inspectionList: PropTypes.object,
-    currentPage: PropTypes.number,
+    list: PropTypes.object,
+    pageNum: PropTypes.number,
     onChangePage: PropTypes.func,
     onChangePageSize: PropTypes.func,
     getInspectionList: PropTypes.func,
@@ -20,10 +20,9 @@ class InspectionList extends Component {
   }
 
   static defaultProps={
-    inspectionList: Immutable.fromJS([]),
-    currentPage: 1,
-    currentSelectedStatus: null,
-
+    list: Immutable.fromJS([]),
+    pageNum: 1,
+    currentSelectedStatus: 5,
   }
 
   constructor(props){
@@ -31,30 +30,32 @@ class InspectionList extends Component {
     this.state={
       tab: "5",
       selectedRowKeys: [],
-      
+      currentSelectedStatus: 5,      
     }
     this.onChangeTab = this.onChangeTab.bind(this);
+    this.onChangeTable = this.onChangeTable.bind(this);
   }
 
   onChangeTab(e){
-    // this.setState({
-    //   tab: e.target.value,
-    // })
+    this.setState({
+      tab: e.target.value,
+    })
     this.props.onChangeStatus(e.target.value);
   }
-  onChangeTable(selectedRowKeys, selectedRows){
+
+  onChangeTable(pagination, filter, sorter){
 
   }
-  render(){
-    let inspectionList = this.props.inspectionList;
-    let inProcessNum = inspectionList.filter((item) => { return item.get("inspectStatus") === 2 }).size;
-    let waitCheckNum = inspectionList.filter((item) => { return item.get("inspectStatus") === 3 }).size;
 
+  render(){
+    let list = this.props.list;
+    let inProcessNum = list.filter((item) => { return item.get("inspectStatus") === 2 }).size;
+    let waitCheckNum = list.filter((item) => { return item.get("inspectStatus") === 3 }).size;   
     const pagination={
-      total: inspectionList.size,
+      total: list.size,
       showQuickJumper: true,
       showSizeChanger: true,
-      current: this.props.currentPage,
+      current: this.props.pageNum,
       onShowSizeChange: (current, pagesize) => {
         this.props.onChangePageSize(pagesize);
       },
@@ -95,27 +96,25 @@ class InspectionList extends Component {
         <div>
           <span>{getStatus(value)}</span>
           <div>
-            { record.is_overtime === 0 ? <span>超时</span> : null }
-            { record.is_overtime === 0 ? <span>超时</span> : null }
+            { record.isOvertime === 0 ? <span>超时</span> : null }
+            { record.isOvertime === 0 ? <span>超时</span> : null }
           </div>
         </div>
       ),
     },{
       title: '查看',
       render: (text, record) => (
-        <span></span>
+        <span><Icon type="eye-o" /></span>
       )
     }]
     const {selectedRowKeys} = this.state;
     const rowSelection = {
       selectedRowKeys,
       onChange: (selectedRowKeys, selectedRows) => {
-        let status = this.state.currentSelectedStatus;
+        var status = this.state.currentSelectedStatus;
         if(selectedRowKeys.length > 0){
-          selectedRows.forEach((e, i) => {
-            (e.inspectStatus !== selectedRows[0].inspectStatus) && (alert("请选择相同进度的工单进行处理！"))
-          })
-          status = selectedRows[0].inspectStatus;
+          const newArray = [...new Set(selectedRows.map(e => e.inspectStatus))];
+          status = newArray.length < 2 ? newArray[0] : 0;
         }else{
           status = null;
         }
@@ -123,10 +122,8 @@ class InspectionList extends Component {
           selectedRowKeys: selectedRowKeys,
           currentSelectedStatus: status,
         });
+        
       },
-      getCheckboxProps: (record) => ({
-        disabled: record.inspectStatus === 2 || record.inspectStatus === 4,
-      }),
     }
 
     return(
@@ -142,7 +139,7 @@ class InspectionList extends Component {
           <div className={styles.add}>
             <Button onClick={this.onAdd}><Icon type="plus" />新建</Button>
             {
-              this.state.currentSelectedStatus === 3 && 
+              this.state.currentSelectedStatus === "3" && 
                 <div>
                   <Button onClick={this.onConfirm}>确认</Button>
                 </div>
@@ -151,12 +148,13 @@ class InspectionList extends Component {
         </div>
         <Table 
           rowKey={(record) => { return record.inspectId }}
-          dataSource={inspectionList.toJS()}
+          dataSource={list.toJS()}
           columns= {columns}
-          pagination= {pagination}
           rowSelection={rowSelection}
           onChange={this.onChangeTable}
           loading={this.props.loading}
+          scroll={{y : 400}}
+          pagination= {pagination}
         />
       </div>
     )

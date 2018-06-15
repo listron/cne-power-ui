@@ -3,17 +3,16 @@ import InspectionList from '../../../../components/Operation/Ticket/Inspection/I
 import { GET_INSPECTION_LIST_SAGA } from "../../../../constants/actionTypes/Ticket";
 import { connect } from "react-redux";
 import PropTypes from 'prop-types';
-
 class Inspection extends Component {
   static propTypes={
     inspectionList: PropTypes.object,
     getInspectionList: PropTypes.func,
-    currentPage: PropTypes.number,
-    currentPageSize: PropTypes.number,
+    pageNum: PropTypes.number,
+    pageSize: PropTypes.number,
     total: PropTypes.number,
     isFetching: PropTypes.bool,
     error: PropTypes.string,
-    status: PropTypes.string,
+    status: PropTypes.number,
   }
 
   constructor(props,context) {
@@ -23,12 +22,13 @@ class Inspection extends Component {
     this.onChangePageSize = this.onChangePageSize.bind(this);
     this.onChangeStatus = this.onChangeStatus.bind(this);
   }
-
+  
   componentDidMount(){
     var params = {
+      stationType: "2",
       status: this.props.status,
-      pageNum: this.props.currentPage - 1,
-      pageSize: this.props.currentPageSize,
+      pageNum: this.props.pageNum,
+      pageSize: this.props.pageSize,
     }
     this.props.getInspectionList(params);
   }
@@ -36,20 +36,37 @@ class Inspection extends Component {
   onChangeStatus(status){
     if(status !== this.props.status){
       let params = {
+        stationType: "2",
         status: status,
-        pageNum: this.props.currentPage - 1,
-        pageSize: this.props.currentPageSize,
+        pageNum: this.props.pageNum,
+        pageSize: this.props.pageSize,
       }
       this.props.getInspectionList(params);
     }
   }
 
-  onChangePage(){
-
+  onChangePage(page){
+    if(page !== this.props.pageNum){
+      let params={
+        stationType: "2",
+        status: this.props.status,
+        pageNum: page,
+        pageSize: this.props.pageSize,
+      }
+      this.props.getInspectionList(params);
+    }
   }
 
-  onChangePageSize(){
-    
+  onChangePageSize(pagesize){
+    if(pagesize !== this.props.pageSize){
+      let params = {
+        stationType: "2",
+        status: this.props.status,
+        pageNum: 1,
+        pagesize: pagesize,
+      }
+      this.props.getInspectionList(params);
+    }
   }
 
   render() {   
@@ -57,10 +74,10 @@ class Inspection extends Component {
         <div>
           <div>巡检处理页面</div>
           <InspectionList 
-          inspectionList={this.props.inspectionList} 
+          list={this.props.inspectionList} 
           getInspectionList={this.props.getInspectionList}
-          currentPage={this.props.currentPage}
-          currentPageSize={this.props.currentPageSize}
+          pageNum={this.props.pageNum}
+          pageSize={this.props.pageSize}
           total={this.props.total}
           status={this.props.status}
           isFetching={this.props.isFetching}
@@ -77,8 +94,8 @@ const mapStateToProps = (state) => ({
   inspectionList: state.operation.inspection.get('inspectionList'),
   isFetching: state.login.get('isFetching'),
   error: state.login.get('error'),
-  currentPage: state.operation.inspection.get('currentPage'),
-  currentPageSize: state.operation.inspection.get('currentPageSize'),
+  pageNum: state.operation.inspection.get('pageNum'),
+  pageSize: state.operation.inspection.get('pageSize'),
   total: state.operation.inspection.get('total'),
   status: state.operation.inspection.get('status'),
 })
