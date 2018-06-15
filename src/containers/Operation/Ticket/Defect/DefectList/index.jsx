@@ -30,9 +30,9 @@ class DefectList extends Component {
     var params = {
       defectSource: "3",
       stationType: "2",
-      status: this.props.status,
-      pageNum: this.props.currentPage - 1,
-      pageSize: this.props.currentPageSize
+      status: "5",
+      pageNum: 0,
+      pageSize: 10
     }
     this.props.getDefectList(params);
   }
