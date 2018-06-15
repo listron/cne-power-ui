@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import InspectionList from '../../../../components/Operation/Ticket/Inspect/InspectList';
-import { GET_INSPECTION_LIST_SAGA } from "../../../../constants/actionTypes/Ticket";
+import InspectionList from '../../../../../components/Operation/Ticket/Inspect/InspectList';
+import { GET_INSPECTION_LIST_SAGA } from "../../../../../constants/actionTypes/Ticket";
 import { connect } from "react-redux";
 import PropTypes from 'prop-types';
 class InspectList extends Component {
