@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import InspectionList from '../../../../../components/Operation/Ticket/Inspect/InspectList';
+import List from '../../../../../components/Operation/Ticket/Inspect/List';
 import { GET_INSPECT_LIST_SAGA } from "../../../../../constants/actionTypes/Ticket";
 import { connect } from "react-redux";
 import PropTypes from 'prop-types';
@@ -75,7 +75,7 @@ class InspectList extends Component {
     return (
       <div>
         <div>巡检处理页面</div>
-          <InspectionList 
+          <List 
             list={this.props.inspectList} 
             getInspectionList={this.props.getInspectList}
             pageNum={this.props.pageNum}

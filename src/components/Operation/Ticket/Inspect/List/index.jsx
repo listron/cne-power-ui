@@ -8,7 +8,7 @@ import Immutable from 'immutable';
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
 
-class InspectionList extends Component {  
+class List extends Component {  
   static propTypes={
     list: PropTypes.object,
     pageNum: PropTypes.number,
@@ -18,6 +18,7 @@ class InspectionList extends Component {
     onChangePageSize: PropTypes.func,
     getInspectionList: PropTypes.func,
     loading: PropTypes.bool,
+    status: PropTypes.string,
     onChangeStatus: PropTypes.func,
     inspectStatusStatistics: PropTypes.any,
   }
@@ -25,7 +26,7 @@ class InspectionList extends Component {
   static defaultProps={
     list: Immutable.fromJS([]),
     pageNum: 1,
-    currentSelectedStatus: 5,
+
   }
 
   constructor(props){
@@ -40,9 +41,6 @@ class InspectionList extends Component {
   }
 
   onChangeTab(e){
-    this.setState({
-      tab: e.target.value,
-    })
     this.props.onChangeStatus(e.target.value);
   }
 
@@ -139,7 +137,7 @@ class InspectionList extends Component {
       <div className={styles.bugTicket}>
         <div className={styles.action}>
           <div>
-            <RadioGroup onChange={this.onChangeTab} default="2" value={this.state.tab} >
+            <RadioGroup onChange={this.onChangeTab} default="2" value={this.props.status} >
               <RadioButton value="5">全部</RadioButton>
               <RadioButton value="2">{`执行中${inProcessNum}`}</RadioButton>
               <RadioButton value="3">{`待验收${waitCheckNum}`}</RadioButton>
@@ -170,4 +168,4 @@ class InspectionList extends Component {
   }
 }
 
-export default InspectionList;
+export default List;
