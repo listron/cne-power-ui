@@ -36,7 +36,6 @@ class InspectList extends Component {
 
   onChangeStatus(status){
     if(status !== this.props.status){
-      console.log(status);
       let params = {
         stationType: "2",
         status: status,
@@ -59,13 +58,13 @@ class InspectList extends Component {
     }
   }
 
-  onChangePageSize(pagesize){
+  onChangePageSize(current, pagesize){
     if(pagesize !== this.props.pageSize){
       let params = {
         stationType: "2",
         status: this.props.status,
         pageNum: 0,
-        pagesize: pagesize,
+        pageSize: pagesize,
       }
       this.props.getInspectList(params);
     }

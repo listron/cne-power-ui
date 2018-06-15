@@ -32,9 +32,8 @@ class List extends Component {
   constructor(props){
     super(props);
     this.state={
-      tab: "5",
       selectedRowKeys: [],
-      currentSelectedStatus: 5,      
+      currentSelectedStatus: null,      
     }
     this.onChangeTab = this.onChangeTab.bind(this);
     this.onChangeTable = this.onChangeTable.bind(this);
@@ -59,8 +58,8 @@ class List extends Component {
       showSizeChanger: true,
       current: this.props.pageNum,
       pageSize: this.props.pageSize,
-      onShowSizeChange: (current, pagesize) => {
-        this.props.onChangePageSize(pagesize);
+      onShowSizeChange: (current, pageSize) => {
+        this.props.onChangePageSize(current,pageSize);
       },
       onChange: (current) => {
         this.props.onChangePage(current);
@@ -87,8 +86,8 @@ class List extends Component {
       sorter: true,
     },{
       title: '截止时间',
-      dataIndex: 'deadLine',
-      key: 'deadLine',
+      dataIndex: 'deadline',
+      key: 'deadline',
       sorter: true,
     },{
       title: '处理进度',
@@ -108,7 +107,7 @@ class List extends Component {
       title: '查看',
       render: (text, record) => (
         <span><Icon type="eye-o" /></span>
-      )
+      ),
     }]
     const {selectedRowKeys} = this.state;
     const rowSelection = {
@@ -156,8 +155,9 @@ class List extends Component {
           rowSelection={rowSelection}
           onChange={this.onChangeTable}
           loading={this.props.loading}
-          scroll={{y : 400}}
           pagination= {pagination}
+          bordered={true}
+          scroll={{ y: 600 }}
         />
       </div>
     )
