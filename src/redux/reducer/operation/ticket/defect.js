@@ -1,10 +1,17 @@
 import immutable from 'immutable';
 
-import {BEGIN_FETCH, GET_DEFECT_LIST_SUCCESS} from '../../../../constants/actionTypes/Ticket';
+import {
+  BEGIN_FETCH, 
+  GET_DEFECT_LIST_SUCCESS,
+  GET_DEFECT_LIST_FAIL
+} from '../../../../constants/actionTypes/Ticket';
 
 var initState = immutable.fromJS({
   isFetching: false,
-  error: '',
+  error: {
+    code: "",
+    message: ""
+  },
   fileterAllInfor:[],//顶部筛选所有数据[{stations:[],devices:[]...}]
   selectedFileterInfor: {},//选中的筛选项{selectedStation:[],selectedDevices:[]}
   defectList:[],//渲染为table的缺陷列表
@@ -38,7 +45,9 @@ const defectReducer = (state = initState, action) => {
                   .set('defectList', immutable.fromJS(action.data))
                   .set('currentPage', (action.params.pageNum + 1))
                   .set('currentPageSize', action.params.pageSize)
-                  .set('status', action.params.status); 
+                  .set('status', action.params.status);
+    case GET_DEFECT_LIST_FAIL:
+      return state.set("error", immutable.fromJS(action.error));
   }
 
   return state;

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { GET_DEFECT_LIST_SAGA } from '../../../../constants/actionTypes/Ticket';
+import { GET_DEFECT_LIST_SAGA, DELETE_BATCH_DEFECT_SAGA } from '../../../../constants/actionTypes/Ticket';
 import DefectList from '../../../../components/Operation/Ticket/Defect/List';
 
 class Defect extends Component {
@@ -14,6 +14,7 @@ class Defect extends Component {
     error: PropTypes.string,
     status: PropTypes.string,
     getDefectList: PropTypes.func,
+    onBatchDelete: PropTypes.func,
   };
   constructor(props,context) {
     super(props);
@@ -21,6 +22,7 @@ class Defect extends Component {
     this.onChangePage = this.onChangePage.bind(this);
     this.onChangePageSize = this.onChangePageSize.bind(this);
     this.onChangeStatus = this.onChangeStatus.bind(this);
+    this.onBatchDelete = this.onBatchDelete.bind(this);
   }
 
   componentDidMount() {
@@ -73,20 +75,25 @@ class Defect extends Component {
     }
   }
 
+  onBatchDelete(ids) {
+    this.props.onBatchDelete(ids.join(","));
+  }
+
   render() {   
     return (
-        <div>
-          <DefectList 
-            list={this.props.defectList} 
-            currentPage={this.props.currentPage}
-            currentPageSize={this.props.currentPageSize}
-            total={this.props.total}
-            status={this.props.status}
-            isFetching={this.props.isFetching}
-            onChangePage={this.onChangePage}
-            onChangePageSize={this.onChangePageSize}
-            onChangeStatus={this.onChangeStatus} />
-        </div>
+      <div>
+        <DefectList 
+          list={this.props.defectList} 
+          currentPage={this.props.currentPage}
+          currentPageSize={this.props.currentPageSize}
+          total={this.props.total}
+          status={this.props.status}
+          isFetching={this.props.isFetching}
+          onChangePage={this.onChangePage}
+          onChangePageSize={this.onChangePageSize}
+          onChangeStatus={this.onChangeStatus}
+          onDelete={this.onBatchDelete} />
+      </div>
     );
   }
 }
@@ -103,6 +110,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   getDefectList: params => dispatch({ type: GET_DEFECT_LIST_SAGA, params }),
+  onBatchDelete: params => dispatch({ type: DELETE_BATCH_DEFECT_SAGA, params }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Defect);

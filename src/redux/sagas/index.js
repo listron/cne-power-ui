@@ -10,6 +10,7 @@ import {
   watchCreateRegister 
 } from './login';
 import {
+<<<<<<< HEAD
   watchGetDefectList
 } from './operation/ticket/defect';
 
@@ -17,6 +18,11 @@ import {
   watchGetInspectionList
 } from './operation/ticket/inspection';
 
+=======
+  watchGetDefectList,
+  watchBatchDeleteDefect
+} from './operation/ticket/defect'
+>>>>>>> upstream/dev
 import axios from 'axios';
 
 import {
@@ -69,6 +75,7 @@ export default function* rootSaga() {
     watchChangeShowStatus(),
     watchCreateRegister(),
     watchGetDefectList(),
-    watchGetInspectionList()
+    watchBatchDeleteDefect(),
+    watchGetInspectionList(),
   ])
 } 
