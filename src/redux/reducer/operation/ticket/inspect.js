@@ -18,7 +18,7 @@ var initState = immutable.fromJS({
   },
 });
 
-const inspectionReducer = (state = initState, action) => {  
+const inspectReducer = (state = initState, action) => {  
   switch (action.type) {
     case BEGIN_FETCH:
       return state.set('isfetching', true)
@@ -36,4 +36,4 @@ const inspectionReducer = (state = initState, action) => {
 }
 
 
-export default inspectionReducer;
+export default inspectReducer;
