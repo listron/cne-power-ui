@@ -14,8 +14,8 @@ var initState = immutable.fromJS({
   stationType: "2",
   total: 0,
   inspectStatusStatistics: {
-    "checkNum": 10,
-    "executeNum": 110
+    "checkNum": 0,
+    "executeNum": 0
   },
 });
 

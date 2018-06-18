@@ -106,5 +106,4 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   getInspectList: params => dispatch({ type: GET_INSPECT_LIST_SAGA, params }),
 })
-
 export default connect(mapStateToProps,mapDispatchToProps)(InspectList);

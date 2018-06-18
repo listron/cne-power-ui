@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Table, Button, Radio, Icon } from 'antd';
+import { Table, Button, Radio, Icon, Modal } from 'antd';
 import { getStatus } from '../../../../../constants/ticket';
 import styles from './style.scss';
 import Immutable from 'immutable';
+import CreateForm from '../CreateForm';
 
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
@@ -33,10 +34,39 @@ class List extends Component {
     super(props);
     this.state={
       selectedRowKeys: [],
-      currentSelectedStatus: null,      
+      currentSelectedStatus: null,
+
     }
     this.onChangeTab = this.onChangeTab.bind(this);
     this.onChangeTable = this.onChangeTable.bind(this);
+    this.onCreate = this.onCreate.bind(this);
+    this.onCancel = this.onCancel.bind(this);
+    this.onCreateForm = this.onCreateForm.bind(this);
+  }
+
+  onCreateForm(){
+    this.setState({
+      visible: true,
+    })
+  }
+
+  onCreate(e){
+    console.log(this.formRef);
+    const form = this.formRef.props.form;
+    form.validateFields((err,value) => {
+      if(err){
+        return;
+      }
+      console.log("Received values of form : ",value);
+      form.resetFields();
+      this.setState({ visible: false })
+    })
+  }
+
+  onCancel(e){
+    this.setState({
+      visible: false,
+    })
   }
 
   onChangeTab(e){
@@ -45,6 +75,11 @@ class List extends Component {
 
   onChangeTable(pagination, filter, sorter){
 
+  }
+
+  saveFormRef = (formRef) => {
+    console.log(formRef);
+    this.formRef = formRef;
   }
 
   render(){
@@ -139,7 +174,14 @@ class List extends Component {
             </RadioGroup>
           </div>
           <div className={styles.add}>
-            <Button onClick={this.onAdd}><Icon type="plus" />新建</Button>
+            <Button onClick={this.onCreateForm}><Icon type="plus" />新建</Button>
+            <CreateForm 
+              visible={this.state.visible}
+              onCreate={this.onCreate}
+              onCancel={this.onCancel}
+              width="890"
+              wrappedComponentRef={this.saveFormRef}
+            />
             {
               this.state.currentSelectedStatus === "3" && 
                 <div>
