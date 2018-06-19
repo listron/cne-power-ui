@@ -74,17 +74,15 @@ class DefectDetail extends Component {
 
   render() {   
     return (
-      <div>
-        <Detail 
-          detail={this.props.defectDetail} 
-          onCloseDetail={this.props.onCloseDetail}
-          onClose={this.props.onClose}
-          onSend={this.props.onSend}
-          onReject={this.props.onReject}
-          isFetching={this.props.isFetching}
-          onNext={this.onNext}
-          onPrev={this.onPrev} />
-      </div>
+      <Detail 
+        detail={this.props.defectDetail} 
+        onCloseDetail={this.props.onCloseDetail}
+        onClose={this.props.onClose}
+        onSend={this.props.onSend}
+        onReject={this.props.onReject}
+        isFetching={this.props.isFetching}
+        onNext={this.onNext}
+        onPrev={this.onPrev} />
     );
   }
 }
