@@ -66,3 +66,31 @@ export function getHandleStatus(status) {
   }
   return result;
 }
+
+export function getDefectSortField(feild) {
+  var result = "";
+  switch(feild) {
+    case "defectLevel":
+      result = "0";
+      break;
+    case "stationName":
+      result = "1";
+      break;
+    case "deviceName":
+      result = "2";
+      break;
+    case "defectTypeName":
+      result = "3";
+      break;
+    case "startTime":
+      result = "4";
+      break;
+    case "finishTime":
+      result = "6";
+      break;
+    case "defectStatus":
+      result = "7";
+      break;
+  }
+  return result;
+}
