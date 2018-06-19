@@ -38,3 +38,31 @@ export function getLevel(value) {
   }
   return result;
 }
+
+export function getHandleStatus(status) {
+  var result = "";
+  switch(status) {
+    case "0":
+      result = "已解决";
+      break;
+    case "1":
+      result = "未解决";
+      break;
+    case "3":
+      result = "下发";
+      break;
+    case "4":
+      result = "驳回";
+      break;
+    case "5":
+      result = "不合格";
+      break;
+    case "6":
+      result = "合格";
+      break;
+    case "7":
+      result = "已关闭";
+      break;
+  }
+  return result;
+}
