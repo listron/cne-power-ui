@@ -4,7 +4,9 @@ import {
   BEGIN_FETCH, 
   GET_DEFECT_LIST_SUCCESS,
   GET_DEFECT_LIST_FAIL,
-  SET_DEFECT_ID
+  SET_DEFECT_ID,
+  GET_DEFECT_DETAIL_SUCCESS,
+  GET_DEFECT_DETAIL_FAIL
 } from '../../../../constants/actionTypes/Ticket';
 
 var initState = immutable.fromJS({
@@ -61,11 +63,12 @@ const defectReducer = (state = initState, action) => {
                   .set("status", action.params.status);
     case SET_DEFECT_ID:
       return state.set("defectId", action.data);
-    case GET_DEFECT_LIST_SUCCESS: 
+    case GET_DEFECT_DETAIL_SUCCESS: 
       return state.set("isFetching", false)
                   .set("defectDetail", immutable.fromJS(action.data))
                   .set("defectId", action.params.defectId);
     case GET_DEFECT_LIST_FAIL:
+    case GET_DEFECT_DETAIL_FAIL:
       return state.set("error", immutable.fromJS(action.error));
   }
 

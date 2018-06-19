@@ -47,7 +47,7 @@ function* getDefectDetail(action) {
   let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.ticket.getDefectDetail;
   yield put({ type: BEGIN_FETCH });
   try {
-    const response = yield call(axios.post, url, action.params);
+    const response = yield call(axios.get, url, {params: action.params});
     if(response.data.code === "10000"){
       yield put({ 
         type: GET_DEFECT_DETAIL_SUCCESS, 
