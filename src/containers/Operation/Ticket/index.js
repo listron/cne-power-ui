@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import {Tabs} from 'antd';
-import Defect from './Defect/DefectList';
-import Inspection from './Inspect/InspectList';
+import DefectList from './Defect/DefectList';
+import InspectList from './Inspect/InspectList';
+import DefectDetail from './Defect/DefectDetail';
 const TabPane = Tabs.TabPane;
 
 
@@ -9,9 +10,15 @@ class Ticket extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      tab: "defect"
+      tab: "defect",
+      showDefectDetail: false,
+      showDefectCreate: false,
+      showInspectDetail: false,
+      showInspectCreate: false
     };
     this.onChangeTab = this.onChangeTab.bind(this);
+    this.onShowDefectDetail = this.onShowDefectDetail.bind(this);
+    this.onCLoseDefectDetail = this.onCLoseDefectDetail.bind(this);
   }
 
   onChangeTab(tab) {
@@ -20,13 +27,32 @@ class Ticket extends Component {
     });
   }
 
+  onShowDefectDetail() {
+    this.setState({
+      showDefectDetail: true
+    });
+  }
+
+  onCLoseDefectDetail() {
+    this.setState({
+      showDefectDetail: false
+    });
+  }
+
   render() {
     return (
       <div style={{display:"flex", flex: 1}}>
-        <Tabs activeKey={this.state.tab} onChange={this.onChangeTab}>
-          <TabPane tab="缺陷" key="defect"><Defect /></TabPane>
-          <TabPane tab="巡检" key="inspection"><Inspection /></TabPane>
-        </Tabs>
+        {this.state.showDefectDetail && (
+          <DefectDetail onCloseDetail={this.onCLoseDefectDetail} />)}
+        {!this.state.showDefectDetail && !this.state.showDefectCreate && 
+          !this.state.showInspectDetail && !this.state.showInspectCreate && (
+          <Tabs activeKey={this.state.tab} onChange={this.onChangeTab}>
+            <TabPane tab="缺陷" key="defect">
+              <DefectList onShowDetail={this.onShowDefectDetail} />
+            </TabPane>
+            <TabPane tab="巡检" key="inspection"><InspectList /></TabPane>
+          </Tabs>
+        )}
       </div>
     );
   }

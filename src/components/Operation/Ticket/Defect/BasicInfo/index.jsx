@@ -19,6 +19,21 @@ class BasicInfo extends Component {
     };  
   }
 
+  getImagesData() {
+    if(this.props.basicInfo.get("photoAddress")) {
+      let images = this.props.basicInfo.get("photoAddress").split(",");
+      return images.map((item, index) => {
+        return {
+          uid: index,
+          rotate: 0,
+          thumbUrl: item
+        }
+      });
+    } else {
+      return [];
+    } 
+  }
+
   renderBasic() {
     let info = this.props.basicInfo;
     return (
@@ -31,7 +46,7 @@ class BasicInfo extends Component {
         <div>缺陷描述<span>{info.get("defectDescribe")}</span></div>
         <div>查看照片
           <div>
-            <ImgUploader editable={false} value={info.get("images")} />
+            <ImgUploader editable={false} value={this.getImagesData()} />
           </div>
         </div>
       </div>
@@ -43,7 +58,7 @@ class BasicInfo extends Component {
     return (
       <div>
         <div>
-          {dealData.get("status") === "1" ? "处理建议" : "审核意见"}
+          处理建议
           <span>{dealData.get("defectProposal")}</span>
           </div>
         {dealData.get("status") === "3" &&

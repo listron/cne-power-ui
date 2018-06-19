@@ -14,6 +14,7 @@ class List extends Component {
     onChangeStatus: PropTypes.func,
     onChangePage: PropTypes.func,
     onChangePageSize: PropTypes.func,
+    onShowDetail: PropTypes.func,
     onAdd: PropTypes.func,
     onDelete: PropTypes.func,
     onSend: PropTypes.func,
@@ -193,7 +194,7 @@ class List extends Component {
       title: '查看',
       render:(text, record) => (
         <span>
-          <Icon type="eye-o" />
+          <Icon type="eye-o" onClick={()=>{this.props.onShowDetail(record.defectId)}} />
         </span>
       )
     }];
