@@ -17,6 +17,7 @@ var initState = immutable.fromJS({
     "checkNum": 0,
     "executeNum": 0
   },
+  sort: "00",
 });
 
 const inspectReducer = (state = initState, action) => {  
@@ -31,6 +32,7 @@ const inspectReducer = (state = initState, action) => {
                   .set('total', action.data.total)
                   .set('status', action.params.status)
                   .set('inspectStatusStatistics', immutable.fromJS(action.data.inspectStatusStatistics))
+                  .set('sort', action.params.sort)
     case GET_INSPECT_LIST_FAIL:
       return state.set('error', immutable.fromJS(action.error))
   }

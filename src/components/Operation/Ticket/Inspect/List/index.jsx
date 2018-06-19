@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Table, Button, Radio, Icon, Modal } from 'antd';
+import { Table, Button, Radio, Icon } from 'antd';
 import { getStatus } from '../../../../../constants/ticket';
 import styles from './style.scss';
 import Immutable from 'immutable';
@@ -22,12 +22,12 @@ class List extends Component {
     status: PropTypes.string,
     onChangeStatus: PropTypes.func,
     inspectStatusStatistics: PropTypes.any,
+    onChangeSort: PropTypes.func,
   }
 
   static defaultProps={
     list: Immutable.fromJS([]),
     pageNum: 1,
-
   }
 
   constructor(props){
@@ -35,13 +35,13 @@ class List extends Component {
     this.state={
       selectedRowKeys: [],
       currentSelectedStatus: null,
-
     }
     this.onChangeTab = this.onChangeTab.bind(this);
     this.onChangeTable = this.onChangeTable.bind(this);
     this.onCreate = this.onCreate.bind(this);
     this.onCancel = this.onCancel.bind(this);
     this.onCreateForm = this.onCreateForm.bind(this);
+    this.onChangeSort = this.onChangeSort.bind(this);
   }
 
   onCreateForm(){
@@ -51,13 +51,11 @@ class List extends Component {
   }
 
   onCreate(e){
-    console.log(this.formRef);
     const form = this.formRef.props.form;
     form.validateFields((err,value) => {
       if(err){
         return;
       }
-      console.log("Received values of form : ",value);
       form.resetFields();
       this.setState({ visible: false })
     })
@@ -68,18 +66,46 @@ class List extends Component {
       visible: false,
     })
   }
-
+  
   onChangeTab(e){
     this.props.onChangeStatus(e.target.value);
   }
 
   onChangeTable(pagination, filter, sorter){
-
+    let pageNum = pagination.current - 1;
+    let pageSize = pagination.pageSize;
+    let params = {
+      "stationType": "2",
+      "status": this.props.status,
+      "pageNum": pageNum,
+      "pageSize": pageSize,
+      "sort": this.onChangeSort(pageNum, sorter),
+    }
+    this.props.getInspectionList(params);
   }
 
-  saveFormRef = (formRef) => {
-    console.log(formRef);
-    this.formRef = formRef;
+  onChangeSort(pageNum, sorter){
+    var sortField = 0;
+    var sortMode = sorter.order === "ascend" ? 0 : 1;
+    switch (sorter.columnKey){
+      case "inspectName":
+        sortField = 0;
+        break;
+      case "stationName":
+        sortField = 1;
+        break;
+      case "startTime":
+        sortField = 2;
+        break;
+      case "deadline":
+        sortField = 3;
+        break;
+      case "inspectStatus":
+        sortField = 4;
+        break;
+    }
+    var sortRule = sortField + "," +sortMode;
+    return sortRule;
   }
 
   render(){
@@ -93,12 +119,6 @@ class List extends Component {
       showSizeChanger: true,
       current: this.props.pageNum,
       pageSize: this.props.pageSize,
-      onShowSizeChange: (current, pageSize) => {
-        this.props.onChangePageSize(current,pageSize);
-      },
-      onChange: (current) => {
-        this.props.onChangePage(current);
-      }
     } 
     const columns = [{
       title: '巡检名称',
@@ -179,7 +199,6 @@ class List extends Component {
               visible={this.state.visible}
               onCreate={this.onCreate}
               onCancel={this.onCancel}
-              width="890"
               wrappedComponentRef={this.saveFormRef}
             />
             {

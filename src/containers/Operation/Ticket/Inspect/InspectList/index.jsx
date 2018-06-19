@@ -3,6 +3,7 @@ import List from '../../../../../components/Operation/Ticket/Inspect/List';
 import { GET_INSPECT_LIST_SAGA } from "../../../../../constants/actionTypes/Ticket";
 import { connect } from "react-redux";
 import PropTypes from 'prop-types';
+
 class InspectList extends Component {
   static propTypes={
     inspectList: PropTypes.object,
@@ -19,8 +20,6 @@ class InspectList extends Component {
   constructor(props,context) {
     super(props);
     this.state = {};
-    this.onChangePage = this.onChangePage.bind(this);
-    this.onChangePageSize = this.onChangePageSize.bind(this);
     this.onChangeStatus = this.onChangeStatus.bind(this);
   }
   
@@ -39,32 +38,8 @@ class InspectList extends Component {
       let params = {
         stationType: "2",
         status: status,
-        pageNum: this.props.pageNum - 1,
-        pageSize: this.props.pageSize,
-      }
-      this.props.getInspectList(params);
-    }
-  }
-
-  onChangePage(page){
-    if(page !== this.props.pageNum){
-      let params={
-        stationType: "2",
-        status: this.props.status,
-        pageNum: page - 1,
-        pageSize: this.props.pageSize,
-      }
-      this.props.getInspectList(params);
-    }
-  }
-
-  onChangePageSize(current, pagesize){
-    if(pagesize !== this.props.pageSize){
-      let params = {
-        stationType: "2",
-        status: this.props.status,
         pageNum: 0,
-        pageSize: pagesize,
+        pageSize: this.props.pageSize,
       }
       this.props.getInspectList(params);
     }
@@ -82,6 +57,7 @@ class InspectList extends Component {
             total={this.props.total}
             status={this.props.status}
             isFetching={this.props.isFetching}
+            onChangeSort={this.onChangeSort}
             onChangePage={this.onChangePage}
             onChangePageSize={this.onChangePageSize}
             onChangeStatus={this.onChangeStatus}
