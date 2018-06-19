@@ -2,14 +2,15 @@ import React,{ Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './style.scss';
 import {Radio} from 'antd';
-import SubmitForm from './SubmitForm';
+import ReviewForm from './ReviewForm';
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
 
-class ReviewForm extends Component {
+class HandleForm extends Component {
   static propTypes = {
     onSubmit: PropTypes.func,
     onCancel: PropTypes.func,
+    status: PropTypes.string,
   }
 
   static defaultProps = {
@@ -18,7 +19,7 @@ class ReviewForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      tag: "send"
+      tag: props.status === "1" ? "send" : props.status === "2" ? "solve" : "ok"
     };
     this.onChangeTag = this.onChangeTag.bind(this);
   }
@@ -28,22 +29,30 @@ class ReviewForm extends Component {
       tag: e.target.value
     });
   }
-  
-  render() {   
+
+  renderReviewForm() {
     return (
       <div className={styles.review}>
-        <RadioGroup onChange={this.onChangeTag} defaultValue="send" value={this.state.tag}>
+        <RadioGroup onChange={this.onChangeTag} value={this.state.tag}>
           <RadioButton value="send">下发</RadioButton>
           <RadioButton value="close">关闭</RadioButton>
           <RadioButton value="reject">驳回</RadioButton>
         </RadioGroup>
-        <SubmitForm 
+        <ReviewForm 
           type={this.state.tag} 
           onSubmit={this.props.onSubmit}
           onCancel={this.props.onCancel} />
       </div>
     );
+  }
+  
+  render() {   
+     return (
+       <div className={styles.handleForm}>
+         {this.props.status === "1" ? this.renderReviewForm() : null}
+       </div>
+     );
   }  
 }
 
-export default ReviewForm;
+export default HandleForm;
