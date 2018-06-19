@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import {message} from 'antd';
 import { GET_DEFECT_DETAIL_SAGA } from '../../../../../constants/actionTypes/Ticket';
 import Detail from '../../../../../components/Operation/Ticket/Defect/Detail';
 
@@ -38,11 +39,37 @@ class DefectDetail extends Component {
   }
 
   onPrev() {
-
+    let defectList = this.props.defectList;
+    let defectId = this.props.defectId;
+    let index = defectList.findIndex(item => {
+      return item.get("defectId") === defectId
+    });
+    if(index !== -1) {
+      if(index !== 0) {
+        this.props.getDefectDetail({
+          defectId: defectList.get([index-1, "defectId"])
+        });
+      } else {
+        message.info("已经是第一条");
+      }
+    }
   }
 
   onNext() {
-
+    let defectList = this.props.defectList;
+    let defectId = this.props.defectId;
+    let index = defectList.findIndex(item => {
+      return item.get("defectId") === defectId
+    });
+    if(index !== -1) {
+      if(index !== defectList.size - 1) {
+        this.props.getDefectDetail({
+          defectId: defectList.get([index+1, "defectId"])
+        });
+      } else {
+        message.info("已经是最后一条");
+      }
+    }
   }
 
   render() {   
