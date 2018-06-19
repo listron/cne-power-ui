@@ -1,5 +1,11 @@
 import immutable from 'immutable';
-import { BEGIN_FETCH, GET_INSPECT_LIST_SUCCESS ,GET_INSPECT_LIST_FAIL } from '../../../../constants/actionTypes/Ticket';
+import { 
+  BEGIN_FETCH, 
+  GET_INSPECT_LIST_SUCCESS, 
+  GET_INSPECT_LIST_FAIL,
+  GET_INSPECT_DETAIL_SUCCESS,
+  GET_INSPECT_DETAIL_FAIL,
+ } from '../../../../constants/actionTypes/Ticket';
 
 var initState = immutable.fromJS({
   inspectList:[],
@@ -17,7 +23,35 @@ var initState = immutable.fromJS({
     "checkNum": 0,
     "executeNum": 0
   },
-  sort: "00",
+  sort: "0,0",
+  inspectId: "",
+  inspectDetail: {//巡检详情
+    inspectId: "",
+    stationCode: "",
+    stationName: "",
+    stationType: "",
+    inspectName: "",
+    createTime: "",
+    deadLine: "",
+    abnormalData: {
+      abnormalId: "",
+      deviceTypeCode: "",
+      deviceTypeName: "",
+      deviceCode: "",
+      deviceName: "",
+      defectTypeCode: "",
+      defectTypeName: "",
+      photoAddress: "",
+      isTransform: ""
+    },
+    processData: {
+      flowName: "",
+      operateTime: "",
+      operateUser: ""
+    },
+    inspectStatus: "",
+    deviceTypeNames: "",
+  },
 });
 
 const inspectReducer = (state = initState, action) => {  
@@ -33,7 +67,12 @@ const inspectReducer = (state = initState, action) => {
                   .set("status", action.params.status)
                   .set("inspectStatusStatistics", immutable.fromJS(action.data.inspectStatusStatistics))
                   .set('sort', action.params.sort)
+    case GET_INSPECT_DETAIL_SUCCESS:
+      return state.set("isFetching", false)
+                  .set("inspectDetail", immutable.fromJS(action.data))
+                  .set("inspectId", action.params.inspectId)
     case GET_INSPECT_LIST_FAIL:
+    case GET_INSPECT_DETAIL_FAIL:
       return state.set("error", immutable.fromJS(action.error))
   }
   return state;
