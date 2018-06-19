@@ -12,7 +12,7 @@ class DefectList extends Component {
     total: PropTypes.number,
     defectStatusStatistics: PropTypes.object,
     isFetching: PropTypes.bool,
-    error: PropTypes.string,
+    error: PropTypes.object,
     status: PropTypes.string,
     getDefectList: PropTypes.func,
     onBatchDelete: PropTypes.func,

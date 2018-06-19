@@ -27,6 +27,7 @@ export default {
     ticket: {
       getDefectList: '/v3/defect/worklist/pc',
       batchDeleteDefect: '/v3/defect/delete/batch',
+      getInspectionList: '/v3/inspect/worklist/pc',
     }
   }
 }
