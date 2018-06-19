@@ -194,7 +194,7 @@ class List extends Component {
       title: '查看',
       render:(text, record) => (
         <span>
-          <Icon type="eye-o" onClick={this.props.onShowDetail(record.defectId)} />
+          <Icon type="eye-o" onClick={()=>{this.props.onShowDetail(record.defectId)}} />
         </span>
       )
     }];
