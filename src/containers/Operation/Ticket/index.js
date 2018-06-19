@@ -17,7 +17,8 @@ class Ticket extends Component {
       showInspectCreate: false
     };
     this.onChangeTab = this.onChangeTab.bind(this);
-    this.onShowDetail = this.onShowDetail.bind(this);
+    this.onShowDefectDetail = this.onShowDefectDetail.bind(this);
+    this.onCLoseDefectDetail = this.onCLoseDefectDetail.bind(this);
   }
 
   onChangeTab(tab) {
@@ -26,21 +27,28 @@ class Ticket extends Component {
     });
   }
 
-  onShowDetail() {
+  onShowDefectDetail() {
     this.setState({
       showDefectDetail: true
+    });
+  }
+
+  onCLoseDefectDetail() {
+    this.setState({
+      showDefectDetail: false
     });
   }
 
   render() {
     return (
       <div style={{display:"flex", flex: 1}}>
-        {this.state.showDefectDetail && <DefectDetail />}
+        {this.state.showDefectDetail && (
+          <DefectDetail onCloseDetail={this.onCLoseDefectDetail} />)}
         {!this.state.showDefectDetail && !this.state.showDefectCreate && 
           !this.state.showInspectDetail && !this.state.showInspectCreate && (
           <Tabs activeKey={this.state.tab} onChange={this.onChangeTab}>
             <TabPane tab="缺陷" key="defect">
-              <DefectList onShowDetail={this.onShowDetail} />
+              <DefectList onShowDetail={this.onShowDefectDetail} />
             </TabPane>
             <TabPane tab="巡检" key="inspection"><InspectList /></TabPane>
           </Tabs>
