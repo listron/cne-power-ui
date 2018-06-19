@@ -9,6 +9,11 @@ import {
   DELETE_BATCH_DEFECT_SAGA,
   DELETE_BATCH_DEFECT_SUCCESS,
   DELETE_BATCH_DEFECT_FAIL,
+  SET_DEFECT_ID_SAGA,
+  SET_DEFECT_ID,
+  GET_DEFECT_DETAIL_SAGA,
+  GET_DEFECT_DETAIL_SUCCESS,
+  GET_DEFECT_DETAIL_FAIL
 } from '../../../../constants/actionTypes/Ticket';
 
 //获取缺陷工单列表
@@ -26,6 +31,32 @@ function* getDefectList(action) {
     }else{
       yield put({ 
         type: GET_DEFECT_LIST_FAIL, 
+        error:{
+          code: response.data.code,
+          message: response.data.message
+        }
+      });        
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+//获取缺陷工单详情
+function* getDefectDetail(action) {
+  let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.ticket.getDefectDetail;
+  yield put({ type: BEGIN_FETCH });
+  try {
+    const response = yield call(axios.post, url, action.params);
+    if(response.data.code === "10000"){
+      yield put({ 
+        type: GET_DEFECT_DETAIL_SUCCESS, 
+        data: response.data.data, 
+        params: action.params 
+      });      
+    }else{
+      yield put({ 
+        type: GET_DEFECT_DETAIL_FAIL, 
         error:{
           code: response.data.code,
           message: response.data.message
@@ -62,10 +93,25 @@ function* batchDeleteDefect(action) {
   }
 }
 
+function* setDefectId(action) {
+  yield put({ 
+    type: SET_DEFECT_ID, 
+    data: action.params
+  }); 
+}
+
 export function* watchGetDefectList() {
   yield takeLatest(GET_DEFECT_LIST_SAGA, getDefectList);
 }
 
 export function* watchBatchDeleteDefect() {
   yield takeLatest(DELETE_BATCH_DEFECT_SAGA, batchDeleteDefect);
+}
+
+export function* watchSetDefectId() {
+  yield takeLatest(SET_DEFECT_ID_SAGA, setDefectId);
+}
+
+export function* watchGetDefectDetail() {
+  yield takeLatest(GET_DEFECT_DETAIL_SAGA, getDefectDetail);
 }

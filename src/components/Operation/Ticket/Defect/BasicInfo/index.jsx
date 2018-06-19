@@ -43,7 +43,7 @@ class BasicInfo extends Component {
     return (
       <div>
         <div>
-          {dealData.get("status") === "1" ? "处理建议" : "审核意见"}
+          处理建议
           <span>{dealData.get("defectProposal")}</span>
           </div>
         {dealData.get("status") === "3" &&
