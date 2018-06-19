@@ -26,6 +26,7 @@ var initState = immutable.fromJS({
   },
   currentPage: 1,
   currentPageSize: 10,
+  sort: "",
   total: 0,
   status: "5",
   defectId: "",
@@ -60,7 +61,8 @@ const defectReducer = (state = initState, action) => {
                   .set("defectStatusStatistics", immutable.fromJS(action.data.defectStatusStatistics))
                   .set("currentPage", (action.params.pageNum + 1))
                   .set("currentPageSize", action.params.pageSize)
-                  .set("status", action.params.status);
+                  .set("status", action.params.status)
+                  .set("sort", action.params.sort);
     case SET_DEFECT_ID:
       return state.set("defectId", action.data);
     case GET_DEFECT_DETAIL_SUCCESS: 

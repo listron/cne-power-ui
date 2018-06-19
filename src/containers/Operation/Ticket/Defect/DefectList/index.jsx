@@ -13,6 +13,7 @@ class DefectList extends Component {
     defectList: PropTypes.object,
     currentPage: PropTypes.number,
     currentPageSize: PropTypes.number,
+    sort: PropTypes.string,
     total: PropTypes.number,
     defectStatusStatistics: PropTypes.object,
     isFetching: PropTypes.bool,
@@ -31,6 +32,7 @@ class DefectList extends Component {
     this.onChangeStatus = this.onChangeStatus.bind(this);
     this.onBatchDelete = this.onBatchDelete.bind(this);
     this.onShowDetail = this.onShowDetail.bind(this);
+    this.onSorter = this.onSorter.bind(this);
   }
 
   componentDidMount() {
@@ -39,7 +41,8 @@ class DefectList extends Component {
       stationType: "2",
       status: "5",
       pageNum: 0,
-      pageSize: 10
+      pageSize: 10,
+      sort: ""
     }
     this.props.getDefectList(params);
   }
@@ -51,7 +54,8 @@ class DefectList extends Component {
         stationType: "2",
         status: this.props.status,
         pageNum: page - 1,
-        pageSize: this.props.currentPageSize
+        pageSize: this.props.currentPageSize,
+        sort: this.props.sort
       }
       this.props.getDefectList(params);
     }
@@ -64,7 +68,8 @@ class DefectList extends Component {
         stationType: "2",
         status: this.props.status,
         pageNum: 0,
-        pageSize: pageSize
+        pageSize: pageSize,
+        sort: this.props.sort
       }
       this.props.getDefectList(params);
     } 
@@ -77,7 +82,22 @@ class DefectList extends Component {
         stationType: "2",
         status: status,
         pageNum: 0,
-        pageSize: this.props.currentPageSize
+        pageSize: this.props.currentPageSize,
+        sort: this.props.sort
+      }
+      this.props.getDefectList(params);
+    }
+  }
+
+  onSorter(sort) {
+    if(sort !== this.props.sort) {
+      let params = {
+        defectSource: "3",
+        stationType: "2",
+        status: this.props.status,
+        pageNum: 0,
+        pageSize: this.props.currentPageSize,
+        sort: sort
       }
       this.props.getDefectList(params);
     }
@@ -106,6 +126,7 @@ class DefectList extends Component {
           onChangePage={this.onChangePage}
           onChangePageSize={this.onChangePageSize}
           onChangeStatus={this.onChangeStatus}
+          onSorter={this.onSorter}
           onShowDetail={this.onShowDetail}
           onDelete={this.onBatchDelete} />
       </div>
@@ -121,7 +142,8 @@ const mapStateToProps = (state) => ({
   currentPage: state.operation.defect.get("currentPage"),
   currentPageSize: state.operation.defect.get("currentPageSize"),
   total: state.operation.defect.get("total"),
-  status: state.operation.defect.get("status")
+  status: state.operation.defect.get("status"),
+  sort: state.operation.defect.get("sort"),
 });
 
 const mapDispatchToProps = (dispatch) => ({

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Table, Radio, Button, Icon, Modal } from 'antd';
-import {getLevel, getStatus} from '../../../../../constants/ticket';
+import {getLevel, getStatus, getDefectSortField} from '../../../../../constants/ticket';
 import styles from './style.scss';
 import Immutable from 'immutable';
 
@@ -14,6 +14,7 @@ class List extends Component {
     onChangeStatus: PropTypes.func,
     onChangePage: PropTypes.func,
     onChangePageSize: PropTypes.func,
+    onSorter: PropTypes.func,
     onShowDetail: PropTypes.func,
     onAdd: PropTypes.func,
     onDelete: PropTypes.func,
@@ -106,6 +107,13 @@ class List extends Component {
   }
 
   onChangeTable(pagination, filters, sorter) {
+    if(Object.keys(sorter).length !== 0) {
+      let field = getDefectSortField(sorter.field);
+      let order = sorter.order === "ascend" ? "0" : "1";
+      this.props.onSorter(field+"," + order);
+    } else {
+      this.props.onSorter("");
+    }
 
   }
 
@@ -166,7 +174,6 @@ class List extends Component {
       title: '缺陷描述',
       dataIndex: 'defectDescribe',
       key: 'defectDescribe',
-      sorter: true,
     }, {
       title: '发生时间',
       dataIndex: 'startTime',
@@ -181,6 +188,7 @@ class List extends Component {
       title: '处理进度',
       dataIndex: 'defectStatus',
       key: 'defectStatus',
+      sorter: true,
       render: (value,record,index) => (
         <div>
           <span>{getStatus(value)}</span>
