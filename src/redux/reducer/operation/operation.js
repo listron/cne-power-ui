@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux'
 
 import defect from './ticket/defect';
-import inspection from './ticket/inspection';
+import inspect from './ticket/inspect';
 
-const operationReducer = (() => combineReducers({ defect, inspection }))();
+const operationReducer = (() => combineReducers({ defect, inspect }))();
 
 export default operationReducer;

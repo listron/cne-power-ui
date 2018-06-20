@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import InputLimit from '../../components/Common/InputLimit/index';
+import InputLimit from '../../components/Common/InputLimit';
 import PropTypes from 'prop-types';
 // import TimeLines from '../../components/Common/TimeLines';
 class Pone extends Component {
