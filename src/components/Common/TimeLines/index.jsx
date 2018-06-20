@@ -3,11 +3,12 @@ import { Timeline, Icon } from 'antd';
 import PropTypes from 'prop-types';
 import styles from './style.scss';
 import {getHandleStatus} from '../../../constants/ticket';
+import Immutable from 'immutable';
 
 /*
   时间线组件：
   说明：
-    1.必须传入属性：流程当前状态status,流程数据progressData
+    1.必须传入属性：流程当前状态status,流程信息progressData
  */
 
 class TimeLines extends Component {
@@ -21,9 +22,7 @@ class TimeLines extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-
-    }
+    this.state = {}
   }
 
   getStatus(){
@@ -48,7 +47,8 @@ class TimeLines extends Component {
   }
 
   getItem(item) {
-    let text = item.flowName === "执行工单" ? "处理过程" : "处理建议";
+    let text = item.get("flowName") === "执行工单" ? "处理过程" : "处理建议";
+    console.log("text:"+text);
     let icon;
 
     return (
@@ -114,6 +114,8 @@ class TimeLines extends Component {
 
   render() {
     const processData=this.props.processData;
+    console.log(processData.toJS());
+    console.log("000000000000000")
     return (
       <div>
         <Timeline className={styles.TimeLines}  >

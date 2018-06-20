@@ -6,7 +6,7 @@ import ImgUploader from '../../../../Common/Uploader/ImgUploader';
 
 class BasicInfo extends Component {
   static propTypes = {
-
+    basicInfo: PropTypes.object,
   }
 
   static defaultProps = {
@@ -21,12 +21,21 @@ class BasicInfo extends Component {
   }
 
   renderBasic(){
-    let info = this.props.BasicInfo;
+    let info = this.props.basicInfo;
+    console.log(info.toJS());
+    console.log("basicInfo");
     return (
       <div>
-        
+        <div>电站名称<span>{info.stationName}</span></div>
+        <div>巡检名称<span>{info.inspectName}</span></div>
+        <div>巡检时间<span>{info.createTime}至{info.deadLine}</span></div>
+        <div>巡检描述<span>{info.abnormalData}</span></div>
       </div>
     )
+  }
+
+  renderAbnormal(){
+    // let dealData = this.props.basicInfo.get("");
   }
 
   render(){

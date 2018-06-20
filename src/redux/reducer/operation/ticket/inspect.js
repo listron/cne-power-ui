@@ -3,6 +3,7 @@ import {
   BEGIN_FETCH, 
   GET_INSPECT_LIST_SUCCESS, 
   GET_INSPECT_LIST_FAIL,
+  SET_INSPECT_ID,
   GET_INSPECT_DETAIL_SUCCESS,
   GET_INSPECT_DETAIL_FAIL,
  } from '../../../../constants/actionTypes/Ticket';
@@ -44,17 +45,15 @@ var initState = immutable.fromJS({
       photoAddress: "",
       isTransform: ""
     },
-    processData: {
-      flowName: "",
-      operateTime: "",
-      operateUser: ""
-    },
+    processData:[],
     inspectStatus: "",
     deviceTypeNames: "",
   },
 });
 
-const inspectReducer = (state = initState, action) => {  
+const inspectReducer = (state = initState, action) => {
+  console.log(action)
+  console.log("---------------")
   switch (action.type) {
     case BEGIN_FETCH:
       return state.set("isfetching", true)
@@ -67,6 +66,8 @@ const inspectReducer = (state = initState, action) => {
                   .set("status", action.params.status)
                   .set("inspectStatusStatistics", immutable.fromJS(action.data.inspectStatusStatistics))
                   .set('sort', action.params.sort)
+    case SET_INSPECT_ID:
+      return state.set("inspectId", action.data);
     case GET_INSPECT_DETAIL_SUCCESS:
       return state.set("isFetching", false)
                   .set("inspectDetail", immutable.fromJS(action.data))

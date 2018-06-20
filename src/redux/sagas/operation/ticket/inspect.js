@@ -8,7 +8,9 @@ import {
   GET_INSPECT_LIST_FAIL,
   GET_INSPECT_DETAIL_SAGA,
   GET_INSPECT_DETAIL_SUCCESS,
-  GET_INSPECT_DETAIL_FAIL
+  GET_INSPECT_DETAIL_FAIL,
+  SET_INSPECT_ID_SAGA,
+  SET_INSPECT_ID,
 } from '../../../../constants/actionTypes/Ticket';
 
 
@@ -39,10 +41,6 @@ function* getInspectionList(action){
   }
 }
 
-export function* watchGetInspectionList() {
-  yield takeLatest(GET_INSPECT_LIST_SAGA, getInspectionList);
-}
-
 // 获取巡检工单详情
 function* getInspectDetail(action){
   let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.ticket.getInspectDetail;
@@ -67,6 +65,23 @@ function* getInspectDetail(action){
   } catch(e) {
     console.log(e);
   }
+}
+
+
+// 获取巡检ID
+function* setInspectId(action){
+  yield put({
+    type: SET_INSPECT_ID,
+    data: action.params
+  });
+}
+
+export function* watchGetInspectionList() {
+  yield takeLatest(GET_INSPECT_LIST_SAGA, getInspectionList);
+}
+
+export function* watchSetInspectId(){
+  yield takeLatest(SET_INSPECT_ID_SAGA, setInspectId);
 }
 
 export function* watchGetInspectDetail(){

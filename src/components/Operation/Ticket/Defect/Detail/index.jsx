@@ -4,7 +4,7 @@ import BasicInfo from '../BasicInfo';
 import HandleForm from '../HandleForm';
 import TimeLines from '../../../../Common/TimeLines';
 import styles from './style.scss';
-import {Icon} from 'antd';
+import { Icon, Divider } from 'antd';
 
 class Detail extends Component {
   static propTypes = {
@@ -59,11 +59,13 @@ class Detail extends Component {
           </div>
           <div className={styles.right}>
             <div className={styles.timeLines}>
+              <Divider>流程信息</Divider>
               <TimeLines 
                 processData={detail.get("processData")}
                 status={detail.get("defectStatus")} />
             </div>
             <div className={styles.form}>
+              <Divider>巡检处理</Divider>
               {this.renderForm()}
             </div>
           </div>

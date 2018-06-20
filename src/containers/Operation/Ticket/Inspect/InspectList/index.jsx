@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import List from '../../../../../components/Operation/Ticket/Inspect/List';
-import { GET_INSPECT_LIST_SAGA } from "../../../../../constants/actionTypes/Ticket";
+import { GET_INSPECT_LIST_SAGA, SET_INSPECT_ID_SAGA } from "../../../../../constants/actionTypes/Ticket";
 import { connect } from "react-redux";
 import PropTypes from 'prop-types';
 
@@ -15,12 +15,15 @@ class InspectList extends Component {
     error: PropTypes.object,
     status: PropTypes.string,
     inspectStatusStatistics: PropTypes.object,
+    setInspectId: PropTypes.func,
+    onShowInspectDetail: PropTypes.func,
   }
 
   constructor(props,context) {
     super(props);
     this.state = {};
     this.onChangeStatus = this.onChangeStatus.bind(this);
+    this.onShowDetail = this.onShowDetail.bind(this);
   }
   
   componentDidMount(){
@@ -45,6 +48,11 @@ class InspectList extends Component {
     }
   }
 
+  onShowDetail(inspectId){
+    this.props.setInspectId(inspectId);
+    this.props.onShowInspectDetail();
+  }
+
   render() {
     return (
       <div>
@@ -61,6 +69,7 @@ class InspectList extends Component {
             onChangePage={this.onChangePage}
             onChangePageSize={this.onChangePageSize}
             onChangeStatus={this.onChangeStatus}
+            onShowDetail={this.onShowDetail}
             inspectStatusStatistics={this.props.inspectStatusStatistics}
           />
       </div>
@@ -81,5 +90,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   getInspectList: params => dispatch({ type: GET_INSPECT_LIST_SAGA, params }),
+  setInspectId: params => dispatch({ type: SET_INSPECT_ID_SAGA, params }),
+
 })
 export default connect(mapStateToProps,mapDispatchToProps)(InspectList);

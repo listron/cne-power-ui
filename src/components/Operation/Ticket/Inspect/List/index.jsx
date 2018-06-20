@@ -23,6 +23,7 @@ class List extends Component {
     onChangeStatus: PropTypes.func,
     inspectStatusStatistics: PropTypes.any,
     onChangeSort: PropTypes.func,
+    onShowDetail: PropTypes.func,
   }
 
   static defaultProps={
@@ -161,7 +162,7 @@ class List extends Component {
     },{
       title: '查看',
       render: (text, record) => (
-        <span><Icon type="eye-o" /></span>
+        <span><Icon type="eye-o" onClick={() => {this.props.onShowDetail(record.inspectId)}} /></span>
       ),
     }]
     const {selectedRowKeys} = this.state;
@@ -217,8 +218,6 @@ class List extends Component {
           onChange={this.onChangeTable}
           loading={this.props.loading}
           pagination= {pagination}
-          bordered={true}
-          scroll={{ y: 600 }}
         />
       </div>
     )
