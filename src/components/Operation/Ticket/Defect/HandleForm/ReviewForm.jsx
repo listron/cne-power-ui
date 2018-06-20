@@ -6,7 +6,7 @@ import {Form, DatePicker, Button} from 'antd';
 import InputLimit from '../../../../Common/InputLimit';
 const FormItem = Form.Item;
 
-class SubmitForm extends Component {
+class ReviewForm extends Component {
   static propTypes = {
     type: PropTypes.string,
     form: PropTypes.object,
@@ -41,7 +41,7 @@ class SubmitForm extends Component {
   render() {   
     const { getFieldDecorator } = this.props.form;
     return (
-      <Form onSubmit={this.onSubmit} className={styles.submitForm}>
+      <Form onSubmit={this.onSubmit} className={styles.reviewForm}>
         <FormItem label={this.props.type === "reject" ? "驳回原因" : "处理建议"}>
           {getFieldDecorator('defectProposal', {
               rules: [{ 
@@ -73,4 +73,4 @@ class SubmitForm extends Component {
   }  
 }
 
-export default Form.create()(SubmitForm);
+export default Form.create()(ReviewForm);

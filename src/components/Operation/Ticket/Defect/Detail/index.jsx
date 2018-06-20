@@ -1,7 +1,7 @@
 import React,{ Component } from 'react';
 import PropTypes from 'prop-types';
 import BasicInfo from '../BasicInfo';
-import ReviewForm from '../ReviewForm';
+import HandleForm from '../HandleForm';
 import TimeLines from '../../../../Common/TimeLines';
 import styles from './style.scss';
 import {Icon} from 'antd';
@@ -32,13 +32,15 @@ class Detail extends Component {
 
   renderForm() {
     let status = this.props.detail.get("defectStatus");
-    switch(status) {
-      case "1": 
-        return (
-          <ReviewForm 
-            onSubmit={this.onSubmit}
-            onCancel={this.props.onCloseDetail} />
-        );
+    if(status !== "0" && status !== "4") {
+      return (
+        <HandleForm 
+          onSubmit={this.onSubmit}
+          onCancel={this.props.onCloseDetail}
+          status={status} />
+      )
+    } else {
+      return null;
     }
   }
 
