@@ -13,7 +13,10 @@ import {
   SET_DEFECT_ID,
   GET_DEFECT_DETAIL_SAGA,
   GET_DEFECT_DETAIL_SUCCESS,
-  GET_DEFECT_DETAIL_FAIL
+  GET_DEFECT_DETAIL_FAIL,
+  GET_LANGUAGE_SAGA,
+  GET_LANGUAGE_SUCCESS,
+  GET_LANGUAGE_FAIL,
 } from '../../../../constants/actionTypes/Ticket';
 
 //获取缺陷工单列表
@@ -31,7 +34,7 @@ function* getDefectList(action) {
     }else{
       yield put({ 
         type: GET_DEFECT_LIST_FAIL, 
-        error:{
+        error: {
           code: response.data.code,
           message: response.data.message
         }
@@ -57,7 +60,32 @@ function* getDefectDetail(action) {
     }else{
       yield put({ 
         type: GET_DEFECT_DETAIL_FAIL, 
-        error:{
+        error: {
+          code: response.data.code,
+          message: response.data.message
+        }
+      });        
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+//获取缺陷常用语
+function* getCommonList(action) {
+  let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.ticket.getCommonList;
+  yield put({ type: BEGIN_FETCH });
+  try {
+    const response = yield call(axios.get, url, {params: action.params});
+    if(response.data.code === "10000"){
+      yield put({ 
+        type: GET_LANGUAGE_SUCCESS, 
+        data: response.data.data.data
+      });      
+    }else{
+      yield put({ 
+        type: GET_LANGUAGE_FAIL, 
+        error: {
           code: response.data.code,
           message: response.data.message
         }
@@ -114,4 +142,8 @@ export function* watchSetDefectId() {
 
 export function* watchGetDefectDetail() {
   yield takeLatest(GET_DEFECT_DETAIL_SAGA, getDefectDetail);
+}
+
+export function* watchGetCommonList() {
+  yield takeLatest(GET_LANGUAGE_SAGA, getCommonList);
 }

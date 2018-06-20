@@ -1,0 +1,37 @@
+.handleForm {
+  .title {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+  }
+  .handleForm {
+    :global{
+      .ant-row{
+        display: flex
+      }
+    }
+    .dealProposal {
+      :global {
+        .ant-form-item-control-wrapper {
+          margin-left: -60px;
+          margin-top: 10px;
+        }
+      }
+    }
+    .replacePart {
+      display: flex;
+      flex-direction: row;
+      margin-top: 10px;
+    }
+    .actionBar {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+    }
+  }
+  :global{
+    .ant-btn {
+      margin-right: 10px;
+    }
+  }
+}

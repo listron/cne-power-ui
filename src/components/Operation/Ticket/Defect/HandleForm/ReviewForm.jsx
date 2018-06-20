@@ -2,20 +2,20 @@ import React,{ Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './style.scss';
 import moment from 'moment';
-import {Form, DatePicker, Button} from 'antd';
+import {Form, Radio, DatePicker, Button} from 'antd';
 import InputLimit from '../../../../Common/InputLimit';
 const FormItem = Form.Item;
+const RadioButton = Radio.Button;
+const RadioGroup = Radio.Group;
 
 class ReviewForm extends Component {
   static propTypes = {
-    type: PropTypes.string,
     form: PropTypes.object,
     onSubmit: PropTypes.func,
     onCancel: PropTypes.func,
   }
 
   static defaultProps = {
-    type: "send"
   }
 
   constructor(props) {
@@ -27,11 +27,16 @@ class ReviewForm extends Component {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        let parmas = {...values, type: this.props.type}
-        this.props.onSubmit(parmas);
+        this.props.onSubmit(values);
       }
     });
   }
+
+  hasError() {
+    const { getFieldValue } = this.props.form;
+    return !getFieldValue("rejectReason") && getFieldValue("reviewResult") === "reject";
+  }
+
 
   disabledDate(current) {
     // Can not select days before today
@@ -39,22 +44,56 @@ class ReviewForm extends Component {
   }
 
   render() {   
-    const { getFieldDecorator } = this.props.form;
+    const { getFieldDecorator, getFieldValue } = this.props.form;
+    const reviewResult = getFieldValue("reviewResult");
+    const formItemLayout = {
+      labelCol: { span: 4 },
+      wrapperCol: { span: 32 },
+    }
     return (
-      <Form onSubmit={this.onSubmit} className={styles.reviewForm}>
-        <FormItem label={this.props.type === "reject" ? "驳回原因" : "处理建议"}>
-          {getFieldDecorator('defectProposal', {
-              rules: [{ 
-                required: this.props.type === "reject" ? true: false, 
-                message: '请输入驳回原因' 
-              }],
-            })(
-            <InputLimit placeholder="请描述，不超过80个汉字" />
+      <Form onSubmit={this.onSubmit} className={styles.handleForm}>
+        <FormItem label="审&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;核" {...formItemLayout}>
+        {getFieldDecorator('reviewResult', {
+            rules: [{ 
+              required: true 
+            }],
+            initialValue: "send"
+          })(
+            <RadioGroup>
+              <RadioButton value="send">下发</RadioButton>
+              <RadioButton value="close">关闭</RadioButton>
+              <RadioButton value="reject">驳回</RadioButton>
+            </RadioGroup>
           )}
         </FormItem>
-        {this.props.type === "send" && (
-          <FormItem label="截止时间">
-            {getFieldDecorator('deadLine')(
+        {reviewResult !== "reject" && (
+          <FormItem
+            {...formItemLayout}
+            className={styles.dealProposal} 
+            label="处理建议">
+            {getFieldDecorator("defectProposal")(
+              <InputLimit placeholder="请描述，不超过80个汉字" />
+            )}
+          </FormItem>
+        )}
+        {reviewResult === "reject" && (
+          <FormItem
+            {...formItemLayout}
+            className={styles.dealProposal} 
+            label="驳回原因">
+            {getFieldDecorator("rejectReason", {
+                rules: [{ 
+                  required: true, 
+                  message: "请输入驳回原因" 
+                }],
+              })(
+              <InputLimit placeholder="请描述，不超过80个汉字" />
+            )}
+          </FormItem>
+        )}
+        {reviewResult === "send" && (
+          <FormItem label="截止时间" {...formItemLayout}>
+            {getFieldDecorator("deadLine")(
               <DatePicker 
                 placeholder="默认当前时间"
                 format="YYYY-MM-DD"
@@ -64,9 +103,9 @@ class ReviewForm extends Component {
             )}
           </FormItem>
         )}
-        <FormItem>
+        <FormItem className={styles.actionBar}>
           <Button onClick={this.props.onCancel}>取消</Button>
-          <Button type="primary" htmlType="submit">提交</Button>
+          <Button type="primary" htmlType="submit" disabled={this.hasError()}>提交</Button>
         </FormItem>
       </Form>
     );
