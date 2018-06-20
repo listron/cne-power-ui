@@ -6,7 +6,9 @@ import {
   GET_DEFECT_LIST_FAIL,
   SET_DEFECT_ID,
   GET_DEFECT_DETAIL_SUCCESS,
-  GET_DEFECT_DETAIL_FAIL
+  GET_DEFECT_DETAIL_FAIL,
+  GET_LANGUAGE_SUCCESS,
+  GET_LANGUAGE_FAIL,
 } from '../../../../constants/actionTypes/Ticket';
 
 var initState = immutable.fromJS({
@@ -18,6 +20,7 @@ var initState = immutable.fromJS({
   fileterAllInfor:[],//顶部筛选所有数据[{stations:[],devices:[]...}]
   selectedFileterInfor: {},//选中的筛选项{selectedStation:[],selectedDevices:[]}
   defectList:[],//渲染为table的缺陷列表
+  commonList:[],//获取缺陷常用语列表
   defectStatusStatistics:{
     submitNum: 0,
     examineNum: 0,
@@ -69,8 +72,12 @@ const defectReducer = (state = initState, action) => {
       return state.set("isFetching", false)
                   .set("defectDetail", immutable.fromJS(action.data))
                   .set("defectId", action.params.defectId);
+    case GET_LANGUAGE_SUCCESS: 
+      return state.set("isFetching", false)
+                  .set("commonList", immutable.fromJS(action.data));
     case GET_DEFECT_LIST_FAIL:
     case GET_DEFECT_DETAIL_FAIL:
+    case GET_LANGUAGE_FAIL:
       return state.set("error", immutable.fromJS(action.error));
   }
 

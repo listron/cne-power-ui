@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Timeline, Icon } from 'antd';
+import { Timeline, Tag, Icon } from 'antd';
 import PropTypes from 'prop-types';
 import styles from './style.scss';
 import {getHandleStatus} from '../../../constants/ticket';
@@ -113,12 +113,13 @@ class TimeLines extends Component {
   }
 
   render() {
-    const processData=this.props.processData;
-    console.log(processData.toJS());
-    console.log("000000000000000")
+    const processData = this.props.processData;
     return (
-      <div>
-        <Timeline className={styles.TimeLines}  >
+      <div className={styles.timeLineWrap}>
+        <div className={styles.title}>
+          <Tag>流程信息</Tag>
+        </div>
+        <Timeline className={styles.timeLines}>
           {processData.map((item, index)=>{
             return (
               <Timeline.Item key={"timeline"+index}>

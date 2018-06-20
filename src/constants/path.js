@@ -30,6 +30,7 @@ export default {
       getInspectionList: '/v3/inspect/worklist/pc',
       getDefectDetail: '/v3/defect',
       getInspectDetail: '/v3/inspect',
+      getCommonList: '/v3/language',
     }
   }
 }

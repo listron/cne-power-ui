@@ -14,6 +14,7 @@ import {
   watchBatchDeleteDefect,
   watchSetDefectId,
   watchGetDefectDetail,
+  watchGetCommonList,
 } from './operation/ticket/defect'
 
 import {
@@ -80,6 +81,6 @@ export default function* rootSaga() {
     watchGetInspectionList(),
     watchSetInspectId(),
     watchGetInspectDetail(),
-    
+    watchGetCommonList(),
   ])
 } 
