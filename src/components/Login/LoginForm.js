@@ -14,7 +14,13 @@ class LoginForm extends Component {
     this.state = {
     }
     this.onSubmit = this.onSubmit.bind(this);
+    this.hasErrors = this.hasErrors.bind(this);
   }
+
+  componentDidMount() {
+    this.props.form.validateFields();
+  }
+
 
   onSubmit(e){
     e.preventDefault();
@@ -25,7 +31,7 @@ class LoginForm extends Component {
     })
   }
 
-  hasErrors = (fieldsError) => {
+  hasErrors(fieldsError) {
     return Object.keys(fieldsError).some(field => fieldsError[field]);
   }
 
