@@ -1,7 +1,6 @@
 import React,{ Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './style.scss';
-import moment from 'moment';
 import {Form, Radio, Button} from 'antd';
 import InputLimit from '../../../../Common/InputLimit';
 const FormItem = Form.Item;
