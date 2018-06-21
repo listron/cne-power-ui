@@ -71,7 +71,7 @@ class ProcessForm extends Component {
           label={defectSolveResult === 'solve'?'处理过程':'处理建议'}>
           {getFieldDecorator('defectSolveInfo', {
               rules: [{ 
-                required: defectSolveResult === 'solve' ? true: false, 
+                required: defectSolveResult === 'solve', 
                 message: '请输入处理过程'
               }],
               initialValue: ''

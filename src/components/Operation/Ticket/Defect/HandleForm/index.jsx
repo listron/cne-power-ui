@@ -4,6 +4,7 @@ import styles from './style.scss';
 import {Tag} from 'antd';
 import ReviewForm from './ReviewForm';
 import ProcessForm from './ProcessForm';
+import CheckForm from './CheckForm';
 
 class HandleForm extends Component {
   static propTypes = {
@@ -47,6 +48,14 @@ class HandleForm extends Component {
         onCancel={this.props.onCancel} />
     );
   }
+
+  renderCheckForm() {
+    return (     
+      <CheckForm 
+        onSubmit={this.props.onSubmit}
+        onCancel={this.props.onCancel} />
+    );
+  }
   
   render() {   
     return (
@@ -56,6 +65,7 @@ class HandleForm extends Component {
         </div>
         {this.props.status === '1' ? this.renderReviewForm() : null}
         {this.props.status === '2' ? this.renderProcessForm() : null}
+        {this.props.status === '3' ? this.renderCheckForm() : null}
       </div>
     );
   }  

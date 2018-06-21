@@ -2,7 +2,7 @@ import React,{ Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './style.scss';
 import moment from 'moment';
-import {Form, Radio, DatePicker, Button} from 'antd';
+import {Form, Radio, Button} from 'antd';
 import InputLimit from '../../../../Common/InputLimit';
 const FormItem = Form.Item;
 const RadioButton = Radio.Button;
@@ -32,11 +32,6 @@ class CheckForm extends Component {
     });
   }
 
-  disabledDate(current) {
-    // Can not select days before today
-    return current < moment().endOf('day');
-  }
-
   render() {   
     const { getFieldDecorator, getFieldValue } = this.props.form;
     const checkResult = getFieldValue('checkResult');
@@ -51,52 +46,27 @@ class CheckForm extends Component {
             rules: [{ 
               required: true 
             }],
-            initialValue: "send"
+            initialValue: 'ok'
           })(
             <RadioGroup>
-              <RadioButton value="send">下发</RadioButton>
-              <RadioButton value="close">关闭</RadioButton>
-              <RadioButton value="reject">驳回</RadioButton>
+              <RadioButton value="ok">合格</RadioButton>
+              <RadioButton value="notOk">不合格</RadioButton>
             </RadioGroup>
           )}
         </FormItem>
-        {reviewResult !== "reject" && (
-          <FormItem
-            {...formItemLayout}
-            className={styles.dealProposal} 
-            label="处理建议">
-            {getFieldDecorator("defectProposal")(
-              <InputLimit placeholder="请描述，不超过80个汉字" />
-            )}
-          </FormItem>
-        )}
-        {reviewResult === "reject" && (
-          <FormItem
-            {...formItemLayout}
-            className={styles.dealProposal} 
-            label="驳回原因">
-            {getFieldDecorator("rejectReason", {
-                rules: [{ 
-                  required: true, 
-                  message: "请输入驳回原因" 
-                }],
-              })(
-              <InputLimit placeholder="请描述，不超过80个汉字" />
-            )}
-          </FormItem>
-        )}
-        {reviewResult === "send" && (
-          <FormItem label="截止时间" {...formItemLayout}>
-            {getFieldDecorator("deadLine")(
-              <DatePicker 
-                placeholder="默认当前时间"
-                format="YYYY-MM-DD"
-                showTime={false}
-                showToday={false}
-                disabledDate={this.disabledDate} />
-            )}
-          </FormItem>
-        )}
+        <FormItem
+          {...formItemLayout}
+          className={styles.dealProposal} 
+          label="处理建议">
+          {getFieldDecorator('checkInfo', {
+            rules: [{ 
+              required: checkResult === "notOk",
+              message: '请输入处理建议' 
+            }]
+          })(
+            <InputLimit placeholder="请描述，不超过80个汉字" />
+          )}
+        </FormItem>
         <FormItem className={styles.actionBar}>
           <Button onClick={this.props.onCancel}>取消</Button>
           <Button type="primary" htmlType="submit">提交</Button>
