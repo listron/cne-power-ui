@@ -9,6 +9,7 @@ import {Icon} from 'antd';
 class Detail extends Component {
   static propTypes = {
     detail: PropTypes.object,
+    commonList: PropTypes.object,
     onClose: PropTypes.func,
     onSend: PropTypes.func,
     onReject: PropTypes.func,
@@ -35,6 +36,7 @@ class Detail extends Component {
     if(status !== "0" && status !== "4") {
       return (
         <HandleForm 
+          commonList={this.props.commonList}
           onSubmit={this.onSubmit}
           onCancel={this.props.onCloseDetail}
           status={status} />

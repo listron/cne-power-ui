@@ -2,7 +2,10 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import {message} from 'antd';
-import { GET_DEFECT_DETAIL_SAGA } from '../../../../../constants/actionTypes/Ticket';
+import { 
+  GET_DEFECT_DETAIL_SAGA,
+  GET_LANGUAGE_SAGA
+ } from '../../../../../constants/actionTypes/Ticket';
 import Detail from '../../../../../components/Operation/Ticket/Defect/Detail';
 
 class DefectDetail extends Component {
@@ -11,7 +14,9 @@ class DefectDetail extends Component {
     defectId: PropTypes.string,
     defectList: PropTypes.object,
     defectDetail: PropTypes.object,
+    commonList: PropTypes.object,
     getDefectDetail: PropTypes.func,
+    getCommonList: PropTypes.func,
     onCloseDetail: PropTypes.func,
     onSend: PropTypes.func,
     onClose: PropTypes.func,
@@ -27,6 +32,9 @@ class DefectDetail extends Component {
   componentDidMount() {
     this.props.getDefectDetail({
       defectId: this.props.defectId
+    });
+    this.props.getCommonList({
+      languageType: "1"
     });
   }
 
@@ -76,6 +84,7 @@ class DefectDetail extends Component {
     return (
       <Detail 
         detail={this.props.defectDetail} 
+        commonList={this.props.commonList}
         onCloseDetail={this.props.onCloseDetail}
         onClose={this.props.onClose}
         onSend={this.props.onSend}
@@ -93,10 +102,12 @@ const mapStateToProps = (state) => ({
   error: state.operation.defect.get('error'),
   defectDetail: state.operation.defect.get("defectDetail"),
   defectId: state.operation.defect.get("defectId"),
+  commonList: state.operation.defect.get('commonList'),
 });
 
 const mapDispatchToProps = (dispatch) => ({
   getDefectDetail: params => dispatch({ type: GET_DEFECT_DETAIL_SAGA, params }),
+  getCommonList: params => dispatch({ type: GET_LANGUAGE_SAGA, params }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DefectDetail);
