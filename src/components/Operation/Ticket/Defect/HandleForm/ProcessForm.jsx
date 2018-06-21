@@ -43,13 +43,6 @@ class ProcessForm extends Component {
     });
   }
 
-  hasError() {
-    const { getFieldValue } = this.props.form;
-    let result = this.state.replace ? !getFieldValue("replaceParts") : false;
-    return getFieldValue("defectSolveResult") === "solve" &&
-     (!getFieldValue("defectSolveInfo") || result);
-  }
-
   render() {   
     const { getFieldDecorator } = this.props.form;
     const defectSolveResult = this.props.form.getFieldValue("defectSolveResult");
@@ -115,7 +108,7 @@ class ProcessForm extends Component {
         )}
         <FormItem className={styles.actionBar}>
           <Button onClick={this.props.onCancel}>取消</Button>
-          <Button type="primary" htmlType="submit" disabled={this.hasError()}>提交</Button>
+          <Button type="primary" htmlType="submit">提交</Button>
         </FormItem>
       </Form>
     );

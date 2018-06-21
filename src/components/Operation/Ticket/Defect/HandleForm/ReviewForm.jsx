@@ -32,12 +32,6 @@ class ReviewForm extends Component {
     });
   }
 
-  hasError() {
-    const { getFieldValue } = this.props.form;
-    return !getFieldValue("rejectReason") && getFieldValue("reviewResult") === "reject";
-  }
-
-
   disabledDate(current) {
     // Can not select days before today
     return current < moment().endOf('day');
@@ -105,7 +99,7 @@ class ReviewForm extends Component {
         )}
         <FormItem className={styles.actionBar}>
           <Button onClick={this.props.onCancel}>取消</Button>
-          <Button type="primary" htmlType="submit" disabled={this.hasError()}>提交</Button>
+          <Button type="primary" htmlType="submit">提交</Button>
         </FormItem>
       </Form>
     );
