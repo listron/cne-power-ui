@@ -84,6 +84,15 @@ class StationSelect extends Component {
     })
     this.props.onChange(checkedStations)
   }
+  onModalHandelOK = (stations) => {
+    const checkedStationName = stations.map(e=>e.stationName);
+    this.setState({
+      stationModalShow: false,
+      checkedStationName,
+      checkedStations:stations
+    })
+    this.props.onChange(stations)
+  }
 
   render() {
     const { value, multiple } = this.props;
@@ -109,6 +118,7 @@ class StationSelect extends Component {
         <StationSelectModal 
           multiple={multiple}
           value={value} 
+          handleOK={this.onModalHandelOK}
           stationModalShow={stationModalShow}
           selectStation={this.selectStation} 
           hideStationModal={this.hideStationModal} 

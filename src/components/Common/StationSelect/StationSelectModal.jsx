@@ -14,6 +14,7 @@ class StationSelectModal extends Component {
     selectStation: PropTypes.func,
     hideStationModal: PropTypes.func,
     showStationModal: PropTypes.func,
+    handleOK: PropTypes.func
   }
   constructor(props) {
     super(props);
@@ -42,12 +43,17 @@ class StationSelectModal extends Component {
       selectedStation: tmpSelectedStation
     })
   }
+  
+  handleOK = () => {
+    this.props.handleOK(this.state.selectedStation)
+  }
 
   checkStation = (selectedStation) => {
     this.setState({
       selectedStation
     })
   }
+
 
   _filterStation = () => {
     const { value, multiple } = this.props;
@@ -92,6 +98,7 @@ class StationSelectModal extends Component {
 
 
 
+
   render() {
     const { stationModalShow, hideStationModal, showStationModal, multiple } = this.props;
     const { filterStationType, stationType } = this.state;
@@ -100,7 +107,7 @@ class StationSelectModal extends Component {
         <Icon type="filter" onClick={showStationModal} />
         <Modal
           visible={stationModalShow}
-          onOk={this.onStationSelected}
+          onOk={this.handleOK}
           onCancel={hideStationModal}
           cancelText={'取消'}
           okText={'确定'}

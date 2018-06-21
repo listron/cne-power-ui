@@ -113,7 +113,7 @@ class Power extends Component {
                 />
             </div>
             <div>
-                <StationSelect value={this.state.stationArray} onChange={this.stationSelected} style={{width:'500px'}} />
+                <StationSelect value={this.state.stationArray} multiple={true} onChange={this.stationSelected} style={{width:'500px'}} />
             </div>
           </div>
         </div>
