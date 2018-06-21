@@ -12,7 +12,12 @@ import {
 import {
   watchGetDefectList,
   watchBatchDeleteDefect,
+  watchBatchSendDefect,
+  watchBatchRejectDefect,
+  watchBatchClosedDefect,
+  watchBatchCheckdDefect,
   watchSetDefectId,
+  watchSetSelectedRows,
   watchGetDefectDetail,
   watchGetCommonList,
 } from './operation/ticket/defect'
@@ -74,8 +79,13 @@ export default function* rootSaga() {
     watchCreateRegister(),
     watchGetDefectList(),
     watchSetDefectId(),
+    watchSetSelectedRows(),
     watchGetDefectDetail(),
     watchBatchDeleteDefect(),
+    watchBatchSendDefect(),
+    watchBatchRejectDefect(),
+    watchBatchClosedDefect(),
+    watchBatchCheckdDefect(),
     watchGetInspectionList(),
     watchGetCommonList()
   ])

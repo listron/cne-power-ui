@@ -13,6 +13,8 @@ class Detail extends Component {
     onClose: PropTypes.func,
     onSend: PropTypes.func,
     onReject: PropTypes.func,
+    onHandle: PropTypes.func,
+    onCheck: PropTypes.func,
     onCloseDetail: PropTypes.func,
     onNext: PropTypes.func,
     onPrev: PropTypes.func

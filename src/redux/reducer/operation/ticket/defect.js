@@ -5,6 +5,7 @@ import {
   GET_DEFECT_LIST_SUCCESS,
   GET_DEFECT_LIST_FAIL,
   SET_DEFECT_ID,
+  SET_SELECTED_ROWS,
   GET_DEFECT_DETAIL_SUCCESS,
   GET_DEFECT_DETAIL_FAIL,
   GET_LANGUAGE_SUCCESS,
@@ -21,6 +22,7 @@ var initState = immutable.fromJS({
   selectedFileterInfor: {},//选中的筛选项{selectedStation:[],selectedDevices:[]}
   defectList:[],//渲染为table的缺陷列表
   commonList:[],//获取缺陷常用语列表
+  selectedRowKeys: [],
   defectStatusStatistics:{
     submitNum: 0,
     examineNum: 0,
@@ -61,6 +63,7 @@ const defectReducer = (state = initState, action) => {
       return state.set('isFetching', false)
                   .set('total', action.data.total)
                   .set('defectList', immutable.fromJS(action.data.defectList))
+                  .set('selectedRowKeys', immutable.fromJS([]))
                   .set('defectStatusStatistics', immutable.fromJS(action.data.defectStatusStatistics))
                   .set('currentPage', (action.params.pageNum + 1))
                   .set('currentPageSize', action.params.pageSize)
@@ -68,6 +71,8 @@ const defectReducer = (state = initState, action) => {
                   .set('sort', action.params.sort);
     case SET_DEFECT_ID:
       return state.set('defectId', action.data);
+    case SET_SELECTED_ROWS:
+      return state.set('selectedRowKeys', immutable.fromJS(action.data));
     case GET_DEFECT_DETAIL_SUCCESS: 
       return state.set('isFetching', false)
                   .set('defectDetail', immutable.fromJS(action.data))

@@ -14,6 +14,7 @@ class List extends Component {
     onChangeStatus: PropTypes.func,
     onChangePage: PropTypes.func,
     onChangePageSize: PropTypes.func,
+    onChangeSelectRows: PropTypes.func,
     onSorter: PropTypes.func,
     onShowDetail: PropTypes.func,
     onAdd: PropTypes.func,
@@ -21,15 +22,15 @@ class List extends Component {
     onSend: PropTypes.func,
     onReject: PropTypes.func,
     onClose: PropTypes.func,
-    onOk: PropTypes.func,
-    onNotOk: PropTypes.func,
+    onCheck: PropTypes.func,
     list: PropTypes.object,
     currentPage: PropTypes.number,
     currentPageSize: PropTypes.number,
     total: PropTypes.number,
     defectStatusStatistics: PropTypes.object,
     isFetching: PropTypes.bool,
-    status: PropTypes.string
+    status: PropTypes.string,
+    selectedRowKeys: PropTypes.array
   }
 
   static defaultProps = {
@@ -40,7 +41,6 @@ class List extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedRowKeys: [],
       currentSelectedStatus: null
     };
     this.onChangeTab = this.onChangeTab.bind(this);
@@ -56,9 +56,6 @@ class List extends Component {
   }
 
   onChangeTab(e) {
-    this.setState({
-      selectedRowKeys: []
-    });
     this.props.onChangeStatus(e.target.value);
   }
 
@@ -69,41 +66,63 @@ class List extends Component {
   onDelete() {
     confirm({
       title: '确认删除此缺陷',
-      onOk() {
-        this.props.onDelete(this.state.selectedRowKeys);
-      },
-      onCancel() {
-        console.log('Cancel');
+      onOk: () => {
+        this.props.onDelete(this.props.selectedRowKeys);
       },
     });
   }
 
   onSend() {
-
+    confirm({
+      title: '确认下发此缺陷',
+      onOk: () => {
+        this.props.onSend(this.props.selectedRowKeys);
+      },
+    });
   }
 
   onReject() {
-
+    confirm({
+      title: '确认驳回此缺陷',
+      onOk: () => {
+        this.props.onReject(this.props.selectedRowKeys);
+      },
+    });
   }
 
   onClose() {
-
+    confirm({
+      title: '确认关闭此缺陷',
+      onOk: () => {
+        this.props.onClose(this.props.selectedRowKeys);
+      },
+    });
   }
 
   onOk() {
-
+    confirm({
+      title: '确认验收此缺陷为合格',
+      onOk: () => {
+        this.props.onCheck(this.props.selectedRowKeys, "0");
+      },
+    });
   }
 
   onNotOk() {
-
+    confirm({
+      title: '确认验收此缺陷为不合格',
+      onOk: () => {
+        this.props.onCheck(this.props.selectedRowKeys, "1");
+      },
+    });
   }
 
   onSelectChange(selectedRowKeys, selectedRows) {
     let status = this.getSelectedRowsStatus(selectedRows);
     this.setState({
-      selectedRowKeys: selectedRowKeys,
       currentSelectedStatus: status
     });
+    this.props.onChangeSelectRows(selectedRowKeys);
   }
 
   onChangeTable(pagination, filters, sorter) {
@@ -220,7 +239,7 @@ class List extends Component {
         this.props.onChangePage(current);
       }
     };
-    const {selectedRowKeys} = this.state;
+    const selectedRowKeys = this.props.selectedRowKeys;
 
     const rowSelection = {
       selectedRowKeys,

@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import {message} from 'antd';
+import {message, Spin} from 'antd';
 import { 
   GET_DEFECT_DETAIL_SAGA,
-  GET_LANGUAGE_SAGA
+  GET_LANGUAGE_SAGA,
+  SET_DEFECT_ID_SAGA
  } from '../../../../../constants/actionTypes/Ticket';
 import Detail from '../../../../../components/Operation/Ticket/Defect/Detail';
 
@@ -18,9 +19,12 @@ class DefectDetail extends Component {
     getDefectDetail: PropTypes.func,
     getCommonList: PropTypes.func,
     onCloseDetail: PropTypes.func,
+    setDefectId: PropTypes.func,
     onSend: PropTypes.func,
     onClose: PropTypes.func,
     onReject: PropTypes.func,
+    onHandle: PropTypes.func,
+    onCheck: PropTypes.func,
   };
   constructor(props,context) {
     super(props);
@@ -54,9 +58,7 @@ class DefectDetail extends Component {
     });
     if(index !== -1) {
       if(index !== 0) {
-        this.props.getDefectDetail({
-          defectId: defectList.get([index-1, 'defectId'])
-        });
+        this.props.setDefectId(defectList.getIn([index-1, 'defectId']));
       } else {
         message.info('已经是第一条');
       }
@@ -71,9 +73,7 @@ class DefectDetail extends Component {
     });
     if(index !== -1) {
       if(index !== defectList.size - 1) {
-        this.props.getDefectDetail({
-          defectId: defectList.get([index+1, 'defectId'])
-        });
+        this.props.setDefectId(defectList.getIn([index+1, 'defectId']));
       } else {
         message.info('已经是最后一条');
       }
@@ -82,16 +82,17 @@ class DefectDetail extends Component {
 
   render() {   
     return (
-      <Detail 
-        detail={this.props.defectDetail} 
-        commonList={this.props.commonList}
-        onCloseDetail={this.props.onCloseDetail}
-        onClose={this.props.onClose}
-        onSend={this.props.onSend}
-        onReject={this.props.onReject}
-        isFetching={this.props.isFetching}
-        onNext={this.onNext}
-        onPrev={this.onPrev} />
+      <Spin spinning={this.props.isFetching} size="large">
+        <Detail 
+          detail={this.props.defectDetail} 
+          commonList={this.props.commonList}
+          onCloseDetail={this.props.onCloseDetail}
+          onClose={this.props.onClose}
+          onSend={this.props.onSend}
+          onReject={this.props.onReject}
+          onNext={this.onNext}
+          onPrev={this.onPrev} />
+      </Spin>    
     );
   }
 }
@@ -108,6 +109,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   getDefectDetail: params => dispatch({ type: GET_DEFECT_DETAIL_SAGA, params }),
   getCommonList: params => dispatch({ type: GET_LANGUAGE_SAGA, params }),
+  setDefectId: params => dispatch({ type: SET_DEFECT_ID_SAGA, params }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DefectDetail);
