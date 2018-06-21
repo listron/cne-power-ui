@@ -33,7 +33,8 @@ const Option = Select.Option;
       zoneCode:10
       zoneName:"辽宁"
     }]
-  3. 输出信息:this.props.onChange(selectedStationArray)为value中筛选的一个或多个
+  3. 传递下来的style值，可选填，用于控制筛选组件总体样式 {width:'500px'}
+  4. 输出信息:this.props.onChange(selectedStationArray)为value中筛选的一个或多个
 */
 
 class StationSelect extends Component {
@@ -41,6 +42,7 @@ class StationSelect extends Component {
     multiple: PropTypes.bool,
     value: PropTypes.array,
     onChange: PropTypes.func,
+    style: PropTypes.object
   }
   static defaultProps = {
     multiple: false,
@@ -78,13 +80,14 @@ class StationSelect extends Component {
     const { value } = this.props;
     const { checkedStationName, stationModalShow } = this.state;
     return (
-      <div className={styles.stationSelect}>
+      <div className={styles.stationSelect} style={this.props.style}>
         <Select
           mode="multiple"
           style={{ width: '100%' }}
           placeholder="输入关键字快速查询"
           onChange={this.selectStation}
           value={checkedStationName}
+          className={styles.stationSelectMainInput}
         >
           {value.map(e=>(<Option key={e.stationName}>{e.stationName}</Option>))}
         </Select>

@@ -33,13 +33,26 @@ class StationSelectModal extends Component {
     })
   }
 
+  onClearSelected = () => {
+    this.setState({
+      selectedStation:[]
+    })
+  }
+  onDeleteOneStation = (stationInfor) => {
+    const { selectedStation } = this.state;
+    const tmpSelectedStation = selectedStation.filter(e=>e.stationCode !== stationInfor.stationCode);
+    this.setState({
+      selectedStation: tmpSelectedStation
+    })
+  }
+
   checkStation = (selectedStation) => {
     this.setState({
       selectedStation
     })
   }
 
-  filterStation = () => {
+  _filterStation = () => {
     const { value } = this.props;
     const { filterStationType, selectedStation } = this.state;
     const tmpStations = filterStationType === 0 ? value : value.filter(e=>(e.stationType === filterStationType));
@@ -64,27 +77,50 @@ class StationSelectModal extends Component {
       <ProvinceItem key={e.provinceCode} checkStation={this.checkStation} provinceInfor={{...e}} selectedStation={selectedStation}/>
     ))
   }
+  _selectedStation = () => {
+    const { selectedStation } = this.state;
+    return (
+      <div className={styles.selectedStationList}>
+        <h3 className={styles.selectedStationTitle}>
+          <span>已选电站{selectedStation.length}个</span>
+          <Button onClick={this.onClearSelected}>清空</Button> </h3>
+        <div className={styles.innerStationList}>
+          {selectedStation.map(e=>{
+            return <div key={e.stationCode} className={styles.eachSelectedStation} > <span>{ e.stationName }</span> <Icon type="close" className={styles.deleteIcon} onClick={()=>this.onDeleteOneStation(e)} /> </div>
+          })}
+        </div>
+      </div>
+    )
+  }
+
+
 
   render() {
     const { stationModalShow, hideStationModal, showStationModal } = this.props;
     const { filterStationType, stationType } = this.state;
     return (
-      <div>
+      <div className={styles.stationSelectModal}>
         <Icon type="filter" onClick={showStationModal} />
         <Modal
           visible={stationModalShow}
           onOk={this.onStationSelected}
           onCancel={hideStationModal}
+          cancelText={'取消'}
+          okText={'确定'}
           width={760}
+          wrapClassName={styles.stationStyleModal}
         >
-          <div className={styles.allStations}>
-            <div className={styles.typeSelect}>
+          <div>
+            <div>
               <RadioGroup onChange={this.onSelectStationType} value={filterStationType}>
-                {stationType.map(e=>(<RadioButton key={e} value={e}>{e===0?'全部':e===10?'光伏':'风电'}</RadioButton>))}
+                {stationType.map(e=>(<RadioButton key={e} value={e} >{e===0?'全部':e===10?'光伏':'风电'}</RadioButton>))}
               </RadioGroup>
             </div>
+            <div className={styles.provinceList}>
+              {this._filterStation()}
+            </div>
             <div>
-              {this.filterStation()}
+              {this._selectedStation()}
             </div>
           </div>
         </Modal>
