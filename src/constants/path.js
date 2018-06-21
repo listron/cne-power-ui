@@ -34,6 +34,11 @@ export default {
       getInspectionList: '/v3/inspect/worklist/pc',
       getDefectDetail: '/v3/defect',
       getCommonList: '/v3/language',
+      sendDefect: '/v3/defect/distribute',
+      rejectDefect: '/v3/defect/reject',
+      closeDefect: '/v3/defect/close',
+      handleDefect: '/v3/defect/handle',
+      checkDefect: '/v3/defect/check',
     }
   }
 }

@@ -1,11 +1,16 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import {message, Spin} from 'antd';
+import {message} from 'antd';
 import { 
   GET_DEFECT_DETAIL_SAGA,
   GET_LANGUAGE_SAGA,
-  SET_DEFECT_ID_SAGA
+  SET_DEFECT_ID_SAGA,
+  SEND_DEFECT_SAGA,
+  REJECT_DEFECT_SAGA,
+  CLOSE_DEFECT_SAGA,
+  HANDLE_DEFECT_SAGA,
+  CHECK_DEFECT_SAGA,
  } from '../../../../../constants/actionTypes/Ticket';
 import Detail from '../../../../../components/Operation/Ticket/Defect/Detail';
 
@@ -82,17 +87,18 @@ class DefectDetail extends Component {
 
   render() {   
     return (
-      <Spin spinning={this.props.isFetching} size="large">
-        <Detail 
-          detail={this.props.defectDetail} 
-          commonList={this.props.commonList}
-          onCloseDetail={this.props.onCloseDetail}
-          onClose={this.props.onClose}
-          onSend={this.props.onSend}
-          onReject={this.props.onReject}
-          onNext={this.onNext}
-          onPrev={this.onPrev} />
-      </Spin>    
+      <Detail 
+        detail={this.props.defectDetail}
+        isFetching={this.props.isFetching}
+        commonList={this.props.commonList}
+        onCloseDetail={this.props.onCloseDetail}
+        onClose={this.props.onClose}
+        onSend={this.props.onSend}
+        onReject={this.props.onReject}
+        onHandle={this.props.onHandle}
+        onCheck={this.props.onCheck}
+        onNext={this.onNext}
+        onPrev={this.onPrev} />    
     );
   }
 }
@@ -110,6 +116,11 @@ const mapDispatchToProps = (dispatch) => ({
   getDefectDetail: params => dispatch({ type: GET_DEFECT_DETAIL_SAGA, params }),
   getCommonList: params => dispatch({ type: GET_LANGUAGE_SAGA, params }),
   setDefectId: params => dispatch({ type: SET_DEFECT_ID_SAGA, params }),
+  onSend: params => dispatch({ type: SEND_DEFECT_SAGA, params }),
+  onReject: params => dispatch({ type: REJECT_DEFECT_SAGA, params }),
+  onClose: params => dispatch({ type: CLOSE_DEFECT_SAGA, params }),
+  onHandle: params => dispatch({ type:HANDLE_DEFECT_SAGA, params }),
+  onCheck: params => dispatch({ type: CHECK_DEFECT_SAGA, params }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DefectDetail);

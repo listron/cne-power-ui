@@ -39,7 +39,7 @@ class ReviewForm extends Component {
 
   render() {   
     const { getFieldDecorator, getFieldValue } = this.props.form;
-    const reviewResult = getFieldValue('reviewResult');
+    const dealResult = getFieldValue('dealResult');
     const formItemLayout = {
       labelCol: { span: 4 },
       wrapperCol: { span: 32 },
@@ -47,7 +47,7 @@ class ReviewForm extends Component {
     return (
       <Form onSubmit={this.onSubmit} className={styles.handleForm}>
         <FormItem label="审&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;核" {...formItemLayout}>
-        {getFieldDecorator('reviewResult', {
+        {getFieldDecorator('dealResult', {
             rules: [{ 
               required: true 
             }],
@@ -60,7 +60,7 @@ class ReviewForm extends Component {
             </RadioGroup>
           )}
         </FormItem>
-        {reviewResult !== 'reject' && (
+        {dealResult !== 'reject' && (
           <FormItem
             {...formItemLayout}
             className={styles.dealProposal} 
@@ -70,7 +70,7 @@ class ReviewForm extends Component {
             )}
           </FormItem>
         )}
-        {reviewResult === "reject" && (
+        {dealResult === "reject" && (
           <FormItem
             {...formItemLayout}
             className={styles.dealProposal} 
@@ -85,7 +85,7 @@ class ReviewForm extends Component {
             )}
           </FormItem>
         )}
-        {reviewResult === 'send' && (
+        {dealResult === 'send' && (
           <FormItem label="截止时间" {...formItemLayout}>
             {getFieldDecorator('deadLine')(
               <DatePicker 

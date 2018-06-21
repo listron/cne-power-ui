@@ -1,4 +1,4 @@
-import { call, put, takeLatest, select, delay, take, fork, cancel } from 'redux-saga/effects';
+import { call, put, takeLatest, select } from 'redux-saga/effects';
 import axios from 'axios';
 import Path from '../../../../constants/path';
 import {
@@ -26,6 +26,16 @@ import {
   GET_LANGUAGE_SAGA,
   GET_LANGUAGE_SUCCESS,
   GET_LANGUAGE_FAIL,
+  SEND_DEFECT_SAGA,
+  SEND_DEFECT_FAIL,
+  REJECT_DEFECT_SAGA,
+  REJECT_DEFECT_FAIL,
+  CLOSE_DEFECT_SAGA,
+  CLOSE_DEFECT_FAIL,
+  HANDLE_DEFECT_SAGA,
+  HANDLE_DEFECT_FAIL,
+  CHECK_DEFECT_SAGA,
+  CHECK_DEFECT_FAIL,
 } from '../../../../constants/actionTypes/Ticket';
 
 //获取缺陷工单列表
@@ -294,6 +304,181 @@ function* setSelectedRows(action) {
   }); 
 }
 
+//下发工单
+function* sendDefect(action) {
+  let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.ticket.sendDefect;
+  yield put({ type: BEGIN_FETCH });
+  try {
+    const response = yield call(axios.post, url, action.params);
+    if(response.data.code === '10000'){
+      const pageSize = yield select(state => state.get('currentPageSize'));
+      const status = yield select(state => state.get('status'));
+      const sort = yield select(state => state.get('sort'));
+      yield put({ 
+        type: GET_DEFECT_LIST_SAGA, 
+        params: {
+          defectSource: '3',
+          stationType: '2',
+          status: status,
+          pageNum: 0,
+          pageSize: pageSize,
+          sort: sort
+        }
+      });      
+    } else{
+      yield put({ 
+        type: SEND_DEFECT_FAIL, 
+        error:{
+          code: response.data.code,
+          message: response.data.message
+        }
+      });        
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+//驳回工单
+function* rejectDefect(action) {
+  let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.ticket.rejectDefect;
+  yield put({ type: BEGIN_FETCH });
+  try {
+    const response = yield call(axios.post, url, action.params);
+    if(response.data.code === '10000'){
+      const pageSize = yield select(state => state.get('currentPageSize'));
+      const status = yield select(state => state.get('status'));
+      const sort = yield select(state => state.get('sort'));
+      yield put({ 
+        type: GET_DEFECT_LIST_SAGA, 
+        params: {
+          defectSource: '3',
+          stationType: '2',
+          status: status,
+          pageNum: 0,
+          pageSize: pageSize,
+          sort: sort
+        }
+      });      
+    } else{
+      yield put({ 
+        type: REJECT_DEFECT_FAIL, 
+        error:{
+          code: response.data.code,
+          message: response.data.message
+        }
+      });        
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+//关闭工单
+function* closeDefect(action) {
+  let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.ticket.closeDefect;
+  yield put({ type: BEGIN_FETCH });
+  try {
+    const response = yield call(axios.post, url, action.params);
+    if(response.data.code === '10000'){
+      const pageSize = yield select(state => state.get('currentPageSize'));
+      const status = yield select(state => state.get('status'));
+      const sort = yield select(state => state.get('sort'));
+      yield put({ 
+        type: GET_DEFECT_LIST_SAGA, 
+        params: {
+          defectSource: '3',
+          stationType: '2',
+          status: status,
+          pageNum: 0,
+          pageSize: pageSize,
+          sort: sort
+        }
+      });      
+    } else{
+      yield put({ 
+        type: CLOSE_DEFECT_FAIL, 
+        error:{
+          code: response.data.code,
+          message: response.data.message
+        }
+      });        
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+//执行工单
+function* handleDefect(action) {
+  let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.ticket.handleDefect;
+  yield put({ type: BEGIN_FETCH });
+  try {
+    const response = yield call(axios.post, url, action.params);
+    if(response.data.code === '10000'){
+      const pageSize = yield select(state => state.get('currentPageSize'));
+      const status = yield select(state => state.get('status'));
+      const sort = yield select(state => state.get('sort'));
+      yield put({ 
+        type: GET_DEFECT_LIST_SAGA, 
+        params: {
+          defectSource: '3',
+          stationType: '2',
+          status: status,
+          pageNum: 0,
+          pageSize: pageSize,
+          sort: sort
+        }
+      });      
+    } else{
+      yield put({ 
+        type: HANDLE_DEFECT_FAIL, 
+        error:{
+          code: response.data.code,
+          message: response.data.message
+        }
+      });        
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+//验收工单
+function* checkDefect(action) {
+  let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.ticket.checkDefect;
+  yield put({ type: BEGIN_FETCH });
+  try {
+    const response = yield call(axios.post, url, action.params);
+    if(response.data.code === '10000'){
+      const pageSize = yield select(state => state.get('currentPageSize'));
+      const status = yield select(state => state.get('status'));
+      const sort = yield select(state => state.get('sort'));
+      yield put({ 
+        type: GET_DEFECT_LIST_SAGA, 
+        params: {
+          defectSource: '3',
+          stationType: '2',
+          status: status,
+          pageNum: 0,
+          pageSize: pageSize,
+          sort: sort
+        }
+      });      
+    } else{
+      yield put({ 
+        type: CHECK_DEFECT_FAIL, 
+        error:{
+          code: response.data.code,
+          message: response.data.message
+        }
+      });        
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
+
 export function* watchGetDefectList() {
   yield takeLatest(GET_DEFECT_LIST_SAGA, getDefectList);
 }
@@ -332,4 +517,24 @@ export function* watchGetDefectDetail() {
 
 export function* watchGetCommonList() {
   yield takeLatest(GET_LANGUAGE_SAGA, getCommonList);
+}
+
+export function* watchSendDefect() {
+  yield takeLatest(SEND_DEFECT_SAGA, sendDefect);
+}
+
+export function* watchRejectDefect() {
+  yield takeLatest(REJECT_DEFECT_SAGA, rejectDefect);
+}
+
+export function* watchCloseDefect() {
+  yield takeLatest(CLOSE_DEFECT_SAGA, closeDefect);
+}
+
+export function* watchHandleDefect() {
+  yield takeLatest(HANDLE_DEFECT_SAGA, handleDefect);
+}
+
+export function* watchCheckDefect() {
+  yield takeLatest(CHECK_DEFECT_SAGA, checkDefect);
 }

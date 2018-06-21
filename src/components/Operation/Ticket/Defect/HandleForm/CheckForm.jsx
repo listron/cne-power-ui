@@ -33,7 +33,7 @@ class CheckForm extends Component {
 
   render() {   
     const { getFieldDecorator, getFieldValue } = this.props.form;
-    const checkResult = getFieldValue('checkResult');
+    const dealResult = getFieldValue('dealResult');
     const formItemLayout = {
       labelCol: { span: 4 },
       wrapperCol: { span: 32 },
@@ -41,7 +41,7 @@ class CheckForm extends Component {
     return (
       <Form onSubmit={this.onSubmit} className={styles.handleForm}>
         <FormItem label="验收结果" {...formItemLayout}>
-        {getFieldDecorator('checkResult', {
+        {getFieldDecorator('dealResult', {
             rules: [{ 
               required: true 
             }],
@@ -59,7 +59,7 @@ class CheckForm extends Component {
           label="处理建议">
           {getFieldDecorator('checkInfo', {
             rules: [{ 
-              required: checkResult === "notOk",
+              required: dealResult === "notOk",
               message: '请输入处理建议' 
             }]
           })(
