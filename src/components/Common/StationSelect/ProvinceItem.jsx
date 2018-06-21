@@ -6,24 +6,24 @@ import PropTypes from 'prop-types';
 class ProvinceItem extends Component {
   static propTypes = {
     checkStation: PropTypes.func,
+    multiple: PropTypes.bool,
     provinceInfor: PropTypes.object,
     selectedStation: PropTypes.array,
   }
-  static defaultProps = {
-  }
+  
   constructor(props) {
     super(props);
     this.state = {
     }
   }
   checkStation = (station) => {
-    const { selectedStation } = this.props;
+    const { selectedStation, multiple } = this.props;
     let cancelCheck = selectedStation.some(e=>e.stationCode===station.stationCode)
     let newStations = [];
     if(cancelCheck){
       newStations = selectedStation.filter(e=>e.stationCode!==station.stationCode);
     }else{
-      newStations = [station,...selectedStation];
+      newStations = multiple?[station,...selectedStation]:[station];
     }
     this.props.checkStation(newStations)
   }
@@ -41,7 +41,7 @@ class ProvinceItem extends Component {
   }
 
   render() {
-    const { provinceInfor, selectedStation } = this.props;
+    const { provinceInfor, selectedStation, multiple } = this.props;
     let filterdStations = selectedStation.filter(e=>e.provinceCode === provinceInfor.provinceCode)
     let provinceChecked = false, indeterminate = false;
     if(filterdStations.length > 0 && filterdStations.length < provinceInfor.stations.length ){
@@ -51,7 +51,7 @@ class ProvinceItem extends Component {
     }
     return (
       <div className={styles.provinceItem}>
-        <Checkbox onChange={this.checkProvince} checked={provinceChecked} indeterminate={indeterminate}>{provinceInfor.provinceName}</Checkbox>
+        {multiple ? <Checkbox onChange={this.checkProvince} checked={provinceChecked} indeterminate={indeterminate}>{provinceInfor.provinceName}</Checkbox>:<span>{provinceInfor.provinceName}</span>}
         <div className={styles.stationList}>
           {provinceInfor.stations.map(m=>{
             let checked = selectedStation.some(e=>e.stationCode===m.stationCode)

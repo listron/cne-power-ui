@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { Icon, Input, Select  } from 'antd';
+import { Select ,AutoComplete  } from 'antd';
 import StationSelectModal from './StationSelectModal'
 import styles from './style.scss';
 import PropTypes from 'prop-types';
 const Option = Select.Option;
+const AutoCompleteOption = AutoComplete.Option;
 /*
   电站选择组件：
   必须参数:
@@ -53,6 +54,7 @@ class StationSelect extends Component {
       stationModalShow: false,
       checkedStations: [],
       checkedStationName:[],
+      filteredSelectedStation: [],
     }
   }
   showStationModal = () => {
@@ -63,6 +65,13 @@ class StationSelect extends Component {
   hideStationModal = () => {
     this.setState({
       stationModalShow: false,
+    })
+  }
+  handleSearch = (text) => {
+    const { value } = this.props;
+    let filteredSelectedStation = value.filter(e=>e.stationName.indexOf(text) >= 0)
+    this.setState({
+      filteredSelectedStation
     })
   }
   selectStation = (stations) => {//stations:选中的电站名称数组
@@ -77,12 +86,12 @@ class StationSelect extends Component {
   }
 
   render() {
-    const { value } = this.props;
-    const { checkedStationName, stationModalShow } = this.state;
+    const { value, multiple } = this.props;
+    const { checkedStationName, stationModalShow, filteredSelectedStation } = this.state;
     return (
       <div className={styles.stationSelect} style={this.props.style}>
-        <Select
-          mode="multiple"
+        {multiple ? <Select
+          mode={"multiple"}
           style={{ width: '100%' }}
           placeholder="输入关键字快速查询"
           onChange={this.selectStation}
@@ -90,8 +99,15 @@ class StationSelect extends Component {
           className={styles.stationSelectMainInput}
         >
           {value.map(e=>(<Option key={e.stationName}>{e.stationName}</Option>))}
-        </Select>
+        </Select>:<AutoComplete
+          style={{ width: '100%' }}
+          onSearch={this.handleSearch}
+          placeholder="输入关键字快速查询"
+        >
+          {filteredSelectedStation.map((e) => (<Option key={e.stationName}>{e.stationName}</Option>))}
+        </AutoComplete>}
         <StationSelectModal 
+          multiple={multiple}
           value={value} 
           stationModalShow={stationModalShow}
           selectStation={this.selectStation} 

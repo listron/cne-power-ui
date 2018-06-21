@@ -15,9 +15,6 @@ class StationSelectModal extends Component {
     hideStationModal: PropTypes.func,
     showStationModal: PropTypes.func,
   }
-  static defaultProps = {
-    multiple: false,
-  }
   constructor(props) {
     super(props);
     this.state = {
@@ -53,7 +50,7 @@ class StationSelectModal extends Component {
   }
 
   _filterStation = () => {
-    const { value } = this.props;
+    const { value, multiple } = this.props;
     const { filterStationType, selectedStation } = this.state;
     const tmpStations = filterStationType === 0 ? value : value.filter(e=>(e.stationType === filterStationType));
     let filteredStation = [];
@@ -74,7 +71,7 @@ class StationSelectModal extends Component {
       }
     })
     return filteredStation.map(e=>(
-      <ProvinceItem key={e.provinceCode} checkStation={this.checkStation} provinceInfor={{...e}} selectedStation={selectedStation}/>
+      <ProvinceItem key={e.provinceCode} multiple={multiple} checkStation={this.checkStation} provinceInfor={{...e}} selectedStation={selectedStation} />
     ))
   }
   _selectedStation = () => {
@@ -96,7 +93,7 @@ class StationSelectModal extends Component {
 
 
   render() {
-    const { stationModalShow, hideStationModal, showStationModal } = this.props;
+    const { stationModalShow, hideStationModal, showStationModal, multiple } = this.props;
     const { filterStationType, stationType } = this.state;
     return (
       <div className={styles.stationSelectModal}>
@@ -120,7 +117,7 @@ class StationSelectModal extends Component {
               {this._filterStation()}
             </div>
             <div>
-              {this._selectedStation()}
+              {multiple && this._selectedStation()}
             </div>
           </div>
         </Modal>
