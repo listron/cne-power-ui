@@ -45,7 +45,7 @@ class ProcessForm extends Component {
 
   render() {   
     const { getFieldDecorator } = this.props.form;
-    const defectSolveResult = this.props.form.getFieldValue("defectSolveResult");
+    const defectSolveResult = this.props.form.getFieldValue('defectSolveResult');
     const formItemLayout = {
       labelCol: { span: 4 },
       wrapperCol: { span: 32 },
@@ -57,7 +57,7 @@ class ProcessForm extends Component {
             rules: [{ 
               required: true 
             }],
-            initialValue: "notSolve"
+            initialValue: 'notSolve'
           })(
             <RadioGroup>
               <RadioButton value="notSolve">未解决</RadioButton>
@@ -68,13 +68,13 @@ class ProcessForm extends Component {
         <FormItem
           {...formItemLayout}
           className={styles.dealProposal} 
-          label={defectSolveResult === "solve"?"处理过程":"处理建议"}>
+          label={defectSolveResult === 'solve'?'处理过程':'处理建议'}>
           {getFieldDecorator('defectSolveInfo', {
               rules: [{ 
-                required: defectSolveResult === "solve" ? true: false, 
-                message: '请输入处理过程' 
+                required: defectSolveResult === 'solve' ? true: false, 
+                message: '请输入处理过程'
               }],
-              initialValue: ""
+              initialValue: ''
             })(
             <CommonInput 
               commonList={this.props.commonList} 
@@ -90,14 +90,14 @@ class ProcessForm extends Component {
             <ImgUploader editable={true} />
           )}
         </FormItem>
-        {defectSolveResult === "solve" && (
+        {defectSolveResult === 'solve' && (
           <FormItem label="更换备件" {...formItemLayout}>
             <div className={styles.replacePart}>
               <Switch checked={this.state.replace} onChange={this.onChangeReplace} />
               {this.state.replace && getFieldDecorator('replaceParts', {
                 rules: [{ 
                   required: true, 
-                  message: '请输入更换备件' 
+                  message: '请输入更换备件'
                 }],
               })( 
                 <Input 

@@ -34,7 +34,7 @@ class DefectDetail extends Component {
       defectId: this.props.defectId
     });
     this.props.getCommonList({
-      languageType: "1"
+      languageType: '1'
     });
   }
 
@@ -50,15 +50,15 @@ class DefectDetail extends Component {
     let defectList = this.props.defectList;
     let defectId = this.props.defectId;
     let index = defectList.findIndex(item => {
-      return item.get("defectId") === defectId
+      return item.get('defectId') === defectId
     });
     if(index !== -1) {
       if(index !== 0) {
         this.props.getDefectDetail({
-          defectId: defectList.get([index-1, "defectId"])
+          defectId: defectList.get([index-1, 'defectId'])
         });
       } else {
-        message.info("已经是第一条");
+        message.info('已经是第一条');
       }
     }
   }
@@ -67,15 +67,15 @@ class DefectDetail extends Component {
     let defectList = this.props.defectList;
     let defectId = this.props.defectId;
     let index = defectList.findIndex(item => {
-      return item.get("defectId") === defectId
+      return item.get('defectId') === defectId
     });
     if(index !== -1) {
       if(index !== defectList.size - 1) {
         this.props.getDefectDetail({
-          defectId: defectList.get([index+1, "defectId"])
+          defectId: defectList.get([index+1, 'defectId'])
         });
       } else {
-        message.info("已经是最后一条");
+        message.info('已经是最后一条');
       }
     }
   }
@@ -100,8 +100,8 @@ const mapStateToProps = (state) => ({
   defectList: state.operation.defect.get('defectList'),
   isFetching: state.operation.defect.get('isFetching'),
   error: state.operation.defect.get('error'),
-  defectDetail: state.operation.defect.get("defectDetail"),
-  defectId: state.operation.defect.get("defectId"),
+  defectDetail: state.operation.defect.get('defectDetail'),
+  defectId: state.operation.defect.get('defectId'),
   commonList: state.operation.defect.get('commonList'),
 });
 

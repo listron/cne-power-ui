@@ -109,10 +109,10 @@ class List extends Component {
   onChangeTable(pagination, filters, sorter) {
     if(Object.keys(sorter).length !== 0) {
       let field = getDefectSortField(sorter.field);
-      let order = sorter.order === "ascend" ? "0" : "1";
-      this.props.onSorter(field+"," + order);
+      let order = sorter.order === 'ascend' ? '0' : '1';
+      this.props.onSorter(field+',' + order);
     } else {
-      this.props.onSorter("");
+      this.props.onSorter('');
     }
 
   }
@@ -142,10 +142,10 @@ class List extends Component {
   render() {
     let list = this.props.list;
     let defectStatusStatistics = this.props.defectStatusStatistics;
-    let waitSubmitNum = defectStatusStatistics.get("submitNum");
-    let waitReviewNum = defectStatusStatistics.get("examineNum");
-    let inProcessNum = defectStatusStatistics.get("executeNum");
-    let waitCheckNum = defectStatusStatistics.get("checkNum");
+    let waitSubmitNum = defectStatusStatistics.get('submitNum');
+    let waitReviewNum = defectStatusStatistics.get('examineNum');
+    let inProcessNum = defectStatusStatistics.get('executeNum');
+    let waitCheckNum = defectStatusStatistics.get('checkNum');
 
     const columns = [{
       title: '缺陷级别',
@@ -190,11 +190,11 @@ class List extends Component {
       key: 'defectStatus',
       sorter: true,
       render: (value,record,index) => (
-        <div>
+        <div className={styles.defectStatus}>
           <span>{getStatus(value)}</span>
-          <div>
-            {record.is_overtime === 0? <span>超时</span> : null}
-            {record.is_overtime === 0? <span>协调</span> : null}
+          <div className={styles.warning}>
+            {record.isOvertime === '0'? <span style={{color:'#c80000'}}>超时</span> : null}
+            {record.isCoordination === '0'? <span style={{color:'#e78d14'}}>协调</span> : null}
           </div>
         </div>
       ),
@@ -228,7 +228,7 @@ class List extends Component {
     };
   
     return (
-      <div className={styles.bugTicket}>
+      <div className={styles.defectList}>
         <div className={styles.action}>
           <div>
             <RadioGroup onChange={this.onChangeTab} defaultValue="5" value={this.props.status}>
@@ -246,13 +246,13 @@ class List extends Component {
               新建
             </Button>
             {
-              this.state.currentSelectedStatus === "0" &&
+              this.state.currentSelectedStatus === '0' &&
                 <div>
                   <Button onClick={this.onDelete}>删除</Button>
                 </div>
             }
             {
-              this.state.currentSelectedStatus === "1" &&
+              this.state.currentSelectedStatus === '1' &&
                 <div>
                   <Button onClick={this.onSend}>下发</Button>
                   <Button onClick={this.onReject}>驳回</Button>
@@ -260,7 +260,7 @@ class List extends Component {
                 </div>
             }
             {
-              this.state.currentSelectedStatus === "3" &&
+              this.state.currentSelectedStatus === '3' &&
                 <div>
                   <Button onClick={this.onOk}>合格</Button>
                   <Button onClick={this.onNotOk}>不合格</Button>

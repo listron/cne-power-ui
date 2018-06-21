@@ -116,8 +116,8 @@ class ImgUploader extends Component {
 			action: `${uploadPath}`,
       onChange: this.handleUpload,
 			multiple: true,
-			listType: 'picture-card',
-      headers:{"Authorization": "Bearer " + (authData ? authData.access_token : "")},
+			listType: "picture-card",
+      headers:{'Authorization': 'Bearer ' + (authData ? authData.access_token : '')},
       beforeUpload:this.beforeUpload
 		};
     const uploadButton = (

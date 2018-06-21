@@ -25,7 +25,7 @@ function* getDefectList(action) {
   yield put({ type: BEGIN_FETCH });
   try {
     const response = yield call(axios.post, url, action.params);
-    if(response.data.code === "10000"){
+    if(response.data.code === '10000'){
       yield put({ 
         type: GET_DEFECT_LIST_SUCCESS, 
         data: response.data.data, 
@@ -51,7 +51,7 @@ function* getDefectDetail(action) {
   yield put({ type: BEGIN_FETCH });
   try {
     const response = yield call(axios.get, url, {params: action.params});
-    if(response.data.code === "10000"){
+    if(response.data.code === '10000'){
       yield put({ 
         type: GET_DEFECT_DETAIL_SUCCESS, 
         data: response.data.data, 
@@ -77,7 +77,7 @@ function* getCommonList(action) {
   yield put({ type: BEGIN_FETCH });
   try {
     const response = yield call(axios.get, url, {params: action.params});
-    if(response.data.code === "10000"){
+    if(response.data.code === '10000'){
       yield put({ 
         type: GET_LANGUAGE_SUCCESS, 
         data: response.data.data.data
@@ -102,7 +102,7 @@ function* batchDeleteDefect(action) {
   yield put({ type: BEGIN_FETCH });
   try {
     const response = yield call(axios.get, url, action.params);
-    if(response.data.code === "10000"){
+    if(response.data.code === '10000'){
       yield put({ 
         type: DELETE_BATCH_DEFECT_SUCCESS, 
         data: response.data.data.data

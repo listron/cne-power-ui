@@ -28,7 +28,7 @@ class DeviceName extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedDevice: ""
+      selectedDevice: ''
     };
     this.onSelectItem = this.onSelectItem.bind(this);
   }
@@ -43,8 +43,8 @@ class DeviceName extends Component {
     return this.props.deviceItems.map((item, index) => {
       return (
         <SelectItem
-          key={"device"+index}
-          label={item.get("value")}
+          key={'device'+index}
+          label={item.get('value')}
           selected={this.state.selectedDevice === item.value}
           onSelect={this.onSelectItem}
        />
@@ -55,8 +55,8 @@ class DeviceName extends Component {
   renderTypeItems() {
     return this.props.deviceTypeItems.map((item, index) => {
       return (
-        <Option key={"type"+index}>
-          {item.get("value")}
+        <Option key={'type'+index}>
+          {item.get('value')}
         </Option>                  
       );
     });
@@ -65,8 +65,8 @@ class DeviceName extends Component {
   renderAreaItems() {
     return this.props.deviceAreaItems.map((item, index) => {
       return (
-        <Option key={"area"+index}>
-          {item.get("value")}
+        <Option key={'area'+index}>
+          {item.get('value')}
         </Option>                  
       );
     });
@@ -84,7 +84,7 @@ class DeviceName extends Component {
         <div className={styles.deviceNameSelect}>
           <div className={styles.header}>
             <div>
-              正在查找<span style={{color:"#7ec5c2"}}>{this.props.stationName}</span>电站设备
+              正在查找<span style={{color:'#7ec5c2'}}>{this.props.stationName}</span>电站设备
             </div>
             <div>
               设备类型

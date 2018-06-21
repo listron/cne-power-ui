@@ -32,8 +32,8 @@ class Detail extends Component {
   }
 
   renderForm() {
-    let status = this.props.detail.get("defectStatus");
-    if(status !== "0" && status !== "4") {
+    let status = this.props.detail.get('defectStatus');
+    if(status !== '0' && status !== '4') {
       return (
         <HandleForm 
           commonList={this.props.commonList}
@@ -62,8 +62,8 @@ class Detail extends Component {
           <div className={styles.right}>
             <div className={styles.timeLines}>
               <TimeLines 
-                processData={detail.get("processData")}
-                status={detail.get("defectStatus")} />
+                processData={detail.get('processData')}
+                status={detail.get('defectStatus')} />
             </div>
             <div className={styles.form}>
               {this.renderForm()}

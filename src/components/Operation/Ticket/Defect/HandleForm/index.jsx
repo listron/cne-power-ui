@@ -22,12 +22,12 @@ class HandleForm extends Component {
 
   getTitle() {
     switch(this.props.status) {
-      case "1": 
-        return "审核";
-      case "2":
-        return "处理结果";
-      case "3":
-        return "消缺验收";
+      case '1': 
+        return '审核';
+      case '2':
+        return '处理结果';
+      case '3':
+        return '消缺验收';
     }
   }
 
@@ -54,8 +54,8 @@ class HandleForm extends Component {
         <div className={styles.title}>
           <Tag>{this.getTitle()}</Tag>
         </div>
-        {this.props.status === "1" ? this.renderReviewForm() : null}
-        {this.props.status === "2" ? this.renderProcessForm() : null}
+        {this.props.status === '1' ? this.renderReviewForm() : null}
+        {this.props.status === '2' ? this.renderProcessForm() : null}
       </div>
     );
   }  

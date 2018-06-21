@@ -37,12 +37,12 @@ class DefectList extends Component {
 
   componentDidMount() {
     var params = {
-      defectSource: "3",
-      stationType: "2",
-      status: "5",
+      defectSource: '3',
+      stationType: '2',
+      status: '5',
       pageNum: 0,
       pageSize: 10,
-      sort: ""
+      sort: ''
     }
     this.props.getDefectList(params);
   }
@@ -50,8 +50,8 @@ class DefectList extends Component {
   onChangePage(page) {
     if(page !== this.currentPage) {
       let params = {
-        defectSource: "3",
-        stationType: "2",
+        defectSource: '3',
+        stationType: '2',
         status: this.props.status,
         pageNum: page - 1,
         pageSize: this.props.currentPageSize,
@@ -64,8 +64,8 @@ class DefectList extends Component {
   onChangePageSize(pageSize) {
     if(pageSize !== this.props.currentPageSize) {
       let params = {
-        defectSource: "3",
-        stationType: "2",
+        defectSource: '3',
+        stationType: '2',
         status: this.props.status,
         pageNum: 0,
         pageSize: pageSize,
@@ -78,8 +78,8 @@ class DefectList extends Component {
   onChangeStatus(status) {
     if(status !== this.props.status) {
       let params = {
-        defectSource: "3",
-        stationType: "2",
+        defectSource: '3',
+        stationType: '2',
         status: status,
         pageNum: 0,
         pageSize: this.props.currentPageSize,
@@ -92,8 +92,8 @@ class DefectList extends Component {
   onSorter(sort) {
     if(sort !== this.props.sort) {
       let params = {
-        defectSource: "3",
-        stationType: "2",
+        defectSource: '3',
+        stationType: '2',
         status: this.props.status,
         pageNum: 0,
         pageSize: this.props.currentPageSize,
@@ -104,7 +104,7 @@ class DefectList extends Component {
   }
 
   onBatchDelete(ids) {
-    this.props.onBatchDelete(ids.join(","));
+    this.props.onBatchDelete(ids.join(','));
   }
 
   onShowDetail(defectId) {
@@ -139,11 +139,11 @@ const mapStateToProps = (state) => ({
   defectStatusStatistics: state.operation.defect.get('defectStatusStatistics'),
   isFetching: state.operation.defect.get('isFetching'),
   error: state.operation.defect.get('error'),
-  currentPage: state.operation.defect.get("currentPage"),
-  currentPageSize: state.operation.defect.get("currentPageSize"),
-  total: state.operation.defect.get("total"),
-  status: state.operation.defect.get("status"),
-  sort: state.operation.defect.get("sort"),
+  currentPage: state.operation.defect.get('currentPage'),
+  currentPageSize: state.operation.defect.get('currentPageSize'),
+  total: state.operation.defect.get('total'),
+  status: state.operation.defect.get('status'),
+  sort: state.operation.defect.get('sort'),
 });
 
 const mapDispatchToProps = (dispatch) => ({

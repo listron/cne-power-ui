@@ -39,7 +39,7 @@ class ReviewForm extends Component {
 
   render() {   
     const { getFieldDecorator, getFieldValue } = this.props.form;
-    const reviewResult = getFieldValue("reviewResult");
+    const reviewResult = getFieldValue('reviewResult');
     const formItemLayout = {
       labelCol: { span: 4 },
       wrapperCol: { span: 32 },
@@ -51,7 +51,7 @@ class ReviewForm extends Component {
             rules: [{ 
               required: true 
             }],
-            initialValue: "send"
+            initialValue: 'send'
           })(
             <RadioGroup>
               <RadioButton value="send">下发</RadioButton>
@@ -60,12 +60,12 @@ class ReviewForm extends Component {
             </RadioGroup>
           )}
         </FormItem>
-        {reviewResult !== "reject" && (
+        {reviewResult !== 'reject' && (
           <FormItem
             {...formItemLayout}
             className={styles.dealProposal} 
             label="处理建议">
-            {getFieldDecorator("defectProposal")(
+            {getFieldDecorator('defectProposal')(
               <InputLimit placeholder="请描述，不超过80个汉字" />
             )}
           </FormItem>
@@ -75,19 +75,19 @@ class ReviewForm extends Component {
             {...formItemLayout}
             className={styles.dealProposal} 
             label="驳回原因">
-            {getFieldDecorator("rejectReason", {
+            {getFieldDecorator('rejectReason', {
                 rules: [{ 
                   required: true, 
-                  message: "请输入驳回原因" 
+                  message: '请输入驳回原因'
                 }],
               })(
               <InputLimit placeholder="请描述，不超过80个汉字" />
             )}
           </FormItem>
         )}
-        {reviewResult === "send" && (
+        {reviewResult === 'send' && (
           <FormItem label="截止时间" {...formItemLayout}>
-            {getFieldDecorator("deadLine")(
+            {getFieldDecorator('deadLine')(
               <DatePicker 
                 placeholder="默认当前时间"
                 format="YYYY-MM-DD"
