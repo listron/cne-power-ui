@@ -36,6 +36,7 @@ import {
   HANDLE_DEFECT_FAIL,
   CHECK_DEFECT_SAGA,
   CHECK_DEFECT_FAIL,
+  CHANGE_SHOW_CONTAINER_SAGA,
 } from '../../../../constants/actionTypes/Ticket';
 
 //获取缺陷工单列表
@@ -324,6 +325,10 @@ function* sendDefect(action) {
           pageSize: pageSize,
           sort: sort
         }
+      });
+      yield put({
+        type: CHANGE_SHOW_CONTAINER_SAGA,
+        params: 'list'
       });      
     } else{
       yield put({ 
@@ -359,7 +364,11 @@ function* rejectDefect(action) {
           pageSize: pageSize,
           sort: sort
         }
-      });      
+      });
+      yield put({
+        type: CHANGE_SHOW_CONTAINER_SAGA,
+        params: 'list'
+      });     
     } else{
       yield put({ 
         type: REJECT_DEFECT_FAIL, 
@@ -394,7 +403,11 @@ function* closeDefect(action) {
           pageSize: pageSize,
           sort: sort
         }
-      });      
+      }); 
+      yield put({
+        type: CHANGE_SHOW_CONTAINER_SAGA,
+        params: 'list'
+      });       
     } else{
       yield put({ 
         type: CLOSE_DEFECT_FAIL, 
@@ -429,7 +442,11 @@ function* handleDefect(action) {
           pageSize: pageSize,
           sort: sort
         }
-      });      
+      });
+      yield put({
+        type: CHANGE_SHOW_CONTAINER_SAGA,
+        params: 'list'
+      });   
     } else{
       yield put({ 
         type: HANDLE_DEFECT_FAIL, 
@@ -464,7 +481,11 @@ function* checkDefect(action) {
           pageSize: pageSize,
           sort: sort
         }
-      });      
+      });
+      yield put({
+        type: CHANGE_SHOW_CONTAINER_SAGA,
+        params: 'list'
+      });        
     } else{
       yield put({ 
         type: CHECK_DEFECT_FAIL, 

@@ -1,0 +1,14 @@
+.ticket {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  :global {
+    .ant-tabs {
+      display: flex;
+      flex-direction: column;
+      .ant-tabs-tabpane {
+        display: flex;
+      }
+    }   
+  }
+}
