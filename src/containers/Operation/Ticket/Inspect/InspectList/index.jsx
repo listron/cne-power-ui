@@ -25,13 +25,13 @@ class InspectList extends Component {
   }
   
   componentDidMount(){
-    var params = {
-      stationType: "2",
-      status: this.props.status,
-      pageNum: this.props.pageNum - 1,
-      pageSize: this.props.pageSize
-    }
-    this.props.getInspectList(params);
+    // var params = {
+    //   stationType: "2",
+    //   status: '5',
+    //   pageNum: 0,
+    //   pageSize: 10
+    // }
+    // this.props.getInspectList(params);
   }
 
   onChangeStatus(status){
@@ -76,7 +76,6 @@ class InspectList extends Component {
         <div>巡检处理页面</div>
           <List 
             list={this.props.inspectList} 
-            getInspectionList={this.props.getInspectList}
             pageNum={this.props.pageNum}
             pageSize={this.props.pageSize}
             total={this.props.total}
