@@ -9,7 +9,8 @@ import {
   REJECT_BATCH_DEFECT_SAGA,
   CLOSE_BATCH_DEFECT_SAGA,
   CHECK_BATCH_DEFECT_SAGA,
-  SET_SELECTED_ROWS_SAGA
+  SET_SELECTED_ROWS_SAGA,
+  CHANGE_SHOW_CONTAINER_SAGA,
 } from '../../../../../constants/actionTypes/Ticket';
 import List from '../../../../../components/Operation/Ticket/Defect/List';
 
@@ -32,8 +33,8 @@ class DefectList extends Component {
     onBatchReject: PropTypes.func,
     onBatchClose: PropTypes.func,
     onBatchCheck: PropTypes.func,
-    onShowDetail: PropTypes.func,
     onChangeSelectRows: PropTypes.func,
+    onChangeShowContainer: PropTypes.func,
   };
   constructor(props,context) {
     super(props);
@@ -145,7 +146,7 @@ class DefectList extends Component {
 
   onShowDetail(defectId) {
     this.props.setDefectId(defectId);
-    this.props.onShowDetail();
+    this.props.onChangeShowContainer('detail');
   }
 
   render() {   
@@ -198,6 +199,7 @@ const mapDispatchToProps = (dispatch) => ({
   onBatchClose: params => dispatch({ type: CLOSE_BATCH_DEFECT_SAGA, params }),
   onBatchCheck: params => dispatch({ type: CHECK_BATCH_DEFECT_SAGA, params }),
   onChangeSelectRows: params => dispatch({ type: SET_SELECTED_ROWS_SAGA, params }),
+  onChangeShowContainer: params => dispatch({ type: CHANGE_SHOW_CONTAINER_SAGA, params }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DefectList);

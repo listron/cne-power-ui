@@ -31,6 +31,10 @@ import {
   watchGetInspectionList
 } from './operation/ticket/inspect';
 
+import {
+  watchChangeShowContainer
+} from './operation/ticket/ticket';
+
 import axios from 'axios';
 
 import {
@@ -98,5 +102,6 @@ export default function* rootSaga() {
     watchCloseDefect(),
     watchHandleDefect(),
     watchCheckDefect(),
+    watchChangeShowContainer()
   ])
 } 

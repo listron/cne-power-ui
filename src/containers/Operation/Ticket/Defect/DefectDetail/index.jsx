@@ -11,6 +11,7 @@ import {
   CLOSE_DEFECT_SAGA,
   HANDLE_DEFECT_SAGA,
   CHECK_DEFECT_SAGA,
+  CHANGE_SHOW_CONTAINER_SAGA
  } from '../../../../../constants/actionTypes/Ticket';
 import Detail from '../../../../../components/Operation/Ticket/Defect/Detail';
 
@@ -23,7 +24,7 @@ class DefectDetail extends Component {
     commonList: PropTypes.object,
     getDefectDetail: PropTypes.func,
     getCommonList: PropTypes.func,
-    onCloseDetail: PropTypes.func,
+    onChangeShowContainer: PropTypes.func,
     setDefectId: PropTypes.func,
     onSend: PropTypes.func,
     onClose: PropTypes.func,
@@ -36,6 +37,7 @@ class DefectDetail extends Component {
     this.state = {};
     this.onNext = this.onNext.bind(this);
     this.onPrev = this.onPrev.bind(this);
+    this.onCloseDetail = this.onCloseDetail.bind(this);
   }
 
   componentDidMount() {
@@ -85,13 +87,17 @@ class DefectDetail extends Component {
     }
   }
 
+  onCloseDetail() {
+    this.props.onChangeShowContainer('list');
+  }
+
   render() {   
     return (
       <Detail 
         detail={this.props.defectDetail}
         isFetching={this.props.isFetching}
         commonList={this.props.commonList}
-        onCloseDetail={this.props.onCloseDetail}
+        onCloseDetail={this.onCloseDetail}
         onClose={this.props.onClose}
         onSend={this.props.onSend}
         onReject={this.props.onReject}
@@ -121,6 +127,7 @@ const mapDispatchToProps = (dispatch) => ({
   onClose: params => dispatch({ type: CLOSE_DEFECT_SAGA, params }),
   onHandle: params => dispatch({ type:HANDLE_DEFECT_SAGA, params }),
   onCheck: params => dispatch({ type: CHECK_DEFECT_SAGA, params }),
+  onChangeShowContainer: params => dispatch({ type: CHANGE_SHOW_CONTAINER_SAGA, params }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DefectDetail);
