@@ -3,6 +3,7 @@ import {
   BEGIN_FETCH, 
   GET_INSPECT_LIST_SUCCESS, 
   GET_INSPECT_LIST_FAIL,
+<<<<<<< HEAD
   SET_INSPECT_ID,
   GET_INSPECT_DETAIL_SUCCESS,
   GET_INSPECT_DETAIL_FAIL,
@@ -11,6 +12,10 @@ import {
   DEVICE_TYPE_LIST_SUCCESS,
   DEVICE_TYPE_LIST_FAIL,
  } from '../../../../constants/actionTypes/Ticket';
+=======
+  CLEAR_INSPECT_STATE, 
+} from '../../../../constants/actionTypes/Ticket';
+>>>>>>> upstream/dev
 
 var initState = immutable.fromJS({
   inspectList:[],
@@ -60,6 +65,7 @@ var initState = immutable.fromJS({
 const inspectReducer = (state = initState, action) => {
   switch (action.type) {
     case BEGIN_FETCH:
+<<<<<<< HEAD
       return state.set('isfetching', true)
     case GET_INSPECT_LIST_SUCCESS:
       return state.set('isFetching', false)
@@ -87,6 +93,21 @@ const inspectReducer = (state = initState, action) => {
     case ADD_INSPECT_ABNORMAL_FAIL:
     case DEVICE_TYPE_LIST_FAIL:
       return state.set('error', immutable.fromJS(action.error))
+=======
+      return state.set("isfetching", true);
+    case CLEAR_INSPECT_STATE:
+      return initState;
+    case GET_INSPECT_LIST_SUCCESS:  
+      return state.set("isFetching", false)
+                  .set("inspectList", immutable.fromJS(action.data.inspectList))
+                  .set("pageNum", action.params.pageNum + 1)
+                  .set("pageSize", action.params.pageSize)
+                  .set("total", action.data.total)
+                  .set("status", action.params.status)
+                  .set("inspectStatusStatistics", immutable.fromJS(action.data.inspectStatusStatistics));
+    case GET_INSPECT_LIST_FAIL:
+      return state.set("error", immutable.fromJS(action.error));
+>>>>>>> upstream/dev
   }
   return state;
 }

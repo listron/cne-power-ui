@@ -17,9 +17,9 @@ import {
   watchBatchClosedDefect,
   watchBatchCheckdDefect,
   watchSetDefectId,
-  watchSetSelectedRows,
+  watchSetSelectedDefect,
   watchGetDefectDetail,
-  watchGetCommonList,
+  watchGetDefectCommonList,
   watchSendDefect,
   watchRejectDefect,
   watchCloseDefect,
@@ -29,11 +29,16 @@ import {
 } from './operation/ticket/defect'
 
 import {
+<<<<<<< HEAD
   watchGetInspectionList,
   watchGetInspectDetail,
   watchSetInspectId,  
   watchAddInspectAbnormal,
   watchGetTotalData,
+=======
+  watchGetInspectList,
+  watchClearInspect,
+>>>>>>> upstream/dev
 } from './operation/ticket/inspect';
 
 import {
@@ -91,15 +96,17 @@ export default function* rootSaga() {
     watchGetShowStatus(),
     watchChangeShowStatus(),
     watchCreateRegister(),
+    //Defect
     watchGetDefectList(),
     watchSetDefectId(),
-    watchSetSelectedRows(),
+    watchSetSelectedDefect(),
     watchGetDefectDetail(),
     watchBatchDeleteDefect(),
     watchBatchSendDefect(),
     watchBatchRejectDefect(),
     watchBatchClosedDefect(),
     watchBatchCheckdDefect(),
+<<<<<<< HEAD
     watchGetInspectionList(),
     watchSetInspectId(),
     watchGetInspectDetail(),
@@ -107,6 +114,9 @@ export default function* rootSaga() {
     watchAddInspectAbnormal(),
     watchGetTotalData(),
     watchGetCommonList(),
+=======
+    watchGetDefectCommonList(),
+>>>>>>> upstream/dev
     watchSendDefect(),
     watchRejectDefect(),
     watchCloseDefect(),
@@ -114,6 +124,14 @@ export default function* rootSaga() {
     watchCheckDefect(),
     watchChangeShowContainer(),
     watchClearDefect(),
+<<<<<<< HEAD
     watchChangeShowContainer(),
+=======
+    //Inspect
+    watchGetInspectList(),
+    watchClearInspect(),
+    //ticket
+    watchChangeShowContainer()
+>>>>>>> upstream/dev
   ])
 } 

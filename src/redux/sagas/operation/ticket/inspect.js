@@ -17,13 +17,14 @@ import {
   DEVICE_TYPE_LIST_SAGA,
   DEVICE_TYPE_LIST_SUCCESS,
   DEVICE_TYPE_LIST_FAIL,
+  CLEAR_INSPECT_STATE_SAGA,
+  CLEAR_INSPECT_STATE
 } from '../../../../constants/actionTypes/Ticket';
 
 
 //获取巡检列表信息
-function* getInspectionList(action){
-  let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.ticket.getInspectList;
-  // let url = "/mock/operation/inspectionList";
+function* getInspectList(action){
+  let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.ticket.getInspectionList;
   yield put({ type: BEGIN_FETCH});
   try{
     const response = yield call(axios.post, url, action.params);
@@ -137,10 +138,6 @@ function* getTotalData(action){
   }
 }
 
-export function* watchGetInspectionList() {
-  yield takeLatest(GET_INSPECT_LIST_SAGA, getInspectionList);
-}
-
 export function* watchSetInspectId(){
   yield takeLatest(SET_INSPECT_ID_SAGA, setInspectId);
 }
@@ -155,4 +152,18 @@ export function* watchAddInspectAbnormal(){
 
 export function* watchGetTotalData(){
   yield takeLatest(DEVICE_TYPE_LIST_SAGA, getTotalData);
+}
+
+function* clearInspect(action) {
+  yield put({ 
+    type: CLEAR_INSPECT_STATE, 
+  }); 
+}
+
+export function* watchGetInspectList() {
+  yield takeLatest(GET_INSPECT_LIST_SAGA, getInspectList);
+}
+
+export function* watchClearInspect() {
+  yield takeLatest(CLEAR_INSPECT_STATE_SAGA, clearInspect);
 }

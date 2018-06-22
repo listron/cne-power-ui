@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import {message} from 'antd';
 import { 
   GET_DEFECT_DETAIL_SAGA,
-  GET_LANGUAGE_SAGA,
+  GET_DEFECT_LANGUAGE_SAGA,
   SET_DEFECT_ID_SAGA,
   SEND_DEFECT_SAGA,
   REJECT_DEFECT_SAGA,
@@ -120,7 +120,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   getDefectDetail: params => dispatch({ type: GET_DEFECT_DETAIL_SAGA, params }),
-  getCommonList: params => dispatch({ type: GET_LANGUAGE_SAGA, params }),
+  getCommonList: params => dispatch({ type: GET_DEFECT_LANGUAGE_SAGA, params }),
   setDefectId: params => dispatch({ type: SET_DEFECT_ID_SAGA, params }),
   onSend: params => dispatch({ type: SEND_DEFECT_SAGA, params }),
   onReject: params => dispatch({ type: REJECT_DEFECT_SAGA, params }),
