@@ -1,5 +1,10 @@
 import immutable from 'immutable';
-import { BEGIN_FETCH, GET_INSPECT_LIST_SUCCESS ,GET_INSPECT_LIST_FAIL } from '../../../../constants/actionTypes/Ticket';
+import { 
+  BEGIN_FETCH, 
+  GET_INSPECT_LIST_SUCCESS, 
+  GET_INSPECT_LIST_FAIL,
+  CLEAR_INSPECT_STATE, 
+} from '../../../../constants/actionTypes/Ticket';
 
 var initState = immutable.fromJS({
   inspectList:[],
@@ -22,7 +27,9 @@ var initState = immutable.fromJS({
 const inspectReducer = (state = initState, action) => {  
   switch (action.type) {
     case BEGIN_FETCH:
-      return state.set("isfetching", true)
+      return state.set("isfetching", true);
+    case CLEAR_INSPECT_STATE:
+      return initState;
     case GET_INSPECT_LIST_SUCCESS:  
       return state.set("isFetching", false)
                   .set("inspectList", immutable.fromJS(action.data.inspectList))
@@ -30,9 +37,9 @@ const inspectReducer = (state = initState, action) => {
                   .set("pageSize", action.params.pageSize)
                   .set("total", action.data.total)
                   .set("status", action.params.status)
-                  .set("inspectStatusStatistics", immutable.fromJS(action.data.inspectStatusStatistics))
+                  .set("inspectStatusStatistics", immutable.fromJS(action.data.inspectStatusStatistics));
     case GET_INSPECT_LIST_FAIL:
-      return state.set("error", immutable.fromJS(action.error))
+      return state.set("error", immutable.fromJS(action.error));
   }
   return state;
 }
