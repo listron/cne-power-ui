@@ -14,6 +14,7 @@ class List extends Component {
     onChangeStatus: PropTypes.func,
     onChangePage: PropTypes.func,
     onChangePageSize: PropTypes.func,
+    onChangeSelectRows: PropTypes.func,
     onSorter: PropTypes.func,
     onShowDetail: PropTypes.func,
     onAdd: PropTypes.func,
@@ -21,15 +22,15 @@ class List extends Component {
     onSend: PropTypes.func,
     onReject: PropTypes.func,
     onClose: PropTypes.func,
-    onOk: PropTypes.func,
-    onNotOk: PropTypes.func,
+    onCheck: PropTypes.func,
     list: PropTypes.object,
     currentPage: PropTypes.number,
     currentPageSize: PropTypes.number,
     total: PropTypes.number,
     defectStatusStatistics: PropTypes.object,
     isFetching: PropTypes.bool,
-    status: PropTypes.string
+    status: PropTypes.string,
+    selectedRowKeys: PropTypes.array
   }
 
   static defaultProps = {
@@ -40,7 +41,6 @@ class List extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedRowKeys: [],
       currentSelectedStatus: null
     };
     this.onChangeTab = this.onChangeTab.bind(this);
@@ -56,9 +56,6 @@ class List extends Component {
   }
 
   onChangeTab(e) {
-    this.setState({
-      selectedRowKeys: []
-    });
     this.props.onChangeStatus(e.target.value);
   }
 
@@ -69,50 +66,72 @@ class List extends Component {
   onDelete() {
     confirm({
       title: '确认删除此缺陷',
-      onOk() {
-        this.props.onDelete(this.state.selectedRowKeys);
-      },
-      onCancel() {
-        console.log('Cancel');
+      onOk: () => {
+        this.props.onDelete(this.props.selectedRowKeys);
       },
     });
   }
 
   onSend() {
-
+    confirm({
+      title: '确认下发此缺陷',
+      onOk: () => {
+        this.props.onSend(this.props.selectedRowKeys);
+      },
+    });
   }
 
   onReject() {
-
+    confirm({
+      title: '确认驳回此缺陷',
+      onOk: () => {
+        this.props.onReject(this.props.selectedRowKeys);
+      },
+    });
   }
 
   onClose() {
-
+    confirm({
+      title: '确认关闭此缺陷',
+      onOk: () => {
+        this.props.onClose(this.props.selectedRowKeys);
+      },
+    });
   }
 
   onOk() {
-
+    confirm({
+      title: '确认验收此缺陷为合格',
+      onOk: () => {
+        this.props.onCheck(this.props.selectedRowKeys, "0");
+      },
+    });
   }
 
   onNotOk() {
-
+    confirm({
+      title: '确认验收此缺陷为不合格',
+      onOk: () => {
+        this.props.onCheck(this.props.selectedRowKeys, "1");
+      },
+    });
   }
 
   onSelectChange(selectedRowKeys, selectedRows) {
     let status = this.getSelectedRowsStatus(selectedRows);
     this.setState({
-      selectedRowKeys: selectedRowKeys,
       currentSelectedStatus: status
     });
+    this.props.onChangeSelectRows(selectedRowKeys);
   }
 
   onChangeTable(pagination, filters, sorter) {
     if(Object.keys(sorter).length !== 0) {
       let field = getDefectSortField(sorter.field);
-      let order = sorter.order === "ascend" ? "0" : "1";
-      this.props.onSorter(field+"," + order);
+      let order = sorter.order === 'ascend' ? '0' : '1';
+      this.props.onSorter(field+',' + order);
     } else {
-      this.props.onSorter("");
+      this.props.onSorter('');
     }
 
   }
@@ -142,10 +161,10 @@ class List extends Component {
   render() {
     let list = this.props.list;
     let defectStatusStatistics = this.props.defectStatusStatistics;
-    let waitSubmitNum = defectStatusStatistics.get("submitNum");
-    let waitReviewNum = defectStatusStatistics.get("examineNum");
-    let inProcessNum = defectStatusStatistics.get("executeNum");
-    let waitCheckNum = defectStatusStatistics.get("checkNum");
+    let waitSubmitNum = defectStatusStatistics.get('submitNum');
+    let waitReviewNum = defectStatusStatistics.get('examineNum');
+    let inProcessNum = defectStatusStatistics.get('executeNum');
+    let waitCheckNum = defectStatusStatistics.get('checkNum');
 
     const columns = [{
       title: '缺陷级别',
@@ -190,11 +209,11 @@ class List extends Component {
       key: 'defectStatus',
       sorter: true,
       render: (value,record,index) => (
-        <div>
+        <div className={styles.defectStatus}>
           <span>{getStatus(value)}</span>
-          <div>
-            {record.is_overtime === 0? <span>超时</span> : null}
-            {record.is_overtime === 0? <span>协调</span> : null}
+          <div className={styles.warning}>
+            {record.isOvertime === '0'? <span style={{color:'#c80000'}}>超时</span> : null}
+            {record.isCoordination === '0'? <span style={{color:'#e78d14'}}>协调</span> : null}
           </div>
         </div>
       ),
@@ -220,7 +239,7 @@ class List extends Component {
         this.props.onChangePage(current);
       }
     };
-    const {selectedRowKeys} = this.state;
+    const selectedRowKeys = this.props.selectedRowKeys;
 
     const rowSelection = {
       selectedRowKeys,
@@ -228,7 +247,7 @@ class List extends Component {
     };
   
     return (
-      <div className={styles.bugTicket}>
+      <div className={styles.defectList}>
         <div className={styles.action}>
           <div>
             <RadioGroup onChange={this.onChangeTab} defaultValue="5" value={this.props.status}>
@@ -246,13 +265,13 @@ class List extends Component {
               新建
             </Button>
             {
-              this.state.currentSelectedStatus === "0" &&
+              this.state.currentSelectedStatus === '0' &&
                 <div>
                   <Button onClick={this.onDelete}>删除</Button>
                 </div>
             }
             {
-              this.state.currentSelectedStatus === "1" &&
+              this.state.currentSelectedStatus === '1' &&
                 <div>
                   <Button onClick={this.onSend}>下发</Button>
                   <Button onClick={this.onReject}>驳回</Button>
@@ -260,7 +279,7 @@ class List extends Component {
                 </div>
             }
             {
-              this.state.currentSelectedStatus === "3" &&
+              this.state.currentSelectedStatus === '3' &&
                 <div>
                   <Button onClick={this.onOk}>合格</Button>
                   <Button onClick={this.onNotOk}>不合格</Button>

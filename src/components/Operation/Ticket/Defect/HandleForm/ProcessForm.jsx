@@ -43,16 +43,9 @@ class ProcessForm extends Component {
     });
   }
 
-  hasError() {
-    const { getFieldValue } = this.props.form;
-    let result = this.state.replace ? !getFieldValue("replaceParts") : false;
-    return getFieldValue("defectSolveResult") === "solve" &&
-     (!getFieldValue("defectSolveInfo") || result);
-  }
-
   render() {   
     const { getFieldDecorator } = this.props.form;
-    const defectSolveResult = this.props.form.getFieldValue("defectSolveResult");
+    const dealResult = this.props.form.getFieldValue('dealResult');
     const formItemLayout = {
       labelCol: { span: 4 },
       wrapperCol: { span: 32 },
@@ -60,11 +53,11 @@ class ProcessForm extends Component {
     return (
       <Form onSubmit={this.onSubmit} className={styles.handleForm}>
         <FormItem label="处理结果" {...formItemLayout}>
-        {getFieldDecorator('defectSolveResult', {
+        {getFieldDecorator('dealResult', {
             rules: [{ 
               required: true 
             }],
-            initialValue: "notSolve"
+            initialValue: 'notSolve'
           })(
             <RadioGroup>
               <RadioButton value="notSolve">未解决</RadioButton>
@@ -75,13 +68,13 @@ class ProcessForm extends Component {
         <FormItem
           {...formItemLayout}
           className={styles.dealProposal} 
-          label={defectSolveResult === "solve"?"处理过程":"处理建议"}>
+          label={dealResult === 'solve'?'处理过程':'处理建议'}>
           {getFieldDecorator('defectSolveInfo', {
               rules: [{ 
-                required: defectSolveResult === "solve" ? true: false, 
-                message: '请输入处理过程' 
+                required: dealResult === 'solve', 
+                message: '请输入处理过程'
               }],
-              initialValue: ""
+              initialValue: ''
             })(
             <CommonInput 
               commonList={this.props.commonList} 
@@ -97,14 +90,14 @@ class ProcessForm extends Component {
             <ImgUploader editable={true} />
           )}
         </FormItem>
-        {defectSolveResult === "solve" && (
+        {dealResult === 'solve' && (
           <FormItem label="更换备件" {...formItemLayout}>
             <div className={styles.replacePart}>
               <Switch checked={this.state.replace} onChange={this.onChangeReplace} />
               {this.state.replace && getFieldDecorator('replaceParts', {
                 rules: [{ 
                   required: true, 
-                  message: '请输入更换备件' 
+                  message: '请输入更换备件'
                 }],
               })( 
                 <Input 
@@ -115,7 +108,7 @@ class ProcessForm extends Component {
         )}
         <FormItem className={styles.actionBar}>
           <Button onClick={this.props.onCancel}>取消</Button>
-          <Button type="primary" htmlType="submit" disabled={this.hasError()}>提交</Button>
+          <Button type="primary" htmlType="submit">提交</Button>
         </FormItem>
       </Form>
     );

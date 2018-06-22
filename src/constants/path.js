@@ -28,11 +28,21 @@ export default {
       getDefectList: '/v3/defect/worklist/pc',
       batchDeleteDefect: '/v3/defect/delete/batch',
       getInspectList: '/v3/inspect/worklist/pc',
+      batchSendDefect: '/v3/defect/distribute/batch',
+      batchCloseDefect: '/v3/defect/close/batch',
+      batchRejectDefect: '/v3/defect/reject/batch',
+      batchCheckDefect: '/v3/defect/check/batch',
+      getInspectionList: '/v3/inspect/worklist/pc',
       getDefectDetail: '/v3/defect',
       getInspectDetail: '/v3/inspect',
       getCommonList: '/v3/language',
       addInspectAbnormal: '/v3/inspect/abnormal',
       getDeviceTypeList: '/v3/station/devicetypes',
+      sendDefect: '/v3/defect/distribute',
+      rejectDefect: '/v3/defect/reject',
+      closeDefect: '/v3/defect/close',
+      handleDefect: '/v3/defect/handle',
+      checkDefect: '/v3/defect/check',
     }
   }
 }

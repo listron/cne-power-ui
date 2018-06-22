@@ -5,6 +5,7 @@ import {
   GET_DEFECT_LIST_SUCCESS,
   GET_DEFECT_LIST_FAIL,
   SET_DEFECT_ID,
+  SET_SELECTED_ROWS,
   GET_DEFECT_DETAIL_SUCCESS,
   GET_DEFECT_DETAIL_FAIL,
   GET_LANGUAGE_SUCCESS,
@@ -14,13 +15,14 @@ import {
 var initState = immutable.fromJS({
   isFetching: false,
   error: {
-    code: "",
-    message: ""
+    code: '',
+    message: ''
   },
   fileterAllInfor:[],//顶部筛选所有数据[{stations:[],devices:[]...}]
   selectedFileterInfor: {},//选中的筛选项{selectedStation:[],selectedDevices:[]}
   defectList:[],//渲染为table的缺陷列表
   commonList:[],//获取缺陷常用语列表
+  selectedRowKeys: [],
   defectStatusStatistics:{
     submitNum: 0,
     examineNum: 0,
@@ -29,25 +31,25 @@ var initState = immutable.fromJS({
   },
   currentPage: 1,
   currentPageSize: 10,
-  sort: "",
+  sort: '',
   total: 0,
-  status: "5",
-  defectId: "",
+  status: '5',
+  defectId: '',
   defectDetail: {//缺陷详情
-    defectId: "",
-    stationName: "",
-    deviceName: "",
-    defectTypeName: "",
+    defectId: '',
+    stationName: '',
+    deviceName: '',
+    defectTypeName: '',
     defectLevel: 1,
-    defectDescribe: "",
-    defectStatus: "1",
+    defectDescribe: '',
+    defectStatus: '1',
     images: [],
     handleData: {
-      defectProposal: "",
-      defectSolveInfo: "",
-      replaceParts: "",
+      defectProposal: '',
+      defectSolveInfo: '',
+      replaceParts: '',
       defectSolveResult: 0,
-      status: "1"
+      status: '1'
     },
     processData: []
   }
@@ -56,29 +58,32 @@ var initState = immutable.fromJS({
 const defectReducer = (state = initState, action) => {
   switch (action.type) {
     case BEGIN_FETCH:
-      return state.set("isfetching", true)
+      return state.set('isfetching', true)
     case GET_DEFECT_LIST_SUCCESS:  
-      return state.set("isFetching", false)
-                  .set("total", action.data.total)
-                  .set("defectList", immutable.fromJS(action.data.defectList))
-                  .set("defectStatusStatistics", immutable.fromJS(action.data.defectStatusStatistics))
-                  .set("currentPage", (action.params.pageNum + 1))
-                  .set("currentPageSize", action.params.pageSize)
-                  .set("status", action.params.status)
-                  .set("sort", action.params.sort);
+      return state.set('isFetching', false)
+                  .set('total', action.data.total)
+                  .set('defectList', immutable.fromJS(action.data.defectList))
+                  .set('selectedRowKeys', immutable.fromJS([]))
+                  .set('defectStatusStatistics', immutable.fromJS(action.data.defectStatusStatistics))
+                  .set('currentPage', (action.params.pageNum + 1))
+                  .set('currentPageSize', action.params.pageSize)
+                  .set('status', action.params.status)
+                  .set('sort', action.params.sort);
     case SET_DEFECT_ID:
-      return state.set("defectId", action.data);
+      return state.set('defectId', action.data);
+    case SET_SELECTED_ROWS:
+      return state.set('selectedRowKeys', immutable.fromJS(action.data));
     case GET_DEFECT_DETAIL_SUCCESS: 
-      return state.set("isFetching", false)
-                  .set("defectDetail", immutable.fromJS(action.data))
-                  .set("defectId", action.params.defectId);
+      return state.set('isFetching', false)
+                  .set('defectDetail', immutable.fromJS(action.data))
+                  .set('defectId', action.params.defectId);
     case GET_LANGUAGE_SUCCESS: 
-      return state.set("isFetching", false)
-                  .set("commonList", immutable.fromJS(action.data));
+      return state.set('isFetching', false)
+                  .set('commonList', immutable.fromJS(action.data));
     case GET_DEFECT_LIST_FAIL:
     case GET_DEFECT_DETAIL_FAIL:
     case GET_LANGUAGE_FAIL:
-      return state.set("error", immutable.fromJS(action.error));
+      return state.set('error', immutable.fromJS(action.error));
   }
 
   return state;

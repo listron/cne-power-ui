@@ -32,12 +32,6 @@ class ReviewForm extends Component {
     });
   }
 
-  hasError() {
-    const { getFieldValue } = this.props.form;
-    return !getFieldValue("rejectReason") && getFieldValue("reviewResult") === "reject";
-  }
-
-
   disabledDate(current) {
     // Can not select days before today
     return current < moment().endOf('day');
@@ -45,7 +39,7 @@ class ReviewForm extends Component {
 
   render() {   
     const { getFieldDecorator, getFieldValue } = this.props.form;
-    const reviewResult = getFieldValue("reviewResult");
+    const dealResult = getFieldValue('dealResult');
     const formItemLayout = {
       labelCol: { span: 4 },
       wrapperCol: { span: 32 },
@@ -53,11 +47,11 @@ class ReviewForm extends Component {
     return (
       <Form onSubmit={this.onSubmit} className={styles.handleForm}>
         <FormItem label="审&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;核" {...formItemLayout}>
-        {getFieldDecorator('reviewResult', {
+        {getFieldDecorator('dealResult', {
             rules: [{ 
               required: true 
             }],
-            initialValue: "send"
+            initialValue: 'send'
           })(
             <RadioGroup>
               <RadioButton value="send">下发</RadioButton>
@@ -66,34 +60,34 @@ class ReviewForm extends Component {
             </RadioGroup>
           )}
         </FormItem>
-        {reviewResult !== "reject" && (
+        {dealResult !== 'reject' && (
           <FormItem
             {...formItemLayout}
             className={styles.dealProposal} 
             label="处理建议">
-            {getFieldDecorator("defectProposal")(
+            {getFieldDecorator('defectProposal')(
               <InputLimit placeholder="请描述，不超过80个汉字" />
             )}
           </FormItem>
         )}
-        {reviewResult === "reject" && (
+        {dealResult === "reject" && (
           <FormItem
             {...formItemLayout}
             className={styles.dealProposal} 
             label="驳回原因">
-            {getFieldDecorator("rejectReason", {
+            {getFieldDecorator('rejectReason', {
                 rules: [{ 
                   required: true, 
-                  message: "请输入驳回原因" 
+                  message: '请输入驳回原因'
                 }],
               })(
               <InputLimit placeholder="请描述，不超过80个汉字" />
             )}
           </FormItem>
         )}
-        {reviewResult === "send" && (
+        {dealResult === 'send' && (
           <FormItem label="截止时间" {...formItemLayout}>
-            {getFieldDecorator("deadLine")(
+            {getFieldDecorator('deadLine')(
               <DatePicker 
                 placeholder="默认当前时间"
                 format="YYYY-MM-DD"
@@ -105,7 +99,7 @@ class ReviewForm extends Component {
         )}
         <FormItem className={styles.actionBar}>
           <Button onClick={this.props.onCancel}>取消</Button>
-          <Button type="primary" htmlType="submit" disabled={this.hasError()}>提交</Button>
+          <Button type="primary" htmlType="submit">提交</Button>
         </FormItem>
       </Form>
     );

@@ -4,7 +4,13 @@ import PropTypes from 'prop-types';
 import { 
   GET_DEFECT_LIST_SAGA, 
   DELETE_BATCH_DEFECT_SAGA,
-  SET_DEFECT_ID_SAGA
+  SET_DEFECT_ID_SAGA,
+  SEND_BATCH_DEFECT_SAGA,
+  REJECT_BATCH_DEFECT_SAGA,
+  CLOSE_BATCH_DEFECT_SAGA,
+  CHECK_BATCH_DEFECT_SAGA,
+  SET_SELECTED_ROWS_SAGA,
+  CHANGE_SHOW_CONTAINER_SAGA,
 } from '../../../../../constants/actionTypes/Ticket';
 import List from '../../../../../components/Operation/Ticket/Defect/List';
 
@@ -13,6 +19,7 @@ class DefectList extends Component {
     defectList: PropTypes.object,
     currentPage: PropTypes.number,
     currentPageSize: PropTypes.number,
+    selectedRowKeys: PropTypes.array,
     sort: PropTypes.string,
     total: PropTypes.number,
     defectStatusStatistics: PropTypes.object,
@@ -22,7 +29,12 @@ class DefectList extends Component {
     getDefectList: PropTypes.func,
     setDefectId: PropTypes.func,
     onBatchDelete: PropTypes.func,
-    onShowDetail: PropTypes.func,
+    onBatchSend: PropTypes.func,
+    onBatchReject: PropTypes.func,
+    onBatchClose: PropTypes.func,
+    onBatchCheck: PropTypes.func,
+    onChangeSelectRows: PropTypes.func,
+    onChangeShowContainer: PropTypes.func,
   };
   constructor(props,context) {
     super(props);
@@ -31,18 +43,22 @@ class DefectList extends Component {
     this.onChangePageSize = this.onChangePageSize.bind(this);
     this.onChangeStatus = this.onChangeStatus.bind(this);
     this.onBatchDelete = this.onBatchDelete.bind(this);
+    this.onBatchSend = this.onBatchSend.bind(this);
+    this.onBatchReject = this.onBatchReject.bind(this);
+    this.onBatchClose = this.onBatchClose.bind(this);
+    this.onBatchCheck = this.onBatchCheck.bind(this);
     this.onShowDetail = this.onShowDetail.bind(this);
     this.onSorter = this.onSorter.bind(this);
   }
 
   componentDidMount() {
     var params = {
-      defectSource: "3",
-      stationType: "2",
-      status: "5",
+      defectSource: '3',
+      stationType: '2',
+      status: '5',
       pageNum: 0,
       pageSize: 10,
-      sort: ""
+      sort: ''
     }
     this.props.getDefectList(params);
   }
@@ -50,8 +66,8 @@ class DefectList extends Component {
   onChangePage(page) {
     if(page !== this.currentPage) {
       let params = {
-        defectSource: "3",
-        stationType: "2",
+        defectSource: '3',
+        stationType: '2',
         status: this.props.status,
         pageNum: page - 1,
         pageSize: this.props.currentPageSize,
@@ -64,8 +80,8 @@ class DefectList extends Component {
   onChangePageSize(pageSize) {
     if(pageSize !== this.props.currentPageSize) {
       let params = {
-        defectSource: "3",
-        stationType: "2",
+        defectSource: '3',
+        stationType: '2',
         status: this.props.status,
         pageNum: 0,
         pageSize: pageSize,
@@ -78,8 +94,8 @@ class DefectList extends Component {
   onChangeStatus(status) {
     if(status !== this.props.status) {
       let params = {
-        defectSource: "3",
-        stationType: "2",
+        defectSource: '3',
+        stationType: '2',
         status: status,
         pageNum: 0,
         pageSize: this.props.currentPageSize,
@@ -92,8 +108,8 @@ class DefectList extends Component {
   onSorter(sort) {
     if(sort !== this.props.sort) {
       let params = {
-        defectSource: "3",
-        stationType: "2",
+        defectSource: '3',
+        stationType: '2',
         status: this.props.status,
         pageNum: 0,
         pageSize: this.props.currentPageSize,
@@ -104,12 +120,33 @@ class DefectList extends Component {
   }
 
   onBatchDelete(ids) {
-    this.props.onBatchDelete(ids.join(","));
+    this.props.onBatchDelete({defectID: ids.join(',')});
+  }
+
+  onBatchSend(ids) {
+    this.props.onBatchSend({defectID: ids.join(',')});
+  }
+
+  onBatchReject(ids) {
+    this.props.onBatchReject({defectID: ids.join(',')});
+  }
+
+  onBatchClose(ids) {
+    this.props.onBatchClose({
+      defectID: ids.join(',')
+    });
+  }
+
+  onBatchCheck(ids, checkResult) {
+    this.props.onBatchCheck({
+      defectID: ids.join(','),
+      checkResult
+    });
   }
 
   onShowDetail(defectId) {
     this.props.setDefectId(defectId);
-    this.props.onShowDetail();
+    this.props.onChangeShowContainer('detail');
   }
 
   render() {   
@@ -128,7 +165,13 @@ class DefectList extends Component {
           onChangeStatus={this.onChangeStatus}
           onSorter={this.onSorter}
           onShowDetail={this.onShowDetail}
-          onDelete={this.onBatchDelete} />
+          onDelete={this.onBatchDelete}
+          onSend={this.onBatchSend}
+          onReject={this.onBatchReject}
+          onClose={this.onBatchClose}
+          onCheck={this.onBatchCheck}
+          selectedRowKeys={this.props.selectedRowKeys}
+          onChangeSelectRows={this.props.onChangeSelectRows} />
       </div>
     );
   }
@@ -139,17 +182,24 @@ const mapStateToProps = (state) => ({
   defectStatusStatistics: state.operation.defect.get('defectStatusStatistics'),
   isFetching: state.operation.defect.get('isFetching'),
   error: state.operation.defect.get('error'),
-  currentPage: state.operation.defect.get("currentPage"),
-  currentPageSize: state.operation.defect.get("currentPageSize"),
-  total: state.operation.defect.get("total"),
-  status: state.operation.defect.get("status"),
-  sort: state.operation.defect.get("sort"),
+  currentPage: state.operation.defect.get('currentPage'),
+  currentPageSize: state.operation.defect.get('currentPageSize'),
+  total: state.operation.defect.get('total'),
+  status: state.operation.defect.get('status'),
+  sort: state.operation.defect.get('sort'),
+  selectedRowKeys: state.operation.defect.get('selectedRowKeys').toJS(),
 });
 
 const mapDispatchToProps = (dispatch) => ({
   getDefectList: params => dispatch({ type: GET_DEFECT_LIST_SAGA, params }),
   setDefectId: params => dispatch({ type: SET_DEFECT_ID_SAGA, params }),
   onBatchDelete: params => dispatch({ type: DELETE_BATCH_DEFECT_SAGA, params }),
+  onBatchSend: params => dispatch({ type: SEND_BATCH_DEFECT_SAGA, params }),
+  onBatchReject: params => dispatch({ type: REJECT_BATCH_DEFECT_SAGA, params }),
+  onBatchClose: params => dispatch({ type: CLOSE_BATCH_DEFECT_SAGA, params }),
+  onBatchCheck: params => dispatch({ type: CHECK_BATCH_DEFECT_SAGA, params }),
+  onChangeSelectRows: params => dispatch({ type: SET_SELECTED_ROWS_SAGA, params }),
+  onChangeShowContainer: params => dispatch({ type: CHANGE_SHOW_CONTAINER_SAGA, params }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DefectList);
