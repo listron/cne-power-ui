@@ -1,4 +1,9 @@
 import { call, put, takeLatest, all } from 'redux-saga/effects';
+import {
+  watchGetStations,
+  watchGetDeviceTypes,
+  watchGetDevices,
+} from './commonSaga';
 import { 
   watchSendCode, 
   watchLogin, 
@@ -73,6 +78,9 @@ function* watchGetPosts() {
 // root saga
 export default function* rootSaga() {
   yield all([
+    watchGetStations(),
+    watchGetDeviceTypes(),
+    watchGetDevices(),
     watchGetPosts(),
     // watchGetCompInfo(),
     watchLogin(),

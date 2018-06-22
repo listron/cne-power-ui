@@ -10,6 +10,9 @@ export default {
   },
   commonPaths:{
     imgUploads:'/Pv/Utils/UploadFiles',
+    getStations: '/PointAdmin/QueryAllStationDto',
+    getDevicetypes: '/v3/station/devicetypes',
+    getDevices: '/v3/station/stationdevices',
   },
   APISubPaths: {
     getCompInfo: '/v3/enterprise/domainLogin',
@@ -39,6 +42,8 @@ export default {
       closeDefect: '/v3/defect/close',
       handleDefect: '/v3/defect/handle',
       checkDefect: '/v3/defect/check',
+      getDefectTypes: '/v3/defect/type',
+      createNewDefect: '/v3/defect',
     }
   }
 }

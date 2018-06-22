@@ -10,6 +10,11 @@ import {
   GET_DEFECT_DETAIL_FAIL,
   GET_LANGUAGE_SUCCESS,
   GET_LANGUAGE_FAIL,
+  GET_STATIONS_SAGA,
+  GET_DEVICETYPES_SAGA,
+  GET_DEVICES_SAGA,
+  GET_DEFECTTYPES_SAGA,
+  DEFECT_CREATE_SAGA
 } from '../../../../constants/actionTypes/Ticket';
 
 var initState = immutable.fromJS({
@@ -52,7 +57,12 @@ var initState = immutable.fromJS({
       status: '1'
     },
     processData: []
-  }
+  },
+  stations: [],
+  devieceTypes: [],
+  devices: [],
+  defectTypes: [],
+  createDefectParams: {},
 });
 
 const defectReducer = (state = initState, action) => {
@@ -84,6 +94,7 @@ const defectReducer = (state = initState, action) => {
     case GET_DEFECT_DETAIL_FAIL:
     case GET_LANGUAGE_FAIL:
       return state.set('error', immutable.fromJS(action.error));
+    
   }
 
   return state;
