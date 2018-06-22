@@ -44,19 +44,16 @@ class DefectCreate extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  console.log(state) 
-  return{
+const mapStateToProps = (state) => ({
     isFetching: state.operation.defect.get('isFetching'),
-    commonFetching: state.common.defect.get('commonFetching'),
-    stations: state.common.defect.get('stations'),
-    devieceTypes: state.common.defect.get('devieceTypes'),
-    devices: state.common.defect.get('devices'),
+    commonFetching: state.common.get('commonFetching'),
+    stations: state.common.get('stations'),
+    devieceTypes: state.common.get('devieceTypes'),
+    devices: state.common.get('devices'),
     error: state.operation.defect.get('error'),
     defectTypes: state.operation.defect.get('defectTypes'),
     createDefectParams: state.operation.defect.get('createDefectParams'),
-  }
-};
+});
 
 const mapDispatchToProps = (dispatch) => ({
   getStations: params => dispatch({ type: GET_STATIONS_SAGA, params }),
