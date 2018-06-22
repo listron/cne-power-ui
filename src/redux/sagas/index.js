@@ -30,6 +30,8 @@ import {
   watchCloseDefect,
   watchHandleDefect,
   watchCheckDefect,
+  watchGetDefectTypes,
+  watchCreateNewDefect,
 } from './operation/ticket/defect'
 
 import {
@@ -110,6 +112,8 @@ export default function* rootSaga() {
     watchCloseDefect(),
     watchHandleDefect(),
     watchCheckDefect(),
-    watchChangeShowContainer()
+    watchChangeShowContainer(),
+    watchGetDefectTypes(),
+    watchCreateNewDefect(),
   ])
 } 
