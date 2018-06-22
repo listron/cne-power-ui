@@ -36,8 +36,6 @@ class InspectDetail extends Component{
     this.props.getInspectDetail({
       inspectId: this.props.inspectId,
     })
-    console.log(this.props.inspectId+"   000000000000000")
-    
   }
 
   componentWillReceiveProps(nextProps){

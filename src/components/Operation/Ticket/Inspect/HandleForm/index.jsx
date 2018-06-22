@@ -42,9 +42,7 @@ class HandleForm extends Component {
     //   stationCodes: "401"
     // }
     // this.props.getDeviceTypeList(params);
-    const deviceTypeList = this.props.deviceTypeList;
-    console.log(deviceTypeList.toJS());
-    console.log("---------------")
+    
   }
 
   hideAdd(){
@@ -57,7 +55,9 @@ class HandleForm extends Component {
 
   render(){
     const deviceList = [];
-    
+    const deviceTypeList = this.props.deviceTypeList;
+    console.log(deviceTypeList.toJS());
+    console.log("---------------")
     for (let i = 10; i < 36; i++) {
       deviceList.push(<Option key={i.toString(36) + i}>{i.toString(36) + i}</Option>);
     }

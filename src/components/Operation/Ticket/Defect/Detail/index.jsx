@@ -38,22 +38,22 @@ class Detail extends Component {
       case 'send':
         params = {
           defectId,
-          defectProposal: !data.defectProposal ? '' : data.defectProposal,
-          deadLine: !data.deadLine ? '' : data.deadLine+' 23:59:59'
+          defectProposal: !data.defectProposal ? null : data.defectProposal,
+          deadLine: !data.deadLine ? null : data.deadLine.format('YYYY-MM-DD')+' 23:59:59'
         };
         this.props.onSend(params);
         break;
       case 'reject':
         params = {
           defectId,
-          rejectReason: !data.rejectReason ? '' : data.rejectReason
+          rejectReason: !data.rejectReason ? null : data.rejectReason
         };
         this.props.onReject(params);
         break;
       case 'close':
         params = {
           defectId,
-          rejectReason: !data.defectProposal ? '' : data.defectProposal
+          rejectReason: !data.defectProposal ? null : data.defectProposal
         };
         this.props.onClose(params);
         break;
