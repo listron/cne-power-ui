@@ -16,6 +16,7 @@ import DefectCreateForm from '../../../../../components/Operation/Ticket/Defect/
 class DefectCreate extends Component {
   static propTypes = {
     onChangeShowContainer: PropTypes.func,
+    stations: PropTypes.array,
     getStations: PropTypes.func
   };
   constructor(props) {
@@ -34,7 +35,8 @@ class DefectCreate extends Component {
   }
   
 
-  render() {   
+  render() {  
+    console.log(this.props.stations)
     return (
       <div className={styles.defectCreate} >
         <h3><span>缺陷创建</span>    <span onClick={this.onChangeShowContainer }>关闭x</span></h3>
@@ -47,7 +49,7 @@ class DefectCreate extends Component {
 const mapStateToProps = (state) => ({
     isFetching: state.operation.defect.get('isFetching'),
     commonFetching: state.common.get('commonFetching'),
-    stations: state.common.get('stations'),
+    stations: state.common.get('stations').toJS(),
     devieceTypes: state.common.get('devieceTypes'),
     devices: state.common.get('devices'),
     error: state.operation.defect.get('error'),

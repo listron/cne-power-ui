@@ -23,20 +23,19 @@ function *getStations(action){
   yield put({ type: COMMON_FETCH });
   try {
     const response = yield call(axios.post, url, action.params);
-    if(response.data.code === '10000'){
+    if(response.data.success){
       yield put({ 
         type: GET_STATIONS_SAGA_SUCCESS, 
         params: {
-          data: response.data.data, 
-          params: action.params 
+          data: response.data.result
         }
       });       
     } else{
       yield put({ 
         type: GET_STATIONS_SAGA_FAIL, 
         error:{
-          code: response.data.code,
-          message: response.data.message
+          code: response.data.error,
+          message: response.data.error
         }
       });        
     }

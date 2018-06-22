@@ -25,12 +25,15 @@ const defectReducer = (state = initState, action) => {
     case COMMON_FETCH:
       return state.set('commonFetching', true)
     case GET_STATIONS_SAGA_SUCCESS:  
+      console.log(action)
       return state.set('commonFetching', false)
-                  .set('stations', action.data)
+                  .set('stations', immutable.fromJS(action.params.data))
     case GET_DEVICETYPES_SAGA_SUCCESS:
-      return state.set('devieceTypes', action.data);
+      return state.set('commonFetching', false)
+                  .set('devieceTypes',immutable.fromJS(action.params.data));
     case GET_DEVICES_SAGA_SUCCESS:
-      return state.set('devices', action.data);
+      return state.set('commonFetching', false)
+                  .set('devices',immutable.fromJS(action.params.data));
     case GET_STATIONS_SAGA_FAIL:
     case GET_DEVICETYPES_SAGA_FAIL:
     case GET_DEVICES_SAGA_FAIL:
