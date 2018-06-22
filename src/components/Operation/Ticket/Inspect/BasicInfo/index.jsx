@@ -22,14 +22,12 @@ class BasicInfo extends Component {
 
   renderBasic(){
     let info = this.props.basicInfo;
-    console.log(info.toJS());
-    console.log("basicInfo");
     return (
       <div>
-        <div>电站名称<span>{info.stationName}</span></div>
-        <div>巡检名称<span>{info.inspectName}</span></div>
-        <div>巡检时间<span>{info.createTime}至{info.deadLine}</span></div>
-        <div>巡检描述<span>{info.abnormalData}</span></div>
+        <div>电站名称<span>{info.get('stationName')}</span></div>
+        <div>巡检名称<span>{info.get('inspectName')}</span></div>
+        <div>巡检时间<span>{info.get('createTime')}至{info.get('deadLine')}</span></div>
+        <div>巡检描述<span>{info.get('abnormalData')}</span></div>
       </div>
     )
   }
@@ -40,7 +38,7 @@ class BasicInfo extends Component {
 
   render(){
     return (
-      <div className={styles.BasicInfo} >
+      <div className={styles.basicInfo} >
         <Card title="基本信息">
           {this.renderBasic()}
         </Card>

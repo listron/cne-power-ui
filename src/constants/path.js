@@ -27,10 +27,12 @@ export default {
     ticket: {
       getDefectList: '/v3/defect/worklist/pc',
       batchDeleteDefect: '/v3/defect/delete/batch',
-      getInspectionList: '/v3/inspect/worklist/pc',
+      getInspectList: '/v3/inspect/worklist/pc',
       getDefectDetail: '/v3/defect',
       getInspectDetail: '/v3/inspect',
       getCommonList: '/v3/language',
+      addInspectAbnormal: '/v3/inspect/abnormal',
+      getDeviceTypeList: '/v3/station/devicetypes',
     }
   }
 }

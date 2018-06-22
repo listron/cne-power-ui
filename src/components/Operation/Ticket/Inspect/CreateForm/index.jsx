@@ -134,7 +134,6 @@ class CreateForm extends Component{
                 <Select
                   mode="multiple"
                   placeholder="请选择设备类型"
-                  onChange={this.selectChange}
                 >
                   {children}
                 </Select>

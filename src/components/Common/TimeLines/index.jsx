@@ -48,7 +48,6 @@ class TimeLines extends Component {
 
   getItem(item) {
     let text = item.get("flowName") === "执行工单" ? "处理过程" : "处理建议";
-    console.log("text:"+text);
     let icon;
 
     return (
@@ -58,58 +57,9 @@ class TimeLines extends Component {
           <span>{item.get("operateTime")}</span>
           {item.get("operateUser")}
         </div>
-        <div><b>{text}</b>{getHandleStatus(item.get("handleStatus"))} | {item.get("defectProposal")}</div>
+        { item.get("handleStatus") === undefined ? null : (<div><b>{text}</b>{getHandleStatus(item.get("handleStatus"))} | {item.get("defectProposal")}</div>) }
       </div>
     );
-
-    // switch (item.flowName) {
-    //   case "发现缺陷":
-    //     return (
-    //       <div className={styles.processWrap}>
-    //         <div>
-    //           <b>{item.flowName}</b>
-    //           <span>{item.operateTime}</span>
-    //           {item.operateUser}
-    //         </div>
-    //         <div><b>{text}</b>{item.processResult} | {item.defectProposal}</div>
-    //       </div>
-    //       );
-    //   case "审核工单":
-    //     return (
-    //       <div className={styles.processWrap}>
-    //         <div>
-    //           <b>{item.flowName}</b>
-    //           <span>{item.operateTime}</span>
-    //           {item.operateUser}
-    //         </div>
-    //         <div><b>处理建议</b>{item.processResult} | {item.defectProposal}</div>
-    //       </div>
-    //       );
-    //   case "执行工单":
-    //     return (
-    //       <div className={styles.processWrap}>
-    //         <div>
-    //           <b>{item.flowName}</b>
-    //           <span>{item.operateTime}</span>
-    //           {item.operateUser}
-    //         </div>
-    //         <div><b>处理过程</b>{item.processResult} | {item.defectProposal}</div>
-    //       </div>
-    //       );
-    //   case "验收工单":
-    //     return (
-    //       <div className={styles.processWrap}>
-    //         <div>
-    //           <b>{item.flowName}</b>
-    //           <span>{item.operateTime}</span>
-    //           {item.operateUser}
-    //         </div>
-    //         <div><b>处理建议</b>{item.processResult} | {item.defectProposal}</div>
-    //       </div>
-    //       );
-    //   default: 
-    //     return ;
-    // }
   }
 
   render() {

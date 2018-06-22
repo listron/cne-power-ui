@@ -11,12 +11,18 @@ import {
   GET_INSPECT_DETAIL_FAIL,
   SET_INSPECT_ID_SAGA,
   SET_INSPECT_ID,
+  ADD_INSPECT_ABNORMAL_SAGA,
+  ADD_INSPECT_ABNORMAL_SUCCESS,
+  ADD_INSPECT_ABNORMAL_FAIL,
+  DEVICE_TYPE_LIST_SAGA,
+  DEVICE_TYPE_LIST_SUCCESS,
+  DEVICE_TYPE_LIST_FAIL,
 } from '../../../../constants/actionTypes/Ticket';
 
 
 //获取巡检列表信息
 function* getInspectionList(action){
-  let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.ticket.getInspectionList;
+  let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.ticket.getInspectList;
   // let url = "/mock/operation/inspectionList";
   yield put({ type: BEGIN_FETCH});
   try{
@@ -76,6 +82,61 @@ function* setInspectId(action){
   });
 }
 
+// 添加巡检详情
+function* addInspectAbnormal(action){
+  let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.ticket.addInspectAbnormal;
+  yield put({ type: BEGIN_FETCH })
+  try{
+    const response = yield call(axios.post, url, {params: action.params});
+    if(response.data.code === "10000"){
+      yield put({
+        type: ADD_INSPECT_ABNORMAL_SUCCESS,
+        data: response.data.data,
+        params: action.params,
+      })
+    }
+    else{
+      yield put({
+        type: ADD_INSPECT_ABNORMAL_FAIL,
+        error:{
+          code: response.data.code,
+          message: response.data.message,
+        }
+      })
+    }
+  }catch(e){
+    console.log(e);
+  }
+}
+
+// 获取设备类型，设备名称，缺陷类型列表
+function* getTotalData(action){
+  let getDeviceTypeList = Path.basePaths.newAPIBasePath + Path.APISubPaths.ticket.getDeviceTypeList;
+  yield put({ type: BEGIN_FETCH })
+  try{
+    const response = yield call(axios.get, getDeviceTypeList, {params: action.params});
+    console.log(response);
+    if(response.data.code === "10000"){
+      yield put({
+        type: DEVICE_TYPE_LIST_SUCCESS,
+        data: response.data.data,
+        params: action.params,
+      })
+    }
+    else{
+      yield put({
+        type: DEVICE_TYPE_LIST_FAIL,
+        error:{
+          code: response.data.code,
+          message: response.data.message,
+        }
+      })
+    }
+  }catch(e){
+    console.log(e);
+  }
+}
+
 export function* watchGetInspectionList() {
   yield takeLatest(GET_INSPECT_LIST_SAGA, getInspectionList);
 }
@@ -86,4 +147,12 @@ export function* watchSetInspectId(){
 
 export function* watchGetInspectDetail(){
   yield takeLatest(GET_INSPECT_DETAIL_SAGA, getInspectDetail);
+}
+
+export function* watchAddInspectAbnormal(){
+  yield takeLatest(ADD_INSPECT_ABNORMAL_SAGA, addInspectAbnormal);
+}
+
+export function* watchGetTotalData(){
+  yield takeLatest(DEVICE_TYPE_LIST_SAGA, getTotalData);
 }

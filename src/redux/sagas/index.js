@@ -21,6 +21,8 @@ import {
   watchGetInspectionList,
   watchGetInspectDetail,
   watchSetInspectId,  
+  watchAddInspectAbnormal,
+  watchGetTotalData,
 } from './operation/ticket/inspect';
 
 import axios from 'axios';
@@ -82,5 +84,7 @@ export default function* rootSaga() {
     watchSetInspectId(),
     watchGetInspectDetail(),
     watchGetCommonList(),
+    watchAddInspectAbnormal(),
+    watchGetTotalData(),
   ])
 } 

@@ -3,7 +3,10 @@ import PropTypes from 'prop-types';
 import BasicInfo from '../BasicInfo';
 import TimeLines from '../../../../Common/TimeLines';
 import styles from './style.scss';
-import { Icon } from 'antd';
+import { Icon, Button, Form, Select, Input } from 'antd';
+import HandleForm from '../HandleForm';
+
+const FormItem = Form.Item;
 
 class Detail extends Component {
   static propTypes={
@@ -11,7 +14,11 @@ class Detail extends Component {
     processData: PropTypes.object,
     onPrev: PropTypes.func,
     onNext: PropTypes.func,
-    onCloseDetail: PropTypes.func,
+    onCloseInspectDetail: PropTypes.func,
+    form: PropTypes.object,
+    getDeviceTypeList: PropTypes.func,
+    deviceTypeList: PropTypes.object,
+    stationCode: PropTypes.string,
   }
 
   constructor(props){
@@ -22,32 +29,47 @@ class Detail extends Component {
   }
 
   renderForm(){
-    
+    let status = this.props.inspectDetail.get("inspectStatus");
+    console.log("renderForm")
+    console.log(this.props.stationCode+"   ===============")
+    this.props.getDeviceTypeList({
+      stationCodes: this.props.stationCode,
+    })
+    if(status === "2"){
+      return (
+        <HandleForm  
+          onCloseInspectDetail={this.props.onCloseInspectDetail}
+          getDeviceTypeList={this.props.getDeviceTypeList}
+          deviceTypeList={this.props.deviceTypeList}
+        />
+      )
+    }else if(status === "3"){
+      return (
+        <div></div>
+      )
+    }
   }
 
   render(){
     let inspectDetail = this.props.inspectDetail;
-    // console.log(inspectDetail);
-    // console.log("------------");
     let progressData = inspectDetail.get('processData');
-    // console.log(progressData);
-    // console.log("1000000000000");
+    
     return (
-      <div>
-        <div>
+      <div className={styles.inspectDetail} >
+        <div className={styles.header} >
           <Icon type="up" onClick={this.props.onPrev} />
           <Icon type="down" onClick={this.props.onNext} />
-          <Icon type="close" onClick={this.props.onCloseDetail} />
+          <Icon type="close" onClick={this.props.onCloseInspectDetail} />
         </div>
-        <div>
-          <div>
+        <div className={styles.content} >
+          <div className={styles.basic} >
             <BasicInfo basicInfo={inspectDetail} />
           </div>
-          <div>
-            <div>
-              <TimeLines processData={progressData} />
+          <div className={styles.right} >
+            <div className={styles.timeLines}>
+              <TimeLines processData={progressData} status={inspectDetail.get("inspectStatus")} />
             </div>
-            <div>
+            <div className={styles.form} >
               {this.renderForm()}
             </div>
           </div>
