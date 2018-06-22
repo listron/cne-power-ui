@@ -9,7 +9,7 @@ import {
   REJECT_BATCH_DEFECT_SAGA,
   CLOSE_BATCH_DEFECT_SAGA,
   CHECK_BATCH_DEFECT_SAGA,
-  SET_SELECTED_ROWS_SAGA,
+  SET_SELECTED_DEFECT_SAGA,
   CHANGE_SHOW_CONTAINER_SAGA,
 } from '../../../../../constants/actionTypes/Ticket';
 import List from '../../../../../components/Operation/Ticket/Defect/List';
@@ -198,7 +198,7 @@ const mapDispatchToProps = (dispatch) => ({
   onBatchReject: params => dispatch({ type: REJECT_BATCH_DEFECT_SAGA, params }),
   onBatchClose: params => dispatch({ type: CLOSE_BATCH_DEFECT_SAGA, params }),
   onBatchCheck: params => dispatch({ type: CHECK_BATCH_DEFECT_SAGA, params }),
-  onChangeSelectRows: params => dispatch({ type: SET_SELECTED_ROWS_SAGA, params }),
+  onChangeSelectRows: params => dispatch({ type: SET_SELECTED_DEFECT_SAGA, params }),
   onChangeShowContainer: params => dispatch({ type: CHANGE_SHOW_CONTAINER_SAGA, params }),
 });
 
