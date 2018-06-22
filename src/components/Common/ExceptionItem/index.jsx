@@ -40,7 +40,7 @@ class ExceptionItem extends Component {
     confirm({
       title: '确认删除异常设备？',
       content: '点击确认，删除此异常设备信息，记录将无法保存',
-      okText: "确认",
+      okText: '确认',
       onOk() {
         this.props.onDelete(this.props.label);
       },
@@ -51,7 +51,7 @@ class ExceptionItem extends Component {
   }
 
   render() {
-    if(this.props.status === "delete") {
+    if(this.props.status === 'delete') {
       return (
         <div 
           className={styles.deleteItem}
@@ -66,7 +66,7 @@ class ExceptionItem extends Component {
           <Icon type="close" onClick={this.onDeleteItem} />
         </div>
       )
-    } else if(this.props.status === "select") {
+    } else if(this.props.status === 'select') {
       return ( 
         <div 
           className={classnames({
@@ -82,7 +82,7 @@ class ExceptionItem extends Component {
           {this.props.selected && <Icon type="check" />}
         </div>
       );
-    } else if(this.props.status === "view") {
+    } else if(this.props.status === 'view') {
       return ( 
         <div 
           className={classnames({

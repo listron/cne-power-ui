@@ -4,7 +4,14 @@ import PropTypes from 'prop-types';
 import {message} from 'antd';
 import { 
   GET_DEFECT_DETAIL_SAGA,
-  GET_LANGUAGE_SAGA
+  GET_LANGUAGE_SAGA,
+  SET_DEFECT_ID_SAGA,
+  SEND_DEFECT_SAGA,
+  REJECT_DEFECT_SAGA,
+  CLOSE_DEFECT_SAGA,
+  HANDLE_DEFECT_SAGA,
+  CHECK_DEFECT_SAGA,
+  CHANGE_SHOW_CONTAINER_SAGA
  } from '../../../../../constants/actionTypes/Ticket';
 import Detail from '../../../../../components/Operation/Ticket/Defect/Detail';
 
@@ -17,16 +24,20 @@ class DefectDetail extends Component {
     commonList: PropTypes.object,
     getDefectDetail: PropTypes.func,
     getCommonList: PropTypes.func,
-    onCloseDetail: PropTypes.func,
+    onChangeShowContainer: PropTypes.func,
+    setDefectId: PropTypes.func,
     onSend: PropTypes.func,
     onClose: PropTypes.func,
     onReject: PropTypes.func,
+    onHandle: PropTypes.func,
+    onCheck: PropTypes.func,
   };
   constructor(props,context) {
     super(props);
     this.state = {};
     this.onNext = this.onNext.bind(this);
     this.onPrev = this.onPrev.bind(this);
+    this.onCloseDetail = this.onCloseDetail.bind(this);
   }
 
   componentDidMount() {
@@ -34,7 +45,7 @@ class DefectDetail extends Component {
       defectId: this.props.defectId
     });
     this.props.getCommonList({
-      languageType: "1"
+      languageType: '1'
     });
   }
 
@@ -50,15 +61,13 @@ class DefectDetail extends Component {
     let defectList = this.props.defectList;
     let defectId = this.props.defectId;
     let index = defectList.findIndex(item => {
-      return item.get("defectId") === defectId
+      return item.get('defectId') === defectId
     });
     if(index !== -1) {
       if(index !== 0) {
-        this.props.getDefectDetail({
-          defectId: defectList.get([index-1, "defectId"])
-        });
+        this.props.setDefectId(defectList.getIn([index-1, 'defectId']));
       } else {
-        message.info("已经是第一条");
+        message.info('已经是第一条');
       }
     }
   }
@@ -67,31 +76,35 @@ class DefectDetail extends Component {
     let defectList = this.props.defectList;
     let defectId = this.props.defectId;
     let index = defectList.findIndex(item => {
-      return item.get("defectId") === defectId
+      return item.get('defectId') === defectId
     });
     if(index !== -1) {
       if(index !== defectList.size - 1) {
-        this.props.getDefectDetail({
-          defectId: defectList.get([index+1, "defectId"])
-        });
+        this.props.setDefectId(defectList.getIn([index+1, 'defectId']));
       } else {
-        message.info("已经是最后一条");
+        message.info('已经是最后一条');
       }
     }
+  }
+
+  onCloseDetail() {
+    this.props.onChangeShowContainer('list');
   }
 
   render() {   
     return (
       <Detail 
-        detail={this.props.defectDetail} 
+        detail={this.props.defectDetail}
+        isFetching={this.props.isFetching}
         commonList={this.props.commonList}
-        onCloseDetail={this.props.onCloseDetail}
+        onCloseDetail={this.onCloseDetail}
         onClose={this.props.onClose}
         onSend={this.props.onSend}
         onReject={this.props.onReject}
-        isFetching={this.props.isFetching}
+        onHandle={this.props.onHandle}
+        onCheck={this.props.onCheck}
         onNext={this.onNext}
-        onPrev={this.onPrev} />
+        onPrev={this.onPrev} />    
     );
   }
 }
@@ -100,14 +113,21 @@ const mapStateToProps = (state) => ({
   defectList: state.operation.defect.get('defectList'),
   isFetching: state.operation.defect.get('isFetching'),
   error: state.operation.defect.get('error'),
-  defectDetail: state.operation.defect.get("defectDetail"),
-  defectId: state.operation.defect.get("defectId"),
+  defectDetail: state.operation.defect.get('defectDetail'),
+  defectId: state.operation.defect.get('defectId'),
   commonList: state.operation.defect.get('commonList'),
 });
 
 const mapDispatchToProps = (dispatch) => ({
   getDefectDetail: params => dispatch({ type: GET_DEFECT_DETAIL_SAGA, params }),
   getCommonList: params => dispatch({ type: GET_LANGUAGE_SAGA, params }),
+  setDefectId: params => dispatch({ type: SET_DEFECT_ID_SAGA, params }),
+  onSend: params => dispatch({ type: SEND_DEFECT_SAGA, params }),
+  onReject: params => dispatch({ type: REJECT_DEFECT_SAGA, params }),
+  onClose: params => dispatch({ type: CLOSE_DEFECT_SAGA, params }),
+  onHandle: params => dispatch({ type:HANDLE_DEFECT_SAGA, params }),
+  onCheck: params => dispatch({ type: CHECK_DEFECT_SAGA, params }),
+  onChangeShowContainer: params => dispatch({ type: CHANGE_SHOW_CONTAINER_SAGA, params }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DefectDetail);

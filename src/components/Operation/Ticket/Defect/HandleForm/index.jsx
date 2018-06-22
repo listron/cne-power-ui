@@ -4,6 +4,7 @@ import styles from './style.scss';
 import {Tag} from 'antd';
 import ReviewForm from './ReviewForm';
 import ProcessForm from './ProcessForm';
+import CheckForm from './CheckForm';
 
 class HandleForm extends Component {
   static propTypes = {
@@ -22,12 +23,12 @@ class HandleForm extends Component {
 
   getTitle() {
     switch(this.props.status) {
-      case "1": 
-        return "审核";
-      case "2":
-        return "处理结果";
-      case "3":
-        return "消缺验收";
+      case '1': 
+        return '审核';
+      case '2':
+        return '处理结果';
+      case '3':
+        return '消缺验收';
     }
   }
 
@@ -47,6 +48,14 @@ class HandleForm extends Component {
         onCancel={this.props.onCancel} />
     );
   }
+
+  renderCheckForm() {
+    return (     
+      <CheckForm 
+        onSubmit={this.props.onSubmit}
+        onCancel={this.props.onCancel} />
+    );
+  }
   
   render() {   
     return (
@@ -54,8 +63,9 @@ class HandleForm extends Component {
         <div className={styles.title}>
           <Tag>{this.getTitle()}</Tag>
         </div>
-        {this.props.status === "1" ? this.renderReviewForm() : null}
-        {this.props.status === "2" ? this.renderProcessForm() : null}
+        {this.props.status === '1' ? this.renderReviewForm() : null}
+        {this.props.status === '2' ? this.renderProcessForm() : null}
+        {this.props.status === '3' ? this.renderCheckForm() : null}
       </div>
     );
   }  

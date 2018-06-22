@@ -12,14 +12,28 @@ import {
 import {
   watchGetDefectList,
   watchBatchDeleteDefect,
+  watchBatchSendDefect,
+  watchBatchRejectDefect,
+  watchBatchClosedDefect,
+  watchBatchCheckdDefect,
   watchSetDefectId,
+  watchSetSelectedRows,
   watchGetDefectDetail,
   watchGetCommonList,
+  watchSendDefect,
+  watchRejectDefect,
+  watchCloseDefect,
+  watchHandleDefect,
+  watchCheckDefect,
 } from './operation/ticket/defect'
 
 import {
   watchGetInspectionList
 } from './operation/ticket/inspect';
+
+import {
+  watchChangeShowContainer
+} from './operation/ticket/ticket';
 
 import axios from 'axios';
 
@@ -74,9 +88,20 @@ export default function* rootSaga() {
     watchCreateRegister(),
     watchGetDefectList(),
     watchSetDefectId(),
+    watchSetSelectedRows(),
     watchGetDefectDetail(),
     watchBatchDeleteDefect(),
+    watchBatchSendDefect(),
+    watchBatchRejectDefect(),
+    watchBatchClosedDefect(),
+    watchBatchCheckdDefect(),
     watchGetInspectionList(),
-    watchGetCommonList()
+    watchGetCommonList(),
+    watchSendDefect(),
+    watchRejectDefect(),
+    watchCloseDefect(),
+    watchHandleDefect(),
+    watchCheckDefect(),
+    watchChangeShowContainer()
   ])
 } 

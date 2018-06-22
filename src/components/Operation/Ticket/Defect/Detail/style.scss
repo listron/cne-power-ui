@@ -1,28 +1,40 @@
-.defectDetail{
+.detailWrap {
   display: flex;
-  flex-direction: column;
-  flex: 1;
-  .header {
-    height: 50px;
-  }
-  .content {
-    display: flex;
-    flex-direction: row;
-    flex: 1;
-    .basic {
-      width: 570px;
-    }
-    .right {
-      flex: 1;
+  :global {
+    .ant-spin-nested-loading {
       display: flex;
-      flex-direction: column;
-      .timeLines {
-        display: flex;
-        flex: 1;
-        overflow-y: auto;
+    }
+    .ant-spin-container {
+      display: flex;
+      flex: 1;
+    }
+  }
+  .defectDetail{
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    .header {
+      height: 50px;
+    }
+    .content {
+      display: flex;
+      flex-direction: row;
+      flex: 1;
+      .basic {
+        width: 570px;
       }
-      .form {
+      .right {
+        flex: 1;
         display: flex;
+        flex-direction: column;
+        .timeLines {
+          display: flex;
+          flex: 1;
+          overflow-y: auto;
+        }
+        .form {
+          display: flex;
+        }
       }
     }
   }

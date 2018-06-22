@@ -27,9 +27,18 @@ export default {
     ticket: {
       getDefectList: '/v3/defect/worklist/pc',
       batchDeleteDefect: '/v3/defect/delete/batch',
+      batchSendDefect: '/v3/defect/distribute/batch',
+      batchCloseDefect: '/v3/defect/close/batch',
+      batchRejectDefect: '/v3/defect/reject/batch',
+      batchCheckDefect: '/v3/defect/check/batch',
       getInspectionList: '/v3/inspect/worklist/pc',
       getDefectDetail: '/v3/defect',
       getCommonList: '/v3/language',
+      sendDefect: '/v3/defect/distribute',
+      rejectDefect: '/v3/defect/reject',
+      closeDefect: '/v3/defect/close',
+      handleDefect: '/v3/defect/handle',
+      checkDefect: '/v3/defect/check',
     }
   }
 }

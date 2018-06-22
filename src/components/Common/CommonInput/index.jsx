@@ -44,10 +44,10 @@ class CommonInput extends Component {
     return this.props.commonList.map((item, index) => {
       return (
         <Button 
-          key={"common"+index}
+          key={'common'+index}
           ghost={true} 
           type="primary"
-          onClick={()=>this.onClickCommon(item.get("languageInfo"))}>{item.get("languageInfo")}</Button>
+          onClick={()=>this.onClickCommon(item.get('languageInfo'))}>{item.get('languageInfo')}</Button>
       );
     });
   }
