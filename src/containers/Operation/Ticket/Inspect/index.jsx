@@ -20,8 +20,8 @@ class Inspect extends Component {
   render() {
     return (
       <div style={{display:"flex", flex: 1}}>
-        {this.props.showContainer === 'detail' && (<InspectDetail />)}
-        {this.props.showContainer === 'list' && (<InspectList />)}
+        {this.props.showContainer === 'inspectDetail' && (<InspectDetail />)}
+        {this.props.showContainer === 'inspectList' && (<InspectList />)}
       </div>
     );
   }

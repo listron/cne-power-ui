@@ -30,11 +30,6 @@ class Detail extends Component {
 
   renderForm(){
     let status = this.props.inspectDetail.get("inspectStatus");
-    console.log("renderForm")
-    console.log(this.props.stationCode+"   ===============")
-    this.props.getDeviceTypeList({
-      stationCodes: this.props.stationCode,
-    })
     if(status === "2"){
       return (
         <HandleForm  

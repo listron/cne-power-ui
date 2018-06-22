@@ -36,8 +36,8 @@ class Ticket extends Component {
     this.setState({
       tab: tab
     });
-    this.props.onChangeShowContainer('list');
     if(tab === "inspect") {
+      this.props.onChangeShowContainer('inspectList');
       this.props.clearDefectState();//清除缺陷状态
       var params = {
         stationType: "2",
@@ -47,6 +47,7 @@ class Ticket extends Component {
       }
       this.props.getInspectList(params);//获取巡检列表
     } else {
+      this.props.onChangeShowContainer('list');
       this.props.clearInspectState();//清除巡检状态
       var params = {
         defectSource: '3',
