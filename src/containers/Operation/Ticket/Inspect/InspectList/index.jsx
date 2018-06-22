@@ -56,22 +56,21 @@ class InspectList extends Component {
   render() {
     return (
       <div>
-        <div>巡检处理页面</div>
-          <List 
-            list={this.props.inspectList} 
-            getInspectionList={this.props.getInspectList}
-            pageNum={this.props.pageNum}
-            pageSize={this.props.pageSize}
-            total={this.props.total}
-            status={this.props.status}
-            isFetching={this.props.isFetching}
-            onChangeSort={this.onChangeSort}
-            onChangePage={this.onChangePage}
-            onChangePageSize={this.onChangePageSize}
-            onChangeStatus={this.onChangeStatus}
-            onShowDetail={this.onShowDetail}
-            inspectStatusStatistics={this.props.inspectStatusStatistics}
-          />
+        <List 
+          list={this.props.inspectList} 
+          getInspectionList={this.props.getInspectList}
+          pageNum={this.props.pageNum}
+          pageSize={this.props.pageSize}
+          total={this.props.total}
+          status={this.props.status}
+          isFetching={this.props.isFetching}
+          onChangeSort={this.onChangeSort}
+          onChangePage={this.onChangePage}
+          onChangePageSize={this.onChangePageSize}
+          onChangeStatus={this.onChangeStatus}
+          onShowDetail={this.onShowDetail}
+          inspectStatusStatistics={this.props.inspectStatusStatistics}
+        />
       </div>
     );
   }

@@ -24,6 +24,7 @@ class List extends Component {
     inspectStatusStatistics: PropTypes.any,
     onChangeSort: PropTypes.func,
     onShowDetail: PropTypes.func,
+    onAdd: PropTypes.func,
   }
 
   static defaultProps={
@@ -39,35 +40,14 @@ class List extends Component {
     }
     this.onChangeTab = this.onChangeTab.bind(this);
     this.onChangeTable = this.onChangeTable.bind(this);
-    this.onCreate = this.onCreate.bind(this);
-    this.onCancel = this.onCancel.bind(this);
-    this.onCreateForm = this.onCreateForm.bind(this);
     this.onChangeSort = this.onChangeSort.bind(this);
+    this.onAdd = this.onAdd.bind(this);
   }
 
-  onCreateForm(){
-    this.setState({
-      visible: true,
-    })
+  onAdd(){
+
   }
 
-  onCreate(e){
-    const form = this.formRef.props.form;
-    form.validateFields((err,value) => {
-      if(err){
-        return;
-      }
-      form.resetFields();
-      this.setState({ visible: false })
-    })
-  }
-
-  onCancel(e){
-    this.setState({
-      visible: false,
-    })
-  }
-  
   onChangeTab(e){
     this.props.onChangeStatus(e.target.value);
   }
@@ -151,11 +131,11 @@ class List extends Component {
       key: 'inspectStatus',
       sorter: true,
       render: (value, record, index) => (
-        <div>
+        <div className={styles.inspectStatus} >
           <span>{getStatus(value)}</span>
-          <div>
-            { record.isOvertime === 0 ? <span>超时</span> : null }
-            { record.isOvertime === 0 ? <span>超时</span> : null }
+          <div className={styles.warning} >
+            { record.isOvertime === '0' ? <span style={{ color: '#c80000' }}>超时</span> : null }
+            { record.isOvertime === '0' ? <span style={{ color: '#e78d14' }}>协调</span> : null }
           </div>
         </div>
       ),
@@ -185,7 +165,7 @@ class List extends Component {
     }
 
     return(
-      <div className={styles.bugTicket}>
+      <div className={styles.inspectList}>
         <div className={styles.action}>
           <div>
             <RadioGroup onChange={this.onChangeTab} default="2" value={this.props.status} >
@@ -195,13 +175,7 @@ class List extends Component {
             </RadioGroup>
           </div>
           <div className={styles.add}>
-            <Button onClick={this.onCreateForm}><Icon type="plus" />新建</Button>
-            <CreateForm 
-              visible={this.state.visible}
-              onCreate={this.onCreate}
-              onCancel={this.onCancel}
-              wrappedComponentRef={this.saveFormRef}
-            />
+            <Button onClick={this.onAdd}><Icon type="plus" />新建</Button>
             {
               this.state.currentSelectedStatus === "3" && 
                 <div>
