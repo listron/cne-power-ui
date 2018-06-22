@@ -44,9 +44,11 @@ import {
 //获取缺陷工单列表
 function* getDefectList(action) {
   let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.ticket.getDefectList;
+  console.log(url);
   yield put({ type: BEGIN_FETCH });
   try {
     const response = yield call(axios.post, url, action.params);
+    console.log(response);
     if(response.data.code === '10000'){
       yield put({ 
         type: GET_DEFECT_LIST_SUCCESS, 
