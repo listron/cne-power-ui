@@ -7,6 +7,7 @@ import Inspect from './Inspect';
 import { 
   CHANGE_SHOW_CONTAINER_SAGA
  } from '../../../constants/actionTypes/Ticket';
+import styles from './style.scss';
 const TabPane = Tabs.TabPane;
 
 
@@ -32,7 +33,7 @@ class Ticket extends Component {
 
   render() {
     return (
-      <div style={{display:"flex", flex: 1}}>
+      <div className={styles.ticket}>
         <Tabs activeKey={this.state.tab} onChange={this.onChangeTab}>
           <TabPane tab="缺陷" key="defect">
             <Defect showContainer={this.props.showContainer} onChangeShowContainer={this.props.onChangeShowContainer}/>
