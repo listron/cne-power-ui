@@ -37,6 +37,8 @@ import {
   CHECK_DEFECT_SAGA,
   CHECK_DEFECT_FAIL,
   CHANGE_SHOW_CONTAINER_SAGA,
+  CLEAR_DEFECT_STATE_SAGA,
+  CLEAR_DEFECT_STATE
 } from '../../../../constants/actionTypes/Ticket';
 
 //获取缺陷工单列表
@@ -500,6 +502,12 @@ function* checkDefect(action) {
   }
 }
 
+function* clearDefect(action) {
+  yield put({ 
+    type: CLEAR_DEFECT_STATE, 
+  }); 
+}
+
 export function* watchGetDefectList() {
   yield takeLatest(GET_DEFECT_LIST_SAGA, getDefectList);
 }
@@ -558,4 +566,8 @@ export function* watchHandleDefect() {
 
 export function* watchCheckDefect() {
   yield takeLatest(CHECK_DEFECT_SAGA, checkDefect);
+}
+
+export function* watchClearDefect() {
+  yield takeLatest(CLEAR_DEFECT_STATE_SAGA, clearDefect);
 }
