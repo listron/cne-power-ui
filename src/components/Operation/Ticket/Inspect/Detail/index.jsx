@@ -18,7 +18,6 @@ class Detail extends Component {
     form: PropTypes.object,
     getDeviceTypeList: PropTypes.func,
     deviceTypeList: PropTypes.object,
-    stationCode: PropTypes.string,
   }
 
   constructor(props){
@@ -26,7 +25,12 @@ class Detail extends Component {
     this.state={
 
     }
+
   }
+
+  // onNext(){
+
+  // }
 
   renderForm(){
     let status = this.props.inspectDetail.get("inspectStatus");

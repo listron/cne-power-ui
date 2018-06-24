@@ -7,6 +7,8 @@ import {
   GET_INSPECT_DETAIL_SAGA,
   ADD_INSPECT_ABNORMAL_SAGA,
   DEVICE_TYPE_LIST_SAGA,
+  CHANGE_SHOW_CONTAINER_SAGA,
+  SET_INSPECT_ID_SAGA,
  } from '../../../../../constants/actionTypes/Ticket';
 
 class InspectDetail extends Component{
@@ -22,6 +24,9 @@ class InspectDetail extends Component{
     getDeviceTypeList: PropTypes.func,
     deviceTypeList: PropTypes.object,
     stationCode: PropTypes.string,
+    onChangeShowContainer: PropTypes.func,
+    inspectList: PropTypes.object,
+    setInspectId: PropTypes.func,
   }
   constructor(props){
     super(props);
@@ -30,6 +35,7 @@ class InspectDetail extends Component{
     }
     this.onPrev = this.onPrev.bind(this);
     this.onNext = this.onNext.bind(this);
+    this.onCloseInspectDetail = this.onCloseInspectDetail.bind(this);
   }
   
   componentDidMount(){
@@ -47,19 +53,43 @@ class InspectDetail extends Component{
   }
 
   onPrev(){
-
+    let inspectList = this.props.inspectList;
+    let inspectId = this.props.inspectId;
+    let index = inspectList.findIndex(item => {
+      return item.get('inspectId') === inspectId;
+    })
+    if(index !== -1){
+      if(index !== 0){
+        this.props.setInspectId(inspectList.getIn([index-1,'inspectId']));
+      }else{
+        message.info('已经是第一条');
+      }
+    }
   }
 
   onNext(){
-
+    let inspectList = this.props.inspectList;
+    let inspectId = this.props.inspectId;
+    let index = inspectList.findIndex(item => {
+      return item.get('inspectId') === inspectId;
+    })
+    if(index !== -1){
+      if(index !== inspectList.size - 1){
+        this.props.setInspectId(inspectList.getIn([index+1,'inspectId']));
+      }else{
+        message.info('已经是最后一条')
+      }
+    }
   }
 
+  onCloseInspectDetail(){
+    this.props.onChangeShowContainer('inspectList');
+  }
   render(){
     return(
-      
       <Detail 
         inspectDetail={this.props.inspectDetail}
-        onCloseInspectDetail={this.props.onCloseInspectDetail}
+        onCloseInspectDetail={this.onCloseInspectDetail}
         onClose={this.props.onClose}
         onSend={this.props.onSend}
         onReject={this.props.onReject}
@@ -68,7 +98,6 @@ class InspectDetail extends Component{
         onPrev={this.onPrev}
         getDeviceTypeList={this.props.getDeviceTypeList}
         deviceTypeList={this.props.deviceTypeList}
-        stationCode={this.props.stationCode}
       />
     )
   }
@@ -82,13 +111,15 @@ const mapStateToProps = (state) => ({
   inspectDetail: state.operation.inspect.get("inspectDetail"),
   inspectId: state.operation.inspect.get("inspectId"),
   deviceTypeList: state.operation.inspect.get("deviceTypeList"),
-  stationCode: state.operation.inspect.getIn(["inspectDetail","stationCode"]),
+  stationCode: state.operation.inspect.getIn(["inspectDetail","stationCode"]).toString(),
 }) 
 
 const mapDispatchToProps = (dispatch) => ({
   getInspectDetail: params => dispatch({ type: GET_INSPECT_DETAIL_SAGA, params }),
   addInspectAbnormal: params => dispatch({ type: ADD_INSPECT_ABNORMAL_SAGA, params}),
   getDeviceTypeList: params => dispatch({ type: DEVICE_TYPE_LIST_SAGA, params}),
+  onChangeShowContainer: params => dispatch({ type: CHANGE_SHOW_CONTAINER_SAGA, params}),
+  setInspectId: params => dispatch({ type: SET_INSPECT_ID_SAGA, params }),
 })
 
 export default connect(mapStateToProps,mapDispatchToProps)(InspectDetail);

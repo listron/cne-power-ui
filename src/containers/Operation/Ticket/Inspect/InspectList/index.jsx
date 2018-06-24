@@ -55,7 +55,7 @@ class InspectList extends Component {
 
   onShowDetail(inspectId){
     this.props.setInspectId(inspectId);
-    this.props.onChangeShowContainer('detail');
+    this.props.onChangeShowContainer('inspectDetail');
   }
 
   render() {

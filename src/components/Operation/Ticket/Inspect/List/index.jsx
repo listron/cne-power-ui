@@ -17,7 +17,7 @@ class List extends Component {
     total: PropTypes.number,
     onChangePage: PropTypes.func,
     onChangePageSize: PropTypes.func,
-    getInspectionList: PropTypes.func,
+    getInspectList: PropTypes.func,
     loading: PropTypes.bool,
     status: PropTypes.string,
     onChangeStatus: PropTypes.func,
@@ -62,7 +62,7 @@ class List extends Component {
       "pageSize": pageSize,
       "sort": this.onChangeSort(pageNum, sorter),
     }
-    this.props.getInspectionList(params);
+    this.props.getInspectList(params);
   }
 
   onChangeSort(pageNum, sorter){

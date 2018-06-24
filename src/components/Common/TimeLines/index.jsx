@@ -48,7 +48,7 @@ class TimeLines extends Component {
   getItem(item) {
     let text = item.flowName === '执行工单' ? '处理过程' : '处理建议';
     let icon;
-
+    
     return (
       <div className={styles.processWrap}>
         <div>

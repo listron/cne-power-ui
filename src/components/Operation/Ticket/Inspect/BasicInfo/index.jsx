@@ -32,18 +32,18 @@ class BasicInfo extends Component {
     )
   }
 
-  renderAbnormal(){
-    // let dealData = this.props.basicInfo.get("");
-  }
+  // renderAbnormal(){
+  //   // let dealData = this.props.basicInfo.get("");
+  // }
 
-  render(){
+  render(){ 
     return (
       <div className={styles.basicInfo} >
         <Card title="基本信息">
           {this.renderBasic()}
         </Card>
         <Card title="异常设备">
-          {this.renderAbnormal()}
+          {this.renderBasic()}
         </Card>
       </div>
     )
