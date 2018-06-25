@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { message } from 'antd';
-import Detail from '../../../../../components/Operation/Ticket/Inspect/Detail';
+import Detail from '../../../../../components/Operation/Ticket/Inspect/Detail/Detail';
 import { 
   GET_INSPECT_DETAIL_SAGA,
   ADD_INSPECT_ABNORMAL_SAGA,
@@ -36,11 +36,6 @@ class InspectDetail extends Component{
     this.onPrev = this.onPrev.bind(this);
     this.onNext = this.onNext.bind(this);
     this.onCloseInspectDetail = this.onCloseInspectDetail.bind(this);
-  }
-  
-  componentWillMount(){
-    
-    
   }
 
   componentDidMount(){
@@ -94,7 +89,7 @@ class InspectDetail extends Component{
   }
 
   onCloseInspectDetail(){
-    this.props.onChangeShowContainer('inspectList');
+    this.props.onChangeShowContainer({container: 'inspectList'});
   }
   render(){
     console.log(this.props.deviceTypeList.toJS())

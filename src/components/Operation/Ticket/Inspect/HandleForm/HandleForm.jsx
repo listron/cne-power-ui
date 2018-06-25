@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import styles from './style.scss';
+import styles from './handleForm.scss';
 import { Icon, Button, Form, Select, Input } from 'antd';
 import ImgUploader from '../../../../Common/Uploader/ImgUploader';
 

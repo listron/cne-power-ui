@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import styles from './style.scss';
+import styles from './basicInfo.scss';
 import { Card } from 'antd';
 import ImgUploader from '../../../../Common/Uploader/ImgUploader';
 

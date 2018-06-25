@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import BasicInfo from '../BasicInfo';
+import BasicInfo from '../BasicInfo/BasicInfo';
 import TimeLines from '../../../../Common/TimeLines';
-import styles from './style.scss';
+import styles from './detail.scss';
 import { Icon, Button, Form, Select, Input } from 'antd';
-import HandleForm from '../HandleForm';
+import HandleForm from '../HandleForm/HandleForm';
 
 const FormItem = Form.Item;
 

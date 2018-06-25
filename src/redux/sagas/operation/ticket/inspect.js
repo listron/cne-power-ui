@@ -50,15 +50,24 @@ function* getInspectList(action){
 
 // 获取巡检工单详情
 function* getInspectDetail(action){
-  let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.ticket.getInspectDetail;
+  let detailUrl = Path.basePaths.newAPIBasePath + Path.APISubPaths.ticket.getInspectDetail;
+  let typeListUrl = Path.basePaths.newAPIBasePath + Path.APISubPaths.ticket.getDeviceTypeList;
   yield put({type: BEGIN_FETCH });
   try {
-    const response = yield call(axios.get, url, {params: action.params});
-    if(response.data.code === "10000"){
+    const [detail, typeList] = yield [
+      call(axios.get, detailUrl, {params: action.params}),
+      call(axios.get, typeListUrl, {params: action.params})
+    ];
+    console.log(detail, typeList)
+    console.log("==================")
+    if(detail.data.code === "10000"){
       yield put({ 
         type: GET_INSPECT_DETAIL_SUCCESS, 
-        data: response.data.data, 
-        params: action.params 
+        data: detail.data.data, 
+        params:{
+          stations: detail,
+          params2: typeList
+          } 
       });      
     }else{
       yield put({ 

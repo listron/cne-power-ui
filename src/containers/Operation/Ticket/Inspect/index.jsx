@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import InspectList from './InspectList';
-import InspectDetail from './inspectDetail';
+import InspectList from './InspectList/InspectList';
+import InspectDetail from './InspectDetail/InspectDetail';
 
 class Inspect extends Component {
   static propTypes = {

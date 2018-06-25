@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Button, Form, DatePicker, Icon, Modal, Select, Input, Radio, Checkbox } from 'antd';
 import PropTypes from 'prop-types';
-import styles from './style.scss';
+import styles from './createForm.scss';
 import moment from 'moment';
 import StationSelect from '../../../../Common/StationSelect';
 

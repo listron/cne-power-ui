@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import List from '../../../../../components/Operation/Ticket/Inspect/List';
+import List from '../../../../../components/Operation/Ticket/Inspect/List/List';
 import { 
   GET_INSPECT_LIST_SAGA, 
   SET_INSPECT_ID_SAGA,
@@ -55,7 +55,7 @@ class InspectList extends Component {
 
   onShowDetail(inspectId){
     this.props.setInspectId(inspectId);
-    this.props.onChangeShowContainer('inspectDetail');
+    this.props.onChangeShowContainer({container: 'inspectDetail'});
   }
 
   render() {

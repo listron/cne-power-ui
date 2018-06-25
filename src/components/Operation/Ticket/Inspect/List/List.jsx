@@ -2,9 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Table, Button, Radio, Icon } from 'antd';
 import { getStatus } from '../../../../../constants/ticket';
-import styles from './style.scss';
+import styles from './list.scss';
 import Immutable from 'immutable';
-import CreateForm from '../CreateForm';
 
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
