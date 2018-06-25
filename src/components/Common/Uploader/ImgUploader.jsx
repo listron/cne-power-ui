@@ -19,7 +19,7 @@ import { getCookie } from '../../../utils/index.js'
       status: 'done',  
       thumbUrl: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',  //必填
     }],
-    4. 输出参数为this.props.onChange调用，输入格式同data数组。this.props.onChange([
+    4. 输出参数为this.props.onOK调用，输入格式同data数组。this.props.onOK([
       {
         response:e.response.result,
         imgStyle,
@@ -29,7 +29,7 @@ import { getCookie } from '../../../utils/index.js'
         status: 'done',   
         thumbUrl: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',   
       }
-    ])
+    ])对于form表单包装的组件，会同时调用this.props.onChange()
 */
 
 class ImgUploader extends Component {
@@ -40,6 +40,7 @@ class ImgUploader extends Component {
     editable : PropTypes.bool, //是否可编辑(右旋+删除)
     data: PropTypes.array, //输入图片信息列表
     onChange: PropTypes.func, //输出
+    onOK: PropTypes.func, //输出
     imgStyle: PropTypes.object, //图片样式
   }
   static defaultProps = {
@@ -60,6 +61,11 @@ class ImgUploader extends Component {
     this.hideImg = this.hideImg.bind(this);
     this.changeCurrentImgIndex = this.changeCurrentImgIndex.bind(this);
     this.beforeUpload = this.beforeUpload.bind(this);
+  }
+  onOK = (stations) => {
+    const { onChange,onOK } = this.props
+    onOK && onOK(stations);
+    onChange && onChange(stations);
   }
   beforeUpload(file){
     const isIMG = /^image/.test(file.type);
@@ -85,7 +91,7 @@ class ImgUploader extends Component {
         status:e.status,
         imgStyle
       }));
-      this.props.onChange(upLoadfiles);
+      this.onOK(upLoadfiles);
     }
   }
 
@@ -111,7 +117,7 @@ class ImgUploader extends Component {
   render() {
     const authData = getCookie('authData');
     const { imageListShow, currentImgIndex } = this.state;
-    const { uploadPath, max,  data, onChange, editable } = this.props;
+    const { uploadPath, max,  data, editable } = this.props;
 		const imageProps = {
 			action: `${uploadPath}`,
       onChange: this.handleUpload,
@@ -136,7 +142,7 @@ class ImgUploader extends Component {
             {...e} 
             index={i} 
             data={data} 
-            onEdit={onChange} />
+            onEdit={this.onOK} />
           ))}
         {editable && <Upload
           className={styles.loaderHandler}
