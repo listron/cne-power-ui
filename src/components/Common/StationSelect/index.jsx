@@ -35,7 +35,7 @@ const AutoCompleteOption = AutoComplete.Option;
       zoneName:"辽宁"
     }]
   3. 传递下来的style值，可选填，用于控制筛选组件总体样式 {width:'500px'}
-  4. 输出信息:this.props.onSelected(selectedStationArray)为data中筛选的一个或多个，this.props.onChange(form表单用若有会同时触发)
+  4. 输出信息:this.props.onOK(selectedStationArray)为data中筛选的一个或多个，this.props.onChange(form表单用若有会同时触发)
 */
 
 class StationSelect extends Component {
@@ -43,7 +43,7 @@ class StationSelect extends Component {
     multiple: PropTypes.bool,
     data: PropTypes.array,
     onChange: PropTypes.func,
-    onSelected: PropTypes.func,
+    onOK: PropTypes.func,
     style: PropTypes.object
   }
   static defaultProps = {
@@ -59,8 +59,8 @@ class StationSelect extends Component {
     }
   }
   onOK = (stations) => {
-    const { onChange,onSelected } = this.props
-    onSelected && onSelected(stations);
+    const { onChange,onOK } = this.props
+    onOK && onOK(stations);
     onChange && onChange(stations);
   }
   onModalHandelOK = (stations) => {

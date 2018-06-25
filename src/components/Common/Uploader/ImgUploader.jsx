@@ -19,7 +19,7 @@ import { getCookie } from '../../../utils/index.js'
       status: 'done',  
       thumbUrl: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',  //必填
     }],
-    4. 输出参数为this.props.onSelected调用，输入格式同data数组。this.props.onSelected([
+    4. 输出参数为this.props.onOK调用，输入格式同data数组。this.props.onOK([
       {
         response:e.response.result,
         imgStyle,
@@ -40,7 +40,7 @@ class ImgUploader extends Component {
     editable : PropTypes.bool, //是否可编辑(右旋+删除)
     data: PropTypes.array, //输入图片信息列表
     onChange: PropTypes.func, //输出
-    onSelected: PropTypes.func, //输出
+    onOK: PropTypes.func, //输出
     imgStyle: PropTypes.object, //图片样式
   }
   static defaultProps = {
@@ -63,8 +63,8 @@ class ImgUploader extends Component {
     this.beforeUpload = this.beforeUpload.bind(this);
   }
   onOK = (stations) => {
-    const { onChange,onSelected } = this.props
-    onSelected && onSelected(stations);
+    const { onChange,onOK } = this.props
+    onOK && onOK(stations);
     onChange && onChange(stations);
   }
   beforeUpload(file){
