@@ -23,8 +23,8 @@ var initState = immutable.fromJS({
     code: '',
     message: ''
   },
-  fileterAllInfo:[],//顶部筛选所有数据[{stations:[],devices:[]...}]
-  selectedFileterInfo: {},//选中的筛选项{selectedStation:[],selectedDevices:[]}
+  filterAllInfo:[],//顶部筛选所有数据[{stations:[],devices:[]...}]
+  selectedFilterInfo: {},//选中的筛选项{selectedStation:[],selectedDevices:[]}
   defectList:[],//渲染为table的缺陷列表
   commonList:[],//获取缺陷常用语列表
   selectedRowKeys: [],

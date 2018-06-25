@@ -13,7 +13,7 @@ import {
   CHECK_DEFECT_SAGA,
   CHANGE_SHOW_CONTAINER_SAGA
  } from '../../../../../constants/actionTypes/Ticket';
-import Detail from '../../../../../components/Operation/Ticket/Defect/Detail';
+import DefectDetailForm from '../../../../../components/Operation/Ticket/Defect/DefectDetailForm/DefectDetailForm';
 
 class DefectDetail extends Component {
   static propTypes = {
@@ -93,7 +93,7 @@ class DefectDetail extends Component {
 
   render() {   
     return (
-      <Detail 
+      <DefectDetailForm 
         detail={this.props.defectDetail}
         isFetching={this.props.isFetching}
         commonList={this.props.commonList}
