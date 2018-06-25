@@ -1,23 +1,25 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import styles from './style.scss';
+import styles from './defectCreate.scss';
 import {
   GET_DEFECTTYPES_SAGA,
   DEFECT_CREATE_SAGA,
+  CHANGE_SHOW_CONTAINER_SAGA
 } from '../../../../../constants/actionTypes/Ticket';
 import {
   GET_STATIONS_SAGA,
   GET_DEVICETYPES_SAGA,
   GET_DEVICES_SAGA,
 } from '../../../../../constants/actionTypes/commonAction';
-import DefectCreateForm from '../../../../../components/Operation/Ticket/Defect/CreateNewDefect/DefectCreateForm';
+import DefectCreateMain from '../../../../../components/Operation/Ticket/Defect/CreateNewDefect/DefectCreateMain';
 
 class DefectCreate extends Component {
   static propTypes = {
     onChangeShowContainer: PropTypes.func,
     stations: PropTypes.array,
-    getStations: PropTypes.func
+    getStations: PropTypes.func,
+    showContainer: PropTypes.string,
   };
   constructor(props) {
     super(props);
@@ -36,25 +38,26 @@ class DefectCreate extends Component {
   
 
   render() {  
-    console.log(this.props.stations)
+    console.log(this.props.stations);
+    console.log(this.props.showContainer);
     return (
       <div className={styles.defectCreate} >
         <h3><span>缺陷创建</span>    <span onClick={this.onChangeShowContainer} className={styles.close}>关闭x</span></h3>
-        <DefectCreateForm {...this.props} />
+        <DefectCreateMain {...this.props} />
       </div>
     );
   }
 }
 
 const mapStateToProps = (state) => ({
+    showContainer: state.operation.ticket.get('showContainer'),
     isFetching: state.operation.defect.get('isFetching'),
     commonFetching: state.common.get('commonFetching'),
     stations: state.common.get('stations').toJS(),
     devieceTypes: state.common.get('devieceTypes').toJS(),
     devices: state.common.get('devices').toJS(),
     error: state.operation.defect.get('error'),
-    defectTypes: state.operation.defect.get('defectTypes'),
-    createDefectParams: state.operation.defect.get('createDefectParams'),
+    defectTypes: state.operation.defect.get('defectTypes').toJS(),
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -62,7 +65,8 @@ const mapDispatchToProps = (dispatch) => ({
   getDevieceTypes: params => dispatch({ type: GET_DEVICETYPES_SAGA, params }),
   getDevieces: params => dispatch({ type: GET_DEVICES_SAGA, params }),
   getDefectTypes: params => dispatch({ type: GET_DEFECTTYPES_SAGA, params }),
-  onDefectCreateNew: params => dispatch({type: DEFECT_CREATE_SAGA, params})
+  onDefectCreateNew: params => dispatch({type: DEFECT_CREATE_SAGA, params}),
+  onChangeShowContainer: params => dispatch({ type: CHANGE_SHOW_CONTAINER_SAGA, params }),
 });
 
 

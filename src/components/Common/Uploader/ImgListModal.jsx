@@ -5,7 +5,7 @@ import styles from './uploader.scss';
 
 class ImgListModal extends Component {
   static propTypes = {
-    value: PropTypes.array,
+    data: PropTypes.array,
     imageListShow: PropTypes.bool,
     hideImg: PropTypes.func,
     currentImgIndex: PropTypes.number,
@@ -30,15 +30,15 @@ class ImgListModal extends Component {
   }
   
   nextImg() {
-    let { currentImgIndex,value } = this.props;
-    if(currentImgIndex >= value.length - 1){
+    let { currentImgIndex,data } = this.props;
+    if(currentImgIndex >= data.length - 1){
       return;
     }
     this.props.changeCurrentImgIndex(currentImgIndex + 1);
   }
 
   render() {
-    const { imageListShow, hideImg, value, currentImgIndex } = this.props;
+    const { imageListShow, hideImg, data, currentImgIndex } = this.props;
     const { imgWidth } = this.state;
     let listMargin = currentImgIndex*(-imgWidth);
     return (
@@ -56,7 +56,7 @@ class ImgListModal extends Component {
           </div>
           <div className={styles.imgContainer} style={{width:imgWidth}}>
             <ul className={styles.imgList} style={{marginLeft: `${listMargin}px`}}>
-              {value.map(e=>(
+              {data.map(e=>(
                 <li className={styles.eachImg} key={e.uid}>
                   <img src={ e.thumbUrl } alt={e.name} width={imgWidth} />
                 </li>
@@ -64,7 +64,7 @@ class ImgListModal extends Component {
             </ul>
           </div>
           <div className={styles.handleButton}>
-            <Button onClick={this.nextImg} disabled={currentImgIndex===value.length-1}>
+            <Button onClick={this.nextImg} disabled={currentImgIndex===data.length-1}>
               <Icon type="right" />
             </Button>
           </div>
