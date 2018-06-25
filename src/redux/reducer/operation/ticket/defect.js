@@ -59,7 +59,6 @@ var initState = immutable.fromJS({
     processData: []
   },
   defectTypes: [],
-  createDefectParams: {},
 });
 
 const defectReducer = (state = initState, action) => {
@@ -99,7 +98,6 @@ const defectReducer = (state = initState, action) => {
     case GET_DEFECTTYPES_SAGA_FAIL:
     case DEFECT_CREATE_SAGA_SUCCESS:
       return state.set('isFetching', false)
-                  .set('createDefectParams',action.data);
     case DEFECT_CREATE_SAGA_FAIL:
   }
 
