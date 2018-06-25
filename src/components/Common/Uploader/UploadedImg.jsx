@@ -7,7 +7,7 @@ class UploadedImg extends Component {
     thumbUrl: PropTypes.string,
     name: PropTypes.string,
     imgStyle: PropTypes.object,
-    value: PropTypes.array,
+    data: PropTypes.array,
     uid: PropTypes.any,
     onEdit: PropTypes.func,
     rotate: PropTypes.number,
@@ -29,8 +29,8 @@ class UploadedImg extends Component {
   }
 
   rotateImg() {
-    const { value, uid, onEdit } = this.props;
-    const fileList = value.map(e=>{
+    const { data, uid, onEdit } = this.props;
+    const fileList = data.map(e=>{
       if(uid === e.uid){ 
         e.rotate += 90
         e.rotate >= 360 ? e.rotate = e.rotate -360 : null;
@@ -41,8 +41,8 @@ class UploadedImg extends Component {
   }
 
   deleteImg() {
-    const { value, uid, onEdit } = this.props;
-    const fileList = value.filter(e=>e.uid !== uid);
+    const { data, uid, onEdit } = this.props;
+    const fileList = data.filter(e=>e.uid !== uid);
     onEdit(fileList);
   }
 

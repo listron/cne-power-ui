@@ -1,23 +1,33 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import styles from './style.scss';
+import StationSelect from '../../../../Common/StationSelect'
+import { Form, Icon, Input, Button } from 'antd';
+import styles from './newDefect.scss';
+const FormItem = Form.Item;
 
-class DefectCreate extends Component {
+class TmpForm extends Component {
   static propTypes = {
-    
+    form: PropTypes.object,
+    stations: PropTypes.array,
   };
-  constructor(props) {
-    super(props);
-  }  
   
-
-  render() {   
+  render() {
+    const {stations} = this.props;
+    const {getFieldDecorator} = this.props.form;
     return (
-      <div className={styles.defectCreate} >
-        form表单区域，，，，，，
-      </div>
+      <Form layout="inline" onSubmit={this.handleSubmit}>
+        <FormItem>
+          {getFieldDecorator('station', {
+            rules: [{ required: true, message: '请选择电站' }],
+          })(
+            <StationSelect data={stations} multiple={false} />
+          )}
+        </FormItem>
+      </Form>
     );
   }
 }
 
-export default DefectCreate;
+const DefectCreateForm = Form.create()(TmpForm);
+
+export default DefectCreateForm;
