@@ -16,7 +16,7 @@ class Detail extends Component {
     onNext: PropTypes.func,
     onCloseInspectDetail: PropTypes.func,
     form: PropTypes.object,
-    getDeviceTypeList: PropTypes.func,
+    // getDeviceTypeList: PropTypes.func,
     deviceTypeList: PropTypes.object,
     stationCode: PropTypes.string,
   }
@@ -40,7 +40,7 @@ class Detail extends Component {
       return (
         <HandleForm  
           onCloseInspectDetail={this.props.onCloseInspectDetail}
-          getDeviceTypeList={this.props.getDeviceTypeList}
+          // getDeviceTypeList={this.props.getDeviceTypeList}
           deviceTypeList={this.props.deviceTypeList}
           stationCode={this.props.stationCode}
         />

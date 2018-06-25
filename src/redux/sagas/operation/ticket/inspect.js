@@ -55,26 +55,27 @@ function* getInspectDetail(action){
   yield put({type: BEGIN_FETCH });
   try {
     const [detail, typeList] = yield [
-      call(axios.get, detailUrl, {params: action.params}),
-      call(axios.get, typeListUrl, {params: action.params})
+      call(axios.get, detailUrl, { params: action.params.inspectId }),
+      call(axios.get, typeListUrl, { params: action.params.stationCodes })
     ];
     console.log(detail, typeList)
     console.log("==================")
+    console.log(detail.data.code)    
     if(detail.data.code === "10000"){
       yield put({ 
         type: GET_INSPECT_DETAIL_SUCCESS, 
-        data: detail.data.data, 
-        params:{
-          stations: detail,
-          params2: typeList
-          } 
+        data:{
+          detailData: detail.data.data,
+          typeListData: typeList.data.data,
+          params: action.params,
+        },
       });      
     }else{
       yield put({ 
         type: GET_INSPECT_DETAIL_FAIL, 
         error:{
-          code: response.data.code,
-          message: response.data.message
+          code: detail.data.code,
+          message: detail.data.message
         }
       });        
     }

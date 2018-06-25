@@ -21,7 +21,7 @@ class InspectDetail extends Component{
     isFetching: PropTypes.bool,
     inspectId: PropTypes.string,
     getInspectDetail: PropTypes.func,
-    getDeviceTypeList: PropTypes.func,
+    // getDeviceTypeList: PropTypes.func,
     deviceTypeList: PropTypes.object,
     stationCode: PropTypes.string,
     onChangeShowContainer: PropTypes.func,
@@ -41,20 +41,22 @@ class InspectDetail extends Component{
   componentDidMount(){
     this.props.getInspectDetail({
       inspectId: this.props.inspectId,
-    })
-    this.props.getDeviceTypeList({
       stationCodes: this.props.inspectDetail.get("stationCode"),
     })
+    // this.props.getDeviceTypeList({
+    //   stationCodes: this.props.inspectDetail.get("stationCode"),
+    // })
   }
 
   componentWillReceiveProps(nextProps){
     if(nextProps.inspectId !== this.props.inspectId){
       this.props.getInspectDetail({
         inspectId: nextProps.inspectId,
+        stationCodes: nextProps.inspectDetail.get("stationCode"),
       })
-      this.props.getDeviceTypeList({
-        stationCodes: this.props.stationCode,
-      })
+      // this.props.getDeviceTypeList({
+      //   stationCodes: this.props.stationCode,
+      // })
     }
   }
 
@@ -104,7 +106,7 @@ class InspectDetail extends Component{
         onReject={this.props.onReject}
         onNext={this.onNext}
         onPrev={this.onPrev}
-        getDeviceTypeList={this.props.getDeviceTypeList}
+        // getDeviceTypeList={this.props.getDeviceTypeList}
         deviceTypeList={this.props.deviceTypeList}
       />
     )
@@ -125,7 +127,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   getInspectDetail: params => dispatch({ type: GET_INSPECT_DETAIL_SAGA, params }),
   addInspectAbnormal: params => dispatch({ type: ADD_INSPECT_ABNORMAL_SAGA, params}),
-  getDeviceTypeList: params => dispatch({ type: GET_DEVICE_TYPE_LIST_SAGA, params}),
+  // getDeviceTypeList: params => dispatch({ type: GET_DEVICE_TYPE_LIST_SAGA, params}),
   onChangeShowContainer: params => dispatch({ type: CHANGE_SHOW_CONTAINER_SAGA, params}),
   setInspectId: params => dispatch({ type: SET_INSPECT_ID_SAGA, params }),
 })

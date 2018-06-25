@@ -59,6 +59,8 @@ var initState = immutable.fromJS({
 });
 
 const inspectReducer = (state = initState, action) => {
+  console.log("action:")
+  console.log(action)
   switch (action.type) {
     case BEGIN_FETCH:
       return state.set('isfetching', true);
@@ -77,8 +79,9 @@ const inspectReducer = (state = initState, action) => {
       return state.set('inspectId', action.data);
     case GET_INSPECT_DETAIL_SUCCESS:
       return state.set('isFetching', false)
-                  .set('inspectDetail', immutable.fromJS(action.data))
-                  .set('inspectId', action.params.inspectId);
+                  .set('inspectDetail', immutable.fromJS(action.data.detailData))
+                  .set('deviceTypeList', immutable.fromJS(action.data.typeListData))
+                  .set('inspectId', action.data.params.inspectId);
     case ADD_INSPECT_ABNORMAL_SUCCESS:
       return state.set('isFetching', false)
                   .set('inspectDetail', immutable.fromJS(action.data));
