@@ -2,14 +2,14 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Table, Radio, Button, Icon, Modal } from 'antd';
 import {getLevel, getStatus, getDefectSortField} from '../../../../../constants/ticket';
-import styles from './style.scss';
+import styles from './defectTable.scss';
 import Immutable from 'immutable';
 
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
 const confirm = Modal.confirm;
 
-class List extends Component {
+class DefectTable extends Component {
   static propTypes = {
     onChangeStatus: PropTypes.func,
     onChangePage: PropTypes.func,
@@ -302,4 +302,4 @@ class List extends Component {
 
 }
 
-export default List;
+export default DefectTable;

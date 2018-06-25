@@ -1,6 +1,6 @@
 import React,{ Component } from 'react';
 import PropTypes from 'prop-types';
-import styles from './style.scss';
+import styles from './defectHandleForm.scss';
 import {Tag} from 'antd';
 import ReviewForm from './ReviewForm';
 import ProcessForm from './ProcessForm';

@@ -12,7 +12,7 @@ import {
   SET_SELECTED_DEFECT_SAGA,
   CHANGE_SHOW_CONTAINER_SAGA,
 } from '../../../../../constants/actionTypes/Ticket';
-import List from '../../../../../components/Operation/Ticket/Defect/List';
+import DefectTable from '../../../../../components/Operation/Ticket/Defect/DefectTable/DefectTable';
 
 class DefectList extends Component {
   static propTypes = {
@@ -156,7 +156,7 @@ class DefectList extends Component {
   render() {   
     return (
       <div>
-        <List 
+        <DefectTable 
           list={this.props.defectList} 
           currentPage={this.props.currentPage}
           currentPageSize={this.props.currentPageSize}
