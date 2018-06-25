@@ -7,7 +7,7 @@ import {getHandleStatus} from '../../../constants/ticket';
 /*
   时间线组件：
   说明：
-    1.必须传入属性：流程当前状态status,流程数据progressData
+    1.必须传入属性：流程当前状态status,流程信息progressData
  */
 
 class TimeLines extends Component {
@@ -21,9 +21,7 @@ class TimeLines extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-
-    }
+    this.state = {}
   }
 
   getStatus(){
@@ -50,7 +48,7 @@ class TimeLines extends Component {
   getItem(item) {
     let text = item.flowName === '执行工单' ? '处理过程' : '处理建议';
     let icon;
-
+    
     return (
       <div className={styles.processWrap}>
         <div>
@@ -58,58 +56,9 @@ class TimeLines extends Component {
           <span>{item.get('operateTime')}</span>
           {item.get('operateUser')}
         </div>
-        <div><b>{text}</b>{getHandleStatus(item.get('handleStatus'))} | {item.get('defectProposal')}</div>
+        { item.get("handleStatus") === undefined ? null : (<div><b>{text}</b>{getHandleStatus(item.get("handleStatus"))} | {item.get("defectProposal")}</div>) }
       </div>
     );
-
-    // switch (item.flowName) {
-    //   case '发现缺陷':
-    //     return (
-    //       <div className={styles.processWrap}>
-    //         <div>
-    //           <b>{item.flowName}</b>
-    //           <span>{item.operateTime}</span>
-    //           {item.operateUser}
-    //         </div>
-    //         <div><b>{text}</b>{item.processResult} | {item.defectProposal}</div>
-    //       </div>
-    //       );
-    //   case '审核工单':
-    //     return (
-    //       <div className={styles.processWrap}>
-    //         <div>
-    //           <b>{item.flowName}</b>
-    //           <span>{item.operateTime}</span>
-    //           {item.operateUser}
-    //         </div>
-    //         <div><b>处理建议</b>{item.processResult} | {item.defectProposal}</div>
-    //       </div>
-    //       );
-    //   case '执行工单':
-    //     return (
-    //       <div className={styles.processWrap}>
-    //         <div>
-    //           <b>{item.flowName}</b>
-    //           <span>{item.operateTime}</span>
-    //           {item.operateUser}
-    //         </div>
-    //         <div><b>处理过程</b>{item.processResult} | {item.defectProposal}</div>
-    //       </div>
-    //       );
-    //   case '验收工单':
-    //     return (
-    //       <div className={styles.processWrap}>
-    //         <div>
-    //           <b>{item.flowName}</b>
-    //           <span>{item.operateTime}</span>
-    //           {item.operateUser}
-    //         </div>
-    //         <div><b>处理建议</b>{item.processResult} | {item.defectProposal}</div>
-    //       </div>
-    //       );
-    //   default: 
-    //     return ;
-    // }
   }
 
   render() {

@@ -1,0 +1,32 @@
+.inspectDetail{
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  .header{
+    height: 50px;
+  }
+  .content{
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+    .basic{
+      width: 570px;
+    }
+    .right{
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      .timeLines{
+        display: flex;
+        flex: 1;
+        overflow-y: auto;
+      }
+      .form{
+        display: flex;
+        >div{
+          width: 100%;
+        }
+      }
+    }
+  }
+}

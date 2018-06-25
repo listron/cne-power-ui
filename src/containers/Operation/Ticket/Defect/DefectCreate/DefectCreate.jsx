@@ -5,7 +5,6 @@ import styles from './defectCreate.scss';
 import {
   GET_DEFECTTYPES_SAGA,
   DEFECT_CREATE_SAGA,
-  CHANGE_SHOW_CONTAINER_SAGA
 } from '../../../../../constants/actionTypes/Ticket';
 import {
   GET_STATIONS_SAGA,
@@ -37,7 +36,7 @@ class DefectCreate extends Component {
   }
   
 
-  render() {  
+  render() {
     return (
       <div className={styles.defectCreate} >
         <h3><span>缺陷创建</span>    <span onClick={this.onChangeShowContainer} className={styles.close}>关闭x</span></h3>
@@ -64,7 +63,6 @@ const mapDispatchToProps = (dispatch) => ({
   getDevieces: params => dispatch({ type: GET_DEVICES_SAGA, params }),
   getDefectTypes: params => dispatch({ type: GET_DEFECTTYPES_SAGA, params }),
   onDefectCreateNew: params => dispatch({type: DEFECT_CREATE_SAGA, params}),
-  onChangeShowContainer: params => dispatch({ type: CHANGE_SHOW_CONTAINER_SAGA, params }),
 });
 
 

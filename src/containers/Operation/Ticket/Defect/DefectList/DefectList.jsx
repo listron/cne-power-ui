@@ -10,7 +10,6 @@ import {
   CLOSE_BATCH_DEFECT_SAGA,
   CHECK_BATCH_DEFECT_SAGA,
   SET_SELECTED_DEFECT_SAGA,
-  CHANGE_SHOW_CONTAINER_SAGA,
 } from '../../../../../constants/actionTypes/Ticket';
 import DefectTable from '../../../../../components/Operation/Ticket/Defect/DefectTable/DefectTable';
 
@@ -202,7 +201,6 @@ const mapDispatchToProps = (dispatch) => ({
   onBatchClose: params => dispatch({ type: CLOSE_BATCH_DEFECT_SAGA, params }),
   onBatchCheck: params => dispatch({ type: CHECK_BATCH_DEFECT_SAGA, params }),
   onChangeSelectRows: params => dispatch({ type: SET_SELECTED_DEFECT_SAGA, params }),
-  onChangeShowContainer: params => dispatch({ type: CHANGE_SHOW_CONTAINER_SAGA, params }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DefectList);

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {Tabs} from 'antd';
 import Defect from './Defect/Defect';
-import Inspect from './Inspect';
+import Inspect from './Inspect/Inspect';
 import { 
   CHANGE_SHOW_CONTAINER_SAGA,
   CLEAR_DEFECT_STATE_SAGA,
@@ -12,8 +12,8 @@ import {
   GET_INSPECT_LIST_SAGA,
  } from '../../../constants/actionTypes/Ticket';
 import styles from './ticket.scss';
-const TabPane = Tabs.TabPane;
 
+const TabPane = Tabs.TabPane;
 
 class Ticket extends Component {
   static propTypes = {
@@ -60,15 +60,27 @@ class Ticket extends Component {
     }
   }
 
+  onShowInspectDetail(){
+    this.setState({
+      showInspectDetail: true
+    })
+  }
+
+  onCloseInspectDetail(){
+    this.setState({
+      showInspectDetail: false
+    })
+  }
+
   render() {
     return (
       <div className={styles.ticket}>
         <Tabs activeKey={this.state.tab} onChange={this.onChangeTab}>
           <TabPane tab="缺陷" key="defect">
-            <Defect showContainer={this.props.showContainer} />
+            <Defect showContainer={this.props.showContainer} onChangeShowContainer={this.props.onChangeShowContainer} />
           </TabPane>
           <TabPane tab="巡检" key="inspect">
-            <Inspect showContainer={this.props.showContainer} />
+            <Inspect showContainer={this.props.showContainer} onChangeShowContainer={this.props.onChangeShowContainer}  />
           </TabPane>
         </Tabs>
       </div>

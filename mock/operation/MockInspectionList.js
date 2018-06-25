@@ -11,7 +11,7 @@ module.exports = [
                 "checkNum": 11,
                 "executeNum": 115
             },
-            "total": 126,
+            "total": 12,
             "inspectList": [
                 {
                     "stationCode": "393",
