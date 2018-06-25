@@ -1,6 +1,6 @@
 import React,{ Component } from 'react';
 import PropTypes from 'prop-types';
-import styles from './style.scss';
+import styles from './defectBasicInfo.scss';
 import {Card} from 'antd';
 import {getLevel} from '../../../../../constants/ticket';
 import ImgUploader from '../../../../Common/Uploader/ImgUploader';

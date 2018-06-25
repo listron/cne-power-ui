@@ -1,6 +1,6 @@
 import React,{ Component } from 'react';
 import PropTypes from 'prop-types';
-import styles from './style.scss';
+import styles from './defectHandleForm.scss';
 import {Form, Radio, Input, Button, Switch} from 'antd';
 import CommonInput from '../../../../Common/CommonInput';
 import ImgUploader from '../../../../Common/Uploader/ImgUploader';

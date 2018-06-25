@@ -10,6 +10,10 @@ class TmpForm extends Component {
     form: PropTypes.object,
     stations: PropTypes.array,
   };
+  constructor(props){
+    super(props);
+  }
+  onStationSelected
   
   render() {
     const {stations} = this.props;
@@ -20,7 +24,7 @@ class TmpForm extends Component {
           {getFieldDecorator('station', {
             rules: [{ required: true, message: '请选择电站' }],
           })(
-            <StationSelect data={stations} multiple={false} />
+            <StationSelect data={stations} multiple={false} onSelected={this.onStationSelected} />
           )}
         </FormItem>
       </Form>
