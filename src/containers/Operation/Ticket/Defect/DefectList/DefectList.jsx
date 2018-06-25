@@ -12,7 +12,7 @@ import {
   SET_SELECTED_DEFECT_SAGA,
   CHANGE_SHOW_CONTAINER_SAGA,
 } from '../../../../../constants/actionTypes/Ticket';
-import List from '../../../../../components/Operation/Ticket/Defect/List';
+import DefectTable from '../../../../../components/Operation/Ticket/Defect/DefectTable/DefectTable';
 
 class DefectList extends Component {
   static propTypes = {
@@ -133,9 +133,7 @@ class DefectList extends Component {
   }
 
   onBatchClose(ids) {
-    this.props.onBatchClose({
-      defectID: ids.join(',')
-    });
+    this.props.onBatchClose({defectID: ids.join(',')});
   }
 
   onBatchCheck(ids, checkResult) {
@@ -150,13 +148,13 @@ class DefectList extends Component {
     this.props.onChangeShowContainer({container: 'detail'});
   }
   onAdd(){
-    this.props.onChangeShowContainer({container: 'creatNew'});
+    this.props.onChangeShowContainer({container: 'create'});
   }
 
   render() {   
     return (
       <div>
-        <List 
+        <DefectTable 
           list={this.props.defectList} 
           currentPage={this.props.currentPage}
           currentPageSize={this.props.currentPageSize}

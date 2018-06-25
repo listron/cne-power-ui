@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
-import Ticket from '../containers/Operation/Ticket';
+import Ticket from '../containers/Operation/Ticket/Ticket';
 import Exception from '../containers/Exception/404';
 import Login from '../containers/Login';
 import Forget from '../containers/Forget';

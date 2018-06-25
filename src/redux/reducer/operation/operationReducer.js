@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux'
 
-import defect from './ticket/defect';
-import inspect from './ticket/inspect';
-import ticket from './ticket/ticket'
+import defect from './ticket/defectReducer';
+import inspect from './ticket/inspectReducer';
+import ticket from './ticket/ticketReducer'
 
 const operationReducer = (() => combineReducers({ defect, inspect, ticket }))();
 

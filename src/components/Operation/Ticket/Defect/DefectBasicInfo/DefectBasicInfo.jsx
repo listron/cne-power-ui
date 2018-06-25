@@ -1,6 +1,6 @@
 import React,{ Component } from 'react';
 import PropTypes from 'prop-types';
-import styles from './style.scss';
+import styles from './defectBasicInfo.scss';
 import {Card} from 'antd';
 import {getLevel} from '../../../../../constants/ticket';
 import ImgUploader from '../../../../Common/Uploader/ImgUploader';
@@ -46,7 +46,7 @@ class BasicInfo extends Component {
         <div>缺陷描述<span>{info.get('defectDescribe')}</span></div>
         <div>查看照片
           <div>
-            <ImgUploader editable={false} value={this.getImagesData()} />
+            <ImgUploader editable={false} data={this.getImagesData()} />
           </div>
         </div>
       </div>

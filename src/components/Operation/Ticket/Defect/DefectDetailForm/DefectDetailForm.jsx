@@ -1,12 +1,12 @@
 import React,{ Component } from 'react';
 import PropTypes from 'prop-types';
-import BasicInfo from '../BasicInfo';
-import HandleForm from '../HandleForm';
+import BasicInfo from '../DefectBasicInfo/DefectBasicInfo';
+import HandleForm from '../DefectHandleForm/DefectHandleForm';
 import TimeLines from '../../../../Common/TimeLines';
-import styles from './style.scss';
+import styles from './defectDetailForm.scss';
 import {Icon, Spin} from 'antd';
 
-class Detail extends Component {
+class DetailForm extends Component {
   static propTypes = {
     detail: PropTypes.object,
     isFetching: PropTypes.bool,
@@ -164,4 +164,4 @@ class Detail extends Component {
   }  
 }
 
-export default Detail;
+export default DetailForm;

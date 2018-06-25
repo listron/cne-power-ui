@@ -33,7 +33,7 @@ import {
   watchGetDefectTypes,
   watchCreateNewDefect,
   watchClearDefect,
-} from './operation/ticket/defect'
+} from './operation/ticket/defectSaga'
 
 import {
   watchGetInspectList,
@@ -42,11 +42,11 @@ import {
   watchAddInspectAbnormal,
   watchGetTotalData,
   watchClearInspect,
-} from './operation/ticket/inspect';
+} from './operation/ticket/inspectSaga';
 
 import {
   watchChangeShowContainer
-} from './operation/ticket/ticket';
+} from './operation/ticket/ticketSaga';
 
 import axios from 'axios';
 

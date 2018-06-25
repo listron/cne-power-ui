@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {Tabs} from 'antd';
-import Defect from './Defect';
+import Defect from './Defect/Defect';
 import Inspect from './Inspect';
 import { 
   CHANGE_SHOW_CONTAINER_SAGA,
@@ -11,7 +11,12 @@ import {
   GET_DEFECT_LIST_SAGA,
   GET_INSPECT_LIST_SAGA,
  } from '../../../constants/actionTypes/Ticket';
+<<<<<<< HEAD:src/containers/Operation/Ticket/index.js
 import styles from './style.scss';
+=======
+import styles from './ticket.scss';
+const TabPane = Tabs.TabPane;
+>>>>>>> upstream/dev:src/containers/Operation/Ticket/Ticket.jsx
 
 const TabPane = Tabs.TabPane;
 

@@ -1,6 +1,6 @@
 import React,{ Component } from 'react';
 import PropTypes from 'prop-types';
-import styles from './style.scss';
+import styles from './defectHandleForm.scss';
 import moment from 'moment';
 import {Form, Radio, DatePicker, Button} from 'antd';
 import InputLimit from '../../../../Common/InputLimit';
