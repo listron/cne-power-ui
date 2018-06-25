@@ -3,7 +3,7 @@ import DefectCreateForm from './DefectCreateForm';
 import PropTypes from 'prop-types';
 import styles from './style.scss';
 
-class DefectCreateMain extends Component {
+class DefectCreate extends Component {
   constructor(props) {
     super(props);
   }  
@@ -18,4 +18,4 @@ class DefectCreateMain extends Component {
   }
 }
 
-export default DefectCreateMain;
+export default DefectCreate;
