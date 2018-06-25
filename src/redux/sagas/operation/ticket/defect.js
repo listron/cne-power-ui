@@ -18,14 +18,14 @@ import {
   CLOSE_BATCH_DEFECT_FAIL,
   SET_DEFECT_ID_SAGA,
   SET_DEFECT_ID,
-  SET_SELECTED_ROWS_SAGA,
-  SET_SELECTED_ROWS,
+  SET_SELECTED_DEFECT_SAGA,
+  SET_SELECTED_DEFECT,
   GET_DEFECT_DETAIL_SAGA,
   GET_DEFECT_DETAIL_SUCCESS,
   GET_DEFECT_DETAIL_FAIL,
-  GET_LANGUAGE_SAGA,
-  GET_LANGUAGE_SUCCESS,
-  GET_LANGUAGE_FAIL,
+  GET_DEFECT_LANGUAGE_SAGA,
+  GET_DEFECT_LANGUAGE_SUCCESS,
+  GET_DEFECT_LANGUAGE_FAIL,
   SEND_DEFECT_SAGA,
   SEND_DEFECT_FAIL,
   REJECT_DEFECT_SAGA,
@@ -43,6 +43,8 @@ import {
   DEFECT_CREATE_SAGA,
   DEFECT_CREATE_SAGA_SUCCESS,
   DEFECT_CREATE_SAGA_FAIL,
+  CLEAR_DEFECT_STATE_SAGA,
+  CLEAR_DEFECT_STATE
 } from '../../../../constants/actionTypes/Ticket';
 
 //获取缺陷工单列表
@@ -98,19 +100,19 @@ function* getDefectDetail(action) {
 }
 
 //获取缺陷常用语
-function* getCommonList(action) {
+function* getDefectCommonList(action) {
   let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.ticket.getCommonList;
   yield put({ type: BEGIN_FETCH });
   try {
     const response = yield call(axios.get, url, {params: action.params});
     if(response.data.code === '10000'){
       yield put({ 
-        type: GET_LANGUAGE_SUCCESS, 
+        type: GET_DEFECT_LANGUAGE_SUCCESS, 
         data: response.data.data.data
       });      
     }else{
       yield put({ 
-        type: GET_LANGUAGE_FAIL, 
+        type: GET_DEFECT_LANGUAGE_FAIL, 
         error: {
           code: response.data.code,
           message: response.data.message
@@ -304,9 +306,9 @@ function* setDefectId(action) {
   }); 
 }
 
-function* setSelectedRows(action) {
+function* setSelectedDefect(action) {
   yield put({ 
-    type: SET_SELECTED_ROWS, 
+    type: SET_SELECTED_DEFECT, 
     data: action.params
   }); 
 }
@@ -560,6 +562,11 @@ function *createNewDefect(action){
     console.log(e);
   }
 }
+function* clearDefect(action) {
+  yield put({ 
+    type: CLEAR_DEFECT_STATE, 
+  }); 
+}
 
 export function* watchGetDefectList() {
   yield takeLatest(GET_DEFECT_LIST_SAGA, getDefectList);
@@ -589,16 +596,16 @@ export function* watchSetDefectId() {
   yield takeLatest(SET_DEFECT_ID_SAGA, setDefectId);
 }
 
-export function* watchSetSelectedRows() {
-  yield takeLatest(SET_SELECTED_ROWS_SAGA, setSelectedRows);
+export function* watchSetSelectedDefect() {
+  yield takeLatest(SET_SELECTED_DEFECT_SAGA, setSelectedDefect);
 }
 
 export function* watchGetDefectDetail() {
   yield takeLatest(GET_DEFECT_DETAIL_SAGA, getDefectDetail);
 }
 
-export function* watchGetCommonList() {
-  yield takeLatest(GET_LANGUAGE_SAGA, getCommonList);
+export function* watchGetDefectCommonList() {
+  yield takeLatest(GET_DEFECT_LANGUAGE_SAGA, getDefectCommonList);
 }
 
 export function* watchSendDefect() {
@@ -628,4 +635,7 @@ export function* watchGetDefectTypes() {
 
 export function* watchCreateNewDefect() {
   yield takeLatest(DEFECT_CREATE_SAGA, createNewDefect);
+}
+export function* watchClearDefect() {
+  yield takeLatest(CLEAR_DEFECT_STATE_SAGA, clearDefect);
 }

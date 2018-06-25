@@ -16,6 +16,10 @@ class Defect extends Component {
     };
   }
 
+  componentDidUpdate(nextProps) {
+    return nextProps.showContainer !== this.props.showContainer;
+  }
+
   render() {
     return (
       <div style={{display:"flex", flex: 1}}>

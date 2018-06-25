@@ -5,12 +5,14 @@ import {
   BEGIN_FETCH, 
   GET_INSPECT_LIST_SAGA, 
   GET_INSPECT_LIST_SUCCESS, 
-  GET_INSPECT_LIST_FAIL
+  GET_INSPECT_LIST_FAIL,
+  CLEAR_INSPECT_STATE_SAGA,
+  CLEAR_INSPECT_STATE
 } from '../../../../constants/actionTypes/Ticket';
 
 
 //获取巡检列表信息
-function* getInspectionList(action){
+function* getInspectList(action){
   let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.ticket.getInspectionList;
   yield put({ type: BEGIN_FETCH});
   try{
@@ -35,6 +37,16 @@ function* getInspectionList(action){
   }
 }
 
-export function* watchGetInspectionList() {
-  yield takeLatest(GET_INSPECT_LIST_SAGA, getInspectionList);
+function* clearInspect(action) {
+  yield put({ 
+    type: CLEAR_INSPECT_STATE, 
+  }); 
+}
+
+export function* watchGetInspectList() {
+  yield takeLatest(GET_INSPECT_LIST_SAGA, getInspectList);
+}
+
+export function* watchClearInspect() {
+  yield takeLatest(CLEAR_INSPECT_STATE_SAGA, clearInspect);
 }
