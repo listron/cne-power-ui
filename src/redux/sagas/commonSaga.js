@@ -48,12 +48,12 @@ function *getDeviceTypes(action){
   let url = Path.basePaths.newAPIBasePath + Path.commonPaths.getDevicetypes;
   yield put({ type: COMMON_FETCH });
   try {
-    const response = yield call(axios.get, url, action.params);
+    const response = yield call(axios.get, url, {params: action.params});
     if(response.data.code === '10000'){
       yield put({ 
         type: GET_DEVICETYPES_SAGA_SUCCESS, 
         params: {
-          data: response.data.data, 
+          data: response.data.data.data, 
           params: action.params 
         }
       });       

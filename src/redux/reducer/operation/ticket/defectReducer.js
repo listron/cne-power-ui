@@ -94,7 +94,7 @@ const defectReducer = (state = initState, action) => {
       return state.set('error', immutable.fromJS(action.error));
     case GET_DEFECTTYPES_SAGA_SUCCESS:
       return state.set('isFetching', false)
-                  .set('defectTypes', immutable.fromJS(action.data));
+                  .set('defectTypes', immutable.fromJS(action.params.data));
     case GET_DEFECTTYPES_SAGA_FAIL:
     case DEFECT_CREATE_SAGA_SUCCESS:
       return state.set('isFetching', false)
