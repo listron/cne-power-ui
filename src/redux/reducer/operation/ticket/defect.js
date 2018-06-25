@@ -5,20 +5,16 @@ import {
   GET_DEFECT_LIST_SUCCESS,
   GET_DEFECT_LIST_FAIL,
   SET_DEFECT_ID,
-  SET_SELECTED_ROWS,
+  SET_SELECTED_DEFECT,
   GET_DEFECT_DETAIL_SUCCESS,
   GET_DEFECT_DETAIL_FAIL,
-  GET_LANGUAGE_SUCCESS,
-  GET_LANGUAGE_FAIL,
-  GET_STATIONS_SAGA,
-  GET_DEVICETYPES_SAGA,
-  GET_DEVICES_SAGA,
-  GET_DEFECTTYPES_SAGA,
-  DEFECT_CREATE_SAGA,
   GET_DEFECTTYPES_SAGA_SUCCESS,
   GET_DEFECTTYPES_SAGA_FAIL,
   DEFECT_CREATE_SAGA_SUCCESS,
   DEFECT_CREATE_SAGA_FAIL,
+  GET_DEFECT_LANGUAGE_SUCCESS,
+  GET_DEFECT_LANGUAGE_FAIL,
+  CLEAR_DEFECT_STATE,
 } from '../../../../constants/actionTypes/Ticket';
 
 var initState = immutable.fromJS({
@@ -27,8 +23,8 @@ var initState = immutable.fromJS({
     code: '',
     message: ''
   },
-  fileterAllInfor:[],//顶部筛选所有数据[{stations:[],devices:[]...}]
-  selectedFileterInfor: {},//选中的筛选项{selectedStation:[],selectedDevices:[]}
+  fileterAllInfo:[],//顶部筛选所有数据[{stations:[],devices:[]...}]
+  selectedFileterInfo: {},//选中的筛选项{selectedStation:[],selectedDevices:[]}
   defectList:[],//渲染为table的缺陷列表
   commonList:[],//获取缺陷常用语列表
   selectedRowKeys: [],
@@ -69,7 +65,7 @@ var initState = immutable.fromJS({
 const defectReducer = (state = initState, action) => {
   switch (action.type) {
     case BEGIN_FETCH:
-      return state.set('isfetching', true)
+      return state.set('isfetching', true);
     case GET_DEFECT_LIST_SUCCESS:  
       return state.set('isFetching', false)
                   .set('total', action.data.total)
@@ -82,18 +78,20 @@ const defectReducer = (state = initState, action) => {
                   .set('sort', action.params.sort);
     case SET_DEFECT_ID:
       return state.set('defectId', action.data);
-    case SET_SELECTED_ROWS:
+    case SET_SELECTED_DEFECT:
       return state.set('selectedRowKeys', immutable.fromJS(action.data));
+    case CLEAR_DEFECT_STATE:
+      return initState;
     case GET_DEFECT_DETAIL_SUCCESS: 
       return state.set('isFetching', false)
                   .set('defectDetail', immutable.fromJS(action.data))
                   .set('defectId', action.params.defectId);
-    case GET_LANGUAGE_SUCCESS: 
+    case GET_DEFECT_LANGUAGE_SUCCESS: 
       return state.set('isFetching', false)
                   .set('commonList', immutable.fromJS(action.data));
     case GET_DEFECT_LIST_FAIL:
     case GET_DEFECT_DETAIL_FAIL:
-    case GET_LANGUAGE_FAIL:
+    case GET_DEFECT_LANGUAGE_FAIL:
       return state.set('error', immutable.fromJS(action.error));
     case GET_DEFECTTYPES_SAGA_SUCCESS:
       return state.set('isFetching', false)
