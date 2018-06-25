@@ -50,32 +50,22 @@ function* getInspectList(action){
 
 // 获取巡检工单详情
 function* getInspectDetail(action){
-  let detailUrl = Path.basePaths.newAPIBasePath + Path.APISubPaths.ticket.getInspectDetail;
-  let typeListUrl = Path.basePaths.newAPIBasePath + Path.APISubPaths.ticket.getDeviceTypeList;
+  let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.ticket.getInspectDetail;
   yield put({type: BEGIN_FETCH });
   try {
-    const [detail, typeList] = yield [
-      call(axios.get, detailUrl, { params: action.params.inspectId }),
-      call(axios.get, typeListUrl, { params: action.params.stationCodes })
-    ];
-    console.log(detail, typeList)
-    console.log("==================")
-    console.log(detail.data.code)    
-    if(detail.data.code === "10000"){
+    const response = yield call(axios.get, url, { params: action.params });  
+    if(response.data.code === "10000"){
       yield put({ 
         type: GET_INSPECT_DETAIL_SUCCESS, 
-        data:{
-          detailData: detail.data.data,
-          typeListData: typeList.data.data,
-          params: action.params,
-        },
+        data: response.data.data, 
+        params: action.params
       });      
     }else{
       yield put({ 
         type: GET_INSPECT_DETAIL_FAIL, 
-        error:{
-          code: detail.data.code,
-          message: detail.data.message
+        error: {
+          code: response.data.code,
+          message: response.data.message
         }
       });        
     }
@@ -93,7 +83,7 @@ function* setInspectId(action){
   });
 }
 
-// 添加巡检详情
+// 添加巡检异常
 function* addInspectAbnormal(action){
   let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.ticket.addInspectAbnormal;
   yield put({ type: BEGIN_FETCH })
