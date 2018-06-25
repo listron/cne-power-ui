@@ -147,10 +147,10 @@ class DefectList extends Component {
 
   onShowDetail(defectId) {
     this.props.setDefectId(defectId);
-    this.props.onChangeShowContainer('detail');
+    this.props.onChangeShowContainer({container: 'detail'});
   }
   onAdd(){
-    this.props.onChangeShowContainer('creatNew');
+    this.props.onChangeShowContainer({container: 'creatNew'});
   }
 
   render() {   

@@ -36,7 +36,7 @@ class Ticket extends Component {
     this.setState({
       tab: tab
     });
-    this.props.onChangeShowContainer('list');
+    this.props.onChangeShowContainer({container: 'list'});
     if(tab === "inspect") {
       this.props.clearDefectState();//清除缺陷状态
       var params = {

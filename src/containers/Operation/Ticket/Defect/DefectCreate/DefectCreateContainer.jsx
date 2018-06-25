@@ -31,7 +31,7 @@ class DefectCreate extends Component {
     });
   } 
   onChangeShowContainer(){
-    this.props.onChangeShowContainer('list')
+    this.props.onChangeShowContainer({ container: 'list' })
   }
   
 
@@ -39,8 +39,8 @@ class DefectCreate extends Component {
     console.log(this.props.stations)
     return (
       <div className={styles.defectCreate} >
-        <h3><span>缺陷创建</span>    <span onClick={this.onChangeShowContainer }>关闭x</span></h3>
-        <DefectCreateForm />
+        <h3><span>缺陷创建</span>    <span onClick={this.onChangeShowContainer} className={styles.close}>关闭x</span></h3>
+        <DefectCreateForm {...this.props} />
       </div>
     );
   }
@@ -50,8 +50,8 @@ const mapStateToProps = (state) => ({
     isFetching: state.operation.defect.get('isFetching'),
     commonFetching: state.common.get('commonFetching'),
     stations: state.common.get('stations').toJS(),
-    devieceTypes: state.common.get('devieceTypes'),
-    devices: state.common.get('devices'),
+    devieceTypes: state.common.get('devieceTypes').toJS(),
+    devices: state.common.get('devices').toJS(),
     error: state.operation.defect.get('error'),
     defectTypes: state.operation.defect.get('defectTypes'),
     createDefectParams: state.operation.defect.get('createDefectParams'),
