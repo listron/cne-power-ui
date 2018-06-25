@@ -48,7 +48,7 @@ var initState = immutable.fromJS({
     defectLevel: 1,
     defectDescribe: '',
     defectStatus: '1',
-    images: [],
+    photoAddress: '',
     handleData: {
       defectProposal: '',
       defectSolveInfo: '',
