@@ -37,6 +37,12 @@ import {
   CHECK_DEFECT_SAGA,
   CHECK_DEFECT_FAIL,
   CHANGE_SHOW_CONTAINER_SAGA,
+  GET_DEFECTTYPES_SAGA,
+  GET_DEFECTTYPES_SAGA_SUCCESS,
+  GET_DEFECTTYPES_SAGA_FAIL,
+  DEFECT_CREATE_SAGA,
+  DEFECT_CREATE_SAGA_SUCCESS,
+  DEFECT_CREATE_SAGA_FAIL,
   CLEAR_DEFECT_STATE_SAGA,
   CLEAR_DEFECT_STATE
 } from '../../../../constants/actionTypes/Ticket';
@@ -502,6 +508,60 @@ function* checkDefect(action) {
   }
 }
 
+//获取缺陷类型信息
+function *getDefectTypes(action){
+  let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.ticket.getDefectTypes;
+  yield put({ type: BEGIN_FETCH });
+  try {
+    const response = yield call(axios.post, url, action.params);
+    if(response.data.code === '10000'){
+      yield put({ 
+        type: GET_DEFECTTYPES_SAGA_SUCCESS, 
+        params: {
+          data: response.data.data, 
+          params: action.params 
+        }
+      });       
+    } else{
+      yield put({ 
+        type: GET_DEFECTTYPES_SAGA_FAIL, 
+        error:{
+          code: response.data.code,
+          message: response.data.message
+        }
+      });        
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
+//生成缺陷
+function *createNewDefect(action){
+  let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.ticket.createNewDefect;
+  yield put({ type: BEGIN_FETCH });
+  try {
+    const response = yield call(axios.post, url, action.params);
+    if(response.data.code === '10000'){
+      yield put({ 
+        type: DEFECT_CREATE_SAGA_SUCCESS, 
+        params: {
+          data: response.data.data, 
+          params: action.params 
+        }
+      });       
+    } else{
+      yield put({ 
+        type: DEFECT_CREATE_SAGA_FAIL, 
+        error:{
+          code: response.data.code,
+          message: response.data.message
+        }
+      });        
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
 function* clearDefect(action) {
   yield put({ 
     type: CLEAR_DEFECT_STATE, 
@@ -568,6 +628,13 @@ export function* watchCheckDefect() {
   yield takeLatest(CHECK_DEFECT_SAGA, checkDefect);
 }
 
+export function* watchGetDefectTypes() {
+  yield takeLatest(GET_DEFECTTYPES_SAGA, getDefectTypes);
+}
+
+export function* watchCreateNewDefect() {
+  yield takeLatest(DEFECT_CREATE_SAGA, createNewDefect);
+}
 export function* watchClearDefect() {
   yield takeLatest(CLEAR_DEFECT_STATE_SAGA, clearDefect);
 }
