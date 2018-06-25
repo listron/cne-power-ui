@@ -39,24 +39,20 @@ class InspectDetail extends Component{
   }
 
   componentDidMount(){
-    this.props.getInspectDetail({
-      inspectId: this.props.inspectId,
-      stationCodes: this.props.inspectDetail.get("stationCode"),
-    })
-    // this.props.getDeviceTypeList({
-    //   stationCodes: this.props.inspectDetail.get("stationCode"),
-    // })
+    if(this.props.inspectId){
+      this.props.getInspectDetail({
+        inspectId: this.props.inspectId,
+        stationCodes: this.props.inspectDetail.get("stationCode"),
+      })
+    }
   }
 
   componentWillReceiveProps(nextProps){
-    if(nextProps.inspectId !== this.props.inspectId){
+    if(this.props.inspectId && nextProps.inspectId !== this.props.inspectId){
       this.props.getInspectDetail({
         inspectId: nextProps.inspectId,
         stationCodes: nextProps.inspectDetail.get("stationCode"),
       })
-      // this.props.getDeviceTypeList({
-      //   stationCodes: this.props.stationCode,
-      // })
     }
   }
 
@@ -119,7 +115,7 @@ const mapStateToProps = (state) => ({
   inspectDetail: state.operation.inspect.get("inspectDetail"),
   inspectId: state.operation.inspect.get("inspectId"),
   deviceTypeList: state.operation.inspect.get("deviceTypeList"),
-  // stationCode: state.operation.inspect.getIn(["inspectDetail","stationCode"]).toString(),
+  stationCode: state.operation.inspect.getIn(["inspectDetail","stationCode"]).toString(),
 }) 
 
 const mapDispatchToProps = (dispatch) => ({

@@ -40,16 +40,19 @@ class DefectDetail extends Component {
   }
 
   componentDidMount() {
-    this.props.getDefectDetail({
-      defectId: this.props.defectId
-    });
-    this.props.getCommonList({
-      languageType: '1'
-    });
+    if(this.props.defectId){
+      this.props.getDefectDetail({
+        defectId: this.props.defectId
+      });
+      this.props.getCommonList({
+        languageType: '1'
+      });
+    }
+    
   }
 
   componentWillReceiveProps(nextProps) {
-    if(nextProps.defectId !== this.props.defectId) {
+    if(this.props.defectId && nextProps.defectId !== this.props.defectId) {
       this.props.getDefectDetail({
         defectId: nextProps.defectId
       });

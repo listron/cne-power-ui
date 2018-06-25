@@ -134,7 +134,6 @@ class InspectTable extends Component {
           <span>{getStatus(value)}</span>
           <div className={styles.warning} >
             { record.isOvertime === '0' ? <span style={{ color: '#c80000' }}>超时</span> : null }
-            { record.isOvertime === '0' ? <span style={{ color: '#e78d14' }}>协调</span> : null }
           </div>
         </div>
       ),
