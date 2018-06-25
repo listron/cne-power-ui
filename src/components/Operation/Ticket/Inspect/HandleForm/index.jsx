@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import styles from './style.scss';
 import { Icon, Button, Form, Select, Input } from 'antd';
 import ImgUploader from '../../../../Common/Uploader/ImgUploader';
+import Immutable from 'immutable';
+
 const FormItem = Form.Item;
 const Option = Select.Option;
 class HandleForm extends Component {
@@ -30,8 +32,6 @@ class HandleForm extends Component {
 
   onHandleSubmit(){
     console.log("onHandleSubmit")
-    
-    
   }
 
   showAdd(){
@@ -57,9 +57,8 @@ class HandleForm extends Component {
     const deviceList = [];
     const deviceTypeList = this.props.deviceTypeList;
     console.log(deviceTypeList.toJS());
-    console.log("---------------")
-    for (let i = 10; i < 36; i++) {
-      deviceList.push(<Option key={i.toString(36) + i}>{i.toString(36) + i}</Option>);
+    for (let i = 0; i < deviceTypeList.size; i++) {
+      deviceList.push(<Option key={deviceTypeList.getIn([i,'deviceTypeCode'])}>{deviceTypeList.getIn([i,'deviceTypeName'])}</Option>);
     }
     const formItemLayout = {
       labelCol: {
@@ -95,7 +94,15 @@ class HandleForm extends Component {
                     mode="multiple"
                     placeholder="必选"
                     onChange={this.selectChange}
-                  >{deviceList}</Select>
+                  >
+                  {deviceTypeList.map((item,index) => {
+                    return (
+                      <Option key={'device'+index}>
+                        {item.getIn([index, 'deviceTypeName'])}
+                      </Option>
+                    )
+                  })}
+                  </Select>
                 )}
               </FormItem>
               <FormItem
@@ -107,7 +114,11 @@ class HandleForm extends Component {
                     required: true,
                   }]
                 })(
-                  <Input placeholder="输入关键字快速查询" onClick={this.filterDevice} addonAfter={<Icon type="filter" />} />
+                  <Input 
+                    placeholder="输入关键字快速查询" 
+                    onClick={this.filterDevice} 
+                    addonAfter={<Icon type="filter" />} 
+                  />
                 )}
               </FormItem>
               <FormItem

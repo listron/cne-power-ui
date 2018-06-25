@@ -14,9 +14,9 @@ import {
   ADD_INSPECT_ABNORMAL_SAGA,
   ADD_INSPECT_ABNORMAL_SUCCESS,
   ADD_INSPECT_ABNORMAL_FAIL,
-  DEVICE_TYPE_LIST_SAGA,
-  DEVICE_TYPE_LIST_SUCCESS,
-  DEVICE_TYPE_LIST_FAIL,
+  GET_DEVICE_TYPE_LIST_SAGA,
+  GET_DEVICE_TYPE_LIST_SUCCESS,
+  GET_DEVICE_TYPE_LIST_FAIL,
   CLEAR_INSPECT_STATE_SAGA,
   CLEAR_INSPECT_STATE
 } from '../../../../constants/actionTypes/Ticket';
@@ -113,20 +113,21 @@ function* addInspectAbnormal(action){
 // 获取设备类型，设备名称，缺陷类型列表
 function* getTotalData(action){
   let getDeviceTypeList = Path.basePaths.newAPIBasePath + Path.APISubPaths.ticket.getDeviceTypeList;
+  console.log(action);
   yield put({ type: BEGIN_FETCH })
   try{
     const response = yield call(axios.get, getDeviceTypeList, {params: action.params});
     console.log(response);
     if(response.data.code === "10000"){
       yield put({
-        type: DEVICE_TYPE_LIST_SUCCESS,
+        type: GET_DEVICE_TYPE_LIST_SUCCESS,
         data: response.data.data,
         params: action.params,
       })
     }
     else{
       yield put({
-        type: DEVICE_TYPE_LIST_FAIL,
+        type: GET_DEVICE_TYPE_LIST_FAIL,
         error:{
           code: response.data.code,
           message: response.data.message,
@@ -151,7 +152,7 @@ export function* watchAddInspectAbnormal(){
 }
 
 export function* watchGetTotalData(){
-  yield takeLatest(DEVICE_TYPE_LIST_SAGA, getTotalData);
+  yield takeLatest(GET_DEVICE_TYPE_LIST_SAGA, getTotalData);
 }
 
 function* clearInspect(action) {

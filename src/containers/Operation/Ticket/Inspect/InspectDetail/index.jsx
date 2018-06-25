@@ -6,7 +6,7 @@ import Detail from '../../../../../components/Operation/Ticket/Inspect/Detail';
 import { 
   GET_INSPECT_DETAIL_SAGA,
   ADD_INSPECT_ABNORMAL_SAGA,
-  DEVICE_TYPE_LIST_SAGA,
+  GET_DEVICE_TYPE_LIST_SAGA,
   CHANGE_SHOW_CONTAINER_SAGA,
   SET_INSPECT_ID_SAGA,
  } from '../../../../../constants/actionTypes/Ticket';
@@ -38,10 +38,16 @@ class InspectDetail extends Component{
     this.onCloseInspectDetail = this.onCloseInspectDetail.bind(this);
   }
   
+  componentWillMount(){
+    
+    
+  }
+
   componentDidMount(){
     this.props.getInspectDetail({
       inspectId: this.props.inspectId,
     })
+    
   }
 
   componentWillReceiveProps(nextProps){
@@ -49,6 +55,9 @@ class InspectDetail extends Component{
       this.props.getInspectDetail({
         inspectId: nextProps.inspectId,
       })
+      // this.props.getDeviceTypeList({
+      //   stationCodes: this.props.stationCode,
+      // })
     }
   }
 
@@ -111,13 +120,13 @@ const mapStateToProps = (state) => ({
   inspectDetail: state.operation.inspect.get("inspectDetail"),
   inspectId: state.operation.inspect.get("inspectId"),
   deviceTypeList: state.operation.inspect.get("deviceTypeList"),
-  stationCode: state.operation.inspect.getIn(["inspectDetail","stationCode"]).toString(),
+  // stationCode: state.operation.inspect.getIn(["inspectDetail","stationCode"]).toString(),
 }) 
 
 const mapDispatchToProps = (dispatch) => ({
   getInspectDetail: params => dispatch({ type: GET_INSPECT_DETAIL_SAGA, params }),
   addInspectAbnormal: params => dispatch({ type: ADD_INSPECT_ABNORMAL_SAGA, params}),
-  getDeviceTypeList: params => dispatch({ type: DEVICE_TYPE_LIST_SAGA, params}),
+  getDeviceTypeList: params => dispatch({ type: GET_DEVICE_TYPE_LIST_SAGA, params}),
   onChangeShowContainer: params => dispatch({ type: CHANGE_SHOW_CONTAINER_SAGA, params}),
   setInspectId: params => dispatch({ type: SET_INSPECT_ID_SAGA, params }),
 })

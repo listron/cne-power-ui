@@ -18,6 +18,7 @@ class Detail extends Component {
     form: PropTypes.object,
     getDeviceTypeList: PropTypes.func,
     deviceTypeList: PropTypes.object,
+    stationCode: PropTypes.string,
   }
 
   constructor(props){
@@ -25,21 +26,23 @@ class Detail extends Component {
     this.state={
 
     }
-
+    
   }
 
-  // onNext(){
-
-  // }
+  componentDidMount(){
+    
+  }
 
   renderForm(){
     let status = this.props.inspectDetail.get("inspectStatus");
+    
     if(status === "2"){
       return (
         <HandleForm  
           onCloseInspectDetail={this.props.onCloseInspectDetail}
           getDeviceTypeList={this.props.getDeviceTypeList}
           deviceTypeList={this.props.deviceTypeList}
+          stationCode={this.props.stationCode}
         />
       )
     }else if(status === "3"){
