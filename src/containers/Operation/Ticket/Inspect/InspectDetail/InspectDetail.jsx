@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { message } from 'antd';
-import Detail from '../../../../../components/Operation/Ticket/Inspect/Detail/Detail';
+import InspectDetailForm from '../../../../../components/Operation/Ticket/Inspect/InspectDetailForm/InspectDetailForm';
 import { 
   GET_INSPECT_DETAIL_SAGA,
   ADD_INSPECT_ABNORMAL_SAGA,
@@ -21,7 +21,7 @@ class InspectDetail extends Component{
     isFetching: PropTypes.bool,
     inspectId: PropTypes.string,
     getInspectDetail: PropTypes.func,
-    // getDeviceTypeList: PropTypes.func,
+    getDeviceTypeList: PropTypes.func,
     deviceTypeList: PropTypes.object,
     stationCode: PropTypes.string,
     onChangeShowContainer: PropTypes.func,
@@ -91,11 +91,11 @@ class InspectDetail extends Component{
   }
 
   onCloseInspectDetail(){
-    this.props.onChangeShowContainer({container: 'inspectList'});
+    this.props.onChangeShowContainer({container: 'list'});
   }
   render(){
     return(
-      <Detail 
+      <InspectDetailForm 
         isFetching={this.props.isFetching}
         inspectDetail={this.props.inspectDetail}
         onCloseInspectDetail={this.onCloseInspectDetail}
@@ -104,7 +104,7 @@ class InspectDetail extends Component{
         onReject={this.props.onReject}
         onNext={this.onNext}
         onPrev={this.onPrev}
-        // getDeviceTypeList={this.props.getDeviceTypeList}
+        getDeviceTypeList={this.props.getDeviceTypeList}
         deviceTypeList={this.props.deviceTypeList}
       />
     )
