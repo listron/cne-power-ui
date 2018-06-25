@@ -11,7 +11,6 @@ import {
   CLOSE_DEFECT_SAGA,
   HANDLE_DEFECT_SAGA,
   CHECK_DEFECT_SAGA,
-  CHANGE_SHOW_CONTAINER_SAGA
  } from '../../../../../constants/actionTypes/Ticket';
 import DefectDetailForm from '../../../../../components/Operation/Ticket/Defect/DefectDetailForm/DefectDetailForm';
 
@@ -127,7 +126,6 @@ const mapDispatchToProps = (dispatch) => ({
   onClose: params => dispatch({ type: CLOSE_DEFECT_SAGA, params }),
   onHandle: params => dispatch({ type:HANDLE_DEFECT_SAGA, params }),
   onCheck: params => dispatch({ type: CHECK_DEFECT_SAGA, params }),
-  onChangeShowContainer: params => dispatch({ type: CHANGE_SHOW_CONTAINER_SAGA, params }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DefectDetail);
