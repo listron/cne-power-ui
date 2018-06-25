@@ -42,9 +42,6 @@ class InspectBasicInfo extends Component {
         <Card title="基本信息">
           {this.renderBasic()}
         </Card>
-        <Card title="异常设备">
-          {this.renderBasic()}
-        </Card>
       </div>
     )
   }
