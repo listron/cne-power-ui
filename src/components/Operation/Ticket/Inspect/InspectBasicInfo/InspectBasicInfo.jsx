@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './inspectBasicInfo.scss';
 import { Card } from 'antd';
-import ImgUploader from '../../../../Common/Uploader/ImgUploader';
 
 class InspectBasicInfo extends Component {
   static propTypes = {
@@ -27,14 +26,10 @@ class InspectBasicInfo extends Component {
         <div>电站名称<span>{info.get('stationName')}</span></div>
         <div>巡检名称<span>{info.get('inspectName')}</span></div>
         <div>巡检时间<span>{info.get('createTime')}至{info.get('deadLine')}</span></div>
-        <div>巡检描述<span>{info.get('abnormalData')}</span></div>
+        <div>设备类型<span>{info.get('deviceTypeNames')}</span></div>
       </div>
     )
   }
-
-  // renderAbnormal(){
-  //   // let dealData = this.props.basicInfo.get("");
-  // }
 
   render(){ 
     return (

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import styles from './inspectBasicInfo.scss';
+import styles from './inspectAbnormal.scss';
 import { Button } from 'antd';
 import ImgUploader from '../../../../Common/Uploader/ImgUploader';
 import AbnormalItem from '../../../../Common/AbnormalItem';
