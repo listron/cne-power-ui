@@ -24,8 +24,7 @@ const defectReducer = (state = initState, action) => {
   switch (action.type) {
     case COMMON_FETCH:
       return state.set('commonFetching', true)
-    case GET_STATIONS_SAGA_SUCCESS:  
-      console.log(action)
+    case GET_STATIONS_SAGA_SUCCESS:
       return state.set('commonFetching', false)
                   .set('stations', immutable.fromJS(action.params.data))
     case GET_DEVICETYPES_SAGA_SUCCESS:

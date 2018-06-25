@@ -77,7 +77,6 @@ class DefectDetail extends Component {
     let index = defectList.findIndex(item => {
       return item.get('defectId') === defectId
     });
-    console.log("index: "+ index)
     if(index !== -1) {
       if(index !== defectList.size - 1) {
         this.props.setDefectId(defectList.getIn([index+1, 'defectId']));

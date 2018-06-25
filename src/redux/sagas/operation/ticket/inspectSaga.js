@@ -117,7 +117,6 @@ function* getTotalData(action){
   yield put({ type: BEGIN_FETCH })
   try{
     const response = yield call(axios.get, getDeviceTypeList, {params: action.params});
-    console.log(response);
     if(response.data.code === "10000"){
       yield put({
         type: GET_DEVICE_TYPE_LIST_SUCCESS,

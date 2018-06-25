@@ -94,8 +94,6 @@ class InspectDetail extends Component{
     this.props.onChangeShowContainer({container: 'inspectList'});
   }
   render(){
-    console.log(this.props.deviceTypeList.toJS())
-    console.log("-----------")
     return(
       <Detail 
         isFetching={this.props.isFetching}

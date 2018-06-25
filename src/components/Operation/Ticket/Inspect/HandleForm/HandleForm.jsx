@@ -50,7 +50,6 @@ class HandleForm extends Component {
   render(){
     const deviceList = [];
     const deviceTypeList = this.props.deviceTypeList;
-    console.log(deviceTypeList.toJS());
     for (let i = 0; i < deviceTypeList.size; i++) {
       deviceList.push(<Option key={deviceTypeList.getIn([i,'deviceTypeCode'])}>{deviceTypeList.getIn([i,'deviceTypeName'])}</Option>);
     }
