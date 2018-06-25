@@ -24,7 +24,7 @@ class Defect extends Component {
       <div style={{display:"flex", flex: 1}}>
         {this.props.showContainer === 'detail' && (<DefectDetail />)}
         {this.props.showContainer === 'list' && (<DefectList />)}
-        {this.props.showContainer === 'creatNew' && (<DefectCreateContainer />)}
+        {this.props.showContainer === 'create' && (<DefectCreateContainer />)}
       </div>
     );
   }

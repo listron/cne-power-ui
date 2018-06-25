@@ -150,7 +150,7 @@ class DefectList extends Component {
     this.props.onChangeShowContainer({container: 'detail'});
   }
   onAdd(){
-    this.props.onChangeShowContainer({container: 'creatNew'});
+    this.props.onChangeShowContainer({container: 'create'});
   }
 
   render() {   
