@@ -85,9 +85,10 @@ class ProcessForm extends Component {
           {...formItemLayout}
           label="添加照片">
           {getFieldDecorator('photoData', {
-            initialValue: []
+            initialValue: [],
+            valuePropName: 'data'
           })(
-            <ImgUploader editable={true} />
+            <ImgUploader editable={true}  />
           )}
         </FormItem>
         {dealResult === 'solve' && (
