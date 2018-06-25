@@ -60,7 +60,7 @@ class StationSelect extends Component {
   }
   onOK = (stations) => {
     const { onChange,onSelected } = this.props
-    onSelected(stations);
+    onSelected && onSelected(stations);
     onChange && onChange(stations);
   }
   onModalHandelOK = (stations) => {

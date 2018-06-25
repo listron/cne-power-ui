@@ -64,7 +64,7 @@ class ImgUploader extends Component {
   }
   onOK = (stations) => {
     const { onChange,onSelected } = this.props
-    onSelected(stations);
+    onSelected && onSelected(stations);
     onChange && onChange(stations);
   }
   beforeUpload(file){
