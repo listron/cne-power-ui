@@ -2,9 +2,9 @@ import React,{ Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './defectHandleForm.scss';
 import {Tag} from 'antd';
-import ReviewForm from './ReviewForm';
-import ProcessForm from './ProcessForm';
-import CheckForm from './CheckForm';
+import DefectReviewForm from './DefectReviewForm';
+import DefectProcessForm from './DefectProcessForm';
+import DefectCheckForm from './DefectCheckForm';
 
 class DefectHandleForm extends Component {
   static propTypes = {
@@ -34,7 +34,7 @@ class DefectHandleForm extends Component {
 
   renderReviewForm() {
     return (     
-      <ReviewForm 
+      <DefectReviewForm 
         onSubmit={this.props.onSubmit}
         onCancel={this.props.onCancel} />
     );
@@ -42,7 +42,7 @@ class DefectHandleForm extends Component {
 
   renderProcessForm() {
     return (     
-      <ProcessForm
+      <DefectProcessForm
         commonList={this.props.commonList} 
         onSubmit={this.props.onSubmit}
         onCancel={this.props.onCancel} />
@@ -51,7 +51,7 @@ class DefectHandleForm extends Component {
 
   renderCheckForm() {
     return (     
-      <CheckForm 
+      <DefectCheckForm 
         onSubmit={this.props.onSubmit}
         onCancel={this.props.onCancel} />
     );

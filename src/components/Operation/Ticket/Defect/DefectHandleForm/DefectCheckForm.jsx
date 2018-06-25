@@ -7,7 +7,7 @@ const FormItem = Form.Item;
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
 
-class CheckForm extends Component {
+class DefectCheckForm extends Component {
   static propTypes = {
     form: PropTypes.object,
     onSubmit: PropTypes.func,
@@ -75,4 +75,4 @@ class CheckForm extends Component {
   }  
 }
 
-export default Form.create()(CheckForm);
+export default Form.create()(DefectCheckForm);
