@@ -6,9 +6,9 @@ import Detail from '../../../../../components/Operation/Ticket/Inspect/Detail/De
 import { 
   GET_INSPECT_DETAIL_SAGA,
   ADD_INSPECT_ABNORMAL_SAGA,
-  GET_DEVICE_TYPE_LIST_SAGA,
   CHANGE_SHOW_CONTAINER_SAGA,
   SET_INSPECT_ID_SAGA,
+  GET_DEVICETYPES_SAGA,
  } from '../../../../../constants/actionTypes/Ticket';
 
 class InspectDetail extends Component{
@@ -125,7 +125,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   getInspectDetail: params => dispatch({ type: GET_INSPECT_DETAIL_SAGA, params }),
   addInspectAbnormal: params => dispatch({ type: ADD_INSPECT_ABNORMAL_SAGA, params}),
-  // getDeviceTypeList: params => dispatch({ type: GET_DEVICE_TYPE_LIST_SAGA, params}),
+  getDeviceTypeList: params => dispatch({ type: GET_DEVICETYPES_SAGA, params}),
   onChangeShowContainer: params => dispatch({ type: CHANGE_SHOW_CONTAINER_SAGA, params}),
   setInspectId: params => dispatch({ type: SET_INSPECT_ID_SAGA, params }),
 })

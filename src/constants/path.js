@@ -40,7 +40,6 @@ export default {
       getInspectDetail: '/v3/inspect',
       getCommonList: '/v3/language',
       addInspectAbnormal: '/v3/inspect/abnormal',
-      getDeviceTypeList: '/v3/station/devicetypes',
       sendDefect: '/v3/defect/distribute',
       rejectDefect: '/v3/defect/reject',
       closeDefect: '/v3/defect/close',
