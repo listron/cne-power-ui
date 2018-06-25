@@ -106,14 +106,14 @@ class Power extends Component {
             </div>
             <div>
                 <ImgUploader 
-                    value={this.state.fileList} 
+                    data={this.state.fileList} 
                     uploadPath={`${pathConfig.basePaths.APIBasePath}${pathConfig.commonPaths.imgUploads}`} 
                     onChange={this.uploadImg} 
                     editable={true}
                 />
             </div>
             <div>
-                <StationSelect value={this.state.stationArray} multiple={true} onChange={this.stationSelected} style={{width:'500px'}} />
+                <StationSelect data={this.state.stationArray} multiple={true} onChange={this.stationSelected} style={{width:'500px'}} />
             </div>
           </div>
         </div>

@@ -1,48 +1,26 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import StationSelect from '../../../../Common/StationSelect'
 import { Form, Icon, Input, Button } from 'antd';
 import styles from './newDefect.scss';
 const FormItem = Form.Item;
 
 class TmpForm extends Component {
   static propTypes = {
-    form: PropTypes.func,
+    form: PropTypes.object,
+    stations: PropTypes.array,
   };
-  // componentDidMount() {
-  //   this.props.form.validateFields();
-  // }
-  // handleSubmit = (e) => {
-  //   e.preventDefault();
-  //   this.props.form.validateFields((err, values) => {
-  //     if (!err) {
-  //       console.log('Received values of form: ', values);
-  //     }
-  //   });
-  // }
+  
   render() {
-    const { getFieldDecorator, getFieldError, isFieldTouched } = this.props.form;
-    const userNameError = isFieldTouched('userName') && getFieldError('userName');
-    const passwordError = isFieldTouched('password') && getFieldError('password');
+    const {stations} = this.props;
+    const {getFieldDecorator} = this.props.form;
     return (
       <Form layout="inline" onSubmit={this.handleSubmit}>
-        <FormItem
-          validateStatus={userNameError ? 'error' : ''}
-          help={userNameError || ''}
-        >
-          {getFieldDecorator('userName', {
-            rules: [{ required: true, message: 'Please input your username!' }],
+        <FormItem>
+          {getFieldDecorator('station', {
+            rules: [{ required: true, message: '请选择电站' }],
           })(
-            <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Username" />
-          )}
-        </FormItem>
-        <FormItem
-          validateStatus={passwordError ? 'error' : ''}
-          help={passwordError || ''}
-        >
-          {getFieldDecorator('password', {
-            rules: [{ required: true, message: 'Please input your Password!' }],
-          })(
-            <Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="Password" />
+            <StationSelect data={stations} multiple={false} />
           )}
         </FormItem>
       </Form>

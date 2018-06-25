@@ -9,7 +9,7 @@ const RadioGroup = Radio.Group;
 class StationSelectModal extends Component {
   static propTypes = {
     stationModalShow: PropTypes.bool,
-    value: PropTypes.array,
+    data: PropTypes.array,
     multiple: PropTypes.bool,
     selectStation: PropTypes.func,
     hideStationModal: PropTypes.func,
@@ -56,9 +56,9 @@ class StationSelectModal extends Component {
 
 
   _filterStation = () => {
-    const { value, multiple } = this.props;
+    const { data, multiple } = this.props;
     const { filterStationType, selectedStation } = this.state;
-    const tmpStations = filterStationType === 0 ? value : value.filter(e=>(e.stationType === filterStationType));
+    const tmpStations = filterStationType === 0 ? data : data.filter(e=>(e.stationType === filterStationType));
     let filteredStation = [];
     tmpStations.forEach(e=>{
       let findExactStation = false;

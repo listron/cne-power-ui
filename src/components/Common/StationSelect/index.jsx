@@ -9,7 +9,7 @@ const AutoCompleteOption = AutoComplete.Option;
   电站选择组件：
   必须参数:
   1. 电站选择是否多选: multiple, 选填，默认为单选(false)。
-  2. 电站基本信息数组(value),包含信息如下：
+  2. 电站基本信息数组(data),包含信息如下：
     [{
       commissioningDate:"2012-04-15T00:00:00"
       enterpriseId:"1"
@@ -35,13 +35,13 @@ const AutoCompleteOption = AutoComplete.Option;
       zoneName:"辽宁"
     }]
   3. 传递下来的style值，可选填，用于控制筛选组件总体样式 {width:'500px'}
-  4. 输出信息:this.props.onChange(selectedStationArray)为value中筛选的一个或多个
+  4. 输出信息:this.props.onChange(selectedStationArray)为data中筛选的一个或多个
 */
 
 class StationSelect extends Component {
   static propTypes = {
     multiple: PropTypes.bool,
-    value: PropTypes.array,
+    data: PropTypes.array,
     onChange: PropTypes.func,
     style: PropTypes.object
   }
@@ -68,15 +68,15 @@ class StationSelect extends Component {
     })
   }
   handleSearch = (text) => {
-    const { value } = this.props;
-    let filteredSelectedStation = value.filter(e=>e.stationName.indexOf(text) >= 0)
+    const { data } = this.props;
+    let filteredSelectedStation = data.filter(e=>e.stationName.indexOf(text) >= 0)
     this.setState({
       filteredSelectedStation
     })
   }
   selectStation = (stations) => {//stations:选中的电站名称数组
-    const { value } = this.props;
-    const checkedStations = value.filter(e=>stations.includes(e.stationName))
+    const { data } = this.props;
+    const checkedStations = data.filter(e=>stations.includes(e.stationName))
     this.setState({
       stationModalShow: false,
       checkedStationName: stations,
@@ -95,7 +95,7 @@ class StationSelect extends Component {
   }
 
   render() {
-    const { value, multiple } = this.props;
+    const { data, multiple } = this.props;
     const { checkedStationName, stationModalShow, filteredSelectedStation } = this.state;
     return (
       <div className={styles.stationSelect} style={this.props.style}>
@@ -107,7 +107,7 @@ class StationSelect extends Component {
           value={checkedStationName}
           className={styles.stationSelectMainInput}
         >
-          {value.map(e=>(<Option key={e.stationName}>{e.stationName}</Option>))}
+          {data.map(e=>(<Option key={e.stationName}>{e.stationName}</Option>))}
         </Select>:<AutoComplete
           style={{ width: '100%' }}
           onSearch={this.handleSearch}
@@ -117,7 +117,7 @@ class StationSelect extends Component {
         </AutoComplete>}
         <StationSelectModal 
           multiple={multiple}
-          value={value} 
+          data={data} 
           handleOK={this.onModalHandelOK}
           stationModalShow={stationModalShow}
           selectStation={this.selectStation} 
