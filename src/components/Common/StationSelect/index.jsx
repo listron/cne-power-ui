@@ -35,7 +35,7 @@ const AutoCompleteOption = AutoComplete.Option;
       zoneName:"辽宁"
     }]
   3. 传递下来的style值，可选填，用于控制筛选组件总体样式 {width:'500px'}
-  4. 输出信息:this.props.onChange(selectedStationArray)为data中筛选的一个或多个
+  4. 输出信息:this.props.onOK(selectedStationArray)为data中筛选的一个或多个，this.props.onChange(form表单用若有会同时触发)
 */
 
 class StationSelect extends Component {
@@ -43,6 +43,7 @@ class StationSelect extends Component {
     multiple: PropTypes.bool,
     data: PropTypes.array,
     onChange: PropTypes.func,
+    onOK: PropTypes.func,
     style: PropTypes.object
   }
   static defaultProps = {
@@ -57,10 +58,19 @@ class StationSelect extends Component {
       filteredSelectedStation: [],
     }
   }
-  showStationModal = () => {
+  onOK = (stations) => {
+    const { onChange,onOK } = this.props
+    onOK && onOK(stations);
+    onChange && onChange(stations);
+  }
+  onModalHandelOK = (stations) => {
+    const checkedStationName = stations.map(e=>e.stationName);
     this.setState({
-      stationModalShow: true,
+      stationModalShow: false,
+      checkedStationName,
+      checkedStations:stations
     })
+    this.onOK(stations)
   }
   hideStationModal = () => {
     this.setState({
@@ -82,16 +92,13 @@ class StationSelect extends Component {
       checkedStationName: stations,
       checkedStations
     })
-    this.props.onChange(checkedStations)
+    this.onOK(checkedStations)
   }
-  onModalHandelOK = (stations) => {
-    const checkedStationName = stations.map(e=>e.stationName);
+  
+  showStationModal = () => {
     this.setState({
-      stationModalShow: false,
-      checkedStationName,
-      checkedStations:stations
+      stationModalShow: true,
     })
-    this.props.onChange(stations)
   }
 
   render() {
