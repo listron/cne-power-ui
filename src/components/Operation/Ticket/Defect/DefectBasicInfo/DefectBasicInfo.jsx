@@ -39,7 +39,7 @@ class DefectBasicInfo extends Component {
     return (
       <div>
         <div>电站名称<span>{info.get('stationName')}</span></div>
-        <div>设备类型<span>{info.get('stationName')}</span></div>
+        <div>设备类型<span>{info.get('deviceTypeName')}</span></div>
         <div>设备名称<span>{info.get('deviceName')}</span></div>
         <div>缺陷类型<span>{info.get('defectTypeName')}</span></div>
         <div>缺陷级别<span>{getLevel(info.get('defectLevel'))}</span></div>

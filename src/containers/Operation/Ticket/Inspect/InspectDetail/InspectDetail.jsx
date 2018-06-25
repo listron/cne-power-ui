@@ -39,17 +39,19 @@ class InspectDetail extends Component{
   }
 
   componentDidMount(){
-    this.props.getInspectDetail({
-      inspectId: this.props.inspectId,
-      stationCodes: this.props.inspectDetail.get("stationCode"),
-    })
+    if(this.props.inspectId) {
+      this.props.getInspectDetail({
+        inspectId: this.props.inspectId,
+        stationCodes: this.props.inspectDetail.get("stationCode"),
+      });
+    }
     // this.props.getDeviceTypeList({
     //   stationCodes: this.props.inspectDetail.get("stationCode"),
     // })
   }
 
   componentWillReceiveProps(nextProps){
-    if(nextProps.inspectId !== this.props.inspectId){
+    if(nextProps.inspectId && nextProps.inspectId !== this.props.inspectId){
       this.props.getInspectDetail({
         inspectId: nextProps.inspectId,
         stationCodes: nextProps.inspectDetail.get("stationCode"),
