@@ -4,7 +4,7 @@ import common from './commonReducer';
 import users from './users';
 import posts from './posts';
 import login from './login';
-import operation from './operation';
+import operation from './operation/operationReducer';
 
 const appReducer = (() => combineReducers({common, users, posts,login, operation }))();
 
