@@ -11,7 +11,7 @@ import {
   GET_DEVICETYPES_SAGA,
   GET_DEVICES_SAGA,
 } from '../../../../../constants/actionTypes/commonAction';
-import DefectCreateMain from '../../../../../components/Operation/Ticket/Defect/CreateNewDefect/DefectCreateMain';
+import CreateNewDefect from '../../../../../components/Operation/Ticket/Defect/CreateNewDefect/CreateNewDefect';
 
 class DefectCreate extends Component {
   static propTypes = {
@@ -40,7 +40,7 @@ class DefectCreate extends Component {
     return (
       <div className={styles.defectCreate} >
         <h3><span>缺陷创建</span>    <span onClick={this.onChangeShowContainer} className={styles.close}>关闭x</span></h3>
-        <DefectCreateMain {...this.props} />
+        <CreateNewDefect {...this.props} />
       </div>
     );
   }

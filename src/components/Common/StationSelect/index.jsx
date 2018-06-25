@@ -72,6 +72,16 @@ class StationSelect extends Component {
     })
     this.onOK(stations)
   }
+  onSelect = (stationName) =>{
+    const { data } = this.props;
+    const checkedStations = data.filter(e=>e.stationName===stationName);
+    const checkedStationName = checkedStations.map(e=>e.stationName);
+    this.setState({
+      checkedStationName,
+      checkedStations
+    })
+    this.onOK(checkedStations)
+  }
   hideStationModal = () => {
     this.setState({
       stationModalShow: false,
@@ -81,15 +91,17 @@ class StationSelect extends Component {
     const { data } = this.props;
     let filteredSelectedStation = data.filter(e=>e.stationName.indexOf(text) >= 0)
     this.setState({
+      checkedStationName:[text],
       filteredSelectedStation
     })
   }
   selectStation = (stations) => {//stations:选中的电站名称数组
     const { data } = this.props;
     const checkedStations = data.filter(e=>stations.includes(e.stationName))
+    const checkedStationName = stations.map(e=>e.stationName)
     this.setState({
       stationModalShow: false,
-      checkedStationName: stations,
+      checkedStationName,
       checkedStations
     })
     this.onOK(checkedStations)
@@ -118,6 +130,8 @@ class StationSelect extends Component {
         </Select>:<AutoComplete
           style={{ width: '100%' }}
           onSearch={this.handleSearch}
+          onSelect={this.onSelect}
+          value={checkedStationName}
           placeholder="输入关键字快速查询"
         >
           {filteredSelectedStation.map((e) => (<Option key={e.stationName}>{e.stationName}</Option>))}

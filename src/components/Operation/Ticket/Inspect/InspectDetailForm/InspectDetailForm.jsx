@@ -3,10 +3,15 @@ import PropTypes from 'prop-types';
 import InspectBasicInfo from '../InspectBasicInfo/InspectBasicInfo';
 import TimeLines from '../../../../Common/TimeLines';
 import styles from './inspectDetailForm.scss';
+<<<<<<< HEAD
 import { Icon, Button, Form } from 'antd';
 import InspectAddAbnormal from '../InspectAddAbnormal/InspectAddAbnormal';
+=======
+import { Icon } from 'antd';
+import InspectHandleForm from '../InspectHandleForm/InspectHandleForm';
+import InspectAbnormal from '../InspectAbnormal/InspectAbnormal';
+>>>>>>> upstream/dev
 
-const FormItem = Form.Item;
 
 class InspectDetailForm extends Component {
   static propTypes={
@@ -48,10 +53,12 @@ class InspectDetailForm extends Component {
           stationCode={this.props.stationCode}
         />
       )
-    }else if(status === "3"){
+    } else if(status === "3"){
       return (
         <div></div>
       )
+    } else {
+      return null;
     }
   }
 
@@ -67,8 +74,15 @@ class InspectDetailForm extends Component {
           <Icon type="close" onClick={this.props.onCloseInspectDetail} />
         </div>
         <div className={styles.content} >
-          <div className={styles.basic} >
-            <InspectBasicInfo basicInfo={inspectDetail} />
+          <div className={styles.left} >
+            <div className={styles.basic} >
+              <InspectBasicInfo basicInfo={inspectDetail} />
+            </div>
+            {inspectDetail.get('abnormalData').size !== 0 && (
+              <div className={styles.abnormal} >
+                <InspectAbnormal abnormalItems={inspectDetail.get('abnormalData')} />
+              </div>
+            )}
           </div>
           <div className={styles.right} >
             <div className={styles.timeLines}>
