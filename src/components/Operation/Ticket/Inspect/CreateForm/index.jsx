@@ -3,6 +3,7 @@ import { Button, Form, DatePicker, Icon, Modal, Select, Input, Radio, Checkbox }
 import PropTypes from 'prop-types';
 import styles from './style.scss';
 import moment from 'moment';
+import StationSelect from '../../../../Common/StationSelect';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -22,6 +23,7 @@ class CreateForm extends Component{
     super(props);
     this.state={
       startValue: null,
+      
     }
   }
 
@@ -119,7 +121,12 @@ class CreateForm extends Component{
                   required: true,
                 }]
               })(
-                <Input placeholder="输入名字快速查询" onClick={this.filterStation} addonAfter={<Icon type="filter" />} />
+                {/*<StationSelect 
+                  value={this.state.stationArray}
+                  multiple={true}
+                  onChange={this.stationSelected}
+                />
+                <Input placeholder="输入名字快速查询" onClick={this.filterStation} addonAfter={<Icon type="filter" />} />*/}
               )}
             </FormItem>
             <FormItem

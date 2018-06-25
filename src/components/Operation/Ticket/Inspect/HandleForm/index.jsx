@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import styles from './style.scss';
 import { Icon, Button, Form, Select, Input } from 'antd';
 import ImgUploader from '../../../../Common/Uploader/ImgUploader';
-import Immutable from 'immutable';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -37,12 +36,7 @@ class HandleForm extends Component {
   showAdd(){
     this.setState({
       showAddAbnormal: true,
-    })
-    // let params = {
-    //   stationCodes: "401"
-    // }
-    // this.props.getDeviceTypeList(params);
-    
+    })    
   }
 
   hideAdd(){

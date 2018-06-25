@@ -47,7 +47,9 @@ class InspectDetail extends Component{
     this.props.getInspectDetail({
       inspectId: this.props.inspectId,
     })
-    
+    this.props.getDeviceTypeList({
+      stationCodes: this.props.inspectDetail.get("stationCode"),
+    })
   }
 
   componentWillReceiveProps(nextProps){
@@ -55,9 +57,9 @@ class InspectDetail extends Component{
       this.props.getInspectDetail({
         inspectId: nextProps.inspectId,
       })
-      // this.props.getDeviceTypeList({
-      //   stationCodes: this.props.stationCode,
-      // })
+      this.props.getDeviceTypeList({
+        stationCodes: this.props.stationCode,
+      })
     }
   }
 
@@ -95,14 +97,16 @@ class InspectDetail extends Component{
     this.props.onChangeShowContainer('inspectList');
   }
   render(){
+    console.log(this.props.deviceTypeList.toJS())
+    console.log("-----------")
     return(
       <Detail 
+        isFetching={this.props.isFetching}
         inspectDetail={this.props.inspectDetail}
         onCloseInspectDetail={this.onCloseInspectDetail}
         onClose={this.props.onClose}
         onSend={this.props.onSend}
         onReject={this.props.onReject}
-        isFetching={this.props.isFetching}
         onNext={this.onNext}
         onPrev={this.onPrev}
         getDeviceTypeList={this.props.getDeviceTypeList}
