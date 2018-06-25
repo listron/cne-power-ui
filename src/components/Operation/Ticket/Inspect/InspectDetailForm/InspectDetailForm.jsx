@@ -3,14 +3,10 @@ import PropTypes from 'prop-types';
 import InspectBasicInfo from '../InspectBasicInfo/InspectBasicInfo';
 import TimeLines from '../../../../Common/TimeLines';
 import styles from './inspectDetailForm.scss';
-<<<<<<< HEAD
-import { Icon, Button, Form } from 'antd';
-import InspectAddAbnormal from '../InspectAddAbnormal/InspectAddAbnormal';
-=======
+
 import { Icon } from 'antd';
-import InspectHandleForm from '../InspectHandleForm/InspectHandleForm';
+import InspectAddAbnormal from '../InspectAddAbnormal/InspectAddAbnormal';
 import InspectAbnormal from '../InspectAbnormal/InspectAbnormal';
->>>>>>> upstream/dev
 
 
 class InspectDetailForm extends Component {
@@ -48,7 +44,6 @@ class InspectDetailForm extends Component {
       return (
         <InspectAddAbnormal  
           onCloseInspectDetail={this.props.onCloseInspectDetail}
-          getDeviceTypeList={this.props.getDeviceTypeList}
           deviceTypeList={this.props.deviceTypeList}
           stationCode={this.props.stationCode}
         />

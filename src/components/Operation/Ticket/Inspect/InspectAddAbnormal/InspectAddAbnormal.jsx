@@ -12,7 +12,6 @@ class InspectHandleForm extends Component {
   static propTypes={
     form: PropTypes.object,
     onCloseInspectDetail: PropTypes.func,
-    getDeviceTypeList: PropTypes.func,
     deviceTypeList: PropTypes.object,
   }
 
