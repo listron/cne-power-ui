@@ -6,7 +6,7 @@ import ReviewForm from './ReviewForm';
 import ProcessForm from './ProcessForm';
 import CheckForm from './CheckForm';
 
-class HandleForm extends Component {
+class DefectHandleForm extends Component {
   static propTypes = {
     onSubmit: PropTypes.func,
     onCancel: PropTypes.func,
@@ -71,4 +71,4 @@ class HandleForm extends Component {
   }  
 }
 
-export default HandleForm;
+export default DefectHandleForm;

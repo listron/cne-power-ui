@@ -1,12 +1,12 @@
 import React,{ Component } from 'react';
 import PropTypes from 'prop-types';
-import BasicInfo from '../DefectBasicInfo/DefectBasicInfo';
-import HandleForm from '../DefectHandleForm/DefectHandleForm';
+import DefectBasicInfo from '../DefectBasicInfo/DefectBasicInfo';
+import DefectHandleForm from '../DefectHandleForm/DefectHandleForm';
 import TimeLines from '../../../../Common/TimeLines';
 import styles from './defectDetailForm.scss';
 import {Icon, Spin} from 'antd';
 
-class DetailForm extends Component {
+class DefectDetailForm extends Component {
   static propTypes = {
     detail: PropTypes.object,
     isFetching: PropTypes.bool,
@@ -98,7 +98,7 @@ class DetailForm extends Component {
     let status = this.props.detail.get('defectStatus');
     if(status !== '0' && status !== '4') {
       return (
-        <HandleForm 
+        <DefectHandleForm 
           commonList={this.props.commonList}
           onSubmit={this.onSubmit}
           onCancel={this.props.onCloseDetail}
@@ -122,7 +122,7 @@ class DetailForm extends Component {
             </div>
             <div className={styles.content}>
               <div className={styles.basic}>
-                <BasicInfo basicInfo={detail} />
+                <DefectBasicInfo basicInfo={detail} />
               </div>
               <div className={styles.right}>
                 <div className={styles.timeLines}>
@@ -142,4 +142,4 @@ class DetailForm extends Component {
   }  
 }
 
-export default DetailForm;
+export default DefectDetailForm;
