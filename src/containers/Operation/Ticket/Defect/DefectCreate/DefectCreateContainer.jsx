@@ -5,6 +5,7 @@ import styles from './style.scss';
 import {
   GET_DEFECTTYPES_SAGA,
   DEFECT_CREATE_SAGA,
+  CHANGE_SHOW_CONTAINER_SAGA
 } from '../../../../../constants/actionTypes/Ticket';
 import {
   GET_STATIONS_SAGA,
@@ -62,7 +63,8 @@ const mapDispatchToProps = (dispatch) => ({
   getDevieceTypes: params => dispatch({ type: GET_DEVICETYPES_SAGA, params }),
   getDevieces: params => dispatch({ type: GET_DEVICES_SAGA, params }),
   getDefectTypes: params => dispatch({ type: GET_DEFECTTYPES_SAGA, params }),
-  onDefectCreateNew: params => dispatch({type: DEFECT_CREATE_SAGA, params})
+  onDefectCreateNew: params => dispatch({type: DEFECT_CREATE_SAGA, params}),
+  onChangeShowContainer: params => dispatch({ type: CHANGE_SHOW_CONTAINER_SAGA, params }),
 });
 
 
