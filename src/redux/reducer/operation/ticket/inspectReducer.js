@@ -61,7 +61,7 @@ var initState = immutable.fromJS({
 const inspectReducer = (state = initState, action) => {
   switch (action.type) {
     case BEGIN_FETCH:
-      return state.set('isfetching', true);
+      return state.set('isFetching', true);
     case CLEAR_INSPECT_STATE:
       return initState;
     case GET_INSPECT_LIST_SUCCESS:

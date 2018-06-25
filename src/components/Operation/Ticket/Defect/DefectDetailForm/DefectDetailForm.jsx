@@ -112,28 +112,6 @@ class DetailForm extends Component {
   render() {
     let detail = this.props.detail;
     return (
-// <<<<<<< HEAD
-//       <div className={styles.defectDetail}>
-//         <div className={styles.header}>
-//           <Icon type="up" onClick={this.props.onPrev} />
-//           <Icon type="down" onClick={this.props.onNext} />
-//           <Icon type="close" onClick={this.props.onCloseDetail} />
-//         </div>
-//         <div className={styles.content}>
-//           <div className={styles.basic}>
-//             <BasicInfo basicInfo={detail} />
-//           </div>
-//           <div className={styles.right}>
-//             <div className={styles.timeLines}>
-//               <Divider>流程信息</Divider>
-//               <TimeLines 
-//                 processData={detail.get("processData")}
-//                 status={detail.get("defectStatus")} />
-//             </div>
-//             <div className={styles.form}>
-//               <Divider>巡检处理</Divider>
-//               {this.renderForm()}
-// =======
       <div className={styles.detailWrap}>
         <Spin spinning={this.props.isFetching} size="large">
           <div className={styles.defectDetail}>
