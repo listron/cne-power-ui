@@ -8,7 +8,7 @@ import Immutable from 'immutable';
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
 
-class List extends Component {  
+class InspectTable extends Component {  
   static propTypes={
     list: PropTypes.object,
     pageNum: PropTypes.number,
@@ -164,7 +164,7 @@ class List extends Component {
     }
 
     return(
-      <div className={styles.inspectList}>
+      <div className={styles.inspectTable}>
         <div className={styles.action}>
           <div>
             <RadioGroup onChange={this.onChangeTab} default="2" value={this.props.status} >
@@ -197,4 +197,4 @@ class List extends Component {
   }
 }
 
-export default List;
+export default InspectTable;

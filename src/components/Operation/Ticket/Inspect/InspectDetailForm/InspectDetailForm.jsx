@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import BasicInfo from '../BasicInfo/BasicInfo';
+import InspectBasicInfo from '../InspectBasicInfo/InspectBasicInfo';
 import TimeLines from '../../../../Common/TimeLines';
-import styles from './detail.scss';
+import styles from './inspectDetailForm.scss';
 import { Icon, Button, Form, Select, Input } from 'antd';
-import HandleForm from '../HandleForm/HandleForm';
+import InspectHandleForm from '../InspectHandleForm/InspectHandleForm';
 
 const FormItem = Form.Item;
 
-class Detail extends Component {
+class InspectDetailForm extends Component {
   static propTypes={
     inspectDetail: PropTypes.object,
     processData: PropTypes.object,
@@ -38,7 +38,7 @@ class Detail extends Component {
     
     if(status === "2"){
       return (
-        <HandleForm  
+        <InspectHandleForm  
           onCloseInspectDetail={this.props.onCloseInspectDetail}
           // getDeviceTypeList={this.props.getDeviceTypeList}
           deviceTypeList={this.props.deviceTypeList}
@@ -65,7 +65,7 @@ class Detail extends Component {
         </div>
         <div className={styles.content} >
           <div className={styles.basic} >
-            <BasicInfo basicInfo={inspectDetail} />
+            <InspectBasicInfo basicInfo={inspectDetail} />
           </div>
           <div className={styles.right} >
             <div className={styles.timeLines}>
@@ -81,4 +81,4 @@ class Detail extends Component {
   }
 }
 
-export default Detail;
+export default InspectDetailForm;

@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import styles from './handleForm.scss';
+import styles from './inspectHandleForm.scss';
 import { Icon, Button, Form, Select, Input } from 'antd';
 import ImgUploader from '../../../../Common/Uploader/ImgUploader';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
-class HandleForm extends Component {
+
+class InspectHandleForm extends Component {
 
   static propTypes={
     form: PropTypes.object,
@@ -65,7 +66,7 @@ class HandleForm extends Component {
     };
     const { getFieldDecorator } = this.props.form;
     return(
-      <div className={styles.handleForm} >
+      <div className={styles.inspectHandleForm} >
         <div>
           <Button icon="plus" onClick={this.showAdd} >添加异常</Button>
           <Button type="primary" >完成巡检</Button>
@@ -157,4 +158,4 @@ class HandleForm extends Component {
   }
 }
 
-export default Form.create()(HandleForm);
+export default Form.create()(InspectHandleForm);

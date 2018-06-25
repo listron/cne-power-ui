@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { Button, Form, DatePicker, Icon, Modal, Select, Input, Radio, Checkbox } from 'antd';
 import PropTypes from 'prop-types';
-import styles from './createForm.scss';
+import styles from './createNewInspect.scss';
 import moment from 'moment';
 import StationSelect from '../../../../Common/StationSelect';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
-class CreateForm extends Component{
+class CreateNewInspect extends Component{
   static propTypes={
     form: PropTypes.object,
     onCancel: PropTypes.func,
@@ -179,4 +179,4 @@ class CreateForm extends Component{
 
 }
 
-export default Form.create()(CreateForm);
+export default Form.create()(CreateNewInspect);

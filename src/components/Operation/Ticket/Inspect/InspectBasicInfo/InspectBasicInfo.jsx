@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import styles from './basicInfo.scss';
+import styles from './inspectBasicInfo.scss';
 import { Card } from 'antd';
 import ImgUploader from '../../../../Common/Uploader/ImgUploader';
 
-class BasicInfo extends Component {
+class InspectBasicInfo extends Component {
   static propTypes = {
     basicInfo: PropTypes.object,
   }
@@ -38,7 +38,7 @@ class BasicInfo extends Component {
 
   render(){ 
     return (
-      <div className={styles.basicInfo} >
+      <div className={styles.inspectBasicInfo} >
         <Card title="基本信息">
           {this.renderBasic()}
         </Card>
@@ -51,4 +51,4 @@ class BasicInfo extends Component {
 
 }
 
-export default BasicInfo;
+export default InspectBasicInfo;
