@@ -45,9 +45,6 @@ class InspectDetail extends Component{
         stationCodes: this.props.inspectDetail.get("stationCode"),
       });
     }
-    // this.props.getDeviceTypeList({
-    //   stationCodes: this.props.inspectDetail.get("stationCode"),
-    // })
   }
 
   componentWillReceiveProps(nextProps){
@@ -112,13 +109,14 @@ class InspectDetail extends Component{
 }
 
 const mapStateToProps = (state) => ({
-  isFetching: state.operation.inspect.get("isFetching"),
-  inspectList: state.operation.inspect.get("inspectList"),
-  error: state.operation.inspect.get("error"),
-  inspectDetail: state.operation.inspect.get("inspectDetail"),
-  inspectId: state.operation.inspect.get("inspectId"),
-  deviceTypeList: state.operation.inspect.get("deviceTypeList"),
-  stationCode: state.operation.inspect.getIn(["inspectDetail","stationCode"]).toString(),
+  isFetching: state.operation.inspect.get('isFetching'),
+  inspectList: state.operation.inspect.get('inspectList'),
+  error: state.operation.inspect.get('error'),
+  inspectDetail: state.operation.inspect.get('inspectDetail'),
+  inspectId: state.operation.inspect.get('inspectId'),
+  commonFetching: state.common.get('commonFetching'),
+  devieceTypes: state.common.get('devieceTypes').toJS(),
+  stationCode: state.operation.inspect.getIn(['inspectDetail','stationCode']).toString(),
 }) 
 
 const mapDispatchToProps = (dispatch) => ({

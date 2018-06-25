@@ -120,9 +120,9 @@ class InspectTable extends Component {
       key: 'startTime',
       sorter: true,
     },{
-      title: '截止时间',
-      dataIndex: 'deadline',
-      key: 'deadline',
+      title: '完成时间',
+      dataIndex: 'checkTime',
+      key: 'checkTime',
       sorter: true,
     },{
       title: '处理进度',
