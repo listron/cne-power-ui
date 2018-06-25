@@ -49,6 +49,7 @@ class DefectList extends Component {
     this.onBatchCheck = this.onBatchCheck.bind(this);
     this.onShowDetail = this.onShowDetail.bind(this);
     this.onSorter = this.onSorter.bind(this);
+    this.onAdd = this.onAdd.bind(this);
   }
 
   componentDidMount() {
@@ -148,6 +149,9 @@ class DefectList extends Component {
     this.props.setDefectId(defectId);
     this.props.onChangeShowContainer('detail');
   }
+  onAdd(){
+    this.props.onChangeShowContainer('creatNew');
+  }
 
   render() {   
     return (
@@ -160,6 +164,7 @@ class DefectList extends Component {
           defectStatusStatistics={this.props.defectStatusStatistics}
           status={this.props.status}
           isFetching={this.props.isFetching}
+          onAdd={this.onAdd}
           onChangePage={this.onChangePage}
           onChangePageSize={this.onChangePageSize}
           onChangeStatus={this.onChangeStatus}

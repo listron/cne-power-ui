@@ -1,4 +1,9 @@
 import { call, put, takeLatest, all } from 'redux-saga/effects';
+import {
+  watchGetStations,
+  watchGetDeviceTypes,
+  watchGetDevices,
+} from './commonSaga';
 import { 
   watchSendCode, 
   watchLogin, 
@@ -25,6 +30,8 @@ import {
   watchCloseDefect,
   watchHandleDefect,
   watchCheckDefect,
+  watchGetDefectTypes,
+  watchCreateNewDefect,
   watchClearDefect,
 } from './operation/ticket/defect'
 
@@ -79,6 +86,9 @@ function* watchGetPosts() {
 // root saga
 export default function* rootSaga() {
   yield all([
+    watchGetStations(),
+    watchGetDeviceTypes(),
+    watchGetDevices(),
     watchGetPosts(),
     // watchGetCompInfo(),
     watchLogin(),
@@ -109,6 +119,8 @@ export default function* rootSaga() {
     watchHandleDefect(),
     watchCheckDefect(),
     watchChangeShowContainer(),
+    watchGetDefectTypes(),
+    watchCreateNewDefect(),
     watchClearDefect(),
     // 巡检
     watchGetInspectList(),
@@ -117,5 +129,6 @@ export default function* rootSaga() {
     watchAddInspectAbnormal(),
     watchGetTotalData(),
     watchClearInspect(),
+    //ticket
   ])
 } 

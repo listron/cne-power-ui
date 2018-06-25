@@ -8,6 +8,10 @@ import {
   SET_SELECTED_DEFECT,
   GET_DEFECT_DETAIL_SUCCESS,
   GET_DEFECT_DETAIL_FAIL,
+  GET_DEFECTTYPES_SAGA_SUCCESS,
+  GET_DEFECTTYPES_SAGA_FAIL,
+  DEFECT_CREATE_SAGA_SUCCESS,
+  DEFECT_CREATE_SAGA_FAIL,
   GET_DEFECT_LANGUAGE_SUCCESS,
   GET_DEFECT_LANGUAGE_FAIL,
   CLEAR_DEFECT_STATE,
@@ -53,7 +57,9 @@ var initState = immutable.fromJS({
       status: '1'
     },
     processData: []
-  }
+  },
+  defectTypes: [],
+  createDefectParams: {},
 });
 
 const defectReducer = (state = initState, action) => {
@@ -87,6 +93,14 @@ const defectReducer = (state = initState, action) => {
     case GET_DEFECT_DETAIL_FAIL:
     case GET_DEFECT_LANGUAGE_FAIL:
       return state.set('error', immutable.fromJS(action.error));
+    case GET_DEFECTTYPES_SAGA_SUCCESS:
+      return state.set('isFetching', false)
+                  .set('defectTypes', action.data);
+    case GET_DEFECTTYPES_SAGA_FAIL:
+    case DEFECT_CREATE_SAGA_SUCCESS:
+      return state.set('isFetching', false)
+                  .set('createDefectParams',action.data);
+    case DEFECT_CREATE_SAGA_FAIL:
   }
 
   return state;

@@ -1,11 +1,12 @@
 import { combineReducers } from 'redux'
 
+import common from './commonReducer';
 import users from './users';
 import posts from './posts';
 import login from './login';
 import operation from './operation';
 
-const appReducer = (() => combineReducers({ users, posts,login, operation }))();
+const appReducer = (() => combineReducers({common, users, posts,login, operation }))();
 
 // ========================= 单独一个文件的写法 =============================
 /* import { 
