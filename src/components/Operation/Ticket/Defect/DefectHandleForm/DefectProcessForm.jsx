@@ -8,7 +8,7 @@ const FormItem = Form.Item;
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
 
-class ProcessForm extends Component {
+class DefectProcessForm extends Component {
   static propTypes = {
     form: PropTypes.object,
     commonList: PropTypes.object,
@@ -116,4 +116,4 @@ class ProcessForm extends Component {
   }  
 }
 
-export default Form.create()(ProcessForm);
+export default Form.create()(DefectProcessForm);

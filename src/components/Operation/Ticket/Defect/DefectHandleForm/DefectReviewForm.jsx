@@ -8,7 +8,7 @@ const FormItem = Form.Item;
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
 
-class ReviewForm extends Component {
+class DefectReviewForm extends Component {
   static propTypes = {
     form: PropTypes.object,
     onSubmit: PropTypes.func,
@@ -106,4 +106,4 @@ class ReviewForm extends Component {
   }  
 }
 
-export default Form.create()(ReviewForm);
+export default Form.create()(DefectReviewForm);

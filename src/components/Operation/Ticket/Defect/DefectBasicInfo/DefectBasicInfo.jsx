@@ -5,7 +5,7 @@ import {Card} from 'antd';
 import {getLevel} from '../../../../../constants/ticket';
 import ImgUploader from '../../../../Common/Uploader/ImgUploader';
 
-class BasicInfo extends Component {
+class DefectBasicInfo extends Component {
   static propTypes = {
     basicInfo: PropTypes.object
   }
@@ -87,4 +87,4 @@ class BasicInfo extends Component {
   }  
 }
 
-export default BasicInfo;
+export default DefectBasicInfo;
