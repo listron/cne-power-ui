@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Table, Button, Radio, Icon } from 'antd';
 import { getStatus } from '../../../../../constants/ticket';
-import styles from './style.scss';
+import styles from './inspectTable.scss';
 import Immutable from 'immutable';
 
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
 
-class List extends Component {  
+class InspectTable extends Component {  
   static propTypes={
     list: PropTypes.object,
     pageNum: PropTypes.number,
@@ -16,27 +16,35 @@ class List extends Component {
     total: PropTypes.number,
     onChangePage: PropTypes.func,
     onChangePageSize: PropTypes.func,
-    getInspectionList: PropTypes.func,
+    getInspectList: PropTypes.func,
     loading: PropTypes.bool,
     status: PropTypes.string,
     onChangeStatus: PropTypes.func,
     inspectStatusStatistics: PropTypes.any,
+    onChangeSort: PropTypes.func,
+    onShowDetail: PropTypes.func,
+    onAdd: PropTypes.func,
   }
 
   static defaultProps={
     list: Immutable.fromJS([]),
     pageNum: 1,
-
   }
 
   constructor(props){
     super(props);
     this.state={
       selectedRowKeys: [],
-      currentSelectedStatus: null,      
+      currentSelectedStatus: null,
     }
     this.onChangeTab = this.onChangeTab.bind(this);
     this.onChangeTable = this.onChangeTable.bind(this);
+    this.onChangeSort = this.onChangeSort.bind(this);
+    this.onAdd = this.onAdd.bind(this);
+  }
+
+  onAdd(){
+
   }
 
   onChangeTab(e){
@@ -44,7 +52,40 @@ class List extends Component {
   }
 
   onChangeTable(pagination, filter, sorter){
+    let pageNum = pagination.current - 1;
+    let pageSize = pagination.pageSize;
+    let params = {
+      "stationType": "2",
+      "status": this.props.status,
+      "pageNum": pageNum,
+      "pageSize": pageSize,
+      "sort": this.onChangeSort(pageNum, sorter),
+    }
+    this.props.getInspectList(params);
+  }
 
+  onChangeSort(pageNum, sorter){
+    var sortField = 0;
+    var sortMode = sorter.order === "ascend" ? 0 : 1;
+    switch (sorter.columnKey){
+      case "inspectName":
+        sortField = 0;
+        break;
+      case "stationName":
+        sortField = 1;
+        break;
+      case "startTime":
+        sortField = 2;
+        break;
+      case "deadline":
+        sortField = 3;
+        break;
+      case "inspectStatus":
+        sortField = 4;
+        break;
+    }
+    var sortRule = sortField + "," +sortMode;
+    return sortRule;
   }
 
   render(){
@@ -58,12 +99,6 @@ class List extends Component {
       showSizeChanger: true,
       current: this.props.pageNum,
       pageSize: this.props.pageSize,
-      onShowSizeChange: (current, pageSize) => {
-        this.props.onChangePageSize(current,pageSize);
-      },
-      onChange: (current) => {
-        this.props.onChangePage(current);
-      }
     } 
     const columns = [{
       title: '巡检名称',
@@ -95,18 +130,18 @@ class List extends Component {
       key: 'inspectStatus',
       sorter: true,
       render: (value, record, index) => (
-        <div>
+        <div className={styles.inspectStatus} >
           <span>{getStatus(value)}</span>
-          <div>
-            { record.isOvertime === 0 ? <span>超时</span> : null }
-            { record.isOvertime === 0 ? <span>超时</span> : null }
+          <div className={styles.warning} >
+            { record.isOvertime === '0' ? <span style={{ color: '#c80000' }}>超时</span> : null }
+            { record.isOvertime === '0' ? <span style={{ color: '#e78d14' }}>协调</span> : null }
           </div>
         </div>
       ),
     },{
       title: '查看',
       render: (text, record) => (
-        <span><Icon type="eye-o" /></span>
+        <span><Icon type="eye-o" onClick={() => {this.props.onShowDetail(record.inspectId)}} /></span>
       ),
     }]
     const {selectedRowKeys} = this.state;
@@ -129,7 +164,7 @@ class List extends Component {
     }
 
     return(
-      <div className={styles.bugTicket}>
+      <div className={styles.inspectTable}>
         <div className={styles.action}>
           <div>
             <RadioGroup onChange={this.onChangeTab} default="2" value={this.props.status} >
@@ -156,12 +191,10 @@ class List extends Component {
           onChange={this.onChangeTable}
           loading={this.props.loading}
           pagination= {pagination}
-          bordered={true}
-          scroll={{ y: 600 }}
         />
       </div>
     )
   }
 }
 
-export default List;
+export default InspectTable;

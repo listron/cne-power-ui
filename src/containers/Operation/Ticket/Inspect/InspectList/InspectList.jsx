@@ -1,8 +1,13 @@
 import React, { Component } from 'react';
-import List from '../../../../../components/Operation/Ticket/Inspect/List';
-import { GET_INSPECT_LIST_SAGA } from "../../../../../constants/actionTypes/Ticket";
+import InspectTable from '../../../../../components/Operation/Ticket/Inspect/InspectTable/InspectTable';
+import { 
+  GET_INSPECT_LIST_SAGA, 
+  SET_INSPECT_ID_SAGA,
+  CHANGE_SHOW_CONTAINER_SAGA,
+ } from "../../../../../constants/actionTypes/Ticket";
 import { connect } from "react-redux";
 import PropTypes from 'prop-types';
+
 class InspectList extends Component {
   static propTypes={
     inspectList: PropTypes.object,
@@ -14,14 +19,16 @@ class InspectList extends Component {
     error: PropTypes.object,
     status: PropTypes.string,
     inspectStatusStatistics: PropTypes.object,
+    setInspectId: PropTypes.func,
+    onShowInspectDetail: PropTypes.func,
+    onChangeShowContainer: PropTypes.func,
   }
 
   constructor(props,context) {
     super(props);
     this.state = {};
-    this.onChangePage = this.onChangePage.bind(this);
-    this.onChangePageSize = this.onChangePageSize.bind(this);
     this.onChangeStatus = this.onChangeStatus.bind(this);
+    this.onShowDetail = this.onShowDetail.bind(this);
   }
   
   componentDidMount(){
@@ -39,53 +46,36 @@ class InspectList extends Component {
       let params = {
         stationType: "2",
         status: status,
-        pageNum: this.props.pageNum - 1,
-        pageSize: this.props.pageSize,
-      }
-      this.props.getInspectList(params);
-    }
-  }
-
-  onChangePage(page){
-    if(page !== this.props.pageNum){
-      let params={
-        stationType: "2",
-        status: this.props.status,
-        pageNum: page - 1,
-        pageSize: this.props.pageSize,
-      }
-      this.props.getInspectList(params);
-    }
-  }
-
-  onChangePageSize(current, pagesize){
-    if(pagesize !== this.props.pageSize){
-      let params = {
-        stationType: "2",
-        status: this.props.status,
         pageNum: 0,
-        pageSize: pagesize,
+        pageSize: this.props.pageSize,
       }
       this.props.getInspectList(params);
     }
+  }
+
+  onShowDetail(inspectId){
+    this.props.setInspectId(inspectId);
+    this.props.onChangeShowContainer({container: 'detail'});
   }
 
   render() {
     return (
       <div>
-        <div>巡检处理页面</div>
-          <List 
-            list={this.props.inspectList} 
-            pageNum={this.props.pageNum}
-            pageSize={this.props.pageSize}
-            total={this.props.total}
-            status={this.props.status}
-            isFetching={this.props.isFetching}
-            onChangePage={this.onChangePage}
-            onChangePageSize={this.onChangePageSize}
-            onChangeStatus={this.onChangeStatus}
-            inspectStatusStatistics={this.props.inspectStatusStatistics}
-          />
+        <InspectTable 
+          list={this.props.inspectList}
+          pageNum={this.props.pageNum}
+          pageSize={this.props.pageSize}
+          total={this.props.total}
+          status={this.props.status}
+          isFetching={this.props.isFetching}
+          onChangeSort={this.onChangeSort}
+          onChangePage={this.onChangePage}
+          onChangePageSize={this.onChangePageSize}
+          onChangeStatus={this.onChangeStatus}
+          onShowDetail={this.onShowDetail}
+          inspectStatusStatistics={this.props.inspectStatusStatistics}
+          getInspectList={this.props.getInspectList}
+        />
       </div>
     );
   }
@@ -104,6 +94,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   getInspectList: params => dispatch({ type: GET_INSPECT_LIST_SAGA, params }),
+  setInspectId: params => dispatch({ type: SET_INSPECT_ID_SAGA, params }),
+  onChangeShowContainer: params => dispatch({ type: CHANGE_SHOW_CONTAINER_SAGA, params}),
 })
-
 export default connect(mapStateToProps,mapDispatchToProps)(InspectList);

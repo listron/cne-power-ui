@@ -36,9 +36,7 @@ class DefectCreate extends Component {
   }
   
 
-  render() {  
-    console.log(this.props.stations);
-    console.log(this.props.showContainer);
+  render() {
     return (
       <div className={styles.defectCreate} >
         <h3><span>缺陷创建</span>    <span onClick={this.onChangeShowContainer} className={styles.close}>关闭x</span></h3>

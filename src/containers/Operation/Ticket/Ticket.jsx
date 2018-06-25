@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {Tabs} from 'antd';
 import Defect from './Defect/Defect';
-import Inspect from './Inspect';
+import Inspect from './Inspect/Inspect';
 import { 
   CHANGE_SHOW_CONTAINER_SAGA,
   CLEAR_DEFECT_STATE_SAGA,
@@ -12,8 +12,8 @@ import {
   GET_INSPECT_LIST_SAGA,
  } from '../../../constants/actionTypes/Ticket';
 import styles from './ticket.scss';
-const TabPane = Tabs.TabPane;
 
+const TabPane = Tabs.TabPane;
 
 class Ticket extends Component {
   static propTypes = {
@@ -58,6 +58,18 @@ class Ticket extends Component {
       }
       this.props.getDefectList(params);//获取缺陷列表
     }
+  }
+
+  onShowInspectDetail(){
+    this.setState({
+      showInspectDetail: true
+    })
+  }
+
+  onCloseInspectDetail(){
+    this.setState({
+      showInspectDetail: false
+    })
   }
 
   render() {
