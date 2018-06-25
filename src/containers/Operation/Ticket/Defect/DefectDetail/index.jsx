@@ -88,7 +88,7 @@ class DefectDetail extends Component {
   }
 
   onCloseDetail() {
-    this.props.onChangeShowContainer('list');
+    this.props.onChangeShowContainer({container: 'list'});
   }
 
   render() {   

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import DefectList from './DefectList';
 import DefectDetail from './DefectDetail';
-import DefectCreate from './DefectCreate';
+import DefectCreateContainer from './DefectCreate/DefectCreateContainer';
 
 
 class Defect extends Component {
@@ -25,7 +25,7 @@ class Defect extends Component {
       <div style={{display:"flex", flex: 1}}>
         {this.props.showContainer === 'detail' && (<DefectDetail />)}
         {this.props.showContainer === 'list' && (<DefectList />)}
-        {this.props.showContainer === 'creatNew' && (<DefectCreate onChangeShowContainer={this.props.onChangeShowContainer} />)}
+        {this.props.showContainer === 'creatNew' && (<DefectCreateContainer onChangeShowContainer={this.props.onChangeShowContainer} />)}
       </div>
     );
   }

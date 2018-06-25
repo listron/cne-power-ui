@@ -1,0 +1,11 @@
+
+
+.defectCreate {
+  background-color: lightblue;
+  .close{
+    cursor: pointer;
+    &:hover{
+      background-color: lightgreen;
+    }
+  }
+}
