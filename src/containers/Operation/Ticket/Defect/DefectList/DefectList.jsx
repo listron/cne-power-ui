@@ -133,9 +133,7 @@ class DefectList extends Component {
   }
 
   onBatchClose(ids) {
-    this.props.onBatchClose({
-      defectID: ids.join(',')
-    });
+    this.props.onBatchClose({defectID: ids.join(',')});
   }
 
   onBatchCheck(ids, checkResult) {
