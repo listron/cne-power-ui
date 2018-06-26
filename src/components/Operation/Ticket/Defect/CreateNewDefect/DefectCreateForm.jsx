@@ -5,13 +5,12 @@ import ImgUploader from '../../../../Common/Uploader/ImgUploader';
 import FormHanleButtons from './FormHanleButtons';
 import SolveTextArea from './SolveTextArea';
 import ReplaceParts from './ReplaceParts';
-import { Form, Icon, Input, Button, Select } from 'antd';
+import { Form, Input, Button, Select } from 'antd';
 import pathConfig from '../../../../../constants/path';
 import styles from './newDefect.scss';
 const { TextArea } = Input;
 const FormItem = Form.Item;
 const Option = Select.Option;
-const ButtonGroup = Button.Group;
 
 class TmpForm extends Component {
   static propTypes = {
@@ -22,12 +21,35 @@ class TmpForm extends Component {
     getDevieceTypes: PropTypes.func,
     getDefectTypes: PropTypes.func,
     onDefectCreateNew: PropTypes.func,
+    showContainer: PropTypes.string,
     onChangeShowContainer: PropTypes.func,
+    defectDetail: PropTypes.object,
   };
   constructor(props){
     super(props);
     this.state = {
       defectFinished: false
+    }
+  }
+  componentDidMount(){
+    const { showContainer, form, defectDetail } = this.props;
+    if(showContainer === 'edit'){
+      console.log(defectDetail);      
+      console.log(showContainer);
+      //   form.setFields({
+      //     stations: [],
+      //     deviceTypeCode:0,
+      //     defectTypeCode:0,
+      //     defectLevel:0,
+      //     defectDescribe:0,
+      //     imgDescribe:0,
+      //     defectSolveResult:0,
+      //     defectSolveInfo:0,
+      //     imgHandle:0,
+      //     replaceParts:0
+      //   })
+    }else{
+      form.resetFields()
     }
   }
   onStationSelected = (stations) =>{
@@ -52,7 +74,7 @@ class TmpForm extends Component {
         // stationType:20--光伏---10风
         let {stationCode,stationType} = values.stations[0];
         stationType = stationType/10 - 1;
-        let deviceCode = '';
+        let deviceCode = '503M202M4M1';
         let partitionCode = values.stations[0].zoneCode;
         let partitionName = values.stations[0].zoneName;
         let rotatePhotoArray = [];
@@ -79,15 +101,15 @@ class TmpForm extends Component {
           photoSolveAddress,
           rotatePhoto,
         };
-        console.log(params)
         this.props.onDefectCreateNew(params);
       }
     });
   }
   
+  
   render() {
     const { defectFinished } = this.state;
-    const {stations, deviceTypes, defectTypes} = this.props;
+    const {stations, deviceTypes, defectTypes } = this.props;
     const {getFieldDecorator} = this.props.form;
     const formItemLayout = {
       labelCol: {
@@ -105,6 +127,7 @@ class TmpForm extends Component {
         <FormItem label={'电站名称：'} {...formItemLayout}>
           {getFieldDecorator('stations', {
             rules: [{ required: true, message: '请选择电站' }],
+            initialValue: [],
           })(
             <StationSelect data={stations} multiple={false} onOK={this.onStationSelected} />
           )}
@@ -112,8 +135,9 @@ class TmpForm extends Component {
         <FormItem label={'设备类型：'} {...formItemLayout}>
           {getFieldDecorator('deviceTypeCode', {
             rules: [{ required: true, message: '请选择设备类型' }],
+            initialValue: null,
           })(
-            <Select onChange={(value)=>console.log(value)} placeholder={'请选择设备类型'} disabled={deviceTypes.length === 0}>
+            <Select placeholder={'请选择设备类型'} disabled={deviceTypes.length === 0}>
               {deviceTypes.map(e=>(<Option key={e.deviceTypeCode} value={e.deviceTypeCode}>{e.deviceTypeName}</Option>))}
             </Select>
           )}
@@ -121,8 +145,9 @@ class TmpForm extends Component {
         <FormItem label={'缺陷类型：'} {...formItemLayout}>
           {getFieldDecorator('defectTypeCode', {
             rules: [{ required: true, message: '请选择缺陷类型' }],
+            initialValue: null,
           })(
-            <Select onChange={(value)=>console.log(value)} placeholder={'请选择缺陷类型'} disabled={defectTypes.length === 0}>
+            <Select placeholder={'请选择缺陷类型'} disabled={defectTypes.length === 0}>
               {defectTypes.map(e=>(<Option key={e.defectTypeCode} value={e.defectTypeCode}>{e.defectTypeName}</Option>))}
             </Select>
           )}
@@ -130,6 +155,7 @@ class TmpForm extends Component {
         <FormItem  label={'缺陷级别：'} {...formItemLayout}>
           {getFieldDecorator('defectLevel', {
             rules: [{ required: true, message: '请选择缺陷级别' }],
+            initialValue: null,
           })(
             <Select placeholder={'请选择缺陷级别'} disabled={defectTypes.length === 0}>
               <Option value={1}>一级</Option>
@@ -142,6 +168,7 @@ class TmpForm extends Component {
         <FormItem label={'缺陷描述：'} {...formItemLayout}>
           {getFieldDecorator('defectDescribe', {
             rules: [{ required: true, message: '请输入缺陷描述' }],
+            initialValue: '',
           })(
             <TextArea placeholder={'请输入缺陷描述'} />
           )}
@@ -167,6 +194,7 @@ class TmpForm extends Component {
         {!defectFinished && <FormItem label={'处理建议：'} {...formItemLayout}>
           {getFieldDecorator('defectSolveInfo', {
             rules: [{ required: true, message: '请输入处理建议' }],
+            initialValue: '',
           })(
             <TextArea placeholder={'请描述处理建议，不超过80字'} />
           )}
@@ -174,6 +202,7 @@ class TmpForm extends Component {
         {defectFinished && <FormItem label={'处理过程：'} {...formItemLayout}>
           {getFieldDecorator('defectSolveInfo', {
             rules: [{ required: true, message: '请输入处理过程' }],
+            initialValue: '',
           })(
             <SolveTextArea />
           )}
@@ -190,6 +219,7 @@ class TmpForm extends Component {
         {defectFinished && <FormItem label={'更换部件：'} {...formItemLayout}>
           {getFieldDecorator('replaceParts', {
             rules: [{ required: false, message: '填写更换部件信息' }],
+            initialValue: '',
           })(
             <ReplaceParts />
           )}

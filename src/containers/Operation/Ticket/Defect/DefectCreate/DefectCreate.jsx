@@ -55,6 +55,7 @@ const mapStateToProps = (state) => ({
     devices: state.common.get('devices').toJS(),
     error: state.operation.defect.get('error'),
     defectTypes: state.operation.defect.get('defectTypes').toJS(),
+    defectDetail: state.operation.defect.get('defectDetail').toJS(),
 });
 
 const mapDispatchToProps = (dispatch) => ({

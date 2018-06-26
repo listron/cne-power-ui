@@ -14,7 +14,6 @@ class ReplaceParts extends Component {
     }
   }
   onCheckChange = (checked) => {
-    console.log(checked);
     this.setState({
       checked
     })
