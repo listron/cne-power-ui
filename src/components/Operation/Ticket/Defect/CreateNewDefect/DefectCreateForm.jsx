@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import StationSelect from '../../../../Common/StationSelect';
 import ImgUploader from '../../../../Common/Uploader/ImgUploader';
+import FormHanleButtons from './FormHanleButtons';
+import SolveTextArea from './SolveTextArea';
 import { Form, Icon, Input, Button, Select } from 'antd';
 import pathConfig from '../../../../../constants/path';
 import styles from './newDefect.scss';
@@ -22,6 +24,9 @@ class TmpForm extends Component {
   };
   constructor(props){
     super(props);
+    this.state = {
+      defectFinished: false
+    }
   }
   onStationSelected = (stations) =>{
     const stationCodes = (stations && stations[0] && stations[0].stationCode) || 0;
@@ -29,6 +34,14 @@ class TmpForm extends Component {
     const stationType = tmpStationType===20?1:tmpStationType===10?0:2;
     this.props.getDevieceTypes({stationCodes})
     this.props.getDefectTypes({stationType})
+  }
+  onCancelCreat = () => {
+    console.log('cancel')
+  }
+  onDefectFinishChange = (defectFinished) => {
+    this.setState({
+      defectFinished
+    })
   }
   onDefectCreat = () => {
     this.props.form.validateFieldsAndScroll((err, values) => {
@@ -39,6 +52,7 @@ class TmpForm extends Component {
   }
   
   render() {
+    const { defectFinished } = this.state;
     const {stations, deviceTypes, defectTypes} = this.props;
     const {getFieldDecorator} = this.props.form;
     const formItemLayout = {
@@ -52,7 +66,7 @@ class TmpForm extends Component {
       },
     };
     return (
-      <Form onSubmit={this.handleSubmit}>
+      <Form>
         <h3>基本信息</h3>
         <FormItem label={'电站名称：'} {...formItemLayout}>
           {getFieldDecorator('stationCode', {
@@ -83,7 +97,7 @@ class TmpForm extends Component {
           {getFieldDecorator('defectLevel', {
             rules: [{ required: true, message: '请选择缺陷级别' }],
           })(
-            <Select onChange={(value)=>console.log(value)} placeholder={'请选择缺陷级别'} disabled={defectTypes.length === 0}>
+            <Select placeholder={'请选择缺陷级别'} disabled={defectTypes.length === 0}>
               <Option value={1}>一级</Option>
               <Option value={2}>二级</Option>
               <Option value={3}>三级</Option>
@@ -95,7 +109,7 @@ class TmpForm extends Component {
           {getFieldDecorator('defectDescribe', {
             rules: [{ required: true, message: '请输入缺陷描述' }],
           })(
-            <TextArea onChange={(value)=>console.log(value)} placeholder={'请输入缺陷描述'} />
+            <TextArea placeholder={'请输入缺陷描述'} />
           )}
         </FormItem>
         <FormItem label={'添加图片：'} {...formItemLayout}>
@@ -109,20 +123,25 @@ class TmpForm extends Component {
         <FormItem label={'处理结果：'} {...formItemLayout}>
           {getFieldDecorator('defectSolveResult', {
             rules: [{ required: true, message: '选择处理结果' }],
+            initialValue: '1',
           })(
-            <ButtonGroup>
-              <Button onClick={()=>console.log('未解决')}>未解决</Button>
-              <Button onClick={()=>console.log('已经解决')}>已解决</Button>
-            </ButtonGroup>
+            <FormHanleButtons onDefectFinishChange={this.onDefectFinishChange} />
           )}
         </FormItem>
-        <FormItem label={'处理建议：'} {...formItemLayout}>
+        {!defectFinished && <FormItem label={'处理建议：'} {...formItemLayout}>
           {getFieldDecorator('defectSolveInfo', {
             rules: [{ required: true, message: '请输入处理建议' }],
           })(
-            <TextArea onChange={(value)=>console.log(value)} placeholder={'请描述处理建议，不超过80字'} />
+            <TextArea placeholder={'请描述处理建议，不超过80字'} />
           )}
-        </FormItem>
+        </FormItem>}
+        {defectFinished && <FormItem label={'处理过程：'} {...formItemLayout}>
+          {getFieldDecorator('defectSolveInfo', {
+            rules: [{ required: true, message: '请输入处理过程' }],
+          })(
+            <SolveTextArea />
+          )}
+        </FormItem>}
         <FormItem label={'添加照片：'} {...formItemLayout}>
           {getFieldDecorator('imgHandle', {
             rules: [{ required: false, message: '请上传图片' }],
@@ -130,15 +149,8 @@ class TmpForm extends Component {
             <ImgUploader uploadPath={`${pathConfig.basePaths.APIBasePath}${pathConfig.commonPaths.imgUploads}`} editable={true} />
           )}
         </FormItem>
-        <FormItem label={'处理过程：'} {...formItemLayout}>
-          {getFieldDecorator('defectSolveInfo', {
-            rules: [{ required: true, message: '请输入处理过程' }],
-          })(
-            <TextArea onChange={(value)=>console.log(value)} placeholder={'请描述处理过程，不超过80字'} />
-          )}
-        </FormItem>
         <div>
-          <Button>取消</Button>
+          <Button onClick={this.onCancelCreat}>取消</Button>
           <Button onClick={this.onDefectCreat}>提交</Button>
         </div>
       </Form>
