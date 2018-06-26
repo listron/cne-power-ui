@@ -21,6 +21,7 @@ class TmpForm extends Component {
     defectTypes: PropTypes.array,
     getDevieceTypes: PropTypes.func,
     getDefectTypes: PropTypes.func,
+    onDefectCreateNew: PropTypes.func,
     onChangeShowContainer: PropTypes.func,
   };
   constructor(props){
@@ -47,7 +48,39 @@ class TmpForm extends Component {
   onDefectCreat = () => {
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        console.log('Received values of form: ', values);
+        // 电站类型(0:风电，1光伏，2：全部)
+        // stationType:20--光伏---10风
+        let {stationCode,stationType} = values.stations[0];
+        stationType = stationType/10 - 1;
+        let deviceCode = '';
+        let partitionCode = values.stations[0].zoneCode;
+        let partitionName = values.stations[0].zoneName;
+        let rotatePhotoArray = [];
+        let photoAddress = values.imgDescribe.map(e=>{
+          rotatePhotoArray.push(`${e.response},${e.rotate}`);
+          return e.response
+        }).join(',');
+        let photoSolveAddress = values.imgHandle.map(e=>{
+          rotatePhotoArray.push(`${e.response},${e.rotate}`);
+          return  e.response
+        }).join(',');
+        let rotatePhoto = rotatePhotoArray.join(';');
+        delete values.stations;
+        delete values.imgDescribe;
+        delete values.imgHandle;
+        let params = {
+          ...values,
+          stationCode,
+          stationType,
+          deviceCode,
+          partitionCode,
+          partitionName,
+          photoAddress,
+          photoSolveAddress,
+          rotatePhoto,
+        };
+        console.log(params)
+        this.props.onDefectCreateNew(params);
       }
     });
   }
@@ -70,7 +103,7 @@ class TmpForm extends Component {
       <Form>
         <h3>基本信息</h3>
         <FormItem label={'电站名称：'} {...formItemLayout}>
-          {getFieldDecorator('stationCode', {
+          {getFieldDecorator('stations', {
             rules: [{ required: true, message: '请选择电站' }],
           })(
             <StationSelect data={stations} multiple={false} onOK={this.onStationSelected} />
