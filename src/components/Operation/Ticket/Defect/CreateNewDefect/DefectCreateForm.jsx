@@ -4,6 +4,7 @@ import StationSelect from '../../../../Common/StationSelect';
 import ImgUploader from '../../../../Common/Uploader/ImgUploader';
 import FormHanleButtons from './FormHanleButtons';
 import SolveTextArea from './SolveTextArea';
+import ReplaceParts from './ReplaceParts';
 import { Form, Icon, Input, Button, Select } from 'antd';
 import pathConfig from '../../../../../constants/path';
 import styles from './newDefect.scss';
@@ -116,7 +117,7 @@ class TmpForm extends Component {
           {getFieldDecorator('imgDescribe', {
             rules: [{ required: false, message: '请上传图片' }],
           })(
-            <ImgUploader uploadPath={`${pathConfig.basePaths.APIBasePath}${pathConfig.commonPaths.imgUploads}`} editable={true} />
+            <ImgUploader  imgStyle={{width:'50px',height:'50px'}} uploadPath={`${pathConfig.basePaths.APIBasePath}${pathConfig.commonPaths.imgUploads}`} editable={true} />
           )}
         </FormItem>
         <h3>处理信息</h3>
@@ -146,7 +147,14 @@ class TmpForm extends Component {
           {getFieldDecorator('imgHandle', {
             rules: [{ required: false, message: '请上传图片' }],
           })(
-            <ImgUploader uploadPath={`${pathConfig.basePaths.APIBasePath}${pathConfig.commonPaths.imgUploads}`} editable={true} />
+            <ImgUploader imgStyle={{width:'50px',height:'50px'}} uploadPath={`${pathConfig.basePaths.APIBasePath}${pathConfig.commonPaths.imgUploads}`} editable={true} />
+          )}
+        </FormItem>
+        <FormItem label={'更换部件：'} {...formItemLayout}>
+          {getFieldDecorator('replaceParts', {
+            rules: [{ required: false, message: '填写更换部件信息' }],
+          })(
+            <ReplaceParts />
           )}
         </FormItem>
         <div>

@@ -117,7 +117,7 @@ class ImgUploader extends Component {
   render() {
     const authData = getCookie('authData');
     const { imageListShow, currentImgIndex } = this.state;
-    const { uploadPath, max,  data, editable } = this.props;
+    const { uploadPath, max,  data, editable, imgStyle } = this.props;
 		const imageProps = {
 			action: `${uploadPath}`,
       onChange: this.handleUpload,
@@ -146,6 +146,7 @@ class ImgUploader extends Component {
           ))}
         {editable && <Upload
           className={styles.loaderHandler}
+          style={imgStyle}
           { ...imageProps }
         >
           {(data && data.length >= max) ? null : uploadButton}
