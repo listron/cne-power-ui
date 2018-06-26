@@ -6,7 +6,7 @@ import {setCookie} from '../../utils';
 import Config from '../../constants/config';
 import Path from '../../constants/path';
 import {
-  BEGIN_FETCH,
+  TICKET_FETCH,
   BEGIN_COUNT,
   STOP_TASK,
   UPDATE_COUNT,
@@ -49,7 +49,7 @@ import {
 //根据域名获取企业信息
 function* getCompInfo(action) {
   let url = Config.APIBasePath + Path.APISubPaths.getCompInfo;
-  yield put({ type: BEGIN_FETCH });
+  yield put({ type: TICKET_FETCH });
   try {
     const response = yield call(axios.post, url, {domain: action.params.domain});
     if(response.data.success){
@@ -69,7 +69,7 @@ function* login(action){
   // let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.login;
   let url = Config.TokenBasePath;
   // Content-Type: application/x-www-form-urlencoded; charset=UTF-8
-  yield put({ type: BEGIN_FETCH });
+  yield put({ type: TICKET_FETCH });
   try{
     const response = yield call(axios, {
       method: 'post',
@@ -99,7 +99,7 @@ function* login(action){
 // //验证手机号（修改密码）
 // function* checkPhone(action){
 //   let url = Config.APIBasePath + Path.APISubPaths.checkPhone;
-//   yield put({ type: BEGIN_FETCH });
+//   yield put({ type: TICKET_FETCH });
 //   try{
 //     const response = yield call(axios.post, url, {phone:action.parmas});
 //     if (response.data.success){//手机号未注册，不能修改密码
@@ -140,7 +140,7 @@ function* sendCode(action){
 //验证验证码
 function* checkCode(action){
   let url = Config.APIBasePath + Path.APISubPaths.checkCode;
-  yield put({ type: BEGIN_FETCH });
+  yield put({ type: TICKET_FETCH });
   try{    
     const response = yield call(axios.post,url,action.parmas);
     if (response.data.success){
@@ -161,7 +161,7 @@ function* checkCode(action){
 //修改密码
 function* changePSW(action){
   let url = Config.APIBasePath + Path.APISubPaths.changePassword;
-  yield put({ type: BEGIN_FETCH });
+  yield put({ type: TICKET_FETCH });
   try{
     const response = yield call(axios.post,url,action.parmas);
     if (response.data.success){
@@ -178,7 +178,7 @@ function* changePSW(action){
 //通过link获取企业信息
 function* getComInfoSu(action){
   let url = Config.APIBasePath + Path.APISubPaths.getCompInfoBylink;
-  yield put({ type: BEGIN_FETCH });
+  yield put({ type: TICKET_FETCH });
   try{
     const response = yield call(axios.post,url,{linkCode:action.parmas});
     if (response.data.success){
@@ -194,7 +194,7 @@ function* getComInfoSu(action){
 // // 验证手机号(注册)
 // function* checkPhoneSU(action){
 //   let url = Config.APIBasePath + Path.APISubPaths.checkPhone;
-//   yield put({ type: BEGIN_FETCH });
+//   yield put({ type: TICKET_FETCH });
 //   try{
 //     const response = yield call(axios.post,url,{phone:action.parmas});
 //     if (response.data.success){//手机号未注册，可以注册，发送验证码
@@ -213,7 +213,7 @@ function* getComInfoSu(action){
 //注册
 function* signup(action){
   let url = Config.APIBasePath + Path.APISubPaths.signup;
-  yield put({ type: BEGIN_FETCH });
+  yield put({ type: TICKET_FETCH });
   try{
     const response = yield call(axios.post,url,action.parmas);
     if (response.data.success){
@@ -231,7 +231,7 @@ function* signup(action){
 }
 function* getShowStatus(action) {
   let url = Config.APIBasePath + Path.APISubPaths.getShowStatus;
-  yield put({ type: BEGIN_FETCH });
+  yield put({ type: TICKET_FETCH });
   try{
     const response = yield call(axios.post,url,action.parmas);
     if (response.data.success){
@@ -246,7 +246,7 @@ function* getShowStatus(action) {
 }
 function* changeShowStatus(action) {
   let url = Config.APIBasePath + Path.APISubPaths.changeShowStatus;
-  yield put({ type: BEGIN_FETCH });
+  yield put({ type: TICKET_FETCH });
   try{
     const response = yield call(axios.post,url,action.parmas);
     if (response.data.success){
@@ -261,7 +261,7 @@ function* changeShowStatus(action) {
 }
 function* createRegister(action) {
   let url = Config.APIBasePath + Path.APISubPaths.createRegister;
-  yield put({ type: BEGIN_FETCH });
+  yield put({ type: TICKET_FETCH });
   try{
     const response = yield call(axios.post,url,action.parmas);
     if (response.data.success){

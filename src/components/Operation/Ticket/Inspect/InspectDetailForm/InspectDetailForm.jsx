@@ -15,8 +15,12 @@ class InspectDetailForm extends Component {
     onPrev: PropTypes.func,
     onNext: PropTypes.func,
     onCloseInspectDetail: PropTypes.func,
-    getDeviceTypeList: PropTypes.func,
-    deviceTypes: PropTypes.array,
+    loadDeviceTypeList: PropTypes.func,
+    loadDeviceAreaList: PropTypes.func,
+    loadDeviceList: PropTypes.func,
+    deviceTypeItems: PropTypes.object,
+    deviceAreaItems: PropTypes.object,
+    deiviceItems: PropTypes.object,
   }
 
   constructor(props){
@@ -31,9 +35,12 @@ class InspectDetailForm extends Component {
       return (
         <InspectAddAbnormal
           inspectDetail={this.props.inspectDetail}
-          deviceTypes={this.props.deviceTypes}
-          getDeviceTypeList={this.props.getDeviceTypeList}
-          onCloseInspectDetail={this.props.onCloseInspectDetail}
+          deviceTypeItems={this.props.deviceTypeItems}
+          deviceAreaItems={this.props.deviceAreaItems}
+          deiviceItems={this.props.deiviceItems}
+          loadDeviceTypeList={this.props.loadDeviceTypeList}
+          loadDeviceAreaList={this.props.loadDeviceAreaList}
+          loadDeviceList={this.props.loadDeviceList}
         />
       )
     } else if(status === "3"){

@@ -2,7 +2,7 @@ import { call, put, takeLatest, delay, take, fork, cancel } from 'redux-saga/eff
 import axios from 'axios';
 import Path from '../../../../constants/path';
 import {
-  BEGIN_FETCH, 
+  TICKET_FETCH, 
   GET_INSPECT_LIST_SAGA, 
   GET_INSPECT_LIST_SUCCESS, 
   GET_INSPECT_LIST_FAIL,
@@ -22,7 +22,7 @@ import {
 //获取巡检列表信息
 function* getInspectList(action){
   let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.ticket.getInspectionList;
-  yield put({ type: BEGIN_FETCH});
+  yield put({ type: TICKET_FETCH});
   try{
     const response = yield call(axios.post, url, action.params);
     if(response.data.code === "10000"){
@@ -48,7 +48,7 @@ function* getInspectList(action){
 // 获取巡检工单详情
 function* getInspectDetail(action){
   let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.ticket.getInspectDetail;
-  yield put({type: BEGIN_FETCH });
+  yield put({type: TICKET_FETCH });
   try {
     const response = yield call(axios.get, url, { params: action.params });  
     if(response.data.code === "10000"){
@@ -83,7 +83,7 @@ function* setInspectId(action){
 // 添加巡检异常
 function* addInspectAbnormal(action){
   let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.ticket.addInspectAbnormal;
-  yield put({ type: BEGIN_FETCH })
+  yield put({ type: TICKET_FETCH })
   try{
     const response = yield call(axios.post, url, {params: action.params});
     if(response.data.code === "10000"){

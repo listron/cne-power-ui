@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Icon, Modal, Button, Radio, Checkbox  } from 'antd';
+import { Icon, Modal, Button, Radio  } from 'antd';
 import ProvinceItem from './ProvinceItem';
 import styles from './style.scss';
 import PropTypes from 'prop-types';

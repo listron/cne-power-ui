@@ -1,6 +1,6 @@
 import immutable from 'immutable';
 import {
-  BEGIN_FETCH,
+  TICKET_FETCH,
   UPDATE_COUNT,
   GET_COMPINFO_SUCCESS,
   GET_COMPINFO_FAIL,
@@ -52,7 +52,7 @@ var initState = immutable.fromJS({
 
 const loginReducer = (state = initState, action) => {
   switch (action.type) {
-    case BEGIN_FETCH:
+    case TICKET_FETCH:
       return state.set('isFetching', true);
     case UPDATE_COUNT:
       return state.set('count', action.number)

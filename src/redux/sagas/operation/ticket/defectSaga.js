@@ -2,7 +2,7 @@ import { call, put, takeLatest, select } from 'redux-saga/effects';
 import axios from 'axios';
 import Path from '../../../../constants/path';
 import {
-  BEGIN_FETCH, 
+  TICKET_FETCH, 
   GET_DEFECT_LIST_SAGA, 
   GET_DEFECT_LIST_SUCCESS, 
   GET_DEFECT_LIST_FAIL,
@@ -50,7 +50,7 @@ import {
 //获取缺陷工单列表
 function* getDefectList(action) {
   let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.ticket.getDefectList;
-  yield put({ type: BEGIN_FETCH });
+  yield put({ type: TICKET_FETCH });
   try {
     const response = yield call(axios.post, url, action.params);
     if(response.data.code === '10000'){
@@ -76,7 +76,7 @@ function* getDefectList(action) {
 //获取缺陷工单详情
 function* getDefectDetail(action) {
   let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.ticket.getDefectDetail;
-  yield put({ type: BEGIN_FETCH });
+  yield put({ type: TICKET_FETCH });
   try {
     const response = yield call(axios.get, url, {params: action.params});
     if(response.data.code === '10000'){
@@ -102,7 +102,7 @@ function* getDefectDetail(action) {
 //获取缺陷常用语
 function* getDefectCommonList(action) {
   let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.ticket.getCommonList;
-  yield put({ type: BEGIN_FETCH });
+  yield put({ type: TICKET_FETCH });
   try {
     const response = yield call(axios.get, url, {params: action.params});
     if(response.data.code === '10000'){
@@ -127,7 +127,7 @@ function* getDefectCommonList(action) {
 //批量删除工单
 function* batchDeleteDefect(action) {
   let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.ticket.batchDeleteDefect;
-  yield put({ type: BEGIN_FETCH });
+  yield put({ type: TICKET_FETCH });
   try {
     const response = yield call(axios.get, url, {params: action.params});
     if(response.data.code === '10000'){
@@ -162,7 +162,7 @@ function* batchDeleteDefect(action) {
 //批量关闭工单
 function* batchCloseDefect(action) {
   let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.ticket.batchCloseDefect;
-  yield put({ type: BEGIN_FETCH });
+  yield put({ type: TICKET_FETCH });
   try {
     const response = yield call(axios.post, url, action.params);
     if(response.data.code === '10000'){
@@ -197,7 +197,7 @@ function* batchCloseDefect(action) {
 //批量下发工单
 function* batchSendDefect(action) {
   let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.ticket.batchSendDefect;
-  yield put({ type: BEGIN_FETCH });
+  yield put({ type: TICKET_FETCH });
   try {
     const response = yield call(axios.post, url, action.params);
     if(response.data.code === '10000'){
@@ -232,7 +232,7 @@ function* batchSendDefect(action) {
 //批量驳回工单
 function* batchRejectDefect(action) {
   let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.ticket.batchRejectDefect;
-  yield put({ type: BEGIN_FETCH });
+  yield put({ type: TICKET_FETCH });
   try {
     const response = yield call(axios.post, url, action.params);
     if(response.data.code === '10000'){
@@ -267,7 +267,7 @@ function* batchRejectDefect(action) {
 //批量验收工单
 function* batchChecktDefect(action) {
   let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.ticket.batchCheckDefect;
-  yield put({ type: BEGIN_FETCH });
+  yield put({ type: TICKET_FETCH });
   try {
     const response = yield call(axios.post, url, action.params);
     if(response.data.code === '10000'){
@@ -316,7 +316,7 @@ function* setSelectedDefect(action) {
 //下发工单
 function* sendDefect(action) {
   let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.ticket.sendDefect;
-  yield put({ type: BEGIN_FETCH });
+  yield put({ type: TICKET_FETCH });
   try {
     const response = yield call(axios.post, url, action.params);
     if(response.data.code === '10000'){
@@ -355,7 +355,7 @@ function* sendDefect(action) {
 //驳回工单
 function* rejectDefect(action) {
   let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.ticket.rejectDefect;
-  yield put({ type: BEGIN_FETCH });
+  yield put({ type: TICKET_FETCH });
   try {
     const response = yield call(axios.post, url, action.params);
     if(response.data.code === '10000'){
@@ -394,7 +394,7 @@ function* rejectDefect(action) {
 //关闭工单
 function* closeDefect(action) {
   let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.ticket.closeDefect;
-  yield put({ type: BEGIN_FETCH });
+  yield put({ type: TICKET_FETCH });
   try {
     const response = yield call(axios.post, url, action.params);
     if(response.data.code === '10000'){
@@ -433,7 +433,7 @@ function* closeDefect(action) {
 //执行工单
 function* handleDefect(action) {
   let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.ticket.handleDefect;
-  yield put({ type: BEGIN_FETCH });
+  yield put({ type: TICKET_FETCH });
   try {
     const response = yield call(axios.post, url, action.params);
     if(response.data.code === '10000'){
@@ -472,7 +472,7 @@ function* handleDefect(action) {
 //验收工单
 function* checkDefect(action) {
   let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.ticket.checkDefect;
-  yield put({ type: BEGIN_FETCH });
+  yield put({ type: TICKET_FETCH });
   try {
     const response = yield call(axios.post, url, action.params);
     if(response.data.code === '10000'){
@@ -511,7 +511,7 @@ function* checkDefect(action) {
 //获取缺陷类型信息
 function *getDefectTypes(action){
   let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.ticket.getDefectTypes;
-  yield put({ type: BEGIN_FETCH });
+  yield put({ type: TICKET_FETCH });
   try {
     const response = yield call(axios.get, url, {params: action.params});
     if(response.data.code === '10000'){
@@ -538,7 +538,7 @@ function *getDefectTypes(action){
 //生成缺陷
 function *createNewDefect(action){
   let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.ticket.createNewDefect;
-  yield put({ type: BEGIN_FETCH });
+  yield put({ type: TICKET_FETCH });
   try {
     const response = yield call(axios.post, url, action.params);
     if(response.data.code === '10000'){

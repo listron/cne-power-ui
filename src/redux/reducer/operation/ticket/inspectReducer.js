@@ -1,6 +1,6 @@
 import immutable from 'immutable';
 import { 
-  BEGIN_FETCH, 
+  TICKET_FETCH, 
   GET_INSPECT_LIST_SUCCESS, 
   GET_INSPECT_LIST_FAIL,
   SET_INSPECT_ID,
@@ -58,7 +58,7 @@ var initState = immutable.fromJS({
 
 const inspectReducer = (state = initState, action) => {
   switch (action.type) {
-    case BEGIN_FETCH:
+    case TICKET_FETCH:
       return state.set('isFetching', true);
     case CLEAR_INSPECT_STATE:
       return initState;
