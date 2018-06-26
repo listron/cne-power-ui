@@ -40,7 +40,6 @@ import {
   watchGetInspectDetail,
   watchSetInspectId,  
   watchAddInspectAbnormal,
-  watchGetTotalData,
   watchClearInspect,
 } from './operation/ticket/inspectSaga';
 
@@ -127,7 +126,6 @@ export default function* rootSaga() {
     watchSetInspectId(),
     watchGetInspectDetail(),
     watchAddInspectAbnormal(),
-    watchGetTotalData(),
     watchClearInspect(),
     //ticket
   ])

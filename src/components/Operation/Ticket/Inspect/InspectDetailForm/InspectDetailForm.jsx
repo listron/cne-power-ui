@@ -3,10 +3,11 @@ import PropTypes from 'prop-types';
 import InspectBasicInfo from '../InspectBasicInfo/InspectBasicInfo';
 import TimeLines from '../../../../Common/TimeLines';
 import styles from './inspectDetailForm.scss';
-import { Icon, Button, Form, Select, Input } from 'antd';
-import InspectHandleForm from '../InspectHandleForm/InspectHandleForm';
 
-const FormItem = Form.Item;
+import { Icon } from 'antd';
+import InspectAddAbnormal from '../InspectAddAbnormal/InspectAddAbnormal';
+import InspectAbnormal from '../InspectAbnormal/InspectAbnormal';
+
 
 class InspectDetailForm extends Component {
   static propTypes={
@@ -16,46 +17,37 @@ class InspectDetailForm extends Component {
     onNext: PropTypes.func,
     onCloseInspectDetail: PropTypes.func,
     form: PropTypes.object,
-    // getDeviceTypeList: PropTypes.func,
-    deviceTypeList: PropTypes.object,
+    getDeviceTypeList: PropTypes.func,
+    deviceTypes: PropTypes.array,
     stationCode: PropTypes.string,
   }
 
   constructor(props){
     super(props);
-    this.state={
-
-    }
-    
-  }
-
-  componentDidMount(){
-    
+    this.state={}
   }
 
   renderForm(){
-    let status = this.props.inspectDetail.get("inspectStatus");
-    
+    let status = this.props.inspectDetail.get('inspectStatus');
+    console.log(this.props.inspectDetail.toJS())
     if(status === "2"){
       return (
-        <InspectHandleForm  
-          onCloseInspectDetail={this.props.onCloseInspectDetail}
-          // getDeviceTypeList={this.props.getDeviceTypeList}
-          deviceTypeList={this.props.deviceTypeList}
-          stationCode={this.props.stationCode}
+        <InspectAddAbnormal
+          {...this.props}
         />
       )
-    }else if(status === "3"){
+    } else if(status === "3"){
       return (
         <div></div>
       )
+    } else {
+      return null;
     }
   }
 
   render(){
     let inspectDetail = this.props.inspectDetail;
-    let progressData = inspectDetail.get('processData');
-    
+    let progressData = inspectDetail.get('processData');  
     return (
       <div className={styles.inspectDetail} >
         <div className={styles.header} >
@@ -64,8 +56,15 @@ class InspectDetailForm extends Component {
           <Icon type="close" onClick={this.props.onCloseInspectDetail} />
         </div>
         <div className={styles.content} >
-          <div className={styles.basic} >
-            <InspectBasicInfo basicInfo={inspectDetail} />
+          <div className={styles.left} >
+            <div className={styles.basic} >
+              <InspectBasicInfo basicInfo={inspectDetail} />
+            </div>
+            {inspectDetail.get('abnormalData').size !== 0 && (
+              <div className={styles.abnormal} >
+                <InspectAbnormal abnormalItems={inspectDetail.get('abnormalData')} />
+              </div>
+            )}
           </div>
           <div className={styles.right} >
             <div className={styles.timeLines}>

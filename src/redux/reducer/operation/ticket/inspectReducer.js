@@ -8,10 +8,9 @@ import {
   GET_INSPECT_DETAIL_FAIL,
   ADD_INSPECT_ABNORMAL_SUCCESS,
   ADD_INSPECT_ABNORMAL_FAIL,
-  GET_DEVICE_TYPE_LIST_SUCCESS,
-  GET_DEVICE_TYPE_LIST_FAIL,
   CLEAR_INSPECT_STATE, 
 } from '../../../../constants/actionTypes/Ticket';
+
 
 var initState = immutable.fromJS({
   inspectList:[],
@@ -54,7 +53,6 @@ var initState = immutable.fromJS({
     inspectStatus: '',
     deviceTypeNames: '',
   },
-  deviceTypeList:[],
   
 });
 
@@ -82,13 +80,9 @@ const inspectReducer = (state = initState, action) => {
     case ADD_INSPECT_ABNORMAL_SUCCESS:
       return state.set('isFetching', false)
                   .set('inspectDetail', immutable.fromJS(action.data));
-    case GET_DEVICE_TYPE_LIST_SUCCESS:
-      return state.set('isFetching', false)
-                  .set('deviceTypeList', immutable.fromJS(action.data.data));
     case GET_INSPECT_LIST_FAIL:
     case GET_INSPECT_DETAIL_FAIL:
     case ADD_INSPECT_ABNORMAL_FAIL:
-    case GET_DEVICE_TYPE_LIST_FAIL:
       return state.set('error', immutable.fromJS(action.error));
   }
   return state;
