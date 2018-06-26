@@ -51,7 +51,7 @@ const mapStateToProps = (state) => ({
     isFetching: state.operation.defect.get('isFetching'),
     commonFetching: state.common.get('commonFetching'),
     stations: state.common.get('stations').toJS(),
-    devieceTypes: state.common.get('devieceTypes').toJS(),
+    deviceTypes: state.common.get('deviceTypes').toJS(),
     devices: state.common.get('devices').toJS(),
     error: state.operation.defect.get('error'),
     defectTypes: state.operation.defect.get('defectTypes').toJS(),

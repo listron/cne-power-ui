@@ -120,9 +120,9 @@ class InspectTable extends Component {
       key: 'startTime',
       sorter: true,
     },{
-      title: '截止时间',
-      dataIndex: 'deadline',
-      key: 'deadline',
+      title: '完成时间',
+      dataIndex: 'checkTime',
+      key: 'checkTime',
       sorter: true,
     },{
       title: '处理进度',
@@ -134,7 +134,6 @@ class InspectTable extends Component {
           <span>{getStatus(value)}</span>
           <div className={styles.warning} >
             { record.isOvertime === '0' ? <span style={{ color: '#c80000' }}>超时</span> : null }
-            { record.isOvertime === '0' ? <span style={{ color: '#e78d14' }}>协调</span> : null }
           </div>
         </div>
       ),

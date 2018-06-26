@@ -60,18 +60,6 @@ class Ticket extends Component {
     }
   }
 
-  onShowInspectDetail(){
-    this.setState({
-      showInspectDetail: true
-    })
-  }
-
-  onCloseInspectDetail(){
-    this.setState({
-      showInspectDetail: false
-    })
-  }
-
   render() {
     return (
       <div className={styles.ticket}>

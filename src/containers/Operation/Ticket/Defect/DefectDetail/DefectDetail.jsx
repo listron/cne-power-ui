@@ -44,10 +44,11 @@ class DefectDetail extends Component {
       this.props.getDefectDetail({
         defectId: this.props.defectId
       });
+      this.props.getCommonList({
+        languageType: '1'
+      });
     }  
-    this.props.getCommonList({
-      languageType: '1'
-    });
+    
   }
 
   componentWillReceiveProps(nextProps) {

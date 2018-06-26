@@ -8,8 +8,8 @@ import {
   ADD_INSPECT_ABNORMAL_SAGA,
   CHANGE_SHOW_CONTAINER_SAGA,
   SET_INSPECT_ID_SAGA,
-  GET_DEVICETYPES_SAGA,
  } from '../../../../../constants/actionTypes/Ticket';
+ import { GET_DEVICETYPES_SAGA } from '../../../../../constants/actionTypes/commonAction'
 
 class InspectDetail extends Component{
   static propTypes = {
@@ -22,7 +22,7 @@ class InspectDetail extends Component{
     inspectId: PropTypes.string,
     getInspectDetail: PropTypes.func,
     getDeviceTypeList: PropTypes.func,
-    deviceTypeList: PropTypes.object,
+    deviceTypes: PropTypes.array,
     stationCode: PropTypes.string,
     onChangeShowContainer: PropTypes.func,
     inspectList: PropTypes.object,
@@ -42,23 +42,15 @@ class InspectDetail extends Component{
     if(this.props.inspectId) {
       this.props.getInspectDetail({
         inspectId: this.props.inspectId,
-        stationCodes: this.props.inspectDetail.get("stationCode"),
       });
     }
-    // this.props.getDeviceTypeList({
-    //   stationCodes: this.props.inspectDetail.get("stationCode"),
-    // })
   }
 
   componentWillReceiveProps(nextProps){
     if(nextProps.inspectId && nextProps.inspectId !== this.props.inspectId){
       this.props.getInspectDetail({
         inspectId: nextProps.inspectId,
-        stationCodes: nextProps.inspectDetail.get("stationCode"),
       })
-      // this.props.getDeviceTypeList({
-      //   stationCodes: this.props.stationCode,
-      // })
     }
   }
 
@@ -97,17 +89,11 @@ class InspectDetail extends Component{
   }
   render(){
     return(
-      <InspectDetailForm 
-        isFetching={this.props.isFetching}
-        inspectDetail={this.props.inspectDetail}
-        onCloseInspectDetail={this.onCloseInspectDetail}
-        onClose={this.props.onClose}
-        onSend={this.props.onSend}
-        onReject={this.props.onReject}
+      <InspectDetailForm
         onNext={this.onNext}
         onPrev={this.onPrev}
-        getDeviceTypeList={this.props.getDeviceTypeList}
-        deviceTypeList={this.props.deviceTypeList}
+        onCloseInspectDetail={this.onCloseInspectDetail}
+        {...this.props}
       />
     )
   }
@@ -115,13 +101,14 @@ class InspectDetail extends Component{
 }
 
 const mapStateToProps = (state) => ({
-  isFetching: state.operation.inspect.get("isFetching"),
-  inspectList: state.operation.inspect.get("inspectList"),
-  error: state.operation.inspect.get("error"),
-  inspectDetail: state.operation.inspect.get("inspectDetail"),
-  inspectId: state.operation.inspect.get("inspectId"),
-  deviceTypeList: state.operation.inspect.get("deviceTypeList"),
-  // stationCode: state.operation.inspect.getIn(["inspectDetail","stationCode"]).toString(),
+  isFetching: state.operation.inspect.get('isFetching'),
+  inspectList: state.operation.inspect.get('inspectList'),
+  error: state.operation.inspect.get('error'),
+  inspectDetail: state.operation.inspect.get('inspectDetail'),
+  inspectId: state.operation.inspect.get('inspectId'),
+  commonFetching: state.common.get('commonFetching'),
+  deviceTypes: state.common.get('deviceTypes').toJS(),
+  stationCode: state.operation.inspect.getIn(['inspectDetail','stationCode']).toString(),
 }) 
 
 const mapDispatchToProps = (dispatch) => ({
