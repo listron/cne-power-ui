@@ -21,7 +21,7 @@ class TmpForm extends Component {
     defectTypes: PropTypes.array,
     getDevieceTypes: PropTypes.func,
     getDefectTypes: PropTypes.func,
-
+    onChangeShowContainer: PropTypes.func,
   };
   constructor(props){
     super(props);
@@ -37,7 +37,7 @@ class TmpForm extends Component {
     this.props.getDefectTypes({stationType})
   }
   onCancelCreat = () => {
-    console.log('cancel')
+    this.props.onChangeShowContainer({ container: 'list' })
   }
   onDefectFinishChange = (defectFinished) => {
     this.setState({
@@ -116,6 +116,8 @@ class TmpForm extends Component {
         <FormItem label={'添加图片：'} {...formItemLayout}>
           {getFieldDecorator('imgDescribe', {
             rules: [{ required: false, message: '请上传图片' }],
+            initialValue: [],
+            valuePropName:'data',
           })(
             <ImgUploader  imgStyle={{width:'50px',height:'50px'}} uploadPath={`${pathConfig.basePaths.APIBasePath}${pathConfig.commonPaths.imgUploads}`} editable={true} />
           )}
@@ -146,17 +148,19 @@ class TmpForm extends Component {
         <FormItem label={'添加照片：'} {...formItemLayout}>
           {getFieldDecorator('imgHandle', {
             rules: [{ required: false, message: '请上传图片' }],
+            initialValue: [],
+            valuePropName:'data',
           })(
             <ImgUploader imgStyle={{width:'50px',height:'50px'}} uploadPath={`${pathConfig.basePaths.APIBasePath}${pathConfig.commonPaths.imgUploads}`} editable={true} />
           )}
         </FormItem>
-        <FormItem label={'更换部件：'} {...formItemLayout}>
+        {defectFinished && <FormItem label={'更换部件：'} {...formItemLayout}>
           {getFieldDecorator('replaceParts', {
             rules: [{ required: false, message: '填写更换部件信息' }],
           })(
             <ReplaceParts />
           )}
-        </FormItem>
+        </FormItem>}
         <div>
           <Button onClick={this.onCancelCreat}>取消</Button>
           <Button onClick={this.onDefectCreat}>提交</Button>

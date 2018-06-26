@@ -69,12 +69,13 @@ class ImgUploader extends Component {
   }
   beforeUpload(file){
     const isIMG = /^image/.test(file.type);
-    const isLimitSize = file.size / 1024 / 1024 > 1;
+    const { limitSize } = this.props;
+    const isLimitSize = file.size  > limitSize;
     if(!isIMG){
       message.error('只支持图片上传！')
     }
     if(isLimitSize){
-      message.error('图片上传大小不得超过1M！')
+      message.error(`图片上传大小不得超过${parseInt(limitSize/1024/1024)}M！`)
     }
     return isIMG && !isLimitSize
   }
