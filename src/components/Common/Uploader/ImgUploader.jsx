@@ -134,7 +134,7 @@ class ImgUploader extends Component {
     );
     return (
       <div className={styles.imgUploader}>
-        {data.map((e,i)=>(
+        {data && data.length > 0 && data.map((e,i)=>(
           <UploadedImg 
             editable={editable}
             showImg={this.showImg} 
@@ -148,7 +148,7 @@ class ImgUploader extends Component {
           className={styles.loaderHandler}
           { ...imageProps }
         >
-          {data.length >= max ? null : uploadButton}
+          {(data && data.length >= max) ? null : uploadButton}
         </Upload>}
         <ImgListModal 
           data={data} 

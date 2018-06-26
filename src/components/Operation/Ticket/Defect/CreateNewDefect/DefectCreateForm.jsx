@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import StationSelect from '../../../../Common/StationSelect'
+import StationSelect from '../../../../Common/StationSelect';
+import ImgUploader from '../../../../Common/Uploader/ImgUploader';
 import { Form, Icon, Input, Button, Select } from 'antd';
+import pathConfig from '../../../../../constants/path';
 import styles from './newDefect.scss';
 const { TextArea } = Input;
 const FormItem = Form.Item;
@@ -28,22 +30,38 @@ class TmpForm extends Component {
     this.props.getDevieceTypes({stationCodes})
     this.props.getDefectTypes({stationType})
   }
+  onDefectCreat = () => {
+    this.props.form.validateFieldsAndScroll((err, values) => {
+      if (!err) {
+        console.log('Received values of form: ', values);
+      }
+    });
+  }
   
   render() {
     const {stations, deviceTypes, defectTypes} = this.props;
-    console.log(this.props.deviceTypes);
     const {getFieldDecorator} = this.props.form;
+    const formItemLayout = {
+      labelCol: {
+        xs: { span: 24 },
+        sm: { span: 8 },
+      },
+      wrapperCol: {
+        xs: { span: 24 },
+        sm: { span: 16 },
+      },
+    };
     return (
       <Form onSubmit={this.handleSubmit}>
         <h3>基本信息</h3>
-        <FormItem label={'电站名称：'}>
+        <FormItem label={'电站名称：'} {...formItemLayout}>
           {getFieldDecorator('stationCode', {
             rules: [{ required: true, message: '请选择电站' }],
           })(
             <StationSelect data={stations} multiple={false} onOK={this.onStationSelected} />
           )}
         </FormItem>
-        <FormItem label={'设备类型：'}>
+        <FormItem label={'设备类型：'} {...formItemLayout}>
           {getFieldDecorator('deviceTypeCode', {
             rules: [{ required: true, message: '请选择设备类型' }],
           })(
@@ -52,7 +70,7 @@ class TmpForm extends Component {
             </Select>
           )}
         </FormItem>
-        <FormItem label={'缺陷类型：'}>
+        <FormItem label={'缺陷类型：'} {...formItemLayout}>
           {getFieldDecorator('defectTypeCode', {
             rules: [{ required: true, message: '请选择缺陷类型' }],
           })(
@@ -61,7 +79,7 @@ class TmpForm extends Component {
             </Select>
           )}
         </FormItem>
-        <FormItem  label={'缺陷级别：'}>
+        <FormItem  label={'缺陷级别：'} {...formItemLayout}>
           {getFieldDecorator('defectLevel', {
             rules: [{ required: true, message: '请选择缺陷级别' }],
           })(
@@ -73,22 +91,22 @@ class TmpForm extends Component {
             </Select>
           )}
         </FormItem>
-        <FormItem label={'缺陷描述：'}>
+        <FormItem label={'缺陷描述：'} {...formItemLayout}>
           {getFieldDecorator('defectDescribe', {
             rules: [{ required: true, message: '请输入缺陷描述' }],
           })(
             <TextArea onChange={(value)=>console.log(value)} placeholder={'请输入缺陷描述'} />
           )}
         </FormItem>
-        <FormItem label={'添加图片：'}>
+        <FormItem label={'添加图片：'} {...formItemLayout}>
           {getFieldDecorator('imgDescribe', {
             rules: [{ required: false, message: '请上传图片' }],
           })(
-            <div />
+            <ImgUploader uploadPath={`${pathConfig.basePaths.APIBasePath}${pathConfig.commonPaths.imgUploads}`} editable={true} />
           )}
         </FormItem>
         <h3>处理信息</h3>
-        <FormItem label={'处理结果：'}>
+        <FormItem label={'处理结果：'} {...formItemLayout}>
           {getFieldDecorator('defectSolveResult', {
             rules: [{ required: true, message: '选择处理结果' }],
           })(
@@ -98,21 +116,21 @@ class TmpForm extends Component {
             </ButtonGroup>
           )}
         </FormItem>
-        <FormItem label={'处理建议：'}>
+        <FormItem label={'处理建议：'} {...formItemLayout}>
           {getFieldDecorator('defectSolveInfo', {
             rules: [{ required: true, message: '请输入处理建议' }],
           })(
             <TextArea onChange={(value)=>console.log(value)} placeholder={'请描述处理建议，不超过80字'} />
           )}
         </FormItem>
-        <FormItem label={'添加照片：'}>
+        <FormItem label={'添加照片：'} {...formItemLayout}>
           {getFieldDecorator('imgHandle', {
-            rules: [{ required: true, message: '请上传图片' }],
+            rules: [{ required: false, message: '请上传图片' }],
           })(
-            <div />
+            <ImgUploader uploadPath={`${pathConfig.basePaths.APIBasePath}${pathConfig.commonPaths.imgUploads}`} editable={true} />
           )}
         </FormItem>
-        <FormItem label={'处理过程：'}>
+        <FormItem label={'处理过程：'} {...formItemLayout}>
           {getFieldDecorator('defectSolveInfo', {
             rules: [{ required: true, message: '请输入处理过程' }],
           })(
@@ -121,7 +139,7 @@ class TmpForm extends Component {
         </FormItem>
         <div>
           <Button>取消</Button>
-          <Button>提交</Button>
+          <Button onClick={this.onDefectCreat}>提交</Button>
         </div>
       </Form>
     );
