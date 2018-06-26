@@ -16,7 +16,7 @@ import {
 var initState = immutable.fromJS({
   commonFetching: false,
   stations: [],
-  devieceTypes: [],
+  deviceTypes: [],
   devices: [],
 });
 
@@ -29,7 +29,7 @@ const defectReducer = (state = initState, action) => {
                   .set('stations', immutable.fromJS(action.params.data))
     case GET_DEVICETYPES_SAGA_SUCCESS:
       return state.set('commonFetching', false)
-                  .set('devieceTypes',immutable.fromJS(action.params.data));
+                  .set('deviceTypes',immutable.fromJS(action.params.data));
     case GET_DEVICES_SAGA_SUCCESS:
       return state.set('commonFetching', false)
                   .set('devices',immutable.fromJS(action.params.data));

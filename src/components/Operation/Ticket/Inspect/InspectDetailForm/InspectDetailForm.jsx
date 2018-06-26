@@ -18,34 +18,22 @@ class InspectDetailForm extends Component {
     onCloseInspectDetail: PropTypes.func,
     form: PropTypes.object,
     getDeviceTypeList: PropTypes.func,
-    deviceTypeList: PropTypes.object,
+    deviceTypes: PropTypes.array,
     stationCode: PropTypes.string,
   }
 
   constructor(props){
     super(props);
-    this.state={
-
-    }
-    
-  }
-
-  componentDidMount(){
-
-    this.props.getDeviceTypeList({
-      stationCodes: this.props.inspectDetail.get('stationCode')
-    })
+    this.state={}
   }
 
   renderForm(){
     let status = this.props.inspectDetail.get('inspectStatus');
-    
+    console.log(this.props.inspectDetail.toJS())
     if(status === "2"){
       return (
-        <InspectAddAbnormal  
-          onCloseInspectDetail={this.props.onCloseInspectDetail}
-          deviceTypeList={this.props.deviceTypeList}
-          stationCode={this.props.stationCode}
+        <InspectAddAbnormal
+          {...this.props}
         />
       )
     } else if(status === "3"){
@@ -59,8 +47,7 @@ class InspectDetailForm extends Component {
 
   render(){
     let inspectDetail = this.props.inspectDetail;
-    let progressData = inspectDetail.get('processData');
-    
+    let progressData = inspectDetail.get('processData');  
     return (
       <div className={styles.inspectDetail} >
         <div className={styles.header} >

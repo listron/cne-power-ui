@@ -12,7 +12,7 @@ class TmpForm extends Component {
   static propTypes = {
     form: PropTypes.object,
     stations: PropTypes.array,
-    devieceTypes: PropTypes.array,
+    deviceTypes: PropTypes.array,
     defectTypes: PropTypes.array,
     getDevieceTypes: PropTypes.func,
     getDefectTypes: PropTypes.func,
@@ -30,8 +30,8 @@ class TmpForm extends Component {
   }
   
   render() {
-    const {stations, devieceTypes, defectTypes} = this.props;
-    console.log(this.props);
+    const {stations, deviceTypes, defectTypes} = this.props;
+    console.log(this.props.deviceTypes);
     const {getFieldDecorator} = this.props.form;
     return (
       <Form onSubmit={this.handleSubmit}>
@@ -47,8 +47,8 @@ class TmpForm extends Component {
           {getFieldDecorator('deviceTypeCode', {
             rules: [{ required: true, message: '请选择设备类型' }],
           })(
-            <Select onChange={(value)=>console.log(value)} placeholder={'请选择设备类型'} disabled={devieceTypes.length === 0}>
-              {devieceTypes.map(e=>(<Option key={e.deviceTypeCode} value={e.deviceTypeCode}>{e.deviceTypeName}</Option>))}
+            <Select onChange={(value)=>console.log(value)} placeholder={'请选择设备类型'} disabled={deviceTypes.length === 0}>
+              {deviceTypes.map(e=>(<Option key={e.deviceTypeCode} value={e.deviceTypeCode}>{e.deviceTypeName}</Option>))}
             </Select>
           )}
         </FormItem>

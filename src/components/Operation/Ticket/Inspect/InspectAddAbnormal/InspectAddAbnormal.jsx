@@ -7,12 +7,14 @@ import ImgUploader from '../../../../Common/Uploader/ImgUploader';
 const FormItem = Form.Item;
 const Option = Select.Option;
 
-class InspectHandleForm extends Component {
+class inspectAddAbnormal extends Component {
 
   static propTypes={
     form: PropTypes.object,
     onCloseInspectDetail: PropTypes.func,
-    deviceTypeList: PropTypes.object,
+    deviceTypes: PropTypes.array,
+    getDeviceTypeList: PropTypes.func,
+    inspectDetail: PropTypes.object,
   }
 
   static defaultProps={
@@ -36,7 +38,12 @@ class InspectHandleForm extends Component {
   showAdd(){
     this.setState({
       showAddAbnormal: true,
-    })    
+    })  
+    console.log(this.props.inspectDetail.stationCode);
+    let stationCodes=this.props.inspectDetail.stationCode; 
+    this.props.getDeviceTypeList({
+      stationCodes: stationCodes,
+    }) 
   }
 
   hideAdd(){
@@ -48,11 +55,8 @@ class InspectHandleForm extends Component {
   
 
   render(){
-    const deviceList = [];
-    const deviceTypeList = this.props.deviceTypeList;
-    for (let i = 0; i < deviceTypeList.size; i++) {
-      deviceList.push(<Option key={deviceTypeList.getIn([i,'deviceTypeCode'])}>{deviceTypeList.getIn([i,'deviceTypeName'])}</Option>);
-    }
+    const { deviceTypes, inspectDetail} = this.props;
+    console.log(deviceTypes)
     const formItemLayout = {
       labelCol: {
         xs: { span: 8 },
@@ -88,10 +92,10 @@ class InspectHandleForm extends Component {
                     placeholder="必选"
                     onChange={this.selectChange}
                   >
-                  {deviceTypeList.map((item,index) => {
+                  {deviceTypes.map((item,index) => {
                     return (
-                      <Option key={'device'+index}>
-                        {item.getIn([index, 'deviceTypeName'])}
+                      <Option key={item.deviceTypeCode} value={item.deviceTypeCode} >
+                        {item.deviceTypeName}
                       </Option>
                     )
                   })}
@@ -157,4 +161,4 @@ class InspectHandleForm extends Component {
   }
 }
 
-export default Form.create()(InspectHandleForm);
+export default Form.create()(inspectAddAbnormal);
