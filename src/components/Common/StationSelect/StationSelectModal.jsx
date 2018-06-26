@@ -60,7 +60,7 @@ class StationSelectModal extends Component {
     const { filterStationType, selectedStation } = this.state;
     const tmpStations = filterStationType === 0 ? data : data.filter(e=>(e.stationType === filterStationType));
     let filteredStation = [];
-    tmpStations.forEach(e=>{
+    tmpStations && tmpStations.length > 0 && tmpStations.forEach(e=>{
       let findExactStation = false;
       filteredStation.forEach(m=>{
         if(m.provinceCode === e.provinceCode){
