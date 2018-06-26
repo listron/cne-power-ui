@@ -12,14 +12,11 @@ import InspectAbnormal from '../InspectAbnormal/InspectAbnormal';
 class InspectDetailForm extends Component {
   static propTypes={
     inspectDetail: PropTypes.object,
-    processData: PropTypes.object,
     onPrev: PropTypes.func,
     onNext: PropTypes.func,
     onCloseInspectDetail: PropTypes.func,
-    form: PropTypes.object,
     getDeviceTypeList: PropTypes.func,
     deviceTypes: PropTypes.array,
-    stationCode: PropTypes.string,
   }
 
   constructor(props){
@@ -33,7 +30,10 @@ class InspectDetailForm extends Component {
     if(status === "2"){
       return (
         <InspectAddAbnormal
-          {...this.props}
+          inspectDetail={this.props.inspectDetail}
+          deviceTypes={this.props.deviceTypes}
+          getDeviceTypeList={this.props.getDeviceTypeList}
+          onCloseInspectDetail={this.props.onCloseInspectDetail}
         />
       )
     } else if(status === "3"){
