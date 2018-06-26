@@ -36,14 +36,14 @@ class TmpForm extends Component {
     return (
       <Form onSubmit={this.handleSubmit}>
         <h3>基本信息</h3>
-        <FormItem>
+        <FormItem label={'电站名称：'}>
           {getFieldDecorator('stationCode', {
             rules: [{ required: true, message: '请选择电站' }],
           })(
             <StationSelect data={stations} multiple={false} onOK={this.onStationSelected} />
           )}
         </FormItem>
-        <FormItem>
+        <FormItem label={'设备类型：'}>
           {getFieldDecorator('deviceTypeCode', {
             rules: [{ required: true, message: '请选择设备类型' }],
           })(
@@ -52,7 +52,7 @@ class TmpForm extends Component {
             </Select>
           )}
         </FormItem>
-        <FormItem>
+        <FormItem label={'缺陷类型：'}>
           {getFieldDecorator('defectTypeCode', {
             rules: [{ required: true, message: '请选择缺陷类型' }],
           })(
@@ -61,7 +61,7 @@ class TmpForm extends Component {
             </Select>
           )}
         </FormItem>
-        <FormItem>
+        <FormItem  label={'缺陷级别：'}>
           {getFieldDecorator('defectLevel', {
             rules: [{ required: true, message: '请选择缺陷级别' }],
           })(
@@ -73,22 +73,22 @@ class TmpForm extends Component {
             </Select>
           )}
         </FormItem>
-        <FormItem>
+        <FormItem label={'缺陷描述：'}>
           {getFieldDecorator('defectDescribe', {
             rules: [{ required: true, message: '请输入缺陷描述' }],
           })(
             <TextArea onChange={(value)=>console.log(value)} placeholder={'请输入缺陷描述'} />
           )}
         </FormItem>
-        <FormItem>
+        <FormItem label={'添加图片：'}>
           {getFieldDecorator('imgDescribe', {
-            rules: [{ required: true, message: '请上传图片' }],
+            rules: [{ required: false, message: '请上传图片' }],
           })(
             <div />
           )}
         </FormItem>
         <h3>处理信息</h3>
-        <FormItem>
+        <FormItem label={'处理结果：'}>
           {getFieldDecorator('defectSolveResult', {
             rules: [{ required: true, message: '选择处理结果' }],
           })(
@@ -98,21 +98,21 @@ class TmpForm extends Component {
             </ButtonGroup>
           )}
         </FormItem>
-        <FormItem>
+        <FormItem label={'处理建议：'}>
           {getFieldDecorator('defectSolveInfo', {
             rules: [{ required: true, message: '请输入处理建议' }],
           })(
             <TextArea onChange={(value)=>console.log(value)} placeholder={'请描述处理建议，不超过80字'} />
           )}
         </FormItem>
-        <FormItem>
+        <FormItem label={'添加照片：'}>
           {getFieldDecorator('imgHandle', {
             rules: [{ required: true, message: '请上传图片' }],
           })(
             <div />
           )}
         </FormItem>
-        <FormItem>
+        <FormItem label={'处理过程：'}>
           {getFieldDecorator('defectSolveInfo', {
             rules: [{ required: true, message: '请输入处理过程' }],
           })(
