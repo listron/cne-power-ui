@@ -9,7 +9,7 @@ import {
   CHANGE_SHOW_CONTAINER_SAGA,
   SET_INSPECT_ID_SAGA,
  } from '../../../../../constants/actionTypes/Ticket';
- import { GET_DEVICETYPES_SAGA } from '../../../../../constants/actionTypes/commonAction'
+ import { GET_DEVICETYPES_SAGA } from '../../../../../constants/actionTypes/commonAction';
 
 class InspectDetail extends Component{
   static propTypes = {
@@ -93,11 +93,12 @@ class InspectDetail extends Component{
         onNext={this.onNext}
         onPrev={this.onPrev}
         onCloseInspectDetail={this.onCloseInspectDetail}
-        {...this.props}
+        inspectDetail={this.props.inspectDetail}
+        getDeviceTypeList={this.props.getDeviceTypeList}
+        deviceTypes={this.props.deviceTypes}
       />
-    )
+    );
   }
-
 }
 
 const mapStateToProps = (state) => ({
@@ -108,14 +109,12 @@ const mapStateToProps = (state) => ({
   inspectId: state.operation.inspect.get('inspectId'),
   commonFetching: state.common.get('commonFetching'),
   deviceTypes: state.common.get('deviceTypes').toJS(),
-  stationCode: state.operation.inspect.getIn(['inspectDetail','stationCode']).toString(),
 }) 
 
 const mapDispatchToProps = (dispatch) => ({
   getInspectDetail: params => dispatch({ type: GET_INSPECT_DETAIL_SAGA, params }),
   addInspectAbnormal: params => dispatch({ type: ADD_INSPECT_ABNORMAL_SAGA, params}),
   getDeviceTypeList: params => dispatch({ type: GET_DEVICETYPES_SAGA, params}),
-  onChangeShowContainer: params => dispatch({ type: CHANGE_SHOW_CONTAINER_SAGA, params}),
   setInspectId: params => dispatch({ type: SET_INSPECT_ID_SAGA, params }),
 })
 
