@@ -95,6 +95,5 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   getInspectList: params => dispatch({ type: GET_INSPECT_LIST_SAGA, params }),
   setInspectId: params => dispatch({ type: SET_INSPECT_ID_SAGA, params }),
-  onChangeShowContainer: params => dispatch({ type: CHANGE_SHOW_CONTAINER_SAGA, params}),
 })
 export default connect(mapStateToProps,mapDispatchToProps)(InspectList);
