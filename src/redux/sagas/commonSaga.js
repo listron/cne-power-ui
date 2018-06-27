@@ -76,7 +76,7 @@ function *getDeviceTypes(action){
 }
 //获取设备信息列表
 function *getDevices(action){
-  let url = Path.basePaths.newAPIBasePath + Path.commonPaths.getPartitions;
+  let url = Path.basePaths.newAPIBasePath + Path.commonPaths.getDevices;
   yield put({ type: COMMON_FETCH });
   try {
     const response = yield call(axios.get, url, {params: action.params});
@@ -84,7 +84,7 @@ function *getDevices(action){
       yield put({ 
         type: GET_DEVICES_SAGA_SUCCESS, 
         params: {
-          data: response.data.data, 
+          data: response.data.data.devices, 
           params: action.params 
         }
       });       
@@ -104,7 +104,7 @@ function *getDevices(action){
 
 //获取方阵列表
 function *getPartition(action){
-  let url = Path.basePaths.newAPIBasePath + Path.commonPaths.getDevices;
+  let url = Path.basePaths.newAPIBasePath + Path.commonPaths.getPartitions;
   yield put({ type: COMMON_FETCH });
   try {
     const response = yield call(axios.get, url, {params: action.params});
@@ -112,7 +112,7 @@ function *getPartition(action){
       yield put({ 
         type: GET_PARTITIONS_SAGA_SUCCESS, 
         params: {
-          data: response.data.data, 
+          data: response.data.data.partitions, 
           params: action.params 
         }
       });       

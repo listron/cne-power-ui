@@ -35,7 +35,7 @@ class inspectAddAbnormal extends Component {
     super(props);
     this.state={
       showAddAbnormal: false,
-      deviceAreaCode: null,
+      deviceAreaCode: '',
     }
     this.showAdd = this.showAdd.bind(this);
     this.hideAdd = this.hideAdd.bind(this);
@@ -47,10 +47,6 @@ class inspectAddAbnormal extends Component {
   }
 
   componentDidMount(){
-    let stationCodes = this.props.inspectDetail.get('stationCode'); 
-    let stationType = this.props.inspectDetail.get('stationType');
-    this.props.loadDeviceTypeList({stationCodes: stationCodes, }); 
-    this.props.getDefectTypes({stationType: stationType, });
   }
 
   onFinishInspect(){
@@ -88,9 +84,13 @@ class inspectAddAbnormal extends Component {
       deviceCode: ''
     });
     this.setState({
-      deviceAreaCode: null
+      deviceAreaCode: ''
     });
     this.props.loadDeviceAreaList({
+      stationCode: this.props.inspectDetail.get('stationCode'),
+      deviceTypeCode: value
+    });
+    this.props.loadDeviceList({
       stationCode: this.props.inspectDetail.get('stationCode'),
       deviceTypeCode: value
     });
@@ -105,7 +105,7 @@ class inspectAddAbnormal extends Component {
   getDeviceType(code) {
     let deviceType = ''
     let index = this.props.deviceTypeItems.findIndex((item) => {
-      item.get('deviceTypeCode') === code
+      return item.get('deviceTypeCode') === code
     });
     if(index !== -1) {
       deviceType = this.props.deviceTypeItems.getIn([index, 'deviceTypeName']);
@@ -118,7 +118,7 @@ class inspectAddAbnormal extends Component {
       stationCode: this.props.inspectDetail.get('stationCode'),
       deviceTypeCode: this.props.form.getFieldValue('deviceTypeCode')
     };
-    if(areaCode !== null) {
+    if(areaCode !== '') {
       params.partitionCode = areaCode;
     }
     this.props.loadDeviceList(params);
@@ -129,9 +129,9 @@ class inspectAddAbnormal extends Component {
       showAddAbnormal: true,
     })
     let stationCode = this.props.inspectDetail.get('stationCode'); 
-    this.props.loadDeviceTypeList({
-      stationCodes: stationCode,
-    });
+    let stationType = this.props.inspectDetail.get('stationType');
+    this.props.loadDeviceTypeList({stationCodes: stationCode}); 
+    this.props.getDefectTypes({stationType: stationType});
   }
 
   hideAdd(){
@@ -173,7 +173,6 @@ class inspectAddAbnormal extends Component {
                   }]
                 })(
                   <Select 
-                    mode="combobox"
                     placeholder="必选"
                     onChange={this.onChangeType}
                   >
@@ -196,7 +195,8 @@ class inspectAddAbnormal extends Component {
                     required: true,
                   }]
                 })(
-                  <DeviceName 
+                  <DeviceName
+                    disabled={!getFieldValue('deviceTypeCode')}
                     placeholder="输入关键字快速查询" 
                     stationName={inspectDetail.get('stationName')}
                     deviceType={this.getDeviceType(getFieldValue('deviceTypeCode'))}
@@ -220,7 +220,6 @@ class inspectAddAbnormal extends Component {
                 })(
                   <Select
                     placeholder="必选"
-                    onChange={this.selectChange}
                   >
                     {defectTypes.map(item => {
                       return(

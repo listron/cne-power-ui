@@ -36,7 +36,7 @@ class DeviceItem extends Component {
           className={styles.selectedItem} 
           style={{height: this.props.height, width: this.props.width}}
         >
-          <div className={styles.itemLabel}>{this.props.label}</div>
+          <div className={styles.itemLabel}>{this.props.item.get('deviceName')}</div>
           <Icon type="check-circle-o" />
         </div>
       )

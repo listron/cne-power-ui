@@ -13,7 +13,7 @@ class DeviceNameModal extends Component {
     // deviceTypeCode: PropTypes.int,//选中的设备类型编码
     deviceType: PropTypes.string,//选中的设备类型
     deviceCode: PropTypes.string,//选中的设备
-    deviceAreaCode: PropTypes.int,//选中的分区编码
+    deviceAreaCode: PropTypes.string,//选中的分区编码
     // deviceTypeItems: PropTypes.object,//设备类型的选项
     deviceAreaItems: PropTypes.object,//电站分区选项
     deviceItems: PropTypes.object,//设备列表
@@ -31,11 +31,12 @@ class DeviceNameModal extends Component {
     super(props);
     this.state = {
       selectedDeviceCode: '',
-      selectedDeviceAreaCode: 0
+      selectedDeviceAreaCode: ''
     };
     this.onSelectItem = this.onSelectItem.bind(this);
     this.onChangeArea = this.onChangeArea.bind(this);
     this.onSave = this.onSave.bind(this);
+    this.onCancel = this.onCancel.bind(this);
   }
 
   componentDidMount() {
@@ -57,7 +58,12 @@ class DeviceNameModal extends Component {
 
   onSave() {
     this.props.onSelectDevice(this.state.selectedDeviceCode);
-    this.props.onChangeArea(this.state.selectedDeviceAreaCode);
+    this.onCancel();
+  }
+
+  onCancel() {
+    this.props.loadDeviceList('');
+    this.props.onCancel();
   }
 
   renderItems() {
@@ -67,7 +73,7 @@ class DeviceNameModal extends Component {
         <DeviceItem
           key={'device'+index}
           item={item}
-          selected={selectedDeviceCode === item.get('')}
+          selected={selectedDeviceCode === item.get('deviceCode')}
           onSelect={this.onSelectItem}
        />
       );
@@ -88,7 +94,7 @@ class DeviceNameModal extends Component {
     return this.props.deviceAreaItems.map((item, index) => {
       return (
         <Option key={item.get('deviceCode')} value={item.get('deviceCode')}>
-          {item.get(item.get('deviceName'))}
+          {item.get('deviceName')}
         </Option>                  
       );
     });
@@ -97,10 +103,10 @@ class DeviceNameModal extends Component {
   render() {
     return (
       <Modal
-        visble={this.props.show}
+        visible={this.props.show}
         closable={false}
         onOk={this.onSave}
-        onCancel={this.props.onCancel}
+        onCancel={this.onCancel}
         destroyOnClose={true}
         okText="保存"
       >
@@ -130,7 +136,7 @@ class DeviceNameModal extends Component {
                   }}
                   placeholder="请选择"
                   style={{ width: 200 }}
-                  value={this.state.selectedDeviceAreaCode !== 0 ? this.state.selectedDeviceAreaCod : this.props.deviceAreaCode}>
+                  value={this.state.selectedDeviceAreaCode !== '' ? this.state.selectedDeviceAreaCode : this.props.deviceAreaCode}>
                   {this.renderAreaItems()}
                 </Select>
               </div>
