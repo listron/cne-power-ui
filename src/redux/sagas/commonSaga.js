@@ -76,7 +76,7 @@ function *getDeviceTypes(action){
 }
 //获取设备信息列表
 function *getDevices(action){
-  let url = Path.basePaths.newAPIBasePath + Path.commonPaths.getPartitions;
+  let url = Path.basePaths.newAPIBasePath + Path.commonPaths.getDevices;
   yield put({ type: COMMON_FETCH });
   try {
     const response = yield call(axios.get, url, {params: action.params});
@@ -104,7 +104,7 @@ function *getDevices(action){
 
 //获取方阵列表
 function *getPartition(action){
-  let url = Path.basePaths.newAPIBasePath + Path.commonPaths.getDevices;
+  let url = Path.basePaths.newAPIBasePath + Path.commonPaths.getPartitions;
   yield put({ type: COMMON_FETCH });
   try {
     const response = yield call(axios.get, url, {params: action.params});

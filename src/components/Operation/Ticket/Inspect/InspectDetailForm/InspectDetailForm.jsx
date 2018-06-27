@@ -27,7 +27,7 @@ class InspectDetailForm extends Component {
     loadDeviceList: PropTypes.func,
     deviceTypeItems: PropTypes.object,
     deviceAreaItems: PropTypes.object,
-    deiviceItems: PropTypes.object,
+    deviceItems: PropTypes.object,
   }
 
   constructor(props){
@@ -86,7 +86,7 @@ class InspectDetailForm extends Component {
           inspectDetail={this.props.inspectDetail}
           deviceTypeItems={this.props.deviceTypeItems}
           deviceAreaItems={this.props.deviceAreaItems}
-          deiviceItems={this.props.deiviceItems}
+          deviceItems={this.props.deviceItems}
           loadDeviceTypeList={this.props.loadDeviceTypeList}
           loadDeviceAreaList={this.props.loadDeviceAreaList}
           loadDeviceList={this.props.loadDeviceList}
@@ -103,7 +103,6 @@ class InspectDetailForm extends Component {
             <Button type="primary" onClick={this.onInspectCheck} >验收</Button>
             <div>（确认验收，请点击按钮）</div>
           </div>
-
         </div>
       )
     } else {

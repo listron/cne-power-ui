@@ -10,7 +10,7 @@ class DeviceName extends Component {
     placeholder: PropTypes.string,
     stationName: PropTypes.string,//电站名称
     deviceType: PropTypes.string,//设备类型
-    deviceAreaCode: PropTypes.int,//选中的设备分区编码
+    deviceAreaCode: PropTypes.number,//选中的设备分区编码
     value: PropTypes.string,//选中的设备编码
     deviceTypeItems: PropTypes.object,//电站类型的选项
     deviceAreaItems: PropTypes.object,//电站分区选项

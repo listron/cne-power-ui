@@ -12,7 +12,7 @@ import {
   SET_INSPECT_CHECK_SAGA,
   FINISH_INSPECT_SAGA,
  } from '../../../../../constants/actionTypes/Ticket';
- import { 
+import { 
    GET_DEVICETYPES_SAGA,
    GET_PARTITIONS_SAGA,
    GET_DEVICES_SAGA,
@@ -31,7 +31,7 @@ class InspectDetail extends Component{
     loadDeviceList: PropTypes.func,
     deviceTypeItems: PropTypes.object,
     deviceAreaItems: PropTypes.object,
-    deiviceItems: PropTypes.object,
+    deviceItems: PropTypes.object,
     onChangeShowContainer: PropTypes.func,
     inspectList: PropTypes.object,
     setInspectId: PropTypes.func,
@@ -117,7 +117,7 @@ class InspectDetail extends Component{
         loadDeviceList={this.props.loadDeviceList}
         deviceTypeItems={this.props.deviceTypeItems}
         deviceAreaItems={this.props.deviceAreaItems}
-        deiviceItems={this.props.deiviceItems}
+        deviceItems={this.props.deviceItems}
       />
     );
   }
@@ -133,7 +133,7 @@ const mapStateToProps = (state) => ({
   defectTypes: state.operation.defect.get('defectTypes'),
   deviceTypeItems: state.common.get('deviceTypes'),
   deviceAreaItems: state.common.get('partitions'),
-  deiviceItems: state.common.get('devices'),
+  deviceItems: state.common.get('devices'),
 }) 
 
 const mapDispatchToProps = (dispatch) => ({

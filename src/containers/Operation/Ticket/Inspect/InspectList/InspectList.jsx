@@ -29,16 +29,7 @@ class InspectList extends Component {
     this.state = {};
     this.onChangeStatus = this.onChangeStatus.bind(this);
     this.onShowDetail = this.onShowDetail.bind(this);
-  }
-  
-  componentDidMount(){
-    // var params = {
-    //   stationType: "2",
-    //   status: '5',
-    //   pageNum: 0,
-    //   pageSize: 10
-    // }
-    // this.props.getInspectList(params);
+    this.onShowCreate = this.onShowCreate.bind(this);
   }
 
   onChangeStatus(status){
@@ -58,6 +49,11 @@ class InspectList extends Component {
     this.props.onChangeShowContainer({container: 'detail'});
   }
 
+  onShowCreate(){
+    console.log("onShowCreate...")
+    this.props.onChangeShowContainer({container: 'create'});
+  }  
+
   render() {
     return (
       <div>
@@ -73,6 +69,7 @@ class InspectList extends Component {
           onChangePageSize={this.onChangePageSize}
           onChangeStatus={this.onChangeStatus}
           onShowDetail={this.onShowDetail}
+          onShowCreate={this.onShowCreate}
           inspectStatusStatistics={this.props.inspectStatusStatistics}
           getInspectList={this.props.getInspectList}
         />

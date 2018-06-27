@@ -4,35 +4,51 @@ import PropTypes from 'prop-types';
 import styles from './inspectCreateForm.scss';
 import moment from 'moment';
 import StationSelect from '../../../../Common/StationSelect';
+import locale from 'antd/lib/date-picker/locale/zh_CN';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
-class CreateInspectForm extends Component{
+class InspectCreateForm extends Component{
   static propTypes={
     form: PropTypes.object,
     onCancel: PropTypes.func,
-    onCreate: PropTypes.func,
+    createInspect: PropTypes.func,
     visible: PropTypes.bool,
+    loadDeviceTypeList: PropTypes.func,
+    onCloseInspectCreate: PropTypes.func,
+    getStations: PropTypes.func,
+    stations: PropTypes.object,
+    deviceTypeItems: PropTypes.object,
   }
 
   static defaultProps={
-
   }
 
   constructor(props){
     super(props);
     this.state={
       startValue: null,
-      
     }
+    this.onHandleSubmit = this.onHandleSubmit.bind(this);
   }
 
-  filterStation = () => {
-
+  onHandleSubmit(e){
+    e.preventDefault();
+    this.props.form.validateFields((err, values) => {
+      if(!err){
+        this.props.createInspect({
+          inspectName: values.inspectName,
+          stationCodes: values.stationCodes.map((item) => (item.stationCode)).toString(),
+          deviceTypeCodes: values.deviceTypeCodes.toString(),
+          deadline: values.deadline.format("YYYY-MM-DD hh:mm:ss"),
+        })
+      }
+    })
   }
 
-  selectChange = (value) => {
-    console.log(`selected ${value}`);
+  stationSelected = (stations) => {
+    const stationCodes = (stations && stations[0] && stations[0].stationCode) || 0;
+    this.props.loadDeviceTypeList({stationCodes})
   }
 
   disabledDate = (start) => {
@@ -63,120 +79,108 @@ class CreateInspectForm extends Component{
         sm: { span: 8 },
       },
       wrapperCol: {
-        xs: { span: 8 },
-        sm: { span: 8 },
+        xs: { span: 16 },
+        sm: { span: 16 },
       },
     };
     const tailFormItemLayout = {
       wrapperCol: {
         xs: {
-          span: 24,
-          offset: 0,
+          span: 8,
+          offset: 8,
         },
         sm: {
           span: 16,
-          offset: 8,
+          offset: 16,
         },
       },
     };
-
-    const children = [];
-    for (let i = 10; i < 36; i++) {
-      children.push(<Option key={i.toString(36) + i}>{i.toString(36) + i}</Option>);
-    }
-
-    const { visible, onCancel, onCreate, form } = this.props;
-    const {
-      getFieldDecorator,
-    } = this.props.form;
+    
+    const { deviceTypeItems } = this.props;
+    const { getFieldDecorator } = this.props.form;
     return(
       <div>
-        <Modal
-          visible={visible}
-          title="基本信息"
-          footer={null}
-          onCancel={onCancel}
-        >
-          <Form >
-            <FormItem
-              {...formItemLayout}
-              label="巡检名称"
-            >
-              {getFieldDecorator('inspectName',{
-                rules:[{
-                  required: true,
-                  message: "",
-                  max: 10,
-                }]
-              })(
-                <Input placeholder="必填，10个中文字符以内" />
-              )}
-            </FormItem>
-            <FormItem
-              {...formItemLayout}
-              label="电站名称"
-            >
-              {getFieldDecorator('stationCodes',{
-                rules:[{
-                  required: true,
-                }]
-              })(
-                {/*<StationSelect 
-                  value={this.state.stationArray}
-                  multiple={true}
-                  onChange={this.stationSelected}
-                />
-                <Input placeholder="输入名字快速查询" onClick={this.filterStation} addonAfter={<Icon type="filter" />} />*/}
-              )}
-            </FormItem>
-            <FormItem
-              {...formItemLayout}
-              label="设备类型"
-            >
-              {getFieldDecorator('deviceTypeCodes',{
-                rules:[{
-                  required: true,
-                }]
-              })(
-                <Select
-                  mode="multiple"
-                  placeholder="请选择设备类型"
-                >
-                  {children}
-                </Select>
-              )}
-            </FormItem>
-            <FormItem
-              {...formItemLayout}
-              label="截止时间"
-            >
-              {getFieldDecorator('deadline',{
-                rules:[{
-                  required: true,
-                }]
-              })(
-                <DatePicker 
-                  showTime 
-                  format="YYYY-MM-DD HH:mm:ss" 
-                  placeholder="请选择截至时间"
-                  disabledDate={this.disabledDate}
-                  disabledTime={this.disabledTime}
-                  language="zh-CN"
-                />
-              )}
-            </FormItem>
-            <FormItem
-              {...tailFormItemLayout}
-            >
-              <Button htmlType="reset" onClick={onCancel} >取消</Button>
-              <Button type="primary" htmlType="submit" onClick={onCreate} >提交</Button>
-            </FormItem>
-          </Form>
-        </Modal>
+        <Form onSubmit={this.onHandleSubmit} >
+          <FormItem
+            {...formItemLayout}
+            label="巡检名称"
+          >
+            {getFieldDecorator('inspectName',{
+              rules:[{
+                required: true,
+                message: "",
+                max: 10,
+              }]
+            })(
+              <Input placeholder="必填，10个中文字符以内" />
+            )}
+          </FormItem>
+          <FormItem
+            {...formItemLayout}
+            label="电站名称"
+          >
+            {getFieldDecorator('stationCodes',{
+              rules:[{
+                required: true,
+              }]
+            })(
+              <StationSelect 
+                data={this.props.stations.toJS()}
+                multiple={true}
+                onChange={this.stationSelected}
+              />
+            )}
+          </FormItem>
+          <FormItem
+            {...formItemLayout}
+            label="设备类型"
+          >
+            {getFieldDecorator('deviceTypeCodes',{
+              rules:[{
+                required: true,
+              }]
+            })(
+              <Select
+                mode="multiple"
+                placeholder="请选择设备类型"
+                disabled={deviceTypeItems.size === 0}
+              >
+                {deviceTypeItems.map((item, index) => (
+                  <Option key={item.get('deviceTypeName')+index} value={item.get('deviceTypeCode')} >{item.get('deviceTypeName')}</Option> 
+                ))}
+              </Select>
+            )}
+          </FormItem>
+          <FormItem
+            {...formItemLayout}
+            label="截止时间"
+          >
+            {getFieldDecorator('deadline',{
+              rules:[{
+                required: true,
+              }]
+            })(
+              <DatePicker 
+                showTime 
+                format="YYYY-MM-DD HH:mm:ss" 
+                placeholder="请选择截至时间"
+                disabledDate={this.disabledDate}
+                disabledTime={this.disabledTime}
+                language="zh-CN"
+              />
+            )}
+          </FormItem>
+          <FormItem
+            {...tailFormItemLayout}
+          >
+            <Button htmlType="reset" onClick={this.props.onCloseInspectCreate} >取消</Button>
+            <Button type="primary" htmlType="submit" >提交</Button>
+          </FormItem>
+        </Form>
       </div>
     )
   }
 
 }
 
-export default Form.create()(CreateInspectForm);
+export default Form.create()(InspectCreateForm);

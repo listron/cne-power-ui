@@ -25,6 +25,9 @@ import {
   FINISH_INSPECT_SUCCESS,
   FINISH_INSPECT_FAIL,
   CHANGE_SHOW_CONTAINER_SAGA,
+  CREATE_INSPECT_SAGA,
+  CREATE_INSPECT_SUCCESS,
+  CREATE_INSPECT_FAIL,
 } from '../../../../constants/actionTypes/Ticket';
 
 
@@ -212,6 +215,33 @@ function *finishInspect(action){
     console.log(e);
   }
 }
+// 创建巡检
+function *createInspect(action){
+  let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.ticket.createInspect;
+  console.log(action);
+  yield put({ type: TICKET_FETCH })
+  try{
+    const response = yield call(axios.post, url, action.params)
+    if(response.data.code === "10000"){
+      yield put({
+        type: CREATE_INSPECT_SUCCESS,
+        data: response.data.data,
+        params: action.params,
+      })
+    }else{
+      yield put({
+        type: CREATE_INSPECT_FAIL,
+        error: {
+          code: response.data.code,
+          message: response.data.message,
+        }
+      })
+    }
+  }catch(e){
+    console.log(e);
+  }
+}
+
 export function* watchSetInspectId(){
   yield takeLatest(SET_INSPECT_ID_SAGA, setInspectId);
 }
@@ -235,4 +265,7 @@ export function* watchSetInspectCheck(){
 }
 export function* watchFinishInspect(){
   yield takeLatest(FINISH_INSPECT_SAGA, finishInspect);
+}
+export function* watchCreateInspect(){
+  yield takeLatest(CREATE_INSPECT_SAGA, createInspect);
 }

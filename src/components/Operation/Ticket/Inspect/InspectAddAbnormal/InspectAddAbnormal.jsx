@@ -173,7 +173,7 @@ class inspectAddAbnormal extends Component {
                   }]
                 })(
                   <Select 
-                    mode="combobox"
+                    // mode="combobox"
                     placeholder="必选"
                     onChange={this.onChangeType}
                   >
@@ -202,7 +202,7 @@ class inspectAddAbnormal extends Component {
                     deviceType={this.getDeviceType(getFieldValue('deviceTypeCode'))}
                     deviceAreaCode={this.state.deviceAreaCode}
                     deviceTypeItems={this.props.deviceTypeItems}
-                    deviceAreaItems={this.props.deviceAreaItems}
+                    // deviceAreaItems={this.props.deviceAreaItems}
                     deviceItems={this.props.deviceItems}
                     loadDeviceList={this.loadDeviceList}
                     onChangeArea={this.onChangeArea}
