@@ -15,7 +15,6 @@ class inspectAddAbnormal extends Component {
     onCloseInspectDetail: PropTypes.func,
     deviceTypes: PropTypes.object,
     defectTypes: PropTypes.object,
-    getDeviceTypeList: PropTypes.func,
     deviceTypeItems: PropTypes.object,
     deviceAreaItems: PropTypes.object,
     deviceItems: PropTypes.object,
@@ -26,7 +25,6 @@ class inspectAddAbnormal extends Component {
     getDefectTypes: PropTypes.func,
     finishInspect: PropTypes.func,
     addInspectAbnormal: PropTypes.func,
-
   }
 
   static defaultProps={
@@ -51,7 +49,7 @@ class inspectAddAbnormal extends Component {
   componentDidMount(){
     let stationCodes = this.props.inspectDetail.get('stationCode'); 
     let stationType = this.props.inspectDetail.get('stationType');
-    this.props.getDeviceTypeList({stationCodes: stationCodes, }); 
+    this.props.loadDeviceTypeList({stationCodes: stationCodes, }); 
     this.props.getDefectTypes({stationType: stationType, });
   }
 

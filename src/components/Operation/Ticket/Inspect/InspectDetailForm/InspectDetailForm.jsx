@@ -19,7 +19,6 @@ class InspectDetailForm extends Component {
     stationCode: PropTypes.string,
     defectTypes: PropTypes.object,
     getDefectTypes: PropTypes.func,
-    getDeviceTypeList: PropTypes.func,
     transformDefect: PropTypes.func,
     finishInspect: PropTypes.func,
     addInspectAbnormal: PropTypes.func,
@@ -81,7 +80,6 @@ class InspectDetailForm extends Component {
           deviceTypes={this.props.deviceTypes}
           defectTypes={this.props.defectTypes}
           getDefectTypes={this.props.getDefectTypes}
-          getDeviceTypeList={this.props.getDeviceTypeList}
           finishInspect={this.props.finishInspect}
           addInspectAbnormal={this.props.addInspectAbnormal}
           onCloseInspectDetail={this.props.onCloseInspectDetail}
