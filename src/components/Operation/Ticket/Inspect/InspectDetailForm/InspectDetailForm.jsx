@@ -79,6 +79,7 @@ class InspectDetailForm extends Component {
           inspectDetail={this.props.inspectDetail}
           finishInspect={this.props.finishInspect}
           addInspectAbnormal={this.props.addInspectAbnormal}
+          onCloseInspectDetail={this.props.onCloseInspectDetail}
         />
       )
     } else if(status === "3"){

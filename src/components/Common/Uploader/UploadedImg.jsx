@@ -30,7 +30,7 @@ class UploadedImg extends Component {
 
   rotateImg() {
     const { data, uid, onEdit } = this.props;
-    const fileList = data.map(e=>{
+    const fileList = data && data.length > 0 && data.map(e=>{
       if(uid === e.uid){ 
         e.rotate += 90
         e.rotate >= 360 ? e.rotate = e.rotate -360 : null;

@@ -2,7 +2,11 @@
 
 .defectCreate {
   background-color: lightblue;
-  margin: 30px auto;
+  margin: 0 auto;
+  height: 100%;
+  width: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
   .close{
     cursor: pointer;
     &:hover{

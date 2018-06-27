@@ -69,12 +69,13 @@ class ImgUploader extends Component {
   }
   beforeUpload(file){
     const isIMG = /^image/.test(file.type);
-    const isLimitSize = file.size / 1024 / 1024 > 1;
+    const { limitSize } = this.props;
+    const isLimitSize = file.size  > limitSize;
     if(!isIMG){
       message.error('只支持图片上传！')
     }
     if(isLimitSize){
-      message.error('图片上传大小不得超过1M！')
+      message.error(`图片上传大小不得超过${parseInt(limitSize/1024/1024)}M！`)
     }
     return isIMG && !isLimitSize
   }
@@ -117,7 +118,7 @@ class ImgUploader extends Component {
   render() {
     const authData = getCookie('authData');
     const { imageListShow, currentImgIndex } = this.state;
-    const { uploadPath, max,  data, editable } = this.props;
+    const { uploadPath, max,  data, editable, imgStyle } = this.props;
 		const imageProps = {
 			action: `${uploadPath}`,
       onChange: this.handleUpload,
@@ -134,7 +135,7 @@ class ImgUploader extends Component {
     );
     return (
       <div className={styles.imgUploader}>
-        {data.map((e,i)=>(
+        {data && data.length > 0 && data.map((e,i)=>(
           <UploadedImg 
             editable={editable}
             showImg={this.showImg} 
@@ -146,9 +147,10 @@ class ImgUploader extends Component {
           ))}
         {editable && <Upload
           className={styles.loaderHandler}
+          style={imgStyle}
           { ...imageProps }
         >
-          {data.length >= max ? null : uploadButton}
+          {(data && data.length >= max) ? null : uploadButton}
         </Upload>}
         <ImgListModal 
           data={data} 

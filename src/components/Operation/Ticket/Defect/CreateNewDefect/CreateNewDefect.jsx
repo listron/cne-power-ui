@@ -11,7 +11,6 @@ class DefectCreate extends Component {
   render() {   
     return (
       <div className={styles.defectCreate}>
-        form表单区域，，，，，，
         <DefectCreateForm {...this.props} />
       </div>
     );

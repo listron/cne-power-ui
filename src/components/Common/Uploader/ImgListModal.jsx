@@ -31,7 +31,7 @@ class ImgListModal extends Component {
   
   nextImg() {
     let { currentImgIndex,data } = this.props;
-    if(currentImgIndex >= data.length - 1){
+    if(!data || currentImgIndex >= data.length - 1){
       return;
     }
     this.props.changeCurrentImgIndex(currentImgIndex + 1);
@@ -56,7 +56,7 @@ class ImgListModal extends Component {
           </div>
           <div className={styles.imgContainer} style={{width:imgWidth}}>
             <ul className={styles.imgList} style={{marginLeft: `${listMargin}px`}}>
-              {data.map(e=>(
+              {data && data.length > 0 && data.map(e=>(
                 <li className={styles.eachImg} key={e.uid}>
                   <img src={ e.thumbUrl } alt={e.name} width={imgWidth} />
                 </li>
@@ -64,7 +64,7 @@ class ImgListModal extends Component {
             </ul>
           </div>
           <div className={styles.handleButton}>
-            <Button onClick={this.nextImg} disabled={currentImgIndex===data.length-1}>
+            <Button onClick={this.nextImg} disabled={!data || currentImgIndex===data.length-1}>
               <Icon type="right" />
             </Button>
           </div>

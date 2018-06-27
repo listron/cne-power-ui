@@ -13,7 +13,7 @@ import {
   SET_INSPECT_CHECK_SAGA,
   FINISH_INSPECT_SAGA,
  } from '../../../../../constants/actionTypes/Ticket';
- import { GET_DEVICETYPES_SAGA } from '../../../../../constants/actionTypes/commonAction'
+ import { GET_DEVICETYPES_SAGA } from '../../../../../constants/actionTypes/commonAction';
 
 class InspectDetail extends Component{
   static propTypes = {
@@ -112,9 +112,8 @@ class InspectDetail extends Component{
         setInspectCheck={this.props.setInspectCheck}
         addInspectAbnormal={this.props.addInspectAbnormal}
       />
-    )
+    );
   }
-
 }
 
 const mapStateToProps = (state) => ({
