@@ -13,6 +13,7 @@ export default {
     getStations: '/PointAdmin/QueryAllStationDto',
     getDevicetypes: '/v3/station/devicetypes',
     getDevices: '/v3/station/stationdevices',
+    getPartitions: '/v3/station/partitions',
   },
   APISubPaths: {
     getCompInfo: '/v3/enterprise/domainLogin',

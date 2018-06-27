@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './inspectAddAbnormal.scss';
 import { Icon, Button, Form, Select, Input, Modal } from 'antd';
-import ImgUploader from '../../../../Common/Uploader/ImgUploader';
+// import ImgUploader from '../../../../Common/Uploader/ImgUploader';
+import DeviceName from '../../../../Common/DeviceName';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -15,10 +16,17 @@ class inspectAddAbnormal extends Component {
     deviceTypes: PropTypes.object,
     defectTypes: PropTypes.object,
     getDeviceTypeList: PropTypes.func,
+    deviceTypeItems: PropTypes.object,
+    deviceAreaItems: PropTypes.object,
+    deviceItems: PropTypes.object,
+    loadDeviceTypeList: PropTypes.func,
+    loadDeviceAreaList: PropTypes.func,
+    loadDeviceList: PropTypes.func,
     inspectDetail: PropTypes.object,
     getDefectTypes: PropTypes.func,
     finishInspect: PropTypes.func,
     addInspectAbnormal: PropTypes.func,
+
   }
 
   static defaultProps={
@@ -29,11 +37,15 @@ class inspectAddAbnormal extends Component {
     super(props);
     this.state={
       showAddAbnormal: false,
+      deviceAreaCode: null,
     }
     this.showAdd = this.showAdd.bind(this);
     this.hideAdd = this.hideAdd.bind(this);
     this.onHandleSubmit = this.onHandleSubmit.bind(this);
     this.onFinishInspect = this.onFinishInspect.bind(this);
+    this.loadDeviceList = this.loadDeviceList.bind(this);
+    this.onChangeType = this.onChangeType.bind(this);
+    this.onChangeArea = this.onChangeArea.bind(this);
   }
 
   componentDidMount(){
@@ -61,13 +73,8 @@ class inspectAddAbnormal extends Component {
 
   onHandleSubmit(e){
     e.preventDefault();
-    // let params = {
-    //   inspectId: this.props.inspectDetail.get('inspectId'),
-    //   deviceTypeCode: deviceTypeCodes.value,
-    // }
     this.props.form.validateFields((err, values) => {
       if(!err){
-        console.log('Received values of form: ', values);
         this.props.addInspectAbnormal({
           inspectId: this.props.inspectDetail.get('inspectId'),
           deviceTypeCode: values.deviceTypeCode,
@@ -78,11 +85,55 @@ class inspectAddAbnormal extends Component {
     })
   }
 
+  onChangeType(value) {
+    this.props.form.setFieldsValue({
+      deviceCode: ''
+    });
+    this.setState({
+      deviceAreaCode: null
+    });
+    this.props.loadDeviceAreaList({
+      stationCode: this.props.inspectDetail.get('stationCode'),
+      deviceTypeCode: value
+    });
+  }
+
+  onChangeArea(value) {
+    this.setState({
+      deviceAreaCode: value
+    });
+  }
+
+  getDeviceType(code) {
+    let deviceType = ''
+    let index = this.props.deviceTypeItems.findIndex((item) => {
+      item.get('deviceTypeCode') === code
+    });
+    if(index !== -1) {
+      deviceType = this.props.deviceTypeItems.getIn([index, 'deviceTypeName']);
+    }
+    return deviceType;
+  }
+
+  loadDeviceList(areaCode) {
+    let params = {
+      stationCode: this.props.inspectDetail.get('stationCode'),
+      deviceTypeCode: this.props.form.getFieldValue('deviceTypeCode')
+    };
+    if(areaCode !== null) {
+      params.partitionCode = areaCode;
+    }
+    this.props.loadDeviceList(params);
+  }
+
   showAdd(){
     this.setState({
       showAddAbnormal: true,
-    })  
-    
+    })
+    let stationCode = this.props.inspectDetail.get('stationCode'); 
+    this.props.loadDeviceTypeList({
+      stationCodes: stationCode,
+    });
   }
 
   hideAdd(){
@@ -90,9 +141,9 @@ class inspectAddAbnormal extends Component {
       showAddAbnormal: false,
     })
   }
-  
+
   render(){
-    const { deviceTypes, defectTypes} = this.props;
+    const { deviceTypeItems, defectTypes, inspectDetail} = this.props;
     const formItemLayout = {
       labelCol: {
         xs: { span: 8 },
@@ -103,7 +154,7 @@ class inspectAddAbnormal extends Component {
         sm: { span: 8 },
       },
     };
-    const { getFieldDecorator } = this.props.form;
+    const { getFieldDecorator, getFieldValue } = this.props.form;
     return(
       <div className={styles.inspectHandleForm} >
         <div>
@@ -113,7 +164,7 @@ class inspectAddAbnormal extends Component {
         {this.state.showAddAbnormal &&
           <div >
             <div>添加</div>
-            <Form  onSubmit={this.onHandleSubmit} >
+            <Form onSubmit={this.onHandleSubmit} >
               <FormItem
                 {...formItemLayout}
                 label="设备类型" 
@@ -123,16 +174,17 @@ class inspectAddAbnormal extends Component {
                     required: true,
                   }]
                 })(
-                  <Select
+                  <Select 
+                    mode="combobox"
                     placeholder="必选"
-                    onChange={this.selectChange}
+                    onChange={this.onChangeType}
                   >
-                  {deviceTypes.map(item => {
+                  {deviceTypeItems.map((item,index) => {
                     return (
-                      <Option key={item.get('deviceTypeCode') } value={item.get('deviceTypeCode') } >
-                        {item.get('deviceTypeName') }
+                      <Option key={item.get('deviceTypeCode')} value={item.get('deviceTypeCode')} >
+                        {item.get('deviceTypeName')}
                       </Option>
-                    )
+                    );
                   })}
                   </Select>
                 )}
@@ -146,10 +198,16 @@ class inspectAddAbnormal extends Component {
                     required: true,
                   }]
                 })(
-                  <Input 
+                  <DeviceName 
                     placeholder="输入关键字快速查询" 
-                    onClick={this.filterDevice} 
-                    addonAfter={<Icon type="filter" />} 
+                    stationName={inspectDetail.get('stationName')}
+                    deviceType={this.getDeviceType(getFieldValue('deviceTypeCode'))}
+                    deviceAreaCode={this.state.deviceAreaCode}
+                    deviceTypeItems={this.props.deviceTypeItems}
+                    deviceAreaItems={this.props.deviceAreaItems}
+                    deviceItems={this.props.deviceItems}
+                    loadDeviceList={this.loadDeviceList}
+                    onChangeArea={this.onChangeArea}
                   />
                 )}
               </FormItem>

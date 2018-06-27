@@ -44,8 +44,8 @@ class DefectProcessForm extends Component {
   }
 
   render() {   
-    const { getFieldDecorator } = this.props.form;
-    const dealResult = this.props.form.getFieldValue('dealResult');
+    const { getFieldDecorator, getFieldValue } = this.props.form;
+    const dealResult = getFieldValue('dealResult');
     const formItemLayout = {
       labelCol: { span: 4 },
       wrapperCol: { span: 32 },

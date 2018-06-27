@@ -1,125 +1,86 @@
-import React, { Component } from 'react';
+import React,{ Component } from 'react';
 import PropTypes from 'prop-types';
-import SelectItem from '../SelectItem';
-import Immutable from 'immutable';
-import {Select, Modal} from 'antd';
-const Option = Select.Option;
 import styles from './style.scss';
-
+import {AutoComplete, Input, Icon} from 'antd';
+const Option = AutoComplete.Option;
+import DeviceNameModal from './DeviceNameModal';
 
 class DeviceName extends Component {
   static propTypes = {
-    show: PropTypes.bool,//控制对话框的显示和关闭
+    placeholder: PropTypes.string,
     stationName: PropTypes.string,//电站名称
-    deviceType: PropTypes.string,//选中的电站类型
-    deviceArea: PropTypes.string,//选中的分区
+    deviceType: PropTypes.string,//设备类型
+    deviceAreaCode: PropTypes.int,//选中的设备分区编码
+    value: PropTypes.string,//选中的设备编码
     deviceTypeItems: PropTypes.object,//电站类型的选项
     deviceAreaItems: PropTypes.object,//电站分区选项
     deviceItems: PropTypes.object,//设备列表
-    onSave: PropTypes.func,
-    onCancel: PropTypes.func,
-    onChangeType: PropTypes.func,
+    onChange: PropTypes.func,
+    loadDeviceList: PropTypes.func,
     onChangeArea: PropTypes.func,
-  }
-
-  static defaultProps = {
   }
 
   constructor(props) {
     super(props);
     this.state = {
-      selectedDevice: ''
+      showDeviceNameModal: false,
     };
-    this.onSelectItem = this.onSelectItem.bind(this);
+    this.onShowDeviceNameModal = this.onShowDeviceNameModal.bind(this);
+    this.onCloseDeviceNameModal = this.onCloseDeviceNameModal.bind(this);
   }
 
-  onSelectItem(value) {
+  onShowDeviceNameModal() {
     this.setState({
-      selectedDevice: value
+      showDeviceNameModal: true
     });
   }
 
-  renderItems() {
+  onCloseDeviceNameModal() {
+    this.setState({
+      showDeviceNameModal: false
+    })
+  }
+
+  getDeviceItems() {
     return this.props.deviceItems.map((item, index) => {
       return (
-        <SelectItem
-          key={'device'+index}
-          label={item.get('value')}
-          selected={this.state.selectedDevice === item.value}
-          onSelect={this.onSelectItem}
-       />
-      );
-    });
-  }
-
-  renderTypeItems() {
-    return this.props.deviceTypeItems.map((item, index) => {
-      return (
-        <Option key={'type'+index}>
-          {item.get('value')}
-        </Option>                  
-      );
-    });
-  }
-
-  renderAreaItems() {
-    return this.props.deviceAreaItems.map((item, index) => {
-      return (
-        <Option key={'area'+index}>
-          {item.get('value')}
-        </Option>                  
-      );
-    });
+        <Option key={item.get('deviceCode')} value={item.get('deviceCode')}>
+          {item.get('deviceName')}
+        </Option>
+      )
+    })
   }
 
   render() {
+    let options = this.getDeviceItems();
     return (
-      <Modal
-        visble={this.props.show}
-        closable={false}
-        onOk={()=>{this.props.onSave(this.state.selectedDevice)}}
-        onCancel={this.props.onCancel}
-        okText="保存"
-      >
-        <div className={styles.deviceNameSelect}>
-          <div className={styles.header}>
-            <div>
-              正在查找<span style={{color:'#7ec5c2'}}>{this.props.stationName}</span>电站设备
-            </div>
-            <div>
-              设备类型
-              <Select 
-                onChange={(value)=>{
-                  this.props.onChangeType(value)
-                }}
-                style={{ width: 200 }}
-                value={this.props.deviceType}>
-                {this.renderTypeItems()}
-              </Select>
-            </div>
-            {this.props.deviceAreaItems && this.props.deviceAreaItems.size > 0 &&
-              <div>
-                所属分区
-                <Select 
-                  onChange={(value)=>{
-                    this.props.onChangeArea(value)
-                  }}
-                  placeholder="请选择"
-                  style={{ width: 200 }}
-                  value={this.props.deviceArea}>
-                  {this.renderAreaItems()}
-                </Select>
-              </div>
-            }
-          </div>
-          <div className={styles.content}>
-            {this.renderItems()}
-          </div>
-        </div>
-      </Modal>
-    );
+      <div className={styles.deviceName}>
+        <AutoComplete 
+          style={{ width: '100%' }}
+          dataSource={options}
+          placeholder={this.props.placeholder}
+          optionLabelProp="value"
+          filterOption={(inputValue, option) => 
+            option.props.children.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1}
+        >
+          <Input suffix={<Icon type="filter" onClick={this.onShowDeviceNameModal} />} />
+        </AutoComplete>
+        <DeviceNameModal
+          show={this.state.showDeviceNameModal}
+          stationName={this.props.stationName}
+          deviceType={this.props.deviceType}
+          deviceCode={this.props.value}
+          deviceAreaCode={this.props.deviceAreaCode}
+          deviceAreaItems={this.props.deviceAreaItems}
+          deviceItems={this.props.deviceItems}
+          onSelectDevice={this.props.onChange}
+          onCancel={this.onCloseDeviceNameModal}
+          loadDeviceList={this.props.loadDeviceList}
+          onChangeArea={this.props.onChangeArea}
+        />
+      </div>
+    );  
   }
-
 }
 
 export default DeviceName;

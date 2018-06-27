@@ -6,29 +6,32 @@ import InspectDetailForm from '../../../../../components/Operation/Ticket/Inspec
 import { 
   GET_INSPECT_DETAIL_SAGA,
   ADD_INSPECT_ABNORMAL_SAGA,
-  CHANGE_SHOW_CONTAINER_SAGA,
   SET_INSPECT_ID_SAGA,
   GET_DEFECTTYPES_SAGA,
   TRANSFORM_DEFECT_SAGA,
   SET_INSPECT_CHECK_SAGA,
   FINISH_INSPECT_SAGA,
  } from '../../../../../constants/actionTypes/Ticket';
- import { GET_DEVICETYPES_SAGA } from '../../../../../constants/actionTypes/commonAction';
+ import { 
+   GET_DEVICETYPES_SAGA,
+   GET_PARTITIONS_SAGA,
+   GET_DEVICES_SAGA,
+} from '../../../../../constants/actionTypes/commonAction';
 
 class InspectDetail extends Component{
   static propTypes = {
     inspectDetail: PropTypes.object,
-    onCloseInspectDetail: PropTypes.func,
-    onClose: PropTypes.func,
-    onSend: PropTypes.func,
-    onReject: PropTypes.func,
     isFetching: PropTypes.bool,
     inspectId: PropTypes.string,
     getInspectDetail: PropTypes.func,
-    getDeviceTypeList: PropTypes.func,
     getDefectTypes: PropTypes.func,
-    deviceTypes: PropTypes.object,
     defectTypes: PropTypes.object,
+    loadDeviceTypeList: PropTypes.func,
+    loadDeviceAreaList: PropTypes.func,
+    loadDeviceList: PropTypes.func,
+    deviceTypeItems: PropTypes.object,
+    deviceAreaItems: PropTypes.object,
+    deiviceItems: PropTypes.object,
     onChangeShowContainer: PropTypes.func,
     inspectList: PropTypes.object,
     setInspectId: PropTypes.func,
@@ -102,15 +105,19 @@ class InspectDetail extends Component{
         onNext={this.onNext}
         onPrev={this.onPrev}
         onCloseInspectDetail={this.onCloseInspectDetail}
-        deviceTypes={this.props.deviceTypes}
         defectTypes={this.props.defectTypes}
         getDefectTypes={this.props.getDefectTypes}
-        getDeviceTypeList={this.props.getDeviceTypeList}
         inspectDetail={this.props.inspectDetail}
         transformDefect={this.props.transformDefect}
         finishInspect={this.props.finishInspect}
         setInspectCheck={this.props.setInspectCheck}
         addInspectAbnormal={this.props.addInspectAbnormal}
+        loadDeviceTypeList={this.props.loadDeviceTypeList}
+        loadDeviceAreaList={this.props.loadDeviceAreaList}
+        loadDeviceList={this.props.loadDeviceList}
+        deviceTypeItems={this.props.deviceTypeItems}
+        deviceAreaItems={this.props.deviceAreaItems}
+        deiviceItems={this.props.deiviceItems}
       />
     );
   }
@@ -123,20 +130,23 @@ const mapStateToProps = (state) => ({
   inspectDetail: state.operation.inspect.get('inspectDetail'),
   inspectId: state.operation.inspect.get('inspectId'),
   commonFetching: state.common.get('commonFetching'),
-  deviceTypes: state.common.get('deviceTypes'),
   defectTypes: state.operation.defect.get('defectTypes'),
+  deviceTypeItems: state.common.get('deviceTypes'),
+  deviceAreaItems: state.common.get('partitions'),
+  deiviceItems: state.common.get('devices'),
 }) 
 
 const mapDispatchToProps = (dispatch) => ({
-  onChangeShowContainer: params => dispatch({ type: CHANGE_SHOW_CONTAINER_SAGA, params}),
   getInspectDetail: params => dispatch({ type: GET_INSPECT_DETAIL_SAGA, params}),
   addInspectAbnormal: params => dispatch({ type: ADD_INSPECT_ABNORMAL_SAGA, params}),
-  setInspectId: params => dispatch({ type: SET_INSPECT_ID_SAGA, params}),
-  getDeviceTypeList: params => dispatch({ type: GET_DEVICETYPES_SAGA, params}),
   getDefectTypes: params => dispatch({ type: GET_DEFECTTYPES_SAGA, params}),
   transformDefect: params => dispatch({ type: TRANSFORM_DEFECT_SAGA, params}),
   setInspectCheck: params => dispatch({ type: SET_INSPECT_CHECK_SAGA, params}),
   finishInspect: params => dispatch({ type: FINISH_INSPECT_SAGA, params}),
+  loadDeviceTypeList: params => dispatch({ type: GET_DEVICETYPES_SAGA, params}),
+  loadDeviceAreaList: params => dispatch({ type: GET_PARTITIONS_SAGA, params}),
+  loadDeviceList: params => dispatch({ type: GET_DEVICES_SAGA, params}),
+  setInspectId: params => dispatch({ type: SET_INSPECT_ID_SAGA, params }),
 })
 
 export default connect(mapStateToProps,mapDispatchToProps)(InspectDetail);

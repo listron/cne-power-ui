@@ -23,6 +23,12 @@ class InspectDetailForm extends Component {
     transformDefect: PropTypes.func,
     finishInspect: PropTypes.func,
     addInspectAbnormal: PropTypes.func,
+    loadDeviceTypeList: PropTypes.func,
+    loadDeviceAreaList: PropTypes.func,
+    loadDeviceList: PropTypes.func,
+    deviceTypeItems: PropTypes.object,
+    deviceAreaItems: PropTypes.object,
+    deiviceItems: PropTypes.object,
   }
 
   constructor(props){
@@ -76,10 +82,16 @@ class InspectDetailForm extends Component {
           defectTypes={this.props.defectTypes}
           getDefectTypes={this.props.getDefectTypes}
           getDeviceTypeList={this.props.getDeviceTypeList}
-          inspectDetail={this.props.inspectDetail}
           finishInspect={this.props.finishInspect}
           addInspectAbnormal={this.props.addInspectAbnormal}
           onCloseInspectDetail={this.props.onCloseInspectDetail}
+          inspectDetail={this.props.inspectDetail}
+          deviceTypeItems={this.props.deviceTypeItems}
+          deviceAreaItems={this.props.deviceAreaItems}
+          deiviceItems={this.props.deiviceItems}
+          loadDeviceTypeList={this.props.loadDeviceTypeList}
+          loadDeviceAreaList={this.props.loadDeviceAreaList}
+          loadDeviceList={this.props.loadDeviceList}
         />
       )
     } else if(status === "3"){

@@ -3,6 +3,7 @@ import {
   watchGetStations,
   watchGetDeviceTypes,
   watchGetDevices,
+  watchGetPartition,
 } from './commonSaga';
 import { 
   watchSendCode, 
@@ -88,10 +89,13 @@ function* watchGetPosts() {
 // root saga
 export default function* rootSaga() {
   yield all([
+    //common
     watchGetStations(),
     watchGetDeviceTypes(),
     watchGetDevices(),
     watchGetPosts(),
+    watchGetPartition(),
+    //login
     // watchGetCompInfo(),
     watchLogin(),
     // watchCheckPhone(),

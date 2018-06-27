@@ -2,7 +2,7 @@ import { call, put, takeLatest, select } from 'redux-saga/effects';
 import axios from 'axios';
 import Path from '../../../../constants/path';
 import {
-  BEGIN_FETCH, 
+  TICKET_FETCH, 
   GET_INSPECT_LIST_SAGA, 
   GET_INSPECT_LIST_SUCCESS, 
   GET_INSPECT_LIST_FAIL,
@@ -31,7 +31,7 @@ import {
 //获取巡检列表信息
 function* getInspectList(action){
   let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.ticket.getInspectionList;
-  yield put({ type: BEGIN_FETCH});
+  yield put({ type: TICKET_FETCH});
   try{
     const response = yield call(axios.post, url, action.params);
     if(response.data.code === "10000"){
@@ -57,7 +57,7 @@ function* getInspectList(action){
 // 获取巡检工单详情
 function* getInspectDetail(action){
   let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.ticket.getInspectDetail;
-  yield put({type: BEGIN_FETCH });
+  yield put({type: TICKET_FETCH });
   try {
     const response = yield call(axios.get, url, { params: action.params });  
     if(response.data.code === "10000"){
@@ -92,7 +92,7 @@ function* setInspectId(action){
 // 添加巡检异常
 function* addInspectAbnormal(action){
   let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.ticket.addInspectAbnormal;
-  yield put({ type: BEGIN_FETCH })
+  yield put({ type: TICKET_FETCH })
   try{
     const response = yield call(axios.post, url, {params: action.params});
     if(response.data.code === "10000"){
@@ -125,7 +125,7 @@ function* clearInspect(action) {
 // 巡检异常设备转为工单
 function *transformDefect(action){
   let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.ticket.transformDefect;
-  yield put({ type: BEGIN_FETCH })
+  yield put({ type: TICKET_FETCH })
   try{
     const response = yield call(axios.post, url, action.params );
     if(response.data.code === "10000"){
@@ -151,7 +151,7 @@ function *transformDefect(action){
 // 巡检验收
 function *setInspectCheck(action){
   let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.ticket.setInspectCheck;
-  yield put({ type: BEGIN_FETCH })
+  yield put({ type: TICKET_FETCH })
   try{
     const response = yield call(axios.post, url, action.params)
     if(response.data.code === "10000"){
@@ -190,7 +190,7 @@ function *setInspectCheck(action){
 // 完成巡检
 function *finishInspect(action){
   let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.ticket.finishInspect;
-  yield put({ type: BEGIN_FETCH })
+  yield put({ type: TICKET_FETCH })
   try{
     const response = yield call(axios.post, url, action.params)
     if(response.data.code === "10000"){
