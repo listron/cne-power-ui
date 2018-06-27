@@ -7,10 +7,11 @@ import DeviceNameModal from './DeviceNameModal';
 
 class DeviceName extends Component {
   static propTypes = {
+    disabled: PropTypes.bool,
     placeholder: PropTypes.string,
     stationName: PropTypes.string,//电站名称
     deviceType: PropTypes.string,//设备类型
-    deviceAreaCode: PropTypes.number,//选中的设备分区编码
+    deviceAreaCode: PropTypes.string,//选中的设备分区编码
     value: PropTypes.string,//选中的设备编码
     deviceTypeItems: PropTypes.object,//电站类型的选项
     deviceAreaItems: PropTypes.object,//电站分区选项
@@ -51,6 +52,17 @@ class DeviceName extends Component {
     })
   }
 
+  getDeviceName(code) {
+    let deviceName = ''
+    let index = this.props.deviceItems.findIndex((item) => {
+      return item.get('deviceCode') === code
+    });
+    if(index !== -1) {
+      deviceName = this.props.deviceItems.getIn([index, 'deviceName']);
+    }
+    return deviceName;
+  }
+
   render() {
     let options = this.getDeviceItems();
     return (
@@ -58,14 +70,19 @@ class DeviceName extends Component {
         <AutoComplete 
           style={{ width: '100%' }}
           dataSource={options}
-          placeholder={this.props.placeholder}
-          optionLabelProp="value"
+          disabled={this.props.disabled}
+          onSelect={this.props.onChange}
+          value={this.getDeviceName(this.props.value)}
           filterOption={(inputValue, option) => 
             option.props.children.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1}
         >
-          <Input suffix={<Icon type="filter" onClick={this.onShowDeviceNameModal} />} />
+          <Input
+            disabled={this.props.disabled}
+            value={this.getDeviceName(this.props.value)}
+            placeholder={this.props.placeholder} 
+            suffix={<Icon disabled={this.props.disabled} type="filter" onClick={this.onShowDeviceNameModal} />} />
         </AutoComplete>
-        <DeviceNameModal
+        {this.state.showDeviceNameModal && <DeviceNameModal
           show={this.state.showDeviceNameModal}
           stationName={this.props.stationName}
           deviceType={this.props.deviceType}
@@ -77,7 +94,7 @@ class DeviceName extends Component {
           onCancel={this.onCloseDeviceNameModal}
           loadDeviceList={this.props.loadDeviceList}
           onChangeArea={this.props.onChangeArea}
-        />
+        />}
       </div>
     );  
   }

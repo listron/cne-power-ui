@@ -84,7 +84,7 @@ function *getDevices(action){
       yield put({ 
         type: GET_DEVICES_SAGA_SUCCESS, 
         params: {
-          data: response.data.data, 
+          data: response.data.data.devices, 
           params: action.params 
         }
       });       
@@ -112,7 +112,7 @@ function *getPartition(action){
       yield put({ 
         type: GET_PARTITIONS_SAGA_SUCCESS, 
         params: {
-          data: response.data.data, 
+          data: response.data.data.partitions, 
           params: action.params 
         }
       });       
