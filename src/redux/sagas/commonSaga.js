@@ -98,7 +98,6 @@ function *getDevices(action){
   }
 }
 
-
 export function* watchGetStations() {
   yield takeLatest(GET_STATIONS_SAGA, getStations);
 }
@@ -107,4 +106,7 @@ export function* watchGetDeviceTypes() {
 }
 export function* watchGetDevices() {
   yield takeLatest(GET_DEVICES_SAGA, getDevices);
+}
+export function* watchGetDefectTypes(){
+  yield takeLatest(GET_DEFECT_TYPES_SAGA, getDefectTypes);
 }

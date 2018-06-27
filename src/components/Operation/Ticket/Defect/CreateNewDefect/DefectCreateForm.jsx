@@ -14,7 +14,7 @@ class TmpForm extends Component {
     stations: PropTypes.array,
     deviceTypes: PropTypes.array,
     defectTypes: PropTypes.array,
-    getDevieceTypes: PropTypes.func,
+    getDeviceTypes: PropTypes.func,
     getDefectTypes: PropTypes.func,
 
   };
@@ -25,7 +25,7 @@ class TmpForm extends Component {
     const stationCodes = (stations && stations[0] && stations[0].stationCode) || 0;
     const tmpStationType = stations && stations[0] && stations[0].stationType;
     const stationType = tmpStationType===20?1:tmpStationType===10?0:2;
-    this.props.getDevieceTypes({stationCodes})
+    this.props.getDeviceTypes({stationCodes})
     this.props.getDefectTypes({stationType})
   }
   

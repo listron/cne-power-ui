@@ -131,9 +131,9 @@ function* batchDeleteDefect(action) {
   try {
     const response = yield call(axios.get, url, {params: action.params});
     if(response.data.code === '10000'){
-      const pageSize = yield select(state => state.get('currentPageSize'));
-      const status = yield select(state => state.get('status'));
-      const sort = yield select(state => state.get('sort'));
+      const pageSize = yield select(state => state.opration.defect.get('currentPageSize'));
+      const status = yield select(state => state.opration.defect.et('status'));
+      const sort = yield select(state => state.opration.defect.get('sort'));
       yield put({ 
         type: GET_DEFECT_LIST_SAGA, 
         params: {
@@ -166,9 +166,9 @@ function* batchCloseDefect(action) {
   try {
     const response = yield call(axios.post, url, action.params);
     if(response.data.code === '10000'){
-      const pageSize = yield select(state => state.get('currentPageSize'));
-      const status = yield select(state => state.get('status'));
-      const sort = yield select(state => state.get('sort'));
+      const pageSize = yield select(state => state.opration.defect.get('currentPageSize'));
+      const status = yield select(state => state.opration.defect.get('status'));
+      const sort = yield select(state => state.opration.defect.get('sort'));
       yield put({ 
         type: GET_DEFECT_LIST_SAGA, 
         params: {
@@ -201,9 +201,10 @@ function* batchSendDefect(action) {
   try {
     const response = yield call(axios.post, url, action.params);
     if(response.data.code === '10000'){
-      const pageSize = yield select(state => state.get('currentPageSize'));
-      const status = yield select(state => state.get('status'));
-      const sort = yield select(state => state.get('sort'));
+      // console.log(state);
+      const pageSize = yield select(state => state.opration.defect.get('currentPageSize'));
+      const status = yield select(state => state.opration.defect.get('status'));
+      const sort = yield select(state => state.opration.defect.get('sort'));
       yield put({ 
         type: GET_DEFECT_LIST_SAGA, 
         params: {
@@ -236,9 +237,9 @@ function* batchRejectDefect(action) {
   try {
     const response = yield call(axios.post, url, action.params);
     if(response.data.code === '10000'){
-      const pageSize = yield select(state => state.get('currentPageSize'));
-      const status = yield select(state => state.get('status'));
-      const sort = yield select(state => state.get('sort'));
+      const pageSize = yield select(state => state.opration.defect.get('currentPageSize'));
+      const status = yield select(state => state.opration.defect.get('status'));
+      const sort = yield select(state => state.opration.defect.get('sort'));
       yield put({ 
         type: GET_DEFECT_LIST_SAGA, 
         params: {
@@ -271,9 +272,9 @@ function* batchChecktDefect(action) {
   try {
     const response = yield call(axios.post, url, action.params);
     if(response.data.code === '10000'){
-      const pageSize = yield select(state => state.get('currentPageSize'));
-      const status = yield select(state => state.get('status'));
-      const sort = yield select(state => state.get('sort'));
+      const pageSize = yield select(state => state.opration.defect.get('currentPageSize'));
+      const status = yield select(state => state.opration.defect.get('status'));
+      const sort = yield select(state => state.opration.defect.get('sort'));
       yield put({ 
         type: GET_DEFECT_LIST_SAGA, 
         params: {
@@ -320,9 +321,9 @@ function* sendDefect(action) {
   try {
     const response = yield call(axios.post, url, action.params);
     if(response.data.code === '10000'){
-      const pageSize = yield select(state => state.get('currentPageSize'));
-      const status = yield select(state => state.get('status'));
-      const sort = yield select(state => state.get('sort'));
+      const pageSize = yield select(state => state.opration.defect.get('currentPageSize'));
+      const status = yield select(state => state.opration.defect.get('status'));
+      const sort = yield select(state => state.opration.defect.get('sort'));
       yield put({ 
         type: GET_DEFECT_LIST_SAGA, 
         params: {
@@ -359,9 +360,9 @@ function* rejectDefect(action) {
   try {
     const response = yield call(axios.post, url, action.params);
     if(response.data.code === '10000'){
-      const pageSize = yield select(state => state.get('currentPageSize'));
-      const status = yield select(state => state.get('status'));
-      const sort = yield select(state => state.get('sort'));
+      const pageSize = yield select(state => state.opration.defect.get('currentPageSize'));
+      const status = yield select(state => state.opration.defect.get('status'));
+      const sort = yield select(state => state.opration.defect.get('sort'));
       yield put({ 
         type: GET_DEFECT_LIST_SAGA, 
         params: {
@@ -398,9 +399,9 @@ function* closeDefect(action) {
   try {
     const response = yield call(axios.post, url, action.params);
     if(response.data.code === '10000'){
-      const pageSize = yield select(state => state.get('currentPageSize'));
-      const status = yield select(state => state.get('status'));
-      const sort = yield select(state => state.get('sort'));
+      const pageSize = yield select(state => state.opration.defect.get('currentPageSize'));
+      const status = yield select(state => state.opration.defect.get('status'));
+      const sort = yield select(state => state.opration.defect.get('sort'));
       yield put({ 
         type: GET_DEFECT_LIST_SAGA, 
         params: {
@@ -437,9 +438,9 @@ function* handleDefect(action) {
   try {
     const response = yield call(axios.post, url, action.params);
     if(response.data.code === '10000'){
-      const pageSize = yield select(state => state.get('currentPageSize'));
-      const status = yield select(state => state.get('status'));
-      const sort = yield select(state => state.get('sort'));
+      const pageSize = yield select(state => state.opration.defect.get('currentPageSize'));
+      const status = yield select(state => state.opration.defect.get('status'));
+      const sort = yield select(state => state.opration.defect.get('sort'));
       yield put({ 
         type: GET_DEFECT_LIST_SAGA, 
         params: {
@@ -476,9 +477,9 @@ function* checkDefect(action) {
   try {
     const response = yield call(axios.post, url, action.params);
     if(response.data.code === '10000'){
-      const pageSize = yield select(state => state.get('currentPageSize'));
-      const status = yield select(state => state.get('status'));
-      const sort = yield select(state => state.get('sort'));
+      const pageSize = yield select(state => state.opration.defect.get('currentPageSize'));
+      const status = yield select(state => state.opration.defect.get('status'));
+      const sort = yield select(state => state.opration.defect.get('sort'));
       yield put({ 
         type: GET_DEFECT_LIST_SAGA, 
         params: {

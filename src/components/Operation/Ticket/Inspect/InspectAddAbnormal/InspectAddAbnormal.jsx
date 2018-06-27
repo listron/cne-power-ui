@@ -1,20 +1,24 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './inspectAddAbnormal.scss';
-import { Icon, Button, Form, Select, Input } from 'antd';
+import { Icon, Button, Form, Select, Input, Modal } from 'antd';
 import ImgUploader from '../../../../Common/Uploader/ImgUploader';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
-
+const confirm = Modal.confirm;
 class inspectAddAbnormal extends Component {
 
   static propTypes={
     form: PropTypes.object,
     onCloseInspectDetail: PropTypes.func,
-    deviceTypes: PropTypes.array,
+    deviceTypes: PropTypes.object,
+    defectTypes: PropTypes.object,
     getDeviceTypeList: PropTypes.func,
     inspectDetail: PropTypes.object,
+    getDefectTypes: PropTypes.func,
+    finishInspect: PropTypes.func,
+    addInspectAbnormal: PropTypes.func,
   }
 
   static defaultProps={
@@ -29,21 +33,56 @@ class inspectAddAbnormal extends Component {
     this.showAdd = this.showAdd.bind(this);
     this.hideAdd = this.hideAdd.bind(this);
     this.onHandleSubmit = this.onHandleSubmit.bind(this);
+    this.onFinishInspect = this.onFinishInspect.bind(this);
   }
 
-  onHandleSubmit(){
-    console.log("onHandleSubmit")
+  componentDidMount(){
+    let stationCodes = this.props.inspectDetail.get('stationCode'); 
+    let stationType = this.props.inspectDetail.get('stationType');
+    this.props.getDeviceTypeList({stationCodes: stationCodes, }); 
+    this.props.getDefectTypes({stationType: stationType, });
+  }
+
+  onFinishInspect(){
+    let inspectId = this.props.inspectDetail.get('inspectId');
+    var that = this;
+    confirm({
+      title: '确定此工单全部完成?',
+      onOk() {
+        that.props.finishInspect({
+          inspectId: inspectId,
+        })
+      },
+      onCancel() {
+        console.log('Cancel');
+      },
+    })
+  }
+
+  onHandleSubmit(e){
+    e.preventDefault();
+    // let params = {
+    //   inspectId: this.props.inspectDetail.get('inspectId'),
+    //   deviceTypeCode: deviceTypeCodes.value,
+    // }
+    this.props.form.validateFields((err, values) => {
+      if(!err){
+        console.log('Received values of form: ', values);
+        this.props.addInspectAbnormal({
+          inspectId: this.props.inspectDetail.get('inspectId'),
+          deviceTypeCode: values.deviceTypeCode,
+          deviceCode: values.deviceCode,
+          defectTypeCode: values.defectTypeCode,
+        });
+      }
+    })
   }
 
   showAdd(){
     this.setState({
       showAddAbnormal: true,
     })  
-    console.log(this.props.inspectDetail.stationCode);
-    let stationCodes=this.props.inspectDetail.stationCode; 
-    this.props.getDeviceTypeList({
-      stationCodes: stationCodes,
-    }) 
+    
   }
 
   hideAdd(){
@@ -51,12 +90,9 @@ class inspectAddAbnormal extends Component {
       showAddAbnormal: false,
     })
   }
-
   
-
   render(){
-    const { deviceTypes, inspectDetail} = this.props;
-    console.log(deviceTypes)
+    const { deviceTypes, defectTypes} = this.props;
     const formItemLayout = {
       labelCol: {
         xs: { span: 8 },
@@ -72,7 +108,7 @@ class inspectAddAbnormal extends Component {
       <div className={styles.inspectHandleForm} >
         <div>
           <Button icon="plus" onClick={this.showAdd} >添加异常</Button>
-          <Button type="primary" >完成巡检</Button>
+          <Button type="primary" onClick={this.onFinishInspect} >完成巡检</Button>
         </div>
         {this.state.showAddAbnormal &&
           <div >
@@ -82,20 +118,19 @@ class inspectAddAbnormal extends Component {
                 {...formItemLayout}
                 label="设备类型" 
               >
-                {getFieldDecorator('deviceTypeCodes',{
+                {getFieldDecorator('deviceTypeCode',{
                   rules:[{
                     required: true,
                   }]
                 })(
-                  <Select 
-                    mode="multiple"
+                  <Select
                     placeholder="必选"
                     onChange={this.selectChange}
                   >
-                  {deviceTypes.map((item,index) => {
+                  {deviceTypes.map(item => {
                     return (
-                      <Option key={item.deviceTypeCode} value={item.deviceTypeCode} >
-                        {item.deviceTypeName}
+                      <Option key={item.get('deviceTypeCode') } value={item.get('deviceTypeCode') } >
+                        {item.get('deviceTypeName') }
                       </Option>
                     )
                   })}
@@ -106,7 +141,7 @@ class inspectAddAbnormal extends Component {
                 {...formItemLayout}
                 label="设备名称"
               >
-                {getFieldDecorator('deviceName',{
+                {getFieldDecorator('deviceCode',{
                   rules:[{
                     required: true,
                   }]
@@ -122,16 +157,23 @@ class inspectAddAbnormal extends Component {
                 {...formItemLayout}
                 label="缺陷类型" 
               >
-                {getFieldDecorator('defectTypeName',{
+                {getFieldDecorator('defectTypeCode',{
                   rules:[{
                     required: true,
                   }]
                 })(
-                  <Select 
-                    mode="multiple"
+                  <Select
                     placeholder="必选"
                     onChange={this.selectChange}
-                  ></Select>
+                  >
+                    {defectTypes.map(item => {
+                      return(
+                        <Option key={item.get('defectTypeCode') } value={item.get('defectTypeCode') } >
+                          {item.get('defectTypeName') }
+                        </Option>
+                      )
+                    })}
+                  </Select>
                 )}
               </FormItem>
               {/*<FormItem
@@ -140,7 +182,8 @@ class inspectAddAbnormal extends Component {
               >
                 {getFieldDecorator('photoData',{
                   rules:[{
-                    initialValue: []
+                    initialValue: [],
+                    valuePropName: 'data',
                   }]
                 })(
                   <ImgUploader editable={true}  />

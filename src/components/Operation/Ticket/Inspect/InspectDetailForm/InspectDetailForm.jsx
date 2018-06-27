@@ -4,41 +4,96 @@ import InspectBasicInfo from '../InspectBasicInfo/InspectBasicInfo';
 import TimeLines from '../../../../Common/TimeLines';
 import styles from './inspectDetailForm.scss';
 
-import { Icon } from 'antd';
+import { Icon, Button, Modal } from 'antd';
 import InspectAddAbnormal from '../InspectAddAbnormal/InspectAddAbnormal';
 import InspectAbnormal from '../InspectAbnormal/InspectAbnormal';
 
-
+const confirm = Modal.confirm;
 class InspectDetailForm extends Component {
   static propTypes={
     inspectDetail: PropTypes.object,
-    processData: PropTypes.object,
     onPrev: PropTypes.func,
     onNext: PropTypes.func,
     onCloseInspectDetail: PropTypes.func,
-    form: PropTypes.object,
-    getDeviceTypeList: PropTypes.func,
-    deviceTypes: PropTypes.array,
+    deviceTypes: PropTypes.object,
     stationCode: PropTypes.string,
+    defectTypes: PropTypes.object,
+    getDefectTypes: PropTypes.func,
+    getDeviceTypeList: PropTypes.func,
+    transformDefect: PropTypes.func,
+    finishInspect: PropTypes.func,
+    addInspectAbnormal: PropTypes.func,
   }
 
   constructor(props){
     super(props);
-    this.state={}
+    this.state={
+      disabled: false,
+    }
+    this.onTransformDefect = this.onTransformDefect.bind(this);
+    this.onInspectCheck = this.onInspectCheck.bind(this);
+  }
+  
+  onTransformDefect(){
+    let inspectId = this.props.inspectDetail.get('inspectId');
+    var that = this;
+    confirm({
+      title: '确定将选定的异常设备转为工单?',
+      onOk() {
+        that.props.transformDefect({
+          inspectId: inspectId,
+          abnormalIds: "939927204451008512",
+        })
+      },
+      onCancel() {
+        console.log('Cancel');
+      },
+    })
+  }
+
+  onInspectCheck(){
+    let inspectId = this.props.inspectDetail.get('inspectId');
+    var that = this;
+    confirm({
+      title: '确定验收此巡检工单?',
+      onOk() {
+        that.props.setInspectCheck({
+          inspectId: inspectId,
+        })
+      },
+      onCancel() {
+        console.log('Cancel');
+      },
+    })
   }
 
   renderForm(){
     let status = this.props.inspectDetail.get('inspectStatus');
-    console.log(this.props.inspectDetail.toJS())
     if(status === "2"){
       return (
         <InspectAddAbnormal
-          {...this.props}
+          deviceTypes={this.props.deviceTypes}
+          defectTypes={this.props.defectTypes}
+          getDefectTypes={this.props.getDefectTypes}
+          getDeviceTypeList={this.props.getDeviceTypeList}
+          inspectDetail={this.props.inspectDetail}
+          finishInspect={this.props.finishInspect}
+          addInspectAbnormal={this.props.addInspectAbnormal}
         />
       )
     } else if(status === "3"){
       return (
-        <div></div>
+        <div>
+          <div>
+            <Button type="primary" onClick={this.onTransformDefect} disabled={this.state.disabled} >转工单</Button>
+            <div>（请先选择设备，灰色背景为不可选）</div>
+          </div>
+          <div>
+            <Button type="primary" onClick={this.onInspectCheck} >验收</Button>
+            <div>（确认验收，请点击按钮）</div>
+          </div>
+
+        </div>
       )
     } else {
       return null;
@@ -46,7 +101,7 @@ class InspectDetailForm extends Component {
   }
 
   render(){
-    let inspectDetail = this.props.inspectDetail;
+    let { inspectDetail } = this.props;
     let progressData = inspectDetail.get('processData');  
     return (
       <div className={styles.inspectDetail} >
