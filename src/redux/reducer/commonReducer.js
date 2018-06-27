@@ -11,6 +11,9 @@ import {
   
   GET_DEVICES_SAGA_SUCCESS,
   GET_DEVICES_SAGA_FAIL,
+
+  GET_PARTITIONS_SAGA_SUCCESS,
+  GET_PARTITIONS_SAGA_FAIL
 } from '../../constants/actionTypes/commonAction';
 
 var initState = immutable.fromJS({
@@ -18,6 +21,7 @@ var initState = immutable.fromJS({
   stations: [],
   deviceTypes: [],
   devices: [],
+  partitions: []
 });
 
 const defectReducer = (state = initState, action) => {
@@ -33,9 +37,13 @@ const defectReducer = (state = initState, action) => {
     case GET_DEVICES_SAGA_SUCCESS:
       return state.set('commonFetching', false)
                   .set('devices',immutable.fromJS(action.params.data));
+    case GET_PARTITIONS_SAGA_SUCCESS: 
+      return state.set('commonFetching', false)
+                  .set('partitions',immutable.fromJS(action.params.data));
     case GET_STATIONS_SAGA_FAIL:
     case GET_DEVICETYPES_SAGA_FAIL:
     case GET_DEVICES_SAGA_FAIL:
+    case GET_PARTITIONS_SAGA_FAIL:
   }
   return state;
 }

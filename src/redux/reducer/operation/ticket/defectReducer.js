@@ -1,7 +1,7 @@
 import immutable from 'immutable';
 
 import {
-  BEGIN_FETCH, 
+  TICKET_FETCH, 
   GET_DEFECT_LIST_SUCCESS,
   GET_DEFECT_LIST_FAIL,
   SET_DEFECT_ID,
@@ -63,7 +63,7 @@ var initState = immutable.fromJS({
 
 const defectReducer = (state = initState, action) => {
   switch (action.type) {
-    case BEGIN_FETCH:
+    case TICKET_FETCH:
       return state.set('isfetching', true);
     case GET_DEFECT_LIST_SUCCESS:  
       return state.set('isFetching', false)

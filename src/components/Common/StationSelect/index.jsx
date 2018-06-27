@@ -4,7 +4,6 @@ import StationSelectModal from './StationSelectModal'
 import styles from './style.scss';
 import PropTypes from 'prop-types';
 const Option = Select.Option;
-const AutoCompleteOption = AutoComplete.Option;
 /*
   电站选择组件：
   必须参数:
