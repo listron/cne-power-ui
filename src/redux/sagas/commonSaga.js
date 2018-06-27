@@ -82,7 +82,7 @@ function *getDevices(action){
     const response = yield call(axios.get, url, {params: action.params});
     if(response.data.code === '10000'){
       yield put({ 
-        type: GET_PARTITIONS_SAGA_SUCCESS, 
+        type: GET_DEVICES_SAGA_SUCCESS, 
         params: {
           data: response.data.data, 
           params: action.params 
@@ -110,7 +110,7 @@ function *getPartition(action){
     const response = yield call(axios.get, url, {params: action.params});
     if(response.data.code === '10000'){
       yield put({ 
-        type: GET_DEVICES_SAGA_SUCCESS, 
+        type: GET_PARTITIONS_SAGA_SUCCESS, 
         params: {
           data: response.data.data, 
           params: action.params 
@@ -129,7 +129,6 @@ function *getPartition(action){
     console.log(e);
   }
 }
-
 
 export function* watchGetStations() {
   yield takeLatest(GET_STATIONS_SAGA, getStations);

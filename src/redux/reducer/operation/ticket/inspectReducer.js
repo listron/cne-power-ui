@@ -8,7 +8,13 @@ import {
   GET_INSPECT_DETAIL_FAIL,
   ADD_INSPECT_ABNORMAL_SUCCESS,
   ADD_INSPECT_ABNORMAL_FAIL,
-  CLEAR_INSPECT_STATE, 
+  CLEAR_INSPECT_STATE,
+  TRANSFORM_DEFECT_SUCCESS,
+  TRANSFORM_DEFECT_FAIL,
+  SET_INSPECT_CHECK_SUCCESS,
+  SET_INSPECT_CHECK_FAIL,
+  FINISH_INSPECT_SUCCESS,
+  FINISH_INSPECT_FAIL,
 } from '../../../../constants/actionTypes/Ticket';
 
 
@@ -79,10 +85,21 @@ const inspectReducer = (state = initState, action) => {
                   .set('inspectId', action.params.inspectId);
     case ADD_INSPECT_ABNORMAL_SUCCESS:
       return state.set('isFetching', false)
-                  .set('inspectDetail', immutable.fromJS(action.data));
+                  .set('inspectDetail', immutable.fromJS(action.data))
+    case TRANSFORM_DEFECT_SUCCESS:
+      return state.set('isFetching', false)
+                  .set('abnormalId', action.collection)
+                  .set('inspectId', action.params.inspectId);
+    case SET_INSPECT_CHECK_SUCCESS:
+      return state.set('isFetching', false)
+    case FINISH_INSPECT_SUCCESS:
+      return state.set('isFetching', false)
     case GET_INSPECT_LIST_FAIL:
     case GET_INSPECT_DETAIL_FAIL:
     case ADD_INSPECT_ABNORMAL_FAIL:
+    case TRANSFORM_DEFECT_FAIL:
+    case SET_INSPECT_CHECK_FAIL:
+    case FINISH_INSPECT_FAIL:
       return state.set('error', immutable.fromJS(action.error));
   }
   return state;

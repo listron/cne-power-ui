@@ -1,17 +1,20 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './inspectAddAbnormal.scss';
-import { Button, Form, Select } from 'antd';
+import { Icon, Button, Form, Select, Input, Modal } from 'antd';
 // import ImgUploader from '../../../../Common/Uploader/ImgUploader';
 import DeviceName from '../../../../Common/DeviceName';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
-
+const confirm = Modal.confirm;
 class inspectAddAbnormal extends Component {
 
   static propTypes={
     form: PropTypes.object,
+    onCloseInspectDetail: PropTypes.func,
+    deviceTypes: PropTypes.object,
+    defectTypes: PropTypes.object,
     deviceTypeItems: PropTypes.object,
     deviceAreaItems: PropTypes.object,
     deviceItems: PropTypes.object,
@@ -19,6 +22,9 @@ class inspectAddAbnormal extends Component {
     loadDeviceAreaList: PropTypes.func,
     loadDeviceList: PropTypes.func,
     inspectDetail: PropTypes.object,
+    getDefectTypes: PropTypes.func,
+    finishInspect: PropTypes.func,
+    addInspectAbnormal: PropTypes.func,
   }
 
   static defaultProps={
@@ -34,13 +40,47 @@ class inspectAddAbnormal extends Component {
     this.showAdd = this.showAdd.bind(this);
     this.hideAdd = this.hideAdd.bind(this);
     this.onHandleSubmit = this.onHandleSubmit.bind(this);
+    this.onFinishInspect = this.onFinishInspect.bind(this);
     this.loadDeviceList = this.loadDeviceList.bind(this);
     this.onChangeType = this.onChangeType.bind(this);
     this.onChangeArea = this.onChangeArea.bind(this);
   }
 
-  onHandleSubmit(){
-    console.log("onHandleSubmit")
+  componentDidMount(){
+    let stationCodes = this.props.inspectDetail.get('stationCode'); 
+    let stationType = this.props.inspectDetail.get('stationType');
+    this.props.loadDeviceTypeList({stationCodes: stationCodes, }); 
+    this.props.getDefectTypes({stationType: stationType, });
+  }
+
+  onFinishInspect(){
+    let inspectId = this.props.inspectDetail.get('inspectId');
+    var that = this;
+    confirm({
+      title: '确定此工单全部完成?',
+      onOk() {
+        that.props.finishInspect({
+          inspectId: inspectId,
+        })
+      },
+      onCancel() {
+        console.log('Cancel');
+      },
+    })
+  }
+
+  onHandleSubmit(e){
+    e.preventDefault();
+    this.props.form.validateFields((err, values) => {
+      if(!err){
+        this.props.addInspectAbnormal({
+          inspectId: this.props.inspectDetail.get('inspectId'),
+          deviceTypeCode: values.deviceTypeCode,
+          deviceCode: values.deviceCode,
+          defectTypeCode: values.defectTypeCode,
+        });
+      }
+    })
   }
 
   onChangeType(value) {
@@ -87,8 +127,7 @@ class inspectAddAbnormal extends Component {
   showAdd(){
     this.setState({
       showAddAbnormal: true,
-    })  
-    // console.log(this.props.inspectDetail.stationCode);
+    })
     let stationCode = this.props.inspectDetail.get('stationCode'); 
     this.props.loadDeviceTypeList({
       stationCodes: stationCode,
@@ -98,11 +137,11 @@ class inspectAddAbnormal extends Component {
   hideAdd(){
     this.setState({
       showAddAbnormal: false,
-    });
-  } 
+    })
+  }
 
   render(){
-    const { deviceTypeItems, inspectDetail} = this.props;
+    const { deviceTypeItems, defectTypes, inspectDetail} = this.props;
     const formItemLayout = {
       labelCol: {
         xs: { span: 8 },
@@ -118,7 +157,7 @@ class inspectAddAbnormal extends Component {
       <div className={styles.inspectHandleForm} >
         <div>
           <Button icon="plus" onClick={this.showAdd} >添加异常</Button>
-          <Button type="primary" >完成巡检</Button>
+          <Button type="primary" onClick={this.onFinishInspect} >完成巡检</Button>
         </div>
         {this.state.showAddAbnormal &&
           <div >
@@ -174,16 +213,23 @@ class inspectAddAbnormal extends Component {
                 {...formItemLayout}
                 label="缺陷类型" 
               >
-                {getFieldDecorator('defectTypeName',{
+                {getFieldDecorator('defectTypeCode',{
                   rules:[{
                     required: true,
                   }]
                 })(
-                  <Select 
-                    mode="multiple"
+                  <Select
                     placeholder="必选"
                     onChange={this.selectChange}
-                  ></Select>
+                  >
+                    {defectTypes.map(item => {
+                      return(
+                        <Option key={item.get('defectTypeCode') } value={item.get('defectTypeCode') } >
+                          {item.get('defectTypeName') }
+                        </Option>
+                      )
+                    })}
+                  </Select>
                 )}
               </FormItem>
               {/*<FormItem
@@ -192,7 +238,8 @@ class inspectAddAbnormal extends Component {
               >
                 {getFieldDecorator('photoData',{
                   rules:[{
-                    initialValue: []
+                    initialValue: [],
+                    valuePropName: 'data',
                   }]
                 })(
                   <ImgUploader editable={true}  />

@@ -7,7 +7,11 @@ import {
   GET_INSPECT_DETAIL_SAGA,
   ADD_INSPECT_ABNORMAL_SAGA,
   SET_INSPECT_ID_SAGA,
-} from '../../../../../constants/actionTypes/Ticket';
+  GET_DEFECTTYPES_SAGA,
+  TRANSFORM_DEFECT_SAGA,
+  SET_INSPECT_CHECK_SAGA,
+  FINISH_INSPECT_SAGA,
+ } from '../../../../../constants/actionTypes/Ticket';
  import { 
    GET_DEVICETYPES_SAGA,
    GET_PARTITIONS_SAGA,
@@ -20,6 +24,8 @@ class InspectDetail extends Component{
     isFetching: PropTypes.bool,
     inspectId: PropTypes.string,
     getInspectDetail: PropTypes.func,
+    getDefectTypes: PropTypes.func,
+    defectTypes: PropTypes.object,
     loadDeviceTypeList: PropTypes.func,
     loadDeviceAreaList: PropTypes.func,
     loadDeviceList: PropTypes.func,
@@ -29,6 +35,10 @@ class InspectDetail extends Component{
     onChangeShowContainer: PropTypes.func,
     inspectList: PropTypes.object,
     setInspectId: PropTypes.func,
+    transformDefect: PropTypes.func,
+    finishInspect: PropTypes.func,
+    setInspectCheck: PropTypes.func,
+    addInspectAbnormal: PropTypes.func,
   }
   constructor(props){
     super(props);
@@ -44,7 +54,7 @@ class InspectDetail extends Component{
     if(this.props.inspectId) {
       this.props.getInspectDetail({
         inspectId: this.props.inspectId,
-      });
+      })
     }
   }
 
@@ -95,7 +105,13 @@ class InspectDetail extends Component{
         onNext={this.onNext}
         onPrev={this.onPrev}
         onCloseInspectDetail={this.onCloseInspectDetail}
+        defectTypes={this.props.defectTypes}
+        getDefectTypes={this.props.getDefectTypes}
         inspectDetail={this.props.inspectDetail}
+        transformDefect={this.props.transformDefect}
+        finishInspect={this.props.finishInspect}
+        setInspectCheck={this.props.setInspectCheck}
+        addInspectAbnormal={this.props.addInspectAbnormal}
         loadDeviceTypeList={this.props.loadDeviceTypeList}
         loadDeviceAreaList={this.props.loadDeviceAreaList}
         loadDeviceList={this.props.loadDeviceList}
@@ -114,15 +130,19 @@ const mapStateToProps = (state) => ({
   inspectDetail: state.operation.inspect.get('inspectDetail'),
   inspectId: state.operation.inspect.get('inspectId'),
   commonFetching: state.common.get('commonFetching'),
+  defectTypes: state.operation.defect.get('defectTypes'),
   deviceTypeItems: state.common.get('deviceTypes'),
   deviceAreaItems: state.common.get('partitions'),
   deiviceItems: state.common.get('devices'),
-
 }) 
 
 const mapDispatchToProps = (dispatch) => ({
-  getInspectDetail: params => dispatch({ type: GET_INSPECT_DETAIL_SAGA, params }),
+  getInspectDetail: params => dispatch({ type: GET_INSPECT_DETAIL_SAGA, params}),
   addInspectAbnormal: params => dispatch({ type: ADD_INSPECT_ABNORMAL_SAGA, params}),
+  getDefectTypes: params => dispatch({ type: GET_DEFECTTYPES_SAGA, params}),
+  transformDefect: params => dispatch({ type: TRANSFORM_DEFECT_SAGA, params}),
+  setInspectCheck: params => dispatch({ type: SET_INSPECT_CHECK_SAGA, params}),
+  finishInspect: params => dispatch({ type: FINISH_INSPECT_SAGA, params}),
   loadDeviceTypeList: params => dispatch({ type: GET_DEVICETYPES_SAGA, params}),
   loadDeviceAreaList: params => dispatch({ type: GET_PARTITIONS_SAGA, params}),
   loadDeviceList: params => dispatch({ type: GET_DEVICES_SAGA, params}),

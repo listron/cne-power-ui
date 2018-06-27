@@ -6,7 +6,7 @@ import InspectDetail from './InspectDetail/InspectDetail';
 class Inspect extends Component {
   static propTypes = {
     showContainer: PropTypes.string,
-    onChangeShowContainer: PropTypes.string,
+    onChangeShowContainer: PropTypes.func,
   };
   constructor(props) {
     super(props);

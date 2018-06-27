@@ -60,8 +60,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   getStations: params => dispatch({ type: GET_STATIONS_SAGA, params }),
-  getDevieceTypes: params => dispatch({ type: GET_DEVICETYPES_SAGA, params }),
-  getDevieces: params => dispatch({ type: GET_DEVICES_SAGA, params }),
+  getDeviceTypes: params => dispatch({ type: GET_DEVICETYPES_SAGA, params }),
+  getDevices: params => dispatch({ type: GET_DEVICES_SAGA, params }),
   getDefectTypes: params => dispatch({ type: GET_DEFECTTYPES_SAGA, params }),
   onDefectCreateNew: params => dispatch({type: DEFECT_CREATE_SAGA, params}),
 });
