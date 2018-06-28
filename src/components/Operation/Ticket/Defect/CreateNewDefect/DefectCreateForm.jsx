@@ -25,6 +25,7 @@ class TmpForm extends Component {
     onChangeShowContainer: PropTypes.func,
     editNewDefect: PropTypes.bool,
     defectDetail: PropTypes.object,
+    editDataGet: PropTypes.bool
   };
   constructor(props){
     super(props);
@@ -32,51 +33,7 @@ class TmpForm extends Component {
       defectFinished: false
     }
   }
-  componentDidMount(){
-    const { showContainer,editNewDefect, form, defectDetail } = this.props;
-    
-    console.log(this.props)
-    if(editNewDefect){
-      console.log(defectDetail);      
-      console.log(showContainer);
-      let fieldValues = {
-        deviceTypeCode: defectDetail.deviceTypeCode,
-        defectTypeCode: defectDetail.defectTypeCode,
-        // defectLevel: defectDetail.defectLevel,
-        // defectDescribe: defectDetail.defectDescribe || '',
-        // defectSolveResult: defectDetail.handleData.defectSolveResult,
-        // defectSolveInfo: defectDetail.handleData.defectSolveInfo || '',
-        // replaceParts: defectDetail.handleData.replaceParts || '',
-      }
-      console.log(fieldValues)
-      // form.setFields(fieldValues)
 
-      // createTime:"2018-05-31 22:52:10"
-      // defectId:"918736969683755008"
-      // defectStatus:"0"
-      // defectTypeName:"建筑物遮挡"
-      // deviceCode:"504M302M28M2"
-      // deviceName:"2#集电线路"
-      // deviceTypeName:"集电线路"
-      // distributeTime:"2018-06-13 05:01:58"
-      // handleData:{defectSolveResult: "1", defectSolveInfo: null, replaceParts: null, status: "0", defectProposal: "处理建议:"}
-      // isCoordination:"1"
-      // isOverTime:"1"
-      // overTime:null
-      // photoAddress:null
-      // processData:(3) [{…}, {…}, {…}]
-      // stationCode:504
-      // stationName:"江孜"
-      // stationType:"0"
-
-      //   form.setFields({
-      //     stations: [],
-      //     imgHandle:0,
-      //   })
-    }else{
-      form.resetFields()
-    }
-  }
   onStationSelected = (stations) =>{
     const stationCodes = (stations && stations[0] && stations[0].stationCode) || 0;
     const tmpStationType = stations && stations[0] && stations[0].stationType;
@@ -134,7 +91,7 @@ class TmpForm extends Component {
   
   render() {
     const { defectFinished } = this.state;
-    const {stations, deviceTypes, defectTypes } = this.props;
+    const {stations, deviceTypes, defectTypes, defectDetail, editDataGet, editNewDefect } = this.props;
     const {getFieldDecorator} = this.props.form;
     const formItemLayout = {
       labelCol: {
@@ -146,13 +103,22 @@ class TmpForm extends Component {
         sm: { span: 16 },
       },
     };
+    const defaultStations = editNewDefect && stations.filter(e=>e.stationCode===defectDetail.stationCode) || [] ;
+    const defaultDeviceType = editNewDefect && editDataGet && deviceTypes.find(e=>e.deviceTypeCode===defectDetail.deviceTypeCode);
+    const defaultDefectType = editNewDefect && editDataGet && defectTypes.find(e=>e.defectTypeCode===defectDetail.defectTypeCode) || null ;
+    const imgDescribe = editNewDefect && defectDetail.photoAddress && defectDetail.photoAddress.split(',').filter(e=>!!e).map((e,i)=>({
+      uid: i,    
+      rotate: 0,  
+      status: 'done',  
+      thumbUrl: e,  
+    }))
     return (
       <Form>
         <h3>基本信息</h3>
         <FormItem label={'电站名称：'} {...formItemLayout}>
           {getFieldDecorator('stations', {
             rules: [{ required: true, message: '请选择电站' }],
-            initialValue: [],
+            initialValue: defaultStations,
           })(
             <StationSelect data={stations} multiple={false} onOK={this.onStationSelected} />
           )}
@@ -160,7 +126,7 @@ class TmpForm extends Component {
         <FormItem label={'设备类型：'} {...formItemLayout}>
           {getFieldDecorator('deviceTypeCode', {
             rules: [{ required: true, message: '请选择设备类型' }],
-            initialValue: null,
+            initialValue: defaultDeviceType && defaultDeviceType.deviceTypeCode || null,
           })(
             <Select placeholder={'请选择设备类型'} disabled={deviceTypes.length === 0}>
               {deviceTypes.map(e=>(<Option key={e.deviceTypeCode} value={e.deviceTypeCode}>{e.deviceTypeName}</Option>))}
@@ -170,7 +136,7 @@ class TmpForm extends Component {
         <FormItem label={'缺陷类型：'} {...formItemLayout}>
           {getFieldDecorator('defectTypeCode', {
             rules: [{ required: true, message: '请选择缺陷类型' }],
-            initialValue: null,
+            initialValue: defaultDefectType && defaultDefectType.defectTypeCode || null,
           })(
             <Select placeholder={'请选择缺陷类型'} disabled={defectTypes.length === 0}>
               {defectTypes.map(e=>(<Option key={e.defectTypeCode} value={e.defectTypeCode}>{e.defectTypeName}</Option>))}
@@ -180,7 +146,7 @@ class TmpForm extends Component {
         <FormItem  label={'缺陷级别：'} {...formItemLayout}>
           {getFieldDecorator('defectLevel', {
             rules: [{ required: true, message: '请选择缺陷级别' }],
-            initialValue: null,
+            initialValue: editNewDefect && defectDetail.defectLevel || null,
           })(
             <Select placeholder={'请选择缺陷级别'} disabled={defectTypes.length === 0}>
               <Option value={1}>一级</Option>
@@ -193,7 +159,7 @@ class TmpForm extends Component {
         <FormItem label={'缺陷描述：'} {...formItemLayout}>
           {getFieldDecorator('defectDescribe', {
             rules: [{ required: true, message: '请输入缺陷描述' }],
-            initialValue: '',
+            initialValue: editNewDefect && defectDetail.defectDescribe || null,
           })(
             <TextArea placeholder={'请输入缺陷描述'} />
           )}
@@ -201,7 +167,7 @@ class TmpForm extends Component {
         <FormItem label={'添加图片：'} {...formItemLayout}>
           {getFieldDecorator('imgDescribe', {
             rules: [{ required: false, message: '请上传图片' }],
-            initialValue: [],
+            initialValue: imgDescribe || [],
             valuePropName:'data',
           })(
             <ImgUploader uploadPath={`${pathConfig.basePaths.newAPIBasePath}${pathConfig.commonPaths.imgUploads}`} editable={true} />
@@ -211,7 +177,7 @@ class TmpForm extends Component {
         <FormItem label={'处理结果：'} {...formItemLayout}>
           {getFieldDecorator('defectSolveResult', {
             rules: [{ required: true, message: '选择处理结果' }],
-            initialValue: '1',
+            initialValue: editNewDefect && defectDetail.handleData.defectSolveResult || '1',
           })(
             <FormHanleButtons onDefectFinishChange={this.onDefectFinishChange} />
           )}
@@ -219,7 +185,7 @@ class TmpForm extends Component {
         {!defectFinished && <FormItem label={'处理建议：'} {...formItemLayout}>
           {getFieldDecorator('defectSolveInfo', {
             rules: [{ required: true, message: '请输入处理建议' }],
-            initialValue: '',
+            initialValue: editNewDefect && defectDetail.handleData.defectSolveInfo || '',
           })(
             <TextArea placeholder={'请描述处理建议，不超过80字'} />
           )}
@@ -227,7 +193,7 @@ class TmpForm extends Component {
         {defectFinished && <FormItem label={'处理过程：'} {...formItemLayout}>
           {getFieldDecorator('defectSolveInfo', {
             rules: [{ required: true, message: '请输入处理过程' }],
-            initialValue: '',
+            initialValue: editNewDefect && defectDetail.handleData.defectSolveInfo || ''
           })(
             <SolveTextArea />
           )}
@@ -244,7 +210,7 @@ class TmpForm extends Component {
         {defectFinished && <FormItem label={'更换部件：'} {...formItemLayout}>
           {getFieldDecorator('replaceParts', {
             rules: [{ required: false, message: '填写更换部件信息' }],
-            initialValue: '',
+            initialValue: editNewDefect && defectDetail.handleData.replaceParts || '',
           })(
             <ReplaceParts />
           )}

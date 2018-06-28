@@ -17,30 +17,56 @@ class DefectCreate extends Component {
   static propTypes = {
     onChangeShowContainer: PropTypes.func,
     stations: PropTypes.array,
+    deviceTypes: PropTypes.array,
+    defectTypes: PropTypes.array,
     getStations: PropTypes.func,
+    editNewDefect: PropTypes.bool,
     showContainer: PropTypes.string,
+    defectDetail: PropTypes.object,
+    getDeviceTypes: PropTypes.func,
+    getDefectTypes: PropTypes.func,
   };
   constructor(props) {
     super(props);
     this.onChangeShowContainer = this.onChangeShowContainer.bind(this);
+    this.state = {
+      editDataGet: false,
+    }
   } 
   componentDidMount(){
+    const { editNewDefect } = this.props;
     this.props.getStations({
       domainName: "cne", 
       stationType: 0, 
       app: "bi"
     });
+    if(editNewDefect){
+      const { defectDetail } = this.props;
+      const stationType = defectDetail.stationType;
+      const stationCodes = defectDetail.stationCode;
+      this.props.getDeviceTypes({stationCodes})
+      this.props.getDefectTypes({stationType})
+    }
   } 
+  componentWillReceiveProps(nextProps){
+    const { editNewDefect } = this.props;
+    if(editNewDefect && nextProps.stations.length > 0 && nextProps.deviceTypes.length > 0 && nextProps.defectTypes.length > 0){
+      this.setState({
+        editDataGet: true,
+      })
+    }
+  }
   onChangeShowContainer(){
     this.props.onChangeShowContainer({ container: 'list' })
   }
   
 
   render() {
+    const {editDataGet} = this.state;
     return (
       <div className={styles.defectCreate} >
         <h3><span>缺陷创建</span>    <span onClick={this.onChangeShowContainer} className={styles.close}>关闭x</span></h3>
-        <CreateNewDefect {...this.props} />
+        <CreateNewDefect {...this.props} editDataGet={editDataGet} />
       </div>
     );
   }
