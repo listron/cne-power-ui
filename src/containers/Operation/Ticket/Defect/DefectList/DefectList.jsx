@@ -10,6 +10,7 @@ import {
   CLOSE_BATCH_DEFECT_SAGA,
   CHECK_BATCH_DEFECT_SAGA,
   SET_SELECTED_DEFECT_SAGA,
+  GET_DEFECT_DETAIL_SAGA
 } from '../../../../../constants/actionTypes/Ticket';
 import DefectTable from '../../../../../components/Operation/Ticket/Defect/DefectTable/DefectTable';
 
@@ -34,6 +35,7 @@ class DefectList extends Component {
     onBatchCheck: PropTypes.func,
     onChangeSelectRows: PropTypes.func,
     onChangeShowContainer: PropTypes.func,
+    getDefectDetail: PropTypes.func,
   };
   constructor(props,context) {
     super(props);
@@ -142,9 +144,17 @@ class DefectList extends Component {
     });
   }
 
-  onShowDetail(defectId) {
-    this.props.setDefectId(defectId);
-    this.props.onChangeShowContainer({container: 'detail'});
+  onShowDetail(defectId,record) {
+    if(record.defectStatus === 0 || record.defectStatus === '0'){
+      this.props.getDefectDetail({
+        container: 'create',
+        editNewDefect:true,
+        defectId
+      });
+    }else{
+      this.props.setDefectId(defectId);
+      this.props.onChangeShowContainer({container: 'detail'});
+    }
   }
   onAdd(){
     this.props.onChangeShowContainer({container: 'create'});
@@ -201,6 +211,7 @@ const mapDispatchToProps = (dispatch) => ({
   onBatchClose: params => dispatch({ type: CLOSE_BATCH_DEFECT_SAGA, params }),
   onBatchCheck: params => dispatch({ type: CHECK_BATCH_DEFECT_SAGA, params }),
   onChangeSelectRows: params => dispatch({ type: SET_SELECTED_DEFECT_SAGA, params }),
+  getDefectDetail: params => dispatch({ type: GET_DEFECT_DETAIL_SAGA, params }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DefectList);

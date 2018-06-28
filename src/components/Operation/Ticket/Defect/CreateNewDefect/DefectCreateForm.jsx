@@ -23,6 +23,7 @@ class TmpForm extends Component {
     onDefectCreateNew: PropTypes.func,
     showContainer: PropTypes.string,
     onChangeShowContainer: PropTypes.func,
+    editNewDefect: PropTypes.bool,
     defectDetail: PropTypes.object,
   };
   constructor(props){
@@ -32,21 +33,45 @@ class TmpForm extends Component {
     }
   }
   componentDidMount(){
-    const { showContainer, form, defectDetail } = this.props;
-    if(showContainer === 'edit'){
+    const { showContainer,editNewDefect, form, defectDetail } = this.props;
+    
+    console.log(this.props)
+    if(editNewDefect){
       console.log(defectDetail);      
       console.log(showContainer);
+      let fieldValues = {
+        deviceTypeCode: defectDetail.deviceTypeCode,
+        defectTypeCode: defectDetail.defectTypeCode,
+        // defectLevel: defectDetail.defectLevel,
+        // defectDescribe: defectDetail.defectDescribe || '',
+        // defectSolveResult: defectDetail.handleData.defectSolveResult,
+        // defectSolveInfo: defectDetail.handleData.defectSolveInfo || '',
+        // replaceParts: defectDetail.handleData.replaceParts || '',
+      }
+      console.log(fieldValues)
+      // form.setFields(fieldValues)
+
+      // createTime:"2018-05-31 22:52:10"
+      // defectId:"918736969683755008"
+      // defectStatus:"0"
+      // defectTypeName:"建筑物遮挡"
+      // deviceCode:"504M302M28M2"
+      // deviceName:"2#集电线路"
+      // deviceTypeName:"集电线路"
+      // distributeTime:"2018-06-13 05:01:58"
+      // handleData:{defectSolveResult: "1", defectSolveInfo: null, replaceParts: null, status: "0", defectProposal: "处理建议:"}
+      // isCoordination:"1"
+      // isOverTime:"1"
+      // overTime:null
+      // photoAddress:null
+      // processData:(3) [{…}, {…}, {…}]
+      // stationCode:504
+      // stationName:"江孜"
+      // stationType:"0"
+
       //   form.setFields({
       //     stations: [],
-      //     deviceTypeCode:0,
-      //     defectTypeCode:0,
-      //     defectLevel:0,
-      //     defectDescribe:0,
-      //     imgDescribe:0,
-      //     defectSolveResult:0,
-      //     defectSolveInfo:0,
       //     imgHandle:0,
-      //     replaceParts:0
       //   })
     }else{
       form.resetFields()
@@ -179,7 +204,7 @@ class TmpForm extends Component {
             initialValue: [],
             valuePropName:'data',
           })(
-            <ImgUploader  imgStyle={{width:'50px',height:'50px'}} uploadPath={`${pathConfig.basePaths.APIBasePath}${pathConfig.commonPaths.imgUploads}`} editable={true} />
+            <ImgUploader uploadPath={`${pathConfig.basePaths.newAPIBasePath}${pathConfig.commonPaths.imgUploads}`} editable={true} />
           )}
         </FormItem>
         <h3>处理信息</h3>
@@ -213,7 +238,7 @@ class TmpForm extends Component {
             initialValue: [],
             valuePropName:'data',
           })(
-            <ImgUploader imgStyle={{width:'50px',height:'50px'}} uploadPath={`${pathConfig.basePaths.APIBasePath}${pathConfig.commonPaths.imgUploads}`} editable={true} />
+            <ImgUploader uploadPath={`${pathConfig.basePaths.newAPIBasePath}${pathConfig.commonPaths.imgUploads}`} editable={true} />
           )}
         </FormItem>
         {defectFinished && <FormItem label={'更换部件：'} {...formItemLayout}>

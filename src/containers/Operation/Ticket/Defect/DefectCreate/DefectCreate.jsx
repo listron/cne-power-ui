@@ -48,6 +48,7 @@ class DefectCreate extends Component {
 
 const mapStateToProps = (state) => ({
     showContainer: state.operation.ticket.get('showContainer'),
+    editNewDefect: state.operation.ticket.get('editNewDefect'),
     isFetching: state.operation.defect.get('isFetching'),
     commonFetching: state.common.get('commonFetching'),
     stations: state.common.get('stations').toJS(),
