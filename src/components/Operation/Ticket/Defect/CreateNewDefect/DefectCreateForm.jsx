@@ -103,22 +103,6 @@ class TmpForm extends Component {
         sm: { span: 16 },
       },
     };
-      // defectId:"918736969683755008"
-      // defectTypeName:"建筑物遮挡"
-      // deviceCode:"504M302M28M2"
-      // deviceName:"2#集电线路"
-      // deviceTypeName:"集电线路"
-      // handleData:{defectSolveResult: "1", defectSolveInfo: null, replaceParts: null, status: "0", defectProposal: "处理建议:"}
-      // photoAddress:null
-      // stationCode:504
-      // stationName:"江孜"
-      // stationType:"0"
-
-      //   form.setFields({
-      //     stations: [],
-      //     imgHandle:0,
-      //   })
-
     const defaultStations = editNewDefect && stations.filter(e=>e.stationCode===defectDetail.stationCode) || [] ;
     const defaultDeviceType = editNewDefect && editDataGet && deviceTypes.find(e=>e.deviceTypeCode===defectDetail.deviceTypeCode);
     const defaultDefectType = editNewDefect && editDataGet && defectTypes.find(e=>e.defectTypeCode===defectDetail.defectTypeCode) || null ;
