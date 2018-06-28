@@ -179,7 +179,7 @@ class TmpForm extends Component {
             initialValue: [],
             valuePropName:'data',
           })(
-            <ImgUploader  imgStyle={{width:'50px',height:'50px'}} uploadPath={`${pathConfig.basePaths.APIBasePath}${pathConfig.commonPaths.imgUploads}`} editable={true} />
+            <ImgUploader uploadPath={`${pathConfig.basePaths.newAPIBasePath}${pathConfig.commonPaths.imgUploads}`} editable={true} />
           )}
         </FormItem>
         <h3>处理信息</h3>
@@ -213,7 +213,7 @@ class TmpForm extends Component {
             initialValue: [],
             valuePropName:'data',
           })(
-            <ImgUploader imgStyle={{width:'50px',height:'50px'}} uploadPath={`${pathConfig.basePaths.APIBasePath}${pathConfig.commonPaths.imgUploads}`} editable={true} />
+            <ImgUploader uploadPath={`${pathConfig.basePaths.newAPIBasePath}${pathConfig.commonPaths.imgUploads}`} editable={true} />
           )}
         </FormItem>
         {defectFinished && <FormItem label={'更换部件：'} {...formItemLayout}>

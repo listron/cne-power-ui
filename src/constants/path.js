@@ -9,10 +9,10 @@ export default {
     TokenBasePath: config.tokenUri
   },
   commonPaths:{
-    imgUploads:'/Pv/Utils/UploadFiles',
-    getStations: '/PointAdmin/QueryAllStationDto',
-    getDevicetypes: '/v3/station/devicetypes',
-    getDevices: '/v3/station/stationdevices',
+    imgUploads:'/v3/uploadfile', //上传文件
+    getStations: '/PointAdmin/QueryAllStationDto',  //获取电站列表
+    getDevicetypes: '/v3/station/devicetypes',  //获取设备类型
+    getDevices: '/v3/station/stationdevices',   //获取各设备
   },
   APISubPaths: {
     getCompInfo: '/v3/enterprise/domainLogin',

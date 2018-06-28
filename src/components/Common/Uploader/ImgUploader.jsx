@@ -83,12 +83,12 @@ class ImgUploader extends Component {
   handleUpload({file,fileList}) {
     const { imgStyle } = this.props;
     if (file.status !== 'uploading') {
-      const upLoadfiles = fileList.filter(e=>(e.response && e.response.success)).map(e => ({
+      const upLoadfiles = fileList.filter(e=>(e.response && e.response.code === '10000')).map(e => ({
         uid:e.uid,
         name:e.name,
         rotate: 0,
-        response:e.response.result,
-        thumbUrl:e.thumbUrl,
+        response:e.response.data.address,
+        thumbUrl:e.response.data.address,
         status:e.status,
         imgStyle
       }));
@@ -124,7 +124,7 @@ class ImgUploader extends Component {
       onChange: this.handleUpload,
 			multiple: true,
 			listType: "picture-card",
-      headers:{'Authorization': 'Bearer ' + (authData ? authData.access_token : '')},
+      headers:{'Authorization': 'bearer ' + (authData ? JSON.parse(authData).access_token : '')},
       beforeUpload:this.beforeUpload
 		};
     const uploadButton = (
