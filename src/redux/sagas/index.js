@@ -3,6 +3,7 @@ import {
   watchGetStations,
   watchGetDeviceTypes,
   watchGetDevices,
+  watchGetPartition,
 } from './commonSaga';
 import { 
   watchSendCode, 
@@ -41,6 +42,9 @@ import {
   watchSetInspectId,  
   watchAddInspectAbnormal,
   watchClearInspect,
+  watchTransformDefect,
+  watchSetInspectCheck,
+  watchFinishInspect,
 } from './operation/ticket/inspectSaga';
 
 import {
@@ -85,10 +89,13 @@ function* watchGetPosts() {
 // root saga
 export default function* rootSaga() {
   yield all([
+    //common
     watchGetStations(),
     watchGetDeviceTypes(),
     watchGetDevices(),
     watchGetPosts(),
+    watchGetPartition(),
+    //login
     // watchGetCompInfo(),
     watchLogin(),
     // watchCheckPhone(),
@@ -127,6 +134,9 @@ export default function* rootSaga() {
     watchGetInspectDetail(),
     watchAddInspectAbnormal(),
     watchClearInspect(),
+    watchTransformDefect(),
+    watchSetInspectCheck(),
+    watchFinishInspect(),
     //ticket
   ])
 } 

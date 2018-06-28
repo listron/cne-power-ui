@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import styles from './style.scss';
 import {Icon} from 'antd';
 
-class SelectedItem extends Component {
+class DeviceItem extends Component {
   static propTypes = {
-    label: PropTypes.string,
+    item: PropTypes.object,
     selected: PropTypes.bool,
     onSelect: PropTypes.func,
     width: PropTypes.number,
@@ -26,7 +26,7 @@ class SelectedItem extends Component {
   }
 
   onSelectItem() {
-    this.props.onSelect(this.props.label);
+    this.props.onSelect(this.props.item.get('deviceCode'));
   }
 
   render() {
@@ -36,7 +36,7 @@ class SelectedItem extends Component {
           className={styles.selectedItem} 
           style={{height: this.props.height, width: this.props.width}}
         >
-          <div className={styles.itemLabel}>{this.props.label}</div>
+          <div className={styles.itemLabel}>{this.props.item.get('deviceName')}</div>
           <Icon type="check-circle-o" />
         </div>
       )
@@ -47,7 +47,7 @@ class SelectedItem extends Component {
           style={{height: this.props.height, width: this.props.width}}
           onClick={this.onSelectItem}
         >
-          <div className={styles.itemLabel}>{this.props.label}</div>
+          <div className={styles.itemLabel}>{this.props.item.get('deviceName')}</div>
         </div>
       );
     }
@@ -55,4 +55,4 @@ class SelectedItem extends Component {
   }
 }
 
-export default SelectedItem;
+export default DeviceItem;

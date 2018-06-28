@@ -10,9 +10,10 @@ export default {
   },
   commonPaths:{
     imgUploads:'/v3/uploadfile', //上传文件
-    getStations: '/PointAdmin/QueryAllStationDto',  //获取电站列表
-    getDevicetypes: '/v3/station/devicetypes',  //获取设备类型
-    getDevices: '/v3/station/stationdevices',   //获取各设备
+    getStations: '/PointAdmin/QueryAllStationDto',
+    getDevicetypes: '/v3/station/devicetypes',
+    getDevices: '/v3/station/stationdevices',
+    getPartitions: '/v3/station/partitions',
   },
   APISubPaths: {
     getCompInfo: '/v3/enterprise/domainLogin',
@@ -47,6 +48,9 @@ export default {
       checkDefect: '/v3/defect/check',
       getDefectTypes: '/v3/defect/type',
       createNewDefect: '/v3/defect',
+      transformDefect: '/v3/inspect/defect',
+      setInspectCheck: '/v3/inspect/check',
+      finishInspect: '/v3/inspect/finish',
     }
   }
 }
