@@ -1,5 +1,6 @@
 import { call, put, takeLatest, all } from 'redux-saga/effects';
 import {
+  watchTopMenuChange,
   watchGetStations,
   watchGetDeviceTypes,
   watchGetDevices,
@@ -90,6 +91,7 @@ function* watchGetPosts() {
 export default function* rootSaga() {
   yield all([
     //common
+    watchTopMenuChange(),
     watchGetStations(),
     watchGetDeviceTypes(),
     watchGetDevices(),

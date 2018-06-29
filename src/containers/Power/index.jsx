@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import ImgUploader from '../../components/Common/Uploader/ImgUploader';
 import StationSelect from '../../components/Common/StationSelect';
 
-import Sider from '../../components/Power/Sider';
-
 import { Button } from 'antd';
 import styles from './style.scss';
 import pathConfig from '../../constants/path'
@@ -92,7 +90,6 @@ class Power extends Component {
   render() {   
     return (
         <div className={styles.power} >
-          <Sider />
           <div className={styles.powerRight}>
             {/* <Menu mode="horizontal">
               <SubMenu title={<span><Icon type="user" />{this.state.username}</span>}>

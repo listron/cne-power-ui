@@ -3,28 +3,33 @@ import { isUrl } from '../utils';
 const menuData = [
   {
     name: '首页',
-    icon: 'home',
     path: '/',
+    clickable: true,
   },{
     name: '电站运维',
-    icon: 'operation',
+    clickable: false,
     path: 'operation',
     children: [
       {
         name: '工单',
+        clickable: true,
         path: 'ticket'
       },{
         name: '缺陷管理',
+        clickable: false,
         path: 'faultManage',
         children: [
           {
             name: '新建缺陷',
+            clickable: true,
             path: 'create',
           },{
             name: '待办缺陷',
+            clickable: true,
             path: 'faultTodo',
           },{
             name: '缺陷历史',
+            clickable: true,
             path: 'faultHistory',
           }
         ],
@@ -32,15 +37,17 @@ const menuData = [
     ],
   },
   {
-    name: '系统管理',
-    icon: 'systemManage',
-    path: 'systemManage',
+    name: '用户管理',
+    clickable: false,
+    path: 'userManage',
     children: [
       {
-        name: '用户管理',
+        name: '人员管理',
+        clickable: true,
         path: 'user',
       },{
         name: '角色管理',
+        clickable: true,
         path: 'role',
       }
     ],
@@ -64,5 +71,5 @@ function formatter(data, parentPath = '/') {
   });
 }
 
-export const topMenu = formatter(menuData);
+export const menu = formatter(menuData);
 

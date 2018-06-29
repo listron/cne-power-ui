@@ -13,6 +13,10 @@ import Ptwo from '../containers/TestPages/Ptwo';
 
 const routers = [
   {
+    path:'/',
+    exact:true,
+    component: Power
+  },{
     path:'/404',
     exact:true,
     component: Exception
@@ -29,11 +33,7 @@ const routers = [
     path:'/signup',
     exact:true,
     component: Signup
-  }, {
-    path:'/',
-    exact:true,
-    component: Power
-  }, {
+  },  {
     path:'/operation/ticket',
     exact:true,
     component: Ticket,
