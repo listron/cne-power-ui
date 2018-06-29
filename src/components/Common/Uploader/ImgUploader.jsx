@@ -45,7 +45,6 @@ class ImgUploader extends Component {
   }
   static defaultProps = {
     max: 4,
-    data: [],
     limitSize: 2*1024*1024,
     editable: false,
     imgStyle: {width:'104px',height:'104px'}
@@ -73,7 +72,7 @@ class ImgUploader extends Component {
     const isIMG = /^image/.test(file.type);
     const { limitSize, max, data} = this.props;
     const isLimitSize = file.size  > limitSize;
-    const isLimitNum = (fileList.length + data.length) > max;
+    const isLimitNum = (fileList.length + (data && data.length || 0)) > max;
     if(!isIMG){
       message.error('只支持图片上传！');
     }
@@ -90,7 +89,7 @@ class ImgUploader extends Component {
     const { imgStyle, data } = this.props;
     if (file.status !== 'uploading') {
       const upLoadfiles = fileList.map(e => {
-        let rotateObj = data.find(m=>m.uid === e.uid);
+        let rotateObj = data && data.find(m=>m.uid === e.uid);
         let rotate = (rotateObj && rotateObj.rotate) || 0;
         return {
           uid:e.uid,
