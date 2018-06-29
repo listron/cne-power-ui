@@ -33,6 +33,7 @@ const Option = Select.Option;
       zoneCode:10
       zoneName:"辽宁"
     }]
+  3. 组件生成时默认已选中的电站(value)(value形式与data相同[object])
   3. 传递下来的style值，可选填，用于控制筛选组件总体样式 {width:'500px'}
   4. 输出信息:this.props.onOK(selectedStationArray)为data中筛选的一个或多个，this.props.onChange(form表单用若有会同时触发)
 */
@@ -40,6 +41,7 @@ const Option = Select.Option;
 class StationSelect extends Component {
   static propTypes = {
     multiple: PropTypes.bool,
+    value: PropTypes.array,
     data: PropTypes.array,
     onChange: PropTypes.func,
     onOK: PropTypes.func,
@@ -47,14 +49,24 @@ class StationSelect extends Component {
   }
   static defaultProps = {
     multiple: false,
+    data: [],
   }
   constructor(props) {
     super(props);
     this.state = {
       stationModalShow: false,
       checkedStations: [],
-      checkedStationName:[],
+      checkedStationName: [],
       filteredSelectedStation: [],
+    }
+  }
+  componentWillReceiveProps(nextProps){
+    const { data, value } = nextProps;
+    if( data.length > 0 && value.length > 0){
+      this.setState({
+        checkedStations: nextProps.value,
+        checkedStationName: nextProps.value.map(e=>e.stationName),
+      })
     }
   }
   onOK = (stations) => {

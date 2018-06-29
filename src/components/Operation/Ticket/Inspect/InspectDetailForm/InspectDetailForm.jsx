@@ -103,7 +103,6 @@ class InspectDetailForm extends Component {
             <Button type="primary" onClick={this.onInspectCheck} >验收</Button>
             <div>（确认验收，请点击按钮）</div>
           </div>
-
         </div>
       )
     } else {

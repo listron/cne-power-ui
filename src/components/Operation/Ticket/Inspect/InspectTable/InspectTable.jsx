@@ -24,6 +24,7 @@ class InspectTable extends Component {
     onChangeSort: PropTypes.func,
     onShowDetail: PropTypes.func,
     onAdd: PropTypes.func,
+    onShowCreate: PropTypes.func,
   }
 
   static defaultProps={
@@ -44,7 +45,7 @@ class InspectTable extends Component {
   }
 
   onAdd(){
-
+    this.props.onShowCreate();
   }
 
   onChangeTab(e){
