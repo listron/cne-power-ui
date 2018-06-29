@@ -8,7 +8,8 @@ const Option = Select.Option;
   电站选择组件：
   必须参数:
   1. 电站选择是否多选: multiple, 选填，默认为单选(false)。
-  2. 电站基本信息数组(data),包含信息如下：
+  2. 组件生成时默认已选中的电站(value)(value形式与data相同[object])
+  3. 电站基本信息数组(data),包含信息如下：
     [{
       commissioningDate:"2012-04-15T00:00:00"
       enterpriseId:"1"
@@ -40,6 +41,7 @@ const Option = Select.Option;
 class StationSelect extends Component {
   static propTypes = {
     multiple: PropTypes.bool,
+    value: PropTypes.array,
     data: PropTypes.array,
     onChange: PropTypes.func,
     onOK: PropTypes.func,
@@ -47,14 +49,24 @@ class StationSelect extends Component {
   }
   static defaultProps = {
     multiple: false,
+    data: [],
   }
   constructor(props) {
     super(props);
     this.state = {
       stationModalShow: false,
       checkedStations: [],
-      checkedStationName:[],
+      checkedStationName: [],
       filteredSelectedStation: [],
+    }
+  }
+  componentWillReceiveProps(nextProps){
+    const { data, value } = nextProps;
+    if( data && data.length > 0 && value && value.length > 0){
+      this.setState({
+        checkedStations: nextProps.value,
+        checkedStationName: nextProps.value.map(e=>e.stationName),
+      })
     }
   }
   onOK = (stations) => {
@@ -97,7 +109,7 @@ class StationSelect extends Component {
   selectStation = (stations) => {//stations:选中的电站名称数组
     const { data } = this.props;
     const checkedStations = data.filter(e=>stations.includes(e.stationName))
-    const checkedStationName = stations.map(e=>e.stationName)
+    const checkedStationName = stations
     this.setState({
       stationModalShow: false,
       checkedStationName,
@@ -140,7 +152,6 @@ class StationSelect extends Component {
           data={data} 
           handleOK={this.onModalHandelOK}
           stationModalShow={stationModalShow}
-          selectStation={this.selectStation} 
           hideStationModal={this.hideStationModal} 
           showStationModal={this.showStationModal}
         />

@@ -13,7 +13,8 @@ class UploadedImg extends Component {
     rotate: PropTypes.number,
     showImg: PropTypes.func,
     index: PropTypes.number,
-    editable: PropTypes.bool
+    editable: PropTypes.bool,
+    fileList: PropTypes.array,
   }
 
   constructor(props) {
@@ -30,20 +31,21 @@ class UploadedImg extends Component {
 
   rotateImg() {
     const { data, uid, onEdit } = this.props;
-    const fileList = data && data.length > 0 && data.map(e=>{
+    const imgList = data && data.length > 0 && data.map(e=>{
       if(uid === e.uid){ 
         e.rotate += 90
         e.rotate >= 360 ? e.rotate = e.rotate -360 : null;
       }
       return e;
     });
-    onEdit(fileList);
+    onEdit(imgList);
   }
 
   deleteImg() {
-    const { data, uid, onEdit } = this.props;
-    const fileList = data.filter(e=>e.uid !== uid);
-    onEdit(fileList);
+    const { data, uid, onEdit, fileList } = this.props;
+    const imgList = data.filter(e=>e.uid !== uid);
+    const editFileList = fileList.filter(e=>e.uid !== uid);
+    onEdit(imgList,editFileList);
   }
 
   render() {

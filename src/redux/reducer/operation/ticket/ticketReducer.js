@@ -6,12 +6,14 @@ import {
 
 var initState = immutable.fromJS({
   showContainer: 'list',
+  editNewDefect: false
 });
 
 const ticketReducer = (state = initState, action) => {
   switch (action.type) {
     case CHANGE_SHOW_CONTAINER:
-      return state.set('showContainer', action.data.container);
+      return state.set('showContainer', action.data.container)
+                  .set('editNewDefect', !!action.data.editNewDefect);
   }
   return state;
 }

@@ -9,7 +9,7 @@ export default {
     TokenBasePath: config.tokenUri
   },
   commonPaths:{
-    imgUploads:'/Pv/Utils/UploadFiles',
+    imgUploads:'/v3/uploadfile', //上传文件
     getStations: '/PointAdmin/QueryAllStationDto',
     getDevicetypes: '/v3/station/devicetypes',
     getDevices: '/v3/station/stationdevices',

@@ -2,7 +2,11 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './inspectAddAbnormal.scss';
 import { Button, Form, Select, Modal } from 'antd';
+<<<<<<< HEAD
 import ImgUploader from '../../../../Common/Uploader/ImgUploader';
+=======
+// import ImgUploader from '../../../../Common/Uploader/ImgUploader';
+>>>>>>> upstream/dev
 import DeviceName from '../../../../Common/DeviceName';
 
 const FormItem = Form.Item;

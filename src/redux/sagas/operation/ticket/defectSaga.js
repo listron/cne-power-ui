@@ -36,6 +36,7 @@ import {
   HANDLE_DEFECT_FAIL,
   CHECK_DEFECT_SAGA,
   CHECK_DEFECT_FAIL,
+  CHANGE_SHOW_CONTAINER,
   CHANGE_SHOW_CONTAINER_SAGA,
   GET_DEFECTTYPES_SAGA,
   GET_DEFECTTYPES_SAGA_SUCCESS,
@@ -78,13 +79,22 @@ function* getDefectDetail(action) {
   let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.ticket.getDefectDetail;
   yield put({ type: TICKET_FETCH });
   try {
-    const response = yield call(axios.get, url, {params: action.params});
+    const response = yield call(axios.get, url, {params: {defectId:action.params.defectId}});
     if(response.data.code === '10000'){
       yield put({ 
         type: GET_DEFECT_DETAIL_SUCCESS, 
         data: response.data.data, 
         params: action.params 
-      });      
+      });  
+      if(action.params.editNewDefect){
+        yield put({
+          type: CHANGE_SHOW_CONTAINER,
+          data: {
+            container: 'create',
+            editNewDefect:true
+          },
+        });
+      }    
     }else{
       yield put({ 
         type: GET_DEFECT_DETAIL_FAIL, 
