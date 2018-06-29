@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './inspectAddAbnormal.scss';
-import { Icon, Button, Form, Select, Input, Modal } from 'antd';
+import { Button, Form, Select, Modal } from 'antd';
 // import ImgUploader from '../../../../Common/Uploader/ImgUploader';
 import DeviceName from '../../../../Common/DeviceName';
 
