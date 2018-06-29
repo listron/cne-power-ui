@@ -12,7 +12,7 @@ import {
   SET_INSPECT_CHECK_SAGA,
   FINISH_INSPECT_SAGA,
  } from '../../../../../constants/actionTypes/Ticket';
- import { 
+import { 
    GET_DEVICETYPES_SAGA,
    GET_PARTITIONS_SAGA,
    GET_DEVICES_SAGA,

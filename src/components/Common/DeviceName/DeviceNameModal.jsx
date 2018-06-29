@@ -10,7 +10,7 @@ class DeviceNameModal extends Component {
   static propTypes = {
     show: PropTypes.bool,//控制对话框的显示和关闭
     stationName: PropTypes.string,//电站名称
-    // deviceTypeCode: PropTypes.int,//选中的设备类型编码
+    // deviceTypeCode: PropTypes.number,//选中的设备类型编码
     deviceType: PropTypes.string,//选中的设备类型
     deviceCode: PropTypes.string,//选中的设备
     deviceAreaCode: PropTypes.string,//选中的分区编码

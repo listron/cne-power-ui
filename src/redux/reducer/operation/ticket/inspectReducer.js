@@ -15,6 +15,8 @@ import {
   SET_INSPECT_CHECK_FAIL,
   FINISH_INSPECT_SUCCESS,
   FINISH_INSPECT_FAIL,
+  CREATE_INSPECT_SUCCESS,
+  CREATE_INSPECT_FAIL,
 } from '../../../../constants/actionTypes/Ticket';
 
 
@@ -94,12 +96,15 @@ const inspectReducer = (state = initState, action) => {
       return state.set('isFetching', false)
     case FINISH_INSPECT_SUCCESS:
       return state.set('isFetching', false)
+    case CREATE_INSPECT_SUCCESS:
+      return state.set('isFetching', false)
     case GET_INSPECT_LIST_FAIL:
     case GET_INSPECT_DETAIL_FAIL:
     case ADD_INSPECT_ABNORMAL_FAIL:
     case TRANSFORM_DEFECT_FAIL:
     case SET_INSPECT_CHECK_FAIL:
     case FINISH_INSPECT_FAIL:
+    case CREATE_INSPECT_FAIL:
       return state.set('error', immutable.fromJS(action.error));
   }
   return state;

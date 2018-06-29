@@ -51,6 +51,7 @@ export default {
       transformDefect: '/v3/inspect/defect',
       setInspectCheck: '/v3/inspect/check',
       finishInspect: '/v3/inspect/finish',
+      createInspect:'/v3/inspect',
     }
   }
 }
