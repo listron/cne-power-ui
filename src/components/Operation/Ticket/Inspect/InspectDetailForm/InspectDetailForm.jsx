@@ -28,6 +28,9 @@ class InspectDetailForm extends Component {
     deviceTypeItems: PropTypes.object,
     deviceAreaItems: PropTypes.object,
     deviceItems: PropTypes.object,
+    onDeleteAbnormal: PropTypes.func,
+    getInspectStandard: PropTypes.func,
+    inspectStandard: PropTypes.object,
   }
 
   constructor(props){
@@ -37,8 +40,12 @@ class InspectDetailForm extends Component {
     }
     this.onTransformDefect = this.onTransformDefect.bind(this);
     this.onInspectCheck = this.onInspectCheck.bind(this);
+    
   }
   
+  componentDidMount(){
+  }
+
   onTransformDefect(){
     let inspectId = this.props.inspectDetail.get('inspectId');
     var that = this;
@@ -112,6 +119,7 @@ class InspectDetailForm extends Component {
 
   render(){
     let { inspectDetail } = this.props;
+    console.log(inspectDetail);
     let progressData = inspectDetail.get('processData');  
     return (
       <div className={styles.inspectDetail} >
@@ -125,11 +133,16 @@ class InspectDetailForm extends Component {
             <div className={styles.basic} >
               <InspectBasicInfo basicInfo={inspectDetail} />
             </div>
-            {inspectDetail.get('abnormalData').size !== 0 && (
-              <div className={styles.abnormal} >
-                <InspectAbnormal abnormalItems={inspectDetail.get('abnormalData')} />
-              </div>
-            )}
+            <div className={styles.abnormal} >
+              <InspectAbnormal 
+                abnormalItems={inspectDetail.get('abnormalData')}
+                status={inspectDetail.get("inspectStatus")}
+                onDeleteAbnormal={this.props.onDeleteAbnormal}
+                getInspectStandard={this.props.getInspectStandard}
+                inspectDetail={this.props.inspectDetail}
+                inspectStandard={this.props.inspectStandard}
+              />
+            </div>           
           </div>
           <div className={styles.right} >
             <div className={styles.timeLines}>

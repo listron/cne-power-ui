@@ -50,7 +50,6 @@ class InspectList extends Component {
   }
 
   onShowCreate(){
-    console.log("onShowCreate...")
     this.props.onChangeShowContainer({container: 'create'});
   }  
 

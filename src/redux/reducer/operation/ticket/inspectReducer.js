@@ -17,6 +17,8 @@ import {
   FINISH_INSPECT_FAIL,
   CREATE_INSPECT_SUCCESS,
   CREATE_INSPECT_FAIL,
+  GET_INSPECT_STANDARD_SUCCESS,
+  GET_INSPECT_STANDARD_FAIL,
 } from '../../../../constants/actionTypes/Ticket';
 
 
@@ -46,25 +48,16 @@ var initState = immutable.fromJS({
     inspectName: '',
     createTime: '',
     deadLine: '',
-    abnormalData: {
-      abnormalId: '',
-      deviceTypeCode: '',
-      deviceTypeName: '',
-      deviceCode: '',
-      deviceName: '',
-      defectTypeCode: '',
-      defectTypeName: '',
-      photoAddress: '',
-      isTransform: ''
-    },
+    abnormalData: [],
     processData:[],
     inspectStatus: '',
     deviceTypeNames: '',
   },
-  
+  inspectStandard: [],
 });
 
 const inspectReducer = (state = initState, action) => {
+  console.log(action)
   switch (action.type) {
     case TICKET_FETCH:
       return state.set('isFetching', true);
@@ -87,7 +80,6 @@ const inspectReducer = (state = initState, action) => {
                   .set('inspectId', action.params.inspectId);
     case ADD_INSPECT_ABNORMAL_SUCCESS:
       return state.set('isFetching', false)
-                  .set('inspectDetail', immutable.fromJS(action.data))
     case TRANSFORM_DEFECT_SUCCESS:
       return state.set('isFetching', false)
                   .set('abnormalId', action.collection)
@@ -98,6 +90,9 @@ const inspectReducer = (state = initState, action) => {
       return state.set('isFetching', false)
     case CREATE_INSPECT_SUCCESS:
       return state.set('isFetching', false)
+    case GET_INSPECT_STANDARD_SUCCESS:
+      return state.set('isFetching', false)
+                  .set('inspectStandard', immutable.fromJS(action.data.data));
     case GET_INSPECT_LIST_FAIL:
     case GET_INSPECT_DETAIL_FAIL:
     case ADD_INSPECT_ABNORMAL_FAIL:
@@ -105,6 +100,7 @@ const inspectReducer = (state = initState, action) => {
     case SET_INSPECT_CHECK_FAIL:
     case FINISH_INSPECT_FAIL:
     case CREATE_INSPECT_FAIL:
+    case GET_INSPECT_STANDARD_FAIL:
       return state.set('error', immutable.fromJS(action.error));
   }
   return state;

@@ -1,15 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './inspectAddAbnormal.scss';
-import { Icon, Button, Form, Select, Input, Modal } from 'antd';
-// import ImgUploader from '../../../../Common/Uploader/ImgUploader';
+import { Button, Form, Select, Modal } from 'antd';
+import ImgUploader from '../../../../Common/Uploader/ImgUploader';
 import DeviceName from '../../../../Common/DeviceName';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
 const confirm = Modal.confirm;
 class inspectAddAbnormal extends Component {
-
   static propTypes={
     form: PropTypes.object,
     onCloseInspectDetail: PropTypes.func,
@@ -46,9 +45,6 @@ class inspectAddAbnormal extends Component {
     this.onChangeArea = this.onChangeArea.bind(this);
   }
 
-  componentDidMount(){
-  }
-
   onFinishInspect(){
     let inspectId = this.props.inspectDetail.get('inspectId');
     var that = this;
@@ -69,12 +65,13 @@ class inspectAddAbnormal extends Component {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if(!err){
-        this.props.addInspectAbnormal({
+        let params = {
           inspectId: this.props.inspectDetail.get('inspectId'),
           deviceTypeCode: values.deviceTypeCode,
           deviceCode: values.deviceCode,
           defectTypeCode: values.defectTypeCode,
-        });
+        }
+        this.props.addInspectAbnormal(params);
       }
     })
   }
@@ -144,8 +141,8 @@ class inspectAddAbnormal extends Component {
     const { deviceTypeItems, defectTypes, inspectDetail} = this.props;
     const formItemLayout = {
       labelCol: {
-        xs: { span: 8 },
-        sm: { span: 8 },
+        xs: { span: 4 },
+        sm: { span: 4 },
       },
       wrapperCol: {
         xs: { span: 8 },
@@ -231,7 +228,7 @@ class inspectAddAbnormal extends Component {
                   </Select>
                 )}
               </FormItem>
-              {/*<FormItem
+              <FormItem
                 {...formItemLayout}
                 label="添加照片"
               >
@@ -243,7 +240,7 @@ class inspectAddAbnormal extends Component {
                 })(
                   <ImgUploader editable={true}  />
                 )}
-              </FormItem>*/}
+              </FormItem>
               <FormItem
                 {...formItemLayout}
               >

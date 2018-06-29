@@ -1,18 +1,24 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './inspectAbnormal.scss';
-import { Button } from 'antd';
+import { Button, Modal, Tabs } from 'antd';
 import ImgUploader from '../../../../Common/Uploader/ImgUploader';
 import AbnormalItem from '../../../../Common/AbnormalItem';
 
-class InspectAbnormalo extends Component {
+const TabPane = Tabs.TabPane;
+
+class InspectAbnormal extends Component {
   static propTypes = {
     abnormalItems: PropTypes.object,
     status: PropTypes.string,
     selectedIds: PropTypes.object,
-    onDeleteItem: PropTypes.func,
+    onDeleteAbnormal: PropTypes.func,
     onSelectItem: PropTypes.func,
     onWatchStandard: PropTypes.func,
+    stationType: PropTypes.string,
+    getInspectStandard: PropTypes.func,
+    inspectStandard: PropTypes.object,
+    inspectDetail: PropTypes.object,
   }
 
   static defaultProps = {
@@ -22,7 +28,8 @@ class InspectAbnormalo extends Component {
   constructor(props){
     super(props);
     this.state = {
-      showDetailId: null
+      showDetailId: null,
+      visible: false,
     };
     this.onShowDetail = this.onShowDetail.bind(this);
   }
@@ -48,9 +55,21 @@ class InspectAbnormalo extends Component {
     } 
   }
 
+  showModal = () => {
+    this.setState({visible: true})
+    let stationType = this.props.inspectDetail.get('stationType');
+    this.props.getInspectStandard({'stationType': stationType});
+  }
+
+  handleCancel = (e) => {
+    this.setState({
+      visible: false,
+    })
+  }
+
   renderItems(){
     let status = this.props.status;
-    this.props.abnormalItems.map((item, index) => {
+    return this.props.abnormalItems.map((item, index) => {
       if(status === '2') {
         return (
           <AbnormalItem 
@@ -59,7 +78,8 @@ class InspectAbnormalo extends Component {
             item={item}
             selected={this.state.showDetailId === item.get('abnormalId')}
             onShowDetail={this.onShowDetail}
-            onDelete={this.props.onDeleteItem} />
+            onDelete={this.props.onDeleteAbnormal}
+          />
         );
       } else if(status === '3') {
         return (
@@ -68,7 +88,7 @@ class InspectAbnormalo extends Component {
             status="select"
             item={item}
             disabled={item.get('isTransform') === '1'}
-            selected={this.props.selectedIds.includes(item.get('abnormalId'))}
+            // selected={this.props.selectedIds.includes(item.get('abnormalId'))}
             onSelect={this.props.onSelectItem} />
         );
       } else if(status === '4') {
@@ -107,11 +127,30 @@ class InspectAbnormalo extends Component {
   }
 
   render(){ 
+    let inspectStandard = this.props.inspectStandard;
+    console.log(inspectStandard.toJS());
     return (
       <div className={styles.inspectAbnormal} >
         <div>
           <span>异常设备</span>
-          <Button onClick={this.props.onWatchStandard}>查看巡检标准</Button>
+          <Button onClick={this.showModal}>查看巡检标准</Button>
+          <Modal 
+            visible={this.state.visible}
+            onCancel={this.handleCancel}
+            closable={false}
+            footer={null}
+            width={1050}
+          >
+            <Tabs defaultActiveKey="1"tabPosition="left" style={{height: 560, width:1000}} >
+              {inspectStandard.map((item,index) => {
+                return (
+                  <TabPane tab={item.get('standardItem')} key={item.get('standardItem')} >
+                    {item.get('standardInfo')}
+                  </TabPane>
+                )
+              })}
+            </Tabs>
+          </Modal>
         </div>
         {this.renderItems()}
         {this.props.status === '2' ? this.renderItemDetail() : null}
@@ -121,4 +160,4 @@ class InspectAbnormalo extends Component {
 
 }
 
-export default InspectAbnormalo;
+export default InspectAbnormal;
