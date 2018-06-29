@@ -8,7 +8,8 @@ const Option = Select.Option;
   电站选择组件：
   必须参数:
   1. 电站选择是否多选: multiple, 选填，默认为单选(false)。
-  2. 电站基本信息数组(data),包含信息如下：
+  2. 组件生成时默认已选中的电站(value)(value形式与data相同[object])
+  3. 电站基本信息数组(data),包含信息如下：
     [{
       commissioningDate:"2012-04-15T00:00:00"
       enterpriseId:"1"
@@ -33,7 +34,6 @@ const Option = Select.Option;
       zoneCode:10
       zoneName:"辽宁"
     }]
-  3. 组件生成时默认已选中的电站(value)(value形式与data相同[object])
   3. 传递下来的style值，可选填，用于控制筛选组件总体样式 {width:'500px'}
   4. 输出信息:this.props.onOK(selectedStationArray)为data中筛选的一个或多个，this.props.onChange(form表单用若有会同时触发)
 */
@@ -109,7 +109,7 @@ class StationSelect extends Component {
   selectStation = (stations) => {//stations:选中的电站名称数组
     const { data } = this.props;
     const checkedStations = data.filter(e=>stations.includes(e.stationName))
-    const checkedStationName = stations.map(e=>e.stationName)
+    const checkedStationName = stations
     this.setState({
       stationModalShow: false,
       checkedStationName,
@@ -152,7 +152,6 @@ class StationSelect extends Component {
           data={data} 
           handleOK={this.onModalHandelOK}
           stationModalShow={stationModalShow}
-          selectStation={this.selectStation} 
           hideStationModal={this.hideStationModal} 
           showStationModal={this.showStationModal}
         />

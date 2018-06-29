@@ -11,7 +11,6 @@ class StationSelectModal extends Component {
     stationModalShow: PropTypes.bool,
     data: PropTypes.array,
     multiple: PropTypes.bool,
-    selectStation: PropTypes.func,
     hideStationModal: PropTypes.func,
     showStationModal: PropTypes.func,
     handleOK: PropTypes.func
