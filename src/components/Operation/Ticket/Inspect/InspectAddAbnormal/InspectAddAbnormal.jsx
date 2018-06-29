@@ -2,12 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './inspectAddAbnormal.scss';
 import { Button, Form, Select, Modal } from 'antd';
-<<<<<<< HEAD
 import ImgUploader from '../../../../Common/Uploader/ImgUploader';
-=======
-// import ImgUploader from '../../../../Common/Uploader/ImgUploader';
->>>>>>> upstream/dev
 import DeviceName from '../../../../Common/DeviceName';
+import pathConfig from '../../../../../constants/path';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -236,13 +233,13 @@ class inspectAddAbnormal extends Component {
                 {...formItemLayout}
                 label="添加照片"
               >
-                {getFieldDecorator('photoData',{
+                {getFieldDecorator("photoData",{
                   rules:[{
                     initialValue: [],
                     valuePropName: 'data',
                   }]
                 })(
-                  <ImgUploader editable={true}  />
+                  <ImgUploader uploadPath={`${pathConfig.basePaths.newAPIBasePath}${pathConfig.commonPaths.imgUploads}`} editable={true}  />
                 )}
               </FormItem>
               <FormItem
