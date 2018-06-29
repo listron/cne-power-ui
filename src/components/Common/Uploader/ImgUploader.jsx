@@ -45,6 +45,7 @@ class ImgUploader extends Component {
   }
   static defaultProps = {
     max: 4,
+    data: [],
     limitSize: 2*1024*1024,
     editable: false,
     imgStyle: {width:'104px',height:'104px'}
@@ -67,20 +68,28 @@ class ImgUploader extends Component {
     onOK && onOK(stations);
     onChange && onChange(stations);
   }
-  beforeUpload(file){
+  beforeUpload(file,fileList){
     const isIMG = /^image/.test(file.type);
-    const { limitSize } = this.props;
+    const { limitSize, max, data} = this.props;
     const isLimitSize = file.size  > limitSize;
+    const isLimitNum = (fileList.length + data.length) > max;
     if(!isIMG){
-      message.error('只支持图片上传！')
+      message.error('只支持图片上传！');
     }
     if(isLimitSize){
-      message.error(`图片上传大小不得超过${parseInt(limitSize/1024/1024)}M！`)
+      message.error(`图片上传大小不得超过${parseInt(limitSize/1024/1024)}M！`);
     }
-    return isIMG && !isLimitSize
+    if(isLimitNum){
+      message.error(`图片数量超限，不得超过${max}张！`);
+    }
+    return isIMG && !isLimitSize && !isLimitNum;
   }
 
   handleUpload({file,fileList}) {
+    // console.log('--------------')
+    // console.log(file)
+    // console.log(fileList)
+    // console.log('--------------')
     const { imgStyle } = this.props;
     if (file.status !== 'uploading') {
       const upLoadfiles = fileList.filter(e=>(e.response && e.response.code === '10000')).map(e => ({
