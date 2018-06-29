@@ -63,10 +63,11 @@ class ImgUploader extends Component {
     this.changeCurrentImgIndex = this.changeCurrentImgIndex.bind(this);
     this.beforeUpload = this.beforeUpload.bind(this);
   }
-  onOK = (stations) => {
+  onOK = (imgList,editFileList) => {
     const { onChange,onOK } = this.props
-    onOK && onOK(stations);
-    onChange && onChange(stations);
+    onOK && onOK(imgList);
+    onChange && onChange(imgList);
+    editFileList && this.setState({fileList:editFileList})
   }
   beforeUpload(file,fileList){
     const isIMG = /^image/.test(file.type);
@@ -86,23 +87,24 @@ class ImgUploader extends Component {
   }
 
   handleUpload({file,fileList}) {
-    // console.log('--------------')
-    // console.log(file)
-    // console.log(fileList)
-    // console.log('--------------')
-    const { imgStyle } = this.props;
+    const { imgStyle, data } = this.props;
     if (file.status !== 'uploading') {
-      const upLoadfiles = fileList.filter(e=>(e.response && e.response.code === '10000')).map(e => ({
-        uid:e.uid,
-        name:e.name,
-        rotate: 0,
-        response:e.response.data.address,
-        thumbUrl:e.response.data.address,
-        status:e.status,
-        imgStyle
-      }));
+      const upLoadfiles = fileList.map(e => {
+        let rotateObj = data.find(m=>m.uid === e.uid);
+        let rotate = (rotateObj && rotateObj.rotate) || 0;
+        return {
+          uid:e.uid,
+          name:e.name,
+          rotate,
+          response:e.response.data.address,
+          thumbUrl:e.response.data.address,
+          status:e.status,
+          imgStyle
+        }
+      })
       this.onOK(upLoadfiles);
     }
+    this.setState({fileList})
   }
 
   showImg(index) {
@@ -126,12 +128,13 @@ class ImgUploader extends Component {
 
   render() {
     const authData = getCookie('authData');
-    const { imageListShow, currentImgIndex } = this.state;
+    const { imageListShow, currentImgIndex, fileList } = this.state;
     const { uploadPath, max,  data, editable, imgStyle } = this.props;
 		const imageProps = {
 			action: `${uploadPath}`,
       onChange: this.handleUpload,
-			multiple: true,
+      multiple: true,
+      fileList,
 			listType: "picture-card",
       headers:{'Authorization': 'bearer ' + (authData ? JSON.parse(authData).access_token : '')},
       beforeUpload:this.beforeUpload
@@ -147,6 +150,7 @@ class ImgUploader extends Component {
         {data && data.length > 0 && data.map((e,i)=>(
           <UploadedImg 
             editable={editable}
+            fileList={fileList}
             showImg={this.showImg} 
             key={e.uid} 
             {...e} 
