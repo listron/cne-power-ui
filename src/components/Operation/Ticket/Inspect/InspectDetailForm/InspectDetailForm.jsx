@@ -141,6 +141,7 @@ class InspectDetailForm extends Component {
                 getInspectStandard={this.props.getInspectStandard}
                 inspectDetail={this.props.inspectDetail}
                 inspectStandard={this.props.inspectStandard}
+                selectedIds={this}
               />
             </div>           
           </div>

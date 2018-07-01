@@ -3,7 +3,7 @@ import InspectTable from '../../../../../components/Operation/Ticket/Inspect/Ins
 import { 
   GET_INSPECT_LIST_SAGA, 
   SET_INSPECT_ID_SAGA,
-  CHANGE_SHOW_CONTAINER_SAGA,
+  INSPECT_CHECK_BATCH_SAGA,
  } from "../../../../../constants/actionTypes/Ticket";
 import { connect } from "react-redux";
 import PropTypes from 'prop-types';
@@ -22,6 +22,7 @@ class InspectList extends Component {
     setInspectId: PropTypes.func,
     onShowInspectDetail: PropTypes.func,
     onChangeShowContainer: PropTypes.func,
+    inspectCheckBatch: PropTypes.func,
   }
 
   constructor(props,context) {
@@ -71,6 +72,7 @@ class InspectList extends Component {
           onShowCreate={this.onShowCreate}
           inspectStatusStatistics={this.props.inspectStatusStatistics}
           getInspectList={this.props.getInspectList}
+          inspectCheckBatch={this.props.inspectCheckBatch}
         />
       </div>
     );
@@ -91,5 +93,6 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   getInspectList: params => dispatch({ type: GET_INSPECT_LIST_SAGA, params }),
   setInspectId: params => dispatch({ type: SET_INSPECT_ID_SAGA, params }),
+  inspectCheckBatch: params => dispatch({ type: INSPECT_CHECK_BATCH_SAGA, params}),
 })
 export default connect(mapStateToProps,mapDispatchToProps)(InspectList);

@@ -25,6 +25,7 @@ class InspectTable extends Component {
     onShowDetail: PropTypes.func,
     onAdd: PropTypes.func,
     onShowCreate: PropTypes.func,
+    inspectCheckBatch: PropTypes.func,
   }
 
   static defaultProps={
@@ -42,6 +43,7 @@ class InspectTable extends Component {
     this.onChangeTable = this.onChangeTable.bind(this);
     this.onChangeSort = this.onChangeSort.bind(this);
     this.onAdd = this.onAdd.bind(this);
+    this.onInspectCheck = this.onInspectCheck.bind(this);
   }
 
   onAdd(){
@@ -89,6 +91,10 @@ class InspectTable extends Component {
     return sortRule;
   }
 
+  onInspectCheck(){
+    console.log(this.state.selectedRowKeys.toString())
+    this.props.inspectCheckBatch({inspectId: this.state.selectedRowKeys.toString()})
+  }
   render(){
     let list = this.props.list;
     let statistics = this.props.inspectStatusStatistics;
@@ -178,7 +184,7 @@ class InspectTable extends Component {
             {
               this.state.currentSelectedStatus === "3" && 
                 <div>
-                  <Button onClick={this.onConfirm}>确认</Button>
+                  <Button onClick={this.onInspectCheck}>确认</Button>
                 </div>
             }
           </div>
