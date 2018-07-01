@@ -71,8 +71,11 @@ class inspectAddAbnormal extends Component {
           deviceTypeCode: values.deviceTypeCode,
           deviceCode: values.deviceCode,
           defectTypeCode: values.defectTypeCode,
+          photoAddress: values.photoData.map((item) => (item.response)).join(','),
+          rotatePhoto: values.photoData.map((item) => (item.response+';'+item.rotate)).join(','),
         }
         this.props.addInspectAbnormal(params);
+
       }
     })
   }
@@ -234,10 +237,9 @@ class inspectAddAbnormal extends Component {
                 label="添加照片"
               >
                 {getFieldDecorator("photoData",{
-                  rules:[{
-                    initialValue: [],
-                    valuePropName: 'data',
-                  }]
+                  rules: [{required: false,message: '请上传图片'}],
+                  initialValue: [],
+                  valuePropName: 'data',
                 })(
                   <ImgUploader uploadPath={`${pathConfig.basePaths.newAPIBasePath}${pathConfig.commonPaths.imgUploads}`} editable={true}  />
                 )}
