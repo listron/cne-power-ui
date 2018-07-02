@@ -3,6 +3,8 @@ import immutable from 'immutable';
 import {
   COMMON_FETCH,
 
+  GET_TOPMENU_CHANGE_SUCCESS,
+
   GET_STATIONS_SAGA_SUCCESS,
   GET_STATIONS_SAGA_FAIL,
 
@@ -17,6 +19,11 @@ import {
 } from '../../constants/actionTypes/commonAction';
 
 var initState = immutable.fromJS({
+  topMenu:{
+    name: '首页',
+    path: '/',
+    clickable: true,
+  },
   commonFetching: false,
   stations: [],
   deviceTypes: [],
@@ -28,6 +35,8 @@ const defectReducer = (state = initState, action) => {
   switch (action.type) {
     case COMMON_FETCH:
       return state.set('commonFetching', true)
+    case GET_TOPMENU_CHANGE_SUCCESS:
+      return state.set('topMenu',immutable.fromJS(action.params))
     case GET_STATIONS_SAGA_SUCCESS:
       return state.set('commonFetching', false)
                   .set('stations', immutable.fromJS(action.params.data))
