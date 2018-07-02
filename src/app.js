@@ -7,7 +7,7 @@ import { createStore, applyMiddleware } from 'redux';
 import logger from 'redux-logger';
 import thunk from 'redux-thunk';
 import createSagaMiddleware from 'redux-saga';
-import Main from './containers/Main';
+import Main from './containers/Main/Main';
 import appReducer from './redux/reducer';
 import rootSaga from './redux/sagas';
 import './theme/style.scss';
