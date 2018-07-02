@@ -14,7 +14,7 @@ class NotFund extends Component {
   render() {
     return (
       <div className="loginpagewrap">
-        {this.props.info.msg}
+        {this.props.info}
         <Link  to="/login">去登录</Link>              
       </div>
     )
