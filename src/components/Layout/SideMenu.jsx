@@ -18,7 +18,7 @@ class SideMenu extends Component {
     this.state = {
     };
   }
-  getSideMenuData = () => {
+  getSideMenuData = () => {//根据顶部菜单判定侧边栏菜单数据
     const { topMenu } = this.props;
     let tmpSideMenuData = menu.find(e => e.path === topMenu.path);
     if(tmpSideMenuData && tmpSideMenuData.children){
@@ -38,7 +38,7 @@ class SideMenu extends Component {
                 </Item>)
               }else{//有三级目录
                 return (<SubMenu title={e.name} key={e.path} >
-                  {e.children.map(m=>(<Item key={e.path}>
+                  {e.children.map(m=>(<Item key={m.path}>
                     <Link to={m.path}>{m.name}</Link>
                   </Item>))}
                 </SubMenu>)
@@ -53,7 +53,7 @@ class SideMenu extends Component {
 
 
   render() {
-    const sideMenuData = this.getSideMenu();
+    const sideMenuData = this.getSideMenuData();
     return (
       <div style={{width:'180px'}}>
         {this._createSideMenu(sideMenuData)}
