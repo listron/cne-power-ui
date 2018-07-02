@@ -19,17 +19,18 @@ class TopMenu extends Component {
     };
   }
 
-  selectTopMenu = (params) => {
+  selectTopMenu = ({item,key,selectedKeys}) => {
+    const params = menu.find(e=>e.path === key);
     this.props.setTopMenu(params)
   }
 
   render() {
     return (
-      <Menu mode="horizontal" theme="dark">
+      <Menu mode="horizontal" theme="dark" onSelect={this.selectTopMenu}>
         {menu.map((e,i)=>(
           <Item key={e.path}>
-            {e.clickable && <Link to={e.path} onClick={()=>this.selectTopMenu(e)} >{e.name}</Link>}
-            {!e.clickable && <span onClick={()=>this.selectTopMenu(e)}>{e.name}</span>}
+            {e.clickable && <Link to={e.path}>{e.name}</Link>}
+            {!e.clickable && <span>{e.name}</span>}
           </Item>
         ))}
       </Menu>

@@ -64,7 +64,7 @@ class Main extends Component {
             </div>
             <TopMenu setTopMenu={setTopMenu} />
           </div>
-          <div>
+          <div className={styles.appMain}>
             <SideMenu topMenu={topMenu} />
             <div className={styles.content}>
               <Switch>
