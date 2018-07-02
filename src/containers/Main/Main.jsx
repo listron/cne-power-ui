@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Route,Redirect, Switch,withRouter} from 'react-router-dom';
 import {routerConfig} from '../../common/routerSetting';
+import { menu } from '../../common/menu';
 import styles from './style.scss';
 import { connect } from 'react-redux';
 import {getCookie} from '../../utils/index.js'
@@ -11,8 +12,19 @@ import NotFund from '../Exception/404';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 
-import TopMenu from '../../components/Layout/Topmenu'
+import { GET_TOPMENU_CHANGE_SAGA } from '../../constants/actionTypes/commonAction';
+
+import TopMenu from '../../components/Layout/TopMenu';
+import SideMenu from '../../components/Layout/SideMenu';
+
 class Main extends Component {
+  static propTypes = {
+    setTopMenu: PropTypes.func,
+    topMenu: PropTypes.object,
+    login: PropTypes.object,
+    history: PropTypes.object,
+  };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -38,6 +50,7 @@ class Main extends Component {
   }
 
   render() {
+    const { setTopMenu, topMenu } = this.props;
     const authData = getCookie('authData');
     if (authData && authData.length) {
       axios.defaults.headers.common['Authorization'] = "bearer " + JSON.parse(authData).access_token;
@@ -49,13 +62,16 @@ class Main extends Component {
             <div className={styles.headerLeft}>
               <div className={styles.logo}></div>
             </div>
-            <TopMenu />
+            <TopMenu setTopMenu={setTopMenu} />
           </div>
-          <div className={styles.content}>
-            <Switch>
-              {routerConfig}
-              <Redirect to="/" />
-            </Switch>
+          <div className={styles.appMain}>
+            <SideMenu topMenu={topMenu} />
+            <div className={styles.content}>
+              <Switch>
+                {routerConfig}
+                <Redirect to="/" />
+              </Switch>
+            </div>
           </div>
         </div>
       );
@@ -73,12 +89,14 @@ class Main extends Component {
     }
   }
 }
-Main.propTypes = {
-  login: PropTypes.object,
-  history: PropTypes.object,
-};
+
 const mapStateToProps = (state) => ({
-  login: state.login
+  login: state.login,
+  topMenu: state.common.get('topMenu').toJS(),
 });
 
-export default withRouter(connect(mapStateToProps)(Main));
+const mapDispatchToProps = (dispatch) => ({
+  setTopMenu: params => dispatch({ type: GET_TOPMENU_CHANGE_SAGA, params }),
+});
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Main));

@@ -1,4 +1,20 @@
 
+
+
+.sideMenu{
+  .sideLayout{
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    .logo{
+      width: 180px;
+    }
+    .menuHandler{
+      flex: 1;
+    }
+  }
+}
+
 .icon{
   font-size: 16px;
 }

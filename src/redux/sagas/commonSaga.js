@@ -2,6 +2,8 @@ import { call, put, takeLatest } from 'redux-saga/effects';
 import axios from 'axios';
 import Path from '../../constants/path';
 import {
+  GET_TOPMENU_CHANGE_SAGA,
+  GET_TOPMENU_CHANGE_SUCCESS,
   COMMON_FETCH,
 
   GET_STATIONS_SAGA,
@@ -20,6 +22,14 @@ import {
   GET_PARTITIONS_SAGA_SUCCESS,
   GET_PARTITIONS_SAGA_FAIL,
 } from '../../constants/actionTypes/commonAction';
+
+//保存当前topMenu信息
+function *getTopMenuChange(action){
+  yield put({ 
+    type: GET_TOPMENU_CHANGE_SUCCESS, 
+    params: action.params
+  });    
+}
 
 //获取所有电站信息
 function *getStations(action){
@@ -130,6 +140,9 @@ function *getPartition(action){
   }
 }
 
+export function* watchTopMenuChange() {
+  yield takeLatest(GET_TOPMENU_CHANGE_SAGA, getTopMenuChange);
+}
 export function* watchGetStations() {
   yield takeLatest(GET_STATIONS_SAGA, getStations);
 }
