@@ -32,12 +32,26 @@ class InspectAbnormal extends Component {
       visible: false,
     };
     this.onShowDetail = this.onShowDetail.bind(this);
+    this.onShowModal = this.onShowModal.bind(this);
+    this.onCloseModal = this.onCloseModal.bind(this);
   }
 
   onShowDetail(data) {
     this.setState({
       showDetailId: data.get('abnormalId')
     });
+  }
+
+  onShowModal(){
+    this.setState({visible: true})
+    let stationType = this.props.inspectDetail.get('stationType');
+    this.props.getInspectStandard({'stationType': stationType});
+  }
+
+  onCloseModal() {
+    this.setState({
+      visible: false,
+    })
   }
 
   getImagesData(data) {
@@ -55,20 +69,9 @@ class InspectAbnormal extends Component {
     } 
   }
 
-  showModal = () => {
-    this.setState({visible: true})
-    let stationType = this.props.inspectDetail.get('stationType');
-    this.props.getInspectStandard({'stationType': stationType});
-  }
-
-  handleCancel = (e) => {
-    this.setState({
-      visible: false,
-    })
-  }
-
   renderItems(){
     let status = this.props.status;
+    console.log(status);
     return this.props.abnormalItems.map((item, index) => {
       if(status === '2') {
         return (
@@ -88,8 +91,9 @@ class InspectAbnormal extends Component {
             status="select"
             item={item}
             disabled={item.get('isTransform') === '1'}
-            // selected={this.props.selectedIds.includes(item.get('abnormalId'))}
-            onSelect={this.props.onSelectItem} />
+            selected={this.props.selectedIds.includes(item.get('abnormalId'))}
+            onSelect={this.props.onSelectItem}
+          />
         );
       } else if(status === '4') {
         return (
@@ -97,10 +101,34 @@ class InspectAbnormal extends Component {
             key={'abnormal'+index}
             status="view"
             item={item}
-            disabled={item.get('isTransform') === '1'} />
+            disabled={item.get('isTransform') === '1'} 
+          />
         );
       }
     });
+  }
+
+  renderStandard(){
+    let inspectStandard = this.props.inspectStandard;
+    return (
+      <Modal 
+        visible={this.state.visible}
+        onCancel={this.onCloseModal}
+        closable={false}
+        footer={null}
+        width={1050}
+      >
+        <Tabs defaultActiveKey="1"tabPosition="left" style={{height: 560, width:1000}} >
+          {inspectStandard.map((item,index) => {
+            return (
+              <TabPane tab={item.get('standardItem')} key={item.get('standardItem')} >
+                {item.get('standardInfo')}
+              </TabPane>
+            )
+          })}
+        </Tabs>
+      </Modal>
+    )
   }
 
   renderItemDetail() {
@@ -126,30 +154,13 @@ class InspectAbnormal extends Component {
     }
   }
 
-  render(){ 
-    let inspectStandard = this.props.inspectStandard;
+  render(){
     return (
       <div className={styles.inspectAbnormal} >
         <div>
           <span>异常设备</span>
-          <Button onClick={this.showModal}>查看巡检标准</Button>
-          <Modal 
-            visible={this.state.visible}
-            onCancel={this.handleCancel}
-            closable={false}
-            footer={null}
-            width={1050}
-          >
-            <Tabs defaultActiveKey="1"tabPosition="left" style={{height: 560, width:1000}} >
-              {inspectStandard.map((item,index) => {
-                return (
-                  <TabPane tab={item.get('standardItem')} key={item.get('standardItem')} >
-                    {item.get('standardInfo')}
-                  </TabPane>
-                )
-              })}
-            </Tabs>
-          </Modal>
+          <Button onClick={this.onShowModal}>查看巡检标准</Button>
+          {this.renderStandard()}
         </div>
         {this.renderItems()}
         {this.props.status === '2' ? this.renderItemDetail() : null}
