@@ -58,7 +58,6 @@ class InspectDetailForm extends Component {
         })
       },
       onCancel() {
-        console.log('Cancel');
       },
     })
   }
@@ -74,7 +73,6 @@ class InspectDetailForm extends Component {
         })
       },
       onCancel() {
-        console.log('Cancel');
       },
     })
   }
@@ -119,7 +117,6 @@ class InspectDetailForm extends Component {
 
   render(){
     let { inspectDetail } = this.props;
-    console.log(inspectDetail);
     let progressData = inspectDetail.get('processData');  
     return (
       <div className={styles.inspectDetail} >

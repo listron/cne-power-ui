@@ -128,7 +128,6 @@ class InspectAbnormal extends Component {
 
   render(){ 
     let inspectStandard = this.props.inspectStandard;
-    console.log(inspectStandard.toJS());
     return (
       <div className={styles.inspectAbnormal} >
         <div>

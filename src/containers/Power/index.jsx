@@ -86,7 +86,6 @@ class Power extends Component {
     this.setState({fileList})
   }
   stationSelected = (stations) => {
-      console.log(stations)
   }
 
   render() {   

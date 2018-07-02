@@ -92,7 +92,6 @@ class InspectTable extends Component {
   }
 
   onInspectCheck(){
-    console.log(this.state.selectedRowKeys.toString())
     this.props.inspectCheckBatch({inspectId: this.state.selectedRowKeys.toString()})
   }
   render(){

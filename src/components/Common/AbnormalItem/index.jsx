@@ -45,13 +45,11 @@ class AbnormalItem extends Component {
         this.props.onDelete({abnormalId: this.props.item.get('abnormalId')});
       },
       onCancel() {
-        console.log('Cancel');
       },
     });
   }
 
   render() {
-    console.log(this.props);
     let item = this.props.item;
     if(this.props.status === 'delete') {
       return (

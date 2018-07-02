@@ -57,7 +57,6 @@ class inspectAddAbnormal extends Component {
         })
       },
       onCancel() {
-        console.log('Cancel');
       },
     })
   }
