@@ -46,6 +46,9 @@ import {
   watchSetInspectCheck,
   watchFinishInspect,
   watchCreateInspect,
+  watchDeleteAbnormal,
+  watchGetInspectStandard,
+  watchInspectCheckBatch,
 } from './operation/ticket/inspectSaga';
 
 import {
@@ -139,6 +142,9 @@ export default function* rootSaga() {
     watchSetInspectCheck(),
     watchFinishInspect(),
     watchCreateInspect(),
+    watchDeleteAbnormal(),
+    watchGetInspectStandard(),
+    watchInspectCheckBatch(),
     //ticket
   ])
 } 

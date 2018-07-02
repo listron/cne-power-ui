@@ -2,14 +2,14 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './inspectAddAbnormal.scss';
 import { Button, Form, Select, Modal } from 'antd';
-// import ImgUploader from '../../../../Common/Uploader/ImgUploader';
+import ImgUploader from '../../../../Common/Uploader/ImgUploader';
 import DeviceName from '../../../../Common/DeviceName';
+import pathConfig from '../../../../../constants/path';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
 const confirm = Modal.confirm;
 class inspectAddAbnormal extends Component {
-
   static propTypes={
     form: PropTypes.object,
     onCloseInspectDetail: PropTypes.func,
@@ -46,9 +46,6 @@ class inspectAddAbnormal extends Component {
     this.onChangeArea = this.onChangeArea.bind(this);
   }
 
-  componentDidMount(){
-  }
-
   onFinishInspect(){
     let inspectId = this.props.inspectDetail.get('inspectId');
     var that = this;
@@ -60,7 +57,6 @@ class inspectAddAbnormal extends Component {
         })
       },
       onCancel() {
-        console.log('Cancel');
       },
     })
   }
@@ -69,12 +65,16 @@ class inspectAddAbnormal extends Component {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if(!err){
-        this.props.addInspectAbnormal({
+        let params = {
           inspectId: this.props.inspectDetail.get('inspectId'),
           deviceTypeCode: values.deviceTypeCode,
           deviceCode: values.deviceCode,
           defectTypeCode: values.defectTypeCode,
-        });
+          photoAddress: values.photoData.map((item) => (item.response)).join(','),
+          rotatePhoto: values.photoData.map((item) => (item.response+';'+item.rotate)).join(','),
+        }
+        this.props.addInspectAbnormal(params);
+
       }
     })
   }
@@ -144,8 +144,8 @@ class inspectAddAbnormal extends Component {
     const { deviceTypeItems, defectTypes, inspectDetail} = this.props;
     const formItemLayout = {
       labelCol: {
-        xs: { span: 8 },
-        sm: { span: 8 },
+        xs: { span: 4 },
+        sm: { span: 4 },
       },
       wrapperCol: {
         xs: { span: 8 },
@@ -231,19 +231,18 @@ class inspectAddAbnormal extends Component {
                   </Select>
                 )}
               </FormItem>
-              {/*<FormItem
+              <FormItem
                 {...formItemLayout}
                 label="添加照片"
               >
-                {getFieldDecorator('photoData',{
-                  rules:[{
-                    initialValue: [],
-                    valuePropName: 'data',
-                  }]
+                {getFieldDecorator("photoData",{
+                  rules: [{required: false,message: '请上传图片'}],
+                  initialValue: [],
+                  valuePropName: 'data',
                 })(
-                  <ImgUploader editable={true}  />
+                  <ImgUploader uploadPath={`${pathConfig.basePaths.newAPIBasePath}${pathConfig.commonPaths.imgUploads}`} editable={true}  />
                 )}
-              </FormItem>*/}
+              </FormItem>
               <FormItem
                 {...formItemLayout}
               >

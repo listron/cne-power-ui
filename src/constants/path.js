@@ -52,6 +52,9 @@ export default {
       setInspectCheck: '/v3/inspect/check',
       finishInspect: '/v3/inspect/finish',
       createInspect:'/v3/inspect',
+      deleteAbnormal: '/v3/inspect/deleteabnormal',
+      getInspectStandard:'/v3/inspect/standard',
+      inspectCheckBatch:'/v3/inspect/check/batch',
     }
   }
 }
