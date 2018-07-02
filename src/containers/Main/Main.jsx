@@ -33,6 +33,9 @@ class Main extends Component {
     };
     this.handleClick = this.handleClick.bind(this);
   }
+  componentDidMount(){
+    console.log(this.props)
+  }
 
   componentWillReceiveProps(nextProps) {   
     if(nextProps.login.fetched && !this.props.login.fetched){
