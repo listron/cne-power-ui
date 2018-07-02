@@ -33,7 +33,9 @@ class AbnormalItem extends Component {
   }
 
   onSelectItem() {
-    this.props.onSelect(this.props.item.get('abnormalId'), !this.props.selected);
+    if(!this.props.disabled) {
+      this.props.onSelect(this.props.item.get('abnormalId'), !this.props.selected);
+    }
   }
 
   onDeleteItem() {
