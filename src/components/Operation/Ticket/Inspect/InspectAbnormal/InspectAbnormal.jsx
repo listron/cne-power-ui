@@ -71,7 +71,6 @@ class InspectAbnormal extends Component {
 
   renderItems(){
     let status = this.props.status;
-    console.log(status);
     return this.props.abnormalItems.map((item, index) => {
       if(status === '2') {
         return (
