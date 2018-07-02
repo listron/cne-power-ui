@@ -13,10 +13,12 @@ const menuData = [
       {
         name: '工单',
         clickable: true,
+        iconStyle: 'calendar',
         path: 'ticket'
       },{
         name: '缺陷管理',
         clickable: false,
+        iconStyle: 'paper-clip',
         path: 'faultManage',
         children: [
           {
@@ -44,9 +46,11 @@ const menuData = [
       {
         name: '人员管理',
         clickable: true,
+        iconStyle: 'user-add',
         path: 'user',
       },{
         name: '角色管理',
+        iconStyle: 'usergroup-add',
         clickable: true,
         path: 'role',
       }
