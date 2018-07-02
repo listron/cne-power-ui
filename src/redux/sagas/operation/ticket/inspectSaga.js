@@ -145,10 +145,13 @@ function *transformDefect(action){
   try{
     const response = yield call(axios.post, url, action.params );
     if(response.data.code === "10000"){
+      message.success('转工单成功！');
+      const inspectId = yield select(state => state.operation.inspect.get('inspectId'));
       yield put({
-        type: TRANSFORM_DEFECT_SUCCESS,
-        data: response.data.data,
-        params: action.params,
+        type: GET_INSPECT_DETAIL_SAGA,
+        params: {
+          inspectId: inspectId,
+        }
       })
     }else{
       yield put({

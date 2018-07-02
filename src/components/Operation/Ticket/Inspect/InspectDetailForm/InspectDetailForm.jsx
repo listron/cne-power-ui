@@ -7,6 +7,7 @@ import styles from './inspectDetailForm.scss';
 import { Icon, Button, Modal } from 'antd';
 import InspectAddAbnormal from '../InspectAddAbnormal/InspectAddAbnormal';
 import InspectAbnormal from '../InspectAbnormal/InspectAbnormal';
+import immutable from 'immutable';
 
 const confirm = Modal.confirm;
 class InspectDetailForm extends Component {
@@ -37,29 +38,49 @@ class InspectDetailForm extends Component {
     super(props);
     this.state={
       disabled: false,
+      abnormalIds: immutable.fromJS([]),
+      tipColor: "#999",
     }
     this.onTransformDefect = this.onTransformDefect.bind(this);
     this.onInspectCheck = this.onInspectCheck.bind(this);
-    
-  }
-  
-  componentDidMount(){
+    this.onSelectItem = this.onSelectItem.bind(this);
   }
 
   onTransformDefect(){
     let inspectId = this.props.inspectDetail.get('inspectId');
-    var that = this;
-    confirm({
-      title: '确定将选定的异常设备转为工单?',
-      onOk() {
-        that.props.transformDefect({
-          inspectId: inspectId,
-          abnormalIds: "939927204451008512",
-        })
-      },
-      onCancel() {
-      },
-    })
+    if(this.state.abnormalIds.size > 0){
+      confirm({
+        title: '确定将选定的异常设备转为工单?',
+        onOk: () => {
+          this.props.transformDefect({
+            inspectId: inspectId,
+            abnormalIds: this.state.abnormalIds.toJS().join(','),
+          })
+        },
+        onCancel: () => {
+        },
+      })
+    } else {
+      this.setState({
+        tipColor : "#c80000",
+      })
+    }
+    
+  }
+
+  onSelectItem(abnormalId, checked) {
+    let abnormalIds = this.state.abnormalIds;
+    if(checked) {
+      abnormalIds = abnormalIds.push(abnormalId);
+    } else {
+      let index = abnormalIds.findIndex((item) => {
+        return item === abnormalId;
+      });
+      abnormalIds = abnormalIds.delete(index);
+    }
+    this.setState({
+      abnormalIds: abnormalIds
+    });
   }
 
   onInspectCheck(){
@@ -102,7 +123,7 @@ class InspectDetailForm extends Component {
         <div>
           <div>
             <Button type="primary" onClick={this.onTransformDefect} disabled={this.state.disabled} >转工单</Button>
-            <div>（请先选择设备，灰色背景为不可选）</div>
+            <div style={{color:this.state.tipColor}}>（请先选择设备，灰色背景为不可选）</div>
           </div>
           <div>
             <Button type="primary" onClick={this.onInspectCheck} >验收</Button>
@@ -138,7 +159,8 @@ class InspectDetailForm extends Component {
                 getInspectStandard={this.props.getInspectStandard}
                 inspectDetail={this.props.inspectDetail}
                 inspectStandard={this.props.inspectStandard}
-                selectedIds={this}
+                selectedIds={this.state.abnormalIds}
+                onSelectItem={this.onSelectItem}
               />
             </div>           
           </div>
