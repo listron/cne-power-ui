@@ -2,7 +2,14 @@
 
 
 .sideMenu{
-  width: 160px;
+  .sideLayout{
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    .logo{
+      width: 180px;
+    }
+  }
 }
 
 .icon{

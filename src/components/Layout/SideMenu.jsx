@@ -29,7 +29,8 @@ class SideMenu extends Component {
   }
   _createSideMenu = (sideMenuData) => {
     if(sideMenuData.length > 0){//至少拥有二级目录
-      return (<div className={styles.sideMenu}>
+      return (<div className={styles.sideLayout}>
+          <div className={styles.logo}>menuLogo</div>
           <Menu mode="inline" theme="dark">
             {sideMenuData.map(e=>{
               if(!e.children || e.children.length === 0){//只有二级目录
@@ -55,7 +56,7 @@ class SideMenu extends Component {
   render() {
     const sideMenuData = this.getSideMenuData();
     return (
-      <div>
+      <div className={styles.sideMenu}>
         {this._createSideMenu(sideMenuData)}
       </div>
       
