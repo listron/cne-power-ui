@@ -11,6 +11,8 @@ import {
   TRANSFORM_DEFECT_SAGA,
   SET_INSPECT_CHECK_SAGA,
   FINISH_INSPECT_SAGA,
+  DELETE_ABNORMAL_SAGA,
+  GET_INSPECT_STANDARD_SAGA,
  } from '../../../../../constants/actionTypes/Ticket';
 import { 
    GET_DEVICETYPES_SAGA,
@@ -39,6 +41,9 @@ class InspectDetail extends Component{
     finishInspect: PropTypes.func,
     setInspectCheck: PropTypes.func,
     addInspectAbnormal: PropTypes.func,
+    onDeleteAbnormal: PropTypes.func,
+    getInspectStandard: PropTypes.func,
+    inspectStandard: PropTypes.object,
   }
   constructor(props){
     super(props);
@@ -118,6 +123,9 @@ class InspectDetail extends Component{
         deviceTypeItems={this.props.deviceTypeItems}
         deviceAreaItems={this.props.deviceAreaItems}
         deviceItems={this.props.deviceItems}
+        onDeleteAbnormal={this.props.onDeleteAbnormal}
+        getInspectStandard={this.props.getInspectStandard}
+        inspectStandard={this.props.inspectStandard}
       />
     );
   }
@@ -134,6 +142,7 @@ const mapStateToProps = (state) => ({
   deviceTypeItems: state.common.get('deviceTypes'),
   deviceAreaItems: state.common.get('partitions'),
   deviceItems: state.common.get('devices'),
+  inspectStandard: state.operation.inspect.get('inspectStandard'),
 }) 
 
 const mapDispatchToProps = (dispatch) => ({
@@ -147,6 +156,8 @@ const mapDispatchToProps = (dispatch) => ({
   loadDeviceAreaList: params => dispatch({ type: GET_PARTITIONS_SAGA, params}),
   loadDeviceList: params => dispatch({ type: GET_DEVICES_SAGA, params}),
   setInspectId: params => dispatch({ type: SET_INSPECT_ID_SAGA, params }),
+  onDeleteAbnormal: params => dispatch({ type: DELETE_ABNORMAL_SAGA, params }),
+  getInspectStandard: params => dispatch({ type: GET_INSPECT_STANDARD_SAGA, params}),
 })
 
 export default connect(mapStateToProps,mapDispatchToProps)(InspectDetail);

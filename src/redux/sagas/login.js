@@ -82,7 +82,6 @@ function* login(action){
       }),
     });
     if (response.data) {
-      console.log(response);
       setCookie('authData',JSON.stringify(response.data));
       setCookie('phone',action.parmas.phone);
       setCookie('userName',response.data.result.userName);

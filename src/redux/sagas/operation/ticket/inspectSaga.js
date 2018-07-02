@@ -1,5 +1,6 @@
 import { call, put, takeLatest, select } from 'redux-saga/effects';
 import axios from 'axios';
+import { message } from 'antd';
 import Path from '../../../../constants/path';
 import {
   TICKET_FETCH, 
@@ -28,6 +29,15 @@ import {
   CREATE_INSPECT_SAGA,
   CREATE_INSPECT_SUCCESS,
   CREATE_INSPECT_FAIL,
+  DELETE_ABNORMAL_SAGA,
+  DELETE_ABNORMAL_SUCCESS,
+  DELETE_ABNORMAL_FAIL,
+  GET_INSPECT_STANDARD_SAGA,
+  GET_INSPECT_STANDARD_SUCCESS,
+  GET_INSPECT_STANDARD_FAIL,
+  INSPECT_CHECK_BATCH_SAGA,
+  INSPECT_CHECK_BATCH_SUCCESS,
+  INSPECT_CHECK_BATCH_FAIL,
 } from '../../../../constants/actionTypes/Ticket';
 
 
@@ -83,7 +93,6 @@ function* getInspectDetail(action){
   }
 }
 
-
 // 获取巡检ID
 function* setInspectId(action){
   yield put({
@@ -97,15 +106,19 @@ function* addInspectAbnormal(action){
   let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.ticket.addInspectAbnormal;
   yield put({ type: TICKET_FETCH })
   try{
-    const response = yield call(axios.post, url, {params: action.params});
+    const response = yield call(axios.post, url, action.params);
     if(response.data.code === "10000"){
+      message.success('添加成功！');
+      const inspectId = yield select(state => state.operation.inspect.get('inspectId'));
       yield put({
-        type: ADD_INSPECT_ABNORMAL_SUCCESS,
-        data: response.data.data,
-        params: action.params,
+        type: GET_INSPECT_DETAIL_SAGA,
+        params: {
+          inspectId: inspectId,
+        }
       })
     }
     else{
+      message.error('添加失败！');
       yield put({
         type: ADD_INSPECT_ABNORMAL_FAIL,
         error:{
@@ -175,7 +188,7 @@ function *setInspectCheck(action){
       });
       yield put({
         type: CHANGE_SHOW_CONTAINER_SAGA,
-        params: 'list'
+        params: {container: 'list'},
       });
     }else{
       yield put({
@@ -218,7 +231,6 @@ function *finishInspect(action){
 // 创建巡检
 function *createInspect(action){
   let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.ticket.createInspect;
-  console.log(action);
   yield put({ type: TICKET_FETCH })
   try{
     const response = yield call(axios.post, url, action.params)
@@ -239,6 +251,96 @@ function *createInspect(action){
     }
   }catch(e){
     console.log(e);
+  }
+}
+// 删除异常设备
+function *deleteAbnormal(action){
+  let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.ticket.deleteAbnormal;
+  yield put({ type: TICKET_FETCH })
+  try{
+    const response = yield call(axios.get, url, {params: action.params })
+    if(response.data.code === "10000"){
+      message.success('删除成功！');
+      const inspectId = yield select(state => state.operation.inspect.get('inspectId'));
+      yield put({
+        type: GET_INSPECT_DETAIL_SAGA,
+        params: { inspectId: inspectId}
+      })
+    }else{
+      message.error('删除失败！');
+      yield put({
+        type: DELETE_ABNORMAL_FAIL,
+        error: {
+          code: response.data.code,
+          message: response.data.message,
+        }
+      })
+    }
+  }catch(e){
+    console.log(e);
+  }
+}
+// 获取巡检标准
+function *getInspectStandard(action){
+  let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.ticket.getInspectStandard;
+  yield put({type: TICKET_FETCH})
+  try{
+    const response = yield call(axios.get, url, {params: action.params} )
+    if(response.data.code === "10000"){
+      yield put({
+        type: GET_INSPECT_STANDARD_SUCCESS,
+        data: response.data.data,
+        params: action.params,
+      })
+    }else{
+      yield put({
+        type: GET_INSPECT_STANDARD_FAIL,
+        error: {
+          code: response.data.code,
+          message: response.data.message,
+        }
+      })
+    }
+  }catch(e){
+    console.log(e);
+  }
+}
+// 巡检批量验收
+function *inspectCheckBatch(action){
+  let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.ticket.inspectCheckBatch;
+  yield put({type: TICKET_FETCH})
+  try{
+    const response = yield call(axios.post, url, action.params)
+    if(response.data.code === "10000"){
+      const pageSize = yield select(state => state.operation.inspect.get('pageSize'));
+      const status = yield select(state => state.operation.inspect.get('status'));
+      const sort = yield select(state => state.operation.inspect.get('sort'));
+      yield put({
+        type: GET_INSPECT_LIST_SAGA,
+        params:{
+          stationType: '2',
+          status: status,
+          pageNum: 0,
+          pageSize: pageSize,
+          sort: sort
+        }
+      })
+      // yield put({
+      //   type: INSPECT_CHECK_BATCH_SUCCESS,
+      //   data: response.data.data,
+      //   params: action.params,
+      // })
+    }else{
+      yield put({
+        type: INSPECT_CHECK_BATCH_FAIL,
+        error: {
+          code: response.data.code,
+          message: response.data.message,
+        }
+      })
+    }
+  }catch(e){
+    console.log(e)
   }
 }
 
@@ -268,4 +370,13 @@ export function* watchFinishInspect(){
 }
 export function* watchCreateInspect(){
   yield takeLatest(CREATE_INSPECT_SAGA, createInspect);
+}
+export function* watchDeleteAbnormal(){
+  yield takeLatest(DELETE_ABNORMAL_SAGA, deleteAbnormal);
+}
+export function* watchGetInspectStandard(){
+  yield takeLatest(GET_INSPECT_STANDARD_SAGA, getInspectStandard);
+}
+export function* watchInspectCheckBatch(){
+  yield takeLatest(INSPECT_CHECK_BATCH_SAGA, inspectCheckBatch);
 }

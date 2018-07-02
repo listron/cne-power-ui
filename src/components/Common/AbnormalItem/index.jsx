@@ -5,7 +5,7 @@ import classnames from 'classnames';
 import {Icon, Modal} from 'antd';
 const confirm = Modal.confirm;
 
-class ExceptionItem extends Component {
+class AbnormalItem extends Component {
   static propTypes = {
     item: PropTypes.object,
     status: PropTypes.string,//view,delete,select
@@ -41,11 +41,10 @@ class ExceptionItem extends Component {
       title: '确认删除异常设备？',
       content: '点击确认，删除此异常设备信息，记录将无法保存',
       okText: '确认',
-      onOk() {
-        this.props.onDelete(this.props.item.get('abnormalId'));
+      onOk: () => {
+        this.props.onDelete({abnormalId: this.props.item.get('abnormalId')});
       },
       onCancel() {
-        console.log('Cancel');
       },
     });
   }
@@ -62,7 +61,7 @@ class ExceptionItem extends Component {
           })}
           style={{height: this.props.height, width: this.props.width}}
         >
-          <Icon style="eye-o" onClick={()=>{this.props.onShowDetail(item)}} />
+          <Icon type="eye-o" onClick={()=>{this.props.onShowDetail(item)}} />
           <div className={styles.itemLabel}>{item.get('deviceName')}</div>
           <Icon type="close" onClick={this.onDeleteItem} />
         </div>
@@ -78,7 +77,7 @@ class ExceptionItem extends Component {
           style={{height: this.props.height, width: this.props.width}}
           onClick={this.onSelectItem}
         >
-          <Icon style="eye-o" />
+          <Icon type="eye-o" />
           <div className={styles.itemLabel}>{item.get('deviceName')}</div>
           {this.props.selected && <Icon type="check" />}
         </div>
@@ -100,4 +99,4 @@ class ExceptionItem extends Component {
   }
 }
 
-export default ExceptionItem;
+export default AbnormalItem;

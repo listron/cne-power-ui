@@ -86,7 +86,6 @@ class Power extends Component {
     this.setState({fileList})
   }
   stationSelected = (stations) => {
-      console.log(stations)
   }
 
   render() {   
@@ -107,7 +106,7 @@ class Power extends Component {
             <div>
                 <ImgUploader 
                     data={this.state.fileList} 
-                    uploadPath={`${pathConfig.basePaths.APIBasePath}${pathConfig.commonPaths.imgUploads}`} 
+                    uploadPath={`${pathConfig.basePaths.newAPIBasePath}${pathConfig.commonPaths.imgUploads}`} 
                     onChange={this.uploadImg} 
                     editable={true}
                 />
