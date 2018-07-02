@@ -62,7 +62,7 @@ class Main extends Component {
             <div className={styles.headerLeft}>
               <div className={styles.logo}></div>
             </div>
-            <TopMenu setTopMenu={setTopMenu} topMenu={topMenu} />
+            <TopMenu setTopMenu={setTopMenu} />
           </div>
           <div>
             <SideMenu topMenu={topMenu} />
@@ -92,7 +92,7 @@ class Main extends Component {
 
 const mapStateToProps = (state) => ({
   login: state.login,
-  topMenu: state.common.get('topMenu'),
+  topMenu: state.common.get('topMenu').toJS(),
 });
 
 const mapDispatchToProps = (dispatch) => ({

@@ -12,7 +12,6 @@ const { SubMenu,Item } = Menu;
 class TopMenu extends Component {
   static propTypes = {
     setTopMenu: PropTypes.func,
-    topMenu: PropTypes.object
   }
   constructor(props) {
     super(props);

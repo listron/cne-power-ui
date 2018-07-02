@@ -2,10 +2,13 @@
 
 import React, { Component } from 'react';
 import { Menu } from 'antd';
+import { Link } from 'react-router-dom';
 import styles from './layout.scss';
 import PropTypes from 'prop-types';
+import { menu } from '../../common/menu';
 const { SubMenu,Item } = Menu;
 
+console.log(menu)
 class SideMenu extends Component {
   static propTypes = {
     topMenu: PropTypes.object
@@ -15,52 +18,51 @@ class SideMenu extends Component {
     this.state = {
     };
   }
+  getSideMenuData = () => {
+    const { topMenu } = this.props;
+    let tmpSideMenuData = menu.find(e => e.path === topMenu.path);
+    if(tmpSideMenuData && tmpSideMenuData.children){
+      return tmpSideMenuData.children
+    }else{ 
+      return []
+    }
+  }
+  _createSideMenu = (sideMenuData) => {
+    if(sideMenuData.length > 0){//至少拥有二级目录
+      return (<div>
+          <Menu mode="inline" theme="dark">
+            {sideMenuData.map(e=>{
+              if(!e.children || e.children.length === 0){//只有二级目录
+                return (<Item key={e.path}>
+                  <Link to={e.path}>{e.name}</Link>
+                </Item>)
+              }else{//有三级目录
+                return (<SubMenu title={e.name} key={e.path} >
+                  {e.children.map(m=>(<Item key={e.path}>
+                    <Link to={m.path}>{m.name}</Link>
+                  </Item>))}
+                </SubMenu>)
+              }
+            })}
+          </Menu>
+      </div>)
+    }else{//根目录或只有一级目录
+      return <div style={{'backgroundColor':'yellowgreen'}}>木有侧边栏啊！</div>
+    }
+  }
+
 
   render() {
-    const { topMenu } = this.props;
-    console.log(typeof topMenu)
+    const sideMenuData = this.getSideMenu();
     return (
-      <div>
-        <span className={styles.logo} style={{ marginLeft: '40px' }}>侧边菜单</span>
-        <div>这是侧边菜单咯</div>
-        <Menu mode="inline" theme="dark">
-          <Item key={1} >
-            {topMenu.get('name')}
-          </Item>
-          <Item key={2} >
-            {topMenu.get('path')}
-          </Item>
-          <Item key={3} >
-            {topMenu.get('clickable')}
-          </Item>
-        </Menu>
+      <div style={{width:'180px'}}>
+        {this._createSideMenu(sideMenuData)}
       </div>
       
     );
   }
 }
-// function createSiderMenu(topMenu,topHash){//顶部单独提取渲染
-//   let siderMenu = [];
-//   topMenu.find(e=>{
-//     if(e.name === topHash){
-//       if(e.children && e.children.length>0){
-//         siderMenu = e.children
-//       }
-//       return true
-//     }
-//   })
-//   if(siderMenu.length>0){
-//     let Menus = siderMenu.map(e=>{
-//       return <Item
-//         key={e.path}
-//       >
-//         {e.icon && <span className={classnames(e.icon, styles.icon)} />}
-//         <Link to={e.path}>{e.name}</Link>
-//       </Item>
-//     })
-//     return Menus
-//   }
-// }
+
 
 export default SideMenu;
 
