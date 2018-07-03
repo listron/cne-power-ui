@@ -47,6 +47,7 @@ import {
   CLEAR_DEFECT_STATE_SAGA,
   CLEAR_DEFECT_STATE
 } from '../../../../constants/actionTypes/Ticket';
+import { message } from 'antd';
 
 //获取缺陷工单列表
 function* getDefectList(action) {
@@ -553,13 +554,20 @@ function *createNewDefect(action){
   try {
     const response = yield call(axios.post, url, action.params);
     if(response.data.code === '10000'){
-      yield put({ 
-        type: DEFECT_CREATE_SAGA_SUCCESS, 
-        params: {
-          data: response.data.data, 
-          params: action.params 
-        }
-      });       
+      message.success('创建成功！');
+      yield put({
+        type: CHANGE_SHOW_CONTAINER,
+        data: {
+          container: 'list',
+        },
+      })
+      // yield put({ 
+      //   type: DEFECT_CREATE_SAGA_SUCCESS, 
+      //   params: {
+      //     data: response.data.data, 
+      //     params: action.params 
+      //   }
+      // });       
     } else{
       yield put({ 
         type: DEFECT_CREATE_SAGA_FAIL, 
