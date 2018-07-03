@@ -16,6 +16,11 @@ import {
   watchChangeShowStatus, 
   watchCreateRegister 
 } from './login';
+
+import { 
+  watchLoginSaga
+} from './login/loginSaga';
+
 import {
   watchGetDefectList,
   watchBatchDeleteDefect,
@@ -103,6 +108,8 @@ export default function* rootSaga() {
     watchGetPartition(),
     //login
     // watchGetCompInfo(),
+    watchLoginSaga(), ////刚刚新写的login函数！！！！！！！！！！！！
+
     watchLogin(),
     // watchCheckPhone(),
     watchSendCode(),
