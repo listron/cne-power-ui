@@ -43,24 +43,30 @@ class DeviceName extends Component {
   }
 
   getDeviceItems() {
-    return this.props.deviceItems.map((item, index) => {
-      return (
-        <Option key={item.get('deviceCode')} value={item.get('deviceCode')}>
-          {item.get('deviceName')}
-        </Option>
-      )
-    })
+    if(this.props.deviceItems){
+      return this.props.deviceItems.map((item, index) => {
+        return (
+          <Option key={item.get('deviceCode')} value={item.get('deviceCode')}>
+            {item.get('deviceName')}
+          </Option>
+        )
+      })
+    }
+    
   }
 
   getDeviceName(code) {
-    let deviceName = ''
-    let index = this.props.deviceItems.findIndex((item) => {
-      return item.get('deviceCode') === code
-    });
-    if(index !== -1) {
-      deviceName = this.props.deviceItems.getIn([index, 'deviceName']);
+    if(this.props.deviceItems){
+      let deviceName = '';
+      let index = this.props.deviceItems.findIndex((item) => {
+        return item.get('deviceCode') === code
+      });
+      if(index !== -1) {
+        deviceName = this.props.deviceItems.getIn([index, 'deviceName']);
+      }
+      return deviceName;
     }
-    return deviceName;
+    
   }
 
   render() {
