@@ -142,9 +142,10 @@ function* batchDeleteDefect(action) {
   try {
     const response = yield call(axios.get, url, {params: action.params});
     if(response.data.code === '10000'){
-      const pageSize = yield select(state => state.opration.defect.get('currentPageSize'));
-      const status = yield select(state => state.opration.defect.et('status'));
-      const sort = yield select(state => state.opration.defect.get('sort'));
+      message.success('删除成功！');
+      const pageSize = yield select(state => state.operation.defect.get('currentPageSize'));
+      const status = yield select(state => state.operation.defect.get('status'));
+      const sort = yield select(state => state.operation.defect.get('sort'));
       yield put({ 
         type: GET_DEFECT_LIST_SAGA, 
         params: {
@@ -177,9 +178,10 @@ function* batchCloseDefect(action) {
   try {
     const response = yield call(axios.post, url, action.params);
     if(response.data.code === '10000'){
-      const pageSize = yield select(state => state.opration.defect.get('currentPageSize'));
-      const status = yield select(state => state.opration.defect.get('status'));
-      const sort = yield select(state => state.opration.defect.get('sort'));
+      message.success('批量关闭成功！');
+      const pageSize = yield select(state => state.operation.defect.get('currentPageSize'));
+      const status = yield select(state => state.operation.defect.get('status'));
+      const sort = yield select(state => state.operation.defect.get('sort'));
       yield put({ 
         type: GET_DEFECT_LIST_SAGA, 
         params: {
@@ -212,10 +214,10 @@ function* batchSendDefect(action) {
   try {
     const response = yield call(axios.post, url, action.params);
     if(response.data.code === '10000'){
-      // console.log(state);
-      const pageSize = yield select(state => state.opration.defect.get('currentPageSize'));
-      const status = yield select(state => state.opration.defect.get('status'));
-      const sort = yield select(state => state.opration.defect.get('sort'));
+      message.success('批量下发成功！');
+      const pageSize = yield select(state => state.operation.defect.get('currentPageSize'));
+      const status = yield select(state => state.operation.defect.get('status'));
+      const sort = yield select(state => state.operation.defect.get('sort'));
       yield put({ 
         type: GET_DEFECT_LIST_SAGA, 
         params: {
@@ -248,9 +250,10 @@ function* batchRejectDefect(action) {
   try {
     const response = yield call(axios.post, url, action.params);
     if(response.data.code === '10000'){
-      const pageSize = yield select(state => state.opration.defect.get('currentPageSize'));
-      const status = yield select(state => state.opration.defect.get('status'));
-      const sort = yield select(state => state.opration.defect.get('sort'));
+      message.success('批量驳回成功！');
+      const pageSize = yield select(state => state.operation.defect.get('currentPageSize'));
+      const status = yield select(state => state.operation.defect.get('status'));
+      const sort = yield select(state => state.operation.defect.get('sort'));
       yield put({ 
         type: GET_DEFECT_LIST_SAGA, 
         params: {
@@ -283,9 +286,10 @@ function* batchChecktDefect(action) {
   try {
     const response = yield call(axios.post, url, action.params);
     if(response.data.code === '10000'){
-      const pageSize = yield select(state => state.opration.defect.get('currentPageSize'));
-      const status = yield select(state => state.opration.defect.get('status'));
-      const sort = yield select(state => state.opration.defect.get('sort'));
+      message.success('批量验收成功！');
+      const pageSize = yield select(state => state.operation.defect.get('currentPageSize'));
+      const status = yield select(state => state.operation.defect.get('status'));
+      const sort = yield select(state => state.operation.defect.get('sort'));
       yield put({ 
         type: GET_DEFECT_LIST_SAGA, 
         params: {
@@ -332,9 +336,10 @@ function* sendDefect(action) {
   try {
     const response = yield call(axios.post, url, action.params);
     if(response.data.code === '10000'){
-      const pageSize = yield select(state => state.opration.defect.get('currentPageSize'));
-      const status = yield select(state => state.opration.defect.get('status'));
-      const sort = yield select(state => state.opration.defect.get('sort'));
+      message.success('下发成功！');
+      const pageSize = yield select(state => state.operation.defect.get('currentPageSize'));
+      const status = yield select(state => state.operation.defect.get('status'));
+      const sort = yield select(state => state.operation.defect.get('sort'));
       yield put({ 
         type: GET_DEFECT_LIST_SAGA, 
         params: {
@@ -348,7 +353,7 @@ function* sendDefect(action) {
       });
       yield put({
         type: CHANGE_SHOW_CONTAINER_SAGA,
-        params: 'list'
+        params: {container: 'list'},
       });      
     } else{
       yield put({ 
@@ -371,9 +376,10 @@ function* rejectDefect(action) {
   try {
     const response = yield call(axios.post, url, action.params);
     if(response.data.code === '10000'){
-      const pageSize = yield select(state => state.opration.defect.get('currentPageSize'));
-      const status = yield select(state => state.opration.defect.get('status'));
-      const sort = yield select(state => state.opration.defect.get('sort'));
+      message.success('驳回成功！');
+      const pageSize = yield select(state => state.operation.defect.get('currentPageSize'));
+      const status = yield select(state => state.operation.defect.get('status'));
+      const sort = yield select(state => state.operation.defect.get('sort'));
       yield put({ 
         type: GET_DEFECT_LIST_SAGA, 
         params: {
@@ -387,7 +393,7 @@ function* rejectDefect(action) {
       });
       yield put({
         type: CHANGE_SHOW_CONTAINER_SAGA,
-        params: 'list'
+        params: {container: 'list'},
       });     
     } else{
       yield put({ 
@@ -410,9 +416,10 @@ function* closeDefect(action) {
   try {
     const response = yield call(axios.post, url, action.params);
     if(response.data.code === '10000'){
-      const pageSize = yield select(state => state.opration.defect.get('currentPageSize'));
-      const status = yield select(state => state.opration.defect.get('status'));
-      const sort = yield select(state => state.opration.defect.get('sort'));
+      message.success('关闭成功！');
+      const pageSize = yield select(state => state.operation.defect.get('currentPageSize'));
+      const status = yield select(state => state.operation.defect.get('status'));
+      const sort = yield select(state => state.operation.defect.get('sort'));
       yield put({ 
         type: GET_DEFECT_LIST_SAGA, 
         params: {
@@ -426,7 +433,7 @@ function* closeDefect(action) {
       }); 
       yield put({
         type: CHANGE_SHOW_CONTAINER_SAGA,
-        params: 'list'
+        params: {container: 'list'},
       });       
     } else{
       yield put({ 
@@ -449,9 +456,10 @@ function* handleDefect(action) {
   try {
     const response = yield call(axios.post, url, action.params);
     if(response.data.code === '10000'){
-      const pageSize = yield select(state => state.opration.defect.get('currentPageSize'));
-      const status = yield select(state => state.opration.defect.get('status'));
-      const sort = yield select(state => state.opration.defect.get('sort'));
+      message.success('处理缺陷成功！');
+      const pageSize = yield select(state => state.operation.defect.get('currentPageSize'));
+      const status = yield select(state => state.operation.defect.get('status'));
+      const sort = yield select(state => state.operation.defect.get('sort'));
       yield put({ 
         type: GET_DEFECT_LIST_SAGA, 
         params: {
@@ -465,7 +473,7 @@ function* handleDefect(action) {
       });
       yield put({
         type: CHANGE_SHOW_CONTAINER_SAGA,
-        params: 'list'
+        params: {container: 'list'},
       });   
     } else{
       yield put({ 
@@ -487,10 +495,12 @@ function* checkDefect(action) {
   yield put({ type: TICKET_FETCH });
   try {
     const response = yield call(axios.post, url, action.params);
+    console.log(response)
     if(response.data.code === '10000'){
-      const pageSize = yield select(state => state.opration.defect.get('currentPageSize'));
-      const status = yield select(state => state.opration.defect.get('status'));
-      const sort = yield select(state => state.opration.defect.get('sort'));
+      message.success('验收成功！');
+      const pageSize = yield select(state => state.operation.defect.get('currentPageSize'));
+      const status = yield select(state => state.operation.defect.get('status'));
+      const sort = yield select(state => state.operation.defect.get('sort'));
       yield put({ 
         type: GET_DEFECT_LIST_SAGA, 
         params: {
@@ -504,8 +514,8 @@ function* checkDefect(action) {
       });
       yield put({
         type: CHANGE_SHOW_CONTAINER_SAGA,
-        params: 'list'
-      });        
+        params: {container: 'list'},
+      });     
     } else{
       yield put({ 
         type: CHECK_DEFECT_FAIL, 
@@ -560,14 +570,7 @@ function *createNewDefect(action){
         data: {
           container: 'list',
         },
-      })
-      // yield put({ 
-      //   type: DEFECT_CREATE_SAGA_SUCCESS, 
-      //   params: {
-      //     data: response.data.data, 
-      //     params: action.params 
-      //   }
-      // });       
+      })       
     } else{
       yield put({ 
         type: DEFECT_CREATE_SAGA_FAIL, 

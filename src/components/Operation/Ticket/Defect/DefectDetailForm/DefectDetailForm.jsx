@@ -71,13 +71,13 @@ class DefectDetailForm extends Component {
         break;
       case 'ok':
       case 'notOk':
-          params = {
-            defectId,
-            checkResult: data.dealResult === 'ok' ? '0' : '1',
-            checkInfo: !data.checkInfo ? '' : data.checkInfo,
-          };
-          this.props.onHandle(params);
-          break;
+        params = {
+          defectId,
+          checkResult: data.dealResult === 'ok' ? '0' : '1',
+          checkInfo: !data.checkInfo ? '' : data.checkInfo,
+        };
+        this.props.onCheck(params);
+        break;
     }
   }
 
