@@ -19,7 +19,7 @@ import {
 
 import { 
   watchPreLoginPageChangeSaga
-} from './prelogin/preLogin';
+} from './prelogin/preLoginSaga';
 
 import {
   watchGetDefectList,
