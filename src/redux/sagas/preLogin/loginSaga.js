@@ -8,8 +8,11 @@ import {
   GET_LOGIN_FAIL,
 } from '../../../constants/actionTypes/loginAction';
 
+//切换登录方式
 
-//获取所有电站信息
+//
+
+//账号密码登录
 function *getLogin(action){
   let url = Path.basePaths.newAPIBasePath + Path.commonPaths.getStations;
   yield put({ type: LOGIN_FETCH });
@@ -35,6 +38,12 @@ function *getLogin(action){
     console.log(e);
   }
 }
+//获取短信验证码
+
+//手机+验证码登录
+
+
+
 
 
 export function* watchLoginSaga() {

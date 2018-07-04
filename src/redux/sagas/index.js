@@ -18,8 +18,8 @@ import {
 } from './login';
 
 import { 
-  watchLoginSaga
-} from './login/loginSaga';
+  watchPreLoginPageChangeSaga
+} from './prelogin/preLogin';
 
 import {
   watchGetDefectList,
@@ -108,7 +108,7 @@ export default function* rootSaga() {
     watchGetPartition(),
     //login
     // watchGetCompInfo(),
-    watchLoginSaga(), ////刚刚新写的login函数！！！！！！！！！！！！
+    watchPreLoginPageChangeSaga(), 
 
     watchLogin(),
     // watchCheckPhone(),

@@ -3,7 +3,7 @@ import { Route } from 'react-router-dom';
 import Ticket from '../containers/Operation/Ticket/Ticket';
 import Exception from '../containers/Exception/404';
 import Login from '../containers/Login';
-import LoginTmp from '../containers/Login/LoginContainer';
+import PreLoginContainer from '../containers/PreLogin/PreLoginContainer';
 import Forget from '../containers/Forget';
 import Signup from '../containers/Signup';
 import Power from '../containers/Power';
@@ -21,7 +21,7 @@ const routers = [
   {
     path:'/newlogin',
     exact:true,
-    component: LoginTmp
+    component: PreLoginContainer
   },
   {
     path:'/login',
