@@ -22,7 +22,7 @@ class LoginContainer extends Component {
     return (
       <div className={styles.login}>
         <div className={styles.loginTop}>
-          <span onClick={()=>this.changePage('register')}>加入企业</span>
+          <span onClick={()=>this.changePage('joinIn')}>加入企业</span>
         </div>
         登录页面!!!!!
         <div className={styles.loginContent}>
