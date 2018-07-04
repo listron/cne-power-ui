@@ -6,6 +6,10 @@
   }
   .preLoginContent{
     flex: 1;
+    .login{
+      height: 100%;
+      border: 1px solid #aaa;
+    }
   }
 }
 

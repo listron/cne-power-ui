@@ -27,8 +27,8 @@ class PreLoginContainer extends Component {
           <img width={'200px'} height={'200px'} src={'//www.baidu.com/img/bd_logo1.png?where=super'} />
         </div>
         <div className={styles.preLoginContent}>
-          {pageTab==='login' && <LoginContainer changePreLoginPage={changePreLoginPage} />}
-          {pageTab==='register' && <RegisterContainer changePreLoginPage={changePreLoginPage} />}
+          {pageTab==='login' && <LoginContainer changePreLoginPage={changePreLoginPage} pageTab={pageTab} />}
+          {pageTab==='register' && <RegisterContainer changePreLoginPage={changePreLoginPage} pageTab={pageTab} />}
           {pageTab==='joinIn' && <JoinInContainer changePreLoginPage={changePreLoginPage} />}
           {pageTab==='forget' && <ForgetContainer changePreLoginPage={changePreLoginPage} />}
         </div>
