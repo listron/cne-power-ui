@@ -16,6 +16,11 @@ import {
   watchChangeShowStatus, 
   watchCreateRegister 
 } from './login';
+
+import { 
+  watchPreLoginPageChangeSaga
+} from './prelogin/preLoginSaga';
+
 import {
   watchGetDefectList,
   watchBatchDeleteDefect,
@@ -103,6 +108,8 @@ export default function* rootSaga() {
     watchGetPartition(),
     //login
     // watchGetCompInfo(),
+    watchPreLoginPageChangeSaga(), 
+
     watchLogin(),
     // watchCheckPhone(),
     watchSendCode(),

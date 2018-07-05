@@ -98,7 +98,7 @@ class Main extends Component {
 
 const mapStateToProps = (state) => ({
   login: state.login,
-  topMenu: state.common.get('topMenu').toJS(),
+  topMenu: state.common.get('topMenu')? state.common.get('topMenu').toJS() : {},
 });
 
 const mapDispatchToProps = (dispatch) => ({
