@@ -1,8 +1,13 @@
 
 
 import React, { Component } from 'react';
-import { Table } from 'antd';
+import { Radio , Table } from 'antd';
 import PropTypes from 'prop-types';
+import EnterpriseSearch from './EnterpriseSearch'
+
+const RadioButton = Radio.Button;
+const RadioGroup = Radio.Group;
+
 
 class EnterpriseMain extends Component {
   static propTypes = {
@@ -12,6 +17,10 @@ class EnterpriseMain extends Component {
 
   constructor(props){
     super(props);
+  }
+
+  selectStatus = (e) => {
+    console.log(e.target.value)
   }
 
   render(){
@@ -45,6 +54,15 @@ class EnterpriseMain extends Component {
     ];
     return (
       <div>
+          <div>
+            <span>状态</span>
+            <RadioGroup onChange={this.selectStatus}>
+              <RadioButton value={0}>全部</RadioButton>
+              <RadioButton value={1}>启用</RadioButton>
+              <RadioButton value={2}>禁用</RadioButton>
+            </RadioGroup>
+          </div>
+          <EnterpriseSearch />
           这个是啥？
           <Table 
             rowSelection={rowSelection}

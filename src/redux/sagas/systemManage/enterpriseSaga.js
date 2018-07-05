@@ -31,10 +31,12 @@ function *getEnterprisList(action){
   try{
     yield put({ type:ENTERPRISE_FETCH });
     const response = yield call(axios.post,url,payload);
-    console.log(response)
     yield put({
       type:  GET_ENTERPRISE_LIST_SUCCESS,
-      payload,
+      payload:{
+        ...payload,
+        enterpriseList: response.data.data.enterpriseList
+      },
     });
   }catch(e){
     console.log(e);
@@ -47,7 +49,6 @@ function *changeEnterprise(action){
   try{
     yield put({ type:ENTERPRISE_FETCH });
     const response = yield call(axios.post,url,payload);
-    console.log(response)
     yield put({
       type:  CHANGE_SELECTED_ENTERPRISE_SUCCESS,
       payload,
