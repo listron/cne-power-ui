@@ -48,11 +48,11 @@ class TimeLines extends Component {
   getItem(item) {
     let text = item.flowName === '执行工单' ? '处理过程' : '处理建议';
     let icon;
-    
+    let lastColor = item.get('operateTime') === undefined ? "#7ec5c2" : "#000";
     return (
       <div className={styles.processWrap}>
         <div>
-          <b>{item.get('flowName')}</b>
+          <b style={{color: lastColor }}>{item.get('flowName')}</b>
           <span>{item.get('operateTime')}</span>
           {item.get('operateUser')}
         </div>
@@ -76,7 +76,8 @@ class TimeLines extends Component {
               </Timeline.Item>
             );
           })}
-          <Timeline.Item className={styles.processStatus}>{this.getStatus()}</Timeline.Item>
+          {processData.getIn([0,'defectProposal']) ? <Timeline.Item className={styles.processStatus}>{this.getStatus()}</Timeline.Item> : null}
+          
         </Timeline>
       </div> 
     )
