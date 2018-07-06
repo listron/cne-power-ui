@@ -8,7 +8,7 @@ import {
 
 var initState = immutable.fromJS({
   loading: false,
-  showPage: 'list',//默认展示列表页,可展示新建add,编辑edit,查看detail页,
+  showPage: 'list',//默认展示列表页,可展示新建/编辑edit,查看detail页,
   filterStatus: 0, //筛选条件全部0，启用1，禁用2
   enterpriseName:'', //筛选条件，企业名称
   enterprisePhone: '',//筛选条件，企业电话

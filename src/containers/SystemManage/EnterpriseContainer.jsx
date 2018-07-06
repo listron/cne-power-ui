@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import styles from './enterprise.scss';
+import styles from './enterpriseContainer.scss';
 import { 
   GET_ENTERPRISE_ATTR_CHANGE_SAGA,
   GET_ENTERPRISE_LIST_SAGA,
@@ -8,6 +8,8 @@ import {
 } from '../../constants/actionTypes/systemManage/enterpriseAction';
 import PropTypes from 'prop-types';
 import EnterpriseMain from '../../components/SystemManage/Enterprise/EnterpriseMain';
+import EnterpriseSide from '../../components/SystemManage/Enterprise/EnterpriseSide';
+import { CSSTransition } from 'react-transition-group';
 
 class EnterpriseContainer extends Component {
   static propTypes = {
@@ -23,12 +25,13 @@ class EnterpriseContainer extends Component {
     pageSize: PropTypes.number, 
     enterpriseDetail:PropTypes.object, 
     selectedEnterprise: PropTypes.array,
-    getEnterpriseList: PropTypes.func,
+    changeEnterpriseAttr: PropTypes.func,
     getEnterpriseList: PropTypes.func,
     changeSelectedEnterprise: PropTypes.func,
   }
   constructor(props) {
     super(props);
+    this.state = {}
   }
   componentDidMount(){
     const params = {
@@ -44,11 +47,22 @@ class EnterpriseContainer extends Component {
     this.props.getEnterpriseList(params)
   }
 
+  handleChangePages = (params) => {
+    this.props.changeEnterpriseAttr(params)
+  }
+
   render() {
-    // const { showPage, enterpriseList, enterpriseDetail } = this.props;
+    const { showPage } = this.props;
     return (
-      <div className={styles.enterprise}>
-        <EnterpriseMain {...this.props} />
+      <div className={styles.enterpriseContainer}>
+        <EnterpriseMain handleChangePages={this.handleChangePages} {...this.props} />
+        <CSSTransition
+          in={showPage!=='list'}
+          timeout={500}
+          classNames={'enterpriseSide'}
+        >
+          <EnterpriseSide handleChangePages={this.handleChangePages} {...this.props} />
+        </CSSTransition>
       </div>
     );
   }
@@ -69,9 +83,9 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  changeEnterpriseShow: params => dispatch({type:GET_ENTERPRISE_ATTR_CHANGE_SAGA, payload: params}),
-  getEnterpriseList: params => dispatch({type:GET_ENTERPRISE_LIST_SAGA, payload: params}),
-  changeSelectedEnterprise: params => dispatch({type:CHANGE_SELECTED_ENTERPRISE_SAGA, payload: params}),
+  changeEnterpriseAttr: payload => dispatch({type:GET_ENTERPRISE_ATTR_CHANGE_SAGA, payload}),
+  getEnterpriseList: payload => dispatch({type:GET_ENTERPRISE_LIST_SAGA, payload}),
+  changeSelectedEnterprise: payload => dispatch({type:CHANGE_SELECTED_ENTERPRISE_SAGA, payload}),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(EnterpriseContainer);
