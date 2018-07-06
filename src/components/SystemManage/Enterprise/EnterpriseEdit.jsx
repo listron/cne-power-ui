@@ -8,7 +8,7 @@ import styles from './enterprise.scss';
 
 class EnterpriseEdit extends Component {
   static propTypes = {
-    handleChangePages: PropTypes.func,
+    changeEnterpriseAttr: PropTypes.func,
   }
 
   constructor(props){
@@ -16,12 +16,12 @@ class EnterpriseEdit extends Component {
   }
 
   render(){
-    const { handleChangePages } = this.props;
+    const { changeEnterpriseAttr } = this.props;
     return (
       <div className={styles.enterpriseEdit} >
           这个是新增啊编辑啊的页面，是吧！！
-          <Button type={'primary'} onClick={()=>handleChangePages({showPage:'list'})}>返回主页面！！！！！</Button>
-          <Button type={'primary'} onClick={()=>handleChangePages({showPage:'detail'})}>拒绝返回，我要去看详情@</Button>
+          <Button type={'primary'} onClick={()=>changeEnterpriseAttr({showPage:'list'})}>返回主页面！！！！！</Button>
+          <Button type={'primary'} onClick={()=>changeEnterpriseAttr({showPage:'detail'})}>拒绝返回，我要去看详情@</Button>
       </div>
     )
   }

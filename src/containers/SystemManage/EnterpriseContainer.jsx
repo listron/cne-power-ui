@@ -25,7 +25,6 @@ class EnterpriseContainer extends Component {
     pageSize: PropTypes.number, 
     enterpriseDetail:PropTypes.object, 
     selectedEnterprise: PropTypes.array,
-    changeEnterpriseAttr: PropTypes.func,
     getEnterpriseList: PropTypes.func,
     changeSelectedEnterprise: PropTypes.func,
   }
@@ -47,21 +46,16 @@ class EnterpriseContainer extends Component {
     this.props.getEnterpriseList(params)
   }
 
-  handleChangePages = (params) => {
-    this.props.changeEnterpriseAttr(params)
-  }
-
   render() {
     const { showPage } = this.props;
     return (
       <div className={styles.enterpriseContainer}>
-        <EnterpriseMain handleChangePages={this.handleChangePages} {...this.props} />
+        <EnterpriseMain {...this.props} />
         <CSSTransition
           in={showPage!=='list'}
-          timeout={500}
           classNames={'enterpriseSide'}
         >
-          <EnterpriseSide handleChangePages={this.handleChangePages} {...this.props} />
+          <EnterpriseSide {...this.props} />
         </CSSTransition>
       </div>
     );

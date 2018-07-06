@@ -15,7 +15,7 @@ class EnterpriseMain extends Component {
   static propTypes = {
     enterpriseList: PropTypes.array,
     selectedEnterprise: PropTypes.array,
-    handleChangePages: PropTypes.func,
+    changeEnterpriseAttr: PropTypes.func,
   }
 
   constructor(props){
@@ -28,11 +28,11 @@ class EnterpriseMain extends Component {
 
 
   render(){
-    const { enterpriseList, selectedEnterprise,handleChangePages } = this.props;
+    const { enterpriseList, selectedEnterprise,changeEnterpriseAttr } = this.props;
     return (
       <div className={styles.enterpriseMain}>
-        <Button onClick={()=>handleChangePages({showPage:'detail'})}  type={'primary'} >请展示详情</Button>
-        <Button onClick={()=>handleChangePages({showPage: 'edit'})}  type={'primary'} >请展示新增编辑企业信息的按钮</Button>
+        <Button onClick={()=>changeEnterpriseAttr({showPage:'detail'})}  type={'primary'} >请展示详情</Button>
+        <Button onClick={()=>changeEnterpriseAttr({showPage: 'edit'})}  type={'primary'} >请展示新增编辑企业信息的按钮</Button>
         <div>
           <span>状态</span>
           <RadioGroup onChange={this.selectStatus}>
