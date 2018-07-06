@@ -75,7 +75,7 @@ class DeviceName extends Component {
           onSelect={this.props.onChange}
           value={this.getDeviceName(this.props.value)}
           filterOption={(inputValue, option) => 
-            option.props.children.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1}
+          option.props.children.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1}
         >
           <Input
             disabled={this.props.disabled}

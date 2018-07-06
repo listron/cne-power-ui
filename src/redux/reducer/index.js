@@ -7,7 +7,7 @@ import login from './login';
 import operation from './operation/operationReducer';
 import preLogin from './preLogin/preLoginReducer'
 
-const appReducer = (() => combineReducers({common, users, posts, login, operation,preLogin }))();
+const appReducer = (() => combineReducers({common, users, posts, login, operation, preLogin }))();
 
 // ========================= 单独一个文件的写法 =============================
 /* import { 

@@ -19,7 +19,6 @@ class JoinInContainer extends Component {
         加入企业页面！！！！
         <Button type={'primary'} onClick={()=>this.changePage('login')}> 登录页面 </Button>
         <Button type={'primary'} onClick={()=>this.changePage('register')}> 注册企业 </Button>
-        <Button type={'primary'} onClick={()=>this.changePage('forget')}> 忘记密码 </Button>
       </div>
     );
   }

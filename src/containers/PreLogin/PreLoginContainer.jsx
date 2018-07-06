@@ -20,7 +20,6 @@ class PreLoginContainer extends Component {
 
   render() {
     const { pageTab, changePreLoginPage } = this.props;
-    console.log(pageTab);
     return (
       <div className={styles.preLogin}>
         <div className={styles.preLoginImg}>左侧图片区域
@@ -38,10 +37,11 @@ class PreLoginContainer extends Component {
 }
 const mapStateToProps = (state) => ({
   pageTab: state.preLogin.get('pageTab'),
+
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  changePreLoginPage: parmas => dispatch({type: CHANGE_PRELOGIN_PAGE_SAGA, payload: parmas}),
+  changePreLoginPage: params => dispatch({ type: CHANGE_PRELOGIN_PAGE_SAGA, params }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PreLoginContainer);

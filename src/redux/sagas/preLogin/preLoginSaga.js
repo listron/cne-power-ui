@@ -9,10 +9,10 @@ import {
 
 //切换页面
 function *changePrelogin(action){
-  const { payload } = action;
+  const { params } = action;
   yield put({
     type:CHANGE_PRELOGIN_PAGE,
-    payload,
+    params,
   })
 }
 

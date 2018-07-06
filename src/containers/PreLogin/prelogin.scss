@@ -1,6 +1,7 @@
 .preLogin{
   display: flex;
   flex: 1;
+  color: #999;
   .preLoginImg{
     flex: 1;
   }
@@ -9,7 +10,12 @@
     .login{
       height: 100%;
       border: 1px solid #aaa;
+      .ant-tabs-nav .ant-tabs-tab-active {
+        color: #199475;
+        font-weight: 500;
+      }
     }
+    
   }
 }
 

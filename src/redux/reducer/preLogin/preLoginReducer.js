@@ -11,8 +11,7 @@ var initState = immutable.fromJS({
 const preLoginReducer = (state = initState, action) => {
   switch (action.type) {
     case CHANGE_PRELOGIN_PAGE:
-    console.log(action.payload.pageTab)
-      return state.set('pageTab', action.payload.pageTab)
+      return state.set('pageTab', action.params.pageTab)
   }
   return state;
 }
