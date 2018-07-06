@@ -68,18 +68,16 @@ class DeviceNameModal extends Component {
 
   renderItems() {
     let selectedDeviceCode = this.state.selectedDeviceCode !== '' ? this.state.selectedDeviceCode : this.props.deviceCode;
-    if(this.props.deviceItems){
-      return this.props.deviceItems.map((item, index) => {
-        return (
-          <DeviceItem
-            key={'device'+index}
-            item={item}
-            selected={selectedDeviceCode === item.get('deviceCode')}
-            onSelect={this.onSelectItem}
-         />
-        );
-      });
-    }
+    return this.props.deviceItems.map((item, index) => {
+      return (
+        <DeviceItem
+          key={'device'+index}
+          item={item}
+          selected={selectedDeviceCode === item.get('deviceCode')}
+          onSelect={this.onSelectItem}
+       />
+      );
+    });
     
   }
 
