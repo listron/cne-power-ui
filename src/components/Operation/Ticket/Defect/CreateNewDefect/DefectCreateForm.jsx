@@ -8,6 +8,7 @@ import ReplaceParts from './ReplaceParts';
 import { Form, Input, Button, Select } from 'antd';
 import pathConfig from '../../../../../constants/path';
 import styles from './newDefect.scss';
+import DeviceName from '../../../../Common/DeviceName';
 const { TextArea } = Input;
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -25,13 +26,26 @@ class TmpForm extends Component {
     onChangeShowContainer: PropTypes.func,
     editNewDefect: PropTypes.bool,
     defectDetail: PropTypes.object,
-    editDataGet: PropTypes.bool
+    editDataGet: PropTypes.bool,
+    deviceTypeItems: PropTypes.object,
+    deviceAreaItems: PropTypes.object,
+    deviceItems: PropTypes.object,
+    loadDeviceList: PropTypes.func,
   };
   constructor(props){
     super(props);
     this.state = {
-      defectFinished: false
+      defectFinished: false,
+      deviceAreaCode: '',
     }
+    this.onChangeArea = this.onChangeArea.bind(this);
+    this.loadDeviceList = this.loadDeviceList.bind(this);
+  }
+
+  onChangeArea(value) {
+    this.setState({
+      deviceAreaCode: value
+    });
   }
 
   onStationSelected = (stations) =>{
@@ -56,7 +70,7 @@ class TmpForm extends Component {
         // stationType:20--光伏---10风
         let {stationCode,stationType} = values.stations[0];
         stationType = stationType/10 - 1;
-        let deviceCode = '503M202M4M1';
+        let deviceCode = values.deviceCode;
         let partitionCode = values.stations[0].zoneCode;
         let partitionName = values.stations[0].zoneName;
         let rotatePhotoArray = [];
@@ -88,11 +102,32 @@ class TmpForm extends Component {
     });
   }
   
-  
+  getDeviceType(code) {
+    let deviceType = ''
+    let index = this.props.deviceTypeItems.findIndex((item) => {
+      return item.get('deviceTypeCode') === code
+    });
+    if(index !== -1) {
+      deviceType = this.props.deviceTypeItems.getIn([index, 'deviceTypeName']);
+    }
+    return deviceType;
+  }
+
+  loadDeviceList(areaCode) {
+    let params = {
+      stationCode: this.props.form.getFieldValue('stations')[0].stationCode,
+      deviceTypeCode: this.props.form.getFieldValue('deviceTypeCode')
+    };
+    if(areaCode !== '') {
+      params.partitionCode = areaCode;
+    }
+    this.props.loadDeviceList(params);
+  }
+
   render() {
     const { defectFinished } = this.state;
     const {stations, deviceTypes, defectTypes, defectDetail, editDataGet, editNewDefect } = this.props;
-    const {getFieldDecorator} = this.props.form;
+    const {getFieldDecorator, getFieldValue} = this.props.form;
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -131,6 +166,24 @@ class TmpForm extends Component {
             <Select placeholder={'请选择设备类型'} disabled={deviceTypes.length === 0}>
               {deviceTypes.map(e=>(<Option key={e.deviceTypeCode} value={e.deviceTypeCode}>{e.deviceTypeName}</Option>))}
             </Select>
+          )}
+        </FormItem>
+        <FormItem label={'设备名称：'} {...formItemLayout} >
+          {getFieldDecorator('deviceCode',{
+            rules: [{ required: true, message: '请选择设备名称' }],
+          })(
+            <DeviceName  
+              disabled = {!getFieldValue('deviceTypeCode')}
+              placeholder = "请选择设备名称"
+              stationName = {getFieldValue('stations').length > 0 ? getFieldValue('stations')[0].stationName : ""}
+              deviceType = {this.getDeviceType(getFieldValue('deviceTypeCode'))}
+              deviceAreaCode={this.state.deviceAreaCode}
+              onChangeArea={this.onChangeArea}
+              deviceTypeItems={this.props.deviceTypeItems}
+              deviceAreaItems={this.props.deviceAreaItems}
+              deviceItems={this.props.deviceItems}
+              loadDeviceList={this.loadDeviceList}
+            />
           )}
         </FormItem>
         <FormItem label={'缺陷类型：'} {...formItemLayout}>

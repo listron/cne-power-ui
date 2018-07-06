@@ -127,7 +127,7 @@ const mapDispatchToProps = (dispatch) => ({
   onSend: params => dispatch({ type: SEND_DEFECT_SAGA, params }),
   onReject: params => dispatch({ type: REJECT_DEFECT_SAGA, params }),
   onClose: params => dispatch({ type: CLOSE_DEFECT_SAGA, params }),
-  onHandle: params => dispatch({ type:HANDLE_DEFECT_SAGA, params }),
+  onHandle: params => dispatch({ type: HANDLE_DEFECT_SAGA, params }),
   onCheck: params => dispatch({ type: CHECK_DEFECT_SAGA, params }),
 });
 

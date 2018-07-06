@@ -52,6 +52,7 @@ var initState = immutable.fromJS({
     processData:[],
     inspectStatus: '',
     deviceTypeNames: '',
+    abnormalIsShow: false,
   },
   inspectStandard: [],
 });

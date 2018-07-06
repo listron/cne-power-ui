@@ -1,13 +1,11 @@
 
 
 import React, { Component } from 'react';
-import { Menu, Icon } from 'antd';
-import classnames from 'classnames';
+import { Menu } from 'antd';
 import { Link } from 'react-router-dom';
 import { menu } from '../../common/menu';
 import PropTypes from 'prop-types';
-import styles from './layout.scss'
-const { SubMenu,Item } = Menu;
+const { Item } = Menu;
 
 class TopMenu extends Component {
   static propTypes = {
