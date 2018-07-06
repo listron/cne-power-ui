@@ -11,7 +11,7 @@ import EnterpriseEdit from './EnterpriseEdit';
 class EnterpriseSide extends Component {
   static propTypes = {
     showPage: PropTypes.string,
-    handleChangePages: PropTypes.func,
+    changeEnterpriseAttr: PropTypes.func,
   }
 
   constructor(props){
@@ -20,13 +20,13 @@ class EnterpriseSide extends Component {
 
 
   render(){
-    const { showPage, handleChangePages } = this.props;
+    const { showPage, changeEnterpriseAttr } = this.props;
     return (
       <div className={styles.enterpriseSide}>
         {
           showPage==='detail' || showPage === 'list' ?
-          <EnterpriseDetail handleChangePages={handleChangePages} />:
-          <EnterpriseEdit handleChangePages={handleChangePages} />
+          <EnterpriseDetail changeEnterpriseAttr={changeEnterpriseAttr} />:
+          <EnterpriseEdit changeEnterpriseAttr={changeEnterpriseAttr} />
         }
       </div>
     )

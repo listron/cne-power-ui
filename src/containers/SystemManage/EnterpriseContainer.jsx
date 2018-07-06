@@ -25,6 +25,7 @@ class EnterpriseContainer extends Component {
     pageSize: PropTypes.number, 
     enterpriseDetail:PropTypes.object, 
     selectedEnterprise: PropTypes.array,
+    
     getEnterpriseList: PropTypes.func,
     changeSelectedEnterprise: PropTypes.func,
   }
@@ -53,6 +54,7 @@ class EnterpriseContainer extends Component {
         <EnterpriseMain {...this.props} />
         <CSSTransition
           in={showPage!=='list'}
+          timeout={500}
           classNames={'enterpriseSide'}
         >
           <EnterpriseSide {...this.props} />
