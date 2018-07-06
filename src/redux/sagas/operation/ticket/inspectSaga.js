@@ -101,7 +101,7 @@ function* setInspectId(action){
   });
 }
 
-// 添加巡检异常
+// 巡检添加异常
 function* addInspectAbnormal(action){
   let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.ticket.addInspectAbnormal;
   yield put({ type: TICKET_FETCH })
@@ -118,7 +118,7 @@ function* addInspectAbnormal(action){
       })
     }
     else{
-      message.error('添加失败！');
+      message.error(response.data.message);
       yield put({
         type: ADD_INSPECT_ABNORMAL_FAIL,
         error:{
@@ -154,6 +154,7 @@ function *transformDefect(action){
         }
       })
     }else{
+      message.success('转工单失败！');
       yield put({
         type: TRANSFORM_DEFECT_FAIL,
         error: {
@@ -173,12 +174,11 @@ function *setInspectCheck(action){
   yield put({ type: TICKET_FETCH })
   try{
     const response = yield call(axios.post, url, action.params)
-    if(response.data.code === "10000"){
-      // const newState = yield select();
-      // console.log(newState);  
-      const pageSize = yield select(state => state.opration.inspect.get('pageSize'));
-      const status = yield select(state => state.opration.inspect.get('status'));
-      const sort = yield select(state => state.opration.inspect.get('sort'));
+    if(response.data.code === "10000"){ 
+      message.success('验收成功！');
+      const pageSize = yield select(state => state.operation.inspect.get('pageSize'));
+      const status = yield select(state => state.operation.inspect.get('status'));
+      const sort = yield select(state => state.operation.inspect.get('sort'));
       yield put({
         type: GET_INSPECT_LIST_SAGA,
         params:{
@@ -194,6 +194,7 @@ function *setInspectCheck(action){
         params: {container: 'list'},
       });
     }else{
+      message.error('验收失败！')
       yield put({
         type: SET_INSPECT_CHECK_FAIL,
         error:{
@@ -213,12 +214,26 @@ function *finishInspect(action){
   try{
     const response = yield call(axios.post, url, action.params)
     if(response.data.code === "10000"){
+      message.success('执行工单转入待验收成功！');
+      const pageSize = yield select(state => state.operation.inspect.get('pageSize'));
+      const status = yield select(state => state.operation.inspect.get('status'));
+      const sort = yield select(state => state.operation.inspect.get('sort'));
       yield put({
-        type: FINISH_INSPECT_SUCCESS,
-        data: response.data.data,
-        params: action.params,
-      })
+        type: GET_INSPECT_LIST_SAGA,
+        params:{
+          stationType: '2',
+          status: status,
+          pageNum: 0,
+          pageSize: pageSize,
+          sort: sort
+        }
+      });
+      yield put({
+        type: CHANGE_SHOW_CONTAINER_SAGA,
+        params: {container: 'list'},
+      });
     }else{
+      message.error('执行工单转验收失败！')
       yield put({
         type: FINISH_INSPECT_FAIL,
         error:{
@@ -238,12 +253,26 @@ function *createInspect(action){
   try{
     const response = yield call(axios.post, url, action.params)
     if(response.data.code === "10000"){
+      message.success('创建成功！')
+      const pageSize = yield select(state => state.operation.inspect.get('pageSize'));
+      const status = yield select(state => state.operation.inspect.get('status'));
+      const sort = yield select(state => state.operation.inspect.get('sort'));
       yield put({
-        type: CREATE_INSPECT_SUCCESS,
-        data: response.data.data,
-        params: action.params,
+        type: GET_INSPECT_LIST_SAGA,
+        params:{
+          stationType: '2',
+          status: status,
+          pageNum: 0,
+          pageSize: pageSize,
+          sort: sort,
+        }
       })
+      yield put({
+        type: CHANGE_SHOW_CONTAINER_SAGA,
+        params: {container: 'list'},
+      });
     }else{
+      message.error('创建失败！');
       yield put({
         type: CREATE_INSPECT_FAIL,
         error: {
@@ -328,11 +357,6 @@ function *inspectCheckBatch(action){
           sort: sort
         }
       })
-      // yield put({
-      //   type: INSPECT_CHECK_BATCH_SUCCESS,
-      //   data: response.data.data,
-      //   params: action.params,
-      // })
     }else{
       yield put({
         type: INSPECT_CHECK_BATCH_FAIL,

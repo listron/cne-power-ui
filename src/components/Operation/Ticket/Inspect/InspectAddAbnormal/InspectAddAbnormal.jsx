@@ -5,6 +5,7 @@ import { Button, Form, Select, Modal } from 'antd';
 import ImgUploader from '../../../../Common/Uploader/ImgUploader';
 import DeviceName from '../../../../Common/DeviceName';
 import pathConfig from '../../../../../constants/path';
+import InputLimit from '../../../../Common/InputLimit';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -28,7 +29,7 @@ class inspectAddAbnormal extends Component {
   }
 
   static defaultProps={
-
+    showAddAbnormal: false,
   }
 
   constructor(props){
@@ -71,10 +72,13 @@ class inspectAddAbnormal extends Component {
           deviceCode: values.deviceCode,
           defectTypeCode: values.defectTypeCode,
           photoAddress: values.photoData.map((item) => (item.response)).join(','),
-          rotatePhoto: values.photoData.map((item) => (item.response+';'+item.rotate)).join(','),
+          rotatePhoto: values.photoData.map((item) => (item.response+','+item.rotate)).join(';'),
+          abnormalDescribe: values.abnormalDescribe,
         }
         this.props.addInspectAbnormal(params);
-
+        this.setState({
+          showAddAbnormal: false,
+        })
       }
     })
   }
@@ -233,9 +237,19 @@ class inspectAddAbnormal extends Component {
               </FormItem>
               <FormItem
                 {...formItemLayout}
+                label="异常描述"
+              >
+                {getFieldDecorator('abnormalDescribe',{
+                  rules: [{required: true, message: '请填写异常描述'}],
+                })(
+                  <InputLimit />
+                )}
+              </FormItem>
+              <FormItem
+                {...formItemLayout}
                 label="添加照片"
               >
-                {getFieldDecorator("photoData",{
+                {getFieldDecorator('photoData',{
                   rules: [{required: false,message: '请上传图片'}],
                   initialValue: [],
                   valuePropName: 'data',

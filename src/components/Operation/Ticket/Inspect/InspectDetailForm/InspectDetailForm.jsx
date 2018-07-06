@@ -56,6 +56,9 @@ class InspectDetailForm extends Component {
             inspectId: inspectId,
             abnormalIds: this.state.abnormalIds.toJS().join(','),
           })
+          this.setState({
+            abnormalIds: immutable.fromJS([]),
+          })
         },
         onCancel: () => {
         },
