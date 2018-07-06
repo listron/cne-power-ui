@@ -2,8 +2,8 @@ import immutable from 'immutable';
 
 import {
   ENTERPRISE_FETCH,
-  GET_ENTERPRISE_LIST_SUCCESS,
-  CHANGE_SELECTED_ENTERPRISE_SUCCESS
+  GET_ENTERPRISE_ATTR_CHANGE_SUCCESS,
+  GET_ENTERPRISE_COMMON_FETCH_SUCCESS,
 } from '../../../constants/actionTypes/systemManage/enterpriseAction';
 
 var initState = immutable.fromJS({
@@ -25,10 +25,10 @@ const enterpriseReducer = (state = initState, action) => {
   switch (action.type) {
     case ENTERPRISE_FETCH:
       return state.set('loading',true)
-    case GET_ENTERPRISE_LIST_SUCCESS :
+    case GET_ENTERPRISE_COMMON_FETCH_SUCCESS :
+      return state.merge(immutable.fromJS(action.payload)).set('loading',false)
+    case GET_ENTERPRISE_ATTR_CHANGE_SUCCESS:
       return state.merge(immutable.fromJS(action.payload))
-    case CHANGE_SELECTED_ENTERPRISE_SUCCESS:
-      return state.set('loading',true)
   }
 
   return state;

@@ -69,6 +69,7 @@ class EnterpriseMain extends Component {
             dataSource={enterpriseList} 
             columns={columns} 
             onChange={this.tableChange}
+            pagination={null}
           />
       </div>
     )

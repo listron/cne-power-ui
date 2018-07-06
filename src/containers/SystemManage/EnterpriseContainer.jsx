@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 // import styles from './preLogin.scss';
 import { 
-  CHANGE_ENTERPRISE_PAGE_SAGA,
+  GET_ENTERPRISE_ATTR_CHANGE_SAGA,
   GET_ENTERPRISE_LIST_SAGA,
   CHANGE_SELECTED_ENTERPRISE_SAGA,
 } from '../../constants/actionTypes/systemManage/enterpriseAction';
@@ -70,7 +70,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  changeEnterpriseShow: params => dispatch({type:CHANGE_ENTERPRISE_PAGE_SAGA, payload: params}),
+  changeEnterpriseShow: params => dispatch({type:GET_ENTERPRISE_ATTR_CHANGE_SAGA, payload: params}),
   getEnterpriseList: params => dispatch({type:GET_ENTERPRISE_LIST_SAGA, payload: params}),
   changeSelectedEnterprise: params => dispatch({type:CHANGE_SELECTED_ENTERPRISE_SAGA, payload: params}),
 });

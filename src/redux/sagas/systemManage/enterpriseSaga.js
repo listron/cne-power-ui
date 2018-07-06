@@ -5,21 +5,20 @@ import Path from '../../../constants/path';
 import {
   ENTERPRISE_FETCH,
 
-  CHANGE_ENTERPRISE_PAGE,
-  CHANGE_ENTERPRISE_PAGE_SAGA,
+  GET_ENTERPRISE_ATTR_CHANGE_SAGA,
+  GET_ENTERPRISE_ATTR_CHANGE_SUCCESS,
+  GET_ENTERPRISE_COMMON_FETCH_SUCCESS,
 
-  GET_ENTERPRISE_LIST_SAGA,
-  GET_ENTERPRISE_LIST_SUCCESS,
-
+  GET_ENTERPRISE_LIST_SAGA,  
   CHANGE_SELECTED_ENTERPRISE_SAGA,
-  CHANGE_SELECTED_ENTERPRISE_SUCCESS,
+  
 } from '../../../constants/actionTypes/systemManage/enterpriseAction';
 
 //切换页面->列表页，新建/编辑页,详情页
-function *changeEnterprisePage(action){
+function *changeEnterpriseAttr(action){
   const { payload } = action;
   yield put({
-    type:  CHANGE_ENTERPRISE_PAGE,
+    type:  GET_ENTERPRISE_ATTR_CHANGE_SUCCESS,
     payload,
   })
 }
@@ -32,7 +31,7 @@ function *getEnterprisList(action){
     yield put({ type:ENTERPRISE_FETCH });
     const response = yield call(axios.post,url,payload);
     yield put({
-      type:  GET_ENTERPRISE_LIST_SUCCESS,
+      type:  GET_ENTERPRISE_COMMON_FETCH_SUCCESS,
       payload:{
         ...payload,
         enterpriseList: response.data.data.enterpriseList
@@ -42,6 +41,9 @@ function *getEnterprisList(action){
     console.log(e);
   }
 }
+
+//请求单个电站详细数据信息
+
 //新建+编辑企业信息
 function *changeEnterprise(action){
   const { payload } = action;
@@ -50,7 +52,7 @@ function *changeEnterprise(action){
     yield put({ type:ENTERPRISE_FETCH });
     const response = yield call(axios.post,url,payload);
     yield put({
-      type:  CHANGE_SELECTED_ENTERPRISE_SUCCESS,
+      type:  GET_ENTERPRISE_COMMON_FETCH_SUCCESS,
       payload,
     });
   }catch(e){
@@ -61,7 +63,7 @@ function *changeEnterprise(action){
 
 
 export function* watchEnterpriseSaga() {
-  yield takeLatest(CHANGE_ENTERPRISE_PAGE_SAGA, changeEnterprisePage);
+  yield takeLatest(GET_ENTERPRISE_ATTR_CHANGE_SAGA, changeEnterpriseAttr);
   yield takeLatest(GET_ENTERPRISE_LIST_SAGA, getEnterprisList);
   yield takeLatest(CHANGE_SELECTED_ENTERPRISE_SAGA, changeEnterprise);
 }

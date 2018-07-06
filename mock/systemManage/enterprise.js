@@ -11,6 +11,7 @@ module.exports = [
       "data": {
         "total": 110, 
         "enterpriseList":  [1,2,3,4,5,6,7,8,9,0].map((e,i)=>({
+          key: i,
           stationCode: i,
           stationName: `第${i}个电站`,
           stationPhone: '112121kjhk,112121kjhk,112121kjhk',
