@@ -8,7 +8,7 @@ class DefectCreate extends Component {
     super(props);
   }  
 
-  render() {   
+  render() { 
     return (
       <div className={styles.defectCreate}>
         <DefectCreateForm {...this.props} />

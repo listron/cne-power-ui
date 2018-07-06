@@ -25,6 +25,7 @@ class DefectCreate extends Component {
     defectDetail: PropTypes.object,
     getDeviceTypes: PropTypes.func,
     getDefectTypes: PropTypes.func,
+    loadDeviceList: PropTypes.func,
   };
   constructor(props) {
     super(props);
@@ -83,6 +84,9 @@ const mapStateToProps = (state) => ({
     error: state.operation.defect.get('error'),
     defectTypes: state.operation.defect.get('defectTypes').toJS(),
     defectDetail: state.operation.defect.get('defectDetail').toJS(),
+    deviceTypeItems: state.common.get('deviceTypes'),
+    deviceAreaItems: state.common.get('partitions'),
+    deviceItems: state.common.get('devices'),
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -91,6 +95,7 @@ const mapDispatchToProps = (dispatch) => ({
   getDevices: params => dispatch({ type: GET_DEVICES_SAGA, params }),
   getDefectTypes: params => dispatch({ type: GET_DEFECTTYPES_SAGA, params }),
   onDefectCreateNew: params => dispatch({type: DEFECT_CREATE_SAGA, params}),
+  loadDeviceList: params => dispatch({ type: GET_DEVICES_SAGA, params}),
 });
 
 

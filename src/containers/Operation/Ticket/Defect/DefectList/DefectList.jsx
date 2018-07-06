@@ -122,24 +122,24 @@ class DefectList extends Component {
   }
 
   onBatchDelete(ids) {
-    this.props.onBatchDelete({defectID: ids.join(',')});
+    this.props.onBatchDelete({defectId: ids.join(',')});
   }
 
   onBatchSend(ids) {
-    this.props.onBatchSend({defectID: ids.join(',')});
+    this.props.onBatchSend({defectId: ids.join(',')});
   }
 
   onBatchReject(ids) {
-    this.props.onBatchReject({defectID: ids.join(',')});
+    this.props.onBatchReject({defectId: ids.join(',')});
   }
 
   onBatchClose(ids) {
-    this.props.onBatchClose({defectID: ids.join(',')});
+    this.props.onBatchClose({defectId: ids.join(',')});
   }
 
   onBatchCheck(ids, checkResult) {
     this.props.onBatchCheck({
-      defectID: ids.join(','),
+      defectId: ids.join(','),
       checkResult
     });
   }

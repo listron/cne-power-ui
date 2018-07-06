@@ -41,7 +41,7 @@ class DefectTable extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentSelectedStatus: null
+      currentSelectedStatus: 5
     };
     this.onChangeTab = this.onChangeTab.bind(this);
     this.onAdd = this.onAdd.bind(this);

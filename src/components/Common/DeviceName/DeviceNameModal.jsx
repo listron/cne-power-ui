@@ -78,6 +78,7 @@ class DeviceNameModal extends Component {
        />
       );
     });
+    
   }
 
   // renderTypeItems() {

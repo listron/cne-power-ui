@@ -53,7 +53,7 @@ class DeviceName extends Component {
   }
 
   getDeviceName(code) {
-    let deviceName = ''
+    let deviceName = '';
     let index = this.props.deviceItems.findIndex((item) => {
       return item.get('deviceCode') === code
     });
@@ -61,6 +61,7 @@ class DeviceName extends Component {
       deviceName = this.props.deviceItems.getIn([index, 'deviceName']);
     }
     return deviceName;
+    
   }
 
   render() {
