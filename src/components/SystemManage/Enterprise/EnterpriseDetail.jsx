@@ -22,6 +22,7 @@ class EnterpriseDetail extends Component {
           <span>这个是表示符</span>
           <span>现在你在详情页，开心嘛？</span>
           <Button type={'primary'} onClick={()=>handleChangePages({showPage:'list'})}>返回主页面</Button>
+          <Button type={'primary'} onClick={()=>handleChangePages({showPage:'edit'})}>看看去修改修改企业信息啊！</Button>
       </div>
     )
   }

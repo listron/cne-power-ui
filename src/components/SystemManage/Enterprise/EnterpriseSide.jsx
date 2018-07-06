@@ -21,7 +21,6 @@ class EnterpriseSide extends Component {
 
   render(){
     const { showPage, handleChangePages } = this.props;
-    console.log(showPage)
     return (
       <div className={styles.enterpriseSide}>
         {

@@ -21,6 +21,7 @@ class EnterpriseEdit extends Component {
       <div className={styles.enterpriseEdit} >
           这个是新增啊编辑啊的页面，是吧！！
           <Button type={'primary'} onClick={()=>handleChangePages({showPage:'list'})}>返回主页面！！！！！</Button>
+          <Button type={'primary'} onClick={()=>handleChangePages({showPage:'detail'})}>拒绝返回，我要去看详情@</Button>
       </div>
     )
   }
