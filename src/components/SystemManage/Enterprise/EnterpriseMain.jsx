@@ -1,9 +1,10 @@
 
 
 import React, { Component } from 'react';
-import { Radio , Table } from 'antd';
+import { Radio } from 'antd';
 import PropTypes from 'prop-types';
-import EnterpriseSearch from './EnterpriseSearch'
+import EnterpriseSearch from './EnterpriseSearch';
+import EnterpriseTable from './EnterpriseTable';
 
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
@@ -24,34 +25,7 @@ class EnterpriseMain extends Component {
   }
 
   render(){
-    const { enterpriseList } = this.props;
-    let { selectedEnterprise } = this.props;
-    const rowSelection = {
-      selectedRowKeys: selectedEnterprise,
-      onChange: (selectedRowKeys, selectedRows) => {
-        console.log(selectedRowKeys, selectedRows)
-      }
-    };
-    const columns = [
-      {
-        title: '企业名称',
-        dataIndex: 'stationName',
-        key: 'stationName',
-      }, {
-        title: '企业电话',
-        dataIndex: 'stationPhone',
-        key: 'stationPhone',
-      }, {
-        title: '状态',
-        dataIndex: 'status',
-        key: 'status',
-        sorter: true
-      }, {
-        title: '查看',
-        dataIndex: 'handle',
-        key: 'handle',
-      }
-    ];
+    const { enterpriseList, selectedEnterprise } = this.props;
     return (
       <div>
           <div>
@@ -63,14 +37,7 @@ class EnterpriseMain extends Component {
             </RadioGroup>
           </div>
           <EnterpriseSearch />
-          这个是啥？
-          <Table 
-            rowSelection={rowSelection}
-            dataSource={enterpriseList} 
-            columns={columns} 
-            onChange={this.tableChange}
-            pagination={null}
-          />
+          <EnterpriseTable enterpriseList={enterpriseList} selectedEnterprise={selectedEnterprise} />
       </div>
     )
   }
