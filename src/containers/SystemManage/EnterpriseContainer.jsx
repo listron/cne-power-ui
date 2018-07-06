@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-// import styles from './preLogin.scss';
+import styles from './enterprise.scss';
 import { 
   GET_ENTERPRISE_ATTR_CHANGE_SAGA,
   GET_ENTERPRISE_LIST_SAGA,
@@ -47,8 +47,7 @@ class EnterpriseContainer extends Component {
   render() {
     // const { showPage, enterpriseList, enterpriseDetail } = this.props;
     return (
-      <div>
-        这里是企业管理页面！！！！哈哈哈哈，猴赛雷！
+      <div className={styles.enterprise}>
         <EnterpriseMain {...this.props} />
       </div>
     );
