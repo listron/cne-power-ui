@@ -31,7 +31,9 @@ class EnterpriseContainer extends Component {
   }
   constructor(props) {
     super(props);
-    this.state = {}
+    this.state = {
+      showDetail: true,
+    }
   }
   componentDidMount(){
     const params = {
@@ -49,15 +51,18 @@ class EnterpriseContainer extends Component {
 
   render() {
     const { showPage } = this.props;
+    const { showDetail } = this.state;
     return (
       <div className={styles.enterpriseContainer}>
         <EnterpriseMain {...this.props} />
         <CSSTransition
           in={showPage!=='list'}
+          onEnter={()=>this.setState({showDetail:showPage==='detail'})}
+          onExited={()=>this.setState({showDetail:showPage==='detail'})}
           timeout={500}
           classNames={'enterpriseSide'}
         >
-          <EnterpriseSide {...this.props} />
+          <EnterpriseSide {...this.props} showDetail={showDetail} />
         </CSSTransition>
       </div>
     );

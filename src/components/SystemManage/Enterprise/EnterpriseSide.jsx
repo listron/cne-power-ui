@@ -10,7 +10,7 @@ import EnterpriseEdit from './EnterpriseEdit';
 
 class EnterpriseSide extends Component {
   static propTypes = {
-    showPage: PropTypes.string,
+    showDetail: PropTypes.bool,
     changeEnterpriseAttr: PropTypes.func,
   }
 
@@ -20,11 +20,11 @@ class EnterpriseSide extends Component {
 
 
   render(){
-    const { showPage, changeEnterpriseAttr } = this.props;
+    const { showDetail, changeEnterpriseAttr } = this.props;
     return (
       <div className={styles.enterpriseSide}>
         {
-          showPage==='detail' || showPage === 'list' ?
+          showDetail ?
           <EnterpriseDetail changeEnterpriseAttr={changeEnterpriseAttr} />:
           <EnterpriseEdit changeEnterpriseAttr={changeEnterpriseAttr} />
         }
