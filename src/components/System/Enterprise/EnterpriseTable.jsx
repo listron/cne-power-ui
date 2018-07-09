@@ -1,8 +1,10 @@
 
 
 import React, { Component } from 'react';
-import { Table, Button, Select, Pagination } from 'antd';
+import { Table, Button, Select, Icon } from 'antd';
+import CommonPagination from '../../Common/CommonPagination';
 import PropTypes from 'prop-types';
+import styles from './enterprise.scss';
 
 const { Option } = Select;
 
@@ -14,13 +16,18 @@ class EnterpriseTable extends Component {
 
   constructor(props){
     super(props);
+    this.state = {
+    }
   }
+
+  onPaginationChange = ({currentPage,pageSize}) => {
+    console.log(currentPage,pageSize)
+  }
+
   tableChange = (params) => {
     console.log(params);
   }
-  changePageSize = (value) => {
-    console.log(value);
-  }
+
   enterpriseHandle = (value) => {
     console.log(value);
   }
@@ -66,21 +73,14 @@ class EnterpriseTable extends Component {
     ];
     return (
       <div>
-        <div>
-          <Button>添加企业</Button>
+        <div className={styles.enterpriseList} >
+          <Button className={styles.addEnterprise}><Icon type="plus" />企业</Button>
           <Select onChange={this.enterpriseHandle} style={{width:'100px'}} placeholder={'操作'}>
             <Option value="edit">编辑</Option>
             <Option value="open">启用</Option>
             <Option value="close">禁用</Option>
           </Select>
-          <span>合计：54</span>
-          <span>每页：</span>
-          <Select onChange={this.changePageSize} style={{width:'100px'}} placeholder={'10'}>
-            <Option value={10} >10</Option>
-            <Option value={20} >20</Option>
-            <Option value={50} >50</Option>
-          </Select>
-          <Pagination simple defaultCurrent={2} total={50} />
+          <CommonPagination total={54} onPaginationChange={this.onPaginationChange} />
         </div>
         <Table 
           rowSelection={rowSelection}

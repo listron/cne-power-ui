@@ -3,7 +3,7 @@
 
 module.exports = [
   {
-    api:'/mock/systemManage/enterprisList',
+    api:'/mock/system/enterprisList',
     method:'post',
     response:{
       "code": "10000",
@@ -26,7 +26,7 @@ module.exports = [
     delay:1000,
     error:{}
   },{
-    api:'/mock/systemManage/changeEnterprise',
+    api:'/mock/system/changeEnterprise',
     method:'post',
     response:{
       "code": "10000",
