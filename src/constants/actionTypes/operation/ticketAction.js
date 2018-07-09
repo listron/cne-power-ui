@@ -81,9 +81,6 @@ module.exports = {
     INSPECT_CHECK_BATCH_SUCCESS: null,
     INSPECT_CHECK_BATCH_FAIL: null,
     TRANSFORM_DEFECT_SAGA: null,
-    TRANSFORM_DEFECT_SUCCESS: null,
     TRANSFORM_DEFECT_FAIL: null,
-
-
   })
 };

@@ -58,10 +58,6 @@ const inspectReducer = (state = initState, action) => {
       return state.set('isFetching', false)
                   .set('inspectDetail', immutable.fromJS(action.data))
                   .set('inspectId', action.params.inspectId);
-    case TicketAction.TRANSFORM_DEFECT_SUCCESS:
-      return state.set('isFetching', false)
-                  .set('abnormalId', action.collection)
-                  .set('inspectId', action.params.inspectId);
     case TicketAction.GET_INSPECT_STANDARD_SUCCESS:
       return state.set('isFetching', false)
                   .set('inspectStandard', immutable.fromJS(action.data.data));
