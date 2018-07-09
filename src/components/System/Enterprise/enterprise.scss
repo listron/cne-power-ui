@@ -91,6 +91,19 @@ $disableFontColor: #999;
       color: $darkFontColor;
     }
   }
+  .enterpriseList{//企业列表
+
+    .addEnterprise{
+      i{
+        display: inline-block;
+        background:#199475;
+        color: #fff;
+      }
+      span{
+        display: inline-block;
+      }
+    }
+  }
 }
 .enterpriseSide {
   display: flex;

@@ -1,9 +1,10 @@
 
 
 import React, { Component } from 'react';
-import { Table, Button, Select, Pagination } from 'antd';
+import { Table, Button, Select, Icon } from 'antd';
 import CommonPagination from '../../Common/CommonPagination';
 import PropTypes from 'prop-types';
+import styles from './enterprise.scss';
 
 const { Option } = Select;
 
@@ -72,8 +73,8 @@ class EnterpriseTable extends Component {
     ];
     return (
       <div>
-        <div>
-          <Button>添加企业</Button>
+        <div className={styles.enterpriseList} >
+          <Button className={styles.addEnterprise}><Icon type="plus" />企业</Button>
           <Select onChange={this.enterpriseHandle} style={{width:'100px'}} placeholder={'操作'}>
             <Option value="edit">编辑</Option>
             <Option value="open">启用</Option>
