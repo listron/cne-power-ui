@@ -79,13 +79,6 @@ class EnterpriseTable extends Component {
             <Option value="open">启用</Option>
             <Option value="close">禁用</Option>
           </Select>
-          <span>合计：54</span>
-          <span>每页：</span>
-          <Select onChange={this.changePageSize} style={{width:'100px'}} placeholder={'10'}>
-            <Option value={10} >10</Option>
-            <Option value={20} >20</Option>
-            <Option value={50} >50</Option>
-          </Select>
           <CommonPagination total={54} onPaginationChange={this.onPaginationChange} />
         </div>
         <Table 
