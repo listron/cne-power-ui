@@ -64,6 +64,10 @@ $disableFontColor: #999;
       margin-top: 9px;
       position: static;
       width: 160px;
+      &:hover,&:focus,&::selection{
+        border:1px solid #199475;
+        box-shadow: 0 0 2px #199475;
+      }
     }
     .searchNameInput{
       margin-right: 40px;
