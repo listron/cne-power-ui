@@ -19,7 +19,6 @@ class CommonPagination extends Component {
   static propTypes = {
     total: PropTypes.number,
     pageSizeArray: PropTypes.array,
-    currentPage: PropTypes.number,
     onPaginationChange: PropTypes.func
   }
   static defaultProps = {
@@ -28,19 +27,26 @@ class CommonPagination extends Component {
 
   constructor(props){
     super(props);
-    this.setState({
-      currentPage: 1
-    })
+    this.state = {
+      currentPage: 1,
+      pageSize: props.pageSizeArray[0]
+    }
   }
   onPageSizeChange = (pageSize) => {
-    const { currentPage } = this.state;
+    let { currentPage } = this.state;
+    const { total } = this.props;
+    currentPage = total/pageSize>currentPage?currentPage:Math.ceil(total/pageSize);
+    this.setState({
+      pageSize,
+      currentPage
+    })
     this.props.onPaginationChange({
       pageSize,
       currentPage
     })
   }
-  onPageChange = (currentPage, pageSize) => {
-    console.log(currentPage,pageSize)
+  onPageChange = (currentPage) => {
+    const { pageSize } = this.state;
     this.setState({
       currentPage
     })
@@ -51,18 +57,17 @@ class CommonPagination extends Component {
   }
 
   render(){
-    const { pageSizeArray, total } = this.props;
-    const { currentPage } = this.state;
-    const defaultSize = pageSizeArray[0];
+    const { total, pageSizeArray } = this.props;
+    const { currentPage, pageSize } = this.state;
     return (
       <div>
         <span>合计：</span>
         <span>{total}</span>
         <span>每页：</span>
-        <Select onChange={this.onPageSizeChange} style={{width:'40px'}} defaultValue={defaultSize} >
+        <Select onChange={this.onPageSizeChange} style={{width:'40px'}} defaultValue={pageSize} >
           {pageSizeArray.map(e=>(<Option value={e}>{e}</Option>))}
         </Select>
-        <Pagination simple defaultCurrent={currentPage} total={total} onChange={this.onPageChange} />
+        <Pagination simple current={currentPage} total={total} onChange={this.onPageChange} pageSize={pageSize} />
       </div>
     )
   }

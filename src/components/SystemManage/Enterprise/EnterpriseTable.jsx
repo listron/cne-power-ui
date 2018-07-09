@@ -19,7 +19,7 @@ class EnterpriseTable extends Component {
     }
   }
 
-  onPaginationChange = (currentPage,pageSize) => {
+  onPaginationChange = ({currentPage,pageSize}) => {
     console.log(currentPage,pageSize)
   }
 
