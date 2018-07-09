@@ -2,15 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import styles from './defectCreate.scss';
-import {
-  GET_DEFECTTYPES_SAGA,
-  DEFECT_CREATE_SAGA,
-} from '../../../../../constants/actionTypes/Ticket';
-import {
-  GET_STATIONS_SAGA,
-  GET_DEVICETYPES_SAGA,
-  GET_DEVICES_SAGA,
-} from '../../../../../constants/actionTypes/commonAction';
+import { CommonAction } from '../../../../../constants/actionTypes/commonAction';
+import { TicketAction } from '../../../../../constants/actionTypes/operation/ticketAction';
 import CreateNewDefect from '../../../../../components/Operation/Ticket/Defect/CreateNewDefect/CreateNewDefect';
 
 class DefectCreate extends Component {
@@ -25,7 +18,7 @@ class DefectCreate extends Component {
     defectDetail: PropTypes.object,
     getDeviceTypes: PropTypes.func,
     getDefectTypes: PropTypes.func,
-    loadDeviceList: PropTypes.func,
+    getDevices: PropTypes.func,
   };
   constructor(props) {
     super(props);
@@ -90,12 +83,11 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  getStations: params => dispatch({ type: GET_STATIONS_SAGA, params }),
-  getDeviceTypes: params => dispatch({ type: GET_DEVICETYPES_SAGA, params }),
-  getDevices: params => dispatch({ type: GET_DEVICES_SAGA, params }),
-  getDefectTypes: params => dispatch({ type: GET_DEFECTTYPES_SAGA, params }),
-  onDefectCreateNew: params => dispatch({type: DEFECT_CREATE_SAGA, params}),
-  loadDeviceList: params => dispatch({ type: GET_DEVICES_SAGA, params}),
+  getStations: params => dispatch({ type: CommonAction.GET_STATIONS_SAGA, params }),
+  getDeviceTypes: params => dispatch({ type: CommonAction.GET_DEVICETYPES_SAGA, params }),
+  getDevices: params => dispatch({ type: CommonAction.GET_DEVICES_SAGA, params }),
+  getDefectTypes: params => dispatch({ type: TicketAction.GET_DEFECTTYPES_SAGA, params }),
+  onDefectCreateNew: params => dispatch({type: TicketAction.DEFECT_CREATE_SAGA, params}),
 });
 
 
