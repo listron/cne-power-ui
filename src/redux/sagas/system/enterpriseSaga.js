@@ -12,7 +12,7 @@ import {
   GET_ENTERPRISE_LIST_SAGA,  
   CHANGE_SELECTED_ENTERPRISE_SAGA,
   
-} from '../../../constants/actionTypes/systemManage/enterpriseAction';
+} from '../../../constants/actionTypes/system/enterpriseAction';
 
 //切换页面->列表页，新建/编辑页,详情页
 function *changeEnterpriseAttr(action){
@@ -26,7 +26,7 @@ function *changeEnterpriseAttr(action){
 //请求企业列表数据
 function *getEnterprisList(action){
   const { payload } = action;
-  const url = '/mock/systemManage/enterprisList';
+  const url = '/mock/system/enterprisList';
   try{
     yield put({ type:ENTERPRISE_FETCH });
     const response = yield call(axios.post,url,payload);
@@ -47,7 +47,7 @@ function *getEnterprisList(action){
 //新建+编辑企业信息
 function *changeEnterprise(action){
   const { payload } = action;
-  const url = '/mock/systemManage/changeEnterprise';
+  const url = '/mock/system/changeEnterprise';
   try{
     yield put({ type:ENTERPRISE_FETCH });
     const response = yield call(axios.post,url,payload);

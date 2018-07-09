@@ -4,7 +4,7 @@ import {
   ENTERPRISE_FETCH,
   GET_ENTERPRISE_ATTR_CHANGE_SUCCESS,
   GET_ENTERPRISE_COMMON_FETCH_SUCCESS,
-} from '../../../constants/actionTypes/systemManage/enterpriseAction';
+} from '../../../constants/actionTypes/system/enterpriseAction';
 
 var initState = immutable.fromJS({
   loading: false,

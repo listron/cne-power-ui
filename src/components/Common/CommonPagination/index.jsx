@@ -66,7 +66,7 @@ class CommonPagination extends Component {
         <span>{total}</span>
         <span>每页：</span>
         <Select onChange={this.onPageSizeChange} style={{width:'40px'}} defaultValue={pageSize} >
-          {pageSizeArray.map(e=>(<Option value={e}>{e}</Option>))}
+          {pageSizeArray.map(e=>(<Option value={e} key={e}>{e}</Option>))}
         </Select>
         <span>页数：</span>
         <Pagination simple current={currentPage} total={total} onChange={this.onPageChange} pageSize={pageSize} />

@@ -41,7 +41,7 @@ const menuData = [
   {
     name: '系统管理',
     clickable: false,
-    path: 'systemManage',
+    path: 'system',
     children: [
       {
         name: '企业',

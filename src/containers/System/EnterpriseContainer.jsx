@@ -5,10 +5,10 @@ import {
   GET_ENTERPRISE_ATTR_CHANGE_SAGA,
   GET_ENTERPRISE_LIST_SAGA,
   CHANGE_SELECTED_ENTERPRISE_SAGA,
-} from '../../constants/actionTypes/systemManage/enterpriseAction';
+} from '../../constants/actionTypes/system/enterpriseAction';
 import PropTypes from 'prop-types';
-import EnterpriseMain from '../../components/SystemManage/Enterprise/EnterpriseMain';
-import EnterpriseSide from '../../components/SystemManage/Enterprise/EnterpriseSide';
+import EnterpriseMain from '../../components/System/Enterprise/EnterpriseMain';
+import EnterpriseSide from '../../components/System/Enterprise/EnterpriseSide';
 import { CSSTransition } from 'react-transition-group';
 
 class EnterpriseContainer extends Component {
