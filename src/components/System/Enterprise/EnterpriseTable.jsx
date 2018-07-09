@@ -74,7 +74,10 @@ class EnterpriseTable extends Component {
     return (
       <div>
         <div className={styles.enterpriseList} >
-          <Button className={styles.addEnterprise}><Icon type="plus" />企业</Button>
+          <Button className={styles.addEnterprise}>
+            <Icon type="plus" />
+            <span className={styles.text}>企业</span>
+          </Button>
           <Select onChange={this.enterpriseHandle} style={{width:'100px'}} placeholder={'操作'}>
             <Option value="edit">编辑</Option>
             <Option value="open">启用</Option>

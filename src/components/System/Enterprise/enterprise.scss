@@ -94,13 +94,37 @@ $disableFontColor: #999;
   .enterpriseList{//企业列表
 
     .addEnterprise{
+      padding : 0;
+      border: 1px solid #199475;
       i{
         display: inline-block;
         background:#199475;
         color: #fff;
+        vertical-align: top;
+        width: 28px;
+        line-height: 30px;
+        height: 100%;
+        border-radius: 4px 0 0 4px;
       }
-      span{
+      .text{
+        background:#fff;
+        color:#199475;
         display: inline-block;
+        height: 100%;
+        width: 38px;
+        line-height: 30px;
+        margin: 0px;
+        text-align: center;
+      }
+      &:hover{
+        border: 1px solid #199475;
+        .text{
+          background:#199475;
+          color: #fff;
+        }
+      }
+      &:focus{
+        border: 1px solid #199475;
       }
     }
   }
