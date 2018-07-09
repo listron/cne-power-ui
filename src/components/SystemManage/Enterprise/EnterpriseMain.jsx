@@ -26,6 +26,10 @@ class EnterpriseMain extends Component {
     console.log(e.target.value)
   }
 
+  searchEnterprise = ({enterpriseName,enterprisePhone}) => {
+    console.log(enterpriseName,enterprisePhone)
+  }
+
 
   render(){
     const { enterpriseList, selectedEnterprise,changeEnterpriseAttr } = this.props;
@@ -41,7 +45,7 @@ class EnterpriseMain extends Component {
             <RadioButton value={2}>禁用</RadioButton>
           </RadioGroup>
         </div>
-        <EnterpriseSearch />
+        <EnterpriseSearch searchEnterprise={this.searchEnterprise} />
         <EnterpriseTable enterpriseList={enterpriseList} selectedEnterprise={selectedEnterprise} />
       </div>
     )

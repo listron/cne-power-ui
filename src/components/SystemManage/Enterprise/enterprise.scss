@@ -1,9 +1,12 @@
 
+$darkFontColor: #666;
+$lightFontColor: #999;
+$disableFontColor: #999;
 .enterpriseMain{
   flex: 1 0 auto;
   width: 100%;
   padding: 24px 24px 0;
-  .enterpriseStatus{
+  .enterpriseStatus{//企业状态筛选
     height: 74px;
     line-height: 74px;
     background: #fff;
@@ -11,14 +14,18 @@
     .statusText{
       display: inline-block;
       height: 30px;
+      width: 57px;
+      text-align: justify;
       line-height: 30px;
       margin: 0 12px 0 24px;
+      color: $lightFontColor;
     }
     .radioGroup{
       :global{
         .ant-radio-button-wrapper{
           height: 30px;
           padding: 0 10px;
+          color: $darkFontColor;
         }
         .ant-radio-button-wrapper{
           height: 30px;
@@ -37,6 +44,47 @@
           }
         }
       }
+    }
+  }
+  .enterpriseSearch{//企业搜索
+    background:#f9f9f9;
+    height: 50px;
+    line-height: 50px;
+    display: flex;
+    .searchName,.seachPhone{
+      color: $lightFontColor;
+    }
+    .searchName{
+      margin: 0 12px 0 24px;
+    }
+    .seachPhone{
+      margin-right: 12px;
+    }
+    .searchNameInput,.searchPhoneInput{
+      margin-top: 9px;
+      position: static;
+      width: 160px;
+    }
+    .searchNameInput{
+      margin-right: 40px;
+    }
+    .searchPhoneInput{
+      margin-right: 12px;
+    }
+    .searchButton{
+      width: 68px;
+      margin-top: 9px;
+      margin-right: 12px;
+      color: $lightFontColor;
+      border:1px solid #dfdfdf;
+      &:hover{
+        border:1px solid #199475;
+        color: #199475;
+      }
+    }
+    .clearButton{
+      cursor: pointer;
+      color: $darkFontColor;
     }
   }
 }
