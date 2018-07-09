@@ -2,12 +2,38 @@
 .enterpriseMain{
   flex: 1 0 auto;
   width: 100%;
+  padding: 24px 24px 0;
+  .enterpriseStatus{
+    height: 74px;
+    .statusText{
+      display: inline-block;
+      height: 30px;
+      line-height: 30px;
+      margin: 0 12px 0 24px;
+    }
+    .radioGroup{
+      :global{
+        .ant-radio-button-wrapper{
+          height: 30px;
+          padding: 0 10px;
+        }
+        .ant-radio-button-wrapper{
+          height: 30px;
+        }
+        .ant-radio-button-wrapper-checked{
+          border: 1px solid #d9d9d9;
+          background-color: #199475;
+          color: #fff;
+        }
+      }
+    }
+  }
 }
 .enterpriseSide {
   display: flex;
   flex: 1 0 auto;
   width: 100%;
-
+  padding: 24px 24px 0;
 }
 .enterpriseDetail{
   flex: 1;

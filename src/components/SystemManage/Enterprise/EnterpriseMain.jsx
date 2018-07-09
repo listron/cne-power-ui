@@ -33,9 +33,9 @@ class EnterpriseMain extends Component {
       <div className={styles.enterpriseMain}>
         <Button onClick={()=>changeEnterpriseAttr({showPage:'detail'})}  type={'primary'} >请展示详情</Button>
         <Button onClick={()=>changeEnterpriseAttr({showPage: 'edit'})}  type={'primary'} >请展示新增编辑企业信息的按钮</Button>
-        <div>
-          <span>状态</span>
-          <RadioGroup onChange={this.selectStatus}>
+        <div className={styles.enterpriseStatus}>
+          <span className={styles.statusText}>状态</span>
+          <RadioGroup onChange={this.selectStatus} className={styles.radioGroup}>
             <RadioButton value={0}>全部</RadioButton>
             <RadioButton value={1}>启用</RadioButton>
             <RadioButton value={2}>禁用</RadioButton>
