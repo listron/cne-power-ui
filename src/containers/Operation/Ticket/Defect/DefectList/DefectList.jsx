@@ -12,6 +12,7 @@ import {
   SET_SELECTED_DEFECT_SAGA,
   GET_DEFECT_DETAIL_SAGA
 } from '../../../../../constants/actionTypes/Ticket';
+import { Action } from '../../../../../constants/actionTypes/operation/ticketAction';
 import DefectTable from '../../../../../components/Operation/Ticket/Defect/DefectTable/DefectTable';
 
 class DefectList extends Component {
@@ -203,7 +204,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  getDefectList: params => dispatch({ type: GET_DEFECT_LIST_SAGA, params }),
+  getDefectList: params => dispatch({ type: Action.GET_DEFECT_LIST_SAGA, params }),
   setDefectId: params => dispatch({ type: SET_DEFECT_ID_SAGA, params }),
   onBatchDelete: params => dispatch({ type: DELETE_BATCH_DEFECT_SAGA, params }),
   onBatchSend: params => dispatch({ type: SEND_BATCH_DEFECT_SAGA, params }),

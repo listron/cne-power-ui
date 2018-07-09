@@ -16,6 +16,7 @@ import {
   GET_DEFECT_LANGUAGE_FAIL,
   CLEAR_DEFECT_STATE,
 } from '../../../../constants/actionTypes/Ticket';
+import { Action } from '../../../../constants/actionTypes/operation/ticketAction';
 
 var initState = immutable.fromJS({
   isFetching: false,
@@ -65,7 +66,7 @@ const defectReducer = (state = initState, action) => {
   switch (action.type) {
     case TICKET_FETCH:
       return state.set('isfetching', true);
-    case GET_DEFECT_LIST_SUCCESS:  
+    case Action.GET_DEFECT_LIST_SUCCESS:  
       return state.set('isFetching', false)
                   .set('total', action.data.total)
                   .set('defectList', immutable.fromJS(action.data.defectList))
@@ -88,7 +89,7 @@ const defectReducer = (state = initState, action) => {
     case GET_DEFECT_LANGUAGE_SUCCESS: 
       return state.set('isFetching', false)
                   .set('commonList', immutable.fromJS(action.data));
-    case GET_DEFECT_LIST_FAIL:
+    case Action.GET_DEFECT_LIST_FAIL:
     case GET_DEFECT_DETAIL_FAIL:
     case GET_DEFECT_LANGUAGE_FAIL:
       return state.set('error', immutable.fromJS(action.error));

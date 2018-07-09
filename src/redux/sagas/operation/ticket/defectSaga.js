@@ -47,6 +47,7 @@ import {
   CLEAR_DEFECT_STATE_SAGA,
   CLEAR_DEFECT_STATE
 } from '../../../../constants/actionTypes/Ticket';
+import { Action } from '../../../../constants/actionTypes/operation/ticketAction';
 import { message } from 'antd';
 
 //获取缺陷工单列表
@@ -57,13 +58,13 @@ function* getDefectList(action) {
     const response = yield call(axios.post, url, action.params);
     if(response.data.code === '10000'){
       yield put({ 
-        type: GET_DEFECT_LIST_SUCCESS, 
+        type: Action.GET_DEFECT_LIST_SUCCESS, 
         data: response.data.data, 
         params: action.params 
       });      
     }else{
       yield put({ 
-        type: GET_DEFECT_LIST_FAIL, 
+        type: Action.GET_DEFECT_LIST_FAIL, 
         error: {
           code: response.data.code,
           message: response.data.message

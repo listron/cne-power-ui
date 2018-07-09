@@ -1,4 +1,17 @@
+import keyMirror from 'keymirror';
+
+
+
+module.exports = {
+
+  Action: keyMirror({
+    GET_DEFECT_LIST_SAGA: null,
+    GET_DEFECT_LIST_SUCCESS: null,
+    GET_DEFECT_LIST_FAIL: null,
+  })
+};
 export const TICKET_FETCH = 'TICKET_FETCH';
+
 // 缺陷
 export const GET_DEFECT_LIST_SAGA = 'GET_DEFECT_LIST_SAGA';
 export const GET_DEFECT_LIST_SUCCESS = 'GET_DEFECT_LIST_SUCCESS';
