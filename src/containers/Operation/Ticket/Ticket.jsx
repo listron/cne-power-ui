@@ -4,13 +4,7 @@ import { connect } from 'react-redux';
 import {Tabs} from 'antd';
 import Defect from './Defect/Defect';
 import Inspect from './Inspect/Inspect';
-import { 
-  CHANGE_SHOW_CONTAINER_SAGA,
-  CLEAR_DEFECT_STATE_SAGA,
-  CLEAR_INSPECT_STATE_SAGA,
-  GET_DEFECT_LIST_SAGA,
-  GET_INSPECT_LIST_SAGA,
- } from '../../../constants/actionTypes/Ticket';
+ import { TicketAction } from '../../../constants/actionTypes/operation/ticketAction';
 import styles from './ticket.scss';
 
 const TabPane = Tabs.TabPane;
@@ -81,11 +75,11 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  onChangeShowContainer: params => dispatch({ type: CHANGE_SHOW_CONTAINER_SAGA, params }),
-  clearDefectState: params => dispatch({ type: CLEAR_DEFECT_STATE_SAGA, params }),
-  clearInspectState: params => dispatch({ type: CLEAR_INSPECT_STATE_SAGA, params }),
-  getDefectList: params => dispatch({ type: GET_DEFECT_LIST_SAGA, params }),
-  getInspectList: params => dispatch({ type: GET_INSPECT_LIST_SAGA, params }),
+  onChangeShowContainer: params => dispatch({ type: TicketAction.CHANGE_SHOW_CONTAINER_SAGA, params }),
+  clearDefectState: params => dispatch({ type: TicketAction.CLEAR_DEFECT_STATE_SAGA, params }),
+  clearInspectState: params => dispatch({ type: TicketAction.CLEAR_INSPECT_STATE_SAGA, params }),
+  getDefectList: params => dispatch({ type: TicketAction.GET_DEFECT_LIST_SAGA, params }),
+  getInspectList: params => dispatch({ type: TicketAction.GET_INSPECT_LIST_SAGA, params }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Ticket);
