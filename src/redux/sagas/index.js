@@ -61,6 +61,8 @@ import {
   watchChangeShowContainer
 } from './operation/ticket/ticketSaga';
 
+import { watchEnterpriseSaga } from './system/enterpriseSaga';
+
 import axios from 'axios';
 
 import {
@@ -155,5 +157,8 @@ export default function* rootSaga() {
     watchGetInspectStandard(),
     watchInspectCheckBatch(),
     //ticket
+
+    //system-enterprise
+    watchEnterpriseSaga(),
   ])
 } 

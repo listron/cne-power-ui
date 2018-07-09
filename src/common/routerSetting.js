@@ -7,6 +7,7 @@ import PreLoginContainer from '../containers/PreLogin/PreLoginContainer';
 import Forget from '../containers/Forget';
 import Signup from '../containers/Signup';
 import Power from '../containers/Power';
+import EnterpriseContainer from '../containers/System/EnterpriseContainer';
 
 const routers = [
   {
@@ -39,6 +40,10 @@ const routers = [
     path:'/operation/ticket',
     exact:true,
     component: Ticket,
+  },  {
+    path:'/system/enterprise',
+    exact:true,
+    component: EnterpriseContainer,
   }
 ];
 const RouteWithSubRoutes = route => (
