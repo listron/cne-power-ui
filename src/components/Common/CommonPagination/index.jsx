@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import { Select, Pagination } from 'antd';
 import PropTypes from 'prop-types';
-import styles from './commonPagination.scss';
+import styles from './style.scss';
 
 const { Option } = Select;
 /*

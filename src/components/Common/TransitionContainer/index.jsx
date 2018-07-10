@@ -26,12 +26,12 @@ class TransitionContainer extends Component {
   render() {
     return (
       <CSSTransition
-          in={this.props.show}
-          onEnter={this.props.onEnter}
-          onExited={this.props.onExited}
-          timeout={this.props.timeout}
-          classNames={this.props.effect}
-        >
+        in={this.props.show}
+        onEnter={this.props.onEnter}
+        onExited={this.props.onExited}
+        timeout={this.props.timeout}
+        classNames={this.props.effect}
+      >
         {this.props.children}
       </CSSTransition>
     );
