@@ -10,6 +10,7 @@ import PropTypes from 'prop-types';
 import EnterpriseMain from '../../components/System/Enterprise/EnterpriseMain';
 import EnterpriseSide from '../../components/System/Enterprise/EnterpriseSide';
 import { CSSTransition } from 'react-transition-group';
+import TransitionContainer from '../../components/Common/TransitionContainer';
 
 class EnterpriseContainer extends Component {
   static propTypes = {
@@ -24,10 +25,10 @@ class EnterpriseContainer extends Component {
     currentPage: PropTypes.number, 
     pageSize: PropTypes.number, 
     enterpriseDetail:PropTypes.object, 
-    selectedEnterprise: PropTypes.array,
-    
+    selectedEnterprise: PropTypes.array, 
     getEnterpriseList: PropTypes.func,
     changeSelectedEnterprise: PropTypes.func,
+    changeEnterpriseAttr: PropTypes.func,
   }
   constructor(props) {
     super(props);
@@ -49,21 +50,27 @@ class EnterpriseContainer extends Component {
     this.props.getEnterpriseList(params)
   }
 
+  onShowSide = () => {
+    const showPage = this.props.showPage;
+    this.setState({
+      showDetail: showPage === 'detail'
+    });
+  }
+
   render() {
     const { showPage } = this.props;
     const { showDetail } = this.state;
     return (
       <div className={styles.enterpriseContainer}>
         <EnterpriseMain {...this.props} />
-        <CSSTransition
-          in={showPage!=='list'}
-          onEnter={()=>this.setState({showDetail:showPage==='detail'})}
-          onExited={()=>this.setState({showDetail:showPage==='detail'})}
+        <TransitionContainer
+          show={showPage!=='list'}
+          onEnter={this.onShowSide}
           timeout={500}
-          classNames={'enterpriseSide'}
+          effect="side"
         >
           <EnterpriseSide {...this.props} showDetail={showDetail} />
-        </CSSTransition>
+        </TransitionContainer>
       </div>
     );
   }

@@ -33,10 +33,9 @@ class InputLimit extends Component {
     this.state = {
       current: 0
     }
-    this.checkWord = this.checkWord.bind(this);
   }
 
-  checkWord(e) {
+  checkWord = (e) => {
     const textValue = e.target.value;
     this.setState({
       current: textValue.length,

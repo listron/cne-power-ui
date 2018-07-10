@@ -19,13 +19,10 @@ class DeviceItem extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-    };
-    this.onSelectItem = this.onSelectItem.bind(this);
-    
+    this.state = {};  
   }
 
-  onSelectItem() {
+  onSelectItem = () => {
     this.props.onSelect(this.props.item.get('deviceCode'));
   }
 

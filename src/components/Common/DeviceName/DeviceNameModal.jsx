@@ -33,35 +33,31 @@ class DeviceNameModal extends Component {
       selectedDeviceCode: '',
       selectedDeviceAreaCode: ''
     };
-    this.onSelectItem = this.onSelectItem.bind(this);
-    this.onChangeArea = this.onChangeArea.bind(this);
-    this.onSave = this.onSave.bind(this);
-    this.onCancel = this.onCancel.bind(this);
   }
 
   componentDidMount() {
     this.props.loadDeviceList(this.props.deviceAreaCode);
   }
 
-  onSelectItem(value) {
+  onSelectItem = (value) => {
     this.setState({
       selectedDeviceCode: value
     });
   }
 
-  onChangeArea(value) {
+  onChangeArea = (value) => {
     this.setState({
       selectedDeviceAreaCode: value
     });
     this.props.loadDeviceList(value);
   }
 
-  onSave() {
+  onSave = () => {
     this.props.onSelectDevice(this.state.selectedDeviceCode);
     this.onCancel();
   }
 
-  onCancel() {
+  onCancel = () => {
     this.props.loadDeviceList('');
     this.props.onCancel();
   }
