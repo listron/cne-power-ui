@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import styles from './preLogin.scss';
-import { CHANGE_PRELOGIN_PAGE_SAGA } from '../../constants/actionTypes/preLoginAction';
+import { PreLoginAction } from '../../constants/actionTypes/preLoginAction';
 import PropTypes from 'prop-types';
 import Login from './Login';
 import Register from './Register';
@@ -41,7 +41,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  changePreLoginPage: params => dispatch({ type: CHANGE_PRELOGIN_PAGE_SAGA, params }),
+  changePreLoginPage: params => dispatch({ type: PreLoginAction.CHANGE_PRELOGIN_PAGE_SAGA, params }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PreLoginContainer);

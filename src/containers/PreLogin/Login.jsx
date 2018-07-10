@@ -5,12 +5,7 @@ import PropTypes from 'prop-types';
 import styles from './preLogin.scss';
 import LoginForm from '../../components/PreLogin/LoginForm';
 import RegisterForm from '../../components/PreLogin/RegisterForm';
-import { 
-  GET_COMPINFO_SAGA, 
-  GET_LOGIN_SAGA,
-  SEND_CODE_SAGA,
-  CHECK_CODE_SAGA,
-} from '../../constants/actionTypes/preLoginAction';
+import { PreLoginAction } from '../../constants/actionTypes/preLoginAction';
 const { TabPane } = Tabs;
 
 class LoginContainer extends Component {
@@ -87,10 +82,10 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  fetchCompanyInfo: params => dispatch({type: GET_COMPINFO_SAGA, params}),
-  fetchLogin: params => dispatch({type: GET_LOGIN_SAGA, params}),
-  sendCode: params => dispatch({ type: SEND_CODE_SAGA, params}),
-  checkCodeLogin: params => dispatch({ type: CHECK_CODE_SAGA, params}),
+  fetchCompanyInfo: params => dispatch({type: PreLoginAction.GET_COMPINFO_SAGA, params}),
+  fetchLogin: params => dispatch({type: PreLoginAction.GET_LOGIN_SAGA, params}),
+  sendCode: params => dispatch({ type: PreLoginAction.SEND_CODE_SAGA, params}),
+  checkCodeLogin: params => dispatch({ type: PreLoginAction.CHECK_CODE_SAGA, params}),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginContainer);

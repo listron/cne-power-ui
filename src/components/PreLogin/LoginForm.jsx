@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Form, Icon, Input, Button, message} from 'antd';
+import {Form, Icon, Input, Button} from 'antd';
 import PropTypes from 'prop-types';
 import styles from './loginForm.scss';
 
@@ -47,9 +47,7 @@ class LoginForm extends Component{
   // 点击获取验证码
   sendCode(){
     this.props.form.validateFields(['phone'], (err, values) => {
-      console.log(this.props.error)
       if(!err && this.props.error === ''){
-        console.log(err,values);
         this.props.sendCode({...values, type:'signup'});
       }
     })
@@ -58,7 +56,7 @@ class LoginForm extends Component{
   render(){
     const { getFieldDecorator, getFieldsError } = this.props.form;
     let { showPasswordLogin } = this.state;
-    console.log(this.props.loginSuccess)
+    console.log("this.props.loginSuccess:"+this.props.loginSuccess)
     return (
       <div>
         {this.props.loginSuccess ? "登陆成功！" : 
