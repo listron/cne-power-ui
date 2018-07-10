@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import { Select, Pagination } from 'antd';
 import PropTypes from 'prop-types';
-import styles from './commonPagination.scss';
+import styles from './style.scss';
 
 const { Option } = Select;
 /*
@@ -62,14 +62,17 @@ class CommonPagination extends Component {
     const { currentPage, pageSize } = this.state;
     return (
       <div className={styles.commonPagination}>
-        <span>合计：</span>
-        <span>{total}</span>
-        <span>每页：</span>
-        <Select onChange={this.onPageSizeChange} style={{width:'40px'}} defaultValue={pageSize} >
-          {pageSizeArray.map(e=>(<Option value={e} key={e}>{e}</Option>))}
-        </Select>
-        <span>页数：</span>
-        <Pagination simple current={currentPage} total={total} onChange={this.onPageChange} pageSize={pageSize} />
+        <span>合计：{total}</span>
+        <div className={styles.sizeSelector}>
+          <span>每页：</span>
+          <Select onChange={this.onPageSizeChange} defaultValue={pageSize} >
+            {pageSizeArray.map(e=>(<Option value={e} key={e}>{e}</Option>))}
+          </Select>
+        </div>
+        <div className={styles.pageSelector} >
+          <span>页数：</span>
+          <Pagination simple current={currentPage} total={total} onChange={this.onPageChange} pageSize={pageSize} />
+        </div>
       </div>
     )
   }

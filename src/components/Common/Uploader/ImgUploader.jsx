@@ -56,11 +56,6 @@ class ImgUploader extends Component {
       currentImgIndex:0,
       fileList: [],
     };
-    this.handleUpload = this.handleUpload.bind(this);
-    this.showImg = this.showImg.bind(this);
-    this.hideImg = this.hideImg.bind(this);
-    this.changeCurrentImgIndex = this.changeCurrentImgIndex.bind(this);
-    this.beforeUpload = this.beforeUpload.bind(this);
   }
   onOK = (imgList,editFileList) => {
     const { onChange,onOK } = this.props
@@ -68,7 +63,7 @@ class ImgUploader extends Component {
     onChange && onChange(imgList);
     editFileList && this.setState({fileList:editFileList})
   }
-  beforeUpload(file,fileList){
+  beforeUpload = (file,fileList) => {
     const isIMG = /^image/.test(file.type);
     const { limitSize, max, data} = this.props;
     const isLimitSize = file.size  > limitSize;
@@ -85,7 +80,7 @@ class ImgUploader extends Component {
     return isIMG && !isLimitSize && !isLimitNum;
   }
 
-  handleUpload({file,fileList}) {
+  handleUpload = ({file,fileList}) => {
     const { imgStyle, data } = this.props;
     if (file.status !== 'uploading') {
       const upLoadfiles = fileList.map(e => {
@@ -106,20 +101,20 @@ class ImgUploader extends Component {
     this.setState({fileList})
   }
 
-  showImg(index) {
+  showImg = (index) => {
     this.setState({
       imageListShow: true,
       currentImgIndex:index
     });
   }
 
-  hideImg() {
+  hideImg = () => {
     this.setState({
       imageListShow: false
     });
   }
 
-  changeCurrentImgIndex(index) {
+  changeCurrentImgIndex = (index) => {
     this.setState({
       currentImgIndex:index
     });

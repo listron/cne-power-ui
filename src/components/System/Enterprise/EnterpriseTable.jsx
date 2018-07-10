@@ -10,8 +10,20 @@ const { Option } = Select;
 
 class EnterpriseTable extends Component {
   static propTypes = {
+    loading: PropTypes.bool,
+    totalEnterprise: PropTypes.number,
     enterpriseList: PropTypes.array,
-    selectedEnterprise: PropTypes.array,
+    selectedEnterprise: PropTypes.array,//勾选的数组
+    getEnterpriseList: PropTypes.func,
+    changeEnterpriseAttr: PropTypes.func,
+
+    filterStatus: PropTypes.number, 
+    enterpriseName: PropTypes.string, 
+    enterprisePhone: PropTypes.string,
+    sort: PropTypes.string, 
+    ascend: PropTypes.bool,
+    currentPage: PropTypes.number, 
+    pageSize: PropTypes.number, 
   }
 
   constructor(props){
@@ -20,12 +32,32 @@ class EnterpriseTable extends Component {
     }
   }
 
-  onPaginationChange = ({currentPage,pageSize}) => {
-    console.log(currentPage,pageSize)
+  onPaginationChange = ({currentPage,pageSize}) => {//分页器
+    const {enterpriseName,sort,ascend,enterprisePhone,filterStatus} = this.props;
+    this.props.getEnterpriseList({
+      enterpriseName,
+      enterprisePhone,
+      sort,
+      ascend,
+      currentPage,
+      pageSize,
+      filterStatus
+    });
   }
 
-  tableChange = (params) => {
-    console.log(params);
+  tableChange = (pagination,filter,sorter) => {//排序，筛选
+    const {enterpriseName,enterprisePhone,currentPage,pageSize,filterStatus} = this.props;
+    const sort = sorter.field;
+    const ascend = sorter.order==='ascend';
+    this.props.getEnterpriseList({
+      enterpriseName,
+      enterprisePhone,
+      sort,
+      ascend,
+      currentPage,
+      pageSize,
+      filterStatus
+    });
   }
 
   enterpriseHandle = (value) => {
@@ -33,7 +65,7 @@ class EnterpriseTable extends Component {
   }
 
   render(){
-    const { enterpriseList, selectedEnterprise } = this.props;
+    const { enterpriseList, selectedEnterprise, totalEnterprise, loading } = this.props;
     const rowSelection = {
       selectedRowKeys: selectedEnterprise,
       onChange: (selectedRowKeys, selectedRows) => {
@@ -72,23 +104,35 @@ class EnterpriseTable extends Component {
       }
     ];
     return (
-      <div>
-        <div className={styles.enterpriseList} >
-          <Button className={styles.addEnterprise}><Icon type="plus" />企业</Button>
-          <Select onChange={this.enterpriseHandle} style={{width:'100px'}} placeholder={'操作'}>
-            <Option value="edit">编辑</Option>
-            <Option value="open">启用</Option>
-            <Option value="close">禁用</Option>
-          </Select>
-          <CommonPagination total={54} onPaginationChange={this.onPaginationChange} />
+      <div className={styles.enterpriseList}>
+        <div className={styles.enterpriseListTop} >
+          <div>
+            <Button className={styles.addEnterprise}>
+              <Icon type="plus" />
+              <span className={styles.text}>企业</span>
+            </Button>
+            <div className={styles.handleEnterprise}>
+              <Select onChange={this.enterpriseHandle} placeholder={'操作'} dropdownMatchSelectWidth={false} dropdownClassName={styles.handleDropdown}>
+                <Option value="edit" disabled={true}>编辑</Option>
+                <Option value="open">启用</Option>
+                <Option value="close">禁用</Option>
+              </Select>
+            </div>
+          </div>
+          <CommonPagination total={totalEnterprise} onPaginationChange={this.onPaginationChange} />
         </div>
         <Table 
+          loading={loading}
           rowSelection={rowSelection}
           dataSource={enterpriseList} 
           columns={columns} 
           onChange={this.tableChange}
           pagination={false}
         />
+        <div className={styles.tableFooter}>
+          <span className={styles.info}>当前选中<span className={styles.totalNum}>{totalEnterprise}</span>项</span>
+          <span className={styles.cancel}>取消选中</span>
+        </div>
       </div>
     )
   }

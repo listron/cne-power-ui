@@ -1,0 +1,25 @@
+
+
+//专门针对antd样式的部分重置：(table)
+$tableSelectedBackground: #f4f4f4;
+
+:global{
+  .ant-table{//table行高，高亮，背景色调整；
+    .ant-table-thead > tr > th{
+      background: $tableSelectedBackground; 
+    }
+    .ant-table-tbody{
+      background: #fff;
+      &>tr:hover{
+        td {
+          background: $tableSelectedBackground; 
+        }
+      }
+    }
+    .ant-table-thead > tr > th, .ant-table-tbody > tr > td{
+      padding: 0 16px;
+      height: 40px;
+      line-height: 40px;
+    }
+  }
+}

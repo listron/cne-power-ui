@@ -39,22 +39,17 @@ class InspectTable extends Component {
       selectedRowKeys: [],
       currentSelectedStatus: null,
     }
-    this.onChangeTab = this.onChangeTab.bind(this);
-    this.onChangeTable = this.onChangeTable.bind(this);
-    this.onChangeSort = this.onChangeSort.bind(this);
-    this.onAdd = this.onAdd.bind(this);
-    this.onInspectCheck = this.onInspectCheck.bind(this);
   }
 
-  onAdd(){
+  onAdd = () => {
     this.props.onShowCreate();
   }
 
-  onChangeTab(e){
+  onChangeTab = (e) => {
     this.props.onChangeStatus(e.target.value);
   }
 
-  onChangeTable(pagination, filter, sorter){
+  onChangeTable = (pagination, filter, sorter) => {
     let pageNum = pagination.current - 1;
     let pageSize = pagination.pageSize;
     let params = {
@@ -67,7 +62,7 @@ class InspectTable extends Component {
     this.props.getInspectList(params);
   }
 
-  onChangeSort(pageNum, sorter){
+  onChangeSort = (pageNum, sorter) => {
     var sortField = 0;
     var sortMode = sorter.order === "ascend" ? 0 : 1;
     switch (sorter.columnKey){
@@ -91,7 +86,7 @@ class InspectTable extends Component {
     return sortRule;
   }
 
-  onInspectCheck(){
+  onInspectCheck = () => {
     this.props.inspectCheckBatch({inspectId: this.state.selectedRowKeys.toString()})
   }
   render(){

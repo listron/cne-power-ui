@@ -15,8 +15,6 @@ class InspectCreate extends Component{
   }
   constructor(props){
     super(props);
-
-    this.onCloseInspectCreate = this.onCloseInspectCreate.bind(this);
   }
 
   componentDidMount(){
@@ -27,7 +25,7 @@ class InspectCreate extends Component{
     });
   }
 
-  onCloseInspectCreate(){
+  onCloseInspectCreate = () => {
     this.props.onChangeShowContainer({container: 'list'});
   }
 
