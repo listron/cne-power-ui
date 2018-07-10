@@ -25,6 +25,7 @@ $commonHeight: 28px;
     :global{
       .ant-pagination{
         line-height: inherit;
+        margin-top: -4px;
         .ant-pagination-prev,.ant-pagination-next{
           vertical-align: middle;
           height: $commonHeight;

@@ -71,6 +71,7 @@ class EnterpriseTable extends Component {
         )
       }
     ];
+    const total = 54;
     return (
       <div className={styles.enterpriseList}>
         <div className={styles.enterpriseListTop} >
@@ -87,7 +88,7 @@ class EnterpriseTable extends Component {
               </Select>
             </div>
           </div>
-          <CommonPagination total={54} onPaginationChange={this.onPaginationChange} />
+          <CommonPagination total={total} onPaginationChange={this.onPaginationChange} />
         </div>
         <Table 
           rowSelection={rowSelection}
@@ -96,6 +97,10 @@ class EnterpriseTable extends Component {
           onChange={this.tableChange}
           pagination={false}
         />
+        <div className={styles.tableFooter}>
+          <span className={styles.info}>当前选中<span className={styles.totalNum}>{total}</span>项</span>
+          <span className={styles.cancel}>取消选中</span>
+        </div>
       </div>
     )
   }
