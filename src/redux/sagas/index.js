@@ -19,7 +19,7 @@ import {
 
 import { 
   watchPreLoginPageChangeSaga
-} from './prelogin/preLoginSaga';
+} from './preLogin/preLoginSaga';
 
 import {
   watchLoginSaga,
@@ -66,6 +66,8 @@ import {
 import {
   watchChangeShowContainer
 } from './operation/ticket/ticketSaga';
+
+import { watchEnterpriseSaga } from './system/enterpriseSaga';
 
 import axios from 'axios';
 
@@ -161,5 +163,8 @@ export default function* rootSaga() {
     watchGetInspectStandard(),
     watchInspectCheckBatch(),
     //ticket
+
+    //system-enterprise
+    watchEnterpriseSaga(),
   ])
 } 

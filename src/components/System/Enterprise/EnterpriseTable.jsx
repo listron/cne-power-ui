@@ -1,0 +1,97 @@
+
+
+import React, { Component } from 'react';
+import { Table, Button, Select, Icon } from 'antd';
+import CommonPagination from '../../Common/CommonPagination';
+import PropTypes from 'prop-types';
+import styles from './enterprise.scss';
+
+const { Option } = Select;
+
+class EnterpriseTable extends Component {
+  static propTypes = {
+    enterpriseList: PropTypes.array,
+    selectedEnterprise: PropTypes.array,
+  }
+
+  constructor(props){
+    super(props);
+    this.state = {
+    }
+  }
+
+  onPaginationChange = ({currentPage,pageSize}) => {
+    console.log(currentPage,pageSize)
+  }
+
+  tableChange = (params) => {
+    console.log(params);
+  }
+
+  enterpriseHandle = (value) => {
+    console.log(value);
+  }
+
+  render(){
+    const { enterpriseList, selectedEnterprise } = this.props;
+    const rowSelection = {
+      selectedRowKeys: selectedEnterprise,
+      onChange: (selectedRowKeys, selectedRows) => {
+        console.log(selectedRowKeys, selectedRows)
+      }
+    };
+    const columns = [
+      {
+        title: '企业名称',
+        dataIndex: 'stationName',
+        key: 'stationName',
+        render: (text,record,index) => (<a href={'javascript:void(0);'}>{text}</a>)
+      }, {
+        title: '企业电话',
+        dataIndex: 'stationPhone',
+        key: 'stationPhone',
+        render: (text,record,index) => (<span>{text}</span>)
+      }, {
+        title: '状态',
+        dataIndex: 'status',
+        key: 'status',
+        render: (text,record) => (<span>{text===0?'否':'是'}</span>),
+        sorter: true
+      }, {
+        title: '查看',
+        dataIndex: 'handle',
+        key: 'handle',
+        render: (text,record)=>(
+          <span>
+            <span>部门</span>
+            <span>成员</span>
+            <span>角色</span>
+            <span>电站</span>
+          </span>
+        )
+      }
+    ];
+    return (
+      <div>
+        <div className={styles.enterpriseList} >
+          <Button className={styles.addEnterprise}><Icon type="plus" />企业</Button>
+          <Select onChange={this.enterpriseHandle} style={{width:'100px'}} placeholder={'操作'}>
+            <Option value="edit">编辑</Option>
+            <Option value="open">启用</Option>
+            <Option value="close">禁用</Option>
+          </Select>
+          <CommonPagination total={54} onPaginationChange={this.onPaginationChange} />
+        </div>
+        <Table 
+          rowSelection={rowSelection}
+          dataSource={enterpriseList} 
+          columns={columns} 
+          onChange={this.tableChange}
+          pagination={false}
+        />
+      </div>
+    )
+  }
+}
+
+export default EnterpriseTable;

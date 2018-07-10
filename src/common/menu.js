@@ -39,18 +39,28 @@ const menuData = [
     ],
   },
   {
-    name: '用户管理',
+    name: '系统管理',
     clickable: false,
-    path: 'userManage',
+    path: 'system',
     children: [
       {
-        name: '人员管理',
+        name: '企业',
         clickable: true,
+        iconStyle: 'home',
+        path: 'enterprise',
+      },{
+        name: '部门',
+        iconStyle: 'usergroup-add',
+        clickable: true,
+        path: 'department',
+      },{
+        name: '用户',
         iconStyle: 'user-add',
+        clickable: true,
         path: 'user',
       },{
-        name: '角色管理',
-        iconStyle: 'usergroup-add',
+        name: '角色',
+        iconStyle: 'skin',
         clickable: true,
         path: 'role',
       }

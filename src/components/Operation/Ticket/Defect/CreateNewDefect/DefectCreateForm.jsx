@@ -21,6 +21,7 @@ class TmpForm extends Component {
     defectTypes: PropTypes.array,
     getDeviceTypes: PropTypes.func,
     getDefectTypes: PropTypes.func,
+    getDevices: PropTypes.func,
     onDefectCreateNew: PropTypes.func,
     showContainer: PropTypes.string,
     onChangeShowContainer: PropTypes.func,
@@ -30,7 +31,6 @@ class TmpForm extends Component {
     deviceTypeItems: PropTypes.object,
     deviceAreaItems: PropTypes.object,
     deviceItems: PropTypes.object,
-    loadDeviceList: PropTypes.func,
   };
   constructor(props){
     super(props);
@@ -121,7 +121,7 @@ class TmpForm extends Component {
     if(areaCode !== '') {
       params.partitionCode = areaCode;
     }
-    this.props.loadDeviceList(params);
+    this.props.getDevices(params);
   }
 
   render() {

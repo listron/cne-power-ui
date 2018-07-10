@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import DefectCreateForm from './DefectCreateForm';
-import PropTypes from 'prop-types';
 import styles from './newDefect.scss';
 
 class DefectCreate extends Component {
