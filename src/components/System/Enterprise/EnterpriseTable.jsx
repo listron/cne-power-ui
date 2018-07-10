@@ -74,16 +74,18 @@ class EnterpriseTable extends Component {
     return (
       <div className={styles.enterpriseList}>
         <div className={styles.enterpriseListTop} >
-          <Button className={styles.addEnterprise}>
-            <Icon type="plus" />
-            <span className={styles.text}>企业</span>
-          </Button>
-          <div className={styles.handleEnterprise}>
-            <Select onChange={this.enterpriseHandle} placeholder={'操作'} >
-              <Option value="edit">编辑</Option>
-              <Option value="open">启用</Option>
-              <Option value="close">禁用</Option>
-            </Select>
+          <div>
+            <Button className={styles.addEnterprise}>
+              <Icon type="plus" />
+              <span className={styles.text}>企业</span>
+            </Button>
+            <div className={styles.handleEnterprise}>
+              <Select onChange={this.enterpriseHandle} placeholder={'操作'} dropdownMatchSelectWidth={false} dropdownClassName={styles.handleDropdown}>
+                <Option value="edit" disabled={true}>编辑</Option>
+                <Option value="open">启用</Option>
+                <Option value="close">禁用</Option>
+              </Select>
+            </div>
           </div>
           <CommonPagination total={54} onPaginationChange={this.onPaginationChange} />
         </div>

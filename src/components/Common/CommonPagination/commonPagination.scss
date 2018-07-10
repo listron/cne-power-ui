@@ -1,6 +1,51 @@
 
 
 .commonPagination{
-  display: inline-block;
-  font-size: 14px;
+  margin-right: 24px;
+  display: flex;
+  .sizeSelector{
+    margin-left: 12px; 
+    margin-right: 28px;
+    :global{
+      .ant-select{
+        width: 60px;
+        .ant-select-selection{
+          &:focus,&:hover{
+            border: 1px solid #199475;
+            box-shadow: 0 0 1px #199475;
+          }
+        }
+      }
+    }
+  }
+  .pageSelector{
+    display: flex;
+    :global{
+      .ant-pagination{
+        line-height: inherit;
+        .ant-pagination-prev,.ant-pagination-next{
+          vertical-align: middle;
+          height: 32px;
+          line-height: 32px;
+          .ant-pagination-item-link{ 
+            height: 32px;
+            &::after{
+              height: 32px;
+              line-height: 32px;
+            }
+          }
+        }
+        .ant-pagination-simple-pager{
+          input{
+            vertical-align: middle;
+            height: 32px;
+            &:hover,&:focus{
+              border-color: #199475;
+              box-shadow: 0 0 1px #199475;
+            }
+          }
+        } 
+      }
+    }
+  }
 }
