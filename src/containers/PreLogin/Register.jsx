@@ -2,8 +2,12 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Button,Tabs } from 'antd';
 import styles from './preLogin.scss';
+import { connect } from 'react-redux';
 import LoginForm from '../../components/PreLogin/LoginForm';
 import RegisterForm from '../../components/PreLogin/RegisterForm';
+import {
+  CHECK_CODE_NEXT_SAGA,
+} from '../../constants/actionTypes/preLoginAction';
 const { TabPane } = Tabs;
 
 class RegisterContainer extends Component {
@@ -39,5 +43,10 @@ class RegisterContainer extends Component {
     );
   }
 }
+const mapStateToProps = (state) => ({
 
-export default RegisterContainer;
+})
+const mapDispatchToProps = (dispatch) => ({
+  checkCodeNext: params => dispatch({ type: CHECK_CODE_NEXT_SAGA, params})
+})
+export default connect(mapStateToProps, mapDispatchToProps)(RegisterContainer);

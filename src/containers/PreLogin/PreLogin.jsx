@@ -4,10 +4,10 @@ import { connect } from 'react-redux';
 import styles from './preLogin.scss';
 import { CHANGE_PRELOGIN_PAGE_SAGA } from '../../constants/actionTypes/preLoginAction';
 import PropTypes from 'prop-types';
-import LoginContainer from './LoginContainer';
-import RegisterContainer from './RegisterContainer';
-import JoinInContainer from './JoinInContainer';
-import ForgetContainer from './ForgetContainer';
+import Login from './Login';
+import Register from './Register';
+import JoinIn from './JoinIn';
+import Forget from './Forget';
 
 class PreLoginContainer extends Component {
   static propTypes = {
@@ -26,17 +26,17 @@ class PreLoginContainer extends Component {
           <img width={'200px'} height={'200px'} src={'//www.baidu.com/img/bd_logo1.png?where=super'} />
         </div>
         <div className={styles.preLoginContent}>
-          {pageTab==='login' && <LoginContainer changePreLoginPage={changePreLoginPage} pageTab={pageTab} />}
-          {pageTab==='register' && <RegisterContainer changePreLoginPage={changePreLoginPage} pageTab={pageTab} />}
-          {pageTab==='joinIn' && <JoinInContainer changePreLoginPage={changePreLoginPage} />}
-          {pageTab==='forget' && <ForgetContainer changePreLoginPage={changePreLoginPage} />}
+          {pageTab==='login' && <Login changePreLoginPage={changePreLoginPage} pageTab={pageTab} />}
+          {pageTab==='register' && <Register changePreLoginPage={changePreLoginPage} pageTab={pageTab} />}
+          {pageTab==='joinIn' && <JoinIn changePreLoginPage={changePreLoginPage} />}
+          {pageTab==='forget' && <Forget changePreLoginPage={changePreLoginPage} />}
         </div>
       </div>
     );
   }
 }
 const mapStateToProps = (state) => ({
-  pageTab: state.preLogin.get('pageTab'),
+  pageTab: state.preLogin.preLoginReducer.get('pageTab'),
 
 });
 

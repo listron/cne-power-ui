@@ -78,15 +78,8 @@ class LoginForm extends Component{
             </div>
           }
           <FormItem>
-            <div className={styles.loginChange} >
-              <span onClick={() => this.setState({ showPasswordLogin: !showPasswordLogin })} >
-                {showPasswordLogin ? '手机验证码登录' : '密码登录(手机/用户名)'}
-              </span>
-              <span onClick={() => this.props.changePage({pageTab:'forget'})} >忘记密码</span>
-            </div>
-            <Button type="primary" htmlType="submit" className="login-form-button" >登录</Button>
-            <br />
-            <span>易巡登录</span>
+            
+            <Button type="primary" htmlType="submit" className="login-form-button" >下一步</Button>
           </FormItem>
         </Form>
       </div>

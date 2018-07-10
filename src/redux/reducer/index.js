@@ -5,7 +5,7 @@ import users from './users';
 import posts from './posts';
 import login from './login';
 import operation from './operation/operationReducer';
-import preLogin from './preLogin/preLoginReducer'
+import preLogin from './preLogin/preLoginReducer';
 
 const appReducer = (() => combineReducers({common, users, posts, login, operation, preLogin }))();
 

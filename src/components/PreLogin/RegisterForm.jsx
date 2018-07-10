@@ -21,9 +21,14 @@ class RegisterForm extends Component{
     this.onCreateEnterprise = this.onCreateEnterprise.bind(this);
   }
 
-  onCheckMobile(){
-
-    this.next();
+  onCheckMobile(e){
+    e.preventDefault();
+    this.props.form.validateFields((err, values) => {
+      if(!err){
+        this.next();
+      }
+    })
+    
   }
 
   onCreateEnterprise(){
@@ -164,37 +169,7 @@ class RegisterForm extends Component{
           {steps.map(item => <Step key={item.title} title={item.title} />)}
         </Steps>
         <div className="steps-content">{steps[current].content}</div>
-        {/* <div className="steps-action">
-          {current < steps.length - 1 && <Button type="primary" onClick={() => this.next()}>下一步</Button>}
-          {current === steps.length - 1 && <Button type="primary" onClick={() => message.success('Processing complete!')}>进入企业账号</Button>}
-          {current > 0 && 
-            (<Button style={{ marginLeft: 8 }} onClick={() => this.prev()}>
-              Previous
-            </Button>)
-          }
-        </div> */}
-
-        {/* <Form onSubmit={this.onHandleSubmit}  >
-          <FormItem>
-            {getFieldDecorator('userName', {
-              rules: [{required: true, message: '请输入手机号/用户名'}]
-            })(
-              <Input prefix={<Icon type="user" />} placeholder="请输入手机号/用户名" />
-            )}
-          </FormItem>
-          <FormItem>
-            {getFieldDecorator('password',{
-              rules: [{required: true, message: '请输入密码'}]
-            })(
-              <Input prefix={<Icon type="lock" />} placeholder="请输入密码" />
-            )}
-          </FormItem>
-          <FormItem>
-            <a>手机验证码登录</a>
-            <a>忘记密码</a>
-            <Button type="primary" htmlType="submit" className="login-form-button" >登录</Button>
-          </FormItem>
-        </Form> */}
+        
       </div>
     );
   }
