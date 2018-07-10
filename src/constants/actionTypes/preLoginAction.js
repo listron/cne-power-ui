@@ -17,12 +17,19 @@ module.exports ={
     GET_COMPINFO_SAGA : null,
     GET_COMPINFO_SUCCESS : null,
     GET_COMPINFO_FAIL : null,
-    // 手机验证码登录
+    // 登录用手机验证码
     SEND_CODE_SAGA : null,
     SEND_CODE_SUCCESS : null,
     SEND_CODE_FAIL : null,
     CHECK_CODE_SAGA : null,
     CHECK_CODE_SUCCESS : null,
     CHECK_CODE_FAIL : null,
+    // 注册用手机验证码
+    SIGNUP_SEND_CODE_SAGA : null,
+    SIGNUP_SEND_CODE_SUCCESS : null,
+    SIGNUP_SEND_CODE_FAIL : null,
+    SIGNUP_CHECK_CODE_SAGA : null,
+    SIGNUP_CHECK_CODE_SUCCESS : null,
+    SIGNUP_CHECK_CODE_FAIL : null,
   })
 }

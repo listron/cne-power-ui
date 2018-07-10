@@ -126,7 +126,7 @@ class ImgUploader extends Component {
   }
 
   render() {
-    const authData = getCookie('authData');
+    const authData = getCookie('authData') !== "undefined" ? getCookie('authData') : "";
     const { imageListShow, currentImgIndex, fileList } = this.state;
     const { uploadPath, max,  data, editable, imgStyle } = this.props;
 		const imageProps = {

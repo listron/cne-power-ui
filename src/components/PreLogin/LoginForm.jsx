@@ -56,7 +56,6 @@ class LoginForm extends Component{
   render(){
     const { getFieldDecorator, getFieldsError } = this.props.form;
     let { showPasswordLogin } = this.state;
-    console.log("this.props.loginSuccess:"+this.props.loginSuccess)
     return (
       <div>
         {this.props.loginSuccess ? "登陆成功！" : 

@@ -12,6 +12,8 @@ class RegisterContainer extends Component {
   static propTypes = {
     pageTab: PropTypes.string,
     changePreLoginPage: PropTypes.func,
+    signupSendCode: PropTypes.func,
+    signupCount: PropTypes.number,
   }
   constructor(props) {
     super(props);
@@ -33,7 +35,10 @@ class RegisterContainer extends Component {
               <LoginForm changePage={this.props.changePreLoginPage} />
             </TabPane>
             <TabPane tab="注册企业" key="register">
-              <RegisterForm  />
+              <RegisterForm 
+                signupSendCode={this.props.signupSendCode}
+                signupCount={this.props.signupCount}
+              />
             </TabPane>
           </Tabs>
         </div>
@@ -42,9 +47,10 @@ class RegisterContainer extends Component {
   }
 }
 const mapStateToProps = (state) => ({
-
+  signupCount: state.preLogin.registerReducer.get('signupCount'),
 })
 const mapDispatchToProps = (dispatch) => ({
-  checkCodeNext: params => dispatch({ type: PreLoginAction.CHECK_CODE_NEXT_SAGA, params})
+  signupSendCode: params => dispatch({type: PreLoginAction.SIGNUP_SEND_CODE_SAGA, params}),
+  checkCodeNext: params => dispatch({ type: PreLoginAction.CHECK_CODE_NEXT_SAGA, params}),
 })
 export default connect(mapStateToProps, mapDispatchToProps)(RegisterContainer);

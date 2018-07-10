@@ -10,6 +10,8 @@ const Step = Steps.Step;
 class RegisterForm extends Component{
   static propTypes = {
     form: PropTypes.object,
+    signupSendCode: PropTypes.func,
+    signupCount: PropTypes.number,
   }
 
   constructor(props){
@@ -25,7 +27,9 @@ class RegisterForm extends Component{
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if(!err){
-        this.next();
+        console.log(values);
+        this.props.signupSendCode(values);
+        // this.next();
       }
     })
     
@@ -87,7 +91,11 @@ class RegisterForm extends Component{
                     <Input className={styles.checkCode} prefix={<Icon type="lock" />} placeholder="验证码" />
                   )}
                 </FormItem>
-                <Button type="primary"  >获取验证码</Button>
+                <Button type="primary" 
+                  disabled={(this.props.signupCount !== 0).toString()} 
+                  onClick={this.signupSendCode} >
+                  {this.props.signupCount !== 0 ? `${this.props.signupCount}秒后可重新获取` : "点击获取验证码"}
+                </Button>
               </div>
               <FormItem>
                 <Button type="primary" htmlType="submit" className="login-form-button"  >下一步</Button>
