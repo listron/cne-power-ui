@@ -1,15 +1,28 @@
+import keyMirror from 'keymirror';
 
+module.exports ={
+  PreLoginAction: keyMirror({
+    CHANGE_PRELOGIN_PAGE : null,
+    CHANGE_PRELOGIN_PAGE_SAGA : null,
+    CHANGE_LOGIN_PAGE : null,
 
-
-export const CHANGE_PRELOGIN_PAGE = 'CHANGE_PRELOGIN_PAGE';
-export const CHANGE_PRELOGIN_PAGE_SAGA = 'CHANGE_PRELOGIN_PAGE_SAGA';
-
-
-
-export const CHANGE_LOGIN_PAGE = 'CHANGE_LOGIN_PAGE';
-
-export const LOGIN_FETCH = 'LOGIN_FETCH';
-
-export const GET_LOGIN_SAGA = 'GET_LOGIN_SAGA';
-export const GET_LOGIN_SUCCESS = 'GET_LOGIN_SUCCESS';
-export const GET_LOGIN_FAIL = 'GET_LOGIN_FAIL';
+    LOGIN_FETCH : null,
+    UPDATE_COUNT : null,
+    BEGIN_COUNT : null,
+    STOP_TASK : null,
+    // 密码登录
+    GET_LOGIN_SAGA : null,
+    GET_LOGIN_SUCCESS : null,
+    GET_LOGIN_FAIL : null,
+    GET_COMPINFO_SAGA : null,
+    GET_COMPINFO_SUCCESS : null,
+    GET_COMPINFO_FAIL : null,
+    // 手机验证码登录
+    SEND_CODE_SAGA : null,
+    SEND_CODE_SUCCESS : null,
+    SEND_CODE_FAIL : null,
+    CHECK_CODE_SAGA : null,
+    CHECK_CODE_SUCCESS : null,
+    CHECK_CODE_FAIL : null,
+  })
+}

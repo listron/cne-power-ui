@@ -1,26 +1,21 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import styles from './enterpriseContainer.scss';
-import { 
-  GET_ENTERPRISE_ATTR_CHANGE_SAGA,
-  GET_ENTERPRISE_LIST_SAGA,
-  CHANGE_SELECTED_ENTERPRISE_SAGA,
-} from '../../constants/actionTypes/system/enterpriseAction';
+import { enterpriseAction } from '../../../constants/actionTypes/system/enterpriseAction';
 import PropTypes from 'prop-types';
-import EnterpriseMain from '../../components/System/Enterprise/EnterpriseMain';
-import EnterpriseSide from '../../components/System/Enterprise/EnterpriseSide';
-import { CSSTransition } from 'react-transition-group';
+import EnterpriseMain from '../../../components/System/Enterprise/EnterpriseMain';
+import EnterpriseSide from '../../../components/System/Enterprise/EnterpriseSide';
 import TransitionContainer from '../../components/Common/TransitionContainer';
 
 class EnterpriseContainer extends Component {
   static propTypes = {
-    loading: PropTypes.bool,
     showPage: PropTypes.string,
     filterStatus: PropTypes.number, 
     enterpriseName: PropTypes.string, 
     enterprisePhone: PropTypes.string,
     sort: PropTypes.string, 
     ascend: PropTypes.bool,
+    totalEnterprise: PropTypes.number,
     enterpriseList: PropTypes.array,
     currentPage: PropTypes.number, 
     pageSize: PropTypes.number, 
@@ -83,6 +78,7 @@ const mapStateToProps = (state) => ({
   enterprisePhone: state.enterprise.get('enterprisePhone'),
   sort: state.enterprise.get('sort'),
   ascend: state.enterprise.get('ascend'),
+  totalEnterprise: state.enterprise.get('totalEnterprise'),
   enterpriseList: state.enterprise.get('enterpriseList').toJS(),
   currentPage: state.enterprise.get('currentPage'),
   pageSize: state.enterprise.get('pageSize'),
@@ -91,9 +87,9 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  changeEnterpriseAttr: payload => dispatch({type:GET_ENTERPRISE_ATTR_CHANGE_SAGA, payload}),
-  getEnterpriseList: payload => dispatch({type:GET_ENTERPRISE_LIST_SAGA, payload}),
-  changeSelectedEnterprise: payload => dispatch({type:CHANGE_SELECTED_ENTERPRISE_SAGA, payload}),
+  changeEnterpriseAttr: payload => dispatch({type:enterpriseAction.GET_ENTERPRISE_ATTR_CHANGE_SAGA, payload}),
+  getEnterpriseList: payload => dispatch({type:enterpriseAction.GET_ENTERPRISE_LIST_SAGA, payload}),
+  changeSelectedEnterprise: payload => dispatch({type:enterpriseAction.CHANGE_SELECTED_ENTERPRISE_SAGA, payload}),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(EnterpriseContainer);

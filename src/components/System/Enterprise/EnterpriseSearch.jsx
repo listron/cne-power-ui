@@ -30,6 +30,10 @@ class EnterpriseSearch extends Component {
       enterpriseName:'',
       enterprisePhone:''
     })
+    this.setState({
+      enterpriseName: '',
+      enterprisePhone: ''
+    })
   }
 
   inputEnterpriseName = (e) => {
@@ -45,12 +49,13 @@ class EnterpriseSearch extends Component {
   }
 
   render(){
+    const { enterpriseName, enterprisePhone } = this.state;
     return (
       <div className={styles.enterpriseSearch}>
           <span  className={styles.searchName}>企业名称</span>
-          <Input placeholder="请输入企业名称" className={styles.searchNameInput} onChange={this.inputEnterpriseName} />
+          <Input placeholder="请输入企业名称" className={styles.searchNameInput} onChange={this.inputEnterpriseName} value={enterpriseName} />
           <span className={styles.seachPhone}>企业电话</span>
-          <Input placeholder="请输入企业电话" className={styles.searchPhoneInput} onChange={this.inputEnterprisePhone} />         
+          <Input placeholder="请输入企业电话" className={styles.searchPhoneInput} onChange={this.inputEnterprisePhone} value={enterprisePhone} />         
           <Button className={styles.searchButton} onClick={this.onEnterpriseSearch}>查询</Button>  
           <span className={styles.clearButton}  onClick={this.onEnterpriseReset}>重置</span>         
       </div>

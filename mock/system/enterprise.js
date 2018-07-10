@@ -14,7 +14,7 @@ module.exports = [
           key: i,
           stationCode: i,
           stationName: `第${i}个电站`,
-          stationPhone: '112121kjhk,112121kjhk,112121kjhk',
+          stationPhone: `15501${parseInt(Math.random()*1000000)}`,
           status: i%2,
           web: 'www.baidu.com',
           place: '北京市丰台区芳山镇',
