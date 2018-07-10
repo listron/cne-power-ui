@@ -40,8 +40,8 @@ class Main extends Component {
     this.props.setTopMenu(params);
   }
 
-  componentWillReceiveProps(nextProps) {   
-    if(nextProps.login.fetched && !this.props.login.fetched){
+  componentWillReceiveProps(nextProps) {  
+    if(nextProps.login.get('loginSuccess') && !this.props.login.get('loginSuccess')){
       this.props.history.push('/');
       this.setState({
         logined:true
@@ -97,7 +97,7 @@ class Main extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  login: state.login,
+  login: state.preLogin.loginReducer,
   topMenu: state.common.get('topMenu')? state.common.get('topMenu').toJS() : {},
 });
 
