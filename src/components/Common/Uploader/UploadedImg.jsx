@@ -19,17 +19,14 @@ class UploadedImg extends Component {
 
   constructor(props) {
     super(props);
-    this.showImg = this.showImg.bind(this);
-    this.rotateImg = this.rotateImg.bind(this);
-    this.deleteImg = this.deleteImg.bind(this);
   }
 
-  showImg() {
+  showImg = () => {
     const { index } = this.props;
     this.props.showImg(index);
   }
 
-  rotateImg() {
+  rotateImg = () => {
     const { data, uid, onEdit } = this.props;
     const imgList = data && data.length > 0 && data.map(e=>{
       if(uid === e.uid){ 
@@ -41,7 +38,7 @@ class UploadedImg extends Component {
     onEdit(imgList);
   }
 
-  deleteImg() {
+  deleteImg = () => {
     const { data, uid, onEdit, fileList } = this.props;
     const imgList = data.filter(e=>e.uid !== uid);
     const editFileList = fileList.filter(e=>e.uid !== uid);

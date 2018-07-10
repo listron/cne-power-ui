@@ -26,17 +26,15 @@ class DeviceName extends Component {
     this.state = {
       showDeviceNameModal: false,
     };
-    this.onShowDeviceNameModal = this.onShowDeviceNameModal.bind(this);
-    this.onCloseDeviceNameModal = this.onCloseDeviceNameModal.bind(this);
   }
 
-  onShowDeviceNameModal() {
+  onShowDeviceNameModal = () => {
     this.setState({
       showDeviceNameModal: true
     });
   }
 
-  onCloseDeviceNameModal() {
+  onCloseDeviceNameModal = () => {
     this.setState({
       showDeviceNameModal: false
     })

@@ -17,11 +17,9 @@ class ImgListModal extends Component {
     this.state = {
       imgWidth: 580,
     };
-    this.preImg = this.preImg.bind(this);
-    this.nextImg = this.nextImg.bind(this);
   }
 
-  preImg() {
+  preImg = () => {
     let { currentImgIndex } = this.props;
     if(currentImgIndex <= 0){
       return;
@@ -29,7 +27,7 @@ class ImgListModal extends Component {
     this.props.changeCurrentImgIndex(currentImgIndex-1);
   }
   
-  nextImg() {
+  nextImg = () => {
     let { currentImgIndex,data } = this.props;
     if(!data || currentImgIndex >= data.length - 1){
       return;

@@ -26,19 +26,16 @@ class AbnormalItem extends Component {
   constructor(props) {
     super(props);
     this.state = {
-    };
-    this.onSelectItem = this.onSelectItem.bind(this);
-    this.onDeleteItem = this.onDeleteItem.bind(this);
-    
+    };  
   }
 
-  onSelectItem() {
+  onSelectItem = () => {
     if(!this.props.disabled) {
       this.props.onSelect(this.props.item.get('abnormalId'), !this.props.selected);
     }
   }
 
-  onDeleteItem() {
+  onDeleteItem = () => {
     confirm({
       title: '确认删除异常设备？',
       content: '点击确认，删除此异常设备信息，记录将无法保存',
