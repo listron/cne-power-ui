@@ -101,8 +101,7 @@ class DefectProcessForm extends Component {
                   message: '请输入更换备件'
                 }],
               })( 
-                <Input 
-                  placeholder="备件名称+型号" />
+                <Input placeholder="备件名称+型号" />
               )}
             </div>
           </FormItem>

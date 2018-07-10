@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import styles from './defectCreate.scss';
 import { CommonAction } from '../../../../../constants/actionTypes/commonAction';
 import { TicketAction } from '../../../../../constants/actionTypes/operation/ticketAction';
-import CreateNewDefect from '../../../../../components/Operation/Ticket/Defect/CreateNewDefect/CreateNewDefect';
+import DefectCreateForm from '../../../../../components/Operation/Ticket/Defect/DefectCreateForm/DefectCreateForm';
 
 class DefectCreate extends Component {
   static propTypes = {
@@ -60,7 +60,7 @@ class DefectCreate extends Component {
     return (
       <div className={styles.defectCreate} >
         <h3><span>缺陷创建</span>    <span onClick={this.onChangeShowContainer} className={styles.close}>关闭x</span></h3>
-        <CreateNewDefect {...this.props} editDataGet={editDataGet} />
+        <DefectCreateForm {...this.props} editDataGet={editDataGet} />
       </div>
     );
   }

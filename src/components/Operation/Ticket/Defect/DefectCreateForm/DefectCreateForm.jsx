@@ -4,10 +4,9 @@ import StationSelect from '../../../../Common/StationSelect';
 import ImgUploader from '../../../../Common/Uploader/ImgUploader';
 import FormHanleButtons from './FormHanleButtons';
 import SolveTextArea from './SolveTextArea';
-import ReplaceParts from './ReplaceParts';
-import { Form, Input, Button, Select } from 'antd';
+import { Form, Input, Button, Select, Switch } from 'antd';
 import pathConfig from '../../../../../constants/path';
-import styles from './newDefect.scss';
+import styles from './createDefectForm.scss';
 import DeviceName from '../../../../Common/DeviceName';
 const { TextArea } = Input;
 const FormItem = Form.Item;
@@ -36,6 +35,7 @@ class TmpForm extends Component {
     super(props);
     this.state = {
       defectFinished: false,
+      checked: false,
       deviceAreaCode: '',
     }
     this.onChangeArea = this.onChangeArea.bind(this);
@@ -148,7 +148,7 @@ class TmpForm extends Component {
       thumbUrl: e,  
     }))
     return (
-      <Form>
+      <Form className={styles.defectCreate}>
         <h3>基本信息</h3>
         <FormItem label={'电站名称：'} {...formItemLayout}>
           {getFieldDecorator('stations', {
@@ -261,12 +261,17 @@ class TmpForm extends Component {
           )}
         </FormItem>
         {defectFinished && <FormItem label={'更换部件：'} {...formItemLayout}>
-          {getFieldDecorator('replaceParts', {
-            rules: [{ required: false, message: '填写更换部件信息' }],
-            initialValue: editNewDefect && defectDetail.handleData.replaceParts || '',
-          })(
-            <ReplaceParts />
-          )}
+          <div>
+            <Switch checked={this.state.checked} onChange={this.onChangeReplace} />
+            {this.state.checked && getFieldDecorator('replaceParts', {
+              rules: [{ 
+                required: true, 
+                message: '请输入更换备件'
+              }],
+            })(
+              <Input placeholder={'备件名称+型号'} />
+            )}
+          </div>
         </FormItem>}
         <div>
           <Button onClick={this.onCancelCreat}>取消</Button>
