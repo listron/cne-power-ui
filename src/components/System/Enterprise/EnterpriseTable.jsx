@@ -45,6 +45,17 @@ class EnterpriseTable extends Component {
     });
   }
 
+  onRowSelect = (selectedRowKeys, selectedRows) => {
+    this.props.changeEnterpriseAttr({
+      selectedEnterprise:selectedRows
+    })
+  }
+  cancelRowSelect = () => {
+    this.props.changeEnterpriseAttr({
+      selectedEnterprise:[]
+    })
+  }
+
   tableChange = (pagination,filter,sorter) => {//排序，筛选
     const {enterpriseName,enterprisePhone,currentPage,pageSize,filterStatus} = this.props;
     const sort = sorter.field;
@@ -60,18 +71,42 @@ class EnterpriseTable extends Component {
     });
   }
 
-  enterpriseHandle = (value) => {
+  enterpriseHandle = (value) => {//编辑，禁用，启用
     console.log(value);
+    // const { selectedEnterprise } = this.props;
+    // if(value === 'edit'){
+    //   this.props.editEnterprise({
+    //     key: selectedEnterprise[0].key
+    //   })
+    // }else{
+    //   this.props.handleEnterprise({
+    //     keys:selectedEnterprise.map(e=>e.key),
+    //     handle: value
+    //   })
+    // }
   }
-
-  render(){
-    const { enterpriseList, selectedEnterprise, totalEnterprise, loading } = this.props;
-    const rowSelection = {
-      selectedRowKeys: selectedEnterprise,
-      onChange: (selectedRowKeys, selectedRows) => {
-        console.log(selectedRowKeys, selectedRows)
+  _createHandleOption = () => {//生成操作下拉框
+    const { selectedEnterprise } = this.props;
+    let [editable,openable,closeable] = [true,true,true];  
+    if(selectedEnterprise.length > 0){
+      editable = selectedEnterprise.length === 1;
+      const statusSet = new Set(selectedEnterprise.map(e => e.status));
+      const statusArray = [...statusSet];
+      if(statusArray.length > 1){
+        openable = false;
+        closeable = false;
+      }else if(statusArray.length === 1){
+        openable = statusArray[0]===0;
+        closeable = statusArray[0]===1;
       }
-    };
+    }       
+    return (<Select onChange={this.enterpriseHandle} placeholder={'操作'} dropdownMatchSelectWidth={false} dropdownClassName={styles.handleDropdown}>
+      <Option value="edit" disabled={!editable} >编辑</Option>
+      <Option value="open" disabled={!openable} >启用</Option>
+      <Option value="close" disabled={!closeable} >禁用</Option>
+    </Select>)
+  }
+  _createTableColumn = () => {//生成表头
     const columns = [
       {
         title: '企业名称',
@@ -103,6 +138,11 @@ class EnterpriseTable extends Component {
         )
       }
     ];
+    return columns
+  }
+
+  render(){
+    const { enterpriseList, selectedEnterprise, totalEnterprise, loading } = this.props;
     return (
       <div className={styles.enterpriseList}>
         <div className={styles.enterpriseListTop} >
@@ -112,26 +152,25 @@ class EnterpriseTable extends Component {
               <span className={styles.text}>企业</span>
             </Button>
             <div className={styles.handleEnterprise}>
-              <Select onChange={this.enterpriseHandle} placeholder={'操作'} dropdownMatchSelectWidth={false} dropdownClassName={styles.handleDropdown}>
-                <Option value="edit" disabled={true}>编辑</Option>
-                <Option value="open">启用</Option>
-                <Option value="close">禁用</Option>
-              </Select>
+              {this._createHandleOption()}
             </div>
           </div>
           <CommonPagination total={totalEnterprise} onPaginationChange={this.onPaginationChange} />
         </div>
         <Table 
           loading={loading}
-          rowSelection={rowSelection}
+          rowSelection={{
+            selectedRowKeys: selectedEnterprise.map(e=>e.key),
+            onChange: this.onRowSelect
+          }}
           dataSource={enterpriseList} 
-          columns={columns} 
+          columns={this._createTableColumn()} 
           onChange={this.tableChange}
           pagination={false}
         />
         <div className={styles.tableFooter}>
-          <span className={styles.info}>当前选中<span className={styles.totalNum}>{totalEnterprise}</span>项</span>
-          <span className={styles.cancel}>取消选中</span>
+          <span className={styles.info}>当前选中<span className={styles.totalNum}>{selectedEnterprise.length}</span>项</span>
+          <span className={styles.cancel} onClick={this.cancelRowSelect}>取消选中</span>
         </div>
       </div>
     )
