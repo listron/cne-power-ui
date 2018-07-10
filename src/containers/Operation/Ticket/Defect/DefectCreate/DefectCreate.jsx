@@ -22,7 +22,6 @@ class DefectCreate extends Component {
   };
   constructor(props) {
     super(props);
-    this.onChangeShowContainer = this.onChangeShowContainer.bind(this);
     this.state = {
       editDataGet: false,
     }
@@ -50,7 +49,7 @@ class DefectCreate extends Component {
       })
     }
   }
-  onChangeShowContainer(){
+  onChangeShowContainer = () => {
     this.props.onChangeShowContainer({ container: 'list' })
   }
   

@@ -43,27 +43,17 @@ class DefectTable extends Component {
     this.state = {
       currentSelectedStatus: 5
     };
-    this.onChangeTab = this.onChangeTab.bind(this);
-    this.onAdd = this.onAdd.bind(this);
-    this.onDelete = this. onDelete.bind(this);
-    this.onSend = this.onSend.bind(this);
-    this.onReject = this.onReject.bind(this);
-    this.onClose = this.onClose.bind(this);
-    this.onOk = this.onOk.bind(this);
-    this.onNotOk = this.onNotOk.bind(this);
-    this.onSelectChange = this.onSelectChange.bind(this);
-    this.onChangeTable = this.onChangeTable.bind(this);
   }
 
-  onChangeTab(e) {
+  onChangeTab = (e) => {
     this.props.onChangeStatus(e.target.value);
   }
 
-  onAdd() {
+  onAdd = () => {
     this.props.onAdd();
   }
 
-  onDelete() {
+  onDelete = () => {
     confirm({
       title: '确认删除此缺陷',
       onOk: () => {
@@ -72,7 +62,7 @@ class DefectTable extends Component {
     });
   }
 
-  onSend() {
+  onSend = () => {
     confirm({
       title: '确认下发此缺陷',
       onOk: () => {
@@ -81,7 +71,7 @@ class DefectTable extends Component {
     });
   }
 
-  onReject() {
+  onReject = () => {
     confirm({
       title: '确认驳回此缺陷',
       onOk: () => {
@@ -90,7 +80,7 @@ class DefectTable extends Component {
     });
   }
 
-  onClose() {
+  onClose = () => {
     confirm({
       title: '确认关闭此缺陷',
       onOk: () => {
@@ -99,7 +89,7 @@ class DefectTable extends Component {
     });
   }
 
-  onOk() {
+  onOk = () => {
     confirm({
       title: '确认验收此缺陷为合格',
       onOk: () => {
@@ -108,7 +98,7 @@ class DefectTable extends Component {
     });
   }
 
-  onNotOk() {
+  onNotOk = () => {
     confirm({
       title: '确认验收此缺陷为不合格',
       onOk: () => {
@@ -117,7 +107,7 @@ class DefectTable extends Component {
     });
   }
 
-  onSelectChange(selectedRowKeys, selectedRows) {
+  onSelectChange = (selectedRowKeys, selectedRows) => {
     let status = this.getSelectedRowsStatus(selectedRows);
     this.setState({
       currentSelectedStatus: status
@@ -125,7 +115,7 @@ class DefectTable extends Component {
     this.props.onChangeSelectRows(selectedRowKeys);
   }
 
-  onChangeTable(pagination, filters, sorter) {
+  onChangeTable = (pagination, filters, sorter) => {
     if(Object.keys(sorter).length !== 0) {
       let field = getDefectSortField(sorter.field);
       let order = sorter.order === 'ascend' ? '0' : '1';

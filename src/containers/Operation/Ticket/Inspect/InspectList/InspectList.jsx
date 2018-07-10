@@ -24,12 +24,9 @@ class InspectList extends Component {
   constructor(props,context) {
     super(props);
     this.state = {};
-    this.onChangeStatus = this.onChangeStatus.bind(this);
-    this.onShowDetail = this.onShowDetail.bind(this);
-    this.onShowCreate = this.onShowCreate.bind(this);
   }
 
-  onChangeStatus(status){
+  onChangeStatus = (status) => {
     if(status !== this.props.status){
       let params = {
         stationType: "2",
@@ -41,12 +38,12 @@ class InspectList extends Component {
     }
   }
 
-  onShowDetail(inspectId){
+  onShowDetail = (inspectId) => {
     this.props.setInspectId(inspectId);
     this.props.onChangeShowContainer({container: 'detail'});
   }
 
-  onShowCreate(){
+  onShowCreate = () => {
     this.props.onChangeShowContainer({container: 'create'});
   }  
 

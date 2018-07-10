@@ -38,21 +38,15 @@ class TmpForm extends Component {
       checked: false,
       deviceAreaCode: '',
     }
-    this.onChangeArea = this.onChangeArea.bind(this);
-    this.loadDeviceList = this.loadDeviceList.bind(this);
-    this.onChangeReplace = this.onChangeReplace.bind(this);
-    this.onDefectFinishChange = this.onDefectFinishChange.bind(this);
-    this.onCancelCreate = this.onCancelCreate.bind(this);
-    this.onDefectCreate = this.onDefectCreate.bind(this);
   }
 
-  onChangeArea(value) {
+  onChangeArea = (value) => {
     this.setState({
       deviceAreaCode: value
     });
   }
 
-  onChangeReplace(checked) {
+  onChangeReplace = (checked) => {
     this.setState({
       checked: checked
     });
@@ -65,15 +59,15 @@ class TmpForm extends Component {
     this.props.getDeviceTypes({stationCodes})
     this.props.getDefectTypes({stationType})
   }
-  onCancelCreate() {
+  onCancelCreate = () => {
     this.props.onChangeShowContainer({ container: 'list' })
   }
-  onDefectFinishChange(defectFinished) {
+  onDefectFinishChange = (defectFinished) => {
     this.setState({
       defectFinished
     });
   }
-  onDefectCreate() {
+  onDefectCreate = () => {
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         // 电站类型(0:风电，1光伏，2：全部)
@@ -112,7 +106,7 @@ class TmpForm extends Component {
     });
   }
   
-  getDeviceType(code) {
+  getDeviceType = (code) => {
     let deviceType = ''
     let index = this.props.deviceTypeItems.findIndex((item) => {
       return item.get('deviceTypeCode') === code
@@ -123,7 +117,7 @@ class TmpForm extends Component {
     return deviceType;
   }
 
-  loadDeviceList(areaCode) {
+  loadDeviceList = (areaCode) => {
     let params = {
       stationCode: this.props.form.getFieldValue('stations')[0].stationCode,
       deviceTypeCode: this.props.form.getFieldValue('deviceTypeCode')

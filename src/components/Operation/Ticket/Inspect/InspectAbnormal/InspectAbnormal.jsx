@@ -31,24 +31,21 @@ class InspectAbnormal extends Component {
       showDetailId: null,
       visible: false,
     };
-    this.onShowDetail = this.onShowDetail.bind(this);
-    this.onShowModal = this.onShowModal.bind(this);
-    this.onCloseModal = this.onCloseModal.bind(this);
   }
 
-  onShowDetail(data) {
+  onShowDetail = (data) => {
     this.setState({
       showDetailId: data.get('abnormalId')
     });
   }
 
-  onShowModal(){
+  onShowModal = () =>{
     this.setState({visible: true})
     let stationType = this.props.inspectDetail.get('stationType');
     this.props.getInspectStandard({'stationType': stationType});
   }
 
-  onCloseModal() {
+  onCloseModal = () => {
     this.setState({
       visible: false,
     })

@@ -38,16 +38,9 @@ class inspectAddAbnormal extends Component {
       showAddAbnormal: false,
       deviceAreaCode: '',
     }
-    this.showAdd = this.showAdd.bind(this);
-    this.hideAdd = this.hideAdd.bind(this);
-    this.onHandleSubmit = this.onHandleSubmit.bind(this);
-    this.onFinishInspect = this.onFinishInspect.bind(this);
-    this.loadDeviceList = this.loadDeviceList.bind(this);
-    this.onChangeType = this.onChangeType.bind(this);
-    this.onChangeArea = this.onChangeArea.bind(this);
   }
 
-  onFinishInspect(){
+  onFinishInspect = () => {
     let inspectId = this.props.inspectDetail.get('inspectId');
     var that = this;
     confirm({
@@ -62,7 +55,7 @@ class inspectAddAbnormal extends Component {
     })
   }
 
-  onHandleSubmit(e){
+  onHandleSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if(!err){
@@ -83,7 +76,7 @@ class inspectAddAbnormal extends Component {
     })
   }
 
-  onChangeType(value) {
+  onChangeType = (value) => {
     this.props.form.setFieldsValue({
       deviceCode: ''
     });
@@ -100,7 +93,7 @@ class inspectAddAbnormal extends Component {
     });
   }
 
-  onChangeArea(value) {
+  onChangeArea = (value) => {
     this.setState({
       deviceAreaCode: value
     });
@@ -117,7 +110,7 @@ class inspectAddAbnormal extends Component {
     return deviceType;
   }
 
-  loadDeviceList(areaCode) {
+  loadDeviceList = (areaCode) => {
     let params = {
       stationCode: this.props.inspectDetail.get('stationCode'),
       deviceTypeCode: this.props.form.getFieldValue('deviceTypeCode')
@@ -128,7 +121,7 @@ class inspectAddAbnormal extends Component {
     this.props.loadDeviceList(params);
   }
 
-  showAdd(){
+  showAdd = () => {
     this.setState({
       showAddAbnormal: true,
     })
@@ -138,7 +131,7 @@ class inspectAddAbnormal extends Component {
     this.props.getDefectTypes({stationType: stationType});
   }
 
-  hideAdd(){
+  hideAdd = () => {
     this.setState({
       showAddAbnormal: false,
     })

@@ -25,9 +25,6 @@ class DefectDetail extends Component {
   constructor(props,context) {
     super(props);
     this.state = {};
-    this.onNext = this.onNext.bind(this);
-    this.onPrev = this.onPrev.bind(this);
-    this.onCloseDetail = this.onCloseDetail.bind(this);
   }
 
   componentDidMount() {
@@ -50,7 +47,7 @@ class DefectDetail extends Component {
     }
   }
 
-  onPrev() {
+  onPrev = () => {
     let defectList = this.props.defectList;
     let defectId = this.props.defectId;
     let index = defectList.findIndex(item => {
@@ -65,7 +62,7 @@ class DefectDetail extends Component {
     }
   }
 
-  onNext() {
+  onNext = () => {
     let defectList = this.props.defectList;
     let defectId = this.props.defectId;
     let index = defectList.findIndex(item => {
@@ -80,7 +77,7 @@ class DefectDetail extends Component {
     }
   }
 
-  onCloseDetail() {
+  onCloseDetail = () => {
     this.props.onChangeShowContainer({container: 'list'});
   }
 
