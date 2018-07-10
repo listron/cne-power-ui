@@ -37,7 +37,6 @@ function *getLogin(action){
         password: action.params.password,
       })
     });
-    console.log(response)
     if(response.data){
       setCookie('authData',JSON.stringify(response.data));
       setCookie('phone', action.params.phone);
@@ -57,8 +56,6 @@ function *sendCode(action){
   let url = Config.APIBasePath + Path.APISubPaths.sendCode;
   try{
     const response = yield call(axios.post, url, {phone: action.params});
-    console.log(response);
-    console.log(action);
     if(response.data.success){
       yield put({ type: SEND_CODE_SUCCESS, data:{ phone: action.params.phone }});
       yield put({ type: BEGIN_COUNT, payload: 60});
@@ -73,10 +70,8 @@ function *sendCode(action){
 function *checkCode(action){
   let url = Config.APIBasePath + Path.APISubPaths.checkCode;
   yield put({ type: LOGIN_FETCH})
-  console.log(action)
   try{
     const response = yield call( axios.post, url, action.params);
-    console.log(response)
     if(response.data.success){
       yield put({ type: CHECK_CODE_SUCCESS, data:{ code: action.params.captcha}})
     }else{

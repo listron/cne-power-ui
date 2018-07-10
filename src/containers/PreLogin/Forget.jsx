@@ -11,7 +11,6 @@ class ForgetContainer extends Component {
     super(props);
   }
   changePage = (pageTab) =>{
-    console.log(pageTab)
     this.props.changePreLoginPage({pageTab})
   }
 

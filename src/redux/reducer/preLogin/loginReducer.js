@@ -42,7 +42,6 @@ var initState = immutable.fromJS({
 });
 
 const loginReducer = (state = initState, action) => {
-  console.log(action)
   switch (action.type) {
     case LOGIN_FETCH:
       return state.set('isFetching', true)

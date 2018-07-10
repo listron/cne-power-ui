@@ -50,7 +50,6 @@ class LoginContainer extends Component {
 
   render() {
     const { pageTab } = this.props;
-    console.log("count: "+this.props.count)
     return (
       <div className={styles.login}>
         <div className={styles.loginTop}>
