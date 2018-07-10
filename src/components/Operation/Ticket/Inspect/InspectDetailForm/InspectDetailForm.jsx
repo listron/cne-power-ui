@@ -41,12 +41,9 @@ class InspectDetailForm extends Component {
       abnormalIds: immutable.fromJS([]),
       tipColor: "#999",
     }
-    this.onTransformDefect = this.onTransformDefect.bind(this);
-    this.onInspectCheck = this.onInspectCheck.bind(this);
-    this.onSelectItem = this.onSelectItem.bind(this);
   }
 
-  onTransformDefect(){
+  onTransformDefect = () => {
     let inspectId = this.props.inspectDetail.get('inspectId');
     if(this.state.abnormalIds.size > 0){
       confirm({
@@ -71,7 +68,7 @@ class InspectDetailForm extends Component {
     
   }
 
-  onSelectItem(abnormalId, checked) {
+  onSelectItem = (abnormalId, checked) => {
     let abnormalIds = this.state.abnormalIds;
     if(checked) {
       abnormalIds = abnormalIds.push(abnormalId);
@@ -86,7 +83,7 @@ class InspectDetailForm extends Component {
     });
   }
 
-  onInspectCheck(){
+  onInspectCheck = () => {
     let inspectId = this.props.inspectDetail.get('inspectId');
     var that = this;
     confirm({

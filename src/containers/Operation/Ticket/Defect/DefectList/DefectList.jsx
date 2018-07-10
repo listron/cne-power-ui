@@ -30,17 +30,6 @@ class DefectList extends Component {
   constructor(props,context) {
     super(props);
     this.state = {};
-    this.onChangePage = this.onChangePage.bind(this);
-    this.onChangePageSize = this.onChangePageSize.bind(this);
-    this.onChangeStatus = this.onChangeStatus.bind(this);
-    this.onBatchDelete = this.onBatchDelete.bind(this);
-    this.onBatchSend = this.onBatchSend.bind(this);
-    this.onBatchReject = this.onBatchReject.bind(this);
-    this.onBatchClose = this.onBatchClose.bind(this);
-    this.onBatchCheck = this.onBatchCheck.bind(this);
-    this.onShowDetail = this.onShowDetail.bind(this);
-    this.onSorter = this.onSorter.bind(this);
-    this.onAdd = this.onAdd.bind(this);
   }
 
   componentDidMount() {
@@ -55,7 +44,7 @@ class DefectList extends Component {
     this.props.getDefectList(params);
   }
 
-  onChangePage(page) {
+  onChangePage = (page) => {
     if(page !== this.currentPage) {
       let params = {
         defectSource: '3',
@@ -69,7 +58,7 @@ class DefectList extends Component {
     }
   }
 
-  onChangePageSize(pageSize) {
+  onChangePageSize = (pageSize) => {
     if(pageSize !== this.props.currentPageSize) {
       let params = {
         defectSource: '3',
@@ -83,7 +72,7 @@ class DefectList extends Component {
     } 
   }
 
-  onChangeStatus(status) {
+  onChangeStatus = (status) => {
     if(status !== this.props.status) {
       let params = {
         defectSource: '3',
@@ -97,7 +86,7 @@ class DefectList extends Component {
     }
   }
 
-  onSorter(sort) {
+  onSorter = (sort) => {
     if(sort !== this.props.sort) {
       let params = {
         defectSource: '3',
@@ -111,30 +100,30 @@ class DefectList extends Component {
     }
   }
 
-  onBatchDelete(ids) {
+  onBatchDelete = (ids) => {
     this.props.onBatchDelete({defectId: ids.join(',')});
   }
 
-  onBatchSend(ids) {
+  onBatchSend = (ids) => {
     this.props.onBatchSend({defectId: ids.join(',')});
   }
 
-  onBatchReject(ids) {
+  onBatchReject = (ids) => {
     this.props.onBatchReject({defectId: ids.join(',')});
   }
 
-  onBatchClose(ids) {
+  onBatchClose = (ids) => {
     this.props.onBatchClose({defectId: ids.join(',')});
   }
 
-  onBatchCheck(ids, checkResult) {
+  onBatchCheck = (ids, checkResult) => {
     this.props.onBatchCheck({
       defectId: ids.join(','),
       checkResult
     });
   }
 
-  onShowDetail(defectId,record) {
+  onShowDetail = (defectId,record) => {
     if(record.defectStatus === 0 || record.defectStatus === '0'){
       this.props.getDefectDetail({
         container: 'create',
@@ -146,7 +135,7 @@ class DefectList extends Component {
       this.props.onChangeShowContainer({container: 'detail'});
     }
   }
-  onAdd(){
+  onAdd = () => {
     this.props.onChangeShowContainer({container: 'create'});
   }
 

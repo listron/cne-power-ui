@@ -23,10 +23,9 @@ class Ticket extends Component {
     this.state = {
       tab: "defect",
     };
-    this.onChangeTab = this.onChangeTab.bind(this);
   }
 
-  onChangeTab(tab) {
+  onChangeTab = (tab) => {
     this.setState({
       tab: tab
     });

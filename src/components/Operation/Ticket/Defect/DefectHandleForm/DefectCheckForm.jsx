@@ -19,10 +19,9 @@ class DefectCheckForm extends Component {
 
   constructor(props) {
     super(props);
-    this.onSubmit = this.onSubmit.bind(this);
   }
 
-  onSubmit(e) {
+  onSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {

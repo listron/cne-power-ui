@@ -57,7 +57,7 @@ class InspectDetail extends Component{
     }
   }
 
-  onPrev(){
+  onPrev = () => {
     let inspectList = this.props.inspectList;
     let inspectId = this.props.inspectId;
     let index = inspectList.findIndex(item => {
@@ -72,7 +72,7 @@ class InspectDetail extends Component{
     }
   }
 
-  onNext(){
+  onNext = () => {
     let inspectList = this.props.inspectList;
     let inspectId = this.props.inspectId;
     let index = inspectList.findIndex(item => {
@@ -87,7 +87,7 @@ class InspectDetail extends Component{
     }
   }
 
-  onCloseInspectDetail(){
+  onCloseInspectDetail = () => {
     this.props.onChangeShowContainer({container: 'list'});
   }
   render(){

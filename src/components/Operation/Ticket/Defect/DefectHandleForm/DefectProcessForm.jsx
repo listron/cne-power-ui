@@ -24,11 +24,9 @@ class DefectProcessForm extends Component {
     this.state = {
       replace: false
     };
-    this.onSubmit = this.onSubmit.bind(this);
-    this.onChangeReplace = this.onChangeReplace.bind(this);
   }
 
-  onSubmit(e) {
+  onSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
@@ -37,7 +35,7 @@ class DefectProcessForm extends Component {
     });
   }
 
-  onChangeReplace(checked) {
+  onChangeReplace = (checked) => {
     this.setState({
       replace: checked
     });
@@ -101,8 +99,7 @@ class DefectProcessForm extends Component {
                   message: '请输入更换备件'
                 }],
               })( 
-                <Input 
-                  placeholder="备件名称+型号" />
+                <Input placeholder="备件名称+型号" />
               )}
             </div>
           </FormItem>
