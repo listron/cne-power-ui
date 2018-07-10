@@ -12,7 +12,7 @@ import NotFund from '../Exception/404';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 
-import { GET_TOPMENU_CHANGE_SAGA } from '../../constants/actionTypes/commonAction';
+import { CommonAction } from '../../constants/actionTypes/commonAction';
 
 import TopMenu from '../../components/Layout/TopMenu';
 import SideMenu from '../../components/Layout/SideMenu';
@@ -102,7 +102,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  setTopMenu: params => dispatch({ type: GET_TOPMENU_CHANGE_SAGA, params }),
+  setTopMenu: params => dispatch({ type: CommonAction.GET_TOPMENU_CHANGE_SAGA, params }),
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Main));

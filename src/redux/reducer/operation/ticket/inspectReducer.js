@@ -1,25 +1,5 @@
 import immutable from 'immutable';
-import { 
-  TICKET_FETCH, 
-  GET_INSPECT_LIST_SUCCESS, 
-  GET_INSPECT_LIST_FAIL,
-  SET_INSPECT_ID,
-  GET_INSPECT_DETAIL_SUCCESS,
-  GET_INSPECT_DETAIL_FAIL,
-  ADD_INSPECT_ABNORMAL_SUCCESS,
-  ADD_INSPECT_ABNORMAL_FAIL,
-  CLEAR_INSPECT_STATE,
-  TRANSFORM_DEFECT_SUCCESS,
-  TRANSFORM_DEFECT_FAIL,
-  SET_INSPECT_CHECK_SUCCESS,
-  SET_INSPECT_CHECK_FAIL,
-  FINISH_INSPECT_SUCCESS,
-  FINISH_INSPECT_FAIL,
-  CREATE_INSPECT_SUCCESS,
-  CREATE_INSPECT_FAIL,
-  GET_INSPECT_STANDARD_SUCCESS,
-  GET_INSPECT_STANDARD_FAIL,
-} from '../../../../constants/actionTypes/Ticket';
+import { TicketAction } from '../../../../constants/actionTypes/operation/ticketAction';
 
 
 var initState = immutable.fromJS({
@@ -59,11 +39,11 @@ var initState = immutable.fromJS({
 
 const inspectReducer = (state = initState, action) => {
   switch (action.type) {
-    case TICKET_FETCH:
+    case TicketAction.TICKET_FETCH:
       return state.set('isFetching', true);
-    case CLEAR_INSPECT_STATE:
+    case TicketAction.CLEAR_INSPECT_STATE:
       return initState;
-    case GET_INSPECT_LIST_SUCCESS:
+    case TicketAction.GET_INSPECT_LIST_SUCCESS:
       return state.set('isFetching', false)
                   .set('inspectList', immutable.fromJS(action.data.inspectList))
                   .set('pageNum', action.params.pageNum + 1)
@@ -72,35 +52,23 @@ const inspectReducer = (state = initState, action) => {
                   .set('status', action.params.status)
                   .set('inspectStatusStatistics', immutable.fromJS(action.data.inspectStatusStatistics))
                   .set('sort', action.params.sort);
-    case SET_INSPECT_ID:
+    case TicketAction.SET_INSPECT_ID:
       return state.set('inspectId', action.data);
-    case GET_INSPECT_DETAIL_SUCCESS:
+    case TicketAction.GET_INSPECT_DETAIL_SUCCESS:
       return state.set('isFetching', false)
                   .set('inspectDetail', immutable.fromJS(action.data))
                   .set('inspectId', action.params.inspectId);
-    case ADD_INSPECT_ABNORMAL_SUCCESS:
-      return state.set('isFetching', false)
-    case TRANSFORM_DEFECT_SUCCESS:
-      return state.set('isFetching', false)
-                  .set('abnormalId', action.collection)
-                  .set('inspectId', action.params.inspectId);
-    case SET_INSPECT_CHECK_SUCCESS:
-      return state.set('isFetching', false)
-    case FINISH_INSPECT_SUCCESS:
-      return state.set('isFetching', false)
-    case CREATE_INSPECT_SUCCESS:
-      return state.set('isFetching', false)
-    case GET_INSPECT_STANDARD_SUCCESS:
+    case TicketAction.GET_INSPECT_STANDARD_SUCCESS:
       return state.set('isFetching', false)
                   .set('inspectStandard', immutable.fromJS(action.data.data));
-    case GET_INSPECT_LIST_FAIL:
-    case GET_INSPECT_DETAIL_FAIL:
-    case ADD_INSPECT_ABNORMAL_FAIL:
-    case TRANSFORM_DEFECT_FAIL:
-    case SET_INSPECT_CHECK_FAIL:
-    case FINISH_INSPECT_FAIL:
-    case CREATE_INSPECT_FAIL:
-    case GET_INSPECT_STANDARD_FAIL:
+    case TicketAction.GET_INSPECT_LIST_FAIL:
+    case TicketAction.GET_INSPECT_DETAIL_FAIL:
+    case TicketAction.ADD_INSPECT_ABNORMAL_FAIL:
+    case TicketAction.TRANSFORM_DEFECT_FAIL:
+    case TicketAction.SET_INSPECT_CHECK_FAIL:
+    case TicketAction.FINISH_INSPECT_FAIL:
+    case TicketAction.CREATE_INSPECT_FAIL:
+    case TicketAction.GET_INSPECT_STANDARD_FAIL:
       return state.set('error', immutable.fromJS(action.error));
   }
   return state;

@@ -1,17 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { 
-  GET_DEFECT_LIST_SAGA, 
-  DELETE_BATCH_DEFECT_SAGA,
-  SET_DEFECT_ID_SAGA,
-  SEND_BATCH_DEFECT_SAGA,
-  REJECT_BATCH_DEFECT_SAGA,
-  CLOSE_BATCH_DEFECT_SAGA,
-  CHECK_BATCH_DEFECT_SAGA,
-  SET_SELECTED_DEFECT_SAGA,
-  GET_DEFECT_DETAIL_SAGA
-} from '../../../../../constants/actionTypes/Ticket';
+import { TicketAction } from '../../../../../constants/actionTypes/operation/ticketAction';
 import DefectTable from '../../../../../components/Operation/Ticket/Defect/DefectTable/DefectTable';
 
 class DefectList extends Component {
@@ -160,7 +150,7 @@ class DefectList extends Component {
     this.props.onChangeShowContainer({container: 'create'});
   }
 
-  render() {   
+  render() {
     return (
       <div>
         <DefectTable 
@@ -203,15 +193,15 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  getDefectList: params => dispatch({ type: GET_DEFECT_LIST_SAGA, params }),
-  setDefectId: params => dispatch({ type: SET_DEFECT_ID_SAGA, params }),
-  onBatchDelete: params => dispatch({ type: DELETE_BATCH_DEFECT_SAGA, params }),
-  onBatchSend: params => dispatch({ type: SEND_BATCH_DEFECT_SAGA, params }),
-  onBatchReject: params => dispatch({ type: REJECT_BATCH_DEFECT_SAGA, params }),
-  onBatchClose: params => dispatch({ type: CLOSE_BATCH_DEFECT_SAGA, params }),
-  onBatchCheck: params => dispatch({ type: CHECK_BATCH_DEFECT_SAGA, params }),
-  onChangeSelectRows: params => dispatch({ type: SET_SELECTED_DEFECT_SAGA, params }),
-  getDefectDetail: params => dispatch({ type: GET_DEFECT_DETAIL_SAGA, params }),
+  getDefectList: params => dispatch({ type: TicketAction.GET_DEFECT_LIST_SAGA, params }),
+  setDefectId: params => dispatch({ type: TicketAction.SET_DEFECT_ID_SAGA, params }),
+  onBatchDelete: params => dispatch({ type: TicketAction.DELETE_BATCH_DEFECT_SAGA, params }),
+  onBatchSend: params => dispatch({ type: TicketAction.SEND_BATCH_DEFECT_SAGA, params }),
+  onBatchReject: params => dispatch({ type: TicketAction.REJECT_BATCH_DEFECT_SAGA, params }),
+  onBatchClose: params => dispatch({ type: TicketAction.CLOSE_BATCH_DEFECT_SAGA, params }),
+  onBatchCheck: params => dispatch({ type: TicketAction.CHECK_BATCH_DEFECT_SAGA, params }),
+  onChangeSelectRows: params => dispatch({ type: TicketAction.SET_SELECTED_DEFECT_SAGA, params }),
+  getDefectDetail: params => dispatch({ type: TicketAction.GET_DEFECT_DETAIL_SAGA, params }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DefectList);
