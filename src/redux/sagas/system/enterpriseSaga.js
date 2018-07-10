@@ -24,7 +24,8 @@ function *getEnterprisList(action){
       type:  enterpriseAction.GET_ENTERPRISE_COMMON_FETCH_SUCCESS,
       payload:{
         ...payload,
-        enterpriseList: response.data.data.enterpriseList
+        enterpriseList: response.data.data.enterpriseList,
+        totalEnterprise: response.data.data.total,
       },
     });
   }catch(e){

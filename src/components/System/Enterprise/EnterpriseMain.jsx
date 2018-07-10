@@ -10,7 +10,7 @@ import styles from './enterprise.scss'
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
 
-
+//企业主页面。包含状态筛选组件，企业查询组件，表格组件。
 class EnterpriseMain extends Component {
   static propTypes = {
     enterpriseList: PropTypes.array,
@@ -31,7 +31,7 @@ class EnterpriseMain extends Component {
     super(props);
   }
 
-  selectStatus = (e) => {
+  selectStatus = (e) => {//状态筛选
     const filterStatus = e.target.value;
     const {enterpriseName,enterprisePhone,sort,ascend,currentPage,pageSize} = this.props;
     this.props.changeEnterpriseAttr({filterStatus});
@@ -40,13 +40,13 @@ class EnterpriseMain extends Component {
       enterprisePhone,
       sort,
       ascend,
-      currentPage,pageSize,
+      currentPage,
+      pageSize,
       filterStatus
     });
   }
 
-  searchEnterprise = ({enterpriseName,enterprisePhone}) => {
-    console.log(enterpriseName,enterprisePhone)
+  searchEnterprise = ({enterpriseName,enterprisePhone}) => {//名称+电话 搜索企业
     const {filterStatus,sort,ascend,currentPage,pageSize} = this.props;
     this.props.getEnterpriseList({
       filterStatus,
@@ -61,7 +61,7 @@ class EnterpriseMain extends Component {
 
 
   render(){
-    const { enterpriseList, selectedEnterprise,changeEnterpriseAttr, filterStatus, getEnterpriseList } = this.props;
+    const { changeEnterpriseAttr, filterStatus } = this.props;
     return (
       <div className={styles.enterpriseMain}>
         <Button onClick={()=>changeEnterpriseAttr({showPage:'detail'})}  type={'primary'} >请展示详情</Button>
@@ -75,7 +75,7 @@ class EnterpriseMain extends Component {
           </RadioGroup>
         </div>
         <EnterpriseSearch searchEnterprise={this.searchEnterprise} />
-        <EnterpriseTable enterpriseList={enterpriseList} selectedEnterprise={selectedEnterprise} getEnterpriseList={getEnterpriseList} />
+        <EnterpriseTable {...this.props} />
       </div>
     )
   }

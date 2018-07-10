@@ -11,6 +11,7 @@ var initState = immutable.fromJS({
   sort: '', //排序字段
   ascend: true,//排序方式
   enterpriseList: [],//企业列表数据
+  totalEnterprise: 0,//企业总数
   currentPage: 1,//当前页
   pageSize: 10,//每页容纳条数
   enterpriseDetail:{},//选中企业详细信息
