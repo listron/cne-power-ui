@@ -1,5 +1,54 @@
 
+$commonHeight: 28px;
 
 .commonPagination{
-  font-size: 12px;
+  margin-right: 24px;
+  display: flex;
+  .sizeSelector{
+    margin-left: 12px; 
+    margin-right: 28px;
+    :global{
+      .ant-select{
+        width: 60px;
+        .ant-select-selection{
+          height: $commonHeight;
+          &:focus,&:hover{
+            border: 1px solid #199475;
+            box-shadow: 0 0 1px #199475;
+          }
+        }
+      }
+    }
+  }
+  .pageSelector{
+    display: flex;
+    :global{
+      .ant-pagination{
+        line-height: inherit;
+        margin-top: -4px;
+        .ant-pagination-prev,.ant-pagination-next{
+          vertical-align: middle;
+          height: $commonHeight;
+          line-height: $commonHeight;
+          .ant-pagination-item-link{ 
+            height: $commonHeight;
+            &::after{
+              height: $commonHeight;
+              line-height: $commonHeight;
+            }
+          }
+        }
+        .ant-pagination-simple-pager{
+          input{
+            vertical-align: middle;
+            height: $commonHeight;
+            &:hover,&:focus{
+              border-color: #199475;
+              box-shadow: 0 0 1px #199475;
+            }
+          }
+        } 
+      }
+    }
+  }
 }
