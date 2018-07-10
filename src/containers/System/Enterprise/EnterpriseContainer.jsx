@@ -5,7 +5,7 @@ import { enterpriseAction } from '../../../constants/actionTypes/system/enterpri
 import PropTypes from 'prop-types';
 import EnterpriseMain from '../../../components/System/Enterprise/EnterpriseMain';
 import EnterpriseSide from '../../../components/System/Enterprise/EnterpriseSide';
-import TransitionContainer from '../../components/Common/TransitionContainer';
+import TransitionContainer from '../../../components/Common/TransitionContainer';
 
 class EnterpriseContainer extends Component {
   static propTypes = {
