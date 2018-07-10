@@ -9,7 +9,6 @@ import { CSSTransition } from 'react-transition-group';
 
 class EnterpriseContainer extends Component {
   static propTypes = {
-    loading: PropTypes.bool,
     showPage: PropTypes.string,
     filterStatus: PropTypes.number, 
     enterpriseName: PropTypes.string, 
