@@ -28,10 +28,9 @@ class DefectDetailForm extends Component {
     super(props);
     this.state = {
     };
-    this.onSubmit = this.onSubmit.bind(this);
   }
 
-  onSubmit(data) {
+  onSubmit = (data) => {
     let params = {};
     const defectId = this.props.detail.get('defectId');
     switch(data.dealResult) {

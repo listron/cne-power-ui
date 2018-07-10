@@ -4,10 +4,9 @@ import StationSelect from '../../../../Common/StationSelect';
 import ImgUploader from '../../../../Common/Uploader/ImgUploader';
 import FormHanleButtons from './FormHanleButtons';
 import SolveTextArea from './SolveTextArea';
-import ReplaceParts from './ReplaceParts';
-import { Form, Input, Button, Select } from 'antd';
+import { Form, Input, Button, Select, Switch } from 'antd';
 import pathConfig from '../../../../../constants/path';
-import styles from './newDefect.scss';
+import styles from './createDefectForm.scss';
 import DeviceName from '../../../../Common/DeviceName';
 const { TextArea } = Input;
 const FormItem = Form.Item;
@@ -36,15 +35,20 @@ class TmpForm extends Component {
     super(props);
     this.state = {
       defectFinished: false,
+      checked: false,
       deviceAreaCode: '',
     }
-    this.onChangeArea = this.onChangeArea.bind(this);
-    this.loadDeviceList = this.loadDeviceList.bind(this);
   }
 
-  onChangeArea(value) {
+  onChangeArea = (value) => {
     this.setState({
       deviceAreaCode: value
+    });
+  }
+
+  onChangeReplace = (checked) => {
+    this.setState({
+      checked: checked
     });
   }
 
@@ -55,15 +59,15 @@ class TmpForm extends Component {
     this.props.getDeviceTypes({stationCodes})
     this.props.getDefectTypes({stationType})
   }
-  onCancelCreat = () => {
+  onCancelCreate = () => {
     this.props.onChangeShowContainer({ container: 'list' })
   }
   onDefectFinishChange = (defectFinished) => {
     this.setState({
       defectFinished
-    })
+    });
   }
-  onDefectCreat = () => {
+  onDefectCreate = () => {
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         // 电站类型(0:风电，1光伏，2：全部)
@@ -102,7 +106,7 @@ class TmpForm extends Component {
     });
   }
   
-  getDeviceType(code) {
+  getDeviceType = (code) => {
     let deviceType = ''
     let index = this.props.deviceTypeItems.findIndex((item) => {
       return item.get('deviceTypeCode') === code
@@ -113,7 +117,7 @@ class TmpForm extends Component {
     return deviceType;
   }
 
-  loadDeviceList(areaCode) {
+  loadDeviceList = (areaCode) => {
     let params = {
       stationCode: this.props.form.getFieldValue('stations')[0].stationCode,
       deviceTypeCode: this.props.form.getFieldValue('deviceTypeCode')
@@ -148,7 +152,7 @@ class TmpForm extends Component {
       thumbUrl: e,  
     }))
     return (
-      <Form>
+      <Form className={styles.defectCreate}>
         <h3>基本信息</h3>
         <FormItem label={'电站名称：'} {...formItemLayout}>
           {getFieldDecorator('stations', {
@@ -261,16 +265,21 @@ class TmpForm extends Component {
           )}
         </FormItem>
         {defectFinished && <FormItem label={'更换部件：'} {...formItemLayout}>
-          {getFieldDecorator('replaceParts', {
-            rules: [{ required: false, message: '填写更换部件信息' }],
-            initialValue: editNewDefect && defectDetail.handleData.replaceParts || '',
-          })(
-            <ReplaceParts />
-          )}
+          <div>
+            <Switch checked={this.state.checked} onChange={this.onChangeReplace} />
+            {this.state.checked && getFieldDecorator('replaceParts', {
+              rules: [{ 
+                required: true, 
+                message: '请输入更换备件'
+              }],
+            })(
+              <Input placeholder={'备件名称+型号'} />
+            )}
+          </div>
         </FormItem>}
         <div>
-          <Button onClick={this.onCancelCreat}>取消</Button>
-          <Button onClick={this.onDefectCreat}>提交</Button>
+          <Button onClick={this.onCancelCreate}>取消</Button>
+          <Button onClick={this.onDefectCreate}>提交</Button>
         </div>
       </Form>
     );

@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import styles from './inspectCreateForm.scss';
 import moment from 'moment';
 import StationSelect from '../../../../Common/StationSelect';
-import locale from 'antd/lib/date-picker/locale/zh_CN';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -29,10 +28,9 @@ class InspectCreateForm extends Component{
     this.state={
       startValue: null,
     }
-    this.onHandleSubmit = this.onHandleSubmit.bind(this);
   }
 
-  onHandleSubmit(e){
+  onHandleSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if(!err){
