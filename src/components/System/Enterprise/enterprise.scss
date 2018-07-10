@@ -2,6 +2,7 @@
 $darkFontColor: #666;
 $lightFontColor: #999;
 $disableFontColor: #999;
+$tableSelectedBackground: #f4f4f4;
 .enterpriseMain{
   flex: 1 0 auto;
   width: 100%;
@@ -10,7 +11,6 @@ $disableFontColor: #999;
     height: 74px;
     line-height: 74px;
     background: #fff;
-    margin-bottom: 24px;
     .statusText{
       display: inline-block;
       height: 30px;
@@ -93,6 +93,7 @@ $disableFontColor: #999;
   }
   .enterpriseList{//企业列表
     .enterpriseListTop{
+      background: #fff;
       display: flex;
       line-height: 72px;
       justify-content: space-between;
@@ -155,6 +156,26 @@ $disableFontColor: #999;
               }
             }
           }
+        }
+      }
+    }
+    :global{
+      .ant-table{
+        .ant-table-thead > tr > th{
+          background: $tableSelectedBackground; 
+        }
+        .ant-table-tbody{
+          background: #fff;
+          &>tr:hover{
+            td {
+              background: $tableSelectedBackground; 
+            }
+          }
+        }
+        .ant-table-thead > tr > th, .ant-table-tbody > tr > td{
+          padding: 0 16px;
+          height: 40px;
+          line-height: 40px;
         }
       }
     }
