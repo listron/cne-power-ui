@@ -1,0 +1,27 @@
+
+
+/*
+本文件是针对3.0系统设定的全局主题颜色：普通字体，主题，颜色从此处引入，请谨慎修改；
+1. $darkColor: #666; 深色字体，正常页面文字展示效果；
+2. $lightColor: #999; 浅色字体，文字浅色展示效果；
+3. $promptColor: #dfdfdf; 禁用/浅色提示文字/input placehodler颜色，
+4. $themeColor: #199475;   主题颜色！所有主题，hover,select常用颜色
+*/
+
+
+$darkColor: #666;
+$lightColor: #999;
+$promptColor: #dfdfdf;
+$themeColor: #199475;
+
+//常复用代码块：
+@mixin lineheight($height){//创建高度==行高元素
+  height: $height;
+  line-height: $height;
+}
+@mixin highLingt($color){//创建高亮色配置
+  &:hover,&:focus,&::selection{
+    border:1px solid $color;
+    box-shadow: 0 0 2px $color;
+  }
+}

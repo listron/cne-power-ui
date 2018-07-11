@@ -1,14 +1,21 @@
+/*请不要删除，展示企业列表时相关样式，后期开发恢复企业列表展示时可能会用。
 .enterpriseSide {
   display: flex;
   flex: 1 0 auto;
   width: 100%;
   padding: 24px 24px 0;
 }
+*/
+@import '../../../theme/theme.scss';
+
 .enterpriseDetail{
   flex: 1;
-  background-color: lightblue;
+  background-color: #fff;
+  .topHandler{
+    @include lineheight(64px);
+  }
 }
 .enterpriseEdit{
   flex:1;
-  background-color: lightblue;
+  background-color: #fff;
 }

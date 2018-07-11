@@ -25,10 +25,10 @@ class EnterpriseDetail extends Component {
     console.log(this.props.enterpriseDetail)
     return (
       <div className={styles.enterpriseDetail}>
-        <div>
+        <div className={styles.topHandler}>
           <Button onClick={()=>changeEnterpriseAttr({showPage:'edit'})}>编辑</Button>
         </div>
-        <div>
+        <div className={styles.topHandler}>
           <span>stationName : 北京慈寿寺世纪光伏</span>
         </div>
         <div>
