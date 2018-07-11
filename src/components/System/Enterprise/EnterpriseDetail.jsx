@@ -22,7 +22,6 @@ class EnterpriseDetail extends Component {
 
   render(){
     const { changeEnterpriseAttr, enterpriseDetail } = this.props;
-    console.log(this.props.enterpriseDetail)
     return (
       <div className={styles.enterpriseDetail}>
         <div className={styles.topHandler}>

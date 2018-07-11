@@ -1,11 +1,12 @@
 
 
 import React, { Component } from 'react';
-import { Button } from 'antd';
+import { Button, Upload, Icon } from 'antd';
 import PropTypes from 'prop-types';
 import styles from './enterprise.scss';
-import EditEnterprise from './EditEnterprise';
-
+import EditForm from './EditForm';
+import SingleImgUploader from '../../Common/Uploader/SingleImgUploader';
+import pathConfig from '../../../constants/path';
 
 class EnterpriseEdit extends Component {
   static propTypes = {
@@ -18,19 +19,25 @@ class EnterpriseEdit extends Component {
 
   render(){
     const { changeEnterpriseAttr } = this.props;
+    const uploadPath=`${pathConfig.basePaths.newAPIBasePath}${pathConfig.commonPaths.imgUploads}`;
+    const data =  {
+      uid: -1,    //必填
+      name: 'xxx.png', 
+      status: 'done',  
+      thumbUrl: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',  //必填
+    };
     return (
       <div className={styles.enterpriseEdit} >
-          <div>
-            <span>新建</span>
-            <Button type="primary" onClick={()=>changeEnterpriseAttr({showPage:'list'})}>返回主页面！！！！！</Button>
+          <div className={styles.topHandler}>
+            <span className={styles.text}>编辑</span>
           </div>
-          <div>
-            <div>图片上传组件</div>
-            <EditEnterprise />
+          <div className={styles.editPart} >
+            <SingleImgUploader uploadPath={uploadPath} data={data} />
+            <EditForm />
           </div>
           这个是新增啊编辑啊的页面，是吧！！
           
-          <Button type="primary" onClick={()=>changeEnterpriseAttr({showPage:'detail'})}>拒绝返回，我要去看详情@</Button>
+          <Button type="primary" onClick={()=>changeEnterpriseAttr({showPage:'detail'})}>保存</Button>
       </div>
     )
   }
