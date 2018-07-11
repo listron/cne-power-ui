@@ -5,13 +5,13 @@ import { enterpriseAction } from '../../../constants/actionTypes/system/enterpri
 var initState = immutable.fromJS({
   loading: false,
   showPage: 'list',//默认展示列表页,可展示新建/编辑edit,查看detail页,
-  filterStatus: 0, //筛选条件全部0，启用1，禁用2
+  filterStatus: 2, //筛选条件全部2，启用0，禁用1
   enterpriseName:'', //筛选条件，企业名称
   enterprisePhone: '',//筛选条件，企业电话
   sort: '', //排序字段
   ascend: true,//排序方式
-  enterpriseList: [],//企业列表数据
-  totalEnterprise: 0,//企业总数
+  enterpriseData: [],//企业列表数据
+  totalNum: 0,//企业总数
   currentPage: 1,//当前页
   pageSize: 10,//每页容纳条数
   enterpriseDetail:{},//选中企业详细信息

@@ -15,8 +15,6 @@ class EnterpriseContainer extends Component {
     enterprisePhone: PropTypes.string,
     sort: PropTypes.string, 
     ascend: PropTypes.bool,
-    totalEnterprise: PropTypes.number,
-    enterpriseList: PropTypes.array,
     currentPage: PropTypes.number, 
     pageSize: PropTypes.number, 
     enterpriseDetail:PropTypes.object, 
@@ -37,7 +35,6 @@ class EnterpriseContainer extends Component {
       enterprisePhone: this.props.enterprisePhone,
       sort: this.props.sort, 
       ascend: this.props.ascend,
-      enterpriseList: this.props.enterpriseList,
       currentPage: this.props.currentPage, 
       pageSize: this.props.pageSize, 
     }
@@ -47,6 +44,8 @@ class EnterpriseContainer extends Component {
   render() {
     const { showPage } = this.props;
     const { showDetail } = this.state;
+    console.log(this.props)
+    console.log(showDetail)
     return (
       <div className={styles.enterpriseContainer}>
         <EnterpriseMain {...this.props} />
@@ -71,8 +70,8 @@ const mapStateToProps = (state) => ({
   enterprisePhone: state.enterprise.get('enterprisePhone'),
   sort: state.enterprise.get('sort'),
   ascend: state.enterprise.get('ascend'),
-  totalEnterprise: state.enterprise.get('totalEnterprise'),
-  enterpriseList: state.enterprise.get('enterpriseList').toJS(),
+  totalNum: state.enterprise.get('totalNum'),
+  enterpriseData: state.enterprise.get('enterpriseData').toJS(),
   currentPage: state.enterprise.get('currentPage'),
   pageSize: state.enterprise.get('pageSize'),
   enterpriseDetail: state.enterprise.get('enterpriseDetail').toJS(),
@@ -82,6 +81,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   changeEnterpriseAttr: payload => dispatch({type:enterpriseAction.GET_ENTERPRISE_ATTR_CHANGE_SAGA, payload}),
   getEnterpriseList: payload => dispatch({type:enterpriseAction.GET_ENTERPRISE_LIST_SAGA, payload}),
+  getEnterpriseDetail: payload => dispatch({type:enterpriseAction.GET_ENTERPRISE_DETAIL_SAGA, payload}),
   changeSelectedEnterprise: payload => dispatch({type:enterpriseAction.CHANGE_SELECTED_ENTERPRISE_SAGA, payload}),
 });
 

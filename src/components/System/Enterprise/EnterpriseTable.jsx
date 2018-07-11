@@ -11,10 +11,11 @@ const { Option } = Select;
 class EnterpriseTable extends Component {
   static propTypes = {
     loading: PropTypes.bool,
-    totalEnterprise: PropTypes.number,
-    enterpriseList: PropTypes.array,
+    totalNum: PropTypes.number,
+    enterpriseData: PropTypes.array,
     selectedEnterprise: PropTypes.array,//勾选的数组
     getEnterpriseList: PropTypes.func,
+    getEnterpriseDetail: PropTypes.func,
     changeEnterpriseAttr: PropTypes.func,
 
     filterStatus: PropTypes.number, 
@@ -70,7 +71,16 @@ class EnterpriseTable extends Component {
       filterStatus
     });
   }
-
+  showEnterpriseDetail = (record) => {
+    console.log(record);
+    const { enterpriseId } = record;
+    this.props.changeEnterpriseAttr({
+      showPage: 'detail',
+    })
+    this.props.getEnterpriseDetail({
+      enterpriseId
+    })
+  }
   enterpriseHandle = (value) => {//编辑，禁用，启用
     console.log(value);
     // const { selectedEnterprise } = this.props;
@@ -90,7 +100,7 @@ class EnterpriseTable extends Component {
     let [editable,openable,closeable] = [true,true,true];  
     if(selectedEnterprise.length > 0){
       editable = selectedEnterprise.length === 1;
-      const statusSet = new Set(selectedEnterprise.map(e => e.status));
+      const statusSet = new Set(selectedEnterprise.map(e => e.enterpriseStatus));
       const statusArray = [...statusSet];
       if(statusArray.length > 1){
         openable = false;
@@ -110,18 +120,18 @@ class EnterpriseTable extends Component {
     const columns = [
       {
         title: '企业名称',
-        dataIndex: 'stationName',
-        key: 'stationName',
-        render: (text,record,index) => (<a href={'javascript:void(0);'}>{text}</a>)
+        dataIndex: 'enterpriseName',
+        key: 'enterpriseName',
+        render: (text,record,index) => (<a href={'javascript:void(0);'} onClick={()=>this.showEnterpriseDetail(record)} >{text}</a>)
       }, {
         title: '企业电话',
-        dataIndex: 'stationPhone',
-        key: 'stationPhone',
+        dataIndex: 'enterpriseNum',
+        key: 'enterpriseNum',
         render: (text,record,index) => (<span>{text}</span>)
       }, {
         title: '状态',
-        dataIndex: 'status',
-        key: 'status',
+        dataIndex: 'enterpriseStatus',
+        key: 'enterpriseStatus',
         render: (text,record) => (<span>{text===0?'否':'是'}</span>),
         sorter: true
       }, {
@@ -142,7 +152,7 @@ class EnterpriseTable extends Component {
   }
 
   render(){
-    const { enterpriseList, selectedEnterprise, totalEnterprise, loading } = this.props;
+    const { enterpriseData, selectedEnterprise, totalNum, loading } = this.props;
     return (
       <div className={styles.enterpriseList}>
         <div className={styles.enterpriseListTop} >
@@ -155,7 +165,7 @@ class EnterpriseTable extends Component {
               {this._createHandleOption()}
             </div>
           </div>
-          <CommonPagination total={totalEnterprise} onPaginationChange={this.onPaginationChange} />
+          <CommonPagination total={totalNum} onPaginationChange={this.onPaginationChange} />
         </div>
         <Table 
           loading={loading}
@@ -163,7 +173,7 @@ class EnterpriseTable extends Component {
             selectedRowKeys: selectedEnterprise.map(e=>e.key),
             onChange: this.onRowSelect
           }}
-          dataSource={enterpriseList} 
+          dataSource={enterpriseData.map((e,i)=>({...e,key:i}))} 
           columns={this._createTableColumn()} 
           onChange={this.tableChange}
           pagination={false}
