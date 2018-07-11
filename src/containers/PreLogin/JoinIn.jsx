@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Button } from 'antd';
 
-class ForgetContainer extends Component {
+class JoinInContainer extends Component {
   static propTypes = {
     changePreLoginPage: PropTypes.func,
   }
@@ -12,18 +12,16 @@ class ForgetContainer extends Component {
   changePage = (pageTab) =>{
     this.props.changePreLoginPage({pageTab})
   }
-
   render() {
 
     return (
       <div>
-        忘记密码页面！
+        加入企业页面！！！！
         <Button type={'primary'} onClick={()=>this.changePage('login')}> 登录页面 </Button>
         <Button type={'primary'} onClick={()=>this.changePage('register')}> 注册企业 </Button>
-        <Button type={'primary'} onClick={()=>this.changePage('joinIn')}> 加入企业 </Button>
       </div>
     );
   }
 }
 
-export default ForgetContainer;
+export default JoinInContainer;

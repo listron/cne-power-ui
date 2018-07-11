@@ -26,17 +26,15 @@ class DeviceName extends Component {
     this.state = {
       showDeviceNameModal: false,
     };
-    this.onShowDeviceNameModal = this.onShowDeviceNameModal.bind(this);
-    this.onCloseDeviceNameModal = this.onCloseDeviceNameModal.bind(this);
   }
 
-  onShowDeviceNameModal() {
+  onShowDeviceNameModal = () => {
     this.setState({
       showDeviceNameModal: true
     });
   }
 
-  onCloseDeviceNameModal() {
+  onCloseDeviceNameModal = () => {
     this.setState({
       showDeviceNameModal: false
     })
@@ -75,7 +73,7 @@ class DeviceName extends Component {
           onSelect={this.props.onChange}
           value={this.getDeviceName(this.props.value)}
           filterOption={(inputValue, option) => 
-            option.props.children.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1}
+          option.props.children.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1}
         >
           <Input
             disabled={this.props.disabled}

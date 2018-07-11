@@ -7,9 +7,9 @@ import {
   watchGetPartition,
 } from './commonSaga';
 import { 
-  watchSendCode, 
+  // watchSendCode, 
   watchLogin, 
-  watchCheckCode, 
+  // watchCheckCode, 
   watchChangePSW, 
   watchSignup, 
   watchGetShowStatus, 
@@ -20,6 +20,12 @@ import {
 import { 
   watchPreLoginPageChangeSaga
 } from './preLogin/preLoginSaga';
+
+import {
+  watchLoginSaga,
+  watchSendCode,
+  watchCheckCode,
+} from './preLogin/loginSaga';
 
 import {
   watchGetDefectList,
@@ -111,7 +117,7 @@ export default function* rootSaga() {
     //login
     // watchGetCompInfo(),
     watchPreLoginPageChangeSaga(), 
-
+    watchLoginSaga(),
     watchLogin(),
     // watchCheckPhone(),
     watchSendCode(),

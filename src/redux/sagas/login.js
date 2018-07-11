@@ -54,9 +54,9 @@ function* getCompInfo(action) {
     const response = yield call(axios.post, url, {domain: action.params.domain});
     if(response.data.success){
       yield put({ type: GET_COMPINFO_SUCCESS, data: response.data.result });      
-      setCookie('enterpriseId',response.data.result.enterpriseId);
+      setCookie('enterpriseId', response.data.result.enterpriseId);
     }else{
-      yield put({ type: GET_COMPINFO_FAIL, data:{error:response.data.error}});    
+      yield put({ type: GET_COMPINFO_FAIL, data:{error: response.data.error}});    
       message.error(response.data.error);        
     }
   } catch (e) {
@@ -68,6 +68,7 @@ function* getCompInfo(action) {
 function* login(action){
   // let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.login;
   let url = Config.TokenBasePath;
+  console.log(url)
   // Content-Type: application/x-www-form-urlencoded; charset=UTF-8
   yield put({ type: TICKET_FETCH });
   try{
@@ -81,6 +82,7 @@ function* login(action){
         password: action.parmas.password
       }),
     });
+    console.log(response)
     if (response.data) {
       setCookie('authData',JSON.stringify(response.data));
       setCookie('phone',action.parmas.phone);
