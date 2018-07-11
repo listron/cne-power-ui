@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import { Button } from 'antd';
 import PropTypes from 'prop-types';
 import styles from './enterprise.scss';
-
+import { Link } from 'react-router-dom';
 
 class EnterpriseDetail extends Component {
   static propTypes = {
@@ -21,39 +21,39 @@ class EnterpriseDetail extends Component {
   }
 
   render(){
-    const { changeEnterpriseAttr } = this.props;
+    const { changeEnterpriseAttr, enterpriseDetail } = this.props;
     console.log(this.props.enterpriseDetail)
     return (
       <div className={styles.enterpriseDetail}>
         <div className={styles.topHandler}>
-          <Button onClick={()=>changeEnterpriseAttr({showPage:'edit'})}>编辑</Button>
+          <Button className={styles.editButton} onClick={()=>changeEnterpriseAttr({showPage:'edit'})}>编辑</Button>
         </div>
-        <div className={styles.topHandler}>
-          <span>stationName : 北京慈寿寺世纪光伏</span>
+        <div className={styles.enterpriseName}>
+          <span className={styles.text}>{enterpriseDetail.enterpriseIdName}</span>
         </div>
-        <div>
-          <div>
-            <img width={'180px'} height={'180px'} src={'//www.baidu.com/img/bd_logo1.png?where=super'} />
+        <div className={styles.enterpriseInfor} >
+          <div className={styles.logoPart}>
+            <img src={enterpriseDetail.enterpriseLogo} />
+            <div className={styles.user}><span>创建者</span>{enterpriseDetail.createUser}</div>
+            <div className={styles.time}><span>创建时间</span>{enterpriseDetail.createtime}</div>
           </div>
-          <div>
-            <div>
-              <Button type="primary">查看部门</Button>
-              <Button type="primary">查看成员</Button>
-              <Button type="primary">查看角色</Button>
+          <div className={styles.textInfor}>
+            <div className={styles.buttonGroup}>
+              <Button><Link to="/system/department">查看部门</Link></Button>
+              <Button><Link to="/system/user">查看成员</Link></Button>
+              <Button><Link to="/system/role">查看角色</Link></Button>
             </div>
             <div>
-              <span>电话</span>
-              <span>1221211212</span> 
+              <span className={styles.promptTitle}>电话</span>{enterpriseDetail.enterpriseNum} 
             </div>
             <div>
-              <span>网址</span>
-              <span>www.baidu.com</span> 
-            </div><div>
-              <span>地址</span>
-              <span>北京市天安门广场2元一个不能再低</span> 
-            </div><div>
-              <span>简介</span>
-              <span>本组织不平凡有大力量！powerful！</span> 
+              <span className={styles.promptTitle}>网址</span>{enterpriseDetail.enterpriseWebsite}
+            </div>
+            <div>
+              <span className={styles.promptTitle}>地址</span>{enterpriseDetail.enterpriseAddress}
+            </div>
+            <div>
+              <span className={styles.promptTitle}>简介</span>{enterpriseDetail.enterpriseProfile}
             </div>
           </div>
         </div>

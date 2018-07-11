@@ -8,11 +8,66 @@
 */
 @import '../../../theme/theme.scss';
 
-.enterpriseDetail{
+.enterpriseDetail{//详情页
+  line-height: 30px;
   flex: 1;
   background-color: #fff;
-  .topHandler{
+  .topHandler{//顶部编辑栏
     @include lineheight(64px);
+    .editButton{
+      margin-left: 32px;
+      &:hover{
+        background-color: $themeColor;
+        color: #fff;
+      }
+    }
+  }
+  .enterpriseName{//企业名称栏
+    background: #f1f1f1;
+    color: $darkColor;
+    letter-spacing:4px;
+    @include lineheight(62px);
+    .text{
+      font-size: 18px;      
+      margin-left: 30px;
+    }
+  }
+  .enterpriseInfor{//企业主要信息展示区
+    padding: 24px 32px 0;
+    display: flex;
+    color: $lightColor;
+    .promptTitle{
+      color: $darkColor;
+      margin-right: 24px;
+      display: inline-block;
+      width: 28px;
+    }
+    .logoPart{
+      margin-right: 48px;
+      img{
+        width: 240px;
+        height: 240px;
+      }
+      .user,.time{
+        height: 30px;
+        span{
+          display: inline-block;
+          width: 56px;
+          text-align: right;
+          color: $darkColor;
+          margin-right: 24px;
+        }
+      }
+    }
+    .textInfor{
+      flex: 1;
+      .buttonGroup{
+        margin-left: 52px;
+        button{
+          margin-right: 12px;
+        }
+      }
+    }
   }
 }
 .enterpriseEdit{

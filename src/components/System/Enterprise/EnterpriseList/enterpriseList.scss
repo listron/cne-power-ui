@@ -1,14 +1,7 @@
 
-$darkFontColor: #666;
-$lightFontColor: #999;
-$disableFontColor: #999;
-$themeColor: #199475;
-@mixin highLingt($color){
-  &:hover,&:focus,&::selection{
-    border:1px solid $color;
-    box-shadow: 0 0 2px $color;
-  }
-}
+
+
+@import '../../../../theme/theme.scss';
 
 .enterpriseMain{
   flex: 1 0 auto;
@@ -25,14 +18,14 @@ $themeColor: #199475;
       text-align: justify;
       line-height: 30px;
       margin: 0 12px 0 24px;
-      color: $lightFontColor;
+      color: $lightColor;
     }
     .radioGroup{
       :global{
         .ant-radio-button-wrapper{
           height: 30px;
           padding: 0 10px;
-          color: $darkFontColor;
+          color: $darkColor;
         }
         .ant-radio-button-wrapper{
           height: 30px;
@@ -59,7 +52,7 @@ $themeColor: #199475;
     line-height: 50px;
     display: flex;
     .searchName,.seachPhone{
-      color: $lightFontColor;
+      color: $lightColor;
     }
     .searchName{
       margin: 0 12px 0 24px;
@@ -83,13 +76,13 @@ $themeColor: #199475;
       width: 68px;
       margin-top: 9px;
       margin-right: 12px;
-      color: $lightFontColor;
-      border:1px solid #dfdfdf;
+      color: $lightColor;
+      border:1px solid $promptColor;
       @include highLingt($themeColor);
     }
     .clearButton{
       cursor: pointer;
-      color: $darkFontColor;
+      color: $darkColor;
     }
   }
   .enterpriseList{//企业列表
@@ -142,11 +135,11 @@ $themeColor: #199475;
             .ant-select-selection{
               .ant-select-selection__rendered{
                 .ant-select-selection__placeholder{
-                  color: $lightFontColor;
+                  color: $lightColor;
                 }
               }
               .ant-select-arrow{
-                color: $lightFontColor;
+                color: $lightColor;
               }
               @include highLingt($themeColor);
             }
@@ -159,7 +152,7 @@ $themeColor: #199475;
       height: 45px;
       line-height: 45px;
       .info{
-        color: $lightFontColor;
+        color: $lightColor;
         margin-right: 20px;
         margin-left: 24px;
         .totalNum{
@@ -181,7 +174,7 @@ $themeColor: #199475;
       color:$themeColor;
     }
     .ant-select-dropdown-menu-item-disabled{
-      color:#dfdfdf;
+      color:$promptColor;
     }
   }
 }
