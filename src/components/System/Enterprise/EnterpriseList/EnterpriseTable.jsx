@@ -2,9 +2,9 @@
 
 import React, { Component } from 'react';
 import { Table, Button, Select, Icon } from 'antd';
-import CommonPagination from '../../Common/CommonPagination';
+import CommonPagination from '../../../Common/CommonPagination';
 import PropTypes from 'prop-types';
-import styles from './enterprise.scss';
+import styles from './enterpriseList.scss';
 
 const { Option } = Select;
 

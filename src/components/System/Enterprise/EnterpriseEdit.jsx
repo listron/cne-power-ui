@@ -22,7 +22,7 @@ class EnterpriseEdit extends Component {
       <div className={styles.enterpriseEdit} >
           <div>
             <span>新建</span>
-            <Button type={'primary'} onClick={()=>changeEnterpriseAttr({showPage:'list'})}>返回主页面！！！！！</Button>
+            <Button type="primary" onClick={()=>changeEnterpriseAttr({showPage:'list'})}>返回主页面！！！！！</Button>
           </div>
           <div>
             <div>图片上传组件</div>
@@ -30,7 +30,7 @@ class EnterpriseEdit extends Component {
           </div>
           这个是新增啊编辑啊的页面，是吧！！
           
-          <Button type={'primary'} onClick={()=>changeEnterpriseAttr({showPage:'detail'})}>拒绝返回，我要去看详情@</Button>
+          <Button type="primary" onClick={()=>changeEnterpriseAttr({showPage:'detail'})}>拒绝返回，我要去看详情@</Button>
       </div>
     )
   }

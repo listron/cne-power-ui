@@ -3,9 +3,17 @@ import { connect } from 'react-redux';
 import styles from './enterpriseContainer.scss';
 import { enterpriseAction } from '../../../constants/actionTypes/system/enterpriseAction';
 import PropTypes from 'prop-types';
-import EnterpriseMain from '../../../components/System/Enterprise/EnterpriseMain';
+
+/*
+注： 此3引用在企业列表展示功能中引入，后产品调整为直接展示企业详情，去下企业列表页面展示。请不要删除，可能会重新展示企业列表功能；
+import EnterpriseMain from '../../../components/System/Enterprise/EnterpriseMain/EnterpriseMain';
 import EnterpriseSide from '../../../components/System/Enterprise/EnterpriseSide';
-import { CSSTransition } from 'react-transition-group';
+// import { CSSTransition } from 'react-transition-group';
+*/
+
+
+import EnterpriseDetail from '../../../components/System/Enterprise/EnterpriseDetail';
+import EnterpriseEdit from '../../../components/System/Enterprise/EnterpriseEdit';
 
 class EnterpriseContainer extends Component {
   static propTypes = {
@@ -24,9 +32,6 @@ class EnterpriseContainer extends Component {
   }
   constructor(props) {
     super(props);
-    this.state = {
-      showDetail: true,
-    }
   }
   componentDidMount(){
     const params = {
@@ -43,12 +48,15 @@ class EnterpriseContainer extends Component {
 
   render() {
     const { showPage } = this.props;
-    const { showDetail } = this.state;
-    console.log(this.props)
-    console.log(showDetail)
     return (
       <div className={styles.enterpriseContainer}>
-        <EnterpriseMain {...this.props} />
+        {
+          showPage==='detail' ?
+          <EnterpriseDetail {...this.props} />:
+          <EnterpriseEdit {...this.props} />
+        }
+        {/*注：不要删除，此备注用于展示企业列表，可能后续会用。 
+        <EnterpriseMain {...this.props} /> 
         <CSSTransition
           in={showPage!=='list'}
           onEnter={()=>this.setState({showDetail:showPage==='detail'})}
@@ -57,7 +65,7 @@ class EnterpriseContainer extends Component {
           classNames={'enterpriseSide'}
         >
           <EnterpriseSide {...this.props} showDetail={showDetail} />
-        </CSSTransition>
+        </CSSTransition>*/}
       </div>
     );
   }

@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react';
 import { Input, Button } from 'antd';
-import styles from './enterprise.scss';
+import styles from './enterpriseList.scss';
 import PropTypes from 'prop-types';
 
 
