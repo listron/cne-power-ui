@@ -19,6 +19,15 @@ class EditForm extends Component {
     super(props);
   }
 
+  saveEnterprise = () =>{
+    const {} = this.props;
+    this.props.form.validateFieldsAndScroll((error,values)=>{
+      if(!error){
+        console.log(values)
+      }
+    })
+  }
+
   render(){
     const { getFieldDecorator } = this.props.form;
     return (
@@ -94,9 +103,10 @@ class EditForm extends Component {
           className={styles.dealProposal} 
         >
           {getFieldDecorator('enterpriseProfile')(
-            <InputLimit size={80} />
+            <InputLimit size={80} height={102} width={736} />
           )}
         </FormItem>
+        <Button onClick={this.saveEnterprise}>保存</Button>
       </Form>
     )
   }
