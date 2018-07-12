@@ -24,8 +24,8 @@ function *getEnterprisList(action){
       type:  enterpriseAction.GET_ENTERPRISE_COMMON_FETCH_SUCCESS,
       payload:{
         ...payload,
-        enterpriseList: response.data.data.enterpriseList,
-        totalEnterprise: response.data.data.total,
+        enterpriseData: response.data.data.enterpriseData,
+        totalNum: response.data.data.totalNum,
       },
     });
   }catch(e){
@@ -33,8 +33,23 @@ function *getEnterprisList(action){
   }
 }
 
-//请求单个电站详细数据信息
-
+//请求单个详细数据信息
+function *getEnterpriseDetail(action){
+  const { payload } = action;
+  const url = '/mock/system/enterprisDetail/12';
+  try{
+    yield put({ type:enterpriseAction.ENTERPRISE_FETCH });
+    const response = yield call(axios.get,url);
+    yield put({
+      type:  enterpriseAction.GET_ENTERPRISE_COMMON_FETCH_SUCCESS,
+      payload:{
+        enterpriseDetail: response.data.data
+      },
+    });
+  }catch(e){
+    console.log(e);
+  }
+}
 //新建+编辑企业信息
 function *changeEnterprise(action){
   const { payload } = action;
@@ -56,6 +71,7 @@ function *changeEnterprise(action){
 export function* watchEnterpriseSaga() {
   yield takeLatest(enterpriseAction.GET_ENTERPRISE_ATTR_CHANGE_SAGA, changeEnterpriseAttr);
   yield takeLatest(enterpriseAction.GET_ENTERPRISE_LIST_SAGA, getEnterprisList);
+  yield takeLatest(enterpriseAction.GET_ENTERPRISE_DETAIL_SAGA, getEnterpriseDetail);
   yield takeLatest(enterpriseAction.CHANGE_SELECTED_ENTERPRISE_SAGA, changeEnterprise);
 }
 

@@ -13,6 +13,7 @@ module.exports = {
 
     GET_ENTERPRISE_COMMON_FETCH_SUCCESS: null,
     
+    GET_ENTERPRISE_DETAIL_SAGA: null,
   })
 }
 

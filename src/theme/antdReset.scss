@@ -1,7 +1,7 @@
 
 
 //专门针对antd样式的部分重置：(table)
-$tableSelectedBackground: #f4f4f4;
+@import './theme.scss';
 
 :global{
   .ant-table{//table行高，高亮，背景色调整；
@@ -20,6 +20,13 @@ $tableSelectedBackground: #f4f4f4;
       padding: 0 16px;
       height: 40px;
       line-height: 40px;
+    }
+  }
+  .ant-btn{   //antd按钮样式调整-高亮
+    color: $darkColor;
+    @include highLingt($themeColor);
+    &:hover{
+      color:  $darkColor;
     }
   }
 }

@@ -1,201 +1,94 @@
-
-$darkFontColor: #666;
-$lightFontColor: #999;
-$disableFontColor: #999;
-$themeColor: #199475;
-@mixin highLingt($color){
-  &:hover,&:focus,&::selection{
-    border:1px solid $color;
-    box-shadow: 0 0 2px $color;
-  }
-}
-
-.enterpriseMain{
-  flex: 1 0 auto;
-  width: 100%;
-  padding: 24px 24px 0;
-  .enterpriseStatus{//企业状态筛选
-    height: 74px;
-    line-height: 74px;
-    background: #fff;
-    .statusText{
-      display: inline-block;
-      height: 30px;
-      width: 57px;
-      text-align: justify;
-      line-height: 30px;
-      margin: 0 12px 0 24px;
-      color: $lightFontColor;
-    }
-    .radioGroup{
-      :global{
-        .ant-radio-button-wrapper{
-          height: 30px;
-          padding: 0 10px;
-          color: $darkFontColor;
-        }
-        .ant-radio-button-wrapper{
-          height: 30px;
-          border-left-width: 0;
-          &:first-child{
-            border-left: 1px solid #d9d9d9;
-          }
-        }
-        .ant-radio-button-wrapper-checked{
-          border: 1px solid #d9d9d9;
-          border-left-width: 0;
-          background-color: $themeColor;
-          color: #fff;
-          &:first-child{
-            border-left: 1px solid #d9d9d9;
-          }
-        }
-      }
-    }
-  }
-  .enterpriseSearch{//企业搜索
-    background:#f9f9f9;
-    height: 50px;
-    line-height: 50px;
-    display: flex;
-    .searchName,.seachPhone{
-      color: $lightFontColor;
-    }
-    .searchName{
-      margin: 0 12px 0 24px;
-    }
-    .seachPhone{
-      margin-right: 12px;
-    }
-    .searchNameInput,.searchPhoneInput{
-      margin-top: 9px;
-      position: static;
-      width: 160px;
-      @include highLingt($themeColor);
-    }
-    .searchNameInput{
-      margin-right: 40px;
-    }
-    .searchPhoneInput{
-      margin-right: 12px;
-    }
-    .searchButton{
-      width: 68px;
-      margin-top: 9px;
-      margin-right: 12px;
-      color: $lightFontColor;
-      border:1px solid #dfdfdf;
-      @include highLingt($themeColor);
-    }
-    .clearButton{
-      cursor: pointer;
-      color: $darkFontColor;
-    }
-  }
-  .enterpriseList{//企业列表
-    .enterpriseListTop{
-      background: #fff;
-      display: flex;
-      line-height: 72px;
-      justify-content: space-between;
-      .addEnterprise{
-        padding : 0;
-        margin-left: 24px;
-        margin-right: 12px;
-        border: 1px solid $themeColor;
-        i{
-          display: inline-block;
-          background:$themeColor;
-          color: #fff;
-          vertical-align: top;
-          width: 28px;
-          line-height: 30px;
-          height: 100%;
-          border-radius: 4px 0 0 4px;
-        }
-        .text{
-          border-radius: 0 4px 4px 0;
-          background:#fff;
-          color:$themeColor;
-          display: inline-block;
-          height: 100%;
-          width: 38px;
-          line-height: 30px;
-          margin: 0px;
-          text-align: center;
-        }
-        @include highLingt($themeColor);
-        &:hover{
-          .text{
-            background:$themeColor;
-            color: #fff;
-          }
-        }
-      }
-      .handleEnterprise{
-        height: 72px;
-        line-height: 72px;
-        display: inline-block;
-        :global{
-          .ant-select{
-            width: 68px;
-            .ant-select-selection{
-              .ant-select-selection__rendered{
-                .ant-select-selection__placeholder{
-                  color: $lightFontColor;
-                }
-              }
-              .ant-select-arrow{
-                color: $lightFontColor;
-              }
-              @include highLingt($themeColor);
-            }
-          }
-        }
-      }
-    }
-    .tableFooter{
-      background-color: #fff;
-      height: 45px;
-      line-height: 45px;
-      .info{
-        color: $lightFontColor;
-        margin-right: 20px;
-        margin-left: 24px;
-        .totalNum{
-          color: rgb(250,185,7);
-          margin: auto 4px;
-        }
-      }
-      .cancel{
-        color: $themeColor;
-        cursor: pointer;
-      }
-    }
-  }
-}
-.handleDropdown{
-  width: 120px;
-  :global{
-    .ant-select-dropdown-menu-item{
-      color:$themeColor;
-    }
-    .ant-select-dropdown-menu-item-disabled{
-      color:#dfdfdf;
-    }
-  }
-}
+/*请不要删除，展示企业列表时相关样式，后期开发恢复企业列表展示时可能会用。
 .enterpriseSide {
   display: flex;
   flex: 1 0 auto;
   width: 100%;
   padding: 24px 24px 0;
 }
-.enterpriseDetail{
-  flex: 1;
-  background-color: lightblue;
+*/
+@import '../../../theme/theme.scss';
+
+.topHandler{//详情，编辑页通用顶部编辑栏
+  @include lineheight(64px);
+  padding-left: 32px;
+  border-bottom: solid 1px $promptColor;  
+  .editButton{
+    &:hover{
+      background-color: $themeColor;
+      color: #fff;
+    }
+  }
+  .text{
+    font-size:18px;
+    color: $darkColor;
+    letter-spacing:4px;
+  }
 }
-.enterpriseEdit{
+
+.enterpriseDetail{//详情页
+  line-height: 30px;
+  flex: 1;
+  background-color: #fff;
+  
+  .enterpriseName{//企业名称栏
+    background: #f1f1f1;
+    color: $darkColor;
+    letter-spacing:4px;
+    @include lineheight(62px);
+    .text{
+      font-size: 18px;      
+      margin-left: 30px;
+    }
+  }
+  .enterpriseInfor{//企业主要信息展示区
+    margin: 24px 32px 0;
+    display: flex;
+    color: $lightColor;
+    .promptTitle{
+      color: $darkColor;
+      margin-right: 24px;
+      display: inline-block;
+      width: 28px;
+    }
+    .logoPart{
+      margin-right: 48px;
+      img{
+        width: 240px;
+        height: 240px;
+      }
+      .user,.time{
+        height: 30px;
+        span{
+          display: inline-block;
+          width: 56px;
+          text-align: right;
+          color: $darkColor;
+          margin-right: 24px;
+        }
+      }
+    }
+    .textInfor{
+      flex: 1;
+      .buttonGroup{
+        margin-left: 52px;
+        button{
+          margin-right: 12px;
+        }
+      }
+    }
+  }
+}
+.enterpriseEdit{//编辑页
   flex:1;
-  background-color: lightblue;
+  background-color: #fff;
+  .editPart{
+    margin: 24px 32px 0;    
+    display: flex;
+    .logoPart{
+      margin-right: 48px;
+    }
+    .editPart{
+      flex:1;
+    }
+  }
 }

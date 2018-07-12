@@ -3,9 +3,14 @@ import { connect } from 'react-redux';
 import styles from './enterpriseContainer.scss';
 import { enterpriseAction } from '../../../constants/actionTypes/system/enterpriseAction';
 import PropTypes from 'prop-types';
-import EnterpriseMain from '../../../components/System/Enterprise/EnterpriseMain';
+/*
+注： 此3引用在企业列表展示功能中引入，后产品调整为直接展示企业详情，去下企业列表页面展示。请不要删除，可能会重新展示企业列表功能；
+import EnterpriseMain from '../../../components/System/Enterprise/EnterpriseMain/EnterpriseMain';
 import EnterpriseSide from '../../../components/System/Enterprise/EnterpriseSide';
 import TransitionContainer from '../../../components/Common/TransitionContainer';
+*/
+import EnterpriseDetail from '../../../components/System/Enterprise/EnterpriseDetail';
+import EnterpriseEdit from '../../../components/System/Enterprise/EnterpriseEdit';
 
 class EnterpriseContainer extends Component {
   static propTypes = {
@@ -15,8 +20,6 @@ class EnterpriseContainer extends Component {
     enterprisePhone: PropTypes.string,
     sort: PropTypes.string, 
     ascend: PropTypes.bool,
-    totalEnterprise: PropTypes.number,
-    enterpriseList: PropTypes.array,
     currentPage: PropTypes.number, 
     pageSize: PropTypes.number, 
     enterpriseDetail:PropTypes.object, 
@@ -27,9 +30,6 @@ class EnterpriseContainer extends Component {
   }
   constructor(props) {
     super(props);
-    this.state = {
-      showDetail: true,
-    }
   }
   componentDidMount(){
     const params = {
@@ -38,7 +38,6 @@ class EnterpriseContainer extends Component {
       enterprisePhone: this.props.enterprisePhone,
       sort: this.props.sort, 
       ascend: this.props.ascend,
-      enterpriseList: this.props.enterpriseList,
       currentPage: this.props.currentPage, 
       pageSize: this.props.pageSize, 
     }
@@ -54,9 +53,14 @@ class EnterpriseContainer extends Component {
 
   render() {
     const { showPage } = this.props;
-    const { showDetail } = this.state;
     return (
       <div className={styles.enterpriseContainer}>
+        {
+          showPage==='detail' ?
+          <EnterpriseDetail {...this.props} />:
+          <EnterpriseEdit {...this.props} />
+        }
+        {/*注：不要删除，此备注用于展示企业列表，可能后续会用。
         <EnterpriseMain {...this.props} />
         <TransitionContainer
           show={showPage!=='list'}
@@ -65,7 +69,11 @@ class EnterpriseContainer extends Component {
           effect="side"
         >
           <EnterpriseSide {...this.props} showDetail={showDetail} />
-        </TransitionContainer>
+        </TransitionContainer>*/}
+        <div className={styles.enterpriseFooter}>
+          <span className={styles.footerText}>京ICP备12030847号-2 © 2017-2018 北京动力协合科技有限公司</span>
+        </div>
+        
       </div>
     );
   }
@@ -78,8 +86,8 @@ const mapStateToProps = (state) => ({
   enterprisePhone: state.enterprise.get('enterprisePhone'),
   sort: state.enterprise.get('sort'),
   ascend: state.enterprise.get('ascend'),
-  totalEnterprise: state.enterprise.get('totalEnterprise'),
-  enterpriseList: state.enterprise.get('enterpriseList').toJS(),
+  totalNum: state.enterprise.get('totalNum'),
+  enterpriseData: state.enterprise.get('enterpriseData').toJS(),
   currentPage: state.enterprise.get('currentPage'),
   pageSize: state.enterprise.get('pageSize'),
   enterpriseDetail: state.enterprise.get('enterpriseDetail').toJS(),
@@ -89,6 +97,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   changeEnterpriseAttr: payload => dispatch({type:enterpriseAction.GET_ENTERPRISE_ATTR_CHANGE_SAGA, payload}),
   getEnterpriseList: payload => dispatch({type:enterpriseAction.GET_ENTERPRISE_LIST_SAGA, payload}),
+  getEnterpriseDetail: payload => dispatch({type:enterpriseAction.GET_ENTERPRISE_DETAIL_SAGA, payload}),
   changeSelectedEnterprise: payload => dispatch({type:enterpriseAction.CHANGE_SELECTED_ENTERPRISE_SAGA, payload}),
 });
 

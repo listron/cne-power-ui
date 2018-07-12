@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
 import styles from './enterprise.scss';
 
 
-class EditEnterprise extends Component {
+class EditForm extends Component {
   static propTypes = {
   }
 
@@ -43,4 +43,4 @@ class EditEnterprise extends Component {
   }
 }
 
-export default EditEnterprise;
+export default EditForm;
