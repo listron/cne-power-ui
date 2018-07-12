@@ -20,7 +20,7 @@ $tableSelectedBackground: #f4f4f4;//表格高亮背景色
   height: $height;
   line-height: $height;
 }
-@mixin highLingt($color){//创建高亮色配置
+@mixin highLight($color){//创建高亮色配置
   &:hover,&:focus,&::selection{
     border:1px solid $color;
     box-shadow: 0 0 2px $color;
