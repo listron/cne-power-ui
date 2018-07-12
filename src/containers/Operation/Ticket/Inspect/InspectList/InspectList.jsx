@@ -42,6 +42,33 @@ class InspectList extends Component {
     }
   }
 
+  onChangePageSize = (pageSize) => {
+    if(pageSize !== this.props.pageSize) {
+      let params = {
+        defectSource: '3',
+        stationType: '2',
+        status: this.props.status,
+        pageNum: 0,
+        pageSize: pageSize,
+        sort: this.props.sort,
+      }
+      this.props.getInspectList(params);
+    } 
+  }
+
+  onChangePage = (page) => {
+    if(page !== this.props.pageNum) {
+      let params = {
+        stationType: '2',
+        status: this.props.status,
+        pageNum: page - 1,
+        pageSize: this.props.pageSize,
+        sort: this.props.sort,
+      }
+      this.props.getInspectList(params);
+    }
+  }
+  
   onChangeStatus = (status) => {
     if(status !== this.props.status){
       let params = {
@@ -49,20 +76,23 @@ class InspectList extends Component {
         status: status,
         pageNum: 0,
         pageSize: this.props.pageSize,
+        sort: this.props.sort,
       }
       this.props.getInspectList(params);
     }
   }
 
   onChangeSort = (sort) => {
-    let params = {
-      stationType: "2",
-      status: status,
-      pageNum: 0,
-      pageSize: this.props.pageSize,
-      sort: sort,
+    if(sort !== this.props.sort) {
+      let params = {
+        stationType: "2",
+        status: this.props.status,
+        pageNum: 0,
+        pageSize: this.props.pageSize,
+        sort: sort,
+      }
+      this.props.getInspectList(params);
     }
-    this.props.getInspectList(params);
   }
 
   onShowDetail = (inspectId) => {

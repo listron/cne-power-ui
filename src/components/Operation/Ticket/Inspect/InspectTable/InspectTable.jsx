@@ -50,22 +50,21 @@ class InspectTable extends Component {
 
   onChangeTable = (pagination, filter, sorter) => {
     if(Object.keys(sorter).length !== 0) {
-      let sorter = this.getSortParam(sorter);
-      this.props.onChangeSort(sorter);
+      let sortRules = this.getSortParam(sorter);
+      this.props.onChangeSort(sortRules);
     } else {
       this.props.onChangeSort('');
     }
   }
 
-
-
   onInspectCheck = () => {
     this.props.inspectCheckBatch({inspectId: this.state.selectedRowKeys.toString()})
   }
+
   getSortParam = (sorter) => {
     var sortField = 0;
     var sortMode = sorter.order === "ascend" ? 0 : 1;
-    switch (sorter.feild){
+    switch (sorter.field){
       case "inspectName":
         sortField = 0;
         break;
@@ -96,6 +95,12 @@ class InspectTable extends Component {
       showSizeChanger: true,
       current: this.props.pageNum,
       pageSize: this.props.pageSize,
+      onShowSizeChange: (current, pageSize) => {
+        this.props.onChangePageSize(pageSize);
+      },
+      onChange: (current) => {
+        this.props.onChangePage(current);
+      }
     } 
     const columns = [{
       title: '巡检名称',
