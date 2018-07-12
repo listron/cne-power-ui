@@ -49,7 +49,7 @@ class SingleImgUploader extends Component {
     super(props);
     this.state = {
       preInfor: {},
-      currentImgInfor: props.data,
+      currentImgInfor: props.data || {},
       showCurentUpload: true, 
     }
   }
@@ -120,7 +120,7 @@ class SingleImgUploader extends Component {
             ...imgStyle
           }}>
             <Icon type="plus" className={styles.plusIcon} />
-            <div className="ant-upload-text">点击上传</div>
+            <div className={styles.uploadText} >点击上传</div>
           </div>
         </Upload>}
         {!showCurentUpload && <Upload 
@@ -133,7 +133,7 @@ class SingleImgUploader extends Component {
             ...imgStyle
           }}>
             <Icon type="plus" className={styles.plusIcon} />
-            <div className="ant-upload-text">点击上传</div>
+            <div  className={styles.uploadText} >点击上传</div>
           </div>
         </Upload>}
       </div>

@@ -20,19 +20,13 @@ class EnterpriseEdit extends Component {
   render(){
     const { changeEnterpriseAttr } = this.props;
     const uploadPath=`${pathConfig.basePaths.newAPIBasePath}${pathConfig.commonPaths.imgUploads}`;
-    const data =  {
-      uid: -1,    //必填
-      name: 'xxx.png', 
-      status: 'done',  
-      thumbUrl: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',  //必填
-    };
     return (
       <div className={styles.enterpriseEdit} >
           <div className={styles.topHandler}>
             <span className={styles.text}>编辑</span>
           </div>
           <div className={styles.editPart} >
-            <SingleImgUploader uploadPath={uploadPath} data={data} />
+            <SingleImgUploader uploadPath={uploadPath} />
             <EditForm />
           </div>
           这个是新增啊编辑啊的页面，是吧！！

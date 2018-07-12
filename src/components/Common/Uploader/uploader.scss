@@ -69,14 +69,20 @@
   .uploader{
     .innerBox{
       .plusIcon{
-        background:$linghtColor;
-        width:75px;
-        height:73px;
+        margin-top: 40px;
+        margin-bottom: 48px;
+        color:$lightColor;
+        &::before{
+          font-size: 95px;
+        }
+      }
+      .uploadText{
+        color: $lightColor;
       }
     }
     :hover{
       .plusIcon{
-        background:#199475;
+        color: $themeColor;
       }
     }
     :global{
@@ -88,7 +94,7 @@
     }
   }
   :global{
-    .ant-upload-list-item-uploading{
+    .ant-upload-list-item-uploading,.ant-upload-list-item-undefined,.ant-upload-list-item-done{
       display: none;
     }
   }
