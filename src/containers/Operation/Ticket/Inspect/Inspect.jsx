@@ -6,6 +6,7 @@ import InspectCreate from './InspectCreate/InspectCreate';
 class Inspect extends Component {
   static propTypes = {
     showContainer: PropTypes.string,
+    showTab: PropTypes.string,
     onChangeShowContainer: PropTypes.func,
   };
   constructor(props) {
@@ -21,8 +22,8 @@ class Inspect extends Component {
   render() {
     return (
       <div style={{display:"flex", flex: 1}}>
-        {this.props.showContainer === 'detail' && (<InspectDetail  onChangeShowContainer={this.props.onChangeShowContainer} />)}
-        {this.props.showContainer === 'list' && (<InspectList  onChangeShowContainer={this.props.onChangeShowContainer} />)}
+        {this.props.showContainer === 'detail' && (<InspectDetail onChangeShowContainer={this.props.onChangeShowContainer} />)}
+        {this.props.showContainer === 'list' && (<InspectList showTab={this.props.showTab} onChangeShowContainer={this.props.onChangeShowContainer} />)}
         {this.props.showContainer === 'create' && (<InspectCreate onChangeShowContainer={this.props.onChangeShowContainer} />)}
       </div>
     );

@@ -8,6 +8,7 @@ import DefectCreate from './DefectCreate/DefectCreate';
 class Defect extends Component {
   static propTypes = {
     showContainer: PropTypes.string,
+    showTab: PropTypes.string,
     onChangeShowContainer: PropTypes.func
   };
   constructor(props) {
@@ -24,7 +25,7 @@ class Defect extends Component {
     return (
       <div style={{display:"flex", flex: 1}}>
         {this.props.showContainer === 'detail' && (<DefectDetail onChangeShowContainer={this.props.onChangeShowContainer} />)}
-        {this.props.showContainer === 'list' && (<DefectList onChangeShowContainer={this.props.onChangeShowContainer} />)}
+        {this.props.showContainer === 'list' && (<DefectList showTab={this.props.showTab} onChangeShowContainer={this.props.onChangeShowContainer} />)}
         {this.props.showContainer === 'create' && (<DefectCreate onChangeShowContainer={this.props.onChangeShowContainer} />)}
       </div>
     );

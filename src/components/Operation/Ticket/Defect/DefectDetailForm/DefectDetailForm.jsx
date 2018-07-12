@@ -33,29 +33,51 @@ class DefectDetailForm extends Component {
   onSubmit = (data) => {
     let params = {};
     const defectId = this.props.detail.get('defectId');
+    let status = this.props.detail.get('defectStatus');
+    if(status === '1') {
+      switch(data.dealResult) {
+        case 'send':
+          params = {
+            defectId,
+            defectProposal: !data.defectProposal ? null : data.defectProposal,
+            deadLine: !data.deadLine ? null : data.deadLine.format('YYYY-MM-DD')+' 23:59:59'
+          };
+          this.props.onSend(params);
+          break;
+        case 'reject':
+          params = {
+            defectId,
+            rejectReason: !data.rejectReason ? null : data.rejectReason
+          };
+          this.props.onReject(params);
+          break;
+        case 'close':
+          params = {
+            defectId,
+            rejectReason: !data.defectProposal ? null : data.defectProposal
+          };
+          this.props.onClose(params);
+          break;
+      }
+    } else if(status === '2') {
+      let submitImages = this.getSubmitIamges(data.photoData);
+      params = {
+        defectId,
+        defectSolveResult: data.defectSolveResult,
+        defectSolveInfo: !data.defectSolveInfo ? null : data.defectSolveInfo,
+        replaceParts: !data.replaceParts ? null : data.replaceParts,
+        ...submitImages
+      };
+      this.props.onHandle(params);
+    } else if(status === '3') {
+      params = {
+        defectId,
+        checkResult: data.checkResult,
+        checkInfo: !data.checkInfo ? null : data.checkInfo,
+      };
+      this.props.onCheck(params);
+    }
     switch(data.dealResult) {
-      case 'send':
-        params = {
-          defectId,
-          defectProposal: !data.defectProposal ? null : data.defectProposal,
-          deadLine: !data.deadLine ? null : data.deadLine.format('YYYY-MM-DD')+' 23:59:59'
-        };
-        this.props.onSend(params);
-        break;
-      case 'reject':
-        params = {
-          defectId,
-          rejectReason: !data.rejectReason ? null : data.rejectReason
-        };
-        this.props.onReject(params);
-        break;
-      case 'close':
-        params = {
-          defectId,
-          rejectReason: !data.defectProposal ? null : data.defectProposal
-        };
-        this.props.onClose(params);
-        break;
       case 'solve':
       case 'notSolve':
         let submitImages = this.getSubmitIamges(data.photoData);

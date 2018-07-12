@@ -130,7 +130,7 @@ class StationSelect extends Component {
     return (
       <div className={styles.stationSelect} style={this.props.style}>
         {multiple ? <Select
-          mode={"multiple"}
+          mode="multiple"
           style={{ width: '100%' }}
           placeholder="输入关键字快速查询"
           onChange={this.selectStation}

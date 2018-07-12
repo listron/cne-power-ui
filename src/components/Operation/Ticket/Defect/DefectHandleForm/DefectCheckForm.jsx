@@ -1,11 +1,10 @@
 import React,{ Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './defectHandleForm.scss';
-import {Form, Radio, Button} from 'antd';
+import {Form, Button} from 'antd';
 import InputLimit from '../../../../Common/InputLimit';
+import CheckFormButtons from './CheckFormButtons';
 const FormItem = Form.Item;
-const RadioButton = Radio.Button;
-const RadioGroup = Radio.Group;
 
 class DefectCheckForm extends Component {
   static propTypes = {
@@ -32,7 +31,7 @@ class DefectCheckForm extends Component {
 
   render() {   
     const { getFieldDecorator, getFieldValue } = this.props.form;
-    const dealResult = getFieldValue('dealResult');
+    const dealResult = getFieldValue('checkResult');
     const formItemLayout = {
       labelCol: { span: 4 },
       wrapperCol: { span: 32 },
@@ -40,16 +39,13 @@ class DefectCheckForm extends Component {
     return (
       <Form onSubmit={this.onSubmit} className={styles.handleForm}>
         <FormItem label="验收结果" {...formItemLayout}>
-        {getFieldDecorator('dealResult', {
+        {getFieldDecorator('checkResult', {
             rules: [{ 
               required: true 
             }],
-            initialValue: 'ok'
+            initialValue: '0'
           })(
-            <RadioGroup>
-              <RadioButton value="ok">合格</RadioButton>
-              <RadioButton value="notOk">不合格</RadioButton>
-            </RadioGroup>
+            <CheckFormButtons />
           )}
         </FormItem>
         <FormItem
@@ -58,7 +54,7 @@ class DefectCheckForm extends Component {
           label="处理建议">
           {getFieldDecorator('checkInfo', {
             rules: [{ 
-              required: dealResult === "notOk",
+              required: dealResult === '1',
               message: '请输入处理建议' 
             }]
           })(
