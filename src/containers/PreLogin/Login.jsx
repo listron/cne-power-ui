@@ -57,10 +57,8 @@ class LoginContainer extends Component {
               <LoginForm 
                 changePage={this.props.changePreLoginPage} 
                 fetchLogin={this.props.fetchLogin} 
-                loginSuccess={this.props.loginSuccess} 
-                count={this.props.count}
+                loginSuccess={this.props.loginSuccess}
                 sendCode={this.props.sendCode}
-                error={this.props.error}
                 checkCodeLogin={this.props.checkCodeLogin}
               />
             </TabPane>
@@ -75,10 +73,8 @@ class LoginContainer extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  domain: state.login.get('domain'),
-  error: state.login.get('error'),
+  // domain: state.login.get('domain'),
   loginSuccess: state.preLogin.loginReducer.get('loginSuccess'),
-  count: state.preLogin.loginReducer.get('count'),
 });
 
 const mapDispatchToProps = (dispatch) => ({

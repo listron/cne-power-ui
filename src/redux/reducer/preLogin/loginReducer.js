@@ -12,7 +12,6 @@ var initState = immutable.fromJS({
     code: '',
     message: '',
   },
-  count: 0,
   phone: '',
   code: '',
   user: {
@@ -23,6 +22,7 @@ var initState = immutable.fromJS({
 });
 
 const loginReducer = (state = initState, action) => {
+  console.log(action)
   switch (action.type) {
     case PreLoginAction.LOGIN_FETCH:
       return state.set('isFetching', true)
