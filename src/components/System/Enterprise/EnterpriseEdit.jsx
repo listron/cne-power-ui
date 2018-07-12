@@ -25,7 +25,7 @@ class EnterpriseEdit extends Component {
           <div className={styles.topHandler}>
             <span className={styles.text}>编辑</span>
           </div>
-          <div className={styles.editPart} >
+          <div className={styles.mainPart} >
             <div className={styles.logoPart} >
               <SingleImgUploader uploadPath={uploadPath} />
               <div className={styles.instruction}>
