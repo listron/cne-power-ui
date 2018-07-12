@@ -36,7 +36,8 @@ class Ticket extends Component {
         stationType: "2",
         status: '5',
         pageNum: 0,
-        pageSize: 10
+        pageSize: 10,
+        sort: '',
       }
       this.props.getInspectList(params);//获取巡检列表
     } else {
