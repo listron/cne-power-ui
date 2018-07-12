@@ -86,6 +86,13 @@
     display: flex;
     .logoPart{
       margin-right: 48px;
+      .instruction{
+        margin-top: 12px;
+        color: $promptColor;
+        span{
+          display: block;
+        }
+      }
     }
     .editPart{
       flex:1;

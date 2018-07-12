@@ -110,9 +110,7 @@ class SingleImgUploader extends Component {
     };
     return (
       <div className={styles.singleImgUploader}>
-        {showCurentUpload && <Upload
-          { ...imageProps }
-        >
+        {showCurentUpload && <Upload { ...imageProps } >
           <div className={styles.innerBox} style={{
             backgroundImage: `url(${currentImgInfor.thumbUrl})`,
             backgroundSize: 'cover',
@@ -123,9 +121,7 @@ class SingleImgUploader extends Component {
             <div className={styles.uploadText} >点击上传</div>
           </div>
         </Upload>}
-        {!showCurentUpload && <Upload 
-          { ...imageProps }
-        >
+        {!showCurentUpload && <Upload { ...imageProps } >
           <div className={styles.innerBox} style={{
             backgroundImage: `url(${preInfor.thumbUrl})`,
             backgroundSize: 'cover',

@@ -26,11 +26,15 @@ class EnterpriseEdit extends Component {
             <span className={styles.text}>编辑</span>
           </div>
           <div className={styles.editPart} >
-            <SingleImgUploader uploadPath={uploadPath} />
+            <div className={styles.logoPart} >
+              <SingleImgUploader uploadPath={uploadPath} />
+              <div className={styles.instruction}>
+                <span>LOGO上传</span>
+                <span>240px*240px为佳，大小不超过2M</span>
+              </div>
+            </div>
             <EditForm />
           </div>
-          这个是新增啊编辑啊的页面，是吧！！
-          
           <Button type="primary" onClick={()=>changeEnterpriseAttr({showPage:'detail'})}>保存</Button>
       </div>
     )
