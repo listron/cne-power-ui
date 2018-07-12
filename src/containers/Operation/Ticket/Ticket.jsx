@@ -58,10 +58,10 @@ class Ticket extends Component {
       <div className={styles.ticket}>
         <Tabs activeKey={this.state.tab} onChange={this.onChangeTab}>
           <TabPane tab="缺陷" key="defect">
-            <Defect showContainer={this.props.showContainer} onChangeShowContainer={this.props.onChangeShowContainer} />
+            <Defect showTab={this.state.tab} showContainer={this.props.showContainer} onChangeShowContainer={this.props.onChangeShowContainer} />
           </TabPane>
           <TabPane tab="巡检" key="inspect">
-            <Inspect showContainer={this.props.showContainer} onChangeShowContainer={this.props.onChangeShowContainer}  />
+            <Inspect showTab={this.state.tab} showContainer={this.props.showContainer} onChangeShowContainer={this.props.onChangeShowContainer}  />
           </TabPane>
         </Tabs>
       </div>

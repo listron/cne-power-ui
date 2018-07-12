@@ -11,6 +11,7 @@ class DefectList extends Component {
     currentPageSize: PropTypes.number,
     selectedRowKeys: PropTypes.array,
     sort: PropTypes.string,
+    showTab: PropTypes.string,
     total: PropTypes.number,
     defectStatusStatistics: PropTypes.object,
     isFetching: PropTypes.bool,
@@ -33,15 +34,17 @@ class DefectList extends Component {
   }
 
   componentDidMount() {
-    var params = {
-      defectSource: '3',
-      stationType: '2',
-      status: '5',
-      pageNum: 0,
-      pageSize: 10,
-      sort: ''
+    if(this.props.showTab === 'defect') {
+      var params = {
+        defectSource: '3',
+        stationType: '2',
+        status: this.props.status,
+        pageNum: this.props.currentPage - 1,
+        pageSize: this.props.currentPageSize,
+        sort: this.props.sort
+      }
+      this.props.getDefectList(params);
     }
-    this.props.getDefectList(params);
   }
 
   onChangePage = (page) => {
