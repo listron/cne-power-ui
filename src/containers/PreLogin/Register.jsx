@@ -12,8 +12,11 @@ class RegisterContainer extends Component {
   static propTypes = {
     pageTab: PropTypes.string,
     changePreLoginPage: PropTypes.func,
-    signupSendCode: PropTypes.func,
+    sendCode: PropTypes.func,
     signupCount: PropTypes.number,
+    phoneRegister: PropTypes.func,
+    registerStep: PropTypes.number,
+    checkEnterpriseDomain: PropTypes.func,
   }
   constructor(props) {
     super(props);
@@ -36,8 +39,10 @@ class RegisterContainer extends Component {
             </TabPane>
             <TabPane tab="注册企业" key="register">
               <RegisterForm 
-                signupSendCode={this.props.signupSendCode}
-                signupCount={this.props.signupCount}
+                sendCode={this.props.sendCode}
+                phoneRegister={this.props.phoneRegister}
+                registerStep={this.props.registerStep}
+                checkEnterpriseDomain={this.props.checkEnterpriseDomain}
               />
             </TabPane>
           </Tabs>
@@ -47,10 +52,11 @@ class RegisterContainer extends Component {
   }
 }
 const mapStateToProps = (state) => ({
-  signupCount: state.preLogin.registerReducer.get('signupCount'),
+  registerStep: state.preLogin.registerReducer.get('registerStep'),
 })
 const mapDispatchToProps = (dispatch) => ({
-  signupSendCode: params => dispatch({type: PreLoginAction.SIGNUP_SEND_CODE_SAGA, params}),
-  checkCodeNext: params => dispatch({ type: PreLoginAction.CHECK_CODE_NEXT_SAGA, params}),
+  sendCode: params => dispatch({type: PreLoginAction.SEND_CODE_SAGA, params}),
+  phoneRegister: params => dispatch({ type: PreLoginAction.CHECK_PHONE_REGISTER_SAGA, params }),
+  checkEnterpriseDomain: params => dispatch({ type: PreLoginAction.CHECK_ENTERPRISE_DOMAIN_SAGA, params}),
 })
 export default connect(mapStateToProps, mapDispatchToProps)(RegisterContainer);

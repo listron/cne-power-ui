@@ -31,6 +31,8 @@ export default {
     signupSendCode: '/v3/common/requestSmsCode',
     getShowStatus: '/v3/relation/queryShowStatus',
     changeShowStatus: '/v3/relation/changeShowStatus',
+    // 新的登陆注册接口
+
     ticket: {
       getDefectList: '/v3/defect/worklist/pc',
       batchDeleteDefect: '/v3/defect/delete/batch',

@@ -24,12 +24,12 @@ module.exports ={
     CHECK_CODE_SAGA : null,
     CHECK_CODE_SUCCESS : null,
     CHECK_CODE_FAIL : null,
-    // 注册用手机验证码
-    SIGNUP_SEND_CODE_SAGA : null,
-    SIGNUP_SEND_CODE_SUCCESS : null,
-    SIGNUP_SEND_CODE_FAIL : null,
-    SIGNUP_CHECK_CODE_SAGA : null,
-    SIGNUP_CHECK_CODE_SUCCESS : null,
-    SIGNUP_CHECK_CODE_FAIL : null,
+    // 注册用验证
+    CHECK_PHONE_REGISTER_SAGA: null,
+    CHECK_PHONE_REGISTER_SUCCESS: null,
+    CHECK_PHONE_REGISTER_FAIL: null,
+    CHECK_ENTERPRISE_DOMAIN_SAGA: null,
+    CHECK_ENTERPRISE_DOMAIN_SUCCESS:null,
+    CHECK_ENTERPRISE_DOMAIN_FAIL: null,
   })
 }

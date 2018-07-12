@@ -4,28 +4,39 @@ import Path from '../../../constants/path';
 import Config from '../../../constants/config';
 import { PreLoginAction } from '../../../constants/actionTypes/preLoginAction';
 
-//  注册企业 获取手机验证码 
-function *signupSendCode(action){
-  let url = Config.APIBasePath + Path.APISubPaths.signupSendCode;
+// 注册验证第一步
+function *checkPhoneRegister(action){
+  let url = "/mock/api/v3/login/phoneregister";
   try{
-    const response = yield call(axios.post, url, {phone: action.params.phone});
-    if(response.data.success){
-      yield put({ type: PreLoginAction.SIGNUP_SEND_CODE_SUCCESS, data: {phone: action.params.phone}})
-      yield put({ type: PreLoginAction.BEGIN_COUNT, payload: 60})
+    const response = yield call(axios.post, url, action.params);
+    if(response.data.code === '10000'){
+      yield put({type: PreLoginAction.CHECK_PHONE_REGISTER_SUCCESS, data: response.data})
     }else{
-      yield put({ type: PreLoginAction.SIGNUP_SEND_CODE_FAIL, data: {error: response.data.error, phone: action.params.phone}})
+      yield put({type: PreLoginAction.CHECK_PHONE_REGISTER_FAIL, data: {error: response.data.message}})
     }
   }catch(e){
     console.log(e);
   }
 }
-// 下一步 验收验证码
-function *signupCheckCode(action){
-  
+
+// 验证企业域名是否有效
+function *checkEnterpriseDomain(action){
+  let url = '/mock/api/v3/login/enterprisedomain';
+  try{
+    const response = yield call(axios.post, url, action.params);
+    if(response.data.code === '10000'){
+      yield put({ type: PreLoginAction.CHECK_ENTERPRISE_DOMAIN_SUCCESS, data: response.data})
+    }else{
+      yield put({ type: PreLoginAction.CHECK_ENTERPRISE_DOMAIN_FAIL, data: {error: response.data.message}})
+    }
+  }catch(e){
+    console.log(e)
+  }
 }
-export function* watchGetSignupCheck(){
-  yield takeLatest(PreLoginAction.SIGNUP_SEND_CODE_SAGA, signupSendCode);
+
+export function* watchCheckPhoneRegister(){
+  yield takeLatest(PreLoginAction.CHECK_PHONE_REGISTER_SAGA, checkPhoneRegister);
 }
-export function* watchSignupCheckCode(){
-  yield takeLatest(PreLoginAction.SIGNUP_CHECK_CODE_SAGA, signupCheckCode);
+export function* watchCheckEnterpriseDomain(){
+  yield takeLatest(PreLoginAction.CHECK_ENTERPRISE_DOMAIN_SAGA, checkEnterpriseDomain);
 }

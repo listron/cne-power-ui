@@ -10,34 +10,74 @@ const Step = Steps.Step;
 class RegisterForm extends Component{
   static propTypes = {
     form: PropTypes.object,
-    signupSendCode: PropTypes.func,
+    sendCode: PropTypes.func,
     signupCount: PropTypes.number,
+    registerStep: PropTypes.number,
+    phoneRegister: PropTypes.func,
+    checkEnterpriseDomain: PropTypes.func,
   }
 
   constructor(props){
     super(props);
     this.state = {
       current: 0,
+      timeValue: 0,
     }
-    this.onCheckMobile = this.onCheckMobile.bind(this);
-    this.onCreateEnterprise = this.onCreateEnterprise.bind(this);
   }
 
-  onCheckMobile(e){
+  componentWillReceiveProps(nextProps){
+    if(nextProps.registerStep === 2 && this.props.registerStep === 1){
+      console.log("第二步");
+      this.next();
+    }
+  }
+
+  onCheckMobile = (e) =>{
     e.preventDefault();
-    this.props.form.validateFields((err, values) => {
+    this.props.form.validateFields(['phoneNum','verificationCode'],(err, values) => {
       if(!err){
         console.log(values);
-        this.props.signupSendCode(values);
-        // this.next();
+        this.props.phoneRegister(values);
+        
       }
     })
-    
+  }
+  
+  
+  onEnterpriseInfo = (e) => {
+    e.preventDefault();
+    this.props.form.validateFields(['enterpriseDomain','enterpriseName','userAgreement'], (err, values) => {
+      if(!err){
+        console.log(values);
+        this.props.checkEnterpriseDomain({
+          'enterpriseDomain': values.enterpriseDomain,
+          'enterpriseName': values.enterpriseName,
+        });
+      }
+    })
   }
 
-  onCreateEnterprise(){
-    this.next();
+  // 点击获取验证码
+  sendCode = () => {
+    this.props.form.validateFields(['phoneNum'], (err, values) => {
+      if(!err){
+        this.props.sendCode(values);
+        this.setState({ timeValue: 10 })
+        this.timeDecline();
+      }
+    })
   }
+
+  timeDecline = () => {
+    let timeCount = setInterval(() => {
+      this.setState({ timeValue: this.state.timeValue-1 })
+      if(this.state.timeValue < 0){
+        clearInterval(timeCount);
+        this.setState({ timeValue: 0 })
+      }
+    },1000);
+  }
+
 
   next = () => {
     const current = this.state.current + 1;
@@ -76,7 +116,7 @@ class RegisterForm extends Component{
             <Form onSubmit={this.onCheckMobile}  className={styles.verificationCode} >
               <div>
                 <FormItem>
-                  {getFieldDecorator('mobileNumber', {
+                  {getFieldDecorator('phoneNum', {
                     rules: [{required: true, message: '请输入手机号'}]
                   })(
                     <Input className={styles.mobileNumber} prefix={<Icon type="mobile" />} placeholder="请输入手机号" />
@@ -85,16 +125,14 @@ class RegisterForm extends Component{
               </div>
               <div>
                 <FormItem  >
-                  {getFieldDecorator('checkCode',{
+                  {getFieldDecorator('verificationCode',{
                     rules: [{required: true, message: '请输入验证码'}]
                   })(
                     <Input className={styles.checkCode} prefix={<Icon type="lock" />} placeholder="验证码" />
                   )}
                 </FormItem>
-                <Button type="primary" 
-                  disabled={(this.props.signupCount !== 0).toString()} 
-                  onClick={this.signupSendCode} >
-                  {this.props.signupCount !== 0 ? `${this.props.signupCount}秒后可重新获取` : "点击获取验证码"}
+                <Button type="primary" disabled={this.state.timeValue !== 0} onClick={this.sendCode} >
+                  {this.state.timeValue !== 0 ? `${this.state.timeValue}秒后可重发` : "点击获取验证码"}
                 </Button>
               </div>
               <FormItem>
@@ -108,7 +146,7 @@ class RegisterForm extends Component{
       content: 
         (
           <div>
-            <Form onSubmit={this.onCreateEnterprise}  >
+            <Form onSubmit={this.onEnterpriseInfo}  >
               <FormItem label="企业域名"  {...formItemLayout}>
                 {getFieldDecorator('enterpriseDomain', {
                   rules: [{required: true, message: '请输入企业域名'}]
@@ -124,14 +162,14 @@ class RegisterForm extends Component{
                 )}
               </FormItem>
               <FormItem {...tailFormItemLayout} >
-                {getFieldDecorator('agreement',{
+                {getFieldDecorator('userAgreement',{
                   valuePropName: 'checked',
                 })(
                   <Checkbox>同意<a href="#">用户协议</a></Checkbox>
                 )}
               </FormItem>
               <FormItem {...tailFormItemLayout} >
-                <Button type="primary" htmlType="submit" className="login-form-button"  >创建企业</Button>
+                <Button type="primary" htmlType="submit" className="login-form-button"  >下一步</Button>
               </FormItem>
             </Form>
           </div>

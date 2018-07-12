@@ -10,22 +10,11 @@ import { PreLoginAction } from '../../../constants/actionTypes/preLoginAction';
 
 //账号密码登录
 function *getLogin(action){
-  let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.login;
-  console.log(url);
-  // let url = Config.TokenBasePath;
+  // let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.login;
+  let url = "/mock/api/v3/login";
   yield put({ type: PreLoginAction.LOGIN_FETCH });
   try {
-    const response = yield call(axios, {
-      method: 'post',
-      url,
-      header: {'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'},
-      data: stringify({
-        // 'grant_type': "password",
-        userName: action.params.userName,
-        password: action.params.password,
-      })
-    });
-    console.log(response);
+    const response = yield call(axios.post, url, action.params);
     if(response.data.code === "10000"){
       setCookie('authData',JSON.stringify(response.data.access_token));
       setCookie('phone', action.params.phone);
@@ -41,13 +30,12 @@ function *getLogin(action){
 }
 //获取短信验证码
 function *getVerificationCode(action){
-  let url = Config.APIBasePath + Path.APISubPaths.getVerificationCode;
+  // let url = Config.APIBasePath + Path.APISubPaths.getVerificationCode;
+  let url = "/mock/api/v3/login/verificationcode/";
   try{
     const response = yield call(axios.get, url, {phoneNum: action.params});
-    console.log(response)
-    if(response.data.success){
+    if(response.data.code === "10000"){
       yield put({ type: PreLoginAction.SEND_CODE_SUCCESS, data:{ phone: action.params.phone }});
-      yield put({ type: PreLoginAction.BEGIN_COUNT, payload: 60});
     } else {
       yield put({ type: PreLoginAction.SEND_CODE_FAIL, data:{ error: response.data.error, phone: action.params.phone}})
     }
@@ -57,7 +45,8 @@ function *getVerificationCode(action){
 }
 //手机+验证码登录
 function *checkCode(action){
-  let url = Config.APIBasePath + Path.APISubPaths.loginPhoneCode;
+  // let url = Config.APIBasePath + Path.APISubPaths.loginPhoneCode;
+  let url = "/mock/api/v3/login/phonecode";
   yield put({ type: PreLoginAction.LOGIN_FETCH})
   try{
     const response = yield call( axios.post, url, action.params);

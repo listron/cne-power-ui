@@ -21,13 +21,11 @@ class LoginForm extends Component{
     super(props);
     this.state = {
       showPasswordLogin: true,
+      timeValue: 0,
     }
-    this.onHandleSubmit = this.onHandleSubmit.bind(this);
-    this.hasErrors = this.hasErrors.bind(this);
-    this.sendCode = this.sendCode.bind(this);
   }
 
-  onHandleSubmit(e){
+  onHandleSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFields((err,values) => {
       if(!err){
@@ -39,16 +37,28 @@ class LoginForm extends Component{
       }
     })
   }
+  
+  timeDecline = () => {
+    let timeCount = setInterval(() => {
+      this.setState({ timeValue: this.state.timeValue-1 })
+      if(this.state.timeValue < 0){
+        clearInterval(timeCount);
+        this.setState({ timeValue: 0 })
+      }
+    },1000);
+  }
 
-  hasErrors(fieldsError){
+  hasErrors = (fieldsError) =>{
     return Object.keys(fieldsError).some(field => fieldsError[field]);
   }
 
   // 点击获取验证码
-  sendCode(){
-    this.props.form.validateFields(['phone'], (err, values) => {
-      if(!err && this.props.error === ''){
-        this.props.sendCode({...values, type:'signup'});
+  sendCode = () => {
+    this.props.form.validateFields(['phoneNum'], (err, values) => {
+      if(!err){
+        this.props.sendCode(values);
+        this.setState({ timeValue: 10 })
+        this.timeDecline();
       }
     })
   }
@@ -58,7 +68,7 @@ class LoginForm extends Component{
     let { showPasswordLogin } = this.state;
     return (
       <div>
-        {this.props.loginSuccess ? "登陆成功！" : 
+        {this.props.loginSuccess ? "登录成功！" : 
         <Form onSubmit={this.onHandleSubmit}  >
           {showPasswordLogin &&
             <div>
@@ -82,7 +92,7 @@ class LoginForm extends Component{
             <div className={styles.verificationCode}>
               <div>
                 <FormItem>
-                  {getFieldDecorator('phone', {
+                  {getFieldDecorator('phoneNum', {
                     rules: [{pattern: /(^1[3|4|5|7|8]\d{9}$)|(^09\d{8}$)/, required: true, message: '请输入手机号'}]
                   })(
                     <Input prefix={<Icon type="mobile" />} placeholder="请输入手机号" />
@@ -91,14 +101,14 @@ class LoginForm extends Component{
               </div>
               <div>
                 <FormItem  >
-                  {getFieldDecorator('password',{
+                  {getFieldDecorator('verificationCode',{
                     rules: [{required: true, message: '请输入验证码'}]
                   })(
                     <Input prefix={<Icon type="lock" />} placeholder="验证码" />
                   )}
                 </FormItem>
-                <Button type="primary" disabed={(this.props.count !== 0).toString()} onClick={this.sendCode} >
-                  {this.props.count !== 0 ? `${this.props.count}秒后可再次获取` : "点击获取验证码"}
+                <Button type="primary" disabled={this.state.timeValue !== 0} onClick={this.sendCode} >
+                  {this.state.timeValue !== 0 ? `${this.state.timeValue}秒后可重发` : "点击获取验证码"}
                 </Button>
               </div>
             </div>
