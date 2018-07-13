@@ -73,4 +73,4 @@ class EnterpriseDetail extends Component {
   }
 }
 
-export default EnterpriseDetail;
+export default EnterpriseDetail ;

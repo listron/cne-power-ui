@@ -23,7 +23,11 @@ class EnterpriseEdit extends Component {
       enterpriseLogo: props.enterpriseDetail.enterpriseLogo,
     }
   }
-
+  componentWillUnmount(){
+    this.props.changeEnterpriseStore({
+      showPage: 'detail',
+    });
+  }
   uploadLogo = (imgInfor) => {
     this.setState({
       enterpriseLogo: imgInfor.thumbUrl
@@ -31,8 +35,13 @@ class EnterpriseEdit extends Component {
   }
 
   cancelEdit = () => {
-    this.props.changeEnterpriseStore({showPage: 'detail'});
+    this.props.changeEnterpriseStore({
+      showPage: 'detail',
+      enterpriseDetail:{}
+    });
   }
+
+  
 
   render(){
     const { enterpriseLogo } = this.state;
@@ -40,22 +49,22 @@ class EnterpriseEdit extends Component {
     const uploadPath=`${pathConfig.basePaths.newAPIBasePath}${pathConfig.commonPaths.imgUploads}`;
     return (
       <div className={styles.enterpriseEdit} >
-          <div className={styles.editTop}>
-            <span className={styles.text}>编辑</span>
-            <Popconfirm overlayClassName={styles.cancelEdit} placement="rightBottom" title="退出后信息无法保存！" onConfirm={this.cancelEdit} okText="确定" cancelText="取消">
-              <Icon type="arrow-left" className={styles.backIcon} />
-            </Popconfirm>
-          </div>
-          <div className={styles.mainPart} >
-            <div className={styles.logoPart} >
-              <SingleImgUploader uploadPath={uploadPath} onOK={this.uploadLogo} data={{thumbUrl:enterpriseLogo}} />
-              <div className={styles.instruction}>
-                <span>LOGO上传</span>
-                <span>240px*240px为佳，大小不超过2M</span>
-              </div>
+        <div className={styles.editTop}>
+          <span className={styles.text}>编辑</span>
+          <Popconfirm overlayClassName={styles.cancelEdit} placement="rightBottom" title="退出后信息无法保存！" onConfirm={this.cancelEdit} okText="确定" cancelText="取消">
+            <Icon type="arrow-left" className={styles.backIcon} />
+          </Popconfirm>
+        </div>
+        <div className={styles.mainPart} >
+          <div className={styles.logoPart} >
+            <SingleImgUploader uploadPath={uploadPath} onOK={this.uploadLogo} data={{thumbUrl:enterpriseLogo}} />
+            <div className={styles.instruction}>
+              <span>LOGO上传</span>
+              <span>240px*240px为佳，大小不超过2M</span>
             </div>
-            <EditForm enterpriseDetail={enterpriseDetail} enterpriseLogo={enterpriseLogo} saveEnterpriseInfor={saveEnterpriseInfor} loading={loading} />
           </div>
+          <EditForm enterpriseDetail={enterpriseDetail} enterpriseLogo={enterpriseLogo} saveEnterpriseInfor={saveEnterpriseInfor} loading={loading} />
+        </div>
       </div>
     )
   }

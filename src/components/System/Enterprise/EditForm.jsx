@@ -38,7 +38,6 @@ class EditForm extends Component {
   render(){
     const { getFieldDecorator } = this.props.form;
     const { enterpriseDetail, loading } = this.props;
-    console.log(loading)
     return (
       <Form className={styles.editPart}>
         <FormItem label="用户名" >
