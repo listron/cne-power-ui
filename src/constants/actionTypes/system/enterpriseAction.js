@@ -9,7 +9,7 @@ module.exports = {
     GET_ENTERPRISE_ATTR_CHANGE_SUCCESS: null,
 
     GET_ENTERPRISE_LIST_SAGA: null,
-    CHANGE_SELECTED_ENTERPRISE_SAGA: null,
+    SAVE_ENTERPRISE_INFO_SAGA: null,//企业详情保存(编辑+新增)
 
     GET_ENTERPRISE_COMMON_FETCH_SUCCESS: null,
     

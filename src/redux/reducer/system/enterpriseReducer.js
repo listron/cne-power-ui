@@ -4,7 +4,7 @@ import { enterpriseAction } from '../../../constants/actionTypes/system/enterpri
 
 var initState = immutable.fromJS({
   loading: false,
-  showPage: 'edit',//默认展示列表页,可展示新建/编辑edit,查看detail页,
+  showPage: 'detail',//默认展示列表页,可展示新建/编辑edit,查看detail页,
   filterStatus: 2, //筛选条件全部2，启用0，禁用1
   enterpriseName:'', //筛选条件，企业名称
   enterprisePhone: '',//筛选条件，企业电话

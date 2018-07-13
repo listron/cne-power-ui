@@ -14,6 +14,7 @@ class EditForm extends Component {
   static propTypes = {
     form: PropTypes.object,
     enterpriseDetail: PropTypes.object,
+    saveEnterpriseInfor: PropTypes.func,
   }
 
   constructor(props){
@@ -25,6 +26,7 @@ class EditForm extends Component {
     this.props.form.validateFieldsAndScroll((error,values)=>{
       if(!error){
         console.log(values)
+        console.log(this.props.saveEnterpriseInfor)
       }
     })
   }
@@ -35,7 +37,9 @@ class EditForm extends Component {
     return (
       <Form className={styles.editPart}>
         <FormItem label="用户名" >
-          {getFieldDecorator('createUser')(
+          {getFieldDecorator('createUser',{rules: [{
+            initialValue: enterpriseDetail.createUser
+          }]})(
             <span>{enterpriseDetail.createUser}</span>
           )}
         </FormItem>
@@ -44,20 +48,24 @@ class EditForm extends Component {
             required : true,
             message: '请输入30字以内的企业名称',
             max: 29,
-            initialValue: enterpriseDetail.enterpriseName
+            initialValue: enterpriseDetail.enterpriseName || ''
           }]})(
             <Input />
           )}
           <span className={styles.instructionText}>(30字以内)</span>
         </FormItem>
         <FormItem label="注册手机" >
-          {getFieldDecorator('createPhone')(
+          {getFieldDecorator('createPhone',{rules: [{
+            initialValue: enterpriseDetail.createPhone
+          }]})(
             <span>{enterpriseDetail.createPhone}</span>
           )}
           <span className={styles.instructionText}>(30字以内)</span>
         </FormItem>
         <FormItem label="企业域名" >
-          {getFieldDecorator('enterpriseDomain')(
+          {getFieldDecorator('enterpriseDomain',{rules: [{
+            initialValue: enterpriseDetail.enterpriseDomain
+          }]})(
             <span>{enterpriseDetail.enterpriseDomain}</span>
           )}
         </FormItem>
@@ -65,7 +73,7 @@ class EditForm extends Component {
           {getFieldDecorator('enterpriseNum',{rules:[{
             message: '请输入正确格式的企业电话',
             pattern: /^(\d{7,11})([,](\d{7,11})){0,}([,]?)$/,
-            initialValue: enterpriseDetail.enterpriseNum
+            initialValue: enterpriseDetail.enterpriseNum || ''
           }]})(
             <Input />
           )}
@@ -76,7 +84,7 @@ class EditForm extends Component {
             rules: [{
               max: 79,
               message: '80字以内',
-              initialValue: enterpriseDetail.enterpriseWebsite
+              initialValue: enterpriseDetail.enterpriseWebsite || ''
             }]
           })(
             <Input />
@@ -88,7 +96,7 @@ class EditForm extends Component {
             rules: [{
               max: 79,
               message: '80字以内',
-              initialValue: enterpriseDetail.enterpriseAddress
+              initialValue: enterpriseDetail.enterpriseAddress || ''
             }]
           })(
             <Input />
@@ -98,7 +106,7 @@ class EditForm extends Component {
         <FormItem label="简介" className={styles.dealProposal} >
           {getFieldDecorator('enterpriseProfile',{
             rules:[{
-              initialValue: enterpriseDetail.enterpriseProfile
+              initialValue: enterpriseDetail.enterpriseProfile || ''
             }]
           })(
             <InputLimit size={400} height={102} width={736} />

@@ -51,7 +51,7 @@ function *getEnterpriseDetail(action){
   }
 }
 //新建+编辑企业信息
-function *changeEnterprise(action){
+function *saveEnterpriseInfor(action){
   const { payload } = action;
   const url = '/mock/system/changeEnterprise';
   try{
@@ -72,6 +72,6 @@ export function* watchEnterpriseSaga() {
   yield takeLatest(enterpriseAction.GET_ENTERPRISE_ATTR_CHANGE_SAGA, changeEnterpriseAttr);
   yield takeLatest(enterpriseAction.GET_ENTERPRISE_LIST_SAGA, getEnterprisList);
   yield takeLatest(enterpriseAction.GET_ENTERPRISE_DETAIL_SAGA, getEnterpriseDetail);
-  yield takeLatest(enterpriseAction.CHANGE_SELECTED_ENTERPRISE_SAGA, changeEnterprise);
+  yield takeLatest(enterpriseAction.SAVE_ENTERPRISE_INFO_SAGA, saveEnterpriseInfor);
 }
 
