@@ -5,10 +5,10 @@ import Path from '../../../constants/path';
 import { enterpriseAction } from '../../../constants/actionTypes/system/enterpriseAction';
 
 //存储payload指定参数，替换reducer-store属性。
-function *changeEnterpriseAttr(action){
+function *changeEnterpriseStore(action){
   const { payload } = action;
   yield put({
-    type:  enterpriseAction.GET_ENTERPRISE_ATTR_CHANGE_SUCCESS,
+    type:  enterpriseAction.CHANGE_ENTERPRISE_STORE_SUCCESS,
     payload,
   })
 }
@@ -47,7 +47,7 @@ function *getEnterpriseDetail(action){
     yield put({
       type:  enterpriseAction.GET_ENTERPRISE_COMMON_FETCH_SUCCESS,
       payload:{
-        enterpriseDetail: response.data.data
+        enterpriseDetail: response.data.data,
       },
     });
   }catch(e){
@@ -95,7 +95,7 @@ function *saveEnterpriseInfor(action){
 
 
 export function* watchEnterpriseSaga() {
-  yield takeLatest(enterpriseAction.GET_ENTERPRISE_ATTR_CHANGE_SAGA, changeEnterpriseAttr);
+  yield takeLatest(enterpriseAction.GET_ENTERPRISE_ATTR_CHANGE_SAGA, changeEnterpriseStore);
   // yield takeLatest(enterpriseAction.GET_ENTERPRISE_LIST_SAGA, getEnterprisList);
   yield takeLatest(enterpriseAction.GET_ENTERPRISE_DETAIL_SAGA, getEnterpriseDetail);
   yield takeLatest(enterpriseAction.SAVE_ENTERPRISE_INFO_SAGA, saveEnterpriseInfor);

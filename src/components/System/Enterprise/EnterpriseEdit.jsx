@@ -1,7 +1,7 @@
 
 
 import React, { Component } from 'react';
-import { Icon } from 'antd';
+import { Icon, Popconfirm } from 'antd';
 import PropTypes from 'prop-types';
 import styles from './enterprise.scss';
 import EditForm from './EditForm';
@@ -11,6 +11,7 @@ import pathConfig from '../../../constants/path';
 class EnterpriseEdit extends Component {
   static propTypes = {
     loading: PropTypes.bool,
+    changeEnterpriseStore: PropTypes.func,
     getEnterpriseDetail: PropTypes.func,
     saveEnterpriseInfor: PropTypes.func,
     enterpriseDetail: PropTypes.object,
@@ -29,6 +30,10 @@ class EnterpriseEdit extends Component {
     })
   }
 
+  cancelEdit = () => {
+    this.props.changeEnterpriseStore({showPage: 'detail'});
+  }
+
   render(){
     const { enterpriseLogo } = this.state;
     const { enterpriseDetail,saveEnterpriseInfor, loading } = this.props;
@@ -37,7 +42,9 @@ class EnterpriseEdit extends Component {
       <div className={styles.enterpriseEdit} >
           <div className={styles.editTop}>
             <span className={styles.text}>编辑</span>
-            <Icon type="arrow-left" className={styles.backIcon} />
+            <Popconfirm overlayClassName={styles.cancelEdit} placement="rightBottom" title="退出后信息无法保存！" onConfirm={this.cancelEdit} okText="确定" cancelText="取消">
+              <Icon type="arrow-left" className={styles.backIcon} />
+            </Popconfirm>
           </div>
           <div className={styles.mainPart} >
             <div className={styles.logoPart} >

@@ -20,7 +20,7 @@ class EnterpriseDetail extends Component {
     }
   }
   ignoreEdit = () => {
-    this.props.ignoreEnterpirseEdit({id:'1122'})
+    this.props.ignoreEnterpirseEdit({id:'1122'});
     this.setState({
       showInforTip: false
     })
@@ -32,7 +32,7 @@ class EnterpriseDetail extends Component {
     const { showInforTip } = this.state;
     return (
       <div className={styles.enterpriseDetail}>
-        <div className={styles.topHandler}>
+        <div className={styles.detailTop}>
           <Button className={styles.editButton} onClick={()=>changeEnterpriseStore({showPage:'edit'})}>编辑</Button>
           {showInforTip && <span className={styles.infoTip} >
             <span className={styles.toEdit} onClick={()=>changeEnterpriseStore({showPage:'edit'})} >完善企业信息,请点击编辑</span>

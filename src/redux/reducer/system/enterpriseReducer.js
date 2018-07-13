@@ -24,7 +24,7 @@ const enterpriseReducer = (state = initState, action) => {
       return state.set('loading',true)
     case enterpriseAction.GET_ENTERPRISE_COMMON_FETCH_SUCCESS :
       return state.merge(immutable.fromJS(action.payload)).set('loading',false)
-    case enterpriseAction.GET_ENTERPRISE_ATTR_CHANGE_SUCCESS:
+    case enterpriseAction.CHANGE_ENTERPRISE_STORE_SUCCESS:
       return state.merge(immutable.fromJS(action.payload))
   }
   return state;

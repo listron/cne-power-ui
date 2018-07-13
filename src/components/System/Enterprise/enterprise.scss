@@ -8,59 +8,47 @@
 */
 @import '../../../theme/theme.scss';
 
-.topHandler{//详情，编辑页通用顶部编辑栏
+@mixin top(){//详情，编辑通用顶部基础样式
   @include lineheight(64px);
   display: flex;
   padding-left: 32px;
   align-items: center;
   border-bottom: solid 1px $promptColor;  
-  .editButton{
-    &:hover{
-      background-color: $themeColor;
-      color: #fff;
-    }
-  }
-  .text{
-    font-size:18px;
-    color: $darkColor;
-    letter-spacing:4px;
-  }
-  .infoTip{
-    height: 30px;
-    width: 323px;
-    line-height: 30px;
-    font-size: 12px;
-    margin-left: 16px;
-    background-color: rgb(231,243,252);
-    border: 1px solid rgb(207,232,250);
-    border-radius:4px;
-    .toEdit,.ignore{
-      cursor: pointer;
-      color: $darkColor;
-    }
-    .toEdit{
-      margin-left: 36px;
-    }
-    .ignore{
-      margin-left: 60px;
-    }
-  }
-  .backIcon{
-    color: $lightColor;
-    font-size: 20px;
-    border-left: 1px solid $promptColor;
-    height: 100%;
-    line-height: 64px;
-    width: 64px;
-    cursor: pointer;
-  }
 }
 
 .enterpriseDetail{//详情页
   line-height: 30px;
   flex: 1;
   background-color: #fff;
-  
+  .detailTop{
+    @include top;
+    .editButton{
+      &:hover{
+        background-color: $themeColor;
+        color: #fff;
+      }
+    }
+    .infoTip{
+      height: 30px;
+      width: 323px;
+      line-height: 30px;
+      font-size: 12px;
+      margin-left: 16px;
+      background-color: rgb(231,243,252);
+      border: 1px solid rgb(207,232,250);
+      border-radius:4px;
+      .toEdit,.ignore{
+        cursor: pointer;
+        color: $darkColor;
+      }
+      .toEdit{
+        margin-left: 36px;
+      }
+      .ignore{
+        margin-left: 60px;
+      }
+    }
+  }
   .enterpriseName{//企业名称栏
     background: #f1f1f1;
     color: $darkColor;
@@ -112,6 +100,24 @@
 .enterpriseEdit{//编辑页
   flex:1;
   background-color: #fff;
+  .editTop{
+    @include top;
+    justify-content: space-between;
+    .text{
+      font-size:18px;
+      color: $darkColor;
+      letter-spacing:4px;
+    }
+    .backIcon{
+      color: $lightColor;
+      font-size: 20px;
+      border-left: 1px solid $promptColor;
+      height: 100%;
+      line-height: 64px;
+      width: 64px;
+      cursor: pointer;
+    }
+  }
   .mainPart{
     margin: 24px 32px 0;    
     display: flex;
@@ -176,3 +182,7 @@
     }
   }
 }
+// .cancelEdit{
+//   background-color: lightblue;
+//   position: fixed;
+// }
