@@ -73,7 +73,6 @@ class LoginContainer extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  // domain: state.login.get('domain'),
   loginSuccess: state.preLogin.loginReducer.get('loginSuccess'),
 });
 

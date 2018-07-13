@@ -73,7 +73,7 @@ class LoginForm extends Component{
           {showPasswordLogin &&
             <div>
               <FormItem>
-                {getFieldDecorator('userName', {
+                {getFieldDecorator('userName',{
                   rules: [{required: true, message: '请输入手机号/用户名'}]
                 })(
                   <Input prefix={<Icon type="user" />} placeholder="请输入手机号/用户名" />
@@ -120,7 +120,7 @@ class LoginForm extends Component{
               </span>
               <span onClick={() => this.props.changePage({pageTab:'forget'})} >忘记密码</span>
             </div>
-            <Button type="primary" htmlType="submit" className="login-form-button" disabled={this.hasErrors(getFieldsError())} >登录</Button>
+            <Button type="primary" htmlType="submit" disabled={this.hasErrors(getFieldsError())} >登录</Button>
             <br />
             <span>易巡登录</span>
           </FormItem>

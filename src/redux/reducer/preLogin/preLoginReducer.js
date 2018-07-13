@@ -3,6 +3,7 @@ import { combineReducers } from 'redux';
 import { PreLoginAction } from '../../../constants/actionTypes/preLoginAction';
 import loginReducer from './loginReducer';
 import registerReducer from './registerReducer';
+import joinInReducer from './joinInReducer';
 var initState = immutable.fromJS({
   pageTab:'login', //四个页面切换： login,register,joinIn,forget
 });
@@ -15,5 +16,5 @@ const preLoginReducer = (state = initState, action) => {
   return state;
 }
 
-const preLoginReducers = combineReducers({ preLoginReducer, loginReducer, registerReducer,  });
+const preLoginReducers = combineReducers({ preLoginReducer, loginReducer, registerReducer, joinInReducer,  });
 export default preLoginReducers;

@@ -80,6 +80,22 @@ module.exports = [
     },
     delay:1000,
     error:{}
+  },{
+    api:'/mock/api/v3/login/enterpriseinfo/',//根据域名或名称获取企业信息
+    method:'get',
+    response:{
+      "code": "10000",
+      "message": "请求成功",
+      "data": {
+        "enterpriseId": '00000000',
+        "enterpriseName": '协合新能源',
+        'enterpriseLogin': 'https://www.baidu.com/img/bd_logo1.png?where=super',
+        'enterpriseDomain': 'www.cnegroup.com'  
+      },
+      "serviceCode": "3.0"
+    },
+    delay:1000,
+    error:{}
   },
 
 ]

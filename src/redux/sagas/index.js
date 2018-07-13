@@ -32,6 +32,10 @@ import {
 } from './preLogin/registerSaga';
 
 import {
+  watchJoinInSaga,
+} from './preLogin/joinInSaga';
+
+import {
   watchGetDefectList,
   watchBatchDeleteDefect,
   watchBatchSendDefect,
@@ -125,7 +129,7 @@ export default function* rootSaga() {
     watchVerificationCode(),
     watchCheckCode(),
     watchCheckPhoneRegister(),
-    
+    watchJoinInSaga(),
     // watchGetCompInfo(),
     // watchCheckPhone(),
     // watchChangePSW(),
