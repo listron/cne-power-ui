@@ -12,7 +12,6 @@ var initState = immutable.fromJS({
     code: '',
     message: '',
   },
-  count: 0,
   phone: '',
   code: '',
   user: {

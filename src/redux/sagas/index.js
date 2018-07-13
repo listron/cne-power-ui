@@ -10,11 +10,11 @@ import {
   // watchSendCode, 
   watchLogin, 
   // watchCheckCode, 
-  watchChangePSW, 
-  watchSignup, 
-  watchGetShowStatus, 
-  watchChangeShowStatus, 
-  watchCreateRegister 
+  // watchChangePSW, 
+  // watchSignup, 
+  // watchGetShowStatus, 
+  // watchChangeShowStatus, 
+  // watchCreateRegister 
 } from './login';
 
 import { 
@@ -23,9 +23,13 @@ import {
 
 import {
   watchLoginSaga,
-  watchSendCode,
+  watchVerificationCode,
   watchCheckCode,
 } from './preLogin/loginSaga';
+
+import {
+  watchCheckPhoneRegister,
+} from './preLogin/registerSaga';
 
 import {
   watchGetDefectList,
@@ -114,21 +118,23 @@ export default function* rootSaga() {
     watchGetDevices(),
     watchGetPosts(),
     watchGetPartition(),
-    //login
-    // watchGetCompInfo(),
+    //登陆注册
     watchPreLoginPageChangeSaga(), 
     watchLoginSaga(),
     watchLogin(),
-    // watchCheckPhone(),
-    watchSendCode(),
+    watchVerificationCode(),
     watchCheckCode(),
-    watchChangePSW(),
-    // watchGetComInfoSu(),
-    watchSignup(),
-    // watchCheckPhoneSU(),
-    watchGetShowStatus(),
-    watchChangeShowStatus(),
-    watchCreateRegister(),
+    watchCheckPhoneRegister(),
+    
+    // watchGetCompInfo(),
+    // watchCheckPhone(),
+    // watchChangePSW(),
+    // // watchGetComInfoSu(),
+    // watchSignup(),
+    // // watchCheckPhoneSU(),
+    // watchGetShowStatus(),
+    // watchChangeShowStatus(),
+    // watchCreateRegister(),
     //Defect
     watchGetDefectList(),
     watchSetDefectId(),

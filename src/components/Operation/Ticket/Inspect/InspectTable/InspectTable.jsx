@@ -16,7 +16,6 @@ class InspectTable extends Component {
     total: PropTypes.number,
     onChangePage: PropTypes.func,
     onChangePageSize: PropTypes.func,
-    getInspectList: PropTypes.func,
     loading: PropTypes.bool,
     status: PropTypes.string,
     onChangeStatus: PropTypes.func,
@@ -50,22 +49,22 @@ class InspectTable extends Component {
   }
 
   onChangeTable = (pagination, filter, sorter) => {
-    let pageNum = pagination.current - 1;
-    let pageSize = pagination.pageSize;
-    let params = {
-      "stationType": "2",
-      "status": this.props.status,
-      "pageNum": pageNum,
-      "pageSize": pageSize,
-      "sort": this.onChangeSort(pageNum, sorter),
+    if(Object.keys(sorter).length !== 0) {
+      let sortRules = this.getSortParam(sorter);
+      this.props.onChangeSort(sortRules);
+    } else {
+      this.props.onChangeSort('');
     }
-    this.props.getInspectList(params);
   }
 
-  onChangeSort = (pageNum, sorter) => {
+  onInspectCheck = () => {
+    this.props.inspectCheckBatch({inspectId: this.state.selectedRowKeys.toString()})
+  }
+
+  getSortParam = (sorter) => {
     var sortField = 0;
     var sortMode = sorter.order === "ascend" ? 0 : 1;
-    switch (sorter.columnKey){
+    switch (sorter.field){
       case "inspectName":
         sortField = 0;
         break;
@@ -75,7 +74,7 @@ class InspectTable extends Component {
       case "startTime":
         sortField = 2;
         break;
-      case "deadline":
+      case "checkTime":
         sortField = 3;
         break;
       case "inspectStatus":
@@ -84,10 +83,6 @@ class InspectTable extends Component {
     }
     var sortRule = sortField + "," +sortMode;
     return sortRule;
-  }
-
-  onInspectCheck = () => {
-    this.props.inspectCheckBatch({inspectId: this.state.selectedRowKeys.toString()})
   }
   render(){
     let list = this.props.list;
@@ -100,6 +95,12 @@ class InspectTable extends Component {
       showSizeChanger: true,
       current: this.props.pageNum,
       pageSize: this.props.pageSize,
+      onShowSizeChange: (current, pageSize) => {
+        this.props.onChangePageSize(pageSize);
+      },
+      onChange: (current) => {
+        this.props.onChangePage(current);
+      }
     } 
     const columns = [{
       title: '巡检名称',

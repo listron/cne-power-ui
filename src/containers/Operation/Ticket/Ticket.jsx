@@ -36,7 +36,8 @@ class Ticket extends Component {
         stationType: "2",
         status: '5',
         pageNum: 0,
-        pageSize: 10
+        pageSize: 10,
+        sort: '',
       }
       this.props.getInspectList(params);//获取巡检列表
     } else {
@@ -58,10 +59,10 @@ class Ticket extends Component {
       <div className={styles.ticket}>
         <Tabs activeKey={this.state.tab} onChange={this.onChangeTab}>
           <TabPane tab="缺陷" key="defect">
-            <Defect showContainer={this.props.showContainer} onChangeShowContainer={this.props.onChangeShowContainer} />
+            <Defect showTab={this.state.tab} showContainer={this.props.showContainer} onChangeShowContainer={this.props.onChangeShowContainer} />
           </TabPane>
           <TabPane tab="巡检" key="inspect">
-            <Inspect showContainer={this.props.showContainer} onChangeShowContainer={this.props.onChangeShowContainer}  />
+            <Inspect showTab={this.state.tab} showContainer={this.props.showContainer} onChangeShowContainer={this.props.onChangeShowContainer}  />
           </TabPane>
         </Tabs>
       </div>

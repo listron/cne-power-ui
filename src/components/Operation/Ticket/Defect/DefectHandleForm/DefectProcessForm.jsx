@@ -1,12 +1,11 @@
 import React,{ Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './defectHandleForm.scss';
-import {Form, Radio, Input, Button, Switch} from 'antd';
+import {Form, Input, Button, Switch} from 'antd';
 import CommonInput from '../../../../Common/CommonInput';
 import ImgUploader from '../../../../Common/Uploader/ImgUploader';
+import ProcessFormButtons from './ProcessFormButtons';
 const FormItem = Form.Item;
-const RadioButton = Radio.Button;
-const RadioGroup = Radio.Group;
 
 class DefectProcessForm extends Component {
   static propTypes = {
@@ -43,7 +42,7 @@ class DefectProcessForm extends Component {
 
   render() {   
     const { getFieldDecorator, getFieldValue } = this.props.form;
-    const dealResult = getFieldValue('dealResult');
+    const dealResult = getFieldValue('defectSolveResult');
     const formItemLayout = {
       labelCol: { span: 4 },
       wrapperCol: { span: 32 },
@@ -51,25 +50,22 @@ class DefectProcessForm extends Component {
     return (
       <Form onSubmit={this.onSubmit} className={styles.handleForm}>
         <FormItem label="处理结果" {...formItemLayout}>
-        {getFieldDecorator('dealResult', {
+        {getFieldDecorator('defectSolveResult', {
             rules: [{ 
               required: true 
             }],
-            initialValue: 'notSolve'
+            initialValue: '1'
           })(
-            <RadioGroup>
-              <RadioButton value="notSolve">未解决</RadioButton>
-              <RadioButton value="solve">已解决</RadioButton>
-            </RadioGroup>
+            <ProcessFormButtons onDefectSolveChange={this.onDefectSolveChange} />
           )}
         </FormItem>
         <FormItem
           {...formItemLayout}
           className={styles.dealProposal} 
-          label={dealResult === 'solve'?'处理过程':'处理建议'}>
+          label={dealResult === '0'?'处理过程':'处理建议'}>
           {getFieldDecorator('defectSolveInfo', {
               rules: [{ 
-                required: dealResult === 'solve', 
+                required: dealResult === '0', 
                 message: '请输入处理过程'
               }],
               initialValue: ''
@@ -89,7 +85,7 @@ class DefectProcessForm extends Component {
             <ImgUploader editable={true}  />
           )}
         </FormItem>
-        {dealResult === 'solve' && (
+        {dealResult === '0' && (
           <FormItem label="更换备件" {...formItemLayout}>
             <div className={styles.replacePart}>
               <Switch checked={this.state.replace} onChange={this.onChangeReplace} />

@@ -292,20 +292,6 @@ function* sendDefect(action) {
     const response = yield call(axios.post, url, action.params);
     if(response.data.code === '10000'){
       message.success('下发成功！');
-      const pageSize = yield select(state => state.operation.defect.get('currentPageSize'));
-      const status = yield select(state => state.operation.defect.get('status'));
-      const sort = yield select(state => state.operation.defect.get('sort'));
-      yield put({ 
-        type: TicketAction.GET_DEFECT_LIST_SAGA, 
-        params: {
-          defectSource: '3',
-          stationType: '2',
-          status: status,
-          pageNum: 0,
-          pageSize: pageSize,
-          sort: sort
-        }
-      });
       yield put({
         type: TicketAction.CHANGE_SHOW_CONTAINER_SAGA,
         params: {container: 'list'},
@@ -332,20 +318,6 @@ function* rejectDefect(action) {
     const response = yield call(axios.post, url, action.params);
     if(response.data.code === '10000'){
       message.success('驳回成功！');
-      const pageSize = yield select(state => state.operation.defect.get('currentPageSize'));
-      const status = yield select(state => state.operation.defect.get('status'));
-      const sort = yield select(state => state.operation.defect.get('sort'));
-      yield put({ 
-        type: TicketAction.GET_DEFECT_LIST_SAGA, 
-        params: {
-          defectSource: '3',
-          stationType: '2',
-          status: status,
-          pageNum: 0,
-          pageSize: pageSize,
-          sort: sort
-        }
-      });
       yield put({
         type: TicketAction.CHANGE_SHOW_CONTAINER_SAGA,
         params: {container: 'list'},
@@ -371,21 +343,7 @@ function* closeDefect(action) {
   try {
     const response = yield call(axios.post, url, action.params);
     if(response.data.code === '10000'){
-      message.success('关闭成功！');
-      const pageSize = yield select(state => state.operation.defect.get('currentPageSize'));
-      const status = yield select(state => state.operation.defect.get('status'));
-      const sort = yield select(state => state.operation.defect.get('sort'));
-      yield put({ 
-        type: TicketAction.GET_DEFECT_LIST_SAGA, 
-        params: {
-          defectSource: '3',
-          stationType: '2',
-          status: status,
-          pageNum: 0,
-          pageSize: pageSize,
-          sort: sort
-        }
-      }); 
+      message.success('关闭成功！'); 
       yield put({
         type: TicketAction.CHANGE_SHOW_CONTAINER_SAGA,
         params: {container: 'list'},
@@ -412,20 +370,6 @@ function* handleDefect(action) {
     const response = yield call(axios.post, url, action.params);
     if(response.data.code === '10000'){
       message.success('处理缺陷成功！');
-      const pageSize = yield select(state => state.operation.defect.get('currentPageSize'));
-      const status = yield select(state => state.operation.defect.get('status'));
-      const sort = yield select(state => state.operation.defect.get('sort'));
-      yield put({ 
-        type: TicketAction.GET_DEFECT_LIST_SAGA, 
-        params: {
-          defectSource: '3',
-          stationType: '2',
-          status: status,
-          pageNum: 0,
-          pageSize: pageSize,
-          sort: sort
-        }
-      });
       yield put({
         type: TicketAction.CHANGE_SHOW_CONTAINER_SAGA,
         params: {container: 'list'},
@@ -453,20 +397,6 @@ function* checkDefect(action) {
     console.log(response)
     if(response.data.code === '10000'){
       message.success('验收成功！');
-      const pageSize = yield select(state => state.operation.defect.get('currentPageSize'));
-      const status = yield select(state => state.operation.defect.get('status'));
-      const sort = yield select(state => state.operation.defect.get('sort'));
-      yield put({ 
-        type: TicketAction.GET_DEFECT_LIST_SAGA, 
-        params: {
-          defectSource: '3',
-          stationType: '2',
-          status: status,
-          pageNum: 0,
-          pageSize: pageSize,
-          sort: sort
-        }
-      });
       yield put({
         type: TicketAction.CHANGE_SHOW_CONTAINER_SAGA,
         params: {container: 'list'},
