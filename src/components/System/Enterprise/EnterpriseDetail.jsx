@@ -4,13 +4,14 @@ import React, { Component } from 'react';
 import { Button, Icon } from 'antd';
 import PropTypes from 'prop-types';
 import styles from './enterprise.scss';
-import { Link } from 'react-router-dom';
+import { Link, Prompt } from 'react-router-dom';
 
 class EnterpriseDetail extends Component {
   static propTypes = {
     changeEnterpriseStore: PropTypes.func,
     ignoreEnterpirseEdit: PropTypes.func,
     enterpriseDetail: PropTypes.object,
+    history: PropTypes.object
   }
 
   constructor(props){

@@ -37,7 +37,6 @@ class EnterpriseEdit extends Component {
   cancelEdit = () => {
     this.props.changeEnterpriseStore({
       showPage: 'detail',
-      enterpriseDetail:{}
     });
   }
 
