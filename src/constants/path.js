@@ -55,6 +55,11 @@ export default {
       deleteAbnormal: '/v3/inspect/deleteabnormal',
       getInspectStandard:'/v3/inspect/standard',
       inspectCheckBatch:'/v3/inspect/check/batch',
+    },
+    system: {
+      getEnterprisList: '/v3/enterprise/list',
+      getEnterprisDetail: '/v3/enterprise',
+      saveEnterpriseDetail: '/api/v3/enterprise/change',
     }
   }
 }

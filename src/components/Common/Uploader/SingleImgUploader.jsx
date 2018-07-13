@@ -75,7 +75,6 @@ class SingleImgUploader extends Component {
 
   handleUpload = ({file,fileList}) => {
     if (file.status !== 'uploading') {
-      console.log(fileList)
       const { showCurentUpload } = this.state;
       const upLoadfiles = fileList.map(e => {
         return {

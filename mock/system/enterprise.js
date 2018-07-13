@@ -43,7 +43,7 @@ module.exports = [
       "data": {
         enterpriseId:'11111',	
         enterpriseIdName:'图书馆电站',	
-        enterpriseLogo:'1fjklew',	
+        enterpriseLogo:'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',	
         enterpriseNum:'12153413213'	,
         enterpriseDomain:'www.baidu.com',	
         enterpriseWebsite:'www.google.com',	
@@ -58,7 +58,6 @@ module.exports = [
     },
     delay:1000,
     error:{}
-    
   }
 
 ]
