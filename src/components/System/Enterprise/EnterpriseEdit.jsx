@@ -7,18 +7,24 @@ import styles from './enterprise.scss';
 import EditForm from './EditForm';
 import SingleImgUploader from '../../Common/Uploader/SingleImgUploader';
 import pathConfig from '../../../constants/path';
-
+//企业信息编辑页
 class EnterpriseEdit extends Component {
   static propTypes = {
     changeEnterpriseAttr: PropTypes.func,
+    getEnterpriseDetail: PropTypes.func,
+    enterpriseDetail: PropTypes.object,
   }
 
   constructor(props){
     super(props);
   }
 
+  // componentDidMount(){//数据获取来源于企业详情的数据请求
+  //   this.props.getEnterpriseDetail()
+  // }
+
   render(){
-    const { changeEnterpriseAttr } = this.props;
+    const { changeEnterpriseAttr, enterpriseDetail } = this.props;
     const uploadPath=`${pathConfig.basePaths.newAPIBasePath}${pathConfig.commonPaths.imgUploads}`;
     return (
       <div className={styles.enterpriseEdit} >
@@ -33,7 +39,7 @@ class EnterpriseEdit extends Component {
                 <span>240px*240px为佳，大小不超过2M</span>
               </div>
             </div>
-            <EditForm />
+            <EditForm enterpriseDetail={enterpriseDetail} />
           </div>
           <Button type="primary" onClick={()=>changeEnterpriseAttr({showPage:'detail'})}>保存</Button>
       </div>

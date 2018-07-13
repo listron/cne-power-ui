@@ -51,6 +51,7 @@ module.exports = [
         enterpriseProfile:'新能源崛起！',
         enterpriseStatus:1,
         createUser:'孙思邈',
+        createPhone: 15214449995,
         createtime:'公元前2年2月2日，22点22分22秒',	
       },
       "serviceCode": "3.0"
