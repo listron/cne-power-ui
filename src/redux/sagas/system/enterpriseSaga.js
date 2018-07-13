@@ -54,6 +54,23 @@ function *getEnterpriseDetail(action){
     console.log(e);
   }
 }
+//初次进入企业-不再提醒编辑企业详情
+function *ignoreEnterpirseEdit(action){
+  const { payload } = action;
+  const url = '/mock/system/ignoreDetail';
+  // const url = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.system.saveEnterpriseDetail}`
+  try{
+    yield put({ type:enterpriseAction.ENTERPRISE_FETCH });
+    const response = yield call(axios.post,url,payload);
+    if(response.data.code === "10000"){
+      yield put({
+        type:  enterpriseAction.GET_ENTERPRISE_COMMON_FETCH_SUCCESS,
+      });
+    }
+  }catch(e){
+    console.log(e);
+  }
+}
 //新建+编辑企业信息
 function *saveEnterpriseInfor(action){
   const { payload } = action;
@@ -82,5 +99,6 @@ export function* watchEnterpriseSaga() {
   // yield takeLatest(enterpriseAction.GET_ENTERPRISE_LIST_SAGA, getEnterprisList);
   yield takeLatest(enterpriseAction.GET_ENTERPRISE_DETAIL_SAGA, getEnterpriseDetail);
   yield takeLatest(enterpriseAction.SAVE_ENTERPRISE_INFO_SAGA, saveEnterpriseInfor);
+  yield takeLatest(enterpriseAction.IGNORE_ENTERPRISE_EDIT,ignoreEnterpirseEdit);
 }
 
