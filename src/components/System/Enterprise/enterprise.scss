@@ -10,7 +10,9 @@
 
 .topHandler{//详情，编辑页通用顶部编辑栏
   @include lineheight(64px);
+  display: flex;
   padding-left: 32px;
+  align-items: center;
   border-bottom: solid 1px $promptColor;  
   .editButton{
     &:hover{
@@ -24,10 +26,8 @@
     letter-spacing:4px;
   }
   .infoTip{
-    display: inline-block;
     height: 30px;
     width: 323px;
-    vertical-align: middle;
     line-height: 30px;
     font-size: 12px;
     margin-left: 16px;
@@ -44,6 +44,15 @@
     .ignore{
       margin-left: 60px;
     }
+  }
+  .backIcon{
+    color: $lightColor;
+    font-size: 20px;
+    border-left: 1px solid $promptColor;
+    height: 100%;
+    line-height: 64px;
+    width: 64px;
+    cursor: pointer;
   }
 }
 

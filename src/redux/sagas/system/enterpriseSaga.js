@@ -4,7 +4,7 @@ import Path from '../../../constants/path';
 
 import { enterpriseAction } from '../../../constants/actionTypes/system/enterpriseAction';
 
-//切换页面->列表页，新建/编辑页,详情页
+//存储payload指定参数，替换reducer-store属性。
 function *changeEnterpriseAttr(action){
   const { payload } = action;
   yield put({

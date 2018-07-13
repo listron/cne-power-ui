@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
 
 class EnterpriseDetail extends Component {
   static propTypes = {
-    changeEnterpriseAttr: PropTypes.func,
+    changeEnterpriseStore: PropTypes.func,
     ignoreEnterpirseEdit: PropTypes.func,
     enterpriseDetail: PropTypes.object,
   }
@@ -27,15 +27,15 @@ class EnterpriseDetail extends Component {
   }
 
   render(){
-    const { changeEnterpriseAttr, enterpriseDetail } = this.props;
+    const { changeEnterpriseStore, enterpriseDetail } = this.props;
     //todo: 首次进入企业，提示点击编辑的小提示框的enterpriseDetail.showTips判断
     const { showInforTip } = this.state;
     return (
       <div className={styles.enterpriseDetail}>
         <div className={styles.topHandler}>
-          <Button className={styles.editButton} onClick={()=>changeEnterpriseAttr({showPage:'edit'})}>编辑</Button>
+          <Button className={styles.editButton} onClick={()=>changeEnterpriseStore({showPage:'edit'})}>编辑</Button>
           {showInforTip && <span className={styles.infoTip} >
-            <span className={styles.toEdit} onClick={()=>changeEnterpriseAttr({showPage:'edit'})} >完善企业信息,请点击编辑</span>
+            <span className={styles.toEdit} onClick={()=>changeEnterpriseStore({showPage:'edit'})} >完善企业信息,请点击编辑</span>
             <span className={styles.ignore} onClick={this.ignoreEdit}>不再提醒 <Icon type="close" /></span>
           </span>}
         </div>

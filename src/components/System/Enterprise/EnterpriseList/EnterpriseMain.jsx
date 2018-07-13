@@ -14,7 +14,7 @@ const RadioGroup = Radio.Group;
 class EnterpriseMain extends Component {
   static propTypes = {
     selectedEnterprise: PropTypes.array,
-    changeEnterpriseAttr: PropTypes.func,
+    changeEnterpriseStore: PropTypes.func,
     getEnterpriseList: PropTypes.func,
 
     filterStatus: PropTypes.number, 
@@ -33,7 +33,7 @@ class EnterpriseMain extends Component {
   selectStatus = (e) => {//状态筛选
     const filterStatus = e.target.value;
     const {enterpriseName,enterprisePhone,sort,ascend,currentPage,pageSize} = this.props;
-    this.props.changeEnterpriseAttr({filterStatus});
+    this.props.changeEnterpriseStore({filterStatus});
     this.props.getEnterpriseList({
       enterpriseName,
       enterprisePhone,
@@ -60,11 +60,11 @@ class EnterpriseMain extends Component {
 
 
   render(){
-    const { changeEnterpriseAttr, filterStatus } = this.props;
+    const { changeEnterpriseStore, filterStatus } = this.props;
     return (
       <div className={styles.enterpriseMain}>
-        <Button onClick={()=>changeEnterpriseAttr({showPage:'detail'})}  type="primary" >请展示详情</Button>
-        <Button onClick={()=>changeEnterpriseAttr({showPage: 'edit'})}  type="primary" >请展示新增编辑企业信息的按钮</Button>
+        <Button onClick={()=>changeEnterpriseStore({showPage:'detail'})}  type="primary" >请展示详情</Button>
+        <Button onClick={()=>changeEnterpriseStore({showPage: 'edit'})}  type="primary" >请展示新增编辑企业信息的按钮</Button>
         <div className={styles.enterpriseStatus}>
           <span className={styles.statusText}>状态</span>
           <RadioGroup onChange={this.selectStatus} className={styles.radioGroup} value={filterStatus}>

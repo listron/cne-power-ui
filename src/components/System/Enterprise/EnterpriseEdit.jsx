@@ -1,6 +1,7 @@
 
 
 import React, { Component } from 'react';
+import { Icon } from 'antd';
 import PropTypes from 'prop-types';
 import styles from './enterprise.scss';
 import EditForm from './EditForm';
@@ -10,7 +11,6 @@ import pathConfig from '../../../constants/path';
 class EnterpriseEdit extends Component {
   static propTypes = {
     loading: PropTypes.bool,
-    changeEnterpriseAttr: PropTypes.func,
     getEnterpriseDetail: PropTypes.func,
     saveEnterpriseInfor: PropTypes.func,
     enterpriseDetail: PropTypes.object,
@@ -35,8 +35,9 @@ class EnterpriseEdit extends Component {
     const uploadPath=`${pathConfig.basePaths.newAPIBasePath}${pathConfig.commonPaths.imgUploads}`;
     return (
       <div className={styles.enterpriseEdit} >
-          <div className={styles.topHandler}>
+          <div className={styles.editTop}>
             <span className={styles.text}>编辑</span>
+            <Icon type="arrow-left" className={styles.backIcon} />
           </div>
           <div className={styles.mainPart} >
             <div className={styles.logoPart} >
