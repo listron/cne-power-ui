@@ -11,9 +11,11 @@ class JoinInForm extends Component{
     form: PropTypes.object,
     isExist: PropTypes.number,
     enterpriseName: PropTypes.string,
+    isJoined: PropTypes.number,
     getEnterpriseInfo: PropTypes.func,
     sendCode: PropTypes.func,
     checkPhoneCode: PropTypes.func,
+    joinEnterprise: PropTypes.func,
   }
 
   constructor(props){
@@ -24,7 +26,13 @@ class JoinInForm extends Component{
       joinInStep: 1,
     }
   }
-
+  onJoinEnterprise = () => {
+    this.props.form.validateFields((err,values) => {
+      if(!err){
+        this.props.joinEnterprise(values);
+      }
+    })
+  }
   getEnterpriseInfo = (e) => {
     e.preventDefault();
     this.props.form.validateFields((err,values) => {
@@ -66,12 +74,27 @@ class JoinInForm extends Component{
   }
 
   checkPhoneCode = () => {
-    this.props.form.validateFields(['',''], (err, values) => {
+    this.props.form.validateFields(['phoneNum','verificationCode'], (err, values) => {
       if(!err){
         this.props.checkPhoneCode(values);
+        if(this.props.isJoined){
+          this.setState({ joinInStep: 3})
+        }
+        
       }
     })
   }
+
+  compareToFirstPassword = (rule, value, callback) => {
+    const form = this.props.form;
+    if(value && value !== form.getFieldValue('password')){
+      callback('密码不一致！');
+    }else{
+      callback();
+    }
+  }
+
+
 
   hasErrors = (fieldsError) => {
     return Object.keys(fieldsError).some(field => fieldsError[field]);
@@ -79,7 +102,7 @@ class JoinInForm extends Component{
 
   render(){
     const { getFieldDecorator, getFieldsError } = this.props.form;
-    const { isExist, enterpriseName, loading } = this.props;
+    const { isExist, enterpriseName, loading, isJoined } = this.props;
     const { showEnterpriseInfo, joinInStep } = this.state;
     const formItemLayout = {
       labelCol: {
@@ -163,7 +186,37 @@ class JoinInForm extends Component{
                 <Button type="primary" htmlType="submit">加入企业</Button>
               </FormItem>
             </Form>
-
+          </div>
+        }
+        {joinInStep === 3 &&
+          <div>
+            <span>{enterpriseName}</span>
+            <Form onSubmit={this.onJoinEnterprise}  >
+              <FormItem label="用户名" {...formItemLayout}>
+                {getFieldDecorator('userName', {
+                  rules: [{required: true, message: '请输入用户名'}]
+                })(
+                  <Input prefix={<Icon type="user" />} placeholder="请输入用户名" />
+                )}
+              </FormItem>
+              <FormItem label="创建密码" {...formItemLayout}>
+                {getFieldDecorator('password',{
+                  rules: [{required: true, message: '请输入密码',min: 8, }]
+                })(
+                  <Input prefix={<Icon type="lock" />} type="password" placeholder="请输入密码" />
+                )}
+              </FormItem>
+              <FormItem label="确认密码" {...formItemLayout}>
+                {getFieldDecorator('confirmPwd',{
+                  rules: [{required: true, message: '请输入密码', min: 8, validator: this.compareToFirstPassword}]
+                })(
+                  <Input prefix={<Icon type="lock" />} type="password" placeholder="请再次输入密码" />
+                )}
+              </FormItem>
+              <FormItem {...tailFormItemLayout} >
+                <Button type="primary" htmlType="submit" className="login-form-button"  >进入企业账号</Button>
+              </FormItem>
+            </Form>
           </div>
         }
       </div>

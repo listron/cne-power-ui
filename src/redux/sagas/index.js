@@ -25,6 +25,7 @@ import {
   watchLoginSaga,
   watchVerificationCode,
   watchCheckCode,
+  watchResetPassword,
 } from './preLogin/loginSaga';
 
 import {
@@ -130,6 +131,7 @@ export default function* rootSaga() {
     watchCheckCode(),
     watchCheckPhoneRegister(),
     watchJoinInSaga(),
+    watchResetPassword(),
     // watchGetCompInfo(),
     // watchCheckPhone(),
     // watchChangePSW(),

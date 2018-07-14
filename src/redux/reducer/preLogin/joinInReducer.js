@@ -6,7 +6,8 @@ var initState = immutable.fromJS({
   loginSuccess:false, //展示登录页和功能页的唯一区分标识
   pageTab: 'login',//四个页关键字：longin,register,joinIn,forget
   joinInStep: 1,//加入企业步骤：1-输入企业名称，2-手机号验证，3-创建用户名密码
-  isExist: 0,// 0L 输入的企业不存在；1: 输入的企业存在
+  isExist: 0,// 0 输入的企业不存在；1: 输入的企业存在
+  isJoined: 0,// 0 用户未加入过企业；1：用户加入过企业
   isFetching: false,
   error: {
     code: '',
@@ -30,6 +31,7 @@ const joinInReducer = (state = initState, action) => {
                   .merge(immutable.fromJS(action.payload))
                   .set('enterpriseInfo', immutable.fromJS(action.payload.data)) 
                   .set('isExist', 1)
+                  .set('isJoined', 1)
   }
   return state;
 }

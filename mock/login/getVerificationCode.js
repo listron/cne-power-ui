@@ -96,6 +96,32 @@ module.exports = [
     },
     delay:1000,
     error:{}
+  },{
+    api:'/mock/api/v3/login/password',//1.1.13.	设置新密码
+    method:'post',
+    response:{
+      "code": "10000",
+      "message": "请求成功",
+      "data": {
+        "text": '设置新密码成功',  
+      },
+      "serviceCode": "3.0"
+    },
+    delay:1000,
+    error:{}
+  },{
+    api:'/mock/api/v3/login/userenterprise',//1.1.10.	加入企业
+    method:'get',
+    response:{
+      "code": "10000",
+      "message": "加入企业成功",
+      "data": {
+        "text": '加入企业成功',  
+      },
+      "serviceCode": "3.0"
+    },
+    delay:1000,
+    error:{}
   },
 
 ]

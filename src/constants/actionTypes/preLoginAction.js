@@ -36,5 +36,12 @@ module.exports ={
     GET_ENTERPRISE_INFO_SAGA: null,
     GET_ENTERPRISE_INFO_SUCCESS: null,
     GET_ENTERPRISE_INFO_FAIL: null,
+    JOIN_ENTERPRISE_SAGA: null,
+    JOIN_ENTERPRISE_SUCCESS: null,
+    JOIN_ENTERPRISE_FAIL: null,
+    // 重置密码
+    RESET_PASSWORD_SAGA: null,
+    RESET_PASSWORD_SUCCESS: null,
+    RESET_PASSWORD_FAIL: null,
   })
 }

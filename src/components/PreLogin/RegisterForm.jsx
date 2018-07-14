@@ -191,7 +191,7 @@ class RegisterForm extends Component{
                 )}
               </FormItem>
               <FormItem label="确认密码" {...formItemLayout}>
-                {getFieldDecorator('rePassword',{
+                {getFieldDecorator('confirmPwd',{
                   rules: [{required: true, message: '请输入密码'}]
                 })(
                   <Input prefix={<Icon type="lock" />} type="password" placeholder="请再次输入密码" />
