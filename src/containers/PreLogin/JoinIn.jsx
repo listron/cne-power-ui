@@ -58,6 +58,7 @@ const mapDispatchToProps = (dispatch) => ({
   getEnterpriseInfo: params => dispatch({type: PreLoginAction.GET_ENTERPRISE_INFO_SAGA, params}),
   sendCode: params => dispatch({ type: PreLoginAction.SEND_CODE_SAGA, params}),
   checkPhoneCode: params => dispatch({ type: PreLoginAction.CHECK_CODE_SAGA, params}),
+  joinEnterprise: params => dispatch({ type: PreLoginAction.JOIN_ENTERPRISE_SAGA, params})
 })
 
 export default connect(mapStateToProps,mapDispatchToProps)(JoinInContainer);

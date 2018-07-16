@@ -18,7 +18,7 @@ var initState = immutable.fromJS({
     enterpriseName: '',
     enterpriseLogin: '',
     enterpriseDomain: '',
-  }
+  },
 });
 
 const joinInReducer = (state = initState, action) => {
@@ -32,6 +32,7 @@ const joinInReducer = (state = initState, action) => {
                   .set('enterpriseInfo', immutable.fromJS(action.payload.data)) 
                   .set('isExist', 1)
                   .set('isJoined', 1)
+                  
   }
   return state;
 }

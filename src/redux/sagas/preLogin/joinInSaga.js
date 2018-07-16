@@ -38,6 +38,7 @@ function *joinEnterprise(action){
       payload: {
         ...payload,
         data: response.data.data,
+        
       }
     })
   }catch(e){

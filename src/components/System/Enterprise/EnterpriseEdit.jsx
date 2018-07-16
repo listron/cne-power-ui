@@ -35,7 +35,7 @@ class EnterpriseEdit extends Component {
             <SingleImgUploader uploadPath={uploadPath} data={data} />
             <EditForm />
           </div>
-          这个是新增啊编辑啊的页面，是吧！！NO
+          这个是新增啊编辑啊的页面，是吧！！
           
           <Button type="primary" onClick={()=>changeEnterpriseAttr({showPage:'detail'})}>保存</Button>
       </div>
