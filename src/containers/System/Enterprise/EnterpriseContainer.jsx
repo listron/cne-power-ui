@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import styles from './enterpriseContainer.scss';
 import { enterpriseAction } from '../../../constants/actionTypes/system/enterpriseAction';
 import PropTypes from 'prop-types';
+import Footer from '../../../components/Common/Footer';
 /*
 注： 此3引用在企业列表展示功能中引入，后产品调整为直接展示企业详情，去下企业列表页面展示。请不要删除，可能会重新展示企业列表功能；
 import EnterpriseMain from '../../../components/System/Enterprise/EnterpriseMain/EnterpriseMain';
@@ -70,9 +71,7 @@ class EnterpriseContainer extends Component {
         >
           <EnterpriseSide {...this.props} showDetail={showDetail} />
         </TransitionContainer>*/}
-        <div className={styles.enterpriseFooter}>
-          <span className={styles.footerText}>京ICP备12030847号-2 © 2017-2018 北京动力协合科技有限公司</span>
-        </div>
+        <Footer />
         
       </div>
     );
