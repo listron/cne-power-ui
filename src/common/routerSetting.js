@@ -8,7 +8,7 @@ import Forget from '../containers/Forget';
 import Signup from '../containers/Signup';
 import Power from '../containers/Power';
 import EnterpriseContainer from '../containers/System/Enterprise/EnterpriseContainer';
-import DepartmentContainer from '../containers/System/Enterprise/DepartmentContainer';
+import DepartmentContainer from '../containers/System/Department/DepartmentContainer';
 
 const routers = [
   {
