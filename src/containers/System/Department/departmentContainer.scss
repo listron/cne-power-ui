@@ -1,0 +1,37 @@
+
+.enterpriseContainer{
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow: hidden;
+  padding: 24px 24px 0;
+  background:#ececec;
+  .enterpriseFooter{
+    text-align: right;
+    height: 60px;
+    line-height: 60px;
+    color:#999999;
+  }
+  :global{
+    .enterpriseSide-enter{
+      transform: translateX(0);
+    }
+    .enterpriseSide-enter-active{
+      transform: translateX(-100%);
+      transition: all 500ms ease;
+    }
+    .enterpriseSide-enter-done{
+      transform: translateX(-100%);
+    }
+    .enterpriseSide-exit{
+      transform: translateX(-100%);
+    }
+    .enterpriseSide-exit-active{
+      transform: translateX(0);
+      transition: all 500ms ease;
+    }
+    .enterpriseSide-exit-done{
+      transform: translateX(0);
+    }
+  }
+}
