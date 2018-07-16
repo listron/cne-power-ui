@@ -62,9 +62,12 @@ export default {
       inspectCheckBatch:'/v3/inspect/check/batch',
     },
     system: {
-      getEnterprisList: '/v3/enterprise/list',
-      getEnterprisDetail: '/v3/enterprise',
-      saveEnterpriseDetail: '/api/v3/enterprise/change',
+      getEnterprisList: '/v3/enterprise/list',//企业列表
+      getEnterprisDetail: '/v3/enterprise',//企业详情获取
+      saveEnterpriseDetail: '/v3/enterprise/change',//保存企业详情
+      getDepartmentList: '/v3/department/list',//部门列表
+      departmentInfor: '/v3/department', //部门信息新增，编辑，详情
+
     }
   }
 }

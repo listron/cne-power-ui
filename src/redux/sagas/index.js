@@ -72,6 +72,7 @@ import {
 } from './operation/ticket/ticketSaga';
 
 import { watchEnterpriseSaga } from './system/enterpriseSaga';
+import { watchDepartmentSaga } from './system/departmentSaga';
 
 import axios from 'axios';
 
@@ -170,7 +171,8 @@ export default function* rootSaga() {
     watchInspectCheckBatch(),
     //ticket
 
-    //system-enterprise
-    watchEnterpriseSaga(),
+    //system
+    watchEnterpriseSaga(),//-enterprise
+    watchDepartmentSaga(),//-department
   ])
 } 
