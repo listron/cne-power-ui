@@ -22,11 +22,30 @@
       line-height: 40px;
     }
   }
-  .ant-btn{   //antd按钮样式调整-高亮
+  .ant-btn {   //antd按钮样式调整-高亮
     color: $darkColor;
     @include highLight($themeColor);
     &:hover{
-      color:  $darkColor;
+      color: $themeColor;
+    }  
+  }
+  .ant-btn-primary{
+    background-color: $themeColor;
+    color: #fff;
+    border-color: $themeColor;
+    &:hover {
+      background-color: $themeColor;
+      color: #fff;
+    }
+  }
+  .ant-btn-group {
+    .ant-btn-primary {
+      &:first-child:not(:last-child) {
+        border-right-color: $themeColor;
+      }
+      &:last-child:not(:first-child) {
+        border-left-color: $themeColor;
+      }
     }
   }
 }
