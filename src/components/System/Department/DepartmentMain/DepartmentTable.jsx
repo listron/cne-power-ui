@@ -13,7 +13,7 @@ class DepartmentTable extends Component {
     loading: PropTypes.bool,
     // totalNum: PropTypes.number,
     // enterpriseData: PropTypes.array,
-    // selectedEnterprise: PropTypes.array,//勾选的数组
+    selectedDepartment: PropTypes.array,//选中企业
     // getEnterpriseList: PropTypes.func,
     // getEnterpriseDetail: PropTypes.func,
     changeDepartmentStore: PropTypes.func,
@@ -85,9 +85,9 @@ class DepartmentTable extends Component {
     //   enterpriseId
     // })
   }
-  enterpriseHandle = (value) => {//编辑，禁用，启用
+  departmentHandle = (value) => {//编辑，删除，分配用户/电站
     console.log(value);
-    // const { selectedEnterprise } = this.props;
+    // const { selectedDepartment } = this.props;
     // if(value === 'edit'){
     //   this.props.editEnterprise({
     //     key: selectedEnterprise[0].key
@@ -100,9 +100,9 @@ class DepartmentTable extends Component {
     // }
   }
   _createHandleOption = () => {//生成操作下拉框
-    // const { selectedEnterprise } = this.props;
-    // let [editable,openable,closeable] = [true,true,true];  
-    // if(selectedEnterprise.length > 0){
+    const { selectedDepartment } = this.props;
+    let [editable,openable,closeable] = [false,false,false];  
+    if(selectedDepartment.length > 0){
     //   editable = selectedEnterprise.length === 1;
     //   const statusSet = new Set(selectedEnterprise.map(e => e.enterpriseStatus));
     //   const statusArray = [...statusSet];
@@ -113,14 +113,15 @@ class DepartmentTable extends Component {
     //     openable = statusArray[0]===0;
     //     closeable = statusArray[0]===1;
     //   }
-    // }       
-    return (<Select onChange={this.enterpriseHandle} placeholder={'操作'} dropdownMatchSelectWidth={false} dropdownClassName={styles.handleDropdown}>
+    }       
+    return (<Select onChange={this.departmentHandle} placeholder={'操作'} dropdownMatchSelectWidth={false} dropdownClassName={styles.handleDropdown}>
       {/* <Option value="edit" disabled={!editable} >编辑</Option>
       <Option value="open" disabled={!openable} >启用</Option>
       <Option value="close" disabled={!closeable} >禁用</Option> */}
       <Option value="edit" >编辑</Option>
-      <Option value="open" >启用</Option>
-      <Option value="close" >禁用</Option>
+      <Option value="delete" >删除</Option>
+      <Option value="assignUser" >分配用户</Option>
+      <Option value="assignStation" >设置电站</Option>
     </Select>)
   }
   _createTableColumn = () => {//生成表头
