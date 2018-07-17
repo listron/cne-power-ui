@@ -13,17 +13,17 @@ const RadioGroup = Radio.Group;
 //部门主页面。包含搜索组件，表格组件，分页及操作组件；
 class DepartmentMain extends Component {
   static propTypes = {
-    selectedEnterprise: PropTypes.array,
-    changeEnterpriseStore: PropTypes.func,
-    getEnterpriseList: PropTypes.func,
+    // selectedEnterprise: PropTypes.array,
+    changeDepartmentStore: PropTypes.func,
+    // getEnterpriseList: PropTypes.func,
 
-    filterStatus: PropTypes.number, 
-    enterpriseName: PropTypes.string, 
-    enterprisePhone: PropTypes.string,
-    sort: PropTypes.string, 
-    ascend: PropTypes.bool,
-    currentPage: PropTypes.number, 
-    pageSize: PropTypes.number, 
+    // filterStatus: PropTypes.number, 
+    // enterpriseName: PropTypes.string, 
+    // enterprisePhone: PropTypes.string,
+    // sort: PropTypes.string, 
+    // ascend: PropTypes.bool,
+    // currentPage: PropTypes.number, 
+    // pageSize: PropTypes.number, 
   }
 
   constructor(props){
@@ -64,6 +64,9 @@ class DepartmentMain extends Component {
     return (
       <div className={styles.departmentMain}>
         这个是主要表格区域啊！
+        <Button onClick={()=>this.props.changeDepartmentStore({showPage: 'add'})}>点击切换至新增页</Button>
+        <Button onClick={()=>this.props.changeDepartmentStore({showPage: 'edit'})}>点击切换至编辑页</Button>
+        <Button onClick={()=>this.props.changeDepartmentStore({showPage: 'detail'})}>点击切换至详情页</Button>
         {/* <Button onClick={()=>changeEnterpriseStore({showPage:'detail'})}  type="primary" >请展示详情</Button>
         <Button onClick={()=>changeEnterpriseStore({showPage: 'edit'})}  type="primary" >请展示新增编辑企业信息的按钮</Button>
         <div className={styles.enterpriseStatus}>

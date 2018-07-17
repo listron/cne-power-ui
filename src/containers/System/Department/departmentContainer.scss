@@ -1,10 +1,8 @@
 
-.enterpriseContainer{
+.departmentContainer{
   display: flex;
-  flex-direction: column;
   flex: 1;
   overflow: hidden;
-  padding: 24px 24px 0;
   background:#ececec;
   :global{
     .enterpriseSide-enter{

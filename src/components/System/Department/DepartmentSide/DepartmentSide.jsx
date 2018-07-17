@@ -5,7 +5,7 @@
 import React, { Component } from 'react';
 import { Input, Button } from 'antd';
 import PropTypes from 'prop-types';
-// import styles from './enterprise.scss';
+import styles from './departmentSide.scss';
 // import EnterpriseDetail from './EnterpriseDetail';
 // import EnterpriseEdit from './EnterpriseEdit';
 
@@ -13,7 +13,8 @@ import PropTypes from 'prop-types';
 class DepartmentSide extends Component {
   static propTypes = {
     showDetail: PropTypes.bool,
-    changeEnterpriseStore: PropTypes.func,
+    showPage: PropTypes.string,
+    changeDepartmentStore: PropTypes.func,
   }
 
   constructor(props){
@@ -22,11 +23,31 @@ class DepartmentSide extends Component {
 
 
   render(){
-    const { showDetail, changeEnterpriseStore } = this.props;
+    const { showDetail, changeDepartmentStore, showPage } = this.props;
     return (
-      // <div className={styles.enterpriseSide}>
-      <div>
+      <div className={styles.departmentSide}>
         side区域
+        {showPage === 'detail' && <div>
+            详情页标志
+            <Button onClick={()=> this.props.changeDepartmentStore({showPage:'list'})}> 去表格页面</Button>
+            <Button onClick={()=> this.props.changeDepartmentStore({showPage:'add'})}> 去添加点</Button>
+            <Button onClick={()=> this.props.changeDepartmentStore({showPage:'edit'})}> 去编辑点</Button>
+          </div>
+        }
+        {showPage === 'add' && <div>
+            这个是新增页面，快添加东西了！
+            <Button onClick={()=> this.props.changeDepartmentStore({showPage:'list'})}> 去表格页面</Button>
+            <Button onClick={()=> this.props.changeDepartmentStore({showPage:'detail'})}> 看看详情吧！</Button>
+            <Button onClick={()=> this.props.changeDepartmentStore({showPage:'edit'})}> 去编辑点</Button>
+          </div>
+        }
+        {showPage === 'edit' && <div>
+            编辑页面的样式在这
+            <Button onClick={()=> this.props.changeDepartmentStore({showPage:'list'})}> 去表格页面</Button>
+            <Button onClick={()=> this.props.changeDepartmentStore({showPage:'detail'})}> 看看详情吧！</Button>
+            <Button onClick={()=> this.props.changeDepartmentStore({showPage:'add'})}> 是时候添加一波东西了！</Button>
+          </div>
+        }
         {/* {
           showDetail ?
           <EnterpriseDetail changeEnterpriseStore={changeEnterpriseStore} />:

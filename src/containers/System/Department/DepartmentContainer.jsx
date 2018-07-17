@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import styles from './departmentContainer.scss';
-// import { enterpriseAction } from '../../../constants/actionTypes/system/enterpriseAction';
+import { departmentAction } from '../../../constants/actionTypes/system/departmentAction';
 import PropTypes from 'prop-types';
 import TransitionContainer from '../../../components/Common/TransitionContainer';
 import DepartmentMain from '../../../components/System/Department/DepartmentMain/DepartmentMain';
@@ -71,10 +71,7 @@ class DepartmentContainer extends Component {
     );
   }
 }
-const mapStateToProps = (state) => {
-  // console.log(state.department.entries())
-  state.department.map(e=>console.log(e))
-  return {
+const mapStateToProps = (state) => ({
     loading: state.department.get('loading'),
     showPage: state.department.get('showPage'),
     departmentSource: state.department.get('departmentSource'),
@@ -89,11 +86,10 @@ const mapStateToProps = (state) => {
     departmentData: state.department.get('departmentData').toJS(),
     departmentDetail: state.department.get('departmentDetail').toJS(),
     selectedDepartment: state.department.get('selectedDepartment').toJS(),
-  }
-};
+  });
 
 const mapDispatchToProps = (dispatch) => ({
-//   changeEnterpriseStore: payload => dispatch({type:enterpriseAction.GET_ENTERPRISE_ATTR_CHANGE_SAGA, payload}),
+  changeDepartmentStore: payload => dispatch({type:departmentAction.CHANGE_DEPARTMENT_STORE_SAGA, payload}),
 //   getEnterpriseList: payload => dispatch({type:enterpriseAction.GET_ENTERPRISE_LIST_SAGA, payload}),
 //   getEnterpriseDetail: payload => dispatch({type:enterpriseAction.GET_ENTERPRISE_DETAIL_SAGA, payload}),
 //   changeSelectedEnterprise: payload => dispatch({type:enterpriseAction.CHANGE_SELECTED_ENTERPRISE_SAGA, payload}),
@@ -101,7 +97,6 @@ const mapDispatchToProps = (dispatch) => ({
 //   ignoreEnterpirseEdit: payload => dispatch({type: enterpriseAction.IGNORE_ENTERPRISE_EDIT,payload})
 });
 
-// yield takeLatest(departmentAction.CHANGE_DEPARTMENT_STORE_SAGA, changeDepartmentStore);
 //   yield takeLatest(departmentAction.GET_DEPARTMENT_LIST_SAGA, getDepartmentList);
 //   yield takeLatest(departmentAction.GET_DEPARTMENT_DETAIL_SAGA, getDepartmentDetail);
 //   yield takeLatest(departmentAction.ADD_DEPARTMENT_INFO_SAGA, addDepartmentInfor);
