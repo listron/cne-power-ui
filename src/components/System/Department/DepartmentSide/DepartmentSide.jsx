@@ -12,7 +12,7 @@ import styles from './departmentSide.scss';
 
 class DepartmentSide extends Component {
   static propTypes = {
-    showDetail: PropTypes.bool,
+    showSidePage: PropTypes.bool,
     showPage: PropTypes.string,
     changeDepartmentStore: PropTypes.func,
   }
@@ -23,36 +23,31 @@ class DepartmentSide extends Component {
 
 
   render(){
-    const { showDetail, changeDepartmentStore, showPage } = this.props;
+    const { showSidePage, changeDepartmentStore, showPage } = this.props;
     return (
       <div className={styles.departmentSide}>
         side区域
-        {showPage === 'detail' && <div>
+        {showSidePage === 'detail' && <div>
             详情页标志
-            <Button onClick={()=> this.props.changeDepartmentStore({showPage:'list'})}> 去表格页面</Button>
-            <Button onClick={()=> this.props.changeDepartmentStore({showPage:'add'})}> 去添加点</Button>
-            <Button onClick={()=> this.props.changeDepartmentStore({showPage:'edit'})}> 去编辑点</Button>
+            <Button onClick={()=> changeDepartmentStore({showPage:'list'})}> 去表格页面</Button>
+            <Button onClick={()=> changeDepartmentStore({showPage:'add'})}> 去添加点</Button>
+            <Button onClick={()=> changeDepartmentStore({showPage:'edit'})}> 去编辑点</Button>
           </div>
         }
-        {showPage === 'add' && <div>
+        {showSidePage === 'add' && <div>
             这个是新增页面，快添加东西了！
-            <Button onClick={()=> this.props.changeDepartmentStore({showPage:'list'})}> 去表格页面</Button>
-            <Button onClick={()=> this.props.changeDepartmentStore({showPage:'detail'})}> 看看详情吧！</Button>
-            <Button onClick={()=> this.props.changeDepartmentStore({showPage:'edit'})}> 去编辑点</Button>
+            <Button onClick={()=> changeDepartmentStore({showPage:'list'})}> 去表格页面</Button>
+            <Button onClick={()=> changeDepartmentStore({showPage:'detail'})}> 看看详情吧！</Button>
+            <Button onClick={()=> changeDepartmentStore({showPage:'edit'})}> 去编辑点</Button>
           </div>
         }
-        {showPage === 'edit' && <div>
+        {showSidePage === 'edit' && <div>
             编辑页面的样式在这
-            <Button onClick={()=> this.props.changeDepartmentStore({showPage:'list'})}> 去表格页面</Button>
-            <Button onClick={()=> this.props.changeDepartmentStore({showPage:'detail'})}> 看看详情吧！</Button>
-            <Button onClick={()=> this.props.changeDepartmentStore({showPage:'add'})}> 是时候添加一波东西了！</Button>
+            <Button onClick={()=> changeDepartmentStore({showPage:'list'})}> 去表格页面</Button>
+            <Button onClick={()=> changeDepartmentStore({showPage:'detail'})}> 看看详情吧！</Button>
+            <Button onClick={()=> changeDepartmentStore({showPage:'add'})}> 是时候添加一波东西了！</Button>
           </div>
         }
-        {/* {
-          showDetail ?
-          <EnterpriseDetail changeEnterpriseStore={changeEnterpriseStore} />:
-          <EnterpriseEdit changeEnterpriseStore={changeEnterpriseStore} />
-        } */}
       </div>
     )
   }

@@ -1,21 +1,27 @@
 
 
 import React, { Component } from 'react';
-import { Radio, Button } from 'antd';
+import { Button } from 'antd';
 import PropTypes from 'prop-types';
 import DepartmentSearch from './DepartmentSearch';
-// import EnterpriseTable from './EnterpriseTable';
+import DepartmentTable from './DepartmentTable';
 import styles from './departmentMain.scss'
-
-const RadioButton = Radio.Button;
-const RadioGroup = Radio.Group;
 
 //部门主页面。部门查询组件，分页及表格组件；
 class DepartmentMain extends Component {
   static propTypes = {
+    enterpriseId: PropTypes.string,
+    departmentSource: PropTypes.number,
+    departmentName: PropTypes.string, 
+    parentDepartmentName: PropTypes.string, 
+    stationName: PropTypes.string, 
+    sort: PropTypes.string, 
+    ascend: PropTypes.bool, 
+    pageNum: PropTypes.number,
+    pageSize: PropTypes.number,
     // selectedEnterprise: PropTypes.array,
     changeDepartmentStore: PropTypes.func,
-    // getEnterpriseList: PropTypes.func,
+    getDepartmentList: PropTypes.func,
 
     // filterStatus: PropTypes.number, 
     // enterpriseName: PropTypes.string, 
@@ -46,29 +52,29 @@ class DepartmentMain extends Component {
   }
 
   searchDepartment = ({departmentName,parentDepartmentName,stationName}) => {//部门搜索
-    console.log({departmentName,parentDepartmentName,stationName})
-    // const {filterStatus,sort,ascend,currentPage,pageSize} = this.props;
-    // this.props.getEnterpriseList({
-    //   filterStatus,
-    //   enterpriseName,
-    //   enterprisePhone,
-    //   sort,
-    //   ascend,
-    //   currentPage,
-    //   pageSize,
-    // });
+    const params = {
+      departmentSource: this.props.departmentSource,
+      departmentName, 
+      parentDepartmentName, 
+      stationName, 
+      sort: this.props.sort, 
+      ascend: this.props.ascend, 
+      pageNum: this.props.pageNum,
+      pageSize: this.props.pageSize,
+    }
+    this.props.getDepartmentList(params)//请求部门列表
   }
 
 
   render(){
-    const { changeEnterpriseStore, filterStatus } = this.props;
     return (
       <div className={styles.departmentMain}>
         这个是主要表格区域啊！
         <Button onClick={()=>this.props.changeDepartmentStore({showPage: 'add'})}>点击切换至新增页</Button>
         <Button onClick={()=>this.props.changeDepartmentStore({showPage: 'edit'})}>点击切换至编辑页</Button>
         <Button onClick={()=>this.props.changeDepartmentStore({showPage: 'detail'})}>点击切换至详情页</Button>
-        <DepartmentSearch searchDepartment={this.searchDepartment} />        
+        <DepartmentSearch searchDepartment={this.searchDepartment} />    
+        <DepartmentTable {...this.props} />    
         {/* 
         <EnterpriseTable {...this.props} /> */}
       </div>

@@ -48,14 +48,13 @@
       color: $darkColor;
     }
   }
-  
-  .enterpriseList{//企业列表
-    .enterpriseListTop{
+  .departmentList{//部门列表
+    .departmentListTop{
       background: #fff;
       display: flex;
       line-height: 72px;
       justify-content: space-between;
-      .addEnterprise{
+      .addDepartment{
         padding : 0;
         margin-left: 24px;
         margin-right: 12px;
