@@ -3,14 +3,14 @@
 import React, { Component } from 'react';
 import { Radio, Button } from 'antd';
 import PropTypes from 'prop-types';
-// import EnterpriseSearch from './EnterpriseSearch';
+import DepartmentSearch from './DepartmentSearch';
 // import EnterpriseTable from './EnterpriseTable';
 import styles from './departmentMain.scss'
 
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
 
-//部门主页面。包含搜索组件，表格组件，分页及操作组件；
+//部门主页面。部门查询组件，分页及表格组件；
 class DepartmentMain extends Component {
   static propTypes = {
     // selectedEnterprise: PropTypes.array,
@@ -45,17 +45,18 @@ class DepartmentMain extends Component {
     });
   }
 
-  searchEnterprise = ({enterpriseName,enterprisePhone}) => {//名称+电话 搜索企业
-    const {filterStatus,sort,ascend,currentPage,pageSize} = this.props;
-    this.props.getEnterpriseList({
-      filterStatus,
-      enterpriseName,
-      enterprisePhone,
-      sort,
-      ascend,
-      currentPage,
-      pageSize,
-    });
+  searchDepartment = ({departmentName,parentDepartmentName,stationName}) => {//部门搜索
+    console.log({departmentName,parentDepartmentName,stationName})
+    // const {filterStatus,sort,ascend,currentPage,pageSize} = this.props;
+    // this.props.getEnterpriseList({
+    //   filterStatus,
+    //   enterpriseName,
+    //   enterprisePhone,
+    //   sort,
+    //   ascend,
+    //   currentPage,
+    //   pageSize,
+    // });
   }
 
 
@@ -67,17 +68,8 @@ class DepartmentMain extends Component {
         <Button onClick={()=>this.props.changeDepartmentStore({showPage: 'add'})}>点击切换至新增页</Button>
         <Button onClick={()=>this.props.changeDepartmentStore({showPage: 'edit'})}>点击切换至编辑页</Button>
         <Button onClick={()=>this.props.changeDepartmentStore({showPage: 'detail'})}>点击切换至详情页</Button>
-        {/* <Button onClick={()=>changeEnterpriseStore({showPage:'detail'})}  type="primary" >请展示详情</Button>
-        <Button onClick={()=>changeEnterpriseStore({showPage: 'edit'})}  type="primary" >请展示新增编辑企业信息的按钮</Button>
-        <div className={styles.enterpriseStatus}>
-          <span className={styles.statusText}>状态</span>
-          <RadioGroup onChange={this.selectStatus} className={styles.radioGroup} value={filterStatus}>
-            <RadioButton value={2}>全部</RadioButton>
-            <RadioButton value={0}>启用</RadioButton>
-            <RadioButton value={1}>禁用</RadioButton>
-          </RadioGroup>
-        </div>
-        <EnterpriseSearch searchEnterprise={this.searchEnterprise} />
+        <DepartmentSearch searchDepartment={this.searchDepartment} />        
+        {/* 
         <EnterpriseTable {...this.props} /> */}
       </div>
     )
