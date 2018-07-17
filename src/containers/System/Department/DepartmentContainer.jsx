@@ -3,18 +3,19 @@ import { connect } from 'react-redux';
 import styles from './departmentContainer.scss';
 // import { enterpriseAction } from '../../../constants/actionTypes/system/enterpriseAction';
 import PropTypes from 'prop-types';
+import TransitionContainer from '../../../components/Common/TransitionContainer';
+import DepartmentMain from '../../../components/System/Department/DepartmentMain/DepartmentMain';
+import DepartmentSide from '../../../components/System/Department/DepartmentSide/DepartmentSide';
 /*
 注： 此3引用在企业列表展示功能中引入，后产品调整为直接展示企业详情，去下企业列表页面展示。请不要删除，可能会重新展示企业列表功能；
-import EnterpriseMain from '../../../components/System/Enterprise/EnterpriseMain/EnterpriseMain';
-import EnterpriseSide from '../../../components/System/Enterprise/EnterpriseSide';
-import TransitionContainer from '../../../components/Common/TransitionContainer';
+
 */
 // import EnterpriseDetail from '../../../components/System/Enterprise/EnterpriseDetail';
 // import EnterpriseEdit from '../../../components/System/Enterprise/EnterpriseEdit';
 
 class DepartmentContainer extends Component {
-  // static propTypes = {
-  //   showPage: PropTypes.string,
+  static propTypes = {
+    showPage: PropTypes.string,
   //   filterStatus: PropTypes.number, 
   //   enterpriseName: PropTypes.string, 
   //   enterprisePhone: PropTypes.string,
@@ -23,11 +24,14 @@ class DepartmentContainer extends Component {
   //   currentPage: PropTypes.number, 
   //   pageSize: PropTypes.number, 
   //   getEnterpriseDetail: PropTypes.func,
-  // }
+  }
   constructor(props) {
     super(props);
+    this.state = {
+      showSidePage: false,
+    }
   }
-  // componentDidMount(){
+  componentDidMount(){
   //   // const params = {
   //   //   filterStatus: this.props.filterStatus, 
   //   //   enterpriseName: this.props.enterpriseName, 
@@ -39,7 +43,7 @@ class DepartmentContainer extends Component {
   //   // }
   //   // this.props.getEnterpriseList(params)//请求企业列表
   //   this.props.getEnterpriseDetail()
-  // }
+  }
 
   // onShowSide = () => {
   //   const showPage = this.props.showPage;
@@ -49,48 +53,44 @@ class DepartmentContainer extends Component {
   // }
 
   render() {
-    // const { showPage } = this.props;
+    const { showPage } = this.props;
+    const { showSidePage } = this.state;
     return (
-      <div>部门页面基本container</div>
-      // <div className={styles.enterpriseContainer}>
-      //   {
-      //     showPage==='detail' ?
-      //     <EnterpriseDetail {...this.props} />:
-      //     <EnterpriseEdit {...this.props} />
-      //   }
-      //   {/*注：不要删除，此备注用于展示企业列表，可能后续会用。
-      //   <EnterpriseMain {...this.props} />
-      //   <TransitionContainer
-      //     show={showPage!=='list'}
-      //     onEnter={this.onShowSide}
-      //     timeout={500}
-      //     effect="side"
-      //   >
-      //     <EnterpriseSide {...this.props} showDetail={showDetail} />
-      //   </TransitionContainer>*/}
-      //   <div className={styles.enterpriseFooter}>
-      //     <span className={styles.footerText}>京ICP备12030847号-2 © 2017-2018 北京动力协合科技有限公司</span>
-      //   </div>
+      <div className={styles.departmentContainer}>
+        <DepartmentMain {...this.props} />
+        <TransitionContainer
+          show={showPage!=='list'}
+          onEnter={this.onShowSide}
+          timeout={500}
+          effect="side"
+        >
+          <DepartmentSide {...this.props} showSidePage={showSidePage} />
+        </TransitionContainer>
+      </div>
         
-      // </div>
     );
   }
 }
-const mapStateToProps = (state) => ({
-//   loading: state.enterprise.get('loading'),
-//   showPage: state.enterprise.get('showPage'),
-//   filterStatus: state.enterprise.get('filterStatus'),
-//   enterpriseName: state.enterprise.get('enterpriseName'),
-//   enterprisePhone: state.enterprise.get('enterprisePhone'),
-//   sort: state.enterprise.get('sort'),
-//   ascend: state.enterprise.get('ascend'),
-//   totalNum: state.enterprise.get('totalNum'),
-//   enterpriseData: state.enterprise.get('enterpriseData').toJS(),
-//   currentPage: state.enterprise.get('currentPage'),
-//   pageSize: state.enterprise.get('pageSize'),
-//   enterpriseDetail: state.enterprise.get('enterpriseDetail').toJS(),
-//   selectedEnterprise: state.enterprise.get('selectedEnterprise').toJS(),
-});
+const mapStateToProps = (state) => {
+  // console.log(state.department.entries())
+  state.department.map(e=>console.log(e))
+  return {
+    loading: state.department.get('loading'),
+    showPage: state.department.get('showPage'),
+    departmentSource: state.department.get('departmentSource'),
+    departmentName: state.department.get('departmentName'),
+    parentDepartmentName: state.department.get('parentDepartmentName'),
+    stationName: state.department.get('stationName'),
+    sort: state.department.get('sort'),
+    ascend: state.department.get('ascend'),
+    totalNum: state.department.get('totalNum'),
+    pageNum: state.department.get('pageNum'),
+    pageSize: state.department.get('pageSize'),
+    departmentData: state.department.get('departmentData').toJS(),
+    departmentDetail: state.department.get('departmentDetail').toJS(),
+    selectedDepartment: state.department.get('selectedDepartment').toJS(),
+  }
+};
 
 const mapDispatchToProps = (dispatch) => ({
 //   changeEnterpriseStore: payload => dispatch({type:enterpriseAction.GET_ENTERPRISE_ATTR_CHANGE_SAGA, payload}),
@@ -100,5 +100,19 @@ const mapDispatchToProps = (dispatch) => ({
 //   saveEnterpriseInfor: payload => dispatch({type:enterpriseAction.SAVE_ENTERPRISE_INFO_SAGA, payload}),
 //   ignoreEnterpirseEdit: payload => dispatch({type: enterpriseAction.IGNORE_ENTERPRISE_EDIT,payload})
 });
+
+// yield takeLatest(departmentAction.CHANGE_DEPARTMENT_STORE_SAGA, changeDepartmentStore);
+//   yield takeLatest(departmentAction.GET_DEPARTMENT_LIST_SAGA, getDepartmentList);
+//   yield takeLatest(departmentAction.GET_DEPARTMENT_DETAIL_SAGA, getDepartmentDetail);
+//   yield takeLatest(departmentAction.ADD_DEPARTMENT_INFO_SAGA, addDepartmentInfor);
+//   yield takeLatest(departmentAction.EDIT_DEPARTMENT_INFO_SAGA,editDepartmentInfor);
+// DEPARTMENT_FETCH: null,//loading
+//     CHANGE_DEPARTMENT_STORE_SAGA: null,//改变reducer参数
+//     CHANGE_DEPARTMENT_STORE_SUCCESS: null,//替换reducer参数
+//     GET_DEPARTMENT_LIST_SAGA: null,//获取部门列表
+//     ADD_DEPARTMENT_INFO_SAGA: null,//部门新增
+//     EDIT_DEPARTMENT_INFO_SAGA: null,//部门信息编辑
+//     GET_DEPARTMENT_COMMON_FETCH_SUCCESS: null,//部门普通api请求成功
+//     GET_DEPARTMENT_DETAIL_SAGA: null,//获取部门详情
 
 export default connect(mapStateToProps, mapDispatchToProps)(DepartmentContainer);
