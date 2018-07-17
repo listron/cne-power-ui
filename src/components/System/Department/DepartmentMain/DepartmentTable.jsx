@@ -11,20 +11,20 @@ const { Option } = Select;
 class DepartmentTable extends Component {
   static propTypes = {
     loading: PropTypes.bool,
-    totalNum: PropTypes.number,
-    enterpriseData: PropTypes.array,
-    selectedEnterprise: PropTypes.array,//勾选的数组
-    getEnterpriseList: PropTypes.func,
-    getEnterpriseDetail: PropTypes.func,
-    changeEnterpriseStore: PropTypes.func,
+    // totalNum: PropTypes.number,
+    // enterpriseData: PropTypes.array,
+    // selectedEnterprise: PropTypes.array,//勾选的数组
+    // getEnterpriseList: PropTypes.func,
+    // getEnterpriseDetail: PropTypes.func,
+    changeDepartmentStore: PropTypes.func,
 
-    filterStatus: PropTypes.number, 
-    enterpriseName: PropTypes.string, 
-    enterprisePhone: PropTypes.string,
-    sort: PropTypes.string, 
-    ascend: PropTypes.bool,
-    currentPage: PropTypes.number, 
-    pageSize: PropTypes.number, 
+    // filterStatus: PropTypes.number, 
+    // enterpriseName: PropTypes.string, 
+    // enterprisePhone: PropTypes.string,
+    // sort: PropTypes.string, 
+    // ascend: PropTypes.bool,
+    // currentPage: PropTypes.number, 
+    // pageSize: PropTypes.number, 
   }
 
   constructor(props){
@@ -33,53 +33,57 @@ class DepartmentTable extends Component {
     }
   }
 
+  onDepartmentAdd = () =>{//进入添加部门页
+    this.props.changeDepartmentStore({showPage: 'add'});
+  }
+
   onPaginationChange = ({currentPage,pageSize}) => {//分页器
-    const {enterpriseName,sort,ascend,enterprisePhone,filterStatus} = this.props;
-    this.props.getEnterpriseList({
-      enterpriseName,
-      enterprisePhone,
-      sort,
-      ascend,
-      currentPage,
-      pageSize,
-      filterStatus
-    });
+    // const {enterpriseName,sort,ascend,enterprisePhone,filterStatus} = this.props;
+    // this.props.getEnterpriseList({
+    //   enterpriseName,
+    //   enterprisePhone,
+    //   sort,
+    //   ascend,
+    //   currentPage,
+    //   pageSize,
+    //   filterStatus
+    // });
   }
 
   onRowSelect = (selectedRowKeys, selectedRows) => {
-    this.props.changeEnterpriseStore({
-      selectedEnterprise:selectedRows
-    })
+    // this.props.changeEnterpriseStore({
+    //   selectedEnterprise:selectedRows
+    // })
   }
   cancelRowSelect = () => {
-    this.props.changeEnterpriseStore({
-      selectedEnterprise:[]
-    })
+    // this.props.changeEnterpriseStore({
+    //   selectedEnterprise:[]
+    // })
   }
 
   tableChange = (pagination,filter,sorter) => {//排序，筛选
-    const {enterpriseName,enterprisePhone,currentPage,pageSize,filterStatus} = this.props;
-    const sort = sorter.field;
-    const ascend = sorter.order==='ascend';
-    this.props.getEnterpriseList({
-      enterpriseName,
-      enterprisePhone,
-      sort,
-      ascend,
-      currentPage,
-      pageSize,
-      filterStatus
-    });
+    // const {enterpriseName,enterprisePhone,currentPage,pageSize,filterStatus} = this.props;
+    // const sort = sorter.field;
+    // const ascend = sorter.order==='ascend';
+    // this.props.getEnterpriseList({
+    //   enterpriseName,
+    //   enterprisePhone,
+    //   sort,
+    //   ascend,
+    //   currentPage,
+    //   pageSize,
+    //   filterStatus
+    // });
   }
   showEnterpriseDetail = (record) => {
-    console.log(record);
-    const { enterpriseId } = record;
-    this.props.changeEnterpriseStore({
-      showPage: 'detail',
-    })
-    this.props.getEnterpriseDetail({
-      enterpriseId
-    })
+    // console.log(record);
+    // const { enterpriseId } = record;
+    // this.props.changeEnterpriseStore({
+    //   showPage: 'detail',
+    // })
+    // this.props.getEnterpriseDetail({
+    //   enterpriseId
+    // })
   }
   enterpriseHandle = (value) => {//编辑，禁用，启用
     console.log(value);
@@ -160,7 +164,7 @@ class DepartmentTable extends Component {
       <div className={styles.departmentList}>
         <div className={styles.departmentListTop} >
           <div>
-            <Button className={styles.addDepartment}>
+            <Button className={styles.addDepartment} onClick={this.onDepartmentAdd}>
               <Icon type="plus" />
               <span className={styles.text}>部门</span>
             </Button>

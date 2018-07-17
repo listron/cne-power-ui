@@ -19,17 +19,8 @@ class DepartmentMain extends Component {
     ascend: PropTypes.bool, 
     pageNum: PropTypes.number,
     pageSize: PropTypes.number,
-    // selectedEnterprise: PropTypes.array,
     changeDepartmentStore: PropTypes.func,
     getDepartmentList: PropTypes.func,
-
-    // filterStatus: PropTypes.number, 
-    // enterpriseName: PropTypes.string, 
-    // enterprisePhone: PropTypes.string,
-    // sort: PropTypes.string, 
-    // ascend: PropTypes.bool,
-    // currentPage: PropTypes.number, 
-    // pageSize: PropTypes.number, 
   }
 
   constructor(props){
@@ -75,8 +66,6 @@ class DepartmentMain extends Component {
         <Button onClick={()=>this.props.changeDepartmentStore({showPage: 'detail'})}>点击切换至详情页</Button>
         <DepartmentSearch searchDepartment={this.searchDepartment} />    
         <DepartmentTable {...this.props} />    
-        {/* 
-        <EnterpriseTable {...this.props} /> */}
       </div>
     )
   }

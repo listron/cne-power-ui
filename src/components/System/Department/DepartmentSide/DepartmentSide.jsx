@@ -12,8 +12,7 @@ import styles from './departmentSide.scss';
 
 class DepartmentSide extends Component {
   static propTypes = {
-    showSidePage: PropTypes.bool,
-    showPage: PropTypes.string,
+    showSidePage: PropTypes.string,
     changeDepartmentStore: PropTypes.func,
   }
 
@@ -23,7 +22,7 @@ class DepartmentSide extends Component {
 
 
   render(){
-    const { showSidePage, changeDepartmentStore, showPage } = this.props;
+    const { showSidePage, changeDepartmentStore } = this.props;
     return (
       <div className={styles.departmentSide}>
         side区域
