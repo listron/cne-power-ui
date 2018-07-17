@@ -27,7 +27,6 @@ class RegisterForm extends Component{
 
   componentWillReceiveProps(nextProps){
     if(nextProps.registerStep === 2 && this.props.registerStep === 1){
-      console.log("第二步");
       this.next();
     }
   }
@@ -36,9 +35,7 @@ class RegisterForm extends Component{
     e.preventDefault();
     this.props.form.validateFields(['phoneNum','verificationCode'],(err, values) => {
       if(!err){
-        console.log(values);
         this.props.phoneRegister(values);
-        
       }
     })
   }
@@ -48,7 +45,6 @@ class RegisterForm extends Component{
     e.preventDefault();
     this.props.form.validateFields(['enterpriseDomain','enterpriseName','userAgreement'], (err, values) => {
       if(!err){
-        console.log(values);
         this.props.checkEnterpriseDomain({
           'enterpriseDomain': values.enterpriseDomain,
           'enterpriseName': values.enterpriseName,

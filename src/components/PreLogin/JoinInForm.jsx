@@ -53,7 +53,6 @@ class JoinInForm extends Component{
 
   render(){
     const { getFieldDecorator, getFieldsError } = this.props.form;
-    let { showPasswordLogin } = this.state;
     return (
       <div>
 
