@@ -60,6 +60,13 @@ export default {
       deleteAbnormal: '/v3/inspect/deleteabnormal',
       getInspectStandard:'/v3/inspect/standard',
       inspectCheckBatch:'/v3/inspect/check/batch',
+    },
+    system: {
+      getRoleList: '/v3/role/list',
+      getMenuList: 'v3/right',
+      createRole: '/v3/role',
+      editRole: '/v3/role/{enterpriseId}',
+      deleteRole: '/v3/role',
     }
   }
 }

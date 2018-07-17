@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Table, Button, Select, Icon } from 'antd';
 import PropTypes from 'prop-types';
-import styles from './roleTable.scss';
+import styles from './role.scss';
 
 const { Option } = Select;
 
@@ -101,7 +101,7 @@ class RoleTable extends Component {
   renderAuthEl(arr, result, rightEl) {
     for(var i = 0; i < arr.length; i++) {
       if(arr[i].childRightData instanceof Array) {
-        this.renderAuthEl(arr, result, arr[i].rightName+'-');
+        this.renderAuthEl(arr[i].childRightData, result, arr[i].rightName+'-');
       } else {
         result.push(rightEl+'-'+arr[i].rightName);
       }

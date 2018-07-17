@@ -46,8 +46,7 @@ class RoleContainer extends Component {
         >
           <RoleEdit {...this.props} />
         </TransitionContainer>
-        <Footer />
-        
+        <Footer />        
       </div>
     );
   }
@@ -55,20 +54,18 @@ class RoleContainer extends Component {
 const mapStateToProps = (state) => ({
   isFetching: state.role.get('isFetching'),
   showPage: state.role.get('showPage'),
-  sort: state.role.get('sort'),
-  ascend: state.role.get('ascend'),
-  totalNum: state.role.get('totalNum'),
   roleData: state.role.get('roleData').toJS(),
-  currentPage: state.role.get('currentPage'),
-  pageSize: state.role.get('pageSize'),
+  menuData: state.role.get('menuData').toJS(),
   selectedRole: state.role.get('selectedRole').toJS(),
 });
 
 const mapDispatchToProps = (dispatch) => ({
   changeRoleStore: payload => dispatch({type:roleAction.CHANGE_ROLE_STORE_SAGA, payload}),
-  getEnterpriseList: payload => dispatch({type:roleAction.GET_ROLE_LIST_SAGA, payload}),
-  modifyRole: payload => dispatch({type:roleAction.MODIFT_ROLE_SAGA, payload}),
-  deleteRole: payload => dispatch({type:roleAction.DELETE_ROLE_SAGA, payload}),
+  getRoleList: payload => dispatch({type:roleAction.GET_ROLE_LIST_SAGA, payload}),
+  getMenuList: payload => dispatch({type:roleAction.GET_MENU_LIST_SAGA, payload}),
+  onCreateRole: payload => dispatch({type:roleAction.CREATE_ROLE_SAGA, payload}),
+  onEditRole: payload => dispatch({type:roleAction.EDIT_ROLE_SAGA, payload}),
+  onDeleteRole: payload => dispatch({type:roleAction.DELETE_ROLE_SAGA, payload}),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(RoleContainer);
