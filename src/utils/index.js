@@ -29,3 +29,10 @@ export function delCookie(name)
         document.cookie= name + "="+cval+";expires="+exp.toGMTString();
 }
 
+export function replacePathParams(path, ...value) {
+  value.forEach(function(val) {
+    path = path.replace(/{\w*}/, val);
+  });
+  return path;
+}
+
