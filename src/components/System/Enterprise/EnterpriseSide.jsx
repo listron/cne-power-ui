@@ -13,7 +13,7 @@ import EnterpriseEdit from './EnterpriseEdit';
 class EnterpriseSide extends Component {
   static propTypes = {
     showDetail: PropTypes.bool,
-    changeEnterpriseAttr: PropTypes.func,
+    changeEnterpriseStore: PropTypes.func,
   }
 
   constructor(props){
@@ -22,13 +22,13 @@ class EnterpriseSide extends Component {
 
 
   render(){
-    const { showDetail, changeEnterpriseAttr } = this.props;
+    const { showDetail, changeEnterpriseStore } = this.props;
     return (
       <div className={styles.enterpriseSide}>
         {
           showDetail ?
-          <EnterpriseDetail changeEnterpriseAttr={changeEnterpriseAttr} />:
-          <EnterpriseEdit changeEnterpriseAttr={changeEnterpriseAttr} />
+          <EnterpriseDetail changeEnterpriseStore={changeEnterpriseStore} />:
+          <EnterpriseEdit changeEnterpriseStore={changeEnterpriseStore} />
         }
       </div>
     )

@@ -23,26 +23,23 @@ class EnterpriseContainer extends Component {
     ascend: PropTypes.bool,
     currentPage: PropTypes.number, 
     pageSize: PropTypes.number, 
-    enterpriseDetail:PropTypes.object, 
-    selectedEnterprise: PropTypes.array, 
-    getEnterpriseList: PropTypes.func,
-    changeSelectedEnterprise: PropTypes.func,
-    changeEnterpriseAttr: PropTypes.func,
+    getEnterpriseDetail: PropTypes.func,
   }
   constructor(props) {
     super(props);
   }
   componentDidMount(){
-    const params = {
-      filterStatus: this.props.filterStatus, 
-      enterpriseName: this.props.enterpriseName, 
-      enterprisePhone: this.props.enterprisePhone,
-      sort: this.props.sort, 
-      ascend: this.props.ascend,
-      currentPage: this.props.currentPage, 
-      pageSize: this.props.pageSize, 
-    }
-    this.props.getEnterpriseList(params)
+    // const params = {
+    //   filterStatus: this.props.filterStatus, 
+    //   enterpriseName: this.props.enterpriseName, 
+    //   enterprisePhone: this.props.enterprisePhone,
+    //   sort: this.props.sort, 
+    //   ascend: this.props.ascend,
+    //   currentPage: this.props.currentPage, 
+    //   pageSize: this.props.pageSize, 
+    // }
+    // this.props.getEnterpriseList(params)//请求企业列表
+    this.props.getEnterpriseDetail()
   }
 
   onShowSide = () => {
@@ -94,10 +91,12 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  changeEnterpriseAttr: payload => dispatch({type:enterpriseAction.GET_ENTERPRISE_ATTR_CHANGE_SAGA, payload}),
+  changeEnterpriseStore: payload => dispatch({type:enterpriseAction.GET_ENTERPRISE_ATTR_CHANGE_SAGA, payload}),
   getEnterpriseList: payload => dispatch({type:enterpriseAction.GET_ENTERPRISE_LIST_SAGA, payload}),
   getEnterpriseDetail: payload => dispatch({type:enterpriseAction.GET_ENTERPRISE_DETAIL_SAGA, payload}),
   changeSelectedEnterprise: payload => dispatch({type:enterpriseAction.CHANGE_SELECTED_ENTERPRISE_SAGA, payload}),
+  saveEnterpriseInfor: payload => dispatch({type:enterpriseAction.SAVE_ENTERPRISE_INFO_SAGA, payload}),
+  ignoreEnterpirseEdit: payload => dispatch({type: enterpriseAction.IGNORE_ENTERPRISE_EDIT,payload})
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(EnterpriseContainer);

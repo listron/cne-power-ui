@@ -43,7 +43,7 @@ module.exports = [
       "data": {
         enterpriseId:'11111',	
         enterpriseIdName:'图书馆电站',	
-        enterpriseLogo:'1fjklew',	
+        enterpriseLogo:'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',	
         enterpriseNum:'12153413213'	,
         enterpriseDomain:'www.baidu.com',	
         enterpriseWebsite:'www.google.com',	
@@ -51,13 +51,13 @@ module.exports = [
         enterpriseProfile:'新能源崛起！',
         enterpriseStatus:1,
         createUser:'孙思邈',
+        createPhone: 15214449995,
         createtime:'公元前2年2月2日，22点22分22秒',	
       },
       "serviceCode": "3.0"
     },
     delay:1000,
     error:{}
-    
   }
 
 ]
