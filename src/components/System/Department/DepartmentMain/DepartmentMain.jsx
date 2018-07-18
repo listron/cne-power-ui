@@ -27,21 +27,6 @@ class DepartmentMain extends Component {
     super(props);
   }
 
-  selectStatus = (e) => {//状态筛选
-    const filterStatus = e.target.value;
-    const {enterpriseName,enterprisePhone,sort,ascend,currentPage,pageSize} = this.props;
-    this.props.changeEnterpriseStore({filterStatus});
-    this.props.getEnterpriseList({
-      enterpriseName,
-      enterprisePhone,
-      sort,
-      ascend,
-      currentPage,
-      pageSize,
-      filterStatus
-    });
-  }
-
   searchDepartment = ({departmentName,parentDepartmentName,stationName}) => {//部门搜索
     const params = {
       departmentSource: this.props.departmentSource,

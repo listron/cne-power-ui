@@ -54,6 +54,16 @@ function *deleteDepartment(action){
     console.log(e);
   }
 }
+
+//获取所有用户--todo 获取该企业所有用户，用于分配所有用户数据
+function *getAllUsers(action){
+  try{
+    //todo
+  }catch(e){
+    console.log(e)
+  }
+}
+
 //请求单部门详细数据信息
 function *getDepartmentDetail(action){
   const { payload } = action;
@@ -115,10 +125,12 @@ function *editDepartmentInfor(action){
   }
 }
 
+
 export function* watchDepartment() {
   yield takeLatest(departmentAction.CHANGE_DEPARTMENT_STORE_SAGA, changeDepartmentStore);
   yield takeLatest(departmentAction.GET_DEPARTMENT_LIST_SAGA, getDepartmentList);
   yield takeLatest(departmentAction.DELETE_DEPARTMENT_SAGA,deleteDepartment);
+  yield takeLatest(departmentAction.GET_ALL_USERS_SAGA,getAllUsers);
   yield takeLatest(departmentAction.GET_DEPARTMENT_DETAIL_SAGA, getDepartmentDetail);
   yield takeLatest(departmentAction.ADD_DEPARTMENT_INFO_SAGA, addDepartmentInfor);
   yield takeLatest(departmentAction.EDIT_DEPARTMENT_INFO_SAGA,editDepartmentInfor);

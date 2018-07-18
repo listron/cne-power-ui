@@ -1,7 +1,7 @@
 
 
 import React, { Component } from 'react';
-import { Table, Button, Select, Icon } from 'antd';
+import { Table, Button, Select, Icon, Popover } from 'antd';
 import CommonPagination from '../../../Common/CommonPagination';
 import PropTypes from 'prop-types';
 import styles from './departmentMain.scss';
@@ -156,7 +156,22 @@ class DepartmentTable extends Component {
       }, {
         title: '负责电站',
         dataIndex: 'stationName',
-        key: 'stationName'
+        key: 'stationName',
+        render: (text,record) => {
+          let stations = record.stationName.split(',').filter(e=>!!e);
+          const { departmentName } = record;
+          if(stations.length > 1){
+            const content = stations.map(e=>(<div>{e}</div>)) 
+            return (<span>
+              <span>{stations[0]}</span>
+              <Popover content={content} title={`${departmentName}负责电站`} >
+                <span>···</span>
+              </Popover>
+            </span>)
+          }else{
+            return <span>{stations[0]?stations[0]:''}</span>
+          }
+        }
       }
     ];
     return columns
