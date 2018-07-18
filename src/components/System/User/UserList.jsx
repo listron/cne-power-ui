@@ -12,8 +12,8 @@ class UserList extends Component {
   static propTypes = {
     loading: PropTypes.bool,
     totalNum: PropTypes.number,
-    userData: PropTypes.array,
-    selectedUser: PropTypes.array,//勾选的数组
+    userData: PropTypes.object,
+    selectedUser: PropTypes.object,//勾选的数组
     getUserList: PropTypes.func,
     getUserDetail: PropTypes.func,
     changeUserAttr: PropTypes.func,
@@ -45,7 +45,18 @@ class UserList extends Component {
       userStatus
     });
   }
-
+  getUserStaion = (text) => {
+    switch(text){
+      case 1:
+        return '激活';
+      case 2:
+        return '未激活';
+      case 3:
+        return '启用';
+      default:
+        '禁用';
+    }
+  }
   showUserDetail = (record) => {
     console.log(record);
     const { userId } = record;
@@ -101,7 +112,7 @@ class UserList extends Component {
         title: '状态',
         dataIndex: 'userStation',
         key: 'userStation',
-        render: (text, record, index) => (<span>{text}</span>),
+      render: (text, record, index) => (<span>{this.getUserStaion(text)}</span>),
         sorter: true,
       }
     ];
@@ -113,21 +124,13 @@ class UserList extends Component {
     const {  } = this.state;
     return (
       <div className={styles.userList}>
-        {/* <div className={styles.userListTop} >
-          <div>
-            <div className={styles.handleUser}>
-              {this._createHandleOption()}
-            </div>
-          </div>
-          <CommonPagination total={totalNum} onPaginationChange={this.onPaginationChange} />
-        </div> */}
         <Table 
           loading={loading}
           rowSelection={{
             selectedRowKeys: selectedUser.map(e=>e.key),
             onChange: this.onRowSelect
           }}
-          dataSource={userData.map((e,i)=>({...e,key:i}))} 
+          dataSource={userData.toJS().map((e,i)=>({...e,key:i}))} 
           columns={this.tableColumn()} 
           onChange={this.tableChange}
           pagination={false}

@@ -52,7 +52,7 @@ class Register extends Component {
   }
 }
 const mapStateToProps = (state) => ({
-  registerStep: state.preLogin.registerReducer.get('registerStep'),
+  registerStep: state.login.get('registerStep'),
 })
 const mapDispatchToProps = (dispatch) => ({
   sendCode: params => dispatch({type: LoginAction.SEND_CODE_SAGA, params}),

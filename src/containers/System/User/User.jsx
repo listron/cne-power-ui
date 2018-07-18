@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import styles from './userContainer.scss';
+import styles from './user.scss';
 import { userAction } from '../../../constants/actionTypes/system/userAction';
 import PropTypes from 'prop-types';
 import UserDetail from '../../../components/System/User/UserDetail';
 import UserEdit from '../../../components/System/User/UserEdit';
 import UserList from '../../../components/System/User/UserList';
 
-class UserContainer extends Component {
+class User extends Component {
   static propTypes = {
     showPage: PropTypes.string, 
     userId: PropTypes.string,
@@ -21,10 +21,11 @@ class UserContainer extends Component {
     currentPage: PropTypes.number, 
     pageSize: PropTypes.number, 
     userDetail:PropTypes.object, 
-    selectedUser: PropTypes.array, 
+    selectedUser: PropTypes.object, 
     getUserList: PropTypes.func,
     changeSelectedUser: PropTypes.func,
     changeUserAttr: PropTypes.func,
+    userData: PropTypes.object,
   }
   constructor(props) {
     super(props);
@@ -63,26 +64,33 @@ class UserContainer extends Component {
     );
   }
 }
-const mapStateToProps = (state) => ({
-  loading: state.user.get('loading'),
-  showPage: state.user.get('showPage'),
-  userId: state.user.get('userId'),
-  roleId: state.user.get('roleId'),
-  userStatus: state.user.get('userStatus'),
-  roleName: state.user.get('roleName'),
-  filterStatus: state.user.get('filterStatus'),
-  sort: state.user.get('sort'),
-  ascend: state.user.get('ascend'),
-  userName: state.user.get('userName'),
-  phoneNum: state.user.get('phoneNum'),
-  stationName: state.user.get('stationName'),
-  totalNum: state.user.get('totalNum'),
-  userData: state.user.get('userData').toJS(),
-  currentPage: state.user.get('currentPage'),
-  pageSize: state.user.get('pageSize'),
-  userDetail: state.user.get('userDetail').toJS(),
-  selectedUser: state.user.get('selectedUser').toJS(),
-});
+
+const mapStateToProps = state => {
+  let departmentProps = {};
+  // [...state.department].forEach(e=>departmentProps[e[0]]=(e[1].toJS?e[1].toJS():e[1]))
+  [...state.user].forEach(e=>departmentProps[e[0]]=e[1])
+  return departmentProps
+}
+// const mapStateToProps = (state) => ({
+//   loading: state.user.get('loading'),
+//   showPage: state.user.get('showPage'),
+//   userId: state.user.get('userId'),
+//   roleId: state.user.get('roleId'),
+//   userStatus: state.user.get('userStatus'),
+//   roleName: state.user.get('roleName'),
+//   filterStatus: state.user.get('filterStatus'),
+//   sort: state.user.get('sort'),
+//   ascend: state.user.get('ascend'),
+//   userName: state.user.get('userName'),
+//   phoneNum: state.user.get('phoneNum'),
+//   stationName: state.user.get('stationName'),
+//   totalNum: state.user.get('totalNum'),
+//   userData: state.user.get('userData').toJS(),
+//   currentPage: state.user.get('currentPage'),
+//   pageSize: state.user.get('pageSize'),
+//   userDetail: state.user.get('userDetail').toJS(),
+//   selectedUser: state.user.get('selectedUser').toJS(),
+// });
 
 const mapDispatchToProps = (dispatch) => ({
   changeUserAttr: payload => dispatch({type:userAction.GET_USER_ATTR_CHANGE_SAGA, payload}),
@@ -91,4 +99,4 @@ const mapDispatchToProps = (dispatch) => ({
   changeSelectedUser: payload => dispatch({type:userAction.CHANGE_SELECTED_USER_SAGA, payload}),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(User);

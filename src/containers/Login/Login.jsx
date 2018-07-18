@@ -73,7 +73,7 @@ class Login extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  loginSuccess: state.preLogin.loginReducer.get('loginSuccess'),
+  loginSuccess: state.login.get('loginSuccess'),
 });
 
 const mapDispatchToProps = (dispatch) => ({

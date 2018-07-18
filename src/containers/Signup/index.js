@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { Link,withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { GET_COMPINFO_SU_SAGA, SEND_CODE_SAGA, CHECK_CODE_SAGA, SIGNUP_SAGA } from '../../constants/actionTypes/Login';
-import SignupForm1 from '../../components/Login/SignupForm1';
-import SignupForm2 from '../../components/Login/SignupForm2';
+import SignupForm1 from '../../components/LoginOld/SignupForm1';
+import SignupForm2 from '../../components/LoginOld/SignupForm2';
 import PropTypes from 'prop-types';
 import {message, Spin} from 'antd';
 
