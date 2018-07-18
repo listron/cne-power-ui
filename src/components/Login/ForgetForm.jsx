@@ -8,11 +8,12 @@ const FormItem = Form.Item;
 class ForgetForm extends Component{
   static propTypes = {
     form: PropTypes.object,
-    phoneCheck: PropTypes.number,
+    showConfirmPassword: PropTypes.bool,
     changePage: PropTypes.func,
     sendCode: PropTypes.func,
     checkPhoneCode: PropTypes.func,
     resetPassword: PropTypes.func,
+    phoneNum: PropTypes.string,
   }
 
   constructor(props){
@@ -35,7 +36,11 @@ class ForgetForm extends Component{
   onResetPassword = () => {
     this.props.form.validateFields(['password','confirmPwd'], (err,values) => {
       if(!err){
-        this.props.resetPassword(values);
+        this.props.resetPassword({
+          'phoneNum': this.props.phoneNum,
+          'password': values.password,
+          'confirmPwd': values.confirmPwd,
+        });
       }
     })
   }
@@ -82,7 +87,7 @@ class ForgetForm extends Component{
   render(){
     const { getFieldDecorator } = this.props.form;
     const { checkFirst, timeValue } = this.state;
-    const { phoneCheck } = this.props;
+    const { showConfirmPassword } = this.props;
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -108,7 +113,7 @@ class ForgetForm extends Component{
     return (
       <div>
         <div><span>登录</span>|<span>注册</span></div>
-        {!phoneCheck &&
+        {!showConfirmPassword &&
           <div>
             <span>找回密码</span>
             <Form onSubmit={this.checkPhoneCode} >
@@ -139,7 +144,7 @@ class ForgetForm extends Component{
             </Form>
           </div>
         }
-        {phoneCheck &&
+        {showConfirmPassword &&
           <div>
             <Form onSubmit={this.onResetPassword}  >
               <FormItem label="创建密码" {...formItemLayout}>

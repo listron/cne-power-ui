@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Form, Icon, Input, Button, Steps, message, Checkbox} from 'antd';
+import {Form, Icon, Input, Button, Steps, message,Alert, Checkbox} from 'antd';
 import PropTypes from 'prop-types';
 import styles from './registerForm.scss';
 
@@ -15,6 +15,9 @@ class RegisterForm extends Component{
     registerStep: PropTypes.number,
     phoneRegister: PropTypes.func,
     checkEnterpriseDomain: PropTypes.func,
+    getLogin: PropTypes.func,
+    domainIsRegister: PropTypes.number,
+    nameIsRegister: PropTypes.number,
   }
 
   constructor(props){
@@ -29,6 +32,10 @@ class RegisterForm extends Component{
     if(nextProps.registerStep === 2 && this.props.registerStep === 1){
       this.next();
     }
+    if(nextProps.domainIsRegister === 1 && nextProps.nameIsRegister === 1){
+      this.next();
+    }
+    
   }
 
   onCheckMobile = (e) =>{
@@ -46,8 +53,19 @@ class RegisterForm extends Component{
     this.props.form.validateFields(['enterpriseDomain','enterpriseName','userAgreement'], (err, values) => {
       if(!err){
         this.props.checkEnterpriseDomain({
-          'enterpriseDomain': values.enterpriseDomain,
+          'enterpriseDomain': values.enterpriseDomain+'.cneclound.com',
           'enterpriseName': values.enterpriseName,
+        });
+      }
+    })
+  }
+
+  onLogin = () => {
+    this.props.form.validateFields(['userName','password','confirmPwd'],(err, values) => {
+      if(!err){
+        this.props.getLogin({
+          'userName': values.userName,
+          'password': values.password,
         });
       }
     })
@@ -82,6 +100,7 @@ class RegisterForm extends Component{
 
   render(){
     const { getFieldDecorator } = this.props.form;
+    const {domainIsRegister, nameIsRegister} = this.props;
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -147,7 +166,7 @@ class RegisterForm extends Component{
                 {getFieldDecorator('enterpriseDomain', {
                   rules: [{required: true, message: '请输入企业域名'}]
                 })(
-                  <Input placeholder="请输入企业域名"  addonAfter=".cneclound.cn" />
+                  <Input placeholder="请输入企业域名"  addonAfter=".cneclound.com" />
                 )}
               </FormItem>
               <FormItem label="企业名称" {...formItemLayout}>
@@ -166,6 +185,8 @@ class RegisterForm extends Component{
               </FormItem>
               <FormItem {...tailFormItemLayout} >
                 <Button type="primary" htmlType="submit" className="login-form-button"  >下一步</Button>
+                {!domainIsRegister && <Alert message="当前域名无效" type="error" showIcon />}
+                {!nameIsRegister && <Alert message="当前企业名已注册，不能重复注册" type="error" showIcon />}
               </FormItem>
             </Form>
           </div>
@@ -211,7 +232,6 @@ class RegisterForm extends Component{
           {steps.map(item => <Step key={item.title} title={item.title} />)}
         </Steps>
         <div className="steps-content">{steps[current].content}</div>
-        
       </div>
     );
   }

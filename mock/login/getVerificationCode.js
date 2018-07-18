@@ -68,13 +68,13 @@ module.exports = [
     delay:1000,
     error:{}
   },{
-    api:'/mock/api/v3/login/enterprise/',//验证企业是否注册
-    method:'post',
+    api:'/mock/api/v3/login/enterprise/',//验证企业名称是否已注册
+    method:'get',
     response:{
       "code": "10000",
       "message": "请求成功",
       "data": {
-        text: '手机号注册成功了！'  
+        "isRegister": 0,   
       },
       "serviceCode": "3.0"
     },
