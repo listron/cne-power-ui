@@ -75,20 +75,20 @@ class DepartmentTable extends Component {
       selectedDepartment:[]
     })
   }
-
-  tableChange = (pagination,filter,sorter) => {//排序，筛选
-    // const {enterpriseName,enterprisePhone,currentPage,pageSize,filterStatus} = this.props;
-    // const sort = sorter.field;
-    // const ascend = sorter.order==='ascend';
-    // this.props.getEnterpriseList({
-    //   enterpriseName,
-    //   enterprisePhone,
-    //   sort,
-    //   ascend,
-    //   currentPage,
-    //   pageSize,
-    //   filterStatus
-    // });
+  tableChange = (pagination,filter,sorter) => {//部门排序
+    const sort = sorter.field;
+    const ascend = sorter.order==='ascend';
+    this.props.getDepartmentList({
+      enterpriseId: this.props.enterpriseId,
+      departmentSource: this.props.departmentSource,
+      departmentName: this.props.departmentName, 
+      parentDepartmentName: this.props.parentDepartmentName, 
+      stationName: this.props.stationName, 
+      sort, 
+      ascend, 
+      pageNum: this.props.pageNum,
+      pageSize: this.props.pageSize,
+    })
   }
   showEnterpriseDetail = (record) => {
     // console.log(record);
