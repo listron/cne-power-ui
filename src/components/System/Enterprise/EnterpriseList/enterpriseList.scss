@@ -64,7 +64,7 @@
       margin-top: 9px;
       position: static;
       width: 160px;
-      @include highLingt($themeColor);
+      @include highLight($themeColor);
     }
     .searchNameInput{
       margin-right: 40px;
@@ -78,7 +78,7 @@
       margin-right: 12px;
       color: $lightColor;
       border:1px solid $promptColor;
-      @include highLingt($themeColor);
+      @include highLight($themeColor);
     }
     .clearButton{
       cursor: pointer;
@@ -117,7 +117,7 @@
           margin: 0px;
           text-align: center;
         }
-        @include highLingt($themeColor);
+        @include highLight($themeColor);
         &:hover{
           .text{
             background:$themeColor;
@@ -141,7 +141,7 @@
               .ant-select-arrow{
                 color: $lightColor;
               }
-              @include highLingt($themeColor);
+              @include highLight($themeColor);
             }
           }
         }
