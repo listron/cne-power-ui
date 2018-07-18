@@ -12,7 +12,7 @@ module.exports =[{
         phoneNum: `15501${parseInt(Math.random()*1000000)}`,
         roleName: '运维工',
         spcialRoleName: '删除，添加',
-        stationName: '广平',
+        stationName: '广平,顺义,夏威夷,抚平',
         userStation: Math.floor(Math.random()*7+1),
       }))
     },

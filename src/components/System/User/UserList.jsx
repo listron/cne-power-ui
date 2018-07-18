@@ -46,31 +46,6 @@ class UserList extends Component {
     });
   }
 
-  // onRowSelect = (selectedRowKeys, selectedRows) => {
-  //   this.props.changeUserAttr({
-  //     selectedUser:selectedRows
-  //   })
-  // }
-  // cancelRowSelect = () => {
-  //   this.props.changeUserAttr({
-  //     selectedUser:[]
-  //   })
-  // }
-
-  // tableChange = (pagination,filter,sorter) => {//排序，筛选
-  //   const {userName,userPhone,currentPage,pageSize,userStatus} = this.props;
-  //   const sort = sorter.field;
-  //   const ascend = sorter.order==='ascend';
-  //   this.props.getUserList({
-  //     userName,
-  //     userPhone,
-  //     sort,
-  //     ascend,
-  //     currentPage,
-  //     pageSize,
-  //     userStatus
-  //   });
-  // }
   showUserDetail = (record) => {
     console.log(record);
     const { userId } = record;
@@ -81,42 +56,7 @@ class UserList extends Component {
       userId
     })
   }
-  // userHandle = (value) => {//编辑，禁用，启用
-  //   console.log(value);
-  //   // const { selectedUser } = this.props;
-  //   // if(value === 'edit'){
-  //   //   this.props.editUser({
-  //   //     key: selectedUser[0].key
-  //   //   })
-  //   // }else{
-  //   //   this.props.handleUser({
-  //   //     keys:selectedUser.map(e=>e.key),
-  //   //     handle: value
-  //   //   })
-  //   // }
-  // }
-
-  // _createHandleOption = () => {//生成操作下拉框
-  //   const { selectedUser } = this.props;
-  //   let [editable,openable,closeable] = [true,true,true];  
-  //   if(selectedUser.length > 0){
-  //     editable = selectedUser.length === 1;
-  //     const statusSet = new Set(selectedUser.map(e => e.userStatus));
-  //     const statusArray = [...statusSet];
-  //     if(statusArray.length > 1){
-  //       openable = false;
-  //       closeable = false;
-  //     }else if(statusArray.length === 1){
-  //       openable = statusArray[0]===0;
-  //       closeable = statusArray[0]===1;
-  //     }
-  //   }       
-  //   return (<Select onChange={this.userHandle} placeholder={'操作'} dropdownMatchSelectWidth={false} dropdownClassName={styles.handleDropdown}>
-  //     <Option value="edit" disabled={!editable} >编辑</Option>
-  //     <Option value="open" disabled={!openable} >启用</Option>
-  //     <Option value="close" disabled={!closeable} >禁用</Option>
-  //   </Select>)
-  // }
+  
   tableColumn = () => {//表头
     const columns = [
       {
@@ -159,8 +99,9 @@ class UserList extends Component {
         render: (text,record,index) => (<div><span>{text}</span><Popover content={'content'} title={'title'} placement="right" trigger="hover" ><Icon type="ellipsis" /></Popover></div>),
       },  {
         title: '状态',
-        dataIndex: 'userStatus',
-        key: 'userStatus',
+        dataIndex: 'userStation',
+        key: 'userStation',
+        render: (text, record, index) => (<span>{text}</span>),
         sorter: true,
       }
     ];
