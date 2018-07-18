@@ -8,7 +8,7 @@ import {
 } from './commonSaga';
 import { 
   // watchSendCode, 
-  watchLogin, 
+  // watchLogin, 
   // watchCheckCode, 
   // watchChangePSW, 
   // watchSignup, 
@@ -17,19 +17,14 @@ import {
   // watchCreateRegister 
 } from './login';
 
-import { 
-  watchPreLoginPageChangeSaga
-} from './preLogin/preLoginSaga';
 
 import {
-  watchLoginSaga,
+  watchLoginPageChange,
+  watchLogin,
   watchVerificationCode,
   watchCheckCode,
-} from './preLogin/loginSaga';
-
-import {
   watchCheckPhoneRegister,
-} from './preLogin/registerSaga';
+} from './loginSaga';
 
 import {
   watchGetDefectList,
@@ -71,8 +66,8 @@ import {
   watchChangeShowContainer
 } from './operation/ticket/ticketSaga';
 
-import { watchEnterpriseSaga } from './system/enterpriseSaga';
-import { watchDepartmentSaga } from './system/departmentSaga';
+import { watchEnterprise } from './system/enterpriseSaga';
+import { watchDepartment } from './system/departmentSaga';
 
 import axios from 'axios';
 
@@ -120,8 +115,7 @@ export default function* rootSaga() {
     watchGetPosts(),
     watchGetPartition(),
     //登陆注册
-    watchPreLoginPageChangeSaga(), 
-    watchLoginSaga(),
+    watchLoginPageChange(), 
     watchLogin(),
     watchVerificationCode(),
     watchCheckCode(),
@@ -171,8 +165,8 @@ export default function* rootSaga() {
     watchInspectCheckBatch(),
     //ticket
 
-    //system
-    watchEnterpriseSaga(),//-enterprise
-    watchDepartmentSaga(),//-department
+    //system-enterprise
+    watchEnterprise(),
+    watchDepartment(),
   ])
 } 

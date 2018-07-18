@@ -1,35 +1,35 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import styles from './preLogin.scss';
-import { PreLoginAction } from '../../constants/actionTypes/preLoginAction';
+import styles from './login.scss';
+import { LoginAction } from '../../constants/actionTypes/loginAction';
 import PropTypes from 'prop-types';
 import Login from './Login';
 import Register from './Register';
 import JoinIn from './JoinIn';
 import Forget from './Forget';
 
-class PreLoginContainer extends Component {
+class LoginLayout extends Component {
   static propTypes = {
     pageTab: PropTypes.string,
-    changePreLoginPage: PropTypes.func,
+    changeLoginPage: PropTypes.func,
   }
   constructor(props) {
     super(props);
   }
 
   render() {
-    const { pageTab, changePreLoginPage } = this.props;
+    const { pageTab, changeLoginPage } = this.props;
     return (
       <div className={styles.preLogin}>
         <div className={styles.preLoginImg}>左侧图片区域
           <img width={'200px'} height={'200px'} src={'//www.baidu.com/img/bd_logo1.png?where=super'} />
         </div>
         <div className={styles.preLoginContent}>
-          {pageTab==='login' && <Login changePreLoginPage={changePreLoginPage} pageTab={pageTab} />}
-          {pageTab==='register' && <Register changePreLoginPage={changePreLoginPage} pageTab={pageTab} />}
-          {pageTab==='joinIn' && <JoinIn changePreLoginPage={changePreLoginPage} />}
-          {pageTab==='forget' && <Forget changePreLoginPage={changePreLoginPage} />}
+          {pageTab==='login' && <Login changeLoginPage={changeLoginPage} pageTab={pageTab} />}
+          {pageTab==='register' && <Register changeLoginPage={changeLoginPage} pageTab={pageTab} />}
+          {pageTab==='joinIn' && <JoinIn changeLoginPage={changeLoginPage} />}
+          {pageTab==='forget' && <Forget changeLoginPage={changeLoginPage} />}
         </div>
       </div>
     );
@@ -41,7 +41,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  changePreLoginPage: params => dispatch({ type: PreLoginAction.CHANGE_PRELOGIN_PAGE_SAGA, params }),
+  changeLoginPage: params => dispatch({ type: LoginAction.CHANGE_LOGIN_PAGE_SAGA, params }),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(PreLoginContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(LoginLayout);

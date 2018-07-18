@@ -8,13 +8,13 @@ import { PreLoginAction } from '../../../constants/actionTypes/preLoginAction';
 function *changePrelogin(action){
   const { params } = action;
   yield put({
-    type: PreLoginAction.CHANGE_PRELOGIN_PAGE,
+    type: PreLoginAction.CHANGE_LOGIN_PAGE,
     params,
   })
 }
 
 
 export function* watchPreLoginPageChangeSaga() {
-  yield takeLatest( PreLoginAction.CHANGE_PRELOGIN_PAGE_SAGA, changePrelogin);
+  yield takeLatest( PreLoginAction.CHANGE_LOGIN_PAGE_SAGA, changePrelogin);
 }
 
