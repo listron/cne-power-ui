@@ -26,7 +26,7 @@ class DepartmentTable extends Component {
     departmentData: PropTypes.array,
     selectedDepartment: PropTypes.array,//选中部门
     getDepartmentList: PropTypes.func,
-    // getEnterpriseDetail: PropTypes.func,
+    getDepartmentDetail: PropTypes.func,
     changeDepartmentStore: PropTypes.func,
 
     // filterStatus: PropTypes.number, 
@@ -90,15 +90,14 @@ class DepartmentTable extends Component {
       pageSize: this.props.pageSize,
     })
   }
-  showEnterpriseDetail = (record) => {
-    // console.log(record);
-    // const { enterpriseId } = record;
-    // this.props.changeEnterpriseStore({
-    //   showPage: 'detail',
-    // })
-    // this.props.getEnterpriseDetail({
-    //   enterpriseId
-    // })
+  showDepartmentDetail = (record) => {//点击跳转至详情
+    const { departmentId } = record;
+    this.props.changeDepartmentStore({
+      showPage: 'detail',
+    })
+    this.props.getDepartmentDetail({
+      departmentId
+    })
   }
   departmentHandle = (value) => {//编辑，删除，分配用户/电站
     if(value==='edit'){
@@ -138,7 +137,7 @@ class DepartmentTable extends Component {
         title: '部门名称',
         dataIndex: 'departmentName',
         key: 'departmentName',
-        render: (text,record,index) => (<a href={'javascript:void(0);'} >{text}</a>)
+        render: (text,record,index) => (<a href={'javascript:void(0);'} onClick={()=>this.showDepartmentDetail(record)} >{text}</a>)
       }, {
         title: '所属部门',
         dataIndex: 'parentDepartmentName',
@@ -174,7 +173,6 @@ class DepartmentTable extends Component {
           </div>
           <CommonPagination total={totalNum} onPaginationChange={this.onPaginationChange} />
         </div>
-        表格组件
         <Table 
           loading={loading}
           rowSelection={{
