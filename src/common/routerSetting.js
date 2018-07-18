@@ -8,6 +8,7 @@ import Login from '../containers/Login/LoginLayout';
 // import Signup from '../containers/Signup';
 import Power from '../containers/Power';
 import Enterprise from '../containers/System/Enterprise/Enterprise';
+import Department from '../containers/System/Department/Department';
 
 const routers = [
   {
@@ -45,6 +46,10 @@ const routers = [
     path:'/system/enterprise',
     exact:true,
     component: Enterprise,
+  },  {
+    path:'/system/department',
+    exact:true,
+    component: Department,
   }
 ];
 const RouteWithSubRoutes = route => (

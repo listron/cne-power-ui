@@ -4,7 +4,7 @@ import { enterpriseAction } from '../../../constants/actionTypes/system/enterpri
 
 var initState = immutable.fromJS({
   loading: false,
-  showPage: 'edit',//默认展示列表页,可展示新建/编辑edit,查看detail页,
+  showPage: 'detail',//默认展示列表页,可展示新建/编辑edit,查看detail页,
   filterStatus: 2, //筛选条件全部2，启用0，禁用1
   enterpriseName:'', //筛选条件，企业名称
   enterprisePhone: '',//筛选条件，企业电话
@@ -24,7 +24,7 @@ const enterpriseReducer = (state = initState, action) => {
       return state.set('loading',true)
     case enterpriseAction.GET_ENTERPRISE_COMMON_FETCH_SUCCESS :
       return state.merge(immutable.fromJS(action.payload)).set('loading',false)
-    case enterpriseAction.GET_ENTERPRISE_ATTR_CHANGE_SUCCESS:
+    case enterpriseAction.CHANGE_ENTERPRISE_STORE_SUCCESS:
       return state.merge(immutable.fromJS(action.payload))
   }
   return state;

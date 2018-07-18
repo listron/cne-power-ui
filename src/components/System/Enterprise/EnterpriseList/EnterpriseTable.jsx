@@ -16,7 +16,7 @@ class EnterpriseTable extends Component {
     selectedEnterprise: PropTypes.array,//勾选的数组
     getEnterpriseList: PropTypes.func,
     getEnterpriseDetail: PropTypes.func,
-    changeEnterpriseAttr: PropTypes.func,
+    changeEnterpriseStore: PropTypes.func,
 
     filterStatus: PropTypes.number, 
     enterpriseName: PropTypes.string, 
@@ -47,12 +47,12 @@ class EnterpriseTable extends Component {
   }
 
   onRowSelect = (selectedRowKeys, selectedRows) => {
-    this.props.changeEnterpriseAttr({
+    this.props.changeEnterpriseStore({
       selectedEnterprise:selectedRows
     })
   }
   cancelRowSelect = () => {
-    this.props.changeEnterpriseAttr({
+    this.props.changeEnterpriseStore({
       selectedEnterprise:[]
     })
   }
@@ -74,7 +74,7 @@ class EnterpriseTable extends Component {
   showEnterpriseDetail = (record) => {
     console.log(record);
     const { enterpriseId } = record;
-    this.props.changeEnterpriseAttr({
+    this.props.changeEnterpriseStore({
       showPage: 'detail',
     })
     this.props.getEnterpriseDetail({

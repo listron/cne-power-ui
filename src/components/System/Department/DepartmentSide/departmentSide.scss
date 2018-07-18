@@ -1,12 +1,7 @@
-/*请不要删除，展示企业列表时相关样式，后期开发恢复企业列表展示时可能会用。
-.enterpriseSide {
-  display: flex;
-  flex: 1 0 auto;
-  width: 100%;
-  padding: 24px 24px 0;
-}
-*/
-@import '../../../theme/theme.scss';
+
+
+
+@import '../../../../theme/theme.scss';
 
 @mixin top(){//详情，编辑通用顶部基础样式
   @include lineheight(64px);
@@ -14,6 +9,14 @@
   padding-left: 32px;
   align-items: center;
   border-bottom: solid 1px $promptColor;  
+}
+
+.departmentSide {
+  display: flex;
+  flex: 1 0 auto;
+  width: 100%;
+  padding: 24px 24px 0;
+  background:#ececec;
 }
 
 .enterpriseDetail{//详情页

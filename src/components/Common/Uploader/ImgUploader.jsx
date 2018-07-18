@@ -134,7 +134,7 @@ class ImgUploader extends Component {
       beforeUpload:this.beforeUpload
 		};
     const uploadButton = (
-      <div>
+      <div style={imgStyle}>
         <Icon type="plus" />
         <div className="ant-upload-text">Upload</div>
       </div>

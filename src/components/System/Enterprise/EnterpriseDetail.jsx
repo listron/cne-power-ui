@@ -1,31 +1,44 @@
 
 
 import React, { Component } from 'react';
-import { Button } from 'antd';
+import { Button, Icon } from 'antd';
 import PropTypes from 'prop-types';
 import styles from './enterprise.scss';
-import { Link } from 'react-router-dom';
+import { Link, Prompt } from 'react-router-dom';
 
 class EnterpriseDetail extends Component {
   static propTypes = {
-    changeEnterpriseAttr: PropTypes.func,
-    getEnterpriseDetail: PropTypes.func,
+    changeEnterpriseStore: PropTypes.func,
+    ignoreEnterpirseEdit: PropTypes.func,
     enterpriseDetail: PropTypes.object,
+    history: PropTypes.object
   }
 
   constructor(props){
     super(props);
+    this.state ={
+      showInforTip: true
+    }
   }
-  componentDidMount(){
-    this.props.getEnterpriseDetail()
+  ignoreEdit = () => {
+    this.props.ignoreEnterpirseEdit({id:'1122'});
+    this.setState({
+      showInforTip: false
+    })
   }
 
   render(){
-    const { changeEnterpriseAttr, enterpriseDetail } = this.props;
+    const { changeEnterpriseStore, enterpriseDetail } = this.props;
+    //todo: 首次进入企业，提示点击编辑的小提示框的enterpriseDetail.showTips判断
+    const { showInforTip } = this.state;
     return (
       <div className={styles.enterpriseDetail}>
-        <div className={styles.topHandler}>
-          <Button className={styles.editButton} onClick={()=>changeEnterpriseAttr({showPage:'edit'})}>编辑</Button>
+        <div className={styles.detailTop}>
+          <Button className={styles.editButton} onClick={()=>changeEnterpriseStore({showPage:'edit'})}>编辑</Button>
+          {showInforTip && <span className={styles.infoTip} >
+            <span className={styles.toEdit} onClick={()=>changeEnterpriseStore({showPage:'edit'})} >完善企业信息,请点击编辑</span>
+            <span className={styles.ignore} onClick={this.ignoreEdit}>不再提醒 <Icon type="close" /></span>
+          </span>}
         </div>
         <div className={styles.enterpriseName}>
           <span className={styles.text}>{enterpriseDetail.enterpriseIdName}</span>
@@ -61,4 +74,4 @@ class EnterpriseDetail extends Component {
   }
 }
 
-export default EnterpriseDetail;
+export default EnterpriseDetail ;

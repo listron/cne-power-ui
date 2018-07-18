@@ -6,9 +6,10 @@ import posts from './posts';
 // import login from './login';
 import operation from './operation/operationReducer';
 import login from './loginReducer';
-import enterprise from './system/enterpriseReducer'
+import enterprise from './system/enterpriseReducer';
+import department from './system/departmentReducer';
 
-const appReducer = (() => combineReducers({common, users, posts, operation,login,enterprise }))();
+const appReducer = (() => combineReducers({common, users, posts, operation,login,enterprise,department }))();
 
 // ========================= 单独一个文件的写法 =============================
 /* import { 
