@@ -28,6 +28,7 @@ class DepartmentTable extends Component {
     selectedDepartment: PropTypes.array,//选中部门
     getDepartmentList: PropTypes.func,
     getDepartmentDetail: PropTypes.func,
+    deleteDepartment: PropTypes.func,
     changeDepartmentStore: PropTypes.func,
   }
 
@@ -44,7 +45,6 @@ class DepartmentTable extends Component {
   onDepartmentAdd = () =>{//进入添加部门页
     this.props.changeDepartmentStore({showPage: 'add'});
   }
-
   onPaginationChange = ({currentPage,pageSize}) => {//分页器
     this.props.getDepartmentList({
       enterpriseId: this.props.enterpriseId,
@@ -58,11 +58,14 @@ class DepartmentTable extends Component {
       pageSize,
     })
   }
-
   onRowSelect = (selectedRowKeys, selectedRows) => {//行选择
     this.props.changeDepartmentStore({
       selectedDepartment:selectedRows
     })
+  }
+  onWarningTipOK = () => {//删除部门，todo
+    const { selectedDepartment,deleteDepartment } = this.props;
+    deleteDepartment(selectedDepartment.map(e=>e.departmentId))
   }
   cancelRowSelect = () => {//取消行选择
     this.props.changeDepartmentStore({
@@ -70,7 +73,9 @@ class DepartmentTable extends Component {
     })
   }
   cancelWarningTip = () => {//信息提示栏隐藏
-
+    this.setState({
+      showWarningTip:false
+    })
   }
   tableChange = (pagination,filter,sorter) => {//部门排序
     const sort = sorter.field;
@@ -96,7 +101,7 @@ class DepartmentTable extends Component {
       departmentId
     })
   }
-  departmentHandle = (value) => {//编辑，删除，分配用户/电站
+  departmentHandle = (value) => {//--todo编辑，删除，分配用户/电站
     const { selectedDepartment } = this.props;
     if(value==='edit'){
       this.props.changeDepartmentStore({showPage: 'edit'});
@@ -159,10 +164,12 @@ class DepartmentTable extends Component {
 
   render(){
     const { departmentData, selectedDepartment, totalNum, loading } = this.props;
-    const { showWarningTip, showAssignUser, showAssignStation } = this.state;
+    const { showWarningTip, showAssignUser, showAssignStation,warningTipText } = this.state;
     return (
       <div className={styles.departmentList}>
-        {showWarningTip && <WarningTip onCancel={this.cancelWarningTip} onOK={} />}
+        {showWarningTip && <WarningTip onCancel={this.cancelWarningTip} onOK={this.onWarningTipOK} value={warningTipText} />}
+        {showAssignUser && null}
+        {showAssignStation && null}
         <div className={styles.departmentListTop} >
           <div>
             <Button className={styles.addDepartment} onClick={this.onDepartmentAdd}>
