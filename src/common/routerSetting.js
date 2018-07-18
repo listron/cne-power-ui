@@ -8,6 +8,7 @@ import Forget from '../containers/Forget';
 import Signup from '../containers/Signup';
 import Power from '../containers/Power';
 import EnterpriseContainer from '../containers/System/Enterprise/EnterpriseContainer';
+import UserContainer from '../containers/System/User/UserContainer';
 
 const routers = [
   {
@@ -44,6 +45,10 @@ const routers = [
     path:'/system/enterprise',
     exact:true,
     component: EnterpriseContainer,
+  },  {
+    path:'/system/user',
+    exact:true,
+    component: UserContainer,
   }
 ];
 const RouteWithSubRoutes = route => (

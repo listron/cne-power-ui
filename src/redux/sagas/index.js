@@ -36,6 +36,8 @@ import {
   watchJoinInSaga,
 } from './preLogin/joinInSaga';
 
+import { watchUserSaga } from './system/userSaga';
+
 import {
   watchGetDefectList,
   watchBatchDeleteDefect,
@@ -178,5 +180,7 @@ export default function* rootSaga() {
 
     //system-enterprise
     watchEnterpriseSaga(),
+    // system-user
+    watchUserSaga(),
   ])
 } 

@@ -28,6 +28,7 @@ function *getEnterprisList(action){
         totalNum: response.data.data.totalNum,
       },
     });
+    
   }catch(e){
     console.log(e);
   }
