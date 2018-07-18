@@ -5,6 +5,7 @@ import { Table, Button, Select, Icon } from 'antd';
 import CommonPagination from '../../../Common/CommonPagination';
 import PropTypes from 'prop-types';
 import styles from './departmentMain.scss';
+import WarningTip from '../../../Common/WarningTip';
 
 const { Option } = Select;
 
@@ -28,20 +29,13 @@ class DepartmentTable extends Component {
     getDepartmentList: PropTypes.func,
     getDepartmentDetail: PropTypes.func,
     changeDepartmentStore: PropTypes.func,
-
-    // filterStatus: PropTypes.number, 
-    // enterpriseName: PropTypes.string, 
-    // enterprisePhone: PropTypes.string,
-    // sort: PropTypes.string, 
-    // ascend: PropTypes.bool,
-    // currentPage: PropTypes.number, 
-    // pageSize: PropTypes.number, 
   }
 
   constructor(props){
     super(props);
     this.state = {
       showWarningTip: false,
+      warningTipText: '',
       showAssignUser: false,
       showAssignStation: false,
     }
@@ -75,6 +69,9 @@ class DepartmentTable extends Component {
       selectedDepartment:[]
     })
   }
+  cancelWarningTip = () => {//信息提示栏隐藏
+
+  }
   tableChange = (pagination,filter,sorter) => {//部门排序
     const sort = sorter.field;
     const ascend = sorter.order==='ascend';
@@ -100,11 +97,14 @@ class DepartmentTable extends Component {
     })
   }
   departmentHandle = (value) => {//编辑，删除，分配用户/电站
+    const { selectedDepartment } = this.props;
     if(value==='edit'){
       this.props.changeDepartmentStore({showPage: 'edit'});
-    }else if(value==='delete'){
+    }else if(value==='delete'){//信息提示栏
+      // let departmentRelation = selectedDepartment.map(e=>e.relation)     //todo=>根据选中电站确定警告弹出框文字
       this.setState({
-        showWarningTip: true
+        showWarningTip: true,
+        warningTipText: '删除后，将取消成员关联！'
       })
     }else if(value === 'assignUser'){
       this.setState({
@@ -159,8 +159,10 @@ class DepartmentTable extends Component {
 
   render(){
     const { departmentData, selectedDepartment, totalNum, loading } = this.props;
+    const { showWarningTip, showAssignUser, showAssignStation } = this.state;
     return (
       <div className={styles.departmentList}>
+        {showWarningTip && <WarningTip onCancel={this.cancelWarningTip} onOK={} />}
         <div className={styles.departmentListTop} >
           <div>
             <Button className={styles.addDepartment} onClick={this.onDepartmentAdd}>

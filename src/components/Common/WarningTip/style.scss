@@ -1,0 +1,29 @@
+
+@import '../../../theme/theme.scss';
+
+.warningTip{
+  position: fixed;
+  z-index: 999999;
+  left: 40%;
+  height: 260px;
+  .textArea{
+    .icon{
+      background-color: #f9b600;
+      border-radius: 50%;
+      color: #fff;
+    }
+    .text{
+      color: $darkColor;
+    }
+  }
+  .handle{
+    span{
+      cursor: pointer;
+      color: $lightColor;
+      &:hover{
+        background-color: $themeColor;
+        color: #fff;
+      }
+    }
+  }
+}
