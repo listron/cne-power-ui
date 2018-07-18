@@ -17,6 +17,29 @@
   width: 100%;
   padding: 24px 24px 0;
   background:#ececec;
+  .addDepartment{
+    flex: 1;
+    background-color: #fff;
+    .editTop{
+      @include top;
+      justify-content: space-between;
+      .text{
+        font-size:18px;
+        color: $darkColor;
+        letter-spacing:4px;
+      }
+      .backIcon{
+        color: $lightColor;
+        font-size: 20px;
+        border-left: 1px solid $promptColor;
+        height: 100%;
+        line-height: 64px;
+        width: 64px;
+        cursor: pointer;
+      }
+    }
+
+  }
 }
 
 .enterpriseDetail{//详情页
@@ -103,24 +126,7 @@
 .enterpriseEdit{//编辑页
   flex:1;
   background-color: #fff;
-  .editTop{
-    @include top;
-    justify-content: space-between;
-    .text{
-      font-size:18px;
-      color: $darkColor;
-      letter-spacing:4px;
-    }
-    .backIcon{
-      color: $lightColor;
-      font-size: 20px;
-      border-left: 1px solid $promptColor;
-      height: 100%;
-      line-height: 64px;
-      width: 64px;
-      cursor: pointer;
-    }
-  }
+  
   .mainPart{
     margin: 24px 32px 0;    
     display: flex;

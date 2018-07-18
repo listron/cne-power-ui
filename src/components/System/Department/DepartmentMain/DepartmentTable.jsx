@@ -162,10 +162,10 @@ class DepartmentTable extends Component {
           const { departmentName } = record;
           if(stations.length > 1){
             const content = stations.map(e=>(<div>{e}</div>)) 
-            return (<span>
+            return (<span className={styles.stationColumn}>
               <span>{stations[0]}</span>
               <Popover content={content} title={`${departmentName}负责电站`} >
-                <span>···</span>
+                <span className={styles.others}>···</span>
               </Popover>
             </span>)
           }else{
