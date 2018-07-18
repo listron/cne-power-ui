@@ -11,10 +11,21 @@ const { Option } = Select;
 class DepartmentTable extends Component {
   static propTypes = {
     loading: PropTypes.bool,
-    // totalNum: PropTypes.number,
+
+    enterpriseId: PropTypes.string,
+    departmentSource: PropTypes.number,
+    departmentName: PropTypes.string, 
+    parentDepartmentName: PropTypes.string, 
+    stationName: PropTypes.string, 
+    sort: PropTypes.string, 
+    ascend: PropTypes.bool, 
+    pageNum: PropTypes.number,
+    pageSize: PropTypes.number,
+
+    totalNum: PropTypes.number,
     // enterpriseData: PropTypes.array,
-    selectedDepartment: PropTypes.array,//选中企业
-    // getEnterpriseList: PropTypes.func,
+    selectedDepartment: PropTypes.array,//选中部门
+    getDepartmentList: PropTypes.func,
     // getEnterpriseDetail: PropTypes.func,
     changeDepartmentStore: PropTypes.func,
 
@@ -38,16 +49,17 @@ class DepartmentTable extends Component {
   }
 
   onPaginationChange = ({currentPage,pageSize}) => {//分页器
-    // const {enterpriseName,sort,ascend,enterprisePhone,filterStatus} = this.props;
-    // this.props.getEnterpriseList({
-    //   enterpriseName,
-    //   enterprisePhone,
-    //   sort,
-    //   ascend,
-    //   currentPage,
-    //   pageSize,
-    //   filterStatus
-    // });
+    this.props.getDepartmentList({
+      enterpriseId: this.props.enterpriseId,
+      departmentSource: this.props.departmentSource,
+      departmentName: this.props.departmentName, 
+      parentDepartmentName: this.props.parentDepartmentName, 
+      stationName: this.props.stationName, 
+      sort: this.props.sort, 
+      ascend: this.props.ascend, 
+      pageNum: currentPage,
+      pageSize,
+    })
   }
 
   onRowSelect = (selectedRowKeys, selectedRows) => {
@@ -56,9 +68,9 @@ class DepartmentTable extends Component {
     // })
   }
   cancelRowSelect = () => {
-    // this.props.changeEnterpriseStore({
-    //   selectedEnterprise:[]
-    // })
+    this.props.changeDepartmentStore({
+      selectedDepartment:[]
+    })
   }
 
   tableChange = (pagination,filter,sorter) => {//排序，筛选
@@ -99,29 +111,19 @@ class DepartmentTable extends Component {
     //   })
     // }
   }
-  _createHandleOption = () => {//生成操作下拉框
+  _createHandleOption = () => {//部门操作下拉框生成
     const { selectedDepartment } = this.props;
-    let [editable,openable,closeable] = [false,false,false];  
+    let [editable, deletable, userAssignable, staionAssignable] = [false,false,false,false];  
+
     if(selectedDepartment.length > 0){
-    //   editable = selectedEnterprise.length === 1;
-    //   const statusSet = new Set(selectedEnterprise.map(e => e.enterpriseStatus));
-    //   const statusArray = [...statusSet];
-    //   if(statusArray.length > 1){
-    //     openable = false;
-    //     closeable = false;
-    //   }else if(statusArray.length === 1){
-    //     openable = statusArray[0]===0;
-    //     closeable = statusArray[0]===1;
-    //   }
+      editable = selectedDepartment.length === 1;
+      [deletable, userAssignable, staionAssignable] = [true,true,true];
     }       
     return (<Select onChange={this.departmentHandle} placeholder={'操作'} dropdownMatchSelectWidth={false} dropdownClassName={styles.handleDropdown}>
-      {/* <Option value="edit" disabled={!editable} >编辑</Option>
-      <Option value="open" disabled={!openable} >启用</Option>
-      <Option value="close" disabled={!closeable} >禁用</Option> */}
-      <Option value="edit" >编辑</Option>
-      <Option value="delete" >删除</Option>
-      <Option value="assignUser" >分配用户</Option>
-      <Option value="assignStation" >设置电站</Option>
+      <Option value="edit" disabled={!editable} >编辑</Option>
+      <Option value="delete" disabled={!deletable} >删除</Option>
+      <Option value="assignUser" disabled={!userAssignable} >分配用户</Option>
+      <Option value="assignStation" disabled={!staionAssignable} >设置电站</Option>
     </Select>)
   }
   _createTableColumn = () => {//生成表头
@@ -160,7 +162,7 @@ class DepartmentTable extends Component {
   }
 
   render(){
-    const { enterpriseData, selectedEnterprise, totalNum, loading } = this.props;
+    const { enterpriseData, selectedDepartment, totalNum, loading } = this.props;
     return (
       <div className={styles.departmentList}>
         <div className={styles.departmentListTop} >
@@ -169,7 +171,7 @@ class DepartmentTable extends Component {
               <Icon type="plus" />
               <span className={styles.text}>部门</span>
             </Button>
-            <div className={styles.handleEnterprise}>
+            <div className={styles.handleDepartment}>
               {this._createHandleOption()}
             </div>
           </div>
@@ -188,10 +190,11 @@ class DepartmentTable extends Component {
           onChange={this.tableChange}
           pagination={false}
         />
+         */}
         <div className={styles.tableFooter}>
-          <span className={styles.info}>当前选中<span className={styles.totalNum}>{selectedEnterprise.length}</span>项</span>
+          <span className={styles.info}>当前选中<span className={styles.totalNum}>{selectedDepartment.length}</span>项</span>
           <span className={styles.cancel} onClick={this.cancelRowSelect}>取消选中</span>
-        </div> */}
+        </div>
       </div>
     )
   }

@@ -29,6 +29,7 @@ class DepartmentContainer extends Component {
   }
   componentDidMount(){
     const params = {
+      enterpriseId: this.props.enterpriseId,
       departmentSource: this.props.departmentSource,
       departmentName: this.props.departmentName, 
       parentDepartmentName: this.props.parentDepartmentName, 
