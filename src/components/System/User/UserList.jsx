@@ -156,7 +156,7 @@ class UserList extends Component {
         title: '负责电站',
         dataIndex: 'stationName',
         key: 'stationName',
-        render: (text,record,index) => (<div><span>{text}</span><Popover content={'content'} title={} placement="right" trigger="hover" ><Icon type="ellipsis" /></Popover></div>),
+        render: (text,record,index) => (<div><span>{text}</span><Popover content={'content'} title={'title'} placement="right" trigger="hover" ><Icon type="ellipsis" /></Popover></div>),
       },  {
         title: '状态',
         dataIndex: 'userStatus',
