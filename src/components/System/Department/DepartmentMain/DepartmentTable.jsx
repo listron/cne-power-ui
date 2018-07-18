@@ -23,7 +23,7 @@ class DepartmentTable extends Component {
     pageSize: PropTypes.number,
 
     totalNum: PropTypes.number,
-    // enterpriseData: PropTypes.array,
+    departmentData: PropTypes.array,
     selectedDepartment: PropTypes.array,//选中部门
     getDepartmentList: PropTypes.func,
     // getEnterpriseDetail: PropTypes.func,
@@ -41,6 +41,9 @@ class DepartmentTable extends Component {
   constructor(props){
     super(props);
     this.state = {
+      showWarningTip: false,
+      showAssignUser: false,
+      showAssignStation: false,
     }
   }
 
@@ -62,12 +65,12 @@ class DepartmentTable extends Component {
     })
   }
 
-  onRowSelect = (selectedRowKeys, selectedRows) => {
-    // this.props.changeEnterpriseStore({
-    //   selectedEnterprise:selectedRows
-    // })
+  onRowSelect = (selectedRowKeys, selectedRows) => {//行选择
+    this.props.changeDepartmentStore({
+      selectedDepartment:selectedRows
+    })
   }
-  cancelRowSelect = () => {
+  cancelRowSelect = () => {//取消行选择
     this.props.changeDepartmentStore({
       selectedDepartment:[]
     })
@@ -98,18 +101,21 @@ class DepartmentTable extends Component {
     // })
   }
   departmentHandle = (value) => {//编辑，删除，分配用户/电站
-    console.log(value);
-    // const { selectedDepartment } = this.props;
-    // if(value === 'edit'){
-    //   this.props.editEnterprise({
-    //     key: selectedEnterprise[0].key
-    //   })
-    // }else{
-    //   this.props.handleEnterprise({
-    //     keys:selectedEnterprise.map(e=>e.key),
-    //     handle: value
-    //   })
-    // }
+    if(value==='edit'){
+      this.props.changeDepartmentStore({showPage: 'edit'});
+    }else if(value==='delete'){
+      this.setState({
+        showWarningTip: true
+      })
+    }else if(value === 'assignUser'){
+      this.setState({
+        showAssignUser: true,
+      })
+    }else if(value === 'assignStation'){
+      this.setState({
+        showAssignStation: true,
+      })
+    }
   }
   _createHandleOption = () => {//部门操作下拉框生成
     const { selectedDepartment } = this.props;
@@ -129,40 +135,31 @@ class DepartmentTable extends Component {
   _createTableColumn = () => {//生成表头
     const columns = [
       {
-        title: '企业名称',
-        dataIndex: 'enterpriseName',
-        key: 'enterpriseName',
-        render: (text,record,index) => (<a href={'javascript:void(0);'} onClick={()=>this.showEnterpriseDetail(record)} >{text}</a>)
+        title: '部门名称',
+        dataIndex: 'departmentName',
+        key: 'departmentName',
+        render: (text,record,index) => (<a href={'javascript:void(0);'} >{text}</a>)
       }, {
-        title: '企业电话',
-        dataIndex: 'enterpriseNum',
-        key: 'enterpriseNum',
-        render: (text,record,index) => (<span>{text}</span>)
+        title: '所属部门',
+        dataIndex: 'parentDepartmentName',
+        key: 'parentDepartmentName',
       }, {
-        title: '状态',
-        dataIndex: 'enterpriseStatus',
-        key: 'enterpriseStatus',
-        render: (text,record) => (<span>{text===0?'否':'是'}</span>),
+        title: '预设',
+        dataIndex: 'departmentSource',
+        key: 'departmentSource',
+        render: (text,record) => (<span>{text===0?'是':'否'}</span>),
         sorter: true
       }, {
-        title: '查看',
-        dataIndex: 'handle',
-        key: 'handle',
-        render: (text,record)=>(
-          <span>
-            <span>部门</span>
-            <span>成员</span>
-            <span>角色</span>
-            <span>电站</span>
-          </span>
-        )
+        title: '负责电站',
+        dataIndex: 'stationName',
+        key: 'stationName'
       }
     ];
     return columns
   }
 
   render(){
-    const { enterpriseData, selectedDepartment, totalNum, loading } = this.props;
+    const { departmentData, selectedDepartment, totalNum, loading } = this.props;
     return (
       <div className={styles.departmentList}>
         <div className={styles.departmentListTop} >
@@ -178,19 +175,17 @@ class DepartmentTable extends Component {
           <CommonPagination total={totalNum} onPaginationChange={this.onPaginationChange} />
         </div>
         表格组件
-        {/* 
         <Table 
           loading={loading}
           rowSelection={{
-            selectedRowKeys: selectedEnterprise.map(e=>e.key),
+            selectedRowKeys: selectedDepartment.map(e=>e.key),
             onChange: this.onRowSelect
           }}
-          dataSource={enterpriseData.map((e,i)=>({...e,key:i}))} 
+          dataSource={departmentData.map((e,i)=>({...e,key:i}))} 
           columns={this._createTableColumn()} 
           onChange={this.tableChange}
           pagination={false}
         />
-         */}
         <div className={styles.tableFooter}>
           <span className={styles.info}>当前选中<span className={styles.totalNum}>{selectedDepartment.length}</span>项</span>
           <span className={styles.cancel} onClick={this.cancelRowSelect}>取消选中</span>
