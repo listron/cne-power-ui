@@ -2,16 +2,16 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Tabs, message } from 'antd';
 import PropTypes from 'prop-types';
-import styles from './preLogin.scss';
-import LoginForm from '../../components/PreLogin/LoginForm';
-import RegisterForm from '../../components/PreLogin/RegisterForm';
-import { PreLoginAction } from '../../constants/actionTypes/preLoginAction';
+import styles from './login.scss';
+import LoginForm from '../../components/Login/LoginForm';
+import RegisterForm from '../../components/Login/RegisterForm';
+import { LoginAction } from '../../constants/actionTypes/loginAction';
 const { TabPane } = Tabs;
 
-class LoginContainer extends Component {
+class Login extends Component {
   static propTypes = {
     pageTab: PropTypes.string,
-    changePreLoginPage: PropTypes.func,
+    changeLoginPage: PropTypes.func,
     fetchLogin: PropTypes.func,
     fetchCompanyInfo: PropTypes.func,
     error: PropTypes.string,
@@ -40,7 +40,7 @@ class LoginContainer extends Component {
   }
 
   changePage = (pageTab) =>{
-    this.props.changePreLoginPage({pageTab})
+    this.props.changeLoginPage({pageTab})
   }
 
   render() {
@@ -55,7 +55,7 @@ class LoginContainer extends Component {
           <Tabs onChange={this.changePage} animated={false} activeKey={pageTab} >
             <TabPane tab="登录" key="login">
               <LoginForm 
-                changePage={this.props.changePreLoginPage} 
+                changePage={this.props.changeLoginPage} 
                 fetchLogin={this.props.fetchLogin} 
                 loginSuccess={this.props.loginSuccess}
                 sendCode={this.props.sendCode}
@@ -77,10 +77,10 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  fetchCompanyInfo: params => dispatch({type: PreLoginAction.GET_COMPINFO_SAGA, params}),
-  fetchLogin: params => dispatch({type: PreLoginAction.GET_LOGIN_SAGA, params}),
-  sendCode: params => dispatch({ type: PreLoginAction.SEND_CODE_SAGA, params}),
-  checkCodeLogin: params => dispatch({ type: PreLoginAction.CHECK_CODE_SAGA, params}),
+  fetchCompanyInfo: params => dispatch({type: LoginAction.GET_COMPINFO_SAGA, params}),
+  fetchLogin: params => dispatch({type: LoginAction.GET_LOGIN_SAGA, params}),
+  sendCode: params => dispatch({ type: LoginAction.SEND_CODE_SAGA, params}),
+  checkCodeLogin: params => dispatch({ type: LoginAction.CHECK_CODE_SAGA, params}),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(LoginContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

@@ -3,13 +3,14 @@ import { combineReducers } from 'redux'
 import common from './commonReducer';
 import users from './users';
 import posts from './posts';
-import login from './login';
+// import login from './login';
 import operation from './operation/operationReducer';
-import preLogin from './preLogin/preLoginReducer';
+import login from './loginReducer';
 import enterprise from './system/enterpriseReducer';
+import department from './system/departmentReducer';
 import user from './system/userReducer';
 
-const appReducer = (() => combineReducers({common, users, posts, login, operation,preLogin,enterprise, user }))();
+const appReducer = (() => combineReducers({common, users, posts, operation,login,enterprise,department,user }))();
 
 // ========================= 单独一个文件的写法 =============================
 /* import { 

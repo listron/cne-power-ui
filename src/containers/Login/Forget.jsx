@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Button } from 'antd';
-import ForgetForm from '../../components/PreLogin/ForgetForm';
-import { PreLoginAction } from '../../constants/actionTypes/preLoginAction';
+import ForgetForm from '../../components/Login/ForgetForm';
+import { LoginAction } from '../../constants/actionTypes/loginAction';
 import { connect } from 'react-redux';
 class ForgetContainer extends Component {
   static propTypes = {
-    changePreLoginPage: PropTypes.func,
+    changeLoginPage: PropTypes.func,
     sendCode: PropTypes.func,
     phoneCheck: PropTypes.number,
     checkPhoneCode: PropTypes.func,
@@ -16,7 +16,7 @@ class ForgetContainer extends Component {
     super(props);
   }
   changePage = (pageTab) =>{
-    this.props.changePreLoginPage({pageTab})
+    this.props.changeLoginPage({pageTab})
   }
 
   render() {
@@ -38,13 +38,13 @@ class ForgetContainer extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  phoneCheck: state.preLogin.loginReducer.get('phoneCheck'),
+  phoneCheck: state.login.get('phoneCheck'),
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  sendCode: params => dispatch({ type: PreLoginAction.SEND_CODE_SAGA, params}),
-  checkPhoneCode: params => dispatch({ type: PreLoginAction.CHECK_CODE_SAGA, params}),
-  resetPassword: params => dispatch({ type: PreLoginAction.RESET_PASSWORD_SAGA, params }),
+  sendCode: params => dispatch({ type: LoginAction.SEND_CODE_SAGA, params}),
+  checkPhoneCode: params => dispatch({ type: LoginAction.CHECK_CODE_SAGA, params}),
+  resetPassword: params => dispatch({ type: LoginAction.RESET_PASSWORD_SAGA, params }),
 })
 
 export default connect(mapStateToProps,mapDispatchToProps)(ForgetContainer);

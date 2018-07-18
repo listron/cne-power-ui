@@ -1,17 +1,17 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Button,Tabs } from 'antd';
-import styles from './preLogin.scss';
+import styles from './login.scss';
 import { connect } from 'react-redux';
-import LoginForm from '../../components/PreLogin/LoginForm';
-import RegisterForm from '../../components/PreLogin/RegisterForm';
-import { PreLoginAction } from '../../constants/actionTypes/preLoginAction';
+import LoginForm from '../../components/Login/LoginForm';
+import RegisterForm from '../../components/Login/RegisterForm';
+import { LoginAction } from '../../constants/actionTypes/loginAction';
 const { TabPane } = Tabs;
 
-class RegisterContainer extends Component {
+class Register extends Component {
   static propTypes = {
     pageTab: PropTypes.string,
-    changePreLoginPage: PropTypes.func,
+    changeLoginPage: PropTypes.func,
     sendCode: PropTypes.func,
     signupCount: PropTypes.number,
     phoneRegister: PropTypes.func,
@@ -22,7 +22,7 @@ class RegisterContainer extends Component {
     super(props);
   }
   changePage = (pageTab) =>{
-    this.props.changePreLoginPage({pageTab})
+    this.props.changeLoginPage({pageTab})
   }
   render() {
     const { pageTab } = this.props;
@@ -35,7 +35,7 @@ class RegisterContainer extends Component {
         <div className={styles.loginContent}>
           <Tabs onChange={this.changePage} animated={false} activeKey={pageTab}>
             <TabPane tab="登录" key="login">
-              <LoginForm changePage={this.props.changePreLoginPage} />
+              <LoginForm changePage={this.props.changeLoginPage} />
             </TabPane>
             <TabPane tab="注册企业" key="register">
               <RegisterForm 
@@ -55,8 +55,8 @@ const mapStateToProps = (state) => ({
   registerStep: state.preLogin.registerReducer.get('registerStep'),
 })
 const mapDispatchToProps = (dispatch) => ({
-  sendCode: params => dispatch({type: PreLoginAction.SEND_CODE_SAGA, params}),
-  phoneRegister: params => dispatch({ type: PreLoginAction.CHECK_PHONE_REGISTER_SAGA, params }),
-  checkEnterpriseDomain: params => dispatch({ type: PreLoginAction.CHECK_ENTERPRISE_DOMAIN_SAGA, params}),
+  sendCode: params => dispatch({type: LoginAction.SEND_CODE_SAGA, params}),
+  phoneRegister: params => dispatch({ type: LoginAction.CHECK_PHONE_REGISTER_SAGA, params }),
+  checkEnterpriseDomain: params => dispatch({ type: LoginAction.CHECK_ENTERPRISE_DOMAIN_SAGA, params}),
 })
-export default connect(mapStateToProps, mapDispatchToProps)(RegisterContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(Register);

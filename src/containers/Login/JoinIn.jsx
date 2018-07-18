@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Button } from 'antd';
 import { connect } from 'react-redux';
-import JoinInForm from '../../components/PreLogin/JoinInForm';
-import { PreLoginAction } from '../../constants/actionTypes/preLoginAction';
+import JoinInForm from '../../components/Login/JoinInForm';
+import { LoginAction } from '../../constants/actionTypes/loginAction';
 
-class JoinInContainer extends Component {
+class JoinIn extends Component {
   static propTypes = {
-    changePreLoginPage: PropTypes.func,
+    changeLoginPage: PropTypes.func,
     isJoined: PropTypes.number,
     isExist: PropTypes.number,
     enterpriseName: PropTypes.string,
@@ -21,7 +21,7 @@ class JoinInContainer extends Component {
     super(props);
   }
   changePage = (pageTab) =>{
-    this.props.changePreLoginPage({pageTab})
+    this.props.changeLoginPage({pageTab})
   }
   render() {
 
@@ -47,18 +47,18 @@ class JoinInContainer extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  loading: state.preLogin.joinInReducer.get('loading'),
-  // joinInStep: state.preLogin.joinInReducer.get('joinInStep'),
-  isExist: state.preLogin.joinInReducer.get('isExist'),
-  isJoined: state.preLogin.joinInReducer.get('isJoined'),
-  enterpriseName: state.preLogin.joinInReducer.getIn(['enterpriseInfo','enterpriseName']),
+  loading: state.login.get('loading'),
+  // joinInStep: state.login.get('joinInStep'),
+  isExist: state.login.get('isExist'),
+  isJoined: state.login.get('isJoined'),
+  enterpriseName: state.login.getIn(['enterpriseInfo','enterpriseName']),
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  getEnterpriseInfo: params => dispatch({type: PreLoginAction.GET_ENTERPRISE_INFO_SAGA, params}),
-  sendCode: params => dispatch({ type: PreLoginAction.SEND_CODE_SAGA, params}),
-  checkPhoneCode: params => dispatch({ type: PreLoginAction.CHECK_CODE_SAGA, params}),
-  joinEnterprise: params => dispatch({ type: PreLoginAction.JOIN_ENTERPRISE_SAGA, params})
+  getEnterpriseInfo: params => dispatch({type: LoginAction.GET_ENTERPRISE_INFO_SAGA, params}),
+  sendCode: params => dispatch({ type: LoginAction.SEND_CODE_SAGA, params}),
+  checkPhoneCode: params => dispatch({ type: LoginAction.CHECK_CODE_SAGA, params}),
+  joinEnterprise: params => dispatch({ type: LoginAction.JOIN_ENTERPRISE_SAGA, params})
 })
 
-export default connect(mapStateToProps,mapDispatchToProps)(JoinInContainer);
+export default connect(mapStateToProps,mapDispatchToProps)(JoinIn);

@@ -8,7 +8,7 @@ import {
 } from './commonSaga';
 import { 
   // watchSendCode, 
-  watchLogin, 
+  // watchLogin, 
   // watchCheckCode, 
   // watchChangePSW, 
   // watchSignup, 
@@ -17,24 +17,17 @@ import {
   // watchCreateRegister 
 } from './login';
 
-import { 
-  watchPreLoginPageChangeSaga
-} from './preLogin/preLoginSaga';
 
 import {
-  watchLoginSaga,
+  watchLoginPageChange,
+  watchLogin,
   watchVerificationCode,
   watchCheckCode,
-  watchResetPassword,
-} from './preLogin/loginSaga';
-
-import {
+  // watchResetPassword,
   watchCheckPhoneRegister,
-} from './preLogin/registerSaga';
+  // watchJoinInSaga,
+} from './loginSaga';
 
-import {
-  watchJoinInSaga,
-} from './preLogin/joinInSaga';
 
 import { watchUserSaga } from './system/userSaga';
 
@@ -78,7 +71,8 @@ import {
   watchChangeShowContainer
 } from './operation/ticket/ticketSaga';
 
-import { watchEnterpriseSaga } from './system/enterpriseSaga';
+import { watchEnterprise } from './system/enterpriseSaga';
+import { watchDepartment } from './system/departmentSaga';
 
 import axios from 'axios';
 
@@ -126,14 +120,13 @@ export default function* rootSaga() {
     watchGetPosts(),
     watchGetPartition(),
     //登陆注册
-    watchPreLoginPageChangeSaga(), 
-    watchLoginSaga(),
+    watchLoginPageChange(), 
     watchLogin(),
     watchVerificationCode(),
     watchCheckCode(),
     watchCheckPhoneRegister(),
-    watchJoinInSaga(),
-    watchResetPassword(),
+    // watchJoinInSaga(),
+    // watchResetPassword(),
     // watchGetCompInfo(),
     // watchCheckPhone(),
     // watchChangePSW(),
@@ -179,8 +172,8 @@ export default function* rootSaga() {
     //ticket
 
     //system-enterprise
-    watchEnterpriseSaga(),
-    // system-user
+    watchEnterprise(),
+    watchDepartment(),
     watchUserSaga(),
   ])
 } 

@@ -2,13 +2,14 @@ import React from 'react';
 import { Route } from 'react-router-dom';
 import Ticket from '../containers/Operation/Ticket/Ticket';
 import Exception from '../containers/Exception/404';
-import Login from '../containers/Login';
-import PreLogin from '../containers/PreLogin/PreLogin';
-import Forget from '../containers/Forget';
-import Signup from '../containers/Signup';
+// import Login from '../containers/LoginOld';
+import Login from '../containers/Login/LoginLayout';
+// import Forget from '../containers/Forget';
+// import Signup from '../containers/Signup';
 import Power from '../containers/Power';
-import EnterpriseContainer from '../containers/System/Enterprise/EnterpriseContainer';
-import UserContainer from '../containers/System/User/UserContainer';
+import Enterprise from '../containers/System/Enterprise/Enterprise';
+import Department from '../containers/System/Department/Department';
+import User from '../containers/System/User/User';
 
 const routers = [
   {
@@ -21,34 +22,39 @@ const routers = [
     component: Exception
   },
   {
-    path:'/newlogin',
-    exact:true,
-    component: PreLogin
-  },
-  {
     path:'/login',
     exact:true,
     component: Login
-  }, {
-    path:'/forget',
-    exact:true,
-    component: Forget
-  }, {
-    path:'/signup',
-    exact:true,
-    component: Signup
-  },  {
+  },
+  // {
+  //   path:'/login',
+  //   exact:true,
+  //   component: Login
+  // }, {
+  //   path:'/forget',
+  //   exact:true,
+  //   component: Forget
+  // }, {
+  //   path:'/signup',
+  //   exact:true,
+  //   component: Signup
+  // },  
+  {
     path:'/operation/ticket',
     exact:true,
     component: Ticket,
-  },  {
+  }, {
     path:'/system/enterprise',
     exact:true,
-    component: EnterpriseContainer,
-  },  {
+    component: Enterprise,
+  }, {
+    path:'/system/department',
+    exact:true,
+    component: Department,
+  }, {
     path:'/system/user',
     exact:true,
-    component: UserContainer,
+    component: User,
   }
 ];
 const RouteWithSubRoutes = route => (

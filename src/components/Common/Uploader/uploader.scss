@@ -1,5 +1,5 @@
 
-
+@import '../../../theme/theme.scss';
 
 .imgUploader{
   display: flex;
@@ -66,5 +66,36 @@
 }
 
 .singleImgUploader{
-  
+  .uploader{
+    .innerBox{
+      .plusIcon{
+        margin-top: 40px;
+        margin-bottom: 48px;
+        color:$lightColor;
+        &::before{
+          font-size: 95px;
+        }
+      }
+      .uploadText{
+        color: $lightColor;
+      }
+    }
+    :hover{
+      .plusIcon{
+        color: $themeColor;
+      }
+    }
+    :global{
+      .ant-upload{
+        padding: 0;
+        border:1px dashed #dfdfdf;
+        background-color: #fbfbfb;
+      }
+    }
+  }
+  :global{
+    .ant-upload-list-item-uploading,.ant-upload-list-item-undefined,.ant-upload-list-item-done{
+      display: none;
+    }
+  }
 }
