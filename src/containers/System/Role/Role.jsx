@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import styles from './roleContainer.scss';
+import styles from './role.scss';
 import { roleAction } from '../../../constants/actionTypes/system/roleAction';
 import PropTypes from 'prop-types';
 import Footer from '../../../components/Common/Footer';
@@ -8,7 +8,7 @@ import TransitionContainer from '../../../components/Common/TransitionContainer'
 import RoleEdit from '../../../components/System/Role/RoleEdit';
 import RoleTable from '../../../components/System/Role/RoleTable';
 
-class RoleContainer extends Component {
+class Role extends Component {
   static propTypes = {
     showPage: PropTypes.string,
     sort: PropTypes.string, 
@@ -68,4 +68,4 @@ const mapDispatchToProps = (dispatch) => ({
   onDeleteRole: payload => dispatch({type:roleAction.DELETE_ROLE_SAGA, payload}),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(RoleContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(Role);

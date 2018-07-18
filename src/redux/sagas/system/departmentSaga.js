@@ -104,7 +104,7 @@ function *editDepartmentInfor(action){
   }
 }
 
-export function* watchDepartmentSaga() {
+export function* watchDepartment() {
   yield takeLatest(departmentAction.CHANGE_DEPARTMENT_STORE_SAGA, changeDepartmentStore);
   yield takeLatest(departmentAction.GET_DEPARTMENT_LIST_SAGA, getDepartmentList);
   yield takeLatest(departmentAction.GET_DEPARTMENT_DETAIL_SAGA, getDepartmentDetail);

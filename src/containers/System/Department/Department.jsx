@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import styles from './departmentContainer.scss';
+import styles from './department.scss';
 import { departmentAction } from '../../../constants/actionTypes/system/departmentAction';
 import PropTypes from 'prop-types';
 import TransitionContainer from '../../../components/Common/TransitionContainer';
 import DepartmentMain from '../../../components/System/Department/DepartmentMain/DepartmentMain';
 import DepartmentSide from '../../../components/System/Department/DepartmentSide/DepartmentSide';
 
-class DepartmentContainer extends Component {
+class Department extends Component {
   static propTypes = {
     showPage: PropTypes.string,
     enterpriseId: PropTypes.string,
@@ -99,4 +99,4 @@ const mapDispatchToProps = (dispatch) => ({
 //   yield takeLatest(departmentAction.ADD_DEPARTMENT_INFO_SAGA, addDepartmentInfor);
 //   yield takeLatest(departmentAction.EDIT_DEPARTMENT_INFO_SAGA,editDepartmentInfor);
 
-export default connect(mapStateToProps, mapDispatchToProps)(DepartmentContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(Department);
