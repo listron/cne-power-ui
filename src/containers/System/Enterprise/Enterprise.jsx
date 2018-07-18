@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import styles from './enterpriseContainer.scss';
+import styles from './enterprise.scss';
 import { enterpriseAction } from '../../../constants/actionTypes/system/enterpriseAction';
 import PropTypes from 'prop-types';
 import Footer from '../../../components/Common/Footer';
@@ -13,7 +13,7 @@ import TransitionContainer from '../../../components/Common/TransitionContainer'
 import EnterpriseDetail from '../../../components/System/Enterprise/EnterpriseDetail';
 import EnterpriseEdit from '../../../components/System/Enterprise/EnterpriseEdit';
 
-class EnterpriseContainer extends Component {
+class Enterprise extends Component {
   static propTypes = {
     showPage: PropTypes.string,
     filterStatus: PropTypes.number, 
@@ -100,4 +100,4 @@ const mapDispatchToProps = (dispatch) => ({
   changeSelectedEnterprise: payload => dispatch({type:enterpriseAction.CHANGE_SELECTED_ENTERPRISE_SAGA, payload}),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(EnterpriseContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(Enterprise);

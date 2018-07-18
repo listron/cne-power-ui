@@ -68,7 +68,7 @@ function *changeEnterprise(action){
 
 
 
-export function* watchEnterpriseSaga() {
+export function* watchEnterprise() {
   yield takeLatest(enterpriseAction.GET_ENTERPRISE_ATTR_CHANGE_SAGA, changeEnterpriseAttr);
   yield takeLatest(enterpriseAction.GET_ENTERPRISE_LIST_SAGA, getEnterprisList);
   yield takeLatest(enterpriseAction.GET_ENTERPRISE_DETAIL_SAGA, getEnterpriseDetail);
