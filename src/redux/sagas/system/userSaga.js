@@ -66,7 +66,7 @@ function *editUser(action){
     console.log(e);
   }
 }
-export function* watchUserSaga(){
+export function* watchUser(){
   yield takeLatest(userAction.GET_USER_ATTR_CHANGE_SAGA, changeUserAttr);
   yield takeLatest(userAction.GET_USER_LIST_SAGA, getUserList);
   yield takeLatest(userAction.GET_USER_DETAIL_SAGA, getUserDetail);

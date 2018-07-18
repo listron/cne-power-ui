@@ -8,18 +8,21 @@ var initState = immutable.fromJS({
   loginMethod: 'password', //登录方式 password，phoneCheck，QRcode
   registerStep: 1,//注册企业步骤关键字，1-账户验证，2-企业信息，3-完善个人信息==》优先写页面内
   joinInStep: 1,//加入企业步骤：1-输入企业名称，2-手机号验证，3-创建用户名密码 
+  isExist: 0,// 0 输入的企业不存在；1: 输入的企业存在
+  isJoined: 0,// 0 用户未加入过企业；1：用户加入过企业
   // isRegister: 1,
   error: {
     code: '',
     message: '',
   },
-  phone: '',
-  code: '',
+  phone: '',//手机号
+  verificationCode: '',//验证码
   user: {
     userName: '',
     userId: '',
-  },
-  domain: '',
+  },//用户信息
+  domain: '',//企业域名
+  enterpriseInfo: {},//企业信息
 });
 
 const loginReducer = (state = initState, action) => {

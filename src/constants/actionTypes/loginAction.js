@@ -33,12 +33,9 @@ import keyMirror from 'keymirror';
 //   })
 // }
 
-import keyMirror from 'keymirror';
-
 module.exports ={
-  PreLoginAction: keyMirror({
-    CHANGE_PRELOGIN_PAGE : null,
-    CHANGE_PRELOGIN_PAGE_SAGA : null,
+  LoginAction: keyMirror({
+    CHANGE_LOGIN_PAGE_SAGA : null,
     CHANGE_LOGIN_PAGE : null,
 
     LOGIN_FETCH : null,
@@ -66,7 +63,6 @@ module.exports ={
     CHECK_ENTERPRISE_DOMAIN_SUCCESS:null,
     CHECK_ENTERPRISE_DOMAIN_FAIL: null,
     // 加入企业
-    JOININ_FETCH: null,
     GET_JOININ_COMMON_SUCCESS: null,
     GET_ENTERPRISE_INFO_SAGA: null,
     GET_ENTERPRISE_INFO_SUCCESS: null,

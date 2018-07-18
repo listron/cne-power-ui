@@ -4,11 +4,10 @@ import Path from '../../constants/path';
 import Config from '../../constants/config';
 import { setCookie } from '../../utils';
 import { LoginAction } from '../../constants/actionTypes/loginAction';
+import { message } from 'antd';
 
-//切换登录方式
-
-//切换页面
-function *changePreLogin(action){
+//请求改变store属性
+function *changeLoginStore(action){
   const { params } = action;
   yield put({
     type: LoginAction.CHANGE_LOGIN_PAGE,
@@ -99,22 +98,73 @@ function *checkEnterpriseDomain(action){
   }
 }
 
-export function* watchLogin() {
-  yield takeLatest(LoginAction.GET_LOGIN_SAGA, getLogin);
-}
-export function* watchVerificationCode() {
-  yield takeLatest(LoginAction.SEND_CODE_SAGA, getVerificationCode);
-}
-export function* watchCheckCode() {
-  yield takeLatest(LoginAction.CHECK_CODE_SAGA, checkCode);
-}
-export function* watchLoginPageChange() {
-  yield takeLatest( LoginAction.CHANGE_LOGIN_PAGE_SAGA, changePreLogin);
+
+
+// 获取企业信息
+function *getEnterPriseInfo(action){
+  const { payload } = action;
+  const url = '/mock/api/v3/login/enterpriseinfo';
+  try{
+    yield put({ type: LoginAction.JOININ_FETCH});
+    const response = yield call(axios.get, url, payload);
+    yield put({
+      type: LoginAction.GET_JOININ_COMMON_SUCCESS,
+      payload: {
+        ...payload,
+        data: response.data.data,
+      }
+    })
+  }catch(e){
+    console.log(e);
+  }
 }
 
-export function* watchCheckPhoneRegister(){
-  yield takeLatest(LoginAction.CHECK_PHONE_REGISTER_SAGA, checkPhoneRegister);
+// 加入企业
+function *joinEnterprise(action){
+  const { payload } = action;
+  const url = '/mock/api/v3/login/userenterprise';
+  try{
+    yield put({ type: LoginAction.JOININ_FETCH });
+    const response = yield call(axios.get, url, payload);
+    yield put({
+      type: LoginAction.GET_JOININ_COMMON_SUCCESS,
+      payload: {
+        ...payload,
+        data: response.data.data,
+        
+      }
+    })
+  }catch(e){
+    console.log(e);
+  }
 }
-export function* watchCheckEnterpriseDomain(){
+
+// 设置新密码
+function *resetPassword(action){
+  let url = "/mock/api/v3/login/password";
+  yield put({type: LoginAction.LOGIN_FETCH});
+  try{
+    const response = yield call(axios.post, url, action.params);
+    console.log(response);
+    if(response.data.code === "10000"){
+      message.success('密码设置成功，请重新登录！')
+      yield put({ type: LoginAction.RESET_PASSWORD_SUCCESS})
+    }else{
+      yield put({ type: LoginAction.RESET_PASSWORD_FAIL})
+    }
+  }catch(e){
+    console.log(e);
+  }
+}
+
+export function* watchLogin() {
+  yield takeLatest(LoginAction.GET_LOGIN_SAGA, getLogin);
+  yield takeLatest(LoginAction.SEND_CODE_SAGA, getVerificationCode);
+  yield takeLatest(LoginAction.CHECK_CODE_SAGA, checkCode);
+  yield takeLatest(LoginAction.CHANGE_LOGIN_PAGE_SAGA, changeLoginStore);
+  yield takeLatest(LoginAction.CHECK_PHONE_REGISTER_SAGA, checkPhoneRegister);
   yield takeLatest(LoginAction.CHECK_ENTERPRISE_DOMAIN_SAGA, checkEnterpriseDomain);
+  yield takeLatest(LoginAction.GET_ENTERPRISE_INFO_SAGA, getEnterPriseInfo);
+  yield takeLatest(LoginAction.JOIN_ENTERPRISE_SAGA, joinEnterprise);
+  yield takeLatest(LoginAction.RESET_PASSWORD_SAGA, resetPassword);
 }

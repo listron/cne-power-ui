@@ -13,12 +13,7 @@ var initState = immutable.fromJS({
     code: '',
     message: '',
   },
-  enterpriseInfo: {
-    enterpriseId: '',
-    enterpriseName: '',
-    enterpriseLogin: '',
-    enterpriseDomain: '',
-  },
+  enterpriseInfo: {},
 });
 
 const joinInReducer = (state = initState, action) => {
