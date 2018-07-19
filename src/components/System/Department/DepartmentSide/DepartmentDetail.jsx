@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import { Button, Icon } from 'antd';
 import PropTypes from 'prop-types';
-import styles from './enterprise.scss';
+import styles from './departmentSide.scss';
 import { Link } from 'react-router-dom';
 
 class DepartmentDetail extends Component {
