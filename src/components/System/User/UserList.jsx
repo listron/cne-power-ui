@@ -1,13 +1,14 @@
 
 
 import React, { Component } from 'react';
-import { Table, Button, Select, Icon, Popover, Menu, Dropdown, Checkbox,  } from 'antd';
+import { Table, Button, Select, Icon,Radio, Popover, Menu, Dropdown, Checkbox,  } from 'antd';
 // import CommonPagination from '../../../Common/CommonPagination';
 import PropTypes from 'prop-types';
 import styles from './userList.scss';
 
 const { Option } = Select.Option;
-
+const RadioGroup = Radio.Group;
+const RadioButton = Radio.Button;
 class UserList extends Component {
   static propTypes = {
     loading: PropTypes.bool,
@@ -20,6 +21,7 @@ class UserList extends Component {
     onChangeSort: PropTypes.func,//排序
     onChangePageSize: PropTypes.func,
     onChangePage: PropTypes.func,
+    roleData: PropTypes.object,
 
     userStatus: PropTypes.number, 
     userName: PropTypes.string, 
@@ -34,6 +36,7 @@ class UserList extends Component {
     super(props);
     this.state = {
       selectedRowKeys: [],
+      selectedRoles: [],
     }
   }
   onCheckboxChange = (e) => {
@@ -144,8 +147,9 @@ class UserList extends Component {
 
   
   render(){
-    const { userData, selectedUser, totalNum, loading, currentPage, pageSize, } = this.props;
-    const { selectedRowKeys } = this.state;
+    const { userData, selectedUser, totalNum, loading, currentPage, pageSize, roleData } = this.props;
+    console.log(this.props.roleData.toJS())
+    const { selectedRowKeys, selectedRoles } = this.state;
     const rowSelection={
       selectedRowKeys,
       onChange: (selectedRowKeys,selectedRows) => {
@@ -171,9 +175,13 @@ class UserList extends Component {
     }
     const menu=(
       <Menu onClick={this.handleMenuClick}>
-        <Menu.Item key="1"><Checkbox onChange={this.onCheckboxChange}>系统管理员</Checkbox></Menu.Item>
+        {roleData.toJS().map((item,index) => {
+          console.log(item)
+          return <Menu.Item key={index}><Checkbox onChange={this.onCheckboxChange}>{item}</Checkbox></Menu.Item>;
+        })}
+        {/* <Menu.Item key="1"><Checkbox onChange={this.onCheckboxChange}>系统管理员</Checkbox></Menu.Item>
         <Menu.Item key="2"><Checkbox onChange={this.onCheckboxChange}>企业管理员</Checkbox></Menu.Item>
-        <Menu.Item key="3"><Checkbox onChange={this.onCheckboxChange}>生产管理员</Checkbox></Menu.Item>
+        <Menu.Item key="3"><Checkbox onChange={this.onCheckboxChange}>生产管理员</Checkbox></Menu.Item> */}
       </Menu>
     )
 
@@ -187,10 +195,21 @@ class UserList extends Component {
                 角色 <Icon type="down" />
               </Button>
             </Dropdown>
+            {selectedRoles.length !== 0 && 
+              <div>
+                <span>已选条件</span>
+                <Button type="dashed">Dashed</Button>
+              </div>
+            }
           </div>
           <div>
             <span>状态</span>
-
+            <RadioGroup onChange={this.onChangeTab} default="2" value={this.props.status} >
+              <RadioButton value="5">全部</RadioButton>
+              <RadioButton value="2">{`启用${inProcessNum}`}</RadioButton>
+              <RadioButton value="3">{`禁用${waitCheckNum}`}</RadioButton>
+              <RadioButton value="3">{`未激活${waitCheckNum}`}</RadioButton>
+            </RadioGroup>
           </div>
         </div>
         <Table 

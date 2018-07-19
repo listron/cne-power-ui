@@ -1,6 +1,7 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import axios from 'axios';
 import Path from '../../constants/path';
+import { stringify } from 'qs';
 import Config from '../../constants/config';
 import { setCookie } from '../../utils';
 import { LoginAction } from '../../constants/actionTypes/loginAction';
@@ -18,11 +19,22 @@ function *changeLoginStore(action){
 //账号密码登录
 function *getLogin(action){
   // let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.login;
-  let url = "/mock/api/v3/login";
+  let url = Config.TokenBasePath;
+  // let url = "/mock/api/v3/login";
   yield put({ type: LoginAction.LOGIN_FETCH });
   try {
-    const response = yield call(axios.post, url, action.params);
-    if(response.data.code === "10000"){
+    const response = yield call(axios, {
+      method: 'post',
+      url,
+      headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'},
+      data: stringify({
+        'grant_type': "password",
+        username: action.params.username,
+        password: action.params.password,
+      }),
+    });
+    console.log(response)
+    if(response.data){
       setCookie('authData',JSON.stringify(response.data.access_token));
       setCookie('phone', action.params.phone);
       setCookie('userName', response.data.loginUserName);
