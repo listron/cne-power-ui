@@ -17,6 +17,9 @@ class Register extends Component {
     phoneRegister: PropTypes.func,
     registerStep: PropTypes.number,
     checkEnterpriseDomain: PropTypes.func,
+    getLogin: PropTypes.func,
+    domainIsRegister: PropTypes.number,
+    nameIsRegister: PropTypes.number,
   }
   constructor(props) {
     super(props);
@@ -43,6 +46,9 @@ class Register extends Component {
                 phoneRegister={this.props.phoneRegister}
                 registerStep={this.props.registerStep}
                 checkEnterpriseDomain={this.props.checkEnterpriseDomain}
+                getLogin={this.props.getLogin}
+                domainIsRegister={this.props.domainIsRegister}
+                nameIsRegister={this.props.nameIsRegister}
               />
             </TabPane>
           </Tabs>
@@ -52,11 +58,14 @@ class Register extends Component {
   }
 }
 const mapStateToProps = (state) => ({
-  registerStep: state.preLogin.registerReducer.get('registerStep'),
+  registerStep: state.login.get('registerStep'),
+  domainIsRegister: state.login.get('domainIsRegister'),
+  nameIsRegister: state.login.get('nameIsRegister'),
 })
 const mapDispatchToProps = (dispatch) => ({
   sendCode: params => dispatch({type: LoginAction.SEND_CODE_SAGA, params}),
   phoneRegister: params => dispatch({ type: LoginAction.CHECK_PHONE_REGISTER_SAGA, params }),
   checkEnterpriseDomain: params => dispatch({ type: LoginAction.CHECK_ENTERPRISE_DOMAIN_SAGA, params}),
+  getLogin: params => dispatch({type: LoginAction.GET_LOGIN_SAGA, params}),
 })
 export default connect(mapStateToProps, mapDispatchToProps)(Register);

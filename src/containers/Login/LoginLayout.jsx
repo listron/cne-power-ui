@@ -36,7 +36,7 @@ class LoginLayout extends Component {
   }
 }
 const mapStateToProps = (state) => ({
-  pageTab: state.preLogin.preLoginReducer.get('pageTab'),
+  pageTab: state.login.get('pageTab'),
 
 });
 

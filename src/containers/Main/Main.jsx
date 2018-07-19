@@ -5,9 +5,9 @@ import { menu } from '../../common/menu';
 import styles from './style.scss';
 import { connect } from 'react-redux';
 import {getCookie} from '../../utils/index.js'
-import Login from '../Login';
-import Forget from '../Forget';
-import Signup from '../Signup';
+import Login from '../Login/Login';
+import Forget from '../Login/Forget';
+import Signup from '../Login/Register';
 import NotFund from '../Exception/404';
 import PropTypes from 'prop-types';
 import axios from 'axios';
@@ -97,7 +97,7 @@ class Main extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  login: state.preLogin.loginReducer,
+  login: state.login,
   topMenu: state.common.get('topMenu')? state.common.get('topMenu').toJS() : {},
 });
 
