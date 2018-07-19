@@ -63,11 +63,42 @@ class User extends Component {
     }
   }
 
+  onChangePageSize = (pageSize) => {
+    if(pageSize !== this.props.pageSize){
+      let params = {
+        enterpriseId: this.props.enterpriseId,
+        userStatus: this.props.userStatus,
+        pageNum: 0,
+        pageSize: pageSize,
+      }
+      this.props.getUserList(params);
+    }
+  }
+
+  onChangePage = (currentPage) => {
+    if(currentPage !== this.props.currentPage){
+      let params = {
+        enterpriseId: this.props.enterpriseId,
+        userStatus: this.props.userStatus,
+        pageNum: currentPage-1,
+        pageSize: this.props.pageSize,
+      }
+      this.props.getUserList(params);
+    }
+  }
+
   render() {
     const { showPage } = this.props;
     return (
       <div className={styles.userContainer}>
-        { showPage === 'list' && <UserList {...this.props} onChangeSort={this.onChangeSort} /> }
+        { showPage === 'list' && 
+          <UserList 
+            {...this.props} 
+            onChangeSort={this.onChangeSort}
+            onChangePageSize={this.onChangePageSize} 
+            onChangePage={this.onChangePage}
+          />
+         }
         { showPage === 'detail' && <UserDetail {...this.props} /> }
         { showPage === 'edit' && <UserEdit {...this.props} /> }
         <div className={styles.userFooter}>

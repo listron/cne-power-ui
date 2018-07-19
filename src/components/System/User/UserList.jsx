@@ -1,12 +1,12 @@
 
 
 import React, { Component } from 'react';
-import { Table, Button, Select, Icon, Popover } from 'antd';
+import { Table, Button, Select, Icon, Popover, Menu, Dropdown, Checkbox,  } from 'antd';
 // import CommonPagination from '../../../Common/CommonPagination';
 import PropTypes from 'prop-types';
 import styles from './userList.scss';
 
-const { Option } = Select;
+const { Option } = Select.Option;
 
 class UserList extends Component {
   static propTypes = {
@@ -18,6 +18,8 @@ class UserList extends Component {
     getUserDetail: PropTypes.func,
     changeUserAttr: PropTypes.func,
     onChangeSort: PropTypes.func,//排序
+    onChangePageSize: PropTypes.func,
+    onChangePage: PropTypes.func,
 
     userStatus: PropTypes.number, 
     userName: PropTypes.string, 
@@ -31,22 +33,12 @@ class UserList extends Component {
   constructor(props){
     super(props);
     this.state = {
+      selectedRowKeys: [],
     }
   }
-
-  onPaginationChange = ({currentPage,pageSize}) => {//分页器
-    const {userName,sort,ascend,userPhone,userStatus} = this.props;
-    this.props.getUserList({
-      userName,
-      userPhone,
-      sort,
-      ascend,
-      currentPage,
-      pageSize,
-      userStatus
-    });
+  onCheckboxChange = (e) => {
+    console.log(`checked = ${e.target.checked}`);
   }
-  
   getUserStaion = (text) => {
     switch(text){
       case 0:
@@ -129,7 +121,7 @@ class UserList extends Component {
         title: '负责电站',
         dataIndex: 'stationName',
         key: 'stationName',
-        render: (text,record,index) => (<div><span>{text.split(',')[0]}</span><Popover content={text.split(',').map((item,i)=>{return <p key={i}>{item}</p>})} title={'title'} placement="right" trigger="hover" ><Icon type="ellipsis" /></Popover></div>),
+        render: (text,record,index) => (<div><span>{text.split(',')[0]}</span><Popover content={text.split(',').map((item,i)=>{return <p key={i}>{item}</p>})} title={'负责电站'} placement="right" trigger="hover" ><Icon type="ellipsis" /></Popover></div>),
       },  {
         title: '状态',
         dataIndex: 'userStation',
@@ -141,25 +133,77 @@ class UserList extends Component {
     return columns;
   }
 
+  cancelRowSelect = () => {
+    this,this.setState({
+      selectedRowKeys: [],
+    })
+  }
+  handleMenuClick = () => {
+    console.log('-----------------');
+  }
+
+  
   render(){
-    const { userData, selectedUser, totalNum, loading,  } = this.props;
-    const {  } = this.state;
+    const { userData, selectedUser, totalNum, loading, currentPage, pageSize, } = this.props;
+    const { selectedRowKeys } = this.state;
+    const rowSelection={
+      selectedRowKeys,
+      onChange: (selectedRowKeys,selectedRows) => {
+        console.log(selectedRowKeys,selectedRows)
+        this.setState({
+          selectedRowKeys: selectedRowKeys,
+        });
+      }
+    }
+    const pagination={
+      defaultCurrent: 1,
+      position: 'top',
+      total: totalNum,
+      showSizeChanger: true,
+      current: currentPage,
+      pageSize: pageSize,
+      onShowSizeChange: (current, pageSize) => {
+        this.props.onChangePageSize(pageSize);
+      },
+      onChange: (current) => {
+        this.props.onChangePage(current);
+      }
+    }
+    const menu=(
+      <Menu onClick={this.handleMenuClick}>
+        <Menu.Item key="1"><Checkbox onChange={this.onCheckboxChange}>系统管理员</Checkbox></Menu.Item>
+        <Menu.Item key="2"><Checkbox onChange={this.onCheckboxChange}>企业管理员</Checkbox></Menu.Item>
+        <Menu.Item key="3"><Checkbox onChange={this.onCheckboxChange}>生产管理员</Checkbox></Menu.Item>
+      </Menu>
+    )
+
     return (
       <div className={styles.userList}>
+        <div>
+          <div>
+            <span>筛选条件</span>
+            <Dropdown overlay={menu} mutiple="true">
+              <Button style={{ marginLeft: 8 }}>
+                角色 <Icon type="down" />
+              </Button>
+            </Dropdown>
+          </div>
+          <div>
+            <span>状态</span>
+
+          </div>
+        </div>
         <Table 
           loading={loading}
-          rowSelection={{
-            // selectedRowKeys: selectedUser.map(e=>e.key),
-            onChange: this.onRowSelect
-          }}
+          rowSelection={rowSelection}
           dataSource={userData.toJS().map((e,i)=>({...e,key:i}))} 
           columns={this.tableColumn()} 
           onChange={this.tableChange}
-          pagination={false}
+          pagination={pagination}
         />
         <div className={styles.tableFooter}>
-          <span className={styles.info}>当前选中<span className={styles.totalNum}>{selectedUser.length}</span>项</span>
-          <span className={styles.cancel} onClick={this.cancelRowSelect}>取消选中</span>
+          <span className={styles.info}>当前选中<span className={styles.totalNum}>{selectedRowKeys.length}</span>项</span>
+          <a className={styles.cancel} href="javascript:void(0)" onClick={this.cancelRowSelect}>取消选择</a>
         </div>
       </div>
     )
