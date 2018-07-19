@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 import styles from './departmentSide.scss';
 import AddDepartment from './AddDepartment';
 import DepartmentDetail from './DepartmentDetail';
-
+import EditDepartment from './EditDepartment';
 
 class DepartmentSide extends Component {
   static propTypes = {
@@ -38,9 +38,7 @@ class DepartmentSide extends Component {
         }
         {showSidePage === 'edit' && <div>
             编辑页面的样式在这
-            <Button onClick={()=> changeDepartmentStore({showPage:'list'})}> 去表格页面</Button>
-            <Button onClick={()=> changeDepartmentStore({showPage:'detail'})}> 看看详情吧！</Button>
-            <Button onClick={()=> changeDepartmentStore({showPage:'add'})}> 是时候添加一波东西了！</Button>
+            <EditDepartment />
           </div>
         }
       </div>
