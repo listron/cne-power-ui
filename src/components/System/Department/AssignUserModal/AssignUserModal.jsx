@@ -176,7 +176,7 @@ class AssignUserModal extends Component {
         user = data.getIn([i, 'user']);
         for(let j = 0; j < child.size; j++) {
           childUser = child.getIn([j, 'user']);
-          // otherUser = user.filter(item => !childUser.some(childItem => 
+          // user = user.filter(item => !childUser.some(childItem => 
           //   childItem.get('userId') === item.get('userId')));
           user = filterNode(user, childUser);
         }
@@ -191,14 +191,6 @@ class AssignUserModal extends Component {
       }
     }
     return data;
-  }
-
-  renderConfirm() {
-    return (
-      <Modal >
-
-      </Modal>
-    )
   }
 
   renderDepartmentTree() {

@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Modal, Input, Button, Tree, Checkbox, Avatar, Tag }  from 'antd';
 import Immutable from 'immutable';
-import Styles from './assignUserModal.scss';
+import Styles from './assignStationModal.scss';
 const Search = Input.Search;
 const TreeNode = Tree.TreeNode;
 
-class AssignUserModal extends Component {
+class AssignStationModal extends Component {
   static propTypes = {
     show: PropTypes.bool,
     enterprise: PropTypes.object,//当前企业
@@ -63,7 +63,7 @@ class AssignUserModal extends Component {
     let stationList = this.props.stationList;
     if(value !== '') {
       stationList = stationList.filter((item) => {
-        return item.get('userName').index(value) !== -1;
+        return item.get('stationName').index(value) !== -1;
       });
     } else {
       stationList = Immutable.fromJS([]);
@@ -175,7 +175,7 @@ class AssignUserModal extends Component {
         station = data.getIn([i, 'station']);
         for(let j = 0; j < child.size; j++) {
           childStation = child.getIn([j, 'station']);
-          // otherUser = station.filter(item => !childStation.some(childItem => 
+          // station = station.filter(item => !childStation.some(childItem => 
           //   childItem.get('stationCode') === item.get('stationCode')));
           station = filterNode(station, childStation);
         }
@@ -190,14 +190,6 @@ class AssignUserModal extends Component {
       }
     }
     return data;
-  }
-
-  renderConfirm() {
-    return (
-      <Modal >
-
-      </Modal>
-    )
   }
 
   renderDepartmentTree() {
@@ -233,7 +225,7 @@ class AssignUserModal extends Component {
     );
   }
 
-  renderUserList() {
+  renderStationList() {
     let selectedId = this.state.selectedKeys[0];
     let station = selectedId === 0 ? this.state.stationList : this.props.stationList;
     return (
@@ -259,7 +251,7 @@ class AssignUserModal extends Component {
     );
   }
 
-  renderSelectedUser() {
+  renderSelectedStation() {
     let station = this.state.selectedDepartment.get('station');
     return station.map((item) => {
       return (
@@ -283,7 +275,7 @@ class AssignUserModal extends Component {
         onCancel={this.onCancel}
         destroyOnClose={true}
       >
-        <div className={Styles.assignUserModal}>
+        <div className={Styles.assignStationModal}>
           <div className={Styles.header}>
             <span>分配用户</span>
             <Search
@@ -294,9 +286,9 @@ class AssignUserModal extends Component {
           </div>
           <div className={Styles.content}>
             <div className={Styles.departmentList}>{this.renderDepartmentTree()}</div>
-            <div className={Styles.stationList}>{this.renderUserList()}</div>
+            <div className={Styles.stationList}>{this.renderStationList()}</div>
           </div>
-          <div className={Styles.selectedUser}>{this.renderSelectedUser()}</div>
+          <div className={Styles.selectedStation}>{this.renderSelectedStation()}</div>
           <div className={Styles.footer}>
             <Button onClick={this.onCancel}>取消</Button>
             <Button onClick={this.onOk}>选择</Button>
@@ -308,4 +300,4 @@ class AssignUserModal extends Component {
 }
 
 
-export default AssignUserModal;
+export default AssignStationModal;
