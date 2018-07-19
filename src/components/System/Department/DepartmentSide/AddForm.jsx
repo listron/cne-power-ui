@@ -24,16 +24,16 @@ class AddForm extends Component {
     const { addDepartmentInfor } = this.props;
     this.props.form.validateFieldsAndScroll((error,values)=>{
       if(!error){
-        console.log(values)
+        addDepartmentInfor(values)
       }
     })
   }
   addContinue = () => {
-    const { addDepartmentInfor } = this.props;
-    this.props.form.validateFieldsAndScroll((error,values)=>{
+    const { addDepartmentInfor,form } = this.props;
+    form.validateFieldsAndScroll((error,values)=>{
       if(!error){
-        console.log(values);
-        // form.resetFields()
+        addDepartmentInfor(values);
+        form.resetFields()
       }
     })
   }

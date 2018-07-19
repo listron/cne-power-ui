@@ -13,7 +13,7 @@ class EditForm extends Component {
   static propTypes = {
     loading: PropTypes.bool,
     form: PropTypes.object,
-    addDepartmentInfor: PropTypes.func,
+    editDepartmentInfor: PropTypes.func,
   }
 
   constructor(props){
@@ -21,18 +21,18 @@ class EditForm extends Component {
   }
 
   addDepartment = () =>{
-    const { addDepartmentInfor } = this.props;
+    const { editDepartmentInfor } = this.props;
     this.props.form.validateFieldsAndScroll((error,values)=>{
       if(!error){
-        console.log(values)
+        editDepartmentInfor(values)
       }
     })
   }
   addContinue = () => {
-    const { addDepartmentInfor } = this.props;
+    const { editDepartmentInfor } = this.props;
     this.props.form.validateFieldsAndScroll((error,values)=>{
       if(!error){
-        console.log(values);
+        editDepartmentInfor(values)
         // form.resetFields()
       }
     })

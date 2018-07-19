@@ -8,13 +8,17 @@ import AddForm from './AddForm';
 
 class AddDepartment extends Component {
   static propTypes = {
+    changeDepartmentStore: PropTypes.func,
   }
 
   constructor(props){
     super(props);
-    this.state={
-      
+    this.state={   
     }
+  }
+
+  cancelAdd = () => {
+    this.props.changeDepartmentStore({showPage: 'list'});
   }
 
   render(){
@@ -22,7 +26,7 @@ class AddDepartment extends Component {
       <div className={styles.addDepartment} >
         <div className={styles.editTop}>
           <span className={styles.text}>编辑</span>
-          <Icon type="arrow-left" className={styles.backIcon} onConfirm={this.cancelEdit} />
+          <Icon type="arrow-left" className={styles.backIcon} onClick={this.cancelAdd} />
         </div>
         <div className={styles.mainPart}>
           <AddForm {...this.props} /> 

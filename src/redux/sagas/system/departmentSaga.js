@@ -1,4 +1,4 @@
-import { call, put, takeLatest } from 'redux-saga/effects';
+import { call, put, takeLatest,select } from 'redux-saga/effects';
 import axios from 'axios';
 import Path from '../../../constants/path';
 
@@ -93,7 +93,7 @@ function *addDepartmentInfor(action){
     const response = yield call(axios.post,url,payload);
     if(response.data.code === "10000"){
       yield put({
-        type:  departmentAction.GET_ENTERPRISE_COMMON_FETCH_SUCCESS,
+        type:  departmentAction.GET_DEPARTMENT_COMMON_FETCH_SUCCESS,
         payload:{
           showPage: 'list',
         }

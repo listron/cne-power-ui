@@ -8,6 +8,7 @@ import EditForm from './EditForm';
 
 class AddDepartment extends Component {
   static propTypes = {
+    changeDepartmentStore: PropTypes.func,
   }
 
   constructor(props){
@@ -17,12 +18,16 @@ class AddDepartment extends Component {
     }
   }
 
+  editApartment = () => {
+    this.props.changeDepartmentStore({showPage: 'list'});
+  }
+
   render(){
     return (
       <div className={styles.addDepartment} >
         <div className={styles.editTop}>
           <span className={styles.text}>编辑</span>
-          <Icon type="arrow-left" className={styles.backIcon} onConfirm={this.cancelEdit} />
+          <Icon type="arrow-left" className={styles.backIcon} onClick={this.editApartment} />
         </div>
         <div className={styles.mainPart}>
           <EditForm {...this.props} /> 
