@@ -100,9 +100,9 @@ function *deleteRole(action){
 
 
 
-export function* watchRoleSaga() {
-  yield takeLatest(roleAction.GET_ENTERPRISE_ATTR_CHANGE_SAGA, changeRoleStore);
-  yield takeLatest(roleAction.GET_ENTERPRISE_LIST_SAGA, getRoleList);
+export function* watchRole() {
+  yield takeLatest(roleAction.CHANGE_ROLE_STORE_SAGA, changeRoleStore);
+  yield takeLatest(roleAction.GET_ROLE_LIST_SAGA, getRoleList);
   yield takeLatest(roleAction.GET_MENU_LIST_SAGA, getMenuList);
   yield takeLatest(roleAction.CREATE_ROLE_SAGA, createRole);
   yield takeLatest(roleAction.EDIT_ROLE_SAGA, editRole);
