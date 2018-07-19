@@ -3,3 +3,18 @@
 
 @import '../../../theme/theme.scss';
 
+
+
+
+
+.userList{
+  flex:1;
+  .userFilter{
+    display: flex;
+    justify-content: flex-start;
+  }
+  .userQuery{
+    background: #fbfbfb;
+    display: flex;
+  }
+}

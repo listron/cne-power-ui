@@ -1,7 +1,7 @@
 
 
 import React, { Component } from 'react';
-import { Table, Button, Select, Icon,Radio, Popover, Menu, Dropdown, Checkbox,  } from 'antd';
+import { Table, Button, Select, Icon,Radio, Popover, Menu, Dropdown, Checkbox, Input,  } from 'antd';
 // import CommonPagination from '../../../Common/CommonPagination';
 import PropTypes from 'prop-types';
 import styles from './userList.scss';
@@ -29,7 +29,8 @@ class UserList extends Component {
     sort: PropTypes.string, 
     ascend: PropTypes.bool,
     currentPage: PropTypes.number, 
-    pageSize: PropTypes.number, 
+    pageSize: PropTypes.number,
+    onChangeStatus: PropTypes.func, 
   }
 
   constructor(props){
@@ -41,6 +42,10 @@ class UserList extends Component {
   }
   onCheckboxChange = (e) => {
     console.log(`checked = ${e.target.checked}`);
+  }
+
+  onChangeStatus = (e) => {
+    this.props.onChangeStatus(e.target.value);
   }
   getUserStaion = (text) => {
     switch(text){
@@ -144,11 +149,11 @@ class UserList extends Component {
   handleMenuClick = () => {
     console.log('-----------------');
   }
-
+  
   
   render(){
-    const { userData, selectedUser, totalNum, loading, currentPage, pageSize, roleData } = this.props;
-    console.log(this.props.roleData.toJS())
+    const { userData, selectedUser, totalNum, loading, currentPage, pageSize, roleData, userStatus } = this.props;
+    console.log(this.props)
     const { selectedRowKeys, selectedRoles } = this.state;
     const rowSelection={
       selectedRowKeys,
@@ -179,15 +184,12 @@ class UserList extends Component {
           console.log(item)
           return <Menu.Item key={index}><Checkbox onChange={this.onCheckboxChange}>{item}</Checkbox></Menu.Item>;
         })}
-        {/* <Menu.Item key="1"><Checkbox onChange={this.onCheckboxChange}>系统管理员</Checkbox></Menu.Item>
-        <Menu.Item key="2"><Checkbox onChange={this.onCheckboxChange}>企业管理员</Checkbox></Menu.Item>
-        <Menu.Item key="3"><Checkbox onChange={this.onCheckboxChange}>生产管理员</Checkbox></Menu.Item> */}
       </Menu>
     )
 
     return (
       <div className={styles.userList}>
-        <div>
+        <div className={styles.userFilter}>
           <div>
             <span>筛选条件</span>
             <Dropdown overlay={menu} mutiple="true">
@@ -204,13 +206,19 @@ class UserList extends Component {
           </div>
           <div>
             <span>状态</span>
-            <RadioGroup onChange={this.onChangeTab} default="2" value={this.props.status} >
-              <RadioButton value="5">全部</RadioButton>
-              <RadioButton value="2">{`启用${inProcessNum}`}</RadioButton>
-              <RadioButton value="3">{`禁用${waitCheckNum}`}</RadioButton>
-              <RadioButton value="3">{`未激活${waitCheckNum}`}</RadioButton>
+            <RadioGroup onChange={this.onChangeStatus} defaultValue="0" value={userStatus} >
+              <RadioButton value="0">全部</RadioButton>
+              <RadioButton value="1">启用</RadioButton>
+              <RadioButton value="2">禁用</RadioButton>
+              <RadioButton value="3">未激活</RadioButton>
             </RadioGroup>
           </div>
+        </div>
+        <div className={styles.userQuery}>
+          <div>用户名<Input placeholder="请输入" /></div>
+          <div>用户名<Input placeholder="请输入" /></div>
+          <div>用户名<Input placeholder="请输入" /></div>
+          <Button>查询</Button>
         </div>
         <Table 
           loading={loading}

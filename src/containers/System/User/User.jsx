@@ -48,8 +48,8 @@ class User extends Component {
     }
     this.props.getUserList(params);
 
-    const enterpriseId = this.props.enterpriseId;
-    this.props.getRoleList({ enterpriseId});
+    // const enterpriseId = this.props.enterpriseId;
+    // this.props.getRoleList({ enterpriseId});
   }
   
   componentWillReceiveProps(nextProps){
@@ -106,6 +106,7 @@ class User extends Component {
 
   render() {
     const { showPage } = this.props;
+    console.log(this.props)
     return (
       <div className={styles.userContainer}>
         { showPage === 'list' && 
@@ -128,10 +129,10 @@ class User extends Component {
 }
 
 const mapStateToProps = state => {
-  console.log([...state.user,...state.role])
+  console.log([...state.role,...state.user])
   let departmentProps = {};
   // [...state.department].forEach(e=>departmentProps[e[0]]=(e[1].toJS?e[1].toJS():e[1]))
-  [...state.user,...state.role].forEach(e=>departmentProps[e[0]]=e[1])
+  [...state.role,...state.user].forEach(e=>departmentProps[e[0]]=e[1])
   return departmentProps
 }
 // const mapStateToProps = (state) => ({
