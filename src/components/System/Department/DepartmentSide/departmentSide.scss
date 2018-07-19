@@ -38,9 +38,76 @@
         cursor: pointer;
       }
     }
-
+    .mainPart{
+      margin: 24px 32px 0;    
+      display: flex;
+      .addPart{
+        flex: 1;
+        :global{
+          .ant-form-item{
+            display: flex;
+            line-height: 40px;
+            .ant-form-item-label{
+              width: 70px;
+              color: $darkColor;
+              text-align: right;
+              margin-right: 24px;
+              label::after{
+                display: none;
+              }
+            }
+            .ant-form-item-control-wrapper{
+              input {
+                width: 200px;
+                margin-right: 12px;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  .departmentDetail{//部门详情
+    line-height: 30px;
+    flex: 1;
+    background-color: #fff;
+    .detailTop{
+      @include top;
+      .editButton{
+        &:hover{
+          background-color: $themeColor;
+          color: #fff;
+        }
+      }
+      .infoTip{
+        height: 30px;
+        width: 323px;
+        line-height: 30px;
+        font-size: 12px;
+        margin-left: 16px;
+        background-color: rgb(231,243,252);
+        border: 1px solid rgb(207,232,250);
+        border-radius:4px;
+        .toEdit,.ignore{
+          cursor: pointer;
+          color: $darkColor;
+        }
+        .toEdit{
+          margin-left: 36px;
+        }
+        .ignore{
+          margin-left: 60px;
+        }
+      }
+    }
+    .departmentInfor{//部门信息展示区
+      margin: 24px 32px 0;
+      display: flex;
+      color: $lightColor;
+    }
   }
 }
+
 
 .enterpriseDetail{//详情页
   line-height: 30px;

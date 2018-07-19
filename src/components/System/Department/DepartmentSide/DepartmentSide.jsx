@@ -6,8 +6,8 @@ import React, { Component } from 'react';
 import { Input, Button } from 'antd';
 import PropTypes from 'prop-types';
 import styles from './departmentSide.scss';
-// import EnterpriseDetail from './EnterpriseDetail';
-// import EnterpriseEdit from './EnterpriseEdit';
+import AddDepartment from './AddDepartment';
+import DepartmentDetail from './DepartmentDetail';
 
 
 class DepartmentSide extends Component {
@@ -28,16 +28,12 @@ class DepartmentSide extends Component {
         side区域
         {showSidePage === 'detail' && <div>
             详情页标志
-            <Button onClick={()=> changeDepartmentStore({showPage:'list'})}> 去表格页面</Button>
-            <Button onClick={()=> changeDepartmentStore({showPage:'add'})}> 去添加点</Button>
-            <Button onClick={()=> changeDepartmentStore({showPage:'edit'})}> 去编辑点</Button>
+            <DepartmentDetail {...this.props} />
           </div>
         }
         {showSidePage === 'add' && <div>
             这个是新增页面，快添加东西了！
-            <Button onClick={()=> changeDepartmentStore({showPage:'list'})}> 去表格页面</Button>
-            <Button onClick={()=> changeDepartmentStore({showPage:'detail'})}> 看看详情吧！</Button>
-            <Button onClick={()=> changeDepartmentStore({showPage:'edit'})}> 去编辑点</Button>
+            <AddDepartment {...this.props} />
           </div>
         }
         {showSidePage === 'edit' && <div>

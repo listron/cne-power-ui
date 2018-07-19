@@ -91,14 +91,13 @@ const mapDispatchToProps = (dispatch) => ({
   deleteDepartment: payload => dispatch({type: departmentAction.DELETE_DEPARTMENT_SAGA,payload}),
   getDepartmentList: payload => dispatch({type:departmentAction.GET_DEPARTMENT_LIST_SAGA, payload}),
   getDepartmentDetail: payload => dispatch({type:departmentAction.GET_DEPARTMENT_DETAIL_SAGA, payload}),
-  getAllUsers: payload => dispatch({type:departmentAction.GET_ALL_USERS_SAGA,payload}) 
-//   changeSelectedEnterprise: payload => dispatch({type:departmentAction.CHANGE_SELECTED_ENTERPRISE_SAGA, payload}),
+  getAllUsers: payload => dispatch({type:departmentAction.GET_ALL_USERS_SAGA,payload}), 
+  addDepartmentInfor: payload => dispatch({type:departmentAction.ADD_DEPARTMENT_INFO_SAGA, payload}),
 //   saveEnterpriseInfor: payload => dispatch({type:departmentAction.SAVE_ENTERPRISE_INFO_SAGA, payload}),
 //   ignoreEnterpirseEdit: payload => dispatch({type: departmentAction.IGNORE_ENTERPRISE_EDIT,payload})
 });
 
 //   yield takeLatest(departmentAction.GET_DEPARTMENT_DETAIL_SAGA, getDepartmentDetail);
-//   yield takeLatest(departmentAction.ADD_DEPARTMENT_INFO_SAGA, addDepartmentInfor);
 //   yield takeLatest(departmentAction.EDIT_DEPARTMENT_INFO_SAGA,editDepartmentInfor);
 
 export default connect(mapStateToProps, mapDispatchToProps)(Department);
