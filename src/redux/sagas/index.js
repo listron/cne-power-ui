@@ -67,6 +67,7 @@ import {
 
 import { watchEnterprise } from './system/enterpriseSaga';
 import { watchDepartment } from './system/departmentSaga';
+import { watchRole } from './system/roleSaga';
 
 import axios from 'axios';
 
@@ -169,6 +170,7 @@ export default function* rootSaga() {
     //system-enterprise
     watchEnterprise(),
     watchDepartment(),
+    watchRole(),
     watchUser(),
   ])
 } 
