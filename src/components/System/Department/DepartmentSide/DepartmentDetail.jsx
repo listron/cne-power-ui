@@ -4,7 +4,6 @@ import React, { Component } from 'react';
 import { Button, Icon } from 'antd';
 import PropTypes from 'prop-types';
 import styles from './departmentSide.scss';
-import { Link } from 'react-router-dom';
 
 class DepartmentDetail extends Component {
   static propTypes = {
@@ -22,6 +21,8 @@ class DepartmentDetail extends Component {
 
   render(){
     const { changeDepartmentStore, departmentDetail } = this.props;
+    let userFullNames = departmentDetail.userFullNameData? departmentDetail.userFullNameData.map(e=>e.userFullName):[];
+    let stationNames = departmentDetail.stationNameData? departmentDetail.stationNameData.map(e=>e.stationName):[];
     return (
       <div className={styles.departmentDetail}>
         <div className={styles.detailTop}>
@@ -35,10 +36,10 @@ class DepartmentDetail extends Component {
             <span className={styles.promptTitle}>所属部门</span>{departmentDetail.parentDepartmentName}
           </div>
           <div>
-            <span className={styles.promptTitle}>成员</span>{departmentDetail.userFullNameData}
+            <span className={styles.promptTitle}>成员</span>{userFullNames}
           </div>
           <div>
-            <span className={styles.promptTitle}>负责电站</span>{departmentDetail.stationNameData}
+            <span className={styles.promptTitle}>负责电站</span>{stationNames}
           </div>
           <div>
             <span className={styles.promptTitle}>负责电站</span>{departmentDetail.enterpriseProfile}
