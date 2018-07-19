@@ -19,12 +19,11 @@ import {
 
 
 import {
-  watchLoginPageChange,
-  watchLogin,
-  watchVerificationCode,
-  watchCheckCode,
-  watchCheckPhoneRegister,
+  watchLogin
 } from './loginSaga';
+
+
+import { watchUser } from './system/userSaga';
 
 import {
   watchGetDefectList,
@@ -115,12 +114,14 @@ export default function* rootSaga() {
     watchGetPosts(),
     watchGetPartition(),
     //登陆注册
-    watchLoginPageChange(), 
     watchLogin(),
-    watchVerificationCode(),
-    watchCheckCode(),
-    watchCheckPhoneRegister(),
-    
+    // watchLoginPageChange(), 
+    // watchLogin(),
+    // watchVerificationCode(),
+    // watchCheckCode(),
+    // watchCheckPhoneRegister(),
+    // watchJoinInSaga(),
+    // watchResetPassword(),
     // watchGetCompInfo(),
     // watchCheckPhone(),
     // watchChangePSW(),
@@ -168,5 +169,6 @@ export default function* rootSaga() {
     //system-enterprise
     watchEnterprise(),
     watchDepartment(),
+    watchUser(),
   ])
 } 

@@ -2,8 +2,8 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {Link, withRouter} from 'react-router-dom';
 import { CHECK_CODE_SAGA ,SEND_CODE_SAGA, CHANGE_PSW_SAGA } from '../../constants/actionTypes/Login';
-import ForgetForm1 from '../../components/Login/ForgetForm1';
-import ForgetForm2 from '../../components/Login/ForgetForm2'
+import ForgetForm1 from '../../components/LoginOld/ForgetForm1';
+import ForgetForm2 from '../../components/LoginOld/ForgetForm2'
 import PropTypes from 'prop-types';
 import {message, Spin} from 'antd';
 

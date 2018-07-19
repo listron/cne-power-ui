@@ -9,6 +9,7 @@ import Login from '../containers/Login/LoginLayout';
 import Power from '../containers/Power';
 import Enterprise from '../containers/System/Enterprise/Enterprise';
 import Department from '../containers/System/Department/Department';
+import User from '../containers/System/User/User';
 
 const routers = [
   {
@@ -42,14 +43,18 @@ const routers = [
     path:'/operation/ticket',
     exact:true,
     component: Ticket,
-  },  {
+  }, {
     path:'/system/enterprise',
     exact:true,
     component: Enterprise,
-  },  {
+  }, {
     path:'/system/department',
     exact:true,
     component: Department,
+  }, {
+    path:'/system/user',
+    exact:true,
+    component: User,
   }
 ];
 const RouteWithSubRoutes = route => (

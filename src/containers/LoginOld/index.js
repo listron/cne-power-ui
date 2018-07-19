@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { message } from 'antd';
 import { GET_COMPINFO_SAGA,LOGIN_SAGA } from '../../constants/actionTypes/Login';
-import LoginForm from '../../components/Login/LoginForm';
+import LoginForm from '../../components/LoginOld/LoginForm';
 import './style.scss';
 import PropTypes from 'prop-types';
 

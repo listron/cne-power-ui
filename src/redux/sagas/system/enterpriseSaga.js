@@ -50,6 +50,7 @@ function *getEnterpriseDetail(action){
         enterpriseDetail: response.data.data,
       },
     });
+    
   }catch(e){
     console.log(e);
   }
@@ -94,7 +95,7 @@ function *saveEnterpriseInfor(action){
 
 
 export function* watchEnterprise() {
-  yield takeLatest(enterpriseAction.GET_ENTERPRISE_ATTR_CHANGE_SAGA, changeEnterpriseAttr);
+  yield takeLatest(enterpriseAction.GET_ENTERPRISE_ATTR_CHANGE_SAGA, changeEnterpriseStore);
   // yield takeLatest(enterpriseAction.GET_ENTERPRISE_LIST_SAGA, getEnterprisList);
   yield takeLatest(enterpriseAction.GET_ENTERPRISE_DETAIL_SAGA, getEnterpriseDetail);
   yield takeLatest(enterpriseAction.SAVE_ENTERPRISE_INFO_SAGA, saveEnterpriseInfor);

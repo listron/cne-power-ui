@@ -1,0 +1,67 @@
+module.exports =[{
+  api:'/mock/api/v3/user/list',//用户列表
+  method:'post',
+  response:{
+    "code": "10000",
+    "message": "请求成功",
+    "data": {
+      "totalNum": 110, 
+      "userData":  [1,2,3,4,5,6,7,8,9,0].map((e,i)=>({
+        userId: i,
+        userName: '周树人',
+        phoneNum: `15501${parseInt(Math.random()*1000000)}`,
+        roleName: '运维工',
+        spcialRoleName: '删除，添加',
+        stationName: '广平,顺义,夏威夷,抚平',
+        userStation: Math.floor(Math.random()*7+1),
+      }))
+    },
+    "serviceCode": "3.0"
+  },
+  delay:1000,
+  error:{}
+},{
+  api:'/api/v3/user/{userId}',//用户详情
+  method:'get',
+  response:{
+    "code": "10000",
+    "message": "请求成功",
+    "data": {
+      userId: 0,
+      username: `王小二`,
+      phoneNum: `15501${parseInt(Math.random()*1000000)}`,
+      Email: '119118117@qq.com',
+      webChat: 'hdjfhdbchdjssdnbfdn',
+      roleName: '删除，添加',
+      specialRoleName: '删除，添加',
+      enterpriseData: {
+        enterpriseId: '6788',
+        enterpriseName: '协和系能源',
+        departmentData: {
+          departmentId: '6789',
+          departmentName: '协和运维',
+          stationData: {
+            stationId:'456789',
+            stationName: '夏威夷电站',
+          }
+        }
+      },
+    },
+    "serviceCode": "3.0"
+  },
+  delay:1000,
+  error:{}
+},{
+  api: '/api/v3/user',//编辑用户
+  method:'put',
+  response:{
+    "code": "10000",
+    "message": "请求成功",
+    "data": {
+      "msg": '添加成功',
+    },
+    "serviceCode": "3.0"
+  },
+  delay:1000,
+  error:{}
+}]
