@@ -100,7 +100,7 @@ function *deleteRole(action){
 
 
 
-export function* watchEnterpriseSaga() {
+export function* watchRoleSaga() {
   yield takeLatest(roleAction.GET_ENTERPRISE_ATTR_CHANGE_SAGA, changeRoleStore);
   yield takeLatest(roleAction.GET_ENTERPRISE_LIST_SAGA, getRoleList);
   yield takeLatest(roleAction.GET_MENU_LIST_SAGA, getMenuList);
