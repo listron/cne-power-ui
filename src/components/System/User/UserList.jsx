@@ -17,6 +17,7 @@ class UserList extends Component {
     getUserList: PropTypes.func,
     getUserDetail: PropTypes.func,
     changeUserAttr: PropTypes.func,
+    onChangeSort: PropTypes.func,//排序
 
     userStatus: PropTypes.number, 
     userName: PropTypes.string, 
@@ -45,18 +46,30 @@ class UserList extends Component {
       userStatus
     });
   }
+  
   getUserStaion = (text) => {
     switch(text){
+      case 0:
+        return '全部';
       case 1:
         return '激活';
       case 2:
         return '未激活';
       case 3:
         return '启用';
+      case 4:
+        return '禁用';
+      case 5:
+        return '待审核';
+      case 5:
+        return '审核不通过';
+      case 6:
+        return '移除';
       default:
-        '禁用';
+        return ;
     }
   }
+  
   showUserDetail = (record) => {
     console.log(record);
     const { userId } = record;
@@ -67,8 +80,17 @@ class UserList extends Component {
       userId
     })
   }
+  tableChange = (pagination, filters, sorter) => {
+    console.log(pagination, filters, sorter)
+    if(Object.keys(sorter).length !== 0){
+      let sortRules = '0,1';
+      this.props.onChangeSort(sortRules);
+    }else{
+      this.props.onChangeSort('');
+    }
+  }
   
-  tableColumn = () => {//表头
+  tableColumn = () => {
     const columns = [
       {
         title: '用户名',
@@ -107,12 +129,12 @@ class UserList extends Component {
         title: '负责电站',
         dataIndex: 'stationName',
         key: 'stationName',
-        render: (text,record,index) => (<div><span>{text}</span><Popover content={'content'} title={'title'} placement="right" trigger="hover" ><Icon type="ellipsis" /></Popover></div>),
+        render: (text,record,index) => (<div><span>{text.split(',')[0]}</span><Popover content={text.split(',').map((item,i)=>{return <p key={i}>{item}</p>})} title={'title'} placement="right" trigger="hover" ><Icon type="ellipsis" /></Popover></div>),
       },  {
         title: '状态',
         dataIndex: 'userStation',
         key: 'userStation',
-      render: (text, record, index) => (<span>{this.getUserStaion(text)}</span>),
+        render: (text, record, index) => (<span>{this.getUserStaion(text)}</span>),
         sorter: true,
       }
     ];
@@ -127,7 +149,7 @@ class UserList extends Component {
         <Table 
           loading={loading}
           rowSelection={{
-            selectedRowKeys: selectedUser.map(e=>e.key),
+            // selectedRowKeys: selectedUser.map(e=>e.key),
             onChange: this.onRowSelect
           }}
           dataSource={userData.toJS().map((e,i)=>({...e,key:i}))} 

@@ -26,6 +26,7 @@ class User extends Component {
     changeSelectedUser: PropTypes.func,
     changeUserAttr: PropTypes.func,
     userData: PropTypes.object,
+    enterpriseId: PropTypes.string,
   }
   constructor(props) {
     super(props);
@@ -50,11 +51,23 @@ class User extends Component {
 
   }
 
+  onChangeSort = (sort) => {
+    if(sort !== this.props.sort){
+      let params = {
+        enterpriseId: this.props.enterpriseId,
+        userStatus: this.props.userStatus,
+        pageNum: 0,
+        pageSize: this.props.pageSize,
+      }
+      this.props.getUserList(params);
+    }
+  }
+
   render() {
     const { showPage } = this.props;
     return (
       <div className={styles.userContainer}>
-        { showPage === 'list' && <UserList {...this.props} /> }
+        { showPage === 'list' && <UserList {...this.props} onChangeSort={this.onChangeSort} /> }
         { showPage === 'detail' && <UserDetail {...this.props} /> }
         { showPage === 'edit' && <UserEdit {...this.props} /> }
         <div className={styles.userFooter}>
