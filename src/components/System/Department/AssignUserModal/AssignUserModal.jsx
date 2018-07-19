@@ -29,6 +29,11 @@ class AssignUserModal extends Component {
     };
   }
 
+  componentDidMount() {
+    this.props.getDepartmentTreeData();
+    this.props.getUserList();
+  }
+
   componentWillReceiveProps(nextProps) {
     if(nextProps.departmentUserList.size !== this.props.departmentUserList.size && nextProps.departmentUserList.size > 0) {
       let department = nextProps.departmentUserList.get(0);
