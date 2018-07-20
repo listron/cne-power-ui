@@ -125,6 +125,15 @@ function *editDepartmentInfor(action){
   }
 }
 
+//请求各部门及部门下各电站信息
+function *getDepartmentWithStation(){
+
+}
+
+//请求各部门及部门下各用户信息
+function *getDepartmentWithUser(){
+  
+}
 
 export function* watchDepartment() {
   yield takeLatest(departmentAction.CHANGE_DEPARTMENT_STORE_SAGA, changeDepartmentStore);

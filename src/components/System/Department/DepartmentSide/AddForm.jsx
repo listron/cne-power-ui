@@ -13,6 +13,7 @@ class AddForm extends Component {
   static propTypes = {
     loading: PropTypes.bool,
     form: PropTypes.object,
+    stations: PropTypes.array,
     addDepartmentInfor: PropTypes.func,
   }
 
@@ -41,6 +42,7 @@ class AddForm extends Component {
   render(){
     const { getFieldDecorator } = this.props.form;
     const { loading } = this.props;
+    console.log(this.props.stations)
     return (
       <Form className={styles.addPart}>
         <FormItem label="部门名称" >

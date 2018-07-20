@@ -170,7 +170,7 @@ export default function* rootSaga() {
     //system-enterprise
     watchEnterprise(),
     watchDepartment(),
-    // watchRole(),
+    watchRole(),
     watchUser(),
   ])
 } 

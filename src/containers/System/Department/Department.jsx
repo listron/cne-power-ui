@@ -84,6 +84,7 @@ const mapStateToProps = (state) => ({
     departmentData: state.department.get('departmentData').toJS(),
     departmentDetail: state.department.get('departmentDetail').toJS(),
     selectedDepartment: state.department.get('selectedDepartment').toJS(),
+    stations: state.common.get('stations').toJS()
   });
 
 const mapDispatchToProps = (dispatch) => ({
