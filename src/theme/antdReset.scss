@@ -48,4 +48,17 @@
       }
     }
   }
+  .ant-select{
+    .ant-select-selection{
+      .ant-select-selection__rendered{
+        .ant-select-selection__placeholder{
+          color: $lightColor;
+        }
+      }
+      .ant-select-arrow{
+        color: $lightColor;
+      }
+      @include highLight($themeColor);
+    }
+  }
 }
