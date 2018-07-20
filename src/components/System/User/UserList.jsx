@@ -1,13 +1,14 @@
 
 
 import React, { Component } from 'react';
-import { Table, Button, Select, Icon, Popover } from 'antd';
+import { Table, Button, Select, Icon,Radio, Popover, Menu, Dropdown, Checkbox, Input,  } from 'antd';
 // import CommonPagination from '../../../Common/CommonPagination';
 import PropTypes from 'prop-types';
 import styles from './userList.scss';
 
-const { Option } = Select;
-
+const { Option } = Select.Option;
+const RadioGroup = Radio.Group;
+const RadioButton = Radio.Button;
 class UserList extends Component {
   static propTypes = {
     loading: PropTypes.bool,
@@ -18,6 +19,9 @@ class UserList extends Component {
     getUserDetail: PropTypes.func,
     changeUserAttr: PropTypes.func,
     onChangeSort: PropTypes.func,//排序
+    onChangePageSize: PropTypes.func,
+    onChangePage: PropTypes.func,
+    roleData: PropTypes.object,
 
     userStatus: PropTypes.number, 
     userName: PropTypes.string, 
@@ -25,28 +29,43 @@ class UserList extends Component {
     sort: PropTypes.string, 
     ascend: PropTypes.bool,
     currentPage: PropTypes.number, 
-    pageSize: PropTypes.number, 
+    pageSize: PropTypes.number,
+    onChangeStatus: PropTypes.func, 
+    onUserSearch: PropTypes.func,
   }
 
   constructor(props){
     super(props);
     this.state = {
+      selectedRowKeys: [],
+      selectedRoles: [],
+      nameValue: '',
+      phoneValue: '',
+      stationValue: '',
     }
   }
-
-  onPaginationChange = ({currentPage,pageSize}) => {//分页器
-    const {userName,sort,ascend,userPhone,userStatus} = this.props;
-    this.props.getUserList({
-      userName,
-      userPhone,
-      sort,
-      ascend,
-      currentPage,
-      pageSize,
-      userStatus
-    });
+  onCheckboxChange = (e) => {
+    console.log(`checked = ${e.target.checked}`);
   }
-  
+
+  onChangeStatus = (e) => {
+    this.props.onChangeStatus(Number(e.target.value));
+  }
+  onUserSearch = () => {
+    const { nameValue, phoneValue, stationValue } = this.state;
+    this.props.onUserSearch({
+      userName: nameValue,
+      phoneNum: phoneValue,
+      stationName: stationValue,
+    })
+  }
+  onSearchChange = (e) => {
+    this.setState({
+      nameValue: '',
+      phoneValue: '',
+      stationValue: '',
+    })
+  }
   getUserStaion = (text) => {
     switch(text){
       case 0:
@@ -71,7 +90,6 @@ class UserList extends Component {
   }
   
   showUserDetail = (record) => {
-    console.log(record);
     const { userId } = record;
     this.props.changeUserAttr({
       showPage: 'detail',
@@ -81,7 +99,6 @@ class UserList extends Component {
     })
   }
   tableChange = (pagination, filters, sorter) => {
-    console.log(pagination, filters, sorter)
     if(Object.keys(sorter).length !== 0){
       let sortRules = '0,1';
       this.props.onChangeSort(sortRules);
@@ -129,7 +146,7 @@ class UserList extends Component {
         title: '负责电站',
         dataIndex: 'stationName',
         key: 'stationName',
-        render: (text,record,index) => (<div><span>{text.split(',')[0]}</span><Popover content={text.split(',').map((item,i)=>{return <p key={i}>{item}</p>})} title={'title'} placement="right" trigger="hover" ><Icon type="ellipsis" /></Popover></div>),
+        render: (text,record,index) => (<div><span>{text.split(',')[0]}</span><Popover content={text.split(',').map((item,i)=>{return <p key={i}>{item}</p>})} title={'负责电站'} placement="right" trigger="hover" ><Icon type="ellipsis" /></Popover></div>),
       },  {
         title: '状态',
         dataIndex: 'userStation',
@@ -141,25 +158,95 @@ class UserList extends Component {
     return columns;
   }
 
+  cancelRowSelect = () => {
+    this,this.setState({
+      selectedRowKeys: [],
+    })
+  }
+  handleMenuClick = () => {
+    console.log('-----------------');
+  }
+  
+  
+  
   render(){
-    const { userData, selectedUser, totalNum, loading,  } = this.props;
-    const {  } = this.state;
+    const { userData, selectedUser, totalNum, loading, currentPage, pageSize, roleData, userStatus } = this.props;
+    const { selectedRowKeys, selectedRoles, nameValue, phoneValue, stationValue } = this.state;
+    const rowSelection={
+      selectedRowKeys,
+      onChange: (selectedRowKeys,selectedRows) => {
+        this.setState({
+          selectedRowKeys: selectedRowKeys,
+        });
+      }
+    }
+    const pagination={
+      defaultCurrent: 1,
+      position: 'top',
+      total: totalNum,
+      showSizeChanger: true,
+      current: currentPage,
+      pageSize: pageSize,
+      onShowSizeChange: (current, pageSize) => {
+        this.props.onChangePageSize(pageSize);
+      },
+      onChange: (current) => {
+        this.props.onChangePage(current);
+      }
+    }
+    const menu=(
+      <Menu onClick={this.handleMenuClick}>
+        {roleData.toJS().map((item,index) => {
+          console.log(item)
+          return <Menu.Item key={index}><Checkbox onChange={this.onCheckboxChange}>{item}</Checkbox></Menu.Item>;
+        })}
+      </Menu>
+    )
+
     return (
       <div className={styles.userList}>
+        <div className={styles.userFilter}>
+          <div>
+            <span>筛选条件</span>
+            <Dropdown overlay={menu} mutiple="true">
+              <Button style={{ marginLeft: 8 }}>
+                角色 <Icon type="down" />
+              </Button>
+            </Dropdown>
+            {selectedRoles.length !== 0 && 
+              <div>
+                <span>已选条件</span>
+                <Button type="dashed">Dashed</Button>
+              </div>
+            }
+          </div>
+          <div>
+            <span>状态</span>
+            <RadioGroup onChange={this.onChangeStatus} defaultValue="0" value={userStatus} >
+              <RadioButton value="0">全部</RadioButton>
+              <RadioButton value="1">启用</RadioButton>
+              <RadioButton value="2">禁用</RadioButton>
+              <RadioButton value="3">未激活</RadioButton>
+            </RadioGroup>
+          </div>
+        </div>
+        <div className={styles.userSearch}>
+          <span>用户名</span><Input placeholder="请输入用户名" value={nameValue} onChange={this.onSearchChange} />
+          <span>电话</span><Input placeholder="请输入电话" value={phoneValue} onChange={this.onSearchChange} />
+          <span>负责电站</span><Input placeholder="请输入负责电站" value={stationValue} onChange={this.onSearchChange} />
+          <Button onClick={this.onUserSearch}>查询</Button>
+        </div>
         <Table 
           loading={loading}
-          rowSelection={{
-            // selectedRowKeys: selectedUser.map(e=>e.key),
-            onChange: this.onRowSelect
-          }}
+          rowSelection={rowSelection}
           dataSource={userData.toJS().map((e,i)=>({...e,key:i}))} 
           columns={this.tableColumn()} 
           onChange={this.tableChange}
-          pagination={false}
+          pagination={pagination}
         />
         <div className={styles.tableFooter}>
-          <span className={styles.info}>当前选中<span className={styles.totalNum}>{selectedUser.length}</span>项</span>
-          <span className={styles.cancel} onClick={this.cancelRowSelect}>取消选中</span>
+          <span className={styles.info}>当前选中<span className={styles.totalNum}>{selectedRowKeys.length}</span>项</span>
+          <a className={styles.cancel} href="javascript:void(0)" onClick={this.cancelRowSelect}>取消选择</a>
         </div>
       </div>
     )

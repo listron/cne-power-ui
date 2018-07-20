@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import styles from './user.scss';
 import { userAction } from '../../../constants/actionTypes/system/userAction';
+import { roleAction } from '../../../constants/actionTypes/system/roleAction';
 import PropTypes from 'prop-types';
 import UserDetail from '../../../components/System/User/UserDetail';
 import UserEdit from '../../../components/System/User/UserEdit';
@@ -27,6 +28,7 @@ class User extends Component {
     changeUserAttr: PropTypes.func,
     userData: PropTypes.object,
     enterpriseId: PropTypes.string,
+    getRoleList: PropTypes.func,
   }
   constructor(props) {
     super(props);
@@ -44,11 +46,14 @@ class User extends Component {
       currentPage: this.props.currentPage, 
       pageSize: this.props.pageSize, 
     }
-    this.props.getUserList(params)
+    this.props.getUserList(params);
+
+    // const enterpriseId = this.props.enterpriseId;
+    // this.props.getRoleList({ enterpriseId});
   }
-
+  
   componentWillReceiveProps(nextProps){
-
+    
   }
 
   onChangeSort = (sort) => {
@@ -63,11 +68,68 @@ class User extends Component {
     }
   }
 
+  onChangePageSize = (pageSize) => {
+    if(pageSize !== this.props.pageSize){
+      let params = {
+        enterpriseId: this.props.enterpriseId,
+        userStatus: this.props.userStatus,
+        pageNum: 0,
+        pageSize: pageSize,
+      }
+      this.props.getUserList(params);
+    }
+  }
+
+  onChangePage = (currentPage) => {
+    if(currentPage !== this.props.currentPage){
+      let params = {
+        enterpriseId: this.props.enterpriseId,
+        userStatus: this.props.userStatus,
+        pageNum: currentPage-1,
+        pageSize: this.props.pageSize,
+      }
+      this.props.getUserList(params);
+    }
+  }
+
+  onChangeStatus = (status) => {
+    if(status !== this.props.userStatus){
+      let params = {
+        enterpriseId: this.props.enterpriseId,
+        userStatus: status,
+        pageNum: 0,
+        pageSize: this.props.pageSize,
+      }
+      this.props.getUserList(params);
+    }
+  }
+  onUserSearch = (data) => {
+    let params = {
+      enterpriseId: this.props.enterpriseId,
+      userStatus: status,
+      pageNum: 0,
+      pageSize: this.props.pageSize,
+      userName: data.userName,
+      phoneNum: data.phoneNum,
+      stationName: data.stationName,
+    }
+    this.props.getUserList(params);
+  }
   render() {
     const { showPage } = this.props;
+    console.log(this.props)
     return (
       <div className={styles.userContainer}>
-        { showPage === 'list' && <UserList {...this.props} onChangeSort={this.onChangeSort} /> }
+        { showPage === 'list' && 
+          <UserList 
+            {...this.props} 
+            onChangeSort={this.onChangeSort}
+            onChangePageSize={this.onChangePageSize} 
+            onChangePage={this.onChangePage}
+            onChangeStatus={this.onChangeStatus}
+            onUserSearch={this.onUserSearch}
+          />
+         }
         { showPage === 'detail' && <UserDetail {...this.props} /> }
         { showPage === 'edit' && <UserEdit {...this.props} /> }
         <div className={styles.userFooter}>
@@ -79,9 +141,10 @@ class User extends Component {
 }
 
 const mapStateToProps = state => {
+  console.log([...state.role,...state.user])
   let departmentProps = {};
   // [...state.department].forEach(e=>departmentProps[e[0]]=(e[1].toJS?e[1].toJS():e[1]))
-  [...state.user].forEach(e=>departmentProps[e[0]]=e[1])
+  [...state.role,...state.user].forEach(e=>departmentProps[e[0]]=e[1])
   return departmentProps
 }
 // const mapStateToProps = (state) => ({
@@ -110,6 +173,7 @@ const mapDispatchToProps = (dispatch) => ({
   getUserList: payload => dispatch({type:userAction.GET_USER_LIST_SAGA, payload}),
   getUserDetail: payload => dispatch({type:userAction.GET_USER_DETAIL_SAGA, payload}),
   changeSelectedUser: payload => dispatch({type:userAction.CHANGE_SELECTED_USER_SAGA, payload}),
+  getRoleList: payload => dispatch({ type: roleAction.GET_ROLE_LIST_SAGA, payload}),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(User);
