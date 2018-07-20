@@ -5,10 +5,7 @@ import { menu } from '../../common/menu';
 import styles from './style.scss';
 import { connect } from 'react-redux';
 import {getCookie} from '../../utils/index.js'
-import Login from '../Login/Login';
-import Forget from '../Login/Forget';
-import Register from '../Login/Register';
-import Exception from '../Login/Exception';
+import Login from '../Login/LoginLayout';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import { Icon } from 'antd';
@@ -32,15 +29,19 @@ class Main extends Component {
       current: 'home',
       logined: false,
       isScroll: false,
+      showFeedback: false,
     };
     this.handleClick = this.handleClick.bind(this);
   }
+
   componentDidMount(){//根据路径缓存topMenu值
     const { pathname } = this.props.history.location;
     let pathArray = pathname.split('/').filter(e=>e);
     const params = menu.find(e=>e.path===`/${pathArray[0]?pathArray[0]:''}`);
     this.props.setTopMenu(params);
-    this.refs.main.addEventListener('scroll', this.onScroll);
+    if(this.refs.main) {
+      this.refs.main.addEventListener('scroll', this.onScroll);
+    }
   }
 
 
@@ -54,7 +55,9 @@ class Main extends Component {
   }
 
   componentWillUnmount() {
-    this.refs.main.removeEventListener('scroll', this.onScroll);
+    if(this.refs.main) {
+      this.refs.main.removeEventListener('scroll', this.onScroll);
+    }
   }
 
 
@@ -71,6 +74,10 @@ class Main extends Component {
     });
   }
 
+  renderFeedback() {
+
+  }
+
 
   render() {
     const { setTopMenu, topMenu } = this.props;
@@ -79,7 +86,7 @@ class Main extends Component {
       axios.defaults.headers.common['Authorization'] = "bearer " + JSON.parse(authData).access_token;
       console.log(authData);
     }
-    if(this.state.logined || getCookie('authData')){
+    if(this.state.logined || authData !== 'undefined'){
       return (
         <div className={styles.app}>
           <div className={styles.appHeader}>
@@ -104,6 +111,7 @@ class Main extends Component {
             {this.state.isScroll && 
             <div className={styles.floatItem}><Icon type="up-circle-o" /></div>}
           </div>
+          {this.renderFeedback()}
         </div>
       );
     }
@@ -111,10 +119,6 @@ class Main extends Component {
       return (
         <Switch>
           <Route path="/login" excat component={Login} />
-          <Route path="/forget" excat component={Forget} />
-          <Route path="/signup" excat component={Register} />
-          <Route path="/404" excat component={Exception} />          
-          <Redirect to="/login" />
         </Switch>  
       );
     }
