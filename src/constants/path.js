@@ -17,9 +17,9 @@ export default {
   },
   APISubPaths: {
     getCompInfo: '/v3/enterprise/domainLogin',
-    login: '/v3/login',
+    
     loginPhoneCode: '/v3/login/phonecode',
-    getVerificationCode: '/v3/login/verificationcode/',
+    
     checkPhone: '/v3/user/validateEnterpriseRegPhoneNum',
     sendCode: '/v3/common/requestSmsCode',
     checkCode: '/v3/user/validateCaptcha',
@@ -32,7 +32,9 @@ export default {
     getShowStatus: '/v3/relation/queryShowStatus',
     changeShowStatus: '/v3/relation/changeShowStatus',
     // 新的登陆注册接口
-
+    login: '/v3/login',
+    getVerificationCode: '/v3/login/verificationcode',
+    getEnterpriseInfo: '/v3/login/enterpriseinfo',
     ticket: {
       getDefectList: '/v3/defect/worklist/pc',
       batchDeleteDefect: '/v3/defect/delete/batch',

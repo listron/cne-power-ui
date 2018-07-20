@@ -31,6 +31,7 @@ class UserList extends Component {
     currentPage: PropTypes.number, 
     pageSize: PropTypes.number,
     onChangeStatus: PropTypes.func, 
+    onUserSearch: PropTypes.func,
   }
 
   constructor(props){
@@ -38,6 +39,9 @@ class UserList extends Component {
     this.state = {
       selectedRowKeys: [],
       selectedRoles: [],
+      nameValue: '',
+      phoneValue: '',
+      stationValue: '',
     }
   }
   onCheckboxChange = (e) => {
@@ -45,7 +49,22 @@ class UserList extends Component {
   }
 
   onChangeStatus = (e) => {
-    this.props.onChangeStatus(e.target.value);
+    this.props.onChangeStatus(Number(e.target.value));
+  }
+  onUserSearch = () => {
+    const { nameValue, phoneValue, stationValue } = this.state;
+    this.props.onUserSearch({
+      userName: nameValue,
+      phoneNum: phoneValue,
+      stationName: stationValue,
+    })
+  }
+  onSearchChange = (e) => {
+    this.setState({
+      nameValue: '',
+      phoneValue: '',
+      stationValue: '',
+    })
   }
   getUserStaion = (text) => {
     switch(text){
@@ -71,7 +90,6 @@ class UserList extends Component {
   }
   
   showUserDetail = (record) => {
-    console.log(record);
     const { userId } = record;
     this.props.changeUserAttr({
       showPage: 'detail',
@@ -81,7 +99,6 @@ class UserList extends Component {
     })
   }
   tableChange = (pagination, filters, sorter) => {
-    console.log(pagination, filters, sorter)
     if(Object.keys(sorter).length !== 0){
       let sortRules = '0,1';
       this.props.onChangeSort(sortRules);
@@ -151,14 +168,13 @@ class UserList extends Component {
   }
   
   
+  
   render(){
     const { userData, selectedUser, totalNum, loading, currentPage, pageSize, roleData, userStatus } = this.props;
-    console.log(this.props)
-    const { selectedRowKeys, selectedRoles } = this.state;
+    const { selectedRowKeys, selectedRoles, nameValue, phoneValue, stationValue } = this.state;
     const rowSelection={
       selectedRowKeys,
       onChange: (selectedRowKeys,selectedRows) => {
-        console.log(selectedRowKeys,selectedRows)
         this.setState({
           selectedRowKeys: selectedRowKeys,
         });
@@ -214,11 +230,11 @@ class UserList extends Component {
             </RadioGroup>
           </div>
         </div>
-        <div className={styles.userQuery}>
-          <div>用户名<Input placeholder="请输入" /></div>
-          <div>用户名<Input placeholder="请输入" /></div>
-          <div>用户名<Input placeholder="请输入" /></div>
-          <Button>查询</Button>
+        <div className={styles.userSearch}>
+          <span>用户名</span><Input placeholder="请输入用户名" value={nameValue} onChange={this.onSearchChange} />
+          <span>电话</span><Input placeholder="请输入电话" value={phoneValue} onChange={this.onSearchChange} />
+          <span>负责电站</span><Input placeholder="请输入负责电站" value={stationValue} onChange={this.onSearchChange} />
+          <Button onClick={this.onUserSearch}>查询</Button>
         </div>
         <Table 
           loading={loading}

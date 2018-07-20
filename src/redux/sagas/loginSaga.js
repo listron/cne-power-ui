@@ -18,9 +18,10 @@ function *changeLoginStore(action){
 
 //账号密码登录
 function *getLogin(action){
-  // let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.login;
-  let url = Config.TokenBasePath;
+  let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.login;
+  // let url = Config.TokenBasePath;
   // let url = "/mock/api/v3/login";
+  console.log(url);
   yield put({ type: LoginAction.LOGIN_FETCH });
   try {
     const response = yield call(axios, {
@@ -49,14 +50,17 @@ function *getLogin(action){
 }
 //获取短信验证码
 function *getVerificationCode(action){
-  // let url = Config.APIBasePath + Path.APISubPaths.getVerificationCode;
-  let url = "/mock/api/v3/login/verificationcode/";
+  let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.getVerificationCode + '/' +action.params.phoneNum;
+  // let url = "/mock/api/v3/login/verificationcode/";
+  console.log(url)
+  console.log(action)
   try{
-    const response = yield call(axios.get, url, {phoneNum: action.params});
+    const response = yield call(axios.get, url);
+    console.log(response);
     if(response.data.code === "10000"){
       yield put({ type: LoginAction.SEND_CODE_SUCCESS, data:{ phone: action.params.phone }});
     } else {
-      yield put({ type: LoginAction.SEND_CODE_FAIL, data:{ error: response.data.error, phone: action.params.phone}})
+      yield put({ type: LoginAction.SEND_CODE_FAIL, data:{ error: response.data.msg, phone: action.params.phone}})
     }
   }catch(e){
     console.log(e);
@@ -129,10 +133,13 @@ function *checkEnterpriseName(action){
 // 获取企业信息
 function *getEnterPriseInfo(action){
   const { payload } = action;
-  const url = '/mock/api/v3/login/enterpriseinfo';
+  // const url = '/mock/api/v3/login/enterpriseinfo';
+  console.log(action);
+  let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.getEnterpriseInfo + '/' +action.params.enterpriseName;
   try{
-    yield put({ type: LoginAction.JOININ_FETCH});
-    const response = yield call(axios.get, url, payload);
+    yield put({ type: LoginAction.LOGIN_FETCH});
+    const response = yield call(axios.get, url);
+    console.log(response);
     yield put({
       type: LoginAction.GET_ENTERPRISE_INFO_SUCCESS,
       payload: {
@@ -150,7 +157,7 @@ function *joinEnterprise(action){
   const { payload } = action;
   const url = '/mock/api/v3/login/userenterprise';
   try{
-    yield put({ type: LoginAction.JOININ_FETCH });
+    yield put({ type: LoginAction.LOGIN_FETCH });
     const response = yield call(axios.get, url, payload);
     yield put({
       type: LoginAction.GET_JOININ_COMMON_SUCCESS,

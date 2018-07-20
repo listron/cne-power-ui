@@ -103,7 +103,18 @@ class User extends Component {
       this.props.getUserList(params);
     }
   }
-
+  onUserSearch = (data) => {
+    let params = {
+      enterpriseId: this.props.enterpriseId,
+      userStatus: status,
+      pageNum: 0,
+      pageSize: this.props.pageSize,
+      userName: data.userName,
+      phoneNum: data.phoneNum,
+      stationName: data.stationName,
+    }
+    this.props.getUserList(params);
+  }
   render() {
     const { showPage } = this.props;
     console.log(this.props)
@@ -116,6 +127,7 @@ class User extends Component {
             onChangePageSize={this.onChangePageSize} 
             onChangePage={this.onChangePage}
             onChangeStatus={this.onChangeStatus}
+            onUserSearch={this.onUserSearch}
           />
          }
         { showPage === 'detail' && <UserDetail {...this.props} /> }
