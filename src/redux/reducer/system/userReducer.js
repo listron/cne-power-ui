@@ -8,7 +8,7 @@ var initState = immutable.fromJS({
   enterpriseId: '',//企业ID
   roleId: '',//角色ID 
   roleName: '',//筛选条件：角色
-  userStatus: 4,//筛选条件： 状态  1启用,2禁用,3未激活,4全部
+  userStatus: 0,//筛选条件： 状态  1启用,2禁用,3未激活,0全部
   sort: '',//排序规则
   ascend: true,//排序方式
   userName: '',//筛选条件：用户名
@@ -23,7 +23,6 @@ var initState = immutable.fromJS({
 })
 
 const userReducer = (state = initState, action) => {
-  console.log(action)
   switch(action.type){
     case userAction.USER_FETCH:
       return state.set('loading', true)

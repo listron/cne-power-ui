@@ -1,197 +1,217 @@
 
 
 import React, { Component } from 'react';
-import { Table, Button, Select, Icon } from 'antd';
+import { Table, Button, Select, Icon, Popover } from 'antd';
 import CommonPagination from '../../../Common/CommonPagination';
 import PropTypes from 'prop-types';
 import styles from './departmentMain.scss';
+import WarningTip from '../../../Common/WarningTip';
 
 const { Option } = Select;
 
 class DepartmentTable extends Component {
   static propTypes = {
     loading: PropTypes.bool,
-    // totalNum: PropTypes.number,
-    // enterpriseData: PropTypes.array,
-    selectedDepartment: PropTypes.array,//选中企业
-    // getEnterpriseList: PropTypes.func,
-    // getEnterpriseDetail: PropTypes.func,
-    changeDepartmentStore: PropTypes.func,
 
-    // filterStatus: PropTypes.number, 
-    // enterpriseName: PropTypes.string, 
-    // enterprisePhone: PropTypes.string,
-    // sort: PropTypes.string, 
-    // ascend: PropTypes.bool,
-    // currentPage: PropTypes.number, 
-    // pageSize: PropTypes.number, 
+    enterpriseId: PropTypes.string,
+    departmentSource: PropTypes.number,
+    departmentName: PropTypes.string, 
+    parentDepartmentName: PropTypes.string, 
+    stationName: PropTypes.string, 
+    sort: PropTypes.string, 
+    ascend: PropTypes.bool, 
+    pageNum: PropTypes.number,
+    pageSize: PropTypes.number,
+
+    totalNum: PropTypes.number,
+    departmentData: PropTypes.array,
+    selectedDepartment: PropTypes.array,//选中部门
+    getDepartmentList: PropTypes.func,
+    getDepartmentDetail: PropTypes.func,
+    deleteDepartment: PropTypes.func,
+    changeDepartmentStore: PropTypes.func,
   }
 
   constructor(props){
     super(props);
     this.state = {
+      showWarningTip: false,
+      warningTipText: '',
+      showAssignUser: false,
+      showAssignStation: false,
     }
   }
 
   onDepartmentAdd = () =>{//进入添加部门页
     this.props.changeDepartmentStore({showPage: 'add'});
   }
-
   onPaginationChange = ({currentPage,pageSize}) => {//分页器
-    // const {enterpriseName,sort,ascend,enterprisePhone,filterStatus} = this.props;
-    // this.props.getEnterpriseList({
-    //   enterpriseName,
-    //   enterprisePhone,
-    //   sort,
-    //   ascend,
-    //   currentPage,
-    //   pageSize,
-    //   filterStatus
-    // });
+    this.props.getDepartmentList({
+      enterpriseId: this.props.enterpriseId,
+      departmentSource: this.props.departmentSource,
+      departmentName: this.props.departmentName, 
+      parentDepartmentName: this.props.parentDepartmentName, 
+      stationName: this.props.stationName, 
+      sort: this.props.sort, 
+      ascend: this.props.ascend, 
+      pageNum: currentPage,
+      pageSize,
+    })
   }
-
-  onRowSelect = (selectedRowKeys, selectedRows) => {
-    // this.props.changeEnterpriseStore({
-    //   selectedEnterprise:selectedRows
-    // })
+  onRowSelect = (selectedRowKeys, selectedRows) => {//行选择
+    this.props.changeDepartmentStore({
+      selectedDepartment:selectedRows
+    })
   }
-  cancelRowSelect = () => {
-    // this.props.changeEnterpriseStore({
-    //   selectedEnterprise:[]
-    // })
+  onWarningTipOK = () => {//删除部门，todo
+    const { selectedDepartment,deleteDepartment } = this.props;
+    deleteDepartment(selectedDepartment.map(e=>e.departmentId))
   }
-
-  tableChange = (pagination,filter,sorter) => {//排序，筛选
-    // const {enterpriseName,enterprisePhone,currentPage,pageSize,filterStatus} = this.props;
-    // const sort = sorter.field;
-    // const ascend = sorter.order==='ascend';
-    // this.props.getEnterpriseList({
-    //   enterpriseName,
-    //   enterprisePhone,
-    //   sort,
-    //   ascend,
-    //   currentPage,
-    //   pageSize,
-    //   filterStatus
-    // });
+  cancelRowSelect = () => {//取消行选择
+    this.props.changeDepartmentStore({
+      selectedDepartment:[]
+    })
   }
-  showEnterpriseDetail = (record) => {
-    // console.log(record);
-    // const { enterpriseId } = record;
-    // this.props.changeEnterpriseStore({
-    //   showPage: 'detail',
-    // })
-    // this.props.getEnterpriseDetail({
-    //   enterpriseId
-    // })
+  cancelWarningTip = () => {//信息提示栏隐藏
+    this.setState({
+      showWarningTip:false
+    })
   }
-  departmentHandle = (value) => {//编辑，删除，分配用户/电站
-    console.log(value);
-    // const { selectedDepartment } = this.props;
-    // if(value === 'edit'){
-    //   this.props.editEnterprise({
-    //     key: selectedEnterprise[0].key
-    //   })
-    // }else{
-    //   this.props.handleEnterprise({
-    //     keys:selectedEnterprise.map(e=>e.key),
-    //     handle: value
-    //   })
-    // }
+  tableChange = (pagination,filter,sorter) => {//部门排序
+    const sort = sorter.field;
+    const ascend = sorter.order==='ascend';
+    this.props.getDepartmentList({
+      enterpriseId: this.props.enterpriseId,
+      departmentSource: this.props.departmentSource,
+      departmentName: this.props.departmentName, 
+      parentDepartmentName: this.props.parentDepartmentName, 
+      stationName: this.props.stationName, 
+      sort, 
+      ascend, 
+      pageNum: this.props.pageNum,
+      pageSize: this.props.pageSize,
+    })
   }
-  _createHandleOption = () => {//生成操作下拉框
+  showDepartmentDetail = (record) => {//点击跳转至详情
+    const { departmentId } = record;
+    this.props.changeDepartmentStore({
+      showPage: 'detail',
+    })
+    this.props.getDepartmentDetail({
+      departmentId
+    })
+  }
+  departmentHandle = (value) => {//--todo编辑，删除，分配用户/电站
     const { selectedDepartment } = this.props;
-    let [editable,openable,closeable] = [false,false,false];  
+    if(value==='edit'){
+      this.props.changeDepartmentStore({showPage: 'edit'});
+    }else if(value==='delete'){//信息提示栏
+      // let departmentRelation = selectedDepartment.map(e=>e.relation)     //todo=>根据选中电站确定警告弹出框文字
+      this.setState({
+        showWarningTip: true,
+        warningTipText: '删除后，将取消成员关联！'
+      })
+    }else if(value === 'assignUser'){
+      this.setState({
+        showAssignUser: true,
+      })
+    }else if(value === 'assignStation'){
+      this.setState({
+        showAssignStation: true,
+      })
+    }
+  }
+  _createHandleOption = () => {//部门操作下拉框生成
+    const { selectedDepartment } = this.props;
+    let [editable, deletable, userAssignable, staionAssignable] = [false,false,false,false];  
+
     if(selectedDepartment.length > 0){
-    //   editable = selectedEnterprise.length === 1;
-    //   const statusSet = new Set(selectedEnterprise.map(e => e.enterpriseStatus));
-    //   const statusArray = [...statusSet];
-    //   if(statusArray.length > 1){
-    //     openable = false;
-    //     closeable = false;
-    //   }else if(statusArray.length === 1){
-    //     openable = statusArray[0]===0;
-    //     closeable = statusArray[0]===1;
-    //   }
+      editable = selectedDepartment.length === 1;
+      [deletable, userAssignable, staionAssignable] = [true,true,true];
     }       
     return (<Select onChange={this.departmentHandle} placeholder={'操作'} dropdownMatchSelectWidth={false} dropdownClassName={styles.handleDropdown}>
-      {/* <Option value="edit" disabled={!editable} >编辑</Option>
-      <Option value="open" disabled={!openable} >启用</Option>
-      <Option value="close" disabled={!closeable} >禁用</Option> */}
-      <Option value="edit" >编辑</Option>
-      <Option value="delete" >删除</Option>
-      <Option value="assignUser" >分配用户</Option>
-      <Option value="assignStation" >设置电站</Option>
+      <Option value="edit" disabled={!editable} >编辑</Option>
+      <Option value="delete" disabled={!deletable} >删除</Option>
+      <Option value="assignUser" disabled={!userAssignable} >分配用户</Option>
+      <Option value="assignStation" disabled={!staionAssignable} >设置电站</Option>
     </Select>)
   }
   _createTableColumn = () => {//生成表头
     const columns = [
       {
-        title: '企业名称',
-        dataIndex: 'enterpriseName',
-        key: 'enterpriseName',
-        render: (text,record,index) => (<a href={'javascript:void(0);'} onClick={()=>this.showEnterpriseDetail(record)} >{text}</a>)
+        title: '部门名称',
+        dataIndex: 'departmentName',
+        key: 'departmentName',
+        render: (text,record,index) => (<a href={'javascript:void(0);'} onClick={()=>this.showDepartmentDetail(record)} >{text}</a>)
       }, {
-        title: '企业电话',
-        dataIndex: 'enterpriseNum',
-        key: 'enterpriseNum',
-        render: (text,record,index) => (<span>{text}</span>)
+        title: '所属部门',
+        dataIndex: 'parentDepartmentName',
+        key: 'parentDepartmentName',
       }, {
-        title: '状态',
-        dataIndex: 'enterpriseStatus',
-        key: 'enterpriseStatus',
-        render: (text,record) => (<span>{text===0?'否':'是'}</span>),
+        title: '预设',
+        dataIndex: 'departmentSource',
+        key: 'departmentSource',
+        render: (text,record) => (<span>{text===0?'是':'否'}</span>),
         sorter: true
       }, {
-        title: '查看',
-        dataIndex: 'handle',
-        key: 'handle',
-        render: (text,record)=>(
-          <span>
-            <span>部门</span>
-            <span>成员</span>
-            <span>角色</span>
-            <span>电站</span>
-          </span>
-        )
+        title: '负责电站',
+        dataIndex: 'stationName',
+        key: 'stationName',
+        render: (text,record) => {
+          let stations = record.stationName.split(',').filter(e=>!!e);
+          const { departmentName } = record;
+          if(stations.length > 1){
+            const content = stations.map(e=>(<div>{e}</div>)) 
+            return (<span className={styles.stationColumn}>
+              <span>{stations[0]}</span>
+              <Popover content={content} title={`${departmentName}负责电站`} >
+                <span className={styles.others}>···</span>
+              </Popover>
+            </span>)
+          }else{
+            return <span>{stations[0]?stations[0]:''}</span>
+          }
+        }
       }
     ];
     return columns
   }
 
   render(){
-    const { enterpriseData, selectedEnterprise, totalNum, loading } = this.props;
+    const { departmentData, selectedDepartment, totalNum, loading } = this.props;
+    const { showWarningTip, showAssignUser, showAssignStation,warningTipText } = this.state;
     return (
       <div className={styles.departmentList}>
+        {showWarningTip && <WarningTip onCancel={this.cancelWarningTip} onOK={this.onWarningTipOK} value={warningTipText} />}
+        {showAssignUser && null}
+        {showAssignStation && null}
         <div className={styles.departmentListTop} >
           <div>
             <Button className={styles.addDepartment} onClick={this.onDepartmentAdd}>
               <Icon type="plus" />
               <span className={styles.text}>部门</span>
             </Button>
-            <div className={styles.handleEnterprise}>
+            <div className={styles.handleDepartment}>
               {this._createHandleOption()}
             </div>
           </div>
           <CommonPagination total={totalNum} onPaginationChange={this.onPaginationChange} />
         </div>
-        表格组件
-        {/* 
         <Table 
           loading={loading}
           rowSelection={{
-            selectedRowKeys: selectedEnterprise.map(e=>e.key),
+            selectedRowKeys: selectedDepartment.map(e=>e.key),
             onChange: this.onRowSelect
           }}
-          dataSource={enterpriseData.map((e,i)=>({...e,key:i}))} 
+          dataSource={departmentData.map((e,i)=>({...e,key:i}))} 
           columns={this._createTableColumn()} 
           onChange={this.tableChange}
           pagination={false}
         />
         <div className={styles.tableFooter}>
-          <span className={styles.info}>当前选中<span className={styles.totalNum}>{selectedEnterprise.length}</span>项</span>
+          <span className={styles.info}>当前选中<span className={styles.totalNum}>{selectedDepartment.length}</span>项</span>
           <span className={styles.cancel} onClick={this.cancelRowSelect}>取消选中</span>
-        </div> */}
+        </div>
       </div>
     )
   }

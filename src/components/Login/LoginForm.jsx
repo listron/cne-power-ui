@@ -73,7 +73,7 @@ class LoginForm extends Component{
           {showPasswordLogin &&
             <div>
               <FormItem>
-                {getFieldDecorator('userName',{
+                {getFieldDecorator('username',{
                   rules: [{required: true, message: '请输入手机号/用户名'}]
                 })(
                   <Input prefix={<Icon type="user" />} placeholder="请输入手机号/用户名" />

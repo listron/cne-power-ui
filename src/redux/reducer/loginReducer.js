@@ -37,6 +37,9 @@ const loginReducer = (state = initState, action) => {
       return state.set('isFetching', false)
                   .set('loginSuccess', true)
                   .set('user', immutable.fromJS(action.data));
+    case LoginAction.GET_ENTERPRISE_INFO_SUCCESS:
+      return state.set('isFetching', false)
+                  .set('enterpriseInfo', immutable.fromJS(action.payload.data))
     case LoginAction.SEND_CODE_SUCCESS:
       return state.set('isFetching', false)
                   .set('phone', action.data.phone);

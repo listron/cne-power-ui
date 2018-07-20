@@ -5,7 +5,7 @@ module.exports =[{
     "code": "10000",
     "message": "请求成功",
     "data": {
-      "totalNum": 110, 
+      "totalNum": 10, 
       "userData":  [1,2,3,4,5,6,7,8,9,0].map((e,i)=>({
         userId: i,
         userName: '周树人',

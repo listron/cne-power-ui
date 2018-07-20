@@ -75,9 +75,9 @@ class Main extends Component {
   render() {
     const { setTopMenu, topMenu } = this.props;
     const authData = getCookie('authData');
-
-    if(authData && authData !== "undefined"){
+    if(authData && authData !== undefined){
       axios.defaults.headers.common['Authorization'] = "bearer " + JSON.parse(authData).access_token;
+      console.log(authData);
     }
     if(this.state.logined || getCookie('authData')){
       return (
@@ -98,9 +98,9 @@ class Main extends Component {
             </div>
           </div>
           <div className={styles.appFloat} style={{height: this.state.isScroll ? 140 : 105}}>
-          <div className={styles.floatItem}><Icon type="android-o" /></div>
-          <div className={styles.floatItem}><Icon type="apple-o" /></div>
-          <div className={styles.floatItem}><Icon type="wechat" /></div>
+            <div className={styles.floatItem}><Icon type="android-o" /></div>
+            <div className={styles.floatItem}><Icon type="apple-o" /></div>
+            <div className={styles.floatItem}><Icon type="wechat" /></div>
             {this.state.isScroll && 
             <div className={styles.floatItem}><Icon type="up-circle-o" /></div>}
           </div>
