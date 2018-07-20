@@ -7,8 +7,8 @@ import { connect } from 'react-redux';
 import {getCookie} from '../../utils/index.js'
 import Login from '../Login/Login';
 import Forget from '../Login/Forget';
-import Signup from '../Login/Register';
-import NotFund from '../Exception/404';
+import Register from '../Login/Register';
+import Exception from '../Login/Exception';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 
@@ -79,6 +79,9 @@ class Main extends Component {
               </Switch>
             </div>
           </div>
+          <div className={styles.appFloat}>
+
+          </div>
         </div>
       );
     }
@@ -87,8 +90,8 @@ class Main extends Component {
         <Switch>
           <Route path="/login" excat component={Login} />
           <Route path="/forget" excat component={Forget} />
-          <Route path="/signup" excat component={Signup} />
-          <Route path="/404" excat component={NotFund} />          
+          <Route path="/signup" excat component={Register} />
+          <Route path="/404" excat component={Exception} />          
           <Redirect to="/login" />
         </Switch>  
       );

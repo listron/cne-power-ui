@@ -44,6 +44,20 @@
       .content{
         display: flex;
         flex: 1;
+        overflow-x: hidden;
+        overflow-y: auto;
       }
+    }
+    .appFloat {
+      display: flex;
+      flex-direction: column;
+      position: absolute;
+      bottom: 60px;
+      right: 0px;
+      background:#199475;
+      box-shadow:0 0 2px 0 rgba(0,0,0,0.50);
+      border-radius:2px;
+      width:40px;
+      height:140px;
     }
   }
