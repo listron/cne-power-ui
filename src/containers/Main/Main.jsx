@@ -83,7 +83,7 @@ class Main extends Component {
     const { setTopMenu, topMenu } = this.props;
     const authData = getCookie('authData');
     if(authData && (authData !== 'undefined' && authData !== null)){
-      axios.defaults.headers.common['Authorization'] = "bearer " + JSON.parse(authData).access_token;
+      axios.defaults.headers.common['Authorization'] = "bearer " + JSON.parse(authData);
       console.log(authData);
     }
     if(this.state.logined || (authData !== 'undefined' && authData !== null)){
