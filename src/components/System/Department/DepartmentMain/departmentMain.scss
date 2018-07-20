@@ -88,31 +88,20 @@
           }
         }
       }
-
-
-
-
-      
-      .handleEnterprise{
+      .handleDepartment{
         height: 72px;
         line-height: 72px;
         display: inline-block;
         :global{
           .ant-select{
             width: 78px;
-            .ant-select-selection{
-              .ant-select-selection__rendered{
-                .ant-select-selection__placeholder{
-                  color: $lightColor;
-                }
-              }
-              .ant-select-arrow{
-                color: $lightColor;
-              }
-              @include highLight($themeColor);
-            }
           }
         }
+      }
+    }
+    .stationColumn{
+      .others{
+        cursor: pointer;
       }
     }
     .tableFooter{

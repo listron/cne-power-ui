@@ -37,7 +37,6 @@ class JoinInForm extends Component{
     e.preventDefault();
     this.props.form.validateFields((err,values) => {
       if(!err){
-        console.log(values)
         this.props.getEnterpriseInfo({'enterpriseName': values.enterpriseName})
         this.setState({ showEnterpriseInfo: true,  });
       }
@@ -103,6 +102,7 @@ class JoinInForm extends Component{
   render(){
     const { getFieldDecorator, getFieldsError } = this.props.form;
     const { isExist, enterpriseName, loading, isJoined } = this.props;
+    console.log(this.props);
     const { showEnterpriseInfo, joinInStep } = this.state;
     const formItemLayout = {
       labelCol: {

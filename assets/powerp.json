@@ -14,7 +14,7 @@
 	"develop": {
 		"htUrl": "http://10.10.11.3",
     "apiUrlReal": "http://dev-api.cnecloud.cn",
-    "newApiUrl": "http://10.10.11.226:8080",
+    "newApiUrl": "http://10.10.11.224:80",
 		"signalrReal": "http://dev-api.cnecloud.cn"
 	},
 	"local": {

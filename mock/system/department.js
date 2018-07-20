@@ -65,5 +65,87 @@ module.exports = [
     },
     delay:1000,
     error:{}
+  },{//获取企业下电站信息
+    api:'/mock/system/departmentAndStation',
+    method:'get',
+    response:{
+      "code": "10000",
+      "message": "请求成功",
+      "data": [{
+        departmentId:'12',
+        departmentName:'运维组',
+        stationData:[{
+          stationId: 1,
+          stationName: '广东'
+        },{
+          stationId: 2,
+          stationName: '广西'
+        },{
+          stationId: 3,
+          stationName: '杭州'
+        }],
+        childDepartmentData:[
+          {
+            departmentId:'122',
+            departmentName: '运维1组',
+            stationData:[{
+              stationId: 2,
+              stationName: '广西'
+            }],
+          },{
+            departmentId:'121',
+            departmentName: '运维2组',
+            stationData:[{
+              stationId: 1,
+              stationName: '广东'
+            }],
+          }
+        ]
+      }],
+      "serviceCode": "3.0"
+    },
+    delay:1000,
+    error:{}
+  },{//获取企业下人员信息
+    api:'/mock/system/departmentAndUser',
+    method:'get',
+    response:{
+      "code": "10000",
+      "message": "请求成功",
+      "data": [{
+        departmentId:'12',
+        departmentName:'运维组',
+        userData:[{
+          userId: 1,
+          userName: 'zhang'
+        },{
+          userId: 2,
+          userName: 'liu'
+        },{
+          userId: 3,
+          userName: 'zhou'
+        }],
+        childDepartmentData:[
+          {
+            departmentId:'122',
+            departmentName: '运维1组',
+            userData:[{
+              userId: 2,
+              userName: 'liu'
+            }],
+          },{
+            departmentId:'121',
+            departmentName: '运维2组',
+            userData:[{
+              userId: 1,
+              userName: 'zhang'
+            }],
+          }
+        ]
+      }],
+      "serviceCode": "3.0"
+    },
+    delay:1000,
+    error:{}
   }
 ]

@@ -36,14 +36,15 @@ class SideMenu extends Component {
   _createSideMenu = (sideMenuData) => {
     const { collapsed } = this.state;
     if(sideMenuData.length > 0){//至少拥有二级目录
-      return (<div className={styles.sideLayout}>
+      return (
+        <div className={styles.sideLayout}>
           <div className={styles.logo}>
             <span>menuLogo</span>
             <Button type="primary" onClick={this.toggleCollapsed}>
               <Icon type={collapsed ? 'menu-unfold' : 'menu-fold'} />
             </Button>
           </div>
-          <Menu mode="inline" theme="dark" inlineCollapsed={collapsed} className={styles.menuHandler}>
+          <Menu mode="inline" theme="dark" inlineCollapsed={collapsed} className={styles.menuList}>
             {sideMenuData.map(e=>{
               if(!e.children || e.children.length === 0){//只有二级目录
                 return (<Item key={e.path}>
@@ -59,9 +60,10 @@ class SideMenu extends Component {
               }
             })}
           </Menu>
-      </div>)
-    }else{//根目录或只有一级目录
-      return null
+      </div>
+      );
+    } else{//根目录或只有一级目录
+      return null;
     }
   }
 
@@ -69,10 +71,9 @@ class SideMenu extends Component {
   render() {
     const sideMenuData = this.getSideMenuData();
     return (
-      <div className={styles.sideMenu}>
+      <div className={styles.sideMenu} style={{width: this.state.collapsed ? 80 : 180}}>
         {this._createSideMenu(sideMenuData)}
-      </div>
-      
+      </div> 
     );
   }
 }

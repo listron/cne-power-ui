@@ -2,15 +2,23 @@
 
 
 .sideMenu{
+  display: flex;
   .sideLayout{
     display: flex;
-    height: 100%;
+    flex: 1;
     flex-direction: column;
     .logo{
-      width: 180px;
+      height: 40px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
     }
-    .menuHandler{
+    .menuList{
+      display: flex;
       flex: 1;
+      flex-direction: column;
+      overflow-x: hidden;
+      overflow-y: auto;
     }
   }
 }
