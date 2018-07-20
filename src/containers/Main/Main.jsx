@@ -11,6 +11,7 @@ import Register from '../Login/Register';
 import Exception from '../Login/Exception';
 import PropTypes from 'prop-types';
 import axios from 'axios';
+import { Icon } from 'antd';
 
 import { CommonAction } from '../../constants/actionTypes/commonAction';
 
@@ -29,7 +30,8 @@ class Main extends Component {
     super(props);
     this.state = {
       current: 'home',
-      logined:false
+      logined: false,
+      isScroll: false,
     };
     this.handleClick = this.handleClick.bind(this);
   }
@@ -38,7 +40,9 @@ class Main extends Component {
     let pathArray = pathname.split('/').filter(e=>e);
     const params = menu.find(e=>e.path===`/${pathArray[0]?pathArray[0]:''}`);
     this.props.setTopMenu(params);
+    this.refs.main.addEventListener('scroll', this.onScroll);
   }
+
 
   componentWillReceiveProps(nextProps) {  
     if(nextProps.login.get('loginSuccess') && !this.props.login.get('loginSuccess')){
@@ -49,15 +53,29 @@ class Main extends Component {
     }
   }
 
+  componentWillUnmount() {
+    this.refs.main.removeEventListener('scroll', this.onScroll);
+  }
+
+
+  onScroll = () => {
+    let isScroll = this.refs.main.scrollTop > 0;
+    this.setState({
+      isScroll
+    });
+  }
+
   handleClick(e) {
     this.setState({
       current: e.key
     });
   }
 
+
   render() {
     const { setTopMenu, topMenu } = this.props;
     const authData = getCookie('authData');
+
     if(authData && authData !== "undefined"){
       axios.defaults.headers.common['Authorization'] = "bearer " + JSON.parse(authData).access_token;
     }
@@ -72,15 +90,19 @@ class Main extends Component {
           </div>
           <div className={styles.appMain}>
             <SideMenu topMenu={topMenu} />
-            <div className={styles.content}>
+            <div className={styles.content} ref="main">
               <Switch>
                 {routerConfig}
                 <Redirect to="/" />
               </Switch>
             </div>
           </div>
-          <div className={styles.appFloat}>
-
+          <div className={styles.appFloat} style={{height: this.state.isScroll ? 140 : 105}}>
+          <div className={styles.floatItem}><Icon type="android-o" /></div>
+          <div className={styles.floatItem}><Icon type="apple-o" /></div>
+          <div className={styles.floatItem}><Icon type="wechat" /></div>
+            {this.state.isScroll && 
+            <div className={styles.floatItem}><Icon type="up-circle-o" /></div>}
           </div>
         </div>
       );
