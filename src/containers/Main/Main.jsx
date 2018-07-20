@@ -119,6 +119,7 @@ class Main extends Component {
       return (
         <Switch>
           <Route path="/login" excat component={Login} />
+          <Redirect to="/login" />
         </Switch>  
       );
     }
