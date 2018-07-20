@@ -45,10 +45,6 @@ class DepartmentMain extends Component {
   render(){
     return (
       <div className={styles.departmentMain}>
-        这个是主要表格区域啊！
-        <Button onClick={()=>this.props.changeDepartmentStore({showPage: 'add'})}>点击切换至新增页</Button>
-        <Button onClick={()=>this.props.changeDepartmentStore({showPage: 'edit'})}>点击切换至编辑页</Button>
-        <Button onClick={()=>this.props.changeDepartmentStore({showPage: 'detail'})}>点击切换至详情页</Button>
         <DepartmentSearch searchDepartment={this.searchDepartment} />    
         <DepartmentTable {...this.props} />    
       </div>

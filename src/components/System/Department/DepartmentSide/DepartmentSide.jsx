@@ -25,18 +25,13 @@ class DepartmentSide extends Component {
     const { showSidePage, changeDepartmentStore } = this.props;
     return (
       <div className={styles.departmentSide}>
-        side区域
         {showSidePage === 'detail' && <div>
             详情页标志
             <DepartmentDetail {...this.props} />
           </div>
         }
-        {showSidePage === 'add' && <div>
-            这个是新增页面，快添加东西了！
-            <AddDepartment {...this.props} />
-          </div>
-        }
-        {showSidePage === 'edit' && <div>
+        { showSidePage === 'add' && <AddDepartment {...this.props} /> }
+        { showSidePage === 'edit' && <div>
             编辑页面的样式在这
             <EditDepartment />
           </div>

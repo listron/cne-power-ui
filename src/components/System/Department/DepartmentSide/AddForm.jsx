@@ -59,8 +59,10 @@ class AddForm extends Component {
           )}
           <span className={styles.instructionText}>(不选默认为父级部门，保存后不可修改)</span>
         </FormItem>
-        <Button onClick={this.addDepartment} loading={loading} >保存</Button>
-        <Button onClick={this.addContinue} loading={loading} >保存并继续添加</Button>
+        <div className={styles.buttonGroup}>
+          <Button onClick={this.addDepartment} loading={loading} className={styles.save}>保存</Button>
+          <Button onClick={this.addContinue} loading={loading}>保存并继续添加</Button>
+        </div>
       </Form>
     )
   }

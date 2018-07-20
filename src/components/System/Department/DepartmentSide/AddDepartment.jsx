@@ -25,7 +25,7 @@ class AddDepartment extends Component {
     return (
       <div className={styles.addDepartment} >
         <div className={styles.editTop}>
-          <span className={styles.text}>编辑</span>
+          <span className={styles.text}>新建</span>
           <Icon type="arrow-left" className={styles.backIcon} onClick={this.cancelAdd} />
         </div>
         <div className={styles.mainPart}>

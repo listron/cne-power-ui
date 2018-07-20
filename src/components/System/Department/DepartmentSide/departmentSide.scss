@@ -43,15 +43,24 @@
       display: flex;
       .addPart{
         flex: 1;
+        .instructionText{
+          color: $promptColor;
+        }
+        .buttonGroup{
+          .save{
+            margin-left: 410px;
+            margin-right: 16px;
+          }
+        }
         :global{
           .ant-form-item{
             display: flex;
             line-height: 40px;
             .ant-form-item-label{
-              width: 70px;
+              width: 410px;
               color: $darkColor;
               text-align: right;
-              margin-right: 24px;
+              padding-right: 24px;
               label::after{
                 display: none;
               }
@@ -259,7 +268,3 @@
     }
   }
 }
-// .cancelEdit{
-//   background-color: lightblue;
-//   position: fixed;
-// }
