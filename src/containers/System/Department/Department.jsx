@@ -38,7 +38,7 @@ class Department extends Component {
       pageNum: this.props.pageNum,
       pageSize: this.props.pageSize,
     }
-    this.props.getDepartmentList(params) // 请求部门列表
+    this.props.getDepartmentList(params)//请求部门列表
   }
 
   onToggleSide = () => {
