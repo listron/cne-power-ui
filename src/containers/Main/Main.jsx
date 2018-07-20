@@ -82,11 +82,11 @@ class Main extends Component {
   render() {
     const { setTopMenu, topMenu } = this.props;
     const authData = getCookie('authData');
-    if(authData && authData !== 'undefined'){
+    if(authData && (authData !== 'undefined' && authData !== null)){
       axios.defaults.headers.common['Authorization'] = "bearer " + JSON.parse(authData).access_token;
       console.log(authData);
     }
-    if(this.state.logined || authData !== 'undefined'){
+    if(this.state.logined || (authData !== 'undefined' && authData !== null)){
       return (
         <div className={styles.app}>
           <div className={styles.appHeader}>
