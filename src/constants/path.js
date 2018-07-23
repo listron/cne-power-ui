@@ -17,9 +17,6 @@ export default {
   },
   APISubPaths: {
     getCompInfo: '/v3/enterprise/domainLogin',
-    
-    loginPhoneCode: '/v3/login/phonecode',
-    
     checkPhone: '/v3/user/validateEnterpriseRegPhoneNum',
     sendCode: '/v3/common/requestSmsCode',
     checkCode: '/v3/user/validateCaptcha',
@@ -35,6 +32,9 @@ export default {
     login: '/v3/login',
     getVerificationCode: '/v3/login/verificationcode',
     getEnterpriseInfo: '/v3/login/enterpriseinfo',
+    loginPhoneCode: '/v3/login/phonecode',
+    joinEnterprise: '/v3/login/userenterprise',
+
     ticket: {
       getDefectList: '/v3/defect/worklist/pc',
       batchDeleteDefect: '/v3/defect/delete/batch',

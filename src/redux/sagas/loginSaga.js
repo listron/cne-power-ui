@@ -68,8 +68,8 @@ function *getVerificationCode(action){
 }
 //手机+验证码登录
 function *checkCode(action){
-  // let url = Config.APIBasePath + Path.APISubPaths.loginPhoneCode;
-  let url = "/mock/api/v3/login/phonecode";
+  let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.loginPhoneCode;
+  // let url = "/mock/api/v3/login/phonecode";
   console.log(action)
   yield put({ type: LoginAction.LOGIN_FETCH})
   try{
@@ -155,12 +155,15 @@ function *getEnterPriseInfo(action){
 // 加入企业
 function *joinEnterprise(action){
   const { payload } = action;
-  const url = '/mock/api/v3/login/userenterprise';
+  // const url = '/mock/api/v3/login/userenterprise';
+  const url = Path.basePaths.newAPIBasePath + Path.APISubPaths.joinEnterprise;
+  console.log(action);
   try{
     yield put({ type: LoginAction.LOGIN_FETCH });
     const response = yield call(axios.get, url, payload);
+    console.log(response);
     yield put({
-      type: LoginAction.GET_JOININ_COMMON_SUCCESS,
+      type: LoginAction.JOIN_ENTERPRISE_SUCCESS,
       payload: {
         ...payload,
         data: response.data.data,

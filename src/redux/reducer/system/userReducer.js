@@ -8,7 +8,7 @@ var initState = immutable.fromJS({
   enterpriseId: '',//企业ID
   roleId: '',//角色ID 
   roleName: '',//筛选条件：角色
-  userStatus: 0,//筛选条件： 状态  1启用,2禁用,3未激活,0全部
+  userStatus: 0,//筛选条件： 状态  0:全部，1：激活，2：未激活，3：启用，4：禁用，5：待审核，6：审核不通过，7：移除
   sort: '',//排序规则
   ascend: true,//排序方式
   userName: '',//筛选条件：用户名

@@ -29,7 +29,14 @@ class JoinInForm extends Component{
   onJoinEnterprise = () => {
     this.props.form.validateFields((err,values) => {
       if(!err){
-        this.props.joinEnterprise(values);
+        console.log(values);
+        let { phoneNum,enterpriseId } =this.props;
+        let params = {
+          phoneNum,
+          enterpriseId,
+
+        }
+        this.props.joinEnterprise(params);
       }
     })
   }
@@ -143,7 +150,7 @@ class JoinInForm extends Component{
             {/* <Spin spinning={loading}> */}
               <Modal
                 visible={showEnterpriseInfo}
-                title={isExist === 0 ? "没有此企业，请重新输入" : "点击确认要加入的企业"}
+                title={enterpriseName === null ? "没有此企业，请重新输入" : "点击确认要加入的企业"}
                 footer={null}
                 maskClosable={false}
                 destroyOnClose={true}
@@ -151,7 +158,7 @@ class JoinInForm extends Component{
                 height={228}
                 closable={false}
               >
-                {`${enterpriseName}` === '' ? '' : <Button onClick={() => this.setState({joinInStep : 2 }) }>{enterpriseName}</Button>}
+                {enterpriseName === null ? null : <Button onClick={() => this.setState({joinInStep : 2 }) }>{enterpriseName}</Button>}
                 <br /><Icon type="arrow-left" /><span  onClick={this.handleCancel}>返回</span>
               </Modal>
             {/* </Spin> */}
@@ -183,7 +190,7 @@ class JoinInForm extends Component{
                 </Button>
               </div>
               <FormItem>
-                <Button type="primary" htmlType="submit">加入企业</Button>
+                <Button type="primary" htmlType="submit">下一步</Button>
               </FormItem>
             </Form>
           </div>

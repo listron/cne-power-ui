@@ -84,8 +84,9 @@ class Main extends Component {
     const authData = getCookie('authData');
     if(authData && (authData !== 'undefined' && authData !== null)){
       axios.defaults.headers.common['Authorization'] = "bearer " + JSON.parse(authData);
-      console.log(authData);
+      // console.log(authData);
     }
+    // console.log(this.state.logined || (authData !== 'undefined' && authData !== null))
     if(this.state.logined || (authData !== 'undefined' && authData !== null)){
       return (
         <div className={styles.app}>
