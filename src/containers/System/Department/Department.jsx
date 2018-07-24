@@ -19,7 +19,8 @@ class Department extends Component {
     ascend: PropTypes.bool, 
     pageNum: PropTypes.number,
     pageSize: PropTypes.number,
-    getDepartmentList: PropTypes.func
+    getDepartmentList: PropTypes.func,
+    getAllDepartment: PropTypes.func,
   }
   constructor(props) {
     super(props);
@@ -40,6 +41,10 @@ class Department extends Component {
       pageSize: this.props.pageSize,
     }
     this.props.getDepartmentList(params)//请求部门列表
+    console.log(params)
+    this.props.getAllDepartment({//请求所有部门
+      enterpriseId: this.props.enterpriseId,
+    })
   }
 
   onToggleSide = () => {
@@ -71,6 +76,7 @@ class Department extends Component {
 }
 const mapStateToProps = (state) => ({
     loading: state.department.get('loading'),
+    buttonLoading: state.department.get('buttonLoading'),
     showPage: state.department.get('showPage'),
     departmentSource: state.department.get('departmentSource'),
     departmentName: state.department.get('departmentName'),
@@ -81,6 +87,8 @@ const mapStateToProps = (state) => ({
     totalNum: state.department.get('totalNum'),
     pageNum: state.department.get('pageNum'),
     pageSize: state.department.get('pageSize'),
+
+    allDepartment:state.department.get('allDepartment').toJS(),
     departmentData: state.department.get('departmentData').toJS(),
     departmentDetail: state.department.get('departmentDetail').toJS(),
     selectedDepartment: state.department.get('selectedDepartment').toJS(),
@@ -93,12 +101,12 @@ const mapDispatchToProps = (dispatch) => ({
   getDepartmentList: payload => dispatch({type:departmentAction.GET_DEPARTMENT_LIST_SAGA, payload}),
   getDepartmentDetail: payload => dispatch({type:departmentAction.GET_DEPARTMENT_DETAIL_SAGA, payload}),
   getAllUsers: payload => dispatch({type:departmentAction.GET_ALL_USERS_SAGA,payload}), 
+  getAllDepartment: payload => dispatch({type:departmentAction.GET_ALL_DEPARTMENT,payload}),
   addDepartmentInfor: payload => dispatch({type:departmentAction.ADD_DEPARTMENT_INFO_SAGA, payload}),
 //   saveEnterpriseInfor: payload => dispatch({type:departmentAction.SAVE_ENTERPRISE_INFO_SAGA, payload}),
 //   ignoreEnterpirseEdit: payload => dispatch({type: departmentAction.IGNORE_ENTERPRISE_EDIT,payload})
 });
 
-//   yield takeLatest(departmentAction.GET_DEPARTMENT_DETAIL_SAGA, getDepartmentDetail);
 //   yield takeLatest(departmentAction.EDIT_DEPARTMENT_INFO_SAGA,editDepartmentInfor);
 
 export default connect(mapStateToProps, mapDispatchToProps)(Department);

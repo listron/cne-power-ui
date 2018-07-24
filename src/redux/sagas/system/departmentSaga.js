@@ -64,6 +64,24 @@ function *getAllUsers(action){
   }
 }
 
+function *getAllDepartment(action){//获取所有部门
+  const { payload } = action;
+  const url = '/mock/system/allDepartments';
+  // const url = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.system.departmentInfor}/${payload.enterpriseId}`
+  try{
+    yield put({ type:departmentAction.DEPARTMENT_FETCH });
+    const response = yield call(axios.get,url);
+    yield put({
+      type:  departmentAction.GET_DEPARTMENT_COMMON_FETCH_SUCCESS,
+      payload:{
+        allDepartmentRelation: response.data.data,
+      },
+    });
+  }catch(e){
+    console.log(e);
+  }
+}
+
 //请求单部门详细数据信息
 function *getDepartmentDetail(action){
   const { payload } = action;
@@ -140,6 +158,7 @@ export function* watchDepartment() {
   yield takeLatest(departmentAction.GET_DEPARTMENT_LIST_SAGA, getDepartmentList);
   yield takeLatest(departmentAction.DELETE_DEPARTMENT_SAGA,deleteDepartment);
   yield takeLatest(departmentAction.GET_ALL_USERS_SAGA,getAllUsers);
+  yield takeLatest(departmentAction.GET_ALL_DEPARTMENT,getAllDepartment);
   yield takeLatest(departmentAction.GET_DEPARTMENT_DETAIL_SAGA, getDepartmentDetail);
   yield takeLatest(departmentAction.ADD_DEPARTMENT_INFO_SAGA, addDepartmentInfor);
   yield takeLatest(departmentAction.EDIT_DEPARTMENT_INFO_SAGA,editDepartmentInfor);
