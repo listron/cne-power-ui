@@ -20,10 +20,10 @@ class AssignStationModal extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedDepartment: Immutable.fromJS({}),
-      stationList: Immutable.fromJS([]),
-      selectedStationList: Immutable.fromJS([]),
-      searchStationList: null,
+      selectedDepartment: Immutable.fromJS({}),//选中部门
+      stationList: Immutable.fromJS([]),//电站Id和部门Id一一匹配，一维数组，最后回传的数组
+      selectedStationList: Immutable.fromJS([]),//右边的电站列表数据
+      searchStationList: null,//右边有搜索文字的电站列表数据
       expandedKeys: [],
       selectedKeys: [],
     };
@@ -131,7 +131,7 @@ class AssignStationModal extends Component {
 
   getStationChecked(station) {
     let selectedDepartment = this.state.selectedDepartment;
-    let index = this.state.userList.findIndex((item) => {
+    let index = this.state.stationList.findIndex((item) => {
       return item.get('stationCode') === station.get('stationCode') && item.get('departmentId') === selectedDepartment.get('departmentId');
     });
     if(index > -1) {
