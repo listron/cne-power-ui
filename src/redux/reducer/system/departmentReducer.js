@@ -16,6 +16,8 @@ var initState = immutable.fromJS({
   totalNum: 0,//部门总数
   pageNum: 1,//当前页号
   pageSize: 10,//每页容纳条数
+  showAssignStationModal: false,//展示分配电站模态框
+  showAssignUserModal: false,//展示分配用户模态框
   
   allDepartment: {},//所有部门基础信息及子父级关系
 

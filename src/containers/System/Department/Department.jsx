@@ -19,13 +19,15 @@ class Department extends Component {
     ascend: PropTypes.bool, 
     pageNum: PropTypes.number,
     pageSize: PropTypes.number,
+    showAssignStationModal: PropTypes.bool, 
+    showAssignUserModal: PropTypes.bool,
     getDepartmentList: PropTypes.func,
     getAllDepartment: PropTypes.func,
   }
   constructor(props) {
     super(props);
     this.state = {
-      showSidePage: 'add',
+      showSidePage: 'add'
     }
   }
   componentDidMount(){
@@ -54,11 +56,11 @@ class Department extends Component {
   }
 
   render() {
-    const { showPage } = this.props;
+    const { showPage, showAssignStationModal, showAssignUserModal } = this.props;
     const { showSidePage } = this.state;
     return (
       <div className={styles.departmentContainer}>
-        <DepartmentMain {...this.props} />
+        <DepartmentMain {...this.props} onWarningTipToggle={this.onWarningTipToggle}/>
         <TransitionContainer
           show={showPage!=='list'}
           onEnter={this.onToggleSide}
@@ -68,6 +70,8 @@ class Department extends Component {
         >
           <DepartmentSide {...this.props} showSidePage={showSidePage} />
         </TransitionContainer>
+        {showAssignStationModal && null}
+        {showAssignUserModal && null}
       </div>
         
     );
@@ -87,6 +91,8 @@ const mapStateToProps = (state) => ({
     totalNum: state.department.get('totalNum'),
     pageNum: state.department.get('pageNum'),
     pageSize: state.department.get('pageSize'),
+    showAssignStationModal: state.department.get('showAssignStationModal'),
+    showAssignUserModal: state.department.get('showAssignUserModal'),
 
     allDepartment:state.department.get('allDepartment').toJS(),
     departmentData: state.department.get('departmentData').toJS(),
@@ -104,8 +110,6 @@ const mapDispatchToProps = (dispatch) => ({
   getAllDepartment: payload => dispatch({type:departmentAction.GET_ALL_DEPARTMENT,payload}),
   addDepartmentInfor: payload => dispatch({type:departmentAction.ADD_DEPARTMENT_INFO_SAGA, payload}),
   editDepartmentInfor: payload => dispatch({type: departmentAction.EDIT_DEPARTMENT_INFO_SAGA, payload})
-//   saveEnterpriseInfor: payload => dispatch({type:departmentAction.SAVE_ENTERPRISE_INFO_SAGA, payload}),
-//   ignoreEnterpirseEdit: payload => dispatch({type: departmentAction.IGNORE_ENTERPRISE_EDIT,payload})
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Department);

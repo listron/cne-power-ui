@@ -37,8 +37,6 @@ class DepartmentTable extends Component {
     this.state = {
       showWarningTip: false,
       warningTipText: '',
-      showAssignUser: false,
-      showAssignStation: false,
     }
   }
 
@@ -103,7 +101,6 @@ class DepartmentTable extends Component {
   }
   departmentHandle = (value) => {//--todo编辑，删除，分配用户/电站
     const { selectedDepartment } = this.props;
-    console.log(selectedDepartment)
     if(value==='edit'){
       this.props.changeDepartmentStore({
         showPage: 'edit',
@@ -116,12 +113,12 @@ class DepartmentTable extends Component {
         warningTipText: '删除后，将取消成员关联！'
       })
     }else if(value === 'assignUser'){
-      this.setState({
-        showAssignUser: true,
+      this.props.changeDepartmentStore({
+        showAssignUserModal: true,
       })
     }else if(value === 'assignStation'){
-      this.setState({
-        showAssignStation: true,
+      this.props.changeDepartmentStore({
+        showAssignStationModal: true,
       })
     }
   }
@@ -183,12 +180,10 @@ class DepartmentTable extends Component {
 
   render(){
     const { departmentData, selectedDepartment, totalNum, loading } = this.props;
-    const { showWarningTip, showAssignUser, showAssignStation,warningTipText } = this.state;
+    const { showWarningTip, warningTipText } = this.state;
     return (
       <div className={styles.departmentList}>
         {showWarningTip && <WarningTip onCancel={this.cancelWarningTip} onOK={this.onWarningTipOK} value={warningTipText} />}
-        {showAssignUser && null}
-        {showAssignStation && null}
         <div className={styles.departmentListTop} >
           <div>
             <Button className={styles.addDepartment} onClick={this.onDepartmentAdd}>
