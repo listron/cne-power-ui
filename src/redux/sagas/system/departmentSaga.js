@@ -27,6 +27,7 @@ function *getDepartmentList(action){
         ...payload,
         departmentData: response.data.data.departmentData,
         totalNum: response.data.data.totalNum,
+        buttonLoading: false
       },
     });
   }catch(e){
@@ -74,7 +75,7 @@ function *getAllDepartment(action){//获取所有部门
     yield put({
       type:  departmentAction.GET_DEPARTMENT_COMMON_FETCH_SUCCESS,
       payload:{
-        allDepartmentRelation: response.data.data,
+        allDepartment: response.data.data,
       },
     });
   }catch(e){
@@ -107,14 +108,36 @@ function *addDepartmentInfor(action){
   const url = '/mock/system/addDepartment';
   // const url = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.system.departmentInfor}`
   try{
-    yield put({ type:departmentAction.DEPARTMENT_FETCH });
+    yield put({ 
+      type:departmentAction.GET_DEPARTMENT_COMMON_FETCH_SUCCESS,
+      payload: {
+        loading: payload.loading,
+        buttonLoading: payload.buttonLoading
+      } 
+    });
     const response = yield call(axios.post,url,payload);
     if(response.data.code === "10000"){
       yield put({
         type:  departmentAction.GET_DEPARTMENT_COMMON_FETCH_SUCCESS,
         payload:{
           showPage: 'list',
+          buttonLoading: false,
         }
+      });
+      const params = yield select(state => ({//继续请求部门列表
+        enterpriseId: payload.enterpriseId,
+        departmentSource: state.department.get('departmentSource'),
+        departmentName: state.department.get('departmentName'),
+        parentDepartmentName: state.department.get('parentDepartmentName'),
+        stationName: state.department.get('stationName'), 
+        sort: state.department.get('sort'),
+        ascend: state.department.get('ascend'),
+        pageNum: state.department.get('pageNum'),
+        pageSize: state.department.get('pageSize'),
+      }));
+      yield put({
+        type:  departmentAction.GET_DEPARTMENT_LIST_SAGA,
+        payload: params,
       });
     }
   }catch(e){

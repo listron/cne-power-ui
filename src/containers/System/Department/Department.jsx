@@ -41,7 +41,6 @@ class Department extends Component {
       pageSize: this.props.pageSize,
     }
     this.props.getDepartmentList(params)//请求部门列表
-    console.log(params)
     this.props.getAllDepartment({//请求所有部门
       enterpriseId: this.props.enterpriseId,
     })
