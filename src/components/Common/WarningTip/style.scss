@@ -5,20 +5,31 @@
   position: fixed;
   z-index: 999999;
   left: 40%;
-  height: 260px;
+  top: 260px;
+  background-color: #fff;
+  box-shadow: 0 1px 4px 0 rgba(0,0,0,0.2);
+  border-radius: 4px;
   .textArea{
+    margin: 16px;
     .icon{
       background-color: #f9b600;
       border-radius: 50%;
       color: #fff;
+      margin-right: 4px;
     }
     .text{
       color: $darkColor;
     }
   }
   .handle{
+    text-align: right;
+    margin-right: 16px;
     span{
       cursor: pointer;
+      display: inline-block;
+      border-radius: 4px;
+      margin-left: 24px;
+      padding:0 8px;
       color: $lightColor;
       &:hover{
         background-color: $themeColor;
