@@ -10,7 +10,7 @@ class AssignStationModal extends Component {
   static propTypes = {
     show: PropTypes.bool,
     enterprise: PropTypes.object,//当前企业
-    departmentStationList: PropTypes.object,//immutable
+    departmentList: PropTypes.object,//immutable
     stationList: PropTypes.object,//immutable
     getDepartmentTreeData: PropTypes.func,
     getStationList: PropTypes.func,
@@ -20,9 +20,10 @@ class AssignStationModal extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      departmentStationList: Immutable.fromJS([]),
       selectedDepartment: Immutable.fromJS({}),
       stationList: Immutable.fromJS([]),
+      selectedStationList: Immutable.fromJS([]),
+      searchStationList: null,
       expandedKeys: [],
       selectedKeys: [],
     };
@@ -34,20 +35,24 @@ class AssignStationModal extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if(nextProps.departmentStationList.size !== this.props.departmentStationList.size && nextProps.departmentStationList.size > 0) {
-      let department = nextProps.departmentStationList.get(0);
-      let departmentId = nextProps.departmentStationList.getIn([0, 'departmentId']);
+    if(nextProps.departmentList.size !== this.props.departmentList.size && nextProps.departmentList.size > 0) {
+      let department = nextProps.departmentList.get(0);
+      let departmentId = nextProps.departmentList.getIn([0, 'departmentId']);
       this.setState({
-        departmentStationList: nextProps.departmentStationList,
         selectedDepartment: department,
         selectedKeys: [departmentId],
-        stationList: departmentId === 0 ? nextProps.departmentStationList.getIn([0, 'station']) : Immutable.fromJS([]),
+      });
+    }
+    if(nextProps.stationList.size !== this.props.stationList.size && nextProps.stationList.size > 0) {
+      this.setState({
+        stationList: nextProps.stationList,
+        selectedStationList: nextProps.stationList,
       });
     }
   }
 
   onOk = () => {
-    this.props.onSelect(this.state.departmentStationList);
+    this.props.onSelect(this.state.stationList);
   }
 
   onCancel = () => {
@@ -60,45 +65,25 @@ class AssignStationModal extends Component {
   }
 
   onSearch = (value) => {
-    let stationList = this.props.stationList;
+    let stationList = this.state.selectedStationList;
     if(value !== '') {
       stationList = stationList.filter((item) => {
         return item.get('stationName').index(value) !== -1;
       });
     } else {
-      stationList = Immutable.fromJS([]);
+      stationList = null;
     }
     this.setState({
-      stationList
+      searchStationList: stationList
     });  
   }
 
   onSelectNode = (selectedKeys, info) => {
     let item = info.node.props.dataRef;
-    let key = info.node.props.key;//item.get('departmentId')
-    const expandedKeys = this.state.expandedKeys;
-    if(item.get('childDepartmentData')) {
-      if(expandedKeys.indexOf(key) === -1) {
-        expandedKeys.push(key);
-      } else {
-        expandedKeys.splice(expandedKeys.indexOf(key), 1);
-      }
-      this.setState({
-        expandedKeys,
-      });
-    } else {
-      if(key === 0) {
-        this.setState({
-          stationList: item.get('station')
-        });
-      } else {
-        this.setState({
-          stationList: Immutable.fromJS([])
-        });
-      }
-    }
+    let selectedStationList = this.getDepartmenStationRange(item, this.state.stationList);
     this.setState({
       selectedDepartment: item,
+      selectedStationList,
       selectedKeys
     });
   }
@@ -109,40 +94,45 @@ class AssignStationModal extends Component {
     });
   }
 
-  onCheckStation = (obj, checked) => {
-    let { selectedDepartment, departmentStationList, selectedKeys } = this.state;
-    let station = selectedDepartment.get('station');
-    let departmentId = selectedKeys[0];
-    const departmentIndex = departmentStationList.findIndex((item) => {
-      return departmentId === item.get('departmentId');
-    });
+  onCheckStation = (station, checked) => {
+    let { selectedDepartment, stationList } = this.state;
     if(checked) {
-      station = station.push(Immutable.fromJS({
-        stationCode: obj.get('stationCode'),
-        stationName: obj.get('stationName'),
-        disabled: false
-      }));
+      stationList = stationList.push(Immutable.fromJS({
+        departmentId: selectedDepartment.get('departmentId'),
+        departmentName: selectedDepartment.get('departmentName'),
+        stationCode: station.get('stationCode'),
+        stationName: station.get('stationName'),
+      }))
     } else {
-      let index = station.findIndex((item) => {
-        return item.get('stationCode') === obj.get('stationCode');
-      });
-      if(index > -1) {
-        station = station.delete(index);
+      if(selectedDepartment.get('childDepartmentData')) {
+        let child = selectedDepartment.get('childDepartmentData');
+        child.forEach((item) => {
+          let childIndex = stationList.findIndex((current) => {
+            item.get('departmentId') === current.get('departmentId') && 
+            station.get('stationCode') === current.get('stationCode')
+          })
+          if(childIndex !== -1) {
+            stationList = stationList.delete(childIndex);
+          }
+        })
+        let index = stationList.findIndex((current) => {
+          selectedDepartment.get('departmentId') === current.get('departmentId') && 
+          station.get('stationCode') === current.get('stationCode')
+        });
+        stationList = stationList.delete(index);
       }
     }
-    selectedDepartment = selectedDepartment.set('station', station);
-    departmentStationList = departmentStationList.set(departmentIndex, selectedDepartment);
+    let selectedStationList = this.getDepartmenStationRange(selectedDepartment, stationList);
     this.setState({
-      selectedDepartment,
-      departmentStationList
+      stationList,
+      selectedStationList
     });
   }
 
-  getStationChecked(obj) {
+  getStationChecked(station) {
     let selectedDepartment = this.state.selectedDepartment;
-    let station = selectedDepartment.get('station');
-    let index = station.findIndex((item) => {
-      return item.get('stationCode') === obj.get('stationCode');
+    let index = this.state.userList.findIndex((item) => {
+      return item.get('stationCode') === station.get('stationCode') && item.get('departmentId') === selectedDepartment.get('departmentId');
     });
     if(index > -1) {
       return true;
@@ -151,50 +141,45 @@ class AssignStationModal extends Component {
     }
   }
 
-  getStationDepartment(obj) {
-    let departmentData = obj.get('departmentData');
-    let result = '';
-    for(let i = 0; i < departmentData.size; i++) {
-      result += '，' + departmentData.getIn([i, 'departmentName']);
+  getDepartmenStationRange(department, stationList) {
+    let parentDepartmentId = department.get('parentId');
+    let selectedStationList;
+    if(parentDepartmentId === null) {
+      selectedStationList = stationList;
+    } else {
+      selectedStationList = stationList.filter((item) => {
+        return item.get('departmentId') === parentDepartmentId;
+      });
     }
-    result.splice(0, 1);
-    return result;
+    return selectedStationList;
   }
 
-  transformData(data) {
-    let child, station, childStation;
-    const filterNode = (data, childData) => {
-      let result;
-      result = data.filter(item => !childData.some(childItem => 
-        childItem.get('stationCode') === item.get('stationCode')));
-      return result;
-    }
-    for(let i = 0; i < data.size; i++) {
-      if(data.getIn([i, 'childDepartmentData]']).toJS() instanceof Array) {
-        child = data.getIn([i, 'childDepartmentData]']);
-        station = data.getIn([i, 'station']);
-        for(let j = 0; j < child.size; j++) {
-          childStation = child.getIn([j, 'station']);
-          // station = station.filter(item => !childStation.some(childItem => 
-          //   childItem.get('stationCode') === item.get('stationCode')));
-          station = filterNode(station, childStation);
-        }
-        if(station.size > 0) {
-          child = child.unshift(Immutable({
-            departmentId: 0,
-            departmentName: '未分配子部门',
-            station: station
-          }));
-          data = data.setIn([i, 'childDepartmentData]'], child);
-        }
+  getDepartmentStation(departmentId) {
+    return this.state.stationList.filter((item) => {
+      return item.get('departmentId') === departmentId;
+    });
+  }
+
+  tansformStationData(stationList) {
+    let newStationList = Immutable.fromJS([]);
+    stationList.forEach(element => {
+      const index = newStationList.findIndex(item =>{
+        return item.get('userId') === element.get('userId');
+      })
+      if(index === -1) {
+        newStationList = newStationList.push(element);
+      } else {
+        let user = newStationList.get(index);
+        user = user.set('departmentName', user.get('departmentName')+','+element.get('departmenName'))
+                   .set('departmentId'),Immutable.fromJS([user.get('departmentId')].push(element.get('departmentId'))); 
+        newStationList = newStationList.set(index, user);
       }
-    }
-    return data;
+    });
+    return newStationList;
   }
 
   renderDepartmentTree() {
-    const { enterprise } = this.props;
-    const { departmentStationList } = this.state;
+    const { enterprise, departmentList } = this.props;
     return (
       <Tree 
         onSelect={this.onSelectNode} 
@@ -203,47 +188,46 @@ class AssignStationModal extends Component {
         selectedKeys={this.state.selectedKeys}
       >
         <TreeNode title={enterprise.enterpriseId} key={enterprise.enterpriseName}>
-          {this.renderTreeNodes(this.transformData(departmentStationList))}
+          {this.renderTreeNodes(departmentList)}
         </TreeNode>
       </Tree>
     );
   }
 
   renderTreeNodes(treeData) {
+    let stationNum;
     return (
       treeData.map((item) => {
+        stationNum = this.getDepartmentStation(item.get('departmentId')).size;
         if(item.get('childDepartmentData').toJS() instanceof Array) {
           return (
-            <TreeNode title={item.get('departmentName')} key={item.get('departmentId')} dataRef={item}>
+            <TreeNode title={item.get('departmentName')+'('+stationNum+')'} key={item.get('departmentId')} dataRef={item}>
               {this.renderTreeNodes(item.get('childDepartmentData'))}
             </TreeNode>
           );
         } else {
-          return <TreeNode title={item.get('departmentName')} key={item.get('departmentId')} dataRef={item} />
+          return <TreeNode title={item.get('departmentName')+'('+stationNum+')'} key={item.get('departmentId')} dataRef={item} />
         }
       })
     );
   }
 
   renderStationList() {
-    let selectedId = this.state.selectedKeys[0];
-    let station = selectedId === 0 ? this.state.stationList : this.props.stationList;
+    const { searchStationList , selectedStationList } = this.state;
+    let station = this.tansformStationData(searchStationList===null?searchStationList:selectedStationList);
     return (
       station.map((item) => {
         return (
           <div key={item.get('stationCode')}>
             <div>
-              {selectedId !== 0 && 
-                <Checkbox 
-                  onChange={(e)=>{this.onCheckStation(item, e.target.checked)}} 
-                  checked={()=>this.getStationChecked(item)}
-                  disabled={item.get('disabled')} />
-              }
+              <Checkbox 
+                onChange={(e)=>{this.onCheckStation(item, e.target.checked)}} 
+                checked={()=>this.getStationChecked(item)} />
               <Avatar>{item.get('stationName').charAt(0)}</Avatar>
               <span>{item.get('stationName')}</span>
             </div>
             <div>
-              {selectedId !== 0 && this.getStationDepartment(item)}
+              {this.getStationDepartment(item)}
             </div>
           </div>
         );
@@ -252,7 +236,8 @@ class AssignStationModal extends Component {
   }
 
   renderSelectedStation() {
-    let station = this.state.selectedDepartment.get('station');
+    let department = this.state.selectedDepartment;
+    let station = this.getDepartmentStation(department.get('departmentId'));
     return station.map((item) => {
       return (
         <Tag 
