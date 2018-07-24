@@ -10,7 +10,6 @@ class DepartmentDetail extends Component {
     changeDepartmentStore: PropTypes.func,
     // ignoreEnterpirseEdit: PropTypes.func,
     departmentDetail: PropTypes.object,
-    // history: PropTypes.object
   }
 
   constructor(props){
@@ -18,11 +17,18 @@ class DepartmentDetail extends Component {
     this.state = {
     }
   }
+  setDepartmentUser = () => {
+    console.log(this.props.departmentDetail);
+  }
+
+  setDepartmentStation = () => {
+    console.log(this.props.departmentDetail);
+  }
 
   render(){
     const { changeDepartmentStore, departmentDetail } = this.props;
-    let userFullNames = departmentDetail.userFullNameData? departmentDetail.userFullNameData.map(e=>e.userFullName):[];
-    let stationNames = departmentDetail.stationNameData? departmentDetail.stationNameData.map(e=>e.stationName):[];
+    let userFullNames = (departmentDetail.userFullNameData && departmentDetail.userFullNameData.length > 0 )? departmentDetail.userFullNameData.map(e=>e.userFullName).join(','):' -- ';
+    let stationNames = (departmentDetail.stationNameData && departmentDetail.stationNameData.length > 0 )? departmentDetail.stationNameData.map(e=>e.stationName).join(','):' -- ';
     return (
       <div className={styles.departmentDetail}>
         <div className={styles.detailTop}>
@@ -30,31 +36,42 @@ class DepartmentDetail extends Component {
         </div>
         <div className={styles.departmentInfor} >
           <div>
-            <span className={styles.promptTitle}>部门名称</span>{departmentDetail.departmentName} 
+            <span className={styles.title}>部门名称</span>
+            <span className={styles.value}>{departmentDetail.departmentName}</span> 
           </div>
           <div>
-            <span className={styles.promptTitle}>所属部门</span>{departmentDetail.parentDepartmentName}
+            <span className={styles.title}>所属部门</span>
+            <span className={styles.value}>{departmentDetail.parentDepartmentName}</span> 
           </div>
           <div>
-            <span className={styles.promptTitle}>成员</span>{userFullNames}
+            <span className={styles.title}>成员</span>
+            <span className={styles.value}>{userFullNames}</span> 
+            <Button className={styles.setting} onClick={this.setDepartmentUser}>设置</Button>
           </div>
           <div>
-            <span className={styles.promptTitle}>负责电站</span>{stationNames}
+            <span className={styles.title}>负责电站</span>
+            <span className={styles.value}>{stationNames}</span> 
+            <Button className={styles.setting} onClick={this.setDepartmentStation} >设置</Button>
           </div>
           <div>
-            <span className={styles.promptTitle}>负责电站</span>{departmentDetail.enterpriseProfile}
+            <span className={styles.title}>负责电站</span>
+            <span className={styles.value}>{departmentDetail.enterpriseProfile}</span> 
           </div>
           <div>
-            <span className={styles.promptTitle}>创建者</span>{departmentDetail.createUser}
+            <span className={styles.title}>创建者</span>
+            <span className={styles.value}>{departmentDetail.createUser}</span> 
           </div>
           <div>
-            <span className={styles.promptTitle}>创建时间</span>{departmentDetail.createTime}
+            <span className={styles.title}>创建时间</span>
+            <span className={styles.value}>{departmentDetail.createTime}</span> 
           </div>
           <div>
-            <span className={styles.promptTitle}>最后修改人--接口没数据</span>{departmentDetail.createUser}
+            <span className={styles.title}>最后修改人</span>
+            <span className={styles.value}>{departmentDetail.createUser}</span> 
           </div>
           <div>
-            <span className={styles.promptTitle}>最后修改时间--接口没数据</span>{departmentDetail.createTime}
+            <span className={styles.title}>最后修改时间</span>
+            <span className={styles.value}>{departmentDetail.createTime}</span> 
           </div>
         </div>
       </div>

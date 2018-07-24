@@ -1,7 +1,7 @@
 
 
 import React, { Component } from 'react';
-import { Icon, Popconfirm } from 'antd';
+import { Icon } from 'antd';
 import PropTypes from 'prop-types';
 import styles from './departmentSide.scss';
 import AddForm from './AddForm';
@@ -13,8 +13,6 @@ class AddDepartment extends Component {
 
   constructor(props){
     super(props);
-    this.state={   
-    }
   }
 
   cancelAdd = () => {
