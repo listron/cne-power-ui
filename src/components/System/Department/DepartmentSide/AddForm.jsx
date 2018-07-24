@@ -4,10 +4,11 @@
 
 
 import React, { Component } from 'react';
-import { Button, Input, Form } from 'antd';
+import { Button, Input, Form, Select } from 'antd';
 import PropTypes from 'prop-types';
 import styles from './departmentSide.scss';
 const FormItem = Form.Item;
+const Option = Select.Option;
 
 class AddForm extends Component {
   static propTypes = {
@@ -42,7 +43,6 @@ class AddForm extends Component {
   render(){
     const { getFieldDecorator } = this.props.form;
     const { loading } = this.props;
-    console.log(this.props.stations)
     return (
       <Form className={styles.addPart}>
         <FormItem label="部门名称" >
@@ -57,7 +57,12 @@ class AddForm extends Component {
           {getFieldDecorator('departmentId',{
             initialValue: '',
           })(
-            <Input />
+            <Select style={{ width: 200 }}>
+              <Option value="">无</Option>
+              <Option value="lucy">Lucy</Option>
+              <Option value="disabled" disabled>Disabled</Option>
+              <Option value="Yiminghe">yiminghe</Option>
+            </Select>
           )}
           <span className={styles.instructionText}>(不选默认为父级部门，保存后不可修改)</span>
         </FormItem>
