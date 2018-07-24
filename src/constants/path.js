@@ -34,6 +34,13 @@ export default {
     getEnterpriseInfo: '/v3/login/enterpriseinfo',
     loginPhoneCode: '/v3/login/phonecode',
     joinEnterprise: '/v3/login/userenterprise',
+    loginPhoneRegister: '/v3/login/phoneregister',
+    checkEnterpriseDomain: '/v3/login/enterprisedomain',
+    checkEnterpriseName: '/v3/login/enterprise',
+    resetPassword: '/v3/login/password',
+    registerEnterprise: '/v3/login/enterpriseregister',
+    checkUserRegister: '/v3/login/userregister',
+    phoneCodeRegister: '/v3/login/phoneregister',
 
     ticket: {
       getDefectList: '/v3/defect/worklist/pc',

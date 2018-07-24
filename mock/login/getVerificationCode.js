@@ -35,7 +35,20 @@ module.exports = [
       "code": "10000",
       "message": "请求成功",
       "data": {
-        text: '手机号登录成功了！'  
+        "access_token": "ghjhkhgjkjh",   //token
+        "token_type": "abc",    //类型
+        "expires_in":  "5678678",     //有效期
+        "refresh_token": 'fghjkfghjkl',    //token刷新
+        "scope": 'read',       //读写
+        "enterpriseId": '5678',   //企业id  （目前只是单个企业）
+        "enterpriseName": '协合新能源',  //企业名称
+        "userName": 'cne',      //用户名
+        "userFullName": 'cnegroup',  //用户姓名
+        "right": 'fhdjfdfj',     //所拥有权限英文名（逗号隔开）
+        "userStatus":  '0', //用户状态Id
+        "userEnterpriseStatus": '67890', //用户企业状态Id
+        "auto": '1',	//"1":系统自动生成, "0":非系统生成
+        "jti": 'fhdfdkfjdk',
       },
       "serviceCode": "3.0"
     },

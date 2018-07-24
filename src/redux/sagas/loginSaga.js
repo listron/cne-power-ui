@@ -19,9 +19,7 @@ function *changeLoginStore(action){
 //账号密码登录
 function *getLogin(action){
   let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.login;
-  // let url = Config.TokenBasePath;
   // let url = "/mock/api/v3/login";
-  console.log(url);
   yield put({ type: LoginAction.LOGIN_FETCH });
   try {
     const response = yield call(axios, {
@@ -35,9 +33,9 @@ function *getLogin(action){
       }),
     });
     console.log(response)
-    if(response.data){
+    if(response.data.code === '10000'){
       setCookie('authData',JSON.stringify(response.data.access_token));
-      setCookie('phone', action.params.phone);
+      setCookie('phoneNum', action.params.phoneNum);
       setCookie('userName', response.data.loginUserName);
       // setCookie('userId', response.data.result.userId);
       yield put({ type: LoginAction.GET_LOGIN_SUCCESS, data: response.data});       
@@ -52,15 +50,13 @@ function *getLogin(action){
 function *getVerificationCode(action){
   let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.getVerificationCode + '/' +action.params.phoneNum;
   // let url = "/mock/api/v3/login/verificationcode/";
-  console.log(url)
-  console.log(action)
   try{
     const response = yield call(axios.get, url);
     console.log(response);
     if(response.data.code === "10000"){
-      yield put({ type: LoginAction.SEND_CODE_SUCCESS, data:{ phone: action.params.phone }});
+      yield put({ type: LoginAction.SEND_CODE_SUCCESS, data:{ phoneNum: action.params.phoneNum }});
     } else {
-      yield put({ type: LoginAction.SEND_CODE_FAIL, data:{ error: response.data.msg, phone: action.params.phone}})
+      yield put({ type: LoginAction.SEND_CODE_FAIL, data:{ error: response.data.msg, phoneNum: action.params.phoneNum}})
     }
   }catch(e){
     console.log(e);
@@ -70,13 +66,16 @@ function *getVerificationCode(action){
 function *checkCode(action){
   let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.loginPhoneCode;
   // let url = "/mock/api/v3/login/phonecode";
-  console.log(action)
   yield put({ type: LoginAction.LOGIN_FETCH})
   try{
     const response = yield call( axios.post, url, action.params);
     console.log(response)
     if(response.data.code === "10000"){
-      yield put({ type: LoginAction.CHECK_CODE_SUCCESS, data:{ phoneNum: action.params.phoneNum}})
+      yield put({
+        type: LoginAction.CHECK_CODE_SUCCESS,
+        params: action.params,
+        data: response.data.data,
+      });
     }else{
       yield put({ type: LoginAction.CHECK_CODE_FAIL, data:{ error: response.data.error, code: action.params.captcha}})
     }
@@ -85,13 +84,32 @@ function *checkCode(action){
   }
 }
 
-// 注册验证第一步
-function *checkPhoneRegister(action){
-  let url = "/mock/api/v3/login/phoneregister";
+// 手机号验证码注册
+function *phoneCodeRegister(action){
+  // let url = "/mock/api/v3/login/phoneregister";
+  let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.phoneCodeRegister;
   try{
     const response = yield call(axios.post, url, action.params);
+    console.log(response)
     if(response.data.code === '10000'){
-      yield put({type: LoginAction.CHECK_PHONE_REGISTER_SUCCESS, data: response.data})
+      yield put({type: LoginAction.PHONE_CODE_REGISTER_SUCCESS, data: response.data})
+    }else{
+      yield put({type: LoginAction.PHONE_CODE_REGISTER_FAIL, data: {error: response.data.message}})
+    }
+  }catch(e){
+    console.log(e);
+  }
+}
+// 注册验证手机号是否已存在
+function *checkPhoneRegister(action){
+  // let url = "/mock/api/v3/login/phoneregister";
+  console.log(action)
+  let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.loginPhoneRegister + '/' + action.params;
+  try{
+    const response = yield call(axios.get, url);
+    console.log(response)
+    if(response.data.code === '10000'){
+      yield put({type: LoginAction.CHECK_PHONE_REGISTER_SUCCESS, data: response.data.data})
     }else{
       yield put({type: LoginAction.CHECK_PHONE_REGISTER_FAIL, data: {error: response.data.message}})
     }
@@ -102,11 +120,17 @@ function *checkPhoneRegister(action){
 
 // 验证企业域名是否有效
 function *checkEnterpriseDomain(action){
-  let url = '/mock/api/v3/login/enterprisedomain/';
+  // let url = '/mock/api/v3/login/enterprisedomain/';
+  let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.checkEnterpriseDomain + '/' +action.params.enterpriseDomain;
   try{
-    const response = yield call(axios.get, url, action.params.enterpriseDomain);
+    const response = yield call(axios.get, url);
+    console.log(response);
     if(response.data.code === '10000'){
-      yield put({type: LoginAction.CHECK_ENTERPRISE_DOMAIN_SUCCESS, data: response.data.data});
+      yield put({
+        type: LoginAction.CHECK_ENTERPRISE_DOMAIN_SUCCESS, 
+        params: action.params,
+        data: response.data.data,
+      });
       yield put({type: LoginAction.CHECK_ENTERPRISE_NAME_SAGA, 'params': action.params})
     }else{
       yield put({ type: LoginAction.CHECK_ENTERPRISE_DOMAIN_FAIL, data: {error: response.data.message}})
@@ -118,11 +142,17 @@ function *checkEnterpriseDomain(action){
 
 // 验证企业名是否已注册
 function *checkEnterpriseName(action){
-  let url = '/mock/api/v3/login/enterprise/';
+  // let url = '/mock/api/v3/login/enterprise/';
+  let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.checkEnterpriseName + '/' +action.params.enterpriseName;
   try{
-    const response = yield call(axios.get, url, action.params.enterpriseName);
+    const response = yield call(axios.get, url);
+    console.log(response);
     if(response.data.code === '10000'){
-      yield put({ type: LoginAction.CHECK_ENTERPRISE_NAME_SUCCESS, data: response.data.data})
+      yield put({
+        type: LoginAction.CHECK_ENTERPRISE_NAME_SUCCESS, 
+        params: action.params,
+        data: response.data.data,
+      });
     }else{
       yield put({ type: LoginAction.CHECK_ENTERPRISE_NAME_FAIL})
     }
@@ -130,10 +160,28 @@ function *checkEnterpriseName(action){
     console.log(e)
   }
 }
+// 注册企业 完善个人信息
+function *registerEnterprise(action){
+  let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.registerEnterprise;
+  yield put({ type: LoginAction.LOGIN_FETCH});
+  try{
+    const response = yield call(axios.post, url, action.params);
+    console.log(response);
+    if(response.data.code === '10000'){
+      yield put({
+        type: LoginAction.REGISTER_ENTERPRISE_SUCCESS,
+        params: action.params,
+        data: response.data.data,
+      })
+    }else{
+      yield put({ type: LoginAction.REGISTER_ENTERPRISE_FAIL})
+    }
+  }catch(e){
+    console.log(e);
+  }
+}
 // 获取企业信息
 function *getEnterPriseInfo(action){
-  const { payload } = action;
-  // const url = '/mock/api/v3/login/enterpriseinfo';
   console.log(action);
   let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.getEnterpriseInfo + '/' +action.params.enterpriseName;
   try{
@@ -142,10 +190,8 @@ function *getEnterPriseInfo(action){
     console.log(response);
     yield put({
       type: LoginAction.GET_ENTERPRISE_INFO_SUCCESS,
-      payload: {
-        ...payload,
-        data: response.data.data,
-      }
+      params: action.params,
+      data: response.data.data,
     })
   }catch(e){
     console.log(e);
@@ -154,9 +200,8 @@ function *getEnterPriseInfo(action){
 
 // 加入企业
 function *joinEnterprise(action){
-  const { payload } = action;
   // const url = '/mock/api/v3/login/userenterprise';
-  const url = Path.basePaths.newAPIBasePath + Path.APISubPaths.joinEnterprise;
+  let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.joinEnterprise;
   console.log(action);
   try{
     yield put({ type: LoginAction.LOGIN_FETCH });
@@ -164,11 +209,8 @@ function *joinEnterprise(action){
     console.log(response);
     yield put({
       type: LoginAction.JOIN_ENTERPRISE_SUCCESS,
-      payload: {
-        ...payload,
-        data: response.data.data,
-        
-      }
+      params: action.params,
+      data: response.data.data,
     })
   }catch(e){
     console.log(e);
@@ -177,7 +219,8 @@ function *joinEnterprise(action){
 
 // 设置新密码
 function *resetPassword(action){
-  let url = "/mock/api/v3/login/password";
+  // let url = "/mock/api/v3/login/password";
+  let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.resetPassword;
   yield put({type: LoginAction.LOGIN_FETCH});
   try{
     const response = yield call(axios.post, url, action.params);
@@ -192,16 +235,36 @@ function *resetPassword(action){
     console.log(e);
   }
 }
+// 动态验证用户名是否注册
+function *checkUserRegister(action){
+  // let url = "/mock/api/v3/login/password";
+  let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.checkUserRegister + '/' + action.params.userName;
+  yield put({type: LoginAction.LOGIN_FETCH});
+  try{
+    const response = yield call(axios.get, url);
+    console.log(response);
+    if(response.data.code === "10000"){
+      yield put({ type: LoginAction.CHECK_USER_REGISTER_SUCCESS})
+    }else{
+      yield put({ type: LoginAction.CHECK_USER_REGISTER_FAIL})
+    }
+  }catch(e){
+    console.log(e);
+  }
+}
 
 export function* watchLogin() {
   yield takeLatest(LoginAction.GET_LOGIN_SAGA, getLogin);
   yield takeLatest(LoginAction.SEND_CODE_SAGA, getVerificationCode);
   yield takeLatest(LoginAction.CHECK_CODE_SAGA, checkCode);
   yield takeLatest(LoginAction.CHANGE_LOGIN_PAGE_SAGA, changeLoginStore);
-  yield takeLatest(LoginAction.CHECK_PHONE_REGISTER_SAGA, checkPhoneRegister);
   yield takeLatest(LoginAction.CHECK_ENTERPRISE_DOMAIN_SAGA, checkEnterpriseDomain);
   yield takeLatest(LoginAction.GET_ENTERPRISE_INFO_SAGA, getEnterPriseInfo);
   yield takeLatest(LoginAction.JOIN_ENTERPRISE_SAGA, joinEnterprise);
   yield takeLatest(LoginAction.RESET_PASSWORD_SAGA, resetPassword);
   yield takeLatest(LoginAction.CHECK_ENTERPRISE_NAME_SAGA, checkEnterpriseName);
+  yield takeLatest(LoginAction.REGISTER_ENTERPRISE_SAGA, registerEnterprise);
+  yield takeLatest(LoginAction.CHECK_USER_REGISTER_SAGA, checkUserRegister);
+  yield takeLatest(LoginAction.CHECK_PHONE_REGISTER_SAGA, checkPhoneRegister);
+  yield takeLatest(LoginAction.PHONE_CODE_REGISTER_SAGA, phoneCodeRegister);
 }

@@ -15,6 +15,7 @@ class LoginForm extends Component{
     error: PropTypes.string,
     sendCode: PropTypes.func,
     checkCodeLogin: PropTypes.func,
+    enterpriseId: PropTypes.string,
   }
 
   constructor(props){
@@ -98,6 +99,7 @@ class LoginForm extends Component{
                     <Input prefix={<Icon type="mobile" />} placeholder="请输入手机号" />
                   )}
                 </FormItem>
+                {this.props.enterpriseId === null ? "您已注册，请<span onClick={()=>this.changePage('joinIn')}>加入企业</span>或<span onClick={()=>this.changePage('register')}>注册企业</span>" : null}
               </div>
               <div>
                 <FormItem  >

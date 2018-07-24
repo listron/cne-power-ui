@@ -16,8 +16,15 @@ class RegisterForm extends Component{
     phoneRegister: PropTypes.func,
     checkEnterpriseDomain: PropTypes.func,
     getLogin: PropTypes.func,
-    domainIsRegister: PropTypes.number,
-    nameIsRegister: PropTypes.number,
+    registerEnterprise: PropTypes.func,
+    domainIsRegister: PropTypes.string,
+    nameIsRegister: PropTypes.string,
+    checkUserRegister: PropTypes.func,
+    checkPhoneRegister: PropTypes.func,
+    isPhoneRegister: PropTypes.string,
+    isUserRegister: PropTypes.string,
+    phoneCodeRegister: PropTypes.func,
+    enterpriseId: PropTypes.string,
   }
 
   constructor(props){
@@ -32,7 +39,7 @@ class RegisterForm extends Component{
     if(nextProps.registerStep === 2 && this.props.registerStep === 1){
       this.next();
     }
-    if(nextProps.domainIsRegister === 1 && nextProps.nameIsRegister === 1){
+    if(nextProps.domainIsRegister === '1' && nextProps.nameIsRegister === '1'){
       this.next();
     }
     
@@ -53,20 +60,17 @@ class RegisterForm extends Component{
     this.props.form.validateFields(['enterpriseDomain','enterpriseName','userAgreement'], (err, values) => {
       if(!err){
         this.props.checkEnterpriseDomain({
-          'enterpriseDomain': values.enterpriseDomain+'.cneclound.com',
+          'enterpriseDomain': values.enterpriseDomain+'.cneclound.cn',
           'enterpriseName': values.enterpriseName,
         });
       }
     })
   }
 
-  onLogin = () => {
+  onRegisterEnterprise = () => {
     this.props.form.validateFields(['userName','password','confirmPwd'],(err, values) => {
       if(!err){
-        this.props.getLogin({
-          'userName': values.userName,
-          'password': values.password,
-        });
+        this.props.registerEnterprise(values);
       }
     })
   }
@@ -92,15 +96,22 @@ class RegisterForm extends Component{
     },1000);
   }
 
-
+  checkUserRegister = (e) => {
+    console.log(e)
+    this.props.checkUserRegister(e.target.value);
+  }
+  checkPhoneRegister = (e) => {
+    console.log(e);
+    this.props.checkPhoneRegister(e.target.value);
+  }
   next = () => {
-    const current = this.state.current + 1;
+    const current = this.state.current !== 2 ? this.state.current + 1 : 2;
     this.setState({ current })
   }
 
   render(){
     const { getFieldDecorator } = this.props.form;
-    const {domainIsRegister, nameIsRegister} = this.props;
+    const {domainIsRegister, nameIsRegister, isPhoneRegister, isUserRegister} = this.props;
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -134,9 +145,10 @@ class RegisterForm extends Component{
                   {getFieldDecorator('phoneNum', {
                     rules: [{required: true, message: '请输入手机号'}]
                   })(
-                    <Input className={styles.mobileNumber} prefix={<Icon type="mobile" />} placeholder="请输入手机号" />
+                    <Input className={styles.mobileNumber} onBlur={this.checkPhoneRegister} prefix={<Icon type="mobile" />} placeholder="请输入手机号" />
                   )}
                 </FormItem>
+                {isPhoneRegister === '0' && <span>手机号已经注册，请登录</span>}
               </div>
               <div>
                 <FormItem  >
@@ -166,7 +178,7 @@ class RegisterForm extends Component{
                 {getFieldDecorator('enterpriseDomain', {
                   rules: [{required: true, message: '请输入企业域名'}]
                 })(
-                  <Input placeholder="请输入企业域名"  addonAfter=".cneclound.com" />
+                  <Input placeholder="请输入企业域名"  addonAfter=".cneclound.cn" />
                 )}
               </FormItem>
               <FormItem label="企业名称" {...formItemLayout}>
@@ -196,14 +208,15 @@ class RegisterForm extends Component{
       content: 
         (
           <div>
-            <Form onSubmit={this.onLogin}  >
+            <Form onSubmit={this.onRegisterEnterprise}  >
               <FormItem label="用户名" {...formItemLayout}>
                 {getFieldDecorator('userName', {
                   rules: [{required: true, message: '请输入用户名'}]
                 })(
-                  <Input prefix={<Icon type="user" />} placeholder="请输入用户名" />
+                  <Input prefix={<Icon type="user" />} onChange={this.checkUserRegister} placeholder="请输入用户名" />
                 )}
               </FormItem>
+              {isUserRegister === '0' && <span>用户名已存在</span>}
               <FormItem label="创建密码" {...formItemLayout}>
                 {getFieldDecorator('password',{
                   rules: [{required: true, message: '请输入密码'}]
