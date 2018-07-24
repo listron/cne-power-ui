@@ -71,7 +71,7 @@ class AddForm extends Component {
             <Select style={{ width: 200 }}>
               <Option value="0">无</Option>
               {(allDepartment.list && allDepartment.list.length>0)?allDepartment.list.map(e=>(
-                  <Option value={e.departmentId}>{e.departmentName}</Option>)
+                  <Option value={e.departmentId} key={e.departmentId} >{e.departmentName}</Option>)
                 ):null 
               }
             </Select>

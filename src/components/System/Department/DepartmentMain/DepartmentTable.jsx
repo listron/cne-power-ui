@@ -103,8 +103,12 @@ class DepartmentTable extends Component {
   }
   departmentHandle = (value) => {//--todo编辑，删除，分配用户/电站
     const { selectedDepartment } = this.props;
+    console.log(selectedDepartment)
     if(value==='edit'){
-      this.props.changeDepartmentStore({showPage: 'edit'});
+      this.props.changeDepartmentStore({
+        showPage: 'edit',
+        departmentDetail: selectedDepartment[0],
+      });
     }else if(value==='delete'){//信息提示栏
       // let departmentRelation = selectedDepartment.map(e=>e.relation)     //todo=>根据选中电站确定警告弹出框文字
       this.setState({

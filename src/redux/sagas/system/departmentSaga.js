@@ -156,14 +156,33 @@ function *editDepartmentInfor(action){
   const url = '/mock/system/editDepartment';
   // const url = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.system.departmentInfor}`
   try{
+    // yield put({ //按钮的loading
+    //   type:departmentAction.GET_DEPARTMENT_COMMON_FETCH_SUCCESS,
+    //   payload: { buttonLoading: true } 
+    // });
     yield put({ type:departmentAction.DEPARTMENT_FETCH });
     const response = yield call(axios.put,url,payload);
     if(response.data.code === "10000"){
       yield put({
         type:  departmentAction.GET_ENTERPRISE_COMMON_FETCH_SUCCESS,
         payload:{
-          showPage: 'detail',
+          showPage: 'list',
         }
+      });
+      const params = yield select(state => ({//继续请求部门列表
+        enterpriseId: payload.enterpriseId,
+        departmentSource: state.department.get('departmentSource'),
+        departmentName: state.department.get('departmentName'),
+        parentDepartmentName: state.department.get('parentDepartmentName'),
+        stationName: state.department.get('stationName'), 
+        sort: state.department.get('sort'),
+        ascend: state.department.get('ascend'),
+        pageNum: state.department.get('pageNum'),
+        pageSize: state.department.get('pageSize'),
+      }));
+      yield put({
+        type:  departmentAction.GET_DEPARTMENT_LIST_SAGA,
+        payload: params,
       });
     }
   }catch(e){

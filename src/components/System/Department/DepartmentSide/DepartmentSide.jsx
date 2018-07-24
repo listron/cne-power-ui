@@ -33,7 +33,7 @@ class DepartmentSide extends Component {
         { showSidePage === 'add' && <AddDepartment {...this.props} /> }
         { showSidePage === 'edit' && <div>
             编辑页面的样式在这
-            <EditDepartment />
+            <EditDepartment {...this.props} />
           </div>
         }
       </div>

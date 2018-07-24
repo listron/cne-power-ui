@@ -86,7 +86,8 @@ class Main extends Component {
       axios.defaults.headers.common['Authorization'] = "bearer " + JSON.parse(authData);
       console.log(authData);
     }
-    if(this.state.logined || (authData !== 'undefined' && authData !== null)){
+    // if(this.state.logined || (authData !== 'undefined' && authData !== null)){
+    if(true){
       return (
         <div className={styles.app}>
           <div className={styles.appHeader}>

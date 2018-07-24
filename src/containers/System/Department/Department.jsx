@@ -103,10 +103,9 @@ const mapDispatchToProps = (dispatch) => ({
   getAllUsers: payload => dispatch({type:departmentAction.GET_ALL_USERS_SAGA,payload}), 
   getAllDepartment: payload => dispatch({type:departmentAction.GET_ALL_DEPARTMENT,payload}),
   addDepartmentInfor: payload => dispatch({type:departmentAction.ADD_DEPARTMENT_INFO_SAGA, payload}),
+  editDepartmentInfor: payload => dispatch({type: departmentAction.EDIT_DEPARTMENT_INFO_SAGA, payload})
 //   saveEnterpriseInfor: payload => dispatch({type:departmentAction.SAVE_ENTERPRISE_INFO_SAGA, payload}),
 //   ignoreEnterpirseEdit: payload => dispatch({type: departmentAction.IGNORE_ENTERPRISE_EDIT,payload})
 });
-
-//   yield takeLatest(departmentAction.EDIT_DEPARTMENT_INFO_SAGA,editDepartmentInfor);
 
 export default connect(mapStateToProps, mapDispatchToProps)(Department);
