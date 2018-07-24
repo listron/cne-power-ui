@@ -236,7 +236,7 @@ class AssignUserModal extends Component {
             disabled: true
           }));
         }
-        data = data.setIn([i, 'childDepartmentData'], department);
+        data = data.setIn([i, 'childDepartmentData'], child);
       }
     }
     const nonAssignUser = this.getDepartmentUser(null);
@@ -317,7 +317,7 @@ class AssignUserModal extends Component {
                 <Checkbox 
                   onChange={(e)=>{this.onCheckUser(item, e.target.checked)}} 
                   checked={()=>this.getUserChecked(item)}
-                  disabled={item.get('disabled')} />
+                  disabled={item.get('userStatus') === 4} />
               }
               <Avatar>{item.get('userName').charAt(0)}</Avatar>
               <span>{item.get('userName')}</span>
@@ -333,7 +333,8 @@ class AssignUserModal extends Component {
   }
 
   renderSelectedUser() {
-    let user = this.state.selectedDepartment.get('user');
+    let department = this.state.selectedDepartment;
+    let user = this.getDepartmentUser(department, false);
     return user.map((item) => {
       return (
         <Tag 
