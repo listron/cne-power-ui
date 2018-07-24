@@ -4,7 +4,8 @@ import { departmentAction } from '../../../constants/actionTypes/system/departme
 
 var initState = immutable.fromJS({
   loading: false,
-  buttonLoading: false,
+  buttonLoading: false,//普通按钮交互loading
+  continueAddLoading: false,//继续添加部门按钮交互loading
   showPage: 'list',//默认展示列表页list,可展示新建add,编辑edit,查看detail页,
   departmentSource: 2, //部门类型全部2，预设0，自定义1
   departmentName:'部门名称', //部门名称

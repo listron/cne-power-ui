@@ -75,7 +75,8 @@ class Department extends Component {
 }
 const mapStateToProps = (state) => ({
     loading: state.department.get('loading'),
-    buttonLoading: state.department.get('buttonLoading'),
+    buttonLoading:  state.department.get('buttonLoading'),
+    continueAddLoading:  state.department.get('continueAddLoading'),
     showPage: state.department.get('showPage'),
     departmentSource: state.department.get('departmentSource'),
     departmentName: state.department.get('departmentName'),

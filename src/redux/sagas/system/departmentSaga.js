@@ -108,20 +108,25 @@ function *addDepartmentInfor(action){
   const url = '/mock/system/addDepartment';
   // const url = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.system.departmentInfor}`
   try{
-    yield put({ 
+    yield put({ //按钮的loading
       type:departmentAction.GET_DEPARTMENT_COMMON_FETCH_SUCCESS,
       payload: {
-        loading: payload.loading,
-        buttonLoading: payload.buttonLoading
+        buttonLoading: !payload.continueAdd,
+        continueAddLoading: payload.continueAdd,
       } 
     });
-    const response = yield call(axios.post,url,payload);
+    const response = yield call(axios.post,url,{//请求新增
+      enterpriseId: payload.enterpriseId,
+      departmentName: payload.deleteDepartment,
+      departmentId: payload.departmentId
+    });
     if(response.data.code === "10000"){
       yield put({
         type:  departmentAction.GET_DEPARTMENT_COMMON_FETCH_SUCCESS,
         payload:{
-          showPage: 'list',
+          showPage: payload.continueAdd?'add':'list',
           buttonLoading: false,
+          continueAddLoading: false,
         }
       });
       const params = yield select(state => ({//继续请求部门列表

@@ -12,8 +12,8 @@ const Option = Select.Option;
 
 class AddForm extends Component {
   static propTypes = {
-    loading: PropTypes.bool,
     buttonLoading: PropTypes.bool,
+    continueAddLoading: PropTypes.bool,
     enterpriseId: PropTypes.string,
     form: PropTypes.object,
     stations: PropTypes.array,
@@ -53,7 +53,7 @@ class AddForm extends Component {
 
   render(){
     const { getFieldDecorator } = this.props.form;
-    const { loading, buttonLoading, allDepartment } = this.props;
+    const { buttonLoading, continueAddLoading, allDepartment } = this.props;
     return (
       <Form className={styles.addPart}>
         <FormItem label="部门名称" >
@@ -79,8 +79,8 @@ class AddForm extends Component {
           <span className={styles.instructionText}>(不选默认为父级部门，保存后不可修改)</span>
         </FormItem>
         <div className={styles.buttonGroup}>
-          <Button onClick={this.addDepartment} loading={loading} className={styles.save}>保存</Button>
-          <Button onClick={this.addContinue} loading={buttonLoading}>保存并继续添加</Button>
+          <Button onClick={this.addDepartment} loading={buttonLoading} className={styles.save}>保存</Button>
+          <Button onClick={this.addContinue} loading={continueAddLoading}>保存并继续添加</Button>
         </div>
       </Form>
     )
