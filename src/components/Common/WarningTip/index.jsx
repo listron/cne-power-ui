@@ -1,7 +1,7 @@
 
 
 import React, { Component } from 'react';
-import { Icon } from 'antd';
+import { Icon, Modal } from 'antd';
 import PropTypes from 'prop-types';
 import styles from './style.scss'
 
@@ -35,16 +35,42 @@ class WarningTip extends Component {
   render(){
     const { style, value } = this.props;
     return (
-      <div className={styles.warningTip} style={{...style}}>
-        <div className={styles.textArea}>
-          <Icon type="exclamation-circle-o" className={styles.icon} />
-          <span className={styles.text}>{value}</span>
+      // <div className={styles.warningTipBox}>
+      //   <div className={styles.warningTip} style={{...style}}>
+      //     <div>
+      //       <Icon type="exclamation-circle-o" className={styles.icon} />
+      //       <span className={styles.text}>{value}</span>
+      //     </div>
+      //     <div>
+      //       <span onClick={this.onCancel}>取消</span>
+      //       <span onClick={this.onOK}>确认</span>
+      //     </div>
+      //   </div>
+      // </div>
+      <Modal
+        onOk={this.onOK}
+        onCancel={this.onCancel}
+        visible={true}
+        footer={null}
+        closable={false}
+        maskClosable={false}
+        maskStyle={{backgroundColor:'rgba(153,153,153,0.2)'}}
+        wrapClassName={styles.warningTipWrapBox}
+        width={style.width}
+      >
+        <div className={styles.warningTip} style={{...style}}>
+          <div className={styles.textArea}>
+            <Icon type="exclamation-circle-o" className={styles.icon} />
+            <span className={styles.text}>{value}</span>
+          </div>
+          <div className={styles.handle}>
+            <span onClick={this.onCancel}>取消</span>
+            <span onClick={this.onOK}>确认</span>
+          </div>
         </div>
-        <div className={styles.handle}>
-          <span onClick={this.onCancel}>取消</span>
-          <span onClick={this.onOK}>确认</span>
-        </div>
-      </div>
+        
+      </Modal>
+      
     )
   }
 }
