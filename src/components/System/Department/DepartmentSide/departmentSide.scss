@@ -17,7 +17,7 @@
   width: 100%;
   padding: 24px 24px 0;
   background:#ececec;
-  .addDepartment{
+  .addDepartment,.editDepartment{
     flex: 1;
     background-color: #fff;
     .editTop{
@@ -41,7 +41,7 @@
     .mainPart{
       margin: 24px 32px 0;    
       display: flex;
-      .addPart{
+      .addPart,.editPart{
         flex: 1;
         .instructionText{
           color: $promptColor;
@@ -51,6 +51,9 @@
             margin-left: 410px;
             margin-right: 16px;
           }
+        }
+        .editSave{
+          margin-left: 410px;
         }
         :global{
           .ant-form-item{

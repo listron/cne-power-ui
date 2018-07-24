@@ -24,7 +24,7 @@ class AddDepartment extends Component {
 
   render(){
     return (
-      <div className={styles.addDepartment} >
+      <div className={styles.editDepartment} >
         <div className={styles.editTop}>
           <span className={styles.text}>编辑</span>
           <Icon type="arrow-left" className={styles.backIcon} onClick={this.editApartment} />

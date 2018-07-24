@@ -4,8 +4,8 @@ import Path from '../../../constants/path';
 
 import { departmentAction } from '../../../constants/actionTypes/system/departmentAction';
 
-//存储payload指定参数，替换reducer-store属性。
-function *changeDepartmentStore(action){
+
+function *changeDepartmentStore(action){//存储payload指定参数，替换reducer-store属性。
   const { payload } = action;
   yield put({
     type:  departmentAction.CHANGE_DEPARTMENT_STORE_SUCCESS,
@@ -13,8 +13,7 @@ function *changeDepartmentStore(action){
   })
 }
 
-//请求部门列表数据
-function *getDepartmentList(action){
+function *getDepartmentList(action){//请求部门列表数据
   const { payload } = action;
   const url = '/mock/system/departmentList';
   // const url = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.system.getDepartmentList}`
@@ -34,7 +33,7 @@ function *getDepartmentList(action){
     console.log(e);
   }
 }
-//删除部门
+//todo - 删除部门
 function *deleteDepartment(action){
   console.log(action)
   // const { payload } = action;
@@ -65,7 +64,7 @@ function *getAllUsers(action){
   }
 }
 
-function *getAllDepartment(action){//获取所有部门
+function *getAllDepartment(action){//获取所有部门基础信息
   const { payload } = action;
   const url = '/mock/system/allDepartments';
   // const url = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.system.departmentInfor}/${payload.enterpriseId}`
@@ -83,7 +82,7 @@ function *getAllDepartment(action){//获取所有部门
   }
 }
 
-//请求单部门详细数据信息
+//todo - 请求单部门详细数据信息
 function *getDepartmentDetail(action){
   const { payload } = action;
   const url = '/mock/system/departmentDetail';
@@ -102,8 +101,7 @@ function *getDepartmentDetail(action){
   }
 }
 
-//新建部门信息
-function *addDepartmentInfor(action){
+function *addDepartmentInfor(action){//新建部门信息
   const { payload } = action;
   const url = '/mock/system/addDepartment';
   // const url = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.system.departmentInfor}`
@@ -115,11 +113,7 @@ function *addDepartmentInfor(action){
         continueAddLoading: payload.continueAdd,
       } 
     });
-    const response = yield call(axios.post,url,{//请求新增
-      enterpriseId: payload.enterpriseId,
-      departmentName: payload.deleteDepartment,
-      departmentId: payload.departmentId
-    });
+    const response = yield call(axios.post,url,payload);
     if(response.data.code === "10000"){
       yield put({
         type:  departmentAction.GET_DEPARTMENT_COMMON_FETCH_SUCCESS,
@@ -150,21 +144,19 @@ function *addDepartmentInfor(action){
   }
 }
 
-//编辑部门信息
-function *editDepartmentInfor(action){
+function *editDepartmentInfor(action){//编辑部门信息
   const { payload } = action;
   const url = '/mock/system/editDepartment';
   // const url = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.system.departmentInfor}`
   try{
-    // yield put({ //按钮的loading
-    //   type:departmentAction.GET_DEPARTMENT_COMMON_FETCH_SUCCESS,
-    //   payload: { buttonLoading: true } 
-    // });
-    yield put({ type:departmentAction.DEPARTMENT_FETCH });
+    yield put({ //按钮的loading
+      type:departmentAction.GET_DEPARTMENT_COMMON_FETCH_SUCCESS,
+      payload: { buttonLoading: true } 
+    });
     const response = yield call(axios.put,url,payload);
     if(response.data.code === "10000"){
       yield put({
-        type:  departmentAction.GET_ENTERPRISE_COMMON_FETCH_SUCCESS,
+        type:  departmentAction.GET_DEPARTMENT_COMMON_FETCH_SUCCESS,
         payload:{
           showPage: 'list',
         }
@@ -190,12 +182,12 @@ function *editDepartmentInfor(action){
   }
 }
 
-//请求各部门及部门下各电站信息
+//todo - 请求各部门及部门下各电站信息
 function *getDepartmentWithStation(){
 
 }
 
-//请求各部门及部门下各用户信息
+//todo - 请求各部门及部门下各用户信息
 function *getDepartmentWithUser(){
   
 }

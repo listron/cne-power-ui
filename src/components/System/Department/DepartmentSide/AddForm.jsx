@@ -58,11 +58,12 @@ class AddForm extends Component {
       <Form className={styles.addPart}>
         <FormItem label="部门名称" >
           {getFieldDecorator('departmentName',{
-            rules: [{ required : true }],
+            rules: [{ required : true, max: 29, message:'30字以内!' }],
             initialValue: '',
           })(
             <Input />
           )}
+          <span className={styles.instructionText}>(30字以内)</span>
         </FormItem>
         <FormItem label="所属部门" >
           {getFieldDecorator('departmentId',{
