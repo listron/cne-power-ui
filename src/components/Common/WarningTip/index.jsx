@@ -35,18 +35,6 @@ class WarningTip extends Component {
   render(){
     const { style, value } = this.props;
     return (
-      // <div className={styles.warningTipBox}>
-      //   <div className={styles.warningTip} style={{...style}}>
-      //     <div>
-      //       <Icon type="exclamation-circle-o" className={styles.icon} />
-      //       <span className={styles.text}>{value}</span>
-      //     </div>
-      //     <div>
-      //       <span onClick={this.onCancel}>取消</span>
-      //       <span onClick={this.onOK}>确认</span>
-      //     </div>
-      //   </div>
-      // </div>
       <Modal
         onOk={this.onOK}
         onCancel={this.onCancel}

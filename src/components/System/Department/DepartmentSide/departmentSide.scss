@@ -69,10 +69,10 @@
               }
             }
             .ant-form-item-control-wrapper{
-              // input {
-              //   width: 200px;
-              //   margin-right: 12px;
-              // }
+              input {
+                width: 200px;
+                margin-right: 12px;
+              }
             }
           }
         }
@@ -114,8 +114,4 @@
       }
     }
   }
-}
-
-.textWidth{
-  width:600px; 
 }
