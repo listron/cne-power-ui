@@ -59,7 +59,6 @@ class DepartmentDetail extends Component {
     const { getOtherPageDetail, getDepartmentDetail, departmentDetail, departmentData, enterpriseId, departmentSource, departmentName, parentDepartmentName, stationName, sort,  ascend, pageNum, pageSize } = this.props;
     let detailIndex = departmentData.findIndex(e=>e.departmentId===departmentDetail.departmentId);
     let params = { enterpriseId, departmentSource, departmentName, parentDepartmentName, stationName, sort, ascend, pageNum, pageSize }
-    console.log(pageNum,detailIndex)
     if(pageNum === 1 && detailIndex === 0){//第一条记录
       this.setState({
         showWarningTip: true,
