@@ -162,11 +162,16 @@ class DepartmentTable extends Component {
           let stations = record.stationName.split(',').filter(e=>!!e);
           const { departmentName } = record;
           if(stations.length > 1){
-            const content = stations.map(e=>(<div>{e}</div>)) 
+            const content = (<ul>
+              {stations.map(e=>(<li key={e} className={styles.eachStation}>
+                <span className={styles.square}></span>
+                <span>{e}</span>
+              </li>))}
+            </ul>) 
             return (<span className={styles.stationColumn}>
               <span>{stations[0]}</span>
-              <Popover content={content} title={`${departmentName}负责电站`} >
-                <span className={styles.others}>···</span>
+              <Popover placement="right" content={content}  title={`${departmentName}负责电站`} overlayClassName={styles.responsibleDetails}>
+                <Icon className={styles.others} type="ellipsis" />
               </Popover>
             </span>)
           }else{

@@ -14,7 +14,7 @@ module.exports = [
           departmentName: `第${i}个部门`,
           parentDepartmentName: `${i*2+2}号父部门`,
           departmentSource: i%2,
-          stationName:`${['1号','2号','3号','4号','5号','6号','8号','9号','10号'][i]}电站`,
+          stationName:`${['1号','2号','3号','4号','5号','6号','8号','9号','10号'][i]}电站,${10+i}电站,${20+i}电站`,
           hasChildren: !!(i%2),
           hasMember: !!(i%2),
         }))
