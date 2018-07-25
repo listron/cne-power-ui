@@ -14,6 +14,7 @@ class ForgetForm extends Component{
     checkPhoneCode: PropTypes.func,
     resetPassword: PropTypes.func,
     phoneNum: PropTypes.string,
+    phoneCodeRegister: PropTypes.func,
   }
 
   constructor(props){
@@ -66,11 +67,10 @@ class ForgetForm extends Component{
     },1000);
   }
 
-  checkPhoneCode = () => {
+  phoneCodeRegister = () => {
     this.props.form.validateFields(['phoneNum','verificationCode'], (err, values) => {
       if(!err){
-        this.props.checkPhoneCode(values);
-
+        this.props.phoneCodeRegister({...values,'showResetPassword': 1});
       }
     })
   }
@@ -86,7 +86,7 @@ class ForgetForm extends Component{
 
   render(){
     const { getFieldDecorator } = this.props.form;
-    const { checkFirst, timeValue } = this.state;
+    const { timeValue } = this.state;
     const { showConfirmPassword } = this.props;
     const formItemLayout = {
       labelCol: {
@@ -116,7 +116,7 @@ class ForgetForm extends Component{
         {!showConfirmPassword &&
           <div>
             <span>找回密码</span>
-            <Form onSubmit={this.checkPhoneCode} >
+            <Form onSubmit={this.phoneCodeRegister} >
               <div>
                 <FormItem>
                   {getFieldDecorator('phoneNum', {

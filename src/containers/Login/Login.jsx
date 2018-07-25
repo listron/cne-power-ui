@@ -20,6 +20,9 @@ class Login extends Component {
     count: PropTypes.number,
     sendCode: PropTypes.func,
     checkCodeLogin: PropTypes.func,
+    checkPhoneRegister: PropTypes.func,
+    phoneCodeRegister: PropTypes.func,
+    username: PropTypes.string,
   }
   constructor(props) {
     super(props);
@@ -60,6 +63,10 @@ class Login extends Component {
                 loginSuccess={this.props.loginSuccess}
                 sendCode={this.props.sendCode}
                 checkCodeLogin={this.props.checkCodeLogin}
+                // checkPhoneRegister={this.props.checkPhoneRegister}
+                phoneCodeRegister={this.props.phoneCodeRegister}
+                username={this.props.username}
+                pageTab={this.props.pageTab}
               />
             </TabPane>
             <TabPane tab="注册企业" key="register">
@@ -74,6 +81,7 @@ class Login extends Component {
 
 const mapStateToProps = (state) => ({
   loginSuccess: state.login.get('loginSuccess'),
+  username: state.login.get('username'),
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -81,6 +89,8 @@ const mapDispatchToProps = (dispatch) => ({
   fetchLogin: params => dispatch({type: LoginAction.GET_LOGIN_SAGA, params}),
   sendCode: params => dispatch({ type: LoginAction.SEND_CODE_SAGA, params}),
   checkCodeLogin: params => dispatch({ type: LoginAction.CHECK_CODE_SAGA, params}),
+  // checkPhoneRegister: params => dispatch({ type: LoginAction.CHECK_PHONE_REGISTER_SAGA, params}),
+  phoneCodeRegister: params => dispatch({ type: LoginAction.PHONE_CODE_REGISTER_SAGA, params}),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);
