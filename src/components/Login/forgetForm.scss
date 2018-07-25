@@ -1,5 +1,14 @@
 .forgetPass{
   margin-left: 140px;
+  .findPass{
+    font-family:MicrosoftYaHei;
+    font-size:14px;
+    color:#999999;
+    text-align:left;
+    display: block;
+    margin-bottom: 15px;
+  }
+
   .testCode{
   width: 120px;
   :global{

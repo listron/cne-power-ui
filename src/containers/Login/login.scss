@@ -1,48 +1,114 @@
+
 .preLogin{
     display: flex;
-    flex: 1;
-    .preLoginImg{
+  flex-direction: row;
+  width: 1440px;
+  height: 100%;
+    .left{
       flex: 1;
-    }
-    .preLoginContent{
-      flex: 1;
-      .login{
-        padding: 75px 140px;
+      width: 50%;
+      height: 100%;
+      justify-content: flex-end;
+      background: #199475;
+      display: flex;
+      .logoImg{
+        width: 500px;
         height: 100%;
-        position: relative;
-      //  border: 1px solid #aaa;
-      }
-      .forgetPassword{
-        height: 100%;
-        position: relative;
-        .goLogin{
-          margin: 70px 60px 0 0 ;
-          height: 100px;
-          display: flex;
-          justify-content: flex-end;
-          span{
-            color: #199475;
-            font-weight: 500;
-            margin-left: 10px;
-            cursor:pointer;
-          }
-
+        background: yellow;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        .preLoginImg{
+          flex: 1;
         }
       }
+    }
+  .right{
+    flex: 1;
+    width: 50%;
+    height: 100%;
+    background: #fff;
+    display: flex;
+    .containerLogin{
+      width: 500px;
+      height: 100%;
+      background: #fff;
+      display: flex;
+      justify-content: center;
 
+      .preLoginContent{
+        width: 500px;
+        height: 100%;
+        .login{
+          width: 500px;
+          height: 100%;
+          padding: 75px 0 0 140px;
+          position: relative;
+          .contactUs{
+            position: absolute;
+            top: 580px;
+            left: 170px;
+            width: 170px;
+            height: 30px;
+
+            span{
+              width: 55px;
+              margin-right: 30px;
+              font-family:MicrosoftYaHei;
+              font-size:14px;
+              color:#999999;
+              text-align:left;
+            }
+          }
+          //  border: 1px solid #aaa;
+        }
+
+
+      }
     }
   }
-.preLoginImg{
+
+  }
+.forgetPassword{
+  width: 500px;
+  height: 100%;
   position: relative;
-  left: 0;
-  top: 0;
-  width: 720px;
-  height: 768px;
+  .goLogin{
+    margin-top: 70px;
+    height: 40px;
+    display: flex;
+    justify-content: flex-end;
+    span{
+      color: #199475;
+      font-weight: 500;
+      margin-left: 10px;
+      cursor:pointer;
+    }
+
+  }
+  .contactUs{
+    position: absolute;
+    top:510px;
+    left: 170px;
+    width: 170px;
+    height: 30px;
+
+    span{
+      width: 55px;
+      margin-right: 30px;
+      font-family:MicrosoftYaHei;
+      font-size:14px;
+      color:#999999;
+      text-align:left;
+    }
+  }
+}
+.preLoginImg{
+  width: 500px;
+  height: 100%;
   background: #199475;
   .logo{
-    position: absolute;
-    left: 221px;
-    top: 62px;
+    margin-top: 61px;
     height: 100px;
     .pic{
       width: 120px;
@@ -63,19 +129,16 @@
       height: 31px;
       line-height: 31px;
     }
-
-
   }
   .bgPic{
     position: absolute;
-    left: 221px;
+
     top: 170px;
     width: 450px;
     height: 375px;
   }
   .comRegisterInfo{
     position: absolute;
-    left: 221px;
     top: 580px;
     width: 410px;
     font-size: 14px;
@@ -126,7 +189,7 @@
   color: #199475;
 }
 .goLogin{
-  margin: 70px 60px 0 0 ;
+  margin: 70px 30px;
   height: 100px;
   display: flex;
   justify-content: flex-end;
@@ -138,20 +201,6 @@
   }
 
 }
-.contactUs{
-  position: absolute;
-  top: 580px;
-  left: 170px;
-  width: 170px;
-  height: 30px;
 
-  span{
-    width: 55px;
-    margin-right: 30px;
-    font-family:MicrosoftYaHei;
-    font-size:14px;
-    color:#999999;
-    text-align:left;
-  }
-}
+
 
