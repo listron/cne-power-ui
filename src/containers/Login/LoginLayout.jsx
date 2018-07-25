@@ -22,8 +22,14 @@ class LoginLayout extends Component {
     const { pageTab, changeLoginPage } = this.props;
     return (
       <div className={styles.preLogin}>
-        <div className={styles.preLoginImg}>左侧图片区域
-          <img width={'200px'} height={'200px'} src={'//www.baidu.com/img/bd_logo1.png?where=super'} />
+        <div className={styles.preLoginImg}>
+          <div className={styles.logo}>
+            <div className={styles.pic}> <img src= {require('../../../assets/img/logo_power.png')} alt=""/></div>
+            <h3>智慧能源运维平台</h3>
+          </div>
+          <img className={styles.bgPic}  src={require('../../../assets/img/bg_01.png')} />
+          <span className={styles.comRegisterInfo}>京ICP备12030847号-2 © 2017-2018 北京动力协合科技有限公司</span>
+
         </div>
         <div className={styles.preLoginContent}>
           {pageTab==='login' && <Login changeLoginPage={changeLoginPage} pageTab={pageTab} />}

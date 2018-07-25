@@ -8,25 +8,61 @@
   padding-top: 80px;
 }
 
-.steps-action {
-  margin-top: 24px;
-}
-
+// .steps-action {
+//   margin-top: 24px;
+// }
 .verificationCode{
-  width:240px;
-  div{
-    display: flex;
-    justify-content: space-between;
-    .checkCode{
-      width: 100px;
-    }
+  width:200px;
+  .phoneInput{
     .login-form-button,.mobileNumber{
       width:240px;
     }
-    Button{
+  }
+  .checkCodeBox{
+    display: flex;
+    justify-content: space-between;
+    .testCode{
       width: 120px;
+      :global{
+        .ant-input{
+          width:100px;
+        }
+      }
+    }
+    .queryCode{
+      width: 80px;
       margin-top: 3px;
+      margin-right: 0;
+      padding: 0 5px;
+      :global{
+        button{
+          width: 80px;
+        }
+      }
+      background: #fff;
+      border-color: #199475;
+      color: #199475;
     }
   }
-  
 }
+.contactUs{
+  position: absolute;
+  top: 580px;
+  left: 170px;
+  width: 170px;
+  height: 30px;
+  //display: flex;
+  //justify-content: space-between;
+  span{
+    width: 55px;
+    margin-right: 30px;
+    font-family:MicrosoftYaHei;
+    font-size:14px;
+    color:#999999;
+    text-align:left;
+  }
+}
+
+
+
+
