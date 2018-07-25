@@ -22,7 +22,20 @@ module.exports = [
       "code": "10000",
       "message": "请求成功",
       "data": {
-        text: '创建成功了！'  
+        'access_token':"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbmUiLCJ1c2VyRW50ZXJwcmlzZVN0YXR1cyI6bnVsbCwidXNlclN0YXR1cyI6MSwidXNlcl9uYW1lIjoiY25lIiwidXNlckZ1bGxOYW1lIjoiY25lZ3JvdXAiLCJyaWdodCI6bnVsbCwiYXV0aG9yaXRpZXMiOlsiYWRtaW4iXSwiY2xpZW50X2lkIjoiY25lZ3JvdXAiLCJzY29wZSI6WyJhbGwiLCJyZWFkIiwid3JpdGUiXSwiZW50ZXJwcmlzZUlkIjpudWxsLCJleHAiOjE1MzI1MDkwNTYsImVudGVycHJpc2VOYW1lIjpudWxsLCJqdGkiOiI5MzQ0NWM2Zi1hNGJjLTRmMzQtOGIwZS00ZjQwMmI0OWRkM2YiLCJ1c2VybmFtZSI6ImNuZSJ9.gUZfhfvPzG33jxXa46iLAAfJnTmAA9QgWO_WI1wnxKU",
+        'enterpriseId': null,
+        'enterpriseName': null,
+        'expires_in': 28799,
+        'jti': "93445c6f-a4bc-4f34-8b0e-4f402b49dd3f",
+        'refresh_token':"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbmUiLCJ1c2VyRW50ZXJwcmlzZVN0YXR1cyI6bnVsbCwidXNlclN0YXR1cyI6MSwidXNlcl9uYW1lIjoiY25lIiwidXNlckZ1bGxOYW1lIjoiY25lZ3JvdXAiLCJyaWdodCI6bnVsbCwiYXV0aG9yaXRpZXMiOlsiYWRtaW4iXSwiY2xpZW50X2lkIjoiY25lZ3JvdXAiLCJzY29wZSI6WyJhbGwiLCJyZWFkIiwid3JpdGUiXSwiYXRpIjoiOTM0NDVjNmYtYTRiYy00ZjM0LThiMGUtNGY0MDJiNDlkZDNmIiwiZW50ZXJwcmlzZUlkIjpudWxsLCJleHAiOjE1MzMwODUwNTYsImVudGVycHJpc2VOYW1lIjpudWxsLCJqdGkiOiIzYWNmMGZhMy1kZjcyLTQyNDEtYmNhMC03ZDMwMjI4MzQ1MmQiLCJ1c2VybmFtZSI6ImNuZSJ9.yowetWU2l7XgzEwR0Iqi-sNTcMd663a7dMiy03B54Ak",
+        'right': null,
+        'scope': "all read write",
+        'sub': "cne",
+        'token_type': "bearer",
+        'userEnterpriseStatus':null,
+        'userFullName':"cnegroup",
+        'userStatus': 1,
+        'username': "cne",  
       },
       "serviceCode": "3.0"
     },
