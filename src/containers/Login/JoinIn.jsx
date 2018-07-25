@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button } from 'antd';
-import styles from './login.scss';
+import styles from './loginLayout.scss';
 import { connect } from 'react-redux';
 import JoinInForm from '../../components/Login/JoinInForm';
 import { LoginAction } from '../../constants/actionTypes/loginAction';
@@ -37,12 +36,11 @@ class JoinIn extends Component {
 
     return (
       <div>
-<div className={styles.goLogin}>
-  <span  onClick={()=>this.changePage('login')}> 登录 </span>
-  <span>I</span>
-  <span  onClick={()=>this.changePage('register')}> 注册企业 </span>
-</div>
-
+        <div className={styles.goLogin}>
+          <span  onClick={()=>this.changePage('login')}> 登录 </span>
+          <span>I</span>
+          <span  onClick={()=>this.changePage('register')}> 注册企业 </span>
+        </div>
         <JoinInForm 
           loading={this.props.loading}
           isExist={this.props.isExist}

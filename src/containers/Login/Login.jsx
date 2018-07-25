@@ -2,8 +2,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {Tabs, message} from 'antd';
 import PropTypes from 'prop-types';
-import styles from './login.scss';
-
+import styles from './loginLayout.scss';
 import LoginForm from '../../components/Login/LoginForm';
 import RegisterForm from '../../components/Login/RegisterForm';
 import {LoginAction} from '../../constants/actionTypes/loginAction';
@@ -57,7 +56,7 @@ class Login extends Component {
       <div className={styles.login}>
         <div className={styles.joinTop}>
           <div className={styles.fontIcon}>
-            <i className='font_family icon-phone'/>
+            <i className="iconfont icon-join" />
           </div>
           <div className={styles.join} onClick={() => this.changePage('joinIn')}>加入企业</div>
         </div>
@@ -78,7 +77,7 @@ class Login extends Component {
               />
             </TabPane>
             <TabPane tab="注册企业" key="register">
-              <RegisterForm/>
+              <RegisterForm />
             </TabPane>
           </Tabs>
         </div>

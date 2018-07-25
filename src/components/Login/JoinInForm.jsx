@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Form, Icon, Input, Button, Modal, Spin } from 'antd';
+import {Form, Icon, Input, Button, Modal } from 'antd';
 import PropTypes from 'prop-types';
 import styles from './joinInForm.scss';
 
