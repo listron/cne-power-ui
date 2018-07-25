@@ -41,14 +41,15 @@ function *getLogin(action){
       }),
     });
     console.log(response)
-    if(response.data){
+    if(response.data.code === '10000'){
       setCookie('authData',JSON.stringify(response.data.access_token));
       setCookie('phoneNum', action.params.phoneNum);
       setCookie('userName', response.data.username);
       // setCookie('userId', response.data.result.userId);
       yield put({ type: LoginAction.GET_LOGIN_SUCCESS, data: response.data});       
     } else{
-      yield put({ type: LoginAction.GET_LOGIN_FAIL, data: {error: response.data.message }});        
+      yield put({ type: LoginAction.GET_LOGIN_FAIL, data: {error: response.data.message }}); 
+      message.error(response.data.message);       
     }
   } catch (e) {
     console.log(e);
@@ -78,9 +79,19 @@ function *checkCode(action){
   let { params } =action;
   yield put({ type: LoginAction.LOGIN_FETCH})
   try{
-    const response = yield call( axios.post, url, {'phoneNum':action.params.phoneNum, 'verificationCode': action.params.verificationCode});
+    const response = yield call(axios, {
+      method: 'post',
+      url,
+      headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'},
+      data: stringify({
+        'grant_type': "password",
+        phoneNum: action.params.phoneNum,
+        verificationCode: action.params.verificationCode,
+      }),
+    });
+    // const response = yield call( axios.post, url, {'phoneNum':action.params.phoneNum, 'verificationCode': action.params.verificationCode});
     console.log(response)
-    if(response.data.data){
+    if(response.data.code === '10000'){
       setCookie('authData',JSON.stringify(response.data.access_token));
       setCookie('phoneNum', action.params.phoneNum);
       setCookie('userName', response.data.username);
