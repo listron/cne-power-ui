@@ -5,7 +5,7 @@ import styles from './loginForm.scss';
 
 const FormItem = Form.Item;
 
-class LoginForm extends Component{
+class LoginForm extends Component {
   static propTypes = {
     form: PropTypes.object,
     changePage: PropTypes.func,
@@ -23,7 +23,7 @@ class LoginForm extends Component{
     changeJoinStep: PropTypes.func,
   }
 
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
       showPasswordLogin: true,
@@ -32,9 +32,9 @@ class LoginForm extends Component{
   }
   onHandleSubmit = (e) => {
     e.preventDefault();
-    this.props.form.validateFields((err,values) => {
-      if(!err){
-        if(this.state.showPasswordLogin){
+    this.props.form.validateFields((err, values) => {
+      if (!err) {
+        if (this.state.showPasswordLogin) {
           this.props.fetchLogin(values);
         }else{
           this.props.phoneCodeRegister(values);
@@ -42,27 +42,27 @@ class LoginForm extends Component{
       }
     })
   }
-  
+
   timeDecline = () => {
     let timeCount = setInterval(() => {
-      this.setState({ timeValue: this.state.timeValue-1 })
-      if(this.state.timeValue < 0){
+      this.setState({timeValue: this.state.timeValue - 1})
+      if (this.state.timeValue < 0) {
         clearInterval(timeCount);
-        this.setState({ timeValue: 0 })
+        this.setState({timeValue: 0})
       }
-    },1000);
+    }, 1000);
   }
 
-  hasErrors = (fieldsError) =>{
+  hasErrors = (fieldsError) => {
     return Object.keys(fieldsError).some(field => fieldsError[field]);
   }
 
   // 点击获取验证码
   sendCode = () => {
     this.props.form.validateFields(['phoneNum'], (err, values) => {
-      if(!err){
+      if (!err) {
         this.props.sendCode(values);
-        this.setState({ timeValue: 10 })
+        this.setState({timeValue: 10})
         this.timeDecline();
       }
     })
@@ -84,68 +84,83 @@ class LoginForm extends Component{
     let { username } = this.props;
     return (
       <div>
-        {this.props.loginSuccess ? "登录成功！" : 
-        <Form onSubmit={this.onHandleSubmit}  >
-          {showPasswordLogin &&
+        {this.props.loginSuccess ? "登录成功！" :
+          <Form onSubmit={this.onHandleSubmit}>
+            {showPasswordLogin &&
             <div>
               <FormItem>
-                {getFieldDecorator('username',{
+                {getFieldDecorator('username', {
                   rules: [{required: true, message: '请输入手机号/用户名'}]
                 })(
-                  <Input prefix={<Icon type="user" />} placeholder="请输入手机号/用户名" />
+                  <Input prefix={<Icon type="user"/>} placeholder="请输入手机号/用户名" />
                 )}
               </FormItem>
               <FormItem>
-                {getFieldDecorator('password',{
+                {getFieldDecorator('password', {
                   rules: [{required: true, message: '请输入密码'}]
                 })(
-                  <Input prefix={<Icon type="lock" />} type="password" placeholder="请输入密码" />
+                  <Input prefix={<Icon type="lock"/>} type="password" placeholder="请输入密码"/>
                 )}
               </FormItem>
             </div>
-          }
-          {!showPasswordLogin &&
+            }
+            {!showPasswordLogin &&
             <div className={styles.verificationCode}>
               <div>
                 <FormItem>
                   {getFieldDecorator('phoneNum', {
                     rules: [{pattern: /(^1[3|4|5|7|8]\d{9}$)|(^09\d{8}$)/, required: true, message: '请输入手机号'}]
                   })(
-                    <Input prefix={<Icon type="mobile" />}  placeholder="请输入手机号" />
+                    <Input prefix={<Icon type="mobile"/>} placeholder="请输入手机号"/>
                   )}
                 </FormItem>
                 {this.props.enterpriseId === null ? <p>您已注册，请<span onClick={()=>this.changePage('joinIn')}>加入企业</span>或<span onClick={()=>this.changePage('register')}>注册企业</span></p> : null}
               </div>
-              <div>
-                <FormItem  >
-                  {getFieldDecorator('verificationCode',{
+            {/*  <div className={styles.checkCodeBox}>
+                <FormItem>
+                  {getFieldDecorator('verificationCode', {
                     rules: [{required: true, message: '请输入验证码'}]
                   })(
-                    <Input prefix={<Icon type="lock" />} placeholder="验证码" />
+                    <Input className={styles.testCode} prefix={<Icon type="lock"/>} placeholder="验证码"/>
                   )}
                 </FormItem>
-                <Button type="primary" disabled={this.state.timeValue !== 0} onClick={this.sendCode} >
-                  {this.state.timeValue !== 0 ? `${this.state.timeValue}秒后可重发` : "点击获取验证码"}
+                <Button type="primary" className={styles.queryCode} disabled={this.state.timeValue !== 0}
+                        onClick={this.sendCode}>
+                  {this.state.timeValue !== 0 ? `${this.state.timeValue}秒后可重发` : "获取验证码"}
+                </Button>
+              </div>*/}
+              <div className={styles.checkCodeBox}>
+                <FormItem>
+                  {getFieldDecorator('verificationCode', {
+                    rules: [{required: true, message: '请输入验证码!'}]
+                  })(
+                    <Input className={styles.testCode} prefix={<Icon type="lock"/>} placeholder="验证码!"/>
+                  )}
+
+                </FormItem>
+                <Button type="primary" disabled={this.state.timeValue !== 0} onClick={this.sendCode} className={styles.queryCode}>
+                  {this.state.timeValue !== 0 ? `${this.state.timeValue}秒后可重发` : "获取验证码"}
                 </Button>
               </div>
             </div>
-          }
-          <FormItem>
-            <div className={styles.loginChange} >
-              <span onClick={() => this.setState({ showPasswordLogin: !showPasswordLogin })} >
+            }
+            <FormItem>
+              <div className={styles.loginChange}>
+              <span onClick={() => this.setState({showPasswordLogin: !showPasswordLogin})}>
                 {showPasswordLogin ? '手机验证码登录' : '密码登录(手机/用户名)'}
               </span>
-              <span onClick={() => this.props.changePage({pageTab:'forget'})} >忘记密码</span>
-            </div>
-            <Button type="primary" htmlType="submit" disabled={this.hasErrors(getFieldsError())} >登录</Button>
-            {username === null ? <p>您还未<a href="javascript:void(0)" onClick={this.jumpPersonalInfo}>完善个人信息</a>，请完善</p> : null }
-            <br />
-            <span>易巡登录</span>
-          </FormItem>
-        </Form>}
+                <span onClick={() => this.props.changePage({pageTab: 'forget'})}>忘记密码</span>
+              </div>
+              <div className="loginBtn">
+                <Button type="primary" htmlType="submit" disabled={this.hasErrors(getFieldsError())}>登录</Button>
+                <div className={styles.yiLogin}>易巡登录</div>
+              </div>
+            </FormItem>
+          </Form>}
       </div>
     );
   }
 }
+
 const LoginForms = Form.create()(LoginForm);
 export default LoginForms;

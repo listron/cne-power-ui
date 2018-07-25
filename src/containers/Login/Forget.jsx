@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Button } from 'antd';
+import styles from './login.scss';
 import ForgetForm from '../../components/Login/ForgetForm';
 import { LoginAction } from '../../constants/actionTypes/loginAction';
 import { connect } from 'react-redux';
@@ -25,10 +26,12 @@ class Forget extends Component {
   render() {
 
     return (
-      <div>
-        忘记密码页面！
-        <Button type={'primary'} onClick={()=>this.changePage('login')}> 登录页面 </Button>
-        <Button type={'primary'} onClick={()=>this.changePage('register')}> 注册企业 </Button>
+      <div className={styles.forgetPassword}>
+        <div className={styles.goLogin}>
+          <span  onClick={()=>this.changePage('login')}> 登录 </span>
+          <span>I</span>
+          <span  onClick={()=>this.changePage('register')}> 注册企业 </span>
+        </div>
         <ForgetForm
           sendCode={this.props.sendCode}
           showConfirmPassword={this.props.showConfirmPassword}
@@ -38,6 +41,11 @@ class Forget extends Component {
           phoneCodeRegister={this.props.phoneCodeRegister}
           pageTab={this.props.pageTab}
         />
+        <div className={styles.contactUs}>
+          <span>用户协议</span>
+          <span>联系我们</span>
+        </div>
+
       </div>
     );
   }

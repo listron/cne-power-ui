@@ -51,10 +51,19 @@ class Register extends Component {
     const { pageTab } = this.props;
     return (
       <div className={styles.login}>
-        <div className={styles.loginTop}>
-          <span onClick={()=>this.changePage('joinIn')}>加入企业</span>
+        <div className={styles.joinTop}>
+          {/*<span onClick={()=>this.changePage('joinIn')}>加入企业</span>*/}
+          <div className={styles.fontIcon}>
+            <i className='icon-phone'/>
+          </div>
+          <div className={styles.join} onClick={()=>this.changePage('joinIn')}>加入企业</div>
         </div>
-        这里是企业注册页面!!!!!
+        <div className={styles.contactUs}>
+          <span>用户协议</span>
+          <span>联系我们</span>
+        </div>
+
+      {/*  这里是企业注册页面!!!!!*/}
         <div className={styles.loginContent}>
           <Tabs onChange={this.changePage} animated={false} activeKey={pageTab}>
             <TabPane tab="登录" key="login">

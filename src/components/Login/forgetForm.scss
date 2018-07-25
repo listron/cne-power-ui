@@ -1,0 +1,31 @@
+.forgetPass{
+  margin-left: 140px;
+  .testCode{
+  width: 120px;
+  :global{
+    .ant-input{
+      width:100px;
+    }
+  }
+}
+  .checkCodeBox{
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .queryCode{
+    width: 80px;
+    margin-top: 3px;
+    margin-right: 0;
+    padding: 0 5px;
+    :global{
+      button{
+        width: 80px;
+      }
+    }
+    background: #fff;
+    border-color: #199475;
+    color: #199475;
+  }
+
+}
