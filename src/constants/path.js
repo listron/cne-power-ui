@@ -69,6 +69,7 @@ export default {
       saveEnterpriseDetail: '/v3/enterprise/change',//保存企业详情
       getDepartmentList: '/v3/department/list',//部门列表
       departmentInfor: '/v3/department', //部门信息新增，编辑，详情
+      departmentAllList: '/v3/department/all', //所有部门列表
       
       getRoleList: '/v3/role/list',
       getMenuList: 'v3/right',
