@@ -20,7 +20,7 @@ class Forget extends Component {
     super(props);
   }
   changePage = (pageTab) =>{
-    this.props.changeLoginPage({pageTab})
+    this.props.changeLoginPage({pageTab, registerStep: 1, joinStep: 1})
   }
 
   render() {

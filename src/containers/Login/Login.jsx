@@ -48,7 +48,7 @@ class Login extends Component {
   }
 
   changePage = (pageTab) => {
-    this.props.changeLoginPage({pageTab})
+    this.props.changeLoginPage({pageTab, registerStep: 1, joinStep: 1})
   }
 
   render() {
@@ -57,7 +57,7 @@ class Login extends Component {
       <div className={styles.login}>
         <div className={styles.joinTop}>
           <div className={styles.fontIcon}>
-            <i className='font_family icon-phone'/>
+            <i className="font_family icon-phone" />
           </div>
           <div className={styles.join} onClick={() => this.changePage('joinIn')}>加入企业</div>
         </div>
@@ -78,7 +78,7 @@ class Login extends Component {
               />
             </TabPane>
             <TabPane tab="注册企业" key="register">
-              <RegisterForm/>
+              <RegisterForm />
             </TabPane>
           </Tabs>
         </div>

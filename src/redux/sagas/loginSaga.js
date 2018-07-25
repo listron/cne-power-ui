@@ -11,19 +11,27 @@ import { message } from 'antd';
 function *changeLoginStore(action){
   const { params } = action;
   yield put({
-    type: LoginAction.CHANGE_LOGIN_PAGE,
+    type: LoginAction.CHANGE_LOGIN_STORE,
     params,
   })
 }
-//改变加入企业步骤
-function *changeJoinStep(action){
-  const { params } = action;
-  console.log(action,params)
-  yield put({
-    type: LoginAction.CHANGE_JOIN_STEP_SUCCESS,
-    params,
-  })
-}
+// //请求改变store属性
+// function *changeLoginStore(action){
+//   const { params } = action;
+//   yield put({
+//     type: LoginAction.CHANGE_LOGIN_PAGE,
+//     params,
+//   })
+// }
+// //改变加入企业步骤
+// function *changeJoinStep(action){
+//   const { params } = action;
+//   console.log(action,params)
+//   yield put({
+//     type: LoginAction.CHANGE_JOIN_STEP_SUCCESS,
+//     params,
+//   })
+// }
 //账号密码登录
 function *getLogin(action){
   let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.login;
@@ -303,7 +311,7 @@ export function* watchLogin() {
   yield takeLatest(LoginAction.GET_LOGIN_SAGA, getLogin);
   yield takeLatest(LoginAction.SEND_CODE_SAGA, getVerificationCode);
   yield takeLatest(LoginAction.CHECK_CODE_SAGA, checkCode);
-  yield takeLatest(LoginAction.CHANGE_LOGIN_PAGE_SAGA, changeLoginStore);
+  // yield takeLatest(LoginAction.CHANGE_LOGIN_PAGE_SAGA, changeLoginStore);
   yield takeLatest(LoginAction.CHECK_ENTERPRISE_DOMAIN_SAGA, checkEnterpriseDomain);
   yield takeLatest(LoginAction.GET_ENTERPRISE_INFO_SAGA, getEnterPriseInfo);
   yield takeLatest(LoginAction.JOIN_ENTERPRISE_SAGA, joinEnterprise);
@@ -313,6 +321,7 @@ export function* watchLogin() {
   yield takeLatest(LoginAction.CHECK_USER_REGISTER_SAGA, checkUserRegister);
   yield takeLatest(LoginAction.CHECK_PHONE_REGISTER_SAGA, checkPhoneRegister);
   yield takeLatest(LoginAction.PHONE_CODE_REGISTER_SAGA, phoneCodeRegister);
-  yield takeLatest(LoginAction.CHANGE_JOIN_STEP_SAGA, changeJoinStep);
+  // yield takeLatest(LoginAction.CHANGE_JOIN_STEP_SAGA, changeJoinStep);
+  yield takeLatest(LoginAction.CHANGE_LOGIN_STORE_SAGA, changeLoginStore);
 
 }

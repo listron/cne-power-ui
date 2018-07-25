@@ -4,7 +4,8 @@ module.exports ={
   LoginAction: keyMirror({
     CHANGE_LOGIN_PAGE_SAGA : null,
     CHANGE_LOGIN_PAGE : null,
-
+    CHANGE_LOGIN_STORE_SAGA: null,
+    CHANGE_LOGIN_STORE: null,
     LOGIN_FETCH : null,
     UPDATE_COUNT : null,
     BEGIN_COUNT : null,

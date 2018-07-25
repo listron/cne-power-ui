@@ -31,11 +31,18 @@ class RegisterForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      // current: 0,
+      current: 0,
       timeValue: 0,
     }
   }
   
+  componentWillReceiveProps(nextProps){
+    
+    if(nextProps.domainIsRegister === '1' && nextProps.nameIsRegister === '1'){
+      this.setState({ current: 1})
+    }
+  }
+
   onEnterpriseInfo = (e) => {
     e.preventDefault();
     this.props.form.validateFields(['enterpriseDomain', 'enterpriseName', 'userAgreement'], (err, values) => {
@@ -70,7 +77,7 @@ class RegisterForm extends Component {
     this.props.form.validateFields(['phoneNum'], (err, values) => {
       if (!err) {
         this.props.sendCode(values);
-        this.setState({timeValue: 10})
+        this.setState({timeValue: 60})
         this.timeDecline();
       }
     })
@@ -96,10 +103,27 @@ class RegisterForm extends Component {
   //   const current = this.state.current !== 2 ? this.state.current + 1 : 2;
   //   this.setState({ current })
   // }
+  showDomainBack = (rule, value, callback) => {
+    const { domainIsRegister } = this.props;
+    if(!domainIsRegister){
+      callback('当前域名无效');
+    } else{
+      callback();
+    }
+  }
+
+  showNameBack = (rule, value, callback) => {
+    const { nameIsRegister } =this.props;
+    if(!nameIsRegister){
+      callback('当前企业名已注册，不能重复注册');
+    } else{
+      callback();
+    }
+  }
 
   render(){
     const { getFieldDecorator } = this.props.form;
-    const {domainIsRegister, nameIsRegister, isPhoneRegister, isUserRegister} = this.props;
+    const { isPhoneRegister, isUserRegister, domainIsRegister, nameIsRegister } = this.props;
     const formItemLayout = {
       labelCol: {
         xs: {span: 24},
@@ -134,7 +158,7 @@ class RegisterForm extends Component {
                     {getFieldDecorator('phoneNum', {
                       rules: [{required: true, message: '请输入手机号'}]
                     })(
-                      <Input className={styles.mobileNumber} prefix={<Icon type="mobile"/>} placeholder="请输入手机号"/>
+                      <Input className={styles.mobileNumber} prefix={<Icon type="mobile" />} placeholder="请输入手机号"/>
                     )}
                   </FormItem>
                 </div>
@@ -143,7 +167,7 @@ class RegisterForm extends Component {
                     {getFieldDecorator('verificationCode', {
                       rules: [{required: true, message: '请输入验证码!'}]
                     })(
-                      <Input className={styles.testCode} prefix={<Icon type="lock"/>} placeholder="验证码!"/>
+                      <Input className={styles.testCode} prefix={<Icon type="lock" />} placeholder="验证码!"/>
                     )}
                   </FormItem>
                   <Button type="primary" disabled={this.state.timeValue !== 0} onClick={this.sendCode} className={styles.queryCode}>
@@ -165,16 +189,22 @@ class RegisterForm extends Component {
               <Form onSubmit={this.onEnterpriseInfo}>
                 <FormItem label="企业域名"  {...formItemLayout}>
                   {getFieldDecorator('enterpriseDomain', {
-                    rules: [{required: true, message: '请输入企业域名'}]
+                    rules: [
+                      {required: true, message: '请输入企业域名'},
+                      {validator: this.showDomainBack}
+                    ]
                   })(
-                    <Input placeholder="请输入企业域名" addonAfter=".cneclound.com"/>
+                    <Input placeholder="请输入企业域名" style={{width: '200px'}} addonAfter=".cneclound.com" />
                   )}
                 </FormItem>
                 <FormItem label="企业名称" {...formItemLayout}>
                   {getFieldDecorator('enterpriseName', {
-                    rules: [{required: true, message: '请输入企业名称'}]
+                    rules: [
+                      {required: true, message: '请输入企业名称'},
+                      {validator: this.showNameBack}
+                    ]
                   })(
-                    <Input placeholder="请输入企业名称"/>
+                    <Input placeholder="请输入企业名称" />
                   )}
                 </FormItem>
                 <FormItem {...tailFormItemLayout} >
@@ -186,8 +216,6 @@ class RegisterForm extends Component {
                 </FormItem>
                 <FormItem {...tailFormItemLayout} >
                   <Button type="primary" htmlType="submit" className="login-form-button">下一步</Button>
-                  {!domainIsRegister && <Alert message="当前域名无效" type="error" showIcon/>}
-                  {!nameIsRegister && <Alert message="当前企业名已注册，不能重复注册" type="error" showIcon/>}
                 </FormItem>
               </Form>
             </div>
@@ -212,7 +240,7 @@ class RegisterForm extends Component {
                   {getFieldDecorator('verificationCode',{
                     rules: [{required: true, message: '请输入验证码'}]
                   })(
-                    <Input prefix={<Icon type="lock"/>} type="password" placeholder="请输入密码"/>
+                    <Input prefix={<Icon type="lock" />} type="password" placeholder="请输入密码"/>
                   )}
                 </FormItem>
                 <Button type="primary" disabled={this.state.timeValue !== 0} onClick={this.sendCode} >
@@ -226,13 +254,16 @@ class RegisterForm extends Component {
           </div>
         ),
     }];
-    const current = this.props.registerStep - 1;
+    let { current } = this.state;
+
+    const step = current === 1 ? 1 : this.props.registerStep - 1;
+    console.log(step)
     return (
       <div>
-        <Steps current={current}>
+        <Steps current={step}>
           {steps.map(item => <Step key={item.title} title={item.title} />)}
         </Steps>
-        <div className="steps-content">{steps[current].content}</div>
+        <div className="steps-content">{steps[step].content}</div>
       </div>
     );
   }

@@ -31,7 +31,7 @@ class JoinIn extends Component {
     super(props);
   }
   changePage = (pageTab) =>{
-    this.props.changeLoginPage({pageTab})
+    this.props.changeLoginPage({pageTab, registerStep: 1, joinStep: 1})
   }
   render() {
 
@@ -87,7 +87,7 @@ const mapDispatchToProps = (dispatch) => ({
   joinEnterprise: params => dispatch({ type: LoginAction.JOIN_ENTERPRISE_SAGA, params}),
   // checkPhoneRegister: params => dispatch({ type: LoginAction.CHECK_PHONE_REGISTER_SAGA, params}),
   phoneCodeRegister: params => dispatch({ type: LoginAction.PHONE_CODE_REGISTER_SAGA, params}),
-  changeJoinStep: params => dispatch({type: LoginAction.CHANGE_JOIN_STEP_SAGA, params})
+  changeJoinStep: params => dispatch({type: LoginAction.CHANGE_LOGIN_STORE_SAGA, params})
 })
 
 export default connect(mapStateToProps,mapDispatchToProps)(JoinIn);

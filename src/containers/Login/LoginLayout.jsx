@@ -34,8 +34,8 @@ class LoginLayout extends Component {
         <div className={styles.preLoginContent}>
           {pageTab==='login' && <Login changeLoginPage={changeLoginPage} pageTab={pageTab} />}
           {pageTab==='register' && <Register changeLoginPage={changeLoginPage} pageTab={pageTab} />}
-          {pageTab==='joinIn' && <JoinIn changeLoginPage={changeLoginPage} pageTab={pageTab} />}
-          {pageTab==='forget' && <Forget changeLoginPage={changeLoginPage} pageTab={pageTab} />}
+          {pageTab==='joinIn' && <JoinIn changeLoginPage={changeLoginPage} />}
+          {pageTab==='forget' && <Forget changeLoginPage={changeLoginPage} />}
         </div>
       </div>
     );
@@ -47,7 +47,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  changeLoginPage: params => dispatch({ type: LoginAction.CHANGE_LOGIN_PAGE_SAGA, params }),
+  changeLoginPage: params => dispatch({ type: LoginAction.CHANGE_LOGIN_STORE_SAGA, params }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginLayout);

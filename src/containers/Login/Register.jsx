@@ -34,7 +34,7 @@ class Register extends Component {
     super(props);
   }
   changePage = (pageTab) =>{
-    this.props.changeLoginPage({pageTab})
+    this.props.changeLoginPage({pageTab, registerStep: 1, joinStep: 1})
   }
   registerEnterprise = (data) => {
     let params = {
@@ -54,7 +54,7 @@ class Register extends Component {
         <div className={styles.joinTop}>
           {/*<span onClick={()=>this.changePage('joinIn')}>加入企业</span>*/}
           <div className={styles.fontIcon}>
-            <i className='icon-phone'/>
+            <i className="icon-phone" />
           </div>
           <div className={styles.join} onClick={()=>this.changePage('joinIn')}>加入企业</div>
         </div>

@@ -51,7 +51,7 @@ class ForgetForm extends Component{
     this.props.form.validateFields(['phoneNum'], (err, values) => {
       if(!err){
         this.props.sendCode(values);
-        this.setState({ timeValue: 10 })
+        this.setState({ timeValue: 60 })
         this.timeDecline();
       }
     })

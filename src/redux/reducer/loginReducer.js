@@ -43,8 +43,8 @@ const loginReducer = (state = initState, action) => {
   console.log(action);
   console.log(state.toJS())
   switch (action.type) {
-    case LoginAction.CHANGE_LOGIN_PAGE:
-      return state.set('pageTab', action.params.pageTab);
+    case LoginAction.CHANGE_LOGIN_STORE:
+      return state.merge(immutable.fromJS(action.params));
     case LoginAction.CHANGE_JOIN_STEP_SUCCESS:
       return state.set('joinStep', action.params.joinStep)
     case LoginAction.LOGIN_FETCH:
@@ -61,30 +61,27 @@ const loginReducer = (state = initState, action) => {
                   .set('phoneNum', action.params.phoneNum);
     case LoginAction.CHECK_CODE_SUCCESS:
       return state.merge(immutable.fromJS(action.payload)).set('loading', false);
-      // return state.set('isFetching', false)
-      //             .set('phoneNum', action.params.phoneNum)
-      //             .set('enterpriseId', action.data.enterpriseId)
-      //             .set('username', action.data.username)
-      //             .set('registerStep', action.params.registerStep);
     case LoginAction.CHECK_PHONE_REGISTER_SUCCESS:
       return state.set('isPhoneRegister', action.data.isRegister)
     case LoginAction.PHONE_CODE_REGISTER_SUCCESS:
       return state;
-      // return state.merge(immutable.fromJS(action.payload)).set('loading', false)
     case LoginAction.CHECK_ENTERPRISE_DOMAIN_SUCCESS:
-      return state.set('domainIsRegister', action.data.data.isRegister)
+      return state.set('domainIsRegister', action.data.isRegister)
                   .set('enterpriseDomian', action.params.enterpriseDomian);
     case LoginAction.CHECK_ENTERPRISE_NAME_SUCCESS:
       return state.set('isFetching', false)
-                  .set('nameIsRegister', action.data.data.isRegister)
+                  .set('nameIsRegister', action.data.isRegister)
                   .set('enterpriseName', action.params.enterpriseName)
-                  .set('registerStep', 3 );
     case LoginAction.CHECK_USER_REGISTER_SUCCESS:
       return state.set('isFetching', false)
-                  .set('isUserRegister', action.data.data.isRegister);
+                  .set('isUserRegister', action.data.isRegister);
     case LoginAction.JOIN_ENTERPRISE_SUCCESS:
       return state.set('isFetching', false)
-                  .set('joinResult', 1);
+                  .set('joinResult', 1)
+                  .set('joinStep', 1);
+    case LoginAction.REGISTER_ENTERPRISE_SUCCESS:
+      return state.set('isFetching', false)
+                  // .set('',)
     case LoginAction.CHECK_PHONE_REGISTER_FAIL:
     case LoginAction.SEND_CODE_FAIL:
     case LoginAction.GET_LOGIN_FAIL:
