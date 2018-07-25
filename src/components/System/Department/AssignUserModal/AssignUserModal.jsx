@@ -11,7 +11,7 @@ class AssignUserModal extends Component {
     show: PropTypes.bool,
     currentUser: PropTypes.object,//当前用户
     enterprise: PropTypes.object,//当前企业
-    departmentUserList: PropTypes.object,//immutable
+    departmentList: PropTypes.object,//immutable
     userList: PropTypes.object,//immutable
     getDepartmentTreeData: PropTypes.func,
     getUserList: PropTypes.func,
@@ -21,9 +21,10 @@ class AssignUserModal extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      departmentUserList: Immutable.fromJS([]),
-      selectedDepartment: Immutable.fromJS({}),
-      userList: Immutable.fromJS([]),
+      selectedDepartment: Immutable.fromJS({}),//选中部门
+      userList: Immutable.fromJS([]),//用户Id和部门Id一一匹配，一维数组，最后回传的数组
+      selectedUserList: Immutable.fromJS([]),//右边的用户列表数据
+      searchUserList: null,//右边有搜索文字的用户列表数据
       expandedKeys: [],
       selectedKeys: [],
     };
@@ -35,20 +36,25 @@ class AssignUserModal extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if(nextProps.departmentUserList.size !== this.props.departmentUserList.size && nextProps.departmentUserList.size > 0) {
-      let department = nextProps.departmentUserList.get(0);
-      let departmentId = nextProps.departmentUserList.getIn([0, 'departmentId']);
+    if(nextProps.departmentList.size !== this.props.departmentList.size && nextProps.departmentList.size > 0) {
+      let hasChild = !!nextProps.departmentList.getIn([0, 'childDepartmentData']);
+      let department = hasChild ? nextProps.departmentList.getIn([0, 'childDepartmentData', 0]) : nextProps.departmentList.get(0);
+      let departmentId = department.get('departmentId');
       this.setState({
-        departmentUserList: nextProps.departmentUserList,
         selectedDepartment: department,
         selectedKeys: [departmentId],
-        userList: departmentId === 0 ? nextProps.departmentUserList.getIn([0, 'user']) : Immutable.fromJS([]),
+        expandedKeys: hasChild ? [nextProps.departmentList.getIn([0, 'departmentId'])] : []
+      });
+    }
+    if(nextProps.userList.size !== this.props.userList.size && nextProps.userList.size > 0) {
+      this.setState({
+        userList: nextProps.userList,
       });
     }
   }
 
   onOk = () => {
-    this.props.onSelect(this.state.departmentUserList);
+    this.props.onSelect(this.state.userList);
   }
 
   onCancel = () => {
@@ -61,16 +67,16 @@ class AssignUserModal extends Component {
   }
 
   onSearch = (value) => {
-    let userList = this.props.userList;
+    let userList = this.state.selectedUserList;
     if(value !== '') {
       userList = userList.filter((item) => {
         return item.get('userName').index(value) !== -1;
       });
     } else {
-      userList = Immutable.fromJS([]);
+      userList = null;
     }
     this.setState({
-      userList
+      searchUserList: userList
     });  
   }
 
@@ -86,22 +92,17 @@ class AssignUserModal extends Component {
       }
       this.setState({
         expandedKeys,
+        selectedDepartment: item,
+        selectedKeys
       });
     } else {
-      if(key === 0) {
-        this.setState({
-          userList: item.get('user')
-        });
-      } else {
-        this.setState({
-          userList: Immutable.fromJS([])
-        });
-      }
+      let selectedUserList = this.getDepartmentUserRange(item, this.state.userList);
+      this.setState({
+        selectedUserList,
+        selectedDepartment: item,
+        selectedKeys
+      });
     }
-    this.setState({
-      selectedDepartment: item,
-      selectedKeys
-    });
   }
 
   onExpand = (expandedKeys) => {
@@ -110,40 +111,70 @@ class AssignUserModal extends Component {
     });
   }
 
-  onCheckUser = (obj, checked) => {
-    let { selectedDepartment, departmentUserList, selectedKeys } = this.state;
-    let user = selectedDepartment.get('user');
-    let departmentId = selectedKeys[0];
-    const departmentIndex = departmentUserList.findIndex((item) => {
-      return departmentId === item.get('departmentId');
-    });
+  onCheckUser = (user, checked) => {
+    let userList = this.state.userList;
+    let selectedDepartment = this.state.selectedDepartment;
+    const parentDepartmentId = selectedDepartment.get('parentId');
     if(checked) {
-      user = user.push(Immutable.fromJS({
-        userId: obj.get('userId'),
-        userName: obj.get('userName'),
-        disabled: false
-      }));
-    } else {
-      let index = user.findIndex((item) => {
-        return item.get('userId') === obj.get('userId');
+      let index = userList.findIndex((item) => {
+        return item.get('departmentId') === parentDepartmentId && item.get('userId') === user.get('userId');
       });
-      if(index > -1) {
-        user = user.delete(index);
+      if(index === -1) {
+        userList = userList.push(Immutable.fromJS({
+          userId: user.get('userId'),
+          userName: user.get('userName'),
+          departmentId: selectedDepartment.get('departmentId'),
+          departmentName: selectedDepartment.get('departmentName')
+        }))
+      } else {
+        userList = userList.set(index, {
+          userId: user.get('userId'),
+          userName: user.get('userName'),
+          departmentId: selectedDepartment.get('departmentId'),
+          departmentName: selectedDepartment.get('departmentName')
+        });
+      }
+    } else {
+      let userIndex = userList.findIndex((item) => {
+        item.get('userId') === user.get('userId') && item.get('departmentId') === selectedDepartment.get('departmentId')
+      });
+      let childHasCurrent = false;
+      let parentDepartment = this.props.departmentList.find((item) => {
+        return item.get('departmentId' === parentDepartmentId);
+      });
+      if(parentDepartment && parentDepartment.get('childDepartmentData')) {
+        parentDepartment.get('childDepartmentData').forEach((department) => {
+          let index = userList.findIndex((item) => {
+            return department.get('departmentId') === item.get('departmentId') && user.get('userId') === item.get('userId');
+          });
+          if(department.get('departmenId') !== selectedDepartment.get('departmentId') && index !== -1) {
+            childHasCurrent = true;
+            return;
+          }
+        })
+      }
+      if(childHasCurrent) {
+        userList.delete(userIndex);
+      } else {
+        userList = userList.set(userIndex, {
+          userId: user.get('userId'),
+          userName: user.get('userName'),
+          departmentId: parentDepartmentId,
+          departmentName: parentDepartment.get('departmentName')
+        });
       }
     }
-    selectedDepartment = selectedDepartment.set('user', user);
-    departmentUserList = departmentUserList.set(departmentIndex, selectedDepartment);
+    let selectedUserList = this.getDepartmentUserRange(selectedDepartment, userList);
     this.setState({
-      selectedDepartment,
-      departmentUserList
+      userList,
+      selectedUserList
     });
   }
 
-  getUserChecked(obj) {
+  getUserChecked(user) {
     let selectedDepartment = this.state.selectedDepartment;
-    let user = selectedDepartment.get('user');
-    let index = user.findIndex((item) => {
-      return item.get('userId') === obj.get('userId');
+    let index = this.state.userList.findIndex((item) => {
+      return item.get('userId') === user.get('userId') && item.get('departmentId') === selectedDepartment.get('departmentId');
     });
     if(index > -1) {
       return true;
@@ -152,45 +183,98 @@ class AssignUserModal extends Component {
     }
   }
 
-  getUserDepartment(obj) {
-    let departmentData = obj.get('departmentData');
-    let result = '';
-    for(let i = 0; i < departmentData.size; i++) {
-      result += '，' + departmentData.getIn([i, 'departmentName']);
+  getDepartmentUserRange(department, userList) {
+    let selectedUserList;
+    if(department.get('disabled') === true) {
+      selectedUserList = userList.filter((user) => {
+        return user.get('departmentId' === department.get('parentId'))
+      });
+    } else {
+      selectedUserList = userList;
     }
-    result.splice(0, 1);
-    return result;
+    return selectedUserList
   }
 
-  transformData(data) {
-    let child, user, childUser;
-    const filterNode = (data, childData) => {
-      let result;
-      result = data.filter(item => !childData.some(childItem => 
-        childItem.get('userId') === item.get('userId')));
-      return result;
-    }
-    for(let i = 0; i < data.size; i++) {
-      if(data.getIn([i, 'childDepartmentData]']).toJS() instanceof Array) {
-        child = data.getIn([i, 'childDepartmentData]']);
-        user = data.getIn([i, 'user']);
-        for(let j = 0; j < child.size; j++) {
-          childUser = child.getIn([j, 'user']);
-          // user = user.filter(item => !childUser.some(childItem => 
-          //   childItem.get('userId') === item.get('userId')));
-          user = filterNode(user, childUser);
-        }
-        if(user.size > 0) {
-          child = child.unshift(Immutable({
-            departmentId: 0,
-            departmentName: '未分配子部门',
-            user: user
-          }));
-          data = data.setIn([i, 'childDepartmentData]'], child);
-        }
+  getDepartmentUser(department, isAll=true) {
+    let { userList } = this.state;
+    if(department === null) {
+      return userList.filter((item) => {
+        return item.get('departmentId') === null;
+      });
+    } else {
+      const departmentId = department.get('disabled') ? department.get('parentId') : department.get('departmentId');
+      if(department.get('childDepartmentData') && isAll) {
+        let parentUser = userList.filter((item) => {
+          return item.get('departmentId') === departmentId;
+        });
+        department.get('childDepartmentData').forEach((item)=> {
+          let childrenUser = userList.filter((user) => {
+            return user.get('departmentId') === item.get('departmentId');
+          });
+          childrenUser.forEach((user) => {
+            const index = parentUser.findIndex((item) => {
+              item.get('userId') === user.get('userId')
+            });
+            if(index === -1) {
+              parentUser = parentUser.push(user);
+            }
+          });
+        });
+        return parentUser;
+      } else {
+        return userList.filter((item) => {
+          return item.get('departmentId') === departmentId;
+        });
       }
     }
+  }
+
+  transformTreeData(data) {
+    let department, child, parentUser;
+    for(let i = 0; i < data.size; i++) {
+      department = data.get(i);
+      child = department.get('childDepartmentData');
+      if(child.toJS() instanceof Array) {
+        parentUser = this.getDepartmentUser(department, false);
+        if(parentUser.size > 0) {
+          child = child.unshift(Immutable.fromJS({
+            departmentId: department.get('departmentId')+i,
+            parentId: department.get('departmentId'),
+            departmentName: '未分配人员',
+            disabled: true
+          }));
+        }
+        data = data.setIn([i, 'childDepartmentData'], child);
+      }
+    }
+    const nonAssignUser = this.getDepartmentUser(null);
+    if(nonAssignUser.size > 0) {
+      data = data.unshift(Immutable({
+        departmentId: '0',
+        parentId: null,
+        departmentName: '待分配人员',
+        disabled: true
+      }));
+    }
     return data;
+  }
+
+  tansformUserData(userList) {
+    let newUserList = Immutable.fromJS([]);
+    userList.forEach(element => {
+      const index = newUserList.findIndex(item =>{
+        return item.get('userId') === element.get('userId');
+      })
+      if(index === -1) {
+        newUserList = newUserList.push(element);
+      } else {
+        let user = newUserList.get(index);
+        user = user.set('departmentName', user.get('departmentName')+','+element.get('departmenName'))
+                   .set('departmentId'),Immutable.fromJS([user.get('departmentId')].push(element.get('departmentId'))); 
+        newUserList = newUserList.set(index, user);
+      }
+    });
+    return newUserList;
   }
 
   renderDepartmentTree() {
@@ -203,48 +287,52 @@ class AssignUserModal extends Component {
         expandedKeys={this.state.expandedKeys}
         selectedKeys={this.state.selectedKeys}
       >
-        <TreeNode title={enterprise.enterpriseId} key={enterprise.enterpriseName}>
-          {this.renderTreeNodes(this.transformData(departmentUserList))}
+        <TreeNode title={enterprise.enterpriseName} key={enterprise.enterpriseId}>
+          {this.renderTreeNodes(this.transformTreeData(departmentUserList))}
         </TreeNode>
       </Tree>
     );
   }
 
   renderTreeNodes(treeData) {
+    let userNum;
     return (
       treeData.map((item) => {
         if(item.get('childDepartmentData').toJS() instanceof Array) {
+          userNum = this.getDepartmentUser(item, true).size;
           return (
-            <TreeNode title={item.get('departmentName')} key={item.get('departmentId')} dataRef={item}>
+            <TreeNode title={item.get('departmentName')+'('+userNum+')'} key={item.get('departmentId')} dataRef={item}>
               {this.renderTreeNodes(item.get('childDepartmentData'))}
             </TreeNode>
           );
         } else {
-          return <TreeNode title={item.get('departmentName')} key={item.get('departmentId')} dataRef={item} />
+          userNum = this.getDepartmentUser(item, false).size;
+          return <TreeNode title={item.get('departmentName')+'('+userNum+')'} key={item.get('departmentId')} dataRef={item} />
         }
       })
     );
   }
 
   renderUserList() {
-    let selectedId = this.state.selectedKeys[0];
-    let user = selectedId === 0 ? this.state.userList : this.props.userList;
+    let {searchUserList, selectedUserList} = this.state;
+    const disabled = this.state.selectedDepartment.get('disabled');
+    let user = this.tansformUserData(searchUserList!==null?searchUserList:selectedUserList);
     return (
       user.map((item) => {
         return (
           <div key={item.get('userId')}>
             <div>
-              {selectedId !== 0 && 
+              {!disabled && 
                 <Checkbox 
                   onChange={(e)=>{this.onCheckUser(item, e.target.checked)}} 
                   checked={()=>this.getUserChecked(item)}
-                  disabled={item.get('disabled')} />
+                  disabled={item.get('userStatus') === 4} />
               }
               <Avatar>{item.get('userName').charAt(0)}</Avatar>
               <span>{item.get('userName')}</span>
             </div>
             <div>
-              {selectedId !== 0 && this.getUserDepartment(item)}
+              {!disabled && item.get('departmentName')}
               {item.get('userId') === this.props.currentUser.get('userId') && <span>我</span>}
             </div>
           </div>
@@ -254,7 +342,8 @@ class AssignUserModal extends Component {
   }
 
   renderSelectedUser() {
-    let user = this.state.selectedDepartment.get('user');
+    let department = this.state.selectedDepartment;
+    let user = this.getDepartmentUser(department, false);
     return user.map((item) => {
       return (
         <Tag 
@@ -280,7 +369,7 @@ class AssignUserModal extends Component {
         <div className={Styles.assignUserModal}>
           <div className={Styles.header}>
             <span>分配用户</span>
-            <Search
+             <Search
               placeholder="真实姓名/用户名"
               onSearch={this.onSearch}
               enterButton={true}
