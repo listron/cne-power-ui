@@ -35,21 +35,35 @@ function *getDepartmentList(action){//请求部门列表数据
 }
 //todo - 删除部门
 function *deleteDepartment(action){
-  console.log(action)
-  // const { payload } = action;
-  // const url = '/mock/system/deleteDepartment';
+  const { payload } = action;
+  const url = '/mock/system/deleteDepartment';
   // const url = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.system.getDepartmentList}`
   try{
-    // yield put({ type:departmentAction.DEPARTMENT_FETCH });
-    // const response = yield call(axios.post,url,payload);
-    // yield put({
-    //   type:  departmentAction.GET_DEPARTMENT_COMMON_FETCH_SUCCESS,
-    //   payload:{
-    //     ...payload,
-    //     departmentData: response.data.data.departmentData,
-    //     totalNum: response.data.data.totalNum,
-    //   },
-    // });
+    yield put({ type:departmentAction.DEPARTMENT_FETCH });
+    const response = yield call(axios.delete,url,payload);
+    if(response.data.code === "10000"){
+      yield put({//清空选中项
+        type:  departmentAction.CHANGE_DEPARTMENT_STORE_SUCCESS,
+        payload: {
+          selectedDepartment: [],
+        },
+      })
+      const params = yield select(state => ({//继续请求部门列表
+        enterpriseId: payload.enterpriseId,
+        departmentSource: state.department.get('departmentSource'),
+        departmentName: state.department.get('departmentName'),
+        parentDepartmentName: state.department.get('parentDepartmentName'),
+        stationName: state.department.get('stationName'), 
+        sort: state.department.get('sort'),
+        ascend: state.department.get('ascend'),
+        pageNum: state.department.get('pageNum'),
+        pageSize: state.department.get('pageSize'),
+      }));
+      yield put({
+        type:  departmentAction.GET_DEPARTMENT_LIST_SAGA,
+        payload: params,
+      });
+    }
   }catch(e){
     console.log(e);
   }
@@ -82,8 +96,7 @@ function *getAllDepartment(action){//获取所有部门基础信息
   }
 }
 
-//todo - 请求单部门详细数据信息
-function *getDepartmentDetail(action){
+function *getDepartmentDetail(action){// 请求单部门详细数据信息
   const { payload } = action;
   const url = '/mock/system/departmentDetail';
   // const url = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.system.departmentInfor}/${payload.departmentId}`
