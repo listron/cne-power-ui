@@ -15,6 +15,11 @@ class LoginForm extends Component{
     error: PropTypes.string,
     sendCode: PropTypes.func,
     checkCodeLogin: PropTypes.func,
+    enterpriseId: PropTypes.string,
+    checkPhoneRegister: PropTypes.func,
+    phoneCodeRegister: PropTypes.func,
+    username: PropTypes.string,
+    pageTab: PropTypes.string,
   }
 
   constructor(props){
@@ -24,7 +29,6 @@ class LoginForm extends Component{
       timeValue: 0,
     }
   }
-
   onHandleSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFields((err,values) => {
@@ -32,7 +36,7 @@ class LoginForm extends Component{
         if(this.state.showPasswordLogin){
           this.props.fetchLogin(values);
         }else{
-          this.props.checkCodeLogin(values);
+          this.props.phoneCodeRegister(...values);
         }
       }
     })
@@ -62,10 +66,21 @@ class LoginForm extends Component{
       }
     })
   }
-
+  checkPhoneRegister = (e) => {
+    console.log(e)
+    this.props.checkPhoneRegister(e.target.value);
+  }
+  jumpPersonalInfo = () => {
+    this.props.form.validateFields(['phoneNum', 'verificationCode'], (err, values) => {
+      if(!err){
+        this.props.changePage('joinIn')
+      }
+    })
+  }
   render(){
     const { getFieldDecorator, getFieldsError } = this.props.form;
     let { showPasswordLogin } = this.state;
+    let { username } = this.props;
     return (
       <div>
         {this.props.loginSuccess ? "登录成功！" : 
@@ -95,9 +110,10 @@ class LoginForm extends Component{
                   {getFieldDecorator('phoneNum', {
                     rules: [{pattern: /(^1[3|4|5|7|8]\d{9}$)|(^09\d{8}$)/, required: true, message: '请输入手机号'}]
                   })(
-                    <Input prefix={<Icon type="mobile" />} placeholder="请输入手机号" />
+                    <Input prefix={<Icon type="mobile" />}  placeholder="请输入手机号" />
                   )}
                 </FormItem>
+                {this.props.enterpriseId === null ? <p>您已注册，请<span onClick={()=>this.changePage('joinIn')}>加入企业</span>或<span onClick={()=>this.changePage('register')}>注册企业</span></p> : null}
               </div>
               <div>
                 <FormItem  >
@@ -121,6 +137,7 @@ class LoginForm extends Component{
               <span onClick={() => this.props.changePage({pageTab:'forget'})} >忘记密码</span>
             </div>
             <Button type="primary" htmlType="submit" disabled={this.hasErrors(getFieldsError())} >登录</Button>
+            {username === null ? <p>您还未<a href="javascript:void(0)" onClick={this.jumpPersonalInfo}>完善个人信息</a>，请完善</p> : null }
             <br />
             <span>易巡登录</span>
           </FormItem>

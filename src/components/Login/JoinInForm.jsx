@@ -16,6 +16,13 @@ class JoinInForm extends Component{
     sendCode: PropTypes.func,
     checkPhoneCode: PropTypes.func,
     joinEnterprise: PropTypes.func,
+    enterpriseId: PropTypes.string,
+    phoneNum: PropTypes.string,
+    isPhoneRegister: PropTypes.string,
+    checkPhoneRegister: PropTypes.func,
+    phoneCodeRegister: PropTypes.func,
+    username: PropTypes.string,
+    joinResult: PropTypes.number,
   }
 
   constructor(props){
@@ -26,10 +33,24 @@ class JoinInForm extends Component{
       joinInStep: 1,
     }
   }
+  componentWillMount(){
+    if(this.props.username === null){
+      this.setState({
+        joinInStep: 3,
+      })
+    }
+  }
   onJoinEnterprise = () => {
     this.props.form.validateFields((err,values) => {
       if(!err){
-        this.props.joinEnterprise(values);
+        console.log(values);
+        let { phoneNum, enterpriseId } =this.props;
+        let params = {
+          phoneNum,
+          enterpriseId,
+          ...values,
+        }
+        this.props.joinEnterprise(params);
       }
     })
   }
@@ -72,10 +93,10 @@ class JoinInForm extends Component{
     })
   }
 
-  checkPhoneCode = () => {
+  phoneCodeRegister = () => {
     this.props.form.validateFields(['phoneNum','verificationCode'], (err, values) => {
       if(!err){
-        this.props.checkPhoneCode(values);
+        this.props.phoneCodeRegister(...values);
         if(this.props.isJoined){
           this.setState({ joinInStep: 3})
         }
@@ -93,7 +114,10 @@ class JoinInForm extends Component{
     }
   }
 
-
+  checkPhoneRegister = (e) => {
+    console.log(e)
+    this.props.checkPhoneRegister(e.target.value);
+  }
 
   hasErrors = (fieldsError) => {
     return Object.keys(fieldsError).some(field => fieldsError[field]);
@@ -101,9 +125,9 @@ class JoinInForm extends Component{
 
   render(){
     const { getFieldDecorator, getFieldsError } = this.props.form;
-    const { isExist, enterpriseName, loading, isJoined } = this.props;
-    console.log(this.props);
+    const { enterpriseName, isPhoneRegister, joinResult } = this.props;
     const { showEnterpriseInfo, joinInStep } = this.state;
+    console.log(enterpriseName);
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -143,7 +167,7 @@ class JoinInForm extends Component{
             {/* <Spin spinning={loading}> */}
               <Modal
                 visible={showEnterpriseInfo}
-                title={isExist === 0 ? "没有此企业，请重新输入" : "点击确认要加入的企业"}
+                title={enterpriseName === null ? "没有此企业，请重新输入" : "点击确认要加入的企业"}
                 footer={null}
                 maskClosable={false}
                 destroyOnClose={true}
@@ -151,7 +175,7 @@ class JoinInForm extends Component{
                 height={228}
                 closable={false}
               >
-                {`${enterpriseName}` === '' ? '' : <Button onClick={() => this.setState({joinInStep : 2 }) }>{enterpriseName}</Button>}
+                {enterpriseName === null ? null : <Button onClick={() => this.setState({joinInStep : 2 }) }>{enterpriseName}</Button>}
                 <br /><Icon type="arrow-left" /><span  onClick={this.handleCancel}>返回</span>
               </Modal>
             {/* </Spin> */}
@@ -160,15 +184,16 @@ class JoinInForm extends Component{
         {joinInStep === 2 && 
           <div>
             <span>{enterpriseName}</span>
-            <Form onSubmit={this.checkPhoneCode} >
+            <Form onSubmit={this.phoneCodeRegister} >
               <div>
                 <FormItem>
                   {getFieldDecorator('phoneNum', {
                     rules: [{pattern: /(^1[3|4|5|7|8]\d{9}$)|(^09\d{8}$)/, required: true, message: '请输入手机号'}]
                   })(
-                    <Input prefix={<Icon type="mobile" />} placeholder="请输入手机号" />
+                    <Input prefix={<Icon type="mobile" />}  placeholder="请输入手机号" />
                   )}
                 </FormItem>
+                {isPhoneRegister === '0' && <span>手机号已经注册，请登录</span>}
               </div>
               <div>
                 <FormItem  >
@@ -183,12 +208,13 @@ class JoinInForm extends Component{
                 </Button>
               </div>
               <FormItem>
-                <Button type="primary" htmlType="submit">加入企业</Button>
+                <Button type="primary" htmlType="submit">下一步</Button>
               </FormItem>
             </Form>
           </div>
         }
         {joinInStep === 3 &&
+          (joinResult ? <span>等待管理员审核</span> : 
           <div>
             <span>{enterpriseName}</span>
             <Form onSubmit={this.onJoinEnterprise}  >
@@ -217,7 +243,7 @@ class JoinInForm extends Component{
                 <Button type="primary" htmlType="submit" className="login-form-button"  >进入企业账号</Button>
               </FormItem>
             </Form>
-          </div>
+          </div>)
         }
       </div>
     );

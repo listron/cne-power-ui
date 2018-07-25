@@ -14,6 +14,12 @@
     display: flex;
     justify-content: flex-start;
     margin: 20px 0;
+    .selectedRoles{
+      width: 100px;
+      ul.listbox{
+        width: 200px;
+      }
+    }
   }
   .userSearch{
     line-height: 50px;

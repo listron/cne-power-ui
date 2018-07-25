@@ -12,6 +12,8 @@ class Forget extends Component {
     checkPhoneCode: PropTypes.func,
     resetPassword: PropTypes.func,
     phoneNum: PropTypes.string,
+    phoneCodeRegister: PropTypes.func,
+    pageTab: PropTypes.string,
   }
   constructor(props) {
     super(props);
@@ -33,6 +35,8 @@ class Forget extends Component {
           checkPhoneCode={this.props.checkPhoneCode}
           resetPassword={this.props.resetPassword}
           phoneNum={this.props.phoneNum}
+          phoneCodeRegister={this.props.phoneCodeRegister}
+          pageTab={this.props.pageTab}
         />
       </div>
     );
@@ -48,6 +52,7 @@ const mapDispatchToProps = (dispatch) => ({
   sendCode: params => dispatch({ type: LoginAction.SEND_CODE_SAGA, params}),
   checkPhoneCode: params => dispatch({ type: LoginAction.CHECK_CODE_SAGA, params}),
   resetPassword: params => dispatch({ type: LoginAction.RESET_PASSWORD_SAGA, params }),
+  phoneCodeRegister: params => dispatch({ type: LoginAction.PHONE_CODE_REGISTER_SAGA, params}),
 })
 
 export default connect(mapStateToProps,mapDispatchToProps)(Forget);

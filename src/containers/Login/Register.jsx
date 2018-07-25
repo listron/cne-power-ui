@@ -14,12 +14,21 @@ class Register extends Component {
     changeLoginPage: PropTypes.func,
     sendCode: PropTypes.func,
     signupCount: PropTypes.number,
-    phoneRegister: PropTypes.func,
     registerStep: PropTypes.number,
     checkEnterpriseDomain: PropTypes.func,
     getLogin: PropTypes.func,
-    domainIsRegister: PropTypes.number,
-    nameIsRegister: PropTypes.number,
+    domainIsRegister: PropTypes.string,
+    nameIsRegister: PropTypes.string,
+    phoneNum: PropTypes.string,
+    enterpriseDomian: PropTypes.string,
+    enterpriseName: PropTypes.string,
+    isUserRegister: PropTypes.string,
+    registerEnterprise: PropTypes.func,
+    checkPhoneRegister: PropTypes.func,
+    isPhoneRegister: PropTypes.string,
+    phoneCodeRegister: PropTypes.func,
+    enterpriseId: PropTypes.string,
+    pageTab: PropTypes.string,
   }
   constructor(props) {
     super(props);
@@ -27,6 +36,17 @@ class Register extends Component {
   changePage = (pageTab) =>{
     this.props.changeLoginPage({pageTab})
   }
+  registerEnterprise = (data) => {
+    let params = {
+      phoneNum: this.props.phoneNum,
+      enterpriseDomian: this.props.enterpriseDomian,
+      enterpriseName: this.props.enterpriseName,
+      userName: data.userName,
+      password: data.password,
+      confirmPwd: data.confirmPwd,
+    }
+    this.props.registerEnterprise(params);
+  } 
   render() {
     const { pageTab } = this.props;
     return (
@@ -43,12 +63,18 @@ class Register extends Component {
             <TabPane tab="注册企业" key="register">
               <RegisterForm 
                 sendCode={this.props.sendCode}
-                phoneRegister={this.props.phoneRegister}
                 registerStep={this.props.registerStep}
                 checkEnterpriseDomain={this.props.checkEnterpriseDomain}
                 getLogin={this.props.getLogin}
+                registerEnterprise={this.registerEnterprise}
                 domainIsRegister={this.props.domainIsRegister}
                 nameIsRegister={this.props.nameIsRegister}
+                isUserRegister={this.props.isUserRegister}
+                checkPhoneRegister={this.props.checkPhoneRegister}
+                isPhoneRegister={this.props.isPhoneRegister}
+                phoneCodeRegister={this.props.phoneCodeRegister}
+                enterpriseId={this.props.enterpriseId}
+                pageTab={this.props.pageTab}
               />
             </TabPane>
           </Tabs>
@@ -61,11 +87,20 @@ const mapStateToProps = (state) => ({
   registerStep: state.login.get('registerStep'),
   domainIsRegister: state.login.get('domainIsRegister'),
   nameIsRegister: state.login.get('nameIsRegister'),
+  phoneNum: state.login.get('phoneNum'),
+  enterpriseDomian: state.login.get('enterpriseDomian'),
+  enterpriseName: state.login.get('enterpriseName'),
+  isUserRegister: state.login.get('isUserRegister'),
+  isPhoneRegister: state.login.get('isPhoneRegister'),
+  enterpriseId: state.login.get('enterpriseId'),
 })
 const mapDispatchToProps = (dispatch) => ({
   sendCode: params => dispatch({type: LoginAction.SEND_CODE_SAGA, params}),
-  phoneRegister: params => dispatch({ type: LoginAction.CHECK_PHONE_REGISTER_SAGA, params }),
   checkEnterpriseDomain: params => dispatch({ type: LoginAction.CHECK_ENTERPRISE_DOMAIN_SAGA, params}),
   getLogin: params => dispatch({type: LoginAction.GET_LOGIN_SAGA, params}),
+  registerEnterprise: params => dispatch({ type: LoginAction.REGISTER_ENTERPRISE_SAGA, params}),
+  checkUserRegister: params => dispatch({ type: LoginAction.CHECK_USER_REGISTER_SAGA, params}),
+  checkPhoneRegister: params => dispatch({ type: LoginAction.CHECK_PHONE_REGISTER_SAGA, params}),
+  phoneCodeRegister: params => dispatch({ type: LoginAction.PHONE_CODE_REGISTER_SAGA, params}),
 })
 export default connect(mapStateToProps, mapDispatchToProps)(Register);

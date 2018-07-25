@@ -28,8 +28,8 @@ class LoginLayout extends Component {
         <div className={styles.preLoginContent}>
           {pageTab==='login' && <Login changeLoginPage={changeLoginPage} pageTab={pageTab} />}
           {pageTab==='register' && <Register changeLoginPage={changeLoginPage} pageTab={pageTab} />}
-          {pageTab==='joinIn' && <JoinIn changeLoginPage={changeLoginPage} />}
-          {pageTab==='forget' && <Forget changeLoginPage={changeLoginPage} />}
+          {pageTab==='joinIn' && <JoinIn changeLoginPage={changeLoginPage} pageTab={pageTab} />}
+          {pageTab==='forget' && <Forget changeLoginPage={changeLoginPage} pageTab={pageTab} />}
         </div>
       </div>
     );
