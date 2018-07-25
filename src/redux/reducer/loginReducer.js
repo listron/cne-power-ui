@@ -7,7 +7,8 @@ var initState = immutable.fromJS({
   pageTab: 'login',//四个页关键字：longin,register,joinIn,forget
   loginMethod: 'password', //登录方式 password，phoneCheck，QRcode
   phoneCodeNext: 'login',//验证手机号验证码的下一步 login/join/register/forget 
-  registerStep: 1,//注册企业步骤关键字，1-账户验证，2-企业信息，3-完善个人信息==》优先写页面内
+  registerStep: 1,//注册企业步骤，1-账户验证，2-企业信息，3-完善个人信息==》优先写页面内
+  joinStepReducer: 1,//加入企业步骤，1-输入企业，2-手机号验证，3-完善个人信息==》优先写页面内
   domainIsRegister: '2',//域名 0-无效，1-有效
   nameIsRegister: '2',//企业名称 0-已注册，1-未注册
   isJoined: 0,// 0 用户未加入过企业；1：用户加入过企业
@@ -44,6 +45,8 @@ const loginReducer = (state = initState, action) => {
   switch (action.type) {
     case LoginAction.CHANGE_LOGIN_PAGE:
       return state.set('pageTab', action.params.pageTab);
+    case LoginAction.CHANGE_JOIN_STEP_SUCCESS:
+      return state.set('joinStepReducer', action.params.joinStepReducer)
     case LoginAction.LOGIN_FETCH:
       return state.set('isFetching', true);
     case LoginAction.GET_LOGIN_SUCCESS:
@@ -57,21 +60,25 @@ const loginReducer = (state = initState, action) => {
       return state.set('isFetching', false)
                   .set('phoneNum', action.params.phoneNum);
     case LoginAction.CHECK_CODE_SUCCESS:
-      return state.set('isFetching', false)
-                  .set('phoneNum', action.params.phoneNum)
-                  .set('enterpriseId', action.data.enterpriseId)
-                  .set('username', action.data.username);
+      return state.merge(immutable.fromJS(action.payload)).set('loading', false);
+      // return state.set('isFetching', false)
+      //             .set('phoneNum', action.params.phoneNum)
+      //             .set('enterpriseId', action.data.enterpriseId)
+      //             .set('username', action.data.username)
+      //             .set('registerStep', action.params.registerStep);
     case LoginAction.CHECK_PHONE_REGISTER_SUCCESS:
       return state.set('isPhoneRegister', action.data.isRegister)
     case LoginAction.PHONE_CODE_REGISTER_SUCCESS:
-      return state.merge(immutable.fromJS(action.payload)).set('loading', false)
+      return state;
+      // return state.merge(immutable.fromJS(action.payload)).set('loading', false)
     case LoginAction.CHECK_ENTERPRISE_DOMAIN_SUCCESS:
       return state.set('domainIsRegister', action.data.data.isRegister)
                   .set('enterpriseDomian', action.params.enterpriseDomian);
     case LoginAction.CHECK_ENTERPRISE_NAME_SUCCESS:
       return state.set('isFetching', false)
                   .set('nameIsRegister', action.data.data.isRegister)
-                  .set('enterpriseName', action.params.enterpriseName);
+                  .set('enterpriseName', action.params.enterpriseName)
+                  .set('registerStep', 3 );
     case LoginAction.CHECK_USER_REGISTER_SUCCESS:
       return state.set('isFetching', false)
                   .set('isUserRegister', action.data.data.isRegister);

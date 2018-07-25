@@ -23,6 +23,8 @@ class JoinIn extends Component {
     username: PropTypes.string,
     joinResult: PropTypes.number,
     pageTab: PropTypes.string,
+    joinStepReducer: PropTypes.number,
+    changeJoinStep: PropTypes.func,
   }
   constructor(props) {
     super(props);
@@ -53,6 +55,8 @@ class JoinIn extends Component {
           username={this.props.username}
           joinResult={this.props.joinResult}
           pageTab={this.props.pageTab}
+          joinStepReducer={this.props.joinStepReducer}
+          changeJoinStep={this.props.changeJoinStep}
         />
       </div>
     );
@@ -68,6 +72,8 @@ const mapStateToProps = (state) => ({
   isPhoneRegister: state.login.get('isPhoneRegister'),
   username: state.login.get('username'),
   joinResult: state.login.get('joinResult'),
+  joinStepReducer: state.login.get('joinStepReducer'),
+  
 })
 
 const mapDispatchToProps = (dispatch) => ({
@@ -77,6 +83,7 @@ const mapDispatchToProps = (dispatch) => ({
   joinEnterprise: params => dispatch({ type: LoginAction.JOIN_ENTERPRISE_SAGA, params}),
   // checkPhoneRegister: params => dispatch({ type: LoginAction.CHECK_PHONE_REGISTER_SAGA, params}),
   phoneCodeRegister: params => dispatch({ type: LoginAction.PHONE_CODE_REGISTER_SAGA, params}),
+  changeJoinStep: params => dispatch({type: LoginAction.CHANGE_JOIN_STEP_SAGA, params})
 })
 
 export default connect(mapStateToProps,mapDispatchToProps)(JoinIn);

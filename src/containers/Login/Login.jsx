@@ -23,6 +23,7 @@ class Login extends Component {
     checkPhoneRegister: PropTypes.func,
     phoneCodeRegister: PropTypes.func,
     username: PropTypes.string,
+    changeJoinStep: PropTypes.func,
   }
   constructor(props) {
     super(props);
@@ -67,6 +68,7 @@ class Login extends Component {
                 phoneCodeRegister={this.props.phoneCodeRegister}
                 username={this.props.username}
                 pageTab={this.props.pageTab}
+                changeJoinStep={this.props.changeJoinStep}
               />
             </TabPane>
             <TabPane tab="注册企业" key="register">
@@ -91,6 +93,7 @@ const mapDispatchToProps = (dispatch) => ({
   checkCodeLogin: params => dispatch({ type: LoginAction.CHECK_CODE_SAGA, params}),
   // checkPhoneRegister: params => dispatch({ type: LoginAction.CHECK_PHONE_REGISTER_SAGA, params}),
   phoneCodeRegister: params => dispatch({ type: LoginAction.PHONE_CODE_REGISTER_SAGA, params}),
+  changeJoinStep: params => dispatch({type: LoginAction.CHANGE_JOIN_STEP_SAGA, params}),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

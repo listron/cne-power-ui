@@ -15,7 +15,15 @@ function *changeLoginStore(action){
     params,
   })
 }
-
+//改变加入企业步骤
+function *changeJoinStep(action){
+  const { params } = action;
+  console.log(action,params)
+  yield put({
+    type: LoginAction.CHANGE_JOIN_STEP_SUCCESS,
+    params,
+  })
+}
 //账号密码登录
 function *getLogin(action){
   let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.login;
@@ -67,9 +75,10 @@ function *checkCode(action){
   let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.loginPhoneCode;
   // let url = "/mock/api/v3/login/phonecode";
   console.log(action)
+  let { params } =action;
   yield put({ type: LoginAction.LOGIN_FETCH})
   try{
-    const response = yield call( axios.post, url, action.params);
+    const response = yield call( axios.post, url, {'phoneNum':action.params.phoneNum, 'verificationCode': action.params.verificationCode});
     console.log(response)
     if(response.data.data){
       setCookie('authData',JSON.stringify(response.data.access_token));
@@ -77,8 +86,10 @@ function *checkCode(action){
       setCookie('userName', response.data.username);
       yield put({
         type: LoginAction.CHECK_CODE_SUCCESS,
-        params: action.params,
-        data: response.data.data,
+        payload: {
+          ...params,
+          ...response.data.data,
+        },
       });
     }else{
       yield put({ type: LoginAction.CHECK_CODE_FAIL, data:{ message: response.data.message, code: response.data.code}})
@@ -93,18 +104,17 @@ function *checkCode(action){
 function *phoneCodeRegister(action){
   // let url = "/mock/api/v3/login/phoneregister";
   let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.phoneCodeRegister;
-  let { payload } = action;
+  let { params } = action;
+  console.log(action)
   try{
-
-    const response = yield call(axios.post, url, payload);
+    const response = yield call(axios.post, url, {'phoneNum':action.params.phoneNum, 'verificationCode': action.params.verificationCode});
     console.log(response)
     if(response.data.code === '10000'){
       yield put({type: LoginAction.CHECK_CODE_SAGA, params: action.params})
       yield put({
-        type: LoginAction.PHONE_CODE_REGISTER_SUCCESS, 
-        payload: {
-          ...payload,
-        }
+        type: LoginAction.PHONE_CODE_REGISTER_SUCCESS,
+        params: action.params,
+        data: response.data.data,
       })
     }else{
       yield put({type: LoginAction.PHONE_CODE_REGISTER_FAIL, data: {error: response.data.message}})
@@ -292,4 +302,6 @@ export function* watchLogin() {
   yield takeLatest(LoginAction.CHECK_USER_REGISTER_SAGA, checkUserRegister);
   yield takeLatest(LoginAction.CHECK_PHONE_REGISTER_SAGA, checkPhoneRegister);
   yield takeLatest(LoginAction.PHONE_CODE_REGISTER_SAGA, phoneCodeRegister);
+  yield takeLatest(LoginAction.CHANGE_JOIN_STEP_SAGA, changeJoinStep);
+
 }

@@ -31,19 +31,9 @@ class RegisterForm extends Component{
   constructor(props){
     super(props);
     this.state = {
-      current: 0,
+      // current: 0,
       timeValue: 0,
     }
-  }
-
-  componentWillReceiveProps(nextProps){
-    if(nextProps.registerStep === 2 && this.props.registerStep === 1){
-      this.next();
-    }
-    if(nextProps.domainIsRegister === '1' && nextProps.nameIsRegister === '1'){
-      this.next();
-    }
-    
   }
   
   onEnterpriseInfo = (e) => {
@@ -70,8 +60,7 @@ class RegisterForm extends Component{
     e.preventDefault();
     this.props.form.validateFields(['phoneNum','verificationCode'],(err, values) => {
       if(!err){
-        let { pageTab } = this.props;
-        this.props.phoneCodeRegister({...values, 'registerStep': 1});
+        this.props.phoneCodeRegister({...values, 'registerStep': 2});
       }
     })
   }
@@ -98,17 +87,15 @@ class RegisterForm extends Component{
   }
 
   checkUserRegister = (e) => {
-    console.log(e)
     this.props.checkUserRegister(e.target.value);
   }
   checkPhoneRegister = (e) => {
-    console.log(e)
     this.props.checkPhoneRegister(e.target.value);
   }
-  next = () => {
-    const current = this.state.current !== 2 ? this.state.current + 1 : 2;
-    this.setState({ current })
-  }
+  // next = () => {
+  //   const current = this.state.current !== 2 ? this.state.current + 1 : 2;
+  //   this.setState({ current })
+  // }
 
   render(){
     const { getFieldDecorator } = this.props.form;
@@ -239,7 +226,7 @@ class RegisterForm extends Component{
           </div>
         ),
     }];
-    const { current } = this.state;
+    const current = this.props.registerStep - 1;
     return (
       <div>
         <Steps current={current}>

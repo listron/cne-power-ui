@@ -20,6 +20,7 @@ class LoginForm extends Component{
     phoneCodeRegister: PropTypes.func,
     username: PropTypes.string,
     pageTab: PropTypes.string,
+    changeJoinStep: PropTypes.func,
   }
 
   constructor(props){
@@ -36,7 +37,7 @@ class LoginForm extends Component{
         if(this.state.showPasswordLogin){
           this.props.fetchLogin(values);
         }else{
-          this.props.phoneCodeRegister(...values);
+          this.props.phoneCodeRegister(values);
         }
       }
     })
@@ -67,13 +68,13 @@ class LoginForm extends Component{
     })
   }
   checkPhoneRegister = (e) => {
-    console.log(e)
     this.props.checkPhoneRegister(e.target.value);
   }
   jumpPersonalInfo = () => {
     this.props.form.validateFields(['phoneNum', 'verificationCode'], (err, values) => {
       if(!err){
-        this.props.changePage('joinIn')
+        this.props.changePage('joinIn');
+        this.props.changeJoinStep({'joinStepReducer': 3})
       }
     })
   }
