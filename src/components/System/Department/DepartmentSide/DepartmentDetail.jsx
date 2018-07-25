@@ -97,6 +97,10 @@ class DepartmentDetail extends Component {
     }
   }
 
+  backToList = () => {
+    this.props.changeDepartmentStore({showPage: 'list'});
+  }
+
   render(){
     const { departmentDetail } = this.props;
     const { showWarningTip, warningTipText } = this.state;
@@ -110,7 +114,7 @@ class DepartmentDetail extends Component {
           <span className={styles.handleArea} >
             <Icon type="arrow-up" className={styles.previous} title="上一个" onClick={this.preDepartment} />
             <Icon type="arrow-down" className={styles.next} title="下一个" onClick={this.nextDepartment} />
-            <Icon type="arrow-left" className={styles.backIcon} onClick={this.cancelAdd} />
+            <Icon type="arrow-left" className={styles.backIcon} onClick={this.backToList} />
           </span>
         </div>
         <div className={styles.departmentInfor} >
