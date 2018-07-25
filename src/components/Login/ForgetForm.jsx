@@ -111,8 +111,8 @@ class ForgetForm extends Component{
       },
     };
     return (
-      <div>
-        <div><span>登录</span>|<span>注册</span></div>
+      <div className={styles.forgetPass}>
+
         {!showConfirmPassword &&
           <div>
             <span>找回密码</span>
@@ -126,16 +126,16 @@ class ForgetForm extends Component{
                   )}
                 </FormItem>
               </div>
-              <div>
+              <div className={styles.checkCodeBox}>
                 <FormItem  >
                   {getFieldDecorator('verificationCode',{
                     rules: [{required: true, message: '请输入验证码'}]
                   })(
-                    <Input prefix={<Icon type="lock" />} placeholder="验证码" />
+                    <Input className={styles.testCode} prefix={<Icon type="lock" />} placeholder="验证码" />
                   )}
                 </FormItem>
-                <Button type="primary" disabled={timeValue !== 0} onClick={this.sendCode} >
-                  {timeValue !== 0 ? `${timeValue}秒后可重发` : "点击获取验证码"}
+                <Button type="primary" disabled={timeValue !== 0} onClick={this.sendCode}  className={styles.queryCode}>
+                  {timeValue !== 0 ? `${timeValue}秒后可重发` : "获取验证码"}
                 </Button>
               </div>
               <FormItem>
