@@ -8,7 +8,7 @@ var initState = immutable.fromJS({
   loginMethod: 'password', //登录方式 password，phoneCheck，QRcode
   phoneCodeNext: 'login',//验证手机号验证码的下一步 login/join/register/forget 
   registerStep: 1,//注册企业步骤，1-账户验证，2-企业信息，3-完善个人信息==》优先写页面内
-  joinStepReducer: 1,//加入企业步骤，1-输入企业，2-手机号验证，3-完善个人信息==》优先写页面内
+  joinStep: 1,//加入企业步骤，1-输入企业，2-手机号验证，3-完善个人信息==》优先写页面内
   domainIsRegister: '2',//域名 0-无效，1-有效
   nameIsRegister: '2',//企业名称 0-已注册，1-未注册
   isJoined: 0,// 0 用户未加入过企业；1：用户加入过企业
@@ -46,7 +46,7 @@ const loginReducer = (state = initState, action) => {
     case LoginAction.CHANGE_LOGIN_PAGE:
       return state.set('pageTab', action.params.pageTab);
     case LoginAction.CHANGE_JOIN_STEP_SUCCESS:
-      return state.set('joinStepReducer', action.params.joinStepReducer)
+      return state.set('joinStep', action.params.joinStep)
     case LoginAction.LOGIN_FETCH:
       return state.set('isFetching', true);
     case LoginAction.GET_LOGIN_SUCCESS:

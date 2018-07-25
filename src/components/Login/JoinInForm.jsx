@@ -24,7 +24,7 @@ class JoinInForm extends Component{
     username: PropTypes.string,
     joinResult: PropTypes.number,
     changeJoinStep: PropTypes.func,
-    joinStepReducer: PropTypes.number,
+    joinStep: PropTypes.number,
   }
 
   constructor(props){
@@ -32,14 +32,6 @@ class JoinInForm extends Component{
     this.state = {
       timeValue: 0,
       showEnterpriseInfo: false,
-      joinInStep: 1,
-    }
-  }
-  componentWillMount(){
-    if(this.props.username === null){
-      this.setState({
-        joinInStep: 3,
-      })
     }
   }
   onJoinEnterprise = () => {
@@ -98,7 +90,7 @@ class JoinInForm extends Component{
   phoneCodeRegister = () => {
     this.props.form.validateFields(['phoneNum','verificationCode'], (err, values) => {
       if(!err){
-        this.props.phoneCodeRegister({...values, 'joinStepReducer': 3})
+        this.props.phoneCodeRegister({...values, 'joinStep': 3})
       }
     })
   }
@@ -121,12 +113,12 @@ class JoinInForm extends Component{
   }
   changeJoinStep = (e) => {
     e.preventDefault();
-    this.props.changeJoinStep({'joinStepReducer': 2})
+    this.props.changeJoinStep({'joinStep': 2})
   }
   render(){
     const { getFieldDecorator, getFieldsError } = this.props.form;
-    const { enterpriseName, isPhoneRegister, joinResult, joinStepReducer } = this.props;
-    const { showEnterpriseInfo, joinInStep } = this.state;
+    const { enterpriseName, isPhoneRegister, joinResult, joinStep } = this.props;
+    const { showEnterpriseInfo } = this.state;
     console.log(enterpriseName);
     const formItemLayout = {
       labelCol: {
@@ -152,7 +144,7 @@ class JoinInForm extends Component{
     };
     return (
       <div>
-        {joinStepReducer === 1 &&
+        {joinStep === 1 &&
           <Form onSubmit={this.getEnterpriseInfo} >
             <FormItem label="企业名称" {...formItemLayout}>
               {getFieldDecorator('enterpriseName',{
@@ -181,7 +173,7 @@ class JoinInForm extends Component{
             {/* </Spin> */}
           </Form>
         }
-        {joinStepReducer === 2 && 
+        {joinStep === 2 && 
           <div>
             <span>{enterpriseName}</span>
             <Form onSubmit={this.phoneCodeRegister} >
@@ -213,7 +205,7 @@ class JoinInForm extends Component{
             </Form>
           </div>
         }
-        {joinStepReducer === 3 &&
+        {joinStep === 3 &&
           (joinResult ? <span>等待管理员审核</span> : 
           <div>
             <span>{enterpriseName}</span>

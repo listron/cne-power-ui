@@ -23,7 +23,7 @@ class JoinIn extends Component {
     username: PropTypes.string,
     joinResult: PropTypes.number,
     pageTab: PropTypes.string,
-    joinStepReducer: PropTypes.number,
+    joinStep: PropTypes.number,
     changeJoinStep: PropTypes.func,
   }
   constructor(props) {
@@ -55,7 +55,7 @@ class JoinIn extends Component {
           username={this.props.username}
           joinResult={this.props.joinResult}
           pageTab={this.props.pageTab}
-          joinStepReducer={this.props.joinStepReducer}
+          joinStep={this.props.joinStep}
           changeJoinStep={this.props.changeJoinStep}
         />
       </div>
@@ -72,7 +72,7 @@ const mapStateToProps = (state) => ({
   isPhoneRegister: state.login.get('isPhoneRegister'),
   username: state.login.get('username'),
   joinResult: state.login.get('joinResult'),
-  joinStepReducer: state.login.get('joinStepReducer'),
+  joinStep: state.login.get('joinStep'),
   
 })
 

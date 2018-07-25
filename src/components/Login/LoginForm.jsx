@@ -74,7 +74,7 @@ class LoginForm extends Component{
     this.props.form.validateFields(['phoneNum', 'verificationCode'], (err, values) => {
       if(!err){
         this.props.changePage('joinIn');
-        this.props.changeJoinStep({'joinStepReducer': 3})
+        this.props.changeJoinStep({'joinStep': 3})
       }
     })
   }
