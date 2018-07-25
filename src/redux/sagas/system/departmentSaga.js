@@ -101,6 +101,32 @@ function *getDepartmentDetail(action){
   }
 }
 
+function *getOtherPageDetail(action){//部门详情页第一条查看前一条详情/最后一条看下一条详情=>翻页+请求详情
+  const { payload, previous } = action;
+  const listUrl = '/mock/system/departmentList';
+  // const listUrl = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.system.getDepartmentList}`
+  try{
+    yield put({ type:departmentAction.DEPARTMENT_FETCH });
+    const listResponse = yield call(axios.post,listUrl,payload);
+    const { departmentData, totalNum } = listResponse.data.data;
+    const { departmentId } = previous?departmentData[departmentData.length - 1]:departmentData[0];
+    const detailUrl = '/mock/system/departmentDetail';
+    // const detailUrl = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.system.departmentInfor}/${departmentId}`
+    const detailResponse = yield call(axios.get,detailUrl);
+    yield put({
+      type:  departmentAction.GET_DEPARTMENT_COMMON_FETCH_SUCCESS,
+      payload:{
+        ...payload,
+        departmentData,
+        totalNum,
+        departmentDetail: detailResponse.data.data,
+      },
+    });
+  }catch(e){
+    console.log(e);
+  }
+}
+
 function *addDepartmentInfor(action){//新建部门信息
   const { payload } = action;
   const url = '/mock/system/addDepartment';
@@ -199,6 +225,7 @@ export function* watchDepartment() {
   yield takeLatest(departmentAction.GET_ALL_USERS_SAGA,getAllUsers);
   yield takeLatest(departmentAction.GET_ALL_DEPARTMENT,getAllDepartment);
   yield takeLatest(departmentAction.GET_DEPARTMENT_DETAIL_SAGA, getDepartmentDetail);
+  yield takeLatest(departmentAction.GET_OTHER_PAGE_DEPARTMENT_DETAIL_SAGA,getOtherPageDetail);
   yield takeLatest(departmentAction.ADD_DEPARTMENT_INFO_SAGA, addDepartmentInfor);
   yield takeLatest(departmentAction.EDIT_DEPARTMENT_INFO_SAGA,editDepartmentInfor);
 }

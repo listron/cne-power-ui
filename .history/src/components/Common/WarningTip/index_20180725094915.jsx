@@ -33,7 +33,7 @@ class WarningTip extends Component {
   }
   
   render(){
-    const { style, value, onCancel, onOK } = this.props;
+    const { style, value } = this.props;
     return (
       <Modal
         onOk={this.onOK}
@@ -52,8 +52,8 @@ class WarningTip extends Component {
             <span className={styles.text}>{value}</span>
           </div>
           <div className={styles.handle}>
-            {onCancel && <span onClick={this.onCancel}>取消</span>}
-            {onOK && <span onClick={this.onOK}>确认</span>}
+            <span onClick={this.onCancel}>取消</span>
+            <span onClick={this.onOK}>确认</span>
           </div>
         </div>
       </Modal>
