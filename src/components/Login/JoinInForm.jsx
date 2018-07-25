@@ -151,7 +151,7 @@ class JoinInForm extends Component{
       },
     };
     return (
-      <div>
+      <div className={styles.comName}>
         {joinInStep === 1 &&
           <Form onSubmit={this.getEnterpriseInfo} >
             <FormItem label="企业名称" {...formItemLayout}>
@@ -195,16 +195,16 @@ class JoinInForm extends Component{
                 </FormItem>
                 {isPhoneRegister === '0' && <span>手机号已经注册，请登录</span>}
               </div>
-              <div>
-                <FormItem  >
+              <div className={styles.checkCodeBox}>
+                <FormItem >
                   {getFieldDecorator('verificationCode',{
                     rules: [{required: true, message: '请输入验证码'}]
                   })(
-                    <Input prefix={<Icon type="lock" />} placeholder="验证码" />
+                    <Input className={styles.testCode} prefix={<Icon type="lock" />} placeholder="验证码" />
                   )}
                 </FormItem>
-                <Button type="primary" disabled={this.state.timeValue !== 0} onClick={this.sendCode} >
-                  {this.state.timeValue !== 0 ? `${this.state.timeValue}秒后可重发` : "点击获取验证码"}
+                <Button  className={styles.queryCode} type="primary" disabled={this.state.timeValue !== 0} onClick={this.sendCode} >
+                  {this.state.timeValue !== 0 ? `${this.state.timeValue}秒后可重发` : "获取验证码"}
                 </Button>
               </div>
               <FormItem>
