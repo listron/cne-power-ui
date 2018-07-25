@@ -49,6 +49,9 @@ module.exports ={
     JOIN_ENTERPRISE_SAGA: null,
     JOIN_ENTERPRISE_SUCCESS: null,
     JOIN_ENTERPRISE_FAIL: null,
+    CHANGE_JOIN_STEP_SAGA: null,
+    CHANGE_JOIN_STEP_SUCCESS: null,
+    CHANGE_JOIN_STEP_FAIL: null,
     // 重置密码
     RESET_PASSWORD_SAGA: null,
     RESET_PASSWORD_SUCCESS: null,

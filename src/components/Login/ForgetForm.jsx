@@ -115,7 +115,7 @@ class ForgetForm extends Component{
 
         {!showConfirmPassword &&
           <div>
-            <span>找回密码</span>
+            <span className={styles.findPass}>找回密码</span>
             <Form onSubmit={this.phoneCodeRegister} >
               <div>
                 <FormItem>

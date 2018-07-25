@@ -6,7 +6,7 @@ import { roleAction } from '../../../constants/actionTypes/system/roleAction';
 import PropTypes from 'prop-types';
 import UserDetail from '../../../components/System/User/UserDetail';
 import UserEdit from '../../../components/System/User/UserEdit';
-import UserList from '../../../components/System/User/UserList';
+import UserList from '../../../components/System/User/UserList/UserList';
 
 class User extends Component {
   static propTypes = {
