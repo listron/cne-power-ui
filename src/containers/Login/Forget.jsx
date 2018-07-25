@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button } from 'antd';
-import styles from './login.scss';
+import styles from './loginLayout.scss';
 import ForgetForm from '../../components/Login/ForgetForm';
 import { LoginAction } from '../../constants/actionTypes/loginAction';
 import { connect } from 'react-redux';
