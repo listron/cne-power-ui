@@ -37,6 +37,7 @@ class DepartmentTable extends Component {
     this.state = {
       showWarningTip: false,
       warningTipText: '',
+      hiddenWarningTipCancelText: false
     }
   }
 
@@ -63,7 +64,12 @@ class DepartmentTable extends Component {
   }
   onWarningTipOK = () => {//删除部门，todo
     const { selectedDepartment,deleteDepartment } = this.props;
-    deleteDepartment(selectedDepartment.map(e=>e.departmentId))
+    const selectedDepartmentHasChild = selectedDepartment.map(e=>e.hasChildren).some(e=>!!e);
+    this.setState({
+      showWarningTip:false,
+      hiddenWarningTipCancelText: false
+    })
+    selectedDepartmentHasChild || deleteDepartment(selectedDepartment.map(e=>e.departmentId))
   }
   cancelRowSelect = () => {//取消行选择
     this.props.changeDepartmentStore({
@@ -99,19 +105,36 @@ class DepartmentTable extends Component {
       departmentId
     })
   }
-  departmentHandle = (value) => {//--todo编辑，删除，分配用户/电站
+  departmentHandle = (value) => {//编辑，删除，分配用户/电站
     const { selectedDepartment } = this.props;
     if(value==='edit'){
       this.props.changeDepartmentStore({
         showPage: 'edit',
         departmentDetail: selectedDepartment[0],
       });
-    }else if(value==='delete'){//信息提示栏
-      // let departmentRelation = selectedDepartment.map(e=>e.relation)     //todo=>根据选中电站确定警告弹出框文字
-      this.setState({
-        showWarningTip: true,
-        warningTipText: '删除后，将取消成员关联！'
-      })
+    }else if(value==='delete'){
+      const selectedDepartmentHasChild = selectedDepartment.map(e=>e.hasChildren).some(e=>!!e);
+      const selectedDepartmentHasMember = selectedDepartment.map(e=>e.hasMember).some(e=>!!e);
+      if(selectedDepartmentHasChild){
+        this.setState({
+          showWarningTip: true,
+          warningTipText: '请先删除子部门!',
+          hiddenWarningTipCancelText: true
+        })
+      }else if(selectedDepartmentHasMember){
+        this.setState({
+          showWarningTip: true,
+          warningTipText: '删除后,将取消成员关联!',
+          hiddenWarningTipCancelText: false
+        })
+      }else{
+        this.setState({
+          showWarningTip: true,
+          warningTipText: '是否确认删除!',
+          hiddenWarningTipCancelText: false
+        })
+      }
+      
     }else if(value === 'assignUser'){
       this.props.changeDepartmentStore({
         showAssignUserModal: true,
@@ -185,10 +208,10 @@ class DepartmentTable extends Component {
 
   render(){
     const { departmentData, selectedDepartment, totalNum, loading } = this.props;
-    const { showWarningTip, warningTipText } = this.state;
+    const { showWarningTip, warningTipText, hiddenWarningTipCancelText } = this.state;
     return (
       <div className={styles.departmentList}>
-        {showWarningTip && <WarningTip onCancel={this.cancelWarningTip} onOK={this.onWarningTipOK} value={warningTipText} />}
+        {showWarningTip && <WarningTip onCancel={this.cancelWarningTip} onOK={this.onWarningTipOK} value={warningTipText} hiddenCancel={hiddenWarningTipCancelText} />}
         <div className={styles.departmentListTop} >
           <div>
             <Button className={styles.addDepartment} onClick={this.onDepartmentAdd}>
