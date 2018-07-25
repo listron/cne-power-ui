@@ -7,7 +7,7 @@ module.exports = {
     GET_DEFECT_LIST_SAGA: null,
     GET_DEFECT_LIST_SUCCESS: null,
     GET_DEFECT_LIST_FAIL: null,
-    //Batch operation
+    //Batch operation --1122
     DELETE_BATCH_DEFECT_SAGA: null,
     DELETE_BATCH_DEFECT_FAIL: null,
     SEND_BATCH_DEFECT_SAGA: null,
@@ -17,7 +17,7 @@ module.exports = {
     CLOSE_BATCH_DEFECT_SAGA: null,
     CLOSE_BATCH_DEFECT_FAIL: null,
     CHECK_BATCH_DEFECT_SAGA: null,
-    CHECK_BATCH_DEFECT_FAIL:null,
+    CHECK_BATCH_DEFECT_FAIL: null,
     //Operation
     SEND_DEFECT_SAGA: null,
     SEND_DEFECT_FAIL: null,
