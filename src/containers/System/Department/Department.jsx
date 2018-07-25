@@ -48,6 +48,11 @@ class Department extends Component {
     })
   }
 
+  
+  onShowSideChange = ({showSidePage}) => {
+    this.setState({ showSidePage });
+  }
+
   onToggleSide = () => {
     const { showPage } = this.props;
     this.setState({
@@ -68,7 +73,7 @@ class Department extends Component {
           timeout={500}
           effect="side"
         >
-          <DepartmentSide {...this.props} showSidePage={showSidePage} />
+          <DepartmentSide {...this.props} showSidePage={showSidePage} onShowSideChange={this.onShowSideChange} />
         </TransitionContainer>
         {showAssignStationModal && null}
         {showAssignUserModal && null}

@@ -7,8 +7,9 @@ import styles from './departmentSide.scss';
 
 class DepartmentDetail extends Component {
   static propTypes = {
+    departmentData: PropTypes.array,
     changeDepartmentStore: PropTypes.func,
-    // ignoreEnterpirseEdit: PropTypes.func,
+    onShowSideChange: PropTypes.func,
     departmentDetail: PropTypes.object,
   }
 
@@ -17,6 +18,12 @@ class DepartmentDetail extends Component {
     this.state = {
     }
   }
+
+  onShowSideChange = ({showSidePage}) => {
+    this.props.onShowSideChange({showSidePage:'edit'});
+    this.props.changeDepartmentStore({showPage: 'edit'});
+  }
+  
   setDepartmentUser = () => {
     console.log(this.props.departmentDetail);
   }
@@ -25,14 +32,31 @@ class DepartmentDetail extends Component {
     console.log(this.props.departmentDetail);
   }
 
+  preDepartment = () =>{
+    const { departmentDetail, departmentData } = this.props;
+    console.log(departmentDetail);
+    console.log(departmentData);
+  }
+
+  nextDepartment = () => {
+    const { departmentDetail, departmentData } = this.props;
+    console.log(departmentDetail);
+    console.log(departmentData);
+  }
+
   render(){
-    const { changeDepartmentStore, departmentDetail } = this.props;
+    const { departmentDetail } = this.props;
     let userFullNames = (departmentDetail.userFullNameData && departmentDetail.userFullNameData.length > 0 )? departmentDetail.userFullNameData.map(e=>e.userFullName).join(','):' -- ';
     let stationNames = (departmentDetail.stationNameData && departmentDetail.stationNameData.length > 0 )? departmentDetail.stationNameData.map(e=>e.stationName).join(','):' -- ';
     return (
       <div className={styles.departmentDetail}>
         <div className={styles.detailTop}>
-          <Button className={styles.editButton} onClick={()=>changeDepartmentStore({showPage:'edit'})}>编辑</Button>
+          <Button className={styles.editButton} onClick={()=>this.onShowSideChange({showSidePage:'eidt'})}>编辑</Button>
+          <span className={styles.handleArea} >
+            <Icon type="arrow-up" className={styles.previous} title="上一个" onClick={this.preDepartment} />
+            <Icon type="arrow-down" className={styles.next} title="下一个" onClick={this.nextDepartment} />
+            <Icon type="arrow-left" className={styles.backIcon} onClick={this.cancelAdd} />
+          </span>
         </div>
         <div className={styles.departmentInfor} >
           <div>
@@ -67,11 +91,11 @@ class DepartmentDetail extends Component {
           </div>
           <div>
             <span className={styles.title}>最后修改人</span>
-            <span className={styles.value}>{departmentDetail.createUser}</span> 
+            <span className={styles.value}>{departmentDetail.updateUser}</span> 
           </div>
           <div>
             <span className={styles.title}>最后修改时间</span>
-            <span className={styles.value}>{departmentDetail.createTime}</span> 
+            <span className={styles.value}>{departmentDetail.updateTime}</span> 
           </div>
         </div>
       </div>

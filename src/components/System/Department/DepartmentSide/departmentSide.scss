@@ -85,12 +85,33 @@
     background-color: #fff;
     .detailTop{
       @include top;
+      justify-content: space-between;
       .editButton{
         &:hover{
           background-color: $themeColor;
           color: #fff;
         }
       }
+      .handleArea{
+        font-size: 20px;
+        .previous{
+          margin-right: 20px;
+          cursor: pointer;
+        }
+        .next{
+          margin-right: 28px;
+          cursor: pointer;
+        }
+        .backIcon{
+          height: 100%;
+          line-height: 64px;
+          color: $lightColor;
+          border-left: 1px solid $promptColor;
+          width: 64px;
+          cursor: pointer;
+        }
+      }
+      
     }
     .departmentInfor{//部门信息展示区
       margin: 24px 0 0;

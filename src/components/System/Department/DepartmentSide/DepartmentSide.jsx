@@ -15,7 +15,6 @@ class DepartmentSide extends Component {
     super(props);
   }
 
-
   render(){
     const { showSidePage } = this.props;
     return (
