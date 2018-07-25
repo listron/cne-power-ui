@@ -2,11 +2,12 @@
 
 import React, { Component } from 'react';
 import { Table, Button, Select, Icon,Radio, Popover, Menu, Dropdown, Checkbox, Input,  } from 'antd';
-// import CommonPagination from '../../../Common/CommonPagination';
+import CommonPagination from '../../../Common/CommonPagination';
 import PropTypes from 'prop-types';
 import styles from './userList.scss';
+import UserSearch from './UserSearch'; 
 
-const { Option } = Select.Option;
+const Option = Select.Option;
 const RadioGroup = Radio.Group;
 const RadioButton = Radio.Button;
 class UserList extends Component {
@@ -38,34 +39,20 @@ class UserList extends Component {
     super(props);
     this.state = {
       selectedRowKeys: [],
-      selectedRoles: [],
-      nameValue: '',
-      phoneValue: '',
-      stationValue: '',
     }
   }
-  onCheckboxChange = (e) => {
-    console.log(`checked = ${e.target.checked}`);
-  }
+  // onCheckboxChange = (e) => {
+  //   console.log(`checked = ${e.target.checked}`);
+  //   console.log(e.target);
+  //   if(e.target.checked){
+  //     this.state.selectedRoles.push
+  //     this.setState({
+  //       // selectedRoles.filter
+  //     })
+      
+  //   }
+  // }
 
-  onChangeStatus = (e) => {
-    this.props.onChangeStatus(Number(e.target.value));
-  }
-  onUserSearch = () => {
-    const { nameValue, phoneValue, stationValue } = this.state;
-    this.props.onUserSearch({
-      userName: nameValue,
-      phoneNum: phoneValue,
-      stationName: stationValue,
-    })
-  }
-  onSearchChange = (e) => {
-    this.setState({
-      nameValue: '',
-      phoneValue: '',
-      stationValue: '',
-    })
-  }
   getUserStaion = (text) => {
     switch(text){
       case 0:
@@ -163,15 +150,17 @@ class UserList extends Component {
       selectedRowKeys: [],
     })
   }
-  handleMenuClick = () => {
-    console.log('-----------------');
+  handleMenuClick = (e) => {
+    // console.log(e);
+    // console.log(e.target)
+    // this.state.selectedRoles.push(e.target.value);
+    // this.setState({ selectedRoles: this.state.selectedRoles})
   }
-  
-  
-  
+
   render(){
-    const { userData, selectedUser, totalNum, loading, currentPage, pageSize, roleData, userStatus } = this.props;
-    const { selectedRowKeys, selectedRoles, nameValue, phoneValue, stationValue } = this.state;
+    const { userData, totalNum, loading, currentPage, pageSize, } = this.props;
+    const { selectedRowKeys, selectedRoles, } = this.state;
+    console.log(selectedRoles)
     const rowSelection={
       selectedRowKeys,
       onChange: (selectedRowKeys,selectedRows) => {
@@ -194,48 +183,10 @@ class UserList extends Component {
         this.props.onChangePage(current);
       }
     }
-    const menu=(
-      <Menu onClick={this.handleMenuClick}>
-        {roleData.toJS().map((item,index) => {
-          console.log(item)
-          return <Menu.Item key={index}><Checkbox onChange={this.onCheckboxChange}>{item}</Checkbox></Menu.Item>;
-        })}
-      </Menu>
-    )
-
+    
     return (
       <div className={styles.userList}>
-        <div className={styles.userFilter}>
-          <div>
-            <span>筛选条件</span>
-            <Dropdown overlay={menu} mutiple="true">
-              <Button style={{ marginLeft: 8 }}>
-                角色 <Icon type="down" />
-              </Button>
-            </Dropdown>
-            {selectedRoles.length !== 0 && 
-              <div>
-                <span>已选条件</span>
-                <Button type="dashed">Dashed</Button>
-              </div>
-            }
-          </div>
-          <div>
-            <span>状态</span>
-            <RadioGroup onChange={this.onChangeStatus} defaultValue="0" value={userStatus} >
-              <RadioButton value="0">全部</RadioButton>
-              <RadioButton value="1">启用</RadioButton>
-              <RadioButton value="2">禁用</RadioButton>
-              <RadioButton value="3">未激活</RadioButton>
-            </RadioGroup>
-          </div>
-        </div>
-        <div className={styles.userSearch}>
-          <span>用户名</span><Input placeholder="请输入用户名" value={nameValue} onChange={this.onSearchChange} />
-          <span>电话</span><Input placeholder="请输入电话" value={phoneValue} onChange={this.onSearchChange} />
-          <span>负责电站</span><Input placeholder="请输入负责电站" value={stationValue} onChange={this.onSearchChange} />
-          <Button onClick={this.onUserSearch}>查询</Button>
-        </div>
+        <UserSearch {...this.props} />
         <Table 
           loading={loading}
           rowSelection={rowSelection}

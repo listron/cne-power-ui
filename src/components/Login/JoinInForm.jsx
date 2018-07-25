@@ -16,6 +16,15 @@ class JoinInForm extends Component{
     sendCode: PropTypes.func,
     checkPhoneCode: PropTypes.func,
     joinEnterprise: PropTypes.func,
+    enterpriseId: PropTypes.string,
+    phoneNum: PropTypes.string,
+    isPhoneRegister: PropTypes.string,
+    checkPhoneRegister: PropTypes.func,
+    phoneCodeRegister: PropTypes.func,
+    username: PropTypes.string,
+    joinResult: PropTypes.number,
+    changeJoinStep: PropTypes.func,
+    joinStep: PropTypes.number,
   }
 
   constructor(props){
@@ -23,13 +32,19 @@ class JoinInForm extends Component{
     this.state = {
       timeValue: 0,
       showEnterpriseInfo: false,
-      joinInStep: 1,
     }
   }
   onJoinEnterprise = () => {
     this.props.form.validateFields((err,values) => {
       if(!err){
-        this.props.joinEnterprise(values);
+        console.log(values);
+        let { phoneNum, enterpriseId } =this.props;
+        let params = {
+          phoneNum,
+          enterpriseId,
+          ...values,
+        }
+        this.props.joinEnterprise(params);
       }
     })
   }
@@ -72,14 +87,10 @@ class JoinInForm extends Component{
     })
   }
 
-  checkPhoneCode = () => {
+  phoneCodeRegister = () => {
     this.props.form.validateFields(['phoneNum','verificationCode'], (err, values) => {
       if(!err){
-        this.props.checkPhoneCode(values);
-        if(this.props.isJoined){
-          this.setState({ joinInStep: 3})
-        }
-        
+        this.props.phoneCodeRegister({...values, 'joinStep': 3})
       }
     })
   }
@@ -93,17 +104,22 @@ class JoinInForm extends Component{
     }
   }
 
-
+  checkPhoneRegister = (e) => {
+    this.props.checkPhoneRegister(e.target.value);
+  }
 
   hasErrors = (fieldsError) => {
     return Object.keys(fieldsError).some(field => fieldsError[field]);
   }
-
+  changeJoinStep = (e) => {
+    e.preventDefault();
+    this.props.changeJoinStep({'joinStep': 2})
+  }
   render(){
     const { getFieldDecorator, getFieldsError } = this.props.form;
-    const { isExist, enterpriseName, loading, isJoined } = this.props;
-    console.log(this.props);
-    const { showEnterpriseInfo, joinInStep } = this.state;
+    const { enterpriseName, isPhoneRegister, joinResult, joinStep } = this.props;
+    const { showEnterpriseInfo } = this.state;
+    console.log(enterpriseName);
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -127,8 +143,8 @@ class JoinInForm extends Component{
       },
     };
     return (
-      <div>
-        {joinInStep === 1 &&
+      <div  className={styles.comName}>
+        {joinStep === 1 &&
           <Form onSubmit={this.getEnterpriseInfo} >
             <FormItem label="企业名称" {...formItemLayout}>
               {getFieldDecorator('enterpriseName',{
@@ -143,7 +159,7 @@ class JoinInForm extends Component{
             {/* <Spin spinning={loading}> */}
               <Modal
                 visible={showEnterpriseInfo}
-                title={isExist === 0 ? "没有此企业，请重新输入" : "点击确认要加入的企业"}
+                title={enterpriseName === null ? "没有此企业，请重新输入" : "点击确认要加入的企业"}
                 footer={null}
                 maskClosable={false}
                 destroyOnClose={true}
@@ -151,44 +167,46 @@ class JoinInForm extends Component{
                 height={228}
                 closable={false}
               >
-                {`${enterpriseName}` === '' ? '' : <Button onClick={() => this.setState({joinInStep : 2 }) }>{enterpriseName}</Button>}
+                {enterpriseName === null ? null : <Button onClick={this.changeJoinStep }>{enterpriseName}</Button>}
                 <br /><Icon type="arrow-left" /><span  onClick={this.handleCancel}>返回</span>
               </Modal>
             {/* </Spin> */}
           </Form>
         }
-        {joinInStep === 2 && 
+        {joinStep === 2 && 
           <div>
             <span>{enterpriseName}</span>
-            <Form onSubmit={this.checkPhoneCode} >
+            <Form onSubmit={this.phoneCodeRegister} >
               <div>
                 <FormItem>
                   {getFieldDecorator('phoneNum', {
                     rules: [{pattern: /(^1[3|4|5|7|8]\d{9}$)|(^09\d{8}$)/, required: true, message: '请输入手机号'}]
                   })(
-                    <Input prefix={<Icon type="mobile" />} placeholder="请输入手机号" />
+                    <Input prefix={<Icon type="mobile" />}  placeholder="请输入手机号" />
                   )}
                 </FormItem>
+                {isPhoneRegister === '0' && <span>手机号已经注册，请登录</span>}
               </div>
-              <div>
-                <FormItem  >
+              <div className={styles.checkCodeBox}>
+                <FormItem >
                   {getFieldDecorator('verificationCode',{
                     rules: [{required: true, message: '请输入验证码'}]
                   })(
-                    <Input prefix={<Icon type="lock" />} placeholder="验证码" />
+                    <Input className={styles.testCode} prefix={<Icon type="lock" />} placeholder="验证码" />
                   )}
                 </FormItem>
-                <Button type="primary" disabled={this.state.timeValue !== 0} onClick={this.sendCode} >
-                  {this.state.timeValue !== 0 ? `${this.state.timeValue}秒后可重发` : "点击获取验证码"}
+                <Button  className={styles.queryCode} type="primary" disabled={this.state.timeValue !== 0} onClick={this.sendCode} >
+                  {this.state.timeValue !== 0 ? `${this.state.timeValue}秒后可重发` : "获取验证码"}
                 </Button>
               </div>
               <FormItem>
-                <Button type="primary" htmlType="submit">加入企业</Button>
+                <Button type="primary" htmlType="submit">下一步</Button>
               </FormItem>
             </Form>
           </div>
         }
-        {joinInStep === 3 &&
+        {joinStep === 3 &&
+          (joinResult ? <span>等待管理员审核</span> : 
           <div>
             <span>{enterpriseName}</span>
             <Form onSubmit={this.onJoinEnterprise}  >
@@ -217,7 +235,7 @@ class JoinInForm extends Component{
                 <Button type="primary" htmlType="submit" className="login-form-button"  >进入企业账号</Button>
               </FormItem>
             </Form>
-          </div>
+          </div>)
         }
       </div>
     );

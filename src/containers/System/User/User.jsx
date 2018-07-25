@@ -6,7 +6,7 @@ import { roleAction } from '../../../constants/actionTypes/system/roleAction';
 import PropTypes from 'prop-types';
 import UserDetail from '../../../components/System/User/UserDetail';
 import UserEdit from '../../../components/System/User/UserEdit';
-import UserList from '../../../components/System/User/UserList';
+import UserList from '../../../components/System/User/UserList/UserList';
 
 class User extends Component {
   static propTypes = {
@@ -106,18 +106,18 @@ class User extends Component {
   onUserSearch = (data) => {
     let params = {
       enterpriseId: this.props.enterpriseId,
-      userStatus: status,
+      userStatus: this.props.userStatus,
       pageNum: 0,
       pageSize: this.props.pageSize,
-      userName: data.userName,
-      phoneNum: data.phoneNum,
-      stationName: data.stationName,
+      userName: data.nameValue,
+      phoneNum: data.phoneValue,
+      stationName: data.stationValue,
     }
     this.props.getUserList(params);
   }
   render() {
     const { showPage } = this.props;
-    console.log(this.props)
+    // console.log(this.props)
     return (
       <div className={styles.userContainer}>
         { showPage === 'list' && 
@@ -141,7 +141,7 @@ class User extends Component {
 }
 
 const mapStateToProps = state => {
-  console.log([...state.role,...state.user])
+  // console.log([...state.role,...state.user])
   let departmentProps = {};
   // [...state.department].forEach(e=>departmentProps[e[0]]=(e[1].toJS?e[1].toJS():e[1]))
   [...state.role,...state.user].forEach(e=>departmentProps[e[0]]=e[1])

@@ -14,6 +14,7 @@ class ForgetForm extends Component{
     checkPhoneCode: PropTypes.func,
     resetPassword: PropTypes.func,
     phoneNum: PropTypes.string,
+    phoneCodeRegister: PropTypes.func,
   }
 
   constructor(props){
@@ -66,11 +67,10 @@ class ForgetForm extends Component{
     },1000);
   }
 
-  checkPhoneCode = () => {
+  phoneCodeRegister = () => {
     this.props.form.validateFields(['phoneNum','verificationCode'], (err, values) => {
       if(!err){
-        this.props.checkPhoneCode(values);
-
+        this.props.phoneCodeRegister({...values,'showResetPassword': 1});
       }
     })
   }
@@ -86,7 +86,7 @@ class ForgetForm extends Component{
 
   render(){
     const { getFieldDecorator } = this.props.form;
-    const { checkFirst, timeValue } = this.state;
+    const { timeValue } = this.state;
     const { showConfirmPassword } = this.props;
     const formItemLayout = {
       labelCol: {
@@ -111,12 +111,12 @@ class ForgetForm extends Component{
       },
     };
     return (
-      <div>
-        <div><span>登录</span>|<span>注册</span></div>
+      <div className={styles.forgetPass}>
+
         {!showConfirmPassword &&
           <div>
-            <span>找回密码</span>
-            <Form onSubmit={this.checkPhoneCode} >
+            <span className={styles.findPass}>找回密码</span>
+            <Form onSubmit={this.phoneCodeRegister} >
               <div>
                 <FormItem>
                   {getFieldDecorator('phoneNum', {
@@ -126,16 +126,16 @@ class ForgetForm extends Component{
                   )}
                 </FormItem>
               </div>
-              <div>
+              <div className={styles.checkCodeBox}>
                 <FormItem  >
                   {getFieldDecorator('verificationCode',{
                     rules: [{required: true, message: '请输入验证码'}]
                   })(
-                    <Input prefix={<Icon type="lock" />} placeholder="验证码" />
+                    <Input className={styles.testCode} prefix={<Icon type="lock" />} placeholder="验证码" />
                   )}
                 </FormItem>
-                <Button type="primary" disabled={timeValue !== 0} onClick={this.sendCode} >
-                  {timeValue !== 0 ? `${timeValue}秒后可重发` : "点击获取验证码"}
+                <Button type="primary" disabled={timeValue !== 0} onClick={this.sendCode}  className={styles.queryCode}>
+                  {timeValue !== 0 ? `${timeValue}秒后可重发` : "获取验证码"}
                 </Button>
               </div>
               <FormItem>
