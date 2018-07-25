@@ -27,7 +27,8 @@ class Register extends Component {
     checkPhoneRegister: PropTypes.func,
     isPhoneRegister: PropTypes.string,
     phoneCodeRegister: PropTypes.func,
-    enterpriseId: PropTypes.func,
+    enterpriseId: PropTypes.string,
+    pageTab: PropTypes.string,
   }
   constructor(props) {
     super(props);
@@ -73,6 +74,7 @@ class Register extends Component {
                 isPhoneRegister={this.props.isPhoneRegister}
                 phoneCodeRegister={this.props.phoneCodeRegister}
                 enterpriseId={this.props.enterpriseId}
+                pageTab={this.props.pageTab}
               />
             </TabPane>
           </Tabs>

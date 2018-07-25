@@ -25,6 +25,7 @@ class RegisterForm extends Component{
     isUserRegister: PropTypes.string,
     phoneCodeRegister: PropTypes.func,
     enterpriseId: PropTypes.string,
+    pageTab: PropTypes.string,
   }
 
   constructor(props){
@@ -44,16 +45,6 @@ class RegisterForm extends Component{
     }
     
   }
-
-  onCheckMobile = (e) =>{
-    e.preventDefault();
-    this.props.form.validateFields(['phoneNum','verificationCode'],(err, values) => {
-      if(!err){
-        this.props.phoneRegister(values);
-      }
-    })
-  }
-  
   
   onEnterpriseInfo = (e) => {
     e.preventDefault();
@@ -75,6 +66,16 @@ class RegisterForm extends Component{
     })
   }
 
+  phoneCodeRegister = (e) =>{
+    e.preventDefault();
+    this.props.form.validateFields(['phoneNum','verificationCode'],(err, values) => {
+      if(!err){
+        let { pageTab } = this.props;
+        this.props.phoneCodeRegister({...values, 'registerStep': 1});
+      }
+    })
+  }
+  
   // 点击获取验证码
   sendCode = () => {
     this.props.form.validateFields(['phoneNum'], (err, values) => {
@@ -101,7 +102,7 @@ class RegisterForm extends Component{
     this.props.checkUserRegister(e.target.value);
   }
   checkPhoneRegister = (e) => {
-    console.log(e);
+    console.log(e)
     this.props.checkPhoneRegister(e.target.value);
   }
   next = () => {
@@ -139,13 +140,13 @@ class RegisterForm extends Component{
       content: 
         (
           <div>
-            <Form onSubmit={this.onCheckMobile}  className={styles.verificationCode} >
+            <Form onSubmit={this.phoneCodeRegister}  className={styles.verificationCode} >
               <div>
                 <FormItem>
                   {getFieldDecorator('phoneNum', {
                     rules: [{required: true, message: '请输入手机号'}]
                   })(
-                    <Input className={styles.mobileNumber} onBlur={this.checkPhoneRegister} prefix={<Icon type="mobile" />} placeholder="请输入手机号" />
+                    <Input className={styles.mobileNumber} prefix={<Icon type="mobile" />} placeholder="请输入手机号" />
                   )}
                 </FormItem>
                 {isPhoneRegister === '0' && <span>手机号已经注册，请登录</span>}

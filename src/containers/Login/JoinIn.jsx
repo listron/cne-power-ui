@@ -11,11 +11,18 @@ class JoinIn extends Component {
     isJoined: PropTypes.number,
     isExist: PropTypes.number,
     enterpriseName: PropTypes.string,
+    enterpriseId: PropTypes.string,
     getEnterpriseInfo: PropTypes.func,
     loading: PropTypes.bool,
     sendCode: PropTypes.func,
     checkPhoneCode: PropTypes.func,
     joinEnterprise: PropTypes.func,
+    isPhoneRegister: PropTypes.string,
+    checkPhoneRegister: PropTypes.func,
+    phoneCodeRegister: PropTypes.func,
+    username: PropTypes.string,
+    joinResult: PropTypes.number,
+    pageTab: PropTypes.string,
   }
   constructor(props) {
     super(props);
@@ -32,14 +39,20 @@ class JoinIn extends Component {
         <Button type={'primary'} onClick={()=>this.changePage('register')}> 注册企业 </Button>
         <JoinInForm 
           loading={this.props.loading}
-          // joinInStep={this.props.joinInStep}
           isExist={this.props.isExist}
           enterpriseName={this.props.enterpriseName}
+          enterpriseId={this.props.enterpriseId}
           getEnterpriseInfo={this.props.getEnterpriseInfo}
           sendCode={this.props.sendCode}
           checkPhoneCode={this.props.checkPhoneCode}
           isJoined={this.props.isJoined}
           joinEnterprise={this.props.joinEnterprise}
+          isPhoneRegister={this.props.isPhoneRegister}
+          // checkPhoneRegister={this.props.checkPhoneRegister}
+          phoneCodeRegister={this.props.phoneCodeRegister}
+          username={this.props.username}
+          joinResult={this.props.joinResult}
+          pageTab={this.props.pageTab}
         />
       </div>
     );
@@ -48,17 +61,22 @@ class JoinIn extends Component {
 
 const mapStateToProps = (state) => ({
   loading: state.login.get('loading'),
-  // joinInStep: state.login.get('joinInStep'),
   isExist: state.login.get('isExist'),
   isJoined: state.login.get('isJoined'),
   enterpriseName: state.login.getIn(['enterpriseInfo','enterpriseName']),
+  enterpriseId: state.login.getIn(['enterpriseInfo','enterpriseId']),
+  isPhoneRegister: state.login.get('isPhoneRegister'),
+  username: state.login.get('username'),
+  joinResult: state.login.get('joinResult'),
 })
 
 const mapDispatchToProps = (dispatch) => ({
   getEnterpriseInfo: params => dispatch({type: LoginAction.GET_ENTERPRISE_INFO_SAGA, params}),
   sendCode: params => dispatch({ type: LoginAction.SEND_CODE_SAGA, params}),
   checkPhoneCode: params => dispatch({ type: LoginAction.CHECK_CODE_SAGA, params}),
-  joinEnterprise: params => dispatch({ type: LoginAction.JOIN_ENTERPRISE_SAGA, params})
+  joinEnterprise: params => dispatch({ type: LoginAction.JOIN_ENTERPRISE_SAGA, params}),
+  // checkPhoneRegister: params => dispatch({ type: LoginAction.CHECK_PHONE_REGISTER_SAGA, params}),
+  phoneCodeRegister: params => dispatch({ type: LoginAction.PHONE_CODE_REGISTER_SAGA, params}),
 })
 
 export default connect(mapStateToProps,mapDispatchToProps)(JoinIn);

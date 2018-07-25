@@ -33,10 +33,10 @@ function *getLogin(action){
       }),
     });
     console.log(response)
-    if(response.data.code === '10000'){
+    if(response.data){
       setCookie('authData',JSON.stringify(response.data.access_token));
       setCookie('phoneNum', action.params.phoneNum);
-      setCookie('userName', response.data.loginUserName);
+      setCookie('userName', response.data.username);
       // setCookie('userId', response.data.result.userId);
       yield put({ type: LoginAction.GET_LOGIN_SUCCESS, data: response.data});       
     } else{
@@ -54,7 +54,7 @@ function *getVerificationCode(action){
     const response = yield call(axios.get, url);
     console.log(response);
     if(response.data.code === "10000"){
-      yield put({ type: LoginAction.SEND_CODE_SUCCESS, data:{ phoneNum: action.params.phoneNum }});
+      yield put({ type: LoginAction.SEND_CODE_SUCCESS, params: action.params });
     } else {
       yield put({ type: LoginAction.SEND_CODE_FAIL, data:{ error: response.data.msg, phoneNum: action.params.phoneNum}})
     }
@@ -66,18 +66,23 @@ function *getVerificationCode(action){
 function *checkCode(action){
   let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.loginPhoneCode;
   // let url = "/mock/api/v3/login/phonecode";
+  console.log(action)
   yield put({ type: LoginAction.LOGIN_FETCH})
   try{
     const response = yield call( axios.post, url, action.params);
     console.log(response)
-    if(response.data.code === "10000"){
+    if(response.data.data){
+      setCookie('authData',JSON.stringify(response.data.access_token));
+      setCookie('phoneNum', action.params.phoneNum);
+      setCookie('userName', response.data.username);
       yield put({
         type: LoginAction.CHECK_CODE_SUCCESS,
         params: action.params,
         data: response.data.data,
       });
     }else{
-      yield put({ type: LoginAction.CHECK_CODE_FAIL, data:{ error: response.data.error, code: action.params.captcha}})
+      yield put({ type: LoginAction.CHECK_CODE_FAIL, data:{ message: response.data.message, code: response.data.code}})
+      message.error(response.data.message);
     }
   }catch(e){
     console.log(e);
@@ -88,19 +93,28 @@ function *checkCode(action){
 function *phoneCodeRegister(action){
   // let url = "/mock/api/v3/login/phoneregister";
   let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.phoneCodeRegister;
+  let { payload } = action;
   try{
-    const response = yield call(axios.post, url, action.params);
+
+    const response = yield call(axios.post, url, payload);
     console.log(response)
     if(response.data.code === '10000'){
-      yield put({type: LoginAction.PHONE_CODE_REGISTER_SUCCESS, data: response.data})
+      yield put({type: LoginAction.CHECK_CODE_SAGA, params: action.params})
+      yield put({
+        type: LoginAction.PHONE_CODE_REGISTER_SUCCESS, 
+        payload: {
+          ...payload,
+        }
+      })
     }else{
       yield put({type: LoginAction.PHONE_CODE_REGISTER_FAIL, data: {error: response.data.message}})
+      message.error(response.data.message);
     }
   }catch(e){
     console.log(e);
   }
 }
-// 注册验证手机号是否已存在
+// 注册验证手机号是否已存在(此接口暂时弃用)
 function *checkPhoneRegister(action){
   // let url = "/mock/api/v3/login/phoneregister";
   console.log(action)
@@ -188,11 +202,16 @@ function *getEnterPriseInfo(action){
     yield put({ type: LoginAction.LOGIN_FETCH});
     const response = yield call(axios.get, url);
     console.log(response);
-    yield put({
-      type: LoginAction.GET_ENTERPRISE_INFO_SUCCESS,
-      params: action.params,
-      data: response.data.data,
-    })
+    if(response.data.code === "10000"){
+      yield put({
+        type: LoginAction.GET_ENTERPRISE_INFO_SUCCESS,
+        params: action.params,
+        data: response.data.data,
+      })
+    }else{
+      yield put({type: LoginAction.GET_ENTERPRISE_INFO_FAIL})
+    }
+    
   }catch(e){
     console.log(e);
   }
@@ -205,13 +224,19 @@ function *joinEnterprise(action){
   console.log(action);
   try{
     yield put({ type: LoginAction.LOGIN_FETCH });
-    const response = yield call(axios.get, url, payload);
+    const response = yield call(axios.get, url, action.params);
     console.log(response);
-    yield put({
-      type: LoginAction.JOIN_ENTERPRISE_SUCCESS,
-      params: action.params,
-      data: response.data.data,
-    })
+    if(response.data.code === '10000'){
+      yield put({
+        type: LoginAction.JOIN_ENTERPRISE_SUCCESS,
+        params: action.params,
+        data: response.data.data,
+      })
+    }else{
+      yield put({type: LoginAction.JOIN_ENTERPRISE_FAIL, params: response.data.message})
+      message.error(response.data.message)
+    }
+    
   }catch(e){
     console.log(e);
   }
