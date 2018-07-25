@@ -56,7 +56,6 @@ class WarningTip extends Component {
             <span onClick={this.onOK}>确认</span>
           </div>
         </div>
-        
       </Modal>
       
     )
