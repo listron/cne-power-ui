@@ -33,15 +33,6 @@ class ForgetForm extends Component{
     };
   }
 
-  onHandleSubmit = (e) => {
-    e.preventDefault();
-    this.props.form.validateFields((err,values) => {
-      if(!err){
-        console.log('Received values of form: ', values);
-      }
-    })
-  }
-
   onResetPassword = () => {
     this.props.form.validateFields(['password','confirmPwd'], (err,values) => {
       if(!err){
@@ -79,7 +70,6 @@ class ForgetForm extends Component{
     this.props.form.validateFields(['phoneNum','verificationCode'], (err, values) => {
       if(!err){
         const { enterpriseId, username } = this.props;
-        console.log(enterpriseId, username);
         this.props.phoneCodeRegister({...values});
         if(enterpriseId !== null && username !== null){
           this.props.changeLoginStore({ showResetPassword: 1 })
@@ -123,7 +113,6 @@ class ForgetForm extends Component{
         },
       },
     };
-    console.log(enterpriseId, username);
     return (
       <div className={styles.forgetPass}>
         {!showConfirmPassword &&

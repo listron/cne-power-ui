@@ -47,7 +47,6 @@ class JoinInForm extends Component{
   onJoinEnterprise = () => {
     this.props.form.validateFields((err,values) => {
       if(!err){
-        console.log(values);
         let { phoneNum, enterpriseId } =this.props;
         let params = {
           phoneNum,

@@ -31,7 +31,6 @@ function *getLogin(action){
         password: action.params.password,
       }),
     });
-    console.log(response)
     if(response.data.code === '10000'){
       setCookie('authData',JSON.stringify(response.data.data.access_token));
       setCookie('phoneNum', action.params.phoneNum);
@@ -52,7 +51,6 @@ function *getVerificationCode(action){
   // let url = "/mock/api/v3/login/verificationcode/";
   try{
     const response = yield call(axios.get, url);
-    console.log(response);
     if(response.data.code === "10000"){
       yield put({ type: LoginAction.SEND_CODE_SUCCESS, params: action.params });
     } else {
@@ -67,7 +65,6 @@ function *getVerificationCode(action){
 function *checkCode(action){
   let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.loginPhoneCode;
   // let url = "/mock/api/v3/login/phonecode";
-  console.log(action)
   let { params } =action;
   yield put({ type: LoginAction.LOGIN_FETCH})
   try{
@@ -81,7 +78,6 @@ function *checkCode(action){
         verificationCode: action.params.verificationCode,
       }),
     });
-    console.log(response)
     if(response.data.code === '10000'){
       setCookie('authData',JSON.stringify(response.data.data.access_token));
       setCookie('phoneNum', action.params.phoneNum);
@@ -106,10 +102,8 @@ function *checkCode(action){
 function *phoneCodeRegister(action){
   // let url = "/mock/api/v3/login/phoneregister";
   let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.phoneCodeRegister;
-  console.log(action)
   try{
     const response = yield call(axios.post, url, {'phoneNum':action.params.phoneNum, 'verificationCode': action.params.verificationCode});
-    console.log(response)
     if(response.data.code === '10000'){
       yield put({type: LoginAction.CHECK_CODE_SAGA, params: action.params})
       yield put({
@@ -128,11 +122,9 @@ function *phoneCodeRegister(action){
 // 注册验证手机号是否已存在(此接口暂时弃用)
 function *checkPhoneRegister(action){
   // let url = "/mock/api/v3/login/phoneregister";
-  console.log(action)
   let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.loginPhoneRegister + '/' + action.params;
   try{
     const response = yield call(axios.get, url);
-    console.log(response)
     if(response.data.code === '10000'){
       yield put({type: LoginAction.CHECK_PHONE_REGISTER_SUCCESS, data: response.data.data})
     }else{
@@ -149,7 +141,6 @@ function *checkEnterpriseDomain(action){
   let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.checkEnterpriseDomain + '/' +action.params.enterpriseDomain;
   try{
     const response = yield call(axios.get, url);
-    console.log(response);
     if(response.data.code === '10000'){
       yield put({
         type: LoginAction.CHECK_ENTERPRISE_DOMAIN_SUCCESS, 
@@ -171,7 +162,6 @@ function *checkEnterpriseName(action){
   let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.checkEnterpriseName + '/' +action.params.enterpriseName;
   try{
     const response = yield call(axios.get, url);
-    console.log(response);
     if(response.data.code === '10000'){
       yield put({
         type: LoginAction.CHECK_ENTERPRISE_NAME_SUCCESS, 
@@ -191,7 +181,6 @@ function *registerEnterprise(action){
   yield put({ type: LoginAction.LOGIN_FETCH});
   try{
     const response = yield call(axios.post, url, action.params);
-    console.log(response);
     if(response.data.code === '10000'){
       yield put({
         type: LoginAction.REGISTER_ENTERPRISE_SUCCESS,
@@ -208,12 +197,10 @@ function *registerEnterprise(action){
 }
 // 获取企业信息
 function *getEnterPriseInfo(action){
-  console.log(action);
   let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.getEnterpriseInfo + '/' +action.params.enterpriseName;
   try{
     yield put({ type: LoginAction.LOGIN_FETCH});
     const response = yield call(axios.get, url);
-    console.log(response);
     if(response.data.code === "10000"){
       yield put({
         type: LoginAction.GET_ENTERPRISE_INFO_SUCCESS,
@@ -233,11 +220,9 @@ function *getEnterPriseInfo(action){
 function *joinEnterprise(action){
   // const url = '/mock/api/v3/login/userenterprise';
   let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.joinEnterprise;
-  console.log(action);
   try{
     yield put({ type: LoginAction.LOGIN_FETCH });
     const response = yield call(axios.get, url, action.params);
-    console.log(response);
     if(response.data.code === '10000'){
       yield put({
         type: LoginAction.JOIN_ENTERPRISE_SUCCESS,
@@ -261,7 +246,6 @@ function *resetPassword(action){
   yield put({type: LoginAction.LOGIN_FETCH});
   try{
     const response = yield call(axios.post, url, action.params);
-    console.log(response);
     if(response.data.code === "10000"){
       message.success('密码设置成功，请重新登录！')
       yield put({ type: LoginAction.RESET_PASSWORD_SUCCESS})
@@ -279,7 +263,6 @@ function *checkUserRegister(action){
   yield put({type: LoginAction.LOGIN_FETCH});
   try{
     const response = yield call(axios.get, url);
-    console.log(response);
     if(response.data.code === "10000"){
       yield put({ type: LoginAction.CHECK_USER_REGISTER_SUCCESS})
     }else{

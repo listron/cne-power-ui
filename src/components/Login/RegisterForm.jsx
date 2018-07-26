@@ -279,7 +279,6 @@ class RegisterForm extends Component {
     let { current } = this.state;
 
     const step = current === 1 ? 2 : this.props.registerStep - 1;
-    console.log(step)
     return (
       <div>
         <Steps current={step}>
