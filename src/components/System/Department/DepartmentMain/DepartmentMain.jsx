@@ -29,6 +29,7 @@ class DepartmentMain extends Component {
 
   searchDepartment = ({departmentName,parentDepartmentName,stationName}) => {//部门搜索
     const params = {
+      enterpriseId: this.props.enterpriseId,      
       departmentSource: this.props.departmentSource,
       departmentName, 
       parentDepartmentName, 

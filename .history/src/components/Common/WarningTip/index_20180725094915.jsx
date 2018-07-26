@@ -7,20 +7,18 @@ import styles from './style.scss'
 
 /*
   全局共用信息提示组件：
-  1. 必须传入参数(props): 确认操作的回调函数,onOK(function);组件的文字提示value(string);
-  2. 可选参数(props): 取消操作的回调onCancel(function),传递下来的style值(object)，用于组件总体样式 {width:'500px'},hiddenCancel(boolean(:false))隐藏取消按钮
+  1. 必须传入参数(props): 确认/取消操作的回调函数onCancel(function),onOK(function);组件的文字提示value(string);
+  2. 可选参数(props): 传递下来的style值(object)，用于组件总体样式 {width:'500px'}
 */
 class WarningTip extends Component {
   static propTypes = {
     onCancel: PropTypes.func,
     onOK: PropTypes.func,
     style: PropTypes.object,
-    value: PropTypes.string,
-    hiddenCancel: PropTypes.bool
+    value: PropTypes.string
   }
   static defaultProps = {
-    style:{width: '210px',height:'88px'},
-    hiddenCancel: false
+    style:{width: '210px',height:'88px'}
   }
 
   constructor(props){
@@ -35,7 +33,7 @@ class WarningTip extends Component {
   }
   
   render(){
-    const { style,hiddenCancel, value, onCancel, onOK } = this.props;
+    const { style, value } = this.props;
     return (
       <Modal
         onOk={this.onOK}
@@ -54,8 +52,8 @@ class WarningTip extends Component {
             <span className={styles.text}>{value}</span>
           </div>
           <div className={styles.handle}>
-            {(onCancel && !hiddenCancel) && <span onClick={this.onCancel}>取消</span>}
-            {onOK && <span onClick={this.onOK}>确认</span>}
+            <span onClick={this.onCancel}>取消</span>
+            <span onClick={this.onOK}>确认</span>
           </div>
         </div>
       </Modal>
