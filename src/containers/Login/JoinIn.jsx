@@ -32,14 +32,14 @@ class JoinIn extends Component {
     super(props);
   }
   changePage = (pageTab) =>{
-    this.props.changeLoginStore({pageTab, registerStep: 1, joinStep: 1})
+    this.props.changeLoginStore({pageTab, registerStep: 1, joinStep: 1,enterpriseId: ''})
   }
 
   render() {
     return (
       <div>
         <div className={styles.goLogin}>
-          <span  onClick={()=>this.changePage({pageTab: 'login',enterpriseId: ''})}> 登录 </span>
+          <span  onClick={()=>this.changePage( 'login')}> 登录 </span>
           <span>I</span>
           <span  onClick={()=>this.changePage('register')}> 注册企业 </span>
         </div>
