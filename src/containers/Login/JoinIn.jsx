@@ -8,7 +8,7 @@ import { LoginAction } from '../../constants/actionTypes/loginAction';
 
 class JoinIn extends Component {
   static propTypes = {
-    changeLoginPage: PropTypes.func,
+    changeLoginStore: PropTypes.func,
     isJoined: PropTypes.number,
     isExist: PropTypes.number,
     enterpriseName: PropTypes.string,
@@ -25,24 +25,24 @@ class JoinIn extends Component {
     joinResult: PropTypes.number,
     pageTab: PropTypes.string,
     joinStep: PropTypes.number,
-    changeJoinStep: PropTypes.func,
+    enterpriseIdToken: PropTypes.string,
+    enterpriseNameToken: PropTypes.string,
   }
   constructor(props) {
     super(props);
   }
   changePage = (pageTab) =>{
-    this.props.changeLoginPage({pageTab, registerStep: 1, joinStep: 1})
+    this.props.changeLoginStore({pageTab, registerStep: 1, joinStep: 1})
   }
   render() {
 
     return (
       <div>
-<div className={styles.goLogin}>
-  <span  onClick={()=>this.changePage('login')}> 登录 </span>
-  <span>I</span>
-  <span  onClick={()=>this.changePage('register')}> 注册企业 </span>
-</div>
-
+        <div className={styles.goLogin}>
+          <span  onClick={()=>this.changePage('login')}> 登录 </span>
+          <span>I</span>
+          <span  onClick={()=>this.changePage('register')}> 注册企业 </span>
+        </div>
         <JoinInForm 
           loading={this.props.loading}
           isExist={this.props.isExist}
@@ -54,13 +54,14 @@ class JoinIn extends Component {
           isJoined={this.props.isJoined}
           joinEnterprise={this.props.joinEnterprise}
           isPhoneRegister={this.props.isPhoneRegister}
-          // checkPhoneRegister={this.props.checkPhoneRegister}
           phoneCodeRegister={this.props.phoneCodeRegister}
           username={this.props.username}
           joinResult={this.props.joinResult}
           pageTab={this.props.pageTab}
           joinStep={this.props.joinStep}
-          changeJoinStep={this.props.changeJoinStep}
+          changeLoginStore={this.props.changeLoginStore}
+          enterpriseIdToken={this.props.enterpriseIdToken}
+          enterpriseNameToken={this.props.enterpriseNameToken}
         />
       </div>
     );
@@ -73,11 +74,12 @@ const mapStateToProps = (state) => ({
   isJoined: state.login.get('isJoined'),
   enterpriseName: state.login.getIn(['enterpriseInfo','enterpriseName']),
   enterpriseId: state.login.getIn(['enterpriseInfo','enterpriseId']),
-  isPhoneRegister: state.login.get('isPhoneRegister'),
+  enterpriseNameToken: state.login.get('enterpriseName'),
+  enterpriseIdToken: state.login.get('enterpriseId'),
   username: state.login.get('username'),
   joinResult: state.login.get('joinResult'),
   joinStep: state.login.get('joinStep'),
-  
+  isPhoneRegister: state.login.get('isPhoneRegister'),
 })
 
 const mapDispatchToProps = (dispatch) => ({
@@ -85,9 +87,7 @@ const mapDispatchToProps = (dispatch) => ({
   sendCode: params => dispatch({ type: LoginAction.SEND_CODE_SAGA, params}),
   checkPhoneCode: params => dispatch({ type: LoginAction.CHECK_CODE_SAGA, params}),
   joinEnterprise: params => dispatch({ type: LoginAction.JOIN_ENTERPRISE_SAGA, params}),
-  // checkPhoneRegister: params => dispatch({ type: LoginAction.CHECK_PHONE_REGISTER_SAGA, params}),
   phoneCodeRegister: params => dispatch({ type: LoginAction.PHONE_CODE_REGISTER_SAGA, params}),
-  changeJoinStep: params => dispatch({type: LoginAction.CHANGE_LOGIN_STORE_SAGA, params})
 })
 
 export default connect(mapStateToProps,mapDispatchToProps)(JoinIn);

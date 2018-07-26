@@ -8,7 +8,7 @@ const FormItem = Form.Item;
 class LoginForm extends Component {
   static propTypes = {
     form: PropTypes.object,
-    changePage: PropTypes.func,
+    changeLoginStore: PropTypes.func,
     fetchLogin: PropTypes.func,
     loginSuccess: PropTypes.bool,
     count: PropTypes.number,
@@ -19,8 +19,6 @@ class LoginForm extends Component {
     checkPhoneRegister: PropTypes.func,
     phoneCodeRegister: PropTypes.func,
     username: PropTypes.string,
-    pageTab: PropTypes.string,
-    changeJoinStep: PropTypes.func,
   }
 
   constructor(props) {
@@ -30,6 +28,13 @@ class LoginForm extends Component {
       timeValue: 0,
     }
   }
+
+  componentWillUnmount = () => {
+    this.setState = (timeValue)=>{
+      return;
+    };
+  }
+
   onHandleSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
@@ -37,6 +42,7 @@ class LoginForm extends Component {
         if (this.state.showPasswordLogin) {
           this.props.fetchLogin(values);
         }else{
+
           this.props.phoneCodeRegister(values);
         }
       }
@@ -73,7 +79,7 @@ class LoginForm extends Component {
   jumpPersonalInfo = () => {
     this.props.form.validateFields(['phoneNum', 'verificationCode'], (err, values) => {
       if(!err){
-        this.props.changePage({pageTab:'joinIn', joinStep: 3, registerStep: 1,phoneNum: values.phoneNum, verificationCode: values.verificationCode});
+        this.props.changeLoginStore({pageTab:'joinIn', joinStep: 3, registerStep: 1,phoneNum: values.phoneNum, verificationCode: values.verificationCode});
       }
     })
   }
@@ -148,13 +154,13 @@ class LoginForm extends Component {
               <span onClick={() => this.setState({showPasswordLogin: !showPasswordLogin})}>
                 {showPasswordLogin ? '手机验证码登录' : '密码登录(手机/用户名)'}
               </span>
-              <span onClick={() => this.props.changePage({pageTab: 'forget'})}>忘记密码</span>
+              <span onClick={() => this.props.changeLoginStore({pageTab: 'forget'})}>忘记密码</span>
               </div>
               <div className="loginBtn">
                 <Button type="primary" htmlType="submit" disabled={this.hasErrors(getFieldsError())}>登录</Button>
                 <div className={styles.yiLogin}>易巡登录</div>
               </div>
-              {enterpriseId === null ? <p>您已注册，请<b onClick={()=>this.changePage('joinIn')}>加入企业</b>或<b onClick={()=>this.changePage('register')}>注册企业</b></p> : null}
+              {enterpriseId === null ? <p>您已注册，请<b onClick={()=>this.changeLoginStore('joinIn')}>加入企业</b>或<b onClick={()=>this.changeLoginStore('register')}>注册企业</b></p> : null}
               {username === null ? <p>个人信息不完善，请完善<b onClick={this.jumpPersonalInfo} >个人信息</b></p> : null }
             </FormItem>
           </Form>}

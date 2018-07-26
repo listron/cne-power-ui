@@ -11,7 +11,7 @@ const { TabPane } = Tabs;
 class Register extends Component {
   static propTypes = {
     pageTab: PropTypes.string,
-    changeLoginPage: PropTypes.func,
+    changeLoginStore: PropTypes.func,
     sendCode: PropTypes.func,
     signupCount: PropTypes.number,
     registerStep: PropTypes.number,
@@ -34,7 +34,7 @@ class Register extends Component {
     super(props);
   }
   changePage = (pageTab) =>{
-    this.props.changeLoginPage({pageTab, registerStep: 1, joinStep: 1})
+    this.props.changeLoginStore({pageTab, registerStep: 1, joinStep: 1})
   }
   registerEnterprise = (data) => {
     let params = {
@@ -52,7 +52,6 @@ class Register extends Component {
     return (
       <div className={styles.login}>
         <div className={styles.joinTop}>
-          {/*<span onClick={()=>this.changePage('joinIn')}>加入企业</span>*/}
           <div className={styles.fontIcon}>
             <i className="icon-phone" />
           </div>
@@ -62,12 +61,10 @@ class Register extends Component {
           <span>用户协议</span>
           <span>联系我们</span>
         </div>
-
-      {/*  这里是企业注册页面!!!!!*/}
         <div className={styles.loginContent}>
           <Tabs onChange={this.changePage} animated={false} activeKey={pageTab}>
             <TabPane tab="登录" key="login">
-              <LoginForm changePage={this.props.changeLoginPage} />
+              <LoginForm changeLoginStore={this.props.changeLoginStore} />
             </TabPane>
             <TabPane tab="注册企业" key="register">
               <RegisterForm 

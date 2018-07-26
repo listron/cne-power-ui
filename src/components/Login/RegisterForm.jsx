@@ -37,10 +37,15 @@ class RegisterForm extends Component {
   }
   
   componentWillReceiveProps(nextProps){
-    
     if(nextProps.domainIsRegister === '1' && nextProps.nameIsRegister === '1'){
       this.setState({ current: 1})
     }
+  }
+
+  componentWillUnmount = () => {
+    this.setState = (timeValue, current)=>{
+      return;
+    };
   }
 
   onEnterpriseInfo = (e) => {
@@ -48,7 +53,7 @@ class RegisterForm extends Component {
     this.props.form.validateFields(['enterpriseDomain', 'enterpriseName', 'userAgreement'], (err, values) => {
       if (!err) {
         this.props.checkEnterpriseDomain({
-          'enterpriseDomain': values.enterpriseDomain+'.cneclound.cn',
+          'enterpriseDomain': values.enterpriseDomain+'.cneclound.com',
           'enterpriseName': values.enterpriseName,
         });
       }
@@ -96,13 +101,11 @@ class RegisterForm extends Component {
   checkUserRegister = (e) => {
     this.props.checkUserRegister(e.target.value);
   }
+
   checkPhoneRegister = (e) => {
     this.props.checkPhoneRegister(e.target.value);
   }
-  // next = () => {
-  //   const current = this.state.current !== 2 ? this.state.current + 1 : 2;
-  //   this.setState({ current })
-  // }
+
   showDomainBack = (rule, value, callback) => {
     const { domainIsRegister } = this.props;
     if(!domainIsRegister){

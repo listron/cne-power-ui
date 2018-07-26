@@ -7,7 +7,7 @@ import { LoginAction } from '../../constants/actionTypes/loginAction';
 import { connect } from 'react-redux';
 class Forget extends Component {
   static propTypes = {
-    changeLoginPage: PropTypes.func,
+    changeLoginStore: PropTypes.func,
     sendCode: PropTypes.func,
     showConfirmPassword: PropTypes.bool,
     checkPhoneCode: PropTypes.func,
@@ -20,7 +20,7 @@ class Forget extends Component {
     super(props);
   }
   changePage = (pageTab) =>{
-    this.props.changeLoginPage({pageTab, registerStep: 1, joinStep: 1})
+    this.props.changeLoginStore({pageTab, registerStep: 1, joinStep: 1})
   }
 
   render() {

@@ -31,10 +31,10 @@ var initState = immutable.fromJS({
   },//加入企业信息
   showResetPassword: 0,//显示重置密码页面 0 不显示 1 显示
   enterpriseDomian: '',//注册企业域名
-  enterpriseName: '',//注册企业名称
+  enterpriseName: null,//注册企业名称
   isUserRegister: '2',//'0' 用户名已注册 '1' 用户名未注册
   isPhoneRegister: '2',//'0' 已注册 '1' 未注册
-  enterpriseId: '',//登录判断用户是否在企业里
+  enterpriseId: null,//登录判断用户是否在企业里
   username: '',//判断是否完善个人信息
   joinResult: 0,//0 加入失败，1 加入成功
 });

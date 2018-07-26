@@ -13,9 +13,8 @@ const {TabPane} = Tabs;
 class Login extends Component {
   static propTypes = {
     pageTab: PropTypes.string,
-    changeLoginPage: PropTypes.func,
+    changeLoginStore: PropTypes.func,
     fetchLogin: PropTypes.func,
-    fetchCompanyInfo: PropTypes.func,
     error: PropTypes.string,
     domain: PropTypes.object,
     loginSuccess: PropTypes.bool,
@@ -25,17 +24,10 @@ class Login extends Component {
     checkPhoneRegister: PropTypes.func,
     phoneCodeRegister: PropTypes.func,
     username: PropTypes.string,
-    changeJoinStep: PropTypes.func,
   }
 
   constructor(props) {
     super(props);
-  }
-
-  componentWillMount() {
-    // const damain = document.domain.split('.')[0];
-    const domain = 'test';
-    this.props.fetchCompanyInfo(domain);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -48,7 +40,7 @@ class Login extends Component {
   }
 
   changePage = (pageTab) => {
-    this.props.changeLoginPage({pageTab, registerStep: 1, joinStep: 1})
+    this.props.changeLoginStore({pageTab, registerStep: 1, joinStep: 1})
   }
 
   render() {
@@ -65,16 +57,13 @@ class Login extends Component {
           <Tabs onChange={this.changePage} animated={false} activeKey={pageTab}>
             <TabPane tab="登录" key="login">
               <LoginForm
-                changePage={this.props.changeLoginPage}
+                changeLoginStore={this.props.changeLoginStore}
                 fetchLogin={this.props.fetchLogin}
                 loginSuccess={this.props.loginSuccess}
                 sendCode={this.props.sendCode}
                 checkCodeLogin={this.props.checkCodeLogin}
-                // checkPhoneRegister={this.props.checkPhoneRegister}
                 phoneCodeRegister={this.props.phoneCodeRegister}
                 username={this.props.username}
-                pageTab={this.props.pageTab}
-                changeJoinStep={this.props.changeJoinStep}
               />
             </TabPane>
             <TabPane tab="注册企业" key="register">
@@ -97,13 +86,10 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  fetchCompanyInfo: params => dispatch({type: LoginAction.GET_COMPINFO_SAGA, params}),
   fetchLogin: params => dispatch({type: LoginAction.GET_LOGIN_SAGA, params}),
   sendCode: params => dispatch({ type: LoginAction.SEND_CODE_SAGA, params}),
   checkCodeLogin: params => dispatch({ type: LoginAction.CHECK_CODE_SAGA, params}),
-  // checkPhoneRegister: params => dispatch({ type: LoginAction.CHECK_PHONE_REGISTER_SAGA, params}),
   phoneCodeRegister: params => dispatch({ type: LoginAction.PHONE_CODE_REGISTER_SAGA, params}),
-  changeJoinStep: params => dispatch({type: LoginAction.CHANGE_JOIN_STEP_SAGA, params}),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

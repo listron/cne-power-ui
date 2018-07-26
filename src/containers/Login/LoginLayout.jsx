@@ -12,19 +12,19 @@ import Forget from './Forget';
 class LoginLayout extends Component {
   static propTypes = {
     pageTab: PropTypes.string,
-    changeLoginPage: PropTypes.func,
+    changeLoginStore: PropTypes.func,
   }
   constructor(props) {
     super(props);
   }
 
   render() {
-    const { pageTab, changeLoginPage } = this.props;
+    const { pageTab, changeLoginStore } = this.props;
     return (
       <div className={styles.preLogin}>
         <div className={styles.preLoginImg}>
           <div className={styles.logo}>
-            <div className={styles.pic}> <img src= {require('../../../assets/img/logo_power.png')} alt=""/></div>
+            <div className={styles.pic}> <img src= {require('../../../assets/img/logo_power.png')} alt="" /></div>
             <h3>智慧能源运维平台</h3>
           </div>
           <img className={styles.bgPic}  src={require('../../../assets/img/bg_01.png')} />
@@ -32,10 +32,10 @@ class LoginLayout extends Component {
 
         </div>
         <div className={styles.preLoginContent}>
-          {pageTab==='login' && <Login changeLoginPage={changeLoginPage} pageTab={pageTab} />}
-          {pageTab==='register' && <Register changeLoginPage={changeLoginPage} pageTab={pageTab} />}
-          {pageTab==='joinIn' && <JoinIn changeLoginPage={changeLoginPage} />}
-          {pageTab==='forget' && <Forget changeLoginPage={changeLoginPage} />}
+          {pageTab==='login' && <Login changeLoginStore={changeLoginStore} pageTab={pageTab} />}
+          {pageTab==='register' && <Register changeLoginStore={changeLoginStore} pageTab={pageTab} />}
+          {pageTab==='joinIn' && <JoinIn changeLoginStore={changeLoginStore} />}
+          {pageTab==='forget' && <Forget changeLoginStore={changeLoginStore} />}
         </div>
       </div>
     );
@@ -47,7 +47,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  changeLoginPage: params => dispatch({ type: LoginAction.CHANGE_LOGIN_STORE_SAGA, params }),
+  changeLoginStore: params => dispatch({ type: LoginAction.CHANGE_LOGIN_STORE_SAGA, params }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginLayout);

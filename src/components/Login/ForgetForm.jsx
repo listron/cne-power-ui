@@ -9,7 +9,6 @@ class ForgetForm extends Component{
   static propTypes = {
     form: PropTypes.object,
     showConfirmPassword: PropTypes.bool,
-    changePage: PropTypes.func,
     sendCode: PropTypes.func,
     checkPhoneCode: PropTypes.func,
     resetPassword: PropTypes.func,
@@ -23,6 +22,12 @@ class ForgetForm extends Component{
       checkFirst: true,
       timeValue: 0,
     }
+  }
+
+  componentWillUnmount = () => {
+    this.setState = (timeValue)=>{
+      return;
+    };
   }
 
   onHandleSubmit = (e) => {
