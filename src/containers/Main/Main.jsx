@@ -36,7 +36,7 @@ class Main extends Component {
 
   componentDidMount(){//根据路径缓存topMenu值
     const { pathname } = this.props.history.location;
-    let pathArray = pathname.split('/').filter(e=>e);
+    let pathArray = pathname.split('/').filter(e=>!!e);
     const params = menu.find(e=>e.path===`/${pathArray[0]?pathArray[0]:''}`);
     this.props.setTopMenu(params);
     if(this.refs.main) {
@@ -87,8 +87,8 @@ class Main extends Component {
       // console.log(authData);
     }
     // console.log(this.state.logined || (authData !== 'undefined' && authData !== null))
-    // if(this.state.logined || (authData !== 'undefined' && authData !== null)){
-    if(true){
+    if(this.state.logined || (authData !== 'undefined' && authData !== null)){ 
+    // if(true){
       return (
         <div className={styles.app}>
           <div className={styles.appHeader}>
@@ -98,7 +98,7 @@ class Main extends Component {
             <TopMenu setTopMenu={setTopMenu} />
           </div>
           <div className={styles.appMain}>
-            <SideMenu topMenu={topMenu} />
+            {topMenu.children && topMenu.children.length > 0 && <SideMenu topMenu={topMenu} />}
             <div className={styles.content} ref="main">
               <Switch>
                 {routerConfig}
