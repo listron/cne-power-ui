@@ -117,10 +117,10 @@ class User extends Component {
   }
   render() {
     const { showPage } = this.props;
-    // console.log(this.props)
+    console.log(this.props)
     return (
       <div className={styles.userContainer}>
-        { showPage === 'list' && 
+        {showPage === 'list' && 
           <UserList 
             {...this.props} 
             onChangeSort={this.onChangeSort}
@@ -129,7 +129,7 @@ class User extends Component {
             onChangeStatus={this.onChangeStatus}
             onUserSearch={this.onUserSearch}
           />
-         }
+        }
         { showPage === 'detail' && <UserDetail {...this.props} /> }
         { showPage === 'edit' && <UserEdit {...this.props} /> }
         <div className={styles.userFooter}>
@@ -141,32 +141,12 @@ class User extends Component {
 }
 
 const mapStateToProps = state => {
-  // console.log([...state.role,...state.user])
-  let departmentProps = {};
+  let userProps = {};
   // [...state.department].forEach(e=>departmentProps[e[0]]=(e[1].toJS?e[1].toJS():e[1]))
-  [...state.role,...state.user].forEach(e=>departmentProps[e[0]]=e[1])
-  return departmentProps
+  [...state.user].forEach(e=>userProps[e[0]]=e[1])
+  userProps['roleData'] = state.role.get('roleData');
+  return userProps;
 }
-// const mapStateToProps = (state) => ({
-//   loading: state.user.get('loading'),
-//   showPage: state.user.get('showPage'),
-//   userId: state.user.get('userId'),
-//   roleId: state.user.get('roleId'),
-//   userStatus: state.user.get('userStatus'),
-//   roleName: state.user.get('roleName'),
-//   filterStatus: state.user.get('filterStatus'),
-//   sort: state.user.get('sort'),
-//   ascend: state.user.get('ascend'),
-//   userName: state.user.get('userName'),
-//   phoneNum: state.user.get('phoneNum'),
-//   stationName: state.user.get('stationName'),
-//   totalNum: state.user.get('totalNum'),
-//   userData: state.user.get('userData').toJS(),
-//   currentPage: state.user.get('currentPage'),
-//   pageSize: state.user.get('pageSize'),
-//   userDetail: state.user.get('userDetail').toJS(),
-//   selectedUser: state.user.get('selectedUser').toJS(),
-// });
 
 const mapDispatchToProps = (dispatch) => ({
   changeUserAttr: payload => dispatch({type:userAction.GET_USER_ATTR_CHANGE_SAGA, payload}),

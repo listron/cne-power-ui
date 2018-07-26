@@ -7,9 +7,6 @@ import PropTypes from 'prop-types';
 import styles from './userList.scss';
 import UserSearch from './UserSearch'; 
 
-const Option = Select.Option;
-const RadioGroup = Radio.Group;
-const RadioButton = Radio.Button;
 class UserList extends Component {
   static propTypes = {
     loading: PropTypes.bool,
@@ -133,7 +130,28 @@ class UserList extends Component {
         title: '负责电站',
         dataIndex: 'stationName',
         key: 'stationName',
-        render: (text,record,index) => (<div><span>{text.split(',')[0]}</span><Popover content={text.split(',').map((item,i)=>{return <p key={i}>{item}</p>})} title={'负责电站'} placement="right" trigger="hover" ><Icon type="ellipsis" /></Popover></div>),
+        render: (text,record,index) => {
+          console.log(text, record, index);
+          let stations = record.stationName.split(',').filter(e=>!!e);
+          const { userName } = record;
+          if(stations.length > 1){
+            return (
+              <div>
+                <span>{text.split(',')[0]}</span>
+                <Popover 
+                  content={text.split(',').map((item,i)=>{return <p key={i}>{item}</p>})} 
+                  title={userName + '负责电站'} 
+                  placement="right" trigger="hover"
+                >
+                  <Icon type="ellipsis" />
+                </Popover>
+              </div>
+            )
+          }else{
+            return <span>{stations[0] ? stations[0] : ''}</span>
+          }
+          
+        } 
       },  {
         title: '状态',
         dataIndex: 'userStation',
