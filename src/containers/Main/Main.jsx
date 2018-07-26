@@ -87,7 +87,8 @@ class Main extends Component {
       // console.log(authData);
     }
     // console.log(this.state.logined || (authData !== 'undefined' && authData !== null))
-    if(this.state.logined || (authData !== 'undefined' && authData !== null)){
+    // if(this.state.logined || (authData !== 'undefined' && authData !== null)){
+    if(true){
       return (
         <div className={styles.app}>
           <div className={styles.appHeader}>
