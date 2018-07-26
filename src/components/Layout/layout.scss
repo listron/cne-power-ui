@@ -1,0 +1,28 @@
+
+
+
+.sideMenu{
+  display: flex;
+  .sideLayout{
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    .logo{
+      height: 40px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+    }
+    .menuList{
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      overflow-x: hidden;
+      overflow-y: auto;
+    }
+  }
+}
+
+.icon{
+  font-size: 16px;
+}

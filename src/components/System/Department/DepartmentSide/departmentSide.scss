@@ -1,0 +1,138 @@
+
+
+
+@import '../../../../theme/theme.scss';
+
+@mixin top(){//详情，编辑通用顶部基础样式
+  @include lineheight(64px);
+  display: flex;
+  padding-left: 32px;
+  align-items: center;
+  border-bottom: solid 1px $promptColor;  
+}
+
+.departmentSide {
+  display: flex;
+  flex: 1 0 auto;
+  width: 100%;
+  padding: 24px 24px 0;
+  background:#ececec;
+  .addDepartment,.editDepartment{
+    flex: 1;
+    background-color: #fff;
+    .editTop{
+      @include top;
+      justify-content: space-between;
+      .text{
+        font-size:18px;
+        color: $darkColor;
+        letter-spacing:4px;
+      }
+      .backIcon{
+        color: $lightColor;
+        font-size: 20px;
+        border-left: 1px solid $promptColor;
+        height: 100%;
+        line-height: 64px;
+        width: 64px;
+        cursor: pointer;
+      }
+    }
+    .mainPart{
+      margin: 24px 32px 0;    
+      display: flex;
+      .addPart,.editPart{
+        flex: 1;
+        .instructionText{
+          color: $promptColor;
+        }
+        .buttonGroup{
+          .save{
+            margin-left: 410px;
+            margin-right: 16px;
+          }
+        }
+        .editSave{
+          margin-left: 410px;
+        }
+        :global{
+          .ant-form-item{
+            display: flex;
+            line-height: 40px;
+            .ant-form-item-label{
+              width: 410px;
+              color: $darkColor;
+              text-align: right;
+              padding-right: 24px;
+              label::after{
+                display: none;
+              }
+            }
+            .ant-form-item-control-wrapper{
+              input {
+                width: 200px;
+                margin-right: 12px;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  .departmentDetail{//部门详情
+    line-height: 30px;
+    flex: 1;
+    background-color: #fff;
+    .detailTop{
+      @include top;
+      justify-content: space-between;
+      .editButton{
+        &:hover{
+          background-color: $themeColor;
+          color: #fff;
+        }
+      }
+      .handleArea{
+        font-size: 20px;
+        .previous{
+          margin-right: 20px;
+          cursor: pointer;
+        }
+        .next{
+          margin-right: 28px;
+          cursor: pointer;
+        }
+        .backIcon{
+          height: 100%;
+          line-height: 64px;
+          color: $lightColor;
+          border-left: 1px solid $promptColor;
+          width: 64px;
+          cursor: pointer;
+        }
+      }
+      
+    }
+    .departmentInfor{//部门信息展示区
+      margin: 24px 0 0;
+      display: flex;
+      flex-direction: column;
+      color: $lightColor;
+      .title{
+        display: inline-block;
+        width: 386px;
+        text-align: right;
+        margin-right: 24px;
+        color: $darkColor;
+      }
+      .value{
+        display: inline-block;
+        color: $lightColor;
+        margin-right: 16px;
+      }
+      .setting{
+        @include lineheight(26px);
+      }
+    }
+  }
+}

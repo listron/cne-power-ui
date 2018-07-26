@@ -1,0 +1,71 @@
+
+  .app {
+    overflow: hidden;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    height: 100%;
+    .appHeader{
+      height: 59px;
+      background-color: #06213E;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      .headerLeft{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        .logo{
+          width: 55px;
+          height: 33px;
+          margin: 0 24px 0 9px;
+          //background-image: url('../../theme/img/cnelogo.png');
+          background-position: 0% 0%;
+          background-size: contain;
+          background-repeat: no-repeat;
+        }
+      }
+      .headerMenu{
+        .menuItem{
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          color: #fff;
+          .icon {
+            font-size: 14px;
+            margin-right: 6px;
+          }
+        }
+      }
+    }
+    .appMain{
+      display: flex;
+      flex: 1;
+      .content{
+        display: flex;
+        flex: 1;
+        overflow-x: hidden;
+        overflow-y: auto;
+      }
+    }
+    .appFloat {
+      display: flex;
+      flex-direction: column;
+      position: absolute;
+      bottom: 60px;
+      right: 0px;
+      background: #199475;
+      box-shadow:0 0 2px 0 rgba(0,0,0,0.50);
+      border-radius:2px;
+      width:40px;
+      .floatItem {
+        height: 35px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-size: 16px;
+      }
+    }
+  }

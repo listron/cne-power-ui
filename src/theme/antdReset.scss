@@ -1,0 +1,193 @@
+
+
+//专门针对antd样式的部分重置：(table)
+@import './theme.scss';
+
+:global{
+  .ant-table{//table行高，高亮，背景色调整；
+    .ant-table-thead > tr > th{
+      background: $tableSelectedBackground;
+    }
+    .ant-table-tbody{
+      background: #fff;
+      &>tr:hover{
+        td {
+          background: $tableSelectedBackground;
+        }
+      }
+    }
+    .ant-table-thead > tr > th, .ant-table-tbody > tr > td{
+      padding: 0 16px;
+      height: 40px;
+      line-height: 40px;
+    }
+  }
+  .ant-btn {   //antd按钮样式调整-高亮
+    color: $darkColor;
+    @include highLight($themeColor);
+    &:hover{
+      color: $themeColor;
+    }
+  }
+  .ant-btn-primary{
+    background-color: $themeColor;
+    color: #fff;
+    border-color: $themeColor;
+    &:hover {
+      background-color: $themeColor;
+      color: #fff;
+    }
+  }
+  .ant-btn-group {
+    .ant-btn-primary {
+      &:first-child:not(:last-child) {
+        border-right-color: $themeColor;
+      }
+      &:last-child:not(:first-child) {
+        border-left-color: $themeColor;
+      }
+    }
+  }
+  .ant-select{
+    .ant-select-selection{
+      .ant-select-selection__rendered{
+        .ant-select-selection__placeholder{
+          color: $lightColor;
+        }
+      }
+      .ant-select-arrow{
+        color: $lightColor;
+      }
+      @include highLight($themeColor);
+    }
+  }
+  //.ant-tabs-nav-wrap .ant-tabs-nav-scroll .ant-tabs-nav .ant-tabs-nav-animated  .ant-tabs-ink-bar-no-animated .ant-tabs-tab-active .ant-tabs-tab{
+  //  color: $themeColor;
+  //}
+  .ant-tabs-ink-bar{
+    color: $themeColor;
+  }
+  .ant-tabs-bar {
+    width: 200px;
+  }
+  .ant-tabs-nav ,.ant-tabs-tab-active {
+    color: $themeColor;
+  }
+  .ant-tabs-nav .ant-tabs-tab-active:hover{
+    color: $themeColor;
+  }
+
+  .ant-tabs-nav .ant-tabs-tab:hover{
+    color: $themeColor;
+  }
+.ant-tabs-tab{
+  color: $darkColor;
+}
+  .ant-tabs-tab-active .ant-tabs-tab{
+    color: $themeColor;
+  }
+
+.ant-tabs-nav .ant-tabs-tab-active{
+  color: $themeColor;
+}
+
+.ant-tabs-ink-bar{
+  background-color: $themeColor;
+}
+  .ant-input:hover{
+    border-color:$themeColor ;
+  }
+  .ant-input{
+    background:#ffffff;
+    border:1px solid $promptColor;
+    border-radius:4px;
+    width:198px;
+    height:31px;
+
+  }
+
+  /*输入框前面的小方块*/
+  .ant-input-affix-wrapper .ant-input-prefix {
+    left: 12px;
+    height: 28px;
+    width: 29px;
+    border-radius: 3px 0 0 3px;
+    background:#f1f1f1;
+    margin-left: -11px;
+    text-align: center;
+    line-height: 200%;
+  }
+
+/* 验证码输入框的宽度
+ .ant-form .ant-form-horizontal .verificationCode__ZLcpT{
+    .ant-form .ant-form-item {
+      width: 100px;
+    }
+  }*/
+
+  /*上下input输入框的距离*/
+  .ant-form-item, .ant-form-horizontal {
+    margin-bottom: 21px;
+  }
+  /*input的鼠标移上颜色*/
+  .ant-input-affix-wrapper:hover .ant-input:not(.ant-input-disabled) {
+    border-color: $themeColor;
+    border-right-width: 1px !important;
+  }
+  /*步骤的下边距*/
+  .ant-steps{
+    margin-bottom: 20px;
+  }
+/*步骤的标题的字体大小*/
+  .ant-steps-item-title{
+    font-size: 12px;
+  }
+ /* .ant-steps-item-process .ant-steps-item-icon{
+    background: $themeColor;
+  }*/
+
+  /*流程步骤的icon大小形状以及对其*/
+  .ant-steps-item-icon {
+    border: 1px solid rgba(0, 0, 0, 0.25);
+    width: 12px;
+    height: 12px;
+    line-height: 12px;
+    text-align: center;
+    border-radius: 12px;
+    font-size: 12px;
+    margin-right: 8px;
+    vertical-align: -22px;
+    margin-left: 10px;
+  }
+  /*流程步骤的icon颜色背景*/
+  .ant-steps-item-process .ant-steps-item-icon{
+    border-color: $themeColor;
+    background: #ceebe0;
+
+  }
+  .ant-steps-item-process .ant-steps-item-icon > .ant-steps-icon {
+    color: #199475;
+  }
+  /*流程步骤后面的线*/
+  .ant-steps-item-title:after{
+    width: 0;
+  }
+  /*流程步骤的总长度*/
+  .ant-tabs:not(.ant-tabs-vertical) > .ant-tabs-content {
+    width: 315px;
+  }
+  .ant-steps-horizontal:not(.ant-steps-label-vertical) .ant-steps-item {
+    margin-right: 0;
+    white-space: nowrap;
+  }
+  /*单个步骤流程*/
+  .ant-steps-item-icon
+  .ant-steps-item ,.ant-steps-item-process{
+    background: url("../../assets/img/firstbg.png") no-repeat center ;
+    width: 105px;
+  }
+  .ant-form-explain{
+
+
+  }
+}

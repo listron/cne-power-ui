@@ -1,0 +1,34 @@
+.timeLineWrap{
+  .title {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+  }
+  .timeLines{
+    color:#9b9b9b;
+    font-size: 14px;
+    line-height: 30px;
+    background-color:#fafafa; 
+    li{
+      padding-bottom: 0;
+      :global{
+        .ant-timeline-item-head{
+          top:0.25em;
+        }
+      }
+      .processWrap{
+        b{
+          color: #000;
+          font-weight: normal;
+          margin-right:13px;
+        }
+        span{
+          margin-right: 13px;
+        }
+      }      
+    }
+    .processStatus span{
+      color:#7ec5c2;
+    }
+  }
+}

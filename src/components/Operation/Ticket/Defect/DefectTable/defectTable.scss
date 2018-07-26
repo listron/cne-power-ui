@@ -1,0 +1,25 @@
+.defectList {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  .action {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  .buttonArea {
+    display: flex;
+    flex-direction: row;
+  }
+  .defectStatus {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    .warning {
+      display: flex;
+      flex-direction: column;
+      font-size: 12px;
+    }
+  }
+}

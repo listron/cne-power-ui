@@ -1,0 +1,53 @@
+
+.verificationCode{
+  .checkCodeBox{
+    display: flex;
+    justify-content: space-between;
+    .testCode{
+      width: 80px;
+      :global{
+        .ant-input{
+          width:100px;
+        }
+      }
+    }
+    .queryCode{
+      width: 100px;
+      margin-top: 3px;
+      margin-right: 0;
+      padding: 0 5px;
+      :global{
+        button{
+          width: 80px;
+        }
+      }
+      background: #fff;
+      border-color: #199475;
+      color: #199475;
+    }
+  }
+  .loginBtn{
+    display: flex;
+    justify-content: flex-end;
+    width: 200px;
+  }
+}
+.yiLogin{
+  font-size:14px;
+  color:#199475;
+  text-align:center;
+  float: right;
+  cursor: pointer;
+}
+.loginChange{
+  width: 200px;
+  display: flex;
+  justify-content: space-between;
+
+  span{
+    font-size: 12px;
+    color:#199475;
+    cursor: pointer;
+  }
+
+}

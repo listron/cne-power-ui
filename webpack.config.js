@@ -1,82 +1,108 @@
-/*
- * @Author: Ruth
- * @Date:   2016-11-02 11:25:52
- * @Last Modified time: 2016-11-14 15:33:35
- */
 
-'use strict';
 
-var webpack = require('webpack');
-var path = require('path');
-var resolve = path.resolve;
+  const path = require('path');
+  const HtmlWebpackPlugin = require('html-webpack-plugin');
+  const CopyWebpackPlugin = require('copy-webpack-plugin');
+  const { mockConfig } = require('./mock.config.js')
 
-// css 单独打包，使用该插件后就不需要配置style-loader了
-// 本来是内联在最终的网页里，现在通过外联方式，可以在/dist文件夹下找到单独的css文件
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
-
-module.exports = {
+  module.exports = {
+    mode:'development',
     entry: {
-        index: './src/index.js', // 唯一的入口文件
-        vendor: [   // 这里是依赖的库文件配置，和CommonsChunkPlugin配合使用可以单独打包
-            'react',
-            'react-dom',
-            'react-redux',
-            'react-router-dom',
-            'redux',
-            'redux-logger',
-            'redux-thunk',
-            'redux-saga',
-            'axios',
-            'immutable'
-        ]
+      app: './src/app.js',
     },
-    output: {
-        path: '/dist', //打包后的文件存放的地方
-        filename: 'bundle.js',
-        publicPath: '/dist' //启动本地服务后的根目录
-    },
+    devtool: 'inline-source-map',
     devServer: {
-        historyApiFallback: true,
-        hot: true,
-        inline: true,
-        progress: true
+      contentBase: './dist',
+      port:8080,
+      inline:true,
+      before(server) {
+        mockConfig.forEach(e=>{
+          server[e.method](`${e.api}`, (req, res) => {
+            setTimeout(()=>res.json(e.response),e.delay || 2000)
+          });
+        })
+      },
     },
-    resolve: {
-        extensions: ['', '.js', '.jsx'],
-        alias: {
-			'common': resolve('src/common'),
-			'component': resolve('src/component'),
-			'container': resolve('src/container'),
-			'asset': resolve('asset'),
-			'constant': resolve('src/constant')
-		}
+    resolve:{
+      extensions: [".js", ".json", ".jsx"]
     },
     module: {
-        loaders: [{
-            test: /\.(js|jsx)$/,
-            loader: 'babel',
-            // 可以单独在当前目录下配置.babelrc，也可以在这里配置
-            query: {
-                // presets: ['es2015', 'react']
-            },
-            // 排除 node_modules 下不需要转换的文件，可以加快编译
-            exclude: /node_modules/
-        }, {
-            test: /\.css$/,
-            loader: ExtractTextPlugin.extract("style", "css")
-        }, {
-            test: /\.scss$/,
-            loader: ExtractTextPlugin.extract("style", "css!sass")
-        }, {
-            test: /\.(png|jpg|gif)$/,
-            loader: 'url?limit=819200'
+      rules: [{
+        test: /\.(js|jsx)$/,
+        use: 'babel-loader',
+        exclude: /node_modules/        
+      }, {
+        test: /\.css$/,
+        exclude: /node_modules/,
+        use: [{
+          loader:'style-loader'
+        },{
+          loader:'css-loader',
+          options: {
+            modules: true,
+            localIdentName: '[local]__[hash:base64:5]'
+          }
         }]
+      }, {//antd样式处理
+        test:/\.css$/,
+        exclude:/src/,
+        use:[
+          { loader: "style-loader"},
+          {
+            loader: "css-loader",
+            options:{
+              importLoaders: 1
+            }
+          }
+        ]
+      }, {
+        test: /\.scss$/,
+        use: [{
+          loader: "style-loader" 
+        }, {
+            loader: "css-loader",
+            options: {
+              modules: true,
+              localIdentName: '[local]__[hash:base64:5]'
+            }
+        }, {
+            loader: "sass-loader" 
+        }]
+      }, {
+        test: /\.(png|jpg|gif)$/,
+        use: 'file-loader?name=[name].[ext]'
+      }, {
+        test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+        use: 'url-loader?name=[name].[ext]&limit=10000&minetype=application/font-woff'
+      }, {
+        test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+        use: 'file-loader?name=[name].[ext]'
+      }]
     },
     plugins: [
-        new ExtractTextPlugin('main.css'),
-        new webpack.optimize.CommonsChunkPlugin({
-            name: 'vendor',
-            filename: 'vendor.js'
-        })
-    ]
-};
+      new CopyWebpackPlugin([{
+        from: __dirname + '/assets',
+        to:__dirname + '/dist'
+      }]),
+      new HtmlWebpackPlugin({
+        title: 'Donut-UI',
+        template : __dirname + '/index.ejs',
+      }),
+    ],
+    output: {
+      path: path.resolve(__dirname, 'dist'),
+      filename: '[name].[hash].js',
+      chunkFilename:'[name].[hash].async.js',
+    }
+  };
+
+
+// module.exports = {
+//   devServer: {
+//     historyApiFallback: true,
+//     hot:true
+//   },
+//   plugins: [
+//     new webpack.HotModuleReplacementPlugin()
+//   ]
+// };
