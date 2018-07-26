@@ -19,7 +19,7 @@ class LoginLayout extends Component {
   }
 
   render() {
-    const {pageTab, changeLoginPage} = this.props;
+    const {pageTab, changeLoginStore} = this.props;
     return (
 
       <div className={styles.loginLayout}>
@@ -39,10 +39,10 @@ class LoginLayout extends Component {
         <div className={styles.right}>
           <div className={styles.containerLogin}>
             <div className={styles.loginContent}>
-              {pageTab === 'login' && <Login changeLoginPage={changeLoginPage} pageTab={pageTab} />}
-              {pageTab === 'register' && <Register changeLoginPage={changeLoginPage} pageTab={pageTab} />}
-              {pageTab === 'joinIn' && <JoinIn changeLoginPage={changeLoginPage} />}
-              {pageTab === 'forget' && <Forget changeLoginPage={changeLoginPage} />}
+              {pageTab === 'login' && <Login changeLoginStore={changeLoginStore} pageTab={pageTab} />}
+              {pageTab === 'register' && <Register changeLoginStore={changeLoginStore} pageTab={pageTab} />}
+              {pageTab === 'joinIn' && <JoinIn changeLoginStore={changeLoginStore} />}
+              {pageTab === 'forget' && <Forget changeLoginStore={changeLoginStore} />}
             </div>
           </div>
         </div>
