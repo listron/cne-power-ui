@@ -1,33 +1,33 @@
-.forgetPass{
+.forgetPass {
   margin-left: 140px;
-  .findPass{
-    font-size:14px;
-    color:#999999;
-    text-align:left;
+  .findPass {
+    font-size: 14px;
+    color: #999999;
+    text-align: left;
     display: block;
     margin-bottom: 15px;
   }
 
-  .testCode{
-  width: 120px;
-  :global{
-    .ant-input{
-      width:100px;
+  .testCode {
+    width: 120px;
+    :global {
+      .ant-input {
+        width: 100px;
+      }
     }
   }
-}
-  .checkCodeBox{
+  .checkCodeBox {
     display: flex;
     justify-content: space-between;
   }
 
-  .queryCode{
+  .queryCode {
     width: 80px;
     margin-top: 3px;
     margin-right: 0;
     padding: 0 5px;
-    :global{
-      button{
+    :global {
+      button {
         width: 80px;
       }
     }
@@ -35,5 +35,4 @@
     border-color: #199475;
     color: #199475;
   }
-
 }
