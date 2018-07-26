@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Form, Icon, Input, Button, Steps, Alert, Checkbox} from 'antd';
+import {Form, Icon, Input, Button, Steps, Checkbox} from 'antd';
 import PropTypes from 'prop-types';
 import styles from './registerForm.scss';
 
@@ -81,7 +81,7 @@ class RegisterForm extends Component {
     }else{
       callback();
     }
-  }
+  } 
 
   phoneCodeRegister = (e) =>{
     e.preventDefault();
@@ -139,18 +139,9 @@ class RegisterForm extends Component {
     }
   }
 
-  onRegisterEnterprise = () => {
-    this.props.form.validateFields(['userName','password','confirmPwd'], (err, values) => {
-      if (!err) {
-        this.props.registerEnterprise(values);
-      }
-    })
-    
-  }
-
   render(){
     const { getFieldDecorator } = this.props.form;
-    const { isPhoneRegister, isUserRegister, domainIsRegister, nameIsRegister, registerSuccess } = this.props;
+    const {  domainIsRegister, nameIsRegister } = this.props;
     const formItemLayout = {
       labelCol: {
         xs: {span: 24},
