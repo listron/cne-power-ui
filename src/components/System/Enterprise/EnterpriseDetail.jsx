@@ -4,7 +4,8 @@ import React, { Component } from 'react';
 import { Button, Icon } from 'antd';
 import PropTypes from 'prop-types';
 import styles from './enterprise.scss';
-import { Link, Prompt } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { ObjectUnsubscribedError } from '../../../../node_modules/rxjs';
 
 class EnterpriseDetail extends Component {
   static propTypes = {
@@ -17,14 +18,22 @@ class EnterpriseDetail extends Component {
   constructor(props){
     super(props);
     this.state ={
-      showInforTip: true
+      showInforTip: false
     }
   }
-  ignoreEdit = () => {
-    this.props.ignoreEnterpirseEdit({id:'1122'});
-    this.setState({
-      showInforTip: false
-    })
+  // ignoreEdit = () => {//
+  //   this.props.ignoreEnterpirseEdit({id:'1122'});
+  //   this.setState({
+  //     showInforTip: false
+  //   })
+  // }
+  componentWillReceiveProps(nextProps){//获取到详情数据后当详情存在且logo不存在时提示完善企业信息
+    const { enterpriseDetail } = nextProps;
+    if(Object.keys(enterpriseDetail).length > 0 && !enterpriseDetail.enterpriseLogo){
+      this.setState({
+        showInforTip: true
+      })
+    }
   }
 
   render(){
@@ -36,8 +45,8 @@ class EnterpriseDetail extends Component {
         <div className={styles.detailTop}>
           <Button className={styles.editButton} onClick={()=>changeEnterpriseStore({showPage:'edit'})}>编辑</Button>
           {showInforTip && <span className={styles.infoTip} >
-            <span className={styles.toEdit} onClick={()=>changeEnterpriseStore({showPage:'edit'})} >完善企业信息,请点击编辑</span>
-            <span className={styles.ignore} onClick={this.ignoreEdit}>不再提醒 <Icon type="close" /></span>
+            <span className={styles.toEdit} >请编辑完善企业信息!</span>
+            {/* <span className={styles.ignore} onClick={this.ignoreEdit}>不再提醒 <Icon type="close" /></span> */}
           </span>}
         </div>
         <div className={styles.enterpriseName}>
