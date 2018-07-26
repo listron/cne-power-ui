@@ -62,7 +62,7 @@ class JoinInForm extends Component{
     e.preventDefault();
     this.props.form.validateFields((err,values) => {
       if(!err){
-        this.props.getEnterpriseInfo({'enterpriseName': values.enterpriseName})
+        this.props.getEnterpriseInfo({enterpriseName: values.enterpriseName})
         this.setState({ showEnterpriseInfo: true,  });
       }
     })
@@ -127,7 +127,7 @@ class JoinInForm extends Component{
   }
   render(){
     const { getFieldDecorator, getFieldsError } = this.props.form;
-    const { enterpriseName, isPhoneRegister, joinResult, joinStep,phoneNum, enterpriseIdToken } = this.props;
+    const { enterpriseName, isPhoneRegister, joinResult, joinStep } = this.props;
     const { showEnterpriseInfo } = this.state;
     const formItemLayout = {
       labelCol: {
