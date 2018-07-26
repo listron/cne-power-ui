@@ -20,6 +20,7 @@ class LoginForm extends Component {
     phoneCodeRegister: PropTypes.func,
     username: PropTypes.string,
     pageTab: PropTypes.string,
+    changeJoinStep: PropTypes.func,
   }
 
   constructor(props) {
@@ -35,8 +36,8 @@ class LoginForm extends Component {
       if (!err) {
         if (this.state.showPasswordLogin) {
           this.props.fetchLogin(values);
-        } else {
-          this.props.checkCodeLogin(...values);
+        }else{
+          this.props.phoneCodeRegister(values);
         }
       }
     })
@@ -67,22 +68,21 @@ class LoginForm extends Component {
     })
   }
   checkPhoneRegister = (e) => {
-    console.log(e)
     this.props.checkPhoneRegister(e.target.value);
   }
   jumpPersonalInfo = () => {
     this.props.form.validateFields(['phoneNum', 'verificationCode'], (err, values) => {
       if(!err){
-        this.props.changePage('joinIn')
+        this.props.changePage('joinIn');
+        this.props.changeJoinStep({'joinStep': 3})
       }
     })
   }
   render(){
     const { getFieldDecorator, getFieldsError } = this.props.form;
     let { showPasswordLogin } = this.state;
-    let { username } = this.props;
     return (
-      <div>
+      <div className={styles.loginForm}>
         {this.props.loginSuccess ? "登录成功！" :
           <Form onSubmit={this.onHandleSubmit}>
             {showPasswordLogin &&
@@ -91,14 +91,14 @@ class LoginForm extends Component {
                 {getFieldDecorator('username', {
                   rules: [{required: true, message: '请输入手机号/用户名'}]
                 })(
-                  <Input prefix={<Icon type="user"/>} placeholder="请输入手机号/用户名" />
+                  <Input prefix={<Icon type="user" />} placeholder="请输入手机号/用户名" />
                 )}
               </FormItem>
               <FormItem>
                 {getFieldDecorator('password', {
                   rules: [{required: true, message: '请输入密码'}]
                 })(
-                  <Input prefix={<Icon type="lock"/>} type="password" placeholder="请输入密码"/>
+                  <Input prefix={<Icon type="lock" />} type="password" placeholder="请输入密码" />
                 )}
               </FormItem>
             </div>
@@ -110,7 +110,7 @@ class LoginForm extends Component {
                   {getFieldDecorator('phoneNum', {
                     rules: [{pattern: /(^1[3|4|5|7|8]\d{9}$)|(^09\d{8}$)/, required: true, message: '请输入手机号'}]
                   })(
-                    <Input prefix={<Icon type="mobile"/>} placeholder="请输入手机号"/>
+                    <Input prefix={<Icon type="mobile" />} placeholder="请输入手机号" />
                   )}
                 </FormItem>
                 {this.props.enterpriseId === null ? <p>您已注册，请<span onClick={()=>this.changePage('joinIn')}>加入企业</span>或<span onClick={()=>this.changePage('register')}>注册企业</span></p> : null}
@@ -133,7 +133,7 @@ class LoginForm extends Component {
                   {getFieldDecorator('verificationCode', {
                     rules: [{required: true, message: '请输入验证码!'}]
                   })(
-                    <Input className={styles.testCode} prefix={<Icon type="lock"/>} placeholder="验证码!"/>
+                    <Input className={styles.testCode} prefix={<Icon type="lock" />} placeholder="验证码!" />
                   )}
 
                 </FormItem>

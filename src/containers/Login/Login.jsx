@@ -2,8 +2,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {Tabs, message} from 'antd';
 import PropTypes from 'prop-types';
-import styles from './login.scss';
-
+import styles from './loginLayout.scss';
 import LoginForm from '../../components/Login/LoginForm';
 import RegisterForm from '../../components/Login/RegisterForm';
 import {LoginAction} from '../../constants/actionTypes/loginAction';
@@ -25,6 +24,7 @@ class Login extends Component {
     checkPhoneRegister: PropTypes.func,
     phoneCodeRegister: PropTypes.func,
     username: PropTypes.string,
+    changeJoinStep: PropTypes.func,
   }
 
   constructor(props) {
@@ -56,7 +56,7 @@ class Login extends Component {
       <div className={styles.login}>
         <div className={styles.joinTop}>
           <div className={styles.fontIcon}>
-            <i className='font_family icon-phone'/>
+            <i className="iconfont icon-join" />
           </div>
           <div className={styles.join} onClick={() => this.changePage('joinIn')}>加入企业</div>
         </div>
@@ -73,10 +73,11 @@ class Login extends Component {
                 phoneCodeRegister={this.props.phoneCodeRegister}
                 username={this.props.username}
                 pageTab={this.props.pageTab}
+                changeJoinStep={this.props.changeJoinStep}
               />
             </TabPane>
             <TabPane tab="注册企业" key="register">
-              <RegisterForm/>
+              <RegisterForm />
             </TabPane>
           </Tabs>
         </div>
@@ -101,6 +102,7 @@ const mapDispatchToProps = (dispatch) => ({
   checkCodeLogin: params => dispatch({ type: LoginAction.CHECK_CODE_SAGA, params}),
   // checkPhoneRegister: params => dispatch({ type: LoginAction.CHECK_PHONE_REGISTER_SAGA, params}),
   phoneCodeRegister: params => dispatch({ type: LoginAction.PHONE_CODE_REGISTER_SAGA, params}),
+  changeJoinStep: params => dispatch({type: LoginAction.CHANGE_JOIN_STEP_SAGA, params}),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

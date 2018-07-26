@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button } from 'antd';
-import styles from './login.scss';
+import styles from './loginLayout.scss';
 import { connect } from 'react-redux';
 import JoinInForm from '../../components/Login/JoinInForm';
 import { LoginAction } from '../../constants/actionTypes/loginAction';
@@ -24,6 +23,8 @@ class JoinIn extends Component {
     username: PropTypes.string,
     joinResult: PropTypes.number,
     pageTab: PropTypes.string,
+    joinStep: PropTypes.number,
+    changeJoinStep: PropTypes.func,
   }
   constructor(props) {
     super(props);
@@ -35,12 +36,11 @@ class JoinIn extends Component {
 
     return (
       <div>
-<div className={styles.goLogin}>
-  <span  onClick={()=>this.changePage('login')}> 登录 </span>
-  <span>I</span>
-  <span  onClick={()=>this.changePage('register')}> 注册企业 </span>
-</div>
-
+        <div className={styles.goLogin}>
+          <span  onClick={()=>this.changePage('login')}> 登录 </span>
+          <span>I</span>
+          <span  onClick={()=>this.changePage('register')}> 注册企业 </span>
+        </div>
         <JoinInForm 
           loading={this.props.loading}
           isExist={this.props.isExist}
@@ -57,6 +57,8 @@ class JoinIn extends Component {
           username={this.props.username}
           joinResult={this.props.joinResult}
           pageTab={this.props.pageTab}
+          joinStep={this.props.joinStep}
+          changeJoinStep={this.props.changeJoinStep}
         />
       </div>
     );
@@ -72,6 +74,8 @@ const mapStateToProps = (state) => ({
   isPhoneRegister: state.login.get('isPhoneRegister'),
   username: state.login.get('username'),
   joinResult: state.login.get('joinResult'),
+  joinStep: state.login.get('joinStep'),
+  
 })
 
 const mapDispatchToProps = (dispatch) => ({
@@ -81,6 +85,7 @@ const mapDispatchToProps = (dispatch) => ({
   joinEnterprise: params => dispatch({ type: LoginAction.JOIN_ENTERPRISE_SAGA, params}),
   // checkPhoneRegister: params => dispatch({ type: LoginAction.CHECK_PHONE_REGISTER_SAGA, params}),
   phoneCodeRegister: params => dispatch({ type: LoginAction.PHONE_CODE_REGISTER_SAGA, params}),
+  changeJoinStep: params => dispatch({type: LoginAction.CHANGE_JOIN_STEP_SAGA, params})
 })
 
 export default connect(mapStateToProps,mapDispatchToProps)(JoinIn);

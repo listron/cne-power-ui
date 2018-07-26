@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button,Tabs } from 'antd';
-import styles from './login.scss';
+import { Tabs } from 'antd';
+import styles from './loginLayout.scss';
 import { connect } from 'react-redux';
 import LoginForm from '../../components/Login/LoginForm';
 import RegisterForm from '../../components/Login/RegisterForm';
@@ -54,7 +54,7 @@ class Register extends Component {
         <div className={styles.joinTop}>
           {/*<span onClick={()=>this.changePage('joinIn')}>加入企业</span>*/}
           <div className={styles.fontIcon}>
-            <i className='icon-phone'/>
+            <i className="icon-phone" />
           </div>
           <div className={styles.join} onClick={()=>this.changePage('joinIn')}>加入企业</div>
         </div>

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Form, Icon, Input, Button, Steps, message, Alert, Checkbox} from 'antd';
+import {Form, Icon, Input, Button, Steps, Alert, Checkbox} from 'antd';
 import PropTypes from 'prop-types';
 import styles from './registerForm.scss';
 
@@ -31,20 +31,11 @@ class RegisterForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      current: 0,
+      // current: 0,
       timeValue: 0,
     }
   }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.registerStep === 2 && this.props.registerStep === 1) {
-      this.next();
-    }
-    if(nextProps.domainIsRegister === '1' && nextProps.nameIsRegister === '1'){
-      this.next();
-    }
-
-  }
+  
   onEnterpriseInfo = (e) => {
     e.preventDefault();
     this.props.form.validateFields(['enterpriseDomain', 'enterpriseName', 'userAgreement'], (err, values) => {
@@ -69,8 +60,7 @@ class RegisterForm extends Component {
     e.preventDefault();
     this.props.form.validateFields(['phoneNum','verificationCode'],(err, values) => {
       if(!err){
-        let { pageTab } = this.props;
-        this.props.phoneCodeRegister({...values, 'registerStep': 1});
+        this.props.phoneCodeRegister({...values, 'registerStep': 2});
       }
     })
   }
@@ -97,21 +87,19 @@ class RegisterForm extends Component {
   }
 
   checkUserRegister = (e) => {
-    console.log(e)
     this.props.checkUserRegister(e.target.value);
   }
   checkPhoneRegister = (e) => {
-    console.log(e)
     this.props.checkPhoneRegister(e.target.value);
   }
-  next = () => {
-    const current = this.state.current !== 2 ? this.state.current + 1 : 2;
-    this.setState({ current })
-  }
+  // next = () => {
+  //   const current = this.state.current !== 2 ? this.state.current + 1 : 2;
+  //   this.setState({ current })
+  // }
 
   render(){
     const { getFieldDecorator } = this.props.form;
-    const {domainIsRegister, nameIsRegister, isPhoneRegister, isUserRegister} = this.props;
+    const { domainIsRegister, nameIsRegister, isPhoneRegister } = this.props;
     const formItemLayout = {
       labelCol: {
         xs: {span: 24},
@@ -146,7 +134,7 @@ class RegisterForm extends Component {
                     {getFieldDecorator('phoneNum', {
                       rules: [{required: true, message: '请输入手机号'}]
                     })(
-                      <Input className={styles.mobileNumber} prefix={<Icon type="mobile"/>} placeholder="请输入手机号"/>
+                      <Input className={styles.mobileNumber} prefix={<Icon type="mobile" />} placeholder="请输入手机号" />
                     )}
                   </FormItem>
                 </div>
@@ -155,9 +143,8 @@ class RegisterForm extends Component {
                     {getFieldDecorator('verificationCode', {
                       rules: [{required: true, message: '请输入验证码!'}]
                     })(
-                      <Input className={styles.testCode} prefix={<Icon type="lock"/>} placeholder="验证码!"/>
+                      <Input className={styles.testCode} prefix={<Icon type="lock" />} placeholder="验证码!" />
                     )}
-
                   </FormItem>
                   <Button type="primary" disabled={this.state.timeValue !== 0} onClick={this.sendCode} className={styles.queryCode}>
                     {this.state.timeValue !== 0 ? `${this.state.timeValue}秒后可重发` : "获取验证码"}
@@ -180,14 +167,14 @@ class RegisterForm extends Component {
                   {getFieldDecorator('enterpriseDomain', {
                     rules: [{required: true, message: '请输入企业域名'}]
                   })(
-                    <Input placeholder="请输入企业域名" addonAfter=".cneclound.com"/>
+                    <Input placeholder="请输入企业域名" addonAfter=".cneclound.com" />
                   )}
                 </FormItem>
                 <FormItem label="企业名称" {...formItemLayout}>
                   {getFieldDecorator('enterpriseName', {
                     rules: [{required: true, message: '请输入企业名称'}]
                   })(
-                    <Input placeholder="请输入企业名称"/>
+                    <Input placeholder="请输入企业名称" />
                   )}
                 </FormItem>
                 <FormItem {...tailFormItemLayout} >
@@ -199,8 +186,8 @@ class RegisterForm extends Component {
                 </FormItem>
                 <FormItem {...tailFormItemLayout} >
                   <Button type="primary" htmlType="submit" className="login-form-button">下一步</Button>
-                  {!domainIsRegister && <Alert message="当前域名无效" type="error" showIcon/>}
-                  {!nameIsRegister && <Alert message="当前企业名已注册，不能重复注册" type="error" showIcon/>}
+                  {!domainIsRegister && <Alert message="当前域名无效" type="error" showIcon />}
+                  {!nameIsRegister && <Alert message="当前企业名已注册，不能重复注册" type="error" showIcon />}
                 </FormItem>
               </Form>
             </div>
@@ -216,7 +203,7 @@ class RegisterForm extends Component {
                   {getFieldDecorator('userName', {
                     rules: [{required: true, message: '请输入用户名'}]
                   })(
-                    <Input prefix={<Icon type="user" />} placeholder="请输入用户名"/>
+                    <Input prefix={<Icon type="user" />} placeholder="请输入用户名" />
                   )}
                 </FormItem>
                 {isPhoneRegister === '0' && <span>手机号已经注册，请登录</span>}
@@ -225,7 +212,7 @@ class RegisterForm extends Component {
                   {getFieldDecorator('verificationCode',{
                     rules: [{required: true, message: '请输入验证码'}]
                   })(
-                    <Input prefix={<Icon type="lock"/>} type="password" placeholder="请输入密码"/>
+                    <Input prefix={<Icon type="lock" />} type="password" placeholder="请输入密码" />
                   )}
                 </FormItem>
                 <Button type="primary" disabled={this.state.timeValue !== 0} onClick={this.sendCode} >
@@ -233,13 +220,13 @@ class RegisterForm extends Component {
                 </Button>
               </div>
               <FormItem>
-                <Button type="primary" htmlType="submit" className="login-form-button"  >下一步</Button>
+                <Button type="primary" htmlType="submit" className="login-form-button">下一步</Button>
               </FormItem>
             </Form>
           </div>
         ),
     }];
-    const { current } = this.state;
+    const current = this.props.registerStep - 1;
     return (
       <div>
         <Steps current={current}>

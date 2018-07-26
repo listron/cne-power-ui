@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Form, Icon, Input, Button, Modal, Spin } from 'antd';
+import {Form, Icon, Input, Button, Modal } from 'antd';
 import PropTypes from 'prop-types';
 import styles from './joinInForm.scss';
 
@@ -23,6 +23,8 @@ class JoinInForm extends Component{
     phoneCodeRegister: PropTypes.func,
     username: PropTypes.string,
     joinResult: PropTypes.number,
+    changeJoinStep: PropTypes.func,
+    joinStep: PropTypes.number,
   }
 
   constructor(props){
@@ -30,14 +32,6 @@ class JoinInForm extends Component{
     this.state = {
       timeValue: 0,
       showEnterpriseInfo: false,
-      joinInStep: 1,
-    }
-  }
-  componentWillMount(){
-    if(this.props.username === null){
-      this.setState({
-        joinInStep: 3,
-      })
     }
   }
   onJoinEnterprise = () => {
@@ -96,11 +90,7 @@ class JoinInForm extends Component{
   phoneCodeRegister = () => {
     this.props.form.validateFields(['phoneNum','verificationCode'], (err, values) => {
       if(!err){
-        this.props.phoneCodeRegister(...values);
-        if(this.props.isJoined){
-          this.setState({ joinInStep: 3})
-        }
-        
+        this.props.phoneCodeRegister({...values, 'joinStep': 3})
       }
     })
   }
@@ -115,18 +105,20 @@ class JoinInForm extends Component{
   }
 
   checkPhoneRegister = (e) => {
-    console.log(e)
     this.props.checkPhoneRegister(e.target.value);
   }
 
   hasErrors = (fieldsError) => {
     return Object.keys(fieldsError).some(field => fieldsError[field]);
   }
-
+  changeJoinStep = (e) => {
+    e.preventDefault();
+    this.props.changeJoinStep({'joinStep': 2})
+  }
   render(){
     const { getFieldDecorator, getFieldsError } = this.props.form;
-    const { enterpriseName, isPhoneRegister, joinResult } = this.props;
-    const { showEnterpriseInfo, joinInStep } = this.state;
+    const { enterpriseName, isPhoneRegister, joinResult, joinStep } = this.props;
+    const { showEnterpriseInfo } = this.state;
     console.log(enterpriseName);
     const formItemLayout = {
       labelCol: {
@@ -151,8 +143,8 @@ class JoinInForm extends Component{
       },
     };
     return (
-      <div className={styles.comName}>
-        {joinInStep === 1 &&
+      <div  className={styles.comName}>
+        {joinStep === 1 &&
           <Form onSubmit={this.getEnterpriseInfo} >
             <FormItem label="企业名称" {...formItemLayout}>
               {getFieldDecorator('enterpriseName',{
@@ -175,13 +167,13 @@ class JoinInForm extends Component{
                 height={228}
                 closable={false}
               >
-                {enterpriseName === null ? null : <Button onClick={() => this.setState({joinInStep : 2 }) }>{enterpriseName}</Button>}
+                {enterpriseName === null ? null : <Button onClick={this.changeJoinStep }>{enterpriseName}</Button>}
                 <br /><Icon type="arrow-left" /><span  onClick={this.handleCancel}>返回</span>
               </Modal>
             {/* </Spin> */}
           </Form>
         }
-        {joinInStep === 2 && 
+        {joinStep === 2 && 
           <div>
             <span>{enterpriseName}</span>
             <Form onSubmit={this.phoneCodeRegister} >
@@ -213,7 +205,7 @@ class JoinInForm extends Component{
             </Form>
           </div>
         }
-        {joinInStep === 3 &&
+        {joinStep === 3 &&
           (joinResult ? <span>等待管理员审核</span> : 
           <div>
             <span>{enterpriseName}</span>
