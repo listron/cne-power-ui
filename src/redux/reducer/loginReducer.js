@@ -31,20 +31,21 @@ var initState = immutable.fromJS({
   },//加入企业信息
   showResetPassword: 0,//显示重置密码页面 0 不显示 1 显示
   enterpriseDomian: '',//注册企业域名
-  enterpriseName: '',//注册企业名称
+  enterpriseName: null,//注册企业名称
   isUserRegister: '2',//'0' 用户名已注册 '1' 用户名未注册
   isPhoneRegister: '2',//'0' 已注册 '1' 未注册
   enterpriseId: '',//登录判断用户是否在企业里
   username: '',//判断是否完善个人信息
   joinResult: 0,//0 加入失败，1 加入成功
+  registerSuccess: 2,//0 失败 1 成功
 });
 
 const loginReducer = (state = initState, action) => {
   console.log(action);
   console.log(state.toJS())
   switch (action.type) {
-    case LoginAction.CHANGE_LOGIN_PAGE:
-      return state.set('pageTab', action.params.pageTab);
+    case LoginAction.CHANGE_LOGIN_STORE:
+      return state.merge(immutable.fromJS(action.params));
     case LoginAction.CHANGE_JOIN_STEP_SUCCESS:
       return state.set('joinStep', action.params.joinStep)
     case LoginAction.LOGIN_FETCH:
@@ -60,31 +61,28 @@ const loginReducer = (state = initState, action) => {
       return state.set('isFetching', false)
                   .set('phoneNum', action.params.phoneNum);
     case LoginAction.CHECK_CODE_SUCCESS:
-      return state.merge(immutable.fromJS(action.payload)).set('loading', false);
-      // return state.set('isFetching', false)
-      //             .set('phoneNum', action.params.phoneNum)
-      //             .set('enterpriseId', action.data.enterpriseId)
-      //             .set('username', action.data.username)
-      //             .set('registerStep', action.params.registerStep);
+      return state.merge(immutable.fromJS(action.payload)).set('isFetching', false);
     case LoginAction.CHECK_PHONE_REGISTER_SUCCESS:
       return state.set('isPhoneRegister', action.data.isRegister)
     case LoginAction.PHONE_CODE_REGISTER_SUCCESS:
-      return state;
-      // return state.merge(immutable.fromJS(action.payload)).set('loading', false)
+      return state.set('phoneNum', action.params.phoneNum);
     case LoginAction.CHECK_ENTERPRISE_DOMAIN_SUCCESS:
-      return state.set('domainIsRegister', action.data.data.isRegister)
+      return state.set('domainIsRegister', action.data.isRegister)
                   .set('enterpriseDomian', action.params.enterpriseDomian);
     case LoginAction.CHECK_ENTERPRISE_NAME_SUCCESS:
       return state.set('isFetching', false)
-                  .set('nameIsRegister', action.data.data.isRegister)
+                  .set('nameIsRegister', action.data.isRegister)
                   .set('enterpriseName', action.params.enterpriseName)
-                  .set('registerStep', 3 );
     case LoginAction.CHECK_USER_REGISTER_SUCCESS:
       return state.set('isFetching', false)
-                  .set('isUserRegister', action.data.data.isRegister);
+                  .set('isUserRegister', action.data.isRegister);
     case LoginAction.JOIN_ENTERPRISE_SUCCESS:
       return state.set('isFetching', false)
-                  .set('joinResult', 1);
+                  .set('joinResult', 1)
+                  .set('joinStep', 1);
+    case LoginAction.REGISTER_ENTERPRISE_SUCCESS:
+      return state.set('isFetching', false)
+                  .set('registerSuccess', 1)
     case LoginAction.CHECK_PHONE_REGISTER_FAIL:
     case LoginAction.SEND_CODE_FAIL:
     case LoginAction.GET_LOGIN_FAIL:

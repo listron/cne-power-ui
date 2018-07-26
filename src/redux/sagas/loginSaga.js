@@ -11,19 +11,11 @@ import { message } from 'antd';
 function *changeLoginStore(action){
   const { params } = action;
   yield put({
-    type: LoginAction.CHANGE_LOGIN_PAGE,
+    type: LoginAction.CHANGE_LOGIN_STORE,
     params,
   })
 }
-//改变加入企业步骤
-function *changeJoinStep(action){
-  const { params } = action;
-  console.log(action,params)
-  yield put({
-    type: LoginAction.CHANGE_JOIN_STEP_SUCCESS,
-    params,
-  })
-}
+
 //账号密码登录
 function *getLogin(action){
   let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.login;
@@ -42,9 +34,9 @@ function *getLogin(action){
     });
     console.log(response)
     if(response.data.code === '10000'){
-      setCookie('authData',JSON.stringify(response.data.access_token));
+      setCookie('authData',JSON.stringify(response.data.data.access_token));
       setCookie('phoneNum', action.params.phoneNum);
-      setCookie('userName', response.data.username);
+      setCookie('userName', response.data.data.username);
       // setCookie('userId', response.data.result.userId);
       yield put({ type: LoginAction.GET_LOGIN_SUCCESS, data: response.data});       
     } else{
@@ -65,7 +57,8 @@ function *getVerificationCode(action){
     if(response.data.code === "10000"){
       yield put({ type: LoginAction.SEND_CODE_SUCCESS, params: action.params });
     } else {
-      yield put({ type: LoginAction.SEND_CODE_FAIL, data:{ error: response.data.msg, phoneNum: action.params.phoneNum}})
+      yield put({ type: LoginAction.SEND_CODE_FAIL, data:{ error: response.data.message, phoneNum: action.params.phoneNum}})
+      message.error(response.data.message);
     }
   }catch(e){
     console.log(e);
@@ -89,12 +82,11 @@ function *checkCode(action){
         verificationCode: action.params.verificationCode,
       }),
     });
-    // const response = yield call( axios.post, url, {'phoneNum':action.params.phoneNum, 'verificationCode': action.params.verificationCode});
     console.log(response)
     if(response.data.code === '10000'){
-      setCookie('authData',JSON.stringify(response.data.access_token));
+      setCookie('authData',JSON.stringify(response.data.data.access_token));
       setCookie('phoneNum', action.params.phoneNum);
-      setCookie('userName', response.data.username);
+      setCookie('userName', response.data.data.username);
       yield put({
         type: LoginAction.CHECK_CODE_SUCCESS,
         payload: {
@@ -115,7 +107,6 @@ function *checkCode(action){
 function *phoneCodeRegister(action){
   // let url = "/mock/api/v3/login/phoneregister";
   let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.phoneCodeRegister;
-  let { params } = action;
   console.log(action)
   try{
     const response = yield call(axios.post, url, {'phoneNum':action.params.phoneNum, 'verificationCode': action.params.verificationCode});
@@ -208,6 +199,7 @@ function *registerEnterprise(action){
         params: action.params,
         data: response.data.data,
       })
+      message.success('注册成功，请登录！');
     }else{
       yield put({ type: LoginAction.REGISTER_ENTERPRISE_FAIL})
     }
@@ -303,7 +295,6 @@ export function* watchLogin() {
   yield takeLatest(LoginAction.GET_LOGIN_SAGA, getLogin);
   yield takeLatest(LoginAction.SEND_CODE_SAGA, getVerificationCode);
   yield takeLatest(LoginAction.CHECK_CODE_SAGA, checkCode);
-  yield takeLatest(LoginAction.CHANGE_LOGIN_PAGE_SAGA, changeLoginStore);
   yield takeLatest(LoginAction.CHECK_ENTERPRISE_DOMAIN_SAGA, checkEnterpriseDomain);
   yield takeLatest(LoginAction.GET_ENTERPRISE_INFO_SAGA, getEnterPriseInfo);
   yield takeLatest(LoginAction.JOIN_ENTERPRISE_SAGA, joinEnterprise);
@@ -313,6 +304,6 @@ export function* watchLogin() {
   yield takeLatest(LoginAction.CHECK_USER_REGISTER_SAGA, checkUserRegister);
   yield takeLatest(LoginAction.CHECK_PHONE_REGISTER_SAGA, checkPhoneRegister);
   yield takeLatest(LoginAction.PHONE_CODE_REGISTER_SAGA, phoneCodeRegister);
-  yield takeLatest(LoginAction.CHANGE_JOIN_STEP_SAGA, changeJoinStep);
+  yield takeLatest(LoginAction.CHANGE_LOGIN_STORE_SAGA, changeLoginStore);
 
 }

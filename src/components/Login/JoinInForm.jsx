@@ -25,6 +25,9 @@ class JoinInForm extends Component{
     joinResult: PropTypes.number,
     changeJoinStep: PropTypes.func,
     joinStep: PropTypes.number,
+    changeLoginStore: PropTypes.func,
+    enterpriseIdToken: PropTypes.string,
+    enterpriseNameToken: PropTypes.string,
   }
 
   constructor(props){
@@ -34,6 +37,13 @@ class JoinInForm extends Component{
       showEnterpriseInfo: false,
     }
   }
+
+  componentWillUnmount = () => {
+    this.setState = (timeValue)=>{
+      return;
+    };
+  }
+
   onJoinEnterprise = () => {
     this.props.form.validateFields((err,values) => {
       if(!err){
@@ -81,7 +91,7 @@ class JoinInForm extends Component{
     this.props.form.validateFields(['phoneNum'], (err, values) => {
       if(!err){
         this.props.sendCode(values);
-        this.setState({ timeValue: 10 })
+        this.setState({ timeValue: 60 })
         this.timeDecline();
       }
     })
@@ -113,13 +123,12 @@ class JoinInForm extends Component{
   }
   changeJoinStep = (e) => {
     e.preventDefault();
-    this.props.changeJoinStep({'joinStep': 2})
+    this.props.changeLoginStore({'joinStep': 2})
   }
   render(){
     const { getFieldDecorator, getFieldsError } = this.props.form;
-    const { enterpriseName, isPhoneRegister, joinResult, joinStep } = this.props;
+    const { enterpriseName, isPhoneRegister, joinResult, joinStep,phoneNum, enterpriseIdToken } = this.props;
     const { showEnterpriseInfo } = this.state;
-    console.log(enterpriseName);
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -202,6 +211,7 @@ class JoinInForm extends Component{
               <FormItem>
                 <Button type="primary" htmlType="submit">下一步</Button>
               </FormItem>
+              {/* {enterpriseIdToken !== null ? <span>您已经加入过企业，请直接登录</span> : null} */}
             </Form>
           </div>
         }
