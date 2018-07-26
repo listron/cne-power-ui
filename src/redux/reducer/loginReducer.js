@@ -61,7 +61,7 @@ const loginReducer = (state = initState, action) => {
       return state.set('isFetching', false)
                   .set('phoneNum', action.params.phoneNum);
     case LoginAction.CHECK_CODE_SUCCESS:
-      return state.merge(immutable.fromJS(action.payload)).set('loading', false);
+      return state.merge(immutable.fromJS(action.payload)).set('isFetching', false);
     case LoginAction.CHECK_PHONE_REGISTER_SUCCESS:
       return state.set('isPhoneRegister', action.data.isRegister)
     case LoginAction.PHONE_CODE_REGISTER_SUCCESS:
