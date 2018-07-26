@@ -156,7 +156,7 @@ class LoginForm extends Component {
               </span>
               <span onClick={() => this.props.changeLoginStore({pageTab: 'forget'})}>忘记密码</span>
               </div>
-              <div className="loginBtn">
+              <div className="styles.loginBtn">
                 <Button type="primary" htmlType="submit" disabled={this.hasErrors(getFieldsError())}>登录</Button>
                 <div className={styles.yiLogin}>易巡登录</div>
               </div>
