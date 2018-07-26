@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button } from 'antd';
-import styles from './login.scss';
+import styles from './loginLayout.scss';
 import { connect } from 'react-redux';
 import JoinInForm from '../../components/Login/JoinInForm';
 import { LoginAction } from '../../constants/actionTypes/loginAction';

@@ -89,7 +89,7 @@ class LoginForm extends Component {
     let { username, enterpriseId } = this.props;
 
     return (
-      <div>
+      <div className={styles.loginForm}>
         {this.props.loginSuccess ? "登录成功！" :
           <Form onSubmit={this.onHandleSubmit}>
             {showPasswordLogin &&
@@ -105,7 +105,7 @@ class LoginForm extends Component {
                 {getFieldDecorator('password', {
                   rules: [{required: true, message: '请输入密码'}]
                 })(
-                  <Input prefix={<Icon type="lock" />} type="password" placeholder="请输入密码"/>
+                  <Input prefix={<Icon type="lock" />} type="password" placeholder="请输入密码" />
                 )}
               </FormItem>
             </div>
@@ -140,7 +140,7 @@ class LoginForm extends Component {
                   {getFieldDecorator('verificationCode', {
                     rules: [{required: true, message: '请输入验证码!'}]
                   })(
-                    <Input className={styles.testCode} prefix={<Icon type="lock"/>} placeholder="验证码!"/>
+                    <Input className={styles.testCode} prefix={<Icon type="lock" />} placeholder="验证码!" />
                   )}
                 </FormItem>
                 <Button type="primary" disabled={this.state.timeValue !== 0} onClick={this.sendCode} className={styles.queryCode}>
