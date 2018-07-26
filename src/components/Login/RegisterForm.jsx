@@ -81,7 +81,7 @@ class RegisterForm extends Component {
     }else{
       callback();
     }
-  }
+  } 
 
   phoneCodeRegister = (e) =>{
     e.preventDefault();

@@ -26,16 +26,11 @@
       color: #199475;
     }
   }
-}
-.loginChange{
-  display: flex;
-  justify-content: space-between;
-  span{
-    font-size: 12px;
-    color:#199475;
-    cursor: pointer;
+  .loginBtn{
+    display: flex;
+    justify-content: flex-end;
+    width: 200px;
   }
-
 }
 .yiLogin{
   font-size:14px;
@@ -44,4 +39,15 @@
   float: right;
   cursor: pointer;
 }
+.loginChange{
+  width: 200px;
+  display: flex;
+  justify-content: space-between;
 
+  span{
+    font-size: 12px;
+    color:#199475;
+    cursor: pointer;
+  }
+
+}
