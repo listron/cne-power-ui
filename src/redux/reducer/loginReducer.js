@@ -34,9 +34,10 @@ var initState = immutable.fromJS({
   enterpriseName: null,//注册企业名称
   isUserRegister: '2',//'0' 用户名已注册 '1' 用户名未注册
   isPhoneRegister: '2',//'0' 已注册 '1' 未注册
-  enterpriseId: null,//登录判断用户是否在企业里
+  enterpriseId: '',//登录判断用户是否在企业里
   username: '',//判断是否完善个人信息
   joinResult: 0,//0 加入失败，1 加入成功
+  registerSuccess: 2,//0 失败 1 成功
 });
 
 const loginReducer = (state = initState, action) => {
@@ -64,7 +65,7 @@ const loginReducer = (state = initState, action) => {
     case LoginAction.CHECK_PHONE_REGISTER_SUCCESS:
       return state.set('isPhoneRegister', action.data.isRegister)
     case LoginAction.PHONE_CODE_REGISTER_SUCCESS:
-      return state;
+      return state.set('phoneNum', action.params.phoneNum);
     case LoginAction.CHECK_ENTERPRISE_DOMAIN_SUCCESS:
       return state.set('domainIsRegister', action.data.isRegister)
                   .set('enterpriseDomian', action.params.enterpriseDomian);
@@ -81,7 +82,7 @@ const loginReducer = (state = initState, action) => {
                   .set('joinStep', 1);
     case LoginAction.REGISTER_ENTERPRISE_SUCCESS:
       return state.set('isFetching', false)
-                  // .set('',)
+                  .set('registerSuccess', 1)
     case LoginAction.CHECK_PHONE_REGISTER_FAIL:
     case LoginAction.SEND_CODE_FAIL:
     case LoginAction.GET_LOGIN_FAIL:

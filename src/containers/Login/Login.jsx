@@ -23,6 +23,7 @@ class Login extends Component {
     checkPhoneRegister: PropTypes.func,
     phoneCodeRegister: PropTypes.func,
     username: PropTypes.string,
+    enterpriseId: PropTypes.string,
   }
 
   constructor(props) {
@@ -63,6 +64,7 @@ class Login extends Component {
                 checkCodeLogin={this.props.checkCodeLogin}
                 phoneCodeRegister={this.props.phoneCodeRegister}
                 username={this.props.username}
+                enterpriseId={this.props.enterpriseId}
               />
             </TabPane>
             <TabPane tab="注册企业" key="register">
@@ -82,6 +84,8 @@ class Login extends Component {
 const mapStateToProps = (state) => ({
   loginSuccess: state.login.get('loginSuccess'),
   username: state.login.get('username'),
+  enterpriseId: state.login.get('enterpriseId'),
+
 });
 
 const mapDispatchToProps = (dispatch) => ({

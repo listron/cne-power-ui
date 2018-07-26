@@ -26,6 +26,7 @@ class RegisterForm extends Component {
     phoneCodeRegister: PropTypes.func,
     enterpriseId: PropTypes.string,
     pageTab: PropTypes.string,
+    registerSuccess: PropTypes.number,
   }
 
   constructor(props) {
@@ -56,9 +57,14 @@ class RegisterForm extends Component {
           'enterpriseDomain': values.enterpriseDomain+'.cneclound.com',
           'enterpriseName': values.enterpriseName,
         });
+        if(this.props.domainIsRegister === '1' && this.props.nameIsRegister === '1'){
+          this.setState({ current: 1})
+        }
       }
     })
   }
+
+  
 
   onRegisterEnterprise = () => {
     this.props.form.validateFields(['userName','password','confirmPwd'],(err, values) => {
@@ -66,6 +72,15 @@ class RegisterForm extends Component {
         this.props.registerEnterprise(values);
       }
     })
+  }
+
+  compareToFirstPassword = (rule, value, callback) => {
+    const form = this.props.form;
+    if(value && value !== form.getFieldValue('password')){
+      callback('密码不一致！');
+    }else{
+      callback();
+    }
   }
 
   phoneCodeRegister = (e) =>{
@@ -124,9 +139,18 @@ class RegisterForm extends Component {
     }
   }
 
+  onRegisterEnterprise = () => {
+    this.props.form.validateFields(['userName','password','confirmPwd'], (err, values) => {
+      if (!err) {
+        this.props.registerEnterprise(values);
+      }
+    })
+    
+  }
+
   render(){
     const { getFieldDecorator } = this.props.form;
-    const { isPhoneRegister, isUserRegister, domainIsRegister, nameIsRegister } = this.props;
+    const { isPhoneRegister, isUserRegister, domainIsRegister, nameIsRegister, registerSuccess } = this.props;
     const formItemLayout = {
       labelCol: {
         xs: {span: 24},
@@ -200,6 +224,7 @@ class RegisterForm extends Component {
                     <Input placeholder="请输入企业域名" style={{width: '200px'}} addonAfter=".cneclound.com" />
                   )}
                 </FormItem>
+                {domainIsRegister === '0' && <span>域名无效</span>}
                 <FormItem label="企业名称" {...formItemLayout}>
                   {getFieldDecorator('enterpriseName', {
                     rules: [
@@ -210,6 +235,7 @@ class RegisterForm extends Component {
                     <Input placeholder="请输入企业名称" />
                   )}
                 </FormItem>
+                {nameIsRegister === '0' && <span>企业名称已注册，不能重复注册</span>}
                 <FormItem {...tailFormItemLayout} >
                   {getFieldDecorator('userAgreement', {
                     valuePropName: 'checked',
@@ -229,7 +255,7 @@ class RegisterForm extends Component {
         content:
           (
             <div>
-              <Form onSubmit={this.onLogin}>
+              <Form onSubmit={this.onRegisterEnterprise}>
                 <FormItem label="用户名" {...formItemLayout}>
                   {getFieldDecorator('userName', {
                     rules: [{required: true, message: '请输入用户名'}]
@@ -237,29 +263,31 @@ class RegisterForm extends Component {
                     <Input prefix={<Icon type="user" />} placeholder="请输入用户名" />
                   )}
                 </FormItem>
-                {isPhoneRegister === '0' && <span>手机号已经注册，请登录</span>}
-              <div>
-                <FormItem  >
-                  {getFieldDecorator('verificationCode',{
-                    rules: [{required: true, message: '请输入验证码'}]
+                {/* {isPhoneRegister === '0' && <span>手机号已经注册，请登录</span>} */}
+                <FormItem label="创建密码" {...formItemLayout}>
+                  {getFieldDecorator('password',{
+                    rules: [{required: true, message: '请输入密码',min: 8, }]
                   })(
                     <Input prefix={<Icon type="lock" />} type="password" placeholder="请输入密码" />
                   )}
                 </FormItem>
-                <Button type="primary" disabled={this.state.timeValue !== 0} onClick={this.sendCode} >
-                  {this.state.timeValue !== 0 ? `${this.state.timeValue}秒后可重发` : "点击获取验证码"}
-                </Button>
-              </div>
-              <FormItem>
-                <Button type="primary" htmlType="submit" className="login-form-button">下一步</Button>
-              </FormItem>
+                <FormItem label="确认密码" {...formItemLayout}>
+                  {getFieldDecorator('confirmPwd',{
+                    rules: [{required: true, message: '请输入密码', min: 8, validator: this.compareToFirstPassword}]
+                  })(
+                    <Input prefix={<Icon type="lock" />} type="password" placeholder="请再次输入密码" />
+                  )}
+                </FormItem>
+                <FormItem>
+                  <Button type="primary" htmlType="submit" className="login-form-button">进入企业账号</Button>
+                </FormItem>
             </Form>
           </div>
         ),
     }];
     let { current } = this.state;
 
-    const step = current === 1 ? 1 : this.props.registerStep - 1;
+    const step = current === 1 ? 2 : this.props.registerStep - 1;
     console.log(step)
     return (
       <div>

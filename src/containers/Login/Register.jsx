@@ -29,6 +29,7 @@ class Register extends Component {
     phoneCodeRegister: PropTypes.func,
     enterpriseId: PropTypes.string,
     pageTab: PropTypes.string,
+    registerSuccess: PropTypes.number,
   }
   constructor(props) {
     super(props);
@@ -81,6 +82,7 @@ class Register extends Component {
                 phoneCodeRegister={this.props.phoneCodeRegister}
                 enterpriseId={this.props.enterpriseId}
                 pageTab={this.props.pageTab}
+                registerSuccess={this.props.registerSuccess}
               />
             </TabPane>
           </Tabs>
@@ -99,6 +101,7 @@ const mapStateToProps = (state) => ({
   isUserRegister: state.login.get('isUserRegister'),
   isPhoneRegister: state.login.get('isPhoneRegister'),
   enterpriseId: state.login.get('enterpriseId'),
+  registerSuccess: state.login.get('registerSuccess'),
 })
 const mapDispatchToProps = (dispatch) => ({
   sendCode: params => dispatch({type: LoginAction.SEND_CODE_SAGA, params}),

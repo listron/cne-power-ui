@@ -26,6 +26,7 @@ class JoinIn extends Component {
     joinStep: PropTypes.number,
     enterpriseIdToken: PropTypes.string,
     enterpriseNameToken: PropTypes.string,
+    phoneNum: PropTypes.string,
   }
   constructor(props) {
     super(props);
@@ -33,12 +34,12 @@ class JoinIn extends Component {
   changePage = (pageTab) =>{
     this.props.changeLoginStore({pageTab, registerStep: 1, joinStep: 1})
   }
-  render() {
 
+  render() {
     return (
       <div>
         <div className={styles.goLogin}>
-          <span  onClick={()=>this.changePage('login')}> 登录 </span>
+          <span  onClick={()=>this.changePage({pageTab: 'login',enterpriseId: ''})}> 登录 </span>
           <span>I</span>
           <span  onClick={()=>this.changePage('register')}> 注册企业 </span>
         </div>
@@ -61,6 +62,7 @@ class JoinIn extends Component {
           changeLoginStore={this.props.changeLoginStore}
           enterpriseIdToken={this.props.enterpriseIdToken}
           enterpriseNameToken={this.props.enterpriseNameToken}
+          phoneNum={this.props.phoneNum}
         />
       </div>
     );
@@ -79,6 +81,7 @@ const mapStateToProps = (state) => ({
   joinResult: state.login.get('joinResult'),
   joinStep: state.login.get('joinStep'),
   isPhoneRegister: state.login.get('isPhoneRegister'),
+  phoneNum: state.login.get('phoneNum'),
 })
 
 const mapDispatchToProps = (dispatch) => ({

@@ -34,9 +34,9 @@ function *getLogin(action){
     });
     console.log(response)
     if(response.data.code === '10000'){
-      setCookie('authData',JSON.stringify(response.data.access_token));
+      setCookie('authData',JSON.stringify(response.data.data.access_token));
       setCookie('phoneNum', action.params.phoneNum);
-      setCookie('userName', response.data.username);
+      setCookie('userName', response.data.data.username);
       // setCookie('userId', response.data.result.userId);
       yield put({ type: LoginAction.GET_LOGIN_SUCCESS, data: response.data});       
     } else{
@@ -84,9 +84,9 @@ function *checkCode(action){
     });
     console.log(response)
     if(response.data.code === '10000'){
-      setCookie('authData',JSON.stringify(response.data.access_token));
+      setCookie('authData',JSON.stringify(response.data.data.access_token));
       setCookie('phoneNum', action.params.phoneNum);
-      setCookie('userName', response.data.username);
+      setCookie('userName', response.data.data.username);
       yield put({
         type: LoginAction.CHECK_CODE_SUCCESS,
         payload: {
@@ -199,6 +199,7 @@ function *registerEnterprise(action){
         params: action.params,
         data: response.data.data,
       })
+      message.success('注册成功，请登录！');
     }else{
       yield put({ type: LoginAction.REGISTER_ENTERPRISE_FAIL})
     }

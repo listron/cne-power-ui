@@ -127,7 +127,7 @@ class JoinInForm extends Component{
   }
   render(){
     const { getFieldDecorator, getFieldsError } = this.props.form;
-    const { enterpriseName, isPhoneRegister, joinResult, joinStep, enterpriseIdToken } = this.props;
+    const { enterpriseName, isPhoneRegister, joinResult, joinStep,phoneNum, enterpriseIdToken } = this.props;
     const { showEnterpriseInfo } = this.state;
     const formItemLayout = {
       labelCol: {
@@ -211,7 +211,7 @@ class JoinInForm extends Component{
               <FormItem>
                 <Button type="primary" htmlType="submit">下一步</Button>
               </FormItem>
-              {enterpriseIdToken !== null ? <span>您已经加入过企业，请直接登录</span> : null}
+              {/* {enterpriseIdToken !== null ? <span>您已经加入过企业，请直接登录</span> : null} */}
             </Form>
           </div>
         }
