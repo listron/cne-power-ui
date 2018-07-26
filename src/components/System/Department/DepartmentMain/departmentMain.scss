@@ -102,6 +102,8 @@
     .stationColumn{
       .others{
         cursor: pointer;
+        font-size: 24px;
+        vertical-align: middle;
       }
     }
     .tableFooter{
@@ -132,6 +134,27 @@
     }
     .ant-select-dropdown-menu-item-disabled{
       color:$promptColor;
+    }
+  }
+}
+.responsibleDetails{
+  color: $lightColor;
+  .eachStation{
+    .square{
+      display: inline-block;
+      vertical-align: middle;
+      margin-right: 4px;
+      margin-top: -4px;
+      width: 4px;
+      height: 4px;
+      background-color: $lightColor;
+    }
+    @include lineheight(30px);
+  }
+  
+  :global{
+    .ant-popover-title{
+      color: $lightColor;
     }
   }
 }

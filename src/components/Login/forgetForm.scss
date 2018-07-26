@@ -8,12 +8,11 @@
     margin-bottom: 15px;
   }
 
-  .testCode {
-    width: 120px;
-    :global {
-      .ant-input {
-        width: 100px;
-      }
+  .testCode{
+  width: 80px;
+  :global{
+    .ant-input{
+      width:100px;
     }
   }
   .checkCodeBox {
@@ -21,8 +20,8 @@
     justify-content: space-between;
   }
 
-  .queryCode {
-    width: 80px;
+  .queryCode{
+    width: 100px;
     margin-top: 3px;
     margin-right: 0;
     padding: 0 5px;
@@ -35,4 +34,5 @@
     border-color: #199475;
     color: #199475;
   }
+}
 }

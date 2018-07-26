@@ -17,7 +17,7 @@
   width: 100%;
   padding: 24px 24px 0;
   background:#ececec;
-  .addDepartment{
+  .addDepartment,.editDepartment{
     flex: 1;
     background-color: #fff;
     .editTop{
@@ -41,7 +41,7 @@
     .mainPart{
       margin: 24px 32px 0;    
       display: flex;
-      .addPart{
+      .addPart,.editPart{
         flex: 1;
         .instructionText{
           color: $promptColor;
@@ -51,6 +51,9 @@
             margin-left: 410px;
             margin-right: 16px;
           }
+        }
+        .editSave{
+          margin-left: 410px;
         }
         :global{
           .ant-form-item{
@@ -82,188 +85,53 @@
     background-color: #fff;
     .detailTop{
       @include top;
+      justify-content: space-between;
       .editButton{
         &:hover{
           background-color: $themeColor;
           color: #fff;
         }
       }
-      .infoTip{
-        height: 30px;
-        width: 323px;
-        line-height: 30px;
-        font-size: 12px;
-        margin-left: 16px;
-        background-color: rgb(231,243,252);
-        border: 1px solid rgb(207,232,250);
-        border-radius:4px;
-        .toEdit,.ignore{
+      .handleArea{
+        font-size: 20px;
+        .previous{
+          margin-right: 20px;
           cursor: pointer;
-          color: $darkColor;
         }
-        .toEdit{
-          margin-left: 36px;
+        .next{
+          margin-right: 28px;
+          cursor: pointer;
         }
-        .ignore{
-          margin-left: 60px;
+        .backIcon{
+          height: 100%;
+          line-height: 64px;
+          color: $lightColor;
+          border-left: 1px solid $promptColor;
+          width: 64px;
+          cursor: pointer;
         }
       }
+      
     }
     .departmentInfor{//部门信息展示区
-      margin: 24px 32px 0;
+      margin: 24px 0 0;
       display: flex;
       flex-direction: column;
       color: $lightColor;
-    }
-  }
-}
-
-
-.enterpriseDetail{//详情页
-  line-height: 30px;
-  flex: 1;
-  background-color: #fff;
-  .detailTop{
-    @include top;
-    .editButton{
-      &:hover{
-        background-color: $themeColor;
-        color: #fff;
-      }
-    }
-    .infoTip{
-      height: 30px;
-      width: 323px;
-      line-height: 30px;
-      font-size: 12px;
-      margin-left: 16px;
-      background-color: rgb(231,243,252);
-      border: 1px solid rgb(207,232,250);
-      border-radius:4px;
-      .toEdit,.ignore{
-        cursor: pointer;
+      .title{
+        display: inline-block;
+        width: 386px;
+        text-align: right;
+        margin-right: 24px;
         color: $darkColor;
       }
-      .toEdit{
-        margin-left: 36px;
+      .value{
+        display: inline-block;
+        color: $lightColor;
+        margin-right: 16px;
       }
-      .ignore{
-        margin-left: 60px;
-      }
-    }
-  }
-  .enterpriseName{//企业名称栏
-    background: #f1f1f1;
-    color: $darkColor;
-    letter-spacing:4px;
-    @include lineheight(62px);
-    .text{
-      font-size: 18px;      
-      margin-left: 30px;
-    }
-  }
-  .enterpriseInfor{//企业主要信息展示区
-    margin: 24px 32px 0;
-    display: flex;
-    color: $lightColor;
-    .promptTitle{
-      color: $darkColor;
-      margin-right: 24px;
-      display: inline-block;
-      width: 28px;
-    }
-    .logoPart{
-      margin-right: 48px;
-      img{
-        width: 240px;
-        height: 240px;
-      }
-      .user,.time{
-        height: 30px;
-        span{
-          display: inline-block;
-          width: 56px;
-          text-align: right;
-          color: $darkColor;
-          margin-right: 24px;
-        }
-      }
-    }
-    .textInfor{
-      flex: 1;
-      .buttonGroup{
-        margin-left: 52px;
-        button{
-          margin-right: 12px;
-        }
-      }
-    }
-  }
-}
-.enterpriseEdit{//编辑页
-  flex:1;
-  background-color: #fff;
-  
-  .mainPart{
-    margin: 24px 32px 0;    
-    display: flex;
-    .logoPart{
-      margin-right: 48px;
-      .instruction{
-        margin-top: 12px;
-        color: $promptColor;
-        span{
-          display: block;
-        }
-      }
-    }
-    .editPart{
-      flex: 1;
-      .instructionText{
-        color: $promptColor;
-      }
-      .confirmDomain{
-        .domainText{
-          margin-right: 20px;
-        }
-        .domainButton{
-          padding: 0 4px;
-          width: 92px;
-          @include lineheight(24px);
-          &:hover{
-            background: $themeColor;
-            color: #fff;
-          }
-        }
-      }
-      .dealProposal {
-        :global {
-          .ant-form-item-control-wrapper {
-            margin-left: -60px;
-            margin-top: 10px;
-          }
-        }
-      }
-      :global{
-        .ant-form-item{
-          display: flex;
-          line-height: 40px;
-          .ant-form-item-label{
-            width: 70px;
-            color: $darkColor;
-            text-align: right;
-            margin-right: 24px;
-            label::after{
-              display: none;
-            }
-          }
-          .ant-form-item-control-wrapper{
-            input {
-              width: 200px;
-              margin-right: 12px;
-            }
-          }
-        }
+      .setting{
+        @include lineheight(26px);
       }
     }
   }

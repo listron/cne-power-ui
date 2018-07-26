@@ -1,4 +1,4 @@
-import { call, put, takeLatest, all } from 'redux-saga/effects';
+import { all } from 'redux-saga/effects';
 import {
   watchTopMenuChange,
   watchGetStations,

@@ -7,6 +7,8 @@ import styles from './enterprise.scss';
 import EditForm from './EditForm';
 import SingleImgUploader from '../../Common/Uploader/SingleImgUploader';
 import pathConfig from '../../../constants/path';
+import WarningTip from '../../Common/WarningTip';
+
 //企业信息编辑页
 class EnterpriseEdit extends Component {
   static propTypes = {
@@ -21,38 +23,52 @@ class EnterpriseEdit extends Component {
     super(props);
     this.state={
       enterpriseLogo: props.enterpriseDetail.enterpriseLogo,
+      showWarningTip: false,
+      warningTipText: '退出后信息无法保存!',
     }
   }
+
   componentWillUnmount(){
     this.props.changeEnterpriseStore({
       showPage: 'detail',
     });
   }
+
+  onWarningTipShow = () =>{
+    this.setState({
+      showWarningTip: true,
+    })
+  }
+
   uploadLogo = (imgInfor) => {
     this.setState({
       enterpriseLogo: imgInfor.thumbUrl
     })
   }
 
-  cancelEdit = () => {
+  confirmWarningTip = () => {
     this.props.changeEnterpriseStore({
       showPage: 'detail',
     });
   }
 
+  cancelWarningTip = () => {
+    this.setState({
+      showWarningTip: false,
+    })
+  }
   
-
   render(){
     const { enterpriseLogo } = this.state;
     const { enterpriseDetail,saveEnterpriseInfor, loading } = this.props;
+    const { showWarningTip, warningTipText } = this.state;
     const uploadPath=`${pathConfig.basePaths.newAPIBasePath}${pathConfig.commonPaths.imgUploads}`;
     return (
       <div className={styles.enterpriseEdit} >
+        {showWarningTip && <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}      
         <div className={styles.editTop}>
           <span className={styles.text}>编辑</span>
-          <Popconfirm overlayClassName={styles.cancelEdit} placement="rightBottom" title="退出后信息无法保存！" onConfirm={this.cancelEdit} okText="确定" cancelText="取消">
-            <Icon type="arrow-left" className={styles.backIcon} />
-          </Popconfirm>
+          <Icon type="arrow-left" className={styles.backIcon} onClick={this.onWarningTipShow} />
         </div>
         <div className={styles.mainPart} >
           <div className={styles.logoPart} >
