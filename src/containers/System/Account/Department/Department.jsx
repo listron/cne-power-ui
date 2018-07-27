@@ -65,7 +65,7 @@ class Department extends Component {
     const { showSidePage } = this.state;
     return (
       <div className={styles.departmentContainer}>
-        <DepartmentMain {...this.props} onWarningTipToggle={this.onWarningTipToggle}/>
+        <DepartmentMain {...this.props} onWarningTipToggle={this.onWarningTipToggle} />
         <TransitionContainer
           show={showPage!=='list'}
           onEnter={this.onToggleSide}
