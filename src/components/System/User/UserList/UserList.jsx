@@ -5,7 +5,8 @@ import { Table, Button, Select, Icon,Radio, Popover, Menu, Dropdown, Checkbox, I
 import CommonPagination from '../../../Common/CommonPagination';
 import PropTypes from 'prop-types';
 import styles from './userList.scss';
-import UserSearch from './UserSearch'; 
+import UserSearch from './UserSearch';
+
 
 const Option = Select.Option;
 const RadioGroup = Radio.Group;
@@ -24,14 +25,14 @@ class UserList extends Component {
     onChangePage: PropTypes.func,
     roleData: PropTypes.object,
 
-    userStatus: PropTypes.number, 
-    userName: PropTypes.string, 
+    userStatus: PropTypes.number,
+    userName: PropTypes.string,
     userPhone: PropTypes.string,
-    sort: PropTypes.string, 
+    sort: PropTypes.string,
     ascend: PropTypes.bool,
-    currentPage: PropTypes.number, 
+    currentPage: PropTypes.number,
     pageSize: PropTypes.number,
-    onChangeStatus: PropTypes.func, 
+    onChangeStatus: PropTypes.func,
     onUserSearch: PropTypes.func,
   }
 
@@ -49,7 +50,7 @@ class UserList extends Component {
   //     this.setState({
   //       // selectedRoles.filter
   //     })
-      
+
   //   }
   // }
 
@@ -75,7 +76,7 @@ class UserList extends Component {
         return ;
     }
   }
-  
+
   showUserDetail = (record) => {
     const { userId } = record;
     this.props.changeUserAttr({
@@ -93,7 +94,7 @@ class UserList extends Component {
       this.props.onChangeSort('');
     }
   }
-  
+
   tableColumn = () => {
     const columns = [
       {
@@ -183,15 +184,15 @@ class UserList extends Component {
         this.props.onChangePage(current);
       }
     }
-    
+
     return (
       <div className={styles.userList}>
         <UserSearch {...this.props} />
-        <Table 
+        <Table
           loading={loading}
           rowSelection={rowSelection}
-          dataSource={userData.toJS().map((e,i)=>({...e,key:i}))} 
-          columns={this.tableColumn()} 
+          dataSource={userData.toJS().map((e,i)=>({...e,key:i}))}
+          columns={this.tableColumn()}
           onChange={this.tableChange}
           pagination={pagination}
         />

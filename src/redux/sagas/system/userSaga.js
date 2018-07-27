@@ -40,6 +40,7 @@ function *getUserDetail(action){
   try{
     yield put({ type: userAction.USER_FETCH});
     const response = yield call(axios.get, url);
+    console.log(response);
     yield put({
       type: userAction.GET_USER_COMMON_FETCH_SUCCESS,
       payload: {
@@ -71,4 +72,4 @@ export function* watchUser(){
   yield takeLatest(userAction.GET_USER_LIST_SAGA, getUserList);
   yield takeLatest(userAction.GET_USER_DETAIL_SAGA, getUserDetail);
   yield takeLatest(userAction.GET_USER_EDIT_SAGA, editUser);
-} 
+}
