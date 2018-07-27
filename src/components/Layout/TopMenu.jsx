@@ -4,27 +4,51 @@ import React, { Component } from 'react';
 import { Menu } from 'antd';
 import { Link } from 'react-router-dom';
 import { menu } from '../../common/menu';
+import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 const { Item } = Menu;
 
 class TopMenu extends Component {
   static propTypes = {
     setTopMenu: PropTypes.func,
+    location: PropTypes.object,
+    history: PropTypes.object,
   }
   constructor(props) {
     super(props);
     this.state = {
+      selectedTopKey: []
     };
+  }
+
+  componentWillReceiveProps(nextProps){
+    const { location } = nextProps;
+    const { pathname } = location;
+    const pathArray = pathname.split('/').filter(e=>!!e);
+    const selectedKeyName = pathArray.length > 0? `/${pathArray[0]}`:'/';
+    this.setState({
+      selectedKeys:[selectedKeyName]
+    })
   }
 
   selectTopMenu = ({item,key,selectedKeys}) => {
     const params = menu.find(e=>e.path === key);
-    this.props.setTopMenu(params)
+    const defaultPath = { 
+      '/': '/',
+      '/operation':'/operation/ticket',
+      '/system':'/system/enterprise',
+    }
+    this.setState({
+      selectedKeys
+    });
+    this.props.history.push(defaultPath[key]);
+    this.props.setTopMenu(params);
   }
 
   render() {
+    const { selectedKeys } = this.state;
     return (
-      <Menu mode="horizontal" theme="dark" onSelect={this.selectTopMenu}>
+      <Menu mode="horizontal" theme="dark" onSelect={this.selectTopMenu} selectedKeys={selectedKeys} >
         {menu.map((e,i)=>(
           <Item key={e.path}>
             {e.clickable && <Link to={e.path}>{e.name}</Link>}
@@ -59,4 +83,4 @@ class TopMenu extends Component {
 //   return Menus
 // }
 
-export default TopMenu;
+export default withRouter(TopMenu);
