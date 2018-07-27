@@ -38,7 +38,6 @@ class EnterpriseDetail extends Component {
 
   render(){
     const { changeEnterpriseStore, enterpriseDetail } = this.props;
-    //todo: 首次进入企业，提示点击编辑的小提示框的enterpriseDetail.showTips判断
     const { showInforTip } = this.state;
     return (
       <div className={styles.enterpriseDetail}>
