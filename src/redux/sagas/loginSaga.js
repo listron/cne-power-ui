@@ -2,7 +2,6 @@ import { call, put, takeLatest } from 'redux-saga/effects';
 import axios from 'axios';
 import Path from '../../constants/path';
 import { stringify } from 'qs';
-import Config from '../../constants/config';
 import { setCookie } from '../../utils';
 import { LoginAction } from '../../constants/actionTypes/loginAction';
 import { message } from 'antd';

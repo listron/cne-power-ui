@@ -1,0 +1,73 @@
+
+
+
+@import '../../../../../theme/theme.scss';
+
+
+.userList{
+  flex:1;
+  background-color: #fff;
+  .userFilter{
+    display: flex;
+    justify-content: flex-start;
+    margin: 20px 0;
+    .selectedRoles{
+      width: 100px;
+      ul.listbox{
+        width: 200px;
+      }
+    }
+  }
+  .userSearch{
+    line-height: 50px;
+    background: #fbfbfb;
+    display: flex;
+    span{
+      margin: 0 10px;
+    }
+    Input{
+      width: 160px;
+      margin:10px 30px 0 0;
+    }
+    Button{
+      margin-top: 10px;
+    }
+  }
+  .userOperate{
+    Button{
+      margin: 0 6px;
+      color: $themeColor;
+      border: 1px solid $themeColor;
+    }
+    .addUser{
+      border: 1px solid $themeColor;
+      padding : 0;
+      margin-left: 24px;
+      margin-right: 12px;
+      i{
+        background: $themeColor;
+        color: #fff;
+        width: 28px;
+        line-height: 30px;
+        height: 100%;
+        display: inline-block;
+      }
+      .text{
+        color: $themeColor;
+        width: 38px;
+        text-align: center;
+        display: inline-block;
+        margin: 0;
+        height: 100%;
+        line-height: 30px;
+      }
+      @include highLight($themeColor);
+      &:hover{
+        .text{
+          background: $themeColor;
+          color: #fff;
+        }
+      }
+    }
+  }
+}
