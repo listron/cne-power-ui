@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button,Tabs } from 'antd';
-import styles from './login.scss';
+import { Tabs } from 'antd';
+import styles from './loginLayout.scss';
 import { connect } from 'react-redux';
 import LoginForm from '../../components/Login/LoginForm';
 import RegisterForm from '../../components/Login/RegisterForm';
@@ -11,7 +11,7 @@ const { TabPane } = Tabs;
 class Register extends Component {
   static propTypes = {
     pageTab: PropTypes.string,
-    changeLoginPage: PropTypes.func,
+    changeLoginStore: PropTypes.func,
     sendCode: PropTypes.func,
     signupCount: PropTypes.number,
     registerStep: PropTypes.number,
@@ -29,12 +29,13 @@ class Register extends Component {
     phoneCodeRegister: PropTypes.func,
     enterpriseId: PropTypes.string,
     pageTab: PropTypes.string,
+    registerSuccess: PropTypes.number,
   }
   constructor(props) {
     super(props);
   }
   changePage = (pageTab) =>{
-    this.props.changeLoginPage({pageTab})
+    this.props.changeLoginStore({pageTab, registerStep: 1, joinStep: 1})
   }
   registerEnterprise = (data) => {
     let params = {
@@ -52,9 +53,8 @@ class Register extends Component {
     return (
       <div className={styles.login}>
         <div className={styles.joinTop}>
-          {/*<span onClick={()=>this.changePage('joinIn')}>加入企业</span>*/}
           <div className={styles.fontIcon}>
-            <i className='icon-phone'/>
+            <i className="icon-phone" />
           </div>
           <div className={styles.join} onClick={()=>this.changePage('joinIn')}>加入企业</div>
         </div>
@@ -62,12 +62,10 @@ class Register extends Component {
           <span>用户协议</span>
           <span>联系我们</span>
         </div>
-
-      {/*  这里是企业注册页面!!!!!*/}
         <div className={styles.loginContent}>
           <Tabs onChange={this.changePage} animated={false} activeKey={pageTab}>
             <TabPane tab="登录" key="login">
-              <LoginForm changePage={this.props.changeLoginPage} />
+              <LoginForm changeLoginStore={this.props.changeLoginStore} />
             </TabPane>
             <TabPane tab="注册企业" key="register">
               <RegisterForm 
@@ -84,6 +82,7 @@ class Register extends Component {
                 phoneCodeRegister={this.props.phoneCodeRegister}
                 enterpriseId={this.props.enterpriseId}
                 pageTab={this.props.pageTab}
+                registerSuccess={this.props.registerSuccess}
               />
             </TabPane>
           </Tabs>
@@ -102,6 +101,7 @@ const mapStateToProps = (state) => ({
   isUserRegister: state.login.get('isUserRegister'),
   isPhoneRegister: state.login.get('isPhoneRegister'),
   enterpriseId: state.login.get('enterpriseId'),
+  registerSuccess: state.login.get('registerSuccess'),
 })
 const mapDispatchToProps = (dispatch) => ({
   sendCode: params => dispatch({type: LoginAction.SEND_CODE_SAGA, params}),

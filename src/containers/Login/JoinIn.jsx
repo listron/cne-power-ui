@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button } from 'antd';
-import styles from './login.scss';
+import styles from './loginLayout.scss';
 import { connect } from 'react-redux';
 import JoinInForm from '../../components/Login/JoinInForm';
 import { LoginAction } from '../../constants/actionTypes/loginAction';
 
 class JoinIn extends Component {
   static propTypes = {
-    changeLoginPage: PropTypes.func,
+    changeLoginStore: PropTypes.func,
     isJoined: PropTypes.number,
     isExist: PropTypes.number,
     enterpriseName: PropTypes.string,
@@ -24,23 +23,26 @@ class JoinIn extends Component {
     username: PropTypes.string,
     joinResult: PropTypes.number,
     pageTab: PropTypes.string,
+    joinStep: PropTypes.number,
+    enterpriseIdToken: PropTypes.string,
+    enterpriseNameToken: PropTypes.string,
+    phoneNum: PropTypes.string,
   }
   constructor(props) {
     super(props);
   }
   changePage = (pageTab) =>{
-    this.props.changeLoginPage({pageTab})
+    this.props.changeLoginStore({pageTab, registerStep: 1, joinStep: 1,enterpriseId: ''})
   }
-  render() {
 
+  render() {
     return (
       <div>
-<div className={styles.goLogin}>
-  <span  onClick={()=>this.changePage('login')}> 登录 </span>
-  <span>I</span>
-  <span  onClick={()=>this.changePage('register')}> 注册企业 </span>
-</div>
-
+        <div className={styles.goLogin}>
+          <span  onClick={()=>this.changePage( 'login')}> 登录 </span>
+          <span>I</span>
+          <span  onClick={()=>this.changePage('register')}> 注册企业 </span>
+        </div>
         <JoinInForm 
           loading={this.props.loading}
           isExist={this.props.isExist}
@@ -52,11 +54,15 @@ class JoinIn extends Component {
           isJoined={this.props.isJoined}
           joinEnterprise={this.props.joinEnterprise}
           isPhoneRegister={this.props.isPhoneRegister}
-          // checkPhoneRegister={this.props.checkPhoneRegister}
           phoneCodeRegister={this.props.phoneCodeRegister}
           username={this.props.username}
           joinResult={this.props.joinResult}
           pageTab={this.props.pageTab}
+          joinStep={this.props.joinStep}
+          changeLoginStore={this.props.changeLoginStore}
+          enterpriseIdToken={this.props.enterpriseIdToken}
+          enterpriseNameToken={this.props.enterpriseNameToken}
+          phoneNum={this.props.phoneNum}
         />
       </div>
     );
@@ -69,9 +75,13 @@ const mapStateToProps = (state) => ({
   isJoined: state.login.get('isJoined'),
   enterpriseName: state.login.getIn(['enterpriseInfo','enterpriseName']),
   enterpriseId: state.login.getIn(['enterpriseInfo','enterpriseId']),
-  isPhoneRegister: state.login.get('isPhoneRegister'),
+  enterpriseNameToken: state.login.get('enterpriseName'),
+  enterpriseIdToken: state.login.get('enterpriseId'),
   username: state.login.get('username'),
   joinResult: state.login.get('joinResult'),
+  joinStep: state.login.get('joinStep'),
+  isPhoneRegister: state.login.get('isPhoneRegister'),
+  phoneNum: state.login.get('phoneNum'),
 })
 
 const mapDispatchToProps = (dispatch) => ({
@@ -79,7 +89,6 @@ const mapDispatchToProps = (dispatch) => ({
   sendCode: params => dispatch({ type: LoginAction.SEND_CODE_SAGA, params}),
   checkPhoneCode: params => dispatch({ type: LoginAction.CHECK_CODE_SAGA, params}),
   joinEnterprise: params => dispatch({ type: LoginAction.JOIN_ENTERPRISE_SAGA, params}),
-  // checkPhoneRegister: params => dispatch({ type: LoginAction.CHECK_PHONE_REGISTER_SAGA, params}),
   phoneCodeRegister: params => dispatch({ type: LoginAction.PHONE_CODE_REGISTER_SAGA, params}),
 })
 

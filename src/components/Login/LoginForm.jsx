@@ -8,7 +8,7 @@ const FormItem = Form.Item;
 class LoginForm extends Component {
   static propTypes = {
     form: PropTypes.object,
-    changePage: PropTypes.func,
+    changeLoginStore: PropTypes.func,
     fetchLogin: PropTypes.func,
     loginSuccess: PropTypes.bool,
     count: PropTypes.number,
@@ -19,7 +19,6 @@ class LoginForm extends Component {
     checkPhoneRegister: PropTypes.func,
     phoneCodeRegister: PropTypes.func,
     username: PropTypes.string,
-    pageTab: PropTypes.string,
   }
 
   constructor(props) {
@@ -29,14 +28,22 @@ class LoginForm extends Component {
       timeValue: 0,
     }
   }
+
+  componentWillUnmount = () => {
+    this.setState = (timeValue)=>{
+      return;
+    };
+  }
+
   onHandleSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
         if (this.state.showPasswordLogin) {
           this.props.fetchLogin(values);
-        } else {
-          this.props.checkCodeLogin(...values);
+        }else{
+
+          this.props.phoneCodeRegister(values);
         }
       }
     })
@@ -61,28 +68,28 @@ class LoginForm extends Component {
     this.props.form.validateFields(['phoneNum'], (err, values) => {
       if (!err) {
         this.props.sendCode(values);
-        this.setState({timeValue: 10})
+        this.setState({timeValue: 60})
         this.timeDecline();
       }
     })
   }
   checkPhoneRegister = (e) => {
-    console.log(e)
     this.props.checkPhoneRegister(e.target.value);
   }
   jumpPersonalInfo = () => {
     this.props.form.validateFields(['phoneNum', 'verificationCode'], (err, values) => {
       if(!err){
-        this.props.changePage('joinIn')
+        this.props.changeLoginStore({pageTab:'joinIn', joinStep: 3, registerStep: 1,phoneNum: values.phoneNum, verificationCode: values.verificationCode});
       }
     })
   }
   render(){
     const { getFieldDecorator, getFieldsError } = this.props.form;
     let { showPasswordLogin } = this.state;
-    let { username } = this.props;
+    let { username, enterpriseId } = this.props;
+
     return (
-      <div>
+      <div className={styles.loginForm}>
         {this.props.loginSuccess ? "登录成功！" :
           <Form onSubmit={this.onHandleSubmit}>
             {showPasswordLogin &&
@@ -91,14 +98,14 @@ class LoginForm extends Component {
                 {getFieldDecorator('username', {
                   rules: [{required: true, message: '请输入手机号/用户名'}]
                 })(
-                  <Input prefix={<Icon type="user"/>} placeholder="请输入手机号/用户名" />
+                  <Input prefix={<Icon type="user" />} placeholder="请输入手机号/用户名" />
                 )}
               </FormItem>
               <FormItem>
                 {getFieldDecorator('password', {
                   rules: [{required: true, message: '请输入密码'}]
                 })(
-                  <Input prefix={<Icon type="lock"/>} type="password" placeholder="请输入密码"/>
+                  <Input prefix={<Icon type="lock" />} type="password" placeholder="请输入密码" />
                 )}
               </FormItem>
             </div>
@@ -110,12 +117,12 @@ class LoginForm extends Component {
                   {getFieldDecorator('phoneNum', {
                     rules: [{pattern: /(^1[3|4|5|7|8]\d{9}$)|(^09\d{8}$)/, required: true, message: '请输入手机号'}]
                   })(
-                    <Input prefix={<Icon type="mobile"/>} placeholder="请输入手机号"/>
+                    <Input prefix={<Icon type="mobile" />} placeholder="请输入手机号" />
                   )}
                 </FormItem>
-                {this.props.enterpriseId === null ? <p>您已注册，请<span onClick={()=>this.changePage('joinIn')}>加入企业</span>或<span onClick={()=>this.changePage('register')}>注册企业</span></p> : null}
+                
               </div>
-            {/*  <div className={styles.checkCodeBox}>
+              {/*  <div className={styles.checkCodeBox}>
                 <FormItem>
                   {getFieldDecorator('verificationCode', {
                     rules: [{required: true, message: '请输入验证码'}]
@@ -133,9 +140,8 @@ class LoginForm extends Component {
                   {getFieldDecorator('verificationCode', {
                     rules: [{required: true, message: '请输入验证码!'}]
                   })(
-                    <Input className={styles.testCode} prefix={<Icon type="lock"/>} placeholder="验证码!"/>
+                    <Input className={styles.testCode} prefix={<Icon type="lock" />} placeholder="验证码!" />
                   )}
-
                 </FormItem>
                 <Button type="primary" disabled={this.state.timeValue !== 0} onClick={this.sendCode} className={styles.queryCode}>
                   {this.state.timeValue !== 0 ? `${this.state.timeValue}秒后可重发` : "获取验证码"}
@@ -148,12 +154,14 @@ class LoginForm extends Component {
               <span onClick={() => this.setState({showPasswordLogin: !showPasswordLogin})}>
                 {showPasswordLogin ? '手机验证码登录' : '密码登录(手机/用户名)'}
               </span>
-                <span onClick={() => this.props.changePage({pageTab: 'forget'})}>忘记密码</span>
+              <span onClick={() => this.props.changeLoginStore({pageTab: 'forget'})}>忘记密码</span>
               </div>
-              <div className="loginBtn">
+              <div className="styles.loginBtn">
                 <Button type="primary" htmlType="submit" disabled={this.hasErrors(getFieldsError())}>登录</Button>
                 <div className={styles.yiLogin}>易巡登录</div>
               </div>
+              {enterpriseId === null ? <p>您已注册，请<b onClick={()=>this.props.changeLoginStore({pageTab: 'joinIn'})}>加入企业</b>或<b onClick={()=>this.props.changeLoginStore({pageTab: 'register'})}>注册企业</b></p> : null}
+              {username === null ? <p>个人信息不完善，请完善<b onClick={this.jumpPersonalInfo} >个人信息</b></p> : null }
             </FormItem>
           </Form>}
       </div>

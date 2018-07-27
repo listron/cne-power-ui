@@ -17,11 +17,8 @@ class DepartmentDetail extends Component {
     ascend: PropTypes.bool, 
     pageNum: PropTypes.number,
     pageSize: PropTypes.number,
-    totalNum: PropTypes.number,
 
     departmentData: PropTypes.array,
-    getOtherPageDetail: PropTypes.func,
-    getDepartmentDetail: PropTypes.func,
     changeDepartmentStore: PropTypes.func,
     onShowSideChange: PropTypes.func,
     departmentDetail: PropTypes.object,
@@ -48,17 +45,20 @@ class DepartmentDetail extends Component {
     console.log(this.props.departmentDetail);
   }
 
-  confirmWarningTip = () => {
-    this.setState({
-      showWarningTip: false,
-      warningTipText: ''
-    })
-  }
-
   preDepartment = () =>{
-    const { getOtherPageDetail, getDepartmentDetail, departmentDetail, departmentData, enterpriseId, departmentSource, departmentName, parentDepartmentName, stationName, sort,  ascend, pageNum, pageSize } = this.props;
+    const { departmentDetail, departmentData, pageNum, pageSize } = this.props;
     let detailIndex = departmentData.findIndex(e=>e.departmentId===departmentDetail.departmentId);
-    let params = { enterpriseId, departmentSource, departmentName, parentDepartmentName, stationName, sort, ascend, pageNum, pageSize }
+    let params = {
+      enterpriseId: this.props.enterpriseId,
+      departmentSource: this.props.departmentSource,
+      departmentName: this.props.departmentName, 
+      parentDepartmentName: this.props.parentDepartmentName, 
+      stationName: this.props.stationName, 
+      sort: this.props.sort, 
+      ascend: this.props.ascend, 
+      pageNum: this.props.pageNum,
+      pageSize: this.props.pageSize,
+    }
     if(pageNum === 1 && detailIndex === 0){//第一条记录
       this.setState({
         showWarningTip: true,
@@ -66,39 +66,20 @@ class DepartmentDetail extends Component {
       })
     }else if(pageNum > 1 && detailIndex === 0){
       params.pageNum = pageNum - 1
-      getOtherPageDetail(params,{previous:true})
-    }else if(detailIndex > 0 ){
-      const {departmentId} = departmentData[detailIndex-1]
-      getDepartmentDetail({ departmentId })
-    }else{
-      console.log("部门id信息有误，在tablelist中未获取")
+      this.props.getDepartmentList(params)
+    }else if(detailIndex> 0 ){
+      const currentDepartmentId = departmentData[detailIndex-1]
+      
     }
+    // if(pageNum === 1)
+    
+    this.props.getDepartmentList(params)//请求部门列表
   }
 
   nextDepartment = () => {
-    const { getOtherPageDetail, getDepartmentDetail, departmentDetail, departmentData, enterpriseId, departmentSource, departmentName, parentDepartmentName, stationName, sort,  ascend, pageNum, pageSize, totalNum } = this.props;
-    let detailIndex = departmentData.findIndex(e=>e.departmentId===departmentDetail.departmentId);
-    let params = { enterpriseId, departmentSource, departmentName, parentDepartmentName, stationName, sort, ascend, pageNum, pageSize }
-    const maxPage = Math.ceil(totalNum/pageSize) 
-    const lastPageMaxIndex = totalNum - (maxPage-1)*pageSize - 1;
-    if(pageNum === maxPage && detailIndex === lastPageMaxIndex){//最后一条记录
-      this.setState({
-        showWarningTip: true,
-        warningTipText: '这是最后一个!',
-      })
-    }else if(pageNum < maxPage && detailIndex === pageSize - 1){
-      params.pageNum = pageNum + 1
-      getOtherPageDetail(params,{previous:false})
-    }else if( pageNum < maxPage ){
-      const {departmentId} = departmentData[detailIndex + 1]
-      getDepartmentDetail({ departmentId })
-    }else{
-      console.log("部门id信息有误，在tablelist中未获取")
-    }
-  }
-
-  backToList = () => {
-    this.props.changeDepartmentStore({showPage: 'list'});
+    const { departmentDetail, departmentData } = this.props;
+    console.log(departmentDetail);
+    console.log(departmentData);
   }
 
   render(){
@@ -114,7 +95,7 @@ class DepartmentDetail extends Component {
           <span className={styles.handleArea} >
             <Icon type="arrow-up" className={styles.previous} title="上一个" onClick={this.preDepartment} />
             <Icon type="arrow-down" className={styles.next} title="下一个" onClick={this.nextDepartment} />
-            <Icon type="arrow-left" className={styles.backIcon} onClick={this.backToList} />
+            <Icon type="arrow-left" className={styles.backIcon} onClick={this.cancelAdd} />
           </span>
         </div>
         <div className={styles.departmentInfor} >

@@ -19,12 +19,15 @@ class Department extends Component {
     ascend: PropTypes.bool, 
     pageNum: PropTypes.number,
     pageSize: PropTypes.number,
-    getDepartmentList: PropTypes.func
+    showAssignStationModal: PropTypes.bool, 
+    showAssignUserModal: PropTypes.bool,
+    getDepartmentList: PropTypes.func,
+    getAllDepartment: PropTypes.func,
   }
   constructor(props) {
     super(props);
     this.state = {
-      showSidePage: 'add',
+      showSidePage: 'add'
     }
   }
   componentDidMount(){
@@ -40,6 +43,14 @@ class Department extends Component {
       pageSize: this.props.pageSize,
     }
     this.props.getDepartmentList(params)//请求部门列表
+    this.props.getAllDepartment({//请求所有部门
+      enterpriseId: this.props.enterpriseId,
+    })
+  }
+
+  
+  onShowSideChange = ({showSidePage}) => {
+    this.setState({ showSidePage });
   }
 
   onToggleSide = () => {
@@ -50,11 +61,11 @@ class Department extends Component {
   }
 
   render() {
-    const { showPage } = this.props;
+    const { showPage, showAssignStationModal, showAssignUserModal } = this.props;
     const { showSidePage } = this.state;
     return (
       <div className={styles.departmentContainer}>
-        <DepartmentMain {...this.props} />
+        <DepartmentMain {...this.props} onWarningTipToggle={this.onWarningTipToggle}/>
         <TransitionContainer
           show={showPage!=='list'}
           onEnter={this.onToggleSide}
@@ -62,8 +73,10 @@ class Department extends Component {
           timeout={500}
           effect="side"
         >
-          <DepartmentSide {...this.props} showSidePage={showSidePage} />
+          <DepartmentSide {...this.props} showSidePage={showSidePage} onShowSideChange={this.onShowSideChange} />
         </TransitionContainer>
+        {showAssignStationModal && null}
+        {showAssignUserModal && null}
       </div>
         
     );
@@ -71,6 +84,8 @@ class Department extends Component {
 }
 const mapStateToProps = (state) => ({
     loading: state.department.get('loading'),
+    buttonLoading:  state.department.get('buttonLoading'),
+    continueAddLoading:  state.department.get('continueAddLoading'),
     showPage: state.department.get('showPage'),
     departmentSource: state.department.get('departmentSource'),
     departmentName: state.department.get('departmentName'),
@@ -81,6 +96,10 @@ const mapStateToProps = (state) => ({
     totalNum: state.department.get('totalNum'),
     pageNum: state.department.get('pageNum'),
     pageSize: state.department.get('pageSize'),
+    showAssignStationModal: state.department.get('showAssignStationModal'),
+    showAssignUserModal: state.department.get('showAssignUserModal'),
+
+    allDepartment:state.department.get('allDepartment').toJS(),
     departmentData: state.department.get('departmentData').toJS(),
     departmentDetail: state.department.get('departmentDetail').toJS(),
     selectedDepartment: state.department.get('selectedDepartment').toJS(),
@@ -92,13 +111,11 @@ const mapDispatchToProps = (dispatch) => ({
   deleteDepartment: payload => dispatch({type: departmentAction.DELETE_DEPARTMENT_SAGA,payload}),
   getDepartmentList: payload => dispatch({type:departmentAction.GET_DEPARTMENT_LIST_SAGA, payload}),
   getDepartmentDetail: payload => dispatch({type:departmentAction.GET_DEPARTMENT_DETAIL_SAGA, payload}),
+  getOtherPageDetail: (payload, {previous}) => dispatch({type:departmentAction.GET_OTHER_PAGE_DEPARTMENT_DETAIL_SAGA, payload, previous}),
   getAllUsers: payload => dispatch({type:departmentAction.GET_ALL_USERS_SAGA,payload}), 
+  getAllDepartment: payload => dispatch({type:departmentAction.GET_ALL_DEPARTMENT,payload}),
   addDepartmentInfor: payload => dispatch({type:departmentAction.ADD_DEPARTMENT_INFO_SAGA, payload}),
-//   saveEnterpriseInfor: payload => dispatch({type:departmentAction.SAVE_ENTERPRISE_INFO_SAGA, payload}),
-//   ignoreEnterpirseEdit: payload => dispatch({type: departmentAction.IGNORE_ENTERPRISE_EDIT,payload})
+  editDepartmentInfor: payload => dispatch({type: departmentAction.EDIT_DEPARTMENT_INFO_SAGA, payload})
 });
-
-//   yield takeLatest(departmentAction.GET_DEPARTMENT_DETAIL_SAGA, getDepartmentDetail);
-//   yield takeLatest(departmentAction.EDIT_DEPARTMENT_INFO_SAGA,editDepartmentInfor);
 
 export default connect(mapStateToProps, mapDispatchToProps)(Department);

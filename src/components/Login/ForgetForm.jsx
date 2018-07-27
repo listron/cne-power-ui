@@ -9,12 +9,14 @@ class ForgetForm extends Component{
   static propTypes = {
     form: PropTypes.object,
     showConfirmPassword: PropTypes.bool,
-    changePage: PropTypes.func,
     sendCode: PropTypes.func,
     checkPhoneCode: PropTypes.func,
     resetPassword: PropTypes.func,
     phoneNum: PropTypes.string,
     phoneCodeRegister: PropTypes.func,
+    enterpriseId: PropTypes.string,
+    username: PropTypes.string,
+    changeLoginStore: PropTypes.func,
   }
 
   constructor(props){
@@ -23,6 +25,12 @@ class ForgetForm extends Component{
       checkFirst: true,
       timeValue: 0,
     }
+  }
+
+  componentWillUnmount = () => {
+    this.setState = (timeValue)=>{
+      return;
+    };
   }
 
   onHandleSubmit = (e) => {
@@ -51,7 +59,7 @@ class ForgetForm extends Component{
     this.props.form.validateFields(['phoneNum'], (err, values) => {
       if(!err){
         this.props.sendCode(values);
-        this.setState({ timeValue: 10 })
+        this.setState({ timeValue: 60 })
         this.timeDecline();
       }
     })
@@ -70,7 +78,12 @@ class ForgetForm extends Component{
   phoneCodeRegister = () => {
     this.props.form.validateFields(['phoneNum','verificationCode'], (err, values) => {
       if(!err){
-        this.props.phoneCodeRegister({...values,'showResetPassword': 1});
+        const { enterpriseId, username } = this.props;
+        console.log(enterpriseId, username);
+        this.props.phoneCodeRegister({...values});
+        if(enterpriseId !== null && username !== null){
+          this.props.changeLoginStore({ showResetPassword: 1 })
+        }
       }
     })
   }
@@ -87,7 +100,7 @@ class ForgetForm extends Component{
   render(){
     const { getFieldDecorator } = this.props.form;
     const { timeValue } = this.state;
-    const { showConfirmPassword } = this.props;
+    const { showConfirmPassword, enterpriseId, username } = this.props;
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -110,9 +123,9 @@ class ForgetForm extends Component{
         },
       },
     };
+    console.log(enterpriseId, username);
     return (
       <div className={styles.forgetPass}>
-
         {!showConfirmPassword &&
           <div>
             <span className={styles.findPass}>找回密码</span>
@@ -141,6 +154,8 @@ class ForgetForm extends Component{
               <FormItem>
                 <Button type="primary" htmlType="submit">下一步</Button>
               </FormItem>
+              {enterpriseId === null ? <p>未加入企业，请加入企业</p> : null}
+              {username === null ? <p>未完善个人信息，请尽快完善</p> : null}
             </Form>
           </div>
         }

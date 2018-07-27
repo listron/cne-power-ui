@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button } from 'antd';
-import styles from './login.scss';
+import styles from './loginLayout.scss';
 import ForgetForm from '../../components/Login/ForgetForm';
 import { LoginAction } from '../../constants/actionTypes/loginAction';
 import { connect } from 'react-redux';
 class Forget extends Component {
   static propTypes = {
-    changeLoginPage: PropTypes.func,
+    changeLoginStore: PropTypes.func,
     sendCode: PropTypes.func,
     showConfirmPassword: PropTypes.bool,
     checkPhoneCode: PropTypes.func,
@@ -15,12 +14,14 @@ class Forget extends Component {
     phoneNum: PropTypes.string,
     phoneCodeRegister: PropTypes.func,
     pageTab: PropTypes.string,
+    enterpriseId: PropTypes.string,
+    username: PropTypes.string,
   }
   constructor(props) {
     super(props);
   }
   changePage = (pageTab) =>{
-    this.props.changeLoginPage({pageTab})
+    this.props.changeLoginStore({pageTab, registerStep: 1, joinStep: 1})
   }
 
   render() {
@@ -28,7 +29,7 @@ class Forget extends Component {
     return (
       <div className={styles.forgetPassword}>
         <div className={styles.goLogin}>
-          <span  onClick={()=>this.changePage('login')}> 登录 </span>
+          <span  onClick={()=>this.changePage({pageTab: 'login',enterpriseId: ''})}> 登录 </span>
           <span>I</span>
           <span  onClick={()=>this.changePage('register')}> 注册企业 </span>
         </div>
@@ -40,6 +41,9 @@ class Forget extends Component {
           phoneNum={this.props.phoneNum}
           phoneCodeRegister={this.props.phoneCodeRegister}
           pageTab={this.props.pageTab}
+          enterpriseId={this.props.enterpriseId}
+          username={this.props.username}
+          changeLoginStore={this.props.changeLoginStore}
         />
         <div className={styles.contactUs}>
           <span>用户协议</span>
@@ -54,6 +58,8 @@ class Forget extends Component {
 const mapStateToProps = (state) => ({
   showConfirmPassword: state.login.get('showConfirmPassword'),
   phoneNum: state.login.get('phoneNum'),
+  enterpriseId: state.login.get('enterpriseId'),
+  username: state.login.get('username'),
 })
 
 const mapDispatchToProps = (dispatch) => ({

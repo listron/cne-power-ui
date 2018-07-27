@@ -2,8 +2,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {Tabs, message} from 'antd';
 import PropTypes from 'prop-types';
-import styles from './login.scss';
-
+import styles from './loginLayout.scss';
 import LoginForm from '../../components/Login/LoginForm';
 import RegisterForm from '../../components/Login/RegisterForm';
 import {LoginAction} from '../../constants/actionTypes/loginAction';
@@ -13,9 +12,8 @@ const {TabPane} = Tabs;
 class Login extends Component {
   static propTypes = {
     pageTab: PropTypes.string,
-    changeLoginPage: PropTypes.func,
+    changeLoginStore: PropTypes.func,
     fetchLogin: PropTypes.func,
-    fetchCompanyInfo: PropTypes.func,
     error: PropTypes.string,
     domain: PropTypes.object,
     loginSuccess: PropTypes.bool,
@@ -25,16 +23,11 @@ class Login extends Component {
     checkPhoneRegister: PropTypes.func,
     phoneCodeRegister: PropTypes.func,
     username: PropTypes.string,
+    enterpriseId: PropTypes.string,
   }
 
   constructor(props) {
     super(props);
-  }
-
-  componentWillMount() {
-    // const damain = document.domain.split('.')[0];
-    const domain = 'test';
-    this.props.fetchCompanyInfo(domain);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -47,7 +40,7 @@ class Login extends Component {
   }
 
   changePage = (pageTab) => {
-    this.props.changeLoginPage({pageTab})
+    this.props.changeLoginStore({pageTab, registerStep: 1, joinStep: 1})
   }
 
   render() {
@@ -56,7 +49,7 @@ class Login extends Component {
       <div className={styles.login}>
         <div className={styles.joinTop}>
           <div className={styles.fontIcon}>
-            <i className='font_family icon-phone'/>
+            <i className="iconfont icon-join" />
           </div>
           <div className={styles.join} onClick={() => this.changePage('joinIn')}>加入企业</div>
         </div>
@@ -64,19 +57,18 @@ class Login extends Component {
           <Tabs onChange={this.changePage} animated={false} activeKey={pageTab}>
             <TabPane tab="登录" key="login">
               <LoginForm
-                changePage={this.props.changeLoginPage}
+                changeLoginStore={this.props.changeLoginStore}
                 fetchLogin={this.props.fetchLogin}
                 loginSuccess={this.props.loginSuccess}
                 sendCode={this.props.sendCode}
                 checkCodeLogin={this.props.checkCodeLogin}
-                // checkPhoneRegister={this.props.checkPhoneRegister}
                 phoneCodeRegister={this.props.phoneCodeRegister}
                 username={this.props.username}
-                pageTab={this.props.pageTab}
+                enterpriseId={this.props.enterpriseId}
               />
             </TabPane>
             <TabPane tab="注册企业" key="register">
-              <RegisterForm/>
+              <RegisterForm />
             </TabPane>
           </Tabs>
         </div>
@@ -92,14 +84,14 @@ class Login extends Component {
 const mapStateToProps = (state) => ({
   loginSuccess: state.login.get('loginSuccess'),
   username: state.login.get('username'),
+  enterpriseId: state.login.get('enterpriseId'),
+
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  fetchCompanyInfo: params => dispatch({type: LoginAction.GET_COMPINFO_SAGA, params}),
   fetchLogin: params => dispatch({type: LoginAction.GET_LOGIN_SAGA, params}),
   sendCode: params => dispatch({ type: LoginAction.SEND_CODE_SAGA, params}),
   checkCodeLogin: params => dispatch({ type: LoginAction.CHECK_CODE_SAGA, params}),
-  // checkPhoneRegister: params => dispatch({ type: LoginAction.CHECK_PHONE_REGISTER_SAGA, params}),
   phoneCodeRegister: params => dispatch({ type: LoginAction.PHONE_CODE_REGISTER_SAGA, params}),
 });
 

@@ -6,13 +6,13 @@
 :global{
   .ant-table{//table行高，高亮，背景色调整；
     .ant-table-thead > tr > th{
-      background: $tableSelectedBackground; 
+      background: $tableSelectedBackground;
     }
     .ant-table-tbody{
       background: #fff;
       &>tr:hover{
         td {
-          background: $tableSelectedBackground; 
+          background: $tableSelectedBackground;
         }
       }
     }
@@ -27,7 +27,7 @@
     @include highLight($themeColor);
     &:hover{
       color: $themeColor;
-    }  
+    }
   }
   .ant-btn-primary{
     background-color: $themeColor;
@@ -105,16 +105,7 @@
     height:31px;
 
   }
-  .ant-form{
-    width: 200px;
-   /* height: 500px;*/
-    .ant-form-item{
-      width: 200px;
-      button{
-        width: 200px;
-      }
-    }
-  }
+
   /*输入框前面的小方块*/
   .ant-input-affix-wrapper .ant-input-prefix {
     left: 12px;
