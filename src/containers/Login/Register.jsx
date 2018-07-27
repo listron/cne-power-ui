@@ -20,7 +20,7 @@ class Register extends Component {
     domainIsRegister: PropTypes.string,
     nameIsRegister: PropTypes.string,
     phoneNum: PropTypes.string,
-    enterpriseDomian: PropTypes.string,
+    enterpriseDomain: PropTypes.string,
     enterpriseName: PropTypes.string,
     isUserRegister: PropTypes.string,
     registerEnterprise: PropTypes.func,
@@ -40,9 +40,9 @@ class Register extends Component {
   registerEnterprise = (data) => {
     let params = {
       phoneNum: this.props.phoneNum,
-      enterpriseDomian: this.props.enterpriseDomian,
+      enterpriseDomain: this.props.enterpriseDomain,
       enterpriseName: this.props.enterpriseName,
-      userName: data.userName,
+      username: data.username,
       password: data.password,
       confirmPwd: data.confirmPwd,
     }
@@ -96,7 +96,7 @@ const mapStateToProps = (state) => ({
   domainIsRegister: state.login.get('domainIsRegister'),
   nameIsRegister: state.login.get('nameIsRegister'),
   phoneNum: state.login.get('phoneNum'),
-  enterpriseDomian: state.login.get('enterpriseDomian'),
+  enterpriseDomain: state.login.get('enterpriseDomain'),
   enterpriseName: state.login.get('enterpriseName'),
   isUserRegister: state.login.get('isUserRegister'),
   isPhoneRegister: state.login.get('isPhoneRegister'),

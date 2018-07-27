@@ -54,8 +54,8 @@ class RegisterForm extends Component {
     this.props.form.validateFields(['enterpriseDomain', 'enterpriseName', 'userAgreement'], (err, values) => {
       if (!err) {
         this.props.checkEnterpriseDomain({
-          'enterpriseDomain': values.enterpriseDomain+'.cneclound.com',
-          'enterpriseName': values.enterpriseName,
+          enterpriseDomain: values.enterpriseDomain+'.cneclound.com',
+          enterpriseName: values.enterpriseName,
         });
         if(this.props.domainIsRegister === '1' && this.props.nameIsRegister === '1'){
           this.setState({ current: 1})
@@ -67,7 +67,7 @@ class RegisterForm extends Component {
   
 
   onRegisterEnterprise = () => {
-    this.props.form.validateFields(['userName','password','confirmPwd'],(err, values) => {
+    this.props.form.validateFields(['username','password','confirmPwd'],(err, values) => {
       if(!err){
         this.props.registerEnterprise(values);
       }
@@ -248,7 +248,7 @@ class RegisterForm extends Component {
             <div>
               <Form onSubmit={this.onRegisterEnterprise}>
                 <FormItem label="用户名" {...formItemLayout}>
-                  {getFieldDecorator('userName', {
+                  {getFieldDecorator('username', {
                     rules: [{required: true, message: '请输入用户名'}]
                   })(
                     <Input prefix={<Icon type="user" />} placeholder="请输入用户名" />

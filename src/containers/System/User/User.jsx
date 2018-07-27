@@ -25,7 +25,7 @@ class User extends Component {
     selectedUser: PropTypes.object, 
     getUserList: PropTypes.func,
     changeSelectedUser: PropTypes.func,
-    changeUserAttr: PropTypes.func,
+    changeUserStore: PropTypes.func,
     userData: PropTypes.object,
     enterpriseId: PropTypes.string,
     getRoleList: PropTypes.func,
@@ -149,11 +149,12 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  changeUserAttr: payload => dispatch({type:userAction.GET_USER_ATTR_CHANGE_SAGA, payload}),
+  changeUserStore: payload => dispatch({type:userAction.CHANGE_USER_STORE_SAGA, payload}),
   getUserList: payload => dispatch({type:userAction.GET_USER_LIST_SAGA, payload}),
   getUserDetail: payload => dispatch({type:userAction.GET_USER_DETAIL_SAGA, payload}),
   changeSelectedUser: payload => dispatch({type:userAction.CHANGE_SELECTED_USER_SAGA, payload}),
   getRoleList: payload => dispatch({ type: roleAction.GET_ROLE_LIST_SAGA, payload}),
+  changeUserStatus: payload => dispatch({ type:userAction.CHANGE_USER_STATUS_SAGA, payload}),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(User);

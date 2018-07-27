@@ -22,7 +22,7 @@ class EnterpriseEdit extends Component {
   constructor(props){
     super(props);
     this.state={
-      enterpriseLogo: props.enterpriseDetail.enterpriseLogo,
+      enterpriseLogo: props.enterpriseDetail && props.enterpriseDetail.enterpriseLogo,
       showWarningTip: false,
       warningTipText: '退出后信息无法保存!',
     }

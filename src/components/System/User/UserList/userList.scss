@@ -33,7 +33,7 @@
       margin-top: 10px;
     }
   }
-  .userOperate{
+  .userHelper{
     Button{
       margin: 0 6px;
       color: $themeColor;
@@ -69,5 +69,49 @@
         }
       }
     }
+    .userOperate{
+      height: 72px;
+      line-height: 72px;
+      display: inline-block;
+      :global{
+        .ant-select{
+          width: 78px;
+        }
+      }
+    }
+  }
+
+  
+}
+.responsibleDetails{
+  color: $lightColor;
+  .eachStation{
+    .square{
+      width: 4px;
+      height: 4px;
+      background-color: $lightColor;
+      display: inline-block;
+      vertical-align: middle;
+      margin-right: 4px;
+      margin-top: -4px;        
+    }
+    @include lineheight(30px);
+  }
+  :global{
+    .ant-popover-title{
+      color: $lightColor;
+    }
   }
 }
+.handleDropdown{
+  width: 120px;
+  :global{
+    .ant-select-dropdown-menu-item{
+      color:$themeColor;
+    }
+    .ant-select-dropdown-menu-item-disabled{
+      color:$promptColor;
+    }
+  }
+}
+

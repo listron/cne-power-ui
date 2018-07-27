@@ -18,7 +18,6 @@ class UserSearch extends Component {
     selectedUser: PropTypes.object,//勾选的数组
     getUserList: PropTypes.func,
     getUserDetail: PropTypes.func,
-    changeUserAttr: PropTypes.func,
     onChangeSort: PropTypes.func,//排序
     onChangePageSize: PropTypes.func,
     onChangePage: PropTypes.func,
@@ -69,7 +68,7 @@ class UserSearch extends Component {
     })
   }
 
-  onSelectRoles = (e,item) => {
+  onSelectRoles = (e, item) => {
     // console.log(e)
     // console.log(e.domEvent.isPropagationStopped())
     // e.domEvent.isPropagationStopped(true)
@@ -107,18 +106,11 @@ class UserSearch extends Component {
     const { selectedRowKeys, selectedRoles, nameValue, phoneValue, stationValue } = this.state;
     console.log(selectedRoles)
     const roleData = ['系统管理员','企业管理员','生产管理员','运维实施工人','运维管理员'];
-    const handleData = ['编辑','移除','启用','禁用','审核'];
+    
     const roleMenu=(
       <Menu  onClick={this.onSelectRoles} >
         {roleData.map((item,index) => {
           return <Menu.Item key={item} ><Checkbox onClick={(e)=>console.log(e.isPropagationStopped) }>{item}</Checkbox></Menu.Item>;
-        })}
-      </Menu>
-    )
-    const handleMenu=(
-      <Menu  onClick={this} >
-        {handleData.map((item,index) => {
-          return <Menu.Item key={item}   >{item}</Menu.Item>;
         })}
       </Menu>
     )
@@ -170,17 +162,7 @@ class UserSearch extends Component {
           <Button onClick={this.onUserSearch}>查询</Button>
           <span onClick={() => this.setState({ nameValue: '', phoneValue: '', stationValue: '', })} >重置</span>
         </div>
-        <div className={styles.userOperate} >
-          <Button onClick={this.onCreateUser} className={styles.addUser} ><Icon type="plus" /><span className={styles.text}>用户</span></Button>
-          <Button>邀请用户</Button>
-          <Button>批量导入</Button>
-          <Button  >导入模板下载</Button>
-          <Dropdown overlay={handleMenu}  >
-            <Button className={styles.handleMenu} style={{ marginLeft: 8 }}>
-              操作 <Icon type="down" />
-            </Button>
-          </Dropdown>
-        </div>
+        
       </div>
     )
   }

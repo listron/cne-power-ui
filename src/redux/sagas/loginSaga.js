@@ -34,7 +34,7 @@ function *getLogin(action){
     if(response.data.code === '10000'){
       setCookie('authData',JSON.stringify(response.data.data.access_token));
       setCookie('phoneNum', action.params.phoneNum);
-      setCookie('userName', response.data.data.username);
+      setCookie('username', response.data.data.username);
       // setCookie('userId', response.data.result.userId);
       yield put({ type: LoginAction.GET_LOGIN_SUCCESS, data: response.data});       
     } else{
@@ -81,7 +81,7 @@ function *checkCode(action){
     if(response.data.code === '10000'){
       setCookie('authData',JSON.stringify(response.data.data.access_token));
       setCookie('phoneNum', action.params.phoneNum);
-      setCookie('userName', response.data.data.username);
+      setCookie('username', response.data.data.username);
       yield put({
         type: LoginAction.CHECK_CODE_SUCCESS,
         payload: {
@@ -180,7 +180,20 @@ function *registerEnterprise(action){
   let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.registerEnterprise;
   yield put({ type: LoginAction.LOGIN_FETCH});
   try{
-    const response = yield call(axios.post, url, action.params);
+    const response = yield call(axios, {
+      method: 'post',
+      url,
+      headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'},
+      data: stringify({
+        'grant_type': "password",
+        confirmPwd: action.params.confirmPwd,
+        enterpriseDomain: action.params.enterpriseDomain,
+        enterpriseName: action.params.enterpriseName,
+        password: action.params.password,
+        phoneNum: action.params.phoneNum,
+        username: action.params.username,
+      }),
+    });
     if(response.data.code === '10000'){
       yield put({
         type: LoginAction.REGISTER_ENTERPRISE_SUCCESS,
@@ -188,8 +201,16 @@ function *registerEnterprise(action){
         data: response.data.data,
       })
       message.success('注册成功，请登录！');
+      yield put({
+        type: LoginAction.GET_LOGIN_SAGA,
+        params:{
+          username: action.params.username,
+          password: action.params.password,
+        }
+      })
     }else{
       yield put({ type: LoginAction.REGISTER_ENTERPRISE_FAIL})
+      message.error(response.data.message);
     }
   }catch(e){
     console.log(e);
@@ -222,12 +243,32 @@ function *joinEnterprise(action){
   let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.joinEnterprise;
   try{
     yield put({ type: LoginAction.LOGIN_FETCH });
-    const response = yield call(axios.get, url, action.params);
+    const response = yield call(axios, {
+      method: 'post',
+      url,
+      headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'},
+      data: stringify({
+        'grant_type': "password",
+        confirmPwd: action.params.confirmPwd,
+        enterpriseId: action.params.enterpriseId,
+        password: action.params.password,
+        phoneNum: action.params.phoneNum,
+        username: action.params.username,
+      }),
+    });
     if(response.data.code === '10000'){
       yield put({
         type: LoginAction.JOIN_ENTERPRISE_SUCCESS,
         params: action.params,
         data: response.data.data,
+      })
+      message.success(response.data.message)
+      yield put({
+        type: LoginAction.GET_LOGIN_SAGA,
+        params:{
+          username: action.params.username,
+          password: action.params.password,
+        }
       })
     }else{
       yield put({type: LoginAction.JOIN_ENTERPRISE_FAIL, params: response.data.message})
@@ -245,7 +286,17 @@ function *resetPassword(action){
   let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.resetPassword;
   yield put({type: LoginAction.LOGIN_FETCH});
   try{
-    const response = yield call(axios.post, url, action.params);
+    const response = yield call(axios, {
+      method: 'post',
+      url,
+      headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'},
+      data: stringify({
+        'grant_type': "password",
+        confirmPwd: action.params.confirmPwd,
+        password: action.params.password,
+        phoneNum: action.params.phoneNum,
+      }),
+    });
     if(response.data.code === "10000"){
       message.success('密码设置成功，请重新登录！')
       yield put({ type: LoginAction.RESET_PASSWORD_SUCCESS})
@@ -259,7 +310,7 @@ function *resetPassword(action){
 // 动态验证用户名是否注册
 function *checkUserRegister(action){
   // let url = "/mock/api/v3/login/password";
-  let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.checkUserRegister + '/' + action.params.userName;
+  let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.checkUserRegister + '/' + action.params.username;
   yield put({type: LoginAction.LOGIN_FETCH});
   try{
     const response = yield call(axios.get, url);

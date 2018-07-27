@@ -20,7 +20,7 @@ var initState = immutable.fromJS({
   phoneNum: '',//手机号
   verificationCode: '',//验证码
   user: {
-    userName: '',
+    username: '',
     userId: '',
   },//用户信息
   enterpriseInfo: {
@@ -30,7 +30,7 @@ var initState = immutable.fromJS({
     enterpriseName: null,
   },//加入企业信息
   showResetPassword: 0,//显示重置密码页面 0 不显示 1 显示
-  enterpriseDomian: '',//注册企业域名
+  enterpriseDomain: '',//注册企业域名
   enterpriseName: null,//注册企业名称
   isUserRegister: '2',//'0' 用户名已注册 '1' 用户名未注册
   isPhoneRegister: '2',//'0' 已注册 '1' 未注册
@@ -66,7 +66,7 @@ const loginReducer = (state = initState, action) => {
       return state.set('phoneNum', action.params.phoneNum);
     case LoginAction.CHECK_ENTERPRISE_DOMAIN_SUCCESS:
       return state.set('domainIsRegister', action.data.isRegister)
-                  .set('enterpriseDomian', action.params.enterpriseDomian);
+                  .set('enterpriseDomain', action.params.enterpriseDomain);
     case LoginAction.CHECK_ENTERPRISE_NAME_SUCCESS:
       return state.set('isFetching', false)
                   .set('nameIsRegister', action.data.isRegister)
@@ -77,7 +77,7 @@ const loginReducer = (state = initState, action) => {
     case LoginAction.JOIN_ENTERPRISE_SUCCESS:
       return state.set('isFetching', false)
                   .set('joinResult', 1)
-                  .set('joinStep', 1);
+                  // .set('joinStep', 1);
     case LoginAction.REGISTER_ENTERPRISE_SUCCESS:
       return state.set('isFetching', false)
                   .set('registerSuccess', 1)

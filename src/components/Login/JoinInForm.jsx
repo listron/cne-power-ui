@@ -220,7 +220,7 @@ class JoinInForm extends Component{
             <span>{enterpriseName}</span>
             <Form onSubmit={this.onJoinEnterprise}  >
               <FormItem label="用户名" {...formItemLayout}>
-                {getFieldDecorator('userName', {
+                {getFieldDecorator('username', {
                   rules: [{required: true, message: '请输入用户名'}]
                 })(
                   <Input prefix={<Icon type="user" />} placeholder="请输入用户名" />

@@ -21,7 +21,7 @@ module.exports =[{
   delay:1000,
   error:{}
 },{
-  api:'/api/v3/user/{userId}',//用户详情
+  api:'/api/v3/user/',//用户详情
   method:'get',
   response:{
     "code": "10000",

@@ -1,0 +1,75 @@
+
+@import '../../../theme/theme.scss';
+
+@mixin top {
+  @include lineheight(64px);
+  display: flex;
+  padding-left: 32px;
+  align-items: center;
+  border-bottom: 1px solid $promptColor;
+}
+
+
+.userEdit{//编辑页
+  flex: 1;
+  background-color: #fff;
+  .editTop{
+    @include top;
+    justify-content: space-between;
+    .text{
+      font-size: 18px;
+      color: $darkColor;
+      letter-spacing: 4px;
+    }
+    .backIcon{
+      color: $lightColor;
+      font-size: 20px;
+      border-left: 1px solid $promptColor;
+      height: 100%;
+      line-height: 64px;
+      width: 64px;
+      cursor: pointer;
+    }
+  }
+  .mainPart{
+    margin: 24px 32px 0;
+    display: flex;
+    .logoPart{
+      margin-right: 48px;
+      .instruction{
+        margin-top: 12px;
+        color: $promptColor;
+        span{
+          display: block;
+        }
+      }
+    }
+    .editPart{
+      flex: 1;
+      .instructionText{
+        color: $promptColor;
+      }
+      :global{
+        .ant-form-item{
+          display: flex;
+          line-height: 40px;
+          .ant-form-item-label{
+            width: 70px;
+            margin-right: 24px;
+            color: $darkColor;
+            text-align: right;
+            label::after{
+              display: none;
+            } 
+          }
+          .ant-form-item-control-wrapper input{
+            width: 200px;
+            margin-right: 12px;
+          }
+        }
+      }
+    }
+  }
+
+
+}
