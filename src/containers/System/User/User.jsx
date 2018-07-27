@@ -10,100 +10,102 @@ import UserList from '../../../components/System/User/UserList/UserList';
 
 class User extends Component {
   static propTypes = {
-    showPage: PropTypes.string, 
+    showPage: PropTypes.string,
     userId: PropTypes.string,
     roleId: PropTypes.string,
     userStatus: PropTypes.number,
-    userName: PropTypes.string, 
+    userName: PropTypes.string,
     stationName: PropTypes.string,
     phoneNum: PropTypes.string,
-    sort: PropTypes.string, 
+    sort: PropTypes.string,
     ascend: PropTypes.bool,
-    currentPage: PropTypes.number, 
-    pageSize: PropTypes.number, 
-    userDetail:PropTypes.object, 
-    selectedUser: PropTypes.object, 
+    currentPage: PropTypes.number,
+    pageSize: PropTypes.number,
+    userDetail: PropTypes.object,
+    selectedUser: PropTypes.object,
     getUserList: PropTypes.func,
     changeSelectedUser: PropTypes.func,
     changeUserAttr: PropTypes.func,
     userData: PropTypes.object,
     enterpriseId: PropTypes.string,
-    getRoleList: PropTypes.func,
-  }
+    getRoleList: PropTypes.func
+  };
   constructor(props) {
     super(props);
   }
-  componentDidMount(){
+  componentDidMount() {
     const params = {
       userId: this.props.userId,
       roleId: this.props.roleId,
       userStatus: this.props.userStatus,
-      userName: this.props.userName, 
+      userName: this.props.userName,
       phoneNum: this.props.phoneNum,
       stationName: this.props.stationName,
-      sort: this.props.sort, 
+      sort: this.props.sort,
       ascend: this.props.ascend,
-      currentPage: this.props.currentPage, 
-      pageSize: this.props.pageSize, 
-    }
+      currentPage: this.props.currentPage,
+      pageSize: this.props.pageSize
+    };
     this.props.getUserList(params);
 
     // const enterpriseId = this.props.enterpriseId;
     // this.props.getRoleList({ enterpriseId});
   }
-  
-  componentWillReceiveProps(nextProps){
-    
-  }
 
-  onChangeSort = (sort) => {
-    if(sort !== this.props.sort){
+  componentWillReceiveProps(nextProps) {}
+
+  onChangeSort = sort => {
+    if (sort !== this.props.sort) {
       let params = {
         enterpriseId: this.props.enterpriseId,
         userStatus: this.props.userStatus,
         pageNum: 0,
-        pageSize: this.props.pageSize,
-      }
+        pageSize: this.props.pageSize
+      };
       this.props.getUserList(params);
     }
-  }
+  };
 
-  onChangePageSize = (pageSize) => {
-    if(pageSize !== this.props.pageSize){
+  onChangePageSize = pageSize => {
+    if (pageSize !== this.props.pageSize) {
       let params = {
         enterpriseId: this.props.enterpriseId,
         userStatus: this.props.userStatus,
         pageNum: 0,
-        pageSize: pageSize,
-      }
+        pageSize: pageSize
+      };
       this.props.getUserList(params);
     }
-  }
+  };
 
-  onChangePage = (currentPage) => {
-    if(currentPage !== this.props.currentPage){
+  onChangePage = currentPage => {
+    if (currentPage !== this.props.currentPage) {
       let params = {
         enterpriseId: this.props.enterpriseId,
         userStatus: this.props.userStatus,
-        pageNum: currentPage-1,
-        pageSize: this.props.pageSize,
-      }
+        pageNum: currentPage - 1,
+        pageSize: this.props.pageSize
+      };
       this.props.getUserList(params);
     }
-  }
+  };
+  onShowSideChange = ({ showSidePage }) => {
+    console.log(showSidePage);
+    this.setState({ showSidePage });
+  };
 
-  onChangeStatus = (status) => {
-    if(status !== this.props.userStatus){
+  onChangeStatus = status => {
+    if (status !== this.props.userStatus) {
       let params = {
         enterpriseId: this.props.enterpriseId,
         userStatus: status,
         pageNum: 0,
-        pageSize: this.props.pageSize,
-      }
+        pageSize: this.props.pageSize
+      };
       this.props.getUserList(params);
     }
-  }
-  onUserSearch = (data) => {
+  };
+  onUserSearch = data => {
     let params = {
       enterpriseId: this.props.enterpriseId,
       userStatus: this.props.userStatus,
@@ -111,29 +113,31 @@ class User extends Component {
       pageSize: this.props.pageSize,
       userName: data.nameValue,
       phoneNum: data.phoneValue,
-      stationName: data.stationValue,
-    }
+      stationName: data.stationValue
+    };
     this.props.getUserList(params);
-  }
+  };
   render() {
     const { showPage } = this.props;
-    // console.log(this.props)
+     console.log(this.props)
     return (
       <div className={styles.userContainer}>
-        { showPage === 'list' && 
-          <UserList 
-            {...this.props} 
+        {showPage === "list" && (
+          <UserList
+            {...this.props}
             onChangeSort={this.onChangeSort}
-            onChangePageSize={this.onChangePageSize} 
+            onChangePageSize={this.onChangePageSize}
             onChangePage={this.onChangePage}
             onChangeStatus={this.onChangeStatus}
             onUserSearch={this.onUserSearch}
           />
-         }
-        { showPage === 'detail' && <UserDetail {...this.props} /> }
-        { showPage === 'edit' && <UserEdit {...this.props} /> }
+        )}
+        {showPage === "detail" && <UserDetail {...this.props} onShowSideChange={this.onShowSideChange} />}
+        {showPage === "edit" && <UserEdit {...this.props} />}
         <div className={styles.userFooter}>
-          <span className={styles.footerText}>京ICP备12030847号-2 © 2017-2018 北京动力协合科技有限公司</span>
+          <span className={styles.footerText}>
+            京ICP备12030847号-2 © 2017-2018 北京动力协合科技有限公司
+          </span>
         </div>
       </div>
     );

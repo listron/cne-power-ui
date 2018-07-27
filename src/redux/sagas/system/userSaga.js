@@ -16,6 +16,7 @@ function *changeUserAttr(action){
 // 请求用户列表
 function *getUserList(action){
   const { payload } = action;
+
   const url = '/mock/api/v3/user/list';
   try{
     yield put({type: userAction.USER_FETCH});
@@ -72,4 +73,5 @@ export function* watchUser(){
   yield takeLatest(userAction.GET_USER_LIST_SAGA, getUserList);
   yield takeLatest(userAction.GET_USER_DETAIL_SAGA, getUserDetail);
   yield takeLatest(userAction.GET_USER_EDIT_SAGA, editUser);
+
 }

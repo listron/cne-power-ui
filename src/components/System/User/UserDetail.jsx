@@ -48,11 +48,39 @@ class UserDetail extends Component {
 
   onShowSideChange = ({ showSidePage }) => {
     this.props.onShowSideChange({ showSidePage: "edit" });
-  
   };
 
   prePage = () => {
-    const { getOtherPageDetail, getUserDetail, userId, username, userDetail, userLogo, userFullName, UserDetail, phoneNum, Email, userStation, createtime, roleId, roleName, specialRoleId, specialRoleName, enterpriseId, enterpriseData, enterpriseUserStatus, departmentId, departmentData, departmentName, stationId, stationData, currentPage, pageSize, totalNum, userData } = this.props;
+    const {
+      getOtherPageDetail,
+      getUserDetail,
+      userId,
+      username,
+      userDetail,
+      userLogo,
+      userFullName,
+      UserDetail,
+      phoneNum,
+      Email,
+      userStation,
+      createtime,
+      roleId,
+      roleName,
+      specialRoleId,
+      specialRoleName,
+      enterpriseId,
+      enterpriseData,
+      enterpriseUserStatus,
+      departmentId,
+      departmentData,
+      departmentName,
+      stationId,
+      stationData,
+      currentPage,
+      pageSize,
+      totalNum,
+      userData
+    } = this.props;
     let detailIndex = userData.findIndex(
       e => e.userId === userDetail.userId,
       userLogo
@@ -100,7 +128,36 @@ class UserDetail extends Component {
   };
 
   nextPage = () => {
-    const { getOtherPageDetail, getUserDetail, userId, username, userLogo, userFullName, UserDetail, phoneNum, Email, userStation, createtime, roleId, roleName, specialRoleId, specialRoleName, enterpriseId, enterpriseData, enterpriseUserStatus, departmentId, departmentData, departmentName, stationId, stationData, currentPage, pageSize, totalNum, usertData, userDetail, } = this.props;
+    const {
+      getOtherPageDetail,
+      getUserDetail,
+      userId,
+      username,
+      userLogo,
+      userFullName,
+      UserDetail,
+      phoneNum,
+      Email,
+      userStation,
+      createtime,
+      roleId,
+      roleName,
+      specialRoleId,
+      specialRoleName,
+      enterpriseId,
+      enterpriseData,
+      enterpriseUserStatus,
+      departmentId,
+      departmentData,
+      departmentName,
+      stationId,
+      stationData,
+      currentPage,
+      pageSize,
+      totalNum,
+      usertData,
+      userDetail
+    } = this.props;
     let detailIndex = usertData.findIndex(e => e.userId === userDetail.userId);
     let params = {
       userId,
@@ -149,10 +206,11 @@ class UserDetail extends Component {
   };
 
   backToList = () => {
-    this.props.changeUserStore({ showPage: "list" });
+    history.go(-1);
   };
 
   render() {
+    console.log(this.props);
     const { userDetail } = this.props;
 
     const { showWarningTip, warningTipText } = this.state;
