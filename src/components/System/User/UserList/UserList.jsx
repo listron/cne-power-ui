@@ -87,6 +87,7 @@ class UserList extends Component {
 
   showUserDetail = record => {
     const { userId } = record;
+    // console.log(userId)
     this.props.changeUserAttr({
       showPage: "detail"
     });

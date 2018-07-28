@@ -35,7 +35,8 @@ class UserDetail extends Component {
     getUserDetail: PropTypes.func,
     changeUserStore: PropTypes.func,
     onShowSideChange: PropTypes.func,
-    userDetail: PropTypes.object
+    userDetail: PropTypes.object,
+    changeUserAttr: PropTypes.func
   };
 
   constructor(props) {
@@ -47,7 +48,9 @@ class UserDetail extends Component {
   }
 
   onShowSideChange = ({ showSidePage }) => {
-    this.props.onShowSideChange({ showSidePage: "edit" });
+    this.props.changeUserAttr({
+      showPage: "edit"
+    });
   };
 
   prePage = () => {
@@ -206,13 +209,13 @@ class UserDetail extends Component {
   };
 
   backToList = () => {
-    history.go(-1);
+    this.props.changeUserAttr({
+      showPage: "list"
+    });
   };
 
   render() {
-    console.log(this.props);
     const { userDetail } = this.props;
-
     const { showWarningTip, warningTipText } = this.state;
 
     let stationNames =
@@ -266,7 +269,7 @@ class UserDetail extends Component {
               {userDetail.createtime}
             </div>
           </div>
-          <div className={styles.userContainer}>
+          <div className={styles.userDetailContainer}>
             <div>
               <span className={styles.title}>用户名</span>
               <span className={styles.value}>{userDetail.username}</span>

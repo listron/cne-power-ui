@@ -4,6 +4,7 @@ import Path from '../../../constants/path';
 
 import { userAction } from '../../../constants/actionTypes/system/userAction';
 
+
 // 切换页面 -> 列表页 详情页 编辑页
 function *changeUserAttr(action){
   const { payload } = action;
@@ -36,9 +37,12 @@ function *getUserList(action){
 
 // 请求用户详情
 function *getUserDetail(action){
+
   const { payload } = action;
-  const url = '/api/v3/user/{userId}';
+  const url = "/api/v3/user/{userId}";
+
   try{
+
     yield put({ type: userAction.USER_FETCH});
     const response = yield call(axios.get, url);
     console.log(response);
