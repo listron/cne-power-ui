@@ -119,7 +119,7 @@ class User extends Component {
   };
   render() {
     const { showPage } = this.props;
-     console.log(this.props)
+     console.log(this.props);
     return (
       <div className={styles.userContainer}>
         {showPage === "list" && (

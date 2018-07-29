@@ -39,12 +39,12 @@ function *getUserList(action){
 function *getUserDetail(action){
 
   const { payload } = action;
-  const url = "/api/v3/user/{userId}";
+  //const url = "/api/v3/user/{userId}";
+ const url = "/mock/api/v3/userDetail";
 
   try{
-
     yield put({ type: userAction.USER_FETCH});
-    const response = yield call(axios.get, url);
+    const response = yield call(axios.get, url, payload);
     console.log(response);
     yield put({
       type: userAction.GET_USER_COMMON_FETCH_SUCCESS,

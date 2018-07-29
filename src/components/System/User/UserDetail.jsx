@@ -215,7 +215,11 @@ class UserDetail extends Component {
   };
 
   render() {
+
+    console.log(this.props);
     const { userDetail } = this.props;
+    console.log(userDetail);
+
     const { showWarningTip, warningTipText } = this.state;
 
     let stationNames =
