@@ -2,7 +2,7 @@ import { call, put, takeLatest } from 'redux-saga/effects';
 import axios from 'axios';
 import Path from '../../../../constants/path';
 import { message } from 'antd';
-import { userAction } from '../../../../constants/actionTypes/system/userAction';
+import { userAction } from '../../../../constants/actionTypes/system/account/userAction';
 
 // 切换页面 -> 列表页 详情页 编辑页
 function *changeUserStore(action){
