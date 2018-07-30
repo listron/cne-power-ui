@@ -54,7 +54,7 @@ class Register extends Component {
       <div className={styles.login}>
         <div className={styles.joinTop}>
           <div className={styles.fontIcon}>
-            <i className="icon-phone" />
+            <i className="iconfont icon-join" />
           </div>
           <div className={styles.join} onClick={()=>this.changePage('joinIn')}>加入企业</div>
         </div>
