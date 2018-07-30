@@ -148,7 +148,7 @@ class DepartmentTable extends Component {
   _createHandleOption = () => {//部门操作下拉框生成
     const { selectedDepartment } = this.props;
     let [editable, deletable, userAssignable, staionAssignable] = [false,false,false,false];  
-
+    
     if(selectedDepartment.length > 0){
       editable = selectedDepartment.length === 1;
       [deletable, userAssignable, staionAssignable] = [true,true,true];

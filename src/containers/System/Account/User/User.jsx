@@ -4,10 +4,9 @@ import styles from './user.scss';
 import { userAction } from '../../../../constants/actionTypes/system/account/userAction';
 import { roleAction } from '../../../../constants/actionTypes/system/account/roleAction';
 import PropTypes from 'prop-types';
-import UserDetail from '../../../../components/System/Account/User/UserDetail';
-import UserEdit from '../../../../components/System/Account/User/UserEdit';
-import UserList from '../../../../components/System/Account/User/UserList/UserList';
-
+import TransitionContainer from '../../../../components/Common/TransitionContainer';
+import UserSide from '../../../../components/System/User/UserSide/UserSide';
+import UserMain from '../../../../components/System/User/UserList/UserMain';
 class User extends Component {
   static propTypes = {
     showPage: PropTypes.string, 
@@ -25,13 +24,16 @@ class User extends Component {
     selectedUser: PropTypes.object, 
     getUserList: PropTypes.func,
     changeSelectedUser: PropTypes.func,
-    changeUserAttr: PropTypes.func,
+    changeUserStore: PropTypes.func,
     userData: PropTypes.object,
     enterpriseId: PropTypes.string,
     getRoleList: PropTypes.func,
   }
   constructor(props) {
     super(props);
+    this.state = {
+      showSidePage: 'add',
+    }
   }
   componentDidMount(){
     const params = {
@@ -115,23 +117,36 @@ class User extends Component {
     }
     this.props.getUserList(params);
   }
+
+  onShowSideChange = ({showSidePage}) => {
+    this.setState({ showSidePage });
+  }
+
+  onToggleSide = () => {
+    const { showPage } = this.props;
+    this.setState({
+      showSidePage: showPage
+    });
+  }
+
   render() {
     const { showPage } = this.props;
-    // console.log(this.props)
+    const { showSidePage } =this.state;
     return (
       <div className={styles.userContainer}>
-        { showPage === 'list' && 
-          <UserList 
-            {...this.props} 
-            onChangeSort={this.onChangeSort}
-            onChangePageSize={this.onChangePageSize} 
-            onChangePage={this.onChangePage}
-            onChangeStatus={this.onChangeStatus}
-            onUserSearch={this.onUserSearch}
-          />
-         }
-        { showPage === 'detail' && <UserDetail {...this.props} /> }
-        { showPage === 'edit' && <UserEdit {...this.props} /> }
+        <UserMain 
+          {...this.props} 
+          onUserSearch={this.onUserSearch} 
+        />
+        <TransitionContainer
+          show={showPage!=='list'}
+          onEnter={this.onToggleSide}
+          onExited={this.onToggleSide}
+          timeout={500}
+          effect="side"
+        >
+          <UserSide {...this.props} showSidePage={showSidePage} onShowSideChange={this.onShowSideChange} />
+        </TransitionContainer>
         <div className={styles.userFooter}>
           <span className={styles.footerText}>京ICP备12030847号-2 © 2017-2018 北京动力协合科技有限公司</span>
         </div>
@@ -141,39 +156,28 @@ class User extends Component {
 }
 
 const mapStateToProps = state => {
-  // console.log([...state.role,...state.user])
-  let departmentProps = {};
+  let userProps = {};
   // [...state.department].forEach(e=>departmentProps[e[0]]=(e[1].toJS?e[1].toJS():e[1]))
+<<<<<<< HEAD:src/containers/System/Account/User/User.jsx
   [...state.system.role,...state.system.user].forEach(e=>departmentProps[e[0]]=e[1])
   return departmentProps
+=======
+  [...state.user].forEach(e=>userProps[e[0]]=e[1])
+  userProps['roleData'] = state.role.get('roleData');
+  return userProps;
+>>>>>>> upstream/dev:src/containers/System/User/User.jsx
 }
-// const mapStateToProps = (state) => ({
-//   loading: state.user.get('loading'),
-//   showPage: state.user.get('showPage'),
-//   userId: state.user.get('userId'),
-//   roleId: state.user.get('roleId'),
-//   userStatus: state.user.get('userStatus'),
-//   roleName: state.user.get('roleName'),
-//   filterStatus: state.user.get('filterStatus'),
-//   sort: state.user.get('sort'),
-//   ascend: state.user.get('ascend'),
-//   userName: state.user.get('userName'),
-//   phoneNum: state.user.get('phoneNum'),
-//   stationName: state.user.get('stationName'),
-//   totalNum: state.user.get('totalNum'),
-//   userData: state.user.get('userData').toJS(),
-//   currentPage: state.user.get('currentPage'),
-//   pageSize: state.user.get('pageSize'),
-//   userDetail: state.user.get('userDetail').toJS(),
-//   selectedUser: state.user.get('selectedUser').toJS(),
-// });
 
 const mapDispatchToProps = (dispatch) => ({
-  changeUserAttr: payload => dispatch({type:userAction.GET_USER_ATTR_CHANGE_SAGA, payload}),
+  changeUserStore: payload => dispatch({type:userAction.CHANGE_USER_STORE_SAGA, payload}),
   getUserList: payload => dispatch({type:userAction.GET_USER_LIST_SAGA, payload}),
   getUserDetail: payload => dispatch({type:userAction.GET_USER_DETAIL_SAGA, payload}),
   changeSelectedUser: payload => dispatch({type:userAction.CHANGE_SELECTED_USER_SAGA, payload}),
   getRoleList: payload => dispatch({ type: roleAction.GET_ROLE_LIST_SAGA, payload}),
+  changeUserStatus: payload => dispatch({ type:userAction.CHANGE_USER_STATUS_SAGA, payload}),
+  createUserInfo: payload => dispatch({type:userAction.CREATE_USER_INFO_SAGA, payload}),
+  editUserInfo: payload => dispatch({type:userAction.EDIT_USER_INFO_SAGA, payload}),
+
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(User);

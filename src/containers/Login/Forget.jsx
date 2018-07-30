@@ -8,20 +8,20 @@ class Forget extends Component {
   static propTypes = {
     changeLoginStore: PropTypes.func,
     sendCode: PropTypes.func,
-    showConfirmPassword: PropTypes.bool,
-    checkPhoneCode: PropTypes.func,
+    showResetPassword: PropTypes.number,
     resetPassword: PropTypes.func,
     phoneNum: PropTypes.string,
     phoneCodeRegister: PropTypes.func,
     pageTab: PropTypes.string,
     enterpriseId: PropTypes.string,
     username: PropTypes.string,
+    checkCodeLogin: PropTypes.func,
   }
   constructor(props) {
     super(props);
   }
   changePage = (pageTab) =>{
-    this.props.changeLoginStore({pageTab, registerStep: 1, joinStep: 1})
+    this.props.changeLoginStore({pageTab, registerStep: 1, joinStep: 1,enterpriseId: ''})
   }
 
   render() {
@@ -29,14 +29,13 @@ class Forget extends Component {
     return (
       <div className={styles.forgetPassword}>
         <div className={styles.goLogin}>
-          <span  onClick={()=>this.changePage({pageTab: 'login',enterpriseId: ''})}> 登录 </span>
+          <span  onClick={()=>this.changePage('login')}> 登录 </span>
           <span>I</span>
           <span  onClick={()=>this.changePage('register')}> 注册企业 </span>
         </div>
         <ForgetForm
           sendCode={this.props.sendCode}
-          showConfirmPassword={this.props.showConfirmPassword}
-          checkPhoneCode={this.props.checkPhoneCode}
+          showResetPassword={this.props.showResetPassword}
           resetPassword={this.props.resetPassword}
           phoneNum={this.props.phoneNum}
           phoneCodeRegister={this.props.phoneCodeRegister}
@@ -44,6 +43,7 @@ class Forget extends Component {
           enterpriseId={this.props.enterpriseId}
           username={this.props.username}
           changeLoginStore={this.props.changeLoginStore}
+          checkCodeLogin={this.props.checkCodeLogin}
         />
         <div className={styles.contactUs}>
           <span>用户协议</span>
@@ -56,7 +56,7 @@ class Forget extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  showConfirmPassword: state.login.get('showConfirmPassword'),
+  showResetPassword: state.login.get('showResetPassword'),
   phoneNum: state.login.get('phoneNum'),
   enterpriseId: state.login.get('enterpriseId'),
   username: state.login.get('username'),
@@ -64,8 +64,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   sendCode: params => dispatch({ type: LoginAction.SEND_CODE_SAGA, params}),
-  checkPhoneCode: params => dispatch({ type: LoginAction.CHECK_CODE_SAGA, params}),
   resetPassword: params => dispatch({ type: LoginAction.RESET_PASSWORD_SAGA, params }),
+  checkCodeLogin: params => dispatch({ type: LoginAction.CHECK_CODE_SAGA, params}),
   phoneCodeRegister: params => dispatch({ type: LoginAction.PHONE_CODE_REGISTER_SAGA, params}),
 })
 

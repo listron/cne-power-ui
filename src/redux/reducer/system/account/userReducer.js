@@ -4,7 +4,7 @@ import { userAction } from '../../../../constants/actionTypes/system/account/use
 
 var initState = immutable.fromJS({
   loading: false,
-  showPage: 'list',//默认显示list,可显示list,detail,edit
+  showPage: 'list',//默认显示list,可显示list,detail,edit,add
   enterpriseId: '',//企业ID
   roleId: '',//角色ID 
   roleName: '',//筛选条件：角色
@@ -23,12 +23,13 @@ var initState = immutable.fromJS({
 })
 
 const userReducer = (state = initState, action) => {
+  console.log(action)
   switch(action.type){
     case userAction.USER_FETCH:
       return state.set('loading', true)
     case userAction.GET_USER_COMMON_FETCH_SUCCESS:
       return state.merge(immutable.fromJS(action.payload)).set('loading', false)
-    case userAction.GET_USER_ATTR_CHANGE_SUCCESS:
+    case userAction.CHANGE_USER_STORE_SUCCESS:
       return state.merge(immutable.fromJS(action.payload))
     
   }

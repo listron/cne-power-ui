@@ -63,6 +63,7 @@ class Department extends Component {
   render() {
     const { showPage, showAssignStationModal, showAssignUserModal } = this.props;
     const { showSidePage } = this.state;
+    console.log(showPage!=='list')
     return (
       <div className={styles.departmentContainer}>
         <DepartmentMain {...this.props} onWarningTipToggle={this.onWarningTipToggle} />
