@@ -5,7 +5,7 @@ import { Icon, Popconfirm, Input, Button, message } from 'antd';
 import PropTypes from 'prop-types';
 import styles from './userSide.scss';
 import WarningTip from '../../../../Common/WarningTip';
-import Clipboard from 'clipboard';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 //企业信息编辑页
 class InviteUser extends Component {
@@ -23,16 +23,7 @@ class InviteUser extends Component {
     }
   }
   componentWillReceiveProps(){
-    var clipboard = new Clipboard('.copyBtn');
-    clipboard.on('success', function(e) {
-      console.log(e);
-      message.success('复制成功');
-    });
-
-    clipboard.on('error', function(e) {
-      console.log(e);
-      message.success('复制失败');
-    });
+    
   }
   onWarningTipShow = () =>{
     this.setState({
