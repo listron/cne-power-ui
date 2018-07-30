@@ -27,6 +27,7 @@ class RegisterForm extends Component {
     enterpriseId: PropTypes.string,
     pageTab: PropTypes.string,
     registerSuccess: PropTypes.number,
+    changeLoginStore: PropTypes.func,
   }
 
   constructor(props) {
@@ -38,9 +39,9 @@ class RegisterForm extends Component {
   }
   
   componentWillReceiveProps(nextProps){
-    if(nextProps.domainIsRegister === '1' && nextProps.nameIsRegister === '1'){
-      this.setState({ current: 1})
-    }
+    // if(nextProps.domainIsRegister === '1' && nextProps.nameIsRegister === '1'){
+    //   this.setState({ current: 1})
+    // }
   }
 
   componentWillUnmount = () => {
@@ -56,10 +57,8 @@ class RegisterForm extends Component {
         this.props.checkEnterpriseDomain({
           enterpriseDomain: values.enterpriseDomain+'.cneclound.com',
           enterpriseName: values.enterpriseName,
+          registerStep: 3,
         });
-        if(this.props.domainIsRegister === '1' && this.props.nameIsRegister === '1'){
-          this.setState({ current: 1})
-        }
       }
     })
   }
@@ -87,7 +86,7 @@ class RegisterForm extends Component {
     e.preventDefault();
     this.props.form.validateFields(['phoneNum','verificationCode'],(err, values) => {
       if(!err){
-        this.props.phoneCodeRegister({...values, 'registerStep': 2});
+        this.props.phoneCodeRegister({...values,registerStep: 2 });
       }
     })
   }
@@ -141,7 +140,7 @@ class RegisterForm extends Component {
 
   render(){
     const { getFieldDecorator } = this.props.form;
-    const { domainIsRegister, nameIsRegister } = this.props;
+    const { domainIsRegister, nameIsRegister, enterpriseId } = this.props;
     const formItemLayout = {
       labelCol: {
         xs: {span: 24},
@@ -195,6 +194,8 @@ class RegisterForm extends Component {
                 <FormItem>
                   <Button type="primary" htmlType="submit" className="login-form-button">下一步</Button>
                 </FormItem>
+                {/* {isPhoneRegister === '0' && <span>手机号已经注册，请登录</span>} */}
+                {(enterpriseId !== null && enterpriseId.length > 0) ? <p>您已加入企业，请直接登录</p> : null}
               </Form>
             </div>
           ),
@@ -254,7 +255,7 @@ class RegisterForm extends Component {
                     <Input prefix={<Icon type="user" />} placeholder="请输入用户名" />
                   )}
                 </FormItem>
-                {/* {isPhoneRegister === '0' && <span>手机号已经注册，请登录</span>} */}
+                
                 <FormItem label="创建密码" {...formItemLayout}>
                   {getFieldDecorator('password',{
                     rules: [{required: true, message: '请输入密码',min: 8, }]
@@ -276,9 +277,7 @@ class RegisterForm extends Component {
           </div>
         ),
     }];
-    let { current } = this.state;
-
-    const step = current === 1 ? 2 : this.props.registerStep - 1;
+    const step = this.props.registerStep - 1;
     return (
       <div>
         <Steps current={step}>

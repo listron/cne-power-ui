@@ -63,7 +63,7 @@ const loginReducer = (state = initState, action) => {
     case LoginAction.CHECK_PHONE_REGISTER_SUCCESS:
       return state.set('isPhoneRegister', action.data.isRegister)
     case LoginAction.PHONE_CODE_REGISTER_SUCCESS:
-      return state.set('phoneNum', action.params.phoneNum);
+      return state.merge(immutable.fromJS(action.payload)).set('isFetching', false);
     case LoginAction.CHECK_ENTERPRISE_DOMAIN_SUCCESS:
       return state.set('domainIsRegister', action.data.isRegister)
                   .set('enterpriseDomain', action.params.enterpriseDomain);
@@ -71,6 +71,7 @@ const loginReducer = (state = initState, action) => {
       return state.set('isFetching', false)
                   .set('nameIsRegister', action.data.isRegister)
                   .set('enterpriseName', action.params.enterpriseName)
+                  .set('registerStep', 3);
     case LoginAction.CHECK_USER_REGISTER_SUCCESS:
       return state.set('isFetching', false)
                   .set('isUserRegister', action.data.isRegister);

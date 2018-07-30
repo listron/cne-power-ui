@@ -35,7 +35,7 @@ class Register extends Component {
     super(props);
   }
   changePage = (pageTab) =>{
-    this.props.changeLoginStore({pageTab, registerStep: 1, joinStep: 1})
+    this.props.changeLoginStore({pageTab, registerStep: 1, joinStep: 1,enterpriseId: ''})
   }
   registerEnterprise = (data) => {
     let params = {
@@ -83,6 +83,7 @@ class Register extends Component {
                 enterpriseId={this.props.enterpriseId}
                 pageTab={this.props.pageTab}
                 registerSuccess={this.props.registerSuccess}
+                changeLoginStore={this.props.changeLoginStore}
               />
             </TabPane>
           </Tabs>

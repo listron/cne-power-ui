@@ -99,7 +99,13 @@ class JoinInForm extends Component{
   phoneCodeRegister = () => {
     this.props.form.validateFields(['phoneNum','verificationCode'], (err, values) => {
       if(!err){
-        this.props.phoneCodeRegister({...values, 'joinStep': 3})
+        this.props.phoneCodeRegister({...values,joinStep: 3 })
+        // let { enterpriseIdToken } = this.props;
+        // if(enterpriseIdToken !== null && enterpriseIdToken.length > 0){
+        //   this.props.changeLoginStore({joinStep: 3});
+        // }else{
+        //   return;
+        // }
       }
     })
   }
@@ -126,7 +132,7 @@ class JoinInForm extends Component{
   }
   render(){
     const { getFieldDecorator, getFieldsError } = this.props.form;
-    const { enterpriseName, isPhoneRegister, joinResult, joinStep } = this.props;
+    const { enterpriseName, isPhoneRegister, joinResult, joinStep, enterpriseIdToken } = this.props;
     const { showEnterpriseInfo } = this.state;
     const formItemLayout = {
       labelCol: {
@@ -210,7 +216,7 @@ class JoinInForm extends Component{
               <FormItem>
                 <Button type="primary" htmlType="submit">下一步</Button>
               </FormItem>
-              {/* {enterpriseIdToken !== null ? <span>您已经加入过企业，请直接登录</span> : null} */}
+              {(enterpriseIdToken !== null && enterpriseIdToken.length > 0) ? <p>您已加入企业，请直接登录</p> : null}
             </Form>
           </div>
         }

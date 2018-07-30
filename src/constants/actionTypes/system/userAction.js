@@ -13,8 +13,10 @@ module.exports = {
 
     GET_USER_DETAIL_SAGA: null,//获取详情
 
-    GET_USER_EDIT_SAGA: null,//编辑/新建用户
+    EDIT_USER_INFO_SAGA: null,//编辑用户
 
     CHANGE_USER_STATUS_SAGA: null,//改变用户状态
+
+    CREATE_USER_INFO_SAGA: null,//新建用户信息
   })
 }

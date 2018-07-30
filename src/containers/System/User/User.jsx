@@ -4,10 +4,9 @@ import styles from './user.scss';
 import { userAction } from '../../../constants/actionTypes/system/userAction';
 import { roleAction } from '../../../constants/actionTypes/system/roleAction';
 import PropTypes from 'prop-types';
-import UserDetail from '../../../components/System/User/UserDetail';
-import UserEdit from '../../../components/System/User/UserEdit';
-import UserList from '../../../components/System/User/UserList/UserList';
-
+import TransitionContainer from '../../../components/Common/TransitionContainer';
+import UserSide from '../../../components/System/User/UserSide/UserSide';
+import UserMain from '../../../components/System/User/UserList/UserMain';
 class User extends Component {
   static propTypes = {
     showPage: PropTypes.string, 
@@ -32,6 +31,9 @@ class User extends Component {
   }
   constructor(props) {
     super(props);
+    this.state = {
+      showSidePage: 'add',
+    }
   }
   componentDidMount(){
     const params = {
@@ -115,23 +117,36 @@ class User extends Component {
     }
     this.props.getUserList(params);
   }
+
+  onShowSideChange = ({showSidePage}) => {
+    this.setState({ showSidePage });
+  }
+
+  onToggleSide = () => {
+    const { showPage } = this.props;
+    this.setState({
+      showSidePage: showPage
+    });
+  }
+
   render() {
     const { showPage } = this.props;
-    console.log(this.props)
+    const { showSidePage } =this.state;
     return (
       <div className={styles.userContainer}>
-        {showPage === 'list' && 
-          <UserList 
-            {...this.props} 
-            onChangeSort={this.onChangeSort}
-            onChangePageSize={this.onChangePageSize} 
-            onChangePage={this.onChangePage}
-            onChangeStatus={this.onChangeStatus}
-            onUserSearch={this.onUserSearch}
-          />
-        }
-        { showPage === 'detail' && <UserDetail {...this.props} /> }
-        { showPage === 'edit' && <UserEdit {...this.props} /> }
+        <UserMain 
+          {...this.props} 
+          onUserSearch={this.onUserSearch} 
+        />
+        <TransitionContainer
+          show={showPage!=='list'}
+          onEnter={this.onToggleSide}
+          onExited={this.onToggleSide}
+          timeout={500}
+          effect="side"
+        >
+          <UserSide {...this.props} showSidePage={showSidePage} onShowSideChange={this.onShowSideChange} />
+        </TransitionContainer>
         <div className={styles.userFooter}>
           <span className={styles.footerText}>京ICP备12030847号-2 © 2017-2018 北京动力协合科技有限公司</span>
         </div>
@@ -155,6 +170,9 @@ const mapDispatchToProps = (dispatch) => ({
   changeSelectedUser: payload => dispatch({type:userAction.CHANGE_SELECTED_USER_SAGA, payload}),
   getRoleList: payload => dispatch({ type: roleAction.GET_ROLE_LIST_SAGA, payload}),
   changeUserStatus: payload => dispatch({ type:userAction.CHANGE_USER_STATUS_SAGA, payload}),
+  createUserInfo: payload => dispatch({type:userAction.CREATE_USER_INFO_SAGA, payload}),
+  editUserInfo: payload => dispatch({type:userAction.EDIT_USER_INFO_SAGA, payload}),
+
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(User);

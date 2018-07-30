@@ -3,14 +3,14 @@
 import React, { Component } from 'react';
 import { Icon, Popconfirm } from 'antd';
 import PropTypes from 'prop-types';
-import styles from './user.scss';
+import styles from './userSide.scss';
 import EditForm from './EditForm';
-import SingleImgUploader from '../../Common/Uploader/SingleImgUploader';
-import pathConfig from '../../../constants/path';
-import WarningTip from '../../Common/WarningTip';
+import SingleImgUploader from '../../../Common/Uploader/SingleImgUploader';
+import pathConfig from '../../../../constants/path';
+import WarningTip from '../../../Common/WarningTip';
 
 //企业信息编辑页
-class UserEdit extends Component {
+class EditUser extends Component {
   static propTypes = {
     loading: PropTypes.bool,
     changeUserStore: PropTypes.func,
@@ -28,11 +28,11 @@ class UserEdit extends Component {
     }
   }
 
-  componentWillUnmount(){
-    this.props.changeUserStore({
-      showPage: 'detail',
-    });
-  }
+  // componentWillUnmount(){
+  //   this.props.changeUserStore({
+  //     showPage: 'detail',
+  //   });
+  // }
 
   onWarningTipShow = () =>{
     this.setState({
@@ -47,8 +47,11 @@ class UserEdit extends Component {
   }
 
   confirmWarningTip = () => {
+    this.setState({
+      showWarningTip: false,
+    })
     this.props.changeUserStore({
-      showPage: 'detail',
+      showPage: 'list',
     });
   }
 
@@ -64,7 +67,7 @@ class UserEdit extends Component {
     const { showWarningTip, warningTipText } = this.state;
     const uploadPath=`${pathConfig.basePaths.newAPIBasePath}${pathConfig.commonPaths.imgUploads}`;
     return (
-      <div className={styles.userEdit} >
+      <div className={styles.editUser} >
         {showWarningTip && <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}      
         <div className={styles.editTop}>
           <span className={styles.text}>编辑</span>
@@ -85,4 +88,4 @@ class UserEdit extends Component {
   }
 }
 
-export default UserEdit;
+export default EditUser;

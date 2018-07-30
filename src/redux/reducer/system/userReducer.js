@@ -4,7 +4,7 @@ import { userAction } from '../../../constants/actionTypes/system/userAction';
 
 var initState = immutable.fromJS({
   loading: false,
-  showPage: 'list',//默认显示list,可显示list,detail,edit
+  showPage: 'list',//默认显示list,可显示list,detail,edit,add
   enterpriseId: '',//企业ID
   roleId: '',//角色ID 
   roleName: '',//筛选条件：角色

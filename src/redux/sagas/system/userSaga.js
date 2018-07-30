@@ -59,6 +59,7 @@ function *changeUserStatus(action){
 function *getUserDetail(action){
   const { payload } = action;
   const url = '/api/v3/user/'+'10';
+  console.log(action)
   try{
     yield put({ type: userAction.USER_FETCH});
     const response = yield call(axios.get, url);
@@ -74,8 +75,8 @@ function *getUserDetail(action){
   }
 }
 
-// 新建/编辑用户信息
-function *editUser(action){
+// 编辑用户信息
+function *editUserInfo(action){
   const { payload } =action;
   const url = '/api/v3/user';
   try{
@@ -88,10 +89,25 @@ function *editUser(action){
     console.log(e);
   }
 }
+// 新建用户信息
+function *createUserInfo(action){
+  const { payload } = action;
+  const url = '/api/v3/createUser';
+  try{
+    yield put({ type: userAction.USER_FETCH});
+    const response = yield call(axios.post, url, payload);
+    console.log(action);
+    console.log(response)
+    yield put({ type: userAction.GET_USER_COMMON_FETCH_SUCCESS})
+  }catch(e){
+    console.log(e);
+  }
+}
 export function* watchUser(){
   yield takeLatest(userAction.CHANGE_USER_STORE_SAGA, changeUserStore);
   yield takeLatest(userAction.GET_USER_LIST_SAGA, getUserList);
   yield takeLatest(userAction.GET_USER_DETAIL_SAGA, getUserDetail);
-  yield takeLatest(userAction.GET_USER_EDIT_SAGA, editUser);
+  yield takeLatest(userAction.EDIT_USER_INFO_SAGA, editUserInfo);
   yield takeLatest(userAction.CHANGE_USER_STATUS_SAGA, changeUserStatus);
+  yield takeLatest(userAction.CREATE_USER_INFO_SAGA, createUserInfo);
 } 

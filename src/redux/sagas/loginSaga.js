@@ -36,7 +36,7 @@ function *getLogin(action){
       setCookie('phoneNum', action.params.phoneNum);
       setCookie('username', response.data.data.username);
       // setCookie('userId', response.data.result.userId);
-      yield put({ type: LoginAction.GET_LOGIN_SUCCESS, data: response.data});       
+      yield put({ type: LoginAction.GET_LOGIN_SUCCESS, data: response.data});   
     } else{
       yield put({ type: LoginAction.GET_LOGIN_FAIL, data: {error: response.data.message }}); 
       message.error(response.data.message);       
@@ -89,6 +89,7 @@ function *checkCode(action){
           ...response.data.data,
         },
       });
+      // message.success(response.data.message);
     }else{
       yield put({ type: LoginAction.CHECK_CODE_FAIL, data:{ message: response.data.message, code: response.data.code}})
       message.error(response.data.message);
@@ -104,16 +105,16 @@ function *phoneCodeRegister(action){
   let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.phoneCodeRegister;
   try{
     const response = yield call(axios.post, url, {'phoneNum':action.params.phoneNum, 'verificationCode': action.params.verificationCode});
-    if(response.data.code === '10000'){
+    if(response.data.code === '20001' || response.data.code === '20005' || response.data.code === '00000'){
+      yield put({type: LoginAction.PHONE_CODE_REGISTER_FAIL, data: {error: response.data.message}})
+      message.error(response.data.message);
+    }else{
       yield put({type: LoginAction.CHECK_CODE_SAGA, params: action.params})
       yield put({
         type: LoginAction.PHONE_CODE_REGISTER_SUCCESS,
         params: action.params,
         data: response.data.data,
       })
-    }else{
-      yield put({type: LoginAction.PHONE_CODE_REGISTER_FAIL, data: {error: response.data.message}})
-      message.error(response.data.message);
     }
   }catch(e){
     console.log(e);
@@ -147,7 +148,7 @@ function *checkEnterpriseDomain(action){
         params: action.params,
         data: response.data.data,
       });
-      yield put({type: LoginAction.CHECK_ENTERPRISE_NAME_SAGA, 'params': action.params})
+      yield put({type: LoginAction.CHECK_ENTERPRISE_NAME_SAGA, params: action.params, isRegister: response.data.data.isRegister})
     }else{
       yield put({ type: LoginAction.CHECK_ENTERPRISE_DOMAIN_FAIL, data: {error: response.data.message}})
     }
@@ -163,11 +164,14 @@ function *checkEnterpriseName(action){
   try{
     const response = yield call(axios.get, url);
     if(response.data.code === '10000'){
-      yield put({
-        type: LoginAction.CHECK_ENTERPRISE_NAME_SUCCESS, 
-        params: action.params,
-        data: response.data.data,
-      });
+      if(response.data.data.isRegister === '1' && action.isRegister === '1'){
+        yield put({
+          type: LoginAction.CHECK_ENTERPRISE_NAME_SUCCESS, 
+          params: action.params,
+          data: response.data.data,
+        });
+      }
+      
     }else{
       yield put({ type: LoginAction.CHECK_ENTERPRISE_NAME_FAIL})
     }
@@ -200,7 +204,7 @@ function *registerEnterprise(action){
         params: action.params,
         data: response.data.data,
       })
-      message.success('注册成功，请登录！');
+      message.success('注册成功！');
       yield put({
         type: LoginAction.GET_LOGIN_SAGA,
         params:{
@@ -286,6 +290,7 @@ function *resetPassword(action){
   let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.resetPassword;
   yield put({type: LoginAction.LOGIN_FETCH});
   try{
+    // const response = yield call(axios.post, url, action.params);
     const response = yield call(axios, {
       method: 'post',
       url,
@@ -302,6 +307,7 @@ function *resetPassword(action){
       yield put({ type: LoginAction.RESET_PASSWORD_SUCCESS})
     }else{
       yield put({ type: LoginAction.RESET_PASSWORD_FAIL})
+      message.error(response.data.message)
     }
   }catch(e){
     console.log(e);

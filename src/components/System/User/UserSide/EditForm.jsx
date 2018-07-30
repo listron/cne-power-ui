@@ -5,9 +5,9 @@
 
 import React, { Component } from 'react';
 import { Button, Input, Form } from 'antd';
-import InputLimit from '../../Common/InputLimit'; 
+import InputLimit from '../../../Common/InputLimit'; 
 import PropTypes from 'prop-types';
-import styles from './user.scss';
+import styles from './userSide.scss';
 const FormItem = Form.Item;
 
 class EditForm extends Component {
@@ -15,7 +15,7 @@ class EditForm extends Component {
     loading: PropTypes.bool,
     form: PropTypes.object,
     userDetail: PropTypes.object,
-    saveUserInfor: PropTypes.func,
+    editUserInfo: PropTypes.func,
     userLogo: PropTypes.string
   }
 
@@ -27,7 +27,7 @@ class EditForm extends Component {
     const { userLogo } = this.props;
     this.props.form.validateFieldsAndScroll((error,values)=>{
       if(!error){
-        this.props.saveUserInfor({
+        this.props.editUserInfo({
           ...values,
           userLogo
         })
@@ -72,9 +72,10 @@ class EditForm extends Component {
             rules: [{
               message: '请输入正确的手机号',
               pattern: /^1[3|4|5|7|8]\d{9}$/,
+              required: true,
             }]
           })(
-            <span>{userDetail && userDetail.phoneNum}</span>
+            <Input placeholder="请输入电话号码" />
           )}
           <span className={styles.instructionText}>(11位手机号码)</span>
         </FormItem>
@@ -83,7 +84,7 @@ class EditForm extends Component {
               message: '请输入正确格式的邮箱',
               pattern: /^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$/,
             }],
-            initialValue: userDetail || (userDetail.email || '')
+            initialValue: userDetail && (userDetail.email || '')
           })(
             <Input placeholder="请输入邮箱" />
           )}
@@ -117,7 +118,7 @@ class EditForm extends Component {
             <Input />
           )}
         </FormItem>
-        <Button onClick={this.saveUser} loading={loading} >保存</Button>
+        <Button onClick={this.saveUser} loading={loading} className={styles.saveUser} >保存</Button>
         <Button onClick={this.continueToAdd} loading={loading} >保存并继续添加</Button>
       </Form>
     )

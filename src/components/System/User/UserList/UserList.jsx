@@ -32,6 +32,9 @@ class UserList extends Component {
     onUserSearch: PropTypes.func,
     changeUserStatus: PropTypes.func,
     enterpriseId: PropTypes.string,
+    createUserInfo: PropTypes.func,
+    pageNum: PropTypes.number,
+
   }
 
   constructor(props){
@@ -58,7 +61,12 @@ class UserList extends Component {
       selectedUser: selectedRows,
     })
   }
-
+  onInviteUser = () => {
+    this.props.changeUserStore({showPage: 'invite'});
+  }
+  onCreateUser = () => {
+    this.props.changeUserStore({showPage: 'add'});
+  }
   getUserStaion = (text) => {
     switch(text){
       case 0:
@@ -205,7 +213,7 @@ class UserList extends Component {
 
   userHandle = (value) => {
     console.log(value)
-    const { selectedUser, enterpriseId } = this.props;
+    const { selectedUser, enterpriseId, roleId, pageNum, pageSize } = this.props;
     console.log(selectedUser.toJS()[0])
     if(value === 'edit'){
       this.props.changeUserStore({
@@ -237,8 +245,14 @@ class UserList extends Component {
         enterpriseUserStatus: 5,
       })
     }
+    this.props.getUserList({
+      enterpriseId,
+      roleId,
+      pageNum,
+      pageSize,
+    })
   }
-
+  
   render(){
     const { userData, totalNum, loading, currentPage, pageSize, selectedUser } = this.props;
     console.log(selectedUser.toJS())
@@ -259,10 +273,9 @@ class UserList extends Component {
     
     return (
       <div className={styles.userList}>
-        <UserSearch {...this.props} />
         <div className={styles.userHelper} >
           <Button onClick={this.onCreateUser} className={styles.addUser} ><Icon type="plus" /><span className={styles.text}>用户</span></Button>
-          <Button>邀请用户</Button>
+          <Button onClick={this.onInviteUser} >邀请用户</Button>
           <Button>批量导入</Button>
           <Button  >导入模板下载</Button>
           <div className={styles.userOperate} >

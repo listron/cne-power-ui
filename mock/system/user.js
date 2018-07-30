@@ -64,4 +64,30 @@ module.exports =[{
   },
   delay:1000,
   error:{}
+},{
+  api: '/api/v3/createUser',//新建用户
+  method:'post',
+  response:{
+    "code": "10000",
+    "message": "请求成功",
+    "data": {
+      "msg": '添加成功',
+    },
+    "serviceCode": "3.0"
+  },
+  delay:1000,
+  error:{}
+},{
+  api: '/api/v3/user/status',//更改用户状态
+  method:'put',
+  response:{
+    "code": "10000",
+    "message": "更改成功",
+    "data": {
+      "msg": '更改成功',
+    },
+    "serviceCode": "3.0"
+  },
+  delay:1000,
+  error:{}
 }]

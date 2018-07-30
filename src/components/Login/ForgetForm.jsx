@@ -8,15 +8,15 @@ const FormItem = Form.Item;
 class ForgetForm extends Component{
   static propTypes = {
     form: PropTypes.object,
-    showConfirmPassword: PropTypes.bool,
+    showResetPassword: PropTypes.bool,
     sendCode: PropTypes.func,
-    checkPhoneCode: PropTypes.func,
     resetPassword: PropTypes.func,
     phoneNum: PropTypes.string,
-    phoneCodeRegister: PropTypes.func,
+    checkCodeLogin: PropTypes.func,
     enterpriseId: PropTypes.string,
     username: PropTypes.string,
     changeLoginStore: PropTypes.func,
+    showResetPassword: PropTypes.number,
   }
 
   constructor(props){
@@ -66,14 +66,10 @@ class ForgetForm extends Component{
     },1000);
   }
 
-  phoneCodeRegister = () => {
+  checkCodeLogin = () => {
     this.props.form.validateFields(['phoneNum','verificationCode'], (err, values) => {
       if(!err){
-        const { enterpriseId, username } = this.props;
-        this.props.phoneCodeRegister({...values});
-        if(enterpriseId !== null && username !== null){
-          this.props.changeLoginStore({ showResetPassword: 1 })
-        }
+        this.props.checkCodeLogin({...values,showResetPassword: 1});
       }
     })
   }
@@ -90,7 +86,7 @@ class ForgetForm extends Component{
   render(){
     const { getFieldDecorator } = this.props.form;
     const { timeValue } = this.state;
-    const { showConfirmPassword, enterpriseId, username } = this.props;
+    const { showResetPassword, enterpriseId, username } = this.props;
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -115,10 +111,10 @@ class ForgetForm extends Component{
     };
     return (
       <div className={styles.forgetPass}>
-        {!showConfirmPassword &&
+        {!showResetPassword &&
           <div>
             <span className={styles.findPass}>找回密码</span>
-            <Form onSubmit={this.phoneCodeRegister} >
+            <Form onSubmit={this.checkCodeLogin} >
               <div>
                 <FormItem>
                   {getFieldDecorator('phoneNum', {
@@ -148,7 +144,7 @@ class ForgetForm extends Component{
             </Form>
           </div>
         }
-        {showConfirmPassword &&
+        {showResetPassword &&
           <div>
             <Form onSubmit={this.onResetPassword}  >
               <FormItem label="创建密码" {...formItemLayout}>
