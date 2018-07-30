@@ -3,36 +3,36 @@
 import React, { Component } from 'react';
 import { Icon, Popconfirm } from 'antd';
 import PropTypes from 'prop-types';
-import styles from './enterprise.scss';
+import styles from './userSide.scss';
 import EditForm from './EditForm';
-import SingleImgUploader from '../../Common/Uploader/SingleImgUploader';
-import pathConfig from '../../../constants/path';
-import WarningTip from '../../Common/WarningTip';
+import SingleImgUploader from '../../../Common/Uploader/SingleImgUploader';
+import pathConfig from '../../../../constants/path';
+import WarningTip from '../../../Common/WarningTip';
 
 //企业信息编辑页
-class EnterpriseEdit extends Component {
+class AddUser extends Component {
   static propTypes = {
     loading: PropTypes.bool,
-    changeEnterpriseStore: PropTypes.func,
-    getEnterpriseDetail: PropTypes.func,
-    saveEnterpriseInfor: PropTypes.func,
-    enterpriseDetail: PropTypes.object,
+    changeUserStore: PropTypes.func,
+    getUserDetail: PropTypes.func,
+    saveUserInfor: PropTypes.func,
+    userDetail: PropTypes.object,
   }
 
   constructor(props){
     super(props);
     this.state={
-      enterpriseLogo: props.enterpriseDetail && props.enterpriseDetail.enterpriseLogo,
+      userLogo: props.userDetail && props.userDetail.userLogo,
       showWarningTip: false,
       warningTipText: '退出后信息无法保存!',
     }
   }
 
-  componentWillUnmount(){
-    this.props.changeEnterpriseStore({
-      showPage: 'detail',
-    });
-  }
+  // componentWillUnmount(){
+  //   // this.props.changeUserStore({
+  //   //   showPage: 'list',
+  //   // });
+  // }
 
   onWarningTipShow = () =>{
     this.setState({
@@ -42,14 +42,18 @@ class EnterpriseEdit extends Component {
 
   uploadLogo = (imgInfor) => {
     this.setState({
-      enterpriseLogo: imgInfor.thumbUrl
+      userLogo: imgInfor.thumbUrl
     })
   }
 
   confirmWarningTip = () => {
-    this.props.changeEnterpriseStore({
-      showPage: 'detail',
+    this.setState({
+      showWarningTip: false,
+    })
+    this.props.changeUserStore({
+      showPage: 'list',
     });
+    
   }
 
   cancelWarningTip = () => {
@@ -59,12 +63,12 @@ class EnterpriseEdit extends Component {
   }
   
   render(){
-    const { enterpriseLogo } = this.state;
-    const { enterpriseDetail,saveEnterpriseInfor, loading } = this.props;
+    const { userLogo } = this.state;
+    const { userDetail,saveUserInfor, loading } = this.props;
     const { showWarningTip, warningTipText } = this.state;
     const uploadPath=`${pathConfig.basePaths.newAPIBasePath}${pathConfig.commonPaths.imgUploads}`;
     return (
-      <div className={styles.enterpriseEdit} >
+      <div className={styles.addUser} >
         {showWarningTip && <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}      
         <div className={styles.editTop}>
           <span className={styles.text}>编辑</span>
@@ -72,17 +76,17 @@ class EnterpriseEdit extends Component {
         </div>
         <div className={styles.mainPart} >
           <div className={styles.logoPart} >
-            <SingleImgUploader uploadPath={uploadPath} onOK={this.uploadLogo} data={{thumbUrl:enterpriseLogo}} />
+            <SingleImgUploader uploadPath={uploadPath} onOK={this.uploadLogo} data={{thumbUrl:userLogo}} />
             <div className={styles.instruction}>
               <span>LOGO上传</span>
               <span>240px*240px为佳，大小不超过2M</span>
             </div>
           </div>
-          <EditForm enterpriseDetail={enterpriseDetail} enterpriseLogo={enterpriseLogo} saveEnterpriseInfor={saveEnterpriseInfor} loading={loading} />
+          <EditForm userDetail={userDetail} userLogo={userLogo} saveUserInfor={saveUserInfor} loading={loading} />
         </div>
       </div>
     )
   }
 }
 
-export default EnterpriseEdit;
+export default AddUser;

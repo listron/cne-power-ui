@@ -42,8 +42,7 @@ class LoginForm extends Component {
         if (this.state.showPasswordLogin) {
           this.props.fetchLogin(values);
         }else{
-
-          this.props.phoneCodeRegister(values);
+          this.props.checkCodeLogin(values);
         }
       }
     })
