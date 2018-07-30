@@ -6,27 +6,54 @@ import { Link } from 'react-router-dom';
 import styles from './layout.scss';
 import PropTypes from 'prop-types';
 import { menu } from '../../common/menu';
+import { withRouter } from 'react-router-dom';
 const { SubMenu,Item } = Menu;
 
 class SideMenu extends Component {
   static propTypes = {
-    topMenu: PropTypes.object
+    topMenu: PropTypes.object,
+    location: PropTypes.object,
   }
   constructor(props) {
     super(props);
     this.state = {
-      collapsed: false
+      collapsed: false,
+      sideMenuData: [],
+      selectedKeys: []
     };
   }
-  getSideMenuData = () => {//根据顶部菜单判定侧边栏菜单数据
-    const { topMenu } = this.props;
+  componentWillReceiveProps(nextProps){
+    const { location,topMenu } = nextProps;
+    const { pathname } = location;
+    const selectedKeys = [];//激活菜单选中
     let tmpSideMenuData = menu.find(e => e.path === topMenu.path);
-    if(tmpSideMenuData && tmpSideMenuData.children){
-      return tmpSideMenuData.children
-    }else{ 
-      return []
-    }
+    let sideMenuData = (tmpSideMenuData && tmpSideMenuData.children) ? tmpSideMenuData.children : [];
+    
+    pathname !== '/' && sideMenuData.forEach(e=>{
+      if(e.children){
+        e.children.forEach(m=>{
+          m.path.indexOf(`${pathname}`) === 0 && selectedKeys.push(e.path,m.path);
+        })
+      }else{
+        e.path.indexOf(`${pathname}`) === 0 && selectedKeys.push(e.path);
+      }
+    })
+
+    this.setState({
+      sideMenuData,
+      selectedKeys,
+    })
   }
+
+  // getSideMenuData = () => {//根据顶部菜单判定侧边栏菜单数据
+  //   const { topMenu } = this.props;
+  //   let tmpSideMenuData = menu.find(e => e.path === topMenu.path);
+  //   if(tmpSideMenuData && tmpSideMenuData.children){
+  //     return tmpSideMenuData.children
+  //   }else{ 
+  //     return []
+  //   }
+  // }
   toggleCollapsed = () => {
     const { collapsed } = this.state;
     this.setState({
@@ -34,7 +61,7 @@ class SideMenu extends Component {
     })
   }
   _createSideMenu = (sideMenuData) => {
-    const { collapsed } = this.state;
+    const { collapsed,selectedKeys } = this.state;
     if(sideMenuData.length > 0){//至少拥有二级目录
       return (
         <div className={styles.sideLayout}>
@@ -44,7 +71,7 @@ class SideMenu extends Component {
               <Icon type={collapsed ? 'menu-unfold' : 'menu-fold'} />
             </Button>
           </div>
-          <Menu mode="inline" theme="dark" inlineCollapsed={collapsed} className={styles.menuList}>
+          <Menu mode="inline" theme="dark" inlineCollapsed={collapsed} className={styles.menuList} selectedKeys={selectedKeys} openKeys={selectedKeys}>
             {sideMenuData.map(e=>{
               if(!e.children || e.children.length === 0){//只有二级目录
                 return (<Item key={e.path}>
@@ -69,7 +96,8 @@ class SideMenu extends Component {
 
 
   render() {
-    const sideMenuData = this.getSideMenuData();
+    // const sideMenuData = this.getSideMenuData();
+    const { sideMenuData } = this.state;
     return (
       <div className={styles.sideMenu} style={{width: this.state.collapsed ? 80 : 180}}>
         {this._createSideMenu(sideMenuData)}
@@ -79,4 +107,4 @@ class SideMenu extends Component {
 }
 
 
-export default SideMenu;
+export default withRouter(SideMenu) ;

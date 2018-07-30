@@ -47,7 +47,6 @@ class JoinInForm extends Component{
   onJoinEnterprise = () => {
     this.props.form.validateFields((err,values) => {
       if(!err){
-        console.log(values);
         let { phoneNum, enterpriseId } =this.props;
         let params = {
           phoneNum,
@@ -62,7 +61,7 @@ class JoinInForm extends Component{
     e.preventDefault();
     this.props.form.validateFields((err,values) => {
       if(!err){
-        this.props.getEnterpriseInfo({'enterpriseName': values.enterpriseName})
+        this.props.getEnterpriseInfo({enterpriseName: values.enterpriseName})
         this.setState({ showEnterpriseInfo: true,  });
       }
     })
@@ -100,7 +99,13 @@ class JoinInForm extends Component{
   phoneCodeRegister = () => {
     this.props.form.validateFields(['phoneNum','verificationCode'], (err, values) => {
       if(!err){
-        this.props.phoneCodeRegister({...values, 'joinStep': 3})
+        this.props.phoneCodeRegister({...values,joinStep: 3 })
+        // let { enterpriseIdToken } = this.props;
+        // if(enterpriseIdToken !== null && enterpriseIdToken.length > 0){
+        //   this.props.changeLoginStore({joinStep: 3});
+        // }else{
+        //   return;
+        // }
       }
     })
   }
@@ -127,7 +132,7 @@ class JoinInForm extends Component{
   }
   render(){
     const { getFieldDecorator, getFieldsError } = this.props.form;
-    const { enterpriseName, isPhoneRegister, joinResult, joinStep } = this.props;
+    const { enterpriseName, isPhoneRegister, joinResult, joinStep, enterpriseIdToken } = this.props;
     const { showEnterpriseInfo } = this.state;
     const formItemLayout = {
       labelCol: {
@@ -211,7 +216,7 @@ class JoinInForm extends Component{
               <FormItem>
                 <Button type="primary" htmlType="submit">下一步</Button>
               </FormItem>
-              {/* {enterpriseIdToken !== null ? <span>您已经加入过企业，请直接登录</span> : null} */}
+              {(enterpriseIdToken !== null && enterpriseIdToken.length > 0) ? <p>您已加入企业，请直接登录</p> : null}
             </Form>
           </div>
         }
@@ -221,7 +226,7 @@ class JoinInForm extends Component{
             <span>{enterpriseName}</span>
             <Form onSubmit={this.onJoinEnterprise}  >
               <FormItem label="用户名" {...formItemLayout}>
-                {getFieldDecorator('userName', {
+                {getFieldDecorator('username', {
                   rules: [{required: true, message: '请输入用户名'}]
                 })(
                   <Input prefix={<Icon type="user" />} placeholder="请输入用户名" />

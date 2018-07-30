@@ -76,7 +76,7 @@ const mapStateToProps = (state) => ({
   enterpriseName: state.login.getIn(['enterpriseInfo','enterpriseName']),
   enterpriseId: state.login.getIn(['enterpriseInfo','enterpriseId']),
   enterpriseNameToken: state.login.get('enterpriseName'),
-  enterpriseIdToken: state.login.get('enterpriseId'),
+  enterpriseIdToken: state.login.get('enterpriseId'),//命名enterpriseIdToken区别于info里获取的enterpriseId
   username: state.login.get('username'),
   joinResult: state.login.get('joinResult'),
   joinStep: state.login.get('joinStep'),

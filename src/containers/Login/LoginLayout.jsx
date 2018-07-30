@@ -20,7 +20,6 @@ class LoginLayout extends Component {
 
   render() {
     const {pageTab, changeLoginStore} = this.props;
-    console.log(pageTab)
     return (
 
       <div className={styles.loginLayout}>
