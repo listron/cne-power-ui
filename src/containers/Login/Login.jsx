@@ -40,7 +40,7 @@ class Login extends Component {
   }
 
   changePage = (pageTab) => {
-    this.props.changeLoginStore({pageTab, registerStep: 1, joinStep: 1})
+    this.props.changeLoginStore({pageTab, registerStep: 1, joinStep: 1,enterpriseId: ''})
   }
 
   render() {
