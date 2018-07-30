@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { TicketAction } from '../../../../../constants/actionTypes/operation/ticketAction';
 import DefectTable from '../../../../../components/Operation/Ticket/Defect/DefectTable/DefectTable';
+import DefectFilter from '../../../../../components/Operation/Ticket/Defect/DefectFilter/DefectFilter';
 
 class DefectList extends Component {
   static propTypes = {
@@ -145,6 +146,7 @@ class DefectList extends Component {
   render() {
     return (
       <div>
+        <DefectFilter {...this.props} />
         <DefectTable 
           list={this.props.defectList} 
           currentPage={this.props.currentPage}
@@ -182,6 +184,21 @@ const mapStateToProps = (state) => ({
   status: state.operation.defect.get('status'),
   sort: state.operation.defect.get('sort'),
   selectedRowKeys: state.operation.defect.get('selectedRowKeys').toJS(),
+
+  stationType: state.operation.defect.get('stationType'),
+  stationCodes: state.operation.defect.get('stationCodes'),    
+  defectSource: state.operation.defect.get('defectSource'),   
+  defectLevel: state.operation.defect.get('defectLevel'),	  
+  timeInterval: state.operation.defect.get('timeInterval'),   
+  status: state.operation.defect.get('status'),          
+  pageNum: state.operation.defect.get('pageNum'),       
+  pageSize: state.operation.defect.get('pageSize'),       
+  createTimeStart: state.operation.defect.get('createTimeStart'), 
+  createTimeEnd: state.operation.defect.get('createTimeEnd'),	 
+  deviceTypeCode: state.operation.defect.get('deviceTypeCode'),	 
+  defectTypeCode: state.operation.defect.get('defectTypeCode'),
+  handleUser: state.operation.defect.get('handleUser'), 
+  sort: state.operation.defect.get('sort'),
 });
 
 const mapDispatchToProps = (dispatch) => ({
