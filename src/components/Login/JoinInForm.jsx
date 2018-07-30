@@ -227,21 +227,21 @@ class JoinInForm extends Component{
             <Form onSubmit={this.onJoinEnterprise}  >
               <FormItem label="用户名" {...formItemLayout}>
                 {getFieldDecorator('username', {
-                  rules: [{required: true, message: '请输入用户名'}]
+                  rules: [{required: true, message: '请输入用户名', min: 3, max: 8}]
                 })(
                   <Input prefix={<Icon type="user" />} placeholder="请输入用户名" />
                 )}
               </FormItem>
               <FormItem label="创建密码" {...formItemLayout}>
                 {getFieldDecorator('password',{
-                  rules: [{required: true, message: '请输入密码',min: 8, }]
+                  rules: [{pattern: /^[a-zA-Z\d]{6,8}$/,required: true, message: '请输入密码', }]
                 })(
                   <Input prefix={<Icon type="lock" />} type="password" placeholder="请输入密码" />
                 )}
               </FormItem>
               <FormItem label="确认密码" {...formItemLayout}>
                 {getFieldDecorator('confirmPwd',{
-                  rules: [{required: true, message: '请输入密码', min: 8, validator: this.compareToFirstPassword}]
+                  rules: [{pattern: /^[a-zA-Z\d]{6,8}$/,required: true, message: '请输入密码', min: 8, validator: this.compareToFirstPassword}]
                 })(
                   <Input prefix={<Icon type="lock" />} type="password" placeholder="请再次输入密码" />
                 )}
