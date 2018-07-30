@@ -4,6 +4,14 @@ import Path from '../../../../constants/path';
 import { TicketAction } from '../../../../constants/actionTypes/operation/ticketAction';
 import { message } from 'antd';
 
+function *changeTicketStore(action){//存储payload指定参数，替换reducer-store属性。
+  const { payload } = action;
+  yield put({
+    type:  TicketAction.GET_DEFECT_COMMON_FETCH_SUCCESS,
+    payload,
+  })
+}
+
 //获取缺陷工单列表
 function* getDefectList(action) {
   let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.ticket.getDefectList;
@@ -489,8 +497,10 @@ function* clearDefect(action) {
   }); 
 }
 
+
 export function* watchGetDefectList() {
   yield takeLatest(TicketAction.GET_DEFECT_LIST_SAGA, getDefectList);
+  yield takeLatest(TicketAction.CHANGE_DEFECT_STORE_SAGA ,changeTicketStore);
 }
 
 export function* watchBatchDeleteDefect() {

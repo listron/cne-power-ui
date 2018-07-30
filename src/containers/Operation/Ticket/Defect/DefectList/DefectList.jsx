@@ -199,9 +199,11 @@ const mapStateToProps = (state) => ({
   defectTypeCode: state.operation.defect.get('defectTypeCode'),
   handleUser: state.operation.defect.get('handleUser'), 
   sort: state.operation.defect.get('sort'),
+  filteredInfor: state.operation.defect.get('filteredInfor').toJS(),
 });
 
 const mapDispatchToProps = (dispatch) => ({
+  changeDefectStore: payload => dispatch({type:TicketAction.CHANGE_DEFECT_STORE_SAGA, payload}),
   getDefectList: params => dispatch({ type: TicketAction.GET_DEFECT_LIST_SAGA, params }),
   setDefectId: params => dispatch({ type: TicketAction.SET_DEFECT_ID_SAGA, params }),
   onBatchDelete: params => dispatch({ type: TicketAction.DELETE_BATCH_DEFECT_SAGA, params }),

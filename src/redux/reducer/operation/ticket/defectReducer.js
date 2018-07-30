@@ -21,8 +21,8 @@ var initState = immutable.fromJS({
   defectTypeCode: '',	 // String	是	缺陷类型编码
   handleUser:	'',      // String	是	处理人
   sort:'',	           // String	是	排序字段，排序方式（缺陷级别：0、电站名称:1、设备名称:2、缺陷类型:3、创建时间:4、截止时间:5、完成时间:6、处理进度:7），格式：排序字段，排序方式（0：升序，1：降序）
+  filteredInfor: {},     //顶部筛选相关选中条件
 
-  filterAllInfo:[],//顶部筛选所有数据[{stations:[],devices:[]...}]
   selectedFilterInfo: {},//选中的筛选项{selectedStation:[],selectedDevices:[]}
   defectList:[],//渲染为table的缺陷列表
   commonList:[],//获取缺陷常用语列表
@@ -61,6 +61,8 @@ var initState = immutable.fromJS({
 
 const defectReducer = (state = initState, action) => {
   switch (action.type) {
+    case TicketAction.GET_DEFECT_COMMON_FETCH_SUCCESS :
+      return state.merge(immutable.fromJS(action.payload)).set('loading',false)
     case TicketAction.TICKET_FETCH:
       return state.set('isfetching', true);
     case TicketAction.GET_DEFECT_LIST_SUCCESS:  

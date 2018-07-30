@@ -55,7 +55,7 @@ class DefectTable extends Component {
           </span>
         </div>
         <div>
-          {showFilter==='time' && <DateFilter/>}
+          {showFilter==='time' && <DateFilter {...this.props} />}
 
         </div>
         <div className={styles.selectedItems}>
