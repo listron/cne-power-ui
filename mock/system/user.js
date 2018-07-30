@@ -30,8 +30,11 @@ module.exports =[{
     "data": {
       userId: 0,
       username: `王小二`,
+      fullName: `王小三`,
       phoneNum: `15501${parseInt(Math.random()*1000000)}`,
       Email: '119118117@qq.com',
+      createtime:'2018/08/01',
+      enterpriseUserStatus:Math.floor(Math.random()*6),
       webChat: 'hdjfhdbchdjssdnbfdn',
       roleName: '删除，添加',
       specialRoleName: '删除，添加',

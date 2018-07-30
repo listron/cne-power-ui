@@ -6,16 +6,9 @@ import WarningTip from "../../Common/WarningTip";
 
 class UserDetail extends Component {
   static propTypes = {
-    userId: PropTypes.string,
-    username: PropTypes.string,
-    userLogo: PropTypes.string,
-    userFullName: PropTypes.string,
     UserDetail: PropTypes.object,
-    phoneNum: PropTypes.string,
-    Email: PropTypes.string,
     userStation: PropTypes.number,
     ascend: PropTypes.bool,
-    createtime: PropTypes.string,
     roleId: PropTypes.string,
     roleName: PropTypes.string,
     specialRoleId: PropTypes.string,
@@ -24,11 +17,10 @@ class UserDetail extends Component {
     enterpriseData: PropTypes.array,
     enterpriseUserStatus: PropTypes.number,
     departmentId: PropTypes.string,
-    departmentData: PropTypes.array,
+    departmentData: PropTypes.object,
     departmentName: PropTypes.string,
     stationId: PropTypes.string,
     stationData: PropTypes.array,
-    currentPage: PropTypes.number,
     pageSize: PropTypes.number,
     totalNum: PropTypes.number,
     getOtherPageDetail: PropTypes.func,
@@ -57,16 +49,9 @@ class UserDetail extends Component {
     const {
       getOtherPageDetail,
       getUserDetail,
-      userId,
-      username,
       userDetail,
-      userLogo,
-      userFullName,
       UserDetail,
-      phoneNum,
-      Email,
       userStation,
-      createtime,
       roleId,
       roleName,
       specialRoleId,
@@ -74,29 +59,22 @@ class UserDetail extends Component {
       enterpriseId,
       enterpriseData,
       enterpriseUserStatus,
-      departmentId,
       departmentData,
       departmentName,
       stationId,
       stationData,
+      departmentId,
       currentPage,
       pageSize,
       totalNum,
       userData
     } = this.props;
     let detailIndex = userData.findIndex(
-      e => e.userId === userDetail.userId,
-      userLogo
+      e => e.userId === userDetail.userId
     );
     let params = {
-      userId,
-      username,
-      userFullName,
       UserDetail,
-      Email,
-      phoneNum,
       userStation,
-      createtime,
       roleId,
       roleName,
       specialRoleId,
@@ -134,15 +112,7 @@ class UserDetail extends Component {
     const {
       getOtherPageDetail,
       getUserDetail,
-      userId,
-      username,
-      userLogo,
-      userFullName,
-      UserDetail,
-      phoneNum,
-      Email,
       userStation,
-      createtime,
       roleId,
       roleName,
       specialRoleId,
@@ -158,20 +128,15 @@ class UserDetail extends Component {
       currentPage,
       pageSize,
       totalNum,
-      usertData,
+      userData,
       userDetail
     } = this.props;
-    let detailIndex = usertData.findIndex(e => e.userId === userDetail.userId);
+    let detailIndex = userData.findIndex(
+      e => e.userId === userDetail.userId
+    );
     let params = {
-      userId,
-      username,
-      userLogo,
-      userFullName,
       UserDetail,
-      phoneNum,
-      Email,
       userStation,
-      createtime,
       roleId,
       roleName,
       specialRoleId,
@@ -188,7 +153,6 @@ class UserDetail extends Component {
       pageSize,
       totalNum
     };
-
     const maxPage = Math.ceil(totalNum / pageSize);
     const lastPageMaxIndex = totalNum - (maxPage - 1) * pageSize - 1;
     if (currentPage === maxPage && detailIndex === lastPageMaxIndex) {
@@ -204,28 +168,19 @@ class UserDetail extends Component {
       const { userId } = userData[detailIndex + 1];
       getUserDetail({ userId });
     } else {
-      console.log("用户id信息有误，在tablelist中未获取");
+      console.log("用户id信息有误，在userlist中未获取");
     }
   };
-
   backToList = () => {
     this.props.changeUserAttr({
       showPage: "list"
     });
   };
-
   render() {
-
-    console.log(this.props);
-    const { userDetail } = this.props;
-    console.log(userDetail);
-
+    const { userDetail} = this.props;
+   console.log(userDetail.toJS());
     const { showWarningTip, warningTipText } = this.state;
-
-    let stationNames =
-      userDetail.stationNameData && userDetail.stationNameData.length > 0
-        ? userDetail.stationNameData.map(e => e.stationName).join(",")
-        : " -- ";
+    console.log(userDetail.get("enterpriseData"))
     return (
       <div className={styles.userDetail}>
         {showWarningTip && (
@@ -243,13 +198,13 @@ class UserDetail extends Component {
               type="arrow-up"
               className={styles.previous}
               title="上一个"
-              onClick={this.preDepartment}
+              onClick={this.prePage}
             />
             <Icon
               type="arrow-down"
               className={styles.next}
               title="下一个"
-              onClick={this.nextDepartment}
+              onClick={this.nextPage}
             />
             <Icon
               type="arrow-left"
@@ -266,50 +221,54 @@ class UserDetail extends Component {
 
             <div className={styles.user}>
               <span>状态</span>
-              {userDetail.enterpriseUserStatus}
+              {userDetail.get('enterpriseUserStatus')}
             </div>
             <div className={styles.time}>
               <span>创建时间</span>
-              {userDetail.createtime}
+              {userDetail.get('createtime')}
             </div>
           </div>
           <div className={styles.userDetailContainer}>
             <div>
               <span className={styles.title}>用户名</span>
-              <span className={styles.value}>{userDetail.username}</span>
+              <span className={styles.value}>{userDetail.get("username")}</span>
             </div>
             <div>
               <span className={styles.title}>电话</span>
-              <span className={styles.value}>{userDetail.phoneNum}</span>
+              <span className={styles.value}>{userDetail.get("phoneNum")}</span>
             </div>
 
             <div>
               <span className={styles.title}>真实姓名</span>
-              <span className={styles.value}>真实姓名</span>
+              <span className={styles.value}>{userDetail.get("fullName")}</span>
             </div>
             <div>
               <span className={styles.title}>邮箱</span>
-              <span className={styles.value}>{userDetail.Email}</span>
+              <span className={styles.value}>{userDetail.get("Email")}</span>
             </div>
             <div>
               <span className={styles.title}>微信账户</span>
-              <span className={styles.value}>待续</span>
+              <span className={styles.value}>{userDetail.get("webChat")}</span>
             </div>
             <hr className={styles.doshLine} />
             <div>
               <span className={styles.title}>角色</span>
-              <span className={styles.value}>{userDetail.roleName}</span>
+              <span className={styles.value}>{userDetail.get("roleName")}</span>
             </div>
             <div>
               <span className={styles.title}>特殊权限</span>
-              <span className={styles.value}>{userDetail.specialRoleName}</span>
+              <span className={styles.value}>
+                {userDetail.get("specialRoleName")}
+              </span>
             </div>
             <hr className={styles.doshLine} />
             <div>
               <span className={styles.enterpriseDepartment}>
                 企业部门(负责电站)
               </span>
-              <div className={styles.value}>{stationNames}</div>
+              <div className={styles.enterpriseDepartmentValue}>
+               {userDetail.get("enterpriseData") && userDetail.get("enterpriseData").get("enterpriseName")}: {userDetail.get("enterpriseData") && userDetail.get("enterpriseData").get('departmentData').get('departmentName')}({userDetail.get("enterpriseData") && userDetail.get("enterpriseData").get('departmentData').get('stationData').get('stationName')})
+              </div>
             </div>
           </div>
         </div>
@@ -319,3 +278,5 @@ class UserDetail extends Component {
 }
 
 export default UserDetail;
+
+

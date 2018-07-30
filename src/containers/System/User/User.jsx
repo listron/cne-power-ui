@@ -146,10 +146,10 @@ class User extends Component {
 
 const mapStateToProps = state => {
   // console.log([...state.role,...state.user])
-  let departmentProps = {};
+  let userProps = {};
   // [...state.department].forEach(e=>departmentProps[e[0]]=(e[1].toJS?e[1].toJS():e[1]))
-  [...state.role,...state.user].forEach(e=>departmentProps[e[0]]=e[1])
-  return departmentProps
+  [...state.role,...state.user].forEach(e=>userProps[e[0]]=e[1])
+  return userProps
 }
 // const mapStateToProps = (state) => ({
 //   loading: state.user.get('loading'),

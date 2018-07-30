@@ -41,6 +41,7 @@ function *getUserDetail(action){
   const { payload } = action;
   //const url = "/api/v3/user/{userId}";
  const url = "/mock/api/v3/userDetail";
+ console.log(payload);
 
   try{
     yield put({ type: userAction.USER_FETCH});
