@@ -5,8 +5,8 @@ import { userAction } from '../../../../constants/actionTypes/system/account/use
 import { roleAction } from '../../../../constants/actionTypes/system/account/roleAction';
 import PropTypes from 'prop-types';
 import TransitionContainer from '../../../../components/Common/TransitionContainer';
-import UserSide from '../../../../components/System/User/UserSide/UserSide';
-import UserMain from '../../../../components/System/User/UserList/UserMain';
+import UserSide from '../../../../components/System/Account/User/UserSide/UserSide';
+import UserMain from '../../../../components/System/Account/User/UserList/UserMain';
 class User extends Component {
   static propTypes = {
     showPage: PropTypes.string, 

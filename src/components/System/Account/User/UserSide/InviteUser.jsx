@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import { Icon, Popconfirm, Input, Button, message } from 'antd';
 import PropTypes from 'prop-types';
 import styles from './userSide.scss';
-import WarningTip from '../../../Common/WarningTip';
+import WarningTip from '../../../../Common/WarningTip';
 import Clipboard from 'clipboard';
 
 //企业信息编辑页
