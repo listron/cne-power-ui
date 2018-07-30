@@ -172,22 +172,8 @@
   .ant-steps-item-title:after{
     width: 0;
   }
-  /*流程步骤的总长度*/
-  .ant-tabs:not(.ant-tabs-vertical) > .ant-tabs-content {
-    width: 315px;
-  }
   .ant-steps-horizontal:not(.ant-steps-label-vertical) .ant-steps-item {
     margin-right: 0;
     white-space: nowrap;
-  }
-  /*单个步骤流程*/
-  .ant-steps-item-icon
-  .ant-steps-item ,.ant-steps-item-process{
-    background: url("../../assets/img/firstbg.png") no-repeat center ;
-    width: 105px;
-  }
-  .ant-form-explain{
-
-
   }
 }
