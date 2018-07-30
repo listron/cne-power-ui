@@ -1,0 +1,36 @@
+
+.userContainer{
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  padding: 24px 24px 0;
+  background:#ececec;
+  .userFooter{
+    text-align: right;
+    height: 60px;
+    line-height: 60px;
+    color:#999999;
+  }
+  :global{
+    .userSide-enter{
+      transform: translateX(0);
+    }
+    .userSide-enter-active{
+      transform: translateX(-100%);
+      transition: all 500ms ease;
+    }
+    .userSide-enter-done{
+      transform: translateX(-100%);
+    }
+    .userSide-exit{
+      transform: translateX(-100%);
+    }
+    .userSide-exit-active{
+      transform: translateX(0);
+      transition: all 500ms ease;
+    }
+    .userSide-exit-done{
+      transform: translateX(0);
+    }
+  }
+}

@@ -11,7 +11,7 @@ import {
   watchLogin
 } from './loginSaga';
 
-import { watchUser } from './system/userSaga';
+import { watchUser } from './system/account/userSaga';
 
 import {
   watchGetDefectList,
@@ -53,9 +53,9 @@ import {
   watchChangeShowContainer
 } from './operation/ticket/ticketSaga';
 
-import { watchEnterprise } from './system/enterpriseSaga';
-import { watchDepartment } from './system/departmentSaga';
-import { watchRole } from './system/roleSaga';
+import { watchEnterprise } from './system/account/enterpriseSaga';
+import { watchDepartment } from './system/account/departmentSaga';
+import { watchRole } from './system/account/roleSaga';
 
 
 // root saga
