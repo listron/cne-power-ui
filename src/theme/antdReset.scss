@@ -80,20 +80,20 @@
   .ant-tabs-nav .ant-tabs-tab:hover{
     color: $themeColor;
   }
-.ant-tabs-tab{
-  color: $darkColor;
-}
+  .ant-tabs-tab{
+    color: $darkColor;
+  }
   .ant-tabs-tab-active .ant-tabs-tab{
     color: $themeColor;
   }
 
-.ant-tabs-nav .ant-tabs-tab-active{
-  color: $themeColor;
-}
+  .ant-tabs-nav .ant-tabs-tab-active{
+    color: $themeColor;
+  }
 
-.ant-tabs-ink-bar{
-  background-color: $themeColor;
-}
+  .ant-tabs-ink-bar{
+    background-color: $themeColor;
+  }
   .ant-input:hover{
     border-color:$themeColor ;
   }
@@ -118,13 +118,6 @@
     line-height: 200%;
   }
 
-/* 验证码输入框的宽度
- .ant-form .ant-form-horizontal .verificationCode__ZLcpT{
-    .ant-form .ant-form-item {
-      width: 100px;
-    }
-  }*/
-
   /*上下input输入框的距离*/
   .ant-form-item, .ant-form-horizontal {
     margin-bottom: 21px;
@@ -138,11 +131,11 @@
   .ant-steps{
     margin-bottom: 20px;
   }
-/*步骤的标题的字体大小*/
+  /*步骤的标题的字体大小*/
   .ant-steps-item-title{
     font-size: 12px;
   }
- /* .ant-steps-item-process .ant-steps-item-icon{
+  /* .ant-steps-item-process .ant-steps-item-icon{
     background: $themeColor;
   }*/
 
