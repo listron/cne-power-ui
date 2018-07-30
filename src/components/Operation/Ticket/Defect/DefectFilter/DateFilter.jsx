@@ -24,7 +24,7 @@ class DefectTable extends Component {
   onEndChange = (date,dateString) => {
     this.props.changeDefectStore({createTimeEnd: dateString})
   }
-  resetTime = () => {
+  resetTime = () => { //todo 实际应该是请求list，同时保存时间参数
     this.props.changeDefectStore({
       createTimeEnd: '',
       createTimeStart: '',

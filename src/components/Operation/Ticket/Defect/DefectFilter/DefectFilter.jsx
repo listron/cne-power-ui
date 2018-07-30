@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Radio, Button, Switch, DatePicker } from 'antd';
 import DateFilter from './DateFilter';
+import StationTypeFilter from './StationTypeFilter';
 import styles from './defectFilter.scss';
 
 const RadioButton = Radio.Button;
@@ -56,7 +57,7 @@ class DefectTable extends Component {
         </div>
         <div>
           {showFilter==='time' && <DateFilter {...this.props} />}
-
+          {showFilter==='stationType' && <StationTypeFilter {...this.props} />}
         </div>
         <div className={styles.selectedItems}>
           <span>已选条件</span>
