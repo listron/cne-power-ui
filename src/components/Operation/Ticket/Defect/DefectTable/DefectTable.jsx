@@ -24,8 +24,8 @@ class DefectTable extends Component {
     onClose: PropTypes.func,
     onCheck: PropTypes.func,
     list: PropTypes.object,
-    currentPage: PropTypes.number,
-    currentPageSize: PropTypes.number,
+    pageNum: PropTypes.number,
+    pageSize: PropTypes.number,
     total: PropTypes.number,
     defectStatusStatistics: PropTypes.object,
     isFetching: PropTypes.bool,
@@ -35,7 +35,7 @@ class DefectTable extends Component {
 
   static defaultProps = {
     list: Immutable.fromJS([]),
-    currentPage: 1
+    pageNum: 1
   }
 
   constructor(props) {
@@ -220,8 +220,8 @@ class DefectTable extends Component {
       total: this.props.total,
       showQuickJumper: true,
       showSizeChanger: true,
-      current: this.props.currentPage,
-      pageSize: this.props.currentPageSize,
+      current: this.props.pageNum,
+      pageSize: this.props.pageSize,
       onShowSizeChange: (current, pageSize) => {
         this.props.onChangePageSize(pageSize);
       },

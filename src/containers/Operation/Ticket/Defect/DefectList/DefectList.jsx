@@ -8,8 +8,8 @@ import DefectFilter from '../../../../../components/Operation/Ticket/Defect/Defe
 class DefectList extends Component {
   static propTypes = {
     defectList: PropTypes.object,
-    currentPage: PropTypes.number,
-    currentPageSize: PropTypes.number,
+    pageNum: PropTypes.number,
+    pageSize: PropTypes.number,
     selectedRowKeys: PropTypes.array,
     sort: PropTypes.string,
     showTab: PropTypes.string,
@@ -40,8 +40,8 @@ class DefectList extends Component {
         defectSource: '3',
         stationType: '2',
         status: this.props.status,
-        pageNum: this.props.currentPage - 1,
-        pageSize: this.props.currentPageSize,
+        pageNum: this.props.pageNum,
+        pageSize: this.props.pageSize,
         sort: this.props.sort
       }
       this.props.getDefectList(params);
@@ -49,13 +49,13 @@ class DefectList extends Component {
   }
 
   onChangePage = (page) => {
-    if(page !== this.currentPage) {
+    if(page !== this.pageNum) {
       let params = {
         defectSource: '3',
         stationType: '2',
         status: this.props.status,
         pageNum: page - 1,
-        pageSize: this.props.currentPageSize,
+        pageSize: this.props.pageSize,
         sort: this.props.sort
       }
       this.props.getDefectList(params);
@@ -63,7 +63,7 @@ class DefectList extends Component {
   }
 
   onChangePageSize = (pageSize) => {
-    if(pageSize !== this.props.currentPageSize) {
+    if(pageSize !== this.props.pageSize) {
       let params = {
         defectSource: '3',
         stationType: '2',
@@ -83,7 +83,7 @@ class DefectList extends Component {
         stationType: '2',
         status: status,
         pageNum: 0,
-        pageSize: this.props.currentPageSize,
+        pageSize: this.props.pageSize,
         sort: this.props.sort
       }
       this.props.getDefectList(params);
@@ -97,7 +97,7 @@ class DefectList extends Component {
         stationType: '2',
         status: this.props.status,
         pageNum: 0,
-        pageSize: this.props.currentPageSize,
+        pageSize: this.props.pageSize,
         sort: sort
       }
       this.props.getDefectList(params);
@@ -149,8 +149,8 @@ class DefectList extends Component {
         <DefectFilter {...this.props} />
         <DefectTable 
           list={this.props.defectList} 
-          currentPage={this.props.currentPage}
-          currentPageSize={this.props.currentPageSize}
+          pageNum={this.props.pageNum}
+          pageSize={this.props.pageSize}
           total={this.props.total}
           defectStatusStatistics={this.props.defectStatusStatistics}
           status={this.props.status}
@@ -178,8 +178,6 @@ const mapStateToProps = (state) => ({
   defectStatusStatistics: state.operation.defect.get('defectStatusStatistics'),
   isFetching: state.operation.defect.get('isFetching'),
   error: state.operation.defect.get('error'),
-  currentPage: state.operation.defect.get('currentPage'),
-  currentPageSize: state.operation.defect.get('currentPageSize'),
   total: state.operation.defect.get('total'),
   selectedRowKeys: state.operation.defect.get('selectedRowKeys').toJS(),
 

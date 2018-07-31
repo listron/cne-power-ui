@@ -22,7 +22,6 @@ var initState = immutable.fromJS({
   handleUser:	'',      // String	是	处理人
   sort:'',	           // String	是	排序字段，排序方式（缺陷级别：0、电站名称:1、设备名称:2、缺陷类型:3、创建时间:4、截止时间:5、完成时间:6、处理进度:7），格式：排序字段，排序方式（0：升序，1：降序）
 
-  selectedFilterInfo: {},//选中的筛选项{selectedStation:[],selectedDevices:[]}
   defectList:[],//渲染为table的缺陷列表
   commonList:[],//获取缺陷常用语列表
   selectedRowKeys: [],
@@ -32,8 +31,6 @@ var initState = immutable.fromJS({
     executeNum: 0,
     checkNum: 0,
   },
-  currentPage: 1,
-  // currentPageSize: 10,
   total: 0,
   status: '5',
   defectId: '',
@@ -60,6 +57,8 @@ var initState = immutable.fromJS({
 
 const defectReducer = (state = initState, action) => {
   switch (action.type) {
+    case TicketAction.CHANGE_DEFECT_STORE :
+      return state.merge(immutable.fromJS(action.payload))
     case TicketAction.GET_DEFECT_COMMON_FETCH_SUCCESS :
       return state.merge(immutable.fromJS(action.payload)).set('loading',false)
     case TicketAction.TICKET_FETCH:
@@ -70,8 +69,8 @@ const defectReducer = (state = initState, action) => {
                   .set('defectList', immutable.fromJS(action.data.defectList))
                   .set('selectedRowKeys', immutable.fromJS([]))
                   .set('defectStatusStatistics', immutable.fromJS(action.data.defectStatusStatistics))
-                  .set('currentPage', (action.params.pageNum + 1))
-                  .set('currentPageSize', action.params.pageSize)
+                  .set('pageNum', (action.params.pageNum + 1))
+                  .set('pageSize', action.params.pageSize)
                   .set('status', action.params.status)
                   .set('sort', action.params.sort);
     case TicketAction.SET_DEFECT_ID:

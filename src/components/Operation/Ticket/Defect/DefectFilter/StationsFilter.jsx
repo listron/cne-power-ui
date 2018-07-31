@@ -24,30 +24,6 @@ class StationsFilter extends Component {
   }
 
   render() {
-    // stations = [{
-    //   commissioningDate:"2012-04-15T00:00:00"
-    //   enterpriseId:"1"
-    //   isConnected:false
-    //   isWork:true
-    //   latitude:"42.269351000000"
-    //   longitude:"121.361496000000"
-    //   orderNO:21102
-    //   provinceCode:11            //必传
-    //   provinceName:"辽宁"        //必传
-    //   ratio:"0.30"
-    //   stationCode:35           //必传
-    //   stationId:"07392334-41ee-46f3-9385-e0617bd79433"       //必传
-    //   stationName:"阜西古力本皋"  //必传
-    //   stationPower:"49.50" 
-    //   stationType:10              //必传
-    //   stationUnitCount:33
-    //   subCompany:"辽宁分公司"
-    //   timeZone:8
-    //   version:4436
-    //   weaId:null
-    //   zoneCode:10
-    //   zoneName:"辽宁"
-    // },...]
     const { stations } = this.props;
     let stationGroup =  [];
     stations.forEach(e=>{//将stations拆分为以省份为组的对象数组；
