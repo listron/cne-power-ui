@@ -18,11 +18,18 @@ function* getDefectList(action) {
   yield put({ type: TicketAction.TICKET_FETCH });
   try {
     const response = yield call(axios.post, url, action.params);
+    let { params } = action;
+    delete params.handleUser;
     if(response.data.code === '10000'){
       yield put({ 
-        type: TicketAction.GET_DEFECT_LIST_SUCCESS, 
-        data: response.data.data, 
-        params: action.params 
+        type: TicketAction.GET_DEFECT_COMMON_FETCH_SUCCESS, 
+        payload: {
+          ...params,
+          total: response.data.data.total,
+          defectList: response.data.data.defectList,
+          selectedRowKeys: [],
+          defectStatusStatistics: response.data.data.defectStatusStatistics,
+        }
       });      
     }else{
       yield put({ 

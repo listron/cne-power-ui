@@ -13,7 +13,7 @@ var initState = immutable.fromJS({
   defectLevel: '0',	   // String	是	缺陷级别（0：全部，1：一级，2：二级，3：三级，4：四级）
   timeInterval: '0',   //	String	是	时间段（0：全部，1：今天，2：近三天，3：一周内，4：一个月）
   status:'5',          //	String	是	工单状态代码状态（0：待提交:1：待审核、2：执行中、3：待验收、4：已完成、5：所有）
-  pageNum: 1,          //	Int	否	页号
+  pageNum: 0,          //	Int	否	页号
   pageSize: 10,        //	Int	否	每页记录数
   createTimeStart: '', //	String	是	创建时间（开始）
   createTimeEnd: '',	 // String	是	创建时间（结束）

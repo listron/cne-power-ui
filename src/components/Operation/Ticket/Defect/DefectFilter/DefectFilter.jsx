@@ -52,7 +52,7 @@ class DefectTable extends Component {
       defectLevel: this.props.defectLevel,
       timeInterval: this.props.timeInterval,
       status: this.props.status,
-      pageNum: this.props.pageNum,
+      pageNum: this.props.pageNum + 1,
       pageSize: this.props.pageSize,
       createTimeStart: this.props.createTimeStart,
       createTimeEnd: this.props.createTimeEnd,
