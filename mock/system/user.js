@@ -21,12 +21,8 @@ module.exports =[{
   delay:1000,
   error:{}
 },{
-<<<<<<< HEAD
   api:'/mock/api/v3/userDetail',
   //api:'/api/v3/user/{userId}',//用户详情
-=======
-  api:'/api/v3/user/',//用户详情
->>>>>>> 0870332c36f8a51dd6051caad7866240e0225575
   method:'get',
   response:{
     "code": "10000",
@@ -72,9 +68,6 @@ module.exports =[{
   },
   delay:1000,
   error:{}
-<<<<<<< HEAD
-}]
-=======
 },{
   api: '/api/v3/createUser',//新建用户
   method:'post',
@@ -102,4 +95,3 @@ module.exports =[{
   delay:1000,
   error:{}
 }]
->>>>>>> 0870332c36f8a51dd6051caad7866240e0225575
