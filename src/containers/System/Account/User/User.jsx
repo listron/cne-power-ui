@@ -162,8 +162,8 @@ class User extends Component {
 const mapStateToProps = state => {
   let userProps = {};
   // [...state.department].forEach(e=>departmentProps[e[0]]=(e[1].toJS?e[1].toJS():e[1]))
-  [...state.user].forEach(e=>userProps[e[0]]=e[1])
-  userProps['roleData'] = state.role.get('roleData');
+  [...state.system.user].forEach(e=>userProps[e[0]]=e[1])
+  userProps['roleData'] = state.system.role.get('roleData');
   return userProps;
 }
 
