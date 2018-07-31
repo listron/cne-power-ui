@@ -19,7 +19,7 @@ class DeviceTypeFilter extends Component {
   }
 
   onDeviceTypeSelect = (deviceTypeCode) => {
-    this.props.changeDefectStore({deviceTypeCode});
+    this.props.changeDefectStore({deviceTypeCode: deviceTypeCode.join(',')});
   }
 
   resetDevieType = () => {
@@ -35,7 +35,7 @@ class DeviceTypeFilter extends Component {
     return (
       <div className={styles.deviceTypeFilter}>
         <span onClick={this.resetDevieType} >不限</span>
-        <CheckboxGroup options={deviceTypeOptions} value={deviceTypeCode} onChange={this.onDeviceTypeSelect} />
+        <CheckboxGroup options={deviceTypeOptions} value={deviceTypeCode.split(',').filter(e=>!!e)} onChange={this.onDeviceTypeSelect} />
       </div>
     );
   }
