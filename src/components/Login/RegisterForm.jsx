@@ -173,7 +173,7 @@ class RegisterForm extends Component {
                 <div className={styles.phoneInput}>
                   <FormItem>
                     {getFieldDecorator('phoneNum', {
-                      rules: [{required: true, message: '请输入手机号'}]
+                      rules: [{pattern: /(^1\d{10}$)/, required: true, message: '请输入手机号'}]
                     })(
                       <Input className={styles.mobileNumber} prefix={<Icon type="mobile" />} placeholder="请输入手机号" />
                     )}
