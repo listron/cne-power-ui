@@ -202,6 +202,7 @@ const mapStateToProps = (state) => ({
   filteredInfor: state.operation.defect.get('filteredInfor').toJS(),
 
   stations: state.common.get('stations').toJS(),
+  deviceTypes: state.common.get('deviceTypes').toJS(),
 });
 
 const mapDispatchToProps = (dispatch) => ({

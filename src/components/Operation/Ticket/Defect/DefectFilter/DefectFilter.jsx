@@ -4,6 +4,7 @@ import {  Button, Switch } from 'antd';
 import DateFilter from './DateFilter';
 import StationTypeFilter from './StationTypeFilter';
 import StationsFilter from './StationsFilter';
+import DeviceTypeFilter from './DeviceTypeFilter';
 import styles from './defectFilter.scss';
 
 class DefectTable extends Component {
@@ -57,6 +58,8 @@ class DefectTable extends Component {
           {showFilter==='time' && <DateFilter {...this.props} />}
           {showFilter==='stationType' && <StationTypeFilter {...this.props} />}
           {showFilter==='stationName' && <StationsFilter {...this.props} />}
+          {showFilter==='deviceType' && <DeviceTypeFilter {...this.props} />}
+          {/* {showFilter==='defectLevel' && <DeviceTypeFilter {...this.props} />} */}
         </div>
         <div className={styles.selectedItems}>
           <span>已选条件</span>
