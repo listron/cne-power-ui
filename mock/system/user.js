@@ -5,7 +5,7 @@ module.exports =[{
     "code": "10000",
     "message": "请求成功",
     "data": {
-      "totalNum": 10, 
+      "totalNum": 10,
       "userData":  [1,2,3,4,5,6,7,8,9,0].map((e,i)=>({
         userId: i,
         userName: '周树人',
@@ -21,7 +21,8 @@ module.exports =[{
   delay:1000,
   error:{}
 },{
-  api:'/api/v3/user/',//用户详情
+  api:'/mock/api/v3/userDetail',
+  //api:'/api/v3/user/{userId}',//用户详情
   method:'get',
   response:{
     "code": "10000",
@@ -29,8 +30,11 @@ module.exports =[{
     "data": {
       userId: 0,
       username: `王小二`,
+      fullName: `王小三`,
       phoneNum: `15501${parseInt(Math.random()*1000000)}`,
       Email: '119118117@qq.com',
+      createtime:'2018/08/01',
+      enterpriseUserStatus:Math.floor(Math.random()*6),
       webChat: 'hdjfhdbchdjssdnbfdn',
       roleName: '删除，添加',
       specialRoleName: '删除，添加',

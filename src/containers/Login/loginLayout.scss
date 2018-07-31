@@ -1,43 +1,43 @@
 
-.loginLayout{
+.loginLayout {
   display: flex;
   flex-direction: row;
   height: 100%;
   flex: 1;
-  .left{
+  .left {
     flex: 1;
     width: 50%;
     height: 100%;
     justify-content: flex-end;
     background: #199475;
     display: flex;
-    .logoImg{
+    .logoImg {
       width: 500px;
       height: 100%;
       background: yellow;
       display: flex;
       justify-content: center;
       align-items: center;
-      .loginImg{
+      .loginImg {
         flex: 1;
         width: 500px;
         height: 100%;
         background: #199475;
-        .logo{
+        .logo {
           margin-top: 61px;
           height: 100px;
-          .pic{
+          .pic {
             width: 120px;
             height: 40px;
             float: left;
             margin-right: 60px;
           }
-          h3{
+          h3 {
             padding-top: 7px;
-            font-size:24px;
-            color:#ffffff;
-            letter-spacing:4px;
-            text-align:left;
+            font-size: 24px;
+            color: #ffffff;
+            letter-spacing: 4px;
+            text-align: left;
             display: block;
             float: left;
             width: 230px;
@@ -45,131 +45,136 @@
             line-height: 31px;
           }
         }
-        .bgPic{
+        .bgPic {
           position: absolute;
           top: 170px;
           width: 450px;
           height: 375px;
         }
-        .comRegisterInfo{
+        .comRegisterInfo {
           position: absolute;
           top: 580px;
           width: 410px;
           font-size: 14px;
           color: #ffffff;
           height: 20px;
-
         }
       }
     }
   }
-  .right{
+  .right {
     flex: 1;
     width: 50%;
     height: 100%;
     background: #fff;
     display: flex;
-    .containerLogin{
+    :global {
+      .ant-form {
+        width: 200px;
+        .ant-form-item {
+          width: 200px;
+          .ant-btn {
+            width: 200px;
+          }
+        }
+      }
+    }
+    .containerLogin {
       width: 500px;
       height: 100%;
       background: #fff;
       display: flex;
       justify-content: center;
-      .loginContent{
+      .loginContent {
         width: 500px;
-        height: 100%;
-        //登录
-        .login{
+        height: 100%; //登录
+        .login {
           width: 500px;
           height: 100%;
           padding: 75px 0 0 140px;
           position: relative;
-          .contactUs{
+          .contactUs {
             top: 580px;
-          }
-          //  border: 1px solid #aaa;
-        }
-        //忘记密码
-        .forgetPassword{
+          } //  border: 1px solid #aaa;
+        } //忘记密码
+        .forgetPassword {
           width: 500px;
           height: 100%;
           position: relative;
-          .goLogin{
+          .goLogin {
             margin-top: 70px;
             height: 40px;
             display: flex;
             justify-content: flex-end;
-            span{
+            span {
               color: #199475;
               font-weight: 500;
               margin-left: 10px;
-              cursor:pointer;
-            }       
+              cursor: pointer;
+            }
           }
-          .contactUs{
-            top:510px;
+          .contactUs {
+            top: 510px;
           }
-        }
-        //下面的联系我们
-        .contactUs{
+        } //下面的联系我们
+        .contactUs {
           position: absolute;
           left: 170px;
           width: 170px;
           height: 30px;
-          span{
+          span {
             width: 55px;
             margin-right: 30px;
-            font-size:14px;
-            color:#999999;
-            text-align:left;
+            font-size: 14px;
+            color: #999999;
+            text-align: left;
           }
         }
         /*加入企业的区域*/
-        .joinTop{
+        .joinTop {
           height: 20px;
           width: 200px;
           margin-bottom: 60px;
-          cursor:pointer;
-          .fontIcon{
+          cursor: pointer;
+          .fontIcon {
             float: left;
-            width:21px;
-            height:21px;
-            border-radius:3px 0 0 3px;
+            width: 21px;
+            height: 21px;
+            border-radius: 3px 0 0 3px;
             text-align: center;
             margin-right: 8px;
-            background:#f1f1f1;
-            i{
+            background: #f1f1f1;
+            i {
               font-size: 14px;
               text-align: center;
-              border:#999999;
-              width:22px;
-              height:22px;
+              border: #999999;
+              width: 22px;
+              height: 22px;
             }
           }
-          .join{
+          .join {
             font-size: 14px;
             height: 20px;
             width: 86px;
             margin-left: 8px;
             font-weight: 500;
-            color:#999999;
-            text-align:left;
+            color: #999999;
+            text-align: left;
           }
-          .join:hover{
+          .join:hover {
             color: #199475;
           }
-        }
-        //右上角去登录
-        .goLogin{
+        } //右上角去登录
+        .goLogin {
           margin: 70px 30px;
           height: 100px;
           display: flex;
           justify-content: flex-end;
-          span{
+          span {
             color: #199475;
             font-weight: 500;
             margin-left: 10px;
-            cursor:pointer;
+            cursor: pointer;
           }
         }
         :global{
