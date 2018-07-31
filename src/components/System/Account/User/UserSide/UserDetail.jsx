@@ -29,7 +29,7 @@ class UserDetail extends Component {
     changeUserStore: PropTypes.func,
     onShowSideChange: PropTypes.func,
     userDetail: PropTypes.object,
-    changeUserAttr: PropTypes.func
+    changeUserStore: PropTypes.func
   };
 
   constructor(props) {
@@ -41,7 +41,7 @@ class UserDetail extends Component {
   }
 
   onShowSideChange = ({ showSidePage }) => {
-    this.props.changeUserAttr({
+    this.props.changeUserStore({
       showPage: 'edit'
     });
   };
@@ -173,7 +173,7 @@ class UserDetail extends Component {
     }
   };
   backToList = () => {
-    this.props.changeUserAttr({
+    this.props.changeUserStore({
       showPage: 'list'
     });
   };
