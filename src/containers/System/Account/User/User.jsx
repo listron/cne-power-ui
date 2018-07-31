@@ -139,6 +139,7 @@ class User extends Component {
         <UserMain
           {...this.props}
           onUserSearch={this.onUserSearch}
+          onChangeStatus={this.onChangeStatus}
         />
         <TransitionContainer
           show={showPage!=='list'}

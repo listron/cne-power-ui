@@ -20,6 +20,7 @@ class UserMain extends Component {
     pageSize: PropTypes.number,
     changeUserStore: PropTypes.func,
     getUserList: PropTypes.func,
+    onChangeStatus: PropTypes.func,
   }
 
   constructor(props){

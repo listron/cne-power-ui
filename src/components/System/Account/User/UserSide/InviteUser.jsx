@@ -1,13 +1,13 @@
 
 
 import React, { Component } from 'react';
-import { Icon, Popconfirm, Input, Button, message } from 'antd';
+import { Icon, Input, Button } from 'antd';
 import PropTypes from 'prop-types';
 import styles from './userSide.scss';
 import WarningTip from '../../../../Common/WarningTip';
-// import Clipboard from 'clipboard';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 
-//企业信息编辑页
+//用户邀请页
 class InviteUser extends Component {
   static propTypes = {
     loading: PropTypes.bool,
@@ -19,29 +19,17 @@ class InviteUser extends Component {
     this.state={
       showWarningTip: false,
       warningTipText: '退出后信息无法保存!',
-      copySuccess: false,
+      copied: false,
+      inputValue: '',
     }
   }
-  componentWillReceiveProps(){
-    // var clipboard = new Clipboard('.copyBtn');
-    // clipboard.on('success', function(e) {
-    //   console.log(e);
-    //   message.success('复制成功');
-    // });
 
-    // clipboard.on('error', function(e) {
-    //   console.log(e);
-    //   message.success('复制失败');
-    // });
-  }
   onWarningTipShow = () =>{
     this.setState({
       showWarningTip: true,
     })
   }
-  onCopyLink = () => {
-
-  }
+  
   confirmWarningTip = () => {
     this.setState({
       showWarningTip: false,
@@ -56,10 +44,14 @@ class InviteUser extends Component {
       showWarningTip: false,
     })
   }
-  
+  onCopy = () => {
+    this.setState({copied: true})
+    setTimeout(()=>this.setState({ copied: false}), 2000);
+  }
   render(){
     const { loading } = this.props;
-    const { showWarningTip, warningTipText, copySuccess } = this.state;
+    const { showWarningTip, warningTipText,inputValue, copied } = this.state;
+    const tmpLink = "https://www.cnegroup.com";
     return (
       <div className={styles.inviteUser} >
         {showWarningTip && <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}      
@@ -68,8 +60,16 @@ class InviteUser extends Component {
           <Icon type="arrow-left" className={styles.backIcon} onClick={this.onWarningTipShow} />
         </div>
         <div className={styles.mainPart} >
-          <div>二维码<span>有效期为7天(有效期至2018-08-03)</span>，请尽快分享给用户加入系统~</div>
-          <Input value="rytuihgfghjkl" type="text" readOnly={true} id="linkInput" /><Button data-clipboard-target="#linkInput" className="copyBtn" onClick={this.onCopyBtn} >复制链接</Button>{copySuccess && <Button>复制成功</Button>}
+          <div className={styles.inviteMainPart} >
+            <div>二维码<span>有效期为7天(有效期至2018-08-03)</span>，请尽快分享给用户加入系统~</div>
+            <div className={styles.inviteOperate} >
+              <Input value={tmpLink} type="text" readOnly={true}  className={styles.inviteInput} />
+              <CopyToClipboard text={tmpLink} onCopy={this.onCopy}>
+                <Button className={styles.copyBtn} >复制链接</Button>
+              </CopyToClipboard>
+              {copied && <Button>复制成功!</Button>}
+            </div>
+          </div>
         </div>
       </div>
     )

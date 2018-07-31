@@ -76,6 +76,22 @@
           }
         }
       }
+      .inviteMainPart{
+        flex-direction: column;
+        .inviteOperate{
+          margin-top: 20px;
+          .inviteInput{
+            width:466px;
+          }
+          .copyBtn{
+            margin: 0 20px 0 10px;
+          }
+          .copyBtn:hover, .copyBtn:focus{
+            color: #fff;
+            background: #199475;
+          }
+        }
+      }
     }
   }
   .userDetail {
