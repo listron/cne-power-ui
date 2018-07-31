@@ -200,6 +200,8 @@ const mapStateToProps = (state) => ({
   handleUser: state.operation.defect.get('handleUser'), 
   sort: state.operation.defect.get('sort'),
   filteredInfor: state.operation.defect.get('filteredInfor').toJS(),
+
+  stations: state.common.get('stations').toJS(),
 });
 
 const mapDispatchToProps = (dispatch) => ({
