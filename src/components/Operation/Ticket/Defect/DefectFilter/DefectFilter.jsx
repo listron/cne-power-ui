@@ -38,6 +38,9 @@ class DefectTable extends Component {
       })
     }
   }
+  onUserSelect = (value) => {
+    console.log(value)
+  }
   
 
   render() {
@@ -62,7 +65,7 @@ class DefectTable extends Component {
             缺陷级别{showFilter==='defectLevel'?<Icon type="up" />:<Icon type="down" />}
           </Button>
           <span>
-            <Switch /><span>我参与的</span>
+            <Switch onChange={this.onUserSelect} /><span>我参与的</span>
           </span>
         </div>
         <div className={styles.filterBox}>

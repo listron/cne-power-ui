@@ -181,8 +181,6 @@ const mapStateToProps = (state) => ({
   currentPage: state.operation.defect.get('currentPage'),
   currentPageSize: state.operation.defect.get('currentPageSize'),
   total: state.operation.defect.get('total'),
-  status: state.operation.defect.get('status'),
-  sort: state.operation.defect.get('sort'),
   selectedRowKeys: state.operation.defect.get('selectedRowKeys').toJS(),
 
   stationType: state.operation.defect.get('stationType'),
@@ -199,7 +197,6 @@ const mapStateToProps = (state) => ({
   defectTypeCode: state.operation.defect.get('defectTypeCode'),
   handleUser: state.operation.defect.get('handleUser'), 
   sort: state.operation.defect.get('sort'),
-  filteredInfor: state.operation.defect.get('filteredInfor').toJS(),
 
   stations: state.common.get('stations').toJS(),
   deviceTypes: state.common.get('deviceTypes').toJS(),

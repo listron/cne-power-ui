@@ -21,7 +21,6 @@ var initState = immutable.fromJS({
   defectTypeCode: '',	 // String	是	缺陷类型编码
   handleUser:	'',      // String	是	处理人
   sort:'',	           // String	是	排序字段，排序方式（缺陷级别：0、电站名称:1、设备名称:2、缺陷类型:3、创建时间:4、截止时间:5、完成时间:6、处理进度:7），格式：排序字段，排序方式（0：升序，1：降序）
-  filteredInfor: {},     //顶部筛选相关选中条件
 
   selectedFilterInfo: {},//选中的筛选项{selectedStation:[],selectedDevices:[]}
   defectList:[],//渲染为table的缺陷列表
