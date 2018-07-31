@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {  Button, Switch } from 'antd';
+import {  Button, Switch, Icon } from 'antd';
 import DateFilter from './DateFilter';
 import StationTypeFilter from './StationTypeFilter';
 import StationsFilter from './StationsFilter';
@@ -46,11 +46,21 @@ class DefectTable extends Component {
       <div className={styles.defectFilter}>
         <div className={styles.topSearch}>
           <span>筛选条件</span>
-          <Button onClick={()=>this.onFilterShowChange('time')}>发生时间</Button>
-          <Button onClick={()=>this.onFilterShowChange('stationType')}>电站类型</Button>
-          <Button onClick={()=>this.onFilterShowChange('stationName')}>电站名称</Button>
-          <Button onClick={()=>this.onFilterShowChange('deviceType')}>设备类型</Button>
-          <Button onClick={()=>this.onFilterShowChange('defectLevel')}>缺陷级别</Button>
+          <Button onClick={()=>this.onFilterShowChange('time')}>
+            发生时间{showFilter==='time'?<Icon type="up" />:<Icon type="down" />}
+          </Button>
+          <Button onClick={()=>this.onFilterShowChange('stationType')}>
+            电站类型{showFilter==='stationType'?<Icon type="up" />:<Icon type="down" />}
+          </Button>
+          <Button onClick={()=>this.onFilterShowChange('stationName')}>
+            电站名称{showFilter==='stationName'?<Icon type="up" />:<Icon type="down" />}
+          </Button>
+          <Button onClick={()=>this.onFilterShowChange('deviceType')}>
+            设备类型{showFilter==='deviceType'?<Icon type="up" />:<Icon type="down" />}
+          </Button>
+          <Button onClick={()=>this.onFilterShowChange('defectLevel')}>
+            缺陷级别{showFilter==='defectLevel'?<Icon type="up" />:<Icon type="down" />}
+          </Button>
           <span>
             <Switch /><span>我参与的</span>
           </span>
