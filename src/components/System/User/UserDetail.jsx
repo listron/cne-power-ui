@@ -13,6 +13,8 @@ class UserDetail extends Component {
     roleName: PropTypes.string,
     specialRoleId: PropTypes.string,
     specialRoleName: PropTypes.string,
+    userData: PropTypes.object,
+    currentPage: PropTypes.number,
     enterpriseId: PropTypes.string,
     enterpriseData: PropTypes.array,
     enterpriseUserStatus: PropTypes.number,
