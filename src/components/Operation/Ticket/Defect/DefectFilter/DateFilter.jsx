@@ -6,9 +6,10 @@ import styles from './defectFilter.scss';
 
 class DefectTable extends Component {
   static propTypes = {
+    listQueryParams: PropTypes.object,
     createTimeStart: PropTypes.string,
     createTimeEnd: PropTypes.string,
-    changeDefectStore: PropTypes.func,
+    getDefectList: PropTypes.func,
   }
 
   constructor(props) {
@@ -19,13 +20,20 @@ class DefectTable extends Component {
   }
 
   onStartChange = (date,dateString) => {
-    this.props.changeDefectStore({createTimeStart: dateString})
+    this.props.getDefectList({
+      ...this.props.listQueryParams,
+      createTimeStart: dateString,
+    })
   }
   onEndChange = (date,dateString) => {
-    this.props.changeDefectStore({createTimeEnd: dateString})
+    this.props.getDefectList({
+      ...this.props.listQueryParams,
+      createTimeEnd: dateString
+    })
   }
   resetTime = () => { //todo 实际应该是请求list，同时保存时间参数
-    this.props.changeDefectStore({
+    this.props.getDefectList({
+      ...this.props.listQueryParams,
       createTimeEnd: '',
       createTimeStart: '',
     })

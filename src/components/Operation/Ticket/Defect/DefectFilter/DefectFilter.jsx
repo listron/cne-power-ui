@@ -30,6 +30,7 @@ class DefectTable extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      showFilter: '',
     };
   }
   onFilterShowChange = (filterText) => {
@@ -66,6 +67,22 @@ class DefectTable extends Component {
 
   render() {
     const { showFilter } = this.state;
+    const listQueryParams = {
+      stationType: this.props.stationType,
+      stationCodes: this.props.stationCodes,
+      defectSource: this.props.defectSource, 
+      defectLevel: this.props.defectLevel,
+      timeInterval: this.props.timeInterval,
+      status: this.props.status,
+      pageNum: this.props.pageNum + 1,
+      pageSize: this.props.pageSize,
+      createTimeStart: this.props.createTimeStart,
+      createTimeEnd: this.props.createTimeEnd,
+      deviceTypeCode: this.props.deviceTypeCode,
+      defectTypeCode: this.props.defectTypeCode,
+      handleUser: this.props.userName,
+      sort: this.props.sort,
+    }
     return (
       <div className={styles.defectFilter}>
         <div className={styles.topSearch}>
@@ -90,11 +107,11 @@ class DefectTable extends Component {
           </span>
         </div>
         <div className={styles.filterBox}>
-          {showFilter==='time' && <DateFilter {...this.props} />}
-          {showFilter==='stationType' && <StationTypeFilter {...this.props} />}
-          {showFilter==='stationName' && <StationsFilter {...this.props} />}
-          {showFilter==='deviceType' && <DeviceTypeFilter {...this.props} />}
-          {showFilter==='defectLevel' && <DefectLevelFilter {...this.props} />}
+          {showFilter==='time' && <DateFilter {...this.props} listQueryParams={listQueryParams} />}
+          {showFilter==='stationType' && <StationTypeFilter {...this.props} listQueryParams={listQueryParams} />}
+          {showFilter==='stationName' && <StationsFilter {...this.props} listQueryParams={listQueryParams} />}
+          {showFilter==='deviceType' && <DeviceTypeFilter {...this.props} listQueryParams={listQueryParams} />}
+          {showFilter==='defectLevel' && <DefectLevelFilter {...this.props} listQueryParams={listQueryParams} />}
         </div>
         <div className={styles.selectedItems}>
           <span>已选条件</span>
