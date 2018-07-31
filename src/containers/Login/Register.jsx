@@ -20,7 +20,7 @@ class Register extends Component {
     domainIsRegister: PropTypes.string,
     nameIsRegister: PropTypes.string,
     phoneNum: PropTypes.string,
-    enterpriseDomian: PropTypes.string,
+    enterpriseDomain: PropTypes.string,
     enterpriseName: PropTypes.string,
     isUserRegister: PropTypes.string,
     registerEnterprise: PropTypes.func,
@@ -35,14 +35,14 @@ class Register extends Component {
     super(props);
   }
   changePage = (pageTab) =>{
-    this.props.changeLoginStore({pageTab, registerStep: 1, joinStep: 1})
+    this.props.changeLoginStore({pageTab, registerStep: 1, joinStep: 1,enterpriseId: ''})
   }
   registerEnterprise = (data) => {
     let params = {
       phoneNum: this.props.phoneNum,
-      enterpriseDomian: this.props.enterpriseDomian,
+      enterpriseDomain: this.props.enterpriseDomain,
       enterpriseName: this.props.enterpriseName,
-      userName: data.userName,
+      username: data.username,
       password: data.password,
       confirmPwd: data.confirmPwd,
     }
@@ -54,7 +54,7 @@ class Register extends Component {
       <div className={styles.login}>
         <div className={styles.joinTop}>
           <div className={styles.fontIcon}>
-            <i className="icon-phone" />
+            <i className="iconfont icon-join" />
           </div>
           <div className={styles.join} onClick={()=>this.changePage('joinIn')}>加入企业</div>
         </div>
@@ -83,6 +83,7 @@ class Register extends Component {
                 enterpriseId={this.props.enterpriseId}
                 pageTab={this.props.pageTab}
                 registerSuccess={this.props.registerSuccess}
+                changeLoginStore={this.props.changeLoginStore}
               />
             </TabPane>
           </Tabs>
@@ -96,7 +97,7 @@ const mapStateToProps = (state) => ({
   domainIsRegister: state.login.get('domainIsRegister'),
   nameIsRegister: state.login.get('nameIsRegister'),
   phoneNum: state.login.get('phoneNum'),
-  enterpriseDomian: state.login.get('enterpriseDomian'),
+  enterpriseDomain: state.login.get('enterpriseDomain'),
   enterpriseName: state.login.get('enterpriseName'),
   isUserRegister: state.login.get('isUserRegister'),
   isPhoneRegister: state.login.get('isPhoneRegister'),

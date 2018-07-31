@@ -177,6 +177,18 @@
             cursor: pointer;
           }
         }
+        :global{
+          /*流程步骤的总长度*/
+          .ant-tabs:not(.ant-tabs-vertical) > .ant-tabs-content {
+            width: 315px;
+          }
+          /*单个步骤流程*/
+          .ant-steps-item-icon
+          .ant-steps-item ,.ant-steps-item-process{
+            background: url("../../../assets/img/firstbg.png") no-repeat center ;
+            width: 105px;
+          }
+        }
       }
     }
   }

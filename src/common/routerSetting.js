@@ -4,9 +4,9 @@ import Ticket from '../containers/Operation/Ticket/Ticket';
 import Exception from '../containers/Login/Exception';
 import Login from '../containers/Login/LoginLayout';
 import Power from '../containers/Power';
-import Enterprise from '../containers/System/Enterprise/Enterprise';
-import Department from '../containers/System/Department/Department';
-import User from '../containers/System/User/User';
+import Enterprise from '../containers/System/Account/Enterprise/Enterprise';
+import Department from '../containers/System/Account/Department/Department';
+import User from '../containers/System/Account/User/User';
 
 
 const routers = [
