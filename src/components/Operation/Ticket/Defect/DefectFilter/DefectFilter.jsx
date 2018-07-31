@@ -10,20 +10,26 @@ import styles from './defectFilter.scss';
 
 class DefectTable extends Component {
   static propTypes = {
-    
+    stationType: PropTypes.string,
+    stationCodes: PropTypes.string,
+    defectSource: PropTypes.string,   
+    defectLevel: PropTypes.string,	  
+    timeInterval: PropTypes.string,
+    status: PropTypes.string, 
+    pageNum: PropTypes.number,
+    pageSize: PropTypes.number,
+    createTimeStart: PropTypes.string,
+    createTimeEnd: PropTypes.string, 
+    deviceTypeCode: PropTypes.string,
+    defectTypeCode: PropTypes.string,
+    userName: PropTypes.string,
+    sort: PropTypes.string,
+    getDefectList: PropTypes.func,
   }
 
   constructor(props) {
     super(props);
     this.state = {
-      showFilter: '',
-      createTimeStart: '',//string: （0：全部，1：今天，2：近三天，3：一周内，4：一个月）
-      createTimeEnd: '',//string:
-      stationType:'',//(string:0:风电，1光伏，2：全部)
-      stationCodes:'',//(string:逗号隔开)--全部时使用''
-      deviceTypeCode: '',//string设备类型
-      defectLevel:'',//string（0：全部，1：一级，2：二级，3：三级，4：四级） 缺陷级别
-      handleUser:'',//string 用户名
     };
   }
   onFilterShowChange = (filterText) => {
@@ -39,7 +45,22 @@ class DefectTable extends Component {
     }
   }
   onUserSelect = (value) => {
-    console.log(value)
+    this.props.getDefectList({
+      stationType: this.props.stationType,
+      stationCodes: this.props.stationCodes,
+      defectSource: this.props.defectSource, 
+      defectLevel: this.props.defectLevel,
+      timeInterval: this.props.timeInterval,
+      status: this.props.status,
+      pageNum: this.props.pageNum,
+      pageSize: this.props.pageSize,
+      createTimeStart: this.props.createTimeStart,
+      createTimeEnd: this.props.createTimeEnd,
+      deviceTypeCode: this.props.deviceTypeCode,
+      defectTypeCode: this.props.defectTypeCode,
+      handleUser: value?this.props.userName:'',
+      sort: this.props.sort,
+    });
   }
   
 

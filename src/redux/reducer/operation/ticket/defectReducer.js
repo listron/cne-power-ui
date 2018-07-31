@@ -9,7 +9,7 @@ var initState = immutable.fromJS({
   },
   stationType: '2',    //	电站类型(0:风电，1光伏，2：全部)
   stationCodes: '',    // 电站编码，所有为空字符串
-  defectSource: '3',   // 3：全部，0：告警，1：手动，2：巡检
+  defectSource: '3',   // string  3：全部，0：告警，1：手动，2：巡检
   defectLevel: '0',	   // String	是	缺陷级别（0：全部，1：一级，2：二级，3：三级，4：四级）
   timeInterval: '0',   //	String	是	时间段（0：全部，1：今天，2：近三天，3：一周内，4：一个月）
   status:'5',          //	String	是	工单状态代码状态（0：待提交:1：待审核、2：执行中、3：待验收、4：已完成、5：所有）
@@ -19,7 +19,6 @@ var initState = immutable.fromJS({
   createTimeEnd: '',	 // String	是	创建时间（结束）
   deviceTypeCode: '',	 // String	是	设备类型编码
   defectTypeCode: '',	 // String	是	缺陷类型编码
-  handleUser:	'',      // String	是	处理人
   sort:'',	           // String	是	排序字段，排序方式（缺陷级别：0、电站名称:1、设备名称:2、缺陷类型:3、创建时间:4、截止时间:5、完成时间:6、处理进度:7），格式：排序字段，排序方式（0：升序，1：降序）
 
   defectList:[],//渲染为table的缺陷列表

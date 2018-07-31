@@ -193,9 +193,9 @@ const mapStateToProps = (state) => ({
   createTimeEnd: state.operation.defect.get('createTimeEnd'),	 
   deviceTypeCode: state.operation.defect.get('deviceTypeCode'),	 
   defectTypeCode: state.operation.defect.get('defectTypeCode'),
-  handleUser: state.operation.defect.get('handleUser'), 
   sort: state.operation.defect.get('sort'),
 
+  userName: state.common.get('userName'), 
   stations: state.common.get('stations').toJS(),
   deviceTypes: state.common.get('deviceTypes').toJS(),
 });
