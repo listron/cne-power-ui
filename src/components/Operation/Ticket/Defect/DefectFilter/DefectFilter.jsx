@@ -6,6 +6,7 @@ import StationTypeFilter from './StationTypeFilter';
 import StationsFilter from './StationsFilter';
 import DeviceTypeFilter from './DeviceTypeFilter';
 import DefectLevelFilter from './DefectLevelFilter';
+import FilteredItems from './FilteredItems';
 import styles from './defectFilter.scss';
 
 class DefectTable extends Component {
@@ -86,7 +87,7 @@ class DefectTable extends Component {
     return (
       <div className={styles.defectFilter}>
         <div className={styles.topSearch}>
-          <span>筛选条件</span>
+          <span className={styles.text}>筛选条件</span>
           <Button onClick={()=>this.onFilterShowChange('time')}>
             发生时间{showFilter==='time'?<Icon type="up" />:<Icon type="down" />}
           </Button>
@@ -113,9 +114,7 @@ class DefectTable extends Component {
           {showFilter==='deviceType' && <DeviceTypeFilter {...this.props} listQueryParams={listQueryParams} />}
           {showFilter==='defectLevel' && <DefectLevelFilter {...this.props} listQueryParams={listQueryParams} />}
         </div>
-        <div className={styles.selectedItems}>
-          <span>已选条件</span>
-        </div>
+        <FilteredItems {...this.props} listQueryParams={listQueryParams} />
       </div>
     );
   }

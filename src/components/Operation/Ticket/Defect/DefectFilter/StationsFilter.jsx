@@ -64,7 +64,7 @@ class StationsFilter extends Component {
       <div className={styles.stationsFilter}>
         <Tabs onChange={this.selectProvince} activeKey={activeKey} >
           <TabPane tab="不限" key="0">
-            <span></span>
+            {null}
           </TabPane>
           {stationGroup.map(e=>(<ProvinceTab {...e} stationCodes={stationCodes} getDefectList={getDefectList} listQueryParams={listQueryParams} />))}
         </Tabs>
