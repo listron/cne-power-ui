@@ -56,10 +56,17 @@ class FilteredItems extends Component {
     //   label: e.deviceTypeName,
     //   value: e.deviceTypeCode
     // }))
+    // defectLevel: '0',	   // String	是	缺陷级别（0：全部，1：一级，2：二级，3：三级，4：四级）
+    const levels = ['一级','二级','三级','四级'];
     const tmpSelectedDeviceType = deviceTypeCode.split(',').filter(e=>!!e).map(e=>+e);
     const tmpSelectedStations = stationCodes.split(',').filter(e=>!!e).map(e=>+e);
     const selectedDeviceTypeArray = deviceTypes.filter(e=>tmpSelectedDeviceType.find(m=>m===e.deviceTypeCode));
-
+    const defectLevelArray = defectLevel!=='0'?defectLevel.split(',').filter(e=>!!e).map(e=>({
+      label: levels[+e-1],
+      value: +e,
+    })):[];
+    let resetAll = false;
+    (createTimeStart || createTimeEnd || stationType === '0' || stationType === '1' || selectedDeviceTypeArray.length > 0 || defectLevelArray.length > 0 || tmpSelectedStations.length > 0 ) && (resetAll = true)
     return (
       <div className={styles.filteredItems}>
         <span>已选条件</span>
@@ -69,6 +76,10 @@ class FilteredItems extends Component {
         { selectedDeviceTypeArray.length > 0 && selectedDeviceTypeArray.map(e=>(
           <Tag key={e.deviceTypeCode} >{e.deviceTypeName}</Tag>
         )) }
+        { defectLevelArray.length > 0 && defectLevelArray.map(e=>(
+          <Tag key={e.value} >{e.label}</Tag>
+        )) }
+        {resetAll && <span>清空条件</span>}
       </div>
     );
   }
