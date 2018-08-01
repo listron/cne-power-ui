@@ -28,7 +28,7 @@ class DefectLevelFilter extends Component {
   resetLevel = () => {
     this.props.getDefectList({
       ...this.props.listQueryParams,
-      defectLevel: ''
+      defectLevel: '0'
     })
   }
 
@@ -42,7 +42,7 @@ class DefectLevelFilter extends Component {
     return (
       <div className={styles.defectLevelFilter}>
         <span onClick={this.resetLevel} >不限</span>
-        <CheckboxGroup options={levelOptions} value={defectLevel.split(',').filter(e=>!!e)} onChange={this.onLevelSelect} />
+        <CheckboxGroup options={levelOptions} value={defectLevel.split(',').filter(e=>e>0)} onChange={this.onLevelSelect} />
       </div>
     );
   }
