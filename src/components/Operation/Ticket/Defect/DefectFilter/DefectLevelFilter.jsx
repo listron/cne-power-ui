@@ -4,11 +4,11 @@ import { Checkbox } from 'antd';
 import styles from './defectFilter.scss';
 const CheckboxGroup = Checkbox.Group;
 
-// defectLevel: '0',	   // String	是	缺陷级别（0：全部，1：一级，2：二级，3：三级，4：四级）
 class DefectLevelFilter extends Component {
   static propTypes = {
     defectLevel: PropTypes.string,
-    changeDefectStore: PropTypes.func,
+    listQueryParams: PropTypes.object,
+    getDefectList: PropTypes.func,
   }
 
   constructor(props) {
@@ -19,11 +19,17 @@ class DefectLevelFilter extends Component {
   }
 
   onLevelSelect = (defectLevels) => {
-    this.props.changeDefectStore({defectLevel: defectLevels.join(',')});
+    this.props.getDefectList({
+      ...this.props.listQueryParams,
+      defectLevel: defectLevels.join(',')
+    })
   }
 
   resetLevel = () => {
-    this.props.changeDefectStore({defectLevel: ''});
+    this.props.getDefectList({
+      ...this.props.listQueryParams,
+      defectLevel: ''
+    })
   }
 
   render() {

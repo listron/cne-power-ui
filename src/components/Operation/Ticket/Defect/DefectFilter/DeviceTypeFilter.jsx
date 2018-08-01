@@ -8,7 +8,8 @@ class DeviceTypeFilter extends Component {
   static propTypes = {
     deviceTypes: PropTypes.array,
     deviceTypeCode: PropTypes.string,
-    changeDefectStore: PropTypes.func,
+    listQueryParams: PropTypes.object,
+    getDefectList: PropTypes.func,
   }
 
   constructor(props) {
@@ -19,11 +20,17 @@ class DeviceTypeFilter extends Component {
   }
 
   onDeviceTypeSelect = (deviceTypeCode) => {
-    this.props.changeDefectStore({deviceTypeCode: deviceTypeCode.join(',')});
+    this.props.getDefectList({
+      ...this.props.listQueryParams,
+      deviceTypeCode: deviceTypeCode.join(',')
+    })
   }
 
   resetDevieType = () => {
-    this.props.changeDefectStore({deviceTypeCode: ''});
+    this.props.getDefectList({
+      ...this.props.listQueryParams,
+      deviceTypeCode: ''
+    })
   }
 
   render() {
