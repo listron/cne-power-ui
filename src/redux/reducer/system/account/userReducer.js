@@ -6,7 +6,7 @@ var initState = immutable.fromJS({
   loading: false,
   showPage: 'list',//默认显示list,可显示list,detail,edit,add
   enterpriseId: '',//企业ID
-  roleId: '',//角色ID 
+  roleId: '',//角色ID
   roleName: '',//筛选条件：角色
   userStatus: 0,//筛选条件： 状态  0:全部，1：激活，2：未激活，3：启用，4：禁用，5：待审核，6：审核不通过，7：移除
   sort: '',//排序规则
@@ -20,6 +20,10 @@ var initState = immutable.fromJS({
   userDetail:{},//选中用户详细信息
   selectedUser: [], //table选中用户项
   userData: [],//用户列表数据
+  departmentData:{},
+  departmentName:'',
+  enterpriseUserStatus:0,
+  createtime:''
 })
 
 const userReducer = (state = initState, action) => {
@@ -30,7 +34,7 @@ const userReducer = (state = initState, action) => {
       return state.merge(immutable.fromJS(action.payload)).set('loading', false)
     case userAction.CHANGE_USER_STORE_SUCCESS:
       return state.merge(immutable.fromJS(action.payload))
-    
+
   }
   return state;
 }
