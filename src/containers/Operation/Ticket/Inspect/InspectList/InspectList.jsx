@@ -151,7 +151,8 @@ const mapStateToProps = (state) => ({
   selfDefect: state.operation.defect.get('selfDefect'),
   hasAbnormal: state.operation.inspect.get('hasAbnormal'),
   userName: state.common.get('userName'), 
-
+  stations: state.common.get('stations').toJS(),
+  deviceTypes: state.common.get('deviceTypes').toJS(),
 })
 
 const mapDispatchToProps = (dispatch) => ({
