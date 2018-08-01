@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import InspectTable from '../../../../../components/Operation/Ticket/Inspect/InspectTable/InspectTable';
- import { TicketAction } from '../../../../../constants/actionTypes/operation/ticketAction';
+import { TicketAction } from '../../../../../constants/actionTypes/operation/ticketAction';
+import InspectFilter from '../../../../../components/Operation/Ticket/Inspect/InspectFilter/InspectFilter';
 import { connect } from "react-redux";
 import PropTypes from 'prop-types';
 
@@ -107,6 +108,7 @@ class InspectList extends Component {
   render() {
     return (
       <div>
+        <InspectFilter {...this.props} />
         <InspectTable 
           list={this.props.inspectList}
           pageNum={this.props.pageNum}
@@ -132,12 +134,24 @@ const mapStateToProps = (state) => ({
   inspectList: state.operation.inspect.get('inspectList'),
   isFetching: state.operation.inspect.get('isFetching'),
   error: state.operation.inspect.get('error'),
-  pageNum: state.operation.inspect.get('pageNum'),
-  pageSize: state.operation.inspect.get('pageSize'),
   sort: state.operation.inspect.get('sort'),
   total: state.operation.inspect.get('total'),
-  status: state.operation.inspect.get('status'),
   inspectStatusStatistics: state.operation.inspect.get('inspectStatusStatistics'),
+
+  stationType: state.operation.inspect.get('stationType'),
+  stationCodes: state.operation.inspect.get('stationCodes'),      
+  timeInterval: state.operation.inspect.get('timeInterval'),   
+  status: state.operation.inspect.get('status'),          
+  pageNum: state.operation.inspect.get('pageNum'),       
+  pageSize: state.operation.inspect.get('pageSize'),       
+  createTimeStart: state.operation.inspect.get('createTimeStart'), 
+  createTimeEnd: state.operation.inspect.get('createTimeEnd'),	 
+  deviceTypeCode: state.operation.inspect.get('deviceTypeCode'),
+  sort: state.operation.inspect.get('sort'),
+  selfDefect: state.operation.defect.get('selfDefect'),
+  hasAbnormal: state.operation.inspect.get('hasAbnormal'),
+  userName: state.common.get('userName'), 
+
 })
 
 const mapDispatchToProps = (dispatch) => ({

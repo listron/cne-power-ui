@@ -25,6 +25,7 @@ class DefectTable extends Component {
     defectTypeCode: PropTypes.string,
     userName: PropTypes.string,
     sort: PropTypes.string,
+    selfDefect: PropTypes.bool,
     getDefectList: PropTypes.func,
   }
 
@@ -60,6 +61,7 @@ class DefectTable extends Component {
       createTimeEnd: this.props.createTimeEnd,
       deviceTypeCode: this.props.deviceTypeCode,
       defectTypeCode: this.props.defectTypeCode,
+      selfDefect: value,
       handleUser: value?this.props.userName:'',
       sort: this.props.sort,
     });
@@ -81,7 +83,8 @@ class DefectTable extends Component {
       createTimeEnd: this.props.createTimeEnd,
       deviceTypeCode: this.props.deviceTypeCode,
       defectTypeCode: this.props.defectTypeCode,
-      handleUser: this.props.userName,
+      selfDefect: this.props.selfDefect,
+      handleUser: this.props.selfDefect?this.props.userName:'',
       sort: this.props.sort,
     }
     return (

@@ -194,7 +194,7 @@ const mapStateToProps = (state) => ({
   deviceTypeCode: state.operation.defect.get('deviceTypeCode'),	 
   defectTypeCode: state.operation.defect.get('defectTypeCode'),
   sort: state.operation.defect.get('sort'),
-
+  selfDefect: state.operation.defect.get('selfDefect'),
   userName: state.common.get('userName'), 
   stations: state.common.get('stations').toJS(),
   deviceTypes: state.common.get('deviceTypes').toJS(),

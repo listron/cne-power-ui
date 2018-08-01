@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import styles from './defectFilter.scss';
+import styles from './inspectFilter.scss';
 
 class StationTypeFilter extends Component {
   static propTypes = {
     stationType: PropTypes.string,
     listQueryParams: PropTypes.object,
-    getDefectList: PropTypes.func,
+    getInspectList: PropTypes.func,
   }
 
   constructor(props) {
@@ -17,7 +17,7 @@ class StationTypeFilter extends Component {
   }
 
   selectStationType = (stationType) => {
-    this.props.getDefectList({
+    this.props.getInspectList({
       ...this.props.listQueryParams,
       stationType,
     });
