@@ -9,7 +9,8 @@ class ProvinceTab extends Component {
   static propTypes = {
     stationCodes: PropTypes.string,
     stations: PropTypes.array,
-    changeDefectStore: PropTypes.func,
+    listQueryParams: PropTypes.object,
+    getDefectList: PropTypes.func,
     provinceCode : PropTypes.number,
     provinceName : PropTypes.string,
     childrenStations: PropTypes.array,
@@ -21,6 +22,25 @@ class ProvinceTab extends Component {
       
     };
   }
+  onAllCheck = () => {
+    let { childrenStations, stationCodes,getDefectList,listQueryParams } = this.props;
+    let stationArray = stationCodes.split(',').filter(e=>!!e).map(e=>+e).concat(childrenStations.map(e=>e.stationCode));
+    stationCodes= Array.from(new Set(...stationArray));
+    getDefectList({
+      ...listQueryParams,
+      stationCodes,
+    })
+  }
+
+  onStationCheck = (checkedValue) => {
+    let { stationCodes,getDefectList,listQueryParams } = this.props;
+    let stationArray = stationCodes.split(',').filter(e=>!!e).map(e=>+e).concat(checkedValue);
+    stationCodes= Array.from(new Set(...stationArray));
+    getDefectList({
+      ...listQueryParams,
+      stationCodes,
+    })
+  }
 
   render() {
     const { provinceCode, provinceName, childrenStations, stationCodes } = this.props;
@@ -28,13 +48,15 @@ class ProvinceTab extends Component {
       label: e.stationName,
       value: e.stationCode
     }));
-    let checkedStations = stationCodes.split(',').filter(e=>!!e).map(e=>+e);
-
-    let isAllChecked = false;//checkedStations.length === stationCodes.length;
-
+    const checkedProvinceStationCodes = stationCodes.split(',').filter(e=>!!e).map(e=>+e);//所有选中电站
+    const provincStationArray = childrenStations.filter(e=>{//选出属于当前省份的电站信息
+      return checkedProvinceStationCodes.find(m=>m === e.stationCode)
+    })
+    const isAllChecked = provincStationArray.length === childrenStations.length;
+    const checkedStations = provincStationArray.map(e=>e.stationCode)
     return (
       <TabPane tab={provinceName} key={provinceCode}>
-        <Checkbox onChange={this.checkAll} checked={isAllChecked}>不限</Checkbox>
+        <Checkbox onChange={this.onAllCheck} checked={isAllChecked}>不限</Checkbox>
         <CheckboxGroup options={stationOptions} value={checkedStations} onChange={this.onStationCheck} />
       </TabPane>
     );

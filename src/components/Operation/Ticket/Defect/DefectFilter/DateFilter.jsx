@@ -31,7 +31,7 @@ class DefectTable extends Component {
       createTimeEnd: dateString
     })
   }
-  resetTime = () => { //todo 实际应该是请求list，同时保存时间参数
+  resetTime = () => { 
     this.props.getDefectList({
       ...this.props.listQueryParams,
       createTimeEnd: '',

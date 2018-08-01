@@ -2,26 +2,46 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './defectFilter.scss';
 import ProvinceTab from './ProvinceTab';
-import { Tabs, Checkbox } from 'antd';
+import { Tabs } from 'antd';
 const { TabPane } = Tabs;
-const CheckboxGroup = Checkbox.Group;
 
 class StationsFilter extends Component {
   static propTypes = {
     stationCodes: PropTypes.string,
+    listQueryParams: PropTypes.object,
     stations: PropTypes.array,
     getDefectList: PropTypes.func,
   }
 
   constructor(props) {
     super(props);
+    let activeKey = '0';
+    let selectedStationArray = this.props.stationCodes.split(',').filter(e=>!!e).map(e=>+e)
+    if( selectedStationArray.length > 0 ){//指定激活的tab页
+      let initStationCode = selectedStationArray[0];
+      let activeStation = this.props.stations.find(e=>e.stationCode === initStationCode)
+      activeStation && (activeKey = `${activeStation.stationCode}`)
+    }
     this.state = {
-      
+      activeKey
     };
   }
 
+  selectProvince = (activeKey) => {
+    let { getDefectList, listQueryParams } = this.props;
+    if(activeKey === '0'){
+      getDefectList({
+        ...listQueryParams,
+        stationCodes: ''
+      })
+    }
+    this.setState({activeKey})
+  }
+
+
   render() {
-    const { stations, stationCodes, getDefectList } = this.props;
+    const { stations, stationCodes, getDefectList, listQueryParams } = this.props;
+    const { activeKey } = this.state;
     let stationGroup =  [];
     stations.forEach(e=>{//将stations拆分为以省份为组的对象数组；
       let getAccuacyProvice = false;
@@ -42,23 +62,11 @@ class StationsFilter extends Component {
 
     return (
       <div className={styles.stationsFilter}>
-        <Tabs defaultActiveKey="1" onChange={this.selectProvince}>
-          <TabPane tab="不限" key="1">
+        <Tabs onChange={this.selectProvince} activeKey={activeKey} >
+          <TabPane tab="不限" key="0">
             <span></span>
           </TabPane>
-          {stationGroup.map(e=>(<ProvinceTab {...e} stationCodes={stationCodes} getDefectList={getDefectList} />))}
-          {/* {stationGroup.map(e=>{
-            let stationOptions = [{label: e.provinceName,value: e.provinceName}].concat(e.stations.map(m=>({
-              label: m.stationName,
-              value: m.stationCode,
-            })));
-            <TabPane tab={e.provinceName} key={e.provinceCode}>
-              {<CheckboxGroup options={plainOptions} value={this.state.checkedList} onChange={this.onStationCheck} />}
-            </TabPane>
-            }
-          } */}
-          <TabPane tab="Tab 2" key="2">Content of Tab Pane 2</TabPane>
-          <TabPane tab="Tab 3" key="3">Content of Tab Pane 3</TabPane>
+          {stationGroup.map(e=>(<ProvinceTab {...e} stationCodes={stationCodes} getDefectList={getDefectList} listQueryParams={listQueryParams} />))}
         </Tabs>
       </div>
     );
