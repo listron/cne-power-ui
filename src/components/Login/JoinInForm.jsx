@@ -233,7 +233,7 @@ class JoinInForm extends Component{
                 {getFieldDecorator('username', {
                   rules: [
                     {required: true, message: '请输入用户名'},
-                    {min: 3, max: 8, message: '请输入3到8位中文、英文、数字都可'}
+                    {min: 3, max: 8, message: '请输入3到8位中文、英文、数字'}
                   ]
                 })(
                   <Input prefix={<Icon type="user" />} placeholder="3-8位中文、英文、数字都可" />
