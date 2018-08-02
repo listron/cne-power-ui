@@ -108,7 +108,7 @@ class JoinInForm extends Component{
             this.props.form.setFields({
               phoneNum: {
                 value: values.phoneNum,
-                errors: [new Error('手机号已加入企业，请登录')],
+                errors: [new Error('此手机号已经加入企业，不可加入企业')],
               },
             });
           }
@@ -233,20 +233,20 @@ class JoinInForm extends Component{
                 {getFieldDecorator('username', {
                   rules: [
                     {required: true, message: '请输入用户名'},
-                    {min: 3, max: 8, message: '请输入3到8位字符串'}
+                    {min: 3, max: 8, message: '请输入3到8位中文、英文、数字'}
                   ]
                 })(
-                  <Input prefix={<Icon type="user" />} placeholder="请输入用户名" />
+                  <Input prefix={<Icon type="user" />} placeholder="3-8位中文、英文、数字都可" />
                 )}
               </FormItem>
               <FormItem label="创建密码" {...formItemLayout}>
                 {getFieldDecorator('password',{
                   rules: [
                     {required: true, message: '请输入密码'},
-                    {pattern: /^[a-zA-Z\d]{6,8}$/, message: '密码格式不对' }
+                    {pattern: /^[a-zA-Z\d]{6,8}$/, message: '请输入6-8位数字或英文' }
                   ]
                 })(
-                  <Input prefix={<Icon type="lock" />} type="password" placeholder="请输入密码" />
+                  <Input prefix={<Icon type="lock" />} type="password" placeholder="6-8位数字或英文" />
                 )}
               </FormItem>
               <FormItem label="确认密码" {...formItemLayout}>
@@ -256,7 +256,7 @@ class JoinInForm extends Component{
                     {validator: this.compareToFirstPassword}
                   ]
                 })(
-                  <Input prefix={<Icon type="lock" />} type="password" placeholder="请再次输入密码" />
+                  <Input prefix={<Icon type="lock" />} type="password" placeholder="请再次输入" />
                 )}
               </FormItem>
               <FormItem {...tailFormItemLayout} >
