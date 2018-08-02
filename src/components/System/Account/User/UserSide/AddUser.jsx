@@ -1,7 +1,7 @@
 
 
 import React, { Component } from 'react';
-import { Icon, Popconfirm } from 'antd';
+import { Icon } from 'antd';
 import PropTypes from 'prop-types';
 import styles from './userSide.scss';
 import EditForm from './EditForm';
@@ -14,7 +14,6 @@ class AddUser extends Component {
   static propTypes = {
     loading: PropTypes.bool,
     changeUserStore: PropTypes.func,
-    getUserDetail: PropTypes.func,
     saveUserInfor: PropTypes.func,
     userDetail: PropTypes.object,
   }
@@ -27,12 +26,6 @@ class AddUser extends Component {
       warningTipText: '退出后信息无法保存!',
     }
   }
-
-  // componentWillUnmount(){
-  //   // this.props.changeUserStore({
-  //   //   showPage: 'list',
-  //   // });
-  // }
 
   onWarningTipShow = () =>{
     this.setState({

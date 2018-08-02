@@ -1,8 +1,7 @@
 
 
 import React, { Component } from 'react';
-import { Table, Button, Select, Icon,Radio, Popover, Menu, Dropdown, Checkbox, Input,  } from 'antd';
-// import CommonPagination from '../../../../Common/CommonPagination';
+import { Button, Select, Icon,Radio, Checkbox, Input,  } from 'antd';
 import PropTypes from 'prop-types';
 import styles from './userList.scss';
 
@@ -44,17 +43,6 @@ class UserSearch extends Component {
       stationValue: '',
     }
   }
-  // onCheckboxChange = (e) => {
-  //   console.log(`checked = ${e.target.checked}`);
-  //   console.log(e.target);
-  //   if(e.target.checked){
-  //     this.state.selectedRoles.push
-  //     this.setState({
-  //       // selectedRoles.filter
-  //     })
-      
-  //   }
-  // }
 
   onChangeStatus = (e) => {
     this.props.onChangeStatus(e.target.value);
@@ -68,82 +56,65 @@ class UserSearch extends Component {
     })
   }
 
-  onSelectRoles = (value, item) => {
-    console.log(value, item)
-    let { selectedRoles, selectedRolesSet } = this.state;
+  onSelectRoles = (e, item) => {
+    console.log(e, item)
+    let value = e.key;
+    let { selectedRolesSet } = this.state;
     if(selectedRolesSet.has(value)){
       selectedRolesSet.delete(value)
       this.setState({
         selectedRolesSet: selectedRolesSet,
       })
-      console.log('200')
     }else{
       this.setState({
         selectedRolesSet: selectedRolesSet.add(value),
       })
-      console.log('404')
     }
   }
 
-  onResetOneRole = (e) => {
+  
+  onDeleteRole = (e) => {
     console.log(e)
+    // let value = e.key;
+    // let { selectedRolesSet } = this.state;
+    // if(selectedRolesSet.has(value)){
+    //   selectedRolesSet.delete(value)
+    //   this.setState({
+    //     selectedRolesSet: selectedRolesSet,
+    //   })
+    // }else{
+    //   this.setState({
+    //     selectedRolesSet: selectedRolesSet.add(value),
+    //   })
+    // }
   }
 
-  handleMenuClick = (e) => {
-    // console.log(e);
-    // console.log(e.target)
-    // this.state.selectedRoles.push(e.target.value);
-    // this.setState({ selectedRoles: this.state.selectedRoles})
-  }
-  
   render(){
-    const { userData, selectedUser, totalNum, loading, currentPage, pageSize, userStatus } = this.props;
-    const { selectedRowKeys, selectedRoles, nameValue, phoneValue, stationValue, selectedRolesSet } = this.state;
+    const { userStatus } = this.props;
+    const { nameValue, phoneValue, stationValue, selectedRolesSet } = this.state;
     console.log([...selectedRolesSet])
     const roleData = ['系统管理员','企业管理员','生产管理员','运维实施工人','运维管理员'];
-    
-    // const roleMenu=(
-    //   <Menu  onClick={this.onSelectRoles} >
-    //     {roleData.map((item,index) => {
-    //       return <Menu.Item key={item} ><Checkbox onClick={(e)=>console.log(e.isPropagationStopped) }>{item}</Checkbox></Menu.Item>;
-    //     })}
-    //   </Menu>
-    // )
 
     return (
       <div className={styles.userSearchFilter}>
         <div className={styles.userFilter}>
           <div className={styles.userRole} >
-            <span>筛选条件</span>
-            {/* <Dropdown overlay={roleMenu}  >
-              <Button style={{ marginLeft: 8 }}>
-                角色 <Icon type="down" />
-              </Button>
-            </Dropdown> */}
-            <Select mode="multiple"  onBlur={e=>console.log(e)} onSelect={this.onSelectRoles}  showArrow={true} className={styles.selectedRoles} dropdownMatchSelectWidth={false} >
+            <span className={styles.filterCondition} >筛选条件</span>
+            <Select
+              notFoundContent="角色" 
+              placeholder="角色"  
+              showArrow={true} 
+              className={styles.selectedRoles} 
+              dropdownMatchSelectWidth={false} 
+              labelInValue 
+              onChange={this.onSelectRoles}
+            >
               <Option key="不限" value={'不限'}><Checkbox>不限</Checkbox></Option>
               {roleData.map((item,index) => {
-                return <Option key={index} value={item} ><Checkbox>{item}</Checkbox></Option>;
+                return  <Option key={index} value={item} ><Checkbox >{item}</Checkbox></Option>;
               })}
             </Select>
-            {selectedRolesSet.size !== 0 && 
-              <div>
-                <span>已选条件</span>
-                {[...selectedRolesSet].map((value, key) => {
-                  return <Button type="dashed" key={key} >{value}<Icon type="close" onClick={this.onResetOneRole} /></Button>;
-                })}
-                <span>清空条件</span>
-              </div>
-            }
           </div>
-          {/* <div>
-            <Select mode="mutiple" placeholder="角色" onChange={this.onSelectRoles} showArrow={true} className={styles.selectedRoles} dropdownMatchSelectWidth={false} >
-              <Option key="不限"><Checkbox>不限</Checkbox></Option>
-              {roleData.map((item,index) => {
-                return <Option key={item} ><Checkbox>{item}</Checkbox></Option>;
-              })}
-            </Select>
-          </div> */}
           <div className={styles.userStatus} >
             <span>状态</span>
             <RadioGroup onChange={this.onChangeStatus} defaultValue="0" value={userStatus} buttonStyle="solid" >
@@ -156,6 +127,15 @@ class UserSearch extends Component {
             </RadioGroup>
           </div>
         </div>
+        {selectedRolesSet.size !== 0 && 
+          <div className={styles.selectedRolesBox} >
+            <span>已选条件</span>
+            {[...selectedRolesSet].map((value, key) => {
+              return <Button type="dashed" key={key} >{value}<Icon type="close" onClick={(value)=>this.onDeleteRole(value)} /></Button>;
+            })}
+            <span className={styles.emptyCondition} >清空条件</span>
+          </div>
+        }
         <div className={styles.userSearch}>
           <span>用户名</span><Input placeholder="请输入用户名" value={nameValue} onChange={(e) => this.setState({nameValue: e.target.value })} />
           <span>电话</span><Input placeholder="请输入电话" value={phoneValue} onChange={(e) => this.setState({phoneValue: e.target.value })} />

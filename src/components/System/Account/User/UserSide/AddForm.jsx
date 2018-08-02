@@ -5,7 +5,6 @@
 
 import React, { Component } from 'react';
 import { Button, Input, Form } from 'antd';
-import InputLimit from '../../../../Common/InputLimit'; 
 import PropTypes from 'prop-types';
 import styles from './userSide.scss';
 const FormItem = Form.Item;

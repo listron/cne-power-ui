@@ -1,11 +1,11 @@
 
 
 import React, { Component } from 'react';
-import { Table, Button, Select, Icon, Radio, Popover, Menu, Dropdown, Checkbox, Input,  } from 'antd';
+import { Table, Button, Select, Icon, Popover } from 'antd';
 import CommonPagination from '../../../../Common/CommonPagination';
 import PropTypes from 'prop-types';
 import styles from './userList.scss';
-import UserSearch from './UserSearch'; 
+
 const { Option } = Select;
 class UserList extends Component {
   static propTypes = {
@@ -17,24 +17,14 @@ class UserList extends Component {
     getUserDetail: PropTypes.func,
     changeUserStore: PropTypes.func,
     onChangeSort: PropTypes.func,//排序
-    onChangePageSize: PropTypes.func,
-    onChangePage: PropTypes.func,
-    roleData: PropTypes.object,
-
-    userStatus: PropTypes.number, 
-    userName: PropTypes.string, 
-    userPhone: PropTypes.string,
+    userStatus: PropTypes.number,
     sort: PropTypes.string, 
     ascend: PropTypes.bool,
-    currentPage: PropTypes.number, 
     pageSize: PropTypes.number,
-    onChangeStatus: PropTypes.func, 
-    onUserSearch: PropTypes.func,
     changeUserStatus: PropTypes.func,
     enterpriseId: PropTypes.string,
-    createUserInfo: PropTypes.func,
     pageNum: PropTypes.number,
-
+    roleId: PropTypes.string,
   }
 
   constructor(props){
@@ -43,17 +33,6 @@ class UserList extends Component {
       
     }
   }
-  // onCheckboxChange = (e) => {
-  //   console.log(`checked = ${e.target.checked}`);
-  //   console.log(e.target);
-  //   if(e.target.checked){
-  //     this.state.selectedRoles.push
-  //     this.setState({
-  //       // selectedRoles.filter
-  //     })
-      
-  //   }
-  // }
 
   onRowSelect = (selectedRowKeys, selectedRows) => {//行选择
     console.log(selectedRowKeys, selectedRows);
@@ -209,17 +188,16 @@ class UserList extends Component {
     let [editable, deletable, usable, unallowable, examinable] = [ false, false, false, false, false];
     if(selectedUser.length > 0){
       editable = selectedUser.length === 1;
+      let newArray = [...new Set(selectedUser.map(e=>this.getUserStatus(e.userStatus)))];
+      [deletable, usable, unallowable, examinable] = newArray.length < 2 ? [true, true, true, true] : [ false, false, false, false];
+    
       if(selectedUser[0].userStatus === 3){//启用
         [deletable, usable, unallowable, examinable] = [true, false, true, true];
-      }else if(selectedUser[0].userStatus === 5){//待审核
+      }else if(selectedUser[0].userStatus === 5 || selectedUser[0].userStatus === 6){//待审核//未通过审核
         [deletable, usable, unallowable, examinable] = [true, false, false, true];
       }else if(selectedUser[0].userStatus === 4){//禁用
         [deletable, usable, unallowable, examinable] = [true, true, false, true];
-      }else if(selectedUser[0].userStatus === 6){//未通过审核
-        [deletable, usable, unallowable, examinable] = [true, false, false, true];
       }
-      let newArray = [...new Set(selectedUser.map(e=>this.getUserStatus(e.userStatus)))];
-      [deletable, usable, unallowable, examinable] = newArray.length < 2 ? [true, true, true, true] : [ false, false, false, false];
     }else{
       [editable, deletable, usable, unallowable, examinable] = [ false, false, false, false, false];
     }

@@ -187,4 +187,9 @@
   .ant-btn-primary:hover, .ant-btn-primary:focus{
     background-color: $themeColor;
   }
+  /*ant-btn-dashed:hover ant-btn-dashed:focus颜色*/
+  .ant-btn-dashed:hover,.ant-btn-dashed:focus,.ant-btn-dashed::selection {
+    color: $darkColor;
+  }
+  
 }

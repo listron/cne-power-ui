@@ -7,7 +7,6 @@ class UserDetail extends Component {
   static propTypes = {
     UserDetail: PropTypes.object,
     userStation: PropTypes.number,
-    ascend: PropTypes.bool,
     roleId: PropTypes.string,
     roleName: PropTypes.string,
     specialRoleId: PropTypes.string,

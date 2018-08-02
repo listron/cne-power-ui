@@ -30,9 +30,21 @@
       justify-content: flex-start;
       margin: 20px 0;
       .userRole{
-        width: 30%;
+        :global{
+          .ant-select-selection__placeholder{
+            display: block;
+          }
+          .ant-select-selection-selected-value{
+            display: none;
+          }
+        }
+        
+        .filterCondition{
+          margin: 30px 10px 0 26px;
+        }
       }
       .userStatus{
+        margin-left: 30%;
         >span{ 
           margin-right: 20px;
         }
@@ -61,6 +73,17 @@
         }
       }
       
+    }
+
+    .selectedRolesBox{
+      width: 100%;
+      padding-left: 25px;
+      Button{
+        margin: 0px 5px 20px;
+      }
+      .emptyCodition{
+        color: #199475;
+      }
     }
   }
   .userList{

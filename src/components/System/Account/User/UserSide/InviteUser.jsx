@@ -30,6 +30,17 @@ class InviteUser extends Component {
     })
   }
   
+  onCopy = () => {
+    this.setState({copied: true})
+    setTimeout(()=>this.setState({ copied: false}), 2000);
+  }
+
+  cancelWarningTip = () => {
+    this.setState({
+      showWarningTip: false,
+    })
+  }
+
   confirmWarningTip = () => {
     this.setState({
       showWarningTip: false,
@@ -39,15 +50,6 @@ class InviteUser extends Component {
     });
   }
 
-  cancelWarningTip = () => {
-    this.setState({
-      showWarningTip: false,
-    })
-  }
-  onCopy = () => {
-    this.setState({copied: true})
-    setTimeout(()=>this.setState({ copied: false}), 2000);
-  }
   render(){
     const { loading } = this.props;
     const { showWarningTip, warningTipText,inputValue, copied } = this.state;

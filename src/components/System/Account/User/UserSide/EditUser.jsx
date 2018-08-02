@@ -14,7 +14,6 @@ class EditUser extends Component {
   static propTypes = {
     loading: PropTypes.bool,
     changeUserStore: PropTypes.func,
-    getUserDetail: PropTypes.func,
     saveUserInfor: PropTypes.func,
     userDetail: PropTypes.object,
   }
@@ -27,12 +26,6 @@ class EditUser extends Component {
       warningTipText: '退出后信息无法保存!',
     }
   }
-
-  // componentWillUnmount(){
-  //   this.props.changeUserStore({
-  //     showPage: 'detail',
-  //   });
-  // }
 
   onWarningTipShow = () =>{
     this.setState({
