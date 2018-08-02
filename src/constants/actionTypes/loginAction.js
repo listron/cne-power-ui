@@ -10,6 +10,7 @@ module.exports ={
     UPDATE_COUNT : null,
     BEGIN_COUNT : null,
     STOP_TASK : null,
+    GET_COMMON_DATA_SAGA: null,//获取全电站需要的公共数据，例如getStations,getDeviecTypes,userName等
     // 登录
     GET_LOGIN_SAGA : null,
     GET_LOGIN_SUCCESS : null,
@@ -19,7 +20,6 @@ module.exports ={
     GET_COMPINFO_FAIL : null,
     SEND_CODE_SAGA : null,
     SEND_CODE_SUCCESS : null,
-    SEND_CODE_FAIL : null,
     CHECK_CODE_SAGA : null,
     CHECK_CODE_SUCCESS : null,
     CHECK_CODE_FAIL : null,
@@ -34,7 +34,6 @@ module.exports ={
     CHECK_ENTERPRISE_NAME_SUCCESS: null,
     CHECK_ENTERPRISE_NAME_FAIL: null,
     REGISTER_ENTERPRISE_SAGA: null,
-    REGISTER_ENTERPRISE_SUCCESS: null,
     REGISTER_ENTERPRISE_FAIL: null,
     CHECK_USER_REGISTER_SAGA: null,
     CHECK_USER_REGISTER_SUCCESS: null,
@@ -55,7 +54,6 @@ module.exports ={
     CHANGE_JOIN_STEP_FAIL: null,
     // 重置密码
     RESET_PASSWORD_SAGA: null,
-    RESET_PASSWORD_SUCCESS: null,
     RESET_PASSWORD_FAIL: null,
   })
 }
