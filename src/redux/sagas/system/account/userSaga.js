@@ -8,7 +8,7 @@ import { userAction } from '../../../../constants/actionTypes/system/account/use
 function *changeUserStore(action){
   const { payload } = action;
   yield put({
-    type: userAction.CHANGE_USER_STORE_SUCCESS,
+    type: userAction.CHANGE_USER_STORE,
     payload,
   })
 }
@@ -21,7 +21,7 @@ function *getUserList(action){
     yield put({type: userAction.USER_FETCH});
     const response = yield call(axios.post, url, payload);
     yield put({
-      type: userAction.GET_USER_COMMON_FETCH_SUCCESS,
+      type: userAction.GET_USER_FETCH_SUCCESS,
       payload: {
         ...payload,
         totalNum: response.data.data.totalNum,
@@ -41,7 +41,7 @@ function *changeUserStatus(action){
     const response = yield call(axios.put, url);
     if(response.data.code === '10000'){
       yield put({
-        type: userAction.GET_USER_COMMON_FETCH_SUCCESS,
+        type: userAction.GET_USER_FETCH_SUCCESS,
         payload: {
           ...payload,
         }
@@ -58,13 +58,13 @@ function *changeUserStatus(action){
 // 请求用户详情
 function *getUserDetail(action){
   const { payload } = action;
-  const url = '/api/v3/user/'+'10';
+  const url = '/mock/api/v3/userDetail';
   console.log(action)
   try{
     yield put({ type: userAction.USER_FETCH});
-    const response = yield call(axios.get, url);
+    const response = yield call(axios.get, url,payload);
     yield put({
-      type: userAction.GET_USER_COMMON_FETCH_SUCCESS,
+      type: userAction.GET_USER_FETCH_SUCCESS,
       payload: {
         userDetail: response.data.data,
       }
@@ -83,7 +83,7 @@ function *editUserInfo(action){
     yield put({ type: userAction.USER_FETCH });
     const response = yield call(axios.put, url);
     yield put({
-      type: userAction.GET_USER_COMMON_FETCH_SUCCESS
+      type: userAction.GET_USER_FETCH_SUCCESS
     })
   }catch(e){
     console.log(e);
@@ -98,7 +98,7 @@ function *createUserInfo(action){
     const response = yield call(axios.post, url, payload);
     console.log(action);
     console.log(response)
-    yield put({ type: userAction.GET_USER_COMMON_FETCH_SUCCESS})
+    yield put({ type: userAction.GET_USER_FETCH_SUCCESS})
   }catch(e){
     console.log(e);
   }
@@ -110,4 +110,4 @@ export function* watchUser(){
   yield takeLatest(userAction.EDIT_USER_INFO_SAGA, editUserInfo);
   yield takeLatest(userAction.CHANGE_USER_STATUS_SAGA, changeUserStatus);
   yield takeLatest(userAction.CREATE_USER_INFO_SAGA, createUserInfo);
-} 
+}

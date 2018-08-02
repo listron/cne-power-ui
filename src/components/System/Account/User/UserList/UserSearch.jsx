@@ -113,7 +113,7 @@ class UserSearch extends Component {
     return (
       <div className={styles.userSearchFilter}>
         <div className={styles.userFilter}>
-          <div>
+          <div className={styles.userRole} >
             <span>筛选条件</span>
             {/* <Dropdown overlay={roleMenu}  >
               <Button style={{ marginLeft: 8 }}>
@@ -144,7 +144,7 @@ class UserSearch extends Component {
               })}
             </Select>
           </div> */}
-          <div>
+          <div className={styles.userStatus} >
             <span>状态</span>
             <RadioGroup onChange={this.onChangeStatus} defaultValue="0" value={userStatus} buttonStyle="solid" >
               <RadioButton value="0">全部</RadioButton>

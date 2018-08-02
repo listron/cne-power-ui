@@ -1,14 +1,20 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import axios from 'axios';
 import Path from '../../constants/path';
+import moment from 'moment';
 import { stringify } from 'qs';
-import { setCookie } from '../../utils';
+import { setCookie, getCookie } from '../../utils';
 import { LoginAction } from '../../constants/actionTypes/loginAction';
+import { CommonAction } from '../../constants/actionTypes/commonAction';
 import { message } from 'antd';
 
-//请求改变store属性
+message.config({
+  maxCount: 1,
+});
+
+// 改变loginStore
 function *changeLoginStore(action){
-  const { params } = action;
+  let { params } = action;
   yield put({
     type: LoginAction.CHANGE_LOGIN_STORE,
     params,
@@ -18,7 +24,6 @@ function *changeLoginStore(action){
 //账号密码登录
 function *getLogin(action){
   let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.login;
-  // let url = "/mock/api/v3/login";
   yield put({ type: LoginAction.LOGIN_FETCH });
   try {
     const response = yield call(axios, {
@@ -35,10 +40,15 @@ function *getLogin(action){
       setCookie('authData',JSON.stringify(response.data.data.access_token));
       setCookie('phoneNum', action.params.phoneNum);
       setCookie('username', response.data.data.username);
-      // setCookie('userId', response.data.result.userId);
-      yield put({ type: LoginAction.GET_LOGIN_SUCCESS, data: response.data});   
+      setCookie('expireData', moment().add(response.data.data.expires_in, 'seconds'));
+      setCookie('isNotLogin', 0);
+      yield put({ type: LoginAction.GET_LOGIN_SUCCESS, data: response.data.data});
+      action.params.history.push('/');
+
+      // yield put({ type: LoginAction.GET_COMMON_DATA_SAGA});   
     } else{
-      yield put({ type: LoginAction.GET_LOGIN_FAIL, data: {error: response.data.message }}); 
+      // 此处先这样写，等后端改过来返回具体的error状态信息后再根据error返回具体信息
+      yield put({ type: LoginAction.GET_LOGIN_FAIL, data: response.data }); 
       message.error(response.data.message);       
     }
   } catch (e) {
@@ -48,13 +58,11 @@ function *getLogin(action){
 //获取短信验证码
 function *getVerificationCode(action){
   let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.getVerificationCode + '/' +action.params.phoneNum;
-  // let url = "/mock/api/v3/login/verificationcode/";
   try{
     const response = yield call(axios.get, url);
     if(response.data.code === "10000"){
       yield put({ type: LoginAction.SEND_CODE_SUCCESS, params: action.params });
     } else {
-      yield put({ type: LoginAction.SEND_CODE_FAIL, data:{ error: response.data.message, phoneNum: action.params.phoneNum}})
       message.error(response.data.message);
     }
   }catch(e){
@@ -64,7 +72,6 @@ function *getVerificationCode(action){
 //手机+验证码登录
 function *checkCode(action){
   let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.loginPhoneCode;
-  // let url = "/mock/api/v3/login/phonecode";
   let { params } =action;
   yield put({ type: LoginAction.LOGIN_FETCH})
   try{
@@ -78,42 +85,48 @@ function *checkCode(action){
         verificationCode: action.params.verificationCode,
       }),
     });
-    if(response.data.code === '10000'){
-      setCookie('authData',JSON.stringify(response.data.data.access_token));
-      setCookie('phoneNum', action.params.phoneNum);
-      setCookie('username', response.data.data.username);
+    if(response.data.code === '10000'){ 
+      if(action.params.isNotLogin === 1 || response.data.data.enterpriseId !== null) {
+        setCookie('authData',JSON.stringify(response.data.data.access_token));
+        setCookie('phoneNum', action.params.phoneNum);
+        setCookie('username', response.data.data.username);
+        setCookie('expireData', moment().add(response.data.data.expires_in, 'seconds'));
+        setCookie('isNotLogin', action.params.isNotLogin);
+      }
+      if(action.params.isNotLogin === 0 && response.data.data.enterpriseId !== null) {
+        action.params.history.push('/');
+      }
       yield put({
         type: LoginAction.CHECK_CODE_SUCCESS,
-        payload: {
+        params: {
           ...params,
-          ...response.data.data,
-        },
+          data: response.data.data,
+        },    
       });
-      // message.success(response.data.message);
     }else{
-      yield put({ type: LoginAction.CHECK_CODE_FAIL, data:{ message: response.data.message, code: response.data.code}})
-      message.error(response.data.message);
+      yield put({ type: LoginAction.CHECK_CODE_FAIL, data: response.data })
+      // message.error(response.data.message);
     }
   }catch(e){
     console.log(e);
   }
 }
 
-// 手机号验证码注册
+// 验证手机号和验证码是否正确（加入企业/注册企业，手机验证码正确会调用手机号验证码登录获取token）
 function *phoneCodeRegister(action){
-  // let url = "/mock/api/v3/login/phoneregister";
   let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.phoneCodeRegister;
   try{
-    const response = yield call(axios.post, url, {'phoneNum':action.params.phoneNum, 'verificationCode': action.params.verificationCode});
-    if(response.data.code === '20001' || response.data.code === '20005' || response.data.code === '00000'){
-      yield put({type: LoginAction.PHONE_CODE_REGISTER_FAIL, data: {error: response.data.message}})
-      message.error(response.data.message);
+    const response = yield call(axios.post, url, {
+      phoneNum: action.params.phoneNum, 
+      verificationCode: action.params.verificationCode
+    });
+    if(response.data.code === '00000' || response.data.code === '20001'){
+      yield put({type: LoginAction.PHONE_CODE_REGISTER_FAIL, data: response.data})
     }else{
       yield put({type: LoginAction.CHECK_CODE_SAGA, params: action.params})
       yield put({
         type: LoginAction.PHONE_CODE_REGISTER_SUCCESS,
         params: action.params,
-        data: response.data.data,
       })
     }
   }catch(e){
@@ -122,7 +135,6 @@ function *phoneCodeRegister(action){
 }
 // 注册验证手机号是否已存在(此接口暂时弃用)
 function *checkPhoneRegister(action){
-  // let url = "/mock/api/v3/login/phoneregister";
   let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.loginPhoneRegister + '/' + action.params;
   try{
     const response = yield call(axios.get, url);
@@ -138,7 +150,6 @@ function *checkPhoneRegister(action){
 
 // 验证企业域名是否有效
 function *checkEnterpriseDomain(action){
-  // let url = '/mock/api/v3/login/enterprisedomain/';
   let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.checkEnterpriseDomain + '/' +action.params.enterpriseDomain;
   try{
     const response = yield call(axios.get, url);
@@ -148,9 +159,11 @@ function *checkEnterpriseDomain(action){
         params: action.params,
         data: response.data.data,
       });
-      yield put({type: LoginAction.CHECK_ENTERPRISE_NAME_SAGA, params: action.params, isRegister: response.data.data.isRegister})
+      if(response.data.data.isRegister === '1') {
+        yield put({type: LoginAction.CHECK_ENTERPRISE_NAME_SAGA, params: action.params})
+      }
     }else{
-      yield put({ type: LoginAction.CHECK_ENTERPRISE_DOMAIN_FAIL, data: {error: response.data.message}})
+      yield put({ type: LoginAction.CHECK_ENTERPRISE_DOMAIN_FAIL, data: response.data })
     }
   }catch(e){
     console.log(e)
@@ -159,21 +172,25 @@ function *checkEnterpriseDomain(action){
 
 // 验证企业名是否已注册
 function *checkEnterpriseName(action){
-  // let url = '/mock/api/v3/login/enterprise/';
   let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.checkEnterpriseName + '/' +action.params.enterpriseName;
   try{
     const response = yield call(axios.get, url);
     if(response.data.code === '10000'){
-      if(response.data.data.isRegister === '1' && action.isRegister === '1'){
+      yield put({
+        type: LoginAction.CHECK_ENTERPRISE_NAME_SUCCESS, 
+        params: action.params,
+        data: response.data.data,
+      });
+      if(response.data.data.isRegister === '1') {
         yield put({
-          type: LoginAction.CHECK_ENTERPRISE_NAME_SUCCESS, 
-          params: action.params,
-          data: response.data.data,
+          type: LoginAction.CHANGE_LOGIN_STORE,
+          params: {
+            registerStep: 3
+          }
         });
       }
-      
     }else{
-      yield put({ type: LoginAction.CHECK_ENTERPRISE_NAME_FAIL})
+      yield put({ type: LoginAction.CHECK_ENTERPRISE_NAME_FAIL, data: response.data})
     }
   }catch(e){
     console.log(e)
@@ -187,7 +204,9 @@ function *registerEnterprise(action){
     const response = yield call(axios, {
       method: 'post',
       url,
-      headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'},
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+      },
       data: stringify({
         'grant_type': "password",
         confirmPwd: action.params.confirmPwd,
@@ -200,21 +219,18 @@ function *registerEnterprise(action){
     });
     if(response.data.code === '10000'){
       yield put({
-        type: LoginAction.REGISTER_ENTERPRISE_SUCCESS,
-        params: action.params,
-        data: response.data.data,
-      })
-      message.success('注册成功！');
-      yield put({
         type: LoginAction.GET_LOGIN_SAGA,
         params:{
           username: action.params.username,
           password: action.params.password,
+          history: action.params.history
         }
-      })
+      });
     }else{
-      yield put({ type: LoginAction.REGISTER_ENTERPRISE_FAIL})
-      message.error(response.data.message);
+      yield put({type: LoginAction.REGISTER_ENTERPRISE_FAIL, data: response.data });
+      if(response.data.code !== '20015') {
+        message.error(response.data.message);
+      }
     }
   }catch(e){
     console.log(e);
@@ -233,9 +249,8 @@ function *getEnterPriseInfo(action){
         data: response.data.data,
       })
     }else{
-      yield put({type: LoginAction.GET_ENTERPRISE_INFO_FAIL})
+      yield put({type: LoginAction.GET_ENTERPRISE_INFO_FAIL, data: response.data})
     }
-    
   }catch(e){
     console.log(e);
   }
@@ -243,7 +258,6 @@ function *getEnterPriseInfo(action){
 
 // 加入企业
 function *joinEnterprise(action){
-  // const url = '/mock/api/v3/login/userenterprise';
   let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.joinEnterprise;
   try{
     yield put({ type: LoginAction.LOGIN_FETCH });
@@ -262,23 +276,28 @@ function *joinEnterprise(action){
     });
     if(response.data.code === '10000'){
       yield put({
-        type: LoginAction.JOIN_ENTERPRISE_SUCCESS,
-        params: action.params,
-        data: response.data.data,
-      })
-      message.success(response.data.message)
-      yield put({
         type: LoginAction.GET_LOGIN_SAGA,
         params:{
           username: action.params.username,
           password: action.params.password,
+          history: action.params.history,
         }
       })
-    }else{
-      yield put({type: LoginAction.JOIN_ENTERPRISE_FAIL, params: response.data.message})
-      message.error(response.data.message)
+    }else if(response.data.code === '20014') {//待审核
+      yield put({
+        type: LoginAction.JOIN_ENTERPRISE_SUCCESS,
+        params: action.params,
+        data: {
+          joinResult: 1
+        },      
+      })
+      message.warning('等待管理员审核');
+    } else{
+      yield put({type: LoginAction.JOIN_ENTERPRISE_FAIL, data: response.data })
+      if(response.data.code !== '20015') {
+        message.error(response.data.message);
+      }
     }
-    
   }catch(e){
     console.log(e);
   }
@@ -286,11 +305,9 @@ function *joinEnterprise(action){
 
 // 设置新密码
 function *resetPassword(action){
-  // let url = "/mock/api/v3/login/password";
   let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.resetPassword;
   yield put({type: LoginAction.LOGIN_FETCH});
   try{
-    // const response = yield call(axios.post, url, action.params);
     const response = yield call(axios, {
       method: 'post',
       url,
@@ -304,18 +321,15 @@ function *resetPassword(action){
     });
     if(response.data.code === "10000"){
       message.success('密码设置成功，请重新登录！')
-      yield put({ type: LoginAction.RESET_PASSWORD_SUCCESS})
     }else{
-      yield put({ type: LoginAction.RESET_PASSWORD_FAIL})
-      message.error(response.data.message)
+      yield put({ type: LoginAction.RESET_PASSWORD_FAIL, data: response.data })
     }
   }catch(e){
     console.log(e);
   }
 }
-// 动态验证用户名是否注册
+// 动态验证用户名是否注册（暂时弃用）
 function *checkUserRegister(action){
-  // let url = "/mock/api/v3/login/password";
   let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.checkUserRegister + '/' + action.params.username;
   yield put({type: LoginAction.LOGIN_FETCH});
   try{
@@ -329,7 +343,22 @@ function *checkUserRegister(action){
     console.log(e);
   }
 }
-
+//获取一些公共数据
+function *getCommonData(action){
+  try{
+    yield put({type: CommonAction.GET_STATIONS_SAGA, params:{
+      domainName: "cne", 
+      stationType: 0, 
+      app: "bi"
+    }});
+    // yield put({type: CommonAction.GET_DEVICETYPES_SAGA, params: {
+      // 获取所有设备类型  需与后端协商一致取得
+    // }});
+  }catch(e){
+    console.log(e);
+  }
+  
+}
 export function* watchLogin() {
   yield takeLatest(LoginAction.GET_LOGIN_SAGA, getLogin);
   yield takeLatest(LoginAction.SEND_CODE_SAGA, getVerificationCode);
@@ -344,5 +373,5 @@ export function* watchLogin() {
   yield takeLatest(LoginAction.CHECK_PHONE_REGISTER_SAGA, checkPhoneRegister);
   yield takeLatest(LoginAction.PHONE_CODE_REGISTER_SAGA, phoneCodeRegister);
   yield takeLatest(LoginAction.CHANGE_LOGIN_STORE_SAGA, changeLoginStore);
-
+  yield takeLatest(LoginAction.GET_COMMON_DATA_SAGA, getCommonData);
 }

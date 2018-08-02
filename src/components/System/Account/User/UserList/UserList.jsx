@@ -67,12 +67,23 @@ class UserList extends Component {
   onCreateUser = () => {
     this.props.changeUserStore({showPage: 'add'});
   }
-  getUserStaion = (text) => {
+
+  onPaginationChange = ({currentPage,pageSize}) => {//分页器
+    this.props.getUserList({
+      enterpriseId: this.props.enterpriseId,
+      userStatus: this.props.userStatus,
+      sort: this.props.sort, 
+      ascend: this.props.ascend, 
+      pageNum: currentPage,
+      pageSize,
+    })
+  }
+
+  getUserStatus = (text) => {
     switch(text){
       case 0:
         return '全部';
       case 1:
-        return '激活';
       case 2:
         return '未激活';
       case 3:
@@ -178,9 +189,9 @@ class UserList extends Component {
         } 
       },  {
         title: '状态',
-        dataIndex: 'userStation',
-        key: 'userStation',
-        render: (text, record, index) => (<span>{this.getUserStaion(text)}</span>),
+        dataIndex: 'userStatus',
+        key: 'userStatus',
+        render: (text, record, index) => (<span>{this.getUserStatus(text)}</span>),
         sorter: true,
       }
     ];
@@ -194,12 +205,23 @@ class UserList extends Component {
   }
 
   _createUserOperate = () => {
-    const { selectedUser } = this.props;
+    let selectedUser = this.props.selectedUser.toJS();
     let [editable, deletable, usable, unallowable, examinable] = [ false, false, false, false, false];
-    if(selectedUser.toJS().length > 0){
-      console.log(selectedUser.toJS())
-      editable = selectedUser.toJS().length === 1;
-      [deletable, usable, unallowable, examinable] = [true, true, true, true];
+    if(selectedUser.length > 0){
+      editable = selectedUser.length === 1;
+      if(selectedUser[0].userStatus === 3){//启用
+        [deletable, usable, unallowable, examinable] = [true, false, true, true];
+      }else if(selectedUser[0].userStatus === 5){//待审核
+        [deletable, usable, unallowable, examinable] = [true, false, false, true];
+      }else if(selectedUser[0].userStatus === 4){//禁用
+        [deletable, usable, unallowable, examinable] = [true, true, false, true];
+      }else if(selectedUser[0].userStatus === 6){//未通过审核
+        [deletable, usable, unallowable, examinable] = [true, false, false, true];
+      }
+      let newArray = [...new Set(selectedUser.map(e=>this.getUserStatus(e.userStatus)))];
+      [deletable, usable, unallowable, examinable] = newArray.length < 2 ? [true, true, true, true] : [ false, false, false, false];
+    }else{
+      [editable, deletable, usable, unallowable, examinable] = [ false, false, false, false, false];
     }
 
     return (<Select onChange={this.userHandle} placeholder="操作" dropdownMatchSelectWidth={false} dropdownClassName={styles.handleDropdown} >
@@ -254,33 +276,21 @@ class UserList extends Component {
   }
   
   render(){
-    const { userData, totalNum, loading, currentPage, pageSize, selectedUser } = this.props;
-    console.log(selectedUser.toJS())
-    const pagination={
-      defaultCurrent: 1,
-      position: 'top',
-      total: totalNum,
-      showSizeChanger: true,
-      current: currentPage,
-      pageSize: pageSize,
-      onShowSizeChange: (current, pageSize) => {
-        this.props.onChangePageSize(pageSize);
-      },
-      onChange: (current) => {
-        this.props.onChangePage(current);
-      }
-    }
+    const { userData, totalNum, loading, selectedUser } = this.props;
     
     return (
       <div className={styles.userList}>
         <div className={styles.userHelper} >
-          <Button onClick={this.onCreateUser} className={styles.addUser} ><Icon type="plus" /><span className={styles.text}>用户</span></Button>
-          <Button onClick={this.onInviteUser} >邀请用户</Button>
-          <Button>批量导入</Button>
-          <Button  >导入模板下载</Button>
-          <div className={styles.userOperate} >
-            {this._createUserOperate()}
+          <div>
+            <Button onClick={this.onCreateUser} className={styles.addUser} ><Icon type="plus" /><span className={styles.text}>用户</span></Button>
+            <Button onClick={this.onInviteUser} >邀请用户</Button>
+            <Button>批量导入</Button>
+            <Button  >导入模板下载</Button>
+            <div className={styles.userOperate} >
+              {this._createUserOperate()}
+            </div>
           </div>
+          <CommonPagination total={totalNum} onPaginationChange={this.onPaginationChange} />
         </div>
         <Table 
           loading={loading}
@@ -291,7 +301,7 @@ class UserList extends Component {
           dataSource={userData.toJS().map((e,i)=>({...e,key:i}))} 
           columns={this.tableColumn()} 
           onChange={this.tableChange}
-          pagination={pagination}
+          pagination={false}
         />
         <div className={styles.tableFooter}>
           <span className={styles.info}>当前选中<span className={styles.totalNum}>{selectedUser.toJS().length}</span>项</span>
