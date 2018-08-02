@@ -243,7 +243,7 @@ class JoinInForm extends Component{
                 {getFieldDecorator('password',{
                   rules: [
                     {required: true, message: '请输入密码'},
-                    {pattern: /^[a-zA-Z\d]{6,8}$/, message: '密码格式不对' }
+                    {pattern: /^[a-zA-Z\d]{6,8}$/, message: '请输入6-8位数字或英文' }
                   ]
                 })(
                   <Input prefix={<Icon type="lock" />} type="password" placeholder="6-8位数字或英文" />
