@@ -12,7 +12,7 @@ import appReducer from './redux/reducer';
 import rootSaga from './redux/sagas';
 import './theme/reset.scss';
 import './theme/antdReset.scss';
-
+// 创建saga中间件
 const sagaMiddleware = createSagaMiddleware();
 const middlewares = [thunk, sagaMiddleware, logger];
 const store = createStore(appReducer, applyMiddleware(...middlewares));

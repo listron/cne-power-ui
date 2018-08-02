@@ -58,11 +58,11 @@ function *changeUserStatus(action){
 // 请求用户详情
 function *getUserDetail(action){
   const { payload } = action;
-  const url = '/api/v3/user/'+'10';
+  const url = '/mock/api/v3/userDetail';
   console.log(action)
   try{
     yield put({ type: userAction.USER_FETCH});
-    const response = yield call(axios.get, url);
+    const response = yield call(axios.get, url,payload);
     yield put({
       type: userAction.GET_USER_FETCH_SUCCESS,
       payload: {
@@ -110,4 +110,4 @@ export function* watchUser(){
   yield takeLatest(userAction.EDIT_USER_INFO_SAGA, editUserInfo);
   yield takeLatest(userAction.CHANGE_USER_STATUS_SAGA, changeUserStatus);
   yield takeLatest(userAction.CREATE_USER_INFO_SAGA, createUserInfo);
-} 
+}

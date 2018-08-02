@@ -12,14 +12,14 @@ class Department extends Component {
     showPage: PropTypes.string,
     enterpriseId: PropTypes.string,
     departmentSource: PropTypes.number,
-    departmentName: PropTypes.string, 
-    parentDepartmentName: PropTypes.string, 
-    stationName: PropTypes.string, 
-    sort: PropTypes.string, 
-    ascend: PropTypes.bool, 
+    departmentName: PropTypes.string,
+    parentDepartmentName: PropTypes.string,
+    stationName: PropTypes.string,
+    sort: PropTypes.string,
+    ascend: PropTypes.bool,
     pageNum: PropTypes.number,
     pageSize: PropTypes.number,
-    showAssignStationModal: PropTypes.bool, 
+    showAssignStationModal: PropTypes.bool,
     showAssignUserModal: PropTypes.bool,
     getDepartmentList: PropTypes.func,
     getAllDepartment: PropTypes.func,
@@ -34,11 +34,11 @@ class Department extends Component {
     const params = {
       enterpriseId: this.props.enterpriseId,
       departmentSource: this.props.departmentSource,
-      departmentName: this.props.departmentName, 
-      parentDepartmentName: this.props.parentDepartmentName, 
-      stationName: this.props.stationName, 
-      sort: this.props.sort, 
-      ascend: this.props.ascend, 
+      departmentName: this.props.departmentName,
+      parentDepartmentName: this.props.parentDepartmentName,
+      stationName: this.props.stationName,
+      sort: this.props.sort,
+      ascend: this.props.ascend,
       pageNum: this.props.pageNum,
       pageSize: this.props.pageSize,
     }
@@ -48,7 +48,7 @@ class Department extends Component {
     })
   }
 
-  
+
   onShowSideChange = ({showSidePage}) => {
     this.setState({ showSidePage });
   }
@@ -79,7 +79,7 @@ class Department extends Component {
         {showAssignStationModal && null}
         {showAssignUserModal && null}
       </div>
-        
+
     );
   }
 }
@@ -113,7 +113,7 @@ const mapDispatchToProps = (dispatch) => ({
   getDepartmentList: payload => dispatch({type:departmentAction.GET_DEPARTMENT_LIST_SAGA, payload}),
   getDepartmentDetail: payload => dispatch({type:departmentAction.GET_DEPARTMENT_DETAIL_SAGA, payload}),
   getOtherPageDetail: (payload, {previous}) => dispatch({type:departmentAction.GET_OTHER_PAGE_DEPARTMENT_DETAIL_SAGA, payload, previous}),
-  getAllUsers: payload => dispatch({type:departmentAction.GET_ALL_USERS_SAGA,payload}), 
+  getAllUsers: payload => dispatch({type:departmentAction.GET_ALL_USERS_SAGA,payload}),
   getAllDepartment: payload => dispatch({type:departmentAction.GET_ALL_DEPARTMENT_SAGA,payload}),
   addDepartmentInfor: payload => dispatch({type:departmentAction.ADD_DEPARTMENT_INFO_SAGA, payload}),
   editDepartmentInfor: payload => dispatch({type: departmentAction.EDIT_DEPARTMENT_INFO_SAGA, payload})
