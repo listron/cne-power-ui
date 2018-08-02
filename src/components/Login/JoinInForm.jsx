@@ -185,7 +185,7 @@ class JoinInForm extends Component{
             </FormItem>
             {showEnterpriseInfo && <Card className={styles.enterpriseInfo} >
               {enterpriseName === null ? <div>没有此企业，请重新输入</div> : <div>点击确认要加入的企业</div>}
-              {enterpriseName === null ? null : <Button className={styles.enterpriseBtn} onClick={this.changeJoinStep }>{enterpriseName}</Button>}
+              {enterpriseName === null ? null : <Button className={styles.enterpriseBtn} style={{marginTop: '40px'}} onClick={this.changeJoinStep }>{enterpriseName}</Button>}
               <div className={styles.enterpriseBack} ><Icon type="arrow-left" /><span  onClick={this.handleCancel}>返回</span></div>
             </Card>}
           </Form>

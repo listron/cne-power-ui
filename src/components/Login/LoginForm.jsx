@@ -14,7 +14,8 @@ class LoginForm extends Component {
     checkCodeLogin: PropTypes.func,
     enterpriseId: PropTypes.string,
     username: PropTypes.string,
-    history: PropTypes.object
+    history: PropTypes.object,
+    error: PropTypes.object,
   }
 
   constructor(props) {
@@ -43,6 +44,16 @@ class LoginForm extends Component {
             history: this.props.history,
           });
         }else{
+          setTimeout(() => {
+            if(this.props.error && this.props.error.get('code') === '20009') {
+              this.props.form.setFields({
+                phoneNum: {
+                  value: values.phoneNum,
+                  errors: [new Error('该用户尚未注册')],
+                },
+              });
+            }
+          }, 500);
           this.props.checkCodeLogin({
             ...values,
             history: this.props.history,

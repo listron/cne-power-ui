@@ -105,7 +105,7 @@ function *checkCode(action){
       });
     }else{
       yield put({ type: LoginAction.CHECK_CODE_FAIL, data: response.data })
-      message.error(response.data.message);
+      // message.error(response.data.message);
     }
   }catch(e){
     console.log(e);

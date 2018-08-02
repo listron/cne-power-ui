@@ -15,6 +15,7 @@ class ForgetForm extends Component{
     enterpriseId: PropTypes.string,
     username: PropTypes.string,
     showResetPassword: PropTypes.number,
+    error: PropTypes.object,
   }
 
   constructor(props){
@@ -67,6 +68,16 @@ class ForgetForm extends Component{
   checkCodeLogin = () => {
     this.props.form.validateFields(['phoneNum','verificationCode'], (err, values) => {
       if(!err){
+        setTimeout(() => {
+          if(this.props.error && this.props.error.get('code') === '20009') {
+            this.props.form.setFields({
+              phoneNum: {
+                value: values.phoneNum,
+                errors: [new Error('该用户尚未注册')],
+              },
+            });
+          }
+        }, 500);
         this.props.checkCodeLogin({...values,showResetPassword: 1, isNotLogin: 1});
       }
     })

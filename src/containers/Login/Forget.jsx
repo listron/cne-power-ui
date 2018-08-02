@@ -16,6 +16,7 @@ class Forget extends Component {
     enterpriseId: PropTypes.string,
     username: PropTypes.string,
     checkCodeLogin: PropTypes.func,
+    error: PropTypes.object,
   }
   constructor(props) {
     super(props);
@@ -43,6 +44,7 @@ class Forget extends Component {
           enterpriseId={this.props.enterpriseId}
           username={this.props.username}
           checkCodeLogin={this.props.checkCodeLogin}
+          error={this.props.error}
         />
         <div className={styles.contactUs}>
           <span>用户协议</span>
@@ -59,6 +61,7 @@ const mapStateToProps = (state) => ({
   phoneNum: state.login.get('phoneNum'),
   enterpriseId: state.login.get('enterpriseId'),
   username: state.login.get('username'),
+  error: state.login.get('error'),
 })
 
 const mapDispatchToProps = (dispatch) => ({
