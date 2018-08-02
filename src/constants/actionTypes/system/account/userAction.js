@@ -5,9 +5,9 @@ module.exports = {
     USER_FETCH: null,
 
     CHANGE_USER_STORE_SAGA: null,// 更改reducer
-    CHANGE_USER_STORE_SUCCESS: null,
+    CHANGE_USER_STORE: null,
 
-    GET_USER_COMMON_FETCH_SUCCESS: null, //公共请求API成功
+    GET_USER_FETCH_SUCCESS: null,//公共请求API成功
 
     GET_USER_LIST_SAGA: null, //获取列表
 
