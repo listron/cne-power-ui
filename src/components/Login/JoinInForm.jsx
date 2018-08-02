@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Form, Icon, Input, Button, Modal } from 'antd';
+import {Form, Icon, Input, Button, Modal, Card } from 'antd';
 import PropTypes from 'prop-types';
 import styles from './joinInForm.scss';
 
@@ -7,27 +7,20 @@ const FormItem = Form.Item;
 
 class JoinInForm extends Component{
   static propTypes = {
-    loading: PropTypes.bool,
     form: PropTypes.object,
-    isExist: PropTypes.number,
     enterpriseName: PropTypes.string,
-    isJoined: PropTypes.number,
     getEnterpriseInfo: PropTypes.func,
     sendCode: PropTypes.func,
-    checkPhoneCode: PropTypes.func,
     joinEnterprise: PropTypes.func,
     enterpriseId: PropTypes.string,
     phoneNum: PropTypes.string,
-    isPhoneRegister: PropTypes.string,
-    checkPhoneRegister: PropTypes.func,
     phoneCodeRegister: PropTypes.func,
-    username: PropTypes.string,
-    joinResult: PropTypes.number,
     changeJoinStep: PropTypes.func,
     joinStep: PropTypes.number,
     changeLoginStore: PropTypes.func,
     enterpriseIdToken: PropTypes.string,
-    enterpriseNameToken: PropTypes.string,
+    error: PropTypes.object,
+    history: PropTypes.object,
   }
 
   constructor(props){
@@ -47,10 +40,21 @@ class JoinInForm extends Component{
   onJoinEnterprise = () => {
     this.props.form.validateFields((err,values) => {
       if(!err){
-        let { phoneNum, enterpriseId } =this.props;
+        setTimeout(() => {
+          if(this.props.error && this.props.error.get('code') === '20015') {
+            this.props.form.setFields({
+              username: {
+                value: values.username,
+                errors: [new Error('用户名已存在')],
+              },
+            });
+          }
+        }, 500);
+        let { phoneNum, enterpriseId, history } =this.props;
         let params = {
           phoneNum,
           enterpriseId,
+          history,
           ...values,
         }
         this.props.joinEnterprise(params);
@@ -99,13 +103,26 @@ class JoinInForm extends Component{
   phoneCodeRegister = () => {
     this.props.form.validateFields(['phoneNum','verificationCode'], (err, values) => {
       if(!err){
-        this.props.phoneCodeRegister({...values,joinStep: 3 })
-        // let { enterpriseIdToken } = this.props;
-        // if(enterpriseIdToken !== null && enterpriseIdToken.length > 0){
-        //   this.props.changeLoginStore({joinStep: 3});
-        // }else{
-        //   return;
-        // }
+        setTimeout(() => {
+          if(this.props.error && this.props.error.get('code') === '20001') {
+            this.props.form.setFields({
+              phoneNum: {
+                value: values.phoneNum,
+                errors: [new Error('手机号已加入企业，请登录')],
+              },
+            });
+          }
+          // server validate
+          if(this.props.error && (this.props.error.get('message') === '验证码错误' || this.props.error.get('message') === '验证码已失效')) {
+            this.props.form.setFields({
+              verificationCode: {
+                value: values.verificationCode,
+                errors: [new Error(this.props.error.get('message'))],
+              },
+            });
+          }      
+        }, 500);
+        this.props.phoneCodeRegister({...values,joinStep: 3, isNotLogin: 1 })
       }
     })
   }
@@ -119,10 +136,6 @@ class JoinInForm extends Component{
     }
   }
 
-  checkPhoneRegister = (e) => {
-    this.props.checkPhoneRegister(e.target.value);
-  }
-
   hasErrors = (fieldsError) => {
     return Object.keys(fieldsError).some(field => fieldsError[field]);
   }
@@ -132,8 +145,8 @@ class JoinInForm extends Component{
   }
   render(){
     const { getFieldDecorator, getFieldsError } = this.props.form;
-    const { enterpriseName, isPhoneRegister, joinResult, joinStep, enterpriseIdToken } = this.props;
-    const { showEnterpriseInfo } = this.state;
+    const { enterpriseName, joinStep, enterpriseIdToken } = this.props;
+    const { showEnterpriseInfo, timeValue } = this.state;
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -170,21 +183,11 @@ class JoinInForm extends Component{
             <FormItem {...tailFormItemLayout}>
               <Button type="primary" htmlType="submit" disabled={this.hasErrors(getFieldsError())} >下一步</Button>
             </FormItem>
-            {/* <Spin spinning={loading}> */}
-              <Modal
-                visible={showEnterpriseInfo}
-                title={enterpriseName === null ? "没有此企业，请重新输入" : "点击确认要加入的企业"}
-                footer={null}
-                maskClosable={false}
-                destroyOnClose={true}
-                width={416}
-                height={228}
-                closable={false}
-              >
-                {enterpriseName === null ? null : <Button onClick={this.changeJoinStep }>{enterpriseName}</Button>}
-                <br /><Icon type="arrow-left" /><span  onClick={this.handleCancel}>返回</span>
-              </Modal>
-            {/* </Spin> */}
+            {showEnterpriseInfo && <Card className={styles.enterpriseInfo} >
+              {enterpriseName === null ? <div>没有此企业，请重新输入</div> : <div>点击确认要加入的企业</div>}
+              {enterpriseName === null ? null : <Button className={styles.enterpriseBtn} onClick={this.changeJoinStep }>{enterpriseName}</Button>}
+              <div className={styles.enterpriseBack} ><Icon type="arrow-left" /><span  onClick={this.handleCancel}>返回</span></div>
+            </Card>}
           </Form>
         }
         {joinStep === 2 && 
@@ -194,12 +197,14 @@ class JoinInForm extends Component{
               <div>
                 <FormItem>
                   {getFieldDecorator('phoneNum', {
-                    rules: [{pattern: /(^1\d{10}$)/, required: true, message: '请输入手机号'}]
+                    rules: [
+                      {required: true, message: '请输入手机号'},
+                      {pattern: /(^1\d{10}$)/, message: '手机号格式不对'}
+                    ]
                   })(
                     <Input prefix={<Icon type="mobile" />}  placeholder="请输入手机号" />
                   )}
                 </FormItem>
-                {isPhoneRegister === '0' && <span>手机号已经注册，请登录</span>}
               </div>
               <div className={styles.checkCodeBox}>
                 <FormItem >
@@ -209,8 +214,8 @@ class JoinInForm extends Component{
                     <Input className={styles.testCode} prefix={<Icon type="lock" />} placeholder="验证码" />
                   )}
                 </FormItem>
-                <Button  className={styles.queryCode} type="primary" disabled={this.state.timeValue !== 0} onClick={this.sendCode} >
-                  {this.state.timeValue !== 0 ? `${this.state.timeValue}秒后可重发` : "获取验证码"}
+                <Button  className={timeValue !== 0 ? styles.queryCodeClick : styles.queryCode} type="primary" disabled={timeValue !== 0} onClick={this.sendCode} >
+                  {timeValue !== 0 ? `获取验证码 ${timeValue}` : "获取验证码"}
                 </Button>
               </div>
               <FormItem>
@@ -221,27 +226,35 @@ class JoinInForm extends Component{
           </div>
         }
         {joinStep === 3 &&
-          (joinResult ? <span>等待管理员审核</span> : 
           <div>
             <span>{enterpriseName}</span>
             <Form onSubmit={this.onJoinEnterprise}  >
               <FormItem label="用户名" {...formItemLayout}>
                 {getFieldDecorator('username', {
-                  rules: [{required: true, message: '请输入用户名', min: 3, max: 8}]
+                  rules: [
+                    {required: true, message: '请输入用户名'},
+                    {min: 3, max: 8, message: '请输入3到8位字符串'}
+                  ]
                 })(
                   <Input prefix={<Icon type="user" />} placeholder="请输入用户名" />
                 )}
               </FormItem>
               <FormItem label="创建密码" {...formItemLayout}>
                 {getFieldDecorator('password',{
-                  rules: [{pattern: /^[a-zA-Z\d]{6,8}$/,required: true, message: '请输入密码', }]
+                  rules: [
+                    {required: true, message: '请输入密码'},
+                    {pattern: /^[a-zA-Z\d]{6,8}$/, message: '密码格式不对' }
+                  ]
                 })(
                   <Input prefix={<Icon type="lock" />} type="password" placeholder="请输入密码" />
                 )}
               </FormItem>
               <FormItem label="确认密码" {...formItemLayout}>
                 {getFieldDecorator('confirmPwd',{
-                  rules: [{pattern: /^[a-zA-Z\d]{6,8}$/,required: true, message: '请输入密码', min: 8, validator: this.compareToFirstPassword}]
+                  rules: [
+                    {required: true, message: '请输入密码'},
+                    {validator: this.compareToFirstPassword}
+                  ]
                 })(
                   <Input prefix={<Icon type="lock" />} type="password" placeholder="请再次输入密码" />
                 )}
@@ -250,7 +263,7 @@ class JoinInForm extends Component{
                 <Button type="primary" htmlType="submit" className="login-form-button"  >进入企业账号</Button>
               </FormItem>
             </Form>
-          </div>)
+          </div>
         }
       </div>
     );

@@ -21,19 +21,21 @@
   .checkCodeBox{
     display: flex;
     justify-content: space-between;
+    width: 200px;
     .testCode{
       width: 80px;
       :global{
         .ant-input{
-          width:100px;
+          width: 90px;
         }
       }
     }
     .queryCode{
       width: 100px;
-      margin-top: 3px;
+      margin-top: 4px;
       margin-right: 0;
       padding: 0 5px;
+      height: 30px;
       :global{
         button{
           width: 80px;
@@ -43,7 +45,46 @@
       border-color: #199475;
       color: #199475;
     }
+    .queryCodeClick{
+      width: 100px;
+      margin-top: 4px;
+      margin-right: 0;
+      padding: 0 5px;
+      height: 30px;
+      :global{
+        button{
+          width: 80px;
+        }
+      }
+      background:#f7f7f7;
+      border:1px solid #dfdfdf;
+      color: #dfdfdf;
+    }
   }
+  :global{
+    .ant-btn-primary {
+      width: 200px;
+    }
+  }
+}
+.enterpriseInfor{
+  .userArgee{
+
+    span{
+      color: #199475;
+    }
+  } 
+  :global{
+    .ant-form input[type="checkbox"]{
+      background-color: #199475;
+    }
+    .is-validating.has-feedback .ant-form-item-children::after{
+      content: '';
+    }
+  }
+  .userArgee::selection{
+    background-color: #199475;
+  } 
 }
 .contactUs{
   position: absolute;

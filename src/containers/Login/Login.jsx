@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import {Tabs, message} from 'antd';
 import PropTypes from 'prop-types';
 import styles from './loginLayout.scss';
@@ -14,29 +15,15 @@ class Login extends Component {
     pageTab: PropTypes.string,
     changeLoginStore: PropTypes.func,
     fetchLogin: PropTypes.func,
-    error: PropTypes.string,
-    domain: PropTypes.object,
-    loginSuccess: PropTypes.bool,
-    count: PropTypes.number,
     sendCode: PropTypes.func,
     checkCodeLogin: PropTypes.func,
-    checkPhoneRegister: PropTypes.func,
-    phoneCodeRegister: PropTypes.func,
     username: PropTypes.string,
     enterpriseId: PropTypes.string,
+    history: PropTypes.object
   }
 
   constructor(props) {
     super(props);
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.error && !this.props.error) {
-      message.error(nextProps.error);
-    }
-    if (nextProps.loginSuccess) {
-      message.success('登录成功');
-    }
   }
 
   changePage = (pageTab) => {
@@ -44,7 +31,8 @@ class Login extends Component {
   }
 
   render() {
-    const {pageTab} = this.props;
+    const {pageTab,history} = this.props;
+
     return (
       <div className={styles.login}>
         <div className={styles.joinTop}>
@@ -59,12 +47,11 @@ class Login extends Component {
               <LoginForm
                 changeLoginStore={this.props.changeLoginStore}
                 fetchLogin={this.props.fetchLogin}
-                loginSuccess={this.props.loginSuccess}
                 sendCode={this.props.sendCode}
                 checkCodeLogin={this.props.checkCodeLogin}
-                phoneCodeRegister={this.props.phoneCodeRegister}
                 username={this.props.username}
                 enterpriseId={this.props.enterpriseId}
+                history={history}
               />
             </TabPane>
             <TabPane tab="注册企业" key="register">
@@ -82,17 +69,14 @@ class Login extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  loginSuccess: state.login.get('loginSuccess'),
-  username: state.login.get('username'),
-  enterpriseId: state.login.get('enterpriseId'),
-
+  username: state.login.getIn(['loginData', 'username']),
+  enterpriseId: state.login.getIn(['loginData', 'enterpriseId']),
 });
 
 const mapDispatchToProps = (dispatch) => ({
   fetchLogin: params => dispatch({type: LoginAction.GET_LOGIN_SAGA, params}),
   sendCode: params => dispatch({ type: LoginAction.SEND_CODE_SAGA, params}),
   checkCodeLogin: params => dispatch({ type: LoginAction.CHECK_CODE_SAGA, params}),
-  phoneCodeRegister: params => dispatch({ type: LoginAction.PHONE_CODE_REGISTER_SAGA, params}),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Login));

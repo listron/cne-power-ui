@@ -1,22 +1,39 @@
 .comName{
   width: 300px;
   margin-left: 90px;
+  .enterpriseInfo{
+    width: 416px;
+    margin-left: -25px; 
+    text-align: center;
+    margin-top: 60px;
+    .enterpriseBack{
+      margin-top: 50px;
+    }
+    .enterpriseBtn{
+      width: 139px;
+      height: 36px;
+      border:1px solid #199475;
+      color: #199475;
+    }
+  }
   .checkCodeBox{
     display: flex;
     justify-content: space-between;
+    width: 200px;
     .testCode{
       width: 80px;
       :global{
         .ant-input{
-          width:100px;
+          width: 90px;
         }
       }
     }
     .queryCode{
       width: 100px;
-      margin-top: 3px;
+      margin-top: 4px;
       margin-right: 0;
       padding: 0 5px;
+      height: 30px;
       :global{
         button{
           width: 80px;
@@ -25,6 +42,26 @@
       background: #fff;
       border-color: #199475;
       color: #199475;
+    }
+    .queryCodeClick{
+      width: 100px;
+      margin-top: 4px;
+      margin-right: 0;
+      padding: 0 5px;
+      height: 30px;
+      :global{
+        button{
+          width: 80px;
+        }
+      }
+      background:#f7f7f7;
+      border:1px solid #dfdfdf;
+      color: #dfdfdf;
+    }
+  }
+  :global{
+    .ant-btn-primary {
+      width: 200px;
     }
   }
 }

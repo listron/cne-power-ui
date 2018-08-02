@@ -8,14 +8,12 @@ const FormItem = Form.Item;
 class ForgetForm extends Component{
   static propTypes = {
     form: PropTypes.object,
-    showResetPassword: PropTypes.bool,
     sendCode: PropTypes.func,
     resetPassword: PropTypes.func,
     phoneNum: PropTypes.string,
     checkCodeLogin: PropTypes.func,
     enterpriseId: PropTypes.string,
     username: PropTypes.string,
-    changeLoginStore: PropTypes.func,
     showResetPassword: PropTypes.number,
   }
 
@@ -37,9 +35,9 @@ class ForgetForm extends Component{
     this.props.form.validateFields(['password','confirmPwd'], (err,values) => {
       if(!err){
         this.props.resetPassword({
-          'phoneNum': this.props.phoneNum,
-          'password': values.password,
-          'confirmPwd': values.confirmPwd,
+          phoneNum: this.props.phoneNum,
+          password: values.password,
+          confirmPwd: values.confirmPwd,
         });
       }
     })
@@ -69,7 +67,7 @@ class ForgetForm extends Component{
   checkCodeLogin = () => {
     this.props.form.validateFields(['phoneNum','verificationCode'], (err, values) => {
       if(!err){
-        this.props.checkCodeLogin({...values,showResetPassword: 1});
+        this.props.checkCodeLogin({...values,showResetPassword: 1, isNotLogin: 1});
       }
     })
   }
@@ -111,14 +109,17 @@ class ForgetForm extends Component{
     };
     return (
       <div className={styles.forgetPass}>
-        {!showResetPassword &&
+        {!showResetPassword ?
           <div>
             <span className={styles.findPass}>找回密码</span>
             <Form onSubmit={this.checkCodeLogin} >
               <div>
                 <FormItem>
                   {getFieldDecorator('phoneNum', {
-                    rules: [{pattern: /(^1\d{10}$)/, required: true, message: '请输入手机号'}]
+                    rules: [
+                      {required: true, message: '请输入手机号'},
+                      {pattern: /(^1\d{10}$)/, message: '手机号格式不对'}
+                    ]
                   })(
                     <Input prefix={<Icon type="mobile" />} placeholder="请输入手机号" />
                   )}
@@ -132,8 +133,8 @@ class ForgetForm extends Component{
                     <Input className={styles.testCode} prefix={<Icon type="lock" />} placeholder="验证码" />
                   )}
                 </FormItem>
-                <Button type="primary" disabled={timeValue !== 0} onClick={this.sendCode}  className={styles.queryCode}>
-                  {timeValue !== 0 ? `${timeValue}秒后可重发` : "获取验证码"}
+                <Button type="primary" disabled={timeValue !== 0} onClick={this.sendCode}  className={timeValue !== 0 ? styles.queryCodeClick : styles.queryCode}>
+                  {timeValue !== 0 ? `获取验证码 ${timeValue}` : "获取验证码"}
                 </Button>
               </div>
               <FormItem>
@@ -143,20 +144,25 @@ class ForgetForm extends Component{
               {username === null ? <p>未完善个人信息，请尽快完善</p> : null}
             </Form>
           </div>
-        }
-        {showResetPassword &&
+        :
           <div>
             <Form onSubmit={this.onResetPassword}  >
               <FormItem label="创建密码" {...formItemLayout}>
                 {getFieldDecorator('password',{
-                  rules: [{required: true, message: '请输入密码', min: 8,}]
+                  rules: [
+                    {required: true, message: '请输入密码'},
+                    {pattern: /^[a-zA-Z\d]{6,8}$/, message: '密码格式不对' }
+                ]
                 })(
                   <Input prefix={<Icon type="lock" />} type="password" placeholder="请输入密码" />
                 )}
               </FormItem>
               <FormItem label="确认密码" {...formItemLayout}>
                 {getFieldDecorator('confirmPwd',{
-                  rules: [{required: true, message: '两次密码不一致！', min: 8, validator: this.compareToFirstPassword,}]
+                  rules: [
+                    {required: true, message: '请输入确认密码'},
+                    {validator: this.compareToFirstPassword, message: '两次密码不一致！'}
+                  ]
                 })(
                   <Input prefix={<Icon type="lock" />} type="password" placeholder="请再次输入密码" />
                 )}

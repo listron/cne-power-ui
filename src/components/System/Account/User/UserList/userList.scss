@@ -13,6 +13,7 @@
       line-height: 50px;
       background: #fbfbfb;
       display: flex;
+      padding-left: 14px;
       span{
         margin: 0 10px;
       }
@@ -28,6 +29,26 @@
       display: flex;
       justify-content: flex-start;
       margin: 20px 0;
+      .userRole{
+        width: 30%;
+      }
+      .userStatus{
+        >span{ 
+          margin-right: 20px;
+        }
+        :global{
+          .ant-radio-group-solid .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled) {
+            background-color: #199475;
+            border-color: #199475;
+            color: #fff;
+          }
+          .ant-radio-button-wrapper:hover, .ant-radio-button-wrapper-focused {
+            color: #199475;
+            position: relative;
+          }
+        }
+      }
+      
       .selectedRoles{
         width: 100px;
         ul.listbox{
@@ -44,6 +65,10 @@
   }
   .userList{
     .userHelper{
+      display: flex;
+      justify-content: space-between;
+      height: 72px;
+      line-height: 72px;
       Button{
         margin: 0 6px;
         color: $themeColor;
@@ -80,15 +105,25 @@
         }
       }
       .userOperate{
-        height: 72px;
-        line-height: 72px;
         display: inline-block;
+        .handleDropdown{
+          width: 120px;
+          :global{
+            .ant-select-dropdown-menu-item{
+              color:$themeColor;
+            }
+            .ant-select-dropdown-menu-item-disabled{
+              color:$promptColor;
+            }
+          }
+        }
         :global{
           .ant-select{
             width: 78px;
           }
         }
       }
+
     }
   }
   
@@ -113,15 +148,5 @@
     }
   }
 }
-.handleDropdown{
-  width: 120px;
-  :global{
-    .ant-select-dropdown-menu-item{
-      color:$themeColor;
-    }
-    .ant-select-dropdown-menu-item-disabled{
-      color:$promptColor;
-    }
-  }
-}
+
 

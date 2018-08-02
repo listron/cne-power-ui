@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import moment from 'moment';
 import { Route,Redirect, Switch,withRouter} from 'react-router-dom';
 import {routerConfig} from '../../common/routerSetting';
 import { menu } from '../../common/menu';
@@ -21,6 +22,8 @@ class Main extends Component {
     topMenu: PropTypes.object,
     login: PropTypes.object,
     history: PropTypes.object,
+    enterpriseId: PropTypes.string,
+    username: PropTypes.string,
   };
 
   constructor(props) {
@@ -44,13 +47,13 @@ class Main extends Component {
     }
   }
 
-
-  componentWillReceiveProps(nextProps) {  
-    if(nextProps.login.get('loginSuccess') && !this.props.login.get('loginSuccess')){
+  componentWillReceiveProps(nextProps) {
+    const authData = getCookie('authData');
+    if(moment().isBefore(getCookie('expireData'), 'second') 
+    && (authData !== 'undefined' && authData !== null)
+    && this.props.history.location.pathname === '/login'
+    && getCookie('isNotLogin') === '0') {
       this.props.history.push('/');
-      this.setState({
-        logined:true
-      })
     }
   }
 
@@ -77,17 +80,16 @@ class Main extends Component {
   renderFeedback() {
 
   }
-
-
   render() {
-    const { setTopMenu, topMenu } = this.props;
+    const { setTopMenu, topMenu, } = this.props;
     const authData = getCookie('authData');
+    const isNotLogin = getCookie('isNotLogin');
     if(authData && (authData !== 'undefined' && authData !== null)){
       axios.defaults.headers.common['Authorization'] = "bearer " + JSON.parse(authData);
-      // console.log(authData);
     }
-    // console.log(this.state.logined || (authData !== 'undefined' && authData !== null))
-    if(this.state.logined || (authData !== 'undefined' && authData !== null)){
+    if((moment().isBefore(getCookie('expireData'), 'second')) 
+    && (authData !== 'undefined' && authData !== null) 
+    && (isNotLogin === '0')){
     // if(true){
       return (
         <div className={styles.app}>
@@ -131,6 +133,8 @@ class Main extends Component {
 const mapStateToProps = (state) => ({
   login: state.login,
   topMenu: state.common.get('topMenu')? state.common.get('topMenu').toJS() : {},
+  enterpriseId: state.login.get('enterpriseId'),
+  username: state.login.get('username'),
 });
 
 const mapDispatchToProps = (dispatch) => ({

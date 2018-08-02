@@ -42,7 +42,6 @@ class Forget extends Component {
           pageTab={this.props.pageTab}
           enterpriseId={this.props.enterpriseId}
           username={this.props.username}
-          changeLoginStore={this.props.changeLoginStore}
           checkCodeLogin={this.props.checkCodeLogin}
         />
         <div className={styles.contactUs}>
