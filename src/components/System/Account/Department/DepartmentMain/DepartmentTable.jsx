@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 import styles from './departmentMain.scss';
 import WarningTip from '../../../../Common/WarningTip';
 import AssignUserModal from '../AssignUserModal/AssignUserModal';
+import AssignStationModal from '../AssignStationModal/AssignStationModal';
 
 const { Option } = Select;
 
@@ -25,8 +26,10 @@ class DepartmentTable extends Component {
     pageSize: PropTypes.number,
     allDepartment: PropTypes.object,
     allUser: PropTypes.object,
+    allStation: PropTypes.object,
     loginData: PropTypes.object,
     showAssignUserModal: PropTypes.bool,
+    showAssignStationModal: PropTypes.bool,
     
     totalNum: PropTypes.number,
     departmentData: PropTypes.array,
@@ -37,7 +40,9 @@ class DepartmentTable extends Component {
     changeDepartmentStore: PropTypes.func,
     getAllDepartment: PropTypes.func,
     getAllUser: PropTypes.func,
+    getAllStation: PropTypes.func,
     setDepartmentUser: PropTypes.func,
+    setDepartmentStation: PropTypes.func,
   }
 
   constructor(props){
@@ -214,7 +219,7 @@ class DepartmentTable extends Component {
     return columns
   }
 
-  renderUserAssignModal() {
+  renderAssignUserModal() {
     const { showAssignUserModal, loginData, allDepartment, allUser, getAllDepartment, getAllUser, setDepartmentUser, changeDepartmentStore} = this.props;
     return 
       <AssignUserModal
@@ -228,6 +233,23 @@ class DepartmentTable extends Component {
         getUserList={getAllUser}
         onSetDepartmentUser={setDepartmentUser}
         onCancel={()=>changeDepartmentStore({showAssignUserModal: false})}
+        selectedDepartment={this.state.selectedDepartment}
+     />
+  }
+
+  renderAssignStationModal() {
+    const { showAssignStationModal, loginData, allDepartment, allStation, getAllDepartment, getAllStation, setDepartmentStation, changeDepartmentStore} = this.props;
+    return 
+      <AssignUserModal
+        show={showAssignStationModal}
+        enterpriseId={loginData.get('enterpriseId')}
+        enterpriseName={loginData.get('enterpriseName')}
+        departmentList={allDepartment}
+        stationList={allStation}
+        getDepartmentTreeData={getAllDepartment}
+        getStationList={getAllStation}
+        onSetDepartmentStation={setDepartmentStation}
+        onCancel={()=>changeDepartmentStore({showAssignStationModal: false})}
         selectedDepartment={this.state.selectedDepartment}
      />
   }
@@ -265,7 +287,8 @@ class DepartmentTable extends Component {
           <span className={styles.info}>当前选中<span className={styles.totalNum}>{selectedDepartment.length}</span>项</span>
           <span className={styles.cancel} onClick={this.cancelRowSelect}>取消选中</span>
         </div>
-        {this.renderUserAssignModal()}
+        {this.renderAssignUserModal()}
+        {this.renderAssignStationModal()}
       </div>
     )
   }

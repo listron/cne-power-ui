@@ -33,8 +33,13 @@ class AssignUserModal extends Component {
   }
 
   componentDidMount() {
-    this.props.getDepartmentTreeData();
-    this.props.getUserList();
+    const {enterpriseId} = this.props;
+    this.props.getDepartmentTreeData({
+      enterpriseId
+    });
+    this.props.getUserList({
+      enterpriseId
+    });
   }
 
   componentWillReceiveProps(nextProps) {

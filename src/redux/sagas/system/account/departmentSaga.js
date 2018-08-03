@@ -91,7 +91,7 @@ function *getAllUser(action){
 function *getAllDepartment(action){//获取所有部门基础信息
   const { payload } = action;
   // const url = '/mock/system/allDepartments';
-  const url = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.system.departmentAllList}/${payload.enterpriseId}`
+  const url = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.system.getAllDepartment}/${payload.enterpriseId}`
   try{
     yield put({ type:departmentAction.DEPARTMENT_FETCH });
     const response = yield call(axios.get,url);
@@ -99,6 +99,24 @@ function *getAllDepartment(action){//获取所有部门基础信息
       type:  departmentAction.GET_DEPARTMENT_FETCH_SUCCESS,
       payload:{
         allDepartment: response.data.data,
+      },
+    });
+  }catch(e){
+    console.log(e);
+  }
+}
+
+function *getAllStation(action){//获取所有电站
+  const { payload } = action;
+  // const url = '/mock/system/allDepartments';
+  const url = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.system.getAllStation}/${payload.enterpriseId}`
+  try{
+    yield put({ type:departmentAction.DEPARTMENT_FETCH });
+    const response = yield call(axios.get,url);
+    yield put({
+      type:  departmentAction.GET_DEPARTMENT_FETCH_SUCCESS,
+      payload:{
+        allStation: response.data.data,
       },
     });
   }catch(e){
@@ -231,7 +249,7 @@ function *editDepartmentInfo(action){//编辑部门信息
   }
 }
 
-function *setDepartmentUser() {
+function *setDepartmentUser(action) {
   const { payload } = action;
   // const url = '/mock/system/editDepartment';
   const url = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.system.setDepartmentUser}`
@@ -253,6 +271,43 @@ function *setDepartmentUser() {
   }
 }
 
+function *setDepartmentStation(action) {
+  const { payload } = action;
+  // const url = '/mock/system/editDepartment';
+  const url = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.system.setDepartmentStation}`
+  try{
+    const response = yield call(axios.post,url,payload);
+    if(response.data.code === "10000"){
+      const showPage = yield select(state => state.system.department.get('showPage'));
+      if(showPage === 'detail') {
+        yield put({
+          type:  departmentAction.GET_DEPARTMENT_DETAIL_SAGA,
+          payload:{
+            departmentId: payload.departmentId,
+          }
+        });
+      }
+      const params = yield select(state => ({//继续请求部门列表
+        enterpriseId: payload.enterpriseId,
+        departmentSource: state.department.get('departmentSource'),
+        departmentName: state.department.get('departmentName'),
+        parentDepartmentName: state.department.get('parentDepartmentName'),
+        stationName: state.department.get('stationName'), 
+        sort: state.department.get('sort'),
+        ascend: state.department.get('ascend'),
+        pageNum: state.department.get('pageNum'),
+        pageSize: state.department.get('pageSize'),
+      }));
+      yield put({
+        type:  departmentAction.GET_DEPARTMENT_LIST_SAGA,
+        payload: params,
+      });
+    }
+  }catch(e){
+    console.log(e);
+  }
+}
+
 
 export function* watchDepartment() {
   yield takeLatest(departmentAction.CHANGE_DEPARTMENT_STORE_SAGA, changeDepartmentStore);
@@ -260,10 +315,12 @@ export function* watchDepartment() {
   yield takeLatest(departmentAction.DELETE_DEPARTMENT_SAGA,deleteDepartment);
   yield takeLatest(departmentAction.GET_ALL_USER_SAGA,getAllUser);
   yield takeLatest(departmentAction.GET_ALL_DEPARTMENT_SAGA,getAllDepartment);
+  yield takeLatest(departmentAction.GET_ALL_STATION_SAGA,getAllStation);
   yield takeLatest(departmentAction.GET_DEPARTMENT_DETAIL_SAGA, getDepartmentDetail);
   yield takeLatest(departmentAction.GET_OTHER_PAGE_DEPARTMENT_DETAIL_SAGA,getOtherPageDetail);
   yield takeLatest(departmentAction.ADD_DEPARTMENT_INFO_SAGA, addDepartmentInfo);
   yield takeLatest(departmentAction.EDIT_DEPARTMENT_INFO_SAGA,editDepartmentInfo);
   yield takeLatest(departmentAction.SET_DEPARTMENT_USER_SAGA,setDepartmentUser);
+  yield takeLatest(departmentAction.SET_DEPARTMENT_STATION_SAGA,setDepartmentStation);
 }
 

@@ -27,6 +27,7 @@ class Department extends Component {
     getAllDepartment: PropTypes.func,
     getAllUser: PropTypes.func,
     setDepartmentUser: PropTypes.func,
+    setDepartmentStation: PropTypes.func,
   }
   constructor(props) {
     super(props);
@@ -122,6 +123,7 @@ const mapDispatchToProps = (dispatch) => ({
   getAllUser: payload => dispatch({type:departmentAction.GET_ALL_USER_SAGA,payload}),
   getAllDepartment: payload => dispatch({type:departmentAction.GET_ALL_DEPARTMENT_SAGA,payload}),
   setDepartmentUser: payload => dispatch({type:departmentAction.SET_DEPARTMENT_USER_SAGA,payload}),
+  setDepartmentStation: payload => dispatch({type:departmentAction.SET_DEPARTMENT_STATION_SAGA,payload}),
   addDepartmentInfo: payload => dispatch({type:departmentAction.ADD_DEPARTMENT_INFO_SAGA, payload}),
   editDepartmentInfo: payload => dispatch({type: departmentAction.EDIT_DEPARTMENT_INFO_SAGA, payload})
 });

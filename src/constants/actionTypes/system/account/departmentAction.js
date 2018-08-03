@@ -12,8 +12,10 @@ module.exports = {
     ADD_DEPARTMENT_INFO_SAGA: null,//部门新增
     GET_ALL_USER_SAGA: null, //获取所属企业所有用户
     GET_ALL_DEPARTMENT_SAGA: null, //获取所有部门
+    GET_ALL_STATION_SAGA: null,//获取所有电站
     EDIT_DEPARTMENT_INFO_SAGA: null,//部门信息编辑
     SET_DEPARTMENT_USER_SAGA: null,//分配部门用户
+    SET_DEPARTMENT_STATION_SAGA: null,//分配部门电站
     GET_DEPARTMENT_FETCH_SUCCESS: null,//部门普通api请求成功
     GET_DEPARTMENT_DETAIL_SAGA: null,//获取部门详情
     GET_OTHER_PAGE_DEPARTMENT_DETAIL_SAGA: null,//获取其他页某一条部门详情

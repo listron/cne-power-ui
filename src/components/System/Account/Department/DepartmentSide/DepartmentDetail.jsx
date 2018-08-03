@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import styles from './departmentSide.scss';
 import WarningTip from '../../../../Common/WarningTip';
 import AssignUserModal from '../AssignUserModal/AssignUserModal';
+import AssignStationModal from '../AssignStationModal/AssignStationModal';
 
 class DepartmentDetail extends Component {
   static propTypes = {
@@ -21,8 +22,10 @@ class DepartmentDetail extends Component {
     totalNum: PropTypes.number,
     allDepartment: PropTypes.object,
     allUser: PropTypes.object,
+    allStation: PropTypes.object,
     loginData: PropTypes.object,
     showAssignUserModal: PropTypes.bool,
+    showAssignStationModal: PropTypes.bool,
 
     departmentData: PropTypes.array,
     getOtherPageDetail: PropTypes.func,
@@ -31,7 +34,9 @@ class DepartmentDetail extends Component {
     onShowSideChange: PropTypes.func,
     getAllDepartment: PropTypes.func,
     getAllUser: PropTypes.func,
+    getAllStation: PropTypes.func,
     setDepartmentUser: PropTypes.func,
+    setDepartmentStation: PropTypes.func,
     departmentDetail: PropTypes.object,
   }
 
@@ -111,7 +116,7 @@ class DepartmentDetail extends Component {
     this.props.changeDepartmentStore({showPage: 'list'});
   }
 
-  renderUserAssignModal() {
+  renderAssignUserModal() {
     const { showAssignUserModal, departmentData, departmentDetail, loginData, allDepartment, allUser, getAllDepartment, getAllUser, setDepartmentUser, changeDepartmentStore} = this.props;
     let detailIndex = departmentData.findIndex(e=>e.departmentId===departmentDetail.departmentId);
     return 
@@ -126,6 +131,24 @@ class DepartmentDetail extends Component {
         getUserList={getAllUser}
         onSetDepartmentUser={setDepartmentUser}
         onCancel={()=>changeDepartmentStore({showAssignUserModal: false})}
+        selectedDepartment={departmentData.slice(detailIndex, detailIndex+1)}
+     />
+  }
+
+  renderAssignStationModal() {
+    const { showAssignStationModal, departmentData, departmentDetail, loginData, allDepartment, allStation, getAllDepartment, getAllStation, setDepartmentStation, changeDepartmentStore} = this.props;
+    let detailIndex = departmentData.findIndex(e=>e.departmentId===departmentDetail.departmentId);
+    return 
+      <AssignStationModal
+        show={showAssignStationModal}
+        enterpriseId={loginData.get('enterpriseId')}
+        enterpriseName={loginData.get('enterpriseName')}
+        departmentList={allDepartment}
+        stationList={allStation}
+        getDepartmentTreeData={getAllDepartment}
+        getStationList={getAllStation}
+        onSetDepartmentStation={setDepartmentStation}
+        onCancel={()=>changeDepartmentStore({showAssignStationModal: false})}
         selectedDepartment={departmentData.slice(detailIndex, detailIndex+1)}
      />
   }
@@ -186,7 +209,8 @@ class DepartmentDetail extends Component {
             <span className={styles.value}>{departmentDetail.updateTime}</span> 
           </div>
         </div>
-        {this.renderUserAssignModal()}
+        {this.renderAssignUserModal()}
+        {this.renderAssignStationModal()}
       </div>
     )
   }
