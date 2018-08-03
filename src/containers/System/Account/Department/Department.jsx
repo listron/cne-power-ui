@@ -32,7 +32,7 @@ class Department extends Component {
   }
   componentDidMount(){
     const params = {
-      enterpriseId: this.props.enterpriseId,
+      enterpriseId: '1010694160817111040', //this.props.enterpriseId,//'1010694160817111040',
       departmentSource: this.props.departmentSource,
       departmentName: this.props.departmentName,
       parentDepartmentName: this.props.parentDepartmentName,
@@ -84,7 +84,8 @@ class Department extends Component {
 }
 const mapStateToProps = (state) => ({
     ...state.system.department.toJS(),
-    stations: state.common.get('stations').toJS()
+    stations: state.common.get('stations').toJS(),
+    enterpriseId: state.common.get('enterpriseId'),
 });
 
 const mapDispatchToProps = (dispatch) => ({
