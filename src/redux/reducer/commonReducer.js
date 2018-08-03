@@ -19,8 +19,8 @@ const defectReducer = (state = initState, action) => {
   switch (action.type) {
     case CommonAction.COMMON_FETCH:
       return state.set('commonFetching', true)
-    case CommonAction.GET_TOPMENU_CHANGE_SUCCESS:
-      return state.set('topMenu',immutable.fromJS(action.params))
+    case CommonAction.CHANGE_COMMON_STORE: 
+      return state.merge(immutable.fromJS(action.payload))
     case CommonAction.GET_STATIONS_SAGA_SUCCESS:
       return state.set('commonFetching', false)
                   .set('stations', immutable.fromJS(action.params.data))

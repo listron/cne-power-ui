@@ -16,7 +16,7 @@ import './theme/antdReset.scss';
 import zhCN from 'antd/lib/locale-provider/zh_CN';
 
 const sagaMiddleware = createSagaMiddleware();
-const middlewares = [thunk, sagaMiddleware,logger];
+const middlewares = [thunk, sagaMiddleware];
 const store = createStore(appReducer, applyMiddleware(...middlewares));
 sagaMiddleware.run(rootSaga);
 

@@ -3,8 +3,8 @@ import keyMirror from 'keymirror';
 module.exports = {
   CommonAction: keyMirror({
     COMMON_FETCH: null,
-    GET_TOPMENU_CHANGE_SAGA: null,
-    GET_TOPMENU_CHANGE_SUCCESS: null,
+    CHANGE_COMMON_STORE_SAGA: null,
+    CHANGE_COMMON_STORE: null,
     GET_STATIONS_SAGA: null,
     GET_STATIONS_SAGA_SUCCESS: null,
     GET_STATIONS_SAGA_FAIL: null,

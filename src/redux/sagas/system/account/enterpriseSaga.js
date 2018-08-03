@@ -39,8 +39,8 @@ function *changeEnterpriseStore(action){
 //请求单个详细数据信息
 function *getEnterpriseDetail(action){
   const { payload } = action;
-  const url = '/mock/system/enterprisDetail/12';
-  // const url = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.system.getEnterprisDetail}/${payload.enterpriseId}`
+  // const url = '/mock/system/enterprisDetail/12';
+  const url = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.system.getEnterprisDetail}/${payload.enterpriseId}`
   try{
     yield put({ type:enterpriseAction.ENTERPRISE_FETCH });
     const response = yield call(axios.get,url);
@@ -50,7 +50,6 @@ function *getEnterpriseDetail(action){
         enterpriseDetail: response.data.data,
       },
     });
-    
   }catch(e){
     console.log(e);
   }
@@ -95,6 +94,7 @@ function *saveEnterpriseInfor(action){
 
 
 export function* watchEnterprise() {
+  // yield takeLatest(enterpriseAction.CHANGE_COMMON_STORE_SAGA, changeEnterpriseStore);
   yield takeLatest(enterpriseAction.CHANGE_ENTERPRISE_STORE_SAGA, changeEnterpriseStore);
   // yield takeLatest(enterpriseAction.GET_ENTERPRISE_LIST_SAGA, getEnterprisList);
   yield takeLatest(enterpriseAction.GET_ENTERPRISE_DETAIL_SAGA, getEnterpriseDetail);

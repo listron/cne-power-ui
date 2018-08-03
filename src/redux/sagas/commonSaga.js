@@ -3,12 +3,14 @@ import axios from 'axios';
 import Path from '../../constants/path';
 import { CommonAction } from '../../constants/actionTypes/commonAction';
 
-//保存当前topMenu信息
-function *getTopMenuChange(action){
-  yield put({ 
-    type: CommonAction.GET_TOPMENU_CHANGE_SUCCESS, 
-    params: action.params
-  });    
+
+function *changeCommonStore(action){//存储payload指定参数，替换reducer-store属性。
+  const { payload } = action;
+  console.log(payload)
+  yield put({
+    type:  CommonAction.CHANGE_COMMON_STORE,
+    payload,
+  })
 }
 
 //获取所有电站信息
@@ -120,8 +122,8 @@ function *getPartition(action){
   }
 }
 
-export function* watchTopMenuChange() {
-  yield takeLatest(CommonAction.GET_TOPMENU_CHANGE_SAGA, getTopMenuChange);
+export function* watchCommonStoreChange() {
+  yield takeLatest(CommonAction.CHANGE_COMMON_STORE_SAGA, changeCommonStore);
 }
 export function* watchGetStations() {
   yield takeLatest(CommonAction.GET_STATIONS_SAGA, getStations);
