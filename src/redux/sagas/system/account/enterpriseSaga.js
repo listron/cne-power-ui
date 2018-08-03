@@ -48,6 +48,7 @@ function *getEnterpriseDetail(action){
       type:  enterpriseAction.GET_ENTERPRISE_FETCH_SUCCESS,
       payload:{
         enterpriseDetail: response.data.data,
+        showPage: 'detail',
       },
     });
   }catch(e){
@@ -81,9 +82,9 @@ function *saveEnterpriseInfor(action){
     const response = yield call(axios.put,url,payload);
     if(response.data.code === "10000"){
       yield put({
-        type:  enterpriseAction.GET_ENTERPRISE_FETCH_SUCCESS,
+        type:  enterpriseAction.GET_ENTERPRISE_DETAIL_SAGA,
         payload:{
-          showPage: 'detail',
+          enterpriseId: payload.enterpriseId
         }
       });
     }
