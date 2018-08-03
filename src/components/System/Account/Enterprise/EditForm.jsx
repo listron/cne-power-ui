@@ -48,13 +48,13 @@ class EditForm extends Component {
           )}
         </FormItem>
         <FormItem label="企业名称" >
-          {getFieldDecorator('enterpriseIdName',{
+          {getFieldDecorator('enterpriseName',{
             rules: [{
               required : true,
               message: '请输入30字以内的企业名称',
               max: 29,
             }],
-            initialValue: enterpriseDetail.enterpriseIdName || ''
+            initialValue: enterpriseDetail.enterpriseName || ''
           })(
             <Input />
           )}

@@ -70,7 +70,19 @@ class EnterpriseDetail extends Component {
               <Button><Link to="/system/role">查看角色</Link></Button>
             </div>
             <div>
-              <span className={styles.promptTitle}>电话</span>
+              <span className={styles.promptTitle}>用户名</span>
+              {enterpriseDetail.username || ' -- ' } 
+            </div>
+            <div>
+              <span className={styles.promptTitle}>注册手机</span>
+              {enterpriseDetail.createPhone || ' -- ' } 
+            </div>
+            <div>
+              <span className={styles.promptTitle}>企业域名</span>
+              {enterpriseDetail.enterpriseDomain || ' -- ' } 
+            </div>
+            <div>
+              <span className={styles.promptTitle}>企业电话</span>
               {enterpriseDetail.enterpriseNum || ' -- ' } 
             </div>
             <div>

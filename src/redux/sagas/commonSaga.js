@@ -6,7 +6,6 @@ import { CommonAction } from '../../constants/actionTypes/commonAction';
 
 function *changeCommonStore(action){//存储payload指定参数，替换reducer-store属性。
   const { payload } = action;
-  console.log(payload)
   yield put({
     type:  CommonAction.CHANGE_COMMON_STORE,
     payload,

@@ -97,6 +97,7 @@ class SingleImgUploader extends Component {
 
   render(){
     const authData = getCookie('authData');
+    console.log(authData)
     const { showCurentUpload, currentImgInfor, preInfor } = this.state;
     const { uploadPath, imgStyle } = this.props;
 
@@ -105,7 +106,7 @@ class SingleImgUploader extends Component {
       className:styles.uploader,
       onChange: this.handleUpload,
 			listType: "picture-card",
-      headers:{'Authorization': 'bearer ' + ((authData && authData!== 'undefined') ? JSON.parse(authData).access_token : '')},
+      headers:{'Authorization': 'bearer ' + ((authData && authData!== 'undefined') ? JSON.parse(authData) : '')},//JSON.parse(authData).access_token
       beforeUpload:this.beforeUpload
     };
     return (
