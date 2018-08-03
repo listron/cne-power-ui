@@ -240,7 +240,7 @@ class DepartmentTable extends Component {
   renderAssignStationModal() {
     const { showAssignStationModal, loginData, allDepartment, allStation, getAllDepartment, getAllStation, setDepartmentStation, changeDepartmentStore} = this.props;
     return 
-      <AssignUserModal
+      <AssignStationModal
         show={showAssignStationModal}
         enterpriseId={loginData.get('enterpriseId')}
         enterpriseName={loginData.get('enterpriseName')}
