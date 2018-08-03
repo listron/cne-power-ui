@@ -8,6 +8,8 @@ var initState = immutable.fromJS({
     path: '/',
     clickable: true,
   },
+  enterpriseId:'',
+  enterpriseName: '',
   commonFetching: false,
   stations: [],
   deviceTypes: [],
