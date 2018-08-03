@@ -19,10 +19,14 @@ class Department extends Component {
     ascend: PropTypes.bool,
     pageNum: PropTypes.number,
     pageSize: PropTypes.number,
+    allDepartment: PropTypes.object,
+    allUser: PropTypes.object,
     showAssignStationModal: PropTypes.bool,
     showAssignUserModal: PropTypes.bool,
     getDepartmentList: PropTypes.func,
     getAllDepartment: PropTypes.func,
+    getAllUser: PropTypes.func,
+    setDepartmentUser: PropTypes.func,
   }
   constructor(props) {
     super(props);
@@ -100,11 +104,13 @@ const mapStateToProps = (state) => ({
     showAssignStationModal: state.system.department.get('showAssignStationModal'),
     showAssignUserModal: state.system.department.get('showAssignUserModal'),
 
-    allDepartment:state.system.department.get('allDepartment').toJS(),
+    allDepartment:state.system.department.get('allDepartment'),
+    allUser: state.system.department.get('allUser'),
     departmentData: state.system.department.get('departmentData').toJS(),
     departmentDetail: state.system.department.get('departmentDetail').toJS(),
     selectedDepartment: state.system.department.get('selectedDepartment').toJS(),
-    stations: state.common.get('stations').toJS()
+    stations: state.common.get('stations').toJS(),
+    login: state.login.get('loginData')
   });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -113,10 +119,11 @@ const mapDispatchToProps = (dispatch) => ({
   getDepartmentList: payload => dispatch({type:departmentAction.GET_DEPARTMENT_LIST_SAGA, payload}),
   getDepartmentDetail: payload => dispatch({type:departmentAction.GET_DEPARTMENT_DETAIL_SAGA, payload}),
   getOtherPageDetail: (payload, {previous}) => dispatch({type:departmentAction.GET_OTHER_PAGE_DEPARTMENT_DETAIL_SAGA, payload, previous}),
-  getAllUsers: payload => dispatch({type:departmentAction.GET_ALL_USERS_SAGA,payload}),
+  getAllUser: payload => dispatch({type:departmentAction.GET_ALL_USER_SAGA,payload}),
   getAllDepartment: payload => dispatch({type:departmentAction.GET_ALL_DEPARTMENT_SAGA,payload}),
-  addDepartmentInfor: payload => dispatch({type:departmentAction.ADD_DEPARTMENT_INFO_SAGA, payload}),
-  editDepartmentInfor: payload => dispatch({type: departmentAction.EDIT_DEPARTMENT_INFO_SAGA, payload})
+  setDepartmentUser: payload => dispatch({type:departmentAction.SET_DEPARTMENT_USER_SAGA,payload}),
+  addDepartmentInfo: payload => dispatch({type:departmentAction.ADD_DEPARTMENT_INFO_SAGA, payload}),
+  editDepartmentInfo: payload => dispatch({type: departmentAction.EDIT_DEPARTMENT_INFO_SAGA, payload})
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Department);

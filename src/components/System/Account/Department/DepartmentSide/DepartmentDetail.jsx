@@ -5,6 +5,7 @@ import { Button, Icon } from 'antd';
 import PropTypes from 'prop-types';
 import styles from './departmentSide.scss';
 import WarningTip from '../../../../Common/WarningTip';
+import AssignUserModal from '../AssignUserModal/AssignUserModal';
 
 class DepartmentDetail extends Component {
   static propTypes = {
@@ -18,12 +19,19 @@ class DepartmentDetail extends Component {
     pageNum: PropTypes.number,
     pageSize: PropTypes.number,
     totalNum: PropTypes.number,
+    allDepartment: PropTypes.object,
+    allUser: PropTypes.object,
+    loginData: PropTypes.object,
+    showAssignUserModal: PropTypes.bool,
 
     departmentData: PropTypes.array,
     getOtherPageDetail: PropTypes.func,
     getDepartmentDetail: PropTypes.func,
     changeDepartmentStore: PropTypes.func,
     onShowSideChange: PropTypes.func,
+    getAllDepartment: PropTypes.func,
+    getAllUser: PropTypes.func,
+    setDepartmentUser: PropTypes.func,
     departmentDetail: PropTypes.object,
   }
 
@@ -41,7 +49,9 @@ class DepartmentDetail extends Component {
   }
   
   setDepartmentUser = () => {
-    console.log(this.props.departmentDetail);
+    this.props.changeDepartmentStore({
+      showAssignUserModal: true,
+    })
   }
 
   setDepartmentStation = () => {
@@ -101,6 +111,25 @@ class DepartmentDetail extends Component {
     this.props.changeDepartmentStore({showPage: 'list'});
   }
 
+  renderUserAssignModal() {
+    const { showAssignUserModal, departmentData, departmentDetail, loginData, allDepartment, allUser, getAllDepartment, getAllUser, setDepartmentUser, changeDepartmentStore} = this.props;
+    let detailIndex = departmentData.findIndex(e=>e.departmentId===departmentDetail.departmentId);
+    return 
+      <AssignUserModal
+        show={showAssignUserModal}
+        currentUserId={loginData.get('userId')}
+        enterpriseId={loginData.get('enterpriseId')}
+        enterpriseName={loginData.get('enterpriseName')}
+        departmentList={allDepartment}
+        userList={allUser}
+        getDepartmentTreeData={getAllDepartment}
+        getUserList={getAllUser}
+        onSetDepartmentUser={setDepartmentUser}
+        onCancel={()=>changeDepartmentStore({showAssignUserModal: false})}
+        selectedDepartment={departmentData.slice(detailIndex, detailIndex+1)}
+     />
+  }
+
   render(){
     const { departmentDetail } = this.props;
     const { showWarningTip, warningTipText } = this.state;
@@ -117,7 +146,7 @@ class DepartmentDetail extends Component {
             <Icon type="arrow-left" className={styles.backIcon} onClick={this.backToList} />
           </span>
         </div>
-        <div className={styles.departmentInfor} >
+        <div className={styles.departmentInfo} >
           <div>
             <span className={styles.title}>部门名称</span>
             <span className={styles.value}>{departmentDetail.departmentName}</span> 
@@ -157,6 +186,7 @@ class DepartmentDetail extends Component {
             <span className={styles.value}>{departmentDetail.updateTime}</span> 
           </div>
         </div>
+        {this.renderUserAssignModal()}
       </div>
     )
   }

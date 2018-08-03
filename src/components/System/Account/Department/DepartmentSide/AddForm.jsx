@@ -18,7 +18,7 @@ class AddForm extends Component {
     form: PropTypes.object,
     stations: PropTypes.array,
     allDepartment: PropTypes.object,
-    addDepartmentInfor: PropTypes.func,
+    addDepartmentInfo: PropTypes.func,
   }
 
   constructor(props){
@@ -26,10 +26,10 @@ class AddForm extends Component {
   }
 
   addDepartment = () =>{
-    const { addDepartmentInfor,enterpriseId } = this.props;
+    const { addDepartmentInfo,enterpriseId } = this.props;
     this.props.form.validateFieldsAndScroll((error,values)=>{
       if(!error){
-        addDepartmentInfor({
+        addDepartmentInfo({
           enterpriseId,
           ...values,
           continueAdd: false,
@@ -38,10 +38,10 @@ class AddForm extends Component {
     })
   }
   addContinue = () => {
-    const { addDepartmentInfor,form,enterpriseId } = this.props;
+    const { addDepartmentInfo,form,enterpriseId } = this.props;
     form.validateFieldsAndScroll((error,values)=>{
       if(!error){
-        addDepartmentInfor({
+        addDepartmentInfo({
           enterpriseId,
           ...values,
           continueAdd: true,
