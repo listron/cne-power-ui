@@ -36,7 +36,7 @@ class Enterprise extends Component {
     this.props.getEnterpriseDetail({
       // enterpriseId:"1010694160817111040"
       // enterpriseName:"协合新能源"
-      enterpriseId: '1010694160817111040', //this.props.enterpriseId
+      enterpriseId: this.props.enterpriseId, //this.props.enterpriseId //'1010694160817111040',
     })
   }
 

@@ -63,7 +63,6 @@ class Department extends Component {
   render() {
     const { showPage, showAssignStationModal, showAssignUserModal } = this.props;
     const { showSidePage } = this.state;
-    console.log(showPage!=='list')
     return (
       <div className={styles.departmentContainer}>
         <DepartmentMain {...this.props} onWarningTipToggle={this.onWarningTipToggle} />
@@ -84,28 +83,9 @@ class Department extends Component {
   }
 }
 const mapStateToProps = (state) => ({
-    loading: state.system.department.get('loading'),
-    buttonLoading: state.system.department.get('buttonLoading'),
-    continueAddLoading: state.system.department.get('continueAddLoading'),
-    showPage: state.system.department.get('showPage'),
-    departmentSource: state.system.department.get('departmentSource'),
-    departmentName: state.system.department.get('departmentName'),
-    parentDepartmentName: state.system.department.get('parentDepartmentName'),
-    stationName: state.system.department.get('stationName'),
-    sort: state.system.department.get('sort'),
-    ascend: state.system.department.get('ascend'),
-    totalNum: state.system.department.get('totalNum'),
-    pageNum: state.system.department.get('pageNum'),
-    pageSize: state.system.department.get('pageSize'),
-    showAssignStationModal: state.system.department.get('showAssignStationModal'),
-    showAssignUserModal: state.system.department.get('showAssignUserModal'),
-
-    allDepartment:state.system.department.get('allDepartment').toJS(),
-    departmentData: state.system.department.get('departmentData').toJS(),
-    departmentDetail: state.system.department.get('departmentDetail').toJS(),
-    selectedDepartment: state.system.department.get('selectedDepartment').toJS(),
+    ...state.system.department.toJS(),
     stations: state.common.get('stations').toJS()
-  });
+});
 
 const mapDispatchToProps = (dispatch) => ({
   changeDepartmentStore: payload => dispatch({type:departmentAction.CHANGE_DEPARTMENT_STORE_SAGA, payload}),

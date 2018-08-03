@@ -13,6 +13,7 @@ const FormItem = Form.Item;
 class EditForm extends Component {
   static propTypes = {
     loading: PropTypes.bool,
+    enterpriseId: PropTypes.string,
     form: PropTypes.object,
     enterpriseDetail: PropTypes.object,
     saveEnterpriseInfor: PropTypes.func,
@@ -24,10 +25,16 @@ class EditForm extends Component {
   }
 
   saveEnterprise = () =>{
-    const { enterpriseLogo } = this.props;
+    const { enterpriseId, enterpriseLogo } = this.props;
     this.props.form.validateFieldsAndScroll((error,values)=>{
+      console.log({
+        enterpriseId,
+          ...values,
+          enterpriseLogo
+      })
       if(!error){
         this.props.saveEnterpriseInfor({
+          enterpriseId,
           ...values,
           enterpriseLogo
         })
