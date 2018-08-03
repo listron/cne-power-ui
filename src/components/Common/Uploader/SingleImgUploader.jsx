@@ -97,7 +97,6 @@ class SingleImgUploader extends Component {
 
   render(){
     const authData = getCookie('authData');
-    console.log(authData)
     const { showCurentUpload, currentImgInfor, preInfor } = this.state;
     const { uploadPath, imgStyle } = this.props;
 

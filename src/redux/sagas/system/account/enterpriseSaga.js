@@ -74,11 +74,11 @@ function *ignoreEnterpirseEdit(action){
 //新建+编辑企业信息
 function *saveEnterpriseInfor(action){
   const { payload } = action;
-  const url = '/mock/system/changeEnterprise';
-  // const url = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.system.saveEnterpriseDetail}`
+  // const url = '/mock/system/changeEnterprise';
+  const url = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.system.saveEnterpriseDetail}`
   try{
     yield put({ type:enterpriseAction.ENTERPRISE_FETCH });
-    const response = yield call(axios.post,url,payload);
+    const response = yield call(axios.put,url,payload);
     if(response.data.code === "10000"){
       yield put({
         type:  enterpriseAction.GET_ENTERPRISE_FETCH_SUCCESS,
@@ -94,7 +94,6 @@ function *saveEnterpriseInfor(action){
 
 
 export function* watchEnterprise() {
-  // yield takeLatest(enterpriseAction.CHANGE_COMMON_STORE_SAGA, changeEnterpriseStore);
   yield takeLatest(enterpriseAction.CHANGE_ENTERPRISE_STORE_SAGA, changeEnterpriseStore);
   // yield takeLatest(enterpriseAction.GET_ENTERPRISE_LIST_SAGA, getEnterprisList);
   yield takeLatest(enterpriseAction.GET_ENTERPRISE_DETAIL_SAGA, getEnterpriseDetail);
