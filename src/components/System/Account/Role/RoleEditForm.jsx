@@ -73,7 +73,7 @@ class RoleEditForm extends Component {
       labelCol: { span: 4 },
       wrapperCol: { span: 32 },
     }
-    const selectedRole = this.props.selectedRole[0];
+    const selectedRole = this.props.selectedRole[0];ß
     const isCreate = this.props.showPage === 'create';
     return (     
       <Form onSubmit={this.onSubmit} className={styles.roleEditForm}>
@@ -109,4 +109,4 @@ class RoleEditForm extends Component {
   }
 }
 
-export default RoleEditForm;
+export default Form.create()(RoleEditForm);

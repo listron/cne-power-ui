@@ -4,7 +4,7 @@ import styles from './role.scss';
 import { roleAction } from '../../../../constants/actionTypes/system/account/roleAction';
 import PropTypes from 'prop-types';
 import Footer from '../../../../components/Common/Footer';
-import TransitionContainer from '../../../components/Common/TransitionContainer';
+import TransitionContainer from '../../../../components/Common/TransitionContainer';
 import RoleEdit from '../../../../components/System/Account/Role/RoleEdit';
 import RoleTable from '../../../../components/System/Account/Role/RoleTable';
 
