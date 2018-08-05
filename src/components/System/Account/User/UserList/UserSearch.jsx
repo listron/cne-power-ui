@@ -1,7 +1,7 @@
 
 
 import React, { Component } from 'react';
-import { Button, Select, Icon,Radio, Checkbox, Input,  } from 'antd';
+import { Button, Select, Icon,Radio, Checkbox, Input,Tag  } from 'antd';
 import PropTypes from 'prop-types';
 import styles from './userList.scss';
 
@@ -21,7 +21,7 @@ class UserSearch extends Component {
     onChangePageSize: PropTypes.func,
     onChangePage: PropTypes.func,
     roleData: PropTypes.object,
-
+    pageNum: PropTypes.number,
     userStatus: PropTypes.number, 
     userName: PropTypes.string, 
     userPhone: PropTypes.string,
@@ -31,13 +31,13 @@ class UserSearch extends Component {
     pageSize: PropTypes.number,
     onChangeStatus: PropTypes.func, 
     onUserSearch: PropTypes.func,
+    enterpriseId: PropTypes.string,
+    roleId: PropTypes.string,
   }
 
   constructor(props){
     super(props);
     this.state = {
-      selectedRoles: [],
-      selectedRolesSet: new Set(),
       nameValue: '',
       phoneValue: '',
       stationValue: '',
@@ -56,62 +56,67 @@ class UserSearch extends Component {
     })
   }
 
-  onSelectRoles = (e, item) => {
-    console.log(e, item)
-    let value = e.key;
-    let { selectedRolesSet } = this.state;
-    if(selectedRolesSet.has(value)){
-      selectedRolesSet.delete(value)
-      this.setState({
-        selectedRolesSet: selectedRolesSet,
-      })
-    }else{
-      this.setState({
-        selectedRolesSet: selectedRolesSet.add(value),
-      })
-    }
+  onSelectRoles = (value,item) => {
+    let { roleId } = this.props;
+    let tmpSelectedRoles = new Set(roleId.split(',').filter(e=>!!e));
+    let role = item.key===undefined ? item.roleId : item.key;//key存在=>筛选;roleId存在=>删除
+    tmpSelectedRoles.has(role) ? tmpSelectedRoles.delete(role) : tmpSelectedRoles.add(role)
+    roleId = role === '不限' ? '' : [...tmpSelectedRoles].join(',');
+    let params = {
+      enterpriseId: this.props.enterpriseId,
+      userStatus: this.props.userStatus,
+      roleId: roleId,
+      pageNum: this.props.pageNum - 1,
+      pageSize: this.props.pageSize,
+    };
+    this.props.getUserList(params);
   }
 
-  
-  onDeleteRole = (e) => {
-    console.log(e)
-    // let value = e.key;
-    // let { selectedRolesSet } = this.state;
-    // if(selectedRolesSet.has(value)){
-    //   selectedRolesSet.delete(value)
-    //   this.setState({
-    //     selectedRolesSet: selectedRolesSet,
-    //   })
-    // }else{
-    //   this.setState({
-    //     selectedRolesSet: selectedRolesSet.add(value),
-    //   })
-    // }
+  emptyCondition = (item) => {
+    let params = {
+      enterpriseId: this.props.enterpriseId,
+      userStatus: this.props.userStatus,
+      roleId: '',
+      pageNum: this.props.pageNum - 1,
+      pageSize: this.props.pageSize,
+    };
+    this.props.getUserList(params);
   }
 
   render(){
-    const { userStatus } = this.props;
-    const { nameValue, phoneValue, stationValue, selectedRolesSet } = this.state;
-    console.log([...selectedRolesSet])
-    const roleData = ['系统管理员','企业管理员','生产管理员','运维实施工人','运维管理员'];
-
+    const { userStatus,roleId } = this.props;
+    const { nameValue, phoneValue, stationValue } = this.state;
+    const roleData = [
+      {roleId: '1', roleName: '系统管理员', isPre: 0, rightData:[]},
+      {roleId: '2', roleName: '企业管理员', isPre: 0, rightData:[]},
+      {roleId: '3', roleName: '生产管理员', isPre: 0, rightData:[]},
+      {roleId: '4', roleName: '运维实施工人', isPre: 0, rightData:[]},
+      {roleId: '5', roleName: '运维管理员', isPre: 0, rightData:[]},
+    ];
+    let roleIdSet = new Set(roleId.split(',').filter(e=>!!e));
+    let roleSelectId = roleData.filter(e=>{return roleIdSet.has(e.roleId.toString())});
     return (
       <div className={styles.userSearchFilter}>
         <div className={styles.userFilter}>
           <div className={styles.userRole} >
             <span className={styles.filterCondition} >筛选条件</span>
-            <Select
-              notFoundContent="角色" 
+            <Select 
               placeholder="角色"  
               showArrow={true} 
               className={styles.selectedRoles} 
-              dropdownMatchSelectWidth={false} 
-              labelInValue 
+              dropdownMatchSelectWidth={false}
               onChange={this.onSelectRoles}
             >
-              <Option key="不限" value={'不限'}><Checkbox>不限</Checkbox></Option>
-              {roleData.map((item,index) => {
-                return  <Option key={index} value={item} ><Checkbox >{item}</Checkbox></Option>;
+              <Option key="不限" value={'不限'}><Checkbox checked={roleIdSet.size === 0} >不限</Checkbox></Option>
+              {roleData.map((item) => {
+                return  (<Option key={item.roleId} value={item.roleName} >
+                          <Checkbox
+                            checked={roleIdSet.has(item.roleId.toString())} 
+                            value={item.roleName}
+                          >
+                            {item.roleName}
+                          </Checkbox>
+                        </Option>);
               })}
             </Select>
           </div>
@@ -127,13 +132,13 @@ class UserSearch extends Component {
             </RadioGroup>
           </div>
         </div>
-        {selectedRolesSet.size !== 0 && 
+        {roleIdSet.size !== 0 && 
           <div className={styles.selectedRolesBox} >
             <span>已选条件</span>
-            {[...selectedRolesSet].map((value, key) => {
-              return <Button type="dashed" key={key} >{value}<Icon type="close" onClick={(value)=>this.onDeleteRole(value)} /></Button>;
+            {roleSelectId.map((item, key) => {
+              return <Tag closable key={item.roleId} className={styles.selectedRole} value={item.roleName} onClose={() => this.onSelectRoles(item.roleName,item)} >{item.roleName}</Tag>;
             })}
-            <span className={styles.emptyCondition} >清空条件</span>
+            <span className={styles.emptyCondition} onClick={this.emptyCondition} >清空条件</span>
           </div>
         }
         <div className={styles.userSearch}>

@@ -92,15 +92,14 @@ class User extends Component {
     }
   };
   onShowSideChange = ({ showSidePage }) => {
-    console.log(showSidePage);
     this.setState({ showSidePage });
   };
 
   onChangeStatus = status => {
-    if (status !== this.props.userStatus) {
+    if (Number(status) !== this.props.userStatus) {
       let params = {
         enterpriseId: this.props.enterpriseId,
-        userStatus: status,
+        userStatus: Number(status),
         pageNum: 0,
         pageSize: this.props.pageSize
       };

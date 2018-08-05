@@ -42,6 +42,7 @@ class Main extends Component {
     let pathArray = pathname.split('/').filter(e=>!!e);
     const params = menu.find(e=>e.path===`/${pathArray[0]?pathArray[0]:''}`);
     this.props.setTopMenu(params);
+    // f5刷新此时reducer数据重置，必须重新请求再次获取需要的值
     if(this.refs.main) {
       this.refs.main.addEventListener('scroll', this.onScroll);
     }

@@ -1,7 +1,7 @@
 
 
 import React, { Component } from 'react';
-import { Table, Button, Select, Icon, Popover } from 'antd';
+import { Table, Button, Select, Icon, Popover, Checkbox } from 'antd';
 import CommonPagination from '../../../../Common/CommonPagination';
 import PropTypes from 'prop-types';
 import styles from './userList.scss';
@@ -30,12 +30,11 @@ class UserList extends Component {
   constructor(props){
     super(props);
     this.state = {
-      
+      selectedUserColumns: new Set(),//选中列暂时存在state里，如有需要可存进reducer里
     }
   }
 
   onRowSelect = (selectedRowKeys, selectedRows) => {//行选择
-    console.log(selectedRowKeys, selectedRows);
     this.props.changeUserStore({
       selectedUser: selectedRows,
     })
@@ -56,6 +55,26 @@ class UserList extends Component {
       pageNum: currentPage,
       pageSize,
     })
+  }
+
+  onSelectColumns = (value) => {
+    const { selectedUserColumns } = this.state;
+    let tmpUserColumns = selectedUserColumns;
+    if(value === '全选'){
+      tmpUserColumns = new Set();
+    }else{
+      tmpUserColumns.has(value) ? tmpUserColumns.delete(value) : tmpUserColumns.add(value);
+    }
+    
+    this.setState({selectedUserColumns: tmpUserColumns })
+    let params = {
+      enterpriseId: this.props.enterpriseId,
+      userStatus: this.props.userStatus,
+      roleId: this.props.roleId,
+      pageNum: this.props.pageNum - 1,
+      pageSize: this.props.pageSize,
+    };
+    this.props.getUserList(params);
   }
 
   getUserStatus = (text) => {
@@ -100,6 +119,7 @@ class UserList extends Component {
   }
   
   tableColumn = () => {
+    const { selectedUserColumns } = this.state;
     const columns = [
       {
         title: '用户名',
@@ -174,7 +194,12 @@ class UserList extends Component {
         sorter: true,
       }
     ];
-    return columns;
+    if(selectedUserColumns && selectedUserColumns.size !== 0){
+      return columns.filter(e=>selectedUserColumns.has(e.title));
+    }else{
+      return columns;
+    }
+    
   }
 
   cancelRowSelect = () => {
@@ -212,9 +237,7 @@ class UserList extends Component {
   } 
 
   userHandle = (value) => {
-    console.log(value)
     const { selectedUser, enterpriseId, roleId, pageNum, pageSize } = this.props;
-    console.log(selectedUser.toJS()[0])
     if(value === 'edit'){
       this.props.changeUserStore({
         showPage: 'edit',
@@ -253,9 +276,86 @@ class UserList extends Component {
     })
   }
   
+  
+
   render(){
     const { userData, totalNum, loading, selectedUser } = this.props;
-    
+    const { selectedUserColumns } = this.state;
+    const columns = [
+      {
+        title: '用户名',
+        dataIndex: 'userName',
+        key: 'userName',
+        render: (text, record, index) => (<a href={'javascript:void(0)'} onClick={() => this.showUserDetail(record)} >{text}</a>)
+      }, {
+        title: '真实姓名',
+        dataIndex: 'trueName',
+        key: 'trueName',
+        render: (text,record,index) => (<span>{text}</span>)
+      }, {
+        title: '电话',
+        dataIndex: 'phoneNum',
+        key: 'phoneNum',
+        render: (text,record) => (<span>{text}</span>),
+      }, {
+        title: '角色',
+        dataIndex: 'roleName',
+        key: 'roleName',
+        render: (text,record) => (<span>{text}</span>),
+        sorter: true
+      }, {
+        title: '特殊权限',
+        dataIndex: 'spcialRoleName',
+        key: 'spcialRoleName',
+        render: (text,record) => (<span>{text}</span>),
+        sorter: true
+      }, {
+        title: '所在企业',
+        dataIndex: 'enterpriseId',
+        key: 'enterpriseId',
+        render: (text,record) => (<span>{text}</span>),
+        sorter: true
+      }, {
+        title: '负责电站',
+        dataIndex: 'stationName',
+        key: 'stationName',
+        render: (text,record,index) => {
+          let stations = record.stationName.split(',').filter(e=>!!e);
+          const { userName } = record;
+          if(stations.length > 1){
+            const content = (<ul>
+              {stations.map(e=>(<li key={e} className={styles.eachStation} >
+                <span className={styles.square} ></span><span>{e}</span>
+              </li>))}
+            </ul>)
+            return (
+              <div>
+                <span>{stations[0]}</span>
+                <Popover 
+                  content={content} 
+                  title={userName + '负责电站'} 
+                  placement="right" 
+                  trigger="hover"
+                  overlayClassName={styles.responsibleDetails}
+                >
+                  <Icon type="ellipsis" />
+                </Popover>
+              </div>
+            )
+          }else{
+            return <span>{stations[0] ? stations[0] : ''}</span>
+          }
+          
+        } 
+      },  {
+        title: '状态',
+        dataIndex: 'userStatus',
+        key: 'userStatus',
+        render: (text, record, index) => (<span>{this.getUserStatus(text)}</span>),
+        sorter: true,
+      }
+    ];
+
     return (
       <div className={styles.userList}>
         <div className={styles.userHelper} >
@@ -267,6 +367,21 @@ class UserList extends Component {
             <div className={styles.userOperate} >
               {this._createUserOperate()}
             </div>
+            <Select
+              className={styles.selectedColumns} 
+              showArrow={false}
+              dropdownMatchSelectWidth={false}
+              onChange={this.onSelectColumns}
+            >
+              <Option key="全选" value="全选" ><Checkbox checked={selectedUserColumns.size === 0} >全选</Checkbox></Option>
+              {columns.map(item=>{
+                return (<Option
+                          key={item.title}
+                          value={item.title}
+                          // disabled={selectedUserColumns.has(item.title)}
+                        ><Checkbox value={item.title} checked={selectedUserColumns.has(item.title)} >{item.title}</Checkbox></Option>);
+              })}
+            </Select>
           </div>
           <CommonPagination total={totalNum} onPaginationChange={this.onPaginationChange} />
         </div>
@@ -282,8 +397,9 @@ class UserList extends Component {
           pagination={false}
         />
         <div className={styles.tableFooter}>
-          <span className={styles.info}>当前选中<span className={styles.totalNum}>{selectedUser.toJS().length}</span>项</span>
+          <span className={styles.info}>当前选中 <span className={styles.totalNum}>{selectedUser.toJS().length}</span> 项</span>
           <a className={styles.cancel} href="javascript:void(0)" onClick={this.cancelRowSelect}>取消选择</a>
+          <span className={styles.operateTip} >请选择同一状态下的列表项进行操作</span>
         </div>
       </div>
     )
