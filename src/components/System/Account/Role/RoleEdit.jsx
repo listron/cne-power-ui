@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {Icon} from 'antd';
-import styles from './enterprise.scss';
+import styles from './role.scss';
 import RoleEditForm from './RoleEditForm';
 
 class RoleEdit extends Component {

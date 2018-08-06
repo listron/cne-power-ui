@@ -9,13 +9,15 @@ const TreeNode = Tree.TreeNode;
 class AssignUserModal extends Component {
   static propTypes = {
     show: PropTypes.bool,
-    currentUser: PropTypes.object,//当前用户
-    enterprise: PropTypes.object,//当前企业
+    selectedDepartment: PropTypes.array,
+    currentUserId: PropTypes.string,//当前用户Id
+    enterpriseId: PropTypes.string,//当前企业Id
+    enterpriseName: PropTypes.string,//当前企业名称
     departmentList: PropTypes.object,//immutable
     userList: PropTypes.object,//immutable
     getDepartmentTreeData: PropTypes.func,
     getUserList: PropTypes.func,
-    onSelect: PropTypes.func,
+    onSetDepartmentUser: PropTypes.func,       
     onCancel: PropTypes.func,
   }
   constructor(props) {
@@ -31,19 +33,25 @@ class AssignUserModal extends Component {
   }
 
   componentDidMount() {
-    this.props.getDepartmentTreeData();
-    this.props.getUserList();
+    const {enterpriseId} = this.props;
+    this.props.getDepartmentTreeData({
+      enterpriseId
+    });
+    this.props.getUserList({
+      enterpriseId
+    });
   }
 
   componentWillReceiveProps(nextProps) {
     if(nextProps.departmentList.size !== this.props.departmentList.size && nextProps.departmentList.size > 0) {
-      let hasChild = !!nextProps.departmentList.getIn([0, 'childDepartmentData']);
-      let department = hasChild ? nextProps.departmentList.getIn([0, 'childDepartmentData', 0]) : nextProps.departmentList.get(0);
-      let departmentId = department.get('departmentId');
+      let department = nextProps.selectedDepartment[0];      
+      let hasChild = department.list.length > 0;
+      let selectedDepartment = hasChild ? department.list[0] : department;
+      let departmentId = department.departmentId;
       this.setState({
-        selectedDepartment: department,
+        selectedDepartment: Immutable.fromJS(selectedDepartment),
         selectedKeys: [departmentId],
-        expandedKeys: hasChild ? [nextProps.departmentList.getIn([0, 'departmentId'])] : []
+        expandedKeys: hasChild ? [departmentId] : [this.props.enterpriseId]
       });
     }
     if(nextProps.userList.size !== this.props.userList.size && nextProps.userList.size > 0) {
@@ -54,7 +62,10 @@ class AssignUserModal extends Component {
   }
 
   onOk = () => {
-    this.props.onSelect(this.state.userList);
+    this.props.onSetDepartmentUser({
+      enterpriseId: this.props.enterpriseId,
+      list: this.state.userList.toJS()
+    });
   }
 
   onCancel = () => {
@@ -70,7 +81,7 @@ class AssignUserModal extends Component {
     let userList = this.state.selectedUserList;
     if(value !== '') {
       userList = userList.filter((item) => {
-        return item.get('userName').index(value) !== -1;
+        return item.get('username').index(value) !== -1;
       });
     } else {
       userList = null;
@@ -84,7 +95,7 @@ class AssignUserModal extends Component {
     let item = info.node.props.dataRef;
     let key = info.node.props.key;//item.get('departmentId')
     const expandedKeys = this.state.expandedKeys;
-    if(item.get('childDepartmentData')) {
+    if(item.get('list')) {
       if(expandedKeys.indexOf(key) === -1) {
         expandedKeys.push(key);
       } else {
@@ -114,7 +125,7 @@ class AssignUserModal extends Component {
   onCheckUser = (user, checked) => {
     let userList = this.state.userList;
     let selectedDepartment = this.state.selectedDepartment;
-    const parentDepartmentId = selectedDepartment.get('parentId');
+    const parentDepartmentId = selectedDepartment.get('parentDepartmentId');
     if(checked) {
       let index = userList.findIndex((item) => {
         return item.get('departmentId') === parentDepartmentId && item.get('userId') === user.get('userId');
@@ -122,14 +133,14 @@ class AssignUserModal extends Component {
       if(index === -1) {
         userList = userList.push(Immutable.fromJS({
           userId: user.get('userId'),
-          userName: user.get('userName'),
+          username: user.get('username'),
           departmentId: selectedDepartment.get('departmentId'),
           departmentName: selectedDepartment.get('departmentName')
         }))
       } else {
         userList = userList.set(index, {
           userId: user.get('userId'),
-          userName: user.get('userName'),
+          username: user.get('username'),
           departmentId: selectedDepartment.get('departmentId'),
           departmentName: selectedDepartment.get('departmentName')
         });
@@ -142,8 +153,8 @@ class AssignUserModal extends Component {
       let parentDepartment = this.props.departmentList.find((item) => {
         return item.get('departmentId' === parentDepartmentId);
       });
-      if(parentDepartment && parentDepartment.get('childDepartmentData')) {
-        parentDepartment.get('childDepartmentData').forEach((department) => {
+      if(parentDepartment && parentDepartment.get('list')) {
+        parentDepartment.get('list').forEach((department) => {
           let index = userList.findIndex((item) => {
             return department.get('departmentId') === item.get('departmentId') && user.get('userId') === item.get('userId');
           });
@@ -158,7 +169,7 @@ class AssignUserModal extends Component {
       } else {
         userList = userList.set(userIndex, {
           userId: user.get('userId'),
-          userName: user.get('userName'),
+          username: user.get('username'),
           departmentId: parentDepartmentId,
           departmentName: parentDepartment.get('departmentName')
         });
@@ -187,7 +198,7 @@ class AssignUserModal extends Component {
     let selectedUserList;
     if(department.get('disabled') === true) {
       selectedUserList = userList.filter((user) => {
-        return user.get('departmentId' === department.get('parentId'))
+        return user.get('departmentId' === department.get('parentDepartmentId'))
       });
     } else {
       selectedUserList = userList;
@@ -202,12 +213,12 @@ class AssignUserModal extends Component {
         return item.get('departmentId') === null;
       });
     } else {
-      const departmentId = department.get('disabled') ? department.get('parentId') : department.get('departmentId');
-      if(department.get('childDepartmentData') && isAll) {
+      const departmentId = department.get('disabled') ? department.get('parentDepartmentId') : department.get('departmentId');
+      if(department.get('list') && isAll) {
         let parentUser = userList.filter((item) => {
           return item.get('departmentId') === departmentId;
         });
-        department.get('childDepartmentData').forEach((item)=> {
+        department.get('list').forEach((item)=> {
           let childrenUser = userList.filter((user) => {
             return user.get('departmentId') === item.get('departmentId');
           });
@@ -233,25 +244,25 @@ class AssignUserModal extends Component {
     let department, child, parentUser;
     for(let i = 0; i < data.size; i++) {
       department = data.get(i);
-      child = department.get('childDepartmentData');
-      if(child.toJS() instanceof Array) {
+      child = department.get('list');
+      if(child.size > 0) {
         parentUser = this.getDepartmentUser(department, false);
         if(parentUser.size > 0) {
           child = child.unshift(Immutable.fromJS({
-            departmentId: department.get('departmentId')+i,
-            parentId: department.get('departmentId'),
+            departmentId: department.get('departmentId')+'_'+i,
+            parentDepartmentId: department.get('departmentId'),
             departmentName: '未分配人员',
             disabled: true
           }));
         }
-        data = data.setIn([i, 'childDepartmentData'], child);
+        data = data.setIn([i, 'list'], child);
       }
     }
     const nonAssignUser = this.getDepartmentUser(null);
     if(nonAssignUser.size > 0) {
       data = data.unshift(Immutable({
-        departmentId: '0',
-        parentId: null,
+        departmentId: null,
+        parentDepartmentId: '0',
         departmentName: '待分配人员',
         disabled: true
       }));
@@ -278,7 +289,7 @@ class AssignUserModal extends Component {
   }
 
   renderDepartmentTree() {
-    const { enterprise } = this.props;
+    const { enterpriseId, enterpriseName } = this.props;
     const { departmentUserList } = this.state;
     return (
       <Tree 
@@ -287,7 +298,7 @@ class AssignUserModal extends Component {
         expandedKeys={this.state.expandedKeys}
         selectedKeys={this.state.selectedKeys}
       >
-        <TreeNode title={enterprise.enterpriseName} key={enterprise.enterpriseId}>
+        <TreeNode title={enterpriseName} key={enterpriseId}>
           {this.renderTreeNodes(this.transformTreeData(departmentUserList))}
         </TreeNode>
       </Tree>
@@ -298,11 +309,11 @@ class AssignUserModal extends Component {
     let userNum;
     return (
       treeData.map((item) => {
-        if(item.get('childDepartmentData').toJS() instanceof Array) {
+        if(item.get('list').sieze > 0) {
           userNum = this.getDepartmentUser(item, true).size;
           return (
             <TreeNode title={item.get('departmentName')+'('+userNum+')'} key={item.get('departmentId')} dataRef={item}>
-              {this.renderTreeNodes(item.get('childDepartmentData'))}
+              {this.renderTreeNodes(item.get('list'))}
             </TreeNode>
           );
         } else {
@@ -328,12 +339,12 @@ class AssignUserModal extends Component {
                   checked={()=>this.getUserChecked(item)}
                   disabled={item.get('userStatus') === 4} />
               }
-              <Avatar>{item.get('userName').charAt(0)}</Avatar>
-              <span>{item.get('userName')}</span>
+              <Avatar>{item.get('username').charAt(0)}</Avatar>
+              <span>{item.get('username')}</span>
             </div>
             <div>
               {!disabled && item.get('departmentName')}
-              {item.get('userId') === this.props.currentUser.get('userId') && <span>我</span>}
+              {item.get('userId') === this.props.currentUserId && <span>我</span>}
             </div>
           </div>
         );
@@ -352,7 +363,7 @@ class AssignUserModal extends Component {
           style={{ background: '#fff', borderStyle: 'dashed' }}
           onClose={()=>{this.onCheckUser(item, false)}}
         >
-          {item.get('userName')}
+          {item.get('username')}
         </Tag>
       );
     });

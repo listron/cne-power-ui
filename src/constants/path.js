@@ -75,11 +75,15 @@ export default {
       getEnterprisDetail: '/v3/enterprise',//企业详情获取
       saveEnterpriseDetail: '/v3/enterprise/change',//保存企业详情
       getDepartmentList: '/v3/department/list',//部门列表
-      departmentInfor: '/v3/department', //部门信息新增，编辑，详情
-      departmentAllList: '/v3/department/all', //所有部门列表
+      departmentInfo: '/v3/department', //部门信息新增，编辑，详情
+      getAllDepartment: '/v3/department/all', //所有部门列表
+      getAllUser: '/v3/department/user', //所有用户列表，用于为部门分配用户
+      getAllStation: '/v3/department/station', //所有电站列表，用于为部门分配电站
+      setDepartmentUser: '/v3/department/user',//设置部门成员
+      setDepartmentStation: '/v3/department/station', //设置部门电站
       
       getRoleList: '/v3/role/list',
-      getMenuList: 'v3/right',
+      getMenuList: '/v3/right',
       createRole: '/v3/role',
       editRole: '/v3/role/{enterpriseId}',
       deleteRole: '/v3/role',

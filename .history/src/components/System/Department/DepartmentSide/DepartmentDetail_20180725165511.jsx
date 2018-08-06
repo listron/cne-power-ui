@@ -98,7 +98,7 @@ class DepartmentDetail extends Component {
             <Icon type="arrow-left" className={styles.backIcon} onClick={this.cancelAdd} />
           </span>
         </div>
-        <div className={styles.departmentInfor} >
+        <div className={styles.departmentInfo} >
           <div>
             <span className={styles.title}>部门名称</span>
             <span className={styles.value}>{departmentDetail.departmentName}</span> 

@@ -1,21 +1,18 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import styles from './role.scss';
+import {getCookie} from '../../../../utils'
 import { roleAction } from '../../../../constants/actionTypes/system/account/roleAction';
 import PropTypes from 'prop-types';
 import Footer from '../../../../components/Common/Footer';
-import TransitionContainer from '../../../components/Common/TransitionContainer';
+import TransitionContainer from '../../../../components/Common/TransitionContainer';
 import RoleEdit from '../../../../components/System/Account/Role/RoleEdit';
 import RoleTable from '../../../../components/System/Account/Role/RoleTable';
 
 class Role extends Component {
   static propTypes = {
     showPage: PropTypes.string,
-    sort: PropTypes.string, 
-    ascend: PropTypes.bool,
-    currentPage: PropTypes.number, 
-    pageSize: PropTypes.number,
-    selectedRole: PropTypes.array, 
+    selectedRole: PropTypes.array,
     getRoleList: PropTypes.func,
     modifyRole: PropTypes.func,
     deleteRole: PropTypes.func,
@@ -26,26 +23,24 @@ class Role extends Component {
   }
   componentDidMount(){
     const params = {
-      sort: this.props.sort, 
-      ascend: this.props.ascend,
-      currentPage: this.props.currentPage, 
-      pageSize: this.props.pageSize, 
+      enterpriseId: getCookie('enterpriseId')
     }
-    this.props.getRoleList(params)
+    this.props.getRoleList(params);
   }
 
   render() {
     const { showPage } = this.props;
     return (
-      <div className={styles.RoleContainer}>
-        <RoleTable {...this.props} />
+      <div className={styles.roleContainer}>
+        {showPage==='list' ? 
+        <RoleTable {...this.props} /> :
         <TransitionContainer
           show={showPage!=='list'}
           timeout={500}
           effect="side"
         >
           <RoleEdit {...this.props} />
-        </TransitionContainer>
+        </TransitionContainer>}
         <Footer />        
       </div>
     );
