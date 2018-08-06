@@ -37,7 +37,7 @@ class Department extends Component {
   }
   componentDidMount(){
     const params = {
-      enterpriseId: this.props.enterpriseId,
+      enterpriseId: '1010694160817111040', //this.props.enterpriseId,//'1010694160817111040',
       departmentSource: this.props.departmentSource,
       departmentName: this.props.departmentName,
       parentDepartmentName: this.props.parentDepartmentName,
@@ -49,7 +49,7 @@ class Department extends Component {
     }
     this.props.getDepartmentList(params)//请求部门列表
     this.props.getAllDepartment({//请求所有部门
-      enterpriseId: this.props.enterpriseId,
+      enterpriseId: '1010694160817111040', //this.props.enterpriseId,//'1010694160817111040',
     })
   }
 
@@ -68,7 +68,6 @@ class Department extends Component {
   render() {
     const { showPage, showAssignStationModal, showAssignUserModal } = this.props;
     const { showSidePage } = this.state;
-    console.log(showPage!=='list')
     return (
       <div className={styles.departmentContainer}>
         <DepartmentMain {...this.props} onWarningTipToggle={this.onWarningTipToggle} />
@@ -89,6 +88,7 @@ class Department extends Component {
   }
 }
 const mapStateToProps = (state) => ({
+<<<<<<< HEAD
     loading: state.system.department.get('loading'),
     buttonLoading: state.system.department.get('buttonLoading'),
     continueAddLoading: state.system.department.get('continueAddLoading'),
@@ -113,6 +113,12 @@ const mapStateToProps = (state) => ({
     stations: state.common.get('stations').toJS(),
     login: state.login.get('loginData')
   });
+=======
+    ...state.system.department.toJS(),
+    stations: state.common.get('stations').toJS(),
+    enterpriseId: state.common.get('enterpriseId'),
+});
+>>>>>>> upstream/dev
 
 const mapDispatchToProps = (dispatch) => ({
   changeDepartmentStore: payload => dispatch({type:departmentAction.CHANGE_DEPARTMENT_STORE_SAGA, payload}),

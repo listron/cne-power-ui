@@ -82,7 +82,7 @@ class SideMenu extends Component {
               <Icon type={collapsed ? 'menu-unfold' : 'menu-fold'} />
             </Button>
           </div>
-          <Menu mode="inline" theme="dark" inlineCollapsed={collapsed} className={styles.menuList} selectedKeys={selectedKeys} >
+          <Menu mode="inline" theme="dark" inlineCollapsed={collapsed} className={styles.menuList} selectedKeys={selectedKeys}>
             {this.renderSideMenu(sideMenuData)}
           </Menu>
       </div>

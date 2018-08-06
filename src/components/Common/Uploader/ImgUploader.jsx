@@ -130,7 +130,7 @@ class ImgUploader extends Component {
       multiple: true,
       fileList,
 			listType: "picture-card",
-      headers:{'Authorization': 'bearer ' + (authData ? JSON.parse(authData).access_token : '')},
+      headers:{'Authorization': 'bearer ' + (authData ? JSON.parse(authData) : '')}, //JSON.parse(authData).access_token
       beforeUpload:this.beforeUpload
 		};
     const uploadButton = (

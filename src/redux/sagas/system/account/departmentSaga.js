@@ -15,8 +15,8 @@ function *changeDepartmentStore(action){//存储payload指定参数，替换redu
 
 function *getDepartmentList(action){//请求部门列表数据
   const { payload } = action;
-  const url = '/mock/system/departmentList';
-  // const url = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.system.getDepartmentList}`
+  // const url = '/mock/system/departmentList';
+  const url = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.system.getDepartmentList}`
   try{
     yield put({ type:departmentAction.DEPARTMENT_FETCH });
     const response = yield call(axios.post,url,payload);
@@ -24,7 +24,7 @@ function *getDepartmentList(action){//请求部门列表数据
       type:  departmentAction.GET_DEPARTMENT_FETCH_SUCCESS,
       payload:{
         ...payload,
-        departmentData: response.data.data.departmentData,
+        departmentData: response.data.data.departmentData || [],
         totalNum: response.data.data.totalNum,
         buttonLoading: false
       },
@@ -91,7 +91,11 @@ function *getAllUser(action){
 function *getAllDepartment(action){//获取所有部门基础信息
   const { payload } = action;
   // const url = '/mock/system/allDepartments';
+<<<<<<< HEAD
   const url = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.system.getAllDepartment}/${payload.enterpriseId}`
+=======
+  const url = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.system.departmentAllList}/${payload.enterpriseId}`
+>>>>>>> upstream/dev
   try{
     yield put({ type:departmentAction.DEPARTMENT_FETCH });
     const response = yield call(axios.get,url);

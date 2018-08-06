@@ -41,8 +41,8 @@ class Main extends Component {
     const { pathname } = this.props.history.location;
     let pathArray = pathname.split('/').filter(e=>!!e);
     const params = menu.find(e=>e.path===`/${pathArray[0]?pathArray[0]:''}`);
-    this.props.setTopMenu(params);
-    if(this.refs.main) {
+    this.props.setTopMenu({ topMenu: params });
+    if (this.refs.main) {
       this.refs.main.addEventListener('scroll', this.onScroll);
     }
   }
@@ -138,7 +138,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  setTopMenu: params => dispatch({ type: CommonAction.GET_TOPMENU_CHANGE_SAGA, params }),
+  setTopMenu: payload => dispatch({ type: CommonAction.CHANGE_COMMON_STORE_SAGA, payload }),
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Main));
