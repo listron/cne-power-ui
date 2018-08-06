@@ -30,15 +30,15 @@ const routers = [
     exact:true,
     component: Ticket,
   }, {
-    path:'/system/enterprise',
+    path:'/system/account/enterprise',
     exact:true,
     component: Enterprise,
   }, {
-    path:'/system/department',
+    path:'/system/account/department',
     exact:true,
     component: Department,
   }, {
-    path:'/system/role',
+    path:'/system/account/role',
     exact:true,
     component: Role,
   }

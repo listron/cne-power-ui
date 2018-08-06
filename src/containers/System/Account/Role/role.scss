@@ -1,3 +1,9 @@
 .roleContainer {
-  
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  background:#ececec;
+  flex-direction: column;
+  padding: 24px 24px 0;
+  background:#ececec;
 }

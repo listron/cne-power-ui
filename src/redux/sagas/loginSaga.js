@@ -38,6 +38,7 @@ function *getLogin(action){
     });
     if(response.data.code === '10000'){
       setCookie('authData',JSON.stringify(response.data.data.access_token));
+      setCookie('enterpriseId', response.data.data.enterpriseId);
       setCookie('phoneNum', action.params.phoneNum);
       setCookie('username', response.data.data.username);
       setCookie('expireData', moment().add(response.data.data.expires_in, 'seconds'));
@@ -90,6 +91,7 @@ function *checkCode(action){
         setCookie('authData',JSON.stringify(response.data.data.access_token));
         setCookie('phoneNum', action.params.phoneNum);
         setCookie('username', response.data.data.username);
+        setCookie('enterpriseId', response.data.data.enterpriseId);
         setCookie('expireData', moment().add(response.data.data.expires_in, 'seconds'));
         setCookie('isNotLogin', action.params.isNotLogin);
       }

@@ -73,7 +73,7 @@ class RoleEditForm extends Component {
       labelCol: { span: 4 },
       wrapperCol: { span: 32 },
     }
-    const selectedRole = this.props.selectedRole[0];ß
+    const selectedRole = this.props.selectedRole[0];
     const isCreate = this.props.showPage === 'create';
     return (     
       <Form onSubmit={this.onSubmit} className={styles.roleEditForm}>
@@ -82,7 +82,7 @@ class RoleEditForm extends Component {
             rules: [{ 
               required: isCreate 
             }],
-            initialValue: isCreate ? '' : selectedRole.roleName
+            initialValue: isCreate || !selectedRole ? '' : selectedRole.roleName
           })(
             <Input />
           )}
@@ -95,7 +95,7 @@ class RoleEditForm extends Component {
             rules: [{ 
               required: true,
             }],
-            initialValue: isCreate ? '' : this.getIds(selectedRole.rightData)
+            initialValue: isCreate || !selectedRole ? '' : this.getIds(selectedRole.rightData)
           })(
             <RoleTree treeData={this.props.menuData} />
           )}

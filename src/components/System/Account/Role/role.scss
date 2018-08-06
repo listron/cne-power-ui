@@ -1,0 +1,72 @@
+@import '../../../../theme/theme.scss';
+.roleList{
+  width: 100%;
+  .roleListTop {
+    background: #fff;
+    display: flex;
+    line-height: 72px;
+    justify-content: space-between;
+    .addRole{
+      padding : 0;
+      margin-left: 24px;
+      margin-right: 12px;
+      border: 1px solid $themeColor;
+      i{
+        display: inline-block;
+        background:$themeColor;
+        color: #fff;
+        vertical-align: top;
+        width: 28px;
+        line-height: 30px;
+        height: 100%;
+        border-radius: 4px 0 0 4px;
+      }
+      .text{
+        border-radius: 0 4px 4px 0;
+        background:#fff;
+        color:$themeColor;
+        display: inline-block;
+        height: 100%;
+        width: 38px;
+        line-height: 30px;
+        margin: 0px;
+        text-align: center;
+      }
+      @include highLight($themeColor);
+      &:hover{
+        .text{
+          background:$themeColor;
+          color: #fff;
+        }
+      }
+    }
+    .handleRole{
+      height: 72px;
+      line-height: 72px;
+      display: inline-block;
+      :global{
+        .ant-select{
+          width: 78px;
+        }
+      }
+    }
+  }
+  .tableFooter{
+    background-color: #fff;
+    height: 45px;
+    line-height: 45px;
+    .info{
+      color: $lightColor;
+      margin-right: 20px;
+      margin-left: 24px;
+      .totalNum{
+        color: rgb(250,185,7);
+        margin: auto 4px;
+      }
+    }
+    .cancel{
+      color: $themeColor;
+      cursor: pointer;
+    }
+  }
+}

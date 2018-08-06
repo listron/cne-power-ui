@@ -83,7 +83,7 @@ export default {
       setDepartmentStation: '/v3/department/station', //设置部门电站
       
       getRoleList: '/v3/role/list',
-      getMenuList: 'v3/right',
+      getMenuList: '/v3/right',
       createRole: '/v3/role',
       editRole: '/v3/role/{enterpriseId}',
       deleteRole: '/v3/role',

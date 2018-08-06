@@ -5,7 +5,7 @@ import {routerConfig} from '../../common/routerSetting';
 import { menu } from '../../common/menu';
 import styles from './style.scss';
 import { connect } from 'react-redux';
-import {getCookie} from '../../utils/index.js'
+import {getCookie} from '../../utils'
 import Login from '../Login/LoginLayout';
 import PropTypes from 'prop-types';
 import axios from 'axios';
