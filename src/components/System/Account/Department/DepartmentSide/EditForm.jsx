@@ -14,7 +14,7 @@ class EditForm extends Component {
     buttonLoading: PropTypes.bool,
     enterpriseId: PropTypes.string,
     form: PropTypes.object,
-    editDepartmentInfor: PropTypes.func,
+    editDepartmentInfo: PropTypes.func,
     departmentDetail: PropTypes.object
   }
 
@@ -23,10 +23,10 @@ class EditForm extends Component {
   }
 
   addDepartment = () =>{
-    const { editDepartmentInfor, departmentDetail,enterpriseId } = this.props;
+    const { editDepartmentInfo, departmentDetail,enterpriseId } = this.props;
     this.props.form.validateFieldsAndScroll((error,values)=>{
       if(!error){
-        editDepartmentInfor({
+        editDepartmentInfo({
           departmentId: departmentDetail.departmentId,
           departmentName: values.departmentName,
           enterpriseId,

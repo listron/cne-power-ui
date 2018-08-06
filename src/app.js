@@ -3,6 +3,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import {HashRouter} from 'react-router-dom';
+import { LocaleProvider } from 'antd';
 import { createStore, applyMiddleware } from 'redux';
 import logger from 'redux-logger';
 import thunk from 'redux-thunk';
@@ -12,16 +13,19 @@ import appReducer from './redux/reducer';
 import rootSaga from './redux/sagas';
 import './theme/reset.scss';
 import './theme/antdReset.scss';
-// 创建saga中间件
+import zhCN from 'antd/lib/locale-provider/zh_CN';
+
 const sagaMiddleware = createSagaMiddleware();
-const middlewares = [thunk, sagaMiddleware, logger];
+const middlewares = [thunk, sagaMiddleware];
 const store = createStore(appReducer, applyMiddleware(...middlewares));
 sagaMiddleware.run(rootSaga);
 
 ReactDOM.render(
   <Provider store={store}>
     <HashRouter>
-      <Main />
+      <LocaleProvider locale={zhCN}>
+        <Main />
+      </LocaleProvider>
     </HashRouter>
   </Provider>,
   document.getElementById('app')

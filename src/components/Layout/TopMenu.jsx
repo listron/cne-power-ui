@@ -42,7 +42,7 @@ class TopMenu extends Component {
       selectedKeys
     });
     this.props.history.push(defaultPath[key]);
-    this.props.setTopMenu(params);
+    this.props.setTopMenu({ topMenu: params });
   }
 
   render() {

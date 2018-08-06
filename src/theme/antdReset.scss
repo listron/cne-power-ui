@@ -61,6 +61,9 @@
       @include highLight($themeColor);
     }
   }
+  .ant-switch-checked{
+    color: $themeColor;
+  }
   .ant-steps-item .ant-steps-item-icon{
     width: 13px;
     height: 13px;
@@ -78,9 +81,11 @@
   .ant-tabs-ink-bar{
     color: $themeColor;
   }
-  .ant-tabs-bar {
-    width: 200px;
+
+  .ant-tabs-ink-bar{
+    color: $themeColor;
   }
+  
   .ant-tabs-nav ,.ant-tabs-tab-active {
     color: $themeColor;
   }

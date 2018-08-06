@@ -3,12 +3,13 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { TicketAction } from '../../../../../constants/actionTypes/operation/ticketAction';
 import DefectTable from '../../../../../components/Operation/Ticket/Defect/DefectTable/DefectTable';
+import DefectFilter from '../../../../../components/Operation/Ticket/Defect/DefectFilter/DefectFilter';
 
 class DefectList extends Component {
   static propTypes = {
     defectList: PropTypes.object,
-    currentPage: PropTypes.number,
-    currentPageSize: PropTypes.number,
+    pageNum: PropTypes.number,
+    pageSize: PropTypes.number,
     selectedRowKeys: PropTypes.array,
     sort: PropTypes.string,
     showTab: PropTypes.string,
@@ -39,8 +40,8 @@ class DefectList extends Component {
         defectSource: '3',
         stationType: '2',
         status: this.props.status,
-        pageNum: this.props.currentPage - 1,
-        pageSize: this.props.currentPageSize,
+        pageNum: this.props.pageNum,
+        pageSize: this.props.pageSize,
         sort: this.props.sort
       }
       this.props.getDefectList(params);
@@ -48,13 +49,13 @@ class DefectList extends Component {
   }
 
   onChangePage = (page) => {
-    if(page !== this.currentPage) {
+    if(page !== this.pageNum) {
       let params = {
         defectSource: '3',
         stationType: '2',
         status: this.props.status,
         pageNum: page - 1,
-        pageSize: this.props.currentPageSize,
+        pageSize: this.props.pageSize,
         sort: this.props.sort
       }
       this.props.getDefectList(params);
@@ -62,7 +63,7 @@ class DefectList extends Component {
   }
 
   onChangePageSize = (pageSize) => {
-    if(pageSize !== this.props.currentPageSize) {
+    if(pageSize !== this.props.pageSize) {
       let params = {
         defectSource: '3',
         stationType: '2',
@@ -82,7 +83,7 @@ class DefectList extends Component {
         stationType: '2',
         status: status,
         pageNum: 0,
-        pageSize: this.props.currentPageSize,
+        pageSize: this.props.pageSize,
         sort: this.props.sort
       }
       this.props.getDefectList(params);
@@ -96,7 +97,7 @@ class DefectList extends Component {
         stationType: '2',
         status: this.props.status,
         pageNum: 0,
-        pageSize: this.props.currentPageSize,
+        pageSize: this.props.pageSize,
         sort: sort
       }
       this.props.getDefectList(params);
@@ -145,10 +146,11 @@ class DefectList extends Component {
   render() {
     return (
       <div>
+        <DefectFilter {...this.props} />
         <DefectTable 
           list={this.props.defectList} 
-          currentPage={this.props.currentPage}
-          currentPageSize={this.props.currentPageSize}
+          pageNum={this.props.pageNum}
+          pageSize={this.props.pageSize}
           total={this.props.total}
           defectStatusStatistics={this.props.defectStatusStatistics}
           status={this.props.status}
@@ -176,15 +178,30 @@ const mapStateToProps = (state) => ({
   defectStatusStatistics: state.operation.defect.get('defectStatusStatistics'),
   isFetching: state.operation.defect.get('isFetching'),
   error: state.operation.defect.get('error'),
-  currentPage: state.operation.defect.get('currentPage'),
-  currentPageSize: state.operation.defect.get('currentPageSize'),
   total: state.operation.defect.get('total'),
-  status: state.operation.defect.get('status'),
-  sort: state.operation.defect.get('sort'),
   selectedRowKeys: state.operation.defect.get('selectedRowKeys').toJS(),
+
+  stationType: state.operation.defect.get('stationType'),
+  stationCodes: state.operation.defect.get('stationCodes'),    
+  defectSource: state.operation.defect.get('defectSource'),   
+  defectLevel: state.operation.defect.get('defectLevel'),	  
+  timeInterval: state.operation.defect.get('timeInterval'),   
+  status: state.operation.defect.get('status'),          
+  pageNum: state.operation.defect.get('pageNum'),       
+  pageSize: state.operation.defect.get('pageSize'),       
+  createTimeStart: state.operation.defect.get('createTimeStart'), 
+  createTimeEnd: state.operation.defect.get('createTimeEnd'),	 
+  deviceTypeCode: state.operation.defect.get('deviceTypeCode'),	 
+  defectTypeCode: state.operation.defect.get('defectTypeCode'),
+  sort: state.operation.defect.get('sort'),
+  selfDefect: state.operation.defect.get('selfDefect'),
+  userName: state.common.get('userName'), 
+  stations: state.common.get('stations').toJS(),
+  deviceTypes: state.common.get('deviceTypes').toJS(),
 });
 
 const mapDispatchToProps = (dispatch) => ({
+  changeDefectStore: payload => dispatch({type:TicketAction.CHANGE_DEFECT_STORE_SAGA, payload}),
   getDefectList: params => dispatch({ type: TicketAction.GET_DEFECT_LIST_SAGA, params }),
   setDefectId: params => dispatch({ type: TicketAction.SET_DEFECT_ID_SAGA, params }),
   onBatchDelete: params => dispatch({ type: TicketAction.DELETE_BATCH_DEFECT_SAGA, params }),

@@ -44,26 +44,34 @@ const menuData = [
     path: 'system',
     children: [
       {
-        name: '企业',
-        clickable: true,
+        name: '账户管理',
+        clickable: false,
         iconStyle: 'home',
-        path: 'enterprise',
-      },{
-        name: '部门',
-        iconStyle: 'usergroup-add',
-        clickable: true,
-        path: 'department',
-      },{
-        name: '用户',
-        iconStyle: 'user-add',
-        clickable: true,
-        path: 'user',
-      },{
-        name: '角色',
-        iconStyle: 'skin',
-        clickable: true,
-        path: 'role',
-      }
+        path: 'account',
+        children: [
+          {
+            name: '企业',
+            clickable: true,
+            iconStyle: 'home',
+            path: 'enterprise',
+          },{
+            name: '部门',
+            iconStyle: 'usergroup-add',
+            clickable: true,
+            path: 'department',
+          },{
+            name: '用户',
+            iconStyle: 'user-add',
+            clickable: true,
+            path: 'user',
+          },{
+            name: '角色',
+            iconStyle: 'skin',
+            clickable: true,
+            path: 'role',
+          }
+        ]
+      },    
     ],
   },
 ];

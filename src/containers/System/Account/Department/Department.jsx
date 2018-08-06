@@ -19,10 +19,15 @@ class Department extends Component {
     ascend: PropTypes.bool,
     pageNum: PropTypes.number,
     pageSize: PropTypes.number,
+    allDepartment: PropTypes.object,
+    allUser: PropTypes.object,
     showAssignStationModal: PropTypes.bool,
     showAssignUserModal: PropTypes.bool,
     getDepartmentList: PropTypes.func,
     getAllDepartment: PropTypes.func,
+    getAllUser: PropTypes.func,
+    setDepartmentUser: PropTypes.func,
+    setDepartmentStation: PropTypes.func,
   }
   constructor(props) {
     super(props);
@@ -32,7 +37,7 @@ class Department extends Component {
   }
   componentDidMount(){
     const params = {
-      enterpriseId: this.props.enterpriseId,
+      enterpriseId: '1010694160817111040', //this.props.enterpriseId,//'1010694160817111040',
       departmentSource: this.props.departmentSource,
       departmentName: this.props.departmentName,
       parentDepartmentName: this.props.parentDepartmentName,
@@ -44,7 +49,7 @@ class Department extends Component {
     }
     this.props.getDepartmentList(params)//请求部门列表
     this.props.getAllDepartment({//请求所有部门
-      enterpriseId: this.props.enterpriseId,
+      enterpriseId: '1010694160817111040', //this.props.enterpriseId,//'1010694160817111040',
     })
   }
 
@@ -63,7 +68,6 @@ class Department extends Component {
   render() {
     const { showPage, showAssignStationModal, showAssignUserModal } = this.props;
     const { showSidePage } = this.state;
-    console.log(showPage!=='list')
     return (
       <div className={styles.departmentContainer}>
         <DepartmentMain {...this.props} onWarningTipToggle={this.onWarningTipToggle} />
@@ -84,28 +88,10 @@ class Department extends Component {
   }
 }
 const mapStateToProps = (state) => ({
-    loading: state.system.department.get('loading'),
-    buttonLoading: state.system.department.get('buttonLoading'),
-    continueAddLoading: state.system.department.get('continueAddLoading'),
-    showPage: state.system.department.get('showPage'),
-    departmentSource: state.system.department.get('departmentSource'),
-    departmentName: state.system.department.get('departmentName'),
-    parentDepartmentName: state.system.department.get('parentDepartmentName'),
-    stationName: state.system.department.get('stationName'),
-    sort: state.system.department.get('sort'),
-    ascend: state.system.department.get('ascend'),
-    totalNum: state.system.department.get('totalNum'),
-    pageNum: state.system.department.get('pageNum'),
-    pageSize: state.system.department.get('pageSize'),
-    showAssignStationModal: state.system.department.get('showAssignStationModal'),
-    showAssignUserModal: state.system.department.get('showAssignUserModal'),
-
-    allDepartment:state.system.department.get('allDepartment').toJS(),
-    departmentData: state.system.department.get('departmentData').toJS(),
-    departmentDetail: state.system.department.get('departmentDetail').toJS(),
-    selectedDepartment: state.system.department.get('selectedDepartment').toJS(),
-    stations: state.common.get('stations').toJS()
-  });
+    ...state.system.department.toJS(),
+    stations: state.common.get('stations').toJS(),
+    enterpriseId: state.common.get('enterpriseId'),
+});
 
 const mapDispatchToProps = (dispatch) => ({
   changeDepartmentStore: payload => dispatch({type:departmentAction.CHANGE_DEPARTMENT_STORE_SAGA, payload}),
@@ -113,10 +99,12 @@ const mapDispatchToProps = (dispatch) => ({
   getDepartmentList: payload => dispatch({type:departmentAction.GET_DEPARTMENT_LIST_SAGA, payload}),
   getDepartmentDetail: payload => dispatch({type:departmentAction.GET_DEPARTMENT_DETAIL_SAGA, payload}),
   getOtherPageDetail: (payload, {previous}) => dispatch({type:departmentAction.GET_OTHER_PAGE_DEPARTMENT_DETAIL_SAGA, payload, previous}),
-  getAllUsers: payload => dispatch({type:departmentAction.GET_ALL_USERS_SAGA,payload}),
+  getAllUser: payload => dispatch({type:departmentAction.GET_ALL_USER_SAGA,payload}),
   getAllDepartment: payload => dispatch({type:departmentAction.GET_ALL_DEPARTMENT_SAGA,payload}),
-  addDepartmentInfor: payload => dispatch({type:departmentAction.ADD_DEPARTMENT_INFO_SAGA, payload}),
-  editDepartmentInfor: payload => dispatch({type: departmentAction.EDIT_DEPARTMENT_INFO_SAGA, payload})
+  setDepartmentUser: payload => dispatch({type:departmentAction.SET_DEPARTMENT_USER_SAGA,payload}),
+  setDepartmentStation: payload => dispatch({type:departmentAction.SET_DEPARTMENT_STATION_SAGA,payload}),
+  addDepartmentInfo: payload => dispatch({type:departmentAction.ADD_DEPARTMENT_INFO_SAGA, payload}),
+  editDepartmentInfo: payload => dispatch({type: departmentAction.EDIT_DEPARTMENT_INFO_SAGA, payload})
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Department);

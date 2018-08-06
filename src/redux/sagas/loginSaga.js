@@ -39,9 +39,18 @@ function *getLogin(action){
     if(response.data.code === '10000'){
       setCookie('authData',JSON.stringify(response.data.data.access_token));
       setCookie('enterpriseId', response.data.data.enterpriseId);
+      setCookie('phoneNum', action.params.phoneNum);
+      setCookie('username', response.data.data.username);
       setCookie('expireData', moment().add(response.data.data.expires_in, 'seconds'));
       setCookie('isNotLogin', 0);
       yield put({ type: LoginAction.GET_LOGIN_SUCCESS, data: response.data.data});
+      yield put({ 
+        type: CommonAction.CHANGE_COMMON_STORE_SAGA, 
+        payload: {
+          enterpriseId: response.data.data.enterpriseId,
+          enterpriseName: response.data.data.enterpriseName,
+        }
+      });
       action.params.history.push('/');
 
       // yield put({ type: LoginAction.GET_COMMON_DATA_SAGA});   
@@ -87,6 +96,8 @@ function *checkCode(action){
     if(response.data.code === '10000'){ 
       if(action.params.isNotLogin === 1 || response.data.data.enterpriseId !== null) {
         setCookie('authData',JSON.stringify(response.data.data.access_token));
+        setCookie('phoneNum', action.params.phoneNum);
+        setCookie('username', response.data.data.username);
         setCookie('enterpriseId', response.data.data.enterpriseId);
         setCookie('expireData', moment().add(response.data.data.expires_in, 'seconds'));
         setCookie('isNotLogin', action.params.isNotLogin);
@@ -100,6 +111,13 @@ function *checkCode(action){
           ...params,
           data: response.data.data,
         },    
+      });
+      yield put({ 
+        type: CommonAction.CHANGE_COMMON_STORE_SAGA, 
+        payload: {
+          enterpriseId: response.data.data.enterpriseId,
+          enterpriseName: response.data.data.enterpriseName,
+        }
       });
     }else{
       yield put({ type: LoginAction.CHECK_CODE_FAIL, data: response.data })
