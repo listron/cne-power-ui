@@ -13,7 +13,7 @@ module.exports =[{
         roleName: '运维工',
         spcialRoleName: '删除，添加',
         stationName: '广平,顺义,夏威夷,抚平',
-        userStation: Math.floor(Math.random()*7+1),
+        userStatus: Math.floor(Math.random()*7+1),
       }))
     },
     "serviceCode": "3.0"

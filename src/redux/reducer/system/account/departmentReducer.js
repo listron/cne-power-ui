@@ -8,9 +8,9 @@ var initState = immutable.fromJS({
   continueAddLoading: false,//继续添加部门按钮交互loading
   showPage: 'list',//默认展示列表页list,可展示新建add,编辑edit,查看detail页,
   departmentSource: 2, //部门类型全部2，预设0，自定义1
-  departmentName:'部门名称', //部门名称
-  parentDepartmentName: '所属部门',//所属部门
-  stationName: '负责电站', //负责电站
+  departmentName:'', //部门名称
+  parentDepartmentName: '',//所属部门
+  stationName: '', //负责电站
   sort: '', //排序字段
   ascend: true,//排序方式
   totalNum: 0,//部门总数
@@ -19,7 +19,7 @@ var initState = immutable.fromJS({
   showAssignStationModal: false,//展示分配电站模态框
   showAssignUserModal: false,//展示分配用户模态框
   
-  allDepartment: {},//所有部门基础信息及子父级关系
+  allDepartment: [],//所有部门基础信息及子父级关系
 
   departmentData: [],//部门列表数据
   departmentDetail:{},//选中部门详细信息

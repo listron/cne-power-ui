@@ -18,7 +18,7 @@ class AddForm extends Component {
     form: PropTypes.object,
     stations: PropTypes.array,
     allDepartment: PropTypes.object,
-    addDepartmentInfor: PropTypes.func,
+    addDepartmentInfo: PropTypes.func,
   }
 
   constructor(props){
@@ -26,10 +26,10 @@ class AddForm extends Component {
   }
 
   addDepartment = () =>{
-    const { addDepartmentInfor,enterpriseId } = this.props;
+    const { addDepartmentInfo,enterpriseId } = this.props;
     this.props.form.validateFieldsAndScroll((error,values)=>{
       if(!error){
-        addDepartmentInfor({
+        addDepartmentInfo({
           enterpriseId,
           ...values,
           continueAdd: false,
@@ -38,10 +38,10 @@ class AddForm extends Component {
     })
   }
   addContinue = () => {
-    const { addDepartmentInfor,form,enterpriseId } = this.props;
+    const { addDepartmentInfo,form,enterpriseId } = this.props;
     form.validateFieldsAndScroll((error,values)=>{
       if(!error){
-        addDepartmentInfor({
+        addDepartmentInfo({
           enterpriseId,
           ...values,
           continueAdd: true,
@@ -71,7 +71,7 @@ class AddForm extends Component {
           })(
             <Select style={{ width: 200 }}>
               <Option value="0">无</Option>
-              {(allDepartment.list && allDepartment.list.length>0)?allDepartment.list.map(e=>(
+              {(allDepartment && allDepartment.length>0)?allDepartment.map(e=>(
                   <Option value={e.departmentId} key={e.departmentId} >{e.departmentName}</Option>)
                 ):null 
               }

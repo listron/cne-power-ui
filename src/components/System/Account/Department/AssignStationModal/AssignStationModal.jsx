@@ -9,12 +9,15 @@ const TreeNode = Tree.TreeNode;
 class AssignStationModal extends Component {
   static propTypes = {
     show: PropTypes.bool,
-    enterprise: PropTypes.object,//当前企业
+    selectedDepartment: PropTypes.array,
+    currentUserId: PropTypes.string,//当前用户Id
+    enterpriseId: PropTypes.string,//当前企业Id
+    enterpriseName: PropTypes.string,//当前企业名称
     departmentList: PropTypes.object,//immutable
     stationList: PropTypes.object,//immutable
     getDepartmentTreeData: PropTypes.func,
     getStationList: PropTypes.func,
-    onSelect: PropTypes.func,
+    onSetDepartmentStation: PropTypes.func,
     onCancel: PropTypes.func,
   }
   constructor(props) {
@@ -36,11 +39,12 @@ class AssignStationModal extends Component {
 
   componentWillReceiveProps(nextProps) {
     if(nextProps.departmentList.size !== this.props.departmentList.size && nextProps.departmentList.size > 0) {
-      let department = nextProps.departmentList.get(0);
-      let departmentId = nextProps.departmentList.getIn([0, 'departmentId']);
+      let department = nextProps.selectedDepartment[0];
+      let departmentId = department.departmentId;
       this.setState({
-        selectedDepartment: department,
+        selectedDepartment: Immutable.fromJS(department),
         selectedKeys: [departmentId],
+        expandedKeys: [nextProps.enterpriseId]
       });
     }
     if(nextProps.stationList.size !== this.props.stationList.size && nextProps.stationList.size > 0) {
@@ -52,7 +56,7 @@ class AssignStationModal extends Component {
   }
 
   onOk = () => {
-    this.props.onSelect(this.state.stationList);
+    this.props.onSetDepartmentStation(this.state.stationList);
   }
 
   onCancel = () => {
@@ -100,16 +104,16 @@ class AssignStationModal extends Component {
       stationList = stationList.push(Immutable.fromJS({
         departmentId: selectedDepartment.get('departmentId'),
         departmentName: selectedDepartment.get('departmentName'),
-        stationCode: station.get('stationCode'),
+        stationId: station.get('stationId'),
         stationName: station.get('stationName'),
       }))
     } else {
-      if(selectedDepartment.get('childDepartmentData')) {
-        let child = selectedDepartment.get('childDepartmentData');
+      if(selectedDepartment.get('list')) {
+        let child = selectedDepartment.get('list');
         child.forEach((item) => {
           let childIndex = stationList.findIndex((current) => {
             item.get('departmentId') === current.get('departmentId') && 
-            station.get('stationCode') === current.get('stationCode')
+            station.get('stationId') === current.get('stationId')
           })
           if(childIndex !== -1) {
             stationList = stationList.delete(childIndex);
@@ -117,7 +121,7 @@ class AssignStationModal extends Component {
         })
         let index = stationList.findIndex((current) => {
           selectedDepartment.get('departmentId') === current.get('departmentId') && 
-          station.get('stationCode') === current.get('stationCode')
+          station.get('stationId') === current.get('stationId')
         });
         stationList = stationList.delete(index);
       }
@@ -132,7 +136,7 @@ class AssignStationModal extends Component {
   getStationChecked(station) {
     let selectedDepartment = this.state.selectedDepartment;
     let index = this.state.stationList.findIndex((item) => {
-      return item.get('stationCode') === station.get('stationCode') && item.get('departmentId') === selectedDepartment.get('departmentId');
+      return item.get('stationId') === station.get('stationId') && item.get('departmentId') === selectedDepartment.get('departmentId');
     });
     if(index > -1) {
       return true;
@@ -142,7 +146,7 @@ class AssignStationModal extends Component {
   }
 
   getDepartmenStationRange(department, stationList) {
-    let parentDepartmentId = department.get('parentId');
+    let parentDepartmentId = department.get('parentDepartmentId');
     let selectedStationList;
     if(parentDepartmentId === null) {
       selectedStationList = stationList;
@@ -164,22 +168,22 @@ class AssignStationModal extends Component {
     let newStationList = Immutable.fromJS([]);
     stationList.forEach(element => {
       const index = newStationList.findIndex(item =>{
-        return item.get('userId') === element.get('userId');
+        return item.get('stationId') === element.get('stationId');
       })
       if(index === -1) {
         newStationList = newStationList.push(element);
       } else {
-        let user = newStationList.get(index);
-        user = user.set('departmentName', user.get('departmentName')+','+element.get('departmenName'))
-                   .set('departmentId'),Immutable.fromJS([user.get('departmentId')].push(element.get('departmentId'))); 
-        newStationList = newStationList.set(index, user);
+        let station = newStationList.get(index);
+        station = station.set('departmentName', station.get('departmentName')+','+element.get('departmenName'))
+                   .set('departmentId'),Immutable.fromJS([station.get('departmentId')].push(element.get('departmentId'))); 
+        newStationList = newStationList.set(index, station);
       }
     });
     return newStationList;
   }
 
   renderDepartmentTree() {
-    const { enterprise, departmentList } = this.props;
+    const { enterpriseId, enterpriseName, departmentList } = this.props;
     return (
       <Tree 
         onSelect={this.onSelectNode} 
@@ -187,7 +191,7 @@ class AssignStationModal extends Component {
         expandedKeys={this.state.expandedKeys}
         selectedKeys={this.state.selectedKeys}
       >
-        <TreeNode title={enterprise.enterpriseId} key={enterprise.enterpriseName}>
+        <TreeNode title={enterpriseName} key={enterpriseId}>
           {this.renderTreeNodes(departmentList)}
         </TreeNode>
       </Tree>
@@ -199,10 +203,10 @@ class AssignStationModal extends Component {
     return (
       treeData.map((item) => {
         stationNum = this.getDepartmentStation(item.get('departmentId')).size;
-        if(item.get('childDepartmentData').toJS() instanceof Array) {
+        if(item.get('list').size > 0) {
           return (
             <TreeNode title={item.get('departmentName')+'('+stationNum+')'} key={item.get('departmentId')} dataRef={item}>
-              {this.renderTreeNodes(item.get('childDepartmentData'))}
+              {this.renderTreeNodes(item.get('list'))}
             </TreeNode>
           );
         } else {
@@ -218,7 +222,7 @@ class AssignStationModal extends Component {
     return (
       station.map((item) => {
         return (
-          <div key={item.get('stationCode')}>
+          <div key={item.get('stationId')}>
             <div>
               <Checkbox 
                 onChange={(e)=>{this.onCheckStation(item, e.target.checked)}} 
@@ -241,7 +245,7 @@ class AssignStationModal extends Component {
     return station.map((item) => {
       return (
         <Tag 
-          key={item.get('stationCode')}
+          key={item.get('stationId')}
           closable={true}
           style={{ background: '#fff', borderStyle: 'dashed' }}
           onClose={()=>{this.onCheckStation(item, false)}}

@@ -82,7 +82,7 @@ class RoleEditForm extends Component {
             rules: [{ 
               required: isCreate 
             }],
-            initialValue: isCreate ? '' : selectedRole.roleName
+            initialValue: isCreate || !selectedRole ? '' : selectedRole.roleName
           })(
             <Input />
           )}
@@ -95,7 +95,7 @@ class RoleEditForm extends Component {
             rules: [{ 
               required: true,
             }],
-            initialValue: isCreate ? '' : this.getIds(selectedRole.rightData)
+            initialValue: isCreate || !selectedRole ? '' : this.getIds(selectedRole.rightData)
           })(
             <RoleTree treeData={this.props.menuData} />
           )}
@@ -109,4 +109,4 @@ class RoleEditForm extends Component {
   }
 }
 
-export default RoleEditForm;
+export default Form.create()(RoleEditForm);

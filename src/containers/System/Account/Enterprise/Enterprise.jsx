@@ -16,13 +16,7 @@ import EnterpriseEdit from '../../../../components/System/Account/Enterprise/Ent
 class Enterprise extends Component {
   static propTypes = {
     showPage: PropTypes.string,
-    filterStatus: PropTypes.number, 
-    enterpriseName: PropTypes.string, 
-    enterprisePhone: PropTypes.string,
-    sort: PropTypes.string, 
-    ascend: PropTypes.bool,
-    currentPage: PropTypes.number, 
-    pageSize: PropTypes.number, 
+    enterpriseId: PropTypes.string,
     getEnterpriseDetail: PropTypes.func,
   }
   constructor(props) {
@@ -39,7 +33,11 @@ class Enterprise extends Component {
     //   pageSize: this.props.pageSize, 
     // }
     // this.props.getEnterpriseList(params)//请求企业列表
-    this.props.getEnterpriseDetail()
+    this.props.getEnterpriseDetail({
+      // enterpriseId:"1010694160817111040"
+      // enterpriseName:"协合新能源"
+      enterpriseId: this.props.enterpriseId, //this.props.enterpriseId //'1010694160817111040',
+    })
   }
 
   onShowSide = () => {
@@ -75,19 +73,8 @@ class Enterprise extends Component {
   }
 }
 const mapStateToProps = (state) => ({
-  loading: state.system.enterprise.get('loading'),
-  showPage: state.system.enterprise.get('showPage'),
-  filterStatus: state.system.enterprise.get('filterStatus'),
-  enterpriseName: state.system.enterprise.get('enterpriseName'),
-  enterprisePhone: state.system.enterprise.get('enterprisePhone'),
-  sort: state.system.enterprise.get('sort'),
-  ascend: state.system.enterprise.get('ascend'),
-  totalNum: state.system.enterprise.get('totalNum'),
-  enterpriseData: state.system.enterprise.get('enterpriseData').toJS(),
-  currentPage: state.system.enterprise.get('currentPage'),
-  pageSize: state.system.enterprise.get('pageSize'),
-  enterpriseDetail: state.system.enterprise.get('enterpriseDetail').toJS(),
-  selectedEnterprise: state.system.enterprise.get('selectedEnterprise').toJS(),
+  ...state.system.enterprise.toJS(),
+  enterpriseId: state.common.get('enterpriseId'),
 });
 
 const mapDispatchToProps = (dispatch) => ({

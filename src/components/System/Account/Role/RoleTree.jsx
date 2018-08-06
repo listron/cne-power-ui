@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {Tree} from 'antd';
-import styles from './enterprise.scss';
+import styles from './role.scss';
 const TreeNode = Tree.TreeNode;
 
 class RoleTree extends Component {

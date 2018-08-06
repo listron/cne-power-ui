@@ -30,9 +30,9 @@ const userReducer = (state = initState, action) => {
   switch(action.type){
     case userAction.USER_FETCH:
       return state.set('loading', true)
-    case userAction.GET_USER_COMMON_FETCH_SUCCESS:
+    case userAction.GET_USER_FETCH_SUCCESS:
       return state.merge(immutable.fromJS(action.payload)).set('loading', false)
-    case userAction.CHANGE_USER_STORE_SUCCESS:
+    case userAction.CHANGE_USER_STORE:
       return state.merge(immutable.fromJS(action.payload))
 
   }

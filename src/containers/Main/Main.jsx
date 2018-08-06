@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
+import moment from 'moment';
 import { Route,Redirect, Switch,withRouter} from 'react-router-dom';
 import {routerConfig} from '../../common/routerSetting';
 import { menu } from '../../common/menu';
 import styles from './style.scss';
 import { connect } from 'react-redux';
-import {getCookie} from '../../utils/index.js'
+import {getCookie} from '../../utils'
 import Login from '../Login/LoginLayout';
 import PropTypes from 'prop-types';
 import axios from 'axios';
@@ -21,6 +22,8 @@ class Main extends Component {
     topMenu: PropTypes.object,
     login: PropTypes.object,
     history: PropTypes.object,
+    enterpriseId: PropTypes.string,
+    username: PropTypes.string,
   };
 
   constructor(props) {
@@ -38,19 +41,19 @@ class Main extends Component {
     const { pathname } = this.props.history.location;
     let pathArray = pathname.split('/').filter(e=>!!e);
     const params = menu.find(e=>e.path===`/${pathArray[0]?pathArray[0]:''}`);
-    this.props.setTopMenu(params);
-    if(this.refs.main) {
+    this.props.setTopMenu({ topMenu: params });
+    if (this.refs.main) {
       this.refs.main.addEventListener('scroll', this.onScroll);
     }
   }
 
-
-  componentWillReceiveProps(nextProps) {  
-    if(nextProps.login.get('loginSuccess') && !this.props.login.get('loginSuccess')){
+  componentWillReceiveProps(nextProps) {
+    const authData = getCookie('authData');
+    if(moment().isBefore(getCookie('expireData'), 'second') 
+    && (authData !== 'undefined' && authData !== null)
+    && this.props.history.location.pathname === '/login'
+    && getCookie('isNotLogin') === '0') {
       this.props.history.push('/');
-      this.setState({
-        logined:true
-      })
     }
   }
 
@@ -77,17 +80,16 @@ class Main extends Component {
   renderFeedback() {
 
   }
-
-
   render() {
-    const { setTopMenu, topMenu } = this.props;
+    const { setTopMenu, topMenu, } = this.props;
     const authData = getCookie('authData');
+    const isNotLogin = getCookie('isNotLogin');
     if(authData && (authData !== 'undefined' && authData !== null)){
       axios.defaults.headers.common['Authorization'] = "bearer " + JSON.parse(authData);
-      // console.log(authData);
     }
-    // console.log(this.state.logined || (authData !== 'undefined' && authData !== null))
-    if(this.state.logined || (authData !== 'undefined' && authData !== null)){
+    if((moment().isBefore(getCookie('expireData'), 'second')) 
+    && (authData !== 'undefined' && authData !== null) 
+    && (isNotLogin === '0')){
     // if(true){
       return (
         <div className={styles.app}>
@@ -131,10 +133,12 @@ class Main extends Component {
 const mapStateToProps = (state) => ({
   login: state.login,
   topMenu: state.common.get('topMenu')? state.common.get('topMenu').toJS() : {},
+  enterpriseId: state.login.get('enterpriseId'),
+  username: state.login.get('username'),
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  setTopMenu: params => dispatch({ type: CommonAction.GET_TOPMENU_CHANGE_SAGA, params }),
+  setTopMenu: payload => dispatch({ type: CommonAction.CHANGE_COMMON_STORE_SAGA, payload }),
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Main));

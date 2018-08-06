@@ -1,0 +1,16 @@
+
+@import '../../../../../theme/theme.scss';
+
+.defectFilter{
+  .topSearch{
+    .text{
+      margin-right: 16px;
+    }
+    button {
+      margin-right: 16px;
+    }
+  }
+  .filterBox{
+    background-color: $promptColor;
+  }
+}

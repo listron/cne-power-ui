@@ -1,6 +1,6 @@
 import { all } from 'redux-saga/effects';
 import {
-  watchTopMenuChange,
+  watchCommonStoreChange,
   watchGetStations,
   watchGetDeviceTypes,
   watchGetDevices,
@@ -62,7 +62,7 @@ import { watchRole } from './system/account/roleSaga';
 export default function* rootSaga() {
   yield all([
     //common
-    watchTopMenuChange(),
+    watchCommonStoreChange(),
     watchGetStations(),
     watchGetDeviceTypes(),
     watchGetDevices(),

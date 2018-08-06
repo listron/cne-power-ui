@@ -13,8 +13,6 @@ class RoleTable extends Component {
     selectedRole: PropTypes.array,//勾选的数组
     getRoleList: PropTypes.func,
     changeRoleStore: PropTypes.func,
-    sort: PropTypes.string, 
-    ascend: PropTypes.bool,
   }
 
   constructor(props){
@@ -34,14 +32,14 @@ class RoleTable extends Component {
     })
   }
 
-  tableChange = (pagination,filter,sorter) => {//排序，筛选
-    const sort = sorter.field;
-    const ascend = sorter.order==='ascend';
-    this.props.getRoleList({
-      sort,
-      ascend,
-    });
-  }
+  // tableChange = (pagination,filter,sorter) => {//排序，筛选
+  //   const sort = sorter.field;
+  //   const ascend = sorter.order==='ascend';
+  //   this.props.getRoleList({
+  //     sort,
+  //     ascend,
+  //   });
+  // }
 
   roleHandle = (value) => {//编辑，禁用，启用
     console.log(value);
