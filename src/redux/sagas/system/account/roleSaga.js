@@ -17,16 +17,18 @@ function *changeRoleStore(action){
 //请求角色列表数据
 function *getRoleList(action){
   const { payload } = action;
-  const url = Path.basePaths.newAPIBasePath + Path.APISubPaths.system.getRoleList;
+  const url = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.system.getRoleList}/${payload.enterpriseId}`
   try{
     yield put({ type:roleAction.ROLE_FETCH });
-    const response = yield call(axios.get,url,{params: payload});
-    yield put({
-      type:  roleAction.GET_ROLE_FETCH_SUCCESS,
-      payload:{
-        roleData: response.data.data,
-      },
-    });
+    const response = yield call(axios.get,url);
+    if(response.code === '10000') {
+      yield put({
+        type:  roleAction.GET_ROLE_FETCH_SUCCESS,
+        payload:{
+          roleData: response.data.data,
+        },
+      });
+    }  
   }catch(e){
     console.log(e);
   }
@@ -38,12 +40,14 @@ function *getMenuList(action){
   try{
     yield put({ type:roleAction.ROLE_FETCH });
     const response = yield call(axios.get,url);
-    yield put({
-      type:  roleAction.GET_ROLE_FETCH_SUCCESS,
-      payload:{
-        menuData: response.data.data,
-      },
-    });
+    if(response.code === '10000') {
+      yield put({
+        type:  roleAction.GET_ROLE_FETCH_SUCCESS,
+        payload:{
+          menuData: response.data.data,
+        },
+      });
+    }
   }catch(e){
     console.log(e);
   }
