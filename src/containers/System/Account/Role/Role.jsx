@@ -32,15 +32,16 @@ class Role extends Component {
     const { showPage } = this.props;
     return (
       <div className={styles.roleContainer}>
-        {showPage==='list' ? 
-        <RoleTable {...this.props} /> :
-        <TransitionContainer
-          show={showPage!=='list'}
-          timeout={500}
-          effect="side"
-        >
+        <div className={styles.roleMain}>
+          <RoleTable {...this.props} />
+          <TransitionContainer
+            show={showPage!=='list'}
+            timeout={500}
+            effect="side"
+          >
           <RoleEdit {...this.props} />
-        </TransitionContainer>}
+          </TransitionContainer>
+        </div>
         <Footer />        
       </div>
     );

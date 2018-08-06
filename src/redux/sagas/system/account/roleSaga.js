@@ -21,12 +21,10 @@ function *getRoleList(action){
   try{
     yield put({ type:roleAction.ROLE_FETCH });
     const response = yield call(axios.get,url);
-    if(response.code === '10000') {
+    if(response.data.code === '10000') {
       yield put({
-        type:  roleAction.GET_ROLE_FETCH_SUCCESS,
-        payload:{
-          roleData: response.data.data,
-        },
+        type: roleAction.GET_ROLE_FETCH_SUCCESS,
+        payload: response.data.data,
       });
     }  
   }catch(e){
@@ -40,7 +38,7 @@ function *getMenuList(action){
   try{
     yield put({ type:roleAction.ROLE_FETCH });
     const response = yield call(axios.get,url);
-    if(response.code === '10000') {
+    if(response.data.code === '10000') {
       yield put({
         type:  roleAction.GET_ROLE_FETCH_SUCCESS,
         payload:{

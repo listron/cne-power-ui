@@ -63,7 +63,7 @@ class EnterpriseDetail extends Component {
               {moment(enterpriseDetail.createTime) ? moment(enterpriseDetail.createTime).format('YYYY年MM月DD日'): '--'}
             </div>
           </div>
-          <div className={styles.textInfor}>
+          <div className={styles.textInfo}>
             <div className={styles.buttonGroup}>
               <Button><Link to="/system/department">查看部门</Link></Button>
               <Button><Link to="/system/user">查看成员</Link></Button>
