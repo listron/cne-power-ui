@@ -17,7 +17,7 @@ class AddForm extends Component {
     enterpriseId: PropTypes.string,
     form: PropTypes.object,
     stations: PropTypes.array,
-    allDepartment: PropTypes.object,
+    allDepartment: PropTypes.array,
     addDepartmentInfo: PropTypes.func,
   }
 

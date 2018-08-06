@@ -19,7 +19,7 @@ class Department extends Component {
     ascend: PropTypes.bool,
     pageNum: PropTypes.number,
     pageSize: PropTypes.number,
-    allDepartment: PropTypes.object,
+    allDepartment: PropTypes.array,
     allUser: PropTypes.object,
     showAssignStationModal: PropTypes.bool,
     showAssignUserModal: PropTypes.bool,

@@ -24,7 +24,7 @@ class DepartmentTable extends Component {
     ascend: PropTypes.bool, 
     pageNum: PropTypes.number,
     pageSize: PropTypes.number,
-    allDepartment: PropTypes.object,
+    allDepartment: PropTypes.array,
     allUser: PropTypes.object,
     allStation: PropTypes.object,
     loginData: PropTypes.object,
