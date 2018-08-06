@@ -53,7 +53,7 @@ function *deleteDepartment(action){
         departmentSource: state.department.get('departmentSource'),
         departmentName: state.department.get('departmentName'),
         parentDepartmentName: state.department.get('parentDepartmentName'),
-        stationName: state.department.get('stationName'), 
+        stationName: state.department.get('stationName'),
         sort: state.department.get('sort'),
         ascend: state.department.get('ascend'),
         pageNum: state.department.get('pageNum'),
@@ -178,7 +178,7 @@ function *addDepartmentInfo(action){//新建部门信息
       payload: {
         buttonLoading: !payload.continueAdd,
         continueAddLoading: payload.continueAdd,
-      } 
+      }
     });
     const response = yield call(axios.post,url,payload);
     if(response.data.code === "10000"){
@@ -195,7 +195,7 @@ function *addDepartmentInfo(action){//新建部门信息
         departmentSource: state.department.get('departmentSource'),
         departmentName: state.department.get('departmentName'),
         parentDepartmentName: state.department.get('parentDepartmentName'),
-        stationName: state.department.get('stationName'), 
+        stationName: state.department.get('stationName'),
         sort: state.department.get('sort'),
         ascend: state.department.get('ascend'),
         pageNum: state.department.get('pageNum'),
@@ -218,7 +218,7 @@ function *editDepartmentInfo(action){//编辑部门信息
   try{
     yield put({ //按钮的loading
       type:departmentAction.CHANGE_DEPARTMENT_STORE,
-      payload: { buttonLoading: true } 
+      payload: { buttonLoading: true }
     });
     const response = yield call(axios.put,url,payload);
     if(response.data.code === "10000"){
@@ -233,7 +233,7 @@ function *editDepartmentInfo(action){//编辑部门信息
         departmentSource: state.department.get('departmentSource'),
         departmentName: state.department.get('departmentName'),
         parentDepartmentName: state.department.get('parentDepartmentName'),
-        stationName: state.department.get('stationName'), 
+        stationName: state.department.get('stationName'),
         sort: state.department.get('sort'),
         ascend: state.department.get('ascend'),
         pageNum: state.department.get('pageNum'),
@@ -292,7 +292,7 @@ function *setDepartmentStation(action) {
         departmentSource: state.department.get('departmentSource'),
         departmentName: state.department.get('departmentName'),
         parentDepartmentName: state.department.get('parentDepartmentName'),
-        stationName: state.department.get('stationName'), 
+        stationName: state.department.get('stationName'),
         sort: state.department.get('sort'),
         ascend: state.department.get('ascend'),
         pageNum: state.department.get('pageNum'),
