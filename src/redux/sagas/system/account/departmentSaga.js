@@ -91,11 +91,7 @@ function *getAllUser(action){
 function *getAllDepartment(action){//获取所有部门基础信息
   const { payload } = action;
   // const url = '/mock/system/allDepartments';
-<<<<<<< HEAD
   const url = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.system.getAllDepartment}/${payload.enterpriseId}`
-=======
-  const url = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.system.departmentAllList}/${payload.enterpriseId}`
->>>>>>> upstream/dev
   try{
     yield put({ type:departmentAction.DEPARTMENT_FETCH });
     const response = yield call(axios.get,url);
