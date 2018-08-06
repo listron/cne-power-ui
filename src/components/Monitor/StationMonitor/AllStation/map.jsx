@@ -25,7 +25,7 @@ class Interval extends Component {
         })
     }
     componentDidMount() {
-        const testChart = echarts.init(document.getElementById('PvMap'));
+        const testChart = echarts.init(document.getElementById('bmapTest'));
         this.setMapChart(testChart);
     }
     setMapChart = (testChart) => {
@@ -227,7 +227,7 @@ class Interval extends Component {
         const option = {
             bmap: {
                 center: [116.46, 39.92],
-                zoom: 6,
+                zoom: 5,
                 roam: true,
                 mapStyle: {
                     styleJson: [{
@@ -344,7 +344,7 @@ class Interval extends Component {
         const { barData } = this.state;
         return (<div>
 
-      <div id="PvMap" style={{ width: "1210px", height: "620px" }}  ></div>
+      <div id="bmapTest" style={{ width: "1210px", height: "660px" }}  ></div>
         </div>)
     }
 }
