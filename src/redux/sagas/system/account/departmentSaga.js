@@ -53,7 +53,7 @@ function *deleteDepartment(action){
         departmentSource: state.department.get('departmentSource'),
         departmentName: state.department.get('departmentName'),
         parentDepartmentName: state.department.get('parentDepartmentName'),
-        stationName: state.department.get('stationName'), 
+        stationName: state.department.get('stationName'),
         sort: state.department.get('sort'),
         ascend: state.department.get('ascend'),
         pageNum: state.department.get('pageNum'),
@@ -150,7 +150,7 @@ function *addDepartmentInfor(action){//新建部门信息
       payload: {
         buttonLoading: !payload.continueAdd,
         continueAddLoading: payload.continueAdd,
-      } 
+      }
     });
     const response = yield call(axios.post,url,payload);
     if(response.data.code === "10000"){
@@ -167,7 +167,7 @@ function *addDepartmentInfor(action){//新建部门信息
         departmentSource: state.department.get('departmentSource'),
         departmentName: state.department.get('departmentName'),
         parentDepartmentName: state.department.get('parentDepartmentName'),
-        stationName: state.department.get('stationName'), 
+        stationName: state.department.get('stationName'),
         sort: state.department.get('sort'),
         ascend: state.department.get('ascend'),
         pageNum: state.department.get('pageNum'),
@@ -190,7 +190,7 @@ function *editDepartmentInfor(action){//编辑部门信息
   try{
     yield put({ //按钮的loading
       type:departmentAction.GET_DEPARTMENT_FETCH_SUCCESS,
-      payload: { buttonLoading: true } 
+      payload: { buttonLoading: true }
     });
     const response = yield call(axios.put,url,payload);
     if(response.data.code === "10000"){
@@ -205,7 +205,7 @@ function *editDepartmentInfor(action){//编辑部门信息
         departmentSource: state.department.get('departmentSource'),
         departmentName: state.department.get('departmentName'),
         parentDepartmentName: state.department.get('parentDepartmentName'),
-        stationName: state.department.get('stationName'), 
+        stationName: state.department.get('stationName'),
         sort: state.department.get('sort'),
         ascend: state.department.get('ascend'),
         pageNum: state.department.get('pageNum'),
@@ -228,7 +228,7 @@ function *getDepartmentWithStation(){
 
 //todo - 请求各部门及部门下各用户信息
 function *getDepartmentWithUser(){
-  
+
 }
 
 export function* watchDepartment() {

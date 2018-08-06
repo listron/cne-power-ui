@@ -83,7 +83,9 @@ class Department extends Component {
     );
   }
 }
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state) =>{
+  //dosomething
+  return {
     loading: state.system.department.get('loading'),
     buttonLoading: state.system.department.get('buttonLoading'),
     continueAddLoading: state.system.department.get('continueAddLoading'),
@@ -105,7 +107,8 @@ const mapStateToProps = (state) => ({
     departmentDetail: state.system.department.get('departmentDetail').toJS(),
     selectedDepartment: state.system.department.get('selectedDepartment').toJS(),
     stations: state.common.get('stations').toJS()
-  });
+  }
+}
 
 const mapDispatchToProps = (dispatch) => ({
   changeDepartmentStore: payload => dispatch({type:departmentAction.CHANGE_DEPARTMENT_STORE_SAGA, payload}),

@@ -14,7 +14,7 @@ import './theme/reset.scss';
 import './theme/antdReset.scss';
 // 创建saga中间件
 const sagaMiddleware = createSagaMiddleware();
-const middlewares = [thunk, sagaMiddleware, logger];
+const middlewares = [thunk, sagaMiddleware];
 const store = createStore(appReducer, applyMiddleware(...middlewares));
 sagaMiddleware.run(rootSaga);
 

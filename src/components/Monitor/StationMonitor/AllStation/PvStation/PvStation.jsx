@@ -1,14 +1,14 @@
+
 import React from "react";
 import PropTypes from "prop-types";
-import styles from './windstation.scss';
-import WindMap from './WindStationMap.jsx';
-import WIndStationItem from './WIndStationItem.jsx';
-import WIndStationList from './WIndStationList.jsx';
+import styles from './pvStation.scss';
+import PvMap from './PvStationMap.jsx';
+import PvStationItem from './PvStationItem.jsx';
 import { Progress, Tabs, Icon, Button, Radio, Switch, Table } from "antd";
-import WindStationList from "./WIndStationList.jsx";
+import PvStationList from "./PvStationList";
 
 const TabPane = Tabs.TabPane;
-//tabs筛选部分
+//TABS 筛选
 const operations = (
   <div>
     <Switch defaultChecked onChange={onHandleAlarm} />告警
@@ -29,14 +29,18 @@ function onHandleAlarm(checked) {
   console.log(`switch to ${checked}`);
 }
 
-class WindStation extends React.Component {
+
+
+
+
+class PvStation extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.TabPane = Tabs.TabPane;
   }
   render() {
     return (
-      <div className={styles.WindStation}>
+      <div className={styles.PvStation}>
         <div className={styles.headStation}>
           <div className={styles.typeIcon}>
             <div className={styles.leftIcon}>
@@ -96,7 +100,7 @@ class WindStation extends React.Component {
             </div>
           </div>
         </div>
-        <Tabs defaultActiveKey="1" tabBarExtraContent={operations} >
+        <Tabs defaultActiveKey="1" tabBarExtraContent={operations}>
           <TabPane
             tab={
               <span>
@@ -105,7 +109,7 @@ class WindStation extends React.Component {
             }
             key="1"
           >
-            <WIndStationItem />
+            <PvStationItem />
 
           </TabPane>
           <TabPane
@@ -116,8 +120,7 @@ class WindStation extends React.Component {
             }
             key="2"
           >
-            <WindStationList />
-
+            <PvStationList />
           </TabPane>
           <TabPane
             tab={
@@ -127,7 +130,7 @@ class WindStation extends React.Component {
             }
             key="3"
           >
-            <WindMap />
+            <PvMap />
           </TabPane>
         </Tabs>,
 
@@ -135,6 +138,4 @@ class WindStation extends React.Component {
     )
   }
 }
-
-
-export default WindStation
+export default PvStation

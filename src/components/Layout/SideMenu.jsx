@@ -23,12 +23,16 @@ class SideMenu extends Component {
     };
   }
   componentWillReceiveProps(nextProps){
+    // console.log('into receive Props')
     const { location,topMenu } = nextProps;
     const { pathname } = location;
     const selectedKeys = [];//激活菜单选中
     let tmpSideMenuData = menu.find(e => e.path === topMenu.path);
+    // console.log(topMenu)
+    // console.log(menu)
+    // console.log(tmpSideMenuData)
     let sideMenuData = (tmpSideMenuData && tmpSideMenuData.children) ? tmpSideMenuData.children : [];
-    
+
     pathname !== '/' && sideMenuData.forEach(e=>{
       if(e.children){
         e.children.forEach(m=>{
@@ -50,7 +54,7 @@ class SideMenu extends Component {
   //   let tmpSideMenuData = menu.find(e => e.path === topMenu.path);
   //   if(tmpSideMenuData && tmpSideMenuData.children){
   //     return tmpSideMenuData.children
-  //   }else{ 
+  //   }else{
   //     return []
   //   }
   // }
@@ -101,7 +105,7 @@ class SideMenu extends Component {
     return (
       <div className={styles.sideMenu} style={{width: this.state.collapsed ? 80 : 180}}>
         {this._createSideMenu(sideMenuData)}
-      </div> 
+      </div>
     );
   }
 }
