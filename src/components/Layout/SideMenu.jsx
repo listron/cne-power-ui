@@ -71,7 +71,7 @@ class SideMenu extends Component {
               <Icon type={collapsed ? 'menu-unfold' : 'menu-fold'} />
             </Button>
           </div>
-          <Menu mode="inline" theme="dark" inlineCollapsed={collapsed} className={styles.menuList} selectedKeys={selectedKeys} openKeys={selectedKeys}>
+          <Menu mode="inline" theme="dark" inlineCollapsed={collapsed} className={styles.menuList} selectedKeys={selectedKeys}>
             {sideMenuData.map(e=>{
               if(!e.children || e.children.length === 0){//只有二级目录
                 return (<Item key={e.path}>

@@ -25,7 +25,6 @@ var initState = immutable.fromJS({
 });
 
 const loginReducer = (state = initState, action) => {
-  console.log(action);
   switch (action.type) {
     case LoginAction.CHANGE_LOGIN_STORE:
       return state.merge(immutable.fromJS(action.params)).set('isFetching', false);

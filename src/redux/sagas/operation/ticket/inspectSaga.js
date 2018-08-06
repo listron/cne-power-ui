@@ -9,13 +9,16 @@ import { TicketAction } from '../../../../constants/actionTypes/operation/ticket
 function* getInspectList(action){
   let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.ticket.getInspectionList;
   yield put({ type: TicketAction.TICKET_FETCH});
+  const { params } = action;
   try{
     const response = yield call(axios.post, url, action.params);
     if(response.data.code === "10000"){
       yield put({
-        type: TicketAction.GET_INSPECT_LIST_SUCCESS,
-        data: response.data.data,
-        params: action.params,
+        type: TicketAction.GET_INSPECT_COMMON_FETCH_SUCCESS,
+        ...params,
+        total: response.data.data.total,
+        inspectStatusStatistics: response.data.data.inspectStatusStatistics,
+        inspectList: response.data.data.inspectList,
       });
     }else{
       yield put({ 

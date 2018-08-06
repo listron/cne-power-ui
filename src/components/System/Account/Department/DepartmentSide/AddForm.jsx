@@ -17,7 +17,7 @@ class AddForm extends Component {
     enterpriseId: PropTypes.string,
     form: PropTypes.object,
     stations: PropTypes.array,
-    allDepartment: PropTypes.object,
+    allDepartment: PropTypes.array,
     addDepartmentInfor: PropTypes.func,
   }
 
@@ -71,7 +71,7 @@ class AddForm extends Component {
           })(
             <Select style={{ width: 200 }}>
               <Option value="0">无</Option>
-              {(allDepartment.list && allDepartment.list.length>0)?allDepartment.list.map(e=>(
+              {(allDepartment && allDepartment.length>0)?allDepartment.map(e=>(
                   <Option value={e.departmentId} key={e.departmentId} >{e.departmentName}</Option>)
                 ):null 
               }

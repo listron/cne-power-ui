@@ -4,17 +4,32 @@ import Path from '../../../../constants/path';
 import { TicketAction } from '../../../../constants/actionTypes/operation/ticketAction';
 import { message } from 'antd';
 
+function *changeTicketStore(action){//存储payload指定参数，替换reducer-store属性。
+  const { payload } = action;
+  yield put({
+    type:  TicketAction.CHANGE_DEFECT_STORE,
+    payload,
+  })
+}
+
 //获取缺陷工单列表
 function* getDefectList(action) {
   let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.ticket.getDefectList;
   yield put({ type: TicketAction.TICKET_FETCH });
   try {
     const response = yield call(axios.post, url, action.params);
+    let { params } = action;
+    delete params.handleUser;
     if(response.data.code === '10000'){
       yield put({ 
-        type: TicketAction.GET_DEFECT_LIST_SUCCESS, 
-        data: response.data.data, 
-        params: action.params 
+        type: TicketAction.GET_DEFECT_COMMON_FETCH_SUCCESS, 
+        payload: {
+          ...params,
+          total: response.data.data.total,
+          defectList: response.data.data.defectList,
+          selectedRowKeys: [],
+          defectStatusStatistics: response.data.data.defectStatusStatistics,
+        }
       });      
     }else{
       yield put({ 
@@ -98,7 +113,7 @@ function* batchDeleteDefect(action) {
     const response = yield call(axios.get, url, {params: action.params});
     if(response.data.code === '10000'){
       message.success('批量删除成功！');
-      const pageSize = yield select(state => state.operation.defect.get('currentPageSize'));
+      const pageSize = yield select(state => state.operation.defect.get('pageSize'));
       const status = yield select(state => state.operation.defect.get('status'));
       const sort = yield select(state => state.operation.defect.get('sort'));
       yield put({ 
@@ -134,7 +149,7 @@ function* batchCloseDefect(action) {
     const response = yield call(axios.post, url, action.params);
     if(response.data.code === '10000'){
       message.success('批量关闭成功！');
-      const pageSize = yield select(state => state.operation.defect.get('currentPageSize'));
+      const pageSize = yield select(state => state.operation.defect.get('pageSize'));
       const status = yield select(state => state.operation.defect.get('status'));
       const sort = yield select(state => state.operation.defect.get('sort'));
       yield put({ 
@@ -170,7 +185,7 @@ function* batchSendDefect(action) {
     const response = yield call(axios.post, url, action.params);
     if(response.data.code === '10000'){
       message.success('批量下发成功！');
-      const pageSize = yield select(state => state.operation.defect.get('currentPageSize'));
+      const pageSize = yield select(state => state.operation.defect.get('pageSize'));
       const status = yield select(state => state.operation.defect.get('status'));
       const sort = yield select(state => state.operation.defect.get('sort'));
       yield put({ 
@@ -206,7 +221,7 @@ function* batchRejectDefect(action) {
     const response = yield call(axios.post, url, action.params);
     if(response.data.code === '10000'){
       message.success('批量驳回成功！');
-      const pageSize = yield select(state => state.operation.defect.get('currentPageSize'));
+      const pageSize = yield select(state => state.operation.defect.get('pageSize'));
       const status = yield select(state => state.operation.defect.get('status'));
       const sort = yield select(state => state.operation.defect.get('sort'));
       yield put({ 
@@ -242,7 +257,7 @@ function* batchChecktDefect(action) {
     const response = yield call(axios.post, url, action.params);
     if(response.data.code === '10000'){
       message.success('批量验收成功！');
-      const pageSize = yield select(state => state.operation.defect.get('currentPageSize'));
+      const pageSize = yield select(state => state.operation.defect.get('pageSize'));
       const status = yield select(state => state.operation.defect.get('status'));
       const sort = yield select(state => state.operation.defect.get('sort'));
       yield put({ 
@@ -450,7 +465,7 @@ function *createNewDefect(action){
     const response = yield call(axios.post, url, action.params);
     if(response.data.code === '10000'){
       message.success('创建成功！');
-      const pageSize = yield select(state => state.operation.defect.get('currentPageSize'));
+      const pageSize = yield select(state => state.operation.defect.get('pageSize'));
       const status = yield select(state => state.operation.defect.get('status'));
       const sort = yield select(state => state.operation.defect.get('sort'));
       yield put({ 
@@ -489,8 +504,10 @@ function* clearDefect(action) {
   }); 
 }
 
+
 export function* watchGetDefectList() {
   yield takeLatest(TicketAction.GET_DEFECT_LIST_SAGA, getDefectList);
+  yield takeLatest(TicketAction.CHANGE_DEFECT_STORE_SAGA ,changeTicketStore);
 }
 
 export function* watchBatchDeleteDefect() {

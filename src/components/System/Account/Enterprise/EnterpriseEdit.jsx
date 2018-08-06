@@ -13,6 +13,7 @@ import WarningTip from '../../../Common/WarningTip';
 class EnterpriseEdit extends Component {
   static propTypes = {
     loading: PropTypes.bool,
+    enterpriseId: PropTypes.string,
     changeEnterpriseStore: PropTypes.func,
     getEnterpriseDetail: PropTypes.func,
     saveEnterpriseInfor: PropTypes.func,
@@ -60,7 +61,7 @@ class EnterpriseEdit extends Component {
   
   render(){
     const { enterpriseLogo } = this.state;
-    const { enterpriseDetail,saveEnterpriseInfor, loading } = this.props;
+    const { enterpriseId, enterpriseDetail,saveEnterpriseInfor, loading } = this.props;
     const { showWarningTip, warningTipText } = this.state;
     const uploadPath=`${pathConfig.basePaths.newAPIBasePath}${pathConfig.commonPaths.imgUploads}`;
     return (
@@ -78,7 +79,13 @@ class EnterpriseEdit extends Component {
               <span>240px*240px为佳，大小不超过2M</span>
             </div>
           </div>
-          <EditForm enterpriseDetail={enterpriseDetail} enterpriseLogo={enterpriseLogo} saveEnterpriseInfor={saveEnterpriseInfor} loading={loading} />
+          <EditForm 
+            enterpriseDetail={enterpriseDetail} 
+            enterpriseLogo={enterpriseLogo} 
+            saveEnterpriseInfor={saveEnterpriseInfor} 
+            loading={loading} 
+            enterpriseId={enterpriseId}
+          />
         </div>
       </div>
     )
