@@ -83,6 +83,16 @@ export default {
       createRole: '/v3/role',
       editRole: '/v3/role/{enterpriseId}',
       deleteRole: '/v3/role',
+    },
+    monitor: {//实时监控
+      seriesinverterDetail: '/api/v3/monitor/seriesinverter',//组串式逆变器详情
+      seriesinverterTenMin: '/api/v3/monitor/seriesinverter/sequencechart',//组串式逆变器10min时序图
+      confluenceboxDetail: '/api/v3/monitor/confluencebox',//汇流箱详情
+      confluenceboxTenMin: '/api/v3/monitor/confluencebox/sequencechart',//汇流箱10min时序图
+      boxtransformerDetail: '/api/v3/monitor/boxtransformer',//箱变详情
+      boxtransformerTenMin: '/api/v3/monitor/boxtransformer/sequencechart',//箱变10min时序图
+      weatherstationDetail: '/api/v3/monitor/weatherstation', //气象站详情
+      monitorPointData: '/api/v3/monitor/point', //设备测点数据
     }
   }
 }
