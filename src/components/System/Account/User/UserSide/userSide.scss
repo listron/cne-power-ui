@@ -54,6 +54,7 @@
         flex: 1;
         .instructionText{
           color: $promptColor;
+          margin-left: 12px;
         }
         .saveUser{
           margin: 0 20px 0 94px;
@@ -71,9 +72,8 @@
                 display: none;
               }
             }
-            .ant-form-item-control-wrapper input{
+            .has-error .ant-select-selection,.ant-form-item-control-wrapper input,.ant-select,.ant-cascader-picker{
               width: 200px;
-              margin-right: 12px;
             }
           }
         }

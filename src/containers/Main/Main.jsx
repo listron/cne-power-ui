@@ -88,10 +88,10 @@ class Main extends Component {
     if(authData && (authData !== 'undefined' && authData !== null)){
       axios.defaults.headers.common['Authorization'] = "bearer " + JSON.parse(authData);
     }
-    // if((moment().isBefore(getCookie('expireData'), 'second')) 
-    // && (authData !== 'undefined' && authData !== null) 
-    // && (isNotLogin === '0')){
-    if(true){
+    if((moment().isBefore(getCookie('expireData'), 'second')) 
+    && (authData !== 'undefined' && authData !== null) 
+    && (isNotLogin === '0')){
+    // if(true){
       return (
         <div className={styles.app}>
           <div className={styles.appHeader}>

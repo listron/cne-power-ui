@@ -1,5 +1,6 @@
 import immutable from 'immutable';
 import { LoginAction } from '../../constants/actionTypes/loginAction';
+import { getCookie } from '../../utils';
 
 var initState = immutable.fromJS({
   isFetching: false,
@@ -22,6 +23,7 @@ var initState = immutable.fromJS({
   enterpriseDomain: '',//注册企业域名
   enterpriseName: null,//注册企业名称
   joinResult: 0,//0 加入失败，1，加入待审核
+  enterpriseId: getCookie('enterpriseId'),
 });
 
 const loginReducer = (state = initState, action) => {

@@ -3,7 +3,7 @@ import axios from 'axios';
 import Path from '../../constants/path';
 import moment from 'moment';
 import { stringify } from 'qs';
-import { setCookie, getCookie } from '../../utils';
+import { setCookie } from '../../utils';
 import { LoginAction } from '../../constants/actionTypes/loginAction';
 import { CommonAction } from '../../constants/actionTypes/commonAction';
 import { message } from 'antd';
@@ -38,8 +38,7 @@ function *getLogin(action){
     });
     if(response.data.code === '10000'){
       setCookie('authData',JSON.stringify(response.data.data.access_token));
-      setCookie('phoneNum', action.params.phoneNum);
-      setCookie('username', response.data.data.username);
+      setCookie('enterpriseId', response.data.data.enterpriseId);
       setCookie('expireData', moment().add(response.data.data.expires_in, 'seconds'));
       setCookie('isNotLogin', 0);
       yield put({ type: LoginAction.GET_LOGIN_SUCCESS, data: response.data.data});
@@ -88,8 +87,7 @@ function *checkCode(action){
     if(response.data.code === '10000'){ 
       if(action.params.isNotLogin === 1 || response.data.data.enterpriseId !== null) {
         setCookie('authData',JSON.stringify(response.data.data.access_token));
-        setCookie('phoneNum', action.params.phoneNum);
-        setCookie('username', response.data.data.username);
+        setCookie('enterpriseId', response.data.data.enterpriseId);
         setCookie('expireData', moment().add(response.data.data.expires_in, 'seconds'));
         setCookie('isNotLogin', action.params.isNotLogin);
       }

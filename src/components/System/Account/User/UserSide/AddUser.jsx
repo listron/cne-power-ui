@@ -75,7 +75,13 @@ class AddUser extends Component {
               <span>240px*240px为佳，大小不超过2M</span>
             </div>
           </div>
-          <AddForm userDetail={userDetail} userLogo={userLogo} saveUserInfor={saveUserInfor} loading={loading} />
+          <AddForm 
+            userDetail={userDetail} 
+            userLogo={userLogo} 
+            saveUserInfor={saveUserInfor} 
+            loading={loading} 
+            {...this.props}
+          />
         </div>
       </div>
     )

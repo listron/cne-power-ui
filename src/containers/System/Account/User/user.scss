@@ -31,5 +31,8 @@
     .userSide-exit-done{
       transform: translateX(0);
     }
+    .ant-table-placeholder{
+      z-index: 0;
+    }
   }
 }

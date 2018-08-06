@@ -16,37 +16,69 @@ class AddForm extends Component {
     form: PropTypes.object,
     userDetail: PropTypes.object,
     createUserInfo: PropTypes.func,
-    userLogo: PropTypes.string
+    userLogo: PropTypes.string,
+    enterpriseId: PropTypes.string,
   }
 
   constructor(props){
     super(props);
     this.state={
-
+      selectedRoles: new Set(),
     }
   }
 
-  onSelectRoles = () => {
-    console.log('---------------------')
+  onSelectRoles = (value, item) => {
+    console.log(value, item);
+    // const { selectedRoles } = this.state;
+    // let tmpSelectedRoles = selectedRoles;
+    // tmpSelectedRoles.has(value) ? tmpSelectedRoles.delete(value) : tmpSelectedRoles.add(value);
+    // this.setState({selectedRoles: tmpSelectedRoles})
   }
 
   saveUser = () =>{
-    const { userLogo } = this.props;
+    const { userLogo, enterpriseId, form } = this.props;
     this.props.form.validateFieldsAndScroll((error,values)=>{
       if(!error){
         this.props.createUserInfo({
-          ...values,
-          userLogo
+          email: values.email,
+          phoneNum: values.phoneNum,
+          roleId: values.roleId.join(','),
+          specialRoleId: values.specialRoleId.join(','),
+          userFullName: values.userFullName,
+          username: values.username,
+          // userLogo,
+          enterpriseId,
+          showPage: 'add',
         })
+        form.resetFields();
       }
     })
   }
 
+  continueAdd = () =>{
+    const { userLogo, enterpriseId } = this.props;
+    this.props.form.validateFieldsAndScroll((error,values)=>{
+      if(!error){
+        this.props.createUserInfo({
+          email: values.email,
+          phoneNum: values.phoneNum,
+          roleId: values.roleId.join(','),
+          specialRoleId: values.specialRoleId.join(','),
+          userFullName: values.userFullName,
+          username: values.username,
+          // userLogo,
+          enterpriseId,
+          showPage: 'list',
+        })
+      }
+    })
+  }
   
 
   render(){
     const { getFieldDecorator } = this.props.form;
     const { userDetail, loading } = this.props;
+    const { selectedRoles } = this.state;
     const roleData = [
       {roleId: '1', roleName: '系统管理员', isPre: 0, rightData:[]},
       {roleId: '2', roleName: '企业管理员', isPre: 0, rightData:[]},
@@ -54,7 +86,12 @@ class AddForm extends Component {
       {roleId: '4', roleName: '运维实施工人', isPre: 0, rightData:[]},
       {roleId: '5', roleName: '运维管理员', isPre: 0, rightData:[]},
     ];
-    
+    const specialRoleId = [
+      {specialRoleId: '1', specialRoleName: '特殊权限1'},
+      {specialRoleId: '2', specialRoleName: '特殊权限2'},
+      {specialRoleId: '3', specialRoleName: '特殊权限3'},
+      {specialRoleId: '4', specialRoleName: '特殊权限4'},
+    ]
     return (
       <Form className={styles.editPart}>
         <FormItem label="用户名" >
@@ -88,7 +125,7 @@ class AddForm extends Component {
             initialValue: userDetail && userDetail.phoneNum,
             rules: [{
               message: '请输入正确的手机号',
-              pattern: /^1[3|4|5|7|8]\d{9}$/,
+              pattern: /^1\d{10}$/,
               required: true,
             }]
           })(
@@ -115,19 +152,18 @@ class AddForm extends Component {
           )}
         </FormItem> */}
         <FormItem label="角色" >
-          {getFieldDecorator('roleId',{rules:[{
-
-            }],
-            initialValue: ''
+          {getFieldDecorator('roleId',{
+            initialValue: [],
           })(
             <Select
               mode="multiple"
-              placeholder="请选择"
+              placeholder="请选择用户角色"
               showArrow={true}
               onChange={this.onSelectRoles}
+              className={styles.selectRoles}
             >
               {roleData.map((item,index)=>(
-                <Option key={item.roleName+index} value={item.roleName} ><Checkbox>{item.roleName}</Checkbox></Option>
+                <Option key={item.roleId} value={item.roleId}  >{item.roleName}</Option>
               ))}
             </Select>
           )}
@@ -135,16 +171,23 @@ class AddForm extends Component {
         </FormItem>
         <FormItem label="特殊权限" >
           {getFieldDecorator('specialRoleId', {
-            rules: [{
-              message: '请选择特殊权限',
-            }],
-            initialValue: userDetail && (userDetail.specialRoleId || '')
+            initialValue: [],
           })(
-            <Input />
+            <Select
+              mode="multiple"
+              placeholder="请选择特殊权限"
+              showArrow={true}
+              onChange={this.specialRoleId}
+              className={styles.specialRoleId}
+            >
+              {specialRoleId.map((item,index)=>(
+                <Option key={item.specialRoleId} value={item.specialRoleId}  >{item.specialRoleName}</Option>
+              ))}
+            </Select>
           )}
         </FormItem>
-        <Button onClick={this.saveUser} loading={loading} className={styles.saveUser} >保存</Button>
-        <Button onClick={this.continueToAdd} loading={loading} >保存并继续添加</Button>
+        <Button onClick={this.saveUser} value="save" loading={loading} className={styles.saveUser} >保存</Button>
+        <Button onClick={this.continueAdd} value="continueAdd" loading={loading} >保存并继续添加</Button>
       </Form>
     )
   }

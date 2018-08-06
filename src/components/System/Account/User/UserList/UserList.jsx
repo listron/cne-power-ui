@@ -391,7 +391,7 @@ class UserList extends Component {
             selectedRowKeys: selectedUser.toJS().map(e=>e.key),
             onChange: this.onRowSelect
           }}
-          dataSource={userData.toJS().map((e,i)=>({...e,key:i}))} 
+          dataSource={userData && userData.toJS().map((e,i)=>({...e,key:i}))} 
           columns={this.tableColumn()} 
           onChange={this.tableChange}
           pagination={false}

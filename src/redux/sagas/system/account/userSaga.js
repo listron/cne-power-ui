@@ -16,10 +16,13 @@ function *changeUserStore(action){
 // 请求用户列表
 function *getUserList(action){
   const { payload } = action;
-  const url = '/mock/api/v3/user/list';
+  console.log(payload);
+  // const url = '/mock/api/v3/user/list';
+  const url = Path.basePaths.newAPIBasePath + Path.APISubPaths.system.getUserList;
   try{
     yield put({type: userAction.USER_FETCH});
     const response = yield call(axios.post, url, payload);
+    console.log(response);
     yield put({
       type: userAction.GET_USER_FETCH_SUCCESS,
       payload: {
@@ -35,7 +38,8 @@ function *getUserList(action){
 // 更改企业用户状态
 function *changeUserStatus(action){
   const { payload } =action;
-  const url = '/api/v3/user/status';
+  // const url = '/api/v3/user/status';
+  const url = Path.basePaths.newAPIBasePath + Path.APISubPaths.system.changeUserStatus;
   try{
     yield put({type: userAction.USER_FETCH});
     const response = yield call(axios.put, url);
@@ -58,7 +62,8 @@ function *changeUserStatus(action){
 // 请求用户详情
 function *getUserDetail(action){
   const { payload } = action;
-  const url = '/mock/api/v3/userDetail';
+  // const url = '/mock/api/v3/userDetail';
+  const url = Path.basePaths.newAPIBasePath + Path.APISubPaths.system.getUserDetail + payload.userId;
   console.log(action)
   try{
     yield put({ type: userAction.USER_FETCH});
@@ -78,7 +83,7 @@ function *getUserDetail(action){
 // 编辑用户信息
 function *editUserInfo(action){
   const { payload } =action;
-  const url = '/api/v3/user';
+  const url = Path.basePaths.newAPIBasePath + Path.APISubPaths.system.editUserInfo;
   try{
     yield put({ type: userAction.USER_FETCH });
     const response = yield call(axios.put, url);
@@ -92,13 +97,17 @@ function *editUserInfo(action){
 // 新建用户信息
 function *createUserInfo(action){
   const { payload } = action;
-  const url = '/api/v3/createUser';
+  const url = Path.basePaths.newAPIBasePath + Path.APISubPaths.system.createUserInfo;
+  yield put({ type: userAction.USER_FETCH});
   try{
-    yield put({ type: userAction.USER_FETCH});
     const response = yield call(axios.post, url, payload);
-    console.log(action);
-    console.log(response)
-    yield put({ type: userAction.GET_USER_FETCH_SUCCESS})
+    if(response.data.code === '10000'){
+      yield put({ type: userAction.GET_USER_FETCH_SUCCESS});
+      message.success(response.data.message);
+    }else{
+      yield put({ type: userAction.GET_USER_FETCH_FAIL});
+      message.error(response.data.message);
+    }
   }catch(e){
     console.log(e);
   }

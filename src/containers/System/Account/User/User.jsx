@@ -37,16 +37,14 @@ class User extends Component {
   }
   componentDidMount() {
     const params = {
-      userId: this.props.userId,
+      enterpriseId: this.props.enterpriseId,
       roleId: this.props.roleId,
       userStatus: this.props.userStatus,
       userName: this.props.userName,
       phoneNum: this.props.phoneNum,
       stationName: this.props.stationName,
-      sort: this.props.sort,
-      ascend: this.props.ascend,
-      currentPage: this.props.currentPage,
-      pageSize: this.props.pageSize
+      pageNum: this.props.currentPage,
+      pageSize: this.props.pageSize,
     };
     this.props.getUserList(params);
 
@@ -133,6 +131,7 @@ class User extends Component {
   render() {
     const { showPage } = this.props;
     const { showSidePage } =this.state;
+    console.log(this.props);
     return (
       <div className={styles.userContainer}>
         <UserMain
@@ -164,6 +163,7 @@ const mapStateToProps = state => {
   // [...state.department].forEach(e=>departmentProps[e[0]]=(e[1].toJS?e[1].toJS():e[1]))
   [...state.system.user].forEach(e=>userProps[e[0]]=e[1])
   userProps['roleData'] = state.system.role.get('roleData');
+  userProps['enterpriseId'] = state.login.get('enterpriseId');
   return userProps;
 }
 

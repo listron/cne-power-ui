@@ -83,6 +83,12 @@ export default {
       createRole: '/v3/role',
       editRole: '/v3/role/{enterpriseId}',
       deleteRole: '/v3/role',
+
+      getUserList: '/v3/user/list',//用户列表
+      changeUserStatus: '/v3/user/status',//更改用户状态
+      getUserDetail: '/v3/user/',//用户详情
+      editUserInfo: '/v3/user',//编辑用户
+      createUserInfo: '/v3/user',//新建用户
     }
   }
 }

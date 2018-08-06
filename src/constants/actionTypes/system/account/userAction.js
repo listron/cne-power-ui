@@ -8,7 +8,7 @@ module.exports = {
     CHANGE_USER_STORE: null,
 
     GET_USER_FETCH_SUCCESS: null,//公共请求API成功
-
+    GET_USER_FETCH_FAIL: null,//公共请求API失败
     GET_USER_LIST_SAGA: null, //获取列表
 
     GET_USER_DETAIL_SAGA: null, //获取详情

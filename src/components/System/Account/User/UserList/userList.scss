@@ -83,11 +83,6 @@
         ul.listbox{
           width: 200px;
         }
-        :global{
-          .ant-select-selection .ant-select-selection__rendered ul {
-            // display: none;
-          }
-        }
       }
       
     }

@@ -27,7 +27,7 @@ var initState = immutable.fromJS({
 })
 
 const userReducer = (state = initState, action) => {
-  console.log(state.toJS())
+  // console.log(state.toJS())
   switch(action.type){
     case userAction.USER_FETCH:
       return state.set('loading', true)
@@ -35,7 +35,8 @@ const userReducer = (state = initState, action) => {
       return state.merge(immutable.fromJS(action.payload)).set('loading', false)
     case userAction.CHANGE_USER_STORE:
       return state.merge(immutable.fromJS(action.payload))
-
+    case userAction.GET_USER_FETCH_FAIL:
+      return state.set('loading', false);
   }
   return state;
 }
