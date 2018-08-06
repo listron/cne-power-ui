@@ -44,7 +44,7 @@ class Department extends Component {
     }
     this.props.getDepartmentList(params)//请求部门列表
     this.props.getAllDepartment({//请求所有部门
-      enterpriseId: this.props.enterpriseId,
+      enterpriseId: '1010694160817111040', //this.props.enterpriseId,//'1010694160817111040',
     })
   }
 
