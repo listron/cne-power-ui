@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import styles from './role.scss';
-import {getCookie} from '../../../../utils'
+import {getCookie} from '../../../../utils';
 import { roleAction } from '../../../../constants/actionTypes/system/account/roleAction';
 import PropTypes from 'prop-types';
 import Footer from '../../../../components/Common/Footer';

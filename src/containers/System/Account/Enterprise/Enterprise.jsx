@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import styles from './enterprise.scss';
+import { getCookie } from '../../../../utils';
 import { enterpriseAction } from '../../../../constants/actionTypes/system/account/enterpriseAction';
 import PropTypes from 'prop-types';
 import Footer from '../../../../components/Common/Footer';
@@ -74,7 +75,7 @@ class Enterprise extends Component {
 }
 const mapStateToProps = (state) => ({
   ...state.system.enterprise.toJS(),
-  enterpriseId: state.common.get('enterpriseId'),
+  enterpriseId: getCookie('enterpriseId'),
 });
 
 const mapDispatchToProps = (dispatch) => ({
