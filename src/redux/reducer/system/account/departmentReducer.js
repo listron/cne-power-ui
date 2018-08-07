@@ -20,6 +20,8 @@ var initState = immutable.fromJS({
   showAssignUserModal: false,//展示分配用户模态框
   
   allDepartment: [],//所有部门基础信息及子父级关系
+  allUser: [],//所有用户信息，用于为部门分配用户
+  allStation: [],//所有电站信息，用于为部门分配电站
 
   departmentData: [],//部门列表数据
   departmentDetail:{},//选中部门详细信息

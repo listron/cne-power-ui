@@ -88,7 +88,10 @@ class Department extends Component {
   }
 }
 const mapStateToProps = (state) => ({
-    ...state.system.department.toJS(),
+    ...state.system.department.delete('allDepartment').delete('allUser').delete('allStation').toJS(),
+    allDepartment:state.system.department.get('allDepartment'),
+    allUser: state.system.department.get('allUser'),
+    allStation: state.system.department.get('allStation'),
     stations: state.common.get('stations').toJS(),
     enterpriseId: state.common.get('enterpriseId'),
 });

@@ -80,7 +80,7 @@ function *getAllUser(action){
     yield put({
       type:  departmentAction.GET_DEPARTMENT_FETCH_SUCCESS,
       payload:{
-        userList: response.data.data,
+        allUser: response.data.data,
       },
     });
   }catch(e){
