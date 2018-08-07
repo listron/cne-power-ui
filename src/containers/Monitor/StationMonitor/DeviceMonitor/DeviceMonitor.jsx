@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 class DeviceMonitor extends Component {
   static propTypes = {
     match: PropTypes.object,
+    getMonitorDeviceData: PropTypes.func,
     enterpriseId: PropTypes.string,
   }
   constructor(props) {
@@ -16,9 +17,11 @@ class DeviceMonitor extends Component {
     }
   }
   componentDidMount(){
-    console.log(this.props.match.params)  // {deviceCode: 1121}
-    
-
+    const { deviceCode, deviceTypeCode } = this.props.match.params
+    this.props.getMonitorDeviceData({
+      deviceCode,
+      deviceTypeCode
+    })
   }
 
   render() {
@@ -36,10 +39,6 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   getMonitorDeviceData: payload => dispatch({ type: deviceAction.GET_DEVICE_DATA_SAGA, payload }),
-  // getInverterDetail: payload => dispatch({type: deviceAction.GET_INVERTER_DETAIL_SAGA, payload}),
-  // getInverterTenMin: payload => dispatch({type: deviceAction.GET_INVERTER_TENMIN_SAGA, payload}),
-  // getDevicePointData: payload => dispatch({type: deviceAction.GET_MONITOR_POINT_SAGA, payload}),
-  // getDeviceAlarmData: payload => dispatch({type: deviceAction.GET_DEVICE_ALARM_SAGA, payload}),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DeviceMonitor);

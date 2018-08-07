@@ -20,7 +20,7 @@ class DepartmentDetail extends Component {
     pageNum: PropTypes.number,
     pageSize: PropTypes.number,
     totalNum: PropTypes.number,
-    allDepartment: PropTypes.object,
+    allDepartment: PropTypes.array,
     allUser: PropTypes.object,
     allStation: PropTypes.object,
     loginData: PropTypes.object,
@@ -155,6 +155,7 @@ class DepartmentDetail extends Component {
 
   render(){
     const { departmentDetail } = this.props;
+    console.log(departmentDetail)
     const { showWarningTip, warningTipText } = this.state;
     let userFullNames = (departmentDetail.userFullNameData && departmentDetail.userFullNameData.length > 0 )? departmentDetail.userFullNameData.map(e=>e.userFullName).join(','):' -- ';
     let stationNames = (departmentDetail.stationNameData && departmentDetail.stationNameData.length > 0 )? departmentDetail.stationNameData.map(e=>e.stationName).join(','):' -- ';

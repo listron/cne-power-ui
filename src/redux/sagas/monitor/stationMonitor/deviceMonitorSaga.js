@@ -13,7 +13,7 @@ function *changeDeviceStore(action) {//存储payload指定参数，替换reducer
   })
 }
 
-function *getInverterDetail(action) {  // 请求逆变器详情
+function *getDeviceMonitorDetail(action) {  // 请求单设备详情
   const { payload } = action;
   const url = '/mock/monitor/seriesinverter';
   // const url = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.monitor.seriesinverterDetail}/${payload.deviceCode}`
@@ -183,15 +183,18 @@ function *getDeviceAlarmData(action) {  // 请求设备下各测点信息
 
 export function* watchDeviceMonitor() {
   yield takeLatest(deviceAction.CHANGE_DEVICE_MONITOR_STORE_SAGA, changeDeviceStore);
-  yield takeLatest(deviceAction.GET_INVERTER_DETAIL_SAGA, getInverterDetail);
-  yield takeLatest(deviceAction.GET_INVERTER_TENMIN_SAGA, getInverterTenMin);
-  yield takeLatest(deviceAction.GET_CONFLUENCEBOX_DETAIL_SAGA, getConfluenceBoxDetail);
-  yield takeLatest(deviceAction.GET_CONFLUENCEBOX_TENMIN_SAGA, getConfluenceBoxTenMin);
-  yield takeLatest(deviceAction.GET_TRANSFORMER_DETAIL_SAGA, getTransformerDetail);
-  yield takeLatest(deviceAction.GET_TRANSFORMER_TENMIN_SAGA, getTransformerTenMin);
-  yield takeLatest(deviceAction.GET_WEATHERSTATION_DETAIL_SAGA, getWeatherStationDetail);
-  yield takeLatest(deviceAction.GET_MONITOR_POINT_SAGA, getDevicePointData);
-  yield takeLatest(deviceAction.GET_DEVICE_ALARM_SAGA, getDeviceAlarmData);
+
+  yield takeLatest(deviceAction.GET_DEVICE_DATA_SAGA, getDeviceMonitorDetail);
+
+  // yield takeLatest(deviceAction.GET_INVERTER_DETAIL_SAGA, getInverterDetail);
+  // yield takeLatest(deviceAction.GET_INVERTER_TENMIN_SAGA, getInverterTenMin);
+  // yield takeLatest(deviceAction.GET_CONFLUENCEBOX_DETAIL_SAGA, getConfluenceBoxDetail);
+  // yield takeLatest(deviceAction.GET_CONFLUENCEBOX_TENMIN_SAGA, getConfluenceBoxTenMin);
+  // yield takeLatest(deviceAction.GET_TRANSFORMER_DETAIL_SAGA, getTransformerDetail);
+  // yield takeLatest(deviceAction.GET_TRANSFORMER_TENMIN_SAGA, getTransformerTenMin);
+  // yield takeLatest(deviceAction.GET_WEATHERSTATION_DETAIL_SAGA, getWeatherStationDetail);
+  // yield takeLatest(deviceAction.GET_MONITOR_POINT_SAGA, getDevicePointData);
+  // yield takeLatest(deviceAction.GET_DEVICE_ALARM_SAGA, getDeviceAlarmData);
 }
 
 

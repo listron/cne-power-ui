@@ -10,7 +10,6 @@ import User from '../containers/System/Account/User/User';
 import AllStation from '../containers/Monitor/StationMonitor/AllStation/AllStation';
 import DeviceMonitor from '../containers/Monitor/StationMonitor/DeviceMonitor/DeviceMonitor';
 import Role from '../containers/System/Account/Role/Role';
-import { getCookie } from '../utils';
 /*
   注： path变量中，以/hidden开头的路径，将不展示在菜单中；
 */
@@ -54,13 +53,11 @@ const routers = [
     exact: true,
     component: AllStation,
   }, {  // 菜单栏中不展示的--单设备实时监控
-    path: '/hidden/monitorDevice/:deviceCode',
+    path: '/hidden/monitorDevice/:deviceTypeCode/:deviceCode',
     exact: true,
     component: DeviceMonitor
   }
 ];
-
-const enterpriseId = getCookie('enterpriseId');
 
 const RouteWithSubRoutes = route => (
   <Route
@@ -68,7 +65,7 @@ const RouteWithSubRoutes = route => (
     exact={route.exact}
     render={props => (
       // pass the sub-routes down to keep nesting
-      <route.component {...props} routes={route.routes} enterpriseId={enterpriseId} />
+      <route.component {...props} routes={route.routes} />
     )}
   />
 );

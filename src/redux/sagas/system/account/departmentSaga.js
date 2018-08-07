@@ -24,12 +24,21 @@ function *getDepartmentList(action){//请求部门列表数据
       type:  departmentAction.GET_DEPARTMENT_FETCH_SUCCESS,
       payload:{
         ...payload,
-        departmentData: response.data.data.departmentData || [],
-        totalNum: response.data.data.totalNum,
+        departmentData: response.data.data.context || [],
+        totalNum: response.data.totalNum || 0,
         buttonLoading: false
       },
     });
   }catch(e){
+    yield put({
+      type:  departmentAction.GET_DEPARTMENT_FETCH_SUCCESS,
+      payload:{
+        ...payload,
+        departmentData: [],
+        totalNum: 0,
+        buttonLoading: false
+      },
+    });
     console.log(e);
   }
 }
@@ -126,15 +135,15 @@ function *getAllStation(action){//获取所有电站
 
 function *getDepartmentDetail(action){// 请求单部门详细数据信息
   const { payload } = action;
-  const url = '/mock/system/departmentDetail';
-  // const url = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.system.departmentInfo}/${payload.departmentId}`
+  // const url = '/mock/system/departmentDetail';
+  const url = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.system.departmentInfo}/${payload.departmentId}`
   try{
     yield put({ type:departmentAction.DEPARTMENT_FETCH });
     const response = yield call(axios.get,url);
     yield put({
       type:  departmentAction.GET_DEPARTMENT_FETCH_SUCCESS,
       payload:{
-        departmentDetail: response.data.data,
+        departmentDetail: response.data && response.data.data || {},
       },
     });
   }catch(e){
@@ -170,8 +179,8 @@ function *getOtherPageDetail(action){//部门详情页第一条查看前一条�
 
 function *addDepartmentInfo(action){//新建部门信息
   const { payload } = action;
-  const url = '/mock/system/addDepartment';
-  // const url = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.system.departmentInfo}`
+  // const url = '/mock/system/addDepartment';
+  const url = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.system.departmentInfo}`
   try{
     yield put({ //按钮的loading
       type:departmentAction.CHANGE_DEPARTMENT_STORE,
