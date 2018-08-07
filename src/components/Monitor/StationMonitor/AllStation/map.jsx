@@ -5,8 +5,6 @@ import axios from 'axios'
 import echarts from 'echarts';
 import bmap from 'echarts/extension/bmap/bmap';
 
-console.log(bmap)
-
 class Interval extends Component {
     constructor(props) {
         super(props)
@@ -337,8 +335,6 @@ class Interval extends Component {
             }]
         };
         testChart.setOption(option)
-        console.log(testChart)
-
     }
     render() {
         const { barData } = this.state;

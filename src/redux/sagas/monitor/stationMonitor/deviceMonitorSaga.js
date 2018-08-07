@@ -4,94 +4,64 @@ import Path from '../../../../constants/path';
 
 import { deviceAction } from '../../../../constants/actionTypes/monitor/stationmonitor/deviceAction';
 
-// MONITOR_DEVICE_FETCH: null, // loading
-// CHANGE_DEVICE_STORE_SAGA: null, // 改变reducer参数
-// CHANGE_DEVICE_STORE: null, // 替换reducer参数
-// GET_DEVICE_FETCH_SUCCESS: null, // 单设备详情普通api请求成功
-// GET_INVERTER_DETAIL_SAGA: null, // 获取组串式逆变器详情
-// GET_INVERTER_TENMIN_SAGA: null, // 组串式逆变器10min时序图
-// GET_CONFLUENCEBOX_DETAIL_SAGA: null, //	汇流箱详情
-// GET_CONFLUENCEBOX_TENMIN_SAGA: null, //	汇流箱10min时序图
-// GET_TRANSFORMER_DETAIL_SAGA: null, //	箱变详情
-// GET_TRANSFORMER_TENMIN_SAGA: null, //	箱变10min时序图
-// GET_WEATHERSTATION_DETAIL_SAGA: null, //	气象站详情
-// GET_MONITOR_POINT_SAGA: null, // 设备测点数据
-function *changeDeviceStore(action){//存储payload指定参数，替换reducer-store属性。
+
+function *changeDeviceStore(action) {//存储payload指定参数，替换reducer-store属性。
   const { payload } = action;
   yield put({
-    type:  deviceAction.CHANGE_DEPARTMENT_STORE,
+    type:  deviceAction.CHANGE_DEVICE_MONITOR_STORE,
     payload,
   })
 }
 
-function *getDepartmentList(action){//请求部门列表数据
+function *getInverterDetail(action) {  // 请求逆变器详情
   const { payload } = action;
-  // const url = '/mock/system/departmentList';
-  const url = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.system.getDepartmentList}`
+  const url = '/mock/monitor/seriesinverter';
+  // const url = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.monitor.seriesinverterDetail}/${payload.deviceCode}`
   try{
-    yield put({ type:departmentAction.DEPARTMENT_FETCH });
-    const response = yield call(axios.post,url,payload);
+    yield put({ type: deviceAction.MONITOR_DEVICE_FETCH });
+    const response = yield call(axios.get, url);
     yield put({
-      type:  departmentAction.GET_DEPARTMENT_FETCH_SUCCESS,
-      payload:{
-        ...payload,
-        departmentData: response.data.data.departmentData || [],
-        totalNum: response.data.data.totalNum,
-        buttonLoading: false
+      type:  deviceAction.GET_DEVICE_FETCH_SUCCESS,
+      payload: {
+        deviceDetail: response.data.data,
       },
     });
   }catch(e){
     console.log(e);
   }
 }
-//todo - 删除部门
-function *deleteDepartment(action){
+
+function *getInverterTenMin(action) {  // 请求逆变器十分钟数据
   const { payload } = action;
-  const url = '/mock/system/deleteDepartment';
-  // const url = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.system.getDepartmentList}`
+  const url = '/mock/monitor/seriesinverterTenMin';
+  // const url = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.monitor.seriesinverterTenMin}/${payload.deviceCode}/${payload.hours}`
   try{
-    yield put({ type:departmentAction.DEPARTMENT_FETCH });
-    const response = yield call(axios.delete,url,payload);
+    yield put({ type:deviceAction.MONITOR_DEVICE_FETCH });
+    const response = yield call(axios.get, url);
     if(response.data.code === "10000"){
       yield put({//清空选中项
-        type:  departmentAction.CHANGE_DEPARTMENT_STORE,
+        type:  deviceAction.GET_DEVICE_FETCH_SUCCESS,
         payload: {
-          selectedDepartment: [],
+          deviceTenMin: response.data.data,
         },
       })
-      const params = yield select(state => ({//继续请求部门列表
-        enterpriseId: payload.enterpriseId,
-        departmentSource: state.department.get('departmentSource'),
-        departmentName: state.department.get('departmentName'),
-        parentDepartmentName: state.department.get('parentDepartmentName'),
-        stationName: state.department.get('stationName'), 
-        sort: state.department.get('sort'),
-        ascend: state.department.get('ascend'),
-        pageNum: state.department.get('pageNum'),
-        pageSize: state.department.get('pageSize'),
-      }));
-      yield put({
-        type:  departmentAction.GET_DEPARTMENT_LIST_SAGA,
-        payload: params,
-      });
     }
   }catch(e){
     console.log(e);
   }
 }
 
-//获取该企业所有用户，用于部门分配用户数据
-function *getAllUser(action){
+function *getConfluenceBoxDetail(action) {  // 请求汇流箱详情
   const { payload } = action;
-  // const url = '/mock/system/allDepartments';
-  const url = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.system.getAllUser}/${payload.enterpriseId}`
+  const url = '/mock/monitor/confluenceboxDetail';
+  // const url = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.monitor.confluenceboxDetail}/${payload.deviceCode}`
   try{
-    yield put({ type:departmentAction.DEPARTMENT_FETCH });
+    yield put({ type: deviceAction.MONITOR_DEVICE_FETCH });
     const response = yield call(axios.get,url);
     yield put({
-      type:  departmentAction.GET_DEPARTMENT_FETCH_SUCCESS,
+      type:  deviceAction.GET_DEVICE_FETCH_SUCCESS,
       payload:{
-        userList: response.data.data,
+        deviceDetail: response.data.data,
       },
     });
   }catch(e){
@@ -99,17 +69,37 @@ function *getAllUser(action){
   }
 }
 
-function *getAllDepartment(action){//获取所有部门基础信息
+function *getConfluenceBoxTenMin(action) {  // 请求汇流箱十分钟数据
   const { payload } = action;
-  // const url = '/mock/system/allDepartments';
-  const url = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.system.getAllDepartment}/${payload.enterpriseId}`
+  const url = '/mock/monitor/confluenceboxTenMin';
+  // const url = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.monitor.confluenceboxTenMin}/${payload.deviceCode}/${payload.hours}`
   try{
-    yield put({ type:departmentAction.DEPARTMENT_FETCH });
+    yield put({ type:deviceAction.MONITOR_DEVICE_FETCH });
+    const response = yield call(axios.get, url);
+    if(response.data.code === "10000"){
+      yield put({//清空选中项
+        type:  deviceAction.GET_DEVICE_FETCH_SUCCESS,
+        payload: {
+          deviceTenMin: response.data.data,
+        },
+      })
+    }
+  }catch(e){
+    console.log(e);
+  }
+}
+
+function *getTransformerDetail(action) {  // 请求箱变详情
+  const { payload } = action;
+  const url = '/mock/monitor/boxtransformerDetail';
+  // const url = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.monitor.boxtransformerDetail}/${payload.deviceCode}`
+  try{
+    yield put({ type: deviceAction.MONITOR_DEVICE_FETCH });
     const response = yield call(axios.get,url);
     yield put({
-      type:  departmentAction.GET_DEPARTMENT_FETCH_SUCCESS,
+      type:  deviceAction.GET_DEVICE_FETCH_SUCCESS,
       payload:{
-        allDepartment: response.data.data,
+        deviceDetail: response.data.data,
       },
     });
   }catch(e){
@@ -117,17 +107,37 @@ function *getAllDepartment(action){//获取所有部门基础信息
   }
 }
 
-function *getAllStation(action){//获取所有电站
+function *getTransformerTenMin(action) {  // 请求箱变十分钟数据
   const { payload } = action;
-  // const url = '/mock/system/allDepartments';
-  const url = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.system.getAllStation}/${payload.enterpriseId}`
+  const url = '/mock/monitor/boxtransformerTenMin';
+  // const url = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.monitor.boxtransformerTenMin}/${payload.deviceCode}/${payload.hours}`
   try{
-    yield put({ type:departmentAction.DEPARTMENT_FETCH });
+    yield put({ type:deviceAction.MONITOR_DEVICE_FETCH });
+    const response = yield call(axios.get, url);
+    if(response.data.code === "10000"){
+      yield put({//清空选中项
+        type:  deviceAction.GET_DEVICE_FETCH_SUCCESS,
+        payload: {
+          deviceTenMin: response.data.data,
+        },
+      })
+    }
+  }catch(e){
+    console.log(e);
+  }
+}
+
+function *getWeatherStationDetail(action) {  // 请求气象站详情
+  const { payload } = action;
+  const url = '/mock/monitor/weatherstationDetail';
+  // const url = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.monitor.weatherstationDetail}/${payload.deviceCode}`
+  try{
+    yield put({ type: deviceAction.MONITOR_DEVICE_FETCH });
     const response = yield call(axios.get,url);
     yield put({
-      type:  departmentAction.GET_DEPARTMENT_FETCH_SUCCESS,
+      type:  deviceAction.GET_DEVICE_FETCH_SUCCESS,
       payload:{
-        allStation: response.data.data,
+        deviceDetail: response.data.data,
       },
     });
   }catch(e){
@@ -135,17 +145,17 @@ function *getAllStation(action){//获取所有电站
   }
 }
 
-function *getDepartmentDetail(action){// 请求单部门详细数据信息
+function *getDevicePointData(action) {  // 请求设备下各测点信息
   const { payload } = action;
-  const url = '/mock/system/departmentDetail';
-  // const url = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.system.departmentInfo}/${payload.departmentId}`
+  const url = '/mock/monitor/monitorPointData';
+  // const url = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.monitor.monitorPointData}/${payload.deviceCode}`
   try{
-    yield put({ type:departmentAction.DEPARTMENT_FETCH });
+    yield put({ type: deviceAction.MONITOR_DEVICE_FETCH });
     const response = yield call(axios.get,url);
     yield put({
-      type:  departmentAction.GET_DEPARTMENT_FETCH_SUCCESS,
+      type:  deviceAction.GET_DEVICE_FETCH_SUCCESS,
       payload:{
-        departmentDetail: response.data.data,
+        devicePointData: response.data.data,
       },
     });
   }catch(e){
@@ -153,25 +163,17 @@ function *getDepartmentDetail(action){// 请求单部门详细数据信息
   }
 }
 
-function *getOtherPageDetail(action){//部门详情页第一条查看前一条详情/最后一条看下一条详情=>翻页+请求详情
-  const { payload, previous } = action;
-  const listUrl = '/mock/system/departmentList';
-  // const listUrl = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.system.getDepartmentList}`
+function *getDeviceAlarmData(action) {  // 请求设备下各测点信息
+  const { payload } = action;
+  const url = '/mock/monitor/deviceAlarm';
+  // const url = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.monitor.deviceAlarmData}/${payload.deviceCode}`
   try{
-    yield put({ type:departmentAction.DEPARTMENT_FETCH });
-    const listResponse = yield call(axios.post,listUrl,payload);
-    const { departmentData, totalNum } = listResponse.data.data;
-    const { departmentId } = previous?departmentData[departmentData.length - 1]:departmentData[0];
-    const detailUrl = '/mock/system/departmentDetail';
-    // const detailUrl = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.system.departmentInfo}/${departmentId}`
-    const detailResponse = yield call(axios.get,detailUrl);
+    yield put({ type: deviceAction.MONITOR_DEVICE_FETCH });
+    const response = yield call(axios.get,url);
     yield put({
-      type:  departmentAction.GET_DEPARTMENT_FETCH_SUCCESS,
+      type:  deviceAction.GET_DEVICE_FETCH_SUCCESS,
       payload:{
-        ...payload,
-        departmentData,
-        totalNum,
-        departmentDetail: detailResponse.data.data,
+        deviceAlarmData: response.data.data,
       },
     });
   }catch(e){
@@ -179,159 +181,17 @@ function *getOtherPageDetail(action){//部门详情页第一条查看前一条�
   }
 }
 
-function *addDepartmentInfo(action){//新建部门信息
-  const { payload } = action;
-  const url = '/mock/system/addDepartment';
-  // const url = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.system.departmentInfo}`
-  try{
-    yield put({ //按钮的loading
-      type:departmentAction.CHANGE_DEPARTMENT_STORE,
-      payload: {
-        buttonLoading: !payload.continueAdd,
-        continueAddLoading: payload.continueAdd,
-      } 
-    });
-    const response = yield call(axios.post,url,payload);
-    if(response.data.code === "10000"){
-      yield put({
-        type:  departmentAction.CHANGE_DEPARTMENT_STORE,
-        payload:{
-          showPage: payload.continueAdd?'add':'list',
-          buttonLoading: false,
-          continueAddLoading: false,
-        }
-      });
-      const params = yield select(state => ({//继续请求部门列表
-        enterpriseId: payload.enterpriseId,
-        departmentSource: state.department.get('departmentSource'),
-        departmentName: state.department.get('departmentName'),
-        parentDepartmentName: state.department.get('parentDepartmentName'),
-        stationName: state.department.get('stationName'), 
-        sort: state.department.get('sort'),
-        ascend: state.department.get('ascend'),
-        pageNum: state.department.get('pageNum'),
-        pageSize: state.department.get('pageSize'),
-      }));
-      yield put({
-        type:  departmentAction.GET_DEPARTMENT_LIST_SAGA,
-        payload: params,
-      });
-    }
-  }catch(e){
-    console.log(e);
-  }
+export function* watchDeviceMonitor() {
+  yield takeLatest(deviceAction.CHANGE_DEVICE_MONITOR_STORE_SAGA, changeDeviceStore);
+  yield takeLatest(deviceAction.GET_INVERTER_DETAIL_SAGA, getInverterDetail);
+  yield takeLatest(deviceAction.GET_INVERTER_TENMIN_SAGA, getInverterTenMin);
+  yield takeLatest(deviceAction.GET_CONFLUENCEBOX_DETAIL_SAGA, getConfluenceBoxDetail);
+  yield takeLatest(deviceAction.GET_CONFLUENCEBOX_TENMIN_SAGA, getConfluenceBoxTenMin);
+  yield takeLatest(deviceAction.GET_TRANSFORMER_DETAIL_SAGA, getTransformerDetail);
+  yield takeLatest(deviceAction.GET_TRANSFORMER_TENMIN_SAGA, getTransformerTenMin);
+  yield takeLatest(deviceAction.GET_WEATHERSTATION_DETAIL_SAGA, getWeatherStationDetail);
+  yield takeLatest(deviceAction.GET_MONITOR_POINT_SAGA, getDevicePointData);
+  yield takeLatest(deviceAction.GET_DEVICE_ALARM_SAGA, getDeviceAlarmData);
 }
 
-function *editDepartmentInfo(action){//编辑部门信息
-  const { payload } = action;
-  const url = '/mock/system/editDepartment';
-  // const url = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.system.departmentInfo}`
-  try{
-    yield put({ //按钮的loading
-      type:departmentAction.CHANGE_DEPARTMENT_STORE,
-      payload: { buttonLoading: true } 
-    });
-    const response = yield call(axios.put,url,payload);
-    if(response.data.code === "10000"){
-      yield put({
-        type:  departmentAction.CHANGE_DEPARTMENT_STORE,
-        payload:{
-          showPage: 'list',
-        }
-      });
-      const params = yield select(state => ({//继续请求部门列表
-        enterpriseId: payload.enterpriseId,
-        departmentSource: state.department.get('departmentSource'),
-        departmentName: state.department.get('departmentName'),
-        parentDepartmentName: state.department.get('parentDepartmentName'),
-        stationName: state.department.get('stationName'), 
-        sort: state.department.get('sort'),
-        ascend: state.department.get('ascend'),
-        pageNum: state.department.get('pageNum'),
-        pageSize: state.department.get('pageSize'),
-      }));
-      yield put({
-        type:  departmentAction.GET_DEPARTMENT_LIST_SAGA,
-        payload: params,
-      });
-    }
-  }catch(e){
-    console.log(e);
-  }
-}
-
-function *setDepartmentUser(action) {
-  const { payload } = action;
-  // const url = '/mock/system/editDepartment';
-  const url = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.system.setDepartmentUser}`
-  try{
-    const response = yield call(axios.post,url,payload);
-    if(response.data.code === "10000"){
-      const showPage = yield select(state => state.system.department.get('showPage'));
-      if(showPage === 'detail') {
-        yield put({
-          type:  departmentAction.GET_DEPARTMENT_DETAIL_SAGA,
-          payload:{
-            departmentId: payload.departmentId,
-          }
-        });
-      }
-    }
-  }catch(e){
-    console.log(e);
-  }
-}
-
-function *setDepartmentStation(action) {
-  const { payload } = action;
-  // const url = '/mock/system/editDepartment';
-  const url = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.system.setDepartmentStation}`
-  try{
-    const response = yield call(axios.post,url,payload);
-    if(response.data.code === "10000"){
-      const showPage = yield select(state => state.system.department.get('showPage'));
-      if(showPage === 'detail') {
-        yield put({
-          type:  departmentAction.GET_DEPARTMENT_DETAIL_SAGA,
-          payload:{
-            departmentId: payload.departmentId,
-          }
-        });
-      }
-      const params = yield select(state => ({//继续请求部门列表
-        enterpriseId: payload.enterpriseId,
-        departmentSource: state.department.get('departmentSource'),
-        departmentName: state.department.get('departmentName'),
-        parentDepartmentName: state.department.get('parentDepartmentName'),
-        stationName: state.department.get('stationName'), 
-        sort: state.department.get('sort'),
-        ascend: state.department.get('ascend'),
-        pageNum: state.department.get('pageNum'),
-        pageSize: state.department.get('pageSize'),
-      }));
-      yield put({
-        type:  departmentAction.GET_DEPARTMENT_LIST_SAGA,
-        payload: params,
-      });
-    }
-  }catch(e){
-    console.log(e);
-  }
-}
-
-
-export function* watchDepartment() {
-  yield takeLatest(departmentAction.CHANGE_DEPARTMENT_STORE_SAGA, changeDepartmentStore);
-  yield takeLatest(departmentAction.GET_DEPARTMENT_LIST_SAGA, getDepartmentList);
-  yield takeLatest(departmentAction.DELETE_DEPARTMENT_SAGA,deleteDepartment);
-  yield takeLatest(departmentAction.GET_ALL_USER_SAGA,getAllUser);
-  yield takeLatest(departmentAction.GET_ALL_DEPARTMENT_SAGA,getAllDepartment);
-  yield takeLatest(departmentAction.GET_ALL_STATION_SAGA,getAllStation);
-  yield takeLatest(departmentAction.GET_DEPARTMENT_DETAIL_SAGA, getDepartmentDetail);
-  yield takeLatest(departmentAction.GET_OTHER_PAGE_DEPARTMENT_DETAIL_SAGA,getOtherPageDetail);
-  yield takeLatest(departmentAction.ADD_DEPARTMENT_INFO_SAGA, addDepartmentInfo);
-  yield takeLatest(departmentAction.EDIT_DEPARTMENT_INFO_SAGA,editDepartmentInfo);
-  yield takeLatest(departmentAction.SET_DEPARTMENT_USER_SAGA,setDepartmentUser);
-  yield takeLatest(departmentAction.SET_DEPARTMENT_STATION_SAGA,setDepartmentStation);
-}
 
