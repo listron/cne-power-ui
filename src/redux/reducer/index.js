@@ -4,19 +4,20 @@ import common from './commonReducer';
 import operation from './operation/operationReducer';
 import system from './system/systemReducer';
 import login from './loginReducer';
+import monitor from './monitor/monitorReduce'
 
-const appReducer = (() => combineReducers({common, operation, login, system }))();
+const appReducer = (() => combineReducers({common, operation, login, system ,monitor}))();
 
 // ========================= 单独一个文件的写法 =============================
-/* import { 
-    GET_USERS_SUCESS, 
+/* import {
+    GET_USERS_SUCESS,
     GET_USERS_FAIL,
     GET_POSTS_SUCCESS,
     GET_POSTS_FAIL
 } from 'constant/actionTypes';
 
-const initialState = { 
-	fetched: false, 
+const initialState = {
+	fetched: false,
 	users: [{
 		key: '1',
 		name: '张三',
@@ -33,13 +34,13 @@ const initialState = {
 const appReducer = (state = initialState, action) => {
     switch(action.type) {
         case GET_USERS_SUCESS:
-            return {...state, fetched: true, users: action.users} 
+            return {...state, fetched: true, users: action.users}
         case GET_USERS_FAIL:
-            return {...state, error: action.error} 
+            return {...state, error: action.error}
         case GET_POSTS_SUCCESS:
-            return {...state, fetched: true, posts: action.posts} 
+            return {...state, fetched: true, posts: action.posts}
         case GET_POSTS_FAIL:
-            return {...state, error: action.error} 
+            return {...state, error: action.error}
     }
     return state;
 } */

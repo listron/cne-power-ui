@@ -6,6 +6,23 @@ const menuData = [
     path: '/',
     clickable: true,
   },{
+    name: '实时监控',
+    clickable: false,
+    path: 'monitor',
+    children: [
+      {
+        name: '电站监控',
+        clickable: true,
+        iconStyle: 'home',
+        path: 'stationmonitor',
+      },{
+        name: '告警',
+        iconStyle: 'exclamation-circle',
+        clickable: true,
+        path: 'alarm',
+      }
+    ],
+  },{
     name: '电站运维',
     clickable: false,
     path: 'operation',
