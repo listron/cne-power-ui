@@ -1,7 +1,7 @@
-import { call, put, takeLatest, select } from 'redux-saga/effects';
-import axios from 'axios';
+import { call, put, takeLatest, select } from '../../../../../node_modules/_redux-saga@0.16.0@redux-saga/effects';
+import axios from '../../../../../node_modules/_axios@0.16.2@axios';
 import Path from '../../../../constants/path';
-import { message } from 'antd';
+import { message } from '../../../../../node_modules/_antd@3.8.0@antd';
 import { userAction } from '../../../../constants/actionTypes/system/account/userAction';
 
 // 切换页面 -> 列表页 详情页 编辑页
@@ -68,6 +68,7 @@ function *getUserDetail(action){
   try{
     yield put({ type: userAction.USER_FETCH});
     const response = yield call(axios.get, url,payload);
+    console.log(response);
     yield put({
       type: userAction.GET_USER_FETCH_SUCCESS,
       payload: {
@@ -83,11 +84,11 @@ function *getUserDetail(action){
 // 编辑用户信息
 function *editUserInfo(action){
   const { payload } =action;
-  // const url = '/api/v3/user';
+  console.log(payload)
   const url = Path.basePaths.newAPIBasePath + Path.APISubPaths.system.editUserInfo;
   try{
     yield put({ type: userAction.USER_FETCH });
-    const response = yield call(axios.put, url);
+    const response = yield call(axios.put, url, payload);
     yield put({
       type: userAction.GET_USER_FETCH_SUCCESS
     })
@@ -107,7 +108,7 @@ function *createUserInfo(action){
       yield put({ type: userAction.GET_USER_FETCH_SUCCESS});
       message.success(response.data.message);
       yield put({ type: userAction.CHANGE_USER_STORE_SAGA, payload:{showPage: payload.showPage}})
-      const params = yield select(state => ({//继续请求部门列表
+      const params = yield select(state => ({//继续请求用户列表
         enterpriseId: payload.enterpriseId,
         // roleId: state.user.get('roleId'),
         userStatus: state.user.get('userStatus'),

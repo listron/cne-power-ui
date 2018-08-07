@@ -15,7 +15,8 @@ class EditForm extends Component {
     form: PropTypes.object,
     userDetail: PropTypes.object,
     editUserInfo: PropTypes.func,
-    userLogo: PropTypes.string
+    userLogo: PropTypes.string,
+    enterpriseId: PropTypes.string,
   }
 
   constructor(props){
@@ -23,13 +24,41 @@ class EditForm extends Component {
   }
 
   saveUser = () =>{
-    const { userLogo } = this.props;
+    const { userLogo, enterpriseId } = this.props;
     this.props.form.validateFieldsAndScroll((error,values)=>{
       if(!error){
         this.props.editUserInfo({
-          ...values,
-          userLogo
+          email: values.email,
+          phoneNum: values.phoneNum,
+          roleId: values.roleId.join(','),
+          specialRoleId: values.specialRoleId.join(','),
+          userFullName: values.userFullName,
+          username: values.username,
+          userLogo,
+          enterpriseId,
+          showPage: 'list',
         })
+        
+      }
+    })
+  }
+
+  continueToAdd = () =>{
+    const { userLogo, enterpriseId, form } = this.props;
+    this.props.form.validateFieldsAndScroll((error,values)=>{
+      if(!error){
+        this.props.editUserInfo({
+          email: values.email,
+          phoneNum: values.phoneNum,
+          roleId: values.roleId.join(','),
+          specialRoleId: values.specialRoleId.join(','),
+          userFullName: values.userFullName,
+          username: values.username,
+          userLogo,
+          enterpriseId,
+          showPage: 'add',
+        });
+        form.resetFields();
       }
     })
   }
@@ -70,7 +99,7 @@ class EditForm extends Component {
             initialValue: userDetail && userDetail.phoneNum,
             rules: [{
               message: '请输入正确的手机号',
-              pattern: /^1[3|4|5|7|8]\d{9}$/,
+              pattern: /^1\d{10}$/,
               required: true,
             }]
           })(

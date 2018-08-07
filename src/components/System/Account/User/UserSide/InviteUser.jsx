@@ -10,7 +10,6 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 //用户邀请页
 class InviteUser extends Component {
   static propTypes = {
-    loading: PropTypes.bool,
     changeUserStore: PropTypes.func,
   }
 
@@ -20,7 +19,6 @@ class InviteUser extends Component {
       showWarningTip: false,
       warningTipText: '退出后信息无法保存!',
       copied: false,
-      inputValue: '',
     }
   }
 
@@ -51,8 +49,7 @@ class InviteUser extends Component {
   }
 
   render(){
-    const { loading } = this.props;
-    const { showWarningTip, warningTipText,inputValue, copied } = this.state;
+    const { showWarningTip, warningTipText, copied } = this.state;
     const tmpLink = "https://www.cnegroup.com";
     return (
       <div className={styles.inviteUser} >

@@ -178,7 +178,7 @@ class UserDetail extends Component {
   };
   render() {
     const { userDetail} = this.props;
-   console.log(userDetail.toJS());
+    console.log(userDetail.toJS());
     const { showWarningTip, warningTipText } = this.state;
     console.log(userDetail.get('enterpriseData'))
     return (

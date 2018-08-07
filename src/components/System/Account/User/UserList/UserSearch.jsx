@@ -12,22 +12,10 @@ const RadioButton = Radio.Button;
 class UserSearch extends Component {
   static propTypes = {
     loading: PropTypes.bool,
-    totalNum: PropTypes.number,
-    userData: PropTypes.object,
-    selectedUser: PropTypes.object,//勾选的数组
     getUserList: PropTypes.func,
-    getUserDetail: PropTypes.func,
-    onChangeSort: PropTypes.func,//排序
-    onChangePageSize: PropTypes.func,
-    onChangePage: PropTypes.func,
     roleData: PropTypes.object,
     pageNum: PropTypes.number,
-    userStatus: PropTypes.number, 
-    userName: PropTypes.string, 
-    userPhone: PropTypes.string,
-    sort: PropTypes.string, 
-    ascend: PropTypes.bool,
-    currentPage: PropTypes.number, 
+    userStatus: PropTypes.number,
     pageSize: PropTypes.number,
     onChangeStatus: PropTypes.func, 
     onUserSearch: PropTypes.func,
@@ -66,7 +54,7 @@ class UserSearch extends Component {
       enterpriseId: this.props.enterpriseId,
       userStatus: this.props.userStatus,
       roleId: roleId,
-      pageNum: this.props.pageNum - 1,
+      pageNum: this.props.pageNum,
       pageSize: this.props.pageSize,
     };
     this.props.getUserList(params);

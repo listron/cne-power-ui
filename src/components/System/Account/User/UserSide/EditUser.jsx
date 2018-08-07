@@ -1,7 +1,7 @@
 
 
 import React, { Component } from 'react';
-import { Icon, Popconfirm } from 'antd';
+import { Icon } from 'antd';
 import PropTypes from 'prop-types';
 import styles from './userSide.scss';
 import EditForm from './EditForm';
@@ -9,7 +9,7 @@ import SingleImgUploader from '../../../../Common/Uploader/SingleImgUploader';
 import pathConfig from '../../../../../constants/path';
 import WarningTip from '../../../../Common/WarningTip';
 
-//企业信息编辑页
+//用户编辑页
 class EditUser extends Component {
   static propTypes = {
     loading: PropTypes.bool,

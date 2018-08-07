@@ -104,6 +104,7 @@ class UserList extends Component {
     this.props.changeUserStore({
       showPage: 'detail',
     })
+    console.log(record);
     this.props.getUserDetail({
       userId
     })
@@ -217,11 +218,14 @@ class UserList extends Component {
       [deletable, usable, unallowable, examinable] = newArray.length < 2 ? [true, true, true, true] : [ false, false, false, false];
     
       if(selectedUser[0].userStatus === 3){//启用
-        [deletable, usable, unallowable, examinable] = [true, false, true, true];
+        // [deletable, usable, unallowable, examinable] = [true, false, true, true];
+        [usable] = [false];
       }else if(selectedUser[0].userStatus === 5 || selectedUser[0].userStatus === 6){//待审核//未通过审核
-        [deletable, usable, unallowable, examinable] = [true, false, false, true];
+        // [deletable, usable, unallowable, examinable] = [true, false, false, true];
+        [usable, unallowable] = [false, false];
       }else if(selectedUser[0].userStatus === 4){//禁用
-        [deletable, usable, unallowable, examinable] = [true, true, false, true];
+        // [deletable, usable, unallowable, examinable] = [true, true, false, true];
+        [unallowable] = [false];
       }
     }else{
       [editable, deletable, usable, unallowable, examinable] = [ false, false, false, false, false];

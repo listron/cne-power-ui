@@ -23,16 +23,7 @@ class AddForm extends Component {
   constructor(props){
     super(props);
     this.state={
-      selectedRoles: new Set(),
     }
-  }
-
-  onSelectRoles = (value, item) => {
-    console.log(value, item);
-    // const { selectedRoles } = this.state;
-    // let tmpSelectedRoles = selectedRoles;
-    // tmpSelectedRoles.has(value) ? tmpSelectedRoles.delete(value) : tmpSelectedRoles.add(value);
-    // this.setState({selectedRoles: tmpSelectedRoles})
   }
 
   saveUser = () =>{
@@ -46,7 +37,7 @@ class AddForm extends Component {
           specialRoleId: values.specialRoleId.join(','),
           userFullName: values.userFullName,
           username: values.username,
-          // userLogo,
+          userLogo,
           enterpriseId,
           showPage: 'list',
         })
@@ -55,7 +46,7 @@ class AddForm extends Component {
     })
   }
 
-  continueAdd = () =>{
+  continueToAdd = () =>{
     const { userLogo, enterpriseId, form } = this.props;
     this.props.form.validateFieldsAndScroll((error,values)=>{
       if(!error){
@@ -66,7 +57,7 @@ class AddForm extends Component {
           specialRoleId: values.specialRoleId.join(','),
           userFullName: values.userFullName,
           username: values.username,
-          // userLogo,
+          userLogo,
           enterpriseId,
           showPage: 'add',
         });
@@ -79,7 +70,6 @@ class AddForm extends Component {
   render(){
     const { getFieldDecorator } = this.props.form;
     const { userDetail, loading } = this.props;
-    const { selectedRoles } = this.state;
     const roleData = [
       {roleId: '1', roleName: '系统管理员', isPre: 0, rightData:[]},
       {roleId: '2', roleName: '企业管理员', isPre: 0, rightData:[]},
@@ -188,7 +178,7 @@ class AddForm extends Component {
           )}
         </FormItem>
         <Button onClick={this.saveUser} value="save" loading={loading} className={styles.saveUser} >保存</Button>
-        <Button onClick={this.continueAdd} value="continueAdd" loading={loading} >保存并继续添加</Button>
+        <Button onClick={this.continueToAdd} value="continueToAdd" loading={loading} >保存并继续添加</Button>
       </Form>
     )
   }

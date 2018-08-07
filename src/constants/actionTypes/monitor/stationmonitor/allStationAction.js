@@ -1,4 +1,4 @@
-import keyMirror from 'keymirror';
+import keyMirror from 'C:/Users/admin/AppData/Local/Microsoft/TypeScript/2.9/node_modules/@types/keymirror';
 
 module.exports = {
   allStationAction: keyMirror({
