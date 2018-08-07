@@ -75,7 +75,7 @@ export default {
       getEnterprisDetail: '/v3/enterprise',//企业详情获取
       saveEnterpriseDetail: '/v3/enterprise/change',//保存企业详情
       getDepartmentList: '/v3/department/list',//部门列表
-      departmentInfo: '/v3/department', //部门信息新增，编辑，详情
+      departmentInfo: '/v3/department', //部门信息新增，编辑，详情，删除
       getAllDepartment: '/v3/department/all', //所有部门列表
       getAllUser: '/v3/department/user', //所有用户列表，用于为部门分配用户
       getAllStation: '/v3/department/station', //所有电站列表，用于为部门分配电站
