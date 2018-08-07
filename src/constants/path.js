@@ -81,7 +81,7 @@ export default {
       getAllStation: '/v3/department/station', //所有电站列表，用于为部门分配电站
       setDepartmentUser: '/v3/department/user',//设置部门成员
       setDepartmentStation: '/v3/department/station', //设置部门电站
-      
+
       getRoleList: '/v3/role/list',
       getMenuList: '/v3/right',
       createRole: '/v3/role',
@@ -98,5 +98,8 @@ export default {
       weatherstationDetail: '/api/v3/monitor/weatherstation', //气象站详情
       monitorPointData: '/api/v3/monitor/point', //设备测点数据
     }
+    // monitor:{
+    //   getStationType:'v3/monitor/stations/stationType',
+    // }
   }
 }

@@ -33,10 +33,11 @@ class TopMenu extends Component {
 
   selectTopMenu = ({item,key,selectedKeys}) => {
     const params = menu.find(e=>e.path === key);
-    const defaultPath = { 
+    const defaultPath = {
       '/': '/',
       '/operation':'/operation/ticket',
       '/system':'/system/enterprise',
+      '/monitor':'/monitor/stationmonitor'
     }
     this.setState({
       selectedKeys

@@ -1,0 +1,223 @@
+
+.PvStation{
+  height: 100%;
+  :global{
+    .ant-tabs-bar{
+      width:1210px;
+    }
+    .ant-progress-bg {
+      border-radius: 100px;
+      background-color: #199475;
+  }
+  .ant-tabs-nav .ant-tabs-tab {
+    display: inline-block;
+    text-align: center;
+    height: 100%;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    position: relative;
+    -webkit-transition: color 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+    transition: color 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+    cursor: pointer;
+    text-decoration: none;
+    width: 55px;
+    margin: 0;
+    background: #f1f1f1;
+
+  }
+  .ant-tabs-nav :active{
+    background: #199475
+  }
+  .ant-tabs-ink-bar .ant-tabs-ink-bar-animated{
+    //display: none;
+    width: 0;
+    height: 0;
+  }
+
+   width: 100%;
+  }
+  .headStation{
+    height: 100px;
+    display: flex;
+    flex:1;
+    .typeIcon{
+      width: 120px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+
+      .leftIcon{
+        width: 60px;
+        height: 60px;
+        background: url('../../../../../theme/img/pv-normal.png') no-repeat center;
+      }
+    }
+    .progressInfo{
+      .progressData{
+        width: 300px;
+        height: 100px;
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        margin-left: 25px;
+
+
+        .stationValue{
+          flex: 1;
+          display: flex;
+
+          justify-content: space-between;
+          padding-top: 20px;
+
+        }
+        .progressBar{
+          flex: 1;
+          width: 300px;
+        }
+        .stationType{
+          flex: 1;
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+          padding-bottom: 20px;
+        }
+      }
+    }
+    .stationCollect{
+      height: 100px;
+      display: flex;
+      flex-direction: row;
+
+      .dayStation,.monthStation,.equipmentNum,.windSpeed{
+        height: 100px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin-left: 25px;
+        .dataValue {
+          flex: 1;
+          text-align: center;
+
+          padding-top: 20px;
+        }
+        .dataName {
+          flex: 1;
+          padding-bottom: 1px;
+
+        }
+
+       }
+
+    }
+
+  }
+
+  .stationCardContainer {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+    flex-wrap: wrap;
+
+
+    .ant-progress-bg {
+      background-color: #199419;
+    }
+    .stationCard {
+      margin: 20px 0 0 20px;
+      padding: 8px;
+      width: 215px;
+      height: 132px;
+      border-radius:4px;
+      background: #f1f1f1;
+      color: #999;
+      background:#ffffff;
+      box-shadow:0 1px 4px 0 ;
+      display: flex;
+      flex-direction: column;
+    }
+    .stationCardTitle {
+      flex: 1;
+    }
+    .stationCardProgress {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: row;
+    }
+
+    .stationCardValue {
+      flex: 1;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+    }
+    .stationMark {
+      color: #20cc20;
+    }
+    .stationCardWindSpeed {
+      flex: 1;
+    }
+    .stationCardEquipmentNum {
+      flex: 1;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+    }
+    .stationWarning {
+      color: red;
+    }
+  }
+  .PvStationList{
+    width: 1210px;
+    .pagination{
+      width: 1210px;
+      height: 45px;
+      display: flex;
+      justify-content: flex-end;
+     line-height: 45px;
+    }
+    .stationName{
+      width: 100px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis
+      //text-overflow: ellipsis;
+    }
+    .progressInfo{
+      .progressData{
+        width: 180px;
+        height: 40px;
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+
+
+
+        .stationValue{
+          flex: 1;
+          display: flex;
+          justify-content: space-between;
+
+
+        }
+        .progressBar{
+          flex: 1;
+          width: 180px;
+        }
+        .stationType{
+          flex: 1;
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+          padding-bottom: 20px;
+        }
+      }
+    }
+  }
+
+
+}
