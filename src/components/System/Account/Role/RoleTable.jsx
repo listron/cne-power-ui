@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Table, Button, Select, Icon } from 'antd';
+import { Table, Button, Select, Icon, Popover } from 'antd';
 import PropTypes from 'prop-types';
 import styles from './role.scss';
 const { Option } = Select;
@@ -83,9 +83,17 @@ class RoleTable extends Component {
         title: '功能定义',
         dataIndex: 'rightData',
         key: 'rightData',
-        render: (text,record)=>(
-          <div className={styles.menu}>{this.renderAuth(text).join('|')}</div>
-        )
+        render: (text,record)=>{
+          const right = this.renderAuth(text);
+          const content = (
+            <div>{right.map(item=>(<span>{item}</span>))}</div>
+          );
+          return (
+            <Popover title={record.roleName} content={content}>
+              <div className={styles.menu}>{right.join('|')}</div>
+            </Popover>
+          );
+        }
       }
     ];
     return columns;
