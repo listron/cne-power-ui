@@ -31,17 +31,21 @@ const routers = [
     exact: true,
     component: Ticket,
   }, {
-    path: '/system/enterprise',
+    path: '/system/account/enterprise',
     exact: true,
     component: Enterprise,
   }, {
-    path: '/system/department',
+    path: '/system/account/department',
     exact: true,
     component: Department,
   }, {
-    path: '/system/user',
+    path: '/system/account/user',
     exact: true,
     component: User,
+  }, {
+    path: '/system/account/role',
+    exact: true,
+    component: Role,
   }, {
     path: '/monitor/stationmonitor',
     exact: true,

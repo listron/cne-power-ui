@@ -69,26 +69,22 @@ class RoleEditForm extends Component {
 
   render(){
     const { getFieldDecorator } = this.props.form;
-    const formItemLayout = {
-      labelCol: { span: 4 },
-      wrapperCol: { span: 32 },
-    }
-    const selectedRole = this.props.selectedRole[0];
     const isCreate = this.props.showPage === 'create';
+    const selectedRole = isCreate? null: this.props.selectedRole[0];
     return (     
       <Form onSubmit={this.onSubmit} className={styles.roleEditForm}>
-        <FormItem label="角色名称" {...formItemLayout}>
-        {getFieldDecorator('roleName', {
+        <FormItem label="角色名称">
+          {getFieldDecorator('roleName', {
             rules: [{ 
               required: isCreate 
             }],
             initialValue: isCreate || !selectedRole ? '' : selectedRole.roleName
           })(
-            <Input />
+            <Input placeholder="请输入..." />
           )}
+          <span className={styles.instructionText}>(10字以内)</span>
         </FormItem>
         <FormItem
-          {...formItemLayout}
           className={styles.dealProposal} 
           label="功能设置">
           {getFieldDecorator('rightId', {
@@ -100,8 +96,8 @@ class RoleEditForm extends Component {
             <RoleTree treeData={this.props.menuData} />
           )}
         </FormItem>
-        <div>
-          <Button onClick={this.onSaveRole}>保存</Button>
+        <div className={styles.buttonGroup}>
+          <Button className={styles.save} onClick={this.onSaveRole}>保存</Button>
           <Button onClick={this.onSaveRoleAndAdd}>保存并继续添加</Button>
         </div>
       </Form>

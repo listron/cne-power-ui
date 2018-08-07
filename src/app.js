@@ -5,7 +5,6 @@ import { Provider } from 'react-redux';
 import {HashRouter} from 'react-router-dom';
 import { LocaleProvider } from 'antd';
 import { createStore, applyMiddleware } from 'redux';
-import logger from 'redux-logger';
 import thunk from 'redux-thunk';
 import createSagaMiddleware from 'redux-saga';
 import Main from './containers/Main/Main';

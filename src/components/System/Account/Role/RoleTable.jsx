@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Table, Button, Select, Icon } from 'antd';
 import PropTypes from 'prop-types';
 import styles from './role.scss';
-
 const { Option } = Select;
 
 class RoleTable extends Component {
@@ -13,12 +12,15 @@ class RoleTable extends Component {
     selectedRole: PropTypes.array,//勾选的数组
     getRoleList: PropTypes.func,
     changeRoleStore: PropTypes.func,
+    onDeleteRole: PropTypes.func,
   }
 
   constructor(props){
     super(props);
-    this.state = {
-    }
+  }
+
+  onRoleAdd = () =>{//进入添加角色页
+    this.props.changeRoleStore({showPage: 'create'});
   }
 
   onRowSelect = (selectedRowKeys, selectedRows) => {
@@ -32,6 +34,8 @@ class RoleTable extends Component {
     })
   }
 
+  
+
   // tableChange = (pagination,filter,sorter) => {//排序，筛选
   //   const sort = sorter.field;
   //   const ascend = sorter.order==='ascend';
@@ -41,19 +45,17 @@ class RoleTable extends Component {
   //   });
   // }
 
-  roleHandle = (value) => {//编辑，禁用，启用
-    console.log(value);
-    // const { selectedRole } = this.props;
-    // if(value === 'edit'){
-    //   this.props.editEnterprise({
-    //     key: selectedRole[0].key
-    //   })
-    // }else{
-    //   this.props.handleEnterprise({
-    //     keys:selectedRole.map(e=>e.key),
-    //     handle: value
-    //   })
-    // }
+  roleHandle = (value) => {//编辑
+    const { selectedRole } = this.props;
+    if(value === 'edit'){
+      this.props.changeRoleStore({
+        showPage: 'edit'
+      });
+    }else if(value === 'delete'){
+      this.props.onDeleteRole({
+        roleId: selectedRole.map(e=>e.roleId).join(',')
+      });
+    }
   }
 
   createHandleOption = () => {//生成操作下拉框
@@ -61,7 +63,7 @@ class RoleTable extends Component {
     return (
       <Select disabled={selectedRole.length===0} onChange={this.roleHandle} placeholder="操作" dropdownMatchSelectWidth={false} dropdownClassName={styles.handleDropdown}>
         <Option value="edit" disabled={selectedRole.length>1}>编辑</Option>
-        <Option value="open">删除</Option>
+        <Option value="delete">删除</Option>
       </Select>
     );
   }
@@ -82,7 +84,7 @@ class RoleTable extends Component {
         dataIndex: 'rightData',
         key: 'rightData',
         render: (text,record)=>(
-          this.renderAuth(text).join('|')
+          <div className={styles.menu}>{this.renderAuth(text).join('|')}</div>
         )
       }
     ];
@@ -98,10 +100,16 @@ class RoleTable extends Component {
 
   renderAuthEl(arr, result, rightEl) {
     for(var i = 0; i < arr.length; i++) {
-      if(arr[i].childRightData instanceof Array) {
-        this.renderAuthEl(arr[i].childRightData, result, arr[i].rightName+'-');
+      let name;
+      if(rightEl === '') {
+        name = arr[i].rightName;
       } else {
-        result.push(rightEl+'-'+arr[i].rightName);
+        name = rightEl+'-'+arr[i].rightName;
+      }
+      if(arr[i].childRightData instanceof Array && arr[i].childRightData.length > 0) {
+        this.renderAuthEl(arr[i].childRightData, result, name);
+      } else {
+        result.push(name);
       }
     }
   }
@@ -112,7 +120,7 @@ class RoleTable extends Component {
       <div className={styles.roleList}>
         <div className={styles.roleListTop} >
           <div>
-            <Button className={styles.addRole}>
+            <Button className={styles.addRole} onClick={this.onRoleAdd}>
               <Icon type="plus" />
               <span className={styles.text}>角色</span>
             </Button>
@@ -125,7 +133,7 @@ class RoleTable extends Component {
           loading={isFetching}
           rowKey={(record)=>{return record.roleId}} 
           rowSelection={{
-            selectedRowKeys: selectedRole.map(e=>e.key),
+            selectedRowKeys: selectedRole.map(e=>e.roleId),
             onChange: this.onRowSelect
           }}
           dataSource={roleData} 
@@ -135,7 +143,7 @@ class RoleTable extends Component {
         />
         <div className={styles.tableFooter}>
           <span className={styles.info}>当前选中<span className={styles.totalNum}>{selectedRole.length}</span>项</span>
-          <span className={styles.cancel} onClick={this.cancelRowSelect}>取消选中</span>
+          {selectedRole.length > 0 &&<span className={styles.cancel} onClick={this.cancelRowSelect}>取消选中</span>}
         </div>
       </div>
     )

@@ -27,13 +27,15 @@ class RoleEdit extends Component {
 
   render(){
     return (
-      <div className={styles.roleEdit} >
-        <div className={styles.topHandler}>
-          <span className={styles.text}>{this.props.showPage==='create'?'新建':'编辑'}</span>
-          <Icon type="arrow-left" onClick={this.onCancelEdit} />
-        </div>
-        <div className={styles.editPart} >
-          <RoleEditForm {...this.props} />
+      <div className={styles.roleSide}>
+        <div className={styles.roleEdit}>
+          <div className={styles.editTop}>
+            <span className={styles.text}>{this.props.showPage==='create'?'新建':'编辑'}</span>
+            <Icon type="arrow-left" className={styles.backIcon} onClick={this.onCancelEdit} />
+          </div>
+          <div className={styles.editPart} >
+            {this.props.showPage!=='list'&&<RoleEditForm {...this.props} />}
+          </div>
         </div>
       </div>
     );

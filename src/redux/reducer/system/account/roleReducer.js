@@ -5,6 +5,7 @@ import { roleAction } from '../../../../constants/actionTypes/system/account/rol
 var initState = immutable.fromJS({
   isFetching: false,
   showPage: 'list',//默认展示列表页,可展示列表:list/新建:create/编辑:edit,
+  totalNum: 0,
   roleData: [],//角色列表数据
   menuData: [],//功能列表数据
   selectedRole: [], //table选中角色
