@@ -37,19 +37,19 @@ class Department extends Component {
   }
   componentDidMount(){
     const params = {
-      enterpriseId: '1010694160817111040', //this.props.enterpriseId,//'1010694160817111040',
+      enterpriseId: this.props.enterpriseId, //this.props.enterpriseId,//'1010694160817111040',
       departmentSource: this.props.departmentSource,
       departmentName: this.props.departmentName,
       parentDepartmentName: this.props.parentDepartmentName,
       stationName: this.props.stationName,
-      sort: this.props.sort,
-      ascend: this.props.ascend,
+      // sort: this.props.sort,
+      // ascend: this.props.ascend,
       pageNum: this.props.pageNum,
       pageSize: this.props.pageSize,
     }
     this.props.getDepartmentList(params)//请求部门列表
     this.props.getAllDepartment({//请求所有部门
-      enterpriseId: '1010694160817111040', //this.props.enterpriseId,//'1010694160817111040',
+      enterpriseId: this.props.enterpriseId, //this.props.enterpriseId,//'1010694160817111040',
     })
   }
 

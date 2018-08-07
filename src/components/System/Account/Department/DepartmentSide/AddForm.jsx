@@ -67,10 +67,10 @@ class AddForm extends Component {
         </FormItem>
         <FormItem label="所属部门" >
           {getFieldDecorator('departmentId',{
-            initialValue: '0',
+            initialValue: '',
           })(
             <Select style={{ width: 200 }}>
-              <Option value="0">无</Option>
+              <Option value="">无</Option>
               {(allDepartment && allDepartment.length>0)?allDepartment.map(e=>(
                   <Option value={e.departmentId} key={e.departmentId} >{e.departmentName}</Option>)
                 ):null 
