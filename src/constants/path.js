@@ -97,6 +97,7 @@ export default {
       boxtransformerTenMin: '/api/v3/monitor/boxtransformer/sequencechart',//箱变10min时序图
       weatherstationDetail: '/api/v3/monitor/weatherstation', //气象站详情
       monitorPointData: '/api/v3/monitor/point', //设备测点数据
+      deviceAlarmData: '/api/v3/alarm/device', // 单设备告警信息
     }
     // monitor:{
     //   getStationType:'v3/monitor/stations/stationType',

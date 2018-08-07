@@ -212,5 +212,22 @@ module.exports = [
       "serviceCode": "3.0"
     },
     error:{}
+  }, { // 单设备告警信息
+    api:'/mock/monitor/deviceAlarm',
+    method:'get',
+    response:{
+      "code": "10000",
+      "message": "请求成功",
+      "data": [1,2,3,4,5,6,7,8].map(e => ({
+        rediskey: `${e}a${e*2}b${e*4}`,
+        warningLevel: e%4,
+        warningConfigName: ['状态告警','极值告警','数据告警','外星人来袭告警'][e%4],
+        warningCheckDesc: '告警描述： 外星人来袭，无法发电',
+        timeOn: `201${e}年${e}月${e*3}日 ${e*2}:${e*5}:${e*6}`,
+        durationTime: `${e*124}分钟`
+      })),
+      "serviceCode": "3.0"
+    },
+    error:{}
   }
 ]

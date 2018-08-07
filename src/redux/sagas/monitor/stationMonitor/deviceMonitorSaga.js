@@ -2,13 +2,24 @@ import { call, put, takeLatest,select } from 'redux-saga/effects';
 import axios from 'axios';
 import Path from '../../../../constants/path';
 
-import { departmentAction } from '../../../../constants/actionTypes/system/account/departmentAction';
+import { deviceAction } from '../../../../constants/actionTypes/monitor/stationmonitor/deviceAction';
 
-
+// MONITOR_DEVICE_FETCH: null, // loading
+// CHANGE_DEVICE_STORE_SAGA: null, // 改变reducer参数
+// CHANGE_DEVICE_STORE: null, // 替换reducer参数
+// GET_DEVICE_FETCH_SUCCESS: null, // 单设备详情普通api请求成功
+// GET_INVERTER_DETAIL_SAGA: null, // 获取组串式逆变器详情
+// GET_INVERTER_TENMIN_SAGA: null, // 组串式逆变器10min时序图
+// GET_CONFLUENCEBOX_DETAIL_SAGA: null, //	汇流箱详情
+// GET_CONFLUENCEBOX_TENMIN_SAGA: null, //	汇流箱10min时序图
+// GET_TRANSFORMER_DETAIL_SAGA: null, //	箱变详情
+// GET_TRANSFORMER_TENMIN_SAGA: null, //	箱变10min时序图
+// GET_WEATHERSTATION_DETAIL_SAGA: null, //	气象站详情
+// GET_MONITOR_POINT_SAGA: null, // 设备测点数据
 function *changeDeviceStore(action){//存储payload指定参数，替换reducer-store属性。
   const { payload } = action;
   yield put({
-    type:  departmentAction.CHANGE_DEPARTMENT_STORE,
+    type:  deviceAction.CHANGE_DEPARTMENT_STORE,
     payload,
   })
 }
