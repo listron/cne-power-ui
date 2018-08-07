@@ -61,9 +61,9 @@ class RoleTable extends Component {
   createHandleOption = () => {//生成操作下拉框
     const { selectedRole } = this.props;      
     return (
-      <Select disabled={selectedRole.length===0} onChange={this.roleHandle} placeholder="操作" dropdownMatchSelectWidth={false} dropdownClassName={styles.handleDropdown}>
+      <Select disabled={selectedRole.length===0} onSelect={this.roleHandle} placeholder="操作" dropdownMatchSelectWidth={false} dropdownClassName={styles.handleDropdown}>
         <Option value="edit" disabled={selectedRole.length>1}>编辑</Option>
-        <Option value="delete">删除</Option>
+        <Option value="delete" disabled={selectedRole.some(item=>item.isPre===0)}>删除</Option>
       </Select>
     );
   }
@@ -86,7 +86,7 @@ class RoleTable extends Component {
         render: (text,record)=>{
           const right = this.renderAuth(text);
           const content = (
-            <div>{right.map(item=>(<span>{item}</span>))}</div>
+            <div className={styles.tooltip}>{right.map((item,index)=>(<span key={index}>{item}</span>))}</div>
           );
           return (
             <Popover title={record.roleName} content={content}>

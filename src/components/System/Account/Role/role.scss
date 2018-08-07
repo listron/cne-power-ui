@@ -6,6 +6,10 @@
   align-items: center;
   border-bottom: solid 1px $promptColor;  
 }
+.tooltip {
+  display: flex;
+  flex-direction: column;
+}
 .roleList{
   width: 100%;
   display: flex;

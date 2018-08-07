@@ -1,7 +1,7 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import axios from 'axios';
 import Path from '../../../../constants/path';
-import { replacePathParams } from '../../../../utils';
+import { replacePathParams, getCookie } from '../../../../utils';
 
 import { roleAction } from '../../../../constants/actionTypes/system/account/roleAction';
 
@@ -24,7 +24,7 @@ function *getRoleList(action){
     if(response.data.code === '10000') {
       yield put({
         type: roleAction.GET_ROLE_FETCH_SUCCESS,
-        payload: response.data.data,
+        payload: {roleData: response.data.data},
       });
     }  
   }catch(e){
@@ -55,14 +55,18 @@ function *getMenuList(action){
 //新建角色
 function *createRole(action){
   const { payload } = action;
-  const url = Path.basePaths.newAPIBasePath + Path.APISubPaths.system.createRole;
+  const url = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.system.createRole}`
   try{
     yield put({ type:roleAction.ROLE_FETCH });
     const response = yield call(axios.post,url,payload);
-    // yield put({
-    //   type:  roleAction.MODIFT_ROLE_SUCCESS,
-    //   payload,
-    // });
+    if(response.data.code === '10000') {
+      yield put({
+        type: roleAction.GET_ROLE_LIST_SAGA,
+        payload: {
+          enterpriseId: payload.enterpriseId
+        },
+      });
+    }
   }catch(e){
     console.log(e);
   }
@@ -75,10 +79,14 @@ function *editRole(action){
   try{
     yield put({ type:roleAction.ROLE_FETCH });
     const response = yield call(axios.put,url,payload);
-    // yield put({
-    //   type:  roleAction.MODIFT_ROLE_SUCCESS,
-    //   payload,
-    // });
+    if(response.data.code === '10000') {
+      yield put({
+        type: roleAction.GET_ROLE_LIST_SAGA,
+        payload: {
+          enterpriseId: payload.enterpriseId
+        },
+      });
+    }
   }catch(e){
     console.log(e);
   }
@@ -87,10 +95,19 @@ function *editRole(action){
 //删除角色
 function *deleteRole(action){
   const { payload } = action;
-  const url = Path.basePaths.newAPIBasePath + Path.APISubPaths.system.deleteRole;
+  const url = Path.basePaths.newAPIBasePath+Path.APISubPaths.system.deleteRole;
   try{
     yield put({ type:roleAction.ROLE_FETCH });
-    const response = yield call(axios.delete,url,{data: payload});
+    const response = yield call(axios.delete,url,{params: payload});
+    if(response.data.code === '10000') {
+      yield put({
+        type: roleAction.GET_ROLE_LIST_SAGA,
+        payload: {
+          enterpriseId: getCookie('enterpriseId')
+        },
+      });
+
+    }
     // yield put({
     //   type:  roleAction.MODIFT_ROLE_SUCCESS,
     //   payload,

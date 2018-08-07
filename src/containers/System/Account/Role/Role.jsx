@@ -17,13 +17,14 @@ class Role extends Component {
     modifyRole: PropTypes.func,
     deleteRole: PropTypes.func,
     changeRoleStore: PropTypes.func,
+    enterpriseId: PropTypes.string,
   }
   constructor(props) {
     super(props);
   }
   componentDidMount(){
     const params = {
-      enterpriseId: getCookie('enterpriseId')
+      enterpriseId: this.props.enterpriseId
     }
     this.props.getRoleList(params);
   }
@@ -53,6 +54,7 @@ const mapStateToProps = (state) => ({
   roleData: state.system.role.get('roleData').toJS(),
   menuData: state.system.role.get('menuData').toJS(),
   selectedRole: state.system.role.get('selectedRole').toJS(),
+  enterpriseId: getCookie('enterpriseId')
 });
 
 const mapDispatchToProps = (dispatch) => ({

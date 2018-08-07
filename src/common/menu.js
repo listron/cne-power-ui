@@ -23,7 +23,7 @@ const menuData = [
       }
     ],
   },{
-    name: '电站运维',
+    name: '运维管理',
     clickable: false,
     path: 'operation',
     children: [

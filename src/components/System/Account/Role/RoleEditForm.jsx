@@ -15,10 +15,11 @@ class RoleEditForm extends Component {
   static propTypes = {
     form: PropTypes.object,
     showPage: PropTypes.string,
+    enterpriseId: PropTypes.string,
     selectedRole: PropTypes.array,
     menuData: PropTypes.array,
-    onCreate: PropTypes.func,
-    onEdit: PropTypes.func,
+    onCreateRole: PropTypes.func,
+    onEditRole: PropTypes.func,
     changeRoleStore: PropTypes.func,
   }
 
@@ -27,14 +28,19 @@ class RoleEditForm extends Component {
   }
 
   onSaveRole = () => {
+    const { enterpriseId, selectedRole } = this.props;
     this.props.form.validateFieldsAndScroll((err, values) => {
       if(!err) {
         if(this.props.showPage === 'create') {
-          this.props.onCreate(values);
-        } else {
-          this.props.onEdit({
+          this.props.onCreateRole({
             ...values,
-            roleId: this.props.selectedRole[0].roleId
+            enterpriseId
+          });
+        } else {
+          this.props.onEditRole({
+            ...values,
+            roleId: selectedRole[0].roleId,
+            enterpriseId
           })
         }
       }
@@ -45,7 +51,7 @@ class RoleEditForm extends Component {
   onSaveRoleAndAdd = () => {
     this.props.form.validateFieldsAndScroll((err, values) => {
       if(!err) {
-        this.props.onCreate(values);    
+        this.props.onCreateRole(values);    
       }
     });
     this.props.form.resetFields();
@@ -76,7 +82,8 @@ class RoleEditForm extends Component {
         <FormItem label="角色名称">
           {getFieldDecorator('roleName', {
             rules: [{ 
-              required: isCreate 
+              required: isCreate,
+              message: '请输入角色名称' 
             }],
             initialValue: isCreate || !selectedRole ? '' : selectedRole.roleName
           })(
@@ -90,6 +97,7 @@ class RoleEditForm extends Component {
           {getFieldDecorator('rightId', {
             rules: [{ 
               required: true,
+              message: '请勾选功能'
             }],
             initialValue: isCreate || !selectedRole ? '' : this.getIds(selectedRole.rightData)
           })(
