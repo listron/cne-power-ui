@@ -36,7 +36,7 @@ class TopMenu extends Component {
     const defaultPath = {
       '/': '/',
       '/operation':'/operation/ticket',
-      '/system':'/system/enterprise',
+      '/system':'/system/account/enterprise',
       '/monitor':'/monitor/stationmonitor'
     }
     this.setState({

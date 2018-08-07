@@ -16,11 +16,12 @@ class SideMenu extends Component {
   }
   constructor(props) {
     super(props);
-    const {sideMenuData, selectedKeys} = this.getMenuData(props.topMenu, props.location);
+    const {sideMenuData, selectedKeys, expandKeys} = this.getMenuData(props.topMenu, props.location);
     this.state = {
       collapsed: false,
-      sideMenuData: sideMenuData,
-      selectedKeys: selectedKeys
+      sideMenuData,
+      selectedKeys,
+      expandKeys
     };
   }
 
@@ -28,17 +29,19 @@ class SideMenu extends Component {
     // console.log('into receive Props')
     const { location,topMenu } = nextProps;
     if(nextProps.topMenu.name !== this.props.topMenu.name || location.pathname !== this.props.location.pathname) {
-      const {sideMenuData, selectedKeys} = this.getMenuData(topMenu, location);
+      const {sideMenuData, selectedKeys,expandKeys} = this.getMenuData(topMenu, location);
       this.setState({
         sideMenuData,
         selectedKeys,
+        expandKeys
       });
     }
   }
 
   getMenuData = (topMenu, location) => {
     const { pathname } = location;
-    const selectedKeys = [];//激活菜单选中
+    let selectedKeys = [];//激活菜单选中
+    let expandKeys = [];
     let tmpSideMenuData = menu.find(e => e.path === topMenu.path);
     // console.log(topMenu)
     // console.log(menu)
@@ -48,7 +51,10 @@ class SideMenu extends Component {
     pathname !== '/' && sideMenuData.forEach(e=>{
       if(e.children){
         e.children.forEach(m=>{
-          m.path.indexOf(pathname) !== -1 && selectedKeys.push(e.path,m.path);
+          if(m.path === pathname) {
+            selectedKeys.push(m.path);
+            expandKeys.push(e.path);
+          }
         });
       }else{
         e.path === pathname && selectedKeys.push(e.path);
@@ -56,7 +62,8 @@ class SideMenu extends Component {
     })
     return {
       sideMenuData,
-      selectedKeys
+      selectedKeys,
+      expandKeys
     }
   }
 
@@ -76,7 +83,7 @@ class SideMenu extends Component {
     })
   }
   _createSideMenu = (sideMenuData) => {
-    const { collapsed,selectedKeys } = this.state;
+    const { collapsed, selectedKeys, expandKeys } = this.state;
     if(sideMenuData.length > 0){//至少拥有二级目录
       return (
         <div className={styles.sideLayout}>
@@ -86,7 +93,7 @@ class SideMenu extends Component {
               <Icon type={collapsed ? 'menu-unfold' : 'menu-fold'} />
             </Button>
           </div>
-          <Menu mode="inline" theme="dark" inlineCollapsed={collapsed} className={styles.menuList} selectedKeys={selectedKeys}>
+          <Menu mode="inline" theme="dark" inlineCollapsed={collapsed} className={styles.menuList} selectedKeys={selectedKeys} openKeys={expandKeys}>
             {this.renderSideMenu(sideMenuData)}
           </Menu>
       </div>
