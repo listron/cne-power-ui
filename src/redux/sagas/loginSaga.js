@@ -3,7 +3,7 @@ import axios from 'axios';
 import Path from '../../constants/path';
 import moment from 'moment';
 import { stringify } from 'qs';
-import { setCookie, getCookie } from '../../utils';
+import { setCookie } from '../../utils';
 import { LoginAction } from '../../constants/actionTypes/loginAction';
 import { CommonAction } from '../../constants/actionTypes/commonAction';
 import { message } from 'antd';
