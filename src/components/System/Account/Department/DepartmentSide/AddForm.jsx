@@ -28,25 +28,29 @@ class AddForm extends Component {
   addDepartment = () =>{
     const { addDepartmentInfo,enterpriseId } = this.props;
     this.props.form.validateFieldsAndScroll((error,values)=>{
+      const params = {
+        enterpriseId,
+        departmentName:values.departmentName,
+        continueAdd: false,
+      };
+      values.departmentId && (params.departmentId = values.departmentId);
       if(!error){
-        addDepartmentInfo({
-          enterpriseId,
-          ...values,
-          continueAdd: false,
-        })
+        addDepartmentInfo(params)
       }
     })
   }
   addContinue = () => {
     const { addDepartmentInfo,form,enterpriseId } = this.props;
     form.validateFieldsAndScroll((error,values)=>{
+      const params = {
+        enterpriseId,
+        departmentName:values.departmentName,
+        continueAdd: true,
+      };
+      values.departmentId && (params.departmentId = values.departmentId);
       if(!error){
-        addDepartmentInfo({
-          enterpriseId,
-          ...values,
-          continueAdd: true,
-        });
-        form.resetFields()
+        addDepartmentInfo(params);
+        form.resetFields();
       }
     })
   }

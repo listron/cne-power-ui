@@ -82,7 +82,7 @@ class DepartmentTable extends Component {
       showWarningTip:false,
       hiddenWarningTipCancelText: false
     })
-    selectedDepartmentHasChild || deleteDepartment(selectedDepartment.map(e=>e.departmentId))
+    selectedDepartmentHasChild || deleteDepartment({departmentId: selectedDepartment.map(e=>e.departmentId)})
   }
   cancelRowSelect = () => {//取消行选择
     this.props.changeDepartmentStore({

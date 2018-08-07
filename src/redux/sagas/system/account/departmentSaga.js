@@ -45,8 +45,8 @@ function *getDepartmentList(action){//请求部门列表数据
 //todo - 删除部门
 function *deleteDepartment(action){
   const { payload } = action;
-  const url = '/mock/system/deleteDepartment';
-  // const url = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.system.getDepartmentList}`
+  // const url = '/mock/system/deleteDepartment';
+  const url = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.system.getDepartmentList}`
   try{
     yield put({ type:departmentAction.DEPARTMENT_FETCH });
     const response = yield call(axios.delete,url,payload);
@@ -75,6 +75,12 @@ function *deleteDepartment(action){
     }
   }catch(e){
     console.log(e);
+    yield put({//清空选中项
+      type:  departmentAction.CHANGE_DEPARTMENT_STORE,
+      payload: {
+        buttonLoading: false,
+      },
+    })
   }
 }
 
@@ -216,14 +222,21 @@ function *addDepartmentInfo(action){//新建部门信息
       });
     }
   }catch(e){
-    console.log(e);
+    console.log(e)
+    yield put({
+      type:  departmentAction.CHANGE_DEPARTMENT_STORE,
+      payload:{
+        buttonLoading: false,
+        continueAddLoading: false,
+      }
+    });
   }
 }
 
 function *editDepartmentInfo(action){//编辑部门信息
   const { payload } = action;
-  const url = '/mock/system/editDepartment';
-  // const url = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.system.departmentInfo}`
+  // const url = '/mock/system/editDepartment';
+  const url = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.system.departmentInfo}`
   try{
     yield put({ //按钮的loading
       type:departmentAction.CHANGE_DEPARTMENT_STORE,
