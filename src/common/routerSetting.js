@@ -41,6 +41,10 @@ const routers = [
     path:'/system/account/role',
     exact:true,
     component: Role,
+  }, {
+    path:'/system/account/user',
+    exact:true,
+    component: User,
   }
 ];
 const RouteWithSubRoutes = route => (

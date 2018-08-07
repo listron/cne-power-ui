@@ -36,26 +36,6 @@ class AddForm extends Component {
   }
 
   saveUser = () =>{
-    const { userLogo, enterpriseId, form } = this.props;
-    this.props.form.validateFieldsAndScroll((error,values)=>{
-      if(!error){
-        this.props.createUserInfo({
-          email: values.email,
-          phoneNum: values.phoneNum,
-          roleId: values.roleId.join(','),
-          specialRoleId: values.specialRoleId.join(','),
-          userFullName: values.userFullName,
-          username: values.username,
-          // userLogo,
-          enterpriseId,
-          showPage: 'add',
-        })
-        form.resetFields();
-      }
-    })
-  }
-
-  continueAdd = () =>{
     const { userLogo, enterpriseId } = this.props;
     this.props.form.validateFieldsAndScroll((error,values)=>{
       if(!error){
@@ -70,6 +50,27 @@ class AddForm extends Component {
           enterpriseId,
           showPage: 'list',
         })
+        
+      }
+    })
+  }
+
+  continueAdd = () =>{
+    const { userLogo, enterpriseId, form } = this.props;
+    this.props.form.validateFieldsAndScroll((error,values)=>{
+      if(!error){
+        this.props.createUserInfo({
+          email: values.email,
+          phoneNum: values.phoneNum,
+          roleId: values.roleId.join(','),
+          specialRoleId: values.specialRoleId.join(','),
+          userFullName: values.userFullName,
+          username: values.username,
+          // userLogo,
+          enterpriseId,
+          showPage: 'add',
+        });
+        form.resetFields();
       }
     })
   }

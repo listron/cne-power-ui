@@ -159,7 +159,7 @@ class UserList extends Component {
         dataIndex: 'stationName',
         key: 'stationName',
         render: (text,record,index) => {
-          let stations = record.stationName.split(',').filter(e=>!!e);
+          let stations = record.stationName && record.stationName.split(',').filter(e=>!!e);
           const { userName } = record;
           if(stations.length > 1){
             const content = (<ul>

@@ -1,4 +1,4 @@
-import { call, put, takeLatest } from 'redux-saga/effects';
+import { call, put, takeLatest, select } from 'redux-saga/effects';
 import axios from 'axios';
 import Path from '../../../../constants/path';
 import { message } from 'antd';
@@ -83,6 +83,7 @@ function *getUserDetail(action){
 // 编辑用户信息
 function *editUserInfo(action){
   const { payload } =action;
+  // const url = '/api/v3/user';
   const url = Path.basePaths.newAPIBasePath + Path.APISubPaths.system.editUserInfo;
   try{
     yield put({ type: userAction.USER_FETCH });
@@ -97,6 +98,7 @@ function *editUserInfo(action){
 // 新建用户信息
 function *createUserInfo(action){
   const { payload } = action;
+  // const url = '/api/v3/createUser';
   const url = Path.basePaths.newAPIBasePath + Path.APISubPaths.system.createUserInfo;
   yield put({ type: userAction.USER_FETCH});
   try{
@@ -104,6 +106,21 @@ function *createUserInfo(action){
     if(response.data.code === '10000'){
       yield put({ type: userAction.GET_USER_FETCH_SUCCESS});
       message.success(response.data.message);
+      yield put({ type: userAction.CHANGE_USER_STORE_SAGA, payload:{showPage: payload.showPage}})
+      const params = yield select(state => ({//继续请求部门列表
+        enterpriseId: payload.enterpriseId,
+        // roleId: state.user.get('roleId'),
+        userStatus: state.user.get('userStatus'),
+        userName: state.user.get('userName'),
+        stationName: state.user.get('stationName'),
+        phoneNum: state.user.get('phoneNum'), 
+        pageSize: state.user.get('pageSize'),
+        pageNum: state.user.get('pageNum'),
+      }));
+      yield put({
+        type:  userAction.GET_USER_LIST_SAGA,
+        payload,
+      });
     }else{
       yield put({ type: userAction.GET_USER_FETCH_FAIL});
       message.error(response.data.message);
