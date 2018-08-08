@@ -57,6 +57,7 @@ import { watchEnterprise } from './system/account/enterpriseSaga';
 import { watchDepartment } from './system/account/departmentSaga';
 import { watchRole } from './system/account/roleSaga';
 
+import { watchDeviceMonitor } from './monitor/stationMonitor/deviceMonitorSaga';
 
 // root saga
 export default function* rootSaga() {
@@ -125,5 +126,7 @@ export default function* rootSaga() {
     watchDepartment(),
     watchRole(),
     watchUser(),
+    // monitor
+    watchDeviceMonitor(),
   ])
 } 

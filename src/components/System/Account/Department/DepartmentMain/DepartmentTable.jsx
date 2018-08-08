@@ -24,7 +24,7 @@ class DepartmentTable extends Component {
     ascend: PropTypes.bool, 
     pageNum: PropTypes.number,
     pageSize: PropTypes.number,
-    allDepartment: PropTypes.object,
+    allDepartment: PropTypes.array,
     allUser: PropTypes.object,
     allStation: PropTypes.object,
     loginData: PropTypes.object,
@@ -82,7 +82,10 @@ class DepartmentTable extends Component {
       showWarningTip:false,
       hiddenWarningTipCancelText: false
     })
-    selectedDepartmentHasChild || deleteDepartment(selectedDepartment.map(e=>e.departmentId))
+    selectedDepartmentHasChild || deleteDepartment({
+      departmentId: selectedDepartment.map(e=>e.departmentId).join(','),
+      enterpriseId: this.props.enterpriseId
+    });
   }
   cancelRowSelect = () => {//取消行选择
     this.props.changeDepartmentStore({

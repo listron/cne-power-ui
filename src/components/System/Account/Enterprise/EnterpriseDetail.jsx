@@ -75,7 +75,7 @@ class EnterpriseDetail extends Component {
             </div>
             <div>
               <span className={styles.promptTitle}>注册手机</span>
-              {enterpriseDetail.createPhone || ' -- ' } 
+              {enterpriseDetail.phoneNum || ' -- ' } 
             </div>
             <div>
               <span className={styles.promptTitle}>企业域名</span>

@@ -8,9 +8,11 @@ import Enterprise from '../containers/System/Account/Enterprise/Enterprise';
 import Department from '../containers/System/Account/Department/Department';
 import User from '../containers/System/Account/User/User';
 import AllStation from '../containers/Monitor/StationMonitor/AllStation/AllStation';
+import DeviceMonitor from '../containers/Monitor/StationMonitor/DeviceMonitor/DeviceMonitor';
 import Role from '../containers/System/Account/Role/Role';
-
-
+/*
+  注： path变量中，以/hidden开头的路径，将不展示在菜单中；
+*/
 const routers = [
   {
     path: '/',
@@ -50,9 +52,13 @@ const routers = [
     path: '/monitor/stationmonitor',
     exact: true,
     component: AllStation,
-  },
-
+  }, {  // 菜单栏中不展示的--单设备实时监控
+    path: '/hidden/monitorDevice/:deviceTypeCode/:deviceCode',
+    exact: true,
+    component: DeviceMonitor
+  }
 ];
+
 const RouteWithSubRoutes = route => (
   <Route
     path={route.path}
