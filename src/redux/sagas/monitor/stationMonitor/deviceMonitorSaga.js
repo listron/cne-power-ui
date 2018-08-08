@@ -48,6 +48,7 @@ function *getDeviceMonitorData(action) {  // 请求单设备数据入口
 function *getNormalDeviceData(action){
   const { payload } = action;
   const { deviceTypeCode, deviceCode } = payload;
+  const hours = 72;
   try{
     const detailUrl = monitorPath[deviceTypeCode].detail;
     // const detailUrl = `${Path.basePaths.newAPIBasePath}${monitorPath[deviceTypeCode].detail}/${deviceCode}`;
@@ -65,10 +66,6 @@ function *getNormalDeviceData(action){
       call(axios.get, pointUrl),
       call(axios.get, alarmUrl),
     ])
-    console.log(tmpDetail)
-    console.log(tmpTenMin)
-    console.log(tmpPoint)
-    console.log(tmpAlarm)
     // if(response.data.code === "10000"){
     //   yield put({//清空选中项
     //     type:  deviceAction.GET_DEVICE_FETCH_SUCCESS,

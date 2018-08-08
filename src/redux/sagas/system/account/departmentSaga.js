@@ -42,8 +42,8 @@ function *getDepartmentList(action){//请求部门列表数据
     console.log(e);
   }
 }
-//todo - 删除部门
-function *deleteDepartment(action){
+
+function *deleteDepartment(action){  // 删除部门
   const { payload } = action;
   // const url = '/mock/system/deleteDepartment';
   const url = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.system.departmentInfo}/${payload.departmentId}`
@@ -82,6 +82,7 @@ function *deleteDepartment(action){
     yield put({//清空选中项
       type:  departmentAction.CHANGE_DEPARTMENT_STORE,
       payload: {
+        loading: false,
         buttonLoading: false,
       },
     })
@@ -139,6 +140,13 @@ function *getAllStation(action){//获取所有电站
       },
     });
   }catch(e){
+    yield put({
+      type:  departmentAction.GET_DEPARTMENT_FETCH_SUCCESS,
+      payload:{
+        loading: false,
+        allStation: []
+      },
+    });
     console.log(e);
   }
 }
@@ -236,6 +244,7 @@ function *addDepartmentInfo(action){//新建部门信息
       payload:{
         buttonLoading: false,
         continueAddLoading: false,
+        loading: false,
       }
     });
   }
@@ -275,6 +284,13 @@ function *editDepartmentInfo(action){//编辑部门信息
       });
     }
   }catch(e){
+    yield put({ //按钮的loading
+      type:departmentAction.CHANGE_DEPARTMENT_STORE,
+      payload: { 
+        buttonLoading: false,
+        continueAddLoading: false,
+        loading: false, }
+    });
     console.log(e);
   }
 }
