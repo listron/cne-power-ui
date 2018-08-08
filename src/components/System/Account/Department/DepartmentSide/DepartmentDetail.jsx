@@ -111,7 +111,7 @@ class DepartmentDetail extends Component {
       console.log("部门id信息有误，在tablelist中未获取")
     }
   }
-  1010694160817111041
+  
   backToList = () => {
     this.props.changeDepartmentStore({showPage: 'list'});
   }
@@ -154,15 +154,17 @@ class DepartmentDetail extends Component {
   }
 
   render(){
-    const { departmentDetail } = this.props;
+    const { departmentDetail,departmentData } = this.props;
     const { showWarningTip, warningTipText } = this.state;
     let userFullNames = (departmentDetail.userFullNameData && departmentDetail.userFullNameData.length > 0 )? departmentDetail.userFullNameData.map(e=>e.userFullName).join(','):' -- ';
     let stationNames = (departmentDetail.stationNameData && departmentDetail.stationNameData.length > 0 )? departmentDetail.stationNameData.map(e=>e.stationName).join(','):' -- ';
+    const tmpDepartmentSub = departmentData.find(e=>e.departmentId === departmentDetail.departmentId);
+    const forbiddenEdit = tmpDepartmentSub && tmpDepartmentSub.departmentSource === 0;
     return (
       <div className={styles.departmentDetail}>
         {showWarningTip && <WarningTip onOK={this.confirmWarningTip} value={warningTipText} />}
         <div className={styles.detailTop}>
-          <Button className={styles.editButton} onClick={()=>this.onShowSideChange({showSidePage:'eidt'})}>编辑</Button>
+          <Button className={styles.editButton} disabled={forbiddenEdit} onClick={()=>this.onShowSideChange({showSidePage:'eidt'})}>编辑</Button>
           <span className={styles.handleArea} >
             <Icon type="arrow-up" className={styles.previous} title="上一个" onClick={this.preDepartment} />
             <Icon type="arrow-down" className={styles.next} title="下一个" onClick={this.nextDepartment} />
