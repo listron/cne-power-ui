@@ -75,7 +75,7 @@ export default {
       getEnterprisDetail: '/v3/enterprise',//企业详情获取
       saveEnterpriseDetail: '/v3/enterprise/change',//保存企业详情
       getDepartmentList: '/v3/department/list',//部门列表
-      departmentInfo: '/v3/department', //部门信息新增，编辑，详情
+      departmentInfo: '/v3/department', //部门信息新增，编辑，详情，删除
       getAllDepartment: '/v3/department/all', //所有部门列表
       getAllUser: '/v3/department/user', //所有用户列表，用于为部门分配用户
       getAllStation: '/v3/department/station', //所有电站列表，用于为部门分配电站
@@ -87,6 +87,17 @@ export default {
       createRole: '/v3/role',
       editRole: '/v3/role/{enterpriseId}',
       deleteRole: '/v3/role',
+    },
+    monitor: {//实时监控
+      seriesinverterDetail: '/api/v3/monitor/seriesinverter',//组串式逆变器详情
+      seriesinverterTenMin: '/api/v3/monitor/seriesinverter/sequencechart',//组串式逆变器10min时序图
+      confluenceboxDetail: '/api/v3/monitor/confluencebox',//汇流箱详情
+      confluenceboxTenMin: '/api/v3/monitor/confluencebox/sequencechart',//汇流箱10min时序图
+      boxtransformerDetail: '/api/v3/monitor/boxtransformer',//箱变详情
+      boxtransformerTenMin: '/api/v3/monitor/boxtransformer/sequencechart',//箱变10min时序图
+      weatherstationDetail: '/api/v3/monitor/weatherstation', //气象站详情
+      monitorPointData: '/api/v3/monitor/point', //设备测点数据
+      deviceAlarmData: '/api/v3/alarm/device', // 单设备告警信息
     }
     // monitor:{
     //   getStationType:'v3/monitor/stations/stationType',

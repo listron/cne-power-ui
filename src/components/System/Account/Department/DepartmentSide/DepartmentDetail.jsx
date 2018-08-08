@@ -20,7 +20,7 @@ class DepartmentDetail extends Component {
     pageNum: PropTypes.number,
     pageSize: PropTypes.number,
     totalNum: PropTypes.number,
-    allDepartment: PropTypes.object,
+    allDepartment: PropTypes.array,
     allUser: PropTypes.object,
     allStation: PropTypes.object,
     loginData: PropTypes.object,
