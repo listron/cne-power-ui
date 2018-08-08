@@ -58,6 +58,7 @@ class AddForm extends Component {
   render(){
     const { getFieldDecorator } = this.props.form;
     const { buttonLoading, continueAddLoading, allDepartment } = this.props;
+    const filteredDepartment = allDepartment.filter(e=>!(e.parentDepartmentId > 0))
     return (
       <Form className={styles.addPart}>
         <FormItem label="部门名称" >
@@ -75,7 +76,7 @@ class AddForm extends Component {
           })(
             <Select style={{ width: 200 }}>
               <Option value="">无</Option>
-              {(allDepartment && allDepartment.length>0)?allDepartment.map(e=>(
+              {(filteredDepartment && filteredDepartment.length>0)?filteredDepartment.map(e=>(
                   <Option value={e.departmentId} key={e.departmentId} >{e.departmentName}</Option>)
                 ):null 
               }
