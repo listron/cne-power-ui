@@ -17,18 +17,20 @@ class TopMenu extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedTopKey: []
+      selectedKeys: []
     };
   }
 
   componentWillReceiveProps(nextProps){
     const { location } = nextProps;
     const { pathname } = location;
-    const pathArray = pathname.split('/').filter(e=>!!e);
-    const selectedKeyName = pathArray.length > 0? `/${pathArray[0]}`:'/';
-    this.setState({
-      selectedKeys:[selectedKeyName]
-    })
+    if(this.state.selectedKeys.length === 0) {//点击一级菜单的切换选中在selectTopMenu里做了
+      const pathArray = pathname.split('/').filter(e=>!!e);
+      const selectedKeyName = pathArray.length > 0? `/${pathArray[0]}`:'/';
+      this.setState({
+        selectedKeys:[selectedKeyName]
+      });
+    }
   }
 
   selectTopMenu = ({item,key,selectedKeys}) => {
