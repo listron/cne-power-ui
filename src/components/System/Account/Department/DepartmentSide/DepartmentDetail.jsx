@@ -104,14 +104,14 @@ class DepartmentDetail extends Component {
     }else if(pageNum < maxPage && detailIndex === pageSize - 1){
       params.pageNum = pageNum + 1
       getOtherPageDetail(params,{previous:false})
-    }else if( pageNum < maxPage ){
+    }else if( pageNum <= maxPage ){
       const {departmentId} = departmentData[detailIndex + 1]
       getDepartmentDetail({ departmentId })
     }else{
       console.log("部门id信息有误，在tablelist中未获取")
     }
   }
-
+  1010694160817111041
   backToList = () => {
     this.props.changeDepartmentStore({showPage: 'list'});
   }
