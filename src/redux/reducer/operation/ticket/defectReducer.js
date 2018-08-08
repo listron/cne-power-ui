@@ -60,7 +60,7 @@ const defectReducer = (state = initState, action) => {
     case TicketAction.CHANGE_DEFECT_STORE :
       return state.merge(immutable.fromJS(action.payload))
     case TicketAction.GET_DEFECT_COMMON_FETCH_SUCCESS :
-      return state.merge(immutable.fromJS(action.payload)).set('loading',false)
+      return state.merge(immutable.fromJS(action.payload)).set('isFetching',false)
     case TicketAction.TICKET_FETCH:
       return state.set('isfetching', true);
     // case TicketAction.GET_DEFECT_LIST_SUCCESS:  

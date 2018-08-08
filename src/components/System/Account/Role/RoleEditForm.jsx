@@ -14,6 +14,7 @@ const FormItem = Form.Item;
 class RoleEditForm extends Component {
   static propTypes = {
     form: PropTypes.object,
+    error: PropTypes.object,
     showPage: PropTypes.string,
     enterpriseId: PropTypes.string,
     selectedRole: PropTypes.array,
@@ -21,6 +22,8 @@ class RoleEditForm extends Component {
     onCreateRole: PropTypes.func,
     onEditRole: PropTypes.func,
     changeRoleStore: PropTypes.func,
+    isFetching: PropTypes.bool,
+    continueAdd: PropTypes.bool,
   }
 
   constructor(props){
@@ -31,10 +34,21 @@ class RoleEditForm extends Component {
     const { enterpriseId, selectedRole } = this.props;
     this.props.form.validateFieldsAndScroll((err, values) => {
       if(!err) {
+        setTimeout(() => {
+          if(this.props.error.get('message') === '') {
+            this.props.form.setFields({
+              roleName: {
+                value: values.roleName,
+                errors: [new Error('角色名称重复')],
+              },
+            });
+          }
+        }, 500);
         if(this.props.showPage === 'create') {
           this.props.onCreateRole({
             ...values,
-            enterpriseId
+            enterpriseId,
+            continueAdd: false,
           });
         } else {
           this.props.onEditRole({
@@ -45,16 +59,22 @@ class RoleEditForm extends Component {
         }
       }
     });
-    this.props.changeRoleStore({showPage: 'list'});
   }
 
   onSaveRoleAndAdd = () => {
+    const { enterpriseId, error } = this.props;
     this.props.form.validateFieldsAndScroll((err, values) => {
       if(!err) {
-        this.props.onCreateRole(values);    
+        this.props.onCreateRole({
+          ...values,
+          enterpriseId,
+          continueAdd: true,
+        });
+        if(error.size === 0) {
+          this.props.form.resetFields(); 
+        }  
       }
     });
-    this.props.form.resetFields();
   }
 
   getIds(data) {
@@ -75,7 +95,8 @@ class RoleEditForm extends Component {
 
   render(){
     const { getFieldDecorator } = this.props.form;
-    const isCreate = this.props.showPage === 'create';
+    const { showPage, isFetching, continueAdd } = this.props;
+    const isCreate = showPage === 'create';
     const selectedRole = isCreate? null: this.props.selectedRole[0];
     return (     
       <Form onSubmit={this.onSubmit} className={styles.roleEditForm}>
@@ -105,9 +126,10 @@ class RoleEditForm extends Component {
           )}
         </FormItem>
         <div className={styles.buttonGroup}>
-          <Button className={styles.save} onClick={this.onSaveRole}>保存</Button>
-          <Button onClick={this.onSaveRoleAndAdd}>保存并继续添加</Button>
+          <Button className={styles.save} onClick={this.onSaveRole} loading={!continueAdd&&isFetching}>保存</Button>
+          <Button onClick={this.onSaveRoleAndAdd} loading={continueAdd&&isFetching}>保存并继续添加</Button>
         </div>
+        <div style={{marginLeft:410}} className={styles.instructionText}>选择“保存”按钮后将跳转到对应的列表页；选择“保存并继续添加”按钮将会停留在添加页面</div>
       </Form>
     );
   }

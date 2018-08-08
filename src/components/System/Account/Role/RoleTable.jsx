@@ -62,7 +62,7 @@ class RoleTable extends Component {
     const { selectedRole } = this.props;      
     return (
       <Select disabled={selectedRole.length===0} onSelect={this.roleHandle} placeholder="操作" dropdownMatchSelectWidth={false} dropdownClassName={styles.handleDropdown}>
-        <Option value="edit" disabled={selectedRole.length>1}>编辑</Option>
+        <Option value="edit" disabled={selectedRole.length>1||selectedRole.some(item=>item.isPre===0)}>编辑</Option>
         <Option value="delete" disabled={selectedRole.some(item=>item.isPre===0)}>删除</Option>
       </Select>
     );

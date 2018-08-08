@@ -5,7 +5,7 @@ import {routerConfig} from '../../common/routerSetting';
 import { menu } from '../../common/menu';
 import styles from './style.scss';
 import { connect } from 'react-redux';
-import {getCookie} from '../../utils'
+import { getCookie, delCookie } from '../../utils'
 import Login from '../Login/LoginLayout';
 import PropTypes from 'prop-types';
 import axios from 'axios';
@@ -120,6 +120,9 @@ class Main extends Component {
       );
     }
     else{
+      delCookie('authData');
+      delCookie('expireData');
+      delCookie('isNotLogin');
       return (
         <Switch>
           <Route path="/login" excat component={Login} />

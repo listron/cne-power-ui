@@ -18,6 +18,8 @@ class Role extends Component {
     deleteRole: PropTypes.func,
     changeRoleStore: PropTypes.func,
     enterpriseId: PropTypes.string,
+    continueAdd: PropTypes.bool,
+    error: PropTypes.object,
   }
   constructor(props) {
     super(props);
@@ -54,7 +56,9 @@ const mapStateToProps = (state) => ({
   roleData: state.system.role.get('roleData').toJS(),
   menuData: state.system.role.get('menuData').toJS(),
   selectedRole: state.system.role.get('selectedRole').toJS(),
-  enterpriseId: getCookie('enterpriseId')
+  continueAdd: state.system.role.get('continueAdd'),
+  error: state.system.role.get('error'),
+  enterpriseId: getCookie('enterpriseId'),
 });
 
 const mapDispatchToProps = (dispatch) => ({
