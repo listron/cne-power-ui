@@ -17,7 +17,6 @@ class Department extends Component {
     parentDepartmentName: PropTypes.string,
     stationName: PropTypes.string,
     sort: PropTypes.string,
-    ascend: PropTypes.bool,
     pageNum: PropTypes.number,
     pageSize: PropTypes.number,
     allDepartment: PropTypes.array,
@@ -44,8 +43,7 @@ class Department extends Component {
       departmentName: this.props.departmentName,
       parentDepartmentName: this.props.parentDepartmentName,
       stationName: this.props.stationName,
-      // sort: this.props.sort,
-      // ascend: this.props.ascend,
+      sort: this.props.sort,
       pageNum: this.props.pageNum,
       pageSize: this.props.pageSize,
     }
@@ -93,7 +91,6 @@ class Department extends Component {
 const mapStateToProps = (state) => ({
     ...state.system.department.toJS(),
     stations: state.common.get('stations').toJS(),
-    enterpriseId: state.common.get('enterpriseId'),
 });
 
 const mapDispatchToProps = (dispatch) => ({

@@ -21,7 +21,6 @@ class DepartmentTable extends Component {
     parentDepartmentName: PropTypes.string, 
     stationName: PropTypes.string, 
     sort: PropTypes.string, 
-    ascend: PropTypes.bool, 
     pageNum: PropTypes.number,
     pageSize: PropTypes.number,
     allDepartment: PropTypes.array,
@@ -65,7 +64,6 @@ class DepartmentTable extends Component {
       parentDepartmentName: this.props.parentDepartmentName, 
       stationName: this.props.stationName, 
       sort: this.props.sort, 
-      ascend: this.props.ascend, 
       pageNum: currentPage,
       pageSize,
     })
@@ -100,15 +98,14 @@ class DepartmentTable extends Component {
   }
   tableChange = (pagination,filter,sorter) => {//部门排序
     const sort = sorter.field;
-    const ascend = sorter.order==='ascend';
+    const ascend = sorter.order==='ascend'?'0':'1';
     this.props.getDepartmentList({
       enterpriseId: this.props.enterpriseId,
       departmentSource: this.props.departmentSource,
       departmentName: this.props.departmentName, 
       parentDepartmentName: this.props.parentDepartmentName, 
       stationName: this.props.stationName, 
-      sort, 
-      ascend, 
+      sort:`${sort},${ascend}`, 
       pageNum: this.props.pageNum,
       pageSize: this.props.pageSize,
     })
