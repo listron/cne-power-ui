@@ -39,7 +39,8 @@ function *getLogin(action){
     if(response.data.code === '10000'){
       setCookie('authData',JSON.stringify(response.data.data.access_token));
       setCookie('enterpriseId', response.data.data.enterpriseId);
-      setCookie('phoneNum', action.params.phoneNum);
+      setCookie('enterpriseName', response.data.data.enterpriseName);
+      setCookie('userId', response.data.data.userId);
       setCookie('username', response.data.data.username);
       setCookie('expireData', moment().add(response.data.data.expires_in, 'seconds'));
       setCookie('isNotLogin', 0);
@@ -95,10 +96,11 @@ function *checkCode(action){
     });
     if(response.data.code === '10000'){ 
       if(action.params.isNotLogin === 1 || response.data.data.enterpriseId !== null) {
-        setCookie('authData',JSON.stringify(response.data.data.access_token));
-        setCookie('phoneNum', action.params.phoneNum);
+        setCookie('authData',JSON.stringify(response.data.data.access_token));    
         setCookie('username', response.data.data.username);
+        setCookie('userId', response.data.data.userId);
         setCookie('enterpriseId', response.data.data.enterpriseId);
+        setCookie('enterpriseName', response.data.data.enterpriseName);
         setCookie('expireData', moment().add(response.data.data.expires_in, 'seconds'));
         setCookie('isNotLogin', action.params.isNotLogin);
       }

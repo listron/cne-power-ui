@@ -20,13 +20,15 @@ class Department extends Component {
     ascend: PropTypes.bool,
     pageNum: PropTypes.number,
     pageSize: PropTypes.number,
-    allDepartment: PropTypes.array,
+    allDepartment: PropTypes.object,
     allUser: PropTypes.object,
+    allStation: PropTypes.object,
     showAssignStationModal: PropTypes.bool,
     showAssignUserModal: PropTypes.bool,
     getDepartmentList: PropTypes.func,
     getAllDepartment: PropTypes.func,
     getAllUser: PropTypes.func,
+    getAllStation: PropTypes.func,
     setDepartmentUser: PropTypes.func,
     setDepartmentStation: PropTypes.func,
   }
@@ -37,7 +39,7 @@ class Department extends Component {
     }
   }
   componentDidMount(){
-    const enterpriseId = getCookie('enterpriseId');
+    const enterpriseId = this.props.enterpriseId;
     const params = {
       enterpriseId, //this.props.enterpriseId,//'1010694160817111040',
       departmentSource: this.props.departmentSource,
@@ -70,10 +72,9 @@ class Department extends Component {
   render() {
     const { showPage, showAssignStationModal, showAssignUserModal } = this.props;
     const { showSidePage } = this.state;
-    const enterpriseId = getCookie('enterpriseId');
     return (
       <div className={styles.departmentContainer}>
-        <DepartmentMain {...this.props} onWarningTipToggle={this.onWarningTipToggle} enterpriseId={enterpriseId} />
+        <DepartmentMain {...this.props} onWarningTipToggle={this.onWarningTipToggle} />
         <TransitionContainer
           show={showPage!=='list'}
           onEnter={this.onToggleSide}
@@ -81,7 +82,7 @@ class Department extends Component {
           timeout={500}
           effect="side"
         >
-          <DepartmentSide {...this.props} showSidePage={showSidePage} onShowSideChange={this.onShowSideChange} enterpriseId={enterpriseId} />
+          <DepartmentSide {...this.props} showSidePage={showSidePage} onShowSideChange={this.onShowSideChange} />
         </TransitionContainer>
         {showAssignStationModal && null}
         {showAssignUserModal && null}
@@ -96,7 +97,9 @@ const mapStateToProps = (state) => ({
     allUser: state.system.department.get('allUser'),
     allStation: state.system.department.get('allStation'),
     stations: state.common.get('stations').toJS(),
-    enterpriseId: state.common.get('enterpriseId'),
+    enterpriseId: getCookie('enterpriseId'),
+    userId: getCookie('userId'),
+    enterpriseName: getCookie('enterpriseName'),
 });
 
 const mapDispatchToProps = (dispatch) => ({
