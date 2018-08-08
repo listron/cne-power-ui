@@ -68,6 +68,10 @@ function *deleteDepartment(action){
         pageNum: state.system.department.get('pageNum'),
         pageSize: state.system.department.get('pageSize'),
       }));
+      yield put({//重新请求所有部门信息
+        type:  departmentAction.GET_ALL_DEPARTMENT_SAGA,
+        payload: { enterpriseId: payload.enterpriseId},
+      })
       yield put({
         type:  departmentAction.GET_DEPARTMENT_LIST_SAGA,
         payload: params,
@@ -216,6 +220,10 @@ function *addDepartmentInfo(action){//新建部门信息
         pageNum: state.system.department.get('pageNum'),
         pageSize: state.system.department.get('pageSize'),
       }));
+      yield put({//请求所有部门信息
+        type:  departmentAction.GET_ALL_DEPARTMENT_SAGA,
+        payload: { enterpriseId: payload.enterpriseId},
+      })
       yield put({
         type:  departmentAction.GET_DEPARTMENT_LIST_SAGA,
         payload: params,
