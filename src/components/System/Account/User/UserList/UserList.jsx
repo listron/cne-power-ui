@@ -103,11 +103,10 @@ class UserList extends Component {
     const { userId } = record;
     this.props.changeUserStore({
       showPage: 'detail',
-    })
-    console.log(record);
+    });
     this.props.getUserDetail({
-      userId
-    })
+      userId: userId,
+    });
   }
   
   tableChange = (pagination, filters, sorter) => {
@@ -162,7 +161,7 @@ class UserList extends Component {
         render: (text,record,index) => {
           let stations = record.stationName && record.stationName.split(',').filter(e=>!!e);
           const { userName } = record;
-          if(stations.length > 1){
+          if(stations && stations.length > 1){
             const content = (<ul>
               {stations.map(e=>(<li key={e} className={styles.eachStation} >
                 <span className={styles.square} ></span><span>{e}</span>
@@ -183,9 +182,8 @@ class UserList extends Component {
               </div>
             )
           }else{
-            return <span>{stations[0] ? stations[0] : ''}</span>
+            return <span>{stations ? stations[0] : ''}</span>
           }
-          
         } 
       },  {
         title: '状态',

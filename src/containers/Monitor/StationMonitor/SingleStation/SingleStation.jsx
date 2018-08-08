@@ -1,6 +1,6 @@
-import React, { Component } from '../../../../../node_modules/_@types_react@16.4.7@@types/react';
-import { connect } from 'C:/Users/admin/AppData/Local/Microsoft/TypeScript/2.9/node_modules/@types/react-redux';
-import PropTypes from 'C:/Users/admin/AppData/Local/Microsoft/TypeScript/2.9/node_modules/@types/prop-types';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import styles from './singleStation.scss';
 import { singleStationAction } from '../../../../constants/actionTypes/monitor/stationmonitor/singleStationAction';
 import { SingleStationMonitor } from '../../../../components/Monitor/StationMonitor/SingleStation/SingleStationMonitor';

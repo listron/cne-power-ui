@@ -1,8 +1,8 @@
-import React, { Component } from '../../../../../node_modules/_@types_react@16.4.7@@types/react';
-import { connect } from 'C:/Users/admin/AppData/Local/Microsoft/TypeScript/2.9/node_modules/@types/react-redux';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import styles from './enterprise.scss';
 import { enterpriseAction } from '../../../../constants/actionTypes/system/account/enterpriseAction';
-import PropTypes from 'C:/Users/admin/AppData/Local/Microsoft/TypeScript/2.9/node_modules/@types/prop-types';
+import PropTypes from 'prop-types';
 import Footer from '../../../../components/Common/Footer';
 /*
 注： 此3引用在企业列表展示功能中引入，后产品调整为直接展示企业详情，去下企业列表页面展示。请不要删除，可能会重新展示企业列表功能；

@@ -18,6 +18,7 @@ class UserSide extends Component {
 
   render(){
     const { showSidePage } = this.props;
+    console.log(showSidePage);
     return (
       <div className={styles.userSide}>
         { showSidePage === 'detail' && <UserDetail {...this.props} /> }

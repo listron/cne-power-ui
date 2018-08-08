@@ -3,10 +3,10 @@
 
 
 
-import React, { Component } from '../../../../../node_modules/_@types_react@16.4.7@@types/react';
-import { Button, Input, Form } from '../../../../../node_modules/_antd@3.8.0@antd';
+import React, { Component } from 'react';
+import { Button, Input, Form } from 'antd';
 import InputLimit from '../../../Common/InputLimit'; 
-import PropTypes from 'C:/Users/admin/AppData/Local/Microsoft/TypeScript/2.9/node_modules/@types/prop-types';
+import PropTypes from 'prop-types';
 import styles from './enterprise.scss';
 const FormItem = Form.Item;
 

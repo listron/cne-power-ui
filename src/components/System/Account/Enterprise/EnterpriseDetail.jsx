@@ -1,11 +1,11 @@
 
 
-import React, { Component } from '../../../../../node_modules/_@types_react@16.4.7@@types/react';
-import { Button } from '../../../../../node_modules/_antd@3.8.0@antd';
-import PropTypes from 'C:/Users/admin/AppData/Local/Microsoft/TypeScript/2.9/node_modules/@types/prop-types';
+import React, { Component } from 'react';
+import { Button } from 'antd';
+import PropTypes from 'prop-types';
 import styles from './enterprise.scss';
-import { Link } from 'C:/Users/admin/AppData/Local/Microsoft/TypeScript/2.9/node_modules/@types/react-router-dom';
-import moment from '../../../../../node_modules/_moment@2.22.2@moment';
+import { Link } from 'react-router-dom';
+import moment from 'moment';
 
 class EnterpriseDetail extends Component {
   static propTypes = {

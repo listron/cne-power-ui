@@ -1,7 +1,7 @@
 
 
-import React, { Component } from '../../../../../node_modules/_@types_react@16.4.7@@types/react';
-import PropTypes from 'C:/Users/admin/AppData/Local/Microsoft/TypeScript/2.9/node_modules/@types/prop-types';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 import styles from './singleStation.scss'
 import PvStation from './PvStation/PvStation';

@@ -1,8 +1,8 @@
 
 
-import React, { Component } from '../../../../node_modules/_@types_react@16.4.7@@types/react';
-import { Upload, Icon, message } from '../../../../node_modules/_antd@3.8.0@antd';
-import PropTypes from 'C:/Users/admin/AppData/Local/Microsoft/TypeScript/2.9/node_modules/@types/prop-types';
+import React, { Component } from 'react';
+import { Upload, Icon, message } from 'antd';
+import PropTypes from 'prop-types';
 import { getCookie } from '../../../utils/index.js';
 import styles from './uploader.scss';
 

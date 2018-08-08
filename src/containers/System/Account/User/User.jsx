@@ -47,19 +47,14 @@ class User extends Component {
       pageSize: this.props.pageSize,
     };
     this.props.getUserList(params);
-
-    // const enterpriseId = this.props.enterpriseId;
-    // this.props.getRoleList({ enterpriseId});
   }
-
-  componentWillReceiveProps(nextProps) {}
 
   onChangeSort = sort => {
     if (sort !== this.props.sort) {
       let params = {
         enterpriseId: this.props.enterpriseId,
         userStatus: this.props.userStatus,
-        pageNum: 0,
+        pageNum: 1,
         pageSize: this.props.pageSize
       };
       this.props.getUserList(params);
@@ -71,7 +66,7 @@ class User extends Component {
       let params = {
         enterpriseId: this.props.enterpriseId,
         userStatus: this.props.userStatus,
-        pageNum: 0,
+        pageNum: 1,
         pageSize: pageSize
       };
       this.props.getUserList(params);
@@ -83,14 +78,11 @@ class User extends Component {
       let params = {
         enterpriseId: this.props.enterpriseId,
         userStatus: this.props.userStatus,
-        pageNum: currentPage - 1,
+        pageNum: currentPage,
         pageSize: this.props.pageSize
       };
       this.props.getUserList(params);
     }
-  };
-  onShowSideChange = ({ showSidePage }) => {
-    this.setState({ showSidePage });
   };
 
   onChangeStatus = status => {
@@ -98,17 +90,18 @@ class User extends Component {
       let params = {
         enterpriseId: this.props.enterpriseId,
         userStatus: Number(status),
-        pageNum: 0,
+        pageNum: 1,
         pageSize: this.props.pageSize
       };
       this.props.getUserList(params);
     }
   };
+
   onUserSearch = data => {
     let params = {
       enterpriseId: this.props.enterpriseId,
       userStatus: this.props.userStatus,
-      pageNum: 0,
+      pageNum: 1,
       pageSize: this.props.pageSize,
       userName: data.nameValue,
       phoneNum: data.phoneValue,
@@ -117,7 +110,7 @@ class User extends Component {
     this.props.getUserList(params);
   }
 
-  onShowSideChange = ({showSidePage}) => {
+  onShowSideChange = (showSidePage) => {
     this.setState({ showSidePage });
   }
 
@@ -130,8 +123,7 @@ class User extends Component {
 
   render() {
     const { showPage } = this.props;
-    const { showSidePage } =this.state;
-    console.log(this.props);
+    const { showSidePage } = this.state;
     return (
       <div className={styles.userContainer}>
         <UserMain
@@ -159,8 +151,7 @@ class User extends Component {
 }
 
 const mapStateToProps = state => {
-  let userProps = {};
-  // [...state.department].forEach(e=>departmentProps[e[0]]=(e[1].toJS?e[1].toJS():e[1]))
+  let userProps = {}; 
   [...state.system.user].forEach(e=>userProps[e[0]]=e[1])
   userProps['roleData'] = state.system.role.get('roleData');
   userProps['enterpriseId'] = state.login.get('enterpriseId');

@@ -39,10 +39,11 @@ class UserDetail extends Component {
     };
   }
 
-  onShowSideChange = ({ showSidePage }) => {
-    this.props.changeUserStore({
-      showPage: 'edit'
-    });
+  onShowSideChange = () => {
+    const {userDetail} = this.props;
+    this.props.changeUserStore({ showPage: 'edit', userDetail: userDetail });
+    this.props.onShowSideChange('edit');
+    
   };
 
   prePage = () => {
@@ -178,9 +179,7 @@ class UserDetail extends Component {
   };
   render() {
     const { userDetail} = this.props;
-    console.log(userDetail.toJS());
     const { showWarningTip, warningTipText } = this.state;
-    console.log(userDetail.get('enterpriseData'))
     return (
       <div className={styles.userDetail}>
         {showWarningTip && (
@@ -189,7 +188,7 @@ class UserDetail extends Component {
         <div className={styles.detailTop}>
           <Button
             className={styles.editButton}
-            onClick={() => this.onShowSideChange({ showSidePage: 'eidt' })}
+            onClick={this.onShowSideChange}
           >
             编辑
           </Button>
@@ -267,7 +266,8 @@ class UserDetail extends Component {
                 企业部门(负责电站)
               </span>
               <div className={styles.enterpriseDepartmentValue}>
-               {userDetail.get('enterpriseData') && userDetail.get('enterpriseData').get('enterpriseName')}: {userDetail.get('enterpriseData') && userDetail.get('enterpriseData').get('departmentData').get('departmentName')}({userDetail.get('enterpriseData') && userDetail.get('enterpriseData').get('departmentData').get('stationData').get('stationName')})
+
+                
               </div>
             </div>
           </div>

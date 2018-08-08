@@ -1,7 +1,7 @@
-import { call, put, takeLatest, select } from '../../../../../node_modules/_redux-saga@0.16.0@redux-saga/effects';
-import axios from '../../../../../node_modules/_axios@0.16.2@axios';
+import { call, put, takeLatest, select } from 'redux-saga/effects';
+import axios from 'axios';
 import Path from '../../../../constants/path';
-import { message } from '../../../../../node_modules/_antd@3.8.0@antd';
+import { message } from 'antd';
 import { userAction } from '../../../../constants/actionTypes/system/account/userAction';
 
 // 切换页面 -> 列表页 详情页 编辑页
@@ -16,13 +16,11 @@ function *changeUserStore(action){
 // 请求用户列表
 function *getUserList(action){
   const { payload } = action;
-  console.log(payload);
   // const url = '/mock/api/v3/user/list';
   const url = Path.basePaths.newAPIBasePath + Path.APISubPaths.system.getUserList;
   try{
     yield put({type: userAction.USER_FETCH});
     const response = yield call(axios.post, url, payload);
-    console.log(response);
     yield put({
       type: userAction.GET_USER_FETCH_SUCCESS,
       payload: {
@@ -42,7 +40,7 @@ function *changeUserStatus(action){
   const url = Path.basePaths.newAPIBasePath + Path.APISubPaths.system.changeUserStatus;
   try{
     yield put({type: userAction.USER_FETCH});
-    const response = yield call(axios.put, url);
+    const response = yield call(axios.put, url, payload);
     if(response.data.code === '10000'){
       yield put({
         type: userAction.GET_USER_FETCH_SUCCESS,
@@ -64,11 +62,9 @@ function *getUserDetail(action){
   const { payload } = action;
   // const url = '/mock/api/v3/userDetail';
   const url = Path.basePaths.newAPIBasePath + Path.APISubPaths.system.getUserDetail + payload.userId;
-  console.log(action)
   try{
     yield put({ type: userAction.USER_FETCH});
     const response = yield call(axios.get, url,payload);
-    console.log(response);
     yield put({
       type: userAction.GET_USER_FETCH_SUCCESS,
       payload: {
@@ -84,7 +80,6 @@ function *getUserDetail(action){
 // 编辑用户信息
 function *editUserInfo(action){
   const { payload } =action;
-  console.log(payload)
   const url = Path.basePaths.newAPIBasePath + Path.APISubPaths.system.editUserInfo;
   try{
     yield put({ type: userAction.USER_FETCH });
@@ -92,6 +87,21 @@ function *editUserInfo(action){
     yield put({
       type: userAction.GET_USER_FETCH_SUCCESS
     })
+    yield put({ type: userAction.CHANGE_USER_STORE_SAGA, payload:{showPage: payload.showPage}})
+    const params = yield select(state => ({//继续请求用户列表
+      enterpriseId: payload.enterpriseId,
+      roleId: state.system.user.get('roleId'),
+      userStatus: state.system.user.get('userStatus'),
+      userName: state.system.user.get('userName'),
+      stationName: state.system.user.get('stationName'),
+      phoneNum: state.system.user.get('phoneNum'), 
+      pageSize: state.system.user.get('pageSize'),
+      pageNum: state.system.user.get('pageNum'),
+    }));
+    yield put({
+      type:  userAction.GET_USER_LIST_SAGA,
+      payload: params,
+    });
   }catch(e){
     console.log(e);
   }
@@ -104,27 +114,27 @@ function *createUserInfo(action){
   yield put({ type: userAction.USER_FETCH});
   try{
     const response = yield call(axios.post, url, payload);
-    if(response.data.code === '10000'){
+    if(response.data.code === '00000'){
+      yield put({ type: userAction.GET_USER_FETCH_FAIL});
+      message.error(response.data.message);
+    }else{
       yield put({ type: userAction.GET_USER_FETCH_SUCCESS});
-      message.success(response.data.message);
+      // message.success(response.data.message);
       yield put({ type: userAction.CHANGE_USER_STORE_SAGA, payload:{showPage: payload.showPage}})
       const params = yield select(state => ({//继续请求用户列表
         enterpriseId: payload.enterpriseId,
-        // roleId: state.user.get('roleId'),
-        userStatus: state.user.get('userStatus'),
-        userName: state.user.get('userName'),
-        stationName: state.user.get('stationName'),
-        phoneNum: state.user.get('phoneNum'), 
-        pageSize: state.user.get('pageSize'),
-        pageNum: state.user.get('pageNum'),
+        roleId: state.system.user.get('roleId'),
+        userStatus: state.system.user.get('userStatus'),
+        userName: state.system.user.get('userName'),
+        stationName: state.system.user.get('stationName'),
+        phoneNum: state.system.user.get('phoneNum'), 
+        pageSize: state.system.user.get('pageSize'),
+        pageNum: state.system.user.get('pageNum'),
       }));
       yield put({
         type:  userAction.GET_USER_LIST_SAGA,
-        payload,
+        payload: params,
       });
-    }else{
-      yield put({ type: userAction.GET_USER_FETCH_FAIL});
-      message.error(response.data.message);
     }
   }catch(e){
     console.log(e);

@@ -1,5 +1,5 @@
-import { call, put, takeLatest } from '../../../../../node_modules/_redux-saga@0.16.0@redux-saga/effects';
-import axios from '../../../../../node_modules/_axios@0.16.2@axios';
+import { call, put, takeLatest } from 'redux-saga/effects';
+import axios from 'axios';
 import Path from '../../../../constants/path';
 import { singleStationAction } from '../../../../constants/actionTypes/monitor/stationmonitor/singleStationAction';
 

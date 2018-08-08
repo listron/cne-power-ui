@@ -110,13 +110,13 @@ class UserSearch extends Component {
           </div>
           <div className={styles.userStatus} >
             <span>状态</span>
-            <RadioGroup onChange={this.onChangeStatus} defaultValue="0" value={userStatus} buttonStyle="solid" >
-              <RadioButton value="0">全部</RadioButton>
-              <RadioButton value="3">启用</RadioButton>
-              <RadioButton value="4">禁用</RadioButton>
-              <RadioButton value="5">待审核</RadioButton>
-              <RadioButton value="6">未通过审核</RadioButton>
-              <RadioButton value="2">未激活</RadioButton>
+            <RadioGroup onChange={this.onChangeStatus} defaultChecked={true} defaultValue={0} value={userStatus} buttonStyle="solid" >
+              <RadioButton value={0} >全部</RadioButton>
+              <RadioButton value={3} >启用</RadioButton>
+              <RadioButton value={4} >禁用</RadioButton>
+              <RadioButton value={5} >待审核</RadioButton>
+              <RadioButton value={6} >未通过审核</RadioButton>
+              <RadioButton value={7} >未激活</RadioButton>
             </RadioGroup>
           </div>
         </div>

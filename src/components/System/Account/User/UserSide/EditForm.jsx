@@ -4,11 +4,11 @@
 
 
 import React, { Component } from 'react';
-import { Button, Input, Form } from 'antd'; 
+import { Button, Input, Form, Select } from 'antd'; 
 import PropTypes from 'prop-types';
 import styles from './userSide.scss';
 const FormItem = Form.Item;
-
+const Option= Select.Option;
 class EditForm extends Component {
   static propTypes = {
     loading: PropTypes.bool,
@@ -28,7 +28,7 @@ class EditForm extends Component {
     this.props.form.validateFieldsAndScroll((error,values)=>{
       if(!error){
         this.props.editUserInfo({
-          email: values.email,
+          Email: values.Email,
           phoneNum: values.phoneNum,
           roleId: values.roleId.join(','),
           specialRoleId: values.specialRoleId.join(','),
@@ -48,7 +48,7 @@ class EditForm extends Component {
     this.props.form.validateFieldsAndScroll((error,values)=>{
       if(!error){
         this.props.editUserInfo({
-          email: values.email,
+          Email: values.Email,
           phoneNum: values.phoneNum,
           roleId: values.roleId.join(','),
           specialRoleId: values.specialRoleId.join(','),
@@ -66,11 +66,25 @@ class EditForm extends Component {
   render(){
     const { getFieldDecorator } = this.props.form;
     const { userDetail, loading } = this.props;
+    console.log(userDetail.toJS())
+    const roleData = [
+      {roleId: '1', roleName: '系统管理员', isPre: 0, rightData:[]},
+      {roleId: '2', roleName: '企业管理员', isPre: 0, rightData:[]},
+      {roleId: '3', roleName: '生产管理员', isPre: 0, rightData:[]},
+      {roleId: '4', roleName: '运维实施工人', isPre: 0, rightData:[]},
+      {roleId: '5', roleName: '运维管理员', isPre: 0, rightData:[]},
+    ];
+    const specialRoleId = [
+      {specialRoleId: '1', specialRoleName: '特殊权限1'},
+      {specialRoleId: '2', specialRoleName: '特殊权限2'},
+      {specialRoleId: '3', specialRoleName: '特殊权限3'},
+      {specialRoleId: '4', specialRoleName: '特殊权限4'},
+    ]
     return (
       <Form className={styles.editPart}>
         <FormItem label="用户名" >
           {getFieldDecorator('username',{
-            initialValue: userDetail && userDetail.username,
+            initialValue: userDetail && userDetail.get('username'),
             rules: [{
               required : true,
               message: '请输入用户名',
@@ -88,7 +102,7 @@ class EditForm extends Component {
               message: '请输入10字以内的真实姓名',
               max: 10,
             }],
-            initialValue: userDetail && (userDetail.userFullName || '')
+            initialValue: userDetail && (userDetail.get('userFullName') || '')
           })(
             <Input placeholder="请输入真实姓名" />
           )}
@@ -96,7 +110,7 @@ class EditForm extends Component {
         </FormItem>
         <FormItem label="电话" >
           {getFieldDecorator('phoneNum',{
-            initialValue: userDetail && userDetail.phoneNum,
+            initialValue: userDetail && userDetail.get('phoneNum'),
             rules: [{
               message: '请输入正确的手机号',
               pattern: /^1\d{10}$/,
@@ -108,11 +122,11 @@ class EditForm extends Component {
           <span className={styles.instructionText}>(11位手机号码)</span>
         </FormItem>
         <FormItem label="邮箱" >
-          {getFieldDecorator('email',{rules:[{
+          {getFieldDecorator('Email',{rules:[{
               message: '请输入正确格式的邮箱',
               pattern: /^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$/,
             }],
-            initialValue: userDetail && (userDetail.email || '')
+            initialValue: userDetail && (userDetail.get('Email') || '')
           })(
             <Input placeholder="请输入邮箱" />
           )}
@@ -120,30 +134,44 @@ class EditForm extends Component {
         </FormItem>
         {/* <FormItem label="账户微信" >
           {getFieldDecorator('webChat',{
-            initialValue: userDetail && userDetail.webChat
+            initialValue: userDetail && userDetail.get('webChat')
           })(
             <span>{userDetail.webChat}</span>
           )}
         </FormItem> */}
         <FormItem label="角色" >
-          {getFieldDecorator('roleId',{rules:[{
-              message: '请输入正确格式的企业电话',
-              pattern: /^(\d{7,11})([,](\d{7,11})){0,}([,]?)$/,
-            }],
-            initialValue: userDetail && (userDetail.roleId || '')
+          {getFieldDecorator('roleId',{
+            initialValue: [],
           })(
-            <Input />
+            <Select
+              mode="multiple"
+              placeholder="请选择用户角色"
+              showArrow={true}
+              onChange={this.onSelectRoles}
+              className={styles.selectRoles}
+            >
+              {roleData.map((item,index)=>(
+                <Option key={item.roleId} value={item.roleId}  >{item.roleName}</Option>
+              ))}
+            </Select>
           )}
           <span className={styles.instructionText}>(无角色不能操作系统)</span>
         </FormItem>
         <FormItem label="特殊权限" >
           {getFieldDecorator('specialRoleId', {
-            rules: [{
-              message: '请选择特殊权限',
-            }],
-            initialValue: userDetail && (userDetail.specialRoleId || '')
+            initialValue: [],
           })(
-            <Input />
+            <Select
+              mode="multiple"
+              placeholder="请选择特殊权限"
+              showArrow={true}
+              onChange={this.specialRoleId}
+              className={styles.specialRoleId}
+            >
+              {specialRoleId.map((item,index)=>(
+                <Option key={item.specialRoleId} value={item.specialRoleId}  >{item.specialRoleName}</Option>
+              ))}
+            </Select>
           )}
         </FormItem>
         <Button onClick={this.saveUser} loading={loading} className={styles.saveUser} >保存</Button>

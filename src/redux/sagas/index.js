@@ -54,7 +54,7 @@ import { watchDepartment } from './system/account/departmentSaga';
 import { watchRole } from './system/account/roleSaga';
 import { watchUser } from './system/account/userSaga';
 
-import { watchSingleStationMonitor } from './monitor/stationMonitor/singleStationMonitorSaga'; 
+import { watchSingleStationMonitor } from './monitor/stationMonitor/singleStationSaga'; 
 
 // root saga
 export default function* rootSaga() {
