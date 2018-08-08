@@ -171,15 +171,15 @@ function *getDepartmentDetail(action){// 请求单部门详细数据信息
 
 function *getOtherPageDetail(action){//部门详情页第一条查看前一条详情/最后一条看下一条详情=>翻页+请求详情
   const { payload, previous } = action;
-  const listUrl = '/mock/system/departmentList';
-  // const listUrl = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.system.getDepartmentList}`
+  // const listUrl = '/mock/system/departmentList';
+  const listUrl = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.system.getDepartmentList}`
   try{
     yield put({ type:departmentAction.DEPARTMENT_FETCH });
     const listResponse = yield call(axios.post,listUrl,payload);
     const { departmentData, totalNum } = listResponse.data.data;
     const { departmentId } = previous?departmentData[departmentData.length - 1]:departmentData[0];
-    const detailUrl = '/mock/system/departmentDetail';
-    // const detailUrl = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.system.departmentInfo}/${departmentId}`
+    // const detailUrl = '/mock/system/departmentDetail';
+    const detailUrl = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.system.departmentInfo}/${departmentId}`
     const detailResponse = yield call(axios.get,detailUrl);
     yield put({
       type:  departmentAction.GET_DEPARTMENT_FETCH_SUCCESS,
