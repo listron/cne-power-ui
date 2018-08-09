@@ -112,8 +112,18 @@ class UserList extends Component {
   
   tableChange = (pagination, filters, sorter) => {
     if(Object.keys(sorter).length !== 0){
-      let sortRules = '0,1';
-      this.props.onChangeSort(sortRules);
+      let order = 0;
+      switch(sorter.field){
+        case "roleName":
+          order = sorter.order==="ascend" ? 2 : 1 ;break;
+        case "spcialRoleName":
+          order = sorter.order==="ascend" ? 4 : 3 ;break;
+        case "enterpriseId":
+          order = sorter.order==="ascend" ? 6 : 5 ;break;
+        default:
+          order = 0;
+      }
+      this.props.onChangeSort(order);
     }else{
       this.props.onChangeSort('');
     }
@@ -191,7 +201,6 @@ class UserList extends Component {
         dataIndex: 'userStatus',
         key: 'userStatus',
         render: (text, record, index) => {
-          console.log(record);
           return (<span>{this.getUserStatus(record.userStatus, record.enterpriseStatus)}</span>);
         },
       }

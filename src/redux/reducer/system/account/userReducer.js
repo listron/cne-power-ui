@@ -22,6 +22,7 @@ var initState = immutable.fromJS({
   inviteData: {},//邀请用户数据
   roleAllList: [],//获取企业角色列表
   specialRoleList: [],//获取特殊权限
+  order: "0",//列表排序 默认0不排序 12角色  34特殊权限  56企业名称  倒序正序
 });
 
 const userReducer = (state = initState, action) => {

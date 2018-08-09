@@ -47,6 +47,7 @@ class User extends Component {
       stationName: this.props.stationName,
       pageNum: this.props.currentPage,
       pageSize: this.props.pageSize,
+      order: 0,
     };
     this.props.getUserList(params);
     this.props.getRoleAllList({enterpriseId: this.props.enterpriseId, roleType: "0"});
@@ -57,9 +58,14 @@ class User extends Component {
     if (sort !== this.props.sort) {
       let params = {
         enterpriseId: this.props.enterpriseId,
+        roleId: this.props.roleId,
         userStatus: this.props.userStatus,
+        userName: this.props.userName,
+        phoneNum: this.props.phoneNum,
+        stationName: this.props.stationName,
         pageNum: 1,
-        pageSize: this.props.pageSize
+        pageSize: this.props.pageSize,
+        order: sort.toString(),
       };
       this.props.getUserList(params);
     }
@@ -134,6 +140,7 @@ class User extends Component {
           {...this.props}
           onUserSearch={this.onUserSearch}
           onChangeStatus={this.onChangeStatus}
+          onChangeSort={this.onChangeSort}
         />
         <TransitionContainer
           show={showPage!=='list'}

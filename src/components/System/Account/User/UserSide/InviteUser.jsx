@@ -72,7 +72,7 @@ class InviteUser extends Component {
             <div className={styles.qrCode} >
               <img src={inviteData.get('QRLink')} />
               <a href={inviteData.get('QRLink')} download="cnegroup" target="_blank" >下载二维码</a>
-              <Button href={inviteData.get('QRLink')} download="cnegroup" target="_blank"  >下载二维码</Button>
+              <Button href={inviteData.get('QRLink')} download={inviteData.get('QRLink')} onClick={(e,item)=>console.log(e, item)} target="_blank"  >下载二维码</Button>
             </div>
           </div>
         </div>
