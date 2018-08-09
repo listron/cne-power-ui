@@ -29,7 +29,7 @@ class DepartmentTable extends Component {
     allUser: PropTypes.object,
     allStation: PropTypes.object,
     userId: PropTypes.string,
-    departmentName: PropTypes.string,
+    enterpriseName: PropTypes.string,
     showAssignUserModal: PropTypes.bool,
     showAssignStationModal: PropTypes.bool,
     
