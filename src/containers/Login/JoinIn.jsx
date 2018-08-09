@@ -23,6 +23,7 @@ class JoinIn extends Component {
     phoneNum: PropTypes.string,
     error: PropTypes.object,
     history: PropTypes.object,
+    isInvite: PropTypes.number,
   }
   constructor(props) {
     super(props);
@@ -53,6 +54,7 @@ class JoinIn extends Component {
           phoneNum={this.props.phoneNum}
           error={this.props.error}
           history={this.props.history}
+          isInvite={this.props.isInvite}
         />
       </div>
     );
@@ -67,6 +69,7 @@ const mapStateToProps = (state) => ({
   joinStep: state.login.get('joinStep'),
   phoneNum: state.login.get('phoneNum'),
   error: state.login.get('error'),
+  isInvite: state.login.get('isInvite'),
 })
 
 const mapDispatchToProps = (dispatch) => ({

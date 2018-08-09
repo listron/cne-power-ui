@@ -18,6 +18,8 @@ class AddForm extends Component {
     createUserInfo: PropTypes.func,
     userLogo: PropTypes.string,
     enterpriseId: PropTypes.string,
+    roleAllList: PropTypes.object,
+    specialRoleList: PropTypes.object,
   }
 
   constructor(props){
@@ -69,20 +71,7 @@ class AddForm extends Component {
 
   render(){
     const { getFieldDecorator } = this.props.form;
-    const { userDetail, loading } = this.props;
-    const roleData = [
-      {roleId: '1', roleName: '系统管理员', isPre: 0, rightData:[]},
-      {roleId: '2', roleName: '企业管理员', isPre: 0, rightData:[]},
-      {roleId: '3', roleName: '生产管理员', isPre: 0, rightData:[]},
-      {roleId: '4', roleName: '运维实施工人', isPre: 0, rightData:[]},
-      {roleId: '5', roleName: '运维管理员', isPre: 0, rightData:[]},
-    ];
-    const specialRoleId = [
-      {specialRoleId: '1', specialRoleName: '特殊权限1'},
-      {specialRoleId: '2', specialRoleName: '特殊权限2'},
-      {specialRoleId: '3', specialRoleName: '特殊权限3'},
-      {specialRoleId: '4', specialRoleName: '特殊权限4'},
-    ]
+    const { userDetail, loading, roleAllList, specialRoleList } = this.props;
     return (
       <Form className={styles.editPart}>
         <FormItem label="用户名" >
@@ -90,12 +79,12 @@ class AddForm extends Component {
             initialValue: userDetail && userDetail.username,
             rules: [{
               required : true,
-              message: '请输入用户名',
+              message: '3-8位数字,字母组合',
               max: 8,
               min: 3,
             }]
           })(
-            <Input placeholder="请输入用户名" />
+            <Input placeholder="3-8位数字,字母组合" />
           )}
           <span className={styles.instructionText}>(3-8位数字,字母组合)</span>
         </FormItem>
@@ -153,7 +142,7 @@ class AddForm extends Component {
               onChange={this.onSelectRoles}
               className={styles.selectRoles}
             >
-              {roleData.map((item,index)=>(
+              {roleAllList && roleAllList.toJS().map((item,index)=>(
                 <Option key={item.roleId} value={item.roleId}  >{item.roleName}</Option>
               ))}
             </Select>
@@ -171,8 +160,8 @@ class AddForm extends Component {
               onChange={this.specialRoleId}
               className={styles.specialRoleId}
             >
-              {specialRoleId.map((item,index)=>(
-                <Option key={item.specialRoleId} value={item.specialRoleId}  >{item.specialRoleName}</Option>
+              {specialRoleList && specialRoleList.toJS().map((item,index)=>(
+                <Option key={item.roleId} value={item.roleId}  >{item.roleName}</Option>
               ))}
             </Select>
           )}

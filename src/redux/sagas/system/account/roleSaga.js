@@ -24,7 +24,9 @@ function *getRoleList(action){
     if(response.data.code === '10000') {
       yield put({
         type: roleAction.GET_ROLE_FETCH_SUCCESS,
-        payload: response.data.data,
+        payload: {
+          roleData: response.data.data
+        },
       });
     }  
   }catch(e){

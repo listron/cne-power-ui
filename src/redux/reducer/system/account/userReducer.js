@@ -1,5 +1,4 @@
 import immutable from 'immutable';
-
 import { userAction } from '../../../../constants/actionTypes/system/account/userAction';
 
 var initState = immutable.fromJS({
@@ -19,21 +18,21 @@ var initState = immutable.fromJS({
   userDetail:{},//选中用户详细信息
   selectedUser: [], //table选中用户项
   userData: [],//用户列表数据
-  departmentData:{},
-  departmentName:'',
-  enterpriseUserStatus:0,
-  createtime:'',
-  // selectedUserColumns: [],//选中的table表头
-})
+  userId: '',//用户Id
+  inviteData: {},//邀请用户数据
+  roleAllList: [],//获取企业角色列表
+  specialRoleList: [],//获取特殊权限
+});
 
 const userReducer = (state = initState, action) => {
+  console.log(action)
   switch(action.type){
     case userAction.USER_FETCH:
-      return state.set('loading', true)
+      return state.set('loading', true);
     case userAction.GET_USER_FETCH_SUCCESS:
-      return state.merge(immutable.fromJS(action.payload)).set('loading', false)
+      return state.merge(immutable.fromJS(action.payload)).set('loading', false);
     case userAction.CHANGE_USER_STORE:
-      return state.merge(immutable.fromJS(action.payload))
+      return state.merge(immutable.fromJS(action.payload));
     case userAction.GET_USER_FETCH_FAIL:
       return state.set('loading', false);
   }

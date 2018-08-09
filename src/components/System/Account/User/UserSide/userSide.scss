@@ -30,7 +30,7 @@
       .backIcon{
         color: $lightColor;
         font-size: 20px;
-        border-left: 1px solid $promptColor;
+        border-left: 1px solid #dfdfdf;
         height: 100%;
         line-height: 64px;
         width: 64px;
@@ -95,6 +95,18 @@
             background: #199475;
           }
         }
+        .qrCode{
+          margin-top: 20px;
+          img{
+            display: inline-block;
+            width: 185px;
+            height: 185px;
+          }
+          Button{
+            vertical-align: bottom;
+            margin-left: 20px;
+          }
+        }
       }
     }
   }
@@ -107,8 +119,8 @@
       justify-content: space-between;
       .editButton {
         &:hover {
-          background-color: #199475;
-          color: #fff;
+          background-color: #fff;
+          color: #199475;
         }
       }
       .handleArea {
@@ -116,16 +128,18 @@
         .previous {
           margin-right: 20px;
           cursor: pointer;
+          color: #999;
         }
         .next {
           margin-right: 28px;
           cursor: pointer;
+          color: #999;
         }
         .backIcon {
           height: 100%;
           line-height: 64px;
           color: #999;
-          border-left: 1px solid #999;
+          border-left: 1px solid #dfdfdf;
           width: 64px;
           cursor: pointer;
         }
@@ -182,8 +196,25 @@
         }
         .enterpriseDepartmentValue{
           display: block;
+          color: #999;
+          .departmentDetail{
+            display: flex;
+            flex-direction: row;
+            .enterpriseName{
+              width: 150px;
+              text-align: right;
+            }
+            .enterpriseDetail{
+              p{
+                margin: 0;
+              }
+            }
+          }
         }
-
+        .detailRole, .detailSpecialRole{
+          display: flex;
+          justify-content: flex-start;
+        }
       }
     }
   }

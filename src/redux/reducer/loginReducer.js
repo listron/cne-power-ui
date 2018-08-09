@@ -24,6 +24,7 @@ var initState = immutable.fromJS({
   enterpriseName: null,//注册企业名称
   joinResult: 0,//0 加入失败，1，加入待审核
   enterpriseId: getCookie('enterpriseId'),
+  isInvite: 0,//0普通用户加入 1为邀请用户加入
 });
 
 const loginReducer = (state = initState, action) => {

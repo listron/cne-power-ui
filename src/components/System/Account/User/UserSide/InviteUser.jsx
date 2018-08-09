@@ -11,6 +11,7 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 class InviteUser extends Component {
   static propTypes = {
     changeUserStore: PropTypes.func,
+    inviteData: PropTypes.object,
   }
 
   constructor(props){
@@ -50,7 +51,7 @@ class InviteUser extends Component {
 
   render(){
     const { showWarningTip, warningTipText, copied } = this.state;
-    const tmpLink = "https://www.cnegroup.com";
+    const { inviteData } = this.props;
     return (
       <div className={styles.inviteUser} >
         {showWarningTip && <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}      
@@ -62,11 +63,16 @@ class InviteUser extends Component {
           <div className={styles.inviteMainPart} >
             <div>二维码<span>有效期为7天(有效期至2018-08-03)</span>，请尽快分享给用户加入系统~</div>
             <div className={styles.inviteOperate} >
-              <Input value={tmpLink} type="text" readOnly={true}  className={styles.inviteInput} />
-              <CopyToClipboard text={tmpLink} onCopy={this.onCopy}>
+              <Input value={inviteData.get('link')} type="text" readOnly={true}  className={styles.inviteInput} />
+              <CopyToClipboard text={inviteData.get('link')} onCopy={this.onCopy}>
                 <Button className={styles.copyBtn} >复制链接</Button>
               </CopyToClipboard>
               {copied && <Button>复制成功!</Button>}
+            </div>
+            <div className={styles.qrCode} >
+              <img src={inviteData.get('QRLink')} />
+              <a href={inviteData.get('QRLink')} download="cnegroup" target="_blank" >下载二维码</a>
+              <Button href={inviteData.get('QRLink')} download="cnegroup" target="_blank"  >下载二维码</Button>
             </div>
           </div>
         </div>

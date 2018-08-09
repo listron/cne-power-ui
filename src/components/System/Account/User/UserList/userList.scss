@@ -89,7 +89,6 @@
       }
       
     }
-
     .selectedRolesBox{
       width: 100%;
       padding-left: 25px;
@@ -117,79 +116,93 @@
       justify-content: space-between;
       height: 72px;
       line-height: 72px;
-      Button{
-        margin: 0 6px;
-        color: $themeColor;
-        border: 1px solid $themeColor;
-      }
-      .addUser{
-        border: 1px solid $themeColor;
-        padding : 0;
-        margin-left: 24px;
-        margin-right: 12px;
-        i{
-          background: $themeColor;
-          color: #fff;
-          width: 28px;
-          line-height: 30px;
-          height: 100%;
+      .userHelperLeft{
+        display: flex;
+        justify-content: flex-start;
+        
+        .importUser{
           display: inline-block;
+          :global{
+            .ant-upload-list{
+              display: none;
+            }
+          }
         }
-        .text{
+        Button{
+          margin: 20px 6px;
           color: $themeColor;
-          width: 38px;
-          text-align: center;
-          display: inline-block;
-          margin: 0;
-          height: 100%;
-          line-height: 30px;
+          border: 1px solid $themeColor;
         }
-        @include highLight($themeColor);
-        &:hover{
-          .text{
+        .addUser{
+          border: 1px solid $themeColor;
+          padding : 0;
+          margin-left: 24px;
+          margin-right: 12px;
+          i{
             background: $themeColor;
             color: #fff;
+            width: 28px;
+            line-height: 30px;
+            height: 100%;
+            display: inline-block;
+          }
+          .text{
+            color: $themeColor;
+            width: 38px;
+            text-align: center;
+            display: inline-block;
+            margin: 0;
+            height: 100%;
+            line-height: 30px;
+          }
+          @include highLight($themeColor);
+          &:hover{
+            .text{
+              background: $themeColor;
+              color: #fff;
+            }
           }
         }
-      }
-      .userOperate{
-        display: inline-block;
-        .handleDropdown{
-          width: 120px;
+        .userOperate{
+          display: inline-block;
+          .handleDropdown{
+            width: 120px;
+            :global{
+              .ant-select-dropdown-menu-item{
+                color:$themeColor;
+              }
+              .ant-select-dropdown-menu-item-disabled{
+                color:$promptColor;
+              }
+            }
+          }
           :global{
-            .ant-select-dropdown-menu-item{
-              color:$themeColor;
-            }
-            .ant-select-dropdown-menu-item-disabled{
-              color:$promptColor;
+            .ant-select{
+              width: 78px;
             }
           }
         }
-        :global{
-          .ant-select{
-            width: 78px;
+        .selectedColumns{
+          margin-top: 20px;
+          width: 33px; 
+          height: 33px;
+          border-radius: 4px;
+          margin-left: 20px;
+          :global{
+            .ant-select-selection{
+              background: #199475 url(../../../../../theme/img/avatar.png) no-repeat center center;
+              background-size: 15px 15px;
+            }
+            .ant-select-selection__placeholder{
+              display: none;
+            }
+            .ant-select-selection-selected-value .ant-checkbox-wrapper{
+              display: none;
+            }
           }
         }
       }
-      .selectedColumns{
-        
-        width: 33px; 
-        height: 33px;
-        border-radius: 4px;
-        margin-left: 20px;
-        :global{
-          .ant-select-selection{
-            background: #199475 url(../../../../../theme/img/avatar.png) no-repeat center center;
-            background-size: 15px 15px;
-          }
-          .ant-select-selection__placeholder{
-            display: none;
-          }
-          .ant-select-selection-selected-value .ant-checkbox-wrapper{
-            display: none;
-          }
-        }
-      }
+      
     }
     .tableFooter{
       line-height: 46px;

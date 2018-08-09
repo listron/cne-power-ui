@@ -93,6 +93,9 @@ export default {
       getUserDetail: '/v3/user/',//用户详情
       editUserInfo: '/v3/user',//编辑用户
       createUserInfo: '/v3/user',//新建用户
+      getInviteLink: '/v3/user/link',//邀请用户
+      getRoleAllList: '/v3/role/all/list',//获取企业角色
+      importUserBatch: '/v3/user/batch',//批量导入用户
     }
     // monitor:{
     //   getStationType:'v3/monitor/stations/stationType',

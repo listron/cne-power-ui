@@ -10,6 +10,8 @@ import InviteUser from './InviteUser';
 class UserSide extends Component {
   static propTypes = {
     showSidePage: PropTypes.string,
+    getRoleAllList: PropTypes.func,
+    enterpriseId: PropTypes.string,
   }
 
   constructor(props){
@@ -18,7 +20,6 @@ class UserSide extends Component {
 
   render(){
     const { showSidePage } = this.props;
-    console.log(showSidePage);
     return (
       <div className={styles.userSide}>
         { showSidePage === 'detail' && <UserDetail {...this.props} /> }

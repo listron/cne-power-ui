@@ -13,7 +13,7 @@ class UserSearch extends Component {
   static propTypes = {
     loading: PropTypes.bool,
     getUserList: PropTypes.func,
-    roleData: PropTypes.object,
+    roleAllList: PropTypes.object,
     pageNum: PropTypes.number,
     userStatus: PropTypes.number,
     pageSize: PropTypes.number,
@@ -47,13 +47,13 @@ class UserSearch extends Component {
   onSelectRoles = (value,item) => {
     let { roleId } = this.props;
     let tmpSelectedRoles = new Set(roleId.split(',').filter(e=>!!e));
-    let role = item.key===undefined ? item.roleId : item.key;//key存在=>筛选;roleId存在=>删除
-    tmpSelectedRoles.has(role) ? tmpSelectedRoles.delete(role) : tmpSelectedRoles.add(role)
+    let role = item.key===undefined ? item.roleId.toString() : item.key;//key存在=>筛选;roleId存在=>删除
+    tmpSelectedRoles.has(role) ? tmpSelectedRoles.delete(role) : tmpSelectedRoles.add(role);
     roleId = role === '不限' ? '' : [...tmpSelectedRoles].join(',');
     let params = {
       enterpriseId: this.props.enterpriseId,
       userStatus: this.props.userStatus,
-      roleId: roleId,
+      roleId: roleId.toString(),
       pageNum: this.props.pageNum,
       pageSize: this.props.pageSize,
     };
@@ -72,17 +72,12 @@ class UserSearch extends Component {
   }
 
   render(){
-    const { userStatus,roleId } = this.props;
+    const { userStatus,roleId, roleAllList } = this.props;
     const { nameValue, phoneValue, stationValue } = this.state;
-    const roleData = [
-      {roleId: '1', roleName: '系统管理员', isPre: 0, rightData:[]},
-      {roleId: '2', roleName: '企业管理员', isPre: 0, rightData:[]},
-      {roleId: '3', roleName: '生产管理员', isPre: 0, rightData:[]},
-      {roleId: '4', roleName: '运维实施工人', isPre: 0, rightData:[]},
-      {roleId: '5', roleName: '运维管理员', isPre: 0, rightData:[]},
-    ];
     let roleIdSet = new Set(roleId.split(',').filter(e=>!!e));
-    let roleSelectId = roleData.filter(e=>{return roleIdSet.has(e.roleId.toString())});
+    let roleSelectId = roleAllList.toJS().filter(e=>{
+      return roleIdSet.has(e.roleId.toString())
+    });
     return (
       <div className={styles.userSearchFilter}>
         <div className={styles.userFilter}>
@@ -96,7 +91,7 @@ class UserSearch extends Component {
               onChange={this.onSelectRoles}
             >
               <Option key="不限" value={'不限'}><Checkbox checked={roleIdSet.size === 0} >不限</Checkbox></Option>
-              {roleData.map((item) => {
+              {roleAllList.toJS().map((item) => {
                 return  (<Option key={item.roleId} value={item.roleName} >
                           <Checkbox
                             checked={roleIdSet.has(item.roleId.toString())} 
