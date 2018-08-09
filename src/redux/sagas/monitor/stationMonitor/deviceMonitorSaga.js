@@ -70,10 +70,10 @@ function *getNormalDeviceData(action){
       yield put({
         type:  deviceAction.GET_DEVICE_FETCH_SUCCESS,
         payload: {
-          deviceDetail: tmpDetail.data.data,
-          deviceTenMin: tmpTenMin.data.data,
-          devicePointData: tmpPoint.data.data,
-          deviceAlarmList: tmpAlarm.data.data,
+          deviceDetail: tmpDetail.data.data || {},
+          deviceTenMin: tmpTenMin.data.data || [],
+          devicePointData: tmpPoint.data.data || [],
+          deviceAlarmList: tmpAlarm.data.data || [],
         },
       })
     }

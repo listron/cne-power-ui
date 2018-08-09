@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Button } from 'antd';
 import DeviceMonitorStatistics from '../DeviceMonitorCommon/DeviceMonitorStatistics';
+import InverterTenMin from './InverterTenMin';
+import DeviceAlarmTable from '../DeviceMonitorCommon/DeviceAlarmTable';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import styles from './seriesinverter.scss';
@@ -9,7 +11,10 @@ class Seriesinverter extends Component {
   static propTypes = {
     match: PropTypes.object,
     getMonitorDeviceData: PropTypes.func,
-    deviceDetail: PropTypes.object
+    deviceDetail: PropTypes.object,
+    deviceTenMin: PropTypes.array,
+    deviceAlarmList: PropTypes.array,
+    devicePointData: PropTypes.array,
   }
 
   componentDidMount(){
@@ -22,11 +27,13 @@ class Seriesinverter extends Component {
   }
 
   render(){
-    const { deviceDetail } = this.props;
+    const { deviceDetail, deviceTenMin, deviceAlarmList, devicePointData } = this.props;
     return (
       <div className={styles.seriesinverter}>
         <h1>这是组串式逆变器展示页</h1>
         <DeviceMonitorStatistics deviceDetail={deviceDetail} />
+        <InverterTenMin deviceTenMin={deviceTenMin} />
+        <DeviceAlarmTable deviceAlarmList={deviceAlarmList} />
         <Button>
           <Link to="/hidden/monitorDevice/73/203/112233445566">走我们从逆变器去气象站</Link>
         </Button>
