@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import styles from './department.scss';
 import { departmentAction } from '../../../../constants/actionTypes/system/account/departmentAction';
+import { commonAction } from '../../../../constants/actionTypes/commonAction';
 import PropTypes from 'prop-types';
 import TransitionContainer from '../../../../components/Common/TransitionContainer';
 import DepartmentMain from '../../../../components/System/Account/Department/DepartmentMain/DepartmentMain';
@@ -20,14 +21,15 @@ class Department extends Component {
     pageNum: PropTypes.number,
     pageSize: PropTypes.number,
     allDepartment: PropTypes.object,
-    allUser: PropTypes.object,
-    allStation: PropTypes.object,
+    departmentUser: PropTypes.object,
+    DepartmentStation: PropTypes.object,
     showAssignStationModal: PropTypes.bool,
     showAssignUserModal: PropTypes.bool,
     getDepartmentList: PropTypes.func,
     getAllDepartment: PropTypes.func,
-    getAllUser: PropTypes.func,
-    getAllStation: PropTypes.func,
+    getDepartmentUser: PropTypes.func,
+    getDepartmentStation: PropTypes.func,
+    getStations: PropTypes.func,
     setDepartmentUser: PropTypes.func,
     setDepartmentStation: PropTypes.func,
   }
@@ -53,6 +55,7 @@ class Department extends Component {
     this.props.getAllDepartment({//请求所有部门
       enterpriseId, //this.props.enterpriseId,//'1010694160817111040',
     })
+    this.props.getStations();
   }
 
 
@@ -90,11 +93,11 @@ class Department extends Component {
   }
 }
 const mapStateToProps = (state) => ({
-    ...state.system.department.delete('allDepartment').delete('allUser').delete('allStation').toJS(),
+    ...state.system.department.delete('allDepartment').delete('departmentUser').delete('DepartmentStation').toJS(),
     allDepartment:state.system.department.get('allDepartment'),
-    allUser: state.system.department.get('allUser'),
-    allStation: state.system.department.get('allStation'),
-    stations: state.common.get('stations').toJS(),
+    departmentUser: state.system.department.get('departmentUser'),
+    DepartmentStation: state.system.department.get('DepartmentStation'),
+    stations: state.common.get('stations'),
     enterpriseId: getCookie('enterpriseId'),
     userId: getCookie('userId'),
     enterpriseName: getCookie('enterpriseName'),
@@ -106,9 +109,10 @@ const mapDispatchToProps = (dispatch) => ({
   getDepartmentList: payload => dispatch({type:departmentAction.GET_DEPARTMENT_LIST_SAGA, payload}),
   getDepartmentDetail: payload => dispatch({type:departmentAction.GET_DEPARTMENT_DETAIL_SAGA, payload}),
   getOtherPageDetail: (payload, {previous}) => dispatch({type:departmentAction.GET_OTHER_PAGE_DEPARTMENT_DETAIL_SAGA, payload, previous}),
-  getAllUser: payload => dispatch({type:departmentAction.GET_ALL_USER_SAGA,payload}),
+  getDepartmentUser: payload => dispatch({type:departmentAction.GET_DEPARTMENT_USER_SAGA,payload}),
+  getStations: payload => dispatch({type:commonAction.GET_DEVICES_SAGA,payload}),
   getAllDepartment: payload => dispatch({type:departmentAction.GET_ALL_DEPARTMENT_SAGA,payload}),
-  getAllStation: payload => dispatch({type:departmentAction.GET_ALL_STATION_SAGA,payload}),
+  getDepartmentStation: payload => dispatch({type:departmentAction.GET_DEPARTMENT_STATION_SAGA,payload}),
   setDepartmentUser: payload => dispatch({type:departmentAction.SET_DEPARTMENT_USER_SAGA,payload}),
   setDepartmentStation: payload => dispatch({type:departmentAction.SET_DEPARTMENT_STATION_SAGA,payload}),
   addDepartmentInfo: payload => dispatch({type:departmentAction.ADD_DEPARTMENT_INFO_SAGA, payload}),

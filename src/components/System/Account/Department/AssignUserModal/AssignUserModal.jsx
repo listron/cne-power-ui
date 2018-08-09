@@ -9,7 +9,6 @@ const TreeNode = Tree.TreeNode;
 
 class AssignUserModal extends Component {
   static propTypes = {
-    show: PropTypes.bool,
     selectedDepartment: PropTypes.array,
     currentUserId: PropTypes.string,//当前用户Id
     enterpriseId: PropTypes.string,//当前企业Id
@@ -37,6 +36,7 @@ class AssignUserModal extends Component {
       expandedKeys: hasChild ? [departmentId] : [props.enterpriseId],
       selectedKeys: [departmentId],
       showWarningTip: false,
+      warningTipText: ''
     };
   }
 
@@ -48,7 +48,7 @@ class AssignUserModal extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if(nextProps.userList.size !== this.props.userList.size && nextProps.userList.size > 0) {
+    if(nextProps.userList.size > 0) {
       this.setState({
         userList: nextProps.userList,
         selectedUserList: this.getDepartmentUserRange(this.state.selectedDepartment, nextProps.userList)
@@ -57,7 +57,7 @@ class AssignUserModal extends Component {
   }
 
   onCancelWarningTip = () => {
-      this.setState({
+    this.setState({
       showWarningTip: false,
       });
     }
@@ -77,18 +77,11 @@ class AssignUserModal extends Component {
   }
 
   onCancel = () => {
-    // Modal.confirm({
-    //   title: '关闭后将无法保存编辑信息！',
-    //   okText: '确定',
-    //   cancelText: '取消',
-    //   onOk: this.props.onCancel
-    // });
     this.setState({
       showWarningTip: true,
+      warningTipText: '关闭后将无法保持编辑信息!'
     });
   }
-
-  
 
   onSearch = (value) => {
     let userList = this.state.selectedUserList;
@@ -414,6 +407,7 @@ class AssignUserModal extends Component {
     if(this.state.userList.size === 0) {
       return null;
     }
+    const { showWarningTip, warningTipText } = this.state;
     return (
       <Modal
         visible={true}
@@ -422,11 +416,11 @@ class AssignUserModal extends Component {
         width={625}
       >
         <div className={styles.assignUserModal}>
-          {this.state.showWarningTip && 
+          {showWarningTip && 
           <WarningTip 
             style={{marginTop:'250px',width: '210px',height:'88px'}} 
             onCancel={this.onCancelWarningTip} 
-            onOK={this.onConfirmWarningTip} value="退出后信息无法保存!" />}
+            onOK={this.onConfirmWarningTip} value={warningTipText} />}
           <div className={styles.header}>
             <span>分配用户</span>
              <Search

@@ -1,14 +1,13 @@
 
 
 import React, { Component } from 'react';
-import { Table, Button, Select, Icon, Popover, Modal } from 'antd';
+import { Table, Button, Select, Icon, Popover } from 'antd';
 import CommonPagination from '../../../../Common/CommonPagination';
 import PropTypes from 'prop-types';
 import styles from './departmentMain.scss';
 import WarningTip from '../../../../Common/WarningTip';
 import AssignUserModal from '../AssignUserModal/AssignUserModal';
 import AssignStationModal from '../AssignStationModal/AssignStationModal';
-import { getCookie } from '../../../../../utils';
 
 const { Option } = Select;
 
@@ -25,8 +24,9 @@ class DepartmentTable extends Component {
     pageNum: PropTypes.number,
     pageSize: PropTypes.number,
     allDepartment: PropTypes.object,
-    allUser: PropTypes.object,
-    allStation: PropTypes.object,
+    stations: PropTypes.object,
+    departmentUser: PropTypes.object,
+    DepartmentStation: PropTypes.object,
     userId: PropTypes.string,
     enterpriseName: PropTypes.string,
     showAssignUserModal: PropTypes.bool,
@@ -39,8 +39,8 @@ class DepartmentTable extends Component {
     getDepartmentDetail: PropTypes.func,
     deleteDepartment: PropTypes.func,
     changeDepartmentStore: PropTypes.func,
-    getAllUser: PropTypes.func,
-    getAllStation: PropTypes.func,
+    getDepartmentUser: PropTypes.func,
+    getDepartmentStation: PropTypes.func,
     setDepartmentUser: PropTypes.func,
     setDepartmentStation: PropTypes.func,
   }
@@ -238,15 +238,15 @@ class DepartmentTable extends Component {
   }
 
   renderAssignUserModal() {
-    const { userId, enterpriseName, enterpriseId, allDepartment, allUser, getAllUser, setDepartmentUser, changeDepartmentStore, selectedDepartment} = this.props;
+    const { userId, enterpriseName, enterpriseId, allDepartment, departmentUser, getDepartmentUser, setDepartmentUser, changeDepartmentStore, selectedDepartment} = this.props;
     return (
       <AssignUserModal
         currentUserId={userId}
         enterpriseId={enterpriseId}
         enterpriseName={enterpriseName}
         departmentList={allDepartment}
-        userList={allUser}
-        getUserList={getAllUser}
+        userList={departmentUser}
+        getUserList={getDepartmentUser}
         onSetDepartmentUser={setDepartmentUser}
         onCancel={()=>changeDepartmentStore({showAssignUserModal: false})}
         selectedDepartment={selectedDepartment}
@@ -255,23 +255,24 @@ class DepartmentTable extends Component {
   }
 
   renderAssignStationModal() {
-    const { showAssignStationModal, allDepartment, allStation, getAllStation, setDepartmentStation, changeDepartmentStore, selectedDepartment, enterpriseId} = this.props;
-    return 
+    const { enterpriseName, enterpriseId, allDepartment, DepartmentStation, stations, getDepartmentStation, setDepartmentStation, changeDepartmentStore, selectedDepartment} = this.props;
+    return (
       <AssignStationModal
-        show={showAssignStationModal}
         enterpriseId={enterpriseId}
-        enterpriseName={loginData.get('enterpriseName')}
+        enterpriseName={enterpriseName}
         departmentList={allDepartment}
-        stationList={allStation}
-        getStationList={getAllStation}
+        allStationList={stations}
+        stationList={DepartmentStation}
+        getStationList={getDepartmentStation}
         onSetDepartmentStation={setDepartmentStation}
         onCancel={()=>changeDepartmentStore({showAssignStationModal: false})}
         selectedDepartment={selectedDepartment}
-     />
+      />
+    );
   }
 
   render(){
-    const { departmentData, selectedDepartment, totalNum, loading, showAssignUserModal } = this.props;
+    const { departmentData, selectedDepartment, totalNum, loading, showAssignUserModal, showAssignStationModal } = this.props;
     const { showWarningTip, warningTipText, hiddenWarningTipCancelText } = this.state;
     return (
       <div className={styles.departmentList}>
@@ -304,7 +305,7 @@ class DepartmentTable extends Component {
           <span className={styles.cancel} onClick={this.cancelRowSelect}>取消选中</span>
         </div>
         {showAssignUserModal && this.renderAssignUserModal()}
-        {this.renderAssignStationModal()}
+        {showAssignStationModal && this.renderAssignStationModal()}
       </div>
     )
   }

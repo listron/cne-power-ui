@@ -34,17 +34,6 @@ class RoleTable extends Component {
     })
   }
 
-  
-
-  // tableChange = (pagination,filter,sorter) => {//排序，筛选
-  //   const sort = sorter.field;
-  //   const ascend = sorter.order==='ascend';
-  //   this.props.getRoleList({
-  //     sort,
-  //     ascend,
-  //   });
-  // }
-
   roleHandle = (value) => {//编辑
     const { selectedRole } = this.props;
     if(value === 'edit'){
@@ -61,7 +50,7 @@ class RoleTable extends Component {
   createHandleOption = () => {//生成操作下拉框
     const { selectedRole } = this.props;      
     return (
-      <Select disabled={selectedRole.length===0} onSelect={this.roleHandle} placeholder="操作" dropdownMatchSelectWidth={false} dropdownClassName={styles.handleDropdown}>
+      <Select disabled={selectedRole.length===0} onChange={this.roleHandle} value="操作" placeholder="操作" dropdownMatchSelectWidth={false} dropdownClassName={styles.handleDropdown}>
         <Option value="edit" disabled={selectedRole.length>1||selectedRole.some(item=>item.isPre===0)}>编辑</Option>
         <Option value="delete" disabled={selectedRole.some(item=>item.isPre===0)}>删除</Option>
       </Select>

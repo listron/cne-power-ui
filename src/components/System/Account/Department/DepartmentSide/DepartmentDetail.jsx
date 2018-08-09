@@ -11,6 +11,9 @@ import AssignStationModal from '../AssignStationModal/AssignStationModal';
 class DepartmentDetail extends Component {
   static propTypes = {
     enterpriseId: PropTypes.string,
+    userId: PropTypes.string,
+    enterpriseName: PropTypes.string,
+    enterpriseName: PropTypes.string,
     departmentSource: PropTypes.number,
     departmentName: PropTypes.string, 
     parentDepartmentName: PropTypes.string, 
@@ -21,8 +24,8 @@ class DepartmentDetail extends Component {
     pageSize: PropTypes.number,
     totalNum: PropTypes.number,
     allDepartment: PropTypes.object,
-    allUser: PropTypes.object,
-    allStation: PropTypes.object,
+    departmentUser: PropTypes.object,
+    DepartmentStation: PropTypes.object,
     loginData: PropTypes.object,
     showAssignUserModal: PropTypes.bool,
     showAssignStationModal: PropTypes.bool,
@@ -32,9 +35,8 @@ class DepartmentDetail extends Component {
     getDepartmentDetail: PropTypes.func,
     changeDepartmentStore: PropTypes.func,
     onShowSideChange: PropTypes.func,
-    getAllDepartment: PropTypes.func,
-    getAllUser: PropTypes.func,
-    getAllStation: PropTypes.func,
+    getDepartmentUser: PropTypes.func,
+    getDepartmentStation: PropTypes.func,
     setDepartmentUser: PropTypes.func,
     setDepartmentStation: PropTypes.func,
     departmentDetail: PropTypes.object,
@@ -44,7 +46,7 @@ class DepartmentDetail extends Component {
     super(props);
     this.state = {
       showWarningTip: false,
-      warningTipText: '!',
+      warningTipText: '',
     }
   }
 
@@ -60,7 +62,9 @@ class DepartmentDetail extends Component {
   }
 
   setDepartmentStation = () => {
-    console.log(this.props.departmentDetail);
+    this.props.changeDepartmentStore({
+      showAssignStationModal: true,
+    })
   }
 
   confirmWarningTip = () => {
@@ -117,44 +121,42 @@ class DepartmentDetail extends Component {
   }
 
   renderAssignUserModal() {
-    const { showAssignUserModal, departmentData, departmentDetail, loginData, allDepartment, allUser, getAllDepartment, getAllUser, setDepartmentUser, changeDepartmentStore} = this.props;
+    const { userId, enterpriseId, enterpriseName, departmentData, departmentDetail, allDepartment, departmentUser, getDepartmentUser, setDepartmentUser, changeDepartmentStore} = this.props;
     let detailIndex = departmentData.findIndex(e=>e.departmentId===departmentDetail.departmentId);
-    return 
+    return (
       <AssignUserModal
-        show={showAssignUserModal}
-        currentUserId={loginData.get('userId')}
-        enterpriseId={loginData.get('enterpriseId')}
-        enterpriseName={loginData.get('enterpriseName')}
+        currentUserId={userId}
+        enterpriseId={enterpriseId}
+        enterpriseName={enterpriseName}
         departmentList={allDepartment}
-        userList={allUser}
-        getDepartmentTreeData={getAllDepartment}
-        getUserList={getAllUser}
+        userList={departmentUser}
+        getUserList={getDepartmentUser}
         onSetDepartmentUser={setDepartmentUser}
         onCancel={()=>changeDepartmentStore({showAssignUserModal: false})}
         selectedDepartment={departmentData.slice(detailIndex, detailIndex+1)}
      />
+    );
   }
 
   renderAssignStationModal() {
-    const { showAssignStationModal, departmentData, departmentDetail, loginData, allDepartment, allStation, getAllDepartment, getAllStation, setDepartmentStation, changeDepartmentStore} = this.props;
+    const { enterpriseId, enterpriseName, departmentData, departmentDetail, allDepartment, DepartmentStation, getDepartmentStation, setDepartmentStation, changeDepartmentStore} = this.props;
     let detailIndex = departmentData.findIndex(e=>e.departmentId===departmentDetail.departmentId);
-    return 
+    return (
       <AssignStationModal
-        show={showAssignStationModal}
-        enterpriseId={loginData.get('enterpriseId')}
-        enterpriseName={loginData.get('enterpriseName')}
+        enterpriseId={enterpriseId}
+        enterpriseName={enterpriseName}
         departmentList={allDepartment}
-        stationList={allStation}
-        getDepartmentTreeData={getAllDepartment}
-        getStationList={getAllStation}
+        stationList={DepartmentStation}  
+        getStationList={getDepartmentStation}
         onSetDepartmentStation={setDepartmentStation}
         onCancel={()=>changeDepartmentStore({showAssignStationModal: false})}
         selectedDepartment={departmentData.slice(detailIndex, detailIndex+1)}
-     />
+      />
+    );
   }
 
   render(){
-    const { departmentDetail,departmentData } = this.props;
+    const { departmentDetail,departmentData, showAssignUserModal, showAssignStationModal } = this.props;
     const { showWarningTip, warningTipText } = this.state;
     let userFullNames = (departmentDetail.userFullNameData && departmentDetail.userFullNameData.length > 0 )? departmentDetail.userFullNameData.map(e=>e.userFullName).join(','):' -- ';
     let stationNames = (departmentDetail.stationNameData && departmentDetail.stationNameData.length > 0 )? departmentDetail.stationNameData.map(e=>e.stationName).join(','):' -- ';
@@ -211,8 +213,8 @@ class DepartmentDetail extends Component {
             <span className={styles.value}>{departmentDetail.updateTime}</span> 
           </div>
         </div>
-        {this.renderAssignUserModal()}
-        {this.renderAssignStationModal()}
+        {showAssignUserModal && this.renderAssignUserModal()}
+        {showAssignStationModal && this.renderAssignStationModal()}
       </div>
     )
   }

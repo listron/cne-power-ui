@@ -1,6 +1,6 @@
 import immutable from 'immutable';
 
-import { CommonAction } from '../../constants/actionTypes/commonAction';
+import { commonAction } from '../../constants/actionTypes/commonAction';
 
 var initState = immutable.fromJS({
   topMenu:{
@@ -19,26 +19,26 @@ var initState = immutable.fromJS({
 
 const defectReducer = (state = initState, action) => {
   switch (action.type) {
-    case CommonAction.COMMON_FETCH:
+    case commonAction.COMMON_FETCH:
       return state.set('commonFetching', true)
-    case CommonAction.CHANGE_COMMON_STORE: 
+    case commonAction.CHANGE_COMMON_STORE: 
       return state.merge(immutable.fromJS(action.payload))
-    case CommonAction.GET_STATIONS_SAGA_SUCCESS:
+    case commonAction.GET_STATIONS_SUCCESS:
       return state.set('commonFetching', false)
                   .set('stations', immutable.fromJS(action.params.data))
-    case CommonAction.GET_DEVICETYPES_SAGA_SUCCESS:
+    case commonAction.GET_DEVICETYPES_SUCCESS:
       return state.set('commonFetching', false)
                   .set('deviceTypes',immutable.fromJS(action.params.data));
-    case CommonAction.GET_DEVICES_SAGA_SUCCESS:
+    case commonAction.GET_DEVICES_SUCCESS:
       return state.set('commonFetching', false)
                   .set('devices',immutable.fromJS(action.params.data));
-    case CommonAction.GET_PARTITIONS_SAGA_SUCCESS: 
+    case commonAction.GET_PARTITIONS_SUCCESS: 
       return state.set('commonFetching', false)
                   .set('partitions',immutable.fromJS(action.params.data));
-    case CommonAction.GET_STATIONS_SAGA_FAIL:
-    case CommonAction.GET_DEVICETYPES_SAGA_FAIL:
-    case CommonAction.GET_DEVICES_SAGA_FAIL:
-    case CommonAction.GET_PARTITIONS_SAGA_FAIL:
+    case commonAction.GET_STATIONS_FAIL:
+    case commonAction.GET_DEVICETYPES_FAIL:
+    case commonAction.GET_DEVICES_FAIL:
+    case commonAction.GET_PARTITIONSA_FAIL:
   }
   return state;
 }

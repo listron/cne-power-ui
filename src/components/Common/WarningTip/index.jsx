@@ -54,8 +54,8 @@ class WarningTip extends Component {
             <span className={styles.text}>{value}</span>
           </div>
           <div className={styles.handle}>
-            {(onCancel && !hiddenCancel) && <span onClick={this.onCancel}>取消</span>}
-            {onOK && <span onClick={this.onOK}>确认</span>}
+            {(onCancel && !hiddenCancel) && <span className={styles.cancel} onClick={this.onCancel}>取消</span>}
+            {onOK && <span className={styles.confirm} onClick={this.onOK}>确认</span>}
           </div>
         </div>
       </Modal>

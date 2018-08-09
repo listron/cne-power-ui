@@ -16,7 +16,6 @@ class AddForm extends Component {
     continueAddLoading: PropTypes.bool,
     enterpriseId: PropTypes.string,
     form: PropTypes.object,
-    stations: PropTypes.array,
     allDepartment: PropTypes.object,
     addDepartmentInfo: PropTypes.func,
   }
