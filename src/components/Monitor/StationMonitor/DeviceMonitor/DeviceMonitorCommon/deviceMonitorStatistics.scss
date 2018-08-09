@@ -13,7 +13,7 @@
     .progressNum, .progressText{
       width: 100%;
       display: flex;
-      line-height: 30px;
+      @include lineheight(24px);
       .leftText, .rightText {
         width: 50%;
         color: $darkColor;
@@ -27,7 +27,8 @@
       }
     }
     .progressText{
-      line-height: 14px;
+      @include lineheight(14px);
+      height: 14px;
       .leftText, .rightText {
         font-size: 14px;
         color: $darkColor;
@@ -37,5 +38,12 @@
   .timerGen{
     width: 140px;
     margin-right: 16px;
+    .genNum{
+      font-size: 24px;
+      color: $darkColor;
+    }
+    .genText{
+      color: $lightColor;
+    }
   }
 }
