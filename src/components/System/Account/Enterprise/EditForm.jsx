@@ -68,10 +68,10 @@ class EditForm extends Component {
           <span className={styles.instructionText}>(30字以内)</span>
         </FormItem>
         <FormItem label="注册手机" >
-          {getFieldDecorator('createPhone',{
-            initialValue: enterpriseDetail.createPhone
+          {getFieldDecorator('phoneNum',{
+            initialValue: enterpriseDetail.phoneNum
           })(
-            <span>{enterpriseDetail.createPhone}</span>
+            <span>{enterpriseDetail.phoneNum}</span>
           )}
         </FormItem>
         <FormItem label="企业域名" >

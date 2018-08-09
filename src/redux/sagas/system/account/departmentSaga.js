@@ -24,23 +24,32 @@ function *getDepartmentList(action){//请求部门列表数据
       type:  departmentAction.GET_DEPARTMENT_FETCH_SUCCESS,
       payload:{
         ...payload,
-        departmentData: response.data.data.departmentData || [],
-        totalNum: response.data.data.totalNum,
+        departmentData: response.data.data.context || [],
+        totalNum: response.data.data.totalNum || 0,
         buttonLoading: false
       },
     });
   }catch(e){
+    yield put({
+      type:  departmentAction.GET_DEPARTMENT_FETCH_SUCCESS,
+      payload:{
+        ...payload,
+        departmentData: [],
+        totalNum: 0,
+        buttonLoading: false
+      },
+    });
     console.log(e);
   }
 }
-//todo - 删除部门
-function *deleteDepartment(action){
+
+function *deleteDepartment(action){  // 删除部门
   const { payload } = action;
-  const url = '/mock/system/deleteDepartment';
-  // const url = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.system.getDepartmentList}`
+  // const url = '/mock/system/deleteDepartment';
+  const url = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.system.departmentInfo}/${payload.departmentId}`
   try{
     yield put({ type:departmentAction.DEPARTMENT_FETCH });
-    const response = yield call(axios.delete,url,payload);
+    const response = yield call(axios.delete,url);
     if(response.data.code === "10000"){
       yield put({//清空选中项
         type:  departmentAction.CHANGE_DEPARTMENT_STORE,
@@ -50,15 +59,19 @@ function *deleteDepartment(action){
       })
       const params = yield select(state => ({//继续请求部门列表
         enterpriseId: payload.enterpriseId,
-        departmentSource: state.department.get('departmentSource'),
-        departmentName: state.department.get('departmentName'),
-        parentDepartmentName: state.department.get('parentDepartmentName'),
-        stationName: state.department.get('stationName'),
-        sort: state.department.get('sort'),
-        ascend: state.department.get('ascend'),
-        pageNum: state.department.get('pageNum'),
-        pageSize: state.department.get('pageSize'),
+        departmentSource: state.system.department.get('departmentSource'),
+        departmentName: state.system.department.get('departmentName'),
+        parentDepartmentName: state.system.department.get('parentDepartmentName'),
+        stationName: state.system.department.get('stationName'),
+        sort: state.system.department.get('sort'),
+        ascend: state.system.department.get('ascend'),
+        pageNum: state.system.department.get('pageNum'),
+        pageSize: state.system.department.get('pageSize'),
       }));
+      yield put({//重新请求所有部门信息
+        type:  departmentAction.GET_ALL_DEPARTMENT_SAGA,
+        payload: { enterpriseId: payload.enterpriseId},
+      })
       yield put({
         type:  departmentAction.GET_DEPARTMENT_LIST_SAGA,
         payload: params,
@@ -66,6 +79,13 @@ function *deleteDepartment(action){
     }
   }catch(e){
     console.log(e);
+    yield put({//清空选中项
+      type:  departmentAction.CHANGE_DEPARTMENT_STORE,
+      payload: {
+        loading: false,
+        buttonLoading: false,
+      },
+    })
   }
 }
 
@@ -120,21 +140,28 @@ function *getAllStation(action){//获取所有电站
       },
     });
   }catch(e){
+    yield put({
+      type:  departmentAction.GET_DEPARTMENT_FETCH_SUCCESS,
+      payload:{
+        loading: false,
+        allStation: []
+      },
+    });
     console.log(e);
   }
 }
 
 function *getDepartmentDetail(action){// 请求单部门详细数据信息
   const { payload } = action;
-  const url = '/mock/system/departmentDetail';
-  // const url = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.system.departmentInfo}/${payload.departmentId}`
+  // const url = '/mock/system/departmentDetail';
+  const url = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.system.departmentInfo}/${payload.departmentId}`
   try{
     yield put({ type:departmentAction.DEPARTMENT_FETCH });
     const response = yield call(axios.get,url);
     yield put({
       type:  departmentAction.GET_DEPARTMENT_FETCH_SUCCESS,
       payload:{
-        departmentDetail: response.data.data,
+        departmentDetail: response.data && response.data.data || {},
       },
     });
   }catch(e){
@@ -144,15 +171,15 @@ function *getDepartmentDetail(action){// 请求单部门详细数据信息
 
 function *getOtherPageDetail(action){//部门详情页第一条查看前一条详情/最后一条看下一条详情=>翻页+请求详情
   const { payload, previous } = action;
-  const listUrl = '/mock/system/departmentList';
-  // const listUrl = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.system.getDepartmentList}`
+  // const listUrl = '/mock/system/departmentList';
+  const listUrl = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.system.getDepartmentList}`
   try{
     yield put({ type:departmentAction.DEPARTMENT_FETCH });
     const listResponse = yield call(axios.post,listUrl,payload);
     const { departmentData, totalNum } = listResponse.data.data;
     const { departmentId } = previous?departmentData[departmentData.length - 1]:departmentData[0];
-    const detailUrl = '/mock/system/departmentDetail';
-    // const detailUrl = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.system.departmentInfo}/${departmentId}`
+    // const detailUrl = '/mock/system/departmentDetail';
+    const detailUrl = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.system.departmentInfo}/${departmentId}`
     const detailResponse = yield call(axios.get,detailUrl);
     yield put({
       type:  departmentAction.GET_DEPARTMENT_FETCH_SUCCESS,
@@ -170,8 +197,8 @@ function *getOtherPageDetail(action){//部门详情页第一条查看前一条�
 
 function *addDepartmentInfo(action){//新建部门信息
   const { payload } = action;
-  const url = '/mock/system/addDepartment';
-  // const url = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.system.departmentInfo}`
+  // const url = '/mock/system/addDepartment';
+  const url = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.system.departmentInfo}`
   try{
     yield put({ //按钮的loading
       type:departmentAction.CHANGE_DEPARTMENT_STORE,
@@ -192,29 +219,41 @@ function *addDepartmentInfo(action){//新建部门信息
       });
       const params = yield select(state => ({//继续请求部门列表
         enterpriseId: payload.enterpriseId,
-        departmentSource: state.department.get('departmentSource'),
-        departmentName: state.department.get('departmentName'),
-        parentDepartmentName: state.department.get('parentDepartmentName'),
-        stationName: state.department.get('stationName'),
-        sort: state.department.get('sort'),
-        ascend: state.department.get('ascend'),
-        pageNum: state.department.get('pageNum'),
-        pageSize: state.department.get('pageSize'),
+        departmentSource: state.system.department.get('departmentSource'),
+        departmentName: state.system.department.get('departmentName'),
+        parentDepartmentName: state.system.department.get('parentDepartmentName'),
+        stationName: state.system.department.get('stationName'),
+        sort: state.system.department.get('sort'),
+        ascend: state.system.department.get('ascend'),
+        pageNum: state.system.department.get('pageNum'),
+        pageSize: state.system.department.get('pageSize'),
       }));
+      yield put({//请求所有部门信息
+        type:  departmentAction.GET_ALL_DEPARTMENT_SAGA,
+        payload: { enterpriseId: payload.enterpriseId},
+      })
       yield put({
         type:  departmentAction.GET_DEPARTMENT_LIST_SAGA,
         payload: params,
       });
     }
   }catch(e){
-    console.log(e);
+    console.log(e)
+    yield put({
+      type:  departmentAction.CHANGE_DEPARTMENT_STORE,
+      payload:{
+        buttonLoading: false,
+        continueAddLoading: false,
+        loading: false,
+      }
+    });
   }
 }
 
 function *editDepartmentInfo(action){//编辑部门信息
   const { payload } = action;
-  const url = '/mock/system/editDepartment';
-  // const url = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.system.departmentInfo}`
+  // const url = '/mock/system/editDepartment';
+  const url = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.system.departmentInfo}`
   try{
     yield put({ //按钮的loading
       type:departmentAction.CHANGE_DEPARTMENT_STORE,
@@ -230,14 +269,14 @@ function *editDepartmentInfo(action){//编辑部门信息
       });
       const params = yield select(state => ({//继续请求部门列表
         enterpriseId: payload.enterpriseId,
-        departmentSource: state.department.get('departmentSource'),
-        departmentName: state.department.get('departmentName'),
-        parentDepartmentName: state.department.get('parentDepartmentName'),
-        stationName: state.department.get('stationName'),
-        sort: state.department.get('sort'),
-        ascend: state.department.get('ascend'),
-        pageNum: state.department.get('pageNum'),
-        pageSize: state.department.get('pageSize'),
+        departmentSource: state.system.department.get('departmentSource'),
+        departmentName: state.system.department.get('departmentName'),
+        parentDepartmentName: state.system.department.get('parentDepartmentName'),
+        stationName: state.system.department.get('stationName'),
+        sort: state.system.department.get('sort'),
+        ascend: state.system.department.get('ascend'),
+        pageNum: state.system.department.get('pageNum'),
+        pageSize: state.system.department.get('pageSize'),
       }));
       yield put({
         type:  departmentAction.GET_DEPARTMENT_LIST_SAGA,
@@ -245,6 +284,13 @@ function *editDepartmentInfo(action){//编辑部门信息
       });
     }
   }catch(e){
+    yield put({ //按钮的loading
+      type:departmentAction.CHANGE_DEPARTMENT_STORE,
+      payload: { 
+        buttonLoading: false,
+        continueAddLoading: false,
+        loading: false, }
+    });
     console.log(e);
   }
 }

@@ -7,12 +7,11 @@ var initState = immutable.fromJS({
   buttonLoading: false,//普通按钮交互loading
   continueAddLoading: false,//继续添加部门按钮交互loading
   showPage: 'list',//默认展示列表页list,可展示新建add,编辑edit,查看detail页,
-  departmentSource: 2, //部门类型全部2，预设0，自定义1
+  departmentSource: 0, //部门类型全部2，预设0，自定义1
   departmentName:'', //部门名称
   parentDepartmentName: '',//所属部门
   stationName: '', //负责电站
-  sort: '', //排序字段
-  ascend: true,//排序方式
+  sort: '', //排序 => 'field,0/1'field代表排序字段，0升序,1降序
   totalNum: 0,//部门总数
   pageNum: 1,//当前页号
   pageSize: 10,//每页容纳条数

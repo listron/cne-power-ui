@@ -121,7 +121,6 @@
     height:31px;
 
   }
-
   /*输入框前面的小方块*/
   .ant-input-affix-wrapper .ant-input-prefix {
     left: 12px;
@@ -185,7 +184,7 @@
     margin-right: 0;
     white-space: nowrap;
   }
-  .ant-checkbox-checked .ant-checkbox-inner{
+  .ant-checkbox-checked .ant-checkbox-inner, .ant-checkbox-indeterminate .ant-checkbox-inner{
     background-color: $themeColor;
     border-color: $themeColor;
   }

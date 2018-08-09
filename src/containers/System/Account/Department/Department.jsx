@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import TransitionContainer from '../../../../components/Common/TransitionContainer';
 import DepartmentMain from '../../../../components/System/Account/Department/DepartmentMain/DepartmentMain';
 import DepartmentSide from '../../../../components/System/Account/Department/DepartmentSide/DepartmentSide';
+import { getCookie } from '../../../../utils';
 
 class Department extends Component {
   static propTypes = {
@@ -16,10 +17,9 @@ class Department extends Component {
     parentDepartmentName: PropTypes.string,
     stationName: PropTypes.string,
     sort: PropTypes.string,
-    ascend: PropTypes.bool,
     pageNum: PropTypes.number,
     pageSize: PropTypes.number,
-    allDepartment: PropTypes.object,
+    allDepartment: PropTypes.array,
     allUser: PropTypes.object,
     showAssignStationModal: PropTypes.bool,
     showAssignUserModal: PropTypes.bool,
@@ -36,20 +36,20 @@ class Department extends Component {
     }
   }
   componentDidMount(){
+    const enterpriseId = getCookie('enterpriseId');
     const params = {
-      enterpriseId: '1010694160817111040', //this.props.enterpriseId,//'1010694160817111040',
+      enterpriseId, //this.props.enterpriseId,//'1010694160817111040',
       departmentSource: this.props.departmentSource,
       departmentName: this.props.departmentName,
       parentDepartmentName: this.props.parentDepartmentName,
       stationName: this.props.stationName,
       sort: this.props.sort,
-      ascend: this.props.ascend,
       pageNum: this.props.pageNum,
       pageSize: this.props.pageSize,
     }
     this.props.getDepartmentList(params)//请求部门列表
     this.props.getAllDepartment({//请求所有部门
-      enterpriseId: '1010694160817111040', //this.props.enterpriseId,//'1010694160817111040',
+      enterpriseId, //this.props.enterpriseId,//'1010694160817111040',
     })
   }
 
@@ -68,9 +68,10 @@ class Department extends Component {
   render() {
     const { showPage, showAssignStationModal, showAssignUserModal } = this.props;
     const { showSidePage } = this.state;
+    const enterpriseId = getCookie('enterpriseId');
     return (
       <div className={styles.departmentContainer}>
-        <DepartmentMain {...this.props} onWarningTipToggle={this.onWarningTipToggle} />
+        <DepartmentMain {...this.props} onWarningTipToggle={this.onWarningTipToggle} enterpriseId={enterpriseId} />
         <TransitionContainer
           show={showPage!=='list'}
           onEnter={this.onToggleSide}
@@ -78,7 +79,7 @@ class Department extends Component {
           timeout={500}
           effect="side"
         >
-          <DepartmentSide {...this.props} showSidePage={showSidePage} onShowSideChange={this.onShowSideChange} />
+          <DepartmentSide {...this.props} showSidePage={showSidePage} onShowSideChange={this.onShowSideChange} enterpriseId={enterpriseId} />
         </TransitionContainer>
         {showAssignStationModal && null}
         {showAssignUserModal && null}
@@ -90,7 +91,6 @@ class Department extends Component {
 const mapStateToProps = (state) => ({
     ...state.system.department.toJS(),
     stations: state.common.get('stations').toJS(),
-    enterpriseId: state.common.get('enterpriseId'),
 });
 
 const mapDispatchToProps = (dispatch) => ({
