@@ -24,10 +24,20 @@ class DeviceMonitor extends Component {
     })
   }
 
+  // '206': {  // 组串式逆变器：206
+  // '202': {  // 汇流箱： 202
+  // '304': {  // 箱变： 304
+  // '203': {  // 气象站： 203
+
   render() {
+    const { deviceTypeCode } = this.props.match.params;
     return (
       <div className={styles.inverterMonitor}>
         实时监控页面啊！
+        {deviceTypeCode === '206' && <div>组串式逆变器</div> }
+        {deviceTypeCode === '202' && <div>汇流箱：</div> }
+        {deviceTypeCode === '304' && <div>箱变：</div> }
+        {deviceTypeCode === '203' && <div>气象站：</div> }
       </div>
 
     );

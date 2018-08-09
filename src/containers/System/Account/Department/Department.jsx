@@ -17,7 +17,6 @@ class Department extends Component {
     parentDepartmentName: PropTypes.string,
     stationName: PropTypes.string,
     sort: PropTypes.string,
-    ascend: PropTypes.bool,
     pageNum: PropTypes.number,
     pageSize: PropTypes.number,
     allDepartment: PropTypes.object,
@@ -46,8 +45,7 @@ class Department extends Component {
       departmentName: this.props.departmentName,
       parentDepartmentName: this.props.parentDepartmentName,
       stationName: this.props.stationName,
-      // sort: this.props.sort,
-      // ascend: this.props.ascend,
+      sort: this.props.sort,
       pageNum: this.props.pageNum,
       pageSize: this.props.pageSize,
     }

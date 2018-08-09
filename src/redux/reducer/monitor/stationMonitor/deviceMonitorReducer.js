@@ -3,10 +3,10 @@ import { deviceAction } from '../../../../constants/actionTypes/monitor/stationm
 
 var initState = immutable.fromJS({
   loading: false,
-  deviceCode: '',  // 暂不用
-  deviceName: '',  // 暂不用
-  deviceTypeCode: '',  // 暂不用
-  deviceTypeName: '',  // 暂不用
+  // deviceCode: '',  // 暂不用
+  // deviceName: '',  // 暂不用
+  // deviceTypeCode: '',  // 暂不用
+  // deviceTypeName: '',  // 暂不用
 
   deviceDetail: {},  // 单设备详情
   deviceTenMin: [],  // 但设备10min数据

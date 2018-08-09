@@ -51,13 +51,12 @@ class Enterprise extends Component {
 
   render() {
     const { showPage } = this.props;
-    const enterpriseId = getCookie('enterpriseId');
     return (
       <div className={styles.enterpriseContainer}>
         {
           showPage==='detail' ?
           <EnterpriseDetail {...this.props} />:
-          <EnterpriseEdit {...this.props} enterpriseId={enterpriseId} />
+          <EnterpriseEdit {...this.props} />
         }
         {/*注：不要删除，此备注用于展示企业列表，可能后续会用。
         <EnterpriseMain {...this.props} />
