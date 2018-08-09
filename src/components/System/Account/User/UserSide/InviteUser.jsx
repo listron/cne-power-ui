@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import styles from './userSide.scss';
 import WarningTip from '../../../../Common/WarningTip';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
+import moment from 'moment';
 
 //用户邀请页
 class InviteUser extends Component {
@@ -63,7 +64,7 @@ class InviteUser extends Component {
         </div>
         <div className={styles.mainPart} >
           <div className={styles.inviteMainPart} >
-            <div>二维码<span>有效期为7天(有效期至2018-08-03)</span>，请尽快分享给用户加入系统~</div>
+            <div className={styles.qrTip} >二维码<span>有效期为7天(有效期至{moment().add(7, 'days').format('YYYY-MM-DD HH:mm:ss')})</span>，请尽快分享给用户加入系统~</div>
             <div className={styles.inviteOperate} >
               <Input value={inviteData.get('link')} type="text" readOnly={true}  className={styles.inviteInput} />
               <CopyToClipboard text={inviteData.get('link')} onCopy={this.onCopy}>

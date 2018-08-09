@@ -113,6 +113,14 @@
               vertical-align: bottom;
               margin-left: 20px;
             }
+            .ant-btn:hover, .ant-btn:focus{
+              color: #199475;
+            }
+          }
+        }
+        .qrTip{
+          span{
+            color: #e08031;
           }
         }
       }
