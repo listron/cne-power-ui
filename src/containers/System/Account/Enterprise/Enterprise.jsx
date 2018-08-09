@@ -77,7 +77,6 @@ class Enterprise extends Component {
 }
 const mapStateToProps = (state) => ({
   ...state.system.enterprise.toJS(),
-  enterpriseId: state.common.get('enterpriseId'),
 });
 
 const mapDispatchToProps = (dispatch) => ({

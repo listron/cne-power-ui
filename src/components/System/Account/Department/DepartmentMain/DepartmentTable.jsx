@@ -21,7 +21,6 @@ class DepartmentTable extends Component {
     parentDepartmentName: PropTypes.string, 
     stationName: PropTypes.string, 
     sort: PropTypes.string, 
-    ascend: PropTypes.bool, 
     pageNum: PropTypes.number,
     pageSize: PropTypes.number,
     allDepartment: PropTypes.array,
@@ -65,7 +64,6 @@ class DepartmentTable extends Component {
       parentDepartmentName: this.props.parentDepartmentName, 
       stationName: this.props.stationName, 
       sort: this.props.sort, 
-      ascend: this.props.ascend, 
       pageNum: currentPage,
       pageSize,
     })
@@ -75,14 +73,15 @@ class DepartmentTable extends Component {
       selectedDepartment:selectedRows
     })
   }
-  onWarningTipOK = () => {//删除部门，todo
+  onWarningTipOK = () => {//删除部门，拒绝编辑部门提示框
     const { selectedDepartment,deleteDepartment } = this.props;
-    const selectedDepartmentHasChild = selectedDepartment.map(e=>e.hasChildren).some(e=>!!e);
+    const selectedDepartmentHasChild = selectedDepartment.map(e=>e.hasChildren).some(e=>!!e);//有子部门不得删除
+    const forbiddenDelete = selectedDepartment.some(e=>e.departmentSource === 0); //预设电站不得删除
     this.setState({
       showWarningTip:false,
       hiddenWarningTipCancelText: false
     })
-    selectedDepartmentHasChild || deleteDepartment({
+    forbiddenDelete || selectedDepartmentHasChild || deleteDepartment({
       departmentId: selectedDepartment.map(e=>e.departmentId).join(','),
       enterpriseId: this.props.enterpriseId
     });
@@ -99,15 +98,14 @@ class DepartmentTable extends Component {
   }
   tableChange = (pagination,filter,sorter) => {//部门排序
     const sort = sorter.field;
-    const ascend = sorter.order==='ascend';
+    const ascend = sorter.order==='ascend'?'0':'1';
     this.props.getDepartmentList({
       enterpriseId: this.props.enterpriseId,
       departmentSource: this.props.departmentSource,
       departmentName: this.props.departmentName, 
       parentDepartmentName: this.props.parentDepartmentName, 
       stationName: this.props.stationName, 
-      sort, 
-      ascend, 
+      sort:`${sort},${ascend}`, 
       pageNum: this.props.pageNum,
       pageSize: this.props.pageSize,
     })
@@ -124,14 +122,30 @@ class DepartmentTable extends Component {
   departmentHandle = (value) => {//编辑，删除，分配用户/电站
     const { selectedDepartment } = this.props;
     if(value==='edit'){
-      this.props.changeDepartmentStore({
-        showPage: 'edit',
-        departmentDetail: selectedDepartment[0],
-      });
+      const forbiddenEdit = selectedDepartment.some(e=>e.departmentSource === 0);
+      if(forbiddenEdit){
+        this.setState({
+          showWarningTip: true,
+          warningTipText: '不得编辑预设部门!',
+          hiddenWarningTipCancelText: true
+        })
+      }else{
+        this.props.changeDepartmentStore({
+          showPage: 'edit',
+          departmentDetail: selectedDepartment[0],
+        });
+      }
     }else if(value==='delete'){
       const selectedDepartmentHasChild = selectedDepartment.map(e=>e.hasChildren).some(e=>!!e);
       const selectedDepartmentHasMember = selectedDepartment.map(e=>e.hasMember).some(e=>!!e);
-      if(selectedDepartmentHasChild){
+      const forbiddenDelete = selectedDepartment.some(e=>e.departmentSource === 0)
+      if(forbiddenDelete){
+        this.setState({
+          showWarningTip: true,
+          warningTipText: '不得删除预设部门!',
+          hiddenWarningTipCancelText: true
+        })
+      }else if(selectedDepartmentHasChild){
         this.setState({
           showWarningTip: true,
           warningTipText: '请先删除子部门!',
@@ -169,7 +183,7 @@ class DepartmentTable extends Component {
       editable = selectedDepartment.length === 1;
       [deletable, userAssignable, staionAssignable] = [true,true,true];
     }       
-    return (<Select onChange={this.departmentHandle} placeholder={'操作'} dropdownMatchSelectWidth={false} dropdownClassName={styles.handleDropdown}>
+    return (<Select onChange={this.departmentHandle} placeholder="操作" value="操作" dropdownMatchSelectWidth={false} dropdownClassName={styles.handleDropdown}>
       <Option value="edit" disabled={!editable} >编辑</Option>
       <Option value="delete" disabled={!deletable} >删除</Option>
       <Option value="assignUser" disabled={!userAssignable} >分配用户</Option>
