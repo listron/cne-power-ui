@@ -49,6 +49,8 @@ class InviteUser extends Component {
     });
   }
 
+  
+
   render(){
     const { showWarningTip, warningTipText, copied } = this.state;
     const { inviteData } = this.props;
@@ -71,8 +73,8 @@ class InviteUser extends Component {
             </div>
             <div className={styles.qrCode} >
               <img src={inviteData.get('QRLink')} />
-              <a href={inviteData.get('QRLink')} download="cnegroup" target="_blank" >下载二维码</a>
-              <Button href={inviteData.get('QRLink')} download={inviteData.get('QRLink')} onClick={(e,item)=>console.log(e, item)} target="_blank"  >下载二维码</Button>
+              {/* <a href={inviteData.get('QRLink')} download="cnegroup" target="_blank" onClick={e=>console.log(e)} >下载二维码</a> */}
+              <Button href={inviteData.get('QRLink')} download={inviteData.get('QRLink')}  target="_blank"  >下载二维码</Button>
             </div>
           </div>
         </div>
