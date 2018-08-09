@@ -1,0 +1,41 @@
+
+@import '../../../../../theme/theme.scss';
+.statisticsBox{
+  display: flex;
+  height: 100px;
+  .deviceIcon{
+    width: 170px;
+  }
+  .powerProgress{
+    display: flex;
+    flex-wrap: wrap;
+    width: 215px;
+    .progressNum, .progressText{
+      width: 100%;
+      display: flex;
+      line-height: 30px;
+      .leftText, .rightText {
+        width: 50%;
+        color: $darkColor;
+        font-size: 24px;
+      }
+      .leftText{
+        text-align: left;
+      }
+      .rightText{
+        text-align: right;
+      }
+    }
+    .progressText{
+      line-height: 14px;
+      .leftText, .rightText {
+        font-size: 14px;
+        color: $darkColor;
+      }
+    }
+  }
+  .timerGen{
+    width: 140px;
+    margin-right: 16px;
+  }
+}
