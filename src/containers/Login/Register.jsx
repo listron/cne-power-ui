@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import LoginForm from '../../components/Login/LoginForm';
 import RegisterForm from '../../components/Login/RegisterForm';
-import { LoginAction } from '../../constants/actionTypes/loginAction';
+import { loginAction } from '../../constants/actionTypes/loginAction';
 const { TabPane } = Tabs;
 
 class Register extends Component {
@@ -95,9 +95,9 @@ const mapStateToProps = (state) => ({
   error: state.login.get('error'),
 })
 const mapDispatchToProps = (dispatch) => ({
-  sendCode: params => dispatch({type: LoginAction.SEND_CODE_SAGA, params}),
-  checkEnterpriseDomain: params => dispatch({ type: LoginAction.CHECK_ENTERPRISE_DOMAIN_SAGA, params}),
-  registerEnterprise: params => dispatch({ type: LoginAction.REGISTER_ENTERPRISE_SAGA, params}),
-  phoneCodeRegister: params => dispatch({ type: LoginAction.PHONE_CODE_REGISTER_SAGA, params}),
+  sendCode: params => dispatch({type: loginAction.SEND_CODE_SAGA, params}),
+  checkEnterpriseDomain: params => dispatch({ type: loginAction.CHECK_ENTERPRISE_DOMAIN_SAGA, params}),
+  registerEnterprise: params => dispatch({ type: loginAction.REGISTER_ENTERPRISE_SAGA, params}),
+  phoneCodeRegister: params => dispatch({ type: loginAction.PHONE_CODE_REGISTER_SAGA, params}),
 })
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Register));

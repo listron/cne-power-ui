@@ -10,7 +10,7 @@ export default {
   },
   commonPaths:{
     imgUploads:'/v3/uploadfile', //上传文件
-    getStations: '/PointAdmin/QueryAllStationDto',
+    getStations: '/v3/station',
     getDevicetypes: '/v3/station/devicetypes',
     getDevices: '/v3/station/stationdevices',
     getPartitions: '/v3/station/partitions',
@@ -77,8 +77,8 @@ export default {
       getDepartmentList: '/v3/department/list',//部门列表
       departmentInfo: '/v3/department', //部门信息新增，编辑，详情，删除
       getAllDepartment: '/v3/department/all', //所有部门列表
-      getAllUser: '/v3/department/user', //所有用户列表，用于为部门分配用户
-      getAllStation: '/v3/department/station', //所有电站列表，用于为部门分配电站
+      getDepartmentUser: '/v3/department/user', //所有用户列表，用于为部门分配用户
+      getDepartmentStation: '/v3/department/station', //所有电站列表，用于为部门分配电站
       setDepartmentUser: '/v3/department/user',//设置部门成员
       setDepartmentStation: '/v3/department/station', //设置部门电站
 

@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { message } from 'antd';
 import InspectDetailForm from '../../../../../components/Operation/Ticket/Inspect/InspectDetailForm/InspectDetailForm';
-import { TicketAction } from '../../../../../constants/actionTypes/operation/ticketAction';
-import { CommonAction } from '../../../../../constants/actionTypes/commonAction';
+import { ticketAction } from '../../../../../constants/actionTypes/operation/ticketAction';
+import { commonAction } from '../../../../../constants/actionTypes/commonAction';
 
 class InspectDetail extends Component{
   static propTypes = {
@@ -132,18 +132,18 @@ const mapStateToProps = (state) => ({
 }) 
 
 const mapDispatchToProps = (dispatch) => ({
-  getInspectDetail: params => dispatch({ type: TicketAction.GET_INSPECT_DETAIL_SAGA, params}),
-  addInspectAbnormal: params => dispatch({ type: TicketAction.ADD_INSPECT_ABNORMAL_SAGA, params}),
-  getDefectTypes: params => dispatch({ type: TicketAction.GET_DEFECTTYPES_SAGA, params}),
-  transformDefect: params => dispatch({ type: TicketAction.TRANSFORM_DEFECT_SAGA, params}),
-  setInspectCheck: params => dispatch({ type: TicketAction.SET_INSPECT_CHECK_SAGA, params}),
-  finishInspect: params => dispatch({ type: TicketAction.FINISH_INSPECT_SAGA, params}),
-  loadDeviceTypeList: params => dispatch({ type: CommonAction.GET_DEVICETYPES_SAGA, params}),
-  loadDeviceAreaList: params => dispatch({ type: CommonAction.GET_PARTITIONS_SAGA, params}),
-  loadDeviceList: params => dispatch({ type: CommonAction.GET_DEVICES_SAGA, params}),
-  setInspectId: params => dispatch({ type: TicketAction.SET_INSPECT_ID_SAGA, params }),
-  onDeleteAbnormal: params => dispatch({ type: TicketAction.DELETE_ABNORMAL_SAGA, params }),
-  getInspectStandard: params => dispatch({ type: TicketAction.GET_INSPECT_STANDARD_SAGA, params}),
+  getInspectDetail: params => dispatch({ type: ticketAction.GET_INSPECT_DETAIL_SAGA, params}),
+  addInspectAbnormal: params => dispatch({ type: ticketAction.ADD_INSPECT_ABNORMAL_SAGA, params}),
+  getDefectTypes: params => dispatch({ type: ticketAction.GET_DEFECTTYPES_SAGA, params}),
+  transformDefect: params => dispatch({ type: ticketAction.TRANSFORM_DEFECT_SAGA, params}),
+  setInspectCheck: params => dispatch({ type: ticketAction.SET_INSPECT_CHECK_SAGA, params}),
+  finishInspect: params => dispatch({ type: ticketAction.FINISH_INSPECT_SAGA, params}),
+  loadDeviceTypeList: params => dispatch({ type: commonAction.GET_DEVICETYPES_SAGA, params}),
+  loadDeviceAreaList: params => dispatch({ type: commonAction.GET_PARTITIONS_SAGA, params}),
+  loadDeviceList: params => dispatch({ type: commonAction.GET_DEVICES_SAGA, params}),
+  setInspectId: params => dispatch({ type: ticketAction.SET_INSPECT_ID_SAGA, params }),
+  onDeleteAbnormal: params => dispatch({ type: ticketAction.DELETE_ABNORMAL_SAGA, params }),
+  getInspectStandard: params => dispatch({ type: ticketAction.GET_INSPECT_STANDARD_SAGA, params}),
 })
 
 export default connect(mapStateToProps,mapDispatchToProps)(InspectDetail);

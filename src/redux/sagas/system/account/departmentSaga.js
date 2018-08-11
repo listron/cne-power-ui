@@ -90,19 +90,21 @@ function *deleteDepartment(action){  // 删除部门
 }
 
 //获取该企业所有用户，用于部门分配用户数据
-function *getAllUser(action){
+function *getDepartmentUser(action){
   const { payload } = action;
   // const url = '/mock/system/allDepartments';
-  const url = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.system.getAllUser}/${payload.enterpriseId}`
+  const url = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.system.getDepartmentUser}/${payload.enterpriseId}`
   try{
     yield put({ type:departmentAction.DEPARTMENT_FETCH });
     const response = yield call(axios.get,url);
-    yield put({
-      type:  departmentAction.GET_DEPARTMENT_FETCH_SUCCESS,
-      payload:{
-        userList: response.data.data,
-      },
-    });
+    if(response.data.code === "10000") {
+      yield put({
+        type:  departmentAction.GET_DEPARTMENT_FETCH_SUCCESS,
+        payload:{
+          departmentUser: response.data.data,
+        },
+      });
+    }
   }catch(e){
     console.log(e);
   }
@@ -115,38 +117,36 @@ function *getAllDepartment(action){//获取所有部门基础信息
   try{
     yield put({ type:departmentAction.DEPARTMENT_FETCH });
     const response = yield call(axios.get,url);
-    yield put({
-      type:  departmentAction.GET_DEPARTMENT_FETCH_SUCCESS,
-      payload:{
-        allDepartment: response.data.data,
-      },
-    });
+    if(response.data.code === "10000") {
+      yield put({
+        type:  departmentAction.GET_DEPARTMENT_FETCH_SUCCESS,
+        payload:{
+          allDepartment: response.data.data,
+        },
+      });
+    }
   }catch(e){
     console.log(e);
   }
 }
 
-function *getAllStation(action){//获取所有电站
+function *getDepartmentStation(action){//获取电站-部门一一对应表
   const { payload } = action;
   // const url = '/mock/system/allDepartments';
-  const url = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.system.getAllStation}/${payload.enterpriseId}`
+  const url = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.system.getDepartmentStation}/${payload.enterpriseId}`
   try{
     yield put({ type:departmentAction.DEPARTMENT_FETCH });
     const response = yield call(axios.get,url);
-    yield put({
-      type:  departmentAction.GET_DEPARTMENT_FETCH_SUCCESS,
-      payload:{
-        allStation: response.data.data,
-      },
-    });
+    if(response.data.code === "10000") {
+      yield put({
+        type:  departmentAction.GET_DEPARTMENT_FETCH_SUCCESS,
+        payload:{
+          DepartmentStation: response.data.data,
+        },
+      });
+    }
+    
   }catch(e){
-    yield put({
-      type:  departmentAction.GET_DEPARTMENT_FETCH_SUCCESS,
-      payload:{
-        loading: false,
-        allStation: []
-      },
-    });
     console.log(e);
   }
 }
@@ -302,6 +302,12 @@ function *setDepartmentUser(action) {
   try{
     const response = yield call(axios.post,url,payload);
     if(response.data.code === "10000"){
+      yield put({
+        type:  departmentAction.CHANGE_DEPARTMENT_STORE,
+        payload:{
+          showAssignUserModal: false,
+        }
+      });
       const showPage = yield select(state => state.system.department.get('showPage'));
       if(showPage === 'detail') {
         yield put({
@@ -324,6 +330,12 @@ function *setDepartmentStation(action) {
   try{
     const response = yield call(axios.post,url,payload);
     if(response.data.code === "10000"){
+      yield put({
+        type:  departmentAction.CHANGE_DEPARTMENT_STORE,
+        payload:{
+          showAssignStationModal: false,
+        }
+      });
       const showPage = yield select(state => state.system.department.get('showPage'));
       if(showPage === 'detail') {
         yield put({
@@ -359,9 +371,9 @@ export function* watchDepartment() {
   yield takeLatest(departmentAction.CHANGE_DEPARTMENT_STORE_SAGA, changeDepartmentStore);
   yield takeLatest(departmentAction.GET_DEPARTMENT_LIST_SAGA, getDepartmentList);
   yield takeLatest(departmentAction.DELETE_DEPARTMENT_SAGA,deleteDepartment);
-  yield takeLatest(departmentAction.GET_ALL_USER_SAGA,getAllUser);
+  yield takeLatest(departmentAction.GET_DEPARTMENT_USER_SAGA,getDepartmentUser);
   yield takeLatest(departmentAction.GET_ALL_DEPARTMENT_SAGA,getAllDepartment);
-  yield takeLatest(departmentAction.GET_ALL_STATION_SAGA,getAllStation);
+  yield takeLatest(departmentAction.GET_DEPARTMENT_STATION_SAGA,getDepartmentStation);
   yield takeLatest(departmentAction.GET_DEPARTMENT_DETAIL_SAGA, getDepartmentDetail);
   yield takeLatest(departmentAction.GET_OTHER_PAGE_DEPARTMENT_DETAIL_SAGA,getOtherPageDetail);
   yield takeLatest(departmentAction.ADD_DEPARTMENT_INFO_SAGA, addDepartmentInfo);

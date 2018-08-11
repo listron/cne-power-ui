@@ -51,7 +51,7 @@ class TopMenu extends Component {
   render() {
     const { selectedKeys } = this.state;
     return (
-      <Menu mode="horizontal" theme="dark" onSelect={this.selectTopMenu} selectedKeys={selectedKeys} defaultOpenKeys={selectedKeys} >
+      <Menu mode="horizontal" theme="dark" onSelect={this.selectTopMenu} selectedKeys={selectedKeys}>
         {menu.map((e,i)=>(
           <Item key={e.path}>
             {e.clickable && <Link to={e.path}>{e.name}</Link>}
