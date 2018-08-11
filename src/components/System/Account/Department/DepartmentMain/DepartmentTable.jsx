@@ -24,7 +24,6 @@ class DepartmentTable extends Component {
     pageNum: PropTypes.number,
     pageSize: PropTypes.number,
     allDepartment: PropTypes.object,
-    stations: PropTypes.object,
     departmentUser: PropTypes.object,
     DepartmentStation: PropTypes.object,
     userId: PropTypes.string,
@@ -255,13 +254,12 @@ class DepartmentTable extends Component {
   }
 
   renderAssignStationModal() {
-    const { enterpriseName, enterpriseId, allDepartment, DepartmentStation, stations, getDepartmentStation, setDepartmentStation, changeDepartmentStore, selectedDepartment} = this.props;
+    const { enterpriseName, enterpriseId, allDepartment, DepartmentStation, getDepartmentStation, setDepartmentStation, changeDepartmentStore, selectedDepartment} = this.props;
     return (
       <AssignStationModal
         enterpriseId={enterpriseId}
         enterpriseName={enterpriseName}
         departmentList={allDepartment}
-        allStationList={stations}
         stationList={DepartmentStation}
         getStationList={getDepartmentStation}
         onSetDepartmentStation={setDepartmentStation}

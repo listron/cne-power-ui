@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import styles from './department.scss';
 import { departmentAction } from '../../../../constants/actionTypes/system/account/departmentAction';
-import { commonAction } from '../../../../constants/actionTypes/commonAction';
+// import { commonAction } from '../../../../constants/actionTypes/commonAction';
 import PropTypes from 'prop-types';
 import TransitionContainer from '../../../../components/Common/TransitionContainer';
 import DepartmentMain from '../../../../components/System/Account/Department/DepartmentMain/DepartmentMain';
@@ -29,7 +29,7 @@ class Department extends Component {
     getAllDepartment: PropTypes.func,
     getDepartmentUser: PropTypes.func,
     getDepartmentStation: PropTypes.func,
-    getStations: PropTypes.func,
+    // getStations: PropTypes.func,
     setDepartmentUser: PropTypes.func,
     setDepartmentStation: PropTypes.func,
   }
@@ -55,7 +55,9 @@ class Department extends Component {
     this.props.getAllDepartment({//请求所有部门
       enterpriseId, //this.props.enterpriseId,//'1010694160817111040',
     })
-    this.props.getStations();
+    // this.props.getStations({
+    //   enterpriseId: this.props.enterpriseId
+    // });
   }
 
 
@@ -97,7 +99,7 @@ const mapStateToProps = (state) => ({
     allDepartment:state.system.department.get('allDepartment'),
     departmentUser: state.system.department.get('departmentUser'),
     DepartmentStation: state.system.department.get('DepartmentStation'),
-    stations: state.common.get('stations'),
+    // stations: state.common.get('stations'),
     enterpriseId: getCookie('enterpriseId'),
     userId: getCookie('userId'),
     enterpriseName: getCookie('enterpriseName'),
@@ -110,7 +112,7 @@ const mapDispatchToProps = (dispatch) => ({
   getDepartmentDetail: payload => dispatch({type:departmentAction.GET_DEPARTMENT_DETAIL_SAGA, payload}),
   getOtherPageDetail: (payload, {previous}) => dispatch({type:departmentAction.GET_OTHER_PAGE_DEPARTMENT_DETAIL_SAGA, payload, previous}),
   getDepartmentUser: payload => dispatch({type:departmentAction.GET_DEPARTMENT_USER_SAGA,payload}),
-  getStations: payload => dispatch({type:commonAction.GET_DEVICES_SAGA,payload}),
+  // getStations: payload => dispatch({type:commonAction.GET_STATIONS_SAGA,payload}),
   getAllDepartment: payload => dispatch({type:departmentAction.GET_ALL_DEPARTMENT_SAGA,payload}),
   getDepartmentStation: payload => dispatch({type:departmentAction.GET_DEPARTMENT_STATION_SAGA,payload}),
   setDepartmentUser: payload => dispatch({type:departmentAction.SET_DEPARTMENT_USER_SAGA,payload}),

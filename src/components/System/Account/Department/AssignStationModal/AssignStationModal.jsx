@@ -14,7 +14,6 @@ class AssignStationModal extends Component {
     enterpriseName: PropTypes.string,//当前企业名称
     departmentList: PropTypes.object,//immutable
     stationList: PropTypes.object,//immutable
-    allStationList: PropTypes.object,//immutable
     getStationList: PropTypes.func,
     getDepartmentStation: PropTypes.func,
     onSetDepartmentStation: PropTypes.func,
@@ -40,7 +39,7 @@ class AssignStationModal extends Component {
   componentDidMount() {
     const {enterpriseId} = this.props;
     this.props.getStationList({
-      enterpriseId: '1010953009906106368'
+      enterpriseId
     });
   }
 
@@ -48,7 +47,7 @@ class AssignStationModal extends Component {
     if(nextProps.stationList.size > 0) {
       this.setState({
         stationList: nextProps.stationList,
-        selectedStationList: nextProps.stationList,
+        selectedStationList: this.getDepartmenStationRange(this.state.selectedDepartment, nextProps.stationList),
       });
     }
   }
@@ -67,7 +66,10 @@ class AssignStationModal extends Component {
   }
 
   onSelect = () => {
-    this.props.onSetDepartmentStation(this.state.stationList);
+    this.props.onSetDepartmentStation({
+      enterpriseId: this.props.enterpriseId,
+      list: this.state.stationList.toJS()
+    });
   }
 
   onCancel = () => {
@@ -93,6 +95,9 @@ class AssignStationModal extends Component {
 
   onSelectNode = (selectedKeys, info) => {
     let item = info.node.props.dataRef;
+    if(item === null) {
+      return;
+    }
     let selectedStationList = this.getDepartmenStationRange(item, this.state.stationList);
     this.setState({
       selectedDepartment: item,
@@ -128,12 +133,12 @@ class AssignStationModal extends Component {
             stationList = stationList.delete(childIndex);
           }
         })
-        let index = stationList.findIndex((current) => {
-          return selectedDepartment.get('departmentId') === current.get('departmentId') && 
-          station.get('stationId') === current.get('stationId')
-        });
-        stationList = stationList.delete(index);
       }
+      let index = stationList.findIndex((current) => {
+        return selectedDepartment.get('departmentId') === current.get('departmentId') && 
+        station.get('stationId') === current.get('stationId')
+      });
+      stationList = stationList.delete(index);
     }
     let selectedStationList = this.getDepartmenStationRange(selectedDepartment, stationList);
     this.setState({
@@ -157,7 +162,7 @@ class AssignStationModal extends Component {
   getDepartmenStationRange(department, stationList) {
     let parentDepartmentId = department.get('parentDepartmentId');
     let selectedStationList;
-    if(parentDepartmentId === null) {
+    if(parentDepartmentId === '0' || parentDepartmentId === null) {
       selectedStationList = stationList;
     } else {
       selectedStationList = stationList.filter((item) => {
@@ -200,7 +205,7 @@ class AssignStationModal extends Component {
         expandedKeys={this.state.expandedKeys}
         selectedKeys={this.state.selectedKeys}
       >
-        <TreeNode title={enterpriseName} key={enterpriseId}>
+        <TreeNode title={enterpriseName} key={enterpriseId} dataRef={null}>
           {this.renderTreeNodes(departmentList)}
         </TreeNode>
       </Tree>
@@ -226,7 +231,8 @@ class AssignStationModal extends Component {
   }
 
   renderStationList() {
-    const { searchStationList , selectedStationList } = this.state;
+    const { searchStationList , selectedStationList, stationList } = this.state;
+    let transformStationList = this.tansformStationData(stationList);
     let station = this.tansformStationData(searchStationList!==null?searchStationList:selectedStationList);
     return (
       station.map((item) => {
@@ -236,11 +242,11 @@ class AssignStationModal extends Component {
               <Checkbox
                 style={{marginRight: 6}}
                 onChange={(e)=>{this.onCheckStation(item, e.target.checked)}} 
-                checked={()=>this.getStationChecked(item)} />
+                checked={this.getStationChecked(item)} />
               <span className={styles.stationName}>{item.get('stationName')}</span>
             </div>
             <div className={styles.deparymentName}>
-              {item.get('departmentName')}
+              {transformStationList.find(obj=>obj.get('stationId')===item.get('stationId')).get('departmentName')}
             </div>
           </div>
         );

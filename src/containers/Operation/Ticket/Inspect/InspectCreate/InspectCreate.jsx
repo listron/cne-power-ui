@@ -19,9 +19,7 @@ class InspectCreate extends Component{
 
   componentDidMount(){
     this.props.getStations({
-      domainName: "cne", 
-      stationType: 0, 
-      app: "bi"
+      enterpriseId: '1010694160817111040'//to do
     });
   }
 

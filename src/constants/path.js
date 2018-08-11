@@ -10,7 +10,7 @@ export default {
   },
   commonPaths:{
     imgUploads:'/v3/uploadfile', //上传文件
-    getStations: '/PointAdmin/QueryAllStationDto',
+    getStations: '/v3/station',
     getDevicetypes: '/v3/station/devicetypes',
     getDevices: '/v3/station/stationdevices',
     getPartitions: '/v3/station/partitions',
