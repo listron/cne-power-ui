@@ -1,7 +1,7 @@
-import immutable from 'immutable';
+import Immutable from 'immutable';
 import { ticketAction } from '../../../../constants/actionTypes/operation/ticketAction';
 
-var initState = immutable.fromJS({
+var initState = Immutable.fromJS({
   showContainer: 'list',
   editNewDefect: false
 });

@@ -1,14 +1,13 @@
-import immutable from 'immutable';
+import Immutable from 'immutable';
 import { userAction } from '../../../../constants/actionTypes/system/account/userAction';
 
-var initState = immutable.fromJS({
+var initState = Immutable.fromJS({
   loading: false,
   showPage: 'list',//默认显示list,可显示list,detail,edit,add
   enterpriseId: '',//企业ID
   roleId: '',//筛选条件：选中的角色Id信息
   userStatus: 0,//筛选条件： 状态  0:全部，1：激活，2：未激活，3：启用，4：禁用，5：待审核，6：审核不通过，7：移除
   sort: '',//排序规则
-  ascend: true,//排序方式
   userName: '',//筛选条件：用户名
   phoneNum: '',//筛选条件：电话
   stationName: '',//筛选条件：负责电站
@@ -31,9 +30,9 @@ const userReducer = (state = initState, action) => {
     case userAction.USER_FETCH:
       return state.set('loading', true);
     case userAction.GET_USER_FETCH_SUCCESS:
-      return state.merge(immutable.fromJS(action.payload)).set('loading', false);
+      return state.merge(Immutable.fromJS(action.payload)).set('loading', false);
     case userAction.CHANGE_USER_STORE:
-      return state.merge(immutable.fromJS(action.payload));
+      return state.merge(Immutable.fromJS(action.payload));
     case userAction.GET_USER_FETCH_FAIL:
       return state.set('loading', false);
   }

@@ -1,7 +1,7 @@
-import immutable from 'immutable';
+import Immutable from 'immutable';
 import { ticketAction } from '../../../../constants/actionTypes/operation/ticketAction';
 
-var initState = immutable.fromJS({
+var initState = Immutable.fromJS({
   isFetching: false,
   error: {
     code: '',
@@ -58,17 +58,17 @@ var initState = immutable.fromJS({
 const defectReducer = (state = initState, action) => {
   switch (action.type) {
     case ticketAction.CHANGE_DEFECT_STORE :
-      return state.merge(immutable.fromJS(action.payload))
+      return state.merge(Immutable.fromJS(action.payload))
     case ticketAction.GET_DEFECT_COMMON_FETCH_SUCCESS :
-      return state.merge(immutable.fromJS(action.payload)).set('isFetching',false)
+      return state.merge(Immutable.fromJS(action.payload)).set('isFetching',false)
     case ticketAction.TICKET_FETCH:
       return state.set('isfetching', true);
     // case ticketAction.GET_DEFECT_LIST_SUCCESS:  
     //   return state.set('isFetching', false)
     //               .set('total', action.data.total)
-    //               .set('defectList', immutable.fromJS(action.data.defectList))
-    //               .set('selectedRowKeys', immutable.fromJS([]))
-    //               .set('defectStatusStatistics', immutable.fromJS(action.data.defectStatusStatistics))
+    //               .set('defectList', Immutable.fromJS(action.data.defectList))
+    //               .set('selectedRowKeys', Immutable.fromJS([]))
+    //               .set('defectStatusStatistics', Immutable.fromJS(action.data.defectStatusStatistics))
     //               .set('pageNum', (action.params.pageNum + 1))
     //               .set('pageSize', action.params.pageSize)
     //               .set('status', action.params.status)
@@ -76,25 +76,25 @@ const defectReducer = (state = initState, action) => {
     case ticketAction.SET_DEFECT_ID:
       return state.set('defectId', action.data);
     case ticketAction.SET_SELECTED_DEFECT:
-      return state.set('selectedRowKeys', immutable.fromJS(action.data));
+      return state.set('selectedRowKeys', Immutable.fromJS(action.data));
     case ticketAction.CLEAR_DEFECT_STATE:
       return initState;
     case ticketAction.GET_DEFECT_DETAIL_SUCCESS: 
       return state.set('isFetching', false)
-                  .set('defectDetail', immutable.fromJS(action.data))
+                  .set('defectDetail', Immutable.fromJS(action.data))
                   .set('defectId', action.params.defectId);
     case ticketAction.GET_DEFECT_LANGUAGE_SUCCESS: 
       return state.set('isFetching', false)
-                  .set('commonList', immutable.fromJS(action.data));
+                  .set('commonList', Immutable.fromJS(action.data));
     case ticketAction.GET_DEFECTTYPES_SAGA_SUCCESS:
       return state.set('isFetching', false)
-                  .set('defectTypes', immutable.fromJS(action.params.data));
+                  .set('defectTypes', Immutable.fromJS(action.params.data));
     case ticketAction.GET_DEFECT_LIST_FAIL:
     case ticketAction.GET_DEFECT_DETAIL_FAIL:
     case ticketAction.GET_DEFECT_LANGUAGE_FAIL:
     case ticketAction.GET_DEFECTTYPES_SAGA_FAIL:
     case ticketAction.DEFECT_CREATE_FAIL:
-      return state.set('error', immutable.fromJS(action.error));
+      return state.set('error', Immutable.fromJS(action.error));
   }
 
   return state;
