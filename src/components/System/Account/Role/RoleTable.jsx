@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Table, Button, Select, Icon, Popover } from 'antd';
+import WarningTip from '../../../Common/WarningTip';
 import PropTypes from 'prop-types';
 import styles from './role.scss';
 const { Option } = Select;
@@ -17,6 +18,11 @@ class RoleTable extends Component {
 
   constructor(props){
     super(props);
+    this.state = {
+      showWarningTip: false,
+      warningTipText: '',
+      hiddenWarningTipCancelText: false
+    };
   }
 
   onRoleAdd = () =>{//进入添加角色页
@@ -28,6 +34,11 @@ class RoleTable extends Component {
       selectedRole: selectedRows
     })
   }
+  onConfirmWarningTip = () => {
+    this.setState({
+      showWarningTip: false,
+    });  
+  }
   cancelRowSelect = () => {
     this.props.changeRoleStore({
       selectedRole:[]
@@ -37,13 +48,29 @@ class RoleTable extends Component {
   roleHandle = (value) => {//编辑
     const { selectedRole } = this.props;
     if(value === 'edit'){
-      this.props.changeRoleStore({
-        showPage: 'edit'
-      });
+      if(selectedRole.some(item=>item.isPre===0)) {
+        this.setState({
+          showWarningTip: true,
+          warningTipText: '不得编辑预设角色!',
+          hiddenWarningTipCancelText: true
+        });
+      } else {
+        this.props.changeRoleStore({
+          showPage: 'edit'
+        });
+      }
     }else if(value === 'delete'){
-      this.props.onDeleteRole({
-        roleId: selectedRole.map(e=>e.roleId).join(',')
-      });
+      if(selectedRole.some(item=>item.isPre===0)) {
+        this.setState({
+          showWarningTip: true,
+          warningTipText: '不得删除预设角色!',
+          hiddenWarningTipCancelText: true
+        });
+      } else {
+        this.props.onDeleteRole({
+          roleId: selectedRole.map(e=>e.roleId).join(',')
+        });
+      }
     }
   }
 
@@ -51,8 +78,8 @@ class RoleTable extends Component {
     const { selectedRole } = this.props;      
     return (
       <Select disabled={selectedRole.length===0} onChange={this.roleHandle} value="操作" placeholder="操作" dropdownMatchSelectWidth={false} dropdownClassName={styles.handleDropdown}>
-        <Option value="edit" disabled={selectedRole.length>1||selectedRole.some(item=>item.isPre===0)}>编辑</Option>
-        <Option value="delete" disabled={selectedRole.some(item=>item.isPre===0)}>删除</Option>
+        <Option value="edit" disabled={selectedRole.length>1}>编辑</Option>
+        <Option value="delete">删除</Option>
       </Select>
     );
   }
@@ -113,8 +140,10 @@ class RoleTable extends Component {
 
   render(){
     const { selectedRole, roleData, isFetching } = this.props;
+    const { showWarningTip, warningTipText, hiddenWarningTipCancelText } = this.state;
     return (
       <div className={styles.roleList}>
+      {showWarningTip && <WarningTip onOK={this.onConfirmWarningTip} value={warningTipText} hiddenCancel={hiddenWarningTipCancelText} />}
         <div className={styles.roleListTop} >
           <div>
             <Button className={styles.addRole} onClick={this.onRoleAdd}>
