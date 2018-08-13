@@ -3,6 +3,7 @@ import { Button } from 'antd';
 import DeviceMonitorStatistics from '../DeviceMonitorCommon/DeviceMonitorStatistics';
 import InverterTenMin from './InverterTenMin';
 import DeviceAlarmTable from '../DeviceMonitorCommon/DeviceAlarmTable';
+import DevicePointsData from '../DeviceMonitorCommon/DevicePointsData';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import styles from './seriesinverter.scss';
@@ -34,6 +35,7 @@ class Seriesinverter extends Component {
         <DeviceMonitorStatistics deviceDetail={deviceDetail} />
         <InverterTenMin deviceTenMin={deviceTenMin} />
         <DeviceAlarmTable deviceAlarmList={deviceAlarmList} />
+        <DevicePointsData devicePointData={devicePointData} />
         <Button>
           <Link to="/hidden/monitorDevice/73/203/112233445566">走我们从逆变器去气象站</Link>
         </Button>

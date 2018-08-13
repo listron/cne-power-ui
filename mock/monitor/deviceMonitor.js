@@ -208,7 +208,15 @@ module.exports = [
         devicePointDataType: 'hh',
         devicePointUnit: '级',
         collectTime: '2018-08-04 05:11:12'
-      }],
+      },[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,22,12,34,45,57,55,56,76,12].map((e,i) => ({
+        devicePointCode: `${e}${i}`,
+        devicePointName: `测试测点名${i}`,
+        devicePointIECGroup: `测试测点组${i}`,
+        devicePointValue: `${e}*${i}/3`,
+        devicePointDataType: 'hh',
+        devicePointUnit: 'xx',
+        collectTime: `20${e}-${e}-${e} ${i} ${e}${i} ${i}${e}`
+      }))],
       "serviceCode": "3.0"
     },
     error:{}
@@ -225,6 +233,22 @@ module.exports = [
         warningCheckDesc: '告警描述： 外星人来袭，无法发电',
         timeOn: `201${e}年${e}月${e*3}日 ${e*2}:${e*5}:${e*6}`,
         durationTime: `${e*124}分钟`
+      })),
+      "serviceCode": "3.0"
+    },
+    error:{}
+  }, {// 单电站个设备；列表
+    api:'/mock/monitor/deviceList',
+    method:'get',
+    response:{
+      "code": "10000",
+      "message": "请求成功",
+      "data": [1,2,3,4,5,6,7,8,1,2,3,4,5,65,7,8,8,1,1,1,1,1,1,1,1,1].map((e,i) => ({
+        deviceId: `${i}a${e*2}b${e*4}`,
+        deviceCode: `${i}a${e*2}b${e*4}`,
+        deviceName: `HL${e}NB${i}_test`,
+        isConnected: e%2,
+        deviceStatus: e%15,
       })),
       "serviceCode": "3.0"
     },

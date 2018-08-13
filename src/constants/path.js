@@ -89,6 +89,7 @@ export default {
       deleteRole: '/v3/role',
     },
     monitor: {//实时监控
+      stationDeviceList: '/api/v3/station/devicelist', // 单电站设备列表获取
       seriesinverterDetail: '/api/v3/monitor/seriesinverter',//组串式逆变器详情
       seriesinverterTenMin: '/api/v3/monitor/seriesinverter/sequencechart',//组串式逆变器10min时序图
       confluenceboxDetail: '/api/v3/monitor/confluencebox',//汇流箱详情

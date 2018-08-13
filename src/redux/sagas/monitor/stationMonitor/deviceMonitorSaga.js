@@ -47,9 +47,11 @@ function *getDeviceMonitorData(action) {  // 请求单设备数据入口
 
 function *getNormalDeviceData(action){
   const { payload } = action;
-  const { deviceTypeCode, deviceCode } = payload;
+  const {stationCode, deviceTypeCode, deviceCode } = payload;
   const hours = 72;
   try{
+    const devicesUrl = '/mock/monitor/deviceList';
+    // const devicesUrl = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.monitor.stationDeviceList}/${stationCode}/${deviceTypeCode}`;
     const detailUrl = monitorPath[deviceTypeCode].detail;
     // const detailUrl = `${Path.basePaths.newAPIBasePath}${monitorPath[deviceTypeCode].detail}/${deviceCode}`;
     const tenMinUrl = monitorPath[deviceTypeCode].tenMin;
@@ -60,16 +62,18 @@ function *getNormalDeviceData(action){
     // const alarmUrl = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.monitor.deviceAlarmData}/${deviceCode}`
 
     yield put({ type:deviceAction.MONITOR_DEVICE_FETCH });
-    const [tmpDetail, tmpTenMin, tmpPoint, tmpAlarm] = yield all([
+    const [tmpDevices, tmpDetail, tmpTenMin, tmpPoint, tmpAlarm] = yield all([
+      call(axios.get, devicesUrl),
       call(axios.get, detailUrl),
       call(axios.get, tenMinUrl),
       call(axios.get, pointUrl),
       call(axios.get, alarmUrl),
     ])
-    if(tmpDetail.data.code === "10000" && tmpTenMin.data.code === "10000" && tmpPoint.data.code === "10000" && tmpAlarm.data.code === "10000" ){
+    if(tmpDevices.data.code === '10000' && tmpDetail.data.code === "10000" && tmpTenMin.data.code === "10000" && tmpPoint.data.code === "10000" && tmpAlarm.data.code === "10000" ){
       yield put({
-        type:  deviceAction.GET_DEVICE_FETCH_SUCCESS,
+        type: deviceAction.GET_DEVICE_FETCH_SUCCESS,
         payload: {
+          devices: tmpDevices.data.data || [],
           deviceDetail: tmpDetail.data.data || {},
           deviceTenMin: tmpTenMin.data.data || [],
           devicePointData: tmpPoint.data.data || [],
@@ -82,6 +86,7 @@ function *getNormalDeviceData(action){
     yield put({  //清空数据
       type:  deviceAction.CHANGE_DEVICE_MONITOR_STORE,
       payload: {
+        devices: [],
         deviceDetail: {},
         deviceTenMin: [],
         devicePointData: [],
