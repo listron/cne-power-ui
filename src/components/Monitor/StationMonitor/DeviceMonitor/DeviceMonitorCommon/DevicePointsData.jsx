@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './deviceMonitorStatistics.scss';
+import styles from './deviceMonitor.scss';
 
 function DevicePointsData({ devicePointData }) {
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Progress } from 'antd';
-import styles from './deviceMonitorStatistics.scss';
+import styles from './deviceMonitor.scss';
 
 function PowerProgress({ devicePower, deviceCapacity }) {
   const tmpPercent = parseFloat(deviceCapacity) === 0 ? ' -- ': devicePower / deviceCapacity;

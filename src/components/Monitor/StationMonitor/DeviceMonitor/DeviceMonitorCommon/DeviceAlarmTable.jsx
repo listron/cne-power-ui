@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import CommonPagination from '../../../../Common/CommonPagination';
-import styles from './deviceMonitorStatistics.scss';
+import styles from './deviceMonitor.scss';
 import PropTypes from 'prop-types';
 import { Button, Table } from 'antd';
 import { Link } from 'react-router-dom';
@@ -31,18 +31,7 @@ class DeviceAlarmTable extends Component {
     });
   }
 
-  changePagination = ({ pageSize, currentPage }) => {
-    console.log(pageSize, currentPage)
-  }
-
-
-  render() {
-    const { deviceAlarmList } = this.props;
-    const { pageSize, currentPage, sortedInfo } = this.state;
-    const tableSource = [...deviceAlarmList].map((e, i) => ({
-      ...e,
-      key: i,
-    }));
+  initColumn = () => {
     const columns = [
       {
         title: '告警级别',
@@ -70,6 +59,21 @@ class DeviceAlarmTable extends Component {
         sorter:  (a,b) => a.durationTime - b.durationTime,
       },
     ]
+    return columns;
+  }
+
+  changePagination = ({ pageSize, currentPage }) => {
+    console.log(pageSize, currentPage)
+  }
+
+  render() {
+    const { deviceAlarmList } = this.props;
+    const { pageSize, currentPage, sortedInfo } = this.state;
+    const tableSource = [...deviceAlarmList].map((e, i) => ({
+      ...e,
+      key: i,
+    }));
+    const columns = this.initColumn();
     return (
       <div className={styles.alarmTable} >
         <div>告警</div>

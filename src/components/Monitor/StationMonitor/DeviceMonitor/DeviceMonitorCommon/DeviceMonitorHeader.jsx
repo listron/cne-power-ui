@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import styles from './deviceMonitorStatistics.scss';
+import styles from './deviceMonitor.scss';
 import PropTypes from 'prop-types';
 import { Button, Table } from 'antd';
 import { Link } from 'react-router-dom';

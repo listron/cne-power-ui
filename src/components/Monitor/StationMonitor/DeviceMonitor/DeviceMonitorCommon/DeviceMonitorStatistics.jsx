@@ -1,7 +1,7 @@
 import React from 'react';
 import { Icon } from 'antd';
 import PowerProgress from './PowerProgress';
-import styles from './deviceMonitorStatistics.scss';
+import styles from './deviceMonitor.scss';
 
 function DeviceMonitorStatistics({ deviceDetail }) {
   
