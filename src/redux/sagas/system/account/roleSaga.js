@@ -1,9 +1,10 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import axios from 'axios';
 import Path from '../../../../constants/path';
-import { replacePathParams } from '../../../../utils';
+import { replacePathParams, getCookie } from '../../../../utils';
 
 import { roleAction } from '../../../../constants/actionTypes/system/account/roleAction';
+import { message } from 'antd';
 
 //不是异步请求，仅修改reducer的函数
 function *changeRoleStore(action){
@@ -17,17 +18,15 @@ function *changeRoleStore(action){
 //请求角色列表数据
 function *getRoleList(action){
   const { payload } = action;
-  const url = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.system.getRoleList}/${payload.enterpriseId}`
+  const url = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.system.getRoleList}/${payload.enterpriseId}`;
   try{
     yield put({ type:roleAction.ROLE_FETCH });
     const response = yield call(axios.get,url);
     if(response.data.code === '10000') {
       yield put({
         type: roleAction.GET_ROLE_FETCH_SUCCESS,
-        payload: {
-          roleData: response.data.data
-        },
-      });
+        payload: {roleData: response.data.data},
+      });      
     }  
   }catch(e){
     console.log(e);
@@ -53,18 +52,45 @@ function *getMenuList(action){
   }
 }
 
-
 //新建角色
 function *createRole(action){
   const { payload } = action;
-  const url = Path.basePaths.newAPIBasePath + Path.APISubPaths.system.createRole;
+  const { enterpriseId, roleName, rightId, continueAdd } = payload;
+  const data = {
+    enterpriseId,
+    roleName,
+    rightId
+  }
+  const url = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.system.createRole}`
   try{
     yield put({ type:roleAction.ROLE_FETCH });
-    const response = yield call(axios.post,url,payload);
-    // yield put({
-    //   type:  roleAction.MODIFT_ROLE_SUCCESS,
-    //   payload,
-    // });
+    const response = yield call(axios.post,url,data);
+    if(response.data.code === '10000') {
+      yield put({
+        type: roleAction.GET_ROLE_LIST_SAGA,
+        payload: {
+          enterpriseId: enterpriseId
+        },
+      });
+      yield put({
+        type: roleAction.CHANGE_ROLE_STORE_SAGA,
+        payload: {
+          showPage: continueAdd?'create':'list',
+          continueAdd
+        },
+      });
+    } else {
+      yield put({
+        type: roleAction.MODIFT_ROLE_FAIL,
+        payload: {
+          error: {
+            code: response.dat.code,
+            message: response.data.message
+          }
+        }
+      });
+      message.error(response.data.message);
+    }
   }catch(e){
     console.log(e);
   }
@@ -77,26 +103,69 @@ function *editRole(action){
   try{
     yield put({ type:roleAction.ROLE_FETCH });
     const response = yield call(axios.put,url,payload);
-    // yield put({
-    //   type:  roleAction.MODIFT_ROLE_SUCCESS,
-    //   payload,
-    // });
+    if(response.data.code === '10000') {
+      yield put({
+        type: roleAction.GET_ROLE_LIST_SAGA,
+        payload: {
+          enterpriseId: payload.enterpriseId
+        },
+      });
+      yield put({
+        type: roleAction.CHANGE_ROLE_STORE_SAGA,
+        payload: {
+          showPage: 'list',
+          selectedRole: []
+        },
+      });
+    } else {
+      yield put({
+        type: roleAction.MODIFT_ROLE_FAIL,
+        payload: {
+          error: {
+            code: response.dat.code,
+            message: response.data.message
+          }
+        }
+      });
+      message.error(response.data.message);
+    }
   }catch(e){
     console.log(e);
   }
 }
 
 //删除角色
-function *deleteRole(action){
+function *deleteRole(action) {
   const { payload } = action;
-  const url = Path.basePaths.newAPIBasePath + Path.APISubPaths.system.deleteRole;
+  const url = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.system.deleteRole}/${payload.roleId}`;
   try{
     yield put({ type:roleAction.ROLE_FETCH });
-    const response = yield call(axios.delete,url,{data: payload});
-    // yield put({
-    //   type:  roleAction.MODIFT_ROLE_SUCCESS,
-    //   payload,
-    // });
+    const response = yield call(axios.delete,url);
+    if(response.data.code === '10000') {
+      yield put({
+        type: roleAction.GET_ROLE_LIST_SAGA,
+        payload: {
+          enterpriseId: getCookie('enterpriseId')
+        },
+      });
+      yield put({
+        type: roleAction.CHANGE_ROLE_STORE_SAGA,
+        payload: {
+          selectedRole: []
+        },
+      });
+    } else {
+      yield put({
+        type: roleAction.MODIFT_ROLE_FAIL,
+        payload: {
+          error: {
+            code: response.dat.code,
+            message: response.data.message
+          }
+        }
+      });
+      message.error(response.data.message);
+    }
   }catch(e){
     console.log(e);
   }

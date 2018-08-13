@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import styles from './role.scss';
-import {getCookie} from '../../../../utils'
+import {getCookie} from '../../../../utils';
 import { roleAction } from '../../../../constants/actionTypes/system/account/roleAction';
 import PropTypes from 'prop-types';
 import Footer from '../../../../components/Common/Footer';
@@ -17,13 +17,16 @@ class Role extends Component {
     modifyRole: PropTypes.func,
     deleteRole: PropTypes.func,
     changeRoleStore: PropTypes.func,
+    enterpriseId: PropTypes.string,
+    continueAdd: PropTypes.bool,
+    error: PropTypes.object,
   }
   constructor(props) {
     super(props);
   }
   componentDidMount(){
     const params = {
-      enterpriseId: getCookie('enterpriseId')
+      enterpriseId: this.props.enterpriseId
     }
     this.props.getRoleList(params);
   }
@@ -53,6 +56,9 @@ const mapStateToProps = (state) => ({
   roleData: state.system.role.get('roleData').toJS(),
   menuData: state.system.role.get('menuData').toJS(),
   selectedRole: state.system.role.get('selectedRole').toJS(),
+  continueAdd: state.system.role.get('continueAdd'),
+  error: state.system.role.get('error'),
+  enterpriseId: getCookie('enterpriseId'),
 });
 
 const mapDispatchToProps = (dispatch) => ({

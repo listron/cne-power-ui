@@ -4,7 +4,7 @@ import styles from './loginLayout.scss';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import JoinInForm from '../../components/Login/JoinInForm';
-import { LoginAction } from '../../constants/actionTypes/loginAction';
+import { loginAction } from '../../constants/actionTypes/loginAction';
 
 class JoinIn extends Component {
   static propTypes = {
@@ -73,10 +73,10 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  getEnterpriseInfo: params => dispatch({type: LoginAction.GET_ENTERPRISE_INFO_SAGA, params}),
-  sendCode: params => dispatch({ type: LoginAction.SEND_CODE_SAGA, params}),
-  joinEnterprise: params => dispatch({ type: LoginAction.JOIN_ENTERPRISE_SAGA, params}),
-  phoneCodeRegister: params => dispatch({ type: LoginAction.PHONE_CODE_REGISTER_SAGA, params}),
+  getEnterpriseInfo: params => dispatch({type: loginAction.GET_ENTERPRISE_INFO_SAGA, params}),
+  sendCode: params => dispatch({ type: loginAction.SEND_CODE_SAGA, params}),
+  joinEnterprise: params => dispatch({ type: loginAction.JOIN_ENTERPRISE_SAGA, params}),
+  phoneCodeRegister: params => dispatch({ type: loginAction.PHONE_CODE_REGISTER_SAGA, params}),
 })
 
 export default withRouter(connect(mapStateToProps,mapDispatchToProps)(JoinIn));

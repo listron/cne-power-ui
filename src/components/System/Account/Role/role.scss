@@ -6,6 +6,10 @@
   align-items: center;
   border-bottom: solid 1px $promptColor;  
 }
+.tooltip {
+  display: flex;
+  flex-direction: column;
+}
 .roleList{
   width: 100%;
   display: flex;
@@ -98,6 +102,7 @@
   display: flex;
   flex: 1 0 auto;
   padding: 24px 24px 0;
+  z-index: 10;
   .roleEdit {
     flex: 1;
     background-color: #fff;

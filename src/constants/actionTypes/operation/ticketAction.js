@@ -1,7 +1,7 @@
 import keyMirror from 'keymirror';
 
 module.exports = {
-  TicketAction: keyMirror({
+  ticketAction: keyMirror({
     TICKET_FETCH: null,
     CHANGE_DEFECT_STORE_SAGA: null,
     CHANGE_DEFECT_STORE: null,
