@@ -40,7 +40,7 @@ class PvStation extends React.Component {
   }
   render() {
     return (
-      <div className={styles.PvStation}>
+      <div className={styles.pvStation}>
         <div className={styles.headStation}>
           <div className={styles.typeIcon}>
             <div className={styles.leftIcon}>

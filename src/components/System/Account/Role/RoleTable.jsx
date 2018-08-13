@@ -7,6 +7,7 @@ const { Option } = Select;
 
 class RoleTable extends Component {
   static propTypes = {
+    showPage: PropTypes.string,
     isFetching: PropTypes.bool,
     totalNum: PropTypes.number,
     roleData: PropTypes.array,
@@ -139,10 +140,10 @@ class RoleTable extends Component {
   }
 
   render(){
-    const { selectedRole, roleData, isFetching } = this.props;
+    const { selectedRole, roleData, isFetching, showPage } = this.props;
     const { showWarningTip, warningTipText, hiddenWarningTipCancelText } = this.state;
     return (
-      <div className={styles.roleList}>
+      <div className={styles.roleList} style={{display: showPage==='list'?'flex':'none'}}>
       {showWarningTip && <WarningTip onOK={this.onConfirmWarningTip} value={warningTipText} hiddenCancel={hiddenWarningTipCancelText} />}
         <div className={styles.roleListTop} >
           <div>
