@@ -87,6 +87,15 @@ export default {
       createRole: '/v3/role',
       editRole: '/v3/role/{enterpriseId}',
       deleteRole: '/v3/role',
+
+      getUserList: '/v3/user/list',//用户列表
+      changeUserStatus: '/v3/user/status',//更改用户状态
+      getUserDetail: '/v3/user/',//用户详情
+      editUserInfo: '/v3/user',//编辑用户
+      createUserInfo: '/v3/user',//新建用户
+      getInviteLink: '/v3/user/link',//邀请用户
+      getRoleAllList: '/v3/role/all/list',//获取企业角色
+      importUserBatch: '/v3/user/batch',//批量导入用户
     },
     monitor: {//实时监控
       seriesinverterDetail: '/api/v3/monitor/seriesinverter',//组串式逆变器详情

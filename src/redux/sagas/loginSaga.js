@@ -5,7 +5,6 @@ import moment from 'moment';
 import { stringify } from 'qs';
 import { setCookie } from '../../utils';
 import { loginAction } from '../../constants/actionTypes/loginAction';
-import { commonAction } from '../../constants/actionTypes/commonAction';
 import { message } from 'antd';
 
 message.config({
@@ -45,18 +44,10 @@ function *getLogin(action){
       setCookie('expireData', moment().add(response.data.data.expires_in, 'seconds'));
       setCookie('isNotLogin', 0);
       yield put({ type: loginAction.GET_LOGIN_SUCCESS, data: response.data.data});
-      // yield put({ 
-      //   type: commonAction.CHANGE_COMMON_STORE_SAGA, 
-      //   payload: {
-      //     enterpriseId: response.data.data.enterpriseId,
-      //     enterpriseName: response.data.data.enterpriseName,
-      //   }
-      // });
       action.params.history.push('/');
 
       // yield put({ type: loginAction.GET_COMMON_DATA_SAGA});   
     } else{
-      // 此处先这样写，等后端改过来返回具体的error状态信息后再根据error返回具体信息
       yield put({ type: loginAction.GET_LOGIN_FAIL, data: response.data }); 
       message.error(response.data.message);       
     }
@@ -114,13 +105,6 @@ function *checkCode(action){
           data: response.data.data,
         },    
       });
-      // yield put({ 
-      //   type: commonAction.CHANGE_COMMON_STORE_SAGA, 
-      //   payload: {
-      //     enterpriseId: response.data.data.enterpriseId,
-      //     enterpriseName: response.data.data.enterpriseName,
-      //   }
-      // });
     }else{
       yield put({ type: loginAction.CHECK_CODE_FAIL, data: response.data })
       // message.error(response.data.message);
@@ -361,22 +345,7 @@ function *checkUserRegister(action){
     console.log(e);
   }
 }
-//获取一些公共数据,这个要写在Main组件的didmount里
-// function *getCommonData(action){
-//   try{
-//     yield put({type: commonAction.GET_STATIONS_SAGA, params:{
-//       domainName: "cne", 
-//       stationType: 0, 
-//       app: "bi"
-//     }});
-//     // yield put({type: commonAction.GET_DEVICETYPES_SAGA, params: {
-//       // 获取所有设备类型  需与后端协商一致取得
-//     // }});
-//   }catch(e){
-//     console.log(e);
-//   }
-  
-// }
+
 export function* watchLogin() {
   yield takeLatest(loginAction.GET_LOGIN_SAGA, getLogin);
   yield takeLatest(loginAction.SEND_CODE_SAGA, getVerificationCode);
@@ -391,5 +360,4 @@ export function* watchLogin() {
   yield takeLatest(loginAction.CHECK_PHONE_REGISTER_SAGA, checkPhoneRegister);
   yield takeLatest(loginAction.PHONE_CODE_REGISTER_SAGA, phoneCodeRegister);
   yield takeLatest(loginAction.CHANGE_LOGIN_STORE_SAGA, changeLoginStore);
-  // yield takeLatest(loginAction.GET_COMMON_DATA_SAGA, getCommonData);
 }

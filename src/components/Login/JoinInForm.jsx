@@ -21,6 +21,7 @@ class JoinInForm extends Component{
     enterpriseIdToken: PropTypes.string,
     error: PropTypes.object,
     history: PropTypes.object,
+    isInvite: PropTypes.number,
   }
 
   constructor(props){
@@ -145,7 +146,7 @@ class JoinInForm extends Component{
   }
   render(){
     const { getFieldDecorator, getFieldsError } = this.props.form;
-    const { enterpriseName, joinStep, enterpriseIdToken } = this.props;
+    const { enterpriseName, joinStep, enterpriseIdToken, isInvite } = this.props;
     const { showEnterpriseInfo, timeValue } = this.state;
     const formItemLayout = {
       labelCol: {
@@ -171,24 +172,31 @@ class JoinInForm extends Component{
     };
     return (
       <div  className={styles.comName}>
-        {joinStep === 1 &&
-          <Form onSubmit={this.getEnterpriseInfo} >
-            <FormItem label="企业名称" {...formItemLayout}>
-              {getFieldDecorator('enterpriseName',{
-                rules: [{required: true, message: '请输入企业名称/企业域名'}]
-              })(
-                <Input  placeholder="请输入企业名称/企业域名"  />
-              )}
-            </FormItem>
-            <FormItem {...tailFormItemLayout}>
-              <Button type="primary" htmlType="submit" disabled={this.hasErrors(getFieldsError())} >下一步</Button>
-            </FormItem>
-            {showEnterpriseInfo && <Card className={styles.enterpriseInfo} >
-              {enterpriseName === null ? <div>没有此企业，请重新输入</div> : <div>点击确认要加入的企业</div>}
-              {enterpriseName === null ? null : <Button className={styles.enterpriseBtn} style={{marginTop: '40px'}} onClick={this.changeJoinStep }>{enterpriseName}</Button>}
-              <div className={styles.enterpriseBack} ><Icon type="arrow-left" /><span  onClick={this.handleCancel}>返回</span></div>
-            </Card>}
-          </Form>
+        {joinStep === 1 && 
+          isInvite === 0 ? 
+            <Form onSubmit={this.getEnterpriseInfo} >
+              <FormItem label="企业名称" {...formItemLayout}>
+                {getFieldDecorator('enterpriseName',{
+                  rules: [{required: true, message: '请输入企业名称/企业域名'}]
+                })(
+                  <Input  placeholder="请输入企业名称/企业域名"  />
+                )}
+              </FormItem>
+              <FormItem {...tailFormItemLayout}>
+                <Button type="primary" htmlType="submit" disabled={this.hasErrors(getFieldsError())} >下一步</Button>
+              </FormItem>
+              {showEnterpriseInfo && <Card className={styles.enterpriseInfo} >
+                {enterpriseName === null ? <div>没有此企业，请重新输入</div> : <div>点击确认要加入的企业</div>}
+                {enterpriseName === null ? null : <Button className={styles.enterpriseBtn} style={{marginTop: '40px'}} onClick={this.changeJoinStep }>{enterpriseName}</Button>}
+                <div className={styles.enterpriseBack} ><Icon type="arrow-left" /><span  onClick={this.handleCancel}>返回</span></div>
+              </Card>}
+            </Form> 
+          : 
+          <div className={styles.inviteUser} >
+            <div>企业Logo</div>
+            <div>某某企业名称</div>
+            <div className={styles.inviteTip}>企业邀请用户，<span>7天内有效</span></div>
+          </div>
         }
         {joinStep === 2 && 
           <div>

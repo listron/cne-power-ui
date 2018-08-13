@@ -49,6 +49,10 @@ const routers = [
     exact: true,
     component: Role,
   }, {
+    path:'/system/account/user',
+    exact:true,
+    component: User,
+  }, {
     path: '/monitor/stationmonitor',
     exact: true,
     component: AllStation,

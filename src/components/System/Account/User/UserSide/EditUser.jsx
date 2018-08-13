@@ -1,7 +1,7 @@
 
 
 import React, { Component } from 'react';
-import { Icon, Popconfirm } from 'antd';
+import { Icon } from 'antd';
 import PropTypes from 'prop-types';
 import styles from './userSide.scss';
 import EditForm from './EditForm';
@@ -9,12 +9,11 @@ import SingleImgUploader from '../../../../Common/Uploader/SingleImgUploader';
 import pathConfig from '../../../../../constants/path';
 import WarningTip from '../../../../Common/WarningTip';
 
-//企业信息编辑页
+//用户编辑页
 class EditUser extends Component {
   static propTypes = {
     loading: PropTypes.bool,
     changeUserStore: PropTypes.func,
-    getUserDetail: PropTypes.func,
     saveUserInfor: PropTypes.func,
     userDetail: PropTypes.object,
   }
@@ -27,12 +26,6 @@ class EditUser extends Component {
       warningTipText: '退出后信息无法保存!',
     }
   }
-
-  // componentWillUnmount(){
-  //   this.props.changeUserStore({
-  //     showPage: 'detail',
-  //   });
-  // }
 
   onWarningTipShow = () =>{
     this.setState({
@@ -81,7 +74,7 @@ class EditUser extends Component {
               <span>240px*240px为佳，大小不超过2M</span>
             </div>
           </div>
-          <EditForm userDetail={userDetail} userLogo={userLogo} saveUserInfor={saveUserInfor} loading={loading} />
+          <EditForm userDetail={userDetail} userLogo={userLogo} saveUserInfor={saveUserInfor} loading={loading} {...this.props} />
         </div>
       </div>
     )

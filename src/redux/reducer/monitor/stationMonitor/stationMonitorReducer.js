@@ -1,4 +1,4 @@
-import immutable from 'immutable';
+import immutable from '../../../../../node_modules/_immutable@3.8.2@immutable';
 
 import { allStationAction } from '../../../../constants/actionTypes/monitor/stationmonitor/allStationAction';
 
