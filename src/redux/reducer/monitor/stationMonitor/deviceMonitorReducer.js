@@ -1,7 +1,7 @@
-import immutable from 'immutable';
+import Immutable from 'immutable';
 import { deviceAction } from '../../../../constants/actionTypes/monitor/stationmonitor/deviceAction';
 
-var initState = immutable.fromJS({
+var initState = Immutable.fromJS({
   loading: false,
   // deviceCode: '',  // 暂不用
   // deviceName: '',  // 暂不用
@@ -19,9 +19,9 @@ const deviceMonitorReducer = (state = initState, action) => {
     case deviceAction.MONITOR_DEVICE_FETCH:
       return state.set('loading',true)
     case deviceAction.GET_DEVICE_FETCH_SUCCESS :
-      return state.merge(immutable.fromJS(action.payload)).set('loading',false)
+      return state.merge(Immutable.fromJS(action.payload)).set('loading',false)
     case deviceAction.CHANGE_DEVICE_MONITOR_STORE:
-      return state.merge(immutable.fromJS(action.payload))
+      return state.merge(Immutable.fromJS(action.payload))
   }
   return state;
 }
