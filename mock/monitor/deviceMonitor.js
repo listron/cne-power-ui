@@ -208,7 +208,7 @@ module.exports = [
         devicePointDataType: 'hh',
         devicePointUnit: '级',
         collectTime: '2018-08-04 05:11:12'
-      },[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,22,12,34,45,57,55,56,76,12].map((e,i) => ({
+      },...([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,22,12,34,45,57,55,56,76,12].map((e,i) => ({
         devicePointCode: `${e}${i}`,
         devicePointName: `测试测点名${i}`,
         devicePointIECGroup: `测试测点组${i}`,
@@ -216,7 +216,7 @@ module.exports = [
         devicePointDataType: 'hh',
         devicePointUnit: 'xx',
         collectTime: `20${e}-${e}-${e} ${i} ${e}${i} ${i}${e}`
-      }))],
+      })))],
       "serviceCode": "3.0"
     },
     error:{}
