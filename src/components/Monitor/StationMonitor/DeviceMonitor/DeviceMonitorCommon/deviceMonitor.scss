@@ -64,8 +64,41 @@
   }
 }
 
-.pointDataList{
-  background-color: #f8f8f8;
-  display: flex;
-  flex-wrap: wrap;
+.alarmTable{
+  border-top: solid 1px $promptColor;
+  padding: 16px 68px 48px 68px;
+  .alarmTip{
+    height: 48px;
+    line-height: 48px;
+    i{
+      border-radius: 50%;
+      background-color: $promptColor;
+      color: #fff;
+    }
+  }
+  .tableHeader{
+    display: flex;
+    justify-content: space-between;
+    height: 36px;
+    line-height: 36px;
+    .historyButton{
+      height: 26px;
+    }
+  }
+}
+
+.pointData{
+  .pointTitle{
+    color: $darkColor;
+  }
+  .pointDataList{
+    background-color: #f8f8f8;
+    padding: 20px 60px 80px 60px;
+    display: flex;
+    flex-wrap: wrap;
+    .eachGroup{
+      margin-left: 24px;
+      min-width: 20%;
+    }
+  }
 }

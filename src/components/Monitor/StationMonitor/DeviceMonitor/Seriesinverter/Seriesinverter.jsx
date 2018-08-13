@@ -37,7 +37,7 @@ class Seriesinverter extends Component {
         <DeviceMonitorStatistics deviceDetail={deviceDetail} />
         <InverterTenMin deviceTenMin={deviceTenMin} />
         <DeviceAlarmTable deviceAlarmList={deviceAlarmList} />
-        <DevicePointsData devicePointData={devicePointData} />
+        <DevicePointsData devicePointData={devicePointData}  deviceDetail={deviceDetail} />
         <Button>
           <Link to="/hidden/monitorDevice/73/203/112233445566">走我们从逆变器去气象站</Link>
         </Button>
