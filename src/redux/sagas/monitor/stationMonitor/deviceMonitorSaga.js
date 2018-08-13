@@ -45,7 +45,7 @@ function *getDeviceMonitorData(action) {  // 请求单设备数据入口
   }
 }
 
-function *getNormalDeviceData(action){
+function *getNormalDeviceData(action){ // 请求单设备-除气象站数据信息
   const { payload } = action;
   const {stationCode, deviceTypeCode, deviceCode } = payload;
   const hours = 72;
@@ -97,7 +97,7 @@ function *getNormalDeviceData(action){
   }
 }
 
-function *getWeatherStationData(action){
+function *getWeatherStationData(action){ // 请求气象站设备信息
   const { payload } = action;
   const { deviceTypeCode, deviceCode } = payload;
   try{
@@ -133,7 +133,6 @@ function *getWeatherStationData(action){
 }
 export function* watchDeviceMonitor() {
   yield takeLatest(deviceAction.CHANGE_DEVICE_MONITOR_STORE_SAGA, changeDeviceStore);
-
   yield takeLatest(deviceAction.GET_DEVICE_DATA_SAGA, getDeviceMonitorData);
   yield takeLatest(deviceAction.GET_NORMAL_DEVICE_DATA_SAGA, getNormalDeviceData);
   yield takeLatest(deviceAction.GET_WEATHERSTATION_DATA_SAGA, getWeatherStationData);

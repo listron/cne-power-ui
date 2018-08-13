@@ -13,6 +13,7 @@ class Seriesinverter extends Component {
   static propTypes = {
     match: PropTypes.object,
     getMonitorDeviceData: PropTypes.func,
+    devices: PropTypes.array,
     deviceDetail: PropTypes.object,
     deviceTenMin: PropTypes.array,
     deviceAlarmList: PropTypes.array,
@@ -21,7 +22,6 @@ class Seriesinverter extends Component {
 
   componentDidMount(){
     const { deviceCode, deviceTypeCode,stationCode } = this.props.match.params;
-    console.log('did mount')
     this.props.getMonitorDeviceData({
       stationCode,
       deviceCode,
@@ -29,24 +29,17 @@ class Seriesinverter extends Component {
     })
   }
 
-  componentWillUnmount(){
-    console.log('unmount')
-  }
-
   render(){
-    const { deviceDetail, deviceTenMin, deviceAlarmList, devicePointData } = this.props;
+    const {devices, deviceDetail, deviceTenMin, deviceAlarmList, devicePointData } = this.props;
     return (
       <div className={styles.seriesinverter}>
-        <DeviceMonitorHeader deviceDetail={deviceDetail} />
+        <DeviceMonitorHeader deviceDetail={deviceDetail} devices={devices} />
         <DeviceMonitorStatistics deviceDetail={deviceDetail} />
         <InverterTenMin deviceTenMin={deviceTenMin} />
         <DeviceAlarmTable deviceAlarmList={deviceAlarmList} />
         <DevicePointsData devicePointData={devicePointData} />
         <Button>
           <Link to="/hidden/monitorDevice/73/203/112233445566">走我们从逆变器去气象站</Link>
-        </Button>
-        <Button>
-          <Link to={`/hidden/monitorDevice/73/206/${parseInt(Math.random*10000)}`}>测试路径变化导致的</Link>
         </Button>
         <Button>
           <Link to="/hidden/monitorDevice/73/202/112233445566">走我们从逆变器去汇流箱</Link>

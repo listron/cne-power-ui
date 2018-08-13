@@ -8,25 +8,22 @@ import moment from 'moment';
 class DeviceMonitorHeader extends Component {
 
   static propTypes = {
-    deviceAlarmList: PropTypes.array,
+    devices: PropTypes.array,
+    deviceDetail: PropTypes.object,
   }
 
-  constructor(props){
+  constructor(props) {
     super(props);
-    this.state = {
-      pageSize: 10, 
-      currentPage: 1,
-      sortedInfo: {
-        columnKey: 'warningLevel',
-        order: 'ascend',
-      }
-    }
+    this.state = {}
   }
 
   render() {
+    const { devices, deviceDetail } = this.props;
     return (
       <div className={styles.alarmTable} >
-        头部啊！
+        <div>{deviceDetail.deviceName}</div>
+        <div>{deviceDetail.parentDevice && deviceDetail.parentDevice.deviceName}</div>
+        <div>{deviceDetail.sonDevice && deviceDetail.sonDevice.deviceName}</div>
       </div>
     )
   }

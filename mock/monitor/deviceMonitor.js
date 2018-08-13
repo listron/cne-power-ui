@@ -23,7 +23,7 @@ module.exports = [
           deviceTypeCode: '112',
           deviceTypeName: '汇流箱'
         },
-        deviceStatus: {
+        sonDevice: {
           deviceCode: '12111',
           deviceName: 'HL110',
           deviceTypeCode: '112',
@@ -69,7 +69,7 @@ module.exports = [
           deviceTypeCode: '112',
           deviceTypeName: '箱变'
         },
-        deviceStatus: {
+        sonDevice: {
           deviceCode: '12111',
           deviceName: 'NB110',
           deviceTypeCode: '112',
@@ -118,7 +118,7 @@ module.exports = [
           deviceTypeCode: '112',
           deviceTypeName: '集电线路'
         },
-        deviceStatus: {
+        sonDevice: {
           deviceCode: '12111',
           deviceName: 'HL110',
           deviceTypeCode: '112',
