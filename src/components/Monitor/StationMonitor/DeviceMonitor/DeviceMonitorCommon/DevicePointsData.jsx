@@ -25,11 +25,10 @@ class DevicePointsData extends Component {
       startIndex += 10;
       pointListGroup.push(eachPointGroup);
     }while(startIndex < devicePointData.length)
-
     return (
       <div className={styles.pointDataList} >
-        {pointListGroup.map(e=>(<div>
-          {e.map(eachPoints => (<div>
+        {pointListGroup.map((e, i)=>(<div key={i}>
+          {e.map(eachPoints => (<div key={eachPoints.devicePointCode}>
             <span>{eachPoints.devicePointName}</span>
             <span>{eachPoints.devicePointValue} {eachPoints.devicePointUnit || ''}</span>
           </div>))}
