@@ -96,4 +96,4 @@ class  WindStationItem extends React.Component{
         )
     }
 }
-export default (WindStationItem)
+export default WindStationItem;
