@@ -1,7 +1,7 @@
-import immutable from 'immutable';
+import Immutable from 'immutable';
 import { userAction } from '../../../../constants/actionTypes/system/account/userAction';
 
-var initState = immutable.fromJS({
+var initState = Immutable.fromJS({
   loading: false,
   showPage: 'list',//默认显示list,可显示list,detail,edit,add
   enterpriseId: '',//企业ID
@@ -31,9 +31,9 @@ const userReducer = (state = initState, action) => {
     case userAction.USER_FETCH:
       return state.set('loading', true);
     case userAction.GET_USER_FETCH_SUCCESS:
-      return state.merge(immutable.fromJS(action.payload)).set('loading', false);
+      return state.merge(Immutable.fromJS(action.payload)).set('loading', false);
     case userAction.CHANGE_USER_STORE:
-      return state.merge(immutable.fromJS(action.payload));
+      return state.merge(Immutable.fromJS(action.payload));
     case userAction.GET_USER_FETCH_FAIL:
       return state.set('loading', false);
   }

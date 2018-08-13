@@ -1,7 +1,7 @@
-import immutable from '../../../../../node_modules/_immutable@3.8.2@immutable';
+import Immutable from 'immutable';
 import { singleStationAction } from '../../../../constants/actionTypes/monitor/stationmonitor/singleStationAction';
 
-var initState = immutable.fromJS({
+var initState = Immutable.fromJS({
   loading: false,//加载状态
   stationList: [],//所有电站列表
   singleStationData: {},//单电站数据
@@ -13,9 +13,9 @@ const singleStationReducer = (state = initState, action) => {
     // case singleStationAction.MONITORSTATION_FETCH:
     //   return state.set('loading',true)
     // case singleStationAction.GET_MONITORSTATION_FETCH_SUCCESS :
-    //   return state.merge(immutable.fromJS(action.payload)).set('loading',false)
+    //   return state.merge(Immutable.fromJS(action.payload)).set('loading',false)
     // case singleStationAction.CHANGE_MONITORSTATION_STORE:
-    //   return state.merge(immutable.fromJS(action.payload))
+    //   return state.merge(Immutable.fromJS(action.payload))
   }
   return state;
 }

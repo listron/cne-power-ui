@@ -1,8 +1,8 @@
-import immutable from 'immutable';
+import Immutable from 'immutable';
 import { ticketAction } from '../../../../constants/actionTypes/operation/ticketAction';
 
 
-var initState = immutable.fromJS({
+var initState = Immutable.fromJS({
   inspectList:[],
 
   stationType: '2',    //	电站类型(0:风电，1光伏，2：全部)
@@ -51,29 +51,29 @@ const inspectReducer = (state = initState, action) => {
     case ticketAction.TICKET_FETCH:
       return state.set('isFetching', true);
     case ticketAction.CHANGE_INSPECT_STORE :
-      return state.merge(immutable.fromJS(action.payload))
+      return state.merge(Immutable.fromJS(action.payload))
     case ticketAction.GET_INSPECT_COMMON_FETCH_SUCCESS :
-      return state.merge(immutable.fromJS(action.payload)).set('loading',false)
+      return state.merge(Immutable.fromJS(action.payload)).set('loading',false)
     case ticketAction.CLEAR_INSPECT_STATE:
       return initState;
     // case ticketAction.GET_INSPECT_LIST_SUCCESS:
     //   return state.set('isFetching', false)
-    //               .set('inspectList', immutable.fromJS(action.data.inspectList))
+    //               .set('inspectList', Immutable.fromJS(action.data.inspectList))
     //               .set('pageNum', action.params.pageNum + 1)
     //               .set('pageSize', action.params.pageSize)
     //               .set('total', action.data.total)
     //               .set('status', action.params.status)
-    //               .set('inspectStatusStatistics', immutable.fromJS(action.data.inspectStatusStatistics))
+    //               .set('inspectStatusStatistics', Immutable.fromJS(action.data.inspectStatusStatistics))
     //               .set('sort', action.params.sort);
     case ticketAction.SET_INSPECT_ID:
       return state.set('inspectId', action.data);
     case ticketAction.GET_INSPECT_DETAIL_SUCCESS:
       return state.set('isFetching', false)
-                  .set('inspectDetail', immutable.fromJS(action.data))
+                  .set('inspectDetail', Immutable.fromJS(action.data))
                   .set('inspectId', action.params.inspectId);
     case ticketAction.GET_INSPECT_STANDARD_SUCCESS:
       return state.set('isFetching', false)
-                  .set('inspectStandard', immutable.fromJS(action.data.data));
+                  .set('inspectStandard', Immutable.fromJS(action.data.data));
     case ticketAction.GET_INSPECT_LIST_FAIL:
     case ticketAction.GET_INSPECT_DETAIL_FAIL:
     case ticketAction.ADD_INSPECT_ABNORMAL_FAIL:
@@ -82,7 +82,7 @@ const inspectReducer = (state = initState, action) => {
     case ticketAction.FINISH_INSPECT_FAIL:
     case ticketAction.CREATE_INSPECT_FAIL:
     case ticketAction.GET_INSPECT_STANDARD_FAIL:
-      return state.set('error', immutable.fromJS(action.error));
+      return state.set('error', Immutable.fromJS(action.error));
   }
   return state;
 }

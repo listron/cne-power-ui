@@ -1,4 +1,4 @@
-import { combineReducers } from '../../../../node_modules/_redux@3.7.2@redux';
+import { combineReducers } from 'redux';
 
 import stationMonitor from './stationMonitor/stationMonitorReducer';
 import deviceMonitorReducer from './stationMonitor/deviceMonitorReducer';
