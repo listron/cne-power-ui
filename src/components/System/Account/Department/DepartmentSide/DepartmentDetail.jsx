@@ -5,10 +5,15 @@ import { Button, Icon } from 'antd';
 import PropTypes from 'prop-types';
 import styles from './departmentSide.scss';
 import WarningTip from '../../../../Common/WarningTip';
+import AssignUserModal from '../AssignUserModal/AssignUserModal';
+import AssignStationModal from '../AssignStationModal/AssignStationModal';
 
 class DepartmentDetail extends Component {
   static propTypes = {
     enterpriseId: PropTypes.string,
+    userId: PropTypes.string,
+    enterpriseName: PropTypes.string,
+    enterpriseName: PropTypes.string,
     departmentSource: PropTypes.number,
     departmentName: PropTypes.string, 
     parentDepartmentName: PropTypes.string, 
@@ -18,12 +23,22 @@ class DepartmentDetail extends Component {
     pageNum: PropTypes.number,
     pageSize: PropTypes.number,
     totalNum: PropTypes.number,
+    allDepartment: PropTypes.object,
+    departmentUser: PropTypes.object,
+    DepartmentStation: PropTypes.object,
+    loginData: PropTypes.object,
+    showAssignUserModal: PropTypes.bool,
+    showAssignStationModal: PropTypes.bool,
 
     departmentData: PropTypes.array,
     getOtherPageDetail: PropTypes.func,
     getDepartmentDetail: PropTypes.func,
     changeDepartmentStore: PropTypes.func,
     onShowSideChange: PropTypes.func,
+    getDepartmentUser: PropTypes.func,
+    getDepartmentStation: PropTypes.func,
+    setDepartmentUser: PropTypes.func,
+    setDepartmentStation: PropTypes.func,
     departmentDetail: PropTypes.object,
   }
 
@@ -31,7 +46,7 @@ class DepartmentDetail extends Component {
     super(props);
     this.state = {
       showWarningTip: false,
-      warningTipText: '!',
+      warningTipText: '',
     }
   }
 
@@ -41,11 +56,15 @@ class DepartmentDetail extends Component {
   }
   
   setDepartmentUser = () => {
-    console.log(this.props.departmentDetail);
+    this.props.changeDepartmentStore({
+      showAssignUserModal: true,
+    })
   }
 
   setDepartmentStation = () => {
-    console.log(this.props.departmentDetail);
+    this.props.changeDepartmentStore({
+      showAssignStationModal: true,
+    })
   }
 
   confirmWarningTip = () => {
@@ -89,35 +108,72 @@ class DepartmentDetail extends Component {
     }else if(pageNum < maxPage && detailIndex === pageSize - 1){
       params.pageNum = pageNum + 1
       getOtherPageDetail(params,{previous:false})
-    }else if( pageNum < maxPage ){
+    }else if( pageNum <= maxPage ){
       const {departmentId} = departmentData[detailIndex + 1]
       getDepartmentDetail({ departmentId })
     }else{
       console.log("部门id信息有误，在tablelist中未获取")
     }
   }
-
+  
   backToList = () => {
     this.props.changeDepartmentStore({showPage: 'list'});
   }
 
+  renderAssignUserModal() {
+    const { userId, enterpriseId, enterpriseName, departmentData, departmentDetail, allDepartment, departmentUser, getDepartmentUser, setDepartmentUser, changeDepartmentStore} = this.props;
+    let detailIndex = departmentData.findIndex(e=>e.departmentId===departmentDetail.departmentId);
+    return (
+      <AssignUserModal
+        currentUserId={userId}
+        enterpriseId={enterpriseId}
+        enterpriseName={enterpriseName}
+        departmentList={allDepartment}
+        userList={departmentUser}
+        getUserList={getDepartmentUser}
+        onSetDepartmentUser={setDepartmentUser}
+        onCancel={()=>changeDepartmentStore({showAssignUserModal: false})}
+        selectedDepartment={departmentData.slice(detailIndex, detailIndex+1)}
+     />
+    );
+  }
+
+  renderAssignStationModal() {
+    const { enterpriseId, enterpriseName, departmentData, departmentDetail, allDepartment, DepartmentStation, getDepartmentStation, setDepartmentStation, changeDepartmentStore} = this.props;
+    let detailIndex = departmentData.findIndex(e=>e.departmentId===departmentDetail.departmentId);
+    return (
+      <AssignStationModal
+        enterpriseId={enterpriseId}
+        enterpriseName={enterpriseName}
+        departmentList={allDepartment}
+        stationList={DepartmentStation}  
+        getStationList={getDepartmentStation}
+        onSetDepartmentStation={setDepartmentStation}
+        onCancel={()=>changeDepartmentStore({showAssignStationModal: false})}
+        selectedDepartment={departmentData.slice(detailIndex, detailIndex+1)}
+      />
+    );
+  }
+
   render(){
-    const { departmentDetail } = this.props;
+    const { departmentDetail,departmentData, showAssignUserModal, showAssignStationModal } = this.props;
     const { showWarningTip, warningTipText } = this.state;
     let userFullNames = (departmentDetail.userFullNameData && departmentDetail.userFullNameData.length > 0 )? departmentDetail.userFullNameData.map(e=>e.userFullName).join(','):' -- ';
     let stationNames = (departmentDetail.stationNameData && departmentDetail.stationNameData.length > 0 )? departmentDetail.stationNameData.map(e=>e.stationName).join(','):' -- ';
+    const tmpDepartmentSub = departmentData.find(e=>e.departmentId === departmentDetail.departmentId);
+    const forbiddenEdit = tmpDepartmentSub && tmpDepartmentSub.departmentSource === 0;
     return (
       <div className={styles.departmentDetail}>
         {showWarningTip && <WarningTip onOK={this.confirmWarningTip} value={warningTipText} />}
         <div className={styles.detailTop}>
-          <Button className={styles.editButton} onClick={()=>this.onShowSideChange({showSidePage:'eidt'})}>编辑</Button>
+          <Button className={styles.editButton} disabled={forbiddenEdit} onClick={()=>this.onShowSideChange({showSidePage:'eidt'})}>编辑</Button>
           <span className={styles.handleArea} >
             <Icon type="arrow-up" className={styles.previous} title="上一个" onClick={this.preDepartment} />
             <Icon type="arrow-down" className={styles.next} title="下一个" onClick={this.nextDepartment} />
             <Icon type="arrow-left" className={styles.backIcon} onClick={this.backToList} />
           </span>
         </div>
-        <div className={styles.departmentInfor} >
+        <div className={styles.departmentInfo} >
           <div>
             <span className={styles.title}>部门名称</span>
             <span className={styles.value}>{departmentDetail.departmentName}</span> 
@@ -157,6 +213,8 @@ class DepartmentDetail extends Component {
             <span className={styles.value}>{departmentDetail.updateTime}</span> 
           </div>
         </div>
+        {showAssignUserModal && this.renderAssignUserModal()}
+        {showAssignStationModal && this.renderAssignStationModal()}
       </div>
     )
   }

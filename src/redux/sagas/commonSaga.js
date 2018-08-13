@@ -1,32 +1,34 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import axios from 'axios';
 import Path from '../../constants/path';
-import { CommonAction } from '../../constants/actionTypes/commonAction';
+import { commonAction } from '../../constants/actionTypes/commonAction';
 
-//保存当前topMenu信息
-function *getTopMenuChange(action){
-  yield put({ 
-    type: CommonAction.GET_TOPMENU_CHANGE_SUCCESS, 
-    params: action.params
-  });    
+
+function *changeCommonStore(action){//存储payload指定参数，替换reducer-store属性。
+  const { payload } = action;
+  yield put({
+    type:  commonAction.CHANGE_COMMON_STORE,
+    payload,
+  })
 }
 
 //获取所有电站信息
 function *getStations(action){
-  let url = Path.basePaths.newAPIBasePath + Path.commonPaths.getStations;
-  yield put({ type: CommonAction.COMMON_FETCH });
+  const { payload } = action;
+  const url = `${Path.basePaths.newAPIBasePath}${Path.commonPaths.getStations}/${payload.enterpriseId}`;
+  yield put({ type: commonAction.COMMON_FETCH });
   try {
-    const response = yield call(axios.post, url, action.params);
+    const response = yield call(axios.get, url);
     if(response.data.success){
       yield put({ 
-        type: CommonAction.GET_STATIONS_SAGA_SUCCESS, 
+        type: commonAction.GET_STATIONS_SUCCESS, 
         params: {
           data: response.data.result
         }
       });       
     } else{
       yield put({ 
-        type: CommonAction.GET_STATIONS_SAGA_FAIL, 
+        type: commonAction.GET_STATIONS_FAIL, 
         error:{
           code: response.data.error,
           message: response.data.error
@@ -40,12 +42,12 @@ function *getStations(action){
 //获取电站下设备类型信息
 function *getDeviceTypes(action){
   let url = Path.basePaths.newAPIBasePath + Path.commonPaths.getDevicetypes;
-  yield put({ type: CommonAction.COMMON_FETCH });
+  yield put({ type: commonAction.COMMON_FETCH });
   try {
     const response = yield call(axios.get, url, {params: action.params});
     if(response.data.code === '10000'){
       yield put({ 
-        type: CommonAction.GET_DEVICETYPES_SAGA_SUCCESS, 
+        type: commonAction.GET_DEVICETYPES_SUCCESS, 
         params: {
           data: response.data.data.data, 
           params: action.params 
@@ -53,7 +55,7 @@ function *getDeviceTypes(action){
       });       
     } else{
       yield put({ 
-        type: CommonAction.GET_DEVICETYPES_SAGA_FAIL, 
+        type: commonAction.GET_DEVICETYPES_FAIL, 
         error:{
           code: response.data.code,
           message: response.data.message
@@ -67,12 +69,12 @@ function *getDeviceTypes(action){
 //获取设备信息列表
 function *getDevices(action){
   let url = Path.basePaths.newAPIBasePath + Path.commonPaths.getDevices;
-  yield put({ type: CommonAction.COMMON_FETCH });
+  yield put({ type: commonAction.COMMON_FETCH });
   try {
     const response = yield call(axios.get, url, {params: action.params});
     if(response.data.code === '10000'){
       yield put({ 
-        type: CommonAction.GET_DEVICES_SAGA_SUCCESS, 
+        type: commonAction.GET_DEVICES_SUCCESS, 
         params: {
           data: response.data.data.devices, 
           params: action.params 
@@ -80,7 +82,7 @@ function *getDevices(action){
       });       
     } else{
       yield put({ 
-        type: CommonAction.GET_DEVICES_SAGA_FAIL, 
+        type: commonAction.GET_DEVICES_FAIL, 
         error:{
           code: response.data.code,
           message: response.data.message
@@ -95,12 +97,12 @@ function *getDevices(action){
 //获取方阵列表
 function *getPartition(action){
   let url = Path.basePaths.newAPIBasePath + Path.commonPaths.getPartitions;
-  yield put({ type: CommonAction.COMMON_FETCH });
+  yield put({ type: commonAction.COMMON_FETCH });
   try {
     const response = yield call(axios.get, url, {params: action.params});
     if(response.data.code === '10000'){
       yield put({ 
-        type: CommonAction.GET_PARTITIONS_SAGA_SUCCESS, 
+        type: commonAction.GET_PARTITIONS_SUCCESS, 
         params: {
           data: response.data.data.partitions, 
           params: action.params 
@@ -108,7 +110,7 @@ function *getPartition(action){
       });       
     } else{
       yield put({ 
-        type: CommonAction.GET_PARTITIONS_SAGA_FAIL, 
+        type: commonAction.GET_PARTITIONSA_FAIL, 
         error:{
           code: response.data.code,
           message: response.data.message
@@ -120,18 +122,18 @@ function *getPartition(action){
   }
 }
 
-export function* watchTopMenuChange() {
-  yield takeLatest(CommonAction.GET_TOPMENU_CHANGE_SAGA, getTopMenuChange);
+export function* watchCommonStoreChange() {
+  yield takeLatest(commonAction.CHANGE_COMMON_STORE_SAGA, changeCommonStore);
 }
 export function* watchGetStations() {
-  yield takeLatest(CommonAction.GET_STATIONS_SAGA, getStations);
+  yield takeLatest(commonAction.GET_STATIONS_SAGA, getStations);
 }
 export function* watchGetDeviceTypes() {
-  yield takeLatest(CommonAction.GET_DEVICETYPES_SAGA, getDeviceTypes);
+  yield takeLatest(commonAction.GET_DEVICETYPES_SAGA, getDeviceTypes);
 }
 export function* watchGetDevices() {
-  yield takeLatest(CommonAction.GET_DEVICES_SAGA, getDevices);
+  yield takeLatest(commonAction.GET_DEVICES_SAGA, getDevices);
 }
 export function* watchGetPartition() {
-  yield takeLatest(CommonAction.GET_PARTITIONS_SAGA, getPartition);
+  yield takeLatest(commonAction.GET_PARTITIONS_SAGA, getPartition);
 }

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import {message} from 'antd';
-import { TicketAction } from '../../../../../constants/actionTypes/operation/ticketAction';
+import { ticketAction } from '../../../../../constants/actionTypes/operation/ticketAction';
 import DefectDetailForm from '../../../../../components/Operation/Ticket/Defect/DefectDetailForm/DefectDetailForm';
 
 class DefectDetail extends Component {
@@ -109,14 +109,14 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  getDefectDetail: params => dispatch({ type: TicketAction.GET_DEFECT_DETAIL_SAGA, params }),
-  getCommonList: params => dispatch({ type: TicketAction.GET_DEFECT_LANGUAGE_SAGA, params }),
-  setDefectId: params => dispatch({ type: TicketAction.SET_DEFECT_ID_SAGA, params }),
-  onSend: params => dispatch({ type: TicketAction.SEND_DEFECT_SAGA, params }),
-  onReject: params => dispatch({ type: TicketAction.REJECT_DEFECT_SAGA, params }),
-  onClose: params => dispatch({ type: TicketAction.CLOSE_DEFECT_SAGA, params }),
-  onHandle: params => dispatch({ type: TicketAction.HANDLE_DEFECT_SAGA, params }),
-  onCheck: params => dispatch({ type: TicketAction.CHECK_DEFECT_SAGA, params }),
+  getDefectDetail: params => dispatch({ type: ticketAction.GET_DEFECT_DETAIL_SAGA, params }),
+  getCommonList: params => dispatch({ type: ticketAction.GET_DEFECT_LANGUAGE_SAGA, params }),
+  setDefectId: params => dispatch({ type: ticketAction.SET_DEFECT_ID_SAGA, params }),
+  onSend: params => dispatch({ type: ticketAction.SEND_DEFECT_SAGA, params }),
+  onReject: params => dispatch({ type: ticketAction.REJECT_DEFECT_SAGA, params }),
+  onClose: params => dispatch({ type: ticketAction.CLOSE_DEFECT_SAGA, params }),
+  onHandle: params => dispatch({ type: ticketAction.HANDLE_DEFECT_SAGA, params }),
+  onCheck: params => dispatch({ type: ticketAction.CHECK_DEFECT_SAGA, params }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DefectDetail);

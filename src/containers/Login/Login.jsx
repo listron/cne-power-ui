@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import styles from './loginLayout.scss';
 import LoginForm from '../../components/Login/LoginForm';
 import RegisterForm from '../../components/Login/RegisterForm';
-import {LoginAction} from '../../constants/actionTypes/loginAction';
+import {loginAction} from '../../constants/actionTypes/loginAction';
 
 const {TabPane} = Tabs;
 
@@ -77,9 +77,9 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  fetchLogin: params => dispatch({type: LoginAction.GET_LOGIN_SAGA, params}),
-  sendCode: params => dispatch({ type: LoginAction.SEND_CODE_SAGA, params}),
-  checkCodeLogin: params => dispatch({ type: LoginAction.CHECK_CODE_SAGA, params}),
+  fetchLogin: params => dispatch({type: loginAction.GET_LOGIN_SAGA, params}),
+  sendCode: params => dispatch({ type: loginAction.SEND_CODE_SAGA, params}),
+  checkCodeLogin: params => dispatch({ type: loginAction.CHECK_CODE_SAGA, params}),
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Login));

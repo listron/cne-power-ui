@@ -1,11 +1,14 @@
 import keyMirror from 'keymirror';
 
 module.exports = {
-  TicketAction: keyMirror({
+  ticketAction: keyMirror({
     TICKET_FETCH: null,
+    CHANGE_DEFECT_STORE_SAGA: null,
+    CHANGE_DEFECT_STORE: null,
+    GET_DEFECT_COMMON_FETCH_SUCCESS: null,
     //Defect
     GET_DEFECT_LIST_SAGA: null,
-    GET_DEFECT_LIST_SUCCESS: null,
+    // GET_DEFECT_LIST_SUCCESS: null,
     GET_DEFECT_LIST_FAIL: null,
     //Batch operation --1122
     DELETE_BATCH_DEFECT_SAGA: null,
@@ -51,8 +54,11 @@ module.exports = {
     CLEAR_DEFECT_STATE_SAGA: null,
     CLEAR_DEFECT_STATE: null,
     //Inspaect
+    CHANGE_INSPECT_STORE: null,
+    CHANGE_INSPECT_STORE_SAGA: null,
+    GET_INSPECT_COMMON_FETCH_SUCCESS: null,
     GET_INSPECT_LIST_SAGA: null,
-    GET_INSPECT_LIST_SUCCESS: null,
+    // GET_INSPECT_LIST_SUCCESS: null,
     GET_INSPECT_LIST_FAIL: null,
     SET_INSPECT_ID_SAGA: null,
     SET_INSPECT_ID: null,

@@ -13,6 +13,7 @@ const FormItem = Form.Item;
 class EditForm extends Component {
   static propTypes = {
     loading: PropTypes.bool,
+    enterpriseId: PropTypes.string,
     form: PropTypes.object,
     enterpriseDetail: PropTypes.object,
     saveEnterpriseInfor: PropTypes.func,
@@ -24,10 +25,16 @@ class EditForm extends Component {
   }
 
   saveEnterprise = () =>{
-    const { enterpriseLogo } = this.props;
+    const { enterpriseId, enterpriseLogo } = this.props;
     this.props.form.validateFieldsAndScroll((error,values)=>{
+      console.log({
+        enterpriseId,
+          ...values,
+          enterpriseLogo
+      })
       if(!error){
         this.props.saveEnterpriseInfor({
+          enterpriseId,
           ...values,
           enterpriseLogo
         })
@@ -48,23 +55,23 @@ class EditForm extends Component {
           )}
         </FormItem>
         <FormItem label="企业名称" >
-          {getFieldDecorator('enterpriseIdName',{
+          {getFieldDecorator('enterpriseName',{
             rules: [{
               required : true,
               message: '请输入30字以内的企业名称',
               max: 29,
             }],
-            initialValue: enterpriseDetail.enterpriseIdName || ''
+            initialValue: enterpriseDetail.enterpriseName || ''
           })(
             <Input />
           )}
           <span className={styles.instructionText}>(30字以内)</span>
         </FormItem>
         <FormItem label="注册手机" >
-          {getFieldDecorator('createPhone',{
-            initialValue: enterpriseDetail.createPhone
+          {getFieldDecorator('phoneNum',{
+            initialValue: enterpriseDetail.phoneNum
           })(
-            <span>{enterpriseDetail.createPhone}</span>
+            <span>{enterpriseDetail.phoneNum}</span>
           )}
         </FormItem>
         <FormItem label="企业域名" >

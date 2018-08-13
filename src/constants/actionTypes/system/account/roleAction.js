@@ -13,15 +13,13 @@ module.exports = {
     GET_MENU_LIST_SAGA: null,
 
     GET_ROLE_FETCH_SUCCESS: null,
-    
+    MODIFT_ROLE_FAIL: null,
+
     CREATE_ROLE_SAGA: null,
-    CREATE_ROLE_FAIL: null,
 
     EDIT_ROLE_SAGA: null,
-    EDIT_ROLE_FAIL: null,
 
     DELETE_ROLE_SAGA: null,
-    DELETE_ROLE_FAIL: null,
   })
 }
 

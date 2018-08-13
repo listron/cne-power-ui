@@ -1,17 +1,13 @@
 import { all } from 'redux-saga/effects';
 import {
-  watchTopMenuChange,
+  watchCommonStoreChange,
   watchGetStations,
   watchGetDeviceTypes,
   watchGetDevices,
   watchGetPartition,
 } from './commonSaga';
 
-import {
-  watchLogin
-} from './loginSaga';
-
-import { watchUser } from './system/account/userSaga';
+import { watchLogin } from './loginSaga';
 
 import {
   watchGetDefectList,
@@ -56,35 +52,22 @@ import {
 import { watchEnterprise } from './system/account/enterpriseSaga';
 import { watchDepartment } from './system/account/departmentSaga';
 import { watchRole } from './system/account/roleSaga';
+import { watchUser } from './system/account/userSaga';
 
+import { watchSingleStationMonitor } from './monitor/stationMonitor/singleStationSaga'; 
+import { watchDeviceMonitor } from './monitor/stationMonitor/deviceMonitorSaga';
 
 // root saga
 export default function* rootSaga() {
   yield all([
     //common
-    watchTopMenuChange(),
+    watchCommonStoreChange(),
     watchGetStations(),
     watchGetDeviceTypes(),
     watchGetDevices(),
     watchGetPartition(),
     //登陆注册
     watchLogin(),
-    // watchLoginPageChange(), 
-    // watchLogin(),
-    // watchVerificationCode(),
-    // watchCheckCode(),
-    // watchCheckPhoneRegister(),
-    // watchJoinInSaga(),
-    // watchResetPassword(),
-    // watchGetCompInfo(),
-    // watchCheckPhone(),
-    // watchChangePSW(),
-    // // watchGetComInfoSu(),
-    // watchSignup(),
-    // // watchCheckPhoneSU(),
-    // watchGetShowStatus(),
-    // watchChangeShowStatus(),
-    // watchCreateRegister(),
     //Defect
     watchGetDefectList(),
     watchSetDefectId(),
@@ -125,5 +108,8 @@ export default function* rootSaga() {
     watchDepartment(),
     watchRole(),
     watchUser(),
+    // monitor
+    watchDeviceMonitor(),
+    watchSingleStationMonitor(),
   ])
 } 

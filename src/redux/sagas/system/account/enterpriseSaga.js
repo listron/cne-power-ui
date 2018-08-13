@@ -39,8 +39,8 @@ function *changeEnterpriseStore(action){
 //请求单个详细数据信息
 function *getEnterpriseDetail(action){
   const { payload } = action;
-  const url = '/mock/system/enterprisDetail/12';
-  // const url = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.system.getEnterprisDetail}/${payload.enterpriseId}`
+  // const url = '/mock/system/enterprisDetail/12';
+  const url = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.system.getEnterprisDetail}/${payload.enterpriseId}`
   try{
     yield put({ type:enterpriseAction.ENTERPRISE_FETCH });
     const response = yield call(axios.get,url);
@@ -48,9 +48,9 @@ function *getEnterpriseDetail(action){
       type:  enterpriseAction.GET_ENTERPRISE_FETCH_SUCCESS,
       payload:{
         enterpriseDetail: response.data.data,
+        showPage: 'detail',
       },
     });
-    
   }catch(e){
     console.log(e);
   }
@@ -75,16 +75,16 @@ function *ignoreEnterpirseEdit(action){
 //新建+编辑企业信息
 function *saveEnterpriseInfor(action){
   const { payload } = action;
-  const url = '/mock/system/changeEnterprise';
-  // const url = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.system.saveEnterpriseDetail}`
+  // const url = '/mock/system/changeEnterprise';
+  const url = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.system.saveEnterpriseDetail}`
   try{
     yield put({ type:enterpriseAction.ENTERPRISE_FETCH });
-    const response = yield call(axios.post,url,payload);
+    const response = yield call(axios.put,url,payload);
     if(response.data.code === "10000"){
       yield put({
-        type:  enterpriseAction.GET_ENTERPRISE_FETCH_SUCCESS,
+        type:  enterpriseAction.GET_ENTERPRISE_DETAIL_SAGA,
         payload:{
-          showPage: 'detail',
+          enterpriseId: payload.enterpriseId
         }
       });
     }

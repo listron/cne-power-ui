@@ -6,9 +6,26 @@
 
 .userMain{
   flex: 1 0 auto;
-  background-color: #fff;
   width: 100%;
+  background: #ececec;
+  padding: 24px 24px 0;
+  a{
+    color: $darkColor;
+  }
+  a:hover,a:focus{
+    color: $themeColor;
+  }
+  :global{
+    .ant-checkbox-checked .ant-checkbox-inner, .ant-checkbox-indeterminate .ant-checkbox-inner {
+      background-color: $themeColor;
+      border-color: $themeColor;
+    }
+    .ant-checkbox-wrapper:hover .ant-checkbox-inner, .ant-checkbox:hover .ant-checkbox-inner, .ant-checkbox-input:focus + .ant-checkbox-inner {
+      border-color: $themeColor;
+    }
+  }
   .userSearchFilter{
+    background: #fff;
     .userSearch{
       line-height: 50px;
       background: #fbfbfb;
@@ -28,11 +45,23 @@
     .userFilter{
       display: flex;
       justify-content: flex-start;
-      margin: 20px 0;
+      padding: 20px 0;
       .userRole{
-        width: 30%;
+        :global{
+          .ant-select-selection__placeholder{
+            display: inline-block! important;
+          }
+          .ant-select-selection-selected-value .ant-checkbox-wrapper{
+            display: none;
+          }
+        }
+        
+        .filterCondition{
+          margin: 30px 10px 0 26px;
+        }
       }
       .userStatus{
+        margin-left: 30%;
         >span{ 
           margin-right: 20px;
         }
@@ -46,6 +75,9 @@
             color: #199475;
             position: relative;
           }
+          .ant-radio-button-wrapper-checked{
+            z-index: 0;
+          }
         }
       }
       
@@ -54,76 +86,143 @@
         ul.listbox{
           width: 200px;
         }
-        :global{
-          .ant-select-selection .ant-select-selection__rendered ul {
-            // display: none;
-          }
-        }
       }
       
     }
+    .selectedRolesBox{
+      width: 100%;
+      padding-left: 25px;
+      margin-bottom: 20px;
+      .selectedRole{
+        background: #fff; 
+        border-style: dashed;
+        height: 30px; 
+        line-height: 30px;
+        font-size: 14px;
+        margin-left: 5px;
+      }
+      Button{
+        margin: 0px 5px 20px;
+      }
+      .emptyCondition{
+        color: #199475;
+      }
+    }
   }
   .userList{
+    background: #fff;
     .userHelper{
       display: flex;
       justify-content: space-between;
       height: 72px;
       line-height: 72px;
-      Button{
-        margin: 0 6px;
-        color: $themeColor;
-        border: 1px solid $themeColor;
-      }
-      .addUser{
-        border: 1px solid $themeColor;
-        padding : 0;
-        margin-left: 24px;
-        margin-right: 12px;
-        i{
-          background: $themeColor;
-          color: #fff;
-          width: 28px;
-          line-height: 30px;
-          height: 100%;
+      .userHelperLeft{
+        display: flex;
+        justify-content: flex-start;
+        
+        .importUser{
           display: inline-block;
+          :global{
+            .ant-upload-list{
+              display: none;
+            }
+          }
         }
-        .text{
+        Button{
+          margin: 20px 6px;
           color: $themeColor;
-          width: 38px;
-          text-align: center;
-          display: inline-block;
-          margin: 0;
-          height: 100%;
-          line-height: 30px;
+          border: 1px solid $themeColor;
         }
-        @include highLight($themeColor);
-        &:hover{
-          .text{
+        .addUser{
+          border: 1px solid $themeColor;
+          padding : 0;
+          margin-left: 24px;
+          margin-right: 12px;
+          i{
             background: $themeColor;
             color: #fff;
+            width: 28px;
+            line-height: 30px;
+            height: 100%;
+            display: inline-block;
+          }
+          .text{
+            color: $themeColor;
+            width: 38px;
+            text-align: center;
+            display: inline-block;
+            margin: 0;
+            height: 100%;
+            line-height: 30px;
+          }
+          @include highLight($themeColor);
+          &:hover{
+            .text{
+              background: $themeColor;
+              color: #fff;
+            }
           }
         }
-      }
-      .userOperate{
-        display: inline-block;
-        .handleDropdown{
-          width: 120px;
+        .userOperate{
+          display: inline-block;
+          .handleDropdown{
+            width: 120px;
+            :global{
+              .ant-select-dropdown-menu-item{
+                color:$themeColor;
+              }
+              .ant-select-dropdown-menu-item-disabled{
+                color:$promptColor;
+              }
+            }
+          }
           :global{
-            .ant-select-dropdown-menu-item{
-              color:$themeColor;
-            }
-            .ant-select-dropdown-menu-item-disabled{
-              color:$promptColor;
+            .ant-select{
+              width: 78px;
             }
           }
         }
-        :global{
-          .ant-select{
-            width: 78px;
+        .selectedColumns{
+          margin-top: 20px;
+          width: 33px; 
+          height: 33px;
+          border-radius: 4px;
+          margin-left: 20px;
+          :global{
+            .ant-select-selection{
+              background: #199475 url(../../../../../theme/img/avatar.png) no-repeat center center;
+              background-size: 15px 15px;
+            }
+            .ant-select-selection__placeholder{
+              display: none;
+            }
+            .ant-select-selection-selected-value .ant-checkbox-wrapper{
+              display: none;
+            }
           }
         }
       }
-
+      
+    }
+    .tableFooter{
+      line-height: 46px;
+      height: 46px;
+      color: #999;
+      .info{
+        margin-left: 25px;
+        .totalNum{
+          color:#e08031; 
+        }
+      }
+      .cancel{
+        color: $themeColor;
+        margin-left: 20px;
+      }
+      .operateTip{
+        float: right;
+        margin-right: 60px;
+        
+      }
     }
   }
   
