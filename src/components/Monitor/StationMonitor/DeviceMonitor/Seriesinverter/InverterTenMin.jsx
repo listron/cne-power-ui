@@ -13,11 +13,24 @@ function InverterTenMin({ deviceTenMin }) {
       radiationLineData.push(e.instantaneous);
     });
     const option = {
+      title: {
+        text: '时序图',
+        textStyle: {
+          color: '#666',
+          fontSize: 14,
+        },
+        left: 60
+      },
       legend: {
-        data:['功率','斜面辐射']
+        data:['功率','斜面辐射'],
+        top: 24,
       },
       tooltip: {
         show: true,
+      },
+      grid: {
+        top: 95,
+        containLabel: true,
       },
       xAxis: {
         type: 'category',
@@ -36,7 +49,7 @@ function InverterTenMin({ deviceTenMin }) {
       },
       yAxis: [
         {
-          name: '辐射 (W/m²)',
+          name: '功率 (kW)',
           splitLine:{
             show:false
           },
@@ -53,7 +66,7 @@ function InverterTenMin({ deviceTenMin }) {
           },
         },
         {
-          name: '功率 (kW)',
+          name: '辐射 (W/m²)',
           splitLine:{
             show:false
           },

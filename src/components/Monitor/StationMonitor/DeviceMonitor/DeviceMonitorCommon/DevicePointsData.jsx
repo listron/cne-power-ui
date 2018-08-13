@@ -1,42 +1,25 @@
-import React, { Component } from 'react';
-import CommonPagination from '../../../../Common/CommonPagination';
+import React from 'react';
 import styles from './deviceMonitorStatistics.scss';
-import PropTypes from 'prop-types';
-import { Button, Table } from 'antd';
-import { Link } from 'react-router-dom';
-import moment from 'moment';
 
-class DevicePointsData extends Component {
-  static propTypes = {
-    devicePointData: PropTypes.array,
-  }
+function DevicePointsData({ devicePointData }) {
 
-  constructor(props){
-    super(props);
-    this.state = {
-    }
-  }
+  let pointListGroup = [],startIndex = 0;
+  do{
+    let eachPointGroup = devicePointData.slice(startIndex, startIndex + 10);
+    startIndex += 10;
+    pointListGroup.push(eachPointGroup);
+  }while(startIndex < devicePointData.length);
 
-  render() {
-    const { devicePointData } = this.props;
-    let pointListGroup = [],startIndex = 0;
-    do{
-      let eachPointGroup = devicePointData.slice(startIndex, startIndex + 10);
-      startIndex += 10;
-      pointListGroup.push(eachPointGroup);
-    }while(startIndex < devicePointData.length)
-    return (
-      <div className={styles.pointDataList} >
-        {pointListGroup.map((e, i)=>(<div key={i}>
-          {e.map(eachPoints => (<div key={eachPoints.devicePointCode}>
-            <span>{eachPoints.devicePointName}</span>
-            <span>{eachPoints.devicePointValue} {eachPoints.devicePointUnit || ''}</span>
-          </div>))}
+  return (
+    <div className={styles.pointDataList} >
+      {pointListGroup.map((e, i)=>(<div key={i}>
+        {e.map(eachPoints => (<div key={eachPoints.devicePointCode}>
+          <span>{eachPoints.devicePointName}</span>
+          <span>{eachPoints.devicePointValue} {eachPoints.devicePointUnit || ''}</span>
         </div>))}
-      </div>
-    )
-  }
-  
+      </div>))}
+    </div>
+  )
 }
 
 export default DevicePointsData;
