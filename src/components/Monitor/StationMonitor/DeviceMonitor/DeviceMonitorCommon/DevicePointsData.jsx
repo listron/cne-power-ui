@@ -15,9 +15,9 @@ function DevicePointsData({ devicePointData, deviceDetail }) {
       <div className={styles.pointTitle}>{deviceDetail.deviceTypeName || ''}实时测点数据</div>
       <div className={styles.pointDataList} >
         {pointListGroup.map((e, i)=>(<div className={styles.eachGroup} key={i}>
-          {e.map(eachPoints => (<div key={eachPoints.devicePointCode}>
-            <span>{eachPoints.devicePointName}</span>
-            <span>{eachPoints.devicePointValue} {eachPoints.devicePointUnit || ''}</span>
+          {e.map(eachPoints => (<div className={styles.eachData} key={eachPoints.devicePointCode}>
+            <p>{eachPoints.devicePointName}</p>
+            <p>{eachPoints.devicePointValue}{eachPoints.devicePointUnit || ''}</p>
           </div>))}
         </div>))}
       </div>

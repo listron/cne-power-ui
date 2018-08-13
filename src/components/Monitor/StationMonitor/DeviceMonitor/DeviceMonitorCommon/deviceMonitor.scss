@@ -88,17 +88,28 @@
 }
 
 .pointData{
+  background-color: #f8f8f8;
+  padding: 20px 60px 80px 60px;
   .pointTitle{
     color: $darkColor;
   }
   .pointDataList{
-    background-color: #f8f8f8;
-    padding: 20px 60px 80px 60px;
     display: flex;
     flex-wrap: wrap;
     .eachGroup{
-      margin-left: 24px;
       min-width: 20%;
+      padding-left: 20px;
+      border-right: dotted 1px $promptColor;
+      .eachData{
+        margin-bottom: 4px;
+        p{
+          color: $lightColor;
+          margin-bottom: 0;
+        }
+      }
+    }
+    .eachGroup:last-child{
+      border-right: none;
     }
   }
 }
