@@ -2,8 +2,8 @@ import React from "react";
 import PropTypes from "prop-types";
 import styles from './windstation.scss';
 import WindMap from './WindStationMap.jsx';
-import WIndStationItem from './WIndStationItem.jsx';
-import WIndStationList from './WIndStationList.jsx';
+import WindStationItem from './WindStationItem.jsx';
+import WindStationList from './WindStationList.jsx';
 import { Progress, Tabs, Icon, Button, Radio, Switch, Table } from "antd";
 import WindStationList from "./WIndStationList.jsx";
 
