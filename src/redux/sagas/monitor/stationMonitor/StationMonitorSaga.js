@@ -2,7 +2,7 @@ import { call, put, takeLatest,select } from 'redux-saga/effects';
 import axios from 'axios';
 import Path from '../../../../constants/path';
 
-import { allStationAction } from '../../../../constants/actionTypes/monitor/stationmonitor/allStationAction';
+import { allStationAction } from '../../../../constants/actionTypes/monitor/stationMonitor/allStationAction';
 
 
 
