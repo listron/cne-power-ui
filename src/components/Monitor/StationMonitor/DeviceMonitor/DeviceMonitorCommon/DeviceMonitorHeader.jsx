@@ -57,7 +57,7 @@ class DeviceMonitorHeader extends Component {
             <Icon type="swap" onClick={this.hideDeviceChange} className={styles.titleIcon} />
             <span>{deviceDetail.deviceName}</span>
           </h4>
-          <div className={styles.deviceList}>
+          <div className={styles.deviceList} onClick={this.hideDeviceChange}>
             {devices.map(e=>(<Link className={styles.eachDevice} to={`/hidden/monitorDevice/${stationCode}/${deviceTypeCode}/${e.deviceCode}`} key={e.deviceCode}>{e.deviceName}</Link>))}
           </div>
         </div>}

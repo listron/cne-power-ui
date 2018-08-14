@@ -29,6 +29,10 @@ class Seriesinverter extends Component {
     })
   }
 
+  componentWillReceiveProps(nextProps){
+    console.log(nextProps)
+  }
+
   render(){
     const {devices, deviceDetail, deviceTenMin, deviceAlarmList, devicePointData } = this.props;
     const { stationCode, deviceTypeCode } = this.props.match.params;
