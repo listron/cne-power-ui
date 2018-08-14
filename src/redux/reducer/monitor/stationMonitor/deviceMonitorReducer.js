@@ -7,7 +7,7 @@ var initState = Immutable.fromJS({
   // deviceName: '',  // 暂不用
   // deviceTypeCode: '',  // 暂不用
   // deviceTypeName: '',  // 暂不用
-
+  devices: [],       // 电站下同设备类型的设备列表
   deviceDetail: {},  // 单设备详情
   deviceTenMin: [],  // 但设备10min数据
   devicePointData: [],  // 设备测点数据

@@ -58,7 +58,7 @@ const routers = [
     exact: true,
     component: AllStation,
   }, {  // 菜单栏中不展示的--单设备实时监控
-    path: '/hidden/monitorDevice/:deviceTypeCode/:deviceCode',
+    path: '/hidden/monitorDevice/:stationCode/:deviceTypeCode/:deviceCode',
     exact: true,
     component: DeviceMonitor
   }, {  // 菜单栏中不展示的--单电站实时数据
