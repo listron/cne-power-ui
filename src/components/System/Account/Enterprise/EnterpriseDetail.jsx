@@ -65,9 +65,9 @@ class EnterpriseDetail extends Component {
           </div>
           <div className={styles.textInfo}>
             <div className={styles.buttonGroup}>
-              <Button><Link to="/system/department">查看部门</Link></Button>
-              <Button><Link to="/system/user">查看成员</Link></Button>
-              <Button><Link to="/system/role">查看角色</Link></Button>
+              <Button><Link to="/system/account/department">查看部门</Link></Button>
+              <Button><Link to="/system/account/user">查看成员</Link></Button>
+              <Button><Link to="/system/account/role">查看角色</Link></Button>
             </div>
             <div>
               <span className={styles.promptTitle}>用户名</span>

@@ -166,15 +166,7 @@ class UserDetail extends Component {
                       </div>
                     </div>)
                   })
-                }
-                {/* <div className={styles.departmentDetail}>
-                  <div className={styles.enterpriseName}>协合新能源集团：</div>
-                  <div className={styles.enterpriseDetail}>
-                    <p>运维支持部-运维二组（负责电站：山东平原1,山东平原2）</p>
-                    <p>运维支持部-运维二组（负责电站：山东平原1,山东平原2）</p>
-                  </div>
-                </div> */}
-                
+                }                
               </div>
             </div>
           </div>

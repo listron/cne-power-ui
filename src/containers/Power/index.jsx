@@ -40,16 +40,16 @@ class Power extends Component {
             </div>
 						<div>
 							<Button>
-								<Link to="/hidden/monitorDevice/203/112233445566">气象站</Link>
+								<Link to="/hidden/monitorDevice/73/203/112233445566">气象站</Link>
 							</Button>
 							<Button>
-							  <Link to="/hidden/monitorDevice/206/112233445566">组串逆变器</Link>
+							  <Link to="/hidden/monitorDevice/73/206/112233445566">组串逆变器</Link>
 							</Button>
 							<Button>
-							  <Link to="/hidden/monitorDevice/202/112233445566">汇流箱</Link>
+							  <Link to="/hidden/monitorDevice/73/202/112233445566">汇流箱</Link>
 							</Button>
 							<Button>
-							  <Link to="/hidden/monitorDevice/304/112233445566">箱变</Link>
+							  <Link to="/hidden/monitorDevice/73/304/112233445566">箱变</Link>
 							</Button>
 						</div>
           </div>

@@ -3,41 +3,28 @@ import { connect } from 'react-redux';
 import styles from './deviceMonitor.scss';
 import { deviceAction } from '../../../../constants/actionTypes/monitor/stationMonitor/deviceAction';
 import PropTypes from 'prop-types';
+import Seriesinverter from '../../../../components/Monitor/StationMonitor/DeviceMonitor/Seriesinverter/Seriesinverter';
+import Confluencebox from '../../../../components/Monitor/StationMonitor/DeviceMonitor/Confluencebox/Confluencebox';
+import Boxtransformer from '../../../../components/Monitor/StationMonitor/DeviceMonitor/Boxtransformer/Boxtransformer';
+import Weatherstation from '../../../../components/Monitor/StationMonitor/DeviceMonitor/Weatherstation/Weatherstation';
 
 class DeviceMonitor extends Component {
   static propTypes = {
     match: PropTypes.object,
     getMonitorDeviceData: PropTypes.func,
-    enterpriseId: PropTypes.string,
   }
   constructor(props) {
     super(props);
-    this.state = {
-      
-    }
   }
-  componentDidMount(){
-    const { deviceCode, deviceTypeCode } = this.props.match.params
-    this.props.getMonitorDeviceData({
-      deviceCode,
-      deviceTypeCode
-    })
-  }
-
-  // '206': {  // 组串式逆变器：206
-  // '202': {  // 汇流箱： 202
-  // '304': {  // 箱变： 304
-  // '203': {  // 气象站： 203
 
   render() {
     const { deviceTypeCode } = this.props.match.params;
     return (
       <div className={styles.inverterMonitor}>
-        实时监控页面啊！
-        {deviceTypeCode === '206' && <div>组串式逆变器</div> }
-        {deviceTypeCode === '202' && <div>汇流箱：</div> }
-        {deviceTypeCode === '304' && <div>箱变：</div> }
-        {deviceTypeCode === '203' && <div>气象站：</div> }
+        {deviceTypeCode === '206' && <Seriesinverter {...this.props} /> }
+        {deviceTypeCode === '202' && <Confluencebox {...this.props} /> }
+        {deviceTypeCode === '304' && <Boxtransformer {...this.props} /> }
+        {deviceTypeCode === '203' && <Weatherstation {...this.props} /> }
       </div>
 
     );
