@@ -31,9 +31,10 @@ class Seriesinverter extends Component {
 
   render(){
     const {devices, deviceDetail, deviceTenMin, deviceAlarmList, devicePointData } = this.props;
+    const { stationCode } = this.props.match.params;
     return (
       <div className={styles.seriesinverter}>
-        <DeviceMonitorHeader deviceDetail={deviceDetail} devices={devices} />
+        <DeviceMonitorHeader deviceDetail={deviceDetail} devices={devices} stationCode={stationCode} />
         <DeviceMonitorStatistics deviceDetail={deviceDetail} />
         <InverterTenMin deviceTenMin={deviceTenMin} />
         <DeviceAlarmTable deviceAlarmList={deviceAlarmList} />

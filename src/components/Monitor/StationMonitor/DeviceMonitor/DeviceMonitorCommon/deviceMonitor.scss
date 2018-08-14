@@ -1,5 +1,62 @@
 
 @import '../../../../../theme/theme.scss';
+.deviceMonitorHeader {
+  height: 65px;
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  .deviceChange{
+    position: absolute;
+    background-color: #fff;
+    z-index: 9999;
+    left: 0px;
+    top: 0px;
+    width: 300px;
+    .deviceTitle{
+      color: $darkColor;
+      font-size: 18px;
+    }
+    .deviceList{
+      display: flex;
+      flex-wrap: wrap;
+      .eachDevice{
+        width: 50%;
+      }
+    }
+  }
+  .deviceName{
+    line-height: 65px;
+    .swap{
+      font-size: 18px;
+      margin-left: 32px;
+      color: $darkColor;
+    }
+    .name{
+      font-size: 18px;
+      margin-left: 12px;
+      color: $darkColor;
+    }
+    .status{
+      font-size: 14px;
+      margin-left: 24px;
+      color: $lightColor;
+    }
+  }
+  .linkTo{
+    margin-right: 36px;
+    .eachLink{
+      line-height: 65px;
+      margin-right: 40px;
+      .linkName{
+        color: $darkColor;
+      }
+      .linkIcon{
+        color: $lightColor;
+      }
+    }
+  }
+}
+
 .statisticsBox{
   display: flex;
   height: 100px;
@@ -99,6 +156,7 @@
     .eachGroup{
       min-width: 20%;
       padding-left: 20px;
+      margin: 16px 0;
       border-right: dotted 1px $promptColor;
       .eachData{
         margin-bottom: 4px;
