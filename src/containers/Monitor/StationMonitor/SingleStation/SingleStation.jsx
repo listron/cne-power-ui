@@ -8,6 +8,8 @@ class SingleStation extends Component {
   static propTypes = {
     match: PropTypes.object,
     getSingleStation: PropTypes.func,
+    getCapabilityDiagram: PropTypes.func,
+    getMonitorPower: PropTypes.func,
   };
   constructor(props) {
     super(props);
@@ -16,8 +18,11 @@ class SingleStation extends Component {
     }
   }
   componentDidMount() {
-    const { stationCode } = this.props.match.params;
+    console.log(this.props.match);
+    const { stationCode, intervalTime } = this.props.match.params;
     this.props.getSingleStation({stationCode});
+    this.props.getCapabilityDiagram({stationCode,intervalTime});
+    this.props.getMonitorPower({stationCode,intervalTime});
   }
 
   render() {
@@ -37,7 +42,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = (dispatch) => ({
   getSingleStation: payload => dispatch({type:singleStationAction.GET_SINGLE_STATION_SAGA, payload}),
-
+  getCapabilityDiagram: payload => dispatch({type:singleStationAction.GET_CAPABILITY_DIAGRAM_SAGA, payload}),
+  getMonitorPower: payload => dispatch({type:singleStationAction.GET_MONITOR_POWER_SAGA, payload}),
 
 });
 

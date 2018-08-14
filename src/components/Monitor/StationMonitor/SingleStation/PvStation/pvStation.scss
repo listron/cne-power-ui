@@ -84,5 +84,10 @@
   .outputPowerDiagram{
     border-top: 1px solid #dfdfdf;
     border-bottom: 1px solid #dfdfdf;
+    height: 300px;
+    padding: 0 20px;
+    display: flex;
+    flex-direction: row;
+    
   }
 }

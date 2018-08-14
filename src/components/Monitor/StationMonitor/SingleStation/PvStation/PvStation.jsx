@@ -3,6 +3,7 @@
 import React, { Component } from 'react';
 import propTypes from 'prop-types';
 import PvStationTop from './PvStationTop';
+import OutputPowerDiagram from './OutputPowerDiagram';
 import styles from './pvStation.scss';
 
 class PvStation extends Component {
@@ -17,7 +18,7 @@ class PvStation extends Component {
     return (
       <div className={styles.pvStation}>
         <PvStationTop {...this.props} />
-           
+        <OutputPowerDiagram {...this.props} />  
       </div>
     )
   }

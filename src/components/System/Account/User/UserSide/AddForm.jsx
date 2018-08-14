@@ -143,7 +143,7 @@ class AddForm extends Component {
               className={styles.selectRoles}
             >
               {roleAllList && roleAllList.toJS().map((item,index)=>(
-                <Option key={item.roleId} value={item.roleId}  >{item.roleName}</Option>
+                <Option key={item.roleId} value={item.roleId}  >{item.roleDesc}</Option>
               ))}
             </Select>
           )}
@@ -161,7 +161,7 @@ class AddForm extends Component {
               className={styles.specialRoleId}
             >
               {specialRoleList && specialRoleList.toJS().map((item,index)=>(
-                <Option key={item.roleId} value={item.roleId}  >{item.roleName}</Option>
+                <Option key={item.roleId} value={item.roleId}  >{item.roleDesc}</Option>
               ))}
             </Select>
           )}

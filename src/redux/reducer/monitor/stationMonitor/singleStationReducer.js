@@ -6,6 +6,8 @@ var initState = Immutable.fromJS({
   stationList: [],//所有电站列表
   singleStationData: {},//单电站数据
   stationType: 0,//电站类型  0：风 1：光
+  capabilityData: [],//出力图数据
+  powerData: [],//理论发电量 实际发电量数据
 });
 
 const singleStationReducer = (state = initState, action) => {

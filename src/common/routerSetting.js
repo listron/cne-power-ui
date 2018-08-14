@@ -65,6 +65,10 @@ const routers = [
     path: '/hidden/singleStation/:stationCode',
     exact: true,
     component: SingleStation,
+  }, {  // 菜单栏中不展示的--
+    path: '/hidden/singleStation/:stationCode/:intervalTime',
+    exact: true,
+    component: SingleStation,
   }
 ];
 

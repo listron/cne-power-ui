@@ -19,7 +19,6 @@ class PvStationTop extends Component {
     const stationPower = singleStationData && singleStationData.stationPower;
     const stationCapacity = singleStationData && singleStationData.stationCapacity;
     const powerPercent = stationPower/stationCapacity;
-    console.log(powerPercent);
     return (
       <div className={styles.pvStationTop}>
         <div className={styles.pvStationTitle} >
