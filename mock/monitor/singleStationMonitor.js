@@ -1,7 +1,7 @@
 
 module.exports = [
   {
-    api: '/mock/api/v3/monitor/station/',//单电站实时数据
+    api: '/mock/api/v3/monitor/station/76',//单电站实时数据
     method: 'get',
     response: {
       "code": "10000",

@@ -3,10 +3,11 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import styles from './singleStation.scss';
 import { singleStationAction } from '../../../../constants/actionTypes/monitor/stationmonitor/singleStationAction';
-import { SingleStationMonitor } from '../../../../components/Monitor/StationMonitor/SingleStation/SingleStationMonitor';
+import SingleStationMain from '../../../../components/Monitor/StationMonitor/SingleStation/SingleStationMain';
 class SingleStation extends Component {
   static propTypes = {
-    
+    match: PropTypes.object,
+    getSingleStation: PropTypes.func,
   };
   constructor(props) {
     super(props);
@@ -15,25 +16,27 @@ class SingleStation extends Component {
     }
   }
   componentDidMount() {
-    
+    const { stationCode } = this.props.match.params;
+    this.props.getSingleStation({stationCode});
   }
 
   render() {
-
+    console.log(this.props);
     return (
-      <div className={styles.singleStationContainer}>
-        <SingleStationMonitor {...this.props} />
+      <div className={styles.singleStationContainer} >
+        <div>这是单电站监控页面！</div>
+        <SingleStationMain {...this.props} />
       </div>
     );
   }
 }
 
 const mapStateToProps = state => ({
-  ...state.monitor.SingleStationMonitor.toJS(),
-})
+  ...state.monitor.singleStation.toJS(),
+});
 
 const mapDispatchToProps = (dispatch) => ({
-  getSingleMonitorStation: payload => dispatch({type:singleStationAction.GET_SINGLE_MONITORSTATION_SAGA, payload}),
+  getSingleStation: payload => dispatch({type:singleStationAction.GET_SINGLE_STATION_SAGA, payload}),
 
 
 });

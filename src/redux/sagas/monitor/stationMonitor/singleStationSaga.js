@@ -4,27 +4,28 @@ import Path from '../../../../constants/path';
 import { singleStationAction } from '../../../../constants/actionTypes/monitor/stationmonitor/singleStationAction';
 
 //改变单电站实时数据store
-function *changeSingleMonitorStore(action){
+function *changeSingleStationStore(action){
   const { payload } = action;
   yield put({
-    type: singleStationAction.CHANGE_SINGLE_MONITORSTATION_STORE,
+    type: singleStationAction.CHANGE_SINGLE_STATION_STORE,
     payload,
   })
 }
 
 //获取单电站实时数据
-function *getSingleMonitorStation(action){
+function *getSingleStation(action){
   const { payload } = action;
-  const url = '/mock/api/v3/monitor/station/';
+  const url = '/mock/api/v3/monitor/station/'+ payload.stationCode;
+  console.log(payload);
   try{
     yield put({type: singleStationAction.SINGLE_STATION_FETCH});
-    const response = yield call(axios.post, url, payload);
+    const response = yield call(axios.get, url);
     console.log(response);
     yield put({
-      type: singleStationAction.GET_SINGLE_MONITORSTATION_SUCCESS,
+      type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
       payload: {
         ...payload,
-        ...response.data.data,
+        singleStationData: response.data.data,
       }
     })
   }catch(e){
@@ -41,7 +42,7 @@ function *getStationList(action){
     const response = yield call(axios.post, url, payload);
     console.log(response);
     yield put({
-      type: singleStationAction.GET_SINGLE_MONITORSTATION_SUCCESS,
+      type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
       payload: {
         ...payload,
         ...response.data.data,
@@ -54,8 +55,8 @@ function *getStationList(action){
 
 
 export function* watchSingleStationMonitor() {
-  yield takeLatest(singleStationAction.GET_SINGLE_MONITORSTATION_SAGA, getSingleMonitorStation);
-  yield takeLatest(singleStationAction.CHANGE_SINGLE_MONITORSTATION_STORE_SAGA, changeSingleMonitorStore);
+  yield takeLatest(singleStationAction.GET_SINGLE_STATION_SAGA, getSingleStation);
+  yield takeLatest(singleStationAction.CHANGE_SINGLE_STATION_STORE_SAGA, changeSingleStationStore);
   yield takeLatest(singleStationAction.GET_STATION_LIST_SAGA, getStationList);
 }
 
