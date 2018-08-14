@@ -21,7 +21,7 @@ class Seriesinverter extends Component {
   }
 
   componentDidMount(){
-    const { deviceCode, deviceTypeCode,stationCode } = this.props.match.params;
+    const { deviceCode, deviceTypeCode, stationCode } = this.props.match.params;
     this.props.getMonitorDeviceData({
       stationCode,
       deviceCode,
@@ -31,10 +31,10 @@ class Seriesinverter extends Component {
 
   render(){
     const {devices, deviceDetail, deviceTenMin, deviceAlarmList, devicePointData } = this.props;
-    const { stationCode } = this.props.match.params;
+    const { stationCode, deviceTypeCode } = this.props.match.params;
     return (
       <div className={styles.seriesinverter}>
-        <DeviceMonitorHeader deviceDetail={deviceDetail} devices={devices} stationCode={stationCode} />
+        <DeviceMonitorHeader deviceDetail={deviceDetail} devices={devices} stationCode={stationCode} deviceTypeCode={deviceTypeCode} />
         <DeviceMonitorStatistics deviceDetail={deviceDetail} />
         <InverterTenMin deviceTenMin={deviceTenMin} />
         <DeviceAlarmTable deviceAlarmList={deviceAlarmList} />

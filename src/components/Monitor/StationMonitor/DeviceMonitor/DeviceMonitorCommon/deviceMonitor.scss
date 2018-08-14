@@ -8,19 +8,38 @@
   .deviceChange{
     position: absolute;
     background-color: #fff;
+    border: 1px solid $promptColor;
     z-index: 9999;
     left: 0px;
     top: 0px;
     width: 300px;
+    max-height: calc(100vh - 83px);
+    overflow: auto;
     .deviceTitle{
       color: $darkColor;
       font-size: 18px;
+      height: 65px;
+      line-height: 65px;
+      margin-bottom: 0px;
+      .titleIcon{
+        cursor: pointer;
+        margin-left: 32px;
+        margin-right: 12px;
+      }
     }
     .deviceList{
       display: flex;
       flex-wrap: wrap;
       .eachDevice{
         width: 50%;
+        padding-left: 40px;
+        cursor: pointer;
+        color: $darkColor;
+        height: 28px;
+        line-height: 28px;
+        &:hover{
+          background-color: #eee;
+        }
       }
     }
   }
@@ -30,6 +49,7 @@
       font-size: 18px;
       margin-left: 32px;
       color: $darkColor;
+      cursor: pointer;
     }
     .name{
       font-size: 18px;

@@ -9,20 +9,32 @@ class DeviceMonitorHeader extends Component {
   static propTypes = {
     devices: PropTypes.array,
     stationCode: PropTypes.string,
+    deviceTypeCode: PropTypes.string,
     deviceDetail: PropTypes.object,
   }
 
   constructor(props) {
     super(props);
-    this.state = {}
+    this.state = {
+      showDeviceChangeBox: false,
+    }
   }
 
-  deviceChange = (e) => {
-    console.log(e)
+  showDeviceChange = () => {
+    this.setState({
+      showDeviceChangeBox: true,
+    })
+  }
+
+  hideDeviceChange = () => {
+    this.setState({
+      showDeviceChangeBox: false,
+    })
   }
 
   render() {
-    const { devices, deviceDetail, stationCode } = this.props;
+    const { devices, deviceDetail, stationCode, deviceTypeCode } = this.props;
+    const { showDeviceChangeBox } = this.state;
     const deviceStatusArray = ['正常', '停机', '故障', '未接入'];
     const { deviceStatus } = deviceDetail;
     const deviceStatusName = deviceStatusArray[deviceStatus / 10 - 1];
@@ -40,17 +52,17 @@ class DeviceMonitorHeader extends Component {
     };
     return (
       <div className={styles.deviceMonitorHeader} >
-        <div className={styles.deviceChange}>
+        {showDeviceChangeBox && <div className={styles.deviceChange}>
           <h4 className={styles.deviceTitle}>
-            <Icon type="swap" />
+            <Icon type="swap" onClick={this.hideDeviceChange} className={styles.titleIcon} />
             <span>{deviceDetail.deviceName}</span>
           </h4>
           <div className={styles.deviceList}>
-            {devices.map(e=>(<span className={styles.eachDevice} key={e.deviceCode} onClick={()=>this.deviceChange(e.deviceCode)}>{e.deviceName}</span>))}
+            {devices.map(e=>(<Link className={styles.eachDevice} to={`/hidden/monitorDevice/${stationCode}/${deviceTypeCode}/${e.deviceCode}`} key={e.deviceCode}>{e.deviceName}</Link>))}
           </div>
-        </div>
+        </div>}
         <div className={styles.deviceName}>
-          <Icon type="swap" className={styles.swap} />
+          <Icon type="swap" className={styles.swap} onClick={this.showDeviceChange} />
           <span className={styles.name}>{deviceDetail.deviceName}</span>
           <span className={styles.status} >设备状态: { deviceStatusName || ''}</span>
         </div>
