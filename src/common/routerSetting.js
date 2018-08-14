@@ -53,7 +53,7 @@ const routers = [
     exact:true,
     component: User,
   }, {
-    path: '/monitor/stationmonitor',
+    path: '/monitor/station',
     exact: true,
     component: AllStation,
   }, {  // 菜单栏中不展示的--单设备实时监控

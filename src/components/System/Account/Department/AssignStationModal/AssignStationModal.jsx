@@ -21,16 +21,13 @@ class AssignStationModal extends Component {
   }
   constructor(props) {
     super(props);
-    const department = props.selectedDepartment[0];
-    const departmentId = department.departmentId;
-    let selectedDepartment = props.departmentList.find((item)=>item.get('departmentId')===department.departmentId);
     this.state = {
-      selectedDepartment: selectedDepartment,//选中部门
+      selectedDepartment: Immutable.fromJS([]),//选中部门
       stationList: Immutable.fromJS([]),//电站Id和部门Id一一匹配，一维数组，最后回传的数组
       selectedStationList: Immutable.fromJS([]),//右边的电站列表数据
       searchStationList: null,//右边有搜索文字的电站列表数据
-      expandedKeys: [props.enterpriseId],
-      selectedKeys: [departmentId],
+      expandedKeys: [],
+      selectedKeys: [],
       showWarningTip: false,
       warningTipText: '',
     };
@@ -44,6 +41,16 @@ class AssignStationModal extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    if (nextProps.selectedDepartment.length > 0) {
+      const department = nextProps.selectedDepartment[0];
+      const departmentId = department.departmentId;
+      let selectedDepartment = nextProps.departmentList.find((item)=>item.get('departmentId')===department.departmentId);
+      this.setState({
+        selectedDepartment: selectedDepartment,//选中部门
+        expandedKeys: [nextProps.enterpriseId],
+        selectedKeys: [departmentId],
+      })
+    }
     if(nextProps.stationList.size > 0) {
       this.setState({
         stationList: nextProps.stationList,

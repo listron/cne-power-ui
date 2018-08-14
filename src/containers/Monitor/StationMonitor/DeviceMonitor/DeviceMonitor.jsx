@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import styles from './deviceMonitor.scss';
-import { deviceAction } from '../../../../constants/actionTypes/monitor/stationmonitor/deviceAction';
+import { deviceAction } from '../../../../constants/actionTypes/monitor/stationMonitor/deviceAction';
 import PropTypes from 'prop-types';
 
 class DeviceMonitor extends Component {

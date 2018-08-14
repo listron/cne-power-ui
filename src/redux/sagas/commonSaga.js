@@ -15,10 +15,10 @@ function *changeCommonStore(action){//存储payload指定参数，替换reducer-
 //获取所有电站信息
 function *getStations(action){
   const { payload } = action;
-  const url = `${Path.basePaths.newAPIBasePath}${Path.commonPaths.getStations}/${payload.enterpriseId}`;
+  const url = `${Path.basePaths.newAPIBasePath}${Path.commonPaths.getStations}/${payload.userId}`;
   yield put({ type: commonAction.COMMON_FETCH });
   try {
-    const response = yield call(axios.get, url);
+    const response = yield call(axios.get,url);
     if(response.data.success){
       yield put({ 
         type: commonAction.GET_STATIONS_SUCCESS, 
