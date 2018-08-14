@@ -18,7 +18,7 @@ class RoleEdit extends Component {
     super(props);
     this.state = {
       showWarningTip: false,
-      warningTipText: '退出后信息无法保存!',
+      warningTipText: '',
     }
   }
 
@@ -29,7 +29,7 @@ class RoleEdit extends Component {
   onCancelEdit = () => {
     this.setState({
       showWarningTip: true,
-      warningTipText: ''
+      warningTipText: '退出后信息无法保存!'
     });
   }
 
@@ -49,9 +49,9 @@ class RoleEdit extends Component {
   render(){
     const { showWarningTip, warningTipText } = this.state;
     return (
-      <div className={styles.roleSide}>
-      {showWarningTip && <WarningTip onCancel={this.onCancelWarningTip} onOK={this.onConfirmWarningTip} value={warningTipText} />}
-        <div className={styles.roleEdit}>
+      <div className={styles.roleEdit}>
+        {showWarningTip && <WarningTip onCancel={this.onCancelWarningTip} onOK={this.onConfirmWarningTip} value={warningTipText} />}
+        <div className={styles.roleEditContent}>
           <div className={styles.editTop}>
             <span className={styles.text}>{this.props.showPage==='create'?'新建':'编辑'}</span>
             <Icon type="arrow-left" className={styles.backIcon} onClick={this.onCancelEdit} />
