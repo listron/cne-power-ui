@@ -7,6 +7,7 @@ import styles from './departmentSide.scss';
 import WarningTip from '../../../../Common/WarningTip';
 import AssignUserModal from '../AssignUserModal/AssignUserModal';
 import AssignStationModal from '../AssignStationModal/AssignStationModal';
+import moment from 'moment';
 
 class DepartmentDetail extends Component {
   static propTypes = {
@@ -123,6 +124,8 @@ class DepartmentDetail extends Component {
   renderAssignUserModal() {
     const { userId, enterpriseId, enterpriseName, departmentData, departmentDetail, allDepartment, departmentUser, getDepartmentUser, setDepartmentUser, changeDepartmentStore} = this.props;
     let detailIndex = departmentData.findIndex(e=>e.departmentId===departmentDetail.departmentId);
+    console.log(departmentData);
+    console.log(detailIndex);
     return (
       <AssignUserModal
         currentUserId={userId}
@@ -133,7 +136,7 @@ class DepartmentDetail extends Component {
         getUserList={getDepartmentUser}
         onSetDepartmentUser={setDepartmentUser}
         onCancel={()=>changeDepartmentStore({showAssignUserModal: false})}
-        selectedDepartment={departmentData.slice(detailIndex, detailIndex+1)}
+        selectedDepartment={[departmentData[detailIndex]]}
      />
     );
   }
@@ -150,7 +153,7 @@ class DepartmentDetail extends Component {
         getStationList={getDepartmentStation}
         onSetDepartmentStation={setDepartmentStation}
         onCancel={()=>changeDepartmentStore({showAssignStationModal: false})}
-        selectedDepartment={departmentData.slice(detailIndex, detailIndex+1)}
+        selectedDepartment={[departmentData[detailIndex]]}
       />
     );
   }
@@ -162,6 +165,8 @@ class DepartmentDetail extends Component {
     let stationNames = (departmentDetail.stationNameData && departmentDetail.stationNameData.length > 0 )? departmentDetail.stationNameData.map(e=>e.stationName).join(','):' -- ';
     const tmpDepartmentSub = departmentData.find(e=>e.departmentId === departmentDetail.departmentId);
     const forbiddenEdit = tmpDepartmentSub && tmpDepartmentSub.departmentSource === 0;
+    const createTime = departmentDetail.createTime? moment(departmentDetail.createTime).format('YYYY-MM-DD hh:mm'):' -- ';
+    const updateTime = departmentDetail.updateTime? moment(departmentDetail.updateTime).format('YYYY-MM-DD hh:mm'):' -- ';
     return (
       <div className={styles.departmentDetail}>
         {showWarningTip && <WarningTip onOK={this.confirmWarningTip} value={warningTipText} />}
@@ -176,11 +181,11 @@ class DepartmentDetail extends Component {
         <div className={styles.departmentInfo} >
           <div>
             <span className={styles.title}>部门名称</span>
-            <span className={styles.value}>{departmentDetail.departmentName}</span> 
+            <span className={styles.value}>{departmentDetail.departmentName || ' -- '}</span> 
           </div>
           <div>
             <span className={styles.title}>所属部门</span>
-            <span className={styles.value}>{departmentDetail.parentDepartmentName}</span> 
+            <span className={styles.value}>{departmentDetail.parentDepartmentName || '无'}</span> 
           </div>
           <div>
             <span className={styles.title}>成员</span>
@@ -194,7 +199,7 @@ class DepartmentDetail extends Component {
           </div>
           <div>
             <span className={styles.title}>负责电站</span>
-            <span className={styles.value}>{departmentDetail.enterpriseProfile}</span> 
+            <span className={styles.value}>{departmentDetail.enterpriseProfile || ' -- '}</span> 
           </div>
           <div>
             <span className={styles.title}>创建者</span>
@@ -202,15 +207,15 @@ class DepartmentDetail extends Component {
           </div>
           <div>
             <span className={styles.title}>创建时间</span>
-            <span className={styles.value}>{departmentDetail.createTime}</span> 
+            <span className={styles.value}>{createTime}</span> 
           </div>
           <div>
             <span className={styles.title}>最后修改人</span>
-            <span className={styles.value}>{departmentDetail.updateUser}</span> 
+            <span className={styles.value}>{departmentDetail.updateUser || ' -- '}</span> 
           </div>
           <div>
             <span className={styles.title}>最后修改时间</span>
-            <span className={styles.value}>{departmentDetail.updateTime}</span> 
+            <span className={styles.value}>{updateTime}</span> 
           </div>
         </div>
         {showAssignUserModal && this.renderAssignUserModal()}

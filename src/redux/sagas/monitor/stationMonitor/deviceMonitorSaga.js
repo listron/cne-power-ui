@@ -1,7 +1,7 @@
 import { call, put, takeLatest, select, all } from 'redux-saga/effects';
 import axios from 'axios';
 import Path from '../../../../constants/path';
-import { deviceAction } from '../../../../constants/actionTypes/monitor/stationmonitor/deviceAction';
+import { deviceAction } from '../../../../constants/actionTypes/monitor/stationMonitor/deviceAction';
 
 const monitorPath = {
   '206': {  // 组串式逆变器：206
@@ -45,11 +45,13 @@ function *getDeviceMonitorData(action) {  // 请求单设备数据入口
   }
 }
 
-function *getNormalDeviceData(action){
+function *getNormalDeviceData(action){ // 请求单设备-除气象站数据信息
   const { payload } = action;
-  const { deviceTypeCode, deviceCode } = payload;
+  const {stationCode, deviceTypeCode, deviceCode } = payload;
   const hours = 72;
   try{
+    const devicesUrl = '/mock/monitor/deviceList';
+    // const devicesUrl = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.monitor.stationDeviceList}/${stationCode}/${deviceTypeCode}`;
     const detailUrl = monitorPath[deviceTypeCode].detail;
     // const detailUrl = `${Path.basePaths.newAPIBasePath}${monitorPath[deviceTypeCode].detail}/${deviceCode}`;
     const tenMinUrl = monitorPath[deviceTypeCode].tenMin;
@@ -60,20 +62,22 @@ function *getNormalDeviceData(action){
     // const alarmUrl = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.monitor.deviceAlarmData}/${deviceCode}`
 
     yield put({ type:deviceAction.MONITOR_DEVICE_FETCH });
-    const [tmpDetail, tmpTenMin, tmpPoint, tmpAlarm] = yield all([
+    const [tmpDevices, tmpDetail, tmpTenMin, tmpPoint, tmpAlarm] = yield all([
+      call(axios.get, devicesUrl),
       call(axios.get, detailUrl),
       call(axios.get, tenMinUrl),
       call(axios.get, pointUrl),
       call(axios.get, alarmUrl),
     ])
-    if(tmpDetail.data.code === "10000" && tmpTenMin.data.code === "10000" && tmpPoint.data.code === "10000" && tmpAlarm.data.code === "10000" ){
+    if(tmpDevices.data.code === '10000' && tmpDetail.data.code === "10000" && tmpTenMin.data.code === "10000" && tmpPoint.data.code === "10000" && tmpAlarm.data.code === "10000" ){
       yield put({
-        type:  deviceAction.GET_DEVICE_FETCH_SUCCESS,
+        type: deviceAction.GET_DEVICE_FETCH_SUCCESS,
         payload: {
-          deviceDetail: tmpDetail.data.data,
-          deviceTenMin: tmpTenMin.data.data,
-          devicePointData: tmpPoint.data.data,
-          deviceAlarmList: tmpAlarm.data.data,
+          devices: tmpDevices.data.data || [],
+          deviceDetail: tmpDetail.data.data || {},
+          deviceTenMin: tmpTenMin.data.data || [],
+          devicePointData: tmpPoint.data.data || [],
+          deviceAlarmList: tmpAlarm.data.data || [],
         },
       })
     }
@@ -82,6 +86,7 @@ function *getNormalDeviceData(action){
     yield put({  //清空数据
       type:  deviceAction.CHANGE_DEVICE_MONITOR_STORE,
       payload: {
+        devices: [],
         deviceDetail: {},
         deviceTenMin: [],
         devicePointData: [],
@@ -92,7 +97,7 @@ function *getNormalDeviceData(action){
   }
 }
 
-function *getWeatherStationData(action){
+function *getWeatherStationData(action){ // 请求气象站设备信息
   const { payload } = action;
   const { deviceTypeCode, deviceCode } = payload;
   try{
@@ -128,7 +133,6 @@ function *getWeatherStationData(action){
 }
 export function* watchDeviceMonitor() {
   yield takeLatest(deviceAction.CHANGE_DEVICE_MONITOR_STORE_SAGA, changeDeviceStore);
-
   yield takeLatest(deviceAction.GET_DEVICE_DATA_SAGA, getDeviceMonitorData);
   yield takeLatest(deviceAction.GET_NORMAL_DEVICE_DATA_SAGA, getNormalDeviceData);
   yield takeLatest(deviceAction.GET_WEATHERSTATION_DATA_SAGA, getWeatherStationData);

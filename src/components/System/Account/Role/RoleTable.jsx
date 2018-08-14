@@ -88,8 +88,8 @@ class RoleTable extends Component {
     const columns = [
       {
         title: '名称',
-        dataIndex: 'roleName',
-        key: 'roleName'
+        dataIndex: 'roleDesc',
+        key: 'roleDesc'
       }, {
         title: '预设',
         dataIndex: 'isPre',
@@ -106,7 +106,7 @@ class RoleTable extends Component {
             <div className={styles.tooltip}>{right.map((item,index)=>(<span key={index}>{item}</span>))}</div>
           );
           return (
-            <Popover title={record.roleName} content={content}>
+            <Popover title={record.roleDesc} content={content}>
               <div className={styles.menu}>{right.join('|')}</div>
             </Popover>
           );

@@ -39,7 +39,7 @@ class TopMenu extends Component {
       '/': '/',
       '/operation':'/operation/ticket',
       '/system':'/system/account/enterprise',
-      '/monitor':'/monitor/stationmonitor'
+      '/monitor':'/monitor/station'
     }
     this.setState({
       selectedKeys

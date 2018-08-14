@@ -10,7 +10,7 @@ export default {
   },
   commonPaths:{
     imgUploads:'/v3/uploadfile', //上传文件
-    getStations: '/v3/station',
+    getStations: '/v3/station/datalist',//按照用户权限获取电站
     getDevicetypes: '/v3/station/devicetypes',
     getDevices: '/v3/station/stationdevices',
     getPartitions: '/v3/station/partitions',
@@ -98,6 +98,7 @@ export default {
       importUserBatch: '/v3/user/batch',//批量导入用户
     },
     monitor: {//实时监控
+      stationDeviceList: '/api/v3/station/devicelist', // 单电站设备列表获取
       seriesinverterDetail: '/api/v3/monitor/seriesinverter',//组串式逆变器详情
       seriesinverterTenMin: '/api/v3/monitor/seriesinverter/sequencechart',//组串式逆变器10min时序图
       confluenceboxDetail: '/api/v3/monitor/confluencebox',//汇流箱详情
@@ -107,6 +108,7 @@ export default {
       weatherstationDetail: '/api/v3/monitor/weatherstation', //气象站详情
       monitorPointData: '/api/v3/monitor/point', //设备测点数据
       deviceAlarmData: '/api/v3/alarm/device', // 单设备告警信息
+      getRealtimeAlarm: '/v3/alarm/station/alarmlist', //实时告警信息
     }
     // monitor:{
     //   getStationType:'v3/monitor/stations/stationType',

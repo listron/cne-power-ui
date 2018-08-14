@@ -55,10 +55,10 @@ function *getMenuList(action){
 //新建角色
 function *createRole(action){
   const { payload } = action;
-  const { enterpriseId, roleName, rightId, continueAdd } = payload;
+  const { enterpriseId, roleDesc, rightId, continueAdd } = payload;
   const data = {
     enterpriseId,
-    roleName,
+    roleDesc,
     rightId
   }
   const url = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.system.createRole}`

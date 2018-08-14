@@ -1,0 +1,173 @@
+
+@import '../../../../../theme/theme.scss';
+.deviceMonitorHeader {
+  height: 65px;
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  .deviceChange{
+    position: absolute;
+    background-color: #fff;
+    z-index: 9999;
+    left: 0px;
+    top: 0px;
+    width: 300px;
+    .deviceTitle{
+      color: $darkColor;
+      font-size: 18px;
+    }
+    .deviceList{
+      display: flex;
+      flex-wrap: wrap;
+      .eachDevice{
+        width: 50%;
+      }
+    }
+  }
+  .deviceName{
+    line-height: 65px;
+    .swap{
+      font-size: 18px;
+      margin-left: 32px;
+      color: $darkColor;
+    }
+    .name{
+      font-size: 18px;
+      margin-left: 12px;
+      color: $darkColor;
+    }
+    .status{
+      font-size: 14px;
+      margin-left: 24px;
+      color: $lightColor;
+    }
+  }
+  .linkTo{
+    margin-right: 36px;
+    .eachLink{
+      line-height: 65px;
+      margin-right: 40px;
+      .linkName{
+        color: $darkColor;
+      }
+      .linkIcon{
+        color: $lightColor;
+      }
+    }
+  }
+}
+
+.statisticsBox{
+  display: flex;
+  height: 100px;
+  border-top: solid 1px $promptColor; 
+  border-bottom: solid 1px $promptColor; 
+  .deviceIcon{
+    width: 170px;
+    text-align: center;
+    line-height: 100px;
+  }
+  .powerProgress{
+    display: flex;
+    flex-wrap: wrap;
+    width: 215px;
+    margin-top: 24px;
+    align-content: flex-start;
+    .progressNum, .progressText{
+      width: 100%;
+      display: flex;
+      @include lineheight(24px);
+      .leftText, .rightText {
+        width: 50%;
+        color: $darkColor;
+        font-size: 24px;
+      }
+      .leftText{
+        text-align: left;
+      }
+      .rightText{
+        text-align: right;
+      }
+    }
+    .progressText{
+      @include lineheight(14px);
+      height: 14px;
+      .leftText, .rightText {
+        font-size: 14px;
+        color: $lightColor;
+      }
+    }
+  }
+  .timerGen, .timerDayGen{
+    width: 135px;
+    margin-left: 16px;
+    margin-top: 24px;
+    display: flex;
+    flex-direction: column;
+    .genNum{
+      font-size: 24px;
+      height: 24px;
+      line-height: 24px;
+      color: $darkColor;
+      margin-bottom: 8px;
+    }
+    .genText{
+      color: $lightColor;
+    }
+  }
+  .timerDayGen {
+    width: 105px;
+    margin-left: 24px;
+  }
+}
+
+.alarmTable{
+  border-top: solid 1px $promptColor;
+  padding: 16px 68px 48px 68px;
+  .alarmTip{
+    height: 48px;
+    line-height: 48px;
+    i{
+      border-radius: 50%;
+      background-color: $promptColor;
+      color: #fff;
+    }
+  }
+  .tableHeader{
+    display: flex;
+    justify-content: space-between;
+    height: 36px;
+    line-height: 36px;
+    .historyButton{
+      height: 26px;
+    }
+  }
+}
+
+.pointData{
+  background-color: #f8f8f8;
+  padding: 20px 60px 80px 60px;
+  .pointTitle{
+    color: $darkColor;
+  }
+  .pointDataList{
+    display: flex;
+    flex-wrap: wrap;
+    .eachGroup{
+      min-width: 20%;
+      padding-left: 20px;
+      margin: 16px 0;
+      border-right: dotted 1px $promptColor;
+      .eachData{
+        margin-bottom: 4px;
+        p{
+          color: $lightColor;
+          margin-bottom: 0;
+        }
+      }
+    }
+    .eachGroup:last-child{
+      border-right: none;
+    }
+  }
+}

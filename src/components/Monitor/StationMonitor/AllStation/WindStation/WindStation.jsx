@@ -1,9 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
 import styles from './windstation.scss';
-import WindMap from './WindStationMap.jsx';
-import WindStationItem from './WindStationItem.jsx';
-import WindStationList from './WindStationList.jsx';
+import WindMap from './WindStationMap';
+import WindStationItem from './WindStationItem';
+import WindStationList from './WindStationList';
 import { Progress, Tabs, Icon, Button, Radio, Switch, Table } from 'antd';
 
 const TabPane = Tabs.TabPane;
