@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
-import { Table, Button, Select, Icon } from 'antd';
+import { Table, Button, Select, Icon, Popover } from 'antd';
+import WarningTip from '../../../Common/WarningTip';
 import PropTypes from 'prop-types';
 import styles from './role.scss';
 const { Option } = Select;
 
 class RoleTable extends Component {
   static propTypes = {
+    showPage: PropTypes.string,
     isFetching: PropTypes.bool,
     totalNum: PropTypes.number,
     roleData: PropTypes.array,
@@ -17,6 +19,11 @@ class RoleTable extends Component {
 
   constructor(props){
     super(props);
+    this.state = {
+      showWarningTip: false,
+      warningTipText: '',
+      hiddenWarningTipCancelText: false
+    };
   }
 
   onRoleAdd = () =>{//进入添加角色页
@@ -28,40 +35,50 @@ class RoleTable extends Component {
       selectedRole: selectedRows
     })
   }
+  onConfirmWarningTip = () => {
+    this.setState({
+      showWarningTip: false,
+    });  
+  }
   cancelRowSelect = () => {
     this.props.changeRoleStore({
       selectedRole:[]
     })
   }
 
-  
-
-  // tableChange = (pagination,filter,sorter) => {//排序，筛选
-  //   const sort = sorter.field;
-  //   const ascend = sorter.order==='ascend';
-  //   this.props.getRoleList({
-  //     sort,
-  //     ascend,
-  //   });
-  // }
-
   roleHandle = (value) => {//编辑
     const { selectedRole } = this.props;
     if(value === 'edit'){
-      this.props.changeRoleStore({
-        showPage: 'edit'
-      });
+      if(selectedRole.some(item=>item.isPre===0)) {
+        this.setState({
+          showWarningTip: true,
+          warningTipText: '不得编辑预设角色!',
+          hiddenWarningTipCancelText: true
+        });
+      } else {
+        this.props.changeRoleStore({
+          showPage: 'edit'
+        });
+      }
     }else if(value === 'delete'){
-      this.props.onDeleteRole({
-        roleId: selectedRole.map(e=>e.roleId).join(',')
-      });
+      if(selectedRole.some(item=>item.isPre===0)) {
+        this.setState({
+          showWarningTip: true,
+          warningTipText: '不得删除预设角色!',
+          hiddenWarningTipCancelText: true
+        });
+      } else {
+        this.props.onDeleteRole({
+          roleId: selectedRole.map(e=>e.roleId).join(',')
+        });
+      }
     }
   }
 
   createHandleOption = () => {//生成操作下拉框
     const { selectedRole } = this.props;      
     return (
-      <Select disabled={selectedRole.length===0} onChange={this.roleHandle} placeholder="操作" dropdownMatchSelectWidth={false} dropdownClassName={styles.handleDropdown}>
+      <Select disabled={selectedRole.length===0} onChange={this.roleHandle} value="操作" placeholder="操作" dropdownMatchSelectWidth={false} dropdownClassName={styles.handleDropdown}>
         <Option value="edit" disabled={selectedRole.length>1}>编辑</Option>
         <Option value="delete">删除</Option>
       </Select>
@@ -83,9 +100,17 @@ class RoleTable extends Component {
         title: '功能定义',
         dataIndex: 'rightData',
         key: 'rightData',
-        render: (text,record)=>(
-          <div className={styles.menu}>{this.renderAuth(text).join('|')}</div>
-        )
+        render: (text,record)=>{
+          const right = this.renderAuth(text);
+          const content = (
+            <div className={styles.tooltip}>{right.map((item,index)=>(<span key={index}>{item}</span>))}</div>
+          );
+          return (
+            <Popover title={record.roleName} content={content}>
+              <div className={styles.menu}>{right.join('|')}</div>
+            </Popover>
+          );
+        }
       }
     ];
     return columns;
@@ -115,9 +140,11 @@ class RoleTable extends Component {
   }
 
   render(){
-    const { selectedRole, roleData, isFetching } = this.props;
+    const { selectedRole, roleData, isFetching, showPage } = this.props;
+    const { showWarningTip, warningTipText, hiddenWarningTipCancelText } = this.state;
     return (
-      <div className={styles.roleList}>
+      <div className={styles.roleList} style={{display: showPage==='list'?'flex':'none'}}>
+      {showWarningTip && <WarningTip onOK={this.onConfirmWarningTip} value={warningTipText} hiddenCancel={hiddenWarningTipCancelText} />}
         <div className={styles.roleListTop} >
           <div>
             <Button className={styles.addRole} onClick={this.onRoleAdd}>

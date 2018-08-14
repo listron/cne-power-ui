@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import InspectTable from '../../../../../components/Operation/Ticket/Inspect/InspectTable/InspectTable';
-import { TicketAction } from '../../../../../constants/actionTypes/operation/ticketAction';
+import { ticketAction } from '../../../../../constants/actionTypes/operation/ticketAction';
 import InspectFilter from '../../../../../components/Operation/Ticket/Inspect/InspectFilter/InspectFilter';
 import { connect } from "react-redux";
 import PropTypes from 'prop-types';
@@ -156,8 +156,8 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  getInspectList: params => dispatch({ type: TicketAction.GET_INSPECT_LIST_SAGA, params }),
-  setInspectId: params => dispatch({ type: TicketAction.SET_INSPECT_ID_SAGA, params }),
-  inspectCheckBatch: params => dispatch({ type: TicketAction.INSPECT_CHECK_BATCH_SAGA, params}),
+  getInspectList: params => dispatch({ type: ticketAction.GET_INSPECT_LIST_SAGA, params }),
+  setInspectId: params => dispatch({ type: ticketAction.SET_INSPECT_ID_SAGA, params }),
+  inspectCheckBatch: params => dispatch({ type: ticketAction.INSPECT_CHECK_BATCH_SAGA, params}),
 })
 export default connect(mapStateToProps,mapDispatchToProps)(InspectList);

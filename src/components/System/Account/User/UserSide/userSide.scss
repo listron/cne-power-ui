@@ -14,6 +14,8 @@
   flex: 1 0 auto;
   width: 100%;
   background:#ececec;
+  padding: 24px 24px 0;
+  height: 800px;
   .addUser,.editUser,.inviteUser{//新建/编辑页
     flex: 1;
     background-color: #fff;
@@ -28,12 +30,13 @@
       .backIcon{
         color: $lightColor;
         font-size: 20px;
-        border-left: 1px solid $promptColor;
+        border-left: 1px solid #dfdfdf;
         height: 100%;
         line-height: 64px;
         width: 64px;
         cursor: pointer;
       }
+      
     }
     .mainPart{
       margin: 24px 32px 0;
@@ -52,6 +55,7 @@
         flex: 1;
         .instructionText{
           color: $promptColor;
+          margin-left: 12px;
         }
         .saveUser{
           margin: 0 20px 0 94px;
@@ -69,10 +73,10 @@
                 display: none;
               }
             }
-            .ant-form-item-control-wrapper input{
+            .has-error .ant-select-selection,.ant-form-item-control-wrapper input,.ant-select,.ant-cascader-picker{
               width: 200px;
-              margin-right: 12px;
             }
+            
           }
         }
       }
@@ -91,6 +95,34 @@
             background: #199475;
           }
         }
+        .qrCode{
+          margin-top: 20px;
+          img{
+            display: inline-block;
+            width: 185px;
+            height: 185px;
+          }
+          Button{
+            vertical-align: bottom;
+            margin-left: 20px;
+          }
+          :global{
+            a.ant-btn {
+              line-height: 30px;
+              display: inline-block;
+              vertical-align: bottom;
+              margin-left: 20px;
+            }
+            .ant-btn:hover, .ant-btn:focus{
+              color: #199475;
+            }
+          }
+        }
+        .qrTip{
+          span{
+            color: #e08031;
+          }
+        }
       }
     }
   }
@@ -103,8 +135,8 @@
       justify-content: space-between;
       .editButton {
         &:hover {
-          background-color: #199475;
-          color: #fff;
+          background-color: #fff;
+          color: #199475;
         }
       }
       .handleArea {
@@ -112,16 +144,18 @@
         .previous {
           margin-right: 20px;
           cursor: pointer;
+          color: #999;
         }
         .next {
           margin-right: 28px;
           cursor: pointer;
+          color: #999;
         }
         .backIcon {
           height: 100%;
           line-height: 64px;
           color: #999;
-          border-left: 1px solid #999;
+          border-left: 1px solid #dfdfdf;
           width: 64px;
           cursor: pointer;
         }
@@ -178,8 +212,25 @@
         }
         .enterpriseDepartmentValue{
           display: block;
+          color: #999;
+          .departmentDetail{
+            display: flex;
+            flex-direction: row;
+            .enterpriseName{
+              width: 150px;
+              text-align: right;
+            }
+            .enterpriseDetail{
+              p{
+                margin: 0;
+              }
+            }
+          }
         }
-
+        .detailRole, .detailSpecialRole{
+          display: flex;
+          justify-content: flex-start;
+        }
       }
     }
   }

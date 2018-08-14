@@ -6,12 +6,17 @@
   align-items: center;
   border-bottom: solid 1px $promptColor;  
 }
+.tooltip {
+  display: flex;
+  flex-direction: column;
+}
 .roleList{
   width: 100%;
   display: flex;
   flex-direction: column;
   flex: 1 0 auto;
   padding: 24px 24px 0;
+  background-color: #ececec;
   .roleListTop {
     background: #fff;
     display: flex;
@@ -93,12 +98,14 @@
     word-break:keep-all;
   }
 }
-.roleSide {
-  width: 100%;
-  display: flex;
+
+.roleEdit {
   flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+  background-color: #ececec;
   padding: 24px 24px 0;
-  .roleEdit {
+  .roleEditContent{
     flex: 1;
     background-color: #fff;
     .editTop {

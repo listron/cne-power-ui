@@ -1,10 +1,10 @@
 
 
 import React, { Component } from 'react';
-import { Icon, Popconfirm } from 'antd';
+import { Icon } from 'antd';
 import PropTypes from 'prop-types';
 import styles from './userSide.scss';
-import EditForm from './EditForm';
+import AddForm from './AddForm';
 import SingleImgUploader from '../../../../Common/Uploader/SingleImgUploader';
 import pathConfig from '../../../../../constants/path';
 import WarningTip from '../../../../Common/WarningTip';
@@ -14,7 +14,6 @@ class AddUser extends Component {
   static propTypes = {
     loading: PropTypes.bool,
     changeUserStore: PropTypes.func,
-    getUserDetail: PropTypes.func,
     saveUserInfor: PropTypes.func,
     userDetail: PropTypes.object,
   }
@@ -27,12 +26,6 @@ class AddUser extends Component {
       warningTipText: '退出后信息无法保存!',
     }
   }
-
-  // componentWillUnmount(){
-  //   // this.props.changeUserStore({
-  //   //   showPage: 'list',
-  //   // });
-  // }
 
   onWarningTipShow = () =>{
     this.setState({
@@ -71,7 +64,7 @@ class AddUser extends Component {
       <div className={styles.addUser} >
         {showWarningTip && <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}      
         <div className={styles.editTop}>
-          <span className={styles.text}>编辑</span>
+          <span className={styles.text}>新建</span>
           <Icon type="arrow-left" className={styles.backIcon} onClick={this.onWarningTipShow} />
         </div>
         <div className={styles.mainPart} >
@@ -82,7 +75,13 @@ class AddUser extends Component {
               <span>240px*240px为佳，大小不超过2M</span>
             </div>
           </div>
-          <EditForm userDetail={userDetail} userLogo={userLogo} saveUserInfor={saveUserInfor} loading={loading} />
+          <AddForm 
+            userDetail={userDetail} 
+            userLogo={userLogo} 
+            saveUserInfor={saveUserInfor} 
+            loading={loading} 
+            {...this.props}
+          />
         </div>
       </div>
     )

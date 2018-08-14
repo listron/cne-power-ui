@@ -1,6 +1,15 @@
 .comName{
   width: 300px;
   margin-left: 90px;
+  .inviteUser{
+    text-align: center;
+    .inviteTip{
+      margin: 20px 0;
+      span{
+        color: #e08031;
+      }
+    }
+  }
   .enterpriseInfo{
     width: 416px;
     margin-left: -40px; 

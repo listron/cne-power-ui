@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import styles from './enterprise.scss';
+import { getCookie } from '../../../../utils';
 import { enterpriseAction } from '../../../../constants/actionTypes/system/account/enterpriseAction';
 import PropTypes from 'prop-types';
 import Footer from '../../../../components/Common/Footer';
-import { getCookie } from '../../../../utils';
 /*
 注： 此3引用在企业列表展示功能中引入，后产品调整为直接展示企业详情，去下企业列表页面展示。请不要删除，可能会重新展示企业列表功能；
 import EnterpriseMain from '../../../../components/System/Account/Enterprise/EnterpriseMain/EnterpriseMain';
@@ -51,13 +51,12 @@ class Enterprise extends Component {
 
   render() {
     const { showPage } = this.props;
-    const enterpriseId = getCookie('enterpriseId');
     return (
       <div className={styles.enterpriseContainer}>
         {
           showPage==='detail' ?
           <EnterpriseDetail {...this.props} />:
-          <EnterpriseEdit {...this.props} enterpriseId={enterpriseId} />
+          <EnterpriseEdit {...this.props} />
         }
         {/*注：不要删除，此备注用于展示企业列表，可能后续会用。
         <EnterpriseMain {...this.props} />
@@ -77,6 +76,7 @@ class Enterprise extends Component {
 }
 const mapStateToProps = (state) => ({
   ...state.system.enterprise.toJS(),
+  enterpriseId: getCookie('enterpriseId'),
 });
 
 const mapDispatchToProps = (dispatch) => ({

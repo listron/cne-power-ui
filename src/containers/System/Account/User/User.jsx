@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import styles from './user.scss';
 import { userAction } from '../../../../constants/actionTypes/system/account/userAction';
-import { roleAction } from '../../../../constants/actionTypes/system/account/roleAction';
 import PropTypes from 'prop-types';
 import TransitionContainer from '../../../../components/Common/TransitionContainer';
 import UserSide from '../../../../components/System/Account/User/UserSide/UserSide';
@@ -27,7 +26,10 @@ class User extends Component {
     changeUserStore: PropTypes.func,
     userData: PropTypes.object,
     enterpriseId: PropTypes.string,
-    getRoleList: PropTypes.func
+    getRoleList: PropTypes.func,
+    getRoleAllList: PropTypes.func,
+    roleAllList: PropTypes.object,
+    specialRoleList: PropTypes.object,
   };
   constructor(props) {
     super(props);
@@ -37,32 +39,33 @@ class User extends Component {
   }
   componentDidMount() {
     const params = {
-      userId: this.props.userId,
+      enterpriseId: this.props.enterpriseId,
       roleId: this.props.roleId,
       userStatus: this.props.userStatus,
       userName: this.props.userName,
       phoneNum: this.props.phoneNum,
       stationName: this.props.stationName,
-      sort: this.props.sort,
-      ascend: this.props.ascend,
-      currentPage: this.props.currentPage,
-      pageSize: this.props.pageSize
+      pageNum: this.props.currentPage,
+      pageSize: this.props.pageSize,
+      order: 0,
     };
     this.props.getUserList(params);
-
-    // const enterpriseId = this.props.enterpriseId;
-    // this.props.getRoleList({ enterpriseId});
+    this.props.getRoleAllList({enterpriseId: this.props.enterpriseId, roleType: "0"});
+    this.props.getRoleAllList({enterpriseId: this.props.enterpriseId, roleType: "1"});
   }
-
-  componentWillReceiveProps(nextProps) {}
 
   onChangeSort = sort => {
     if (sort !== this.props.sort) {
       let params = {
         enterpriseId: this.props.enterpriseId,
+        roleId: this.props.roleId,
         userStatus: this.props.userStatus,
-        pageNum: 0,
-        pageSize: this.props.pageSize
+        userName: this.props.userName,
+        phoneNum: this.props.phoneNum,
+        stationName: this.props.stationName,
+        pageNum: 1,
+        pageSize: this.props.pageSize,
+        order: sort.toString(),
       };
       this.props.getUserList(params);
     }
@@ -73,7 +76,7 @@ class User extends Component {
       let params = {
         enterpriseId: this.props.enterpriseId,
         userStatus: this.props.userStatus,
-        pageNum: 0,
+        pageNum: 1,
         pageSize: pageSize
       };
       this.props.getUserList(params);
@@ -85,33 +88,30 @@ class User extends Component {
       let params = {
         enterpriseId: this.props.enterpriseId,
         userStatus: this.props.userStatus,
-        pageNum: currentPage - 1,
+        pageNum: currentPage,
         pageSize: this.props.pageSize
       };
       this.props.getUserList(params);
     }
-  };
-  onShowSideChange = ({ showSidePage }) => {
-    console.log(showSidePage);
-    this.setState({ showSidePage });
   };
 
   onChangeStatus = status => {
-    if (status !== this.props.userStatus) {
+    if (Number(status) !== this.props.userStatus) {
       let params = {
         enterpriseId: this.props.enterpriseId,
-        userStatus: status,
-        pageNum: 0,
+        userStatus: Number(status),
+        pageNum: 1,
         pageSize: this.props.pageSize
       };
       this.props.getUserList(params);
     }
   };
+
   onUserSearch = data => {
     let params = {
       enterpriseId: this.props.enterpriseId,
       userStatus: this.props.userStatus,
-      pageNum: 0,
+      pageNum: 1,
       pageSize: this.props.pageSize,
       userName: data.nameValue,
       phoneNum: data.phoneValue,
@@ -120,7 +120,7 @@ class User extends Component {
     this.props.getUserList(params);
   }
 
-  onShowSideChange = ({showSidePage}) => {
+  onShowSideChange = (showSidePage) => {
     this.setState({ showSidePage });
   }
 
@@ -133,13 +133,14 @@ class User extends Component {
 
   render() {
     const { showPage } = this.props;
-    const { showSidePage } =this.state;
+    const { showSidePage } = this.state;
     return (
       <div className={styles.userContainer}>
         <UserMain
           {...this.props}
           onUserSearch={this.onUserSearch}
           onChangeStatus={this.onChangeStatus}
+          onChangeSort={this.onChangeSort}
         />
         <TransitionContainer
           show={showPage!=='list'}
@@ -161,10 +162,10 @@ class User extends Component {
 }
 
 const mapStateToProps = state => {
-  let userProps = {};
-  // [...state.department].forEach(e=>departmentProps[e[0]]=(e[1].toJS?e[1].toJS():e[1]))
-  [...state.system.user].forEach(e=>userProps[e[0]]=e[1])
+  let userProps = {}; 
+  [...state.system.user].forEach(e=>userProps[e[0]]=e[1]);
   userProps['roleData'] = state.system.role.get('roleData');
+  userProps['enterpriseId'] = state.login.get('enterpriseId');
   return userProps;
 }
 
@@ -173,11 +174,11 @@ const mapDispatchToProps = (dispatch) => ({
   getUserList: payload => dispatch({type:userAction.GET_USER_LIST_SAGA, payload}),
   getUserDetail: payload => dispatch({type:userAction.GET_USER_DETAIL_SAGA, payload}),
   changeSelectedUser: payload => dispatch({type:userAction.CHANGE_SELECTED_USER_SAGA, payload}),
-  getRoleList: payload => dispatch({ type: roleAction.GET_ROLE_LIST_SAGA, payload}),
+  getRoleAllList: payload => dispatch({type:userAction.GET_ROLE_ALL_LIST_SAGA, payload}),
   changeUserStatus: payload => dispatch({ type:userAction.CHANGE_USER_STATUS_SAGA, payload}),
   createUserInfo: payload => dispatch({type:userAction.CREATE_USER_INFO_SAGA, payload}),
   editUserInfo: payload => dispatch({type:userAction.EDIT_USER_INFO_SAGA, payload}),
-
+  getInviteLink: payload => dispatch({type:userAction.GET_INVITE_LINK_SAGA, payload}),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(User);

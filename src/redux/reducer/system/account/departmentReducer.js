@@ -1,8 +1,8 @@
-import immutable from 'immutable';
+import Immutable from 'immutable';
 
 import { departmentAction } from '../../../../constants/actionTypes/system/account/departmentAction';
 
-var initState = immutable.fromJS({
+var initState = Immutable.fromJS({
   loading: false,
   buttonLoading: false,//普通按钮交互loading
   continueAddLoading: false,//继续添加部门按钮交互loading
@@ -19,6 +19,8 @@ var initState = immutable.fromJS({
   showAssignUserModal: false,//展示分配用户模态框
   
   allDepartment: [],//所有部门基础信息及子父级关系
+  departmentUser: [],//bume用户信息，用于为部门分配用户
+  DepartmentStation: [],//部门-电站信息，用于为部门分配电站
 
   departmentData: [],//部门列表数据
   departmentDetail:{},//选中部门详细信息
@@ -30,9 +32,9 @@ const departmentReducer = (state = initState, action) => {
     case departmentAction.DEPARTMENT_FETCH:
       return state.set('loading',true)
     case departmentAction.GET_DEPARTMENT_FETCH_SUCCESS :
-      return state.merge(immutable.fromJS(action.payload)).set('loading',false)
+      return state.merge(Immutable.fromJS(action.payload)).set('loading',false)
     case departmentAction.CHANGE_DEPARTMENT_STORE:
-      return state.merge(immutable.fromJS(action.payload))
+      return state.merge(Immutable.fromJS(action.payload))
   }
   return state;
 }

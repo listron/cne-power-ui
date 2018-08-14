@@ -1,8 +1,8 @@
-import immutable from 'immutable';
+import Immutable from 'immutable';
 
 import { enterpriseAction } from '../../../../constants/actionTypes/system/account/enterpriseAction';
 
-var initState = immutable.fromJS({
+var initState = Immutable.fromJS({
   loading: false,
   showPage: 'detail',//默认展示列表页,可展示新建/编辑edit,查看detail页,
   filterStatus: 2, //筛选条件全部2，启用0，禁用1
@@ -23,9 +23,9 @@ const enterpriseReducer = (state = initState, action) => {
     case enterpriseAction.ENTERPRISE_FETCH:
       return state.set('loading',true)
     case enterpriseAction.GET_ENTERPRISE_FETCH_SUCCESS :
-      return state.merge(immutable.fromJS(action.payload)).set('loading',false)
+      return state.merge(Immutable.fromJS(action.payload)).set('loading',false)
     case enterpriseAction.CHANGE_ENTERPRISE_STORE:
-      return state.merge(immutable.fromJS(action.payload))
+      return state.merge(Immutable.fromJS(action.payload))
   }
   return state;
 }
