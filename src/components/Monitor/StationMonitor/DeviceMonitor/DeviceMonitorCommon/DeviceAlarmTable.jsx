@@ -10,6 +10,7 @@ class DeviceAlarmTable extends Component {
 
   static propTypes = {
     deviceAlarmList: PropTypes.array,
+    loading: PropTypes.bool,
   }
 
   constructor(props){
@@ -65,7 +66,7 @@ class DeviceAlarmTable extends Component {
   }
 
   render() {
-    const { deviceAlarmList } = this.props;
+    const { deviceAlarmList, loading } = this.props;
     const { pageSize, currentPage, sortName, descend } = this.state;
     const tableSource = [...deviceAlarmList].map((e, i) => ({
       ...e,
@@ -102,6 +103,7 @@ class DeviceAlarmTable extends Component {
           onChange={this.ontableSort}
           columns={columns}
           pagination={false}
+          // loading={loading}
         />
       </div>
     )

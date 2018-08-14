@@ -25,7 +25,6 @@ var initState = Immutable.fromJS({
 });
 
 const userReducer = (state = initState, action) => {
-  console.log(action)
   switch(action.type){
     case userAction.USER_FETCH:
       return state.set('loading', true);
