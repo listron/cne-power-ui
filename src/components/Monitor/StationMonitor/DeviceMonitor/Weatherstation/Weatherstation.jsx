@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import WeatherStationHeader from './WeatherStationHeader';
-// import InverterStatistics from './InverterStatistics';
+import WeatherStationStatistics from './WeatherStationStatistics';
 import DeviceAlarmTable from '../DeviceMonitorCommon/DeviceAlarmTable';
 import PropTypes from 'prop-types';
 import styles from '../eachDeviceMonitor.scss';
@@ -53,7 +53,7 @@ class Weatherstation extends Component {
     return (
       <div className={styles.weatherstation}>
         <WeatherStationHeader deviceDetail={deviceDetail} />
-        {/* <InverterStatistics deviceDetail={deviceDetail} /> */}
+        <WeatherStationStatistics deviceDetail={deviceDetail} />
         <DeviceAlarmTable deviceAlarmList={deviceAlarmList} deviceDetail={deviceDetail} loading={loading} />
       </div>
     )
