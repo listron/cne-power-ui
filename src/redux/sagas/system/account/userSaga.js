@@ -35,7 +35,6 @@ function *getUserList(action){
 // 更改企业用户状态
 function *changeUserStatus(action){
   const { payload } =action;
-  // const url = '/api/v3/user/status';
   const url = Path.basePaths.newAPIBasePath + Path.APISubPaths.system.changeUserStatus;
   try{
     yield put({type: userAction.USER_FETCH});
