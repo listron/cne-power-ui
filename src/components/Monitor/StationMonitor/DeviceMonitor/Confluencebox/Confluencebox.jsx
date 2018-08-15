@@ -47,10 +47,10 @@ class Confluencebox extends Component {
       deviceTypeCode,
     };
     this.props.getMonitorDeviceData(params);
-    // this.timeOutId = setTimeout(() => {
-    //   this.props.getMonitorDeviceData(params);
-    //   this.getData(stationCode, deviceCode, deviceTypeCode);
-    // },10000)
+    this.timeOutId = setTimeout(() => {
+      this.props.getMonitorDeviceData(params);
+      this.getData(stationCode, deviceCode, deviceTypeCode);
+    },10000)
   }
 
   render(){
