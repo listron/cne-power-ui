@@ -1,14 +1,11 @@
 import React, { Component } from 'react';
-import { Button } from 'antd';
-import DeviceMonitorStatistics from '../DeviceMonitorCommon/DeviceMonitorStatistics';
+import InverterStatistics from './InverterStatistics';
 import InverterTenMin from './InverterTenMin';
 import DeviceAlarmTable from '../DeviceMonitorCommon/DeviceAlarmTable';
 import DevicePointsData from '../DeviceMonitorCommon/DevicePointsData';
 import DeviceMonitorHeader from '../DeviceMonitorCommon/DeviceMonitorHeader';
-import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import styles from './seriesinverter.scss';
-import moment from 'moment';
 
 class Seriesinverter extends Component {
   static propTypes = {
@@ -25,11 +22,6 @@ class Seriesinverter extends Component {
   componentDidMount(){
     const { deviceCode, deviceTypeCode, stationCode } = this.props.match.params;
     this.getData(stationCode, deviceCode, deviceTypeCode);
-    this.props.getMonitorDeviceData({
-      stationCode,
-      deviceCode,
-      deviceTypeCode
-    })
   }
 
   componentWillReceiveProps(nextProps){
@@ -67,19 +59,10 @@ class Seriesinverter extends Component {
     return (
       <div className={styles.seriesinverter}>
         <DeviceMonitorHeader deviceDetail={deviceDetail} devices={devices} stationCode={stationCode} deviceTypeCode={deviceTypeCode} />
-        <DeviceMonitorStatistics deviceDetail={deviceDetail} />
+        <InverterStatistics deviceDetail={deviceDetail} />
         <InverterTenMin deviceTenMin={deviceTenMin} loading={loading} />
         <DeviceAlarmTable deviceAlarmList={deviceAlarmList} loading={loading} />
         <DevicePointsData devicePointData={devicePointData}  deviceDetail={deviceDetail} />
-        <Button>
-          <Link to="/hidden/monitorDevice/73/203/112233445566">走我们从逆变器去气象站</Link>
-        </Button>
-        <Button>
-          <Link to="/hidden/monitorDevice/73/202/112233445566">走我们从逆变器去汇流箱</Link>
-        </Button>
-        <Button>
-          <Link to="/hidden/monitorDevice/73/304/112233445566">走我们从逆变器去箱变</Link>
-        </Button>
       </div>
     ) 
   }

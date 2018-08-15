@@ -1,9 +1,8 @@
 import React from 'react';
-import { Icon } from 'antd';
-import PowerProgress from './PowerProgress';
-import styles from './deviceMonitor.scss';
+import PowerProgress from '../DeviceMonitorCommon/PowerProgress';
+import styles from './seriesinverter.scss';
 
-function DeviceMonitorStatistics({ deviceDetail }) {
+function InverterStatistics({ deviceDetail }) {
   
   const { devicePower, deviceCapacity, powerDay, powerMonth, powerYear } = deviceDetail;
   const showDayPower = parseFloat(powerDay) >= 0 ? powerDay: ' -- ';
@@ -31,4 +30,4 @@ function DeviceMonitorStatistics({ deviceDetail }) {
   )
 }
 
-export default DeviceMonitorStatistics;
+export default InverterStatistics;
