@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import styles from './singleStation.scss';
-import { singleStationAction } from '../../../../constants/actionTypes/monitor/stationmonitor/singleStationAction';
+import { singleStationAction } from '../../../../constants/actionTypes/monitor/stationMonitor/singleStationAction';
 import SingleStationMain from '../../../../components/Monitor/StationMonitor/SingleStation/SingleStationMain';
 class SingleStation extends Component {
   static propTypes = {

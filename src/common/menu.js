@@ -14,7 +14,7 @@ const menuData = [
         name: '电站监控',
         clickable: true,
         iconStyle: 'home',
-        path: 'stationmonitor',
+        path: 'station',
       },{
         name: '告警',
         iconStyle: 'exclamation-circle',

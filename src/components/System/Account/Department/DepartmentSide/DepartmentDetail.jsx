@@ -124,6 +124,8 @@ class DepartmentDetail extends Component {
   renderAssignUserModal() {
     const { userId, enterpriseId, enterpriseName, departmentData, departmentDetail, allDepartment, departmentUser, getDepartmentUser, setDepartmentUser, changeDepartmentStore} = this.props;
     let detailIndex = departmentData.findIndex(e=>e.departmentId===departmentDetail.departmentId);
+    console.log(departmentData);
+    console.log(detailIndex);
     return (
       <AssignUserModal
         currentUserId={userId}
@@ -134,7 +136,7 @@ class DepartmentDetail extends Component {
         getUserList={getDepartmentUser}
         onSetDepartmentUser={setDepartmentUser}
         onCancel={()=>changeDepartmentStore({showAssignUserModal: false})}
-        selectedDepartment={departmentData.slice(detailIndex, detailIndex+1)}
+        selectedDepartment={[departmentData[detailIndex]]}
      />
     );
   }
@@ -151,7 +153,7 @@ class DepartmentDetail extends Component {
         getStationList={getDepartmentStation}
         onSetDepartmentStation={setDepartmentStation}
         onCancel={()=>changeDepartmentStore({showAssignStationModal: false})}
-        selectedDepartment={departmentData.slice(detailIndex, detailIndex+1)}
+        selectedDepartment={[departmentData[detailIndex]]}
       />
     );
   }
