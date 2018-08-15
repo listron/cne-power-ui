@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-// import InverterHeader from './InverterHeader';
+import WeatherStationHeader from './WeatherStationHeader';
 // import InverterStatistics from './InverterStatistics';
 import DeviceAlarmTable from '../DeviceMonitorCommon/DeviceAlarmTable';
 import PropTypes from 'prop-types';
@@ -49,11 +49,10 @@ class Weatherstation extends Component {
   }
 
   render(){
-    const {devices, deviceDetail, deviceAlarmList, loading } = this.props;
-    const { stationCode, deviceTypeCode } = this.props.match.params;
+    const { deviceDetail, deviceAlarmList, loading } = this.props;
     return (
-      <div className={styles.seriesinverter}>
-        {/* <InverterHeader deviceDetail={deviceDetail} devices={devices} stationCode={stationCode} deviceTypeCode={deviceTypeCode} /> */}
+      <div className={styles.weatherstation}>
+        <WeatherStationHeader deviceDetail={deviceDetail} />
         {/* <InverterStatistics deviceDetail={deviceDetail} /> */}
         <DeviceAlarmTable deviceAlarmList={deviceAlarmList} deviceDetail={deviceDetail} loading={loading} />
       </div>
