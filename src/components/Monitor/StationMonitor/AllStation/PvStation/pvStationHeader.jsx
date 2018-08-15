@@ -4,23 +4,24 @@ import styles from './pvstation.scss';
 import { Progress } from "antd";
 class pvStationHeader extends React.Component {
   static propTypes = {
-
+    pvMonitorStation:PropTypes.object,
   }
   constructor(props, context) {
     super(props, context)
   }
   render() {
     const { pvMonitorStation } = this.props;
-    const stationDataSummary = (pvMonitorStation && pvMonitorStation.stationDataSummary);
-    const stationPower = (stationDataSummary && stationDataSummary.stationPower);
-    const stationCapacity = (stationDataSummary && stationDataSummary.stationCapacity);
-    const stationUnitCount = (stationDataSummary && stationDataSummary.stationUnitCount);
-    const instantaneous = (stationDataSummary && stationDataSummary.instantaneous);
-    const dayPower = (stationDataSummary && stationDataSummary.dayPower);
-    const monthPower = (stationDataSummary && stationDataSummary.monthPower);
-    const yearPower = (stationDataSummary && stationDataSummary.yearPower);
-    const yearPlanPower = (stationDataSummary && stationDataSummary.yearPlanPower);
-    const yearPlanRate = (stationDataSummary && stationDataSummary.yearPlanRate);
+   
+    const stationDataSummary =  pvMonitorStation.stationDataSummary || {};
+    const stationPower = stationDataSummary.stationPower || ' -- ';
+    const stationCapacity = stationDataSummary.stationCapacity || ' -- ';
+    const stationUnitCount =  stationDataSummary.stationUnitCount || ' -- ';
+    const instantaneous =  stationDataSummary.instantaneous || ' -- ';
+    const dayPower =  stationDataSummary.dayPower || ' -- ';
+    const monthPower = stationDataSummary.monthPower || ' -- ';
+    const yearPower =   stationDataSummary.yearPower || ' -- ';
+    const yearPlanPower =  stationDataSummary.yearPlanPower || ' -- ';
+    const yearPlanRate = stationDataSummary.yearPlanRate || ' -- ';
     //console.log(pvMonitorStation && pvMonitorStation.stationDataList);
     return (
       <div>

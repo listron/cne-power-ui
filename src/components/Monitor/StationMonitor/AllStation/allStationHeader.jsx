@@ -13,14 +13,21 @@ class AllStationHeader extends React.Component {
   }
   render() {
     const { allMonitorStation } = this.props;
-    const stationDataSummary = (allMonitorStation && allMonitorStation.stationDataSummary);
-    const stationPower = (stationDataSummary && stationDataSummary.stationPower);
-    const stationCapacity = (stationDataSummary && stationDataSummary.stationCapacity);
-    const dayPower = (stationDataSummary && stationDataSummary.dayPower);
-    const monthPower = (stationDataSummary && stationDataSummary.monthPower);
-    const yearPower = (stationDataSummary && stationDataSummary.yearPower);
-    const yearPlanPower = (stationDataSummary && stationDataSummary.yearPlanPower);
-    const yearPlanRate = (stationDataSummary && stationDataSummary.yearPlanRate);
+    const stationDataSummary = allMonitorStation.stationDataSummary || {};
+    const stationPower = stationDataSummary.stationPower || ' -- ';
+    const stationCapacity =  stationDataSummary.stationCapacity|| ' -- ';
+    const dayPower =  stationDataSummary.dayPower || ' -- ';
+    const monthPower =  stationDataSummary.monthPower || ' -- ';
+    const yearPower = stationDataSummary.yearPower || ' -- ';
+    const yearPlanPower =  stationDataSummary.yearPlanPower || ' -- ';
+    const yearPlanRate =  stationDataSummary.yearPlanRate || ' -- ';
+    const stationTypeSummary= stationDataSummary && stationDataSummary.stationTypeSummary || [];
+    //console.log(stationTypeSummary);
+   const windStation=stationTypeSummary[0] ||{};
+   const windNum=windStation.windStationNum || '--';
+   const lightStation=stationTypeSummary[1] ||{};
+   const pvNum=lightStation.lightStationNum || '--';
+   
     return (
       <div>
         <div className={styles.headStation}>
@@ -84,8 +91,8 @@ class AllStationHeader extends React.Component {
             <Icon type="global" />
           </div>
           <div className={styles.typeTotal}>
-            <div className={styles.windTotal}>风电25</div>
-            <div className={styles.pvTotal}>光伏6</div>
+            <div className={styles.windTotal}>风电:{windNum}</div>
+            <div className={styles.pvTotal}>光伏:{pvNum}</div>
           </div>
         </div>
       </div>

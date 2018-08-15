@@ -1,15 +1,17 @@
 import Immutable from 'immutable';
 
-import { allStationAction } from '../../../../constants/actionTypes/monitor/stationMonitor/allStationAction';
+import { allStationAction } from '../../../../constants/actionTypes/monitor/stationMonitor/allStationAction.js';
 
 var initState = Immutable.fromJS({
    loading: false,
    allMonitorStation:{},//实时数据汇总
+   windMonitorStation:{},
+   pvMonitorStation:{},
    stationDataSummary:{},//电站实时数据汇总
    stationDataList:[],//电站实时数据列表
    pageNum: 1,//当前页号
    pageSize: 10,//每页容纳条数
-  totalNum: 0,//数据总数
+   totalNum: 0,//数据总数
 
 });
 const stationMonitorReducer = (state = initState, action) => {
