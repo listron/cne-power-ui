@@ -37,9 +37,8 @@ class InverterHeader extends Component {
   render() {
     const { devices, deviceDetail, stationCode, deviceTypeCode } = this.props;
     const { showDeviceChangeBox } = this.state;
-    const deviceStatusArray = ['正常', '停机', '故障', '未接入'];
     const { deviceStatus, parentDevice, sonDevice } = deviceDetail;
-    const deviceStatusInfo = deviceStatusArray.find(e=>e.statusCode === deviceStatus)
+    const deviceStatusInfo = deviceStatusArray.find(e=>parseInt(e.statusCode) === parseInt(deviceStatus));
     const baseLinkPath = `/hidden/monitorDevice/${stationCode}/${deviceTypeCode}`;
     return (
       <div className={styles.deviceMonitorHeader} >
