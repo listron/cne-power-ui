@@ -14,6 +14,7 @@ class WindStation extends React.Component {
     pageNum: PropTypes.number,
     pageSize: PropTypes.number,
     windMonitorStation: PropTypes.object,
+    totalNum: PropTypes.number,
   }
   constructor(props, context) {
     super(props, context);
@@ -21,8 +22,10 @@ class WindStation extends React.Component {
       key: '1',
       checked: false,
       stationType: 'all',
+      totalNum:0
     }
   }
+ 
   onHandleAlarm = (checked) => {
     this.setState({
       checked
@@ -36,6 +39,8 @@ class WindStation extends React.Component {
   setkey = (activekey) => {
     this.setState({ key: activekey })
   }
+
+ 
 
   render() {
     let { key, checked, stationType } = this.state;
@@ -56,7 +61,8 @@ class WindStation extends React.Component {
         return e.stationStatus.stationStatus === '900'
       }
     })
-    console.log(newStationDataList)
+    //console.log(newStationDataList)
+    
 
     const TabPane = Tabs.TabPane;
     //tabs筛选部分
@@ -95,7 +101,7 @@ class WindStation extends React.Component {
           })
         }
       })
-      console.log(ary);
+      //console.log(ary);
       return ary;
     }
     const province = (

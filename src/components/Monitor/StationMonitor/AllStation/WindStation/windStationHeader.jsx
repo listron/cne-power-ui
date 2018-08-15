@@ -4,23 +4,25 @@ import styles from './windstation.scss';
 import { Progress } from "antd";
 
 class windStationHeader extends React.Component {
+  static propTypes = {
+    windMonitorStation:PropTypes.object,
+  }
   constructor(props, context) {
     super(props, context)
   }
   render() {
     const { windMonitorStation } = this.props;
-    const stationDataSummary = (windMonitorStation && windMonitorStation.stationDataSummary);
-    const stationPower = (stationDataSummary && stationDataSummary.stationPower);
-    const stationCapacity = (stationDataSummary && stationDataSummary.stationCapacity);
-    const stationUnitCount = (stationDataSummary && stationDataSummary.stationUnitCount);
-    const instantaneous = (stationDataSummary && stationDataSummary.instantaneous);
-    const dayPower = (stationDataSummary && stationDataSummary.dayPower);
-    const monthPower = (stationDataSummary && stationDataSummary.monthPower);
-    const yearPower = (stationDataSummary && stationDataSummary.yearPower);
-    const yearPlanPower = (stationDataSummary && stationDataSummary.yearPlanPower);
-    const yearPlanRate = (stationDataSummary && stationDataSummary.yearPlanRate);
-
-    console.log(windMonitorStation && windMonitorStation.stationDataList);
+  
+    const stationDataSummary = windMonitorStation.stationDataSummary || {};
+    const stationPower = stationDataSummary.stationPower || ' -- ';
+    const stationCapacity =  stationDataSummary.stationCapacity || ' -- ';
+    const stationUnitCount =  stationDataSummary.stationUnitCount || '--';
+    const instantaneous = stationDataSummary.instantaneous || ' -- ';
+    const dayPower =stationDataSummary.dayPower || ' -- ';
+    const monthPower =  stationDataSummary.monthPower || ' -- ';
+    const yearPower = stationDataSummary.yearPower || ' -- ';
+    const yearPlanPower =  stationDataSummary.yearPlanPower || ' -- ';
+    const yearPlanRate =  stationDataSummary.yearPlanRate || ' -- ';
     return (
       <div>
         <div className={styles.headStation}>

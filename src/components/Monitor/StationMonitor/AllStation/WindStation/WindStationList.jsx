@@ -4,31 +4,44 @@ import styles from './windstation.scss';
 import CommonPagination from '../../../../Common/CommonPagination';
 import { Progress, Table } from "antd";
 
-
-
-
-
-
 class WindStationList extends React.Component {
-  static propTypes={
-    stationDataList:PropTypes.array,
+  static propTypes = {
+    stationDataList: PropTypes.array,
+    pageNum: PropTypes.number,
+    pageSize: PropTypes.number,
+    totalNum: PropTypes.number,
   }
 
   constructor(props, context) {
     super(props, context)
+    this.state = {
+      pageNum: 1,//当前页号
+      pageSize: 10,//每页容纳条数
+      //totalNum: 0,
+    }
+  }
+  onPaginationChange = ({ currentPage, pageSize }) => {
+    this.setState({
+      pageNum: currentPage,
+      pageSize
+    })
   }
 
-  onChange=(pagination, filters, sorter)=> {
+  onChange = (pagination, filters, sorter) => {
     console.log("params", pagination, filters, sorter);
   }
-  
+
   render() {
-
     const { stationDataList } = this.props;
-    // const stationDataList = (windMonitorStation && windMonitorStation.stationDataList)
-    // console.log(windMonitorStation,44444);
-    // console.log(stationDataList, 2222);
+    const { pageNum, pageSize } = this.state
+    let totalNum = stationDataList.length;
+    // pageNum//当前页数
+    let startRow = (pageNum - 1) * pageSize;//开始显示的行   数组索引0开始
+    let endRow = pageNum * pageSize;//结束显示的行   索引是10但是取不到10，索引取到9但还是第十项
+    endRow = (endRow > totalNum) ? totalNum : endRow;  //边界判断，如果最后一项的值大于总数据条数，就取总数据的值  
 
+    let datalist = stationDataList.slice(startRow, endRow);
+   // console.log(datalist, 11);
     const columns = [
       {
         title: "电站名称",
@@ -72,7 +85,7 @@ class WindStationList extends React.Component {
                       <div>{record.stationPower}</div>
                       <div>{record.stationCapacity}</div>
                     </div>
-                    <Progress percent={record.stationPower/record.stationCapacity *100} showInfo={false} />
+                    <Progress percent={record.stationPower / record.stationCapacity * 100} showInfo={false} />
                   </div>
                 </div>
               </div>
@@ -131,7 +144,7 @@ class WindStationList extends React.Component {
                       <div>{record.yearOutput}</div>
                       <div>{record.planOutput}</div>
                     </div>
-                    <Progress percent={record.yearOutput/record.planOutput *100} showInfo={false} />
+                    <Progress percent={record.yearOutput / record.planOutput * 100} showInfo={false} />
                   </div>
                 </div>
               </div>
@@ -177,16 +190,16 @@ class WindStationList extends React.Component {
         render: (value, record, index) => {
           return {
             children: (
-              <div className={styles.currentStation}>{record.currentStation==='0'?<div className={styles.redColor} ></div>:record.currentStation==='1'?<div className={styles.greyColor}></div>:<div className={styles.greenColor}></div>}</div>
+              <div className={styles.currentStation}>{record.currentStation === '0' ? <div className={styles.redColor} ></div> : record.currentStation === '1' ? <div className={styles.greyColor}></div> : <div className={styles.greenColor}></div>}</div>
             )
           }
         }
       }
     ];
-    const data = stationDataList.map((item, index) => {
+    const data = datalist.map((item, index) => {
       return (
         {
-          key: `${item.stationCode}` ,
+          key: `${item.stationCode}`,
           stationName: `${item.stationName}`,
           stationrovince: `${item.provinceName}`,
           stationPower: `${item.stationPower}`,
@@ -205,7 +218,7 @@ class WindStationList extends React.Component {
     return (
       <div className={styles.windStationList}>
         <div className={styles.pagination}>
-          <CommonPagination total={56} onPaginationChange={()=>console.log()} />
+          <CommonPagination total={totalNum} onPaginationChange={this.onPaginationChange} />
         </div>
 
         <Table columns={columns} dataSource={data} onChange={this.onChange} pagination={false} />

@@ -3,34 +3,37 @@ import PropTypes from "prop-types";
 import styles from './pvstation.scss';
 import CommonPagination from '../../../../Common/CommonPagination';
 import { Progress, Table } from "antd";
-
-
 class PvStationList extends React.Component {
-  static propTypes = {
-    
-    sort: PropTypes.string, 
-    ascend: PropTypes.bool, 
+  static propTypes = {  
     pageNum: PropTypes.number,
     pageSize: PropTypes.number,
-    stationDataList:PropTypes.array,
-   
+    stationDataList:PropTypes.array, 
   }
   constructor(props, context) {
     super(props, context)
+    this.state={
+      pageNum:1,
+      pageSize:10,
+    } 
   }
-  onPaginationChange = ({currentPage,pageSize}) => ({//分页器
-   
-     
+  onPaginationChange = ({currentPage,pageSize}) => {//分页器
+    this.setState({
       pageNum: currentPage,
-      pageSize,
-   
-  })
+      pageSize
+    })
+  }
    onChange=(pagination, filters, sorter)=> {
     console.log("params", pagination, filters, sorter);
   }
-  
+
   render() {  
     const {stationDataList}=this.props; 
+    const { pageNum,pageSize,}=this.state;
+    const totalNum=stationDataList.length;
+    let startRow=(pageNum-1)*pageSize;
+    let endRow=pageNum*pageSize;
+    endRow = (endRow > totalNum) ? totalNum : endRow;
+    let datalist=stationDataList.slice(startRow,endRow)
     const columns = [
       {
         title: "电站名称",
@@ -187,7 +190,7 @@ class PvStationList extends React.Component {
       }
     ];
     // 表单数据
-    const data = stationDataList.map((item, index) => {
+    const data = datalist.map((item, index) => {
       return (
         {
           key: `${item.stationCode}` ,
@@ -211,10 +214,9 @@ class PvStationList extends React.Component {
     return (
       <div className={styles.PvStationList}>
         <div className={styles.pagination}>
-          <CommonPagination total={56} onPaginationChange={this.onPaginationChange} />
+          <CommonPagination total={totalNum} onPaginationChange={this.onPaginationChange} />
         </div>
         <Table columns={columns} dataSource={data} onChange={this.onChange} pagination={false} />
-
       </div>
     )
   }

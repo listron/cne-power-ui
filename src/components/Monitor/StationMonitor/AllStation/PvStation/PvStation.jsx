@@ -59,7 +59,7 @@ class PvStation extends React.Component {
         return e.stationStatus.stationStatus === '900'
       }
     })
-    console.log(newStationDataList)
+    //console.log(newStationDataList)
 
     const TabPane = Tabs.TabPane;
     //TABS 筛选
@@ -98,7 +98,7 @@ class PvStation extends React.Component {
           })
         }
       })
-      console.log(ary);
+     // console.log(ary);
       return ary;
     }
     const province = (

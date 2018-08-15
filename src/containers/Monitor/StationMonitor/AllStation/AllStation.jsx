@@ -35,9 +35,6 @@ class AllStation extends Component {
   }
 
 
-
-
-
   render() {
     let { key } = this.state;
     const {loading} = this.props;

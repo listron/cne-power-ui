@@ -17,13 +17,13 @@ componentDidMount(){
 
   render() {
     const{allMonitorStation}=this.props;
-    const stationDataList=(allMonitorStation&&allMonitorStation.stationDataList);
+    const stationDataList=allMonitorStation.stationDataList || [];
     console.log(stationDataList);
-    // const dataList=[];
-    // stationDataList.forEach((item,index)=>{
-    //   dataList.push([item.longitude,item.latitude])
-    // })
-    // console.log(dataList);
+    const dataList=[];
+    stationDataList.forEach((item,index)=>{
+      dataList.push([item.longitude,item.latitude])
+    })
+    console.log(dataList);
     
 
     return (

@@ -112,6 +112,7 @@ export default function* rootSaga() {
     watchRole(),
     watchUser(),
     // monitor
+    watchStationMonitor(),
     watchDeviceMonitor(),
     watchSingleStationMonitor(),
   ])
