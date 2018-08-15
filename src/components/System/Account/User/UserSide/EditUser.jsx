@@ -56,6 +56,7 @@ class EditUser extends Component {
   
   render(){
     const { userLogo } = this.state;
+    console.log(userLogo);
     const { userDetail,saveUserInfor, loading } = this.props;
     const { showWarningTip, warningTipText } = this.state;
     const uploadPath=`${pathConfig.basePaths.newAPIBasePath}${pathConfig.commonPaths.imgUploads}`;
@@ -70,7 +71,7 @@ class EditUser extends Component {
           <div className={styles.logoPart} >
             <SingleImgUploader uploadPath={uploadPath} onOK={this.uploadLogo} data={{thumbUrl:userLogo}} />
             <div className={styles.instruction}>
-              <span>LOGO上传</span>
+              <span>头像上传</span>
               <span>240px*240px为佳，大小不超过2M</span>
             </div>
           </div>

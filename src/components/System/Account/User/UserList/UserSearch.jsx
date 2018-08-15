@@ -92,12 +92,12 @@ class UserSearch extends Component {
             >
               <Option key="不限" value={'不限'}><Checkbox checked={roleIdSet.size === 0} >不限</Checkbox></Option>
               {roleAllList.toJS().map((item) => {
-                return  (<Option key={item.roleId} value={item.roleName} >
+                return  (<Option key={item.roleId} value={item.roleDesc} >
                           <Checkbox
                             checked={roleIdSet.has(item.roleId.toString())} 
-                            value={item.roleName}
+                            value={item.roleDesc}
                           >
-                            {item.roleName}
+                            {item.roleDesc}
                           </Checkbox>
                         </Option>);
               })}
@@ -119,7 +119,7 @@ class UserSearch extends Component {
           <div className={styles.selectedRolesBox} >
             <span>已选条件</span>
             {roleSelectId.map((item, key) => {
-              return <Tag closable key={item.roleId} className={styles.selectedRole} value={item.roleName} onClose={() => this.onSelectRoles(item.roleName,item)} >{item.roleName}</Tag>;
+              return <Tag closable key={item.roleId} className={styles.selectedRole} value={item.roleDesc} onClose={() => this.onSelectRoles(item.roleDesc,item)} >{item.roleDesc}</Tag>;
             })}
             <span className={styles.emptyCondition} onClick={this.emptyCondition} >清空条件</span>
           </div>

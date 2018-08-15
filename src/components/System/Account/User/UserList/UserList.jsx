@@ -161,8 +161,8 @@ class UserList extends Component {
         sorter: true
       }, {
         title: '所在企业',
-        dataIndex: 'enterpriseId',
-        key: 'enterpriseId',
+        dataIndex: 'enterpriseName',
+        key: 'enterpriseName',
         render: (text,record) => (<span>{text}</span>),
         sorter: true
       }, {

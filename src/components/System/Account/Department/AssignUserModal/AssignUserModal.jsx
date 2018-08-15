@@ -21,25 +21,13 @@ class AssignUserModal extends Component {
   }
   constructor(props) {
     super(props);
-    const department = props.selectedDepartment[0];      
-    // const hasChild = department.hasChildren;
-    let selectedDepartment = props.departmentList.find((item)=>item.get('departmentId')===department.departmentId);
-    const hasChild = selectedDepartment.get('list') && selectedDepartment.get('list').size > 0;
-    let departmentId = selectedDepartment.get('departmentId');
-    let parentDepartmentId = departmentId;
-    if(hasChild) {
-      selectedDepartment = selectedDepartment.getIn(['list', 0]);
-      departmentId = selectedDepartment.get('departmentId');
-    }
-    // console.log(props.selectedDepartment[0]);
-    // console.log(hasChild);
     this.state = {
-      selectedDepartment: selectedDepartment,//选中部门
+      selectedDepartment: Immutable.fromJS([]),//选中部门
       userList: Immutable.fromJS([]),//用户Id和部门Id一一匹配，一维数组，最后回传的数组
       selectedUserList: Immutable.fromJS([]),//右边的用户列表数据
       searchUserList: null,//右边有搜索文字的用户列表数据
-      expandedKeys: hasChild ? [props.enterpriseId, parentDepartmentId] : [props.enterpriseId],
-      selectedKeys: [departmentId],
+      expandedKeys: [],
+      selectedKeys: [],
       showWarningTip: false,
       warningTipText: ''
     };
@@ -53,9 +41,24 @@ class AssignUserModal extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    if(nextProps.selectedDepartment.length > 0) {
+      const department = nextProps.selectedDepartment[0];      
+      let selectedDepartment = nextProps.departmentList.find((item)=>item.get('departmentId')===department.departmentId);
+      const hasChild = selectedDepartment.get('list') && selectedDepartment.get('list').size > 0;
+      let departmentId = selectedDepartment.get('departmentId');
+      let parentDepartmentId = departmentId;
+      if(hasChild) {
+        selectedDepartment = selectedDepartment.getIn(['list', 0]);
+        departmentId = selectedDepartment.get('departmentId');
+      }
+      this.setState({
+        selectedDepartment: selectedDepartment,//选中部门
+        expandedKeys: hasChild ? [nextProps.enterpriseId, parentDepartmentId] : [nextProps.enterpriseId],
+        selectedKeys: [departmentId],
+      })
+    }
     if(nextProps.userList.size > 0) {
       this.setState({
-        expandedKeys: this.state.expandedKeys,
         userList: nextProps.userList,
         selectedUserList: this.getDepartmentUserRange(this.state.selectedDepartment, nextProps.userList)
       });

@@ -37,8 +37,8 @@ class RoleEditForm extends Component {
         setTimeout(() => {
           if(this.props.error.get('message') === '') {
             this.props.form.setFields({
-              roleName: {
-                value: values.roleName,
+              roleDesc: {
+                value: values.roleDesc,
                 errors: [new Error('角色名称重复')],
               },
             });
@@ -101,12 +101,12 @@ class RoleEditForm extends Component {
     return (     
       <Form onSubmit={this.onSubmit} className={styles.roleEditForm}>
         <FormItem label="角色名称">
-          {getFieldDecorator('roleName', {
+          {getFieldDecorator('roleDesc', {
             rules: [{ 
               required: isCreate,
               message: '请输入角色名称' 
             }],
-            initialValue: isCreate || !selectedRole ? '' : selectedRole.roleName
+            initialValue: isCreate || !selectedRole ? '' : selectedRole.roleDesc
           })(
             <Input placeholder="请输入..." />
           )}
