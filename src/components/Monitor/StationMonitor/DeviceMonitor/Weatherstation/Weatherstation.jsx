@@ -1,36 +1,60 @@
 import React, { Component } from 'react';
-import { Button } from 'antd';
-import { Link } from 'react-router-dom';
+import WeatherStationHeader from './WeatherStationHeader';
+import WeatherStationStatistics from './WeatherStationStatistics';
+import DeviceAlarmTable from '../DeviceMonitorCommon/DeviceAlarmTable';
 import PropTypes from 'prop-types';
+import styles from '../eachDeviceMonitor.scss';
 
 class Weatherstation extends Component {
   static propTypes = {
+    loading: PropTypes.bool,
     match: PropTypes.object,
     getMonitorDeviceData: PropTypes.func,
+    deviceDetail: PropTypes.object,
+    deviceAlarmList: PropTypes.array,
   }
 
   componentDidMount(){
-    const { deviceCode, deviceTypeCode,stationCode } = this.props.match.params
-    this.props.getMonitorDeviceData({
+    const { deviceCode, deviceTypeCode, stationCode } = this.props.match.params;
+    this.getData(stationCode, deviceCode, deviceTypeCode);
+  }
+
+  componentWillReceiveProps(nextProps){
+    const { deviceCode, deviceTypeCode, stationCode } = this.props.match.params;
+    const nextParams = nextProps.match.params;
+    const nextDevice = nextParams.deviceCode;
+    const nextType = nextParams.deviceTypeCode;
+    const nextStation = nextParams.stationCode;
+    if( nextDevice !== deviceCode || nextType !== deviceTypeCode || nextStation !== stationCode ){
+      clearTimeout(this.timeOutId);
+      this.getData(stationCode, deviceCode, deviceTypeCode);
+    }
+  }
+
+  componentWillUnmount(){
+    clearTimeout(this.timeOutId)
+  }
+
+  getData = (stationCode, deviceCode, deviceTypeCode) => {
+    const params = {
       stationCode,
       deviceCode,
-      deviceTypeCode
-    })
+      deviceTypeCode,
+    };
+    this.props.getMonitorDeviceData(params);
+    this.timeOutId = setTimeout(() => {
+      this.props.getMonitorDeviceData(params);
+      this.getData(stationCode, deviceCode, deviceTypeCode);
+    },10000)
   }
 
   render(){
+    const { deviceDetail, deviceAlarmList, loading } = this.props;
     return (
-      <div>
-        <h1>气象站气象站，我们的气象站！</h1>
-        <Button>
-          <Link to="/hidden/monitorDevice/73/206/112233445566">气象站去组串逆变器</Link>
-        </Button>
-        <Button>
-          <Link to="/hidden/monitorDevice/73/202/112233445566">气象站去汇流箱</Link>
-        </Button>
-        <Button>
-          <Link to="/hidden/monitorDevice/73/304/112233445566">气象站去箱变</Link>
-        </Button>
+      <div className={styles.weatherstation}>
+        <WeatherStationHeader deviceDetail={deviceDetail} />
+        <WeatherStationStatistics deviceDetail={deviceDetail} />
+        <DeviceAlarmTable deviceAlarmList={deviceAlarmList} deviceDetail={deviceDetail} loading={loading} />
       </div>
     )
   }
