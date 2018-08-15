@@ -1,7 +1,7 @@
 import keyMirror from 'keymirror';
 
 module.exports ={
-  LoginAction: keyMirror({
+  loginAction: keyMirror({
     CHANGE_LOGIN_PAGE_SAGA : null,
     CHANGE_LOGIN_PAGE : null,
     CHANGE_LOGIN_STORE_SAGA: null,

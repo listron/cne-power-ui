@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import styles from './loginLayout.scss';
-import {LoginAction} from '../../constants/actionTypes/loginAction';
+import {loginAction} from '../../constants/actionTypes/loginAction';
 import PropTypes from 'prop-types';
 import Login from './Login';
 import Register from './Register';
@@ -59,7 +59,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  changeLoginStore: params => dispatch({ type: LoginAction.CHANGE_LOGIN_STORE_SAGA, params }),
+  changeLoginStore: params => dispatch({ type: loginAction.CHANGE_LOGIN_STORE_SAGA, params }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginLayout);

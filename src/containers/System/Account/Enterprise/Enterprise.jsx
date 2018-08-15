@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import styles from './enterprise.scss';
+import { getCookie } from '../../../../utils';
 import { enterpriseAction } from '../../../../constants/actionTypes/system/account/enterpriseAction';
 import PropTypes from 'prop-types';
 import Footer from '../../../../components/Common/Footer';
@@ -23,6 +24,7 @@ class Enterprise extends Component {
     super(props);
   }
   componentDidMount(){
+    const enterpriseId = getCookie('enterpriseId');
     // const params = {
     //   filterStatus: this.props.filterStatus, 
     //   enterpriseName: this.props.enterpriseName, 
@@ -36,7 +38,7 @@ class Enterprise extends Component {
     this.props.getEnterpriseDetail({
       // enterpriseId:"1010694160817111040"
       // enterpriseName:"协合新能源"
-      enterpriseId: this.props.enterpriseId, //this.props.enterpriseId //'1010694160817111040',
+      enterpriseId, //this.props.enterpriseId //'1010694160817111040',
     })
   }
 
@@ -74,7 +76,7 @@ class Enterprise extends Component {
 }
 const mapStateToProps = (state) => ({
   ...state.system.enterprise.toJS(),
-  enterpriseId: state.common.get('enterpriseId'),
+  enterpriseId: getCookie('enterpriseId'),
 });
 
 const mapDispatchToProps = (dispatch) => ({

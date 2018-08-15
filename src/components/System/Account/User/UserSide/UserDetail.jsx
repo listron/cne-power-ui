@@ -1,35 +1,16 @@
 import React, { Component } from 'react';
-import { Button, Icon } from 'antd';
+import { Button, Icon, message } from 'antd';
 import PropTypes from 'prop-types';
 import styles from './userSide.scss';
 import WarningTip from '../../../../Common/WarningTip'
 class UserDetail extends Component {
   static propTypes = {
-    UserDetail: PropTypes.object,
-    userStation: PropTypes.number,
-    ascend: PropTypes.bool,
-    roleId: PropTypes.string,
-    roleName: PropTypes.string,
-    specialRoleId: PropTypes.string,
-    specialRoleName: PropTypes.string,
     userData: PropTypes.object,
-    currentPage: PropTypes.number,
-    enterpriseId: PropTypes.string,
-    enterpriseData: PropTypes.array,
-    enterpriseUserStatus: PropTypes.number,
-    departmentId: PropTypes.string,
-    departmentData: PropTypes.object,
-    departmentName: PropTypes.string,
-    stationId: PropTypes.string,
-    stationData: PropTypes.array,
-    pageSize: PropTypes.number,
-    totalNum: PropTypes.number,
-    getOtherPageDetail: PropTypes.func,
     getUserDetail: PropTypes.func,
     changeUserStore: PropTypes.func,
     onShowSideChange: PropTypes.func,
     userDetail: PropTypes.object,
-    changeUserStore: PropTypes.func
+    userId: PropTypes.string,
   };
 
   constructor(props) {
@@ -40,138 +21,42 @@ class UserDetail extends Component {
     };
   }
 
-  onShowSideChange = ({ showSidePage }) => {
-    this.props.changeUserStore({
-      showPage: 'edit'
-    });
+  onShowSideChange = () => {
+    const {userDetail} = this.props;
+    this.props.changeUserStore({ showPage: 'edit', userDetail: userDetail });
+    this.props.onShowSideChange('edit');
   };
 
   prePage = () => {
-    const {
-      getOtherPageDetail,
-      getUserDetail,
-      userDetail,
-      UserDetail,
-      userStation,
-      roleId,
-      roleName,
-      specialRoleId,
-      specialRoleName,
-      enterpriseId,
-      enterpriseData,
-      enterpriseUserStatus,
-      departmentData,
-      departmentName,
-      stationId,
-      stationData,
-      departmentId,
-      currentPage,
-      pageSize,
-      totalNum,
-      userData
-    } = this.props;
-    let detailIndex = userData.findIndex(
-      e => e.userId === userDetail.userId
-    );
-    let params = {
-      UserDetail,
-      userStation,
-      roleId,
-      roleName,
-      specialRoleId,
-      specialRoleName,
-      enterpriseId,
-      enterpriseData,
-      enterpriseUserStatus,
-      departmentId,
-      departmentData,
-      departmentName,
-      stationId,
-      stationData,
-      currentPage,
-      pageSize,
-      totalNum
-    };
-    if (currentPage === 1 && detailIndex === 0) {
-      //第一条记录
-      this.setState({
-        showWarningTip: true,
-        warningTipText: '这是第一个!'
-      });
-    } else if (currentPage > 1 && detailIndex === 0) {
-      params.currentPage = currentPage - 1;
-      getOtherPageDetail(params, { previous: true });
-    } else if (detailIndex > 0) {
-      const { userId } = userData[detailIndex - 1];
-      getUserDetail({ userId });
-    } else {
-      console.log('用户id信息有误，在tablelist中未获取');
+    let userData = this.props.userData;
+    let userId = this.props.userId;
+    let index = userData.findIndex(item => {
+      return item.get('userId') === userId
+    });
+    if(index !== -1) {
+      if(index !== 0) {
+        this.props.getUserDetail({userId: userData.getIn([index-1, 'userId'])});
+      } else {
+        message.info('已经是第一条');
+      }
     }
-  };
+  }
 
   nextPage = () => {
-    const {
-      getOtherPageDetail,
-      getUserDetail,
-      userStation,
-      roleId,
-      roleName,
-      specialRoleId,
-      specialRoleName,
-      enterpriseId,
-      enterpriseData,
-      enterpriseUserStatus,
-      departmentId,
-      departmentData,
-      departmentName,
-      stationId,
-      stationData,
-      currentPage,
-      pageSize,
-      totalNum,
-      userData,
-      userDetail
-    } = this.props;
-    let detailIndex = userData.findIndex(
-      e => e.userId === userDetail.userId
-    );
-    let params = {
-      UserDetail,
-      userStation,
-      roleId,
-      roleName,
-      specialRoleId,
-      specialRoleName,
-      enterpriseId,
-      enterpriseData,
-      enterpriseUserStatus,
-      departmentId,
-      departmentData,
-      departmentName,
-      stationId,
-      stationData,
-      currentPage,
-      pageSize,
-      totalNum
-    };
-    const maxPage = Math.ceil(totalNum / pageSize);
-    const lastPageMaxIndex = totalNum - (maxPage - 1) * pageSize - 1;
-    if (currentPage === maxPage && detailIndex === lastPageMaxIndex) {
-      //最后一条记录
-      this.setState({
-        showWarningTip: true,
-        warningTipText: '这是最后一个!'
-      });
-    } else if (currentPage < maxPage && detailIndex === pageSize - 1) {
-      params.currentPage = currentPage + 1;
-      getOtherPageDetail(params, { previous: false });
-    } else if (currentPage < maxPage) {
-      const { userId } = userData[detailIndex + 1];
-      getUserDetail({ userId });
-    } else {
-      console.log('用户id信息有误，在userlist中未获取');
+    let userData = this.props.userData;
+    let userId = this.props.userId;
+    let index = userData.findIndex(item => {
+      return item.get('userId') === userId
+    });
+    if(index !== -1) {
+      if(index !== userData.size - 1) {
+        this.props.getUserDetail({userId: userData.getIn([index+1, 'userId'])});
+      } else {
+        message.info('已经是最后一条');
+      }
     }
-  };
+  }
+
   backToList = () => {
     this.props.changeUserStore({
       showPage: 'list'
@@ -179,9 +64,7 @@ class UserDetail extends Component {
   };
   render() {
     const { userDetail} = this.props;
-   console.log(userDetail.toJS());
     const { showWarningTip, warningTipText } = this.state;
-    console.log(userDetail.get('enterpriseData'))
     return (
       <div className={styles.userDetail}>
         {showWarningTip && (
@@ -190,7 +73,7 @@ class UserDetail extends Component {
         <div className={styles.detailTop}>
           <Button
             className={styles.editButton}
-            onClick={() => this.onShowSideChange({ showSidePage: 'eidt' })}
+            onClick={this.onShowSideChange}
           >
             编辑
           </Button>
@@ -217,7 +100,7 @@ class UserDetail extends Component {
         <div className={styles.userInfor}>
           <div className={styles.logoPart}>
             <div className={styles.userImg}>
-              <img src={userDetail.userLogo} />
+              <img src={userDetail && userDetail.get('userLogo')} />
             </div>
 
             <div className={styles.user}>
@@ -252,11 +135,11 @@ class UserDetail extends Component {
               <span className={styles.value}>{userDetail.get('webChat')}</span>
             </div>
             <hr className={styles.doshLine} />
-            <div>
+            <div className={styles.detailRole}>
               <span className={styles.title}>角色</span>
               <span className={styles.value}>{userDetail.get('roleName')}</span>
             </div>
-            <div>
+            <div className={styles.detailSpecialRole} >
               <span className={styles.title}>特殊权限</span>
               <span className={styles.value}>
                 {userDetail.get('specialRoleName')}
@@ -268,7 +151,22 @@ class UserDetail extends Component {
                 企业部门(负责电站)
               </span>
               <div className={styles.enterpriseDepartmentValue}>
-               {userDetail.get('enterpriseData') && userDetail.get('enterpriseData').get('enterpriseName')}: {userDetail.get('enterpriseData') && userDetail.get('enterpriseData').get('departmentData').get('departmentName')}({userDetail.get('enterpriseData') && userDetail.get('enterpriseData').get('departmentData').get('stationData').get('stationName')})
+                {userDetail.get('enterpriseData') && 
+                  userDetail.get('enterpriseData').toJS().map(item=>{
+                    return (<div className={styles.departmentDetail} key={item.enterpriseId} >
+                      <div className={styles.enterpriseName}>{item.enterpriseName}：</div>
+                      <div className={styles.enterpriseDetail}>
+                      {item.departmentData && item.departmentData.map(item2=>{
+                        return (<p  key={item2.departmentId} >{item2.departmentName}-（负责电站：{item2.stationData &&
+                          item2.stationData.map(item3=>{
+                            return item3.stationName;
+                          })
+                        }）</p>)
+                      })}
+                      </div>
+                    </div>)
+                  })
+                }                
               </div>
             </div>
           </div>

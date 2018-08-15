@@ -1,0 +1,93 @@
+@import '../../../../../theme/theme.scss';
+
+.pvStation{
+  .pvStationTop{
+    display: flex;
+    flex-direction: column;
+    .pvStationTitle{
+      height: 60px;
+      line-height: 60px;
+      border-bottom: 1px solid #dfdfdf;
+      display: flex;
+      justify-content: space-between;
+      .pvStationName{
+        display: flex;
+        flex-direction: row;
+        h3{
+          font-size: 18px;
+          color: #666;
+          margin-right: 20px;
+        }
+        span{
+          color: #999;
+          margin-right: 15px;
+        }
+        :global{
+          .anticon-swap{
+            color: $themeColor;
+            margin: 0 15px 0 20px; 
+            display: inline-block;
+            line-height: 60px;
+          }
+        }
+      }
+      .backIcon{
+        border-left: 1px solid #dfdfdf;
+        width: 60px;
+        line-height: 60px;
+        text-align: center;
+        color: #999;
+        cursor: pointer;
+      }
+    }
+    .trueTimeData{
+      display: flex;
+      padding: 16px;
+      justify-content: space-around;
+      color: #999;
+      .powerScale{
+        width: 215px;
+      }
+      .annualEnergyScale{
+        width: 230px;
+      }
+      div{
+        
+        .trueTimeValue{
+          font-size: 24px;
+          color: $themeColor;
+          display: flex;
+          justify-content: space-between;
+          line-height: 24px;
+        }
+        .trueTimeUnit{
+          margin-top: 21px;
+        }
+        .trueTimeDesc{
+          color: #999;
+          display: flex;
+          justify-content: space-between;
+          
+        }
+      }
+      .yearPlanRate{
+        width: 80px;
+        height: 25px;
+        border-radius: 25px;
+        box-shadow:0 1px 2px 0 rgba(0,0,0,0.20);
+        color: $themeColor;
+        font-size: 18px;
+        text-align: center;
+      }
+    }
+  }
+  .outputPowerDiagram{
+    border-top: 1px solid #dfdfdf;
+    border-bottom: 1px solid #dfdfdf;
+    height: 300px;
+    padding: 0 20px;
+    display: flex;
+    flex-direction: row;
+    
+  }
+}

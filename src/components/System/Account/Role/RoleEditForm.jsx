@@ -14,12 +14,16 @@ const FormItem = Form.Item;
 class RoleEditForm extends Component {
   static propTypes = {
     form: PropTypes.object,
+    error: PropTypes.object,
     showPage: PropTypes.string,
+    enterpriseId: PropTypes.string,
     selectedRole: PropTypes.array,
     menuData: PropTypes.array,
-    onCreate: PropTypes.func,
-    onEdit: PropTypes.func,
+    onCreateRole: PropTypes.func,
+    onEditRole: PropTypes.func,
     changeRoleStore: PropTypes.func,
+    isFetching: PropTypes.bool,
+    continueAdd: PropTypes.bool,
   }
 
   constructor(props){
@@ -27,28 +31,50 @@ class RoleEditForm extends Component {
   }
 
   onSaveRole = () => {
+    const { enterpriseId, selectedRole } = this.props;
     this.props.form.validateFieldsAndScroll((err, values) => {
       if(!err) {
+        setTimeout(() => {
+          if(this.props.error.get('message') === '') {
+            this.props.form.setFields({
+              roleDesc: {
+                value: values.roleDesc,
+                errors: [new Error('角色名称重复')],
+              },
+            });
+          }
+        }, 500);
         if(this.props.showPage === 'create') {
-          this.props.onCreate(values);
-        } else {
-          this.props.onEdit({
+          this.props.onCreateRole({
             ...values,
-            roleId: this.props.selectedRole[0].roleId
+            enterpriseId,
+            continueAdd: false,
+          });
+        } else {
+          this.props.onEditRole({
+            ...values,
+            roleId: selectedRole[0].roleId,
+            enterpriseId
           })
         }
       }
     });
-    this.props.changeRoleStore({showPage: 'list'});
   }
 
   onSaveRoleAndAdd = () => {
+    const { enterpriseId, error } = this.props;
     this.props.form.validateFieldsAndScroll((err, values) => {
       if(!err) {
-        this.props.onCreate(values);    
+        this.props.onCreateRole({
+          ...values,
+          enterpriseId,
+          continueAdd: true,
+        });
+        if(error.size === 0) {
+          this.props.form.resetFields(); 
+        }  
       }
     });
-    this.props.form.resetFields();
   }
 
   getIds(data) {
@@ -69,41 +95,41 @@ class RoleEditForm extends Component {
 
   render(){
     const { getFieldDecorator } = this.props.form;
-    const formItemLayout = {
-      labelCol: { span: 4 },
-      wrapperCol: { span: 32 },
-    }
-    const selectedRole = this.props.selectedRole[0];
-    const isCreate = this.props.showPage === 'create';
+    const { showPage, isFetching, continueAdd } = this.props;
+    const isCreate = showPage === 'create';
+    const selectedRole = isCreate? null: this.props.selectedRole[0];
     return (     
       <Form onSubmit={this.onSubmit} className={styles.roleEditForm}>
-        <FormItem label="角色名称" {...formItemLayout}>
-        {getFieldDecorator('roleName', {
+        <FormItem label="角色名称">
+          {getFieldDecorator('roleDesc', {
             rules: [{ 
-              required: isCreate 
+              required: isCreate,
+              message: '请输入角色名称' 
             }],
-            initialValue: isCreate || !selectedRole ? '' : selectedRole.roleName
+            initialValue: isCreate || !selectedRole ? '' : selectedRole.roleDesc
           })(
-            <Input />
+            <Input placeholder="请输入..." />
           )}
+          <span className={styles.instructionText}>(10字以内)</span>
         </FormItem>
         <FormItem
-          {...formItemLayout}
           className={styles.dealProposal} 
           label="功能设置">
           {getFieldDecorator('rightId', {
             rules: [{ 
               required: true,
+              message: '请勾选功能'
             }],
             initialValue: isCreate || !selectedRole ? '' : this.getIds(selectedRole.rightData)
           })(
             <RoleTree treeData={this.props.menuData} />
           )}
         </FormItem>
-        <div>
-          <Button onClick={this.onSaveRole}>保存</Button>
-          <Button onClick={this.onSaveRoleAndAdd}>保存并继续添加</Button>
+        <div className={styles.buttonGroup}>
+          <Button className={styles.save} onClick={this.onSaveRole} loading={!continueAdd&&isFetching}>保存</Button>
+          <Button onClick={this.onSaveRoleAndAdd} loading={continueAdd&&isFetching}>保存并继续添加</Button>
         </div>
+        <div style={{marginLeft:410}} className={styles.instructionText}>选择“保存”按钮后将跳转到对应的列表页；选择“保存并继续添加”按钮将会停留在添加页面</div>
       </Form>
     );
   }

@@ -7,11 +7,7 @@ import {
   watchGetPartition,
 } from './commonSaga';
 
-import {
-  watchLogin
-} from './loginSaga';
-
-import { watchUser } from './system/account/userSaga';
+import { watchLogin } from './loginSaga';
 
 import {
   watchGetDefectList,
@@ -37,7 +33,7 @@ import {
 import {
   watchGetInspectList,
   watchGetInspectDetail,
-  watchSetInspectId,  
+  watchSetInspectId,
   watchAddInspectAbnormal,
   watchClearInspect,
   watchTransformDefect,
@@ -56,6 +52,12 @@ import {
 import { watchEnterprise } from './system/account/enterpriseSaga';
 import { watchDepartment } from './system/account/departmentSaga';
 import { watchRole } from './system/account/roleSaga';
+import { watchUser } from './system/account/userSaga';
+
+import { watchSingleStationMonitor } from './monitor/stationMonitor/singleStationSaga'; 
+import { watchDeviceMonitor } from './monitor/stationMonitor/deviceMonitorSaga';
+
+import {watchStationMonitor} from './monitor/stationMonitor/stationMonitorSaga.js'
 
 
 // root saga
@@ -69,22 +71,6 @@ export default function* rootSaga() {
     watchGetPartition(),
     //登陆注册
     watchLogin(),
-    // watchLoginPageChange(), 
-    // watchLogin(),
-    // watchVerificationCode(),
-    // watchCheckCode(),
-    // watchCheckPhoneRegister(),
-    // watchJoinInSaga(),
-    // watchResetPassword(),
-    // watchGetCompInfo(),
-    // watchCheckPhone(),
-    // watchChangePSW(),
-    // // watchGetComInfoSu(),
-    // watchSignup(),
-    // // watchCheckPhoneSU(),
-    // watchGetShowStatus(),
-    // watchChangeShowStatus(),
-    // watchCreateRegister(),
     //Defect
     watchGetDefectList(),
     watchSetDefectId(),
@@ -125,5 +111,8 @@ export default function* rootSaga() {
     watchDepartment(),
     watchRole(),
     watchUser(),
+    // monitor
+    watchDeviceMonitor(),
+    watchSingleStationMonitor(),
   ])
-} 
+}

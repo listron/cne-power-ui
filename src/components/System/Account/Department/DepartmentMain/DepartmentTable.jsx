@@ -21,13 +21,13 @@ class DepartmentTable extends Component {
     parentDepartmentName: PropTypes.string, 
     stationName: PropTypes.string, 
     sort: PropTypes.string, 
-    ascend: PropTypes.bool, 
     pageNum: PropTypes.number,
     pageSize: PropTypes.number,
     allDepartment: PropTypes.object,
-    allUser: PropTypes.object,
-    allStation: PropTypes.object,
-    loginData: PropTypes.object,
+    departmentUser: PropTypes.object,
+    DepartmentStation: PropTypes.object,
+    userId: PropTypes.string,
+    enterpriseName: PropTypes.string,
     showAssignUserModal: PropTypes.bool,
     showAssignStationModal: PropTypes.bool,
     
@@ -38,9 +38,8 @@ class DepartmentTable extends Component {
     getDepartmentDetail: PropTypes.func,
     deleteDepartment: PropTypes.func,
     changeDepartmentStore: PropTypes.func,
-    getAllDepartment: PropTypes.func,
-    getAllUser: PropTypes.func,
-    getAllStation: PropTypes.func,
+    getDepartmentUser: PropTypes.func,
+    getDepartmentStation: PropTypes.func,
     setDepartmentUser: PropTypes.func,
     setDepartmentStation: PropTypes.func,
   }
@@ -65,7 +64,6 @@ class DepartmentTable extends Component {
       parentDepartmentName: this.props.parentDepartmentName, 
       stationName: this.props.stationName, 
       sort: this.props.sort, 
-      ascend: this.props.ascend, 
       pageNum: currentPage,
       pageSize,
     })
@@ -75,14 +73,18 @@ class DepartmentTable extends Component {
       selectedDepartment:selectedRows
     })
   }
-  onWarningTipOK = () => {//删除部门，todo
+  onWarningTipOK = () => {//删除部门，拒绝编辑部门提示框
     const { selectedDepartment,deleteDepartment } = this.props;
-    const selectedDepartmentHasChild = selectedDepartment.map(e=>e.hasChildren).some(e=>!!e);
+    const selectedDepartmentHasChild = selectedDepartment.map(e=>e.hasChildren).some(e=>!!e);//有子部门不得删除
+    const forbiddenDelete = selectedDepartment.some(e=>e.departmentSource === 0); //预设电站不得删除
     this.setState({
       showWarningTip:false,
       hiddenWarningTipCancelText: false
     })
-    selectedDepartmentHasChild || deleteDepartment(selectedDepartment.map(e=>e.departmentId))
+    forbiddenDelete || selectedDepartmentHasChild || deleteDepartment({
+      departmentId: selectedDepartment.map(e=>e.departmentId).join(','),
+      enterpriseId: this.props.enterpriseId
+    });
   }
   cancelRowSelect = () => {//取消行选择
     this.props.changeDepartmentStore({
@@ -96,15 +98,14 @@ class DepartmentTable extends Component {
   }
   tableChange = (pagination,filter,sorter) => {//部门排序
     const sort = sorter.field;
-    const ascend = sorter.order==='ascend';
+    const ascend = sorter.order==='ascend'?'0':'1';
     this.props.getDepartmentList({
       enterpriseId: this.props.enterpriseId,
       departmentSource: this.props.departmentSource,
       departmentName: this.props.departmentName, 
       parentDepartmentName: this.props.parentDepartmentName, 
       stationName: this.props.stationName, 
-      sort, 
-      ascend, 
+      sort:`${sort},${ascend}`, 
       pageNum: this.props.pageNum,
       pageSize: this.props.pageSize,
     })
@@ -121,14 +122,30 @@ class DepartmentTable extends Component {
   departmentHandle = (value) => {//编辑，删除，分配用户/电站
     const { selectedDepartment } = this.props;
     if(value==='edit'){
-      this.props.changeDepartmentStore({
-        showPage: 'edit',
-        departmentDetail: selectedDepartment[0],
-      });
+      const forbiddenEdit = selectedDepartment.some(e=>e.departmentSource === 0);
+      if(forbiddenEdit){
+        this.setState({
+          showWarningTip: true,
+          warningTipText: '不得编辑预设部门!',
+          hiddenWarningTipCancelText: true
+        })
+      }else{
+        this.props.changeDepartmentStore({
+          showPage: 'edit',
+          departmentDetail: selectedDepartment[0],
+        });
+      }
     }else if(value==='delete'){
       const selectedDepartmentHasChild = selectedDepartment.map(e=>e.hasChildren).some(e=>!!e);
       const selectedDepartmentHasMember = selectedDepartment.map(e=>e.hasMember).some(e=>!!e);
-      if(selectedDepartmentHasChild){
+      const forbiddenDelete = selectedDepartment.some(e=>e.departmentSource === 0)
+      if(forbiddenDelete){
+        this.setState({
+          showWarningTip: true,
+          warningTipText: '不得删除预设部门!',
+          hiddenWarningTipCancelText: true
+        })
+      }else if(selectedDepartmentHasChild){
         this.setState({
           showWarningTip: true,
           warningTipText: '请先删除子部门!',
@@ -166,7 +183,7 @@ class DepartmentTable extends Component {
       editable = selectedDepartment.length === 1;
       [deletable, userAssignable, staionAssignable] = [true,true,true];
     }       
-    return (<Select onChange={this.departmentHandle} placeholder={'操作'} dropdownMatchSelectWidth={false} dropdownClassName={styles.handleDropdown}>
+    return (<Select onChange={this.departmentHandle} placeholder="操作" value="操作" dropdownMatchSelectWidth={false} dropdownClassName={styles.handleDropdown}>
       <Option value="edit" disabled={!editable} >编辑</Option>
       <Option value="delete" disabled={!deletable} >删除</Option>
       <Option value="assignUser" disabled={!userAssignable} >分配用户</Option>
@@ -220,42 +237,40 @@ class DepartmentTable extends Component {
   }
 
   renderAssignUserModal() {
-    const { showAssignUserModal, loginData, allDepartment, allUser, getAllDepartment, getAllUser, setDepartmentUser, changeDepartmentStore} = this.props;
-    return 
+    const { userId, enterpriseName, enterpriseId, allDepartment, departmentUser, getDepartmentUser, setDepartmentUser, changeDepartmentStore, selectedDepartment} = this.props;
+    return (
       <AssignUserModal
-        show={showAssignUserModal}
-        currentUserId={loginData.get('userId')}
-        enterpriseId={loginData.get('enterpriseId')}
-        enterpriseName={loginData.get('enterpriseName')}
+        currentUserId={userId}
+        enterpriseId={enterpriseId}
+        enterpriseName={enterpriseName}
         departmentList={allDepartment}
-        userList={allUser}
-        getDepartmentTreeData={getAllDepartment}
-        getUserList={getAllUser}
+        userList={departmentUser}
+        getUserList={getDepartmentUser}
         onSetDepartmentUser={setDepartmentUser}
         onCancel={()=>changeDepartmentStore({showAssignUserModal: false})}
-        selectedDepartment={this.state.selectedDepartment}
-     />
+        selectedDepartment={selectedDepartment}
+      />
+    );
   }
 
   renderAssignStationModal() {
-    const { showAssignStationModal, loginData, allDepartment, allStation, getAllDepartment, getAllStation, setDepartmentStation, changeDepartmentStore} = this.props;
-    return 
+    const { enterpriseName, enterpriseId, allDepartment, DepartmentStation, getDepartmentStation, setDepartmentStation, changeDepartmentStore, selectedDepartment} = this.props;
+    return (
       <AssignStationModal
-        show={showAssignStationModal}
-        enterpriseId={loginData.get('enterpriseId')}
-        enterpriseName={loginData.get('enterpriseName')}
+        enterpriseId={enterpriseId}
+        enterpriseName={enterpriseName}
         departmentList={allDepartment}
-        stationList={allStation}
-        getDepartmentTreeData={getAllDepartment}
-        getStationList={getAllStation}
+        stationList={DepartmentStation}
+        getStationList={getDepartmentStation}
         onSetDepartmentStation={setDepartmentStation}
         onCancel={()=>changeDepartmentStore({showAssignStationModal: false})}
-        selectedDepartment={this.state.selectedDepartment}
-     />
+        selectedDepartment={selectedDepartment}
+      />
+    );
   }
 
   render(){
-    const { departmentData, selectedDepartment, totalNum, loading } = this.props;
+    const { departmentData, selectedDepartment, totalNum, loading, showAssignUserModal, showAssignStationModal } = this.props;
     const { showWarningTip, warningTipText, hiddenWarningTipCancelText } = this.state;
     return (
       <div className={styles.departmentList}>
@@ -287,8 +302,8 @@ class DepartmentTable extends Component {
           <span className={styles.info}>当前选中<span className={styles.totalNum}>{selectedDepartment.length}</span>项</span>
           <span className={styles.cancel} onClick={this.cancelRowSelect}>取消选中</span>
         </div>
-        {this.renderAssignUserModal()}
-        {this.renderAssignStationModal()}
+        {showAssignUserModal && this.renderAssignUserModal()}
+        {showAssignStationModal && this.renderAssignStationModal()}
       </div>
     )
   }

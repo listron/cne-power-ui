@@ -5,13 +5,13 @@ import {routerConfig} from '../../common/routerSetting';
 import { menu } from '../../common/menu';
 import styles from './style.scss';
 import { connect } from 'react-redux';
-import {getCookie} from '../../utils'
+import { getCookie, delCookie } from '../../utils'
 import Login from '../Login/LoginLayout';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import { Icon } from 'antd';
 
-import { CommonAction } from '../../constants/actionTypes/commonAction';
+import { commonAction } from '../../constants/actionTypes/commonAction';
 
 import TopMenu from '../../components/Layout/TopMenu';
 import SideMenu from '../../components/Layout/SideMenu';
@@ -19,6 +19,7 @@ import SideMenu from '../../components/Layout/SideMenu';
 class Main extends Component {
   static propTypes = {
     setTopMenu: PropTypes.func,
+    getStations: PropTypes.func,
     topMenu: PropTypes.object,
     login: PropTypes.object,
     history: PropTypes.object,
@@ -44,6 +45,9 @@ class Main extends Component {
     this.props.setTopMenu({ topMenu: params });
     if (this.refs.main) {
       this.refs.main.addEventListener('scroll', this.onScroll);
+      this.props.getStations({
+        userId: getCookie('userId'),
+      });
     }
   }
 
@@ -120,6 +124,9 @@ class Main extends Component {
       );
     }
     else{
+      delCookie('authData');
+      delCookie('expireData');
+      delCookie('isNotLogin');
       return (
         <Switch>
           <Route path="/login" excat component={Login} />
@@ -138,7 +145,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  setTopMenu: payload => dispatch({ type: CommonAction.CHANGE_COMMON_STORE_SAGA, payload }),
+  getStations: payload => dispatch({ type: commonAction.GET_STATIONS_SAGA, payload }),
+  setTopMenu: payload => dispatch({ type: commonAction.CHANGE_COMMON_STORE_SAGA, payload }),
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Main));

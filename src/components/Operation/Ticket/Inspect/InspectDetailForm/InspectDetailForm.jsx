@@ -7,7 +7,7 @@ import styles from './inspectDetailForm.scss';
 import { Icon, Button, Modal } from 'antd';
 import InspectAddAbnormal from '../InspectAddAbnormal/InspectAddAbnormal';
 import InspectAbnormal from '../InspectAbnormal/InspectAbnormal';
-import immutable from 'immutable';
+import Immutable from 'immutable';
 
 const confirm = Modal.confirm;
 class InspectDetailForm extends Component {
@@ -38,7 +38,7 @@ class InspectDetailForm extends Component {
     super(props);
     this.state={
       disabled: false,
-      abnormalIds: immutable.fromJS([]),
+      abnormalIds: Immutable.fromJS([]),
       tipColor: "#999",
     }
   }
@@ -54,7 +54,7 @@ class InspectDetailForm extends Component {
             abnormalIds: this.state.abnormalIds.toJS().join(','),
           })
           this.setState({
-            abnormalIds: immutable.fromJS([]),
+            abnormalIds: Immutable.fromJS([]),
           })
         },
         onCancel: () => {

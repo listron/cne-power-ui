@@ -1,102 +1,116 @@
 import React from "react";
 import PropTypes from "prop-types";
 import styles from './windstation.scss';
-import WindMap from './WindStationMap.jsx';
-import WIndStationItem from './WIndStationItem.jsx';
-import WIndStationList from './WIndStationList.jsx';
-import { Progress, Tabs, Icon, Button, Radio, Switch, Table } from "antd";
-import WindStationList from "./WIndStationList.jsx";
-
-const TabPane = Tabs.TabPane;
-//tabs筛选部分
-const operations = (
-  <div>
-    <Switch defaultChecked onChange={onHandleAlarm} />告警
-    <Radio.Group
-      defaultValue="a"
-      buttonStyle="solid"
-      style={{ marginLeft: 20 }}
-    >
-      <Radio.Button value="a">全部</Radio.Button>
-      <Radio.Button value="b">通讯正常</Radio.Button>
-      <Radio.Button value="c">数据中断</Radio.Button>
-      <Radio.Button value="d">网络中断</Radio.Button>
-      <Radio.Button value="e">未接入</Radio.Button>
-    </Radio.Group>
-  </div>
-);
-function onHandleAlarm(checked) {
-  console.log(`switch to ${checked}`);
-}
+import Map from '../map.jsx';
+import WindStationHeader from './windStationHeader.jsx';
+import WindStationItem from './WIndStationItem.jsx';
+import WindStationList from './WIndStationList.jsx';
+import { Tabs, Icon, Radio, Switch } from "antd";
 
 class WindStation extends React.Component {
+  static propTypes = {
+    sort: PropTypes.string,
+    ascend: PropTypes.bool,
+    pageNum: PropTypes.number,
+    pageSize: PropTypes.number,
+    windMonitorStation: PropTypes.object,
+  }
   constructor(props, context) {
     super(props, context);
-    this.TabPane = Tabs.TabPane;
+    this.state = {
+      key: '1',
+      checked: false,
+      stationType: 'all',
+    }
   }
+  onHandleAlarm = (checked) => {
+    this.setState({
+      checked
+    })
+  }
+  onHandleStation = (e) => {
+    this.setState({
+      stationType: e.target.value
+    })
+  }
+  setkey = (activekey) => {
+    this.setState({ key: activekey })
+  }
+
   render() {
+    let { key, checked, stationType } = this.state;
+    const { windMonitorStation } = this.props;
+    const { stationDataList } = windMonitorStation;
+    const newStationDataList = stationDataList.filter(e => {
+      return !checked || (checked && e.alarmNum > 0)
+    }).filter(e => {
+      if (stationType === 'all') {
+        return true
+      } else if (stationType === 'normal') {
+        return e.stationStatus.stationStatus === '400'
+      } else if (stationType === 'dataInterruption') {
+        return e.stationStatus.stationStatus === '500'
+      } else if (stationType === 'networkInterruption') {
+        return e.stationStatus.stationStatus === '900'
+      } else if (stationType === 'unconnection') {
+        return e.stationStatus.stationStatus === '900'
+      }
+    })
+    console.log(newStationDataList)
+
+    const TabPane = Tabs.TabPane;
+    //tabs筛选部分
+    const operations = (
+      <div>
+        <Switch onChange={this.onHandleAlarm} />告警
+    <Radio.Group
+          defaultValue="all"
+          buttonStyle="solid"
+          onChange={this.onHandleStation}
+          style={{ marginLeft: 20 }}
+        >
+          <Radio.Button value="all">全部</Radio.Button>
+          <Radio.Button value="normal">通讯正常</Radio.Button>
+          <Radio.Button value="dataInterruption">数据中断</Radio.Button>
+          <Radio.Button value="networkInterruption">网络中断</Radio.Button>
+          <Radio.Button value="unconnection">未接入</Radio.Button>
+        </Radio.Group>
+      </div>
+    );
+    let provinceNum = () => {
+      let ary = [];
+      this.props.windMonitorStation.stationDataList.forEach((item, index) => {
+        let findProvince = false
+
+        ary.forEach(e => {
+          if (e.provinceName === item.provinceName) {
+            findProvince = true;
+            e.provinceNum += 1;
+          }
+        })
+        if (!findProvince) {
+          ary.push({
+            provinceName: item.provinceName,
+            provinceNum: 1
+          })
+        }
+      })
+      console.log(ary);
+      return ary;
+    }
+    const province = (
+      <div>
+        {provinceNum().map((item, index) => {
+          return (
+            <span key={index}>{item.provinceName}:{item.provinceNum}&nbsp;&nbsp;</span>
+          )
+        })}
+      </div>
+    )
     return (
       <div className={styles.WindStation}>
-        <div className={styles.headStation}>
-          <div className={styles.typeIcon}>
-            <div className={styles.leftIcon}>
-              <img src="" alt="" />
-            </div>
-            <div className={styles.rightIcon}>
-              <img src="" alt="" />
-            </div>
-          </div>
-          <div className={styles.progressInfo}>
-            <div className={styles.progressData}>
-              <div className={styles.stationValue}>
-                <div>125.67</div>
-                <div>12345.56</div>
-              </div>
-              <div className={styles.progressBar}>
-                <Progress percent={50} showInfo={false} status="active" />
-              </div>
-              <div className={styles.stationType}>
-                <div>月发电量 万kWh</div>
-                <div>月发电量 万kWh</div>
-              </div>
-            </div>
-          </div>
-          <div className={styles.stationCollect}>
-            <div className={styles.equipmentNum}>
-              <div className={styles.dataValue}>331</div>
-              <div className={styles.dataName}>装机台数</div>
-            </div>
-            <div className={styles.windSpeed}>
-              <div className={styles.dataValue}>331.75</div>
-              <div className={styles.dataName}>辐射</div>
-            </div>
-            <div className={styles.dayStation}>
-              <div className={styles.dataValue}>331.75</div>
-              <div className={styles.dataName}>日发电量 万kWh</div>
-            </div>
-            <div className={styles.monthStation}>
-              <div className={styles.dataValue}>331.75</div>
-              <div className={styles.dataName}>月发电量 万kWh</div>
-            </div>
-
-          </div>
-          <div className={styles.progressInfo}>
-            <div className={styles.progressData}>
-              <div className={styles.stationValue}>
-                <div>125.67</div>
-                <div>12345.56</div>
-              </div>
-              <div className={styles.progressBar}>
-                <Progress percent={50} status="active" />
-              </div>
-              <div className={styles.stationType}>
-                <div>月发电量 万kWh</div>
-                <div>月发电量 万kWh</div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <Tabs defaultActiveKey="1" tabBarExtraContent={operations} >
+        <WindStationHeader {...this.props} />
+        <Tabs activeKey={key} tabBarExtraContent={key !== '3' ? operations : province} onChange={this.setkey}>
           <TabPane
             tab={
               <span>
@@ -105,7 +119,7 @@ class WindStation extends React.Component {
             }
             key="1"
           >
-            <WIndStationItem />
+            <WindStationItem {...this.props} stationDataList={newStationDataList} />
 
           </TabPane>
           <TabPane
@@ -116,7 +130,7 @@ class WindStation extends React.Component {
             }
             key="2"
           >
-            <WindStationList />
+            <WindStationList {...this.props} stationDataList={newStationDataList} />
 
           </TabPane>
           <TabPane
@@ -127,7 +141,7 @@ class WindStation extends React.Component {
             }
             key="3"
           >
-            <WindMap />
+            <Map {...this.props} testId="wind_bmap_station" />
           </TabPane>
         </Tabs>,
 
@@ -135,6 +149,4 @@ class WindStation extends React.Component {
     )
   }
 }
-
-
 export default WindStation

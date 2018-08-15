@@ -8,7 +8,7 @@ module.exports = {
     CHANGE_USER_STORE: null,
 
     GET_USER_FETCH_SUCCESS: null,//公共请求API成功
-
+    GET_USER_FETCH_FAIL: null,//公共请求API失败
     GET_USER_LIST_SAGA: null, //获取列表
 
     GET_USER_DETAIL_SAGA: null, //获取详情
@@ -18,5 +18,9 @@ module.exports = {
     CHANGE_USER_STATUS_SAGA: null,//改变用户状态
 
     CREATE_USER_INFO_SAGA: null,//新建用户信息
+
+    GET_INVITE_LINK_SAGA: null,//邀请用户信息
+
+    GET_ROLE_ALL_LIST_SAGA: null,//获取角色列表
   })
 };

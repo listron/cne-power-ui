@@ -7,10 +7,14 @@ import styles from './departmentSide.scss';
 import WarningTip from '../../../../Common/WarningTip';
 import AssignUserModal from '../AssignUserModal/AssignUserModal';
 import AssignStationModal from '../AssignStationModal/AssignStationModal';
+import moment from 'moment';
 
 class DepartmentDetail extends Component {
   static propTypes = {
     enterpriseId: PropTypes.string,
+    userId: PropTypes.string,
+    enterpriseName: PropTypes.string,
+    enterpriseName: PropTypes.string,
     departmentSource: PropTypes.number,
     departmentName: PropTypes.string, 
     parentDepartmentName: PropTypes.string, 
@@ -21,8 +25,8 @@ class DepartmentDetail extends Component {
     pageSize: PropTypes.number,
     totalNum: PropTypes.number,
     allDepartment: PropTypes.object,
-    allUser: PropTypes.object,
-    allStation: PropTypes.object,
+    departmentUser: PropTypes.object,
+    DepartmentStation: PropTypes.object,
     loginData: PropTypes.object,
     showAssignUserModal: PropTypes.bool,
     showAssignStationModal: PropTypes.bool,
@@ -32,9 +36,8 @@ class DepartmentDetail extends Component {
     getDepartmentDetail: PropTypes.func,
     changeDepartmentStore: PropTypes.func,
     onShowSideChange: PropTypes.func,
-    getAllDepartment: PropTypes.func,
-    getAllUser: PropTypes.func,
-    getAllStation: PropTypes.func,
+    getDepartmentUser: PropTypes.func,
+    getDepartmentStation: PropTypes.func,
     setDepartmentUser: PropTypes.func,
     setDepartmentStation: PropTypes.func,
     departmentDetail: PropTypes.object,
@@ -44,7 +47,7 @@ class DepartmentDetail extends Component {
     super(props);
     this.state = {
       showWarningTip: false,
-      warningTipText: '!',
+      warningTipText: '',
     }
   }
 
@@ -60,7 +63,9 @@ class DepartmentDetail extends Component {
   }
 
   setDepartmentStation = () => {
-    console.log(this.props.departmentDetail);
+    this.props.changeDepartmentStore({
+      showAssignStationModal: true,
+    })
   }
 
   confirmWarningTip = () => {
@@ -104,65 +109,69 @@ class DepartmentDetail extends Component {
     }else if(pageNum < maxPage && detailIndex === pageSize - 1){
       params.pageNum = pageNum + 1
       getOtherPageDetail(params,{previous:false})
-    }else if( pageNum < maxPage ){
+    }else if( pageNum <= maxPage ){
       const {departmentId} = departmentData[detailIndex + 1]
       getDepartmentDetail({ departmentId })
     }else{
       console.log("部门id信息有误，在tablelist中未获取")
     }
   }
-
+  
   backToList = () => {
     this.props.changeDepartmentStore({showPage: 'list'});
   }
 
   renderAssignUserModal() {
-    const { showAssignUserModal, departmentData, departmentDetail, loginData, allDepartment, allUser, getAllDepartment, getAllUser, setDepartmentUser, changeDepartmentStore} = this.props;
+    const { userId, enterpriseId, enterpriseName, departmentData, departmentDetail, allDepartment, departmentUser, getDepartmentUser, setDepartmentUser, changeDepartmentStore} = this.props;
     let detailIndex = departmentData.findIndex(e=>e.departmentId===departmentDetail.departmentId);
-    return 
+    console.log(departmentData);
+    console.log(detailIndex);
+    return (
       <AssignUserModal
-        show={showAssignUserModal}
-        currentUserId={loginData.get('userId')}
-        enterpriseId={loginData.get('enterpriseId')}
-        enterpriseName={loginData.get('enterpriseName')}
+        currentUserId={userId}
+        enterpriseId={enterpriseId}
+        enterpriseName={enterpriseName}
         departmentList={allDepartment}
-        userList={allUser}
-        getDepartmentTreeData={getAllDepartment}
-        getUserList={getAllUser}
+        userList={departmentUser}
+        getUserList={getDepartmentUser}
         onSetDepartmentUser={setDepartmentUser}
         onCancel={()=>changeDepartmentStore({showAssignUserModal: false})}
-        selectedDepartment={departmentData.slice(detailIndex, detailIndex+1)}
+        selectedDepartment={[departmentData[detailIndex]]}
      />
+    );
   }
 
   renderAssignStationModal() {
-    const { showAssignStationModal, departmentData, departmentDetail, loginData, allDepartment, allStation, getAllDepartment, getAllStation, setDepartmentStation, changeDepartmentStore} = this.props;
+    const { enterpriseId, enterpriseName, departmentData, departmentDetail, allDepartment, DepartmentStation, getDepartmentStation, setDepartmentStation, changeDepartmentStore} = this.props;
     let detailIndex = departmentData.findIndex(e=>e.departmentId===departmentDetail.departmentId);
-    return 
+    return (
       <AssignStationModal
-        show={showAssignStationModal}
-        enterpriseId={loginData.get('enterpriseId')}
-        enterpriseName={loginData.get('enterpriseName')}
+        enterpriseId={enterpriseId}
+        enterpriseName={enterpriseName}
         departmentList={allDepartment}
-        stationList={allStation}
-        getDepartmentTreeData={getAllDepartment}
-        getStationList={getAllStation}
+        stationList={DepartmentStation}  
+        getStationList={getDepartmentStation}
         onSetDepartmentStation={setDepartmentStation}
         onCancel={()=>changeDepartmentStore({showAssignStationModal: false})}
-        selectedDepartment={departmentData.slice(detailIndex, detailIndex+1)}
-     />
+        selectedDepartment={[departmentData[detailIndex]]}
+      />
+    );
   }
 
   render(){
-    const { departmentDetail } = this.props;
+    const { departmentDetail,departmentData, showAssignUserModal, showAssignStationModal } = this.props;
     const { showWarningTip, warningTipText } = this.state;
     let userFullNames = (departmentDetail.userFullNameData && departmentDetail.userFullNameData.length > 0 )? departmentDetail.userFullNameData.map(e=>e.userFullName).join(','):' -- ';
     let stationNames = (departmentDetail.stationNameData && departmentDetail.stationNameData.length > 0 )? departmentDetail.stationNameData.map(e=>e.stationName).join(','):' -- ';
+    const tmpDepartmentSub = departmentData.find(e=>e.departmentId === departmentDetail.departmentId);
+    const forbiddenEdit = tmpDepartmentSub && tmpDepartmentSub.departmentSource === 0;
+    const createTime = departmentDetail.createTime? moment(departmentDetail.createTime).format('YYYY-MM-DD hh:mm'):' -- ';
+    const updateTime = departmentDetail.updateTime? moment(departmentDetail.updateTime).format('YYYY-MM-DD hh:mm'):' -- ';
     return (
       <div className={styles.departmentDetail}>
         {showWarningTip && <WarningTip onOK={this.confirmWarningTip} value={warningTipText} />}
         <div className={styles.detailTop}>
-          <Button className={styles.editButton} onClick={()=>this.onShowSideChange({showSidePage:'eidt'})}>编辑</Button>
+          <Button className={styles.editButton} disabled={forbiddenEdit} onClick={()=>this.onShowSideChange({showSidePage:'eidt'})}>编辑</Button>
           <span className={styles.handleArea} >
             <Icon type="arrow-up" className={styles.previous} title="上一个" onClick={this.preDepartment} />
             <Icon type="arrow-down" className={styles.next} title="下一个" onClick={this.nextDepartment} />
@@ -172,11 +181,11 @@ class DepartmentDetail extends Component {
         <div className={styles.departmentInfo} >
           <div>
             <span className={styles.title}>部门名称</span>
-            <span className={styles.value}>{departmentDetail.departmentName}</span> 
+            <span className={styles.value}>{departmentDetail.departmentName || ' -- '}</span> 
           </div>
           <div>
             <span className={styles.title}>所属部门</span>
-            <span className={styles.value}>{departmentDetail.parentDepartmentName}</span> 
+            <span className={styles.value}>{departmentDetail.parentDepartmentName || '无'}</span> 
           </div>
           <div>
             <span className={styles.title}>成员</span>
@@ -190,7 +199,7 @@ class DepartmentDetail extends Component {
           </div>
           <div>
             <span className={styles.title}>负责电站</span>
-            <span className={styles.value}>{departmentDetail.enterpriseProfile}</span> 
+            <span className={styles.value}>{departmentDetail.enterpriseProfile || ' -- '}</span> 
           </div>
           <div>
             <span className={styles.title}>创建者</span>
@@ -198,19 +207,19 @@ class DepartmentDetail extends Component {
           </div>
           <div>
             <span className={styles.title}>创建时间</span>
-            <span className={styles.value}>{departmentDetail.createTime}</span> 
+            <span className={styles.value}>{createTime}</span> 
           </div>
           <div>
             <span className={styles.title}>最后修改人</span>
-            <span className={styles.value}>{departmentDetail.updateUser}</span> 
+            <span className={styles.value}>{departmentDetail.updateUser || ' -- '}</span> 
           </div>
           <div>
             <span className={styles.title}>最后修改时间</span>
-            <span className={styles.value}>{departmentDetail.updateTime}</span> 
+            <span className={styles.value}>{updateTime}</span> 
           </div>
         </div>
-        {this.renderAssignUserModal()}
-        {this.renderAssignStationModal()}
+        {showAssignUserModal && this.renderAssignUserModal()}
+        {showAssignStationModal && this.renderAssignStationModal()}
       </div>
     )
   }

@@ -1,9 +1,26 @@
 @import '../../../../theme/theme.scss';
+@mixin top(){//详情，编辑通用顶部基础样式
+  @include lineheight(64px);
+  display: flex;
+  padding-left: 32px;
+  align-items: center;
+  border-bottom: solid 1px $promptColor;  
+}
+.tooltip {
+  display: flex;
+  flex-direction: column;
+}
 .roleList{
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 auto;
+  padding: 24px 24px 0;
+  background-color: #ececec;
   .roleListTop {
     background: #fff;
     display: flex;
+    min-height: 72px;
     line-height: 72px;
     justify-content: space-between;
     .addRole{
@@ -67,6 +84,82 @@
     .cancel{
       color: $themeColor;
       cursor: pointer;
+    }
+  }
+  .menu {
+    max-width: 500px;
+    height: 30px;
+    line-height: 30px;
+    padding-top: 8px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: inline-block;
+    word-break:keep-all;
+  }
+}
+
+.roleEdit {
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+  background-color: #ececec;
+  padding: 24px 24px 0;
+  .roleEditContent{
+    flex: 1;
+    background-color: #fff;
+    .editTop {
+      @include top;
+      justify-content: space-between;
+      .text{
+        font-size:18px;
+        color: $darkColor;
+        letter-spacing:4px;
+      }
+      .backIcon{
+        color: $lightColor;
+        font-size: 20px;
+        border-left: 1px solid $promptColor;
+        height: 100%;
+        line-height: 64px;
+        width: 64px;
+        cursor: pointer;
+      }
+      
+    }
+    .editPart{
+      flex: 1;
+      margin: 24px 32px 0;
+      .instructionText{
+        color: $promptColor;
+      }
+      .buttonGroup{
+        .save{
+          margin-left: 410px;
+          margin-right: 16px;
+        }
+      }
+      :global{
+        .ant-form-item{
+          display: flex;
+          line-height: 40px;
+          .ant-form-item-label{
+            width: 410px;
+            color: $darkColor;
+            text-align: right;
+            padding-right: 24px;
+            label::after{
+              display: none;
+            }
+          }
+          .ant-form-item-control-wrapper{
+            input {
+              width: 200px;
+              margin-right: 12px;
+            }
+          }
+        }
+      }  
     }
   }
 }

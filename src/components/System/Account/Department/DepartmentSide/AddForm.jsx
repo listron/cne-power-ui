@@ -16,7 +16,6 @@ class AddForm extends Component {
     continueAddLoading: PropTypes.bool,
     enterpriseId: PropTypes.string,
     form: PropTypes.object,
-    stations: PropTypes.array,
     allDepartment: PropTypes.object,
     addDepartmentInfo: PropTypes.func,
   }
@@ -28,25 +27,29 @@ class AddForm extends Component {
   addDepartment = () =>{
     const { addDepartmentInfo,enterpriseId } = this.props;
     this.props.form.validateFieldsAndScroll((error,values)=>{
+      const params = {
+        enterpriseId,
+        departmentName:values.departmentName,
+        continueAdd: false,
+      };
+      values.departmentId && (params.departmentId = values.departmentId);
       if(!error){
-        addDepartmentInfo({
-          enterpriseId,
-          ...values,
-          continueAdd: false,
-        })
+        addDepartmentInfo(params)
       }
     })
   }
   addContinue = () => {
     const { addDepartmentInfo,form,enterpriseId } = this.props;
     form.validateFieldsAndScroll((error,values)=>{
+      const params = {
+        enterpriseId,
+        departmentName:values.departmentName,
+        continueAdd: true,
+      };
+      values.departmentId && (params.departmentId = values.departmentId);
       if(!error){
-        addDepartmentInfo({
-          enterpriseId,
-          ...values,
-          continueAdd: true,
-        });
-        form.resetFields()
+        addDepartmentInfo(params);
+        form.resetFields();
       }
     })
   }
@@ -67,12 +70,12 @@ class AddForm extends Component {
         </FormItem>
         <FormItem label="所属部门" >
           {getFieldDecorator('departmentId',{
-            initialValue: '0',
+            initialValue: '',
           })(
             <Select style={{ width: 200 }}>
-              <Option value="0">无</Option>
-              {(allDepartment && allDepartment.length>0)?allDepartment.map(e=>(
-                  <Option value={e.departmentId} key={e.departmentId} >{e.departmentName}</Option>)
+              <Option value="">无</Option>
+              {(allDepartment && allDepartment.size>0)?allDepartment.map(e=>(
+                  <Option value={e.get('departmentId')} key={e.get('departmentId')} >{e.get('departmentName')}</Option>)
                 ):null 
               }
             </Select>

@@ -1,70 +1,88 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Modal, Input, Button, Tree, Checkbox, Avatar, Tag }  from 'antd';
+import { Modal, Input, Button, Tree, Checkbox, Tag }  from 'antd';
 import Immutable from 'immutable';
-import Styles from './assignStationModal.scss';
+import styles from './assignStationModal.scss';
+import WarningTip from '../../../../Common/WarningTip';
 const Search = Input.Search;
 const TreeNode = Tree.TreeNode;
 
 class AssignStationModal extends Component {
   static propTypes = {
-    show: PropTypes.bool,
     selectedDepartment: PropTypes.array,
-    currentUserId: PropTypes.string,//当前用户Id
     enterpriseId: PropTypes.string,//当前企业Id
     enterpriseName: PropTypes.string,//当前企业名称
     departmentList: PropTypes.object,//immutable
     stationList: PropTypes.object,//immutable
-    getDepartmentTreeData: PropTypes.func,
     getStationList: PropTypes.func,
+    getDepartmentStation: PropTypes.func,
     onSetDepartmentStation: PropTypes.func,
     onCancel: PropTypes.func,
   }
   constructor(props) {
     super(props);
     this.state = {
-      selectedDepartment: Immutable.fromJS({}),//选中部门
+      selectedDepartment: Immutable.fromJS([]),//选中部门
       stationList: Immutable.fromJS([]),//电站Id和部门Id一一匹配，一维数组，最后回传的数组
       selectedStationList: Immutable.fromJS([]),//右边的电站列表数据
       searchStationList: null,//右边有搜索文字的电站列表数据
       expandedKeys: [],
       selectedKeys: [],
+      showWarningTip: false,
+      warningTipText: '',
     };
   }
 
   componentDidMount() {
-    this.props.getDepartmentTreeData();
-    this.props.getStationList();
+    const {enterpriseId} = this.props;
+    this.props.getStationList({
+      enterpriseId
+    });
   }
 
   componentWillReceiveProps(nextProps) {
-    if(nextProps.departmentList.size !== this.props.departmentList.size && nextProps.departmentList.size > 0) {
-      let department = nextProps.selectedDepartment[0];
-      let departmentId = department.departmentId;
+    if (nextProps.selectedDepartment.length > 0) {
+      const department = nextProps.selectedDepartment[0];
+      const departmentId = department.departmentId;
+      let selectedDepartment = nextProps.departmentList.find((item)=>item.get('departmentId')===department.departmentId);
       this.setState({
-        selectedDepartment: Immutable.fromJS(department),
+        selectedDepartment: selectedDepartment,//选中部门
+        expandedKeys: [nextProps.enterpriseId],
         selectedKeys: [departmentId],
-        expandedKeys: [nextProps.enterpriseId]
-      });
+      })
     }
-    if(nextProps.stationList.size !== this.props.stationList.size && nextProps.stationList.size > 0) {
+    if(nextProps.stationList.size > 0) {
       this.setState({
         stationList: nextProps.stationList,
-        selectedStationList: nextProps.stationList,
+        selectedStationList: this.getDepartmenStationRange(this.state.selectedDepartment, nextProps.stationList),
       });
     }
   }
 
-  onOk = () => {
-    this.props.onSetDepartmentStation(this.state.stationList);
+  onCancelWarningTip = () => {
+    this.setState({
+      showWarningTip: false,
+    });
+  }
+
+  onConfirmWarningTip = () => {
+    this.setState({
+      showWarningTip: false,
+    });
+    this.props.onCancel();   
+  }
+
+  onSelect = () => {
+    this.props.onSetDepartmentStation({
+      enterpriseId: this.props.enterpriseId,
+      list: this.state.stationList.toJS()
+    });
   }
 
   onCancel = () => {
-    Modal.warning({
-      title: '关闭后将无法保存编辑信息！',
-      okText: '确定',
-      cancelText: '取消',
-      onOk: this.props.onCancel
+    this.setState({
+      showWarningTip: true,
+      warningTipText: '关闭后将无法保持编辑信息!'
     });
   }
 
@@ -72,7 +90,7 @@ class AssignStationModal extends Component {
     let stationList = this.state.selectedStationList;
     if(value !== '') {
       stationList = stationList.filter((item) => {
-        return item.get('stationName').index(value) !== -1;
+        return item.get('stationName').indexOf(value) !== -1;
       });
     } else {
       stationList = null;
@@ -84,6 +102,9 @@ class AssignStationModal extends Component {
 
   onSelectNode = (selectedKeys, info) => {
     let item = info.node.props.dataRef;
+    if(item === null) {
+      return;
+    }
     let selectedStationList = this.getDepartmenStationRange(item, this.state.stationList);
     this.setState({
       selectedDepartment: item,
@@ -108,23 +129,23 @@ class AssignStationModal extends Component {
         stationName: station.get('stationName'),
       }))
     } else {
-      if(selectedDepartment.get('list')) {
+      if(selectedDepartment.get('list')&&selectedDepartment.get('list').size > 0) {
         let child = selectedDepartment.get('list');
         child.forEach((item) => {
           let childIndex = stationList.findIndex((current) => {
-            item.get('departmentId') === current.get('departmentId') && 
+            return item.get('departmentId') === current.get('departmentId') && 
             station.get('stationId') === current.get('stationId')
           })
           if(childIndex !== -1) {
             stationList = stationList.delete(childIndex);
           }
         })
-        let index = stationList.findIndex((current) => {
-          selectedDepartment.get('departmentId') === current.get('departmentId') && 
-          station.get('stationId') === current.get('stationId')
-        });
-        stationList = stationList.delete(index);
       }
+      let index = stationList.findIndex((current) => {
+        return selectedDepartment.get('departmentId') === current.get('departmentId') && 
+        station.get('stationId') === current.get('stationId')
+      });
+      stationList = stationList.delete(index);
     }
     let selectedStationList = this.getDepartmenStationRange(selectedDepartment, stationList);
     this.setState({
@@ -148,7 +169,7 @@ class AssignStationModal extends Component {
   getDepartmenStationRange(department, stationList) {
     let parentDepartmentId = department.get('parentDepartmentId');
     let selectedStationList;
-    if(parentDepartmentId === null) {
+    if(parentDepartmentId === '0' || parentDepartmentId === null) {
       selectedStationList = stationList;
     } else {
       selectedStationList = stationList.filter((item) => {
@@ -174,7 +195,7 @@ class AssignStationModal extends Component {
         newStationList = newStationList.push(element);
       } else {
         let station = newStationList.get(index);
-        station = station.set('departmentName', station.get('departmentName')+','+element.get('departmenName'))
+        station = station.set('departmentName', station.get('departmentName')+','+element.get('departmentName'))
                    .set('departmentId'),Immutable.fromJS([station.get('departmentId')].push(element.get('departmentId'))); 
         newStationList = newStationList.set(index, station);
       }
@@ -191,7 +212,7 @@ class AssignStationModal extends Component {
         expandedKeys={this.state.expandedKeys}
         selectedKeys={this.state.selectedKeys}
       >
-        <TreeNode title={enterpriseName} key={enterpriseId}>
+        <TreeNode title={enterpriseName} key={enterpriseId} dataRef={null}>
           {this.renderTreeNodes(departmentList)}
         </TreeNode>
       </Tree>
@@ -203,7 +224,7 @@ class AssignStationModal extends Component {
     return (
       treeData.map((item) => {
         stationNum = this.getDepartmentStation(item.get('departmentId')).size;
-        if(item.get('list').size > 0) {
+        if(item.get('list') && item.get('list').size > 0) {
           return (
             <TreeNode title={item.get('departmentName')+'('+stationNum+')'} key={item.get('departmentId')} dataRef={item}>
               {this.renderTreeNodes(item.get('list'))}
@@ -217,21 +238,22 @@ class AssignStationModal extends Component {
   }
 
   renderStationList() {
-    const { searchStationList , selectedStationList } = this.state;
-    let station = this.tansformStationData(searchStationList===null?searchStationList:selectedStationList);
+    const { searchStationList , selectedStationList, stationList } = this.state;
+    let transformStationList = this.tansformStationData(stationList);
+    let station = this.tansformStationData(searchStationList!==null?searchStationList:selectedStationList);
     return (
       station.map((item) => {
         return (
-          <div key={item.get('stationId')}>
-            <div>
-              <Checkbox 
+          <div key={item.get('stationId')} className={styles.stationItem}>
+            <div className={styles.stationCheck}>
+              <Checkbox
+                style={{marginRight: 6}}
                 onChange={(e)=>{this.onCheckStation(item, e.target.checked)}} 
-                checked={()=>this.getStationChecked(item)} />
-              <Avatar>{item.get('stationName').charAt(0)}</Avatar>
-              <span>{item.get('stationName')}</span>
+                checked={this.getStationChecked(item)} />
+              <span className={styles.stationName}>{item.get('stationName')}</span>
             </div>
-            <div>
-              {this.getStationDepartment(item)}
+            <div className={styles.deparymentName}>
+              {transformStationList.find(obj=>obj.get('stationId')===item.get('stationId')).get('departmentName')}
             </div>
           </div>
         );
@@ -257,30 +279,40 @@ class AssignStationModal extends Component {
   }
 
   render() {
+    if(this.state.stationList.size === 0) {
+      return null;
+    }
+    const { showWarningTip, warningTipText } = this.state;
     return (
       <Modal
-        visible={this.props.show}
+        visible={true}
         footer={null}
         onCancel={this.onCancel}
-        destroyOnClose={true}
+        width={625}
       >
-        <div className={Styles.assignStationModal}>
-          <div className={Styles.header}>
+        <div className={styles.assignStationModal}>
+          { showWarningTip && 
+          <WarningTip 
+            style={{marginTop:'250px',width: '210px',height:'88px'}} 
+            onCancel={this.onCancelWarningTip} 
+            onOK={this.onConfirmWarningTip} value={warningTipText} />}
+          <div className={styles.header}>
             <span>分配用户</span>
             <Search
               placeholder="搜索电站名称"
               onSearch={this.onSearch}
               enterButton={true}
+              style={{ width: 200 }}
             />
           </div>
-          <div className={Styles.content}>
-            <div className={Styles.departmentList}>{this.renderDepartmentTree()}</div>
-            <div className={Styles.stationList}>{this.renderStationList()}</div>
+          <div className={styles.content}>
+            <div className={styles.departmentList}>{this.renderDepartmentTree()}</div>
+            <div className={styles.stationList}>{this.renderStationList()}</div>
           </div>
-          <div className={Styles.selectedStation}>{this.renderSelectedStation()}</div>
-          <div className={Styles.footer}>
+          <div className={styles.selectedStation}>{this.renderSelectedStation()}</div>
+          <div className={styles.footer}>
             <Button onClick={this.onCancel}>取消</Button>
-            <Button onClick={this.onOk}>选择</Button>
+            <Button onClick={this.onSelect}>选择</Button>
           </div>
         </div>        
       </Modal>

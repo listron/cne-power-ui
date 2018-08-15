@@ -1,0 +1,105 @@
+import { call, put, takeLatest } from 'redux-saga/effects';
+import axios from 'axios';
+import Path from '../../../../constants/path';
+import { singleStationAction } from '../../../../constants/actionTypes/monitor/stationMonitor/singleStationAction';
+
+//改变单电站实时数据store
+function *changeSingleStationStore(action){
+  const { payload } = action;
+  yield put({
+    type: singleStationAction.CHANGE_SINGLE_STATION_STORE,
+    payload,
+  })
+}
+
+//获取单电站实时数据
+function *getSingleStation(action){
+  const { payload } = action;
+  const url = '/mock/api/v3/monitor/station/'+ payload.stationCode;
+  console.log(payload);
+  try{
+    yield put({type: singleStationAction.SINGLE_STATION_FETCH});
+    const response = yield call(axios.get, url);
+    console.log(response);
+    yield put({
+      type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
+      payload: {
+        ...payload,
+        singleStationData: response.data.data,
+      }
+    })
+  }catch(e){
+    console.log(e);
+  }
+}
+
+//获取出力图数据
+function *getCapabilityDiagram(action){
+  const { payload } = action;
+  const url = '/mock/api/v3/monitor/capabilitydiagram/'+ payload.stationCode+ '/' + payload.intervalTime;
+  console.log(payload);
+  try{
+    yield put({type: singleStationAction.SINGLE_STATION_FETCH});
+    const response = yield call(axios.get, url);
+    console.log(response);
+    yield put({
+      type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
+      payload: {
+        ...payload,
+        capabilityData: response.data.data,
+      }
+    })
+  }catch(e){
+    console.log(e);
+  }
+}
+
+//获取理论发电量 实际发电量数据
+function *getMonitorPower(action){
+  const { payload } = action;
+  const url = '/mock/api/v3/monitor/power/'+ payload.stationCode+ '/' + payload.intervalTime;
+  console.log(payload);
+  try{
+    yield put({type: singleStationAction.SINGLE_STATION_FETCH});
+    const response = yield call(axios.get, url);
+    console.log(response);
+    yield put({
+      type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
+      payload: {
+        ...payload,
+        powerData: response.data.data,
+      }
+    })
+  }catch(e){
+    console.log(e);
+  }
+}
+// 获取电站列表
+function *getStationList(action){
+  const { payload } = action;
+  const url = '/mock/api/v3/station/datalist/';
+  try{
+    yield put({type: singleStationAction.SINGLE_STATION_FETCH});
+    const response = yield call(axios.post, url, payload);
+    console.log(response);
+    yield put({
+      type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
+      payload: {
+        ...payload,
+        ...response.data.data,
+      }
+    })
+  }catch(e){
+    console.log(e);
+  }
+}
+
+
+export function* watchSingleStationMonitor() {
+  yield takeLatest(singleStationAction.GET_SINGLE_STATION_SAGA, getSingleStation);
+  yield takeLatest(singleStationAction.CHANGE_SINGLE_STATION_STORE_SAGA, changeSingleStationStore);
+  yield takeLatest(singleStationAction.GET_STATION_LIST_SAGA, getStationList);
+  yield takeLatest(singleStationAction.GET_CAPABILITY_DIAGRAM_SAGA, getCapabilityDiagram);
+  yield takeLatest(singleStationAction.GET_MONITOR_POWER_SAGA, getMonitorPower);
+}
+

@@ -2,10 +2,12 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import styles from './department.scss';
 import { departmentAction } from '../../../../constants/actionTypes/system/account/departmentAction';
+// import { commonAction } from '../../../../constants/actionTypes/commonAction';
 import PropTypes from 'prop-types';
 import TransitionContainer from '../../../../components/Common/TransitionContainer';
 import DepartmentMain from '../../../../components/System/Account/Department/DepartmentMain/DepartmentMain';
 import DepartmentSide from '../../../../components/System/Account/Department/DepartmentSide/DepartmentSide';
+import { getCookie } from '../../../../utils';
 
 class Department extends Component {
   static propTypes = {
@@ -16,16 +18,17 @@ class Department extends Component {
     parentDepartmentName: PropTypes.string,
     stationName: PropTypes.string,
     sort: PropTypes.string,
-    ascend: PropTypes.bool,
     pageNum: PropTypes.number,
     pageSize: PropTypes.number,
     allDepartment: PropTypes.object,
-    allUser: PropTypes.object,
+    departmentUser: PropTypes.object,
+    DepartmentStation: PropTypes.object,
     showAssignStationModal: PropTypes.bool,
     showAssignUserModal: PropTypes.bool,
     getDepartmentList: PropTypes.func,
     getAllDepartment: PropTypes.func,
-    getAllUser: PropTypes.func,
+    getDepartmentUser: PropTypes.func,
+    getDepartmentStation: PropTypes.func,
     setDepartmentUser: PropTypes.func,
     setDepartmentStation: PropTypes.func,
   }
@@ -36,20 +39,20 @@ class Department extends Component {
     }
   }
   componentDidMount(){
+    const enterpriseId = this.props.enterpriseId;
     const params = {
-      enterpriseId: '1010694160817111040', //this.props.enterpriseId,//'1010694160817111040',
+      enterpriseId, //this.props.enterpriseId,//'1010694160817111040',
       departmentSource: this.props.departmentSource,
       departmentName: this.props.departmentName,
       parentDepartmentName: this.props.parentDepartmentName,
       stationName: this.props.stationName,
       sort: this.props.sort,
-      ascend: this.props.ascend,
       pageNum: this.props.pageNum,
       pageSize: this.props.pageSize,
     }
     this.props.getDepartmentList(params)//请求部门列表
     this.props.getAllDepartment({//请求所有部门
-      enterpriseId: '1010694160817111040', //this.props.enterpriseId,//'1010694160817111040',
+      enterpriseId,
     })
   }
 
@@ -88,9 +91,14 @@ class Department extends Component {
   }
 }
 const mapStateToProps = (state) => ({
-    ...state.system.department.toJS(),
-    stations: state.common.get('stations').toJS(),
-    enterpriseId: state.common.get('enterpriseId'),
+    ...state.system.department.delete('allDepartment').delete('departmentUser').delete('DepartmentStation').toJS(),
+    allDepartment:state.system.department.get('allDepartment'),
+    departmentUser: state.system.department.get('departmentUser'),
+    DepartmentStation: state.system.department.get('DepartmentStation'),
+    // stations: state.common.get('stations'),
+    enterpriseId: getCookie('enterpriseId'),
+    userId: getCookie('userId'),
+    enterpriseName: getCookie('enterpriseName'),
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -99,8 +107,9 @@ const mapDispatchToProps = (dispatch) => ({
   getDepartmentList: payload => dispatch({type:departmentAction.GET_DEPARTMENT_LIST_SAGA, payload}),
   getDepartmentDetail: payload => dispatch({type:departmentAction.GET_DEPARTMENT_DETAIL_SAGA, payload}),
   getOtherPageDetail: (payload, {previous}) => dispatch({type:departmentAction.GET_OTHER_PAGE_DEPARTMENT_DETAIL_SAGA, payload, previous}),
-  getAllUser: payload => dispatch({type:departmentAction.GET_ALL_USER_SAGA,payload}),
+  getDepartmentUser: payload => dispatch({type:departmentAction.GET_DEPARTMENT_USER_SAGA,payload}),
   getAllDepartment: payload => dispatch({type:departmentAction.GET_ALL_DEPARTMENT_SAGA,payload}),
+  getDepartmentStation: payload => dispatch({type:departmentAction.GET_DEPARTMENT_STATION_SAGA,payload}),
   setDepartmentUser: payload => dispatch({type:departmentAction.SET_DEPARTMENT_USER_SAGA,payload}),
   setDepartmentStation: payload => dispatch({type:departmentAction.SET_DEPARTMENT_STATION_SAGA,payload}),
   addDepartmentInfo: payload => dispatch({type:departmentAction.ADD_DEPARTMENT_INFO_SAGA, payload}),

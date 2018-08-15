@@ -63,11 +63,11 @@ class EnterpriseDetail extends Component {
               {moment(enterpriseDetail.createTime) ? moment(enterpriseDetail.createTime).format('YYYY年MM月DD日'): '--'}
             </div>
           </div>
-          <div className={styles.textInfor}>
+          <div className={styles.textInfo}>
             <div className={styles.buttonGroup}>
-              <Button><Link to="/system/department">查看部门</Link></Button>
-              <Button><Link to="/system/user">查看成员</Link></Button>
-              <Button><Link to="/system/role">查看角色</Link></Button>
+              <Button><Link to="/system/account/department">查看部门</Link></Button>
+              <Button><Link to="/system/account/user">查看成员</Link></Button>
+              <Button><Link to="/system/account/role">查看角色</Link></Button>
             </div>
             <div>
               <span className={styles.promptTitle}>用户名</span>
@@ -75,7 +75,7 @@ class EnterpriseDetail extends Component {
             </div>
             <div>
               <span className={styles.promptTitle}>注册手机</span>
-              {enterpriseDetail.createPhone || ' -- ' } 
+              {enterpriseDetail.phoneNum || ' -- ' } 
             </div>
             <div>
               <span className={styles.promptTitle}>企业域名</span>

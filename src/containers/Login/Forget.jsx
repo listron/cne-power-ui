@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './loginLayout.scss';
 import ForgetForm from '../../components/Login/ForgetForm';
-import { LoginAction } from '../../constants/actionTypes/loginAction';
+import { loginAction } from '../../constants/actionTypes/loginAction';
 import { connect } from 'react-redux';
 class Forget extends Component {
   static propTypes = {
@@ -65,10 +65,10 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  sendCode: params => dispatch({ type: LoginAction.SEND_CODE_SAGA, params}),
-  resetPassword: params => dispatch({ type: LoginAction.RESET_PASSWORD_SAGA, params }),
-  checkCodeLogin: params => dispatch({ type: LoginAction.CHECK_CODE_SAGA, params}),
-  phoneCodeRegister: params => dispatch({ type: LoginAction.PHONE_CODE_REGISTER_SAGA, params}),
+  sendCode: params => dispatch({ type: loginAction.SEND_CODE_SAGA, params}),
+  resetPassword: params => dispatch({ type: loginAction.RESET_PASSWORD_SAGA, params }),
+  checkCodeLogin: params => dispatch({ type: loginAction.CHECK_CODE_SAGA, params}),
+  phoneCodeRegister: params => dispatch({ type: loginAction.PHONE_CODE_REGISTER_SAGA, params}),
 })
 
 export default connect(mapStateToProps,mapDispatchToProps)(Forget);
