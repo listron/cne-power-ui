@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
 import ConfluenceStatistics from './ConfluenceStatistics';
 import ConfluenceTenMin from './ConfluenceTenMin';
-// import DeviceAlarmTable from '../DeviceMonitorCommon/DeviceAlarmTable';
-// import DevicePointsData from '../DeviceMonitorCommon/DevicePointsData';
+import DeviceAlarmTable from '../DeviceMonitorCommon/DeviceAlarmTable';
+import DevicePointsData from '../DeviceMonitorCommon/DevicePointsData';
 import ConfluenceHeader from './ConfluenceHeader';
 import PropTypes from 'prop-types';
 import styles from '../eachDeviceMonitor.scss';
 
 class Confluencebox extends Component {
   static propTypes = {
+    loading: PropTypes.bool,
     match: PropTypes.object,
     getMonitorDeviceData: PropTypes.func,
     devices: PropTypes.array,
@@ -60,8 +61,8 @@ class Confluencebox extends Component {
         <ConfluenceHeader deviceDetail={deviceDetail} devices={devices} stationCode={stationCode} deviceTypeCode={deviceTypeCode} />
         <ConfluenceStatistics deviceDetail={deviceDetail} />
         <ConfluenceTenMin deviceTenMin={deviceTenMin} loading={loading} />
-        {/* <DeviceAlarmTable deviceAlarmList={deviceAlarmList} loading={loading} /> */}
-        {/* <DevicePointsData devicePointData={devicePointData}  deviceDetail={deviceDetail} /> */}
+        <DeviceAlarmTable deviceAlarmList={deviceAlarmList} loading={loading} deviceDetail={deviceDetail} />
+        <DevicePointsData devicePointData={devicePointData}  deviceDetail={deviceDetail} />
       </div>
     ) 
   }

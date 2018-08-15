@@ -10,6 +10,7 @@ class DeviceAlarmTable extends Component {
 
   static propTypes = {
     deviceAlarmList: PropTypes.array,
+    deviceDetail: PropTypes.object,
     loading: PropTypes.bool,
   }
 
@@ -66,7 +67,7 @@ class DeviceAlarmTable extends Component {
   }
 
   render() {
-    const { deviceAlarmList, loading } = this.props;
+    const { deviceAlarmList, loading, deviceDetail } = this.props;
     const { pageSize, currentPage, sortName, descend } = this.state;
     const tableSource = [...deviceAlarmList].map((e, i) => ({
       ...e,
@@ -89,8 +90,8 @@ class DeviceAlarmTable extends Component {
     return (
       <div className={styles.alarmTable} >
         <div className={styles.alarmTip}>
-          逆变器告警
-          <Icon type="info" title="逆变器告警" />
+          {deviceDetail.deviceTypeName}告警
+          <Icon type="info" title={`${deviceDetail.deviceTypeName}告警`} />
         </div>
         <div className={styles.tableHeader}>
           <Button className={styles.historyButton}>

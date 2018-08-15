@@ -27,7 +27,7 @@ function ConfluenceTenMin({ deviceTenMin, loading }) {
         left: 60
       },
       legend: {
-        data:['功率','斜面辐射'],
+        data:['离散率'],
         top: 24,
       },
       tooltip: {
