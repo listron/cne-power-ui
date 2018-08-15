@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import { Icon } from 'antd';
 import { Link } from 'react-router-dom';
 
-class InverterHeader extends Component {
+class ConfluenceHeader extends Component {
 
   static propTypes = {
     devices: PropTypes.array,
@@ -37,7 +37,7 @@ class InverterHeader extends Component {
   render() {
     const { devices, deviceDetail, stationCode, deviceTypeCode } = this.props;
     const { showDeviceChangeBox } = this.state;
-    const { deviceStatus, parentDevice, sonDevice } = deviceDetail;
+    const { deviceStatus, parentDevice, sonDevice, dispersionRatio } = deviceDetail;
     const deviceStatusInfo = deviceStatusArray.find(e=>parseInt(e.statusCode) === parseInt(deviceStatus));
     const baseLinkPath = `/hidden/monitorDevice/${stationCode}/${deviceTypeCode}`;
     return (
@@ -47,6 +47,7 @@ class InverterHeader extends Component {
           <Icon type="swap" className={styles.swap} onClick={this.showDeviceChange} />
           <span className={styles.name}>{deviceDetail.deviceName}</span>
           <span className={styles.status} >设备状态: { deviceStatusInfo && deviceStatusInfo.statusName || ''}</span>
+          <span>离散率>{dispersionRatio}%</span>
         </div>
         <div className={styles.linkTo}>
           <Link to={`/hidden/monitorDevice/${stationCode}/${parentDevice && parentDevice.deviceTypeCode}/${parentDevice && parentDevice.deviceCode}`} className={styles.eachLink}>
@@ -64,4 +65,4 @@ class InverterHeader extends Component {
     )
   }
 }
-export default InverterHeader;
+export default ConfluenceHeader;

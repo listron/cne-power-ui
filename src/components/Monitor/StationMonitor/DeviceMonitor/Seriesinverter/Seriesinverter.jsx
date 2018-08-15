@@ -5,7 +5,7 @@ import DeviceAlarmTable from '../DeviceMonitorCommon/DeviceAlarmTable';
 import DevicePointsData from '../DeviceMonitorCommon/DevicePointsData';
 import InverterHeader from './InverterHeader';
 import PropTypes from 'prop-types';
-import styles from './seriesinverter.scss';
+import styles from '../eachDeviceMonitor.scss';
 
 class Seriesinverter extends Component {
   static propTypes = {

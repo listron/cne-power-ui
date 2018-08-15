@@ -1,6 +1,6 @@
 import React from 'react';
 import PowerProgress from '../DeviceMonitorCommon/PowerProgress';
-import styles from './seriesinverter.scss';
+import styles from '../eachDeviceMonitor.scss';
 
 function InverterStatistics({ deviceDetail }) {
   

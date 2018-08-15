@@ -2,11 +2,12 @@ import React, { Component } from 'react';
 import { Button } from 'antd';
 // import DeviceMonitorStatistics from '../DeviceMonitorCommon/DeviceMonitorStatistics';
 // import InverterTenMin from './InverterTenMin';
-import DeviceAlarmTable from '../DeviceMonitorCommon/DeviceAlarmTable';
-import DevicePointsData from '../DeviceMonitorCommon/DevicePointsData';
-// import DeviceMonitorHeader from '../DeviceMonitorCommon/DeviceMonitorHeader';
+// import DeviceAlarmTable from '../DeviceMonitorCommon/DeviceAlarmTable';
+// import DevicePointsData from '../DeviceMonitorCommon/DevicePointsData';
+import ConfluenceHeader from './ConfluenceHeader';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import styles from '../eachDeviceMonitor.scss';
 
 class Confluencebox extends Component {
   static propTypes = {
@@ -58,21 +59,11 @@ class Confluencebox extends Component {
     const { stationCode, deviceTypeCode } = this.props.match.params;
     return (
       <div>
-        {/* <DeviceMonitorHeader deviceDetail={deviceDetail} devices={devices} stationCode={stationCode} deviceTypeCode={deviceTypeCode} /> */}
+        <ConfluenceHeader deviceDetail={deviceDetail} devices={devices} stationCode={stationCode} deviceTypeCode={deviceTypeCode} />
         {/* <DeviceMonitorStatistics deviceDetail={deviceDetail} /> */}
         {/* <InverterTenMin deviceTenMin={deviceTenMin} loading={loading} /> */}
-        <DeviceAlarmTable deviceAlarmList={deviceAlarmList} loading={loading} />
-        <DevicePointsData devicePointData={devicePointData}  deviceDetail={deviceDetail} />
-        <h1>汇流箱汇流，嘎嘎嘎嘎嘎</h1>
-        <Button>
-          <Link to="/hidden/monitorDevice/73/203/112233445566">汇流箱汇流，嘎嘎嘎嘎嘎去气象站</Link>
-        </Button>
-        <Button>
-          <Link to="/hidden/monitorDevice/73/206/112233445566">汇流箱汇流，嘎嘎嘎嘎嘎去组串逆变器</Link>
-        </Button>
-        <Button>
-          <Link to="/hidden/monitorDevice/73/304/112233445566">汇流箱汇流，嘎嘎嘎嘎嘎去箱变</Link>
-        </Button>
+        {/* <DeviceAlarmTable deviceAlarmList={deviceAlarmList} loading={loading} /> */}
+        {/* <DevicePointsData devicePointData={devicePointData}  deviceDetail={deviceDetail} /> */}
       </div>
     ) 
   }
