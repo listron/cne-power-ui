@@ -59,7 +59,6 @@ import { watchDeviceMonitor } from './monitor/stationMonitor/deviceMonitorSaga';
 
 import {watchStationMonitor} from './monitor/stationMonitor/stationMonitorSaga.js'
 
-
 // root saga
 export default function* rootSaga() {
   yield all([
