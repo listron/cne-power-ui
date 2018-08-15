@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
-import { Button } from 'antd';
-// import DeviceMonitorStatistics from '../DeviceMonitorCommon/DeviceMonitorStatistics';
-// import InverterTenMin from './InverterTenMin';
+import ConfluenceStatistics from './ConfluenceStatistics';
+import ConfluenceTenMin from './ConfluenceTenMin';
 // import DeviceAlarmTable from '../DeviceMonitorCommon/DeviceAlarmTable';
 // import DevicePointsData from '../DeviceMonitorCommon/DevicePointsData';
 import ConfluenceHeader from './ConfluenceHeader';
-import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import styles from '../eachDeviceMonitor.scss';
 
@@ -58,10 +56,10 @@ class Confluencebox extends Component {
     const {devices, deviceDetail, deviceTenMin, deviceAlarmList, devicePointData, loading } = this.props;
     const { stationCode, deviceTypeCode } = this.props.match.params;
     return (
-      <div>
+      <div className={styles.confluencebox}>
         <ConfluenceHeader deviceDetail={deviceDetail} devices={devices} stationCode={stationCode} deviceTypeCode={deviceTypeCode} />
-        {/* <DeviceMonitorStatistics deviceDetail={deviceDetail} /> */}
-        {/* <InverterTenMin deviceTenMin={deviceTenMin} loading={loading} /> */}
+        <ConfluenceStatistics deviceDetail={deviceDetail} />
+        <ConfluenceTenMin deviceTenMin={deviceTenMin} loading={loading} />
         {/* <DeviceAlarmTable deviceAlarmList={deviceAlarmList} loading={loading} /> */}
         {/* <DevicePointsData devicePointData={devicePointData}  deviceDetail={deviceDetail} /> */}
       </div>

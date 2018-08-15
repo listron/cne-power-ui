@@ -1,21 +1,21 @@
 import React from 'react';
 import echarts from 'echarts';
 
-function InverterTenMin({ deviceTenMin, loading }) {
-  const echartBox = document.getElementById('inverter_monitor_tenMin');
+function ConfluenceTenMin({ deviceTenMin, loading }) {
+  const echartBox = document.getElementById('confluence_monitor_tenMin');
   const lineColor = '#999';
   if(echartBox){
-    const inverterChart = echarts.init(echartBox);
+    const confluenceChart = echarts.init(echartBox);
     // if(loading){
-    //   inverterChart.showLoading();
+    //   confluenceChart.showLoading();
     // }else{
-    //   inverterChart.hideLoading();
+    //   confluenceChart.hideLoading();
     // }
-    let powerLineData = [], radiationLineData = [], xTime = [];
+    // const HLNames = ['HL001', 'HL002', 'HL003', 'HL004', 'HL005', 'HL006', 'HL007', 'HL008', 'HL009', 'HL010', 'HL011', 'HL012', 'HL013', 'HL014', 'HL015', 'HL016']
+    let dispersionRatio = [], xTime = [];  //, HL = [];
     deviceTenMin.length > 0 && deviceTenMin.forEach(e=>{
       xTime.push(e.utc);
-      powerLineData.push(e.stationPower);
-      radiationLineData.push(e.instantaneous);
+      dispersionRatio.push(e.dispersionRatio);
     });
     const option = {
       title: {
@@ -54,7 +54,7 @@ function InverterTenMin({ deviceTenMin, loading }) {
       },
       yAxis: [
         {
-          name: '功率 (kW)',
+          name: '电流 (A)',
           splitLine:{
             show:false
           },
@@ -71,7 +71,7 @@ function InverterTenMin({ deviceTenMin, loading }) {
           },
         },
         {
-          name: '辐射 (W/m²)',
+          name: '离散率',
           splitLine:{
             show:false
           },
@@ -90,7 +90,7 @@ function InverterTenMin({ deviceTenMin, loading }) {
       ],
       series: [
         {
-          name: '功率',
+          name: '离散率',
           type: 'line',
           areaStyle: {
             normal: {
@@ -102,30 +102,30 @@ function InverterTenMin({ deviceTenMin, loading }) {
               show: false
             }
           },
-          yAxisIndex: 0,
-          data: powerLineData,
-        },
-        {
-          name: '斜面辐射',
-          type: 'line',
-          lineStyle: {
-            type: 'dashed',
-          },
-          label: {
-            normal: {
-              show: false
-            }
-          },
           yAxisIndex: 1,
-          data: radiationLineData,
+          data: dispersionRatio,
         },
+        // {
+        //   name: '斜面辐射',
+        //   type: 'line',
+        //   lineStyle: {
+        //     type: 'dashed',
+        //   },
+        //   label: {
+        //     normal: {
+        //       show: false
+        //     }
+        //   },
+        //   yAxisIndex: 1,
+        //   data: radiationLineData,
+        // },
       ]
     };
-    inverterChart.setOption(option);
+    confluenceChart.setOption(option);
   }
   return (
-    <div id="inverter_monitor_tenMin" style={{height:"335px"}}></div>
+    <div id="confluence_monitor_tenMin" style={{height:"335px"}}></div>
   );
 }
 
-export default InverterTenMin;
+export default ConfluenceTenMin;

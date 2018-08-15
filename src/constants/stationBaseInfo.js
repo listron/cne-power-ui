@@ -22,16 +22,16 @@ export const PVStationTypes = [
 
 export const deviceStatusArray = [
   {
-    statusCode: '10',
+    statusCode: 100,
     statusName: '正常',
   },{
-    statusCode: '20',
+    statusCode: 200,
     statusName: '停机',
   },{
-    statusCode: '30',
+    statusCode: 300,
     statusName: '故障',
   },{
-    statusCode: '40',
+    statusCode: 900,
     statusName: '未接入',
   }
 ];
