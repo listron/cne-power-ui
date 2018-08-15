@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-// import InverterStatistics from './InverterStatistics';
-// import InverterTenMin from './InverterTenMin';
-// import DeviceAlarmTable from '../DeviceMonitorCommon/DeviceAlarmTable';
-// import DevicePointsData from '../DeviceMonitorCommon/DevicePointsData';
 import BoxtransformerHeader from './BoxtransformerHeader';
+import BoxtransformerStatistics from './BoxtransformerStatistics';
+import BoxtransformerTenMin from './BoxtransformerTenMin';
+import DeviceAlarmTable from '../DeviceMonitorCommon/DeviceAlarmTable';
+import DevicePointsData from '../DeviceMonitorCommon/DevicePointsData';
 import PropTypes from 'prop-types';
 import styles from '../eachDeviceMonitor.scss';
 
@@ -59,10 +59,10 @@ class Boxtransformer extends Component {
     return (
       <div className={styles.boxtransformer}>
         <BoxtransformerHeader deviceDetail={deviceDetail} devices={devices} stationCode={stationCode} deviceTypeCode={deviceTypeCode} />
-        {/* <InverterStatistics deviceDetail={deviceDetail} />
-        <InverterTenMin deviceTenMin={deviceTenMin} loading={loading} />
-        <DeviceAlarmTable deviceAlarmList={deviceAlarmList} loading={loading} />
-        <DevicePointsData devicePointData={devicePointData}  deviceDetail={deviceDetail} /> */}
+        <BoxtransformerStatistics deviceDetail={deviceDetail} />
+        <BoxtransformerTenMin deviceTenMin={deviceTenMin} loading={loading} />
+        <DeviceAlarmTable deviceAlarmList={deviceAlarmList} loading={loading} deviceDetail={deviceDetail} />
+        <DevicePointsData devicePointData={devicePointData}  deviceDetail={deviceDetail} />
       </div>
     ) 
   }
