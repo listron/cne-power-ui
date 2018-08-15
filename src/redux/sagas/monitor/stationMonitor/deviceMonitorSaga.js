@@ -29,7 +29,7 @@ function *changeDeviceStore(action) {//存储payload指定参数，替换reducer
   })
 }
 
-function *getDeviceMonitorData(action) {  // 请求单设备数据入口
+function *getDeviceMonitorData(action) {  // 请求单设备数据(统计信息，十分钟数据，告警，测点数据)入口
   const { payload } = action;
   const { deviceTypeCode } = payload;
   if (deviceTypeCode === '203') {  // 气象站

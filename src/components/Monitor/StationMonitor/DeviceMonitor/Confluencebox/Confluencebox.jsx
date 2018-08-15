@@ -4,7 +4,7 @@ import { Button } from 'antd';
 // import InverterTenMin from './InverterTenMin';
 import DeviceAlarmTable from '../DeviceMonitorCommon/DeviceAlarmTable';
 import DevicePointsData from '../DeviceMonitorCommon/DevicePointsData';
-import DeviceMonitorHeader from '../DeviceMonitorCommon/DeviceMonitorHeader';
+// import DeviceMonitorHeader from '../DeviceMonitorCommon/DeviceMonitorHeader';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
@@ -58,7 +58,7 @@ class Confluencebox extends Component {
     const { stationCode, deviceTypeCode } = this.props.match.params;
     return (
       <div>
-        <DeviceMonitorHeader deviceDetail={deviceDetail} devices={devices} stationCode={stationCode} deviceTypeCode={deviceTypeCode} />
+        {/* <DeviceMonitorHeader deviceDetail={deviceDetail} devices={devices} stationCode={stationCode} deviceTypeCode={deviceTypeCode} /> */}
         {/* <DeviceMonitorStatistics deviceDetail={deviceDetail} /> */}
         {/* <InverterTenMin deviceTenMin={deviceTenMin} loading={loading} /> */}
         <DeviceAlarmTable deviceAlarmList={deviceAlarmList} loading={loading} />

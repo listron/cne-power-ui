@@ -2,6 +2,44 @@
 
 .seriesinverter{
   background-color: #fff;
+  .deviceMonitorHeader {
+    height: 65px;
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    .deviceName{
+      line-height: 65px;
+      .swap{
+        font-size: 18px;
+        margin-left: 32px;
+        color: $darkColor;
+        cursor: pointer;
+      }
+      .name{
+        font-size: 18px;
+        margin-left: 12px;
+        color: $darkColor;
+      }
+      .status{
+        font-size: 14px;
+        margin-left: 24px;
+        color: $lightColor;
+      }
+    }
+    .linkTo{
+      margin-right: 36px;
+      .eachLink{
+        line-height: 65px;
+        margin-right: 40px;
+        .linkName{
+          color: $darkColor;
+        }
+        .linkIcon{
+          color: $lightColor;
+        }
+      }
+    }
+  }
   .statisticsBox{
     display: flex;
     height: 100px;
@@ -11,37 +49,6 @@
       width: 170px;
       text-align: center;
       line-height: 100px;
-    }
-    .powerProgress{
-      display: flex;
-      flex-wrap: wrap;
-      width: 215px;
-      margin-top: 24px;
-      align-content: flex-start;
-      .progressNum, .progressText{
-        width: 100%;
-        display: flex;
-        @include lineheight(24px);
-        .leftText, .rightText {
-          width: 50%;
-          color: $darkColor;
-          font-size: 24px;
-        }
-        .leftText{
-          text-align: left;
-        }
-        .rightText{
-          text-align: right;
-        }
-      }
-      .progressText{
-        @include lineheight(14px);
-        height: 14px;
-        .leftText, .rightText {
-          font-size: 14px;
-          color: $lightColor;
-        }
-      }
     }
     .timerGen, .timerDayGen{
       width: 135px;

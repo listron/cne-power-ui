@@ -11,7 +11,7 @@ function InverterStatistics({ deviceDetail }) {
   return (
     <div className={styles.statisticsBox} >
       <div className={styles.deviceIcon}>
-        <span>图标</span>
+        <span>逆变器图标</span>
       </div>
       <PowerProgress devicePower={devicePower} deviceCapacity={deviceCapacity} />
       <div className={styles.timerDayGen}>

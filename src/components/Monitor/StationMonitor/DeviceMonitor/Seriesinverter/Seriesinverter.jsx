@@ -3,7 +3,7 @@ import InverterStatistics from './InverterStatistics';
 import InverterTenMin from './InverterTenMin';
 import DeviceAlarmTable from '../DeviceMonitorCommon/DeviceAlarmTable';
 import DevicePointsData from '../DeviceMonitorCommon/DevicePointsData';
-import DeviceMonitorHeader from '../DeviceMonitorCommon/DeviceMonitorHeader';
+import InverterHeader from './InverterHeader';
 import PropTypes from 'prop-types';
 import styles from './seriesinverter.scss';
 
@@ -58,7 +58,7 @@ class Seriesinverter extends Component {
     const { stationCode, deviceTypeCode } = this.props.match.params;
     return (
       <div className={styles.seriesinverter}>
-        <DeviceMonitorHeader deviceDetail={deviceDetail} devices={devices} stationCode={stationCode} deviceTypeCode={deviceTypeCode} />
+        <InverterHeader deviceDetail={deviceDetail} devices={devices} stationCode={stationCode} deviceTypeCode={deviceTypeCode} />
         <InverterStatistics deviceDetail={deviceDetail} />
         <InverterTenMin deviceTenMin={deviceTenMin} loading={loading} />
         <DeviceAlarmTable deviceAlarmList={deviceAlarmList} loading={loading} />
