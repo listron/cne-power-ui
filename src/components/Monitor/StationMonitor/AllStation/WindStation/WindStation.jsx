@@ -1,10 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
-import styles from './windstation.scss';
-import Map from '../map.jsx';
-import WindStationHeader from './windStationHeader.jsx';
-import WindStationItem from './WIndStationItem.jsx';
-import WindStationList from './WIndStationList.jsx';
+import styles from './windStation.scss';
+import Map from '../Map.jsx';
+import WindStationHeader from './WindStationHeader.jsx';
+import WindStationItem from './WindStationItem.jsx';
+import WindStationList from './WindStationList.jsx';
 import { Tabs, Icon, Radio, Switch } from "antd";
 
 class WindStation extends React.Component {

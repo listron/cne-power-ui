@@ -18,7 +18,7 @@ class TmpForm extends Component {
     stations: PropTypes.array,
     deviceTypes: PropTypes.array,
     defectTypes: PropTypes.array,
-    getDeviceTypes: PropTypes.func,
+    getStationDeviceTypes: PropTypes.func,
     getDefectTypes: PropTypes.func,
     getDevices: PropTypes.func,
     onDefectCreateNew: PropTypes.func,
@@ -53,10 +53,10 @@ class TmpForm extends Component {
   }
 
   onStationSelected = (stations) =>{
-    const stationCodes = (stations && stations[0] && stations[0].stationCode) || 0;
+    const stationCode = (stations && stations[0] && stations[0].stationCode) || 0;
     const tmpStationType = stations && stations[0] && stations[0].stationType;
     const stationType = tmpStationType===20?1:tmpStationType===10?0:2;
-    this.props.getDeviceTypes({stationCodes})
+    this.props.getStationDeviceTypes({stationCode})
     this.props.getDefectTypes({stationType})
   }
   onCancelCreate = () => {

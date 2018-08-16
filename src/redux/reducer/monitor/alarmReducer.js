@@ -6,11 +6,13 @@ var initState = Immutable.fromJS({
   lastFetchTime: '',
 
   //筛选条件
-  waringLevel: '',//告警级别
-  stationCode: '',//电站
+  warningLevel: '',//告警级别
+  stationType: '',//电站类型
+  stationCode: '',//电站名称
   deviceTypeCode: '',//设备类型
   warningConfigName: '',//告警类型
-  timeOn: '',//发生时间
+  startTime: '',//开始时间
+  endTime: '',//结束时间
   deviceName: '',//设备名称，模糊查询
 
   realtimeAlarm: [],  // 实时告警
