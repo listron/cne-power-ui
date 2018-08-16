@@ -81,26 +81,29 @@ class UserList extends Component {
     this.props.getUserList(params);
   }
 
-  getUserStatus = (userStatus, enterpriseStatus) => {
+  getUserStatus = (userStatus) => {
     if(userStatus===2){
       return '未激活';
-    }else{
-      switch(enterpriseStatus){
-        case 3:
-          return '启用';
-        case 4:
-          return '禁用';
-        case 5:
-          return '待审核';
-        case 6:
-          return '审核不通过';
-        case 7:
-          return '移除';
-        default:
-          return ;
-      }
+    }else if(userStatus===1){
+      return '激活';
     }
-    
+  }
+
+  getEnterpriseStatus = (enterpriseStatus) => {
+    switch(enterpriseStatus){
+      case 3:
+        return '启用';
+      case 4:
+        return '禁用';
+      case 5:
+        return '待审核';
+      case 6:
+        return '审核不通过';
+      case 7:
+        return '移除';
+      default:
+        return ;
+    }
   }
   
   showUserDetail = (record) => {
@@ -135,8 +138,8 @@ class UserList extends Component {
     const columns = [
       {
         title: '用户名',
-        dataIndex: 'userName',
-        key: 'userName',
+        dataIndex: 'username',
+        key: 'username',
         render: (text, record, index) => (<a href={'javascript:void(0)'} onClick={() => this.showUserDetail(record)} >{text}</a>)
       }, {
         title: '真实姓名',
@@ -172,7 +175,7 @@ class UserList extends Component {
         key: 'stationName',
         render: (text,record,index) => {
           let stations = record.stationName && record.stationName.split(',').filter(e=>!!e);
-          const { userName } = record;
+          const { username } = record;
           if(stations && stations.length > 1){
             const content = (<ul>
               {stations.map(e=>(<li key={e} className={styles.eachStation} >
@@ -184,7 +187,7 @@ class UserList extends Component {
                 <span>{stations[0]}</span>
                 <Popover 
                   content={content} 
-                  title={userName + '负责电站'} 
+                  title={username + '负责电站'} 
                   placement="right" 
                   trigger="hover"
                   overlayClassName={styles.responsibleDetails}
@@ -202,7 +205,8 @@ class UserList extends Component {
         dataIndex: 'userStatus',
         key: 'userStatus',
         render: (text, record, index) => {
-          return (<span>{this.getUserStatus(record.userStatus, record.enterpriseStatus)}</span>);
+          console.log(this.getEnterpriseStatus(record.enterpriseStatus)+'/'+this.getUserStatus(record.userStatus));
+          return (<span>{this.getEnterpriseStatus(record.enterpriseStatus)+'/'+this.getUserStatus(record.userStatus)}</span>);
         },
       }
     ];
@@ -225,7 +229,7 @@ class UserList extends Component {
     let [editable, deletable, usable, unallowable, examinable] = [ false, false, false, false, false];
     if(selectedUser.length > 0){
       editable = selectedUser.length === 1;
-      let newArray = [...new Set(selectedUser.map(e=>this.getUserStatus(e.userStatus, e.enterpriseStatus)))];
+      let newArray = [...new Set(selectedUser.map(e=>this.getEnterpriseStatus(e.enterpriseStatus)))];
       [deletable, usable, unallowable, examinable] = newArray.length < 2 ? [true, true, true, true] : [ false, false, false, false];
     
       if(selectedUser[0].userStatus === 3){//启用
@@ -298,8 +302,8 @@ class UserList extends Component {
     const columns = [
       {
         title: '用户名',
-        dataIndex: 'userName',
-        key: 'userName',
+        dataIndex: 'username',
+        key: 'username',
         render: (text, record, index) => (<a href={'javascript:void(0)'} onClick={() => this.showUserDetail(record)} >{text}</a>)
       }, {
         title: '真实姓名',
@@ -335,7 +339,7 @@ class UserList extends Component {
         key: 'stationName',
         render: (text,record,index) => {
           let stations = record.stationName.split(',').filter(e=>!!e);
-          const { userName } = record;
+          const { username } = record;
           if(stations.length > 1){
             const content = (<ul>
               {stations.map(e=>(<li key={e} className={styles.eachStation} >
@@ -347,7 +351,7 @@ class UserList extends Component {
                 <span>{stations[0]}</span>
                 <Popover 
                   content={content} 
-                  title={userName + '负责电站'} 
+                  title={username + '负责电站'} 
                   placement="right" 
                   trigger="hover"
                   overlayClassName={styles.responsibleDetails}
@@ -366,7 +370,8 @@ class UserList extends Component {
         dataIndex: 'userStatus',
         key: 'userStatus',
         render: (text, record, index) => {
-          return (<span>{this.getUserStatus(record.userStatus, record.enterpriseStatus)}</span>);
+          console.log(record);
+          return (<span>{this.getEnterpriseStatus(record.enterpriseStatus)/this.getUserStatus(record.userStatus)}</span>);
         },
       }
     ];

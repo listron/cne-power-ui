@@ -72,7 +72,6 @@ class AddForm extends Component {
   render(){
     const { getFieldDecorator } = this.props.form;
     const { userDetail, loading, roleAllList, specialRoleList } = this.props;
-    console.log(specialRoleList)
     return (
       <Form className={styles.editPart}>
         <FormItem label="用户名" >
