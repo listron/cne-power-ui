@@ -71,7 +71,7 @@ class AddUser extends Component {
           <div className={styles.logoPart} >
             <SingleImgUploader uploadPath={uploadPath} onOK={this.uploadLogo} data={{thumbUrl:userLogo}} />
             <div className={styles.instruction}>
-              <span>LOGO上传</span>
+              <span>头像上传</span>
               <span>240px*240px为佳，大小不超过2M</span>
             </div>
           </div>

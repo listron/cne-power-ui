@@ -1,14 +1,19 @@
 import React from 'react';
 import echarts from 'echarts';
 
-function InverterTenMin({ deviceTenMin }) {
+function InverterTenMin({ deviceTenMin, loading }) {
   const echartBox = document.getElementById('inverter_monitor_tenMin');
   const lineColor = '#999';
   if(echartBox){
     const inverterChart = echarts.init(echartBox);
+    // if(loading){
+    //   inverterChart.showLoading();
+    // }else{
+    //   inverterChart.hideLoading();
+    // }
     let powerLineData = [], radiationLineData = [], xTime = [];
     deviceTenMin.length > 0 && deviceTenMin.forEach(e=>{
-      xTime.push(e.localTime);
+      xTime.push(e.utc);
       powerLineData.push(e.stationPower);
       radiationLineData.push(e.instantaneous);
     });

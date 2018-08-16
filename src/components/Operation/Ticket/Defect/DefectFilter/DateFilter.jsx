@@ -4,7 +4,7 @@ import { DatePicker } from 'antd';
 import moment from 'moment';
 import styles from './defectFilter.scss';
 
-class DefectTable extends Component {
+class DateFliter extends Component {
   static propTypes = {
     listQueryParams: PropTypes.object,
     createTimeStart: PropTypes.string,
@@ -60,4 +60,4 @@ class DefectTable extends Component {
 
 }
 
-export default DefectTable;
+export default DateFliter;

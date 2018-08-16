@@ -13,6 +13,7 @@ var initState = Immutable.fromJS({
   commonFetching: false,
   stations: [],
   deviceTypes: [],
+  stationDeviceTypes: [],
   devices: [],
   partitions: []
 });
@@ -29,6 +30,9 @@ const defectReducer = (state = initState, action) => {
     case commonAction.GET_DEVICETYPES_SUCCESS:
       return state.set('commonFetching', false)
                   .set('deviceTypes',Immutable.fromJS(action.params.data));
+    case commonAction.GET_STATION_DEVICETYPES_SUCCESS:
+      return state.set('commonFetching', false)
+                  .set('stationDeviceTypes',Immutable.fromJS(action.params.data));
     case commonAction.GET_DEVICES_SUCCESS:
       return state.set('commonFetching', false)
                   .set('devices',Immutable.fromJS(action.params.data));
@@ -36,9 +40,9 @@ const defectReducer = (state = initState, action) => {
       return state.set('commonFetching', false)
                   .set('partitions',Immutable.fromJS(action.params.data));
     case commonAction.GET_STATIONS_FAIL:
-    case commonAction.GET_DEVICETYPES_FAIL:
+    case commonAction.GET_STATION_DEVICETYPES_FAIL:
     case commonAction.GET_DEVICES_FAIL:
-    case commonAction.GET_PARTITIONSA_FAIL:
+    case commonAction.GET_PARTITIONS_FAIL:
   }
   return state;
 }
