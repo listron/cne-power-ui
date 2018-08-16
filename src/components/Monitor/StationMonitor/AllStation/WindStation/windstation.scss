@@ -27,7 +27,7 @@
     background: #f1f1f1;
 
   }
-  .ant-tabs-nav :active{
+  .ant-tabs-nav-active{
     background: #199475
   }
   .ant-tabs-ink-bar .ant-tabs-ink-bar-animated{
@@ -61,8 +61,11 @@
 
     }
     .progressInfo{
+      display: flex;
+      flex-direction: row;
+      align-items: center;
       .progressData{
-        width: 300px;
+        width: 220px;
         height: 100px;
         display: flex;
         flex-direction: column;
@@ -80,7 +83,7 @@
         }
         .progressBar{
           flex: 1;
-          width: 300px;
+          width: 220px;
         }
         .stationType{
           flex: 1;
@@ -89,6 +92,16 @@
           justify-content: space-between;
           padding-bottom: 20px;
         }
+      }
+      .showInfo{
+        background:#ffffff;
+        box-shadow:0 1px 2px 0 rgba(0,0,0,0.20);
+        border-radius:25px;
+        width:80px;
+        height:25px;
+        text-align: center;
+        line-height: 25px;
+        color:#199475;
       }
     }
 
@@ -123,7 +136,7 @@
   }
 
   .stationCardContainer {
-    width: 100%;
+    width: 1210px;
     display: flex;
     flex-direction: row;
     flex: 1;
@@ -189,11 +202,36 @@
 
     }
     .stationName{
-      width: 100px;
+      width: 70px;
       white-space: nowrap;
       overflow: hidden;
-      text-overflow: ellipsis
+      text-overflow: ellipsis;
     }
+    .stationrovince{
+      width: 50px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .currentStation{
+      .redColor{
+        background: red;
+        width: 5px;
+        height: 20px;
+      }
+      .greyColor{
+        background:grey;
+        width: 5px;
+        height: 20px;
+      }
+  
+      .greenColor{
+        background:green;
+        width: 5px;
+        height: 20px;
+      }
+    }
+    
     .progressInfo{
       .progressData{
         width: 180px;

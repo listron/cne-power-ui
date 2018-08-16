@@ -1,21 +1,21 @@
 import React from 'react';
 import echarts from 'echarts';
 
-function InverterTenMin({ deviceTenMin, loading }) {
-  const echartBox = document.getElementById('inverter_monitor_tenMin');
+function BoxtransformerTenMin({ deviceTenMin, loading }) {
+  const echartBox = document.getElementById('boxtransformer_monitor_tenMin');
   const lineColor = '#999';
   if(echartBox){
-    const inverterChart = echarts.init(echartBox);
+    const boxtransformerChart = echarts.init(echartBox);
     // if(loading){
-    //   inverterChart.showLoading();
+    //   boxtransformerChart.showLoading();
     // }else{
-    //   inverterChart.hideLoading();
+    //   boxtransformerChart.hideLoading();
     // }
-    let powerLineData = [], radiationLineData = [], xTime = [];
+    let powerLineData = [], instantaneousData = [], xTime = [];
     deviceTenMin.length > 0 && deviceTenMin.forEach(e=>{
       xTime.push(e.utc);
       powerLineData.push(e.stationPower);
-      radiationLineData.push(e.instantaneous);
+      instantaneousData.push(e.instantaneous);
     });
     const option = {
       title: {
@@ -27,7 +27,7 @@ function InverterTenMin({ deviceTenMin, loading }) {
         left: 60
       },
       legend: {
-        data:['功率','斜面辐射'],
+        data:['功率','瞬时辐照'],
         top: 24,
       },
       tooltip: {
@@ -71,7 +71,7 @@ function InverterTenMin({ deviceTenMin, loading }) {
           },
         },
         {
-          name: '辐射 (W/m²)',
+          name: '瞬时辐照 (W/m²)',
           splitLine:{
             show:false
           },
@@ -106,7 +106,7 @@ function InverterTenMin({ deviceTenMin, loading }) {
           data: powerLineData,
         },
         {
-          name: '斜面辐射',
+          name: '瞬时辐照',
           type: 'line',
           lineStyle: {
             type: 'dashed',
@@ -117,15 +117,15 @@ function InverterTenMin({ deviceTenMin, loading }) {
             }
           },
           yAxisIndex: 1,
-          data: radiationLineData,
+          data: instantaneousData,
         },
       ]
     };
-    inverterChart.setOption(option);
+    boxtransformerChart.setOption(option);
   }
   return (
-    <div id="inverter_monitor_tenMin" style={{height:"335px"}}></div>
+    <div id="boxtransformer_monitor_tenMin" style={{height:"335px"}}></div>
   );
 }
 
-export default InverterTenMin;
+export default BoxtransformerTenMin;

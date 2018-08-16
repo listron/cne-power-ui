@@ -23,7 +23,7 @@ class UserSide extends Component {
     return (
       <div className={styles.userSide}>
         { showSidePage === 'detail' && <UserDetail {...this.props} /> }
-        { showSidePage === 'add' && <AddUser {...this.props} /> }
+        { showSidePage === 'add' && <AddUser {...this.props} /> } 
         { showSidePage === 'edit' && <EditUser {...this.props} /> }
         { showSidePage === 'invite' && <InviteUser {...this.props} /> }
       </div>
