@@ -1,150 +1,287 @@
 
-.stationContainer{
-width: 100%;
-height: 100%;
-:global{
-  .ant-switch-checked {
-    background-color: #199475;
-}
-.ant-radio-group-solid .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled) {
-  background: #199475;
-  border-color: #199475;
-  color: #fff;
-}
+.allStationContainer{
+  width: 100%;
+  height: 100%;
+// :global{
+//   .ant-switch-checked {
+//     background-color: #199475;
+// }
+// .ant-radio-group-solid .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled) {
+//   background: #199475;
+//   border-color: #199475;
+//   color: #fff;
+// }
 
 
-  .ant-tabs-bar{
-    width:1210px;
-    margin: 0;
-  }
-  .ant-progress-bg {
-    border-radius: 100px;
-    background-color: #199475;
-}
-.ant-tabs.ant-tabs-card > .ant-tabs-bar .ant-tabs-tab-active {
-  background: #fff;
-  border-color: #e8e8e8;
-  color: #199475;
-  padding-bottom: 1px;
-}
-.ant-tabs-nav .ant-tabs-tab {
-display: inline-block;
-text-align: center;
-height: 100%;
-padding: 12px 16px;
--webkit-box-sizing: border-box;
-box-sizing: border-box;
-position: relative;
--webkit-transition: color 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
-transition: color 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
-cursor: pointer;
-text-decoration: none;
-width: 120px;
-}
-//  width: 100%;
-}
-
-.headStation{
-  width: 1210px;
-  height: 100px;
-  display: flex;
-  flex:1;
-  .typeIcon{
-    width: 120px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-
-    .leftIcon{
-      width: 30px;
-      height: 35px;
-      background: url('../../../../theme/img/wind-normal.png') no-repeat center;
-    }
-    .rightIcon{
-      margin-top: 15px;
-      width: 24px;
-      height: 15px;
-      background:url('../../../../theme/img/pv-normal.png') no-repeat center;
-    }
-  }
-  .progressInfo{
-    .progressData{
-      width: 300px;
-      height: 100px;
-      display: flex;
-      flex-direction: column;
-      flex-wrap: wrap;
-      margin-left: 25px;
+//   .ant-tabs-bar{
+//     width:1210px;
+//     margin: 0;
+//   }
+//   .ant-progress-bg {
+//     border-radius: 100px;
+//     background-color: #199475;
+// }
+// .ant-tabs.ant-tabs-card > .ant-tabs-bar .ant-tabs-tab-active {
+//   background: #fff;
+//   border-color: #e8e8e8;
+//   color: #199475;
+//   padding-bottom: 1px;
+// }
+// .ant-tabs-nav .ant-tabs-tab {
+// display: inline-block;
+// text-align: center;
+// height: 100%;
+// padding: 12px 16px;
+// -webkit-box-sizing: border-box;
+// box-sizing: border-box;
+// position: relative;
+// -webkit-transition: color 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+// transition: color 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+// cursor: pointer;
+// text-decoration: none;
+// width: 120px;
+// }
+// //  width: 100%;
+// }
 
 
-      .stationValue{
-        flex: 1;
-        display: flex;
+// .headStation{
+//   width: 1210px;
+//   height: 100px;
+//   display: flex;
+//   flex:1;
+//   .typeIcon{
+//     width: 120px;
+//     display: flex;
+//     flex-direction: row;
+//     align-items: center;
+//     justify-content: center;
 
-        justify-content: space-between;
-        padding-top: 20px;
+//     .leftIcon{
+//       width: 30px;
+//       height: 35px;
+//       background: url('../../../../theme/img/wind-normal.png') no-repeat center;
+//     }
+//     .rightIcon{
+//       margin-top: 15px;
+//       width: 24px;
+//       height: 15px;
+//       background:url('../../../../theme/img/pv-normal.png') no-repeat center;
+//     }
+//   }
 
-      }
-      .progressBar{
-        flex: 1;
-        width: 300px;
-      }
-      .stationType{
-        flex: 1;
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        padding-bottom: 20px;
-      }
-    }
-  }
-  .stationCollect{
+
+//     .progressInfo{
+//       display: flex;
+//       flex-direction: row;
+//       align-items: center;
+//       .progressData{
+//         width: 220px;
+//         height: 100px;
+//         display: flex;
+//         flex-direction: column;
+//         flex-wrap: wrap;
+//         margin-left: 25px;
+//         .stationValue{
+//           flex: 1;
+//           display: flex;
+//           justify-content: space-between;
+//           padding-top: 20px;
+//         }
+//         .progressBar{
+//           flex: 1;
+//           width: 220px;
+
+//         }
+//         .stationType{
+//           flex: 1;
+//           display: flex;
+//           flex-direction: row;
+//           justify-content: space-between;
+//           padding-bottom: 20px;
+//         }
+//       }
+//       .showInfo{
+//         background:#ffffff;
+//         box-shadow:0 1px 2px 0 rgba(0,0,0,0.20);
+//         border-radius:25px;
+//         width:80px;
+//         height:25px;
+//         text-align: center;
+//         line-height: 25px;
+//         color:#199475;
+//       }
+
+//     }
+
+  
+
+//   .stationCollect{
+//     height: 100px;
+//     display: flex;
+//     flex-direction: row;
+
+//     .dayStation,.monthStation,.equipmentNum,.windSpeed{
+//       height: 100px;
+//       display: flex;
+//       flex-direction: column;
+//       justify-content: center;
+//       align-items: center;
+//       margin-left: 25px;
+//       .dataValue {
+//         flex: 1;
+//         text-align: center;
+
+//         padding-top: 20px;
+//       }
+//       .dataName {
+//         flex: 1;
+//         padding-bottom: 1px;
+//       }
+//       }
+//   }
+// }
+  .headStation{
+    width: 1210px;
     height: 100px;
     display: flex;
-    flex-direction: row;
+    flex:1;
+    .typeIcon{
+      width: 120px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
 
-    .dayStation,.monthStation,.equipmentNum,.windSpeed{
+      .leftIcon{
+        width: 30px;
+        height: 35px;
+        background: url('../../../../theme/img/wind-normal.png') no-repeat center;
+      }
+      .rightIcon{
+        margin-top: 15px;
+        width: 24px;
+        height: 15px;
+        background:url('../../../../theme/img/pv-normal.png') no-repeat center;
+      }
+    }
+
+
+      .progressInfo{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        .progressData{
+          width: 220px;
+          height: 100px;
+          display: flex;
+          flex-direction: column;
+          flex-wrap: wrap;
+          margin-left: 25px;
+          .stationValue{
+            flex: 1;
+            display: flex;
+            justify-content: space-between;
+            padding-top: 20px;
+          }
+          .progressBar{
+            flex: 1;
+            width: 220px;
+
+          }
+          .stationType{
+            flex: 1;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            padding-bottom: 20px;
+          }
+        }
+        .showInfo{
+          background:#ffffff;
+          box-shadow:0 1px 2px 0 rgba(0,0,0,0.20);
+          border-radius:25px;
+          width:80px;
+          height:25px;
+          text-align: center;
+          line-height: 25px;
+          color:#199475;
+        }
+
+      }
+
+    
+
+    .stationCollect{
       height: 100px;
       display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      margin-left: 25px;
-      .dataValue {
-        flex: 1;
-        text-align: center;
+      flex-direction: row;
 
-        padding-top: 20px;
-      }
-      .dataName {
-        flex: 1;
-        padding-bottom: 1px;
-      }
-      }
+      .dayStation,.monthStation,.equipmentNum,.windSpeed{
+        height: 100px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin-left: 25px;
+        .dataValue {
+          flex: 1;
+          text-align: center;
+
+          padding-top: 20px;
+        }
+        .dataName {
+          flex: 1;
+          padding-bottom: 1px;
+        }
+        }
+    }
   }
-}
-.stationNav{
-  width: 1210px;
-  height: 55px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  .showType{
-    width: 55px;
-    height: 55px;
-    background: #199475;
-    text-align: center;
-    line-height: 55px;
-    font-size: 20px;
-    color: #f1f1f1;
-  }
-  .typeTotal{
-    width: 130px;
+  .stationNav{
+    width: 1210px;
     height: 55px;
     display: flex;
+    flex-direction: row;
     justify-content: space-between;
-    align-items: center;
+    .showType{
+      width: 55px;
+      height: 55px;
+      background: #199475;
+      text-align: center;
+      line-height: 55px;
+      font-size: 20px;
+      color: #f1f1f1;
+    }
+    .typeTotal{
+      width: 130px;
+      height: 55px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
   }
-}
+
+  .stationNav{
+    width: 1210px;
+    height: 55px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    .showType{
+      width: 55px;
+      height: 55px;
+      background: #199475;
+      text-align: center;
+      line-height: 55px;
+      font-size: 20px;
+      color: #f1f1f1;
+    }
+    .typeTotal{
+      width: 130px;
+      height: 55px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+  }
 }

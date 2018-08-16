@@ -152,7 +152,7 @@ const mapStateToProps = (state) => ({
   hasAbnormal: state.operation.inspect.get('hasAbnormal'),
   userName: state.common.get('userName'), 
   stations: state.common.get('stations').toJS(),
-  deviceTypes: state.common.get('deviceTypes').toJS(),
+  deviceTypes: state.common.get('stationDeviceTypes').toJS(),
 })
 
 const mapDispatchToProps = (dispatch) => ({

@@ -16,7 +16,7 @@ class DefectCreate extends Component {
     editNewDefect: PropTypes.bool,
     showContainer: PropTypes.string,
     defectDetail: PropTypes.object,
-    getDeviceTypes: PropTypes.func,
+    getStationDeviceTypes: PropTypes.func,
     getDefectTypes: PropTypes.func,
     getDevices: PropTypes.func,
   };
@@ -34,8 +34,8 @@ class DefectCreate extends Component {
     if(editNewDefect){
       const { defectDetail } = this.props;
       const stationType = defectDetail.stationType;
-      const stationCodes = defectDetail.stationCode;
-      this.props.getDeviceTypes({stationCodes})
+      const stationCode = defectDetail.stationCode;
+      this.props.getStationDeviceTypes({stationCode})
       this.props.getDefectTypes({stationType})
     }
   } 
@@ -69,19 +69,19 @@ const mapStateToProps = (state) => ({
     isFetching: state.operation.defect.get('isFetching'),
     commonFetching: state.common.get('commonFetching'),
     stations: state.common.get('stations').toJS(),
-    deviceTypes: state.common.get('deviceTypes').toJS(),
+    deviceTypes: state.common.get('stationDeviceTypes').toJS(),
     devices: state.common.get('devices').toJS(),
     error: state.operation.defect.get('error'),
     defectTypes: state.operation.defect.get('defectTypes').toJS(),
     defectDetail: state.operation.defect.get('defectDetail').toJS(),
-    deviceTypeItems: state.common.get('deviceTypes'),
+    deviceTypeItems: state.common.get('stationDeviceTypes'),
     deviceAreaItems: state.common.get('partitions'),
     deviceItems: state.common.get('devices'),
 });
 
 const mapDispatchToProps = (dispatch) => ({
   getStations: params => dispatch({ type: commonAction.GET_STATIONS_SAGA, params }),
-  getDeviceTypes: params => dispatch({ type: commonAction.GET_DEVICETYPES_SAGA, params }),
+  getStationDeviceTypes: params => dispatch({ type: commonAction.GET_STATION_DEVICETYPES_SAGA, params }),
   getDevices: params => dispatch({ type: commonAction.GET_DEVICES_SAGA, params }),
   getDefectTypes: params => dispatch({ type: ticketAction.GET_DEFECTTYPES_SAGA, params }),
   onDefectCreateNew: params => dispatch({type: ticketAction.DEFECT_CREATE_SAGA, params}),

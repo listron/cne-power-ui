@@ -1,3 +1,49 @@
 .stationMonitor{
 height: 100%;
 }
+.stationContainer{
+  width: 100%;
+  height: 100%;
+  :global{
+    .ant-switch-checked {
+      background-color: #199475;
+  }
+  .ant-radio-group-solid .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled) {
+    background: #199475;
+    border-color: #199475;
+    color: #fff;
+  }
+  
+  
+    .ant-tabs-bar{
+      width:1210px;
+      margin: 0;
+    }
+    .ant-progress-bg {
+      border-radius: 100px;
+      background-color: #199475;
+  }
+  .ant-tabs.ant-tabs-card > .ant-tabs-bar .ant-tabs-tab-active {
+    background: #fff;
+    border-color: #e8e8e8;
+    color: #199475;
+    padding-bottom: 1px;
+  }
+  .ant-tabs-nav .ant-tabs-tab {
+  display: inline-block;
+  text-align: center;
+  height: 100%;
+  padding: 12px 16px;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  position: relative;
+  -webkit-transition: color 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+  transition: color 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+  cursor: pointer;
+  text-decoration: none;
+  width: 120px;
+  }
+  //  width: 100%;
+  }
+  }
+  
