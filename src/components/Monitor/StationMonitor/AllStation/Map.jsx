@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import echarts from 'echarts';
 import bmap from 'echarts/extension/bmap/bmap';
 import { Progress } from 'antd';
-import styles from './WindStation/windstation.scss';
+import styles from './WindStation/windStation.scss';
 
 class Interval extends Component {
     static propTypes = {

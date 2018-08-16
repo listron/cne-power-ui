@@ -1,28 +1,28 @@
 import React from "react";
 import PropTypes from "prop-types";
-import styles from './windstation.scss';
+import styles from './pvStation.scss';
 import { Progress } from "antd";
-
-class windStationHeader extends React.Component {
+class pvStationHeader extends React.Component {
   static propTypes = {
-    windMonitorStation:PropTypes.object,
+    pvMonitorStation:PropTypes.object,
   }
   constructor(props, context) {
     super(props, context)
   }
   render() {
-    const { windMonitorStation } = this.props;
-  
-    const stationDataSummary = windMonitorStation.stationDataSummary || {};
+    const { pvMonitorStation } = this.props;
+   
+    const stationDataSummary =  pvMonitorStation.stationDataSummary || {};
     const stationPower = stationDataSummary.stationPower || ' -- ';
-    const stationCapacity =  stationDataSummary.stationCapacity || ' -- ';
-    const stationUnitCount =  stationDataSummary.stationUnitCount || '--';
-    const instantaneous = stationDataSummary.instantaneous || ' -- ';
-    const dayPower =stationDataSummary.dayPower || ' -- ';
-    const monthPower =  stationDataSummary.monthPower || ' -- ';
-    const yearPower = stationDataSummary.yearPower || ' -- ';
+    const stationCapacity = stationDataSummary.stationCapacity || ' -- ';
+    const stationUnitCount =  stationDataSummary.stationUnitCount || ' -- ';
+    const instantaneous =  stationDataSummary.instantaneous || ' -- ';
+    const dayPower =  stationDataSummary.dayPower || ' -- ';
+    const monthPower = stationDataSummary.monthPower || ' -- ';
+    const yearPower =   stationDataSummary.yearPower || ' -- ';
     const yearPlanPower =  stationDataSummary.yearPlanPower || ' -- ';
-    const yearPlanRate =  stationDataSummary.yearPlanRate || ' -- ';
+    const yearPlanRate = stationDataSummary.yearPlanRate || ' -- ';
+    //console.log(pvMonitorStation && pvMonitorStation.stationDataList);
     return (
       <div>
         <div className={styles.headStation}>
@@ -54,7 +54,7 @@ class windStationHeader extends React.Component {
             </div>
             <div className={styles.windSpeed}>
               <div className={styles.dataValue}>{instantaneous}</div>
-              <div className={styles.dataName}>平均风速 m/s</div>
+              <div className={styles.dataName}>平均辐射 w/m²</div>
             </div>
             <div className={styles.dayStation}>
               <div className={styles.dataValue}>{dayPower}</div>
@@ -64,6 +64,7 @@ class windStationHeader extends React.Component {
               <div className={styles.dataValue}>{monthPower}</div>
               <div className={styles.dataName}>月发电量 万kWh</div>
             </div>
+
           </div>
           <div className={styles.progressInfo}>
             <div className={styles.progressData}>
@@ -86,4 +87,4 @@ class windStationHeader extends React.Component {
     )
   }
 }
-export default (windStationHeader)
+export default (pvStationHeader)
