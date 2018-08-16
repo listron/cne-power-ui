@@ -33,7 +33,7 @@ import {
 import {
   watchGetInspectList,
   watchGetInspectDetail,
-  watchSetInspectId,  
+  watchSetInspectId,
   watchAddInspectAbnormal,
   watchClearInspect,
   watchTransformDefect,
@@ -56,6 +56,8 @@ import { watchUser } from './system/account/userSaga';
 
 import { watchSingleStationMonitor } from './monitor/stationMonitor/singleStationSaga'; 
 import { watchDeviceMonitor } from './monitor/stationMonitor/deviceMonitorSaga';
+
+import {watchStationMonitor} from './monitor/stationMonitor/stationMonitorSaga.js'
 
 // root saga
 export default function* rootSaga() {
@@ -109,7 +111,8 @@ export default function* rootSaga() {
     watchRole(),
     watchUser(),
     // monitor
+    watchStationMonitor(),
     watchDeviceMonitor(),
     watchSingleStationMonitor(),
   ])
-} 
+}

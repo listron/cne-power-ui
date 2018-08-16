@@ -3,56 +3,82 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import styles from "./allstation.scss";
 import PropTypes from "prop-types";
-import { allStationAction } from '../../../../constants/actionTypes/monitor/stationMonitor/allStationAction';
+import { Tabs, Spin } from 'antd';
+import { allStationAction } from '../../../../constants/actionTypes/monitor/stationmonitor/allStationAction';
 import Allstation from '../../../../components/Monitor/StationMonitor/AllStation/AllStation.jsx';
-import TransitionContainer from '../../../../components/Common/TransitionContainer';
-//import PvStation from '../../../../components/Monitor/StationMonitor/AllStation/PvStation/PvStation.jsx'
+import WindStation from '../../../../components/Monitor/StationMonitor/AllStation/WindStation/WindStation.jsx';
+import PvStation from '../../../../components/Monitor/StationMonitor/AllStation/PvStation/PvStation.jsx';
+//import TransitionContainer from '../../../../components/Common/TransitionContainer';
 
-
+const TabPane = Tabs.TabPane;
 class AllStation extends Component {
-  static PropTypes = {
-    getAllMonitorStation: PropTypes.func,
-
+  static propTypes = {
+    getAllMonitorStation:PropTypes.func,
+    getPvMonitorStation:PropTypes.func,
+    getWindMonitorStation:PropTypes.func,
+    loading:PropTypes.bool,
   }
   constructor(props) {
     super(props);
-    this.state = {}
+    this.state = {
+      key: '全部',
+    }
   }
-
-  handleTab = () => {
-    console.log(1);
+  componentDidMount(){
+    this.props.getAllMonitorStation()
+ }
+  queryTargetData = (activeKey) => {
+    activeKey === '全部' ? this.props.getAllMonitorStation() : activeKey === '风电' ? this.props.getWindMonitorStation() : activeKey === '光伏' ? this.props.getPvMonitorStation() : alert('这个按钮没有考虑呢')
+    this.setState({
+      key: activeKey,
+    })
   }
 
 
   render() {
+    let { key } = this.state;
+    const {loading} = this.props;
 
     return (
-      <div className={styles.stationMonitor}>
-        <Allstation />
-        {/* <PvStation /> */}
+      <div className={styles.stationMonitor}>     
+        <div className={styles.stationContainer}>
+        <div className="card-container">
+          <Tabs type="card" activeKey={key} onChange={this.queryTargetData} >
+            <TabPane tab="全部" key="全部" >
+            {!loading ? <Allstation {...this.props} /> : <Spin size="large" />}
+            </TabPane>
+            <TabPane tab="风电" key="风电">
+              {!loading ? <WindStation {...this.props} /> : <Spin size="large" />}           
+            </TabPane>
+            <TabPane tab="光伏" key="光伏">
+              {!loading ? <PvStation {...this.props} /> : <Spin size="large" />}            
+            </TabPane>
+          </Tabs>
+        </div>
+      </div>
       </div>
     );
   }
 }
-const mapStateToProps = (state) => {
-  let allStationProps = {};
-  [...state.monitor.stationMonitor].forEach(e => allStationProps[e[0]] = e[1])
-  return allStationProps;
-}
+const mapStateToProps = (state) => ({
+  ...state.monitor.stationMonitor.toJS()
+})
 const mapDispatchToProps = (dispatch) => ({
   getAllMonitorStation: payload => dispatch({ type: allStationAction. GET_ALL_MONITORSTATION_SAGA, payload }),
+  getWindMonitorStation:payload=>dispatch({type: allStationAction. GET_WIND_MONITORSTATION_SAGA, payload }),
+  getPvMonitorStation:payload=>dispatch({type: allStationAction. GET_PV_MONITORSTATION_SAGA, payload }),
   changeMonitorStationStore: payload => dispatch({ type: allStationAction.CHANGE_MONITORSTATION_STORE_SAGA, payload }),
-  // changeDepartmentStore: payload => dispatch({ type: allStationAction.CHANGE_DEPARTMENT_STORE_SAGA, payload }),
-  // deleteDepartment: payload => dispatch({ type: allStationAction.DELETE_DEPARTMENT_SAGA, payload }),
-  // getDepartmentList: payload => dispatch({ type: allStationAction.GET_DEPARTMENT_LIST_SAGA, payload }),
-  // getDepartmentDetail: payload => dispatch({ type: allStationAction.GET_DEPARTMENT_DETAIL_SAGA, payload }),
-  // getOtherPageDetail: (payload, { previous }) => dispatch({ type: allStationAction.GET_OTHER_PAGE_DEPARTMENT_DETAIL_SAGA, payload, previous }),
-  // getAllUsers: payload => dispatch({ type: allStationAction.GET_ALL_USERS_SAGA, payload }),
-  // getAllDepartment: payload => dispatch({ type: allStationAction.GET_ALL_DEPARTMENT_SAGA, payload }),
-  // addDepartmentInfor: payload => dispatch({ type: allStationAction.ADD_DEPARTMENT_INFO_SAGA, payload }),
-  // editDepartmentInfor: payload => dispatch({ type: allStationAction.EDIT_DEPARTMENT_INFO_SAGA, payload })
+ 
 })
 
 
 export default connect(mapStateToProps, mapDispatchToProps)(AllStation);
+
+
+
+
+
+
+
+
 
