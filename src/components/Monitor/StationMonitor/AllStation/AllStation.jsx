@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styles from './allStation.scss';
 import AllStationHeader from './AllStationHeader.jsx'
-import Map from './map.jsx'
+import Map from './Map.jsx'
 class Allstation extends React.Component {
   static propTypes = {
     allMonitorStation:PropTypes.object,
