@@ -95,12 +95,91 @@ function *getStationList(action){
   }
 }
 
-
+// 获取单电站运维人员列表
+function *getOperatorList(action){
+  const { payload } = action;
+  const url = '/mock/api/v3/station/user/'+ payload.stationCode;
+  try{
+    yield put({type: singleStationAction.SINGLE_STATION_FETCH});
+    const response = yield call(axios.get, url, payload);
+    console.log(response);
+    yield put({
+      type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
+      payload: {
+        ...payload,
+        operatorList: response.data.data,
+      }
+    })
+  }catch(e){
+    console.log(e);
+  }
+}
+// 获取单电站未来天气数据
+function *getWeatherList(action){
+  const { payload } = action;
+  const url = '/mock/api/v3/monitor/weather/'+ payload.stationCode;
+  try{
+    yield put({type: singleStationAction.SINGLE_STATION_FETCH});
+    const response = yield call(axios.get, url, payload);
+    console.log(response);
+    yield put({
+      type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
+      payload: {
+        ...payload,
+        weatherList: response.data.data,
+      }
+    })
+  }catch(e){
+    console.log(e);
+  }
+}
+// 获取单电站活动告警数统计
+function *getAlarmList(action){
+  const { payload } = action;
+  const url = '/mock/api/v3/alarm/station/alarmNum/'+ payload.stationCode;
+  try{
+    yield put({type: singleStationAction.SINGLE_STATION_FETCH});
+    const response = yield call(axios.get, url, payload);
+    console.log(response);
+    yield put({
+      type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
+      payload: {
+        ...payload,
+        alarmList: response.data.data,
+      }
+    })
+  }catch(e){
+    console.log(e);
+  }
+}
+// 获取单电站工单数统计
+function *getWorkList(action){
+  const { payload } = action;
+  const url = '/mock/api/v3/monitor/worklist/'+ payload.stationCode;
+  try{
+    yield put({type: singleStationAction.SINGLE_STATION_FETCH});
+    const response = yield call(axios.get, url, payload);
+    console.log(response);
+    yield put({
+      type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
+      payload: {
+        ...payload,
+        workList: response.data.data,
+      }
+    })
+  }catch(e){
+    console.log(e);
+  }
+}
 export function* watchSingleStationMonitor() {
   yield takeLatest(singleStationAction.GET_SINGLE_STATION_SAGA, getSingleStation);
   yield takeLatest(singleStationAction.CHANGE_SINGLE_STATION_STORE_SAGA, changeSingleStationStore);
   yield takeLatest(singleStationAction.GET_STATION_LIST_SAGA, getStationList);
   yield takeLatest(singleStationAction.GET_CAPABILITY_DIAGRAM_SAGA, getCapabilityDiagram);
   yield takeLatest(singleStationAction.GET_MONITOR_POWER_SAGA, getMonitorPower);
+  yield takeLatest(singleStationAction.GET_OPERATOR_LIST_SAGA, getOperatorList);
+  yield takeLatest(singleStationAction.GET_WEATHER_LIST_SAGA, getWeatherList);
+  yield takeLatest(singleStationAction.GET_ALARM_LIST_SAGA, getAlarmList);
+  yield takeLatest(singleStationAction.GET_WORK_LIST_SAGA, getWorkList);
 }
 

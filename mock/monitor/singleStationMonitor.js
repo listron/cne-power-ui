@@ -178,5 +178,64 @@ module.exports = [
       })),
       "serviceCode": "3.0"
     },
+  },{
+    api: '/mock/api/v3/station/user/76',//获取单电站运维人员列表
+    method: 'get',
+    response: {
+      "code": "10000",
+      "message": "请求成功",
+      "data": [1,2,3,4,5,6,7,8,9,10].map(e=>({
+        userId: e,
+        userName: '王小'+e,
+        userFullName: '王大'+e,
+        phoneNum: '188000000'+e,
+        roleId: '5678',
+        roleName: '运维管理员',
+        userStatus: Math.floor(Math.random()*7+1),
+      })),
+      "serviceCode": "3.0"
+    },
+  },{
+    api: '/mock/api/v3/monitor/weather/76',//获取单电站未来天气
+    method: 'get',
+    response: {
+      "code": "10000",
+      "message": "请求成功",
+      "data": [1,2,3,4,5,6,7].map(e=>({
+        dateDay: moment().format('YYYY-MM-DD'),
+        weather: '晴转阴',
+        tempHigh: '26',
+        tempLow: '17',
+        windDirect: '西北风',
+      })),
+      "serviceCode": "3.0"
+    },
+  },{
+    api: '/mock/api/v3/alarm/station/alarmNum/76',//获取单电站活动告警数统计
+    method: 'get',
+    response: {
+      "code": "10000",
+      "message": "请求成功",
+      "data": {
+        oneWarningNum: 10,
+        twoWarningNum: 20,
+        threeWarningNum: 30,
+        fourWarningNum: 40,
+      },
+      "serviceCode": "3.0"
+    },
+  },{
+    api: '/mock/api/v3/monitor/worklist/76',//获取单电站工单数统计
+    method: 'get',
+    response: {
+      "code": "10000",
+      "message": "请求成功",
+      "data": {
+        worklistNewNum: 1,
+        worklistHandleNum: 2,
+        worklistCompleteNum: 3,
+      },
+      "serviceCode": "3.0"
+    },
   },
 ]
