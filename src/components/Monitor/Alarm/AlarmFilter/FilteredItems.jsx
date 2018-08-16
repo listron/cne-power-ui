@@ -1,115 +1,130 @@
-// import React, { Component } from 'react';
-// import PropTypes from 'prop-types';
-// import { Tag } from 'antd';
-// import styles from './defectFilter.scss';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Tag } from 'antd';
+import styles from './defectFilter.scss';
+import moment from 'moment';
 
-// class FilteredItems extends Component {
-//   static propTypes = {
-//     stations: PropTypes.object,
-//     deviceTypes: PropTypes.object,
-//     deviceTypeCode: PropTypes.string,
-//     warningLevel: PropTypes.string,
-//     stationCode: PropTypes.string, 
-//     warningConfigName: PropTypes.string,	  
-//     startTime: PropTypes.string,
-//     endTime: PropTypes.string, 
-//     onChangeFilter: PropTypes.func,
-//   }
+class FilteredItems extends Component {
+  static propTypes = {
+    stations: PropTypes.object,
+    deviceTypes: PropTypes.object,
+    deviceTypeCode: PropTypes.string,
+    warningLevel: PropTypes.string,
+    stationType: PropTypes.string,
+    stationCode: PropTypes.string, 
+    warningConfigName: PropTypes.string,	  
+    startTime: PropTypes.string,
+    endTime: PropTypes.string, 
+    onChangeFilter: PropTypes.func,
+  }
 
-//   constructor(props) {
-//     super(props);
-//   }
-//   onCancelStartTime = () => {//取消开始时间
-//     const { getDefectList, listQueryParams } = this.props;
-//     getDefectList({
-//       ...listQueryParams,
-//       createTimeStart: '',
-//     })
-//   }
-//   onCancelEndTime = () => { //取消结束时间
-//     const { getDefectList, listQueryParams } = this.props;
-//     getDefectList({
-//       ...listQueryParams,
-//       createTimeEnd: '',
-//     })
-//   }
-//   onCancelStationType = () => {//取消电站类型
-//     const { getDefectList, listQueryParams } = this.props;
-//     getDefectList({
-//       ...listQueryParams,
-//       stationType: '2',
-//     })
-//   }
-//   onCancelProvince = (cancelStations) => {//删除某省电站
-//     const { stationCodes, getDefectList, listQueryParams } = this.props;
-//     const tmpStations = stationCodes.split(',').filter(e=>!!e).map(e=>+e);
-//     const newStationCodes = tmpStations.filter(e=>!cancelStations.some(m=>m===e));
-//     getDefectList({
-//       ...listQueryParams,
-//       stationCodes: newStationCodes,
-//     })
-//   }
-//   onCancelDeviceType = (cancelCode) => {//删除某设备类型
-//     const { deviceTypeCode, getDefectList, listQueryParams } = this.props;
-//     const newDeviceTypeCode = deviceTypeCode.split(',').filter(e=>!!e).map(e=>+e).filter(e=>e!==cancelCode);
-//     getDefectList({
-//       ...listQueryParams,
-//       deviceTypeCode: newDeviceTypeCode,
-//     })
-//   } 
-//   onCancelLevel = (level) => {//删除某级告警
-//     const { defectLevel, getDefectList, listQueryParams } = this.props;
-//     const levelCodes = defectLevel.split(',').filter(e=>!!e).map(e=>+e).filter(e=>e!==level);
-//     getDefectList({
-//       ...listQueryParams,
-//       defectLevel: levelCodes,
-//     })
-//   }
-//   resetAll = () => {//删除所有筛选条件
-//     const { getDefectList, listQueryParams } = this.props;
-//     getDefectList({
-//       ...listQueryParams,
-//       createTimeStart: '',
-//       createTimeEnd: '',
-//       stationType: '2',
-//       stationCodes: '',
-//       deviceTypeCode: '',
-//       defectLevel: '0',
-//     })
-//   }
+  constructor(props) {
+    super(props);
+  }
+  onCancelTimeRange = () => {//取消时间
+    this.props.onChangeFilter({
+      startTime: '',
+      endTime: ''
+    });
+  }
 
-//   render() {
-//     const {deviceTypeCode, warningLevel, stationCode, warningConfigName, startTime, endTime, stations, deviceTypes } = this.props;
-//     const alarmLevel = ['一级','二级','三级','四级'];
-//     const alarmType = [{label:'事件告警', value:'事件告警'}];
-//     const tmpSelectedDeviceType = deviceTypeCode.split(',');//选中设备类型的数组
-//     const tmpSelectedStation = stationCode.split(',');//选中电站的数组
-//     const selectedStation = stations.filter(e=>tmpSelectedStation.some(m=>m === e.get('stationCode').toString()));//选中电站详情
-//     const selectedDeviceType = deviceTypes.filter(e=>tmpSelectedDeviceType.some(m=>m===e.get('deviceTypeCode').toString()));//选中的设备类型详情
-//     if(deviceTypeCode === '' && warningLevel === '' && stationCode === '' && warningConfigName === '' && startTime === '' && endTime === '') {
-//       return null;
-//     }
-//     return (
-//       <div className={styles.filteredItems}>
-//         <span>已选条件</span>
-//         {startTime!==''&&<Tag closable onClose={this.onCancelStartTime}>开始 {createTimeStart}</Tag>}
-//         { createTimeStart && <Tag closable onClose={this.onCancelStartTime}>开始 {createTimeStart}</Tag>}
-//         { createTimeEnd && <Tag closable onClose={this.onCancelEndTime}>结束 {createTimeEnd}</Tag>}
-//         { (stationType === '0' || stationType === '1') &&  <Tag closable onClose={this.onCancelStationType}>{stationType === '0'?'风电':'光伏'}</Tag>}
-//         {stationInforGroup.length > 0 && stationInforGroup.map(e=>(
-//           <Tag closable onClose={()=>this.onCancelProvince(e.childrenStations)} key={e.provinceCode} >{`${e.provinceName} ${e.childrenStations.length}`}</Tag>
-//         ))}
-//         { selectedDeviceTypeArray.length > 0 && selectedDeviceTypeArray.map(e=>(
-//           <Tag closable onClose={()=>this.onCancelDeviceType(e.deviceTypeCode)} key={e.deviceTypeCode} >{e.deviceTypeName}</Tag>
-//         )) }
-//         { defectLevelArray.length > 0 && defectLevelArray.map(e=>(
-//           <Tag key={e.value} closable onClose={()=>this.onCancelLevel(e.value)} >{e.label}</Tag>
-//         )) }
-//         {resetAll && <Tag closable onClose={this.resetAll} >清空条件</Tag>}
-//       </div>
-//     );
-//   }
+  onCancelStationType = () => {//取消电站类型
+    this.props.onChangeFilter({
+      stationType: '2'
+    });
+  }
 
-// }
+  onCancelProvince = (cancelStations) => {//删除某省电站
+    const { stationCode, onChangeFilter } = this.props;
+    const newStationCode = stationCode.split(',').filter(code=>
+      !cancelStations.some(station=>station.get('stationCode').toString()===code)
+    );
+    onChangeFilter({
+      sttaionCode: newStationCode,
+    })
+  }
+  onCancelDeviceType = (cancelCode) => {//删除某设备类型
+    const { deviceTypeCode, onChangeFilter } = this.props;
+    const newDeviceTypeCode = deviceTypeCode.split(',').filter(e=>e!==cancelCode);
+    onChangeFilter({
+      deviceTypeCode: newDeviceTypeCode
+    });
+  } 
+  onCancelLevel = (level) => {//删除某级告警
+    const { warningLevel, onChangeFilter } = this.props;
+    const newWarningLevel = warningLevel.split(',').filter(e=>e!==level);
+    onChangeFilter({
+      warningLevel: newWarningLevel
+    })
+  }
+  resetAll = () => {//删除所有筛选条件
+    this.props.onChangeFilter({
+      warningLevel: '',
+      stationType: '2',
+      stationCode: '',
+      deviceTypeCode: '',
+      warningConfigName: '',
+      startTime: '',
+      endTime: ''
+    });
+  }
 
-// export default FilteredItems;
+  render() {
+    const {deviceTypeCode, warningLevel, stationType, stationCode, warningConfigName, startTime, endTime, stations, deviceTypes } = this.props;
+    const alarmLevel = ['一级','二级','三级','四级'];
+    const alarmLevelArray = warningLevel.split(',').map(item=>{
+      return {
+        value: item,
+        label: alarmLevel[parseInt(item) - 1]
+      }
+    });
+    const alarmTypeArray = warningConfigName.split(',').map(item=>{
+      return {
+        value: item,
+        label: item
+      }
+    })
+    const tmpSelectedDeviceType = deviceTypeCode.split(',');//选中设备类型的数组
+    const tmpSelectedStation = stationCode.split(',');//选中电站的数组
+    const selectedStation = stations.filter(e=>
+      tmpSelectedStation.some(m=>
+        m === e.get('stationCode').toString()
+      )).groupBy(item=>item.get('provinceCode'));//选中电站详情,按省分组
+    const selectedDeviceType = deviceTypes.filter(e=>tmpSelectedDeviceType.some(m=>m===e.get('deviceTypeCode').toString()));//选中的设备类型详情
+    if(deviceTypeCode === '' && warningLevel === '' && stationType === '2' && stationCode === '' && warningConfigName === '' && startTime === '' && endTime === '') {
+      return null;
+    }
+    return (
+      <div className={styles.filteredItems}>
+        <span>已选条件</span>
+        {warningLevel!==''&&alarmLevelArray.map(e => (
+          <Tag key={e.value} closable onClose={()=>this.onCancelAlarmLevel(e.value)}>{e.label}</Tag>
+        ))}
+        {(stationType !== '2') && 
+          <Tag closable onClose={this.onCancelStationType}>{stationType === '0'?'风电':'光伏'}</Tag>}
+        {selectedStation.size > 0 && selectedStation.map(e=>(
+          <Tag closable onClose={()=>this.onCancelProvince(e)} key={e.getIn([0, 'provinceCode']).toString()} >
+            {`${e.getIn([0, 'provinceName'])} ${e.size}`}
+          </Tag>
+        ))}
+        {selectedDeviceType.size > 0 && selectedDeviceType.map(e=>(
+          <Tag closable onClose={()=>this.onCancelDeviceType(e.get('deviceTypeCode').toString())} key={e.get('deviceTypeCode').toString()}>
+            {e.get('deviceTypeName')}
+          </Tag>
+        ))}
+        {warningConfigName!==''&&alarmTypeArray.map(e=>(
+          <Tag key={e.value} closable onClose={()=>this.onCancelAlarmType(e.value)}>{e.label}</Tag>
+        ))}
+        {startTime!==''&&endTime!==''&&
+          <Tag closable onClose={this.onCancelTimeRange}>
+            开始{moment(startTime).format('YYYY-MM-DD')}-结束{moment(endTime).format('YYYY-MM-DD')}
+          </Tag>
+        }
+        <span onClick={this.resetAll}>清空条件</span>
+      </div>
+    );
+  }
+
+}
+
+export default FilteredItems;

@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Switch, Icon } from 'antd';
+import { Button, Icon } from 'antd';
 import DateFilter from './DateFilter';
+import StationTypeFilter from './StationTypeFilter';
 import StationFilter from './StationFilter';
 import DeviceTypeFilter from './DeviceTypeFilter';
 import AlarmTypeFilter from './AlarmTypeFilter';
@@ -64,6 +65,9 @@ class RealTimeAlarmFilter extends Component {
           <Button onClick={()=>this.onFilterShowChange('alarmLevel')}>
             告警级别{showFilter==='alarmLevel'?<Icon type="up" />:<Icon type="down" />}
           </Button>
+          <Button onClick={()=>this.onFilterShowChange('stationType')}>
+            电站类型{showFilter==='stationType'?<Icon type="up" />:<Icon type="down" />}
+          </Button>
           <Button onClick={()=>this.onFilterShowChange('stationName')}>
             电站名称{showFilter==='stationName'?<Icon type="up" />:<Icon type="down" />}
           </Button>
@@ -80,6 +84,7 @@ class RealTimeAlarmFilter extends Component {
         <div className={styles.filterBox}>
           {showFilter==='time' && <DateFilter {...this.props} onChangeFilter={this.onChangeFilter} />}
           {showFilter==='alarmLevel' && <AlarmLevelFilter {...this.props} onChangeFilter={this.onChangeFilter} />}
+          {showFilter==='stationType' && <StationTypeFilter {...this.props} onChangeFilter={this.onChangeFilter} />}
           {showFilter==='stationName' && <StationFilter {...this.props} onChangeFilter={this.onChangeFilter} />}
           {showFilter==='deviceType' && <DeviceTypeFilter {...this.props} onChangeFilter={this.onChangeFilter} />}
           {showFilter==='alarmType' && <AlarmTypeFilter {...this.props} onChangeFilter={this.onChangeFilter} />}
