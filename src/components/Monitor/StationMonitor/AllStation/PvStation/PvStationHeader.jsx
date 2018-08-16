@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import styles from './pvstation.scss';
+import styles from './pvStation.scss';
 import { Progress } from "antd";
 class pvStationHeader extends React.Component {
   static propTypes = {

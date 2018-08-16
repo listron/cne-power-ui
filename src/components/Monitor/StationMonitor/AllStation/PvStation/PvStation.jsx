@@ -1,7 +1,7 @@
 
 import React from "react";
 import PropTypes from "prop-types";
-import styles from './pvstation.scss';
+import styles from './pvStation.scss';
 import Map from '../map.jsx';
 import PvStationHeader from './PvStationHeader.jsx';
 import PvStationItem from './PvStationItem.jsx';

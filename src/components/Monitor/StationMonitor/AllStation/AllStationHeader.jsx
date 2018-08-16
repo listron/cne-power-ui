@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import styles from './allstationheader.scss';
+import styles from './allStation.scss';
 import { Progress ,Icon } from 'antd';
 
 
