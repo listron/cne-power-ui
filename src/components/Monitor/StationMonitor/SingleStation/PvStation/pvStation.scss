@@ -88,6 +88,133 @@
     padding: 0 20px;
     display: flex;
     flex-direction: row;
-    
+    .powerDiagramBox{
+      position: relative;
+      width: 50%;
+      .powerRadio{
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        :global{
+          .ant-radio-button-wrapper-checked:first-child {
+            border-color: $themeColor;
+          }
+          .ant-radio-button-wrapper:hover, .ant-radio-button-wrapper-focused {
+            color: #999;
+          }
+          .ant-radio-button-wrapper-checked {
+            border-color: $themeColor;
+            -webkit-box-shadow: -1px 0 0 0 $themeColor;
+            box-shadow: -1px 0 0 0 $themeColor;
+            color: #fff;
+            background: $themeColor;
+          }
+        }
+      }
+    }
+  }
+  .cardSection{
+    text-align: center;
+    margin: 20px;
+    .weatherList{
+      border: 1px solid #dfdfdf;
+      border-radius:4px;
+      height: 140px;
+      padding: 20px;
+      position: relative;
+      .weatherContent{
+        line-height: 24px;
+      }
+      .weatherLeft{
+        position: absolute;
+        left: 40px;
+        top: 60px;
+
+      }
+      .weatherRight{
+        position: absolute;
+        right: 40px;
+        top: 60px;
+      }
+    }
+    .operatorList{
+      border: 1px solid #dfdfdf;
+      border-radius:4px;
+      height: 140px;
+      padding: 0 20px;
+      .cardTitle{
+        line-height: 40px;
+        text-align: left;
+        padding-left: 20px;
+      }
+      :global{
+        .ant-carousel .slick-dots li button{
+          width: 7px;
+          height: 7px;
+          background-color: #0e1713;
+          border-radius: 7px;
+        }
+        .ant-carousel .slick-dots li.slick-active button {
+          background-color: $themeColor;
+          opacity: 1;
+        }
+        .ant-carousel .slick-dots{
+          bottom: -15px;
+        }
+        .ant-carousel .slick-dots li{
+          margin: 0 6px;
+        }
+      }
+    }
+    .alarmList{
+      border: 1px solid #dfdfdf;
+      border-radius:4px;
+      height: 140px;
+      padding: 10px;
+      .alarmContent{
+        display: flex;
+        justify-content: space-around;
+        line-height: 30px;
+        margin-top: 10px;
+        .oneWarning{
+          border-bottom: 3px solid #a42b2c;
+        }
+        .twoWarning{
+          border-bottom: 3px solid #e08031;
+        }
+        .threeWarning{
+          border-bottom: 3px solid #f9b600;
+        }
+        .fourWarning{
+          border-bottom: 3px solid #fbe6e3;
+        }
+      }
+      .cardTitle{
+        line-height: 30px;
+        text-align: left;
+        display: flex;
+        justify-content: space-between;
+        padding-left: 20px;
+      }
+    }
+    .workList{
+      padding: 10px;
+      border: 1px solid #dfdfdf;
+      border-radius:4px;
+      height: 140px;
+      .workContent{
+        display: flex;
+        justify-content: space-around;
+        line-height: 30px;
+        margin-top: 10px;
+      }
+      .cardTitle{
+        line-height: 30px;
+        text-align: left;
+        display: flex;
+        justify-content: space-between;
+        padding-left: 20px;
+      }
+    }
   }
 }

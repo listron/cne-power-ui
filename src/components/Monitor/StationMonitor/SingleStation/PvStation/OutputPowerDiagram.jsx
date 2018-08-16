@@ -4,11 +4,16 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './pvStation.scss';
 import echarts from 'echarts';
+import { Radio } from 'antd';
 
+const RadioButton = Radio.Button;
+const RadioGroup = Radio.Group;
 class OutputPowerDiagram extends Component {
   static propTypes = {
     capabilityData: PropTypes.array,
     powerData: PropTypes.array,
+    match: PropTypes.object,
+    getMonitorPower: PropTypes.func,
   }
 
   constructor(props){
@@ -20,10 +25,11 @@ class OutputPowerDiagram extends Component {
   }
 
   componentWillReceiveProps(nextProps){
-    const { capabilityData, powerData } = this.props;
-    const tmpData = capabilityData.map(e=>e.stationPower);
-    console.log(tmpData);
+    const { capabilityData, powerData } = nextProps;
+    console.log(powerData.map(e=>e.actualPower));
+    const lineColor = '#999';
     const capabilityDiagram = echarts.init(document.getElementById('capabilityDiagram'));
+    const powerDiagram = echarts.init(document.getElementById('powerDiagram'));
     capabilityDiagram.setOption({
       title: {
         text: '出力图',
@@ -36,46 +42,41 @@ class OutputPowerDiagram extends Component {
       legend: {
         data:['功率','瞬时辐照'],
         textStyle: {
-          color: '#999',
+          color: lineColor,
           fontSize: 12,
         },
       },
       grid: {
-        show: false,
+        show: true,
       },
       tooltip: {
         trigger: 'axis',
-        showContent: true,
-        triggerOn: 'mousemove',
-        enterable: true,
-        backgroundColor: '#fff',
-        extraCssText: 'box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);',
-        formatter: function(params){
-          console.log(JSON.stringify(params));
-          console.log(params);
-        },
+        show: true,
         axisPointer: {
           type: 'cross',
           label: {
-              backgroundColor: '#6a7985'
+            backgroundColor: '#6a7985'
           }
         },
+        backgroundColor: '#fff',
+        textStyle: {
+          color: lineColor,
+          fontSize: '12px',
+        }
       },
       calculable: true,
       xAxis: [
         {
           type: 'category',
           boundaryGap: false,
-          data: [{
-            value: capabilityData.map(e=>e.localTime.slice(5)),
-            textStyle: {
-              color: '#999',
-            }
-          }],
+          data: capabilityData.map(e=>e.localTime),
           axisLine: {
             lineStyle: {
               color: '#dfdfdf',
             },
+          },
+          axisLabel: {
+            color: lineColor,
           },
         }
       ],
@@ -87,49 +88,30 @@ class OutputPowerDiagram extends Component {
             formatter: '{value}'
           },
           nameTextStyle: {
-            color: '#999',
+            color: lineColor,
           },
           axisLine: {
             lineStyle: {
               color: '#dfdfdf',
             },
           },
-          max: 15,
         },
         {
-          name: '瞬时辐照(w/m2)',
+          name: '瞬时辐照(W/m²)',
           type: 'value',
           axisLabel: {
             formatter: '{value}'
           },
           nameTextStyle: {
-            color: '#999',
+            color: lineColor,
           },
           axisLine: {
             lineStyle: {
               color: '#dfdfdf',
             },
           },
-          max: 1000,
         }
       ],
-      dataZoom: [{
-        type: 'inside',
-        start: 0,
-        end: 10
-      }, {
-          start: 0,
-          end: 10,
-          handleIcon: 'M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z',
-          handleSize: '80%',
-          handleStyle: {
-            color: '#fff',
-            shadowBlur: 3,
-            shadowColor: 'rgba(0, 0, 0, 0.6)',
-            shadowOffsetX: 2,
-            shadowOffsetY: 2
-          }
-      }],
       series: [
         {
           name:'功率',
@@ -147,16 +129,181 @@ class OutputPowerDiagram extends Component {
           smooth:true,
           data: capabilityData.map(e=>e.instantaneous),
           yAxisIndex: 1,
+          itemStyle: {
+            color: "#199475",
+          },
+          lineStyle: {
+            type: 'dashed',
+          }
+        }
+      ]              
+    });
+    
+    powerDiagram.setOption({
+      color: ['#a42b2c','#c7ceb2','#f7c028'],
+      title: {
+        text: '发电量',
+        textStyle: {
+          color: '#666',
+          fontSize: 14,
+          fontWeight: 'normal',
+        },
+      },
+      legend: {
+        data:[{
+          name: '实际发电量',
+          icon: 'circle',
+        },{
+          name: '理论发电量',
+          icon: 'circle',
+        },{
+          name: '日曝辐值',
+          icon: 'circle',
+        }],
+        textStyle: {
+          color: lineColor,
+          fontSize: 12,
+        },
+      },
+      grid: {
+        show: true,
+      },
+      tooltip: {
+        trigger: 'axis',
+        show: true,
+        axisPointer: {
+          type: 'cross',
+          label: {
+            backgroundColor: '#6a7985'
+          }
+        },
+        backgroundColor: '#fff',
+        textStyle: {
+          color: lineColor,
+          fontSize: '12px',
+        }
+      },
+      calculable: true,
+      xAxis: [
+        {
+          type: 'category',
+          boundaryGap: false,
+          data: powerData.map(e=>e.time),
+          axisLine: {
+            lineStyle: {
+              color: '#dfdfdf',
+            },
+          },
+          axisLabel: {
+            color: lineColor,
+          },
+          axisPointer: {
+            type: 'shadow'
+          },
+          axisTick: {show: false},
+          boundaryGap: [true, true],
+        }
+      ],
+      yAxis: [
+        {
+          name: '电量(万kWh)',
+          type: 'value',
+          axisLabel: {
+            formatter: '{value}'
+          },
+          nameTextStyle: {
+            color: lineColor,
+          },
+          axisLine: {
+            lineStyle: {
+              color: '#dfdfdf',
+            },
+          },
+        },
+        {
+          name: '日曝辐值(w/m²)',
+          type: 'value',
+          axisLabel: {
+            formatter: '{value}'
+          },
+          nameTextStyle: {
+            color: lineColor,
+          },
+          axisLine: {
+            lineStyle: {
+              color: '#dfdfdf',
+            },
+          },
+        }
+      ],
+      series: [
+        {
+          name:'实际发电量',
+          type:'bar',
+          data: powerData.map(e=>e.actualPower),
+          label: {
+            show: true,
+            rotate: 90,
+            distance: 10,
+            color: '#fff',
+            align: 'left',
+            verticalAlign: 'middle',
+            position: 'insideBottom',
+          },
+          barGap: '0',
+          barWidth: 14,
+        },
+        {
+          name:'理论发电量',
+          type:'bar',
+          data: powerData.map(e=>e.theoryPower),
+          label: {
+            show: true,
+            rotate: 90,
+            distance: 10,
+            color: '#fff',
+            align: 'left',
+            verticalAlign: 'middle',
+            position: 'insideBottom',
+          },
+          barWidth: 14,
+        },
+        {
+          name:'瞬时辐照',
+          type:'line',
+          data: powerData.map(e=>e.instantaneous),
+          yAxisIndex: 1,
+          lineStyle: {
+            type: 'solid',
+            color: "#f7c028",
+          }
         }
       ]              
     })
   }
 
+  onChangeTimePower = (e) => {
+    console.log(e);
+    const { stationCode, intervalTime } = this.props.match.params;
+    this.props.getMonitorPower({stationCode,intervalTime: parseInt(e.target.value)});
+  }
+
   render(){
+    
     return (
       <div className={styles.outputPowerDiagram}>
         <div id="capabilityDiagram" style={{ width: "50%", height: "100%",borderRight:"2px solid #dfdfdf",color: '#999', paddingTop: "20px" }}></div>
-        <div className={styles.powerDiagram} ></div>
+        <div className={styles.powerDiagramBox} >
+          <div id="powerDiagram" style={{ width: "100%", height: "100%",color: '#999', paddingTop: "20px" }}></div>
+          <div className={styles.powerRadio}>
+            <RadioGroup defaultValue="0" size="small" onChange={this.onChangeTimePower} >
+              <RadioButton value="0">日</RadioButton>
+              <RadioButton value="1">月</RadioButton>
+              <RadioButton value="2">年</RadioButton>
+            </RadioGroup>
+          </div>
+        </div>
+        
       </div>
     )
   }
