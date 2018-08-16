@@ -165,42 +165,34 @@
         }
         .userOperate{
           display: inline-block;
-          .handleDropdown{
-            width: 120px;
-            :global{
-              .ant-select-dropdown-menu-item{
-                color:$themeColor;
-              }
-              .ant-select-dropdown-menu-item-disabled{
-                color:$promptColor;
-              }
-            }
-          }
+          
           :global{
             .ant-select{
               width: 78px;
             }
           }
         }
-        .selectedColumns{
-          margin-top: 20px;
-          width: 33px; 
-          height: 33px;
-          border-radius: 4px;
-          margin-left: 20px;
-          :global{
-            .ant-select-selection{
-              background: #199475 url(../../../../../theme/img/avatar.png) no-repeat center center;
-              background-size: 15px 15px;
-            }
-            .ant-select-selection__placeholder{
-              display: none;
-            }
-            .ant-select-selection-selected-value .ant-checkbox-wrapper{
-              display: none;
+        .selectedColumnsBox{
+          .selectedColumns{
+            margin-top: 20px;
+            width: 33px; 
+            height: 33px;
+            border-radius: 4px;
+            margin-left: 20px;
+            :global{
+              .ant-select-selection__placeholder{
+                display: none;
+              }
+              .ant-select-selection-selected-value .ant-checkbox-wrapper{
+                display: none;
+              }
+              .ant-select-selection {
+                background-color: $themeColor;
+              }
             }
           }
         }
+        
       }
       
     }
@@ -244,6 +236,20 @@
   :global{
     .ant-popover-title{
       color: $lightColor;
+    }
+  }
+}
+
+.handleDropdown{
+  :global{
+    .ant-select-dropdown-menu-item{
+      color:$themeColor;
+      i.iconfont{ 
+        margin-right: 7px; 
+      }
+    }
+    .ant-select-dropdown-menu-item-disabled{
+      color:$promptColor;
     }
   }
 }

@@ -72,6 +72,7 @@ class AddForm extends Component {
   render(){
     const { getFieldDecorator } = this.props.form;
     const { userDetail, loading, roleAllList, specialRoleList } = this.props;
+    console.log(specialRoleList)
     return (
       <Form className={styles.editPart}>
         <FormItem label="用户名" >
@@ -160,7 +161,7 @@ class AddForm extends Component {
               onChange={this.specialRoleId}
               className={styles.specialRoleId}
             >
-              {specialRoleList && specialRoleList.toJS().map((item,index)=>(
+              {specialRoleList && specialRoleList.toJS().length>0 && specialRoleList.toJS().map((item,index)=>(
                 <Option key={item.roleId} value={item.roleId}  >{item.roleDesc}</Option>
               ))}
             </Select>
