@@ -11,7 +11,8 @@ export default {
   commonPaths:{
     imgUploads:'/v3/uploadfile', //上传文件
     getStations: '/v3/station/datalist',//按照用户权限获取电站
-    getDevicetypes: '/v3/station/devicetypes',
+    getDevicetypes: '/v3/station/devicetype',
+    getStationDevicetypes: '/v3/station/devicetypes',
     getDevices: '/v3/station/stationdevices',
     getPartitions: '/v3/station/partitions',
   },

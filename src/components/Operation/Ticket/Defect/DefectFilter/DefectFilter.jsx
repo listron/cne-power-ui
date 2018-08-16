@@ -9,7 +9,7 @@ import DefectLevelFilter from './DefectLevelFilter';
 import FilteredItems from './FilteredItems';
 import styles from './defectFilter.scss';
 
-class DefectTable extends Component {
+class DefectFilter extends Component {
   static propTypes = {
     stationType: PropTypes.string,
     stationCodes: PropTypes.string,
@@ -124,4 +124,4 @@ class DefectTable extends Component {
 
 }
 
-export default DefectTable;
+export default DefectFilter;

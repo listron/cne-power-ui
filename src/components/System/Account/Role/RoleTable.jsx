@@ -95,7 +95,7 @@ class RoleTable extends Component {
         dataIndex: 'isPre',
         key: 'isPre',
         render: (text,record) => (<span>{text===1?'否':'是'}</span>),
-        sorter: (a, b) => a.text - b.text
+        sorter: (a, b) => a.isPre - b.isPre
       }, {
         title: '功能定义',
         dataIndex: 'rightData',

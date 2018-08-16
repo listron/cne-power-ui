@@ -1,7 +1,7 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import axios from 'axios';
 //import Path from '../../../../constants/path';
-import { allStationAction } from '../../../../constants/actionTypes/monitor/stationmonitor/allStationAction.js';
+import { allStationAction } from '../../../../constants/actionTypes/monitor/stationMonitor/allStationAction.js';
 function* getAllMonitorStation(action) {//获取所有电站信息
   const { payload } = action;
   const url = '/mock/v3/monitor/stations/stationType';
