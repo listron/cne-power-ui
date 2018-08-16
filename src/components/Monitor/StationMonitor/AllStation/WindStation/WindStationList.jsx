@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import styles from './windstation.scss';
+import styles from './windStation.scss';
 import CommonPagination from '../../../../Common/CommonPagination';
 import { Progress, Table } from "antd";
 

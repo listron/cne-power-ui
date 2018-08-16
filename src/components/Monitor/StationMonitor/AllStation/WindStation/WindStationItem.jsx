@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import styles from './windstation.scss';
+import styles from './windStation.scss';
 import { Progress } from "antd";
 
 class WindStationItem extends React.Component {

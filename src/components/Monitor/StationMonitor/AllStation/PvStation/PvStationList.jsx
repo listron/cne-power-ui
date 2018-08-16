@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import styles from './pvstation.scss';
+import styles from './pvStation.scss';
 import CommonPagination from '../../../../Common/CommonPagination';
 import { Progress, Table } from "antd";
 class PvStationList extends React.Component {
