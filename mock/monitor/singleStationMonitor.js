@@ -137,7 +137,7 @@ module.exports = [
       "serviceCode": "3.0"
     },
   },{
-    api: '/mock/api/v3/monitor/power/76/24',//获取理论发电量 实际发电量数据
+    api: '/mock/api/v3/monitor/power/76/0',//获取理论发电量 实际发电量数据
     method: 'get',
     response: {
       "code": "10000",
@@ -147,6 +147,34 @@ module.exports = [
         actualPower: e*5+'',
         theoryPower: e*10+'',
         instantaneous: e*100+'',
+      })),
+      "serviceCode": "3.0"
+    },
+  },{
+    api: '/mock/api/v3/monitor/power/76/1',//获取理论发电量 实际发电量数据
+    method: 'get',
+    response: {
+      "code": "10000",
+      "message": "请求成功",
+      "data": [1,2,3,4,5,6,7,8,9,10].map(e=>({
+        time: e,
+        actualPower: e*10+'',
+        theoryPower: e*100+'',
+        instantaneous: e*1000+'',
+      })),
+      "serviceCode": "3.0"
+    },
+  },{
+    api: '/mock/api/v3/monitor/power/76/2',//获取理论发电量 实际发电量数据
+    method: 'get',
+    response: {
+      "code": "10000",
+      "message": "请求成功",
+      "data": [1,2,3,4,5,6,7,8,9,10].map(e=>({
+        time: e,
+        actualPower: e*100+'',
+        theoryPower: e*1000+'',
+        instantaneous: e*10000+'',
       })),
       "serviceCode": "3.0"
     },

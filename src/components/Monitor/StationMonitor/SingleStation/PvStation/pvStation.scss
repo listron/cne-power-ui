@@ -89,6 +89,29 @@
     padding: 0 20px;
     display: flex;
     flex-direction: row;
-    
+    .powerDiagramBox{
+      position: relative;
+      width: 50%;
+      .powerRadio{
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        :global{
+          .ant-radio-button-wrapper-checked:first-child {
+            border-color: $themeColor;
+          }
+          .ant-radio-button-wrapper:hover, .ant-radio-button-wrapper-focused {
+            color: #999;
+          }
+          .ant-radio-button-wrapper-checked {
+            border-color: $themeColor;
+            -webkit-box-shadow: -1px 0 0 0 $themeColor;
+            box-shadow: -1px 0 0 0 $themeColor;
+            color: #fff;
+            background: $themeColor;
+          }
+        }
+      }
+    }
   }
 }

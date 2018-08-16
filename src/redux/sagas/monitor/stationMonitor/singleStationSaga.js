@@ -36,7 +36,8 @@ function *getSingleStation(action){
 //获取出力图数据
 function *getCapabilityDiagram(action){
   const { payload } = action;
-  const url = '/mock/api/v3/monitor/capabilitydiagram/'+ payload.stationCode+ '/' + payload.intervalTime;
+  // const url = '/mock/api/v3/monitor/capabilitydiagram/'+ payload.stationCode+ '/' + payload.intervalTime;
+  const url = '/mock/api/v3/monitor/capabilitydiagram/76/24';
   console.log(payload);
   try{
     yield put({type: singleStationAction.SINGLE_STATION_FETCH});

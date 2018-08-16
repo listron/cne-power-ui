@@ -37,11 +37,17 @@ class UserSearch extends Component {
   }
   onUserSearch = () => {
     const { nameValue, phoneValue, stationValue } = this.state;
-    this.props.onUserSearch({
-      nameValue,
-      phoneValue,
-      stationValue,
-    })
+    let params = {
+      enterpriseId: this.props.enterpriseId,
+      userStatus: this.props.userStatus,
+      pageNum: 1,
+      pageSize: this.props.pageSize,
+      userName: nameValue,
+      phoneNum: phoneValue,
+      stationName: stationValue,
+      roleId: this.props.roleId,
+    };
+    this.props.getUserList(params);
   }
 
   onSelectRoles = (value,item) => {
@@ -63,7 +69,7 @@ class UserSearch extends Component {
   emptyCondition = (item) => {
     let params = {
       enterpriseId: this.props.enterpriseId,
-      userStatus: this.props.userStatus,
+      userStatus: 0,
       roleId: '',
       pageNum: this.props.pageNum - 1,
       pageSize: this.props.pageSize,
@@ -75,7 +81,7 @@ class UserSearch extends Component {
     const { userStatus,roleId, roleAllList } = this.props;
     const { nameValue, phoneValue, stationValue } = this.state;
     let roleIdSet = new Set(roleId.split(',').filter(e=>!!e));
-    let roleSelectId = roleAllList.toJS().filter(e=>{
+    let roleSelectId = roleAllList.toJS().length>0 && roleAllList.toJS().filter(e=>{
       return roleIdSet.has(e.roleId.toString())
     });
     return (
@@ -91,7 +97,7 @@ class UserSearch extends Component {
               onChange={this.onSelectRoles}
             >
               <Option key="不限" value={'不限'}><Checkbox checked={roleIdSet.size === 0} >不限</Checkbox></Option>
-              {roleAllList.toJS().map((item) => {
+              {roleAllList.toJS().length>0 && roleAllList.toJS().map((item) => {
                 return  (<Option key={item.roleId} value={item.roleDesc} >
                           <Checkbox
                             checked={roleIdSet.has(item.roleId.toString())} 

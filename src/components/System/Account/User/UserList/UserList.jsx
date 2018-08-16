@@ -57,6 +57,7 @@ class UserList extends Component {
       ascend: this.props.ascend, 
       pageNum: currentPage,
       pageSize,
+      roleId: this.props.roleId,
     })
   }
 
@@ -239,11 +240,11 @@ class UserList extends Component {
     }
 
     return (<Select onChange={this.userHandle} placeholder="操作"  dropdownMatchSelectWidth={false} dropdownClassName={styles.handleDropdown} >
-      <Option value="edit" disabled={!editable}>编辑</Option>
-      <Option value="delete" disabled={!deletable}>移除</Option>
-      <Option value="use" disabled={!usable}>启用</Option>
-      <Option value="unallow" disabled={!unallowable}>禁用</Option>
-      <Option value="examine" disabled={!examinable}>审核</Option>
+      <Option value="edit" disabled={!editable}><i className="iconfont icon-edit"></i><span>编辑</span></Option>
+      <Option value="delete" disabled={!deletable}><i className="iconfont icon-remove"></i><span>移除</span></Option>
+      <Option value="use" disabled={!usable}><i className="iconfont icon-enable"></i><span>启用</span></Option>
+      <Option value="unallow" disabled={!unallowable}><i className="iconfont icon-disable"></i><span>禁用</span></Option>
+      <Option value="examine" disabled={!examinable}><i className="iconfont icon-examine1"></i><span>审核</span></Option>
     </Select>)
   } 
   
@@ -365,20 +366,18 @@ class UserList extends Component {
         dataIndex: 'userStatus',
         key: 'userStatus',
         render: (text, record, index) => {
-          console.log(record);
           return (<span>{this.getUserStatus(record.userStatus, record.enterpriseStatus)}</span>);
         },
       }
     ];
     const url = Path.basePaths.newAPIBasePath + Path.APISubPaths.system.importUserBatch;
-    const props = {
+    const uploadProps = {
       name: 'file',
       action: url,
       headers: {'Authorization': 'bearer ' + ((authData && authData!== 'undefined') ? JSON.parse(authData) : '')},
       beforeUpload: this.beforeUpload,
       data: {
         enterpriseId: this.props.enterpriseId,
-
       },
       onChange(info) {
         if (info.file.status === 'done') {
@@ -407,28 +406,30 @@ class UserList extends Component {
           <div className={styles.userHelperLeft} >
             <Button onClick={this.onCreateUser} className={styles.addUser} ><Icon type="plus" /><span className={styles.text}>用户</span></Button>
             <Button onClick={this.onInviteUser} >邀请用户</Button>
-            <Upload {...props} className={styles.importUser}>
+            <Upload {...uploadProps} className={styles.importUser}>
               <Button>批量导入</Button>
             </Upload>
             <Button  >导入模板下载</Button>
             <div className={styles.userOperate} >
               {this._createUserOperate()}
             </div>
-            <Select
-              className={styles.selectedColumns} 
-              showArrow={false}
-              dropdownMatchSelectWidth={false}
-              onChange={this.onSelectColumns}
-            >
-              <Option key="全选" value="全选" ><Checkbox checked={selectedUserColumns.size === 0} >全选</Checkbox></Option>
-              {columns.map(item=>{
-                return (<Option
-                          key={item.title}
-                          value={item.title}
-                          // disabled={selectedUserColumns.has(item.title)}
-                        ><Checkbox value={item.title} checked={selectedUserColumns.has(item.title)} >{item.title}</Checkbox></Option>);
-              })}
-            </Select>
+            <div className={styles.selectedColumnsBox} >
+              <Select
+                className={styles.selectedColumns} 
+                showArrow={false}
+                dropdownMatchSelectWidth={false}
+                onChange={this.onSelectColumns}
+              >
+                <Option key="全选" value="全选" ><Checkbox checked={selectedUserColumns.size === 0} >全选</Checkbox></Option>
+                {columns.map(item=>{
+                  return (<Option
+                            key={item.title}
+                            value={item.title}
+                            // disabled={selectedUserColumns.has(item.title)}
+                          ><Checkbox value={item.title} checked={selectedUserColumns.has(item.title)} >{item.title}</Checkbox></Option>);
+                })}
+              </Select>
+            </div>
           </div>
           <CommonPagination total={totalNum} onPaginationChange={this.onPaginationChange} />
         </div>
