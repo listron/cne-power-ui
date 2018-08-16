@@ -23,13 +23,13 @@ componentDidMount(){
     stationDataList.forEach((item,index)=>{
       dataList.push([item.longitude,item.latitude])
     })
-    console.log(dataList);
+    console.log(dataList,'处理的经纬度数据');
     
 
     return (
       <div className={styles.allStationContainer}>
         <AllStationHeader {...this.props} />
-        <Map testId="allstation_bmap_station" {...this.props} stationDataList={[]} />
+        <Map testId="allstation_bmap_station" {...this.props} stationDataList={dataList} />
       </div>
     )
   }

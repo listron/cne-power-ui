@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react';
 // import { baseURL, apiPath } from '../../constants/apiURL';
-import axios from 'axios';
+//import axios from 'axios';
 import PropTypes from 'prop-types';
 import echarts from 'echarts';
 import bmap from 'echarts/extension/bmap/bmap';
@@ -10,10 +10,10 @@ import styles from './WindStation/windstation.scss';
 
 class Interval extends Component {
     static propTypes = {
-        allMonitorStation:PropTypes.object,
-        testId:PropTypes.string,
-        stationDataList:PropTypes.array,
-      }
+        allMonitorStation: PropTypes.object,
+        testId: PropTypes.string,
+        stationDataList: PropTypes.array,
+    }
     constructor(props) {
         super(props)
         this.state = {
@@ -39,18 +39,19 @@ class Interval extends Component {
 
         // console.log(testChart)
 
-        this.setMapChart(testChart);  
+        this.setMapChart(testChart);
 
     }
-    componentWillUnmount(){
+    componentWillUnmount() {
         // console.log('bmap is unmount')
     }
-    setMapChart = (testChart) => {   
-        const coordinate = [
-            [121.15, 31.89],
-            [109.781327, 39.608266],
-            [120.38, 37.35],         
-        ];
+    setMapChart = (testChart) => {
+        // const coordinate = [
+        //     [121.15, 31.89],
+        //     [109.781327, 39.608266],
+        //     [120.38, 37.35],         
+        // ];
+        const { stationDataList } = this.props;
 
         const option = {
             bmap: {
@@ -157,9 +158,9 @@ class Interval extends Component {
                     }]
                 }
             },
-              tooltip: {
-        trigger: 'item',
-        formatter: `<div className={styles.stationCard}>
+            tooltip: {
+                trigger: 'item',
+                formatter: `<div className={styles.stationCard}>
         <div className={styles.stationCardTitle}>圣经山</div>
         <div className={styles.stationCardProgress}>
           <Progress percent={50} showInfo={false} />
@@ -171,28 +172,29 @@ class Interval extends Component {
         <div className={styles.stationCardWindSpeed}>4.69m/s</div>
         <div className={styles.stationCardEquipmentNum}>
           <div>24台</div>
-          <div className={styles.stationWarning}>⚠10</div>
+          <div>⚠10</div>
         </div>
       </div>`
-    },
-    legend: {
-        orient: 'vertical',
-        top: 'bottom',
-        left: 'right',
-        background:'#fff',
-        data: ['正常','未接入','未联网','告警','断开'],
-        textStyle: {
-            color: '#fff',
-        }
-    },
+            },
+            legend: {
+                orient: 'vertical',
+                top: 'bottom',
+                left: 'right',
+                background: '#fff',
+                data: ['正常', '未接入', '未联网', '告警', '断开'],
+                textStyle: {
+                    color: '#fff',
+                }
+            },
             // 类型是：scatter散点
             series: [{
-                 type: 'scatter',
-                //  symbol:'image://https://cn.bing.com/images/search?view=detailV2&ccid=TO%2fnCIZ9&id=BCEB571CBDF3229BEC4FA45003EE0E8EE373744D&thid=OIP.TO_nCIZ9T4ahUzCoiklVrgHaGW&mediaurl=http%3a%2f%2fwww.met-online.com%2fzh%2frotor_computation.gif&exph=103&expw=120&q=%E9%A3%8E%E5%8A%9B+gif&simid=607998592277220286&selectedIndex=11&ajaxhist=0',
-                 name:'电站状态',
+                type: 'scatter',
+                //   symbol:'image://cn.bing.com/images/search?view=detailV2&ccid=TO%2fnCIZ9&id=BCEB571CBDF3229BEC4FA45003EE0E8EE373744D&thid=OIP.TO_nCIZ9T4ahUzCoiklVrgHaGW&mediaurl=http%3a%2f%2fwww.met-online.com%2fzh%2frotor_computation.gif&exph=103&expw=120&q=%E9%A3%8E%E5%8A%9B+gif&simid=607998592277220286&selectedIndex=11&ajaxhist=0',
+                name: '电站状态',
                 // symbol:'image//../../../../../theme/img/wind-normal.png',
                 coordinateSystem: 'bmap',
-                data: coordinate,
+                //data: coordinate,
+                data: stationDataList,
                 symbolSize: 12,
                 label: {
                     normal: {
@@ -211,11 +213,17 @@ class Interval extends Component {
             }]
         };
         testChart.setOption(option)
+        testChart.on('click', (params) => {
+            // alert('我要跳转')
+          console.log(params,'电站的参数');
+
+        })
     }
-   
+
     render() {
         const { barData } = this.state;
-        const { testId,stationDataList } = this.props;
+        const { testId, stationDataList } = this.props;
+        console.log(stationDataList, '我是经纬度数据')
         // console.log(testId)
         return (
             <div>
@@ -228,7 +236,7 @@ class Interval extends Component {
 export default Interval
 
    // console.log(testChart)
-         
+
 //多个覆盖信息框
         // var sContent =
         // "<h4 style='margin:0 0 5px 0;padding:0.2em 0'>天安门</h4>" + 
@@ -240,9 +248,9 @@ export default Interval
         //     [121.15, 31.89],
         //     [109.781327, 39.608266],
         //     [120.38, 37.35],
-            
+
         // ];
-       
+
         // coordinateData.forEach((item,index)=>{
         //     var point= new BMap.Point(item[0], item[1]);
         //     var marker = new BMap.Marker(point);
@@ -252,9 +260,9 @@ export default Interval
         //     marker.addEventListener("click", function(){          
         //         this.openInfoWindow(infoWindow)
         //     })
-            
+
         // })
-       
+
 
         // coordinate.forEach((item,index)=>{
         //     var marker = new BMap.Marker(new BMap.Point(data_info[i][0],data_info[i][1]));
@@ -266,7 +274,7 @@ export default Interval
         // "<p style='margin:0;line-height:1.5;font-size:13px;text-indent:2em'>天安门坐落在中国北京市中心,故宫的南侧,与天安门广场隔长安街相望,是清朝皇城的大门...</p>" + 
         // "</div>";
         // coordinate里都是标点的坐标
-      
+
        //多个覆盖信息框
 
 //    const map = new BMap.Map("bmapTest");
