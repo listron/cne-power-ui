@@ -23,7 +23,7 @@ function *getStations(action){
       yield put({ 
         type: commonAction.GET_STATIONS_SUCCESS, 
         params: {
-          data: response.data.result
+          data: response.data.data
         }
       });       
     } else{
@@ -39,15 +39,42 @@ function *getStations(action){
     console.log(e);
   }
 }
-//获取电站下设备类型信息
+//获取用户权限范围内所有设备类型信息
 function *getDeviceTypes(action){
-  let url = Path.basePaths.newAPIBasePath + Path.commonPaths.getDevicetypes;
+  const { payload } = action;
+  const url = `${Path.basePaths.newAPIBasePath}${Path.commonPaths.getDevicetypes}/${payload.userId}`;
+  yield put({ type: commonAction.COMMON_FETCH });
+  try {
+    const response = yield call(axios.get, url);
+    if(response.data.code === '10000'){
+      yield put({ 
+        type: commonAction.GET_DEVICETYPES_SUCCESS, 
+        params: {
+          data: response.data.data, 
+        }
+      });       
+    } else{
+      yield put({ 
+        type: commonAction.GET_DEVICETYPES_FAIL, 
+        error:{
+          code: response.data.code,
+          message: response.data.message
+        }
+      });        
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
+//获取电站下设备类型信息
+function *getStationDeviceTypes(action){
+  let url = Path.basePaths.newAPIBasePath + Path.commonPaths.getStationDevicetypes;
   yield put({ type: commonAction.COMMON_FETCH });
   try {
     const response = yield call(axios.get, url, {params: action.params});
     if(response.data.code === '10000'){
       yield put({ 
-        type: commonAction.GET_DEVICETYPES_SUCCESS, 
+        type: commonAction.GET_STATION_DEVICETYPES_SUCCESS, 
         params: {
           data: response.data.data.data, 
           params: action.params 
@@ -55,7 +82,7 @@ function *getDeviceTypes(action){
       });       
     } else{
       yield put({ 
-        type: commonAction.GET_DEVICETYPES_FAIL, 
+        type: commonAction.GET_STATION_DEVICETYPES_FAIL, 
         error:{
           code: response.data.code,
           message: response.data.message
@@ -110,7 +137,7 @@ function *getPartition(action){
       });       
     } else{
       yield put({ 
-        type: commonAction.GET_PARTITIONSA_FAIL, 
+        type: commonAction.GET_PARTITIONS_FAIL, 
         error:{
           code: response.data.code,
           message: response.data.message
@@ -130,6 +157,9 @@ export function* watchGetStations() {
 }
 export function* watchGetDeviceTypes() {
   yield takeLatest(commonAction.GET_DEVICETYPES_SAGA, getDeviceTypes);
+}
+export function* watchGetStationDeviceTypes() {
+  yield takeLatest(commonAction.GET_STATION_DEVICETYPES_SAGA, getStationDeviceTypes);
 }
 export function* watchGetDevices() {
   yield takeLatest(commonAction.GET_DEVICES_SAGA, getDevices);

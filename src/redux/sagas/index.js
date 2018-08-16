@@ -2,7 +2,7 @@ import { all } from 'redux-saga/effects';
 import {
   watchCommonStoreChange,
   watchGetStations,
-  watchGetDeviceTypes,
+  watchGetStationDeviceTypes,
   watchGetDevices,
   watchGetPartition,
 } from './commonSaga';
@@ -63,7 +63,7 @@ export default function* rootSaga() {
     //common
     watchCommonStoreChange(),
     watchGetStations(),
-    watchGetDeviceTypes(),
+    watchGetStationDeviceTypes(),
     watchGetDevices(),
     watchGetPartition(),
     //登陆注册

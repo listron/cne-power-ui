@@ -44,11 +44,11 @@ class InspectCreate extends Component{
 
 const mapStateToProps = (state) => ({
   showContainer: state.operation.ticket.get('showContainer'),
-  deviceTypeItems: state.common.get('deviceTypes'),
+  deviceTypeItems: state.common.get('stationDeviceTypes'),
   stations: state.common.get('stations'),
 })
 const mapDispatchToProps = (dispatch) => ({
-  loadDeviceTypeList: params => dispatch({ type: commonAction.GET_DEVICETYPES_SAGA, params}),
+  loadDeviceTypeList: params => dispatch({ type: commonAction.GET_STATION_DEVICETYPES_SAGA, params}),
   createInspect: params => dispatch({ type: ticketAction.CREATE_INSPECT_SAGA, params}),
   getStations: params => dispatch({ type: commonAction.GET_STATIONS_SAGA, params }),
 })

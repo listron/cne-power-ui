@@ -20,6 +20,7 @@ class Main extends Component {
   static propTypes = {
     setTopMenu: PropTypes.func,
     getStations: PropTypes.func,
+    getDeviceTypes: PropTypes.func,
     topMenu: PropTypes.object,
     login: PropTypes.object,
     history: PropTypes.object,
@@ -46,6 +47,9 @@ class Main extends Component {
     if (this.refs.main) {
       this.refs.main.addEventListener('scroll', this.onScroll);
       this.props.getStations({
+        userId: getCookie('userId'),
+      });
+      this.props.getDeviceTypes({
         userId: getCookie('userId'),
       });
     }
@@ -146,6 +150,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   getStations: payload => dispatch({ type: commonAction.GET_STATIONS_SAGA, payload }),
+  getDeviceTypes: payload => dispatch({ type: commonAction.GET_DEVICETYPES_SAGA, payload }),
   setTopMenu: payload => dispatch({ type: commonAction.CHANGE_COMMON_STORE_SAGA, payload }),
 });
 
