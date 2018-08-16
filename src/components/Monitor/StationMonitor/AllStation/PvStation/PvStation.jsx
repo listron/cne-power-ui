@@ -3,7 +3,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import styles from './pvstation.scss';
 import Map from '../map.jsx';
-import PvStationHeader from './pvStationHeader.jsx';
+import PvStationHeader from './PvStationHeader.jsx';
 import PvStationItem from './PvStationItem.jsx';
 import { Tabs, Icon, Radio, Switch } from "antd";
 import PvStationList from "./PvStationList";
