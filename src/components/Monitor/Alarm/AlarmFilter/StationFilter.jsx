@@ -28,7 +28,7 @@ class StationFilter extends Component {
     });
   }
 
-  onChangeStationType = (key) => {
+  onChangeProvince = (key) => {
     if(key === 'all') {
       this.props.onChangeFilter({
         stationCode: ''
@@ -58,20 +58,22 @@ class StationFilter extends Component {
   getCheckAll(data) {
     const checkedOption = data.map(item=>data.get('stationCode').toString()).toJS();
     const stationCode = this.props.stationCode.split(',');
-    const result = Array.from(new Set(stationCode.concat(checkedOption)));
-    if(result.length === stationCode.length - checkedOption.length) {
-      return true;
-    } else {
-      return false;
-    }
+    let result = true;
+    checkedOption.forEach(element => {
+      if(stationCode.indexOf(element) === -1) {
+        result = false;
+        return;
+      }
+    });
+    return result;
   }
 
-  renderTypeStation(provinceData, data) {
+  renderProvince(stationData) {
     const stationCode = this.props.stationCode.split(',');
-    const stationList = provinceData.map((provinceItem, index) => {
+    return stationData.map(provinceItem => {
       return (
-        <div className={styles.provinceItem} key={index}>
-          <span>{provinceItem.getIn([0, 'provinceName'])}</span>
+        <TabPane tab={provinceItem.getIn([0,'provinceName'])} key={provinceItem.getIn([0,'provinceCode']).toString()}>
+          <Checkbox onChange={(e)=>this.onCheckAll(e, provinceItem)} checked={this.getCheckAll(provinceItem)}>全部</Checkbox>
           <CheckboxGroup 
             options={provinceItem.map(station=>{
               return {
@@ -82,43 +84,26 @@ class StationFilter extends Component {
             value={provinceItem.filter(station=>{
               return stationCode.find(code=>code===station.get('stationCode').toString());
             }).toJS()} 
-            onChange={this.onChangeStation}></CheckboxGroup>
-        </div>
-      );
+            onChange={this.onChangeStation}>
+          </CheckboxGroup>
+        </TabPane>
+      )
     });
-    return (
-      <div className={styles.stationTab}>
-        <Checkbox onChange={(e)=>this.onCheckAll(e, data)} checked={this.getCheckAll(data)}>全部</Checkbox>
-        {stationList}
-      </div>
-    )
   }
 
 
   render() {
     const { stations } = this.props;
     const { activeKey } = this.state;
-    const windStation = stations.filter(item=>{
-      return item.get('stationType') === 0;
-    });
-    const pvStation = stations.filter(item=>{
-      return item.get('stationType') === 1;
-    });
-    const windProvinceStation = windStation.groupBy(item=>item.get('provinceCode'));
-    const pvProvinceStation = pvStation.groupBy(item=>item.get('provinceCode'));
+    const provinceStation = stations.groupBy(item=>item.get('provinceCode'));
 
     return (
       <div className={styles.stationFilter}>
-        <Tabs onChange={this.onChangeStationType} activeKey={activeKey} >
+        <Tabs onChange={this.onChangeProvince} activeKey={activeKey} >
           <TabPane tab="不限" key="all">
             {null}
           </TabPane>
-          <TabPane tab="风电" key="wind">
-            {this.renderTypeStation(windProvinceStation, windStation)}
-          </TabPane>
-          <TabPane tab="光伏" key="pv">
-            {this.renderTypeStation(pvProvinceStation, pvStation)}
-          </TabPane>
+          {this.renderProvince(provinceStation)}
         </Tabs>
       </div>
     );
