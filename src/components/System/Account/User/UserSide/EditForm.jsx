@@ -52,7 +52,7 @@ class EditForm extends Component {
       <Form className={styles.editPart}>
         <FormItem label="用户名" >
           {getFieldDecorator('username',{
-            initialValue: userDetail && userDetail.get('userName'),
+            initialValue: userDetail && userDetail.get('username'),
             rules: [{
               required : true,
               message: '3-8位数字,字母组合',
@@ -60,7 +60,7 @@ class EditForm extends Component {
               min: 3,
             }]
           })(
-            <Input placeholder="3-8位数字,字母组合" />
+            <Input placeholder="3-8位数字,字母组合" disabled />
           )}
           <span className={styles.instructionText}>(3-8位数字,字母组合)</span>
         </FormItem>
@@ -85,7 +85,7 @@ class EditForm extends Component {
               required: true,
             }]
           })(
-            <Input placeholder="请输入电话号码" />
+            <Input placeholder="请输入电话号码" disabled />
           )}
           <span className={styles.instructionText}>(11位手机号码)</span>
         </FormItem>
