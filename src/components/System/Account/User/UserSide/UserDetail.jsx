@@ -23,7 +23,6 @@ class UserDetail extends Component {
 
   onShowSideChange = () => {
     const {userDetail} = this.props;
-    console.log(userDetail);
     this.props.changeUserStore({ showPage: 'edit', userDetail: userDetail });
     this.props.onShowSideChange('edit');
   };

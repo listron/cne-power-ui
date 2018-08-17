@@ -63,7 +63,6 @@ class UserList extends Component {
 
   onSelectColumns = (value) => {
     const { selectedUserColumns } = this.state;
-    console.log(selectedUserColumns)
     let tmpUserColumns = selectedUserColumns;
     if(value === '全选'){
       tmpUserColumns = new Set(['用户名','真实姓名','电话','角色','特殊权限','所在企业','负责电站','状态']);
@@ -227,7 +226,6 @@ class UserList extends Component {
   _createUserOperate = () => {
     let selectedUser = this.props.selectedUser.toJS();
     let [editable, deletable, usable, unallowable, examinable] = [ false, false, false, false, false];
-    console.log(selectedUser);
     if(selectedUser.length > 0){
       editable = selectedUser.length === 1;
       let newArray = [...new Set(selectedUser.map(e=>this.getEnterpriseStatus(e.enterpriseStatus)))];
@@ -243,8 +241,7 @@ class UserList extends Component {
     }else{
       [editable, deletable, usable, unallowable, examinable] = [ false, false, false, false, false];
     }
-    console.log(!editable);
-    return (<Select onChange={this.userHandle} onFocus={e=>console.log(e)} placeholder="操作"  dropdownMatchSelectWidth={false} dropdownClassName={styles.handleDropdown} >
+    return (<Select onSelect={this.userHandle} placeholder="操作"  dropdownMatchSelectWidth={false} dropdownClassName={styles.handleDropdown} >
       <Option value="edit" disabled={!editable}><i className="iconfont icon-edit"></i><span>编辑</span></Option>
       <Option value="delete" disabled={!deletable}><i className="iconfont icon-remove"></i><span>移除</span></Option>
       <Option value="use" disabled={!usable}><i className="iconfont icon-enable"></i><span>启用</span></Option>
@@ -372,7 +369,6 @@ class UserList extends Component {
         dataIndex: 'userStatus',
         key: 'userStatus',
         render: (text, record, index) => {
-          console.log(record);
           return (<span>{this.getEnterpriseStatus(record.enterpriseStatus)/this.getUserStatus(record.userStatus)}</span>);
         },
       }
