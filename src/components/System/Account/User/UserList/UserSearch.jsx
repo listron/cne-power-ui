@@ -42,7 +42,7 @@ class UserSearch extends Component {
       userStatus: this.props.userStatus,
       pageNum: 1,
       pageSize: this.props.pageSize,
-      userName: nameValue,
+      username: nameValue,
       phoneNum: phoneValue,
       stationName: stationValue,
       roleId: this.props.roleId,
@@ -73,7 +73,7 @@ class UserSearch extends Component {
       roleId: '',
       pageNum: this.props.pageNum,
       pageSize: this.props.pageSize,
-      userName: '',
+      username: '',
       phoneNum: '',
       stationName: '',
     };
