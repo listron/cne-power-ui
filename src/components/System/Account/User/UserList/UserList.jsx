@@ -33,7 +33,7 @@ class UserList extends Component {
   constructor(props){
     super(props);
     this.state = {
-      selectedUserColumns: new Set(),//选中列暂时存在state里，如有需要可存进reducer里
+      selectedUserColumns: new Set(['用户名','电话','角色','特殊权限','负责电站','状态']),//选中列
     }
   }
 
@@ -63,9 +63,10 @@ class UserList extends Component {
 
   onSelectColumns = (value) => {
     const { selectedUserColumns } = this.state;
+    console.log(selectedUserColumns)
     let tmpUserColumns = selectedUserColumns;
     if(value === '全选'){
-      tmpUserColumns = new Set();
+      tmpUserColumns = new Set(['用户名','真实姓名','电话','角色','特殊权限','所在企业','负责电站','状态']);
     }else{
       tmpUserColumns.has(value) ? tmpUserColumns.delete(value) : tmpUserColumns.add(value);
     }
@@ -143,8 +144,8 @@ class UserList extends Component {
         render: (text, record, index) => (<a href={'javascript:void(0)'} onClick={() => this.showUserDetail(record)} >{text}</a>)
       }, {
         title: '真实姓名',
-        dataIndex: 'trueName',
-        key: 'trueName',
+        dataIndex: 'userFullName',
+        key: 'userFullName',
         render: (text,record,index) => (<span>{text}</span>)
       }, {
         title: '电话',
@@ -205,7 +206,6 @@ class UserList extends Component {
         dataIndex: 'userStatus',
         key: 'userStatus',
         render: (text, record, index) => {
-          console.log(this.getEnterpriseStatus(record.enterpriseStatus)+'/'+this.getUserStatus(record.userStatus));
           return (<span>{this.getEnterpriseStatus(record.enterpriseStatus)+'/'+this.getUserStatus(record.userStatus)}</span>);
         },
       }
@@ -227,6 +227,7 @@ class UserList extends Component {
   _createUserOperate = () => {
     let selectedUser = this.props.selectedUser.toJS();
     let [editable, deletable, usable, unallowable, examinable] = [ false, false, false, false, false];
+    console.log(selectedUser);
     if(selectedUser.length > 0){
       editable = selectedUser.length === 1;
       let newArray = [...new Set(selectedUser.map(e=>this.getEnterpriseStatus(e.enterpriseStatus)))];
@@ -242,8 +243,8 @@ class UserList extends Component {
     }else{
       [editable, deletable, usable, unallowable, examinable] = [ false, false, false, false, false];
     }
-
-    return (<Select onChange={this.userHandle} placeholder="操作"  dropdownMatchSelectWidth={false} dropdownClassName={styles.handleDropdown} >
+    console.log(!editable);
+    return (<Select onChange={this.userHandle} onFocus={e=>console.log(e)} placeholder="操作"  dropdownMatchSelectWidth={false} dropdownClassName={styles.handleDropdown} >
       <Option value="edit" disabled={!editable}><i className="iconfont icon-edit"></i><span>编辑</span></Option>
       <Option value="delete" disabled={!deletable}><i className="iconfont icon-remove"></i><span>移除</span></Option>
       <Option value="use" disabled={!usable}><i className="iconfont icon-enable"></i><span>启用</span></Option>
@@ -254,6 +255,7 @@ class UserList extends Component {
   
   userHandle = (value) => {
     const { selectedUser, enterpriseId, } = this.props;
+    console.log(selectedUser.toJS()[0])
     if(value === 'edit'){
       this.props.changeUserStore({
         showPage: 'edit',
@@ -284,7 +286,7 @@ class UserList extends Component {
         enterpriseUserStatus: 5,
       })
     }
-    value = "";
+    // value = "";
   }
   
   beforeUpload = (file) => {
@@ -307,8 +309,8 @@ class UserList extends Component {
         render: (text, record, index) => (<a href={'javascript:void(0)'} onClick={() => this.showUserDetail(record)} >{text}</a>)
       }, {
         title: '真实姓名',
-        dataIndex: 'trueName',
-        key: 'trueName',
+        dataIndex: 'userFullName',
+        key: 'userFullName',
         render: (text,record,index) => (<span>{text}</span>)
       }, {
         title: '电话',
@@ -425,13 +427,19 @@ class UserList extends Component {
                 dropdownMatchSelectWidth={false}
                 onChange={this.onSelectColumns}
               >
-                <Option key="全选" value="全选" ><Checkbox checked={selectedUserColumns.size === 0} >全选</Checkbox></Option>
+                <Option key="全选" value="全选" ><Checkbox checked={selectedUserColumns.size === 8} >全选</Checkbox></Option>
                 {columns.map(item=>{
                   return (<Option
                             key={item.title}
                             value={item.title}
-                            // disabled={selectedUserColumns.has(item.title)}
-                          ><Checkbox value={item.title} checked={selectedUserColumns.has(item.title)} >{item.title}</Checkbox></Option>);
+                            disabled={item.title==='用户名'||item.title==='电话'||item.title==='负责电站'||item.title==='状态'}
+                          ><Checkbox 
+                            value={item.title} 
+                            checked={selectedUserColumns.has(item.title)} 
+                            disabled={item.title==='用户名'||item.title==='电话'||item.title==='负责电站'||item.title==='状态'}
+                            >{item.title}
+                            </Checkbox>
+                          </Option>);
                 })}
               </Select>
             </div>
