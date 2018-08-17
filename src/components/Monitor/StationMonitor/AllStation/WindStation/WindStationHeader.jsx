@@ -2,27 +2,28 @@ import React from "react";
 import PropTypes from "prop-types";
 import styles from './windStation.scss';
 import { Progress } from "antd";
+import CommonProgress from '../../../../Common/CommonProgress'
 
 class windStationHeader extends React.Component {
   static propTypes = {
-    windMonitorStation:PropTypes.object,
+    windMonitorStation: PropTypes.object,
   }
   constructor(props, context) {
     super(props, context)
   }
   render() {
     const { windMonitorStation } = this.props;
-  
+
     const stationDataSummary = windMonitorStation.stationDataSummary || {};
     const stationPower = stationDataSummary.stationPower || ' -- ';
-    const stationCapacity =  stationDataSummary.stationCapacity || ' -- ';
-    const stationUnitCount =  stationDataSummary.stationUnitCount || '--';
+    const stationCapacity = stationDataSummary.stationCapacity || ' -- ';
+    const stationUnitCount = stationDataSummary.stationUnitCount || '--';
     const instantaneous = stationDataSummary.instantaneous || ' -- ';
-    const dayPower =stationDataSummary.dayPower || ' -- ';
-    const monthPower =  stationDataSummary.monthPower || ' -- ';
+    const dayPower = stationDataSummary.dayPower || ' -- ';
+    const monthPower = stationDataSummary.monthPower || ' -- ';
     const yearPower = stationDataSummary.yearPower || ' -- ';
-    const yearPlanPower =  stationDataSummary.yearPlanPower || ' -- ';
-    const yearPlanRate =  stationDataSummary.yearPlanRate || ' -- ';
+    const yearPlanPower = stationDataSummary.yearPlanPower || ' -- ';
+    const yearPlanRate = stationDataSummary.yearPlanRate || ' -- ';
     return (
       <div>
         <div className={styles.headStation}>
@@ -32,21 +33,7 @@ class windStationHeader extends React.Component {
             <div className={styles.rightIcon}>
             </div>
           </div>
-          <div className={styles.progressInfo}>
-            <div className={styles.progressData}>
-              <div className={styles.stationValue}>
-                <div>{stationPower}</div>
-                <div>{stationCapacity}</div>
-              </div>
-              <div className={styles.progressBar}>
-                <Progress percent={stationPower / stationCapacity * 100} showInfo={false} status="active" />
-              </div>
-              <div className={styles.stationType}>
-                <div>实时功率 MW</div>
-                <div>装机容量 MW</div>
-              </div>
-            </div>
-          </div>
+          <CommonProgress value={stationPower} total={stationCapacity} valueText={"实时功率 MW"} totalText={"装机容量 MW"} />
           <div className={styles.stationCollect}>
             <div className={styles.equipmentNum}>
               <div className={styles.dataValue}>{stationUnitCount}</div>
@@ -65,22 +52,7 @@ class windStationHeader extends React.Component {
               <div className={styles.dataName}>月发电量 万kWh</div>
             </div>
           </div>
-          <div className={styles.progressInfo}>
-            <div className={styles.progressData}>
-              <div className={styles.stationValue}>
-                <div>{yearPower}</div>
-                <div>{yearPlanPower}</div>
-              </div>
-              <div className={styles.progressBar}>
-                <Progress percent={yearPower / yearPlanPower * 100} showInfo={false} status="active" />
-              </div>
-              <div className={styles.stationType}>
-                <div>年累计发电量 万kWh</div>
-                <div>计划 万kWh</div>
-              </div>
-            </div>
-            <div className={styles.showInfo}>{yearPlanRate}</div>
-          </div>
+          <CommonProgress value={yearPower} total={yearPlanPower} valueText={"年累计发电量 万kWh"} totalText={"计划 万kWh"} percent={yearPlanRate} />
         </div>
       </div>
     )

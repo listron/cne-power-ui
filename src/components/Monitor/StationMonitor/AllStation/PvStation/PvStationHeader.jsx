@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import styles from './pvStation.scss';
 import { Progress } from "antd";
+import CommonProgress from '../../../../Common/CommonProgress'
 class pvStationHeader extends React.Component {
   static propTypes = {
     pvMonitorStation:PropTypes.object,
@@ -32,21 +33,7 @@ class pvStationHeader extends React.Component {
             <div className={styles.rightIcon}>
             </div>
           </div>
-          <div className={styles.progressInfo}>
-            <div className={styles.progressData}>
-              <div className={styles.stationValue}>
-                <div>{stationPower}</div>
-                <div>{stationCapacity}</div>
-              </div>
-              <div className={styles.progressBar}>
-                <Progress percent={stationPower / stationCapacity * 100} showInfo={false} status="active" />
-              </div>
-              <div className={styles.stationType}>
-                <div>实时功率 MW</div>
-                <div>装机容量 MW</div>
-              </div>
-            </div>
-          </div>
+          <CommonProgress value={stationPower} total={stationCapacity} valueText={"实时功率 MW"} totalText={"装机容量 MW"} />
           <div className={styles.stationCollect}>
             <div className={styles.equipmentNum}>
               <div className={styles.dataValue}>{stationUnitCount}</div>
@@ -64,24 +51,10 @@ class pvStationHeader extends React.Component {
               <div className={styles.dataValue}>{monthPower}</div>
               <div className={styles.dataName}>月发电量 万kWh</div>
             </div>
+          </div>
+          <CommonProgress value={yearPower} total={yearPlanPower} valueText={"年累计发电量 万kWh"} totalText={"计划 万kWh"} percent={yearPlanRate} />
+    
 
-          </div>
-          <div className={styles.progressInfo}>
-            <div className={styles.progressData}>
-              <div className={styles.stationValue}>
-                <div>{yearPower}</div>
-                <div>{yearPlanPower}</div>
-              </div>
-              <div className={styles.progressBar}>
-                <Progress percent={yearPower / yearPlanPower * 100} showInfo={false} status="active" />
-              </div>
-              <div className={styles.stationType}>
-                <div>年累计发电量 万kWh</div>
-                <div>计划 万kWh</div>
-              </div>
-            </div>
-            <div className={styles.showInfo}>{yearPlanRate}</div>
-          </div>
         </div>
       </div>
     )
