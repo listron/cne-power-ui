@@ -188,6 +188,12 @@
     background-color: $themeColor;
     border-color: $themeColor;
   }
+  .ant-checkbox-disabled .ant-checkbox-inner{
+    background-color: #eaeaea;
+    border-color: rgba(0,0,0,0.15);
+    border-radius:2px;
+    color: #999;
+  }
   .ant-btn-primary:hover, .ant-btn-primary:focus{
     background-color: $themeColor;
   }

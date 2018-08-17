@@ -179,6 +179,7 @@
             height: 33px;
             border-radius: 4px;
             margin-left: 20px;
+            
             :global{
               .ant-select-selection__placeholder{
                 display: none;
@@ -187,7 +188,7 @@
                 display: none;
               }
               .ant-select-selection {
-                background-color: $themeColor;
+                background: #199475 url(../../../../../../assets/img/handle1.png) center center;
               }
             }
           }
