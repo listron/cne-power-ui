@@ -10,6 +10,10 @@ class SingleStation extends Component {
     getSingleStation: PropTypes.func,
     getCapabilityDiagram: PropTypes.func,
     getMonitorPower: PropTypes.func,
+    getOperatorList: PropTypes.func,
+    getWeatherList: PropTypes.func,
+    getAlarmList: PropTypes.func,
+    getWorkList: PropTypes.func,
   };
   constructor(props) {
     super(props);
@@ -23,10 +27,13 @@ class SingleStation extends Component {
     this.props.getSingleStation({stationCode});
     this.props.getCapabilityDiagram({stationCode,intervalTime});
     this.props.getMonitorPower({stationCode,intervalTime});
+    this.props.getOperatorList({stationCode,roleId: '4,5'});
+    this.props.getWeatherList({stationCode});
+    this.props.getAlarmList({stationCode});
+    this.props.getWorkList({stationCode});
   }
 
   render() {
-    console.log(this.props);
     return (
       <div className={styles.singleStationContainer} >
         <div>这是单电站监控页面！</div>
@@ -44,7 +51,10 @@ const mapDispatchToProps = (dispatch) => ({
   getSingleStation: payload => dispatch({type:singleStationAction.GET_SINGLE_STATION_SAGA, payload}),
   getCapabilityDiagram: payload => dispatch({type:singleStationAction.GET_CAPABILITY_DIAGRAM_SAGA, payload}),
   getMonitorPower: payload => dispatch({type:singleStationAction.GET_MONITOR_POWER_SAGA, payload}),
-
+  getOperatorList: payload => dispatch({type:singleStationAction.GET_OPERATOR_LIST_SAGA, payload}),
+  getWeatherList: payload => dispatch({type:singleStationAction.GET_WEATHER_LIST_SAGA, payload }),
+  getAlarmList: payload => dispatch({type:singleStationAction.GET_ALARM_LIST_SAGA, payload }),
+  getWorkList: payload => dispatch({type:singleStationAction.GET_WORK_LIST_SAGA, payload }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SingleStation);

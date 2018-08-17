@@ -107,19 +107,6 @@ class User extends Component {
     }
   };
 
-  onUserSearch = data => {
-    let params = {
-      enterpriseId: this.props.enterpriseId,
-      userStatus: this.props.userStatus,
-      pageNum: 1,
-      pageSize: this.props.pageSize,
-      userName: data.nameValue,
-      phoneNum: data.phoneValue,
-      stationName: data.stationValue
-    };
-    this.props.getUserList(params);
-  }
-
   onShowSideChange = (showSidePage) => {
     this.setState({ showSidePage });
   }
@@ -138,7 +125,6 @@ class User extends Component {
       <div className={styles.userContainer}>
         <UserMain
           {...this.props}
-          onUserSearch={this.onUserSearch}
           onChangeStatus={this.onChangeStatus}
           onChangeSort={this.onChangeSort}
         />

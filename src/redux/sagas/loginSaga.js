@@ -266,7 +266,6 @@ function *joinEnterprise(action){
     const response = yield call(axios, {
       method: 'post',
       url,
-      headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'},
       data: stringify({
         'grant_type': "password",
         confirmPwd: action.params.confirmPwd,
