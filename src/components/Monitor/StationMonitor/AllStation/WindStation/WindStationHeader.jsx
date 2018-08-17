@@ -1,7 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 import styles from './windStation.scss';
-import { Progress } from "antd";
 import CommonProgress from '../../../../Common/CommonProgress'
 
 class windStationHeader extends React.Component {
