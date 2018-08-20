@@ -44,10 +44,21 @@ class AssignStationModal extends Component {
     if (nextProps.selectedDepartment.length > 0) {
       const department = nextProps.selectedDepartment[0];
       const departmentId = department.departmentId;
-      let selectedDepartment = nextProps.departmentList.find((item)=>item.get('departmentId')===department.departmentId);
+      let selectedDepartment;
+      let parentDepartmentId;
+      let hasParent = false;
+      if(department.parentDepartmentName) {//二级部门
+        const parentDepartment = nextProps.departmentList.find((item)=>item.get('departmentName')===department.parentDepartmentName);
+        selectedDepartment = parentDepartment.get('list').find((item)=>item.get('departmentId')===department.departmentId);
+        parentDepartmentId = parentDepartment.get('departmentId');
+        hasParent = true;
+      } else {//一级部门
+        selectedDepartment = nextProps.departmentList.find((item)=>item.get('departmentId')===department.departmentId);
+        hasParent = false;
+      }
       this.setState({
         selectedDepartment: selectedDepartment,//选中部门
-        expandedKeys: [nextProps.enterpriseId],
+        expandedKeys: hasParent ? [nextProps.enterpriseId, parentDepartmentId] : [nextProps.enterpriseId],
         selectedKeys: [departmentId],
       })
     }

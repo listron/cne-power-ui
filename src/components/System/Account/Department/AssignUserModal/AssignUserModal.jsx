@@ -42,18 +42,34 @@ class AssignUserModal extends Component {
 
   componentWillReceiveProps(nextProps) {
     if(nextProps.selectedDepartment.length > 0) {
-      const department = nextProps.selectedDepartment[0];      
-      let selectedDepartment = nextProps.departmentList.find((item)=>item.get('departmentId')===department.departmentId);
-      const hasChild = selectedDepartment.get('list') && selectedDepartment.get('list').size > 0;
-      let departmentId = selectedDepartment.get('departmentId');
-      let parentDepartmentId = departmentId;
-      if(hasChild) {
-        selectedDepartment = selectedDepartment.getIn(['list', 0]);
+      const department = nextProps.selectedDepartment[0];
+      let selectedDepartment;
+      let departmentId;
+      let parentDepartmentId;
+      let hasParent = false;
+      let hasChild = false;
+      if(department.parentDepartmentName) {//二级部门
+        const parentDepartment = nextProps.departmentList.find((item)=>item.get('departmentName')===department.parentDepartmentName);
+        selectedDepartment = parentDepartment.get('list').find((item)=>item.get('departmentId')===department.departmentId);
         departmentId = selectedDepartment.get('departmentId');
+        parentDepartmentId = parentDepartment.get('departmentId');
+        hasParent = true;
+        hasChild = false;
+      } else {//一级部门
+        selectedDepartment = nextProps.departmentList.find((item)=>item.get('departmentId')===department.departmentId);
+        hasParent = false;
+        hasChild = selectedDepartment.get('list') && selectedDepartment.get('list').size > 0;
+        departmentId = selectedDepartment.get('departmentId');
+        if(hasChild) {//若有子部门，则选中子部门第一个
+          hasParent = true;
+          parentDepartmentId = departmentId;
+          selectedDepartment = selectedDepartment.getIn(['list', 0]);
+          departmentId = selectedDepartment.get('departmentId');
+        }
       }
       this.setState({
         selectedDepartment: selectedDepartment,//选中部门
-        expandedKeys: hasChild ? [nextProps.enterpriseId, parentDepartmentId] : [nextProps.enterpriseId],
+        expandedKeys: hasParent ? [nextProps.enterpriseId, parentDepartmentId] : [nextProps.enterpriseId],
         selectedKeys: [departmentId],
       })
     }
