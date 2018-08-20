@@ -2,20 +2,27 @@
 
 .pvmodule{
   .pvmoduleList{
-    height: 49px;
-    margin: 28px 0;
-    display: flex;
-    flex-direction: row-reverse;
     .pvmoduleItem{
-      width: 180px;
+      width: 205px;
       height: 60px;
+      margin: 0 12px;
+      display: inline-block;
+      margin-bottom: 20px;
+      :global{
+        .iconfont{
+          width: 21px;
+          height: 26px;
+          margin-right: 5px;
+        }
+      }
       .sightValue{
         background: #ceebe0;
-        width: 22px;
-        height: 14px;
+        width: 21px;
+        height: 18px;
         display: inline-block;
         font-size: 11px;
         color: #fff;
+        margin: 0 2px;
       }
     }
   }

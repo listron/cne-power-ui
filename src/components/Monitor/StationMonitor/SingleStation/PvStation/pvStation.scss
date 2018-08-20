@@ -234,6 +234,8 @@
       text-align: center;
       justify-content: space-between;
       color: #dfdfdf;
+      background: #f8f8f8;
+      padding: 16px 25px 0;
       .deviceTypeItem{
         width: 100px;
         height: 90px;
@@ -295,6 +297,7 @@
     }
     .deviceList{
       background: #fff;
+      padding: 16px 25px;
     }
     :global{
       .ant-tabs.ant-tabs-card > .ant-tabs-bar .ant-tabs-nav-container {
@@ -305,8 +308,8 @@
         margin: 0;
       }
       .ant-tabs.ant-tabs-card > .ant-tabs-content > .ant-tabs-tabpane {
-        background: #f8f8f8;
-        padding: 16px 25px 0;
+        
+        
       }
       .ant-tabs.ant-tabs-card > .ant-tabs-bar {
         border-color: #fff;

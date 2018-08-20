@@ -39,7 +39,6 @@ class SingleStation extends Component {
   render() {
     return (
       <div className={styles.singleStationContainer} >
-        <div>这是单电站监控页面！</div>
         <SingleStationMain {...this.props} />
       </div>
     );

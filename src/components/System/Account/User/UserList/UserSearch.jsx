@@ -78,6 +78,11 @@ class UserSearch extends Component {
       stationName: '',
     };
     this.props.getUserList(params);
+    this.setState({
+      nameValue: '', 
+      phoneValue: '', 
+      stationValue: '',
+    })
   }
 
   emptyCondition = () => {
