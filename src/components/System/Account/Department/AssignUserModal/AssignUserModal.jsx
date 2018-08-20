@@ -404,8 +404,8 @@ class AssignUserModal extends Component {
               <span className={styles.userName}>{item.get('username')}</span>
             </div>
             <div className={styles.deparymentName}>
-              {!disabled && item.get('departmentName')}
-              {item.get('userId') === this.props.currentUserId && <span>我</span>}
+              {!disabled && <span className={styles.name} title={item.get('departmentName')}>{item.get('departmentName')}</span>}
+              {item.get('userId') === this.props.currentUserId && <span className={styles.me}>我</span>}
             </div>
           </div>
         );
