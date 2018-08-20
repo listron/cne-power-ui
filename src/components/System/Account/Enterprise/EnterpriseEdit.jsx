@@ -63,7 +63,7 @@ class EnterpriseEdit extends Component {
     const { enterpriseLogo } = this.state;
     const { enterpriseId, enterpriseDetail,saveEnterpriseInfor, loading } = this.props;
     const { showWarningTip, warningTipText } = this.state;
-    const uploadPath=`${pathConfig.basePaths.newAPIBasePath}${pathConfig.commonPaths.imgUploads}`;
+    const uploadPath=`${pathConfig.basePaths.APIBasePath}${pathConfig.commonPaths.imgUploads}`;
     return (
       <div className={styles.enterpriseEdit} >
         {showWarningTip && <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}      

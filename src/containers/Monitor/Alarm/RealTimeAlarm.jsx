@@ -22,6 +22,20 @@ class RealTimeAlarm extends Component {
     super(props);
   }
 
+  componentDidMount() {
+    const { warningLevel, stationType, stationCode, deviceTypeCode, warningConfigName, startTime, endTime, deviceName} = this.props;
+    this.props.getRealTimeAlarm({
+      warningLevel,
+      stationType,
+      stationCode,
+      deviceTypeCode,
+      warningConfigName,
+      startTime,
+      endTime,
+      deviceName
+    });
+  }
+
   render() {
     return (
       <div className={styles.realTimeAlarm}>
