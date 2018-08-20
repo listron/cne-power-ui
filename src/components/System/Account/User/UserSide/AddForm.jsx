@@ -160,7 +160,7 @@ class AddForm extends Component {
               onChange={this.specialRoleId}
               className={styles.specialRoleId}
             >
-              {specialRoleList && specialRoleList.toJS().map((item,index)=>(
+              {specialRoleList && specialRoleList.toJS().length>0 && specialRoleList.toJS().map((item,index)=>(
                 <Option key={item.roleId} value={item.roleId}  >{item.roleDesc}</Option>
               ))}
             </Select>

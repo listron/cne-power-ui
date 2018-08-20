@@ -26,7 +26,22 @@ class UserDetail extends Component {
     this.props.changeUserStore({ showPage: 'edit', userDetail: userDetail });
     this.props.onShowSideChange('edit');
   };
-
+  getEnterpriseStatus = (enterpriseStatus) => {
+    switch(enterpriseStatus){
+      case 3:
+        return '启用';
+      case 4:
+        return '禁用';
+      case 5:
+        return '待审核';
+      case 6:
+        return '审核不通过';
+      case 7:
+        return '移除';
+      default:
+        return ;
+    }
+  }
   prePage = () => {
     let userData = this.props.userData;
     let userId = this.props.userId;
@@ -105,7 +120,7 @@ class UserDetail extends Component {
 
             <div className={styles.user}>
               <span>状态</span>
-              {userDetail.get('enterpriseUserStatus')}
+              {this.getEnterpriseStatus(userDetail.get('enterpriseUserStatus'))}
             </div>
             <div className={styles.time}>
               <span>创建时间</span>

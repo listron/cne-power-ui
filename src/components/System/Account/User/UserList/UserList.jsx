@@ -33,7 +33,7 @@ class UserList extends Component {
   constructor(props){
     super(props);
     this.state = {
-      selectedUserColumns: new Set(),//选中列暂时存在state里，如有需要可存进reducer里
+      selectedUserColumns: new Set(['用户名','电话','角色','特殊权限','负责电站','状态']),//选中列
     }
   }
 
@@ -57,6 +57,7 @@ class UserList extends Component {
       ascend: this.props.ascend, 
       pageNum: currentPage,
       pageSize,
+      roleId: this.props.roleId,
     })
   }
 
@@ -64,7 +65,7 @@ class UserList extends Component {
     const { selectedUserColumns } = this.state;
     let tmpUserColumns = selectedUserColumns;
     if(value === '全选'){
-      tmpUserColumns = new Set();
+      tmpUserColumns = new Set(['用户名','真实姓名','电话','角色','特殊权限','所在企业','负责电站','状态']);
     }else{
       tmpUserColumns.has(value) ? tmpUserColumns.delete(value) : tmpUserColumns.add(value);
     }
@@ -80,26 +81,29 @@ class UserList extends Component {
     this.props.getUserList(params);
   }
 
-  getUserStatus = (userStatus, enterpriseStatus) => {
+  getUserStatus = (userStatus) => {
     if(userStatus===2){
       return '未激活';
-    }else{
-      switch(enterpriseStatus){
-        case 3:
-          return '启用';
-        case 4:
-          return '禁用';
-        case 5:
-          return '待审核';
-        case 6:
-          return '审核不通过';
-        case 7:
-          return '移除';
-        default:
-          return ;
-      }
+    }else if(userStatus===1){
+      return '激活';
     }
-    
+  }
+
+  getEnterpriseStatus = (enterpriseStatus) => {
+    switch(enterpriseStatus){
+      case 3:
+        return '启用';
+      case 4:
+        return '禁用';
+      case 5:
+        return '待审核';
+      case 6:
+        return '审核不通过';
+      case 7:
+        return '移除';
+      default:
+        return ;
+    }
   }
   
   showUserDetail = (record) => {
@@ -134,13 +138,13 @@ class UserList extends Component {
     const columns = [
       {
         title: '用户名',
-        dataIndex: 'userName',
-        key: 'userName',
+        dataIndex: 'username',
+        key: 'username',
         render: (text, record, index) => (<a href={'javascript:void(0)'} onClick={() => this.showUserDetail(record)} >{text}</a>)
       }, {
         title: '真实姓名',
-        dataIndex: 'trueName',
-        key: 'trueName',
+        dataIndex: 'userFullName',
+        key: 'userFullName',
         render: (text,record,index) => (<span>{text}</span>)
       }, {
         title: '电话',
@@ -171,7 +175,7 @@ class UserList extends Component {
         key: 'stationName',
         render: (text,record,index) => {
           let stations = record.stationName && record.stationName.split(',').filter(e=>!!e);
-          const { userName } = record;
+          const { username } = record;
           if(stations && stations.length > 1){
             const content = (<ul>
               {stations.map(e=>(<li key={e} className={styles.eachStation} >
@@ -183,7 +187,7 @@ class UserList extends Component {
                 <span>{stations[0]}</span>
                 <Popover 
                   content={content} 
-                  title={userName + '负责电站'} 
+                  title={username + '负责电站'} 
                   placement="right" 
                   trigger="hover"
                   overlayClassName={styles.responsibleDetails}
@@ -201,7 +205,7 @@ class UserList extends Component {
         dataIndex: 'userStatus',
         key: 'userStatus',
         render: (text, record, index) => {
-          return (<span>{this.getUserStatus(record.userStatus, record.enterpriseStatus)}</span>);
+          return (<span>{this.getEnterpriseStatus(record.enterpriseStatus)+'/'+this.getUserStatus(record.userStatus)}</span>);
         },
       }
     ];
@@ -224,7 +228,7 @@ class UserList extends Component {
     let [editable, deletable, usable, unallowable, examinable] = [ false, false, false, false, false];
     if(selectedUser.length > 0){
       editable = selectedUser.length === 1;
-      let newArray = [...new Set(selectedUser.map(e=>this.getUserStatus(e.userStatus, e.enterpriseStatus)))];
+      let newArray = [...new Set(selectedUser.map(e=>this.getEnterpriseStatus(e.enterpriseStatus)))];
       [deletable, usable, unallowable, examinable] = newArray.length < 2 ? [true, true, true, true] : [ false, false, false, false];
     
       if(selectedUser[0].userStatus === 3){//启用
@@ -237,18 +241,18 @@ class UserList extends Component {
     }else{
       [editable, deletable, usable, unallowable, examinable] = [ false, false, false, false, false];
     }
-
-    return (<Select onChange={this.userHandle} placeholder="操作"  dropdownMatchSelectWidth={false} dropdownClassName={styles.handleDropdown} >
-      <Option value="edit" disabled={!editable}>编辑</Option>
-      <Option value="delete" disabled={!deletable}>移除</Option>
-      <Option value="use" disabled={!usable}>启用</Option>
-      <Option value="unallow" disabled={!unallowable}>禁用</Option>
-      <Option value="examine" disabled={!examinable}>审核</Option>
+    return (<Select onSelect={this.userHandle} placeholder="操作"  dropdownMatchSelectWidth={false} dropdownClassName={styles.handleDropdown} >
+      <Option value="edit" disabled={!editable}><i className="iconfont icon-edit"></i><span>编辑</span></Option>
+      <Option value="delete" disabled={!deletable}><i className="iconfont icon-remove"></i><span>移除</span></Option>
+      <Option value="use" disabled={!usable}><i className="iconfont icon-enable"></i><span>启用</span></Option>
+      <Option value="unallow" disabled={!unallowable}><i className="iconfont icon-disable"></i><span>禁用</span></Option>
+      <Option value="examine" disabled={!examinable}><i className="iconfont icon-examine1"></i><span>审核</span></Option>
     </Select>)
   } 
   
   userHandle = (value) => {
     const { selectedUser, enterpriseId, } = this.props;
+    console.log(selectedUser.toJS()[0])
     if(value === 'edit'){
       this.props.changeUserStore({
         showPage: 'edit',
@@ -279,7 +283,7 @@ class UserList extends Component {
         enterpriseUserStatus: 5,
       })
     }
-    value = "";
+    // value = "";
   }
   
   beforeUpload = (file) => {
@@ -297,13 +301,13 @@ class UserList extends Component {
     const columns = [
       {
         title: '用户名',
-        dataIndex: 'userName',
-        key: 'userName',
+        dataIndex: 'username',
+        key: 'username',
         render: (text, record, index) => (<a href={'javascript:void(0)'} onClick={() => this.showUserDetail(record)} >{text}</a>)
       }, {
         title: '真实姓名',
-        dataIndex: 'trueName',
-        key: 'trueName',
+        dataIndex: 'userFullName',
+        key: 'userFullName',
         render: (text,record,index) => (<span>{text}</span>)
       }, {
         title: '电话',
@@ -334,7 +338,7 @@ class UserList extends Component {
         key: 'stationName',
         render: (text,record,index) => {
           let stations = record.stationName.split(',').filter(e=>!!e);
-          const { userName } = record;
+          const { username } = record;
           if(stations.length > 1){
             const content = (<ul>
               {stations.map(e=>(<li key={e} className={styles.eachStation} >
@@ -346,7 +350,7 @@ class UserList extends Component {
                 <span>{stations[0]}</span>
                 <Popover 
                   content={content} 
-                  title={userName + '负责电站'} 
+                  title={username + '负责电站'} 
                   placement="right" 
                   trigger="hover"
                   overlayClassName={styles.responsibleDetails}
@@ -365,20 +369,18 @@ class UserList extends Component {
         dataIndex: 'userStatus',
         key: 'userStatus',
         render: (text, record, index) => {
-          console.log(record);
-          return (<span>{this.getUserStatus(record.userStatus, record.enterpriseStatus)}</span>);
+          return (<span>{this.getEnterpriseStatus(record.enterpriseStatus)/this.getUserStatus(record.userStatus)}</span>);
         },
       }
     ];
     const url = Path.basePaths.APIBasePath + Path.APISubPaths.system.importUserBatch;
-    const props = {
+    const uploadProps = {
       name: 'file',
       action: url,
       headers: {'Authorization': 'bearer ' + ((authData && authData!== 'undefined') ? JSON.parse(authData) : '')},
       beforeUpload: this.beforeUpload,
       data: {
         enterpriseId: this.props.enterpriseId,
-
       },
       onChange(info) {
         if (info.file.status === 'done') {
@@ -407,28 +409,36 @@ class UserList extends Component {
           <div className={styles.userHelperLeft} >
             <Button onClick={this.onCreateUser} className={styles.addUser} ><Icon type="plus" /><span className={styles.text}>用户</span></Button>
             <Button onClick={this.onInviteUser} >邀请用户</Button>
-            <Upload {...props} className={styles.importUser}>
+            <Upload {...uploadProps} className={styles.importUser}>
               <Button>批量导入</Button>
             </Upload>
             <Button  >导入模板下载</Button>
             <div className={styles.userOperate} >
               {this._createUserOperate()}
             </div>
-            <Select
-              className={styles.selectedColumns} 
-              showArrow={false}
-              dropdownMatchSelectWidth={false}
-              onChange={this.onSelectColumns}
-            >
-              <Option key="全选" value="全选" ><Checkbox checked={selectedUserColumns.size === 0} >全选</Checkbox></Option>
-              {columns.map(item=>{
-                return (<Option
-                          key={item.title}
-                          value={item.title}
-                          // disabled={selectedUserColumns.has(item.title)}
-                        ><Checkbox value={item.title} checked={selectedUserColumns.has(item.title)} >{item.title}</Checkbox></Option>);
-              })}
-            </Select>
+            <div className={styles.selectedColumnsBox} >
+              <Select
+                className={styles.selectedColumns} 
+                showArrow={false}
+                dropdownMatchSelectWidth={false}
+                onChange={this.onSelectColumns}
+              >
+                <Option key="全选" value="全选" ><Checkbox checked={selectedUserColumns.size === 8} >全选</Checkbox></Option>
+                {columns.map(item=>{
+                  return (<Option
+                            key={item.title}
+                            value={item.title}
+                            disabled={item.title==='用户名'||item.title==='电话'||item.title==='负责电站'||item.title==='状态'}
+                          ><Checkbox 
+                            value={item.title} 
+                            checked={selectedUserColumns.has(item.title)} 
+                            disabled={item.title==='用户名'||item.title==='电话'||item.title==='负责电站'||item.title==='状态'}
+                            >{item.title}
+                            </Checkbox>
+                          </Option>);
+                })}
+              </Select>
+            </div>
           </div>
           <CommonPagination total={totalNum} onPaginationChange={this.onPaginationChange} />
         </div>

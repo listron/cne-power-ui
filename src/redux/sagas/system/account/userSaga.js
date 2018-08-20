@@ -20,14 +20,16 @@ function *getUserList(action){
   try{
     yield put({type: userAction.USER_FETCH});
     const response = yield call(axios.post, url, payload);
-    yield put({
-      type: userAction.GET_USER_FETCH_SUCCESS,
-      payload: {
-        ...payload,
-        totalNum: response.data.data.totalNum,
-        userData: response.data.data.userData,
-      }
-    })
+    if(response.data.code==='10000'){
+      yield put({
+        type: userAction.GET_USER_FETCH_SUCCESS,
+        payload: {
+          ...payload,
+          totalNum: response.data.data.totalNum,
+          userData: response.data.data.userData,
+        }
+      })
+    }
   }catch(e){
     console.log(e);
   }

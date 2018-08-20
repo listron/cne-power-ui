@@ -12,7 +12,7 @@ class User extends Component {
     userId: PropTypes.string,
     roleId: PropTypes.string,
     userStatus: PropTypes.number,
-    userName: PropTypes.string,
+    username: PropTypes.string,
     stationName: PropTypes.string,
     phoneNum: PropTypes.string,
     sort: PropTypes.string,
@@ -30,6 +30,7 @@ class User extends Component {
     getRoleAllList: PropTypes.func,
     roleAllList: PropTypes.object,
     specialRoleList: PropTypes.object,
+    order: PropTypes.string,
   };
   constructor(props) {
     super(props);
@@ -42,12 +43,12 @@ class User extends Component {
       enterpriseId: this.props.enterpriseId,
       roleId: this.props.roleId,
       userStatus: this.props.userStatus,
-      userName: this.props.userName,
+      username: this.props.username,
       phoneNum: this.props.phoneNum,
       stationName: this.props.stationName,
       pageNum: this.props.currentPage,
       pageSize: this.props.pageSize,
-      order: 0,
+      order: '0',
     };
     this.props.getUserList(params);
     this.props.getRoleAllList({enterpriseId: this.props.enterpriseId, roleType: "0"});
@@ -60,7 +61,7 @@ class User extends Component {
         enterpriseId: this.props.enterpriseId,
         roleId: this.props.roleId,
         userStatus: this.props.userStatus,
-        userName: this.props.userName,
+        username: this.props.username,
         phoneNum: this.props.phoneNum,
         stationName: this.props.stationName,
         pageNum: 1,
@@ -77,7 +78,12 @@ class User extends Component {
         enterpriseId: this.props.enterpriseId,
         userStatus: this.props.userStatus,
         pageNum: 1,
-        pageSize: pageSize
+        pageSize: pageSize,
+        roleId: this.props.roleId,
+        username: this.props.username,
+        phoneNum: this.props.phoneNum,
+        stationName: this.props.stationName,
+        order: this.props.order,
       };
       this.props.getUserList(params);
     }
@@ -89,7 +95,12 @@ class User extends Component {
         enterpriseId: this.props.enterpriseId,
         userStatus: this.props.userStatus,
         pageNum: currentPage,
-        pageSize: this.props.pageSize
+        pageSize: this.props.pageSize,
+        roleId: this.props.roleId,
+        username: this.props.username,
+        phoneNum: this.props.phoneNum,
+        stationName: this.props.stationName,
+        order: this.props.order,
       };
       this.props.getUserList(params);
     }
@@ -106,19 +117,6 @@ class User extends Component {
       this.props.getUserList(params);
     }
   };
-
-  onUserSearch = data => {
-    let params = {
-      enterpriseId: this.props.enterpriseId,
-      userStatus: this.props.userStatus,
-      pageNum: 1,
-      pageSize: this.props.pageSize,
-      userName: data.nameValue,
-      phoneNum: data.phoneValue,
-      stationName: data.stationValue
-    };
-    this.props.getUserList(params);
-  }
 
   onShowSideChange = (showSidePage) => {
     this.setState({ showSidePage });
@@ -138,7 +136,6 @@ class User extends Component {
       <div className={styles.userContainer}>
         <UserMain
           {...this.props}
-          onUserSearch={this.onUserSearch}
           onChangeStatus={this.onChangeStatus}
           onChangeSort={this.onChangeSort}
         />
