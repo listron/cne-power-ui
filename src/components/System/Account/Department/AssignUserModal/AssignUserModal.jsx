@@ -131,10 +131,6 @@ class AssignUserModal extends Component {
     }
     if(item.list && item.list.length > 0) {
       const index = expandedKeys.findIndex(item=>item===key);
-      // let newExpandedKeys = [];
-      // for(let i = 0; i < expandedKeys.length; i++) {
-      //   newExpandedKeys[i] = expandedKeys[i];
-      // }
       if(index === -1) {
         expandedKeys = expandedKeys.push(key);
       } else {

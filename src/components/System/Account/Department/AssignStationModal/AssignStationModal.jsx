@@ -116,9 +116,9 @@ class AssignStationModal extends Component {
     if(item === null) {
       return;
     }
-    let selectedStationList = this.getDepartmenStationRange(item, this.state.stationList);
+    let selectedStationList = this.getDepartmenStationRange(Immutable.fromJS(item), this.state.stationList);
     this.setState({
-      selectedDepartment: item,
+      selectedDepartment: Immutable.fromJS(item),
       selectedStationList,
       selectedKeys
     });
@@ -224,7 +224,7 @@ class AssignStationModal extends Component {
         selectedKeys={this.state.selectedKeys}
       >
         <TreeNode title={enterpriseName} key={enterpriseId} dataRef={null}>
-          {this.renderTreeNodes(departmentList)}
+          {this.renderTreeNodes(departmentList.toJS())}
         </TreeNode>
       </Tree>
     );
@@ -234,15 +234,15 @@ class AssignStationModal extends Component {
     let stationNum;
     return (
       treeData.map((item) => {
-        stationNum = this.getDepartmentStation(item.get('departmentId')).size;
-        if(item.get('list') && item.get('list').size > 0) {
+        stationNum = this.getDepartmentStation(item.departmentId).size;
+        if(item.list && item.list.length > 0) {
           return (
-            <TreeNode title={item.get('departmentName')+'('+stationNum+')'} key={item.get('departmentId')} dataRef={item}>
-              {this.renderTreeNodes(item.get('list'))}
+            <TreeNode title={item.departmentName+'('+stationNum+')'} key={item.departmentId} dataRef={item}>
+              {this.renderTreeNodes(item.list)}
             </TreeNode>
           );
         } else {
-          return <TreeNode title={item.get('departmentName')+'('+stationNum+')'} key={item.get('departmentId')} dataRef={item} />
+          return <TreeNode title={item.departmentName+'('+stationNum+')'} key={item.departmentId} dataRef={item} />
         }
       })
     );
