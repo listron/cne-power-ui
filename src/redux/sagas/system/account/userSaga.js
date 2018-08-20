@@ -16,7 +16,7 @@ function *changeUserStore(action){
 // 请求用户列表
 function *getUserList(action){
   const { payload } = action;
-  const url = Path.basePaths.newAPIBasePath + Path.APISubPaths.system.getUserList;
+  const url = Path.basePaths.APIBasePath + Path.APISubPaths.system.getUserList;
   try{
     yield put({type: userAction.USER_FETCH});
     const response = yield call(axios.post, url, payload);
@@ -35,7 +35,7 @@ function *getUserList(action){
 // 更改企业用户状态
 function *changeUserStatus(action){
   const { payload } =action;
-  const url = Path.basePaths.newAPIBasePath + Path.APISubPaths.system.changeUserStatus;
+  const url = Path.basePaths.APIBasePath + Path.APISubPaths.system.changeUserStatus;
   try{
     yield put({type: userAction.USER_FETCH});
     const response = yield call(axios.put, url, payload);
@@ -72,7 +72,7 @@ function *changeUserStatus(action){
 // 请求用户详情
 function *getUserDetail(action){
   const { payload } = action;
-  const url = Path.basePaths.newAPIBasePath + Path.APISubPaths.system.getUserDetail + payload.userId;
+  const url = Path.basePaths.APIBasePath + Path.APISubPaths.system.getUserDetail + payload.userId;
   try{
     yield put({ type: userAction.USER_FETCH});
     const response = yield call(axios.get, url,payload);
@@ -93,7 +93,7 @@ function *getUserDetail(action){
 // 邀请用户信息
 function *getInviteLink(action){
   const { payload } = action;
-  const url = Path.basePaths.newAPIBasePath + Path.APISubPaths.system.getInviteLink;
+  const url = Path.basePaths.APIBasePath + Path.APISubPaths.system.getInviteLink;
   try{
     yield put({ type: userAction.USER_FETCH});
     const response = yield call(axios.get, url, {params: {enterpriseId: payload.enterpriseId}});
@@ -113,7 +113,7 @@ function *getInviteLink(action){
 // 获取企业角色列表
 function *getRoleAllList(action){
   const { payload } = action;
-  const url = Path.basePaths.newAPIBasePath + Path.APISubPaths.system.getRoleAllList;
+  const url = Path.basePaths.APIBasePath + Path.APISubPaths.system.getRoleAllList;
   try{
     yield put({ type: userAction.USER_FETCH});
     const response = yield call(axios.post, url, payload);
@@ -142,7 +142,7 @@ function *getRoleAllList(action){
 // 编辑用户信息
 function *editUserInfo(action){
   const { payload } =action;
-  const url = Path.basePaths.newAPIBasePath + Path.APISubPaths.system.editUserInfo;
+  const url = Path.basePaths.APIBasePath + Path.APISubPaths.system.editUserInfo;
   try{
     yield put({ type: userAction.USER_FETCH });
     const response = yield call(axios.put, url, payload);
@@ -171,7 +171,7 @@ function *editUserInfo(action){
 // 新建用户信息
 function *createUserInfo(action){
   const { payload } = action;
-  const url = Path.basePaths.newAPIBasePath + Path.APISubPaths.system.createUserInfo;
+  const url = Path.basePaths.APIBasePath + Path.APISubPaths.system.createUserInfo;
   yield put({ type: userAction.USER_FETCH});
   try{
     const response = yield call(axios.post, url, payload);

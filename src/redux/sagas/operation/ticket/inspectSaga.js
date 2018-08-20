@@ -7,7 +7,7 @@ import { ticketAction } from '../../../../constants/actionTypes/operation/ticket
 
 //获取巡检列表信息
 function* getInspectList(action){
-  let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.ticket.getInspectionList;
+  let url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.getInspectionList;
   yield put({ type: ticketAction.TICKET_FETCH});
   const { params } = action;
   try{
@@ -36,7 +36,7 @@ function* getInspectList(action){
 
 // 获取巡检工单详情
 function* getInspectDetail(action){
-  let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.ticket.getInspectDetail;
+  let url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.getInspectDetail;
   yield put({type: ticketAction.TICKET_FETCH });
   try {
     const response = yield call(axios.get, url, { params: action.params });  
@@ -70,7 +70,7 @@ function* setInspectId(action){
 
 // 巡检添加异常
 function* addInspectAbnormal(action){
-  let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.ticket.addInspectAbnormal;
+  let url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.addInspectAbnormal;
   yield put({ type: ticketAction.TICKET_FETCH })
   try{
     const response = yield call(axios.post, url, action.params);
@@ -107,7 +107,7 @@ function* clearInspect(action) {
 
 // 巡检异常设备转为工单
 function *transformDefect(action){
-  let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.ticket.transformDefect;
+  let url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.transformDefect;
   yield put({ type: ticketAction.TICKET_FETCH })
   try{
     const response = yield call(axios.post, url, action.params );
@@ -137,7 +137,7 @@ function *transformDefect(action){
 
 // 巡检验收
 function *setInspectCheck(action){
-  let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.ticket.setInspectCheck;
+  let url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.setInspectCheck;
   yield put({ type: ticketAction.TICKET_FETCH })
   try{
     const response = yield call(axios.post, url, action.params)
@@ -176,7 +176,7 @@ function *setInspectCheck(action){
 }
 // 完成巡检
 function *finishInspect(action){
-  let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.ticket.finishInspect;
+  let url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.finishInspect;
   yield put({ type: ticketAction.TICKET_FETCH })
   try{
     const response = yield call(axios.post, url, action.params)
@@ -215,7 +215,7 @@ function *finishInspect(action){
 }
 // 创建巡检
 function *createInspect(action){
-  let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.ticket.createInspect;
+  let url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.createInspect;
   yield put({ type: ticketAction.TICKET_FETCH })
   try{
     const response = yield call(axios.post, url, action.params)
@@ -254,7 +254,7 @@ function *createInspect(action){
 }
 // 删除异常设备
 function *deleteAbnormal(action){
-  let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.ticket.deleteAbnormal;
+  let url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.deleteAbnormal;
   yield put({ type: ticketAction.TICKET_FETCH })
   try{
     const response = yield call(axios.get, url, {params: action.params })
@@ -281,7 +281,7 @@ function *deleteAbnormal(action){
 }
 // 获取巡检标准
 function *getInspectStandard(action){
-  let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.ticket.getInspectStandard;
+  let url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.getInspectStandard;
   yield put({type: ticketAction.TICKET_FETCH})
   try{
     const response = yield call(axios.get, url, {params: action.params} )
@@ -306,7 +306,7 @@ function *getInspectStandard(action){
 }
 // 巡检批量验收
 function *inspectCheckBatch(action){
-  let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.ticket.inspectCheckBatch;
+  let url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.inspectCheckBatch;
   yield put({type: ticketAction.TICKET_FETCH})
   try{
     const response = yield call(axios.post, url, action.params)

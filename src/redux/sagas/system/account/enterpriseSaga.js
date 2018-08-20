@@ -18,7 +18,7 @@ function *changeEnterpriseStore(action){
   function *getEnterprisList(action){
     const { payload } = action;
     const url = '/mock/system/enterprisList';
-    // const url = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.system.getEnterprisList}/${payload.userID}`
+    // const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.getEnterprisList}/${payload.userID}`
     try{
       yield put({ type:enterpriseAction.ENTERPRISE_FETCH });
       const response = yield call(axios.get,url);
@@ -40,7 +40,7 @@ function *changeEnterpriseStore(action){
 function *getEnterpriseDetail(action){
   const { payload } = action;
   // const url = '/mock/system/enterprisDetail/12';
-  const url = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.system.getEnterprisDetail}/${payload.enterpriseId}`
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.getEnterprisDetail}/${payload.enterpriseId}`
   try{
     yield put({ type:enterpriseAction.ENTERPRISE_FETCH });
     const response = yield call(axios.get,url);
@@ -59,7 +59,7 @@ function *getEnterpriseDetail(action){
 function *ignoreEnterpirseEdit(action){
   const { payload } = action;
   const url = '/mock/system/ignoreDetail';
-  // const url = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.system.saveEnterpriseDetail}`
+  // const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.saveEnterpriseDetail}`
   try{
     yield put({ type:enterpriseAction.ENTERPRISE_FETCH });
     const response = yield call(axios.post,url,payload);
@@ -76,7 +76,7 @@ function *ignoreEnterpirseEdit(action){
 function *saveEnterpriseInfor(action){
   const { payload } = action;
   // const url = '/mock/system/changeEnterprise';
-  const url = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.system.saveEnterpriseDetail}`
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.saveEnterpriseDetail}`
   try{
     yield put({ type:enterpriseAction.ENTERPRISE_FETCH });
     const response = yield call(axios.put,url,payload);

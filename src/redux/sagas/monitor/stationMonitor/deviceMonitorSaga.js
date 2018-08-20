@@ -51,15 +51,15 @@ function *getNormalDeviceData(action){ // 请求单设备-除气象站数据信�
   const hours = 72;
   try{
     const devicesUrl = '/mock/monitor/deviceList';
-    // const devicesUrl = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.monitor.stationDeviceList}/${stationCode}/${deviceTypeCode}`;
+    // const devicesUrl = `${Path.basePaths.APIBasePath}${Path.APISubPaths.monitor.stationDeviceList}/${stationCode}/${deviceTypeCode}`;
     const detailUrl = monitorPath[deviceTypeCode].detail;
-    // const detailUrl = `${Path.basePaths.newAPIBasePath}${monitorPath[deviceTypeCode].detail}/${deviceCode}`;
+    // const detailUrl = `${Path.basePaths.APIBasePath}${monitorPath[deviceTypeCode].detail}/${deviceCode}`;
     const tenMinUrl = monitorPath[deviceTypeCode].tenMin;
-    // const tenMinUrl = `${Path.basePaths.newAPIBasePath}${monitorPath[deviceTypeCode].tenMin}/${deviceCode}/${hours}`;
+    // const tenMinUrl = `${Path.basePaths.APIBasePath}${monitorPath[deviceTypeCode].tenMin}/${deviceCode}/${hours}`;
     const pointUrl = '/mock/monitor/monitorPointData';
-    // const pointUrl = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.monitor.monitorPointData}/${deviceCode}`
+    // const pointUrl = `${Path.basePaths.APIBasePath}${Path.APISubPaths.monitor.monitorPointData}/${deviceCode}`
     const alarmUrl = '/mock/monitor/deviceAlarm';
-    // const alarmUrl = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.monitor.deviceAlarmData}/${deviceCode}`
+    // const alarmUrl = `${Path.basePaths.APIBasePath}${Path.APISubPaths.monitor.deviceAlarmData}/${deviceCode}`
 
     yield put({ type:deviceAction.MONITOR_DEVICE_FETCH });
     const [tmpDevices, tmpDetail, tmpTenMin, tmpPoint, tmpAlarm] = yield all([
@@ -102,9 +102,9 @@ function *getWeatherStationData(action){ // 请求气象站设备信息
   const { deviceTypeCode, deviceCode } = payload;
   try{
     const detailUrl = monitorPath[deviceTypeCode].detail;
-    // const detailUrl = `${Path.basePaths.newAPIBasePath}${monitorPath[deviceTypeCode].detail}/${deviceCode}`;
+    // const detailUrl = `${Path.basePaths.APIBasePath}${monitorPath[deviceTypeCode].detail}/${deviceCode}`;
     const alarmUrl = '/mock/monitor/deviceAlarm';
-    // const alarmUrl = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.monitor.deviceAlarmData}/${deviceCode}`
+    // const alarmUrl = `${Path.basePaths.APIBasePath}${Path.APISubPaths.monitor.deviceAlarmData}/${deviceCode}`
     yield put({ type:deviceAction.MONITOR_DEVICE_FETCH });
     const [tmpDetail,tmpAlarm] = yield all([
       call(axios.get, detailUrl),

@@ -15,7 +15,7 @@ function *changeCommonStore(action){//存储payload指定参数，替换reducer-
 //获取所有电站信息
 function *getStations(action){
   const { payload } = action;
-  const url = `${Path.basePaths.newAPIBasePath}${Path.commonPaths.getStations}/${payload.userId}`;
+  const url = `${Path.basePaths.APIBasePath}${Path.commonPaths.getStations}/${payload.userId}`;
   yield put({ type: commonAction.COMMON_FETCH });
   try {
     const response = yield call(axios.get,url);
@@ -42,7 +42,7 @@ function *getStations(action){
 //获取用户权限范围内所有设备类型信息
 function *getDeviceTypes(action){
   const { payload } = action;
-  const url = `${Path.basePaths.newAPIBasePath}${Path.commonPaths.getDevicetypes}/${payload.userId}`;
+  const url = `${Path.basePaths.APIBasePath}${Path.commonPaths.getDevicetypes}/${payload.userId}`;
   yield put({ type: commonAction.COMMON_FETCH });
   try {
     const response = yield call(axios.get, url);
@@ -68,7 +68,7 @@ function *getDeviceTypes(action){
 }
 //获取电站下设备类型信息
 function *getStationDeviceTypes(action){
-  let url = Path.basePaths.newAPIBasePath + Path.commonPaths.getStationDevicetypes;
+  let url = Path.basePaths.APIBasePath + Path.commonPaths.getStationDevicetypes;
   yield put({ type: commonAction.COMMON_FETCH });
   try {
     const response = yield call(axios.get, url, {params: action.params});
@@ -95,7 +95,7 @@ function *getStationDeviceTypes(action){
 }
 //获取设备信息列表
 function *getDevices(action){
-  let url = Path.basePaths.newAPIBasePath + Path.commonPaths.getDevices;
+  let url = Path.basePaths.APIBasePath + Path.commonPaths.getDevices;
   yield put({ type: commonAction.COMMON_FETCH });
   try {
     const response = yield call(axios.get, url, {params: action.params});
@@ -123,7 +123,7 @@ function *getDevices(action){
 
 //获取方阵列表
 function *getPartition(action){
-  let url = Path.basePaths.newAPIBasePath + Path.commonPaths.getPartitions;
+  let url = Path.basePaths.APIBasePath + Path.commonPaths.getPartitions;
   yield put({ type: commonAction.COMMON_FETCH });
   try {
     const response = yield call(axios.get, url, {params: action.params});

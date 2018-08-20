@@ -16,7 +16,6 @@ const environmentUrl = apiConfig.public.environment
 
 module.exports = {
   apiHostUri: apiConfig[environmentUrl].apiUrlReal + '/api',
-  newApiHostUri: apiConfig[environmentUrl].newApiUrl + '/api',
 	tokenUri: apiConfig[environmentUrl].apiUrlReal + '/token',
 	outUrl: '',
 	apiUrlReal: apiConfig[environmentUrl].apiUrlReal,

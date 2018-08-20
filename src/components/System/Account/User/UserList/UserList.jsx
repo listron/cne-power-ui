@@ -370,7 +370,7 @@ class UserList extends Component {
         },
       }
     ];
-    const url = Path.basePaths.newAPIBasePath + Path.APISubPaths.system.importUserBatch;
+    const url = Path.basePaths.APIBasePath + Path.APISubPaths.system.importUserBatch;
     const props = {
       name: 'file',
       action: url,

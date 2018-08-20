@@ -18,7 +18,7 @@ function *changeRoleStore(action){
 //请求角色列表数据
 function *getRoleList(action){
   const { payload } = action;
-  const url = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.system.getRoleList}/${payload.enterpriseId}`;
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.getRoleList}/${payload.enterpriseId}`;
   try{
     yield put({ type:roleAction.ROLE_FETCH });
     const response = yield call(axios.get,url);
@@ -35,7 +35,7 @@ function *getRoleList(action){
 
 //请求功能列表数据
 function *getMenuList(action){
-  const url = Path.basePaths.newAPIBasePath + Path.APISubPaths.system.getMenuList;
+  const url = Path.basePaths.APIBasePath + Path.APISubPaths.system.getMenuList;
   try{
     yield put({ type:roleAction.ROLE_FETCH });
     const response = yield call(axios.get,url);
@@ -61,7 +61,7 @@ function *createRole(action){
     roleDesc,
     rightId
   }
-  const url = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.system.createRole}`
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.createRole}`
   try{
     yield put({ type:roleAction.ROLE_FETCH });
     const response = yield call(axios.post,url,data);
@@ -99,7 +99,7 @@ function *createRole(action){
 //编辑角色
 function *editRole(action){
   const { payload, enterpriseId } = action;
-  const url = replacePathParams(Path.basePaths.newAPIBasePath + Path.APISubPaths.system.createRole, enterpriseId);
+  const url = replacePathParams(Path.basePaths.APIBasePath + Path.APISubPaths.system.createRole, enterpriseId);
   try{
     yield put({ type:roleAction.ROLE_FETCH });
     const response = yield call(axios.put,url,payload);
@@ -137,7 +137,7 @@ function *editRole(action){
 //删除角色
 function *deleteRole(action) {
   const { payload } = action;
-  const url = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.system.deleteRole}/${payload.roleId}`;
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.deleteRole}/${payload.roleId}`;
   try{
     yield put({ type:roleAction.ROLE_FETCH });
     const response = yield call(axios.delete,url);
