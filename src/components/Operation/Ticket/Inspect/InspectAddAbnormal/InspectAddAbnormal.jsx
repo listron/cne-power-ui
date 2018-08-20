@@ -247,7 +247,7 @@ class inspectAddAbnormal extends Component {
                   initialValue: [],
                   valuePropName: 'data',
                 })(
-                  <ImgUploader uploadPath={`${pathConfig.basePaths.newAPIBasePath}${pathConfig.commonPaths.imgUploads}`} editable={true}  />
+                  <ImgUploader uploadPath={`${pathConfig.basePaths.APIBasePath}${pathConfig.commonPaths.imgUploads}`} editable={true}  />
                 )}
               </FormItem>
               <FormItem

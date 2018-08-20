@@ -16,7 +16,7 @@ function *changeDepartmentStore(action){//存储payload指定参数，替换redu
 function *getDepartmentList(action){//请求部门列表数据
   const { payload } = action;
   // const url = '/mock/system/departmentList';
-  const url = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.system.getDepartmentList}`
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.getDepartmentList}`
   try{
     yield put({ type:departmentAction.DEPARTMENT_FETCH });
     const response = yield call(axios.post,url,payload);
@@ -46,7 +46,7 @@ function *getDepartmentList(action){//请求部门列表数据
 function *deleteDepartment(action){  // 删除部门
   const { payload } = action;
   // const url = '/mock/system/deleteDepartment';
-  const url = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.system.departmentInfo}/${payload.departmentId}`
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.departmentInfo}/${payload.departmentId}`
   try{
     yield put({ type:departmentAction.DEPARTMENT_FETCH });
     const response = yield call(axios.delete,url);
@@ -93,7 +93,7 @@ function *deleteDepartment(action){  // 删除部门
 function *getDepartmentUser(action){
   const { payload } = action;
   // const url = '/mock/system/allDepartments';
-  const url = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.system.getDepartmentUser}/${payload.enterpriseId}`
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.getDepartmentUser}/${payload.enterpriseId}`
   try{
     yield put({ type:departmentAction.DEPARTMENT_FETCH });
     const response = yield call(axios.get,url);
@@ -113,7 +113,7 @@ function *getDepartmentUser(action){
 function *getAllDepartment(action){//获取所有部门基础信息
   const { payload } = action;
   // const url = '/mock/system/allDepartments';
-  const url = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.system.getAllDepartment}/${payload.enterpriseId}`
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.getAllDepartment}/${payload.enterpriseId}`
   try{
     yield put({ type:departmentAction.DEPARTMENT_FETCH });
     const response = yield call(axios.get,url);
@@ -133,7 +133,7 @@ function *getAllDepartment(action){//获取所有部门基础信息
 function *getDepartmentStation(action){//获取电站-部门一一对应表
   const { payload } = action;
   // const url = '/mock/system/allDepartments';
-  const url = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.system.getDepartmentStation}/${payload.enterpriseId}`
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.getDepartmentStation}/${payload.enterpriseId}`
   try{
     yield put({ type:departmentAction.DEPARTMENT_FETCH });
     const response = yield call(axios.get,url);
@@ -154,7 +154,7 @@ function *getDepartmentStation(action){//获取电站-部门一一对应表
 function *getDepartmentDetail(action){// 请求单部门详细数据信息
   const { payload } = action;
   // const url = '/mock/system/departmentDetail';
-  const url = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.system.departmentInfo}/${payload.departmentId}`
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.departmentInfo}/${payload.departmentId}`
   try{
     yield put({ type:departmentAction.DEPARTMENT_FETCH });
     const response = yield call(axios.get,url);
@@ -172,14 +172,14 @@ function *getDepartmentDetail(action){// 请求单部门详细数据信息
 function *getOtherPageDetail(action){//部门详情页第一条查看前一条详情/最后一条看下一条详情=>翻页+请求详情
   const { payload, previous } = action;
   // const listUrl = '/mock/system/departmentList';
-  const listUrl = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.system.getDepartmentList}`
+  const listUrl = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.getDepartmentList}`
   try{
     yield put({ type:departmentAction.DEPARTMENT_FETCH });
     const listResponse = yield call(axios.post,listUrl,payload);
     const { departmentData, totalNum } = listResponse.data.data;
     const { departmentId } = previous?departmentData[departmentData.length - 1]:departmentData[0];
     // const detailUrl = '/mock/system/departmentDetail';
-    const detailUrl = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.system.departmentInfo}/${departmentId}`
+    const detailUrl = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.departmentInfo}/${departmentId}`
     const detailResponse = yield call(axios.get,detailUrl);
     yield put({
       type:  departmentAction.GET_DEPARTMENT_FETCH_SUCCESS,
@@ -198,7 +198,7 @@ function *getOtherPageDetail(action){//部门详情页第一条查看前一条�
 function *addDepartmentInfo(action){//新建部门信息
   const { payload } = action;
   // const url = '/mock/system/addDepartment';
-  const url = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.system.departmentInfo}`
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.departmentInfo}`
   try{
     yield put({ //按钮的loading
       type:departmentAction.CHANGE_DEPARTMENT_STORE,
@@ -253,7 +253,7 @@ function *addDepartmentInfo(action){//新建部门信息
 function *editDepartmentInfo(action){//编辑部门信息
   const { payload } = action;
   // const url = '/mock/system/editDepartment';
-  const url = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.system.departmentInfo}`
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.departmentInfo}`
   try{
     yield put({ //按钮的loading
       type:departmentAction.CHANGE_DEPARTMENT_STORE,
@@ -298,7 +298,7 @@ function *editDepartmentInfo(action){//编辑部门信息
 function *setDepartmentUser(action) {
   const { payload } = action;
   // const url = '/mock/system/editDepartment';
-  const url = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.system.setDepartmentUser}`
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.setDepartmentUser}`
   try{
     const response = yield call(axios.post,url,payload);
     if(response.data.code === "10000"){
@@ -326,7 +326,7 @@ function *setDepartmentUser(action) {
 function *setDepartmentStation(action) {
   const { payload } = action;
   // const url = '/mock/system/editDepartment';
-  const url = `${Path.basePaths.newAPIBasePath}${Path.APISubPaths.system.setDepartmentStation}`
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.setDepartmentStation}`
   try{
     const response = yield call(axios.post,url,payload);
     if(response.data.code === "10000"){

@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Icon } from 'antd';
-import DateFilter from './DateFilter';
-import StationTypeFilter from './StationTypeFilter';
-import StationFilter from './StationFilter';
-import DeviceTypeFilter from './DeviceTypeFilter';
-import AlarmTypeFilter from './AlarmTypeFilter';
-import AlarmLevelFilter from './AlarmLevelFilter';
-import FilteredItems from './FilteredItems';
+import DateFilter from '../AlarmFilter/DateFilter';
+import StationTypeFilter from '../AlarmFilter/StationTypeFilter';
+import StationFilter from '../AlarmFilter/StationFilter';
+import DeviceTypeFilter from '../AlarmFilter/DeviceTypeFilter';
+import AlarmTypeFilter from '../AlarmFilter/AlarmTypeFilter';
+import AlarmLevelFilter from '../AlarmFilter/AlarmLevelFilter';
+import FilteredItems from '../AlarmFilter/FilteredItems';
 import styles from './alarmFilter.scss';
 
 class RealTimeAlarmFilter extends Component {
@@ -19,6 +19,7 @@ class RealTimeAlarmFilter extends Component {
     warningConfigName: PropTypes.string,
     startTime: PropTypes.string,
     endTime: PropTypes.string,
+    deviceName: PropTypes.string,
     getRealTimeAlarm: PropTypes.func,
   }
 
@@ -42,14 +43,15 @@ class RealTimeAlarmFilter extends Component {
   }
 
   onChangeFilter = (obj) => {
-    const { warningLevel, stationCode, deviceTypeCode, warningConfigName, startTime, endTime } = this.props;
+    const { warningLevel, stationCode, deviceTypeCode, warningConfigName, startTime, endTime, deviceName } = this.props;
     let filter = {
       warningLevel,
       stationCode,
       deviceTypeCode,
       warningConfigName,
       startTime,
-      endTime
+      endTime,
+      deviceName
     }
     let newFiter = Object.assign({}, filter, obj);
     this.props.getRealTimeAlarm(newFiter);
