@@ -58,7 +58,7 @@ class EditUser extends Component {
     const { userLogo } = this.state;
     const { userDetail,saveUserInfor, loading } = this.props;
     const { showWarningTip, warningTipText } = this.state;
-    const uploadPath=`${pathConfig.basePaths.newAPIBasePath}${pathConfig.commonPaths.imgUploads}`;
+    const uploadPath=`${pathConfig.basePaths.APIBasePath}${pathConfig.commonPaths.imgUploads}`;
     return (
       <div className={styles.editUser} >
         {showWarningTip && <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}      

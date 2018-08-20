@@ -5,7 +5,6 @@ import config from '../config/apiConfig';
 export default {
   basePaths:{
     APIBasePath: config.apiHostUri,
-    newAPIBasePath: config.newApiHostUri,
     TokenBasePath: config.tokenUri
   },
   commonPaths:{
