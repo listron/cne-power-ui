@@ -139,7 +139,7 @@ class UserDetail extends Component {
 
             <div>
               <span className={styles.title}>真实姓名</span>
-              <span className={styles.value}>{userDetail.get('fullName')}</span>
+              <span className={styles.value}>{userDetail.get('userFullName')}</span>
             </div>
             <div>
               <span className={styles.title}>邮箱</span>

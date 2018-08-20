@@ -238,4 +238,35 @@ module.exports = [
       "serviceCode": "3.0"
     },
   },
+  {
+    api: '/mock/api/v3/station/devicetypeflow/76',//获取单电站设备类型流程图(设备示意图)
+    method: 'get',
+    response: {
+      "code": "10000",
+      "message": "请求成功",
+      "data": [0,1,2,3,4].map(e=>({
+        deviceTypeCode: '1000'+e,
+        deviceTypeName: '汇流箱'+e,
+        sort: e,
+      })),
+      "serviceCode": "3.0"
+    },
+  },
+  {
+    api: '/mock/api/v3/monitor/pvmodule/datalist/76',//获取单电站光伏组件列表
+    method: 'get',
+    response: {
+      "code": "10000",
+      "message": "请求成功",
+      "data": [0,1,2,3,4,5,6,7,8,9,10].map(e=>({
+        deviceId: '1000'+e,
+        deviceCode: '00000'+e,
+        electricityList: [0,1,2,3,4,5,6,7,8,9,10].map(e=>({
+          NB039: '4.0'+e,
+          pointStatus: 0,
+        })),
+      })),
+      "serviceCode": "3.0"
+    },
+  },
 ]

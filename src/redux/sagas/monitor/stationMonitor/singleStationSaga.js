@@ -16,11 +16,9 @@ function *changeSingleStationStore(action){
 function *getSingleStation(action){
   const { payload } = action;
   const url = '/mock/api/v3/monitor/station/'+ payload.stationCode;
-  console.log(payload);
   try{
     yield put({type: singleStationAction.SINGLE_STATION_FETCH});
     const response = yield call(axios.get, url);
-    console.log(response);
     yield put({
       type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
       payload: {
@@ -38,11 +36,9 @@ function *getCapabilityDiagram(action){
   const { payload } = action;
   // const url = '/mock/api/v3/monitor/capabilitydiagram/'+ payload.stationCode+ '/' + payload.intervalTime;
   const url = '/mock/api/v3/monitor/capabilitydiagram/76/24';
-  console.log(payload);
   try{
     yield put({type: singleStationAction.SINGLE_STATION_FETCH});
     const response = yield call(axios.get, url);
-    console.log(response);
     yield put({
       type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
       payload: {
@@ -59,11 +55,9 @@ function *getCapabilityDiagram(action){
 function *getMonitorPower(action){
   const { payload } = action;
   const url = '/mock/api/v3/monitor/power/'+ payload.stationCode+ '/' + payload.intervalTime;
-  console.log(payload);
   try{
     yield put({type: singleStationAction.SINGLE_STATION_FETCH});
     const response = yield call(axios.get, url);
-    console.log(response);
     yield put({
       type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
       payload: {
@@ -82,7 +76,6 @@ function *getStationList(action){
   try{
     yield put({type: singleStationAction.SINGLE_STATION_FETCH});
     const response = yield call(axios.post, url, payload);
-    console.log(response);
     yield put({
       type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
       payload: {
@@ -102,7 +95,6 @@ function *getOperatorList(action){
   try{
     yield put({type: singleStationAction.SINGLE_STATION_FETCH});
     const response = yield call(axios.get, url, payload);
-    console.log(response);
     yield put({
       type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
       payload: {
@@ -121,7 +113,6 @@ function *getWeatherList(action){
   try{
     yield put({type: singleStationAction.SINGLE_STATION_FETCH});
     const response = yield call(axios.get, url, payload);
-    console.log(response);
     yield put({
       type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
       payload: {
@@ -140,7 +131,6 @@ function *getAlarmList(action){
   try{
     yield put({type: singleStationAction.SINGLE_STATION_FETCH});
     const response = yield call(axios.get, url, payload);
-    console.log(response);
     yield put({
       type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
       payload: {
@@ -159,12 +149,47 @@ function *getWorkList(action){
   try{
     yield put({type: singleStationAction.SINGLE_STATION_FETCH});
     const response = yield call(axios.get, url, payload);
-    console.log(response);
     yield put({
       type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
       payload: {
         ...payload,
         workList: response.data.data,
+      }
+    })
+  }catch(e){
+    console.log(e);
+  }
+}
+// 获取单电站设备类型流程图(设备示意图)
+function *getDeviceTypeFlow(action){
+  const { payload } = action;
+  const url = '/mock/api/v3/station/devicetypeflow/'+ payload.stationCode;
+  try{
+    yield put({type: singleStationAction.SINGLE_STATION_FETCH});
+    const response = yield call(axios.get, url, payload);
+    yield put({
+      type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
+      payload: {
+        ...payload,
+        deviceTypeFlow: response.data.data,
+      }
+    })
+  }catch(e){
+    console.log(e);
+  }
+}
+//
+function *getPvmoduleList(action){
+  const { payload } = action;
+  const url = '/mock/api/v3/monitor/pvmodule/datalist/'+ payload.stationCode;
+  try{
+    yield put({type: singleStationAction.SINGLE_STATION_FETCH});
+    const response = yield call(axios.get, url, payload);
+    yield put({
+      type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
+      payload: {
+        ...payload,
+        pvmoduleList: response.data.data,
       }
     })
   }catch(e){
@@ -181,5 +206,8 @@ export function* watchSingleStationMonitor() {
   yield takeLatest(singleStationAction.GET_WEATHER_LIST_SAGA, getWeatherList);
   yield takeLatest(singleStationAction.GET_ALARM_LIST_SAGA, getAlarmList);
   yield takeLatest(singleStationAction.GET_WORK_LIST_SAGA, getWorkList);
+  yield takeLatest(singleStationAction.GET_DEVICE_TYPE_FLOW_SAGA, getDeviceTypeFlow);
+  yield takeLatest(singleStationAction.GET_PVMODULE_LIST_SAGA, getPvmoduleList);
+  
 }
 
