@@ -3,8 +3,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import echarts from 'echarts';
 import bmap from 'echarts/extension/bmap/bmap';
-import { Progress } from 'antd';
-import styles from './WindStation/windStation.scss';
+//import { Progress } from 'antd';
+//import styles from './WindStation/windStation.scss';
 
 class Interval extends Component {
   static propTypes = {
@@ -24,7 +24,7 @@ class Interval extends Component {
     this.setMapChart(testChart);
   }
   setMapChart = (testChart) => {
-   
+
     const { stationDataList } = this.props;
 
     const option = {
@@ -139,35 +139,34 @@ class Interval extends Component {
         orient: 'vertical',
         top: 'bottom',
         left: 'right',
-        data: ['正常', '未接入', '未联网', '告警', '断开'],
+        data: ['正常',  '信息中断', '未接入'],
       },
       // 类型是：scatter散点
       series: [{
         type: 'scatter',
         tooltip: {
           //position:['50%','50%'],
-          formatter: (params)=>{
-            //console.log(params.data.name);
-            return `<div className={style.stationCard}>
-            <div className={styles.stationCardTitle}>
-            <span>${params.data.name}</span>&nbsp;&nbsp;
-            <span style='color:red'>⚠${params.data.alarmNum}</span>
+          formatter: (params) => {
+           // console.log(params.data);
+            return `<div class='stationCard' style='height:70px;overflow:hidden'>
+            <div class='stationCardTitle' style='display:flex;flex-direction: row;justify-content: space-between;'>
+            <span>${params.data.name}</span>
+           
+            <span style='color:red'>${params.data.alarmNum>0?'⚠':''}${params.data.alarmNum>0?params.data.alarmNum:''}</span>              
             </div>           
-            <div className={styles.stationCardProgress}>
-              <Progress percent={50} showInfo={false} />
-            </div>
-            <div className={styles.stationCardValue}>
-              <span className={styles.stationMark}>${params.data.stationPower}MW</span>
+            <div class='stationCardProgress' style='background:#dfdfdf;height:1px;
+            width:100%;' ></div>
+            <div class='stationCardValue'}>
+              <span class='stationMark'>${params.data.stationPower}MW</span>
               &nbsp;&nbsp;
               <span>${params.data.stationCapacity}MW</span>
             </div>
-            <div className={styles.stationCardWindSpeed}>${params.data.instantaneous}m/s</div>             
+            <div class='stationCardWindSpeed'>${params.data.instantaneous}m/s</div>             
           </div>`
-
-            
-
           },
-            
+          // width:'128px',
+          // height:'68px',
+
 
           backgroundColor: '#fff',
           textStyle: {
@@ -175,12 +174,13 @@ class Interval extends Component {
           },
           extraCssText: 'box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);',
         },
-       
+
         name: '电站状态',
         // symbol:'image//../../../../../theme/img/wind-normal.png',
         coordinateSystem: 'bmap',
         //data: coordinate,
         data: stationDataList,
+        
 
         symbolSize: 12,
         label: {
@@ -188,7 +188,7 @@ class Interval extends Component {
             show: false
           },
           emphasis: {
-            show: true
+            show: false
           }
         },
         itemStyle: {
@@ -202,7 +202,7 @@ class Interval extends Component {
     testChart.setOption(option)
     testChart.on('click', (params) => {
       // alert('我要跳转')
-      console.log(params, '电站的参数');
+      alert(params, '电站的参数');
 
     })
   }
@@ -210,7 +210,7 @@ class Interval extends Component {
   render() {
     const { barData } = this.state;
     const { testId, stationDataList } = this.props;
-   
+
 
     return (
       <div>
@@ -220,3 +220,7 @@ class Interval extends Component {
   }
 }
 export default Interval
+{/* <Progress percent={50} showInfo={false} /> */ }
+{/* <div style='position:relative;border-radius:9px;height:9px; background:#f5f5f5'>
+<div style=' position: absolute;top: 0;left: 0;background:#199475;height: 9px;border-radius:9px;width: ${params.data.stationPower/params.data.stationCapacity *100>100?100:params.data.stationPower/params.data.stationCapacity *100}%;'></div>             
+</div> */}

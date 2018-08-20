@@ -99,6 +99,7 @@ export default {
       importUserBatch: '/v3/user/batch',//批量导入用户
     },
     monitor: {//实时监控
+      getStationType:'/v3/monitor/stations/',
       stationDeviceList: '/api/v3/station/devicelist', // 单电站设备列表获取
       seriesinverterDetail: '/api/v3/monitor/seriesinverter',//组串式逆变器详情
       seriesinverterTenMin: '/api/v3/monitor/seriesinverter/sequencechart',//组串式逆变器10min时序图

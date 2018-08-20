@@ -183,7 +183,7 @@ class PvStationList extends React.Component {
         render: (value, record, index) => {
           return {
             children: (
-              <div className={styles.currentStation}>{record.currentStation==='0'?<div className={styles.redColor} ></div>:record.currentStation==='1'?<div className={styles.greyColor}></div>:<div className={styles.greenColor}></div>}</div>
+              <div className={styles.currentStation}>{record.currentStation === '500' ? <div className={styles.dataInterruptionColor} ></div> : record.currentStation === '900' ? <div className={styles.unconnectionColor}></div> : <div className={styles.normalColor}></div>}</div>
             )
           }
         }
@@ -194,18 +194,18 @@ class PvStationList extends React.Component {
       return (
         {
           key: `${item.stationCode}` ,
-          stationName: `${item.stationName}`,
-          stationrovince: `${item.provinceName}`,
-          stationPower: `${item.stationPower}`,
-          stationCapacity: `${item.stationCapacity}`,
-          windSpeed: `${item.instantaneous}`,
-          dayOutput: `${item.dayPower}`,
-          monthOutput: `${item.monthPower}`,
-          yearOutput: `${item.yearPower}`,
-          planOutput: `${item.yearPlanPower}`,
-          equipmentNum: `${item.stationUnitCount}`,
-          alarmNum: `${item.alarmNum}`,
-          currentStation: `${item.stationType}`
+          stationName: `${item.stationName||'--'}`,
+          stationrovince: `${item.provinceName||'--'}`,
+          stationPower: `${item.stationPower||'--'}`,
+          stationCapacity: `${item.stationCapacity||'--'}`,
+          windSpeed: `${item.instantaneous||'--'}`,
+          dayOutput: `${item.dayPower||'--'}`,
+          monthOutput: `${item.monthPower||'--'}`,
+          yearOutput: `${item.yearPower||'--'}`,
+          planOutput: `${item.yearPlanPower||'--'}`,
+          equipmentNum: `${item.stationUnitCount||'--'}`,
+          alarmNum: `${item.alarmNum||'--'}`,
+          currentStation: `${item.stationStatus.stationStatus}`
         }
       )
     })

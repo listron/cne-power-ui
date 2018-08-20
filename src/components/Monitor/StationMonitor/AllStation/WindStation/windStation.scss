@@ -57,8 +57,6 @@
         background: url('../../../../../theme/img/wind-normal.png') no-repeat center;
 
       }
-
-
     }
     .progressInfo{
       display: flex;
@@ -71,15 +69,11 @@
         flex-direction: column;
         flex-wrap: wrap;
         margin-left: 25px;
-
-
         .stationValue{
           flex: 1;
           display: flex;
-
           justify-content: space-between;
           padding-top: 20px;
-
         }
         .progressBar{
           flex: 1;
@@ -142,23 +136,49 @@
     flex: 1;
     flex-wrap: wrap;
 
-
-
     .stationCard {
-      margin: 20px 0 0 20px;
+      margin: 20px 0 10px 20px;
       padding: 8px;
       width: 215px;
       height: 132px;
       border-radius:4px;
-      background: #f1f1f1;
       color: #999;
       background:#ffffff;
       box-shadow:0 1px 4px 0 ;
       display: flex;
       flex-direction: column;
+      cursor: pointer;
+    }
+    .stationTest{
+      margin: 20px 0 0 20px;
+      padding: 8px;
+      width: 215px;
+      height: 132px;
+      border-radius:4px;  
+      color: #999;
+      display: flex;
+      flex-direction: column;
+      background:#f8f8f8;
+      box-shadow:0 1px 4px 0 rgba(0,0,0,0.20);
+      pointer-events: none;
+      cursor: default;
+      opacity: 0.6;
+        
     }
     .stationCardTitle {
       flex: 1;
+      display: flex;
+      flex-direction: row;
+      justify-content:space-between;
+      .stationName{
+        width: 150px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      i{
+        color:#e08031;
+      }
     }
     .stationCardProgress {
       flex: 1;
@@ -189,7 +209,6 @@
     .stationWarning {
       color: red;
     }
-
   }
   .windStationList{
     width: 1210px;
@@ -214,21 +233,27 @@
       text-overflow: ellipsis;
     }
     .currentStation{
-      .redColor{
-        background: red;
-        width: 5px;
+      .dataInterruptionColor{
+        background: #e08031;
+        width: 6px;
         height: 20px;
+        border-radius:2px;
+
       }
-      .greyColor{
-        background:grey;
-        width: 5px;
+      .unconnectionColor{
+        background:#c7ceb2;
+        width: 6px;
         height: 20px;
+        border-radius:2px;
+
       }
   
-      .greenColor{
-        background:green;
+      .normalColor{
+        background:#199475;
         width: 5px;
         height: 20px;
+        border-radius:2px;
+
       }
     }
     
@@ -267,41 +292,4 @@
 
 }
 
-  // .stationCard {
-    
-  //   display: flex;
-  //   flex-direction: column;
-  // }
-  // .stationCardTitle {
-  //   flex: 1;
-  // }
-  // .stationCardProgress {
-  //   flex: 1;
-  //   display: flex;
-  //   justify-content: center;
-  //   align-items: center;
-  //   flex-direction: row;
-  // }
-
-  // .stationCardValue {
-  //   flex: 1;
-  //   display: flex;
-  //   flex-direction: row;
-  //   justify-content: space-between;
-  // }
-  // .stationMark {
-  //   color: #20cc20;
-  // }
-  // .stationCardWindSpeed {
-  //   flex: 1;
-  // }
-  // .stationCardEquipmentNum {
-  //   flex: 1;
-  //   display: flex;
-  //   flex-direction: row;
-  //   justify-content: space-between;
-  // }
-  // .stationWarning {
-  //   color: red;
-  // }
-
+  

@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import styles from './allStation.scss';
-import { Icon } from 'antd';
+//import { Icon } from 'antd';
 import CommonProgress from '../../../Common/CommonProgress'
 
 
@@ -51,7 +51,7 @@ class AllStationHeader extends React.Component {
               <div className={styles.dataName}>月发电量 万kWh</div>
             </div>
           </div>
-          <CommonProgress value={yearPower} total={yearPlanPower} valueText={"年累计发电量 万kWh"} totalText={"计划 万kWh"} percent={yearPlanRate} />
+          <CommonProgress value={yearPower} total={yearPlanPower} valueText={"年累计发电量 万kWh"} totalText={"计划 万kWh"} percent={yearPlanRate>0?yearPlanRate:''} />
 
          
 
@@ -59,7 +59,8 @@ class AllStationHeader extends React.Component {
 {/* 筛选 */}
         <div className={styles.stationNav}>
           <div className={styles.showType}>
-            <Icon type="global" />
+            {/* <Icon type="global" /> */}
+            <i className="iconfont icon-map"></i>
           </div>
           <div className={styles.typeTotal}>
             <div className={styles.windTotal}>风电:{windNum}</div>

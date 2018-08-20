@@ -5,7 +5,7 @@ import styles from './pvStation.scss';
 import Map from '../Map.jsx';
 import PvStationHeader from './PvStationHeader.jsx';
 import PvStationItem from './PvStationItem.jsx';
-import { Tabs, Icon, Radio, Switch } from "antd";
+import { Tabs, Radio, Switch } from "antd";
 import PvStationList from "./PvStationList";
 class PvStation extends React.Component {
   static propTypes = {
@@ -42,7 +42,25 @@ class PvStation extends React.Component {
   render() {
     let { key, checked, stationType } = this.state;
     const { pvMonitorStation } = this.props;
-    const { stationDataList } = pvMonitorStation;
+    const { stationDataList,stationDataSummary } = pvMonitorStation; 
+    console.log(pvMonitorStation);
+    const normalNum=stationDataSummary.stationStatusSummary.filter(e=>{
+      return e.stationStatus===400
+    }).length>0?stationDataSummary.stationStatusSummary.filter(e=>{
+      return e.stationStatus===400
+    })[0].stationNum:'0';
+
+    const dataInterruptionNum=stationDataSummary.stationStatusSummary.filter(e=>{
+      return e.stationStatus===500
+    }).length>0?stationDataSummary.stationStatusSummary.filter(e=>{
+      return e.stationStatus===500
+    })[0].stationNum:'0';
+    
+    const unconnectionNum=stationDataSummary.stationStatusSummary.filter(e=>{
+      return e.stationStatus===900
+    }).length>0?stationDataSummary.stationStatusSummary.filter(e=>{
+      return e.stationStatus===900
+    })[0].stationNum:'0';
     //let stationType=stationDataList.stationStatus.stationStatus
     const newStationDataList = stationDataList.filter(e => {
       return !checked || (checked && e.alarmNum > 0)
@@ -73,44 +91,42 @@ class PvStation extends React.Component {
           style={{ marginLeft: 20 }}
         >
           <Radio.Button value="all">全部</Radio.Button>
-          <Radio.Button value="normal">通讯正常</Radio.Button>
-          <Radio.Button value="dataInterruption">数据中断</Radio.Button>
-          <Radio.Button value="networkInterruption">网络中断</Radio.Button>
-          <Radio.Button value="unconnection">未接入</Radio.Button>
+          <Radio.Button value="normal">通讯正常  {normalNum}<span></span></Radio.Button>
+          <Radio.Button value="dataInterruption">信息中断  {dataInterruptionNum}</Radio.Button>
+          {/* <Radio.Button value="networkInterruption">网络中断</Radio.Button> */}
+          <Radio.Button value="unconnection">未接入  {unconnectionNum}</Radio.Button>
         </Radio.Group>
       </div>
     );
-    let provinceNum = () => {
-      let ary = [];
-      this.props.pvMonitorStation.stationDataList.forEach((item, index) => {
-        let findProvince = false
-
-        ary.forEach(e => {
-          if (e.provinceName === item.provinceName) {
-            findProvince = true;
-            e.provinceNum += 1;
-          }
-        })
-        if (!findProvince) {
-          ary.push({
-            provinceName: item.provinceName,
-            provinceNum: 1
-          })
-        }
-      })
-     // console.log(ary);
-      return ary;
-    }
+   
     const province = (
       <div>
-        {provinceNum().map((item, index) => {
-          return (
-            <span key={index}>{item.provinceName}:{item.provinceNum}&nbsp;&nbsp;</span>
-          )
-        })}
+       
+         {this.props.pvMonitorStation.stationDataSummary.stationProvinceSummary.map((item,index)=>{
+      return (
+        <span key={index}>{item.provinceName}:{item.lightStationNum}&nbsp;&nbsp;</span>
+      )
+    })}
       </div>
     )
 
+    let iconArray = [
+      {400:'circle',500:'triangle',900:'roundRect'},
+   
+
+    ]
+    let data = [];
+    stationDataList.forEach((item, index) => {
+      data.push({
+        name: item.stationName,
+        value: [item.longitude, item.latitude, item.stationType, item.stationStatus.stationStatus],
+        symbol: [iconArray[0][item.stationStatus.stationStatus]],
+        alarmNum: item.alarmNum,
+        stationPower: item.stationPower,
+        stationCapacity: item.stationCapacity,
+        instantaneous: item.instantaneous
+      })
+    })
     return (
       <div className={styles.pvStation}>
        <PvStationHeader {...this.props} />
@@ -119,7 +135,7 @@ class PvStation extends React.Component {
           <TabPane
             tab={
               <span>
-                <Icon type="appstore" />
+               <i className="iconfont icon-grid"></i>
               </span>
             }
             key="1"
@@ -130,7 +146,7 @@ class PvStation extends React.Component {
           <TabPane
             tab={
               <span>
-                <Icon type="bars" />
+                <i className="iconfont icon-table"></i>
               </span>
             }
             key="2"
@@ -140,12 +156,12 @@ class PvStation extends React.Component {
           <TabPane
             tab={
               <span>
-                <Icon type="global" />
+               <i className="iconfont icon-map"></i>
               </span>
             }
             key="3"
           >
-            <Map testId="pv_bmap_station" />
+            <Map testId="pv_bmap_station" {...this.props} stationDataList={data} />
           </TabPane>
         </Tabs>,
 
@@ -155,3 +171,4 @@ class PvStation extends React.Component {
 }
 export default PvStation
 
+ 

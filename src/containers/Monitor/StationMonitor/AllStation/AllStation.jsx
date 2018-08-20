@@ -25,10 +25,10 @@ class AllStation extends Component {
     }
   }
   componentDidMount() {
-    this.props.getAllMonitorStation()
+    this.props.getAllMonitorStation({stationType:'2'})
   }
   queryTargetData = (activeKey) => {
-    activeKey === '全部' ? this.props.getAllMonitorStation() : activeKey === '风电' ? this.props.getWindMonitorStation() : activeKey === '光伏' ? this.props.getPvMonitorStation() : alert('这个按钮没有考虑呢')
+    activeKey === '全部' ? this.props.getAllMonitorStation({stationType:'2'}) : activeKey === '风电' ? this.props.getWindMonitorStation({stationType:'0'}) : activeKey === '光伏' ? this.props.getPvMonitorStation({stationType:'1'}) : alert('这个按钮没有考虑呢')
     this.setState({
       key: activeKey,
     })
