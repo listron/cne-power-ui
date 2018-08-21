@@ -5,7 +5,7 @@ import echarts from 'echarts';
 import bmap from 'echarts/extension/bmap/bmap';
 
 
-class Interval extends Component {
+class Map extends Component {
   static propTypes = {
     allMonitorStation: PropTypes.object,
     testId: PropTypes.string,
@@ -179,11 +179,8 @@ class Interval extends Component {
         name: '电站状态',
         // symbol:'image//../../../../../theme/img/wind-normal.png',
         coordinateSystem: 'bmap',
-        //data: coordinate,
         data: stationDataList,
-        
-
-        symbolSize: 12,
+        symbolSize: 16,
         label: {
           normal: {
             show: false
@@ -220,5 +217,5 @@ class Interval extends Component {
     )
   }
 }
-export default Interval
+export default Map;
 
