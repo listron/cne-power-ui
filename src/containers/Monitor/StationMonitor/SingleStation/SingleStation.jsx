@@ -14,6 +14,8 @@ class SingleStation extends Component {
     getWeatherList: PropTypes.func,
     getAlarmList: PropTypes.func,
     getWorkList: PropTypes.func,
+    getDeviceTypeFlow: PropTypes.func,
+    getPvmoduleList: PropTypes.func,
   };
   constructor(props) {
     super(props);
@@ -22,7 +24,6 @@ class SingleStation extends Component {
     }
   }
   componentDidMount() {
-    console.log(this.props.match);
     const { stationCode, intervalTime } = this.props.match.params;
     this.props.getSingleStation({stationCode});
     this.props.getCapabilityDiagram({stationCode,intervalTime});
@@ -31,12 +32,13 @@ class SingleStation extends Component {
     this.props.getWeatherList({stationCode});
     this.props.getAlarmList({stationCode});
     this.props.getWorkList({stationCode});
+    this.props.getDeviceTypeFlow({stationCode});
+    this.props.getPvmoduleList({stationCode});
   }
 
   render() {
     return (
       <div className={styles.singleStationContainer} >
-        <div>这是单电站监控页面！</div>
         <SingleStationMain {...this.props} />
       </div>
     );
@@ -48,6 +50,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
+  changeSingleStationStore: payload => dispatch({type:singleStationAction.CHANGE_SINGLE_STATION_STORE_SAGA, payload}),
   getSingleStation: payload => dispatch({type:singleStationAction.GET_SINGLE_STATION_SAGA, payload}),
   getCapabilityDiagram: payload => dispatch({type:singleStationAction.GET_CAPABILITY_DIAGRAM_SAGA, payload}),
   getMonitorPower: payload => dispatch({type:singleStationAction.GET_MONITOR_POWER_SAGA, payload}),
@@ -55,6 +58,8 @@ const mapDispatchToProps = (dispatch) => ({
   getWeatherList: payload => dispatch({type:singleStationAction.GET_WEATHER_LIST_SAGA, payload }),
   getAlarmList: payload => dispatch({type:singleStationAction.GET_ALARM_LIST_SAGA, payload }),
   getWorkList: payload => dispatch({type:singleStationAction.GET_WORK_LIST_SAGA, payload }),
+  getDeviceTypeFlow: payload => dispatch({type:singleStationAction.GET_DEVICE_TYPE_FLOW_SAGA, payload}),
+  getPvmoduleList: payload => dispatch({type:singleStationAction.GET_PVMODULE_LIST_SAGA, payload}),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SingleStation);
