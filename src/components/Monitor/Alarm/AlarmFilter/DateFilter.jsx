@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { DatePicker } from 'antd';
 import moment from 'moment';
-import styles from './inspectFilter.scss';
+import styles from './alarmFilter.scss';
 const { RangePicker } = DatePicker;
 
 class DateFilter extends Component {

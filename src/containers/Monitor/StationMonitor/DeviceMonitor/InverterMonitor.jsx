@@ -28,7 +28,7 @@ class InverterMonitor extends Component {
   }
 }
 const mapStateToProps = (state) => ({
-    ...state.monitor.deviceMonitorReducer.toJS(),
+    ...state.monitor.deviceMonitor.toJS(),
 });
 
 const mapDispatchToProps = (dispatch) => ({

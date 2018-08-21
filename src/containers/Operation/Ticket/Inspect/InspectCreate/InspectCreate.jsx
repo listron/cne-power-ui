@@ -18,9 +18,9 @@ class InspectCreate extends Component{
   }
 
   componentDidMount(){
-    this.props.getStations({
-      enterpriseId: '1010694160817111040'//to do
-    });
+    // this.props.getStations({
+    //   enterpriseId: '1010694160817111040'//to do
+    // });
   }
 
   onCloseInspectCreate = () => {
