@@ -5,36 +5,51 @@ import AllStationHeader from './AllStationHeader.jsx'
 import Map from './Map.jsx'
 class Allstation extends React.Component {
   static propTypes = {
-    allMonitorStation:PropTypes.object,
-    stationDataList:PropTypes.array,
+    allMonitorStation: PropTypes.object,
+    stationDataList: PropTypes.array,
   }
   constructor(props, context) {
     super(props, context)
   }
-componentDidMount(){
-   
-}
+  componentDidMount() {
+
+  }
 
   render() {
-    const{allMonitorStation}=this.props;
-    const stationDataList=allMonitorStation.stationDataList || [];
+    const { allMonitorStation } = this.props;
+    if(allMonitorStation===null||'')return '';
+    const stationDataList = allMonitorStation.stationDataList || [];
     console.log(stationDataList);
-    const dataList=[];
-    stationDataList.forEach((item,index)=>{
-      dataList.push([item.longitude,item.latitude])
+  
+    let iconArray = [
+      {400:'circle',500:'triangle',900:'roundRect'},//这是测试用的图标
+      // {400:['circle','triangle'],500:'diamond',900:'roundRect'},
+      {400:'arrow',500:'diamond',900:'diamond'},
+       // {400:['circle','triangle'],500:'diamond',900:'roundRect'},
+ 
+    ]
+    let data = [];
+    stationDataList.forEach((item, index) => {
+      data.push({
+        name: item.stationName,
+        value: [item.longitude, item.latitude, item.stationType, item.stationStatus.stationStatus],
+        symbol: [iconArray[item.stationType][item.stationStatus.stationStatus]],
+        //symbol: [iconArray[item.stationType][item.stationStatus.stationStatus===400?item.stationStatus.stationStatus[item.alarmNum?1:0]:item.stationStatus.stationStatus]],
+        alarmNum: item.alarmNum,
+        stationPower: item.stationPower,
+        stationCapacity: item.stationCapacity,
+        instantaneous: item.instantaneous
+      })
     })
-    console.log(dataList);
-    
+    console.log(data);
 
     return (
       <div className={styles.allStationContainer}>
         <AllStationHeader {...this.props} />
-        <Map testId="allstation_bmap_station" {...this.props} stationDataList={[]} />
+        <Map testId="allstation_bmap_station" {...this.props} stationDataList={data} />
       </div>
     )
   }
 }
-
-
 export default Allstation
 

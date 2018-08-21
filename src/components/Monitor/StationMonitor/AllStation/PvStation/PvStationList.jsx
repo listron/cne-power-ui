@@ -7,7 +7,8 @@ class PvStationList extends React.Component {
   static propTypes = {  
     pageNum: PropTypes.number,
     pageSize: PropTypes.number,
-    stationDataList:PropTypes.array, 
+    stationDataList:PropTypes.array,
+ 
   }
   constructor(props, context) {
     super(props, context)
@@ -26,6 +27,9 @@ class PvStationList extends React.Component {
     console.log("params", pagination, filters, sorter);
   }
 
+ 
+  
+
   render() {  
     const {stationDataList}=this.props; 
     const { pageNum,pageSize,}=this.state;
@@ -42,8 +46,8 @@ class PvStationList extends React.Component {
         sorter: (a, b) => a.stationName.length - b.stationName.length,
         render: (value, record, index) => {
           return {
-            children: (
-              <div className={styles.stationName}>{record.stationName}</div>
+            children: (<a href={'javascript:void(0)'} onClick={() => console.log("record",'跳转到单电站')} ><div className={styles.stationName}>{record.stationName}</div></a>
+              
             )
           }
         }
@@ -183,7 +187,7 @@ class PvStationList extends React.Component {
         render: (value, record, index) => {
           return {
             children: (
-              <div className={styles.currentStation}>{record.currentStation==='0'?<div className={styles.redColor} ></div>:record.currentStation==='1'?<div className={styles.greyColor}></div>:<div className={styles.greenColor}></div>}</div>
+              <div className={styles.currentStation}>{record.currentStation === '500' ? <div className={styles.dataInterruptionColor} ></div> : record.currentStation === '900' ? <div className={styles.unconnectionColor}></div> : <div className={styles.normalColor}></div>}</div>
             )
           }
         }
@@ -194,18 +198,18 @@ class PvStationList extends React.Component {
       return (
         {
           key: `${item.stationCode}` ,
-          stationName: `${item.stationName}`,
-          stationrovince: `${item.provinceName}`,
-          stationPower: `${item.stationPower}`,
-          stationCapacity: `${item.stationCapacity}`,
-          windSpeed: `${item.instantaneous}`,
-          dayOutput: `${item.dayPower}`,
-          monthOutput: `${item.monthPower}`,
-          yearOutput: `${item.yearPower}`,
-          planOutput: `${item.yearPlanPower}`,
-          equipmentNum: `${item.stationUnitCount}`,
-          alarmNum: `${item.alarmNum}`,
-          currentStation: `${item.stationType}`
+          stationName: `${item.stationName||'--'}`,
+          stationrovince: `${item.provinceName||'--'}`,
+          stationPower: `${item.stationPower||'--'}`,
+          stationCapacity: `${item.stationCapacity||'--'}`,
+          windSpeed: `${item.instantaneous||'--'}`,
+          dayOutput: `${item.dayPower||'--'}`,
+          monthOutput: `${item.monthPower||'--'}`,
+          yearOutput: `${item.yearPower||'--'}`,
+          planOutput: `${item.yearPlanPower||'--'}`,
+          equipmentNum: `${item.stationUnitCount||'--'}`,
+          alarmNum: `${item.alarmNum||'--'}`,
+          currentStation: `${item.stationStatus.stationStatus}`
         }
       )
     })

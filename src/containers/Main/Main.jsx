@@ -78,7 +78,7 @@ class Main extends Component {
     if((moment().isBefore(getCookie('expireData'), 'second')) 
     && (authData !== 'undefined' && authData !== null) 
     && (isNotLogin === '0')){
-    //  if(true){
+      //if(true){
       return (
         <div className={styles.app}>
           <div className={styles.appHeader}>
