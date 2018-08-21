@@ -28,9 +28,9 @@ class DefectCreate extends Component {
   } 
   componentDidMount(){
     const { editNewDefect } = this.props;
-    this.props.getStations({
-      enterpriseId: '1010694160817111040'//to do
-    });
+    // this.props.getStations({
+    //   enterpriseId: '1010694160817111040'//to do
+    // });
     if(editNewDefect){
       const { defectDetail } = this.props;
       const stationType = defectDetail.stationType;
