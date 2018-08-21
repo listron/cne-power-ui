@@ -3,8 +3,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import echarts from 'echarts';
 import bmap from 'echarts/extension/bmap/bmap';
-//import { Progress } from 'antd';
-//import styles from './WindStation/windStation.scss';
+
 
 class Interval extends Component {
   static propTypes = {
@@ -202,7 +201,7 @@ class Interval extends Component {
     testChart.setOption(option)
     testChart.on('click', (params) => {
       // alert('我要跳转')
-      alert(params, '电站的参数');
+      console.log(params, '电站的参数');
 
     })
   }
