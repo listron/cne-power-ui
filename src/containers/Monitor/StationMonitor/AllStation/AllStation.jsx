@@ -69,6 +69,7 @@ const mapDispatchToProps = (dispatch) => ({
   getPvMonitorStation: payload => dispatch({ type: allStationAction.GET_PV_MONITORSTATION_SAGA, payload }),
   changeMonitorStationStore: payload => dispatch({ type: allStationAction.CHANGE_MONITORSTATION_STORE_SAGA, payload }),
 
+
 })
 
 

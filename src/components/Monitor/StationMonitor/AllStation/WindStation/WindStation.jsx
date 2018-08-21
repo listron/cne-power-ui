@@ -119,8 +119,8 @@ class WindStation extends React.Component {
 //地图数据处理
 
     let iconArray = [
-      {400:'circle',500:'triangle',900:'roundRect'},
-   
+      {400:'circle',500:'triangle',900:'roundRect'},//只是测试
+   //{400:['circle','triangle'],500:'diamond',900:'roundRect'},
 
     ]
     let data = [];
@@ -129,6 +129,7 @@ class WindStation extends React.Component {
         name: item.stationName,
         value: [item.longitude, item.latitude, item.stationType, item.stationStatus.stationStatus],
         symbol: [iconArray[0][item.stationStatus.stationStatus]],
+        // symbol: [iconArray[0][item.stationStatus.stationStatus===400?item.stationStatus.stationStatus[item.alarmNum?1:0]:item.stationStatus.stationStatus]],
         alarmNum: item.alarmNum,
         stationPower: item.stationPower,
         stationCapacity: item.stationCapacity,

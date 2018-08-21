@@ -34,7 +34,7 @@ class PvStationItem extends React.Component{
                   <div className={styles.stationCardWindSpeed}>{item.instantaneous}w/m²</div>
                   <div className={styles.stationCardEquipmentNum}>
                     <div>{item.stationCapacity}台</div>
-                    {!(item.alarmNum === 0||'' )? <div className={styles.stationWarning}>
+                    {item.alarmNum >0? <div className={styles.stationWarning}>
                     <i className="iconfont icon-alarm1"></i>{item.alarmNum}</div> : ''}
                     {/*  <div className={styles.stationWarning}>⚠{item.alarmNum}</div> */}
                   </div>

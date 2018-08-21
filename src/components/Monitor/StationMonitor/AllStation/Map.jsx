@@ -133,6 +133,7 @@ class Interval extends Component {
       },
       tooltip: {
         trigger: 'item',
+        enterable:true,        
       },
       legend: {
         orient: 'vertical',
@@ -144,6 +145,7 @@ class Interval extends Component {
       series: [{
         type: 'scatter',
         tooltip: {
+          enterable:true,
           //position:['50%','50%'],
           formatter: (params) => {
            // console.log(params.data);
@@ -151,7 +153,7 @@ class Interval extends Component {
             <div class='stationCardTitle' style='display:flex;flex-direction: row;justify-content: space-between;'>
             <span>${params.data.name}</span>
            
-            <span style='color:red'>${params.data.alarmNum>0?'⚠':''}${params.data.alarmNum>0?params.data.alarmNum:''}</span>              
+            <span style='color:red' onClick={console.log(${params.data.alarmNum},'报警数')}>${params.data.alarmNum>0?'⚠':''}${params.data.alarmNum>0?params.data.alarmNum:''}</span>              
             </div>           
             <div class='stationCardProgress' style='background:#dfdfdf;height:1px;
             width:100%;' ></div>
@@ -219,7 +221,4 @@ class Interval extends Component {
   }
 }
 export default Interval
-{/* <Progress percent={50} showInfo={false} /> */ }
-{/* <div style='position:relative;border-radius:9px;height:9px; background:#f5f5f5'>
-<div style=' position: absolute;top: 0;left: 0;background:#199475;height: 9px;border-radius:9px;width: ${params.data.stationPower/params.data.stationCapacity *100>100?100:params.data.stationPower/params.data.stationCapacity *100}%;'></div>             
-</div> */}
+

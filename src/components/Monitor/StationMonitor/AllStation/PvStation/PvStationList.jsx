@@ -7,7 +7,8 @@ class PvStationList extends React.Component {
   static propTypes = {  
     pageNum: PropTypes.number,
     pageSize: PropTypes.number,
-    stationDataList:PropTypes.array, 
+    stationDataList:PropTypes.array,
+ 
   }
   constructor(props, context) {
     super(props, context)
@@ -26,6 +27,9 @@ class PvStationList extends React.Component {
     console.log("params", pagination, filters, sorter);
   }
 
+ 
+  
+
   render() {  
     const {stationDataList}=this.props; 
     const { pageNum,pageSize,}=this.state;
@@ -42,8 +46,8 @@ class PvStationList extends React.Component {
         sorter: (a, b) => a.stationName.length - b.stationName.length,
         render: (value, record, index) => {
           return {
-            children: (
-              <div className={styles.stationName}>{record.stationName}</div>
+            children: (<a href={'javascript:void(0)'} onClick={() => console.log("record",'跳转到单电站')} ><div className={styles.stationName}>{record.stationName}</div></a>
+              
             )
           }
         }

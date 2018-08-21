@@ -22,8 +22,10 @@ class Allstation extends React.Component {
     console.log(stationDataList);
   
     let iconArray = [
-      {400:'circle',500:'triangle',900:'roundRect'},
-      {400:'arrow',500:'diamond',900:'diamond'}
+      {400:'circle',500:'triangle',900:'roundRect'},//这是测试用的图标
+      // {400:['circle','triangle'],500:'diamond',900:'roundRect'},
+      {400:'arrow',500:'diamond',900:'diamond'},
+       // {400:['circle','triangle'],500:'diamond',900:'roundRect'},
  
     ]
     let data = [];
@@ -31,7 +33,8 @@ class Allstation extends React.Component {
       data.push({
         name: item.stationName,
         value: [item.longitude, item.latitude, item.stationType, item.stationStatus.stationStatus],
-        symbol: [iconArray[item.stationType][item.stationStatus.stationStatus?item.stationStatus.stationStatus:'500']],
+        symbol: [iconArray[item.stationType][item.stationStatus.stationStatus]],
+        //symbol: [iconArray[item.stationType][item.stationStatus.stationStatus===400?item.stationStatus.stationStatus[item.alarmNum?1:0]:item.stationStatus.stationStatus]],
         alarmNum: item.alarmNum,
         stationPower: item.stationPower,
         stationCapacity: item.stationCapacity,
