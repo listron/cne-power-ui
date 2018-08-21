@@ -25,6 +25,7 @@ class RealTimeAlarm extends Component {
     getDefectTypes: PropTypes.func,
     onTransferAlarm: PropTypes.func,
     onRelieveAlarm: PropTypes.func,
+    location: PropTypes.object,
   }
   constructor(props) {
     super(props);
@@ -32,6 +33,7 @@ class RealTimeAlarm extends Component {
 
   componentDidMount() {
     const { warningLevel, stationType, stationCode, deviceTypeCode, warningConfigName, startTime, endTime, deviceName} = this.props;
+    const status = this.getStatus();
     this.props.getRealTimeAlarm({
       warningLevel,
       stationType,
@@ -40,15 +42,26 @@ class RealTimeAlarm extends Component {
       warningConfigName,
       startTime,
       endTime,
-      deviceName
+      deviceName,
+      ...status
     });
     this.props.getDefectTypes({stationType: 2});
   }
 
+  getStatus() {
+    const pathname = this.props.location.pathname;
+    const status = pathname.split('/')[3];
+    return {
+      isTransferWork: status === 'transfer' ? 0 : 1,
+      isRelieveAlarm: status === 'relieve' ? 0: 1
+    }
+  }
+
   render() {
+    const status = this.getStatus();
     return (
       <div className={styles.realTimeAlarm}>
-        <RealTimeAlarmFilter {...this.props} />      
+        <RealTimeAlarmFilter {...this.props} {...status} />      
         <RealTimeAlarmTable {...this.props} />   
       </div>
     );

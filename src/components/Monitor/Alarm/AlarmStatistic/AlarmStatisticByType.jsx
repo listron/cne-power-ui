@@ -13,7 +13,11 @@ class AlarmStatisticByType extends Component {
   }
 
   render() {
-    return null;
+    return (
+      <div>
+
+      </div>
+    );
   }
 }
 

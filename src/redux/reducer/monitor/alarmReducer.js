@@ -7,7 +7,7 @@ var initState = Immutable.fromJS({
 
   //筛选条件
   warningLevel: [],//告警级别
-  stationType: '',//电站类型
+  stationType: '2',//电站类型
   stationCode: [],//电站名称
   deviceTypeCode: [],//设备类型
   warningConfigName: [],//告警类型

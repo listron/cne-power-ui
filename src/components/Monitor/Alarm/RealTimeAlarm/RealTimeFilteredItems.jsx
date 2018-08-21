@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Tag } from 'antd';
-import styles from './alarmFilter.scss';
+import styles from './realTimeAlarm.scss';
 import moment from 'moment';
 
-class FilteredItems extends Component {
+class RealTimeFilteredItems extends Component {
   static propTypes = {
     stations: PropTypes.object,
     deviceTypes: PropTypes.object,
@@ -91,7 +91,7 @@ class FilteredItems extends Component {
         m === e.get('stationCode').toString()
       )).groupBy(item=>item.get('provinceCode'));//选中电站详情,按省分组
     const selectedDeviceType = deviceTypes.filter(e=>tmpSelectedDeviceType.some(m=>m===e.get('deviceTypeCode').toString()));//选中的设备类型详情
-    if(deviceTypeCode === '' && warningLevel === '' && stationType === '2' && stationCode === '' && warningConfigName === '' && startTime === '' && endTime === '') {
+    if(deviceTypeCode.length === 0 && warningLevel.length === 0 && stationType === '2' && stationCode.length === 0 && warningConfigName.length === 0 && startTime === '' && endTime === '') {
       return null;
     }
     return (
@@ -127,4 +127,4 @@ class FilteredItems extends Component {
 
 }
 
-export default FilteredItems;
+export default RealTimeFilteredItems;
