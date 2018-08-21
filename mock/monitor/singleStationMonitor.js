@@ -1,7 +1,7 @@
 const moment = require('moment');
 module.exports = [
   {
-    api: '/mock/api/v3/monitor/station/76',//单电站实时数据
+    api: '/mock/api/v3/monitor/station/360',//单电站实时数据
     method: 'get',
     response: {
       "code": "10000",
@@ -123,7 +123,7 @@ module.exports = [
       "serviceCode": "3.0"
     },
   },{
-    api: '/mock/api/v3/monitor/capabilitydiagram/76/24',//获取出力图数据
+    api: '/mock/api/v3/monitor/capabilitydiagram/360/24',//获取出力图数据
     method: 'get',
     response: {
       "code": "10000",
@@ -137,7 +137,7 @@ module.exports = [
       "serviceCode": "3.0"
     },
   },{
-    api: '/mock/api/v3/monitor/power/76/0',//获取理论发电量 实际发电量数据
+    api: '/mock/api/v3/monitor/power/360/0',//获取理论发电量 实际发电量数据
     method: 'get',
     response: {
       "code": "10000",
@@ -151,7 +151,7 @@ module.exports = [
       "serviceCode": "3.0"
     },
   },{
-    api: '/mock/api/v3/monitor/power/76/1',//获取理论发电量 实际发电量数据
+    api: '/mock/api/v3/monitor/power/360/1',//获取理论发电量 实际发电量数据
     method: 'get',
     response: {
       "code": "10000",
@@ -165,7 +165,7 @@ module.exports = [
       "serviceCode": "3.0"
     },
   },{
-    api: '/mock/api/v3/monitor/power/76/2',//获取理论发电量 实际发电量数据
+    api: '/mock/api/v3/monitor/power/360/2',//获取理论发电量 实际发电量数据
     method: 'get',
     response: {
       "code": "10000",
@@ -179,7 +179,7 @@ module.exports = [
       "serviceCode": "3.0"
     },
   },{
-    api: '/mock/api/v3/station/user/76',//获取单电站运维人员列表
+    api: '/mock/api/v3/station/user/360',//获取单电站运维人员列表
     method: 'get',
     response: {
       "code": "10000",
@@ -196,7 +196,7 @@ module.exports = [
       "serviceCode": "3.0"
     },
   },{
-    api: '/mock/api/v3/monitor/weather/76',//获取单电站未来天气
+    api: '/mock/api/v3/monitor/weather/360',//获取单电站未来天气
     method: 'get',
     response: {
       "code": "10000",
@@ -211,7 +211,7 @@ module.exports = [
       "serviceCode": "3.0"
     },
   },{
-    api: '/mock/api/v3/alarm/station/alarmNum/76',//获取单电站活动告警数统计
+    api: '/mock/api/v3/alarm/station/alarmNum/360',//获取单电站活动告警数统计
     method: 'get',
     response: {
       "code": "10000",
@@ -225,7 +225,7 @@ module.exports = [
       "serviceCode": "3.0"
     },
   },{
-    api: '/mock/api/v3/monitor/worklist/76',//获取单电站工单数统计
+    api: '/mock/api/v3/monitor/worklist/360',//获取单电站工单数统计
     method: 'get',
     response: {
       "code": "10000",
@@ -239,7 +239,7 @@ module.exports = [
     },
   },
   {
-    api: '/mock/api/v3/station/devicetypeflow/76',//获取单电站设备类型流程图(设备示意图)
+    api: '/mock/api/v3/station/devicetypeflow/360',//获取单电站设备类型流程图(设备示意图)
     method: 'get',
     response: {
       "code": "10000",
@@ -253,7 +253,24 @@ module.exports = [
     },
   },
   {
-    api: '/mock/api/v3/monitor/pvmodule/datalist/76',//获取单电站光伏组件列表
+    api: '/mock/api/v3/monitor/pvmodule/datalist/360',//获取单电站光伏组件列表
+    method: 'get',
+    response: {
+      "code": "10000",
+      "message": "请求成功",
+      "data": [0,1,2,3,4,5,6,7,8,9,10].map(e=>({
+        deviceId: '1000'+e,
+        deviceCode: '00000'+e,
+        electricityList: [0,1,2,3,4,5,6,7,8,9,10].map(e=>({
+          NB039: '4.0'+e,
+          pointStatus: 0,
+        })),
+      })),
+      "serviceCode": "3.0"
+    },
+  },
+  {
+    api: '/mock/api/v3/monitor/seriesinverter/datalist/360',//获取单电站组串式逆变器列表
     method: 'get',
     response: {
       "code": "10000",

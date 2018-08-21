@@ -297,19 +297,16 @@
     }
     .deviceList{
       background: #fff;
-      padding: 16px 25px;
+      
     }
     :global{
       .ant-tabs.ant-tabs-card > .ant-tabs-bar .ant-tabs-nav-container {
         height: 33px;
       }
       .ant-tabs-bar {
-        border-bottom: 0;
+        border-top: 1px dashed #dfdfdf;
+        border-bottom: 1px dashed #dfdfdf;
         margin: 0;
-      }
-      .ant-tabs.ant-tabs-card > .ant-tabs-content > .ant-tabs-tabpane {
-        
-        
       }
       .ant-tabs.ant-tabs-card > .ant-tabs-bar {
         border-color: #fff;

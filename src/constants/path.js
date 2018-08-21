@@ -109,6 +109,9 @@ export default {
       monitorPointData: '/api/v3/monitor/point', //设备测点数据
       deviceAlarmData: '/api/v3/alarm/device', // 单设备告警信息
       getRealtimeAlarm: '/v3/alarm/station/alarmlist', //实时告警信息
+
+      getPvmoduleList: '/v3/monitor/pvmodule/datalist/',//光伏组件实时列表
+      getInverterList: '/v3/monitor/seriesinverter/datalist/',// 组串式逆变器实时数据列表
     }
     // monitor:{
     //   getStationType:'v3/monitor/stations/stationType',
