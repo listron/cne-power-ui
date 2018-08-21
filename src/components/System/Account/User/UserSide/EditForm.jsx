@@ -48,6 +48,8 @@ class EditForm extends Component {
   render(){
     const { getFieldDecorator } = this.props.form;
     const { userDetail, loading, roleAllList, specialRoleList } = this.props;
+    // console.log(userDetail && userDetail.get('roleName') || (userDetail.get('roleName').split(',') || [].length))
+    console.log(userDetail && userDetail.get('roleName') ? userDetail.get('roleName').split(',') : [].length)
     return (
       <Form className={styles.editPart}>
         <FormItem label="用户名" >
@@ -109,7 +111,7 @@ class EditForm extends Component {
         </FormItem> */}
         <FormItem label="角色" >
           {getFieldDecorator('roleId',{
-            initialValue: [],
+            initialValue: userDetail && userDetail.get('roleName') ? userDetail.get('roleName').split(',') : [],
           })(
             <Select
               mode="multiple"
@@ -127,7 +129,7 @@ class EditForm extends Component {
         </FormItem>
         <FormItem label="特殊权限" >
           {getFieldDecorator('specialRoleId', {
-            initialValue: [],
+            initialValue: userDetail && userDetail.get('specialRoleName') ? userDetail.get('specialRoleName').split(',') : [],
           })(
             <Select
               mode="multiple"
@@ -140,6 +142,73 @@ class EditForm extends Component {
                 <Option key={item.roleId} value={item.roleId} >{item.roleDesc}</Option>
               ))}
             </Select>
+          )}
+        </FormItem>
+        <FormItem label="所在企业" >
+          {getFieldDecorator('enterpriseName', {
+            initialValue: userDetail && (userDetail.getIn(['enterpriseData','enterpriseName']) || ''),
+          })(
+            <p>{userDetail && (userDetail.getIn(['enterpriseData','enterpriseName']) || '')}</p>
+          )}
+        </FormItem>
+        <FormItem label="所在部门" >
+          {getFieldDecorator('departmentName', {
+            initialValue: userDetail.get('enterpriseData') && 
+            userDetail.get('enterpriseData').toJS().map(item=>{
+              return (<div className={styles.departmentDetail} key={item.enterpriseId} >
+                <div className={styles.enterpriseName}>{item.enterpriseName}：</div>
+                <div className={styles.enterpriseDetail}>
+                {item.departmentData && item.departmentData.map(item2=>{item2.departmentName})}
+                </div>
+              </div>)
+            }),
+          })(
+            <p>{userDetail.get('enterpriseData') && 
+              userDetail.get('enterpriseData').toJS().map(item=>{
+                return (<div className={styles.departmentDetail} key={item.enterpriseId} >
+                  <div className={styles.enterpriseName}>{item.enterpriseName}：</div>
+                  <div className={styles.enterpriseDetail}>
+                  {item.departmentData && item.departmentData.map(item2=>{item2.departmentName})}
+                  </div>
+                </div>)
+              })
+            }</p>
+          )}
+        </FormItem>
+        <FormItem label="负责电站" >
+          {getFieldDecorator('stationName', {
+            initialValue: userDetail.get('enterpriseData') && 
+            userDetail.get('enterpriseData').toJS().map(item=>{
+              return (<div className={styles.departmentDetail} key={item.enterpriseId} >
+                <div className={styles.enterpriseName}>{item.enterpriseName}：</div>
+                <div className={styles.enterpriseDetail}>
+                {item.departmentData && item.departmentData.map(item2=>{
+                  return (<p  key={item2.departmentId} >{item2.stationData &&
+                    item2.stationData.map(item3=>{
+                      return item3.stationName;
+                    })
+                  }）</p>)
+                })}
+                </div>
+              </div>)
+            }),
+          })(
+            <p>{userDetail.get('enterpriseData') && 
+              userDetail.get('enterpriseData').toJS().map(item=>{
+                return (<div className={styles.departmentDetail} key={item.enterpriseId} >
+                  <div className={styles.enterpriseName}>{item.enterpriseName}：</div>
+                  <div className={styles.enterpriseDetail}>
+                  {item.departmentData && item.departmentData.map(item2=>{
+                    return (<p  key={item2.departmentId} >{item2.stationData &&
+                      item2.stationData.map(item3=>{
+                        return item3.stationName;
+                      })
+                    }）</p>)
+                  })}
+                  </div>
+                </div>)
+              })
+            }</p>
           )}
         </FormItem>
         <Button onClick={this.saveUser} loading={loading} className={styles.saveUser} >保存</Button>
