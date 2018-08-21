@@ -44,9 +44,9 @@ class Main extends Component {
     let pathArray = pathname.split('/').filter(e=>!!e);
     const params = menu.find(e=>e.path===`/${pathArray[0]?pathArray[0]:''}`);
     this.props.setTopMenu({ topMenu: params });
-    this.props.getStations({
-      userId: getCookie('userId'),
-    });
+    // this.props.getStations({
+    //   userId: getCookie('userId'),
+    // });
     this.props.getDeviceTypes({
       userId: getCookie('userId'),
     });

@@ -20,6 +20,21 @@ const menuData = [
         iconStyle: 'exclamation-circle',
         clickable: true,
         path: 'alarm',
+        children: [
+          {
+            name: '实时告警',
+            clickable: true,
+            path: 'realtime',
+          },{
+            name: '历史告警',
+            clickable: true,
+            path: 'history',
+          },{
+            name: '告警统计',
+            clickable: true,
+            path: 'statistic',
+          }
+        ],
       }
     ],
   },{
