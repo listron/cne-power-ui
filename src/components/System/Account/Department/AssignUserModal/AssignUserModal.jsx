@@ -158,7 +158,7 @@ class AssignUserModal extends Component {
   onCheckUser = (user, checked) => {
     let userList = this.state.userList;
     const selectedDepartment = this.state.selectedDepartment;
-    const selectedDepartmrntId = selectedDepartment.get('departmentId');
+    const selectedDepartmentId = selectedDepartment.get('departmentId');
     const selectedDepartmentName = selectedDepartment.get('departmentName');
     const parentDepartmentId = selectedDepartment.get('parentDepartmentId');
     const userId = user.get('userId');
@@ -174,24 +174,24 @@ class AssignUserModal extends Component {
         userList = userList.splice(lastIndex+1, 0, Immutable.fromJS({
           userId: userId,
           username: username,
-          departmentId: selectedDepartmrntId,
+          departmentId: selectedDepartmentId,
           departmentName: selectedDepartmentName
-        }))
+        }));
       } else {
         userList = userList.set(index, Immutable.fromJS({
           userId: userId,
           username: username,
-          departmentId: selectedDepartmrntId,
+          departmentId: selectedDepartmentId,
           departmentName: selectedDepartmentName
         }));
       }
     } else {
       let userIndex = userList.findIndex((item) => {
-        return item.get('userId') === userId && item.get('departmentId') === selectedDepartmrntId
+        return item.get('userId') === userId && item.get('departmentId') === selectedDepartmentId
       });
       if(parentDepartmentId === '0') {//从一级部门里勾掉
         let otherHasCurrent = userList.findIndex((item) => {
-          return item.get('userId') === userId && item.get('departmentId') !== null && item.get('departmentId') !== selectedDepartmrntId;
+          return item.get('userId') === userId && item.get('departmentId') !== null && item.get('departmentId') !== selectedDepartmentId;
       });
         if(otherHasCurrent !== -1) {
           userList = userList.delete(userIndex);
@@ -211,7 +211,7 @@ class AssignUserModal extends Component {
       if(parentDepartment && parentDepartment.get('list').size > 0) {
         parentDepartment.get('list').forEach((department) => {
           let index = userList.findIndex((item) => {
-            return department.get('departmentId') === item.get('departmentId') && userId === item.get('userId') && department.get('departmentId') !== selectedDepartmrntId;
+            return department.get('departmentId') === item.get('departmentId') && userId === item.get('userId') && department.get('departmentId') !== selectedDepartmentId;
           });
           if(index !== -1) {
             childHasCurrent = true;
@@ -263,7 +263,7 @@ class AssignUserModal extends Component {
     return selectedUserList
   }
 
-  getDepartmentUser(department, isAll=true) {
+  getDepartmentUser(department, isAll=false) {
     let { userList } = this.state;
     if(department === null) {
       return userList.filter((item) => {
@@ -281,7 +281,7 @@ class AssignUserModal extends Component {
           });
           childrenUser.forEach((user) => {
             const index = parentUser.findIndex((item) => {
-              item.get('userId') === user.get('userId')
+              return item.get('userId') === user.get('userId')
             });
             if(index === -1) {
               parentUser = parentUser.push(user);
@@ -303,7 +303,7 @@ class AssignUserModal extends Component {
       department = data.get(i);
       child = department.get('list');
       if(child.size > 0) {
-        parentUser = this.getDepartmentUser(department, false);
+        parentUser = this.getDepartmentUser(department);
         if(parentUser.size > 0) {
           child = child.unshift(Immutable.fromJS({
             departmentId: department.get('departmentId')+'-'+i,
@@ -321,7 +321,7 @@ class AssignUserModal extends Component {
     if(nonAssignUser.size > 0) {
       data = data.unshift(Immutable.fromJS({
         departmentId: null,
-        parentDepartmentId: '0',
+        parentDepartmentId: null,
         departmentName: '待分配人员',
         list: [],
         userNum: nonAssignUser.size,
@@ -377,7 +377,7 @@ class AssignUserModal extends Component {
             </TreeNode>
           );
         } else {
-          userNum = !!item.userNum? item.userNum : this.getDepartmentUser(Immutable.fromJS(item), false).size;
+          userNum = !!item.userNum? item.userNum : this.getDepartmentUser(Immutable.fromJS(item)).size;
           return <TreeNode title={item.departmentName+'('+userNum+')'} key={item.departmentId} dataRef={item} />
         }
       })
@@ -415,7 +415,7 @@ class AssignUserModal extends Component {
 
   renderSelectedUser() {
     let department = this.state.selectedDepartment;
-    let user = this.getDepartmentUser(department, true);
+    let user = this.getDepartmentUser(department);
     return user.map((item) => {
       return (
         <Tag 

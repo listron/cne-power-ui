@@ -20,6 +20,9 @@ module.exports = {
     EDIT_ROLE_SAGA: null,
 
     DELETE_ROLE_SAGA: null,
+
+    RESET_ROLE_SAGA: null,
+    RESET_ROLE: null,
   })
 }
 
