@@ -32,7 +32,7 @@ class CardSection extends Component {
               <Carousel autoplay dots={true} arrow={true} >
                 {tmpOperatorList.length>0 &&
                   tmpOperatorList.map((item,index)=>{
-                    return (<div key={item.index} className={styles.operatorContent} >
+                    return (<div key={index} className={styles.operatorContent} >
                       {item.map(e=>{
                         return (
                           <div key={e.userFullName} ><span>{e.userFullName}</span><span style={{margin: "0 10px"}}>{e.roleName}</span><span>{e.phoneNum}</span></div>

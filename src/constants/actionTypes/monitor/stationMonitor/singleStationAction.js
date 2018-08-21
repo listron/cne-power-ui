@@ -14,5 +14,7 @@ module.exports = {
     GET_WEATHER_LIST_SAGA: null,//未来天气数据
     GET_ALARM_LIST_SAGA: null,//告警数统计
     GET_WORK_LIST_SAGA: null,//工单数统计
+    GET_DEVICE_TYPE_FLOW_SAGA: null,//设备类型示意图
+    GET_PVMODULE_LIST_SAGA: null,//光伏组件列表
   })
 }

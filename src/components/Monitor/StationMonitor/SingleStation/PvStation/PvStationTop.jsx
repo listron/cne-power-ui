@@ -30,6 +30,7 @@ class PvStationTop extends Component {
           <Icon type="arrow-left" className={styles.backIcon} />
         </div>
         <div className={styles.trueTimeData} >
+          <div className={styles.pvlogo} ><i  className="iconfont icon-pvlogo" ></i></div>
           <div className={styles.powerScale} >
             <div className={styles.trueTimeValue}><span>{singleStationData && singleStationData.stationPower}</span><span>{singleStationData && singleStationData.stationCapacity}</span></div>
             <Progress percent={powerPercent} showInfo={false} strokeWidth={6} type="line" strokeColor="#199475" />
