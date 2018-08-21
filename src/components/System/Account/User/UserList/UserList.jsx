@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 import styles from './userList.scss';
 import { getCookie } from '../../../../../utils/index.js';
 import Path from '../../../../../constants/path';
+import WarningTip from '../../../../Common/WarningTip';
 
 const { Option } = Select;
 class UserList extends Component {
@@ -28,12 +29,19 @@ class UserList extends Component {
     pageNum: PropTypes.number,
     roleId: PropTypes.string,
     getInviteLink: PropTypes.func,
+    userName: PropTypes.string,
+    stationName: PropTypes.string,
+    phoneNum: PropTypes.string,
   }
 
   constructor(props){
     super(props);
     this.state = {
       selectedUserColumns: new Set(['用户名','电话','角色','特殊权限','负责电站','状态']),//选中列
+      showDeleteTip: false,
+      showExamineTip: false,
+      deleteWarningTip: '确认要移除么？',
+      examineWarningTip: '是否通过审核？',
     }
   }
 
@@ -58,6 +66,9 @@ class UserList extends Component {
       pageNum: currentPage,
       pageSize,
       roleId: this.props.roleId,
+      userName: this.props.userName,
+      stationName: this.props.stationName,
+      phoneNum: this.props.phoneNum, 
     })
   }
 
@@ -205,7 +216,7 @@ class UserList extends Component {
         dataIndex: 'userStatus',
         key: 'userStatus',
         render: (text, record, index) => {
-          return (<span>{this.getEnterpriseStatus(record.enterpriseStatus)+'/'+this.getUserStatus(record.userStatus)}</span>);
+          return (<span>{this.getEnterpriseStatus(record.enterpriseStatus)}</span>);
         },
       }
     ];
@@ -252,17 +263,14 @@ class UserList extends Component {
   
   userHandle = (value) => {
     const { selectedUser, enterpriseId, } = this.props;
-    console.log(selectedUser.toJS()[0])
     if(value === 'edit'){
       this.props.changeUserStore({
         showPage: 'edit',
         userDetail: selectedUser.toJS()[0],
       })
     }else if(value === 'delete'){//移除
-      this.props.changeUserStatus({
-        enterpriseId,
-        userId: selectedUser.toJS().map(e=>e.userId).toString(),
-        enterpriseUserStatus: 7,
+      this.setState({
+        showDeleteTip: true,
       })
     }else if(value === 'use'){//启用
       this.props.changeUserStatus({
@@ -276,14 +284,11 @@ class UserList extends Component {
         userId: selectedUser.toJS().map(e=>e.userId).toString(),
         enterpriseUserStatus: 4,
       })
-    }else if(value === 'examine'){//待审核
-      this.props.changeUserStatus({
-        enterpriseId,
-        userId: selectedUser.toJS().map(e=>e.userId).toString(),
-        enterpriseUserStatus: 5,
+    }else if(value === 'examine'){//审核
+      this.setState({
+        showExamineTip: true,
       })
     }
-    // value = "";
   }
   
   beforeUpload = (file) => {
@@ -294,9 +299,41 @@ class UserList extends Component {
     return isExcel;
   }
 
+  cancelDeleteTip = () => {
+    this.setState({
+      showDeleteTip: false,
+    })
+  }
+  confirmDeleteTip = () => {
+    const { selectedUser, enterpriseId, } = this.props;
+    this.props.changeUserStatus({
+      enterpriseId,
+      userId: selectedUser.toJS().map(e=>e.userId).toString(),
+      enterpriseUserStatus: 7,
+    })
+    this.setState({
+      showDeleteTip: false,
+    })
+  }
+  cancelExamineTip = () => {
+    this.setState({
+      showExamineTip: false,
+    })
+  }
+  confirmExamineTip = () => {
+    const { selectedUser, enterpriseId, } = this.props;
+    this.props.changeUserStatus({
+      enterpriseId,
+      userId: selectedUser.toJS().map(e=>e.userId).toString(),
+      enterpriseUserStatus: 5,
+    })
+    this.setState({
+      showExamineTip: false,
+    })
+  }
   render(){
     const { userData, totalNum, loading, selectedUser } = this.props;
-    const { selectedUserColumns } = this.state;
+    const { selectedUserColumns,showDeleteTip,showExamineTip,deleteWarningTip,examineWarningTip, } = this.state;
     const authData = getCookie('authData');
     const columns = [
       {
@@ -369,11 +406,11 @@ class UserList extends Component {
         dataIndex: 'userStatus',
         key: 'userStatus',
         render: (text, record, index) => {
-          return (<span>{this.getEnterpriseStatus(record.enterpriseStatus)/this.getUserStatus(record.userStatus)}</span>);
+          return (<span>{this.getEnterpriseStatus(record.enterpriseStatus)}</span>);
         },
       }
     ];
-    const url = Path.basePaths.newAPIBasePath + Path.APISubPaths.system.importUserBatch;
+    const url = Path.basePaths.APIBasePath + Path.APISubPaths.system.importUserBatch;
     const uploadProps = {
       name: 'file',
       action: url,
@@ -382,7 +419,7 @@ class UserList extends Component {
       data: {
         enterpriseId: this.props.enterpriseId,
       },
-      onChange(info) {
+      onChange:(info) => {
         if (info.file.status === 'done') {
           if(info.file.response.code === '10000'){
             message.success(`${info.file.name} 导入完成`);
@@ -400,11 +437,12 @@ class UserList extends Component {
         } else if (info.file.status === 'error') {
           message.error(`${info.file.name} 导入失败，请重新导入.`);
         }
-        
       },
     };
     return (
       <div className={styles.userList}>
+        {showDeleteTip && <WarningTip onCancel={this.cancelDeleteTip} onOK={this.confirmDeleteTip} value={deleteWarningTip} />}
+        {showExamineTip && <WarningTip onCancel={this.cancelExamineTip} onOK={this.confirmExamineTip} value={examineWarningTip} />}
         <div className={styles.userHelper} >
           <div className={styles.userHelperLeft} >
             <Button onClick={this.onCreateUser} className={styles.addUser} ><Icon type="plus" /><span className={styles.text}>用户</span></Button>
@@ -412,7 +450,7 @@ class UserList extends Component {
             <Upload {...uploadProps} className={styles.importUser}>
               <Button>批量导入</Button>
             </Upload>
-            <Button  >导入模板下载</Button>
+            <Button className={styles.templateDown} href="http://test-dpv.cnecloud.cn/template/用户批量导入模板.xlsx" >导入模板下载</Button>
             <div className={styles.userOperate} >
               {this._createUserOperate()}
             </div>

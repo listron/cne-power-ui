@@ -16,7 +16,7 @@ function *changeUserStore(action){
 // 请求用户列表
 function *getUserList(action){
   const { payload } = action;
-  const url = Path.basePaths.newAPIBasePath + Path.APISubPaths.system.getUserList;
+  const url = Path.basePaths.APIBasePath + Path.APISubPaths.system.getUserList;
   try{
     yield put({type: userAction.USER_FETCH});
     const response = yield call(axios.post, url, payload);
@@ -29,6 +29,9 @@ function *getUserList(action){
           userData: response.data.data.userData,
         }
       })
+    }else{
+      yield put({ type: userAction.GET_USER_FETCH_FAIL})
+      message.error(response.data.message);
     }
   }catch(e){
     console.log(e);
@@ -37,7 +40,7 @@ function *getUserList(action){
 // 更改企业用户状态
 function *changeUserStatus(action){
   const { payload } =action;
-  const url = Path.basePaths.newAPIBasePath + Path.APISubPaths.system.changeUserStatus;
+  const url = Path.basePaths.APIBasePath + Path.APISubPaths.system.changeUserStatus;
   try{
     yield put({type: userAction.USER_FETCH});
     const response = yield call(axios.put, url, payload);
@@ -63,7 +66,7 @@ function *changeUserStatus(action){
         payload: params,
       });
     }else{
-      yield put({ type: userAction.CHANGE_USER_STATUS_FAIL})
+      yield put({ type: userAction.GET_USER_FETCH_FAIL})
       message.error(response.data.message);
     }
   }catch(e){
@@ -74,18 +77,23 @@ function *changeUserStatus(action){
 // 请求用户详情
 function *getUserDetail(action){
   const { payload } = action;
-  const url = Path.basePaths.newAPIBasePath + Path.APISubPaths.system.getUserDetail + payload.userId;
+  const url = Path.basePaths.APIBasePath + Path.APISubPaths.system.getUserDetail + payload.userId;
   try{
     yield put({ type: userAction.USER_FETCH});
     const response = yield call(axios.get, url,payload);
-    yield put({
-      type: userAction.GET_USER_FETCH_SUCCESS,
-      payload: {
-        userDetail: response.data.data,
-        showPage: payload.showPage,
-        userId: payload.userId,
-      }
-    })
+    if(response.data.code === '10000'){
+      yield put({
+        type: userAction.GET_USER_FETCH_SUCCESS,
+        payload: {
+          userDetail: response.data.data,
+          showPage: payload.showPage,
+          userId: payload.userId,
+        }
+      })
+    }else{
+      yield put({ type: userAction.GET_USER_FETCH_FAIL});
+      message.error(response.data.message);
+    }
   }
   catch(e){
     console.log(e);
@@ -95,17 +103,22 @@ function *getUserDetail(action){
 // 邀请用户信息
 function *getInviteLink(action){
   const { payload } = action;
-  const url = Path.basePaths.newAPIBasePath + Path.APISubPaths.system.getInviteLink;
+  const url = Path.basePaths.APIBasePath + Path.APISubPaths.system.getInviteLink;
   try{
     yield put({ type: userAction.USER_FETCH});
     const response = yield call(axios.get, url, {params: {enterpriseId: payload.enterpriseId}});
-    yield put({
-      type: userAction.GET_USER_FETCH_SUCCESS,
-      payload: {
-        inviteData: response.data.data,
-        showPage: payload.showPage,
-      }
-    })
+    if(response.data.code === '10000'){
+      yield put({
+        type: userAction.GET_USER_FETCH_SUCCESS,
+        payload: {
+          inviteData: response.data.data,
+          showPage: payload.showPage,
+        }
+      })
+    }else{
+      yield put({ type: userAction.GET_USER_FETCH_FAIL});
+      message.error(response.data.message);
+    }
   }
   catch(e){
     console.log(e);
@@ -115,7 +128,7 @@ function *getInviteLink(action){
 // 获取企业角色列表
 function *getRoleAllList(action){
   const { payload } = action;
-  const url = Path.basePaths.newAPIBasePath + Path.APISubPaths.system.getRoleAllList;
+  const url = Path.basePaths.APIBasePath + Path.APISubPaths.system.getRoleAllList;
   try{
     yield put({ type: userAction.USER_FETCH});
     const response = yield call(axios.post, url, payload);
@@ -144,28 +157,31 @@ function *getRoleAllList(action){
 // 编辑用户信息
 function *editUserInfo(action){
   const { payload } =action;
-  const url = Path.basePaths.newAPIBasePath + Path.APISubPaths.system.editUserInfo;
+  const url = Path.basePaths.APIBasePath + Path.APISubPaths.system.editUserInfo;
   try{
     yield put({ type: userAction.USER_FETCH });
     const response = yield call(axios.put, url, payload);
-    yield put({
-      type: userAction.GET_USER_FETCH_SUCCESS
-    })
-    yield put({ type: userAction.CHANGE_USER_STORE_SAGA, payload:{showPage: payload.showPage}})
-    const params = yield select(state => ({//继续请求用户列表
-      enterpriseId: payload.enterpriseId,
-      roleId: state.system.user.get('roleId'),
-      userStatus: state.system.user.get('userStatus'),
-      userName: state.system.user.get('userName'),
-      stationName: state.system.user.get('stationName'),
-      phoneNum: state.system.user.get('phoneNum'), 
-      pageSize: state.system.user.get('pageSize'),
-      pageNum: state.system.user.get('pageNum'),
-    }));
-    yield put({
-      type:  userAction.GET_USER_LIST_SAGA,
-      payload: params,
-    });
+    if(response.data.code === '10000'){
+      yield put({type: userAction.GET_USER_FETCH_SUCCESS});
+      yield put({ type: userAction.CHANGE_USER_STORE_SAGA, payload:{showPage: payload.showPage}})
+      const params = yield select(state => ({//继续请求用户列表
+        enterpriseId: payload.enterpriseId,
+        roleId: state.system.user.get('roleId'),
+        userStatus: state.system.user.get('userStatus'),
+        userName: state.system.user.get('userName'),
+        stationName: state.system.user.get('stationName'),
+        phoneNum: state.system.user.get('phoneNum'), 
+        pageSize: state.system.user.get('pageSize'),
+        pageNum: state.system.user.get('pageNum'),
+      }));
+      yield put({
+        type:  userAction.GET_USER_LIST_SAGA,
+        payload: params,
+      });
+    }else{
+      yield put({ type: userAction.GET_USER_FETCH_FAIL});
+      message.error(response.data.message);
+    }
   }catch(e){
     console.log(e);
   }
@@ -173,14 +189,11 @@ function *editUserInfo(action){
 // 新建用户信息
 function *createUserInfo(action){
   const { payload } = action;
-  const url = Path.basePaths.newAPIBasePath + Path.APISubPaths.system.createUserInfo;
+  const url = Path.basePaths.APIBasePath + Path.APISubPaths.system.createUserInfo;
   yield put({ type: userAction.USER_FETCH});
   try{
     const response = yield call(axios.post, url, payload);
-    if(response.data.code === '00000'){
-      yield put({ type: userAction.GET_USER_FETCH_FAIL});
-      message.error(response.data.message);
-    }else{
+    if(response.data.code === '10000'){
       yield put({ type: userAction.GET_USER_FETCH_SUCCESS});
       yield put({ type: userAction.CHANGE_USER_STORE_SAGA, payload:{showPage: payload.showPage}})
       const params = yield select(state => ({//继续请求用户列表
@@ -197,6 +210,9 @@ function *createUserInfo(action){
         type:  userAction.GET_USER_LIST_SAGA,
         payload: params,
       });
+    }else{
+      yield put({ type: userAction.GET_USER_FETCH_FAIL});
+      message.error(response.data.message);
     }
   }catch(e){
     console.log(e);

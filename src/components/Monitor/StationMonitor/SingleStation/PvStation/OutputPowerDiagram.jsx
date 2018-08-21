@@ -26,7 +26,6 @@ class OutputPowerDiagram extends Component {
 
   componentWillReceiveProps(nextProps){
     const { capabilityData, powerData } = nextProps;
-    console.log(powerData.map(e=>e.actualPower));
     const lineColor = '#999';
     const capabilityDiagram = echarts.init(document.getElementById('capabilityDiagram'));
     const powerDiagram = echarts.init(document.getElementById('powerDiagram'));

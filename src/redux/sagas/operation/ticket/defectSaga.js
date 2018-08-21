@@ -14,7 +14,7 @@ function *changeTicketStore(action){//存储payload指定参数，替换reducer-
 
 //获取缺陷工单列表
 function* getDefectList(action) {
-  let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.ticket.getDefectList;
+  let url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.getDefectList;
   yield put({ type: ticketAction.TICKET_FETCH });
   try {
     const response = yield call(axios.post, url, action.params);
@@ -47,7 +47,7 @@ function* getDefectList(action) {
 
 //获取缺陷工单详情
 function* getDefectDetail(action) {
-  let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.ticket.getDefectDetail;
+  let url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.getDefectDetail;
   yield put({ type: ticketAction.TICKET_FETCH });
   try {
     const response = yield call(axios.get, url, {params: {defectId:action.params.defectId}});
@@ -82,7 +82,7 @@ function* getDefectDetail(action) {
 
 //获取缺陷常用语
 function* getDefectCommonList(action) {
-  let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.ticket.getCommonList;
+  let url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.getCommonList;
   yield put({ type: ticketAction.TICKET_FETCH });
   try {
     const response = yield call(axios.get, url, {params: action.params});
@@ -107,7 +107,7 @@ function* getDefectCommonList(action) {
 
 //批量删除工单
 function* batchDeleteDefect(action) {
-  let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.ticket.batchDeleteDefect;
+  let url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.batchDeleteDefect;
   yield put({ type: ticketAction.TICKET_FETCH });
   try {
     const response = yield call(axios.get, url, {params: action.params});
@@ -143,7 +143,7 @@ function* batchDeleteDefect(action) {
 
 //批量关闭工单
 function* batchCloseDefect(action) {
-  let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.ticket.batchCloseDefect;
+  let url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.batchCloseDefect;
   yield put({ type: ticketAction.TICKET_FETCH });
   try {
     const response = yield call(axios.post, url, action.params);
@@ -179,7 +179,7 @@ function* batchCloseDefect(action) {
 
 //批量下发工单
 function* batchSendDefect(action) {
-  let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.ticket.batchSendDefect;
+  let url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.batchSendDefect;
   yield put({ type: ticketAction.TICKET_FETCH });
   try {
     const response = yield call(axios.post, url, action.params);
@@ -215,7 +215,7 @@ function* batchSendDefect(action) {
 
 //批量驳回工单
 function* batchRejectDefect(action) {
-  let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.ticket.batchRejectDefect;
+  let url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.batchRejectDefect;
   yield put({ type: ticketAction.TICKET_FETCH });
   try {
     const response = yield call(axios.post, url, action.params);
@@ -251,7 +251,7 @@ function* batchRejectDefect(action) {
 
 //批量验收工单
 function* batchChecktDefect(action) {
-  let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.ticket.batchCheckDefect;
+  let url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.batchCheckDefect;
   yield put({ type: ticketAction.TICKET_FETCH });
   try {
     const response = yield call(axios.post, url, action.params);
@@ -301,7 +301,7 @@ function* setSelectedDefect(action) {
 
 //下发工单
 function* sendDefect(action) {
-  let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.ticket.sendDefect;
+  let url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.sendDefect;
   yield put({ type: ticketAction.TICKET_FETCH });
   try {
     const response = yield call(axios.post, url, action.params);
@@ -327,7 +327,7 @@ function* sendDefect(action) {
 
 //驳回工单
 function* rejectDefect(action) {
-  let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.ticket.rejectDefect;
+  let url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.rejectDefect;
   yield put({ type: ticketAction.TICKET_FETCH });
   try {
     const response = yield call(axios.post, url, action.params);
@@ -353,7 +353,7 @@ function* rejectDefect(action) {
 
 //关闭工单
 function* closeDefect(action) {
-  let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.ticket.closeDefect;
+  let url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.closeDefect;
   yield put({ type: ticketAction.TICKET_FETCH });
   try {
     const response = yield call(axios.post, url, action.params);
@@ -379,7 +379,7 @@ function* closeDefect(action) {
 
 //执行工单
 function* handleDefect(action) {
-  let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.ticket.handleDefect;
+  let url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.handleDefect;
   yield put({ type: ticketAction.TICKET_FETCH });
   try {
     const response = yield call(axios.post, url, action.params);
@@ -405,7 +405,7 @@ function* handleDefect(action) {
 
 //验收工单
 function* checkDefect(action) {
-  let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.ticket.checkDefect;
+  let url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.checkDefect;
   yield put({ type: ticketAction.TICKET_FETCH });
   try {
     const response = yield call(axios.post, url, action.params);
@@ -432,7 +432,7 @@ function* checkDefect(action) {
 
 //获取缺陷类型信息
 function *getDefectTypes(action){
-  let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.ticket.getDefectTypes;
+  let url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.getDefectTypes;
   yield put({ type: ticketAction.TICKET_FETCH });
   try {
     const response = yield call(axios.get, url, {params: action.params});
@@ -459,7 +459,7 @@ function *getDefectTypes(action){
 }
 //生成缺陷
 function *createNewDefect(action){
-  let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.ticket.createNewDefect;
+  let url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.createNewDefect;
   yield put({ type: ticketAction.TICKET_FETCH });
   try {
     const response = yield call(axios.post, url, action.params);

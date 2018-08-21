@@ -22,7 +22,7 @@ function *changeLoginStore(action){
 
 //账号密码登录
 function *getLogin(action){
-  let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.login;
+  let url = Path.basePaths.APIBasePath + Path.APISubPaths.login;
   yield put({ type: loginAction.LOGIN_FETCH });
   try {
     const response = yield call(axios, {
@@ -57,7 +57,7 @@ function *getLogin(action){
 }
 //获取短信验证码
 function *getVerificationCode(action){
-  let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.getVerificationCode + '/' +action.params.phoneNum;
+  let url = Path.basePaths.APIBasePath + Path.APISubPaths.getVerificationCode + '/' +action.params.phoneNum;
   try{
     const response = yield call(axios.get, url);
     if(response.data.code === "10000"){
@@ -71,7 +71,7 @@ function *getVerificationCode(action){
 }
 //手机+验证码登录
 function *checkCode(action){
-  let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.loginPhoneCode;
+  let url = Path.basePaths.APIBasePath + Path.APISubPaths.loginPhoneCode;
   let { params } =action;
   yield put({ type: loginAction.LOGIN_FETCH})
   try{
@@ -116,7 +116,7 @@ function *checkCode(action){
 
 // 验证手机号和验证码是否正确（加入企业/注册企业，手机验证码正确会调用手机号验证码登录获取token）
 function *phoneCodeRegister(action){
-  let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.phoneCodeRegister;
+  let url = Path.basePaths.APIBasePath + Path.APISubPaths.phoneCodeRegister;
   try{
     const response = yield call(axios.post, url, {
       phoneNum: action.params.phoneNum, 
@@ -137,7 +137,7 @@ function *phoneCodeRegister(action){
 }
 // 注册验证手机号是否已存在(此接口暂时弃用)
 function *checkPhoneRegister(action){
-  let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.loginPhoneRegister + '/' + action.params;
+  let url = Path.basePaths.APIBasePath + Path.APISubPaths.loginPhoneRegister + '/' + action.params;
   try{
     const response = yield call(axios.get, url);
     if(response.data.code === '10000'){
@@ -152,7 +152,7 @@ function *checkPhoneRegister(action){
 
 // 验证企业域名是否有效
 function *checkEnterpriseDomain(action){
-  let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.checkEnterpriseDomain + '/' +action.params.enterpriseDomain;
+  let url = Path.basePaths.APIBasePath + Path.APISubPaths.checkEnterpriseDomain + '/' +action.params.enterpriseDomain;
   try{
     const response = yield call(axios.get, url);
     if(response.data.code === '10000'){
@@ -174,7 +174,7 @@ function *checkEnterpriseDomain(action){
 
 // 验证企业名是否已注册
 function *checkEnterpriseName(action){
-  let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.checkEnterpriseName + '/' +action.params.enterpriseName;
+  let url = Path.basePaths.APIBasePath + Path.APISubPaths.checkEnterpriseName + '/' +action.params.enterpriseName;
   try{
     const response = yield call(axios.get, url);
     if(response.data.code === '10000'){
@@ -200,7 +200,7 @@ function *checkEnterpriseName(action){
 }
 // 注册企业 完善个人信息
 function *registerEnterprise(action){
-  let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.registerEnterprise;
+  let url = Path.basePaths.APIBasePath + Path.APISubPaths.registerEnterprise;
   yield put({ type: loginAction.LOGIN_FETCH});
   try{
     const response = yield call(axios, {
@@ -240,7 +240,7 @@ function *registerEnterprise(action){
 }
 // 获取企业信息
 function *getEnterPriseInfo(action){
-  let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.getEnterpriseInfo + '/' +action.params.enterpriseName;
+  let url = Path.basePaths.APIBasePath + Path.APISubPaths.getEnterpriseInfo + '/' +action.params.enterpriseName;
   try{
     yield put({ type: loginAction.LOGIN_FETCH});
     const response = yield call(axios.get, url);
@@ -260,12 +260,13 @@ function *getEnterPriseInfo(action){
 
 // 加入企业
 function *joinEnterprise(action){
-  let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.joinEnterprise;
+  let url = Path.basePaths.APIBasePath + Path.APISubPaths.joinEnterprise;
   try{
     yield put({ type: loginAction.LOGIN_FETCH });
     const response = yield call(axios, {
       method: 'post',
       url,
+      headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'},
       data: stringify({
         'grant_type': "password",
         confirmPwd: action.params.confirmPwd,
@@ -306,7 +307,7 @@ function *joinEnterprise(action){
 
 // 设置新密码
 function *resetPassword(action){
-  let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.resetPassword;
+  let url = Path.basePaths.APIBasePath + Path.APISubPaths.resetPassword;
   yield put({type: loginAction.LOGIN_FETCH});
   try{
     const response = yield call(axios, {
@@ -331,7 +332,7 @@ function *resetPassword(action){
 }
 // 动态验证用户名是否注册（暂时弃用）
 function *checkUserRegister(action){
-  let url = Path.basePaths.newAPIBasePath + Path.APISubPaths.checkUserRegister + '/' + action.params.username;
+  let url = Path.basePaths.APIBasePath + Path.APISubPaths.checkUserRegister + '/' + action.params.username;
   yield put({type: loginAction.LOGIN_FETCH});
   try{
     const response = yield call(axios.get, url);

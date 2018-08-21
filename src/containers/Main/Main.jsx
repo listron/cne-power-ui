@@ -44,9 +44,9 @@ class Main extends Component {
     let pathArray = pathname.split('/').filter(e=>!!e);
     const params = menu.find(e=>e.path===`/${pathArray[0]?pathArray[0]:''}`);
     this.props.setTopMenu({ topMenu: params });
-    this.props.getStations({
-      userId: getCookie('userId'),
-    });
+    // this.props.getStations({
+    //   userId: getCookie('userId'),
+    // });
     this.props.getDeviceTypes({
       userId: getCookie('userId'),
     });
@@ -78,7 +78,7 @@ class Main extends Component {
     if((moment().isBefore(getCookie('expireData'), 'second')) 
     && (authData !== 'undefined' && authData !== null) 
     && (isNotLogin === '0')){
-    //  if(true){
+      //if(true){
       return (
         <div className={styles.app}>
           <div className={styles.appHeader}>

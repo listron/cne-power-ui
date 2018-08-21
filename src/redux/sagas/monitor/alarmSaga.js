@@ -13,8 +13,8 @@ function *changeAlarmStore(action) {//存储payload指定参数，替换reducer-
 
 function *getRealtimeAlarm(action) {  // 请求实时告警
   const { payload } = action;
-  // const realtimeAlarmUrl = Path.basePaths.newAPIBasePath + Path.APISubPaths.monitor.getRealtimeAlarm;
-  const url = '/mock/monitor/getRealtimeAlarm';
+  const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getRealtimeAlarm;
+  // const url = '/mock/monitor/getRealtimeAlarm';
   try{
     yield put({ type:alarmAction.ALARM_FETCH });
     const response = yield call(axios.post,url,payload);

@@ -19,8 +19,11 @@ class PvStationItem extends React.Component{
               {
                 stationDataList.map((item,index)=>{
                   return(
-                  <div className={styles.stationCard} key={index}>
-                  <div className={styles.stationCardTitle}>{item.stationName}</div>
+                  <div className={item.stationStatus.stationStatus==='900' ? styles.stationTest : styles.stationCard }  key={index}>
+                  <div className={styles.stationCardTitle}>
+                  <div className={styles.stationName}>{item.stationName}</div>
+                   {item.stationStatus.stationStatus==='500' ?<i className="iconfont icon-outage"></i>:''}
+                   </div>
                   <div className={styles.stationCardProgress}>
                     <Progress percent={item.stationPower / item.stationCapacity * 100} showInfo={false} />
                   </div>
@@ -31,7 +34,8 @@ class PvStationItem extends React.Component{
                   <div className={styles.stationCardWindSpeed}>{item.instantaneous}w/m²</div>
                   <div className={styles.stationCardEquipmentNum}>
                     <div>{item.stationCapacity}台</div>
-                    {item.alarmNum===2?<div className={styles.stationWarning}>⚠{item.alarmNum}</div>:''}
+                    {item.alarmNum >0? <div className={styles.stationWarning}>
+                    <i className="iconfont icon-alarm1"></i>{item.alarmNum}</div> : ''}
                     {/*  <div className={styles.stationWarning}>⚠{item.alarmNum}</div> */}
                   </div>
                 </div>
