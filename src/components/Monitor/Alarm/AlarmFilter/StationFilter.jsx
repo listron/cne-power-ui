@@ -8,7 +8,7 @@ const CheckboxGroup = Checkbox.Group;
 
 class StationFilter extends Component {
   static propTypes = {
-    stationCode: PropTypes.string,
+    stationCode: PropTypes.array,
     stations: PropTypes.object,
     onChangeFilter: PropTypes.func,
   }
@@ -21,8 +21,8 @@ class StationFilter extends Component {
   }
 
   onChangeStation = (checkedValue) => {
-    const stationArray = this.props.stationCode.split(',').concat(checkedValue);
-    const stationCode = Array.from(new Set(stationArray)).join(',');
+    const stationArray = this.props.stationCode.concat(checkedValue);
+    const stationCode = Array.from(new Set(stationArray));
     this.props.onChangeFilter({
       stationCode
     });
@@ -31,7 +31,7 @@ class StationFilter extends Component {
   onChangeProvince = (key) => {
     if(key === 'all') {
       this.props.onChangeFilter({
-        stationCode: ''
+        stationCode: []
       });
     }
     this.setState({
@@ -41,11 +41,11 @@ class StationFilter extends Component {
 
   onCheckAll(e, data) {
     const checkedValue = data.map(item=>data.get('stationCode').toString()).toJS();
-    let stationCode = this.props.stationCode.split(',');
-    let stationArray, stationCode;
+    let stationCode = this.props.stationCode;
+    let stationArray;
     if(e.target.Checked) {
       stationArray = stationCode.concat(checkedValue);
-      stationCode = Array.from(new Set(stationArray)).join(',');   
+      stationCode = Array.from(new Set(stationArray));   
     } else {
       stationArray = stationCode.filter(item => checkedValue.indexOf(item)===-1);
       stationCode = stationArray.join(',');
@@ -57,7 +57,7 @@ class StationFilter extends Component {
 
   getCheckAll(data) {
     const checkedOption = data.map(item=>data.get('stationCode').toString()).toJS();
-    const stationCode = this.props.stationCode.split(',');
+    const stationCode = this.props.stationCode;
     let result = true;
     checkedOption.forEach(element => {
       if(stationCode.indexOf(element) === -1) {
@@ -69,7 +69,7 @@ class StationFilter extends Component {
   }
 
   renderProvince(stationData) {
-    const stationCode = this.props.stationCode.split(',');
+    const stationCode = this.props.stationCode;
     return stationData.map(provinceItem => {
       return (
         <TabPane tab={provinceItem.getIn([0,'provinceName'])} key={provinceItem.getIn([0,'provinceCode']).toString()}>

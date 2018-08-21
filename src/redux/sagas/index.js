@@ -57,7 +57,8 @@ import { watchUser } from './system/account/userSaga';
 import { watchSingleStationMonitor } from './monitor/stationMonitor/singleStationSaga'; 
 import { watchDeviceMonitor } from './monitor/stationMonitor/deviceMonitorSaga';
 
-import {watchStationMonitor} from './monitor/stationMonitor/stationMonitorSaga.js'
+import {watchStationMonitor} from './monitor/stationMonitor/stationMonitorSaga';
+import {watchAlarmMonitor} from './monitor/alarmSaga';
 
 // root saga
 export default function* rootSaga() {
@@ -114,5 +115,6 @@ export default function* rootSaga() {
     watchStationMonitor(),
     watchDeviceMonitor(),
     watchSingleStationMonitor(),
+    watchAlarmMonitor()
   ])
 }

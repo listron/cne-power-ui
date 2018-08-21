@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
-import CommonPagination from '../../../../Common/CommonPagination';
+import CommonPagination from '../../../Common/CommonPagination';
 import WarningTip from '../../../Common/WarningTip';
-import styles from './deviceMonitor.scss';
+import TransferAlarmModal from './TransferAlarmModal';
+import RelieveAlarmModal from './RelieveAlarmModal';
+import styles from './realTimeAlarm.scss';
 import PropTypes from 'prop-types';
 import { Table, Select } from 'antd';
 import { Link } from 'react-router-dom';
@@ -15,6 +17,8 @@ class RealTimeAlarmTable extends Component {
     onRelieveAlarm: PropTypes.func,
     onResetRelieveAlarm: PropTypes.func,
     onTransferAlarm: PropTypes.func,
+    onRelieveAlarm: PropTypes.func,
+    defectTypes: PropTypes.object,
   }
 
   constructor(props){
@@ -125,13 +129,22 @@ class RealTimeAlarmTable extends Component {
   }
 
   renderTransferModal() {
-    // return (
-      
-    // )
+    return (
+      <TransferAlarmModal
+        onTransferAlarm={this.props.onTransferAlarm}
+        defectTypes={this.props.defectTypes}
+        selectedRowKeys={this.state.selectedRowKeys}
+      />     
+    );
   }
 
   renderRelieveModal() {
-
+    return (
+      <RelieveAlarmModal
+        onRelieveAlarm={this.props.onRelieveAlarm}
+        selectedRowKeys={this.state.selectedRowKeys}
+      />     
+    );
   }
 
   render() {

@@ -8,15 +8,15 @@ import DeviceTypeFilter from '../AlarmFilter/DeviceTypeFilter';
 import AlarmTypeFilter from '../AlarmFilter/AlarmTypeFilter';
 import AlarmLevelFilter from '../AlarmFilter/AlarmLevelFilter';
 import FilteredItems from '../AlarmFilter/FilteredItems';
-import styles from './alarmFilter.scss';
+import styles from './realTimeAlarm.scss';
 
 class RealTimeAlarmFilter extends Component {
   static propTypes = {
-    warningLevel: PropTypes.string,
+    warningLevel: PropTypes.array,
     stationType: PropTypes.string,
-    stationCode: PropTypes.string,
-    deviceTypeCode: PropTypes.string,
-    warningConfigName: PropTypes.string,
+    stationCode: PropTypes.array,
+    deviceTypeCode: PropTypes.array,
+    warningConfigName: PropTypes.array,
     startTime: PropTypes.string,
     endTime: PropTypes.string,
     deviceName: PropTypes.string,
