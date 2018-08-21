@@ -183,7 +183,7 @@ function *getDeviceTypeFlow(action){
 function *getPvmoduleList(action){
   const { payload } = action;
   // const url = '/mock/api/v3/monitor/pvmodule/datalist/'+ payload.stationCode;
-  const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getInverterList + payload.stationCode;
+  const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getPvmoduleList + payload.stationCode;
   try{
     yield put({type: singleStationAction.SINGLE_STATION_FETCH});
     const response = yield call(axios.get, url, payload);
