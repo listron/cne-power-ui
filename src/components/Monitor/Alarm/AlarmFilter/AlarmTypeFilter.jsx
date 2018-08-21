@@ -6,7 +6,7 @@ const CheckboxGroup = Checkbox.Group;
 
 class AlarmLevelFilter extends Component {
   static propTypes = {
-    warningConfigName: PropTypes.string,
+    warningConfigName: PropTypes.array,
     onChangeFilter: PropTypes.func,
   }
 
@@ -16,13 +16,13 @@ class AlarmLevelFilter extends Component {
 
   onChange = (value) => {
     this.props.onChangeFilter({
-      warningConfigName: value.join(',')
+      warningConfigName: value
     });
   }
 
   onReset = () => {
     this.props.onChangeFilter({
-      warningConfigName: ''
+      warningConfigName: []
     });
   }
 
@@ -32,7 +32,7 @@ class AlarmLevelFilter extends Component {
     return (
       <div className={styles.alarmFilterItem}>
         <span onClick={this.onReset} >不限</span>
-        <CheckboxGroup options={options} value={warningConfigName.split(',')} onChange={this.onChange} />
+        <CheckboxGroup options={options} value={warningConfigName} onChange={this.onChange} />
       </div>
     );
   }

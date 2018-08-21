@@ -11,6 +11,7 @@ import AllStation from '../containers/Monitor/StationMonitor/AllStation/AllStati
 import DeviceMonitor from '../containers/Monitor/StationMonitor/DeviceMonitor/DeviceMonitor';
 import Role from '../containers/System/Account/Role/Role';
 import SingleStation from '../containers/Monitor/StationMonitor/SingleStation/SingleStation';
+import RealTimeAlarm from '../containers/Monitor/Alarm/RealTimeAlarm';
 /*
   注： path变量中，以/hidden开头的路径，将不展示在菜单中；
 */
@@ -53,6 +54,10 @@ const routers = [
     path:'/system/account/user',
     exact:true,
     component: User,
+  }, {
+    path: '/monitor/alarm/realtime',
+    exact: true,
+    component: RealTimeAlarm,
   }, {
     path: '/monitor/station',
     exact: true,

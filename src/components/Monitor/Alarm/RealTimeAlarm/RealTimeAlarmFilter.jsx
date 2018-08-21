@@ -7,19 +7,21 @@ import StationFilter from '../AlarmFilter/StationFilter';
 import DeviceTypeFilter from '../AlarmFilter/DeviceTypeFilter';
 import AlarmTypeFilter from '../AlarmFilter/AlarmTypeFilter';
 import AlarmLevelFilter from '../AlarmFilter/AlarmLevelFilter';
-import FilteredItems from '../AlarmFilter/FilteredItems';
-import styles from './alarmFilter.scss';
+import RealTimeFilteredItems from './RealTimeFilteredItems';
+import styles from './realTimeAlarm.scss';
 
 class RealTimeAlarmFilter extends Component {
   static propTypes = {
-    warningLevel: PropTypes.string,
+    warningLevel: PropTypes.array,
     stationType: PropTypes.string,
-    stationCode: PropTypes.string,
-    deviceTypeCode: PropTypes.string,
-    warningConfigName: PropTypes.string,
+    stationCode: PropTypes.array,
+    deviceTypeCode: PropTypes.array,
+    warningConfigName: PropTypes.array,
     startTime: PropTypes.string,
     endTime: PropTypes.string,
     deviceName: PropTypes.string,
+    isTransferWork: PropTypes.number,
+    isRelieveAlarm: PropTypes.number,
     getRealTimeAlarm: PropTypes.func,
   }
 
@@ -43,7 +45,7 @@ class RealTimeAlarmFilter extends Component {
   }
 
   onChangeFilter = (obj) => {
-    const { warningLevel, stationCode, deviceTypeCode, warningConfigName, startTime, endTime, deviceName } = this.props;
+    const { warningLevel, stationCode, deviceTypeCode, warningConfigName, startTime, endTime, deviceName, isTransferWork, isRelieveAlarm } = this.props;
     let filter = {
       warningLevel,
       stationCode,
@@ -51,7 +53,9 @@ class RealTimeAlarmFilter extends Component {
       warningConfigName,
       startTime,
       endTime,
-      deviceName
+      deviceName,
+      isTransferWork,
+      isRelieveAlarm
     }
     let newFiter = Object.assign({}, filter, obj);
     this.props.getRealTimeAlarm(newFiter);
@@ -91,7 +95,7 @@ class RealTimeAlarmFilter extends Component {
           {showFilter==='deviceType' && <DeviceTypeFilter {...this.props} onChangeFilter={this.onChangeFilter} />}
           {showFilter==='alarmType' && <AlarmTypeFilter {...this.props} onChangeFilter={this.onChangeFilter} />}
         </div>
-        <FilteredItems {...this.props} onChangeFilter={this.onChangeFilter} />
+        <RealTimeFilteredItems {...this.props} onChangeFilter={this.onChangeFilter} />
       </div>
     );
   }
