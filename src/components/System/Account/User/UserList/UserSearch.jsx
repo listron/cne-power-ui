@@ -130,7 +130,7 @@ class UserSearch extends Component {
               })}
             </Select>
           </div>
-          <div className={styles.userStatus} >
+          {/* <div className={styles.userStatus} > 产品建议暂时去掉
             <span>状态</span>
             <RadioGroup onChange={this.onChangeStatus} defaultChecked={true} defaultValue={0} value={userStatus} buttonStyle="solid" >
               <RadioButton value={0} >全部</RadioButton>
@@ -140,7 +140,7 @@ class UserSearch extends Component {
               <RadioButton value={6} >未通过审核</RadioButton>
               <RadioButton value={2} >未激活</RadioButton>
             </RadioGroup>
-          </div>
+          </div> */}
         </div>
         {roleIdSet.size !== 0 && 
           <div className={styles.selectedRolesBox} >

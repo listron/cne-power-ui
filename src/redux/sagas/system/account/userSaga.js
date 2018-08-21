@@ -29,6 +29,9 @@ function *getUserList(action){
           userData: response.data.data.userData,
         }
       })
+    }else{
+      yield put({ type: userAction.GET_USER_FETCH_FAIL})
+      message.error(response.data.message);
     }
   }catch(e){
     console.log(e);
@@ -63,7 +66,7 @@ function *changeUserStatus(action){
         payload: params,
       });
     }else{
-      yield put({ type: userAction.CHANGE_USER_STATUS_FAIL})
+      yield put({ type: userAction.GET_USER_FETCH_FAIL})
       message.error(response.data.message);
     }
   }catch(e){
@@ -78,14 +81,19 @@ function *getUserDetail(action){
   try{
     yield put({ type: userAction.USER_FETCH});
     const response = yield call(axios.get, url,payload);
-    yield put({
-      type: userAction.GET_USER_FETCH_SUCCESS,
-      payload: {
-        userDetail: response.data.data,
-        showPage: payload.showPage,
-        userId: payload.userId,
-      }
-    })
+    if(response.data.code === '10000'){
+      yield put({
+        type: userAction.GET_USER_FETCH_SUCCESS,
+        payload: {
+          userDetail: response.data.data,
+          showPage: payload.showPage,
+          userId: payload.userId,
+        }
+      })
+    }else{
+      yield put({ type: userAction.GET_USER_FETCH_FAIL});
+      message.error(response.data.message);
+    }
   }
   catch(e){
     console.log(e);
@@ -99,13 +107,18 @@ function *getInviteLink(action){
   try{
     yield put({ type: userAction.USER_FETCH});
     const response = yield call(axios.get, url, {params: {enterpriseId: payload.enterpriseId}});
-    yield put({
-      type: userAction.GET_USER_FETCH_SUCCESS,
-      payload: {
-        inviteData: response.data.data,
-        showPage: payload.showPage,
-      }
-    })
+    if(response.data.code === '10000'){
+      yield put({
+        type: userAction.GET_USER_FETCH_SUCCESS,
+        payload: {
+          inviteData: response.data.data,
+          showPage: payload.showPage,
+        }
+      })
+    }else{
+      yield put({ type: userAction.GET_USER_FETCH_FAIL});
+      message.error(response.data.message);
+    }
   }
   catch(e){
     console.log(e);
@@ -148,24 +161,27 @@ function *editUserInfo(action){
   try{
     yield put({ type: userAction.USER_FETCH });
     const response = yield call(axios.put, url, payload);
-    yield put({
-      type: userAction.GET_USER_FETCH_SUCCESS
-    })
-    yield put({ type: userAction.CHANGE_USER_STORE_SAGA, payload:{showPage: payload.showPage}})
-    const params = yield select(state => ({//继续请求用户列表
-      enterpriseId: payload.enterpriseId,
-      roleId: state.system.user.get('roleId'),
-      userStatus: state.system.user.get('userStatus'),
-      userName: state.system.user.get('userName'),
-      stationName: state.system.user.get('stationName'),
-      phoneNum: state.system.user.get('phoneNum'), 
-      pageSize: state.system.user.get('pageSize'),
-      pageNum: state.system.user.get('pageNum'),
-    }));
-    yield put({
-      type:  userAction.GET_USER_LIST_SAGA,
-      payload: params,
-    });
+    if(response.data.code === '10000'){
+      yield put({type: userAction.GET_USER_FETCH_SUCCESS});
+      yield put({ type: userAction.CHANGE_USER_STORE_SAGA, payload:{showPage: payload.showPage}})
+      const params = yield select(state => ({//继续请求用户列表
+        enterpriseId: payload.enterpriseId,
+        roleId: state.system.user.get('roleId'),
+        userStatus: state.system.user.get('userStatus'),
+        userName: state.system.user.get('userName'),
+        stationName: state.system.user.get('stationName'),
+        phoneNum: state.system.user.get('phoneNum'), 
+        pageSize: state.system.user.get('pageSize'),
+        pageNum: state.system.user.get('pageNum'),
+      }));
+      yield put({
+        type:  userAction.GET_USER_LIST_SAGA,
+        payload: params,
+      });
+    }else{
+      yield put({ type: userAction.GET_USER_FETCH_FAIL});
+      message.error(response.data.message);
+    }
   }catch(e){
     console.log(e);
   }
@@ -177,10 +193,7 @@ function *createUserInfo(action){
   yield put({ type: userAction.USER_FETCH});
   try{
     const response = yield call(axios.post, url, payload);
-    if(response.data.code === '00000'){
-      yield put({ type: userAction.GET_USER_FETCH_FAIL});
-      message.error(response.data.message);
-    }else{
+    if(response.data.code === '10000'){
       yield put({ type: userAction.GET_USER_FETCH_SUCCESS});
       yield put({ type: userAction.CHANGE_USER_STORE_SAGA, payload:{showPage: payload.showPage}})
       const params = yield select(state => ({//继续请求用户列表
@@ -197,6 +210,9 @@ function *createUserInfo(action){
         type:  userAction.GET_USER_LIST_SAGA,
         payload: params,
       });
+    }else{
+      yield put({ type: userAction.GET_USER_FETCH_FAIL});
+      message.error(response.data.message);
     }
   }catch(e){
     console.log(e);

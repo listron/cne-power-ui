@@ -72,40 +72,6 @@ class User extends Component {
     }
   };
 
-  onChangePageSize = pageSize => {
-    if (pageSize !== this.props.pageSize) {
-      let params = {
-        enterpriseId: this.props.enterpriseId,
-        userStatus: this.props.userStatus,
-        pageNum: 1,
-        pageSize: pageSize,
-        roleId: this.props.roleId,
-        username: this.props.username,
-        phoneNum: this.props.phoneNum,
-        stationName: this.props.stationName,
-        order: this.props.order,
-      };
-      this.props.getUserList(params);
-    }
-  };
-
-  onChangePage = currentPage => {
-    if (currentPage !== this.props.currentPage) {
-      let params = {
-        enterpriseId: this.props.enterpriseId,
-        userStatus: this.props.userStatus,
-        pageNum: currentPage,
-        pageSize: this.props.pageSize,
-        roleId: this.props.roleId,
-        username: this.props.username,
-        phoneNum: this.props.phoneNum,
-        stationName: this.props.stationName,
-        order: this.props.order,
-      };
-      this.props.getUserList(params);
-    }
-  };
-
   onChangeStatus = status => {
     if (Number(status) !== this.props.userStatus) {
       let params = {

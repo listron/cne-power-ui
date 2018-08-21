@@ -29,6 +29,9 @@ class UserList extends Component {
     pageNum: PropTypes.number,
     roleId: PropTypes.string,
     getInviteLink: PropTypes.func,
+    userName: PropTypes.string,
+    stationName: PropTypes.string,
+    phoneNum: PropTypes.string,
   }
 
   constructor(props){
@@ -63,6 +66,9 @@ class UserList extends Component {
       pageNum: currentPage,
       pageSize,
       roleId: this.props.roleId,
+      userName: this.props.userName,
+      stationName: this.props.stationName,
+      phoneNum: this.props.phoneNum, 
     })
   }
 
@@ -210,7 +216,7 @@ class UserList extends Component {
         dataIndex: 'userStatus',
         key: 'userStatus',
         render: (text, record, index) => {
-          return (<span>{this.getEnterpriseStatus(record.enterpriseStatus)+'/'+this.getUserStatus(record.userStatus)}</span>);
+          return (<span>{this.getEnterpriseStatus(record.enterpriseStatus)}</span>);
         },
       }
     ];
@@ -257,7 +263,6 @@ class UserList extends Component {
   
   userHandle = (value) => {
     const { selectedUser, enterpriseId, } = this.props;
-    console.log(selectedUser.toJS()[0])
     if(value === 'edit'){
       this.props.changeUserStore({
         showPage: 'edit',
@@ -267,7 +272,6 @@ class UserList extends Component {
       this.setState({
         showDeleteTip: true,
       })
-      
     }else if(value === 'use'){//启用
       this.props.changeUserStatus({
         enterpriseId,
@@ -402,7 +406,7 @@ class UserList extends Component {
         dataIndex: 'userStatus',
         key: 'userStatus',
         render: (text, record, index) => {
-          return (<span>{this.getEnterpriseStatus(record.enterpriseStatus)/this.getUserStatus(record.userStatus)}</span>);
+          return (<span>{this.getEnterpriseStatus(record.enterpriseStatus)}</span>);
         },
       }
     ];
@@ -446,7 +450,7 @@ class UserList extends Component {
             <Upload {...uploadProps} className={styles.importUser}>
               <Button>批量导入</Button>
             </Upload>
-            <Button  >导入模板下载</Button>
+            <Button className={styles.templateDown} href="http://test-dpv.cnecloud.cn/template/用户批量导入模板.xlsx" >导入模板下载</Button>
             <div className={styles.userOperate} >
               {this._createUserOperate()}
             </div>
