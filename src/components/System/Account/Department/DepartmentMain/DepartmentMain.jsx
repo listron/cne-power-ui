@@ -40,7 +40,6 @@ class DepartmentMain extends Component {
     this.props.getDepartmentList(params)//请求部门列表
   }
 
-
   render(){
     const { departmentName, parentDepartmentName, stationName } = this.props;
     return (
