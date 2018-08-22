@@ -264,10 +264,8 @@ class UserList extends Component {
   userHandle = (value) => {
     const { selectedUser, enterpriseId, } = this.props;
     if(value === 'edit'){
-      this.props.changeUserStore({
-        showPage: 'edit',
-        userDetail: selectedUser.toJS()[0],
-      })
+      this.props.getUserDetail({userId: selectedUser.toJS()[0].userId});
+      this.props.changeUserStore({ showPage: 'edit',});
     }else if(value === 'delete'){//移除
       this.setState({
         showDeleteTip: true,

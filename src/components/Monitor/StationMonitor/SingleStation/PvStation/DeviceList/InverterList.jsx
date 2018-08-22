@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './deviceList.scss';
-import { Tabs, Switch, Radio, Table  } from 'antd';
+import { Tabs, Switch, Radio, Table, Progress  } from 'antd';
 import CommonPagination from '../../../../../Common/CommonPagination';
 
 const TabPane = Tabs.TabPane;
@@ -51,19 +51,19 @@ class InverterList extends Component {
         render: (text,record,index) => (<span>{text}</span>),
         sorter: true,
       }, {
-        title: '实时功率',
+        title: '实时功率(kW)',
         dataIndex: 'devicePower',
         key: 'devicePower',
-        render: (text,record) => (<span>{text}</span>),
+        render: (text,record) => (<div className={styles.devicePower} ><div>{text}</div><Progress className={styles.devicePower} percent={text/record.deviceCapacity*100} showInfo={false} /></div>),
         sorter: true,
       }, {
-        title: '装机容量',
+        title: '装机容量(kW)',
         dataIndex: 'deviceCapacity',
         key: 'deviceCapacity',
         render: (text,record) => (<span>{text}</span>),
         sorter: true
       }, {
-        title: '告警',
+        title: '告警(个)',
         dataIndex: 'alarmNum',
         key: 'alarmNum',
         render: (text,record) => (<span>{text}</span>),
@@ -101,6 +101,9 @@ class InverterList extends Component {
       showQuickJumper: true,
       total: inverterListNum,
       showSizeChanger: true,
+      position: 'top',
+      // simple: true,
+      size: 'small',
     }
     return (
       <div className={styles.inverterList} >
