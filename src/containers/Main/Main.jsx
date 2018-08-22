@@ -5,7 +5,7 @@ import {routerConfig} from '../../common/routerSetting';
 import { menu } from '../../common/menu';
 import styles from './style.scss';
 import { connect } from 'react-redux';
-import { getCookie, delCookie } from '../../utils'
+import { getCookie, delCookie } from '../../utils';
 import Login from '../Login/LoginLayout';
 import PropTypes from 'prop-types';
 import axios from 'axios';
@@ -33,10 +33,8 @@ class Main extends Component {
     this.state = {
       current: 'home',
       logined: false,
-      
       showFeedback: false,
     };
-    this.handleClick = this.handleClick.bind(this);
   }
 
   componentDidMount(){//根据路径缓存topMenu值
@@ -44,12 +42,6 @@ class Main extends Component {
     let pathArray = pathname.split('/').filter(e=>!!e);
     const params = menu.find(e=>e.path===`/${pathArray[0]?pathArray[0]:''}`);
     this.props.setTopMenu({ topMenu: params });
-    // this.props.getStations({
-    //   userId: getCookie('userId'),
-    // });
-    this.props.getDeviceTypes({
-      userId: getCookie('userId'),
-    });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -60,21 +52,22 @@ class Main extends Component {
     && getCookie('isNotLogin') === '0') {
       this.props.history.push('/');
     }
-  }
-
-  handleClick(e) {
-    this.setState({
-      current: e.key
-    });
+    if(nextProps.login.size > 0 && this.props.login.size === 0) {
+      if(authData && (authData !== 'undefined' && authData !== null)){
+        axios.defaults.headers.common['Authorization'] = "bearer " + JSON.parse(authData);
+        this.props.getStations();
+        this.props.getDeviceTypes();
+      }
+    }
   }
 
   render() {
     const { setTopMenu, topMenu, } = this.props;
     const authData = getCookie('authData');
     const isNotLogin = getCookie('isNotLogin');
-    if(authData && (authData !== 'undefined' && authData !== null)){
-      axios.defaults.headers.common['Authorization'] = "bearer " + JSON.parse(authData);
-    }
+    // if(authData && (authData !== 'undefined' && authData !== null)){
+    //   axios.defaults.headers.common['Authorization'] = "bearer " + JSON.parse(authData);
+    // }
     if((moment().isBefore(getCookie('expireData'), 'second')) 
     && (authData !== 'undefined' && authData !== null) 
     && (isNotLogin === '0')){
@@ -115,7 +108,7 @@ class Main extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  login: state.login,
+  login: state.login.get('loginData'),
   topMenu: state.common.get('topMenu')? state.common.get('topMenu').toJS() : {},
   enterpriseId: state.login.get('enterpriseId'),
   username: state.login.get('username'),
