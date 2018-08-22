@@ -31,11 +31,12 @@ class Department extends Component {
     getDepartmentStation: PropTypes.func,
     setDepartmentUser: PropTypes.func,
     setDepartmentStation: PropTypes.func,
+    changeDepartmentStore: PropTypes.func,
   }
   constructor(props) {
     super(props);
     this.state = {
-      showSidePage: 'add'
+      showSidePage: 'list'
     }
   }
   componentDidMount(){
@@ -56,6 +57,10 @@ class Department extends Component {
     })
   }
 
+  componentWillUnmount(){
+    this.props.changeDepartmentStore({showPage: 'list'});
+  }
+
 
   onShowSideChange = ({showSidePage}) => {
     this.setState({ showSidePage });
@@ -71,6 +76,8 @@ class Department extends Component {
   render() {
     const { showPage, showAssignStationModal, showAssignUserModal } = this.props;
     const { showSidePage } = this.state;
+    console.log(showPage + '-----showPage')
+    console.log(showSidePage + '-----showSidePage')
     return (
       <div className={styles.departmentContainer}>
         <DepartmentMain {...this.props} onWarningTipToggle={this.onWarningTipToggle} />

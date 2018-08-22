@@ -44,7 +44,6 @@ function *getEnterpriseDetail(action){
   try{
     yield put({ type:enterpriseAction.ENTERPRISE_FETCH });
     const response = yield call(axios.get,url);
-    console.log(response);
     yield put({
       type:  enterpriseAction.GET_ENTERPRISE_FETCH_SUCCESS,
       payload:{

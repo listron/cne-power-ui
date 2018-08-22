@@ -124,6 +124,11 @@
         cursor: pointer;
       }
     }
+    :global{
+      .ant-table-placeholder{
+        z-index: auto;
+      }
+    }
   }
 }
 
