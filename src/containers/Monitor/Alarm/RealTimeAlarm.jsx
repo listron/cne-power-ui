@@ -75,10 +75,12 @@ class RealTimeAlarm extends Component {
     const alarmStatus = this.getAlarmStatus(status);
     return (
       <div className={styles.realTimeAlarmContainer}>
-        <div className={styles.realTimeAlarm}>
-          <RealTimeAlarmInfo {...this.props} />
-          <RealTimeAlarmFilter {...this.props} isTransferWork={status==='transfer'?0:1} isRelieveAlarm={status==='relieve'?0:1} />      
-          <RealTimeAlarmTable {...this.props} alarmStatus={alarmStatus} />
+        <div className={styles.realTimeAlarmBox}>
+          <div className={styles.realTimeAlarm}>
+            <RealTimeAlarmInfo {...this.props} />
+            <RealTimeAlarmFilter {...this.props} isTransferWork={status==='transfer'?0:1} isRelieveAlarm={status==='relieve'?0:1} />      
+            <RealTimeAlarmTable {...this.props} alarmStatus={alarmStatus} /> 
+          </div>
           <Footer />
         </div>
       </div>
@@ -106,7 +108,7 @@ const mapDispatchToProps = (dispatch) => ({
   changeAlarmStore: payload => dispatch({type: alarmAction.CHANGE_ALARM_STORE_SAGA, payload}),
   getRealTimeAlarm: payload => dispatch({type: alarmAction.GET_REALTIME_ALARM_SAGA, payload}),
   getAlarmNum: payload => dispatch({type: alarmAction.GET_ALARM_NUM_SAGA, payload}),
-  getDefectTypes: payload => dispatch({ type: ticketAction.GET_DEFECTTYPES_SAGA, payload }),
+  getDefectTypes: params => dispatch({ type: ticketAction.GET_DEFECTTYPES_SAGA, params }),
   onTransferAlarm: payload =>dispatch({ type: alarmAction.TRANSFER_ALARM_SAGA, payload }),
   onRelieveAlarm: payload =>dispatch({ type: alarmAction.RELIEVE_ALARM_SAGA, payload }),
 });
