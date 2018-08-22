@@ -37,6 +37,14 @@ class InverterList extends Component {
         return '';
     }
   }
+  onChangeStatus = () => {
+
+  }
+  getDeviceSource = () => {
+    const {inverterList} = this.props; 
+    const deviceList = inverterList && inverterList.deviceList;
+    return deviceList && deviceList.map((e,i)=>({...e,key:i}));
+  }
   tableColumn = () => {
     const columns = [
       {
@@ -86,8 +94,8 @@ class InverterList extends Component {
     const inverterListNum = deviceList && (deviceList.length || 0);
     const deviceStatusSummary = inverterList && inverterList.deviceStatusSummary;
     const operations = (<div className={styles.inverterRight} >
-      <Switch defaultChecked onChange={this.onChange} />告警
-      <Radio.Group defaultValue="a" buttonStyle="solid" className={styles.inverterStatus} >
+      <Switch defaultChecked onChange={this.onSwitchAlarm} />告警
+      <Radio.Group defaultValue="a" buttonStyle="solid" className={styles.inverterStatus} onChange={this.onChangeStatus}  >
         <Radio.Button value="a">全部</Radio.Button>
         <Radio.Button value="b">正常</Radio.Button>
         <Radio.Button value="c">故障</Radio.Button>
@@ -120,10 +128,11 @@ class InverterList extends Component {
               {/* <CommonPagination total={inverterListNum} onPaginationChange={this.onPaginationChange} /> */}
               <Table 
                 loading={loading}
-                dataSource={deviceList && deviceList.map((e,i)=>({...e,key:i}))} 
+                dataSource={this.getDeviceSource} 
                 columns={this.tableColumn()} 
                 onChange={this.tableChange}
                 pagination={pagination}
+                className={styles.inverterTable}
               />
             </div>
             

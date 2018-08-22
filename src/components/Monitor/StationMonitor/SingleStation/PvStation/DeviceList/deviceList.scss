@@ -38,6 +38,26 @@
       
     }
   }
+  .inverterTab{
+    .inverterTable{
+      
+
+      :global{
+        .ant-progress-success-bg, .ant-progress-bg{
+          background-color: $themeColor;
+        }
+        a{
+          color:#666666;
+        }
+        .ant-table-column-sorter-up.on .anticon-caret-up:hover, .ant-table-column-sorter-down.on .anticon-caret-up:hover, .ant-table-column-sorter-up.on .anticon-caret-down:hover, .ant-table-column-sorter-down.on .anticon-caret-down:hover {
+          color: $themeColor;
+        }
+        a:hover{
+          color: $themeColor;
+        }
+      }
+    }
+  }
   
   :global{
     .ant-tabs-extra-content {
