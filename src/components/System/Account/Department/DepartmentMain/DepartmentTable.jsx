@@ -184,10 +184,10 @@ class DepartmentTable extends Component {
       [deletable, userAssignable, staionAssignable] = [true,true,true];
     }       
     return (<Select onChange={this.departmentHandle} placeholder="操作" value="操作" dropdownMatchSelectWidth={false} dropdownClassName={styles.handleDropdown}>
-      <Option value="edit" disabled={!editable} >编辑</Option>
-      <Option value="delete" disabled={!deletable} >删除</Option>
-      <Option value="assignUser" disabled={!userAssignable} >分配用户</Option>
-      <Option value="assignStation" disabled={!staionAssignable} >设置电站</Option>
+      <Option value="edit" disabled={!editable} ><span className="font_family icon-edit"></span>编辑</Option>
+      <Option value="delete" disabled={!deletable} ><span className="font_family icon-remove"></span>删除</Option>
+      <Option value="assignUser" disabled={!userAssignable} ><span className="font_family icon-role"></span>分配用户</Option>
+      <Option value="assignStation" disabled={!staionAssignable} ><span className="font_family icon-powerstation"></span>设置电站</Option>
     </Select>)
   }
   _createTableColumn = () => {//生成表头
