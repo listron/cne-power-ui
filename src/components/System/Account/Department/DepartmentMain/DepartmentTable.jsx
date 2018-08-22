@@ -183,7 +183,7 @@ class DepartmentTable extends Component {
       editable = selectedDepartment.length === 1;
       [deletable, userAssignable, staionAssignable] = [true,true,true];
     }       
-    return (<Select onChange={this.departmentHandle} placeholder="操作" value="操作" dropdownMatchSelectWidth={false} dropdownClassName={styles.handleDropdown}>
+    return (<Select onChange={this.departmentHandle} placeholder="操作" value="操作" dropdownMatchSelectWidth={false} dropdownClassName={styles.departmentHandleDropdown}>
       <Option value="edit" disabled={!editable} ><span className="font_family icon-edit"></span>编辑</Option>
       <Option value="delete" disabled={!deletable} ><span className="font_family icon-remove"></span>删除</Option>
       <Option value="assignUser" disabled={!userAssignable} ><span className="font_family icon-role"></span>分配用户</Option>

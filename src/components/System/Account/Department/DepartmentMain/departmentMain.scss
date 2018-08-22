@@ -132,7 +132,7 @@
   }
 }
 
-.handleDropdown{
+.departmentHandleDropdown{
   width: 120px;
   :global{
     .ant-select-dropdown-menu-item{
@@ -140,6 +140,9 @@
     }
     .ant-select-dropdown-menu-item-disabled{
       color:$promptColor;
+    }
+    .font_family{
+      margin-right: 4px;
     }
   }
 }
