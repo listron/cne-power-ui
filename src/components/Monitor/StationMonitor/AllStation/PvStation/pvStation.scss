@@ -50,7 +50,7 @@
       .leftIcon{
         width: 60px;
         height: 60px;
-        background: url('../../../../../theme/img/pv-normal.png') no-repeat center;
+        background: url('/img/pv-normal.png') no-repeat center;
       }
     }
     .progressInfo{
@@ -70,10 +70,8 @@
         .stationValue{
           flex: 1;
           display: flex;
-
           justify-content: space-between;
           padding-top: 20px;
-
         }
         .progressBar{
           flex: 1;
@@ -140,20 +138,49 @@
       background-color: #199419;
     }
     .stationCard {
-      margin: 20px 0 0 20px;
+      margin: 20px 0 10px 20px;
       padding: 8px;
       width: 215px;
       height: 132px;
       border-radius:4px;
-      background: #f1f1f1;
       color: #999;
       background:#ffffff;
       box-shadow:0 1px 4px 0 ;
       display: flex;
       flex-direction: column;
+      cursor: pointer;
+    }
+    .stationTest{
+      margin: 20px 0 0 20px;
+      padding: 8px;
+      width: 215px;
+      height: 132px;
+      border-radius:4px;
+      
+      color: #999;
+      display: flex;
+      flex-direction: column;
+      background:#f8f8f8;
+      box-shadow:0 1px 4px 0 rgba(0,0,0,0.20);
+        pointer-events: none;
+        cursor: default;
+        opacity: 0.6;
+        
     }
     .stationCardTitle {
       flex: 1;
+      display: flex;
+      flex-direction: row;
+      justify-content:space-between;
+      .stationName{
+        width: 150px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      i{
+        color:#e08031;
+      }
     }
     .stationCardProgress {
       flex: 1;
@@ -208,21 +235,27 @@
       text-overflow: ellipsis
     }
     .currentStation{
-      .redColor{
-        background: red;
-        width: 5px;
+      .dataInterruptionColor{
+        background: #e08031;
+        width: 6px;
         height: 20px;
+        border-radius:2px;
+
       }
-      .greyColor{
-        background:grey;
-        width: 5px;
+      .unconnectionColor{
+        background:#c7ceb2;
+        width: 6px;
         height: 20px;
+        border-radius:2px;
+
       }
   
-      .greenColor{
-        background:green;
+      .normalColor{
+        background:#199475;
         width: 5px;
         height: 20px;
+        border-radius:2px;
+
       }
     }
 

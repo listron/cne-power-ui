@@ -21,6 +21,8 @@ const roleReducer = (state = initState, action) => {
       return state.merge(Immutable.fromJS(action.payload)).set('isFetching',false);
     case roleAction.CHANGE_ROLE_STORE:
       return state.merge(Immutable.fromJS(action.payload));
+    case roleAction.RESET_ROLE:
+      return initState;
   }
   return state;
 }

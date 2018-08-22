@@ -132,31 +132,62 @@ class AssignStationModal extends Component {
 
   onCheckStation = (station, checked) => {
     let { selectedDepartment, stationList } = this.state;
+    const selectedDepartmentId = selectedDepartment.get('departmentId');
+    const selectedDepartmentName = selectedDepartment.get('departmentName');
+    const stationId = station.get('stationId');
+    const stationName = station.get('stationName');
     if(checked) {
-      stationList = stationList.push(Immutable.fromJS({
-        departmentId: selectedDepartment.get('departmentId'),
-        departmentName: selectedDepartment.get('departmentName'),
-        stationId: station.get('stationId'),
-        stationName: station.get('stationName'),
-      }))
+      let index = stationList.findIndex((item) => {
+        return item.get('departmentId') === null && item.get('stationId') === stationId;
+      });
+      if(index === -1) {
+        const lastIndex = stationList.findLastIndex((item) => {
+          return item.get('stationId') === stationId;
+        });
+        stationList = stationList.splice(lastIndex+1, 0, Immutable.fromJS({
+          stationId: stationId,
+          stationName: stationName,
+          departmentId: selectedDepartmentId,
+          departmentName: selectedDepartmentName
+        }));
+      } else {
+        stationList = stationList.set(index, Immutable.fromJS({
+          stationId: stationId,
+          stationName: stationName,
+          departmentId: selectedDepartmentId,
+          departmentName: selectedDepartmentName
+        }));
+      }
     } else {
       if(selectedDepartment.get('list')&&selectedDepartment.get('list').size > 0) {
         let child = selectedDepartment.get('list');
         child.forEach((item) => {
           let childIndex = stationList.findIndex((current) => {
             return item.get('departmentId') === current.get('departmentId') && 
-            station.get('stationId') === current.get('stationId')
-          })
+            stationId === current.get('stationId')
+          });
           if(childIndex !== -1) {
             stationList = stationList.delete(childIndex);
           }
         })
       }
       let index = stationList.findIndex((current) => {
-        return selectedDepartment.get('departmentId') === current.get('departmentId') && 
-        station.get('stationId') === current.get('stationId')
+        return selectedDepartmentId === current.get('departmentId') && 
+        stationId === current.get('stationId')
       });
-      stationList = stationList.delete(index);
+      const num = stationList.filter(item => {
+        return stationId === item.get('stationId')
+      }).size;
+      if(num > 1) {
+        stationList = stationList.delete(index);
+      } else {
+        stationList = stationList.set(index, Immutable.fromJS({
+          stationId: stationId,
+          stationName: stationName,
+          departmentId: null,
+          departmentName: null
+        }));
+      }
     }
     let selectedStationList = this.getDepartmenStationRange(selectedDepartment, stationList);
     this.setState({

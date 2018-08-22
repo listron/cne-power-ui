@@ -32,6 +32,22 @@ class CommonProgress extends Component {
     const { value, total, valueText, totalText, percent} = this.props;
     return (
       <div className={styles.commonProgress}>
+          <div className={styles.progressInfo}>
+            <div className={styles.progressData}>
+              <div className={styles.stationValue}>
+                <div>{value}</div>
+                <div>{total}</div>
+              </div>
+              <div className={styles.progressBar}>
+                <Progress percent={value / total * 100} showInfo={false} status="active" />
+              </div>
+              <div className={styles.stationType}>
+                <div>{valueText}</div>
+                <div>{totalText}</div>
+              </div>
+            </div>
+            {percent?<div className={styles.showInfo}>{percent}</div>:''}        
+          </div>
       </div>
     )
   }
