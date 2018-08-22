@@ -9,33 +9,36 @@ class FixedHelper extends Component {
       isScroll: false,
     }
   }
-  // componentDidMount(){
-  //   if (this.refs.main) {
-  //     this.refs.main.addEventListener('scroll', this.onScroll);
-  //   }
-  // }
+  componentDidMount(){
+    const main = document.getElementById('main');
+    if(main){
+      main.addEventListener('scroll', this.onScroll)
+    }
+  }
 
-  // componentWillUnmount() {
-  //   if(this.refs.main) {
-  //     this.refs.main.removeEventListener('scroll', this.onScroll);
-  //   }
-  // }
+  componentWillUnmount() {
+    const main = document.getElementById('main');
+    main && main.removeEventListener('scroll', this.onScroll);
+  }
 
-  // onScroll = () => {
-  //   let isScroll = this.refs.main.scrollTop > 0;
-  //   this.setState({
-  //     isScroll
-  //   });
-  // }
+  onScroll = () => {
+    const main = document.getElementById('main');
+    const scrollTop = main.scrollTop;
+    if(scrollTop > 0){
+      this.setState({
+        isScroll: true
+      });
+    }
+  }
 
   render(){
+    const { isScroll } = this.state;
     return (
       <div className={styles.appFloat} style={{height: this.state.isScroll ? 140 : 105}}>
         <div className={styles.floatItem}><Icon type="android-o" /></div>
         <div className={styles.floatItem}><Icon type="apple-o" /></div>
         <div className={styles.floatItem}><Icon type="wechat" /></div>
-        {this.state.isScroll && 
-        <div className={styles.floatItem}><Icon type="up-circle-o" /></div>}
+        {isScroll && <div className={styles.floatItem}><Icon type="up-circle-o" /></div>}
       </div>
     )
   }
