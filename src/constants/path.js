@@ -112,6 +112,7 @@ export default {
 
       getPvmoduleList: '/v3/monitor/pvmodule/datalist/',//光伏组件实时列表
       getInverterList: '/v3/monitor/seriesinverter/datalist/',// 组串式逆变器实时数据列表
+      getBoxTransformerList: '/v3/monitor/boxtransformer/datalist/',//箱变实时数据列表
     }
     // monitor:{
     //   getStationType:'v3/monitor/stations/stationType',

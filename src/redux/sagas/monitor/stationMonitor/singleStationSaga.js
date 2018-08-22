@@ -182,8 +182,8 @@ function *getDeviceTypeFlow(action){
 // 获取光伏组件列表
 function *getPvmoduleList(action){
   const { payload } = action;
-  // const url = '/mock/api/v3/monitor/pvmodule/datalist/'+ payload.stationCode;
-  const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getPvmoduleList + payload.stationCode;
+  const url = '/mock/api/v3/monitor/pvmodule/datalist/'+ payload.stationCode;
+  // const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getPvmoduleList + payload.stationCode;
   try{
     yield put({type: singleStationAction.SINGLE_STATION_FETCH});
     const response = yield call(axios.get, url, payload);
@@ -201,7 +201,6 @@ function *getPvmoduleList(action){
 // 获取逆变器实时数据列表
 function *getInverterList(action){
   const { payload } = action;
-  console.log(payload);
   // const url = '/mock/api/v3/monitor/pvmodule/datalist/'+ payload.stationCode;
   const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getInverterList + payload.stationCode;
   try{
@@ -213,6 +212,30 @@ function *getInverterList(action){
         payload: {
           ...payload,
           inverterList: response.data.data,
+        }
+      })
+    }else{
+      yield put({ type: singleStationAction.GET_SINGLE_STATION_FAIL});
+    }
+    
+  }catch(e){
+    console.log(e);
+  }
+}
+// 获取箱变列表
+function *getBoxTransformerList(action){
+  const { payload } = action;
+  // const url = '/mock/api/v3/monitor/pvmodule/datalist/'+ payload.stationCode;
+  const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getBoxTransformerList + payload.stationCode;
+  try{
+    yield put({type: singleStationAction.SINGLE_STATION_FETCH});
+    const response = yield call(axios.get, url, payload);
+    if(response.data.code === '10000'){
+      yield put({
+        type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
+        payload: {
+          ...payload,
+          boxTransformerList: response.data.data,
         }
       })
     }else{
@@ -236,6 +259,7 @@ export function* watchSingleStationMonitor() {
   yield takeLatest(singleStationAction.GET_DEVICE_TYPE_FLOW_SAGA, getDeviceTypeFlow);
   yield takeLatest(singleStationAction.GET_PVMODULE_LIST_SAGA, getPvmoduleList);
   yield takeLatest(singleStationAction.GET_INVERTER_LIST_SAGA, getInverterList);
+  yield takeLatest(singleStationAction.GET_BOXTRANSFORMER_LIST_SAGA, getBoxTransformerList);
   
 }
 

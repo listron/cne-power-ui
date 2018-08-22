@@ -264,6 +264,7 @@ class UserList extends Component {
   userHandle = (value) => {
     const { selectedUser, enterpriseId, } = this.props;
     if(value === 'edit'){
+      console.log(selectedUser.toJS()[0]);
       this.props.changeUserStore({
         showPage: 'edit',
         userDetail: selectedUser.toJS()[0],

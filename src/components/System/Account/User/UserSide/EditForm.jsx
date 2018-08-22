@@ -48,8 +48,8 @@ class EditForm extends Component {
   render(){
     const { getFieldDecorator } = this.props.form;
     const { userDetail, loading, roleAllList, specialRoleList } = this.props;
-    // console.log(userDetail && userDetail.get('roleName') || (userDetail.get('roleName').split(',') || [].length))
-    console.log(userDetail && userDetail.get('roleName') ? userDetail.get('roleName').split(',') : [].length)
+    
+    console.log(roleAllList && roleAllList.toJS().map((item,index)=>item.roleId));
     return (
       <Form className={styles.editPart}>
         <FormItem label="用户名" >
