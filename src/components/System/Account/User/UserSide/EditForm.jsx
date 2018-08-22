@@ -26,7 +26,8 @@ class EditForm extends Component {
   }
 
   saveUser = () =>{
-    const { userLogo, enterpriseId } = this.props;
+    const { userDetail } = this.props;
+    console.log(userDetail.toJS());
     this.props.form.validateFieldsAndScroll((error,values)=>{
       if(!error){
         this.props.editUserInfo({
@@ -36,8 +37,8 @@ class EditForm extends Component {
           specialRoleId: values.specialRoleId.join(','),
           userFullName: values.userFullName,
           username: values.username,
-          userLogo,
-          enterpriseId,
+          userLogo: userDetail.get('userLogo'),
+          userId: userDetail.get('userId'),
           showPage: 'list',
         })
         
