@@ -1,0 +1,14 @@
+.alarmFilterItem {
+  margin-top: 10px;
+  display: flex;
+  flex: 1;
+  align-items: center;
+  flex-shrink: 0;
+  padding-left: 26px;
+  min-height: 40px;
+  border-radius: 4px;
+  background-color: #f0f2f5;
+  >span {
+    margin-right: 10px;
+  }
+}

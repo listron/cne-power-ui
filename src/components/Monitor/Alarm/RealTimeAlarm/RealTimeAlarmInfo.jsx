@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Icon } from 'antd';
 import styles from './realTimeAlarm.scss';
 
 class RealTimeAlarmInfo extends Component {
@@ -16,7 +15,10 @@ class RealTimeAlarmInfo extends Component {
 
   render() {
     const alarmNum = this.props.alarmNum;
-    const total = alarmNum.oneWarningNum + alarmNum.twoWarningNum + alarmNum.threeWarningNum + alarmNum.fourWarningNum;
+    let total = 0;
+    if(alarmNum.oneWarningNum) {
+      total = alarmNum.oneWarningNum + alarmNum.twoWarningNum + alarmNum.threeWarningNum + alarmNum.fourWarningNum;
+    }
     return (
       <div className={styles.alarmInfo}>
         <div className={styles.alarmInfoLeft}>
@@ -55,6 +57,7 @@ class RealTimeAlarmInfo extends Component {
         <div className={styles.alarmInfoRight}>
           <div className={styles.updateTimeContainer}>
             <span className={styles.updateTime}>{this.props.lastUpdateTime+'-北京时间'}</span>
+            <span className={styles.updateTimeText}>本次数据更新时间</span>
           </div>
           <i className="iconfont icon-refresh"></i>
         </div>

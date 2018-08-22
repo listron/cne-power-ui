@@ -1,14 +1,33 @@
 @import '../../../../theme/theme.scss';
 .alarmInfo {
   display: flex;
+  flex-shrink: 0;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
   height: 100px;
   background-color: #fff;
+  border-bottom: 1px solid #dfdfdf;
   .alarmInfoLeft {
     display: flex;
     flex-direction: row;
+  }
+  .alarmInfoRight {
+    display: flex;
+    flex-direction: row;
+    margin-right: 56px;
+    .updateTimeContainer {
+      display: flex;
+      flex-direction: column;
+      font-size: 14px;
+      margin-right: 27px;
+      .updateTime {
+        color: $themeColor;
+      }
+      .updateTimeText {
+        color: $lightColor;
+      }
+    }
   }
   .alarmInfoItem {
     display: flex;
@@ -43,7 +62,7 @@
     align-items: center;
     .alarmText {
       font-size: 14px;
-      color: #999;
+      color: $lightColor;
     }
     &:hover {
       border:1px solid $themeColor;
@@ -67,5 +86,48 @@
         color: $themeColor;
       }
     }
+    .icon-refresh {
+      width: 29px;
+      height: 29px;
+      border:1px solid $themeColor;
+      color: $themeColor;
+      border-radius: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+}
+.alarmFilter {
+  min-height: 80px;
+  height: auto;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  padding: 26px 28px 20px;
+  .topSearch {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-shrink: 0;
+    .text {
+      color: $lightColor;
+      margin-right: 20px;
+    }
+    button {
+      margin-right: 16px;
+    }
+  }
+  .filterBox {
+    display: flex;
+    flex-shrink: 0;
+  }
+}
+.alarmTable {
+  display: flex;
+  flex-direction: column;
+  .tableHeader {
+    display: flex;
+    flex-direction: row;
   }
 }
