@@ -29,7 +29,7 @@ class EnterpriseDetail extends Component {
   // }
   componentWillReceiveProps(nextProps){//获取到详情数据后当详情存在且logo不存在时提示完善企业信息
     const { enterpriseDetail } = nextProps;
-    if(Object.keys(enterpriseDetail).length > 0 && !enterpriseDetail.enterpriseLogo){
+    if(enterpriseDetail && Object.keys(enterpriseDetail).length > 0 && !enterpriseDetail.enterpriseLogo){
       this.setState({
         showInforTip: true
       })

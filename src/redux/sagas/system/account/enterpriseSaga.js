@@ -47,7 +47,7 @@ function *getEnterpriseDetail(action){
     yield put({
       type:  enterpriseAction.GET_ENTERPRISE_FETCH_SUCCESS,
       payload:{
-        enterpriseDetail: response.data.data,
+        enterpriseDetail: response.data.data || {},
         showPage: 'detail',
       },
     });
