@@ -37,7 +37,6 @@ class DateFilter extends Component {
         <span onClick={this.onReset} className={styles.resetTime} >不限</span>
         <RangePicker
           value={[startTime!==''?moment(startTime):null, endTime!==''?moment(endTime):null]}
-          placeholder="选择时间范围"
           onChange={this.onChange}
         />
       </div>
