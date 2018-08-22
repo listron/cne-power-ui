@@ -30,12 +30,13 @@ class Allstation extends React.Component {
     ]
     let data = [];
     stationDataList.forEach((item, index) => {
+      const stationType = item.stationType;
+      const stationStatus = item.stationStatus.stationStatus;
       data.push({
         name: item.stationName,
-        value: [item.longitude, item.latitude, item.stationType, item.stationStatus.stationStatus],
+        value: [item.longitude, item.latitude, stationType, stationStatus],
         //symbol: [iconArray[item.stationType][item.stationStatus.stationStatus]][0],
-        symbol: [iconArray[item.stationType][item.stationStatus.stationStatus===400?item.stationStatus.stationStatus[item.alarmNum?1:0]:item.stationStatus.stationStatus]][0]||'image://./img/pv-normal.png',
-       
+        symbol: iconArray[stationType][stationStatus===400?stationStatus[item.alarmNum?1:0]:stationStatus]||'image://./img/pv-normal.png',
         alarmNum: item.alarmNum,
         stationPower: item.stationPower,
         stationCapacity: item.stationCapacity,
