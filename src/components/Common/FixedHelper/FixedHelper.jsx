@@ -11,9 +11,7 @@ class FixedHelper extends Component {
   }
   componentDidMount(){
     const main = document.getElementById('main');
-    if(main){
-      main.addEventListener('scroll', this.onScroll)
-    }
+    main && main.addEventListener('scroll', this.onScroll)
   }
 
   componentWillUnmount() {
@@ -22,11 +20,16 @@ class FixedHelper extends Component {
   }
 
   onScroll = () => {
+    const { isScroll } = this.state;
     const main = document.getElementById('main');
-    const scrollTop = main.scrollTop;
-    if(scrollTop > 0){
+    const scrollTop = main.scrollTop > 0;
+    if(!isScroll && scrollTop > 0){
       this.setState({
         isScroll: true
+      });
+    }else if(isScroll && scrollTop <= 0){
+      this.setState({
+        isScroll: false
       });
     }
   }
