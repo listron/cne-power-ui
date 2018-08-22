@@ -16,6 +16,7 @@ class SingleStation extends Component {
     getWorkList: PropTypes.func,
     getDeviceTypeFlow: PropTypes.func,
     getPvmoduleList: PropTypes.func,
+    getInverterList: PropTypes.func,
   };
   constructor(props) {
     super(props);
@@ -24,16 +25,17 @@ class SingleStation extends Component {
     }
   }
   componentDidMount() {
-    const { stationCode, intervalTime } = this.props.match.params;
+    const { stationCode } = this.props.match.params;
     this.props.getSingleStation({stationCode});
-    this.props.getCapabilityDiagram({stationCode,intervalTime});
-    this.props.getMonitorPower({stationCode,intervalTime});
+    this.props.getCapabilityDiagram({stationCode,intervalTime: 0});
+    this.props.getMonitorPower({stationCode,intervalTime: 0});
     this.props.getOperatorList({stationCode,roleId: '4,5'});
     this.props.getWeatherList({stationCode});
     this.props.getAlarmList({stationCode});
     this.props.getWorkList({stationCode});
     this.props.getDeviceTypeFlow({stationCode});
     this.props.getPvmoduleList({stationCode});
+    this.props.getInverterList({stationCode});
   }
 
   render() {
@@ -60,6 +62,7 @@ const mapDispatchToProps = (dispatch) => ({
   getWorkList: payload => dispatch({type:singleStationAction.GET_WORK_LIST_SAGA, payload }),
   getDeviceTypeFlow: payload => dispatch({type:singleStationAction.GET_DEVICE_TYPE_FLOW_SAGA, payload}),
   getPvmoduleList: payload => dispatch({type:singleStationAction.GET_PVMODULE_LIST_SAGA, payload}),
+  getInverterList: payload => dispatch({type:singleStationAction.GET_INVERTER_LIST_SAGA, payload}),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SingleStation);

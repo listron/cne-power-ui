@@ -298,7 +298,7 @@ function *editDepartmentInfo(action){//编辑部门信息
 function *setDepartmentUser(action) {
   const { payload } = action;
   // const url = '/mock/system/editDepartment';
-  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.setDepartmentUser}`
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.setDepartmentUser}`;
   try{
     const response = yield call(axios.post,url,payload);
     if(response.data.code === "10000"){
@@ -309,11 +309,12 @@ function *setDepartmentUser(action) {
         }
       });
       const showPage = yield select(state => state.system.department.get('showPage'));
+      const departmentId = yield select(state => state.system.department.getIn(['departmentDetail', 'departmentId']));
       if(showPage === 'detail') {
         yield put({
           type:  departmentAction.GET_DEPARTMENT_DETAIL_SAGA,
           payload:{
-            departmentId: payload.departmentId,
+            departmentId: departmentId,
           }
         });
       }
@@ -337,11 +338,12 @@ function *setDepartmentStation(action) {
         }
       });
       const showPage = yield select(state => state.system.department.get('showPage'));
+      const departmentId = yield select(state => state.system.department.getIn(['departmentDetail', 'departmentId']));
       if(showPage === 'detail') {
         yield put({
           type:  departmentAction.GET_DEPARTMENT_DETAIL_SAGA,
           payload:{
-            departmentId: payload.departmentId,
+            departmentId: departmentId,
           }
         });
       }

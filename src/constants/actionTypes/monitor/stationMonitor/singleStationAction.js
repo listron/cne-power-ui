@@ -16,5 +16,7 @@ module.exports = {
     GET_WORK_LIST_SAGA: null,//工单数统计
     GET_DEVICE_TYPE_FLOW_SAGA: null,//设备类型示意图
     GET_PVMODULE_LIST_SAGA: null,//光伏组件列表
+    GET_INVERTER_LIST_SAGA: null,//组串式逆变器列表
+    GET_BOXTRANSFORMER_LIST_SAGA: null,//箱变列表
   })
 }

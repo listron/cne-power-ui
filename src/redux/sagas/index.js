@@ -3,6 +3,7 @@ import {
   watchCommonStoreChange,
   watchGetStations,
   watchGetStationDeviceTypes,
+  watchGetDeviceTypes,
   watchGetDevices,
   watchGetPartition,
 } from './commonSaga';
@@ -67,6 +68,7 @@ export default function* rootSaga() {
     watchCommonStoreChange(),
     watchGetStations(),
     watchGetStationDeviceTypes(),
+    watchGetDeviceTypes(),
     watchGetDevices(),
     watchGetPartition(),
     //登陆注册
