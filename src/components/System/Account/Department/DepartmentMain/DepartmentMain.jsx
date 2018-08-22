@@ -42,9 +42,10 @@ class DepartmentMain extends Component {
 
 
   render(){
+    const { departmentName, parentDepartmentName, stationName } = this.props;
     return (
       <div className={styles.departmentMain}>
-        <DepartmentSearch searchDepartment={this.searchDepartment} />    
+        <DepartmentSearch searchDepartment={this.searchDepartment} departmentName={departmentName} parentDepartmentName={parentDepartmentName} stationName={stationName} />    
         <DepartmentTable {...this.props} />    
       </div>
     )
