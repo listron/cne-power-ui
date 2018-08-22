@@ -13,6 +13,12 @@ function *changeUserStore(action){
   })
 }
 
+function *resetUserState(action){
+  yield put({
+    type: userAction.RESET_USER,
+  });
+}
+
 // 请求用户列表
 function *getUserList(action){
   const { payload } = action;
@@ -55,7 +61,7 @@ function *changeUserStatus(action){
         enterpriseId: state.login.get('enterpriseId'),
         roleId: state.system.user.get('roleId'),
         userStatus: state.system.user.get('userStatus'),
-        userName: state.system.user.get('userName'),
+        username: state.system.user.get('username'),
         stationName: state.system.user.get('stationName'),
         phoneNum: state.system.user.get('phoneNum'), 
         pageSize: state.system.user.get('pageSize'),
@@ -168,7 +174,7 @@ function *editUserInfo(action){
         enterpriseId: payload.enterpriseId,
         roleId: state.system.user.get('roleId'),
         userStatus: state.system.user.get('userStatus'),
-        userName: state.system.user.get('userName'),
+        username: state.system.user.get('username'),
         stationName: state.system.user.get('stationName'),
         phoneNum: state.system.user.get('phoneNum'), 
         pageSize: state.system.user.get('pageSize'),
@@ -193,14 +199,14 @@ function *createUserInfo(action){
   yield put({ type: userAction.USER_FETCH});
   try{
     const response = yield call(axios.post, url, payload);
-    if(response.data.data.collection === '1'){
+    if(response.data.code === '10000' || response.data.code === '20013'){
       yield put({ type: userAction.GET_USER_FETCH_SUCCESS});
       yield put({ type: userAction.CHANGE_USER_STORE_SAGA, payload:{showPage: payload.showPage}})
       const params = yield select(state => ({//继续请求用户列表
         enterpriseId: payload.enterpriseId,
         roleId: state.system.user.get('roleId'),
         userStatus: state.system.user.get('userStatus'),
-        userName: state.system.user.get('userName'),
+        username: state.system.user.get('username'),
         stationName: state.system.user.get('stationName'),
         phoneNum: state.system.user.get('phoneNum'), 
         pageSize: state.system.user.get('pageSize'),
@@ -229,4 +235,5 @@ export function* watchUser(){
   yield takeLatest(userAction.CREATE_USER_INFO_SAGA, createUserInfo);
   yield takeLatest(userAction.GET_INVITE_LINK_SAGA, getInviteLink);
   yield takeEvery(userAction.GET_ROLE_ALL_LIST_SAGA, getRoleAllList);
+  yield takeEvery(userAction.RESET_USER_STATE_SAGA, resetUserState);
 }

@@ -79,7 +79,6 @@ class UserDetail extends Component {
   };
   render() {
     const { userDetail} = this.props;
-    console.log(userDetail.toJS())
     const { showWarningTip, warningTipText } = this.state;
     return (
       <div className={styles.userDetail}>
@@ -144,7 +143,7 @@ class UserDetail extends Component {
             </div>
             <div>
               <span className={styles.title}>邮箱</span>
-              <span className={styles.value}>{userDetail.get('Email')}</span>
+              <span className={styles.value}>{userDetail.get('email')}</span>
             </div>
             <div>
               <span className={styles.title}>微信账户</span>

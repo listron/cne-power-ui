@@ -30,7 +30,7 @@ class EditForm extends Component {
     this.props.form.validateFieldsAndScroll((error,values)=>{
       if(!error){
         this.props.editUserInfo({
-          Email: values.Email,
+          email: values.email,
           phoneNum: values.phoneNum,
           roleId: values.roleId.join(','),
           specialRoleId: values.specialRoleId.join(','),
@@ -48,8 +48,6 @@ class EditForm extends Component {
   render(){
     const { getFieldDecorator } = this.props.form;
     const { userDetail, loading, roleAllList, specialRoleList } = this.props;
-    
-    console.log(roleAllList && roleAllList.toJS().map((item,index)=>item.roleId));
     return (
       <Form className={styles.editPart}>
         <FormItem label="用户名" >
@@ -92,11 +90,11 @@ class EditForm extends Component {
           <span className={styles.instructionText}>(11位手机号码)</span>
         </FormItem>
         <FormItem label="邮箱" >
-          {getFieldDecorator('Email',{rules:[{
+          {getFieldDecorator('email',{rules:[{
               message: '请输入正确格式的邮箱',
               pattern: /^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$/,
             }],
-            initialValue: userDetail && (userDetail.get('Email') || '')
+            initialValue: userDetail && (userDetail.get('email') || '')
           })(
             <Input placeholder="请输入邮箱" />
           )}
