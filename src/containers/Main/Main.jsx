@@ -52,12 +52,9 @@ class Main extends Component {
     && getCookie('isNotLogin') === '0') {
       this.props.history.push('/');
     }
-    if(nextProps.login.size > 0 && this.props.login.size === 0) {
-      if(authData && (authData !== 'undefined' && authData !== null)){
-        axios.defaults.headers.common['Authorization'] = "bearer " + JSON.parse(authData);
-        this.props.getStations();
-        this.props.getDeviceTypes();
-      }
+    if(nextProps.login.size > 0 && this.props.login.size === 0) {    
+      this.props.getStations();
+      this.props.getDeviceTypes();
     }
   }
 
@@ -65,9 +62,9 @@ class Main extends Component {
     const { setTopMenu, topMenu, } = this.props;
     const authData = getCookie('authData');
     const isNotLogin = getCookie('isNotLogin');
-    // if(authData && (authData !== 'undefined' && authData !== null)){
-    //   axios.defaults.headers.common['Authorization'] = "bearer " + JSON.parse(authData);
-    // }
+    if(authData && (authData !== 'undefined' && authData !== null)){
+      axios.defaults.headers.common['Authorization'] = "bearer " + JSON.parse(authData);
+    }
     if((moment().isBefore(getCookie('expireData'), 'second')) 
     && (authData !== 'undefined' && authData !== null) 
     && (isNotLogin === '0')){
