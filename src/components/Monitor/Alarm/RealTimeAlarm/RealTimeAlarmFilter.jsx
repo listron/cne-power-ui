@@ -83,7 +83,7 @@ class RealTimeAlarmFilter extends Component {
           <Button onClick={()=>this.onFilterShowChange('alarmType')}>
             告警类型{showFilter==='alarmType'?<Icon type="up" />:<Icon type="down" />}
           </Button>
-          <Button onClick={()=>this.onFilterShowChange('stationName')}>
+          <Button onClick={()=>this.onFilterShowChange('time')}>
             发生时间{showFilter==='time'?<Icon type="up" />:<Icon type="down" />}
           </Button>
         </div>
