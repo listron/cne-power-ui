@@ -1,0 +1,11 @@
+.realTimeAlarmContainer {
+  display: flex;
+  flex: 1;
+  padding: 24px 24px 0;
+  background-color: #ececec;
+  .realTimeAlarm {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+}

@@ -40,7 +40,7 @@ class StationFilter extends Component {
   }
 
   onCheckAll(e, data) {
-    const checkedValue = data.map(item=>data.get('stationCode').toString()).toJS();
+    const checkedValue = data.map(item=>item.get('stationCode').toString()).toJS();
     let stationCode = this.props.stationCode;
     let stationArray;
     if(e.target.Checked) {
@@ -56,7 +56,7 @@ class StationFilter extends Component {
   }
 
   getCheckAll(data) {
-    const checkedOption = data.map(item=>data.get('stationCode').toString()).toJS();
+    const checkedOption = data.map(item=>item.get('stationCode').toString()).toJS();
     const stationCode = this.props.stationCode;
     let result = true;
     checkedOption.forEach(element => {
@@ -71,23 +71,25 @@ class StationFilter extends Component {
   renderProvince(stationData) {
     const stationCode = this.props.stationCode;
     return stationData.map(provinceItem => {
+      const options = provinceItem.map(station=>{
+        return {
+          label: station.get('stationName'),
+          value: station.get('stationCode').toString()
+        };
+      }).toJS();
+      const value = provinceItem.filter(station=>{
+        return stationCode.find(code=>code===station.get('stationCode').toString());
+      }).toJS();
       return (
         <TabPane tab={provinceItem.getIn([0,'provinceName'])} key={provinceItem.getIn([0,'provinceCode']).toString()}>
           <Checkbox onChange={(e)=>this.onCheckAll(e, provinceItem)} checked={this.getCheckAll(provinceItem)}>全部</Checkbox>
           <CheckboxGroup 
-            options={provinceItem.map(station=>{
-              return {
-                label: station.get('stationName'),
-                value: station.get('stationCode').toString()
-              };
-            }).toJS()}
-            value={provinceItem.filter(station=>{
-              return stationCode.find(code=>code===station.get('stationCode').toString());
-            }).toJS()} 
+            options={options}
+            value={value} 
             onChange={this.onChangeStation}>
           </CheckboxGroup>
         </TabPane>
-      )
+      );
     });
   }
 
@@ -95,7 +97,7 @@ class StationFilter extends Component {
   render() {
     const { stations } = this.props;
     const { activeKey } = this.state;
-    const provinceStation = stations.groupBy(item=>item.get('provinceCode'));
+    const provinceStation = stations.groupBy(item=>item.get('provinceCode')).toList();
 
     return (
       <div className={styles.stationFilter}>

@@ -18,7 +18,7 @@ function *getStations(action){
   yield put({ type: commonAction.COMMON_FETCH });
   try {
     const response = yield call(axios.get,url);
-    if(response.data.success){
+    if(response.data.code === '10000'){
       yield put({ 
         type: commonAction.GET_STATIONS_SUCCESS, 
         params: {
