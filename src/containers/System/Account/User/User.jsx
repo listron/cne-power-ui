@@ -55,6 +55,10 @@ class User extends Component {
     this.props.getRoleAllList({enterpriseId: this.props.enterpriseId, roleType: "1"});
   }
 
+  componentWillUnmount() {
+    this.props.resetUserState();
+  }
+
   onChangeSort = sort => {
     if (sort !== this.props.sort) {
       let params = {
@@ -142,6 +146,7 @@ const mapDispatchToProps = (dispatch) => ({
   createUserInfo: payload => dispatch({type:userAction.CREATE_USER_INFO_SAGA, payload}),
   editUserInfo: payload => dispatch({type:userAction.EDIT_USER_INFO_SAGA, payload}),
   getInviteLink: payload => dispatch({type:userAction.GET_INVITE_LINK_SAGA, payload}),
+  resetUserState: payload => dispatch({type:userAction.RESET_USER_STATE_SAGA, payload}),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(User);

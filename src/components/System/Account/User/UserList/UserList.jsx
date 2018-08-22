@@ -29,7 +29,7 @@ class UserList extends Component {
     pageNum: PropTypes.number,
     roleId: PropTypes.string,
     getInviteLink: PropTypes.func,
-    userName: PropTypes.string,
+    username: PropTypes.string,
     stationName: PropTypes.string,
     phoneNum: PropTypes.string,
   }
@@ -66,7 +66,7 @@ class UserList extends Component {
       pageNum: currentPage,
       pageSize,
       roleId: this.props.roleId,
-      userName: this.props.userName,
+      username: this.props.username,
       stationName: this.props.stationName,
       phoneNum: this.props.phoneNum, 
     })

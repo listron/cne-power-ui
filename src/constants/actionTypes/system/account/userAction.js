@@ -22,5 +22,8 @@ module.exports = {
     GET_INVITE_LINK_SAGA: null,//邀请用户信息
 
     GET_ROLE_ALL_LIST_SAGA: null,//获取角色列表
+
+    RESET_USER_STATE_SAGA: null,//重置用户状态
+    RESET_USER: null,//重置用户状态成功
   })
 };

@@ -34,6 +34,8 @@ const userReducer = (state = initState, action) => {
       return state.merge(Immutable.fromJS(action.payload));
     case userAction.GET_USER_FETCH_FAIL:
       return state.set('loading', false);
+    case userAction.RESET_USER:
+      return state;
   }
   return state;
 }

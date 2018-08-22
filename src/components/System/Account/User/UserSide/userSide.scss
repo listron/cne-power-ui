@@ -15,7 +15,6 @@
   width: 100%;
   background:#ececec;
   padding: 24px 24px 0;
-  height: 800px;
   .addUser,.editUser,.inviteUser{//新建/编辑页
     flex: 1;
     background-color: #fff;
@@ -173,6 +172,10 @@
           width: 240px;
           height: 240px;
           background: #199475;
+          img{
+            width: 240px;
+            height: 240px;
+          }
         }
        .user,.time{
           height: 30px;
