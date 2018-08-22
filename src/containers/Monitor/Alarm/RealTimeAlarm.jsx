@@ -75,10 +75,12 @@ class RealTimeAlarm extends Component {
     const alarmStatus = this.getAlarmStatus(status);
     return (
       <div className={styles.realTimeAlarmContainer}>
-        <div className={styles.realTimeAlarm}>
-          <RealTimeAlarmInfo {...this.props} />
-          <RealTimeAlarmFilter {...this.props} isTransferWork={status==='transfer'?0:1} isRelieveAlarm={status==='relieve'?0:1} />      
-          <RealTimeAlarmTable {...this.props} alarmStatus={alarmStatus} />
+        <div className={styles.realTimeAlarmBox}>
+          <div className={styles.realTimeAlarm}>
+            <RealTimeAlarmInfo {...this.props} />
+            <RealTimeAlarmFilter {...this.props} isTransferWork={status==='transfer'?0:1} isRelieveAlarm={status==='relieve'?0:1} />      
+            <RealTimeAlarmTable {...this.props} alarmStatus={alarmStatus} /> 
+          </div>
           <Footer />
         </div>
       </div>
