@@ -21,6 +21,9 @@ class UserSearch extends Component {
     onUserSearch: PropTypes.func,
     enterpriseId: PropTypes.string,
     roleId: PropTypes.string,
+    username: PropTypes.string,
+    stationName: PropTypes.string,
+    phoneNum: PropTypes.string,
   }
 
   constructor(props){
@@ -62,6 +65,9 @@ class UserSearch extends Component {
       roleId: roleId.toString(),
       pageNum: this.props.pageNum,
       pageSize: this.props.pageSize,
+      username: this.props.username,
+      stationName: this.props.stationName,
+      phoneNum: this.props.phoneNum,
     };
     this.props.getUserList(params);
   }
@@ -99,7 +105,7 @@ class UserSearch extends Component {
   
 
   render(){
-    const { userStatus,roleId, roleAllList } = this.props;
+    const { roleId, roleAllList } = this.props;
     const { nameValue, phoneValue, stationValue } = this.state;
     let roleIdSet = new Set(roleId.split(',').filter(e=>!!e));
     let roleSelectId = roleAllList && roleAllList.toJS().filter(e=>{
@@ -115,7 +121,7 @@ class UserSearch extends Component {
               showArrow={true} 
               className={styles.selectedRoles} 
               dropdownMatchSelectWidth={false}
-              onChange={this.onSelectRoles}
+              onSelect={this.onSelectRoles}
             >
               <Option key="不限" value={'不限'}><Checkbox checked={roleIdSet.size === 0} >不限</Checkbox></Option>
               {roleAllList && roleAllList.toJS().map((item) => {

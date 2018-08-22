@@ -82,7 +82,6 @@ class PvStation extends Component {
             </TabPane>
           </Tabs>
         </div>
-        {/*  */}
       </div>
     )
   }

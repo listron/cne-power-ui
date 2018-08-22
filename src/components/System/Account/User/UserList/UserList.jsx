@@ -29,7 +29,7 @@ class UserList extends Component {
     pageNum: PropTypes.number,
     roleId: PropTypes.string,
     getInviteLink: PropTypes.func,
-    userName: PropTypes.string,
+    username: PropTypes.string,
     stationName: PropTypes.string,
     phoneNum: PropTypes.string,
   }
@@ -66,7 +66,7 @@ class UserList extends Component {
       pageNum: currentPage,
       pageSize,
       roleId: this.props.roleId,
-      userName: this.props.userName,
+      username: this.props.username,
       stationName: this.props.stationName,
       phoneNum: this.props.phoneNum, 
     })
@@ -264,10 +264,8 @@ class UserList extends Component {
   userHandle = (value) => {
     const { selectedUser, enterpriseId, } = this.props;
     if(value === 'edit'){
-      this.props.changeUserStore({
-        showPage: 'edit',
-        userDetail: selectedUser.toJS()[0],
-      })
+      this.props.getUserDetail({userId: selectedUser.toJS()[0].userId});
+      this.props.changeUserStore({ showPage: 'edit',});
     }else if(value === 'delete'){//移除
       this.setState({
         showDeleteTip: true,

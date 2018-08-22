@@ -40,11 +40,11 @@ class DepartmentMain extends Component {
     this.props.getDepartmentList(params)//请求部门列表
   }
 
-
   render(){
+    const { departmentName, parentDepartmentName, stationName } = this.props;
     return (
       <div className={styles.departmentMain}>
-        <DepartmentSearch searchDepartment={this.searchDepartment} />    
+        <DepartmentSearch searchDepartment={this.searchDepartment} departmentName={departmentName} parentDepartmentName={parentDepartmentName} stationName={stationName} />    
         <DepartmentTable {...this.props} />    
       </div>
     )
