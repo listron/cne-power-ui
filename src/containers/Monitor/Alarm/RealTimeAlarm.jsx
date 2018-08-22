@@ -4,6 +4,8 @@ import { alarmAction } from '../../../constants/actionTypes/monitor/alarmAction'
 import { ticketAction } from '../../../constants/actionTypes/operation/ticketAction';
 import RealTimeAlarmTable from '../../../components/Monitor/Alarm/RealTimeAlarm/RealTimeAlarmTable';
 import RealTimeAlarmFilter from '../../../components/Monitor/Alarm/RealTimeAlarm/RealTimeAlarmFilter';
+import RealTimeAlarmInfo from '../../../components/Monitor/Alarm/RealTimeAlarm/RealTimeAlarmInfo';
+import Footer from '../../../components/Common/Footer';
 import styles from './alarm.scss';
 import PropTypes from 'prop-types';
 
@@ -25,6 +27,7 @@ class RealTimeAlarm extends Component {
     getDefectTypes: PropTypes.func,
     onTransferAlarm: PropTypes.func,
     onRelieveAlarm: PropTypes.func,
+    getAlarmNum: PropTypes.func,
     location: PropTypes.object,
   }
   constructor(props) {
@@ -34,6 +37,7 @@ class RealTimeAlarm extends Component {
   componentDidMount() {
     const { warningLevel, stationType, stationCode, deviceTypeCode, warningConfigName, startTime, endTime, deviceName} = this.props;
     const status = this.getStatus();
+    const warningStatus = this.getAlarmStatus(status);
     this.props.getRealTimeAlarm({
       warningLevel,
       stationType,
@@ -43,26 +47,40 @@ class RealTimeAlarm extends Component {
       startTime,
       endTime,
       deviceName,
-      ...status
+      isTransferWork: status === 'transfer' ? 0 : 1,
+      isRelieveAlarm: status === 'relieve' ? 0: 1
     });
     this.props.getDefectTypes({stationType: 2});
+    this.props.getAlarmNum({warningStatus});
   }
 
   getStatus() {
     const pathname = this.props.location.pathname;
     const status = pathname.split('/')[3];
-    return {
-      isTransferWork: status === 'transfer' ? 0 : 1,
-      isRelieveAlarm: status === 'relieve' ? 0: 1
+    return status;
+  }
+
+  getAlarmStatus(status) {
+    let warningStatus = 1;
+    if(status === 'transfer') {
+      warningStatus = 3;
+    } else if(status === 'relieve') {
+      warningStatus = 2;
     }
+    return warningStatus;
   }
 
   render() {
     const status = this.getStatus();
+    const alarmStatus = this.getAlarmStatus(status);
     return (
-      <div className={styles.realTimeAlarm}>
-        <RealTimeAlarmFilter {...this.props} {...status} />      
-        <RealTimeAlarmTable {...this.props} />   
+      <div className={styles.realTimeAlarmContainer}>
+        <div className={styles.realTimeAlarm}>
+          <RealTimeAlarmInfo {...this.props} />
+          <RealTimeAlarmFilter {...this.props} isTransferWork={status==='transfer'?0:1} isRelieveAlarm={status==='relieve'?0:1} />      
+          <RealTimeAlarmTable {...this.props} alarmStatus={alarmStatus} />
+          <Footer />
+        </div>
       </div>
     );
   }
@@ -80,11 +98,14 @@ const mapStateToProps = (state) => ({
   startTime: state.monitor.alarm.get('startTime'),
   endTime: state.monitor.alarm.get('endTime'),
   deviceName: state.monitor.alarm.get('deviceName'),
+  alarmNum: state.monitor.alarm.get('alarmNum').toJS(),
   defectTypes: state.operation.defect.get('defectTypes'),
+  lastUpdateTime: state.monitor.alarm.get('lastUpdateTime'),
 });
 const mapDispatchToProps = (dispatch) => ({
   changeAlarmStore: payload => dispatch({type: alarmAction.CHANGE_ALARM_STORE_SAGA, payload}),
   getRealTimeAlarm: payload => dispatch({type: alarmAction.GET_REALTIME_ALARM_SAGA, payload}),
+  getAlarmNum: payload => dispatch({type: alarmAction.GET_ALARM_NUM_SAGA, payload}),
   getDefectTypes: payload => dispatch({ type: ticketAction.GET_DEFECTTYPES_SAGA, payload }),
   onTransferAlarm: payload =>dispatch({ type: alarmAction.TRANSFER_ALARM_SAGA, payload }),
   onRelieveAlarm: payload =>dispatch({ type: alarmAction.RELIEVE_ALARM_SAGA, payload }),

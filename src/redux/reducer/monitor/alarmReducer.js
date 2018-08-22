@@ -15,8 +15,10 @@ var initState = Immutable.fromJS({
   endTime: '',//结束时间
   deviceName: '',//设备名称，模糊查询
 
+  alarmNum: {},
   realtimeAlarm: [],  // 实时告警
   historyAlarm: [],  // 历史告警
+  lastUpdateTime: '',
 });
 
 const alarmReducer = (state = initState, action) => {
