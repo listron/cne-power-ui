@@ -15,6 +15,12 @@ function *changeRoleStore(action){
   })
 }
 
+function *resetRole(action){
+  yield put({
+    type: roleAction.RESET_ROLE,
+  });
+}
+
 //请求角色列表数据
 function *getRoleList(action){
   const { payload } = action;
@@ -180,5 +186,6 @@ export function* watchRole() {
   yield takeLatest(roleAction.CREATE_ROLE_SAGA, createRole);
   yield takeLatest(roleAction.EDIT_ROLE_SAGA, editRole);
   yield takeLatest(roleAction.DELETE_ROLE_SAGA, deleteRole);
+  yield takeLatest(roleAction.RESET_ROLE_SAGA, resetRole);
 }
 
