@@ -1,7 +1,9 @@
 @import '../../../../../../theme/theme.scss';
 
+// 光伏组件
 .pvmodule{
   .pvmoduleList{
+    padding: 16px 25px;
     .pvmoduleItem{
       width: 205px;
       height: 60px;
@@ -24,6 +26,60 @@
         color: #fff;
         margin: 0 2px;
       }
+    }
+  }
+}
+//逆变器 
+.inverterList{
+  
+  .inverterRight{
+    .inverterStatus{
+      
+      
+    }
+  }
+  
+  :global{
+    .ant-tabs-extra-content {
+      line-height: 46px;
+    }
+    .ant-radio-group{
+      margin: 0 20px;
+    }
+    .ant-tabs{
+      margin-top: 20px;
+    }
+    .ant-tabs-bar{
+      border-top: 1px dashed #dfdfdf;
+      border-bottom: 1px dashed #dfdfdf;
+    }
+    .ant-tabs-nav .ant-tabs-tab{
+      margin: 0;
+      background: #f1f1f1;
+      color: #999;
+    }
+    .ant-tabs-nav .ant-tabs-tab:hover {
+      color: $themeColor;
+    }
+    .ant-tabs-nav .ant-tabs-tab-active {
+      color: #fff;
+      background: $themeColor;
+    }
+    .ant-tabs-nav .ant-tabs-tab-active:hover {
+      color: #fff;
+    }
+
+    .ant-switch-checked {
+      background-color: $themeColor;
+    }
+    .ant-radio-group-solid .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled) {
+      background: $themeColor;
+      border-color: $themeColor;
+      color: #fff;
+    }
+    .ant-radio-button-wrapper:hover, .ant-radio-button-wrapper-focused {
+      color: $themeColor;
+      position: relative;
     }
   }
 }

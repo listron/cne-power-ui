@@ -15,6 +15,8 @@ var initState = Immutable.fromJS({
   deviceTypeFlow: [],//设备类型示意图
   deviceTypeCode: '10000',//当前显示设备列表code值 默认显示光伏组件
   pvmoduleList: [],//光伏组件列表
+  inverterList: {},//逆变器列表
+  boxTransformerList: [],//箱变列表
 });
 
 const singleStationReducer = (state = initState, action) => {
