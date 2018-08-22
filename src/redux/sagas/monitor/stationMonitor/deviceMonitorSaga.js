@@ -1,23 +1,23 @@
 import { call, put, takeLatest, select, all } from 'redux-saga/effects';
 import axios from 'axios';
-import Path from '../../../../constants/path';
+import path from '../../../../constants/path';
 import { deviceAction } from '../../../../constants/actionTypes/monitor/stationMonitor/deviceAction';
 
 const monitorPath = {
   '206': {  // 组串式逆变器：206
-    detail: '/mock/monitor/seriesinverter',  // Path.APISubPaths.monitor.seriesinverterDetail,
-    tenMin: '/mock/monitor/seriesinverterTenMin',   // Path.APISubPaths.monitor.seriesinverterTenMin
+    detail: path.APISubPaths.monitor.seriesinverterDetail,// '/mock/monitor/seriesinverter',  // path.APISubPaths.monitor.seriesinverterDetail,
+    tenMin: path.APISubPaths.monitor.seriesinverterTenMin,// '/mock/monitor/seriesinverterTenMin',   // path.APISubPaths.monitor.seriesinverterTenMin
   },
   '202': {  // 汇流箱： 202
-    detail: '/mock/monitor/confluenceboxDetail',  // Path.APISubPaths.monitor.confluenceboxDetail,
-    tenMin: '/mock/monitor/confluenceboxTenMin'  // Path.APISubPaths.monitor.confluenceboxTenMin
+    detail: '/mock/monitor/confluenceboxDetail',  // path.APISubPaths.monitor.confluenceboxDetail,
+    tenMin: '/mock/monitor/confluenceboxTenMin'  // path.APISubPaths.monitor.confluenceboxTenMin
   },
   '304': {  // 箱变： 304
-    detail: '/mock/monitor/boxtransformerDetail',  // Path.APISubPaths.monitor.boxtransformerDetail,
-    tenMin: '/mock/monitor/boxtransformerTenMin',  // Path.APISubPaths.monitor.boxtransformerTenMin
+    detail: '/mock/monitor/boxtransformerDetail',  // path.APISubPaths.monitor.boxtransformerDetail,
+    tenMin: '/mock/monitor/boxtransformerTenMin',  // path.APISubPaths.monitor.boxtransformerTenMin
   },
   '203': {  // 气象站： 203
-    detail: '/mock/monitor/weatherstationDetail',  // Path.APISubPaths.monitor.weatherstationDetail,
+    detail: '/mock/monitor/weatherstationDetail',  // path.APISubPaths.monitor.weatherstationDetail,
   },
 }
 
@@ -50,16 +50,16 @@ function *getNormalDeviceData(action){ // 请求单设备-除气象站数据信�
   const {stationCode, deviceTypeCode, deviceCode } = payload;
   const hours = 72;
   try{
-    const devicesUrl = '/mock/monitor/deviceList';
-    // const devicesUrl = `${Path.basePaths.APIBasePath}${Path.APISubPaths.monitor.stationDeviceList}/${stationCode}/${deviceTypeCode}`;
-    const detailUrl = monitorPath[deviceTypeCode].detail;
-    // const detailUrl = `${Path.basePaths.APIBasePath}${monitorPath[deviceTypeCode].detail}/${deviceCode}`;
-    const tenMinUrl = monitorPath[deviceTypeCode].tenMin;
-    // const tenMinUrl = `${Path.basePaths.APIBasePath}${monitorPath[deviceTypeCode].tenMin}/${deviceCode}/${hours}`;
+    // const devicesUrl = '/mock/monitor/deviceList';
+    const devicesUrl = `${path.basePaths.APIBasePath}${path.APISubPaths.monitor.stationDeviceList}/${stationCode}/${deviceTypeCode}`;
+    // const detailUrl = monitorPath[deviceTypeCode].detail;
+    const detailUrl = `${path.basePaths.APIBasePath}${monitorPath[deviceTypeCode].detail}/${deviceCode}`;
+    // const tenMinUrl = monitorPath[deviceTypeCode].tenMin;
+    const tenMinUrl = `${path.basePaths.APIBasePath}${monitorPath[deviceTypeCode].tenMin}/${deviceCode}/${hours}`;
     const pointUrl = '/mock/monitor/monitorPointData';
-    // const pointUrl = `${Path.basePaths.APIBasePath}${Path.APISubPaths.monitor.monitorPointData}/${deviceCode}`
+    // const pointUrl = `${path.basePaths.APIBasePath}${path.APISubPaths.monitor.monitorPointData}/${deviceCode}`
     const alarmUrl = '/mock/monitor/deviceAlarm';
-    // const alarmUrl = `${Path.basePaths.APIBasePath}${Path.APISubPaths.monitor.deviceAlarmData}/${deviceCode}`
+    // const alarmUrl = `${path.basePaths.APIBasePath}${path.APISubPaths.monitor.deviceAlarmData}/${deviceCode}`
 
     yield put({ type:deviceAction.MONITOR_DEVICE_FETCH });
     const [tmpDevices, tmpDetail, tmpTenMin, tmpPoint, tmpAlarm] = yield all([
@@ -102,9 +102,9 @@ function *getWeatherStationData(action){ // 请求气象站设备信息
   const { deviceTypeCode, deviceCode } = payload;
   try{
     const detailUrl = monitorPath[deviceTypeCode].detail;
-    // const detailUrl = `${Path.basePaths.APIBasePath}${monitorPath[deviceTypeCode].detail}/${deviceCode}`;
+    // const detailUrl = `${path.basePaths.APIBasePath}${monitorPath[deviceTypeCode].detail}/${deviceCode}`;
     const alarmUrl = '/mock/monitor/deviceAlarm';
-    // const alarmUrl = `${Path.basePaths.APIBasePath}${Path.APISubPaths.monitor.deviceAlarmData}/${deviceCode}`
+    // const alarmUrl = `${path.basePaths.APIBasePath}${path.APISubPaths.monitor.deviceAlarmData}/${deviceCode}`
     yield put({ type:deviceAction.MONITOR_DEVICE_FETCH });
     const [tmpDetail,tmpAlarm] = yield all([
       call(axios.get, detailUrl),
