@@ -161,8 +161,8 @@ class DepartmentDetail extends Component {
   render(){
     const { departmentDetail,departmentData, showAssignUserModal, showAssignStationModal } = this.props;
     const { showWarningTip, warningTipText } = this.state;
-    let userFullNames = (departmentDetail.userFullNameData && departmentDetail.userFullNameData.length > 0 )? departmentDetail.userFullNameData.map(e=>e.userFullName).join(','):' -- ';
-    let stationNames = (departmentDetail.stationNameData && departmentDetail.stationNameData.length > 0 )? departmentDetail.stationNameData.map(e=>e.stationName).join(','):' -- ';
+    let userFullNames = (departmentDetail.userFullNameDatas && departmentDetail.userFullNameDatas.length > 0 )? departmentDetail.userFullNameDatas.map(e=>e.userFullName).join(','):' -- ';
+    let stationNames = (departmentDetail.stationNameDatas && departmentDetail.stationNameDatas.length > 0 )? departmentDetail.stationNameDatas.map(e=>e.stationName).join(','):' -- ';
     const tmpDepartmentSub = departmentData.find(e=>e.departmentId === departmentDetail.departmentId);
     const forbiddenEdit = tmpDepartmentSub && tmpDepartmentSub.departmentSource === 0;
     const createTime = departmentDetail.createTime? moment(departmentDetail.createTime).format('YYYY-MM-DD hh:mm'):' -- ';
@@ -196,10 +196,6 @@ class DepartmentDetail extends Component {
             <span className={styles.title}>负责电站</span>
             <span className={styles.value}>{stationNames}</span> 
             <Button className={styles.setting} onClick={this.setDepartmentStation} >设置</Button>
-          </div>
-          <div>
-            <span className={styles.title}>负责电站</span>
-            <span className={styles.value}>{departmentDetail.enterpriseProfile || ' -- '}</span> 
           </div>
           <div>
             <span className={styles.title}>创建者</span>

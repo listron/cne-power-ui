@@ -79,7 +79,7 @@ class Main extends Component {
           </div>
           <div className={styles.appMain}>
             {topMenu.children && topMenu.children.length > 0 && <SideMenu topMenu={topMenu} />}
-            <div className={styles.content} ref="main">
+            <div className={styles.content} id="main" >
               <Switch>
                 {routerConfig}
                 <Redirect to="/" />
