@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './deviceList.scss';
-import { Tabs, Switch, Radio, Table  } from 'antd';
+import { Tabs, Switch, Radio, Table, Progress  } from 'antd';
 import CommonPagination from '../../../../../Common/CommonPagination';
 
 const TabPane = Tabs.TabPane;
@@ -37,6 +37,14 @@ class InverterList extends Component {
         return '';
     }
   }
+  onChangeStatus = () => {
+
+  }
+  getDeviceSource = () => {
+    const {inverterList} = this.props; 
+    const deviceList = inverterList && inverterList.deviceList;
+    return deviceList && deviceList.map((e,i)=>({...e,key:i}));
+  }
   tableColumn = () => {
     const columns = [
       {
@@ -51,19 +59,19 @@ class InverterList extends Component {
         render: (text,record,index) => (<span>{text}</span>),
         sorter: true,
       }, {
-        title: '实时功率',
+        title: '实时功率(kW)',
         dataIndex: 'devicePower',
         key: 'devicePower',
-        render: (text,record) => (<span>{text}</span>),
+        render: (text,record) => (<div className={styles.devicePower} ><div>{text}</div><Progress className={styles.devicePower} percent={text/record.deviceCapacity*100} showInfo={false} /></div>),
         sorter: true,
       }, {
-        title: '装机容量',
+        title: '装机容量(kW)',
         dataIndex: 'deviceCapacity',
         key: 'deviceCapacity',
         render: (text,record) => (<span>{text}</span>),
         sorter: true
       }, {
-        title: '告警',
+        title: '告警(个)',
         dataIndex: 'alarmNum',
         key: 'alarmNum',
         render: (text,record) => (<span>{text}</span>),
@@ -86,8 +94,8 @@ class InverterList extends Component {
     const inverterListNum = deviceList && (deviceList.length || 0);
     const deviceStatusSummary = inverterList && inverterList.deviceStatusSummary;
     const operations = (<div className={styles.inverterRight} >
-      <Switch defaultChecked onChange={this.onChange} />告警
-      <Radio.Group defaultValue="a" buttonStyle="solid" className={styles.inverterStatus} >
+      <Switch defaultChecked onChange={this.onSwitchAlarm} />告警
+      <Radio.Group defaultValue="a" buttonStyle="solid" className={styles.inverterStatus} onChange={this.onChangeStatus}  >
         <Radio.Button value="a">全部</Radio.Button>
         <Radio.Button value="b">正常</Radio.Button>
         <Radio.Button value="c">故障</Radio.Button>
@@ -101,6 +109,9 @@ class InverterList extends Component {
       showQuickJumper: true,
       total: inverterListNum,
       showSizeChanger: true,
+      position: 'top',
+      // simple: true,
+      size: 'small',
     }
     return (
       <div className={styles.inverterList} >
@@ -117,10 +128,11 @@ class InverterList extends Component {
               {/* <CommonPagination total={inverterListNum} onPaginationChange={this.onPaginationChange} /> */}
               <Table 
                 loading={loading}
-                dataSource={deviceList && deviceList.map((e,i)=>({...e,key:i}))} 
+                dataSource={this.getDeviceSource} 
                 columns={this.tableColumn()} 
                 onChange={this.tableChange}
                 pagination={pagination}
+                className={styles.inverterTable}
               />
             </div>
             

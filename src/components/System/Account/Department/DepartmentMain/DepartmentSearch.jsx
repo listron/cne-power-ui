@@ -8,7 +8,10 @@ import PropTypes from 'prop-types';
 
 class DepartmentSearch extends Component {
   static propTypes = {
-    searchDepartment: PropTypes.func
+    searchDepartment: PropTypes.func,
+    departmentName: PropTypes.string,
+    parentDepartmentName: PropTypes.string,
+    stationName: PropTypes.string,
   }
 
   constructor(props){
@@ -55,6 +58,7 @@ class DepartmentSearch extends Component {
 
   render(){
     const { departmentName, parentDepartmentName,stationName } = this.state;
+    const showRestButton = this.props.departmentName || this.props.parentDepartmentName || this.props.stationName;
     return (
       <div className={styles.departmentSearch}>
           <span  className={styles.departmentName}>部门名称</span>
@@ -64,7 +68,7 @@ class DepartmentSearch extends Component {
           <span className={styles.stationName}>负责电站</span>
           <Input placeholder="请输入负责电站" className={styles.stationInput} onChange={this.onStationNameChange} value={stationName} />     
           <Button className={styles.searchButton} onClick={this.onDepartmentSearch}>查询</Button>  
-          <span className={styles.clearButton}  onClick={this.onDepartmentReset}>重置</span>         
+          {showRestButton && <span className={styles.clearButton}  onClick={this.onDepartmentReset}>重置</span>}         
       </div>
     )
   }

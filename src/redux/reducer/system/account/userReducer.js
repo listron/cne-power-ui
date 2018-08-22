@@ -17,7 +17,6 @@ var initState = Immutable.fromJS({
   userDetail:{},//选中用户详细信息
   selectedUser: [], //table选中用户项
   userData: [],//用户列表数据
-  userId: '',//用户Id
   inviteData: {},//邀请用户数据
   roleAllList: [],//获取企业角色列表
   specialRoleList: [],//获取特殊权限

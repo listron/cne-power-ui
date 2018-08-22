@@ -93,7 +93,6 @@ function *getUserDetail(action){
         payload: {
           userDetail: response.data.data,
           showPage: payload.showPage,
-          userId: payload.userId,
         }
       })
     }else{
