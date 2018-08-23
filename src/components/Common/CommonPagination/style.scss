@@ -4,6 +4,7 @@ $commonHeight: 28px;
 .commonPagination{
   margin-right: 24px;
   display: flex;
+  align-items: center;
   .sizeSelector{
     margin-left: 12px; 
     margin-right: 28px;
@@ -16,6 +17,9 @@ $commonHeight: 28px;
             border: 1px solid #199475;
             box-shadow: 0 0 1px #199475;
           }
+        }
+        .ant-select-selection__rendered {
+          line-height: 26px;
         }
       }
     }

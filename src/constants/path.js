@@ -126,6 +126,9 @@ export default {
 
       
       getAlarmNum: '/v3/alarm/stations/alarmnum', //多电站告警数
+      getTicketInfo: '/v3/alarm/worklist/getbyid', //告警工单详情
+      getRelieveInfo: '/v3/alarm/getrelievealarm', //屏蔽详情
+      
     }
     // monitor:{
     //   getStationType:'v3/monitor/stations/stationType',

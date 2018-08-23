@@ -20,9 +20,7 @@ class RealTimeAlarmFilter extends Component {
     startTime: PropTypes.string,
     endTime: PropTypes.string,
     deviceName: PropTypes.string,
-    isTransferWork: PropTypes.number,
-    isRelieveAlarm: PropTypes.number,
-    getRealTimeAlarm: PropTypes.func,
+    onChangeFilter: PropTypes.func,
   }
 
   constructor(props) {
@@ -43,24 +41,6 @@ class RealTimeAlarmFilter extends Component {
       });
     }
   }
-
-  onChangeFilter = (obj) => {
-    const { warningLevel, stationCode, deviceTypeCode, warningConfigName, startTime, endTime, deviceName, isTransferWork, isRelieveAlarm } = this.props;
-    let filter = {
-      warningLevel,
-      stationCode,
-      deviceTypeCode,
-      warningConfigName,
-      startTime,
-      endTime,
-      deviceName,
-      isTransferWork,
-      isRelieveAlarm
-    }
-    let newFiter = Object.assign({}, filter, obj);
-    this.props.getRealTimeAlarm(newFiter);
-  }
-  
 
   render() {
     const { showFilter } = this.state;
@@ -88,12 +68,12 @@ class RealTimeAlarmFilter extends Component {
           </Button>
         </div>
         <div className={styles.filterBox}>
-          {showFilter==='time' && <DateFilter {...this.props} onChangeFilter={this.onChangeFilter} />}
-          {showFilter==='alarmLevel' && <AlarmLevelFilter {...this.props} onChangeFilter={this.onChangeFilter} />}
-          {showFilter==='stationType' && <StationTypeFilter {...this.props} onChangeFilter={this.onChangeFilter} />}
-          {showFilter==='stationName' && <StationFilter {...this.props} onChangeFilter={this.onChangeFilter} />}
-          {showFilter==='deviceType' && <DeviceTypeFilter {...this.props} onChangeFilter={this.onChangeFilter} />}
-          {showFilter==='alarmType' && <AlarmTypeFilter {...this.props} onChangeFilter={this.onChangeFilter} />}
+          {showFilter==='time' && <DateFilter {...this.props} />}
+          {showFilter==='alarmLevel' && <AlarmLevelFilter {...this.props} />}
+          {showFilter==='stationType' && <StationTypeFilter {...this.props} />}
+          {showFilter==='stationName' && <StationFilter {...this.props} />}
+          {showFilter==='deviceType' && <DeviceTypeFilter {...this.props} />}
+          {showFilter==='alarmType' && <AlarmTypeFilter {...this.props} />}
         </div>
         <RealTimeFilteredItems {...this.props} onChangeFilter={this.onChangeFilter} />
       </div>
