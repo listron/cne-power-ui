@@ -27,7 +27,6 @@ class EditForm extends Component {
 
   saveUser = () =>{
     const { userDetail } = this.props;
-    console.log(userDetail.toJS());
     this.props.form.validateFieldsAndScroll((error,values)=>{
       if(!error){
         this.props.editUserInfo({
@@ -49,6 +48,7 @@ class EditForm extends Component {
   render(){
     const { getFieldDecorator } = this.props.form;
     const { userDetail, loading, roleAllList, specialRoleList } = this.props;
+    
     return (
       <Form className={styles.editPart}>
         <FormItem label="用户名" >

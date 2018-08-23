@@ -11,10 +11,16 @@ class InverterList extends Component {
   static propTypes = {
     inverterList: PropTypes.object,
     getInverterList: PropTypes.func,
+    loading: PropTypes.bool,
   }
 
   constructor(props){
     super(props);
+    this.state = {
+      tmpDeviceList : props.inverterList && props.inverterList.deviceList && props.inverterList.deviceList.map((e,i)=>({...e,key:i})),//暂存的逆变器列表
+      currentStatus: 0,//当前状态值
+      alarmSwitch: false,
+    }
   }
 
   onPaginationChange = ({currentPage,pageSize}) => {//分页器
@@ -23,6 +29,36 @@ class InverterList extends Component {
     // })
   }
 
+  
+  onChangeStatus = (e) => {
+    console.log(e);
+    const statusValue = e.target.value;
+    const { inverterList } = this.props; 
+    const { alarmSwitch } = this.state; 
+    const deviceList = inverterList && inverterList.deviceList && inverterList.deviceList.map((e,i)=>({...e,key:i}));
+    let selectedList = [];
+    if(alarmSwitch){
+      selectedList = statusValue===0 ? deviceList : deviceList.filter(e=>e.deviceStatus===statusValue&&e.alarmNum!==null);
+    }else{
+      selectedList = statusValue===0 ? deviceList : deviceList.filter(e=>e.deviceStatus===statusValue);
+    }
+    this.setState({
+      tmpDeviceList: selectedList,
+      currentStatus: statusValue,
+    })
+  }
+  onSwitchAlarm = (e) => {
+    const { inverterList } = this.props; 
+    const { currentStatus } = this.state; 
+    const deviceList = inverterList && inverterList.deviceList && inverterList.deviceList.map((e,i)=>({...e,key:i}));
+    console.log(deviceList);
+    let selectedList = [];
+    selectedList = e ? deviceList.filter(e=>e.deviceStatus===currentStatus&&e.alarmNum!==null) : deviceList;
+    this.setState({
+      tmpDeviceList: selectedList,
+      alarmSwitch: e,
+    });
+  }
   getDeviceStatus = (value) => {
     switch(value){
       case 100:
@@ -37,14 +73,7 @@ class InverterList extends Component {
         return '';
     }
   }
-  onChangeStatus = () => {
-
-  }
-  getDeviceSource = () => {
-    const {inverterList} = this.props; 
-    const deviceList = inverterList && inverterList.deviceList;
-    return deviceList && deviceList.map((e,i)=>({...e,key:i}));
-  }
+  
   tableColumn = () => {
     const columns = [
       {
@@ -89,18 +118,32 @@ class InverterList extends Component {
   
   render(){
     const { inverterList, loading } = this.props;
-    console.log(inverterList);
+    const {tmpDeviceList, } = this.state;
     const deviceList = inverterList && inverterList.deviceList;
+    const initDeviceList = deviceList && deviceList.map((e,i)=>({...e,key:i}));
+    
+    console.log(initDeviceList);
+    let endDeviceList = tmpDeviceList || initDeviceList;
+    let parentDeviceCodes = endDeviceList && endDeviceList.map(e=>e.parentDeviceCode);
+    console.log(parentDeviceCodes);
+    let parentDeviceCodeSet = new Set(parentDeviceCodes);
+    let tmpParentDeviceCodes = [...parentDeviceCodeSet];
+    console.log(tmpParentDeviceCodes);
+    tmpParentDeviceCodes.forEach((value,key)=>{
+      console.log(value+''+ key);
+      tmpParentDeviceCodes[key] = deviceList.filter(e=>value===e.parentDeviceCode);
+    })
+    console.log(tmpParentDeviceCodes);
     const inverterListNum = deviceList && (deviceList.length || 0);
-    const deviceStatusSummary = inverterList && inverterList.deviceStatusSummary;
+    const deviceStatus = inverterList && inverterList.deviceStatusSummary;
     const operations = (<div className={styles.inverterRight} >
-      <Switch defaultChecked onChange={this.onSwitchAlarm} />告警
-      <Radio.Group defaultValue="a" buttonStyle="solid" className={styles.inverterStatus} onChange={this.onChangeStatus}  >
-        <Radio.Button value="a">全部</Radio.Button>
-        <Radio.Button value="b">正常</Radio.Button>
-        <Radio.Button value="c">故障</Radio.Button>
-        <Radio.Button value="d">停机</Radio.Button>
-        <Radio.Button value="d">无通讯</Radio.Button>
+      <Switch defaultChecked={false} onChange={this.onSwitchAlarm}  />告警
+      <Radio.Group defaultValue={0} buttonStyle="solid" className={styles.inverterStatus} onChange={this.onChangeStatus}  >
+        <Radio.Button value={0} >全部</Radio.Button>
+        <Radio.Button value={100}>正常{deviceStatus && deviceStatus.deviceStatusNum}</Radio.Button>
+        <Radio.Button value={300}>故障{deviceStatus && deviceStatus.deviceStatusNum}</Radio.Button>
+        <Radio.Button value={200}>停机{deviceStatus && deviceStatus.deviceStatusNum}</Radio.Button>
+        <Radio.Button value={900}>无通讯{deviceStatus && deviceStatus.deviceStatusNum}</Radio.Button>
       </Radio.Group>
     </div>);
     const pagination = {
@@ -110,25 +153,34 @@ class InverterList extends Component {
       total: inverterListNum,
       showSizeChanger: true,
       position: 'top',
-      // simple: true,
       size: 'small',
     }
     return (
       <div className={styles.inverterList} >
         <Tabs defaultActiveKey="1" className={styles.inverterTab} tabBarExtraContent={operations}>
-          <TabPane tab={<span><i className="iconfont icon-grid" ></i></span>} key="1">
-            {/* {inverterList && inverterList.map(e=>{
-              return (<div>
-
+          <TabPane tab={<span><i className="iconfont icon-grid" ></i></span>} key="1" className={styles.inverterBlockBox} >
+            {tmpParentDeviceCodes && tmpParentDeviceCodes.map((e,index)=>{
+              return (<div key={index}>
+                <div className={styles.parentDeviceName} >{e[0].parentDeviceName}</div>
+                {e && e.map(item=>{
+                  return (<div key={item.deviceCode} className={styles.inverterItem}>
+                    <div className={styles.inverterItemIcon} ><i className="iconfont icon-nb" ></i></div>
+                    <div className={styles.inverterItemR} >
+                      <div>{item.deviceName}</div>
+                      <Progress className={styles.powerProgress} strokeWidth={4} percent={item.devicePower/item.deviceCapacity*100} showInfo={false} />
+                      <div className={styles.inverterItemPower}><div>{item.devicePower}</div><div>{item.deviceCapacity}</div></div>
+                    </div>
+                  </div>);
+                })}
               </div>);
-            })} */}
+            })}
           </TabPane>
           <TabPane tab={<span><i className="iconfont icon-table" ></i></span>} key="2">
             <div>
               {/* <CommonPagination total={inverterListNum} onPaginationChange={this.onPaginationChange} /> */}
               <Table 
                 loading={loading}
-                dataSource={this.getDeviceSource} 
+                dataSource={tmpDeviceList || initDeviceList} 
                 columns={this.tableColumn()} 
                 onChange={this.tableChange}
                 pagination={pagination}

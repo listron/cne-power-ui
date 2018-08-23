@@ -13,6 +13,33 @@
       .pvStationName{
         display: flex;
         flex-direction: row;
+        .allStationModal{
+          .provinceName{
+            color:#999;
+            text-align:left;
+            line-height: 30px;
+            background: #f8f8f8;
+            height: 30px;
+            text-indent: 1em;
+            
+          }
+          .stationName{
+            display: inline-block;
+            width: 120px;
+            height: 56px;
+            line-height: 56px;
+            text-align: left;
+            text-indent: 1em;
+            cursor: pointer;
+          }
+          .stationName:hover,.stationName:focus{
+            color: $themeColor;
+          }
+        }
+        .stationToggle{
+          display: flex;
+          position: relative;
+        }
         h3{
           font-size: 18px;
           color: #666;
@@ -28,6 +55,17 @@
             margin: 0 15px 0 20px; 
             display: inline-block;
             line-height: 60px;
+          }
+          .ant-modal{
+            margin: 0;
+            top: 0;
+          }
+          .ant-modal-wrap{
+            position: absolute;
+            overflow: unset;
+          }
+          .ant-modal-body{
+            padding: 10px 10px 40px 40px;
           }
         }
       }
@@ -88,6 +126,7 @@
         color: $themeColor;
         font-size: 18px;
         text-align: center;
+        margin-top: 20px;
       }
     }
   }

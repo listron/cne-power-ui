@@ -17,6 +17,7 @@ class SingleStation extends Component {
     getDeviceTypeFlow: PropTypes.func,
     getPvmoduleList: PropTypes.func,
     getInverterList: PropTypes.func,
+    getStationList: PropTypes.func,
   };
   constructor(props) {
     super(props);
@@ -26,6 +27,7 @@ class SingleStation extends Component {
   }
   componentDidMount() {
     const { stationCode } = this.props.match.params;
+    this.props.getStationList({});
     this.props.getSingleStation({stationCode});
     this.props.getCapabilityDiagram({stationCode,intervalTime: 0});
     this.props.getMonitorPower({stationCode,intervalTime: 0});
@@ -63,6 +65,7 @@ const mapDispatchToProps = (dispatch) => ({
   getDeviceTypeFlow: payload => dispatch({type:singleStationAction.GET_DEVICE_TYPE_FLOW_SAGA, payload}),
   getPvmoduleList: payload => dispatch({type:singleStationAction.GET_PVMODULE_LIST_SAGA, payload}),
   getInverterList: payload => dispatch({type:singleStationAction.GET_INVERTER_LIST_SAGA, payload}),
+  getStationList: payload => dispatch({type:singleStationAction.GET_STATION_LIST_SAGA, payload}),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SingleStation);

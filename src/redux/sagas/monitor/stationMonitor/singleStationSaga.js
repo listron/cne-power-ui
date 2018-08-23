@@ -15,7 +15,8 @@ function *changeSingleStationStore(action){
 //获取单电站实时数据
 function *getSingleStation(action){
   const { payload } = action;
-  const url = '/mock/api/v3/monitor/station/'+ payload.stationCode;
+  // const url = '/mock/api/v3/monitor/station/'+ payload.stationCode;
+  const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getSingleStation + payload.stationCode;
   try{
     yield put({type: singleStationAction.SINGLE_STATION_FETCH});
     const response = yield call(axios.get, url);
@@ -34,8 +35,8 @@ function *getSingleStation(action){
 //获取出力图数据
 function *getCapabilityDiagram(action){
   const { payload } = action;
-  // const url = '/mock/api/v3/monitor/capabilitydiagram/'+ payload.stationCode+ '/' + payload.intervalTime;
   const url = '/mock/api/v3/monitor/capabilitydiagram/360/24';
+  // const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getCapabilityDiagram + payload.stationCode+ '/' + payload.intervalTime;
   try{
     yield put({type: singleStationAction.SINGLE_STATION_FETCH});
     const response = yield call(axios.get, url);
@@ -56,6 +57,7 @@ function *getMonitorPower(action){
   const { payload } = action;
   console.log(payload)
   const url = '/mock/api/v3/monitor/power/'+ payload.stationCode+ '/' + payload.intervalTime;
+  // const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getMonitorPower + payload.stationCode+ '/' + payload.intervalTime;
   try{
     yield put({type: singleStationAction.SINGLE_STATION_FETCH});
     const response = yield call(axios.get, url);
@@ -74,14 +76,15 @@ function *getMonitorPower(action){
 function *getStationList(action){
   const { payload } = action;
   const url = '/mock/api/v3/station/datalist/';
+  // const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getStationList;
   try{
     yield put({type: singleStationAction.SINGLE_STATION_FETCH});
-    const response = yield call(axios.post, url, payload);
+    const response = yield call(axios.get, url, payload);
     yield put({
       type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
       payload: {
         ...payload,
-        ...response.data.data,
+        stationList: response.data.data,
       }
     })
   }catch(e){
@@ -93,6 +96,7 @@ function *getStationList(action){
 function *getOperatorList(action){
   const { payload } = action;
   const url = '/mock/api/v3/station/user/'+ payload.stationCode;
+  // const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getOperatorList + payload.stationCode;
   try{
     yield put({type: singleStationAction.SINGLE_STATION_FETCH});
     const response = yield call(axios.get, url, payload);
@@ -110,7 +114,8 @@ function *getOperatorList(action){
 // 获取单电站未来天气数据
 function *getWeatherList(action){
   const { payload } = action;
-  const url = '/mock/api/v3/monitor/weather/'+ payload.stationCode;
+  // const url = '/mock/api/v3/monitor/weather/'+ payload.stationCode;
+  const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getWeatherList + payload.stationCode;
   try{
     yield put({type: singleStationAction.SINGLE_STATION_FETCH});
     const response = yield call(axios.get, url, payload);
@@ -129,6 +134,7 @@ function *getWeatherList(action){
 function *getAlarmList(action){
   const { payload } = action;
   const url = '/mock/api/v3/alarm/station/alarmNum/'+ payload.stationCode;
+  // const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getAlarmList + payload.stationCode;
   try{
     yield put({type: singleStationAction.SINGLE_STATION_FETCH});
     const response = yield call(axios.get, url, payload);
@@ -147,6 +153,7 @@ function *getAlarmList(action){
 function *getWorkList(action){
   const { payload } = action;
   const url = '/mock/api/v3/monitor/worklist/'+ payload.stationCode;
+  // const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getWorkList + payload.stationCode;
   try{
     yield put({type: singleStationAction.SINGLE_STATION_FETCH});
     const response = yield call(axios.get, url, payload);
@@ -165,6 +172,7 @@ function *getWorkList(action){
 function *getDeviceTypeFlow(action){
   const { payload } = action;
   const url = '/mock/api/v3/station/devicetypeflow/'+ payload.stationCode;
+  // const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getDeviceTypeFlow + payload.stationCode;
   try{
     yield put({type: singleStationAction.SINGLE_STATION_FETCH});
     const response = yield call(axios.get, url, payload);
@@ -206,6 +214,7 @@ function *getInverterList(action){
   try{
     yield put({type: singleStationAction.SINGLE_STATION_FETCH});
     const response = yield call(axios.get, url, payload);
+    console.log(response)
     if(response.data.code === '10000'){
       yield put({
         type: singleStationAction.GET_SINGLE_STATION_SUCCESS,

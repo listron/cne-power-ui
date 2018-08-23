@@ -49,13 +49,13 @@ class CardSection extends Component {
               <Icon type="left"  className={styles.weatherLeft} />
               <Icon type="right"   className={styles.weatherRight} />
               <Carousel autoplay={false} dots={false} arrow={true} >
-                {weatherList.length>0 &&
+                {weatherList && weatherList.length>0 &&
                   weatherList.map(e=>{
-                    return (<div key={e.dateDay} className={styles.weatherContent}>
-                      <div>{e.dateDay}</div>
-                      <div>{e.tempLow}-{e.tempHigh}℃</div>
+                    return (<div key={e.date} className={styles.weatherContent}>
+                      <div>{e.date}</div>
+                      <div>{e.night.tempLow}-{e.day.tempHigh}℃</div>
                       <div>{e.weather}</div>
-                      <div>{e.windDirect}</div>
+                      <div>{e.windDirect}{e.windpower}</div>
                     </div>);
                   })
                 }

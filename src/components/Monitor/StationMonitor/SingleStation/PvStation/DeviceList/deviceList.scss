@@ -32,17 +32,52 @@
 //逆变器 
 .inverterList{
   
-  .inverterRight{
-    .inverterStatus{
-      
-      
-    }
-  }
   .inverterTab{
+    .inverterBlockBox{
+      padding: 20px 20px 60px;
+      .parentDeviceName{
+        margin: 20px 0;
+      } 
+      .inverterItem{
+        display: inline-block;
+        margin-right: 18px; 
+        margin-bottom: 20px;
+        width: 215px;
+        height: 76px;
+        padding: 5px;
+        box-shadow:0 1px 4px 0 rgba(0,0,0,0.20);
+        border-radius:4px;
+        .inverterItemIcon{
+          display: inline-block;
+          vertical-align: top;
+          margin: 5px;
+        }
+        .inverterItemR{
+          display: inline-block;
+          width: 166px;
+          .inverterItemPower{
+            display: flex;
+            justify-content: space-between;
+            div:first-child{
+              color: $themeColor;
+            }
+          }
+          :global{
+            .ant-progress-success-bg, .ant-progress-bg{
+              background-color: $themeColor;
+            }
+          }
+        }
+      }
+    }
+    
     .inverterTable{
       
-
+      margin-bottom: 60px;
       :global{
+        .ant-table-placeholder{
+          z-index: 0;
+        }
         .ant-progress-success-bg, .ant-progress-bg{
           background-color: $themeColor;
         }
