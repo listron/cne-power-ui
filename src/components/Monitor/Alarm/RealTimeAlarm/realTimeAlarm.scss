@@ -1,0 +1,71 @@
+@import '../../../../theme/theme.scss';
+.alarmInfo {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  height: 100px;
+  background-color: #fff;
+  .alarmInfoLeft {
+    display: flex;
+    flex-direction: row;
+  }
+  .alarmInfoItem {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-right: 30px;
+    .alarmNum {
+      font-size:24px;
+      color: $themeColor;
+      opacity:0.74;
+    }
+    .alarmText {
+      font-size: 14px;
+      color: #999;
+    }
+  }
+  .alarmNumDetail {
+    padding-left: 30px;
+    margin-right: 22px;
+    border-left: 1px solid #f1f1f1;
+    border-right: 1px solid #f1f1f1;
+    display: flex;
+    flex-direction: row;
+  }
+  .alarmAction {
+    margin-right: 24px;
+    margin-top: 8px;
+    display: flex;
+    width:73px;
+    height:57px;
+    flex-direction: column;
+    align-items: center;
+    .alarmText {
+      font-size: 14px;
+      color: #999;
+    }
+    &:hover {
+      border:1px solid $themeColor;
+      border-radius:4px;
+      cursor: pointer;
+      .alarmText {
+        color: $themeColor;
+      }
+    }
+  }
+  :global {
+    .icon-alarm {
+      font-size: 30px;
+      color: #a42b2c;
+      margin-left: 47px;
+      margin-right: 35px;
+    }
+    .icon-action {
+      font-size: 18px;
+      &:hover {
+        color: $themeColor;
+      }
+    }
+  }
+}
