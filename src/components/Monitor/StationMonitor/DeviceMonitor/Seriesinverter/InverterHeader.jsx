@@ -37,7 +37,7 @@ class InverterHeader extends Component {
   render() {
     const { devices, deviceDetail, stationCode, deviceTypeCode } = this.props;
     const { showDeviceChangeBox } = this.state;
-    const { deviceStatus, parentDevice, sonDevice } = deviceDetail;
+    const { deviceStatus, parentDevice } = deviceDetail;
     const deviceStatusInfo = deviceStatusArray.find(e=>parseInt(e.statusCode) === parseInt(deviceStatus));
     const parentDeviceBaseInfo = PVStationTypes.find(e=>parentDevice && parentDevice.deviceTypeCode === e.deviceTypeCode);
     const baseLinkPath = `/hidden/monitorDevice/${stationCode}/${deviceTypeCode}`;

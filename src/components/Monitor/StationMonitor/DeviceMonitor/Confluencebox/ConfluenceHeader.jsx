@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import HeaderDeviceChange from '../DeviceMonitorCommon/HeaderDeviceChange';
-import { deviceStatusArray } from '../../../../../constants/stationBaseInfo';
+import { deviceStatusArray, PVStationTypes } from '../../../../../constants/stationBaseInfo';
 import styles from '../eachDeviceMonitor.scss';
 import PropTypes from 'prop-types';
 import { Icon } from 'antd';
@@ -39,6 +39,8 @@ class ConfluenceHeader extends Component {
     const { showDeviceChangeBox } = this.state;
     const { deviceStatus, parentDevice, sonDevice, dispersionRatio } = deviceDetail;
     const deviceStatusInfo = deviceStatusArray.find(e=>parseInt(e.statusCode) === parseInt(deviceStatus));
+    const parentDeviceBaseInfo = PVStationTypes.find(e=>parentDevice && parentDevice.deviceTypeCode === e.deviceTypeCode);
+    const sonDeviceBaseInfo = PVStationTypes.find(e=>sonDevice && sonDevice.deviceTypeCode === e.deviceTypeCode);
     const baseLinkPath = `/hidden/monitorDevice/${stationCode}/${deviceTypeCode}`;
     return (
       <div className={styles.deviceMonitorHeader} >
@@ -51,13 +53,15 @@ class ConfluenceHeader extends Component {
         </div>
         <div className={styles.linkTo}>
           <Link to={`/hidden/monitorDevice/${stationCode}/${parentDevice && parentDevice.deviceTypeCode}/${parentDevice && parentDevice.deviceCode}`} className={styles.eachLink}>
-            <span>箱式变压器图标</span>
-            <span className={styles.linkName}>箱式变压器{parentDevice && parentDevice.deviceName}详情</span>
-            <Icon type="up" className={styles.linkIcon} />
+            <span className={parentDeviceBaseInfo && `${parentDeviceBaseInfo.icon} linkIcon`}></span>
+            <span className={styles.linkName}>
+              {parentDevice && parentDevice.deviceTypeName}{parentDevice && parentDevice.deviceName}详情
+            </span>
+            <span className="iconfont icon-upstream linkIcon"></span>
           </Link>
           <Link to={`/hidden/singleStation/${stationCode}?showPart=${sonDevice && sonDevice.deviceTypeCode}`} className={styles.eachLink}>
-            <span>组串图标</span>
-            <span className={styles.linkName}>逆变器列表</span>
+            <span className={sonDeviceBaseInfo && `${sonDeviceBaseInfo.icon} linkIcon`}></span>
+            <span className={styles.linkName}>{`${sonDevice?sonDevice.deviceTypeName:''}`}列表</span>
             <Icon type="down" className={styles.linkIcon} />
           </Link>
         </div>
