@@ -23,19 +23,18 @@ class Department extends Component {
     allDepartment: PropTypes.object,
     departmentUser: PropTypes.object,
     DepartmentStation: PropTypes.object,
-    showAssignStationModal: PropTypes.bool,
-    showAssignUserModal: PropTypes.bool,
     getDepartmentList: PropTypes.func,
     getAllDepartment: PropTypes.func,
     getDepartmentUser: PropTypes.func,
     getDepartmentStation: PropTypes.func,
     setDepartmentUser: PropTypes.func,
     setDepartmentStation: PropTypes.func,
+    changeDepartmentStore: PropTypes.func,
   }
   constructor(props) {
     super(props);
     this.state = {
-      showSidePage: 'add'
+      showSidePage: 'list'
     }
   }
   componentDidMount(){
@@ -56,6 +55,10 @@ class Department extends Component {
     })
   }
 
+  componentWillUnmount(){
+    this.props.changeDepartmentStore({showPage: 'list'});
+  }
+
 
   onShowSideChange = ({showSidePage}) => {
     this.setState({ showSidePage });
@@ -69,22 +72,22 @@ class Department extends Component {
   }
 
   render() {
-    const { showPage, showAssignStationModal, showAssignUserModal } = this.props;
+    const { showPage } = this.props;
     const { showSidePage } = this.state;
     return (
       <div className={styles.departmentContainer}>
-        <DepartmentMain {...this.props} onWarningTipToggle={this.onWarningTipToggle} />
-        <TransitionContainer
-          show={showPage!=='list'}
-          onEnter={this.onToggleSide}
-          onExited={this.onToggleSide}
-          timeout={500}
-          effect="side"
-        >
-          <DepartmentSide {...this.props} showSidePage={showSidePage} onShowSideChange={this.onShowSideChange} />
-        </TransitionContainer>
-        {showAssignStationModal && null}
-        {showAssignUserModal && null}
+        <div className={styles.departmentBox}>
+          <DepartmentMain {...this.props} onWarningTipToggle={this.onWarningTipToggle} />
+          <TransitionContainer
+            show={showPage!=='list'}
+            onEnter={this.onToggleSide}
+            onExited={this.onToggleSide}
+            timeout={500}
+            effect="side"
+          >
+            <DepartmentSide {...this.props} showSidePage={showSidePage} onShowSideChange={this.onShowSideChange} />
+          </TransitionContainer>
+        </div>
       </div>
 
     );

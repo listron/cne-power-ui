@@ -99,16 +99,16 @@ export default {
     },
     monitor: {//实时监控
       getStationType:'/v3/monitor/stations/',
-      stationDeviceList: '/api/v3/station/devicelist', // 单电站设备列表获取
-      seriesinverterDetail: '/api/v3/monitor/seriesinverter',//组串式逆变器详情
-      seriesinverterTenMin: '/api/v3/monitor/seriesinverter/sequencechart',//组串式逆变器10min时序图
-      confluenceboxDetail: '/api/v3/monitor/confluencebox',//汇流箱详情
-      confluenceboxTenMin: '/api/v3/monitor/confluencebox/sequencechart',//汇流箱10min时序图
-      boxtransformerDetail: '/api/v3/monitor/boxtransformer',//箱变详情
-      boxtransformerTenMin: '/api/v3/monitor/boxtransformer/sequencechart',//箱变10min时序图
-      weatherstationDetail: '/api/v3/monitor/weatherstation', //气象站详情
-      monitorPointData: '/api/v3/monitor/point', //设备测点数据
-      deviceAlarmData: '/api/v3/alarm/device', // 单设备告警信息
+      stationDeviceList: '/v3/station/devicelist', // 单电站设备列表获取
+      seriesinverterDetail: '/v3/monitor/seriesinverter',//组串式逆变器详情
+      seriesinverterTenMin: '/v3/monitor/seriesinverter/sequencechart',//组串式逆变器10min时序图
+      confluenceboxDetail: '/v3/monitor/confluencebox',//汇流箱详情
+      confluenceboxTenMin: '/v3/monitor/confluencebox/sequencechart',//汇流箱10min时序图
+      boxtransformerDetail: '/v3/monitor/boxtransformer',//箱变详情
+      boxtransformerTenMin: '/v3/monitor/boxtransformer/sequencechart',//箱变10min时序图
+      weatherstationDetail: '/v3/monitor/weatherstation', //气象站详情
+      monitorPointData: '/v3/monitor/point', //设备测点数据
+      deviceAlarmData: '/v3/alarm/device', // 单设备告警信息
       getRealtimeAlarm: '/v3/alarm/station/alarmlist', //实时告警信息
 
       getPvmoduleList: '/v3/monitor/pvmodule/datalist/',//光伏组件实时
@@ -123,6 +123,9 @@ export default {
       getAlarmList: '/v3/alarm/station/alarmnum/',//单电站活动告警数统计
       getWorkList: '/v3/monitor/worklist/',//单电站工单数统计
       getDeviceTypeFlow: '/v3/station/devicetypeflow/',//单电站设备类型流程图
+
+      
+      getAlarmNum: '/v3/alarm/stations/alarmnum', //多电站告警数
     }
     // monitor:{
     //   getStationType:'v3/monitor/stations/stationType',

@@ -20,11 +20,13 @@ class DeviceMonitor extends Component {
   render() {
     const { deviceTypeCode } = this.props.match.params;
     return (
-      <div className={styles.inverterMonitor}>
-        {deviceTypeCode === '206' && <Seriesinverter {...this.props} /> }
-        {deviceTypeCode === '202' && <Confluencebox {...this.props} /> }
-        {deviceTypeCode === '304' && <Boxtransformer {...this.props} /> }
-        {deviceTypeCode === '203' && <Weatherstation {...this.props} /> }
+      <div className={styles.monitorDevice}>
+        <div className={styles.eachDeviceBox}>
+          {deviceTypeCode === '206' && <Seriesinverter {...this.props} /> }
+          {deviceTypeCode === '202' && <Confluencebox {...this.props} /> }
+          {deviceTypeCode === '304' && <Boxtransformer {...this.props} /> }
+          {deviceTypeCode === '203' && <Weatherstation {...this.props} /> }
+        </div>
       </div>
 
     );

@@ -124,10 +124,15 @@
         cursor: pointer;
       }
     }
+    :global{
+      .ant-table-placeholder{
+        z-index: auto;
+      }
+    }
   }
 }
 
-.handleDropdown{
+.departmentHandleDropdown{
   width: 120px;
   :global{
     .ant-select-dropdown-menu-item{
@@ -135,6 +140,9 @@
     }
     .ant-select-dropdown-menu-item-disabled{
       color:$promptColor;
+    }
+    .iconfont{
+      margin-right: 4px;
     }
   }
 }
