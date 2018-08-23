@@ -20,11 +20,15 @@ class StationFilter extends Component {
     };
   }
 
-  onChangeStation = (checkedValue) => {
-    const stationArray = this.props.stationCode.concat(checkedValue);
-    const stationCode = Array.from(new Set(stationArray));
+  onChangeStation = (checkedValue, provinceCode) => {
+    const { stations, stationCode } = this.props;
+    const provinceStation = stations.groupBy(item=>item.get('provinceCode')).toJS()[provinceCode];
+    const newStationCode = stationCode.filter(code => {
+      return provinceStation.findIndex(station => station.stationCode.toString() === code) === -1
+    }).concat(checkedValue);
+    // const stationCode = Array.from(new Set(stationArray));
     this.props.onChangeFilter({
-      stationCode
+      stationCode: newStationCode
     });
   }
 
@@ -77,8 +81,11 @@ class StationFilter extends Component {
           value: station.get('stationCode').toString()
         };
       }).toJS();
-      const value = provinceItem.filter(station=>{
-        return stationCode.find(code=>code===station.get('stationCode').toString());
+      const items = provinceItem.filter(station=>{
+        return stationCode.findIndex(code=>code===station.get('stationCode').toString()) > -1;
+      });
+      const value = items.map(item => {
+        return item.get('stationCode').toString()
       }).toJS();
       return (
         <TabPane tab={provinceItem.getIn([0,'provinceName'])} key={provinceItem.getIn([0,'provinceCode']).toString()}>
@@ -86,7 +93,7 @@ class StationFilter extends Component {
           <CheckboxGroup 
             options={options}
             value={value} 
-            onChange={this.onChangeStation}>
+            onChange={(checkedValue)=>this.onChangeStation(checkedValue, provinceItem.getIn([0,'provinceCode']).toString())}>
           </CheckboxGroup>
         </TabPane>
       );
