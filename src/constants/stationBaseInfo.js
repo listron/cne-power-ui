@@ -28,19 +28,19 @@ export const deviceStatusArray = [
   {
     statusCode: '100',
     statusName: '正常',
-    icon: 'iconfont icon-alarm'
+    icon: 'iconfont icon-examine'
   },{
     statusCode: '200',
     statusName: '停机',
-    icon: 'iconfont icon-examine'
+    icon: 'iconfont icon-alarm'
   },{
     statusCode: '300',
     statusName: '故障',
-    icon: 'iconfont icon-examine'
+    icon: 'iconfont icon-alarm'
   },{
     statusCode: '900',
     statusName: '未接入',
-    icon: 'iconfont icon-examine'
+    icon: 'iconfont icon-alarm'
   }
 ];
 

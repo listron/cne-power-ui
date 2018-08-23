@@ -91,11 +91,11 @@ class DeviceAlarmTable extends Component {
       <div className={styles.alarmTable} >
         <div className={styles.alarmTip}>
           {deviceDetail.deviceTypeName}告警
-          <Icon type="info" title={`${deviceDetail.deviceTypeName}告警`} />
+          <Icon type="info" title="此列表为设备当前活动的告警" />
         </div>
         <div className={styles.tableHeader}>
           <Button className={styles.historyButton}>
-            <Link to="/home">查看告警历史--todo</Link>
+            <Link to="/home">查看告警历史</Link>
           </Button>
           <CommonPagination onPaginationChange={this.changePagination} total={deviceAlarmList.length} />
         </div>
