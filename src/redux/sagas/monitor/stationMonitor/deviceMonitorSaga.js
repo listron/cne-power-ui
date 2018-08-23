@@ -1,4 +1,4 @@
-import { call, put, takeLatest, select, all } from 'redux-saga/effects';
+import { call, put, takeLatest, all } from 'redux-saga/effects';
 import axios from 'axios';
 import path from '../../../../constants/path';
 import { deviceAction } from '../../../../constants/actionTypes/monitor/stationMonitor/deviceAction';
@@ -9,15 +9,15 @@ const monitorPath = {
     tenMin: path.APISubPaths.monitor.seriesinverterTenMin,// '/mock/monitor/seriesinverterTenMin',   // path.APISubPaths.monitor.seriesinverterTenMin
   },
   '202': {  // 汇流箱： 202
-    detail: '/mock/monitor/confluenceboxDetail',  // path.APISubPaths.monitor.confluenceboxDetail,
-    tenMin: '/mock/monitor/confluenceboxTenMin'  // path.APISubPaths.monitor.confluenceboxTenMin
+    detail: path.APISubPaths.monitor.confluenceboxDetail,//'/mock/monitor/confluenceboxDetail',  // path.APISubPaths.monitor.confluenceboxDetail,
+    tenMin: path.APISubPaths.monitor.confluenceboxTenMin//'/mock/monitor/confluenceboxTenMin'  // path.APISubPaths.monitor.confluenceboxTenMin
   },
   '304': {  // 箱变： 304
-    detail: '/mock/monitor/boxtransformerDetail',  // path.APISubPaths.monitor.boxtransformerDetail,
-    tenMin: '/mock/monitor/boxtransformerTenMin',  // path.APISubPaths.monitor.boxtransformerTenMin
+    detail: path.APISubPaths.monitor.boxtransformerDetail,//'/mock/monitor/boxtransformerDetail',  // path.APISubPaths.monitor.boxtransformerDetail,
+    tenMin: path.APISubPaths.monitor.boxtransformerTenMin//'/mock/monitor/boxtransformerTenMin',  // path.APISubPaths.monitor.boxtransformerTenMin
   },
   '203': {  // 气象站： 203
-    detail: '/mock/monitor/weatherstationDetail',  // path.APISubPaths.monitor.weatherstationDetail,
+    detail: path.APISubPaths.monitor.weatherstationDetail,//'/mock/monitor/weatherstationDetail',  // path.APISubPaths.monitor.weatherstationDetail,
   },
 }
 

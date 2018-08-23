@@ -62,7 +62,7 @@ class ConfluenceHeader extends Component {
           <Link to={`/hidden/singleStation/${stationCode}?showPart=${sonDevice && sonDevice.deviceTypeCode}`} className={styles.eachLink}>
             <span className={sonDeviceBaseInfo && `${sonDeviceBaseInfo.icon} linkIcon`}></span>
             <span className={styles.linkName}>{`${sonDevice?sonDevice.deviceTypeName:''}`}列表</span>
-            <Icon type="down" className={styles.linkIcon} />
+            <span className="iconfont icon-downstream linkIcon"></span>
           </Link>
         </div>
       </div>
