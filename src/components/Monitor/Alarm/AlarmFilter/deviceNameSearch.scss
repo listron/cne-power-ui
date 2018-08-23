@@ -1,0 +1,13 @@
+.deviceNameSearch {
+  display: flex;
+  height: 50px;
+  flex-shrink: 0;
+  background-color: #f9f9f9;
+  flex-direction: row;
+  align-items: center;
+  padding-left: 28px;
+  .deviceName {
+    width: 200px;
+    margin: 0 16px;
+  }
+}
