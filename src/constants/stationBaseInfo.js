@@ -26,19 +26,19 @@ export const PVStationTypes = [
 
 export const deviceStatusArray = [
   {
-    statusCode: 100,
+    statusCode: '100',
     statusName: '正常',
     icon: 'iconfont icon-alarm'
   },{
-    statusCode: 200,
+    statusCode: '200',
     statusName: '停机',
     icon: 'iconfont icon-examine'
   },{
-    statusCode: 300,
+    statusCode: '300',
     statusName: '故障',
     icon: 'iconfont icon-examine'
   },{
-    statusCode: 900,
+    statusCode: '900',
     statusName: '未接入',
     icon: 'iconfont icon-examine'
   }
