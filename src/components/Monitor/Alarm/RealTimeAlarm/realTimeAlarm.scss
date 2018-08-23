@@ -8,6 +8,9 @@
   height: 100px;
   background-color: #fff;
   border-bottom: 1px solid #dfdfdf;
+  a {
+    text-decoration: none;
+  }
   .alarmInfoLeft {
     display: flex;
     flex-direction: row;
@@ -82,9 +85,23 @@
     }
     .icon-action {
       font-size: 18px;
+      color: $lightColor;
       &:hover {
         color: $themeColor;
       }
+    }
+    .icon-title {
+      background-color:#ceebe0;
+      color: $themeColor;
+      width:30px;
+      height:30px;
+      border-radius:100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-left: 47px;
+      margin-right: 35px;
+      margin-top: 15px;
     }
     .icon-refresh {
       width: 29px;
@@ -113,7 +130,7 @@
     flex-shrink: 0;
     .text {
       color: $lightColor;
-      margin-right: 20px;
+      margin-right: 16px;
     }
     button {
       margin-right: 16px;
@@ -136,5 +153,17 @@
     height: 55px;
     padding: 0 28px;
     background-color: #fff;
+  }
+  :global {
+    .icon-action {
+      background-color:#ceebe0;
+      color: $themeColor;
+      width:30px;
+      height:30px;
+      border-radius:100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
   }
 }

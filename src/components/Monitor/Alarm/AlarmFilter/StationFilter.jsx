@@ -48,7 +48,7 @@ class StationFilter extends Component {
       stationCode = Array.from(new Set(stationArray));   
     } else {
       stationArray = stationCode.filter(item => checkedValue.indexOf(item)===-1);
-      stationCode = stationArray.join(',');
+      stationCode = stationArray;
     }
     this.props.onChangeFilter({
       stationCode
