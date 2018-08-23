@@ -6,5 +6,7 @@
   .departmentBox{
     width: 100%;
     background:#ececec;
+    display: flex;
+    overflow-x: hidden;
   }
 }
