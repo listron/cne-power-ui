@@ -23,6 +23,7 @@ class RealTimeAlarmTable extends Component {
     defectTypes: PropTypes.object,
     ticketInfo: PropTypes.object,
     relieveInfo: PropTypes.object,
+    alarmStatus: PropTypes.string
   }
 
   constructor(props){
@@ -183,14 +184,15 @@ class RealTimeAlarmTable extends Component {
   }
 
   renderOperation() {
-    const { selectedRowKeys } = this.state;
-    const alarmList = this.props.realtimeAlarm.filter(alarm=>
-      selectedRowKeys.some(key=>key===alarm.warningLogId));     
+    const alarmStatus = this.props.alarmStatus;
+    if(alarmStatus===3) {
+      return <div></div>;
+    }
     return (
       <Select onChange={this.onHandle} value="操作" placeholder="操作" dropdownMatchSelectWidth={false} dropdownClassName={styles.handleDropdown}>
-        <Option value="ticket" disabled={alarmList.some(alarm=>alarm.isTransferWork===0)}>转工单</Option>
-        <Option value="relieve" disabled={alarmList.some(alarm=>(alarm.isTransferWork===0||alarm.isRelieveAlarm===0))}>手动解除</Option>
-        <Option value="resetRelieve" disabled={alarmList.some(alarm=>(alarm.isRelieveAlarm===1))}>取消解除</Option>
+        <Option value="ticket">转工单</Option>
+        <Option value="relieve" disabled={alarmStatus===2}>手动解除</Option>
+        <Option value="resetRelieve" disabled={alarmStatus===1}>取消解除</Option>
       </Select>
     );
   }
