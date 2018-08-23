@@ -23,7 +23,7 @@ class RealTimeAlarmTable extends Component {
     defectTypes: PropTypes.object,
     ticketInfo: PropTypes.object,
     relieveInfo: PropTypes.object,
-    alarmStatus: PropTypes.string
+    alarmStatus: PropTypes.number
   }
 
   constructor(props){
@@ -101,7 +101,7 @@ class RealTimeAlarmTable extends Component {
         dataIndex: 'warningLevel',
         key: 'warningLevel',
         render: (text, record, index)=> {
-          return level[text+1]
+          return level[text-1]
         },
         sorter: (a,b) => a.warningLevel - b.warningLevel,
       },{
