@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import HeaderDeviceChange from '../DeviceMonitorCommon/HeaderDeviceChange';
-import { deviceStatusArray } from '../../../../../constants/stationBaseInfo';
+import { deviceStatusArray, PVStationTypes } from '../../../../../constants/stationBaseInfo';
 import styles from '../eachDeviceMonitor.scss';
 import PropTypes from 'prop-types';
 import { Icon } from 'antd';
@@ -39,6 +39,7 @@ class InverterHeader extends Component {
     const { showDeviceChangeBox } = this.state;
     const { deviceStatus, parentDevice, sonDevice } = deviceDetail;
     const deviceStatusInfo = deviceStatusArray.find(e=>parseInt(e.statusCode) === parseInt(deviceStatus));
+    const parentDeviceBaseInfo = PVStationTypes.find(e=>parentDevice && parentDevice.deviceTypeCode === e.deviceTypeCode);
     const baseLinkPath = `/hidden/monitorDevice/${stationCode}/${deviceTypeCode}`;
     return (
       <div className={styles.deviceMonitorHeader} >
@@ -46,18 +47,24 @@ class InverterHeader extends Component {
         <div className={styles.deviceName}>
           <Icon type="swap" className={styles.swap} onClick={this.showDeviceChange} />
           <span className={styles.name}>{deviceDetail.deviceName}</span>
-          <span className={styles.status} >设备状态: { deviceStatusInfo && deviceStatusInfo.statusName || ''}</span>
+          <span className={styles.status} >
+            <span>设备状态:</span> 
+            <span className={deviceStatusInfo && `${deviceStatusInfo.icon} statusIcon` || ''}></span>
+            <span>{ deviceStatusInfo && deviceStatusInfo.statusName || ' '}</span>
+          </span>
         </div>
         <div className={styles.linkTo}>
           <Link to={`/hidden/monitorDevice/${stationCode}/${parentDevice && parentDevice.deviceTypeCode}/${parentDevice && parentDevice.deviceCode}`} className={styles.eachLink}>
-            <span>汇流箱图标</span>
-            <span className={styles.linkName}>汇流箱{parentDevice && parentDevice.deviceName}详情</span>
-            <Icon type="up" className={styles.linkIcon} />
+            <span className={parentDeviceBaseInfo && `${parentDeviceBaseInfo.icon} linkIcon`}></span>
+            <span className={styles.linkName}>
+              {parentDevice && parentDevice.deviceTypeName}{parentDevice && parentDevice.deviceName}详情
+            </span>
+            <span className="iconfont icon-upstream linkIcon"></span>
           </Link>
-          <Link to={`/hidden/singleStation/${stationCode}?showPart=${sonDevice && sonDevice.deviceTypeCode}`} className={styles.eachLink}>
-            <span>组串图标</span>
-            <span className={styles.linkName}>组串列表</span>
-            <Icon type="down" className={styles.linkIcon} />
+          <Link to={`/hidden/singleStation/${stationCode}?showPart=206#1`} className={styles.eachLink}>
+            <span className="iconfont icon-pvs linkIcon"></span>
+            <span className={styles.linkName}>光伏组串列表</span>
+            <span className="iconfont icon-downstream linkIcon"></span>
           </Link>
         </div>
       </div>
