@@ -10,7 +10,7 @@ const TabPane = Tabs.TabPane;
 class InverterList extends Component {
   static propTypes = {
     inverterList: PropTypes.object,
-    getInverterList: PropTypes.func,
+    // getInverterList: PropTypes.func,
     loading: PropTypes.bool,
   }
 
@@ -159,7 +159,7 @@ class InverterList extends Component {
       <div className={styles.inverterList} >
         <Tabs defaultActiveKey="1" className={styles.inverterTab} tabBarExtraContent={operations}>
           <TabPane tab={<span><i className="iconfont icon-grid" ></i></span>} key="1" className={styles.inverterBlockBox} >
-            {tmpParentDeviceCodes && tmpParentDeviceCodes.map((e,index)=>{
+            {(tmpParentDeviceCodes&&tmpParentDeviceCodes.length>0) ? tmpParentDeviceCodes.map((e,index)=>{
               return (<div key={index}>
                 <div className={styles.parentDeviceName} >{e[0].parentDeviceName}</div>
                 {e && e.map(item=>{
@@ -173,7 +173,7 @@ class InverterList extends Component {
                   </div>);
                 })}
               </div>);
-            })}
+            }) : <div className={styles.nodata} ><img src="/img/nodata.png" /><div>暂无数据</div></div>}
           </TabPane>
           <TabPane tab={<span><i className="iconfont icon-table" ></i></span>} key="2">
             <div>

@@ -55,7 +55,6 @@ function *getCapabilityDiagram(action){
 //获取理论发电量 实际发电量数据
 function *getMonitorPower(action){
   const { payload } = action;
-  console.log(payload)
   const url = '/mock/api/v3/monitor/power/'+ payload.stationCode+ '/' + payload.intervalTime;
   // const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getMonitorPower + payload.stationCode+ '/' + payload.intervalTime;
   try{
@@ -119,13 +118,18 @@ function *getWeatherList(action){
   try{
     yield put({type: singleStationAction.SINGLE_STATION_FETCH});
     const response = yield call(axios.get, url, payload);
-    yield put({
-      type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
-      payload: {
-        ...payload,
-        weatherList: response.data.data,
-      }
-    })
+    if(response.data.code==='10000'){
+      yield put({
+        type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
+        payload: {
+          ...payload,
+          weatherList: response.data.data,
+        }
+      })
+    }else{
+      yield put({ type: singleStationAction.GET_SINGLE_STATION_FAIL});
+    }
+    
   }catch(e){
     console.log(e);
   }
