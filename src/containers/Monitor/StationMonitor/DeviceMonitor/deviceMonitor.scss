@@ -2,6 +2,7 @@
 
 .monitorDevice{
   flex: 1;
+  overflow: auto;
   .eachDeviceBox{
     background-color: $promptColor;
     padding: 24px 24px 0;
