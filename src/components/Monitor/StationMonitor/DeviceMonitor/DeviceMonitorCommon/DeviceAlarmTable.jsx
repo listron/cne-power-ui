@@ -5,7 +5,19 @@ import PropTypes from 'prop-types';
 import { Button, Table, Icon } from 'antd';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
-
+const warningLevelArray = [{
+  levelName: '一级',
+  levelColor: '#a42b2c'
+},{
+  levelName: '二级',
+  levelColor: '#e08031'
+},{
+  levelName: '三级',
+  levelColor: '#f9b600'
+},{
+  levelName: '四级',
+  levelColor: '#fbe6e3'
+}];
 class DeviceAlarmTable extends Component {
 
   static propTypes = {
@@ -38,11 +50,19 @@ class DeviceAlarmTable extends Component {
         dataIndex: 'warningLevel',
         key: 'warningLevel', 
         sorter: true, // (a,b) => a.warningLevel - b.warningLevel,
+        render: (text, record, index) => {
+          const warningInfor = warningLevelArray[text - 1];
+          return (
+          <span style={{color: warningInfor.levelColor, border: `1px solid ${warningInfor.levelColor}`}} className={styles.level}>
+            {warningInfor.levelName}
+          </span>
+          )
+        }
       },{
         title: '告警类型',
         dataIndex: 'warningConfigName',
         key: 'warningConfigName', 
-        sorter: true, // (a,b) => a.warningConfigName - b.warningConfigName,
+        sorter: true, 
       },{
         title: '告警描述',
         dataIndex: 'warningCheckDesc',
@@ -51,12 +71,12 @@ class DeviceAlarmTable extends Component {
         title: '发生时间',
         dataIndex: 'timeOn',
         key: 'timeOn', 
-        sorter:  true, // (a,b) => a.timeOn - b.timeOn,
+        sorter:  true, 
       },{
         title: '持续时间',
         dataIndex: 'durationTime',
         key: 'durationTime', 
-        sorter: true, // (a,b) => a.durationTime - b.durationTime,
+        sorter: true, 
       },
     ]
     return columns;
@@ -66,26 +86,33 @@ class DeviceAlarmTable extends Component {
     this.setState({ pageSize, currentPage })
   }
 
-  render() {
-    const { deviceAlarmList, loading, deviceDetail } = this.props;
+  createTableSource = (data) => { // 数据源的排序，翻页
     const { pageSize, currentPage, sortName, descend } = this.state;
-    const tableSource = [...deviceAlarmList].map((e, i) => ({
+    const tableSource = [...data].map((e, i) => ({
       ...e,
       key: i,
     })).sort((a, b) => { // 手动排序
       const sortType = descend ? -1: 1;
-      const sortArray = {
-        warningLevel: 'warningLevel',
-        warningConfigName: 'warningConfigName',
-        timeOn: 'timeOn',
-        durationTime: 'durationTime'
-      };
-      return sortType * (a[sortArray[sortName]] - b[sortArray[sortName]]);
+      if(sortName === 'warningLevel'){
+        return sortType * (a.warningLevel - b.warningLevel);
+      }else if(sortName === 'warningConfigName'){
+        return sortType * a.warningConfigName.localCompare(b.warningConfigName);
+      }else if(sortName === 'timeOn'){
+        return sortType * (moment(b.timeOn) - moment(a.timeOn));
+      }else if(sortName === 'durationTime'){
+        return sortType * (moment(a.timeOn) - moment(b.timeOn));
+      }
     }).filter((e,i)=>{ // 筛选页面
       const startIndex = (currentPage - 1) * pageSize;
       const endIndex = startIndex + pageSize;
       return (i >= startIndex && i < endIndex);
     });
+    return tableSource
+  }
+
+  render() {
+    const { deviceAlarmList, loading, deviceDetail } = this.props;
+    const tableSource = this.createTableSource(deviceAlarmList);
     const columns = this.initColumn();
     return (
       <div className={styles.alarmTable} >
