@@ -51,9 +51,7 @@ class PvStationTop extends Component {
     })
     let stationStatusTime = singleStationData && singleStationData.stationStatus && singleStationData.stationStatus.stationStatusTime
     let localTime = moment.utc(stationStatusTime).toDate();
-    console.log(localTime)
     stationStatusTime = moment(localTime).format("YYYY/MM/DD hh:mm");
-    console.log(stationStatusTime)
     return (
       <div className={styles.pvStationTop}>
         <div className={styles.pvStationTitle} >
@@ -81,7 +79,7 @@ class PvStationTop extends Component {
             </Modal>
             <div onClick={this.showStationList} className={styles.stationToggle}  id="stationToggle" ><Icon type="swap" /><h3>{singleStationData && singleStationData.stationName}</h3></div>
             <span>电站状态：{singleStationData && singleStationData.stationStatus && singleStationData.stationStatus.stationStatusName}</span>
-            {singleStationData && singleStationData.stationStatus && singleStationData.stationStatus.stationStatus !== "400" && <div>时间：{stationStatusTime}</div>}
+            {singleStationData && singleStationData.stationStatus && singleStationData.stationStatus.stationStatus !== "400" && <span>时间：{stationStatusTime}</span>}
           </div>
           <Icon type="arrow-left" className={styles.backIcon} />
         </div>
