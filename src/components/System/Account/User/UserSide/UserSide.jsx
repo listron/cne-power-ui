@@ -6,6 +6,7 @@ import AddUser from './AddUser';
 import UserDetail from './UserDetail';
 import EditUser from './EditUser';
 import InviteUser from './InviteUser';
+import Footer from '../../../../Common/Footer';
 
 class UserSide extends Component {
   static propTypes = {
@@ -26,6 +27,7 @@ class UserSide extends Component {
         { showSidePage === 'add' && <AddUser {...this.props} /> } 
         { showSidePage === 'edit' && <EditUser {...this.props} /> }
         { showSidePage === 'invite' && <InviteUser {...this.props} /> }
+        <Footer />
       </div>
     )
   }
