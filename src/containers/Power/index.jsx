@@ -49,7 +49,7 @@ class Power extends Component {
 							  <Link to="/hidden/monitorDevice/360/202/360M202M9M1">汇流箱</Link>
 							</Button>
 							<Button>
-							  <Link to="/hidden/monitorDevice/56/304/56M304M23M1">箱变</Link>
+							  <Link to="/hidden/monitorDevice/56/304/302M304M16M1">箱变</Link>
 							</Button>
 						</div>
           </div>
