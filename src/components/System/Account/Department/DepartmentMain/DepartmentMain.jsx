@@ -5,6 +5,7 @@ import { Button } from 'antd';
 import PropTypes from 'prop-types';
 import DepartmentSearch from './DepartmentSearch';
 import DepartmentTable from './DepartmentTable';
+import Footer from '../../../../Common/Footer';
 import styles from './departmentMain.scss'
 
 //部门主页面。部门查询组件，分页及表格组件；
@@ -45,7 +46,8 @@ class DepartmentMain extends Component {
     return (
       <div className={styles.departmentMain}>
         <DepartmentSearch searchDepartment={this.searchDepartment} departmentName={departmentName} parentDepartmentName={parentDepartmentName} stationName={stationName} />    
-        <DepartmentTable {...this.props} />    
+        <DepartmentTable {...this.props} />  
+        <Footer />  
       </div>
     )
   }

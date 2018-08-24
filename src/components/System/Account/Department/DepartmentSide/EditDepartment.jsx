@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import styles from './departmentSide.scss';
 import EditForm from './EditForm';
 import WarningTip from '../../../../Common/WarningTip';
+import Footer from '../../../../Common/Footer';
 
 class AddDepartment extends Component {
   static propTypes = {

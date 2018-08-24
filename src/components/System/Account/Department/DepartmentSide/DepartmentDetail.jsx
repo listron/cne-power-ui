@@ -5,6 +5,7 @@ import { Button, Icon } from 'antd';
 import PropTypes from 'prop-types';
 import styles from './departmentSide.scss';
 import WarningTip from '../../../../Common/WarningTip';
+import Footer from '../../../../Common/Footer';
 import AssignUserModal from '../AssignUserModal/AssignUserModal';
 import AssignStationModal from '../AssignStationModal/AssignStationModal';
 import moment from 'moment';
@@ -124,8 +125,6 @@ class DepartmentDetail extends Component {
   renderAssignUserModal() {
     const { userId, enterpriseId, enterpriseName, departmentData, departmentDetail, allDepartment, departmentUser, getDepartmentUser, setDepartmentUser, changeDepartmentStore} = this.props;
     let detailIndex = departmentData.findIndex(e=>e.departmentId===departmentDetail.departmentId);
-    console.log(departmentData);
-    console.log(detailIndex);
     return (
       <AssignUserModal
         currentUserId={userId}

@@ -76,18 +76,16 @@ class Department extends Component {
     const { showSidePage } = this.state;
     return (
       <div className={styles.departmentContainer}>
-        <div className={styles.departmentBox}>
-          <DepartmentMain {...this.props} onWarningTipToggle={this.onWarningTipToggle} />
-          <TransitionContainer
-            show={showPage!=='list'}
-            onEnter={this.onToggleSide}
-            onExited={this.onToggleSide}
-            timeout={500}
-            effect="side"
-          >
-            <DepartmentSide {...this.props} showSidePage={showSidePage} onShowSideChange={this.onShowSideChange} />
-          </TransitionContainer>
-        </div>
+        <DepartmentMain {...this.props} onWarningTipToggle={this.onWarningTipToggle} />
+        <TransitionContainer
+          show={showPage!=='list'}
+          onEnter={this.onToggleSide}
+          onExited={this.onToggleSide}
+          timeout={500}
+          effect="side"
+        >
+          <DepartmentSide {...this.props} showSidePage={showSidePage} onShowSideChange={this.onShowSideChange} />
+        </TransitionContainer>
       </div>
 
     );

@@ -11,6 +11,7 @@
 .realTimeAlarmContainer {
   display: flex;
   flex: 1;
+  min-height: 100%;
   .realTimeAlarmBox {
     display: flex;
     flex-direction: column;
