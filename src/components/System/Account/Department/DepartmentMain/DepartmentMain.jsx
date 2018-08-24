@@ -1,7 +1,6 @@
 
 
 import React, { Component } from 'react';
-import { Button } from 'antd';
 import PropTypes from 'prop-types';
 import DepartmentSearch from './DepartmentSearch';
 import DepartmentTable from './DepartmentTable';
@@ -45,9 +44,11 @@ class DepartmentMain extends Component {
     const { departmentName, parentDepartmentName, stationName } = this.props;
     return (
       <div className={styles.departmentMain}>
-        <DepartmentSearch searchDepartment={this.searchDepartment} departmentName={departmentName} parentDepartmentName={parentDepartmentName} stationName={stationName} />    
-        <DepartmentTable {...this.props} />  
-        <Footer />  
+        <div>
+          <DepartmentSearch searchDepartment={this.searchDepartment} departmentName={departmentName} parentDepartmentName={parentDepartmentName} stationName={stationName} />    
+          <DepartmentTable {...this.props} />
+        </div>
+        <Footer />
       </div>
     )
   }
