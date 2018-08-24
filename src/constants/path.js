@@ -110,6 +110,7 @@ export default {
       monitorPointData: '/v3/monitor/point', //设备测点数据
       deviceAlarmData: '/v3/alarm/device', // 单设备告警信息
       getRealtimeAlarm: '/v3/alarm/station/alarmlist', //实时告警信息
+      getHistoryAlarm: '/v3/alarm/station/historyalarmlist',//历史告警
       getAlarmNum: '/v3/alarm/stations/alarmnum', //多电站告警数
       getTicketInfo: '/v3/alarm/worklist/getbyid', //告警工单详情
       getRelieveInfo: '/v3/alarm/getrelievealarm', //屏蔽详情

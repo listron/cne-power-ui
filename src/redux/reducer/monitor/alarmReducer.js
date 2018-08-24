@@ -11,9 +11,10 @@ var initState = Immutable.fromJS({
   stationCode: [],//电站名称
   deviceTypeCode: [],//设备类型
   warningConfigName: [],//告警类型
-  startTime: '',//开始时间
-  endTime: '',//结束时间
+  startTime: [],//发生时间
+  endTime: [],//结束时间
   deviceName: '',//设备名称，模糊查询
+  warningStatus: [],//处理结果
 
   alarmNum: {},
   realtimeAlarm: [],  // 实时告警
@@ -26,11 +27,13 @@ var initState = Immutable.fromJS({
 const alarmReducer = (state = initState, action) => {
   switch (action.type) {
     case alarmAction.ALARM_FETCH:
-      return state.set('loading',true)
+      return state.set('loading',true);
     case alarmAction.GET_ALARM_FETCH_SUCCESS :
-      return state.merge(Immutable.fromJS(action.payload)).set('loading',false)
+      return state.merge(Immutable.fromJS(action.payload)).set('loading',false);
     case alarmAction.CHANGE_ALARM_STORE_SAGA:
-      return state.merge(Immutable.fromJS(action.payload))
+      return state.merge(Immutable.fromJS(action.payload));
+    case alarmAction.RESET_ALARM:
+      return initState;
   }
   return state;
 }
