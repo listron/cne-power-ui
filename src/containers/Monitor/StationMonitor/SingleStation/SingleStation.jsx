@@ -18,6 +18,7 @@ class SingleStation extends Component {
     getPvmoduleList: PropTypes.func,
     getInverterList: PropTypes.func,
     getStationList: PropTypes.func,
+    getBoxTransformerList: PropTypes.func,
   };
   constructor(props) {
     super(props);
@@ -38,6 +39,7 @@ class SingleStation extends Component {
     this.props.getDeviceTypeFlow({stationCode});
     this.props.getPvmoduleList({stationCode});
     this.props.getInverterList({stationCode});
+    this.props.getBoxTransformerList({stationCode});
   }
 
   render() {
@@ -65,6 +67,7 @@ const mapDispatchToProps = (dispatch) => ({
   getDeviceTypeFlow: payload => dispatch({type:singleStationAction.GET_DEVICE_TYPE_FLOW_SAGA, payload}),
   getPvmoduleList: payload => dispatch({type:singleStationAction.GET_PVMODULE_LIST_SAGA, payload}),
   getInverterList: payload => dispatch({type:singleStationAction.GET_INVERTER_LIST_SAGA, payload}),
+  getBoxTransformerList: payload => dispatch({type:singleStationAction.GET_BOXTRANSFORMER_LIST_SAGA, payload}),
   getStationList: payload => dispatch({type:singleStationAction.GET_STATION_LIST_SAGA, payload}),
 });
 

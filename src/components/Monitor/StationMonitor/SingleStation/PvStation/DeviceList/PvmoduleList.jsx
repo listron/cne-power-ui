@@ -3,12 +3,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './deviceList.scss';
-import { Switch ,Radio } from 'antd';
-import { Icon } from '../../../../../../../node_modules/antd';
 
 class PvmoduleList extends Component {
   static propTypes = {
-    
+    pvmoduleList: PropTypes.array,
   }
 
   constructor(props){
@@ -17,7 +15,6 @@ class PvmoduleList extends Component {
   
   render(){
     const { pvmoduleList } = this.props;
-    console.log(pvmoduleList)
     return (
       <div className={styles.pvmodule}>
         {/* <div className={styles.pvmoduleTop} >

@@ -291,7 +291,10 @@ class OutputPowerDiagram extends Component {
     
     return (
       <div className={styles.outputPowerDiagram}>
-        <div id="capabilityDiagram" style={{ width: "50%", height: "100%",borderRight:"2px solid #dfdfdf",color: '#999', paddingTop: "20px" }}></div>
+        <div className={styles.capabilityDiagramBox} >
+          <div id="capabilityDiagram" style={{ width: "100%", height: "100%",borderRight:"2px solid #dfdfdf",color: '#999', paddingTop: "20px" }}><i className="iconfont icon-more"></i></div>
+          <i className="iconfont icon-more"></i>
+        </div>
         <div className={styles.powerDiagramBox} >
           <div id="powerDiagram" style={{ width: "100%", height: "100%",color: '#999', paddingTop: "20px" }}></div>
           <div className={styles.powerRadio}>
@@ -301,6 +304,7 @@ class OutputPowerDiagram extends Component {
               <RadioButton value="2">年</RadioButton>
             </RadioGroup>
           </div>
+          <i className="iconfont icon-more"></i>
         </div>
         
       </div>

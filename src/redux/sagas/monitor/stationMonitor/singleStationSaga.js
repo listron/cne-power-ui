@@ -35,8 +35,8 @@ function *getSingleStation(action){
 //获取出力图数据
 function *getCapabilityDiagram(action){
   const { payload } = action;
-  const url = '/mock/api/v3/monitor/capabilitydiagram/360/24';
-  // const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getCapabilityDiagram + payload.stationCode+ '/' + payload.intervalTime;
+  // const url = '/mock/api/v3/monitor/capabilitydiagram/360/24';
+  const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getCapabilityDiagram + payload.stationCode+ '/' + payload.intervalTime;
   try{
     yield put({type: singleStationAction.SINGLE_STATION_FETCH});
     const response = yield call(axios.get, url);
@@ -55,8 +55,8 @@ function *getCapabilityDiagram(action){
 //获取理论发电量 实际发电量数据
 function *getMonitorPower(action){
   const { payload } = action;
-  const url = '/mock/api/v3/monitor/power/'+ payload.stationCode+ '/' + payload.intervalTime;
-  // const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getMonitorPower + payload.stationCode+ '/' + payload.intervalTime;
+  // const url = '/mock/api/v3/monitor/power/'+ payload.stationCode+ '/' + payload.intervalTime;
+  const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getMonitorPower + payload.stationCode+ '/' + payload.intervalTime;
   try{
     yield put({type: singleStationAction.SINGLE_STATION_FETCH});
     const response = yield call(axios.get, url);
@@ -74,8 +74,8 @@ function *getMonitorPower(action){
 // 获取电站列表
 function *getStationList(action){
   const { payload } = action;
-  const url = '/mock/api/v3/station/datalist/';
-  // const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getStationList;
+  // const url = '/mock/api/v3/station/datalist/';
+  const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getStationList;
   try{
     yield put({type: singleStationAction.SINGLE_STATION_FETCH});
     const response = yield call(axios.get, url, payload);
@@ -94,8 +94,8 @@ function *getStationList(action){
 // 获取单电站运维人员列表
 function *getOperatorList(action){
   const { payload } = action;
-  const url = '/mock/api/v3/station/user/'+ payload.stationCode;
-  // const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getOperatorList + payload.stationCode;
+  // const url = '/mock/api/v3/station/user/'+ payload.stationCode;
+  const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getOperatorList + payload.stationCode;
   try{
     yield put({type: singleStationAction.SINGLE_STATION_FETCH});
     const response = yield call(axios.get, url, payload);
@@ -137,8 +137,8 @@ function *getWeatherList(action){
 // 获取单电站活动告警数统计
 function *getAlarmList(action){
   const { payload } = action;
-  const url = '/mock/api/v3/alarm/station/alarmNum/'+ payload.stationCode;
-  // const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getAlarmList + payload.stationCode;
+  // const url = '/mock/api/v3/alarm/station/alarmNum/'+ payload.stationCode;
+  const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getAlarmList + payload.stationCode;
   try{
     yield put({type: singleStationAction.SINGLE_STATION_FETCH});
     const response = yield call(axios.get, url, payload);
@@ -156,8 +156,8 @@ function *getAlarmList(action){
 // 获取单电站工单数统计
 function *getWorkList(action){
   const { payload } = action;
-  const url = '/mock/api/v3/monitor/worklist/'+ payload.stationCode;
-  // const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getWorkList + payload.stationCode;
+  // const url = '/mock/api/v3/monitor/worklist/'+ payload.stationCode;
+  const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getWorkList + payload.stationCode;
   try{
     yield put({type: singleStationAction.SINGLE_STATION_FETCH});
     const response = yield call(axios.get, url, payload);

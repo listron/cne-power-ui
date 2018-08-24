@@ -73,7 +73,20 @@ class InverterList extends Component {
         return '';
     }
   }
-  
+  getStatusColor = (value) => {
+    switch(value){
+      case 100:
+        return '#199475';
+      case 200:
+        return '#999';
+      case 300:
+        return '#a42b2c';
+      case 900:
+        return '#c7ceb2';
+      default:
+        return '#c7ceb2';
+    }
+  }
   tableColumn = () => {
     const columns = [
       {
@@ -86,31 +99,34 @@ class InverterList extends Component {
         dataIndex: 'parentDeviceName',
         key: 'parentDeviceName',
         render: (text,record,index) => (<span>{text}</span>),
-        sorter: true,
+        sorter: (a, b) => a.parentDeviceName.length - b.parentDeviceName.length,
       }, {
         title: '实时功率(kW)',
         dataIndex: 'devicePower',
         key: 'devicePower',
-        render: (text,record) => (<div className={styles.devicePower} ><div>{text}</div><Progress className={styles.devicePower} percent={text/record.deviceCapacity*100} showInfo={false} /></div>),
-        sorter: true,
+        render: (text,record) => (<div className={styles.devicePower} >
+          <div>{text}</div>
+          <Progress className={styles.progressPower} percent={text/record.deviceCapacity*100} showInfo={false} strokeWidth={4}  />
+        </div>),
+        sorter: (a, b) => a.devicePower - b.devicePower,
       }, {
         title: '装机容量(kW)',
         dataIndex: 'deviceCapacity',
         key: 'deviceCapacity',
         render: (text,record) => (<span>{text}</span>),
-        sorter: true
+        sorter: (a, b) => a.deviceCapacity - b.deviceCapacity,
       }, {
         title: '告警(个)',
         dataIndex: 'alarmNum',
         key: 'alarmNum',
-        render: (text,record) => (<span>{text}</span>),
-        sorter: true,
+        render: (text,record) => (<span>{text || 0}</span>),
+        sorter: (a, b) => a.alarmNum - b.alarmNum,
       }, {
         title: '设备状态',
         dataIndex: 'deviceStatus',
         key: 'deviceStatus',
-        render: (text,record) => (<span>{this.getDeviceStatus(text)}</span>),
-        sorter: true,
+        render: (text,record) => (<span><i className={styles.statusColor} style={{backgroundColor: this.getStatusColor(record.deviceStatus)}} ></i>{this.getDeviceStatus(text)}</span>),
+        sorter: (a, b) => a.deviceStatus - b.deviceStatus,
       }, 
     ];
     return columns;
@@ -136,14 +152,15 @@ class InverterList extends Component {
     console.log(tmpParentDeviceCodes);
     const inverterListNum = deviceList && (deviceList.length || 0);
     const deviceStatus = inverterList && inverterList.deviceStatusSummary;
+    const deviceStatusNums=deviceStatus && deviceStatus.map(e=>e.deviceStatusNum);
     const operations = (<div className={styles.inverterRight} >
       <Switch defaultChecked={false} onChange={this.onSwitchAlarm}  />告警
       <Radio.Group defaultValue={0} buttonStyle="solid" className={styles.inverterStatus} onChange={this.onChangeStatus}  >
         <Radio.Button value={0} >全部</Radio.Button>
-        <Radio.Button value={100}>正常{deviceStatus && deviceStatus.deviceStatusNum}</Radio.Button>
-        <Radio.Button value={300}>故障{deviceStatus && deviceStatus.deviceStatusNum}</Radio.Button>
-        <Radio.Button value={200}>停机{deviceStatus && deviceStatus.deviceStatusNum}</Radio.Button>
-        <Radio.Button value={900}>无通讯{deviceStatus && deviceStatus.deviceStatusNum}</Radio.Button>
+        <Radio.Button value={100}>正常{deviceStatusNums && deviceStatusNums[0]}</Radio.Button>
+        <Radio.Button value={300}>故障{deviceStatusNums && deviceStatusNums[2]}</Radio.Button>
+        <Radio.Button value={200}>停机{deviceStatusNums && deviceStatusNums[1]}</Radio.Button>
+        <Radio.Button value={900}>无通讯{deviceStatusNums && deviceStatusNums[3]}</Radio.Button>
       </Radio.Group>
     </div>);
     const pagination = {
@@ -164,16 +181,16 @@ class InverterList extends Component {
                 <div className={styles.parentDeviceName} >{e[0].parentDeviceName}</div>
                 {e && e.map(item=>{
                   return (<div key={item.deviceCode} className={styles.inverterItem}>
-                    <div className={styles.inverterItemIcon} ><i className="iconfont icon-nb" ></i></div>
+                    <div className={styles.inverterItemIcon} ><i className="iconfont icon-nb" ></i>{item.alarmNum && <i className="iconfont icon-alarm" ></i>}</div>
                     <div className={styles.inverterItemR} >
                       <div>{item.deviceName}</div>
                       <Progress className={styles.powerProgress} strokeWidth={4} percent={item.devicePower/item.deviceCapacity*100} showInfo={false} />
-                      <div className={styles.inverterItemPower}><div>{item.devicePower}</div><div>{item.deviceCapacity}</div></div>
+                      <div className={styles.inverterItemPower}><div>{item.devicePower}KW</div><div>{item.deviceCapacity}KW</div></div>
                     </div>
                   </div>);
                 })}
               </div>);
-            }) : <div className={styles.nodata} ><img src="/img/nodata.png" /><div>暂无数据</div></div>}
+            }) : <div className={styles.nodata} ><img src="/img/nodata.png" /></div>}
           </TabPane>
           <TabPane tab={<span><i className="iconfont icon-table" ></i></span>} key="2">
             <div>

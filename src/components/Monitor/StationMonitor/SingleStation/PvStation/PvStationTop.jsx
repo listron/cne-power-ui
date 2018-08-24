@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './pvStation.scss';
 import { Icon, Progress, Modal  } from 'antd';
-
+import moment from 'moment';
 class PvStationTop extends Component {
   static propTypes = {
     singleStationData: PropTypes.object,
@@ -18,6 +18,13 @@ class PvStationTop extends Component {
       showAllStation: false,
     }
   }
+  onToggleStation = (e) => {
+    this.setState({
+      showAllStation: false,
+    })
+    this.props.getSingleStation({stationCode: e});
+    
+  }
   showStationList = () => {
     this.setState({
       showAllStation: true,
@@ -28,6 +35,7 @@ class PvStationTop extends Component {
       showAllStation: false,
     });
   }
+  
   render(){
     const { singleStationData, stationList } = this.props;
     const { showAllStation } = this.state;
@@ -41,14 +49,18 @@ class PvStationTop extends Component {
     tmpProvenceCodes.forEach((value,key)=>{
       tmpProvenceCodes[key] = stationList.filter(e=>value===e.provinceCode);
     })
+    let stationStatusTime = singleStationData && singleStationData.stationStatus && singleStationData.stationStatus.stationStatusTime
+    let localTime = moment.utc(stationStatusTime).toDate();
+    console.log(localTime)
+    stationStatusTime = moment(localTime).format("YYYY/MM/DD hh:mm");
+    console.log(stationStatusTime)
     return (
       <div className={styles.pvStationTop}>
         <div className={styles.pvStationTitle} >
           <div className={styles.pvStationName} >
             <Modal
               visible={showAllStation}
-              title="海兴光伏"
-              onOk={this.handleOk}
+              title={singleStationData && singleStationData.stationName}
               onCancel={this.handleCancel}
               footer={false}
               width={308}
@@ -62,15 +74,14 @@ class PvStationTop extends Component {
                 return (<div key={index} >
                   <div className={styles.provinceName} >{item[0].provinceName}</div>
                   {item && item.map(e=>{
-                    return (<div key={e.stationCode} className={styles.stationName} onClick={e=>this.props.getSingleStation({stationCode: e.stationCode})}  >{e.stationName}</div>)
+                    return (<div key={e.stationCode} className={(singleStationData && singleStationData.stationName)===e.stationName ? styles.currentStationName : styles.stationName} onClick={()=>this.onToggleStation(e.stationCode)}  >{e.stationName}</div>)
                   })}
                 </div>)
               })}
             </Modal>
-            <div onClick={this.showStationList} className={styles.stationToggle}  id="stationToggle" ><Icon type="swap" /></div>
-            {/* <h3>{singleStationData && singleStationData.stationStatus}</h3> */}
+            <div onClick={this.showStationList} className={styles.stationToggle}  id="stationToggle" ><Icon type="swap" /><h3>{singleStationData && singleStationData.stationName}</h3></div>
             <span>电站状态：{singleStationData && singleStationData.stationStatus && singleStationData.stationStatus.stationStatusName}</span>
-            {singleStationData && singleStationData.stationStatus && singleStationData.stationStatus.stationStatus !== "400" && <div>时间：{singleStationData.stationStatus.stationStatusTime}</div>}
+            {singleStationData && singleStationData.stationStatus && singleStationData.stationStatus.stationStatus !== "400" && <div>时间：{stationStatusTime}</div>}
           </div>
           <Icon type="arrow-left" className={styles.backIcon} />
         </div>
