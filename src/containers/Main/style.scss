@@ -2,7 +2,6 @@
   .app {
     display: flex;
     flex: 1;
-    overflow: hidden;
     flex-direction: column;
     height: 100%;
     .appHeader{
@@ -42,7 +41,7 @@
       display: flex;
       flex: 1;
       .content{
-        display: flex;
+        height: calc(100vh - 59px);
         flex: 1;
         overflow-y: auto;
         overflow-x: hidden;
