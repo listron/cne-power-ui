@@ -75,7 +75,7 @@ class RealTimeAlarmFilter extends Component {
           {showFilter==='deviceType' && <DeviceTypeFilter {...this.props} />}
           {showFilter==='alarmType' && <AlarmTypeFilter {...this.props} />}
         </div>
-        <RealTimeFilteredItems {...this.props} onChangeFilter={this.onChangeFilter} />
+        <RealTimeFilteredItems {...this.props} />
       </div>
     );
   }

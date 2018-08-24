@@ -21,6 +21,7 @@ class RealTimeFilteredItems extends Component {
   constructor(props) {
     super(props);
   }
+
   onCancelTimeRange = () => {//取消时间
     this.props.onChangeFilter({
       startTime: '',
@@ -40,8 +41,8 @@ class RealTimeFilteredItems extends Component {
       !cancelStations.some(station=>station.get('stationCode').toString()===code)
     );
     onChangeFilter({
-      sttaionCode: newStationCode,
-    })
+      stationCode: newStationCode,
+    });
   }
   onCancelDeviceType = (cancelCode) => {//删除某设备类型
     const { deviceTypeCode, onChangeFilter } = this.props;
@@ -50,12 +51,12 @@ class RealTimeFilteredItems extends Component {
       deviceTypeCode: newDeviceTypeCode
     });
   } 
-  onCancelLevel = (level) => {//删除某级告警
+  onCancelAlarmLevel = (level) => {//删除某级告警
     const { warningLevel, onChangeFilter } = this.props;
     const newWarningLevel = warningLevel.filter(e=>e!==level);
     onChangeFilter({
       warningLevel: newWarningLevel
-    })
+    });
   }
   resetAll = () => {//删除所有筛选条件
     this.props.onChangeFilter({
