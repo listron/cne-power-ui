@@ -23,7 +23,8 @@ function *getRealtimeAlarm(action) {  // 请求实时告警
         type: alarmAction.GET_ALARM_FETCH_SUCCESS,
         payload: {
           realtimeAlarm: response.data.data,
-          lastUpdateTime: moment().format('YYYY-MM-DD HH:mm')
+          lastUpdateTime: moment().format('YYYY-MM-DD HH:mm'),
+          ...payload
         },
       });
       if(payload.warningLevel.length===0&&payload.stationType==='2'&&
