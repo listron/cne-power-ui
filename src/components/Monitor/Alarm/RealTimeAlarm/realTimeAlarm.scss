@@ -1,0 +1,185 @@
+@import '../../../../theme/theme.scss';
+.alarmInfo {
+  display: flex;
+  flex-shrink: 0;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  height: 100px;
+  background-color: #fff;
+  border-bottom: 1px solid #dfdfdf;
+  a {
+    text-decoration: none;
+  }
+  .alarmInfoLeft {
+    display: flex;
+    flex-direction: row;
+  }
+  .alarmInfoRight {
+    display: flex;
+    flex-direction: row;
+    margin-right: 56px;
+    .updateTimeContainer {
+      display: flex;
+      flex-direction: column;
+      font-size: 14px;
+      margin-right: 27px;
+      .updateTime {
+        color: $themeColor;
+      }
+      .updateTimeText {
+        color: $lightColor;
+      }
+    }
+  }
+  .alarmInfoItem {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-right: 30px;
+    .alarmNum {
+      font-size:24px;
+      color: $themeColor;
+      opacity: 0.74;
+    }
+    .alarmText {
+      font-size: 14px;
+      color: #999;
+    }
+  }
+  .alarmNumDetail {
+    padding-left: 30px;
+    margin-right: 22px;
+    border-left: 1px solid #f1f1f1;
+    border-right: 1px solid #f1f1f1;
+    display: flex;
+    flex-direction: row;
+  }
+  .alarmAction {
+    margin-right: 24px;
+    margin-top: 8px;
+    display: flex;
+    width:73px;
+    height:57px;
+    flex-direction: column;
+    align-items: center;
+    .alarmText {
+      font-size: 14px;
+      color: $lightColor;
+    }
+    &:hover {
+      border:1px solid $themeColor;
+      border-radius:4px;
+      cursor: pointer;
+      .alarmText {
+        color: $themeColor;
+      }
+    }
+  }
+  :global {
+    .icon-alarm {
+      font-size: 30px;
+      color: #a42b2c;
+      margin-left: 47px;
+      margin-right: 35px;
+    }
+    .icon-action {
+      font-size: 18px;
+      color: $lightColor;
+      &:hover {
+        color: $themeColor;
+      }
+    }
+    .icon-title {
+      background-color:#ceebe0;
+      color: $themeColor;
+      width:30px;
+      height:30px;
+      border-radius:100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-left: 47px;
+      margin-right: 35px;
+      margin-top: 15px;
+    }
+    .icon-refresh {
+      width: 29px;
+      height: 29px;
+      border:1px solid $themeColor;
+      color: $themeColor;
+      border-radius: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+}
+.alarmFilter {
+  min-height: 80px;
+  height: auto;
+  background-color: #fff;
+  display: flex;
+  flex-shrink: 0;
+  flex-direction: column;
+  padding: 26px 28px 20px;
+  .topSearch {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-shrink: 0;
+    .text {
+      color: $lightColor;
+      margin-right: 16px;
+    }
+    button {
+      margin-right: 16px;
+    }
+  }
+  .filterBox {
+    display: flex;
+    flex-shrink: 0;
+  }
+}
+.alarmTable {
+  display: flex;
+  flex-direction: column;
+  .tableHeader {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+    height: 55px;
+    padding: 0 28px;
+    background-color: #fff;
+  }
+  :global {
+    .icon-action {
+      background-color:#ceebe0;
+      color: $themeColor;
+      width:30px;
+      height:30px;
+      border-radius:100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+}
+.filteredItems {
+  display: flex;
+  flex-direction: row;
+  padding-top: 16px;
+  align-items: center;
+  >span:first-child {
+    color: $lightColor;
+    font-size: 14px;
+    margin-right: 16px;
+  }
+  >span:last-child {
+    color: $themeColor;
+    font-size: 14px;
+    cursor: pointer;
+  }
+}

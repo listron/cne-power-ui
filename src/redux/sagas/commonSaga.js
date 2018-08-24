@@ -14,12 +14,11 @@ function *changeCommonStore(action){//存储payload指定参数，替换reducer-
 
 //获取所有电站信息
 function *getStations(action){
-  const { payload } = action;
-  const url = `${Path.basePaths.APIBasePath}${Path.commonPaths.getStations}/${payload.userId}`;
+  const url = `${Path.basePaths.APIBasePath}${Path.commonPaths.getStations}/`;
   yield put({ type: commonAction.COMMON_FETCH });
   try {
     const response = yield call(axios.get,url);
-    if(response.data.success){
+    if(response.data.code === '10000'){
       yield put({ 
         type: commonAction.GET_STATIONS_SUCCESS, 
         params: {
@@ -41,8 +40,7 @@ function *getStations(action){
 }
 //获取用户权限范围内所有设备类型信息
 function *getDeviceTypes(action){
-  const { payload } = action;
-  const url = `${Path.basePaths.APIBasePath}${Path.commonPaths.getDevicetypes}/${payload.userId}`;
+  const url = `${Path.basePaths.APIBasePath}${Path.commonPaths.getDevicetypes}/`;
   yield put({ type: commonAction.COMMON_FETCH });
   try {
     const response = yield call(axios.get, url);

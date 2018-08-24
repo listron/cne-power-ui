@@ -89,14 +89,14 @@ module.exports = [
         departmentId:'11111',	
         departmentName:'全能战斗部',	
         parentDepartmentName:'abc传说部',	
-        userFullNameData:[{
+        userFullNameDatas:[{
           departmentUserId:123,
           userFullName:'张三啊！'
         },{
           departmentUserId:223,
           userFullName:'李四！'
         }]	,
-        stationNameData:[{
+        stationNameDatas:[{
           departmentStationId:350,
           stationName:'平原'
         },{

@@ -52,7 +52,6 @@ class Allstation extends React.Component {
         name: item.stationName,
         value: [item.longitude, item.latitude, stationType, stationStatus],
         symbol: stationStatus === "400" ? currentStationStatus[item.alarmNum ? 1 : 0] : currentStationStatus,
-
         alarmNum: item.alarmNum,
         stationPower: item.stationPower,
         stationCapacity: item.stationCapacity,

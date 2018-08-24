@@ -1,8 +1,8 @@
 
   .app {
-    overflow: hidden;
     display: flex;
     flex: 1;
+    overflow: hidden;
     flex-direction: column;
     height: 100%;
     .appHeader{
@@ -44,8 +44,8 @@
       .content{
         display: flex;
         flex: 1;
-        overflow-x: hidden;
         overflow-y: auto;
+        overflow-x: hidden;
       }
     }
   }

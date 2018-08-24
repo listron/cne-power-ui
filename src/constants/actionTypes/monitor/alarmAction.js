@@ -9,5 +9,8 @@ module.exports = {
     GET_ALARM_FETCH_SUCCESS: null,
     TRANSFER_ALARM_SAGA: null,
     RELIEVE_ALARM_SAGA: null,
+    GET_ALARM_NUM_SAGA: null,
+    GET_TICKET_INFO_SAGA: null,
+    GET_RELIEVE_INFO_SAGA: null,
   })
 }
