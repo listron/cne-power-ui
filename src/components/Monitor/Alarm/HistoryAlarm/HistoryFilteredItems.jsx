@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Tag } from 'antd';
-import styles from './realTimeAlarm.scss';
+import styles from './historyAlarm.scss';
 import moment from 'moment';
 
-class RealTimeFilteredItems extends Component {
+class HistoryFilteredItems extends Component {
   static propTypes = {
     stations: PropTypes.object,
     deviceTypes: PropTypes.object,
@@ -14,6 +14,8 @@ class RealTimeFilteredItems extends Component {
     stationCode: PropTypes.array, 
     warningConfigName: PropTypes.array,	  
     startTime: PropTypes.array,
+    endTime: PropTypes.array,
+    warningStatus: PropTypes.array,
     onChangeFilter: PropTypes.func,
   }
 
@@ -21,9 +23,21 @@ class RealTimeFilteredItems extends Component {
     super(props);
   }
 
-  onCancelTimeRange = () => {//取消时间
+  onCancelStartTimeRange = () => {//取消发生时间
     this.props.onChangeFilter({
       startTime: [],
+    });
+  }
+
+  onCancelEndTimeRange = () => {//取消结束时间
+    this.props.onChangeFilter({
+      endTime: [],
+    });
+  }
+
+  onCancelDealResult = () => {//取消处理结果
+    this.props.onChangeFilter({
+      warningStatus: []
     });
   }
 
@@ -64,17 +78,30 @@ class RealTimeFilteredItems extends Component {
       deviceTypeCode: [],
       warningConfigName: [],
       startTime: [],
+      endTime: [],
+      warningStatus: []
     });
   }
 
   render() {
-    const {deviceTypeCode, warningLevel, stationType, stationCode, warningConfigName, startTime, stations, deviceTypes } = this.props;
+    const {deviceTypeCode, warningLevel, stationType, stationCode, warningConfigName, startTime, endTime, warningStatus, stations, deviceTypes } = this.props;
     const alarmLevel = ['一级','二级','三级','四级'];
+    const status = [
+      {value:'0', label:'自动解除'},
+      {value:'2', label:'手动解除'},
+      {value:'3', label:'转工单'}
+    ];
     const alarmLevelArray = warningLevel.map(item=>{
       return {
         value: item,
         label: alarmLevel[parseInt(item) - 1]
       }
+    });
+    const dealResultArray = warningStatus.map(item=> {
+      return {
+        value: item,
+        label: status.find(e=>e.value===item).label
+      };
     });
     const alarmTypeArray = warningConfigName.map(item=>{
       return {
@@ -125,10 +152,18 @@ class RealTimeFilteredItems extends Component {
           <Tag style={style} key={e.value} closable onClose={()=>this.onCancelAlarmType(e.value)}>{e.label}</Tag>
         ))}
         {startTime.length>0&&
-          <Tag style={style} closable onClose={this.onCancelTimeRange}>
+          <Tag style={style} closable onClose={this.onCancelStartTimeRange}>
             发生时间{moment(startTime[0]).format('YYYY-MM-DD')}-{moment(startTime[1]).format('YYYY-MM-DD')}
           </Tag>
         }
+        {endTime.length>0&&
+          <Tag style={style} closable onClose={this.onCancelEndTimeRange}>
+            结束时间{moment(endTime[0]).format('YYYY-MM-DD')}-{moment(endTime[1]).format('YYYY-MM-DD')}
+          </Tag>
+        }
+        {warningStatus.length>0&&dealResultArray.map(e=>(
+          <Tag style={style} key={e.value} closable onClose={()=>this.onCancelDealResult(e.value)}>{e.label}</Tag>
+        ))}
         <span onClick={this.resetAll}>清空条件</span>
       </div>
     );
@@ -136,4 +171,4 @@ class RealTimeFilteredItems extends Component {
 
 }
 
-export default RealTimeFilteredItems;
+export default HistoryFilteredItems;
