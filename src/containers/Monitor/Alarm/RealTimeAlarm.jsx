@@ -21,22 +21,27 @@ class RealTimeAlarm extends Component {
     stationCode: PropTypes.array,
     deviceTypeCode: PropTypes.array,
     warningConfigName: PropTypes.array,
-    startTime: PropTypes.string,
-    endTime: PropTypes.string,
+    startTime: PropTypes.array,
     deviceName: PropTypes.string,
     getRealTimeAlarm: PropTypes.func,
     getDefectTypes: PropTypes.func,
     onTransferAlarm: PropTypes.func,
     onRelieveAlarm: PropTypes.func,
     getAlarmNum: PropTypes.func,
+    resetAlarm: PropTypes.func,
+    changeAlarmStore: PropTypes.func,
+    getTicketInfo: PropTypes.func,
+    getRelieveInfo: PropTypes.func,
     location: PropTypes.object,
+    ticketInfo: PropTypes.object,
+    relieveInfo: PropTypes.object,
   }
   constructor(props) {
     super(props);
   }
 
   componentDidMount() {
-    const { warningLevel, stationType, stationCode, deviceTypeCode, warningConfigName, startTime, endTime, deviceName} = this.props;
+    const { warningLevel, stationType, stationCode, deviceTypeCode, warningConfigName, startTime, deviceName} = this.props;
     const status = this.getStatus();
     const warningStatus = this.getAlarmStatus(status);
     this.props.getRealTimeAlarm({
@@ -46,7 +51,6 @@ class RealTimeAlarm extends Component {
       deviceTypeCode,
       warningConfigName,
       startTime,
-      endTime,
       deviceName,
       isTransferWork: status === 'transfer' ? 0 : 1,
       isRelieveAlarm: status === 'relieve' ? 0: 1
@@ -55,16 +59,20 @@ class RealTimeAlarm extends Component {
     this.props.getAlarmNum({warningStatus});
   }
 
+  componentWillUnmount() {
+    this.props.resetAlarm();
+  }
+
   onChangeFilter = (obj) => {
     const status = this.getStatus();
-    const { warningLevel, stationCode, deviceTypeCode, warningConfigName, startTime, endTime, deviceName } = this.props;
+    const { warningLevel, stationType, stationCode, deviceTypeCode, warningConfigName, startTime, deviceName } = this.props;
     let filter = {
       warningLevel,
+      stationType,
       stationCode,
       deviceTypeCode,
       warningConfigName,
       startTime,
-      endTime,
       deviceName,
       isTransferWork: status==='transfer'?0:1,
       isRelieveAlarm: status==='relieve'?0:1
@@ -117,8 +125,7 @@ const mapStateToProps = (state) => ({
   stationCode: state.monitor.alarm.get('stationCode').toJS(),
   deviceTypeCode: state.monitor.alarm.get('deviceTypeCode').toJS(),
   warningConfigName: state.monitor.alarm.get('warningConfigName').toJS(),
-  startTime: state.monitor.alarm.get('startTime'),
-  endTime: state.monitor.alarm.get('endTime'),
+  startTime: state.monitor.alarm.get('startTime').toJS(),
   deviceName: state.monitor.alarm.get('deviceName'),
   alarmNum: state.monitor.alarm.get('alarmNum').toJS(),
   defectTypes: state.operation.defect.get('defectTypes'),
@@ -135,5 +142,6 @@ const mapDispatchToProps = (dispatch) => ({
   onRelieveAlarm: payload =>dispatch({ type: alarmAction.RELIEVE_ALARM_SAGA, payload }),
   getTicketInfo: payload =>dispatch({ type: alarmAction.GET_TICKET_INFO_SAGA, payload }),
   getRelieveInfo: payload =>dispatch({ type: alarmAction.GET_RELIEVE_INFO_SAGA, payload }),
+  resetAlarm: payload =>dispatch({ type: alarmAction.RESET_ALARM_SAGA, payload }),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(RealTimeAlarm);

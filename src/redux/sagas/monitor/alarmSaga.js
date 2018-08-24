@@ -12,6 +12,12 @@ function *changeAlarmStore(action) {//存储payload指定参数，替换reducer-
   });
 }
 
+function *resetAlarm(action) {//恢复reducer为默认初始值。
+  yield put({
+    type:  alarmAction.RESET_ALARM,
+  });
+}
+
 function *getRealtimeAlarm(action) {  // 请求实时告警
   const { payload } = action;
   const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getRealtimeAlarm;
@@ -29,8 +35,8 @@ function *getRealtimeAlarm(action) {  // 请求实时告警
       });
       if(payload.warningLevel.length===0&&payload.stationType==='2'&&
       payload.stationCode.length===0&&payload.deviceTypeCode.length===0&&
-      payload.warningConfigName.length===0&&payload.startTime===''&&
-      payload.endTime===''&&payload.deviceName==='') {
+      payload.warningConfigName.length===0&&payload.startTime.length===0&&
+      payload.deviceName==='') {
         // const delay = (ms)=>new Promise((resolve)=> {
         //   setTimeout(resolve, ms);
         // });
@@ -40,6 +46,26 @@ function *getRealtimeAlarm(action) {  // 请求实时告警
         //   payload,
         // });
       }      
+    }  
+  }catch(e){
+    console.log(e);
+  }
+}
+
+function *getHistoryAlarm(action) {  // 请求历史告警
+  const { payload } = action;
+  const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getHistoryAlarm;
+  try{
+    yield put({ type:alarmAction.ALARM_FETCH });
+    const response = yield call(axios.post,url,payload);
+    if(response.data.code === '10000') {
+      yield put({
+        type: alarmAction.GET_ALARM_FETCH_SUCCESS,
+        payload: {
+          historyAlarm: response.data.data,
+          ...payload
+        },
+      });     
     }  
   }catch(e){
     console.log(e);
@@ -107,9 +133,11 @@ function *getRelieveInfo(action) {  // 请求屏蔽详情
 export function* watchAlarmMonitor() {
   yield takeLatest(alarmAction.CHANGE_ALARM_STORE_SAGA, changeAlarmStore);
   yield takeLatest(alarmAction.GET_REALTIME_ALARM_SAGA, getRealtimeAlarm);
+  yield takeLatest(alarmAction.GET_HISTORY_ALARM_SAGA, getHistoryAlarm);
   yield takeLatest(alarmAction.GET_ALARM_NUM_SAGA, getAlarmNum);
   yield takeLatest(alarmAction.GET_TICKET_INFO_SAGA, getTicketInfo);
   yield takeLatest(alarmAction.GET_RELIEVE_INFO_SAGA, getRelieveInfo);
+  yield takeLatest(alarmAction.RESET_ALARM_SAGA, resetAlarm);
 }
 
 
