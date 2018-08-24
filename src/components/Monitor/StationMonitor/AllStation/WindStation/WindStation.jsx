@@ -49,7 +49,7 @@ class WindStation extends React.Component {
     let { key, checked, stationType } = this.state;
     const { windMonitorStation } = this.props;
 
-    console.log(windMonitorStation);
+    
     const stationDataSummary = windMonitorStation.stationDataSummary || {};
     const stationProvinceSummary=stationDataSummary.stationProvinceSummary||[];
     const stationStatusSummary = stationDataSummary.stationStatusSummary || [];
@@ -65,9 +65,7 @@ class WindStation extends React.Component {
     }).length > 0 ? stationStatusSummary.filter(e => {
       return e.stationStatus === 500
     })[0].stationNum : '0';
-    console.log(stationStatusSummary.filter(e => {
-      return e.stationStatus === 500
-    }));
+   
 
     const unconnectionNum = stationStatusSummary.filter(e => {
       return e.stationStatus === 900
@@ -93,7 +91,7 @@ class WindStation extends React.Component {
         return e.stationStatus.stationStatus === '900'
       }
     })
-    //console.log(newStationDataList)
+    console.log(newStationDataList,'筛选的数据')
 
 
     const TabPane = Tabs.TabPane;
@@ -148,7 +146,7 @@ class WindStation extends React.Component {
         instantaneous: item.instantaneous
       })
     })
-    console.log(data);
+   
 
     return (
       <div className={styles.WindStation}>

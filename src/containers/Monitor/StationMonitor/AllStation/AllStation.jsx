@@ -28,13 +28,16 @@ class AllStation extends Component {
   }
   componentDidMount() {
     // const autoRefresh=()=>{}
-    const autoRefresh = () => {
+    clearTimeout(this.timer)
+    const autoUpdata = () => {
       this.props.getAllMonitorStation({ stationType: '2' })
-      //const autoTimer=setTimeout(autoRefresh,10000)
+      this.timer=setTimeout(autoUpdata,10000)
     };
-    autoRefresh();
+    autoUpdata();
+    
 
   }
+ 
   componentWillUnmount() {
     console.log('allMonitorStation');
 
@@ -45,15 +48,17 @@ class AllStation extends Component {
       key: activeKey,
     })
     const autoRefresh = () => {
+      clearTimeout(this.timer)
       clearTimeout(this.autoTimer)
       activeKey === '全部' ? this.props.getAllMonitorStation({ stationType: '2' }) : activeKey === '风电' ? this.props.getWindMonitorStation({ stationType: '0' }) : activeKey === '光伏' ? this.props.getPvMonitorStation({ stationType: '1' }) : alert('这个按钮没有考虑呢')
-      this.autoTimer = setTimeout(autoRefresh, 3000)
+      this.autoTimer = setTimeout(autoRefresh, 10000)
     }
     autoRefresh();
   }
 
 
   render() {
+  console.log(new Date());
     let { key } = this.state;
     const { loading } = this.props;
     const { allMonitorStation } = this.props;
