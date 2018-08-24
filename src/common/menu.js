@@ -1,37 +1,42 @@
 import { isUrl } from '../utils';
 
+/*
+  文件说明： 菜单配置项
+  页面显示展示的菜单集中管理，点击后页面跳转至对应路径。设计菜单最多包含三级。
+  参数说明： 
+  1. name：该级菜单对应名称，
+  2. path: 该菜单对应部分路径，一级路径不得重复！！
+  3. children: 该菜单下子菜单数组
+  4. clickable: 该菜单点击效果==>后期考虑配置，clickable为true时不管是几级菜单均可跳转路径展示。
+  5. iconStyle: 菜单附加的icon图标
+  6. defaultPath: 每个一级菜单下，必须有且仅有一个true，代表该一级目录下默认展示的页面。--todo
+*/
+
 const menuData = [
   {
     name: '首页',
     path: '/',
-    clickable: true,
   },{
     name: '实时监控',
-    clickable: false,
     path: 'monitor',
     children: [
       {
         name: '电站监控',
-        clickable: true,
         iconStyle: 'home',
         path: 'station',
       },{
         name: '告警',
         iconStyle: 'exclamation-circle',
-        clickable: true,
         path: 'alarm',
         children: [
           {
             name: '实时告警',
-            clickable: true,
             path: 'realtime',
           },{
             name: '历史告警',
-            clickable: true,
             path: 'history',
           },{
             name: '告警统计',
-            clickable: true,
             path: 'statistic',
           }
         ],
@@ -39,31 +44,25 @@ const menuData = [
     ],
   },{
     name: '运维管理',
-    clickable: false,
     path: 'operation',
     children: [
       {
         name: '工单',
-        clickable: true,
         iconStyle: 'calendar',
         path: 'ticket'
       },{
         name: '缺陷管理',
-        clickable: false,
         iconStyle: 'paper-clip',
         path: 'faultManage',
         children: [
           {
             name: '新建缺陷',
-            clickable: true,
             path: 'create',
           },{
             name: '待办缺陷',
-            clickable: true,
             path: 'faultTodo',
           },{
             name: '缺陷历史',
-            clickable: true,
             path: 'faultHistory',
           }
         ],
@@ -72,34 +71,28 @@ const menuData = [
   },
   {
     name: '系统管理',
-    clickable: false,
     path: 'system',
     children: [
       {
         name: '账户管理',
-        clickable: false,
         iconStyle: 'home',
         path: 'account',
         children: [
           {
             name: '企业',
-            clickable: true,
             iconStyle: 'home',
             path: 'enterprise',
           },{
             name: '部门',
             iconStyle: 'usergroup-add',
-            clickable: true,
             path: 'department',
           },{
             name: '用户',
             iconStyle: 'user-add',
-            clickable: true,
             path: 'user',
           },{
             name: '角色',
             iconStyle: 'skin',
-            clickable: true,
             path: 'role',
           }
         ]

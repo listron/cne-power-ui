@@ -7,6 +7,7 @@ import Seriesinverter from '../../../../components/Monitor/StationMonitor/Device
 import Confluencebox from '../../../../components/Monitor/StationMonitor/DeviceMonitor/Confluencebox/Confluencebox';
 import Boxtransformer from '../../../../components/Monitor/StationMonitor/DeviceMonitor/Boxtransformer/Boxtransformer';
 import Weatherstation from '../../../../components/Monitor/StationMonitor/DeviceMonitor/Weatherstation/Weatherstation';
+import Footer from '../../../../components/Common/Footer';
 
 class DeviceMonitor extends Component {
   static propTypes = {
@@ -21,14 +22,12 @@ class DeviceMonitor extends Component {
     const { deviceTypeCode } = this.props.match.params;
     return (
       <div className={styles.monitorDevice}>
-        <div className={styles.eachDeviceBox}>
-          {deviceTypeCode === '206' && <Seriesinverter {...this.props} /> }
-          {deviceTypeCode === '202' && <Confluencebox {...this.props} /> }
-          {deviceTypeCode === '304' && <Boxtransformer {...this.props} /> }
-          {deviceTypeCode === '203' && <Weatherstation {...this.props} /> }
-        </div>
+        {deviceTypeCode === '206' && <Seriesinverter {...this.props} /> }
+        {deviceTypeCode === '202' && <Confluencebox {...this.props} /> }
+        {deviceTypeCode === '304' && <Boxtransformer {...this.props} /> }
+        {deviceTypeCode === '203' && <Weatherstation {...this.props} /> }
+        <Footer />
       </div>
-
     );
   }
 }

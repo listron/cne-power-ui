@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import UserSearch from './UserSearch';
 import UserList from './UserList';
+import Footer from '../../../../Common/Footer';
 import styles from './userList.scss';
 
 class UserMain extends Component {
@@ -17,8 +18,11 @@ class UserMain extends Component {
   render(){
     return (
       <div className={styles.userMain}>
-        <UserSearch {...this.props} />    
-        <UserList {...this.props} />    
+        <div>
+          <UserSearch {...this.props} />    
+          <UserList {...this.props} />
+        </div>
+        <Footer />
       </div>
     )
   }

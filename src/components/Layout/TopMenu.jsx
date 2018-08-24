@@ -54,8 +54,9 @@ class TopMenu extends Component {
       <Menu mode="horizontal" theme="dark" onSelect={this.selectTopMenu} selectedKeys={selectedKeys}>
         {menu.map((e,i)=>(
           <Item key={e.path}>
-            {e.clickable && <Link to={e.path}>{e.name}</Link>}
-            {!e.clickable && <span>{e.name}</span>}
+            {(!e.children || e.children.length === 0) && <Link to={e.path}>{e.name}</Link>}
+            {/* {(!e.children || e.children.length === 0 || e.clickable) && <Link to={e.path}>{e.name}</Link>} */}
+            {(e.children && e.children.length > 0) && <span>{e.name}</span>}
           </Item>
         ))}
       </Menu>
