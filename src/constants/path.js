@@ -111,6 +111,8 @@ export default {
       deviceAlarmData: '/v3/alarm/device', // 单设备告警信息
       getRealtimeAlarm: '/v3/alarm/station/alarmlist', //实时告警信息
       getAlarmNum: '/v3/alarm/stations/alarmnum', //多电站告警数
+      getTicketInfo: '/v3/alarm/worklist/getbyid', //告警工单详情
+      getRelieveInfo: '/v3/alarm/getrelievealarm', //屏蔽详情
       getPvmoduleList: '/v3/monitor/pvmodule/datalist/',//光伏组件实时列表
       getInverterList: '/v3/monitor/seriesinverter/datalist/',// 组串式逆变器实时数据列表
       getBoxTransformerList: '/v3/monitor/boxtransformer/datalist/',//箱变实时数据列表

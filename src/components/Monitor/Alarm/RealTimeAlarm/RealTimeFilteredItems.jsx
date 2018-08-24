@@ -83,13 +83,24 @@ class RealTimeFilteredItems extends Component {
         value: item,
         label: item
       }
-    })
+    });
+    const style = {
+      background: '#fff', 
+      borderStyle: 'dashed',
+      padding: '0 10px',
+      height: '30px',
+      borderRadius: '4px',
+      display: 'flex',
+      alignItems: 'center',
+      fontSize: '14px',
+      marginRight: '16px',
+    }
     const tmpSelectedDeviceType = deviceTypeCode;//选中设备类型的数组
     const tmpSelectedStation = stationCode;//选中电站的数组
     const selectedStation = stations.filter(e=>
       tmpSelectedStation.some(m=>
         m === e.get('stationCode').toString()
-      )).groupBy(item=>item.get('provinceCode'));//选中电站详情,按省分组
+      )).groupBy(item=>item.get('provinceCode')).toList();//选中电站详情,按省分组
     const selectedDeviceType = deviceTypes.filter(e=>tmpSelectedDeviceType.some(m=>m===e.get('deviceTypeCode').toString()));//选中的设备类型详情
     if(deviceTypeCode.length === 0 && warningLevel.length === 0 && stationType === '2' && stationCode.length === 0 && warningConfigName.length === 0 && startTime === '' && endTime === '') {
       return null;
@@ -98,25 +109,25 @@ class RealTimeFilteredItems extends Component {
       <div className={styles.filteredItems}>
         <span>已选条件</span>
         {warningLevel!==''&&alarmLevelArray.map(e => (
-          <Tag key={e.value} closable onClose={()=>this.onCancelAlarmLevel(e.value)}>{e.label}</Tag>
+          <Tag style={style} key={e.value} closable onClose={()=>this.onCancelAlarmLevel(e.value)}>{e.label}</Tag>
         ))}
         {(stationType !== '2') && 
-          <Tag closable onClose={this.onCancelStationType}>{stationType === '0'?'风电':'光伏'}</Tag>}
+          <Tag style={style} closable onClose={this.onCancelStationType}>{stationType === '0'?'风电':'光伏'}</Tag>}
         {selectedStation.size > 0 && selectedStation.map(e=>(
-          <Tag closable onClose={()=>this.onCancelProvince(e)} key={e.getIn([0, 'provinceCode']).toString()} >
+          <Tag style={style} closable onClose={()=>this.onCancelProvince(e)} key={e.getIn([0, 'provinceCode']).toString()} >
             {`${e.getIn([0, 'provinceName'])} ${e.size}`}
           </Tag>
         ))}
         {selectedDeviceType.size > 0 && selectedDeviceType.map(e=>(
-          <Tag closable onClose={()=>this.onCancelDeviceType(e.get('deviceTypeCode').toString())} key={e.get('deviceTypeCode').toString()}>
+          <Tag style={style} closable onClose={()=>this.onCancelDeviceType(e.get('deviceTypeCode').toString())} key={e.get('deviceTypeCode').toString()}>
             {e.get('deviceTypeName')}
           </Tag>
         ))}
         {warningConfigName!==''&&alarmTypeArray.map(e=>(
-          <Tag key={e.value} closable onClose={()=>this.onCancelAlarmType(e.value)}>{e.label}</Tag>
+          <Tag style={style} key={e.value} closable onClose={()=>this.onCancelAlarmType(e.value)}>{e.label}</Tag>
         ))}
         {startTime!==''&&endTime!==''&&
-          <Tag closable onClose={this.onCancelTimeRange}>
+          <Tag style={style} closable onClose={this.onCancelTimeRange}>
             开始{moment(startTime).format('YYYY-MM-DD')}-结束{moment(endTime).format('YYYY-MM-DD')}
           </Tag>
         }

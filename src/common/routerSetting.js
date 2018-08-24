@@ -60,6 +60,14 @@ const routers = [
     exact: true,
     component: RealTimeAlarm,
   }, {
+    path: '/monitor/alarm/realtime/transfer',
+    exact: true,
+    component: RealTimeAlarm,
+  }, {
+    path: '/monitor/alarm/realtime/relieve',
+    exact: true,
+    component: RealTimeAlarm,
+  }, {
     path: '/monitor/alarm/statistic',
     exact: true,
     component: AlarmStatistic,
