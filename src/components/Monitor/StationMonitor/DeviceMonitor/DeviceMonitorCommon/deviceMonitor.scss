@@ -80,6 +80,7 @@
     height: 48px;
     line-height: 48px;
     i{
+      margin-left: 4px;
       border-radius: 50%;
       background-color: $promptColor;
       color: #fff;
@@ -93,6 +94,13 @@
     .historyButton{
       height: 26px;
     }
+  }
+  .level{
+    border-radius: 2px;
+    display: inline-block;
+    height: 18px;
+    line-height: 18px;
+    padding: 0 4px;
   }
 }
 

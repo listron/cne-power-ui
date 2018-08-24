@@ -14,7 +14,7 @@ function WeatherStationStatistics({ deviceDetail }) {
   return (
     <div className={styles.statisticsBox} >
       <div className={styles.deviceIcon}>
-        <span>气象站图标</span>
+        <span className="iconfont icon-weather"></span>
       </div>
       <div className={styles.weatherEachData}>
         <div className={styles.genNum}>{windSpeed}</div>
