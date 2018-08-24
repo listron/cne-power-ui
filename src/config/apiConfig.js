@@ -1,10 +1,10 @@
 import $ from 'jquery';
 // import apiConfig from './api_config.json'
-
+const randomNum = Math.random();
 const jsonText = $.ajax({
 	type: "get",
 	dataType: "json",
-	url: "/powerp.json?",
+	url: `/powerp.json?${randomNum}`,
 	async: false,
 }).responseText;
 
