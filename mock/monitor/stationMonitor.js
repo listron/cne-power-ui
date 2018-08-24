@@ -52,7 +52,7 @@ module.exports = [
           {
             "stationCode": `${i+1}`,
             "stationName": `圣经山${i+1}`,
-            "stationType": `${Math.floor(Math.random()*3)}`,
+            "stationType": `${Math.floor(Math.random()*2)}`,
             "provinceName": `河北${i+1}`,
             "instantaneous": `${i+1}`,
             "dayResources": `${i+1}`,

@@ -42,26 +42,33 @@ class PvStation extends React.Component {
   render() {
     let { key, checked, stationType } = this.state;
     const { pvMonitorStation } = this.props;
-    const { stationDataList,stationDataSummary } = pvMonitorStation; 
+   
     console.log(pvMonitorStation);
-    const normalNum=stationDataSummary.stationStatusSummary.filter(e=>{
+    const stationDataSummary = pvMonitorStation.stationDataSummary || {};
+    const stationProvinceSummary=stationDataSummary.stationProvinceSummary||[];
+    const stationStatusSummary = stationDataSummary.stationStatusSummary || [];
+    const normalNum=stationStatusSummary.filter(e=>{
       return e.stationStatus===400
-    }).length>0?stationDataSummary.stationStatusSummary.filter(e=>{
+    }).length>0?stationStatusSummary.filter(e=>{
       return e.stationStatus===400
     })[0].stationNum:'0';
 
-    const dataInterruptionNum=stationDataSummary.stationStatusSummary.filter(e=>{
+    const dataInterruptionNum=stationStatusSummary.filter(e=>{
       return e.stationStatus===500
-    }).length>0?stationDataSummary.stationStatusSummary.filter(e=>{
+    }).length>0?stationStatusSummary.filter(e=>{
       return e.stationStatus===500
     })[0].stationNum:'0';
     
-    const unconnectionNum=stationDataSummary.stationStatusSummary.filter(e=>{
+    const unconnectionNum=stationStatusSummary.filter(e=>{
       return e.stationStatus===900
-    }).length>0?stationDataSummary.stationStatusSummary.filter(e=>{
+    }).length>0?stationStatusSummary.filter(e=>{
       return e.stationStatus===900
     })[0].stationNum:'0';
     //let stationType=stationDataList.stationStatus.stationStatus
+
+
+   
+    const stationDataList = pvMonitorStation.stationDataList || [];
     const newStationDataList = stationDataList.filter(e => {
       return !checked || (checked && e.alarmNum > 0)
     }).filter(e => {
@@ -88,7 +95,7 @@ class PvStation extends React.Component {
           defaultValue="all"
           buttonStyle="solid"
           onChange={this.onHandleStation}
-          style={{ marginLeft: 20 }}
+          style={{ margin:'0 30px' }}
         >
           <Radio.Button value="all">全部</Radio.Button>
           <Radio.Button value="normal">通讯正常  {normalNum}<span></span></Radio.Button>
@@ -102,7 +109,7 @@ class PvStation extends React.Component {
     const province = (
       <div>
        
-         {this.props.pvMonitorStation.stationDataSummary.stationProvinceSummary.map((item,index)=>{
+         {stationProvinceSummary.map((item,index)=>{
       return (
         <span key={index}>{item.provinceName}:{item.lightStationNum}&nbsp;&nbsp;</span>
       )
@@ -111,18 +118,21 @@ class PvStation extends React.Component {
     )
 
     let iconArray = [
-      {400:'circle',500:'triangle',900:'roundRect'},//test
-      //{400:['circle','triangle'],500:'diamond',900:'roundRect'},
+      {"400":['image://./img/pv-normal.png','image://./img/pv-alert.png'],"500":'image://./img/pv-cutdown.png',"900":'image://./img/pv-unconnected.png'}
    
 
     ]
     let data = [];
     stationDataList.forEach((item, index) => {
+      let stationStatusAll = item.stationStatus || [];
+      let stationStatus = stationStatusAll.stationStatus || "";  
+      const stationType = item.stationType || "";
+      const currentStationType=iconArray[item.stationType]||{};   
+      const currentStationStatus=currentStationType[stationStatus]||'';
       data.push({
         name: item.stationName,
-        value: [item.longitude, item.latitude, item.stationType, item.stationStatus.stationStatus],
-        symbol: [iconArray[0][item.stationStatus.stationStatus]],
-         // symbol: [iconArray[0][item.stationStatus.stationStatus===400?item.stationStatus.stationStatus[item.alarmNum?1:0]:item.stationStatus.stationStatus]],
+        value: [item.longitude, item.latitude, stationType, stationStatus],
+        symbol: stationStatus === "400" ? currentStationStatus[item.alarmNum ? 1 : 0] : currentStationStatus, 
         alarmNum: item.alarmNum,
         stationPower: item.stationPower,
         stationCapacity: item.stationCapacity,

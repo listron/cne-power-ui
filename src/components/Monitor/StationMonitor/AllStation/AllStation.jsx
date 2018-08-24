@@ -17,32 +17,50 @@ class Allstation extends React.Component {
 
   render() {
     const { allMonitorStation } = this.props;
-    if(allMonitorStation===null||'')return '';
     const stationDataList = allMonitorStation.stationDataList || [];
-    console.log(stationDataList);
-  
+    //console.log(stationDataList);
+
     let iconArray = [
-      //{400:'image://./img/wind-normal.png',500:'image://./img/wind-alert.png',900:'/img/wind-normal.png'},//这是测试用的图标
-       {400:['image://./img/wind-normal.png','image://./img/wind-alert.png'],500:'image://./img/wind-normal.png',900:'image://./img/wind-normal.png'},
-      //{400:'image://./img/pv-normal.png',500:'/img/wind-normal.png',900:'image://./img/pv-alert.png'},
-       {400:['image://./img/pv-normal.png','image://./img/pv-alert.png'],500:'image://./img/pv-normal.png',900:'image://./img/pv-alert.png'},
- 
+      {
+        "400": ['image://./img/wind-normal.png', 'image://./img/wind-alert.png'],
+        "500": 'image://./img/wind-cutdown.png',
+        "900": 'image://./img/wind-unconnected.png'
+      },
+      {
+        "400": ['image://./img/pv-normal.png', 'image://./img/pv-alert.png'],
+        "500": 'image://./img/pv-cutdown.png',
+        "900": 'image://./img/pv-unconnected.png'
+      },
+
     ]
     let data = [];
+    // console.log(stationDataList)
     stationDataList.forEach((item, index) => {
-      data.push({
+      let stationStatusAll = item.stationStatus || [];
+      let stationStatus = stationStatusAll.stationStatus || "";
+      //console.log(stationStatus)
+      const stationType = item.stationType || "";
+      const currentStationType=iconArray[item.stationType]||{};
+      // console.log(currentStationType);
+      const currentStationStatus=currentStationType[stationStatus]||'';
+       //console.log(currentStationType[stationStatus]);
+
+
+      //const num='400';
+     
+        data.push({
         name: item.stationName,
-        value: [item.longitude, item.latitude, item.stationType, item.stationStatus.stationStatus],
-        //symbol: [iconArray[item.stationType][item.stationStatus.stationStatus]][0],
-        symbol: [iconArray[item.stationType][item.stationStatus.stationStatus===400?item.stationStatus.stationStatus[item.alarmNum?1:0]:item.stationStatus.stationStatus]][0]||'image://./img/pv-normal.png',
-       
+        value: [item.longitude, item.latitude, stationType, stationStatus],
+        symbol: stationStatus === "400" ? currentStationStatus[item.alarmNum ? 1 : 0] : currentStationStatus,
+
         alarmNum: item.alarmNum,
         stationPower: item.stationPower,
         stationCapacity: item.stationCapacity,
         instantaneous: item.instantaneous
       })
+    
     })
-    console.log(data);
+     //console.log(data);
 
     return (
       <div className={styles.allStationContainer}>
