@@ -47,8 +47,8 @@ class AlarmStatisticByType extends Component {
     console.log(startTime, endTime);
 
     this.props.onChangeFilter({
-      startTime,
-      endTime
+      // startTime,
+      // endTime
     });
   }
   onOk = (value) => {
@@ -78,8 +78,8 @@ class AlarmStatisticByType extends Component {
      
       console.log(this.state.startTime,this.state.endTime);
       this.props.onChangeFilter({
-        startTime,
-        endTime
+        // startTime,
+        // endTime
       });
   }
   callback = (key) => {

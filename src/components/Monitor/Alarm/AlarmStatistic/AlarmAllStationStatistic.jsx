@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Tabs } from 'antd';
-import styles from './alarmStatistic';
+import styles from './alarmStatistic.scss';
 import AlarmStatisticByType from './AlarmStatisticByType';
 const TabPane = Tabs.TabPane;
 
@@ -59,7 +59,7 @@ class ALarmAllStationStatistic extends React.Component {
 
   render() {
     const operations = (
-      <div style={{ marginRight: '50px' }}>
+      <div style={{ marginRight: '50px',color:'#199475' }}>
         单电站告警统计
         <i className="iconfont icon-filter"></i>
       </div>

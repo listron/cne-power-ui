@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import styles from "./alarm.scss";
 import PropTypes from "prop-types";
 import { Tabs } from 'antd';
-import AlarmAllStationStatistic from '../../../components/Monitor/Alarm/AlarmStatistic/AlarmAllStationStatistic';
+import AlarmAllStationStatistic from '../../../components/Monitor/Alarm/AlarmStatistic/AlarmAllStationStatistic.jsx';
 import { alarmAction } from '../../../constants/actionTypes/monitor/alarmAction';
 
 
