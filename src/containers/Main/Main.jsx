@@ -67,13 +67,13 @@ class Main extends Component {
     const { setTopMenu, topMenu, } = this.props;
     const authData = getCookie('authData');
     const isNotLogin = getCookie('isNotLogin');
-    if(authData && (authData !== 'undefined' && authData !== null)){
+    if(authData && (authData !== 'undefined' && authData !== null) && (moment().isBefore(getCookie('expireData'), 'second'))){
       axios.defaults.headers.common['Authorization'] = "bearer " + JSON.parse(authData);
     }
     if((moment().isBefore(getCookie('expireData'), 'second')) 
     && (authData !== 'undefined' && authData !== null) 
     && (isNotLogin === '0')){
-      //if(true){
+    // if(true){
       return (
         <div className={styles.app}>
           <div className={styles.appHeader}>
