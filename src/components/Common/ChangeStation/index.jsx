@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './singleStationCommon.scss';
+import styles from './index.scss';
 import { Icon } from 'antd';
 import { Link } from 'react-router-dom';
 
@@ -9,7 +9,7 @@ function ChangeStation({ stations, stationName, baseLinkPath, hideStationChange 
   const tmpProvenceCodes = [...stationListSet];
   tmpProvenceCodes.forEach((value,key)=>{
     tmpProvenceCodes[key] = stations.filter(e=>value===e.provinceCode);
-  });
+  })
   
   return (
     <div className={styles.stationChange}>
