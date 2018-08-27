@@ -190,7 +190,7 @@ class OutputPowerDiagram extends Component {
         {
           type: 'category',
           boundaryGap: false,
-          data: powerData.map(e=>e.time),
+          data: powerData && powerData.map(e=>e.time),
           axisLine: {
             lineStyle: {
               color: '#dfdfdf',
@@ -242,7 +242,7 @@ class OutputPowerDiagram extends Component {
         {
           name:'实际发电量',
           type:'bar',
-          data: powerData.map(e=>e.actualPower),
+          data: powerData && powerData.map(e=>e.actualPower),
           label: {
             show: true,
             rotate: 90,
@@ -258,7 +258,7 @@ class OutputPowerDiagram extends Component {
         {
           name:'理论发电量',
           type:'bar',
-          data: powerData.map(e=>e.theoryPower),
+          data: powerData && powerData.map(e=>e.theoryPower),
           label: {
             show: true,
             rotate: 90,
@@ -273,7 +273,7 @@ class OutputPowerDiagram extends Component {
         {
           name:'瞬时辐照',
           type:'line',
-          data: powerData.map(e=>e.instantaneous),
+          data: powerData && powerData.map(e=>e.instantaneous),
           yAxisIndex: 1,
           lineStyle: {
             type: 'solid',

@@ -35,9 +35,10 @@ class InverterList extends Component {
     const { inverterList } = this.props; 
     const { alarmSwitch } = this.state; 
     const deviceList = inverterList && inverterList.deviceList && inverterList.deviceList.map((e,i)=>({...e,key:i}));
+
     let selectedList = [];
     if(alarmSwitch){
-      selectedList = statusValue===0 ? deviceList : deviceList.filter(e=>e.deviceStatus===statusValue&&e.alarmNum!==null);
+      selectedList = statusValue===0 ? deviceList : deviceList.filter(e=>e.deviceStatus === statusValue && e.alarmNum!==null);
     }else{
       selectedList = statusValue===0 ? deviceList : deviceList.filter(e=>e.deviceStatus===statusValue);
     }

@@ -13,7 +13,7 @@ var initState = Immutable.fromJS({
   alarmList: {},//告警数统计
   workList: {},//工单数统计
   deviceTypeFlow: [],//设备类型示意图
-  deviceTypeCode: 206,//当前显示设备列表code值 默认显示光伏组件
+  deviceTypeCode: 509,//当前显示设备列表code值 默认显示光伏组件
   pvmoduleList: [],//光伏组件列表
   inverterList: {},//逆变器列表
   boxTransformerList: [],//箱变列表

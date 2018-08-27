@@ -71,9 +71,12 @@ class CardSection extends Component {
     const { weatherIndex,disabled1,disabled2,} = this.state;
 
     let tmpOperatorList = [];
-    for(var i=0;i<operatorList.length;i+=3){
-      tmpOperatorList.push(operatorList.slice(i,i+3));
+    if(operatorList){
+      for(var i=0;i<operatorList.length;i+=3){
+        tmpOperatorList.push(operatorList.slice(i,i+3));
+      }
     }
+    
     return (
       <div className={styles.cardSection}>
         <Row gutter={16}  type="flex" justify="space-around" >

@@ -25,7 +25,40 @@
   }
   .stationList{
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
+    padding-left: 42px;
+    .provinceName{
+      color:#999;
+      text-align:left;
+      line-height: 30px;
+      background: #f8f8f8;
+      height: 30px;
+      text-indent: 1em;
+      
+    }
+    .stationName{
+      display: inline-block;
+      width: 120px;
+      height: 56px;
+      line-height: 56px;
+      text-align: left;
+      text-indent: 1em;
+      cursor: pointer;
+      color:#999999;
+    }
+    .currentStationName{
+      display: inline-block;
+      width: 120px;
+      height: 56px;
+      line-height: 56px;
+      text-align: left;
+      text-indent: 1em;
+      cursor: pointer;
+      color: $themeColor;
+    }
+    .stationName:hover,.stationName:focus{
+      color: $themeColor;
+    }
     .eachStation{
       width: 50%;
       padding-left: 40px;
