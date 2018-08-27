@@ -5,6 +5,7 @@ import styles from './deviceNameSearch.scss';
 
 class DeviceNameSearch extends Component {
   static propTypes = {
+    deviceName: PropTypes.string,
     onSearch: PropTypes.func,
   }
 
@@ -17,14 +18,14 @@ class DeviceNameSearch extends Component {
 
   onSearch = () => {
     const value = this.state.value;
-    this.porps.onSearch({
+    this.props.onSearch({
       deviceName: value
     });
   }
 
-  onChange = (value) => {
+  onChange = (e) => {
     this.setState({
-      value
+      value: e.target.value
     });
   }
 
@@ -32,9 +33,11 @@ class DeviceNameSearch extends Component {
     this.setState({
       value: ''
     });
-    this.porps.onSearch({
-      deviceName: ''
-    });
+    if(this.props.deviceName !== '') {
+      this.props.onSearch({
+        deviceName: ''
+      });
+    }
   }
 
 

@@ -73,14 +73,12 @@ class HistoryAlarm extends Component {
   render() {
     return (
       <div className={styles.historyAlarmContainer}>
-        <div className={styles.historyAlarmBox}>
-          <div className={styles.historyAlarm}>
-            <HistoryAlarmFilter {...this.props} onChangeFilter={this.onChangeFilter} />      
-            <DeviceNameSearch onSearch={this.onChangeFilter} />
-            <HistoryAlarmTable {...this.props} /> 
-          </div>
-          <Footer />
+        <div className={styles.historyAlarm}>
+          <HistoryAlarmFilter {...this.props} onChangeFilter={this.onChangeFilter} />      
+          <DeviceNameSearch onSearch={this.onChangeFilter} deviceName={this.props.deviceName} />
+          <HistoryAlarmTable {...this.props} /> 
         </div>
+        <Footer />
       </div>
     );
   }

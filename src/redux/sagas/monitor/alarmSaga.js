@@ -72,6 +72,44 @@ function *getHistoryAlarm(action) {  // 请求历史告警
   }
 }
 
+function *getStationsAlarmStatistic(action) {  // 请求多电站告警统计
+  const { payload } = action;
+  const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getStationsAlarmStatistic;
+  try{
+    yield put({ type:alarmAction.ALARM_FETCH });
+    const response = yield call(axios.post,url,payload);
+    if(response.data.code === '10000') {
+      yield put({
+        type: alarmAction.GET_ALARM_FETCH_SUCCESS,
+        payload: {
+          alarmStatistic: response.data.data,
+        },
+      });     
+    }  
+  }catch(e){
+    console.log(e);
+  }
+}
+
+function *getSingleStationAlarmStatistic(action) {  // 请求单电站告警统计
+  const { payload } = action;
+  const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getSingleStationAlarmStatistic;
+  try{
+    yield put({ type:alarmAction.ALARM_FETCH });
+    const response = yield call(axios.post,url,payload);
+    if(response.data.code === '10000') {
+      yield put({
+        type: alarmAction.GET_ALARM_FETCH_SUCCESS,
+        payload: {
+          singleAlarmStatistic: response.data.data,
+        },
+      });     
+    }  
+  }catch(e){
+    console.log(e);
+  }
+}
+
 function *getAlarmNum(action) {  // 请求告警个数
   const { payload } = action;
   const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getAlarmNum;
@@ -93,7 +131,7 @@ function *getAlarmNum(action) {  // 请求告警个数
 
 function *getTicketInfo(action) {  // 请求工单详情
   const { payload } = action;
-  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.monitor.getTicketInfo}/${payload.operateId}`;
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.monitor.getTicketInfo}/${payload.workOrderId}`;
   try{
     yield put({ type:alarmAction.ALARM_FETCH });
     const response = yield call(axios.get,url);
@@ -134,6 +172,8 @@ export function* watchAlarmMonitor() {
   yield takeLatest(alarmAction.CHANGE_ALARM_STORE_SAGA, changeAlarmStore);
   yield takeLatest(alarmAction.GET_REALTIME_ALARM_SAGA, getRealtimeAlarm);
   yield takeLatest(alarmAction.GET_HISTORY_ALARM_SAGA, getHistoryAlarm);
+  yield takeLatest(alarmAction.GET_STATIONS_ALARM_STATISTIC_SAGA, getStationsAlarmStatistic);
+  yield takeLatest(alarmAction.GET_SINGLESTATION_ALARM_STATISTIC_SAGA, getSingleStationAlarmStatistic);
   yield takeLatest(alarmAction.GET_ALARM_NUM_SAGA, getAlarmNum);
   yield takeLatest(alarmAction.GET_TICKET_INFO_SAGA, getTicketInfo);
   yield takeLatest(alarmAction.GET_RELIEVE_INFO_SAGA, getRelieveInfo);
