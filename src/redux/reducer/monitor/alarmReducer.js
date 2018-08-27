@@ -19,6 +19,8 @@ var initState = Immutable.fromJS({
   alarmNum: {},
   realtimeAlarm: [],  // 实时告警
   historyAlarm: [],  // 历史告警
+  alarmStatistic: [],//多电站
+  singleAlarmStatistic: [],//单电站
   lastUpdateTime: '',
   ticketInfo: {},
   relieveInfo: {}
