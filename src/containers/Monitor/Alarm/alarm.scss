@@ -1,6 +1,5 @@
 .alarmStatist{
-  width: 1260px;
-  height: 1460px;
+  
   background:#ececec;
   .alarmStatistTabs{
     margin: 24px;
@@ -11,7 +10,7 @@
 .realTimeAlarmContainer {
   display: flex;
   flex: 1;
-  min-height: 100%;
+  //min-height: 100%;
   flex-direction: column;
   justify-content: space-between;
   padding: 24px 24px 0;
