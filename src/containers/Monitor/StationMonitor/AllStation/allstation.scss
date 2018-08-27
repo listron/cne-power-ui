@@ -1,10 +1,16 @@
 .stationMonitor{
-  height: 100%;
+ 
   min-height: 100%;
+  background: #ececec;
+  padding:24px;
+  display: flex;
+  flex-direction: column;
 }
 .stationContainer{
+  flex:1;
   width: 100%;
-  height: 100%;
+ 
+  background: #fff;
   :global{
     .ant-switch-checked {
       background-color: #199475;
@@ -17,7 +23,7 @@
   
   
     .ant-tabs-bar{
-      width:1210px;
+      //width:1210px;
       margin: 0;
     }
     .ant-progress-bg {
