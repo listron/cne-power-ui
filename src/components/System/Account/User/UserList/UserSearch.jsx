@@ -104,6 +104,7 @@ class UserSearch extends Component {
 
   render(){
     const { roleId, roleAllList } = this.props;
+    const showRestButton = this.props.username || this.props.phoneNum || this.props.stationName;
     const { nameValue, phoneValue, stationValue } = this.state;
     let roleIdSet = new Set(roleId.split(',').filter(e=>!!e));
     
@@ -161,7 +162,7 @@ class UserSearch extends Component {
           <span>电话</span><Input placeholder="请输入电话" value={phoneValue} onChange={(e) => this.setState({phoneValue: e.target.value })} />
           <span>负责电站</span><Input placeholder="请输入负责电站" value={stationValue} onChange={(e) => this.setState({stationValue: e.target.value })} />
           <Button onClick={this.onUserSearch}>查询</Button>
-          <span onClick={this.onResetUserList} style={{cursor: 'pointer'}}>重置</span>
+          {showRestButton && <span onClick={this.onResetUserList} style={{cursor: 'pointer'}}>重置</span>}
         </div>
         
       </div>
