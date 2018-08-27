@@ -1,3 +1,4 @@
+@import '../../../../theme/theme.scss';
 .deviceNameSearch {
   display: flex;
   height: 50px;
@@ -9,5 +10,11 @@
   .deviceName {
     width: 200px;
     margin: 0 16px;
+  }
+  >span:last-child {
+    color: $themeColor;
+    font-size: 14px;
+    cursor: pointer;
+    margin-left: 16px;
   }
 }
