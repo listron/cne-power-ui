@@ -106,7 +106,7 @@ class RealTimeAlarm extends Component {
           <div className={styles.realTimeAlarm}>
             <RealTimeAlarmInfo {...this.props} alarmStatus={alarmStatus} />
             <RealTimeAlarmFilter {...this.props} onChangeFilter={this.onChangeFilter} />      
-            <DeviceNameSearch onSearch={this.onChangeFilter} />
+            <DeviceNameSearch onSearch={this.onChangeFilter} deviceName={this.props.deviceName} />
             <RealTimeAlarmTable {...this.props} alarmStatus={alarmStatus} /> 
           </div>
           <Footer />

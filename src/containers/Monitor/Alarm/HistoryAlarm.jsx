@@ -76,7 +76,7 @@ class HistoryAlarm extends Component {
         <div className={styles.historyAlarmBox}>
           <div className={styles.historyAlarm}>
             <HistoryAlarmFilter {...this.props} onChangeFilter={this.onChangeFilter} />      
-            <DeviceNameSearch onSearch={this.onChangeFilter} />
+            <DeviceNameSearch onSearch={this.onChangeFilter} deviceName={this.props.deviceName} />
             <HistoryAlarmTable {...this.props} /> 
           </div>
           <Footer />
