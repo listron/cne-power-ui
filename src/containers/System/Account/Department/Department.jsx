@@ -38,9 +38,9 @@ class Department extends Component {
     }
   }
   componentDidMount(){
-    const enterpriseId = this.props.enterpriseId;
+    const { enterpriseId } = this.props; //'1010694160817111040', //this.props.enterpriseId;
     const params = {
-      enterpriseId, //this.props.enterpriseId,//'1010694160817111040',
+      enterpriseId, 
       departmentSource: this.props.departmentSource,
       departmentName: this.props.departmentName,
       parentDepartmentName: this.props.parentDepartmentName,

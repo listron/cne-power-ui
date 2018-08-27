@@ -2,15 +2,17 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Icon } from 'antd';
 import StartTimeFilter from '../AlarmFilter/StartTimeFilter';
+import EndTimeFilter from '../AlarmFilter/EndTimeFilter';
 import StationTypeFilter from '../AlarmFilter/StationTypeFilter';
 import StationFilter from '../AlarmFilter/StationFilter';
 import DeviceTypeFilter from '../AlarmFilter/DeviceTypeFilter';
 import AlarmTypeFilter from '../AlarmFilter/AlarmTypeFilter';
 import AlarmLevelFilter from '../AlarmFilter/AlarmLevelFilter';
-import RealTimeFilteredItems from './RealTimeFilteredItems';
-import styles from './realTimeAlarm.scss';
+import DealResultFilter from '../AlarmFilter/DealResultFilter';
+import HistoryFilteredItems from './HistoryFilteredItems';
+import styles from './historyAlarm.scss';
 
-class RealTimeAlarmFilter extends Component {
+class HistoryAlarmFilter extends Component {
   static propTypes = {
     warningLevel: PropTypes.array,
     stationType: PropTypes.string,
@@ -18,6 +20,7 @@ class RealTimeAlarmFilter extends Component {
     deviceTypeCode: PropTypes.array,
     warningConfigName: PropTypes.array,
     startTime: PropTypes.array,
+    endTime: PropTypes.array,
     deviceName: PropTypes.string,
     onChangeFilter: PropTypes.func,
   }
@@ -65,20 +68,28 @@ class RealTimeAlarmFilter extends Component {
           <Button onClick={()=>this.onFilterShowChange('startTime')}>
             发生时间{showFilter==='startTime'?<Icon type="up" />:<Icon type="down" />}
           </Button>
+          <Button onClick={()=>this.onFilterShowChange('endTime')}>
+            结束时间{showFilter==='endTime'?<Icon type="up" />:<Icon type="down" />}
+          </Button>
+          <Button onClick={()=>this.onFilterShowChange('dealResult')}>
+            处理结果{showFilter==='dealResult'?<Icon type="up" />:<Icon type="down" />}
+          </Button>
         </div>
         <div className={styles.filterBox}>
           {showFilter==='startTime' && <StartTimeFilter {...this.props} />}
+          {showFilter==='endTime' && <EndTimeFilter {...this.props} />}
           {showFilter==='alarmLevel' && <AlarmLevelFilter {...this.props} />}
           {showFilter==='stationType' && <StationTypeFilter {...this.props} />}
           {showFilter==='stationName' && <StationFilter {...this.props} />}
           {showFilter==='deviceType' && <DeviceTypeFilter {...this.props} />}
           {showFilter==='alarmType' && <AlarmTypeFilter {...this.props} />}
+          {showFilter==='dealResult' && <DealResultFilter {...this.props} />}
         </div>
-        <RealTimeFilteredItems {...this.props} />
+        <HistoryFilteredItems {...this.props} />
       </div>
     );
   }
 
 }
 
-export default RealTimeAlarmFilter;
+export default HistoryAlarmFilter;

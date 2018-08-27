@@ -80,7 +80,7 @@ class Main extends Component {
             <div className={styles.headerLeft}>
               <div className={styles.logo}></div>
             </div>
-            <TopMenu setTopMenu={setTopMenu} />
+            <TopMenu setTopMenu={setTopMenu} topMenu={topMenu}  />
           </div>
           <div className={styles.appMain}>
             {topMenu.children && topMenu.children.length > 0 && <SideMenu topMenu={topMenu} />}

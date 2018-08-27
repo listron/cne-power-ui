@@ -5,10 +5,9 @@ import moment from 'moment';
 import styles from './alarmFilter.scss';
 const { RangePicker } = DatePicker;
 
-class DateFilter extends Component {
+class StartTimeFilter extends Component {
   static propTypes = {
-    startTime: PropTypes.string,
-    endTime: PropTypes.string,
+    startTime: PropTypes.array,
     onChangeFilter: PropTypes.func,
   }
 
@@ -18,31 +17,28 @@ class DateFilter extends Component {
 
   onChange = (date, dateString) => {
     this.props.onChangeFilter({
-      startTime: date[0].toISOString(),
-      endTime: date[1].toISOString()
+      startTime: [date[0].toISOString(), date[1].toISOString()]
     });
   }
 
   onReset = () => { 
     this.props.onChangeFilter({
-      startTime: '',
-      endTime: ''
+      startTime: [],
     });
   }
 
   render() {
-    const { startTime, endTime } = this.props;
+    const { startTime } = this.props;
     return (
       <div className={styles.alarmFilterItem}>
         <span onClick={this.onReset} className={styles.resetTime} >不限</span>
         <RangePicker
-          value={[startTime!==''?moment(startTime):null, endTime!==''?moment(endTime):null]}
+          value={[startTime[0]?moment(startTime[0]):null, startTime[1]?moment(startTime[1]):null]}
           onChange={this.onChange}
         />
       </div>
     );
   }
-
 }
 
-export default DateFilter;
+export default StartTimeFilter;

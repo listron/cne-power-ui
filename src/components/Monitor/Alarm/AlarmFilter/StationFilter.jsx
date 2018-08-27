@@ -26,7 +26,6 @@ class StationFilter extends Component {
     const newStationCode = stationCode.filter(code => {
       return provinceStation.findIndex(station => station.stationCode.toString() === code) === -1
     }).concat(checkedValue);
-    // const stationCode = Array.from(new Set(stationArray));
     this.props.onChangeFilter({
       stationCode: newStationCode
     });

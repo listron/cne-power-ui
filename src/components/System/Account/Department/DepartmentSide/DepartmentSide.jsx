@@ -5,6 +5,7 @@ import styles from './departmentSide.scss';
 import AddDepartment from './AddDepartment';
 import DepartmentDetail from './DepartmentDetail';
 import EditDepartment from './EditDepartment';
+import Footer from '../../../../Common/Footer';
 
 class DepartmentSide extends Component {
   static propTypes = {
@@ -22,6 +23,7 @@ class DepartmentSide extends Component {
         { showSidePage === 'detail' && <DepartmentDetail {...this.props} /> }
         { showSidePage === 'add' && <AddDepartment {...this.props} /> }
         { showSidePage === 'edit' && <EditDepartment {...this.props} /> }
+        <Footer />
       </div>
     )
   }

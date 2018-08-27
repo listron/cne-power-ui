@@ -125,6 +125,9 @@ export default {
       getDeviceTypeFlow: '/v3/station/devicetypeflow/',//单电站设备类型流程图
 
       
+      getHistoryAlarm: '/v3/alarm/station/historyalarmlist',//历史告警
+      getStationsAlarmStatistic: '/v3/alarm/stations/alarmsummary',//多电站统计
+      getSingleStationAlarmStatistic: '/v3/alarm/station/alarmsummary',//单电站统计
       getAlarmNum: '/v3/alarm/stations/alarmnum', //多电站告警数
       getTicketInfo: '/v3/alarm/worklist/getbyid', //告警工单详情
       getRelieveInfo: '/v3/alarm/getrelievealarm', //屏蔽详情
