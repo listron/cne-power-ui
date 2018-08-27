@@ -78,7 +78,7 @@ class RealTimeAlarmTable extends Component {
     });
   }
 
-  onTransferChange(visible, workOrderId) {
+  onTransferChange(visible, workOrderId, i) {
     if(visible) {
       this.props.getTicketInfo({
         workOrderId
@@ -95,7 +95,7 @@ class RealTimeAlarmTable extends Component {
     });
   }
 
-  onRelieveChange(visible, operateId) {
+  onRelieveChange(visible, operateId, i) {
     if(visible) {
       this.props.getRelieveInfo({
         operateId
