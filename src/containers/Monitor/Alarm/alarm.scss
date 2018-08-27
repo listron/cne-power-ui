@@ -1,3 +1,13 @@
+.alarmStatist{
+  width: 1260px;
+  height: 1460px;
+  background:#ececec;
+  .alarmStatistTabs{
+    margin: 24px;
+    background: #fff;
+  }
+}
+    
 .realTimeAlarmContainer {
   display: flex;
   flex: 1;

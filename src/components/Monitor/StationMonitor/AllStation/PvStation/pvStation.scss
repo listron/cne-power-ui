@@ -2,9 +2,7 @@
 .pvStation{
   height: 100%;
   :global{
-    .ant-tabs-bar{
-      width:1210px;
-    }
+    
     .ant-progress-bg {
       border-radius: 100px;
       background-color: #199475;
@@ -149,6 +147,12 @@
       display: flex;
       flex-direction: column;
       cursor: pointer;
+      .stationMark {
+        color: #20cc20;
+      }
+      i{
+        color:#e08031;
+      }
     }
     .stationTest{
       margin: 20px 0 0 20px;
@@ -178,9 +182,7 @@
         overflow: hidden;
         text-overflow: ellipsis;
       }
-      i{
-        color:#e08031;
-      }
+     
     }
     .stationCardProgress {
       flex: 1;
@@ -196,9 +198,7 @@
       flex-direction: row;
       justify-content: space-between;
     }
-    .stationMark {
-      color: #20cc20;
-    }
+   
     .stationCardWindSpeed {
       flex: 1;
     }

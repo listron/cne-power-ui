@@ -1,5 +1,26 @@
+@import '../../theme/theme.scss';
 
+.topMenu{
+  height: 59px;
+  line-height: 56px;
+  background-color: transparent;
+  border-bottom: none;
+  :global{
+    .ant-menu-item{
+      color: #fff;
+      opacity: 0.7;
+    }
+    .ant-menu-item:hover, .ant-menu-submenu:hover, .ant-menu-item-active, .ant-menu-submenu-active, .ant-menu-item-open, .ant-menu-submenu-open, .ant-menu-item-selected, .ant-menu-submenu-selected{
+      border-bottom: 2px solid #fff;
+      color: #fff;
+    }
+  }
+}
 
+.ant-menu-item:hover, .ant-menu-submenu:hover, .ant-menu-item-active, .ant-menu-submenu-active, .ant-menu-item-open, .ant-menu-submenu-open, .ant-menu-item-selected, .ant-menu-submenu-selected{
+  border-bottom: 2px solid #fff;
+  color: #fff;
+}
 
 .sideMenu{
   display: flex;
@@ -19,6 +40,32 @@
       flex-direction: column;
       overflow-x: hidden;
       overflow-y: auto;
+      background:#fbfbfb;
+      :global{
+        .ant-menu-item, .ant-menu-submenu {
+          color: $darkColor;
+          opacity: 0.7;
+          background-color: transparent;
+          a{
+            color: $darkColor;
+            opacity: 0.7;
+          }
+          a:hover{
+            color: $darkColor;
+            opacity: 1;
+          }
+        }
+        .ant-menu-item::after{
+          border-color: $themeColor;
+        }
+        .ant-menu-item:hover, .ant-menu-submenu:hover, .ant-menu-item-active, .ant-menu-submenu-title:hover, .ant-menu-submenu-active, .ant-menu-item-open, .ant-menu-submenu-open, .ant-menu-item-selected, .ant-menu-submenu-selected{
+          color: $darkColor;
+          opacity: 1;
+          a, a:hover{
+            color: $darkColor;
+          }
+        }
+      }
     }
   }
 }

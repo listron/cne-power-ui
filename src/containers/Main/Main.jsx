@@ -79,8 +79,12 @@ class Main extends Component {
           <div className={styles.appHeader}>
             <div className={styles.headerLeft}>
               <div className={styles.logo}></div>
+              <TopMenu setTopMenu={setTopMenu} topMenu={topMenu}  />
             </div>
-            <TopMenu setTopMenu={setTopMenu} topMenu={topMenu}  />
+            <div className={styles.headerRight}>
+              <img width="294px" height="53px" src="/img/topbg02.png" className={styles.powerConfig} />
+              
+            </div>
           </div>
           <div className={styles.appMain}>
             {topMenu.children && topMenu.children.length > 0 && <SideMenu topMenu={topMenu} />}

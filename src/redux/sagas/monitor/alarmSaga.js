@@ -83,6 +83,10 @@ function *getStationsAlarmStatistic(action) {  // 请求多电站告警统计
         type: alarmAction.GET_ALARM_FETCH_SUCCESS,
         payload: {
           alarmStatistic: response.data.data,
+          stationCodeStatistic: payload.stationCode,
+          stationCode: payload.stationCode,
+          startTimeStatistic: payload.startTime,
+          endTimeStatistic: payload.endTime,
         },
       });     
     }  
