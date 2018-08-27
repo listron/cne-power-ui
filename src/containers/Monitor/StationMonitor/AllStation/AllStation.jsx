@@ -58,10 +58,10 @@ class AllStation extends Component {
     const { allMonitorStation } = this.props;
     const stationDataList = allMonitorStation.stationDataList || [];
     // console.log(stationDataList);
-    const windDataLength = stationDataList.filter((e, i) => { return e.stationType === 0 }).length;
-    const pvDataLength = stationDataList.filter((e, i) => { return e.stationType === 1 }).length;
-    //  console.log(windDataLength);
-    //  console.log(pvDataLength);
+    const windDataLength = stationDataList.filter((e, i) => { return e.stationType === "0" }).length;
+    const pvDataLength = stationDataList.filter((e, i) => { return e.stationType === "1" }).length;
+      console.log(windDataLength);
+      console.log(pvDataLength);
 
     return (
       <div className={styles.stationMonitor}>

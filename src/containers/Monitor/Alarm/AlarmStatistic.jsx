@@ -24,6 +24,7 @@ class AllStation extends Component {
 
     getRealTimeAlarm: PropTypes.func,
     getAlarmNum: PropTypes.func,
+    getStationsAlarmStatistic:PropTypes.func,
     location: PropTypes.object,
     loading: PropTypes.bool,
   }
@@ -51,6 +52,12 @@ class AllStation extends Component {
     });
    // this.props.getDefectTypes({stationType: 2});
     this.props.getAlarmNum({warningStatus});
+    this.props.getStationsAlarmStatistic({
+      "stationType":1,
+      "stationCode":["360","56","380","340","393","504","350","394","392","301","302","391","401","402","406","407"],
+      "startTime":"2018-08-01T10:17:00Z",
+      "endTime":"2018-08-27T10:17:00Z"
+        })
   }
   
   onChangeFilter = (obj) => {
@@ -93,7 +100,7 @@ class AllStation extends Component {
 
 
   render() {
-   
+   const {alarmStatistic}=this.props;
     let { key } = this.state;
    
 
@@ -136,6 +143,7 @@ const mapDispatchToProps = (dispatch) => ({
   getRealTimeAlarm: payload => dispatch({type: alarmAction.GET_REALTIME_ALARM_SAGA, payload}),
   getAlarmNum: payload => dispatch({type: alarmAction.GET_ALARM_NUM_SAGA, payload}),
   //getDefectTypes: params => dispatch({ type: ticketAction.GET_DEFECTTYPES_SAGA, params }),
+  getStationsAlarmStatistic: payload => dispatch({type: alarmAction.GET_STATIONS_ALARM_STATISTIC_SAGA, payload}),
 
 })
 

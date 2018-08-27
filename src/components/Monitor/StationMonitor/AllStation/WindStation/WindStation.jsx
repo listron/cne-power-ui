@@ -126,7 +126,16 @@ class WindStation extends React.Component {
     //地图数据处理
 
     let iconArray = [
-      { "400": ['image://./img/wind-normal.png', 'image://./img/wind-alert.png'], "500": 'image://./img/wind-cutdown.png', "900": 'image://./img/wind-unconnected.png' }
+      {
+        "400": ['image://./img/wind-normal.png', 'image://./img/wind-alert.png'],
+        "500": 'image://./img/wind-cutdown.png',
+        "900": 'image://./img/wind-unconnected.png'
+      },
+      {
+        "400": ['image://./img/pv-normal.png', 'image://./img/pv-alert.png'],
+        "500": 'image://./img/pv-cutdown.png',
+        "900": 'image://./img/pv-unconnected.png'
+      },
     ]
     let data = [];
     stationDataList.forEach((item, index) => {

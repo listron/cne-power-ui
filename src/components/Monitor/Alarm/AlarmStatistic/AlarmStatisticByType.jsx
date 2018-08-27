@@ -11,6 +11,7 @@ import StationFilter from '../AlarmFilter/StationFilter.jsx';
 class AlarmStatisticByType extends Component {
   static propTypes = {
 
+
   }
   constructor(props) {
     super(props);
@@ -20,9 +21,11 @@ class AlarmStatisticByType extends Component {
       //checkedList: defaultCheckedList,
       indeterminate: true,
       checkAll: false,
+      startTime: moment(0, 'HH').utc().format(),
+      endTime: moment().utc().format(),
     }
   }
-//点击插入要显示内容
+  //点击插入要显示内容
   onFilterShowChange = (filterText) => {
     const { showFilter } = this.state;
     if (showFilter === filterText) {
@@ -35,16 +38,16 @@ class AlarmStatisticByType extends Component {
       })
     }
   }
- 
+
   //改变时间的
-  onTimeChange=(value, dateString)=> {
+  onTimeChange = (value, dateString) => {
     console.log('Selected Time: ', value);//[Fri Aug 24 2018 19:37:08 GMT+0800,Mon Sep 17 2018 19:37:08 GMT+0800 (中国标准时间)]
     console.log('Formatted Selected Time: ', dateString);//["2018-08-24 19:37", "2018-09-17 19:37"]
-    let startTime=value[0].utc().format();
-    let endTime=value[1].utc().format();
-    console.log(startTime,endTime);
+    let startTime = value[0].utc().format();
+    let endTime = value[1].utc().format();
+    console.log(startTime, endTime);
   }
-  onOk=(value)=> {
+  onOk = (value) => {
     console.log('onOk: ', value);
   }
   //设置tabs按钮的
@@ -61,17 +64,35 @@ class AlarmStatisticByType extends Component {
     message.info('Click on menu item.');
     console.log('click', e);
   }
-//筛选时间，出现日期框
+  //筛选时间，出现日期框
   handleDayMenuClick = (e) => {
     message.info('Click on menu item.');
+    let { startTime, endTime } = this.state;
     console.log('click', e);
-    e.key === '其他时间段' ? this.onFilterShowChange('timeSelect') : '啥都不干';
+      e.key === '今天' ? (startTime = this.state.startTime, endTime = this.state.endTime) :
+      e.key === '昨天' ? (
+        this.setState({
+          startTime: moment(0, 'HH').substract(1, 'day').utc().format(),
+          endTime: moment().substract(1, 'day').endOf("day").utc().format()
+        })
+      ) :
+      e.key === '最近7天' ? (
+        this.setState({
+          startTime: moment().subtract(7, 'day').utc().format(),
+          endTime: this.state.endTime
+        })) :
+      e.key === '最近30天' ? (
+        this.setState({
+          startTime: moment().subtract(30, 'day').utc().format(),
+          endTime: this.state.endTime
+        })) :
+      e.key === '其他时间段' ? this.onFilterShowChange('timeSelect') : '啥都不干'
 
   }
   callback = (key) => {
     console.log(key);
   }
-  
+
 
   render() {
     const { RangePicker } = DatePicker;
@@ -121,17 +142,17 @@ class AlarmStatisticByType extends Component {
         <div className={styles.filterBox}>
           {/* 自己写的stationSelect组件,没用，暂保留 */}
           {/* {showFilter === 'stationSelect' && <StationSelect {...this.props} />} */}
-          {showFilter === 'stationSelect' && <StationFilter {...this.props} />}          
+          {showFilter === 'stationSelect' && <StationFilter {...this.props} />}
           {
             showFilter === 'timeSelect' &&
             <div><RangePicker
-            showTime={{ format: 'HH:mm' }}
-            format="YYYY-MM-DD HH:mm"
-            placeholder={['Start Time', 'End Time']}
-            onChange={this.onTimeChange}
-            onOk={this.onOk}
-          /></div>
-            }
+              showTime={{ format: 'HH:mm' }}
+              format="YYYY-MM-DD HH:mm"
+              placeholder={['Start Time', 'End Time']}
+              onChange={this.onTimeChange}
+              onOk={this.onOk}
+            /></div>
+          }
         </div>
         <Tabs activeKey={key} tabBarExtraContent={operations} onChange={this.setkey}>
           <TabPane
