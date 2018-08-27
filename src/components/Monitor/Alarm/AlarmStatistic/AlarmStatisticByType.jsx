@@ -1,29 +1,28 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 import { Menu, Dropdown, Button, Icon, message, Tabs, DatePicker } from 'antd';
 import styles from './alarmStatistic.scss';
 import AlarmStatisticTable from '../../../../components/Monitor/Alarm/AlarmStatistic/AlarmStatisticTable.jsx';
 import AlarmStatisticGraph from '../../../../components/Monitor/Alarm/AlarmStatistic/AlarmStatisticGraph.jsx';
-import StationSelect from './StationSelect.jsx';
+//import StationSelect from './StationSelect.jsx';
+import StationFilter from '../AlarmFilter/StationFilter.jsx';
 
-const plainOptions = ['Apple', 'Pear', 'Orange'];
-const defaultCheckedList = ['Apple', 'Orange'];
 class AlarmStatisticByType extends Component {
   static propTypes = {
 
   }
-
   constructor(props) {
     super(props);
     this.state = {
       showFilter: '',
       key: '1',
-      checkedList: defaultCheckedList,
+      //checkedList: defaultCheckedList,
       indeterminate: true,
       checkAll: false,
     }
   }
-
+//点击插入要显示内容
   onFilterShowChange = (filterText) => {
     const { showFilter } = this.state;
     if (showFilter === filterText) {
@@ -36,25 +35,14 @@ class AlarmStatisticByType extends Component {
       })
     }
   }
-  onChange = (checkedList) => {
-    this.setState({
-      checkedList,
-      indeterminate: !!checkedList.length && (checkedList.length < plainOptions.length),
-      checkAll: checkedList.length === plainOptions.length,
-    });
-  }
-//复选框全选按钮
-  onCheckAllChange = (e) => {
-    this.setState({
-      checkedList: e.target.checked ? plainOptions : [],
-      indeterminate: false,
-      checkAll: e.target.checked,
-    });
-  }
+ 
   //改变时间的
   onTimeChange=(value, dateString)=> {
-    console.log('Selected Time: ', value);
-    console.log('Formatted Selected Time: ', dateString);
+    console.log('Selected Time: ', value);//[Fri Aug 24 2018 19:37:08 GMT+0800,Mon Sep 17 2018 19:37:08 GMT+0800 (中国标准时间)]
+    console.log('Formatted Selected Time: ', dateString);//["2018-08-24 19:37", "2018-09-17 19:37"]
+    let startTime=moment.utc(dateString[0]).format();
+    let endTime=moment.utc(dateString[1]).format();
+    console.log(startTime,endTime);
   }
   onOk=(value)=> {
     console.log('onOk: ', value);
@@ -103,8 +91,6 @@ class AlarmStatisticByType extends Component {
       </Menu>
     );
 
-
-
     //数据导出按钮
     const operations = (
       <div className={styles.exportData}>
@@ -123,7 +109,6 @@ class AlarmStatisticByType extends Component {
           <Button onClick={() => this.onFilterShowChange('stationSelect')}>
             电站类型{showFilter === 'stationSelect' ? <Icon type="up" /> : <Icon type="down" />}
           </Button>
-
           <Dropdown.Button
             onClick={this.handleButtonClick}
             overlay={dayMenu}
@@ -131,13 +116,12 @@ class AlarmStatisticByType extends Component {
             style={{ marginLeft: 8 }}
           >
             统计时间
-
           </Dropdown.Button>
-
         </div>
         <div className={styles.filterBox}>
-
-          {showFilter === 'stationSelect' && <StationSelect {...this.props} />}
+          {/* 自己写的stationSelect组件,没用，暂保留 */}
+          {/* {showFilter === 'stationSelect' && <StationSelect {...this.props} />} */}
+          {showFilter === 'stationSelect' && <StationFilter {...this.props} />}          
           {
             showFilter === 'timeSelect' &&
             <div><RangePicker
@@ -148,9 +132,7 @@ class AlarmStatisticByType extends Component {
             onOk={this.onOk}
           /></div>
             }
-
         </div>
-
         <Tabs activeKey={key} tabBarExtraContent={operations} onChange={this.setkey}>
           <TabPane
             tab={
@@ -161,7 +143,6 @@ class AlarmStatisticByType extends Component {
             key="1"
           >
             <AlarmStatisticGraph  {...this.props} />
-
           </TabPane>
           <TabPane
             tab={
@@ -184,3 +165,24 @@ class AlarmStatisticByType extends Component {
 
 export default AlarmStatisticByType;
 
+
+// const plainOptions = ['Apple', 'Pear', 'Orange'];
+// const defaultCheckedList = ['Apple', 'Orange'];
+
+
+ //筛选电站里的tab和复选框
+  // onChange = (checkedList) => {
+  //   this.setState({
+  //     checkedList,
+  //     indeterminate: !!checkedList.length && (checkedList.length < plainOptions.length),
+  //     checkAll: checkedList.length === plainOptions.length,
+  //   });
+  // }
+//复选框全选按钮
+  // onCheckAllChange = (e) => {
+  //   this.setState({
+  //     checkedList: e.target.checked ? plainOptions : [],
+  //     indeterminate: false,
+  //     checkAll: e.target.checked,
+  //   });
+  // }

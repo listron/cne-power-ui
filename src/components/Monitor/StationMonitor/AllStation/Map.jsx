@@ -215,7 +215,7 @@ class Map extends Component {
 
     return (
       <div>
-        <div id={testId} style={{ width: "1210px", height: "620px" }} ></div>
+        <div id={testId} style={{ width: "100%", height: "620px" }} ></div>
       </div>
     )
   }

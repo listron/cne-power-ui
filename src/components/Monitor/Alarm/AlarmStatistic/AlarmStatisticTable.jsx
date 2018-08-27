@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import styles from './alarmStatistic.scss';
-import {  Table } from "antd";
+import { Table } from "antd";
 import CommonPagination from '../../../Common/CommonPagination';
 
 class AlarmStatisticTable extends React.Component {
@@ -18,16 +18,16 @@ class AlarmStatisticTable extends React.Component {
             pageSize: 10,
         }
     }
-    onPaginationChange = ({currentPage,pageSize}) => {//分页器
+    onPaginationChange = ({ currentPage, pageSize }) => {//分页器
         this.setState({
-          pageNum: currentPage,
-          pageSize
+            pageNum: currentPage,
+            pageSize
         })
-      }
-       onChange=(pagination, filters, sorter)=> {
+    }
+    onChange = (pagination, filters, sorter) => {
         console.log("params", pagination, filters, sorter);
-      }
-    
+    }
+
     render() {
         const { stationDataList } = this.props;
         const { pageNum, pageSize, } = this.state;
@@ -55,21 +55,21 @@ class AlarmStatisticTable extends React.Component {
                 dataIndex: "stationrovince",
                 defaultSortOrder: "descend",
                 sorter: (a, b) => a.stationrovince - b.stationrovince,
-                
+
             },
             {
                 title: "一级总数",
                 dataIndex: "stationPower",
                 defaultSortOrder: "descend",
                 sorter: (a, b) => a.stationPower - b.stationPower,
-                
+
             },
             {
                 title: "二级总数",
                 dataIndex: "stationCapacity",
                 defaultSortOrder: "descend",
                 sorter: (a, b) => a.stationCapacity - b.stationCapacity,
-                
+
             },
             {
                 title: "三级总数",
@@ -94,14 +94,14 @@ class AlarmStatisticTable extends React.Component {
                 dataIndex: "yearOutput",
                 defaultSortOrder: "descend",
                 sorter: (a, b) => a.yearOutput - b.yearOutput,
-                
+
             },
             {
                 title: "二级处理时间",
                 dataIndex: "planOutput",
                 defaultSortOrder: "descend",
                 sorter: (a, b) => a.planOutput - b.planOutput,
-               
+
             },
             {
                 title: "三级处理时间",
@@ -115,7 +115,7 @@ class AlarmStatisticTable extends React.Component {
                 defaultSortOrder: "descend",
                 sorter: (a, b) => a.alarmNum - b.alarmNum
             },
-           
+
         ];
         // 表单数据
         // const data = datalist.map((item, index) => {
@@ -137,7 +137,7 @@ class AlarmStatisticTable extends React.Component {
         //         }
         //     )
         // })
-        const data = [1,2,3,4,5,6,7].map((item, i) => {
+        const data = [1, 2, 3, 4, 5, 6, 7].map((item, i) => {
             return (
                 {
                     key: `${i}`,
@@ -158,7 +158,7 @@ class AlarmStatisticTable extends React.Component {
         })
         return (
             <div>
-               
+
                 <div className={styles.pagination}>
                     <CommonPagination total={56} onPaginationChange={this.onPaginationChange} />
                 </div>

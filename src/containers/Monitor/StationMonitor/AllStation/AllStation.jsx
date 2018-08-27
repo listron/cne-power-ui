@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import styles from "./allstation.scss";
 import PropTypes from "prop-types";
-import { Tabs, Spin } from 'antd';
+import { Tabs } from 'antd';
 import { allStationAction } from '../../../../constants/actionTypes/monitor/stationMonitor/allStationAction';
 import Allstation from '../../../../components/Monitor/StationMonitor/AllStation/AllStation.jsx';
 import WindStation from '../../../../components/Monitor/StationMonitor/AllStation/WindStation/WindStation.jsx';
@@ -26,22 +26,16 @@ class AllStation extends Component {
       key: '全部',
     }
   }
-  componentDidMount() {
-    // const autoRefresh=()=>{}
-    clearTimeout(this.timer)
+  componentDidMount() {  
     const autoUpdata = () => {
+      clearTimeout(this.timer)
       this.props.getAllMonitorStation({ stationType: '2' })
-      this.timer=setTimeout(autoUpdata,10000)
+      this.timer = setTimeout(autoUpdata, 100000)
     };
     autoUpdata();
-    
 
   }
- 
-  componentWillUnmount() {
-    console.log('allMonitorStation');
 
-  }
 
   queryTargetData = (activeKey) => {
     this.setState({
@@ -51,16 +45,16 @@ class AllStation extends Component {
       clearTimeout(this.timer)
       clearTimeout(this.autoTimer)
       activeKey === '全部' ? this.props.getAllMonitorStation({ stationType: '2' }) : activeKey === '风电' ? this.props.getWindMonitorStation({ stationType: '0' }) : activeKey === '光伏' ? this.props.getPvMonitorStation({ stationType: '1' }) : alert('这个按钮没有考虑呢')
-      this.autoTimer = setTimeout(autoRefresh, 10000)
+      this.autoTimer = setTimeout(autoRefresh, 100000)
     }
     autoRefresh();
   }
 
 
   render() {
-  console.log(new Date());
+    //console.log(new Date());
     let { key } = this.state;
-    const { loading } = this.props;
+    //const { loading } = this.props;
     const { allMonitorStation } = this.props;
     const stationDataList = allMonitorStation.stationDataList || [];
     // console.log(stationDataList);
