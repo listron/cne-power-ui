@@ -18,8 +18,8 @@ class AllStation extends Component {
     stationCode: PropTypes.array,
     deviceTypeCode: PropTypes.array,
     warningConfigName: PropTypes.array,
-    startTime: PropTypes.string,
-    endTime: PropTypes.string,
+    //startTime: PropTypes.string,
+    //endTime: PropTypes.string,
     deviceName: PropTypes.string,
 
     getRealTimeAlarm: PropTypes.func,

@@ -40,8 +40,8 @@ class AlarmStatisticByType extends Component {
   onTimeChange=(value, dateString)=> {
     console.log('Selected Time: ', value);//[Fri Aug 24 2018 19:37:08 GMT+0800,Mon Sep 17 2018 19:37:08 GMT+0800 (中国标准时间)]
     console.log('Formatted Selected Time: ', dateString);//["2018-08-24 19:37", "2018-09-17 19:37"]
-    let startTime=moment.utc(dateString[0]).format();
-    let endTime=moment.utc(dateString[1]).format();
+    let startTime=value[0].utc().format();
+    let endTime=value[1].utc().format();
     console.log(startTime,endTime);
   }
   onOk=(value)=> {

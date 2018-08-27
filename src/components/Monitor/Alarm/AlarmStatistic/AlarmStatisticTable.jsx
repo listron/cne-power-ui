@@ -52,68 +52,68 @@ class AlarmStatisticTable extends React.Component {
             },
             {
                 title: "告警总数",
-                dataIndex: "stationrovince",
+                dataIndex: "allAlarmNum",
                 defaultSortOrder: "descend",
-                sorter: (a, b) => a.stationrovince - b.stationrovince,
+                sorter: (a, b) => a.allAlarmNum - b.allAlarmNum,
 
             },
             {
                 title: "一级总数",
-                dataIndex: "stationPower",
+                dataIndex: "oneWarningNum",
                 defaultSortOrder: "descend",
-                sorter: (a, b) => a.stationPower - b.stationPower,
+                sorter: (a, b) => a.oneWarningNum - b.oneWarningNum,
 
             },
             {
                 title: "二级总数",
-                dataIndex: "stationCapacity",
+                dataIndex: "secondLevelAlarm",
                 defaultSortOrder: "descend",
-                sorter: (a, b) => a.stationCapacity - b.stationCapacity,
+                sorter: (a, b) => a.secondLevelAlarm - b.secondLevelAlarm,
 
             },
             {
                 title: "三级总数",
-                dataIndex: "windSpeed",
+                dataIndex: "threeWarningNum",
                 defaultSortOrder: "descend",
-                sorter: (a, b) => a.windSpeed - b.windSpeed
+                sorter: (a, b) => a.threeWarningNum - b.threeWarningNum
             },
             {
                 title: "四级总数",
-                dataIndex: "dayOutput",
+                dataIndex: "fourWarningNum",
                 defaultSortOrder: "descend",
-                sorter: (a, b) => a.dayOutput - b.dayOutput
+                sorter: (a, b) => a.fourWarningNum - b.fourWarningNum
             },
             {
                 title: "平均处理时间",
-                dataIndex: "monthOutput",
+                dataIndex: "handleAvgTime",
                 defaultSortOrder: "descend",
-                sorter: (a, b) => a.monthOutput - b.monthOutput
+                sorter: (a, b) => a.handleAvgTime - b.handleAvgTime
             },
             {
                 title: "一级处理时间",
-                dataIndex: "yearOutput",
+                dataIndex: "oneHandleAvgTime",
                 defaultSortOrder: "descend",
-                sorter: (a, b) => a.yearOutput - b.yearOutput,
+                sorter: (a, b) => a.oneHandleAvgTime - b.oneHandleAvgTime,
 
             },
             {
                 title: "二级处理时间",
-                dataIndex: "planOutput",
+                dataIndex: "twoHandleAvgTime",
                 defaultSortOrder: "descend",
-                sorter: (a, b) => a.planOutput - b.planOutput,
+                sorter: (a, b) => a.twoHandleAvgTime - b.twoHandleAvgTime,
 
             },
             {
                 title: "三级处理时间",
-                dataIndex: "equipmentNum",
+                dataIndex: "threeHandleAvgTime",
                 defaultSortOrder: "descend",
-                sorter: (a, b) => a.equipmentNum - b.equipmentNum
+                sorter: (a, b) => a.threeHandleAvgTime - b.threeHandleAvgTime
             },
             {
                 title: "四级处理时间",
-                dataIndex: "alarmNum",
+                dataIndex: "fourHandleAvgTime",
                 defaultSortOrder: "descend",
-                sorter: (a, b) => a.alarmNum - b.alarmNum
+                sorter: (a, b) => a.fourHandleAvgTime - b.fourHandleAvgTime
             },
 
         ];
@@ -123,16 +123,16 @@ class AlarmStatisticTable extends React.Component {
         //         {
         //             key: `${item.stationCode}`,
         //             stationName: `${item.stationName || '--'}`,
-        //             stationrovince: `${item.provinceName || '--'}`,
-        //             stationPower: `${item.stationPower || '--'}`,
-        //             stationCapacity: `${item.stationCapacity || '--'}`,
-        //             windSpeed: `${item.instantaneous || '--'}`,
-        //             dayOutput: `${item.dayPower || '--'}`,
-        //             monthOutput: `${item.monthPower || '--'}`,
-        //             yearOutput: `${item.yearPower || '--'}`,
-        //             planOutput: `${item.yearPlanPower || '--'}`,
-        //             equipmentNum: `${item.stationUnitCount || '--'}`,
-        //             alarmNum: `${item.alarmNum || '--'}`,
+        //             allAlarmNum: `${item.provinceName || '--'}`,
+        //             oneWarningNum: `${item.oneWarningNum || '--'}`,
+        //             secondLevelAlarm: `${item.secondLevelAlarm || '--'}`,
+        //             threeWarningNum: `${item.instantaneous || '--'}`,
+        //             fourWarningNum: `${item.dayPower || '--'}`,
+        //             handleAvgTime: `${item.monthPower || '--'}`,
+        //             oneHandleAvgTime: `${item.yearPower || '--'}`,
+        //             twoHandleAvgTime: `${item.yearPlanPower || '--'}`,
+        //             threeHandleAvgTime: `${item.stationUnitCount || '--'}`,
+        //             fourHandleAvgTime: `${item.fourHandleAvgTime || '--'}`,
         //             currentStation: `${item.stationStatus.stationStatus}`
         //         }
         //     )
@@ -142,16 +142,16 @@ class AlarmStatisticTable extends React.Component {
                 {
                     key: `${i}`,
                     stationName: `山东${i}`,
-                    stationrovince: `${i}`,
-                    stationPower: `${i}`,
-                    stationCapacity: `${i}`,
-                    windSpeed: `${i}`,
-                    dayOutput: `${i}`,
-                    monthOutput: `${i}`,
-                    yearOutput: `${i}`,
-                    planOutput: `${i}`,
-                    equipmentNum: `${i}`,
-                    alarmNum: `${i}`,
+                    allAlarmNum: `${i}`,
+                    oneWarningNum: `${i}`,
+                    secondLevelAlarm: `${i}`,
+                    threeWarningNum: `${i}`,
+                    fourWarningNum: `${i}`,
+                    handleAvgTime: `${i}`,
+                    oneHandleAvgTime: `${i}`,
+                    twoHandleAvgTime: `${i}`,
+                    threeHandleAvgTime: `${i}`,
+                    fourHandleAvgTime: `${i}`,
                     currentStation: `${i}`
                 }
             )
