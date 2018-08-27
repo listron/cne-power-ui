@@ -17,5 +17,10 @@ module.exports = {
     GET_RELIEVE_INFO_SAGA: null,
     RESET_ALARM_SAGA: null,
     RESET_ALARM: null,
+    
+    ALARM_STATISTIC_FETCH: null,//loading
+    RESET_ALARM_STATISTIC_SAGA: null,
+    RESET_ALARM_STATISTIC: null,
+    GET_ALARM_STATISTIC_FETCH_SUCCESS: null,
   })
 }

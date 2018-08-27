@@ -42,27 +42,40 @@
       overflow-y: auto;
       background:#fbfbfb;
       :global{
-        .ant-menu-item, .ant-menu-submenu {
+        .ant-menu-submenu, .ant-menu-item, .ant-menu-submenu-title {
+          &:hover {
+            color: $themeColor;
+          }
           color: $darkColor;
-          opacity: 0.7;
-          background-color: transparent;
           a{
             color: $darkColor;
-            opacity: 0.7;
           }
-          a:hover{
-            color: $darkColor;
-            opacity: 1;
+          a:hover {
+            color: $themeColor;
+          }
+          .ant-menu-item {
+            color: $lightColor;
+            a{
+              color: $lightColor;
+            }
           }
         }
         .ant-menu-item::after{
           border-color: $themeColor;
         }
-        .ant-menu-item:hover, .ant-menu-submenu:hover, .ant-menu-item-active, .ant-menu-submenu-title:hover, .ant-menu-submenu-active, .ant-menu-item-open, .ant-menu-submenu-open, .ant-menu-item-selected, .ant-menu-submenu-selected{
-          color: $darkColor;
-          opacity: 1;
-          a, a:hover{
-            color: $darkColor;
+        .ant-menu-item-selected {
+          background-color: transparent;
+          color: $themeColor;
+          a{
+            color: $themeColor;
+          }
+        }
+        .ant-menu-submenu-open, .ant-menu-submenu-active, .ant-menu-submenu-selected {
+          .ant-menu-item-selected, .ant-menu-item-active, .ant-menu-submenu-title {
+            color: $themeColor;
+            a{
+              color: $themeColor;
+            }
           }
         }
       }
