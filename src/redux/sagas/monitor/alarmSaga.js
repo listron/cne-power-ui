@@ -131,7 +131,7 @@ function *getAlarmNum(action) {  // 请求告警个数
 
 function *getTicketInfo(action) {  // 请求工单详情
   const { payload } = action;
-  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.monitor.getTicketInfo}/${payload.operateId}`;
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.monitor.getTicketInfo}/${payload.workOrderId}`;
   try{
     yield put({ type:alarmAction.ALARM_FETCH });
     const response = yield call(axios.get,url);
