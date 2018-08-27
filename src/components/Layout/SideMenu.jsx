@@ -57,7 +57,7 @@ class SideMenu extends Component {
     pathname !== '/' && sideMenuData.forEach(e=>{
       if(e.children){
         e.children.forEach(m=>{
-          if(m.path === pathname) {
+          if(pathname.indexOf(m.path) !== -1) {
             selectedKeys.push(m.path);
             openKeys.push(e.path);
           }

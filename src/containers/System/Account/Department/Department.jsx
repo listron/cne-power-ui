@@ -38,9 +38,9 @@ class Department extends Component {
     }
   }
   componentDidMount(){
-    const enterpriseId = this.props.enterpriseId;
+    const { enterpriseId } = this.props; //'1010694160817111040', //this.props.enterpriseId;
     const params = {
-      enterpriseId, //this.props.enterpriseId,//'1010694160817111040',
+      enterpriseId, 
       departmentSource: this.props.departmentSource,
       departmentName: this.props.departmentName,
       parentDepartmentName: this.props.parentDepartmentName,
@@ -76,18 +76,16 @@ class Department extends Component {
     const { showSidePage } = this.state;
     return (
       <div className={styles.departmentContainer}>
-        <div className={styles.departmentBox}>
-          <DepartmentMain {...this.props} onWarningTipToggle={this.onWarningTipToggle} />
-          <TransitionContainer
-            show={showPage!=='list'}
-            onEnter={this.onToggleSide}
-            onExited={this.onToggleSide}
-            timeout={500}
-            effect="side"
-          >
-            <DepartmentSide {...this.props} showSidePage={showSidePage} onShowSideChange={this.onShowSideChange} />
-          </TransitionContainer>
-        </div>
+        <DepartmentMain {...this.props} onWarningTipToggle={this.onWarningTipToggle} />
+        <TransitionContainer
+          show={showPage!=='list'}
+          onEnter={this.onToggleSide}
+          onExited={this.onToggleSide}
+          timeout={500}
+          effect="side"
+        >
+          <DepartmentSide {...this.props} showSidePage={showSidePage} onShowSideChange={this.onShowSideChange} />
+        </TransitionContainer>
       </div>
 
     );

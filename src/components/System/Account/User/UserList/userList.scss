@@ -10,6 +10,9 @@
   background: #ececec;
   padding: 24px 24px 0;
   overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   a{
     color: $darkColor;
   }

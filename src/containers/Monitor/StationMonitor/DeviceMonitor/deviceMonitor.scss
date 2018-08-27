@@ -2,8 +2,10 @@
 
 .monitorDevice{
   flex: 1;
-  .eachDeviceBox{
-    background-color: $promptColor;
-    padding: 24px 24px 0;
-  }
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: $promptColor;
+  padding: 24px 24px 0;
 }

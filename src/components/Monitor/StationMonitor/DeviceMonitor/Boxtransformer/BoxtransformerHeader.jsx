@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import HeaderDeviceChange from '../DeviceMonitorCommon/HeaderDeviceChange';
-import { deviceStatusArray } from '../../../../../constants/stationBaseInfo';
+import { deviceStatusArray, PVStationTypes } from '../../../../../constants/stationBaseInfo';
 import styles from '../eachDeviceMonitor.scss';
 import PropTypes from 'prop-types';
 import { Icon } from 'antd';
@@ -37,8 +37,9 @@ class BoxtransformerHeader extends Component {
   render() {
     const { devices, deviceDetail, stationCode, deviceTypeCode } = this.props;
     const { showDeviceChangeBox } = this.state;
-    const { deviceStatus, parentDevice, sonDevice } = deviceDetail;
+    const { deviceStatus, sonDevice } = deviceDetail;
     const deviceStatusInfo = deviceStatusArray.find(e=>parseInt(e.statusCode) === parseInt(deviceStatus));
+    const sonDeviceBaseInfo = PVStationTypes.find(e=>sonDevice && sonDevice.deviceTypeCode === e.deviceTypeCode);
     const baseLinkPath = `/hidden/monitorDevice/${stationCode}/${deviceTypeCode}`;
     return (
       <div className={styles.deviceMonitorHeader} >
@@ -46,13 +47,17 @@ class BoxtransformerHeader extends Component {
         <div className={styles.deviceName}>
           <Icon type="swap" className={styles.swap} onClick={this.showDeviceChange} />
           <span className={styles.name}>{deviceDetail.deviceName}</span>
-          <span className={styles.status} >设备状态: { deviceStatusInfo && deviceStatusInfo.statusName || ''}</span>
+          <span className={styles.status} >
+            <span>设备状态:</span> 
+            <span className={deviceStatusInfo && `${deviceStatusInfo.icon} statusIcon` || ''}></span>
+            <span>{ deviceStatusInfo && deviceStatusInfo.statusName || ' '}</span>
+          </span>
         </div>
         <div className={styles.linkTo}>
           <Link to={`/hidden/singleStation/${stationCode}?showPart=${sonDevice && sonDevice.deviceTypeCode}`} className={styles.eachLink}>
-            <span>汇流箱图表</span>
-            <span className={styles.linkName}>汇流箱列表</span>
-            <Icon type="down" className={styles.linkIcon} />
+            <span className={sonDeviceBaseInfo && `${sonDeviceBaseInfo.icon} linkIcon`}></span>
+            <span className={styles.linkName}>{`${sonDevice?sonDevice.deviceTypeName:''}`}列表</span>
+            <span className="iconfont icon-downstream linkIcon"></span>
           </Link>
         </div>
       </div>

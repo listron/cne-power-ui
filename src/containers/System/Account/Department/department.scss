@@ -2,9 +2,5 @@
 .departmentContainer{
   display: flex;
   flex: 1;
-  overflow: auto;
-  .departmentBox{
-    width: 100%;
-    background:#ececec;
-  }
+  min-height: 100%;
 }

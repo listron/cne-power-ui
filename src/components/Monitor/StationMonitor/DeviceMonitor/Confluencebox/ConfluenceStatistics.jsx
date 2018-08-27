@@ -11,7 +11,7 @@ function ConfluenceStatistics({ deviceDetail }) {
   return (
     <div className={styles.statisticsBox} >
       <div className={styles.deviceIcon}>
-        <span>汇流箱图标</span>
+        <span className="iconfont icon-hl"></span>
       </div>
       <PowerProgress devicePower={devicePower} deviceCapacity={deviceCapacity} />
       <div className={styles.timerDayGen}>

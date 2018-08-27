@@ -8,7 +8,7 @@ function BoxtransformerStatistics({ deviceDetail }) {
   return (
     <div className={styles.statisticsBox} >
       <div className={styles.deviceIcon}>
-        <span>箱变图标</span>
+        <span className="iconfont icon-xb"></span>
       </div>
       <PowerProgress devicePower={devicePower} deviceCapacity={deviceCapacity} />
     </div>
