@@ -1,3 +1,4 @@
+@import '../../theme/theme.scss';
 
   .app {
     display: flex;
@@ -6,10 +7,12 @@
     height: 100%;
     .appHeader{
       height: 59px;
-      background-color: #06213E;
+      // background-color: #06213E;
       display: flex;
       flex-direction: row;
+      justify-content: space-between;
       align-items: center;
+      background:url('/img/topbg.png') no-repeat center / cover;
       .headerLeft{
         display: flex;
         flex-direction: row;
@@ -24,16 +27,10 @@
           background-repeat: no-repeat;
         }
       }
-      .headerMenu{
-        .menuItem{
-          display: flex;
-          flex-direction: row;
-          align-items: center;
-          color: #fff;
-          .icon {
-            font-size: 14px;
-            margin-right: 6px;
-          }
+      .headerRight{
+        margin-right: 36px;
+        .powerConfig{
+          margin-left: 16px;
         }
       }
     }
