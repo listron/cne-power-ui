@@ -3,23 +3,19 @@ import { alarmAction } from '../../../constants/actionTypes/monitor/alarmAction'
 
 var initState = Immutable.fromJS({
   loading: false,
-  //筛选条件
-  warningLevel: [],//告警级别
-  stationType: '2',//电站类型
-  stationCode: [],//电站名称
-  deviceTypeCode: [],//设备类型
-  warningConfigName: [],//告警类型
-  startTime: [],//发生时间
-  endTime: [],//结束时间
-  deviceName: '',//设备名称，模糊查询
-  warningStatus: [],//处理结果
 
-  alarmNum: {},
-  realtimeAlarm: [],  // 实时告警
-  historyAlarm: [],  // 历史告警
-  lastUpdateTime: '',
-  ticketInfo: {},
-  relieveInfo: {}
+  //筛选条件
+
+  stationType: '0',//电站类型
+  stationCode: [],//电站名称
+
+  startTime: '',//发生时间
+  endTime: '',//结束时间
+  deviceName: '',//设备名称，模糊查询
+
+
+  alarmStatistic: [],//多电站
+  singleAlarmStatistic: [],//单电站
 });
 
 const alarmReducer = (state = initState, action) => {

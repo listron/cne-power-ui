@@ -131,7 +131,7 @@ class PvStation extends React.Component {
 
     ]
     let data = [];
-    newStationDataList.forEach((item, index) => {
+    stationDataList.forEach((item, index) => {
       let stationStatusAll = item.stationStatus || [];
       let stationStatus = stationStatusAll.stationStatus || "";  
       const stationType = item.stationType || "";

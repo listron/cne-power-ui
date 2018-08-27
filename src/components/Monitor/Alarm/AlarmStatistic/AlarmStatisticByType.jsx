@@ -10,7 +10,11 @@ import StationFilter from '../AlarmFilter/StationFilter.jsx';
 
 class AlarmStatisticByType extends Component {
   static propTypes = {
-
+    stationType: PropTypes.string,
+    stationCode: PropTypes.array,
+    startTime: PropTypes.string,
+    endTime: PropTypes.string,
+    onChangeFilter: PropTypes.func,
 
   }
   constructor(props) {
@@ -18,11 +22,6 @@ class AlarmStatisticByType extends Component {
     this.state = {
       showFilter: '',
       key: '1',
-      //checkedList: defaultCheckedList,
-      indeterminate: true,
-      checkAll: false,
-      startTime: moment(0, 'HH').utc().format(),
-      endTime: moment().utc().format(),
     }
   }
   //点击插入要显示内容
@@ -46,6 +45,11 @@ class AlarmStatisticByType extends Component {
     let startTime = value[0].utc().format();
     let endTime = value[1].utc().format();
     console.log(startTime, endTime);
+
+    this.props.onChangeFilter({
+      startTime,
+      endTime
+    });
   }
   onOk = (value) => {
     console.log('onOk: ', value);
@@ -66,28 +70,17 @@ class AlarmStatisticByType extends Component {
   }
   //筛选时间，出现日期框
   handleDayMenuClick = (e) => {
-    message.info('Click on menu item.');
-    let { startTime, endTime } = this.state;
+    //message.info('Click on menu item.');
+   
     console.log('click', e);
-      e.key === '今天' ? (startTime = this.state.startTime, endTime = this.state.endTime) :
-      e.key === '昨天' ? (
-        this.setState({
-          startTime: moment(0, 'HH').substract(1, 'day').utc().format(),
-          endTime: moment().substract(1, 'day').endOf("day").utc().format()
-        })
-      ) :
-      e.key === '最近7天' ? (
-        this.setState({
-          startTime: moment().subtract(7, 'day').utc().format(),
-          endTime: this.state.endTime
-        })) :
-      e.key === '最近30天' ? (
-        this.setState({
-          startTime: moment().subtract(30, 'day').utc().format(),
-          endTime: this.state.endTime
-        })) :
-      e.key === '其他时间段' ? this.onFilterShowChange('timeSelect') : '啥都不干'
-
+    
+      e.key === '其他时间段' ? this.onFilterShowChange('timeSelect') : '啥都不干';
+     
+      console.log(this.state.startTime,this.state.endTime);
+      this.props.onChangeFilter({
+        startTime,
+        endTime
+      });
   }
   callback = (key) => {
     console.log(key);
@@ -146,7 +139,7 @@ class AlarmStatisticByType extends Component {
           {
             showFilter === 'timeSelect' &&
             <div><RangePicker
-              showTime={{ format: 'HH:mm' }}
+              showTime={false}
               format="YYYY-MM-DD HH:mm"
               placeholder={['Start Time', 'End Time']}
               onChange={this.onTimeChange}
@@ -186,24 +179,3 @@ class AlarmStatisticByType extends Component {
 
 export default AlarmStatisticByType;
 
-
-// const plainOptions = ['Apple', 'Pear', 'Orange'];
-// const defaultCheckedList = ['Apple', 'Orange'];
-
-
- //筛选电站里的tab和复选框
-  // onChange = (checkedList) => {
-  //   this.setState({
-  //     checkedList,
-  //     indeterminate: !!checkedList.length && (checkedList.length < plainOptions.length),
-  //     checkAll: checkedList.length === plainOptions.length,
-  //   });
-  // }
-//复选框全选按钮
-  // onCheckAllChange = (e) => {
-  //   this.setState({
-  //     checkedList: e.target.checked ? plainOptions : [],
-  //     indeterminate: false,
-  //     checkAll: e.target.checked,
-  //   });
-  // }
