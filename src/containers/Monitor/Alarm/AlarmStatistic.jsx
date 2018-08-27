@@ -3,14 +3,9 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import styles from "./alarm.scss";
 import PropTypes from "prop-types";
-import { Tabs } from 'antd';
 import AlarmAllStationStatistic from '../../../components/Monitor/Alarm/AlarmStatistic/AlarmAllStationStatistic.jsx';
 import { alarmAction } from '../../../constants/actionTypes/monitor/alarmAction';
 
-
-
-
-const TabPane = Tabs.TabPane;
 class ALarmStatistic extends Component {
   static propTypes = {
     stationType: PropTypes.string,
@@ -49,6 +44,7 @@ const mapStateToProps = (state) => {
 }
 const mapDispatchToProps = (dispatch) => ({
   getStationsAlarmStatistic: payload => dispatch({type: alarmAction.GET_STATIONS_ALARM_STATISTIC_SAGA, payload}),
+  getSingleStationAlarmStatistic: payload => dispatch({type: alarmAction.GET_SINGLESTATION_ALARM_STATISTIC_SAGA, payload}),
   resetAlarm: payload =>dispatch({ type: alarmAction.RESET_ALARM_STATISTIC_SAGA, payload }),
 })
 
