@@ -25,3 +25,20 @@
     }
   }
 }
+
+.historyAlarmContainer {
+  display: flex;
+  flex: 1;
+  .historyAlarmBox {
+    display: flex;
+    flex-direction: column;
+    flex: 1 0 auto;
+    .historyAlarm {
+      display: flex;
+      flex-direction: column;
+      flex: 1 0 auto;
+      padding: 24px 24px 0;
+      background-color: #ececec;
+    }
+  }
+}

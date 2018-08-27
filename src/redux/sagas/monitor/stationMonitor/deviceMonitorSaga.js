@@ -99,10 +99,10 @@ function *getNormalDeviceData(action){ // 请求单设备-除气象站数据信�
 
 function *getWeatherStationData(action){ // 请求气象站设备信息
   const { payload } = action;
-  const { deviceTypeCode, deviceCode } = payload;
+  const { deviceTypeCode, deviceCode, stationCode } = payload;
   try{
     // const detailUrl = monitorPath[deviceTypeCode].detail;
-    const detailUrl = `${path.basePaths.APIBasePath}${monitorPath[deviceTypeCode].detail}/${deviceCode}`;
+    const detailUrl = `${path.basePaths.APIBasePath}${monitorPath[deviceTypeCode].detail}/${stationCode}`;
     // const alarmUrl = '/mock/monitor/deviceAlarm';
     const alarmUrl = `${path.basePaths.APIBasePath}${path.APISubPaths.monitor.deviceAlarmData}/${deviceCode}`
     yield put({ type:deviceAction.MONITOR_DEVICE_FETCH });

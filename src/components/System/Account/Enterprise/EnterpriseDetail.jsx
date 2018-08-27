@@ -54,10 +54,10 @@ class EnterpriseDetail extends Component {
         <div className={styles.enterpriseInfor} >
           <div className={styles.logoPart}>
             <img src={enterpriseDetail.enterpriseLogo} />
-            <div className={styles.user}>
+            {/* <div className={styles.user}>
               <span>创建者</span>
               {enterpriseDetail.createUser || ' -- ' }
-            </div>
+            </div> */}
             <div className={styles.time}>
               <span>创建时间</span>
               {moment(enterpriseDetail.createTime) ? moment(enterpriseDetail.createTime).format('YYYY年MM月DD日'): '--'}
