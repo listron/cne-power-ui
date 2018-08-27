@@ -26,13 +26,6 @@ class ALarmAllStationStatistic extends React.Component {
       startTime,
       endTime,
     });
-   // this.props.getDefectTypes({stationType: 2});
-    this.props.getStationsAlarmStatistic({
-      "stationType":1,
-      "stationCode":["360","56","380","340","393","504","350","394","392","301","302","391","401","402","406","407"],
-      "startTime":"2018-08-01T10:17:00Z",
-      "endTime":"2018-08-27T10:17:00Z"
-        })
   }
 
   onChangeFilter = (obj) => {

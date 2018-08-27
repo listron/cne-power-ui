@@ -110,15 +110,28 @@ export default {
       monitorPointData: '/v3/monitor/point', //设备测点数据
       deviceAlarmData: '/v3/alarm/device', // 单设备告警信息
       getRealtimeAlarm: '/v3/alarm/station/alarmlist', //实时告警信息
+
+      getPvmoduleList: '/v3/monitor/pvmodule/datalist/',//光伏组件实时
+      getInverterList: '/v3/monitor/seriesinverter/datalist/',// 组串式逆变器实时
+      getBoxTransformerList: '/v3/monitor/boxtransformer/datalist/',//箱变实时
+      getSingleStation: '/v3/monitor/station/',//单电站实时数据
+      getCapabilityDiagram: '/v3/monitor/capabilitydiagram/',//单电站出力图表
+      getMonitorPower: '/v3/monitor/power/',//单电站理论发电量-实际发电量图表
+      getStationList: '/v3/station/datalist/',//电站列表
+      getWeatherList: '/v3/monitor/weather/',//单电站未来天气
+      getOperatorList: '/v3/station/user/',//单电站运维人员列表
+      getAlarmList: '/v3/alarm/station/alarmnum/',//单电站活动告警数统计
+      getWorkList: '/v3/monitor/worklist/',//单电站工单数统计
+      getDeviceTypeFlow: '/v3/station/devicetypeflow/',//单电站设备类型流程图
+
+      
       getHistoryAlarm: '/v3/alarm/station/historyalarmlist',//历史告警
       getStationsAlarmStatistic: '/v3/alarm/stations/alarmsummary',//多电站统计
       getSingleStationAlarmStatistic: '/v3/alarm/station/alarmsummary',//单电站统计
       getAlarmNum: '/v3/alarm/stations/alarmnum', //多电站告警数
       getTicketInfo: '/v3/alarm/worklist/getbyid', //告警工单详情
       getRelieveInfo: '/v3/alarm/getrelievealarm', //屏蔽详情
-      getPvmoduleList: '/v3/monitor/pvmodule/datalist/',//光伏组件实时列表
-      getInverterList: '/v3/monitor/seriesinverter/datalist/',// 组串式逆变器实时数据列表
-      getBoxTransformerList: '/v3/monitor/boxtransformer/datalist/',//箱变实时数据列表
+      
     }
     // monitor:{
     //   getStationType:'v3/monitor/stations/stationType',

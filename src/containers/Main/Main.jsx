@@ -67,20 +67,24 @@ class Main extends Component {
     const { setTopMenu, topMenu, } = this.props;
     const authData = getCookie('authData');
     const isNotLogin = getCookie('isNotLogin');
-    if(authData && (authData !== 'undefined' && authData !== null)){
+    if(authData && (authData !== 'undefined' && authData !== null) && (moment().isBefore(getCookie('expireData'), 'second'))){
       axios.defaults.headers.common['Authorization'] = "bearer " + JSON.parse(authData);
     }
     if((moment().isBefore(getCookie('expireData'), 'second')) 
     && (authData !== 'undefined' && authData !== null) 
     && (isNotLogin === '0')){
-      //if(true){
+    // if(true){
       return (
         <div className={styles.app}>
           <div className={styles.appHeader}>
             <div className={styles.headerLeft}>
               <div className={styles.logo}></div>
+              <TopMenu setTopMenu={setTopMenu} topMenu={topMenu}  />
             </div>
-            <TopMenu setTopMenu={setTopMenu} topMenu={topMenu}  />
+            <div className={styles.headerRight}>
+              <img width="294px" height="53px" src="/img/topbg02.png" className={styles.powerConfig} />
+              
+            </div>
           </div>
           <div className={styles.appMain}>
             {topMenu.children && topMenu.children.length > 0 && <SideMenu topMenu={topMenu} />}
