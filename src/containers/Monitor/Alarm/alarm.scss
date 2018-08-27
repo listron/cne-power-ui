@@ -2,33 +2,28 @@
   display: flex;
   flex: 1;
   min-height: 100%;
-  .realTimeAlarmBox {
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 24px 24px 0;
+  background-color: #ececec;
+  .realTimeAlarm {
     display: flex;
     flex-direction: column;
-    flex: 1 0 auto;
-    .realTimeAlarm {
-      display: flex;
-      flex-direction: column;
-      flex: 1 0 auto;
-      padding: 24px 24px 0;
-      background-color: #ececec;
-    }
+    flex: 1;
   }
 }
 
 .historyAlarmContainer {
   display: flex;
   flex: 1;
-  .historyAlarmBox {
+  min-height: 100%;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 24px 24px 0;
+  background-color: #ececec;
+  .historyAlarm {
     display: flex;
     flex-direction: column;
-    flex: 1 0 auto;
-    .historyAlarm {
-      display: flex;
-      flex-direction: column;
-      flex: 1 0 auto;
-      padding: 24px 24px 0;
-      background-color: #ececec;
-    }
+    flex: 1;
   }
 }
