@@ -3,10 +3,12 @@ import axios from 'axios';
 import Path from '../../../../constants/path';
 import { message } from 'antd';
 import { userAction } from '../../../../constants/actionTypes/system/account/userAction';
+import { getCookie } from '../../../../utils';
 
 // 切换页面 -> 列表页 详情页 编辑页
 function *changeUserStore(action){
   const { payload } = action;
+  console.log(payload)
   yield put({
     type: userAction.CHANGE_USER_STORE,
     payload,
@@ -58,7 +60,7 @@ function *changeUserStatus(action){
         }
       })
       const params = yield select(state => ({//继续请求用户列表
-        enterpriseId: state.login.get('enterpriseId'),
+        enterpriseId: getCookie('enterpriseId'),
         roleId: state.system.user.get('roleId'),
         userStatus: state.system.user.get('userStatus'),
         username: state.system.user.get('username'),
@@ -170,7 +172,7 @@ function *editUserInfo(action){
       yield put({type: userAction.GET_USER_FETCH_SUCCESS});
       yield put({ type: userAction.CHANGE_USER_STORE_SAGA, payload:{showPage: payload.showPage}})
       const params = yield select(state => ({//继续请求用户列表
-        enterpriseId: payload.enterpriseId,
+        enterpriseId: getCookie('enterpriseId'),
         roleId: state.system.user.get('roleId'),
         userStatus: state.system.user.get('userStatus'),
         username: state.system.user.get('username'),
@@ -202,7 +204,7 @@ function *createUserInfo(action){
       yield put({ type: userAction.GET_USER_FETCH_SUCCESS});
       yield put({ type: userAction.CHANGE_USER_STORE_SAGA, payload:{showPage: payload.showPage}})
       const params = yield select(state => ({//继续请求用户列表
-        enterpriseId: payload.enterpriseId,
+        enterpriseId: getCookie('enterpriseId'),
         roleId: state.system.user.get('roleId'),
         userStatus: state.system.user.get('userStatus'),
         username: state.system.user.get('username'),

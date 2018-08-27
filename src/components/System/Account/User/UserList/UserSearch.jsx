@@ -6,8 +6,6 @@ import PropTypes from 'prop-types';
 import styles from './userList.scss';
 
 const Option = Select.Option;
-const RadioGroup = Radio.Group;
-const RadioButton = Radio.Button;
 
 class UserSearch extends Component {
   static propTypes = {
@@ -108,6 +106,7 @@ class UserSearch extends Component {
     const { roleId, roleAllList } = this.props;
     const { nameValue, phoneValue, stationValue } = this.state;
     let roleIdSet = new Set(roleId.split(',').filter(e=>!!e));
+    
     let roleSelectId = roleAllList && roleAllList.toJS().filter(e=>{
       return roleIdSet.has(e.roleId.toString())
     });

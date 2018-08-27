@@ -31,7 +31,6 @@ class InverterList extends Component {
 
   
   onChangeStatus = (e) => {
-    console.log(e);
     const statusValue = e.target.value;
     const { inverterList } = this.props; 
     const { alarmSwitch } = this.state; 
@@ -51,7 +50,7 @@ class InverterList extends Component {
     const { inverterList } = this.props; 
     const { currentStatus } = this.state; 
     const deviceList = inverterList && inverterList.deviceList && inverterList.deviceList.map((e,i)=>({...e,key:i}));
-    console.log(deviceList);
+
     let selectedList = [];
     selectedList = e ? deviceList.filter(e=>e.deviceStatus===currentStatus&&e.alarmNum!==null) : deviceList;
     this.setState({
@@ -138,18 +137,17 @@ class InverterList extends Component {
     const deviceList = inverterList && inverterList.deviceList;
     const initDeviceList = deviceList && deviceList.map((e,i)=>({...e,key:i}));
     
-    console.log(initDeviceList);
+    
     let endDeviceList = tmpDeviceList || initDeviceList;
     let parentDeviceCodes = endDeviceList && endDeviceList.map(e=>e.parentDeviceCode);
-    console.log(parentDeviceCodes);
+    
     let parentDeviceCodeSet = new Set(parentDeviceCodes);
     let tmpParentDeviceCodes = [...parentDeviceCodeSet];
-    console.log(tmpParentDeviceCodes);
+    
     tmpParentDeviceCodes.forEach((value,key)=>{
-      console.log(value+''+ key);
       tmpParentDeviceCodes[key] = deviceList.filter(e=>value===e.parentDeviceCode);
     })
-    console.log(tmpParentDeviceCodes);
+    
     const inverterListNum = deviceList && (deviceList.length || 0);
     const deviceStatus = inverterList && inverterList.deviceStatusSummary;
     const deviceStatusNums=deviceStatus && deviceStatus.map(e=>e.deviceStatusNum);

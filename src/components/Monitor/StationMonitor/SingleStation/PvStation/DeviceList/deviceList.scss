@@ -66,6 +66,7 @@
               height: 10px;
               color: #a42b2c;
             }
+            
           }
         }
         .inverterItemR{
@@ -140,6 +141,9 @@
   }
   
   :global{
+    .ant-spin-dot i {
+      background-color: #199475;
+    }
     .ant-tabs-extra-content {
       line-height: 46px;
     }

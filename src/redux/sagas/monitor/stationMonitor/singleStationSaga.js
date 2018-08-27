@@ -36,7 +36,7 @@ function *getSingleStation(action){
 function *getCapabilityDiagram(action){
   const { payload } = action;
   // const url = '/mock/api/v3/monitor/capabilitydiagram/360/24';
-  const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getCapabilityDiagram + payload.stationCode+ '/' + payload.intervalTime;
+  const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getCapabilityDiagram + payload.stationCode+ '/' + payload.startTime+ '/' + payload.endTime;
   try{
     yield put({type: singleStationAction.SINGLE_STATION_FETCH});
     const response = yield call(axios.get, url);
@@ -56,7 +56,7 @@ function *getCapabilityDiagram(action){
 function *getMonitorPower(action){
   const { payload } = action;
   // const url = '/mock/api/v3/monitor/power/'+ payload.stationCode+ '/' + payload.intervalTime;
-  const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getMonitorPower + payload.stationCode+ '/' + payload.intervalTime;
+  const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getMonitorPower + payload.stationCode+ '/' + payload.startTime+ '/' + payload.endTime+ '/' + payload.intervalTime;
   try{
     yield put({type: singleStationAction.SINGLE_STATION_FETCH});
     const response = yield call(axios.get, url);
@@ -157,7 +157,7 @@ function *getAlarmList(action){
 function *getWorkList(action){
   const { payload } = action;
   // const url = '/mock/api/v3/monitor/worklist/'+ payload.stationCode;
-  const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getWorkList + payload.stationCode;
+  const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getWorkList + payload.stationCode + '/' + payload.startTime + '/' + payload.endTime;
   try{
     yield put({type: singleStationAction.SINGLE_STATION_FETCH});
     const response = yield call(axios.get, url, payload);
@@ -175,8 +175,8 @@ function *getWorkList(action){
 // 获取单电站设备类型流程图(设备示意图)
 function *getDeviceTypeFlow(action){
   const { payload } = action;
-  const url = '/mock/api/v3/station/devicetypeflow/'+ payload.stationCode;
-  // const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getDeviceTypeFlow + payload.stationCode;
+  // const url = '/mock/api/v3/station/devicetypeflow/'+ payload.stationCode;
+  const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getDeviceTypeFlow + payload.stationCode;
   try{
     yield put({type: singleStationAction.SINGLE_STATION_FETCH});
     const response = yield call(axios.get, url, payload);
@@ -194,8 +194,8 @@ function *getDeviceTypeFlow(action){
 // 获取光伏组件列表
 function *getPvmoduleList(action){
   const { payload } = action;
-  const url = '/mock/api/v3/monitor/pvmodule/datalist/'+ payload.stationCode;
-  // const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getPvmoduleList + payload.stationCode;
+  // const url = '/mock/api/v3/monitor/pvmodule/datalist/'+ payload.stationCode;
+  const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getPvmoduleList + payload.stationCode;
   try{
     yield put({type: singleStationAction.SINGLE_STATION_FETCH});
     const response = yield call(axios.get, url, payload);

@@ -34,7 +34,7 @@ const userReducer = (state = initState, action) => {
     case userAction.GET_USER_FETCH_FAIL:
       return state.set('loading', false);
     case userAction.RESET_USER:
-      return state;
+      return initState;
   }
   return state;
 }

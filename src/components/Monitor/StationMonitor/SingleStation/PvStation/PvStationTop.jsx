@@ -4,46 +4,47 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './pvStation.scss';
 import { Icon, Progress, Modal  } from 'antd';
+import { Link } from 'react-router-dom';
 import moment from 'moment';
+import ChangeStation from '../SingleStationCommon/ChangeStation';
 class PvStationTop extends Component {
   static propTypes = {
+    match: PropTypes.object,
     singleStationData: PropTypes.object,
     getSingleStation: PropTypes.func,
     stationList: PropTypes.array,
+    getData: PropTypes.func,
+    stationCode: PropTypes.number,
   }
 
   constructor(props){
     super(props);
     this.state={
-      showAllStation: false,
+      showStationList: false,
     }
   }
-  onToggleStation = (e) => {
-    this.setState({
-      showAllStation: false,
-    })
-    this.props.getSingleStation({stationCode: e});
-    
-  }
+
   showStationList = () => {
     this.setState({
-      showAllStation: true,
+      showStationList: true,
     });
   }
-  handleCancel = () => {
+
+  hideDeviceChange = () => {
     this.setState({
-      showAllStation: false,
+      showStationList: false,
     });
   }
   
   render(){
     const { singleStationData, stationList } = this.props;
-    const { showAllStation } = this.state;
+    const { showStationList } = this.state;
+    const { stationCode } = this.props.match.params;
     const stationPower = singleStationData && singleStationData.stationPower;
     const stationCapacity = singleStationData && singleStationData.stationCapacity;
     const powerPercent = stationPower/stationCapacity*100;
     
-    const provenceCodes = stationList && stationList.map(e=>e.provinceCode);
+    const provenceCodes = stationList && stationList.length>0 ? stationList.map(e=>e.provinceCode) : [];
     const stationListSet = new Set(provenceCodes);
     const tmpProvenceCodes = [...stationListSet];
     tmpProvenceCodes.forEach((value,key)=>{
@@ -52,12 +53,13 @@ class PvStationTop extends Component {
     let stationStatusTime = singleStationData && singleStationData.stationStatus && singleStationData.stationStatus.stationStatusTime
     let localTime = moment.utc(stationStatusTime).toDate();
     stationStatusTime = moment(localTime).format("YYYY/MM/DD hh:mm");
+    const baseLinkPath = `/monitor/singleStation/${stationCode}`;
     return (
       <div className={styles.pvStationTop}>
         <div className={styles.pvStationTitle} >
           <div className={styles.pvStationName} >
-            <Modal
-              visible={showAllStation}
+            {/* <Modal
+              visible={showStationList}
               title={singleStationData && singleStationData.stationName}
               onCancel={this.handleCancel}
               footer={false}
@@ -71,12 +73,15 @@ class PvStationTop extends Component {
               {tmpProvenceCodes && tmpProvenceCodes.map((item,index)=>{
                 return (<div key={index} >
                   <div className={styles.provinceName} >{item[0].provinceName}</div>
-                  {item && item.map(e=>{
-                    return (<div key={e.stationCode} className={(singleStationData && singleStationData.stationName)===e.stationName ? styles.currentStationName : styles.stationName} onClick={()=>this.onToggleStation(e.stationCode)}  >{e.stationName}</div>)
+                  {item && item.map((e,i)=>{
+                    return (<Link to={`/monitor/singleStation/${e.stationCode}`} key={i} className={styles.eachLink} onClick={()=>this.setState({showStationList:false})} >
+                    <div key={e.stationCode} className={(singleStationData && singleStationData.stationName)===e.stationName ? styles.currentStationName : styles.stationName}   >{e.stationName}</div>
+                    </Link>)
                   })}
                 </div>)
               })}
-            </Modal>
+            </Modal> */}
+            {showStationList && <ChangeStation stations={stationList} stationDetail={singleStationData} baseLinkPath={baseLinkPath} hideStationChange={this.hideDeviceChange} />}
             <div onClick={this.showStationList} className={styles.stationToggle}  id="stationToggle" ><Icon type="swap" /><h3>{singleStationData && singleStationData.stationName}</h3></div>
             <span>电站状态：{singleStationData && singleStationData.stationStatus && singleStationData.stationStatus.stationStatusName}</span>
             {singleStationData && singleStationData.stationStatus && singleStationData.stationStatus.stationStatus !== "400" && <span>时间：{stationStatusTime}</span>}
@@ -93,7 +98,7 @@ class PvStationTop extends Component {
           <div><div className={styles.trueTimeValue}>{singleStationData && singleStationData.stationUnitCount || 0}</div><div className={styles.trueTimeUnit}>装机台数 台</div></div>
           <div><div className={styles.trueTimeValue} style={{color: "#e08031"}}>{singleStationData && singleStationData.instantaneous ||0}</div><div className={styles.trueTimeUnit}>瞬时辐照 w/m<sup>2</sup></div></div>
           <div><div className={styles.trueTimeValue} style={{color: "#e08031"}}>{singleStationData && singleStationData.dayResources || 0}</div><div className={styles.trueTimeUnit}>日曝辐值 MJ/m<sup>2</sup></div></div>
-          <div><div className={styles.trueTimeValue}>{singleStationData && parseFloat(singleStationData.dayPower).toFixed(2) || 0}</div><div className={styles.trueTimeUnit}>日发电量 万kWh</div></div>
+          <div><div className={styles.trueTimeValue}>{singleStationData && singleStationData.dayPower && parseFloat(singleStationData.dayPower).toFixed(2) || 0}</div><div className={styles.trueTimeUnit}>日发电量 万kWh</div></div>
           <div><div className={styles.trueTimeValue}>{singleStationData && singleStationData.monthPower || 0}</div><div className={styles.trueTimeUnit}>月发电量 万kWh</div></div>
           <div className={styles.annualEnergyScale} >
             <div className={styles.trueTimeValue}><span>{singleStationData && singleStationData.yearPower || 0}</span><span>{singleStationData && singleStationData.yearPlanPower || 0}</span></div>

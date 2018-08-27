@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import styles from './pvStation.scss';
 import echarts from 'echarts';
 import { Radio } from 'antd';
+import moment from 'moment';
 
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
@@ -68,7 +69,9 @@ class OutputPowerDiagram extends Component {
         {
           type: 'category',
           boundaryGap: false,
-          data: capabilityData.map(e=>e.localTime),
+          data: capabilityData && capabilityData.map(e=>{
+            return moment(moment.utc(e.utc).toDate()).format('MM/DD hh:mm');
+          }),
           axisLine: {
             lineStyle: {
               color: '#dfdfdf',
@@ -116,7 +119,7 @@ class OutputPowerDiagram extends Component {
           name:'功率',
           type:'line',
           smooth:true,
-          data: capabilityData.map(e=>e.stationPower),
+          data: capabilityData && capabilityData.map(e=>e.stationPower),
           yAxisIndex: 0,
           areaStyle: {
             color: '#fff2f2',
@@ -126,7 +129,7 @@ class OutputPowerDiagram extends Component {
           name:'瞬时辐照',
           type:'line',
           smooth:true,
-          data: capabilityData.map(e=>e.instantaneous),
+          data: capabilityData && capabilityData.map(e=>e.instantaneous),
           yAxisIndex: 1,
           itemStyle: {
             color: "#199475",
@@ -282,9 +285,13 @@ class OutputPowerDiagram extends Component {
   }
 
   onChangeTimePower = (e) => {
-    console.log(e);
-    const { stationCode, intervalTime } = this.props.match.params;
-    this.props.getMonitorPower({stationCode,intervalTime: parseInt(e.target.value)});
+    const { stationCode } = this.props.match.params;
+    this.props.getMonitorPower({
+      stationCode,
+      intervalTime: parseInt(e.target.value), 
+      startTime: moment().set({'year': moment().year(), 'month': 0, 'date': 1, }).format('YYYY-MM-DD'), 
+      endTime: moment().format('YYYY-MM-DD'),
+    });
   }
 
   render(){

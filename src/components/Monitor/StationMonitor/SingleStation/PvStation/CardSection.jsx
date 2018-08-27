@@ -97,13 +97,17 @@ class CardSection extends Component {
           </Col>
           <Col  span={6}>
             <div className={styles.weatherList}>
-              <Button type="primary" onClick={this.prev} disabled={disabled1} className={styles.weatherLeft} >
-                <Icon type="left" />
-              </Button>
-              <Button  type="primary" onClick={this.next} disabled={disabled2} className={styles.next} className={styles.weatherRight} >
-                <Icon type="right" />
-              </Button>
               {weatherList && weatherList.length>0 && 
+                <div>
+                  <Button type="primary" onClick={this.prev} disabled={disabled1} className={styles.weatherLeft} >
+                    <Icon type="left" />
+                  </Button>
+                  <Button  type="primary" onClick={this.next} disabled={disabled2} className={styles.next} className={styles.weatherRight} >
+                    <Icon type="right" />
+                  </Button>
+                </div>
+              }
+              {weatherList && weatherList.length>0 ? 
                 weatherList.map((e,i)=>{
                   if(i<2){
                     return (<div style={{display:'inline-block',margin: '0 5px',}} key={e.date} className="weather"  id={Number(i)} >
@@ -121,7 +125,7 @@ class CardSection extends Component {
                       <div className={i===0?styles.lightGreen:''}>{e.day.winddirect}{e.day.windpower}</div>
                     </div>);
                   }
-                })
+                }) : <div className={styles.noweather} >暂无天气数据</div>
               }
             </div>
           </Col>

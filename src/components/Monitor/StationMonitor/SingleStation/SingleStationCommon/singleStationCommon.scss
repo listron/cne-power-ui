@@ -1,0 +1,41 @@
+@import '../../../../../theme/theme.scss';
+
+.stationChange{
+  position: absolute;
+  background-color: #fff;
+  border-right: 1px solid $promptColor;
+  border-bottom: 1px solid $promptColor;
+  z-index: 9999;
+  left: 0px;
+  top: 0px;
+  width: 300px;
+  max-height: calc(100vh - 83px);
+  overflow: auto;
+  .stationTitle{
+    color: $darkColor;
+    font-size: 18px;
+    height: 61px;
+    line-height: 65px;
+    margin-bottom: 0px;
+    .titleIcon{
+      cursor: pointer;
+      margin-left: 32px;
+      margin-right: 12px;
+    }
+  }
+  .stationList{
+    display: flex;
+    flex-wrap: wrap;
+    .eachStation{
+      width: 50%;
+      padding-left: 40px;
+      cursor: pointer;
+      color: $darkColor;
+      height: 28px;
+      line-height: 28px;
+      &:hover{
+        background-color: #eee;
+      }
+    }
+  }
+}
