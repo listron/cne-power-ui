@@ -11,6 +11,7 @@ const { Item } = Menu;
 class TopMenu extends Component {
   static propTypes = {
     setTopMenu: PropTypes.func,
+    topMenu: PropTypes.object,
     location: PropTypes.object,
     history: PropTypes.object,
   }
@@ -22,30 +23,54 @@ class TopMenu extends Component {
   }
 
   componentWillReceiveProps(nextProps){
-    const { location } = nextProps;
+    const { location, topMenu } = nextProps;
     const { pathname } = location;
-    if(this.state.selectedKeys.length === 0) {//点击一级菜单的切换选中在selectTopMenu里做了
+    const { selectedKeys } = this.state;
+    const resetTopMenu = topMenu.path !== '/' && pathname === '/';
+    if(selectedKeys.length === 0) {  // f5刷新
       const pathArray = pathname.split('/').filter(e=>!!e);
       const selectedKeyName = pathArray.length > 0? `/${pathArray[0]}`:'/';
-      this.setState({
-        selectedKeys:[selectedKeyName]
-      });
+      this.setState({ selectedKeys:[selectedKeyName] });
+    }else if(resetTopMenu){ // 404 页面的跳转重置topMenu至首页
+      this.setState({ selectedKeys: ['/'] });
+      this.props.setTopMenu({ topMenu: {
+        name: '首页',
+        path: '/',
+        defaultPath: true,
+      }});
     }
   }
 
   selectTopMenu = ({item,key,selectedKeys}) => {
     const params = menu.find(e=>e.path === key);
-    const defaultPath = {
-      '/': '/',
-      '/operation':'/operation/ticket',
-      '/system':'/system/account/enterprise',
-      '/monitor':'/monitor/station'
+    let defaultPath = '/';
+    if(params.defaultPath){
+      defaultPath = params.path;
+    }else if(params.children && params.children.length > 0){
+      defaultPath = this.findDefaultPath(params.children);
     }
     this.setState({
       selectedKeys
     });
-    this.props.history.push(defaultPath[key]);
+    this.props.history.push(defaultPath);
     this.props.setTopMenu({ topMenu: params });
+  }
+
+  findDefaultPath = (menuArray) => { // 递归查找默认页面。
+    const getDefaultPath = menuArray.find(e=>e.defaultPath);
+    if(getDefaultPath){
+      return getDefaultPath.path;
+    }else{
+      for(let i = 0;i < menuArray.length; i += 1){
+        const subMenuArray = menuArray[i].children;
+        if(subMenuArray && subMenuArray.length > 0){
+          const getSubDefaultPath = this.findDefaultPath(subMenuArray);
+          if(getSubDefaultPath){
+            return getSubDefaultPath;
+          }
+        }
+      }
+    }
   }
 
   render() {
@@ -54,9 +79,10 @@ class TopMenu extends Component {
       <Menu mode="horizontal" theme="dark" onSelect={this.selectTopMenu} selectedKeys={selectedKeys}>
         {menu.map((e,i)=>(
           <Item key={e.path}>
-            {(!e.children || e.children.length === 0) && <Link to={e.path}>{e.name}</Link>}
+            <span>{e.name}</span>
+            {/* {(!e.children || e.children.length === 0) && <Link to={e.path}>{e.name}</Link>} */}
             {/* {(!e.children || e.children.length === 0 || e.clickable) && <Link to={e.path}>{e.name}</Link>} */}
-            {(e.children && e.children.length > 0) && <span>{e.name}</span>}
+            {/* {(e.children && e.children.length > 0) && <span>{e.name}</span>} */}
           </Item>
         ))}
       </Menu>

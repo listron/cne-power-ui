@@ -78,10 +78,10 @@ class RealTimeAlarmTable extends Component {
     });
   }
 
-  onTransferChange(visible, operateId) {
+  onTransferChange(visible, workOrderId, i) {
     if(visible) {
       this.props.getTicketInfo({
-        operateId
+        workOrderId
       });
     } else {
       this.props.changeAlarmStore({
@@ -95,7 +95,7 @@ class RealTimeAlarmTable extends Component {
     });
   }
 
-  onRelieveChange(visible, operateId) {
+  onRelieveChange(visible, operateId, i) {
     if(visible) {
       this.props.getRelieveInfo({
         operateId
@@ -178,7 +178,7 @@ class RealTimeAlarmTable extends Component {
               <Popover content={this.renderTransferPopover(index)}
               trigger="click"
               visible={this.state.showTransferPopover}
-              onVisibleChange={(visible)=>this.onTransferChange(visible, record.operateId, index)}
+              onVisibleChange={(visible)=>this.onTransferChange(visible, record.workOrderId, index)}
               >
                 <i className="iconfont icon-tranlist icon-action"></i>
               </Popover>
