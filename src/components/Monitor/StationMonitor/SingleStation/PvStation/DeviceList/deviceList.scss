@@ -32,34 +32,118 @@
 //逆变器 
 .inverterList{
   
-  .inverterRight{
-    .inverterStatus{
-      
-      
-    }
-  }
   .inverterTab{
-    .inverterTable{
-      
+    .inverterBlockBox{
+      padding: 20px 20px 60px;
+      .parentDeviceName{
+        margin: 20px 0;
+      } 
+      .nodata{
+        text-align: center;
+        margin: 30px auto;
 
+      }
+      .inverterItem{
+        display: inline-block;
+        margin-right: 18px; 
+        margin-bottom: 20px;
+        width: 215px;
+        height: 76px;
+        padding: 5px;
+        box-shadow:0 1px 4px 0 rgba(0,0,0,0.20);
+        border-radius:4px;
+        .inverterItemIcon{
+          display: inline-block;
+          vertical-align: top;
+          margin: 5px;
+          position: relative;
+          :global{
+            .icon-alarm{
+              position: absolute;
+              bottom: 0;
+              right: 0;
+              width: 10px;
+              height: 10px;
+              color: #a42b2c;
+            }
+            
+          }
+        }
+        .inverterItemR{
+          display: inline-block;
+          width: 166px;
+          .inverterItemPower{
+            display: flex;
+            justify-content: space-between;
+            div:first-child{
+              color: $themeColor;
+            }
+          }
+          :global{
+            .ant-progress-success-bg, .ant-progress-bg{
+              background-color: $themeColor;
+            }
+          }
+        }
+      }
+    }
+    
+    .inverterTable{
+      .devicePower{
+        position: relative;
+        .progressPower{
+          position: absolute;
+          left: 0;
+          bottom: -2px;
+        }
+      }
+      .statusColor{
+        background:#199475;
+        border-radius:2px;
+        width:3px;
+        height:16px;
+        margin-right: 5px;
+        display: inline-block;
+        vertical-align: middle;
+      }
+      margin-bottom: 60px;
       :global{
+        .ant-table-placeholder{
+          z-index: 0;
+        }
         .ant-progress-success-bg, .ant-progress-bg{
           background-color: $themeColor;
         }
         a{
           color:#666666;
         }
-        .ant-table-column-sorter-up.on .anticon-caret-up:hover, .ant-table-column-sorter-down.on .anticon-caret-up:hover, .ant-table-column-sorter-up.on .anticon-caret-down:hover, .ant-table-column-sorter-down.on .anticon-caret-down:hover {
-          color: $themeColor;
-        }
         a:hover{
           color: $themeColor;
+        }
+        .ant-progress-line {
+          width: 260px;
+        }
+        .ant-table-column-sorter-up.on .anticon-caret-up, .ant-table-column-sorter-down.on .anticon-caret-up, .ant-table-column-sorter-up.on .anticon-caret-down, .ant-table-column-sorter-down.on .anticon-caret-down {
+          color: $themeColor;
+        }
+        .ant-pagination-item-active {
+          border-color: $themeColor;
+        }
+        .ant-pagination.mini .ant-pagination-options-quick-jumper input {
+          border: 1px solid $themeColor;
+        }
+        .ant-table-pagination.ant-pagination {
+          margin: 16px;
+          float: right;
         }
       }
     }
   }
   
   :global{
+    .ant-spin-dot i {
+      background-color: #199475;
+    }
     .ant-tabs-extra-content {
       line-height: 46px;
     }

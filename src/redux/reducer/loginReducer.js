@@ -42,6 +42,7 @@ const loginReducer = (state = initState, action) => {
     case loginAction.CHECK_CODE_SUCCESS:
       return state.set('isFetching', false)
                   .set('showResetPassword', action.params.showResetPassword !== undefined ? action.params.showResetPassword:0)
+                  .set('registerStep', 2)
                   .set('loginData', Immutable.fromJS(action.data));
     case loginAction.PHONE_CODE_REGISTER_SUCCESS:
       return state.merge(Immutable.fromJS(action.params)).set('isFetching', false);

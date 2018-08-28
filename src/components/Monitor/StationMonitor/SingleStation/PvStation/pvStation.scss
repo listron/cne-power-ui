@@ -13,6 +13,53 @@
       .pvStationName{
         display: flex;
         flex-direction: row;
+        position: relative;
+        .allStationModal{
+          :global{
+            .ant-modal-close{
+              left: 0;
+            }
+            .ant-modal-header{
+              text-indent: 2em;
+            }
+          }
+          .provinceName{
+            color:#999;
+            text-align:left;
+            line-height: 30px;
+            background: #f8f8f8;
+            height: 30px;
+            text-indent: 1em;
+            
+          }
+          .stationName{
+            display: inline-block;
+            width: 120px;
+            height: 56px;
+            line-height: 56px;
+            text-align: left;
+            text-indent: 1em;
+            cursor: pointer;
+          }
+          .currentStationName{
+            display: inline-block;
+            width: 120px;
+            height: 56px;
+            line-height: 56px;
+            text-align: left;
+            text-indent: 1em;
+            cursor: pointer;
+            color: $themeColor;
+          }
+          .stationName:hover,.stationName:focus{
+            color: $themeColor;
+          }
+        }
+        .stationToggle{
+          display: flex;
+          position: relative;
+          cursor: pointer;
+        }
         h3{
           font-size: 18px;
           color: #666;
@@ -28,6 +75,20 @@
             margin: 0 15px 0 20px; 
             display: inline-block;
             line-height: 60px;
+          }
+          .ant-modal{
+            margin: 0;
+            top: 0;
+          }
+          .ant-modal-wrap{
+            position: absolute;
+            overflow: unset;
+            a{
+              color: $themeColor;
+            }
+          }
+          .ant-modal-body{
+            padding: 10px 10px 40px 40px;
           }
         }
       }
@@ -51,6 +112,10 @@
             display: block;
             margin-top: 25px;
             margin-right: 30px;
+            color: $themeColor;
+            cursor: pointer;
+          }
+          .iconfont:hover{
             color: $themeColor;
           }
         }
@@ -88,6 +153,7 @@
         color: $themeColor;
         font-size: 18px;
         text-align: center;
+        margin-top: 20px;
       }
     }
   }
@@ -98,6 +164,7 @@
     padding: 0 20px;
     display: flex;
     flex-direction: row;
+    width: 100%;
     .powerDiagramBox{
       position: relative;
       width: 50%;
@@ -121,7 +188,34 @@
           }
         }
       }
+      :global{
+        .iconfont{
+          position: absolute;
+          top: 20px;
+          right: -5px;
+          cursor: pointer;
+        }
+        .iconfont:hover{
+          color: $themeColor;
+        }
+      }
     }
+    .capabilityDiagramBox{
+      position: relative;
+      width: 50%;
+      :global{
+        .iconfont{
+          position: absolute;
+          top: 20px;
+          right: 10px;
+          cursor: pointer;
+        }
+        .iconfont:hover{
+          color: $themeColor;
+        }
+      }
+      
+    } 
   }
   .cardSection{ 
     text-align: center;
@@ -132,19 +226,33 @@
       height: 140px;
       padding: 20px;
       position: relative;
-      .weatherContent{
-        line-height: 24px;
+      :global{
+        .ant-btn{
+          padding: 0;
+        }
+      }
+      .noweather{
+        text-align: center;
+        height: 100%;
+      }
+      .lightGreen{
+        color: #78da72;
       }
       .weatherLeft{
         position: absolute;
-        left: 40px;
-        top: 60px;
-
+        left: 20px;
+        top: 55px;
+        width: 33px;
+        height: 23px;
+        text-align: center;
       }
       .weatherRight{
         position: absolute;
-        right: 40px;
-        top: 60px;
+        right: 20px;
+        top: 55px;
+        width: 33px;
+        height: 23px;
+        text-align: center;
       }
     }
     .operatorList{
@@ -152,6 +260,15 @@
       border-radius:4px;
       height: 140px;
       padding: 0 20px;
+      .nopeople{
+        div{
+          display: inline-block;
+          margin: 0 50px;
+        }
+        img{
+          display: inline-block;
+        }
+      }
       .cardTitle{
         line-height: 40px;
         text-align: left;
@@ -181,6 +298,11 @@
       border-radius:4px;
       height: 140px;
       padding: 10px;
+      :global{
+        .iconfont:hover{
+          color: $themeColor;
+        }
+      }
       .alarmContent{
         display: flex;
         justify-content: space-around;
@@ -212,6 +334,11 @@
       border: 1px solid #dfdfdf;
       border-radius:4px;
       height: 140px;
+      :global{
+        .iconfont:hover{
+          color: $themeColor;
+        }
+      }
       .workContent{
         display: flex;
         justify-content: space-around;
@@ -237,7 +364,7 @@
       background: #f8f8f8;
       padding: 16px 25px 0;
       .deviceTypeItem{
-        width: 100px;
+        width: 110px;
         height: 90px;
         padding: 10px 10px 0;
         border: 0;
@@ -268,6 +395,10 @@
         }
         .iconfont{
           font-size: 27px;
+          cursor: pointer;
+        }
+        .iconfont:hover{
+          color: $themeColor;
         }
       }
       
@@ -281,6 +412,9 @@
         :global{
           .icon-weather{
             display: block;
+          }
+          .icon-weather:hover{
+            color: #fff;
           }
           .icon-weather:before {
             content: "\e68e";

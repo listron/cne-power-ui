@@ -18,14 +18,17 @@ class Map extends Component {
     }
   }
   componentDidMount() {
-    const { testId } = this.props
+    const { testId, stationDataList } = this.props;
     const testChart = echarts.init(document.getElementById(testId));
-    this.setMapChart(testChart);
+    this.setMapChart(testChart, stationDataList);
   }
-  setMapChart = (testChart) => {
-
-    const { stationDataList } = this.props;
-
+  componentWillReceiveProps(nextProps){
+    const { testId, stationDataList } = nextProps;
+    // console.log('will receive prosp')
+    const testChart = echarts.init(document.getElementById(testId));
+    this.setMapChart(testChart, stationDataList);
+  }
+  setMapChart = (testChart, stationDataList) => {
     const option = {
       bmap: {
         center: [116.46, 39.92],//中心点
@@ -200,7 +203,7 @@ class Map extends Component {
     testChart.setOption(option)
     testChart.on('click', (params) => {
       // alert('我要跳转')
-      console.log(params, '电站的参数');
+      // console.log(params, '电站的参数');
 
     })
   }
@@ -212,7 +215,7 @@ class Map extends Component {
 
     return (
       <div>
-        <div id={testId} style={{ width: "1210px", height: "620px" }} ></div>
+        <div id={testId} style={{ width: "100%", height: "620px" }} ></div>
       </div>
     )
   }

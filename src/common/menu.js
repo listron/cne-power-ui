@@ -9,13 +9,14 @@ import { isUrl } from '../utils';
   3. children: 该菜单下子菜单数组
   4. clickable: 该菜单点击效果==>后期考虑配置，clickable为true时不管是几级菜单均可跳转路径展示。
   5. iconStyle: 菜单附加的icon图标
-  6. defaultPath: 每个一级菜单下，必须有且仅有一个true，代表该一级目录下默认展示的页面。--todo
+  6. defaultPath: 每个一级菜单下，必须有且仅有一个true，代表该一级目录(模块)下默认立刻展示的页面
 */
 
 const menuData = [
   {
     name: '首页',
     path: '/',
+    defaultPath: true,
   },{
     name: '实时监控',
     path: 'monitor',
@@ -24,6 +25,7 @@ const menuData = [
         name: '电站监控',
         iconStyle: 'home',
         path: 'station',
+        defaultPath: true,
       },{
         name: '告警',
         iconStyle: 'exclamation-circle',
@@ -49,7 +51,8 @@ const menuData = [
       {
         name: '工单',
         iconStyle: 'calendar',
-        path: 'ticket'
+        path: 'ticket',
+        defaultPath: true,
       },{
         name: '缺陷管理',
         iconStyle: 'paper-clip',
@@ -82,6 +85,7 @@ const menuData = [
             name: '企业',
             iconStyle: 'home',
             path: 'enterprise',
+            defaultPath: true,
           },{
             name: '部门',
             iconStyle: 'usergroup-add',

@@ -102,7 +102,6 @@ class SideMenu extends Component {
           </div>
           <Menu 
             mode="inline" 
-            theme="dark" 
             inlineCollapsed={collapsed} 
             className={styles.menuList} 
             selectedKeys={selectedKeys} 

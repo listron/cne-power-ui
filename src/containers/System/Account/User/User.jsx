@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import TransitionContainer from '../../../../components/Common/TransitionContainer';
 import UserSide from '../../../../components/System/Account/User/UserSide/UserSide';
 import UserMain from '../../../../components/System/Account/User/UserList/UserMain';
+import { getCookie } from '../../../../utils';
 class User extends Component {
   static propTypes = {
     showPage: PropTypes.string,
@@ -31,6 +32,7 @@ class User extends Component {
     roleAllList: PropTypes.object,
     specialRoleList: PropTypes.object,
     order: PropTypes.string,
+    resetUserState: PropTypes.func,
   };
   constructor(props) {
     super(props);
@@ -39,6 +41,7 @@ class User extends Component {
     }
   }
   componentDidMount() {
+    console.log('componentDidMount')
     const params = {
       enterpriseId: this.props.enterpriseId,
       roleId: this.props.roleId,
@@ -56,6 +59,7 @@ class User extends Component {
   }
 
   componentWillUnmount() {
+    console.log('componentWillUnmount')
     this.props.resetUserState();
   }
 
@@ -82,7 +86,12 @@ class User extends Component {
         enterpriseId: this.props.enterpriseId,
         userStatus: Number(status),
         pageNum: 1,
-        pageSize: this.props.pageSize
+        pageSize: this.props.pageSize,
+        username: this.props.username,
+        phoneNum: this.props.phoneNum,
+        stationName: this.props.stationName,
+        roleId: this.props.roleId,
+        sort: this.props.sort,
       };
       this.props.getUserList(params);
     }
@@ -132,7 +141,7 @@ const mapStateToProps = state => {
   let userProps = {}; 
   [...state.system.user].forEach(e=>userProps[e[0]]=e[1]);
   userProps['roleData'] = state.system.role.get('roleData');
-  userProps['enterpriseId'] = state.login.get('enterpriseId');
+  userProps['enterpriseId'] = getCookie('enterpriseId');
   return userProps;
 }
 

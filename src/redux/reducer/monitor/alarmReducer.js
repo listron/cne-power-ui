@@ -3,8 +3,6 @@ import { alarmAction } from '../../../constants/actionTypes/monitor/alarmAction'
 
 var initState = Immutable.fromJS({
   loading: false,
-  lastFetchTime: '',
-
   //筛选条件
   warningLevel: [],//告警级别
   stationType: '2',//电站类型
@@ -19,8 +17,6 @@ var initState = Immutable.fromJS({
   alarmNum: {},
   realtimeAlarm: [],  // 实时告警
   historyAlarm: [],  // 历史告警
-  alarmStatistic: [],//多电站
-  singleAlarmStatistic: [],//单电站
   lastUpdateTime: '',
   ticketInfo: {},
   relieveInfo: {}

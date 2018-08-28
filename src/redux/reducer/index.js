@@ -5,8 +5,9 @@ import operation from './operation/operationReducer';
 import system from './system/systemReducer';
 import login from './loginReducer';
 import monitor from './monitor/monitorReduce'
+import alarmReducer from './monitor/alarmReducer'
 
-const appReducer = (() => combineReducers({common, operation, login, system ,monitor}))();
+const appReducer = (() => combineReducers({common, operation, login, system ,monitor, alarmReducer}))();
 
 // ========================= 单独一个文件的写法 =============================
 /* import {
