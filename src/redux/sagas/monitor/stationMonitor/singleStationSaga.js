@@ -218,7 +218,6 @@ function *getInverterList(action){
   try{
     yield put({type: singleStationAction.SINGLE_STATION_FETCH});
     const response = yield call(axios.get, url, payload);
-    console.log(response)
     if(response.data.code === '10000'){
       yield put({
         type: singleStationAction.GET_SINGLE_STATION_SUCCESS,

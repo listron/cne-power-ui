@@ -25,8 +25,8 @@ class PvmoduleList extends Component {
     return (
       <div className={styles.pvmodule}>
         <div className={styles.pvmoduleList} >
-          {tmpPvmoduleList && tmpPvmoduleList.map(item=>{
-            return (<div key={item.deviceCode} className={styles.pvmoduleItem} key={item.deviceCode} >
+          {tmpPvmoduleList && tmpPvmoduleList.map((item,index)=>{
+            return (<div key={index} className={styles.pvmoduleItem} >
               <div><i className="iconfont icon-nb" ></i>{item.deviceCode}</div>
               {item.electricityList && tmpNBList.map((e,i)=>{
                 let num;
@@ -41,11 +41,11 @@ class PvmoduleList extends Component {
                     breakValue: obj.pointStatus === 300,
                     noValue: obj.pointStatus === 900,
                     commonStyle: true,
-                  })} >{num}</span>)
+                  })} key={i} >{num}</span>)
                 }else{
                   return (<span className={classnames({
                     commonStyle: true,
-                  })} >{num}</span>)
+                  })}  key={i} >{num}</span>)
                 }
                 // return (<span className={classnames({
                 //   normalValue: e.pointStatus === 100,

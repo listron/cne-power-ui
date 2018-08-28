@@ -179,8 +179,8 @@ class InverterList extends Component {
             {(tmpParentDeviceCodes&&tmpParentDeviceCodes.length>0) ? tmpParentDeviceCodes.map((e,index)=>{
               return (<div key={index}>
                 <div className={styles.parentDeviceName} >{e && e[0].parentDeviceName}</div>
-                {e && e.map(item=>{
-                  return (<div key={item.deviceCode} className={item.deviceStatus === 900 ? styles.cutOverItem : styles.inverterItem} >
+                {e && e.map((item,i)=>{
+                  return (<div key={i} className={item.deviceStatus === 900 ? styles.cutOverItem : styles.inverterItem} >
                     <div className={styles.inverterItemIcon} >
                       <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${item.deviceCode}`}  >
                         <i className="iconfont icon-nb" ></i>

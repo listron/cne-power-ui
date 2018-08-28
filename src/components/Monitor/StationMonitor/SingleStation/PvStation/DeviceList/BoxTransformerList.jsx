@@ -164,8 +164,8 @@ class BoxTransformerList extends Component {
             {(tmpParentDeviceCodes&&tmpParentDeviceCodes.length>0) ? tmpParentDeviceCodes.map((e,index)=>{
               return (<div key={index}>
                 <div className={styles.parentDeviceName} >{e[0].parentDeviceName}</div>
-                {e && e.map(item=>{
-                  return (<div key={item.deviceCode} className={item.deviceStatus === 900 ? styles.cutOverItem : styles.inverterItem}>
+                {e && e.map((item,i)=>{
+                  return (<div key={i} className={item.deviceStatus === 900 ? styles.cutOverItem : styles.inverterItem}>
                     <div className={styles.inverterItemIcon} ><i className="iconfont icon-xb" ></i>{item.alarmNum && <i className="iconfont icon-alarm" ></i>}</div>
                     <div className={styles.inverterItemR} >
                       <div>{item.deviceName}</div>
