@@ -102,7 +102,8 @@ function *getSingleStationAlarmStatistic(action) {  // 请求单电站告警统�
       yield put({
         type: alarmAction.GET_ALARM_STATISTIC_FETCH_SUCCESS,
         payload: {
-          singleAlarmStatistic: response.data.data,
+          singleAlarmStatistic: response.data.data.alarmChart,
+          singleAlarmSummary: response.data.data.alarmSummary,
         },
       });     
     }  

@@ -16,6 +16,7 @@ var initState = Immutable.fromJS({
 
   alarmStatistic: [],//多电站
   singleAlarmStatistic: [],//单电站
+  singleAlarmSummary: {},//单电站告警汇总
 });
 
 const alarmStatisticReducer = (state = initState, action) => {
