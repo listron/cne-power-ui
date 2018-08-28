@@ -80,15 +80,12 @@ function *getStationsAlarmStatistic(action) {  // 请求多电站告警统计
     const response = yield call(axios.post,url,payload);
     if(response.data.code === '10000') {
       yield put({
-        type: alarmAction.GET_ALARM_FETCH_SUCCESS,
+        type: alarmAction.GET_ALARM_STATISTIC_FETCH_SUCCESS,
         payload: {
           alarmStatistic: response.data.data,
-          stationCodeStatistic: payload.stationCode,
-          stationCode: payload.stationCode,
-          startTimeStatistic: payload.startTime,
-          endTimeStatistic: payload.endTime,
-        },
-      });     
+          ...payload
+        }   
+      });
     }  
   }catch(e){
     console.log(e);
@@ -103,9 +100,10 @@ function *getSingleStationAlarmStatistic(action) {  // 请求单电站告警统�
     const response = yield call(axios.post,url,payload);
     if(response.data.code === '10000') {
       yield put({
-        type: alarmAction.GET_ALARM_FETCH_SUCCESS,
+        type: alarmAction.GET_ALARM_STATISTIC_FETCH_SUCCESS,
         payload: {
-          singleAlarmStatistic: response.data.data,
+          singleAlarmStatistic: response.data.data.alarmChart,
+          singleAlarmSummary: response.data.data.alarmSummary,
         },
       });     
     }  

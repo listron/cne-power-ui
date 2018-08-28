@@ -7,7 +7,7 @@ const ButtonGroup = Button.Group;
 class StationSelectModal extends Component {
   static propTypes = {
     stations: PropTypes.object,
-    onCancel: PropTypes.func,
+    onClose: PropTypes.func,
     onChangeStation: PropTypes.func
   }
 
@@ -32,6 +32,17 @@ class StationSelectModal extends Component {
     });
   }
 
+  onOk = () => {
+    this.props.onChangeStation(this.state.stationCode);
+    this.props.onClose();
+  }
+
+  onCancel = () => {
+    this.setState({
+      onCancel: ''
+    });
+  }
+
   renderProvinceStation(stations) {
     const provinceStation = stations.groupBy(item=>item.get('provinceCode')).toList();
     return provinceStation.map((province, index) => {
@@ -49,7 +60,6 @@ class StationSelectModal extends Component {
           })}
         </div>
       );
-
     });
   }
 
@@ -84,7 +94,7 @@ class StationSelectModal extends Component {
         okText="确认"
         cancelText="重置"
         onOk={this.onOk}
-        onCancel={this.props.onCancel}
+        onCancel={this.onCancel}
       >
         {this.renderStation()}
       </Modal>

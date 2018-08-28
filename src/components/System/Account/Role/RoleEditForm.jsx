@@ -1,8 +1,3 @@
-
-
-
-
-
 import React, { Component } from 'react';
 import { Button, Input, Form } from 'antd';
 import PropTypes from 'prop-types';
@@ -127,7 +122,7 @@ class RoleEditForm extends Component {
         </FormItem>
         <div className={styles.buttonGroup}>
           <Button className={styles.save} onClick={this.onSaveRole} loading={!continueAdd&&isFetching}>保存</Button>
-          <Button onClick={this.onSaveRoleAndAdd} loading={continueAdd&&isFetching}>保存并继续添加</Button>
+          {isCreate&&<Button onClick={this.onSaveRoleAndAdd} loading={continueAdd&&isFetching}>保存并继续添加</Button>}
         </div>
         <div style={{marginLeft:410}} className={styles.instructionText}>选择“保存”按钮后将跳转到对应的列表页；选择“保存并继续添加”按钮将会停留在添加页面</div>
       </Form>

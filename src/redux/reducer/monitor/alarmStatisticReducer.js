@@ -16,21 +16,20 @@ var initState = Immutable.fromJS({
 
   alarmStatistic: [],//多电站
   singleAlarmStatistic: [],//单电站
+  singleAlarmSummary: {},//单电站告警汇总
 });
 
-const alarmReducer = (state = initState, action) => {
+const alarmStatisticReducer = (state = initState, action) => {
   switch (action.type) {
-    case alarmAction.ALARM_FETCH:
+    case alarmAction.ALARM_STATISTIC_FETCH:
       return state.set('loading',true);
-    case alarmAction.GET_ALARM_FETCH_SUCCESS :
+    case alarmAction.GET_ALARM_STATISTIC_FETCH_SUCCESS :
       return state.merge(Immutable.fromJS(action.payload)).set('loading',false);
-    case alarmAction.CHANGE_ALARM_STORE_SAGA:
-      return state.merge(Immutable.fromJS(action.payload));
-    case alarmAction.RESET_ALARM:
+    case alarmAction.RESET_ALARM_STATISTIC:
       return initState;
   }
   return state;
 }
 
 
-export default alarmReducer;
+export default alarmStatisticReducer;
