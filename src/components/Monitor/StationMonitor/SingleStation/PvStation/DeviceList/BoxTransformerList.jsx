@@ -10,7 +10,7 @@ const TabPane = Tabs.TabPane;
 class BoxTransformerList extends Component {
   static propTypes = {
     boxTransformerList: PropTypes.object,
-    // getInverterList: PropTypes.func,
+    match: PropTypes.object,
     loading: PropTypes.bool,
   }
 
@@ -94,7 +94,7 @@ class BoxTransformerList extends Component {
         dataIndex: 'devicePower',
         key: 'devicePower',
         render: (text,record) => (<div className={styles.devicePower} >
-          <div>{text}</div>
+          <div>{parseFloat(text).toFixed(2)}</div>
           <Progress className={styles.progressPower} percent={text/record.deviceCapacity*100} showInfo={false} strokeWidth={4}  />
         </div>),
         sorter: (a, b) => a.devicePower - b.devicePower,
@@ -102,7 +102,7 @@ class BoxTransformerList extends Component {
         title: '装机容量(kW)',
         dataIndex: 'deviceCapacity',
         key: 'deviceCapacity',
-        render: (text,record) => (<span>{text}</span>),
+        render: (text,record) => (<span>{parseFloat(text).toFixed(2)}</span>),
         sorter: (a, b) => a.deviceCapacity - b.deviceCapacity,
       }, {
         title: '告警(个)',
@@ -165,7 +165,7 @@ class BoxTransformerList extends Component {
               return (<div key={index}>
                 <div className={styles.parentDeviceName} >{e[0].parentDeviceName}</div>
                 {e && e.map(item=>{
-                  return (<div key={item.deviceCode} className={styles.inverterItem}>
+                  return (<div key={item.deviceCode} className={item.deviceStatus === 900 ? styles.cutOverItem : styles.inverterItem}>
                     <div className={styles.inverterItemIcon} ><i className="iconfont icon-xb" ></i>{item.alarmNum && <i className="iconfont icon-alarm" ></i>}</div>
                     <div className={styles.inverterItemR} >
                       <div>{item.deviceName}</div>
