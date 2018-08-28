@@ -17,7 +17,6 @@ class PvStation extends Component {
   static propTypes = {
     deviceTypeFlow: PropTypes.array,
     changeSingleStationStore: PropTypes.func,
-    deviceTypeCode: PropTypes.string,
   }
 
   constructor(props){
@@ -26,19 +25,20 @@ class PvStation extends Component {
     }
   }
   onSelectedDeviceType = (e) => {
-    console.log(e);
-    const deviceTypeCode = e.target.value;
+    const deviceTypeCode = parseInt(e.target.value);
+    console.log(deviceTypeCode)
     this.props.changeSingleStationStore({deviceTypeCode});
   }
   getDeviceTypeIcon = (e) => {
     switch(e){
-      case '10000':
+      case 509:
         return 'iconfont icon-pvs';
-      case '10001':
+      case 206:
+      case 201:
         return 'iconfont icon-nb';
-      case '10002':
+      case 202:
         return 'iconfont icon-hl';
-      case '10003':
+      case 304:
         return 'iconfont icon-xb';
       case '10004':
         return 'iconfont icon-elecnetting';
@@ -49,6 +49,7 @@ class PvStation extends Component {
   
   render(){
     const { deviceTypeFlow } = this.props;
+    console.log(deviceTypeFlow && deviceTypeFlow.length > 0 && deviceTypeFlow[0].deviceTypeName)
     return (
       <div className={styles.pvStation}>
         <PvStationTop {...this.props} />
@@ -62,22 +63,23 @@ class PvStation extends Component {
             </TabPane>
             <TabPane tab="示意图" key="2">
               <div className={styles.deviceTypeFlow}>
-                <RadioGroup defaultValue={deviceTypeFlow.length > 0 && deviceTypeFlow[0].deviceTypeName}  onChange={this.onSelectedDeviceType} >
+                {deviceTypeFlow && <RadioGroup defaultValue={deviceTypeFlow.length > 0 && deviceTypeFlow[0].deviceTypeCode}  onChange={this.onSelectedDeviceType} >
                   {deviceTypeFlow && 
                     deviceTypeFlow.map(e=>{
-                      return (<RadioButton value={e.deviceTypeCode} className={styles.deviceTypeItem} key={e.deviceTypeName}>
+                      console.log(e.deviceTypeCode)
+                      return (<RadioButton value={e.deviceTypeCode} className={styles.deviceTypeItem} key={e.deviceTypeCode}>
                         <div className={styles.deviceTypeIcon} ><i className={this.getDeviceTypeIcon(e.deviceTypeCode)} ></i></div><div>{e.deviceTypeName}</div>
                         </RadioButton>)
                     })
                   }
-                </RadioGroup>
+                </RadioGroup>}
                 <div className={styles.weatherStation}>
                   <i  className="iconfont icon-weather" ></i>
                   <div>气象站</div>
                 </div>
               </div>
               <div className={styles.deviceList} >
-                <DeviceList {...this.props} />
+                <DeviceList {...this.props}  />
               </div>
             </TabPane>
           </Tabs>

@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import styles from './pvStation.scss';
 import echarts from 'echarts';
 import { Radio } from 'antd';
+import moment from 'moment';
 
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
@@ -68,7 +69,9 @@ class OutputPowerDiagram extends Component {
         {
           type: 'category',
           boundaryGap: false,
-          data: capabilityData.map(e=>e.localTime),
+          data: capabilityData && capabilityData.map(e=>{
+            return moment(moment.utc(e.utc).toDate()).format('MM/DD hh:mm');
+          }),
           axisLine: {
             lineStyle: {
               color: '#dfdfdf',
@@ -116,7 +119,7 @@ class OutputPowerDiagram extends Component {
           name:'功率',
           type:'line',
           smooth:true,
-          data: capabilityData.map(e=>e.stationPower),
+          data: capabilityData && capabilityData.map(e=>e.stationPower),
           yAxisIndex: 0,
           areaStyle: {
             color: '#fff2f2',
@@ -126,7 +129,7 @@ class OutputPowerDiagram extends Component {
           name:'瞬时辐照',
           type:'line',
           smooth:true,
-          data: capabilityData.map(e=>e.instantaneous),
+          data: capabilityData && capabilityData.map(e=>e.instantaneous),
           yAxisIndex: 1,
           itemStyle: {
             color: "#199475",
@@ -187,7 +190,7 @@ class OutputPowerDiagram extends Component {
         {
           type: 'category',
           boundaryGap: false,
-          data: powerData.map(e=>e.time),
+          data: powerData && powerData.map(e=>e.time),
           axisLine: {
             lineStyle: {
               color: '#dfdfdf',
@@ -239,7 +242,7 @@ class OutputPowerDiagram extends Component {
         {
           name:'实际发电量',
           type:'bar',
-          data: powerData.map(e=>e.actualPower),
+          data: powerData && powerData.map(e=>e.actualPower),
           label: {
             show: true,
             rotate: 90,
@@ -255,7 +258,7 @@ class OutputPowerDiagram extends Component {
         {
           name:'理论发电量',
           type:'bar',
-          data: powerData.map(e=>e.theoryPower),
+          data: powerData && powerData.map(e=>e.theoryPower),
           label: {
             show: true,
             rotate: 90,
@@ -270,7 +273,7 @@ class OutputPowerDiagram extends Component {
         {
           name:'瞬时辐照',
           type:'line',
-          data: powerData.map(e=>e.instantaneous),
+          data: powerData && powerData.map(e=>e.instantaneous),
           yAxisIndex: 1,
           lineStyle: {
             type: 'solid',
@@ -282,16 +285,23 @@ class OutputPowerDiagram extends Component {
   }
 
   onChangeTimePower = (e) => {
-    console.log(e);
-    const { stationCode, intervalTime } = this.props.match.params;
-    this.props.getMonitorPower({stationCode,intervalTime: parseInt(e.target.value)});
+    const { stationCode } = this.props.match.params;
+    this.props.getMonitorPower({
+      stationCode,
+      intervalTime: parseInt(e.target.value), 
+      startTime: moment().set({'year': moment().year(), 'month': 0, 'date': 1, }).format('YYYY-MM-DD'), 
+      endTime: moment().format('YYYY-MM-DD'),
+    });
   }
 
   render(){
     
     return (
       <div className={styles.outputPowerDiagram}>
-        <div id="capabilityDiagram" style={{ width: "50%", height: "100%",borderRight:"2px solid #dfdfdf",color: '#999', paddingTop: "20px" }}></div>
+        <div className={styles.capabilityDiagramBox} >
+          <div id="capabilityDiagram" style={{ width: "100%", height: "100%",borderRight:"2px solid #dfdfdf",color: '#999', paddingTop: "20px" }}><i className="iconfont icon-more"></i></div>
+          <i className="iconfont icon-more"></i>
+        </div>
         <div className={styles.powerDiagramBox} >
           <div id="powerDiagram" style={{ width: "100%", height: "100%",color: '#999', paddingTop: "20px" }}></div>
           <div className={styles.powerRadio}>
@@ -301,6 +311,7 @@ class OutputPowerDiagram extends Component {
               <RadioButton value="2">年</RadioButton>
             </RadioGroup>
           </div>
+          <i className="iconfont icon-more"></i>
         </div>
         
       </div>

@@ -12,7 +12,7 @@ import BoxTransformerList from './BoxTransformerList';
 
 class DeviceList extends Component {
   static propTypes = {
-    deviceTypeCode: PropTypes.string,
+    deviceTypeCode: PropTypes.number,
   }
 
   constructor(props){
@@ -23,10 +23,10 @@ class DeviceList extends Component {
     const { deviceTypeCode } = this.props;
     return (
       <div>
-        {deviceTypeCode==='10000' && <PvmoduleList {...this.props} />}
-        {deviceTypeCode==='10001' && <InverterList {...this.props} />}
-        {deviceTypeCode==='10002' && <ConfluenceBoxList {...this.props} />}
-        {deviceTypeCode==='10003' && <BoxTransformerList {...this.props} />}
+        {deviceTypeCode===509 && <PvmoduleList {...this.props} />}
+        {deviceTypeCode===206 && <InverterList {...this.props} />}
+        {deviceTypeCode===202 && <ConfluenceBoxList {...this.props} />}
+        {deviceTypeCode===304 && <BoxTransformerList {...this.props} />}
       </div>
     )
   }
