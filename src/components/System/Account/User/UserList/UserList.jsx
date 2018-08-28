@@ -21,7 +21,7 @@ class UserList extends Component {
     changeUserStore: PropTypes.func,
     onChangeSort: PropTypes.func,//排序
     userStatus: PropTypes.number,
-    sort: PropTypes.string, 
+    order: PropTypes.string, 
     ascend: PropTypes.bool,
     pageSize: PropTypes.number,
     changeUserStatus: PropTypes.func,
@@ -42,6 +42,7 @@ class UserList extends Component {
       showExamineTip: false,
       deleteWarningTip: '确认要移除么？',
       examineWarningTip: '是否通过审核？',
+      currentPage: 1,
     }
   }
 
@@ -58,10 +59,11 @@ class UserList extends Component {
   }
 
   onPaginationChange = ({currentPage,pageSize}) => {//分页器
+    console.log(currentPage,pageSize)
     this.props.getUserList({
       enterpriseId: this.props.enterpriseId,
       userStatus: this.props.userStatus,
-      sort: this.props.sort, 
+      order: this.props.order, 
       ascend: this.props.ascend, 
       pageNum: currentPage,
       pageSize,

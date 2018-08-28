@@ -55,7 +55,7 @@ class PvStationTop extends Component {
     stationStatusTime = moment(localTime).format("YYYY/MM/DD hh:mm");
     
     const tmpStationCode = parseInt(stationCode);
-    const baseLinkPath = `/monitor/singleStation/${tmpStationCode}`;
+    const baseLinkPath = `/monitor/singleStation/`;
     return (
       <div className={styles.pvStationTop}>
         <div className={styles.pvStationTitle} >
