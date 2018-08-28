@@ -153,15 +153,13 @@ class Map extends Component {
           enterable: true,
           //position:['50%','50%'],
           formatter: (params) => {
-             console.log(params.data);
+             //console.log(params.data);
             return `<div class='stationCard' style='height:70px;overflow:hidden'>
             <div class='stationCardTitle' style='display:flex;flex-direction: row;justify-content: space-between;'>
             <span>${params.data.name}</span>
-           
-
-            <span style='color:red' onClick={
-             console.log(${params.data.alarmNum},'报警数')}>${params.data.alarmNum > 0 ? '⚠' : ''}${params.data.alarmNum > 0 ? params.data.alarmNum : ''}</span>    
-         
+            <a target='_blank' href='#/monitor/singleStation/${params.data.stationCode}'>
+            <span style='color:red' onClick={console.log(${params.data.alarmNum},'报警数')}>${params.data.alarmNum > 0 ? '⚠' : ''}${params.data.alarmNum > 0 ? params.data.alarmNum : ''}</span>    
+            </a>
             </div>           
             <div class='stationCardProgress' style='background:#dfdfdf;height:1px;
             width:100%;' ></div>

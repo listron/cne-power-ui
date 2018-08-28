@@ -14,6 +14,7 @@ class AlarmStatisticByType extends React.Component {
   componentDidMount() {
     const { graphId } = this.props;
     const { alarmStatistic } = this.props;
+    console.log(alarmStatistic);
     const stationNameData = alarmStatistic.map((item, index) => {
       return item.stationName
     }) || 0
@@ -60,9 +61,9 @@ class AlarmStatisticByType extends React.Component {
     });
     const handleAvgTime = alarmStatistic.map((item, index) => {
       return item.handleAvgTime
-    });
+    })||'--';
 
-    console.log(oneWarningNum);
+    //console.log(oneWarningNum);
     this.setMapChart(windAlarmChart, stationNameData, oneWarningNum, twoWarningNum, threeWarningNum, fourWarningNum, handleAvgTime);
   }
   setMapChart = (windAlarmChart, stationNameData, oneWarningNum, twoWarningNum, threeWarningNum, fourWarningNum, handleAvgTime) => {
@@ -76,16 +77,16 @@ class AlarmStatisticByType extends React.Component {
         axisPointer: {            // 坐标轴指示器，坐标轴触发有效
           type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
         },
-        formatter: (params,handleAvgTime) => {
-            // console.log(params,handleAvgTime);
-             return `<div>
-             <div> ${params[0].name}</div> 
-             <div> ${params[0].marker}${params[0].seriesName}${params[0].value}</div>
-             <div> ${params[1].marker}${params[1].seriesName}${params[1].value}</div>             
-             <div> ${params[2].marker}${params[2].seriesName}${params[2].value}</div>
-             <div> ${params[3].marker}${params[3].seriesName}${params[3].value}</div>                
-           </div>`
-           },
+        // formatter: (params,handleAvgTime) => {
+        //     // console.log(params,handleAvgTime);
+        //      return `<div>
+        //      <div> ${params[0].name}</div> 
+        //      <div> ${params[0].marker}${params[0].seriesName}${params[0].value}</div>
+        //      <div> ${params[1].marker}${params[1].seriesName}${params[1].value}</div>             
+        //      <div> ${params[2].marker}${params[2].seriesName}${params[2].value}</div>
+        //      <div> ${params[3].marker}${params[3].seriesName}${params[3].value}</div>                
+        //    </div>`
+        //    },
         backgroundColor: '#fff',
         textStyle: {
           color: '#999',
@@ -119,7 +120,7 @@ class AlarmStatisticByType extends React.Component {
           type: 'value',
           name: '告警个数(个)',
           min: 0,
-          max: 800,
+          max: 1500,
           position: 'left',
           axisLine: {
             lineStyle: {
@@ -144,7 +145,7 @@ class AlarmStatisticByType extends React.Component {
           label: {
             normal: {
               show: true,
-              //position: 'insideRight'
+              position: 'insideRight'
             }
           },
           lineStyle: {
@@ -214,6 +215,19 @@ class AlarmStatisticByType extends React.Component {
           data: fourWarningNum
           //data: [6, 5, 10, 24, 11, 7, 9]
         },
+        {
+          name: '总计',
+          type: 'bar',
+          stack: '总量',
+          label: {
+            normal: {
+              show: true,
+              position: 'insideRight'
+            }
+          },
+          yAxisIndex: 1,
+          data:oneWarningNum+ twoWarningNum+threeWarningNum+fourWarningNum
+        }
 
       ]
     };

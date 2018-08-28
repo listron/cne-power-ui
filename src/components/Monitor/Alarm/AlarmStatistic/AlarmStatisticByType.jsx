@@ -67,10 +67,16 @@ class AlarmStatisticByType extends Component {
   }
   //筛选时间，出现日期框
   handleDayMenuClick = (e) => {
+  //   const{startTime, endTime}=this.props;
+  //   if(e.key === '今天'){
+  //     this.props.startTime=moment(0,'HH').utc().format();
+  //     this.props.endTime=moment().utc().format();
+  //  console.log(startTime,endTime);
+  //   }
     //message.info('Click on menu item.');
     console.log('click', e);
     e.key === '其他时间段' ? this.onFilterShowChange('timeSelect') : '啥都不干';
-    console.log(this.state.startTime, this.state.endTime);
+    //console.log(this.props.startTime, this.props.endTime);
     this.props.onChangeFilter({
       // startTime,
       // endTime

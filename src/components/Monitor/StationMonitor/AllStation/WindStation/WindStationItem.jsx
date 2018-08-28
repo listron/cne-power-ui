@@ -24,8 +24,9 @@ class WindStationItem extends React.Component {
               // item.stationStatus.stationStatus==='900'
 
               return (
-                <Link to={`monitor/singleStation/${item.stationCode}`} target="_blank" key={item.stationCode}>
+               
                   <div className={item.stationStatus.stationStatus === '900' ? styles.stationTest : styles.stationCard} key={index}>
+                   <Link to={`monitor/singleStation/${item.stationCode}`} target="_blank" key={item.stationCode}>
                     <div className={styles.stationCardTitle}>
                       <div className={styles.stationName}>{item.stationName}</div>
                       {item.stationStatus.stationStatus === '500' ? <i className="iconfont icon-outage"></i> : ''}
@@ -40,12 +41,14 @@ class WindStationItem extends React.Component {
                     <div className={styles.stationCardWindSpeed}>{item.instantaneous}m/s</div>
                     <div className={styles.stationCardEquipmentNum}>
                       <div>{item.stationCapacity}台</div>
+                      <div className={styles.stationWarning}>⚠{2}</div>
                       {item.alarmNum > 0 ? <div className={styles.stationWarning}>
                         <i className="iconfont icon-alarm1"></i>{item.alarmNum}</div> : ''}
                       {/*  <div className={styles.stationWarning}>⚠{item.alarmNum}</div> */}
                     </div>
+                    </Link>
                   </div>
-                </Link>
+                
 
 
               )
