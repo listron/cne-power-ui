@@ -43,6 +43,7 @@ function *getLogin(action){
       Cookie.set('userId', response.data.data.userId);
       Cookie.set('username', response.data.data.username);
       Cookie.set('expireData', moment().add(response.data.data.expires_in, 'seconds'));
+      Cookie.set('refresh_token', action.params.refresh_token);
       Cookie.set('isNotLogin', 0);
       yield put({ type: loginAction.GET_LOGIN_SUCCESS, data: response.data.data});
       action.params.history.push('/');
@@ -96,6 +97,7 @@ function *checkCode(action){
         Cookie.set('enterpriseName', response.data.data.enterpriseName);
         Cookie.set('expireData', moment().add(response.data.data.expires_in, 'seconds'));
         Cookie.set('isNotLogin', action.params.isNotLogin);
+        Cookie.set('refresh_token', action.params.refresh_token);
       }
       if(action.params.isNotLogin === 0 && response.data.data.enterpriseId !== null) {
         action.params.history.push('/');

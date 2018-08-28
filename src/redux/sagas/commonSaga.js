@@ -2,7 +2,9 @@ import { call, put, takeLatest } from 'redux-saga/effects';
 import axios from 'axios';
 import Path from '../../constants/path';
 import { commonAction } from '../../constants/actionTypes/commonAction';
-
+import { message } from 'antd';
+import Cookie from 'js-cookie';
+import moment from 'moment';
 
 function *changeCommonStore(action){//存储payload指定参数，替换reducer-store属性。
   const { payload } = action;
@@ -147,8 +149,33 @@ function *getPartition(action){
   }
 }
 
+
+/*  --- todo 待后台开发refreshtoken接口后，解开注释并进行refresh token的替换。
+  export function* refreshToken(action){ //根据当前的refresh token获取刷新token并替换
+    const { payload } = action;
+    const url = '';
+    try{
+      const response = yield call(axios.post, url ,payload)
+      if(response.data.code === '10000'){
+        const { data } = response.data;
+        Cookie.set('authData',JSON.stringify(data.access_token));
+        Cookie.set('enterpriseId', data.enterpriseId);
+        Cookie.set('enterpriseName', data.enterpriseName);
+        Cookie.set('userId', data.userId);
+        Cookie.set('username', data.username);
+        Cookie.set('expireData', moment().add(data.expires_in, 'seconds'));
+        Cookie.set('refresh_token', payload.refresh_token);
+      }
+    }catch(error){
+      message.error('更新token失败，请重试');
+      console.log(error)
+    }
+  }
+*/
+
 export function* watchCommonStoreChange() {
   yield takeLatest(commonAction.CHANGE_COMMON_STORE_SAGA, changeCommonStore);
+  // yield takeLatest(commonAction.REFRESHTOKEN_SAGE, refreshToken);
 }
 export function* watchGetStations() {
   yield takeLatest(commonAction.GET_STATIONS_SAGA, getStations);

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import moment from 'moment';
+import { message } from 'antd';
 import { Route,Redirect, Switch,withRouter} from 'react-router-dom';
 import {routerConfig} from '../../common/routerSetting';
 import { menu } from '../../common/menu';
@@ -49,10 +50,15 @@ class Main extends Component {
 
   componentWillReceiveProps(nextProps) {
     const authData = Cookie.get('authData');
-    if(moment().isBefore(Cookie.get('expireData'), 'second') 
-    && authData && this.props.history.location.pathname === '/login'
+    const refreshToken = Cookie.get('refresh_token');
+    const isTokenValid = moment().isBefore(Cookie.get('expireData'), 'second');
+    if(isTokenValid && authData && this.props.history.location.pathname === '/login'
     && Cookie.get('isNotLogin') === '0') {
       this.props.history.push('/');
+    }
+    if(authData && !isTokenValid && refreshToken){
+      message.error('token已过期，请刷新页面重新登录后使用');
+      // this.props.refreshToken({ refreshToken })
     }
     if(nextProps.login.size > 0 && this.props.login.size === 0) {    
       this.props.getStations();
@@ -116,6 +122,7 @@ const mapDispatchToProps = (dispatch) => ({
   getStations: payload => dispatch({ type: commonAction.GET_STATIONS_SAGA, payload }),
   getDeviceTypes: payload => dispatch({ type: commonAction.GET_DEVICETYPES_SAGA, payload }),
   setTopMenu: payload => dispatch({ type: commonAction.CHANGE_COMMON_STORE_SAGA, payload }),
+  // refreshToken: payload => dispatch({ type: commonAction.REFRESHTOKEN_SAGE, payload})
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Main));
