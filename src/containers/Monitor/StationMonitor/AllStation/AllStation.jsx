@@ -60,8 +60,8 @@ class AllStation extends Component {
     // console.log(stationDataList);
     const windDataLength = stationDataList.filter((e, i) => { return e.stationType === "0" }).length;
     const pvDataLength = stationDataList.filter((e, i) => { return e.stationType === "1" }).length;
-      console.log(windDataLength);
-      console.log(pvDataLength);
+      // console.log(windDataLength);
+      // console.log(pvDataLength);
 
     return (
       <div className={styles.stationMonitor}>
