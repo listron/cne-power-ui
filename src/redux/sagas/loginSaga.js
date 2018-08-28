@@ -3,9 +3,9 @@ import axios from 'axios';
 import Path from '../../constants/path';
 import moment from 'moment';
 import { stringify } from 'qs';
-import { setCookie } from '../../utils';
 import { loginAction } from '../../constants/actionTypes/loginAction';
 import { message } from 'antd';
+import Cookie from 'js-cookie';
 
 message.config({
   maxCount: 1,
@@ -36,13 +36,13 @@ function *getLogin(action){
       }),
     });
     if(response.data.code === '10000'){
-      setCookie('authData',JSON.stringify(response.data.data.access_token));
-      setCookie('enterpriseId', response.data.data.enterpriseId);
-      setCookie('enterpriseName', response.data.data.enterpriseName);
-      setCookie('userId', response.data.data.userId);
-      setCookie('username', response.data.data.username);
-      setCookie('expireData', moment().add(response.data.data.expires_in, 'seconds'));
-      setCookie('isNotLogin', 0);
+      Cookie.set('authData',JSON.stringify(response.data.data.access_token));
+      Cookie.set('enterpriseId', response.data.data.enterpriseId);
+      Cookie.set('enterpriseName', response.data.data.enterpriseName);
+      Cookie.set('userId', response.data.data.userId);
+      Cookie.set('username', response.data.data.username);
+      Cookie.set('expireData', moment().add(response.data.data.expires_in, 'seconds'));
+      Cookie.set('isNotLogin', 0);
       yield put({ type: loginAction.GET_LOGIN_SUCCESS, data: response.data.data});
       action.params.history.push('/');
 
@@ -87,13 +87,13 @@ function *checkCode(action){
     });
     if(response.data.code === '10000'){ 
       if(action.params.isNotLogin === 1 || response.data.data.enterpriseId !== null) {
-        setCookie('authData',JSON.stringify(response.data.data.access_token));    
-        setCookie('username', response.data.data.username);
-        setCookie('userId', response.data.data.userId);
-        setCookie('enterpriseId', response.data.data.enterpriseId);
-        setCookie('enterpriseName', response.data.data.enterpriseName);
-        setCookie('expireData', moment().add(response.data.data.expires_in, 'seconds'));
-        setCookie('isNotLogin', action.params.isNotLogin);
+        Cookie.set('authData',JSON.stringify(response.data.data.access_token));    
+        Cookie.set('username', response.data.data.username);
+        Cookie.set('userId', response.data.data.userId);
+        Cookie.set('enterpriseId', response.data.data.enterpriseId);
+        Cookie.set('enterpriseName', response.data.data.enterpriseName);
+        Cookie.set('expireData', moment().add(response.data.data.expires_in, 'seconds'));
+        Cookie.set('isNotLogin', action.params.isNotLogin);
       }
       if(action.params.isNotLogin === 0 && response.data.data.enterpriseId !== null) {
         action.params.history.push('/');

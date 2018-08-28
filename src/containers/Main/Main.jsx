@@ -5,16 +5,23 @@ import {routerConfig} from '../../common/routerSetting';
 import { menu } from '../../common/menu';
 import styles from './style.scss';
 import { connect } from 'react-redux';
-import { getCookie, delCookie } from '../../utils';
 import Login from '../Login/LoginLayout';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import FixedHelper from '../../components/Common/FixedHelper/FixedHelper';
-
 import { commonAction } from '../../constants/actionTypes/commonAction';
-
 import TopMenu from '../../components/Layout/TopMenu';
 import SideMenu from '../../components/Layout/SideMenu';
+import Cookie from 'js-cookie';
+console.log(Cookie.get('nothing'))
+console.log(Cookie.get('authData'))
+console.log(typeof Cookie.get('authData'))
+console.log('bear' + "12113")
+const params = "121211212"
+console.log('bear params ' + params)
+console.log(JSON.parse(Cookie.get('authData')))
+console.log(typeof JSON.parse(Cookie.get('authData')))
+console.log('bear ' + Cookie.get('authData').toString())
 
 class Main extends Component {
   static propTypes = {
@@ -42,7 +49,7 @@ class Main extends Component {
     let pathArray = pathname.split('/').filter(e=>!!e);
     const params = menu.find(e=>e.path===`/${pathArray[0]?pathArray[0]:''}`);
     this.props.setTopMenu({ topMenu: params });
-    const authData = getCookie('authData');
+    const authData = Cookie.get('authData');
     if(authData !== 'undefined' && authData !== null) {
       this.props.getStations();
       this.props.getDeviceTypes();
@@ -50,11 +57,11 @@ class Main extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const authData = getCookie('authData');
-    if(moment().isBefore(getCookie('expireData'), 'second') 
+    const authData = Cookie.get('authData');
+    if(moment().isBefore(Cookie.get('expireData'), 'second') 
     && (authData !== 'undefined' && authData !== null)
     && this.props.history.location.pathname === '/login'
-    && getCookie('isNotLogin') === '0') {
+    && Cookie.get('isNotLogin') === '0') {
       this.props.history.push('/');
     }
     if(nextProps.login.size > 0 && this.props.login.size === 0) {    
@@ -65,12 +72,12 @@ class Main extends Component {
 
   render() {
     const { setTopMenu, topMenu, } = this.props;
-    const authData = getCookie('authData');
-    const isNotLogin = getCookie('isNotLogin');
-    if(authData && (authData !== 'undefined' && authData !== null) && (moment().isBefore(getCookie('expireData'), 'second'))){
+    const authData = Cookie.get('authData');
+    const isNotLogin = Cookie.get('isNotLogin');
+    if(authData && (authData !== 'undefined' && authData !== null) && (moment().isBefore(Cookie.get('expireData'), 'second'))){
       axios.defaults.headers.common['Authorization'] = "bearer " + JSON.parse(authData);
     }
-    if((moment().isBefore(getCookie('expireData'), 'second')) 
+    if((moment().isBefore(Cookie.get('expireData'), 'second')) 
     && (authData !== 'undefined' && authData !== null) 
     && (isNotLogin === '0')){
     // if(true){
@@ -100,9 +107,9 @@ class Main extends Component {
       );
     }
     else{
-      delCookie('authData');
-      delCookie('expireData');
-      delCookie('isNotLogin');
+      Cookie.remove('authData');
+      Cookie.remove('expireData');
+      Cookie.remove('isNotLogin');
       return (
         <Switch>
           <Route path="/login" excat component={Login} />

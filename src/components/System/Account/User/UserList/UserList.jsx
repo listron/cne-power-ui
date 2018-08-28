@@ -5,7 +5,7 @@ import { Table, Button, Select, Icon, Popover, Checkbox, Upload, message } from 
 import CommonPagination from '../../../../Common/CommonPagination';
 import PropTypes from 'prop-types';
 import styles from './userList.scss';
-import { getCookie } from '../../../../../utils/index.js';
+import Cookie from 'js-cookie';
 import Path from '../../../../../constants/path';
 import WarningTip from '../../../../Common/WarningTip';
 
@@ -332,7 +332,7 @@ class UserList extends Component {
   render(){
     const { userData, totalNum, loading, selectedUser } = this.props;
     const { selectedUserColumns,showDeleteTip,showExamineTip,deleteWarningTip,examineWarningTip, } = this.state;
-    const authData = getCookie('authData');
+    const authData = Cookie.get('authData');
     const columns = [
       {
         title: '用户名',
