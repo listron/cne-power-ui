@@ -10,7 +10,6 @@ class AlarmStatisticTable extends React.Component {
     pageSize: PropTypes.number,
     stationDataList: PropTypes.array,
     alarmStatistic:PropTypes.array,
-
   }
   constructor(props, context) {
     super(props, context);
@@ -28,11 +27,9 @@ class AlarmStatisticTable extends React.Component {
   onChange = (pagination, filters, sorter) => {
     console.log("params", pagination, filters, sorter);
   }
-
   render() {
     const { alarmStatistic } = this.props;
     const { pageNum, pageSize, } = this.state;
-   
     const totalNum = alarmStatistic.length;
     let startRow = (pageNum - 1) * pageSize;
     let endRow = pageNum * pageSize;
@@ -47,7 +44,6 @@ class AlarmStatisticTable extends React.Component {
         render: (value, record, index) => {
           return {
             children: (<a href={'javascript:void(0)'} onClick={() => console.log("record", '跳转到单电站')} ><div className={styles.stationName}>{record.stationName}</div></a>
-
             )
           }
         }
@@ -117,29 +113,7 @@ class AlarmStatisticTable extends React.Component {
         defaultSortOrder: "descend",
         sorter: (a, b) => a.fourHandleAvgTime - b.fourHandleAvgTime
       },
-
-    ];
-    // 表单数据
-    // const data = datalist.map((item, index) => {
-    //     return (
-    //         {
-    //             key: `${item.stationCode}`,
-    //             stationName: `${item.stationName || '--'}`,
-    //             allAlarmNum: `${item.provinceName || '--'}`,
-    //             oneWarningNum: `${item.oneWarningNum || '--'}`,
-    //             secondLevelAlarm: `${item.secondLevelAlarm || '--'}`,
-    //             threeWarningNum: `${item.instantaneous || '--'}`,
-    //             fourWarningNum: `${item.dayPower || '--'}`,
-    //             handleAvgTime: `${item.monthPower || '--'}`,
-    //             oneHandleAvgTime: `${item.yearPower || '--'}`,
-    //             twoHandleAvgTime: `${item.yearPlanPower || '--'}`,
-    //             threeHandleAvgTime: `${item.stationUnitCount || '--'}`,
-    //             fourHandleAvgTime: `${item.fourHandleAvgTime || '--'}`,
-    //             currentStation: `${item.stationStatus.stationStatus}`
-    //         }
-    //     )
-    // })
-    
+    ];    
     const data = datalist.map((item, i) => {
       return (
         {
@@ -154,14 +128,12 @@ class AlarmStatisticTable extends React.Component {
           oneHandleAvgTime: `${item.oneHandleAvgTime || '--'}`,
           twoHandleAvgTime: `${item.twoHandleAvgTime || '--'}`,
           threeHandleAvgTime: `${item.threeHandleAvgTime || '--'}`,
-          fourHandleAvgTime: `${item.fourHandleAvgTime || '--'}`,
-          
+          fourHandleAvgTime: `${item.fourHandleAvgTime || '--'}`,          
         }
       )
     })
     return (
       <div>
-
         <div className={styles.pagination}>
           <CommonPagination total={totalNum} onPaginationChange={this.onPaginationChange} />
         </div>

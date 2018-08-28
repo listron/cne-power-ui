@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import { Menu, Dropdown, Button, Icon, message, Tabs, DatePicker, Select } from 'antd';
+import { Button, Icon, message, Tabs, DatePicker, Select } from 'antd';
 import styles from './alarmStatistic.scss';
 import AlarmStatisticTable from '../../../../components/Monitor/Alarm/AlarmStatistic/AlarmStatisticTable.jsx';
 import AlarmStatisticGraph from '../../../../components/Monitor/Alarm/AlarmStatistic/AlarmStatisticGraph.jsx';
-//import StationSelect from './StationSelect.jsx';
 import StationFilter from '../AlarmFilter/StationFilter.jsx';
 
 class AlarmStatisticByType extends Component {
@@ -67,19 +66,27 @@ class AlarmStatisticByType extends Component {
   }
   //筛选时间，出现日期框
   handleDayMenuClick = (e) => {
-  //   const{startTime, endTime}=this.props;
-  //   if(e.key === '今天'){
-  //     this.props.startTime=moment(0,'HH').utc().format();
-  //     this.props.endTime=moment().utc().format();
-  //  console.log(startTime,endTime);
-  //   }
-    //message.info('Click on menu item.');
-    console.log('click', e);
+    //const{startTime, endTime}=this.props;
+    let startTime=moment(0,'HH').utc().format();
+    let endTime=moment().utc().format();
+    if(e.key === '今天'){
+      startTime=moment(0,'HH').utc().format();
+      endTime=moment().utc().format();
+    }else if(e.key === '昨天'){
+    startTime=moment(0,'HH').subtract(1,'day').utc().format();
+    endTime=moment().subtract(1,'day').endOf('day').utc().format();     
+    }else if(e.key === '最近7天'){
+      startTime=moment(0,'HH').subtract(7,'day').utc().format();
+      endTime=moment().utc().format();
+    }else if(e.key === '最近30天'){
+      startTime=moment(0,'HH').subtract(30,'day').utc().format();
+      endTime=moment().utc().format();
+    }
     e.key === '其他时间段' ? this.onFilterShowChange('timeSelect') : '啥都不干';
-    //console.log(this.props.startTime, this.props.endTime);
+   
     this.props.onChangeFilter({
-      // startTime,
-      // endTime
+      startTime,
+      endTime
     });
   }
   callback = (key) => {
@@ -92,7 +99,6 @@ class AlarmStatisticByType extends Component {
     const { showFilter } = this.state;
     let { key } = this.state;
     const TabPane = Tabs.TabPane;
-    // const CheckboxGroup = Checkbox.Group;
     //数据导出按钮
     const operations = (
       <div className={styles.exportData}>
@@ -120,9 +126,7 @@ class AlarmStatisticByType extends Component {
           </Select>
 
         </div>
-        <div className={styles.filterBox}>
-          {/* 自己写的stationSelect组件,没用，暂保留 */}
-          {/* {showFilter === 'stationSelect' && <StationSelect {...this.props} />} */}
+        <div className={styles.filterBox}>     
           {showFilter === 'stationSelect' && <StationFilter {...this.props} />}
           {
             showFilter === 'timeSelect' &&

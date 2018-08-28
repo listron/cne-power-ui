@@ -61,17 +61,11 @@ class AlarmStatisticByType extends React.Component {
     });
     const handleAvgTime = alarmStatistic.map((item, index) => {
       return item.handleAvgTime
-    })||'--';
-
-    //console.log(oneWarningNum);
+    }) || '--';
     this.setMapChart(windAlarmChart, stationNameData, oneWarningNum, twoWarningNum, threeWarningNum, fourWarningNum, handleAvgTime);
   }
   setMapChart = (windAlarmChart, stationNameData, oneWarningNum, twoWarningNum, threeWarningNum, fourWarningNum, handleAvgTime) => {
-
-    //let colors = ['#5793f3', '#d14a61', '#675bba'];
-    //const { stationDataList } = this.props;
     const option = {
-      //color: colors,
       tooltip: {
         trigger: 'axis',
         axisPointer: {            // 坐标轴指示器，坐标轴触发有效
@@ -155,7 +149,7 @@ class AlarmStatisticByType extends React.Component {
               type: 'dashed'
             }
           },
-           data: handleAvgTime
+          data: handleAvgTime
           //这是平均处理时间的数据
           //data: [6, 15, 20, 8, 9, 7, 0,]
         },
@@ -226,7 +220,7 @@ class AlarmStatisticByType extends React.Component {
             }
           },
           yAxisIndex: 1,
-          data:oneWarningNum+ twoWarningNum+threeWarningNum+fourWarningNum
+          data: oneWarningNum + twoWarningNum + threeWarningNum + fourWarningNum
         }
 
       ]
