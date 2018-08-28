@@ -3,8 +3,8 @@
 import React, { Component } from 'react';
 import { Upload, Icon, message } from 'antd';
 import PropTypes from 'prop-types';
-import { getCookie } from '../../../utils/index.js';
 import styles from './uploader.scss';
+import Cookie from 'js-cookie';
 
 /*
 该组件只用于处理单图片上传；只能上传一张图片，在已上传一张图片后只能重新点选图片进行替换。
@@ -94,9 +94,8 @@ class SingleImgUploader extends Component {
     }
   }
 
-
   render(){
-    const authData = getCookie('authData');
+    const authData = Cookie.get('authData') || '';
     const { showCurentUpload, currentImgInfor, preInfor } = this.state;
     const { uploadPath, imgStyle } = this.props;
 
@@ -105,7 +104,7 @@ class SingleImgUploader extends Component {
       className:styles.uploader,
       onChange: this.handleUpload,
 			listType: "picture-card",
-      headers:{'Authorization': 'bearer ' + ((authData && authData!== 'undefined') ? JSON.parse(authData) : '')},//JSON.parse(authData).access_token
+      headers:{'Authorization': 'bearer ' + JSON.parse(authData)},//JSON.parse(authData).access_token
       beforeUpload:this.beforeUpload
     };
     return (

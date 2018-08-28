@@ -4,7 +4,7 @@ import styles from './uploader.scss';
 import PropTypes from 'prop-types';
 import UploadedImg from './UploadedImg';
 import ImgListModal from './ImgListModal'
-import { getCookie } from '../../../utils/index.js'
+import Cookie from 'js-cookie';
 
 /*
   图片上传共用组件：
@@ -121,7 +121,7 @@ class ImgUploader extends Component {
   }
 
   render() {
-    const authData = (getCookie('authData') && getCookie('authData') !== "undefined") ? getCookie('authData') : "";
+    const authData = Cookie.get('authData') || '';
     const { imageListShow, currentImgIndex, fileList } = this.state;
     const { uploadPath, max,  data, editable, imgStyle } = this.props;
 		const imageProps = {
@@ -130,7 +130,7 @@ class ImgUploader extends Component {
       multiple: true,
       fileList,
 			listType: "picture-card",
-      headers:{'Authorization': 'bearer ' + (authData ? JSON.parse(authData) : '')}, //JSON.parse(authData).access_token
+      headers:{'Authorization': 'bearer ' + JSON.parse(authData)}, //JSON.parse(authData).access_token
       beforeUpload:this.beforeUpload
 		};
     const uploadButton = (

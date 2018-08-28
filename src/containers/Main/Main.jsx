@@ -1,20 +1,19 @@
 import React, { Component } from 'react';
 import moment from 'moment';
+import { message } from 'antd';
 import { Route,Redirect, Switch,withRouter} from 'react-router-dom';
 import {routerConfig} from '../../common/routerSetting';
 import { menu } from '../../common/menu';
 import styles from './style.scss';
 import { connect } from 'react-redux';
-import { getCookie, delCookie } from '../../utils';
 import Login from '../Login/LoginLayout';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import FixedHelper from '../../components/Common/FixedHelper/FixedHelper';
-
 import { commonAction } from '../../constants/actionTypes/commonAction';
-
 import TopMenu from '../../components/Layout/TopMenu';
 import SideMenu from '../../components/Layout/SideMenu';
+import Cookie from 'js-cookie';
 
 class Main extends Component {
   static propTypes = {
@@ -42,20 +41,24 @@ class Main extends Component {
     let pathArray = pathname.split('/').filter(e=>!!e);
     const params = menu.find(e=>e.path===`/${pathArray[0]?pathArray[0]:''}`);
     this.props.setTopMenu({ topMenu: params });
-    const authData = getCookie('authData');
-    if(authData !== 'undefined' && authData !== null) {
+    const authData = Cookie.get('authData');
+    if(authData) {
       this.props.getStations();
       this.props.getDeviceTypes();
     }
   }
 
   componentWillReceiveProps(nextProps) {
-    const authData = getCookie('authData');
-    if(moment().isBefore(getCookie('expireData'), 'second') 
-    && (authData !== 'undefined' && authData !== null)
-    && this.props.history.location.pathname === '/login'
-    && getCookie('isNotLogin') === '0') {
+    const authData = Cookie.get('authData');
+    const refreshToken = Cookie.get('refresh_token');
+    const isTokenValid = moment().isBefore(Cookie.get('expireData'), 'second');
+    if(isTokenValid && authData && this.props.history.location.pathname === '/login'
+    && Cookie.get('isNotLogin') === '0') {
       this.props.history.push('/');
+    }
+    if(authData && !isTokenValid && refreshToken){
+      message.error('token已过期，请刷新页面重新登录后使用');
+      // this.props.refreshToken({ refreshToken })
     }
     if(nextProps.login.size > 0 && this.props.login.size === 0) {    
       this.props.getStations();
@@ -65,14 +68,13 @@ class Main extends Component {
 
   render() {
     const { setTopMenu, topMenu, } = this.props;
-    const authData = getCookie('authData');
-    const isNotLogin = getCookie('isNotLogin');
-    if(authData && (authData !== 'undefined' && authData !== null) && (moment().isBefore(getCookie('expireData'), 'second'))){
+    const authData = Cookie.get('authData');
+    const isNotLogin = Cookie.get('isNotLogin');
+    const isTokenValid = moment().isBefore(Cookie.get('expireData'), 'second');
+    if(authData && isTokenValid){
       axios.defaults.headers.common['Authorization'] = "bearer " + JSON.parse(authData);
     }
-    if((moment().isBefore(getCookie('expireData'), 'second')) 
-    && (authData !== 'undefined' && authData !== null) 
-    && (isNotLogin === '0')){
+    if(isTokenValid && authData && (isNotLogin === '0')){
     // if(true){
       return (
         <div className={styles.app}>
@@ -98,11 +100,7 @@ class Main extends Component {
           <FixedHelper />
         </div>
       );
-    }
-    else{
-      delCookie('authData');
-      delCookie('expireData');
-      delCookie('isNotLogin');
+    }else{
       return (
         <Switch>
           <Route path="/login" excat component={Login} />
@@ -124,6 +122,7 @@ const mapDispatchToProps = (dispatch) => ({
   getStations: payload => dispatch({ type: commonAction.GET_STATIONS_SAGA, payload }),
   getDeviceTypes: payload => dispatch({ type: commonAction.GET_DEVICETYPES_SAGA, payload }),
   setTopMenu: payload => dispatch({ type: commonAction.CHANGE_COMMON_STORE_SAGA, payload }),
+  // refreshToken: payload => dispatch({ type: commonAction.REFRESHTOKEN_SAGE, payload})
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Main));
