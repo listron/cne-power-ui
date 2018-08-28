@@ -25,7 +25,7 @@ class AlarmStatisticTable extends React.Component {
     })
   }
   onChange = (pagination, filters, sorter) => {
-    console.log("params", pagination, filters, sorter);
+   // console.log("params", pagination, filters, sorter);
   }
   render() {
     const { alarmStatistic } = this.props;

@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import echarts from 'echarts';
-class AlarmStatisticByType extends React.Component {
+class AlarmStatisticGraph extends React.Component {
   static propTypes = {
 
     graphId: PropTypes.string,
@@ -14,10 +14,9 @@ class AlarmStatisticByType extends React.Component {
   componentDidMount() {
     const { graphId } = this.props;
     const { alarmStatistic } = this.props;
-    console.log(alarmStatistic);
     const stationNameData = alarmStatistic.map((item, index) => {
       return item.stationName
-    }) || 0
+    });
     const oneWarningNum = alarmStatistic.map((item, index) => {
       return item.oneWarningNum
     });
@@ -35,9 +34,10 @@ class AlarmStatisticByType extends React.Component {
     const handleAvgTime = alarmStatistic.map((item, index) => {
       return item.handleAvgTime
     });
+    const totalNum=oneWarningNum+twoWarningNum+threeWarningNum+fourWarningNum;
 
     const windAlarmChart = echarts.init(document.getElementById(graphId));
-    this.setMapChart(windAlarmChart, stationNameData, oneWarningNum, twoWarningNum, threeWarningNum, fourWarningNum, handleAvgTime);
+    this.setMapChart(windAlarmChart, stationNameData, oneWarningNum, twoWarningNum, threeWarningNum, fourWarningNum, handleAvgTime,totalNum);
   }
   componentWillReceiveProps(nextProps) {
     const { graphId } = this.props;
@@ -59,28 +59,31 @@ class AlarmStatisticByType extends React.Component {
     const fourWarningNum = alarmStatistic.map((item, index) => {
       return item.fourWarningNum
     });
+    const totalNum=oneWarningNum+twoWarningNum+threeWarningNum+fourWarningNum;
+
     const handleAvgTime = alarmStatistic.map((item, index) => {
       return item.handleAvgTime
     }) || '--';
-    this.setMapChart(windAlarmChart, stationNameData, oneWarningNum, twoWarningNum, threeWarningNum, fourWarningNum, handleAvgTime);
+    this.setMapChart(windAlarmChart, stationNameData, oneWarningNum, twoWarningNum, threeWarningNum, fourWarningNum, handleAvgTime,totalNum);
   }
-  setMapChart = (windAlarmChart, stationNameData, oneWarningNum, twoWarningNum, threeWarningNum, fourWarningNum, handleAvgTime) => {
+  setMapChart = (windAlarmChart, stationNameData, oneWarningNum, twoWarningNum, threeWarningNum, fourWarningNum, handleAvgTime,totalNum) => {
     const option = {
       tooltip: {
         trigger: 'axis',
         axisPointer: {            // 坐标轴指示器，坐标轴触发有效
           type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
         },
-        // formatter: (params,handleAvgTime) => {
-        //     // console.log(params,handleAvgTime);
-        //      return `<div>
-        //      <div> ${params[0].name}</div> 
-        //      <div> ${params[0].marker}${params[0].seriesName}${params[0].value}</div>
-        //      <div> ${params[1].marker}${params[1].seriesName}${params[1].value}</div>             
-        //      <div> ${params[2].marker}${params[2].seriesName}${params[2].value}</div>
-        //      <div> ${params[3].marker}${params[3].seriesName}${params[3].value}</div>                
-        //    </div>`
-        //    },
+        formatter: (params) => {
+           
+             return `<div>
+             <div> ${params[0].name}</div>             
+             <div> ${params[0].marker}${params[0].seriesName}${params[0].value}</div>
+             <div> ${params[1].marker}${params[1].seriesName}${params[1].value}</div>             
+             <div> ${params[2].marker}${params[2].seriesName}${params[2].value}</div>
+             <div> ${params[3].marker}${params[3].seriesName}${params[3].value}</div>
+             <div>总计${params[0].value+params[1].value+params[2].value+params[3].value}</div>                
+           </div>`
+           },
         backgroundColor: '#fff',
         textStyle: {
           color: '#999',
@@ -209,35 +212,21 @@ class AlarmStatisticByType extends React.Component {
           data: fourWarningNum
           //data: [6, 5, 10, 24, 11, 7, 9]
         },
-        {
-          name: '总计',
-          type: 'bar',
-          stack: '总量',
-          label: {
-            normal: {
-              show: true,
-              position: 'insideRight'
-            }
-          },
-          yAxisIndex: 1,
-          data: oneWarningNum + twoWarningNum + threeWarningNum + fourWarningNum
-        }
+       
 
       ]
     };
 
     windAlarmChart.setOption(option)
     windAlarmChart.on('click', (params) => {
-      // alert('我要跳转')
-      console.log(params, '电站的参数');
+     // console.log(params, '电站的参数');
 
     })
   }
   render() {
-    const { graphId, alarmStatistic } = this.props;
-    console.log(alarmStatistic);
-
-
+    const { graphId } = this.props;
+  
+   
 
     return (
       <div>
@@ -246,4 +235,4 @@ class AlarmStatisticByType extends React.Component {
     )
   }
 }
-export default (AlarmStatisticByType)
+export default (AlarmStatisticGraph)

@@ -4,8 +4,6 @@ import { Tabs } from 'antd';
 import styles from './alarmStatistic.scss';
 import AlarmStatisticByType from './AlarmStatisticByType';
 const TabPane = Tabs.TabPane;
-
-
 class ALarmAllStationStatistic extends React.Component {
   static propTypes = {
     stationType: PropTypes.string,
@@ -17,7 +15,6 @@ class ALarmAllStationStatistic extends React.Component {
   constructor(props) {
     super(props);
   }
-
   componentDidMount() {
     const { stationType, stationCode, startTime, endTime } = this.props;
     this.props.getStationsAlarmStatistic({
@@ -27,7 +24,6 @@ class ALarmAllStationStatistic extends React.Component {
       endTime,
     });
   }
-
   onChangeFilter = (obj) => {
     const { stationType, stationCode, startTime, endTime } = this.props;
     let filter = {
@@ -36,10 +32,10 @@ class ALarmAllStationStatistic extends React.Component {
       startTime,
       endTime,
     }
-    let newFiter = Object.assign({}, filter, obj);
-    this.props.getStationsAlarmStatistic(newFiter);
+    let newFilter = Object.assign({}, filter, obj);
+    console.log(newFilter);
+    this.props.getStationsAlarmStatistic(newFilter);
   }
-
   queryTargetData = (activeKey) => {
     const { stationCode, startTime, endTime } = this.props;
     this.props.getStationsAlarmStatistic({
@@ -49,7 +45,6 @@ class ALarmAllStationStatistic extends React.Component {
       endTime,
     });
   }
-
   render() {
     const operations = (
       <div style={{ marginRight: '50px',color:'#199475' }}>

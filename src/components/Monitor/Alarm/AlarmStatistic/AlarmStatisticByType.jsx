@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import { Button, Icon, message, Tabs, DatePicker, Select } from 'antd';
+import { Button, Icon,Tabs, DatePicker, Select } from 'antd';
 import styles from './alarmStatistic.scss';
 import AlarmStatisticTable from '../../../../components/Monitor/Alarm/AlarmStatistic/AlarmStatisticTable.jsx';
 import AlarmStatisticGraph from '../../../../components/Monitor/Alarm/AlarmStatistic/AlarmStatisticGraph.jsx';
 import StationFilter from '../AlarmFilter/StationFilter.jsx';
-
 class AlarmStatisticByType extends Component {
   static propTypes = {
     stationType: PropTypes.string,
@@ -46,23 +45,18 @@ class AlarmStatisticByType extends Component {
     console.log(startTime, endTime);
 
     this.props.onChangeFilter({
-      // startTime,
-      // endTime
+      startTime,
+      endTime
     });
   }
-  onOk = (value) => {
-    console.log('onOk: ', value);
-  }
+  
   //设置tabs按钮的
   setkey = (activekey) => {
     this.setState({ key: activekey })
   }
-
-
-
   handleStationMenuClick = (e) => {
-    message.info('Click on menu item.');
-    console.log('click', e);
+   // message.info('Click on menu item.');
+   // console.log('click', e);
   }
   //筛选时间，出现日期框
   handleDayMenuClick = (e) => {
@@ -90,9 +84,8 @@ class AlarmStatisticByType extends Component {
     });
   }
   callback = (key) => {
-    console.log(key);
+   // console.log(key);
   }
-
   render() {
     const { RangePicker } = DatePicker;
     const Option = Select.Option;
@@ -135,7 +128,6 @@ class AlarmStatisticByType extends Component {
               format="YYYY-MM-DD HH:mm"
               placeholder={['Start Time', 'End Time']}
               onChange={this.onTimeChange}
-              onOk={this.onOk}
             /></div>
           }
         </div>
