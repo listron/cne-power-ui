@@ -45,7 +45,6 @@ class Register extends Component {
     this.props.registerEnterprise(params);
   } 
   render() {
-    console.log(this.props.error);
     const { pageTab, history } = this.props;
     return (
       <div className={styles.login}>

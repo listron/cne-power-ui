@@ -13,15 +13,6 @@ import { commonAction } from '../../constants/actionTypes/commonAction';
 import TopMenu from '../../components/Layout/TopMenu';
 import SideMenu from '../../components/Layout/SideMenu';
 import Cookie from 'js-cookie';
-console.log(Cookie.get('nothing'))
-console.log(Cookie.get('authData'))
-console.log(typeof Cookie.get('authData'))
-console.log('bear' + "12113")
-const params = "121211212"
-console.log('bear params ' + params)
-console.log(JSON.parse(Cookie.get('authData')))
-console.log(typeof JSON.parse(Cookie.get('authData')))
-console.log('bear ' + Cookie.get('authData').toString())
 
 class Main extends Component {
   static propTypes = {
@@ -50,7 +41,7 @@ class Main extends Component {
     const params = menu.find(e=>e.path===`/${pathArray[0]?pathArray[0]:''}`);
     this.props.setTopMenu({ topMenu: params });
     const authData = Cookie.get('authData');
-    if(authData !== 'undefined' && authData !== null) {
+    if(authData) {
       this.props.getStations();
       this.props.getDeviceTypes();
     }
@@ -59,8 +50,7 @@ class Main extends Component {
   componentWillReceiveProps(nextProps) {
     const authData = Cookie.get('authData');
     if(moment().isBefore(Cookie.get('expireData'), 'second') 
-    && (authData !== 'undefined' && authData !== null)
-    && this.props.history.location.pathname === '/login'
+    && authData && this.props.history.location.pathname === '/login'
     && Cookie.get('isNotLogin') === '0') {
       this.props.history.push('/');
     }
@@ -74,12 +64,11 @@ class Main extends Component {
     const { setTopMenu, topMenu, } = this.props;
     const authData = Cookie.get('authData');
     const isNotLogin = Cookie.get('isNotLogin');
-    if(authData && (authData !== 'undefined' && authData !== null) && (moment().isBefore(Cookie.get('expireData'), 'second'))){
+    const isTokenValid = moment().isBefore(Cookie.get('expireData'), 'second');
+    if(authData && isTokenValid){
       axios.defaults.headers.common['Authorization'] = "bearer " + JSON.parse(authData);
     }
-    if((moment().isBefore(Cookie.get('expireData'), 'second')) 
-    && (authData !== 'undefined' && authData !== null) 
-    && (isNotLogin === '0')){
+    if(isTokenValid && authData && (isNotLogin === '0')){
     // if(true){
       return (
         <div className={styles.app}>
@@ -105,11 +94,7 @@ class Main extends Component {
           <FixedHelper />
         </div>
       );
-    }
-    else{
-      Cookie.remove('authData');
-      Cookie.remove('expireData');
-      Cookie.remove('isNotLogin');
+    }else{
       return (
         <Switch>
           <Route path="/login" excat component={Login} />

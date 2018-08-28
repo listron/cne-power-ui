@@ -29,6 +29,7 @@ function *getLogin(action){
       method: 'post',
       url,
       headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'},
+      auth: {},
       data: stringify({
         'grant_type': "password",
         username: action.params.username,
@@ -79,6 +80,7 @@ function *checkCode(action){
       method: 'post',
       url,
       headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'},
+      auth: {},
       data: stringify({
         'grant_type': "password",
         phoneNum: action.params.phoneNum,
