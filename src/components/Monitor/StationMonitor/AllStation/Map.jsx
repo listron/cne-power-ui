@@ -1,6 +1,8 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import echarts from 'echarts';
 import bmap from 'echarts/extension/bmap/bmap';
 
@@ -22,7 +24,7 @@ class Map extends Component {
     const testChart = echarts.init(document.getElementById(testId));
     this.setMapChart(testChart, stationDataList);
   }
-  componentWillReceiveProps(nextProps){
+  componentWillReceiveProps(nextProps) {
     const { testId, stationDataList } = nextProps;
     // console.log('will receive prosp')
     const testChart = echarts.init(document.getElementById(testId));
@@ -136,27 +138,28 @@ class Map extends Component {
       },
       tooltip: {
         trigger: 'item',
-        enterable:true,        
+        enterable: true,
       },
       legend: {
         orient: 'vertical',
         top: 'bottom',
         left: 'right',
-        data: ['正常',  '信息中断', '未接入'],
+        data: ['正常', '信息中断', '未接入'],
       },
       // 类型是：scatter散点
       series: [{
         type: 'scatter',
         tooltip: {
-          enterable:true,
+          enterable: true,
           //position:['50%','50%'],
           formatter: (params) => {
-           // console.log(params.data);
+             //console.log(params.data);
             return `<div class='stationCard' style='height:70px;overflow:hidden'>
             <div class='stationCardTitle' style='display:flex;flex-direction: row;justify-content: space-between;'>
             <span>${params.data.name}</span>
-           
-            <span style='color:red' onClick={console.log(${params.data.alarmNum},'报警数')}>${params.data.alarmNum>0?'⚠':''}${params.data.alarmNum>0?params.data.alarmNum:''}</span>              
+            <a target='_blank' href='#/monitor/singleStation/${params.data.stationCode}'>
+            <span style='color:red' onClick={console.log(${params.data.alarmNum},'报警数')}>${params.data.alarmNum > 0 ? '⚠' : ''}${params.data.alarmNum > 0 ? params.data.alarmNum : ''}</span>    
+            </a>
             </div>           
             <div class='stationCardProgress' style='background:#dfdfdf;height:1px;
             width:100%;' ></div>
@@ -204,7 +207,7 @@ class Map extends Component {
     testChart.on('click', (params) => {
       // alert('我要跳转')
       // console.log(params, '电站的参数');
-
+      this.props.history.push(`monitor/singleStation/${params.data.stationCode}`)
     })
   }
 
@@ -220,5 +223,5 @@ class Map extends Component {
     )
   }
 }
-export default Map;
+export default withRouter(Map);
 

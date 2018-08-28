@@ -46,7 +46,11 @@ class PvStationList extends React.Component {
         sorter: (a, b) => a.stationName.length - b.stationName.length,
         render: (value, record, index) => {
           return {
-            children: (<a href={'javascript:void(0)'} onClick={() => console.log("record",'跳转到单电站')} ><div className={styles.stationName}>{record.stationName}</div></a>
+            children: (
+            
+            <a target="_blank" href={`#/monitor/singleStation/${record.key}`}>
+            <div className={styles.stationName}>{record.stationName}</div>
+            </a>
               
             )
           }
