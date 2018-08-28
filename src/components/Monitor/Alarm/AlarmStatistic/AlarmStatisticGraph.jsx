@@ -1,20 +1,27 @@
 import React from "react";
 import PropTypes from "prop-types";
 import echarts from 'echarts';
-class AlarmStatisticByType extends React.Component {
+class AlarmStatisticGraph extends React.Component {
   static propTypes = {
-
     graphId: PropTypes.string,
     alarmStatistic: PropTypes.array,
-
   }
-  constructor(props, context) {
-    super(props, context)
+  constructor(props) {
+    super(props);
   }
   componentDidMount() {
-    const { graphId } = this.props;
-    const { alarmStatistic } = this.props;
-    console.log(alarmStatistic);
+    const { graphId, alarmStatistic } = this.props;
+    const data = this.transferData(alarmStatistic);
+    this.alarmChart = echarts.init(document.getElementById(graphId));
+    this.renderChart(data);
+  }
+  
+  componentWillReceiveProps(nextProps) {
+    const { alarmStatistic } = nextProps;
+    const data = this.transferData(alarmStatistic);
+    this.renderChart(data);
+  }
+  transferData(alarmStatistic) {
     const stationNameData = alarmStatistic.map((item, index) => {
       return item.stationName
     }) || 0
@@ -35,39 +42,12 @@ class AlarmStatisticByType extends React.Component {
     const handleAvgTime = alarmStatistic.map((item, index) => {
       return item.handleAvgTime
     });
-
-    const windAlarmChart = echarts.init(document.getElementById(graphId));
-    this.setMapChart(windAlarmChart, stationNameData, oneWarningNum, twoWarningNum, threeWarningNum, fourWarningNum, handleAvgTime);
+    return {
+      stationNameData, oneWarningNum, twoWarningNum, threeWarningNum, fourWarningNum, handleAvgTime
+    };
   }
-  componentWillReceiveProps(nextProps) {
-    const { graphId } = this.props;
-    const windAlarmChart = echarts.init(document.getElementById(graphId));
-    const { alarmStatistic } = nextProps;
-    const stationNameData = alarmStatistic.map((item, index) => {
-      return item.stationName
-    });
-    const oneWarningNum = alarmStatistic.map((item, index) => {
-      return item.oneWarningNum
-    });
-    const twoWarningNum = alarmStatistic.map((item, index) => {
-      return item.twoWarningNum
-    });
-
-    const threeWarningNum = alarmStatistic.map((item, index) => {
-      return item.threeWarningNum
-    });
-    const fourWarningNum = alarmStatistic.map((item, index) => {
-      return item.fourWarningNum
-    });
-    const handleAvgTime = alarmStatistic.map((item, index) => {
-      return item.handleAvgTime
-    })||'--';
-
-    //console.log(oneWarningNum);
-    this.setMapChart(windAlarmChart, stationNameData, oneWarningNum, twoWarningNum, threeWarningNum, fourWarningNum, handleAvgTime);
-  }
-  setMapChart = (windAlarmChart, stationNameData, oneWarningNum, twoWarningNum, threeWarningNum, fourWarningNum, handleAvgTime) => {
-
+  renderChart(data) {
+    const { stationNameData, oneWarningNum, twoWarningNum, threeWarningNum, fourWarningNum, handleAvgTime } = data;
     //let colors = ['#5793f3', '#d14a61', '#675bba'];
     //const { stationDataList } = this.props;
     const option = {
@@ -232,24 +212,21 @@ class AlarmStatisticByType extends React.Component {
       ]
     };
 
-    windAlarmChart.setOption(option)
-    windAlarmChart.on('click', (params) => {
-      // alert('我要跳转')
-      console.log(params, '电站的参数');
-
-    })
+    this.alarmChart.setOption(option)
+    // this.alarmChart.on('click', (params) => {
+    //   // alert('我要跳转')
+    //   console.log(params, '电站的参数');
+    // });
   }
+
+  
   render() {
-    const { graphId, alarmStatistic } = this.props;
-    console.log(alarmStatistic);
-
-
-
+    const { graphId } = this.props;
     return (
       <div>
         <div id={graphId} style={{ width: '1200px', height: '410px' }}> </div>
       </div>
-    )
+    );
   }
 }
-export default (AlarmStatisticByType)
+export default AlarmStatisticGraph;

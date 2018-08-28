@@ -12,6 +12,14 @@ function *changeAlarmStore(action) {//存储payload指定参数，替换reducer-
   });
 }
 
+function *changeAlarmStatisticStore(action) {//存储payload指定参数，替换reducer-store属性。
+  const { payload } = action;
+  yield put({
+    type:  alarmAction.CHANGE_ALARM_STATISTIC_STORE,
+    payload,
+  });
+}
+
 function *resetAlarm(action) {//恢复reducer为默认初始值。
   yield put({
     type:  alarmAction.RESET_ALARM,
@@ -104,6 +112,10 @@ function *getSingleStationAlarmStatistic(action) {  // 请求单电站告警统�
         payload: {
           singleAlarmStatistic: response.data.data.alarmChart,
           singleAlarmSummary: response.data.data.alarmSummary,
+          startTime: payload.startTime,
+          endTime: payload.endTime,
+          singleStationCode: payload.stationCode,
+          summaryType: payload.summaryType
         },
       });     
     }  
@@ -172,6 +184,7 @@ function *getRelieveInfo(action) {  // 请求屏蔽详情
 
 export function* watchAlarmMonitor() {
   yield takeLatest(alarmAction.CHANGE_ALARM_STORE_SAGA, changeAlarmStore);
+  yield takeLatest(alarmAction.CHANGE_ALARM_STATISTIC_STORE_SAGA, changeAlarmStatisticStore);
   yield takeLatest(alarmAction.GET_REALTIME_ALARM_SAGA, getRealtimeAlarm);
   yield takeLatest(alarmAction.GET_HISTORY_ALARM_SAGA, getHistoryAlarm);
   yield takeLatest(alarmAction.GET_STATIONS_ALARM_STATISTIC_SAGA, getStationsAlarmStatistic);
