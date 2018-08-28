@@ -41,7 +41,7 @@
     "@types/react-copy-to-clipboard": "^4.2.5",
     "antd": "^3.7.0",
     "axios": "^0.16.2",
-    "classnames": "^2.2.5",
+    "classnames": "^2.2.6",
     "copy-to-clipboard": "^3.0.8",
     "echarts": "^4.0.4",
     "immutable": "^3.8.2",

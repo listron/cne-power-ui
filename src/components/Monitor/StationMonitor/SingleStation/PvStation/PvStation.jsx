@@ -49,7 +49,7 @@ class PvStation extends Component {
   
   render(){
     const { deviceTypeFlow } = this.props;
-    console.log(deviceTypeFlow && deviceTypeFlow.length > 0 && deviceTypeFlow[0].deviceTypeName)
+    
     return (
       <div className={styles.pvStation}>
         <PvStationTop {...this.props} />
@@ -66,7 +66,6 @@ class PvStation extends Component {
                 {deviceTypeFlow && <RadioGroup defaultValue={deviceTypeFlow.length > 0 && deviceTypeFlow[0].deviceTypeCode}  onChange={this.onSelectedDeviceType} >
                   {deviceTypeFlow && 
                     deviceTypeFlow.map(e=>{
-                      console.log(e.deviceTypeCode)
                       return (<RadioButton value={e.deviceTypeCode} className={styles.deviceTypeItem} key={e.deviceTypeCode}>
                         <div className={styles.deviceTypeIcon} ><i className={this.getDeviceTypeIcon(e.deviceTypeCode)} ></i></div><div>{e.deviceTypeName}</div>
                         </RadioButton>)

@@ -3,10 +3,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './pvStation.scss';
-import { Icon, Progress, Modal  } from 'antd';
-import { Link } from 'react-router-dom';
+import { Icon, Progress  } from 'antd';
 import moment from 'moment';
 import ChangeStation from '../SingleStationCommon/ChangeStation';
+import { Link } from 'react-router-dom';
 class PvStationTop extends Component {
   static propTypes = {
     match: PropTypes.object,
@@ -38,7 +38,7 @@ class PvStationTop extends Component {
   render(){
     const { singleStationData, stationList } = this.props;
     const { showStationList } = this.state;
-    const { stationCode } = this.props.match.params;
+    
     const stationPower = singleStationData && singleStationData.stationPower;
     const stationCapacity = singleStationData && singleStationData.stationCapacity;
     const powerPercent = stationPower/stationCapacity*100;
@@ -53,42 +53,21 @@ class PvStationTop extends Component {
     let stationStatusTime = singleStationData && singleStationData.stationStatus && singleStationData.stationStatus.stationStatusTime
     let localTime = moment.utc(stationStatusTime).toDate();
     stationStatusTime = moment(localTime).format("YYYY/MM/DD hh:mm");
-    
-    const tmpStationCode = parseInt(stationCode);
-    const baseLinkPath = `/monitor/singleStation/`;
+
+    const baseLinkPath = `/monitor/singleStation`;
+    const pathAllStation = "/monitor/station";
     return (
       <div className={styles.pvStationTop}>
         <div className={styles.pvStationTitle} >
           <div className={styles.pvStationName} >
-            {/* <Modal
-              visible={showStationList}
-              title={singleStationData && singleStationData.stationName}
-              onCancel={this.handleCancel}
-              footer={false}
-              width={308}
-              mask={false}
-              maskClosable={true}
-              getContainer={() => document.getElementById('stationToggle')}
-              style={{left: 0, top: 0}}
-              wrapClassName={styles.allStationModal}
-            >
-              {tmpProvenceCodes && tmpProvenceCodes.map((item,index)=>{
-                return (<div key={index} >
-                  <div className={styles.provinceName} >{item[0].provinceName}</div>
-                  {item && item.map((e,i)=>{
-                    return (<Link to={`/monitor/singleStation/${e.stationCode}`} key={i} className={styles.eachLink} onClick={()=>this.setState({showStationList:false})} >
-                    <div key={e.stationCode} className={(singleStationData && singleStationData.stationName)===e.stationName ? styles.currentStationName : styles.stationName}   >{e.stationName}</div>
-                    </Link>)
-                  })}
-                </div>)
-              })}
-            </Modal> */}
             {showStationList && <ChangeStation stations={stationList} stationName={singleStationData.stationName} baseLinkPath={baseLinkPath} hideStationChange={this.hideDeviceChange} />}
             <div onClick={this.showStationList} className={styles.stationToggle}  id="stationToggle" ><Icon type="swap" /><h3>{singleStationData && singleStationData.stationName}</h3></div>
             <span>电站状态：{singleStationData && singleStationData.stationStatus && singleStationData.stationStatus.stationStatusName}</span>
             {singleStationData && singleStationData.stationStatus && singleStationData.stationStatus.stationStatus !== "400" && <span>时间：{stationStatusTime}</span>}
           </div>
-          <Icon type="arrow-left" className={styles.backIcon} />
+          <Link to={pathAllStation}  >
+            <Icon type="arrow-left" className={styles.backIcon}  />
+          </Link>
         </div>
         <div className={styles.trueTimeData} >
           <div className={styles.pvlogo} ><i  className="iconfont icon-pvlogo" ></i></div>
@@ -98,7 +77,7 @@ class PvStationTop extends Component {
             <div  className={styles.trueTimeDesc}><span>实时功率 MW</span><span>装机容量 MW</span></div>
           </div>
           <div><div className={styles.trueTimeValue}>{singleStationData && singleStationData.stationUnitCount || 0}</div><div className={styles.trueTimeUnit}>装机台数 台</div></div>
-          <div><div className={styles.trueTimeValue} style={{color: "#e08031"}}>{singleStationData && singleStationData.instantaneous ||0}</div><div className={styles.trueTimeUnit}>瞬时辐照 w/m<sup>2</sup></div></div>
+          <div><div className={styles.trueTimeValue} style={{color: "#e08031"}}>{singleStationData && parseFloat(singleStationData.instantaneous).toFixed(2) ||0}</div><div className={styles.trueTimeUnit}>瞬时辐照 w/m<sup>2</sup></div></div>
           <div><div className={styles.trueTimeValue} style={{color: "#e08031"}}>{singleStationData && singleStationData.dayResources || 0}</div><div className={styles.trueTimeUnit}>日曝辐值 MJ/m<sup>2</sup></div></div>
           <div><div className={styles.trueTimeValue}>{singleStationData && singleStationData.dayPower && parseFloat(singleStationData.dayPower).toFixed(2) || 0}</div><div className={styles.trueTimeUnit}>日发电量 万kWh</div></div>
           <div><div className={styles.trueTimeValue}>{singleStationData && singleStationData.monthPower || 0}</div><div className={styles.trueTimeUnit}>月发电量 万kWh</div></div>

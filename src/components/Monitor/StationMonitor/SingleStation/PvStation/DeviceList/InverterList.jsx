@@ -4,14 +4,15 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './deviceList.scss';
 import { Tabs, Switch, Radio, Table, Progress  } from 'antd';
-import CommonPagination from '../../../../../Common/CommonPagination';
+import { Link } from 'react-router-dom';
 
 const TabPane = Tabs.TabPane;
 class InverterList extends Component {
   static propTypes = {
     inverterList: PropTypes.object,
-    // getInverterList: PropTypes.func,
+    match: PropTypes.object,
     loading: PropTypes.bool,
+    deviceTypeCode: PropTypes.number,
   }
 
   constructor(props){
@@ -22,13 +23,6 @@ class InverterList extends Component {
       alarmSwitch: false,
     }
   }
-
-  onPaginationChange = ({currentPage,pageSize}) => {//分页器
-    // const { stationCode } = this.props.match.params;
-    // this.props.getInverterList({ 
-    // })
-  }
-
   
   onChangeStatus = (e) => {
     const statusValue = e.target.value;
@@ -88,12 +82,15 @@ class InverterList extends Component {
     }
   }
   tableColumn = () => {
+    const baseLinkPath = "/hidden/monitorDevice";
+    const { stationCode } = this.props.match.params;
+    const { deviceTypeCode, } = this.props;
     const columns = [
       {
         title: '设备编号',
         dataIndex: 'deviceCode',
         key: 'deviceCode',
-        render: (text, record, index) => (<a href={'javascript:void(0)'} onClick={() => this.showUserDetail(record)} >{text}</a>)
+        render: (text, record, index) => (<div className={record.deviceStatus === 900 ? styles.deviceCode : ""} ><Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${record.deviceCode}` }  >{text}</Link></div>)
       }, {
         title: '所属设备',
         dataIndex: 'parentDeviceName',
@@ -133,7 +130,7 @@ class InverterList extends Component {
   }
   
   render(){
-    const { inverterList, loading } = this.props;
+    const { inverterList, loading, deviceTypeCode, } = this.props;
     const {tmpDeviceList, } = this.state;
     const deviceList = inverterList && inverterList.deviceList;
     const initDeviceList = deviceList && deviceList.map((e,i)=>({...e,key:i}));
@@ -171,21 +168,32 @@ class InverterList extends Component {
       position: 'top',
       size: 'small',
     }
+    
+    const baseLinkPath = "/hidden/monitorDevice";
+    const { stationCode } = this.props.match.params;
+
     return (
       <div className={styles.inverterList} >
         <Tabs defaultActiveKey="1" className={styles.inverterTab} tabBarExtraContent={operations}>
           <TabPane tab={<span><i className="iconfont icon-grid" ></i></span>} key="1" className={styles.inverterBlockBox} >
             {(tmpParentDeviceCodes&&tmpParentDeviceCodes.length>0) ? tmpParentDeviceCodes.map((e,index)=>{
               return (<div key={index}>
-                <div className={styles.parentDeviceName} >{e[0].parentDeviceName}</div>
+                <div className={styles.parentDeviceName} >{e && e[0].parentDeviceName}</div>
                 {e && e.map(item=>{
-                  return (<div key={item.deviceCode} className={styles.inverterItem}>
-                    <div className={styles.inverterItemIcon} ><i className="iconfont icon-nb" ></i>{item.alarmNum && <i className="iconfont icon-alarm" ></i>}</div>
-                    <div className={styles.inverterItemR} >
-                      <div>{item.deviceName}</div>
-                      <Progress className={styles.powerProgress} strokeWidth={4} percent={item.devicePower/item.deviceCapacity*100} showInfo={false} />
-                      <div className={styles.inverterItemPower}><div>{item.devicePower}KW</div><div>{item.deviceCapacity}KW</div></div>
+                  return (<div key={item.deviceCode} className={item.deviceStatus === 900 ? styles.cutOverItem : styles.inverterItem} >
+                    <div className={styles.inverterItemIcon} >
+                      <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${item.deviceCode}`}  >
+                        <i className="iconfont icon-nb" ></i>
+                      </Link>
+                      {item.alarmNum>0 && <i className="iconfont icon-alarm" ></i>}
                     </div>
+                    <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${item.deviceCode}`}  >
+                      <div className={styles.inverterItemR} >
+                        <div>{item.deviceName}</div>
+                        <Progress className={styles.powerProgress} strokeWidth={4} percent={item.devicePower/item.deviceCapacity*100} showInfo={false} />
+                        <div className={styles.inverterItemPower}><div>{parseFloat(item.devicePower).toFixed(2)}KW</div><div>{parseFloat(item.deviceCapacity).toFixed(2)}KW</div></div>
+                      </div>
+                    </Link>
                   </div>);
                 })}
               </div>);
