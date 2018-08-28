@@ -14,8 +14,8 @@ class ALarmAllStationStatistic extends React.Component {
     endTime: PropTypes.string,
     getStationsAlarmStatistic: PropTypes.func,
   }
-  constructor(props, context) {
-    super(props, context);
+  constructor(props) {
+    super(props);
   }
 
   componentDidMount() {
