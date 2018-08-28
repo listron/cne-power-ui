@@ -47,11 +47,14 @@ class WindStationList extends React.Component {
         title: "电站名称",
         dataIndex: "stationName",
         onFilter: (value, record) => record.stationName.indexOf(value) === 0,
-        sorter: (a, b) => a.stationName.length - b.stationName.length,
+        sorter: (a, b) => a.stationName.localeCompare(b.stationName),
         render: (value, record, index) => {
           return {
             children: (
-              <div className={styles.stationName}>{record.stationName}</div>
+              <a target="_blank" href={`#/monitor/singleStation/${record.key}`}>
+               <div className={styles.stationName}>{record.stationName}</div>
+               </a>
+             
             )
           }
         }

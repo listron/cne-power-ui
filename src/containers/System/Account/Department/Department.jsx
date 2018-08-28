@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import TransitionContainer from '../../../../components/Common/TransitionContainer';
 import DepartmentMain from '../../../../components/System/Account/Department/DepartmentMain/DepartmentMain';
 import DepartmentSide from '../../../../components/System/Account/Department/DepartmentSide/DepartmentSide';
-import { getCookie } from '../../../../utils';
+import Cookie from 'js-cookie';
 
 class Department extends Component {
   static propTypes = {
@@ -97,9 +97,9 @@ const mapStateToProps = (state) => ({
     departmentUser: state.system.department.get('departmentUser'),
     DepartmentStation: state.system.department.get('DepartmentStation'),
     // stations: state.common.get('stations'),
-    enterpriseId: getCookie('enterpriseId'),
-    userId: getCookie('userId'),
-    enterpriseName: getCookie('enterpriseName'),
+    enterpriseId: Cookie.get('enterpriseId'),
+    userId: Cookie.get('userId'),
+    enterpriseName: Cookie.get('enterpriseName'),
 });
 
 const mapDispatchToProps = (dispatch) => ({

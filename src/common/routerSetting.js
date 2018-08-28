@@ -76,6 +76,10 @@ const routers = [
     path: '/monitor/alarm/statistic',
     exact: true,
     component: AlarmStatistic,
+  }, {
+    path: '/monitor/alarm/statistic/:stationCode',
+    exact: true,
+    component: AlarmStatistic,
   },{
     path: '/monitor/station',
     exact: true,

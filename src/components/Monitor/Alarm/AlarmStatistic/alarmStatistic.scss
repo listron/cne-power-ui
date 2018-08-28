@@ -1,23 +1,147 @@
-
-.alarmStatistTabs{
-  background: #fff;
+@import '../../../../theme/theme.scss';
+.alarmStatistTabs {
+  background-color: #fff;
+  :global {
+    .ant-tabs-bar {
+      background-color: #f8f8f8;
+      margin-bottom: 0px;
+    }
+  }
 }
-
-
 .alarmStatisticType{
-
- background: #fff;
-  height: 100%;
-  margin: 30px;
-
-
-
-.pagination{
-      width: 1210px;
-      height: 45px;
+  background-color: #fff;
+  .alarmStatisticTable {
+    margin-top: 10px;
+    .pagination{
       display: flex;
+      flex-direction: row;
       justify-content: flex-end;
-      line-height: 45px;
+      margin-bottom: 10px;
+    }
+  }
+  .filter {
+    height: 80px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding-left: 32px;
+    .stationType {
+      margin: 0 16px;
+    }
+  }
+  .filterBox {
+    margin-top: -20px;
+    margin-bottom: 10px;
+    padding: 0 32px;
+    .datePicker {
+      margin-top: 10px;
+      display: flex;
+      flex: 1;
+      flex-shrink: 0;
+      min-height: 40px;
+      border-radius: 4px;
+      background-color: #f0f2f5;
+      align-items: center;
+      padding: 5px 26px;
+    }
+    :global {
+      .ant-tabs-bar {
+        background-color: #f0f2f5;
+        margin-bottom: 0px;
+      }
+    }
+  }
 }
 
+.singleAlarmStatistic {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  background-color: #fff;
+  .title {
+    display: flex;
+    position: relative;
+    flex-direction: row;
+    padding-left: 28px;
+    height: 60px;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid $promptColor;
+    .titleLeft {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+    }
+    .stationName {
+      .icon {
+        color: $themeColor;
+        margin-right: 15px;
+        font-size: 18px;
+      }
+      >span {
+        font-size: 18px;
+        color: $darkColor;
+      }
+    }
+    .stationStatus {
+      margin-left: 50px;
+      color: $lightColor;
+    }
+    .backIcon{
+      border-left: 1px solid #dfdfdf;
+      width: 60px;
+      line-height: 60px;
+      text-align: center;
+      color: $darkColor;
+      cursor: pointer;
+    }
+  }
+  .filter {
+    display: flex;
+    flex-direction: row;
+    padding-left: 28px;
+    height: 60px;
+    align-items: center;
+    border-bottom: 1px solid $promptColor;
+    .duration {
+      margin: 0 16px;
+    }
+  }
+  .alarmSummary {
+    display: flex;
+    flex-direction: row;
+    padding-left: 28px;
+    height: 100px;
+    align-items: center;
+    border-bottom: 1px solid $promptColor;
+    :global {
+      .icon-summary {
+        font-size: 24px;
+        color: $themeColor;
+        margin-right: 48px;
+      }
+    }
+    .summaryItem {
+      display: flex;
+      flex-direction: column;
+      margin-right: 30px;
+      .alarmNum {
+        font-size:24px;
+        color: $themeColor;
+        opacity: 0.74;
+      }
+      .alarmText {
+        font-size: 14px;
+        color: #999;
+      }
+    }
+  }
+  .singleStationTable {
+    .pagination{
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-end;
+      margin-bottom: 10px;
+    }
+  }
 }
