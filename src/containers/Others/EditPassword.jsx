@@ -1,37 +1,34 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-// import styles from './loginLayout.scss';
-// import ForgetForm from '../../components/Login/ForgetForm';
+import styles from './editPassword.scss';
 import EditPasswordForm from '../../components/Others/EditPasswordForm';
-import { loginAction } from '../../constants/actionTypes/loginAction';
+import { otherAction } from '../../constants/actionTypes/otherAction';
 import { connect } from 'react-redux';
-import Cookie from 'js-cookie';
 
 class EditPassword extends Component {
-  static propTypes = {
-    editPassword: PropTypes.func,
-  }
 
   constructor(props) {
     super(props);
   }
 
   render() {
-    const userName = Cookie.get('username');
+    console.log(this.props)
     return (
-      <div>
-        <EditPasswordForm />
+      <div className={styles.editPassword}>
+        <div className={styles.editTitle}>修改密码</div>
+        <div className={styles.editContent}>
+          <EditPasswordForm {...this.props} />
+        </div>
       </div>
     );
   }
 }
 
 const mapStateToProps = (state) => ({
-  
-})
+  loading: state.otherReducer.get('loading')
+});
 
 const mapDispatchToProps = (dispatch) => ({
-  editPassword: params => dispatch({ type: loginAction.SEND_CODE_SAGA, params}),
+  editPassword: payload => dispatch({ type: otherAction.EDIT_PASSWORD_SAGA, payload, }),
 })
 
 export default connect(mapStateToProps,mapDispatchToProps)(EditPassword);

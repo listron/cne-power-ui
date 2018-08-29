@@ -137,7 +137,7 @@ export default {
       
     },
     other: {
-      editPassword: './v3/', // 更变密码
+      editPassword: '/v3/user/password', // 更变密码
     }
     // monitor:{
     //   getStationType:'v3/monitor/stations/stationType',
