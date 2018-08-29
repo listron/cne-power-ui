@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Form, Icon, Input, Button, Modal, Card } from 'antd';
+import {Form, Icon, Input, Button, Modal,Checkbox, Card } from 'antd';
 import PropTypes from 'prop-types';
 import styles from './joinInForm.scss';
 
@@ -194,7 +194,7 @@ class JoinInForm extends Component{
             </Form> 
           : 
           <div className={styles.inviteUser} >
-            <div><img src={enterpriseLogo} /></div>
+            <div className={styles.enterpriseLogo} ><img src={enterpriseLogo} width="60px" height="60px" /></div>
             <div>{enterpriseName}</div>
             {/* <div className={styles.inviteTip}>企业邀请用户，<span>7天内有效</span></div> */}
           </div>
@@ -210,7 +210,7 @@ class JoinInForm extends Component{
                       {pattern: /(^1\d{10}$)/, message: '手机号格式不对'}
                     ]
                   })(
-                    <Input prefix={<Icon type="mobile" />}  placeholder="请输入手机号" />
+                    <Input addonBefore={<i className="iconfont icon-phone"></i>}  placeholder="请输入手机号" />
                   )}
                 </FormItem>
               </div>
@@ -219,7 +219,7 @@ class JoinInForm extends Component{
                   {getFieldDecorator('verificationCode',{
                     rules: [{required: true, message: '请输入验证码'}]
                   })(
-                    <Input className={styles.testCode} prefix={<Icon type="lock" />} placeholder="验证码" />
+                    <Input className={styles.testCode} addonBefore={<i className="iconfont icon-password"></i>} placeholder="验证码" />
                   )}
                 </FormItem>
                 <Button  className={timeValue !== 0 ? styles.queryCodeClick : styles.queryCode} type="primary" disabled={timeValue !== 0} onClick={this.sendCode} >
@@ -234,8 +234,7 @@ class JoinInForm extends Component{
           </div>
         }
         {joinStep === 3 &&
-          <div>
-            <span>{enterpriseName}</span>
+          <div className={styles.userInfo} >
             <Form onSubmit={this.onJoinEnterprise}  >
               <FormItem label="用户名" {...formItemLayout}>
                 {getFieldDecorator('username', {
@@ -244,7 +243,7 @@ class JoinInForm extends Component{
                     {min: 3, max: 8, message: '请输入3到8位中文、英文、数字'}
                   ]
                 })(
-                  <Input prefix={<Icon type="user" />} placeholder="3-8位中文、英文、数字都可" />
+                  <Input addonBefore={<i className="iconfont icon-user"></i>} placeholder="请输入用户名" />
                 )}
               </FormItem>
               <FormItem label="创建密码" {...formItemLayout}>
@@ -254,7 +253,7 @@ class JoinInForm extends Component{
                     {pattern: /^[a-zA-Z\d]{6,8}$/, message: '请输入6-8位数字或英文' }
                   ]
                 })(
-                  <Input prefix={<Icon type="lock" />} type="password" placeholder="6-8位数字或英文" />
+                  <Input addonBefore={<i className="iconfont icon-password"></i>} type="password" placeholder="6-8位数字或英文" />
                 )}
               </FormItem>
               <FormItem label="确认密码" {...formItemLayout}>
@@ -264,7 +263,14 @@ class JoinInForm extends Component{
                     {validator: this.compareToFirstPassword}
                   ]
                 })(
-                  <Input prefix={<Icon type="lock" />} type="password" placeholder="请再次输入" />
+                  <Input addonBefore={<i className="iconfont icon-password"></i>} type="password" placeholder="请再次输入" />
+                )}
+              </FormItem>
+              <FormItem {...tailFormItemLayout} >
+                {getFieldDecorator('userAgreement', {
+                  valuePropName: 'checked',
+                })(
+                  <Checkbox className={styles.userArgee}  >同意<a href="#" >用户协议</a></Checkbox>
                 )}
               </FormItem>
               <FormItem {...tailFormItemLayout} >

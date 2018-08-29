@@ -272,6 +272,7 @@ class UserList extends Component {
     }else if(value === 'delete'){//移除
       this.setState({
         showDeleteTip: true,
+        warningText: ''
       })
     }else if(value === 'use'){//启用
       this.props.changeUserStatus({

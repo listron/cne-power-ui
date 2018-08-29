@@ -240,16 +240,14 @@ class RegisterForm extends Component {
                       {max: 30, message: '企业名称最长不超过30个字符'},
                     ]
                   })(
-                    <Input placeholder="请输入企业名称" />
+                    <Input placeholder="请输入企业名称" style={{width: '160px'}} />
                   )}
                 </FormItem>
                 <FormItem {...tailFormItemLayout} >
                   {getFieldDecorator('userAgreement', {
-                    rules:[
-                      {required: true, message: '请同意用户协议！'},
-                    ]
+                    valuePropName: 'checked',
                   })(
-                    <Checkbox className={styles.userArgee}  >同意<span>用户协议</span></Checkbox>
+                    <Checkbox className={styles.userArgee}  >同意<a className={styles.userAgreement} >用户协议</a></Checkbox>
                   )}
                 </FormItem>
                 <FormItem {...tailFormItemLayout} >
@@ -305,7 +303,7 @@ class RegisterForm extends Component {
     const step = this.props.registerStep - 1;
     return (
       <div className={styles.registerBox} >
-        <Steps current={step}>
+        <Steps current={step}  className={styles.registerStepBox}>
           {steps.map(item => <Step key={item.title} title={item.title} />)}
         </Steps>
         <div className={styles.registerTips} >完善企业信息</div>

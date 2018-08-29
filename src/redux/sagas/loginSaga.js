@@ -38,19 +38,25 @@ function *getLogin(action){
       }),
     });
     if(response.data.code === '10000'){
-      const { data } = response.data
-      data.access_token && Cookie.set('authData',JSON.stringify(data.access_token));
-      data.enterpriseId && Cookie.set('enterpriseId', data.enterpriseId);
-      data.enterpriseName && Cookie.set('enterpriseName', data.enterpriseName);
-      data.enterpriseLogo && Cookie.set('enterpriseLogo', data.enterpriseLogo);
-      data.userId && Cookie.set('userId', data.userId);
-      data.username && Cookie.set('username', data.username);
-      data.userLogo && Cookie.set('userLogo', data.userLogo);
-      data.expires_in && Cookie.set('expireData', moment().add(data.expires_in, 'seconds'));
-      data.refresh_token && Cookie.set('refresh_token', data.refresh_token);
-      Cookie.set('isNotLogin', 0);
-      yield put({ type: loginAction.GET_LOGIN_SUCCESS, data});
-      action.params.history.push('/');  
+      const { data } = response.data;
+      if(data.userEnterpriseStatus === 1 || data.userEnterpriseStatus === 2 || data.userEnterpriseStatus === 3) {
+        data.access_token && Cookie.set('authData',JSON.stringify(data.access_token));
+        data.enterpriseId && Cookie.set('enterpriseId', data.enterpriseId);
+        data.enterpriseName && Cookie.set('enterpriseName', data.enterpriseName);
+        data.enterpriseLogo && Cookie.set('enterpriseLogo', data.enterpriseLogo);
+        data.userId && Cookie.set('userId', data.userId);
+        data.username && Cookie.set('username', data.username);
+        data.userLogo && Cookie.set('userLogo', data.userLogo);
+        data.expires_in && Cookie.set('expireData', moment().add(data.expires_in, 'seconds'));
+        data.refresh_token && Cookie.set('refresh_token', data.refresh_token);
+        Cookie.set('isNotLogin', 0);
+
+        yield put({ type: loginAction.GET_LOGIN_SUCCESS, data});
+        action.params.history.push('/');
+      } else {
+        yield put({ type: loginAction.CHANGE_LOGIN_STORE_SAGA, params: {userEnterpriseStatus: data.userEnterpriseStatus}})
+        message.error(data.userEnterpriseStatus); 
+      }
     } else{
       yield put({ type: loginAction.GET_LOGIN_FAIL, data: response.data }); 
       message.error(response.data.message);       
