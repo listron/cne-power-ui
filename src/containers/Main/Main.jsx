@@ -14,7 +14,7 @@ import { commonAction } from '../../constants/actionTypes/commonAction';
 import TopMenu from '../../components/Layout/TopMenu';
 import SideMenu from '../../components/Layout/SideMenu';
 import LogoInfo from '../../components/Layout/LogoInfo';
-import UserInfo from '../../Components/Layout/UserInfo';
+import UserInfo from '../../components/Layout/UserInfo';
 import Cookie from 'js-cookie';
 
 class Main extends Component {

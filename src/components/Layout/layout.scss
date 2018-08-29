@@ -71,6 +71,9 @@
       overflow-y: auto;
       background:#fbfbfb;
       :global{
+        .iconfont {
+          margin-right:5px;
+        }
         .ant-menu-submenu, .ant-menu-item, .ant-menu-submenu-title {
           &:hover {
             color: $themeColor;

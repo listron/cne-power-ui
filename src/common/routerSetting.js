@@ -35,7 +35,7 @@ const routers = [
     component: Login
   },
   {
-    path: '/operation/ticket',
+    path: '/operation/ticket/list',
     exact: true,
     component: Ticket,
   }, {
