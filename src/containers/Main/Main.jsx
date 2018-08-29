@@ -84,8 +84,7 @@ class Main extends Component {
               <TopMenu setTopMenu={setTopMenu} topMenu={topMenu}  />
             </div>
             <div className={styles.headerRight}>
-              <img width="294px" height="53px" src="/img/topbg02.png" className={styles.powerConfig} />
-              
+              <img width="294px" height="53px" src="/img/topbg02.png" className={styles.powerConfig} />            
             </div>
           </div>
           <div className={styles.appMain}>
@@ -97,7 +96,7 @@ class Main extends Component {
               </Switch>
             </div>
           </div>
-          <FixedHelper />
+          {/* <FixedHelper /> */}
         </div>
       );
     }else{
