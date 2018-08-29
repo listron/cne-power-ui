@@ -17,16 +17,22 @@ function *editPassword(action){ // 修改密码
   const url = '/mock/other/editPassword';
   yield put({ type: otherAction.OTHER_FETCH });
   const { payload } = action;
+  const { userId, oldPassword, newPassword, history } = payload;
   try {
-    const response = yield call(axios.post, url, {
-       ...payload,
+    const response = yield call(axios.put, url, {
+      userId,
+      oldPassword,
+      newPassword,
     });
     if(response.data.code === '10000'){
       yield put({
-        type: otherAction.GET_LOGIN_SUCCESS,
+        type: otherAction.GET_OTHER_FETCH_SUCCESS,
         payload: {}
       });
-      payload.history.push('/'); 
+      message.success('密码更改成功, 2s后将返回首页');
+      setTimeout(()=>{
+        history.push('/monitor/station');
+      },2000)
     } else{
       yield put({ 
         type: otherAction.CHANGE_OTHER_STORE_SAGA, 
