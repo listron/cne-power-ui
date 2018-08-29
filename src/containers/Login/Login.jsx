@@ -42,7 +42,7 @@ class Login extends Component {
           </div>
           <div className={styles.join} onClick={() => this.changePage('joinIn')}>加入企业</div>
         </div>
-        <div className={styles.loginContent}>
+        <div className={styles.loginTab}>
           <Tabs onChange={this.changePage} animated={false} activeKey={pageTab}>
             <TabPane tab="登录" key="login">
               <LoginForm

@@ -27,11 +27,11 @@ class EditForm extends Component {
   saveEnterprise = () =>{
     const { enterpriseId, enterpriseLogo } = this.props;
     this.props.form.validateFieldsAndScroll((error,values)=>{
-      console.log({
-        enterpriseId,
-          ...values,
-          enterpriseLogo
-      })
+      // console.log({
+      //   enterpriseId,
+      //     ...values,
+      //     enterpriseLogo
+      // })
       if(!error){
         this.props.saveEnterpriseInfor({
           enterpriseId,

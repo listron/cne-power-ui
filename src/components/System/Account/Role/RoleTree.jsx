@@ -26,7 +26,7 @@ class RoleTree extends Component {
     });
   }
 
-  onCheck = (checkedKeys) => {
+  onCheck = (checkedKeys, e) => {
     this.props.onChange(checkedKeys.join(','));
   }
 

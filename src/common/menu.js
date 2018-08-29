@@ -13,22 +13,23 @@ import { isUrl } from '../utils';
 */
 
 const menuData = [
+  // {
+  //   name: '首页',
+  //   path: '/',
+  //   defaultPath: true,
+  // },
   {
-    name: '首页',
-    path: '/',
-    defaultPath: true,
-  },{
     name: '实时监控',
     path: 'monitor',
     children: [
       {
         name: '电站监控',
-        iconStyle: 'home',
+        iconStyle: 'icon-monitoring',
         path: 'station',
         defaultPath: true,
       },{
         name: '告警',
-        iconStyle: 'exclamation-circle',
+        iconStyle: 'icon-alarm1',
         path: 'alarm',
         children: [
           {
@@ -50,25 +51,15 @@ const menuData = [
     children: [
       {
         name: '工单',
-        iconStyle: 'calendar',
+        iconStyle: 'icon-gd2',
         path: 'ticket',
-        defaultPath: true,
-      },{
-        name: '缺陷管理',
-        iconStyle: 'paper-clip',
-        path: 'faultManage',
         children: [
           {
-            name: '新建缺陷',
-            path: 'create',
-          },{
-            name: '待办缺陷',
-            path: 'faultTodo',
-          },{
-            name: '缺陷历史',
-            path: 'faultHistory',
+            name: '工单列表',
+            path: 'list',
+            defaultPath: true,
           }
-        ],
+        ]
       }
     ],
   },
@@ -78,25 +69,21 @@ const menuData = [
     children: [
       {
         name: '账户管理',
-        iconStyle: 'home',
+        iconStyle: 'icon-usermanage',
         path: 'account',
         children: [
           {
             name: '企业',
-            iconStyle: 'home',
             path: 'enterprise',
             defaultPath: true,
           },{
             name: '部门',
-            iconStyle: 'usergroup-add',
             path: 'department',
           },{
             name: '用户',
-            iconStyle: 'user-add',
             path: 'user',
           },{
             name: '角色',
-            iconStyle: 'skin',
             path: 'role',
           }
         ]

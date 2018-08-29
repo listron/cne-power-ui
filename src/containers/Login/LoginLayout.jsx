@@ -32,7 +32,6 @@ class LoginLayout extends Component {
               </div>
               <img className={styles.bgPic} src={require('../../../assets/img/bg_01.png')} />
               <span className={styles.comRegisterInfo}>京ICP备12030847号-2 © 2017-2018 北京动力协合科技有限公司</span>
-
             </div>
           </div>
         </div>

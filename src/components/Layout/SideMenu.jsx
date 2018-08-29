@@ -1,7 +1,7 @@
 
 
 import React, { Component } from 'react';
-import { Menu, Icon, Button  } from 'antd';
+import { Menu, Icon } from 'antd';
 import { Link } from 'react-router-dom';
 import styles from './layout.scss';
 import PropTypes from 'prop-types';
@@ -95,10 +95,10 @@ class SideMenu extends Component {
       return (
         <div className={styles.sideLayout}>
           <div className={styles.logo}>
-            <img src="/img/menubg.png" style={{width:55,height:23}} />
-            <Button type="primary" onClick={this.toggleCollapsed}>
-              <Icon type={collapsed ? 'menu-unfold' : 'menu-fold'} />
-            </Button>
+            {!collapsed&&<img src="/img/menubg.png" style={{width:55,height:23}} />}
+            <div className={styles.action}>
+              <Icon style={{marginTop:10}} onClick={this.toggleCollapsed} type={collapsed ? 'menu-unfold' : 'menu-fold'} />
+            </div>
           </div>
           <Menu 
             mode="inline" 
@@ -122,11 +122,11 @@ class SideMenu extends Component {
       if(!e.children || e.children.length === 0){//只有二级目录
         return (
           <Item key={e.path}>
-            <Link to={e.path}>{e.iconStyle && <Icon type={e.iconStyle} />}{collapsed ? null: e.name}</Link>
+            <Link to={e.path}>{e.iconStyle && <i className={`iconfont ${e.iconStyle}`} />}{collapsed ? null: e.name}</Link>
           </Item>
         );
       }else{//有三级目录
-        let menuTitle = <span>{e.iconStyle && <Icon type={e.iconStyle} />}<span>{e.name}</span></span>
+        let menuTitle = <span>{e.iconStyle && <i className={`iconfont ${e.iconStyle}`} />}<span>{e.name}</span></span>
         return (
           <SubMenu title={menuTitle} key={e.path}>
             {e.children.map(m=>{
