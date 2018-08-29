@@ -133,6 +133,9 @@ export default {
       getTicketInfo: '/v3/alarm/worklist/getbyid', //告警工单详情
       getRelieveInfo: '/v3/alarm/getrelievealarm', //屏蔽详情
       
+    },
+    other: {
+      editPassword: './v3/', // 更变密码
     }
     // monitor:{
     //   getStationType:'v3/monitor/stations/stationType',

@@ -13,7 +13,8 @@ function *changeOtherStore(action){
 }
 
 function *editPassword(action){ // 修改密码
-  let url = Path.basePaths.APIBasePath + Path.APISubPaths.login;
+  // const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.other.editPassword}`;
+  const url = '/mock/other/editPassword';
   yield put({ type: otherAction.OTHER_FETCH });
   const { payload } = action;
   try {
@@ -21,12 +22,11 @@ function *editPassword(action){ // 修改密码
        ...payload,
     });
     if(response.data.code === '10000'){
-      const { data } = response.data
-      yield put({ 
+      yield put({
         type: otherAction.GET_LOGIN_SUCCESS,
         payload: {}
       });
-      action.params.history.push('/'); 
+      payload.history.push('/'); 
     } else{
       yield put({ 
         type: otherAction.CHANGE_OTHER_STORE_SAGA, 

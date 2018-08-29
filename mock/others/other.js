@@ -1,11 +1,16 @@
 module.exports = [
   {
-    api:'/home',
+    api:'/mock/other/editPassword',
     method:'put',
     response:{
-      text:'单位有个同事'
+      "code": "10000",
+      "message": "请求成功",
+      "data": {
+        "data": []
+      },
+      "serviceCode": "3.0"
     },
-    delay:3000,
+    delay:1000,
     error:{}
   }
 ]
