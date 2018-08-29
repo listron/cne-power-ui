@@ -14,15 +14,17 @@ import SingleStation from '../containers/Monitor/StationMonitor/SingleStation/Si
 import RealTimeAlarm from '../containers/Monitor/Alarm/RealTimeAlarm';
 import HistoryAlarm from '../containers/Monitor/Alarm/HistoryAlarm';
 import AlarmStatistic from '../containers/Monitor/Alarm/AlarmStatistic';
+import EditPassword from '../containers/Others/EditPassword';
 /*
   注： path变量中，以/hidden开头的路径，将不展示在菜单中；
 */
 const routers = [
+  // {
+  //   path: '/',
+  //   exact: true,
+  //   component: Power
+  // }, 
   {
-    path: '/',
-    exact: true,
-    component: Power
-  }, {
     path: '/404',
     exact: true,
     component: Exception
@@ -92,6 +94,10 @@ const routers = [
     path: '/monitor/singleStation/:stationCode',
     exact: true,
     component: SingleStation,
+  }, {
+    path: '/hidden/user/editPassword',
+    exact: true,
+    component: EditPassword
   }
 ];
 

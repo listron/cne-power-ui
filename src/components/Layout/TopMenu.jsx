@@ -32,11 +32,34 @@ class TopMenu extends Component {
       const selectedKeyName = pathArray.length > 0? `/${pathArray[0]}`:'/';
       this.setState({ selectedKeys:[selectedKeyName] });
     }else if(resetTopMenu){ // 404 页面的跳转重置topMenu至首页
-      this.setState({ selectedKeys: ['/'] });
+      this.setState({ selectedKeys: ['/monitor'] });
       this.props.setTopMenu({ topMenu: {
-        name: '首页',
-        path: '/',
-        defaultPath: true,
+        name: '实时监控',
+        path: '/monitor',
+        children: [
+          {
+            name: '电站监控',
+            iconStyle: 'home',
+            path: '/monitor/station',
+            defaultPath: true,
+          },{
+            name: '告警',
+            iconStyle: 'exclamation-circle',
+            path: '/monitor/alarm',
+            children: [
+              {
+                name: '实时告警',
+                path: '/monitor/alarm/realtime',
+              },{
+                name: '历史告警',
+                path: '/monitor/alarm/history',
+              },{
+                name: '告警统计',
+                path: '/monitor/alarm/statistic',
+              }
+            ],
+          }
+        ]
       }});
     }
   }

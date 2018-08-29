@@ -29,6 +29,9 @@
       }
       .headerRight{
         margin-right: 36px;
+        height: 100%;
+        display: flex;
+        align-items: center;
         .powerConfig{
           margin-left: 16px;
         }
