@@ -74,7 +74,7 @@ class UserSearch extends Component {
     let params = {
       enterpriseId: this.props.enterpriseId,
       userStatus: 0,
-      roleId: '',
+      roleId: this.props.roleId,
       pageNum: this.props.pageNum,
       pageSize: this.props.pageSize,
       username: '',

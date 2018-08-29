@@ -211,4 +211,7 @@
   .ant-select-dropdown.ant-select-dropdown--multiple .ant-select-dropdown-menu-item-selected:after, .ant-select-dropdown.ant-select-dropdown--multiple .ant-select-dropdown-menu-item-selected:hover:after {
     color: $themeColor;
   }
+  .ant-btn:hover, .ant-btn:focus, .ant-btn::selection{
+    color: $themeColor;
+  }
 }

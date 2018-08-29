@@ -5,7 +5,7 @@ import { Table, Button, Select, Icon, Popover, Checkbox, Upload, message } from 
 import CommonPagination from '../../../../Common/CommonPagination';
 import PropTypes from 'prop-types';
 import styles from './userList.scss';
-import Cookie from 'js-cookie';
+import { getCookie } from '../../../../../utils/index.js';
 import Path from '../../../../../constants/path';
 import WarningTip from '../../../../Common/WarningTip';
 
@@ -243,12 +243,13 @@ class UserList extends Component {
       editable = selectedUser.length === 1;
       let newArray = [...new Set(selectedUser.map(e=>this.getEnterpriseStatus(e.enterpriseStatus)))];
       [deletable, usable, unallowable, examinable] = newArray.length < 2 ? [true, true, true, true] : [ false, false, false, false];
-      console.log(selectedUser[0]);
       if(selectedUser[0].enterpriseStatus === 3){//启用
         [usable] = [false];
       }else if(selectedUser[0].enterpriseStatus === 5 || selectedUser[0].enterpriseStatus === 6){//待审核//未通过审核
         [usable, unallowable] = [false, false];
       }else if(selectedUser[0].enterpriseStatus === 4){//禁用
+        [unallowable] = [false];
+      }else if(selectedUser[0].enterpriseStatus === 7){//移除
         [unallowable] = [false];
       }
     }else{
@@ -334,7 +335,7 @@ class UserList extends Component {
   render(){
     const { userData, totalNum, loading, selectedUser } = this.props;
     const { selectedUserColumns,showDeleteTip,showExamineTip,deleteWarningTip,examineWarningTip, } = this.state;
-    const authData = Cookie.get('authData');
+    const authData = getCookie('authData');
     const columns = [
       {
         title: '用户名',
