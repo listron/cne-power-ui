@@ -104,7 +104,10 @@ class AlarmStatisticTable extends React.Component {
     let startRow = (pageNum - 1) * pageSize;
     let endRow = pageNum * pageSize;
     endRow = (endRow > totalNum) ? totalNum : endRow;
-    let data = alarmStatistic.slice(startRow, endRow);
+    let data = alarmStatistic.slice(startRow, endRow).map((item,index)=>{
+      item.key=index;
+      return item;
+    });
     return (
       <div className={styles.alarmStatisticTable}>
         <div className={styles.pagination}>

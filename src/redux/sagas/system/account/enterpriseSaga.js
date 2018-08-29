@@ -1,7 +1,7 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import axios from 'axios';
 import Path from '../../../../constants/path';
-
+import Cookie from 'js-cookie';
 import { enterpriseAction } from '../../../../constants/actionTypes/system/account/enterpriseAction';
 
 //存储payload指定参数，替换reducer-store属性。
@@ -81,6 +81,8 @@ function *saveEnterpriseInfor(action){
     yield put({ type:enterpriseAction.ENTERPRISE_FETCH });
     const response = yield call(axios.put,url,payload);
     if(response.data.code === "10000"){
+      const { enterpriseLogo } = payload;
+      enterpriseLogo && Cookie.set('enterpriseLogo', enterpriseLogo);
       yield put({
         type:  enterpriseAction.GET_ENTERPRISE_DETAIL_SAGA,
         payload:{

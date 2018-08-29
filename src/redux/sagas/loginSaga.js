@@ -38,17 +38,20 @@ function *getLogin(action){
       }),
     });
     if(response.data.code === '10000'){
-      Cookie.set('authData',JSON.stringify(response.data.data.access_token));
-      Cookie.set('enterpriseId', response.data.data.enterpriseId);
-      Cookie.set('enterpriseName', response.data.data.enterpriseName);
-      Cookie.set('userId', response.data.data.userId);
-      Cookie.set('username', response.data.data.username);
-      Cookie.set('expireData', moment().add(response.data.data.expires_in, 'seconds'));
-      Cookie.set('refresh_token', action.params.refresh_token);
+      const { data } = response.data
+      data.access_token && Cookie.set('authData',JSON.stringify(data.access_token));
+      data.enterpriseId && Cookie.set('enterpriseId', data.enterpriseId);
+      data.enterpriseName && Cookie.set('enterpriseName', data.enterpriseName);
+      data.enterpriseLogo && Cookie.set('enterpriseLogo', data.enterpriseLogo);
+      data.userId && Cookie.set('userId', data.userId);
+      data.username && Cookie.set('username', data.username);
+      data.userLogo && Cookie.set('userLogo', data.userLogo);
+      data.expires_in && Cookie.set('expireData', moment().add(data.expires_in, 'seconds'));
+      data.refresh_token && Cookie.set('refresh_token', data.refresh_token);
       Cookie.set('isNotLogin', 0);
-      yield put({ type: loginAction.GET_LOGIN_SUCCESS, data: response.data.data});
-      params.history.push('/');
-    }else{
+      yield put({ type: loginAction.GET_LOGIN_SUCCESS, data});
+      action.params.history.push('/');  
+    } else{
       yield put({ type: loginAction.GET_LOGIN_FAIL, data: response.data }); 
       message.error(response.data.message);       
     }
@@ -88,24 +91,27 @@ function *checkCode(action){
         verificationCode: params.verificationCode,
       }),
     });
-    if(response.data.code === '10000'){ 
-      if(action.params.isNotLogin === 1 || response.data.data.enterpriseId !== null) {
-        Cookie.set('authData',JSON.stringify(response.data.data.access_token));    
-        Cookie.set('username', response.data.data.username);
-        Cookie.set('userId', response.data.data.userId);
-        Cookie.set('enterpriseId', response.data.data.enterpriseId);
-        Cookie.set('enterpriseName', response.data.data.enterpriseName);
-        Cookie.set('expireData', moment().add(response.data.data.expires_in, 'seconds'));
+    if(response.data.code === '10000'){
+      const { data } = response.data
+      if(action.params.isNotLogin === 1 || data.enterpriseId !== null) {
+        data.access_token && Cookie.set('authData',JSON.stringify(data.access_token));
+        data.enterpriseId && Cookie.set('enterpriseId', data.enterpriseId);
+        data.enterpriseName && Cookie.set('enterpriseName', data.enterpriseName);
+        data.enterpriseLogo && Cookie.set('enterpriseLogo', data.enterpriseLogo);
+        data.userId && Cookie.set('userId', data.userId);
+        data.username && Cookie.set('username', data.username);
+        data.userLogo && Cookie.set('userLogo', data.userLogo);
+        data.expires_in && Cookie.set('expireData', moment().add(data.expires_in, 'seconds'));
+        data.refresh_token && Cookie.set('refresh_token', data.refresh_token);
         Cookie.set('isNotLogin', action.params.isNotLogin);
-        Cookie.set('refresh_token', action.params.refresh_token);
       }
-      if(params.isNotLogin === 0 && response.data.data.enterpriseId !== null) {
+      if(params.isNotLogin === 0 && data.enterpriseId !== null) {
         params.history.push('/');
       }
       yield put({
         type: loginAction.CHECK_CODE_SUCCESS,
-        params,//params为请求传入的值
-        data: response.data.data,//data为API返回的值
+        params, //params为请求传入的值
+        data, //data为API返回的值
       });
     }else{
       yield put({ type: loginAction.CHECK_CODE_FAIL, data: response.data })
