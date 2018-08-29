@@ -49,7 +49,9 @@ class RelieveAlarmModal extends Component {
     const { showWarningTip, warningTipText } = this.state;
     return (     
       <Form>
-        {showWarningTip && <WarningTip onOK={this.onRelieveAlarm} value={warningTipText} />}
+        {showWarningTip && <WarningTip 
+          style={{marginTop:'250px',width: '210px',height:'88px'}}
+          onOK={this.onRelieveAlarm} value={warningTipText} />}
         <Modal title="解除告警" className={styles.relieveModal}
           style={{height:630}}
           bodyStyle={{display:'flex',flex:1,flexDirection:'column',padding:24}}

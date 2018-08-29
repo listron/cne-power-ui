@@ -194,9 +194,6 @@
     border-radius:2px;
     color: #999;
   }
-  .ant-btn-primary:hover, .ant-btn-primary:focus{
-    background-color: $themeColor;
-  }
   /*ant-btn-dashed:hover ant-btn-dashed:focus颜色*/
   .ant-btn-dashed:hover,.ant-btn-dashed:focus,.ant-btn-dashed::selection {
     color: $darkColor;
@@ -204,11 +201,5 @@
   /*select下拉框背景色*/
   .ant-select-dropdown-menu-item-active {
     background-color: #f8f8f8;
-  }
-  .ant-select-dropdown.ant-select-dropdown--multiple .ant-select-dropdown-menu-item-selected:after, .ant-select-dropdown.ant-select-dropdown--multiple .ant-select-dropdown-menu-item-selected:hover:after {
-    color: $themeColor;
-  }
-  .ant-btn:hover, .ant-btn:focus, .ant-btn::selection{
-    color: $themeColor;
   }
 }

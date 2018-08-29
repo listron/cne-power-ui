@@ -48,7 +48,9 @@ class TransferAlarmModal extends Component {
     const { showWarningTip, warningTipText } = this.state;
     return (     
       <Form>
-        {showWarningTip && <WarningTip onOK={this.onTransferAlarm} value={warningTipText} />}
+        {showWarningTip && <WarningTip
+          style={{marginTop:'250px',width: '210px',height:'88px'}} 
+          onOK={this.onTransferAlarm} value={warningTipText} />}
         <Modal title="转缺陷工单"
           className={styles.transferModal}
           style={{height:630}}
