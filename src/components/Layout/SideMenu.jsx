@@ -122,11 +122,11 @@ class SideMenu extends Component {
       if(!e.children || e.children.length === 0){//只有二级目录
         return (
           <Item key={e.path}>
-            <Link to={e.path}>{e.iconStyle && <Icon type={e.iconStyle} />}{collapsed ? null: e.name}</Link>
+            <Link to={e.path}>{e.iconStyle && <i className={`iconfont ${e.iconStyle}`} />}{collapsed ? null: e.name}</Link>
           </Item>
         );
       }else{//有三级目录
-        let menuTitle = <span>{e.iconStyle && <Icon type={e.iconStyle} />}<span>{e.name}</span></span>
+        let menuTitle = <span>{e.iconStyle && <i className={`iconfont ${e.iconStyle}`} />}<span>{e.name}</span></span>
         return (
           <SubMenu title={menuTitle} key={e.path}>
             {e.children.map(m=>{
