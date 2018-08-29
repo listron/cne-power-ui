@@ -1,6 +1,9 @@
 @import '../../../../theme/theme.scss';
 .alarmStatistTabs {
   background-color: #fff;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
   :global {
     .ant-tabs-bar {
       background-color: #f8f8f8;

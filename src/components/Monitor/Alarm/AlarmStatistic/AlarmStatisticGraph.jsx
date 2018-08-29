@@ -48,25 +48,22 @@ class AlarmStatisticGraph extends React.Component {
   }
   renderChart(data) {
     const { stationNameData, oneWarningNum, twoWarningNum, threeWarningNum, fourWarningNum, handleAvgTime } = data;
-    //let colors = ['#5793f3', '#d14a61', '#675bba'];
-    //const { stationDataList } = this.props;
     const option = {
-      //color: colors,
       tooltip: {
         trigger: 'axis',
         axisPointer: {            // 坐标轴指示器，坐标轴触发有效
           type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
         },
-        // formatter: (params,handleAvgTime) => {
-        //     // console.log(params,handleAvgTime);
-        //      return `<div>
-        //      <div> ${params[0].name}</div> 
-        //      <div> ${params[0].marker}${params[0].seriesName}${params[0].value}</div>
-        //      <div> ${params[1].marker}${params[1].seriesName}${params[1].value}</div>             
-        //      <div> ${params[2].marker}${params[2].seriesName}${params[2].value}</div>
-        //      <div> ${params[3].marker}${params[3].seriesName}${params[3].value}</div>                
-        //    </div>`
-        //    },
+        formatter: (params) => {
+          return `<div>
+          <div> ${params[0].name}</div> 
+          <div> ${params[0].marker}${params[0].seriesName}${params[0].value}</div>
+          <div> ${params[1].marker}${params[1].seriesName}${params[1].value}</div> 
+          <div> ${params[2].marker}${params[2].seriesName}${params[2].value}</div>
+          <div> ${params[3].marker}${params[3].seriesName}${params[3].value}</div>
+          <div>总计${params[0].value+params[1].value+params[2].value+params[3].value}</div> 
+          </div>`
+          },
         backgroundColor: '#fff',
         textStyle: {
           color: '#999',
@@ -85,22 +82,19 @@ class AlarmStatisticGraph extends React.Component {
         {
           type: 'value',
           name: '天数(天)',
-          min: 0,
-          max: 100,
           position: 'right',
+          min: 0,
+          max: 10,
           axisLine: {
             lineStyle: {
             }
           },
           axisLabel: {
-            formatter: '{value} 天'
           }
         },
         {
           type: 'value',
-          name: '告警个数(个)',
-          min: 0,
-          max: 1500,
+          name: '告警数(个)',
           position: 'left',
           axisLine: {
             lineStyle: {
@@ -108,7 +102,6 @@ class AlarmStatisticGraph extends React.Component {
             }
           },
           axisLabel: {
-            formatter: '{value} 个'
           }
         }
       ],
@@ -121,7 +114,6 @@ class AlarmStatisticGraph extends React.Component {
         {
           name: '平均处理时间',
           type: 'line',
-          // stack: '总量',
           label: {
             normal: {
               show: true,
@@ -194,29 +186,12 @@ class AlarmStatisticGraph extends React.Component {
           yAxisIndex: 1,
           data: fourWarningNum
           //data: [6, 5, 10, 24, 11, 7, 9]
-        },
-        {
-          name: '总计',
-          type: 'bar',
-          stack: '总量',
-          label: {
-            normal: {
-              show: true,
-              position: 'insideRight'
-            }
-          },
-          yAxisIndex: 1,
-          data:oneWarningNum+ twoWarningNum+threeWarningNum+fourWarningNum
         }
 
       ]
     };
 
     this.alarmChart.setOption(option)
-    // this.alarmChart.on('click', (params) => {
-    //   // alert('我要跳转')
-    //   console.log(params, '电站的参数');
-    // });
   }
 
   
@@ -224,7 +199,7 @@ class AlarmStatisticGraph extends React.Component {
     const { graphId } = this.props;
     return (
       <div>
-        <div id={graphId} style={{ width: '1200px', height: '410px' }}> </div>
+        <div id={graphId} style={{ width: '85%', height: '500px' }}> </div>
       </div>
     );
   }

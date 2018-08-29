@@ -208,11 +208,12 @@ class RealTimeAlarmTable extends Component {
     if(alarmStatus===3) {
       return <div></div>;
     }
+    const selectedRowKeys = this.state.selectedRowKeys;
     return (
       <Select onChange={this.onHandle} value="操作" placeholder="操作" dropdownMatchSelectWidth={false} dropdownClassName={styles.handleDropdown}>
-        <Option value="ticket">转工单</Option>
-        <Option value="relieve" disabled={alarmStatus===2}>手动解除</Option>
-        <Option value="resetRelieve" disabled={alarmStatus===1}>取消解除</Option>
+        <Option value="ticket" disabled={selectedRowKeys.length===0}>转工单</Option>
+        <Option value="relieve" disabled={alarmStatus===2||selectedRowKeys.length===0}>手动解除</Option>
+        <Option value="resetRelieve" disabled={alarmStatus===1||selectedRowKeys.length===0}>取消解除</Option>
       </Select>
     );
   }
@@ -220,6 +221,7 @@ class RealTimeAlarmTable extends Component {
   renderTransferModal() {
     return (
       <TransferAlarmModal
+        onCancel={()=>this.setState({showTransferTicketModal:false})}
         onTransferAlarm={this.props.onTransferAlarm}
         defectTypes={this.props.defectTypes}
         selectedRowKeys={this.state.selectedRowKeys}
@@ -230,6 +232,7 @@ class RealTimeAlarmTable extends Component {
   renderRelieveModal() {
     return (
       <RelieveAlarmModal
+        onCancel={()=>this.setState({showRelieveAlarmModal:false})}
         onRelieveAlarm={this.props.onRelieveAlarm}
         selectedRowKeys={this.state.selectedRowKeys}
       />     
