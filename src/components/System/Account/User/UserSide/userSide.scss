@@ -17,6 +17,15 @@
   width: 100%;
   background:#ececec;
   padding: 24px 24px 0;
+  :global{
+    .ant-select-dropdown.ant-select-dropdown--multiple .ant-select-dropdown-menu-item-selected:after, .ant-select-dropdown.ant-select-dropdown--multiple .ant-select-dropdown-menu-item-selected:hover:after {
+      color: $themeColor;
+    }
+    .ant-select-focused .ant-select-selection, .ant-select-selection:focus, .ant-select-selection:active{
+      -webkit-box-shadow: 0 0 0 0;
+      box-shadow: 0 0 0 0;
+    }
+  }
   .addUser,.editUser,.inviteUser{//新建/编辑页
     flex: 1;
     background-color: #fff;

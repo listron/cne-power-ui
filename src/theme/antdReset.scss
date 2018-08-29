@@ -205,13 +205,7 @@
   .ant-select-dropdown-menu-item-active {
     background-color: #f8f8f8;
   }
-  .ant-input,.ant-input:focus, .ant-input:active, .ant-select-focused .ant-select-selection, .ant-select-selection:focus, .ant-select-selection:active {
-    border-color: $themeColor;
-  }
-  .ant-select-dropdown.ant-select-dropdown--multiple .ant-select-dropdown-menu-item-selected:after, .ant-select-dropdown.ant-select-dropdown--multiple .ant-select-dropdown-menu-item-selected:hover:after {
-    color: $themeColor;
-  }
-  .ant-btn:hover, .ant-btn:focus, .ant-btn::selection{
-    color: $themeColor;
-  }
+  
+  
+  
 }

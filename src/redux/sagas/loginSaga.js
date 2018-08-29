@@ -125,13 +125,14 @@ function *phoneCodeRegister(action){
       verificationCode: params.verificationCode,
     });
     if(response.data.code === '00000' || response.data.code === '20001'){
-      yield put({type: loginAction.PHONE_CODE_REGISTER_FAIL, data: response.data})
+      yield put({type: loginAction.PHONE_CODE_REGISTER_FAIL, data: response.data});
+      message.error(response.data.message);
     }else{
-      yield put({type: loginAction.CHECK_CODE_SAGA, params})
+      yield put({type: loginAction.CHECK_CODE_SAGA, params});
       yield put({
         type: loginAction.PHONE_CODE_REGISTER_SUCCESS,
         params,
-      })
+      });
     }
   }catch(e){
     console.log(e);
@@ -143,9 +144,10 @@ function *checkPhoneRegister(action){
   try{
     const response = yield call(axios.get, url);
     if(response.data.code === '10000'){
-      yield put({type: loginAction.CHECK_PHONE_REGISTER_SUCCESS, data: response.data.data})
+      yield put({type: loginAction.CHECK_PHONE_REGISTER_SUCCESS, data: response.data.data});
     }else{
-      yield put({type: loginAction.CHECK_PHONE_REGISTER_FAIL, data: {error: response.data.message}})
+      yield put({type: loginAction.CHECK_PHONE_REGISTER_FAIL, data: {error: response.data.message}});
+      
     }
   }catch(e){
     console.log(e);

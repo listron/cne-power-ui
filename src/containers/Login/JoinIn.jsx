@@ -24,6 +24,7 @@ class JoinIn extends Component {
     error: PropTypes.object,
     history: PropTypes.object,
     isInvite: PropTypes.number,
+    enterpriseLogo: PropTypes.string,
   }
   constructor(props) {
     super(props);
@@ -42,6 +43,7 @@ class JoinIn extends Component {
         </div>
         <JoinInForm 
           enterpriseName={this.props.enterpriseName}
+          enterpriseLogo={this.props.enterpriseLogo}
           enterpriseId={this.props.enterpriseId}
           getEnterpriseInfo={this.props.getEnterpriseInfo}
           sendCode={this.props.sendCode}
@@ -63,6 +65,7 @@ class JoinIn extends Component {
 
 const mapStateToProps = (state) => ({
   enterpriseName: state.login.getIn(['enterpriseInfo','enterpriseName']),
+  enterpriseLogo: state.login.getIn(['enterpriseInfo','enterpriseLogo']),
   enterpriseId: state.login.getIn(['enterpriseInfo','enterpriseId']),
   enterpriseIdToken: state.login.get('enterpriseId'),//命名enterpriseIdToken区别于info里获取的enterpriseId
   joinResult: state.login.get('joinResult'),
