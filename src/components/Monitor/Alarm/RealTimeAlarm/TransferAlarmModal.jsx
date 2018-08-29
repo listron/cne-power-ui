@@ -55,10 +55,6 @@ class TransferAlarmModal extends Component {
           bodyStyle={{display:'flex',flex:1,flexDirection:'column',padding:24}}
           width={625}
           visible={true}
-          okButtonProps={{
-            type: 'default',
-            // htmlType: 'submit'
-          }}
           onOk={this.onSubmit}
           onCancel={this.props.onCancel}>
           <FormItem className={styles.formItem} label="缺陷类型">

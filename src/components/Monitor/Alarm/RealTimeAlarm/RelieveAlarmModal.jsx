@@ -74,10 +74,10 @@ class RelieveAlarmModal extends Component {
                 message: '请输入解除原因'
               }],
             })(
-              <InputLimit placeholder="请输入不超过80字的解除原因..." />
+              <InputLimit style={{marginLeft:-60,marginTop:15}} placeholder="请输入不超过80字的解除原因..." />
             )}
           </FormItem>
-          <div style={{marginLeft:410}} className={styles.instructionText}>注意：保存后，此设备的同类告警在所选时限内均被解除</div>
+          <div className={styles.instructionText}>注意：保存后，此设备的同类告警在所选时限内均被解除</div>
         </Modal>
       </Form>
     );
