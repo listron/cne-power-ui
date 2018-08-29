@@ -105,18 +105,18 @@ class LoginForm extends Component {
         <Form onSubmit={this.onHandleSubmit}>
           {showPasswordLogin &&
           <div>
-            <FormItem>
+            <FormItem className={styles.usernameInput}>
               {getFieldDecorator('username', {
                 rules: [{required: true, message: '请输入手机号/用户名'}]
               })(
-                <Input prefix={<Icon type="user" />} placeholder="请输入手机号/用户名" />
+                <Input addonBefore={<i className="iconfont icon-user"></i>} placeholder="请输入手机号/用户名" />
               )}
             </FormItem>
             <FormItem>
               {getFieldDecorator('password', {
                 rules: [{required: true, message: '请输入密码'}]
               })(
-                <Input prefix={<Icon type="lock" />} type="password" placeholder="请输入密码" />
+                <Input addonBefore={<i className="iconfont icon-password"></i>} type="password" placeholder="请输入密码" />
               )}
             </FormItem>
           </div>
@@ -128,17 +128,16 @@ class LoginForm extends Component {
                 {getFieldDecorator('phoneNum', {
                   rules: [{pattern: /(^1\d{10}$)/, required: true, message: '请输入手机号'}]
                 })(
-                  <Input prefix={<Icon type="mobile" />} placeholder="请输入手机号" />
+                  <Input addonBefore={<i className="iconfont icon-phone"></i>} placeholder="请输入手机号" />
                 )}
               </FormItem>
-              
             </div>
             <div className={styles.checkCodeBox}>
               <FormItem>
                 {getFieldDecorator('verificationCode', {
                   rules: [{required: true, message: '请输入验证码!'}]
                 })(
-                  <Input className={styles.testCode} prefix={<Icon type="lock" />} placeholder="验证码" />
+                  <Input className={styles.testCode} addonBefore={<i className="iconfont icon-password"></i>} placeholder="验证码" />
                 )}
               </FormItem>
               <Button type="primary" disabled={timeValue !== 0} onClick={this.sendCode} className={timeValue !== 0 ? styles.queryCodeClick : styles.queryCode}>

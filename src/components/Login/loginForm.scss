@@ -1,77 +1,102 @@
+@import '../../theme/theme.scss';
 
-.verificationCode{
-  .checkCodeBox{
+
+.loginForm{
+
+  .usernameInput{
+    margin-top: 60px;
+  }
+  .verificationCode{
+    margin-top: 60px;
+    .checkCodeBox{
+      display: flex;
+      justify-content: space-between;
+      width: 200px;
+      .testCode{
+        width: 64px;
+        :global{
+          .ant-input{
+            width:90px;
+          }
+        }
+      }
+      .queryCode{
+        width: 100px;
+        margin-top: 6px;
+        margin-right: 0;
+        padding: 0 5px;
+        height: 30px;
+        :global{
+          button{
+            width: 80px;
+          }
+        }
+        background: #fff;
+        border-color: #199475;
+        color: #199475;
+      }
+      .queryCodeClick{
+        width: 100px;
+        margin-top: 4px;
+        margin-right: 0;
+        padding: 0 5px;
+        height: 30px;
+        :global{
+          button{
+            width: 80px;
+          }
+        }
+        background:#f7f7f7;
+        border:1px solid #dfdfdf;
+        color: #dfdfdf;
+      }
+    }
+  }
+  .loginChange{
+    width: 200px;
     display: flex;
     justify-content: space-between;
-    width: 200px;
-    .testCode{
-      width: 80px;
-      :global{
-        .ant-input{
-          width:90px;
-        }
-      }
-    }
-    .queryCode{
-      width: 100px;
-      margin-top: 4px;
-      margin-right: 0;
-      padding: 0 5px;
-      height: 30px;
-      :global{
-        button{
-          width: 80px;
-        }
-      }
-      background: #fff;
-      border-color: #199475;
-      color: #199475;
-    }
-    .queryCodeClick{
-      width: 100px;
-      margin-top: 4px;
-      margin-right: 0;
-      padding: 0 5px;
-      height: 30px;
-      :global{
-        button{
-          width: 80px;
-        }
-      }
-      background:#f7f7f7;
-      border:1px solid #dfdfdf;
-      color: #dfdfdf;
-    }
-  }
   
-}
-
-.loginChange{
-  width: 200px;
-  display: flex;
-  justify-content: space-between;
-
-  span{
-    font-size: 12px;
-    color:#199475;
-    cursor: pointer;
+    span{
+      font-size: 12px;
+      color:#199475;
+      cursor: pointer;
+    }
+  
   }
-
-}
-
-.loginBtn{
-  display: flex;
-  flex-direction: column;
-  width: 200px;
-  :global{
-    .ant-btn-primary {
-      width: 200px;
+  .loginBtn{
+    display: flex;
+    flex-direction: column;
+    width: 200px;
+    :global{
+      .ant-btn-primary {
+        width: 200px;
+      }
+    }
+    .yiLogin{
+      font-size:14px;
+      color:#199475;
+      text-align: right;
+      cursor: pointer;
     }
   }
-  .yiLogin{
-    font-size:14px;
-    color:#199475;
-    text-align: right;
-    cursor: pointer;
+}
+
+
+
+:global{
+  .ant-input-group-addon{
+    background-color: #f1f1f1;
+    padding: 0 7px;
+  }
+  .ant-input{
+    padding: 4px;
+  }
+  .ant-input:focus {
+    border-color: $themeColor;
+    box-shadow: 0 0 0 0;
+  }
+  .ant-btn:hover, .ant-btn:focus, .ant-btn::selection{
+    color: #fff;
   }
 }

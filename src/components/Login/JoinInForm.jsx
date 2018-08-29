@@ -22,6 +22,7 @@ class JoinInForm extends Component{
     error: PropTypes.object,
     history: PropTypes.object,
     isInvite: PropTypes.number,
+    enterpriseLogo: PropTypes.string,
   }
 
   constructor(props){
@@ -146,7 +147,7 @@ class JoinInForm extends Component{
   }
   render(){
     const { getFieldDecorator, getFieldsError } = this.props.form;
-    const { enterpriseName, joinStep, enterpriseIdToken, isInvite } = this.props;
+    const { enterpriseName, joinStep, enterpriseIdToken, isInvite, enterpriseLogo } = this.props;
     const { showEnterpriseInfo, timeValue } = this.state;
     const formItemLayout = {
       labelCol: {
@@ -193,14 +194,13 @@ class JoinInForm extends Component{
             </Form> 
           : 
           <div className={styles.inviteUser} >
-            <div>企业Logo</div>
-            <div>某某企业名称</div>
-            <div className={styles.inviteTip}>企业邀请用户，<span>7天内有效</span></div>
+            <div><img src={enterpriseLogo} /></div>
+            <div>{enterpriseName}</div>
+            {/* <div className={styles.inviteTip}>企业邀请用户，<span>7天内有效</span></div> */}
           </div>
         }
         {joinStep === 2 && 
-          <div>
-            <span>{enterpriseName}</span>
+          <div className={styles.joinCheckCode} >
             <Form onSubmit={this.phoneCodeRegister} >
               <div>
                 <FormItem>
