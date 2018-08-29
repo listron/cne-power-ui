@@ -400,10 +400,10 @@ class AssignUserModal extends Component {
                   checked={this.getUserChecked(item)}
                   disabled={item.get('userStatus') === 4} />
               }
-              <Avatar size="small">{item.get('username').charAt(0)}</Avatar>
+              <Avatar size="small">{item.get('username')?item.get('username').charAt(0):'c'}</Avatar>
               <span className={styles.userName}>{item.get('username')}</span>
             </div>
-            <div className={styles.deparymentName}>
+            <div className={styles.departmentName}>
               {!disabled && <span className={styles.name} title={item.get('departmentName')}>{item.get('departmentName')}</span>}
               {item.get('userId') === this.props.currentUserId && <span className={styles.me}>我</span>}
             </div>

@@ -198,7 +198,7 @@ class ALarmSingleStationStatistic extends React.Component {
           tab={<i className="iconfont icon-grid"></i>}
           key="graph"
         >
-          {/* <AlarmSingleStationGraph  {...this.props} /> */}
+          <AlarmSingleStationGraph  {...this.props} />
         </TabPane>
         <TabPane
           tab={<i className="iconfont icon-table"></i>}

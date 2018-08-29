@@ -15,7 +15,7 @@ import styles from './style.scss';
 class CommonInput extends Component {
   static propTypes = {
     commonList: PropTypes.object,
-    placeHolder: PropTypes.string,
+    placeholder: PropTypes.string,
     size: PropTypes.number,
     value: PropTypes.string,
     onChange: PropTypes.func,
@@ -57,7 +57,7 @@ class CommonInput extends Component {
       <div className={styles.commonInput}>
         <InputLimit 
           value={this.props.value}
-          placeHolder={this.props.placeHolder}
+          placeholder={this.props.placeholder}
           size={this.props.size}
           width={this.props.width}
           height={this.props.height}
