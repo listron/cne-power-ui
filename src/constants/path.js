@@ -14,7 +14,7 @@ export default {
     getStationDevicetypes: '/v3/station/devicetypes',
     getDevices: '/v3/station/stationdevices',
     getPartitions: '/v3/station/partitions',
-    // getRefreshToken: 'v3/....' --todo 根据过期token中携带的refreshToken获取新token接口。
+    // getRefreshToken: '/v3/oauth/token' --todo 根据过期token中携带的refreshToken获取新token接口。
   },
   APISubPaths: {
     getCompInfo: '/v3/enterprise/domainLogin',
@@ -135,6 +135,9 @@ export default {
       transferAlarm: '/v3/alarm',//告警转工单
       relieveAlarm: '/v3/alarm/relievealarm',//告警转工单
       
+    },
+    other: {
+      editPassword: './v3/', // 更变密码
     }
     // monitor:{
     //   getStationType:'v3/monitor/stations/stationType',
