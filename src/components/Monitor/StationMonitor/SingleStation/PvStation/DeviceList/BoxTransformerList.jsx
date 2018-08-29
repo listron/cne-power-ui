@@ -4,14 +4,13 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './deviceList.scss';
 import { Tabs, Switch, Radio, Table, Progress  } from 'antd';
-import CommonPagination from '../../../../../Common/CommonPagination';
-
+import { Link } from 'react-router-dom';
 const TabPane = Tabs.TabPane;
 
 class BoxTransformerList extends Component {
   static propTypes = {
     boxTransformerList: PropTypes.object,
-    // getInverterList: PropTypes.func,
+    match: PropTypes.object,
     loading: PropTypes.bool,
   }
 
@@ -24,15 +23,8 @@ class BoxTransformerList extends Component {
     }
   }
 
-  onPaginationChange = ({currentPage,pageSize}) => {//分页器
-    // const { stationCode } = this.props.match.params;
-    // this.props.getInverterList({ 
-    // })
-  }
-
   
   onChangeStatus = (e) => {
-    console.log(e);
     const statusValue = e.target.value;
     const { boxTransformerList } = this.props; 
     const { alarmSwitch } = this.state; 
@@ -52,7 +44,6 @@ class BoxTransformerList extends Component {
     const { boxTransformerList } = this.props; 
     const { currentStatus } = this.state; 
     const deviceList = boxTransformerList && boxTransformerList.deviceList && boxTransformerList.deviceList.map((e,i)=>({...e,key:i}));
-    console.log(deviceList);
     let selectedList = [];
     selectedList = e ? deviceList.filter(e=>e.deviceStatus===currentStatus&&e.alarmNum!==null) : deviceList;
     this.setState({
@@ -89,18 +80,21 @@ class BoxTransformerList extends Component {
     }
   }
   tableColumn = () => {
+    const baseLinkPath = "/hidden/monitorDevice";
+    const { stationCode } = this.props.match.params;
+    const { deviceTypeCode, } = this.props;
     const columns = [
       {
         title: '设备编号',
         dataIndex: 'deviceCode',
         key: 'deviceCode',
-        render: (text, record, index) => (<a href={'javascript:void(0)'} onClick={() => this.showUserDetail(record)} >{text}</a>)
+        render: (text, record, index) => (<div className={record.deviceStatus === 900 ? styles.deviceCode : ""} ><Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${record.deviceCode}` }  >{text}</Link></div>)
       }, {
         title: '实时功率(kW)',
         dataIndex: 'devicePower',
         key: 'devicePower',
         render: (text,record) => (<div className={styles.devicePower} >
-          <div>{text}</div>
+          <div>{parseFloat(text).toFixed(2)}</div>
           <Progress className={styles.progressPower} percent={text/record.deviceCapacity*100} showInfo={false} strokeWidth={4}  />
         </div>),
         sorter: (a, b) => a.devicePower - b.devicePower,
@@ -108,7 +102,7 @@ class BoxTransformerList extends Component {
         title: '装机容量(kW)',
         dataIndex: 'deviceCapacity',
         key: 'deviceCapacity',
-        render: (text,record) => (<span>{text}</span>),
+        render: (text,record) => (<span>{parseFloat(text).toFixed(2)}</span>),
         sorter: (a, b) => a.deviceCapacity - b.deviceCapacity,
       }, {
         title: '告警(个)',
@@ -133,18 +127,14 @@ class BoxTransformerList extends Component {
     const deviceList = boxTransformerList && boxTransformerList.deviceList;
     const initDeviceList = deviceList && deviceList.map((e,i)=>({...e,key:i}));
     
-    console.log(initDeviceList);
     let endDeviceList = tmpDeviceList || initDeviceList;
     let parentDeviceCodes = endDeviceList && endDeviceList.map(e=>e.parentDeviceCode);
-    console.log(parentDeviceCodes);
     let parentDeviceCodeSet = new Set(parentDeviceCodes);
     let tmpParentDeviceCodes = [...parentDeviceCodeSet];
-    console.log(tmpParentDeviceCodes);
     tmpParentDeviceCodes.forEach((value,key)=>{
-      console.log(value+''+ key);
       tmpParentDeviceCodes[key] = deviceList.filter(e=>value===e.parentDeviceCode);
     })
-    console.log(tmpParentDeviceCodes);
+    
     const inverterListNum = deviceList && (deviceList.length || 0);
     const deviceStatus = boxTransformerList && boxTransformerList.deviceStatusSummary;
     const deviceStatusNums=deviceStatus && deviceStatus.map(e=>e.deviceStatusNum);
@@ -174,13 +164,13 @@ class BoxTransformerList extends Component {
             {(tmpParentDeviceCodes&&tmpParentDeviceCodes.length>0) ? tmpParentDeviceCodes.map((e,index)=>{
               return (<div key={index}>
                 <div className={styles.parentDeviceName} >{e[0].parentDeviceName}</div>
-                {e && e.map(item=>{
-                  return (<div key={item.deviceCode} className={styles.inverterItem}>
+                {e && e.map((item,i)=>{
+                  return (<div key={i} className={item.deviceStatus === 900 ? styles.cutOverItem : styles.inverterItem}>
                     <div className={styles.inverterItemIcon} ><i className="iconfont icon-xb" ></i>{item.alarmNum && <i className="iconfont icon-alarm" ></i>}</div>
                     <div className={styles.inverterItemR} >
                       <div>{item.deviceName}</div>
                       <Progress className={styles.powerProgress} strokeWidth={4} percent={item.devicePower/item.deviceCapacity*100} showInfo={false} />
-                      <div className={styles.inverterItemPower}><div>{item.devicePower}KW</div><div>{item.deviceCapacity}KW</div></div>
+                      <div className={styles.inverterItemPower}><div>{parseFloat(item.devicePower).toFixed(2)}KW</div><div>{parseFloat(item.deviceCapacity).toFixed(2)}KW</div></div>
                     </div>
                   </div>);
                 })}

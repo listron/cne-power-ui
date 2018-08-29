@@ -42,7 +42,6 @@ class User extends Component {
     }
   }
   componentDidMount() {
-    console.log('componentDidMount')
     const params = {
       enterpriseId: this.props.enterpriseId,
       roleId: this.props.roleId,
@@ -60,7 +59,6 @@ class User extends Component {
   }
 
   componentWillUnmount() {
-    console.log('componentWillUnmount')
     this.props.resetUserState();
   }
 
