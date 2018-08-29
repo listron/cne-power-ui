@@ -59,7 +59,7 @@ class UserList extends Component {
   }
 
   onPaginationChange = ({currentPage,pageSize}) => {//分页器
-    console.log(currentPage,pageSize)
+    // console.log(currentPage,pageSize)
     this.props.getUserList({
       enterpriseId: this.props.enterpriseId,
       userStatus: this.props.userStatus,

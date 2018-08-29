@@ -14,7 +14,7 @@ import { commonAction } from '../../constants/actionTypes/commonAction';
 import TopMenu from '../../components/Layout/TopMenu';
 import SideMenu from '../../components/Layout/SideMenu';
 import LogoInfo from '../../components/Layout/LogoInfo';
-import UserInfo from '../../Components/Layout/UserInfo';
+import UserInfo from '../../components/Layout/UserInfo';
 import Cookie from 'js-cookie';
 
 class Main extends Component {
@@ -56,7 +56,7 @@ class Main extends Component {
     const isTokenValid = moment().isBefore(Cookie.get('expireData'), 'second');
     if(isTokenValid && authData && this.props.history.location.pathname === '/login'
     && Cookie.get('isNotLogin') === '0') {
-      this.props.history.push('/');
+      this.props.history.push('/monitpr/station');
     }
     if(authData && !isTokenValid && refreshToken){
       message.error('token已过期，请刷新页面重新登录后使用');
@@ -99,7 +99,7 @@ class Main extends Component {
             <div className={styles.content} id="main" >
               <Switch>
                 {routerConfig}
-                <Redirect to="/" />
+                <Redirect to="/monitor/station" />
               </Switch>
             </div>
           </div>

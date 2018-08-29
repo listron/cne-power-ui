@@ -15,7 +15,7 @@ class InverterMonitor extends Component {
     }
   }
   componentDidMount(){
-    console.log(this.props.enterpriseId);
+    // console.log(this.props.enterpriseId);
   }
 
   render() {

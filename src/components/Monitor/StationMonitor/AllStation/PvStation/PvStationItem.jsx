@@ -13,7 +13,7 @@ class PvStationItem extends React.Component {
   }
   render() {
     const { stationDataList } = this.props;
-    console.log(stationDataList);
+    // console.log(stationDataList);
 
     return (
       <div>

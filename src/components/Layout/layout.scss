@@ -55,6 +55,13 @@
       flex-direction: row;
       align-items: center;
       justify-content: space-around;
+      .action {
+        height: 23px;
+        width: 20px;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+      }
     }
     .menuList{
       display: flex;
@@ -64,6 +71,9 @@
       overflow-y: auto;
       background:#fbfbfb;
       :global{
+        .iconfont {
+          margin-right:5px;
+        }
         .ant-menu-submenu, .ant-menu-item, .ant-menu-submenu-title {
           &:hover {
             color: $themeColor;
