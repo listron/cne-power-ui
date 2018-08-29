@@ -78,9 +78,9 @@ class RoleTable extends Component {
   createHandleOption = () => {//生成操作下拉框
     const { selectedRole } = this.props;      
     return (
-      <Select disabled={selectedRole.length===0} onChange={this.roleHandle} value="操作" placeholder="操作" dropdownMatchSelectWidth={false} dropdownClassName={styles.handleDropdown}>
-        <Option value="edit" disabled={selectedRole.length>1}>编辑</Option>
-        <Option value="delete">删除</Option>
+      <Select onChange={this.roleHandle} value="操作" placeholder="操作" dropdownMatchSelectWidth={false} dropdownClassName={styles.handleDropdown}>
+        <Option value="edit" disabled={selectedRole.length>1||selectedRole.length===0}>编辑</Option>
+        <Option value="delete" disabled={selectedRole.length===0}>删除</Option>
       </Select>
     );
   }
