@@ -37,17 +37,18 @@ function *getLogin(action){
       }),
     });
     if(response.data.code === '10000'){
-      Cookie.set('authData',JSON.stringify(response.data.data.access_token));
-      Cookie.set('enterpriseId', response.data.data.enterpriseId);
-      Cookie.set('enterpriseName', response.data.data.enterpriseName);
-      Cookie.set('enterpriseLogo', response.data.data.enterpriseLogo);
-      Cookie.set('userId', response.data.data.userId);
-      Cookie.set('username', response.data.data.username);
-      Cookie.set('userLogo', response.data.data.userLogo);
-      Cookie.set('expireData', moment().add(response.data.data.expires_in, 'seconds'));
-      Cookie.set('refresh_token', action.params.refresh_token);
+      const { data } = response.data
+      data.access_token && Cookie.set('authData',JSON.stringify(data.access_token));
+      data.enterpriseId && Cookie.set('enterpriseId', data.enterpriseId);
+      data.enterpriseName && Cookie.set('enterpriseName', data.enterpriseName);
+      data.enterpriseLogo && Cookie.set('enterpriseLogo', data.enterpriseLogo);
+      data.userId && Cookie.set('userId', data.userId);
+      data.username && Cookie.set('username', data.username);
+      data.userLogo && Cookie.set('userLogo', data.userLogo);
+      data.expires_in && Cookie.set('expireData', moment().add(data.expires_in, 'seconds'));
+      data.refresh_token && Cookie.set('refresh_token', data.refresh_token);
       Cookie.set('isNotLogin', 0);
-      yield put({ type: loginAction.GET_LOGIN_SUCCESS, data: response.data.data});
+      yield put({ type: loginAction.GET_LOGIN_SUCCESS, data});
       action.params.history.push('/');
 
       // yield put({ type: loginAction.GET_COMMON_DATA_SAGA});   
@@ -90,27 +91,28 @@ function *checkCode(action){
         verificationCode: action.params.verificationCode,
       }),
     });
-    if(response.data.code === '10000'){ 
-      if(action.params.isNotLogin === 1 || response.data.data.enterpriseId !== null) {
-        Cookie.set('authData',JSON.stringify(response.data.data.access_token));    
-        Cookie.set('username', response.data.data.username);
-        Cookie.set('userId', response.data.data.userId);
-        Cookie.set('userLogo', response.data.data.userLogo);
-        Cookie.set('enterpriseId', response.data.data.enterpriseId);
-        Cookie.set('enterpriseName', response.data.data.enterpriseName);
-        Cookie.set('enterpriseLogo', response.data.data.enterpriseLogo);
-        Cookie.set('expireData', moment().add(response.data.data.expires_in, 'seconds'));
+    if(response.data.code === '10000'){
+      const { data } = response.data
+      if(action.params.isNotLogin === 1 || data.enterpriseId !== null) {
+        data.access_token && Cookie.set('authData',JSON.stringify(data.access_token));
+        data.enterpriseId && Cookie.set('enterpriseId', data.enterpriseId);
+        data.enterpriseName && Cookie.set('enterpriseName', data.enterpriseName);
+        data.enterpriseLogo && Cookie.set('enterpriseLogo', data.enterpriseLogo);
+        data.userId && Cookie.set('userId', data.userId);
+        data.username && Cookie.set('username', data.username);
+        data.userLogo && Cookie.set('userLogo', data.userLogo);
+        data.expires_in && Cookie.set('expireData', moment().add(data.expires_in, 'seconds'));
+        data.refresh_token && Cookie.set('refresh_token', data.refresh_token);
         Cookie.set('isNotLogin', action.params.isNotLogin);
-        Cookie.set('refresh_token', action.params.refresh_token);
       }
-      if(action.params.isNotLogin === 0 && response.data.data.enterpriseId !== null) {
+      if(action.params.isNotLogin === 0 && data.enterpriseId !== null) {
         action.params.history.push('/');
       }
       yield put({
         type: loginAction.CHECK_CODE_SUCCESS,
         params: {
           ...params,
-          data: response.data.data,
+          data,
         },    
       });
     }else{

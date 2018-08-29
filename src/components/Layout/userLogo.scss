@@ -1,3 +1,45 @@
+
 .layoutUser{
-  margin-right: 20px;
+  height: 100%;
+  .layoutUserContent{
+    max-width: 120px;
+    min-width: 80px;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .userLogo{
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background:#c7ceb2;
+      color: #fff;
+      text-align: center;
+      margin-right: 4px;
+      line-height: 30px;
+    }
+    .username{
+      color: #fff;
+      margin-right: 4px;
+    }
+    .downIcon{
+      font-size: 14px;
+      color: #fff;
+    }
+  }
+}
+.layoutUserDropdown{
+  background:#3e97d1;
+  padding: 0;
+  margin-top: -4px;
+  .innerItem{
+    height: 50px;
+    line-height: 50px;
+    color:#fff;
+    text-align: center;
+    padding: 0;
+  }
+  .innerItem:hover{
+    background-color: rgba(0,13,52,0.20);
+  }
 }

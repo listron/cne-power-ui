@@ -81,7 +81,8 @@ function *saveEnterpriseInfor(action){
     yield put({ type:enterpriseAction.ENTERPRISE_FETCH });
     const response = yield call(axios.put,url,payload);
     if(response.data.code === "10000"){
-      Cookie.set('enterpriseLogo', payload.enterpriseLogo);
+      const { enterpriseLogo } = payload;
+      enterpriseLogo && Cookie.set('enterpriseLogo', enterpriseLogo);
       yield put({
         type:  enterpriseAction.GET_ENTERPRISE_DETAIL_SAGA,
         payload:{
