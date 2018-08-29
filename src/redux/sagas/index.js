@@ -61,6 +61,8 @@ import { watchDeviceMonitor } from './monitor/stationMonitor/deviceMonitorSaga';
 import {watchStationMonitor} from './monitor/stationMonitor/stationMonitorSaga';
 import {watchAlarmMonitor} from './monitor/alarmSaga';
 
+import { watchOtherSaga } from './otherSaga';
+
 // root saga
 export default function* rootSaga() {
   yield all([
@@ -117,6 +119,8 @@ export default function* rootSaga() {
     watchStationMonitor(),
     watchDeviceMonitor(),
     watchSingleStationMonitor(),
-    watchAlarmMonitor()
+    watchAlarmMonitor(),
+    // 无逻辑关系隐藏页面
+    watchOtherSaga()
   ])
 }

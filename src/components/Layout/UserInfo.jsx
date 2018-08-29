@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import { Dropdown, Menu, Icon } from 'antd';
 import { withRouter } from 'react-router-dom'
 import Cookie from 'js-cookie';
-import Proptypes from 'prop-types';
+import PropTypes from 'prop-types';
 import styles from './userLogo.scss';
 
 class UserInfo extends Component{
   static propTypes = {
-    history: Proptypes.object,
+    history: PropTypes.object,
   }
 
   constructor(props){
@@ -15,7 +15,7 @@ class UserInfo extends Component{
   }
 
   editPassword = () => {
-    console.log(this.props.history)
+    this.props.history.push('/hidden/user/editPassword');
   }
 
   logout = () => { // 删除登录凭证并退出。
@@ -35,8 +35,6 @@ class UserInfo extends Component{
   render(){
     const username = Cookie.get('username');
     const userLogo = Cookie.get('userLogo');
-    console.log(userLogo)
-    console.log(typeof userLogo)
     const defaultUserLogo = username && username[0];
     const DropdowMenu = (
       <Menu className={styles.layoutUserDropdown}>

@@ -155,7 +155,10 @@ function *getPartition(action){
     const { payload } = action;
     const url = '';
     try{
-      const response = yield call(axios.post, url ,payload)
+      const response = yield call(axios.post, url ,{
+        grant_type: 'refresh_token',
+        payload
+      })
       if(response.data.code === '10000'){
         const { data } = response.data;
         data.access_token && Cookie.set('authData',JSON.stringify(data.access_token));

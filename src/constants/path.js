@@ -14,7 +14,7 @@ export default {
     getStationDevicetypes: '/v3/station/devicetypes',
     getDevices: '/v3/station/stationdevices',
     getPartitions: '/v3/station/partitions',
-    // getRefreshToken: 'v3/....' --todo 根据过期token中携带的refreshToken获取新token接口。
+    // getRefreshToken: '/v3/oauth/token' --todo 根据过期token中携带的refreshToken获取新token接口。
   },
   APISubPaths: {
     getCompInfo: '/v3/enterprise/domainLogin',

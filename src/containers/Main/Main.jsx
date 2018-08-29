@@ -9,7 +9,7 @@ import { connect } from 'react-redux';
 import Login from '../Login/LoginLayout';
 import PropTypes from 'prop-types';
 import axios from 'axios';
-import FixedHelper from '../../components/Common/FixedHelper/FixedHelper';
+// import FixedHelper from '../../components/Common/FixedHelper/FixedHelper'; 暂不实现。
 import { commonAction } from '../../constants/actionTypes/commonAction';
 import TopMenu from '../../components/Layout/TopMenu';
 import SideMenu from '../../components/Layout/SideMenu';
@@ -60,7 +60,10 @@ class Main extends Component {
     }
     if(authData && !isTokenValid && refreshToken){
       message.error('token已过期，请刷新页面重新登录后使用');
-      // this.props.refreshToken({ refreshToken })
+      // this.props.refreshToken({ 
+      //   grant_type: 'refresh_token',
+      //   refresh_token:refreshToken
+      // })
     }
     if(nextProps.login.size > 0 && this.props.login.size === 0) {    
       this.props.getStations();
@@ -100,7 +103,7 @@ class Main extends Component {
               </Switch>
             </div>
           </div>
-          <FixedHelper />
+          {/* <FixedHelper /> */}
         </div>
       );
     }else{
