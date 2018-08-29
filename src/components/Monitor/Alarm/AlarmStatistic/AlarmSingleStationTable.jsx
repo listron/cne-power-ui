@@ -48,16 +48,16 @@ class AlarmSingleStationTable extends React.Component {
       },
       {
         title: "未转工单数",
-        dataIndex: "secondLevelAlarm",
-        key: "secondLevelAlarm",
-        sorter: (a, b) => a.secondLevelAlarm - b.secondLevelAlarm,
+        dataIndex: "noTransferWorkAlarmNum",
+        key: "noTransferWorkAlarmNum",
+        sorter: (a, b) => a.noTransferWorkAlarmNum - b.noTransferWorkAlarmNum,
 
       },
       {
         title: "转工单率",
-        dataIndex: "threeWarningNum",
-        dataIndex: "threeWarningNum",
-        sorter: (a, b) => a.threeWarningNum - b.threeWarningNum
+        dataIndex: "transferWorkRate",
+        dataIndex: "transferWorkRate",
+        sorter: (a, b) => a.transferWorkRate - b.transferWorkRate
       }
     ];
     return columns;
@@ -71,13 +71,20 @@ class AlarmSingleStationTable extends React.Component {
     let startRow = (pageNum - 1) * pageSize;
     let endRow = pageNum * pageSize;
     endRow = (endRow > totalNum) ? totalNum : endRow;
-    let data = singleAlarmStatistic.slice(startRow, endRow);
+    let data = singleAlarmStatistic.slice(startRow, endRow).map((item,index)=>{
+      item.key=index;
+      return item;
+    });
     return (
       <div className={styles.singleStationTable}>
         <div className={styles.pagination}>
           <CommonPagination total={totalNum} onPaginationChange={this.onPaginationChange} />
         </div>
-        <Table columns={this.renderColumn()} dataSource={data} onChange={this.onChange} pagination={false} />
+        <Table 
+          columns={this.renderColumn()} 
+          dataSource={data} 
+          onChange={this.onChange} 
+          pagination={false} />
       </div>
     );
   }
