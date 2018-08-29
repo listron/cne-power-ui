@@ -24,7 +24,7 @@ class PvStationList extends React.Component {
     })
   }
    onChange=(pagination, filters, sorter)=> {
-    console.log("params", pagination, filters, sorter);
+    // console.log("params", pagination, filters, sorter);
   }
 
  

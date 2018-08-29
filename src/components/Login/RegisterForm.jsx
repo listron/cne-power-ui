@@ -60,7 +60,7 @@ class RegisterForm extends Component {
           }
         }, 500);
         this.props.checkEnterpriseDomain({
-          enterpriseDomain: values.enterpriseDomain+'.cneclound.com',
+          enterpriseDomain: values.enterpriseDomain+'.cnecloud.com',
           enterpriseName: values.enterpriseName,
         });
       }
@@ -227,7 +227,7 @@ class RegisterForm extends Component {
                       {required: true, message: '请输入企业域名'},
                     ]
                   })(
-                    <Input placeholder="请输入企业域名" style={{width: '200px'}} addonAfter=".cneclound.com" />
+                    <Input placeholder="请输入企业域名" style={{width: '200px'}} addonAfter=".cnecloud.com" />
                   )}
                 </FormItem>
                 <FormItem label="企业名称" {...formItemLayout}>

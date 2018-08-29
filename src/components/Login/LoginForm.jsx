@@ -156,7 +156,7 @@ class LoginForm extends Component {
             </div>
             <div className={styles.loginBtn}>
               <Button type="primary" htmlType="submit" disabled={this.hasErrors(getFieldsError())}>登录</Button>
-              <div className={styles.yiLogin}>易巡登录</div>
+              {/* <div className={styles.yiLogin}>易巡登录</div> */}
             </div>
             {enterpriseId === null ? <p>您已注册，请<b onClick={()=>this.props.changeLoginStore({pageTab: 'joinIn'})}>加入企业</b>或<b onClick={()=>this.props.changeLoginStore({pageTab: 'register'})}>注册企业</b></p> : null}
             {username === null ? <p>个人信息不完善，请完善<b onClick={this.jumpPersonalInfo} >个人信息</b></p> : null }

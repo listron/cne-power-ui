@@ -72,7 +72,7 @@ class EnterpriseTable extends Component {
     });
   }
   showEnterpriseDetail = (record) => {
-    console.log(record);
+    // console.log(record);
     const { enterpriseId } = record;
     this.props.changeEnterpriseStore({
       showPage: 'detail',
@@ -82,7 +82,7 @@ class EnterpriseTable extends Component {
     })
   }
   enterpriseHandle = (value) => {//编辑，禁用，启用
-    console.log(value);
+    // console.log(value);
     // const { selectedEnterprise } = this.props;
     // if(value === 'edit'){
     //   this.props.editEnterprise({
