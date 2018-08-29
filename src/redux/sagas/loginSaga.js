@@ -40,8 +40,10 @@ function *getLogin(action){
       Cookie.set('authData',JSON.stringify(response.data.data.access_token));
       Cookie.set('enterpriseId', response.data.data.enterpriseId);
       Cookie.set('enterpriseName', response.data.data.enterpriseName);
+      Cookie.set('enterpriseLogo', response.data.data.enterpriseLogo);
       Cookie.set('userId', response.data.data.userId);
       Cookie.set('username', response.data.data.username);
+      Cookie.set('userLogo', response.data.data.userLogo);
       Cookie.set('expireData', moment().add(response.data.data.expires_in, 'seconds'));
       Cookie.set('refresh_token', action.params.refresh_token);
       Cookie.set('isNotLogin', 0);
@@ -93,8 +95,10 @@ function *checkCode(action){
         Cookie.set('authData',JSON.stringify(response.data.data.access_token));    
         Cookie.set('username', response.data.data.username);
         Cookie.set('userId', response.data.data.userId);
+        Cookie.set('userLogo', response.data.data.userLogo);
         Cookie.set('enterpriseId', response.data.data.enterpriseId);
         Cookie.set('enterpriseName', response.data.data.enterpriseName);
+        Cookie.set('enterpriseLogo', response.data.data.enterpriseLogo);
         Cookie.set('expireData', moment().add(response.data.data.expires_in, 'seconds'));
         Cookie.set('isNotLogin', action.params.isNotLogin);
         Cookie.set('refresh_token', action.params.refresh_token);

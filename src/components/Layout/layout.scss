@@ -1,5 +1,14 @@
 @import '../../theme/theme.scss';
 
+.layoutLogo{
+  img{
+    margin: 0 16px;
+  }
+  .enterpriseName{
+    color: #ceebe0;
+  }
+}
+
 .topMenu{
   height: 59px;
   line-height: 56px;
@@ -78,8 +87,4 @@
       }
     }
   }
-}
-
-.icon{
-  font-size: 16px;
 }
