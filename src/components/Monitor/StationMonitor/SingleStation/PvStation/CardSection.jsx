@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './pvStation.scss';
 import { Carousel,Row, Col,Icon, Button } from 'antd';
-import { eachDay } from 'date-fns';
+import { Link } from 'react-router-dom';
 
 class CardSection extends Component {
   static propTypes = {
@@ -68,7 +68,7 @@ class CardSection extends Component {
   }
   render(){
     const {operatorList,weatherList,alarmList,workList } = this.props;
-    const { weatherIndex,disabled1,disabled2,} = this.state;
+    const { disabled1,disabled2,} = this.state;
 
     let tmpOperatorList = [];
     if(operatorList){
@@ -76,7 +76,7 @@ class CardSection extends Component {
         tmpOperatorList.push(operatorList.slice(i,i+3));
       }
     }
-    
+    const baseLinkPath = "/operation/ticket";
     return (
       <div className={styles.cardSection}>
         <Row gutter={16}  type="flex" justify="space-around" >
@@ -96,6 +96,7 @@ class CardSection extends Component {
                   }) : <div className={styles.nopeople} ><div>暂未设置</div><img src="/img/nopeople.png" /></div>
                 }
               </Carousel>
+              {/* <img src="/img/blurbg.png" className={styles.blurbg} /> */}
             </div>
           </Col>
           <Col  span={6}>
@@ -147,7 +148,12 @@ class CardSection extends Component {
           </Col>
           <Col  span={6}>
             <div title="电站工单" className={styles.workList} >
-              <div className={styles.cardTitle}><span>电站工单</span><i className="iconfont icon-more"></i></div>
+              <div className={styles.cardTitle}>
+                <span>电站工单</span>
+                <Link to={baseLinkPath}  >
+                  <i className="iconfont icon-more" ></i>
+                </Link>
+              </div>
               {workList &&
                 <div className={styles.workContent} >
                   <div><div>{workList.worklistNewNum}</div><div>今日新增</div></div>

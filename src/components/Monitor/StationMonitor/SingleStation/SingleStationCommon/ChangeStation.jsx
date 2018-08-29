@@ -31,19 +31,5 @@ function ChangeStation({ stations, stationName, baseLinkPath, hideStationChange 
       </div>
     </div>
   )
-
-  // {tmpProvenceCodes && tmpProvenceCodes.map((item,index)=>{
-  //   return (<div key={index}  className={styles.stationChange} >
-  //     <div className={styles.provinceName} >
-  //       <Icon type="swap" onClick={hideStationChange} className={styles.titleIcon} />
-  //       <span>{stationDetail.stationName}</span>
-  //     </div>
-  //     {item && item.map((e,i)=>{
-  //       return (<Link to={`/monitor/singleStation/${e.stationCode}`} key={i} className={styles.eachLink} onClick={hideStationChange} >
-  //       <div key={e.stationCode} className={(stationDetail && stationDetail.stationName)===e.stationName ? styles.currentStationName : styles.stationName}   >{e.stationName}</div>
-  //       </Link>)
-  //     })}
-  //   </div>)
-  // })}
 }
 export default ChangeStation;

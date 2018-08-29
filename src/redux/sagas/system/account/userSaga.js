@@ -8,7 +8,6 @@ import Cookie from 'js-cookie';
 // 切换页面 -> 列表页 详情页 编辑页
 function *changeUserStore(action){
   const { payload } = action;
-  console.log(payload)
   yield put({
     type: userAction.CHANGE_USER_STORE,
     payload,

@@ -88,7 +88,7 @@ const routers = [
     path: '/hidden/monitorDevice/:stationCode/:deviceTypeCode/:deviceCode',
     exact: true,
     component: DeviceMonitor
-  }, {  // 菜单栏中不展示的--单电站实时数据
+  }, {
     path: '/monitor/singleStation/:stationCode',
     exact: true,
     component: SingleStation,
