@@ -115,7 +115,7 @@ module.exports = [
       "data": {
         "enterpriseId": '00000000',
         "enterpriseName": '协合新能源',
-        'enterpriseLogin': 'https://www.baidu.com/img/bd_logo1.png?where=super',
+        'enterpriseLogo': 'https://www.baidu.com/img/bd_logo1.png?where=super',
         'enterpriseDomain': 'www.cnegroup.com'  
       },
       "serviceCode": "3.0"

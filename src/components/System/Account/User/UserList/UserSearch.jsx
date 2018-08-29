@@ -96,6 +96,9 @@ class UserSearch extends Component {
       roleId: '',
       pageNum: this.props.pageNum,
       pageSize: this.props.pageSize,
+      username: this.props.username,
+      phoneNum: this.props.phoneNum,
+      stationName: this.props.stationName,
     };
     this.props.getUserList(params);
   }

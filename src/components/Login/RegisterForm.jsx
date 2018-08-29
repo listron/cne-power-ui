@@ -189,7 +189,7 @@ class RegisterForm extends Component {
                         {pattern: /(^1\d{10}$)/, message: '手机号格式不对'}
                       ]
                     })(
-                      <Input className={styles.mobileNumber} prefix={<Icon type="mobile" />} placeholder="请输入手机号" />
+                      <Input className={styles.mobileNumber} addonBefore={<i className="iconfont icon-phone"></i>} placeholder="请输入手机号" />
                     )}
                   </FormItem>
                 </div>
@@ -200,7 +200,7 @@ class RegisterForm extends Component {
                         {required: true, message: '请输入验证码'},
                       ]
                     })(
-                      <Input className={styles.testCode} prefix={<Icon type="lock" />} placeholder="验证码" />
+                      <Input className={styles.testCode} addonBefore={<i className="iconfont icon-password"></i>} placeholder="验证码" />
                     )}
                   </FormItem>
                   <Button type="primary" disabled={timeValue !== 0} onClick={this.sendCode} className={timeValue !== 0 ? styles.queryCodeClick : styles.queryCode}>
@@ -227,7 +227,10 @@ class RegisterForm extends Component {
                       {required: true, message: '请输入企业域名'},
                     ]
                   })(
-                    <Input placeholder="请输入企业域名" style={{width: '200px'}} addonAfter=".cnecloud.com" />
+                    <div className={styles.domain} >
+                      <Input placeholder="请输入企业域名" style={{width: '200px'}}  />
+                      <span>.cnecloud.com</span>
+                    </div>
                   )}
                 </FormItem>
                 <FormItem label="企业名称" {...formItemLayout}>
@@ -244,7 +247,6 @@ class RegisterForm extends Component {
                   {getFieldDecorator('userAgreement', {
                     rules:[
                       {required: true, message: '请同意用户协议！'},
-                      
                     ]
                   })(
                     <Checkbox className={styles.userArgee}  >同意<span>用户协议</span></Checkbox>
@@ -270,7 +272,7 @@ class RegisterForm extends Component {
                       {min: 3, max: 8, message: '请输入3到8位中文、英文、数字'}
                     ]
                   })(
-                    <Input prefix={<Icon type="user" />} placeholder="3-8位中文、英文、数字都可" />
+                    <Input addonBefore={<i className="iconfont icon-user"></i>} placeholder="请输入用户名" />
                   )}
                 </FormItem>
                 <FormItem label="创建密码" {...formItemLayout}>
@@ -280,7 +282,7 @@ class RegisterForm extends Component {
                       {pattern: /^[a-zA-Z\d]{6,8}$/, message: '请输入6-8位数字或英文' }
                     ]
                   })(
-                    <Input prefix={<Icon type="lock" />} type="password" placeholder="6-8位数字或英文" />
+                    <Input addonBefore={<i className="iconfont icon-password"></i>} type="password" placeholder="6-8位数字或英文" />
                   )}
                 </FormItem>
                 <FormItem label="确认密码" {...formItemLayout}>
@@ -290,10 +292,10 @@ class RegisterForm extends Component {
                       {validator: this.compareToFirstPassword}
                     ]
                   })(
-                    <Input prefix={<Icon type="lock" />} type="password" placeholder="请再次输入" />
+                    <Input addonBefore={<i className="iconfont icon-password"></i>} type="password" placeholder="请再次输入" />
                   )}
                 </FormItem>
-                <FormItem>
+                <FormItem label="" {...formItemLayout}>
                   <Button type="primary" htmlType="submit" className="login-form-button">进入企业账号</Button>
                 </FormItem>
             </Form>
@@ -302,10 +304,11 @@ class RegisterForm extends Component {
     }];
     const step = this.props.registerStep - 1;
     return (
-      <div>
+      <div className={styles.registerBox} >
         <Steps current={step}>
           {steps.map(item => <Step key={item.title} title={item.title} />)}
         </Steps>
+        <div className={styles.registerTips} >完善企业信息</div>
         <div className="steps-content">{steps[step].content}</div>
       </div>
     );
