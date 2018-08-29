@@ -19,11 +19,12 @@ import EditPassword from '../containers/Others/EditPassword';
   注： path变量中，以/hidden开头的路径，将不展示在菜单中；
 */
 const routers = [
+  // {
+  //   path: '/',
+  //   exact: true,
+  //   component: Power
+  // }, 
   {
-    path: '/',
-    exact: true,
-    component: Power
-  }, {
     path: '/404',
     exact: true,
     component: Exception
