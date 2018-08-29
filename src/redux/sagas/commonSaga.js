@@ -155,16 +155,21 @@ function *getPartition(action){
     const { payload } = action;
     const url = '';
     try{
-      const response = yield call(axios.post, url ,payload)
+      const response = yield call(axios.post, url ,{
+        grant_type: 'refresh_token',
+        payload
+      })
       if(response.data.code === '10000'){
         const { data } = response.data;
-        Cookie.set('authData',JSON.stringify(data.access_token));
-        Cookie.set('enterpriseId', data.enterpriseId);
-        Cookie.set('enterpriseName', data.enterpriseName);
-        Cookie.set('userId', data.userId);
-        Cookie.set('username', data.username);
-        Cookie.set('expireData', moment().add(data.expires_in, 'seconds'));
-        Cookie.set('refresh_token', payload.refresh_token);
+        data.access_token && Cookie.set('authData',JSON.stringify(data.access_token));
+        data.enterpriseId && Cookie.set('enterpriseId', data.enterpriseId);
+        data.enterpriseName && Cookie.set('enterpriseName', data.enterpriseName);
+        data.enterpriseLogo && Cookie.set('enterpriseLogo', data.enterpriseLogo);
+        data.userId && Cookie.set('userId', data.userId);
+        data.username && Cookie.set('username', data.username);
+        data.userLogo && Cookie.set('userLogo', data.userLogo);
+        data.expires_in && Cookie.set('expireData', moment().add(data.expires_in, 'seconds'));
+        data.refresh_token && Cookie.set('refresh_token', data.refresh_token);
       }
     }catch(error){
       message.error('更新token失败，请重试');

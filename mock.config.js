@@ -9,11 +9,9 @@ const user = require('./mock/system/user');
 
 const monitor =require('./mock/monitor/stationMonitor')
 
-
-
-
 const singleStationMonitor = require('./mock/monitor/singleStationMonitor');
 const monitorDevice = require('./mock/monitor/deviceMonitor');
+const others = require('./mock/others/other');
 
 
 // as
@@ -31,5 +29,5 @@ exports.mockConfig = [
 
   ...singleStationMonitor,
   ...monitorDevice, //监控-单设备详情
-
+  ...others,
 ]
