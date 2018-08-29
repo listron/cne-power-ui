@@ -126,7 +126,7 @@ class SideMenu extends Component {
           </Item>
         );
       }else{//有三级目录
-        let menuTitle = <span>{e.iconStyle && <i className={`iconfont ${e.iconStyle}`} />}<span>{e.name}</span></span>
+        let menuTitle = <span>{e.iconStyle && <i className={`iconfont ${e.iconStyle}`} />}<span>{collapsed ? null: e.name}</span></span>
         return (
           <SubMenu title={menuTitle} key={e.path}>
             {e.children.map(m=>{
