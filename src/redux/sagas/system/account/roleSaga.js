@@ -1,8 +1,8 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import axios from 'axios';
 import Path from '../../../../constants/path';
-import { replacePathParams, getCookie } from '../../../../utils';
-
+import { replacePathParams } from '../../../../utils';
+import Cookie from 'js-cookie';
 import { roleAction } from '../../../../constants/actionTypes/system/account/roleAction';
 import { message } from 'antd';
 
@@ -151,7 +151,7 @@ function *deleteRole(action) {
       yield put({
         type: roleAction.GET_ROLE_LIST_SAGA,
         payload: {
-          enterpriseId: getCookie('enterpriseId')
+          enterpriseId: Cookie.get('enterpriseId')
         },
       });
       yield put({

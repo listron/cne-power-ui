@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import styles from './role.scss';
-import { getCookie } from '../../../../utils';
+import Cookie from 'js-cookie';
 import { roleAction } from '../../../../constants/actionTypes/system/account/roleAction';
 import PropTypes from 'prop-types';
 import Footer from '../../../../components/Common/Footer';
@@ -65,7 +65,7 @@ const mapStateToProps = (state) => ({
   selectedRole: state.system.role.get('selectedRole').toJS(),
   continueAdd: state.system.role.get('continueAdd'),
   error: state.system.role.get('error'),
-  enterpriseId: getCookie('enterpriseId'),
+  enterpriseId: Cookie.get('enterpriseId'),
 });
 
 const mapDispatchToProps = (dispatch) => ({

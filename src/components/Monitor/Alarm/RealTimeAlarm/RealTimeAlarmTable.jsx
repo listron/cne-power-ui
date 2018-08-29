@@ -150,6 +150,7 @@ class RealTimeAlarmTable extends Component {
         title: '发生时间',
         dataIndex: 'timeOn',
         key: 'timeOn', 
+        render: (text, record) => moment(text).format('YYYY-MM-DD HH:mm'),
         sorter:  (a,b) => moment(a.timeOn).isBefore(moment(b.timeOn)),
       },{
         title: '持续时间',

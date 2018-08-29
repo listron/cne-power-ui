@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Modal, Button } from 'antd';
-import styles from './stationSelectModal.scss';
+import styles from './alarmStationSelectModal.scss';
 const ButtonGroup = Button.Group;
 
-class StationSelectModal extends Component {
+class AlarmStationSelectModal extends Component {
   static propTypes = {
     stations: PropTypes.object,
     onClose: PropTypes.func,
@@ -15,14 +15,17 @@ class StationSelectModal extends Component {
     super(props);
     this.state = {
       stationCode: '',
+      stationType: 0,
       stationData: props.stations.filter(station=>station.get('stationType')===0)
     };
   }
 
-  onChangeStationType(data) {
+  onChangeStationType(stationType) {
+    const data = this.props.stations.filter(station=>station.get('stationType')===stationType);
     this.setState({
+      stationType,
       stationCode: '',
-      sttaionData: data
+      stationData: data
     });
   }
 
@@ -47,13 +50,13 @@ class StationSelectModal extends Component {
     const provinceStation = stations.groupBy(item=>item.get('provinceCode')).toList();
     return provinceStation.map((province, index) => {
       return (
-        <div className={styles.provinceItem} key={province.getIn([0, 'provinceCode'])}>
-          <span>{province.getIn([0, 'provinceName'])}</span>
-          {province.map(station => {
-            return (
-              <div className={styles.stationItem} 
-                key={station.get('statinCode')} 
-                onClick={()=>this.onChangeStation(station.get('statinCode'))}>
+        <div className={styles.provinceItem} key={index}>
+          <div className={styles.provinceName}>{province.getIn([0, 'provinceName'])}</div>
+          {province.map((station, i) => {
+            return (             
+              <div className={station.get('stationCode')===this.state.stationCode?styles.selectedStationItem:styles.stationItem} 
+                key={i} 
+                onClick={()=>this.onChangeStation(station.get('stationCode'))}>
                 {station.get('stationName')}
               </div>
             );
@@ -64,14 +67,12 @@ class StationSelectModal extends Component {
   }
 
   renderStation() {
-    const stations = this.props.stations;
-    const pvStations = stations.filter(station=>station.get('stationType')===1);
-    const windStations = stations.filter(station=>station.get('stationType')===0);
+    const stationType = this.state.stationType;
     return (
       <div className={styles.content}>
         <ButtonGroup>
-          <Button type="primary" onClick={()=>this.onChangeStationType(windStations)}>风电</Button>
-          <Button type="primary" onClick={()=>this.onChangeStationType(pvStations)}>光伏</Button>
+          <Button type={stationType===0?'primary':''} onClick={()=>this.onChangeStationType(0)}>风电</Button>
+          <Button type={stationType===1?'primary':''} onClick={()=>this.onChangeStationType(1)}>光伏</Button>
         </ButtonGroup>
         {this.renderProvinceStation(this.state.stationData)}
       </div>
@@ -87,7 +88,9 @@ class StationSelectModal extends Component {
     );
     return (
       <Modal
-        className={styles.stationSelect}
+        wrapClassName={styles.stationSelectModal}
+        style={{top:82,right:24,height:'90%',float:'right',paddingBottom:0}}
+        width={600}
         title={title}
         visible={true}
         mask={false}
@@ -102,4 +105,4 @@ class StationSelectModal extends Component {
   }
 }
 
-export default StationSelectModal;
+export default AlarmStationSelectModal;

@@ -1,0 +1,53 @@
+@import '../../../../theme/theme.scss';
+.stationSelectModal {
+  :global {
+    .ant-modal-content {
+      display: flex;
+      flex: 1;
+      height: 100%;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .ant-modal-body {
+      display: flex;
+      flex: 1;
+    }
+  }
+  .content {
+    display: flex;
+    flex-direction: column;
+    padding: 24px 16px;
+    .provinceItem {
+      margin-top: 12px;
+      margin-bottom: 10px;
+      .provinceName {
+        margin-bottom: 12px;
+        color: $darkColor;
+      }
+      .selectedStationItem {
+        color: #fff;
+        margin-right: 8px;
+        margin-bottom: 8px;
+        width: 135px;
+        height: 24px;
+        border-radius: 4px;
+        background-color: $themeColor;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .stationItem {
+        color: $lightColor;
+        margin-right: 8px;
+        margin-bottom: 8px;
+        width: 135px;
+        height: 24px;
+        border-radius: 4px;
+        background-color: #f1f1f1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+  }
+}
