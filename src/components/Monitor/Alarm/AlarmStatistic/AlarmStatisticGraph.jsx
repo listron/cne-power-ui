@@ -3,52 +3,33 @@ import PropTypes from "prop-types";
 import echarts from 'echarts';
 class AlarmStatisticGraph extends React.Component {
   static propTypes = {
-
     graphId: PropTypes.string,
     alarmStatistic: PropTypes.array,
+  };
 
-  }
-  constructor(props, context) {
-    super(props, context)
+  constructor(props) {
+    super(props);
   }
   componentDidMount() {
-    const { graphId } = this.props;
-    const { alarmStatistic } = this.props;
-    const stationNameData = alarmStatistic.map((item, index) => {
-      return item.stationName
-    });
-    const oneWarningNum = alarmStatistic.map((item, index) => {
-      return item.oneWarningNum
-    });
-
-    const twoWarningNum = alarmStatistic.map((item, index) => {
-      return item.twoWarningNum
-    });
-
-    const threeWarningNum = alarmStatistic.map((item, index) => {
-      return item.threeWarningNum
-    });
-    const fourWarningNum = alarmStatistic.map((item, index) => {
-      return item.fourWarningNum
-    });
-    const handleAvgTime = alarmStatistic.map((item, index) => {
-      return item.handleAvgTime
-    });
-    const totalNum=oneWarningNum+twoWarningNum+threeWarningNum+fourWarningNum;
-
-    const windAlarmChart = echarts.init(document.getElementById(graphId));
-    this.setMapChart(windAlarmChart, stationNameData, oneWarningNum, twoWarningNum, threeWarningNum, fourWarningNum, handleAvgTime,totalNum);
+    const { graphId, alarmStatistic } = this.props;
+    const data = this.transferData(alarmStatistic);
+    this.alarmChart = echarts.init(document.getElementById(graphId));
+    this.renderChart(data);
   }
+  
   componentWillReceiveProps(nextProps) {
-    const { graphId } = this.props;
-    const windAlarmChart = echarts.init(document.getElementById(graphId));
     const { alarmStatistic } = nextProps;
+    const data = this.transferData(alarmStatistic);
+    this.renderChart(data);
+  }
+  transferData(alarmStatistic) {
     const stationNameData = alarmStatistic.map((item, index) => {
       return item.stationName
-    });
+    }) || 0
     const oneWarningNum = alarmStatistic.map((item, index) => {
       return item.oneWarningNum
     });
+
     const twoWarningNum = alarmStatistic.map((item, index) => {
       return item.twoWarningNum
     });
@@ -59,14 +40,16 @@ class AlarmStatisticGraph extends React.Component {
     const fourWarningNum = alarmStatistic.map((item, index) => {
       return item.fourWarningNum
     });
-    const totalNum=oneWarningNum+twoWarningNum+threeWarningNum+fourWarningNum;
-
     const handleAvgTime = alarmStatistic.map((item, index) => {
       return item.handleAvgTime
-    }) || '--';
-    this.setMapChart(windAlarmChart, stationNameData, oneWarningNum, twoWarningNum, threeWarningNum, fourWarningNum, handleAvgTime,totalNum);
+    });
+    return {
+      stationNameData, oneWarningNum, twoWarningNum, threeWarningNum, fourWarningNum, handleAvgTime
+    };
   }
-  setMapChart = (windAlarmChart, stationNameData, oneWarningNum, twoWarningNum, threeWarningNum, fourWarningNum, handleAvgTime,totalNum) => {
+  renderChart = (data) => {
+    const { stationNameData, oneWarningNum, twoWarningNum, threeWarningNum, fourWarningNum, handleAvgTime } = data;
+
     const option = {
       tooltip: {
         trigger: 'axis',
@@ -102,8 +85,6 @@ class AlarmStatisticGraph extends React.Component {
         {
           type: 'value',
           name: '天数(天)',
-          min: 0,
-          max: 100,
           position: 'right',
           axisLine: {
             lineStyle: {
@@ -116,8 +97,6 @@ class AlarmStatisticGraph extends React.Component {
         {
           type: 'value',
           name: '告警个数(个)',
-          min: 0,
-          max: 1500,
           position: 'left',
           axisLine: {
             lineStyle: {
@@ -154,7 +133,7 @@ class AlarmStatisticGraph extends React.Component {
           },
           data: handleAvgTime
           //这是平均处理时间的数据
-          //data: [6, 15, 20, 8, 9, 7, 0,]
+          // data: [6, 15, 20, 8, 9, 7, 0,]
         },
         {
           name: '一级',
@@ -217,19 +196,16 @@ class AlarmStatisticGraph extends React.Component {
       ]
     };
 
-    windAlarmChart.setOption(option)
-    windAlarmChart.on('click', (params) => {
-     // console.log(params, '电站的参数');
+    this.alarmChart.setOption(option)
+    // windAlarmChart.on('click', (params) => {
+    //  // console.log(params, '电站的参数');
 
-    })
+    // })
   }
   render() {
     const { graphId } = this.props;
-  
-   
-
     return (
-      <div>
+      <div style={{borderTop:"1px dashed #dfdfdf"}}>
         <div id={graphId} style={{ width: '1200px', height: '410px' }}> </div>
       </div>
     )

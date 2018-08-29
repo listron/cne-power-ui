@@ -133,7 +133,7 @@ class AlarmStatisticTable extends React.Component {
       )
     })
     return (
-      <div>
+      <div style={{borderTop:"1px dashed #dfdfdf"}}>
         <div className={styles.pagination}>
           <CommonPagination total={totalNum} onPaginationChange={this.onPaginationChange} />
         </div>

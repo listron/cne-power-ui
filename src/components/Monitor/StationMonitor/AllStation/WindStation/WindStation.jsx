@@ -97,7 +97,7 @@ class WindStation extends React.Component {
     const TabPane = Tabs.TabPane;
     //tabs筛选部分
     const operations = (
-      <div>
+      <div style={{border:'none'}}>
         <Switch onChange={this.onHandleAlarm} />告警
     <Radio.Group
           defaultValue="all"
@@ -116,9 +116,12 @@ class WindStation extends React.Component {
 
 
     const province = (
-      <div>       {stationProvinceSummary.map((item, index) => {
+      <div className={styles.provinceStationTotal}>       {stationProvinceSummary.map((item, index) => {
         return (
-          <span key={index}>{item.provinceName}:{item.windStationNum}&nbsp;&nbsp;</span>
+          <div key={index}>
+          <span>{item.provinceName}:</span>
+          <span className={styles.fontColor}>{item.windStationNum}&nbsp;&nbsp;</span>
+          </div>
         )
       })}
       </div>
@@ -160,8 +163,8 @@ class WindStation extends React.Component {
     return (
       <div className={styles.WindStation}>
         <WindStationHeader {...this.props} />
-        <Tabs activeKey={key} tabBarExtraContent={key !== '3' ? operations : province} onChange={this.setkey}>
-          <TabPane
+        <Tabs className={styles.smallTabs} activeKey={key} tabBarExtraContent={key !== '3' ? operations : province} onChange={this.setkey}>
+          <TabPane 
             tab={
               <span>
                 <i className="iconfont icon-grid"></i>
@@ -193,7 +196,7 @@ class WindStation extends React.Component {
           >
             <Map {...this.props} stationDataList={data} testId="wind_bmap_station" />
           </TabPane>
-        </Tabs>,
+        </Tabs>
 
       </div>
     )

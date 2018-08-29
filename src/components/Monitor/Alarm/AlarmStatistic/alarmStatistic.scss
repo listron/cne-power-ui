@@ -1,23 +1,121 @@
 
 .alarmStatistTabs{
-  background: #fff;
-}
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  background-color: #fff;
+  :global{
+    .ant-tabs-nav-scroll{
+      background: #f8f8f8;
+     }
+    .ant-tabs-bar{
+      border:none;
+      margin-bottom: 0;
+      background: #f8f8f8;   
+    }
+    .ant-tabs.ant-tabs-card > .ant-tabs-bar .ant-tabs-tab-active {
+      background: #fff;
+      border-color: #e8e8e8;
+      color: #199475;
+      margin: 0;
+    }
+    .ant-tabs-nav .ant-tabs-tab {
+      display: inline-block;
+      text-align: center;
+      height: 100%;
+      padding: 12px 16px;
+      margin: 0;
+      box-sizing: border-box;
+      position: relative;
+      transition: color 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+      cursor: pointer;
+      text-decoration: none;
+      width: 120px;
+      
+      }
 
+    
+  }
+}
 
 .alarmStatisticType{
 
  background: #fff;
   height: 100%;
-  margin: 30px;
+  a{
+    text-decoration: none;
+    color:rgba(0, 0, 0, 0.65);
+  }
+  .stationName{
+    width: 70px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    &:hover{
+      color: #199475;
+    }
+  }
+.smallTab{
+  :global{
+    .ant-tabs-nav-scroll{
+    background: #fff;
+    
+     }
+    .ant-tabs-bar{
+    background: #fff;
+      
+    }
+    .ant-tabs-nav .ant-tabs-tab {
+      display: inline-block;
+      text-align: center;
+      height: 100%;
+      padding: 12px 16px;
+      margin: 0;
+      box-sizing: border-box;
+      position: relative;
+      transition: color 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+      cursor: pointer;
+      text-decoration: none;
+      width: 55px; 
+      }
+      .ant-tabs-bar .ant-tabs-tab-active.ant-tabs-tab{
+        background: #199475;
+        border-color: #199475;
+        color: #fff;
+        margin: 0;
+      }
+      .ant-tabs-bar .ant-tabs-tab{
+        background: #f1f1f1;
 
+      }
+    
+  }
+}
 
+  .exportData{
+    margin-right: 30px;
+    .exportBtn{
+      color: #199475;
+      background:#fff;
+      border-radius: 5px;
+      border: 1px solid #199475;
+      line-height:45px;
+    }
+  }
+  .payloadFilter{
+    padding:16px 0 16px 30px;
+    border-bottom: 1px dashed #dfdfdf;
+    .selectStation{
+      margin: 0 10px;
+    }
+  }
 
 .pagination{
-      width: 1210px;
       height: 45px;
       display: flex;
       justify-content: flex-end;
       line-height: 45px;
+      
 }
 
 }

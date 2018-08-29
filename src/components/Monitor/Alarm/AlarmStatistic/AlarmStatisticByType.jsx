@@ -95,19 +95,14 @@ class AlarmStatisticByType extends Component {
     //数据导出按钮
     const operations = (
       <div className={styles.exportData}>
-        <button style={{
-          color: '#199475',
-          background: 'rgba(0,0,0,0)',
-          borderRadius: '5px',
-          border: '1px solid #199475',
-        }}>数据导出</button>
+        <button className={styles.exportBtn} >数据导出</button>
       </div >
     );
     return (
       <div className={styles.alarmStatisticType}>
-        <div>
+        <div className={styles.payloadFilter}>
           <span> 筛选条件 </span>
-          <Button onClick={() => this.onFilterShowChange('stationSelect')}>
+          <Button className={styles.selectStation} onClick={() => this.onFilterShowChange('stationSelect')}>
             电站类型{showFilter === 'stationSelect' ? <Icon type="up" /> : <Icon type="down" />}
           </Button>
           <Select labelInValue defaultValue={{ key: '今天' }} style={{ width: 120 }} onChange={this.handleDayMenuClick}>
@@ -131,11 +126,11 @@ class AlarmStatisticByType extends Component {
             /></div>
           }
         </div>
-        <Tabs activeKey={key} tabBarExtraContent={operations} onChange={this.setkey}>
+        <Tabs className={styles.smallTab} activeKey={key} tabBarExtraContent={operations} onChange={this.setkey}>
           <TabPane
             tab={
               <span>
-                <i className="iconfont icon-grid"></i>
+                <i className="iconfont icon-drawing"></i>
               </span>
             }
             key="1"

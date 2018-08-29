@@ -5,7 +5,7 @@ import styles from "./alarm.scss";
 import PropTypes from "prop-types";
 import AlarmAllStationStatistic from '../../../components/Monitor/Alarm/AlarmStatistic/AlarmAllStationStatistic.jsx';
 import { alarmAction } from '../../../constants/actionTypes/monitor/alarmAction';
-
+import Footer from '../../../components/Common/Footer';
 class ALarmStatistic extends Component {
   static propTypes = {
     stationType: PropTypes.string,
@@ -31,6 +31,7 @@ class ALarmStatistic extends Component {
     return (
       <div className={styles.alarmStatist}>
         <AlarmAllStationStatistic {...this.props} onChangeFilter={this.onChangeFilter} />
+        <Footer />
       </div>
     )
   }

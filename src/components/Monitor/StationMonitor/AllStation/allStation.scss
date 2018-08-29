@@ -1,20 +1,19 @@
 
 .allStationContainer{
-  width: 100%;
-  height: 100%;
-
-  .headStation{
-    width: 1210px;
-    height: 100px;
-    display: flex;
+ background: #fff;
+width: 100%;
+ display: flex;
+ flex:1;
+ flex-direction: column;
+  .headStation{ 
     flex:1;
+    display: flex;  
     .typeIcon{
       width: 120px;
       display: flex;
       flex-direction: row;
       align-items: center;
       justify-content: center;
-
       .leftIcon{
         width: 30px;
         height: 35px;
@@ -27,8 +26,6 @@
         background:url('/img/pv-normal.png') no-repeat center;
       }
     }
-
-
       .progressInfo{
         display: flex;
         flex-direction: row;
@@ -49,7 +46,6 @@
           .progressBar{
             flex: 1;
             width: 220px;
-
           }
           .stationType{
             flex: 1;
@@ -69,17 +65,13 @@
           line-height: 25px;
           color:#199475;
         }
-
       }
-
-    
-
     .stationCollect{
       height: 100px;
       display: flex;
       flex-direction: row;
 
-      .dayStation,.monthStation,.equipmentNum,.windSpeed{
+      .dayStation,.monthStation{
         height: 100px;
         display: flex;
         flex-direction: column;
@@ -89,7 +81,8 @@
         .dataValue {
           flex: 1;
           text-align: center;
-
+          color:#199475;
+          font-size: 20px;
           padding-top: 20px;
         }
         .dataName {
@@ -99,12 +92,15 @@
         }
     }
   }
+
+
   .stationNav{
-    width: 1210px;
     height: 55px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    border-top:1px dashed #dfdfdf;
+   
     .showType{
       width: 55px;
       height: 55px;
@@ -116,35 +112,15 @@
       font-size: 16px;
     }
     .typeTotal{
+      margin-right: 30px;
       width: 130px;
       height: 55px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-    }
-  }
-
-  .stationNav{
-    width: 1210px;
-    height: 55px;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    .showType{
-      width: 55px;
-      height: 55px;
-      background: #199475;
-      text-align: center;
-      line-height: 55px;
-      font-size: 20px;
-      color: #f1f1f1;
-    }
-    .typeTotal{
-      width: 130px;
-      height: 55px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      .stationNum{
+        color:#199475;
+      }
     }
   }
 }

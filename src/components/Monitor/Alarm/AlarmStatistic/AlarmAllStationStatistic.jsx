@@ -55,8 +55,8 @@ class ALarmAllStationStatistic extends React.Component {
     const { stationType }  = this.props;
     return (
       <div className={styles.alarmStatistTabs}>
-        <div className="tabsContainer">
-          <Tabs type="card" activeKey={stationType} tabBarExtraContent={operations} onChange={this.queryTargetData} >
+        <div className={styles.tabsContainer}>
+          <Tabs type="card" activeKey={stationType} tabBarExtraContent={operations} onChange={this.queryTargetData} tabBarGutter={0} >
             <TabPane tab="风电" key="0">
               <AlarmStatisticByType {...this.props} onChangeFilter={this.onChangeFilter} graphId="windStation" />
             </TabPane>

@@ -1,15 +1,23 @@
 
-
-
 .WindStation{
-
-  min-height: 100%;
-  :global{
-   
+  background: #fff;
+ height: 100%;
+  display: flex;
+  flex:1;
+  flex-direction: column;
+  :global{ 
     .ant-progress-bg {
       border-radius: 100px;
       background-color: #199475;
   }
+  .ant-radio-button-wrapper:hover, .ant-radio-button-wrapper-focused{
+    color: #199475;
+  }
+  //tab的表头的右侧附属
+  .ant-tabs-extra-content {
+    line-height: 48px;
+   
+}
   .ant-tabs-nav .ant-tabs-tab {
     display: inline-block;
     text-align: center;
@@ -26,19 +34,55 @@
     background: #f1f1f1;
 
   }
+  .ant-tabs-nav-scroll{
+    background: #fff;
+   }
   .ant-tabs-nav-active{
     background: #199475
   }
   .ant-tabs-ink-bar .ant-tabs-ink-bar-animated{
-    //display: none;
     width: 0;
     height: 0;
   }
 
    width: 100%;
+   //tableList的头部宽高
+   .ant-table .ant-table-thead > tr > th, .ant-table .ant-table-tbody > tr > td {
+    padding: 0px 12px;
+    height: 40px;
+    line-height: 30px;
+}
   }
 
+  .smallTabs{
+   
+    :global{
+      .ant-tabs-bar{
+        border:none;
+      }
+
+      .ant-tabs-bar .ant-tabs-tab-active.ant-tabs-tab{
+        background: #199475;
+        border-color: #199475;
+        color: #fff;
+        margin: 0;
+      }
+      
+
+    }
+  }
+  .provinceStationTotal{
+    margin-right: 30px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    .fontColor{
+      color:#199475;
+    }
+  }
   .headStation{
+    //color: #199475;
+    border-bottom: 1px dashed #dfdfdf;
     height: 100px;
     display: flex;
     flex:1;
@@ -111,9 +155,17 @@
         align-items: center;
         margin-left: 25px;
         .dataValue {
+          color:#199475;
+          font-size: 20px;
           flex: 1;
           text-align: center;
-
+          padding-top: 20px;
+        }
+        .dataWindValue{
+          color:#3e97d1;
+          font-size: 20px;
+          flex: 1;
+          text-align: center;
           padding-top: 20px;
         }
         .dataName {
@@ -127,14 +179,13 @@
     }
 
   }
-
+//卡片
   .stationCardContainer {
-    width: 1210px;
+    border-top:1px dashed #dfdfdf; 
     display: flex;
     flex-direction: row;
     flex: 1;
     flex-wrap: wrap;
-
     .stationCard {
       margin: 20px 0 10px 20px;
       padding: 8px;
@@ -155,11 +206,11 @@
         color:#e08031;
       }
       .stationMark {
-        color: #20cc20;
+        color: #199475;
       }
     }
     .stationTest{
-      margin: 20px 0 0 20px;
+      margin: 20px 0 10px 20px;
       padding: 8px;
       width: 215px;
       height: 132px;
@@ -219,8 +270,9 @@
       color: red;
     }
   }
+  //列表
   .windStationList{
-    //width: 1210px;
+    border-top:1px dashed #dfdfdf; 
     display: flex;
     flex-direction: column;
     a{
@@ -229,7 +281,6 @@
     }
     .pagination{
       flex:1;
-      //width: 1210px;
       height: 45px;
       display: flex;
       justify-content: flex-end;
@@ -241,6 +292,9 @@
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      &:hover{
+        color: #199475;
+      }
     }
     .stationrovince{
       width: 50px;
@@ -261,9 +315,7 @@
         width: 6px;
         height: 20px;
         border-radius:2px;
-
-      }
-  
+      }  
       .normalColor{
         background:#199475;
         width: 5px;
@@ -280,14 +332,10 @@
         display: flex;
         flex-direction: column;
         flex-wrap: wrap;
-
-
-
         .stationValue{
           flex: 1;
           display: flex;
           justify-content: space-between;
-
 
         }
         .progressBar{
@@ -308,4 +356,12 @@
 
 }
 
-  
+
+  .test1{
+    .ant-tabs .ant-tabs-card .ant-tabs-bar .ant-tabs-tab-active {
+      background: #199475;
+      border-color: #199475;
+      color: #fff;
+      margin: 0;
+  }
+  }
