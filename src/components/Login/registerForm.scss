@@ -3,6 +3,27 @@
 .registerBox{
   position: relative;
   :global{
+    .ant-tabs-nav, .ant-tabs-tab-active {
+      width: 100%;
+    }
+    .ant-tabs-nav .ant-tabs-tab{
+      margin: 0;
+      width: 50%;
+      text-align: center;
+      font-size: 18px;
+    }
+    .ant-btn-primary:focus {
+      background-color: $themeColor;
+    }
+    .ant-form {
+      width: 200px;
+      .ant-form-item {
+        width: 200px;
+        .ant-btn {
+          width: 200px;
+        }
+      }
+    }
     .ant-steps {
       position: absolute;
       left: -60px;
@@ -26,6 +47,15 @@
     }
     .ant-form-item-control{
       padding-left: 5px;
+    }
+    .ant-form{
+      width: 300px;
+      .ant-form-item{
+        width: 300px;
+        .ant-btn{
+          width: 160px;
+        }
+      }
     }
   }
   .registerTips{
@@ -80,7 +110,7 @@
       }
       .queryCodeClick{
         width: 100px;
-        margin-top: 4px;
+        margin-top: 6px;
         margin-right: 0;
         padding: 0 5px;
         height: 30px;
@@ -101,13 +131,18 @@
     }
   }
   .enterpriseInfor{
+    margin-left: -82px;
     .userArgee{
-      span{
-        color: #199475;
+      .userAgreement{
+        color: #449ad3;
       }
     }
     .domain{
-
+      display: flex;
+      flex-direction: row;
+      span{
+        color: $themeColor;
+      }
     }
     :global{
       .ant-form input[type="checkbox"]{
@@ -142,17 +177,7 @@
   }
 }
 
-:global{
-  .ant-tabs-nav, .ant-tabs-tab-active {
-    width: 100%;
-  }
-  .ant-tabs-nav .ant-tabs-tab{
-    margin: 0;
-    width: 50%;
-    text-align: center;
-    font-size: 18px;
-  }
-}
+
 
 
 
