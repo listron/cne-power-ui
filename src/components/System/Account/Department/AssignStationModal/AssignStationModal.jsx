@@ -285,6 +285,7 @@ class AssignStationModal extends Component {
     let station = this.tansformStationData(searchStationList!==null?searchStationList:selectedStationList);
     return (
       station.map((item) => {
+        const stationItem = transformStationList.find(obj=>obj.get('stationId')===item.get('stationId'));
         return (
           <div key={item.get('stationId')} className={styles.stationItem}>
             <div className={styles.stationCheck}>
@@ -294,8 +295,8 @@ class AssignStationModal extends Component {
                 checked={this.getStationChecked(item)} />
               <span className={styles.stationName}>{item.get('stationName')}</span>
             </div>
-            <div className={styles.deparymentName}>
-              {transformStationList.find(obj=>obj.get('stationId')===item.get('stationId')).get('departmentName')}
+            <div className={styles.departmentName} title={stationItem.get('departmentName')}>
+              {stationItem.get('departmentName')}
             </div>
           </div>
         );

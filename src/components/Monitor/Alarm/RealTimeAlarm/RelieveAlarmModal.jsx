@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import styles from './realTimeAlarm.scss';
 import InputLimit from '../../../Common/InputLimit';
 import WarningTip from '../../../Common/WarningTip';
+import moment from 'moment';
 const FormItem = Form.Item;
 
 
@@ -12,6 +13,7 @@ class RelieveAlarmModal extends Component {
   static propTypes = {
     form: PropTypes.object,
     onRelieveAlarm: PropTypes.func,
+    onCancel: PropTypes.func,
     selectedRowKeys: PropTypes.array,
   }
 
@@ -34,7 +36,8 @@ class RelieveAlarmModal extends Component {
     this.props.form.validateFieldsAndScroll((err, values) => {
       if(!err) {
         this.props.onRelieveAlarm({
-          ...values,
+          operateReason: values.operateReason,
+          endTime: moment(values.endTime).utc().format(),
           warningLogId: this.props.selectedRowKeys.join(','),
         });
       }
@@ -45,16 +48,18 @@ class RelieveAlarmModal extends Component {
     const { getFieldDecorator } = this.props.form;
     const { showWarningTip, warningTipText } = this.state;
     return (     
-      <Form onSubmit={this.onSubmit}>
-        {showWarningTip && <WarningTip onOK={this.onRelieveAlarm} value={warningTipText} />}
-        <Modal title="解除告警" 
+      <Form>
+        {showWarningTip && <WarningTip 
+          style={{marginTop:'250px',width: '210px',height:'88px'}}
+          onOK={this.onRelieveAlarm} value={warningTipText} />}
+        <Modal title="解除告警" className={styles.relieveModal}
+          style={{height:630}}
+          bodyStyle={{display:'flex',flex:1,flexDirection:'column',padding:24}}
+          width={625}
+          onOk={this.onSubmit}
           visible={true}
-          okButtonProps={{
-            type: 'primary',
-            htmlType: 'submit'
-          }}
-          onCancel={this.handleCancel}>
-          <FormItem label="解除时限">
+          onCancel={this.props.onCancel}>
+          <FormItem className={styles.formItem} label="解除时限">
             {getFieldDecorator('endTime', {
               rules: [{ 
                 required: true,
@@ -64,17 +69,17 @@ class RelieveAlarmModal extends Component {
               <DatePicker placeholder="请输入" />
             )}
           </FormItem>
-          <FormItem label="解除原因">
-            {getFieldDecorator('defectDesc', {
+          <FormItem  className={styles.formItem} label="解除原因">
+            {getFieldDecorator('operateReason', {
               rules: [{ 
                 required: true,
                 message: '请输入解除原因'
               }],
             })(
-              <InputLimit placeholder="请输入不超过80字的解除原因..." />
+              <InputLimit style={{marginLeft:-60,marginTop:15}} placeholder="请输入不超过80字的解除原因..." />
             )}
           </FormItem>
-          <div style={{marginLeft:410}} className={styles.instructionText}>注意：保存后，此设备的同类告警在所选时限内均被解除</div>
+          <div className={styles.instructionText}>注意：保存后，此设备的同类告警在所选时限内均被解除</div>
         </Modal>
       </Form>
     );

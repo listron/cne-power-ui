@@ -91,19 +91,17 @@ class ALarmAllStationStatistic extends React.Component {
     const stationTypeOne = this.stationIsOneType();
     return (
       <div className={styles.alarmStatistTabs}>
-        <div>
-          {stationTypeOne ? 
-          <AlarmStatisticByType {...this.props} onChangeFilter={this.onChangeFilter} graphId="station" /> :
-          <Tabs type="card" activeKey={stationType} tabBarExtraContent={operations} onChange={this.queryTargetData} >
-            <TabPane tab="风电" key="0">
-              <AlarmStatisticByType {...this.props} onChangeFilter={this.onChangeFilter} graphId="windStation" />
-            </TabPane>
-            <TabPane tab="光伏" key="1">
-              <AlarmStatisticByType {...this.props} onChangeFilter={this.onChangeFilter} graphId="pvStation" />
-            </TabPane>
-          </Tabs>
-          }
-        </div>
+        {stationTypeOne ? 
+        <AlarmStatisticByType {...this.props} onChangeFilter={this.onChangeFilter} graphId="station" /> :
+        <Tabs type="card" activeKey={stationType} tabBarExtraContent={operations} onChange={this.queryTargetData} >
+          <TabPane tab="风电" key="0">
+            <AlarmStatisticByType {...this.props} onChangeFilter={this.onChangeFilter} graphId="windStation" />
+          </TabPane>
+          <TabPane tab="光伏" key="1">
+            <AlarmStatisticByType {...this.props} onChangeFilter={this.onChangeFilter} graphId="pvStation" />
+          </TabPane>
+        </Tabs>
+        }
         {showStationSelect&&
           <AlarmStationSelectModal 
             stations={stations} 

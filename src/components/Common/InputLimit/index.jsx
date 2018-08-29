@@ -14,12 +14,13 @@ import styles from './style.scss';
 
 class InputLimit extends Component {
   static propTypes = {
-    placeHolder: PropTypes.string,
+    placeholder: PropTypes.string,
     value: PropTypes.string,
     size: PropTypes.number,
     onChange: PropTypes.func,
     width: PropTypes.number,
     height: PropTypes.number,
+    style: PropTypes.object,
   }
 
   static defaultProps = {
@@ -46,11 +47,11 @@ class InputLimit extends Component {
   render() {
 
     return ( 
-      <div className={styles.inputLimit}>
+      <div className={styles.inputLimit} style={this.props.style}>
         <div className={styles.inputCount}>({this.state.current}/{this.props.size})</div>
         <TextArea 
           value={this.props.value}
-          placeholder={this.props.placeHolder}
+          placeholder={this.props.placeholder}
           onChange={this.checkWord} 
           maxLength={this.props.size} 
           style={{height: this.props.height, width: this.props.width}} />
