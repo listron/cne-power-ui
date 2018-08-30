@@ -138,14 +138,15 @@ class DepartmentTable extends Component {
     }else if(value==='delete'){
       const selectedDepartmentHasChild = selectedDepartment.map(e=>e.hasChildren).some(e=>!!e);
       const selectedDepartmentHasMember = selectedDepartment.map(e=>e.hasMember).some(e=>!!e);
-      const forbiddenDelete = selectedDepartment.some(e=>e.departmentSource === 0)
-      if(forbiddenDelete){
-        this.setState({
-          showWarningTip: true,
-          warningTipText: '不得删除预设部门!',
-          hiddenWarningTipCancelText: true
-        })
-      }else if(selectedDepartmentHasChild){
+      // const forbiddenDelete = selectedDepartment.some(e=>e.departmentSource === 0)
+      // if(forbiddenDelete){
+      //   this.setState({
+      //     showWarningTip: true,
+      //     warningTipText: '不得删除预设部门!',
+      //     hiddenWarningTipCancelText: true
+      //   })
+      // }else 
+      if(selectedDepartmentHasChild){
         this.setState({
           showWarningTip: true,
           warningTipText: '请先删除子部门!',
@@ -180,8 +181,9 @@ class DepartmentTable extends Component {
     let [editable, deletable, userAssignable, staionAssignable] = [false,false,false,false];  
     
     if(selectedDepartment.length > 0){
-      editable = selectedDepartment.length === 1;
-      [deletable, userAssignable, staionAssignable] = [true,true,true];
+      editable = (selectedDepartment.length === 1);
+      deletable = selectedDepartment.every(e => e.selectedDepartment === 1);
+      [userAssignable, staionAssignable] = [true,true];
     }       
     return (<Select onChange={this.departmentHandle} placeholder="操作" value="操作" dropdownMatchSelectWidth={false} dropdownClassName={styles.departmentHandleDropdown}>
       <Option value="edit" disabled={!editable} ><span className="iconfont icon-edit"></span>编辑</Option>
