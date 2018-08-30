@@ -389,27 +389,30 @@ class AssignUserModal extends Component {
     const disabled = !!selectedDepartment.get('disabled') || (selectedDepartment.get('list')&&selectedDepartment.get('list').size>0);
     let user = this.tansformUserData(searchUserList!==null?searchUserList:selectedUserList);
     return (
-      user.map((item) => {
-        return (
-          <div key={item.get('userId')} className={styles.userItem}>
-            <div className={styles.userCheck}>
-              {!disabled && 
-                <Checkbox 
-                  style={{marginRight: 6}}
-                  onChange={(e)=>{this.onCheckUser(item, e.target.checked)}} 
-                  checked={this.getUserChecked(item)}
-                  disabled={item.get('userStatus') === 4} />
-              }
-              <Avatar size="small">{item.get('username')?item.get('username').charAt(0):'c'}</Avatar>
-              <span className={styles.userName}>{item.get('username')}</span>
+      <div className={styles.userListContainer}>
+        <div className={styles.userListTip}>父部门不可选择人员</div>
+        {user.map((item) => {
+          return (
+            <div key={item.get('userId')} className={styles.userItem}>
+              <div className={styles.userCheck}>
+                {!disabled && 
+                  <Checkbox 
+                    style={{marginRight: 6}}
+                    onChange={(e)=>{this.onCheckUser(item, e.target.checked)}} 
+                    checked={this.getUserChecked(item)}
+                    disabled={item.get('userStatus') === 4} />
+                }
+                <Avatar size="small">{item.get('username')?item.get('username').charAt(0):'c'}</Avatar>
+                <span className={styles.userName}>{item.get('username')}</span>
+              </div>
+              <div className={styles.departmentName}>
+                {!disabled && <span className={styles.name} title={item.get('departmentName')}>{item.get('departmentName')}</span>}
+                {item.get('userId') === this.props.currentUserId && <span className={styles.me}>我</span>}
+              </div>
             </div>
-            <div className={styles.departmentName}>
-              {!disabled && <span className={styles.name} title={item.get('departmentName')}>{item.get('departmentName')}</span>}
-              {item.get('userId') === this.props.currentUserId && <span className={styles.me}>我</span>}
-            </div>
-          </div>
-        );
-      })
+          );
+        })}
+      </div>
     );
   }
 
