@@ -254,6 +254,7 @@ class JoinInForm extends Component{
             <FormItem {...tailFormItemLayout} >
               {getFieldDecorator('userAgreement', {
                 valuePropName: 'checked',
+                required: true,
               })(
                 <Checkbox className={styles.userArgee}  >同意<a href="#" >用户协议</a></Checkbox>
               )}

@@ -1,13 +1,15 @@
 
 
 import React, { Component } from 'react';
-import { Table, Button, Select, Icon, Popover, Checkbox, Upload, message } from 'antd';
+import { Table, Button, Select, Icon, Popover, Checkbox, Upload, message, Modal,Radio  } from 'antd';
 import CommonPagination from '../../../../Common/CommonPagination';
 import PropTypes from 'prop-types';
 import styles from './userList.scss';
 import { getCookie } from '../../../../../utils/index.js';
 import Path from '../../../../../constants/path';
 import WarningTip from '../../../../Common/WarningTip';
+const RadioGroup = Radio.Group;
+
 
 const { Option } = Select;
 class UserList extends Component {
@@ -349,6 +351,35 @@ class UserList extends Component {
       showExamineTip: false,
     })
   }
+
+  examineModal(){
+
+    return (
+      <Modal
+        onOk={this.onOK}
+        onCancel={this.onCancel}
+        visible={true}
+        footer={null}
+        closable={false}
+        maskClosable={false}
+        maskStyle={{backgroundColor:'rgba(153,153,153,0.2)'}}
+        wrapClassName={styles.warningTipWrapBox}
+      >
+        <div className={styles.warningTip} >
+          <div className={styles.textArea}>
+            <Icon type="exclamation-circle-o" className={styles.icon} />
+            <span className={styles.text}>是否通过审核？</span>
+          </div>
+          <RadioGroup name="radiogroup" defaultValue={3}>
+            <Radio value={3}>通过</Radio>
+            <Radio value={6}>不通过</Radio>
+          </RadioGroup>
+          
+        </div>
+      </Modal>
+    );
+  }
+
   render(){
     const { userData, totalNum, loading, selectedUser } = this.props;
     const { selectedUserColumns,showDeleteTip,showExamineTip,deleteWarningTip,examineWarningTip, } = this.state;

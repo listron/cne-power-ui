@@ -214,8 +214,9 @@ class RegisterForm extends Component {
           <FormItem {...tailFormItemLayout} >
             {getFieldDecorator('userAgreement', {
               valuePropName: 'checked',
+              required: true,
             })(
-              <Checkbox className={styles.userArgee}  >同意<a className={styles.userAgreement} >用户协议</a></Checkbox>
+              <Checkbox className={styles.userArgee}  >同意<a className={styles.userAgreement} href="#" >用户协议</a></Checkbox>
             )}
           </FormItem>
           <FormItem {...tailFormItemLayout} >
