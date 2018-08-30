@@ -13,9 +13,13 @@
   .ant-radio-button-wrapper:hover, .ant-radio-button-wrapper-focused{
     color: #199475;
   }
+  
+    .ant-tabs-nav-container{
+      margin: 0;
+    }
   //tab的表头的右侧附属
   .ant-tabs-extra-content {
-    line-height: 51px;
+    line-height: 48px;
    
 }
   .ant-tabs-nav .ant-tabs-tab {
@@ -59,6 +63,7 @@
     :global{
       .ant-tabs-bar{
         border:none;
+        border-bottom: 1px dashed #dfdfdf;
       }
 
       .ant-tabs-bar .ant-tabs-tab-active.ant-tabs-tab{
@@ -181,7 +186,7 @@
   }
 //卡片
   .stationCardContainer {
-    border-top:1px dashed #dfdfdf; 
+    // border-top:1px dashed #dfdfdf; 
     display: flex;
     flex-direction: row;
     flex: 1;
@@ -272,7 +277,7 @@
   }
   //列表
   .windStationList{
-    border-top:1px dashed #dfdfdf; 
+    // border-top:1px dashed #dfdfdf; 
     display: flex;
     flex-direction: column;
     a{

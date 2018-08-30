@@ -6,6 +6,9 @@
   flex:1;
   flex-direction: column;
   :global{  
+    .ant-tabs-nav-container{
+      margin: 0;
+    }
     .ant-progress-bg {
       border-radius: 100px;
       background-color: #199475;
@@ -14,7 +17,7 @@
     color: #199475;
   }
   .ant-tabs-extra-content {
-    line-height: 51px;
+    line-height: 48px;
 }
   //风光组件里的小tabs
   
@@ -54,6 +57,7 @@
     :global{
       .ant-tabs-bar{
         border:none;
+        border-bottom: 1px dashed #dfdfdf;
       }
       .ant-tabs-bar .ant-tabs-tab-active.ant-tabs-tab{
         background: #199475;
@@ -168,7 +172,7 @@
     }
   }
   .stationCardContainer {
-    border-top:1px dashed #dfdfdf;
+    
     display: flex;
     flex-direction: row;
     flex: 1;
@@ -257,8 +261,7 @@
       color: red;
     }
   }
-  .PvStationList{
-    border-top:1px dashed #dfdfdf; 
+  .PvStationList{ 
     display: flex;
     flex-direction: column;
     a{

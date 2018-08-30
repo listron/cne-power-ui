@@ -217,7 +217,7 @@ class Map extends Component {
 
 
     return (
-      <div style={{borderTop:"1px dashed #dfdfdf"}}>
+      <div>
         <div id={testId} style={{ width: "100%", height: "580px" }} ></div>
       </div>
     )
