@@ -71,8 +71,8 @@ class FilteredItems extends Component {
 
   render() {
     const {createTimeStart, createTimeEnd, stationType, stationCodes, deviceTypeCode, stations, deviceTypes, } = this.props;
-    console.log(stationCodes)
-    console.log(stations)
+    // console.log(stationCodes)
+    // console.log(stations)
 
     const tmpSelectedDeviceType = deviceTypeCode.split(',').filter(e=>!!e).map(e=>+e);
     const tmpSelectedStations = stationCodes.split(',').filter(e=>!!e).map(e=>+e);//选中电站的数组

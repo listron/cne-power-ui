@@ -10,9 +10,10 @@ class AlarmStatisticTable extends React.Component {
     pageSize: PropTypes.number,
     stationDataList: PropTypes.array,
     alarmStatistic:PropTypes.array,
+ 
   }
-  constructor(props, context) {
-    super(props, context);
+  constructor(props) {
+    super(props);
     this.state = {
       pageNum: 1,
       pageSize: 10,
@@ -24,22 +25,14 @@ class AlarmStatisticTable extends React.Component {
       pageSize
     })
   }
-  onChange = (pagination, filters, sorter) => {
-   // console.log("params", pagination, filters, sorter);
-  }
-  render() {
-    const { alarmStatistic } = this.props;
-    const { pageNum, pageSize, } = this.state;
-    const totalNum = alarmStatistic.length;
-    let startRow = (pageNum - 1) * pageSize;
-    let endRow = pageNum * pageSize;
-    endRow = (endRow > totalNum) ? totalNum : endRow;
-    let datalist = alarmStatistic.slice(startRow, endRow)
+ 
+
+  renderColumn() {
     const columns = [
       {
         title: "电站名称",
         dataIndex: "stationName",
-        onFilter: (value, record) => record.stationName.indexOf(value) === 0,
+        key: "stationName",
         sorter: (a, b) => a.stationName.localeCompare(b.stationName),
         render: (value, record, index) => {
           return {
@@ -50,96 +43,89 @@ class AlarmStatisticTable extends React.Component {
       },
       {
         title: "告警总数",
-        dataIndex: "allAlarmNum",
-        defaultSortOrder: "descend",
+        dataIndex: "alarmNum",
+        key: "alarmNum",
         sorter: (a, b) => a.allAlarmNum - b.allAlarmNum,
-
       },
       {
         title: "一级总数",
         dataIndex: "oneWarningNum",
-        defaultSortOrder: "descend",
+        key: "oneWarningNum",
         sorter: (a, b) => a.oneWarningNum - b.oneWarningNum,
 
       },
       {
         title: "二级总数",
-        dataIndex: "secondLevelAlarm",
-        defaultSortOrder: "descend",
+        dataIndex: "twoWarningNum",
+        key: "twoWarningNum",
         sorter: (a, b) => a.secondLevelAlarm - b.secondLevelAlarm,
 
       },
       {
         title: "三级总数",
         dataIndex: "threeWarningNum",
-        defaultSortOrder: "descend",
+        key: "threeWarningNum",
         sorter: (a, b) => a.threeWarningNum - b.threeWarningNum
       },
       {
         title: "四级总数",
         dataIndex: "fourWarningNum",
-        defaultSortOrder: "descend",
+        key: "fourWarningNum",
         sorter: (a, b) => a.fourWarningNum - b.fourWarningNum
       },
       {
         title: "平均处理时间",
         dataIndex: "handleAvgTime",
-        defaultSortOrder: "descend",
+        key: "handleAvgTime",
         sorter: (a, b) => a.handleAvgTime - b.handleAvgTime
       },
       {
         title: "一级处理时间",
         dataIndex: "oneHandleAvgTime",
-        defaultSortOrder: "descend",
+        key: "oneHandleAvgTime",
         sorter: (a, b) => a.oneHandleAvgTime - b.oneHandleAvgTime,
-
       },
       {
         title: "二级处理时间",
         dataIndex: "twoHandleAvgTime",
-        defaultSortOrder: "descend",
+        key: "twoHandleAvgTime",
         sorter: (a, b) => a.twoHandleAvgTime - b.twoHandleAvgTime,
-
       },
       {
         title: "三级处理时间",
         dataIndex: "threeHandleAvgTime",
-        defaultSortOrder: "descend",
+        key: "threeHandleAvgTime",
         sorter: (a, b) => a.threeHandleAvgTime - b.threeHandleAvgTime
       },
       {
         title: "四级处理时间",
         dataIndex: "fourHandleAvgTime",
-        defaultSortOrder: "descend",
+        key: "fourHandleAvgTime",
         sorter: (a, b) => a.fourHandleAvgTime - b.fourHandleAvgTime
       },
     ];    
-    const data = datalist.map((item, i) => {
-      return (
-        {
-          key: `${item.stationCode}`,
-          stationName: `${item.stationName || '--'}`,
-          allAlarmNum: `${item.alarmNum || '--'}`,
-          oneWarningNum: `${item.oneWarningNum || '--'}`,
-          secondLevelAlarm: `${item.secondLevelAlarm || '--'}`,
-          threeWarningNum: `${item.threeWarningNum || '--'}`,
-          fourWarningNum: `${item.fourWarningNum || '--'}`,
-          handleAvgTime: `${item.handleAvgTime || '--'}`,
-          oneHandleAvgTime: `${item.oneHandleAvgTime || '--'}`,
-          twoHandleAvgTime: `${item.twoHandleAvgTime || '--'}`,
-          threeHandleAvgTime: `${item.threeHandleAvgTime || '--'}`,
-          fourHandleAvgTime: `${item.fourHandleAvgTime || '--'}`,          
-        }
-      )
-    })
+
+    return columns;
+  }
+  render() {
+    const { alarmStatistic } = this.props;
+    const { pageNum, pageSize, } = this.state;
+    const totalNum = alarmStatistic.length;
+    let startRow = (pageNum - 1) * pageSize;
+    let endRow = pageNum * pageSize;
+    endRow = (endRow > totalNum) ? totalNum : endRow;
+    let data = alarmStatistic.slice(startRow, endRow).map((item,index)=>{
+      item.key=index;
+      return item;
+    });
     return (
-      <div style={{borderTop:"1px dashed #dfdfdf"}}>
+      <div className={styles.alarmStatisticTable}>
         <div className={styles.pagination}>
           <CommonPagination total={totalNum} onPaginationChange={this.onPaginationChange} />
         </div>
-        <Table columns={columns} dataSource={data} onChange={this.onChange} pagination={false} />
+        <Table columns={this.renderColumn()} dataSource={data} onChange={this.onChange} pagination={false} />
       </div>
-    )
+    );
   }
 }
-export default (AlarmStatisticTable)
+export default AlarmStatisticTable;

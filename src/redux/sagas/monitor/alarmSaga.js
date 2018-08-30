@@ -1,4 +1,4 @@
-import { call, put, takeLatest } from 'redux-saga/effects';
+import { call, put, takeLatest, select } from 'redux-saga/effects';
 import axios from 'axios';
 import moment from 'moment'
 import Path from '../../../constants/path';
@@ -8,6 +8,14 @@ function *changeAlarmStore(action) {//存储payload指定参数，替换reducer-
   const { payload } = action;
   yield put({
     type:  alarmAction.CHANGE_ALARM_STORE,
+    payload,
+  });
+}
+
+function *changeAlarmStatisticStore(action) {//存储payload指定参数，替换reducer-store属性。
+  const { payload } = action;
+  yield put({
+    type:  alarmAction.CHANGE_ALARM_STATISTIC_STORE,
     payload,
   });
 }
@@ -104,6 +112,10 @@ function *getSingleStationAlarmStatistic(action) {  // 请求单电站告警统�
         payload: {
           singleAlarmStatistic: response.data.data.alarmChart,
           singleAlarmSummary: response.data.data.alarmSummary,
+          startTime: payload.startTime,
+          endTime: payload.endTime,
+          singleStationCode: payload.stationCode,
+          summaryType: payload.summaryType
         },
       });     
     }  
@@ -169,9 +181,66 @@ function *getRelieveInfo(action) {  // 请求屏蔽详情
   }
 }
 
+function *transferAlarm(action) {  // 转工单
+  const { payload } = action;
+  const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.transferAlarm;
+  try{
+    yield put({ type:alarmAction.ALARM_FETCH });
+    const response = yield call(axios.post,url,payload);
+    if(response.data.code === '10000')
+    {
+      const params = yield select(state => ({//继续请求实时告警
+        warningLevel: state.monitor.alarm.get('warningLevel'),
+        stationType: state.monitor.alarm.get('stationType'),
+        stationCode: state.monitor.alarm.get('stationCode'),
+        deviceTypeCode: state.monitor.alarm.get('deviceTypeCode'),
+        warningConfigName: state.monitor.alarm.get('warningConfigName'),
+        startTime: state.monitor.alarm.get('startTime'),
+        endTime: state.monitor.alarm.get('endTime'),
+        deviceName: state.monitor.alarm.get('deviceName'),
+      }));
+      yield put({
+        type: alarmAction.GET_REALTIME_ALARM_SAGA,
+        payload: params
+      });     
+    }  
+  }catch(e){
+    console.log(e);
+  }
+}
+
+function *relieveAlarm(action) {  // 屏蔽告警
+  const { payload } = action;
+  const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.relieveAlarm;
+  try{
+    yield put({ type:alarmAction.ALARM_FETCH });
+    const response = yield call(axios.post,url,payload);
+    if(response.data.code === '10000')
+    {
+      const params = yield select(state => ({//继续请求实时告警
+        warningLevel: state.monitor.alarm.get('warningLevel'),
+        stationType: state.monitor.alarm.get('stationType'),
+        stationCode: state.monitor.alarm.get('stationCode'),
+        deviceTypeCode: state.monitor.alarm.get('deviceTypeCode'),
+        warningConfigName: state.monitor.alarm.get('warningConfigName'),
+        startTime: state.monitor.alarm.get('startTime'),
+        endTime: state.monitor.alarm.get('endTime'),
+        deviceName: state.monitor.alarm.get('deviceName'),
+      }));
+      yield put({
+        type: alarmAction.GET_REALTIME_ALARM_SAGA,
+        payload: params
+      });     
+    }  
+  }catch(e){
+    console.log(e);
+  }
+}
+
 
 export function* watchAlarmMonitor() {
   yield takeLatest(alarmAction.CHANGE_ALARM_STORE_SAGA, changeAlarmStore);
+  yield takeLatest(alarmAction.CHANGE_ALARM_STATISTIC_STORE_SAGA, changeAlarmStatisticStore);
   yield takeLatest(alarmAction.GET_REALTIME_ALARM_SAGA, getRealtimeAlarm);
   yield takeLatest(alarmAction.GET_HISTORY_ALARM_SAGA, getHistoryAlarm);
   yield takeLatest(alarmAction.GET_STATIONS_ALARM_STATISTIC_SAGA, getStationsAlarmStatistic);
@@ -180,6 +249,8 @@ export function* watchAlarmMonitor() {
   yield takeLatest(alarmAction.GET_TICKET_INFO_SAGA, getTicketInfo);
   yield takeLatest(alarmAction.GET_RELIEVE_INFO_SAGA, getRelieveInfo);
   yield takeLatest(alarmAction.RESET_ALARM_SAGA, resetAlarm);
+  yield takeLatest(alarmAction.TRANSFER_ALARM_SAGA, transferAlarm);
+  yield takeLatest(alarmAction.RELIEVE_ALARM_SAGA, relieveAlarm);
 }
 
 

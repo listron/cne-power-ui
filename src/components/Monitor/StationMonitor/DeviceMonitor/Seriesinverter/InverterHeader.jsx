@@ -61,7 +61,7 @@ class InverterHeader extends Component {
             </span>
             <span className="iconfont icon-upstream linkIcon"></span>
           </Link>
-          <Link to={`/hidden/singleStation/${stationCode}?showPart=206#1`} className={styles.eachLink}>
+          <Link to={`/monitor/singleStation/${stationCode}?showPart=509`} className={styles.eachLink}>
             <span className="iconfont icon-pvs linkIcon"></span>
             <span className={styles.linkName}>光伏组串列表</span>
             <span className="iconfont icon-downstream linkIcon"></span>

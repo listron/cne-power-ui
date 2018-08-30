@@ -16,6 +16,28 @@
           height: 26px;
           margin-right: 5px;
         }
+        .commonStyle{
+          background: #f1f1f1;
+          width: 21px;
+          height: 18px;
+          display: inline-block;
+          font-size: 11px;
+          color: #fff;
+          margin: 0 2px;
+          border-radius: 2px;
+        }
+        .normalValue{
+          background: #ceebe0;
+        }
+        .stopValue{
+          background: #f9b600;
+        }
+        .breakValue{
+          background: #a42b2c;
+        }
+        .noValue{
+          background: #f1f1f1;
+        }
       }
       .sightValue{
         background: #ceebe0;
@@ -25,6 +47,7 @@
         font-size: 11px;
         color: #fff;
         margin: 0 2px;
+        border-radius: 2px;
       }
     }
   }
@@ -66,12 +89,63 @@
               height: 10px;
               color: #a42b2c;
             }
-            
+            a{
+              color: #666;
+            }
           }
         }
         .inverterItemR{
           display: inline-block;
           width: 166px;
+          color: #666;
+          .inverterItemPower{
+            display: flex;
+            justify-content: space-between;
+            div:first-child{
+              color: $themeColor;
+            }
+          }
+          :global{
+            .ant-progress-success-bg, .ant-progress-bg{
+              background-color: $themeColor;
+            }
+          }
+        }
+      }
+      .cutOverItem{
+        display: inline-block;
+        margin-right: 18px; 
+        margin-bottom: 20px;
+        width: 215px;
+        height: 76px;
+        padding: 5px;
+        box-shadow:0 1px 4px 0 rgba(0,0,0,0.20);
+        border-radius:4px;
+        background: #f8f8f8;
+        pointer-events: none;
+        .inverterItemIcon{
+          display: inline-block;
+          vertical-align: top;
+          margin: 5px;
+          position: relative;
+          :global{
+            .icon-alarm{
+              position: absolute;
+              bottom: 0;
+              right: 0;
+              width: 10px;
+              height: 10px;
+              color: #a42b2c;
+            }
+            a{
+              color: #666;
+            }
+          }
+        }
+        .inverterItemR{
+          display: inline-block;
+          width: 166px;
+          color: #666;
           .inverterItemPower{
             display: flex;
             justify-content: space-between;
@@ -89,6 +163,9 @@
     }
     
     .inverterTable{
+      .deviceCode{
+        pointer-events: none;
+      }
       .devicePower{
         position: relative;
         .progressPower{

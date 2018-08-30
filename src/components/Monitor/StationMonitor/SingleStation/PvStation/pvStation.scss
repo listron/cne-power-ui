@@ -171,7 +171,7 @@
       .powerRadio{
         position: absolute;
         top: 20px;
-        right: 20px;
+        right: 30px;
         :global{
           .ant-radio-button-wrapper-checked:first-child {
             border-color: $themeColor;
@@ -192,7 +192,7 @@
         .iconfont{
           position: absolute;
           top: 20px;
-          right: -5px;
+          right: 5px;
           cursor: pointer;
         }
         .iconfont:hover{
@@ -260,6 +260,12 @@
       border-radius:4px;
       height: 140px;
       padding: 0 20px;
+      position: relative;
+      .blurbg{
+        position: absolute;
+        left: 23px;
+        bottom: -23px;
+      }
       .nopeople{
         div{
           display: inline-block;
@@ -273,6 +279,12 @@
         line-height: 40px;
         text-align: left;
         padding-left: 20px;
+        :global{
+          .iconfont{
+            color: #666;
+            cursor: pointer;
+          }
+        }
       }
       :global{
         .ant-carousel .slick-dots li button{
@@ -291,6 +303,7 @@
         .ant-carousel .slick-dots li{
           margin: 0 6px;
         }
+
       }
     }
     .alarmList{
@@ -327,6 +340,12 @@
         display: flex;
         justify-content: space-between;
         padding-left: 20px;
+        :global{
+          .iconfont{
+            color: #666;
+            cursor: pointer;
+          }
+        }
       }
     }
     .workList{
@@ -351,6 +370,12 @@
         display: flex;
         justify-content: space-between;
         padding-left: 20px;
+        :global{
+          .iconfont{
+            color: #666;
+            cursor: pointer;
+          }
+        }
       }
     }
   }

@@ -1,11 +1,11 @@
-.alarmStatist{
-  width: 100%;
-  min-height: 100%;
+.alarmStatistic{ 
   display: flex;
-  flex:1;
-  padding: 24px 24px 0;
+  flex: 1;
+  min-height: 100%;
   flex-direction: column;
-  background:#ececec;  
+  justify-content: space-between;
+  padding: 24px 24px 0;
+  background-color: #ececec;
 }
     
 .realTimeAlarmContainer {

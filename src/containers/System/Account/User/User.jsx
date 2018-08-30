@@ -6,7 +6,8 @@ import PropTypes from 'prop-types';
 import TransitionContainer from '../../../../components/Common/TransitionContainer';
 import UserSide from '../../../../components/System/Account/User/UserSide/UserSide';
 import UserMain from '../../../../components/System/Account/User/UserList/UserMain';
-import { getCookie } from '../../../../utils';
+import Cookie from 'js-cookie';
+
 class User extends Component {
   static propTypes = {
     showPage: PropTypes.string,
@@ -41,7 +42,6 @@ class User extends Component {
     }
   }
   componentDidMount() {
-    console.log('componentDidMount')
     const params = {
       enterpriseId: this.props.enterpriseId,
       roleId: this.props.roleId,
@@ -59,7 +59,6 @@ class User extends Component {
   }
 
   componentWillUnmount() {
-    console.log('componentWillUnmount')
     this.props.resetUserState();
   }
 
@@ -141,7 +140,7 @@ const mapStateToProps = state => {
   let userProps = {}; 
   [...state.system.user].forEach(e=>userProps[e[0]]=e[1]);
   userProps['roleData'] = state.system.role.get('roleData');
-  userProps['enterpriseId'] = getCookie('enterpriseId');
+  userProps['enterpriseId'] = Cookie.get('enterpriseId');
   return userProps;
 }
 

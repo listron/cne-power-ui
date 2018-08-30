@@ -91,7 +91,7 @@ class WindStation extends React.Component {
         return e.stationStatus.stationStatus === '900'
       }
     })
-    console.log(newStationDataList,'筛选的数据')
+    // console.log(newStationDataList,'筛选的数据')
 
 
     const TabPane = Tabs.TabPane;

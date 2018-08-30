@@ -61,7 +61,7 @@ class UserSearch extends Component {
       enterpriseId: this.props.enterpriseId,
       userStatus: this.props.userStatus,
       roleId: roleId.toString(),
-      pageNum: this.props.pageNum,
+      pageNum: 1,
       pageSize: this.props.pageSize,
       username: this.props.username,
       stationName: this.props.stationName,
@@ -74,7 +74,7 @@ class UserSearch extends Component {
     let params = {
       enterpriseId: this.props.enterpriseId,
       userStatus: 0,
-      roleId: '',
+      roleId: this.props.roleId,
       pageNum: this.props.pageNum,
       pageSize: this.props.pageSize,
       username: '',
@@ -96,6 +96,9 @@ class UserSearch extends Component {
       roleId: '',
       pageNum: this.props.pageNum,
       pageSize: this.props.pageSize,
+      username: this.props.username,
+      phoneNum: this.props.phoneNum,
+      stationName: this.props.stationName,
     };
     this.props.getUserList(params);
   }

@@ -44,9 +44,9 @@ class UserDetail extends Component {
   }
   prePage = () => {
     let userData = this.props.userData;
-    let userId = this.props.userId;
+    let userId = this.props.userDetail.get('userId');
     let index = userData.findIndex(item => {
-      return item.get('userId') === userId
+      return item.get('userId') === userId;
     });
     if(index !== -1) {
       if(index !== 0) {
@@ -59,9 +59,9 @@ class UserDetail extends Component {
 
   nextPage = () => {
     let userData = this.props.userData;
-    let userId = this.props.userId;
+    let userId = this.props.userDetail.get('userId');
     let index = userData.findIndex(item => {
-      return item.get('userId') === userId
+      return item.get('userId') === userId;
     });
     if(index !== -1) {
       if(index !== userData.size - 1) {

@@ -22,6 +22,7 @@ module.exports = {
     GET_PARTITIONS_SAGA: null,
     GET_PARTITIONS_SUCCESS: null,
     GET_PARTITIONS_FAIL: null,
+    REFRESHTOKEN_SAGE: null, //refreshToken -get 
   })
 }
 
