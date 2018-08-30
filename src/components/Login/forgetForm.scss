@@ -1,3 +1,5 @@
+@import '../../theme/theme.scss';
+
 .forgetPass {
   margin-left: 140px;
   .findPass {
@@ -28,7 +30,7 @@
     }
     .queryCodeClick{
       width: 100px;
-      margin-top: 4px;
+      margin-top: 6px;
       margin-right: 0;
       padding: 0 5px;
       height: 30px;
@@ -53,5 +55,18 @@
       }
     }
   }
-  
+  :global{
+    .ant-btn-primary:focus {
+      background-color: $themeColor;
+    }
+    .ant-form {
+      width: 200px;
+      .ant-form-item {
+        width: 200px;
+        .ant-btn {
+          width: 200px;
+        }
+      }
+    }
+  }
 }
