@@ -45,14 +45,14 @@ function *getRealtimeAlarm(action) {  // 请求实时告警
       payload.stationCode.length===0&&payload.deviceTypeCode.length===0&&
       payload.warningConfigName.length===0&&payload.startTime.length===0&&
       payload.deviceName===''&&payload.isTransferWork===1&&payload.isRelieveAlarm===1) {
-        const delay = (ms)=>new Promise((resolve)=> {
-          setTimeout(resolve, ms);
-        });
-        yield call(delay, 10000);
-        yield put({
-          type: alarmAction.GET_REALTIME_ALARM_SAGA,
-          payload,
-        });
+        // const delay = (ms)=>new Promise((resolve)=> {
+        //   setTimeout(resolve, ms);
+        // });
+        // yield call(delay, 10000);
+        // yield put({
+        //   type: alarmAction.GET_REALTIME_ALARM_SAGA,
+        //   payload,
+        // });
       }      
     }  
   }catch(e){

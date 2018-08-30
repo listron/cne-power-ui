@@ -284,23 +284,26 @@ class AssignStationModal extends Component {
     let transformStationList = this.tansformStationData(stationList);
     let station = this.tansformStationData(searchStationList!==null?searchStationList:selectedStationList);
     return (
-      station.map((item) => {
-        const stationItem = transformStationList.find(obj=>obj.get('stationId')===item.get('stationId'));
-        return (
-          <div key={item.get('stationId')} className={styles.stationItem}>
-            <div className={styles.stationCheck}>
-              <Checkbox
-                style={{marginRight: 6}}
-                onChange={(e)=>{this.onCheckStation(item, e.target.checked)}} 
-                checked={this.getStationChecked(item)} />
-              <span className={styles.stationName}>{item.get('stationName')}</span>
+      <div className={styles.stationListContainer}>
+        <div className={styles.stationListTip}>父部门不可选择电站，子部门继承</div>
+        {station.map((item) => {
+          const stationItem = transformStationList.find(obj=>obj.get('stationId')===item.get('stationId'));
+          return (
+            <div key={item.get('stationId')} className={styles.stationItem}>
+              <div className={styles.stationCheck}>
+                <Checkbox
+                  style={{marginRight: 6}}
+                  onChange={(e)=>{this.onCheckStation(item, e.target.checked)}} 
+                  checked={this.getStationChecked(item)} />
+                <div className={styles.stationName}>{item.get('stationName')}</div>
+              </div>
+              <div className={styles.departmentName} title={stationItem.get('departmentName')}>
+                {stationItem.get('departmentName')}
+              </div>
             </div>
-            <div className={styles.departmentName} title={stationItem.get('departmentName')}>
-              {stationItem.get('departmentName')}
-            </div>
-          </div>
-        );
-      })
+          );
+        })}
+      </div>
     );
   }
 
@@ -325,13 +328,15 @@ class AssignStationModal extends Component {
     if(this.state.stationList.size === 0) {
       return null;
     }
-    const { showWarningTip, warningTipText } = this.state;
+    const { showWarningTip, warningTipText, selectedDepartment } = this.state;
+    const num = this.getDepartmentStation(selectedDepartment.get('departmentId')).size;
     return (
       <Modal
         visible={true}
         footer={null}
         onCancel={this.onCancel}
         width={625}
+        className={styles.assignStation}
       >
         <div className={styles.assignStationModal}>
           { showWarningTip && 
@@ -354,8 +359,8 @@ class AssignStationModal extends Component {
           </div>
           <div className={styles.selectedStation}>{this.renderSelectedStation()}</div>
           <div className={styles.footer}>
-            <Button onClick={this.onCancel}>取消</Button>
-            <Button onClick={this.onSelect}>选择</Button>
+            <Button className={styles.cancel} onClick={this.onCancel}>取消</Button>
+            <Button  className={styles.select} onClick={this.onSelect}>{`选择(${num})`}</Button>
           </div>
         </div>        
       </Modal>
