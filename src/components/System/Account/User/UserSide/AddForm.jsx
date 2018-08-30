@@ -83,14 +83,14 @@ class AddForm extends Component {
             initialValue: userDetail && userDetail.username,
             rules: [{
               required : true,
-              message: '3-8位数字,字母组合',
+              message: '3-8位中文,英文,数字都可',
               max: 8,
               min: 3,
             }]
           })(
-            <Input placeholder="3-8位数字,字母组合" />
+            <Input placeholder="3-8位中文,英文,数字都可" />
           )}
-          <span className={styles.instructionText}>(3-8位数字,字母,组合)</span>
+          <span className={styles.instructionText}>(3-8位中文,英文,数字都可)</span>
         </FormItem>
         <FormItem label="真实姓名" >
           {getFieldDecorator('userFullName',{

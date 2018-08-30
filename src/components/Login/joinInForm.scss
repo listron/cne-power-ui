@@ -96,6 +96,39 @@
       color: #dfdfdf;
     }
   }
+
+  .loginAbnormal{
+    width: 200px;
+    text-align: center;
+    margin-top: 60px;
+    color:#999999;
+    .abnormalIcon{
+      display: block;
+      margin: 0 auto;
+      :global{
+        .iconfont{
+          font-size: 62px;
+          color: #999999;
+        }
+      }
+    }
+  }
+  .waitExamine{
+    width: 200px;
+    text-align: center;
+    margin-top: 60px;
+    color: #e08031;
+    .waitExamineIcon{
+      display: block;
+      margin: 0 auto;
+      :global{
+        .iconfont{
+          font-size: 62px;
+          color: #e08031;
+        }
+      }
+    }
+  }
   :global{
     .ant-input:focus {
       border-color: $themeColor;

@@ -38,6 +38,9 @@ class JoinInForm extends Component{
     this.setState = (timeValue)=>{
       return;
     };
+    this.props.changeLoginStore({
+      userEnterpriseStatus: 3,
+    });
   }
 
   onJoinEnterprise = () => {
@@ -97,7 +100,7 @@ class JoinInForm extends Component{
     this.props.form.validateFields(['phoneNum'], (err, values) => {
       if(!err){
         this.props.sendCode(values);
-        this.setState({ timeValue: 60 })
+        this.setState({ timeValue: 60 });
         this.timeDecline();
       }
     })
@@ -213,11 +216,22 @@ class JoinInForm extends Component{
   renderStepThree(formItemLayout, tailFormItemLayout) {
     const { getFieldDecorator } = this.props.form;
     const { userEnterpriseStatus } = this.props;
+    console.log(userEnterpriseStatus)
     if(userEnterpriseStatus === 5) {
-      return (<div>等待管理员审核</div>);
+      return (
+        <div className={styles.waitExamine}>
+          <div className={styles.waitExamineIcon}><i className="iconfont icon-ha"></i></div>
+          <div className={styles.waitExamineTip}>等待管理员审核</div>
+        </div>
+      );
     } else if(userEnterpriseStatus === 6) {
-      return (<div>未通过审核，如有问题，请联系管理员！</div>);
-    } else if(userEnterpriseStatus===3) {
+      return (
+        <div className={styles.loginAbnormal}>
+          <div className={styles.abnormalIcon}><i className="iconfont icon-ha"></i></div>
+          <div className={styles.abnormalTip}>未通过审核，如有问题，请联系管理员！</div>
+        </div>
+      );
+    } else if(userEnterpriseStatus===3 || userEnterpriseStatus===null) {
       return (
         <div className={styles.userInfo} >
           <Form onSubmit={this.onJoinEnterprise}  >
