@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Form, Icon, Input, Button} from 'antd';
+import {Form, Input, Button} from 'antd';
 import PropTypes from 'prop-types';
 import styles from './loginForm.scss';
 
@@ -96,6 +96,56 @@ class LoginForm extends Component {
       }
     })
   }
+
+  renderUsernameLogin = (getFieldDecorator) =>{
+    return (
+      <div>
+        <FormItem className={styles.usernameInput}>
+          {getFieldDecorator('username', {
+            rules: [{required: true, message: '请输入手机号/用户名'}]
+          })(
+            <Input addonBefore={<i className="iconfont icon-user"></i>} placeholder="请输入手机号/用户名" />
+          )}
+        </FormItem>
+        <FormItem>
+          {getFieldDecorator('password', {
+            rules: [{required: true, message: '请输入密码'}]
+          })(
+            <Input addonBefore={<i className="iconfont icon-password"></i>} type="password" placeholder="请输入密码" />
+          )}
+        </FormItem>
+      </div>
+    );
+  }
+
+  renderPhoneLogin(getFieldDecorator,timeValue){
+    return (
+      <div className={styles.verificationCode}>
+        <div>
+          <FormItem>
+            {getFieldDecorator('phoneNum', {
+              rules: [{pattern: /(^1\d{10}$)/, required: true, message: '请输入手机号'}]
+            })(
+              <Input addonBefore={<i className="iconfont icon-phone"></i>} placeholder="请输入手机号" />
+            )}
+          </FormItem>
+        </div>
+        <div className={styles.checkCodeBox}>
+          <FormItem>
+            {getFieldDecorator('verificationCode', {
+              rules: [{required: true, message: '请输入验证码!'}]
+            })(
+              <Input className={styles.testCode} addonBefore={<i className="iconfont icon-password"></i>} placeholder="验证码" />
+            )}
+          </FormItem>
+          <Button type="primary" disabled={timeValue !== 0} onClick={this.sendCode} className={timeValue !== 0 ? styles.queryCodeClick : styles.queryCode}>
+            {timeValue !== 0 ? `获取验证码 ${timeValue}` : "获取验证码"}
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
   render(){
     const { getFieldDecorator, getFieldsError } = this.props.form;
     let { showPasswordLogin, timeValue } = this.state;
@@ -113,49 +163,8 @@ class LoginForm extends Component {
         }
         {userEnterpriseStatus===3 &&
         <Form onSubmit={this.onHandleSubmit}>
-          {showPasswordLogin &&
-          <div>
-            <FormItem className={styles.usernameInput}>
-              {getFieldDecorator('username', {
-                rules: [{required: true, message: '请输入手机号/用户名'}]
-              })(
-                <Input addonBefore={<i className="iconfont icon-user"></i>} placeholder="请输入手机号/用户名" />
-              )}
-            </FormItem>
-            <FormItem>
-              {getFieldDecorator('password', {
-                rules: [{required: true, message: '请输入密码'}]
-              })(
-                <Input addonBefore={<i className="iconfont icon-password"></i>} type="password" placeholder="请输入密码" />
-              )}
-            </FormItem>
-          </div>
-          }
-          {!showPasswordLogin &&
-          <div className={styles.verificationCode}>
-            <div>
-              <FormItem>
-                {getFieldDecorator('phoneNum', {
-                  rules: [{pattern: /(^1\d{10}$)/, required: true, message: '请输入手机号'}]
-                })(
-                  <Input addonBefore={<i className="iconfont icon-phone"></i>} placeholder="请输入手机号" />
-                )}
-              </FormItem>
-            </div>
-            <div className={styles.checkCodeBox}>
-              <FormItem>
-                {getFieldDecorator('verificationCode', {
-                  rules: [{required: true, message: '请输入验证码!'}]
-                })(
-                  <Input className={styles.testCode} addonBefore={<i className="iconfont icon-password"></i>} placeholder="验证码" />
-                )}
-              </FormItem>
-              <Button type="primary" disabled={timeValue !== 0} onClick={this.sendCode} className={timeValue !== 0 ? styles.queryCodeClick : styles.queryCode}>
-                {timeValue !== 0 ? `获取验证码 ${timeValue}` : "获取验证码"}
-              </Button>
-            </div>
-          </div>
-          }
+          {showPasswordLogin && this.renderUsernameLogin(getFieldDecorator)}
+          {!showPasswordLogin && this.renderPhoneLogin(getFieldDecorator,timeValue)}
           <FormItem>
             <div className={styles.loginChange}>
               <span onClick={() => this.setState({showPasswordLogin: !showPasswordLogin})}>

@@ -4,7 +4,7 @@
 
 
 import React, { Component } from 'react';
-import { Button, Input, Form, Select, Checkbox } from 'antd';
+import { Button, Input, Form, Select } from 'antd';
 import PropTypes from 'prop-types';
 import styles from './userSide.scss';
 

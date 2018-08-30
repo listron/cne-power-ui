@@ -39,7 +39,7 @@ class JoinIn extends Component {
       <div>
         <div className={styles.goLogin}>
           <span  onClick={()=>this.changePage( 'login')}> 登录 </span>
-          <span>I</span>
+          <span>|</span>
           <span  onClick={()=>this.changePage('register')}> 注册 </span>
         </div>
         <JoinInForm 
