@@ -3,15 +3,19 @@ import styles from './editPassword.scss';
 import EditPasswordForm from '../../components/Others/EditPasswordForm';
 import { otherAction } from '../../constants/actionTypes/otherAction';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 class EditPassword extends Component {
+
+  static propTypes = {
+    setTopMenu: PropTypes.func,
+  };
 
   constructor(props) {
     super(props);
   }
 
   render() {
-    console.log(this.props)
     return (
       <div className={styles.editPassword}>
         <div className={styles.editTitle}>修改密码</div>

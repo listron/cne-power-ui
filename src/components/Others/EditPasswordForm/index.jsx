@@ -102,7 +102,7 @@ class EditPasswordForm extends Component {
         <FormItem {...formItemLayout} label="新密码确认" >
           {getFieldDecorator('confirm', {
             rules: [{
-              required: true, message: 'Please confirm your password!',
+              required: true, message: '请确认密码',
             }, {
               validator: this.compareToFirstPassword,
             }],
