@@ -23,6 +23,13 @@ class RoleEditForm extends Component {
 
   constructor(props){
     super(props);
+    this.state = {
+      halfCheckedKeys: []
+    };
+  }
+
+  onChangeHalf = (halfCheckedKeys) => {
+    this.setState({halfCheckedKeys});
   }
 
   onSaveRole = () => {
@@ -41,13 +48,15 @@ class RoleEditForm extends Component {
         }, 500);
         if(this.props.showPage === 'create') {
           this.props.onCreateRole({
-            ...values,
+            roleDesc: values.roleDesc,
+            rightId: values.rightId.split(',').concat(this.state.halfCheckedKeys).join(','),
             enterpriseId,
             continueAdd: false,
           });
         } else {
           this.props.onEditRole({
-            ...values,
+            roleDesc: values.roleDesc,
+            rightId: values.rightId.split(',').concat(this.state.halfCheckedKeys).join(','),
             roleId: selectedRole[0].roleId,
             enterpriseId
           })
@@ -61,7 +70,8 @@ class RoleEditForm extends Component {
     this.props.form.validateFieldsAndScroll((err, values) => {
       if(!err) {
         this.props.onCreateRole({
-          ...values,
+          roleDesc: values.roleDesc,
+          rightId: values.rightId.split(',').concat(this.state.halfCheckedKeys).join(','),
           enterpriseId,
           continueAdd: true,
         });
@@ -117,7 +127,7 @@ class RoleEditForm extends Component {
             }],
             initialValue: isCreate || !selectedRole ? '' : this.getIds(selectedRole.rightData)
           })(
-            <RoleTree treeData={this.props.menuData} />
+            <RoleTree treeData={this.props.menuData} onChangeHalf={this.onChangeHalf} />
           )}
         </FormItem>
         <div className={styles.buttonGroup}>

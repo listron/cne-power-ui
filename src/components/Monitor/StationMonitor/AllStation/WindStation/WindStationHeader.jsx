@@ -39,7 +39,7 @@ class windStationHeader extends React.Component {
               <div className={styles.dataName}>装机台数 台</div>
             </div>
             <div className={styles.windSpeed}>
-              <div className={styles.dataValue}>{instantaneous}</div>
+              <div className={styles.dataWindValue}>{instantaneous}</div>
               <div className={styles.dataName}>平均风速 m/s</div>
             </div>
             <div className={styles.dayStation}>

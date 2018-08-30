@@ -178,7 +178,7 @@ class RealTimeAlarmTable extends Component {
             return (
               <Popover content={this.renderTransferPopover(index)}
               trigger="click"
-              visible={this.state.showTransferPopover}
+              visible={this.state.showTransferPopover[index]}
               onVisibleChange={(visible)=>this.onTransferChange(visible, record.workOrderId, index)}
               >
                 <i className="iconfont icon-tranlist icon-action"></i>
@@ -189,7 +189,7 @@ class RealTimeAlarmTable extends Component {
             return (
               <Popover content={this.renderRelievePopover(index)}
               trigger="click"
-              visible={this.state.showRelievePopover}
+              visible={this.state.showRelievePopover[index]}
               onVisibleChange={(visible)=>this.onRelieveChange(visible, record.operateId, index)}
               >
                 <i className="iconfont icon-manual icon-action"></i>
