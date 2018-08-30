@@ -187,6 +187,7 @@ class RegisterForm extends Component {
                       rules: [
                         {required: true, message: '请输入手机号'},
                         {pattern: /(^1\d{10}$)/, message: '手机号格式不对'}
+                         
                       ]
                     })(
                       <Input className={styles.mobileNumber} addonBefore={<i className="iconfont icon-phone"></i>} placeholder="请输入手机号" />
@@ -225,6 +226,7 @@ class RegisterForm extends Component {
                   {getFieldDecorator('enterpriseDomain', {
                     rules: [
                       {required: true, message: '请输入企业域名'},
+                      {pattern: /\w|[^\s~'!@#￥$%^&*()-+_=:]/, message: '格式不对'}
                     ]
                   })(
                     <div className={styles.domain} >
