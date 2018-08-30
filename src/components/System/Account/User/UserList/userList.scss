@@ -32,6 +32,11 @@
     .ant-checkbox-input:focus{
       outline-color: $themeColor;
     }
+    .ant-input:focus {
+      border-color: $themeColor;
+      -webkit-box-shadow: 0 0 0 0;
+      box-shadow: 0 0 0 0;
+    }
   }
   .userSearchFilter{
     background: #fff;
@@ -269,5 +274,19 @@
     }
   }
 }
-
+.highLight{
+  border: 1px solid #199475;
+  box-shadow: 0 0 2px #199475;
+  :global{
+    .ant-select-dropdown-menu-item{
+      color:$themeColor;
+      i.iconfont{ 
+        margin-right: 7px; 
+      }
+    }
+    .ant-select-dropdown-menu-item-disabled{
+      color:$promptColor;
+    }
+  }
+}
 

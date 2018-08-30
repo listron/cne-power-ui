@@ -120,44 +120,43 @@ class UserDetail extends Component {
 
             <div className={styles.user}>
               <span>状态</span>
-              {this.getEnterpriseStatus(userDetail.get('enterpriseUserStatus'))}
+              {this.getEnterpriseStatus(userDetail.get('enterpriseUserStatus')) || '--'}
             </div>
             <div className={styles.time}>
               <span>创建时间</span>
-              {userDetail.get('createtime')}
+              {userDetail.get('createtime') || '--'}
             </div>
           </div>
           <div className={styles.userDetailContainer}>
             <div>
               <span className={styles.title}>用户名</span>
-              <span className={styles.value}>{userDetail.get('username')}</span>
+              <span className={styles.value}>{userDetail.get('username') || '--'}</span>
+            </div>
+            <div>
+              <span className={styles.title}>真实姓名</span>
+              <span className={styles.value}>{userDetail.get('userFullName') || '--'}</span>
             </div>
             <div>
               <span className={styles.title}>电话</span>
-              <span className={styles.value}>{userDetail.get('phoneNum')}</span>
-            </div>
-
-            <div>
-              <span className={styles.title}>真实姓名</span>
-              <span className={styles.value}>{userDetail.get('userFullName')}</span>
+              <span className={styles.value}>{userDetail.get('phoneNum') || '--'}</span>
             </div>
             <div>
               <span className={styles.title}>邮箱</span>
-              <span className={styles.value}>{userDetail.get('email')}</span>
+              <span className={styles.value}>{userDetail.get('email') || '--'}</span>
             </div>
             <div>
               <span className={styles.title}>微信账户</span>
-              <span className={styles.value}>{userDetail.get('webChat')}</span>
+              <span className={styles.value}>{userDetail.get('webChat') || '--'}</span>
             </div>
             <hr className={styles.doshLine} />
             <div className={styles.detailRole}>
               <span className={styles.title}>角色</span>
-              <span className={styles.value}>{userDetail.get('roleName')}</span>
+              <span className={styles.value}>{userDetail.get('roleName') || '--'}</span>
             </div>
             <div className={styles.detailSpecialRole} >
               <span className={styles.title}>特殊权限</span>
               <span className={styles.value}>
-                {userDetail.get('spcialRoleName')}
+                {userDetail.get('spcialRoleName') || '--'}
               </span>
             </div>
             <hr className={styles.doshLine} />

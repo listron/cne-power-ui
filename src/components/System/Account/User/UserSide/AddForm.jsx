@@ -20,6 +20,7 @@ class AddForm extends Component {
     enterpriseId: PropTypes.string,
     roleAllList: PropTypes.object,
     specialRoleList: PropTypes.object,
+    changeUserStore: PropTypes.func,
   }
 
   constructor(props){
@@ -41,9 +42,10 @@ class AddForm extends Component {
           username: values.username,
           userLogo,
           enterpriseId,
+        })
+        this.props.changeUserStore({
           showPage: 'list',
         })
-        
       }
     })
   }
@@ -61,8 +63,10 @@ class AddForm extends Component {
           username: values.username,
           userLogo,
           enterpriseId,
-          showPage: 'add',
         });
+        this.props.changeUserStore({
+          showPage: 'add',
+        })
         form.resetFields();
       }
     })
@@ -86,7 +90,7 @@ class AddForm extends Component {
           })(
             <Input placeholder="3-8位数字,字母组合" />
           )}
-          <span className={styles.instructionText}>(3-8位数字,字母组合)</span>
+          <span className={styles.instructionText}>(3-8位数字,字母,组合)</span>
         </FormItem>
         <FormItem label="真实姓名" >
           {getFieldDecorator('userFullName',{

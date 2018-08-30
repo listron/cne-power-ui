@@ -32,6 +32,7 @@ class UserList extends Component {
     username: PropTypes.string,
     stationName: PropTypes.string,
     phoneNum: PropTypes.string,
+    currentPage: PropTypes.number,
   }
 
   constructor(props){
@@ -44,6 +45,21 @@ class UserList extends Component {
       examineWarningTip: '是否通过审核？',
       currentPage: 1,
     }
+  }
+
+  componentDidMount() {
+    const params = {
+      enterpriseId: this.props.enterpriseId,
+      roleId: this.props.roleId,
+      userStatus: this.props.userStatus,
+      username: this.props.username,
+      phoneNum: this.props.phoneNum,
+      stationName: this.props.stationName,
+      pageNum: this.props.currentPage,
+      pageSize: this.props.pageSize,
+      order: '0',
+    };
+    this.props.getUserList(params);
   }
 
   onRowSelect = (selectedRowKeys, selectedRows) => {//行选择
@@ -59,7 +75,6 @@ class UserList extends Component {
   }
 
   onPaginationChange = ({currentPage,pageSize}) => {//分页器
-    // console.log(currentPage,pageSize)
     this.props.getUserList({
       enterpriseId: this.props.enterpriseId,
       userStatus: this.props.userStatus,
@@ -238,6 +253,7 @@ class UserList extends Component {
 
   _createUserOperate = () => {
     let selectedUser = this.props.selectedUser.toJS();
+    // const { highLight } = this.state;
     let [editable, deletable, usable, unallowable, examinable] = [ false, false, false, false, false];
     if(selectedUser.length > 0){
       editable = selectedUser.length === 1;
@@ -272,7 +288,7 @@ class UserList extends Component {
     }else if(value === 'delete'){//移除
       this.setState({
         showDeleteTip: true,
-        warningText: ''
+        warningText: '',
       })
     }else if(value === 'use'){//启用
       this.props.changeUserStatus({

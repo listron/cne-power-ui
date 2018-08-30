@@ -25,6 +25,15 @@
       -webkit-box-shadow: 0 0 0 0;
       box-shadow: 0 0 0 0;
     }
+    .ant-input:focus {
+      border-color: $themeColor;
+      box-shadow: 0 0 2px $themeColor;
+    }
+    .ant-input {
+      border-color: #d9d9d9;
+      -webkit-box-shadow: 0 0 0 0;
+      box-shadow: 0 0 0 0;
+    }
   }
   .addUser,.editUser,.inviteUser{//新建/编辑页
     flex: 1;
@@ -144,6 +153,13 @@
       @include top;
       justify-content: space-between;
       .editButton {
+        border: 1px solid $themeColor;
+        box-shadow: 0 0 2px $themeColor;
+        color: $themeColor;
+        // .ant-btn:hover, .ant-btn:focus, .ant-btn::selection {
+        //   border: 1px solid #199475;
+        //   box-shadow: 0 0 2px #199475;
+        // }
         &:hover {
           background-color: #fff;
           color: #199475;

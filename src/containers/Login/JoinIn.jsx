@@ -25,6 +25,7 @@ class JoinIn extends Component {
     history: PropTypes.object,
     isInvite: PropTypes.number,
     enterpriseLogo: PropTypes.string,
+    userEnterpriseStatus: PropTypes.number,
   }
   constructor(props) {
     super(props);
@@ -39,7 +40,7 @@ class JoinIn extends Component {
         <div className={styles.goLogin}>
           <span  onClick={()=>this.changePage( 'login')}> 登录 </span>
           <span>I</span>
-          <span  onClick={()=>this.changePage('register')}> 注册企业 </span>
+          <span  onClick={()=>this.changePage('register')}> 注册 </span>
         </div>
         <JoinInForm 
           enterpriseName={this.props.enterpriseName}
@@ -57,6 +58,7 @@ class JoinIn extends Component {
           error={this.props.error}
           history={this.props.history}
           isInvite={this.props.isInvite}
+          userEnterpriseStatus={this.props.userEnterpriseStatus}
         />
       </div>
     );
@@ -73,6 +75,7 @@ const mapStateToProps = (state) => ({
   phoneNum: state.login.get('phoneNum'),
   error: state.login.get('error'),
   isInvite: state.login.get('isInvite'),
+  userEnterpriseStatus: state.login.get('userEnterpriseStatus'),
 })
 
 const mapDispatchToProps = (dispatch) => ({

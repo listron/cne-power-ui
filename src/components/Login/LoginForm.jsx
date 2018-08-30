@@ -16,6 +16,7 @@ class LoginForm extends Component {
     username: PropTypes.string,
     history: PropTypes.object,
     error: PropTypes.object,
+    userEnterpriseStatus: PropTypes.number,
   }
 
   constructor(props) {
@@ -98,10 +99,19 @@ class LoginForm extends Component {
   render(){
     const { getFieldDecorator, getFieldsError } = this.props.form;
     let { showPasswordLogin, timeValue } = this.state;
-    let { username, enterpriseId } = this.props;
+    let { username, enterpriseId, userEnterpriseStatus } = this.props;
 
     return (
       <div className={styles.loginForm}>
+        {userEnterpriseStatus===5 && <div>等待管理员审核</div>}
+        {userEnterpriseStatus===6 && <div>未通过审核，如有问题，请联系管理员！</div>}
+        {userEnterpriseStatus===4 || userEnterpriseStatus===7 && 
+          <div className={styles.loginAbnormal}>
+            <div className={styles.abnormalIcon}><i className="iconfont icon-ha"></i></div>
+            <div className={styles.abnormalTip}>账号异常，请联系管理员！</div>
+          </div>
+        }
+        {userEnterpriseStatus===3 &&
         <Form onSubmit={this.onHandleSubmit}>
           {showPasswordLogin &&
           <div>
@@ -157,10 +167,10 @@ class LoginForm extends Component {
               <Button type="primary" htmlType="submit" disabled={this.hasErrors(getFieldsError())}>登录</Button>
               {/* <div className={styles.yiLogin}>易巡登录</div> */}
             </div>
-            {enterpriseId === null ? <p>您已注册，请<b onClick={()=>this.props.changeLoginStore({pageTab: 'joinIn'})}>加入企业</b>或<b onClick={()=>this.props.changeLoginStore({pageTab: 'register'})}>注册企业</b></p> : null}
+            {enterpriseId === null ? <p>您已注册，请<b onClick={()=>this.props.changeLoginStore({pageTab: 'joinIn'})}>加入企业</b>或<b onClick={()=>this.props.changeLoginStore({pageTab: 'register'})}>注册</b></p> : null}
             {username === null ? <p>个人信息不完善，请完善<b onClick={this.jumpPersonalInfo} >个人信息</b></p> : null }
           </FormItem>
-        </Form>
+        </Form>}
       </div>
     );
   }

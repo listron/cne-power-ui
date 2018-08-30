@@ -35,7 +35,6 @@ class RegisterForm extends Component {
       return;
     };
   }
-  
 
   onEnterpriseInfo = (e) => {
     e.preventDefault();
@@ -66,9 +65,7 @@ class RegisterForm extends Component {
       }
     })
   }
-
   
-
   onRegisterEnterprise = () => {
     this.props.form.validateFields(['username','password','confirmPwd'],(err, values) => {
       if(!err){
