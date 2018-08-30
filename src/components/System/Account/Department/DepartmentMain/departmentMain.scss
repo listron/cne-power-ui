@@ -110,6 +110,9 @@
     table{
       .tableDepartmentName{
         color: $darkColor;
+        &:hover{
+          color: #199475;
+        }
       }
     }
     .stationColumn{
