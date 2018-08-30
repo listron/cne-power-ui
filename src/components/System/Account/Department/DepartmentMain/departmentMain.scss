@@ -45,6 +45,11 @@
       color: $lightColor;
       border:1px solid $promptColor;
       @include highLight($themeColor);
+      &:hover{
+        background-color: $themeColor;
+        border-color: $themeColor;
+        color: #fff;
+      }
     }
     .clearButton{
       cursor: pointer;
