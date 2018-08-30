@@ -135,6 +135,7 @@ class ForgetForm extends Component{
 
     return (
       <div>
+        <span>新密码</span>
         <Form onSubmit={this.onResetPassword}  >
           <FormItem label="创建密码" {...formItemLayout}>
             {getFieldDecorator('password',{

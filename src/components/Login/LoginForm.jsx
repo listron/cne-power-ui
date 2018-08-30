@@ -154,8 +154,9 @@ class LoginForm extends Component {
     return (
       <div className={styles.loginForm}>
         {userEnterpriseStatus===5 && 
-          <div >
-            等待管理员审核
+          <div className={styles.waitExamine}>
+            <div className={styles.waitExamineIcon}><i className="iconfont icon-ha"></i></div>
+            <div className={styles.waitExamineTip}>等待管理员审核</div>
           </div>
         }
         {userEnterpriseStatus===6 && <div>未通过审核，如有问题，请联系管理员！</div>}
