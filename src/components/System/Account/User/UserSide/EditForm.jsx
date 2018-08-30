@@ -19,6 +19,7 @@ class EditForm extends Component {
     enterpriseId: PropTypes.string,
     roleAllList: PropTypes.object,
     specialRoleList: PropTypes.object,
+    changeUserStore: PropTypes.func,
   }
 
   constructor(props){
@@ -38,9 +39,10 @@ class EditForm extends Component {
           username: values.username,
           userLogo: userDetail.get('userLogo'),
           userId: userDetail.get('userId'),
-          showPage: 'list',
         })
-        
+        this.props.changeUserStore({
+          showPage: 'list',
+        });
       }
     })
   }

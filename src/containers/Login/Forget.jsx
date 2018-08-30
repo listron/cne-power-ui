@@ -39,8 +39,8 @@ class Forget extends Component {
       <div className={styles.forgetPassword}>
         <div className={styles.goLogin}>
           <span  onClick={()=>this.changePage('login')}> 登录 </span>
-          <span>I</span>
-          <span  onClick={()=>this.changePage('register')}> 注册企业 </span>
+          <span>|</span>
+          <span  onClick={()=>this.changePage('register')}> 注册 </span>
         </div>
         <ForgetForm
           sendCode={this.props.sendCode}

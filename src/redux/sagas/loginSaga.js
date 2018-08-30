@@ -39,7 +39,7 @@ function *getLogin(action){
     });
     if(response.data.code === '10000'){
       const { data } = response.data;
-      if(data.userEnterpriseStatus === 1 || data.userEnterpriseStatus === 2 || data.userEnterpriseStatus === 3) {
+      if(data.userEnterpriseStatus === 3) {
         data.access_token && Cookie.set('authData',JSON.stringify(data.access_token));
         data.enterpriseId && Cookie.set('enterpriseId', data.enterpriseId);
         data.enterpriseName && Cookie.set('enterpriseName', data.enterpriseName);
@@ -55,7 +55,7 @@ function *getLogin(action){
         action.params.history.push('/');
       } else {
         yield put({ type: loginAction.CHANGE_LOGIN_STORE_SAGA, params: {userEnterpriseStatus: data.userEnterpriseStatus}})
-        message.error(data.userEnterpriseStatus); 
+        // message.error(data.userEnterpriseStatus); 
       }
     } else{
       yield put({ type: loginAction.GET_LOGIN_FAIL, data: response.data }); 
@@ -98,29 +98,34 @@ function *checkCode(action){
       }),
     });
     if(response.data.code === '10000'){
-      const { data } = response.data
-      if(action.params.isNotLogin === 1 || data.enterpriseId !== null) {
-        data.access_token && Cookie.set('authData',JSON.stringify(data.access_token));
-        data.enterpriseId && Cookie.set('enterpriseId', data.enterpriseId);
-        data.enterpriseName && Cookie.set('enterpriseName', data.enterpriseName);
-        data.enterpriseLogo && Cookie.set('enterpriseLogo', data.enterpriseLogo);
-        data.userId && Cookie.set('userId', data.userId);
-        data.username && Cookie.set('username', data.username);
-        data.userLogo && Cookie.set('userLogo', data.userLogo);
-        data.expires_in && Cookie.set('expireData', moment().add(data.expires_in, 'seconds'));
-        data.refresh_token && Cookie.set('refresh_token', data.refresh_token);
-        Cookie.set('isNotLogin', action.params.isNotLogin);
+      const { data } = response.data;
+      if(data.userEnterpriseStatus === 3) {
+        if(action.params.isNotLogin === 1 || data.enterpriseId !== null) {
+          data.access_token && Cookie.set('authData',JSON.stringify(data.access_token));
+          data.enterpriseId && Cookie.set('enterpriseId', data.enterpriseId);
+          data.enterpriseName && Cookie.set('enterpriseName', data.enterpriseName);
+          data.enterpriseLogo && Cookie.set('enterpriseLogo', data.enterpriseLogo);
+          data.userId && Cookie.set('userId', data.userId);
+          data.username && Cookie.set('username', data.username);
+          data.userLogo && Cookie.set('userLogo', data.userLogo);
+          data.expires_in && Cookie.set('expireData', moment().add(data.expires_in, 'seconds'));
+          data.refresh_token && Cookie.set('refresh_token', data.refresh_token);
+          Cookie.set('isNotLogin', action.params.isNotLogin);
+        }
+        if(params.isNotLogin === 0 && data.enterpriseId !== null) {
+          params.history.push('/');
+        }
+        yield put({
+          type: loginAction.CHECK_CODE_SUCCESS,
+          params, //params为请求传入的值
+          data, //data为API返回的值
+        });
+      } else {
+        yield put({ type: loginAction.CHANGE_LOGIN_STORE_SAGA, params: {userEnterpriseStatus: data.userEnterpriseStatus}})
+        // message.error(data.userEnterpriseStatus);
       }
-      if(params.isNotLogin === 0 && data.enterpriseId !== null) {
-        params.history.push('/');
-      }
-      yield put({
-        type: loginAction.CHECK_CODE_SUCCESS,
-        params, //params为请求传入的值
-        data, //data为API返回的值
-      });
     }else{
-      yield put({ type: loginAction.CHECK_CODE_FAIL, data: response.data })
+      yield put({ type: loginAction.CHECK_CODE_FAIL, data: response.data });
     }
   }catch(e){
     console.log(e);
@@ -138,7 +143,7 @@ function *phoneCodeRegister(action){
     });
     if(response.data.code === '00000' || response.data.code === '20001'){
       yield put({type: loginAction.PHONE_CODE_REGISTER_FAIL, data: response.data});
-      message.error(response.data.message);
+      // message.error(response.data.message);
     }else{
       yield put({type: loginAction.CHECK_CODE_SAGA, params});
       yield put({
