@@ -311,15 +311,6 @@ function *joinEnterprise(action){
           history: params.history,
         }
       })
-    }else if(response.data.code === '20014') {//待审核
-      yield put({
-        type: loginAction.JOIN_ENTERPRISE_SUCCESS,
-        params,
-        data: {
-          joinResult: 1,
-        },      
-      })
-      message.warning('等待管理员审核');
     } else{
       yield put({type: loginAction.JOIN_ENTERPRISE_FAIL, data: response.data })
       if(response.data.code !== '20015') {

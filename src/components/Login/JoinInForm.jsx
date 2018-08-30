@@ -97,7 +97,7 @@ class JoinInForm extends Component{
     this.props.form.validateFields(['phoneNum'], (err, values) => {
       if(!err){
         this.props.sendCode(values);
-        this.setState({ timeValue: 60 })
+        this.setState({ timeValue: 60 });
         this.timeDecline();
       }
     })
