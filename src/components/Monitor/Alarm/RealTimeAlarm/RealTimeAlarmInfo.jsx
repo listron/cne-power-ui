@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './realTimeAlarm.scss';
 import { Link } from 'react-router-dom';
+import { Tooltip } from 'antd';
 
 class RealTimeAlarmInfo extends Component {
   static propTypes = {
@@ -12,6 +13,10 @@ class RealTimeAlarmInfo extends Component {
 
   constructor(props) {
     super(props);
+  }
+
+  refresh = () => {
+    window.location.reload();
   }
 
   render() {
@@ -65,13 +70,16 @@ class RealTimeAlarmInfo extends Component {
             </Link>
           }
         </div>
-        <div className={styles.alarmInfoRight}>
+        {alarmStatus===1&&<div className={styles.alarmInfoRight}>
           <div className={styles.updateTimeContainer}>
             <span className={styles.updateTime}>{lastUpdateTime+'-北京时间'}</span>
             <span className={styles.updateTimeText}>本次数据更新时间</span>
           </div>
-          <i className="iconfont icon-refresh"></i>
-        </div>
+          <i className="iconfont icon-refresh" onClick={this.refresh}></i>
+          <Tooltip placement="topLeft" overlayClassName="alarmTootip" title="数据每隔10秒刷新一次，筛选/查询后不再刷新，如需重置，请点此按钮刷新">
+            <i className="iconfont icon-help" onClick={this.refresh}></i>
+          </Tooltip>  
+        </div>}
       </div>
     );
   }

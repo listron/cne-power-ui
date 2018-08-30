@@ -69,15 +69,7 @@
     height: 100%;
     display: flex;
     :global {
-      .ant-form {
-        width: 200px;
-        .ant-form-item {
-          width: 200px;
-          .ant-btn {
-            width: 200px;
-          }
-        }
-      }
+      
     }
     .containerLogin {
       width: 500px;

@@ -113,6 +113,12 @@
       justify-content: center;
       align-items: center;
     }
+    .icon-help {
+      color: #f9b600;
+      font-size: 12px;
+      margin-left: 4px;
+      margin-top: -4px;
+    }
   }
 }
 .alarmFilter {
@@ -251,5 +257,13 @@
         color: #fff;
       }
     }
+  }
+}
+
+:global {
+  .alarmTootip {
+    width: 430px;
+    max-width: 500px;
+    font-size: 12px;
   }
 }
