@@ -54,8 +54,11 @@ function *getLogin(action){
         yield put({ type: loginAction.GET_LOGIN_SUCCESS, data});
         action.params.history.push('/station/monitor');
       } else {
-        yield put({ type: loginAction.CHANGE_LOGIN_STORE_SAGA, params})
-        yield put({ type: loginAction.CHANGE_LOGIN_STORE_SAGA, params: {userEnterpriseStatus: data.userEnterpriseStatus}})
+        yield put({ type: loginAction.CHANGE_LOGIN_STORE_SAGA, params});
+        if(data.userEnterpriseStatus){
+          yield put({ type: loginAction.CHANGE_LOGIN_STORE_SAGA, params: {userEnterpriseStatus: data.userEnterpriseStatus}})
+        }
+        
         // message.error(data.userEnterpriseStatus); 
       }
     } else{
@@ -123,8 +126,10 @@ function *checkCode(action){
           data, //data为API返回的值
         });
       } else {
-        yield put({ type: loginAction.CHANGE_LOGIN_STORE_SAGA, params })
-        yield put({ type: loginAction.CHANGE_LOGIN_STORE_SAGA, params: {userEnterpriseStatus: data.userEnterpriseStatus}})
+        yield put({ type: loginAction.CHANGE_LOGIN_STORE_SAGA, params });
+        if(data.userEnterpriseStatus){
+          yield put({ type: loginAction.CHANGE_LOGIN_STORE_SAGA, params: {userEnterpriseStatus: data.userEnterpriseStatus}})
+        }
         // message.error(data.userEnterpriseStatus);
       }
     }else{
