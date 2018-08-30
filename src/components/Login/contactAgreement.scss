@@ -1,0 +1,30 @@
+
+@import '../../theme/theme.scss';
+
+.contactAgreement{
+  display: flex;
+  justify-content: center;
+  .innerContent{
+    width: 506px;
+    margin-top: 72px;
+    .returnLogin{
+      color: $lightColor;
+      cursor: pointer;
+    }
+    .contentTitle{
+      font-size: 18px;
+      color: $darkColor;
+      height: 52px;
+      line-height: 52px;
+      text-align: center;
+    }
+    .content{
+      height: 542px;
+      width: 100%;
+      padding: 24px;
+      border: 1px solid $promptColor;
+      border-radius: 4px;
+      overflow: auto;
+    }
+  }
+}
