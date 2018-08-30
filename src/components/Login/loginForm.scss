@@ -3,6 +3,11 @@
 
 .loginForm{
   :global{
+    .ant-input:focus {
+      border-color: $themeColor;
+      -webkit-box-shadow: 0 0 0 0;
+      box-shadow: 0 0 0 0;
+    }
     .ant-input-group-addon{
       background-color: #f1f1f1;
       padding: 0 7px;
@@ -105,6 +110,24 @@
       color:#199475;
       text-align: right;
       cursor: pointer;
+    }
+  }
+  .loginAbnormal{
+    width: 200px;
+    text-align: center;
+    margin-top: 60px;
+    .abnormalIcon{
+      display: block;
+      margin: 0 auto;
+      :global{
+        .iconfont{
+          font-size: 62px;
+          color: #999999;
+        }
+      }
+    }
+    .abnormalTip{
+      
     }
   }
 }

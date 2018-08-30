@@ -25,14 +25,22 @@ class Forget extends Component {
     this.props.changeLoginStore({pageTab, registerStep: 1, joinStep: 1,enterpriseId: ''})
   }
 
+  toSeeAgreement = () => {
+    this.props.changeLoginStore({pageTab: 'agreement'})
+  }
+
+  toContactUs = () => {
+    this.props.changeLoginStore({pageTab: 'contact'})
+  }
+
   render() {
 
     return (
       <div className={styles.forgetPassword}>
         <div className={styles.goLogin}>
           <span  onClick={()=>this.changePage('login')}> 登录 </span>
-          <span>I</span>
-          <span  onClick={()=>this.changePage('register')}> 注册企业 </span>
+          <span>|</span>
+          <span  onClick={()=>this.changePage('register')}> 注册 </span>
         </div>
         <ForgetForm
           sendCode={this.props.sendCode}
@@ -47,8 +55,8 @@ class Forget extends Component {
           error={this.props.error}
         />
         <div className={styles.contactUs}>
-          <span>用户协议</span>
-          <span>联系我们</span>
+          <span onClick={this.toSeeAgreement}>用户协议</span>
+          <span onClick={this.toContactUs}>联系我们</span>
         </div>
 
       </div>

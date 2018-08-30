@@ -35,7 +35,6 @@ class AllStation extends Component {
   }
 
   componentWillUnmount(){
-    console.log('unmount');
     clearTimeout(this.timer)
     clearTimeout(this.autoTimer)
 

@@ -21,6 +21,7 @@ class Login extends Component {
     enterpriseId: PropTypes.string,
     history: PropTypes.object,
     error: PropTypes.object,
+    userEnterpriseStatus: PropTypes.number,
   }
 
   constructor(props) {
@@ -29,6 +30,14 @@ class Login extends Component {
 
   changePage = (pageTab) => {
     this.props.changeLoginStore({pageTab, registerStep: 1, joinStep: 1,enterpriseId: ''})
+  }
+
+  toSeeAgreement = () => {
+    this.props.changeLoginStore({pageTab: 'agreement'})
+  }
+
+  toContactUs = () => {
+    this.props.changeLoginStore({pageTab: 'contact'})
   }
 
   render() {
@@ -54,6 +63,7 @@ class Login extends Component {
                 enterpriseId={this.props.enterpriseId}
                 history={history}
                 error={this.props.error}
+                userEnterpriseStatus={this.props.userEnterpriseStatus}
               />
             </TabPane>
             <TabPane tab="注册企业" key="register">
@@ -62,8 +72,8 @@ class Login extends Component {
           </Tabs>
         </div>
         <div className={styles.contactUs}>
-          <span>用户协议</span>
-          <span>联系我们</span>
+          <span onClick={this.toSeeAgreement}>用户协议</span>
+          <span onClick={this.toContactUs}>联系我们</span>
         </div>
       </div>
     );
@@ -73,6 +83,7 @@ class Login extends Component {
 const mapStateToProps = (state) => ({
   username: state.login.getIn(['loginData', 'username']),
   enterpriseId: state.login.getIn(['loginData', 'enterpriseId']),
+  userEnterpriseStatus: state.login.get('userEnterpriseStatus'),
   error: state.login.get('error'),
 });
 

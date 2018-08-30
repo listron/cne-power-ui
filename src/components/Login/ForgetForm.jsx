@@ -91,11 +91,82 @@ class ForgetForm extends Component{
       callback();
     }
   }
+  renderResetOne(getFieldDecorator,timeValue){
+    const {  enterpriseId, username } = this.props;
+    return (
+      <div>
+        <span className={styles.findPass}>找回密码</span>
+        <Form onSubmit={this.checkCodeLogin} >
+          <div>
+            <FormItem>
+              {getFieldDecorator('phoneNum', {
+                rules: [
+                  {required: true, message: '请输入手机号'},
+                  {pattern: /(^1\d{10}$)/, message: '手机号格式不对'}
+                ]
+              })(
+                <Input addonBefore={<i className="iconfont icon-phone"></i>} placeholder="请输入手机号" />
+              )}
+            </FormItem>
+          </div>
+          <div className={styles.checkCodeBox}>
+            <FormItem  >
+              {getFieldDecorator('verificationCode',{
+                rules: [{required: true, message: '请输入验证码'}]
+              })(
+                <Input className={styles.testCode} addonBefore={<i className="iconfont icon-password"></i>} placeholder="验证码" />
+              )}
+            </FormItem>
+            <Button type="primary" disabled={timeValue !== 0} onClick={this.sendCode}  className={timeValue !== 0 ? styles.queryCodeClick : styles.queryCode}>
+              {timeValue !== 0 ? `获取验证码 ${timeValue}` : "获取验证码"}
+            </Button>
+          </div>
+          <FormItem>
+            <Button type="primary" htmlType="submit">下一步</Button>
+          </FormItem>
+          {enterpriseId === null ? <p>未加入企业，请加入企业</p> : null}
+          {username === null ? <p>未完善个人信息，请尽快完善</p> : null}
+        </Form>
+      </div>
+    );
+  }
 
+  renderResetTwo(getFieldDecorator, formItemLayout, tailFormItemLayout ){
+
+    return (
+      <div>
+        <Form onSubmit={this.onResetPassword}  >
+          <FormItem label="创建密码" {...formItemLayout}>
+            {getFieldDecorator('password',{
+              rules: [
+                {required: true, message: '请输入密码'},
+                {pattern: /^[a-zA-Z\d]{6,8}$/, message: '请输入6-8位数字或英文' }
+            ]
+            })(
+              <Input addonBefore={<i className="iconfont icon-password"></i>} type="password" placeholder="6-8位数字或英文" />
+            )}
+          </FormItem>
+          <FormItem label="确认密码" {...formItemLayout}>
+            {getFieldDecorator('confirmPwd',{
+              rules: [
+                {required: true, message: '请输入确认密码'},
+                {validator: this.compareToFirstPassword, message: '两次密码不一致！'}
+              ]
+            })(
+              <Input addonBefore={<i className="iconfont icon-password"></i>} type="password" placeholder="请再次输入" />
+            )}
+          </FormItem>
+          <FormItem {...tailFormItemLayout} >
+            <Button type="primary" htmlType="submit" className="login-form-button"  >完成</Button>
+          </FormItem>
+        </Form>
+      </div>
+    );
+  }
   render(){
     const { getFieldDecorator } = this.props.form;
     const { timeValue } = this.state;
-    const { showResetPassword, enterpriseId, username } = this.props;
+    const { showResetPassword } = this.props;
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -121,68 +192,9 @@ class ForgetForm extends Component{
     return (
       <div className={styles.forgetPass}>
         {!showResetPassword ?
-          <div>
-            <span className={styles.findPass}>找回密码</span>
-            <Form onSubmit={this.checkCodeLogin} >
-              <div>
-                <FormItem>
-                  {getFieldDecorator('phoneNum', {
-                    rules: [
-                      {required: true, message: '请输入手机号'},
-                      {pattern: /(^1\d{10}$)/, message: '手机号格式不对'}
-                    ]
-                  })(
-                    <Input addonBefore={<i className="iconfont icon-phone"></i>} placeholder="请输入手机号" />
-                  )}
-                </FormItem>
-              </div>
-              <div className={styles.checkCodeBox}>
-                <FormItem  >
-                  {getFieldDecorator('verificationCode',{
-                    rules: [{required: true, message: '请输入验证码'}]
-                  })(
-                    <Input className={styles.testCode} addonBefore={<i className="iconfont icon-password"></i>} placeholder="验证码" />
-                  )}
-                </FormItem>
-                <Button type="primary" disabled={timeValue !== 0} onClick={this.sendCode}  className={timeValue !== 0 ? styles.queryCodeClick : styles.queryCode}>
-                  {timeValue !== 0 ? `获取验证码 ${timeValue}` : "获取验证码"}
-                </Button>
-              </div>
-              <FormItem>
-                <Button type="primary" htmlType="submit">下一步</Button>
-              </FormItem>
-              {enterpriseId === null ? <p>未加入企业，请加入企业</p> : null}
-              {username === null ? <p>未完善个人信息，请尽快完善</p> : null}
-            </Form>
-          </div>
+          this.renderResetOne(getFieldDecorator,timeValue)
         :
-          <div>
-            <Form onSubmit={this.onResetPassword}  >
-              <FormItem label="创建密码" {...formItemLayout}>
-                {getFieldDecorator('password',{
-                  rules: [
-                    {required: true, message: '请输入密码'},
-                    {pattern: /^[a-zA-Z\d]{6,8}$/, message: '请输入6-8位数字或英文' }
-                ]
-                })(
-                  <Input addonBefore={<i className="iconfont icon-password"></i>} type="password" placeholder="6-8位数字或英文" />
-                )}
-              </FormItem>
-              <FormItem label="确认密码" {...formItemLayout}>
-                {getFieldDecorator('confirmPwd',{
-                  rules: [
-                    {required: true, message: '请输入确认密码'},
-                    {validator: this.compareToFirstPassword, message: '两次密码不一致！'}
-                  ]
-                })(
-                  <Input addonBefore={<i className="iconfont icon-password"></i>} type="password" placeholder="请再次输入" />
-                )}
-              </FormItem>
-              <FormItem {...tailFormItemLayout} >
-                <Button type="primary" htmlType="submit" className="login-form-button"  >完成</Button>
-              </FormItem>
-            </Form>
-          </div>
+          this.renderResetTwo(getFieldDecorator, formItemLayout, tailFormItemLayout )
         }
       </div>
     );

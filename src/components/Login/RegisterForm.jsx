@@ -35,7 +35,6 @@ class RegisterForm extends Component {
       return;
     };
   }
-  
 
   onEnterpriseInfo = (e) => {
     e.preventDefault();
@@ -66,9 +65,7 @@ class RegisterForm extends Component {
       }
     })
   }
-
   
-
   onRegisterEnterprise = () => {
     this.props.form.validateFields(['username','password','confirmPwd'],(err, values) => {
       if(!err){
@@ -148,10 +145,135 @@ class RegisterForm extends Component {
     }, 1000);
   }
 
+  renderStepOne(getFieldDecorator, enterpriseId){
+    const { timeValue } =this.state;
+    return (
+      <div>
+        <Form onSubmit={this.phoneCodeRegister} className={styles.verificationCode}>
+          <div className={styles.phoneInput}>
+            <FormItem>
+              {getFieldDecorator('phoneNum', {
+                rules: [
+                  {required: true, message: '请输入手机号'},
+                  {pattern: /(^1\d{10}$)/, message: '手机号格式不对'}
+                ]
+              })(
+                <Input className={styles.mobileNumber} addonBefore={<i className="iconfont icon-phone"></i>} placeholder="请输入手机号" />
+              )}
+            </FormItem>
+          </div>
+          <div className={styles.checkCodeBox}>
+            <FormItem>
+              {getFieldDecorator('verificationCode', {
+                rules: [
+                  {required: true, message: '请输入验证码'},
+                ]
+              })(
+                <Input className={styles.testCode} addonBefore={<i className="iconfont icon-password"></i>} placeholder="验证码" />
+              )}
+            </FormItem>
+            <Button type="primary" disabled={timeValue !== 0} onClick={this.sendCode} className={timeValue !== 0 ? styles.queryCodeClick : styles.queryCode}>
+              {timeValue !== 0 ? `获取验证码 ${timeValue}` : "获取验证码"}
+            </Button>
+          </div>
+          <FormItem>
+            <Button type="primary" htmlType="submit" className="login-form-button">下一步</Button>
+          </FormItem>
+          {(enterpriseId !== null && enterpriseId.length > 0) ? <p>您已加入企业，请直接登录</p> : null}
+        </Form>
+      </div>
+    );
+  }
+
+  renderStepTwo(getFieldDecorator, formItemLayout, tailFormItemLayout){
+    return (
+      <div>
+        <Form onSubmit={this.onEnterpriseInfo}  className={styles.enterpriseInfor}>
+          <FormItem label="企业域名"  {...formItemLayout}>
+            {getFieldDecorator('enterpriseDomain', {
+              rules: [
+                {required: true, message: '请输入企业域名'},
+                {pattern: /[a-zA-Z0-9]|[\u4E00-\u9FA5]/, message: '格式不对'}
+              ]
+            })(
+              <div className={styles.domain} >
+                <Input placeholder="请输入企业域名" style={{width: '200px'}}  />
+                <span>.cnecloud.com</span>
+              </div>
+            )}
+          </FormItem>
+          <FormItem label="企业名称" {...formItemLayout}>
+            {getFieldDecorator('enterpriseName', {
+              rules: [
+                {required: true, message: '请输入企业名称'},
+                {max: 30, message: '企业名称最长不超过30个字符'},
+              ]
+            })(
+              <Input placeholder="请输入企业名称" style={{width: '160px'}} />
+            )}
+          </FormItem>
+          <FormItem {...tailFormItemLayout} >
+            {getFieldDecorator('userAgreement', {
+              valuePropName: 'checked',
+              required: true,
+            })(
+              <Checkbox className={styles.userArgee}  >同意<a className={styles.userAgreement} href="#" >用户协议</a></Checkbox>
+            )}
+          </FormItem>
+          <FormItem {...tailFormItemLayout} >
+            <Button type="primary" htmlType="submit" className="login-form-button">下一步</Button>
+          </FormItem>
+        </Form>
+      </div>
+    );
+  }
+
+  renderStepThree(getFieldDecorator, formItemLayout){
+    return (
+      <div>
+        <Form onSubmit={this.onRegisterEnterprise}>
+          <FormItem label="用户名" {...formItemLayout}>
+            {getFieldDecorator('username', {
+              rules: [
+                {required: true, message: '请输入用户名'},
+                {min: 3, max: 8, message: '请输入3到8位中文、英文、数字'}
+              ]
+            })(
+              <Input addonBefore={<i className="iconfont icon-user"></i>} placeholder="请输入用户名" />
+            )}
+          </FormItem>
+          <FormItem label="创建密码" {...formItemLayout}>
+            {getFieldDecorator('password',{
+              rules: [
+                {required: true, message: '请输入密码'},
+                {pattern: /^[a-zA-Z\d]{6,8}$/, message: '请输入6-8位数字或英文' }
+              ]
+            })(
+              <Input addonBefore={<i className="iconfont icon-password"></i>} type="password" placeholder="6-8位数字或英文" />
+            )}
+          </FormItem>
+          <FormItem label="确认密码" {...formItemLayout}>
+            {getFieldDecorator('confirmPwd',{
+              rules: [
+                {required: true, message: '请输入密码'},
+                {validator: this.compareToFirstPassword}
+              ]
+            })(
+              <Input addonBefore={<i className="iconfont icon-password"></i>} type="password" placeholder="请再次输入" />
+            )}
+          </FormItem>
+          <FormItem label="" {...formItemLayout}>
+            <Button type="primary" htmlType="submit" className="login-form-button">进入企业账号</Button>
+          </FormItem>
+      </Form>
+    </div>
+    );
+  }
+
   render(){
     const { getFieldDecorator } = this.props.form;
     const { enterpriseId } = this.props;
-    const { timeValue } =this.state;
+    
     const formItemLayout = {
       labelCol: {
         xs: {span: 24},
@@ -179,127 +301,21 @@ class RegisterForm extends Component {
         title: '账户验证',
         content:
           (
-            <div>
-              <Form onSubmit={this.phoneCodeRegister} className={styles.verificationCode}>
-                <div className={styles.phoneInput}>
-                  <FormItem>
-                    {getFieldDecorator('phoneNum', {
-                      rules: [
-                        {required: true, message: '请输入手机号'},
-                        {pattern: /(^1\d{10}$)/, message: '手机号格式不对'}
-                         
-                      ]
-                    })(
-                      <Input className={styles.mobileNumber} addonBefore={<i className="iconfont icon-phone"></i>} placeholder="请输入手机号" />
-                    )}
-                  </FormItem>
-                </div>
-                <div className={styles.checkCodeBox}>
-                  <FormItem>
-                    {getFieldDecorator('verificationCode', {
-                      rules: [
-                        {required: true, message: '请输入验证码'},
-                      ]
-                    })(
-                      <Input className={styles.testCode} addonBefore={<i className="iconfont icon-password"></i>} placeholder="验证码" />
-                    )}
-                  </FormItem>
-                  <Button type="primary" disabled={timeValue !== 0} onClick={this.sendCode} className={timeValue !== 0 ? styles.queryCodeClick : styles.queryCode}>
-                    {timeValue !== 0 ? `获取验证码 ${timeValue}` : "获取验证码"}
-                  </Button>
-                </div>
-                <FormItem>
-                  <Button type="primary" htmlType="submit" className="login-form-button">下一步</Button>
-                </FormItem>
-                {(enterpriseId !== null && enterpriseId.length > 0) ? <p>您已加入企业，请直接登录</p> : null}
-              </Form>
-            </div>
+            this.renderStepOne(getFieldDecorator, enterpriseId)
           ),
       },
       {
         title: '企业信息',
         content:
           (
-            <div>
-              <Form onSubmit={this.onEnterpriseInfo}  className={styles.enterpriseInfor}>
-                <FormItem label="企业域名"  {...formItemLayout}>
-                  {getFieldDecorator('enterpriseDomain', {
-                    rules: [
-                      {required: true, message: '请输入企业域名'},
-                      {pattern: /\w|[^\s~'!@#￥$%^&*()-+_=:]/, message: '格式不对'}
-                    ]
-                  })(
-                    <div className={styles.domain} >
-                      <Input placeholder="请输入企业域名" style={{width: '200px'}}  />
-                      <span>.cnecloud.com</span>
-                    </div>
-                  )}
-                </FormItem>
-                <FormItem label="企业名称" {...formItemLayout}>
-                  {getFieldDecorator('enterpriseName', {
-                    rules: [
-                      {required: true, message: '请输入企业名称'},
-                      {max: 30, message: '企业名称最长不超过30个字符'},
-                    ]
-                  })(
-                    <Input placeholder="请输入企业名称" style={{width: '160px'}} />
-                  )}
-                </FormItem>
-                <FormItem {...tailFormItemLayout} >
-                  {getFieldDecorator('userAgreement', {
-                    valuePropName: 'checked',
-                  })(
-                    <Checkbox className={styles.userArgee}  >同意<a className={styles.userAgreement} >用户协议</a></Checkbox>
-                  )}
-                </FormItem>
-                <FormItem {...tailFormItemLayout} >
-                  <Button type="primary" htmlType="submit" className="login-form-button">下一步</Button>
-                </FormItem>
-              </Form>
-            </div>
+            this.renderStepTwo(getFieldDecorator, formItemLayout, tailFormItemLayout)
           ),
       },
       {
         title: '完善个人信息',
         content:
-          (
-            <div>
-              <Form onSubmit={this.onRegisterEnterprise}>
-                <FormItem label="用户名" {...formItemLayout}>
-                  {getFieldDecorator('username', {
-                    rules: [
-                      {required: true, message: '请输入用户名'},
-                      {min: 3, max: 8, message: '请输入3到8位中文、英文、数字'}
-                    ]
-                  })(
-                    <Input addonBefore={<i className="iconfont icon-user"></i>} placeholder="请输入用户名" />
-                  )}
-                </FormItem>
-                <FormItem label="创建密码" {...formItemLayout}>
-                  {getFieldDecorator('password',{
-                    rules: [
-                      {required: true, message: '请输入密码'},
-                      {pattern: /^[a-zA-Z\d]{6,8}$/, message: '请输入6-8位数字或英文' }
-                    ]
-                  })(
-                    <Input addonBefore={<i className="iconfont icon-password"></i>} type="password" placeholder="6-8位数字或英文" />
-                  )}
-                </FormItem>
-                <FormItem label="确认密码" {...formItemLayout}>
-                  {getFieldDecorator('confirmPwd',{
-                    rules: [
-                      {required: true, message: '请输入密码'},
-                      {validator: this.compareToFirstPassword}
-                    ]
-                  })(
-                    <Input addonBefore={<i className="iconfont icon-password"></i>} type="password" placeholder="请再次输入" />
-                  )}
-                </FormItem>
-                <FormItem label="" {...formItemLayout}>
-                  <Button type="primary" htmlType="submit" className="login-form-button">进入企业账号</Button>
-                </FormItem>
-            </Form>
-          </div>
+        (
+          this.renderStepThree(getFieldDecorator, formItemLayout)
         ),
     }];
     const step = this.props.registerStep - 1;
