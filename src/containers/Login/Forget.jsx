@@ -53,6 +53,7 @@ class Forget extends Component {
           username={this.props.username}
           checkCodeLogin={this.props.checkCodeLogin}
           error={this.props.error}
+          changeLoginStore={this.props.changeLoginStore}
         />
         <div className={styles.contactUs}>
           <span onClick={this.toSeeAgreement}>用户协议</span>
