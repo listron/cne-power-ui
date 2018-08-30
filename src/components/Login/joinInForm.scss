@@ -52,6 +52,11 @@
     display: flex;
     justify-content: space-between;
     width: 200px;
+    :global{
+      .ant-input{
+        padding: 4px 7px;
+      }
+    }
     .testCode{
       width: 64px;
       :global{
@@ -61,7 +66,7 @@
       }
     }
     .queryCode{
-      width: 100px;
+      width: 82px;
       margin-top: 6px;
       margin-right: 0;
       padding: 0 5px;
@@ -92,6 +97,15 @@
     }
   }
   :global{
+    .ant-input:focus {
+      border-color: $themeColor;
+      -webkit-box-shadow: 0 0 0 0;
+      box-shadow: 0 0 0 0;
+    }
+    .ant-input-group-addon{
+      background-color: #f1f1f1;
+      padding: 0 7px;
+    }
     .ant-btn-primary {
       width: 200px;
     }
@@ -101,14 +115,14 @@
     .ant-form-item .ant-btn-primary:focus {
       background-color: $themeColor;
     }
-    .ant-form {
-      width: 200px;
-      .ant-form-item {
-        width: 200px;
-        .ant-btn {
-          width: 200px;
-        }
-      }
-    }
+    // .ant-form {
+    //   width: 200px;
+    //   .ant-form-item {
+    //     width: 200px;
+    //     .ant-btn {
+    //       width: 200px;
+    //     }
+    //   }
+    // }
   }
 }

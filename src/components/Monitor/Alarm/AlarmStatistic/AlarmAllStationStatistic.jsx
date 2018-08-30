@@ -6,8 +6,6 @@ import styles from './alarmStatistic.scss';
 import AlarmStatisticByType from './AlarmStatisticByType';
 import AlarmStationSelectModal from './AlarmStationSelectModal';
 const TabPane = Tabs.TabPane;
-
-
 class ALarmAllStationStatistic extends React.Component {
   static propTypes = {
     stations: PropTypes.object,
@@ -24,7 +22,6 @@ class ALarmAllStationStatistic extends React.Component {
       showStationSelect: false
     };
   }
-
   componentDidMount() {
     const { stationCode, startTime, endTime, stations } = this.props;
     let stationType = this.props.stationType;
@@ -39,7 +36,6 @@ class ALarmAllStationStatistic extends React.Component {
       endTime,
     });
   }
-
   onChangeFilter = (obj) => {
     const { stationType, stationCode, startTime, endTime } = this.props;
     let filter = {
@@ -48,8 +44,9 @@ class ALarmAllStationStatistic extends React.Component {
       startTime,
       endTime,
     }
-    let newFiter = Object.assign({}, filter, obj);
-    this.props.getStationsAlarmStatistic(newFiter);
+    let newFilter = Object.assign({}, filter, obj);
+    console.log(newFilter);
+    this.props.getStationsAlarmStatistic(newFilter);
   }
 
   onChangeStation = (stationCode) => {
@@ -78,7 +75,6 @@ class ALarmAllStationStatistic extends React.Component {
       endTime,
     });
   }
-
   render() {
     const operations = (
       <div style={{ marginRight: '50px',color:'#199475' }} onClick={this.showStationSelect}>

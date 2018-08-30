@@ -27,10 +27,16 @@ class TopMenu extends Component {
     const { pathname } = location;
     const { selectedKeys } = this.state;
     const resetTopMenu = topMenu.path !== '/' && pathname === '/';
+    const cancelTopMenuSelect = pathname.indexOf('/hidden') === 0;
     if(selectedKeys.length === 0) {  // f5刷新
       const pathArray = pathname.split('/').filter(e=>!!e);
       const selectedKeyName = pathArray.length > 0? `/${pathArray[0]}`:'/';
       this.setState({ selectedKeys:[selectedKeyName] });
+    }else if(cancelTopMenuSelect){ // 跳转至未注册在菜单中的隐藏页面时，取消顶部菜单的选中
+      this.setState({ selectedKeys: [] });
+      this.props.setTopMenu({
+        topMenu: {},
+      })
     }else if(resetTopMenu){ // 404 页面的跳转重置topMenu至首页
       this.setState({ selectedKeys: ['/monitor'] });
       this.props.setTopMenu({ topMenu: {
