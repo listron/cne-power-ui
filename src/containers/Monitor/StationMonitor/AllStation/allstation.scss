@@ -7,9 +7,9 @@
  
 }
 .stationContainer{
-display: flex;
-flex:1;
-flex-direction: column;
+  display: flex;
+  flex:1;
+  flex-direction: column;
   padding:24px 24px 0;
   background: #ececec;
   :global{
@@ -21,9 +21,9 @@ flex-direction: column;
     border-color: #199475;
     color: #fff;
   }
-    .ant-progress-bg {
-      border-radius: 100px;
-      background-color: #199475;
+  .ant-progress-bg {
+    border-radius: 100px;
+    background-color: #199475;
   }
    .ant-tabs-nav-scroll{
     background: #f8f8f8;

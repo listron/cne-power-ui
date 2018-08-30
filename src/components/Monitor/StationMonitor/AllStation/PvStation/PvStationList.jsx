@@ -24,12 +24,8 @@ class PvStationList extends React.Component {
     })
   }
    onChange=(pagination, filters, sorter)=> {
-    // console.log("params", pagination, filters, sorter);
+   
   }
-
- 
-  
-
   render() {  
     const {stationDataList}=this.props; 
     const { pageNum,pageSize,}=this.state;
@@ -46,12 +42,10 @@ class PvStationList extends React.Component {
         sorter: (a, b) => a.stationName.length - b.stationName.length,
         render: (value, record, index) => {
           return {
-            children: (
-            
+            children: (        
             <a  href={`#/monitor/singleStation/${record.key}`}>
             <div className={styles.stationName}>{record.stationName}</div>
-            </a>
-              
+            </a>         
             )
           }
         }
@@ -67,8 +61,7 @@ class PvStationList extends React.Component {
               <div className={styles.stationrovince}>{record.stationrovince}</div>
             )
           }
-        }
-    
+        }   
       },
       {
         title: "实时功率(MW)",
@@ -217,8 +210,6 @@ class PvStationList extends React.Component {
         }
       )
     })
-  
-
     return (
       <div className={styles.PvStationList}>
         <div className={styles.pagination}>

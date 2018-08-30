@@ -25,17 +25,21 @@ class AllStation extends Component {
       key: '全部',
     }
   }
-  componentDidMount() {  
+  componentDidMount() {
     const autoUpdata = () => {
       clearTimeout(this.timer)
       this.props.getAllMonitorStation({ stationType: '2' })
-      this.timer = setTimeout(autoUpdata, 100000)
+      this.timer = setTimeout(autoUpdata, 10000)
     };
     autoUpdata();
-
   }
 
+  componentWillUnmount(){
+    console.log('unmount');
+    clearTimeout(this.timer)
+    clearTimeout(this.autoTimer)
 
+  }
   queryTargetData = (activeKey) => {
     this.setState({
       key: activeKey,
@@ -44,26 +48,21 @@ class AllStation extends Component {
       clearTimeout(this.timer)
       clearTimeout(this.autoTimer)
       activeKey === '全部' ? this.props.getAllMonitorStation({ stationType: '2' }) : activeKey === '风电' ? this.props.getWindMonitorStation({ stationType: '0' }) : activeKey === '光伏' ? this.props.getPvMonitorStation({ stationType: '1' }) : alert('这个按钮没有考虑呢')
-      this.autoTimer = setTimeout(autoRefresh, 100000)
+      this.autoTimer = setTimeout(autoRefresh, 10000)
     }
     autoRefresh();
   }
 
-
   render() {
     let { key } = this.state;
-    //const { loading } = this.props;
     const { allMonitorStation } = this.props;
     const stationDataList = allMonitorStation.stationDataList || [];
-    // console.log(stationDataList);
     const windDataLength = stationDataList.filter((e, i) => { return e.stationType === "0" }).length;
     const pvDataLength = stationDataList.filter((e, i) => { return e.stationType === "1" }).length;
-      // console.log(windDataLength);
-      // console.log(pvDataLength);
 
     return (
       <div className={styles.stationMonitor}>
-     
+
         <div className={styles.stationContainer}>
           <div className={styles.cardContainer}>
             <Tabs type="card" activeKey={key} onChange={this.queryTargetData} tabBarGutter={0} >
@@ -73,7 +72,6 @@ class AllStation extends Component {
               {windDataLength > 0 ? <TabPane tab="风电" key="风电">
                 <WindStation {...this.props} />
               </TabPane> : ''}
-
               {pvDataLength > 0 ? <TabPane tab="光伏" key="光伏">
                 <PvStation {...this.props} />
               </TabPane> : ''}

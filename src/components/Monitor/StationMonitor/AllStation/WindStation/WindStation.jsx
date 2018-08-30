@@ -72,10 +72,6 @@ class WindStation extends React.Component {
     }).length > 0 ? stationStatusSummary.filter(e => {
       return e.stationStatus === 900
     })[0].stationNum : '0';
-
-
-
-
     //筛选不同状态下的电站列表
     const stationDataList = windMonitorStation.stationDataList || [];
     const newStationDataList = stationDataList.filter(e => {
@@ -91,7 +87,7 @@ class WindStation extends React.Component {
         return e.stationStatus.stationStatus === '900'
       }
     })
-    // console.log(newStationDataList,'筛选的数据')
+   
 
 
     const TabPane = Tabs.TabPane;
@@ -194,7 +190,7 @@ class WindStation extends React.Component {
             }
             key="3"
           >
-            <Map {...this.props} stationDataList={data} testId="wind_bmap_station" />
+           <Map {...this.props} stationDataList={data} testId="wind_bmap_station" />
           </TabPane>
         </Tabs>
 

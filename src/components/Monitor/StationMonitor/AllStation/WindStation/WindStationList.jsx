@@ -28,7 +28,6 @@ class WindStationList extends React.Component {
   }
 
   onChange = (pagination, filters, sorter) => {
-    // console.log("params", pagination, filters, sorter);
   }
 
   render() {
@@ -41,7 +40,6 @@ class WindStationList extends React.Component {
     endRow = (endRow > totalNum) ? totalNum : endRow;  //边界判断，如果最后一项的值大于总数据条数，就取总数据的值  
 
     let datalist = stationDataList.slice(startRow, endRow);
-   // console.log(datalist, 11);
     const columns = [
       {
         title: "电站名称",
@@ -52,9 +50,8 @@ class WindStationList extends React.Component {
           return {
             children: (
               <a href={`#/monitor/singleStation/${record.key}`}>
-               <div className={styles.stationName}>{record.stationName}</div>
-               </a>
-             
+                <div className={styles.stationName}>{record.stationName}</div>
+              </a>
             )
           }
         }
@@ -203,17 +200,17 @@ class WindStationList extends React.Component {
       return (
         {
           key: `${item.stationCode}`,
-          stationName: `${item.stationName||'--'}`,
-          stationrovince: `${item.provinceName||'--'}`,
-          stationPower: `${item.stationPower||'--'}`,
-          stationCapacity: `${item.stationCapacity||'--'}`,
-          windSpeed: `${item.instantaneous||'--'}`,
-          dayOutput: `${item.dayPower||'--'}`,
-          monthOutput: `${item.monthPower||'--'}`,
-          yearOutput: `${item.yearPower||'--'}`,
-          planOutput: `${item.yearPlanPower||'--'}`,
-          equipmentNum: `${item.stationUnitCount||'--'}`,
-          alarmNum: `${item.alarmNum||'--'}`,
+          stationName: `${item.stationName || '--'}`,
+          stationrovince: `${item.provinceName || '--'}`,
+          stationPower: `${item.stationPower || '--'}`,
+          stationCapacity: `${item.stationCapacity || '--'}`,
+          windSpeed: `${item.instantaneous || '--'}`,
+          dayOutput: `${item.dayPower || '--'}`,
+          monthOutput: `${item.monthPower || '--'}`,
+          yearOutput: `${item.yearPower || '--'}`,
+          planOutput: `${item.yearPlanPower || '--'}`,
+          equipmentNum: `${item.stationUnitCount || '--'}`,
+          alarmNum: `${item.alarmNum || '--'}`,
           currentStation: `${item.stationStatus.stationStatus}`
         }
       )
