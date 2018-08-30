@@ -35,6 +35,10 @@ class AllStation extends Component {
 
   }
 
+  componentWillUnmount() {
+    clearTimeout(this.timer);
+  }
+
 
   queryTargetData = (activeKey) => {
     this.setState({
