@@ -52,7 +52,7 @@ function *getLogin(action){
         Cookie.set('isNotLogin', 0);
 
         yield put({ type: loginAction.GET_LOGIN_SUCCESS, data});
-        action.params.history.push('/');
+        action.params.history.push('/station/monitor');
       } else {
         yield put({ type: loginAction.CHANGE_LOGIN_STORE_SAGA, params: {userEnterpriseStatus: data.userEnterpriseStatus}})
         // message.error(data.userEnterpriseStatus); 
@@ -113,7 +113,7 @@ function *checkCode(action){
           Cookie.set('isNotLogin', action.params.isNotLogin);
         }
         if(params.isNotLogin === 0 && data.enterpriseId !== null) {
-          params.history.push('/');
+          params.history.push('/station/monitor');
         }
         yield put({
           type: loginAction.CHECK_CODE_SUCCESS,

@@ -13,11 +13,11 @@ import { isUrl } from '../utils';
 */
 
 const menuData = [
-  // {
-  //   name: '首页',
-  //   path: '/',
-  //   defaultPath: true,
-  // },
+  {
+    name: '首页',
+    path: '/',
+    defaultPath: true,
+  },
   {
     name: '实时监控',
     path: 'monitor',
