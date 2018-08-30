@@ -159,7 +159,12 @@ class LoginForm extends Component {
             <div className={styles.waitExamineTip}>等待管理员审核</div>
           </div>
         }
-        {userEnterpriseStatus===6 && <div>未通过审核，如有问题，请联系管理员！</div>}
+        {userEnterpriseStatus===6 && 
+          <div className={styles.loginAbnormal}>
+            <div className={styles.abnormalIcon}><i className="iconfont icon-ha"></i></div>
+            <div className={styles.abnormalTip}>未通过审核，如有问题，请联系管理员！</div>
+          </div>
+        }
         {userEnterpriseStatus===4 || userEnterpriseStatus===7 && 
           <div className={styles.loginAbnormal}>
             <div className={styles.abnormalIcon}><i className="iconfont icon-ha"></i></div>
