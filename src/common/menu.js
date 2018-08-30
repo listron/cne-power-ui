@@ -60,43 +60,40 @@ const menuData = [
             defaultPath: true,
           }
         ]
+      },{
+        name:'两票管理',
+        path:'tickets',
+        iconStyle: 'icon-usermanage',
+        children: [
+          {
+            name: '第一种工作票',
+            path: 'typeone',
+          }, {
+            name: '第二种工作票',
+            path: 'typetwo',
+          }
+        ]
+      },{ 
+        name:'台账',
+        path:'ledger',
+        iconStyle: 'icon-usermanage'
+
+      },{
+        name:'经验库',
+        path:'experience',
+        iconStyle: 'icon-usermanage'
+
       }
     ],
   },
-  {
-    name: '系统管理',
-    path: 'system',
-    children: [
-      {
-        name: '账户管理',
-        iconStyle: 'icon-usermanage',
-        path: 'account',
-        children: [
-          {
-            name: '企业',
-            path: 'enterprise',
-            defaultPath: true,
-          }, {
-            name: '部门',
-            path: 'department',
-          }, {
-            name: '用户',
-            path: 'user',
-          }, {
-            name: '角色',
-            path: 'role',
-          }
-        ]
-      },
-    ],
-  }, {
+ {
     name: '统计分析',
     path: 'statistical',
     children: [
       {
         name: '电站分析',
         iconStyle: 'icon-usermanage',
-        path: 'account',
+        path: 'stationaccount',
         children: [
           {
             name: '全部电站',
@@ -107,10 +104,10 @@ const menuData = [
             path: 'production',
           }, {
             name: '运行分析',
-            path: 'operation',
+            path: 'operate',
           }, {
             name: '资源分析',
-            path: ' resource',
+            path: 'resource',
           }, {
             name: '电站对比',
             path: 'contrast'
@@ -205,7 +202,33 @@ const menuData = [
       }
 
     ]
-  }
+  },  {
+    name: '系统管理',
+    path: 'system',
+    children: [
+      {
+        name: '账户管理',
+        iconStyle: 'icon-usermanage',
+        path: 'account',
+        children: [
+          {
+            name: '企业',
+            path: 'enterprise',
+            defaultPath: true,
+          }, {
+            name: '部门',
+            path: 'department',
+          }, {
+            name: '用户',
+            path: 'user',
+          }, {
+            name: '角色',
+            path: 'role',
+          }
+        ]
+      },
+    ],
+  },
 ]
 
 function formatter(data, parentPath = '/') {
