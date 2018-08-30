@@ -127,9 +127,9 @@ class AlarmStatisticGraph extends React.Component {
               type: 'dashed'
             }
           },
-           data: handleAvgTime
+          data: handleAvgTime
           //这是平均处理时间的数据
-          //data: [6, 15, 20, 8, 9, 7, 0,]
+          // data: [6, 15, 20, 8, 9, 7, 0,]
         },
         {
           name: '一级',

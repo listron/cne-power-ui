@@ -51,7 +51,7 @@ class WindStationList extends React.Component {
         render: (value, record, index) => {
           return {
             children: (
-              <a target="_blank" href={`#/monitor/singleStation/${record.key}`}>
+              <a href={`#/monitor/singleStation/${record.key}`}>
                <div className={styles.stationName}>{record.stationName}</div>
                </a>
              

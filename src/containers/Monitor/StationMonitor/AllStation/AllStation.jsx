@@ -8,7 +8,7 @@ import { allStationAction } from '../../../../constants/actionTypes/monitor/stat
 import Allstation from '../../../../components/Monitor/StationMonitor/AllStation/AllStation.jsx';
 import WindStation from '../../../../components/Monitor/StationMonitor/AllStation/WindStation/WindStation.jsx';
 import PvStation from '../../../../components/Monitor/StationMonitor/AllStation/PvStation/PvStation.jsx';
-//import TransitionContainer from '../../../../components/Common/TransitionContainer';
+import Footer from '../../../../components/Common/Footer';
 
 const TabPane = Tabs.TabPane;
 class AllStation extends Component {
@@ -21,7 +21,6 @@ class AllStation extends Component {
   }
   constructor(props) {
     super(props);
-    //this.props.getAllMonitorStation({stationType:'2'})
     this.state = {
       key: '全部',
     }
@@ -52,7 +51,6 @@ class AllStation extends Component {
 
 
   render() {
-    //console.log(new Date());
     let { key } = this.state;
     //const { loading } = this.props;
     const { allMonitorStation } = this.props;
@@ -65,9 +63,10 @@ class AllStation extends Component {
 
     return (
       <div className={styles.stationMonitor}>
+     
         <div className={styles.stationContainer}>
-          <div className="card-container">
-            <Tabs type="card" activeKey={key} onChange={this.queryTargetData} >
+          <div className={styles.cardContainer}>
+            <Tabs type="card" activeKey={key} onChange={this.queryTargetData} tabBarGutter={0} >
               <TabPane tab="全部" key="全部" >
                 <Allstation {...this.props} />
               </TabPane>
@@ -81,6 +80,7 @@ class AllStation extends Component {
             </Tabs>
           </div>
         </div>
+        <Footer />
       </div>
     )
   }
