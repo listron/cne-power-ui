@@ -182,8 +182,9 @@ class DepartmentTable extends Component {
     
     if(selectedDepartment.length > 0){
       editable = (selectedDepartment.length === 1);
-      deletable = selectedDepartment.every(e => e.selectedDepartment === 1);
-      [userAssignable, staionAssignable] = [true,true];
+      deletable = selectedDepartment.every(e => e.departmentSource === 1);
+      userAssignable = true;
+      staionAssignable = true;
     }       
     return (<Select onChange={this.departmentHandle} placeholder="操作" value="操作" dropdownMatchSelectWidth={false} dropdownClassName={styles.departmentHandleDropdown}>
       <Option value="edit" disabled={!editable} ><span className="iconfont icon-edit"></span>编辑</Option>
