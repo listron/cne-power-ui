@@ -20,6 +20,7 @@ class RegisterForm extends Component {
     enterpriseId: PropTypes.string,
     error: PropTypes.object,
     history: PropTypes.object,
+    changeLoginStore: PropTypes.func,
   }
 
   constructor(props) {
@@ -34,6 +35,9 @@ class RegisterForm extends Component {
     this.setState = (timeValue, current)=>{
       return;
     };
+    this.props.changeLoginStore({
+      userEnterpriseStatus: 3,
+    });
   }
 
   onEnterpriseInfo = (e) => {

@@ -54,6 +54,7 @@ function *getLogin(action){
         yield put({ type: loginAction.GET_LOGIN_SUCCESS, data});
         action.params.history.push('/station/monitor');
       } else {
+        yield put({ type: loginAction.CHANGE_LOGIN_STORE_SAGA, params})
         yield put({ type: loginAction.CHANGE_LOGIN_STORE_SAGA, params: {userEnterpriseStatus: data.userEnterpriseStatus}})
         // message.error(data.userEnterpriseStatus); 
       }
@@ -83,6 +84,7 @@ function *getVerificationCode(action){
 //手机+验证码登录
 function *checkCode(action){
   const { params } = action;
+  console.log(params)
   const url = Path.basePaths.APIBasePath + Path.APISubPaths.loginPhoneCode;
   yield put({ type: loginAction.LOGIN_FETCH})
   try{
@@ -100,7 +102,7 @@ function *checkCode(action){
     if(response.data.code === '10000'){
       const { data } = response.data;
       if(data.userEnterpriseStatus === 3) {
-        if(action.params.isNotLogin === 1 || data.enterpriseId !== null) {
+        if(params.isNotLogin === 1 || data.enterpriseId !== null) {
           data.access_token && Cookie.set('authData',JSON.stringify(data.access_token));
           data.enterpriseId && Cookie.set('enterpriseId', data.enterpriseId);
           data.enterpriseName && Cookie.set('enterpriseName', data.enterpriseName);
@@ -121,6 +123,7 @@ function *checkCode(action){
           data, //data为API返回的值
         });
       } else {
+        yield put({ type: loginAction.CHANGE_LOGIN_STORE_SAGA, params })
         yield put({ type: loginAction.CHANGE_LOGIN_STORE_SAGA, params: {userEnterpriseStatus: data.userEnterpriseStatus}})
         // message.error(data.userEnterpriseStatus);
       }
@@ -164,7 +167,6 @@ function *checkPhoneRegister(action){
       yield put({type: loginAction.CHECK_PHONE_REGISTER_SUCCESS, data: response.data.data});
     }else{
       yield put({type: loginAction.CHECK_PHONE_REGISTER_FAIL, data: {error: response.data.message}});
-      
     }
   }catch(e){
     console.log(e);

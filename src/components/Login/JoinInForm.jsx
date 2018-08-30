@@ -38,6 +38,9 @@ class JoinInForm extends Component{
     this.setState = (timeValue)=>{
       return;
     };
+    this.props.changeLoginStore({
+      userEnterpriseStatus: 3,
+    });
   }
 
   onJoinEnterprise = () => {
@@ -213,6 +216,7 @@ class JoinInForm extends Component{
   renderStepThree(formItemLayout, tailFormItemLayout) {
     const { getFieldDecorator } = this.props.form;
     const { userEnterpriseStatus } = this.props;
+    console.log(userEnterpriseStatus)
     if(userEnterpriseStatus === 5) {
       return (
         <div className={styles.waitExamine}>
@@ -227,7 +231,7 @@ class JoinInForm extends Component{
           <div className={styles.abnormalTip}>未通过审核，如有问题，请联系管理员！</div>
         </div>
       );
-    } else if(userEnterpriseStatus===3) {
+    } else if(userEnterpriseStatus===3 || userEnterpriseStatus===null) {
       return (
         <div className={styles.userInfo} >
           <Form onSubmit={this.onJoinEnterprise}  >

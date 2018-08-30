@@ -31,6 +31,9 @@ class LoginForm extends Component {
     this.setState = (timeValue)=>{
       return;
     };
+    this.props.changeLoginStore({
+      userEnterpriseStatus: 3,
+    });
   }
 
   
@@ -92,7 +95,13 @@ class LoginForm extends Component {
   jumpPersonalInfo = () => {
     this.props.form.validateFields(['phoneNum', 'verificationCode'], (err, values) => {
       if(!err){
-        this.props.changeLoginStore({pageTab:'joinIn', joinStep: 3, registerStep: 1,phoneNum: values.phoneNum, verificationCode: values.verificationCode});
+        this.props.changeLoginStore({
+          pageTab:'joinIn', 
+          joinStep: 3, 
+          registerStep: 1,
+          phoneNum: values.phoneNum, 
+          verificationCode: values.verificationCode
+        });
       }
     })
   }

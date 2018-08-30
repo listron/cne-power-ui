@@ -2,83 +2,125 @@
 
 .forgetPass {
   margin-left: 140px;
-  .findPass {
-    font-size: 14px;
-    color: #999999;
-    text-align: left;
-    display: block;
-    margin-bottom: 15px;
-  }
-  .checkCodeBox {
-    display: flex;
-    justify-content: space-between;
-    width: 200px;
-    .queryCode{
-      width: 100px;
-      margin-top: 6px;
-      margin-right: 0;
-      padding: 0 5px;
-      height: 30px;
-      :global{
-        button{
-          width: 80px;
+  .resetPassword{
+    margin-left: -96px;
+    .newPass{
+      margin-left: 100px;
+      margin-bottom: 15px;
+      display: block;
+    }
+    :global{
+      .ant-form {
+        width: 305px;
+        .ant-form-item {
+          width: 305px;
+          .ant-btn {
+            // width: 315px;
+          }
         }
       }
-      background: #fff;
-      border-color: #199475;
-      color: #199475;
-    }
-    .queryCodeClick{
-      width: 100px;
-      margin-top: 6px;
-      margin-right: 0;
-      padding: 0 5px;
-      height: 30px;
-      :global{
-        button{
-          width: 80px;
-        }
+      .ant-input-group-addon{
+        background-color: #f1f1f1;
+        padding: 0 7px;
       }
-      background:#f7f7f7;
-      border:1px solid #dfdfdf;
-      color: #dfdfdf;
-    }
-    .testCode{
-      width: 64px;
-      :global{
-        .ant-input{
-          width: 90px;
-        }
-        .ant-btn-primary {
-          width: 200px;
-        }
+      .ant-btn-primary:focus {
+        background-color: $themeColor;
+      }
+      
+      .ant-input:focus {
+        border-color: $themeColor;
+        -webkit-box-shadow: 0 0 0 0;
+        box-shadow: 0 0 0 0;
+      }
+      .ant-input{
+        padding: 4px 7px;
+      }
+      .ant-btn-primary {
+        width: 100%;
       }
     }
   }
-  :global{
-    .ant-input-group-addon{
-      background-color: #f1f1f1;
-      padding: 0 7px;
+  .checkCode{
+    .findPass {
+      font-size: 14px;
+      color: #999999;
+      text-align: left;
+      display: block;
+      margin-bottom: 15px;
     }
-    .ant-btn-primary:focus {
-      background-color: $themeColor;
-    }
-    .ant-form {
+    .checkCodeBox {
+      display: flex;
+      justify-content: space-between;
       width: 200px;
-      .ant-form-item {
-        width: 200px;
-        .ant-btn {
-          width: 200px;
+      .queryCode{
+        width: 100px;
+        margin-top: 6px;
+        margin-right: 0;
+        padding: 0 5px;
+        height: 30px;
+        :global{
+          button{
+            width: 80px;
+          }
+        }
+        background: #fff;
+        border-color: #199475;
+        color: #199475;
+      }
+      .queryCodeClick{
+        width: 100px;
+        margin-top: 6px;
+        margin-right: 0;
+        padding: 0 5px;
+        height: 30px;
+        :global{
+          button{
+            width: 80px;
+          }
+        }
+        background:#f7f7f7;
+        border:1px solid #dfdfdf;
+        color: #dfdfdf;
+      }
+      .testCode{
+        width: 64px;
+        :global{
+          .ant-input{
+            width: 90px;
+          }
+          .ant-btn-primary {
+            width: 200px;
+          }
         }
       }
     }
-    .ant-input:focus {
-      border-color: $themeColor;
-      -webkit-box-shadow: 0 0 0 0;
-      box-shadow: 0 0 0 0;
-    }
-    .ant-input{
-      padding: 4px 7px;
+    :global{
+      .ant-input-group-addon{
+        background-color: #f1f1f1;
+        padding: 0 7px;
+      }
+      .ant-btn-primary:focus {
+        background-color: $themeColor;
+      }
+      
+      .ant-input:focus {
+        border-color: $themeColor;
+        -webkit-box-shadow: 0 0 0 0;
+        box-shadow: 0 0 0 0;
+      }
+      .ant-input{
+        padding: 4px 7px;
+      }
+      .ant-form {
+        width: 200px;
+        .ant-form-item {
+          width: 200px;
+          .ant-btn {
+            width: 200px;
+          }
+        }
+      }
     }
   }
+  
 }
