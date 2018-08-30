@@ -124,7 +124,7 @@
         color: $lightColor;
         .line{
           height: 0px;
-          border-top: 1px solid #dfdfdf;
+          border-top: 1px dashed #dfdfdf;
         }
         .title{
           display: inline-block;
