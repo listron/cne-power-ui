@@ -59,12 +59,11 @@ class AllStationHeader extends React.Component {
 {/* 筛选 */}
         <div className={styles.stationNav}>
           <div className={styles.showType}>
-            {/* <Icon type="global" /> */}
             <i className="iconfont icon-map"></i>
           </div>
           <div className={styles.typeTotal}>
-            <div className={styles.windTotal}>风电:{windNum}</div>
-            <div className={styles.pvTotal}>光伏:{pvNum}</div>
+            <div className={styles.windTotal}>风电:<span className={styles.stationNum}>{windNum}</span></div>
+            <div className={styles.pvTotal}>光伏:<span className={styles.stationNum}></span>{pvNum}</div>
           </div>
         </div>
       </div>

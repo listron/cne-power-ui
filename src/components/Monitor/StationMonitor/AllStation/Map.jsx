@@ -205,9 +205,9 @@ class Map extends Component {
     };
     testChart.setOption(option)
     testChart.on('click', (params) => {
-      // alert('我要跳转')
-      // console.log(params, '电站的参数');
-      this.props.history.push(`monitor/singleStation/${params.data.stationCode}`)
+      console.log(params)
+      this.props.history.push(`/monitor/singleStation/${params.data.stationCode}`)
+     
     })
   }
 
@@ -218,7 +218,7 @@ class Map extends Component {
 
     return (
       <div>
-        <div id={testId} style={{ width: "100%", height: "620px" }} ></div>
+        <div id={testId} style={{ width: "100%", height: "580px" }} ></div>
       </div>
     )
   }

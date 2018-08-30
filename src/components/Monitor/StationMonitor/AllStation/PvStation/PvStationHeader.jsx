@@ -38,8 +38,8 @@ class pvStationHeader extends React.Component {
               <div className={styles.dataValue}>{stationUnitCount}</div>
               <div className={styles.dataName}>装机台数 台</div>
             </div>
-            <div className={styles.windSpeed}>
-              <div className={styles.dataValue}>{instantaneous}</div>
+            <div className={styles.pvInstantaneous}>
+              <div className={styles.dataPvValue}>{instantaneous}</div>
               <div className={styles.dataName}>平均辐射 w/m²</div>
             </div>
             <div className={styles.dayStation}>

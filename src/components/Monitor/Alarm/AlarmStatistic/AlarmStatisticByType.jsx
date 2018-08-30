@@ -48,12 +48,38 @@ class AlarmStatisticByType extends Component {
       endTime
     });
   }
-
   
   //设置tabs按钮的
   onChangeTab = (activekey) => {
     this.setState({ key: activekey })
   }
+
+  //筛选时间，出现日期框
+ 
+   // console.log(key); // handleDayMenuClick = (e) => {
+  //   //const{startTime, endTime}=this.props;
+  //   let startTime=moment(0,'HH').utc().format();
+  //   let endTime=moment().utc().format();
+  //   if(e.key === '今天'){
+  //     startTime=moment(0,'HH').utc().format();
+  //     endTime=moment().utc().format();
+  //   }else if(e.key === '昨天'){
+  //   startTime=moment(0,'HH').subtract(1,'day').utc().format();
+  //   endTime=moment().subtract(1,'day').endOf('day').utc().format();     
+  //   }else if(e.key === '最近7天'){
+  //     startTime=moment(0,'HH').subtract(7,'day').utc().format();
+  //     endTime=moment().utc().format();
+  //   }else if(e.key === '最近30天'){
+  //     startTime=moment(0,'HH').subtract(30,'day').utc().format();
+  //     endTime=moment().utc().format();
+  //   }
+  //   e.key === '其他时间段' ? this.onFilterShowChange('timeSelect') : '啥都不干';
+   
+  //   this.props.onChangeFilter({
+  //     startTime,
+  //     endTime
+  //   });
+  // }
 
   //筛选时间，出现日期框
   onChangeDuration = (value) => {
@@ -80,19 +106,13 @@ class AlarmStatisticByType extends Component {
       });
     }
   }
-
   render() {
     const { showFilter, key } = this.state;
 
     //数据导出按钮
     const operations = (
       <div className={styles.exportData}>
-        <button style={{
-          color: '#199475',
-          background: 'rgba(0,0,0,0)',
-          borderRadius: '5px',
-          border: '1px solid #199475',
-        }}>数据导出</button>
+        <button className={styles.exportBtn} >数据导出</button>
       </div >
     );
     return (
@@ -122,9 +142,9 @@ class AlarmStatisticByType extends Component {
             /></div>
           }
         </div>}
-        <Tabs activeKey={key} tabBarExtraContent={operations} onChange={this.onChangeTab}>
+        <Tabs className={styles.smallTab} activeKey={key} tabBarExtraContent={operations} onChange={this.onChangeTab}>
           <TabPane
-            tab={<i className="iconfont icon-grid"></i>}
+            tab={<i className="iconfont icon-drawing"></i>}
             key="graph"
           >
             <AlarmStatisticGraph  {...this.props} />
