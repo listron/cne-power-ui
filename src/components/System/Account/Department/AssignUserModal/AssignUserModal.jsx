@@ -304,7 +304,7 @@ class AssignUserModal extends Component {
       child = department.get('list');
       if(child.size > 0) {
         parentUser = this.getDepartmentUser(department);
-        if(parentUser.size > 0) {
+        // if(parentUser.size > 0) {
           child = child.unshift(Immutable.fromJS({
             departmentId: department.get('departmentId')+'-'+i,
             parentDepartmentId: department.get('departmentId'),
@@ -313,12 +313,12 @@ class AssignUserModal extends Component {
             userNum: parentUser.size,
             disabled: true,
           }));
-        }
+        // }
         data = data.setIn([i, 'list'], child);
       }
     }
     const nonAssignUser = this.getDepartmentUser(null);
-    if(nonAssignUser.size > 0) {
+    // if(nonAssignUser.size > 0) {
       data = data.unshift(Immutable.fromJS({
         departmentId: null,
         parentDepartmentId: null,
@@ -327,7 +327,7 @@ class AssignUserModal extends Component {
         userNum: nonAssignUser.size,
         disabled: true,
       }));
-    }
+    // }
     return data.toJS();
   }
 
@@ -389,27 +389,30 @@ class AssignUserModal extends Component {
     const disabled = !!selectedDepartment.get('disabled') || (selectedDepartment.get('list')&&selectedDepartment.get('list').size>0);
     let user = this.tansformUserData(searchUserList!==null?searchUserList:selectedUserList);
     return (
-      user.map((item) => {
-        return (
-          <div key={item.get('userId')} className={styles.userItem}>
-            <div className={styles.userCheck}>
-              {!disabled && 
-                <Checkbox 
-                  style={{marginRight: 6}}
-                  onChange={(e)=>{this.onCheckUser(item, e.target.checked)}} 
-                  checked={this.getUserChecked(item)}
-                  disabled={item.get('userStatus') === 4} />
-              }
-              <Avatar size="small">{item.get('username')?item.get('username').charAt(0):'c'}</Avatar>
-              <span className={styles.userName}>{item.get('username')}</span>
+      <div className={styles.userListContainer}>
+        <div className={styles.userListTip}>父部门不可选择人员</div>
+        {user.map((item) => {
+          return (
+            <div key={item.get('userId')} className={styles.userItem}>
+              <div className={styles.userCheck}>
+                {!disabled && 
+                  <Checkbox 
+                    style={{marginRight: 6}}
+                    onChange={(e)=>{this.onCheckUser(item, e.target.checked)}} 
+                    checked={this.getUserChecked(item)}
+                    disabled={item.get('userStatus') === 4} />
+                }
+                <Avatar size="small">{item.get('username')?item.get('username').charAt(0):'c'}</Avatar>
+                <div className={styles.userName}>{item.get('username')}</div>
+              </div>
+              <div className={styles.departmentName}>
+                {!disabled && <span className={styles.name} title={item.get('departmentName')}>{item.get('departmentName')}</span>}
+                {item.get('userId') === this.props.currentUserId && <span className={styles.me}>我</span>}
+              </div>
             </div>
-            <div className={styles.departmentName}>
-              {!disabled && <span className={styles.name} title={item.get('departmentName')}>{item.get('departmentName')}</span>}
-              {item.get('userId') === this.props.currentUserId && <span className={styles.me}>我</span>}
-            </div>
-          </div>
-        );
-      })
+          );
+        })}
+      </div>
     );
   }
 
@@ -434,13 +437,15 @@ class AssignUserModal extends Component {
     if(this.state.userList.size === 0) {
       return null;
     }
-    const { showWarningTip, warningTipText } = this.state;
+    const { showWarningTip, warningTipText, selectedDepartment } = this.state;
+    const num = this.getDepartmentUser(selectedDepartment).size;
     return (
       <Modal
         visible={true}
         footer={null}
         onCancel={this.onCancel}
         width={625}
+        className={styles.assignUser}
       >
         <div className={styles.assignUserModal}>
           {showWarningTip && 
@@ -463,8 +468,8 @@ class AssignUserModal extends Component {
           </div>
           <div className={styles.selectedUser}>{this.renderSelectedUser()}</div>
           <div className={styles.footer}>
-            <Button onClick={this.onCancel}>取消</Button>
-            <Button onClick={this.onSelect}>选择</Button>
+            <Button className={styles.cancel} onClick={this.onCancel}>取消</Button>
+            <Button className={styles.select} onClick={this.onSelect}>{`选择(${num})`}</Button>
           </div>
         </div>        
       </Modal>

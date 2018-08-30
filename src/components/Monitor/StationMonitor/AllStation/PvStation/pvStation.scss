@@ -1,20 +1,32 @@
 
 .pvStation{
-  height: 100%;
-  :global{
-    
+  background: #fff;
+ height: 100%;
+  display: flex;
+  flex:1;
+  flex-direction: column;
+  :global{  
+    .ant-tabs-nav-container{
+      margin: 0;
+    }
     .ant-progress-bg {
       border-radius: 100px;
       background-color: #199475;
   }
+  .ant-radio-button-wrapper:hover, .ant-radio-button-wrapper-focused{
+    color: #199475;
+  }
+  .ant-tabs-extra-content {
+    line-height: 48px;
+}
+  //风光组件里的小tabs
+  
   .ant-tabs-nav .ant-tabs-tab {
     display: inline-block;
     text-align: center;
     height: 100%;
-    -webkit-box-sizing: border-box;
     box-sizing: border-box;
     position: relative;
-    -webkit-transition: color 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
     transition: color 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
     cursor: pointer;
     text-decoration: none;
@@ -26,15 +38,46 @@
   .ant-tabs-nav-active{
     background: #199475
   }
+  .ant-tabs-nav-scroll{
+    background: #fff;
+   }
   .ant-tabs-ink-bar .ant-tabs-ink-bar-animated{
-    //display: none;
     width: 0;
     height: 0;
   }
-
    width: 100%;
+   //tableList的头部宽高
+   .ant-table .ant-table-thead > tr > th, .ant-table .ant-table-tbody > tr > td {
+    padding: 0px 12px;
+    height: 40px;
+    line-height: 30px;
+}
+  }
+  .smallTabs{
+    :global{
+      .ant-tabs-bar{
+        border:none;
+        border-bottom: 1px dashed #dfdfdf;
+      }
+      .ant-tabs-bar .ant-tabs-tab-active.ant-tabs-tab{
+        background: #199475;
+        border-color: #199475;
+        color: #fff;
+        margin: 0;
+      }
+    }
+  }
+  .provinceStationTotal{
+    margin-right: 30px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    .fontColor{
+      color:#199475;
+    }
   }
   .headStation{
+    border-bottom: 1px dashed #dfdfdf;
     height: 100px;
     display: flex;
     flex:1;
@@ -99,7 +142,7 @@
       display: flex;
       flex-direction: row;
 
-      .dayStation,.monthStation,.equipmentNum,.windSpeed{
+      .dayStation,.monthStation,.equipmentNum,.pvInstantaneous{
         height: 100px;
         display: flex;
         flex-direction: column;
@@ -107,34 +150,33 @@
         align-items: center;
         margin-left: 25px;
         .dataValue {
+          color:#199475;
+          font-size: 20px;
           flex: 1;
           text-align: center;
-
+          padding-top: 20px;
+        }
+        .dataPvValue{
+          color:#e08031;
+          font-size: 20px;
+          flex: 1;
+          text-align: center;
           padding-top: 20px;
         }
         .dataName {
           flex: 1;
           padding-bottom: 1px;
-
         }
 
        }
-
     }
-
   }
-
   .stationCardContainer {
-    width: 1210px;
+    
     display: flex;
     flex-direction: row;
     flex: 1;
     flex-wrap: wrap;
-
-
-    .ant-progress-bg {
-      background-color: #199419;
-    }
     .stationCard {
       margin: 20px 0 10px 20px;
       padding: 8px;
@@ -152,19 +194,18 @@
         color: #999;
       }
       .stationMark {
-        color: #20cc20;
+        color: #199475;
       }
       i{
         color:#e08031;
       }
     }
     .stationTest{
-      margin: 20px 0 0 20px;
+      margin: 20px 0 10px 20px;
       padding: 8px;
       width: 215px;
       height: 132px;
-      border-radius:4px;
-      
+      border-radius:4px; 
       color: #999;
       display: flex;
       flex-direction: column;
@@ -220,7 +261,7 @@
       color: red;
     }
   }
-  .PvStationList{
+  .PvStationList{ 
     display: flex;
     flex-direction: column;
     a{
@@ -238,8 +279,10 @@
       width: 70px;
       white-space: nowrap;
       overflow: hidden;
-      text-overflow: ellipsis
-      //text-overflow: ellipsis;
+      text-overflow: ellipsis;
+      &:hover{
+        color: #199475;
+      }
     }
     .stationrovince{
       width: 50px;
@@ -279,15 +322,10 @@
         display: flex;
         flex-direction: column;
         flex-wrap: wrap;
-
-
-
         .stationValue{
           flex: 1;
           display: flex;
           justify-content: space-between;
-
-
         }
         .progressBar{
           flex: 1;

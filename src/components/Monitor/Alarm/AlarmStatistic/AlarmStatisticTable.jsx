@@ -6,7 +6,11 @@ import CommonPagination from '../../../Common/CommonPagination';
 
 class AlarmStatisticTable extends React.Component {
   static propTypes = {
-    alarmStatistic: PropTypes.array,
+    pageNum: PropTypes.number,
+    pageSize: PropTypes.number,
+    stationDataList: PropTypes.array,
+    alarmStatistic:PropTypes.array,
+ 
   }
   constructor(props) {
     super(props);
@@ -21,6 +25,7 @@ class AlarmStatisticTable extends React.Component {
       pageSize
     })
   }
+ 
 
   renderColumn() {
     const columns = [
@@ -29,6 +34,12 @@ class AlarmStatisticTable extends React.Component {
         dataIndex: "stationName",
         key: "stationName",
         sorter: (a, b) => a.stationName.localeCompare(b.stationName),
+        render: (value, record, index) => {
+          return {
+            children: (<a href={'javascript:void(0)'} onClick={() => console.log("record", '跳转到单电站')} ><div className={styles.stationName}>{record.stationName}</div></a>
+            )
+          }
+        }
       },
       {
         title: "告警总数",
@@ -92,14 +103,13 @@ class AlarmStatisticTable extends React.Component {
         key: "fourHandleAvgTime",
         sorter: (a, b) => a.fourHandleAvgTime - b.fourHandleAvgTime
       },
-    ];
+    ];    
+
     return columns;
   }
-
   render() {
     const { alarmStatistic } = this.props;
     const { pageNum, pageSize, } = this.state;
-   
     const totalNum = alarmStatistic.length;
     let startRow = (pageNum - 1) * pageSize;
     let endRow = pageNum * pageSize;
