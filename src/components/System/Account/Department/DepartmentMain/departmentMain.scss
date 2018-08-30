@@ -102,6 +102,11 @@
         }
       }
     }
+    table{
+      .tableDepartmentName{
+        color: $darkColor;
+      }
+    }
     .stationColumn{
       .others{
         cursor: pointer;
