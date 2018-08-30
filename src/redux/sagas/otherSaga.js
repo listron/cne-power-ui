@@ -13,8 +13,8 @@ function *changeOtherStore(action){
 }
 
 function *editPassword(action){ // 修改密码
-  // const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.other.editPassword}`;
-  const url = '/mock/other/editPassword';
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.other.editPassword}`;
+  // const url = '/mock/other/editPassword';
   yield put({ type: otherAction.OTHER_FETCH });
   const { payload } = action;
   const { userId, oldPassword, newPassword, history } = payload;
