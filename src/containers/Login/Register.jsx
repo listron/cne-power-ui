@@ -83,6 +83,7 @@ class Register extends Component {
                 enterpriseId={this.props.enterpriseId}
                 error={this.props.error}
                 history={history}
+                changeLoginStore={this.props.changeLoginStore}
               />
             </TabPane>
           </Tabs>

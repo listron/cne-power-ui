@@ -290,3 +290,71 @@
   }
 }
 
+.warningTipWrapBox{
+  .warningTip{
+    box-shadow: 0 1px 4px 0 rgba(0,0,0,0.2);
+    border-radius: 4px;
+    background-color: #fff;
+    padding: 16px 16px 0 16px;
+    .textArea{
+      margin: 45px 0 30px 45px;
+      .icon{
+        background-color: #f9b600;
+        border-radius: 50%;
+        color: #fff;
+        margin-right: 8px;
+      }
+      .text{
+        color: $darkColor;
+        font-size: 12px;
+      }
+    }
+    .handle{
+      text-align: right;
+      margin-top: 90px;
+      padding-bottom: 20px;
+      span{
+        cursor: pointer;
+        display: inline-block;
+        border-radius: 4px;
+        margin-left: 24px;
+        padding:0 8px;
+        color: $lightColor;
+        &:hover{
+          background-color: $themeColor;
+          color: #fff;
+        }
+      }
+    }
+    .handleRadio{
+      margin-left: 80px;
+      color: #666;
+      :global{
+        .ant-radio:hover .ant-radio-inner, .ant-radio-focused .ant-radio-inner {
+          border-color: #666;
+        }
+        .ant-radio-inner:after{
+          background-color: #666;
+        }
+        .ant-radio-checked .ant-radio-inner{
+          border: 1px solid #666;
+        }
+        .ant-radio-wrapper:hover .ant-radio .ant-radio-inner, .ant-radio:hover .ant-radio-inner, .ant-radio-focused .ant-radio-inner {
+          border-color: #666;
+        }
+      }
+    }
+  }
+  :global{
+    .ant-modal{
+      .ant-modal-content{
+        background-color: transparent;
+        border: none;
+        .ant-modal-body{
+          padding: 0;
+        }
+      }
+    }
+    
+  }
+}

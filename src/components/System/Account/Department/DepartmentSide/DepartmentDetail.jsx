@@ -177,6 +177,45 @@ class DepartmentDetail extends Component {
             <Icon type="arrow-left" className={styles.backIcon} onClick={this.backToList} />
           </span>
         </div>
+        <div className={styles.departmentBox}>
+          <div className={styles.departmentInfo} >
+            <div>
+              <span className={styles.title}>部门名称</span>
+              <span className={styles.value}>{departmentDetail.departmentName || ' -- '}</span> 
+            </div>
+            <div>
+              <span className={styles.title}>所属部门</span>
+              <span className={styles.value}>{departmentDetail.parentDepartmentName || '无'}</span> 
+            </div>
+            <div>
+              <span className={styles.title}>成员</span>
+              <span className={styles.value}>{userFullNames}</span> 
+              <Button className={styles.setting} onClick={this.setDepartmentUser}>设置</Button>
+            </div>
+            <div>
+              <span className={styles.title}>负责电站</span>
+              <span className={styles.value}>{stationNames}</span> 
+              <Button className={styles.setting} onClick={this.setDepartmentStation} >设置</Button>
+            </div>
+            <div className={styles.line}></div>
+            <div>
+              <span className={styles.title}>创建者</span>
+              <span className={styles.value}>{departmentDetail.createUser}</span> 
+            </div>
+            <div>
+              <span className={styles.title}>创建时间</span>
+              <span className={styles.value}>{createTime}</span> 
+            </div>
+            <div>
+              <span className={styles.title}>最后修改人</span>
+              <span className={styles.value}>{departmentDetail.updateUser || ' -- '}</span> 
+            </div>
+            <div>
+              <span className={styles.title}>最后修改时间</span>
+              <span className={styles.value}>{updateTime}</span> 
+            </div>
+          </div>
+        </div>
         <div className={styles.departmentInfo} >
           <div>
             <span className={styles.title}>部门名称</span>

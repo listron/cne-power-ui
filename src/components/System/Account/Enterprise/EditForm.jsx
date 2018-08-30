@@ -88,7 +88,7 @@ class EditForm extends Component {
             }],
             initialValue: enterpriseDetail.enterpriseNum || ''
           })(
-            <Input />
+            <Input placeholder="请输入..." />
           )}
           <span className={styles.instructionText}>(多个电话号码用","隔开)</span>
         </FormItem>
@@ -100,7 +100,7 @@ class EditForm extends Component {
             }],
             initialValue: enterpriseDetail.enterpriseWebsite || ''
           })(
-            <Input />
+            <Input placeholder="请输入..." />
           )}
           <span className={styles.instructionText}>(80字以内)</span>
         </FormItem>
@@ -112,7 +112,7 @@ class EditForm extends Component {
             }],
             initialValue: enterpriseDetail.enterpriseAddress || '',
           })(
-            <Input />
+            <Input placeholder="请输入..." />
           )}
           <span className={styles.instructionText}>(80字以内)</span>
         </FormItem>
@@ -120,7 +120,7 @@ class EditForm extends Component {
           {getFieldDecorator('enterpriseProfile',{
             initialValue: enterpriseDetail.enterpriseProfile || ''
           })(
-            <InputLimit size={400} height={102} width={736} />
+            <InputLimit size={400} height={102} width={736} placeholder="请输入..." />
           )}
         </FormItem>
         <Button onClick={this.saveEnterprise} loading={loading} >保存</Button>

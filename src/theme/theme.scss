@@ -13,7 +13,7 @@ $darkColor: #666;
 $lightColor: #999;
 $promptColor: #dfdfdf;
 $themeColor: #199475;
-$tableSelectedBackground: #f4f4f4;//表格高亮背景色
+$tableSelectedBackground: rgba(206,235,224,0.3);//表格高亮背景色
 
 //常复用代码块：
 @mixin lineheight($height){//创建高度==行高元素
