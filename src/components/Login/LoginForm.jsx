@@ -153,7 +153,11 @@ class LoginForm extends Component {
 
     return (
       <div className={styles.loginForm}>
-        {userEnterpriseStatus===5 && <div>等待管理员审核</div>}
+        {userEnterpriseStatus===5 && 
+          <div >
+            等待管理员审核
+          </div>
+        }
         {userEnterpriseStatus===6 && <div>未通过审核，如有问题，请联系管理员！</div>}
         {userEnterpriseStatus===4 || userEnterpriseStatus===7 && 
           <div className={styles.loginAbnormal}>

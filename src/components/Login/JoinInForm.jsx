@@ -214,7 +214,7 @@ class JoinInForm extends Component{
     const { getFieldDecorator } = this.props.form;
     const { userEnterpriseStatus } = this.props;
     if(userEnterpriseStatus === 5) {
-      return (<div>等待管理员审核</div>);
+      return (<div><div><i className="iconfont icon-ha"></i></div>等待管理员审核...</div>);
     } else if(userEnterpriseStatus === 6) {
       return (<div>未通过审核，如有问题，请联系管理员！</div>);
     } else if(userEnterpriseStatus===3) {
