@@ -119,6 +119,7 @@ const menuData = [
       },{
         name:'设备分析',
         path: 'equipment',
+        iconStyle: 'icon-usermanage',
         children: [
           {
             name: '设备性能分析',
@@ -132,6 +133,7 @@ const menuData = [
       },{
         name:'统计报表',
         path: 'statement',
+        iconStyle: 'icon-usermanage',
         children: [
           {
             name: '日报月报',
@@ -153,6 +155,7 @@ const menuData = [
         name:'光伏发电量评估',
         path:'assess',
         defaultPath: true,
+        iconStyle: 'icon-usermanage',
       },
       {
         name: '清洗模型',
@@ -175,6 +178,7 @@ const menuData = [
       },{
         name:'组串异常检测',
         path:'formation',
+        iconStyle: 'icon-usermanage',
         children: [
           {
             name: '组串异常分析',
@@ -187,6 +191,7 @@ const menuData = [
       },{
         name:'偏航对风分析',
         path:'yaw',
+        iconStyle: 'icon-usermanage',
         children: [
           {
             name: '偏航对风分析',
