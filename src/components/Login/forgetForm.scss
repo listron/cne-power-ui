@@ -56,6 +56,10 @@
     }
   }
   :global{
+    .ant-input-group-addon{
+      background-color: #f1f1f1;
+      padding: 0 7px;
+    }
     .ant-btn-primary:focus {
       background-color: $themeColor;
     }
@@ -67,6 +71,11 @@
           width: 200px;
         }
       }
+    }
+    .ant-input:focus {
+      border-color: $themeColor;
+      -webkit-box-shadow: 0 0 0 0;
+      box-shadow: 0 0 0 0;
     }
   }
 }

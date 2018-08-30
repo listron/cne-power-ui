@@ -21,6 +21,7 @@ class Login extends Component {
     enterpriseId: PropTypes.string,
     history: PropTypes.object,
     error: PropTypes.object,
+    userEnterpriseStatus: PropTypes.number,
   }
 
   constructor(props) {
@@ -62,6 +63,7 @@ class Login extends Component {
                 enterpriseId={this.props.enterpriseId}
                 history={history}
                 error={this.props.error}
+                userEnterpriseStatus={this.props.userEnterpriseStatus}
               />
             </TabPane>
             <TabPane tab="注册企业" key="register">
@@ -81,6 +83,7 @@ class Login extends Component {
 const mapStateToProps = (state) => ({
   username: state.login.getIn(['loginData', 'username']),
   enterpriseId: state.login.getIn(['loginData', 'enterpriseId']),
+  userEnterpriseStatus: state.login.get('userEnterpriseStatus'),
   error: state.login.get('error'),
 });
 

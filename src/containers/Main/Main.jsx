@@ -58,7 +58,7 @@ class Main extends Component {
     const isTokenValid = moment().isBefore(Cookie.get('expireData'), 'second');
     if(isTokenValid && authData && this.props.history.location.pathname === '/login'
     && Cookie.get('isNotLogin') === '0') {
-      this.props.history.push('/monitpr/station');
+      this.props.history.push('/monitor/station');
     }
     if(authData && !isTokenValid && refreshToken){
       message.error('token已过期，请刷新页面重新登录后使用');

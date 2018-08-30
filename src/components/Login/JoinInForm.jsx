@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Form, Icon, Input, Button, Modal,Checkbox, Card } from 'antd';
+import {Form, Icon, Input, Button,Checkbox, Card } from 'antd';
 import PropTypes from 'prop-types';
 import styles from './joinInForm.scss';
 
@@ -254,6 +254,7 @@ class JoinInForm extends Component{
             <FormItem {...tailFormItemLayout} >
               {getFieldDecorator('userAgreement', {
                 valuePropName: 'checked',
+                required: true,
               })(
                 <Checkbox className={styles.userArgee}  >同意<a href="#" >用户协议</a></Checkbox>
               )}
@@ -304,8 +305,7 @@ class JoinInForm extends Component{
     return (
       <div className={styles.comName}>
         {joinStep === 1 && 
-          isInvite === 0 ? 
-            this.renderStepOne(formItemLayout, tailFormItemLayout) :  this.renderInviteUser()
+          isInvite === 0 ? this.renderStepOne(formItemLayout, tailFormItemLayout) :  this.renderInviteUser()
         }
         {joinStep === 2 && this.renderStepTwo()}
         {joinStep === 3 && this.renderStepThree(formItemLayout, tailFormItemLayout)}
