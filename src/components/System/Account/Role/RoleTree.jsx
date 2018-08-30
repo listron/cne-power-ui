@@ -11,6 +11,7 @@ class RoleTree extends Component {
     treeData: PropTypes.array,
     value: PropTypes.string,
     onChange: PropTypes.func,
+    onChangeHalf: PropTypes.func,
   }
 
   constructor(props) {
@@ -28,6 +29,7 @@ class RoleTree extends Component {
 
   onCheck = (checkedKeys, e) => {
     this.props.onChange(checkedKeys.join(','));
+    this.props.onChangeHalf(e.halfCheckedKeys);
   }
 
   onCheckAll = (e) => {
@@ -44,7 +46,7 @@ class RoleTree extends Component {
     for(var i = 0; i < data.length; i++) {
       const item = data[i];
       arr.push(item.rightId.toString());
-      if(!(item.childRightData === null || (item.childRightData instanceof Array && item.childRightData.length === 0))) {
+      if(item.childRightData instanceof Array && item.childRightData.length > 0) {
         this.getAllKeys(item.childRightData, arr);
       }
     }
@@ -52,14 +54,14 @@ class RoleTree extends Component {
 
   renderTreeNodes = (data) => {
     return data.map((item) => {
-      if(item.childRightData === null || (item.childRightData instanceof Array && item.childRightData.length === 0)) {
-        return <TreeNode title={item.rightName} key={item.rightId.toString()} />;
+      if(item.childRightData instanceof Array && item.childRightData.length > 0) {
+        return (
+          <TreeNode title={item.rightName} key={item.rightId.toString()} dataRef={item}>
+            {this.renderTreeNodes(item.childRightData)}
+          </TreeNode>
+        );
       }
-      return (
-        <TreeNode title={item.rightName} key={item.rightId.toString()} dataRef={item}>
-          {this.renderTreeNodes(item.childRightData)}
-        </TreeNode>
-      );
+      return <TreeNode title={item.rightName} key={item.rightId.toString()} />;
     });
   }
 
