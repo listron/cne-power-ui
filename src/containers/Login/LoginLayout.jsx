@@ -1,12 +1,14 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import styles from './loginLayout.scss';
-import {loginAction} from '../../constants/actionTypes/loginAction';
+import { loginAction } from '../../constants/actionTypes/loginAction';
 import PropTypes from 'prop-types';
 import Login from './Login';
 import Register from './Register';
 import JoinIn from './JoinIn';
 import Forget from './Forget';
+import Contact from '../../components/Login/Contact';
+import Agreement from '../../components/Login/Agreement';
 
 class LoginLayout extends Component {
   static propTypes = {
@@ -16,6 +18,12 @@ class LoginLayout extends Component {
 
   constructor(props) {
     super(props);
+  }
+
+  backToLogin = () => {
+    this.props.changeLoginStore({
+      pageTab: 'login',
+    })
   }
 
   render() {
@@ -42,11 +50,11 @@ class LoginLayout extends Component {
               {pageTab === 'register' && <Register changeLoginStore={changeLoginStore} pageTab={pageTab} />}
               {pageTab === 'joinIn' && <JoinIn changeLoginStore={changeLoginStore} />}
               {pageTab === 'forget' && <Forget changeLoginStore={changeLoginStore} />}
+              {pageTab === 'contact' && <Contact backToLogin={this.backToLogin} />}
+              {pageTab === 'agreement' && <Agreement backToLogin={this.backToLogin} />}
             </div>
           </div>
         </div>
-
-
       </div>
     );
   }

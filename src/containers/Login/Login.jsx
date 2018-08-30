@@ -31,6 +31,14 @@ class Login extends Component {
     this.props.changeLoginStore({pageTab, registerStep: 1, joinStep: 1,enterpriseId: ''})
   }
 
+  toSeeAgreement = () => {
+    this.props.changeLoginStore({pageTab: 'agreement'})
+  }
+
+  toContactUs = () => {
+    this.props.changeLoginStore({pageTab: 'contact'})
+  }
+
   render() {
     const {pageTab,history} = this.props;
 
@@ -62,8 +70,8 @@ class Login extends Component {
           </Tabs>
         </div>
         <div className={styles.contactUs}>
-          <span>用户协议</span>
-          <span>联系我们</span>
+          <span onClick={this.toSeeAgreement}>用户协议</span>
+          <span onClick={this.toContactUs}>联系我们</span>
         </div>
       </div>
     );
