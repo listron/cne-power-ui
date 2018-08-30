@@ -30,7 +30,20 @@
       display: flex;
       flex-direction: column;
       flex: 1;
-      overflow-y: auto;
+      overflow-y: hidden;
+      .stationListContainer {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        overflow-y: auto;
+        .stationListTip {
+          margin: 9px 6px 9px 25px;
+          color: $lightColor;
+          height: 32px;
+          line-height: 32px;
+          font-size: 14px;
+        }
+      }
       .stationItem {
         display: flex;
         flex-direction: row;
@@ -40,16 +53,18 @@
         padding: 0 6px 0 25px;
         flex-shrink: 0;
         .stationCheck {
-          userName {
+          display: flex;
+          flex-direction: row;
+          .usestationName {
             font-size: 14px;
-            color: #666;
+            color: $darkColor;
             margin-left: 6px;
           }
         }
         .departmentName {
           font-size: 12px;
-          color: #999;
-          max-width: 250px;
+          color: $lightColor;
+          max-width: 200px;
           white-space: nowrap;
           text-overflow: ellipsis;
           overflow: hidden;
@@ -67,6 +82,20 @@
     overflow-y: auto;
     padding: 20px;
     border-top: 1px solid $promptColor;
+    :global {
+      .ant-tag {
+        margin-bottom: 10px;
+        margin-right: 20px;
+        border:1px solid #d9d9d9;
+        border-radius:4px;
+        padding: 0 12px;
+        height:30px;
+        line-height: 30px;
+        &:hover {
+          box-shadow:0 2px 8px 0 rgba(0,0,0,0.20);
+        }
+      }
+    }
   }
   .footer {
     background:#ececec;
@@ -79,11 +108,29 @@
     border-bottom-right-radius: 4px;
   }
 }
-:global {
-  .ant-modal-body {
-    padding: 0;
+.assignStation {
+  :global {
+    .ant-modal-body {
+      padding: 0;
+    }
+    .ant-modal-close-x {
+      height: 40px;
+      line-height: 40px;
+      width: 40px;
+    }
   }
-  .ant-tag {
-    margin-bottom: 10px;
+  .cancel {
+    margin-right: 20px;
+    width: 80px;
+  }
+  .select {
+    border-color: $themeColor;
+    color: $themeColor;
+    margin-right: 20px;
+    width: 80px;
+    &:hover {
+      background-color: $themeColor;
+      color: #fff;
+    }
   }
 }

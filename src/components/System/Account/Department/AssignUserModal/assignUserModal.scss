@@ -53,7 +53,9 @@
         padding: 0 6px 0 25px;
         flex-shrink: 0;
         .userCheck {
-          userName {
+          display: flex;
+          flex-direction: row;
+          .userName {
             font-size: 14px;
             color: $darkColor;
             margin-left: 6px;
@@ -115,8 +117,29 @@
     border-bottom-right-radius: 4px;
   }
 }
-:global {
-  .ant-modal-body {
-    padding: 0;
+.assignUser {
+  :global {
+    .ant-modal-body {
+      padding: 0;
+    }
+    .ant-modal-close-x {
+      height: 40px;
+      line-height: 40px;
+      width: 40px;
+    }
+  }
+  .cancel {
+    margin-right: 20px;
+    width: 80px;
+  }
+  .select {
+    border-color: $themeColor;
+    color: $themeColor;
+    margin-right: 20px;
+    width: 80px;
+    &:hover {
+      background-color: $themeColor;
+      color: #fff;
+    }
   }
 }
