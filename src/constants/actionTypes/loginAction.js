@@ -55,6 +55,9 @@ module.exports ={
     // 重置密码
     RESET_PASSWORD_SAGA: null,
     RESET_PASSWORD_FAIL: null,
+    // 离开重置state
+    RESET_LOGIN_STORE_SAGA: null,
+    RESET_LOGIN_STORE_SUCCESS: null,
   })
 }
 

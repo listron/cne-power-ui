@@ -70,7 +70,9 @@ const loginReducer = (state = initState, action) => {
     case loginAction.RESET_PASSWORD_FAIL:
     case loginAction.REGISTER_ENTERPRISE_FAIL:
       return state.set('isFetching', false)
-                  .set('error', Immutable.fromJS(action.data));    
+                  .set('error', Immutable.fromJS(action.data));
+    case loginAction.RESET_LOGIN_STORE_SUCCESS:
+      return initState;   
   }
   return state;
 }
