@@ -194,7 +194,6 @@ class ForgetForm extends Component{
         },
       },
     };
-    console.log(showResetPassword)
     return (
       <div className={styles.forgetPass}>
         {!showResetPassword ?
