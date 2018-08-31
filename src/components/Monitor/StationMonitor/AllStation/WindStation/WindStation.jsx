@@ -55,27 +55,23 @@ class WindStation extends React.Component {
     const stationStatusSummary = stationDataSummary.stationStatusSummary || [];
     //统计各状态下的电站数量
     const normalNum = stationStatusSummary.filter(e => {
-      return e.stationStatus === 400
+      return e && e.stationStatus === 400
     }).length > 0 ? stationStatusSummary.filter(e => {
-      return e.stationStatus === 400
+      return e && e.stationStatus === 400
     })[0].stationNum : '0';
 
     const dataInterruptionNum = stationStatusSummary.filter(e => {
-      return e.stationStatus === 500
+      return e && e.stationStatus === 500
     }).length > 0 ? stationStatusSummary.filter(e => {
-      return e.stationStatus === 500
+      return e && e.stationStatus === 500
     })[0].stationNum : '0';
    
 
     const unconnectionNum = stationStatusSummary.filter(e => {
-      return e.stationStatus === 900
+      return e && e.stationStatus === 900
     }).length > 0 ? stationStatusSummary.filter(e => {
-      return e.stationStatus === 900
+      return e && e.stationStatus === 900
     })[0].stationNum : '0';
-
-
-
-
     //筛选不同状态下的电站列表
     const stationDataList = windMonitorStation.stationDataList || [];
     const newStationDataList = stationDataList.filter(e => {
@@ -84,14 +80,17 @@ class WindStation extends React.Component {
       if (stationType === 'all') {
         return true
       } else if (stationType === 'normal') {
-        return e.stationStatus.stationStatus === '400'
+        const stationStatus=e.stationStatus||{};
+        return stationStatus.stationStatus === '400'
       } else if (stationType === 'dataInterruption') {
-        return e.stationStatus.stationStatus === '500'
+        const stationStatus=e.stationStatus||{};
+        return stationStatus.stationStatus === '500'
       } else if (stationType === 'unconnection') {
-        return e.stationStatus.stationStatus === '900'
+        const stationStatus=e.stationStatus||{};
+        return stationStatus.stationStatus === '900'
       }
     })
-    // console.log(newStationDataList,'筛选的数据')
+   
 
 
     const TabPane = Tabs.TabPane;
@@ -194,7 +193,7 @@ class WindStation extends React.Component {
             }
             key="3"
           >
-            <Map {...this.props} stationDataList={data} testId="wind_bmap_station" />
+           <Map {...this.props} stationDataList={data} testId="wind_bmap_station" />
           </TabPane>
         </Tabs>
 

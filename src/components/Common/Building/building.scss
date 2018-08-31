@@ -1,0 +1,20 @@
+.buildingContainer{
+  width: 100%;
+  display: flex;
+  flex: 1;
+  min-height: 100%;
+  flex-direction: column;
+  padding: 24px 24px 0;
+  background: #ececec;
+
+
+  .building{
+
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    background: #fff;
+    background: url('/img/undo.png') no-repeat center #fff;
+
+  }
+}

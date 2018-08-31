@@ -14,7 +14,7 @@ import { isUrl } from '../utils';
 
 const menuData = [
   {
-    name: '首页',
+    name: '主页',
     path: '/',
     defaultPath: true,
   },
@@ -27,7 +27,7 @@ const menuData = [
         iconStyle: 'icon-monitoring',
         path: 'station',
         defaultPath: true,
-      },{
+      }, {
         name: '告警',
         iconStyle: 'icon-alarm1',
         path: 'alarm',
@@ -35,17 +35,17 @@ const menuData = [
           {
             name: '实时告警',
             path: 'realtime',
-          },{
+          }, {
             name: '历史告警',
             path: 'history',
-          },{
+          }, {
             name: '告警统计',
             path: 'statistic',
           }
         ],
       }
     ],
-  },{
+  }, {
     name: '运维管理',
     path: 'operation',
     children: [
@@ -60,10 +60,149 @@ const menuData = [
             defaultPath: true,
           }
         ]
+      },{
+        name:'两票管理',
+        path:'tickets',
+        iconStyle: 'icon-usermanage',
+        children: [
+          {
+            name: '第一种工作票',
+            path: 'typeone',
+          }, {
+            name: '第二种工作票',
+            path: 'typetwo',
+          }
+        ]
+      },{ 
+        name:'台账',
+        path:'ledger',
+        iconStyle: 'icon-usermanage'
+
+      },{
+        name:'经验库',
+        path:'experience',
+        iconStyle: 'icon-usermanage'
+
       }
     ],
   },
-  {
+ {
+    name: '统计分析',
+    path: 'statistical',
+    children: [
+      {
+        name: '电站分析',
+        iconStyle: 'icon-usermanage',
+        path: 'stationaccount',
+        children: [
+          {
+            name: '全部电站',
+            path: 'allstation',
+            defaultPath: true,
+          }, {
+            name: '生产分析',
+            path: 'production',
+          }, {
+            name: '运行分析',
+            path: 'operate',
+          }, {
+            name: '资源分析',
+            path: 'resource',
+          }, {
+            name: '电站对比',
+            path: 'contrast'
+          }
+        ]
+      },{
+        name:'设备分析',
+        path: 'equipment',
+        iconStyle: 'icon-usermanage',
+        children: [
+          {
+            name: '设备性能分析',
+            path: 'performance',          
+          }, {
+            name: '设备厂家对比',
+            path: 'manufacturers',
+          }
+        ]
+
+      },{
+        name:'统计报表',
+        path: 'statement',
+        iconStyle: 'icon-usermanage',
+        children: [
+          {
+            name: '日报月报',
+            path: 'daily',          
+          }, {
+            name: '定制报表',
+            path: 'customization',
+          }
+        ]
+
+      }
+    ]
+
+  }, {
+    name: '高级分析',
+    path: 'analysis',
+    children: [
+      {
+        name:'光伏发电量评估',
+        path:'assess',
+        defaultPath: true,
+        iconStyle: 'icon-usermanage',
+      },
+      {
+        name: '清洗模型',
+        iconStyle: 'icon-usermanage',
+        path: 'cleanout',
+        children: [
+          {
+            name: '灰尘影响',
+            path: 'dirt',
+            defaultPath: true,
+          }, {
+            name: '清洗记录',
+            path: 'record',
+          }, {
+            name: '预警时事件配置',
+            path: 'configuration',
+          }
+        ]
+
+      },{
+        name:'组串异常检测',
+        path:'formation',
+        iconStyle: 'icon-usermanage',
+        children: [
+          {
+            name: '组串异常分析',
+            path: 'abnormal',          
+          }, {
+            name: '预警事件配置',
+            path: 'warning',
+          }
+        ]
+      },{
+        name:'偏航对风分析',
+        path:'yaw',
+        iconStyle: 'icon-usermanage',
+        children: [
+          {
+            name: '偏航对风分析',
+            path: 'wind',
+            defaultPath: true,
+          }, {
+            name: '预测事件配置',
+            path: 'config',
+          }
+        ]
+      }
+
+    ]
+  },  {
     name: '系统管理',
     path: 'system',
     children: [
@@ -76,26 +215,26 @@ const menuData = [
             name: '企业',
             path: 'enterprise',
             defaultPath: true,
-          },{
+          }, {
             name: '部门',
             path: 'department',
-          },{
+          }, {
             name: '用户',
             path: 'user',
-          },{
+          }, {
             name: '角色',
             path: 'role',
           }
         ]
-      },    
+      },
     ],
   },
-];
+]
 
 function formatter(data, parentPath = '/') {
   return data.map(item => {
     let { path } = item;
-    if (!isUrl(path) && path !== '/' ) {
+    if (!isUrl(path) && path !== '/') {
       path = parentPath + item.path;
     }
     const result = {

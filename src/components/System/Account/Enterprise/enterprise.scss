@@ -65,14 +65,11 @@
       color: $darkColor;
       margin-right: 24px;
       display: inline-block;
+      text-align: right;
       width: 56px;
     }
     .logoPart{
       margin-right: 48px;
-      img{
-        width: 240px;
-        height: 240px;
-      }
       .user,.time{
         height: 30px;
         span{
@@ -90,6 +87,13 @@
         margin-left: 52px;
         button{
           margin-right: 12px;
+          padding: 0 6px;
+        }
+        :global{
+          .iconfont {
+            vertical-align: middle;
+            margin-right: 4px;
+          }
         }
       }
     }
