@@ -16,6 +16,7 @@ class ForgetForm extends Component{
     username: PropTypes.string,
     showResetPassword: PropTypes.number,
     error: PropTypes.object,
+    changeLoginStore: PropTypes.func,
   }
 
   constructor(props){
@@ -30,8 +31,11 @@ class ForgetForm extends Component{
     this.setState = (timeValue)=>{
       return;
     };
+    this.props.changeLoginStore({
+      userEnterpriseStatus: 3,
+    });
   }
-
+  
   onResetPassword = () => {
     this.props.form.validateFields(['password','confirmPwd'], (err,values) => {
       if(!err){
@@ -94,7 +98,7 @@ class ForgetForm extends Component{
   renderResetOne(getFieldDecorator,timeValue){
     const {  enterpriseId, username } = this.props;
     return (
-      <div>
+      <div className={styles.checkCode} >
         <span className={styles.findPass}>找回密码</span>
         <Form onSubmit={this.checkCodeLogin} >
           <div>
@@ -134,7 +138,8 @@ class ForgetForm extends Component{
   renderResetTwo(getFieldDecorator, formItemLayout, tailFormItemLayout ){
 
     return (
-      <div>
+      <div className={styles.resetPassword} >
+        <span  className={styles.newPass}>新密码</span>
         <Form onSubmit={this.onResetPassword}  >
           <FormItem label="创建密码" {...formItemLayout}>
             {getFieldDecorator('password',{

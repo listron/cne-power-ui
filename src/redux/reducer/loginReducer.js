@@ -34,13 +34,13 @@ const loginReducer = (state = initState, action) => {
       return state.merge(Immutable.fromJS(action.params)).set('isFetching', false);
     case loginAction.LOGIN_FETCH:
       return state.set('isFetching', true);
-    case loginAction.GET_LOGIN_SUCCESS:
+    case loginAction.USER_NAME_LOGIN_SUCCESS:
       return state.set('isFetching', false)
                   .set('loginData', Immutable.fromJS(action.data));
     case loginAction.SEND_CODE_SUCCESS:
       return state.set('isFetching', false)
                   .set('phoneNum', action.params.phoneNum);
-    case loginAction.CHECK_CODE_SUCCESS:
+    case loginAction.PHONE_CODE_LOGIN_SUCCESS:
       return state.set('isFetching', false)
                   .set('showResetPassword', action.params.showResetPassword !== undefined ? action.params.showResetPassword:0)
                   .set('registerStep', 2)
@@ -60,8 +60,8 @@ const loginReducer = (state = initState, action) => {
     case loginAction.JOIN_ENTERPRISE_SUCCESS://此状态暂未使用，等待后端具体给出审核状态再做判断
       return state.set('isFetching', false)
                   .set('joinResult', action.data.joinResult);
-    case loginAction.GET_LOGIN_FAIL:
-    case loginAction.CHECK_CODE_FAIL:
+    case loginAction.USER_NAME_LOGIN_FAIL:
+    case loginAction.PHONE_CODE_LOGIN_FAIL:
     case loginAction.PHONE_CODE_REGISTER_FAIL:
     case loginAction.CHECK_ENTERPRISE_DOMAIN_FAIL:
     case loginAction.CHECK_ENTERPRISE_NAME_FAIL:

@@ -3,11 +3,12 @@ import { Dropdown, Menu, Icon } from 'antd';
 import { withRouter } from 'react-router-dom'
 import Cookie from 'js-cookie';
 import PropTypes from 'prop-types';
-import styles from './userLogo.scss';
+import styles from './userInfo.scss';
 
 class UserInfo extends Component{
   static propTypes = {
     history: PropTypes.object,
+    changeLoginStore: PropTypes.func
   }
 
   constructor(props){
@@ -29,6 +30,7 @@ class UserInfo extends Component{
     Cookie.remove('expireData');
     Cookie.remove('refresh_token');
     Cookie.remove('isNotLogin');
+    this.props.changeLoginStore({pageTab: 'login'});
     this.props.history.push('/login');
   }
 

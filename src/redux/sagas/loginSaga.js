@@ -21,8 +21,8 @@ function *changeLoginStore(action){
 }
 
 //账号密码登录
-function *getLogin(action){
-  const url = Path.basePaths.APIBasePath + Path.APISubPaths.login;
+function *userNameLogin(action){
+  const url = Path.basePaths.APIBasePath + Path.APISubPaths.userNameLogin;
   const {params} = action;
   yield put({ type: loginAction.LOGIN_FETCH });
   try {
@@ -37,7 +37,7 @@ function *getLogin(action){
         password: params.password,
       }),
     });
-    if(response.data.code === '10000'){
+    if(response.data.code === '10000' && response.data.data.userEnterpriseStatus){
       const { data } = response.data;
       if(data.userEnterpriseStatus === 3) {
         data.access_token && Cookie.set('authData',JSON.stringify(data.access_token));
@@ -51,14 +51,18 @@ function *getLogin(action){
         data.refresh_token && Cookie.set('refresh_token', data.refresh_token);
         Cookie.set('isNotLogin', 0);
 
-        yield put({ type: loginAction.GET_LOGIN_SUCCESS, data});
+        yield put({ type: loginAction.USER_NAME_LOGIN_SUCCESS, data});
         action.params.history.push('/station/monitor');
       } else {
-        yield put({ type: loginAction.CHANGE_LOGIN_STORE_SAGA, params: {userEnterpriseStatus: data.userEnterpriseStatus}})
+        yield put({ type: loginAction.CHANGE_LOGIN_STORE_SAGA, params});
+        if(data.userEnterpriseStatus){
+          yield put({ type: loginAction.CHANGE_LOGIN_STORE_SAGA, params: {userEnterpriseStatus: data.userEnterpriseStatus}})
+        }
+        
         // message.error(data.userEnterpriseStatus); 
       }
     } else{
-      yield put({ type: loginAction.GET_LOGIN_FAIL, data: response.data }); 
+      yield put({ type: loginAction.USER_NAME_LOGIN_FAIL, data: response.data }); 
       message.error(response.data.message);       
     }
   } catch (e) {
@@ -81,9 +85,9 @@ function *getVerificationCode(action){
   }
 }
 //手机+验证码登录
-function *checkCode(action){
+function *phoneCodeLogin(action){
   const { params } = action;
-  const url = Path.basePaths.APIBasePath + Path.APISubPaths.loginPhoneCode;
+  const url = Path.basePaths.APIBasePath + Path.APISubPaths.phoneCodeLogin;
   yield put({ type: loginAction.LOGIN_FETCH})
   try{
     const response = yield call(axios, {
@@ -100,7 +104,7 @@ function *checkCode(action){
     if(response.data.code === '10000'){
       const { data } = response.data;
       if(data.userEnterpriseStatus === 3) {
-        if(action.params.isNotLogin === 1 || data.enterpriseId !== null) {
+        if(params.isNotLogin === 1 || data.enterpriseId !== null) {
           data.access_token && Cookie.set('authData',JSON.stringify(data.access_token));
           data.enterpriseId && Cookie.set('enterpriseId', data.enterpriseId);
           data.enterpriseName && Cookie.set('enterpriseName', data.enterpriseName);
@@ -116,16 +120,20 @@ function *checkCode(action){
           params.history.push('/station/monitor');
         }
         yield put({
-          type: loginAction.CHECK_CODE_SUCCESS,
+          type: loginAction.PHONE_CODE_LOGIN_SUCCESS,
           params, //params为请求传入的值
           data, //data为API返回的值
         });
       } else {
-        yield put({ type: loginAction.CHANGE_LOGIN_STORE_SAGA, params: {userEnterpriseStatus: data.userEnterpriseStatus}})
+        yield put({ type: loginAction.CHANGE_LOGIN_STORE_SAGA, params });
+        if(data.userEnterpriseStatus){
+          yield put({ type: loginAction.CHANGE_LOGIN_STORE_SAGA, params: {userEnterpriseStatus: data.userEnterpriseStatus}})
+        }
         // message.error(data.userEnterpriseStatus);
       }
     }else{
-      yield put({ type: loginAction.CHECK_CODE_FAIL, data: response.data });
+      yield put({ type: loginAction.PHONE_CODE_LOGIN_FAIL, data: response.data });
+      message.error(response.data.message);
     }
   }catch(e){
     console.log(e);
@@ -143,13 +151,14 @@ function *phoneCodeRegister(action){
     });
     if(response.data.code === '00000' || response.data.code === '20001'){
       yield put({type: loginAction.PHONE_CODE_REGISTER_FAIL, data: response.data});
-      // message.error(response.data.message);
+      message.error(response.data.message);
     }else{
-      yield put({type: loginAction.CHECK_CODE_SAGA, params});
+      yield put({type: loginAction.PHONE_CODE_LOGIN_SAGA, params});
       yield put({
         type: loginAction.PHONE_CODE_REGISTER_SUCCESS,
         params,
       });
+      message.error(response.data.message);
     }
   }catch(e){
     console.log(e);
@@ -164,7 +173,6 @@ function *checkPhoneRegister(action){
       yield put({type: loginAction.CHECK_PHONE_REGISTER_SUCCESS, data: response.data.data});
     }else{
       yield put({type: loginAction.CHECK_PHONE_REGISTER_FAIL, data: {error: response.data.message}});
-      
     }
   }catch(e){
     console.log(e);
@@ -245,7 +253,7 @@ function *registerEnterprise(action){
     });
     if(response.data.code === '10000'){
       yield put({
-        type: loginAction.GET_LOGIN_SAGA,
+        type: loginAction.USER_NAME_LOGIN_SAGA,
         params:{
           username: params.username,
           password: params.password,
@@ -304,23 +312,16 @@ function *joinEnterprise(action){
     });
     if(response.data.code === '10000'){
       yield put({
-        type: loginAction.GET_LOGIN_SAGA,
+        type: loginAction.USER_NAME_LOGIN_SAGA,
         params:{
           username: params.username,
           password: params.password,
           history: params.history,
         }
-      })
-    }else if(response.data.code === '20014') {//待审核
-      yield put({
-        type: loginAction.JOIN_ENTERPRISE_SUCCESS,
-        params,
-        data: {
-          joinResult: 1,
-        },      
-      })
-      message.warning('等待管理员审核');
+      });
+      message.success(response.data.message);
     } else{
+      message.error(response.data.message);
       yield put({type: loginAction.JOIN_ENTERPRISE_FAIL, data: response.data })
       if(response.data.code !== '20015') {
         message.error(response.data.message);
@@ -375,9 +376,9 @@ function *checkUserRegister(action){
 }
 
 export function* watchLogin() {
-  yield takeLatest(loginAction.GET_LOGIN_SAGA, getLogin);
+  yield takeLatest(loginAction.USER_NAME_LOGIN_SAGA, userNameLogin);
   yield takeLatest(loginAction.SEND_CODE_SAGA, getVerificationCode);
-  yield takeLatest(loginAction.CHECK_CODE_SAGA, checkCode);
+  yield takeLatest(loginAction.PHONE_CODE_LOGIN_SAGA, phoneCodeLogin);
   yield takeLatest(loginAction.CHECK_ENTERPRISE_DOMAIN_SAGA, checkEnterpriseDomain);
   yield takeLatest(loginAction.GET_ENTERPRISE_INFO_SAGA, getEnterPriseInfo);
   yield takeLatest(loginAction.JOIN_ENTERPRISE_SAGA, joinEnterprise);

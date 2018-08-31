@@ -169,6 +169,18 @@
       text-align:left;
     }
   }
+  .userInfor{
+    :global{
+      .ant-form-item, .ant-form-horizontal {
+        margin-bottom: 21px;
+        width: 315px;
+        margin-left: -44px;
+      }
+      .ant-btn-primary {
+        width: 100%;
+      }
+    }
+  }
 }
 
 
