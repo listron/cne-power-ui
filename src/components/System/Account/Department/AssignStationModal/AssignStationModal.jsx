@@ -286,23 +286,25 @@ class AssignStationModal extends Component {
     return (
       <div className={styles.stationListContainer}>
         <div className={styles.stationListTip}>父部门不可选择电站，子部门继承</div>
-        {station.map((item) => {
-          const stationItem = transformStationList.find(obj=>obj.get('stationId')===item.get('stationId'));
-          return (
-            <div key={item.get('stationId')} className={styles.stationItem}>
-              <div className={styles.stationCheck}>
-                <Checkbox
-                  style={{marginRight: 6}}
-                  onChange={(e)=>{this.onCheckStation(item, e.target.checked)}} 
-                  checked={this.getStationChecked(item)} />
-                <div className={styles.stationName}>{item.get('stationName')}</div>
+        {station.size > 0 ? <div className={styles.noStation}>暂无电站，请去电站管理模块设置。</div> :
+          station.map((item) => {
+            const stationItem = transformStationList.find(obj=>obj.get('stationId')===item.get('stationId'));
+            return (
+              <div key={item.get('stationId')} className={styles.stationItem}>
+                <div className={styles.stationCheck}>
+                  <Checkbox
+                    style={{marginRight: 6}}
+                    onChange={(e)=>{this.onCheckStation(item, e.target.checked)}} 
+                    checked={this.getStationChecked(item)} />
+                  <div className={styles.stationName}>{item.get('stationName')}</div>
+                </div>
+                <div className={styles.departmentName} title={stationItem.get('departmentName')}>
+                  {stationItem.get('departmentName')}
+                </div>
               </div>
-              <div className={styles.departmentName} title={stationItem.get('departmentName')}>
-                {stationItem.get('departmentName')}
-              </div>
-            </div>
-          );
-        })}
+            );
+          })
+        }
       </div>
     );
   }
