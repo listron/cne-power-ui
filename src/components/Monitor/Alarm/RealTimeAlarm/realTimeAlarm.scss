@@ -160,6 +160,24 @@
     padding: 0 28px;
     background-color: #fff;
   }
+  .tableFooter{
+    background-color: #fff;
+    height: 45px;
+    line-height: 45px;
+    .info{
+      color: $lightColor;
+      margin-right: 20px;
+      margin-left: 24px;
+      .totalNum{
+        color: rgb(250,185,7);
+        margin: auto 4px;
+      }
+    }
+    .cancel{
+      color: $themeColor;
+      cursor: pointer;
+    }
+  }
   :global {
     .icon-action {
       background-color:#ceebe0;

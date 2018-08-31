@@ -168,10 +168,10 @@ class RoleTable extends Component {
           onChange={this.tableChange}
           pagination={false}
         />
-        <div className={styles.tableFooter}>
+        {/* <div className={styles.tableFooter}>
           <span className={styles.info}>当前选中<span className={styles.totalNum}>{selectedRole.length}</span>项</span>
           {selectedRole.length > 0 &&<span className={styles.cancel} onClick={this.cancelRowSelect}>取消选中</span>}
-        </div>
+        </div> */}
       </div>
     )
   }

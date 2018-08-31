@@ -37,7 +37,7 @@ class RelieveAlarmModal extends Component {
       if(!err) {
         this.props.onRelieveAlarm({
           operateReason: values.operateReason,
-          endTime: moment(values.endTime).utc().format(),
+          endTime: moment('2020-12-31 23:59:59').utc().format(),
           warningLogId: this.props.selectedRowKeys.join(','),
         });
       }
@@ -60,7 +60,7 @@ class RelieveAlarmModal extends Component {
           onOk={this.onSubmit}
           visible={true}
           onCancel={this.props.onCancel}>
-          <FormItem className={styles.formItem} label="解除时限">
+          {/* <FormItem className={styles.formItem} label="解除时限">
             {getFieldDecorator('endTime', {
               rules: [{ 
                 required: true,
@@ -69,7 +69,7 @@ class RelieveAlarmModal extends Component {
             })(
               <DatePicker placeholder="请输入" />
             )}
-          </FormItem>
+          </FormItem> */}
           <FormItem  className={styles.formItem} label="解除原因">
             {getFieldDecorator('operateReason', {
               rules: [{ 

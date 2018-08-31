@@ -107,7 +107,6 @@ class HostoryAlarmTable extends Component {
         title: '设备名称',
         dataIndex: 'deviceName',
         key: 'deviceName', 
-        sorter: (a,b) => a.stationCode - b.stationCode,
       },{
         title: '设备类型',
         dataIndex: 'deviceTypeName',
@@ -137,6 +136,7 @@ class HostoryAlarmTable extends Component {
         title: '告警处理',
         dataIndex: 'operation',
         key: 'operation',
+        sorter: true,
         render: (text, record, index) => {
           if(record.isTransferWork === 0) {
             return (
@@ -237,10 +237,6 @@ class HostoryAlarmTable extends Component {
           <div className={styles.infoItem}>
             <span className={styles.label}>操作时间：</span>
             <span className={styles.value}>{relieveInfo.operateTime}</span>
-          </div>
-          <div className={styles.infoItem}>
-            <span className={styles.label}>出现次数：</span>
-            <span className={styles.value}>{relieveInfo.warningCount}</span>
           </div>
           <div className={styles.infoItem}>
             <span className={styles.label}>解除原因：</span>
