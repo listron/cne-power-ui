@@ -115,25 +115,45 @@
       }
       
     }
-    .departmentInfo{//部门信息展示区
-      margin: 24px 0 0;
+    .departmentInfo{ // 部门信息展示区
+      margin-top: 24px;
+      margin-left: 300px;
       display: flex;
+      width: 810px;
       flex-direction: column;
       color: $lightColor;
-      .title{
-        display: inline-block;
-        width: 386px;
-        text-align: right;
-        margin-right: 24px;
-        color: $darkColor;
+      .eachInfo{
+        display: flex;
+        .title{
+          display: inline-block;
+          width: 85px;
+          text-align: right;
+          margin-right: 24px;
+          color: $darkColor;
+        }
+        .value{
+          display: inline-block;
+          color: $lightColor;
+          margin-right: 16px;
+        }
+        .stationInfo,.memberInfo{
+          display: flex;
+          width: 725px;
+          flex-wrap: wrap;
+          .value{
+            max-width: 725px;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+          }
+        }
+        .setting{
+          @include lineheight(26px);
+        }
       }
-      .value{
-        display: inline-block;
-        color: $lightColor;
-        margin-right: 16px;
-      }
-      .setting{
-        @include lineheight(26px);
+      .line{
+        height: 0px;
+        margin: 12px 0;
+        border-top: 1px dashed #dfdfdf;
       }
     }
   }

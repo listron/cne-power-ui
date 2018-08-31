@@ -11,6 +11,7 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 // import FixedHelper from '../../components/Common/FixedHelper/FixedHelper'; 暂不实现。
 import { commonAction } from '../../constants/actionTypes/commonAction';
+import { loginAction } from '../../constants/actionTypes/loginAction';
 import TopMenu from '../../components/Layout/TopMenu';
 import SideMenu from '../../components/Layout/SideMenu';
 import LogoInfo from '../../components/Layout/LogoInfo';
@@ -27,6 +28,7 @@ class Main extends Component {
     history: PropTypes.object,
     enterpriseId: PropTypes.string,
     username: PropTypes.string,
+    changeLoginStore: PropTypes.func,
   };
 
   constructor(props) {
@@ -72,7 +74,7 @@ class Main extends Component {
   }
 
   render() {
-    const { setTopMenu, topMenu, } = this.props;
+    const { setTopMenu, topMenu, changeLoginStore } = this.props;
     const authData = Cookie.get('authData');
     const isNotLogin = Cookie.get('isNotLogin');
     const isTokenValid = moment().isBefore(Cookie.get('expireData'), 'second');
@@ -91,7 +93,7 @@ class Main extends Component {
             </div>
             <div className={styles.headerRight}>
               <img width="294px" height="53px" src="/img/topbg02.png" className={styles.powerConfig} />
-              <UserInfo />
+              <UserInfo changeLoginStore={changeLoginStore} />
             </div>
           </div>
           <div className={styles.appMain}>
@@ -128,6 +130,7 @@ const mapDispatchToProps = (dispatch) => ({
   getStations: payload => dispatch({ type: commonAction.GET_STATIONS_SAGA, payload }),
   getDeviceTypes: payload => dispatch({ type: commonAction.GET_DEVICETYPES_SAGA, payload }),
   setTopMenu: payload => dispatch({ type: commonAction.CHANGE_COMMON_STORE_SAGA, payload }),
+  changeLoginStore: params => dispatch({ type: loginAction.CHANGE_LOGIN_STORE_SAGA, params }),
   // refreshToken: payload => dispatch({ type: commonAction.REFRESHTOKEN_SAGE, payload})
 });
 
