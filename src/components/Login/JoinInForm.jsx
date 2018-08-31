@@ -105,10 +105,6 @@ class JoinInForm extends Component{
     },1000);
   }
 
-  hasErrors = (fieldsError) =>{
-    return Object.keys(fieldsError).some(field => fieldsError[field]);
-  }
-
   // 点击获取验证码
   sendCode = () => {
     this.props.form.validateFields(['phoneNum'], (err, values) => {
