@@ -7,7 +7,7 @@ import CommonProgress from '../../../Common/CommonProgress'
 
 class AllStationHeader extends React.Component {
   static propTypes = {
-    allMonitorStation:PropTypes.object,
+    allMonitorStation: PropTypes.object,
   }
   constructor(props, context) {
     super(props, context)
@@ -16,28 +16,22 @@ class AllStationHeader extends React.Component {
     const { allMonitorStation } = this.props;
     const stationDataSummary = allMonitorStation.stationDataSummary || {};
     const stationPower = stationDataSummary.stationPower || ' -- ';
-    const stationCapacity =  stationDataSummary.stationCapacity|| ' -- ';
-    const dayPower =  stationDataSummary.dayPower || ' -- ';
-    const monthPower =  stationDataSummary.monthPower || ' -- ';
+    const stationCapacity = stationDataSummary.stationCapacity || ' -- ';
+    const dayPower = stationDataSummary.dayPower || ' -- ';
+    const monthPower = stationDataSummary.monthPower || ' -- ';
     const yearPower = stationDataSummary.yearPower || ' -- ';
-    const yearPlanPower =  stationDataSummary.yearPlanPower || ' -- ';
-    const yearPlanRate =  stationDataSummary.yearPlanRate || ' -- ';
-    const stationTypeSummary= stationDataSummary && stationDataSummary.stationTypeSummary || [];
-    //console.log(stationTypeSummary);
-   const windStation=stationTypeSummary[0] ||{};
-   const windNum=windStation.windStationNum || '--';
-   const lightStation=stationTypeSummary[1] ||{};
-   const pvNum=lightStation.lightStationNum || '--';
-   
+    const yearPlanPower = stationDataSummary.yearPlanPower || ' -- ';
+    const yearPlanRate = stationDataSummary.yearPlanRate || ' -- ';
+    const stationTypeSummary = stationDataSummary.stationTypeSummary || [];
+    const windStation = stationTypeSummary.windStationNum || '--';  
+    const lightStation = stationTypeSummary.lightStationNum ||'--';
     return (
       <div>
         <div className={styles.headStation}>
           <div className={styles.typeIcon}>
             <div className={styles.leftIcon}>
-
             </div>
             <div className={styles.rightIcon}>
-
             </div>
           </div>
           <CommonProgress value={stationPower} total={stationCapacity} valueText={"实时功率 MW"} totalText={"装机容量 MW"} />
@@ -51,19 +45,16 @@ class AllStationHeader extends React.Component {
               <div className={styles.dataName}>月发电量 万kWh</div>
             </div>
           </div>
-          <CommonProgress value={yearPower} total={yearPlanPower} valueText={"年累计发电量 万kWh"} totalText={"计划 万kWh"} percent={yearPlanRate>0?yearPlanRate:''} />
-
-         
-
+          <CommonProgress value={yearPower} total={yearPlanPower} valueText={"年累计发电量 万kWh"} totalText={"计划 万kWh"} percent={yearPlanRate > 0 ? yearPlanRate : ''} />
         </div>
-{/* 筛选 */}
+        {/* 筛选 */}
         <div className={styles.stationNav}>
           <div className={styles.showType}>
             <i className="iconfont icon-map"></i>
           </div>
           <div className={styles.typeTotal}>
-            <div className={styles.windTotal}>风电:<span className={styles.stationNum}>{windNum}</span></div>
-            <div className={styles.pvTotal}>光伏:<span className={styles.stationNum}></span>{pvNum}</div>
+            <div className={styles.windTotal}>风电:<span className={styles.stationNum}>{windStation}</span></div>
+            <div className={styles.pvTotal}>光伏:<span className={styles.stationNum}>{lightStation}</span></div>
           </div>
         </div>
       </div>

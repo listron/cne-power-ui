@@ -15,6 +15,7 @@ import RealTimeAlarm from '../containers/Monitor/Alarm/RealTimeAlarm';
 import HistoryAlarm from '../containers/Monitor/Alarm/HistoryAlarm';
 import AlarmStatistic from '../containers/Monitor/Alarm/AlarmStatistic';
 import EditPassword from '../containers/Others/EditPassword';
+import Building from '../components/Common/Building/Building';
 /*
   注： path变量中，以/hidden开头的路径，将不展示在菜单中；
 */
@@ -22,7 +23,7 @@ const routers = [
   {
     path: '/',
     exact: true,
-    component: Power
+    component: Building
   }, 
   {
     path: '/404',
@@ -38,6 +39,22 @@ const routers = [
     path: '/operation/ticket/list',
     exact: true,
     component: Ticket,
+  }, {
+    path: '/operation/tickets/typeone',
+    exact: true,
+    component: Building,
+  }, {
+    path: '/operation/tickets/typetwo',
+    exact: true,
+    component: Building,
+  }, {
+    path: '/operation/ledger',
+    exact: true,
+    component: Building,
+  }, {
+    path: '/operation/experience',
+    exact: true,
+    component: Building,
   }, {
     path: '/system/account/enterprise',
     exact: true,
@@ -98,7 +115,76 @@ const routers = [
     path: '/hidden/user/editPassword',
     exact: true,
     component: EditPassword
-  }
+  },{
+    path: '/statistical/stationaccount/allstation',
+    exact: true,
+    component: Building
+  },{
+    path: '/statistical/stationaccount/production',
+    exact: true,
+    component: Building
+  },{
+    path: '/statistical/stationaccount/operate',
+    exact: true,
+    component: Building
+  },{
+    path: '/statistical/stationaccount/resource',
+    exact: true,
+    component: Building
+  },{
+    path: '/statistical/stationaccount/contrast',
+    exact: true,
+    component: Building
+  },{
+    path: '/statistical/equipment/performance',
+    exact: true,
+    component: Building
+  },{
+    path: '/statistical/equipment/manufacturers',
+    exact: true,
+    component: Building
+  },{
+    path: '/statistical/statement/daily',
+    exact: true,
+    component: Building
+  },{
+    path: '/statistical/statement/customization',
+    exact: true,
+    component: Building
+  },{
+    path: '/analysis/assess',
+    exact: true,
+    component: Building
+  },{
+    path: '/analysis/cleanout/dirt',
+    exact: true,
+    component: Building
+  },{
+    path: '/analysis/cleanout/record',
+    exact: true,
+    component: Building
+  },{
+    path: '/analysis/cleanout/configuration',
+    exact: true,
+    component: Building
+  },
+  {
+    path: '/analysis/formation/abnormal',
+    exact: true,
+    component: Building
+  },{
+    path: '/analysis/formation/warning',
+    exact: true,
+    component: Building
+  },{
+    path: '/analysis/yaw/wind',
+    exact: true,
+    component: Building
+  },{
+    path: '/analysis/yaw/config',
+    exact: true,
+    component: Building
+  },
 ];
 
 const RouteWithSubRoutes = route => (

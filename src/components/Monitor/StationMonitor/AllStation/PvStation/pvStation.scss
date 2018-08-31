@@ -1,7 +1,7 @@
 
 .pvStation{
   background: #fff;
- height: 100%;
+  height: 100%;
   display: flex;
   flex:1;
   flex-direction: column;
@@ -18,9 +18,8 @@
   }
   .ant-tabs-extra-content {
     line-height: 48px;
-}
-  //风光组件里的小tabs
-  
+  }
+  //风光组件里的小tabs 
   .ant-tabs-nav .ant-tabs-tab {
     display: inline-block;
     text-align: center;
@@ -33,7 +32,6 @@
     width: 55px;
     margin: 0;
     background: #f1f1f1;
-
   }
   .ant-tabs-nav-active{
     background: #199475
@@ -51,7 +49,7 @@
     padding: 0px 12px;
     height: 40px;
     line-height: 30px;
-}
+   }
   }
   .smallTabs{
     :global{
@@ -87,7 +85,6 @@
       flex-direction: row;
       align-items: center;
       justify-content: center;
-
       .leftIcon{
         width: 60px;
         height: 60px;
@@ -98,7 +95,6 @@
       display: flex;
       flex-direction: row;
       align-items: center;
-
       .progressData{
         width: 220px;
         height: 100px;
@@ -106,8 +102,6 @@
         flex-direction: column;
         flex-wrap: wrap;
         margin-left: 25px;
-
-
         .stationValue{
           flex: 1;
           display: flex;
@@ -141,7 +135,6 @@
       height: 100px;
       display: flex;
       flex-direction: row;
-
       .dayStation,.monthStation,.equipmentNum,.pvInstantaneous{
         height: 100px;
         display: flex;
@@ -168,11 +161,10 @@
           padding-bottom: 1px;
         }
 
-       }
+      }
     }
   }
-  .stationCardContainer {
-    
+  .stationCardContainer {   
     display: flex;
     flex-direction: row;
     flex: 1;
@@ -240,7 +232,6 @@
       align-items: center;
       flex-direction: row;
     }
-
     .stationCardValue {
       flex: 1;
       display: flex;
@@ -314,7 +305,6 @@
 
       }
     }
-
     .progressInfo{
       .progressData{
         width: 180px;
@@ -341,6 +331,4 @@
       }
     }
   }
-
-
 }

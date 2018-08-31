@@ -12,6 +12,7 @@ var initState = Immutable.fromJS({
    pageNum: 1,//当前页号
    pageSize: 10,//每页容纳条数
    totalNum: 0,//数据总数
+   stationTypes:'all'
 
 });
 const stationMonitorReducer = (state = initState, action) => {
