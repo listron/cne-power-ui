@@ -158,7 +158,7 @@ function *phoneCodeRegister(action){
         type: loginAction.PHONE_CODE_REGISTER_SUCCESS,
         params,
       });
-      message.error(response.data.message);
+      // message.error(response.data.message);
     }
   }catch(e){
     console.log(e);

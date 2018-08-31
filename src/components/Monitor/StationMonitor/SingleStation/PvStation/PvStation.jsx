@@ -17,6 +17,7 @@ class PvStation extends Component {
   static propTypes = {
     deviceTypeFlow: PropTypes.array,
     changeSingleStationStore: PropTypes.func,
+    location: PropTypes.object,
   }
 
   constructor(props){
@@ -24,10 +25,12 @@ class PvStation extends Component {
     this.state = {
     }
   }
+
   onSelectedDeviceType = (e) => {
     const deviceTypeCode = parseInt(e.target.value);
     this.props.changeSingleStationStore({deviceTypeCode});
   }
+
   getDeviceTypeIcon = (e) => {
     switch(e){
       case 509:
@@ -48,6 +51,13 @@ class PvStation extends Component {
   
   render(){
     const { deviceTypeFlow } = this.props;
+    const locationSearch  = this.props.location.search;
+    let appointDeviceCode = locationSearch.substr(locationSearch.indexOf('=')+1);
+    if(appointDeviceCode && appointDeviceCode!=='undefined'){
+      appointDeviceCode = parseInt(appointDeviceCode);
+    }else{
+      appointDeviceCode = deviceTypeFlow.length > 0 && deviceTypeFlow[0].deviceTypeCode;
+    }
     
     return (
       <div className={styles.pvStation}>
@@ -62,7 +72,7 @@ class PvStation extends Component {
             </TabPane>
             <TabPane tab="示意图" key="2">
               <div className={styles.deviceTypeFlow}>
-                {deviceTypeFlow && <RadioGroup defaultValue={deviceTypeFlow.length > 0 && deviceTypeFlow[0].deviceTypeCode}  onChange={this.onSelectedDeviceType} >
+                {deviceTypeFlow && <RadioGroup defaultValue={appointDeviceCode || 509}  onChange={this.onSelectedDeviceType} >
                   {deviceTypeFlow && 
                     deviceTypeFlow.map(e=>{
                       return (<RadioButton value={e.deviceTypeCode} className={styles.deviceTypeItem} key={e.deviceTypeCode}>

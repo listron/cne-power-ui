@@ -44,26 +44,36 @@ class JoinInForm extends Component{
   }
 
   onJoinEnterprise = () => {
-    this.props.form.validateFields((err,values) => {
+    this.props.form.validateFields(['username','password','confirmPwd','userAgreement',],(err,values) => {
       if(!err){
-        setTimeout(() => {
-          if(this.props.error && this.props.error.get('code') === '20015') {
-            this.props.form.setFields({
-              username: {
-                value: values.username,
-                errors: [new Error('用户名已存在')],
-              },
-            });
+        if(values.userAgreement){
+          setTimeout(() => {
+            if(this.props.error && this.props.error.get('code') === '20015') {
+              this.props.form.setFields({
+                username: {
+                  value: values.username,
+                  errors: [new Error('用户名已存在')],
+                },
+              });
+            }
+          }, 500);
+          let { phoneNum, enterpriseId, history } =this.props;
+          let params = {
+            phoneNum,
+            enterpriseId,
+            history,
+            ...values,
           }
-        }, 500);
-        let { phoneNum, enterpriseId, history } =this.props;
-        let params = {
-          phoneNum,
-          enterpriseId,
-          history,
-          ...values,
+          this.props.joinEnterprise(params);
+        }else{
+          this.props.form.setFields({
+            userAgreement: {
+              value: values.userAgreement,
+              errors: [new Error('请同意用户协议！')],
+            },
+          });
         }
-        this.props.joinEnterprise(params);
+
       }
     })
   }
@@ -71,23 +81,23 @@ class JoinInForm extends Component{
     e.preventDefault();
     this.props.form.validateFields((err,values) => {
       if(!err){
-        this.props.getEnterpriseInfo({enterpriseName: values.enterpriseName})
+        this.props.getEnterpriseInfo({enterpriseName: values.enterpriseName});
         this.setState({ showEnterpriseInfo: true,  });
       }
     })
   }
   
   handleCancel = () => {
-    this.setState({ showEnterpriseInfo: false, })
+    this.setState({ showEnterpriseInfo: false, });
   }
 
   toSeeAgreement = () => {
-    this.props.changeLoginStore({pageTab: 'agreement'})
+    this.props.changeLoginStore({pageTab: 'agreement'});
   }
-  
+
   timeDecline = () => {
     let timeCount = setInterval(() => {
-      this.setState({ timeValue: this.state.timeValue-1 })
+      this.setState({ timeValue: this.state.timeValue-1 });
       if(this.state.timeValue < 0){
         clearInterval(timeCount);
         this.setState({ timeValue: 0 })
@@ -111,7 +121,7 @@ class JoinInForm extends Component{
   }
 
   phoneCodeRegister = () => {
-    this.props.form.validateFields(['phoneNum','verificationCode'], (err, values) => {
+    this.props.form.validateFields(['phoneNum','verificationCode',], (err, values) => {
       if(!err){
         setTimeout(() => {
           if(this.props.error && this.props.error.get('code') === '20001') {
@@ -132,7 +142,8 @@ class JoinInForm extends Component{
             });
           }      
         }, 500);
-        this.props.phoneCodeRegister({...values,joinStep: 3, isNotLogin: 1 })
+        this.props.phoneCodeRegister({...values,joinStep: 3, isNotLogin: 1 });
+        
       }
     })
   }
@@ -149,6 +160,7 @@ class JoinInForm extends Component{
   hasErrors = (fieldsError) => {
     return Object.keys(fieldsError).some(field => fieldsError[field]);
   }
+
   changeJoinStep = (e) => {
     e.preventDefault();
     this.props.changeLoginStore({'joinStep': 2})
@@ -164,7 +176,7 @@ class JoinInForm extends Component{
           {getFieldDecorator('enterpriseName',{
             rules: [{required: true, message: '请输入企业名称/企业域名'}]
           })(
-            <Input  placeholder="请输入企业名称/企业域名"  />
+            <Input placeholder="请输入企业名称/企业域名"  />
           )}
         </FormItem>
         <FormItem {...tailFormItemLayout}>
@@ -180,10 +192,15 @@ class JoinInForm extends Component{
   }
   renderStepTwo() {
     const { getFieldDecorator } = this.props.form;
-    const { enterpriseIdToken } = this.props;
+    const { enterpriseIdToken,enterpriseName, enterpriseLogo } = this.props;
     const { timeValue } = this.state;
+    const defaultLogo = "/img/nopic.png";
     return (
       <div className={styles.joinCheckCode} >
+        <div className={styles.enterpriseBrief} >
+          <div className={styles.enterpriseLogo} ><img src={enterpriseLogo || defaultLogo} width="60px" height="60px" /></div>
+          <div>{enterpriseName}</div>
+        </div>
         <Form onSubmit={this.phoneCodeRegister} >
           <div>
             <FormItem>
@@ -270,10 +287,8 @@ class JoinInForm extends Component{
             </FormItem>
             <FormItem {...tailFormItemLayout} >
               {getFieldDecorator('userAgreement', {
-                valuePropName: 'checked',
-                required: true,
               })(
-                <Checkbox className={styles.userArgee}  >同意<a href="#" onClick={this.toSeeAgreement} >用户协议</a></Checkbox>
+                <Checkbox className={styles.userArgee}  >同意<span className={styles.userAgreeTip} onClick={this.toSeeAgreement} >用户协议</span></Checkbox>
               )}
             </FormItem>
             <FormItem {...tailFormItemLayout} >
@@ -285,6 +300,7 @@ class JoinInForm extends Component{
     }
   }
   renderInviteUser() {
+    // 邀请用户加入企业暂未订协议怎么做
     const { enterpriseName, enterpriseLogo } = this.props;
     return (
       <div className={styles.inviteUser} >
@@ -294,9 +310,9 @@ class JoinInForm extends Component{
       </div>
     );
   }
-
+  
   render(){
-    const { joinStep, isInvite } = this.props;
+    const { joinStep } = this.props;
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -321,9 +337,7 @@ class JoinInForm extends Component{
     };
     return (
       <div className={styles.comName}>
-        {joinStep === 1 && 
-          isInvite === 0 ? this.renderStepOne(formItemLayout, tailFormItemLayout) :  this.renderInviteUser()
-        }
+        {joinStep === 1 && this.renderStepOne(formItemLayout, tailFormItemLayout)}
         {joinStep === 2 && this.renderStepTwo()}
         {joinStep === 3 && this.renderStepThree(formItemLayout, tailFormItemLayout)}
       </div>

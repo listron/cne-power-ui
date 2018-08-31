@@ -18,11 +18,19 @@
         }
       } 
     }
+    .userArgee{
+      .userAgreeTip{
+        color: #449ad3;
+      }
+    }
   }
   .inviteUser{
     text-align: center;
     .enterpriseLogo{
       margin-bottom: 10px;
+      img{
+        border-radius:4px;
+      }
     }
     .inviteTip{
       margin: 20px 0;
@@ -34,6 +42,27 @@
   .joinCheckCode{
     width: 200px;
     margin: 0 auto;
+    :global{
+      .ant-checkbox-input:focus + .ant-checkbox-inner {
+        border-color: $themeColor;
+      }
+    }
+    .enterpriseBrief{
+      text-align: center;
+      margin: 0 0 30px;
+      .enterpriseLogo{
+        margin-bottom: 10px;
+        img{
+          border-radius:4px;
+        }
+      }
+      .inviteTip{
+        margin: 20px 0;
+        span{
+          color: #e08031;
+        }
+      }
+    }
   }
   .enterpriseInfo{
     width: 416px;
