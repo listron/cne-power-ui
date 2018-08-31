@@ -52,12 +52,14 @@ class AlarmSingleStationGraph extends React.Component {
           type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
         },
         formatter: (params) => {
+          console.log(params);
           return `<div>
-          <div> ${params[0].time}</div> 
+          <div> ${params[0].name}</div> 
+          <div style='background:#dfdfdf;height:1px;width:100%;' ></div>
+          <div>告警数：${params[1].value+params[2].value}</div> 
           <div> ${params[0].marker}${params[0].seriesName}${params[0].value}</div>
           <div> ${params[1].marker}${params[1].seriesName}${params[1].value}</div> 
-          <div> ${params[2].marker}${params[2].seriesName}${params[2].value}</div>
-          <div> ${params[3].marker}${params[3].seriesName}${params[3].value}</div> 
+          <div> ${params[2].marker}${params[2].seriesName}${params[2].value}</div>         
           </div>`
           },
         backgroundColor: '#fff',
@@ -79,6 +81,8 @@ class AlarmSingleStationGraph extends React.Component {
           type: 'value',
           name: '转化率(%)',
           position: 'right',
+          min: 0,
+          max: 100,
           axisLine: {
             lineStyle: {
             }
@@ -100,8 +104,13 @@ class AlarmSingleStationGraph extends React.Component {
         }
       ],
       xAxis: {
-        type: 'time',
-        data: timeData,
+        type: 'category',
+        axisLabel: {
+          interval: 0,
+          rotate: -30
+      },
+        //data: timeData,
+        data:['2018-08-01','2018-08-02','2018-08-03','2018-08-04','2018-08-05','2018-08-06','2018-08-07']
       },
       series: [
         {
@@ -120,9 +129,9 @@ class AlarmSingleStationGraph extends React.Component {
               type: 'dashed'
             }
           },
-           data: transferWorkRate
+           //data: transferWorkRate
           //这是平均处理时间的数据
-          //data: [6, 15, 20, 8, 9, 7, 0,]
+          data: [60, 80, 70, 50, 90, 100, 70]
         },
         {
           name: '转工单数',
@@ -135,8 +144,8 @@ class AlarmSingleStationGraph extends React.Component {
             }
           },
           yAxisIndex: 1,
-          //data: [24, 11, 6, 5, 9, 10, 0]
-          data: transferWorkAlarmNum,
+          data: [15, 10, 5, 5, 10, 10, 5]
+          //data: transferWorkAlarmNum,
         },
         {
           name: '未转工单数',
@@ -149,8 +158,8 @@ class AlarmSingleStationGraph extends React.Component {
             }
           },
           yAxisIndex: 1,
-          data: noTransferWorkAlarmNum
-          //data: [6, 10, 24, 11, 5, 9, 0]
+          //data: noTransferWorkAlarmNum
+          data: [5, 15, 15, 10, 5, 15, 15]
         }
       ]
     };
