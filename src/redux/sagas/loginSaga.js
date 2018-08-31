@@ -87,7 +87,6 @@ function *getVerificationCode(action){
 //手机+验证码登录
 function *phoneCodeLogin(action){
   const { params } = action;
-  console.log(params)
   const url = Path.basePaths.APIBasePath + Path.APISubPaths.phoneCodeLogin;
   yield put({ type: loginAction.LOGIN_FETCH})
   try{
@@ -320,10 +319,8 @@ function *joinEnterprise(action){
           history: params.history,
         }
       });
-      console.log(response.data);
       message.success(response.data.message);
     } else{
-      console.log(response.data);
       message.error(response.data.message);
       yield put({type: loginAction.JOIN_ENTERPRISE_FAIL, data: response.data })
       if(response.data.code !== '20015') {
