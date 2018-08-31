@@ -436,9 +436,6 @@ class AssignUserModal extends Component {
   }
 
   render() {
-    if(this.state.userList.size === 0) {
-      return null;
-    }
     const { showWarningTip, warningTipText, selectedDepartment } = this.state;
     const num = this.getDepartmentUser(selectedDepartment).size;
     return (

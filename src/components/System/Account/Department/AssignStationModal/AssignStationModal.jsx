@@ -327,9 +327,6 @@ class AssignStationModal extends Component {
   }
 
   render() {
-    if(this.state.stationList.size === 0) {
-      return null;
-    }
     const { showWarningTip, warningTipText, selectedDepartment } = this.state;
     const num = this.getDepartmentStation(selectedDepartment.get('departmentId')).size;
     return (
