@@ -42,20 +42,22 @@ class User extends Component {
     }
   }
   componentDidMount() {
-    const params = {
-      enterpriseId: this.props.enterpriseId,
-      roleId: this.props.roleId,
-      userStatus: this.props.userStatus,
-      username: this.props.username,
-      phoneNum: this.props.phoneNum,
-      stationName: this.props.stationName,
-      pageNum: this.props.currentPage,
-      pageSize: this.props.pageSize,
-      order: '0',
-    };
-    this.props.getUserList(params);
-    this.props.getRoleAllList({enterpriseId: this.props.enterpriseId, roleType: "0"});
-    this.props.getRoleAllList({enterpriseId: this.props.enterpriseId, roleType: "1"});
+    if(this.props.enterpriseId){
+      const params = {
+        enterpriseId: this.props.enterpriseId,
+        roleId: this.props.roleId,
+        userStatus: this.props.userStatus,
+        username: this.props.username,
+        phoneNum: this.props.phoneNum,
+        stationName: this.props.stationName,
+        pageNum: this.props.currentPage,
+        pageSize: this.props.pageSize,
+        order: '0',
+      };
+      this.props.getUserList(params);
+      this.props.getRoleAllList({enterpriseId: this.props.enterpriseId, roleType: "0"});
+      this.props.getRoleAllList({enterpriseId: this.props.enterpriseId, roleType: "1"});
+    }
   }
 
   componentWillUnmount() {

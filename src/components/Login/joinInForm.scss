@@ -5,6 +5,10 @@
   margin-left: 90px;
   .userInfo{
     :global{
+      .ant-form-item, .ant-form-horizontal {
+        width: 315px;
+        margin-left: -44px;
+      }
       .ant-form{
         width: 300px;
         .ant-form-item{

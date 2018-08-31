@@ -88,9 +88,9 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  fetchLogin: params => dispatch({type: loginAction.GET_LOGIN_SAGA, params}),
+  fetchLogin: params => dispatch({type: loginAction.USER_NAME_LOGIN_SAGA, params}),
   sendCode: params => dispatch({ type: loginAction.SEND_CODE_SAGA, params}),
-  checkCodeLogin: params => dispatch({ type: loginAction.CHECK_CODE_SAGA, params}),
+  checkCodeLogin: params => dispatch({ type: loginAction.PHONE_CODE_LOGIN_SAGA, params}),
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Login));
