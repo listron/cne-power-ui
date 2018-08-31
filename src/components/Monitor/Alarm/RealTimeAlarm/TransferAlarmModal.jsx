@@ -49,6 +49,7 @@ class TransferAlarmModal extends Component {
     return (     
       <Form>
         {showWarningTip && <WarningTip
+          hiddenCancel={false}
           style={{marginTop:'250px',width: '210px',height:'88px'}} 
           onOK={this.onTransferAlarm} value={warningTipText} />}
         <Modal title="转缺陷工单"
