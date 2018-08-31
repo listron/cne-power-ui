@@ -44,28 +44,37 @@ class RegisterForm extends Component {
     e.preventDefault();
     this.props.form.validateFields(['enterpriseDomain', 'enterpriseName', 'userAgreement'], (err, values) => {
       if (!err) {
-        setTimeout(() => {
-          if(this.props.domainIsRegister === '0') {
-            this.props.form.setFields({
-              enterpriseDomain: {
-                value: values.enterpriseDomain,
-                errors: [new Error('当前域名无效')],
-              },
-            });
-          }
-          if(this.props.nameIsRegister === '0') {
-            this.props.form.setFields({
-              enterpriseName: {
-                value: values.enterpriseName,
-                errors: [new Error('当前企业名已注册，不能重复注册')],
-              },
-            });
-          }
-        }, 500);
-        this.props.checkEnterpriseDomain({
-          enterpriseDomain: values.enterpriseDomain+'.cnecloud.com',
-          enterpriseName: values.enterpriseName,
-        });
+        if(values.userAgreement){
+          setTimeout(() => {
+            if(this.props.domainIsRegister === '0') {
+              this.props.form.setFields({
+                enterpriseDomain: {
+                  value: values.enterpriseDomain,
+                  errors: [new Error('当前域名无效')],
+                },
+              });
+            }
+            if(this.props.nameIsRegister === '0') {
+              this.props.form.setFields({
+                enterpriseName: {
+                  value: values.enterpriseName,
+                  errors: [new Error('当前企业名已注册，不能重复注册')],
+                },
+              });
+            }
+          }, 500);
+          this.props.checkEnterpriseDomain({
+            enterpriseDomain: values.enterpriseDomain+'.cnecloud.com',
+            enterpriseName: values.enterpriseName,
+          });
+        }else{
+          this.props.form.setFields({
+            userAgreement: {
+              value: values.userAgreement,
+              errors: [new Error('请同意用户协议！')],
+            },
+          });
+        }
       }
     })
   }
@@ -102,7 +111,7 @@ class RegisterForm extends Component {
 
   phoneCodeRegister = (e) =>{
     e.preventDefault();
-    this.props.form.validateFields(['phoneNum','verificationCode'],(err, values) => {
+    this.props.form.validateFields(['phoneNum','verificationCode',],(err, values) => {
       if(!err){
         setTimeout(() => {
           if(this.props.error && this.props.error.get('code') === '20001') {
@@ -152,7 +161,7 @@ class RegisterForm extends Component {
   toSeeAgreement = () => {
     this.props.changeLoginStore({pageTab: 'agreement'})
   }
-  
+
   renderStepOne(getFieldDecorator, enterpriseId){
     const { timeValue } =this.state;
     return (
@@ -222,10 +231,8 @@ class RegisterForm extends Component {
           </FormItem>
           <FormItem {...tailFormItemLayout} >
             {getFieldDecorator('userAgreement', {
-              valuePropName: 'checked',
-              required: true,
             })(
-              <Checkbox className={styles.userArgee}  >同意<a className={styles.userAgreement} href="#" onClick={this.toSeeAgreement} >用户协议</a></Checkbox>
+              <Checkbox className={styles.userArgee}  >同意<span  className={styles.userAgreeTip} onClick={this.toSeeAgreement} >用户协议</span></Checkbox>
             )}
           </FormItem>
           <FormItem {...tailFormItemLayout} >

@@ -13,6 +13,8 @@ import BoxTransformerList from './BoxTransformerList';
 class DeviceList extends Component {
   static propTypes = {
     deviceTypeCode: PropTypes.number,
+    deviceTypeFlow: PropTypes.array,
+    location: PropTypes.object,
   }
 
   constructor(props){
@@ -21,12 +23,22 @@ class DeviceList extends Component {
   
   render(){
     const { deviceTypeCode } = this.props;
+    // const { deviceTypeFlow } = this.props;
+    const locationSearch  = this.props.location.search;
+    let appointDeviceCode = locationSearch.substr(locationSearch.indexOf('=')+1);
+    if(appointDeviceCode && appointDeviceCode!=='undefined'){
+      appointDeviceCode = parseInt(appointDeviceCode);
+    }else{
+      appointDeviceCode = deviceTypeCode || 509;
+    }
+
+
     return (
       <div>
-        {deviceTypeCode===509 && <PvmoduleList {...this.props} />}
-        {deviceTypeCode===206 && <InverterList {...this.props} />}
-        {deviceTypeCode===202 && <ConfluenceBoxList {...this.props} />}
-        {deviceTypeCode===304 && <BoxTransformerList {...this.props} />}
+        {appointDeviceCode===509 && <PvmoduleList {...this.props} />}
+        {appointDeviceCode===206 && <InverterList {...this.props} />}
+        {appointDeviceCode===202 && <ConfluenceBoxList {...this.props} />}
+        {appointDeviceCode===304 && <BoxTransformerList {...this.props} />}
       </div>
     )
   }
