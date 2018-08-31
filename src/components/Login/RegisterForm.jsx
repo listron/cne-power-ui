@@ -201,6 +201,7 @@ class RegisterForm extends Component {
             {getFieldDecorator('enterpriseDomain', {
               rules: [
                 {required: true, message: '请输入企业域名'},
+                {pattern: /[a-zA-Z0-9]|[\u4E00-\u9FA5]/, message: '格式不对'}
               ]
             })(
               <div className={styles.domain} >
