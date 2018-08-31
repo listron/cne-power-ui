@@ -231,9 +231,9 @@ class RegisterForm extends Component {
     );
   }
 
-  renderStepThree(getFieldDecorator, formItemLayout){
+  renderStepThree(getFieldDecorator, formItemLayout,tailFormItemLayout){
     return (
-      <div>
+      <div className={styles.userInfor}>
         <Form onSubmit={this.onRegisterEnterprise}>
           <FormItem label="用户名" {...formItemLayout}>
             {getFieldDecorator('username', {
@@ -265,7 +265,7 @@ class RegisterForm extends Component {
               <Input addonBefore={<i className="iconfont icon-password"></i>} type="password" placeholder="请再次输入" />
             )}
           </FormItem>
-          <FormItem label="" {...formItemLayout}>
+          <FormItem {...tailFormItemLayout}>
             <Button type="primary" htmlType="submit" className="login-form-button">进入企业账号</Button>
           </FormItem>
       </Form>
@@ -318,7 +318,7 @@ class RegisterForm extends Component {
         title: '完善个人信息',
         content:
         (
-          this.renderStepThree(getFieldDecorator, formItemLayout)
+          this.renderStepThree(getFieldDecorator, formItemLayout,tailFormItemLayout)
         ),
     }];
     const step = this.props.registerStep - 1;

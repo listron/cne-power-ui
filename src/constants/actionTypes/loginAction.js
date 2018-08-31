@@ -12,17 +12,17 @@ module.exports ={
     STOP_TASK : null,
     GET_COMMON_DATA_SAGA: null,//获取全电站需要的公共数据，例如getStations,getDeviecTypes,userName等
     // 登录
-    GET_LOGIN_SAGA : null,
-    GET_LOGIN_SUCCESS : null,
-    GET_LOGIN_FAIL : null,
+    USER_NAME_LOGIN_SAGA : null,
+    USER_NAME_LOGIN_SUCCESS : null,
+    USER_NAME_LOGIN_FAIL : null,
     GET_COMPINFO_SAGA : null,
     GET_COMPINFO_SUCCESS : null,
     GET_COMPINFO_FAIL : null,
     SEND_CODE_SAGA : null,
     SEND_CODE_SUCCESS : null,
-    CHECK_CODE_SAGA : null,
-    CHECK_CODE_SUCCESS : null,
-    CHECK_CODE_FAIL : null,
+    PHONE_CODE_LOGIN_SAGA : null,
+    PHONE_CODE_LOGIN_SUCCESS : null,
+    PHONE_CODE_LOGIN_FAIL : null,
     // 注册用验证
     CHECK_PHONE_REGISTER_SAGA: null,
     CHECK_PHONE_REGISTER_SUCCESS: null,
