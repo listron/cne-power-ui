@@ -14,7 +14,7 @@ import { isUrl } from '../utils';
 
 const menuData = [
   {
-    name: '首页',
+    name: '主页',
     path: '/',
     defaultPath: true,
   },

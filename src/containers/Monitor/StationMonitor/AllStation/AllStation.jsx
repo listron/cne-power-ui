@@ -18,6 +18,7 @@ class AllStation extends Component {
     getWindMonitorStation: PropTypes.func,
     loading: PropTypes.bool,
     allMonitorStation: PropTypes.object,
+    stationTypes: PropTypes.string
   }
   constructor(props) {
     super(props);
@@ -26,35 +27,66 @@ class AllStation extends Component {
     }
   }
   componentDidMount() {
+    this.props.getAllMonitorStation({ stationType: '2' })
+    setTimeout(this.getNum, 3000)
+  }
+
+  componentWillUnmount() {
+    clearTimeout(this.timer)
+  }
+  getNum = () => {
+    if (this.props.stationTypes === 'all') {
+      this.queryAllStationData();
+    } else if (this.props.stationTypes === 'wind') {
+      this.queryWindStationData();
+    } else if (this.props.stationTypes === 'pv') {
+      this.queryPvStationData();
+    }
+  }
+
+  //获取数据
+  queryAllStationData = () => {
+    clearTimeout(this.timer)
+    this.props.getAllMonitorStation({ stationType: '2' })
     const autoUpdata = () => {
       clearTimeout(this.timer)
       this.props.getAllMonitorStation({ stationType: '2' })
-      this.timer = setTimeout(autoUpdata, 10000)
+      this.timer = setTimeout(autoUpdata, 3000)
+    };
+    autoUpdata();
+  }
+  queryWindStationData = () => {
+    clearTimeout(this.timer)
+    this.props.getWindMonitorStation({ stationType: '0', stationTypes: this.props.stationTypes })
+    const autoUpdata = () => {
+      clearTimeout(this.timer)
+      this.props.getWindMonitorStation({ stationType: '0', stationTypes: this.props.stationTypes })
+      this.timer = setTimeout(autoUpdata, 3000)
+    };
+    autoUpdata();
+  }
+  queryPvStationData = () => {
+    clearTimeout(this.timer)
+    this.props.getPvMonitorStation({ stationType: '1', stationTypes: this.props.stationTypes })
+    const autoUpdata = () => {
+      clearTimeout(this.timer)
+      this.props.getPvMonitorStation({ stationType: '1', stationTypes: this.props.stationTypes })
+      this.timer = setTimeout(autoUpdata, 3000)
     };
     autoUpdata();
   }
 
-  componentWillUnmount(){
-    clearTimeout(this.timer)
-    clearTimeout(this.autoTimer)
 
-  }
   queryTargetData = (activeKey) => {
     this.setState({
       key: activeKey,
     })
-    const autoRefresh = () => {
-      clearTimeout(this.timer)
-      clearTimeout(this.autoTimer)
-      activeKey === '全部' ? this.props.getAllMonitorStation({ stationType: '2' }) : activeKey === '风电' ? this.props.getWindMonitorStation({ stationType: '0' }) : activeKey === '光伏' ? this.props.getPvMonitorStation({ stationType: '1' }) : alert('这个按钮没有考虑呢')
-      this.autoTimer = setTimeout(autoRefresh, 10000)
-    }
-    autoRefresh();
+    clearTimeout(this.timer)
+    activeKey === '全部' ? this.queryAllStationData() : activeKey === '风电' ? this.queryWindStationData() : activeKey === '光伏' ? this.queryPvStationData() : alert('这个按钮没有考虑呢')
   }
-
   render() {
     let { key } = this.state;
-    const { allMonitorStation } = this.props;
+    const { allMonitorStation, stationTypes } = this.props;
     const stationDataList = allMonitorStation.stationDataList || [];
     const windDataLength = stationDataList.filter((e, i) => { return e.stationType === "0" }).length;
     const pvDataLength = stationDataList.filter((e, i) => { return e.stationType === "1" }).length;
@@ -65,9 +97,9 @@ class AllStation extends Component {
         <div className={styles.stationContainer}>
           <div className={styles.cardContainer}>
             <Tabs type="card" activeKey={key} onChange={this.queryTargetData} tabBarGutter={0} >
-              <TabPane tab="全部" key="全部" >
+              {stationTypes === 'all' ? <TabPane tab="全部" key="全部" >
                 <Allstation {...this.props} />
-              </TabPane>
+              </TabPane> : ''}
               {windDataLength > 0 ? <TabPane tab="风电" key="风电">
                 <WindStation {...this.props} />
               </TabPane> : ''}
@@ -90,11 +122,7 @@ const mapDispatchToProps = (dispatch) => ({
   getWindMonitorStation: payload => dispatch({ type: allStationAction.GET_WIND_MONITORSTATION_SAGA, payload }),
   getPvMonitorStation: payload => dispatch({ type: allStationAction.GET_PV_MONITORSTATION_SAGA, payload }),
   changeMonitorStationStore: payload => dispatch({ type: allStationAction.CHANGE_MONITORSTATION_STORE_SAGA, payload }),
-
-
 })
-
-
 export default connect(mapStateToProps, mapDispatchToProps)(AllStation);
 
 

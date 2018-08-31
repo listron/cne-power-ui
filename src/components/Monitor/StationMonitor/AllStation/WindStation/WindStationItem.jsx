@@ -19,12 +19,13 @@ class WindStationItem extends React.Component {
         <div className={styles.stationCardContainer}>
           {
             stationDataList.map((item, index) => {
+              const stationStatus=item.stationStatus||{};
               return (
-                <div className={item.stationStatus.stationStatus === '900' ? styles.stationTest : styles.stationCard} key={index}>
+                <div className={stationStatus.stationStatus === '900' ? styles.stationTest : styles.stationCard} key={index}>
                   <Link to={`/monitor/singleStation/${item.stationCode}`} key={item.stationCode}>
                     <div className={styles.stationCardTitle}>
                       <div className={styles.stationName}>{item.stationName}</div>
-                      {item.stationStatus.stationStatus === '500' ? <i className="iconfont icon-outage"></i> : ''}
+                      {stationStatus.stationStatus === '500' ? <i className="iconfont icon-outage"></i> : ''}
                     </div>
                     <div className={styles.stationCardProgress}>
                       <Progress percent={item.stationPower / item.stationCapacity * 100} showInfo={false} />

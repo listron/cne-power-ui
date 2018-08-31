@@ -22,11 +22,9 @@ class AllStationHeader extends React.Component {
     const yearPower = stationDataSummary.yearPower || ' -- ';
     const yearPlanPower = stationDataSummary.yearPlanPower || ' -- ';
     const yearPlanRate = stationDataSummary.yearPlanRate || ' -- ';
-    const stationTypeSummary = stationDataSummary && stationDataSummary.stationTypeSummary || [];
-    const windStation = stationTypeSummary[0] || {};
-    const windNum = windStation.windStationNum || '--';
-    const lightStation = stationTypeSummary[1] || {};
-    const pvNum = lightStation.lightStationNum || '--';
+    const stationTypeSummary = stationDataSummary.stationTypeSummary || [];
+    const windStation = stationTypeSummary.windStationNum || '--';  
+    const lightStation = stationTypeSummary.lightStationNum ||'--';
     return (
       <div>
         <div className={styles.headStation}>
@@ -55,8 +53,8 @@ class AllStationHeader extends React.Component {
             <i className="iconfont icon-map"></i>
           </div>
           <div className={styles.typeTotal}>
-            <div className={styles.windTotal}>风电:<span className={styles.stationNum}>{windNum}</span></div>
-            <div className={styles.pvTotal}>光伏:<span className={styles.stationNum}></span>{pvNum}</div>
+            <div className={styles.windTotal}>风电:<span className={styles.stationNum}>{windStation}</span></div>
+            <div className={styles.pvTotal}>光伏:<span className={styles.stationNum}>{lightStation}</span></div>
           </div>
         </div>
       </div>

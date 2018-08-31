@@ -152,7 +152,6 @@ class Map extends Component {
           enterable: true,
           //position:['50%','50%'],
           formatter: (params) => {
-
             return `<div class='stationCard' style='height:70px;overflow:hidden'>
             <div class='stationCardTitle' style='display:flex;flex-direction: row;justify-content: space-between;'>
             <span>${params.data.name}</span>
@@ -167,7 +166,7 @@ class Map extends Component {
               &nbsp;&nbsp;
               <span>${params.data.stationCapacity}MW</span>
             </div>
-            <div class='stationCardWindSpeed'>${params.data.instantaneous}m/s</div>             
+            <div class='stationCardWindSpeed'>${params.data.instantaneous}${params.data.value[2]==='0'?'m/s':'w/m²'}</div>             
           </div>`
           },
           // width:'128px',

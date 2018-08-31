@@ -80,11 +80,14 @@ class WindStation extends React.Component {
       if (stationType === 'all') {
         return true
       } else if (stationType === 'normal') {
-        return e.stationStatus.stationStatus === '400'
+        const stationStatus=e.stationStatus||{};
+        return stationStatus.stationStatus === '400'
       } else if (stationType === 'dataInterruption') {
-        return e.stationStatus.stationStatus === '500'
+        const stationStatus=e.stationStatus||{};
+        return stationStatus.stationStatus === '500'
       } else if (stationType === 'unconnection') {
-        return e.stationStatus.stationStatus === '900'
+        const stationStatus=e.stationStatus||{};
+        return stationStatus.stationStatus === '900'
       }
     })
    

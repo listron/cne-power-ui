@@ -190,13 +190,19 @@ class WindStationList extends React.Component {
         render: (value, record, index) => {
           return {
             children: (
-              <div className={styles.currentStation}>{record.currentStation === '500' ? <div className={styles.dataInterruptionColor} ></div> : record.currentStation === '900' ? <div className={styles.unconnectionColor}></div> : <div className={styles.normalColor}></div>}</div>
+              <div className={styles.currentStation}>
+              {record.currentStation === '500' ? <div className={styles.dataInterruptionColor} ></div> :
+               record.currentStation === '900' ? <div className={styles.unconnectionColor}></div> : 
+               record.currentStation === '400' ?<div className={styles.normalColor}></div>:''
+               }
+              </div>
             )
           }
         }
       }
     ];
     const data = datalist.map((item, index) => {
+      const stationStatus=item.stationStatus||{};
       return (
         {
           key: `${item.stationCode}`,
@@ -211,7 +217,7 @@ class WindStationList extends React.Component {
           planOutput: `${item.yearPlanPower || '--'}`,
           equipmentNum: `${item.stationUnitCount || '--'}`,
           alarmNum: `${item.alarmNum || '--'}`,
-          currentStation: `${item.stationStatus.stationStatus}`
+          currentStation: `${stationStatus.stationStatus}`
         }
       )
     })
