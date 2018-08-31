@@ -149,6 +149,10 @@ class RegisterForm extends Component {
     }, 1000);
   }
 
+  toSeeAgreement = () => {
+    this.props.changeLoginStore({pageTab: 'agreement'})
+  }
+  
   renderStepOne(getFieldDecorator, enterpriseId){
     const { timeValue } =this.state;
     return (
@@ -220,7 +224,7 @@ class RegisterForm extends Component {
               valuePropName: 'checked',
               required: true,
             })(
-              <Checkbox className={styles.userArgee}  >同意<a className={styles.userAgreement} href="#" >用户协议</a></Checkbox>
+              <Checkbox className={styles.userArgee}  >同意<a className={styles.userAgreement} href="#" onClick={this.toSeeAgreement} >用户协议</a></Checkbox>
             )}
           </FormItem>
           <FormItem {...tailFormItemLayout} >

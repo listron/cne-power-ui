@@ -81,6 +81,10 @@ class JoinInForm extends Component{
     this.setState({ showEnterpriseInfo: false, })
   }
 
+  toSeeAgreement = () => {
+    this.props.changeLoginStore({pageTab: 'agreement'})
+  }
+  
   timeDecline = () => {
     let timeCount = setInterval(() => {
       this.setState({ timeValue: this.state.timeValue-1 })
@@ -269,7 +273,7 @@ class JoinInForm extends Component{
                 valuePropName: 'checked',
                 required: true,
               })(
-                <Checkbox className={styles.userArgee}  >同意<a href="#" >用户协议</a></Checkbox>
+                <Checkbox className={styles.userArgee}  >同意<a href="#" onClick={this.toSeeAgreement} >用户协议</a></Checkbox>
               )}
             </FormItem>
             <FormItem {...tailFormItemLayout} >

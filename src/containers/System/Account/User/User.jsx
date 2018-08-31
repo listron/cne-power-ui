@@ -112,7 +112,6 @@ class User extends Component {
   render() {
     const { showPage } = this.props;
     const { showSidePage } = this.state;
-    console.log(this.props.enterpriseId);
     return (
       <div className={styles.userContainer}>
         <UserMain
