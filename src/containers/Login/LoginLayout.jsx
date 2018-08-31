@@ -14,10 +14,15 @@ class LoginLayout extends Component {
   static propTypes = {
     pageTab: PropTypes.string,
     changeLoginStore: PropTypes.func,
+    resetLoginState: PropTypes.func,
   }
 
   constructor(props) {
     super(props);
+  }
+
+  componentWillUnmount(){
+    this.props.resetLoginState();
   }
 
   backToLogin = () => {
@@ -67,6 +72,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   changeLoginStore: params => dispatch({ type: loginAction.CHANGE_LOGIN_STORE_SAGA, params }),
+  resetLoginState: params => dispatch({ type: loginAction.RESET_LOGIN_STORE_SAGA, params }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginLayout);
