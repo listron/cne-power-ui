@@ -29,7 +29,7 @@ class EnterpriseDetail extends Component {
   // }
   componentWillReceiveProps(nextProps){//获取到详情数据后当详情存在且logo不存在时提示完善企业信息
     const { enterpriseDetail } = nextProps;
-    if(enterpriseDetail && Object.keys(enterpriseDetail).length > 0 && !enterpriseDetail.enterpriseLogo){
+    if(Object.keys(enterpriseDetail).length > 0 && !enterpriseDetail.enterpriseLogo && !enterpriseDetail.enterpriseNum && !enterpriseDetail.enterpriseAddress && !enterpriseDetail.enterpriseProfile){
       this.setState({
         showInforTip: true
       })
@@ -39,6 +39,7 @@ class EnterpriseDetail extends Component {
   render(){
     const { changeEnterpriseStore, enterpriseDetail } = this.props;
     const { showInforTip } = this.state;
+    const defaultLogo = '/img/nopic.png';
     return (
       <div className={styles.enterpriseDetail}>
         <div className={styles.detailTop}>
@@ -53,7 +54,7 @@ class EnterpriseDetail extends Component {
         </div>
         <div className={styles.enterpriseInfor} >
           <div className={styles.logoPart}>
-            <img src={enterpriseDetail.enterpriseLogo} />
+            <img src={enterpriseDetail.enterpriseLogo || defaultLogo} width="240px" height="240px" />
             {/* <div className={styles.user}>
               <span>创建者</span>
               {enterpriseDetail.createUser || ' -- ' }

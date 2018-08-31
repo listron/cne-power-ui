@@ -81,6 +81,10 @@ class JoinInForm extends Component{
     this.setState({ showEnterpriseInfo: false, })
   }
 
+  toSeeAgreement = () => {
+    this.props.changeLoginStore({pageTab: 'agreement'})
+  }
+  
   timeDecline = () => {
     let timeCount = setInterval(() => {
       this.setState({ timeValue: this.state.timeValue-1 })
@@ -168,7 +172,7 @@ class JoinInForm extends Component{
         </FormItem>
         {showEnterpriseInfo && <Card className={styles.enterpriseInfo} >
           {enterpriseName === null ? <div>没有此企业，请重新输入</div> : <div>点击确认要加入的企业</div>}
-          {enterpriseName === null ? null : <Button className={styles.enterpriseBtn} style={{marginTop: '40px'}} onClick={this.changeJoinStep }>{enterpriseName}</Button>}
+          {enterpriseName === null ? <div></div> : <Button className={styles.enterpriseBtn} style={{marginTop: '40px'}} onClick={this.changeJoinStep }>{enterpriseName}</Button>}
           <div className={styles.enterpriseBack} ><Icon type="arrow-left" /><span  onClick={this.handleCancel}>返回</span></div>
         </Card>}
       </Form>
@@ -216,7 +220,6 @@ class JoinInForm extends Component{
   renderStepThree(formItemLayout, tailFormItemLayout) {
     const { getFieldDecorator } = this.props.form;
     const { userEnterpriseStatus } = this.props;
-    console.log(userEnterpriseStatus)
     if(userEnterpriseStatus === 5) {
       return (
         <div className={styles.waitExamine}>
@@ -270,7 +273,7 @@ class JoinInForm extends Component{
                 valuePropName: 'checked',
                 required: true,
               })(
-                <Checkbox className={styles.userArgee}  >同意<a href="#" >用户协议</a></Checkbox>
+                <Checkbox className={styles.userArgee}  >同意<a href="#" onClick={this.toSeeAgreement} >用户协议</a></Checkbox>
               )}
             </FormItem>
             <FormItem {...tailFormItemLayout} >
