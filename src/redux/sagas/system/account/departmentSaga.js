@@ -349,14 +349,14 @@ function *setDepartmentStation(action) {
       }
       const params = yield select(state => ({//继续请求部门列表
         enterpriseId: payload.enterpriseId,
-        departmentSource: state.department.get('departmentSource'),
-        departmentName: state.department.get('departmentName'),
-        parentDepartmentName: state.department.get('parentDepartmentName'),
-        stationName: state.department.get('stationName'),
-        sort: state.department.get('sort'),
-        ascend: state.department.get('ascend'),
-        pageNum: state.department.get('pageNum'),
-        pageSize: state.department.get('pageSize'),
+        departmentSource: state.system.department.get('departmentSource'),
+        departmentName: state.system.department.get('departmentName'),
+        parentDepartmentName: state.system.department.get('parentDepartmentName'),
+        stationName: state.system.department.get('stationName'),
+        sort: state.system.department.get('sort'),
+        ascend: state.system.department.get('ascend'),
+        pageNum: state.system.department.get('pageNum'),
+        pageSize: state.system.department.get('pageSize'),
       }));
       yield put({
         type:  departmentAction.GET_DEPARTMENT_LIST_SAGA,
