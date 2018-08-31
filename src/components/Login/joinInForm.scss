@@ -23,6 +23,22 @@
         color: #449ad3;
       }
     }
+    .enterpriseBrief{
+      text-align: center;
+      margin: 0 0 30px;
+      .enterpriseLogo{
+        margin-bottom: 10px;
+        img{
+          border-radius:4px;
+        }
+      }
+      .inviteTip{
+        margin: 20px 0;
+        span{
+          color: #e08031;
+        }
+      }
+    }
   }
   .inviteUser{
     text-align: center;

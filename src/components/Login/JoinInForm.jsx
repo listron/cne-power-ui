@@ -232,7 +232,8 @@ class JoinInForm extends Component{
   }
   renderStepThree(formItemLayout, tailFormItemLayout) {
     const { getFieldDecorator } = this.props.form;
-    const { userEnterpriseStatus } = this.props;
+    const { userEnterpriseStatus,enterpriseName, enterpriseLogo } = this.props;
+    const defaultLogo = "/img/nopic.png";
     if(userEnterpriseStatus === 5) {
       return (
         <div className={styles.waitExamine}>
@@ -250,6 +251,10 @@ class JoinInForm extends Component{
     } else if(userEnterpriseStatus===3 || userEnterpriseStatus===null) {
       return (
         <div className={styles.userInfo} >
+          <div className={styles.enterpriseBrief} >
+            <div className={styles.enterpriseLogo} ><img src={enterpriseLogo || defaultLogo} width="60px" height="60px" /></div>
+            <div>{enterpriseName}</div>
+          </div>
           <Form onSubmit={this.onJoinEnterprise}  >
             <FormItem label="用户名" {...formItemLayout}>
               {getFieldDecorator('username', {
