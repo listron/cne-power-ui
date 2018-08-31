@@ -55,22 +55,22 @@ class WindStation extends React.Component {
     const stationStatusSummary = stationDataSummary.stationStatusSummary || [];
     //统计各状态下的电站数量
     const normalNum = stationStatusSummary.filter(e => {
-      return e.stationStatus === 400
+      return e && e.stationStatus === 400
     }).length > 0 ? stationStatusSummary.filter(e => {
-      return e.stationStatus === 400
+      return e && e.stationStatus === 400
     })[0].stationNum : '0';
 
     const dataInterruptionNum = stationStatusSummary.filter(e => {
-      return e.stationStatus === 500
+      return e && e.stationStatus === 500
     }).length > 0 ? stationStatusSummary.filter(e => {
-      return e.stationStatus === 500
+      return e && e.stationStatus === 500
     })[0].stationNum : '0';
    
 
     const unconnectionNum = stationStatusSummary.filter(e => {
-      return e.stationStatus === 900
+      return e && e.stationStatus === 900
     }).length > 0 ? stationStatusSummary.filter(e => {
-      return e.stationStatus === 900
+      return e && e.stationStatus === 900
     })[0].stationNum : '0';
     //筛选不同状态下的电站列表
     const stationDataList = windMonitorStation.stationDataList || [];
