@@ -7,7 +7,9 @@ function LogoInfo(){
   const enterpriseName = Cookie.get('enterpriseName');
   return (
     <div className={styles.layoutEnterprise}>
-      <img height="32px" src={enterpriseLogo} />
+      <span className={styles.logoImg}>
+        <img src={enterpriseLogo} />
+      </span>
       <span className={styles.enterpriseName}>{enterpriseName}</span>
     </div>
   )
