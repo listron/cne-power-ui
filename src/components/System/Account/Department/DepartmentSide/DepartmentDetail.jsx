@@ -164,8 +164,8 @@ class DepartmentDetail extends Component {
     let stationNames = (departmentDetail.stationNameDatas && departmentDetail.stationNameDatas.length > 0 )? departmentDetail.stationNameDatas.map(e=>e.stationName).join(','):' -- ';
     const tmpDepartmentSub = departmentData.find(e=>e.departmentId === departmentDetail.departmentId);
     const forbiddenEdit = tmpDepartmentSub && tmpDepartmentSub.departmentSource === 0;
-    const createTime = departmentDetail.createTime? moment(departmentDetail.createTime).format('YYYY-MM-DD hh:mm'):' -- ';
-    const updateTime = departmentDetail.updateTime? moment(departmentDetail.updateTime).format('YYYY-MM-DD hh:mm'):' -- ';
+    const createTime = departmentDetail.createTime? moment(departmentDetail.createTime).format('YYYY年MM月DD日 hh时mm分'):' -- ';
+    const updateTime = departmentDetail.updateTime? moment(departmentDetail.updateTime).format('YYYY年MM月DD日 hh时mm分'):' -- ';
     return (
       <div className={styles.departmentDetail}>
         {showWarningTip && <WarningTip onOK={this.confirmWarningTip} value={warningTipText} />}
@@ -204,13 +204,13 @@ class DepartmentDetail extends Component {
             <div className={styles.line}></div>
             <div className={styles.eachInfo}>
               <span className={styles.title}>创建者</span>
-              <span className={styles.value}>{departmentDetail.createUser}</span> 
+              <span className={styles.value}>{departmentDetail.createUser || '--'}</span> 
             </div>
             <div className={styles.eachInfo}>
               <span className={styles.title}>创建时间</span>
               <span className={styles.value}>{createTime}</span> 
             </div>
-            <div>
+            <div className={styles.eachInfo}>
               <span className={styles.title}>最后修改人</span>
               <span className={styles.value}>{departmentDetail.updateUser || ' -- '}</span> 
             </div>
