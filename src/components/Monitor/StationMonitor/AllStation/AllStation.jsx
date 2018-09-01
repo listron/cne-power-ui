@@ -33,7 +33,10 @@ class Allstation extends React.Component {
     ]
     let data = [];
     stationDataList.forEach((item, index) => {
-      let stationStatusAll = item.stationStatus || [];
+
+//
+
+      let stationStatusAll = item.stationStatus || {};
       let stationStatus = stationStatusAll.stationStatus || "";
       const stationType = item.stationType || "";
       const currentStationType = iconArray[item.stationType] || {};

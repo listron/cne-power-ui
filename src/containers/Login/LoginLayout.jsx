@@ -14,16 +14,29 @@ class LoginLayout extends Component {
   static propTypes = {
     pageTab: PropTypes.string,
     changeLoginStore: PropTypes.func,
+    resetLoginState: PropTypes.func,
   }
 
   constructor(props) {
     super(props);
   }
 
+  componentWillUnmount(){
+    this.props.resetLoginState();
+  }
+
   backToLogin = () => {
     this.props.changeLoginStore({
       pageTab: 'login',
     })
+  }
+
+  toSeeAgreement = () => {
+    this.props.changeLoginStore({pageTab: 'agreement'})
+  }
+
+  toContactUs = () => {
+    this.props.changeLoginStore({pageTab: 'contact'})
   }
 
   render() {
@@ -44,8 +57,8 @@ class LoginLayout extends Component {
           </div>
         </div>
         <div className={styles.right}>
-          <div className={styles.containerLogin}>
-            <div className={styles.loginContent}>
+          <div className={styles.rightContent}>
+            <div className={styles.mainBox}>
               {pageTab === 'login' && <Login changeLoginStore={changeLoginStore} pageTab={pageTab} />}
               {pageTab === 'register' && <Register changeLoginStore={changeLoginStore} pageTab={pageTab} />}
               {pageTab === 'joinIn' && <JoinIn changeLoginStore={changeLoginStore} />}
@@ -53,6 +66,12 @@ class LoginLayout extends Component {
               {pageTab === 'contact' && <Contact backToLogin={this.backToLogin} />}
               {pageTab === 'agreement' && <Agreement backToLogin={this.backToLogin} />}
             </div>
+            {(pageTab === 'contact' || pageTab === 'agreement') || 
+              <div className={styles.contactUs}>
+                <span onClick={this.toSeeAgreement}>用户协议</span>
+                <span onClick={this.toContactUs}>联系我们</span>
+              </div>
+            }
           </div>
         </div>
       </div>
@@ -67,6 +86,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   changeLoginStore: params => dispatch({ type: loginAction.CHANGE_LOGIN_STORE_SAGA, params }),
+  resetLoginState: params => dispatch({ type: loginAction.RESET_LOGIN_STORE_SAGA, params }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginLayout);

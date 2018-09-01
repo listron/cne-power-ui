@@ -38,7 +38,7 @@ class pvStationHeader extends React.Component {
             </div>
             <div className={styles.pvInstantaneous}>
               <div className={styles.dataPvValue}>{instantaneous}</div>
-              <div className={styles.dataName}>平均辐射 w/m²</div>
+              <div className={styles.dataName}>平均辐射 W/m²</div>
             </div>
             <div className={styles.dayStation}>
               <div className={styles.dataValue}>{dayPower}</div>
@@ -46,7 +46,7 @@ class pvStationHeader extends React.Component {
             </div>
             <div className={styles.monthStation}>
               <div className={styles.dataValue}>{monthPower}</div>
-              <div className={styles.dataName}>月发电量 万kWh</div>
+              <div className={styles.dataName}>月累计发电量 万kWh</div>
             </div>
           </div>
           <CommonProgress value={yearPower} total={yearPlanPower} valueText={"年累计发电量 万kWh"} totalText={"计划 万kWh"} percent={yearPlanRate?yearPlanRate:''} />   

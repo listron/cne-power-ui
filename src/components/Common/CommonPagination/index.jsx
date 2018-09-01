@@ -13,9 +13,11 @@ const { Option } = Select;
     2. 选填属性： pageSizeArray,默认为[10,20,30,40];
     3. 输出为this.props.onPaginationChange调用，输入分页数组信息。this.props.onPaginationChange({
       pageSize: num,
-      currentPage: num
+      currentPage: num.
     })
 */
+
+
 class CommonPagination extends Component {
   static propTypes = {
     total: PropTypes.number,

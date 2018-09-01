@@ -126,8 +126,9 @@
   }
   .enterpriseInfor{
     margin-left: -82px;
+
     .userArgee{
-      .userAgreement{
+      .userAgreeTip{
         color: #449ad3;
       }
     }
@@ -148,6 +149,13 @@
       .ant-form-item-control-wrapper{
         padding-left: 5px;
       }
+      .ant-btn-primary {
+        width: 200px;
+      }
+      .ant-checkbox-input:focus + .ant-checkbox-inner {
+        border-color: $themeColor;
+      }
+
     }
     .userArgee::selection{
       background-color: #199475;

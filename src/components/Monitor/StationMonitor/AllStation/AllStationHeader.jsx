@@ -42,10 +42,10 @@ class AllStationHeader extends React.Component {
             </div>
             <div className={styles.monthStation}>
               <div className={styles.dataValue}>{monthPower}</div>
-              <div className={styles.dataName}>月发电量 万kWh</div>
+              <div className={styles.dataName}>月累计发电量 万kWh</div>
             </div>
           </div>
-          <CommonProgress value={yearPower} total={yearPlanPower} valueText={"年累计发电量 万kWh"} totalText={"计划 万kWh"} percent={yearPlanRate > 0 ? yearPlanRate : ''} />
+          <CommonProgress value={yearPower} total={yearPlanPower} valueText={"年累计发电量 万kWh"} totalText={"计划 万kWh"} percent={yearPlanRate? yearPlanRate:''} />
         </div>
         {/* 筛选 */}
         <div className={styles.stationNav}>
@@ -53,8 +53,8 @@ class AllStationHeader extends React.Component {
             <i className="iconfont icon-map"></i>
           </div>
           <div className={styles.typeTotal}>
-            <div className={styles.windTotal}>风电:<span className={styles.stationNum}>{windStation}</span></div>
-            <div className={styles.pvTotal}>光伏:<span className={styles.stationNum}>{lightStation}</span></div>
+            <div className={styles.windTotal}>风电<span className={styles.stationNum}>{windStation}</span></div>
+            <div className={styles.pvTotal}>光伏<span className={styles.stationNum}>{lightStation}</span></div>
           </div>
         </div>
       </div>

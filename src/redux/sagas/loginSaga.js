@@ -164,7 +164,7 @@ function *phoneCodeRegister(action){
         type: loginAction.PHONE_CODE_REGISTER_SUCCESS,
         params,
       });
-      message.error(response.data.message);
+      // message.error(response.data.message);
     }
   }catch(e){
     console.log(e);
@@ -380,7 +380,12 @@ function *checkUserRegister(action){
     console.log(e);
   }
 }
-
+// 离开重置state
+function* resetLoginStore(action) {
+  yield put({
+    type: loginAction.RESET_LOGIN_STORE_SUCCESS,
+  });
+}
 export function* watchLogin() {
   yield takeLatest(loginAction.USER_NAME_LOGIN_SAGA, userNameLogin);
   yield takeLatest(loginAction.SEND_CODE_SAGA, getVerificationCode);
@@ -395,4 +400,5 @@ export function* watchLogin() {
   yield takeLatest(loginAction.CHECK_PHONE_REGISTER_SAGA, checkPhoneRegister);
   yield takeLatest(loginAction.PHONE_CODE_REGISTER_SAGA, phoneCodeRegister);
   yield takeLatest(loginAction.CHANGE_LOGIN_STORE_SAGA, changeLoginStore);
+  yield takeLatest(loginAction.RESET_LOGIN_STORE_SAGA, resetLoginStore);
 }
