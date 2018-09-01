@@ -9,7 +9,7 @@ function* getAllMonitorStation(action) {//获取所有电站信息
   try {
     yield put({ type: allStationAction.ALL_MONITORSTATION_FETCH });
     const response = yield call(axios.get, url, payload);
-
+   
     const stationDataList = response.data.data.stationDataList || [];
     const allDatastationType = stationDataList.map((e, index) => { return e.stationType });
     const allStationTypeCode = new Set(allDatastationType);
@@ -38,7 +38,7 @@ function* getWindMonitorStation(action) {//获取风电站信息
     const response = yield call(axios.get, url, {
       stationType: payload.stationType
     });
- 
+
 
     yield put({
       type: allStationAction.GET_WIND_MONITORSTATION_FETCH_SUCCESS,
@@ -61,7 +61,7 @@ function* getPvMonitorStation(action) {//获取光伏电站信息
     const response = yield call(axios.get, url, {
       stationType: payload.stationType
     });
-  
+    
     yield put({
       type: allStationAction.GET_PV_MONITORSTATION_FETCH_SUCCESS,
       payload: stationTypes === 'pv' ? 

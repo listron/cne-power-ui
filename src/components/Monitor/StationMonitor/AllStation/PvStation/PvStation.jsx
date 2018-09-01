@@ -16,7 +16,7 @@ class PvStation extends React.Component {
     pvMonitorStation: PropTypes.object,
   }
   constructor(props, context) {
-    
+
     super(props, context);
     this.TabPane = Tabs.TabPane;
     this.state = {
@@ -43,7 +43,7 @@ class PvStation extends React.Component {
     let { key, checked, stationType } = this.state;
     const { pvMonitorStation } = this.props;
     const stationDataSummary = pvMonitorStation.stationDataSummary || {};
-    const stationProvinceSummary=stationDataSummary.stationProvinceSummary||[];
+    const stationProvinceSummary = stationDataSummary.stationProvinceSummary || [];
     const stationStatusSummary = stationDataSummary.stationStatusSummary || [];
     const normalNum=stationStatusSummary.filter(e=>{
       return e && e.stationStatus===400
@@ -70,13 +70,13 @@ class PvStation extends React.Component {
       if (stationType === 'all') {
         return true
       } else if (stationType === 'normal') {
-        const stationStatus=e.stationStatus||{};
+        const stationStatus = e.stationStatus || {};
         return stationStatus.stationStatus === '400'
       } else if (stationType === 'dataInterruption') {
-        const stationStatus=e.stationStatus||{};
+        const stationStatus = e.stationStatus || {};
         return stationStatus.stationStatus === '500'
       } else if (stationType === 'unconnection') {
-        const stationStatus=e.stationStatus||{};
+        const stationStatus = e.stationStatus || {};
         return stationStatus.stationStatus === '900'
       }
     })
@@ -89,7 +89,7 @@ class PvStation extends React.Component {
           defaultValue="all"
           buttonStyle="solid"
           onChange={this.onHandleStation}
-          style={{ margin:'0 30px' }}
+          style={{ margin: '0 30px' }}
         >
           <Radio.Button value="all">全部</Radio.Button>
           <Radio.Button value="normal">通讯正常  {normalNum}<span></span></Radio.Button>
@@ -98,18 +98,18 @@ class PvStation extends React.Component {
           <Radio.Button value="unconnection">未接入  {unconnectionNum}</Radio.Button>
         </Radio.Group>
       </div>
-    );  
+    );
     const province = (
       <div className={styles.provinceStationTotal}>
-       
-         {stationProvinceSummary.map((item,index)=>{
-      return (
-        <div key={index}>
-        <span>{item.provinceName}:</span>
-        <span className={styles.fontColor}>{item.windStationNum}&nbsp;&nbsp;</span>
-        </div>
-      )
-    })}
+
+        {stationProvinceSummary.map((item, index) => {
+          return (
+            <div key={index}>
+              <span>{item.provinceName}</span>
+              <span className={styles.fontColor}>{item.windStationNum}&nbsp;&nbsp;</span>
+            </div>
+          )
+        })}
       </div>
     )
     let iconArray = [
@@ -126,25 +126,28 @@ class PvStation extends React.Component {
     ]
     let data = [];
     stationDataList.forEach((item, index) => {
-      let stationStatusAll = item.stationStatus || [];
-      let stationStatus = stationStatusAll.stationStatus || "";  
+
+
+
+      let stationStatusAll = item.stationStatus || {};
+      let stationStatus = stationStatusAll.stationStatus || "";
       const stationType = item.stationType || "";
-      const currentStationType=iconArray[item.stationType]||{};   
-      const currentStationStatus=currentStationType[stationStatus]||'';
+      const currentStationType = iconArray[item.stationType] || {};
+      const currentStationStatus = currentStationType[stationStatus] || '';
       data.push({
         name: item.stationName,
         value: [item.longitude, item.latitude, stationType, stationStatus],
-        symbol: stationStatus === "400" ? currentStationStatus[item.alarmNum ? 1 : 0] : currentStationStatus, 
+        symbol: stationStatus === "400" ? currentStationStatus[item.alarmNum ? 1 : 0] : currentStationStatus,
         alarmNum: item.alarmNum,
         stationPower: item.stationPower,
         stationCapacity: item.stationCapacity,
         instantaneous: item.instantaneous
       })
     })
-    
+
     return (
       <div className={styles.pvStation}>
-       <PvStationHeader {...this.props} />
+        <PvStationHeader {...this.props} />
         <Tabs className={styles.smallTabs} activeKey={key} tabBarExtraContent={key !== '3' ? operations : province} onChange={this.setkey}>
           <TabPane
             tab={
@@ -183,4 +186,3 @@ class PvStation extends React.Component {
 }
 export default PvStation
 
- 

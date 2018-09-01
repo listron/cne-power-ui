@@ -42,7 +42,7 @@ class PvStationTop extends Component {
     const stationPower = singleStationData && singleStationData.stationPower;
     const stationCapacity = singleStationData && singleStationData.stationCapacity;
     const powerPercent = stationPower/stationCapacity*100;
-    
+    console.log(stationList);
     const provenceCodes = stationList && stationList.length>0 ? stationList.map(e=>e.provinceCode) : [];
     const stationListSet = new Set(provenceCodes);
     const tmpProvenceCodes = [...stationListSet];

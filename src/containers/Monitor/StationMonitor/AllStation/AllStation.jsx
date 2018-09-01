@@ -28,7 +28,7 @@ class AllStation extends Component {
   }
   componentDidMount() {
     this.props.getAllMonitorStation({ stationType: '2' })
-    setTimeout(this.getNum, 3000)
+    setTimeout(this.getNum, 10000)
   }
 
   componentWillUnmount() {
@@ -51,7 +51,7 @@ class AllStation extends Component {
     const autoUpdata = () => {
       clearTimeout(this.timer)
       this.props.getAllMonitorStation({ stationType: '2' })
-      this.timer = setTimeout(autoUpdata, 3000)
+      this.timer = setTimeout(autoUpdata, 10000)
     };
     autoUpdata();
   }
@@ -61,7 +61,7 @@ class AllStation extends Component {
     const autoUpdata = () => {
       clearTimeout(this.timer)
       this.props.getWindMonitorStation({ stationType: '0', stationTypes: this.props.stationTypes })
-      this.timer = setTimeout(autoUpdata, 3000)
+      this.timer = setTimeout(autoUpdata, 10000)
     };
     autoUpdata();
   }
@@ -71,7 +71,7 @@ class AllStation extends Component {
     const autoUpdata = () => {
       clearTimeout(this.timer)
       this.props.getPvMonitorStation({ stationType: '1', stationTypes: this.props.stationTypes })
-      this.timer = setTimeout(autoUpdata, 3000)
+      this.timer = setTimeout(autoUpdata, 10000)
     };
     autoUpdata();
   }
