@@ -42,7 +42,7 @@ class PvStationTop extends Component {
     const stationPower = singleStationData && singleStationData.stationPower;
     const stationCapacity = singleStationData && singleStationData.stationCapacity;
     const powerPercent = stationPower/stationCapacity*100;
-    console.log(stationList);
+    
     const provenceCodes = stationList && stationList.length>0 ? stationList.map(e=>e.provinceCode) : [];
     const stationListSet = new Set(provenceCodes);
     const tmpProvenceCodes = [...stationListSet];
@@ -63,7 +63,7 @@ class PvStationTop extends Component {
             {showStationList && <ChangeStation stations={stationList} stationName={singleStationData.stationName} baseLinkPath={baseLinkPath} hideStationChange={this.hideDeviceChange} />}
             <div onClick={this.showStationList} className={styles.stationToggle}  id="stationToggle" ><Icon type="swap" /><h3>{singleStationData && singleStationData.stationName}</h3></div>
             <span>电站状态：{singleStationData && singleStationData.stationStatus && singleStationData.stationStatus.stationStatusName}</span>
-            {singleStationData && singleStationData.stationStatus && singleStationData.stationStatus.stationStatus !== "400" && <span>时间：{stationStatusTime}</span>}
+            {singleStationData && singleStationData.stationStatus && singleStationData.stationStatus.stationStatus !== 400 && <span>时间：{stationStatusTime}</span>}
           </div>
           <Link to={pathAllStation}  >
             <Icon type="arrow-left" className={styles.backIcon}  />

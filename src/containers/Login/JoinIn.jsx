@@ -36,7 +36,7 @@ class JoinIn extends Component {
 
   render() {
     return (
-      <div className={styles.joinInSection} >
+      <div className={styles.joinInContent} >
         <div className={styles.goLogin}>
           <span  onClick={()=>this.changePage( 'login')}> 登录 </span>
           <span>|</span>
@@ -60,10 +60,6 @@ class JoinIn extends Component {
           isInvite={this.props.isInvite}
           userEnterpriseStatus={this.props.userEnterpriseStatus}
         />
-        <div className={styles.contactUs}>
-          <span onClick={this.toSeeAgreement}>用户协议</span>
-          <span onClick={this.toContactUs}>联系我们</span>
-        </div>
       </div>
     );
   }

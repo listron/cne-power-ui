@@ -68,7 +68,7 @@ class UserList extends Component {
   onRowSelect = (selectedRowKeys, selectedRows) => {//行选择
     this.props.changeUserStore({
       selectedUser: selectedRows,
-    })
+    });
   }
   onInviteUser = () => {
     this.props.getInviteLink({enterpriseId: JSON.parse(this.props.enterpriseId), showPage: 'invite'});
@@ -114,7 +114,7 @@ class UserList extends Component {
   onExamineChange = (e) => {
     this.setState({
       examineStatus: e.target.value,
-    })
+    });
   }
   
   getUserStatus = (userStatus) => {
@@ -143,7 +143,6 @@ class UserList extends Component {
   }
   
   confirmExamineTip = () => {
-    console.log(this.state.examineStatus)
     const { selectedUser, enterpriseId, } = this.props;
     this.props.changeUserStatus({
       enterpriseId,
@@ -152,6 +151,7 @@ class UserList extends Component {
     });
     this.setState({
       showExamineTip: false,
+      examineStatus: 3,
     });
   }
   cancelExamineTip = () => {
@@ -297,7 +297,7 @@ class UserList extends Component {
     }else{
       [editable, deletable, usable, unallowable, examinable] = [ false, false, false, false, false];
     }
-    return (<Select onSelect={this.userHandle} placeholder="操作"  dropdownMatchSelectWidth={false} dropdownClassName={styles.handleDropdown} >
+    return (<Select onSelect={this.userHandle} placeholder="操作" value="操作" dropdownMatchSelectWidth={false} dropdownClassName={styles.handleDropdown} >
       <Option value="edit" disabled={!editable}><i className="iconfont icon-edit"></i><span>编辑</span></Option>
       <Option value="delete" disabled={!deletable}><i className="iconfont icon-remove"></i><span>移除</span></Option>
       <Option value="use" disabled={!usable}><i className="iconfont icon-enable"></i><span>启用</span></Option>
@@ -315,23 +315,23 @@ class UserList extends Component {
       this.setState({
         showDeleteTip: true,
         warningText: '',
-      })
+      });
     }else if(value === 'use'){//启用
       this.props.changeUserStatus({
         enterpriseId,
         userId: selectedUser.toJS().map(e=>e.userId).toString(),
         enterpriseUserStatus: 3,
-      })
+      });
     }else if(value === 'unallow'){//禁用
       this.props.changeUserStatus({
         enterpriseId,
         userId: selectedUser.toJS().map(e=>e.userId).toString(),
         enterpriseUserStatus: 4,
-      })
+      });
     }else if(value === 'examine'){//审核
       this.setState({
         showExamineTip: true,
-      })
+      });
     }
   }
   
@@ -357,6 +357,9 @@ class UserList extends Component {
     });
     this.setState({
       showDeleteTip: false,
+    });
+    this.props.changeUserStore({
+      selectedUser: [],
     });
   }
   
@@ -387,7 +390,7 @@ class UserList extends Component {
           </div>
           <div className={styles.handle}>
             <span onClick={this.cancelExamineTip} >取消</span>
-            <span onClick={this.confirmExamineTip}>确认</span>
+            <span onClick={this.confirmExamineTip} className={styles.confirmExamine} >确认</span>
           </div>
         </div>
       </Modal>
@@ -514,7 +517,7 @@ class UserList extends Component {
               <Button>批量导入</Button>
             </Upload>
             <Button className={styles.templateDown} href="http://test-dpv.cnecloud.cn/template/用户批量导入模板.xlsx" >导入模板下载</Button>
-            <div className={styles.userOperate} >
+            <div className={selectedUser.toJS().length>0 ? styles.selectedOperate : styles.userOperate} >
               {this._createUserOperate()}
             </div>
             <div className={styles.selectedColumnsBox} >

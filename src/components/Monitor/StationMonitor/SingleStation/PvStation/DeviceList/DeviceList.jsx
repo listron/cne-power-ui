@@ -23,7 +23,6 @@ class DeviceList extends Component {
   
   render(){
     const { deviceTypeCode } = this.props;
-    // const { deviceTypeFlow } = this.props;
     const locationSearch  = this.props.location.search;
     let appointDeviceCode = locationSearch.substr(locationSearch.indexOf('=')+1);
     if(appointDeviceCode && appointDeviceCode!=='undefined'){
