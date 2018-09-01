@@ -32,7 +32,8 @@ class AllStation extends Component {
   }
 
   componentWillUnmount() {
-    clearTimeout(this.timer)
+    clearTimeout(this.timer);
+    console.log('unmout')
   }
   getNum = () => {
     if (this.props.stationTypes === 'all') {
