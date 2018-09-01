@@ -9,6 +9,7 @@ import styles from './pvStation.scss';
 import DeviceList from './DeviceList/DeviceList';
 import ThreadList from './DeviceList/ThreadList';
 import { Tabs,Radio  } from 'antd';
+import { Link } from 'react-router-dom';
 
 const TabPane = Tabs.TabPane;
 const RadioButton = Radio.Button;
@@ -18,6 +19,7 @@ class PvStation extends Component {
     deviceTypeFlow: PropTypes.array,
     changeSingleStationStore: PropTypes.func,
     location: PropTypes.object,
+    match: PropTypes.object,
   }
 
   constructor(props){
@@ -58,6 +60,7 @@ class PvStation extends Component {
     }else{
       appointDeviceCode = deviceTypeFlow.length > 0 && deviceTypeFlow[0].deviceTypeCode;
     }
+    const { stationCode } = this.props.match.params;
     return (
       <div className={styles.pvStation}>
         <PvStationTop {...this.props} />
@@ -81,7 +84,7 @@ class PvStation extends Component {
                   }
                 </RadioGroup>}
                 <div className={styles.weatherStation}>
-                  <i  className="iconfont icon-weather" ></i>
+                  <Link to={`/hidden/monitorDevice/${stationCode}/203/`} ><i className="iconfont icon-weather" ></i></Link>
                   <div>气象站</div>
                 </div>
               </div>

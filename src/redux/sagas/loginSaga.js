@@ -63,7 +63,7 @@ function *userNameLogin(action){
       }
     } else{
       yield put({ type: loginAction.USER_NAME_LOGIN_FAIL, data: response.data }); 
-      message.error(response.data.message);       
+      message.error(response.data.message);    
     }
   } catch (e) {
     console.log(e);
@@ -101,7 +101,7 @@ function *phoneCodeLogin(action){
         verificationCode: params.verificationCode,
       }),
     });
-    if(response.data.code === '10000'){
+    if(response.data.code === '10000' && response.data.data.userEnterpriseStatus){
       const { data } = response.data;
       if(data.userEnterpriseStatus === 3) {
         if(params.isNotLogin === 1 || data.enterpriseId !== null) {
@@ -133,7 +133,7 @@ function *phoneCodeLogin(action){
       }
     }else{
       yield put({ type: loginAction.PHONE_CODE_LOGIN_FAIL, data: response.data });
-      message.error(response.data.message);
+      // message.error(response.data.message);
     }
   }catch(e){
     console.log(e);

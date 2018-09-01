@@ -75,7 +75,8 @@ class CardSection extends Component {
         tmpOperatorList.push(operatorList.slice(i,i+3));
       }
     }
-    const baseLinkPath = "/operation/ticket";
+    const ticketList = "/operation/ticket/list";
+    const  alarmRealtime= "/monitor/alarm/realtime";
     return (
       <div className={styles.cardSection}>
         <Row gutter={16}  type="flex" justify="space-around" >
@@ -88,7 +89,7 @@ class CardSection extends Component {
                     return (<div key={index} className={styles.operatorContent} >
                       {item.map(e=>{
                         return (
-                          <div key={e.userFullName} ><span>{e.userFullName}</span><span style={{margin: "0 10px"}}>{e.roleName}</span><span>{e.phoneNum}</span></div>
+                          <div key={e.userFullName} className={styles.userInfo} ><div>{e.userFullName}</div><div style={{margin: "0 10px"}}>{e.roleName}</div><div>{e.phoneNum}</div></div>
                         )
                       })}
                     </div>)
@@ -134,7 +135,10 @@ class CardSection extends Component {
           </Col>
           <Col  span={6}>
             <div title="活动告警" className={styles.alarmList} >
-              <div className={styles.cardTitle}><span>活动告警</span><i className="iconfont icon-more"></i></div>
+              <div className={styles.cardTitle}>
+                <span>活动告警</span>
+                <Link to={alarmRealtime}  ><i className="iconfont icon-more"></i></Link>
+              </div>
               {alarmList &&
                 <div className={styles.alarmContent} >
                   <div><div>{alarmList.oneWarningNum}</div><div className={styles.oneWarning}>一级</div></div>
@@ -149,7 +153,7 @@ class CardSection extends Component {
             <div title="电站工单" className={styles.workList} >
               <div className={styles.cardTitle}>
                 <span>电站工单</span>
-                <Link to={baseLinkPath}  >
+                <Link to={ticketList}  >
                   <i className="iconfont icon-more" ></i>
                 </Link>
               </div>

@@ -6,6 +6,7 @@ import styles from './pvStation.scss';
 import echarts from 'echarts';
 import { Radio } from 'antd';
 import moment from 'moment';
+import { Link } from 'react-router-dom';
 
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
@@ -295,12 +296,13 @@ class OutputPowerDiagram extends Component {
   }
 
   render(){
-    
+    const resourceAnalysis = "/statistical/stationaccount/resource";
+    const productionAnalysis = "/statistical/stationaccount/production";
     return (
       <div className={styles.outputPowerDiagram}>
         <div className={styles.capabilityDiagramBox} >
           <div id="capabilityDiagram" style={{ width: "100%", height: "100%",borderRight:"2px solid #dfdfdf",color: '#999', paddingTop: "20px" }}><i className="iconfont icon-more"></i></div>
-          <i className="iconfont icon-more"></i>
+          <Link to={resourceAnalysis} ><i className="iconfont icon-more"></i></Link>
         </div>
         <div className={styles.powerDiagramBox} >
           <div id="powerDiagram" style={{ width: "100%", height: "100%",color: '#999', paddingTop: "20px" }}></div>
@@ -311,7 +313,7 @@ class OutputPowerDiagram extends Component {
               <RadioButton value="2">年</RadioButton>
             </RadioGroup>
           </div>
-          <i className="iconfont icon-more"></i>
+          <Link to={productionAnalysis} ><i className="iconfont icon-more"></i></Link>
         </div>
         
       </div>

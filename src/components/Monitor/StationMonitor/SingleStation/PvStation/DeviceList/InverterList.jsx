@@ -56,13 +56,13 @@ class InverterList extends Component {
   getDeviceStatus = (value) => {
     switch(value){
       case 100:
-        return '正常';
+        return '正常 ';
       case 200:
-        return '停机';
+        return '停机 ';
       case 300:
-        return '故障';
+        return '故障 ';
       case 900:
-        return '未接入';
+        return '无通讯 ';
       default:
         return '';
     }

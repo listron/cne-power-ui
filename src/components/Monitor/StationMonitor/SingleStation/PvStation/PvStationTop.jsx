@@ -61,9 +61,9 @@ class PvStationTop extends Component {
         <div className={styles.pvStationTitle} >
           <div className={styles.pvStationName} >
             {showStationList && <ChangeStation stations={stationList} stationName={singleStationData.stationName} baseLinkPath={baseLinkPath} hideStationChange={this.hideDeviceChange} />}
-            <div onClick={this.showStationList} className={styles.stationToggle}  id="stationToggle" ><Icon type="swap" /><h3>{singleStationData && singleStationData.stationName}</h3></div>
+            <div onClick={this.showStationList} className={styles.stationToggle}  id="stationToggle" ><Icon type="swap" /><h3>{singleStationData && singleStationData.stationName}-{singleStationData && singleStationData.stationName}</h3></div>
             <span>电站状态：{singleStationData && singleStationData.stationStatus && singleStationData.stationStatus.stationStatusName}</span>
-            {singleStationData && singleStationData.stationStatus && singleStationData.stationStatus.stationStatus !== 400 && <span>时间：{stationStatusTime}</span>}
+            {singleStationData && singleStationData.stationStatus && singleStationData.stationStatus.stationStatus !== 400 && <span>时间：{stationStatusTime||""}</span>}
           </div>
           <Link to={pathAllStation}  >
             <Icon type="arrow-left" className={styles.backIcon}  />

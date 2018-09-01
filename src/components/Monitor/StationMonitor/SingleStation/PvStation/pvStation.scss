@@ -280,6 +280,15 @@
         line-height: 40px;
         text-align: left;
         padding-left: 20px;
+        .operatorContent{
+          .userInfo{
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+            text-align: left;
+            color: #999;
+          }
+        }
         :global{
           .iconfont{
             color: #666;
@@ -438,6 +447,7 @@
         :global{
           .icon-weather{
             display: block;
+            color:#dfdfdf;
           }
           .icon-weather:hover{
             color: #fff;

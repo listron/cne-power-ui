@@ -260,7 +260,7 @@ class JoinInForm extends Component{
               {getFieldDecorator('username', {
                 rules: [
                   {required: true, message: '请输入用户名'},
-                  {min: 3, max: 8, message: '请输入3到8位中文、英文、数字'}
+                  {pattern: /^[A-Za-z0-9\u4e00-\u9fa5]{3,8}$/gi, message: '请输入3到8位中文、英文、数字'},
                 ]
               })(
                 <Input addonBefore={<i className="iconfont icon-user"></i>} placeholder="请输入用户名" />

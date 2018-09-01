@@ -63,7 +63,7 @@ class SingleStation extends Component {
 
     this.timeOutId = setTimeout(()=>{
       this.getData(stationCode);
-    },10000)
+    },10000);
   }
 
   render() {
