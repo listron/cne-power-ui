@@ -28,6 +28,7 @@ class InverterList extends Component {
     const statusValue = e.target.value;
     const { inverterList } = this.props; 
     const { alarmSwitch } = this.state; 
+    console.log(inverterList);
     const deviceList = inverterList && inverterList.deviceList && inverterList.deviceList.map((e,i)=>({...e,key:i}));
 
     let selectedList = [];
