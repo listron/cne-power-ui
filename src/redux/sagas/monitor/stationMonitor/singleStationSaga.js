@@ -2,6 +2,7 @@ import { call, put, takeLatest } from 'redux-saga/effects';
 import axios from 'axios';
 import Path from '../../../../constants/path';
 import { singleStationAction } from '../../../../constants/actionTypes/monitor/stationMonitor/singleStationAction';
+import { message } from 'antd';
 
 //改变单电站实时数据store
 function *changeSingleStationStore(action){
@@ -20,13 +21,18 @@ function *getSingleStation(action){
   try{
     yield put({type: singleStationAction.SINGLE_STATION_FETCH});
     const response = yield call(axios.get, url);
-    yield put({
-      type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
-      payload: {
-        ...payload,
-        singleStationData: response.data.data,
-      }
-    })
+    if(response.data.code === '10000'){
+      yield put({
+        type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
+        payload: {
+          ...payload,
+          singleStationData: response.data.data,
+        }
+      });
+    }else{
+      yield put({ type: singleStationAction.GET_SINGLE_STATION_FAIL, data: response.data});
+      message.error(response.data);
+    }
   }catch(e){
     console.log(e);
   }
@@ -40,13 +46,19 @@ function *getCapabilityDiagram(action){
   try{
     yield put({type: singleStationAction.SINGLE_STATION_FETCH});
     const response = yield call(axios.get, url);
-    yield put({
-      type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
-      payload: {
-        ...payload,
-        capabilityData: response.data.data,
-      }
-    })
+    if(response.data.code === '10000'){
+      yield put({
+        type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
+        payload: {
+          ...payload,
+          capabilityData: response.data.data,
+        }
+      });
+    }else{
+      yield put({ type: singleStationAction.GET_SINGLE_STATION_FAIL, data: response.data});
+      message.error(response.data);
+    }
+    
   }catch(e){
     console.log(e);
   }
@@ -60,13 +72,19 @@ function *getMonitorPower(action){
   try{
     yield put({type: singleStationAction.SINGLE_STATION_FETCH});
     const response = yield call(axios.get, url);
-    yield put({
-      type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
-      payload: {
-        ...payload,
-        powerData: response.data.data,
-      }
-    })
+    if(response.data.code==="10000"){
+      yield put({
+        type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
+        payload: {
+          ...payload,
+          powerData: response.data.data,
+        }
+      })
+    }else{
+      yield put({ type: singleStationAction.GET_SINGLE_STATION_FAIL, data: response.data});
+      message.error(response.data);
+    }
+    
   }catch(e){
     console.log(e);
   }
@@ -79,13 +97,19 @@ function *getStationList(action){
   try{
     yield put({type: singleStationAction.SINGLE_STATION_FETCH});
     const response = yield call(axios.get, url, payload);
-    yield put({
-      type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
-      payload: {
-        ...payload,
-        stationList: response.data.data,
-      }
-    })
+    if(response.data.code === '10000'){
+      yield put({
+        type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
+        payload: {
+          ...payload,
+          stationList: response.data.data,
+        }
+      });
+    }else{
+      yield put({ type: singleStationAction.GET_SINGLE_STATION_FAIL, data: response.data});
+      message.error(response.data);
+    }
+    
   }catch(e){
     console.log(e);
   }
@@ -95,17 +119,23 @@ function *getStationList(action){
 function *getOperatorList(action){
   const { payload } = action;
   // const url = '/mock/api/v3/station/user/'+ payload.stationCode;
-  const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getOperatorList + payload.stationCode;
+  const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getOperatorList + payload.stationCode + '/' + payload.roleId;
   try{
     yield put({type: singleStationAction.SINGLE_STATION_FETCH});
     const response = yield call(axios.get, url, payload);
-    yield put({
-      type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
-      payload: {
-        ...payload,
-        operatorList: response.data.data,
-      }
-    })
+    if(response.data.code === '10000'){
+      yield put({
+        type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
+        payload: {
+          ...payload,
+          operatorList: response.data.data,
+        }
+      });
+    }else{
+      yield put({ type: singleStationAction.GET_SINGLE_STATION_FAIL, data: response.data});
+      message.error(response.data);
+    }
+    
   }catch(e){
     console.log(e);
   }
@@ -127,9 +157,9 @@ function *getWeatherList(action){
         }
       })
     }else{
-      yield put({ type: singleStationAction.GET_SINGLE_STATION_FAIL});
+      yield put({ type: singleStationAction.GET_SINGLE_STATION_FAIL, data: response.data});
+      message.error(response.data);
     }
-    
   }catch(e){
     console.log(e);
   }
@@ -142,13 +172,19 @@ function *getAlarmList(action){
   try{
     yield put({type: singleStationAction.SINGLE_STATION_FETCH});
     const response = yield call(axios.get, url, payload);
-    yield put({
-      type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
-      payload: {
-        ...payload,
-        alarmList: response.data.data,
-      }
-    })
+    if(response.data.code === '10000'){
+      yield put({
+        type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
+        payload: {
+          ...payload,
+          alarmList: response.data.data,
+        }
+      })
+    }else{
+      yield put({ type: singleStationAction.GET_SINGLE_STATION_FAIL, data: response.data});
+      message.error(response.data);
+    }
+    
   }catch(e){
     console.log(e);
   }
@@ -161,13 +197,18 @@ function *getWorkList(action){
   try{
     yield put({type: singleStationAction.SINGLE_STATION_FETCH});
     const response = yield call(axios.get, url, payload);
-    yield put({
-      type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
-      payload: {
-        ...payload,
-        workList: response.data.data,
-      }
-    })
+    if(response.data.code === '10000'){
+      yield put({
+        type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
+        payload: {
+          ...payload,
+          workList: response.data.data,
+        }
+      })
+    }else{
+      yield put({ type: singleStationAction.GET_SINGLE_STATION_FAIL, data: response.data});
+      message.error(response.data);
+    }
   }catch(e){
     console.log(e);
   }
@@ -180,13 +221,19 @@ function *getDeviceTypeFlow(action){
   try{
     yield put({type: singleStationAction.SINGLE_STATION_FETCH});
     const response = yield call(axios.get, url, payload);
-    yield put({
-      type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
-      payload: {
-        ...payload,
-        deviceTypeFlow: response.data.data,
-      }
-    })
+    if(response.data.code === '10000'){
+      yield put({
+        type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
+        payload: {
+          ...payload,
+          deviceTypeFlow: response.data.data,
+        }
+      })
+    }else{
+      yield put({ type: singleStationAction.GET_SINGLE_STATION_FAIL, data: response.data});
+      message.error(response.data);
+    }
+    
   }catch(e){
     console.log(e);
   }
@@ -199,13 +246,19 @@ function *getPvmoduleList(action){
   try{
     yield put({type: singleStationAction.SINGLE_STATION_FETCH});
     const response = yield call(axios.get, url, payload);
-    yield put({
-      type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
-      payload: {
-        ...payload,
-        pvmoduleList: response.data.data,
-      }
-    })
+    if(response.data.code === '10000'){
+      yield put({
+        type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
+        payload: {
+          ...payload,
+          pvmoduleList: response.data.data,
+        }
+      });
+    }else{
+      yield put({ type: singleStationAction.GET_SINGLE_STATION_FAIL, data: response.data});
+      message.error(response.data);
+    }
+    
   }catch(e){
     console.log(e);
   }
@@ -227,7 +280,8 @@ function *getInverterList(action){
         }
       })
     }else{
-      yield put({ type: singleStationAction.GET_SINGLE_STATION_FAIL});
+      yield put({ type: singleStationAction.GET_SINGLE_STATION_FAIL, data: response.data});
+      message.error(response.data);
     }
     
   }catch(e){
@@ -251,7 +305,8 @@ function *getBoxTransformerList(action){
         }
       })
     }else{
-      yield put({ type: singleStationAction.GET_SINGLE_STATION_FAIL});
+      yield put({ type: singleStationAction.GET_SINGLE_STATION_FAIL, data: response.data});
+      message.error(response.data);
     }
     
   }catch(e){

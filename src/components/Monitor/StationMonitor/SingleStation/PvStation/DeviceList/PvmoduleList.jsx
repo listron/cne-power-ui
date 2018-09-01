@@ -18,6 +18,7 @@ class PvmoduleList extends Component {
     const { pvmoduleList } = this.props;
     const pvmoduleListSet = new Set(pvmoduleList);
     const tmpPvmoduleList = [...pvmoduleListSet];
+    console.log(tmpPvmoduleList);
     let tmpNBList = new Array();
     for(let i=0;i<16;i++){
       tmpNBList.push(i);
