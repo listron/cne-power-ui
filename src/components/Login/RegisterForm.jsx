@@ -171,8 +171,9 @@ class RegisterForm extends Component {
             <FormItem>
               {getFieldDecorator('phoneNum', {
                 rules: [
-                  {required: true, message: '请输入手机号'},
-                  {pattern: /(^1\d{10}$)/, message: '手机号格式不对'}
+                  //{required: true, message: '请输入手机号'},
+                  //{pattern: /(^1\d{10}$)/, message: '手机号格式不对'}
+                 
                 ]
               })(
                 <Input className={styles.mobileNumber} addonBefore={<i className="iconfont icon-phone"></i>} placeholder="请输入手机号" />
@@ -210,11 +211,11 @@ class RegisterForm extends Component {
             {getFieldDecorator('enterpriseDomain', {
               rules: [
                 {required: true, message: '请输入企业域名'},
-                {pattern: /[a-zA-Z0-9]|[\u4E00-\u9FA5]/, message: '格式不对'}
+                {pattern: /[a-zA-Z0-9]{3,}/, message: '格式不对'}
               ]
             })(
               <div className={styles.domain} >
-                <Input placeholder="请输入企业域名" style={{width: '200px'}}  />
+                <Input placeholder="英文、数字组合、3个字以上" style={{width: '200px'}}  />
                 <span>.cnecloud.com</span>
               </div>
             )}
@@ -223,10 +224,10 @@ class RegisterForm extends Component {
             {getFieldDecorator('enterpriseName', {
               rules: [
                 {required: true, message: '请输入企业名称'},
-                {max: 30, message: '企业名称最长不超过30个字符'},
+                {pattern: /^[a-zA-Z0-9\u4E00-\u9FA5]{1,30}$/, message: '企业名称最长不超过30个字符'}
               ]
             })(
-              <Input placeholder="请输入企业名称" style={{width: '160px'}} />
+              <Input placeholder="30字以内" style={{width: '160px'}} />
             )}
           </FormItem>
           <FormItem {...tailFormItemLayout} >
@@ -251,10 +252,10 @@ class RegisterForm extends Component {
             {getFieldDecorator('username', {
               rules: [
                 {required: true, message: '请输入用户名'},
-                {min: 3, max: 8, message: '请输入3到8位中文、英文、数字'}
+                {pattern: /^[a-zA-Z0-9\u4E00-\u9FA5]{3,8}$/, message: '请输入3-8位中文、英文、数字'}
               ]
             })(
-              <Input addonBefore={<i className="iconfont icon-user"></i>} placeholder="请输入用户名" />
+              <Input addonBefore={<i className="iconfont icon-user"></i>} placeholder="3-8位中文、英文、数字" />
             )}
           </FormItem>
           <FormItem label="创建密码" {...formItemLayout}>
