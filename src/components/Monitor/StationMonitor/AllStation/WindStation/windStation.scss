@@ -139,6 +139,7 @@
       height: 100px;
       display: flex;
       flex-direction: row;
+      margin: 0 25px;
 
       .dayStation,.monthStation,.equipmentNum,.windSpeed{
         height: 100px;
@@ -146,17 +147,17 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        margin-left: 25px;
+       
         .dataValue {
           color:#199475;
-          font-size: 20px;
+          font-size: 24px;
           flex: 1;
           text-align: center;
           padding-top: 20px;
         }
         .dataWindValue{
           color:#3e97d1;
-          font-size: 20px;
+          font-size: 24px;
           flex: 1;
           text-align: center;
           padding-top: 20px;
@@ -165,6 +166,10 @@
           flex: 1;
           padding-bottom: 1px;
         }
+       }
+       .dayStation,.equipmentNum,.windSpeed{
+         margin-right: 25px;
+
        }
     }
   }
@@ -316,7 +321,7 @@
     
     .progressInfo{
       .progressData{
-        width: 180px;
+        width: 220px;
         height: 40px;
         display: flex;
         flex-direction: column;
@@ -329,7 +334,7 @@
         }
         .progressBar{
           flex: 1;
-          width: 180px;
+          width: 220px;
         }
         .stationType{
           flex: 1;
