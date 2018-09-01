@@ -55,16 +55,12 @@ class Register extends Component {
   render() {
     const { pageTab, history } = this.props;
     return (
-      <div className={styles.login}>
+      <div className={styles.registerContent}>
         <div className={styles.joinTop}>
           <div className={styles.fontIcon}>
             <i className="iconfont icon-join" />
           </div>
           <div className={styles.join} onClick={()=>this.changePage('joinIn')}>加入企业</div>
-        </div>
-        <div className={styles.contactUs}>
-          <span onClick={this.toSeeAgreement}>用户协议</span>
-          <span onClick={this.toContactUs}>联系我们</span>
         </div>
         <div className={styles.loginContent}>
           <Tabs onChange={this.changePage} animated={false} activeKey={pageTab}>

@@ -58,7 +58,6 @@ class PvStation extends Component {
     }else{
       appointDeviceCode = deviceTypeFlow.length > 0 && deviceTypeFlow[0].deviceTypeCode;
     }
-    
     return (
       <div className={styles.pvStation}>
         <PvStationTop {...this.props} />

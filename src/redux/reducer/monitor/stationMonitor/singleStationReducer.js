@@ -17,16 +17,20 @@ var initState = Immutable.fromJS({
   pvmoduleList: [],//光伏组件列表
   inverterList: {},//逆变器列表
   boxTransformerList: [],//箱变列表
+  error: {},//请求错误返回信息
 });
 
 const singleStationReducer = (state = initState, action) => {
   switch (action.type) {
     case singleStationAction.SINGLE_STATION_FETCH:
-      return state.set('loading',true)
+      return state.set('loading',true);
     case singleStationAction.GET_SINGLE_STATION_SUCCESS :
-      return state.merge(Immutable.fromJS(action.payload)).set('loading',false)
+      return state.merge(Immutable.fromJS(action.payload)).set('loading',false);
     case singleStationAction.CHANGE_SINGLE_STATION_STORE:
-      return state.merge(Immutable.fromJS(action.payload))
+      return state.merge(Immutable.fromJS(action.payload));
+    case singleStationAction.GET_SINGLE_STATION_FAIL:
+      return state.set('loading', false)
+                  .set('error', Immutable.fromJS(action.data));
   }
   return state;
 }
