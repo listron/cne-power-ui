@@ -12,6 +12,7 @@ class PvStationItem extends React.Component {
   }
   render() {
     const { stationDataList } = this.props;
+ 
     return (
       <div>
         <div className={styles.stationCardContainer}>
@@ -36,7 +37,7 @@ class PvStationItem extends React.Component {
                   </Link>
                   <div className={styles.stationCardEquipmentNum}>
                     <Link to={`/monitor/singleStation/${item.stationCode}`} key={new Date()}>
-                      <div>{item.stationCapacity}台</div>
+                      <div>{item.stationUnitCount}台</div>
                     </Link>
                     {item.alarmNum > 0 ? <Link to={`/monitor/alarm/realtime`} key={item.stationCode}><div className={styles.stationWarning}>
                       <i className="iconfont icon-alarm1"></i>{item.alarmNum}</div></Link> : ''}
