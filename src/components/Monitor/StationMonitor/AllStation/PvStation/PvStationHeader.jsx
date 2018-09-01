@@ -38,7 +38,7 @@ class pvStationHeader extends React.Component {
             </div>
             <div className={styles.pvInstantaneous}>
               <div className={styles.dataPvValue}>{instantaneous}</div>
-              <div className={styles.dataName}>平均辐射 w/m²</div>
+              <div className={styles.dataName}>平均辐射 W/m²</div>
             </div>
             <div className={styles.dayStation}>
               <div className={styles.dataValue}>{dayPower}</div>
