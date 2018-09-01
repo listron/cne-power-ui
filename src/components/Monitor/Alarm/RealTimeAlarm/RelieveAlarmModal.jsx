@@ -38,7 +38,7 @@ class RelieveAlarmModal extends Component {
         this.props.onRelieveAlarm({
           operateReason: values.operateReason,
           endTime: moment(values.endTime).utc().format(),
-          warningLogId: this.props.selectedRowKeys.join(','),
+          warningLogId: this.props.selectedRowKeys,
         });
       }
     });

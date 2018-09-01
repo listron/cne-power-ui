@@ -166,7 +166,7 @@ class Map extends Component {
               &nbsp;&nbsp;
               <span>${params.data.stationCapacity}MW</span>
             </div>
-            <div class='stationCardWindSpeed'>${params.data.instantaneous}${params.data.value[2]==='0'?'m/s':'w/m²'}</div>             
+            <div class='stationCardWindSpeed'>${params.data.instantaneous}${params.data.value[2]==='0'?'m/s':'W/m²'}</div>             
           </div>`
           },
           // width:'128px',

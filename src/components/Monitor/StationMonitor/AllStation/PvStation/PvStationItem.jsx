@@ -33,7 +33,7 @@ class PvStationItem extends React.Component {
                       <div className={styles.stationMark}>{item.stationPower}MW</div>
                       <div>{item.stationCapacity}MW</div>
                     </div>
-                    <div className={styles.stationCardWindSpeed}>{item.instantaneous}w/m²</div>
+                    <div className={styles.stationCardWindSpeed}>{item.instantaneous}W/m²</div>
                   </Link>
                   <div className={styles.stationCardEquipmentNum}>
                     <Link to={`/monitor/singleStation/${item.stationCode}`} key={new Date()}>

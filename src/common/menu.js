@@ -10,6 +10,7 @@ import { isUrl } from '../utils';
   4. clickable: 该菜单点击效果==>后期考虑配置，clickable为true时不管是几级菜单均可跳转路径展示。
   5. iconStyle: 菜单附加的icon图标
   6. defaultPath: 每个一级菜单下，必须有且仅有一个true，代表该一级目录(模块)下默认立刻展示的页面
+  7. rightKey: 权限控制关键字
 */
 
 const menuData = [
@@ -17,30 +18,37 @@ const menuData = [
     name: '主页',
     path: '/',
     defaultPath: true,
+    rightKey: 'homepage',
   },
   {
     name: '实时监控',
     path: 'monitor',
+    rightKey: 'monitor',
     children: [
       {
         name: '电站监控',
         iconStyle: 'icon-monitoring',
         path: 'station',
         defaultPath: true,
+        rightKey: 'monitor_station',
       }, {
         name: '告警',
         iconStyle: 'icon-alarm1',
         path: 'alarm',
+        rightKey: 'monitor_alarm',
         children: [
           {
             name: '实时告警',
             path: 'realtime',
+            rightKey: 'monitor_alarm_realTime',
           }, {
             name: '历史告警',
             path: 'history',
+            rightKey: 'monitor_alarm_history',
           }, {
             name: '告警统计',
             path: 'statistic',
+            rightKey: 'monitor_alarm_statistics',
           }
         ],
       }
@@ -48,82 +56,98 @@ const menuData = [
   }, {
     name: '运维管理',
     path: 'operation',
+    rightKey: 'operation',
     children: [
       {
         name: '工单',
         iconStyle: 'icon-gd2',
         path: 'ticket',
+        rightKey: 'operation_worklist',
         children: [
           {
             name: '工单列表',
             path: 'list',
             defaultPath: true,
+            rightKey: 'operation_worklist_work',
           }
         ]
       },{
         name:'两票管理',
         path:'tickets',
         iconStyle: 'icon-usermanage',
+        rightKey: 'monitor',
         children: [
           {
             name: '第一种工作票',
             path: 'typeone',
+            rightKey: 'monitor',
           }, {
             name: '第二种工作票',
             path: 'typetwo',
+            rightKey: 'monitor',
           }
         ]
       },{ 
         name:'台账',
         path:'ledger',
-        iconStyle: 'icon-usermanage'
-
+        iconStyle: 'icon-usermanage',
+        rightKey: 'monitor',
       },{
         name:'经验库',
         path:'experience',
-        iconStyle: 'icon-usermanage'
-
+        iconStyle: 'icon-usermanage',
+        rightKey: 'monitor',
       }
     ],
   },
  {
     name: '统计分析',
     path: 'statistical',
+    rightKey: 'statistics',
     children: [
       {
         name: '电站分析',
         iconStyle: 'icon-usermanage',
         path: 'stationaccount',
+        rightKey: 'statistics_station',
         children: [
           {
             name: '全部电站',
             path: 'allstation',
             defaultPath: true,
+            rightKey: 'monitor',
           }, {
             name: '生产分析',
             path: 'production',
+            rightKey: 'monitor',
           }, {
             name: '运行分析',
             path: 'operate',
+            rightKey: 'monitor',
           }, {
             name: '资源分析',
             path: 'resource',
+            rightKey: 'monitor',
           }, {
             name: '电站对比',
-            path: 'contrast'
+            path: 'contrast',
+            rightKey: 'monitor',
           }
         ]
       },{
         name:'设备分析',
         path: 'equipment',
         iconStyle: 'icon-usermanage',
+        rightKey: 'statistics_device',
         children: [
           {
             name: '设备性能分析',
-            path: 'performance',          
+            path: 'performance',
+            rightKey: 'monitor',        
           }, {
             name: '设备厂家对比',
             path: 'manufacturers',
+            rightKey: 'monitor',
           }
         ]
 
@@ -131,72 +155,84 @@ const menuData = [
         name:'统计报表',
         path: 'statement',
         iconStyle: 'icon-usermanage',
+        rightKey: 'statistics_report',
         children: [
           {
             name: '日报月报',
-            path: 'daily',          
+            path: 'daily',
+            rightKey: 'monitor',        
           }, {
             name: '定制报表',
             path: 'customization',
+            rightKey: 'monitor',
           }
         ]
-
       }
     ]
-
   }, {
     name: '高级分析',
     path: 'analysis',
+    rightKey: 'analysis',
     children: [
       {
         name:'光伏发电量评估',
         path:'assess',
         defaultPath: true,
         iconStyle: 'icon-usermanage',
+        rightKey: 'analysis_powerGeneration',
       },
       {
         name: '清洗模型',
         iconStyle: 'icon-usermanage',
         path: 'cleanout',
+        rightKey: 'analysis_cleanModel',
         children: [
           {
             name: '灰尘影响',
             path: 'dirt',
             defaultPath: true,
+            rightKey: 'monitor',
           }, {
             name: '清洗记录',
             path: 'record',
+            rightKey: 'monitor',
           }, {
             name: '预警时事件配置',
             path: 'configuration',
+            rightKey: 'monitor',
           }
         ]
-
       },{
         name:'组串异常检测',
         path:'formation',
         iconStyle: 'icon-usermanage',
+        rightKey: 'analysis_inefficientDetect',
         children: [
           {
             name: '组串异常分析',
-            path: 'abnormal',          
+            path: 'abnormal',
+            rightKey: 'monitor',         
           }, {
             name: '预警事件配置',
             path: 'warning',
+            rightKey: 'monitor',
           }
         ]
       },{
         name:'偏航对风分析',
         path:'yaw',
         iconStyle: 'icon-usermanage',
+        rightKey: 'analysis_yaw',
         children: [
           {
             name: '偏航对风分析',
             path: 'wind',
             defaultPath: true,
+            rightKey: 'monitor',
           }, {
             name: '预测事件配置',
             path: 'config',
+            rightKey: 'monitor',
           }
         ]
       }
@@ -205,25 +241,31 @@ const menuData = [
   },  {
     name: '系统管理',
     path: 'system',
+    rightKey: 'system',
     children: [
       {
         name: '账户管理',
         iconStyle: 'icon-usermanage',
         path: 'account',
+        rightKey: 'system_account',
         children: [
           {
             name: '企业',
             path: 'enterprise',
             defaultPath: true,
+            rightKey: 'system_account_enterprise',
           }, {
             name: '部门',
             path: 'department',
+            rightKey: 'system_account_department',
           }, {
             name: '用户',
             path: 'user',
+            rightKey: 'system_account_user',
           }, {
             name: '角色',
             path: 'role',
+            rightKey: 'system_account_role',
           }
         ]
       },
@@ -250,3 +292,9 @@ function formatter(data, parentPath = '/') {
 
 export const menu = formatter(menuData);
 
+
+// const rigthMenu = ['homepage', 'monitor_station', 'monitor_alarm_realTime', 'operation_worklist', 'operation_worklist_work'];
+// const rightHandler = {
+//   monitor_alarm_realTime: ['alarm_remove','alarm_worklist','monitor_alarm_remove','monitor_alarm_history'],
+//   operation_worklist_work: ['workExamine_defect_review', 'workExamine_defect_check', 'workExamine_inspection_check'],
+// }

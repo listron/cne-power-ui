@@ -51,6 +51,9 @@ function *userNameLogin(action){
         data.refresh_token && Cookie.set('refresh_token', data.refresh_token);
         Cookie.set('isNotLogin', 0);
 
+        // data.menuRight && localStorage.setItem('menuRight',); // 权限信息存储
+        // data.handlerRight && localStorage.setItem('handlerRight'); // 权限信息存储
+
         yield put({ type: loginAction.USER_NAME_LOGIN_SUCCESS, data});
         action.params.history.push('/station/monitor');
       } else {
@@ -115,6 +118,9 @@ function *phoneCodeLogin(action){
           data.expires_in && Cookie.set('expireData', moment().add(data.expires_in, 'seconds'));
           data.refresh_token && Cookie.set('refresh_token', data.refresh_token);
           Cookie.set('isNotLogin', action.params.isNotLogin);
+
+          // data.menuRight && localStorage.setItem('menuRight',); // 权限信息存储
+          // data.handlerRight && localStorage.setItem('handlerRight'); // 权限信息存储
         }
         if(params.isNotLogin === 0 && data.enterpriseId !== null) {
           params.history.push('/station/monitor');

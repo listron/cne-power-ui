@@ -118,6 +118,8 @@ class SideMenu extends Component {
 
   renderSideMenu(sideMenuData) {
     const { collapsed } = this.state;
+    // const menuRight = localStorage.getItem('menuRight');
+    // const filteredMenu = menu.filter(e=>menuRight.includes(e.rightKey)) --todo filter
     return sideMenuData.map(e=>{
       if(!e.children || e.children.length === 0){//只有二级目录
         return (
