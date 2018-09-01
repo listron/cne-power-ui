@@ -69,7 +69,6 @@ class CardSection extends Component {
   render(){
     const {operatorList,weatherList,alarmList,workList } = this.props;
     const { disabled1,disabled2,} = this.state;
-    console.log(operatorList,weatherList,alarmList,workList)
     let tmpOperatorList = [];
     if(operatorList){
       for(var i=0;i<operatorList.length;i+=3){

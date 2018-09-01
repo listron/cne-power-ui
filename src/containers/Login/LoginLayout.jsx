@@ -31,6 +31,14 @@ class LoginLayout extends Component {
     })
   }
 
+  toSeeAgreement = () => {
+    this.props.changeLoginStore({pageTab: 'agreement'})
+  }
+
+  toContactUs = () => {
+    this.props.changeLoginStore({pageTab: 'contact'})
+  }
+
   render() {
     const {pageTab, changeLoginStore} = this.props;
     return (
@@ -49,8 +57,8 @@ class LoginLayout extends Component {
           </div>
         </div>
         <div className={styles.right}>
-          <div className={styles.containerLogin}>
-            <div className={styles.loginContent}>
+          <div className={styles.rightContent}>
+            <div className={styles.mainBox}>
               {pageTab === 'login' && <Login changeLoginStore={changeLoginStore} pageTab={pageTab} />}
               {pageTab === 'register' && <Register changeLoginStore={changeLoginStore} pageTab={pageTab} />}
               {pageTab === 'joinIn' && <JoinIn changeLoginStore={changeLoginStore} />}
@@ -58,6 +66,12 @@ class LoginLayout extends Component {
               {pageTab === 'contact' && <Contact backToLogin={this.backToLogin} />}
               {pageTab === 'agreement' && <Agreement backToLogin={this.backToLogin} />}
             </div>
+            {(pageTab === 'contact' || pageTab === 'agreement') || 
+              <div className={styles.contactUs}>
+                <span onClick={this.toSeeAgreement}>用户协议</span>
+                <span onClick={this.toContactUs}>联系我们</span>
+              </div>
+            }
           </div>
         </div>
       </div>
