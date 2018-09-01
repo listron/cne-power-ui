@@ -106,7 +106,7 @@ class PvStationList extends React.Component {
         }
       },
       {
-        title: "日曝辐值(w/m²)",
+        title: "日曝辐值(W/m²)",
         dataIndex: "windSpeed",
         defaultSortOrder: "descend",
         sorter: (a, b) => a.windSpeed - b.windSpeed

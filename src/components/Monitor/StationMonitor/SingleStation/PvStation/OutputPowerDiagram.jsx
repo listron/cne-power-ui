@@ -223,7 +223,7 @@ class OutputPowerDiagram extends Component {
           },
         },
         {
-          name: '日曝辐值(w/m²)',
+          name: '日曝辐值(W/m²)',
           type: 'value',
           axisLabel: {
             formatter: '{value}'
