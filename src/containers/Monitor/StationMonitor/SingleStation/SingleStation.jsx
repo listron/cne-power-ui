@@ -20,6 +20,7 @@ class SingleStation extends Component {
     getInverterList: PropTypes.func,
     getStationList: PropTypes.func,
     getBoxTransformerList: PropTypes.func,
+    changeSingleStationStore: PropTypes.func,
   };
   constructor(props) {
     super(props);
@@ -31,6 +32,7 @@ class SingleStation extends Component {
   componentDidMount() {
     const { stationCode } = this.props.match.params;
     this.getData(stationCode);
+    this.props.changeSingleStationStore({deviceTypeCode: 509});
   }
 
   componentWillReceiveProps(nextProps){
@@ -63,7 +65,7 @@ class SingleStation extends Component {
 
     this.timeOutId = setTimeout(()=>{
       this.getData(stationCode);
-    },10000)
+    },10000);
   }
 
   render() {

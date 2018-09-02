@@ -24,6 +24,7 @@ class JoinInForm extends Component{
     isInvite: PropTypes.number,
     enterpriseLogo: PropTypes.string,
     userEnterpriseStatus: PropTypes.number,
+    enterpriseInfo: PropTypes.object,
   }
 
   constructor(props){
@@ -164,7 +165,7 @@ class JoinInForm extends Component{
 
   renderStepOne(formItemLayout, tailFormItemLayout) {
     const { getFieldDecorator, getFieldsError } = this.props.form;
-    const { enterpriseName } = this.props;
+    const { enterpriseName, enterpriseInfo } = this.props;
     const { showEnterpriseInfo } = this.state;
     return (
       <Form onSubmit={this.getEnterpriseInfo} >
@@ -180,7 +181,7 @@ class JoinInForm extends Component{
         </FormItem>
         {showEnterpriseInfo && <Card className={styles.enterpriseInfo} >
           {enterpriseName === null ? <div>没有此企业，请重新输入</div> : <div>点击确认要加入的企业</div>}
-          {enterpriseName === null ? <div></div> : <Button className={styles.enterpriseBtn} style={{marginTop: '40px'}} onClick={this.changeJoinStep }>{enterpriseName}</Button>}
+          {Object.keys(enterpriseInfo).length>0 && enterpriseName === null ? <div></div> : <Button className={styles.enterpriseBtn} style={{marginTop: '40px'}} onClick={this.changeJoinStep }>{enterpriseName}</Button>}
           <div className={styles.enterpriseBack} ><Icon type="arrow-left" /><span  onClick={this.handleCancel}>返回</span></div>
         </Card>}
       </Form>
@@ -260,7 +261,7 @@ class JoinInForm extends Component{
               {getFieldDecorator('username', {
                 rules: [
                   {required: true, message: '请输入用户名'},
-                  {min: 3, max: 8, message: '请输入3到8位中文、英文、数字'}
+                  {pattern: /^[A-Za-z0-9\u4e00-\u9fa5]{3,8}$/gi, message: '请输入3到8位中文、英文、数字'},
                 ]
               })(
                 <Input addonBefore={<i className="iconfont icon-user"></i>} placeholder="请输入用户名" />

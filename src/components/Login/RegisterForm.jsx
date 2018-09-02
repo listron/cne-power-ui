@@ -211,11 +211,11 @@ class RegisterForm extends Component {
             {getFieldDecorator('enterpriseDomain', {
               rules: [
                 {required: true, message: '请输入企业域名'},
-                {pattern: /[a-zA-Z0-9]{3,}/, message: '格式不对'}
+                {pattern: /[a-zA-Z0-9]{3,}/, message: '英文、数字组合、3个字以上'}
               ]
             })(
               <div className={styles.domain} >
-                <Input placeholder="英文、数字组合、3个字以上" style={{width: '200px'}}  />
+                <Input placeholder="请输入企业域名"  />
                 <span>.cnecloud.com</span>
               </div>
             )}
@@ -227,7 +227,7 @@ class RegisterForm extends Component {
                 {pattern: /^[a-zA-Z0-9\u4E00-\u9FA5]{1,30}$/, message: '企业名称最长不超过30个字符'}
               ]
             })(
-              <Input placeholder="30字以内" style={{width: '160px'}} />
+              <Input placeholder="请输入企业名称" />
             )}
           </FormItem>
           <FormItem {...tailFormItemLayout} >
@@ -252,7 +252,7 @@ class RegisterForm extends Component {
             {getFieldDecorator('username', {
               rules: [
                 {required: true, message: '请输入用户名'},
-                {pattern: /^[a-zA-Z0-9\u4E00-\u9FA5]{3,8}$/, message: '请输入3-8位中文、英文、数字'}
+                {pattern: /^[a-zA-Z0-9\u4E00-\u9FA5]{3,8}$/gi, message: '请输入3-8位中文、英文、数字'}
               ]
             })(
               <Input addonBefore={<i className="iconfont icon-user"></i>} placeholder="3-8位中文、英文、数字" />

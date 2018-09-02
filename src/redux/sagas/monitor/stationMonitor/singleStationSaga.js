@@ -26,12 +26,12 @@ function *getSingleStation(action){
         type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
         payload: {
           ...payload,
-          singleStationData: response.data.data,
+          singleStationData: response.data.data || {},
         }
       });
     }else{
       yield put({ type: singleStationAction.GET_SINGLE_STATION_FAIL, data: response.data});
-      message.error(response.data);
+      // message.error(response.data.message);
     }
   }catch(e){
     console.log(e);
@@ -51,12 +51,12 @@ function *getCapabilityDiagram(action){
         type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
         payload: {
           ...payload,
-          capabilityData: response.data.data,
+          capabilityData: response.data.data || [],
         }
       });
     }else{
       yield put({ type: singleStationAction.GET_SINGLE_STATION_FAIL, data: response.data});
-      message.error(response.data);
+      // message.error(response.data.message);
     }
     
   }catch(e){
@@ -77,12 +77,12 @@ function *getMonitorPower(action){
         type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
         payload: {
           ...payload,
-          powerData: response.data.data,
+          powerData: response.data.data || [],
         }
       })
     }else{
       yield put({ type: singleStationAction.GET_SINGLE_STATION_FAIL, data: response.data});
-      message.error(response.data);
+      // message.error(response.data.message);
     }
     
   }catch(e){
@@ -102,12 +102,12 @@ function *getStationList(action){
         type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
         payload: {
           ...payload,
-          stationList: response.data.data,
+          stationList: response.data.data || [],
         }
       });
     }else{
       yield put({ type: singleStationAction.GET_SINGLE_STATION_FAIL, data: response.data});
-      message.error(response.data);
+      // message.error(response.data.message);
     }
     
   }catch(e){
@@ -128,12 +128,12 @@ function *getOperatorList(action){
         type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
         payload: {
           ...payload,
-          operatorList: response.data.data,
+          operatorList: response.data.data || [],
         }
       });
     }else{
       yield put({ type: singleStationAction.GET_SINGLE_STATION_FAIL, data: response.data});
-      message.error(response.data);
+      // message.error(response.data.message);
     }
     
   }catch(e){
@@ -153,12 +153,12 @@ function *getWeatherList(action){
         type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
         payload: {
           ...payload,
-          weatherList: response.data.data,
+          weatherList: response.data.data || [],
         }
       })
     }else{
       yield put({ type: singleStationAction.GET_SINGLE_STATION_FAIL, data: response.data});
-      message.error(response.data);
+      // message.error(response.data.message);
     }
   }catch(e){
     console.log(e);
@@ -177,12 +177,12 @@ function *getAlarmList(action){
         type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
         payload: {
           ...payload,
-          alarmList: response.data.data,
+          alarmList: response.data.data || {},
         }
       })
     }else{
       yield put({ type: singleStationAction.GET_SINGLE_STATION_FAIL, data: response.data});
-      message.error(response.data);
+      // message.error(response.data.message);
     }
     
   }catch(e){
@@ -202,12 +202,12 @@ function *getWorkList(action){
         type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
         payload: {
           ...payload,
-          workList: response.data.data,
+          workList: response.data.data || {},
         }
       })
     }else{
       yield put({ type: singleStationAction.GET_SINGLE_STATION_FAIL, data: response.data});
-      message.error(response.data);
+      // message.error(response.data.message);
     }
   }catch(e){
     console.log(e);
@@ -226,12 +226,12 @@ function *getDeviceTypeFlow(action){
         type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
         payload: {
           ...payload,
-          deviceTypeFlow: response.data.data,
+          deviceTypeFlow: response.data.data || [],
         }
       })
     }else{
       yield put({ type: singleStationAction.GET_SINGLE_STATION_FAIL, data: response.data});
-      message.error(response.data);
+      // message.error(response.data.message);
     }
     
   }catch(e){
@@ -251,12 +251,12 @@ function *getPvmoduleList(action){
         type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
         payload: {
           ...payload,
-          pvmoduleList: response.data.data,
+          pvmoduleList: response.data.data || [],
         }
       });
     }else{
       yield put({ type: singleStationAction.GET_SINGLE_STATION_FAIL, data: response.data});
-      message.error(response.data);
+      // message.error(response.data.message);
     }
     
   }catch(e){
@@ -276,12 +276,12 @@ function *getInverterList(action){
         type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
         payload: {
           ...payload,
-          inverterList: response.data.data,
+          inverterList: response.data.data || {},
         }
       })
     }else{
       yield put({ type: singleStationAction.GET_SINGLE_STATION_FAIL, data: response.data});
-      message.error(response.data);
+      // message.error(response.data.message);
     }
     
   }catch(e){
@@ -301,12 +301,12 @@ function *getBoxTransformerList(action){
         type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
         payload: {
           ...payload,
-          boxTransformerList: response.data.data,
+          boxTransformerList: response.data.data || {},
         }
       })
     }else{
       yield put({ type: singleStationAction.GET_SINGLE_STATION_FAIL, data: response.data});
-      message.error(response.data);
+      // message.error(response.data.message);
     }
     
   }catch(e){

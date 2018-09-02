@@ -30,7 +30,7 @@ class DeviceList extends Component {
     }else{
       appointDeviceCode = deviceTypeCode || 509;
     }
-
+    console.log(appointDeviceCode);
 
     return (
       <div>
@@ -38,6 +38,9 @@ class DeviceList extends Component {
         {appointDeviceCode===206 && <InverterList {...this.props} />}
         {appointDeviceCode===202 && <ConfluenceBoxList {...this.props} />}
         {appointDeviceCode===304 && <BoxTransformerList {...this.props} />}
+        {/* 以下两个是风电站设备101风电机组 302集电线路 */}
+        {appointDeviceCode===101 && <BoxTransformerList {...this.props} />}
+        {appointDeviceCode===302 && <BoxTransformerList {...this.props} />}
       </div>
     )
   }

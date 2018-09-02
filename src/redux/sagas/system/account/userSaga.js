@@ -32,8 +32,8 @@ function* getUserList(action) {
         type: userAction.GET_USER_FETCH_SUCCESS,
         payload: {
           ...payload,
-          totalNum: response.data.data.totalNum,
-          userData: response.data.data.userData,
+          totalNum: response.data.data.totalNum || 0,
+          userData: response.data.data.userData || [],
         }
       })
     } else {
@@ -92,7 +92,7 @@ function* getUserDetail(action) {
       yield put({
         type: userAction.GET_USER_FETCH_SUCCESS,
         payload: {
-          userDetail: response.data.data,
+          userDetail: response.data.data || {},
           showPage: payload.showPage,
         }
       })
@@ -117,7 +117,7 @@ function* getInviteLink(action) {
       yield put({
         type: userAction.GET_USER_FETCH_SUCCESS,
         payload: {
-          inviteData: response.data.data,
+          inviteData: response.data.data || {},
           showPage: payload.showPage,
         }
       })
@@ -142,14 +142,14 @@ function* getRoleAllList(action) {
       yield put({
         type: userAction.GET_USER_FETCH_SUCCESS,
         payload: {
-          roleAllList: response.data.data,
+          roleAllList: response.data.data || [],
         }
       })
     } else if (payload.roleType === "1") {//获取特殊权限
       yield put({
         type: userAction.GET_USER_FETCH_SUCCESS,
         payload: {
-          specialRoleList: response.data.data,
+          specialRoleList: response.data.data || [],
         }
       })
     }
