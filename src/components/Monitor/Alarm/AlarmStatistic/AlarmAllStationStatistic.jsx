@@ -77,7 +77,7 @@ class ALarmAllStationStatistic extends React.Component {
   }
   render() {
     const operations = (
-      <div style={{ marginRight: '50px',color:'#199475' }} onClick={this.showStationSelect}>
+      <div className={styles.operation} style={{ marginRight: '50px',color:'#199475' }} onClick={this.showStationSelect}>
         单电站告警统计
         <i className="iconfont icon-filter"></i>
       </div>

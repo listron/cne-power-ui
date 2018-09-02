@@ -33,75 +33,69 @@ class AlarmStatisticTable extends React.Component {
         title: "电站名称",
         dataIndex: "stationName",
         key: "stationName",
-        sorter: (a, b) => a.stationName.localeCompare(b.stationName),
-        render: (value, record, index) => {
-          return {
-            children: (<a href={'javascript:void(0)'} onClick={() => console.log("record", '跳转到单电站')} ><div className={styles.stationName}>{record.stationName}</div></a>
-            )
-          }
-        }
+        sorter: true,
       },
       {
         title: "告警总数",
         dataIndex: "alarmNum",
         key: "alarmNum",
-        sorter: (a, b) => a.allAlarmNum - b.allAlarmNum,
+        sorter: true,
       },
       {
         title: "一级总数",
         dataIndex: "oneWarningNum",
         key: "oneWarningNum",
-        sorter: (a, b) => a.oneWarningNum - b.oneWarningNum,
+        sorter: true,
 
       },
       {
         title: "二级总数",
         dataIndex: "twoWarningNum",
         key: "twoWarningNum",
-        sorter: (a, b) => a.secondLevelAlarm - b.secondLevelAlarm,
+        sorter: true,
 
       },
       {
         title: "三级总数",
         dataIndex: "threeWarningNum",
         key: "threeWarningNum",
-        sorter: (a, b) => a.threeWarningNum - b.threeWarningNum
+        sorter: true,
       },
       {
         title: "四级总数",
         dataIndex: "fourWarningNum",
         key: "fourWarningNum",
-        sorter: (a, b) => a.fourWarningNum - b.fourWarningNum
+        sorter: true,
       },
       {
         title: "平均处理时间",
         dataIndex: "handleAvgTime",
         key: "handleAvgTime",
-        sorter: (a, b) => a.handleAvgTime - b.handleAvgTime
+        sorter: true,
       },
       {
         title: "一级处理时间",
         dataIndex: "oneHandleAvgTime",
         key: "oneHandleAvgTime",
-        sorter: (a, b) => a.oneHandleAvgTime - b.oneHandleAvgTime,
+        sorter: true,
       },
       {
         title: "二级处理时间",
         dataIndex: "twoHandleAvgTime",
         key: "twoHandleAvgTime",
-        sorter: (a, b) => a.twoHandleAvgTime - b.twoHandleAvgTime,
+        sorter: true,
       },
       {
         title: "三级处理时间",
         dataIndex: "threeHandleAvgTime",
         key: "threeHandleAvgTime",
-        sorter: (a, b) => a.threeHandleAvgTime - b.threeHandleAvgTime
+        sorter: true,
       },
       {
         title: "四级处理时间",
         dataIndex: "fourHandleAvgTime",
         key: "fourHandleAvgTime",
-        sorter: (a, b) => a.fourHandleAvgTime - b.fourHandleAvgTime
+        sorter: true,
       },
     ];    
 
@@ -123,7 +117,7 @@ class AlarmStatisticTable extends React.Component {
         <div className={styles.pagination}>
           <CommonPagination total={totalNum} onPaginationChange={this.onPaginationChange} />
         </div>
-        <Table columns={this.renderColumn()} dataSource={data} onChange={this.onChange} pagination={false} />
+        <Table columns={this.renderColumn()} dataSource={data} onChange={this.onChangeTable} pagination={false} />
       </div>
     );
   }
