@@ -25,20 +25,23 @@ class AlarmSingleStationGraph extends React.Component {
     const timeData = singleAlarmStatistic.map((item, index) => {
       return moment(item.time).format('YYYY-MM-DD');
     });
+
     const alarmNum = singleAlarmStatistic.map((item, index) => {
-      return item.alarmNum
+      return item.alarmNum;
     });
 
     const transferWorkAlarmNum = singleAlarmStatistic.map((item, index) => {
-      return item.transferWorkAlarmNum
+      return item.transferWorkAlarmNum;
     });
 
     const noTransferWorkAlarmNum = singleAlarmStatistic.map((item, index) => {
-      return item.noTransferWorkAlarmNum
+      return item.noTransferWorkAlarmNum;
     });
+
     const transferWorkRate = singleAlarmStatistic.map((item, index) => {
-      return item.transferWorkRate
+      return item.transferWorkRate;
     });
+    
     return {
       timeData, alarmNum, transferWorkAlarmNum, noTransferWorkAlarmNum, transferWorkRate
     };
