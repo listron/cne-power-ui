@@ -1,14 +1,24 @@
     
 @import '../../../../theme/theme.scss';
-.alarmStatistTabs{
+.alarmStatistTabs {
   display: flex;
   flex: 1;
   flex-direction: column;
   background-color: #fff;
+  .operation {
+    margin-right: 50px;
+    color: $themeColor;
+    :global {
+      .icon-filter {
+        font-size: 14px;
+        margin-left: 4px;
+      }
+    }
+  }
   :global{
     .ant-tabs-nav-scroll{
-      background: #f8f8f8;
-     }
+      background-color: #f8f8f8;
+    }
     .ant-tabs-bar{
       border:none;
       margin-bottom: 0;
@@ -33,7 +43,7 @@
       text-decoration: none;
       width: 120px;
       
-      }
+    }
 
     
   }
@@ -60,11 +70,13 @@
    
     .exportBtn{
       color: #199475;
-      background:#fff;
-      border-radius: 5px;
+      background-color:#fff;
+      border-radius: 4px;
       border: 1px solid #199475;     
-      line-height:45px;
-      height: 48px;
+      line-height:30px;
+      height: 30px;
+      width: 66px;
+      margin-top: 9px;
     }
   }
   :global{
@@ -153,6 +165,29 @@
       .ant-tabs-bar {
         background-color: #f0f2f5;
         margin-bottom: 0px;
+      }
+      .ant-tabs-nav .ant-tabs-tab {
+        display: inline-block;
+        text-align: center;
+        height: 100%;
+        padding: 12px 0px;
+        margin: 0;
+        box-sizing: border-box;
+        position: relative;
+        transition: color 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+        cursor: pointer;
+        text-decoration: none;
+        width: 40px;
+        color: $darkColor;
+        
+      }
+      .ant-tabs-nav .ant-tabs-tab-active {
+        padding-bottom: 2px;
+        border-bottom: 4px solid $themeColor;
+        color: $themeColor;
+      }
+      .ant-tabs-nav-scroll{
+        background: #f0f2f5;
       }
     }
   }
@@ -247,6 +282,15 @@
       flex-direction: row;
       justify-content: flex-end;
       margin-bottom: 10px;
+    }
+  }
+}
+
+.statisticGraph {
+  :global {
+    .tooltip {
+      width: 128px;
+      height: 165px;
     }
   }
 }
