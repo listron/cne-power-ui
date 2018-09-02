@@ -77,7 +77,7 @@ class TransferAlarmModal extends Component {
             )}
           </FormItem>
           <FormItem className={styles.formItem} label="缺陷描述">
-            {getFieldDecorator('defectDesc', {
+            {getFieldDecorator('defectDescribe', {
               rules: [{ 
                 required: true,
                 message: '请输入缺陷描述'

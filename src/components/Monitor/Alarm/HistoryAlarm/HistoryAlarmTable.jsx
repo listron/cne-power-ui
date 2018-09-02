@@ -136,7 +136,7 @@ class HostoryAlarmTable extends Component {
         title: '告警处理',
         dataIndex: 'operation',
         key: 'operation',
-        sorter: true,
+        sorter: (a,b) => a.warningStatus - b.warningStatus,
         render: (text, record, index) => {
           if(record.isTransferWork === 0) {
             return (
@@ -170,7 +170,6 @@ class HostoryAlarmTable extends Component {
             </Popover>
           );
         }
-
       }
     ]
     return columns;
