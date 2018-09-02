@@ -27,7 +27,7 @@ class BoxTransformerList extends Component {
   onChangeStatus = (e) => {
     const statusValue = e.target.value;
     const { boxTransformerList } = this.props; 
-    const { alarmSwitch } = this.state; 
+    const { alarmSwitch } = this.state;
     const deviceList = boxTransformerList && boxTransformerList.deviceList && boxTransformerList.deviceList.map((e,i)=>({...e,key:i}));
     let selectedList = [];
     if(alarmSwitch){

@@ -5,6 +5,7 @@ module.exports = {
     GET_SINGLE_STATION_SAGA: null,//	获取单电站实时数据
     SINGLE_STATION_FETCH: null,//loading
     GET_SINGLE_STATION_SUCCESS:null,//请求成功
+    GET_SINGLE_STATION_FAIL: null,//请求失败
     CHANGE_SINGLE_STATION_STORE_SAGA: null,//请求改变单电站store数据
     CHANGE_SINGLE_STATION_STORE: null,//改变单电站store数据成功
     GET_STATION_LIST_SAGA: null,//获取电站列表
@@ -18,5 +19,6 @@ module.exports = {
     GET_PVMODULE_LIST_SAGA: null,//光伏组件列表
     GET_INVERTER_LIST_SAGA: null,//组串式逆变器列表
     GET_BOXTRANSFORMER_LIST_SAGA: null,//箱变列表
+
   })
 }

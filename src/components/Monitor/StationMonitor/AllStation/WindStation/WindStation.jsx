@@ -49,33 +49,29 @@ class WindStation extends React.Component {
     let { key, checked, stationType } = this.state;
     const { windMonitorStation } = this.props;
 
-    
+
     const stationDataSummary = windMonitorStation.stationDataSummary || {};
-    const stationProvinceSummary=stationDataSummary.stationProvinceSummary||[];
+    const stationProvinceSummary = stationDataSummary.stationProvinceSummary || [];
     const stationStatusSummary = stationDataSummary.stationStatusSummary || [];
     //统计各状态下的电站数量
     const normalNum = stationStatusSummary.filter(e => {
-      return e.stationStatus === 400
+      return e && e.stationStatus === 400
     }).length > 0 ? stationStatusSummary.filter(e => {
-      return e.stationStatus === 400
+      return e && e.stationStatus === 400
     })[0].stationNum : '0';
 
     const dataInterruptionNum = stationStatusSummary.filter(e => {
-      return e.stationStatus === 500
+      return e && e.stationStatus === 500
     }).length > 0 ? stationStatusSummary.filter(e => {
-      return e.stationStatus === 500
+      return e && e.stationStatus === 500
     })[0].stationNum : '0';
-   
+
 
     const unconnectionNum = stationStatusSummary.filter(e => {
-      return e.stationStatus === 900
+      return e && e.stationStatus === 900
     }).length > 0 ? stationStatusSummary.filter(e => {
-      return e.stationStatus === 900
+      return e && e.stationStatus === 900
     })[0].stationNum : '0';
-
-
-
-
     //筛选不同状态下的电站列表
     const stationDataList = windMonitorStation.stationDataList || [];
     const newStationDataList = stationDataList.filter(e => {
@@ -84,20 +80,23 @@ class WindStation extends React.Component {
       if (stationType === 'all') {
         return true
       } else if (stationType === 'normal') {
-        return e.stationStatus.stationStatus === '400'
+        const stationStatus = e.stationStatus || {};
+        return stationStatus.stationStatus === '400'
       } else if (stationType === 'dataInterruption') {
-        return e.stationStatus.stationStatus === '500'
+        const stationStatus = e.stationStatus || {};
+        return stationStatus.stationStatus === '500'
       } else if (stationType === 'unconnection') {
-        return e.stationStatus.stationStatus === '900'
+        const stationStatus = e.stationStatus || {};
+        return stationStatus.stationStatus === '900'
       }
     })
-    // console.log(newStationDataList,'筛选的数据')
+
 
 
     const TabPane = Tabs.TabPane;
     //tabs筛选部分
     const operations = (
-      <div style={{border:'none'}}>
+      <div style={{ border: 'none' }}>
         <Switch onChange={this.onHandleAlarm} />告警
     <Radio.Group
           defaultValue="all"
@@ -116,14 +115,15 @@ class WindStation extends React.Component {
 
 
     const province = (
-      <div className={styles.provinceStationTotal}>       {stationProvinceSummary.map((item, index) => {
-        return (
-          <div key={index}>
-          <span>{item.provinceName}:</span>
-          <span className={styles.fontColor}>{item.windStationNum}&nbsp;&nbsp;</span>
-          </div>
-        )
-      })}
+      <div className={styles.provinceStationTotal}>
+        {stationProvinceSummary.map((item, index) => {
+          return (
+            <div key={index}>
+              <span>{item.provinceName}</span>
+              <span className={styles.fontColor}>{item.windStationNum}&nbsp;&nbsp;</span>
+            </div>
+          )
+        })}
       </div>
     )
     //地图数据处理
@@ -142,11 +142,16 @@ class WindStation extends React.Component {
     ]
     let data = [];
     stationDataList.forEach((item, index) => {
-      let stationStatusAll = item.stationStatus || [];
-      let stationStatus = stationStatusAll.stationStatus || "";  
+
+
+
+
+
+      let stationStatusAll = item.stationStatus || {};
+      let stationStatus = stationStatusAll.stationStatus || "";
       const stationType = item.stationType || "";
-      const currentStationType=iconArray[item.stationType]||{};   
-      const currentStationStatus=currentStationType[stationStatus]||'';
+      const currentStationType = iconArray[item.stationType] || {};
+      const currentStationStatus = currentStationType[stationStatus] || '';
 
       data.push({
         name: item.stationName,
@@ -158,13 +163,13 @@ class WindStation extends React.Component {
         instantaneous: item.instantaneous
       })
     })
-   
+
 
     return (
       <div className={styles.WindStation}>
         <WindStationHeader {...this.props} />
         <Tabs className={styles.smallTabs} activeKey={key} tabBarExtraContent={key !== '3' ? operations : province} onChange={this.setkey}>
-          <TabPane 
+          <TabPane
             tab={
               <span>
                 <i className="iconfont icon-grid"></i>

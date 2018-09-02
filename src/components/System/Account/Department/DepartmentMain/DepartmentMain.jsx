@@ -20,10 +20,17 @@ class DepartmentMain extends Component {
     pageSize: PropTypes.number,
     changeDepartmentStore: PropTypes.func,
     getDepartmentList: PropTypes.func,
+    selectedDepartment: PropTypes.array,
   }
 
   constructor(props){
     super(props);
+  }
+
+  componentWillUnmount(){
+    this.props.changeDepartmentStore({
+      selectedDepartment: []
+    })
   }
 
   searchDepartment = ({departmentName,parentDepartmentName,stationName}) => {//部门搜索

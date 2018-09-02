@@ -20,6 +20,7 @@
       padding: 0 16px;
       height: 40px;
       line-height: 40px;
+      color: $darkColor;
     }
   }
   .ant-btn {   //antd按钮样式调整-高亮
@@ -171,7 +172,7 @@
   .ant-steps-item-process .ant-steps-item-icon,.ant-steps-item-finish .ant-steps-item-icon{
     border-color: $themeColor;
     background: #ceebe0;
-
+    line-height: 13px;
   }
   .ant-steps-item-process .ant-steps-item-icon > .ant-steps-icon,.ant-steps-item-finish .ant-steps-item-icon > .ant-steps-icon {
     color: #199475;

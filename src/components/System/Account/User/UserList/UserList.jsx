@@ -1,7 +1,7 @@
 
 
 import React, { Component } from 'react';
-import { Table, Button, Select, Icon, Popover, Checkbox, Upload, message, Modal,Radio  } from 'antd';
+import { Table, Button, Select, Icon, Popover, Checkbox, Upload, message, Modal,Radio,Form  } from 'antd';
 import CommonPagination from '../../../../Common/CommonPagination';
 import PropTypes from 'prop-types';
 import styles from './userList.scss';
@@ -12,6 +12,7 @@ const RadioGroup = Radio.Group;
 
 
 const { Option } = Select;
+const FormItem = Form.Item;
 class UserList extends Component {
   static propTypes = {
     loading: PropTypes.bool,
@@ -44,8 +45,8 @@ class UserList extends Component {
       showDeleteTip: false,
       showExamineTip: false,
       deleteWarningTip: '确认要移除么？',
-      examineWarningTip: '是否通过审核？',
       currentPage: 1,
+      examineStatus: 3,//审核状态 默认通过审核变为启用状态
     }
   }
 
@@ -67,7 +68,7 @@ class UserList extends Component {
   onRowSelect = (selectedRowKeys, selectedRows) => {//行选择
     this.props.changeUserStore({
       selectedUser: selectedRows,
-    })
+    });
   }
   onInviteUser = () => {
     this.props.getInviteLink({enterpriseId: JSON.parse(this.props.enterpriseId), showPage: 'invite'});
@@ -110,7 +111,12 @@ class UserList extends Component {
     };
     this.props.getUserList(params);
   }
-
+  onExamineChange = (e) => {
+    this.setState({
+      examineStatus: e.target.value,
+    });
+  }
+  
   getUserStatus = (userStatus) => {
     if(userStatus===2){
       return '未激活';
@@ -136,6 +142,24 @@ class UserList extends Component {
     }
   }
   
+  confirmExamineTip = () => {
+    const { selectedUser, enterpriseId, } = this.props;
+    this.props.changeUserStatus({
+      enterpriseId,
+      userId: selectedUser.toJS().map(e=>e.userId).toString(),
+      enterpriseUserStatus: this.state.examineStatus,
+    });
+    this.setState({
+      showExamineTip: false,
+      examineStatus: 3,
+    });
+  }
+  cancelExamineTip = () => {
+    this.setState({
+      showExamineTip: false,
+    })
+  }
+
   showUserDetail = (record) => {
     const { userId } = record;
     this.props.getUserDetail({
@@ -273,7 +297,7 @@ class UserList extends Component {
     }else{
       [editable, deletable, usable, unallowable, examinable] = [ false, false, false, false, false];
     }
-    return (<Select onSelect={this.userHandle} placeholder="操作"  dropdownMatchSelectWidth={false} dropdownClassName={styles.handleDropdown} >
+    return (<Select onSelect={this.userHandle} placeholder="操作" value="操作" dropdownMatchSelectWidth={false} dropdownClassName={styles.handleDropdown} >
       <Option value="edit" disabled={!editable}><i className="iconfont icon-edit"></i><span>编辑</span></Option>
       <Option value="delete" disabled={!deletable}><i className="iconfont icon-remove"></i><span>移除</span></Option>
       <Option value="use" disabled={!usable}><i className="iconfont icon-enable"></i><span>启用</span></Option>
@@ -291,23 +315,23 @@ class UserList extends Component {
       this.setState({
         showDeleteTip: true,
         warningText: '',
-      })
+      });
     }else if(value === 'use'){//启用
       this.props.changeUserStatus({
         enterpriseId,
         userId: selectedUser.toJS().map(e=>e.userId).toString(),
         enterpriseUserStatus: 3,
-      })
+      });
     }else if(value === 'unallow'){//禁用
       this.props.changeUserStatus({
         enterpriseId,
         userId: selectedUser.toJS().map(e=>e.userId).toString(),
         enterpriseUserStatus: 4,
-      })
+      });
     }else if(value === 'examine'){//审核
       this.setState({
         showExamineTip: true,
-      })
+      });
     }
   }
   
@@ -330,51 +354,44 @@ class UserList extends Component {
       enterpriseId,
       userId: selectedUser.toJS().map(e=>e.userId).toString(),
       enterpriseUserStatus: 7,
-    })
+    });
     this.setState({
       showDeleteTip: false,
-    })
+    });
+    this.props.changeUserStore({
+      selectedUser: [],
+    });
   }
-  cancelExamineTip = () => {
-    this.setState({
-      showExamineTip: false,
-    })
-  }
-  confirmExamineTip = () => {
-    const { selectedUser, enterpriseId, } = this.props;
-    this.props.changeUserStatus({
-      enterpriseId,
-      userId: selectedUser.toJS().map(e=>e.userId).toString(),
-      enterpriseUserStatus: 5,
-    })
-    this.setState({
-      showExamineTip: false,
-    })
-  }
-
-  examineModal(){
-
+  
+  examineModal = () =>{
     return (
       <Modal
-        onOk={this.onOK}
-        onCancel={this.onCancel}
+        onOk={this.cancelExamineTip}
+        onCancel={this.confirmExamineTip}
         visible={true}
         footer={null}
         closable={false}
         maskClosable={false}
         maskStyle={{backgroundColor:'rgba(153,153,153,0.2)'}}
         wrapClassName={styles.warningTipWrapBox}
+        width="560px"
+        height="250px"
       >
         <div className={styles.warningTip} >
           <div className={styles.textArea}>
             <Icon type="exclamation-circle-o" className={styles.icon} />
             <span className={styles.text}>是否通过审核？</span>
           </div>
-          <RadioGroup name="radiogroup" defaultValue={3}>
-            <Radio value={3}>通过</Radio>
-            <Radio value={6}>不通过</Radio>
-          </RadioGroup>
-          
+          <div className={styles.handleRadio}>
+            <RadioGroup name="radiogroup" defaultValue={3} onChange={this.onExamineChange} >
+              <Radio value={3}>通过</Radio>
+              <Radio value={6}>不通过</Radio>
+            </RadioGroup>
+          </div>
+          <div className={styles.handle}>
+            <span onClick={this.cancelExamineTip} >取消</span>
+            <span onClick={this.confirmExamineTip} className={styles.confirmExamine} >确认</span>
+          </div>
         </div>
       </Modal>
     );
@@ -382,7 +399,7 @@ class UserList extends Component {
 
   render(){
     const { userData, totalNum, loading, selectedUser } = this.props;
-    const { selectedUserColumns,showDeleteTip,showExamineTip,deleteWarningTip,examineWarningTip, } = this.state;
+    const { selectedUserColumns,showDeleteTip,showExamineTip,deleteWarningTip, } = this.state;
     const authData = getCookie('authData');
     const columns = [
       {
@@ -491,7 +508,7 @@ class UserList extends Component {
     return (
       <div className={styles.userList}>
         {showDeleteTip && <WarningTip onCancel={this.cancelDeleteTip} onOK={this.confirmDeleteTip} value={deleteWarningTip} />}
-        {showExamineTip && <WarningTip onCancel={this.cancelExamineTip} onOK={this.confirmExamineTip} value={examineWarningTip} />}
+        {showExamineTip && this.examineModal()}
         <div className={styles.userHelper} >
           <div className={styles.userHelperLeft} >
             <Button onClick={this.onCreateUser} className={styles.addUser} ><Icon type="plus" /><span className={styles.text}>用户</span></Button>
@@ -500,7 +517,7 @@ class UserList extends Component {
               <Button>批量导入</Button>
             </Upload>
             <Button className={styles.templateDown} href="http://test-dpv.cnecloud.cn/template/用户批量导入模板.xlsx" >导入模板下载</Button>
-            <div className={styles.userOperate} >
+            <div className={selectedUser.toJS().length>0 ? styles.selectedOperate : styles.userOperate} >
               {this._createUserOperate()}
             </div>
             <div className={styles.selectedColumnsBox} >

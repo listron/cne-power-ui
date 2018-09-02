@@ -47,13 +47,6 @@ class PvmoduleList extends Component {
                     commonStyle: true,
                   })}  key={i} >{num}</span>)
                 }
-                // return (<span className={classnames({
-                //   normalValue: e.pointStatus === 100,
-                //   stopValue: e.pointStatus === 200,
-                //   breakValue: e.pointStatus === 300,
-                //   noValue: e.pointStatus === 900,
-                //   commonStyle: true,
-                // })} >{num}</span>);
               })}
             </div>);
           })}

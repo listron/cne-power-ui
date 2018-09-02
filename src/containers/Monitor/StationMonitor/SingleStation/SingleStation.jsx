@@ -61,9 +61,9 @@ class SingleStation extends Component {
     this.props.getInverterList({stationCode});
     this.props.getBoxTransformerList({stationCode});
 
-    // this.timeOutId = setTimeout(()=>{
-    //   this.getData(stationCode);
-    // },10000)
+    this.timeOutId = setTimeout(()=>{
+      this.getData(stationCode);
+    },10000)
   }
 
   render() {

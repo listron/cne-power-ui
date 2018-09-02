@@ -1,7 +1,7 @@
 
 .WindStation{
   background: #fff;
- height: 100%;
+  height: 100%;
   display: flex;
   flex:1;
   flex-direction: column;
@@ -12,15 +12,13 @@
   }
   .ant-radio-button-wrapper:hover, .ant-radio-button-wrapper-focused{
     color: #199475;
-  }
-  
+  }  
     .ant-tabs-nav-container{
       margin: 0;
     }
   //tab的表头的右侧附属
   .ant-tabs-extra-content {
-    line-height: 48px;
-   
+    line-height: 48px;  
 }
   .ant-tabs-nav .ant-tabs-tab {
     display: inline-block;
@@ -36,7 +34,6 @@
     width: 55px;
     margin: 0;
     background: #f1f1f1;
-
   }
   .ant-tabs-nav-scroll{
     background: #fff;
@@ -48,32 +45,27 @@
     width: 0;
     height: 0;
   }
-
    width: 100%;
    //tableList的头部宽高
    .ant-table .ant-table-thead > tr > th, .ant-table .ant-table-tbody > tr > td {
     padding: 0px 12px;
     height: 40px;
     line-height: 30px;
-}
+   }
   }
 
-  .smallTabs{
-   
+  .smallTabs{   
     :global{
       .ant-tabs-bar{
         border:none;
         border-bottom: 1px dashed #dfdfdf;
       }
-
       .ant-tabs-bar .ant-tabs-tab-active.ant-tabs-tab{
         background: #199475;
         border-color: #199475;
         color: #fff;
         margin: 0;
-      }
-      
-
+      }     
     }
   }
   .provinceStationTotal{
@@ -86,7 +78,6 @@
     }
   }
   .headStation{
-    //color: #199475;
     border-bottom: 1px dashed #dfdfdf;
     height: 100px;
     display: flex;
@@ -97,13 +88,10 @@
       flex-direction: row;
       align-items: center;
       justify-content: center;
-
       .leftIcon{
         width: 60px;
         height: 60px;
-
         background: url('/img/wind-normal.png') no-repeat center;
-
       }
     }
     .progressInfo{
@@ -151,6 +139,7 @@
       height: 100px;
       display: flex;
       flex-direction: row;
+      margin: 0 25px;
 
       .dayStation,.monthStation,.equipmentNum,.windSpeed{
         height: 100px;
@@ -158,17 +147,17 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        margin-left: 25px;
+       
         .dataValue {
           color:#199475;
-          font-size: 20px;
+          font-size: 24px;
           flex: 1;
           text-align: center;
           padding-top: 20px;
         }
         .dataWindValue{
           color:#3e97d1;
-          font-size: 20px;
+          font-size: 24px;
           flex: 1;
           text-align: center;
           padding-top: 20px;
@@ -176,13 +165,13 @@
         .dataName {
           flex: 1;
           padding-bottom: 1px;
-
         }
+       }
+       .dayStation,.equipmentNum,.windSpeed{
+         margin-right: 25px;
 
        }
-
     }
-
   }
 //卡片
   .stationCardContainer {
@@ -332,7 +321,7 @@
     
     .progressInfo{
       .progressData{
-        width: 180px;
+        width: 220px;
         height: 40px;
         display: flex;
         flex-direction: column;
@@ -345,7 +334,7 @@
         }
         .progressBar{
           flex: 1;
-          width: 180px;
+          width: 220px;
         }
         .stationType{
           flex: 1;
@@ -357,16 +346,4 @@
       }
     }
   }
-
-
 }
-
-
-  .test1{
-    .ant-tabs .ant-tabs-card .ant-tabs-bar .ant-tabs-tab-active {
-      background: #199475;
-      border-color: #199475;
-      color: #fff;
-      margin: 0;
-  }
-  }

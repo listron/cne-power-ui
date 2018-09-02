@@ -20,6 +20,7 @@ class RegisterForm extends Component {
     enterpriseId: PropTypes.string,
     error: PropTypes.object,
     history: PropTypes.object,
+    changeLoginStore: PropTypes.func,
   }
 
   constructor(props) {
@@ -34,34 +35,46 @@ class RegisterForm extends Component {
     this.setState = (timeValue, current)=>{
       return;
     };
+    this.props.changeLoginStore({
+      userEnterpriseStatus: 3,
+    });
   }
 
   onEnterpriseInfo = (e) => {
     e.preventDefault();
     this.props.form.validateFields(['enterpriseDomain', 'enterpriseName', 'userAgreement'], (err, values) => {
       if (!err) {
-        setTimeout(() => {
-          if(this.props.domainIsRegister === '0') {
-            this.props.form.setFields({
-              enterpriseDomain: {
-                value: values.enterpriseDomain,
-                errors: [new Error('当前域名无效')],
-              },
-            });
-          }
-          if(this.props.nameIsRegister === '0') {
-            this.props.form.setFields({
-              enterpriseName: {
-                value: values.enterpriseName,
-                errors: [new Error('当前企业名已注册，不能重复注册')],
-              },
-            });
-          }
-        }, 500);
-        this.props.checkEnterpriseDomain({
-          enterpriseDomain: values.enterpriseDomain+'.cnecloud.com',
-          enterpriseName: values.enterpriseName,
-        });
+        if(values.userAgreement){
+          setTimeout(() => {
+            if(this.props.domainIsRegister === '0') {
+              this.props.form.setFields({
+                enterpriseDomain: {
+                  value: values.enterpriseDomain,
+                  errors: [new Error('当前域名无效')],
+                },
+              });
+            }
+            if(this.props.nameIsRegister === '0') {
+              this.props.form.setFields({
+                enterpriseName: {
+                  value: values.enterpriseName,
+                  errors: [new Error('当前企业名已注册，不能重复注册')],
+                },
+              });
+            }
+          }, 500);
+          this.props.checkEnterpriseDomain({
+            enterpriseDomain: values.enterpriseDomain+'.cnecloud.com',
+            enterpriseName: values.enterpriseName,
+          });
+        }else{
+          this.props.form.setFields({
+            userAgreement: {
+              value: values.userAgreement,
+              errors: [new Error('请同意用户协议！')],
+            },
+          });
+        }
       }
     })
   }
@@ -98,7 +111,7 @@ class RegisterForm extends Component {
 
   phoneCodeRegister = (e) =>{
     e.preventDefault();
-    this.props.form.validateFields(['phoneNum','verificationCode'],(err, values) => {
+    this.props.form.validateFields(['phoneNum','verificationCode',],(err, values) => {
       if(!err){
         setTimeout(() => {
           if(this.props.error && this.props.error.get('code') === '20001') {
@@ -145,6 +158,10 @@ class RegisterForm extends Component {
     }, 1000);
   }
 
+  toSeeAgreement = () => {
+    this.props.changeLoginStore({pageTab: 'agreement'})
+  }
+
   renderStepOne(getFieldDecorator, enterpriseId){
     const { timeValue } =this.state;
     return (
@@ -154,8 +171,9 @@ class RegisterForm extends Component {
             <FormItem>
               {getFieldDecorator('phoneNum', {
                 rules: [
-                  {required: true, message: '请输入手机号'},
-                  {pattern: /(^1\d{10}$)/, message: '手机号格式不对'}
+                  //{required: true, message: '请输入手机号'},
+                  //{pattern: /(^1\d{10}$)/, message: '手机号格式不对'}
+                 
                 ]
               })(
                 <Input className={styles.mobileNumber} addonBefore={<i className="iconfont icon-phone"></i>} placeholder="请输入手机号" />
@@ -193,10 +211,11 @@ class RegisterForm extends Component {
             {getFieldDecorator('enterpriseDomain', {
               rules: [
                 {required: true, message: '请输入企业域名'},
+                {pattern: /[a-zA-Z0-9]{3,}/, message: '格式不对'}
               ]
             })(
               <div className={styles.domain} >
-                <Input placeholder="请输入企业域名" style={{width: '200px'}}  />
+                <Input placeholder="英文、数字组合、3个字以上" style={{width: '200px'}}  />
                 <span>.cnecloud.com</span>
               </div>
             )}
@@ -205,18 +224,16 @@ class RegisterForm extends Component {
             {getFieldDecorator('enterpriseName', {
               rules: [
                 {required: true, message: '请输入企业名称'},
-                {max: 30, message: '企业名称最长不超过30个字符'},
+                {pattern: /^[a-zA-Z0-9\u4E00-\u9FA5]{1,30}$/, message: '企业名称最长不超过30个字符'}
               ]
             })(
-              <Input placeholder="请输入企业名称" style={{width: '160px'}} />
+              <Input placeholder="30字以内" style={{width: '160px'}} />
             )}
           </FormItem>
           <FormItem {...tailFormItemLayout} >
             {getFieldDecorator('userAgreement', {
-              valuePropName: 'checked',
-              required: true,
             })(
-              <Checkbox className={styles.userArgee}  >同意<a className={styles.userAgreement} href="#" >用户协议</a></Checkbox>
+              <Checkbox className={styles.userArgee}  >同意<span  className={styles.userAgreeTip} onClick={this.toSeeAgreement} >用户协议</span></Checkbox>
             )}
           </FormItem>
           <FormItem {...tailFormItemLayout} >
@@ -227,18 +244,18 @@ class RegisterForm extends Component {
     );
   }
 
-  renderStepThree(getFieldDecorator, formItemLayout){
+  renderStepThree(getFieldDecorator, formItemLayout,tailFormItemLayout){
     return (
-      <div>
+      <div className={styles.userInfor}>
         <Form onSubmit={this.onRegisterEnterprise}>
           <FormItem label="用户名" {...formItemLayout}>
             {getFieldDecorator('username', {
               rules: [
                 {required: true, message: '请输入用户名'},
-                {min: 3, max: 8, message: '请输入3到8位中文、英文、数字'}
+                {pattern: /^[a-zA-Z0-9\u4E00-\u9FA5]{3,8}$/, message: '请输入3-8位中文、英文、数字'}
               ]
             })(
-              <Input addonBefore={<i className="iconfont icon-user"></i>} placeholder="请输入用户名" />
+              <Input addonBefore={<i className="iconfont icon-user"></i>} placeholder="3-8位中文、英文、数字" />
             )}
           </FormItem>
           <FormItem label="创建密码" {...formItemLayout}>
@@ -261,7 +278,7 @@ class RegisterForm extends Component {
               <Input addonBefore={<i className="iconfont icon-password"></i>} type="password" placeholder="请再次输入" />
             )}
           </FormItem>
-          <FormItem label="" {...formItemLayout}>
+          <FormItem {...tailFormItemLayout}>
             <Button type="primary" htmlType="submit" className="login-form-button">进入企业账号</Button>
           </FormItem>
       </Form>
@@ -314,7 +331,7 @@ class RegisterForm extends Component {
         title: '完善个人信息',
         content:
         (
-          this.renderStepThree(getFieldDecorator, formItemLayout)
+          this.renderStepThree(getFieldDecorator, formItemLayout,tailFormItemLayout)
         ),
     }];
     const step = this.props.registerStep - 1;

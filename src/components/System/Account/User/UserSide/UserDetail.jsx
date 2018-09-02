@@ -123,7 +123,7 @@ class UserDetail extends Component {
               {this.getEnterpriseStatus(userDetail.get('enterpriseUserStatus')) || '--'}
             </div>
             <div className={styles.time}>
-              <span>创建时间</span>
+              <span>注册时间</span>
               {userDetail.get('createtime') || '--'}
             </div>
           </div>
@@ -162,7 +162,7 @@ class UserDetail extends Component {
             <hr className={styles.doshLine} />
             <div>
               <span className={styles.enterpriseDepartment}>
-                企业部门(负责电站)
+                企业-部门(负责电站)
               </span>
               <div className={styles.enterpriseDepartmentValue}>
                 {userDetail.get('enterpriseData') && 

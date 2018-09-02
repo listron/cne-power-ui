@@ -16,7 +16,7 @@ class PvStation extends React.Component {
     pvMonitorStation: PropTypes.object,
   }
   constructor(props, context) {
-    
+
     super(props, context);
     this.TabPane = Tabs.TabPane;
     this.state = {
@@ -42,32 +42,27 @@ class PvStation extends React.Component {
   render() {
     let { key, checked, stationType } = this.state;
     const { pvMonitorStation } = this.props;
-   
-    console.log(pvMonitorStation);
     const stationDataSummary = pvMonitorStation.stationDataSummary || {};
-    const stationProvinceSummary=stationDataSummary.stationProvinceSummary||[];
+    const stationProvinceSummary = stationDataSummary.stationProvinceSummary || [];
     const stationStatusSummary = stationDataSummary.stationStatusSummary || [];
     const normalNum=stationStatusSummary.filter(e=>{
-      return e.stationStatus===400
+      return e && e.stationStatus===400
     }).length>0?stationStatusSummary.filter(e=>{
       return e.stationStatus===400
     })[0].stationNum:'0';
 
     const dataInterruptionNum=stationStatusSummary.filter(e=>{
-      return e.stationStatus===500
+      return e && e.stationStatus===500
     }).length>0?stationStatusSummary.filter(e=>{
-      return e.stationStatus===500
+      return e && e.stationStatus===500
     })[0].stationNum:'0';
     
     const unconnectionNum=stationStatusSummary.filter(e=>{
-      return e.stationStatus===900
+      return e && e.stationStatus===900
     }).length>0?stationStatusSummary.filter(e=>{
-      return e.stationStatus===900
+      return e && e.stationStatus===900
     })[0].stationNum:'0';
-    //let stationType=stationDataList.stationStatus.stationStatus
 
-
-   
     const stationDataList = pvMonitorStation.stationDataList || [];
     const newStationDataList = stationDataList.filter(e => {
       return !checked || (checked && e.alarmNum > 0)
@@ -75,17 +70,16 @@ class PvStation extends React.Component {
       if (stationType === 'all') {
         return true
       } else if (stationType === 'normal') {
-        return e.stationStatus.stationStatus === '400'
+        const stationStatus = e.stationStatus || {};
+        return stationStatus.stationStatus === '400'
       } else if (stationType === 'dataInterruption') {
-        return e.stationStatus.stationStatus === '500'
-      } else if (stationType === 'networkInterruption') {
-        return e.stationStatus.stationStatus === '900'
+        const stationStatus = e.stationStatus || {};
+        return stationStatus.stationStatus === '500'
       } else if (stationType === 'unconnection') {
-        return e.stationStatus.stationStatus === '900'
+        const stationStatus = e.stationStatus || {};
+        return stationStatus.stationStatus === '900'
       }
     })
-    //console.log(newStationDataList)
-
     const TabPane = Tabs.TabPane;
     //TABS 筛选
     const operations = (
@@ -95,7 +89,7 @@ class PvStation extends React.Component {
           defaultValue="all"
           buttonStyle="solid"
           onChange={this.onHandleStation}
-          style={{ margin:'0 30px' }}
+          style={{ margin: '0 30px' }}
         >
           <Radio.Button value="all">全部</Radio.Button>
           <Radio.Button value="normal">通讯正常  {normalNum}<span></span></Radio.Button>
@@ -105,21 +99,19 @@ class PvStation extends React.Component {
         </Radio.Group>
       </div>
     );
-   
     const province = (
       <div className={styles.provinceStationTotal}>
-       
-         {stationProvinceSummary.map((item,index)=>{
-      return (
-        <div key={index}>
-        <span>{item.provinceName}:</span>
-        <span className={styles.fontColor}>{item.windStationNum}&nbsp;&nbsp;</span>
-        </div>
-      )
-    })}
+
+        {stationProvinceSummary.map((item, index) => {
+          return (
+            <div key={index}>
+              <span>{item.provinceName}</span>
+              <span className={styles.fontColor}>{item.windStationNum}&nbsp;&nbsp;</span>
+            </div>
+          )
+        })}
       </div>
     )
-
     let iconArray = [
       {
         "400": ['image://./img/wind-normal.png', 'image://./img/wind-alert.png'],
@@ -131,41 +123,41 @@ class PvStation extends React.Component {
         "500": 'image://./img/pv-cutdown.png',
         "900": 'image://./img/pv-unconnected.png'
       },
-
     ]
     let data = [];
     stationDataList.forEach((item, index) => {
-      let stationStatusAll = item.stationStatus || [];
-      let stationStatus = stationStatusAll.stationStatus || "";  
+
+
+
+      let stationStatusAll = item.stationStatus || {};
+      let stationStatus = stationStatusAll.stationStatus || "";
       const stationType = item.stationType || "";
-      const currentStationType=iconArray[item.stationType]||{};   
-      const currentStationStatus=currentStationType[stationStatus]||'';
+      const currentStationType = iconArray[item.stationType] || {};
+      const currentStationStatus = currentStationType[stationStatus] || '';
       data.push({
         name: item.stationName,
         value: [item.longitude, item.latitude, stationType, stationStatus],
-        symbol: stationStatus === "400" ? currentStationStatus[item.alarmNum ? 1 : 0] : currentStationStatus, 
+        symbol: stationStatus === "400" ? currentStationStatus[item.alarmNum ? 1 : 0] : currentStationStatus,
         alarmNum: item.alarmNum,
         stationPower: item.stationPower,
         stationCapacity: item.stationCapacity,
         instantaneous: item.instantaneous
       })
     })
-    
+
     return (
       <div className={styles.pvStation}>
-       <PvStationHeader {...this.props} />
-
+        <PvStationHeader {...this.props} />
         <Tabs className={styles.smallTabs} activeKey={key} tabBarExtraContent={key !== '3' ? operations : province} onChange={this.setkey}>
           <TabPane
             tab={
               <span>
-               <i className="iconfont icon-grid"></i>
+                <i className="iconfont icon-grid"></i>
               </span>
             }
             key="1"
           >
             <PvStationItem {...this.props} stationDataList={newStationDataList} />
-
           </TabPane>
           <TabPane
             tab={
@@ -180,7 +172,7 @@ class PvStation extends React.Component {
           <TabPane
             tab={
               <span>
-               <i className="iconfont icon-map"></i>
+                <i className="iconfont icon-map"></i>
               </span>
             }
             key="3"
@@ -188,11 +180,9 @@ class PvStation extends React.Component {
             <Map testId="pv_bmap_station" {...this.props} stationDataList={data} />
           </TabPane>
         </Tabs>
-
       </div>
     )
   }
 }
 export default PvStation
 
- 

@@ -5,6 +5,9 @@
   margin-left: 90px;
   .userInfo{
     :global{
+      .ant-form-item, .ant-form-horizontal {
+        width: 315px;
+      }
       .ant-form{
         width: 300px;
         .ant-form-item{
@@ -15,11 +18,35 @@
         }
       } 
     }
+    .userArgee{
+      .userAgreeTip{
+        color: #449ad3;
+      }
+    }
+    .enterpriseBrief{
+      text-align: center;
+      margin: 0 0 30px;
+      .enterpriseLogo{
+        margin-bottom: 10px;
+        img{
+          border-radius:4px;
+        }
+      }
+      .inviteTip{
+        margin: 20px 0;
+        span{
+          color: #e08031;
+        }
+      }
+    }
   }
   .inviteUser{
     text-align: center;
     .enterpriseLogo{
       margin-bottom: 10px;
+      img{
+        border-radius:4px;
+      }
     }
     .inviteTip{
       margin: 20px 0;
@@ -31,6 +58,27 @@
   .joinCheckCode{
     width: 200px;
     margin: 0 auto;
+    :global{
+      .ant-checkbox-input:focus + .ant-checkbox-inner {
+        border-color: $themeColor;
+      }
+    }
+    .enterpriseBrief{
+      text-align: center;
+      margin: 0 0 30px;
+      .enterpriseLogo{
+        margin-bottom: 10px;
+        img{
+          border-radius:4px;
+        }
+      }
+      .inviteTip{
+        margin: 20px 0;
+        span{
+          color: #e08031;
+        }
+      }
+    }
   }
   .enterpriseInfo{
     width: 416px;
@@ -94,6 +142,39 @@
       background:#f7f7f7;
       border:1px solid #dfdfdf;
       color: #dfdfdf;
+    }
+  }
+
+  .loginAbnormal{
+    width: 200px;
+    text-align: center;
+    margin-top: 60px;
+    color:#999999;
+    .abnormalIcon{
+      display: block;
+      margin: 0 auto;
+      :global{
+        .iconfont{
+          font-size: 62px;
+          color: #999999;
+        }
+      }
+    }
+  }
+  .waitExamine{
+    width: 200px;
+    text-align: center;
+    margin-top: 60px;
+    color: #e08031;
+    .waitExamineIcon{
+      display: block;
+      margin: 0 auto;
+      :global{
+        .iconfont{
+          font-size: 62px;
+          color: #e08031;
+        }
+      }
     }
   }
   :global{

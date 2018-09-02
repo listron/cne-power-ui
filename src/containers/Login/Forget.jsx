@@ -25,14 +25,6 @@ class Forget extends Component {
     this.props.changeLoginStore({pageTab, registerStep: 1, joinStep: 1,enterpriseId: ''})
   }
 
-  toSeeAgreement = () => {
-    this.props.changeLoginStore({pageTab: 'agreement'})
-  }
-
-  toContactUs = () => {
-    this.props.changeLoginStore({pageTab: 'contact'})
-  }
-
   render() {
 
     return (
@@ -53,12 +45,8 @@ class Forget extends Component {
           username={this.props.username}
           checkCodeLogin={this.props.checkCodeLogin}
           error={this.props.error}
+          changeLoginStore={this.props.changeLoginStore}
         />
-        <div className={styles.contactUs}>
-          <span onClick={this.toSeeAgreement}>用户协议</span>
-          <span onClick={this.toContactUs}>联系我们</span>
-        </div>
-
       </div>
     );
   }
@@ -75,7 +63,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   sendCode: params => dispatch({ type: loginAction.SEND_CODE_SAGA, params}),
   resetPassword: params => dispatch({ type: loginAction.RESET_PASSWORD_SAGA, params }),
-  checkCodeLogin: params => dispatch({ type: loginAction.CHECK_CODE_SAGA, params}),
+  checkCodeLogin: params => dispatch({ type: loginAction.PHONE_CODE_LOGIN_SAGA, params}),
   phoneCodeRegister: params => dispatch({ type: loginAction.PHONE_CODE_REGISTER_SAGA, params}),
 })
 

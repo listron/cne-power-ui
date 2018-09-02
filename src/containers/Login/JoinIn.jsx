@@ -36,7 +36,7 @@ class JoinIn extends Component {
 
   render() {
     return (
-      <div>
+      <div className={styles.joinInContent} >
         <div className={styles.goLogin}>
           <span  onClick={()=>this.changePage( 'login')}> 登录 </span>
           <span>|</span>

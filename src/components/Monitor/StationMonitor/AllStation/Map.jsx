@@ -1,7 +1,6 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 import { withRouter } from 'react-router-dom';
 import echarts from 'echarts';
 import bmap from 'echarts/extension/bmap/bmap';
@@ -12,6 +11,7 @@ class Map extends Component {
     allMonitorStation: PropTypes.object,
     testId: PropTypes.string,
     stationDataList: PropTypes.array,
+     history: PropTypes.object,
   }
   constructor(props) {
     super(props)
@@ -26,7 +26,6 @@ class Map extends Component {
   }
   componentWillReceiveProps(nextProps) {
     const { testId, stationDataList } = nextProps;
-    // console.log('will receive prosp')
     const testChart = echarts.init(document.getElementById(testId));
     this.setMapChart(testChart, stationDataList);
   }
@@ -153,12 +152,11 @@ class Map extends Component {
           enterable: true,
           //position:['50%','50%'],
           formatter: (params) => {
-             //console.log(params.data);
             return `<div class='stationCard' style='height:70px;overflow:hidden'>
             <div class='stationCardTitle' style='display:flex;flex-direction: row;justify-content: space-between;'>
             <span>${params.data.name}</span>
-            <a target='_blank' href='#/monitor/singleStation/${params.data.stationCode}'>
-            <span style='color:red' onClick={console.log(${params.data.alarmNum},'报警数')}>${params.data.alarmNum > 0 ? '⚠' : ''}${params.data.alarmNum > 0 ? params.data.alarmNum : ''}</span>    
+            <a target='_blank' href='#/monitor/alarm/realtime'>
+            <span style='color:red'>${params.data.alarmNum > 0 ? '⚠' : ''}${params.data.alarmNum > 0 ? params.data.alarmNum : ''}</span>    
             </a>
             </div>           
             <div class='stationCardProgress' style='background:#dfdfdf;height:1px;
@@ -168,7 +166,7 @@ class Map extends Component {
               &nbsp;&nbsp;
               <span>${params.data.stationCapacity}MW</span>
             </div>
-            <div class='stationCardWindSpeed'>${params.data.instantaneous}m/s</div>             
+            <div class='stationCardWindSpeed'>${params.data.instantaneous}${params.data.value[2]==='0'?'m/s':'W/m²'}</div>             
           </div>`
           },
           // width:'128px',
@@ -205,17 +203,13 @@ class Map extends Component {
     };
     testChart.setOption(option)
     testChart.on('click', (params) => {
-      console.log(params)
-      this.props.history.push(`/monitor/singleStation/${params.data.stationCode}`)
-     
+      this.props.history.push(`/monitor/singleStation/${params.data.stationCode}`)    
     })
   }
 
   render() {
     const { barData } = this.state;
     const { testId, stationDataList } = this.props;
-
-
     return (
       <div>
         <div id={testId} style={{ width: "100%", height: "580px" }} ></div>

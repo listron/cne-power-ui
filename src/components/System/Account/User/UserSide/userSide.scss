@@ -156,13 +156,9 @@
         border: 1px solid $themeColor;
         box-shadow: 0 0 2px $themeColor;
         color: $themeColor;
-        // .ant-btn:hover, .ant-btn:focus, .ant-btn::selection {
-        //   border: 1px solid #199475;
-        //   box-shadow: 0 0 2px #199475;
-        // }
-        &:hover {
-          background-color: #fff;
-          color: #199475;
+        &:hover,&:focus {
+          background-color: $themeColor;
+          color: #fff;
         }
       }
       .handleArea {
