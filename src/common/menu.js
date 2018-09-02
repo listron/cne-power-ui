@@ -42,6 +42,14 @@ const menuData = [
             path: 'realtime',
             rightKey: 'monitor_alarm_realTime',
           }, {
+            name: '已转工单',
+            path: 'transfer',
+            rightKey: 'monitor_alarm_realTime',
+          }, {
+            name: '手动解除',
+            path: 'relieve',
+            rightKey: 'monitor_alarm_realTime',
+          }, {
             name: '历史告警',
             path: 'history',
             rightKey: 'monitor_alarm_history',

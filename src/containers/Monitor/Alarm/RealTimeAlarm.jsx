@@ -118,7 +118,7 @@ class RealTimeAlarm extends Component {
 
   getStatus() {
     const pathname = this.props.location.pathname;
-    const status = pathname.split('/')[4];
+    const status = pathname.split('/')[3];
     return status;
   }
 

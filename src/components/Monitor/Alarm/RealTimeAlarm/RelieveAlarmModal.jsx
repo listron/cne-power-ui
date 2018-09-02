@@ -44,6 +44,12 @@ class RelieveAlarmModal extends Component {
     });
   }
 
+  cancelWarningTip = () => {//信息提示栏隐藏
+    this.setState({
+      showWarningTip:false
+    })
+  }
+
   render(){
     const { getFieldDecorator } = this.props.form;
     const { showWarningTip, warningTipText } = this.state;
@@ -52,9 +58,10 @@ class RelieveAlarmModal extends Component {
         {showWarningTip && <WarningTip
           hiddenCancel={false} 
           style={{marginTop:'250px',width: '210px',height:'88px'}}
+          onCancel={this.cancelWarningTip}
           onOK={this.onRelieveAlarm} value={warningTipText} />}
         <Modal title="解除告警" className={styles.relieveModal}
-          style={{height:630}}
+          style={{minHeight:450}}
           bodyStyle={{display:'flex',flex:1,flexDirection:'column',padding:24}}
           width={625}
           onOk={this.onSubmit}
