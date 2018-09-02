@@ -104,7 +104,7 @@ function *phoneCodeLogin(action){
         verificationCode: params.verificationCode,
       }),
     });
-    if(response.data.code === '10000' && response.data.data.userEnterpriseStatus){
+    if(response.data.code === '10000'){
       const { data } = response.data;
       if(data.userEnterpriseStatus === 3) {
         if(params.isNotLogin === 1 || data.enterpriseId !== null) {
@@ -165,7 +165,7 @@ function *phoneCodeRegister(action){
       message.error(response.data.message);
     }else{
       yield put({type: loginAction.PHONE_CODE_LOGIN_SAGA, params});
-      message.success(response.data.message);
+      // message.success(response.data.message);
     }
   }catch(e){
     console.log(e);
@@ -328,7 +328,6 @@ function *joinEnterprise(action){
       });
       message.success(response.data.message);
     } else{
-      message.error(response.data.message);
       yield put({type: loginAction.JOIN_ENTERPRISE_FAIL, data: response.data })
       if(response.data.code !== '20015') {
         message.error(response.data.message);
