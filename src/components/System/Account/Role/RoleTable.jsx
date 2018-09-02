@@ -145,7 +145,7 @@ class RoleTable extends Component {
     return (
       <div className={styles.roleList} style={{display: showPage==='list'?'flex':'none'}}>
       {showWarningTip && <WarningTip onOK={this.onConfirmWarningTip} value={warningTipText} hiddenCancel={hiddenWarningTipCancelText} />}
-        <div className={styles.roleListTop} >
+        {/* <div className={styles.roleListTop} >
           <div>
             <Button className={styles.addRole} onClick={this.onRoleAdd}>
               <Icon type="plus" />
@@ -155,23 +155,23 @@ class RoleTable extends Component {
               {this.createHandleOption()}
             </div>
           </div>
-        </div>
+        </div> */}
         <Table 
           loading={isFetching}
           rowKey={(record)=>{return record.roleId}} 
-          rowSelection={{
-            selectedRowKeys: selectedRole.map(e=>e.roleId),
-            onChange: this.onRowSelect
-          }}
+          // rowSelection={{
+          //   selectedRowKeys: selectedRole.map(e=>e.roleId),
+          //   onChange: this.onRowSelect
+          // }}
           dataSource={roleData} 
           columns={this.createTableColumn()} 
           onChange={this.tableChange}
           pagination={false}
         />
-        <div className={styles.tableFooter}>
+        {/* <div className={styles.tableFooter}>
           <span className={styles.info}>当前选中<span className={styles.totalNum}>{selectedRole.length}</span>项</span>
           {selectedRole.length > 0 &&<span className={styles.cancel} onClick={this.cancelRowSelect}>取消选中</span>}
-        </div>
+        </div> */}
       </div>
     )
   }

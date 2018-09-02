@@ -112,8 +112,15 @@ class RealTimeAlarmTable extends Component {
     });
   }
 
+  cancelRowSelect = () => {
+    this.setState({
+      selectedRowKeys: []
+    });
+  }
+
   initColumn = () => {
     const level = ['一级', '二级', '三级', '四级']; 
+    const { alarmStatus } = this.props;
     const columns = [
       {
         title: '告警级别',
@@ -132,7 +139,6 @@ class RealTimeAlarmTable extends Component {
         title: '设备名称',
         dataIndex: 'deviceName',
         key: 'deviceName', 
-        sorter: (a,b) => a.stationCode - b.stationCode,
       },{
         title: '设备类型',
         dataIndex: 'deviceTypeName',
@@ -173,6 +179,7 @@ class RealTimeAlarmTable extends Component {
         title: '告警处理',
         dataIndex: 'operation',
         key: 'operation',
+        colSpan: alarmStatus === 1 ? 0: 1,
         render: (text, record, index) => {
           if(record.isTransferWork === 0) {
             return (
@@ -338,6 +345,10 @@ class RealTimeAlarmTable extends Component {
           columns={columns}
           pagination={false}
         />
+        <div className={styles.tableFooter}>
+          <span className={styles.info}>当前选中<span className={styles.totalNum}>{selectedRowKeys.length}</span>项</span>
+          {selectedRowKeys.length > 0 &&<span className={styles.cancel} onClick={this.cancelRowSelect}>取消选中</span>}
+        </div>
         {showTransferTicketModal&&this.renderTransferModal()}
         {showRelieveAlarmModal&&this.renderRelieveModal()}
       </div>

@@ -37,7 +37,7 @@ class RelieveAlarmModal extends Component {
       if(!err) {
         this.props.onRelieveAlarm({
           operateReason: values.operateReason,
-          endTime: moment(values.endTime).utc().format(),
+          endTime: moment('2020-12-31 23:59:59').utc().format(),
           warningLogId: this.props.selectedRowKeys,
         });
       }
@@ -49,7 +49,8 @@ class RelieveAlarmModal extends Component {
     const { showWarningTip, warningTipText } = this.state;
     return (     
       <Form>
-        {showWarningTip && <WarningTip 
+        {showWarningTip && <WarningTip
+          hiddenCancel={false} 
           style={{marginTop:'250px',width: '210px',height:'88px'}}
           onOK={this.onRelieveAlarm} value={warningTipText} />}
         <Modal title="解除告警" className={styles.relieveModal}
@@ -59,7 +60,7 @@ class RelieveAlarmModal extends Component {
           onOk={this.onSubmit}
           visible={true}
           onCancel={this.props.onCancel}>
-          <FormItem className={styles.formItem} label="解除时限">
+          {/* <FormItem className={styles.formItem} label="解除时限">
             {getFieldDecorator('endTime', {
               rules: [{ 
                 required: true,
@@ -68,7 +69,7 @@ class RelieveAlarmModal extends Component {
             })(
               <DatePicker placeholder="请输入" />
             )}
-          </FormItem>
+          </FormItem> */}
           <FormItem  className={styles.formItem} label="解除原因">
             {getFieldDecorator('operateReason', {
               rules: [{ 
@@ -79,7 +80,7 @@ class RelieveAlarmModal extends Component {
               <InputLimit style={{marginLeft:-60,marginTop:15}} placeholder="请输入不超过80字的解除原因..." />
             )}
           </FormItem>
-          <div className={styles.instructionText}>注意：保存后，此设备的同类告警在所选时限内均被解除</div>
+          <div className={styles.instructionText}>注意：保存后，此设备的同类告警在所选时限内均被解除。</div>
         </Modal>
       </Form>
     );
