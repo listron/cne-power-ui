@@ -165,6 +165,7 @@ const mapStateToProps = (state) => ({
   lastUpdateTime: state.monitor.alarm.get('lastUpdateTime'),
   ticketInfo: state.monitor.alarm.get('ticketInfo').toJS(),
   relieveInfo: state.monitor.alarm.get('relieveInfo').toJS(),
+  selectedRowKeys: state.monitor.alarm.get('selectedRowKeys').toJS(),
 });
 const mapDispatchToProps = (dispatch) => ({
   changeAlarmStore: payload => dispatch({type: alarmAction.CHANGE_ALARM_STORE_SAGA, payload}),

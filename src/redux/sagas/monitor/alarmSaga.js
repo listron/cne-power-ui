@@ -176,6 +176,12 @@ function *transferAlarm(action) {  // 转工单
     const response = yield call(axios.post,url,payload);
     if(response.data.code === '10000')
     {
+      yield put({
+        type:  alarmAction.CHANGE_ALARM_STORE,
+        payload: {
+          selectedRowKeys: []
+        }
+      });
       const params = yield select(state => ({//继续请求实时告警
         warningLevel: state.monitor.alarm.get('warningLevel'),
         stationType: state.monitor.alarm.get('stationType'),
@@ -183,8 +189,9 @@ function *transferAlarm(action) {  // 转工单
         deviceTypeCode: state.monitor.alarm.get('deviceTypeCode'),
         warningConfigName: state.monitor.alarm.get('warningConfigName'),
         startTime: state.monitor.alarm.get('startTime'),
-        endTime: state.monitor.alarm.get('endTime'),
         deviceName: state.monitor.alarm.get('deviceName'),
+        isTransferWork: 1,
+        isRelieveAlarm: 1
       }));
       yield put({
         type: alarmAction.GET_REALTIME_ALARM_SAGA,
@@ -204,6 +211,12 @@ function *relieveAlarm(action) {  // 屏蔽告警
     const response = yield call(axios.post,url,payload);
     if(response.data.code === '10000')
     {
+      yield put({
+        type:  alarmAction.CHANGE_ALARM_STORE,
+        payload: {
+          selectedRowKeys: []
+        }
+      });
       const params = yield select(state => ({//继续请求实时告警
         warningLevel: state.monitor.alarm.get('warningLevel'),
         stationType: state.monitor.alarm.get('stationType'),
@@ -211,8 +224,9 @@ function *relieveAlarm(action) {  // 屏蔽告警
         deviceTypeCode: state.monitor.alarm.get('deviceTypeCode'),
         warningConfigName: state.monitor.alarm.get('warningConfigName'),
         startTime: state.monitor.alarm.get('startTime'),
-        endTime: state.monitor.alarm.get('endTime'),
         deviceName: state.monitor.alarm.get('deviceName'),
+        isTransferWork: 1,
+        isRelieveAlarm: 1
       }));
       yield put({
         type: alarmAction.GET_REALTIME_ALARM_SAGA,
