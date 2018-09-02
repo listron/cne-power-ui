@@ -85,8 +85,13 @@
     margin-left: -40px; 
     text-align: center;
     margin-top: 60px;
+    box-shadow: 0 2px 8px 0 rgba(0,0,0,0.20);
     .enterpriseBack{
       margin-top: 50px;
+    }
+    .enterpriseBack:hover{
+      cursor: pointer;
+      color: $themeColor;
     }
     .enterpriseBtn{
       margin-top: 40px;

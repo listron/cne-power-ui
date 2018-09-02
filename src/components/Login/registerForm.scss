@@ -8,8 +8,14 @@
       -webkit-box-shadow: 0 0 0 0;
       box-shadow: 0 0 0 0;
     }
-    .ant-tabs-nav, .ant-tabs-tab-active {
+    .ant-steps-item-icon{
+      margin-right: 5px;
+    }
+    .ant-tabs-nav{
       width: 100%;
+    }
+    .ant-tabs-tab-active {
+      width: 50%;
     }
     .ant-input-group-addon{
       padding: 0 7px;
@@ -26,7 +32,7 @@
     }
     .ant-steps {
       position: absolute;
-      left: -60px;
+      left: -56px;
       top: 0px;
       margin-bottom: 10px;
     }
@@ -35,6 +41,7 @@
     }
     .ant-steps-horizontal:not(.ant-steps-label-vertical) .ant-steps-item{
       background: url(/img/graybg.png) no-repeat 0 center;
+      width: 107px;
     }
     .ant-form-item-label{
       text-align: right;
@@ -125,7 +132,7 @@
     }
   }
   .enterpriseInfor{
-    margin-left: -82px;
+    margin-left: -166px;
 
     .userArgee{
       .userAgreeTip{
@@ -135,19 +142,20 @@
     .domain{
       display: flex;
       flex-direction: row;
+      width: 300px;
       span{
         color: $themeColor;
       }
     }
     :global{
       .ant-form input[type="checkbox"]{
-        background-color: #199475;
+        background-color: $themeColor;
       }
       .is-validating.has-feedback .ant-form-item-children::after{
         content: '';
       }
-      .ant-form-item-control-wrapper{
-        padding-left: 5px;
+      .ant-checkbox-wrapper:hover .ant-checkbox-inner, .ant-checkbox:hover .ant-checkbox-inner{
+        border-color: $themeColor;
       }
       .ant-btn-primary {
         width: 200px;

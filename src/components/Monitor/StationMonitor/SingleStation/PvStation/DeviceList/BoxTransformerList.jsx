@@ -12,6 +12,7 @@ class BoxTransformerList extends Component {
     boxTransformerList: PropTypes.object,
     match: PropTypes.object,
     loading: PropTypes.bool,
+    deviceTypeCode: PropTypes.number,
   }
 
   constructor(props){
@@ -60,7 +61,7 @@ class BoxTransformerList extends Component {
       case 300:
         return '故障';
       case 900:
-        return '未接入';
+        return '无通讯';
       default:
         return '';
     }
@@ -139,13 +140,13 @@ class BoxTransformerList extends Component {
     const deviceStatus = boxTransformerList && boxTransformerList.deviceStatusSummary;
     const deviceStatusNums=deviceStatus && deviceStatus.map(e=>e.deviceStatusNum);
     const operations = (<div className={styles.inverterRight} >
-      <Switch defaultChecked={false} onChange={this.onSwitchAlarm}  />告警
+      <Switch defaultChecked={false} onChange={this.onSwitchAlarm}  /> 告警
       <Radio.Group defaultValue={0} buttonStyle="solid" className={styles.inverterStatus} onChange={this.onChangeStatus}  >
         <Radio.Button value={0} >全部</Radio.Button>
-        <Radio.Button value={100}>正常{deviceStatusNums && deviceStatusNums[0]}</Radio.Button>
-        <Radio.Button value={300}>故障{deviceStatusNums && deviceStatusNums[2]}</Radio.Button>
-        <Radio.Button value={200}>停机{deviceStatusNums && deviceStatusNums[1]}</Radio.Button>
-        <Radio.Button value={900}>无通讯{deviceStatusNums && deviceStatusNums[3]}</Radio.Button>
+        <Radio.Button value={100}>正常 {deviceStatusNums && deviceStatusNums[0]}</Radio.Button>
+        <Radio.Button value={300}>故障 {deviceStatusNums && deviceStatusNums[2]}</Radio.Button>
+        <Radio.Button value={200}>停机 {deviceStatusNums && deviceStatusNums[1]}</Radio.Button>
+        <Radio.Button value={900}>无通讯 {deviceStatusNums && deviceStatusNums[3]}</Radio.Button>
       </Radio.Group>
     </div>);
     const pagination = {
@@ -163,7 +164,7 @@ class BoxTransformerList extends Component {
           <TabPane tab={<span><i className="iconfont icon-grid" ></i></span>} key="1" className={styles.inverterBlockBox} >
             {(tmpParentDeviceCodes&&tmpParentDeviceCodes.length>0) ? tmpParentDeviceCodes.map((e,index)=>{
               return (<div key={index}>
-                <div className={styles.parentDeviceName} >{e[0].parentDeviceName}</div>
+                <div className={styles.parentDeviceName} >{e && e.parentDeviceName}</div>
                 {e && e.map((item,i)=>{
                   return (<div key={i} className={item.deviceStatus === 900 ? styles.cutOverItem : styles.inverterItem}>
                     <div className={styles.inverterItemIcon} ><i className="iconfont icon-xb" ></i>{item.alarmNum && <i className="iconfont icon-alarm" ></i>}</div>
