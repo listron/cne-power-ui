@@ -112,7 +112,7 @@ class AlarmStatisticByType extends Component {
     //数据导出按钮
     const operations = (
       <div className={styles.exportData}>
-        <button className={styles.exportBtn} >数据导出</button>
+        <button className={styles.exportBtn}>数据导出</button>
       </div >
     );
     return (
@@ -120,7 +120,7 @@ class AlarmStatisticByType extends Component {
         <div className={styles.filter}>
           <span>筛选条件</span>
           <Button className={styles.stationType} onClick={() => this.onFilterShowChange('stationSelect')}>
-            电站类型{showFilter === 'stationSelect' ? <Icon type="up" /> : <Icon type="down" />}
+            选择电站{showFilter === 'stationSelect' ? <Icon type="up" /> : <Icon type="down" />}
           </Button>
           <Select placeholder="统计时间" style={{ width: 120 }} onChange={this.onChangeDuration}>
             <Option value="today">今天</Option>

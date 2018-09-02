@@ -391,7 +391,7 @@ class AssignUserModal extends Component {
     return (
       <div className={styles.userListContainer}>
         <div className={styles.userListTip}>父部门不可选择人员</div>       
-        {user.size > 0 ? <div className={styles.noUser}>企业暂无人员。</div> :
+        {user.size === 0 ? <div className={styles.noUser}>企业暂无人员。</div> :
           user.map((item) => {
             return (
               <div key={item.get('userId')} className={styles.userItem}>

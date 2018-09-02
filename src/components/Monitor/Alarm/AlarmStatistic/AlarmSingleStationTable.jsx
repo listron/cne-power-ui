@@ -29,35 +29,32 @@ class AlarmSingleStationTable extends React.Component {
         title: "时间",
         dataIndex: "time",
         key: "time",
-        sorter: (a,b) => moment(a.timeOn).isBefore(moment(b.timeOn)),
+        sorter: true,
         render: (text, record) => moment(text).format('YYYY-MM-DD HH:mm'),
       },
       {
         title: "告警总数",
         dataIndex: "alarmNum",
         key: "alarmNum",
-        sorter: (a, b) => a.alarmNum - b.alarmNum,
-
+        sorter: true,
       },
       {
         title: "转工单数",
         dataIndex: "transferWorkAlarmNum",
         key: "transferWorkAlarmNum",
-        sorter: (a, b) => a.transferWorkAlarmNum - b.transferWorkAlarmNum,
-
+        sorter: true,
       },
       {
         title: "未转工单数",
         dataIndex: "noTransferWorkAlarmNum",
         key: "noTransferWorkAlarmNum",
-        sorter: (a, b) => a.noTransferWorkAlarmNum - b.noTransferWorkAlarmNum,
-
+        sorter: true,
       },
       {
         title: "转工单率",
         dataIndex: "transferWorkRate",
         dataIndex: "transferWorkRate",
-        sorter: (a, b) => a.transferWorkRate - b.transferWorkRate
+        sorter: true,
       }
     ];
     return columns;
@@ -65,7 +62,7 @@ class AlarmSingleStationTable extends React.Component {
 
   render() {
     const { singleAlarmStatistic } = this.props;
-    const { pageNum, pageSize, } = this.state;
+    const { pageNum, pageSize } = this.state;
    
     const totalNum = singleAlarmStatistic.length;
     let startRow = (pageNum - 1) * pageSize;
@@ -83,7 +80,7 @@ class AlarmSingleStationTable extends React.Component {
         <Table 
           columns={this.renderColumn()} 
           dataSource={data} 
-          onChange={this.onChange} 
+          onChange={this.onChangeTable} 
           pagination={false} />
       </div>
     );
