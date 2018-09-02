@@ -25,7 +25,39 @@ class HostoryAlarmTable extends Component {
       showTransferPopover: [],
       showRelievePopover: [],
       showAutoRelievePopover: [],
+      key: '',
+      order: 'ascend',
     }
+  }
+
+  onChangeTable = (pagination, filters, sorter) => {
+    const field = sorter.field;
+    let order = sorter.order;
+    let key = '';
+    switch(field) {
+      case 'warningLevel':
+        key = 'warningLevel';
+        break;
+      case 'stationName':
+        key = 'stationCode';
+        break;
+      case 'deviceTypeName':
+        key = 'deviceTypeCode';
+        break;
+      case 'timeOn':
+        key = 'timeOn';
+        break;
+      case 'timeOff':
+        key = 'timeOff';
+        break;
+      case 'operation':
+        key = 'warningStatus';
+        break;
+    }
+    this.setState({
+      key,
+      order,
+    });
   }
 
   onChangePagination = ({ pageSize, currentPage }) => {
@@ -94,15 +126,15 @@ class HostoryAlarmTable extends Component {
         title: '告警级别',
         dataIndex: 'warningLevel',
         key: 'warningLevel',
+        sorter: true,
         render: (text, record, index)=> {
           return level[text-1]
         },
-        sorter: (a,b) => a.warningLevel - b.warningLevel,
       },{
         title: '电站名称',
         dataIndex: 'stationName',
-        key: 'stationName', 
-        sorter: (a,b) => a.stationCode - b.stationCode,
+        key: 'stationName',
+        sorter: true,
       },{
         title: '设备名称',
         dataIndex: 'deviceName',
@@ -110,8 +142,8 @@ class HostoryAlarmTable extends Component {
       },{
         title: '设备类型',
         dataIndex: 'deviceTypeName',
-        key: 'deviceTypeName', 
-        sorter: (a,b) => a.deviceTypeCode - b.deviceTypeCode,
+        key: 'deviceTypeName',
+        sorter: true,
       },{
         title: '告警类型',
         dataIndex: 'warningConfigName',
@@ -119,24 +151,27 @@ class HostoryAlarmTable extends Component {
       },{
         title: '告警描述',
         dataIndex: 'warningCheckDesc',
-        key: 'warningCheckDesc', 
+        key: 'warningCheckDesc',
+        render: (text, record) => {
+          return <div className={styles.alarmDesc} title={text}>{text}</div>
+        } 
       },{
         title: '发生时间',
         dataIndex: 'timeOn',
-        key: 'timeOn', 
+        key: 'timeOn',
+        sorter: true,
         render: (text, record) => moment(text).format('YYYY-MM-DD HH:mm'),
-        sorter:  (a,b) => moment(a.timeOn).isBefore(moment(b.timeOn)),
       },{
         title: '结束时间',
         dataIndex: 'timeOff',
         key: 'timeOff',
+        sorter: true,
         render: (text, record) => moment(text).format('YYYY-MM-DD HH:mm'),
-        sorter:  (a,b) => moment(a.timeOff).isBefore(moment(b.timeOff)),
       },{
         title: '告警处理',
         dataIndex: 'operation',
         key: 'operation',
-        sorter: (a,b) => a.warningStatus - b.warningStatus,
+        sorter: true,
         render: (text, record, index) => {
           if(record.isTransferWork === 0) {
             return (
@@ -184,8 +219,10 @@ class HostoryAlarmTable extends Component {
     return (
       <div className={styles.detailInfo}>
         <div className={styles.header}>
-          <i className="iconfont icon-tranlist icon-action"></i>
-          <span>已转工单</span>
+          <div className={styles.title}>
+            <i className="iconfont icon-tranlist icon-action"></i>
+            <span className={styles.titleText}>已转工单</span>
+          </div>
           <Icon type="close" onClick={()=>{
             let showTransferPopover = this.state.showTransferPopover;
             showTransferPopover[i] = false;
@@ -210,7 +247,7 @@ class HostoryAlarmTable extends Component {
             <span className={styles.value}>{ticketInfo.defectDescribe}</span>
           </div>
         </div>
-        <Button><Link to={`/operation/ticket/${ticketInfo.defectId}`}>查看工单详情</Link></Button> 
+        <Button className={styles.ticketButton}><Link to={`/operation/ticket/${ticketInfo.defectId}`}>查看工单详情</Link></Button> 
       </div>
     );
   }
@@ -220,8 +257,10 @@ class HostoryAlarmTable extends Component {
     return (
       <div className={styles.detailInfo}>
         <div className={styles.header}>
-          <i className="iconfont icon-icon-manual icon-action"></i>
-          <span>手动解除</span>
+          <div className={styles.title}>
+            <i className="iconfont icon-manual icon-action"></i>
+            <span className={styles.titleText}>手动解除</span>
+          </div>
           <Icon type="close" onClick={()=>{
             let showRelievePopover = this.state.showRelievePopover;
             showRelievePopover[i] = false;
@@ -250,8 +289,10 @@ class HostoryAlarmTable extends Component {
     return (
       <div className={styles.detailInfo}>
         <div className={styles.header}>
-          <i className="iconfont icon-icon-lifted icon-action"></i>
-          <span>自动解除</span>
+          <div className={styles.title}>
+            <i className="iconfont icon-lifted icon-action"></i>
+            <span className={styles.titleText}>自动解除</span>
+          </div>
           <Icon type="close" onClick={()=>{
             let showAutoRelievePopover = this.state.showAutoRelievePopover;
             showAutoRelievePopover[i] = false;
@@ -272,8 +313,18 @@ class HostoryAlarmTable extends Component {
 
   render() {
     const { historyAlarm, loading } = this.props;
-    const { pageSize, currentPage } = this.state;
-    const tableSource = historyAlarm.filter((e,i)=>{ // 手动分页
+    const { pageSize, currentPage, key, order } = this.state;
+    let sorterData = historyAlarm;
+    if(key !== '') {
+      sorterData = historyAlarm.sort(function(a,b) {
+        if(key !== 'timeOn' && key !== 'timeOff') {
+          return (a[key] - b[key])*(order === 'ascend' ? 1 : -1);
+        } else {
+          return (moment.utc(a[key]).unix()- moment.utc(b[key]).unix())*(order === 'ascend' ? 1 : -1);
+        }
+      });
+    }
+    const tableSource = sorterData.filter((e,i)=>{ // 手动分页
       const startIndex = (currentPage - 1) * pageSize;
       const endIndex = startIndex + pageSize;
       return (i >= startIndex && i < endIndex);
@@ -291,6 +342,7 @@ class HostoryAlarmTable extends Component {
           dataSource={tableSource}
           columns={columns}
           pagination={false}
+          onChange={this.onChangeTable}
         />
       </div>
     );

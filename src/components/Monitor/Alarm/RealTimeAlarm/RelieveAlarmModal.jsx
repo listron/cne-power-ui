@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Modal, DatePicker } from 'antd';
+import { Form, Modal } from 'antd';
 import PropTypes from 'prop-types';
 import styles from './realTimeAlarm.scss';
 import InputLimit from '../../../Common/InputLimit';

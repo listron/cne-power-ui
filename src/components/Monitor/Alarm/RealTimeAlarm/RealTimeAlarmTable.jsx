@@ -40,7 +40,7 @@ class RealTimeAlarmTable extends Component {
       showWarningTip: false,
       warningTipText: '',
       key: '',
-      order: 'ascend'
+      order: 'ascend',
     }
   }
 
@@ -179,7 +179,10 @@ class RealTimeAlarmTable extends Component {
       },{
         title: '告警描述',
         dataIndex: 'warningCheckDesc',
-        key: 'warningCheckDesc', 
+        key: 'warningCheckDesc',
+        render: (text, record) => {
+          return <div className={styles.alarmDesc} title={text}>{text}</div>
+        }
       },{
         title: '发生时间',
         dataIndex: 'timeOn',
@@ -195,7 +198,7 @@ class RealTimeAlarmTable extends Component {
         title: '告警处理',
         dataIndex: 'operation',
         key: 'operation',
-        colSpan: alarmStatus === 1 ? 0: 1,
+        colSpan: alarmStatus === 1 ? 0: null,
         render: (text, record, index) => {
           if(record.isTransferWork === 0) {
             return (
@@ -267,8 +270,10 @@ class RealTimeAlarmTable extends Component {
     return (
       <div className={styles.detailInfo}>
         <div className={styles.header}>
-          <i className="iconfont icon-tranlist icon-action"></i>
-          <span>已转工单</span>
+          <div className={styles.title}>
+            <i className="iconfont icon-tranlist icon-action"></i>
+            <span className={styles.titleText}>已转工单</span>
+          </div>
           <Icon type="close" onClick={()=>{
             let showTransferPopover = this.state.showTransferPopover;
             showTransferPopover[i] = false;
@@ -293,7 +298,7 @@ class RealTimeAlarmTable extends Component {
             <span className={styles.value}>{ticketInfo.defectDescribe}</span>
           </div>
         </div>
-        <Button><Link to={`/operation/ticket/${ticketInfo.defectId}`}>查看工单详情</Link></Button> 
+        <Button className={styles.ticketButton}><Link to={`/operation/ticket/${ticketInfo.defectId}`}>查看工单详情</Link></Button> 
       </div>
     );
   }
@@ -303,8 +308,10 @@ class RealTimeAlarmTable extends Component {
     return (
       <div className={styles.detailInfo}>
         <div className={styles.header}>
-          <i className="iconfont icon-icon-manual icon-action"></i>
-          <span>手动解除</span>
+          <div className={styles.title}>
+            <i className="iconfont icon-manual icon-action"></i>
+            <span className={styles.titleText}>手动解除</span>
+          </div>
           <Icon type="close" onClick={()=>{
             let showRelievePopover = this.state.showRelievePopover;
             showRelievePopover[i] = false;
@@ -372,10 +379,10 @@ class RealTimeAlarmTable extends Component {
           pagination={false}
           onChange={this.onChangeTable}
         />
-        <div className={styles.tableFooter}>
-          <span className={styles.info}>当前选中<span className={styles.totalNum}>{selectedRowKeys.length}</span>项</span>
-          {selectedRowKeys.length > 0 &&<span className={styles.cancel} onClick={this.cancelRowSelect}>取消选中</span>}
-        </div>
+        {alarmStatus!==3&&<div className={styles.tableFooter}>
+            <span className={styles.info}>当前选中<span className={styles.totalNum}>{selectedRowKeys.length}</span>项</span>
+            {selectedRowKeys.length > 0 &&<span className={styles.cancel} onClick={this.cancelRowSelect}>取消选中</span>}
+          </div>}
         {showTransferTicketModal&&this.renderTransferModal()}
         {showRelieveAlarmModal&&this.renderRelieveModal()}
       </div>

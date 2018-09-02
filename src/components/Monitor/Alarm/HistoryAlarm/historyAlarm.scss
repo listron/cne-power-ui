@@ -38,6 +38,13 @@
     padding: 0 28px;
     background-color: #fff;
   }
+  .alarmDesc {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    word-break:keep-all;
+    max-width: 175px;
+  }
   :global {
     .icon-action {
       background-color:#ceebe0;
@@ -65,5 +72,68 @@
     color: $themeColor;
     font-size: 14px;
     cursor: pointer;
+  }
+}
+
+.detailInfo {
+  display: flex;
+  flex-direction: column;
+  width: 250px;
+  max-height: 300px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  .header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+    .title {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      .titleText {
+        color: $darkColor;
+        font-size: 14px;
+        margin-left: 10px;
+      }
+    }
+  }
+  .content {
+    display: flex;
+    flex-direction: column;
+    line-height: 24px;
+    .infoItem {
+      display: flex;
+      flex-direction: row;
+      .label {
+        color: $darkColor;
+        font-size: 14px;
+        min-width: 70px;
+      }
+      .value {
+        display: flex;
+        flex-wrap: wrap;
+        color: $lightColor;
+        font-size: 14px;
+      }
+    }
+  }
+  .ticketButton {
+    margin-top: 24px;
+    margin-left: 65px;
+    width: 120px;
+  }
+  :global {
+    .icon-action {
+      background-color:#ceebe0;
+      color: $themeColor;
+      width:30px;
+      height:30px;
+      border-radius:100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
   }
 }

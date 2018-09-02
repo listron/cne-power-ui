@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './realTimeAlarm.scss';
-import { Link } from 'react-router-dom';
 import { Tooltip } from 'antd';
 
 class RealTimeAlarmInfo extends Component {
