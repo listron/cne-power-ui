@@ -27,13 +27,12 @@ class AllStation extends Component {
     }
   }
   componentDidMount() {
-    this.props.getAllMonitorStation({ stationType: '2' })
-    setTimeout(this.getNum, 10000)
+    this.props.getAllMonitorStation({ stationType: '2' });
+    setTimeout(this.getNum, 10000);
   }
 
   componentWillUnmount() {
     clearTimeout(this.timer);
-    console.log('unmout')
   }
   getNum = () => {
     if (this.props.stationTypes === 'all') {
@@ -47,42 +46,37 @@ class AllStation extends Component {
 
   //获取数据
   queryAllStationData = () => {
-    clearTimeout(this.timer)
-    this.props.getAllMonitorStation({ stationType: '2' })
-    const autoUpdata = () => {
-      clearTimeout(this.timer)
-      this.props.getAllMonitorStation({ stationType: '2' })
-      this.timer = setTimeout(autoUpdata, 10000)
+    const autoUpdate = () => {
+      // clearTimeout(this.timer);
+      this.props.getAllMonitorStation({ stationType: '2' });
+      this.timer = setTimeout(autoUpdate, 10000);
     };
-    autoUpdata();
+    autoUpdate();
   }
+
   queryWindStationData = () => {
-    clearTimeout(this.timer)
-    this.props.getWindMonitorStation({ stationType: '0', stationTypes: this.props.stationTypes })
-    const autoUpdata = () => {
-      clearTimeout(this.timer)
-      this.props.getWindMonitorStation({ stationType: '0', stationTypes: this.props.stationTypes })
-      this.timer = setTimeout(autoUpdata, 10000)
+    const autoUpdate = () => {
+      // clearTimeout(this.timer);
+      this.props.getWindMonitorStation({ stationType: '0', stationTypes: this.props.stationTypes });
+      this.timer = setTimeout(autoUpdate, 10000);
     };
-    autoUpdata();
+    autoUpdate();
   }
   queryPvStationData = () => {
-    clearTimeout(this.timer)
-    this.props.getPvMonitorStation({ stationType: '1', stationTypes: this.props.stationTypes })
-    const autoUpdata = () => {
-      clearTimeout(this.timer)
-      this.props.getPvMonitorStation({ stationType: '1', stationTypes: this.props.stationTypes })
-      this.timer = setTimeout(autoUpdata, 10000)
+    const autoUpdate = () => {
+      // clearTimeout(this.timer);
+      this.props.getPvMonitorStation({ stationType: '1', stationTypes: this.props.stationTypes });
+      this.timer = setTimeout(autoUpdate, 10000);
     };
-    autoUpdata();
+    autoUpdate();
   }
 
 
   queryTargetData = (activeKey) => {
     this.setState({
       key: activeKey,
-    })
-    clearTimeout(this.timer)
+    });
+    clearTimeout(this.timer);
     activeKey === '全部' ? this.queryAllStationData() : activeKey === '风电' ? this.queryWindStationData() : activeKey === '光伏' ? this.queryPvStationData() : alert('这个按钮没有考虑呢')
   }
   render() {
