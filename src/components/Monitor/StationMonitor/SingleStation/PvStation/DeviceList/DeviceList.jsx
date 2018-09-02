@@ -27,6 +27,7 @@ class DeviceList extends Component {
     let appointDeviceCode = locationSearch.substr(locationSearch.indexOf('=')+1);
     if(appointDeviceCode && appointDeviceCode!=='undefined'){
       appointDeviceCode = parseInt(appointDeviceCode);
+      scrollTo(700);
     }else{
       appointDeviceCode = deviceTypeCode || 509;
     }

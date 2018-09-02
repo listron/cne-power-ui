@@ -61,7 +61,7 @@ class BoxTransformerList extends Component {
       case 300:
         return '故障';
       case 900:
-        return '无通讯';
+        return '未接入';
       default:
         return '';
     }
@@ -146,7 +146,7 @@ class BoxTransformerList extends Component {
         <Radio.Button value={100}>正常 {deviceStatusNums && deviceStatusNums[0]}</Radio.Button>
         <Radio.Button value={300}>故障 {deviceStatusNums && deviceStatusNums[2]}</Radio.Button>
         <Radio.Button value={200}>停机 {deviceStatusNums && deviceStatusNums[1]}</Radio.Button>
-        <Radio.Button value={900}>无通讯 {deviceStatusNums && deviceStatusNums[3]}</Radio.Button>
+        <Radio.Button value={900}>未接入 {deviceStatusNums && deviceStatusNums[3]}</Radio.Button>
       </Radio.Group>
     </div>);
     const pagination = {
