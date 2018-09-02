@@ -137,9 +137,14 @@ function *phoneCodeLogin(action){
         }
         // message.error(data.userEnterpriseStatus);
       }
+      //获取token成功
+      yield put({
+        type: loginAction.PHONE_CODE_REGISTER_SUCCESS,
+        params,
+      });
     }else{
       yield put({ type: loginAction.PHONE_CODE_LOGIN_FAIL, data: response.data });
-      // message.error(response.data.message);
+      message.error(response.data.message);
     }
   }catch(e){
     console.log(e);
@@ -160,11 +165,7 @@ function *phoneCodeRegister(action){
       message.error(response.data.message);
     }else{
       yield put({type: loginAction.PHONE_CODE_LOGIN_SAGA, params});
-      yield put({
-        type: loginAction.PHONE_CODE_REGISTER_SUCCESS,
-        params,
-      });
-      // message.error(response.data.message);
+      message.success(response.data.message);
     }
   }catch(e){
     console.log(e);

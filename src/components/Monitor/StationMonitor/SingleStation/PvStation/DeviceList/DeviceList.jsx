@@ -30,7 +30,7 @@ class DeviceList extends Component {
     }else{
       appointDeviceCode = deviceTypeCode || 509;
     }
-
+    console.log(appointDeviceCode);
 
     return (
       <div>

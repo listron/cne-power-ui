@@ -67,7 +67,7 @@ class PvStation extends Component {
         <OutputPowerDiagram {...this.props} />  
         <CardSection {...this.props} />
         {/* 设备类型流程图切换 */}
-        <div className={styles.threadAndDevice} >
+        <div className={styles.threadAndDevice} id="deviceType" >
           <Tabs type="card" defaultActiveKey="2" >
             <TabPane tab="主线" key="1">
               <p>主线列表</p>

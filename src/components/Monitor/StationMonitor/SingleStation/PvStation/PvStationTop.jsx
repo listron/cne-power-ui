@@ -50,7 +50,7 @@ class PvStationTop extends Component {
       tmpProvenceCodes[key] = stationList.filter(e=>value===e.provinceCode);
     });
 
-    let stationStatusTime = singleStationData && singleStationData.stationStatus && singleStationData.stationStatus.stationStatusTime
+    let stationStatusTime = singleStationData && singleStationData.stationStatus && singleStationData.stationStatus.stationStatusTime;
     let localTime = moment.utc(stationStatusTime).toDate();
     stationStatusTime = moment(localTime).format("YYYY/MM/DD hh:mm");
 
