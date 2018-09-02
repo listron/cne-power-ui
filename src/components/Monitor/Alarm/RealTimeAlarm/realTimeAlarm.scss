@@ -355,3 +355,21 @@
     }
   }
 }
+.handleDropdown{
+  :global{
+    i.iconfont{ 
+      margin-right: 7px; 
+    }
+    .ant-select-dropdown-menu-item:not(.ant-select-dropdown-menu-item-disabled){
+      background-color: #fff;
+      color:$lightColor;
+      &:hover {
+        background-color: #ceebe0;
+        color: $themeColor;
+      }
+    }
+    .ant-select-dropdown-menu-item-disabled{
+      color:$promptColor;
+    }
+  }
+}

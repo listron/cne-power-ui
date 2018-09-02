@@ -237,9 +237,9 @@ class RealTimeAlarmTable extends Component {
     const selectedRowKeys = this.props.selectedRowKeys;
     return (
       <Select onChange={this.onHandle} value="操作" placeholder="操作" dropdownMatchSelectWidth={false} dropdownClassName={styles.handleDropdown}>
-        <Option value="ticket" disabled={selectedRowKeys.length===0}>转工单</Option>
-        <Option value="relieve" disabled={alarmStatus===2||selectedRowKeys.length===0}>手动解除</Option>
-        <Option value="resetRelieve" disabled={alarmStatus===1||selectedRowKeys.length===0}>取消解除</Option>
+        <Option value="ticket" disabled={selectedRowKeys.length===0}><i className="iconfont icon-tranlist"></i>转工单</Option>
+        <Option value="relieve" disabled={alarmStatus===2||selectedRowKeys.length===0}><i className="iconfont icon-manual"></i>手动解除</Option>
+        <Option value="resetRelieve" disabled={alarmStatus===1||selectedRowKeys.length===0}><i className="iconfont icon-lifted"></i>取消解除</Option>
       </Select>
     );
   }
