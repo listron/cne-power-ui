@@ -127,7 +127,7 @@ class HistoryFilteredItems extends Component {
         m === e.get('stationCode').toString()
       )).groupBy(item=>item.get('provinceCode')).toList();//选中电站详情,按省分组
     const selectedDeviceType = deviceTypes.filter(e=>tmpSelectedDeviceType.some(m=>m===e.get('deviceTypeCode').toString()));//选中的设备类型详情
-    if(deviceTypeCode.length === 0 && warningLevel.length === 0 && stationType === '2' && stationCode.length === 0 && warningConfigName.length === 0 && startTime.length === 0) {
+    if(deviceTypeCode.length === 0 && warningLevel.length === 0 && stationType === '2' && stationCode.length === 0 && warningConfigName.length === 0 && startTime.length === 0 && endTime.length === 0 && warningStatus.length === 0) {
       return null;
     }
     return (
