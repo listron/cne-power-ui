@@ -7,7 +7,7 @@ function* getAllMonitorStation(action) {//获取所有电站信息
   const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getStationType + payload.stationType;
   //const url = '/mock/v3/monitor/stations/stationType';
   try {
-    yield put({ type: allStationAction.ALL_MONITORSTATION_FETCH });
+    yield put({ type: allStationAction.MONITORSTATION_FETCH });
     const response = yield call(axios.get, url);
     if(response.data.code === '10000') {
       const stationDataList = response.data.data.stationDataList || [];
