@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './realTimeAlarm.scss';
-import { Link } from 'react-router-dom';
 import { Tooltip } from 'antd';
 
 class RealTimeAlarmInfo extends Component {
@@ -53,7 +52,7 @@ class RealTimeAlarmInfo extends Component {
               <span className={styles.alarmText}>四级</span>
             </div>
           </div>
-          {alarmStatus !== 3 && 
+          {/* {alarmStatus !== 3 && 
             <Link to="/monitor/alarm/realtime/transfer" target="_blank">
               <div className={styles.alarmAction}>
                 <i className="iconfont icon-tranlist icon-action"></i>
@@ -68,7 +67,7 @@ class RealTimeAlarmInfo extends Component {
                 <span className={styles.alarmText}>手动解除</span>
               </div>
             </Link>
-          }
+          } */}
         </div>
         {alarmStatus===1&&<div className={styles.alarmInfoRight}>
           <div className={styles.updateTimeContainer}>

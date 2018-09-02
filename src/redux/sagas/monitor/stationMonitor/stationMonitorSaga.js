@@ -8,43 +8,40 @@ function* getAllMonitorStation(action) {//获取所有电站信息
   //const url = '/mock/v3/monitor/stations/stationType';
   try {
     yield put({ type: allStationAction.ALL_MONITORSTATION_FETCH });
-    const response = yield call(axios.get, url, payload);
-   
-    const stationDataList = response.data.data.stationDataList || [];
-    const allDatastationType = stationDataList.map((e, index) => { return e.stationType });
-    const allStationTypeCode = new Set(allDatastationType);
-    const stationNum = new Set(allDatastationType).size;
+    const response = yield call(axios.get, url);
+    if(response.data.code === '10000') {
+      const stationDataList = response.data.data.stationDataList || [];
+      const allDatastationType = stationDataList.map((e, index) => { return e.stationType });
+      const allStationTypeCode = new Set(allDatastationType);
+      const stationNum = allStationTypeCode.size;
 
-    let stationTypes = '';
-    stationNum > 1 ? stationTypes = 'all' : allStationTypeCode.has['0'] ? stationTypes = 'wind' : allStationTypeCode.has['1']?stationTypes = 'pv':'';
-    yield put({
-      type: allStationAction.GET_MONITORSTATION_FETCH_SUCCESS,
-      payload: {
-        allMonitorStation: response.data.data || {},
-        stationTypes
-      },
-    });
+      let stationTypes = '';
+      stationNum > 1 ? stationTypes = 'all' : allStationTypeCode.has['0'] ? stationTypes = 'wind' : allStationTypeCode.has['1']?stationTypes = 'pv':'';
+      yield put({
+        type: allStationAction.GET_MONITORSTATION_FETCH_SUCCESS,
+        payload: {
+          allMonitorStation: response.data.data || {},
+          stationTypes
+        },
+      });
+    }
   } catch (e) {
     console.log(e);
   }
 }
 function* getWindMonitorStation(action) {//获取风电站信息
   const { payload } = action;
-  const { stationTypes } = payload;
   //const url = '/mock/v3/monitor/stations/stationType';
   const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getStationType + payload.stationType;
   try {
-    yield put({ type: allStationAction.WIND_MONITORSTATION_FETCH });
-    const response = yield call(axios.get, url, {
-      stationType: payload.stationType
-    });
-
-
-    yield put({
-      type: allStationAction.GET_WIND_MONITORSTATION_FETCH_SUCCESS,
-      payload: stationTypes === 'wind' ? 
-     {allMonitorStation: response.data.data}:{windMonitorStation: response.data.data}
-    })
+    yield put({ type: allStationAction.MONITORSTATION_FETCH });
+    const response = yield call(axios.get, url);
+    if(response.data.code === '10000') {
+      yield put({
+        type: allStationAction.GET_MONITORSTATION_FETCH_SUCCESS,
+        payload: {windMonitorStation: response.data.data}
+      });
+    }
   }
   catch (e) {
     console.log(e);
@@ -52,21 +49,17 @@ function* getWindMonitorStation(action) {//获取风电站信息
 }
 function* getPvMonitorStation(action) {//获取光伏电站信息
   const { payload } = action;
-  const { stationTypes } = payload;
   //const url = '/mock/v3/monitor/stations/stationType';
   const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getStationType + payload.stationType;
-
   try {
-    yield put({ type: allStationAction.PV_MONITORSTATION_FETCH });
-    const response = yield call(axios.get, url, {
-      stationType: payload.stationType
-    });
-    
-    yield put({
-      type: allStationAction.GET_PV_MONITORSTATION_FETCH_SUCCESS,
-      payload: stationTypes === 'pv' ? 
-    {allMonitorStation: response.data.data}:{pvMonitorStation: response.data.data}
-    })
+    yield put({ type: allStationAction.MONITORSTATION_FETCH });
+    const response = yield call(axios.get, url);  
+    if(response.data.code === '10000') {
+      yield put({
+        type: allStationAction.GET_MONITORSTATION_FETCH_SUCCESS,
+        payload: {pvMonitorStation: response.data.data}
+      });
+    } 
   } catch (e) {
     console.log(e);
   }

@@ -17,18 +17,10 @@ var initState = Immutable.fromJS({
 });
 const stationMonitorReducer = (state = initState, action) => {
   switch (action.type) {
-    case allStationAction. ALL_MONITORSTATION_FETCH:
+    case allStationAction.MONITORSTATION_FETCH:
       return state.set('loading',true)
-    case allStationAction.GET_MONITORSTATION_FETCH_SUCCESS :
-      return state.merge(Immutable.fromJS(action.payload)).set('loading',false)
-      case allStationAction. WIND_MONITORSTATION_FETCH:
-      return state.set('loading',true)
-    case allStationAction.GET_WIND_MONITORSTATION_FETCH_SUCCESS :
-      return state.merge(Immutable.fromJS(action.payload)).set('loading',false)
-      case allStationAction. PV_MONITORSTATION_FETCH:
-      return state.set('loading',true)
-    case allStationAction.GET_PV_MONITORSTATION_FETCH_SUCCESS :
-      return state.merge(Immutable.fromJS(action.payload)).set('loading',false)
+    case allStationAction.GET_MONITORSTATION_FETCH_SUCCESS:
+      return state.merge(Immutable.fromJS(action.payload)).set('loading',false);
     case allStationAction.CHANGE_MONITORSTATION_STORE:
       return state.merge(Immutable.fromJS(action.payload))
    

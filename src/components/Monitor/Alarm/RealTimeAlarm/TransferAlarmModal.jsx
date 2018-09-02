@@ -39,8 +39,16 @@ class TransferAlarmModal extends Component {
           ...values,
           warningLogId: this.props.selectedRowKeys,
         });
+        this.props.onCancel();
       }
     });
+    this.setState({showWarningTip: false});
+  }
+
+  onCancelWarningTip = () => {//信息提示栏隐藏
+    this.setState({
+      showWarningTip:false
+    })
   }
 
   render(){
@@ -50,11 +58,12 @@ class TransferAlarmModal extends Component {
       <Form>
         {showWarningTip && <WarningTip
           hiddenCancel={false}
-          style={{marginTop:'250px',width: '210px',height:'88px'}} 
+          onCancel={this.onCancelWarningTip}
+          style={{marginTop:'150px',width: '210px',height:'88px'}} 
           onOK={this.onTransferAlarm} value={warningTipText} />}
         <Modal title="转缺陷工单"
           className={styles.transferModal}
-          style={{height:630}}
+          style={{minHeight:450}}
           bodyStyle={{display:'flex',flex:1,flexDirection:'column',padding:24}}
           width={625}
           visible={true}
