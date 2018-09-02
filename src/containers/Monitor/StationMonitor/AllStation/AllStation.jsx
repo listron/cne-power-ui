@@ -27,48 +27,57 @@ class AllStation extends Component {
     }
   }
   componentDidMount() {
-    this.props.getAllMonitorStation({ stationType: '2' });
-    setTimeout(this.getNum, 10000);
+    this.queryAllStationData();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.stationTypes !== this.props.stationTypes && nextProps.stationTypes !== 'all') {
+      this.autoUpdate(nextProps.stationTypes);
+    }
+    if(nextProps.stationTypes === 'wind') {
+      this.setState({
+        key: '风电'
+      });
+    } else if(nextProps.stationTypes === 'pv') {
+      this.setState({
+        key: '光伏'
+      });
+    }
   }
 
   componentWillUnmount() {
-    clearTimeout(this.timer);
+    clearInterval(this.allInterval);
+    clearInterval(this.windInterval);
+    clearInterval(this.pvInterval);
   }
-  getNum = () => {
-    if (this.props.stationTypes === 'all') {
-      this.queryAllStationData();
-    } else if (this.props.stationTypes === 'wind') {
+
+  autoUpdate = (stationTypes) => {
+    if (stationTypes === 'wind') {//只有风
       this.queryWindStationData();
-    } else if (this.props.stationTypes === 'pv') {
+    } else if (stationTypes === 'pv') {//只有光
       this.queryPvStationData();
     }
   }
 
   //获取数据
   queryAllStationData = () => {
-    const autoUpdate = () => {
-      // clearTimeout(this.timer);
-      this.props.getAllMonitorStation({ stationType: '2' });
-      this.timer = setTimeout(autoUpdate, 10000);
-    };
-    autoUpdate();
+    clearInterval(this.windInterval);
+    clearInterval(this.pvInterval);
+    this.props.getAllMonitorStation({ stationType: '2' });
+    this.allInterval = setInterval(()=>this.props.getAllMonitorStation({ stationType: '2' }), 10000);
   }
 
   queryWindStationData = () => {
-    const autoUpdate = () => {
-      // clearTimeout(this.timer);
-      this.props.getWindMonitorStation({ stationType: '0', stationTypes: this.props.stationTypes });
-      this.timer = setTimeout(autoUpdate, 10000);
-    };
-    autoUpdate();
+    clearInterval(this.allInterval);
+    clearInterval(this.pvInterval);
+    this.props.getWindMonitorStation({ stationType: '0' });
+    this.windInterval = setInterval(()=>this.props.getWindMonitorStation({ stationType: '0' }), 10000);
   }
   queryPvStationData = () => {
-    const autoUpdate = () => {
-      // clearTimeout(this.timer);
-      this.props.getPvMonitorStation({ stationType: '1', stationTypes: this.props.stationTypes });
-      this.timer = setTimeout(autoUpdate, 10000);
-    };
-    autoUpdate();
+    clearInterval(this.allInterval);
+    clearInterval(this.windInterval);
+    this.props.getPvMonitorStation({ stationType: '1' });
+    this.pvInterval = setInterval(()=>this.props.getPvMonitorStation({ stationType: '1' }), 10000);
   }
 
 
@@ -76,8 +85,13 @@ class AllStation extends Component {
     this.setState({
       key: activeKey,
     });
-    clearTimeout(this.timer);
-    activeKey === '全部' ? this.queryAllStationData() : activeKey === '风电' ? this.queryWindStationData() : activeKey === '光伏' ? this.queryPvStationData() : alert('这个按钮没有考虑呢')
+    if(activeKey === '全部') {
+      this.queryAllStationData();
+    } else if(activeKey === '风电') {
+      this.queryWindStationData();
+    } else if(activeKey === '光伏') {
+      this.queryPvStationData();
+    }
   }
   render() {
     let { key } = this.state;

@@ -80,11 +80,11 @@ const routers = [
     exact: true,
     component: RealTimeAlarm,
   }, {
-    path: '/monitor/alarm/realtime/transfer',
+    path: '/monitor/alarm/transfer',
     exact: true,
     component: RealTimeAlarm,
   }, {
-    path: '/monitor/alarm/realtime/relieve',
+    path: '/monitor/alarm/relieve',
     exact: true,
     component: RealTimeAlarm,
   }, {
