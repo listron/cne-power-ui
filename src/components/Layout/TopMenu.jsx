@@ -37,7 +37,7 @@ class TopMenu extends Component {
       this.props.setTopMenu({
         topMenu: {},
       })
-    }else if(resetTopMenu){ // 404 页面的跳转重置topMenu至首页
+    }else if(resetTopMenu){ // 404 页面的跳转重置topMenu至电站监控
       this.setState({ selectedKeys: ['/monitor'] });
       this.props.setTopMenu({ topMenu: {
         name: '实时监控',

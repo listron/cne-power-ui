@@ -42,13 +42,15 @@ class Main extends Component {
 
   componentDidMount(){//根据路径缓存topMenu值
     const { pathname } = this.props.history.location;
-    let pathArray = pathname.split('/').filter(e=>!!e);
-    const params = menu.find(e=>e.path===`/${pathArray[0]?pathArray[0]:''}`);
-    this.props.setTopMenu({ topMenu: params });
-    const authData = Cookie.get('authData');
-    if(authData) {
-      this.props.getStations();
-      this.props.getDeviceTypes();
+    if(pathname !== '/login') {
+      let pathArray = pathname.split('/').filter(e=>!!e);
+      const params = menu.find(e=>e.path===`/${pathArray[0]?pathArray[0]:''}`);
+      this.props.setTopMenu({ topMenu: params });
+      const authData = Cookie.get('authData');
+      if(authData) {
+        this.props.getStations();
+        this.props.getDeviceTypes();
+      }
     }
   }
 

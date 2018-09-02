@@ -57,14 +57,20 @@ class RealTimeAlarm extends Component {
     });
     this.props.getDefectTypes({stationType: 2});
     this.props.getAlarmNum({warningStatus});
+    this.alarmInterval = setInterval(()=>{this.getAlarmInfo()}, 10000);
   }
+
+  
 
   componentWillUnmount() {
     this.props.resetAlarm();
+    clearInterval(this.alarmInterval);
   }
 
   onChangeFilter = (obj) => {
+    clearInterval(this.alarmInterval);
     const status = this.getStatus();
+    const warningStatus = this.getAlarmStatus(status);
     const { warningLevel, stationType, stationCode, deviceTypeCode, warningConfigName, startTime, deviceName } = this.props;
     let filter = {
       warningLevel,
@@ -79,6 +85,35 @@ class RealTimeAlarm extends Component {
     }
     let newFiter = Object.assign({}, filter, obj);
     this.props.getRealTimeAlarm(newFiter);
+    this.props.getAlarmNum({warningStatus});
+    this.alarmInterval = setInterval(()=>{this.getAlarmInfo()}, 10000);
+  }
+
+  getAlarmInfo() {
+    const { warningLevel, stationType, stationCode, deviceTypeCode, warningConfigName, startTime, deviceName} = this.props;
+    const status = this.getStatus();
+    const isTransferWork = status === 'transfer' ? 0 : 1;
+    const isRelieveAlarm = status === 'relieve' ? 0: 1;
+    const warningStatus = this.getAlarmStatus(status);
+    if(warningStatus===1&&warningLevel.length===0&&stationType==='2'&&
+    stationCode.length===0&&deviceTypeCode.length===0&&
+    warningConfigName.length===0&&startTime.length===0&&
+    deviceName===''&&isTransferWork===1&&isRelieveAlarm===1) {
+      this.props.getRealTimeAlarm({
+        warningLevel,
+        stationType,
+        stationCode,
+        deviceTypeCode,
+        warningConfigName,
+        startTime,
+        deviceName,
+        isTransferWork,
+        isRelieveAlarm
+      });
+      this.props.getAlarmNum({warningStatus});
+    } else {
+      clearInterval(this.alarmInterval);
+    }
   }
 
   getStatus() {
