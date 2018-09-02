@@ -62,7 +62,7 @@ class InverterList extends Component {
       case 300:
         return '故障';
       case 900:
-        return '未接入';
+        return '无通讯';
       default:
         return '';
     }
@@ -150,13 +150,13 @@ class InverterList extends Component {
     const deviceStatus = inverterList && inverterList.deviceStatusSummary;
     const deviceStatusNums=deviceStatus && deviceStatus.map(e=>e.deviceStatusNum);
     const operations = (<div className={styles.inverterRight} >
-      <Switch defaultChecked={false} onChange={this.onSwitchAlarm}  />告警
+      <Switch defaultChecked={false} onChange={this.onSwitchAlarm}  /> 告警
       <Radio.Group defaultValue={0} buttonStyle="solid" className={styles.inverterStatus} onChange={this.onChangeStatus}  >
         <Radio.Button value={0} >全部</Radio.Button>
-        <Radio.Button value={100}>正常{deviceStatusNums && deviceStatusNums[0]}</Radio.Button>
-        <Radio.Button value={300}>故障{deviceStatusNums && deviceStatusNums[2]}</Radio.Button>
-        <Radio.Button value={200}>停机{deviceStatusNums && deviceStatusNums[1]}</Radio.Button>
-        <Radio.Button value={900}>无通讯{deviceStatusNums && deviceStatusNums[3]}</Radio.Button>
+        <Radio.Button value={100}>正常 {deviceStatusNums && deviceStatusNums[0]}</Radio.Button>
+        <Radio.Button value={300}>故障 {deviceStatusNums && deviceStatusNums[2]}</Radio.Button>
+        <Radio.Button value={200}>停机 {deviceStatusNums && deviceStatusNums[1]}</Radio.Button>
+        <Radio.Button value={900}>无通讯 {deviceStatusNums && deviceStatusNums[3]}</Radio.Button>
       </Radio.Group>
     </div>);
     const pagination = {

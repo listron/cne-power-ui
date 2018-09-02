@@ -74,14 +74,11 @@ class EditForm extends Component {
         <FormItem label="用户名" >
           {getFieldDecorator('username',{
             initialValue: userDetail && userDetail.get('username'),
-            rules: [{
-              required : true,
-              message: '3-8位数字,字母组合',
-              max: 8,
-              min: 3,
-            }]
+            rules: [
+            {pattern: /^[A-Za-z0-9\u4e00-\u9fa5]{3,8}$/gi, message: '请输入3到8位中文、英文、数字'},
+            ]
           })(
-            <Input placeholder="3-8位数字,字母组合" disabled />
+            <Input placeholder="3-8位中文,英文,数字组合" disabled />
           )}
           <span className={styles.instructionText}>(3-8位数字,字母组合)</span>
         </FormItem>

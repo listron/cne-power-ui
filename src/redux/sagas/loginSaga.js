@@ -66,7 +66,7 @@ function *userNameLogin(action){
       }
     } else{
       yield put({ type: loginAction.USER_NAME_LOGIN_FAIL, data: response.data }); 
-      message.error(response.data.message);       
+      message.error(response.data.message);    
     }
   } catch (e) {
     console.log(e);
@@ -137,6 +137,11 @@ function *phoneCodeLogin(action){
         }
         // message.error(data.userEnterpriseStatus);
       }
+      //获取token成功
+      yield put({
+        type: loginAction.PHONE_CODE_REGISTER_SUCCESS,
+        params,
+      });
     }else{
       yield put({ type: loginAction.PHONE_CODE_LOGIN_FAIL, data: response.data });
       message.error(response.data.message);
@@ -160,11 +165,7 @@ function *phoneCodeRegister(action){
       message.error(response.data.message);
     }else{
       yield put({type: loginAction.PHONE_CODE_LOGIN_SAGA, params});
-      yield put({
-        type: loginAction.PHONE_CODE_REGISTER_SUCCESS,
-        params,
-      });
-      // message.error(response.data.message);
+      // message.success(response.data.message);
     }
   }catch(e){
     console.log(e);
@@ -287,7 +288,7 @@ function *getEnterPriseInfo(action){
       yield put({
         type: loginAction.GET_ENTERPRISE_INFO_SUCCESS,
         params,
-        data: response.data.data,
+        data: response.data.data || {},
       })
     }else{
       yield put({type: loginAction.GET_ENTERPRISE_INFO_FAIL, data: response.data})
@@ -327,7 +328,6 @@ function *joinEnterprise(action){
       });
       message.success(response.data.message);
     } else{
-      message.error(response.data.message);
       yield put({type: loginAction.JOIN_ENTERPRISE_FAIL, data: response.data })
       if(response.data.code !== '20015') {
         message.error(response.data.message);

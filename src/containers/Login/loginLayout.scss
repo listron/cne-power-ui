@@ -84,6 +84,25 @@
           width: 100%;
           height: 100%;
           padding: 75px 0 0 140px;
+          :global{
+            .ant-tabs-nav-wrap{
+              .ant-tabs-nav-scroll{
+                .ant-tabs-nav {
+                  width: 100%;
+                }
+              }
+            }
+            .ant-tabs-nav .ant-tabs-tab{
+              margin: 0;
+              width: 50%;
+              text-align: center;
+              font-size: 18px;
+            }
+            
+            // .ant-tabs-tab-active {
+            //   width: 50%;
+            // }
+          }
           .joinTop {
             height: 20px;
             width: 200px;
@@ -96,7 +115,6 @@
               border-radius: 3px 0 0 3px;
               text-align: center;
               margin-right: 8px;
-              background: #f1f1f1;
               i {
                 font-size: 14px;
                 text-align: center;
