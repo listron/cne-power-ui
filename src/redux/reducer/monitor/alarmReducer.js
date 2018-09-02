@@ -17,6 +17,7 @@ var initState = Immutable.fromJS({
   alarmNum: {},
   realtimeAlarm: [],  // 实时告警
   historyAlarm: [],  // 历史告警
+  selectedRowKeys: [], //表格选中的行key
   lastUpdateTime: '',
   ticketInfo: {},
   relieveInfo: {}

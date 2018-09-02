@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Modal, DatePicker } from 'antd';
+import { Form, Modal } from 'antd';
 import PropTypes from 'prop-types';
 import styles from './realTimeAlarm.scss';
 import InputLimit from '../../../Common/InputLimit';
@@ -40,8 +40,16 @@ class RelieveAlarmModal extends Component {
           endTime: moment('2020-12-31 23:59:59').utc().format(),
           warningLogId: this.props.selectedRowKeys,
         });
+        this.props.onCancel();
       }
+      this.setState({showWarningTip: false});
     });
+  }
+
+  onCancelWarningTip = () => {//信息提示栏隐藏
+    this.setState({
+      showWarningTip:false
+    })
   }
 
   render(){
@@ -51,10 +59,11 @@ class RelieveAlarmModal extends Component {
       <Form>
         {showWarningTip && <WarningTip
           hiddenCancel={false} 
-          style={{marginTop:'250px',width: '210px',height:'88px'}}
+          style={{marginTop:'150px',width: '210px',height:'88px'}}
+          onCancel={this.onCancelWarningTip}
           onOK={this.onRelieveAlarm} value={warningTipText} />}
         <Modal title="解除告警" className={styles.relieveModal}
-          style={{height:630}}
+          style={{minHeight:450}}
           bodyStyle={{display:'flex',flex:1,flexDirection:'column',padding:24}}
           width={625}
           onOk={this.onSubmit}
