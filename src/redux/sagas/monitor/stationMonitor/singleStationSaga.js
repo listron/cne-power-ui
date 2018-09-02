@@ -31,7 +31,7 @@ function *getSingleStation(action){
       });
     }else{
       yield put({ type: singleStationAction.GET_SINGLE_STATION_FAIL, data: response.data});
-      message.error(response.data);
+      // message.error(response.data.message);
     }
   }catch(e){
     console.log(e);
@@ -56,7 +56,7 @@ function *getCapabilityDiagram(action){
       });
     }else{
       yield put({ type: singleStationAction.GET_SINGLE_STATION_FAIL, data: response.data});
-      message.error(response.data);
+      // message.error(response.data.message);
     }
     
   }catch(e){
@@ -82,7 +82,7 @@ function *getMonitorPower(action){
       })
     }else{
       yield put({ type: singleStationAction.GET_SINGLE_STATION_FAIL, data: response.data});
-      message.error(response.data);
+      // message.error(response.data.message);
     }
     
   }catch(e){
@@ -107,7 +107,7 @@ function *getStationList(action){
       });
     }else{
       yield put({ type: singleStationAction.GET_SINGLE_STATION_FAIL, data: response.data});
-      message.error(response.data);
+      // message.error(response.data.message);
     }
     
   }catch(e){
@@ -133,7 +133,7 @@ function *getOperatorList(action){
       });
     }else{
       yield put({ type: singleStationAction.GET_SINGLE_STATION_FAIL, data: response.data});
-      message.error(response.data);
+      // message.error(response.data.message);
     }
     
   }catch(e){
@@ -158,7 +158,7 @@ function *getWeatherList(action){
       })
     }else{
       yield put({ type: singleStationAction.GET_SINGLE_STATION_FAIL, data: response.data});
-      message.error(response.data);
+      // message.error(response.data.message);
     }
   }catch(e){
     console.log(e);
@@ -182,7 +182,7 @@ function *getAlarmList(action){
       })
     }else{
       yield put({ type: singleStationAction.GET_SINGLE_STATION_FAIL, data: response.data});
-      message.error(response.data);
+      // message.error(response.data.message);
     }
     
   }catch(e){
@@ -207,7 +207,7 @@ function *getWorkList(action){
       })
     }else{
       yield put({ type: singleStationAction.GET_SINGLE_STATION_FAIL, data: response.data});
-      message.error(response.data);
+      // message.error(response.data.message);
     }
   }catch(e){
     console.log(e);
@@ -231,7 +231,7 @@ function *getDeviceTypeFlow(action){
       })
     }else{
       yield put({ type: singleStationAction.GET_SINGLE_STATION_FAIL, data: response.data});
-      message.error(response.data);
+      // message.error(response.data.message);
     }
     
   }catch(e){
@@ -256,7 +256,7 @@ function *getPvmoduleList(action){
       });
     }else{
       yield put({ type: singleStationAction.GET_SINGLE_STATION_FAIL, data: response.data});
-      message.error(response.data);
+      // message.error(response.data.message);
     }
     
   }catch(e){
@@ -281,7 +281,7 @@ function *getInverterList(action){
       })
     }else{
       yield put({ type: singleStationAction.GET_SINGLE_STATION_FAIL, data: response.data});
-      message.error(response.data);
+      // message.error(response.data.message);
     }
     
   }catch(e){
@@ -306,7 +306,7 @@ function *getBoxTransformerList(action){
       })
     }else{
       yield put({ type: singleStationAction.GET_SINGLE_STATION_FAIL, data: response.data});
-      message.error(response.data);
+      // message.error(response.data.message);
     }
     
   }catch(e){

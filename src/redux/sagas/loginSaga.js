@@ -288,7 +288,7 @@ function *getEnterPriseInfo(action){
       yield put({
         type: loginAction.GET_ENTERPRISE_INFO_SUCCESS,
         params,
-        data: response.data.data,
+        data: response.data.data || {},
       })
     }else{
       yield put({type: loginAction.GET_ENTERPRISE_INFO_FAIL, data: response.data})

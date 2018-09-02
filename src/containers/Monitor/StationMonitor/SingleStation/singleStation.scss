@@ -7,6 +7,10 @@
   padding: 24px 24px 0;
   :global{
     a {
+      color: #666;
+      cursor: pointer;
+    }
+    a:hover{
       color: $themeColor;
     }
   }

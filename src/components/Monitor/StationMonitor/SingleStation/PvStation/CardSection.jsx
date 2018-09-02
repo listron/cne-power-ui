@@ -141,10 +141,10 @@ class CardSection extends Component {
               </div>
               {alarmList &&
                 <div className={styles.alarmContent} >
-                  <div><div>{alarmList.oneWarningNum}</div><div className={styles.oneWarning}>一级</div></div>
-                  <div><div>{alarmList.twoWarningNum}</div><div className={styles.twoWarning}>二级</div></div>
-                  <div><div>{alarmList.threeWarningNum}</div><div className={styles.threeWarning}>三级</div></div>
-                  <div><div>{alarmList.fourWarningNum}</div><div className={styles.fourWarning}>四级</div></div>
+                  <div><div>{alarmList.oneWarningNum===null ? '--' : alarmList.oneWarningNum}</div><div className={styles.oneWarning}>一级</div></div>
+                  <div><div>{alarmList.twoWarningNum===null ? '--' : alarmList.twoWarningNum}</div><div className={styles.twoWarning}>二级</div></div>
+                  <div><div>{alarmList.threeWarningNum===null ? '--' : alarmList.threeWarningNum}</div><div className={styles.threeWarning}>三级</div></div>
+                  <div><div>{alarmList.fourWarningNum===null ? '--' : alarmList.fourWarningNum}</div><div className={styles.fourWarning}>四级</div></div>
                 </div>
               }
             </div>
@@ -159,9 +159,9 @@ class CardSection extends Component {
               </div>
               {workList &&
                 <div className={styles.workContent} >
-                  <div><div>{workList.worklistNewNum}</div><div>今日新增</div></div>
-                  <div><div>{workList.worklistHandleNum}</div><div>处理中</div></div>
-                  <div><div>{workList.worklistCompleteNum}</div><div>今日完成</div></div>
+                  <div><div>{workList.worklistNewNum===null ? '--' : workList.worklistNewNum}</div><div>今日新增</div></div>
+                  <div><div>{workList.worklistHandleNum===null ? '--' : workList.worklistHandleNum}</div><div>处理中</div></div>
+                  <div><div>{workList.worklistCompleteNum===null ? '--' : workList.worklistCompleteNum}</div><div>今日完成</div></div>
                 </div>
               }
             </div>

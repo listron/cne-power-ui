@@ -32,6 +32,15 @@ class OutputPowerDiagram extends Component {
     const capabilityDiagram = echarts.init(document.getElementById('capabilityDiagram'));
     const powerDiagram = echarts.init(document.getElementById('powerDiagram'));
     capabilityDiagram.setOption({
+      noDataLoadingOption: {
+        text: '暂无数据',
+        effect: 'bubble',
+        effectOption: {
+          effect: {
+            n: 0
+          }
+        }
+      },
       title: {
         text: '出力图',
         textStyle: {
@@ -143,6 +152,18 @@ class OutputPowerDiagram extends Component {
     });
     
     powerDiagram.setOption({
+      noDataLoadingOption: {
+        text: '暂无数据',
+        effect: 'whirling',
+        textStyle:{
+          fontSize : 20
+        },
+        effectOption: {
+          effect: {
+            n: 0
+          }
+        }
+      },
       color: ['#a42b2c','#c7ceb2','#f7c028'],
       title: {
         text: '发电量',
