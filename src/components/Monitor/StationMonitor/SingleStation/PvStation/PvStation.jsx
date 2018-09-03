@@ -20,11 +20,14 @@ class PvStation extends Component {
     changeSingleStationStore: PropTypes.func,
     location: PropTypes.object,
     match: PropTypes.object,
+    stationDeviceList: PropTypes.array,
+    deviceTypeCode: PropTypes.number,
   }
 
   constructor(props){
     super(props);
     this.state = {
+      hiddenStationList: false,
     }
   }
 
@@ -50,31 +53,38 @@ class PvStation extends Component {
         return ;
     }
   }
+
+  hiddenStationList = () => {
+    this.setState({
+      hiddenStationList: true,
+    });
+  }
   
   render(){
-    const { deviceTypeFlow } = this.props;
+    const { deviceTypeFlow,stationDeviceList,deviceTypeCode } = this.props;
+    const weatherDeviceCode = stationDeviceList && stationDeviceList.deviceCode || 0;
+    const { stationCode } = this.props.match.params;
+    
     const locationSearch  = this.props.location.search;
     let appointDeviceCode = locationSearch.substr(locationSearch.indexOf('=')+1);
     if(appointDeviceCode && appointDeviceCode!=='undefined'){
       appointDeviceCode = parseInt(appointDeviceCode);
-    }else{
-      appointDeviceCode = deviceTypeFlow.length > 0 && deviceTypeFlow[0].deviceTypeCode;
     }
-    const { stationCode } = this.props.match.params;
+
     return (
-      <div className={styles.pvStation}>
-        <PvStationTop {...this.props} />
+      <div className={styles.pvStation}  >
+        <PvStationTop {...this.props} hiddenStationList={this.state.hiddenStationList} />
         <OutputPowerDiagram {...this.props} />  
         <CardSection {...this.props} />
         {/* 设备类型流程图切换 */}
         <div className={styles.threadAndDevice} id="deviceType" >
           <Tabs type="card" defaultActiveKey="2" >
-            <TabPane tab="主线" key="1">
+            {/* <TabPane tab="主线" key="1">
               <p>主线列表</p>
-            </TabPane>
+            </TabPane> */}
             <TabPane tab="示意图" key="2">
               <div className={styles.deviceTypeFlow}>
-                {deviceTypeFlow && <RadioGroup defaultValue={appointDeviceCode || 509}  onChange={this.onSelectedDeviceType} >
+                {deviceTypeFlow && <RadioGroup defaultValue={appointDeviceCode || deviceTypeCode}  onChange={this.onSelectedDeviceType} >
                   {deviceTypeFlow && 
                     deviceTypeFlow.map(e=>{
                       return (<RadioButton value={e.deviceTypeCode} className={styles.deviceTypeItem} key={e.deviceTypeCode}>
@@ -84,7 +94,7 @@ class PvStation extends Component {
                   }
                 </RadioGroup>}
                 <div className={styles.weatherStation}>
-                  <Link to={`/hidden/monitorDevice/${stationCode}/203/`} ><i className="iconfont icon-weather" ></i></Link>
+                  <Link  target="_blank" to={`/hidden/monitorDevice/${stationCode}/203/${weatherDeviceCode}`} ><i className="iconfont icon-weather" ></i></Link>
                   <div>气象站</div>
                 </div>
               </div>
@@ -94,6 +104,7 @@ class PvStation extends Component {
             </TabPane>
           </Tabs>
         </div>
+        <div style={{height: "2000px",}}></div>
       </div>
     )
   }

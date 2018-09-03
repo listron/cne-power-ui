@@ -8,6 +8,7 @@ import moment from 'moment';
 class SingleStation extends Component {
   static propTypes = {
     match: PropTypes.object,
+    location: PropTypes.object,
     getSingleStation: PropTypes.func,
     getCapabilityDiagram: PropTypes.func,
     getMonitorPower: PropTypes.func,
@@ -21,6 +22,8 @@ class SingleStation extends Component {
     getStationList: PropTypes.func,
     getBoxTransformerList: PropTypes.func,
     changeSingleStationStore: PropTypes.func,
+    getStationDeviceList: PropTypes.func,
+    deviceTypeCode: PropTypes.number,
   };
   constructor(props) {
     super(props);
@@ -32,7 +35,16 @@ class SingleStation extends Component {
   componentDidMount() {
     const { stationCode } = this.props.match.params;
     this.getData(stationCode);
-    this.props.changeSingleStationStore({deviceTypeCode: 509});
+    const main = document.getElementById('main');
+    const locationSearch  = this.props.location.search;
+    let appointDeviceCode = locationSearch.substr(locationSearch.indexOf('=')+1);
+    if(appointDeviceCode && appointDeviceCode!=='undefined'){
+      appointDeviceCode = parseInt(appointDeviceCode);
+      this.props.changeSingleStationStore({deviceTypeCode: appointDeviceCode});
+      main.scrollTo(0, 700);
+    }else{
+      this.props.changeSingleStationStore({deviceTypeCode: 509});
+    }
   }
 
   componentWillReceiveProps(nextProps){
@@ -43,6 +55,7 @@ class SingleStation extends Component {
       clearTimeout(this.timeOutId);
       this.getData(nextStation);
     }
+    this.props.changeSingleStationStore({deviceTypeCode: nextProps.deviceTypeCode});
   }
 
   componentWillUnmount(){
@@ -62,7 +75,7 @@ class SingleStation extends Component {
     this.props.getPvmoduleList({stationCode});
     this.props.getInverterList({stationCode});
     this.props.getBoxTransformerList({stationCode});
-
+    this.props.getStationDeviceList({stationCode, deviceTypeCode: 203});
     this.timeOutId = setTimeout(()=>{
       this.getData(stationCode);
     },10000);
@@ -95,6 +108,7 @@ const mapDispatchToProps = (dispatch) => ({
   getInverterList: payload => dispatch({type:singleStationAction.GET_INVERTER_LIST_SAGA, payload}),
   getBoxTransformerList: payload => dispatch({type:singleStationAction.GET_BOXTRANSFORMER_LIST_SAGA, payload}),
   getStationList: payload => dispatch({type:singleStationAction.GET_STATION_LIST_SAGA, payload}),
+  getStationDeviceList: payload => dispatch({type:singleStationAction.GET_STATION_DEVICELIST_SAGA, payload}),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SingleStation);
