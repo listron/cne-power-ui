@@ -54,7 +54,7 @@ function InverterTenMin({ deviceTenMin, loading }) {
       },
       yAxis: [
         {
-          name: '功率 (kW)',
+          name: '功率(kW)',
           splitLine:{
             show:false
           },
@@ -71,7 +71,7 @@ function InverterTenMin({ deviceTenMin, loading }) {
           },
         },
         {
-          name: '辐射 (W/m²)',
+          name: '瞬时辐照(W/m²)',
           splitLine:{
             show:false
           },

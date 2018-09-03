@@ -54,7 +54,7 @@ function ConfluenceTenMin({ deviceTenMin, loading }) {
       },
       yAxis: [
         {
-          name: '电流 (A)',
+          name: '电流(A)',
           splitLine:{
             show:false
           },
