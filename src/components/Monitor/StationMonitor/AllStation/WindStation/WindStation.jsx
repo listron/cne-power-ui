@@ -9,17 +9,13 @@ import { Tabs, Radio, Switch } from "antd";
 
 class WindStation extends React.Component {
   static propTypes = {
-    sort: PropTypes.string,
-    ascend: PropTypes.bool,
-    pageNum: PropTypes.number,
-    pageSize: PropTypes.number,
     windMonitorStation: PropTypes.object,
-    totalNum: PropTypes.number,
+    stationShowType:PropTypes.string,
+    changeMonitorStationStore: PropTypes.func
   }
   constructor(props, context) {
     super(props, context);
-    this.state = {
-      key: '1',
+    this.state = {  
       checked: false,
       stationType: 'all',
       totalNum: 0
@@ -38,7 +34,8 @@ class WindStation extends React.Component {
     })
   }
   setkey = (activekey) => {
-    this.setState({ key: activekey })
+
+    this.props.changeMonitorStationStore({stationShowType:activekey});
   }
   componentUnmount() {
     //clearTimeout(this.autoTimer)
@@ -144,9 +141,6 @@ class WindStation extends React.Component {
     stationDataList.forEach((item, index) => {
 
 
-
-
-
       let stationStatusAll = item.stationStatus || {};
       let stationStatus = stationStatusAll.stationStatus || "";
       const stationType = item.stationType || "";
@@ -168,14 +162,14 @@ class WindStation extends React.Component {
     return (
       <div className={styles.WindStation}>
         <WindStationHeader {...this.props} />
-        <Tabs className={styles.smallTabs} activeKey={key} tabBarExtraContent={key !== '3' ? operations : province} onChange={this.setkey}>
+        <Tabs className={styles.smallTabs} activeKey={this.props.stationShowType} tabBarExtraContent={key !== 'stationMap' ? operations : province} onChange={this.setkey}>
           <TabPane
             tab={
               <span>
                 <i className="iconfont icon-grid"></i>
               </span>
             }
-            key="1"
+            key="stationBlock"
           >
             <WindStationItem {...this.props} stationDataList={newStationDataList} />
 
@@ -186,7 +180,7 @@ class WindStation extends React.Component {
                 <i className="iconfont icon-table"></i>
               </span>
             }
-            key="2"
+            key="stationList"
           >
             <WindStationList {...this.props} stationDataList={newStationDataList} />
 
@@ -197,7 +191,7 @@ class WindStation extends React.Component {
                 <i className="iconfont icon-map"></i>
               </span>
             }
-            key="3"
+            key="stationMap"
           >
             <Map {...this.props} stationDataList={data} testId="wind_bmap_station" />
           </TabPane>
@@ -208,4 +202,5 @@ class WindStation extends React.Component {
   }
 }
 export default WindStation
+
 

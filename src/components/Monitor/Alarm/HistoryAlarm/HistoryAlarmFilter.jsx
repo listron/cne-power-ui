@@ -14,6 +14,7 @@ import styles from './historyAlarm.scss';
 
 class HistoryAlarmFilter extends Component {
   static propTypes = {
+    stations: PropTypes.object,
     warningLevel: PropTypes.array,
     stationType: PropTypes.string,
     stationCode: PropTypes.array,
@@ -46,6 +47,7 @@ class HistoryAlarmFilter extends Component {
 
   render() {
     const { showFilter } = this.state;
+    const { stations } = this.props;
     return (
       <div className={styles.alarmFilter}>
         <div className={styles.topSearch}>
@@ -53,9 +55,9 @@ class HistoryAlarmFilter extends Component {
           <Button onClick={()=>this.onFilterShowChange('alarmLevel')}>
             告警级别{showFilter==='alarmLevel'?<Icon type="up" />:<Icon type="down" />}
           </Button>
-          <Button onClick={()=>this.onFilterShowChange('stationType')}>
+          { stations && stations.size > 0 && <Button onClick={()=>this.onFilterShowChange('stationType')}>
             电站类型{showFilter==='stationType'?<Icon type="up" />:<Icon type="down" />}
-          </Button>
+          </Button>}
           <Button onClick={()=>this.onFilterShowChange('stationName')}>
             电站名称{showFilter==='stationName'?<Icon type="up" />:<Icon type="down" />}
           </Button>

@@ -41,17 +41,16 @@ class RealTimeAlarm extends Component {
   }
 
   componentDidMount() {
-    const { warningLevel, stationType, stationCode, deviceTypeCode, warningConfigName, startTime, deviceName} = this.props;
     const status = this.getStatus();
     const warningStatus = this.getAlarmStatus(status);
     this.props.getRealTimeAlarm({
-      warningLevel,
-      stationType,
-      stationCode,
-      deviceTypeCode,
-      warningConfigName,
-      startTime,
-      deviceName,
+      warningLevel: [],
+      stationType: '2',
+      stationCode: [],
+      deviceTypeCode: [],
+      warningConfigName: [],
+      startTime: [],
+      deviceName: '',
       isTransferWork: status === 'transfer' ? 0 : 1,
       isRelieveAlarm: status === 'relieve' ? 0: 1
     });
@@ -172,8 +171,9 @@ const mapDispatchToProps = (dispatch) => ({
   getRealTimeAlarm: payload => dispatch({type: alarmAction.GET_REALTIME_ALARM_SAGA, payload}),
   getAlarmNum: payload => dispatch({type: alarmAction.GET_ALARM_NUM_SAGA, payload}),
   getDefectTypes: params => dispatch({ type: ticketAction.GET_DEFECTTYPES_SAGA, params }),
-  onTransferAlarm: payload =>dispatch({ type: alarmAction.TRANSFER_ALARM_SAGA, payload }),
-  onRelieveAlarm: payload =>dispatch({ type: alarmAction.RELIEVE_ALARM_SAGA, payload }),
+  onTransferAlarm: payload => dispatch({ type: alarmAction.TRANSFER_ALARM_SAGA, payload }),
+  onRelieveAlarm: payload => dispatch({ type: alarmAction.RELIEVE_ALARM_SAGA, payload }),
+  onResetRelieveAlarm: payload => dispatch({ type: alarmAction.RESET_RELIEVE_ALARM_SAGA, payload }),
   getTicketInfo: payload =>dispatch({ type: alarmAction.GET_TICKET_INFO_SAGA, payload }),
   getRelieveInfo: payload =>dispatch({ type: alarmAction.GET_RELIEVE_INFO_SAGA, payload }),
   resetAlarm: payload =>dispatch({ type: alarmAction.RESET_ALARM_SAGA, payload }),

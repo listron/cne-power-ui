@@ -14,7 +14,6 @@ class RealTimeAlarmTable extends Component {
   static propTypes = {
     realtimeAlarm: PropTypes.array,
     selectedRowKeys: PropTypes.array,
-    loading: PropTypes.bool,
     onRelieveAlarm: PropTypes.func,
     onResetRelieveAlarm: PropTypes.func,
     getTicketInfo: PropTypes.func,
@@ -39,8 +38,8 @@ class RealTimeAlarmTable extends Component {
       showRelievePopover: [],
       showWarningTip: false,
       warningTipText: '',
-      key: '',
-      order: 'ascend',
+      sortName: '',
+      descend: false,
     }
   }
 
@@ -49,30 +48,9 @@ class RealTimeAlarmTable extends Component {
   }
 
   onChangeTable = (pagination, filters, sorter) => {
-    const field = sorter.field;
-    let order = sorter.order;
-    let key = '';
-    switch(field) {
-      case 'warningLevel':
-        key = 'warningLevel';
-        break;
-      case 'stationName':
-        key = 'stationCode';
-        break;
-      case 'deviceTypeName':
-        key = 'deviceTypeCode';
-        break;
-      case 'timeOn':
-        key = 'timeOn';
-        break;
-      case 'durationTime':
-        key = 'timeOn';
-        order = order === 'ascend' ? 'descend' : 'ascend'
-        break;
-    }
-    this.setState({
-      key,
-      order,
+    this.setState({ 
+      sortName: sorter.field,
+      descend : sorter.order === 'descend'
     });
   }
 
@@ -92,7 +70,7 @@ class RealTimeAlarmTable extends Component {
     } else if(value === 'resetRelieve') {
       this.setState({
         showWarningTip: true,
-        warningTipText: ' 确定要取消解除吗'
+        warningTipText: ' 确定要取消解除么'
       });
     }
   }
@@ -103,8 +81,14 @@ class RealTimeAlarmTable extends Component {
       showWarningTip: false,
       warningTipText: ''
     });
-    this.onResetRelieveAlarm({
+    this.props.onResetRelieveAlarm({
       warningLogId: selectedRowKeys
+    });
+  }
+
+  onCancelWarningTip = () => {//信息提示栏隐藏
+    this.setState({
+      showWarningTip: false
     });
   }
 
@@ -146,6 +130,31 @@ class RealTimeAlarmTable extends Component {
    this.props.changeAlarmStore({selectedRowKeys:[]});
   }
 
+  createTableSource(data) {
+    const { pageSize, currentPage, sortName, descend } = this.state;
+    const nameSortArr = ['stationName', 'deviceTypeName', 'warningConfigName']
+    const tableSource = data.map((e, i) => ({
+      ...e,
+      key: i,
+    })).sort((a, b) => { // 手动排序
+      const sortType = descend ? -1: 1;
+      if(sortName === 'warningLevel'){
+        return sortType * (a.warningLevel - b.warningLevel);
+      }else if(nameSortArr.includes(sortName)){
+        return sortType * a[sortName].localeCompare(b[sortName], 'zh');
+      }else if(sortName === 'timeOn'){
+        return sortType * (moment(a.timeOn) - moment(b.timeOn));
+      }else if(sortName === 'durationTime'){
+        return sortType * (moment(b.timeOn) - moment(a.timeOn));
+      }
+    }).filter((e,i)=>{ // 筛选页面
+      const startIndex = (currentPage - 1) * pageSize;
+      const endIndex = startIndex + pageSize;
+      return (i >= startIndex && i < endIndex);
+    });
+    return tableSource
+  }
+
   initColumn = () => {
     const level = ['一级', '二级', '三级', '四级']; 
     const { alarmStatus } = this.props;
@@ -176,6 +185,7 @@ class RealTimeAlarmTable extends Component {
         title: '告警类型',
         dataIndex: 'warningConfigName',
         key: 'warningConfigName',
+        sorter: true,
       },{
         title: '告警描述',
         dataIndex: 'warningCheckDesc',
@@ -238,8 +248,8 @@ class RealTimeAlarmTable extends Component {
     return (
       <Select onChange={this.onHandle} value="操作" placeholder="操作" dropdownMatchSelectWidth={false} dropdownClassName={styles.handleDropdown}>
         <Option value="ticket" disabled={selectedRowKeys.length===0}><i className="iconfont icon-tranlist"></i>转工单</Option>
-        <Option value="relieve" disabled={alarmStatus===2||selectedRowKeys.length===0}><i className="iconfont icon-manual"></i>手动解除</Option>
-        <Option value="resetRelieve" disabled={alarmStatus===1||selectedRowKeys.length===0}><i className="iconfont icon-lifted"></i>取消解除</Option>
+        {alarmStatus===1&&<Option value="relieve" disabled={selectedRowKeys.length===0}><i className="iconfont icon-manual"></i>手动解除</Option>}
+        {alarmStatus===2&&<Option value="resetRelieve" disabled={selectedRowKeys.length===0}><i className="iconfont icon-lifted"></i>取消解除</Option>}
       </Select>
     );
   }
@@ -341,23 +351,9 @@ class RealTimeAlarmTable extends Component {
   }
 
   render() {
-    const { realtimeAlarm, loading, selectedRowKeys, alarmStatus } = this.props;
-    const { pageSize, currentPage, showTransferTicketModal, showRelieveAlarmModal, showWarningTip, warningTipText, order, key, } = this.state;
-    let sorterData = realtimeAlarm;
-    if(key !== '') {
-      sorterData = realtimeAlarm.sort(function(a,b) {
-        if(key !== 'timeOn') {
-          return (a[key] - b[key])*(order === 'ascend' ? 1 : -1);
-        } else {
-          return (moment.utc(a[key]).unix()- moment.utc(b[key]).unix())*(order === 'ascend' ? 1 : -1);
-        }
-      });
-    }
-    const tableSource = sorterData.filter((e,i)=>{ // 手动分页
-      const startIndex = (currentPage - 1) * pageSize;
-      const endIndex = startIndex + pageSize;
-      return (i >= startIndex && i < endIndex);
-    });
+    const { realtimeAlarm, selectedRowKeys, alarmStatus } = this.props;
+    const { showTransferTicketModal, showRelieveAlarmModal, showWarningTip, warningTipText} = this.state;
+    const tableSource = this.createTableSource(realtimeAlarm);
     const columns = this.initColumn();
     const rowSelection = {
       selectedRowKeys,
@@ -365,21 +361,26 @@ class RealTimeAlarmTable extends Component {
     };
     return (
       <div className={styles.alarmTable}>
-        {showWarningTip && <WarningTip onOK={this.onConfirmWarningTip} value={warningTipText} />}
+        {showWarningTip && <WarningTip
+          style={{marginTop:'350px',width: '210px',height:'88px'}}
+          onCancel={this.onCancelWarningTip} 
+          hiddenCancel={false}
+          onOK={this.onConfirmWarningTip} 
+          value={warningTipText} />}
         <div className={styles.tableHeader}>
           {this.renderOperation()}
           <CommonPagination onPaginationChange={this.onChangePagination} total={realtimeAlarm.length} />
         </div>
         <Table
-          loading={loading}
-          rowKey={(record)=>{return record.warningLogId}} 
           dataSource={tableSource}
+          rowKey={record=>record.warningLogId}
           rowSelection={alarmStatus===3?null:rowSelection}
           columns={columns}
           pagination={false}
           onChange={this.onChangeTable}
+          locale={{emptyText:<div className={styles.noData}><img src="/img/nodata.png" style={{width: 223,height:164}} /></div>}}
         />
-        {alarmStatus!==3&&<div className={styles.tableFooter}>
+        {alarmStatus!==3&&realtimeAlarm.length>0&&<div className={styles.tableFooter}>
             <span className={styles.info}>当前选中<span className={styles.totalNum}>{selectedRowKeys.length}</span>项</span>
             {selectedRowKeys.length > 0 &&<span className={styles.cancel} onClick={this.cancelRowSelect}>取消选中</span>}
           </div>}

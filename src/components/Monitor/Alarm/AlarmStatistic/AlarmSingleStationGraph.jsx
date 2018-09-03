@@ -62,10 +62,10 @@ class AlarmSingleStationGraph extends React.Component {
         formatter: (params) => {
           return `<div>
           <div style="border-bottom: 1px solid #dfdfdf;padding-left:4px;padding-bottom:4px">${params[0].name}</div> 
-          <div style="padding-left:4px;height:22px;line-height:22px"><span style="display:inline-block;padding-right:6px">${params[0].marker}${params[0].seriesName}</span><span>${params[0].value}</span></div>
+          <div style="padding-left:4px;height:22px;line-height:22px"><span style="display:inline-block;padding-right:6px">告警数</span><span>${params[1].value+params[2].value}</span></div>
           <div style="padding-left:4px;height:22px;line-height:22px"><span style="display:inline-block;padding-right:6px">${params[1].marker}${params[1].seriesName}</span><span>${params[1].value}</span></div> 
-          <div style="padding-left:4px;height:22px;line-height:22px"><span style="display:inline-block;padding-right:6px">${params[1].marker}${params[1].seriesName}</span><span>${params[2].marker}${params[2].seriesName}${params[2].value}</span></div>
-          <div style="padding-left:4px;height:22px;line-height:22px"><span style="display:inline-block;padding-right:6px">${params[1].marker}${params[1].seriesName}</span><span>${params[0].marker}${params[0].seriesName}${params[0].value}</span></div>       
+          <div style="padding-left:4px;height:22px;line-height:22px"><span style="display:inline-block;padding-right:6px">${params[2].marker}${params[2].seriesName}</span><span>${params[2].value}</span></div>
+          <div style="padding-left:4px;height:22px;line-height:22px"><span style="display:inline-block;padding-right:6px">${params[0].marker}${params[0].seriesName}</span><span>${params[0].value}%</span></div>       
           </div>`
           },
         backgroundColor: '#fff',
@@ -77,10 +77,16 @@ class AlarmSingleStationGraph extends React.Component {
         {
           type: 'value',
           name: '告警数(个)',
+          splitLine: {
+            show: false
+          }
         },
         {
           type: 'value',
           name: '转化率(%)',
+          splitLine: {
+            show: false
+          }
         }
       ],
       xAxis: {

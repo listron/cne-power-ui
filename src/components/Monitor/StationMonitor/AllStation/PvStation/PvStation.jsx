@@ -9,18 +9,16 @@ import { Tabs, Radio, Switch } from "antd";
 import PvStationList from "./PvStationList";
 class PvStation extends React.Component {
   static propTypes = {
-    sort: PropTypes.string,
-    ascend: PropTypes.bool,
-    pageNum: PropTypes.number,
-    pageSize: PropTypes.number,
     pvMonitorStation: PropTypes.object,
+    stationShowType:PropTypes.string,
+    changeMonitorStationStore: PropTypes.func
   }
   constructor(props, context) {
 
     super(props, context);
     this.TabPane = Tabs.TabPane;
     this.state = {
-      key: '1',
+
       checked: false,
       stationType: 'all',
     }
@@ -37,7 +35,8 @@ class PvStation extends React.Component {
     })
   }
   setkey = (activekey) => {
-    this.setState({ key: activekey })
+ 
+    this.props.changeMonitorStationStore({stationShowType:activekey});
   }
   render() {
     let { key, checked, stationType } = this.state;
@@ -85,7 +84,7 @@ class PvStation extends React.Component {
     const operations = (
       <div>
         <Switch onChange={this.onHandleAlarm} />告警
-    <Radio.Group
+        <Radio.Group
           defaultValue="all"
           buttonStyle="solid"
           onChange={this.onHandleStation}
@@ -94,7 +93,6 @@ class PvStation extends React.Component {
           <Radio.Button value="all">全部</Radio.Button>
           <Radio.Button value="normal">通讯正常  {normalNum}<span></span></Radio.Button>
           <Radio.Button value="dataInterruption">信息中断  {dataInterruptionNum}</Radio.Button>
-          {/* <Radio.Button value="networkInterruption">网络中断</Radio.Button> */}
           <Radio.Button value="unconnection">未接入  {unconnectionNum}</Radio.Button>
         </Radio.Group>
       </div>
@@ -148,14 +146,14 @@ class PvStation extends React.Component {
     return (
       <div className={styles.pvStation}>
         <PvStationHeader {...this.props} />
-        <Tabs className={styles.smallTabs} activeKey={key} tabBarExtraContent={key !== '3' ? operations : province} onChange={this.setkey}>
+        <Tabs className={styles.smallTabs} activeKey={this.props.stationShowType} tabBarExtraContent={key !== 'stationMap' ? operations : province} onChange={this.setkey}>
           <TabPane
             tab={
               <span>
                 <i className="iconfont icon-grid"></i>
               </span>
             }
-            key="1"
+            key="stationBlock"
           >
             <PvStationItem {...this.props} stationDataList={newStationDataList} />
           </TabPane>
@@ -165,7 +163,7 @@ class PvStation extends React.Component {
                 <i className="iconfont icon-table"></i>
               </span>
             }
-            key="2"
+            key="stationList"
           >
             <PvStationList {...this.props} stationDataList={newStationDataList} />
           </TabPane>
@@ -175,7 +173,7 @@ class PvStation extends React.Component {
                 <i className="iconfont icon-map"></i>
               </span>
             }
-            key="3"
+            key="stationMap"
           >
             <Map testId="pv_bmap_station" {...this.props} stationDataList={data} />
           </TabPane>

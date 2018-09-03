@@ -80,10 +80,16 @@ class AlarmStatisticGraph extends React.Component {
         {
           type: 'value',
           name: '告警数(个)',
+          splitLine: {
+            show: false
+          }
         },
         {
           type: 'value',
           name: '天数(天)',
+          splitLine: {
+            show: false
+          }
         },
       ],
       xAxis: {
