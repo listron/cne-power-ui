@@ -6,7 +6,6 @@ import Map from './Map.jsx'
 class Allstation extends React.Component {
   static propTypes = {
     allMonitorStation: PropTypes.object,
-    stationDataList: PropTypes.array,
   }
   constructor(props, context) {
     super(props, context)

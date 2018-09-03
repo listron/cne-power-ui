@@ -5,10 +5,7 @@ import CommonPagination from '../../../../Common/CommonPagination';
 import { Progress, Table } from "antd";
 class PvStationList extends React.Component {
   static propTypes = {
-    currentPage: PropTypes.number,
-    pageSize: PropTypes.number,
     stationDataList: PropTypes.array,
-
   }
   constructor(props, context) {
     super(props, context)
@@ -209,7 +206,7 @@ class PvStationList extends React.Component {
     return columns
   }
   createTableSource = (data) => { // 数据源的排序，翻页
-    const { pageSize, currentPage, sortName, descend } = this.state;
+    const { sortName, descend } = this.state;
     const tableSource = [...data].map((e, i) => ({
       ...e,
       key: i,
@@ -223,19 +220,40 @@ class PvStationList extends React.Component {
         a[sortName] = a[sortName] ? a[sortName] : '';
         return sortType * (a[sortName].localeCompare(b[sortName]));
       }
-    }).filter((e, i) => { // 筛选页面
-      const startIndex = (currentPage - 1) * pageSize;
-      const endIndex = startIndex + pageSize;
-      return (i >= startIndex && i < endIndex);
-    });
+    })
     return tableSource
   }
   render() {
     const { stationDataList } = this.props;
-    const data = this.createTableSource(stationDataList);
-    //const { currentPage,pageSize,}=this.state;
+    const dataSort = this.createTableSource(stationDataList);
     const columns = this.initColumn()
     const totalNum = stationDataList.length;
+    const { pageSize, currentPage } = this.state;
+    let startRow=(currentPage-1)*pageSize;
+    let endRow=currentPage*pageSize;
+    endRow = (endRow > totalNum) ? totalNum : endRow;
+    let datalist=dataSort.slice(startRow,endRow)
+    // // 表单数据
+    const data = datalist.map((item, index) => {
+     const stationStatus=item.stationStatus||{};
+      return (
+        {
+          key: `${item.stationCode}` ,
+          stationName: `${item.stationName||'--'}`,
+          stationrovince: `${item.provinceName||'--'}`,
+          stationPower: `${item.stationPower||'--'}`,
+          stationCapacity: `${item.stationCapacity||'--'}`,
+          windSpeed: `${item.instantaneous||'--'}`,
+          dayOutput: `${item.dayPower||'--'}`,
+          monthOutput: `${item.monthPower||'--'}`,
+          yearOutput: `${item.yearPower||'--'}`,
+          planOutput: `${item.yearPlanPower||'--'}`,
+          equipmentNum: `${item.stationUnitCount||'--'}`,
+          alarmNum: `${item.alarmNum||'--'}`,
+          currentStation: `${stationStatus.stationStatus||''}`
+        }
+      )
+    })
 
     return (
       <div className={styles.PvStationList}>
