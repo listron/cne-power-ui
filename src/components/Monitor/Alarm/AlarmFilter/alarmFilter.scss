@@ -11,13 +11,18 @@
   >span {
     margin-right: 10px;
   }
+  :global {
+    .ant-input {
+      width: 300px;
+    }
+  }
 }
 .stationFilter {
   margin-top: 10px;
   display: flex;
   flex: 1;
   flex-shrink: 0;
-  max-height: 240px;
+  max-height: 190px;
   min-height: 40px;
   overflow-y: auto;
   border-radius: 4px;

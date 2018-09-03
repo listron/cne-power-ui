@@ -180,7 +180,7 @@ class HostoryAlarmTable extends Component {
               visible={this.state.showTransferPopover[index]}
               onVisibleChange={(visible)=>this.onTransferChange(visible, record.operateId, index)}
               >
-                <i className="iconfont icon-tranlist icon-action"></i>
+                <div className={this.state.showTransferPopover[index]?styles.selected:null}><i className="iconfont icon-tranlist icon-action"></i></div>
               </Popover>
             );
           }
@@ -191,7 +191,7 @@ class HostoryAlarmTable extends Component {
               visible={this.state.showRelievePopover[index]}
               onVisibleChange={(visible)=>this.onRelieveChange(visible, record.operateId, index)}
               >
-                <i className="iconfont icon-manual icon-action"></i>
+                <div className={this.state.showRelievePopover[index]?styles.selected:null}><i className="iconfont icon-manual icon-action"></i></div>
               </Popover>
             );
           }
@@ -201,7 +201,7 @@ class HostoryAlarmTable extends Component {
               onVisibleChange={(visible)=>this.onAutoRelieveChange(visible, index)}
               content={this.renderAutoRelievePopover(record, index)} 
               trigger="click">
-              <i className="iconfont icon-lifted icon-action"></i>
+              <div className={this.state.showAutoRelievePopover[index]?styles.selected:null}><i className="iconfont icon-lifted icon-action"></i></div>
             </Popover>
           );
         }
