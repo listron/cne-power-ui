@@ -41,9 +41,7 @@ class AlarmStationSelectModal extends Component {
   }
 
   onCancel = () => {
-    this.setState({
-      onCancel: ''
-    });
+    this.props.onClose();
   }
 
   renderProvinceStation(stations) {

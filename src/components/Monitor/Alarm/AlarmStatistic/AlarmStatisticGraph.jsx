@@ -40,7 +40,7 @@ class AlarmStatisticGraph extends React.Component {
       return item.fourWarningNum
     });
     const handleAvgTime = alarmStatistic.map((item, index) => {
-      return item.handleAvgTime
+      return item.handleAvgTime === null ? 0 : item.handleAvgTime
     });
     return {
       stationNameData, oneWarningNum, twoWarningNum, threeWarningNum, fourWarningNum, handleAvgTime
@@ -51,59 +51,46 @@ class AlarmStatisticGraph extends React.Component {
     const option = {
       tooltip: {
         trigger: 'axis',
+        padding: [4, 0],
         axisPointer: {            // 坐标轴指示器，坐标轴触发有效
           type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
         },
+        textStyle: {
+          color: '#999',
+          fontSize: 12,
+        },
+        extraCssText:'width:128px;height:165px;',
         formatter: (params) => {
           return `<div>
-          <div> ${params[0].name}</div> 
-          <div> ${params[0].marker}${params[0].seriesName}${params[0].value}</div>
-          <div> ${params[1].marker}${params[1].seriesName}${params[1].value}</div> 
-          <div> ${params[2].marker}${params[2].seriesName}${params[2].value}</div>
-          <div> ${params[3].marker}${params[3].seriesName}${params[3].value}</div>
-          <div>总计${params[0].value+params[1].value+params[2].value+params[3].value}</div> 
+          <div style="border-bottom: 1px solid #dfdfdf;padding-left:4px;padding-bottom:4px">${params[0].name}</div> 
+          <div style="padding-left:4px;height:22px;line-height:22px"><span style="display:inline-block;padding-right:6px">${params[0].marker}${params[0].seriesName}</span><span>${params[0].value}</span></div>
+          <div style="padding-left:4px;height:22px;line-height:22px"><span style="display:inline-block;padding-right:6px">${params[1].marker}${params[1].seriesName}</span><span>${params[1].value}</span></div>
+          <div style="padding-left:4px;height:22px;line-height:22px"><span style="display:inline-block;padding-right:6px">${params[2].marker}${params[2].seriesName}</span><span>${params[2].value}</span></div> 
+          <div style="padding-left:4px;height:22px;line-height:22px"><span style="display:inline-block;padding-right:6px">${params[3].marker}${params[3].seriesName}</span><span>${params[3].value}</span></div>
+          <div style="padding-left:4px;height:22px;line-height:22px"><span style="display:inline-block;padding-right:6px">${params[4].marker}${params[4].seriesName}</span><span>${params[4].value}</span></div>
+          <div style="padding-left:4px;height:22px;line-height:22px"><span style="display:inline-block;padding-right:6px">总计</span><span>${params[1].value+params[2].value+params[3].value+params[4].value}</span></div> 
           </div>`
           },
         backgroundColor: '#fff',
-        textStyle: {
-          color: '#999',
-        },
       },
       legend: {
         data: ['一级', '二级', '三级', '四级', '平均处理时间']
       },
-      grid: {
-        left: '3%',
-        right: '4%',
-        bottom: '3%',
-        containLabel: true
-      },
       yAxis: [
         {
           type: 'value',
-          name: '天数(天)',
-          position: 'right',
-          min: 0,
-          max: 10,
-          axisLine: {
-            lineStyle: {
-            }
-          },
-          axisLabel: {
+          name: '告警数(个)',
+          splitLine: {
+            show: false
           }
         },
         {
           type: 'value',
-          name: '告警数(个)',
-          position: 'left',
-          axisLine: {
-            lineStyle: {
-
-            }
-          },
-          axisLabel: {
+          name: '天数(天)',
+          splitLine: {
+            show: false
           }
-        }
+        },
       ],
       xAxis: {
         type: 'category',
@@ -114,78 +101,52 @@ class AlarmStatisticGraph extends React.Component {
         {
           name: '平均处理时间',
           type: 'line',
-          label: {
-            normal: {
-              show: true,
-              position: 'insideRight'
-            }
-          },
+          yAxisIndex: 1,
           lineStyle: {
-            normal: {
-              color: 'green',
-              width: 2,
-              type: 'dashed'
-            }
+            color: '#199475',
+            width: 2,
+            type: 'dashed'
+          },
+          itemStyle: {
+            color: '#199475'
           },
           data: handleAvgTime
-          //这是平均处理时间的数据
-          // data: [6, 15, 20, 8, 9, 7, 0,]
         },
         {
           name: '一级',
           type: 'bar',
           stack: '总量',
-          label: {
-            normal: {
-              show: true,
-              position: 'insideRight'
-            }
+          itemStyle: {
+            color: '#a42b2c'
           },
-          yAxisIndex: 1,
-          //data: [24, 11, 6, 5, 9, 10, 0]
           data: oneWarningNum,
         },
         {
           name: '二级',
           type: 'bar',
           stack: '总量',
-          label: {
-            normal: {
-              show: true,
-              position: 'insideRight'
-            }
+          itemStyle: {
+            color: '#e08031'
           },
-          yAxisIndex: 1,
           data: twoWarningNum
-          //data: [6, 10, 24, 11, 5, 9, 0]
         },
         {
           name: '三级',
           type: 'bar',
           stack: '总量',
-          label: {
-            normal: {
-              show: true,
-              position: 'insideRight'
-            }
+          itemStyle: {
+            color: '#f9b600'
           },
-          yAxisIndex: 1,
           data: threeWarningNum
-          //data: [24, 6, 5, 9, 10, 11, 0]
         },
         {
           name: '四级',
           type: 'bar',
           stack: '总量',
-          label: {
-            normal: {
-              show: true,
-              position: 'insideRight'
-            }
+          itemStyle: {
+            color: '#fbe6e3'
           },
-          yAxisIndex: 1,
           data: fourWarningNum
-          //data: [6, 5, 10, 24, 11, 7, 9]
         }
 
       ]
@@ -199,7 +160,7 @@ class AlarmStatisticGraph extends React.Component {
     const { graphId } = this.props;
     return (
       <div>
-        <div id={graphId} style={{ width: '85%', height: '500px' }}> </div>
+        <div id={graphId} className={StyleSheet.statisticGraph} style={{ width: '85%', height: '500px' }}> </div>
       </div>
     );
   }

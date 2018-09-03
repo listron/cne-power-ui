@@ -2,7 +2,7 @@ import keyMirror from 'keymirror';
 
 module.exports = {
   allStationAction: keyMirror({
-    GET_ALL_MONITORSTATION_SAGA: null,//	获取多电站实时数据列表
+    GET_MONITORSTATION_SAGA: null,//	获取多电站实时数据列表
     MONITORSTATION_FETCH: null,//loading
     GET_MONITORSTATION_FETCH_SUCCESS: null,//请求成功
     
@@ -11,11 +11,11 @@ module.exports = {
 
 
 
-//wind
-    GET_WIND_MONITORSTATION_SAGA: null,
+// //wind
+//     GET_WIND_MONITORSTATION_SAGA: null,
 
-//pv
-    GET_PV_MONITORSTATION_SAGA: null,
+// //pv
+//     GET_PV_MONITORSTATION_SAGA: null,
   })
 }
 

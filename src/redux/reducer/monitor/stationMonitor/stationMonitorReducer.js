@@ -7,12 +7,10 @@ var initState = Immutable.fromJS({
    allMonitorStation:{},//实时数据汇总
    windMonitorStation:{},
    pvMonitorStation:{},
-   stationDataSummary:{},//电站实时数据汇总
-   stationDataList:[],//电站实时数据列表
-   pageNum: 1,//当前页号
-   pageSize: 10,//每页容纳条数
-   totalNum: 0,//数据总数
-   stationTypes:'all'
+   stationTypes: '2',//2-有风和光，默认显示全部，0-只有风，只显示风，1-只有光，只显示光
+   stationTypeTabs:'2',
+   stationShowType:'stationBlock',
+
 
 });
 const stationMonitorReducer = (state = initState, action) => {

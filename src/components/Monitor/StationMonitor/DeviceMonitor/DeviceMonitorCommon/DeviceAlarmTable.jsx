@@ -96,7 +96,7 @@ class DeviceAlarmTable extends Component {
       if(sortName === 'warningLevel'){
         return sortType * (a.warningLevel - b.warningLevel);
       }else if(sortName === 'warningConfigName'){
-        return sortType * a.warningConfigName.localCompare(b.warningConfigName);
+        return sortType * a.warningConfigName.localeCompare(b.warningConfigName);
       }else if(sortName === 'timeOn'){
         return sortType * (moment(b.timeOn) - moment(a.timeOn));
       }else if(sortName === 'durationTime'){
