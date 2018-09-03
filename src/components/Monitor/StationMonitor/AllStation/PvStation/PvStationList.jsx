@@ -248,28 +248,4 @@ class PvStationList extends React.Component {
   }
 }
 export default (PvStationList)
-  // let startRow=(currentPage-1)*pageSize;
-    // let endRow=currentPage*pageSize;
-    // endRow = (endRow > totalNum) ? totalNum : endRow;
-    // let datalist=stationDataList.slice(startRow,endRow)
-    // // // 表单数据
-    // const data = datalist.map((item, index) => {
-    //  const stationStatus=item.stationStatus||{};
-    //   return (
-    //     {
-    //       key: `${item.stationCode}` ,
-    //       stationName: `${item.stationName||'--'}`,
-    //       stationrovince: `${item.provinceName||'--'}`,
-    //       stationPower: `${item.stationPower||'--'}`,
-    //       stationCapacity: `${item.stationCapacity||'--'}`,
-    //       windSpeed: `${item.instantaneous||'--'}`,
-    //       dayOutput: `${item.dayPower||'--'}`,
-    //       monthOutput: `${item.monthPower||'--'}`,
-    //       yearOutput: `${item.yearPower||'--'}`,
-    //       planOutput: `${item.yearPlanPower||'--'}`,
-    //       equipmentNum: `${item.stationUnitCount||'--'}`,
-    //       alarmNum: `${item.alarmNum||'--'}`,
-    //       currentStation: `${stationStatus.stationStatus||''}`
-    //     }
-    //   )
-    // })
+  

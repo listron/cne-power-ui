@@ -249,33 +249,4 @@ class WindStationList extends React.Component {
   }
 }
 export default (WindStationList)
-   // const { pageNum, pageSize } = this.state
-    // let totalNum = stationDataList.length;
-
-    // pageNum//当前页数
-    // let startRow = (pageNum - 1) * pageSize;//开始显示的行   数组索引0开始
-    // let endRow = pageNum * pageSize;//结束显示的行   索引是10但是取不到10，索引取到9但还是第十项
-    // endRow = (endRow > totalNum) ? totalNum : endRow;  //边界判断，如果最后一项的值大于总数据条数，就取总数据的值  
-
-    // let datalist = stationDataList.slice(startRow, endRow);
-
-    // const data = datalist.map((item, index) => {
-    //   const stationStatus=item.stationStatus||{};
-    //   return (
-    //     {
-    //       key: `${item.stationCode}`,
-    //       stationName: `${item.stationName || '--'}`,
-    //       stationrovince: `${item.provinceName || '--'}`,
-    //       stationPower: `${item.stationPower || '--'}`,
-    //       stationCapacity: `${item.stationCapacity || '--'}`,
-    //       windSpeed: `${item.instantaneous || '--'}`,
-    //       dayOutput: `${item.dayPower || '--'}`,
-    //       monthOutput: `${item.monthPower || '--'}`,
-    //       yearOutput: `${item.yearPower || '--'}`,
-    //       planOutput: `${item.yearPlanPower || '--'}`,
-    //       equipmentNum: `${item.stationUnitCount || '--'}`,
-    //       alarmNum: `${item.alarmNum || '--'}`,
-    //       currentStation: `${stationStatus.stationStatus}`
-    //     }
-    //   )
-    // })
+  
