@@ -20,7 +20,7 @@ class PvStation extends React.Component {
     super(props, context);
     this.TabPane = Tabs.TabPane;
     this.state = {
-      key: '1',
+      key: 'block',
       checked: false,
       stationType: 'all',
     }
@@ -155,7 +155,7 @@ class PvStation extends React.Component {
                 <i className="iconfont icon-grid"></i>
               </span>
             }
-            key="1"
+            key="block"
           >
             <PvStationItem {...this.props} stationDataList={newStationDataList} />
           </TabPane>
@@ -165,7 +165,7 @@ class PvStation extends React.Component {
                 <i className="iconfont icon-table"></i>
               </span>
             }
-            key="2"
+            key="list"
           >
             <PvStationList {...this.props} stationDataList={newStationDataList} />
           </TabPane>
@@ -175,7 +175,7 @@ class PvStation extends React.Component {
                 <i className="iconfont icon-map"></i>
               </span>
             }
-            key="3"
+            key="map"
           >
             <Map testId="pv_bmap_station" {...this.props} stationDataList={data} />
           </TabPane>
