@@ -35,7 +35,7 @@ class DealResultFilter extends Component {
     ];
     return (
       <div className={styles.alarmFilterItem}>
-        <span onClick={this.onReset} >不限</span>
+        <span onClick={this.onReset} className={warningStatus.length===0?styles.selected:styles.all}>不限</span>
         <CheckboxGroup options={options} value={warningStatus} onChange={this.onChange} />
       </div>
     );

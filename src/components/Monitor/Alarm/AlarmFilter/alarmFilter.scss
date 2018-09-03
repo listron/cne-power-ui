@@ -1,3 +1,4 @@
+@import '../../../../theme/theme.scss';
 .alarmFilterItem {
   margin-top: 10px;
   display: flex;
@@ -15,6 +16,22 @@
     .ant-input {
       width: 300px;
     }
+  }
+  .all {
+    display: inline-block;
+    color: #666;
+    width: 29px;
+    height: 19px;
+    border-bottom: none;
+    cursor: pointer;
+  }
+  .selected {
+    display: inline-block;
+    color: $themeColor;
+    width: 29px;
+    height: 19px;
+    border-bottom: 1px $themeColor solid;
+    cursor: pointer;
   }
 }
 .stationFilter {
