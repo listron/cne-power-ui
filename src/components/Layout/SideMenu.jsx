@@ -119,9 +119,8 @@ class SideMenu extends Component {
   renderSideMenu(sideMenuData) {
     const { collapsed } = this.state;
     // const menuRight = localStorage.getItem('menuRight');
-    // const filteredMenu = menu.filter(e=>menuRight.includes(e.rightKey)) --todo filter
     return sideMenuData.map(e=>{
-      if(!e.children || e.children.length === 0){//只有二级目录
+      if(!e.children || e.children.length === 0){//只有二级目录  // && menuRight.includes(e.rightKey)) todo添加权限判定
         return (
           <Item key={e.path}>
             <Link to={e.path}>{e.iconStyle && <i className={`iconfont ${e.iconStyle}`} />}{collapsed ? null: e.name}</Link>
@@ -129,6 +128,7 @@ class SideMenu extends Component {
         );
       }else{//有三级目录
         let menuTitle = <span>{e.iconStyle && <i className={`iconfont ${e.iconStyle}`} />}<span>{collapsed ? null: e.name}</span></span>
+        //const filteredMenu = e.children.filter(subItem => menuRight.includes(subItme.rightKey)) --todo 权限控制。
         return (
           <SubMenu title={menuTitle} key={e.path}>
             {e.children.map(m=>{

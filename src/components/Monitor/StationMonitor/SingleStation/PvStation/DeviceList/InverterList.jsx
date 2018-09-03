@@ -178,7 +178,7 @@ class InverterList extends Component {
           <TabPane tab={<span><i className="iconfont icon-grid" ></i></span>} key="1" className={styles.inverterBlockBox} >
             {(tmpParentDeviceCodes&&tmpParentDeviceCodes.length>0) ? tmpParentDeviceCodes.map((e,index)=>{
               return (<div key={index}>
-                <div className={styles.parentDeviceName} >{e && e[0].parentDeviceName}</div>
+                <div className={styles.parentDeviceName} >{e && e[0] && e[0].parentDeviceName}</div>
                 {e && e.map((item,i)=>{
                   return (<div key={i} className={item.deviceStatus === 900 ? styles.cutOverItem : styles.inverterItem} >
                     <div className={styles.inverterItemIcon} >
