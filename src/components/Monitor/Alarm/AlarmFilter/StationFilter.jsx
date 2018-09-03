@@ -46,7 +46,7 @@ class StationFilter extends Component {
     const checkedValue = data.map(item=>item.get('stationCode').toString()).toJS();
     let stationCode = this.props.stationCode;
     let stationArray;
-    if(e.target.Checked) {
+    if(e.target.checked) {
       stationArray = stationCode.concat(checkedValue);
       stationCode = Array.from(new Set(stationArray));   
     } else {

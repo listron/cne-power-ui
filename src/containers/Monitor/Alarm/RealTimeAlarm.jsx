@@ -41,17 +41,16 @@ class RealTimeAlarm extends Component {
   }
 
   componentDidMount() {
-    const { warningLevel, stationType, stationCode, deviceTypeCode, warningConfigName, startTime, deviceName} = this.props;
     const status = this.getStatus();
     const warningStatus = this.getAlarmStatus(status);
     this.props.getRealTimeAlarm({
-      warningLevel,
-      stationType,
-      stationCode,
-      deviceTypeCode,
-      warningConfigName,
-      startTime,
-      deviceName,
+      warningLevel: [],
+      stationType: '2',
+      stationCode: [],
+      deviceTypeCode: [],
+      warningConfigName: [],
+      startTime: [],
+      deviceName: '',
       isTransferWork: status === 'transfer' ? 0 : 1,
       isRelieveAlarm: status === 'relieve' ? 0: 1
     });

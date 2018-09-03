@@ -109,7 +109,7 @@ class RealTimeFilteredItems extends Component {
         {warningLevel.length>0&&alarmLevelArray.map(e => (
           <Tag style={style} key={e.value} closable onClose={()=>this.onCancelAlarmLevel(e.value)}>{e.label}</Tag>
         ))}
-        {(stationType !== '2') && 
+        {(stationType !== '2' ) && 
           <Tag style={style} closable onClose={this.onCancelStationType}>{stationType === '0'?'风电':'光伏'}</Tag>}
         {selectedStation.size > 0 && selectedStation.map(e=>(
           <Tag style={style} closable onClose={()=>this.onCancelProvince(e)} key={e.getIn([0, 'provinceCode']).toString()} >

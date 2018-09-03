@@ -14,6 +14,7 @@ import styles from './historyAlarm.scss';
 
 class HistoryAlarmFilter extends Component {
   static propTypes = {
+    stations: PropTypes.object,
     warningLevel: PropTypes.array,
     stationType: PropTypes.string,
     stationCode: PropTypes.array,
@@ -46,6 +47,7 @@ class HistoryAlarmFilter extends Component {
 
   render() {
     const { showFilter } = this.state;
+    const { stations } = this.props;
     return (
       <div className={styles.alarmFilter}>
         <div className={styles.topSearch}>
@@ -79,7 +81,7 @@ class HistoryAlarmFilter extends Component {
           {showFilter==='startTime' && <StartTimeFilter {...this.props} />}
           {showFilter==='endTime' && <EndTimeFilter {...this.props} />}
           {showFilter==='alarmLevel' && <AlarmLevelFilter {...this.props} />}
-          {showFilter==='stationType' && <StationTypeFilter {...this.props} />}
+          {showFilter==='stationType' && stations && stations.size > 0 && <StationTypeFilter {...this.props} />}
           {showFilter==='stationName' && <StationFilter {...this.props} />}
           {showFilter==='deviceType' && <DeviceTypeFilter {...this.props} />}
           {showFilter==='alarmType' && <AlarmTypeFilter {...this.props} />}
