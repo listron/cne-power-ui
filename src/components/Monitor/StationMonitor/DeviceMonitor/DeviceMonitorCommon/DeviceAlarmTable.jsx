@@ -96,7 +96,7 @@ class DeviceAlarmTable extends Component {
       if(sortName === 'warningLevel'){
         return sortType * (a.warningLevel - b.warningLevel);
       }else if(sortName === 'warningConfigName'){
-        return sortType * a.warningConfigName.localCompare(b.warningConfigName);
+        return sortType * a.warningConfigName.localeCompare(b.warningConfigName);
       }else if(sortName === 'timeOn'){
         return sortType * (moment(b.timeOn) - moment(a.timeOn));
       }else if(sortName === 'durationTime'){
@@ -122,7 +122,7 @@ class DeviceAlarmTable extends Component {
         </div>
         <div className={styles.tableHeader}>
           <Button className={styles.historyButton}>
-            <Link to="/monitor/alarm/history">查看告警历史</Link>
+            <Link to="/monitor/alarm/history" target="_blank">查看告警历史</Link>
           </Button>
           <CommonPagination onPaginationChange={this.changePagination} total={deviceAlarmList.length} />
         </div>

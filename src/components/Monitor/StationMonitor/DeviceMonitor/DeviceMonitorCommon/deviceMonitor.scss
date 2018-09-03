@@ -120,8 +120,12 @@
       border-right: dotted 1px $promptColor;
       .eachData{
         margin-bottom: 4px;
-        p{
+        .pointName{
           color: $lightColor;
+          margin-bottom: 0;
+        }
+        .pointValue{
+          color: #199475;
           margin-bottom: 0;
         }
       }

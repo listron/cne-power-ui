@@ -3,7 +3,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './deviceList.scss';
-import {  } from 'antd';
 import PvmoduleList from './PvmoduleList';
 import InverterList from './InverterList';
 import ConfluenceBoxList from './ConfluenceBoxList';
@@ -30,8 +29,6 @@ class DeviceList extends Component {
     }else{
       appointDeviceCode = deviceTypeCode || 509;
     }
-    console.log(appointDeviceCode);
-
     return (
       <div>
         {appointDeviceCode===509 && <PvmoduleList {...this.props} />}
