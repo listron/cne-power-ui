@@ -39,8 +39,8 @@ class RealTimeAlarmTable extends Component {
       showRelievePopover: [],
       showWarningTip: false,
       warningTipText: '',
-      key: '',
-      order: 'ascend',
+      sortName: '',
+      descend: false,
     }
   }
 
@@ -49,30 +49,9 @@ class RealTimeAlarmTable extends Component {
   }
 
   onChangeTable = (pagination, filters, sorter) => {
-    const field = sorter.field;
-    let order = sorter.order;
-    let key = '';
-    switch(field) {
-      case 'warningLevel':
-        key = 'warningLevel';
-        break;
-      case 'stationName':
-        key = 'stationCode';
-        break;
-      case 'deviceTypeName':
-        key = 'deviceTypeCode';
-        break;
-      case 'timeOn':
-        key = 'timeOn';
-        break;
-      case 'durationTime':
-        key = 'timeOn';
-        order = order === 'ascend' ? 'descend' : 'ascend'
-        break;
-    }
-    this.setState({
-      key,
-      order,
+    this.setState({ 
+      sortName: sorter.field,
+      descend : sorter.order === 'descend'
     });
   }
 
@@ -146,6 +125,31 @@ class RealTimeAlarmTable extends Component {
    this.props.changeAlarmStore({selectedRowKeys:[]});
   }
 
+  createTableSource(data) {
+    const { pageSize, currentPage, sortName, descend } = this.state;
+    const nameSortArr = ['stationName', 'deviceTypeName', 'warningConfigName']
+    const tableSource = data.map((e, i) => ({
+      ...e,
+      key: i,
+    })).sort((a, b) => { // 手动排序
+      const sortType = descend ? -1: 1;
+      if(sortName === 'warningLevel'){
+        return sortType * (a.warningLevel - b.warningLevel);
+      }else if(nameSortArr.includes(sortName)){
+        return sortType * a[sortName].localeCompare(b[sortName], 'zh');
+      }else if(sortName === 'timeOn'){
+        return sortType * (moment(a.timeOn) - moment(b.timeOn));
+      }else if(sortName === 'durationTime'){
+        return sortType * (moment(b.timeOn) - moment(a.timeOn));
+      }
+    }).filter((e,i)=>{ // 筛选页面
+      const startIndex = (currentPage - 1) * pageSize;
+      const endIndex = startIndex + pageSize;
+      return (i >= startIndex && i < endIndex);
+    });
+    return tableSource
+  }
+
   initColumn = () => {
     const level = ['一级', '二级', '三级', '四级']; 
     const { alarmStatus } = this.props;
@@ -176,6 +180,7 @@ class RealTimeAlarmTable extends Component {
         title: '告警类型',
         dataIndex: 'warningConfigName',
         key: 'warningConfigName',
+        sorter: true,
       },{
         title: '告警描述',
         dataIndex: 'warningCheckDesc',
@@ -342,22 +347,8 @@ class RealTimeAlarmTable extends Component {
 
   render() {
     const { realtimeAlarm, loading, selectedRowKeys, alarmStatus } = this.props;
-    const { pageSize, currentPage, showTransferTicketModal, showRelieveAlarmModal, showWarningTip, warningTipText, order, key, } = this.state;
-    let sorterData = realtimeAlarm;
-    if(key !== '') {
-      sorterData = realtimeAlarm.sort(function(a,b) {
-        if(key !== 'timeOn') {
-          return (a[key] - b[key])*(order === 'ascend' ? 1 : -1);
-        } else {
-          return (moment.utc(a[key]).unix()- moment.utc(b[key]).unix())*(order === 'ascend' ? 1 : -1);
-        }
-      });
-    }
-    const tableSource = sorterData.filter((e,i)=>{ // 手动分页
-      const startIndex = (currentPage - 1) * pageSize;
-      const endIndex = startIndex + pageSize;
-      return (i >= startIndex && i < endIndex);
-    });
+    const { showTransferTicketModal, showRelieveAlarmModal, showWarningTip, warningTipText} = this.state;
+    const tableSource = this.createTableSource(realtimeAlarm);
     const columns = this.initColumn();
     const rowSelection = {
       selectedRowKeys,
@@ -372,7 +363,6 @@ class RealTimeAlarmTable extends Component {
         </div>
         <Table
           loading={loading}
-          rowKey={(record)=>{return record.warningLogId}} 
           dataSource={tableSource}
           rowSelection={alarmStatus===3?null:rowSelection}
           columns={columns}
