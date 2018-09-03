@@ -85,7 +85,7 @@ class PvStation extends React.Component {
     const operations = (
       <div>
         <Switch onChange={this.onHandleAlarm} />告警
-    <Radio.Group
+        <Radio.Group
           defaultValue="all"
           buttonStyle="solid"
           onChange={this.onHandleStation}
