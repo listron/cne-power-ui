@@ -343,6 +343,7 @@ class HostoryAlarmTable extends Component {
           columns={columns}
           pagination={false}
           onChange={this.onChangeTable}
+          locale={{emptyText:<div className={styles.noData}><img src="/img/nodata.png" style={{width: 223,height:164}} /></div>}}
         />
       </div>
     );

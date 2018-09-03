@@ -12,6 +12,7 @@ import styles from './realTimeAlarm.scss';
 
 class RealTimeAlarmFilter extends Component {
   static propTypes = {
+    stations: PropTypes.object,
     warningLevel: PropTypes.array,
     stationType: PropTypes.string,
     stationCode: PropTypes.array,
@@ -43,6 +44,7 @@ class RealTimeAlarmFilter extends Component {
 
   render() {
     const { showFilter } = this.state;
+    const { stations } = this.props;
     return (
       <div className={styles.alarmFilter}>
         <div className={styles.topSearch}>
@@ -69,7 +71,7 @@ class RealTimeAlarmFilter extends Component {
         <div className={styles.filterBox}>
           {showFilter==='startTime' && <StartTimeFilter {...this.props} />}
           {showFilter==='alarmLevel' && <AlarmLevelFilter {...this.props} />}
-          {showFilter==='stationType' && <StationTypeFilter {...this.props} />}
+          {showFilter==='stationType' && stations && stations.size > 0 && <StationTypeFilter {...this.props} />}
           {showFilter==='stationName' && <StationFilter {...this.props} />}
           {showFilter==='deviceType' && <DeviceTypeFilter {...this.props} />}
           {showFilter==='alarmType' && <AlarmTypeFilter {...this.props} />}
