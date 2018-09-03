@@ -15,33 +15,26 @@ class DeviceList extends Component {
     deviceTypeCode: PropTypes.number,
     deviceTypeFlow: PropTypes.array,
     location: PropTypes.object,
+    changeSingleStationStore: PropTypes.func,
   }
 
   constructor(props){
     super(props);
   }
   
+  
+
   render(){
     const { deviceTypeCode } = this.props;
-    const locationSearch  = this.props.location.search;
-    let appointDeviceCode = locationSearch.substr(locationSearch.indexOf('=')+1);
-    if(appointDeviceCode && appointDeviceCode!=='undefined'){
-      appointDeviceCode = parseInt(appointDeviceCode);
-      scrollTo(700);
-    }else{
-      appointDeviceCode = deviceTypeCode || 509;
-    }
-    console.log(appointDeviceCode);
-
     return (
-      <div>
-        {appointDeviceCode===509 && <PvmoduleList {...this.props} />}
-        {appointDeviceCode===206 && <InverterList {...this.props} />}
-        {appointDeviceCode===202 && <ConfluenceBoxList {...this.props} />}
-        {appointDeviceCode===304 && <BoxTransformerList {...this.props} />}
+      <div >
+        {deviceTypeCode===509 && <PvmoduleList {...this.props} />}
+        {deviceTypeCode===206 && <InverterList {...this.props} />}
+        {deviceTypeCode===202 && <ConfluenceBoxList {...this.props} />}
+        {deviceTypeCode===304 && <BoxTransformerList {...this.props} />}
         {/* 以下两个是风电站设备101风电机组 302集电线路 */}
-        {appointDeviceCode===101 && <BoxTransformerList {...this.props} />}
-        {appointDeviceCode===302 && <BoxTransformerList {...this.props} />}
+        {deviceTypeCode===101 && <div></div>}
+        {deviceTypeCode===302 && <div></div>}
       </div>
     )
   }

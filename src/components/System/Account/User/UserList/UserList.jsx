@@ -399,6 +399,7 @@ class UserList extends Component {
 
   render(){
     const { userData, totalNum, loading, selectedUser } = this.props;
+    console.log(loading)
     const { selectedUserColumns,showDeleteTip,showExamineTip,deleteWarningTip, } = this.state;
     const authData = getCookie('authData');
     const columns = [

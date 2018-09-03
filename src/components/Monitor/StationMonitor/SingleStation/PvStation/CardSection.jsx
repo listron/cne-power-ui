@@ -87,9 +87,9 @@ class CardSection extends Component {
                 {tmpOperatorList.length>0 ?
                   tmpOperatorList.map((item,index)=>{
                     return (<div key={index} className={styles.operatorContent} >
-                      {item.map(e=>{
+                      {item.map((e,i)=>{
                         return (
-                          <div key={e.userFullName} className={styles.userInfo} ><div>{e.userFullName}</div><div style={{margin: "0 10px"}}>{e.roleName}</div><div>{e.phoneNum}</div></div>
+                          <div key={i} className={styles.userInfo} ><div>{e.userFullName}</div><div style={{margin: "0 10px"}}>{e.roleName}</div><div>{e.phoneNum}</div></div>
                         )
                       })}
                     </div>)
@@ -137,7 +137,7 @@ class CardSection extends Component {
             <div title="活动告警" className={styles.alarmList} >
               <div className={styles.cardTitle}>
                 <span>活动告警</span>
-                <Link to={alarmRealtime}  ><i className="iconfont icon-more"></i></Link>
+                <Link to={alarmRealtime} target="_blank" ><i className="iconfont icon-more"></i></Link>
               </div>
               {alarmList &&
                 <div className={styles.alarmContent} >
@@ -153,7 +153,7 @@ class CardSection extends Component {
             <div title="电站工单" className={styles.workList} >
               <div className={styles.cardTitle}>
                 <span>电站工单</span>
-                <Link to={ticketList}  >
+                <Link to={ticketList}  target="_blank"   >
                   <i className="iconfont icon-more" ></i>
                 </Link>
               </div>

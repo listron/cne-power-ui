@@ -323,7 +323,7 @@ class OutputPowerDiagram extends Component {
       <div className={styles.outputPowerDiagram}>
         <div className={styles.capabilityDiagramBox} >
           <div id="capabilityDiagram" style={{ width: "100%", height: "100%",borderRight:"2px solid #dfdfdf",color: '#999', paddingTop: "20px" }}><i className="iconfont icon-more"></i></div>
-          <Link to={resourceAnalysis} ><i className="iconfont icon-more"></i></Link>
+          <Link to={resourceAnalysis} target="_blank"  ><i className="iconfont icon-more"></i></Link>
         </div>
         <div className={styles.powerDiagramBox} >
           <div id="powerDiagram" style={{ width: "100%", height: "100%",color: '#999', paddingTop: "20px" }}></div>
@@ -334,7 +334,7 @@ class OutputPowerDiagram extends Component {
               <RadioButton value="2">年</RadioButton>
             </RadioGroup>
           </div>
-          <Link to={productionAnalysis} ><i className="iconfont icon-more"></i></Link>
+          <Link to={productionAnalysis} target="_blank"  ><i className="iconfont icon-more"></i></Link>
         </div>
         
       </div>

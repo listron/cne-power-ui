@@ -124,7 +124,7 @@ export default {
       getAlarmList: '/v3/alarm/station/alarmnum/',//单电站活动告警数统计
       getWorkList: '/v3/monitor/worklist/',//单电站工单数统计
       getDeviceTypeFlow: '/v3/station/devicetypeflow/',//单电站设备类型流程图
-
+      getStationDeviceList: '/v3/station/devicelist/',//单电站设备列表
       
       getHistoryAlarm: '/v3/alarm/station/historyalarmlist',//历史告警
       getStationsAlarmStatistic: '/v3/alarm/stations/alarmsummary',//多电站统计

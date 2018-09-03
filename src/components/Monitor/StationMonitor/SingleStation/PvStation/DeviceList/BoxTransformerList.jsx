@@ -89,21 +89,45 @@ class BoxTransformerList extends Component {
         title: '设备编号',
         dataIndex: 'deviceCode',
         key: 'deviceCode',
-        render: (text, record, index) => (<div className={record.deviceStatus === 900 ? styles.deviceCode : ""} ><Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${record.deviceCode}` }  >{text}</Link></div>)
+        render: (text, record, index) => (<div className={record.deviceStatus === 900 ? styles.deviceCode : ""} ><Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${record.deviceCode}`} target="_blank" >{text}</Link></div>)
       }, {
         title: '实时功率(kW)',
         dataIndex: 'devicePower',
         key: 'devicePower',
-        render: (text,record) => (<div className={styles.devicePower} >
-          <div>{parseFloat(text).toFixed(2)}</div>
-          <Progress className={styles.progressPower} percent={text/record.deviceCapacity*100} showInfo={false} strokeWidth={4}  />
-        </div>),
+        render: (value, record, index) => {
+          return {
+            children: (
+              <div>
+                <div className={styles.devicePower}>
+                  <div className={styles.progressPower}>
+                    <div className={styles.deviceValue}>
+                      <div>{record.devicePower}</div>
+                      <div>{record.deviceCapacity}</div>
+                    </div>
+                    <Progress percent={record.devicePower / record.deviceCapacity * 100} showInfo={false} strokeWidth={6} />
+                  </div>
+                </div>
+              </div>
+            ),
+            props: {
+              colSpan: 2
+            }
+          };
+        },
         sorter: (a, b) => a.devicePower - b.devicePower,
       }, {
         title: '装机容量(kW)',
         dataIndex: 'deviceCapacity',
         key: 'deviceCapacity',
-        render: (text,record) => (<span>{parseFloat(text).toFixed(2)}</span>),
+        render: (value, columns, index) => {
+          const obj = {
+            children: null,
+            props: {
+              colSpan: 0
+            }
+          };
+          return obj;
+        },
         sorter: (a, b) => a.deviceCapacity - b.deviceCapacity,
       }, {
         title: '告警(个)',
@@ -171,7 +195,10 @@ class BoxTransformerList extends Component {
                     <div className={styles.inverterItemR} >
                       <div>{item.deviceName}</div>
                       <Progress className={styles.powerProgress} strokeWidth={4} percent={item.devicePower/item.deviceCapacity*100} showInfo={false} />
-                      <div className={styles.inverterItemPower}><div>{parseFloat(item.devicePower).toFixed(2)}KW</div><div>{parseFloat(item.deviceCapacity).toFixed(2)}KW</div></div>
+                      <div className={styles.inverterItemPower}>
+                        <div>{item.devicePower ? parseFloat(item.devicePower).toFixed(2) : '--'}KW</div>
+                        <div>{item.deviceCapacity ? parseFloat(item.deviceCapacity).toFixed(2) : '--'}KW</div>
+                      </div>
                     </div>
                   </div>);
                 })}

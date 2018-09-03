@@ -55,6 +55,10 @@
       Button{
         margin-top: 10px;
       }
+      .resetSearch{
+        color: $themeColor;
+        cursor: pointer;
+      }
     }
     .userFilter{
       display: flex;
