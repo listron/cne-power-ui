@@ -14,6 +14,7 @@ class PvStationTop extends Component {
     getSingleStation: PropTypes.func,
     stationList: PropTypes.array,
     getData: PropTypes.func,
+    showStationList: PropTypes.bool,
   }
 
   constructor(props){
@@ -21,6 +22,22 @@ class PvStationTop extends Component {
     this.state={
       showStationList: false,
     }
+  }
+
+  componentDidMount(){
+    const main = document.getElementById('main');
+    main && main.addEventListener('click', this.hiddenStationList,true);
+  }
+
+  componentWillUnmount() {
+    const main = document.getElementById('main');
+    main && main.removeEventListener('click', this.hiddenStationList,true);
+  }
+
+  hiddenStationList = () => {
+    this.setState({
+      showStationList: false,
+    });
   }
 
   showStationList = () => {
@@ -51,13 +68,13 @@ class PvStationTop extends Component {
     });
 
     let stationStatusTime = singleStationData && singleStationData.stationStatus && singleStationData.stationStatus.stationStatusTime;
-    let localTime = moment.utc(stationStatusTime).toDate();
-    stationStatusTime = moment(localTime).format("YYYY/MM/DD hh:mm");
-
+    let localTime = stationStatusTime!==null && moment.utc(stationStatusTime).toDate();
+    let tmpStationStatusTime = localTime && moment(localTime).format("YYYY/MM/DD hh:mm");
+    
     const baseLinkPath = `/monitor/singleStation`;
     const pathAllStation = "/monitor/station";
     return (
-      <div className={styles.pvStationTop}>
+      <div className={styles.pvStationTop} >
         <div className={styles.pvStationTitle} >
           <div className={styles.pvStationName} >
             {showStationList && <ChangeStation stations={stationList} stationName={singleStationData.stationName} baseLinkPath={baseLinkPath} hideStationChange={this.hideDeviceChange} />}
@@ -66,7 +83,7 @@ class PvStationTop extends Component {
               <h3>{singleStationData && singleStationData.stationName}-{singleStationData && singleStationData.stationName}</h3>
             </div>
             <span>电站状态：{singleStationData && singleStationData.stationStatus && singleStationData.stationStatus.stationStatusName}</span>
-            {singleStationData && singleStationData.stationStatus && singleStationData.stationStatus.stationStatus !== 400 && <span>时间：{stationStatusTime||""}</span>}
+            {singleStationData && singleStationData.stationStatus && singleStationData.stationStatus.stationStatus !== 400 && stationStatusTime!==null && <span>时间：{tmpStationStatusTime||""}</span>}
           </div>
           <Link to={pathAllStation}  >
             <Icon type="arrow-left" className={styles.backIcon}  />
@@ -75,7 +92,10 @@ class PvStationTop extends Component {
         <div className={styles.trueTimeData} >
           <div className={styles.pvlogo} ><i  className="iconfont icon-pvlogo" ></i></div>
           <div className={styles.powerScale} >
-            <div className={styles.trueTimeValue}><span>{singleStationData && singleStationData.stationPower && parseFloat(singleStationData.stationPower).toFixed(2)}</span><span>{singleStationData && parseFloat(singleStationData.stationCapacity).toFixed(2) || 0}</span></div>
+            <div className={styles.trueTimeValue}>
+              <span>{singleStationData && singleStationData.stationPower && parseFloat(singleStationData.stationPower).toFixed(2) || 0}</span>
+              <span>{singleStationData && singleStationData.stationCapacity && parseFloat(singleStationData.stationCapacity).toFixed(2) || 0}</span>
+            </div>
             <Progress percent={powerPercent || 0 } showInfo={false} strokeWidth={6} type="line" strokeColor="#199475" />
             <div  className={styles.trueTimeDesc}><span>实时功率 MW</span><span>装机容量 MW</span></div>
           </div>
@@ -92,15 +112,18 @@ class PvStationTop extends Component {
             <div className={styles.trueTimeUnit}>日曝辐值 MJ/m<sup>2</sup></div>
           </div>
           <div>
-            <div className={styles.trueTimeValue}>{singleStationData && singleStationData.dayPower && parseFloat(singleStationData.dayPower).toFixed(2) || 0}</div>
+            <div className={styles.trueTimeValue}>{singleStationData && singleStationData.dayPower && parseFloat(singleStationData.dayPower).toFixed(4) || 0}</div>
             <div className={styles.trueTimeUnit}>日发电量 万kWh</div>
           </div>
           <div>
-            <div className={styles.trueTimeValue}>{singleStationData && singleStationData.monthPower || 0}</div>
+            <div className={styles.trueTimeValue}>{singleStationData && singleStationData.monthPower && parseFloat(singleStationData.monthPower).toFixed(4) || 0}</div>
             <div className={styles.trueTimeUnit}>月发电量 万kWh</div>
           </div>
           <div className={styles.annualEnergyScale} >
-            <div className={styles.trueTimeValue}><span>{singleStationData && singleStationData.yearPower || 0}</span><span>{singleStationData && singleStationData.yearPlanPower || 0}</span></div>
+            <div className={styles.trueTimeValue}>
+              <span>{singleStationData && singleStationData.yearPower && parseFloat(singleStationData.yearPower).toFixed(4) || 0}</span>
+              <span>{singleStationData && singleStationData.yearPlanPower && parseFloat(singleStationData.yearPlanPower).toFixed(4) || 0}</span>
+            </div>
             <Progress percent={singleStationData && singleStationData.yearPlanRate*100 || 0} showInfo={false} strokeWidth={6} type="line" strokeColor="#199475" />
             <div  className={styles.trueTimeDesc}><span>年累计发电量 万kWh</span><span>计划 万kWh</span></div>
           </div>
