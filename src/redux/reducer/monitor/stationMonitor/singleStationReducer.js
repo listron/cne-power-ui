@@ -18,6 +18,7 @@ var initState = Immutable.fromJS({
   inverterList: {},//逆变器列表
   boxTransformerList: [],//箱变列表
   error: {},//请求错误返回信息
+  stationDeviceList: [],//单电站设备列表
 });
 
 const singleStationReducer = (state = initState, action) => {

@@ -37,10 +37,11 @@ function* getUserList(action) {
         }
       })
     } else {
-      yield put({ type: userAction.GET_USER_FETCH_FAIL })
+      yield put({ type: userAction.GET_USER_FETCH_FAIL });
       message.error(response.data.message);
     }
   } catch (e) {
+    yield put({ type: userAction.GET_USER_FETCH_FAIL });
     console.log(e);
   }
 }
