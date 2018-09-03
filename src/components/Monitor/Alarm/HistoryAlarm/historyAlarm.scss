@@ -28,6 +28,13 @@
 .alarmTable {
   display: flex;
   flex-direction: column;
+  .noData {
+    display: flex;
+    justify-content: center;
+    flex: 1;
+    background-color: #fff;
+    margin-top: 48px;
+  }
   .tableHeader {
     display: flex;
     flex-direction: row;
@@ -55,6 +62,9 @@
       display: flex;
       justify-content: center;
       align-items: center;
+    }
+    .ant-table-placeholder {
+      border-bottom: none;
     }
   }
 }

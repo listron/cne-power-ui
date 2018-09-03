@@ -14,7 +14,6 @@ class RealTimeAlarmTable extends Component {
   static propTypes = {
     realtimeAlarm: PropTypes.array,
     selectedRowKeys: PropTypes.array,
-    loading: PropTypes.bool,
     onRelieveAlarm: PropTypes.func,
     onResetRelieveAlarm: PropTypes.func,
     getTicketInfo: PropTypes.func,
@@ -71,19 +70,27 @@ class RealTimeAlarmTable extends Component {
     } else if(value === 'resetRelieve') {
       this.setState({
         showWarningTip: true,
-        warningTipText: ' 确定要取消解除吗'
+        warningTipText: ' 确定要取消解除么'
       });
     }
   }
   
   onConfirmWarningTip = () => {
-    const { selectedRowKeys } = this.props;
+    const { selectedRowKeys, realtimeAlarm } = this.props;
     this.setState({
       showWarningTip: false,
       warningTipText: ''
     });
-    this.onResetRelieveAlarm({
-      warningLogId: selectedRowKeys
+    this.props.onResetRelieveAlarm({
+      operateId: realtimeAlarm.filter(item=>
+        selectedRowKeys.includes(item.warningLogId))
+      .map(item=>item.operateId)
+    });
+  }
+
+  onCancelWarningTip = () => {//信息提示栏隐藏
+    this.setState({
+      showWarningTip: false
     });
   }
 
@@ -346,7 +353,7 @@ class RealTimeAlarmTable extends Component {
   }
 
   render() {
-    const { realtimeAlarm, loading, selectedRowKeys, alarmStatus } = this.props;
+    const { realtimeAlarm, selectedRowKeys, alarmStatus } = this.props;
     const { showTransferTicketModal, showRelieveAlarmModal, showWarningTip, warningTipText} = this.state;
     const tableSource = this.createTableSource(realtimeAlarm);
     const columns = this.initColumn();
@@ -356,20 +363,26 @@ class RealTimeAlarmTable extends Component {
     };
     return (
       <div className={styles.alarmTable}>
-        {showWarningTip && <WarningTip onOK={this.onConfirmWarningTip} value={warningTipText} />}
+        {showWarningTip && <WarningTip
+          style={{marginTop:'350px',width: '210px',height:'88px'}}
+          onCancel={this.onCancelWarningTip} 
+          hiddenCancel={false}
+          onOK={this.onConfirmWarningTip} 
+          value={warningTipText} />}
         <div className={styles.tableHeader}>
           {this.renderOperation()}
           <CommonPagination onPaginationChange={this.onChangePagination} total={realtimeAlarm.length} />
         </div>
         <Table
-          loading={loading}
           dataSource={tableSource}
+          rowKey={record=>record.warningLogId}
           rowSelection={alarmStatus===3?null:rowSelection}
           columns={columns}
           pagination={false}
           onChange={this.onChangeTable}
+          locale={{emptyText:<div className={styles.noData}><img src="/img/nodata.png" style={{width: 223,height:164}} /></div>}}
         />
-        {alarmStatus!==3&&<div className={styles.tableFooter}>
+        {alarmStatus!==3&&realtimeAlarm.length>0&&<div className={styles.tableFooter}>
             <span className={styles.info}>当前选中<span className={styles.totalNum}>{selectedRowKeys.length}</span>项</span>
             {selectedRowKeys.length > 0 &&<span className={styles.cancel} onClick={this.cancelRowSelect}>取消选中</span>}
           </div>}
