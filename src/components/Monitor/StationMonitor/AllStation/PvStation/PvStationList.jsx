@@ -4,48 +4,48 @@ import styles from './pvStation.scss';
 import CommonPagination from '../../../../Common/CommonPagination';
 import { Progress, Table } from "antd";
 class PvStationList extends React.Component {
-  static propTypes = {  
-    pageNum: PropTypes.number,
+  static propTypes = {
+    currentPage: PropTypes.number,
     pageSize: PropTypes.number,
-    stationDataList:PropTypes.array,
- 
+    stationDataList: PropTypes.array,
+
   }
   constructor(props, context) {
     super(props, context)
-    this.state={
-      pageNum:1,
-      pageSize:10,
-    } 
+    this.state = {
+      currentPage: 1,
+      pageSize: 10,
+      sortName: 'stationName',
+      descend: false,
+    }
   }
-  onPaginationChange = ({currentPage,pageSize}) => {//分页器
+  onPaginationChange = ({ currentPage, pageSize }) => {//分页器
     this.setState({
-      pageNum: currentPage,
+      currentPage,
       pageSize
     })
   }
-   onChange=(pagination, filters, sorter)=> {
-   
+
+  ontableSort = (pagination, filters, sorter) => {
+    this.setState({
+      sortName: sorter.field,
+      descend: sorter.order === 'descend'
+    })
   }
-  render() {  
-    const {stationDataList}=this.props; 
-    const { pageNum,pageSize,}=this.state;
-    const totalNum=stationDataList.length;
-    let startRow=(pageNum-1)*pageSize;
-    let endRow=pageNum*pageSize;
-    endRow = (endRow > totalNum) ? totalNum : endRow;
-    let datalist=stationDataList.slice(startRow,endRow)
+  initColumn = () => {
     const columns = [
       {
         title: "电站名称",
         dataIndex: "stationName",
         onFilter: (value, record) => record.stationName.indexOf(value) === 0,
-        sorter: (a, b) => a.stationName.length - b.stationName.length,
+        sorter: true,
+        //(a, b) => a.stationName.length - b.stationName.length,
         render: (value, record, index) => {
           return {
-            children: (        
-            <a  href={`#/monitor/singleStation/${record.key}`}>
-            <div className={styles.stationName}>{record.stationName}</div>
-            </a>         
+            children: (
+              <a href={`#/monitor/singleStation/${record.key}`}>
+                <div className={styles.stationName}>{record.stationName}</div>
+              </a>
             )
           }
         }
@@ -54,21 +54,23 @@ class PvStationList extends React.Component {
         title: "所在省",
         dataIndex: "stationrovince",
         defaultSortOrder: "descend",
-        sorter: (a, b) => a.stationrovince.localeCompare(b.stationrovince),
+        sorter: true,
+        //(a, b) => a.stationrovince.localeCompare(b.stationrovince),
         render: (value, record, index) => {
           return {
             children: (
               <div className={styles.stationrovince}>{record.stationrovince}</div>
             )
           }
-        }   
+        }
       },
       {
         title: "实时功率(MW)",
-    
+
         dataIndex: "stationPower",
         defaultSortOrder: "descend",
-        sorter: (a, b) => a.stationPower - b.stationPower,
+        sorter: true,
+        //(a, b) => a.stationPower - b.stationPower,
         render: (value, record, index) => {
           return {
             children: (
@@ -79,7 +81,7 @@ class PvStationList extends React.Component {
                       <div>{record.stationPower}</div>
                       <div>{record.stationCapacity}</div>
                     </div>
-                    <Progress percent={record.stationPower/record.stationCapacity *100} showInfo={false} />
+                    <Progress percent={record.stationPower / record.stationCapacity * 100} showInfo={false} />
                   </div>
                 </div>
               </div>
@@ -94,7 +96,8 @@ class PvStationList extends React.Component {
         title: "装机容量(MW)",
         dataIndex: "stationCapacity",
         defaultSortOrder: "descend",
-        sorter: (a, b) => a.stationCapacity - b.stationCapacity,
+        sorter: true,
+        //(a, b) => a.stationCapacity - b.stationCapacity,
         render: (value, columns, index) => {
           const obj = {
             children: null,
@@ -109,25 +112,29 @@ class PvStationList extends React.Component {
         title: "日曝辐值(W/m²)",
         dataIndex: "windSpeed",
         defaultSortOrder: "descend",
-        sorter: (a, b) => a.windSpeed - b.windSpeed
+        sorter: true,
+        //(a, b) => a.windSpeed - b.windSpeed
       },
       {
         title: "日发电量(万kWh)",
         dataIndex: "dayOutput",
         defaultSortOrder: "descend",
-        sorter: (a, b) => a.dayOutput - b.dayOutput
+        sorter: true,
+        //(a, b) => a.dayOutput - b.dayOutput
       },
       {
         title: "月发电量(万kWh)",
         dataIndex: "monthOutput",
         defaultSortOrder: "descend",
-        sorter: (a, b) => a.monthOutput - b.monthOutput
+        sorter: true,
+        //(a, b) => a.monthOutput - b.monthOutput
       },
       {
         title: "年发电量(万kWh)",
         dataIndex: "yearOutput",
         defaultSortOrder: "descend",
-        sorter: (a, b) => a.yearOutput - b.yearOutput,
+        sorter: true,
+        //(a, b) => a.yearOutput - b.yearOutput,
         render: (value, record, index) => {
           return {
             children: (
@@ -138,7 +145,7 @@ class PvStationList extends React.Component {
                       <div>{record.yearOutput}</div>
                       <div>{record.planOutput}</div>
                     </div>
-                    <Progress percent={record.yearOutput/record.planOutput *100} showInfo={false} />
+                    <Progress percent={record.yearOutput / record.planOutput * 100} showInfo={false} />
                   </div>
                 </div>
               </div>
@@ -153,7 +160,8 @@ class PvStationList extends React.Component {
         title: "计划发电量(万kWh)",
         dataIndex: "planOutput",
         defaultSortOrder: "descend",
-        sorter: (a, b) => a.planOutput - b.planOutput,
+        sorter: true,
+        //(a, b) => a.planOutput - b.planOutput,
         render: (value, columns, index) => {
           const obj = {
             children: null,
@@ -168,64 +176,100 @@ class PvStationList extends React.Component {
         title: "装机(台)",
         dataIndex: "equipmentNum",
         defaultSortOrder: "descend",
-        sorter: (a, b) => a.equipmentNum - b.equipmentNum
+        sorter: true,
+        //(a, b) => a.equipmentNum - b.equipmentNum
       },
       {
         title: "告警(个)",
         dataIndex: "alarmNum",
         defaultSortOrder: "descend",
-        sorter: (a, b) => a.alarmNum - b.alarmNum
+        sorter: true,
+        //(a, b) => a.alarmNum - b.alarmNum
       },
       {
         title: "状态",
         dataIndex: "currentStation",
         defaultSortOrder: "descend",
-        sorter: (a, b) => a.currentStation - b.currentStation,
+        sorter: true,
+        //(a, b) => a.currentStation - b.currentStation,
         render: (value, record, index) => {
           return {
             children: (
               <div className={styles.currentStation}>
-              {record.currentStation === '500' ? <div className={styles.dataInterruptionColor} ></div> : 
-              record.currentStation === '900' ? <div className={styles.unconnectionColor}></div> : 
-              record.currentStation === '400' ?<div className={styles.normalColor}></div>:''
-              }
+                {record.currentStation === '500' ? <div className={styles.dataInterruptionColor} ></div> :
+                  record.currentStation === '900' ? <div className={styles.unconnectionColor}></div> :
+                    record.currentStation === '400' ? <div className={styles.normalColor}></div> : ''
+                }
               </div>
             )
           }
         }
       }
     ];
-    // 表单数据
-    const data = datalist.map((item, index) => {
-     const stationStatus=item.stationStatus||{};
+    return columns
+  }
+  createTableSource = (data) => { // 数据源的排序，翻页
+    const { pageSize, currentPage, sortName, descend } = this.state;
+    const tableSource = [...data].map((e, i) => ({
+      ...e,
+      key: i,
+    })).sort((a, b) => { // 手动排序
+      const sortType = descend ? -1 : 1;
+      const arraySort = ['stationrovince', 'stationName'];
+      const arrayNumSort = ['stationPower', 'stationCapacity', 'windSpeed', 'dayOutput', 'monthOutput', 'yearOutput', 'planOutput', 'equipmentNum', 'alarmNum', 'currentStation'];
+      if (arrayNumSort.includes(sortName)) {
+        return sortType * (a[sortName] - b[sortName]);
+      } else if (arraySort.includes(sortName)) {
+        a[sortName] = a[sortName] ? a[sortName] : '';
+        return sortType * (a[sortName].localeCompare(b[sortName]));
+      }
+    }).filter((e, i) => { // 筛选页面
+      const startIndex = (currentPage - 1) * pageSize;
+      const endIndex = startIndex + pageSize;
+      return (i >= startIndex && i < endIndex);
+    });
+    return tableSource
+  }
+  render() {
+    const { stationDataList } = this.props;
+    const data = this.createTableSource(stationDataList);
+    //const { currentPage,pageSize,}=this.state;
+    const columns = this.initColumn()
+    const totalNum = stationDataList.length;
 
-      return (
-        {
-          key: `${item.stationCode}` ,
-          stationName: `${item.stationName||'--'}`,
-          stationrovince: `${item.provinceName||'--'}`,
-          stationPower: `${item.stationPower||'--'}`,
-          stationCapacity: `${item.stationCapacity||'--'}`,
-          windSpeed: `${item.instantaneous||'--'}`,
-          dayOutput: `${item.dayPower||'--'}`,
-          monthOutput: `${item.monthPower||'--'}`,
-          yearOutput: `${item.yearPower||'--'}`,
-          planOutput: `${item.yearPlanPower||'--'}`,
-          equipmentNum: `${item.stationUnitCount||'--'}`,
-          alarmNum: `${item.alarmNum||'--'}`,
-          currentStation: `${stationStatus.stationStatus||''}`
-        }
-      )
-    })
     return (
       <div className={styles.PvStationList}>
         <div className={styles.pagination}>
           <CommonPagination total={totalNum} onPaginationChange={this.onPaginationChange} />
         </div>
-        <Table columns={columns} dataSource={data} onChange={this.onChange} pagination={false} />
+        <Table columns={columns} dataSource={data} onChange={this.ontableSort} pagination={false} />
       </div>
     )
   }
 }
 export default (PvStationList)
- 
+  // let startRow=(currentPage-1)*pageSize;
+    // let endRow=currentPage*pageSize;
+    // endRow = (endRow > totalNum) ? totalNum : endRow;
+    // let datalist=stationDataList.slice(startRow,endRow)
+    // // // 表单数据
+    // const data = datalist.map((item, index) => {
+    //  const stationStatus=item.stationStatus||{};
+    //   return (
+    //     {
+    //       key: `${item.stationCode}` ,
+    //       stationName: `${item.stationName||'--'}`,
+    //       stationrovince: `${item.provinceName||'--'}`,
+    //       stationPower: `${item.stationPower||'--'}`,
+    //       stationCapacity: `${item.stationCapacity||'--'}`,
+    //       windSpeed: `${item.instantaneous||'--'}`,
+    //       dayOutput: `${item.dayPower||'--'}`,
+    //       monthOutput: `${item.monthPower||'--'}`,
+    //       yearOutput: `${item.yearPower||'--'}`,
+    //       planOutput: `${item.yearPlanPower||'--'}`,
+    //       equipmentNum: `${item.stationUnitCount||'--'}`,
+    //       alarmNum: `${item.alarmNum||'--'}`,
+    //       currentStation: `${stationStatus.stationStatus||''}`
+    //     }
+    //   )
+    // })
