@@ -76,15 +76,13 @@ class RealTimeAlarmTable extends Component {
   }
   
   onConfirmWarningTip = () => {
-    const { selectedRowKeys, realtimeAlarm } = this.props;
+    const { selectedRowKeys } = this.props;
     this.setState({
       showWarningTip: false,
       warningTipText: ''
     });
     this.props.onResetRelieveAlarm({
-      operateId: realtimeAlarm.filter(item=>
-        selectedRowKeys.includes(item.warningLogId))
-      .map(item=>item.operateId)
+      warningLogId: selectedRowKeys
     });
   }
 

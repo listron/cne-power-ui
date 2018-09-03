@@ -16,9 +16,15 @@ class EndTimeFilter extends Component {
   }
 
   onChange = (date, dateString) => {
-    this.props.onChangeFilter({
-      endTime: [date[0].toISOString(), date[1].toISOString()]
-    });
+    if(date.length === 0) {
+      this.props.onChangeFilter({
+        endTime: date
+      });
+    } else {
+      this.props.onChangeFilter({
+        endTime: [date[0].toISOString(), date[1].toISOString()]
+      });
+    }
   }
 
   onReset = () => { 
