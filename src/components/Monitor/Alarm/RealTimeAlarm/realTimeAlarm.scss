@@ -150,6 +150,13 @@
 .alarmTable {
   display: flex;
   flex-direction: column;
+  .noData {
+    display: flex;
+    justify-content: center;
+    flex: 1;
+    background-color: #fff;
+    margin-top: 48px;
+  }
   .tableHeader {
     display: flex;
     flex-direction: row;
@@ -195,6 +202,10 @@
       display: flex;
       justify-content: center;
       align-items: center;
+      cursor: pointer;
+    }
+    .ant-table-placeholder {
+      border-bottom: none;
     }
   }
 }
@@ -272,6 +283,7 @@
       flex-direction: column;
       flex: 1;
       height: 100%;
+      margin-top: 180px;
     }
     .ant-btn-primary {
       color: $themeColor;

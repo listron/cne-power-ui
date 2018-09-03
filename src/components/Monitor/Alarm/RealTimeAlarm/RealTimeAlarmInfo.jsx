@@ -20,7 +20,7 @@ class RealTimeAlarmInfo extends Component {
 
   render() {
     const { alarmNum, alarmStatus, lastUpdateTime} = this.props;
-    let total = 0;
+    let total = '- -';
     if(alarmNum.oneWarningNum) {
       total = alarmNum.oneWarningNum + alarmNum.twoWarningNum + alarmNum.threeWarningNum + alarmNum.fourWarningNum;
     }
@@ -36,19 +36,19 @@ class RealTimeAlarmInfo extends Component {
           </div>
           <div className={styles.alarmNumDetail}>
             <div className={styles.alarmInfoItem}>
-              <span className={styles.alarmNum}>{alarmNum.oneWarningNum}</span>
+              <span className={styles.alarmNum}>{alarmNum.oneWarningNum?alarmNum.oneWarningNum:'- -'}</span>
               <span className={styles.alarmText}>一级</span>
             </div>
             <div className={styles.alarmInfoItem}>
-              <span className={styles.alarmNum}>{alarmNum.twoWarningNum}</span>
+              <span className={styles.alarmNum}>{alarmNum.twoWarningNum?alarmNum.twoWarningNum:'- -'}</span>
               <span className={styles.alarmText}>二级</span>
             </div>
             <div className={styles.alarmInfoItem}>
-              <span className={styles.alarmNum}>{alarmNum.threeWarningNum}</span>
+              <span className={styles.alarmNum}>{alarmNum.threeWarningNum?alarmNum.threeWarningNum:'- -'}</span>
               <span className={styles.alarmText}>三级</span>
             </div>
             <div className={styles.alarmInfoItem}>
-              <span className={styles.alarmNum}>{alarmNum.fourWarningNum}</span>
+              <span className={styles.alarmNum}>{alarmNum.fourWarningNum?alarmNum.fourWarningNum:'- -'}</span>
               <span className={styles.alarmText}>四级</span>
             </div>
           </div>
