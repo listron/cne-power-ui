@@ -1,7 +1,7 @@
 
 
 import React, { Component } from 'react';
-import { Table, Button, Select, Icon, Popover, Checkbox, Upload, message, Modal,Radio,Form  } from 'antd';
+import { Table, Button, Select, Icon, Popover, Checkbox, Upload, message, Modal,Radio  } from 'antd';
 import CommonPagination from '../../../../Common/CommonPagination';
 import PropTypes from 'prop-types';
 import styles from './userList.scss';
@@ -12,7 +12,7 @@ const RadioGroup = Radio.Group;
 
 
 const { Option } = Select;
-const FormItem = Form.Item;
+
 class UserList extends Component {
   static propTypes = {
     loading: PropTypes.bool,
