@@ -123,7 +123,7 @@ class EditForm extends Component {
             <InputLimit size={400} height={102} width={736} placeholder="请输入..." />
           )}
         </FormItem>
-        <Button onClick={this.saveEnterprise} loading={loading} >保存</Button>
+        <Button onClick={this.saveEnterprise} loading={loading} className={styles.saveInfo}>保存</Button>
       </Form>
     )
   }
