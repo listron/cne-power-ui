@@ -55,9 +55,9 @@ class HistoryAlarmFilter extends Component {
           <Button onClick={()=>this.onFilterShowChange('alarmLevel')}>
             告警级别{showFilter==='alarmLevel'?<Icon type="up" />:<Icon type="down" />}
           </Button>
-          <Button onClick={()=>this.onFilterShowChange('stationType')}>
+          { stations && stations.size > 0 && <Button onClick={()=>this.onFilterShowChange('stationType')}>
             电站类型{showFilter==='stationType'?<Icon type="up" />:<Icon type="down" />}
-          </Button>
+          </Button>}
           <Button onClick={()=>this.onFilterShowChange('stationName')}>
             电站名称{showFilter==='stationName'?<Icon type="up" />:<Icon type="down" />}
           </Button>
@@ -81,7 +81,7 @@ class HistoryAlarmFilter extends Component {
           {showFilter==='startTime' && <StartTimeFilter {...this.props} />}
           {showFilter==='endTime' && <EndTimeFilter {...this.props} />}
           {showFilter==='alarmLevel' && <AlarmLevelFilter {...this.props} />}
-          {showFilter==='stationType' && stations && stations.size > 0 && <StationTypeFilter {...this.props} />}
+          {showFilter==='stationType' && <StationTypeFilter {...this.props} />}
           {showFilter==='stationName' && <StationFilter {...this.props} />}
           {showFilter==='deviceType' && <DeviceTypeFilter {...this.props} />}
           {showFilter==='alarmType' && <AlarmTypeFilter {...this.props} />}

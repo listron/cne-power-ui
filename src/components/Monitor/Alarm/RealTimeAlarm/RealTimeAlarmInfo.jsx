@@ -21,7 +21,7 @@ class RealTimeAlarmInfo extends Component {
   render() {
     const { alarmNum, alarmStatus, lastUpdateTime} = this.props;
     let total = '- -';
-    if(alarmNum.oneWarningNum) {
+    if(alarmNum.oneWarningNum !== null) {
       total = alarmNum.oneWarningNum + alarmNum.twoWarningNum + alarmNum.threeWarningNum + alarmNum.fourWarningNum;
     }
     return (
