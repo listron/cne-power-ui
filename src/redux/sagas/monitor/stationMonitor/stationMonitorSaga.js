@@ -20,9 +20,9 @@ function* getMonitorStation(action) {//获取所有/风/光电站信息
           if(stationNum > 1) {
             stationTypes = '2';
           } else {
-            if(allStationTypeCode.has['0']) {
+            if(allStationTypeCode.has('0')) {
               stationTypes = '0';
-            } else if(allStationTypeCode.has['1']) {
+            } else if(allStationTypeCode.has('1')) {
               stationTypes = '1';
             }
           }        

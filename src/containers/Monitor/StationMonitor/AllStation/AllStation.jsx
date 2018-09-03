@@ -38,15 +38,15 @@ class AllStation extends Component {
     if(nextProps.stationTypes !== this.props.stationTypes && nextProps.stationTypes !== '2') {
       this.autoUpdate(nextProps.stationTypes);
     }
-    // if(nextProps.stationTypes === '0') {
-    //   this.setState({
-    //     key: '风电'
-    //   });
-    // } else if(nextProps.stationTypes === 'pv') {
-    //   this.setState({
-    //     key: '光伏'
-    //   });
-    // }
+    if(nextProps.stationTypes === '0') {
+      this.setState({
+        key: '0'
+      });
+    } else if(nextProps.stationTypes === 'pv') {
+      this.setState({
+        key: '1'
+      });
+    }
   }
 
   componentWillUnmount() {
