@@ -15,14 +15,17 @@ function InverterStatistics({ deviceDetail }) {
       <PowerProgress devicePower={devicePower} deviceCapacity={deviceCapacity} />
       <div className={styles.timerDayGen}>
         <div className={styles.genNum}>{powerDay}</div>
+        <div className={styles.empty}></div>
         <div className={styles.genText}>日发电量 万kWh</div>
       </div>
       <div className={styles.timerGen}>
         <div className={styles.genNum}>{powerMonth}</div>
+        <div className={styles.empty}></div>
         <div className={styles.genText}>月累计发电量 万kWh</div>
       </div>
       <div className={styles.timerGen}>
         <div className={styles.genNum}>{powerYear}</div>
+        <div className={styles.empty}></div>
         <div className={styles.genText}>年累计发电量 万kWh</div>
       </div>
     </div>

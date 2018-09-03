@@ -92,6 +92,9 @@
         color: $darkColor;
         margin-bottom: 8px;
       }
+      .empty{
+        height: 10px;
+      }
       .genText{
         color: $lightColor;
       }
@@ -100,5 +103,10 @@
       width: 105px;
       margin-left: 24px;
     }
+  }
+}
+.weatherstation{
+  .statisticsBox{
+    border-bottom: none;
   }
 }
