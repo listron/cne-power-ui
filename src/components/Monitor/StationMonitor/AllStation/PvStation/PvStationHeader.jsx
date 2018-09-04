@@ -4,22 +4,22 @@ import styles from './pvStation.scss';
 import CommonProgress from '../../../../Common/CommonProgress'
 class pvStationHeader extends React.Component {
   static propTypes = {
-    pvMonitorStation:PropTypes.object,
+    pvMonitorStation: PropTypes.object,
   }
   constructor(props, context) {
     super(props, context)
   }
   render() {
     const { pvMonitorStation } = this.props;
-    const stationDataSummary =  pvMonitorStation.stationDataSummary || {};
+    const stationDataSummary = pvMonitorStation.stationDataSummary || {};
     const stationPower = stationDataSummary.stationPower || ' -- ';
     const stationCapacity = stationDataSummary.stationCapacity || ' -- ';
-    const stationUnitCount =  stationDataSummary.stationUnitCount || ' -- ';
-    const instantaneous =  stationDataSummary.instantaneous || ' -- ';
-    const dayPower =  stationDataSummary.dayPower || ' -- ';
+    const stationUnitCount = stationDataSummary.stationUnitCount || ' -- ';
+    const instantaneous = stationDataSummary.instantaneous || ' -- ';
+    const dayPower = stationDataSummary.dayPower || ' -- ';
     const monthPower = stationDataSummary.monthPower || ' -- ';
-    const yearPower =   stationDataSummary.yearPower || ' -- ';
-    const yearPlanPower =  stationDataSummary.yearPlanPower || ' -- ';
+    const yearPower = stationDataSummary.yearPower || ' -- ';
+    const yearPlanPower = stationDataSummary.yearPlanPower || ' -- ';
     const yearPlanRate = stationDataSummary.yearPlanRate || ' -- ';
     return (
       <div>
@@ -49,7 +49,7 @@ class pvStationHeader extends React.Component {
               <div className={styles.dataName}>月累计发电量 万kWh</div>
             </div>
           </div>
-          <CommonProgress value={yearPower} total={yearPlanPower} valueText={"年累计发电量 万kWh"} totalText={"计划 万kWh"} percent={yearPlanRate?yearPlanRate:''} />   
+          <CommonProgress value={yearPower} total={yearPlanPower} valueText={"年累计发电量 万kWh"} totalText={"计划 万kWh"} percent={yearPlanRate ? yearPlanRate : ''} />
         </div>
       </div>
     )

@@ -10,12 +10,12 @@ import { Tabs, Radio, Switch } from "antd";
 class WindStation extends React.Component {
   static propTypes = {
     windMonitorStation: PropTypes.object,
-    stationShowType:PropTypes.string,
+    stationShowType: PropTypes.string,
     changeMonitorStationStore: PropTypes.func
   }
   constructor(props, context) {
     super(props, context);
-    this.state = {  
+    this.state = {
       checked: false,
       stationType: 'all',
       totalNum: 0
@@ -35,7 +35,7 @@ class WindStation extends React.Component {
   }
   setkey = (activekey) => {
 
-    this.props.changeMonitorStationStore({stationShowType:activekey});
+    this.props.changeMonitorStationStore({ stationShowType: activekey });
   }
   componentUnmount() {
     //clearTimeout(this.autoTimer)

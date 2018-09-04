@@ -18,12 +18,12 @@ class WindStationItem extends React.Component {
         <div className={styles.stationCardContainer}>
           {
             stationDataList.map((item, index) => {
-              const stationStatus=item.stationStatus||{};
-              const stationName=item.stationName||'--';
-              const stationPower=item.stationPower||'--';
-              const stationCapacity=item.stationCapacity||'--';
-              const instantaneous=item.instantaneous||'--';
-              const stationUnitCount=item.stationUnitCount||'--';
+              const stationStatus = item.stationStatus || {};
+              const stationName = item.stationName || '--';
+              const stationPower = item.stationPower || '--';
+              const stationCapacity = item.stationCapacity || '--';
+              const instantaneous = item.instantaneous || '--';
+              const stationUnitCount = item.stationUnitCount || '--';
               return (
                 <div className={stationStatus.stationStatus === '900' ? styles.stationTest : styles.stationCard} key={index}>
                   <Link to={`/monitor/singleStation/${item.stationCode}`} key={item.stationCode}>
@@ -42,10 +42,10 @@ class WindStationItem extends React.Component {
                   </Link>
                   <div className={styles.stationCardEquipmentNum}>
                     <Link to={`/monitor/singleStation/${item.stationCode}`} key={new Date()}>
-                    <div>{stationUnitCount}台</div>
+                      <div>{stationUnitCount}台</div>
                     </Link>
                     {item.alarmNum > 0 ? <Link to={`/monitor/alarm/realtime`} key={item.stationCode}><div className={styles.stationWarning}>
-                      <i className="iconfont icon-alarm1"></i>{item.alarmNum}</div></Link> : ''}                   
+                      <i className="iconfont icon-alarm1"></i>{item.alarmNum}</div></Link> : ''}
                   </div>
                 </div>
               )
