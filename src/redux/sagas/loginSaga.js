@@ -53,9 +53,21 @@ function *userNameLogin(action){
 
         data.rightMenu && localStorage.setItem('rightMenu', data.rightMenu); // 权限信息存储
         data.right && localStorage.setItem('rightHandler', data.right); // 权限信息存储
-
-        yield put({ type: loginAction.USER_NAME_LOGIN_SUCCESS, data});
-        action.params.history.push('/station/monitor');
+        
+        if(data.auto === '1'){//导入用户/生成用户 无密码
+          yield put({ 
+            type: loginAction.CHANGE_LOGIN_STORE_SAGA, 
+            params: {
+              joinStep: 3,
+              importUser: true
+            }
+          })
+        }else if(data.auto === '0'){//正常用户
+          console.log(data)
+          yield put({ type: loginAction.USER_NAME_LOGIN_SUCCESS, data});
+          action.params.history.push('/station/monitor');
+        }
+        
       } else {
         yield put({ type: loginAction.CHANGE_LOGIN_STORE_SAGA, params});
         if(data.userEnterpriseStatus){
@@ -121,14 +133,19 @@ function *phoneCodeLogin(action){
           data.rightMenu && localStorage.setItem('rightMenu', data.rightMenu); // 权限信息存储
           data.right && localStorage.setItem('rightHandler', data.right); // 权限信息存储
         }
-        if(params.isNotLogin === 0 && data.enterpriseId !== null) {
-          params.history.push('/station/monitor');
+        if(data.auto === '1'){
+          yield put({ type: loginAction.CHANGE_LOGIN_STORE_SAGA, params: {importUser: true}})
+        }else if(data.auto === '0'){
+          if(params.isNotLogin === 0 && data.enterpriseId !== null) {
+            params.history.push('/station/monitor');
+          }
+          yield put({
+            type: loginAction.PHONE_CODE_LOGIN_SUCCESS,
+            params, //params为请求传入的值
+            data, //data为API返回的值
+          });
         }
-        yield put({
-          type: loginAction.PHONE_CODE_LOGIN_SUCCESS,
-          params, //params为请求传入的值
-          data, //data为API返回的值
-        });
+        
       } else {
         yield put({ type: loginAction.CHANGE_LOGIN_STORE_SAGA, params });
         if(data.userEnterpriseStatus){
@@ -143,7 +160,12 @@ function *phoneCodeLogin(action){
       });
     }else{
       yield put({ type: loginAction.PHONE_CODE_LOGIN_FAIL, data: response.data });
-      message.error(response.data.message);
+      yield put({
+        type: loginAction.CHANGE_LOGIN_STORE_SAGA,
+        params: {
+          checkLoginPhone: false,
+        }
+      });
     }
   }catch(e){
     console.log(e);
@@ -222,7 +244,7 @@ function *checkEnterpriseName(action){
       });
       if(response.data.data.isRegister === '1') {
         yield put({
-          type: loginAction.CHANGE_LOGIN_STORE,
+          type: loginAction.CHANGE_LOGIN_STORE_SAGA,
           params: {
             registerStep: 3
           }
@@ -363,7 +385,7 @@ function *resetPassword(action){
     console.log(e);
   }
 }
-// 动态验证用户名是否注册（暂时弃用）
+// （暂时弃用）动态验证用户名是否注册
 function *checkUserRegister(action){
   const { params } = action;
   const url = Path.basePaths.APIBasePath + Path.APISubPaths.checkUserRegister + '/' + params.username;
@@ -385,6 +407,42 @@ function* resetLoginStore(action) {
     type: loginAction.RESET_LOGIN_STORE_SUCCESS,
   });
 }
+// 邀请用户加入企业(获取邀请企业信息)
+function *inviteUserLink(action){
+  const { params } = action;
+  const url = Path.basePaths.APIBasePath + Path.APISubPaths.inviteUserLink + '/' + params.linkId;
+  yield put({type: loginAction.LOGIN_FETCH});
+  try{
+    const response = yield call(axios.post, url,params);
+    if(response.data.code === '10000'){//邀请链接成功
+      yield put({
+        type: loginAction.CHANGE_LOGIN_STORE_SAGA, 
+        params:{
+          pageTab: 'joinIn',
+          joinStep: 2,
+        }
+      });
+      yield put({type: loginAction.INVITE_USER_LINK_SUCCESS,
+        data: response.data.data || {},
+      });
+
+    }else if(response.data.code === '20021'){//邀请链接已失效
+      yield put({
+        type: loginAction.CHANGE_LOGIN_STORE_SAGA, 
+        params:{
+          pageTab: 'joinIn',
+          joinStep: 2,
+          inviteValid: false,
+        }
+      });
+    }else{
+      console.log(response.data);
+    }
+  }catch(e){
+    console.log(e);
+  }
+}
+
 export function* watchLogin() {
   yield takeLatest(loginAction.USER_NAME_LOGIN_SAGA, userNameLogin);
   yield takeLatest(loginAction.SEND_CODE_SAGA, getVerificationCode);
@@ -400,4 +458,5 @@ export function* watchLogin() {
   yield takeLatest(loginAction.PHONE_CODE_REGISTER_SAGA, phoneCodeRegister);
   yield takeLatest(loginAction.CHANGE_LOGIN_STORE_SAGA, changeLoginStore);
   yield takeLatest(loginAction.RESET_LOGIN_STORE_SAGA, resetLoginStore);
+  yield takeLatest(loginAction.INVITE_USER_LINK_SAGA, inviteUserLink);
 }

@@ -52,6 +52,9 @@ class RealTimeAlarmTable extends Component {
       sortName: sorter.field,
       descend : sorter.order === 'descend'
     });
+    this.props.changeAlarmStore({
+      sortName: sorter.field,
+    });
   }
 
   onSelectChange = (selectedRowKeys) => {
@@ -146,13 +149,15 @@ class RealTimeAlarmTable extends Component {
         return sortType * (moment(a.timeOn) - moment(b.timeOn));
       }else if(sortName === 'durationTime'){
         return sortType * (moment(b.timeOn) - moment(a.timeOn));
+      }else {
+        return a.key - b.key;
       }
     }).filter((e,i)=>{ // 筛选页面
       const startIndex = (currentPage - 1) * pageSize;
       const endIndex = startIndex + pageSize;
       return (i >= startIndex && i < endIndex);
     });
-    return tableSource
+    return tableSource;
   }
 
   initColumn = () => {
@@ -175,7 +180,24 @@ class RealTimeAlarmTable extends Component {
       },{
         title: '设备名称',
         dataIndex: 'deviceName',
-        key: 'deviceName', 
+        key: 'deviceName',
+        render: (text, record) => {
+          if(record.deviceTypeCode === 206) {
+            return (
+              <div className={styles.deviceName}>
+                <Link to={`/hidden/monitorDevice/${record.stationCode}/${record.deviceTypeCode}/${record.deviceFullCode}`} target="_blank">{text}</Link>
+              </div>
+            );
+          } else if(record.deviceTypeCode === 304) {
+            return (
+              <div className={styles.deviceName}>
+                <Link to={`/hidden/monitorDevice/${record.stationCode}/${record.deviceTypeCode}/${record.deviceFullCode}`} target="_blank">{text}</Link>
+              </div>
+            );
+          } else {
+            return text;
+          }
+        }
       },{
         title: '设备类型',
         dataIndex: 'deviceTypeName',
@@ -217,7 +239,7 @@ class RealTimeAlarmTable extends Component {
               visible={this.state.showTransferPopover[index]}
               onVisibleChange={(visible)=>this.onTransferChange(visible, record.workOrderId, index)}
               >
-                <i className="iconfont icon-tranlist icon-action"></i>
+                <div className={this.state.showTransferPopover[index]?styles.selected:null}><i className="iconfont icon-tranlist icon-action"></i></div>
               </Popover>
             );
           }
@@ -225,10 +247,11 @@ class RealTimeAlarmTable extends Component {
             return (
               <Popover content={this.renderRelievePopover(index)}
               trigger="click"
+              className={this.state.showRelievePopover[index]?styles.selected:null}
               visible={this.state.showRelievePopover[index]}
               onVisibleChange={(visible)=>this.onRelieveChange(visible, record.operateId, index)}
               >
-                <i className="iconfont icon-manual icon-action"></i>
+                <div className={this.state.showRelievePopover[index]?styles.selected:null}><i className="iconfont icon-manual icon-action"></i></div>
               </Popover>
             );
           }
@@ -301,7 +324,7 @@ class RealTimeAlarmTable extends Component {
           </div>
           <div className={styles.infoItem}>
             <span className={styles.label}>操作时间：</span>
-            <span className={styles.value}>{ticketInfo.operateTime}</span>
+            <span className={styles.value}>{moment(ticketInfo.operateTime).format('YYYY-MM-DD HH:mm')}</span>
           </div>
           <div className={styles.infoItem}>
             <span className={styles.label}>缺陷类型：</span>
@@ -339,7 +362,7 @@ class RealTimeAlarmTable extends Component {
           </div>
           <div className={styles.infoItem}>
             <span className={styles.label}>操作时间：</span>
-            <span className={styles.value}>{relieveInfo.operateTime}</span>
+            <span className={styles.value}>{moment(relieveInfo.operateTime).format('YYYY-MM-DD HH:mm')}</span>
           </div>
           <div className={styles.infoItem}>
             <span className={styles.label}>出现次数：</span>

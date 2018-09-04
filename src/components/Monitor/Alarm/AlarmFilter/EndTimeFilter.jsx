@@ -22,7 +22,7 @@ class EndTimeFilter extends Component {
       });
     } else {
       this.props.onChangeFilter({
-        endTime: [date[0].toISOString(), date[1].toISOString()]
+        endTime: [date[0].hour(0).minute(0).second(0).toISOString(), date[1].hour(23).minute(59).second(59).toISOString()]
       });
     }
   }
@@ -37,7 +37,7 @@ class EndTimeFilter extends Component {
     const { endTime } = this.props;
     return (
       <div className={styles.alarmFilterItem}>
-        <span onClick={this.onReset} className={styles.resetTime} >不限</span>
+        <span onClick={this.onReset} className={endTime.length===0?styles.selected:styles.all}>不限</span>
         <RangePicker
           value={[endTime[0]?moment(endTime[0]):null, endTime[1]?moment(endTime[1]):null]}
           onChange={this.onChange}

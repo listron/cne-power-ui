@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {Form, Icon, Input, Button,Checkbox, Card } from 'antd';
 import PropTypes from 'prop-types';
 import styles from './joinInForm.scss';
+import Cookie from 'js-cookie';
 
 const FormItem = Form.Item;
 
@@ -21,10 +22,12 @@ class JoinInForm extends Component{
     enterpriseIdToken: PropTypes.string,
     error: PropTypes.object,
     history: PropTypes.object,
-    isInvite: PropTypes.number,
+    importUser: PropTypes.bool,
     enterpriseLogo: PropTypes.string,
     userEnterpriseStatus: PropTypes.number,
     enterpriseInfo: PropTypes.object,
+    locatoion: PropTypes.object,
+    inviteUserLink: PropTypes.func,
   }
 
   constructor(props){
@@ -34,6 +37,14 @@ class JoinInForm extends Component{
       showEnterpriseInfo: false,
     }
   }
+
+  // componentWillMount(){
+  //   console.log(this.props);
+  //   console.log(this.props.locatoion);
+  //   const locationSearch = this.props.history.location.search;
+  //   const linkId = locationSearch.subStr(locationSearch.indexOf('=')+1);
+  //   this.props.inviteUserLink({linkId});
+  // }
 
   componentWillUnmount = () => {
     this.setState = (timeValue)=>{
@@ -187,7 +198,7 @@ class JoinInForm extends Component{
       </Form>
     );
   }
-  renderStepTwo() {
+  renderStepTwo(inviteValid) {
     const { getFieldDecorator } = this.props.form;
     const { enterpriseIdToken,enterpriseName, enterpriseLogo } = this.props;
     const { timeValue } = this.state;
@@ -198,40 +209,47 @@ class JoinInForm extends Component{
           <div className={styles.enterpriseLogo} ><img src={enterpriseLogo || defaultLogo} width="60px" height="60px" /></div>
           <div>{enterpriseName}</div>
         </div>
-        <Form onSubmit={this.phoneCodeRegister} >
-          <div>
+        {inviteValid ? 
+          <Form onSubmit={this.phoneCodeRegister} >
+            <div>
+              <FormItem>
+                {getFieldDecorator('phoneNum', {
+                  rules: [
+                    {required: true, message: '请输入手机号'},
+                    {pattern: /(^1\d{10}$)/, message: '手机号格式不对'}
+                  ]
+                })(
+                  <Input addonBefore={<i className="iconfont icon-phone"></i>}  placeholder="请输入手机号" />
+                )}
+              </FormItem>
+            </div>
+            <div className={styles.checkCodeBox}>
+              <FormItem >
+                {getFieldDecorator('verificationCode',{
+                  rules: [{required: true, message: '请输入验证码'}]
+                })(
+                  <Input className={styles.testCode} addonBefore={<i className="iconfont icon-password"></i>} placeholder="验证码" />
+                )}
+              </FormItem>
+              <Button className={timeValue !== 0 ? styles.queryCodeClick : styles.queryCode} type="primary" disabled={timeValue !== 0} onClick={this.sendCode} >
+                {timeValue !== 0 ? `获取验证码 ${timeValue}` : "获取验证码"}
+              </Button>
+            </div>
             <FormItem>
-              {getFieldDecorator('phoneNum', {
-                rules: [
-                  {required: true, message: '请输入手机号'},
-                  {pattern: /(^1\d{10}$)/, message: '手机号格式不对'}
-                ]
-              })(
-                <Input addonBefore={<i className="iconfont icon-phone"></i>}  placeholder="请输入手机号" />
-              )}
+              <Button type="primary" htmlType="submit">下一步</Button>
             </FormItem>
+            {(enterpriseIdToken !== null && enterpriseIdToken.length > 0) ? <p>您已加入企业，请直接登录</p> : null}
+          </Form>
+        :
+          <div className={styles.inviteInvalid} >
+            邀请链接已过<span>7天有效期</span>，需要重新邀请！
           </div>
-          <div className={styles.checkCodeBox}>
-            <FormItem >
-              {getFieldDecorator('verificationCode',{
-                rules: [{required: true, message: '请输入验证码'}]
-              })(
-                <Input className={styles.testCode} addonBefore={<i className="iconfont icon-password"></i>} placeholder="验证码" />
-              )}
-            </FormItem>
-            <Button className={timeValue !== 0 ? styles.queryCodeClick : styles.queryCode} type="primary" disabled={timeValue !== 0} onClick={this.sendCode} >
-              {timeValue !== 0 ? `获取验证码 ${timeValue}` : "获取验证码"}
-            </Button>
-          </div>
-          <FormItem>
-            <Button type="primary" htmlType="submit">下一步</Button>
-          </FormItem>
-          {(enterpriseIdToken !== null && enterpriseIdToken.length > 0) ? <p>您已加入企业，请直接登录</p> : null}
-        </Form>
+        }
+        
       </div>
     );
   }
-  renderStepThree(formItemLayout, tailFormItemLayout) {
+  renderStepThree(formItemLayout, tailFormItemLayout,importUser) {
     const { getFieldDecorator } = this.props.form;
     const { userEnterpriseStatus,enterpriseName, enterpriseLogo } = this.props;
     const defaultLogo = "/img/nopic.png";
@@ -250,6 +268,7 @@ class JoinInForm extends Component{
         </div>
       );
     } else if(userEnterpriseStatus===3 || userEnterpriseStatus===null) {
+      const username= Cookie.get('username');
       return (
         <div className={styles.userInfo} >
           <div className={styles.enterpriseBrief} >
@@ -257,16 +276,24 @@ class JoinInForm extends Component{
             <div>{enterpriseName}</div>
           </div>
           <Form onSubmit={this.onJoinEnterprise}  >
-            <FormItem label="用户名" {...formItemLayout}>
-              {getFieldDecorator('username', {
-                rules: [
-                  {required: true, message: '请输入用户名'},
-                  {pattern: /^[A-Za-z0-9\u4e00-\u9fa5]{3,8}$/gi, message: '请输入3到8位中文、英文、数字'},
-                ]
-              })(
-                <Input addonBefore={<i className="iconfont icon-user"></i>} placeholder="请输入用户名" />
-              )}
-            </FormItem>
+            {importUser ? 
+              <FormItem label="" {...formItemLayout}>
+                {getFieldDecorator('username', )(
+                  <div>请牢记您的用户名：{username}</div>
+                )}
+              </FormItem>
+              : 
+              <FormItem label="用户名" {...formItemLayout}>
+                {getFieldDecorator('username', {
+                  rules: [
+                    {required: true, message: '请输入用户名'},
+                    {pattern: /^[A-Za-z0-9\u4e00-\u9fa5]{3,8}$/gi, message: '请输入3到8位中文、英文、数字'},
+                  ]
+                })(
+                  <Input addonBefore={<i className="iconfont icon-user"></i>} placeholder="请输入用户名" />
+                )}
+              </FormItem>
+            }
             <FormItem label="创建密码" {...formItemLayout}>
               {getFieldDecorator('password',{
                 rules: [
@@ -314,7 +341,7 @@ class JoinInForm extends Component{
   }
   
   render(){
-    const { joinStep } = this.props;
+    const { joinStep,importUser,inviteValid } = this.props;
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -340,8 +367,8 @@ class JoinInForm extends Component{
     return (
       <div className={styles.comName}>
         {joinStep === 1 && this.renderStepOne(formItemLayout, tailFormItemLayout)}
-        {joinStep === 2 && this.renderStepTwo()}
-        {joinStep === 3 && this.renderStepThree(formItemLayout, tailFormItemLayout)}
+        {joinStep === 2 && this.renderStepTwo(inviteValid)}
+        {joinStep === 3 && this.renderStepThree(formItemLayout, tailFormItemLayout, importUser)}
       </div>
     );
   }
