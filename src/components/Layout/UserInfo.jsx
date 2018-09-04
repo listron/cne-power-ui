@@ -41,10 +41,12 @@ class UserInfo extends Component{
     const DropdowMenu = (
       <Menu className={styles.layoutUserDropdown}>
         <Menu.Item className={styles.innerItem} onClick={this.editPassword}>
-          修改密码
+          <span className="iconfont icon-password1"></span>
+          <span className={styles.text}>修改密码</span>
         </Menu.Item>
         <Menu.Item className={styles.innerItem} onClick={this.logout}>
-          退出登录
+          <span className="iconfont icon-quit"></span>
+          <span className={styles.text}>退出登录</span>
         </Menu.Item>
       </Menu>
     );
