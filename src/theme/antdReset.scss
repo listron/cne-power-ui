@@ -6,7 +6,8 @@
 :global{
   .ant-table{//table行高，高亮，背景色调整；
     .ant-table-thead > tr > th{
-      background: $tableSelectedBackground;
+      background: #f4f4f4;
+      color: $lightColor;
     }
     .ant-table-tbody{
       background: #fff;
@@ -20,7 +21,7 @@
       padding: 0 16px;
       height: 40px;
       line-height: 40px;
-      color: $darkColor;
+      color: $lightColor;
     }
   }
   .ant-btn {   //antd按钮样式调整-高亮
