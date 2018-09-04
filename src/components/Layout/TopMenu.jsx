@@ -110,7 +110,7 @@ class TopMenu extends Component {
       <Menu mode="horizontal" onSelect={this.selectTopMenu} selectedKeys={selectedKeys} className={styles.topMenu}>
         {menu.map((e,i)=>(
           <Item key={e.path}>
-            <span>{e.name}</span>
+            <span className={styles.eachMenu}>{e.name}</span>
           </Item>
         ))}
       </Menu>

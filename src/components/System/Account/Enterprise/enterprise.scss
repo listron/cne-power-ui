@@ -19,6 +19,7 @@
 .enterpriseDetail{//详情页
   line-height: 30px;
   background-color: #fff;
+  flex: 1;
   .detailTop{
     @include top;
     .editButton{

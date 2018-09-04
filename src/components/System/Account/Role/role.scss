@@ -17,6 +17,10 @@
   flex: 1 0 auto;
   padding: 24px 24px 0;
   background-color: #ececec;
+  .roleContent{
+    flex: 1;
+    background-color: #fff;
+  }
   .roleListTop {
     background: #fff;
     display: flex;
