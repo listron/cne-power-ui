@@ -23,7 +23,7 @@ class JoinIn extends Component {
     phoneNum: PropTypes.string,
     error: PropTypes.object,
     history: PropTypes.object,
-    isInvite: PropTypes.number,
+    importUser: PropTypes.bool,
     enterpriseLogo: PropTypes.string,
     userEnterpriseStatus: PropTypes.number,
     enterpriseInfo: PropTypes.object,
@@ -58,7 +58,7 @@ class JoinIn extends Component {
           phoneNum={this.props.phoneNum}
           error={this.props.error}
           history={this.props.history}
-          isInvite={this.props.isInvite}
+          importUser={this.props.importUser}
           userEnterpriseStatus={this.props.userEnterpriseStatus}
           enterpriseInfo={this.props.enterpriseInfo}
         />
@@ -77,7 +77,8 @@ const mapStateToProps = (state) => ({
   joinStep: state.login.get('joinStep'),
   phoneNum: state.login.get('phoneNum'),
   error: state.login.get('error'),
-  isInvite: state.login.get('isInvite'),
+  importUser: state.login.get('importUser'),
+  inviteValid: state.login.get('inviteValid'),
   userEnterpriseStatus: state.login.get('userEnterpriseStatus'),
 })
 
@@ -86,6 +87,7 @@ const mapDispatchToProps = (dispatch) => ({
   sendCode: params => dispatch({ type: loginAction.SEND_CODE_SAGA, params}),
   joinEnterprise: params => dispatch({ type: loginAction.JOIN_ENTERPRISE_SAGA, params}),
   phoneCodeRegister: params => dispatch({ type: loginAction.PHONE_CODE_REGISTER_SAGA, params}),
+  
 })
 
 export default withRouter(connect(mapStateToProps,mapDispatchToProps)(JoinIn));

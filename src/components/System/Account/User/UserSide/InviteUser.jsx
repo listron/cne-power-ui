@@ -59,7 +59,7 @@ class InviteUser extends Component {
       <div className={styles.inviteUser} >
         {showWarningTip && <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}      
         <div className={styles.editTop}>
-          <span className={styles.text}>编辑</span>
+          <span className={styles.text}>邀请</span>
           <Icon type="arrow-left" className={styles.backIcon} onClick={this.onWarningTipShow} />
         </div>
         <div className={styles.mainPart} >
