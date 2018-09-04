@@ -7,6 +7,7 @@
 3. $lightColor:常用 ---- 浅色字体，正常页面文字浅色展示：(文字输入，文字展示)；
 
 4. $promptColor: #dfdfdf; 禁用/浅色提示文字/input+placehodler颜色/边框颜色，
+5. $pageBackground 页面常用背景色
 */
 
 $darkColor: #666;
@@ -14,6 +15,7 @@ $lightColor: #999;
 $promptColor: #dfdfdf;
 $themeColor: #199475;
 $tableSelectedBackground: rgba(206,235,224,0.3);//表格高亮背景色
+$pageBackground: #ececec;
 
 //常复用代码块：
 @mixin lineheight($height){//创建高度==行高元素

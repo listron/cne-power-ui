@@ -4,6 +4,7 @@ import ConfluenceTenMin from './ConfluenceTenMin';
 import DeviceAlarmTable from '../DeviceMonitorCommon/DeviceAlarmTable';
 import DevicePointsData from '../DeviceMonitorCommon/DevicePointsData';
 import ConfluenceHeader from './ConfluenceHeader';
+import CommonBreadcrumb from '../../../../Common/CommonBreadcrumb';
 import PropTypes from 'prop-types';
 import styles from '../eachDeviceMonitor.scss';
 
@@ -56,13 +57,26 @@ class Confluencebox extends Component {
   render(){
     const {devices, deviceDetail, deviceTenMin, deviceAlarmList, devicePointData, loading } = this.props;
     const { stationCode, deviceTypeCode } = this.props.match.params;
+    const breadCrumbData = {
+      breadData:[{
+        link: true,
+        name: deviceDetail.stationName || '',
+        path: `/monitor/singleStation/${stationCode}`,
+      },{
+        name: '汇流箱',
+      }],
+      iconName: 'iconfont icon-hl'
+    };
     return (
       <div className={styles.confluencebox}>
-        <ConfluenceHeader deviceDetail={deviceDetail} devices={devices} stationCode={stationCode} deviceTypeCode={deviceTypeCode} />
-        <ConfluenceStatistics deviceDetail={deviceDetail} />
-        <ConfluenceTenMin deviceTenMin={deviceTenMin} loading={loading} />
-        <DeviceAlarmTable deviceAlarmList={deviceAlarmList} loading={loading} deviceDetail={deviceDetail} />
-        <DevicePointsData devicePointData={devicePointData}  deviceDetail={deviceDetail} />
+        <CommonBreadcrumb {...breadCrumbData} />
+        <div className={styles.deviceContent}>
+          <ConfluenceHeader deviceDetail={deviceDetail} devices={devices} stationCode={stationCode} deviceTypeCode={deviceTypeCode} />
+          <ConfluenceStatistics deviceDetail={deviceDetail} />
+          <ConfluenceTenMin deviceTenMin={deviceTenMin} loading={loading} />
+          <DeviceAlarmTable deviceAlarmList={deviceAlarmList} loading={loading} deviceDetail={deviceDetail} />
+          <DevicePointsData devicePointData={devicePointData}  deviceDetail={deviceDetail} />
+        </div>
       </div>
     ) 
   }

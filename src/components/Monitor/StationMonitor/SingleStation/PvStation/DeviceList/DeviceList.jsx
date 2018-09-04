@@ -3,7 +3,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './deviceList.scss';
-import {  } from 'antd';
 import PvmoduleList from './PvmoduleList';
 import InverterList from './InverterList';
 import ConfluenceBoxList from './ConfluenceBoxList';

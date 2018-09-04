@@ -1,5 +1,6 @@
 import React from 'react';
 import echarts from 'echarts';
+import moment from 'moment';
 
 function InverterTenMin({ deviceTenMin, loading }) {
   const echartBox = document.getElementById('inverter_monitor_tenMin');
@@ -13,7 +14,7 @@ function InverterTenMin({ deviceTenMin, loading }) {
     // }
     let powerLineData = [], radiationLineData = [], xTime = [];
     deviceTenMin.length > 0 && deviceTenMin.forEach(e=>{
-      xTime.push(e.utc);
+      xTime.push(moment(e.utc).format('YYYY-MM-DD hh:mm:ss'));
       powerLineData.push(e.stationPower);
       radiationLineData.push(e.instantaneous);
     });
@@ -54,7 +55,7 @@ function InverterTenMin({ deviceTenMin, loading }) {
       },
       yAxis: [
         {
-          name: '功率 (kW)',
+          name: '功率(kW)',
           splitLine:{
             show:false
           },
@@ -71,7 +72,7 @@ function InverterTenMin({ deviceTenMin, loading }) {
           },
         },
         {
-          name: '辐射 (W/m²)',
+          name: '瞬时辐照(W/m²)',
           splitLine:{
             show:false
           },

@@ -69,6 +69,9 @@
       flex-direction: row;
       align-items: center;
       justify-content: space-around;
+      background:#f2f3f4;
+      border-right: solid 1px $promptColor;
+      border-bottom: solid 1px $promptColor;
       .action {
         height: 23px;
         width: 20px;
@@ -84,9 +87,16 @@
       overflow-x: hidden;
       overflow-y: auto;
       background:#fbfbfb;
+      border-right: solid 1px $promptColor;
       :global{
         .iconfont {
           margin-right:5px;
+        }
+        .ant-menu,.ant-menu-sub,.ant-menu-submenu,.ant-menu-submenu-title,.ant-menu-item{
+          background-color: #fbfbfb;
+        }
+        .ant-menu-item:hover{
+          background-color: #f4f4f4;
         }
         .ant-menu-submenu, .ant-menu-item, .ant-menu-submenu-title {
           &:hover {
@@ -123,6 +133,9 @@
               color: $themeColor;
             }
           }
+        }
+        .ant-menu-submenu-vertical > .ant-menu-submenu-title:hover .ant-menu-submenu-arrow:after, .ant-menu-submenu-vertical-left > .ant-menu-submenu-title:hover .ant-menu-submenu-arrow:after, .ant-menu-submenu-vertical-right > .ant-menu-submenu-title:hover .ant-menu-submenu-arrow:after, .ant-menu-submenu-inline > .ant-menu-submenu-title:hover .ant-menu-submenu-arrow:after, .ant-menu-submenu-vertical > .ant-menu-submenu-title:hover .ant-menu-submenu-arrow:before, .ant-menu-submenu-vertical-left > .ant-menu-submenu-title:hover .ant-menu-submenu-arrow:before, .ant-menu-submenu-vertical-right > .ant-menu-submenu-title:hover .ant-menu-submenu-arrow:before, .ant-menu-submenu-inline > .ant-menu-submenu-title:hover .ant-menu-submenu-arrow:before{
+          background: linear-gradient(to right, $themeColor, $themeColor);
         }
       }
     }
