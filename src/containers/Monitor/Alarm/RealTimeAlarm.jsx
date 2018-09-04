@@ -23,6 +23,7 @@ class RealTimeAlarm extends Component {
     warningConfigName: PropTypes.array,
     startTime: PropTypes.array,
     deviceName: PropTypes.string,
+    sortName: PropTypes.string,
     getRealTimeAlarm: PropTypes.func,
     getDefectTypes: PropTypes.func,
     onTransferAlarm: PropTypes.func,
@@ -89,12 +90,12 @@ class RealTimeAlarm extends Component {
   }
 
   getAlarmInfo() {
-    const { warningLevel, stationType, stationCode, deviceTypeCode, warningConfigName, startTime, deviceName} = this.props;
+    const { sortName, warningLevel, stationType, stationCode, deviceTypeCode, warningConfigName, startTime, deviceName} = this.props;
     const status = this.getStatus();
     const isTransferWork = status === 'transfer' ? 0 : 1;
     const isRelieveAlarm = status === 'relieve' ? 0: 1;
     const warningStatus = this.getAlarmStatus(status);
-    if(warningStatus===1&&warningLevel.length===0&&stationType==='2'&&
+    if(sortName===''&&warningStatus===1&&warningLevel.length===0&&stationType==='2'&&
     stationCode.length===0&&deviceTypeCode.length===0&&
     warningConfigName.length===0&&startTime.length===0&&
     deviceName===''&&isTransferWork===1&&isRelieveAlarm===1) {
@@ -159,6 +160,7 @@ const mapStateToProps = (state) => ({
   warningConfigName: state.monitor.alarm.get('warningConfigName').toJS(),
   startTime: state.monitor.alarm.get('startTime').toJS(),
   deviceName: state.monitor.alarm.get('deviceName'),
+  sortName: state.monitor.alarm.get('sortName'),
   alarmNum: state.monitor.alarm.get('alarmNum').toJS(),
   defectTypes: state.operation.defect.get('defectTypes'),
   lastUpdateTime: state.monitor.alarm.get('lastUpdateTime'),

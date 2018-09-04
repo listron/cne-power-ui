@@ -240,7 +240,7 @@ class HostoryAlarmTable extends Component {
           </div>
           <div className={styles.infoItem}>
             <span className={styles.label}>操作时间：</span>
-            <span className={styles.value}>{ticketInfo.operateTime}</span>
+            <span className={styles.value}>{moment(ticketInfo.operateTime).format('YYYY-MM-DD HH:mm')}</span>
           </div>
           <div className={styles.infoItem}>
             <span className={styles.label}>缺陷类型：</span>
@@ -278,7 +278,7 @@ class HostoryAlarmTable extends Component {
           </div>
           <div className={styles.infoItem}>
             <span className={styles.label}>操作时间：</span>
-            <span className={styles.value}>{relieveInfo.operateTime}</span>
+            <span className={styles.value}>{moment(relieveInfo.operateTime).format('YYYY-MM-DD HH:mm')}</span>
           </div>
           <div className={styles.infoItem}>
             <span className={styles.label}>解除原因：</span>
