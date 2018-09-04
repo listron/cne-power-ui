@@ -37,7 +37,7 @@ class StartTimeFilter extends Component {
     const { startTime } = this.props;
     return (
       <div className={styles.alarmFilterItem}>
-        <span onClick={this.onReset} className={styles.resetTime} >不限</span>
+        <span onClick={this.onReset} className={startTime.length===0?styles.selected:styles.all}>不限</span>
         <RangePicker
           value={[startTime[0]?moment(startTime[0]):null, startTime[1]?moment(startTime[1]):null]}
           onChange={this.onChange}
