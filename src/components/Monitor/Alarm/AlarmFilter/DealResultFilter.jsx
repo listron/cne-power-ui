@@ -29,7 +29,7 @@ class DealResultFilter extends Component {
   render() {
     const { warningStatus } = this.props;
     const options = [
-      {value:'0', label:'自动解除'},
+      {value:'1', label:'自动解除'},
       {value:'2', label:'手动解除'},
       {value:'3', label:'转工单'}
     ];
