@@ -71,6 +71,9 @@
               }
             }
             .ant-form-item-control-wrapper{
+              .ant-form-explain{
+                position: absolute;
+              }
               input {
                 width: 200px;
                 margin-right: 12px;

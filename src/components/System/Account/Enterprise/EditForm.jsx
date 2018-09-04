@@ -82,10 +82,7 @@ class EditForm extends Component {
           )}
         </FormItem>
         <FormItem label="企业电话" >
-          {getFieldDecorator('enterpriseNum',{rules:[{
-              message: '请输入正确格式的企业电话',
-              pattern: /^(\d{7,11})([,](\d{7,11})){0,}([,]?)$/,
-            }],
+          {getFieldDecorator('enterpriseNum',{
             initialValue: enterpriseDetail.enterpriseNum || ''
           })(
             <Input placeholder="请输入..." />
