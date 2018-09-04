@@ -17,6 +17,8 @@ class LoginForm extends Component {
     history: PropTypes.object,
     error: PropTypes.object,
     userEnterpriseStatus: PropTypes.number,
+    inviteUserLink: PropTypes.func,
+    checkLoginPhone: PropTypes.bool,
   }
 
   constructor(props) {
@@ -26,7 +28,17 @@ class LoginForm extends Component {
       timeValue: 0,
     }
   }
-  
+
+  componentWillMount(){
+    const locationSearch = this.props.history.location.search;
+    console.log(locationSearch);
+    if(locationSearch){
+      const linkId = locationSearch.substr(locationSearch.indexOf('=')+1);
+      this.props.inviteUserLink({linkId});
+    }
+    
+  }
+
   componentWillUnmount = () => {
     this.setState = (timeValue)=>{
       return;
@@ -35,8 +47,6 @@ class LoginForm extends Component {
       userEnterpriseStatus: 3,
     });
   }
-
-  
 
   onHandleSubmit = (e) => {
     e.preventDefault();
@@ -53,7 +63,7 @@ class LoginForm extends Component {
               this.props.form.setFields({
                 phoneNum: {
                   value: values.phoneNum,
-                  errors: [new Error('该用户尚未注册')],
+                  errors: [new Error('手机号错误，请重新尝试！')],
                 },
               });
             }
@@ -158,8 +168,8 @@ class LoginForm extends Component {
   render(){
     const { getFieldDecorator, getFieldsError } = this.props.form;
     let { showPasswordLogin, timeValue } = this.state;
-    let { username, enterpriseId, userEnterpriseStatus } = this.props;
-    console.log('userEnterpriseStatus'+ userEnterpriseStatus);
+    let { username, checkLoginPhone, userEnterpriseStatus } = this.props;
+    console.log(checkLoginPhone)
     return (
       <div className={styles.loginForm}>
         {userEnterpriseStatus===5 && 
@@ -195,7 +205,13 @@ class LoginForm extends Component {
               <Button type="primary" htmlType="submit" disabled={this.hasErrors(getFieldsError())}>登录</Button>
               {/* <div className={styles.yiLogin}>易巡登录</div> */}
             </div>
-            {enterpriseId === null ? <p>您已注册，请<b onClick={()=>this.props.changeLoginStore({pageTab: 'joinIn'})}>加入企业</b>或<b onClick={()=>this.props.changeLoginStore({pageTab: 'register'})}>注册</b></p> : null}
+            {checkLoginPhone ? <div></div>
+              : 
+              <div className={styles.checkLoginPhone} >
+                <p>如未注册企业，请<span onClick={()=>this.props.changeLoginStore({pageTab: 'register'})}>注册</span>！</p>
+                <p>如需加入企业，请<span onClick={()=>this.props.changeLoginStore({pageTab: 'joinIn'})}>加入企业</span>！</p>
+              </div>
+            }
             {username === null ? <p>个人信息不完善，请完善<b onClick={this.jumpPersonalInfo} >个人信息</b></p> : null }
           </FormItem>
         </Form>}

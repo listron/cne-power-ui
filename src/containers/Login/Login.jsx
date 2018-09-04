@@ -22,6 +22,8 @@ class Login extends Component {
     history: PropTypes.object,
     error: PropTypes.object,
     userEnterpriseStatus: PropTypes.number,
+    inviteUserLink: PropTypes.func,
+    checkLoginPhone: PropTypes.bool,
   }
 
   constructor(props) {
@@ -64,6 +66,8 @@ class Login extends Component {
                 history={history}
                 error={this.props.error}
                 userEnterpriseStatus={this.props.userEnterpriseStatus}
+                inviteUserLink={this.props.inviteUserLink}
+                checkLoginPhone={this.props.checkLoginPhone}
               />
             </TabPane>
             <TabPane tab="注册企业" key="register">
@@ -81,12 +85,14 @@ const mapStateToProps = (state) => ({
   enterpriseId: state.login.getIn(['loginData', 'enterpriseId']),
   userEnterpriseStatus: state.login.get('userEnterpriseStatus'),
   error: state.login.get('error'),
+  checkLoginPhone: state.login.get('checkLoginPhone'),
 });
 
 const mapDispatchToProps = (dispatch) => ({
   fetchLogin: params => dispatch({type: loginAction.USER_NAME_LOGIN_SAGA, params}),
   sendCode: params => dispatch({ type: loginAction.SEND_CODE_SAGA, params}),
   checkCodeLogin: params => dispatch({ type: loginAction.PHONE_CODE_LOGIN_SAGA, params}),
+  inviteUserLink: params => dispatch({ type: loginAction.INVITE_USER_LINK_SAGA, params}),
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Login));

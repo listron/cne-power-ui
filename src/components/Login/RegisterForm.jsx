@@ -50,7 +50,7 @@ class RegisterForm extends Component {
               this.props.form.setFields({
                 enterpriseDomain: {
                   value: values.enterpriseDomain,
-                  errors: [new Error('当前域名无效')],
+                  errors: [new Error('企业域名已存在！')],
                 },
               });
             }
@@ -171,9 +171,8 @@ class RegisterForm extends Component {
             <FormItem>
               {getFieldDecorator('phoneNum', {
                 rules: [
-                  //{required: true, message: '请输入手机号'},
-                  //{pattern: /(^1\d{10}$)/, message: '手机号格式不对'}
-                 
+                  {required: true, message: '请输入手机号'},
+                  {pattern: /(^1\d{10}$)/, message: '手机号格式不对'}
                 ]
               })(
                 <Input className={styles.mobileNumber} addonBefore={<i className="iconfont icon-phone"></i>} placeholder="请输入手机号" />
