@@ -99,7 +99,7 @@ class WindStation extends React.Component {
           defaultValue="all"
           buttonStyle="solid"
           onChange={this.onHandleStation}
-          style={{ margin: "0 30px" }}
+          style={{ margin: "0 30px 0 15px" }}
         >
           <Radio.Button value="all">全部</Radio.Button>
           <Radio.Button value="normal">通讯正常  {normalNum}<span></span></Radio.Button>

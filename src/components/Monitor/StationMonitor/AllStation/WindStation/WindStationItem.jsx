@@ -27,7 +27,7 @@ class WindStationItem extends React.Component {
                       {stationStatus.stationStatus === '500' ? <i className="iconfont icon-outage"></i> : ''}
                     </div>
                     <div className={styles.stationCardProgress}>
-                      <Progress percent={item.stationPower / item.stationCapacity * 100} showInfo={false} />
+                      <Progress strokeWidth={6} percent={item.stationPower / item.stationCapacity * 100} showInfo={false} />
                     </div>
                     <div className={styles.stationCardValue}>
                       <div className={styles.stationMark}>{item.stationPower}MW</div>

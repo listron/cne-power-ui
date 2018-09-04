@@ -12,12 +12,25 @@
     .ant-progress-bg {
       border-radius: 100px;
       background-color: #199475;
+      
   }
+  .ant-switch{
+    vertical-align: -5px;
+  }
+  .ant-radio-button-wrapper{
+    height: 24px;
+    line-height: 24px;
+    padding: 0 8px;   
+  }
+  
   .ant-radio-button-wrapper:hover, .ant-radio-button-wrapper-focused{
     color: #199475;
   }
   .ant-tabs-extra-content {
     line-height: 48px;
+  }
+  .ant-radio-group.ant-radio-group-solid{
+    margin: 0 30px 0 15px;
   }
   //风光组件里的小tabs 
   .ant-tabs-nav .ant-tabs-tab {
@@ -149,6 +162,7 @@
           flex: 1;
           text-align: center;
           padding-top: 20px;
+          font-family:STHeitiSC-Light;
         }
         .dataPvValue{
           color:#e08031;
@@ -156,6 +170,7 @@
           flex: 1;
           text-align: center;
           padding-top: 20px;
+          font-family:STHeitiSC-Light;
         }
         .dataName {
           flex: 1;

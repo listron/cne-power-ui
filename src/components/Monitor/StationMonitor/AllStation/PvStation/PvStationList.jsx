@@ -78,7 +78,7 @@ class PvStationList extends React.Component {
                       <div>{record.stationPower}</div>
                       <div>{record.stationCapacity}</div>
                     </div>
-                    <Progress percent={record.stationPower / record.stationCapacity * 100} showInfo={false} />
+                    <Progress strokeWidth={6} percent={record.stationPower / record.stationCapacity * 100} showInfo={false} />
                   </div>
                 </div>
               </div>
@@ -142,7 +142,7 @@ class PvStationList extends React.Component {
                       <div>{record.yearOutput}</div>
                       <div>{record.planOutput}</div>
                     </div>
-                    <Progress percent={record.yearOutput / record.planOutput * 100} showInfo={false} />
+                    <Progress strokeWidth={6} percent={record.yearOutput / record.planOutput * 100} showInfo={false} />
                   </div>
                 </div>
               </div>

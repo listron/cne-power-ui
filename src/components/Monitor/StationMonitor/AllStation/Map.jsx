@@ -212,7 +212,7 @@ class Map extends Component {
     const { testId, stationDataList } = this.props;
     return (
       <div>
-        <div id={testId} style={{ width: "100%", height: "580px" }} ></div>
+        <div id={testId} style={{ width: "100%", height: "610px" }} ></div>
       </div>
     )
   }
