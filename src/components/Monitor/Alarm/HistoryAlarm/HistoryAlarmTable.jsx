@@ -142,7 +142,24 @@ class HostoryAlarmTable extends Component {
       },{
         title: '设备名称',
         dataIndex: 'deviceName',
-        key: 'deviceName', 
+        key: 'deviceName',
+        render: (text, record) => {
+          if(record.deviceTypeCode === 206) {
+            return (
+              <div className={styles.deviceName}>
+                <Link to={`/hidden/monitorDevice/${record.stationCode}/${record.deviceTypeCode}/${record.deviceFullCode}`} target="_blank">{text}</Link>
+              </div>
+            );
+          } else if(record.deviceTypeCode === 304) {
+            return (
+              <div className={styles.deviceName}>
+                <Link to={`/hidden/monitorDevice/${record.stationCode}/${record.deviceTypeCode}/${record.deviceFullCode}`} target="_blank">{text}</Link>
+              </div>
+            );
+          } else {
+            return text;
+          }
+        }
       },{
         title: '设备类型',
         dataIndex: 'deviceTypeName',

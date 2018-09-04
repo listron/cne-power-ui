@@ -52,6 +52,19 @@
     word-break:keep-all;
     max-width: 175px;
   }
+  .deviceName {
+    :global {
+      a {
+        border-bottom: 1px $darkColor solid;
+        color: $darkColor;
+        text-decoration: none;
+        &:hover {
+          border-bottom: 1px $themeColor solid;
+          color: $themeColor;
+        }
+      }
+    }
+  }
   .selected {
     :global {
       .icon-action {
