@@ -59,10 +59,10 @@ class RelieveAlarmModal extends Component {
       <Form>
         {showWarningTip && <WarningTip
           hiddenCancel={false} 
-          style={{marginTop:'250px',width: '210px',height:'88px'}}
+          style={{marginTop:'280px',width: '210px',height:'88px'}}
           onCancel={this.onCancelWarningTip}
           onOK={this.onRelieveAlarm} value={warningTipText} />}
-        <Modal title="解除告警" className={styles.relieveModal}
+        <Modal title="手动解除告警" className={styles.relieveModal}
           style={{minHeight:450}}
           bodyStyle={{display:'flex',flex:1,flexDirection:'column',padding:24}}
           width={625}

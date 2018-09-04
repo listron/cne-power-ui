@@ -14,6 +14,8 @@ var initState = Immutable.fromJS({
   deviceName: '',//设备名称，模糊查询
   warningStatus: [],//处理结果
   sortName: '',
+  isTransferWork: 1,
+  isRelieveAlarm: 1,
 
   alarmNum: {},
   realtimeAlarm: [],  // 实时告警

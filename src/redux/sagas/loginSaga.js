@@ -51,8 +51,9 @@ function *userNameLogin(action){
         data.refresh_token && Cookie.set('refresh_token', data.refresh_token);
         Cookie.set('isNotLogin', 0);
 
-        // data.menuRight && localStorage.setItem('menuRight',); // 权限信息存储
-        // data.handlerRight && localStorage.setItem('handlerRight'); // 权限信息存储
+        data.rightMenu && localStorage.setItem('rightMenu', data.rightMenu); // 权限信息存储
+        data.right && localStorage.setItem('rightHandler', data.right); // 权限信息存储
+        
         if(data.auto === '1'){//导入用户/生成用户 无密码
           yield put({ 
             type: loginAction.CHANGE_LOGIN_STORE_SAGA, 
@@ -72,7 +73,6 @@ function *userNameLogin(action){
         if(data.userEnterpriseStatus){
           yield put({ type: loginAction.CHANGE_LOGIN_STORE_SAGA, params: {userEnterpriseStatus: data.userEnterpriseStatus}})
         }
-        
         // message.error(data.userEnterpriseStatus); 
       }
     } else{
@@ -130,8 +130,8 @@ function *phoneCodeLogin(action){
           data.refresh_token && Cookie.set('refresh_token', data.refresh_token);
           Cookie.set('isNotLogin', action.params.isNotLogin);
 
-          // data.menuRight && localStorage.setItem('menuRight',); // 权限信息存储
-          // data.handlerRight && localStorage.setItem('handlerRight'); // 权限信息存储
+          data.rightMenu && localStorage.setItem('rightMenu', data.rightMenu); // 权限信息存储
+          data.right && localStorage.setItem('rightHandler', data.right); // 权限信息存储
         }
         if(data.auto === '1'){
           yield put({ type: loginAction.CHANGE_LOGIN_STORE_SAGA, params: {importUser: true}})

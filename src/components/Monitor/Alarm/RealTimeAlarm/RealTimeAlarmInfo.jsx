@@ -20,10 +20,7 @@ class RealTimeAlarmInfo extends Component {
 
   render() {
     const { alarmNum, alarmStatus, lastUpdateTime} = this.props;
-    let total = '- -';
-    if(alarmNum && alarmNum.oneWarningNum && alarmNum.oneWarningNum !== null) {
-      total = alarmNum.oneWarningNum + alarmNum.twoWarningNum + alarmNum.threeWarningNum + alarmNum.fourWarningNum;
-    }
+    let total = alarmNum.oneWarningNum + alarmNum.twoWarningNum + alarmNum.threeWarningNum + alarmNum.fourWarningNum;
     return (
       <div className={styles.alarmInfo}>
         <div className={styles.alarmInfoLeft}>
@@ -31,7 +28,7 @@ class RealTimeAlarmInfo extends Component {
           {alarmStatus===2&&<i className="iconfont icon-manual icon-title"></i>}
           {alarmStatus===3&&<i className="iconfont icon-tranlist icon-title"></i>}
           <div className={styles.alarmInfoItem}>
-            <span className={styles.alarmNum}>{total}</span>
+            <span className={styles.alarmNum}>{isNaN(total)?'- -' : total}</span>
             <span className={styles.alarmText}>{alarmStatus===1?"告警数":alarmStatus===2?"手动解除数":"转工单数"}</span>
           </div>
           <div className={styles.alarmNumDetail}>

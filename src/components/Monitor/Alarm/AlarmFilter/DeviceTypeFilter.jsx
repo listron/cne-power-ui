@@ -23,7 +23,7 @@ class AlarmLevelFilter extends Component {
 
   onReset = () => {
     this.props.onChangeFilter({
-      deviceTypeCode: ''
+      deviceTypeCode: []
     });
   }
 

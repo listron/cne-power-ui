@@ -35,17 +35,16 @@ class HistoryAlarm extends Component {
   }
 
   componentDidMount() {
-    const { warningLevel, stationType, stationCode, deviceTypeCode, warningConfigName, startTime, endTime, warningStatus, deviceName} = this.props;
     this.props.getHistoryAlarm({
-      warningLevel,
-      stationType,
-      stationCode,
-      deviceTypeCode,
-      warningConfigName,
-      warningStatus,
-      startTime,
-      endTime,
-      deviceName,
+      warningLevel: [],
+      stationType: '2',
+      stationCode: [],
+      deviceTypeCode: [],
+      warningConfigName: [],
+      warningStatus: [],
+      startTime: [],
+      endTime: [],
+      deviceName: '',
     });
   }
 

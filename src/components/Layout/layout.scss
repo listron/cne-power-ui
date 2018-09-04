@@ -41,18 +41,32 @@
 
 .topMenu{
   height: 59px;
-  line-height: 56px;
+  line-height: 58px;
   background-color: transparent;
   border-bottom: none;
+  
   :global{
     .ant-menu-item{
       color: #fff;
       opacity: 0.7;
+      height: 100%;
+      border-bottom: none;
+      :local{
+        .eachMenu{
+          display: inline-block;
+          height: 100%;
+        }
+      }
     }
     .ant-menu-item:hover, .ant-menu-item-active, .ant-menu-item-open, .ant-menu-item-selected {
-      border-bottom: 2px solid #fff;
+      border-bottom: none;
       color: #fff;
       opacity: 1;
+      :local{
+        .eachMenu{
+          border-bottom: 2px solid #fff;
+        }
+      }
     }
   }
 }
