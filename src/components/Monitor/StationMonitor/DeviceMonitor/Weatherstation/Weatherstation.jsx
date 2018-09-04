@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import WeatherStationHeader from './WeatherStationHeader';
 import WeatherStationStatistics from './WeatherStationStatistics';
 import DeviceAlarmTable from '../DeviceMonitorCommon/DeviceAlarmTable';
+import CommonBreadcrumb from '../../../../Common/CommonBreadcrumb';
 import PropTypes from 'prop-types';
 import styles from '../eachDeviceMonitor.scss';
 
@@ -50,11 +51,25 @@ class Weatherstation extends Component {
 
   render(){
     const { deviceDetail, deviceAlarmList, loading } = this.props;
+    const { stationCode } = this.props.match.params;
+    const breadCrumbData = {
+      breadData:[{
+        link: true,
+        name: deviceDetail.stationName || '',
+        path: `/monitor/singleStation/${stationCode}`,
+      },{
+        name: '气象站',
+      }],
+      iconName: 'iconfont icon-weather'
+    };
     return (
       <div className={styles.weatherstation}>
-        <WeatherStationHeader deviceDetail={deviceDetail} />
-        <WeatherStationStatistics deviceDetail={deviceDetail} />
-        <DeviceAlarmTable deviceAlarmList={deviceAlarmList} deviceDetail={deviceDetail} loading={loading} />
+        <CommonBreadcrumb {...breadCrumbData} />
+        <div className={styles.deviceContent}>
+          <WeatherStationHeader deviceDetail={deviceDetail} />
+          <WeatherStationStatistics deviceDetail={deviceDetail} />
+          <DeviceAlarmTable deviceAlarmList={deviceAlarmList} deviceDetail={deviceDetail} loading={loading} />
+        </div>
       </div>
     )
   }

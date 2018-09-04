@@ -40,6 +40,8 @@ class ConfluenceHeader extends Component {
     const { deviceStatus, parentDevice, sonDevice, dispersionRatio } = deviceDetail;
     const deviceStatusInfo = deviceStatusArray.find(e=>parseInt(e.statusCode) === parseInt(deviceStatus));
     const parentDeviceBaseInfo = PVStationTypes.find(e=>parentDevice && parentDevice.deviceTypeCode === e.deviceTypeCode);
+    const parentDeviceTypeCode = parentDevice && parentDevice.deviceTypeCode; // 父级设备type
+    const parentDeviceCode = parentDevice && parentDevice.deviceCode; //父级设备code
     const sonDeviceBaseInfo = PVStationTypes.find(e=>sonDevice && sonDevice.deviceTypeCode === e.deviceTypeCode);
     const baseLinkPath = `/hidden/monitorDevice/${stationCode}/${deviceTypeCode}`;
     return (
@@ -52,14 +54,14 @@ class ConfluenceHeader extends Component {
           <span className={styles.dispersionRatio}>离散率>{dispersionRatio}%</span>
         </div>
         <div className={styles.linkTo}>
-          <Link to={`/hidden/monitorDevice/${stationCode}/${parentDevice && parentDevice.deviceTypeCode}/${parentDevice && parentDevice.deviceCode}`} className={styles.eachLink}>
+          {parentDeviceTypeCode && parentDeviceCode && <Link target="_blank" to={`/hidden/monitorDevice/${stationCode}/${parentDeviceTypeCode}/${parentDeviceCode}`} className={styles.eachLink}>
             <span className={parentDeviceBaseInfo && `${parentDeviceBaseInfo.icon} linkIcon`}></span>
             <span className={styles.linkName}>
               {parentDevice && parentDevice.deviceTypeName}{parentDevice && parentDevice.deviceName}详情
             </span>
             <span className="iconfont icon-upstream linkIcon"></span>
-          </Link>
-          <Link to={`/monitor/singleStation/${stationCode}?showPart=${sonDevice && sonDevice.deviceTypeCode}`} className={styles.eachLink}>
+          </Link>}
+          <Link target="_blank" to={`/monitor/singleStation/${stationCode}?showPart=${sonDevice && sonDevice.deviceTypeCode}`} className={styles.eachLink}>
             <span className={sonDeviceBaseInfo && `${sonDeviceBaseInfo.icon} linkIcon`}></span>
             <span className={styles.linkName}>{`${sonDevice?sonDevice.deviceTypeName:''}`}列表</span>
             <span className="iconfont icon-downstream linkIcon"></span>

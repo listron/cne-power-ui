@@ -102,6 +102,16 @@
     line-height: 18px;
     padding: 0 4px;
   }
+  :global{
+    .ant-table{
+      .ant-table-placeholder{
+        border-bottom: none;
+        img{
+          margin-top: 15px;
+        }
+      }
+    }
+  }
 }
 
 .pointData{
@@ -120,8 +130,12 @@
       border-right: dotted 1px $promptColor;
       .eachData{
         margin-bottom: 4px;
-        p{
+        .pointName{
           color: $lightColor;
+          margin-bottom: 0;
+        }
+        .pointValue{
+          color: #199475;
           margin-bottom: 0;
         }
       }

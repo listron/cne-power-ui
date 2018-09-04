@@ -64,11 +64,13 @@ class SingleImgUploader extends Component {
     const isIMG = /^image/.test(file.type);
     const { limitSize } = this.props;
     const isLimitSize = file.size  > limitSize;
-    if(!isIMG){
-      message.error('只支持图片上传！');
-    }
-    if(isLimitSize){
-      message.error(`图片上传大小不得超过${parseInt(limitSize/1024/1024)}M！`);
+    // if(!isIMG){
+    //   message.error('只支持图片上传！');
+    // }else if(isLimitSize){
+    //   message.error(`图片上传大小不得超过${parseInt(limitSize/1024/1024)}M！`);
+    // }
+    if(!isIMG || isLimitSize){
+      message.error(`图片格式或大小不对，请重新上传！`);
     }
     return isIMG && !isLimitSize;
   }
@@ -77,11 +79,12 @@ class SingleImgUploader extends Component {
     if (file.status !== 'uploading') {
       const { showCurentUpload } = this.state;
       const upLoadfiles = fileList.map(e => {
+        const address = e && e.response && e.response.data && e.response.data.address;
         return {
           uid:e.uid,
           name:e.name,
-          response:e.response.data.address,
-          thumbUrl:e.response.data.address,
+          response: address,
+          thumbUrl: address,
           status:e.status,
         }
       })

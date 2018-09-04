@@ -27,13 +27,16 @@ function* getMonitorStation(action) {//获取所有/风/光电站信息
             }
           }        
         }
+        const params = {
+          allMonitorStation: response.data.data || {},
+          stationTypes,
+        }
+        if(stationTypes !== '2') {
+          params.stationTypeTabs = stationTypes;
+        }
         yield put({
           type: allStationAction.GET_MONITORSTATION_FETCH_SUCCESS,
-          payload: {
-            allMonitorStation: response.data.data || {},
-            stationTypes,
-            stationTypeTabs: stationTypes,
-          },
+          payload: params,
         });
         
       } else if(payload.stationType === '0') {

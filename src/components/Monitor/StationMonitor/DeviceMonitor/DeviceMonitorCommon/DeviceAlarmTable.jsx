@@ -72,6 +72,7 @@ class DeviceAlarmTable extends Component {
         dataIndex: 'timeOn',
         key: 'timeOn', 
         sorter:  true, 
+        render: (text) => moment(text).format('YYYY-MM-DD hh:mm:ss')
       },{
         title: '持续时间',
         dataIndex: 'durationTime',
@@ -98,9 +99,9 @@ class DeviceAlarmTable extends Component {
       }else if(sortName === 'warningConfigName'){
         return sortType * a.warningConfigName.localeCompare(b.warningConfigName);
       }else if(sortName === 'timeOn'){
-        return sortType * (moment(b.timeOn) - moment(a.timeOn));
-      }else if(sortName === 'durationTime'){
         return sortType * (moment(a.timeOn) - moment(b.timeOn));
+      }else if(sortName === 'durationTime'){
+        return sortType * (moment(b.timeOn) - moment(a.timeOn));
       }
     }).filter((e,i)=>{ // 筛选页面
       const startIndex = (currentPage - 1) * pageSize;
@@ -122,7 +123,7 @@ class DeviceAlarmTable extends Component {
         </div>
         <div className={styles.tableHeader}>
           <Button className={styles.historyButton}>
-            <Link to="/monitor/alarm/history">查看告警历史</Link>
+            <Link to="/monitor/alarm/history" target="_blank">查看告警历史</Link>
           </Button>
           <CommonPagination onPaginationChange={this.changePagination} total={deviceAlarmList.length} />
         </div>
@@ -131,6 +132,7 @@ class DeviceAlarmTable extends Component {
           onChange={this.ontableSort}
           columns={columns}
           pagination={false}
+          locale={{emptyText:<img width="223" height="164" src="/img/nodata.png" />}}
           // loading={loading}
         />
       </div>
