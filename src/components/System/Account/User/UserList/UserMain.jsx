@@ -18,7 +18,7 @@ class UserMain extends Component {
   render(){
     return (
       <div className={styles.userMain}>
-        <div>
+        <div className={styles.userMainContent}>
           <UserSearch {...this.props} />    
           <UserList {...this.props} />
         </div>

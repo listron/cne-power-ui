@@ -268,11 +268,15 @@ class RealTimeAlarmTable extends Component {
       return <div></div>;
     }
     const selectedRowKeys = this.props.selectedRowKeys;
+    const rightHandler = localStorage.getItem('rightHandler');
+    const removeAlarmRight = rightHandler && rightHandler.includes('alarm_remove');
+    const toChangeWorkListRight = rightHandler && rightHandler.includes('alarm_worklist');
+    if(!removeAlarmRight && !toChangeWorkListRight){ return null;}
     return (
       <Select onChange={this.onHandle} value="操作" placeholder="操作" dropdownMatchSelectWidth={false} dropdownClassName={styles.handleDropdown}>
-        <Option value="ticket" disabled={selectedRowKeys.length===0}><i className="iconfont icon-tranlist"></i>转工单</Option>
-        {alarmStatus===1&&<Option value="relieve" disabled={selectedRowKeys.length===0}><i className="iconfont icon-manual"></i>手动解除</Option>}
-        {alarmStatus===2&&<Option value="resetRelieve" disabled={selectedRowKeys.length===0}><i className="iconfont icon-lifted"></i>取消解除</Option>}
+        {toChangeWorkListRight && <Option value="ticket" disabled={selectedRowKeys.length===0}><i className="iconfont icon-tranlist"></i>转工单</Option>}
+        {alarmStatus===1 && removeAlarmRight && <Option value="relieve" disabled={selectedRowKeys.length===0}><i className="iconfont icon-manual"></i>手动解除</Option>}
+        {alarmStatus===2 && removeAlarmRight && <Option value="resetRelieve" disabled={selectedRowKeys.length===0}><i className="iconfont icon-lifted"></i>取消解除</Option>}
       </Select>
     );
   }
