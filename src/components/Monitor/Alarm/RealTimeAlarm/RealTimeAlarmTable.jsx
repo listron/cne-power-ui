@@ -245,6 +245,10 @@ class RealTimeAlarmTable extends Component {
       return <div></div>;
     }
     const selectedRowKeys = this.props.selectedRowKeys;
+    // const rightHandler = localStorage.getItem('right');
+    // const removeAlarmRight = rightHandler && rightHandler.includes('alarm_remove');
+    // const toChangeWorkListRight = rightHandler && rightHandler.includes('alarm_worklist');
+    // if(!removeAlarmRight && !toChangeWorkListRight){ return null;}
     return (
       <Select onChange={this.onHandle} value="操作" placeholder="操作" dropdownMatchSelectWidth={false} dropdownClassName={styles.handleDropdown}>
         <Option value="ticket" disabled={selectedRowKeys.length===0}><i className="iconfont icon-tranlist"></i>转工单</Option>
