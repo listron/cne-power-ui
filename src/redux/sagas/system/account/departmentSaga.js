@@ -1,7 +1,7 @@
 import { call, put, takeLatest,select } from 'redux-saga/effects';
 import axios from 'axios';
 import Path from '../../../../constants/path';
-
+import { message } from 'antd';
 import { departmentAction } from '../../../../constants/actionTypes/system/account/departmentAction';
 
 
@@ -236,9 +236,20 @@ function *addDepartmentInfo(action){//新建部门信息
         type:  departmentAction.GET_DEPARTMENT_LIST_SAGA,
         payload: params,
       });
+    }else{
+      message.error('新建部门数据出错,请重新填写');
+      yield put({
+        type:  departmentAction.CHANGE_DEPARTMENT_STORE,
+        payload:{
+          buttonLoading: false,
+          continueAddLoading: false,
+          loading: false,
+        }
+      });
     }
   }catch(e){
-    console.log(e)
+    console.log(e);
+    message.error('新建部门数据出错,请重新填写');
     yield put({
       type:  departmentAction.CHANGE_DEPARTMENT_STORE,
       payload:{
