@@ -83,6 +83,9 @@
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
+    .provinceBox{
+      margin-right: 5px;
+    }
     .fontColor{
       color:#199475;
     }
@@ -101,7 +104,7 @@
       .leftIcon{
         width: 60px;
         height: 60px;
-        background: url('/img/pv-normal.png') no-repeat center;
+        background: url('/img/solar01.png') no-repeat center;
       }
     }
     .progressInfo{
@@ -142,6 +145,7 @@
         text-align: center;
         line-height: 25px;
         color:#199475;
+      
       }
     }
     .stationCollect{

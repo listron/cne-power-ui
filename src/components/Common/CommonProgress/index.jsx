@@ -39,7 +39,7 @@ class CommonProgress extends Component {
                 <div>{total}</div>
               </div>
               <div className={styles.progressBar}>
-                <Progress strokeWidth={6}  percent={value / total * 100} showInfo={false} status="active" />
+                <Progress strokeWidth={3}  percent={value / total * 100} showInfo={false} status="active" />
               </div>
               <div className={styles.stationType}>
                 <div>{valueText}</div>

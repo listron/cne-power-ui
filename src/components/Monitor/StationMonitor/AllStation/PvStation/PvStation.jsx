@@ -102,7 +102,7 @@ class PvStation extends React.Component {
 
         {stationProvinceSummary.map((item, index) => {
           return (
-            <div key={index}>
+            <div key={index} className={styles.provinceBox}>
               <span>{item.provinceName}</span>
               <span className={styles.fontColor}>{item.windStationNum}&nbsp;&nbsp;</span>
             </div>
@@ -124,9 +124,6 @@ class PvStation extends React.Component {
     ]
     let data = [];
     stationDataList.forEach((item, index) => {
-
-
-
       let stationStatusAll = item.stationStatus || {};
       let stationStatus = stationStatusAll.stationStatus || "";
       const stationType = item.stationType || "";
@@ -146,7 +143,7 @@ class PvStation extends React.Component {
     return (
       <div className={styles.pvStation}>
         <PvStationHeader {...this.props} />
-        <Tabs className={styles.smallTabs} activeKey={this.props.stationShowType} tabBarExtraContent={key !== 'stationMap' ? operations : province} onChange={this.setkey}>
+        <Tabs className={styles.smallTabs} activeKey={this.props.stationShowType} tabBarExtraContent={this.props.stationShowType !== 'stationMap' ? operations : province} onChange={this.setkey}>
           <TabPane
             tab={
               <span>
