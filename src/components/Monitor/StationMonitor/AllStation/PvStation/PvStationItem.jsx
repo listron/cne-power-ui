@@ -10,13 +10,29 @@ class PvStationItem extends React.Component {
   }
   constructor(props, context) {
     super(props, context)
+    this.state={
+      showWarningTip: false
+    }
+  }
+  confirmWarningTip=()=>{
+    this.setState({
+      showWarningTip: false,
+    })
+  }
+  showTip=()=>{
+    this.setState({
+      showWarningTip: true,
+    })
+ 
   }
   render() {
     const { stationDataList } = this.props;
+    const {showWarningTip}=this.state;
 
     return (
-      <div>
+
         <div className={styles.stationCardContainer}>
+          {showWarningTip &&<WarningTip onOK={this.confirmWarningTip} value={'电站未接入,无法查看详情'} />}
           {
             stationDataList.map((item, index) => {
               const stationStatus = item.stationStatus || {};
@@ -26,7 +42,9 @@ class PvStationItem extends React.Component {
               const instantaneous = item.instantaneous || '--';
               const stationUnitCount = item.stationUnitCount || '--';
               return (
-                <div className={stationStatus.stationStatus === '900' ? styles.stationTest : styles.stationCard} key={index}>
+                <div className={stationStatus.stationStatus === '900' ? styles.stationTest : styles.stationCard} key={index} onClick={this.showTip}>
+                
+
                   <Link to={`/monitor/singleStation/${item.stationCode}`} key={item.stationCode}>
                     <div className={styles.stationCardTitle}>
                       <div className={styles.stationName}>{stationName}</div>
@@ -54,7 +72,7 @@ class PvStationItem extends React.Component {
             })
           }
         </div>
-      </div>
+
     )
   }
 }
