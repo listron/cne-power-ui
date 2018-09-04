@@ -277,13 +277,13 @@ class UserList extends Component {
     })
   }
 
-  _createUserOperate = () => {
+  _createUserOperate = (rightHandler) => {
     let selectedUser = this.props.selectedUser.toJS();
-    // const userDeleteRight = rightHandler && rightHandler.includes('account_user_delete');
-    // const userEnableRight = rightHandler && rightHandler.includes('account_user_enable');
-    // const userDisableRight = rightHandler && rightHandler.includes('account_user_disable');
-    // const showAllHandler = userDeleteRight || userEnableRight || userDisableRight;
-    // if(showAllHandler){ return null;}
+    const userDeleteRight = rightHandler && rightHandler.includes('account_user_delete');
+    const userEnableRight = rightHandler && rightHandler.includes('account_user_enable');
+    const userDisableRight = rightHandler && rightHandler.includes('account_user_disable');
+    const showAllHandler = userDeleteRight || userEnableRight || userDisableRight;
+    if(!showAllHandler){ return null;}
     let [editable, deletable, usable, unallowable, examinable] = [ false, false, false, false, false];
     if(selectedUser.length > 0){
       editable = selectedUser.length === 1;
@@ -303,9 +303,9 @@ class UserList extends Component {
     }
     return (<Select onSelect={this.userHandle} placeholder="操作" value="操作" dropdownMatchSelectWidth={false} dropdownClassName={styles.handleDropdown} >
       <Option value="edit" disabled={!editable}><i className="iconfont icon-edit"></i><span>编辑</span></Option>
-      <Option value="delete" disabled={!deletable}><i className="iconfont icon-remove"></i><span>移除</span></Option>
-      <Option value="use" disabled={!usable}><i className="iconfont icon-enable"></i><span>启用</span></Option>
-      <Option value="unallow" disabled={!unallowable}><i className="iconfont icon-disable"></i><span>禁用</span></Option>
+      {userDeleteRight && <Option value="delete" disabled={!deletable}><i className="iconfont icon-remove"></i><span>移除</span></Option>}
+      {userEnableRight && <Option value="use" disabled={!usable}><i className="iconfont icon-enable"></i><span>启用</span></Option>}
+      {userDisableRight && <Option value="unallow" disabled={!unallowable}><i className="iconfont icon-disable"></i><span>禁用</span></Option>}
       <Option value="examine" disabled={!examinable}><i className="iconfont icon-examine1"></i><span>审核</span></Option>
     </Select>)
   } 
@@ -509,23 +509,23 @@ class UserList extends Component {
         }
       },
     };
-    // const rightHandler = localStorage.getItem('right');
-    // const userCreateRight = rightHandler && rightHandler.includes('account_user_create');
-    // const userImportRight = rightHandler && rightHandler.includes('account_user_batchImport');
+    const rightHandler = localStorage.getItem('rightHandler');
+    const userCreateRight = rightHandler && rightHandler.includes('account_user_create');
+    const userImportRight = rightHandler && rightHandler.includes('account_user_batchImport');
     return (
       <div className={styles.userList}>
         {showDeleteTip && <WarningTip onCancel={this.cancelDeleteTip} onOK={this.confirmDeleteTip} value={deleteWarningTip} />}
         {showExamineTip && this.examineModal()}
         <div className={styles.userHelper} >
           <div className={styles.userHelperLeft} >
-            <Button onClick={this.onCreateUser} className={styles.addUser} ><Icon type="plus" /><span className={styles.text}>用户</span></Button>
+            {userCreateRight && <Button onClick={this.onCreateUser} className={styles.addUser} ><Icon type="plus" /><span className={styles.text}>用户</span></Button>}
             <Button onClick={this.onInviteUser} >邀请用户</Button>
-            <Upload {...uploadProps} className={styles.importUser}>
+            {userImportRight && <Upload {...uploadProps} className={styles.importUser}>
               <Button>批量导入</Button>
-            </Upload>
+            </Upload>}
             <Button className={styles.templateDown} href="http://test-dpv.cnecloud.cn/template/用户批量导入模板.xlsx" >导入模板下载</Button>
             <div className={selectedUser.toJS().length>0 ? styles.selectedOperate : styles.userOperate} >
-              {this._createUserOperate()}
+              {this._createUserOperate(rightHandler)}
             </div>
             <div className={styles.selectedColumnsBox} >
               <Select

@@ -47,26 +47,26 @@ class DefectHandleForm extends Component {
   }
   
   render() {
-    // const rightHandler = localStorage.getItem('right');
-    // const reviewDefectRight = rightHandler && rightHandler.includes('workExamine_defect_review');
-    // const checkDefectRight = rightHandler && rightHandler.includes('workExamine_defect_check');
+    const rightHandler = localStorage.getItem('rightHandler');
+    const reviewDefectRight = rightHandler && rightHandler.includes('workExamine_defect_review');
+    const checkDefectRight = rightHandler && rightHandler.includes('workExamine_defect_check');
     const { status } = this.props;
     let titleName = '';
-    // if(status === '1' && reviewDefectRight){
-    //   titleName = '审核'
-    // }else if(status === '2'){
-    //   titleName = '处理结果'
-    // }else if(status === '3' && checkDefectRight){
-    //   titleName = '消缺验收'
-    // }
+    if(status === '1' && reviewDefectRight){
+      titleName = '审核'
+    }else if(status === '2'){
+      titleName = '处理结果'
+    }else if(status === '3' && checkDefectRight){
+      titleName = '消缺验收'
+    }
     return (
       <div className={styles.handleForm}>
         <div className={styles.title}>
           <Tag>{titleName}</Tag>
         </div>
-        {this.props.status === '1' ? this.renderReviewForm() : null}
-        {this.props.status === '2' ? this.renderProcessForm() : null}
-        {this.props.status === '3' ? this.renderCheckForm() : null}
+        {(status === '1' && reviewDefectRight) ? this.renderReviewForm() : null}
+        {status === '2' ? this.renderProcessForm() : null}
+        {(status === '3' && checkDefectRight) ? this.renderCheckForm() : null}
       </div>
     );
   }  

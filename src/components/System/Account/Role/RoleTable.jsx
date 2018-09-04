@@ -75,11 +75,11 @@ class RoleTable extends Component {
     }
   }
 
-  createHandleOption = () => {//生成操作下拉框
+  createHandleOption = (rightHandler) => {//生成操作下拉框
     const { selectedRole } = this.props;
     // const roleDeleteRight = rightHandler && rightHandler.includes('account_role_delete');
     // const roleUpdateRight = rightHandler && rightHandler.includes('account_role_update');
-    // const showAllHandler = roleDeleteRight || roleUpdateRight;
+    // const showAllHandler = roleDeleteRight || roleUpdateRight;   权限管理 -- todo
     return (
       <Select onChange={this.roleHandle} value="操作" placeholder="操作" dropdownMatchSelectWidth={false} dropdownClassName={styles.handleDropdown}>
         <Option value="edit" disabled={selectedRole.length>1||selectedRole.length===0}>编辑</Option>
@@ -145,7 +145,7 @@ class RoleTable extends Component {
   render(){
     const { selectedRole, roleData, isFetching, showPage } = this.props;
     const { showWarningTip, warningTipText, hiddenWarningTipCancelText } = this.state;
-    // const rightHandler = localStorage.getItem('right');
+    // const rightHandler = localStorage.getItem('rightHandler');
     // const roleCreateRight = rightHandler && rightHandler.includes('account_role_create');
     // const userImportRight = rightHandler && rightHandler.includes('account_user_batchImport');
     return (
@@ -158,7 +158,7 @@ class RoleTable extends Component {
               <span className={styles.text}>角色</span>
             </Button>
             <div className={styles.handleRole}>
-              {this.createHandleOption()}
+              {this.createHandleOption(rightHandler)}
             </div>
           </div>
         </div> */}

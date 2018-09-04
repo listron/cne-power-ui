@@ -177,12 +177,12 @@ class DepartmentTable extends Component {
     }
   }
   _createHandleOption = (rightHandler) => {//部门操作下拉框生成
-    // const departmentDeleteRight = rightHandler && rightHandler.includes('account_department_delete');
-    // const departmentUpdateRight = rightHandler && rightHandler.includes('account_department_update');
-    // const departmentUserRight = rightHandler && rightHandler.includes('account_department_user');
-    // const departmentStationRight = rightHandler && rightHandler.includes('account_department_station');
-    // const showAllHandler = departmentDeleteRight || departmentUpdateRight || departmentUserRight || departmentStationRight;
-    // if(showAllHandler){ return null;}
+    const departmentDeleteRight = rightHandler && rightHandler.includes('account_department_delete');
+    const departmentUpdateRight = rightHandler && rightHandler.includes('account_department_update');
+    const departmentUserRight = rightHandler && rightHandler.includes('account_department_user');
+    const departmentStationRight = rightHandler && rightHandler.includes('account_department_station');
+    const showAllHandler = departmentDeleteRight || departmentUpdateRight || departmentUserRight || departmentStationRight;
+    if(!showAllHandler){ return null;}
     const { selectedDepartment } = this.props;
     let [editable, deletable, userAssignable, staionAssignable] = [false,false,false,false];  
     
@@ -193,10 +193,10 @@ class DepartmentTable extends Component {
       staionAssignable = true;
     }       
     return (<Select onChange={this.departmentHandle} placeholder="操作" value="操作" dropdownMatchSelectWidth={false} dropdownClassName={styles.departmentHandleDropdown}>
-      <Option value="edit" disabled={!editable} ><span className="iconfont icon-edit"></span>编辑</Option>
-      <Option value="delete" disabled={!deletable} ><span className="iconfont icon-remove"></span>删除</Option>
-      <Option value="assignUser" disabled={!userAssignable} ><span className="iconfont icon-role"></span>分配用户</Option>
-      <Option value="assignStation" disabled={!staionAssignable} ><span className="iconfont icon-powerstation"></span>设置电站</Option>
+      {departmentUpdateRight && <Option value="edit" disabled={!editable} ><span className="iconfont icon-edit"></span>编辑</Option>}
+      {departmentDeleteRight && <Option value="delete" disabled={!deletable} ><span className="iconfont icon-remove"></span>删除</Option>}
+      {departmentUserRight && <Option value="assignUser" disabled={!userAssignable} ><span className="iconfont icon-role"></span>分配用户</Option>}
+      {departmentStationRight && <Option value="assignStation" disabled={!staionAssignable} ><span className="iconfont icon-powerstation"></span>设置电站</Option>}
     </Select>)
   }
   _createTableColumn = () => {//生成表头
@@ -283,19 +283,19 @@ class DepartmentTable extends Component {
   render(){
     const { departmentData, selectedDepartment, totalNum, loading, showAssignUserModal, showAssignStationModal } = this.props;
     const { showWarningTip, warningTipText, hiddenWarningTipCancelText } = this.state;
-    // const rightHandler = localStorage.getItem('right');
-    // const departmentCreateRight = rightHandler && rightHandler.includes('account_department_create');
+    const rightHandler = localStorage.getItem('rightHandler');
+    const departmentCreateRight = rightHandler && rightHandler.includes('account_department_create');
     return (
       <div className={styles.departmentList}>
         {showWarningTip && <WarningTip onCancel={this.cancelWarningTip} onOK={this.onWarningTipOK} value={warningTipText} hiddenCancel={hiddenWarningTipCancelText} />}
         <div className={styles.departmentListTop} >
           <div>
-            <Button className={styles.addDepartment} onClick={this.onDepartmentAdd}>
+            {departmentCreateRight && <Button className={styles.addDepartment} onClick={this.onDepartmentAdd}>
               <Icon type="plus" />
               <span className={styles.text}>部门</span>
-            </Button>
+            </Button>}
             <div className={styles.handleDepartment}>
-              {this._createHandleOption()}
+              {this._createHandleOption(rightHandler)}
             </div>
           </div>
           <CommonPagination total={totalNum} onPaginationChange={this.onPaginationChange} />
