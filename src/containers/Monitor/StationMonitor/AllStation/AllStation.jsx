@@ -38,6 +38,9 @@ class AllStation extends Component {
 
   componentWillUnmount() {
     clearInterval(this.stationInterval);
+    this.props.changeMonitorStationStore({
+      stationTypes: '2'
+    });
   }
 
   autoUpdate = (stationTypes) => {
