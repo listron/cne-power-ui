@@ -40,10 +40,12 @@ class EnterpriseDetail extends Component {
     const { changeEnterpriseStore, enterpriseDetail } = this.props;
     const { showInforTip } = this.state;
     const defaultLogo = '/img/nopic.png';
+    const rightHandler = localStorage.getItem('rightHanlder');
+    const enterpriseUpdateRight = rightHandler && rightHandler.includes('account_enterprise_update');
     return (
       <div className={styles.enterpriseDetail}>
         <div className={styles.detailTop}>
-          <Button className={styles.editButton} onClick={()=>changeEnterpriseStore({showPage:'edit'})}>编辑</Button>
+          {enterpriseUpdateRight && <Button className={styles.editButton} onClick={()=>changeEnterpriseStore({showPage:'edit'})}>编辑</Button>}
           {showInforTip && <span className={styles.infoTip} >
             <span className={styles.toEdit} >请编辑完善企业信息!</span>
             {/* <span className={styles.ignore} onClick={this.ignoreEdit}>不再提醒 <Icon type="close" /></span> */}
