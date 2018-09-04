@@ -21,17 +21,6 @@ class DefectHandleForm extends Component {
     super(props);
   }
 
-  getTitle() {
-    switch(this.props.status) {
-      case '1': 
-        return '审核';
-      case '2':
-        return '处理结果';
-      case '3':
-        return '消缺验收';
-    }
-  }
-
   renderReviewForm() {
     return (     
       <DefectReviewForm 
@@ -57,11 +46,23 @@ class DefectHandleForm extends Component {
     );
   }
   
-  render() {   
+  render() {
+    // const rightHandler = localStorage.getItem('right');
+    // const reviewDefectRight = rightHandler && rightHandler.includes('workExamine_defect_review');
+    // const checkDefectRight = rightHandler && rightHandler.includes('workExamine_defect_check');
+    const { status } = this.props;
+    let titleName = '';
+    // if(status === '1' && reviewDefectRight){
+    //   titleName = '审核'
+    // }else if(status === '2'){
+    //   titleName = '处理结果'
+    // }else if(status === '3' && checkDefectRight){
+    //   titleName = '消缺验收'
+    // }
     return (
       <div className={styles.handleForm}>
         <div className={styles.title}>
-          <Tag>{this.getTitle()}</Tag>
+          <Tag>{titleName}</Tag>
         </div>
         {this.props.status === '1' ? this.renderReviewForm() : null}
         {this.props.status === '2' ? this.renderProcessForm() : null}
