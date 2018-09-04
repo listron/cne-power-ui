@@ -11,8 +11,11 @@ function* getMonitorStation(action) {//获取所有/风/光电站信息
     const response = yield call(axios.get, url);
     if(response.data.code === '10000') {
       if(payload.stationType === '2') {
-        let stationTypes = '2';
+        const params = {
+          allMonitorStation: response.data.data || {},
+        }
         if(payload.getStationTypes === true) {
+          let stationTypes = '';
           const stationDataList = response.data.data.stationDataList || [];
           const allDatastationType = stationDataList.map((e, index) => { return e.stationType });
           const allStationTypeCode = new Set(allDatastationType);
@@ -25,15 +28,15 @@ function* getMonitorStation(action) {//获取所有/风/光电站信息
             } else if(allStationTypeCode.has('1')) {
               stationTypes = '1';
             }
-          }        
-        }
+          } 
+          params.stationTypes = stationTypes;
+          if(stationTypes !== '2') {
+            params.stationTypeTabs = stationTypes;
+          }     
+        }        
         yield put({
           type: allStationAction.GET_MONITORSTATION_FETCH_SUCCESS,
-          payload: {
-            allMonitorStation: response.data.data || {},
-            stationTypes,
-            stationTypeTabs: stationTypes,
-          },
+          payload: params,
         });
         
       } else if(payload.stationType === '0') {

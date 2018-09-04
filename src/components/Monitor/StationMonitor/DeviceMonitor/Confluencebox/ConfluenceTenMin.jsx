@@ -1,5 +1,6 @@
 import React from 'react';
 import echarts from 'echarts';
+import moment from 'moment';
 
 function ConfluenceTenMin({ deviceTenMin, loading }) {
   const echartBox = document.getElementById('confluence_monitor_tenMin');
@@ -14,7 +15,7 @@ function ConfluenceTenMin({ deviceTenMin, loading }) {
     // const HLNames = ['HL001', 'HL002', 'HL003', 'HL004', 'HL005', 'HL006', 'HL007', 'HL008', 'HL009', 'HL010', 'HL011', 'HL012', 'HL013', 'HL014', 'HL015', 'HL016']
     let dispersionRatio = [], xTime = [];  //, HL = [];
     deviceTenMin.length > 0 && deviceTenMin.forEach(e=>{
-      xTime.push(e.utc);
+      xTime.push(moment(e.utc).format('YYYY-MM-DD hh:mm:ss'));
       dispersionRatio.push(e.dispersionRatio);
     });
     const option = {
@@ -54,7 +55,7 @@ function ConfluenceTenMin({ deviceTenMin, loading }) {
       },
       yAxis: [
         {
-          name: '电流 (A)',
+          name: '电流(A)',
           splitLine:{
             show:false
           },

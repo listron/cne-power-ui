@@ -35,9 +35,11 @@ class HistoryFilteredItems extends Component {
     });
   }
 
-  onCancelDealResult = () => {//取消处理结果
-    this.props.onChangeFilter({
-      warningStatus: []
+  onCancelDealResult = (status) => {//取消处理结果
+    const { warningStatus, onChangeFilter } = this.props;
+    const newWarningStatus = warningStatus.filter(e=>e!==status);
+    onChangeFilter({
+      warningStatus: newWarningStatus
     });
   }
 
@@ -87,7 +89,7 @@ class HistoryFilteredItems extends Component {
     const {deviceTypeCode, warningLevel, stationType, stationCode, warningConfigName, startTime, endTime, warningStatus, stations, deviceTypes } = this.props;
     const alarmLevel = ['一级','二级','三级','四级'];
     const status = [
-      {value:'0', label:'自动解除'},
+      {value:'1', label:'自动解除'},
       {value:'2', label:'手动解除'},
       {value:'3', label:'转工单'}
     ];
@@ -153,12 +155,12 @@ class HistoryFilteredItems extends Component {
         ))}
         {startTime.length>0&&
           <Tag style={style} closable onClose={this.onCancelStartTimeRange}>
-            发生时间{moment(startTime[0]).format('YYYY-MM-DD')}-{moment(startTime[1]).format('YYYY-MM-DD')}
+            发生时间{moment(startTime[0]).format('YYYY-MM-DD')}~{moment(startTime[1]).format('YYYY-MM-DD')}
           </Tag>
         }
         {endTime.length>0&&
           <Tag style={style} closable onClose={this.onCancelEndTimeRange}>
-            结束时间{moment(endTime[0]).format('YYYY-MM-DD')}-{moment(endTime[1]).format('YYYY-MM-DD')}
+            结束时间{moment(endTime[0]).format('YYYY-MM-DD')}~{moment(endTime[1]).format('YYYY-MM-DD')}
           </Tag>
         }
         {warningStatus.length>0&&dealResultArray.map(e=>(

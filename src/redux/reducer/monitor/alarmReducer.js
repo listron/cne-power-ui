@@ -13,6 +13,7 @@ var initState = Immutable.fromJS({
   endTime: [],//结束时间
   deviceName: '',//设备名称，模糊查询
   warningStatus: [],//处理结果
+  sortName: '',
 
   alarmNum: {},
   realtimeAlarm: [],  // 实时告警

@@ -19,8 +19,8 @@ function DevicePointsData({ devicePointData, deviceDetail }) {
             let pointValue = eachPoints.devicePointValue;
             pointValue = (pointValue || parseFloat(pointValue) === 0)? pointValue: '--';
             return (<div className={styles.eachData} key={eachPoints.devicePointCode}>
-              <p>{eachPoints.devicePointName}</p>
-              <p>{pointValue}{eachPoints.devicePointUnit || ''}</p>
+              <p className={styles.pointName}>{eachPoints.devicePointName}</p>
+              <p className={styles.pointValue}>{pointValue}{eachPoints.devicePointUnit || ''}</p>
             </div>)
           })}
         </div>))}
