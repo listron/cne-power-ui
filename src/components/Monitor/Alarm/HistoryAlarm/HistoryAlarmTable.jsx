@@ -25,38 +25,15 @@ class HostoryAlarmTable extends Component {
       showTransferPopover: [],
       showRelievePopover: [],
       showAutoRelievePopover: [],
-      key: '',
-      order: 'ascend',
+      sortName: '',
+      descend: false,
     }
   }
 
   onChangeTable = (pagination, filters, sorter) => {
-    const field = sorter.field;
-    let order = sorter.order;
-    let key = '';
-    switch(field) {
-      case 'warningLevel':
-        key = 'warningLevel';
-        break;
-      case 'stationName':
-        key = 'stationCode';
-        break;
-      case 'deviceTypeName':
-        key = 'deviceTypeCode';
-        break;
-      case 'timeOn':
-        key = 'timeOn';
-        break;
-      case 'timeOff':
-        key = 'timeOff';
-        break;
-      case 'operation':
-        key = 'warningStatus';
-        break;
-    }
-    this.setState({
-      key,
-      order,
+    this.setState({ 
+      sortName: sorter.field,
+      descend : sorter.order === 'descend'
     });
   }
 
@@ -117,6 +94,33 @@ class HostoryAlarmTable extends Component {
     const minute = duration.minutes();
     const displayMiute = minute < 10 ? "0" + minute : minute;
     return `${displayDay}天${displayHour}小时${displayMiute}分钟`;
+  }
+
+  createTableSource(data) {
+    const { pageSize, currentPage, sortName, descend } = this.state;
+    const nameSortArr = ['stationName', 'deviceTypeName', 'warningConfigName']
+    const tableSource = data.map((e, i) => ({
+      ...e,
+      key: i,
+    })).sort((a, b) => { // 手动排序
+      const sortType = descend ? -1: 1;
+      if(sortName === 'warningLevel'){
+        return sortType * (a.warningLevel - b.warningLevel);
+      }else if(nameSortArr.includes(sortName)){
+        return sortType * a[sortName].localeCompare(b[sortName], 'zh');
+      }else if(sortName === 'timeOn' || sortName === 'timeOff'){
+        return sortType * (moment(a.timeOn) - moment(b.timeOn));
+      }else if(sortName === 'operation'){
+        return sortType * (parseInt(b.warningStatus) - parseInt(a.warningStatus));
+      }else {
+        return a.key - b.key;
+      }
+    }).filter((e,i)=>{ // 筛选页面
+      const startIndex = (currentPage - 1) * pageSize;
+      const endIndex = startIndex + pageSize;
+      return (i >= startIndex && i < endIndex);
+    });
+    return tableSource;
   }
 
   initColumn = () => {
@@ -313,22 +317,7 @@ class HostoryAlarmTable extends Component {
 
   render() {
     const { historyAlarm, loading } = this.props;
-    const { pageSize, currentPage, key, order } = this.state;
-    let sorterData = historyAlarm;
-    if(key !== '') {
-      sorterData = historyAlarm.sort(function(a,b) {
-        if(key !== 'timeOn' && key !== 'timeOff') {
-          return (a[key] - b[key])*(order === 'ascend' ? 1 : -1);
-        } else {
-          return (moment.utc(a[key]).unix()- moment.utc(b[key]).unix())*(order === 'ascend' ? 1 : -1);
-        }
-      });
-    }
-    const tableSource = sorterData.filter((e,i)=>{ // 手动分页
-      const startIndex = (currentPage - 1) * pageSize;
-      const endIndex = startIndex + pageSize;
-      return (i >= startIndex && i < endIndex);
-    });
+    const tableSource = this.createTableSource(historyAlarm);
     const columns = this.initColumn();
     return (
       <div className={styles.alarmTable}>
@@ -338,7 +327,6 @@ class HostoryAlarmTable extends Component {
         </div>
         <Table
           loading={loading}
-          rowKey={(record)=>{return record.warningLogId}} 
           dataSource={tableSource}
           columns={columns}
           pagination={false}

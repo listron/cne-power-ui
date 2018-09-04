@@ -146,13 +146,15 @@ class RealTimeAlarmTable extends Component {
         return sortType * (moment(a.timeOn) - moment(b.timeOn));
       }else if(sortName === 'durationTime'){
         return sortType * (moment(b.timeOn) - moment(a.timeOn));
+      }else {
+        return a.key - b.key;
       }
     }).filter((e,i)=>{ // 筛选页面
       const startIndex = (currentPage - 1) * pageSize;
       const endIndex = startIndex + pageSize;
       return (i >= startIndex && i < endIndex);
     });
-    return tableSource
+    return tableSource;
   }
 
   initColumn = () => {
