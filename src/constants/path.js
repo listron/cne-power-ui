@@ -42,6 +42,7 @@ export default {
     registerEnterprise: '/v3/login/enterpriseregister',
     checkUserRegister: '/v3/login/userregister',
     phoneCodeRegister: '/v3/login/phoneregister',
+    inviteUserLink: '/v3/user/link',
 
     ticket: {
       getDefectList: '/v3/defect/worklist/pc',

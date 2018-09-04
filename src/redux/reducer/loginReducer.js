@@ -24,8 +24,11 @@ var initState = Immutable.fromJS({
   enterpriseName: null,//注册企业名称
   joinResult: 0,//0 加入失败，1，加入待审核
   enterpriseId: Cookie.get('enterpriseId'),
-  isInvite: 0,//0普通用户加入 1为邀请用户加入
-  userEnterpriseStatus: 3,//用户企业状态  默认启用状态
+  inviteUser: false,//false普通用户加入 true为邀请用户加入
+  importUser: false,//普通用户加入false,导入用户加入true
+  inviteValid: true,//true邀请链接默认有效 
+  userEnterpriseStatus: 3,//用户企业状态  默认3启用
+  checkLoginPhone: true,//登录用手机号错误
 });
 
 const loginReducer = (state = initState, action) => {
@@ -57,9 +60,12 @@ const loginReducer = (state = initState, action) => {
       return state.set('isFetching', false)
                   .set('nameIsRegister', action.data.isRegister)
                   .set('enterpriseName', action.params.enterpriseName);
-    case loginAction.JOIN_ENTERPRISE_SUCCESS://此状态暂未使用，等待后端具体给出审核状态再做判断
+    case loginAction.JOIN_ENTERPRISE_SUCCESS:
       return state.set('isFetching', false)
                   .set('joinResult', action.data.joinResult);
+    case loginAction.INVITE_USER_LINK_SUCCESS:
+      return state.set('isFetching', false)
+                  .set('enterpriseInfo',Immutable.fromJS(action.data));
     case loginAction.USER_NAME_LOGIN_FAIL:
     case loginAction.PHONE_CODE_LOGIN_FAIL:
     case loginAction.PHONE_CODE_REGISTER_FAIL:
