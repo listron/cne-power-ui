@@ -36,6 +36,8 @@ class RealTimeAlarm extends Component {
     location: PropTypes.object,
     ticketInfo: PropTypes.object,
     relieveInfo: PropTypes.object,
+    isTransferWork: PropTypes.number,
+    isRelieveAlarm: PropTypes.number,
   }
   constructor(props) {
     super(props);
@@ -71,7 +73,7 @@ class RealTimeAlarm extends Component {
     clearInterval(this.alarmInterval);
     const status = this.getStatus();
     const warningStatus = this.getAlarmStatus(status);
-    const { warningLevel, stationType, stationCode, deviceTypeCode, warningConfigName, startTime, deviceName } = this.props;
+    const { warningLevel, stationType, stationCode, deviceTypeCode, warningConfigName, startTime, deviceName, isTransferWork, isRelieveAlarm } = this.props;
     let filter = {
       warningLevel,
       stationType,
@@ -80,8 +82,8 @@ class RealTimeAlarm extends Component {
       warningConfigName,
       startTime,
       deviceName,
-      isTransferWork: status==='transfer'?0:1,
-      isRelieveAlarm: status==='relieve'?0:1
+      isTransferWork,
+      isRelieveAlarm
     }
     let newFiter = Object.assign({}, filter, obj);
     this.props.getRealTimeAlarm(newFiter);
@@ -90,10 +92,8 @@ class RealTimeAlarm extends Component {
   }
 
   getAlarmInfo() {
-    const { sortName, warningLevel, stationType, stationCode, deviceTypeCode, warningConfigName, startTime, deviceName} = this.props;
+    const { sortName, warningLevel, stationType, stationCode, deviceTypeCode, warningConfigName, startTime, deviceName, isTransferWork, isRelieveAlarm } = this.props;
     const status = this.getStatus();
-    const isTransferWork = status === 'transfer' ? 0 : 1;
-    const isRelieveAlarm = status === 'relieve' ? 0: 1;
     const warningStatus = this.getAlarmStatus(status);
     if(sortName===''&&warningStatus===1&&warningLevel.length===0&&stationType==='2'&&
     stationCode.length===0&&deviceTypeCode.length===0&&
@@ -162,6 +162,8 @@ const mapStateToProps = (state) => ({
   deviceName: state.monitor.alarm.get('deviceName'),
   sortName: state.monitor.alarm.get('sortName'),
   alarmNum: state.monitor.alarm.get('alarmNum').toJS(),
+  isTransferWork: state.monitor.alarm.get('isTransferWork'),
+  isRelieveAlarm: state.monitor.alarm.get('isRelieveAlarm'),
   defectTypes: state.operation.defect.get('defectTypes'),
   lastUpdateTime: state.monitor.alarm.get('lastUpdateTime'),
   ticketInfo: state.monitor.alarm.get('ticketInfo').toJS(),
