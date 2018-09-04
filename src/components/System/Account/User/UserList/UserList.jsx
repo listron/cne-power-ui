@@ -279,7 +279,11 @@ class UserList extends Component {
 
   _createUserOperate = () => {
     let selectedUser = this.props.selectedUser.toJS();
-    // const { highLight } = this.state;
+    // const userDeleteRight = rightHandler && rightHandler.includes('account_user_delete');
+    // const userEnableRight = rightHandler && rightHandler.includes('account_user_enable');
+    // const userDisableRight = rightHandler && rightHandler.includes('account_user_disable');
+    // const showAllHandler = userDeleteRight || userEnableRight || userDisableRight;
+    // if(showAllHandler){ return null;}
     let [editable, deletable, usable, unallowable, examinable] = [ false, false, false, false, false];
     if(selectedUser.length > 0){
       editable = selectedUser.length === 1;
@@ -399,7 +403,6 @@ class UserList extends Component {
 
   render(){
     const { userData, totalNum, loading, selectedUser } = this.props;
-    console.log(loading)
     const { selectedUserColumns,showDeleteTip,showExamineTip,deleteWarningTip, } = this.state;
     const authData = getCookie('authData');
     const columns = [
@@ -506,6 +509,9 @@ class UserList extends Component {
         }
       },
     };
+    // const rightHandler = localStorage.getItem('right');
+    // const userCreateRight = rightHandler && rightHandler.includes('account_user_create');
+    // const userImportRight = rightHandler && rightHandler.includes('account_user_batchImport');
     return (
       <div className={styles.userList}>
         {showDeleteTip && <WarningTip onCancel={this.cancelDeleteTip} onOK={this.confirmDeleteTip} value={deleteWarningTip} />}

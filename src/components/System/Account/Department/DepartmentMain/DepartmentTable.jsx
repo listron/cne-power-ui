@@ -176,7 +176,13 @@ class DepartmentTable extends Component {
       })
     }
   }
-  _createHandleOption = () => {//部门操作下拉框生成
+  _createHandleOption = (rightHandler) => {//部门操作下拉框生成
+    // const departmentDeleteRight = rightHandler && rightHandler.includes('account_department_delete');
+    // const departmentUpdateRight = rightHandler && rightHandler.includes('account_department_update');
+    // const departmentUserRight = rightHandler && rightHandler.includes('account_department_user');
+    // const departmentStationRight = rightHandler && rightHandler.includes('account_department_station');
+    // const showAllHandler = departmentDeleteRight || departmentUpdateRight || departmentUserRight || departmentStationRight;
+    // if(showAllHandler){ return null;}
     const { selectedDepartment } = this.props;
     let [editable, deletable, userAssignable, staionAssignable] = [false,false,false,false];  
     
@@ -277,6 +283,8 @@ class DepartmentTable extends Component {
   render(){
     const { departmentData, selectedDepartment, totalNum, loading, showAssignUserModal, showAssignStationModal } = this.props;
     const { showWarningTip, warningTipText, hiddenWarningTipCancelText } = this.state;
+    // const rightHandler = localStorage.getItem('right');
+    // const departmentCreateRight = rightHandler && rightHandler.includes('account_department_create');
     return (
       <div className={styles.departmentList}>
         {showWarningTip && <WarningTip onCancel={this.cancelWarningTip} onOK={this.onWarningTipOK} value={warningTipText} hiddenCancel={hiddenWarningTipCancelText} />}

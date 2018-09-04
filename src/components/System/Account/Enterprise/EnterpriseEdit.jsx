@@ -60,6 +60,8 @@ class EnterpriseEdit extends Component {
   }
   
   render(){
+    // const rightHandler = localStorage.getItem('right');
+    // const enterpriseUpdateRight = rightHandler && rightHandler.includes('account_enterprise_update');
     const { enterpriseLogo } = this.state;
     const { enterpriseId, enterpriseDetail,saveEnterpriseInfor, loading } = this.props;
     const { showWarningTip, warningTipText } = this.state;

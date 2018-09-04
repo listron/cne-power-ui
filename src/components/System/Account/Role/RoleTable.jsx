@@ -76,7 +76,10 @@ class RoleTable extends Component {
   }
 
   createHandleOption = () => {//生成操作下拉框
-    const { selectedRole } = this.props;      
+    const { selectedRole } = this.props;
+    // const roleDeleteRight = rightHandler && rightHandler.includes('account_role_delete');
+    // const roleUpdateRight = rightHandler && rightHandler.includes('account_role_update');
+    // const showAllHandler = roleDeleteRight || roleUpdateRight;
     return (
       <Select onChange={this.roleHandle} value="操作" placeholder="操作" dropdownMatchSelectWidth={false} dropdownClassName={styles.handleDropdown}>
         <Option value="edit" disabled={selectedRole.length>1||selectedRole.length===0}>编辑</Option>
@@ -142,6 +145,9 @@ class RoleTable extends Component {
   render(){
     const { selectedRole, roleData, isFetching, showPage } = this.props;
     const { showWarningTip, warningTipText, hiddenWarningTipCancelText } = this.state;
+    // const rightHandler = localStorage.getItem('right');
+    // const roleCreateRight = rightHandler && rightHandler.includes('account_role_create');
+    // const userImportRight = rightHandler && rightHandler.includes('account_user_batchImport');
     return (
       <div className={styles.roleList} style={{display: showPage==='list'?'flex':'none'}}>
       {showWarningTip && <WarningTip onOK={this.onConfirmWarningTip} value={warningTipText} hiddenCancel={hiddenWarningTipCancelText} />}
