@@ -34,19 +34,7 @@ class Forget extends Component {
           <span>|</span>
           <span  onClick={()=>this.changePage('register')}> 注册 </span>
         </div>
-        <ForgetForm
-          sendCode={this.props.sendCode}
-          showResetPassword={this.props.showResetPassword}
-          resetPassword={this.props.resetPassword}
-          phoneNum={this.props.phoneNum}
-          phoneCodeRegister={this.props.phoneCodeRegister}
-          pageTab={this.props.pageTab}
-          enterpriseId={this.props.enterpriseId}
-          username={this.props.username}
-          checkCodeLogin={this.props.checkCodeLogin}
-          error={this.props.error}
-          changeLoginStore={this.props.changeLoginStore}
-        />
+        <ForgetForm {...this.props} />
       </div>
     );
   }

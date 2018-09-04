@@ -28,6 +28,7 @@ class JoinInForm extends Component{
     enterpriseInfo: PropTypes.object,
     locatoion: PropTypes.object,
     inviteUserLink: PropTypes.func,
+    inviteValid: PropTypes.bool,
   }
 
   constructor(props){
@@ -37,14 +38,6 @@ class JoinInForm extends Component{
       showEnterpriseInfo: false,
     }
   }
-
-  // componentWillMount(){
-  //   console.log(this.props);
-  //   console.log(this.props.locatoion);
-  //   const locationSearch = this.props.history.location.search;
-  //   const linkId = locationSearch.subStr(locationSearch.indexOf('=')+1);
-  //   this.props.inviteUserLink({linkId});
-  // }
 
   componentWillUnmount = () => {
     this.setState = (timeValue)=>{
@@ -198,9 +191,9 @@ class JoinInForm extends Component{
       </Form>
     );
   }
-  renderStepTwo(inviteValid) {
+  renderStepTwo() {
     const { getFieldDecorator } = this.props.form;
-    const { enterpriseIdToken,enterpriseName, enterpriseLogo } = this.props;
+    const { enterpriseIdToken,enterpriseName, enterpriseLogo,inviteValid } = this.props;
     const { timeValue } = this.state;
     const defaultLogo = "/img/nopic.png";
     return (
@@ -276,24 +269,16 @@ class JoinInForm extends Component{
             <div>{enterpriseName}</div>
           </div>
           <Form onSubmit={this.onJoinEnterprise}  >
-            {importUser ? 
-              <FormItem label="" {...formItemLayout}>
-                {getFieldDecorator('username', )(
-                  <div>请牢记您的用户名：{username}</div>
-                )}
-              </FormItem>
-              : 
-              <FormItem label="用户名" {...formItemLayout}>
-                {getFieldDecorator('username', {
-                  rules: [
-                    {required: true, message: '请输入用户名'},
-                    {pattern: /^[A-Za-z0-9\u4e00-\u9fa5]{3,8}$/gi, message: '请输入3到8位中文、英文、数字'},
-                  ]
-                })(
-                  <Input addonBefore={<i className="iconfont icon-user"></i>} placeholder="请输入用户名" />
-                )}
-              </FormItem>
-            }
+            <FormItem label="用户名" {...formItemLayout}>
+              {getFieldDecorator('username', {
+                rules: [
+                  {required: true, message: '请输入用户名'},
+                  {pattern: /^[A-Za-z0-9\u4e00-\u9fa5]{3,8}$/gi, message: '请输入3到8位中文、英文、数字'},
+                ]
+              })(
+                <Input addonBefore={<i className="iconfont icon-user"></i>} defaultValue={importUser ? username : ''} disabled={importUser ? true : false} placeholder="请输入用户名" />
+              )}
+            </FormItem>
             <FormItem label="创建密码" {...formItemLayout}>
               {getFieldDecorator('password',{
                 rules: [
@@ -341,7 +326,7 @@ class JoinInForm extends Component{
   }
   
   render(){
-    const { joinStep,importUser,inviteValid } = this.props;
+    const { joinStep,importUser } = this.props;
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -367,7 +352,7 @@ class JoinInForm extends Component{
     return (
       <div className={styles.comName}>
         {joinStep === 1 && this.renderStepOne(formItemLayout, tailFormItemLayout)}
-        {joinStep === 2 && this.renderStepTwo(inviteValid)}
+        {joinStep === 2 && this.renderStepTwo()}
         {joinStep === 3 && this.renderStepThree(formItemLayout, tailFormItemLayout, importUser)}
       </div>
     );

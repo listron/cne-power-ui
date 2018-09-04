@@ -43,25 +43,7 @@ class JoinIn extends Component {
           <span>|</span>
           <span  onClick={()=>this.changePage('register')}> 注册 </span>
         </div>
-        <JoinInForm 
-          enterpriseName={this.props.enterpriseName}
-          enterpriseLogo={this.props.enterpriseLogo}
-          enterpriseId={this.props.enterpriseId}
-          getEnterpriseInfo={this.props.getEnterpriseInfo}
-          sendCode={this.props.sendCode}
-          joinEnterprise={this.props.joinEnterprise}
-          phoneCodeRegister={this.props.phoneCodeRegister}
-          pageTab={this.props.pageTab}
-          joinStep={this.props.joinStep}
-          changeLoginStore={this.props.changeLoginStore}
-          enterpriseIdToken={this.props.enterpriseIdToken}
-          phoneNum={this.props.phoneNum}
-          error={this.props.error}
-          history={this.props.history}
-          importUser={this.props.importUser}
-          userEnterpriseStatus={this.props.userEnterpriseStatus}
-          enterpriseInfo={this.props.enterpriseInfo}
-        />
+        <JoinInForm  {...this.props} />
       </div>
     );
   }
