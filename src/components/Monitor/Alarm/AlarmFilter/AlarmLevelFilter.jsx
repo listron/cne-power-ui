@@ -35,7 +35,7 @@ class AlarmLevelFilter extends Component {
     }))
     return (
       <div className={styles.alarmFilterItem}>
-        <span onClick={this.onReset} >不限</span>
+        <span onClick={this.onReset} className={warningLevel.length===0?styles.selected:styles.all}>不限</span>
         <CheckboxGroup options={options} value={warningLevel} onChange={this.onChange} />
       </div>
     );

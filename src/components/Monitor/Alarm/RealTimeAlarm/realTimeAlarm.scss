@@ -95,6 +95,7 @@
       color: $themeColor;
       width:30px;
       height:30px;
+      font-size: 20px;
       border-radius:100%;
       display: flex;
       justify-content: center;
@@ -174,6 +175,19 @@
     word-break:keep-all;
     max-width: 175px;
   }
+  .deviceName {
+    :global {
+      a {
+        border-bottom: 1px $darkColor solid;
+        color: $darkColor;
+        text-decoration: none;
+        &:hover {
+          border-bottom: 1px $themeColor solid;
+          color: $themeColor;
+        }
+      }
+    }
+  }
   .tableFooter{
     background-color: #fff;
     height: 45px;
@@ -190,6 +204,14 @@
     .cancel{
       color: $themeColor;
       cursor: pointer;
+    }
+  }
+  .selected {
+    :global {
+      .icon-action {
+        background-color: $themeColor;
+        color: #fff;
+      }
     }
   }
   :global {
@@ -248,6 +270,7 @@
       flex-direction: column;
       flex: 1;
       height: 100%;
+      margin-top: 180px;
     }
     .ant-btn-primary {
       color: $themeColor;

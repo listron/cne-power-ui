@@ -22,6 +22,7 @@
   .addDepartment,.editDepartment{
     flex: 1;
     background-color: #fff;
+    border: 1px solid #e1e2e2;
     .editTop{
       @include top;
       justify-content: space-between;
@@ -88,6 +89,7 @@
     line-height: 30px;
     flex: 1;
     background-color: #fff;
+    border: 1px solid #e1e2e2;
     .detailTop{
       @include top;
       justify-content: space-between;

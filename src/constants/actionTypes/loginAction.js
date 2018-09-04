@@ -58,6 +58,8 @@ module.exports ={
     // 离开重置state
     RESET_LOGIN_STORE_SAGA: null,
     RESET_LOGIN_STORE_SUCCESS: null,
+    INVITE_USER_LINK_SAGA: null,//请求邀请企业信息
+    INVITE_USER_LINK_SUCCESS: null,//请求邀请企业信息成功
   })
 }
 

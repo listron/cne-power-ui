@@ -61,6 +61,7 @@ class PvStation extends Component {
   }
   
   render(){
+    console.log(this.props);
     const { deviceTypeFlow,stationDeviceList,deviceTypeCode } = this.props;
     const weatherDeviceCode = stationDeviceList && stationDeviceList.deviceCode || 0;
     const { stationCode } = this.props.match.params;

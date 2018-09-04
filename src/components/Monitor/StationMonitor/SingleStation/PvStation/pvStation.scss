@@ -281,18 +281,24 @@
           float: right;
         }
       }
+      .operatorContent{
+        .userInfo{
+          display: flex;
+          justify-content: space-around;
+          text-align: left;
+          color: #999;
+          :global{
+            .ant-row{
+              width: 100%;
+            }
+          }
+        }
+      }
       .cardTitle{
         line-height: 40px;
         text-align: left;
         padding-left: 20px;
-        .operatorContent{
-          .userInfo{
-            display: flex;
-            justify-content: space-around;
-            text-align: left;
-            color: #999;
-          }
-        }
+        
         :global{
           .iconfont{
             color: #666;

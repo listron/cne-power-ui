@@ -100,6 +100,8 @@ class InspectDetailForm extends Component {
 
   renderForm(){
     let status = this.props.inspectDetail.get('inspectStatus');
+    const rightHandler = localStorage.getItem('rightHandler');
+    const checkInspectRight = rightHandler && rightHandler.includes('workExamine_inspection_check');
     if(status === "2"){
       return (
         <InspectAddAbnormal
@@ -125,10 +127,10 @@ class InspectDetailForm extends Component {
             <Button type="primary" onClick={this.onTransformDefect} disabled={this.state.disabled} >转工单</Button>
             <div style={{color:this.state.tipColor}}>（请先选择设备，灰色背景为不可选）</div>
           </div>
-          <div>
+          {checkInspectRight && <div>
             <Button type="primary" onClick={this.onInspectCheck} >验收</Button>
             <div>（确认验收，请点击按钮）</div>
-          </div>
+          </div>}
         </div>
       )
     } else {

@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './pvStation.scss';
-import { Carousel,Row, Col,Icon, Button } from 'antd';
+import { Carousel,Row, Col,Icon, Button, } from 'antd';
 import { Link } from 'react-router-dom';
 
 class CardSection extends Component {
@@ -89,7 +89,13 @@ class CardSection extends Component {
                     return (<div key={index} className={styles.operatorContent} >
                       {item.map((e,i)=>{
                         return (
-                          <div key={i} className={styles.userInfo} ><div>{e.userFullName}</div><div style={{margin: "0 10px"}}>{e.roleName}</div><div>{e.phoneNum}</div></div>
+                          <div key={i} className={styles.userInfo} >
+                            <Row>
+                              <Col span={5}><div>{e.userFullName}</div></Col>
+                              <Col span={9}><div>{e.roleDesc}</div></Col>
+                              <Col span={10}><div>{e.phoneNum}</div></Col>
+                            </Row>
+                          </div>
                         )
                       })}
                     </div>)

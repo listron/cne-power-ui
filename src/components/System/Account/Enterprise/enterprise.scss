@@ -19,6 +19,8 @@
 .enterpriseDetail{//详情页
   line-height: 30px;
   background-color: #fff;
+  flex: 1;
+  border: 1px solid #e1e2e2;
   .detailTop{
     @include top;
     .editButton{
@@ -102,6 +104,7 @@
 .enterpriseEdit{//编辑页
   flex:1;
   background-color: #fff;
+  border: 1px solid #e1e2e2;
   .editTop{
     @include top;
     justify-content: space-between;
