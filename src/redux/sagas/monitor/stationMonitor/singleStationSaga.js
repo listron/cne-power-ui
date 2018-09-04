@@ -313,6 +313,28 @@ function *getBoxTransformerList(action){
     console.log(e);
   }
 }
+// 获取单电站设备列表
+function *getStationDeviceList(action){
+  const { payload } = action;
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.monitor.getStationDeviceList}${payload.stationCode}/${payload.deviceTypeCode}`;
+  try{
+    yield put({type: singleStationAction.SINGLE_STATION_FETCH});
+    const response = yield call(axios.get, url, payload);
+    if(response.data.code === '10000'){
+      yield put({
+        type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
+        payload: {
+          stationDeviceList: response.data.data || [],
+        }
+      })
+    }else{
+      yield put({ type: singleStationAction.GET_SINGLE_STATION_FAIL, data: response.data});
+      // message.error(response.data.message);
+    }
+  }catch(e){
+    console.log(e);
+  }
+}
 export function* watchSingleStationMonitor() {
   yield takeLatest(singleStationAction.GET_SINGLE_STATION_SAGA, getSingleStation);
   yield takeLatest(singleStationAction.CHANGE_SINGLE_STATION_STORE_SAGA, changeSingleStationStore);
@@ -327,6 +349,6 @@ export function* watchSingleStationMonitor() {
   yield takeLatest(singleStationAction.GET_PVMODULE_LIST_SAGA, getPvmoduleList);
   yield takeLatest(singleStationAction.GET_INVERTER_LIST_SAGA, getInverterList);
   yield takeLatest(singleStationAction.GET_BOXTRANSFORMER_LIST_SAGA, getBoxTransformerList);
-  
+  yield takeLatest(singleStationAction.GET_STATION_DEVICELIST_SAGA, getStationDeviceList);
 }
 
