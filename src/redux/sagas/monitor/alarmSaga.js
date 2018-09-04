@@ -190,8 +190,8 @@ function *transferAlarm(action) {  // 转工单
         warningConfigName: state.monitor.alarm.get('warningConfigName'),
         startTime: state.monitor.alarm.get('startTime'),
         deviceName: state.monitor.alarm.get('deviceName'),
-        isTransferWork: 1,
-        isRelieveAlarm: 1
+        isTransferWork: state.monitor.alarm.get('isTransferWork'),
+        isRelieveAlarm: state.monitor.alarm.get('isRelieveAlarm')
       }));
       yield put({
         type: alarmAction.GET_REALTIME_ALARM_SAGA,
@@ -225,8 +225,8 @@ function *relieveAlarm(action) {  // 屏蔽告警
         warningConfigName: state.monitor.alarm.get('warningConfigName'),
         startTime: state.monitor.alarm.get('startTime'),
         deviceName: state.monitor.alarm.get('deviceName'),
-        isTransferWork: 1,
-        isRelieveAlarm: 1
+        isTransferWork: state.monitor.alarm.get('isTransferWork'),
+        isRelieveAlarm: state.monitor.alarm.get('isRelieveAlarm')
       }));
       yield put({
         type: alarmAction.GET_REALTIME_ALARM_SAGA,
@@ -260,8 +260,8 @@ function *resetRelieveAlarm(action) {  // 取消屏蔽告警
         warningConfigName: state.monitor.alarm.get('warningConfigName'),
         startTime: state.monitor.alarm.get('startTime'),
         deviceName: state.monitor.alarm.get('deviceName'),
-        isTransferWork: 1,
-        isRelieveAlarm: 1
+        isTransferWork: state.monitor.alarm.get('isTransferWork'),
+        isRelieveAlarm: state.monitor.alarm.get('isRelieveAlarm')
       }));
       yield put({
         type: alarmAction.GET_REALTIME_ALARM_SAGA,
