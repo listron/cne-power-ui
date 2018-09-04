@@ -126,7 +126,7 @@ class RealTimeFilteredItems extends Component {
         ))}
         {startTime.length>0&&
           <Tag style={style} closable onClose={this.onCancelTimeRange}>
-            发生时间{moment(startTime[0]).format('YYYY-MM-DD')}-{moment(startTime[1]).format('YYYY-MM-DD')}
+            发生时间{moment(startTime[0]).format('YYYY-MM-DD')}~{moment(startTime[1]).format('YYYY-MM-DD')}
           </Tag>
         }
         <span onClick={this.resetAll}>清空条件</span>

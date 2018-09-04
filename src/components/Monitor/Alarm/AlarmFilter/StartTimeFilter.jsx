@@ -22,7 +22,7 @@ class StartTimeFilter extends Component {
       });
     } else {
       this.props.onChangeFilter({
-        startTime: [date[0].toISOString(), date[1].toISOString()]
+        startTime: [date[0].hour(0).minute(0).second(0).toISOString(), date[1].hour(23).minute(59).second(59).toISOString()]
       });
     }
   }

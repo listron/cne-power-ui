@@ -52,6 +52,14 @@
     word-break:keep-all;
     max-width: 175px;
   }
+  .selected {
+    :global {
+      .icon-action {
+        background-color: $themeColor;
+        color: #fff;
+      }
+    }
+  }
   :global {
     .icon-action {
       background-color:#ceebe0;
