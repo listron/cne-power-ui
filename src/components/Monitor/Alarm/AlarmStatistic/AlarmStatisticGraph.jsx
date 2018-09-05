@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import echarts from 'echarts';
+import styles from './alarmStatistic.scss';
 class AlarmStatisticGraph extends React.Component {
   static propTypes = {
     graphId: PropTypes.string,
@@ -159,9 +160,7 @@ class AlarmStatisticGraph extends React.Component {
   render() {
     const { graphId } = this.props;
     return (
-      <div>
-        <div id={graphId} className={StyleSheet.statisticGraph} style={{ width: '85%', height: '500px' }}> </div>
-      </div>
+      <div id={graphId} className={styles.statisticGraph} style={{ marginTop:10,display:'flex',flex:1}}> </div>
     );
   }
 }
