@@ -106,6 +106,21 @@ class AlarmStatisticByType extends Component {
       });
     }
   }
+  onCalendarChange = (dates) => {
+    if (dates.length === 1) {
+      this.start = dates[0].format('YYYY-MM-DD');
+    } else {
+      this.start = null;
+    }
+  }
+  disabledDate = (current) => {
+    if(this.start) {
+      const end = moment(this.start).add(30, 'days');
+      return current > moment.min(moment().endOf('day'), end);
+    } else {
+      return current && current > moment().endOf('day')
+    }
+  }
   render() {
     const { showFilter, key } = this.state;
 
@@ -136,7 +151,9 @@ class AlarmStatisticByType extends Component {
             showFilter === 'timeSelect' &&
             <div className={styles.datePicker}><RangePicker
               showTime={false}
-              format="YYYY-MM-DD HH:mm"
+              disabledDate={this.disabledDate}
+              onCalendarChange={this.onCalendarChange}
+              format="YYYY-MM-DD"
               placeholder={['Start Time', 'End Time']}
               onChange={this.onChangeTime}
             /></div>

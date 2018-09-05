@@ -277,6 +277,11 @@
     .stationStatus {
       margin-left: 50px;
       color: $lightColor;
+      display: flex;
+      flex-direction: row;
+      .status {
+        margin-right: 4px;
+      }
     }
     .backIcon{
       border-left: 1px solid #dfdfdf;
@@ -303,6 +308,14 @@
       :global {
         .ant-select-selection-selected-value {
           color: $lightColor;
+        }
+      }
+    }
+    :global {
+      .ant-input {
+        width: 300px;
+        &:hover {
+          border-color:$themeColor;
         }
       }
     }

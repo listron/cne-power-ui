@@ -107,6 +107,22 @@ class ALarmSingleStationStatistic extends React.Component {
     }
   }
 
+  onCalendarChange = (dates) => {
+    if (dates.length === 1) {
+      this.start = dates[0].format('YYYY-MM-DD');
+    } else {
+      this.start = null;
+    }
+  }
+  disabledDate = (current) => {
+    if(this.start) {
+      const end = moment(this.start).add(30, 'days');
+      return current > moment.min(moment().endOf('day'), end);
+    } else {
+      return current && current > moment().endOf('day')
+    }
+  }
+
   hideStationChange = () => {
     this.setState({
       showStationSelect: false
@@ -127,8 +143,8 @@ class ALarmSingleStationStatistic extends React.Component {
           </div>
           
           <div className={styles.stationStatus}>
-            {`电站状态：${singleAlarmSummary.stationStatusName}`}
-            {singleAlarmSummary.stationStatus===0&&`时间：${singleAlarmSummary.interruptTime}`}
+            <div className={styles.status}>{`电站状态：${singleAlarmSummary.stationStatusName?singleAlarmSummary.stationStatusName:'- -'}`}</div>
+            <div>{singleAlarmSummary.stationStatus==='500'&&`时间：${singleAlarmSummary.interruptTime}`}</div>
           </div>
         </div>
         <Link to="/monitor/alarm/statistic"><Icon type="arrow-left" className={styles.backIcon} onClick={this.onClose} /></Link>
@@ -151,7 +167,10 @@ class ALarmSingleStationStatistic extends React.Component {
         {showTimeSelect&&
           <RangePicker
             showTime={false}
-            format="YYYY-MM-DD HH:mm"
+            disabledDate={this.disabledDate}
+            onCalendarChange={this.onCalendarChange}
+            format="YYYY-MM-DD"
+            format="YYYY-MM-DD"
             placeholder={['Start Time', 'End Time']}
             onChange={this.onChangeTime}
           />
