@@ -57,17 +57,8 @@ class Login extends Component {
           <Tabs onChange={this.changePage} animated={false} activeKey={pageTab}>
             <TabPane tab="登录" key="login">
               <LoginForm
-                changeLoginStore={this.props.changeLoginStore}
-                fetchLogin={this.props.fetchLogin}
-                sendCode={this.props.sendCode}
-                checkCodeLogin={this.props.checkCodeLogin}
-                username={this.props.username}
-                enterpriseId={this.props.enterpriseId}
+                {...this.props}
                 history={history}
-                error={this.props.error}
-                userEnterpriseStatus={this.props.userEnterpriseStatus}
-                inviteUserLink={this.props.inviteUserLink}
-                checkLoginPhone={this.props.checkLoginPhone}
               />
             </TabPane>
             <TabPane tab="注册企业" key="register">

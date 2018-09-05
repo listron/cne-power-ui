@@ -69,17 +69,8 @@ class Register extends Component {
             </TabPane>
             <TabPane tab="注册企业" key="register">
               <RegisterForm 
-                sendCode={this.props.sendCode}
-                registerStep={this.props.registerStep}
-                checkEnterpriseDomain={this.props.checkEnterpriseDomain}
-                registerEnterprise={this.registerEnterprise}
-                domainIsRegister={this.props.domainIsRegister}
-                nameIsRegister={this.props.nameIsRegister}
-                phoneCodeRegister={this.props.phoneCodeRegister}
-                enterpriseId={this.props.enterpriseId}
-                error={this.props.error}
+                {...this.props}
                 history={history}
-                changeLoginStore={this.props.changeLoginStore}
               />
             </TabPane>
           </Tabs>

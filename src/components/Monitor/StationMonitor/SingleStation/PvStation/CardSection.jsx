@@ -22,6 +22,35 @@ class CardSection extends Component {
       disabled2: false,
     }
   }
+
+  componentDidMount() {
+    const { stationCode } = this.props.match.params;
+    this.getData(stationCode);
+    
+  }
+
+  componentWillReceiveProps(nextProps){
+    const { stationCode } = this.props.match.params;
+    const nextParams = nextProps.match.params;
+    const nextStation = nextParams.stationCode;
+    if( nextStation !== stationCode ){
+      clearTimeout(this.timeOutId);
+      this.getData(nextStation);
+    }
+    this.props.changeSingleStationStore({deviceTypeCode: nextProps.deviceTypeCode});
+  }
+
+  componentWillUnmount(){
+    clearTimeout(this.timeOutId);
+  }
+
+  getData = (stationCode) => {
+    this.props.getWeatherList({stationCode});
+    this.timeOutId = setTimeout(()=>{
+      this.getData(stationCode);
+    },10000);
+  }
+
   prev = () => {
     let weatherIndex = this.state.weatherIndex;
     this.setState({

@@ -105,7 +105,7 @@ class PvStation extends Component {
             </TabPane>
           </Tabs>
         </div>
-        <div style={{height: "2000px",}}></div>
+        
       </div>
     )
   }
