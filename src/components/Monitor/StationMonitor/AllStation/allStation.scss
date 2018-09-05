@@ -17,13 +17,13 @@ width: 100%;
       .leftIcon{
         width: 30px;
         height: 35px;
-        background: url('/img/wind-normal.png') no-repeat center;
+        background: url('/img/wind01.png') no-repeat center;
       }
       .rightIcon{
         margin-top: 15px;
         width: 24px;
         height: 15px;
-        background:url('/img/pv-normal.png') no-repeat center;
+        background:url('/img/solar01.png') no-repeat center;
       }
     }
       .progressInfo{
@@ -64,6 +64,7 @@ width: 100%;
           text-align: center;
           line-height: 25px;
           color:#199475;
+         
         }
       }
     .stationCollect{
@@ -85,6 +86,7 @@ width: 100%;
           color:#199475;
           font-size: 24px;
           padding-top: 20px;
+          font-family:STHeitiSC-Light;
         }
         .dataName {
           flex: 1;
@@ -118,13 +120,14 @@ width: 100%;
     }
     .typeTotal{
       margin-right: 30px;
-      width: 130px;
+      width: 100px;
       height: 55px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       .stationNum{
         color:#199475;
+        margin-left: 5px;
       }
     }
   }

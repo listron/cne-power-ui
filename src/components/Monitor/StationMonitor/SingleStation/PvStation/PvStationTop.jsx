@@ -80,7 +80,7 @@ class PvStationTop extends Component {
             {showStationList && <ChangeStation stations={stationList} stationName={singleStationData.stationName} baseLinkPath={baseLinkPath} hideStationChange={this.hideDeviceChange} />}
             <div onClick={this.showStationList} className={styles.stationToggle}  id="stationToggle" >
               <Icon type="swap" />
-              <h3>{singleStationData && singleStationData.stationName}-{singleStationData && singleStationData.stationName}</h3>
+              <h3>{singleStationData && singleStationData.stationName}-{singleStationData && singleStationData.provinceName}</h3>
             </div>
             <span>电站状态：{singleStationData && singleStationData.stationStatus && singleStationData.stationStatus.stationStatusName}</span>
             {singleStationData && singleStationData.stationStatus && singleStationData.stationStatus.stationStatus !== 400 && stationStatusTime!==null && <span>时间：{tmpStationStatusTime||""}</span>}
@@ -105,7 +105,7 @@ class PvStationTop extends Component {
           </div>
           <div>
             <div className={styles.trueTimeValue} style={{color: "#e08031"}}>{singleStationData && singleStationData.instantaneous && parseFloat(singleStationData.instantaneous).toFixed(2) ||0}</div>
-            <div className={styles.trueTimeUnit}>瞬时辐照 w/m<sup>2</sup></div>
+            <div className={styles.trueTimeUnit}>瞬时辐照 W/m<sup>2</sup></div>
           </div>
           <div>
             <div className={styles.trueTimeValue} style={{color: "#e08031"}}>{singleStationData && singleStationData.dayResources || 0}</div>

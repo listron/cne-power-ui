@@ -47,27 +47,18 @@ class Login extends Component {
 
     return (
       <div className={styles.login}>
-        <div className={styles.joinTop}>
+        <div className={styles.joinTop}  onClick={() => this.changePage('joinIn')}>
           <div className={styles.fontIcon}>
             <i className="iconfont icon-join" />
           </div>
-          <div className={styles.join} onClick={() => this.changePage('joinIn')}>加入企业</div>
+          <div className={styles.join} >加入企业</div>
         </div>
         <div className={styles.loginTab}>
           <Tabs onChange={this.changePage} animated={false} activeKey={pageTab}>
             <TabPane tab="登录" key="login">
               <LoginForm
-                changeLoginStore={this.props.changeLoginStore}
-                fetchLogin={this.props.fetchLogin}
-                sendCode={this.props.sendCode}
-                checkCodeLogin={this.props.checkCodeLogin}
-                username={this.props.username}
-                enterpriseId={this.props.enterpriseId}
+                {...this.props}
                 history={history}
-                error={this.props.error}
-                userEnterpriseStatus={this.props.userEnterpriseStatus}
-                inviteUserLink={this.props.inviteUserLink}
-                checkLoginPhone={this.props.checkLoginPhone}
               />
             </TabPane>
             <TabPane tab="注册企业" key="register">

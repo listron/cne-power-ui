@@ -163,6 +163,7 @@ class RegisterForm extends Component {
   }
 
   renderStepOne(getFieldDecorator, enterpriseId){
+    console.log(enterpriseId)
     const { timeValue } =this.state;
     return (
       <div>
@@ -196,7 +197,7 @@ class RegisterForm extends Component {
           <FormItem>
             <Button type="primary" htmlType="submit" className="login-form-button">下一步</Button>
           </FormItem>
-          {(enterpriseId !== null && enterpriseId.length > 0) ? <p>您已加入企业，请直接登录</p> : null}
+          {/* {(enterpriseId !== null && enterpriseId.length>0) ? <p>您已加入企业，请直接登录</p> : <div></div>} */}
         </Form>
       </div>
     );
@@ -232,7 +233,7 @@ class RegisterForm extends Component {
           <FormItem {...tailFormItemLayout} >
             {getFieldDecorator('userAgreement', {
             })(
-              <Checkbox className={styles.userArgee}  >同意<span  className={styles.userAgreeTip} onClick={this.toSeeAgreement} >用户协议</span></Checkbox>
+              <Checkbox className={styles.userArgee} >同意<span  className={styles.userAgreeTip} onClick={this.toSeeAgreement} >用户协议</span></Checkbox>
             )}
           </FormItem>
           <FormItem {...tailFormItemLayout} >
@@ -254,7 +255,7 @@ class RegisterForm extends Component {
                 {pattern: /^[a-zA-Z0-9\u4E00-\u9FA5]{3,8}$/gi, message: '请输入3-8位中文、英文、数字'}
               ]
             })(
-              <Input addonBefore={<i className="iconfont icon-user"></i>} placeholder="3-8位中文、英文、数字" />
+              <Input addonBefore={<i className="iconfont icon-user"></i>} placeholder="3-8位中文、英文、数字都可" />
             )}
           </FormItem>
           <FormItem label="创建密码" {...formItemLayout}>

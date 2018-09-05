@@ -1,4 +1,9 @@
 .commonProgress {
+  :global{
+    .ant-progress-inner{
+      vertical-align: -3px;
+    }
+  }
   .progressInfo{
     display: flex;
     flex-direction: row;
@@ -14,6 +19,7 @@
 
       .stationValue{
         flex: 1;
+        height: 24px;
         display: flex;
         color:#199475;
         font-size: 24px;
@@ -26,10 +32,13 @@
       }
       .progressBar{
         flex: 1;
+        height: 8px; 
         width: 220px;
+        display: block;
       }
       .stationType{
         flex: 1;
+        height: 19px;
         display: flex;
         flex-direction: row;
         justify-content: space-between;
@@ -46,6 +55,7 @@
       text-align: center;
       line-height: 25px;
       color:#199475;
+      margin-top: 10px;
     }
   }
   
