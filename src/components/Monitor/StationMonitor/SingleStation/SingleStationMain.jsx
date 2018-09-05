@@ -10,11 +10,9 @@ class SingleStationMain extends Component {
   static propTypes = {
     stationType: PropTypes.number,
   }
-
   constructor(props){
     super(props);
   }
-
   render(){
     const { stationType } = this.props;
     return (
