@@ -60,15 +60,18 @@ class UserList extends Component {
       stationName: this.props.stationName,
       pageNum: this.props.currentPage,
       pageSize: this.props.pageSize,
-      order: '0',
+      order: '',
     };
     this.props.getUserList(params);
   }
 
   onRowSelect = (selectedRowKeys, selectedRows) => {//行选择
+    // console.log(selectedRowKeys)
+    // console.log(selectedRows)
     this.props.changeUserStore({
       selectedUser: selectedRows,
     });
+
   }
   onInviteUser = () => {
     this.props.getInviteLink({enterpriseId: JSON.parse(this.props.enterpriseId), showPage: 'invite'});
@@ -144,10 +147,12 @@ class UserList extends Component {
   
   confirmExamineTip = () => {
     const { selectedUser, enterpriseId, } = this.props;
+    // console.log(selectedUser.toJS())
     this.props.changeUserStatus({
       enterpriseId,
       userId: selectedUser.toJS().map(e=>e.userId).toString(),
       enterpriseUserStatus: this.state.examineStatus,
+      // selectedKey: selectedUser.toJS()[0].key || -1,
     });
     this.setState({
       showExamineTip: false,
@@ -475,7 +480,7 @@ class UserList extends Component {
         dataIndex: 'userStatus',
         key: 'userStatus',
         render: (text, record, index) => {
-          console.log(record.enterpriseStatus);
+          // console.log(record.enterpriseStatus);
           return (<span className={record.enterpriseStatus===5 && styles.waitExamine} >{this.getEnterpriseStatus(record.enterpriseStatus)}</span>);
         },
       }
@@ -523,7 +528,7 @@ class UserList extends Component {
             {userImportRight && <Upload {...uploadProps} className={styles.importUser}>
               <Button>批量导入</Button>
             </Upload>}
-            <Button className={styles.templateDown} href="http://test-dpv.cnecloud.cn/template/用户批量导入模板.xlsx" >导入模板下载</Button>
+            <Button className={styles.templateDown} href="http://10.10.15.51/template/用户批量导入模板.xlsx" >导入模板下载</Button>
             <div className={selectedUser.toJS().length>0 ? styles.selectedOperate : styles.userOperate} >
               {this._createUserOperate(rightHandler)}
             </div>
@@ -557,7 +562,7 @@ class UserList extends Component {
           loading={loading}
           rowSelection={{
             selectedRowKeys: selectedUser.toJS().map(e=>e.key),
-            onChange: this.onRowSelect
+            onChange: this.onRowSelect,
           }}
           dataSource={userData && userData.toJS().map((e,i)=>({...e,key:i}))} 
           columns={this.tableColumn()} 

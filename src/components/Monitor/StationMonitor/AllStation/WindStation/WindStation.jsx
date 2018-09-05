@@ -21,8 +21,6 @@ class WindStation extends React.Component {
       totalNum: 0
     }
   }
-
-
   onHandleAlarm = (checked) => {
     this.setState({
       checked
@@ -34,21 +32,14 @@ class WindStation extends React.Component {
     })
   }
   setkey = (activekey) => {
-
     this.props.changeMonitorStationStore({ stationShowType: activekey });
   }
   componentUnmount() {
     //clearTimeout(this.autoTimer)
   }
-
-
-  render() {
-    let { key, checked, stationType } = this.state;
+  statisticStatusNum = () => {
     const { windMonitorStation } = this.props;
-
-
     const stationDataSummary = windMonitorStation.stationDataSummary || {};
-    const stationProvinceSummary = stationDataSummary.stationProvinceSummary || [];
     const stationStatusSummary = stationDataSummary.stationStatusSummary || [];
     //统计各状态下的电站数量
     const normalNum = stationStatusSummary.filter(e => {
@@ -63,68 +54,40 @@ class WindStation extends React.Component {
       return e && e.stationStatus === 500
     })[0].stationNum : '0';
 
-
     const unconnectionNum = stationStatusSummary.filter(e => {
       return e && e.stationStatus === 900
     }).length > 0 ? stationStatusSummary.filter(e => {
       return e && e.stationStatus === 900
     })[0].stationNum : '0';
-    //筛选不同状态下的电站列表
+    return {
+      normalNum, 
+      dataInterruptionNum,
+      unconnectionNum
+    }
+  }
+  statusDataList=()=>{
+    let { key, checked, stationType } = this.state;
+    const { windMonitorStation } = this.props;
     const stationDataList = windMonitorStation.stationDataList || [];
     const newStationDataList = stationDataList.filter(e => {
       return !checked || (checked && e.alarmNum > 0)
     }).filter(e => {
+      const stationStatus = e.stationStatus || {};
       if (stationType === 'all') {
         return true
       } else if (stationType === 'normal') {
-        const stationStatus = e.stationStatus || {};
         return stationStatus.stationStatus === '400'
       } else if (stationType === 'dataInterruption') {
-        const stationStatus = e.stationStatus || {};
         return stationStatus.stationStatus === '500'
       } else if (stationType === 'unconnection') {
-        const stationStatus = e.stationStatus || {};
         return stationStatus.stationStatus === '900'
       }
     })
-
-
-
-    const TabPane = Tabs.TabPane;
-    //tabs筛选部分
-    const operations = (
-      <div style={{ border: 'none' }}>
-        <Switch onChange={this.onHandleAlarm} />告警
-    <Radio.Group
-          defaultValue="all"
-          buttonStyle="solid"
-          onChange={this.onHandleStation}
-          style={{ margin: "0 30px 0 15px" }}
-        >
-          <Radio.Button value="all">全部</Radio.Button>
-          <Radio.Button value="normal">通讯正常  {normalNum}<span></span></Radio.Button>
-          <Radio.Button value="dataInterruption">信息中断  {dataInterruptionNum}  </Radio.Button>
-          {/* <Radio.Button value="networkInterruption">网络中断</Radio.Button> */}
-          <Radio.Button value="unconnection">未接入  {unconnectionNum}</Radio.Button>
-        </Radio.Group>
-      </div>
-    );
-
-
-    const province = (
-      <div className={styles.provinceStationTotal}>
-        {stationProvinceSummary.map((item, index) => {
-          return (
-            <div key={index} className={styles.provinceBox}>
-              <span>{item.provinceName}</span>
-              <span className={styles.fontColor}>{item.windStationNum}&nbsp;&nbsp;</span>
-            </div>
-          )
-        })}
-      </div>
-    )
-    //地图数据处理
-
+    return newStationDataList
+  }
+  mapData=()=>{
+    const { windMonitorStation } = this.props;
+    const stationDataList = windMonitorStation.stationDataList || [];
     let iconArray = [
       {
         "400": ['image://./img/wind-normal.png', 'image://./img/wind-alert.png'],
@@ -139,14 +102,11 @@ class WindStation extends React.Component {
     ]
     let data = [];
     stationDataList.forEach((item, index) => {
-
-
       let stationStatusAll = item.stationStatus || {};
       let stationStatus = stationStatusAll.stationStatus || "";
       const stationType = item.stationType || "";
       const currentStationType = iconArray[item.stationType] || {};
       const currentStationStatus = currentStationType[stationStatus] || '';
-
       data.push({
         name: item.stationName,
         value: [item.longitude, item.latitude, stationType, stationStatus],
@@ -157,12 +117,51 @@ class WindStation extends React.Component {
         instantaneous: item.instantaneous
       })
     })
+    return data
 
+  }
 
+  render() {
+    //let { key, checked, stationType } = this.state;
+    const { windMonitorStation } = this.props;
+    const stationDataSummary = windMonitorStation.stationDataSummary || {};
+    const stationProvinceSummary = stationDataSummary.stationProvinceSummary || []; 
+    const TabPane = Tabs.TabPane;
+    //状态筛选部分样式
+    const operations = (
+      <div style={{ border: 'none' }}>
+        <Switch onChange={this.onHandleAlarm} />告警
+        <Radio.Group
+          defaultValue="all"
+          buttonStyle="solid"
+          onChange={this.onHandleStation}
+          style={{ margin: "0 30px 0 15px" }}
+        >
+          <Radio.Button value="all">全部</Radio.Button>
+          <Radio.Button value="normal">通讯正常  {this.statisticStatusNum().normalNum}<span></span></Radio.Button>
+          <Radio.Button value="dataInterruption">信息中断  {this.statisticStatusNum().dataInterruptionNum}  </Radio.Button>
+          <Radio.Button value="unconnection">未接入  {this.statisticStatusNum().unconnectionNum}</Radio.Button>
+        </Radio.Group>
+      </div>
+    );
+    //省份汇总
+    const province = (
+      <div className={styles.provinceStationTotal}>
+        {stationProvinceSummary.map((item, index) => {
+          return (
+            <div key={index} className={styles.provinceBox}>
+              <span>{item.provinceName}</span>
+              <span className={styles.fontColor}>{item.windStationNum}&nbsp;&nbsp;</span>
+            </div>
+          )
+        })}
+      </div>
+    )
+   
     return (
       <div className={styles.WindStation}>
         <WindStationHeader {...this.props} />
-        <Tabs className={styles.smallTabs} activeKey={this.props.stationShowType} tabBarExtraContent={this.props.stationShowType !== 'stationMap' ? operations : province} onChange={this.setkey}>
+        <Tabs className={styles.containerTabs} activeKey={this.props.stationShowType} tabBarExtraContent={this.props.stationShowType !== 'stationMap' ? operations : province} onChange={this.setkey} animated={false}>
           <TabPane
             tab={
               <span>
@@ -171,7 +170,7 @@ class WindStation extends React.Component {
             }
             key="stationBlock"
           >
-            <WindStationItem {...this.props} stationDataList={newStationDataList} />
+            <WindStationItem {...this.props} stationDataList={this.statusDataList()} />
 
           </TabPane>
           <TabPane
@@ -182,7 +181,7 @@ class WindStation extends React.Component {
             }
             key="stationList"
           >
-            <WindStationList {...this.props} stationDataList={newStationDataList} />
+            <WindStationList {...this.props} stationDataList={this.statusDataList()} />
 
           </TabPane>
           <TabPane
@@ -192,8 +191,10 @@ class WindStation extends React.Component {
               </span>
             }
             key="stationMap"
+
+
           >
-            <Map {...this.props} stationDataList={data} testId="wind_bmap_station" />
+            <Map {...this.props} stationDataList={this.mapData()} testId="wind_bmap_station" />
           </TabPane>
         </Tabs>
 
