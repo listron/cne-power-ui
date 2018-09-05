@@ -12,12 +12,25 @@
     .ant-progress-bg {
       border-radius: 100px;
       background-color: #199475;
+      
   }
+  .ant-switch{
+    vertical-align: -5px;
+  }
+  .ant-radio-button-wrapper{
+    height: 24px;
+    line-height: 24px;
+    padding: 0 8px;   
+  }
+  
   .ant-radio-button-wrapper:hover, .ant-radio-button-wrapper-focused{
     color: #199475;
   }
   .ant-tabs-extra-content {
     line-height: 48px;
+  }
+  .ant-radio-group.ant-radio-group-solid{
+    margin: 0 30px 0 15px;
   }
   //风光组件里的小tabs 
   .ant-tabs-nav .ant-tabs-tab {
@@ -70,6 +83,9 @@
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
+    .provinceBox{
+      margin-right: 5px;
+    }
     .fontColor{
       color:#199475;
     }
@@ -88,7 +104,7 @@
       .leftIcon{
         width: 60px;
         height: 60px;
-        background: url('/img/pv-normal.png') no-repeat center;
+        background: url('/img/solar01.png') no-repeat center;
       }
     }
     .progressInfo{
@@ -129,6 +145,7 @@
         text-align: center;
         line-height: 25px;
         color:#199475;
+      
       }
     }
     .stationCollect{
@@ -149,6 +166,7 @@
           flex: 1;
           text-align: center;
           padding-top: 20px;
+          font-family:STHeitiSC-Light;
         }
         .dataPvValue{
           color:#e08031;
@@ -156,6 +174,7 @@
           flex: 1;
           text-align: center;
           padding-top: 20px;
+          font-family:STHeitiSC-Light;
         }
         .dataName {
           flex: 1;
@@ -207,10 +226,11 @@
       flex-direction: column;
       background:#f8f8f8;
       box-shadow:0 1px 4px 0 rgba(0,0,0,0.20);
-      pointer-events: none;
+      //
       cursor: default;
       opacity: 0.6;
       a{
+        pointer-events: none;
         text-decoration: none;
         color: #999;
       }
