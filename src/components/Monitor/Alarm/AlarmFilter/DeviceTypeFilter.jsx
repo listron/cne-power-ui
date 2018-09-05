@@ -34,7 +34,7 @@ class AlarmLevelFilter extends Component {
       value: item.get('deviceTypeCode').toString()
     })).toJS();
     return (
-      <div className={styles.alarmFilterItem}>
+      <div className={styles.deviceTypeFilter}>
         <span onClick={this.onReset} className={deviceTypeCode.length===0?styles.selected:styles.all}>不限</span>
         <CheckboxGroup options={options} value={deviceTypeCode} onChange={this.onChange} />
       </div>
