@@ -69,7 +69,7 @@ class PvStationTop extends Component {
 
     let stationStatusTime = singleStationData && singleStationData.stationStatus && singleStationData.stationStatus.stationStatusTime;
     let localTime = stationStatusTime!==null && moment.utc(stationStatusTime).toDate();
-    let tmpStationStatusTime = localTime && moment(moment(localTime).format("YYYY-MM-DD hh")).fromNow();
+    let tmpStationStatusTime = localTime && moment(localTime).fromNow();
     
     const baseLinkPath = `/monitor/singleStation`;
     const pathAllStation = "/monitor/station";
