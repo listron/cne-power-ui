@@ -120,14 +120,14 @@ class SideMenu extends Component {
     const { collapsed } = this.state;
     const rightMenu = localStorage.getItem('rightMenu');
     return sideMenuData.map(e=>{
-      const hasNoSubMenu = (!e.children || e.children.length === 0) && rightMenu && rightMenu.includes(e.rightKey);
+      const hasNoSubMenu = e && (!e.children || e.children.length === 0) && rightMenu && rightMenu.includes(e.rightKey);
       if(hasNoSubMenu){//只有二级目录  
         return (
           <Item key={e.path}>
             <Link to={e.path}>{e.iconStyle && <i className={`iconfont ${e.iconStyle}`} />}{collapsed ? null: e.name}</Link>
           </Item>
         );
-      }else{//有三级目录
+      }else if(e && e.children > 0){//有三级目录
         let menuTitle = <span>{e.iconStyle && <i className={`iconfont ${e.iconStyle}`} />}<span>{collapsed ? null: e.name}</span></span>
         const filteredMenu = e.children.filter(subItem => rightMenu && rightMenu.includes(subItem.rightKey));
         return (
@@ -141,6 +141,8 @@ class SideMenu extends Component {
             })}
           </SubMenu>
         );
+      }else{
+        return null;
       }
     })
   }
