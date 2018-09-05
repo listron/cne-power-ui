@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {Form, Icon, Input, Button, Steps, Checkbox} from 'antd';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import styles from './registerForm.scss';
 
@@ -158,10 +159,6 @@ class RegisterForm extends Component {
     }, 1000);
   }
 
-  toSeeAgreement = () => {
-    this.props.changeLoginStore({pageTab: 'agreement'})
-  }
-
   renderStepOne(getFieldDecorator, enterpriseId){
     console.log(enterpriseId)
     const { timeValue } =this.state;
@@ -233,7 +230,10 @@ class RegisterForm extends Component {
           <FormItem {...tailFormItemLayout} >
             {getFieldDecorator('userAgreement', {
             })(
-              <Checkbox className={styles.userArgee} >同意<span  className={styles.userAgreeTip} onClick={this.toSeeAgreement} >用户协议</span></Checkbox>
+              <Checkbox className={styles.userArgee}  >
+                同意
+                <Link className={styles.userAgreeTip} to="/userAgreement" target="_blank">用户协议</Link>
+              </Checkbox>
             )}
           </FormItem>
           <FormItem {...tailFormItemLayout} >

@@ -5,10 +5,6 @@
 
 :global{
   .ant-table{//table行高，高亮，背景色调整；
-    .ant-table-thead > tr > th{
-      background: #f4f4f4;
-      color: $lightColor;
-    }
     .ant-table-tbody{
       background: #fff;
       &>tr:hover{
@@ -21,6 +17,10 @@
       padding: 0 16px;
       height: 40px;
       line-height: 40px;
+      color: $darkColor;
+    }
+    .ant-table-thead > tr > th{
+      background: #f4f4f4;
       color: $lightColor;
     }
   }

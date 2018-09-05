@@ -40,7 +40,7 @@ class EnterpriseDetail extends Component {
     const { changeEnterpriseStore, enterpriseDetail } = this.props;
     const { showInforTip } = this.state;
     const defaultLogo = '/img/nopic.png';
-    const rightHandler = localStorage.getItem('rightHanlder');
+    const rightHandler = localStorage.getItem('rightHandler');
     const enterpriseUpdateRight = rightHandler && rightHandler.includes('account_enterprise_update');
     return (
       <div className={styles.enterpriseDetail}>

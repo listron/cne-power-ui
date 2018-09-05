@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {Form, Icon, Input, Button,Checkbox, Card } from 'antd';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import styles from './joinInForm.scss';
 import Cookie from 'js-cookie';
@@ -94,10 +95,6 @@ class JoinInForm extends Component{
   
   handleCancel = () => {
     this.setState({ showEnterpriseInfo: false, });
-  }
-
-  toSeeAgreement = () => {
-    this.props.changeLoginStore({pageTab: 'agreement'});
   }
 
   timeDecline = () => {
@@ -303,7 +300,10 @@ class JoinInForm extends Component{
             <FormItem {...tailFormItemLayout} >
               {getFieldDecorator('userAgreement', {
               })(
-                <Checkbox className={styles.userArgee}  >同意<span className={styles.userAgreeTip} onClick={this.toSeeAgreement} >用户协议</span></Checkbox>
+                <Checkbox className={styles.userArgee}  >
+                  同意
+                  <Link className={styles.userAgreeTip} to="/userAgreement" target="_blank">用户协议</Link>
+                </Checkbox>
               )}
             </FormItem>
             <FormItem {...tailFormItemLayout} >
