@@ -177,7 +177,7 @@ function *transferAlarm(action) {  // 转工单
     if(response.data.code === '10000')
     {
       yield put({
-        type:  alarmAction.CHANGE_ALARM_STORE,
+        type:  alarmAction.CHANGE_ALARM_STORE_SAGA,
         payload: {
           selectedRowKeys: []
         }
@@ -212,7 +212,7 @@ function *relieveAlarm(action) {  // 屏蔽告警
     if(response.data.code === '10000')
     {
       yield put({
-        type:  alarmAction.CHANGE_ALARM_STORE,
+        type:  alarmAction.CHANGE_ALARM_STORE_SAGA,
         payload: {
           selectedRowKeys: []
         }
@@ -247,7 +247,7 @@ function *resetRelieveAlarm(action) {  // 取消屏蔽告警
     if(response.data.code === '10000')
     {
       yield put({
-        type:  alarmAction.CHANGE_ALARM_STORE,
+        type:  alarmAction.CHANGE_ALARM_STORE_SAGA,
         payload: {
           selectedRowKeys: []
         }
