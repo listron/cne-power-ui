@@ -469,14 +469,14 @@ class UserList extends Component {
           }else{
             return <span>{stations[0] ? stations[0] : ''}</span>
           }
-          
         } 
       },  {
         title: '状态',
         dataIndex: 'userStatus',
         key: 'userStatus',
         render: (text, record, index) => {
-          return (<span>{this.getEnterpriseStatus(record.enterpriseStatus)}</span>);
+          console.log(record.enterpriseStatus);
+          return (<span className={record.enterpriseStatus===5 && styles.waitExamine} >{this.getEnterpriseStatus(record.enterpriseStatus)}</span>);
         },
       }
     ];
@@ -563,6 +563,7 @@ class UserList extends Component {
           columns={this.tableColumn()} 
           onChange={this.tableChange}
           pagination={false}
+          className={styles.userTable} 
         />
         <div className={styles.tableFooter}>
           <span className={styles.info}>当前选中 <span className={styles.totalNum}>{selectedUser.toJS().length}</span> 项</span>

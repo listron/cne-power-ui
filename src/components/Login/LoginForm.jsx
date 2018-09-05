@@ -31,7 +31,6 @@ class LoginForm extends Component {
 
   componentWillMount(){
     const locationSearch = this.props.history.location.search;
-    console.log(locationSearch);
     if(locationSearch){
       const linkId = locationSearch.substr(locationSearch.indexOf('=')+1);
       this.props.inviteUserLink({linkId});
@@ -45,6 +44,7 @@ class LoginForm extends Component {
     };
     this.props.changeLoginStore({
       userEnterpriseStatus: 3,
+      checkLoginPhone: true,
     });
   }
 
@@ -169,7 +169,6 @@ class LoginForm extends Component {
     const { getFieldDecorator, getFieldsError } = this.props.form;
     let { showPasswordLogin, timeValue } = this.state;
     let { username, checkLoginPhone, userEnterpriseStatus } = this.props;
-    console.log(checkLoginPhone)
     return (
       <div className={styles.loginForm}>
         {userEnterpriseStatus===5 && 

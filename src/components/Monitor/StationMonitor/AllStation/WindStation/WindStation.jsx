@@ -10,12 +10,12 @@ import { Tabs, Radio, Switch } from "antd";
 class WindStation extends React.Component {
   static propTypes = {
     windMonitorStation: PropTypes.object,
-    stationShowType:PropTypes.string,
+    stationShowType: PropTypes.string,
     changeMonitorStationStore: PropTypes.func
   }
   constructor(props, context) {
     super(props, context);
-    this.state = {  
+    this.state = {
       checked: false,
       stationType: 'all',
       totalNum: 0
@@ -35,7 +35,7 @@ class WindStation extends React.Component {
   }
   setkey = (activekey) => {
 
-    this.props.changeMonitorStationStore({stationShowType:activekey});
+    this.props.changeMonitorStationStore({ stationShowType: activekey });
   }
   componentUnmount() {
     //clearTimeout(this.autoTimer)
@@ -99,7 +99,7 @@ class WindStation extends React.Component {
           defaultValue="all"
           buttonStyle="solid"
           onChange={this.onHandleStation}
-          style={{ margin: "0 30px" }}
+          style={{ margin: "0 30px 0 15px" }}
         >
           <Radio.Button value="all">全部</Radio.Button>
           <Radio.Button value="normal">通讯正常  {normalNum}<span></span></Radio.Button>
@@ -115,7 +115,7 @@ class WindStation extends React.Component {
       <div className={styles.provinceStationTotal}>
         {stationProvinceSummary.map((item, index) => {
           return (
-            <div key={index}>
+            <div key={index} className={styles.provinceBox}>
               <span>{item.provinceName}</span>
               <span className={styles.fontColor}>{item.windStationNum}&nbsp;&nbsp;</span>
             </div>
@@ -162,7 +162,7 @@ class WindStation extends React.Component {
     return (
       <div className={styles.WindStation}>
         <WindStationHeader {...this.props} />
-        <Tabs className={styles.smallTabs} activeKey={this.props.stationShowType} tabBarExtraContent={key !== 'stationMap' ? operations : province} onChange={this.setkey}>
+        <Tabs className={styles.smallTabs} activeKey={this.props.stationShowType} tabBarExtraContent={this.props.stationShowType !== 'stationMap' ? operations : province} onChange={this.setkey}>
           <TabPane
             tab={
               <span>

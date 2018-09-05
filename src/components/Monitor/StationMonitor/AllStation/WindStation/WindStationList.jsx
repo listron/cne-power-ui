@@ -80,7 +80,7 @@ class WindStationList extends React.Component {
                       <div>{record.stationPower}</div>
                       <div>{record.stationCapacity}</div>
                     </div>
-                    <Progress percent={record.stationPower / record.stationCapacity * 100} showInfo={false} />
+                    <Progress strokeWidth={3} percent={record.stationPower / record.stationCapacity * 100} showInfo={false} />
                   </div>
                 </div>
               </div>
@@ -144,7 +144,7 @@ class WindStationList extends React.Component {
                       <div>{record.yearOutput}</div>
                       <div>{record.planOutput}</div>
                     </div>
-                    <Progress percent={record.yearOutput / record.planOutput * 100} showInfo={false} />
+                    <Progress strokeWidth={3} percent={record.yearOutput / record.planOutput * 100} showInfo={false} />
                   </div>
                 </div>
               </div>
@@ -231,28 +231,28 @@ class WindStationList extends React.Component {
     const columns = this.initColumn()
     const dataSort = this.createTableSource(stationDataList);
     const { pageSize, currentPage } = this.state;
-    let startRow=(currentPage-1)*pageSize;
-    let endRow=currentPage*pageSize;
+    let startRow = (currentPage - 1) * pageSize;
+    let endRow = currentPage * pageSize;
     endRow = (endRow > totalNum) ? totalNum : endRow;
-    let datalist=dataSort.slice(startRow,endRow)
+    let datalist = dataSort.slice(startRow, endRow)
     // // 表单数据
     const data = datalist.map((item, index) => {
-     const stationStatus=item.stationStatus||{};
+      const stationStatus = item.stationStatus || {};
       return (
         {
-          key: `${item.stationCode}` ,
-          stationName: `${item.stationName||'--'}`,
-          stationrovince: `${item.provinceName||'--'}`,
-          stationPower: `${item.stationPower||'--'}`,
-          stationCapacity: `${item.stationCapacity||'--'}`,
-          windSpeed: `${item.instantaneous||'--'}`,
-          dayOutput: `${item.dayPower||'--'}`,
-          monthOutput: `${item.monthPower||'--'}`,
-          yearOutput: `${item.yearPower||'--'}`,
-          planOutput: `${item.yearPlanPower||'--'}`,
-          equipmentNum: `${item.stationUnitCount||'--'}`,
-          alarmNum: `${item.alarmNum||'--'}`,
-          currentStation: `${stationStatus.stationStatus||''}`
+          key: `${item.stationCode}`,
+          stationName: `${item.stationName || '--'}`,
+          stationrovince: `${item.provinceName || '--'}`,
+          stationPower: `${item.stationPower || '--'}`,
+          stationCapacity: `${item.stationCapacity || '--'}`,
+          windSpeed: `${item.instantaneous || '--'}`,
+          dayOutput: `${item.dayPower || '--'}`,
+          monthOutput: `${item.monthPower || '--'}`,
+          yearOutput: `${item.yearPower || '--'}`,
+          planOutput: `${item.yearPlanPower || '--'}`,
+          equipmentNum: `${item.stationUnitCount || '--'}`,
+          alarmNum: `${item.alarmNum || '--'}`,
+          currentStation: `${stationStatus.stationStatus || ''}`
         }
       )
     })
@@ -271,4 +271,3 @@ class WindStationList extends React.Component {
 }
 export default (WindStationList)
 
-  

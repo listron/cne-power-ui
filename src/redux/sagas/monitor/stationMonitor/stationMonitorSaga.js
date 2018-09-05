@@ -18,7 +18,7 @@ function* getMonitorStation(action) {//获取所有/风/光电站信息
           let stationTypes = '';
           const stationDataList = response.data.data.stationDataList || [];
           const allDatastationType = stationDataList.map((e, index) => { return e.stationType });
-          const allStationTypeCode = new Set(allDatastationType);
+          const allStationTypeCode = new Set(allDatastationType);     
           const stationNum = allStationTypeCode.size;
           if(stationNum > 1) {
             stationTypes = '2';
@@ -42,12 +42,12 @@ function* getMonitorStation(action) {//获取所有/风/光电站信息
       } else if(payload.stationType === '0') {
         yield put({
           type: allStationAction.GET_MONITORSTATION_FETCH_SUCCESS,
-          payload: {windMonitorStation: response.data.data}
+          payload: {windMonitorStation: response.data.data||{}}
         });
       } else if(payload.stationType === '1') {
         yield put({
           type: allStationAction.GET_MONITORSTATION_FETCH_SUCCESS,
-          payload: {pvMonitorStation: response.data.data}
+          payload: {pvMonitorStation: response.data.data||{}}
         });
       }
     }
