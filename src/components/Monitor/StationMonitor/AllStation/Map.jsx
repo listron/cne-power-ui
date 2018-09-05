@@ -15,9 +15,9 @@ class Map extends Component {
   }
   constructor(props) {
     super(props)
-    this.state = {
-      barData: []
-    }
+    // this.state = {
+    //   barData: []
+    // }
   }
   componentDidMount() {
     const { testId, stationDataList } = this.props;
@@ -213,12 +213,10 @@ class Map extends Component {
   }
 
   render() {
-    const { barData } = this.state;
-    const { testId, stationDataList } = this.props;
+    // const { barData } = this.state;
+    const { testId } = this.props;
     return (
-      <div>
-        <div id={testId} style={{ width: "100%", height: "610px" }} ></div>
-      </div>
+      <div id={testId} style={{ width: "100%",  flex: 1 }} ></div>
     )
   }
 }
