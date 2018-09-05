@@ -172,7 +172,7 @@ class JoinInForm extends Component{
     const { enterpriseName, enterpriseInfo } = this.props;
     const { showEnterpriseInfo } = this.state;
     return (
-      <Form onSubmit={this.getEnterpriseInfo} >
+      <Form onSubmit={this.getEnterpriseInfo} className={styles.joinStepOne} >
         <FormItem label="企业名称" {...formItemLayout}>
           {getFieldDecorator('enterpriseName',{
             rules: [{required: true, message: '请输入企业名称/企业域名'}]
@@ -274,9 +274,10 @@ class JoinInForm extends Component{
                 rules: [
                   {required: true, message: '请输入用户名'},
                   {pattern: /^[A-Za-z0-9\u4e00-\u9fa5]{3,8}$/gi, message: '请输入3到8位中文、英文、数字'},
-                ]
+                ],
+                initialValue: importUser ? username : '',
               })(
-                <Input addonBefore={<i className="iconfont icon-user"></i>} defaultValue={importUser ? username : ''} disabled={importUser ? true : false} placeholder="请输入用户名" />
+                <Input addonBefore={<i className="iconfont icon-user"></i>} disabled={importUser ? true : false} placeholder="请输入用户名" />
               )}
             </FormItem>
             <FormItem label="创建密码" {...formItemLayout}>
@@ -306,23 +307,12 @@ class JoinInForm extends Component{
               )}
             </FormItem>
             <FormItem {...tailFormItemLayout} >
-              <Button type="primary" htmlType="submit" className="login-form-button"  >进入企业账号</Button>
+              <Button type="primary" htmlType="submit" className="login-form-button"  >加入企业</Button>
             </FormItem>
           </Form>
         </div>
       );
     }
-  }
-  renderInviteUser() {
-    // 邀请用户加入企业暂未订协议怎么做
-    const { enterpriseName, enterpriseLogo } = this.props;
-    return (
-      <div className={styles.inviteUser} >
-        <div className={styles.enterpriseLogo} ><img src={enterpriseLogo} width="60px" height="60px" /></div>
-        <div>{enterpriseName}</div>
-        {/* <div className={styles.inviteTip}>企业邀请用户，<span>7天内有效</span></div> */}
-      </div>
-    );
   }
   
   render(){

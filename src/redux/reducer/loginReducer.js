@@ -4,9 +4,9 @@ import Cookie from 'js-cookie';
 
 var initState = Immutable.fromJS({
   isFetching: false,
-  pageTab: 'login',//六个页关键字：longin,register,joinIn,forget, contact, agreement,
-  registerStep: 1,//注册企业步骤，1-账户验证，2-企业信息，3-完善个人信息==》优先写页面内
-  joinStep: 1,//加入企业步骤，1-输入企业，2-手机号验证，3-完善个人信息==》优先写页面内
+  pageTab: 'forget',//六个页关键字：longin,register,joinIn,forget, contact, agreement,
+  registerStep: 1,//注册企业步骤，1-账户验证，2-企业信息，3-完善个人信息
+  joinStep: 3,//加入企业步骤，1-输入企业，2-手机号验证，3-完善个人信息
   domainIsRegister: '2',//域名 0-无效，1-有效
   nameIsRegister: '2',//企业名称 0-已注册，1-未注册
   error: {},
@@ -19,7 +19,7 @@ var initState = Immutable.fromJS({
     enterpriseLogo: null,
     enterpriseName: null,
   },//加入企业信息
-  showResetPassword: 0,//显示重置密码页面 0 不显示 1 显示
+  showResetPassword: 1,//显示重置密码页面 0 不显示 1 显示
   enterpriseDomain: '',//注册企业域名
   enterpriseName: null,//注册企业名称
   joinResult: 0,//0 加入失败，1，加入待审核

@@ -5,28 +5,21 @@
   .resetPassword{
     margin-left: -96px;
     .newPass{
-      margin-left: 100px;
+      margin-left: 115px;
       margin-bottom: 15px;
       display: block;
     }
     :global{
       .ant-form {
-        width: 305px;
+        width: 330px;
         .ant-form-item {
-          width: 305px;
-          .ant-btn {
-            // width: 315px;
-          }
+          width: 330px;
         }
       }
       .ant-input-group-addon{
         background-color: #f1f1f1;
         padding: 0 7px;
       }
-      .ant-btn-primary:focus {
-        background-color: $themeColor;
-      }
-      
       .ant-input:focus {
         border-color: $themeColor;
         -webkit-box-shadow: 0 0 0 0;
@@ -51,9 +44,9 @@
     .checkCodeBox {
       display: flex;
       justify-content: space-between;
-      width: 200px;
+      width: 220px;
       .queryCode{
-        width: 100px;
+        width: 114px;
         margin-top: 6px;
         margin-right: 0;
         padding: 0 5px;
@@ -68,19 +61,20 @@
         color: #199475;
       }
       .queryCodeClick{
-        width: 100px;
+        width: 114px;
         margin-top: 6px;
         margin-right: 0;
         padding: 0 5px;
         height: 30px;
+        background:#f7f7f7;
+        border:1px solid #dfdfdf;
+        color: #dfdfdf;
         :global{
           button{
             width: 80px;
           }
         }
-        background:#f7f7f7;
-        border:1px solid #dfdfdf;
-        color: #dfdfdf;
+        
       }
       .testCode{
         width: 64px;
@@ -89,7 +83,7 @@
             width: 90px;
           }
           .ant-btn-primary {
-            width: 200px;
+            width: 220px;
           }
         }
       }
@@ -99,10 +93,10 @@
         background-color: #f1f1f1;
         padding: 0 7px;
       }
-      .ant-btn-primary:focus {
+      .ant-btn-primary:hover, .ant-btn-primary:focus{
         background-color: $themeColor;
+        border-color: $themeColor;
       }
-      
       .ant-input:focus {
         border-color: $themeColor;
         -webkit-box-shadow: 0 0 0 0;
@@ -112,11 +106,11 @@
         padding: 4px 7px;
       }
       .ant-form {
-        width: 200px;
+        width: 220px;
         .ant-form-item {
-          width: 200px;
+          width: 220px;
           .ant-btn {
-            width: 200px;
+            width: 220px;
           }
         }
       }

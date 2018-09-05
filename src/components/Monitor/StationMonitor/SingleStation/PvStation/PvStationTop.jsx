@@ -105,7 +105,7 @@ class PvStationTop extends Component {
           </div>
           <div>
             <div className={styles.trueTimeValue} style={{color: "#e08031"}}>{singleStationData && singleStationData.instantaneous && parseFloat(singleStationData.instantaneous).toFixed(2) ||0}</div>
-            <div className={styles.trueTimeUnit}>瞬时辐照 w/m<sup>2</sup></div>
+            <div className={styles.trueTimeUnit}>瞬时辐照 W/m<sup>2</sup></div>
           </div>
           <div>
             <div className={styles.trueTimeValue} style={{color: "#e08031"}}>{singleStationData && singleStationData.dayResources || 0}</div>

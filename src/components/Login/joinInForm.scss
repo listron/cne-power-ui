@@ -1,19 +1,19 @@
 @import '../../theme/theme.scss';
 
 .comName{
-  width: 300px;
-  margin-left: 90px;
+  width: 330px;
+  margin-left: 70px;
   .userInfo{
     :global{
       .ant-form-item, .ant-form-horizontal {
-        width: 315px;
+        width: 330px;
       }
       .ant-form{
-        width: 300px;
+        width: 330px;
         .ant-form-item{
-          width: 300px;
+          width: 330px;
           .ant-btn{
-            width: 195px;
+            width: 220px;
           }
         }
       } 
@@ -26,6 +26,7 @@
     .enterpriseBrief{
       text-align: center;
       margin: 0 0 30px;
+      padding-left: 70px;
       .enterpriseLogo{
         margin-bottom: 10px;
         img{
@@ -56,7 +57,7 @@
     }
   }
   .joinCheckCode{
-    width: 200px;
+    width: 220px;
     margin: 0 auto;
     :global{
       .ant-checkbox-input:focus + .ant-checkbox-inner {
@@ -88,31 +89,43 @@
       }
     }
   }
-  .enterpriseInfo{
-    width: 416px;
-    margin-left: -40px; 
-    text-align: center;
-    margin-top: 60px;
-    box-shadow: 0 2px 8px 0 rgba(0,0,0,0.20);
-    .enterpriseBack{
-      margin-top: 50px;
+  .joinStepOne{
+    position: relative;
+    :global{
+      .ant-input{
+        width: 220px;
+      }
     }
-    .enterpriseBack:hover{
-      cursor: pointer;
-      color: $themeColor;
-    }
-    .enterpriseBtn{
-      margin-top: 40px;
-      width: 139px;
-      height: 36px;
-      border:1px solid #199475;
-      color: #199475;
+    .enterpriseInfo{
+      position: absolute;
+      top: 0;
+      left: 20px;
+      width: 416px;
+      margin-left: -40px; 
+      text-align: center;
+      box-shadow: 0 2px 8px 0 rgba(0,0,0,0.20);
+      .enterpriseBack{
+        margin-top: 50px;
+      }
+      .enterpriseBack:hover{
+        cursor: pointer;
+        color: $themeColor;
+      }
+      .enterpriseBtn{
+        margin-top: 40px;
+        width: 139px;
+        height: 36px;
+        border:1px solid #199475;
+        color: #199475;
+        border-radius: 0;
+      }
     }
   }
+  
   .checkCodeBox{
     display: flex;
     justify-content: space-between;
-    width: 200px;
+    width: 220px;
     :global{
       .ant-input{
         padding: 4px 7px;
@@ -127,7 +140,7 @@
       }
     }
     .queryCode{
-      width: 82px;
+      width: 114px;
       margin-top: 6px;
       margin-right: 0;
       padding: 0 5px;
@@ -142,7 +155,7 @@
       color: #199475;
     }
     .queryCodeClick{
-      width: 100px;
+      width: 114px;
       margin-top: 6px;
       margin-right: 0;
       padding: 0 5px;
@@ -159,7 +172,7 @@
   }
 
   .loginAbnormal{
-    width: 200px;
+    width: 220px;
     text-align: center;
     margin-top: 60px;
     color:#999999;
@@ -175,7 +188,7 @@
     }
   }
   .waitExamine{
-    width: 200px;
+    width: 220px;
     text-align: center;
     margin-top: 60px;
     color: #e08031;
@@ -201,22 +214,11 @@
       padding: 0 7px;
     }
     .ant-btn-primary {
-      width: 200px;
-    }
-    .ant-form-item-control-wrapper{
-      padding-left: 5px;
+      width: 220px;
     }
     .ant-form-item .ant-btn-primary:focus {
       background-color: $themeColor;
     }
-    // .ant-form {
-    //   width: 200px;
-    //   .ant-form-item {
-    //     width: 200px;
-    //     .ant-btn {
-    //       width: 200px;
-    //     }
-    //   }
-    // }
+    
   }
 }

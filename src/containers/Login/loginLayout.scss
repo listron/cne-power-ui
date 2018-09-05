@@ -98,14 +98,10 @@
               text-align: center;
               font-size: 18px;
             }
-            
-            // .ant-tabs-tab-active {
-            //   width: 50%;
-            // }
           }
           .joinTop {
             height: 20px;
-            width: 200px;
+            width: 220px;
             margin-bottom: 60px;
             cursor: pointer;
             .fontIcon {
@@ -132,7 +128,11 @@
               color: #999999;
               text-align: left;
             }
-            .join:hover {
+            
+          }
+          .joinTop:hover {
+            color: #199475;
+            .join:hover{
               color: #199475;
             }
           }
@@ -144,7 +144,7 @@
           position: relative;
           .goLogin {
             margin-top: 70px;
-            height: 40px;
+            height: 20px;
             display: flex;
             justify-content: flex-end;
             margin-right: 60px;
@@ -159,11 +159,11 @@
         }
         :global{
           .ant-tabs-bar {
-            width: 200px;
+            width: 220px;
           }
           /*流程步骤的总长度*/
           .ant-tabs:not(.ant-tabs-vertical) > .ant-tabs-content {
-            width: 315px;
+            width: 320px;
           }
           /*单个步骤流程*/
           .ant-steps-item-icon .ant-steps-item ,.ant-steps-item-finish{
