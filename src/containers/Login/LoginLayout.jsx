@@ -56,15 +56,11 @@ class LoginLayout extends Component {
               {pageTab === 'register' && <Register changeLoginStore={changeLoginStore} pageTab={pageTab} />}
               {pageTab === 'joinIn' && <JoinIn changeLoginStore={changeLoginStore} />}
               {pageTab === 'forget' && <Forget changeLoginStore={changeLoginStore} />}
-              {pageTab === 'contact' && <Contact backToLogin={this.backToLogin} />}
-              {pageTab === 'agreement' && <Agreement backToLogin={this.backToLogin} />}
             </div>
-            {(pageTab === 'contact' || pageTab === 'agreement') || 
-              <div className={styles.contactUs}>
-                <Link to="/userAgreement" target="_blank">用户协议</Link>
-                <Link to="/contactUs" target="_blank">联系我们</Link>
-              </div>
-            }
+            <div className={styles.contactUs}>
+              <Link to="/userAgreement" target="_blank">用户协议</Link>
+              <Link to="/contactUs" target="_blank">联系我们</Link>
+            </div>
           </div>
         </div>
       </div>
