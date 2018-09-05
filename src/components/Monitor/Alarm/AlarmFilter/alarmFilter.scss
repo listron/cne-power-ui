@@ -15,6 +15,9 @@
   :global {
     .ant-input {
       width: 300px;
+      &:hover {
+        border-color:$themeColor;
+      }
     }
   }
   .all {

@@ -7,6 +7,9 @@
   flex-direction: row;
   align-items: center;
   padding-left: 28px;
+  >span {
+    color: $lightColor;
+  }
   .deviceName {
     width: 200px;
     margin: 0 16px;
