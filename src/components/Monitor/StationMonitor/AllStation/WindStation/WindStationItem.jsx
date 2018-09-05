@@ -18,29 +18,34 @@ class WindStationItem extends React.Component {
         <div className={styles.stationCardContainer}>
           {
             stationDataList.map((item, index) => {
-              const stationStatus=item.stationStatus||{};
+              const stationStatus = item.stationStatus || {};
+              const stationName = item.stationName || '--';
+              const stationPower = item.stationPower || '--';
+              const stationCapacity = item.stationCapacity || '--';
+              const instantaneous = item.instantaneous || '--';
+              const stationUnitCount = item.stationUnitCount || '--';
               return (
                 <div className={stationStatus.stationStatus === '900' ? styles.stationTest : styles.stationCard} key={index}>
                   <Link to={`/monitor/singleStation/${item.stationCode}`} key={item.stationCode}>
                     <div className={styles.stationCardTitle}>
-                      <div className={styles.stationName}>{item.stationName}</div>
+                      <div className={styles.stationName}>{stationName}</div>
                       {stationStatus.stationStatus === '500' ? <i className="iconfont icon-outage"></i> : ''}
                     </div>
                     <div className={styles.stationCardProgress}>
-                      <Progress percent={item.stationPower / item.stationCapacity * 100} showInfo={false} />
+                      <Progress strokeWidth={3} percent={stationPower / stationCapacity * 100} showInfo={false} />
                     </div>
                     <div className={styles.stationCardValue}>
-                      <div className={styles.stationMark}>{item.stationPower}MW</div>
-                      <div>{item.stationCapacity}MW</div>
+                      <div className={styles.stationMark}>{stationPower}MW</div>
+                      <div>{stationCapacity}MW</div>
                     </div>
-                    <div className={styles.stationCardWindSpeed}>{item.instantaneous}m/s</div>
+                    <div className={styles.stationCardWindSpeed}>{instantaneous}m/s</div>
                   </Link>
                   <div className={styles.stationCardEquipmentNum}>
                     <Link to={`/monitor/singleStation/${item.stationCode}`} key={new Date()}>
-                    <div>{item.stationUnitCount}台</div>
+                      <div>{stationUnitCount}台</div>
                     </Link>
                     {item.alarmNum > 0 ? <Link to={`/monitor/alarm/realtime`} key={item.stationCode}><div className={styles.stationWarning}>
-                      <i className="iconfont icon-alarm1"></i>{item.alarmNum}</div></Link> : ''}                   
+                      <i className="iconfont icon-alarm1"></i>{item.alarmNum}</div></Link> : ''}
                   </div>
                 </div>
               )

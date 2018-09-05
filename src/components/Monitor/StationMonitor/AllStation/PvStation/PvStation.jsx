@@ -10,7 +10,7 @@ import PvStationList from "./PvStationList";
 class PvStation extends React.Component {
   static propTypes = {
     pvMonitorStation: PropTypes.object,
-    stationShowType:PropTypes.string,
+    stationShowType: PropTypes.string,
     changeMonitorStationStore: PropTypes.func
   }
   constructor(props, context) {
@@ -35,8 +35,8 @@ class PvStation extends React.Component {
     })
   }
   setkey = (activekey) => {
- 
-    this.props.changeMonitorStationStore({stationShowType:activekey});
+
+    this.props.changeMonitorStationStore({ stationShowType: activekey });
   }
   render() {
     let { key, checked, stationType } = this.state;
@@ -44,23 +44,23 @@ class PvStation extends React.Component {
     const stationDataSummary = pvMonitorStation.stationDataSummary || {};
     const stationProvinceSummary = stationDataSummary.stationProvinceSummary || [];
     const stationStatusSummary = stationDataSummary.stationStatusSummary || [];
-    const normalNum=stationStatusSummary.filter(e=>{
-      return e && e.stationStatus===400
-    }).length>0?stationStatusSummary.filter(e=>{
-      return e.stationStatus===400
-    })[0].stationNum:'0';
+    const normalNum = stationStatusSummary.filter(e => {
+      return e && e.stationStatus === 400
+    }).length > 0 ? stationStatusSummary.filter(e => {
+      return e.stationStatus === 400
+    })[0].stationNum : '0';
 
-    const dataInterruptionNum=stationStatusSummary.filter(e=>{
-      return e && e.stationStatus===500
-    }).length>0?stationStatusSummary.filter(e=>{
-      return e && e.stationStatus===500
-    })[0].stationNum:'0';
-    
-    const unconnectionNum=stationStatusSummary.filter(e=>{
-      return e && e.stationStatus===900
-    }).length>0?stationStatusSummary.filter(e=>{
-      return e && e.stationStatus===900
-    })[0].stationNum:'0';
+    const dataInterruptionNum = stationStatusSummary.filter(e => {
+      return e && e.stationStatus === 500
+    }).length > 0 ? stationStatusSummary.filter(e => {
+      return e && e.stationStatus === 500
+    })[0].stationNum : '0';
+
+    const unconnectionNum = stationStatusSummary.filter(e => {
+      return e && e.stationStatus === 900
+    }).length > 0 ? stationStatusSummary.filter(e => {
+      return e && e.stationStatus === 900
+    })[0].stationNum : '0';
 
     const stationDataList = pvMonitorStation.stationDataList || [];
     const newStationDataList = stationDataList.filter(e => {
@@ -88,7 +88,7 @@ class PvStation extends React.Component {
           defaultValue="all"
           buttonStyle="solid"
           onChange={this.onHandleStation}
-          style={{ margin: '0 30px' }}
+          style={{ margin: '0 30px 0 15px' }}
         >
           <Radio.Button value="all">全部</Radio.Button>
           <Radio.Button value="normal">通讯正常  {normalNum}<span></span></Radio.Button>
@@ -102,7 +102,7 @@ class PvStation extends React.Component {
 
         {stationProvinceSummary.map((item, index) => {
           return (
-            <div key={index}>
+            <div key={index} className={styles.provinceBox}>
               <span>{item.provinceName}</span>
               <span className={styles.fontColor}>{item.windStationNum}&nbsp;&nbsp;</span>
             </div>
@@ -124,9 +124,6 @@ class PvStation extends React.Component {
     ]
     let data = [];
     stationDataList.forEach((item, index) => {
-
-
-
       let stationStatusAll = item.stationStatus || {};
       let stationStatus = stationStatusAll.stationStatus || "";
       const stationType = item.stationType || "";
@@ -146,7 +143,7 @@ class PvStation extends React.Component {
     return (
       <div className={styles.pvStation}>
         <PvStationHeader {...this.props} />
-        <Tabs className={styles.smallTabs} activeKey={this.props.stationShowType} tabBarExtraContent={key !== 'stationMap' ? operations : province} onChange={this.setkey}>
+        <Tabs className={styles.smallTabs} activeKey={this.props.stationShowType} tabBarExtraContent={this.props.stationShowType !== 'stationMap' ? operations : province} onChange={this.setkey}>
           <TabPane
             tab={
               <span>
