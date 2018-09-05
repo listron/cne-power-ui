@@ -144,6 +144,7 @@
     padding-left: 32px;
     .stationType {
       margin: 0 16px;
+      color: $lightColor;
     }
   }
   .filterBox {
@@ -166,24 +167,32 @@
         background-color: #f0f2f5;
         margin-bottom: 0px;
       }
+      .ant-input {
+        width: 300px;
+        &:hover {
+          border-color:$themeColor;
+        }
+      }
+      .ant-tabs-bar {
+        border-bottom: 1px solid #e8e8e8;
+        margin: 0 0 16px 0;
+        outline: none;
+        transition: padding 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+      }
       .ant-tabs-nav .ant-tabs-tab {
         display: inline-block;
-        text-align: center;
         height: 100%;
-        padding: 12px 0px;
-        margin: 0;
+        margin: 0 32px 0 0;
+        padding: 12px 16px;
         box-sizing: border-box;
         position: relative;
         transition: color 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+        transition: color 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
         cursor: pointer;
         text-decoration: none;
-        width: 40px;
-        color: $darkColor;
-        
+        width: 60px;       
       }
       .ant-tabs-nav .ant-tabs-tab-active {
-        padding-bottom: 2px;
-        border-bottom: 4px solid $themeColor;
         color: $themeColor;
       }
       .ant-tabs-nav-scroll{
@@ -220,7 +229,6 @@
       }
       >span {
         font-size: 18px;
-        color: $darkColor;
       }
     }
     .stationStatus {

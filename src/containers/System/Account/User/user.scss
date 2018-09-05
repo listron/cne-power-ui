@@ -16,9 +16,9 @@
     .userSide-enter{
       transform: translateX(0);
     }
-    .ant-input,.ant-input:focus, .ant-input:active, .ant-select-focused .ant-select-selection, .ant-select-selection:focus, .ant-select-selection:active {
-      border-color: $themeColor;
-    }
+    // .ant-input,.ant-input:focus, .ant-input:active, .ant-select-focused .ant-select-selection, .ant-select-selection:focus, .ant-select-selection:active {
+    //   border-color: $themeColor;
+    // }
     .userSide-enter-active{
       transform: translateX(-100%);
       transition: all 500ms ease;
