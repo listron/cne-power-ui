@@ -7,6 +7,8 @@ import { menu } from '../../common/menu';
 import styles from './style.scss';
 import { connect } from 'react-redux';
 import Login from '../Login/LoginLayout';
+import Contact from '../../components/Login/Contact';
+import Agreement from '../../components/Login/Agreement';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 // import FixedHelper from '../../components/Common/FixedHelper/FixedHelper'; 暂不实现。
@@ -114,6 +116,8 @@ class Main extends Component {
       return (
         <Switch>
           <Route path="/login" excat component={Login} />
+          <Route path="/userAgreement" excat component={Agreement} />
+          <Route path="/contactUs" excat component={Contact} />
           <Redirect to="/login" />
         </Switch>  
       );

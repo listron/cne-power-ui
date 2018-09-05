@@ -49,7 +49,6 @@ class SideMenu extends Component {
     let openKeys = [];
     let tmpSideMenuData = menu.find(e => e.path === topMenu.path);
     let sideMenuData = (tmpSideMenuData && tmpSideMenuData.children) ? tmpSideMenuData.children : [];
-
     pathname !== '/' && sideMenuData.forEach(e=>{
       if(e.children){
         e.children.forEach(m=>{

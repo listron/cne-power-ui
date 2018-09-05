@@ -144,9 +144,7 @@ class AlarmSingleStationGraph extends React.Component {
   
   render() {
     return (
-      <div>
-        <div id="singleStationAlarmChart" style={{ width: '85%', height: '500px' }}> </div>
-      </div>
+      <div id="singleStationAlarmChart" style={{ marginTop:10,display:'flex',flex:1}}> </div>
     );
   }
 }

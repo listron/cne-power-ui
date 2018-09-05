@@ -237,7 +237,7 @@ function *addDepartmentInfo(action){//新建部门信息
         payload: params,
       });
     }else{
-      message.error('新建部门数据出错,请重新填写');
+      message.error('数据出错,请重新填写');
       yield put({
         type:  departmentAction.CHANGE_DEPARTMENT_STORE,
         payload:{
@@ -249,7 +249,7 @@ function *addDepartmentInfo(action){//新建部门信息
     }
   }catch(e){
     console.log(e);
-    message.error('新建部门数据出错,请重新填写');
+    message.error('数据出错,请重新填写');
     yield put({
       type:  departmentAction.CHANGE_DEPARTMENT_STORE,
       payload:{

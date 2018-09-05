@@ -117,7 +117,13 @@ class AlarmStatisticTable extends React.Component {
         <div className={styles.pagination}>
           <CommonPagination total={totalNum} onPaginationChange={this.onPaginationChange} />
         </div>
-        <Table columns={this.renderColumn()} dataSource={data} onChange={this.onChangeTable} pagination={false} />
+        <Table 
+          columns={this.renderColumn()} 
+          dataSource={data} 
+          onChange={this.onChangeTable} 
+          pagination={false} 
+          locale={{emptyText:<div className={styles.noData}><img src="/img/nodata.png" style={{width: 223,height:164}} /></div>}}
+          />
       </div>
     );
   }

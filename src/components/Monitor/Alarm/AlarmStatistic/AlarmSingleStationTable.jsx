@@ -81,7 +81,8 @@ class AlarmSingleStationTable extends React.Component {
           columns={this.renderColumn()} 
           dataSource={data} 
           onChange={this.onChangeTable} 
-          pagination={false} />
+          pagination={false} 
+          locale={{emptyText:<div className={styles.noData}><img src="/img/nodata.png" style={{width: 223,height:164}} /></div>}} />
       </div>
     );
   }
