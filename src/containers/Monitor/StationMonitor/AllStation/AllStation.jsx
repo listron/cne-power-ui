@@ -59,8 +59,7 @@ class AllStation extends Component {
     const { stationTypes } = this.props;
     return (
       <div className={styles.stationMonitor}>
-        <div className={styles.stationContainer}>
-          <div className={styles.cardContainer}>
+        <div className={styles.stationContainer}>         
             <Tabs type="card" activeKey={this.props.stationTypeTabs} onChange={this.queryTargetData} tabBarGutter={0} >
               {stationTypes === '2' ? <TabPane tab="全部" key="2" >
                 <Allstation {...this.props} />
@@ -71,8 +70,7 @@ class AllStation extends Component {
               {stationTypes !== '0' ? <TabPane tab="光伏" key="1">
                 <PvStation {...this.props} />
               </TabPane> : ''}
-            </Tabs>
-          </div>
+            </Tabs>         
         </div>
         <Footer />
       </div>

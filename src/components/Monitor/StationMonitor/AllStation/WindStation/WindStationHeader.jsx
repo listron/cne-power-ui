@@ -23,13 +23,10 @@ class windStationHeader extends React.Component {
     const yearPower = stationDataSummary.yearPower || ' -- ';
     const yearPlanPower = stationDataSummary.yearPlanPower || ' -- ';
     const yearPlanRate = stationDataSummary.yearPlanRate || ' -- ';
-    return (
-      <div>
+    return (   
         <div className={styles.headStation}>
           <div className={styles.typeIcon}>
             <div className={styles.leftIcon}>
-            </div>
-            <div className={styles.rightIcon}>
             </div>
           </div>
           <CommonProgress value={stationPower} total={stationCapacity} valueText={"实时功率 MW"} totalText={"装机容量 MW"} />
@@ -52,8 +49,7 @@ class windStationHeader extends React.Component {
             </div>
           </div>
           <CommonProgress value={yearPower} total={yearPlanPower} valueText={"年累计发电量 万kWh"} totalText={"计划 万kWh"} percent={yearPlanRate ? yearPlanRate : ''} />
-        </div>
-      </div>
+        </div>    
     )
   }
 }
