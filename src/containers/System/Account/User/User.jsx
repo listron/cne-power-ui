@@ -52,7 +52,7 @@ class User extends Component {
         stationName: this.props.stationName,
         pageNum: this.props.currentPage,
         pageSize: this.props.pageSize,
-        order: '0',
+        order: '',
       };
       this.props.getUserList(params);
       this.props.getRoleAllList({enterpriseId: this.props.enterpriseId, roleType: "0"});

@@ -35,7 +35,15 @@ function* getUserList(action) {
           totalNum: response.data.data.totalNum || 0,
           userData: response.data.data.userData || [],
         }
-      })
+      });
+      // if(payload.selectedKey){
+      //   yield put({
+      //     type: userAction.CHANGE_USER_STORE_SAGA,
+      //     payload: {
+      //       selectedUser: [...response.data.data.userData[payload.selectedKey]],
+      //     }
+      //   })
+      // }
     } else {
       yield put({ type: userAction.GET_USER_FETCH_FAIL });
       message.error(response.data.message);
@@ -68,6 +76,7 @@ function* changeUserStatus(action) {
         phoneNum: state.system.user.get('phoneNum'),
         pageSize: state.system.user.get('pageSize'),
         pageNum: state.system.user.get('pageNum'),
+        selectedKey: payload.selectedKey,
       }));
       yield put({
         type: userAction.GET_USER_LIST_SAGA,
