@@ -140,8 +140,8 @@ class ALarmSingleStationStatistic extends React.Component {
     const { showTimeSelect } = this.state;
     return (
       <div className={styles.filter}>
-        <div>筛选条件</div>
-        <Select className={styles.duration} defaultValue="last30" style={{ width: 120 }} onChange={this.onChangeDuration}>
+        <div className={styles.label}>筛选条件</div>
+        <Select className={styles.duration} dropdownClassName={styles.dropdownMenu} defaultValue="last30" style={{ width: 120 }} onChange={this.onChangeDuration}>
           <Option value="today">今天</Option>
           <Option value="yesterday">昨天</Option>
           <Option value="last7">最近7天</Option>
@@ -193,7 +193,7 @@ class ALarmSingleStationStatistic extends React.Component {
   renderContent() {
     const { key } = this.state;
     return (
-      <Tabs activeKey={key} onChange={this.onChangeTab}>
+      <Tabs activeKey={key} onChange={this.onChangeTab} className={styles.tabContainer} animated={false}>
         <TabPane
           tab={<i className="iconfont icon-grid"></i>}
           key="graph"
