@@ -26,7 +26,6 @@ class SideMenu extends Component {
   }
 
   componentWillReceiveProps(nextProps){
-    // console.log('into receive Props')
     const { location,topMenu } = nextProps;
     if(nextProps.topMenu.name !== this.props.topMenu.name || location.pathname !== this.props.location.pathname) {
       const {sideMenuData, selectedKeys,openKeys} = this.getMenuData(topMenu, location);
@@ -49,9 +48,6 @@ class SideMenu extends Component {
     let selectedKeys = [];//激活菜单选中
     let openKeys = [];
     let tmpSideMenuData = menu.find(e => e.path === topMenu.path);
-    // console.log(topMenu)
-    // console.log(menu)
-    // console.log(tmpSideMenuData)
     let sideMenuData = (tmpSideMenuData && tmpSideMenuData.children) ? tmpSideMenuData.children : [];
 
     pathname !== '/' && sideMenuData.forEach(e=>{
@@ -127,7 +123,7 @@ class SideMenu extends Component {
             <Link to={e.path}>{e.iconStyle && <i className={`iconfont ${e.iconStyle}`} />}{collapsed ? null: e.name}</Link>
           </Item>
         );
-      }else if(e && e.children > 0){//有三级目录
+      }else if(e && e.children && e.children.length > 0){//有三级目录
         let menuTitle = <span>{e.iconStyle && <i className={`iconfont ${e.iconStyle}`} />}<span>{collapsed ? null: e.name}</span></span>
         const filteredMenu = e.children.filter(subItem => rightMenu && rightMenu.includes(subItem.rightKey));
         return (
