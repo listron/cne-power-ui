@@ -16,6 +16,7 @@ var initState = Immutable.fromJS({
   pageSize: 10,//每页容纳条数
   userDetail:{},//选中用户详细信息
   selectedUser: [], //table选中用户项
+  // selectedKey: -1,//table选中项的key
   userData: [],//用户列表数据
   inviteData: {},//邀请用户数据
   roleAllList: [],//获取企业角色列表

@@ -17,12 +17,15 @@
     background-color: #fff;
     border: 1px solid #e1e2e2;
     a{
-      color: $darkColor;
+      color: #999;
     }
     a:hover,a:focus{
       color: $themeColor;
     }
     :global{
+      .ant-btn {
+        color: #999;
+      }
       .ant-checkbox-checked .ant-checkbox-inner, .ant-checkbox-indeterminate .ant-checkbox-inner {
         background-color: $themeColor;
         border-color: $themeColor;

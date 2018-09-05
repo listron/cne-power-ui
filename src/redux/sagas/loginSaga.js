@@ -58,12 +58,12 @@ function *userNameLogin(action){
           yield put({ 
             type: loginAction.CHANGE_LOGIN_STORE_SAGA, 
             params: {
+              importUser: true,
+              pageTab: 'joinIn',
               joinStep: 3,
-              importUser: true
             }
           })
         }else if(data.auto === '0'){//正常用户
-          console.log(data)
           yield put({ type: loginAction.USER_NAME_LOGIN_SUCCESS, data});
           action.params.history.push('/station/monitor');
         }
@@ -133,9 +133,15 @@ function *phoneCodeLogin(action){
           data.rightMenu && localStorage.setItem('rightMenu', data.rightMenu); // 权限信息存储
           data.right && localStorage.setItem('rightHandler', data.right); // 权限信息存储
         }
-        if(data.auto === '1'){
-          yield put({ type: loginAction.CHANGE_LOGIN_STORE_SAGA, params: {importUser: true}})
-        }else if(data.auto === '0'){
+        if(data.auto === '1'){//auto为'1'为导入用户
+          yield put({ 
+            type: loginAction.CHANGE_LOGIN_STORE_SAGA, 
+            params: {
+              importUser: true,
+              pageTab: 'joinIn',
+              joinStep: 3,
+            }});
+        }else if(data.auto === '0'){//auto为'0'为正常用户
           if(params.isNotLogin === 0 && data.enterpriseId !== null) {
             params.history.push('/station/monitor');
           }
