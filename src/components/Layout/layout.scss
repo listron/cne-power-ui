@@ -4,18 +4,16 @@
   display: flex;
   align-items: center;
   .logoImg{
-    display: inline-block;
+    display: flex;
     width: 32px;
     height: 32px;
     border-radius: 50%;
     background: #c7ceb2;
     overflow: hidden;
-    text-align: center;
-    line-height: 25px;
+    justify-content: center;
     margin: 0 4px 0 12px;
     img{
-      max-width: 25px;
-      max-height: 25px;
+      height: 32px;
     }
   }
   .enterpriseName{

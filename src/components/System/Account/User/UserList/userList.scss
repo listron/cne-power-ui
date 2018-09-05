@@ -133,6 +133,12 @@
     }
     .userList{
       background: #fff;
+      .userTable{
+        .waitExamine{
+          color:#3e97d1;
+        }
+      }
+      
       .userHelper{
         display: flex;
         justify-content: space-between;
@@ -152,14 +158,10 @@
           }
           Button{
             margin: 20px 6px;
-            color: $themeColor;
-            border: 1px solid $themeColor;
           }
           .templateDown{
             display: inline-block;
             margin: 20px 6px;
-            color: $themeColor;
-            border: 1px solid $themeColor;
           }
           .addUser{
             border: 1px solid $themeColor;
@@ -239,9 +241,6 @@
           
         }
         
-      }
-      .username{
-        color: $lightColor;
       }
       .tableFooter{
         line-height: 46px;

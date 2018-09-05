@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
+import { Link } from 'react-router-dom';
 import styles from './loginLayout.scss';
 import { loginAction } from '../../constants/actionTypes/loginAction';
 import PropTypes from 'prop-types';
@@ -31,14 +32,6 @@ class LoginLayout extends Component {
     })
   }
 
-  toSeeAgreement = () => {
-    this.props.changeLoginStore({pageTab: 'agreement'})
-  }
-
-  toContactUs = () => {
-    this.props.changeLoginStore({pageTab: 'contact'})
-  }
-
   render() {
     const {pageTab, changeLoginStore} = this.props;
     return (
@@ -63,15 +56,11 @@ class LoginLayout extends Component {
               {pageTab === 'register' && <Register changeLoginStore={changeLoginStore} pageTab={pageTab} />}
               {pageTab === 'joinIn' && <JoinIn changeLoginStore={changeLoginStore} />}
               {pageTab === 'forget' && <Forget changeLoginStore={changeLoginStore} />}
-              {pageTab === 'contact' && <Contact backToLogin={this.backToLogin} />}
-              {pageTab === 'agreement' && <Agreement backToLogin={this.backToLogin} />}
             </div>
-            {(pageTab === 'contact' || pageTab === 'agreement') || 
-              <div className={styles.contactUs}>
-                <span onClick={this.toSeeAgreement}>用户协议</span>
-                <span onClick={this.toContactUs}>联系我们</span>
-              </div>
-            }
+            <div className={styles.contactUs}>
+              <Link to="/userAgreement" target="_blank">用户协议</Link>
+              <Link to="/contactUs" target="_blank">联系我们</Link>
+            </div>
           </div>
         </div>
       </div>

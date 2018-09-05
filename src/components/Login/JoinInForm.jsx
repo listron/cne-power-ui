@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {Form, Icon, Input, Button,Checkbox, Card } from 'antd';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import styles from './joinInForm.scss';
 import Cookie from 'js-cookie';
@@ -28,6 +29,7 @@ class JoinInForm extends Component{
     enterpriseInfo: PropTypes.object,
     locatoion: PropTypes.object,
     inviteUserLink: PropTypes.func,
+    inviteValid: PropTypes.bool,
   }
 
   constructor(props){
@@ -37,14 +39,6 @@ class JoinInForm extends Component{
       showEnterpriseInfo: false,
     }
   }
-
-  // componentWillMount(){
-  //   console.log(this.props);
-  //   console.log(this.props.locatoion);
-  //   const locationSearch = this.props.history.location.search;
-  //   const linkId = locationSearch.subStr(locationSearch.indexOf('=')+1);
-  //   this.props.inviteUserLink({linkId});
-  // }
 
   componentWillUnmount = () => {
     this.setState = (timeValue)=>{
@@ -101,10 +95,6 @@ class JoinInForm extends Component{
   
   handleCancel = () => {
     this.setState({ showEnterpriseInfo: false, });
-  }
-
-  toSeeAgreement = () => {
-    this.props.changeLoginStore({pageTab: 'agreement'});
   }
 
   timeDecline = () => {
@@ -179,7 +169,7 @@ class JoinInForm extends Component{
     const { enterpriseName, enterpriseInfo } = this.props;
     const { showEnterpriseInfo } = this.state;
     return (
-      <Form onSubmit={this.getEnterpriseInfo} >
+      <Form onSubmit={this.getEnterpriseInfo} className={styles.joinStepOne} >
         <FormItem label="企业名称" {...formItemLayout}>
           {getFieldDecorator('enterpriseName',{
             rules: [{required: true, message: '请输入企业名称/企业域名'}]
@@ -198,9 +188,9 @@ class JoinInForm extends Component{
       </Form>
     );
   }
-  renderStepTwo(inviteValid) {
+  renderStepTwo() {
     const { getFieldDecorator } = this.props.form;
-    const { enterpriseIdToken,enterpriseName, enterpriseLogo } = this.props;
+    const { enterpriseIdToken,enterpriseName, enterpriseLogo,inviteValid } = this.props;
     const { timeValue } = this.state;
     const defaultLogo = "/img/nopic.png";
     return (
@@ -276,24 +266,17 @@ class JoinInForm extends Component{
             <div>{enterpriseName}</div>
           </div>
           <Form onSubmit={this.onJoinEnterprise}  >
-            {importUser ? 
-              <FormItem label="" {...formItemLayout}>
-                {getFieldDecorator('username', )(
-                  <div>请牢记您的用户名：{username}</div>
-                )}
-              </FormItem>
-              : 
-              <FormItem label="用户名" {...formItemLayout}>
-                {getFieldDecorator('username', {
-                  rules: [
-                    {required: true, message: '请输入用户名'},
-                    {pattern: /^[A-Za-z0-9\u4e00-\u9fa5]{3,8}$/gi, message: '请输入3到8位中文、英文、数字'},
-                  ]
-                })(
-                  <Input addonBefore={<i className="iconfont icon-user"></i>} placeholder="请输入用户名" />
-                )}
-              </FormItem>
-            }
+            <FormItem label="用户名" {...formItemLayout}>
+              {getFieldDecorator('username', {
+                rules: [
+                  {required: true, message: '请输入用户名'},
+                  {pattern: /^[A-Za-z0-9\u4e00-\u9fa5]{3,8}$/gi, message: '请输入3到8位中文、英文、数字'},
+                ],
+                initialValue: importUser ? username : '',
+              })(
+                <Input addonBefore={<i className="iconfont icon-user"></i>} disabled={importUser ? true : false} placeholder="请输入用户名" />
+              )}
+            </FormItem>
             <FormItem label="创建密码" {...formItemLayout}>
               {getFieldDecorator('password',{
                 rules: [
@@ -317,31 +300,23 @@ class JoinInForm extends Component{
             <FormItem {...tailFormItemLayout} >
               {getFieldDecorator('userAgreement', {
               })(
-                <Checkbox className={styles.userArgee}  >同意<span className={styles.userAgreeTip} onClick={this.toSeeAgreement} >用户协议</span></Checkbox>
+                <Checkbox className={styles.userArgee}  >
+                  同意
+                  <Link className={styles.userAgreeTip} to="/userAgreement" target="_blank">用户协议</Link>
+                </Checkbox>
               )}
             </FormItem>
             <FormItem {...tailFormItemLayout} >
-              <Button type="primary" htmlType="submit" className="login-form-button"  >进入企业账号</Button>
+              <Button type="primary" htmlType="submit" className="login-form-button"  >加入企业</Button>
             </FormItem>
           </Form>
         </div>
       );
     }
   }
-  renderInviteUser() {
-    // 邀请用户加入企业暂未订协议怎么做
-    const { enterpriseName, enterpriseLogo } = this.props;
-    return (
-      <div className={styles.inviteUser} >
-        <div className={styles.enterpriseLogo} ><img src={enterpriseLogo} width="60px" height="60px" /></div>
-        <div>{enterpriseName}</div>
-        {/* <div className={styles.inviteTip}>企业邀请用户，<span>7天内有效</span></div> */}
-      </div>
-    );
-  }
   
   render(){
-    const { joinStep,importUser,inviteValid } = this.props;
+    const { joinStep,importUser } = this.props;
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -367,7 +342,7 @@ class JoinInForm extends Component{
     return (
       <div className={styles.comName}>
         {joinStep === 1 && this.renderStepOne(formItemLayout, tailFormItemLayout)}
-        {joinStep === 2 && this.renderStepTwo(inviteValid)}
+        {joinStep === 2 && this.renderStepTwo()}
         {joinStep === 3 && this.renderStepThree(formItemLayout, tailFormItemLayout, importUser)}
       </div>
     );
