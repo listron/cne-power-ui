@@ -47,11 +47,11 @@ class Login extends Component {
 
     return (
       <div className={styles.login}>
-        <div className={styles.joinTop}>
+        <div className={styles.joinTop}  onClick={() => this.changePage('joinIn')}>
           <div className={styles.fontIcon}>
             <i className="iconfont icon-join" />
           </div>
-          <div className={styles.join} onClick={() => this.changePage('joinIn')}>加入企业</div>
+          <div className={styles.join} >加入企业</div>
         </div>
         <div className={styles.loginTab}>
           <Tabs onChange={this.changePage} animated={false} activeKey={pageTab}>
