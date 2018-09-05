@@ -39,7 +39,7 @@ class JoinIn extends Component {
     return (
       <div className={styles.joinInContent} >
         <div className={styles.goLogin}>
-          <span  onClick={()=>this.changePage( 'login')}> 登录 </span>
+          <span  onClick={()=>this.changePage('login')}> 登录 </span>
           <span>|</span>
           <span  onClick={()=>this.changePage('register')}> 注册 </span>
         </div>
