@@ -247,10 +247,11 @@
       flex-direction: column;
       background:#f8f8f8;
       box-shadow:0 1px 4px 0 rgba(0,0,0,0.20);
-      pointer-events: none;
+     
       cursor: default;
       opacity: 0.6;
       a{
+        pointer-events: none;
         text-decoration: none;
         color: #999;
       }

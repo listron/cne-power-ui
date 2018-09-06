@@ -13,7 +13,8 @@ class PvStationItem extends React.Component {
     
   }
   
-  showTip = () => {
+  showTip = (e) => {
+    
     message.config({
       top: 300,
       duration: 2,
@@ -23,6 +24,7 @@ class PvStationItem extends React.Component {
     
 
   }
+ 
   render() {
     const { stationDataList } = this.props;
    
@@ -38,7 +40,8 @@ class PvStationItem extends React.Component {
             const instantaneous = item.instantaneous || '--';
             const stationUnitCount = item.stationUnitCount || '--';
             return (
-              <div className={stationStatus.stationStatus === '900' ? styles.stationTest : styles.stationCard} key={index} onClick={this.showTip}>
+              
+              <div className={stationStatus.stationStatus === '900' ? styles.stationTest : styles.stationCard} key={index} onClick={stationStatus.stationStatus === '900' ?this.showTip:null}>
                 <Link to={`/monitor/singleStation/${item.stationCode}`} key={item.stationCode}>
                   <div className={styles.stationCardTitle}>
                     <div className={styles.stationName}>{stationName}</div>
