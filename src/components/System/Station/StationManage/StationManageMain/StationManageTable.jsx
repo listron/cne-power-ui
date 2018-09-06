@@ -10,7 +10,7 @@ import PropTypes from 'prop-types';
 
 class StationManageTable extends Component {
   static propTypes = {
-    
+    loading: PropTypes.bool,
   }
 
   constructor(props){
@@ -96,7 +96,6 @@ class StationManageTable extends Component {
           onChange={this.tableChange}
           pagination={false}
         />
-        this is a station manage table part
       </div>
     )
   }

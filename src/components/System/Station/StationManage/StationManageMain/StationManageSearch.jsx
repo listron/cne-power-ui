@@ -10,6 +10,7 @@ class StationManageSearch extends Component {
   static propTypes = {
     enterpriseId: PropTypes.string,
     getStationList: PropTypes.func,
+    changeStationManageStore: PropTypes.func,
   }
 
   constructor(props){
@@ -41,6 +42,12 @@ class StationManageSearch extends Component {
     console.log('重置查询条件')
   }
 
+  showStationDetail = () => {
+    this.props.changeStationManageStore({
+      showPage: 'detail',
+    })
+  }
+
   render(){
     return (
       <div>
@@ -49,6 +56,7 @@ class StationManageSearch extends Component {
           <Radio.Button value="default">风电</Radio.Button>
           <Radio.Button value="small">光伏</Radio.Button>
         </Radio.Group>
+        <Button onClick={this.showStationDetail}>测试去详情按钮</Button>
         <div>
           <span>区域</span>
           <Input placeholder="请输入..." onChange={this.onAreaChange} />
