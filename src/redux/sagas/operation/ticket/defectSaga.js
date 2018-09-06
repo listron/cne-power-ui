@@ -418,8 +418,7 @@ function *getDefectTypes(action){
       yield put({ 
         type: ticketAction.GET_DEFECT_FETCH_SUCCESS, 
         payload: {
-          defectTypes: response.data.data.data, 
-          ...payload
+          defectTypes: response.data.data.data,
         }
       });       
     }
@@ -490,7 +489,7 @@ export function* watchDefect() {
   yield takeLatest(ticketAction.CLOSE_DEFECT_SAGA, closeDefect);
   yield takeLatest(ticketAction.HANDLE_DEFECT_SAGA, handleDefect);
   yield takeLatest(ticketAction.CHECK_DEFECT_SAGA, checkDefect);
-  yield takeLatest(ticketAction.GET_DEFECTTYPES_SAGA, getDefectTypes);
+  yield takeLatest(ticketAction.GET_DEFECT_TYPE_SAGA, getDefectTypes);
   yield takeLatest(ticketAction.DEFECT_CREATE_SAGA, createNewDefect);
   yield takeLatest(ticketAction.CLEAR_DEFECT_STATE_SAGA, clearDefect);
   
