@@ -16,6 +16,10 @@ class ALarmSingleStationStatistic extends React.Component {
     stations: PropTypes.object,
     showPage: PropTypes.string,
     singleStationCode: PropTypes.string,
+    pageSize: PropTypes.number,
+    pageNum: PropTypes.number,
+    orderField: PropTypes.string,
+    orderCommand: PropTypes.string,
     startTime: PropTypes.string,
     endTime: PropTypes.string,
     singleAlarmSummary: PropTypes.object,
@@ -34,34 +38,46 @@ class ALarmSingleStationStatistic extends React.Component {
   }
 
   componentDidMount() {
-    const { singleStationCode, summaryType } = this.props;
+    const { singleStationCode, summaryType, pageSize, pageNum, orderField, orderCommand } = this.props;
     this.props.getSingleStationAlarmStatistic({
       stationCode: singleStationCode,
       startTime: moment().subtract(30, 'days').utc().format(),
       endTime: moment().utc().format(),
-      summaryType
+      summaryType,
+      pageSize,
+      pageNum,
+      orderField,
+      orderCommand
     });
   }
 
   componentWillReceiveProps(nextProps) {
-    const { startTime, endTime, summaryType, singleStationCode } = nextProps;
+    const { startTime, endTime, summaryType, singleStationCode, pageSize, pageNum, orderField, orderCommand } = nextProps;
     if(singleStationCode !== this.props.singleStationCode) {
       this.props.getSingleStationAlarmStatistic({
         stationCode: singleStationCode,
         startTime: startTime,
         endTime: endTime,
-        summaryType
+        summaryType,
+        pageSize,
+        pageNum,
+        orderField,
+        orderCommand
       });
     }
   }
 
   onChangeFilter = (obj) => {
-    const { singleStationCode, startTime, endTime, summaryType } = this.props;
+    const { singleStationCode, startTime, endTime, summaryType, pageSize, pageNum, orderField, orderCommand } = this.props;
     let filter = {
       stationCode: singleStationCode,
       startTime,
       endTime,
-      summaryType
+      summaryType,
+      pageSize,
+      pageNum,
+      orderField,
+      orderCommand
     }
     let newFiter = Object.assign({}, filter, obj);
     this.props.getSingleStationAlarmStatistic(newFiter);
@@ -77,8 +93,32 @@ class ALarmSingleStationStatistic extends React.Component {
     });
   }
 
-  onChangeTab = (activekey) => {
-    this.setState({ key: activekey });
+  onChangeTab = (key) => {
+    this.setState({ key });
+    const { singleStationCode, startTime, endTime, summaryType, pageSize, pageNum, orderField, orderCommand } = this.props;
+    if(key === 'graph') {
+      this.props.getSingleStationAlarmStatistic({
+        stationCode: singleStationCode,
+        startTime,
+        endTime,
+        summaryType,
+        pageSize: null,
+        pageNum: null,
+        orderField: '',
+        orderCommand: ''
+      });
+    } else if(key === 'table') {
+      this.props.getSingleStationAlarmStatistic({
+        stationCode: singleStationCode,
+        startTime,
+        endTime,
+        summaryType,
+        pageSize: pageSize!==null?pageSize:10,
+        pageNum: pageNum!==null?pageNum:1,
+        orderField: orderField!==''?orderField:'',
+        orderCommand: orderField!==''?orderCommand:''
+      });
+    }
   }
 
   onChangeDuration = (value) => {

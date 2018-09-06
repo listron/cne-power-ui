@@ -3,7 +3,7 @@ import { loginAction } from '../../constants/actionTypes/loginAction';
 import Cookie from 'js-cookie';
 
 var initState = Immutable.fromJS({
-  isFetching: false,
+  loading: false,
   pageTab: 'login',//四个页关键字：longin,register,joinIn,forget, 
   registerStep: 1,//注册企业步骤，1-账户验证，2-企业信息，3-完善个人信息
   joinStep: 1,//加入企业步骤，1-输入企业，2-手机号验证，3-完善个人信息
@@ -37,38 +37,38 @@ var initState = Immutable.fromJS({
 const loginReducer = (state = initState, action) => {
   switch (action.type) {
     case loginAction.CHANGE_LOGIN_STORE:
-      return state.merge(Immutable.fromJS(action.params)).set('isFetching', false);
+      return state.merge(Immutable.fromJS(action.params)).set('loading', false);
     case loginAction.LOGIN_FETCH:
-      return state.set('isFetching', true);
+      return state.set('loading', true);
     case loginAction.USER_NAME_LOGIN_SUCCESS:
-      return state.set('isFetching', false)
+      return state.set('loading', false)
                   .set('loginData', Immutable.fromJS(action.data));
     case loginAction.SEND_CODE_SUCCESS:
-      return state.set('isFetching', false)
+      return state.set('loading', false)
                   .set('phoneNum', action.params.phoneNum);
     case loginAction.PHONE_CODE_LOGIN_SUCCESS:
-      return state.set('isFetching', false)
+      return state.set('loading', false)
                   .set('showResetPassword', action.params.showResetPassword !== undefined ? action.params.showResetPassword:0)
                   .set('registerStep', 2)
                   .set('phoneNum', action.params.phoneNum)
                   .set('loginData', Immutable.fromJS(action.data));
     case loginAction.PHONE_CODE_REGISTER_SUCCESS:
-      return state.merge(Immutable.fromJS(action.params)).set('isFetching', false);
+      return state.merge(Immutable.fromJS(action.params)).set('loading', false);
     case loginAction.GET_ENTERPRISE_INFO_SUCCESS:
-      return state.set('isFetching', false)
+      return state.set('loading', false)
                   .set('enterpriseInfo', Immutable.fromJS(action.data));
     case loginAction.CHECK_ENTERPRISE_DOMAIN_SUCCESS:
       return state.set('domainIsRegister', action.data.isRegister)
                   .set('enterpriseDomain', action.params.enterpriseDomain);
     case loginAction.CHECK_ENTERPRISE_NAME_SUCCESS:
-      return state.set('isFetching', false)
+      return state.set('loading', false)
                   .set('nameIsRegister', action.data.isRegister)
                   .set('enterpriseName', action.params.enterpriseName);
     case loginAction.JOIN_ENTERPRISE_SUCCESS:
-      return state.set('isFetching', false)
+      return state.set('loading', false)
                   .set('joinResult', action.data.joinResult);
     case loginAction.INVITE_USER_LINK_SUCCESS:
-      return state.set('isFetching', false)
+      return state.set('loading', false)
                   .set('enterpriseInfo',Immutable.fromJS(action.data));
     case loginAction.USER_NAME_LOGIN_FAIL:
     case loginAction.PHONE_CODE_LOGIN_FAIL:
@@ -79,7 +79,7 @@ const loginReducer = (state = initState, action) => {
     case loginAction.JOIN_ENTERPRISE_FAIL:
     case loginAction.RESET_PASSWORD_FAIL:
     case loginAction.REGISTER_ENTERPRISE_FAIL:
-      return state.set('isFetching', false)
+      return state.set('loading', false)
                   .set('error', Immutable.fromJS(action.data));
     case loginAction.RESET_LOGIN_STORE_SUCCESS:
       return initState;   

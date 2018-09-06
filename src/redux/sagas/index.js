@@ -10,26 +10,7 @@ import {
 
 import { watchLogin } from './loginSaga';
 
-import {
-  watchGetDefectList,
-  watchBatchDeleteDefect,
-  watchBatchSendDefect,
-  watchBatchRejectDefect,
-  watchBatchClosedDefect,
-  watchBatchCheckdDefect,
-  watchSetDefectId,
-  watchSetSelectedDefect,
-  watchGetDefectDetail,
-  watchGetDefectCommonList,
-  watchSendDefect,
-  watchRejectDefect,
-  watchCloseDefect,
-  watchHandleDefect,
-  watchCheckDefect,
-  watchGetDefectTypes,
-  watchCreateNewDefect,
-  watchClearDefect,
-} from './operation/ticket/defectSaga'
+import { watchDefect } from './operation/ticket/defectSaga'
 
 import {
   watchGetInspectList,
@@ -46,10 +27,8 @@ import {
   watchInspectCheckBatch,
 } from './operation/ticket/inspectSaga';
 
-import {
-  watchChangeShowContainer
-} from './operation/ticket/ticketSaga';
-
+import { watchChangeShowContainer } from './operation/ticket/ticketSaga';
+ 
 import { watchEnterprise } from './system/account/enterpriseSaga';
 import { watchDepartment } from './system/account/departmentSaga';
 import { watchRole } from './system/account/roleSaga';
@@ -75,26 +54,10 @@ export default function* rootSaga() {
     watchGetPartition(),
     //登陆注册
     watchLogin(),
-    //Defect
-    watchGetDefectList(),
-    watchSetDefectId(),
-    watchSetSelectedDefect(),
-    watchGetDefectDetail(),
-    watchBatchDeleteDefect(),
-    watchBatchSendDefect(),
-    watchBatchRejectDefect(),
-    watchBatchClosedDefect(),
-    watchBatchCheckdDefect(),
-    watchGetDefectCommonList(),
-    watchSendDefect(),
-    watchRejectDefect(),
-    watchCloseDefect(),
-    watchHandleDefect(),
-    watchCheckDefect(),
+    //ticket
     watchChangeShowContainer(),
-    watchGetDefectTypes(),
-    watchCreateNewDefect(),
-    watchClearDefect(),
+    //Defect
+    watchDefect(),
     // 巡检
     watchGetInspectList(),
     watchSetInspectId(),
