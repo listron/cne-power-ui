@@ -77,6 +77,19 @@ class Main extends Component {
     }
   }
 
+  componentWillUnmount(){
+    Cookie.remove('authData');
+    Cookie.remove('enterpriseId');
+    Cookie.remove('enterpriseName');
+    Cookie.remove('enterpriseLogo');
+    Cookie.remove('userId');
+    Cookie.remove('username');
+    Cookie.remove('userLogo');
+    Cookie.remove('expireData');
+    Cookie.remove('refresh_token');
+    Cookie.remove('isNotLogin');
+  }
+
   render() {
     const { setTopMenu, topMenu, changeLoginStore } = this.props;
     const authData = Cookie.get('authData');

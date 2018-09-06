@@ -13,6 +13,7 @@ class BoxTransformerList extends Component {
     match: PropTypes.object,
     loading: PropTypes.bool,
     deviceTypeCode: PropTypes.number,
+    getBoxTransformerList: PropTypes.func,
   }
 
   constructor(props){
@@ -22,6 +23,25 @@ class BoxTransformerList extends Component {
       currentStatus: 0,//当前状态值
       alarmSwitch: false,
     }
+  }
+
+  componentDidMount(){
+    const { stationCode } = this.props.match.params;
+    this.getData(stationCode);
+  }
+
+  componentWillReceiveProps(nextProps){
+    const { stationCode } = this.props.match.params;
+    const nextParams = nextProps.match.params;
+    const nextStation = nextParams.stationCode;
+    if( nextStation !== stationCode ){
+      clearTimeout(this.timeOutId);
+      this.getData(nextStation);
+    }
+  }
+
+  componentWillUnmount(){
+    clearTimeout(this.timeOutId);
   }
 
   
@@ -51,6 +71,12 @@ class BoxTransformerList extends Component {
       tmpDeviceList: selectedList,
       alarmSwitch: e,
     });
+  }
+  getData = (stationCode) => {
+    this.props.getBoxTransformerList({stationCode});
+    this.timeOutId = setTimeout(()=>{
+      this.getData(stationCode);
+    }, 10000);
   }
   getDeviceStatus = (value) => {
     switch(value){

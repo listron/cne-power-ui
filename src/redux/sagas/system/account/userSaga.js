@@ -36,14 +36,19 @@ function* getUserList(action) {
           userData: response.data.data.userData || [],
         }
       });
-      // if(payload.selectedKey){
-      //   yield put({
-      //     type: userAction.CHANGE_USER_STORE_SAGA,
-      //     payload: {
-      //       selectedUser: [...response.data.data.userData[payload.selectedKey]],
-      //     }
-      //   })
-      // }
+      let tmpUserData= response.data.data.userData;
+      if(payload.selectedKey && payload.selectedKey.toJS().length>0){
+        tmpUserData = payload.selectedKey.toJS().map(e=>{
+          return tmpUserData.find((item,i)=>i===e);
+        })
+        yield put({
+          type: userAction.CHANGE_USER_STORE_SAGA,
+          payload: {
+            selectedUser: tmpUserData,
+            selectedKey: payload.selectedKey,
+          }
+        })
+      }
     } else {
       yield put({ type: userAction.GET_USER_FETCH_FAIL });
       message.error(response.data.message);
