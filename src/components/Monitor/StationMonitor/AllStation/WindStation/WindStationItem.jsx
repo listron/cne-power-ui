@@ -21,6 +21,7 @@ class WindStationItem extends React.Component {
     message.warning('电站未接入,无法查看详情',2);
 
   }
+
   render() {
     const { stationDataList } = this.props;
    
@@ -34,8 +35,9 @@ class WindStationItem extends React.Component {
               const stationCapacity = item.stationCapacity || '--';
               const instantaneous = item.instantaneous || '--';
               const stationUnitCount = item.stationUnitCount || '--';
+             
               return (
-                <div className={stationStatus.stationStatus === '900' ? styles.stationTest : styles.stationCard} key={index} onClick={this.showTip}>
+                <div className={stationStatus.stationStatus === '900' ? styles.stationTest : styles.stationCard} key={index} onClick={stationStatus.stationStatus === '900' ?this.showTip:null}>
                
                   <Link to={`/monitor/singleStation/${item.stationCode}`} key={item.stationCode}>
                     <div className={styles.stationCardTitle}>
