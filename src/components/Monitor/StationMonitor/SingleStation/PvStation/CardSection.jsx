@@ -8,10 +8,12 @@ import { Link } from 'react-router-dom';
 
 class CardSection extends Component {
   static propTypes = {
+    match: PropTypes.object,
     weatherList: PropTypes.array,
     operatorList: PropTypes.array, 
     alarmList: PropTypes.object,
-    workList: PropTypes.object, 
+    workList: PropTypes.object,
+    getWeatherList: PropTypes.func,
   }
 
   constructor(props){
@@ -26,7 +28,6 @@ class CardSection extends Component {
   componentDidMount() {
     const { stationCode } = this.props.match.params;
     this.getData(stationCode);
-    
   }
 
   componentWillReceiveProps(nextProps){
@@ -37,7 +38,7 @@ class CardSection extends Component {
       clearTimeout(this.timeOutId);
       this.getData(nextStation);
     }
-    this.props.changeSingleStationStore({deviceTypeCode: nextProps.deviceTypeCode});
+    // this.props.changeSingleStationStore({deviceTypeCode: nextProps.deviceTypeCode});
   }
 
   componentWillUnmount(){
@@ -48,7 +49,7 @@ class CardSection extends Component {
     this.props.getWeatherList({stationCode});
     this.timeOutId = setTimeout(()=>{
       this.getData(stationCode);
-    },10000);
+    },3600000);
   }
 
   prev = () => {

@@ -13,6 +13,7 @@ class InverterList extends Component {
     match: PropTypes.object,
     loading: PropTypes.bool,
     deviceTypeCode: PropTypes.number,
+    getInverterList: PropTypes.func,
   }
 
   constructor(props){
@@ -24,8 +25,23 @@ class InverterList extends Component {
     }
   }
   
+  componentDidMount(){
+    const { stationCode } = this.props.match.params;
+    this.getData(stationCode);
+  }
+
   componentWillReceiveProps(nextProps){
-    
+    const { stationCode } = this.props.match.params;
+    const nextParams = nextProps.match.params;
+    const nextStation = nextParams.stationCode;
+    if( nextStation !== stationCode ){
+      clearTimeout(this.timeOutId);
+      this.getData(nextStation);
+    }
+  }
+
+  componentWillUnmount(){
+    clearTimeout(this.timeOutId);
   }
 
   onChangeStatus = (e) => {
@@ -56,6 +72,12 @@ class InverterList extends Component {
       tmpDeviceList: selectedList,
       alarmSwitch: e,
     });
+  }
+  getData = (stationCode) => {
+    this.props.getInverterList({stationCode});
+    this.timeOutId = setTimeout(()=>{
+      this.getData(stationCode);
+    }, 10000);
   }
   getDeviceStatus = (value) => {
     switch(value){
