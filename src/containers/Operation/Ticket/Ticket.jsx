@@ -75,11 +75,11 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  onChangeShowContainer: params => dispatch({ type: ticketAction.CHANGE_SHOW_CONTAINER_SAGA, params }),
-  clearDefectState: params => dispatch({ type: ticketAction.CLEAR_DEFECT_STATE_SAGA, params }),
-  clearInspectState: params => dispatch({ type: ticketAction.CLEAR_INSPECT_STATE_SAGA, params }),
-  getDefectList: params => dispatch({ type: ticketAction.GET_DEFECT_LIST_SAGA, params }),
-  getInspectList: params => dispatch({ type: ticketAction.GET_INSPECT_LIST_SAGA, params }),
+  onChangeShowContainer: payload => dispatch({ type: ticketAction.CHANGE_SHOW_CONTAINER_SAGA, payload }),
+  clearDefectState: payload => dispatch({ type: ticketAction.CLEAR_DEFECT_STATE_SAGA, payload }),
+  clearInspectState: payload => dispatch({ type: ticketAction.CLEAR_INSPECT_STATE_SAGA, payload }),
+  getDefectList: payload => dispatch({ type: ticketAction.GET_DEFECT_LIST_SAGA, payload }),
+  getInspectList: payload => dispatch({ type: ticketAction.GET_INSPECT_LIST_SAGA, payload }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Ticket);

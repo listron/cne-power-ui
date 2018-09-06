@@ -66,7 +66,7 @@ class WindStation extends React.Component {
     }
   }
   statusDataList=()=>{
-    let { key, checked, stationType } = this.state;
+    let { checked, stationType } = this.state;
     const { windMonitorStation } = this.props;
     const stationDataList = windMonitorStation.stationDataList || [];
     const newStationDataList = stationDataList.filter(e => {

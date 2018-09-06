@@ -12,7 +12,12 @@ const RangePicker = DatePicker.RangePicker;
 
 class AlarmStatisticByType extends Component {
   static propTypes = {
+    stations: PropTypes.object,
     stationCode: PropTypes.array,
+    pageSize: PropTypes.number,
+    pageNum: PropTypes.number,
+    orderField: PropTypes.string,
+    orderCommand: PropTypes.string,
     startTime: PropTypes.string,
     endTime: PropTypes.string,
     onChangeFilter: PropTypes.func,
@@ -50,36 +55,26 @@ class AlarmStatisticByType extends Component {
   }
   
   //设置tabs按钮的
-  onChangeTab = (activekey) => {
-    this.setState({ key: activekey })
+  onChangeTab = (key) => {
+    const { pageSize, pageNum, orderField, orderCommand } = this.props;
+    if(key === 'graph') {
+      this.props.onChangeFilter({
+        pageSize: null,
+        pageNum: null,
+        orderField: '',
+        orderCommand: ''
+      });
+    } else if(key === 'table'){
+      this.props.onChangeFilter({
+        pageSize: pageSize!==null?pageSize:10,
+        pageNum: pageNum!==null?pageNum:1,
+        orderField: orderField!==''?orderField:'',
+        orderCommand: orderField!==''?orderCommand:''
+      });
+    }
+    this.setState({ key });
   }
 
-  //筛选时间，出现日期框
- 
-   // console.log(key); // handleDayMenuClick = (e) => {
-  //   //const{startTime, endTime}=this.props;
-  //   let startTime=moment(0,'HH').utc().format();
-  //   let endTime=moment().utc().format();
-  //   if(e.key === '今天'){
-  //     startTime=moment(0,'HH').utc().format();
-  //     endTime=moment().utc().format();
-  //   }else if(e.key === '昨天'){
-  //   startTime=moment(0,'HH').subtract(1,'day').utc().format();
-  //   endTime=moment().subtract(1,'day').endOf('day').utc().format();     
-  //   }else if(e.key === '最近7天'){
-  //     startTime=moment(0,'HH').subtract(7,'day').utc().format();
-  //     endTime=moment().utc().format();
-  //   }else if(e.key === '最近30天'){
-  //     startTime=moment(0,'HH').subtract(30,'day').utc().format();
-  //     endTime=moment().utc().format();
-  //   }
-  //   e.key === '其他时间段' ? this.onFilterShowChange('timeSelect') : '啥都不干';
-   
-  //   this.props.onChangeFilter({
-  //     startTime,
-  //     endTime
-  //   });
-  // }
 
   //筛选时间，出现日期框
   onChangeDuration = (value) => {
@@ -159,7 +154,7 @@ class AlarmStatisticByType extends Component {
             /></div>
           }
         </div>}
-        <Tabs animated={false} className={styles.tabContainer} activeKey={key} tabBarExtraContent={operations} onChange={this.onChangeTab}>
+        <Tabs animated={false} tabBarGutter={0} className={styles.tabContainer} activeKey={key} tabBarExtraContent={operations} onChange={this.onChangeTab}>
           <TabPane
             tab={<i className="iconfont icon-drawing"></i>}
             key="graph"

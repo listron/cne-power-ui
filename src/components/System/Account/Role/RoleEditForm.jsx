@@ -17,7 +17,7 @@ class RoleEditForm extends Component {
     onCreateRole: PropTypes.func,
     onEditRole: PropTypes.func,
     changeRoleStore: PropTypes.func,
-    isFetching: PropTypes.bool,
+    loading: PropTypes.bool,
     continueAdd: PropTypes.bool,
   }
 
@@ -100,7 +100,7 @@ class RoleEditForm extends Component {
 
   render(){
     const { getFieldDecorator } = this.props.form;
-    const { showPage, isFetching, continueAdd } = this.props;
+    const { showPage, loading, continueAdd } = this.props;
     const isCreate = showPage === 'create';
     const selectedRole = isCreate? null: this.props.selectedRole[0];
     return (     
@@ -131,8 +131,8 @@ class RoleEditForm extends Component {
           )}
         </FormItem>
         <div className={styles.buttonGroup}>
-          <Button className={styles.save} onClick={this.onSaveRole} loading={!continueAdd&&isFetching}>保存</Button>
-          {isCreate&&<Button onClick={this.onSaveRoleAndAdd} loading={continueAdd&&isFetching}>保存并继续添加</Button>}
+          <Button className={styles.save} onClick={this.onSaveRole} loading={!continueAdd&&loading}>保存</Button>
+          {isCreate&&<Button onClick={this.onSaveRoleAndAdd} loading={continueAdd&&loading}>保存并继续添加</Button>}
         </div>
         <div style={{marginLeft:410}} className={styles.instructionText}>选择“保存”按钮后将跳转到对应的列表页；选择“保存并继续添加”按钮将会停留在添加页面</div>
       </Form>

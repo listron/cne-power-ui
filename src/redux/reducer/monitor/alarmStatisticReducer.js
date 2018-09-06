@@ -17,6 +17,12 @@ var initState = Immutable.fromJS({
   summaryType: 2,//统计方式：1-按时，2-按日，3-按月
   singleStationCode: '',
 
+  pageSize: null,
+  pageNum: null,
+  orderField: '',
+  orderCommand: '',
+
+
 
   alarmStatistic: [],//多电站
   singleAlarmStatistic: [],//单电站

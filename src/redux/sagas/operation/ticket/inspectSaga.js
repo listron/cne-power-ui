@@ -158,7 +158,7 @@ function *setInspectCheck(action){
       });
       yield put({
         type: ticketAction.CHANGE_SHOW_CONTAINER_SAGA,
-        params: {container: 'list'},
+        payload: {container: 'list'},
       });
     }else{
       message.error('验收失败！')
@@ -197,7 +197,7 @@ function *finishInspect(action){
       });
       yield put({
         type: ticketAction.CHANGE_SHOW_CONTAINER_SAGA,
-        params: {container: 'list'},
+        payload: {container: 'list'},
       });
     }else{
       message.error('执行工单转验收失败！')
@@ -236,7 +236,7 @@ function *createInspect(action){
       })
       yield put({
         type: ticketAction.CHANGE_SHOW_CONTAINER_SAGA,
-        params: {container: 'list'},
+        payload: {container: 'list'},
       });
     }else{
       message.error('创建失败！');

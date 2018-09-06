@@ -1,59 +1,68 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React from 'react';
+import PropTypes from 'prop-types';
 import styles from './alarmStatistic.scss';
-import { Table } from "antd";
+import { Table } from 'antd';
 import moment from 'moment';
 import CommonPagination from '../../../Common/CommonPagination';
 
 class AlarmSingleStationTable extends React.Component {
   static propTypes = {
     singleAlarmStatistic: PropTypes.array,
+    pageNum: PropTypes.number,
+    pageSize: PropTypes.number,
+    orderField: PropTypes.string,
+    orderCommand: PropTypes.string,
+    onChangeFilter: PropTypes.func,
   }
   constructor(props) {
     super(props);
-    this.state = {
-      pageNum: 1,
-      pageSize: 10,
-    }
   }
   onPaginationChange = ({ currentPage, pageSize }) => {//分页器
-    this.setState({
+    this.props.onChangeFilter({
       pageNum: currentPage,
       pageSize
-    })
+    });
+  }
+  onChangeTable = (pagination, filters, sorter) => {
+    const field = sorter.field;
+    const arr = ['time', 'alarmNum', 'transferWorkAlarmNum', 'noTransferWorkAlarmNum', 'transferWorkRate']
+    this.props.onChangeFilter({
+      orderField: (arr.indexOf(field)+1).toString(),
+      orderCommand: sorter.order === 'ascend' ? '1' : '2'
+    });
   }
 
   renderColumn() {
     const columns = [
       {
-        title: "时间",
-        dataIndex: "time",
-        key: "time",
+        title: '时间',
+        dataIndex: 'time',
+        key: 'time',
         sorter: true,
         render: (text, record) => moment(text).format('YYYY-MM-DD HH:mm'),
       },
       {
-        title: "告警总数",
-        dataIndex: "alarmNum",
-        key: "alarmNum",
+        title: '告警总数',
+        dataIndex: 'alarmNum',
+        key: 'alarmNum',
         sorter: true,
       },
       {
-        title: "转工单数",
-        dataIndex: "transferWorkAlarmNum",
-        key: "transferWorkAlarmNum",
+        title: '转工单数',
+        dataIndex: 'transferWorkAlarmNum',
+        key: 'transferWorkAlarmNum',
         sorter: true,
       },
       {
-        title: "未转工单数",
-        dataIndex: "noTransferWorkAlarmNum",
-        key: "noTransferWorkAlarmNum",
+        title: '未转工单数',
+        dataIndex: 'noTransferWorkAlarmNum',
+        key: 'noTransferWorkAlarmNum',
         sorter: true,
       },
       {
-        title: "转工单率",
-        dataIndex: "transferWorkRate",
-        dataIndex: "transferWorkRate",
+        title: '转工单率',
+        dataIndex: 'transferWorkRate',
+        dataIndex: 'transferWorkRate',
         sorter: true,
       }
     ];
@@ -61,8 +70,7 @@ class AlarmSingleStationTable extends React.Component {
   }
 
   render() {
-    const { singleAlarmStatistic } = this.props;
-    const { pageNum, pageSize } = this.state;
+    const { singleAlarmStatistic, pageNum, pageSize } = this.props;
    
     const totalNum = singleAlarmStatistic.length;
     let startRow = (pageNum - 1) * pageSize;

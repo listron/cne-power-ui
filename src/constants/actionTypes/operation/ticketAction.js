@@ -5,7 +5,7 @@ module.exports = {
     TICKET_FETCH: null,
     CHANGE_DEFECT_STORE_SAGA: null,
     CHANGE_DEFECT_STORE: null,
-    GET_DEFECT_COMMON_FETCH_SUCCESS: null,
+    GET_DEFECT_FETCH_SUCCESS: null,
     //Defect
     GET_DEFECT_LIST_SAGA: null,
     // GET_DEFECT_LIST_SUCCESS: null,

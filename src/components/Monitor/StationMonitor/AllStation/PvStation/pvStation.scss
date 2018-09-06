@@ -60,7 +60,7 @@
     width: 0;
     height: 0;
   }
-   width: 100%;
+   //width: 100%;
    //tableList的头部宽高
    .ant-table .ant-table-thead > tr > th, .ant-table .ant-table-tbody > tr > td {
     padding: 0px 12px;
@@ -79,6 +79,7 @@
         border-color: #199475;
         color: #fff;
         margin: 0;
+        
       }
       .ant-tabs-content.ant-tabs-content-animated{
         display: flex;
@@ -93,6 +94,7 @@
      
         display: flex;
         flex:1;
+       
       }  
 
       
@@ -207,12 +209,20 @@
       }
     }
   }
-  .stationCardContainer {   
+  .stationCardContainer {  
+    :global{
+      .ant-progress-outer{
+        height: 28px;
+      }
+    } 
     display: flex;
     flex-direction: row;
     flex: 1;
+    flex-wrap: wrap;
+    align-self: flex-start;
+
     .stationCard {
-      margin: 20px 0 10px 20px;
+      margin: 20px 0 0 24px;
       padding: 8px;
       width: 215px;
       height: 132px;
@@ -231,11 +241,12 @@
         color: #199475;
       }
       i{
+        font-size: 14px;
         color:#e08031;
       }
     }
     .stationTest{
-      margin: 20px 0 10px 20px;
+      margin: 20px 0 0 24px;
       padding: 8px;
       width: 215px;
       height: 132px;
@@ -254,6 +265,7 @@
       }      
     }
     .stationCardTitle {
+      height: 26px;
       flex: 1;
       display: flex;
       flex-direction: row;
@@ -266,29 +278,31 @@
       }   
     }
     .stationCardProgress {
+      height: 10px;
       flex: 1;
       display: flex;
       justify-content: center;
       align-items: center;
       flex-direction: row;
     }
-    .stationCardValue {
+    .stationCardValue,.stationCardEquipmentNum  {
+      height: 26px;
       flex: 1;
       display: flex;
       flex-direction: row;
       justify-content: space-between;
     }  
     .stationCardWindSpeed {
+      height: 26px;
       flex: 1;
     }
-    .stationCardEquipmentNum {
-      flex: 1;
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-    }
+   
     .stationWarning {
-      color: red;
+      i{
+        font-size: 14px;
+        color:#a42b2c;
+      }
+      color:#a42b2c;
     }
   }
   .PvStationList{ 
@@ -347,7 +361,8 @@
     }
     .progressInfo{
       .progressData{
-        width: 220px;
+        //width: 220px;
+        padding-right: 16px;
         height: 40px;
         display: flex;
         flex-direction: column;

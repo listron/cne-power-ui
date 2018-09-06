@@ -7,29 +7,23 @@ const CheckboxGroup = Checkbox.Group;
 class DefectLevelFilter extends Component {
   static propTypes = {
     defectLevel: PropTypes.string,
-    listQueryParams: PropTypes.object,
-    getDefectList: PropTypes.func,
+    onChangeFilter: PropTypes.func,
   }
 
   constructor(props) {
     super(props);
-    this.state = {
-      
-    };
   }
 
   onLevelSelect = (defectLevels) => {
-    this.props.getDefectList({
-      ...this.props.listQueryParams,
+    this.props.onChangeFilter({
       defectLevel: defectLevels.join(',')
-    })
+    });
   }
 
   resetLevel = () => {
-    this.props.getDefectList({
-      ...this.props.listQueryParams,
+    this.props.onChangeFilter({
       defectLevel: '0'
-    })
+    });
   }
 
   render() {
@@ -41,8 +35,8 @@ class DefectLevelFilter extends Component {
     }))
     return (
       <div className={styles.defectLevelFilter}>
-        <span onClick={this.resetLevel} >不限</span>
-        <CheckboxGroup options={levelOptions} value={defectLevel.split(',').filter(e=>e>0)} onChange={this.onLevelSelect} />
+        <span onClick={this.resetLevel} className={defectLevel==='0'?styles.selected:styles.all}>不限</span>
+        <CheckboxGroup options={levelOptions} value={defectLevel.split(',')} onChange={this.onLevelSelect} />
       </div>
     );
   }
