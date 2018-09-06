@@ -122,14 +122,14 @@ class WindStationList extends React.Component {
         // (a, b) => a.dayOutput - b.dayOutput
       },
       {
-        title: "月发电量(万kWh)",
+        title: "月累计发电量(万kWh)",
         dataIndex: "monthOutput",
         defaultSortOrder: "descend",
         sorter: true,
         // (a, b) => a.monthOutput - b.monthOutput
       },
       {
-        title: "年发电量(万kWh)",
+        title: "年累计发电量(万kWh)",
         dataIndex: "yearOutput",
         defaultSortOrder: "descend",
         sorter: true,

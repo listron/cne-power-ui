@@ -159,7 +159,7 @@ class AlarmStatisticByType extends Component {
             /></div>
           }
         </div>}
-        <Tabs animated={false} className={styles.tabContainer} activeKey={key} tabBarExtraContent={operations} onChange={this.onChangeTab}>
+        <Tabs animated={false} tabBarGutter={0} className={styles.tabContainer} activeKey={key} tabBarExtraContent={operations} onChange={this.onChangeTab}>
           <TabPane
             tab={<i className="iconfont icon-drawing"></i>}
             key="graph"
