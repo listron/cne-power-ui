@@ -29,6 +29,9 @@ var initState = Immutable.fromJS({
   inviteValid: true,//true邀请链接默认有效 
   userEnterpriseStatus: 3,//用户企业状态  默认3启用
   checkLoginPhone: true,//登录用手机号错误
+  importEnterpriseName: '',//导入企业名称
+  importEnterpriseLogo: '',//导入企业Logo地址
+  importEnterpriseId: '',//导入企业Id
 });
 
 const loginReducer = (state = initState, action) => {
@@ -47,6 +50,7 @@ const loginReducer = (state = initState, action) => {
       return state.set('isFetching', false)
                   .set('showResetPassword', action.params.showResetPassword !== undefined ? action.params.showResetPassword:0)
                   .set('registerStep', 2)
+                  .set('phoneNum', action.params.phoneNum)
                   .set('loginData', Immutable.fromJS(action.data));
     case loginAction.PHONE_CODE_REGISTER_SUCCESS:
       return state.merge(Immutable.fromJS(action.params)).set('isFetching', false);

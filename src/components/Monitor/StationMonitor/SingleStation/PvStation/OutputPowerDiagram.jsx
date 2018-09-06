@@ -174,20 +174,6 @@ class OutputPowerDiagram extends Component {
         },
       },
       legend: {
-        data:[{
-          name: '实际发电量',
-          icon: 'circle',
-        },{
-          name: '理论发电量',
-          icon: 'circle',
-        },{
-          name: '日曝辐值',
-          icon: 'circle',
-        }],
-        textStyle: {
-          color: lineColor,
-          fontSize: 12,
-        },
       },
       grid: {
         show: true,
