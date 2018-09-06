@@ -27,6 +27,32 @@
     display: flex;
     flex-shrink: 0;
   }
+  .statusGroup {
+    margin-top: 16px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    .text {
+      display: flex;
+      flex-direction: row;
+      margin-right: 16px;
+      color: $lightColor;
+      >span:first-child {
+        margin-right: 28px;
+      }
+    }
+    :global {
+      .ant-radio-button-wrapper {
+        padding: 0 8px; 
+        color: $darkColor;
+      }
+      .ant-radio-button-wrapper-checked {
+        background-color: $themeColor;
+        border: 1px solid $themeColor;
+        color: #fff;
+      }
+    }
+  }
 }
 
 .filterItem {

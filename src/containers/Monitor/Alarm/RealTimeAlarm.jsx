@@ -174,7 +174,7 @@ const mapDispatchToProps = (dispatch) => ({
   changeAlarmStore: payload => dispatch({type: alarmAction.CHANGE_ALARM_STORE_SAGA, payload}),
   getRealTimeAlarm: payload => dispatch({type: alarmAction.GET_REALTIME_ALARM_SAGA, payload}),
   getAlarmNum: payload => dispatch({type: alarmAction.GET_ALARM_NUM_SAGA, payload}),
-  getDefectTypes: params => dispatch({ type: ticketAction.GET_DEFECT_TYPE_SAGA, params }),
+  getDefectTypes: payload => dispatch({ type: ticketAction.GET_DEFECT_TYPE_SAGA, payload }),
   onTransferAlarm: payload => dispatch({ type: alarmAction.TRANSFER_ALARM_SAGA, payload }),
   onRelieveAlarm: payload => dispatch({ type: alarmAction.RELIEVE_ALARM_SAGA, payload }),
   onResetRelieveAlarm: payload => dispatch({ type: alarmAction.RESET_RELIEVE_ALARM_SAGA, payload }),

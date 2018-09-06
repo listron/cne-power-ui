@@ -24,7 +24,6 @@ class TmpForm extends Component {
     onDefectCreateNew: PropTypes.func,
     showContainer: PropTypes.string,
     onChangeShowContainer: PropTypes.func,
-    editNewDefect: PropTypes.bool,
     defectDetail: PropTypes.object,
     editDataGet: PropTypes.bool,
     deviceTypeItems: PropTypes.object,
@@ -130,7 +129,7 @@ class TmpForm extends Component {
 
   render() {
     const { defectFinished } = this.state;
-    const {stations, deviceTypes, defectTypes, defectDetail, editDataGet, editNewDefect } = this.props;
+    const {stations, deviceTypes, defectTypes, defectDetail, editDataGet, showContainer } = this.props;
     const {getFieldDecorator, getFieldValue} = this.props.form;
     const formItemLayout = {
       labelCol: {
@@ -142,10 +141,11 @@ class TmpForm extends Component {
         sm: { span: 16 },
       },
     };
-    const defaultStations = editNewDefect && stations.filter(e=>e.stationCode===defectDetail.stationCode) || [] ;
-    const defaultDeviceType = editNewDefect && editDataGet && deviceTypes.find(e=>e.deviceTypeCode===defectDetail.deviceTypeCode);
-    const defaultDefectType = editNewDefect && editDataGet && defectTypes.find(e=>e.defectTypeCode===defectDetail.defectTypeCode) || null ;
-    const imgDescribe = editNewDefect && defectDetail.photoAddress && defectDetail.photoAddress.split(',').filter(e=>!!e).map((e,i)=>({
+    const editDefect = showContainer === 'edit';
+    const defaultStations = editDefect && stations.filter(e=>e.stationCode===defectDetail.stationCode) || [] ;
+    const defaultDeviceType = editDefect && editDataGet && deviceTypes.find(e=>e.deviceTypeCode===defectDetail.deviceTypeCode);
+    const defaultDefectType = editDefect && editDataGet && defectTypes.find(e=>e.defectTypeCode===defectDetail.defectTypeCode) || null ;
+    const imgDescribe = editDefect && defectDetail.photoAddress && defectDetail.photoAddress.split(',').filter(e=>!!e).map((e,i)=>({
       uid: i,    
       rotate: 0,  
       status: 'done',  
@@ -203,7 +203,7 @@ class TmpForm extends Component {
         <FormItem  label={'缺陷级别：'} {...formItemLayout}>
           {getFieldDecorator('defectLevel', {
             rules: [{ required: true, message: '请选择缺陷级别' }],
-            initialValue: editNewDefect && defectDetail.defectLevel || null,
+            initialValue: editDefect && defectDetail.defectLevel || null,
           })(
             <Select placeholder={'请选择缺陷级别'} disabled={defectTypes.length === 0}>
               <Option value={1}>一级</Option>
@@ -216,7 +216,7 @@ class TmpForm extends Component {
         <FormItem label={'缺陷描述：'} {...formItemLayout}>
           {getFieldDecorator('defectDescribe', {
             rules: [{ required: true, message: '请输入缺陷描述' }],
-            initialValue: editNewDefect && defectDetail.defectDescribe || null,
+            initialValue: editDefect && defectDetail.defectDescribe || null,
           })(
             <TextArea placeholder={'请输入缺陷描述'} />
           )}
@@ -234,7 +234,7 @@ class TmpForm extends Component {
         <FormItem label={'处理结果：'} {...formItemLayout}>
           {getFieldDecorator('defectSolveResult', {
             rules: [{ required: true, message: '选择处理结果' }],
-            initialValue: editNewDefect && defectDetail.handleData.defectSolveResult || '1',
+            initialValue: editDefect && defectDetail.handleData.defectSolveResult || '1',
           })(
             <FormHanleButtons onDefectFinishChange={this.onDefectFinishChange} />
           )}
@@ -242,7 +242,7 @@ class TmpForm extends Component {
         {!defectFinished && <FormItem label={'处理建议：'} {...formItemLayout}>
           {getFieldDecorator('defectSolveInfo', {
             rules: [{ required: true, message: '请输入处理建议' }],
-            initialValue: editNewDefect && defectDetail.handleData.defectSolveInfo || '',
+            initialValue: editDefect && defectDetail.handleData.defectSolveInfo || '',
           })(
             <TextArea placeholder={'请描述处理建议，不超过80字'} />
           )}
@@ -250,7 +250,7 @@ class TmpForm extends Component {
         {defectFinished && <FormItem label={'处理过程：'} {...formItemLayout}>
           {getFieldDecorator('defectSolveInfo', {
             rules: [{ required: true, message: '请输入处理过程' }],
-            initialValue: editNewDefect && defectDetail.handleData.defectSolveInfo || ''
+            initialValue: editDefect && defectDetail.handleData.defectSolveInfo || ''
           })(
             <SolveTextArea />
           )}
