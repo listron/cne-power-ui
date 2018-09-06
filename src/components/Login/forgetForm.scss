@@ -16,6 +16,9 @@
           width: 330px;
         }
       }
+      .ant-btn-primary:focus{
+        background-color: $themeColor;
+      }
       .ant-input-group-addon{
         background-color: #f1f1f1;
         padding: 0 7px;
@@ -93,7 +96,7 @@
         background-color: #f1f1f1;
         padding: 0 7px;
       }
-      .ant-btn-primary:hover, .ant-btn-primary:focus{
+      .ant-btn-primary:focus{
         background-color: $themeColor;
         border-color: $themeColor;
       }
