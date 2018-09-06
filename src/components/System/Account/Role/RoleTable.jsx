@@ -8,7 +8,7 @@ const { Option } = Select;
 class RoleTable extends Component {
   static propTypes = {
     showPage: PropTypes.string,
-    isFetching: PropTypes.bool,
+    loading: PropTypes.bool,
     totalNum: PropTypes.number,
     roleData: PropTypes.array,
     selectedRole: PropTypes.array,//勾选的数组
@@ -143,7 +143,7 @@ class RoleTable extends Component {
   }
 
   render(){
-    const { selectedRole, roleData, isFetching, showPage } = this.props;
+    const { selectedRole, roleData, loading, showPage } = this.props;
     const { showWarningTip, warningTipText, hiddenWarningTipCancelText } = this.state;
     // const rightHandler = localStorage.getItem('rightHandler');
     // const roleCreateRight = rightHandler && rightHandler.includes('account_role_create');
@@ -164,7 +164,7 @@ class RoleTable extends Component {
         </div> */}
         <div className={styles.roleContent}>
           <Table 
-            loading={isFetching}
+            loading={loading}
             rowKey={(record)=>{return record.roleId}} 
             // rowSelection={{
             //   selectedRowKeys: selectedRole.map(e=>e.roleId),

@@ -2,18 +2,18 @@ import Immutable from 'immutable';
 import { ticketAction } from '../../../../constants/actionTypes/operation/ticketAction';
 
 var initState = Immutable.fromJS({
-  isFetching: false,
+  loading: false,
   error: {
     code: '',
     message: ''
   },
   stationType: '2',    //	电站类型(0:风电，1光伏，2：全部)
   stationCodes: '',    // 电站编码，所有为空字符串
-  defectSource: '3',   // string  3：全部，0：告警，1：手动，2：巡检
+  defectSource: '3',   // string  3：全部，0：告警，1：手动，2：巡检, app需要，web写死是全部
   defectLevel: '0',	   // String	是	缺陷级别（0：全部，1：一级，2：二级，3：三级，4：四级）
-  timeInterval: '0',   //	String	是	时间段（0：全部，1：今天，2：近三天，3：一周内，4：一个月）
+  timeInterval: '0',   //	String	是	时间段（0：全部，1：今天，2：近三天，3：一周内，4：一个月）app参数，web写死全部
   status:'5',          //	String	是	工单状态代码状态（0：待提交:1：待审核、2：执行中、3：待验收、4：已完成、5：所有）
-  pageNum: 0,          //	Int	否	页号
+  pageNum: 1,          //	Int	否	页号
   pageSize: 10,        //	Int	否	每页记录数
   createTimeStart: '', //	String	是	创建时间（开始）
   createTimeEnd: '',	 // String	是	创建时间（结束）
@@ -32,7 +32,6 @@ var initState = Immutable.fromJS({
     checkNum: 0,
   },
   total: 0,
-  status: '5',
   defectId: '',
   defectDetail: {//缺陷详情
     defectId: '',
@@ -59,12 +58,12 @@ const defectReducer = (state = initState, action) => {
   switch (action.type) {
     case ticketAction.CHANGE_DEFECT_STORE :
       return state.merge(Immutable.fromJS(action.payload))
-    case ticketAction.GET_DEFECT_COMMON_FETCH_SUCCESS :
-      return state.merge(Immutable.fromJS(action.payload)).set('isFetching',false)
+    case ticketAction.GET_DEFECT_FETCH_SUCCESS :
+      return state.merge(Immutable.fromJS(action.payload)).set('loading',false)
     case ticketAction.TICKET_FETCH:
-      return state.set('isfetching', true);
+      return state.set('loading', true);
     // case ticketAction.GET_DEFECT_LIST_SUCCESS:  
-    //   return state.set('isFetching', false)
+    //   return state.set('loading', false)
     //               .set('total', action.data.total)
     //               .set('defectList', Immutable.fromJS(action.data.defectList))
     //               .set('selectedRowKeys', Immutable.fromJS([]))
@@ -80,19 +79,19 @@ const defectReducer = (state = initState, action) => {
     case ticketAction.CLEAR_DEFECT_STATE:
       return initState;
     case ticketAction.GET_DEFECT_DETAIL_SUCCESS: 
-      return state.set('isFetching', false)
+      return state.set('loading', false)
                   .set('defectDetail', Immutable.fromJS(action.data))
                   .set('defectId', action.params.defectId);
     case ticketAction.GET_DEFECT_LANGUAGE_SUCCESS: 
-      return state.set('isFetching', false)
+      return state.set('loading', false)
                   .set('commonList', Immutable.fromJS(action.data));
     case ticketAction.GET_DEFECTTYPES_SAGA_SUCCESS:
-      return state.set('isFetching', false)
+      return state.set('loading', false)
                   .set('defectTypes', Immutable.fromJS(action.params.data));
-    case ticketAction.GET_DEFECT_LIST_FAIL:
-    case ticketAction.GET_DEFECT_DETAIL_FAIL:
-    case ticketAction.GET_DEFECT_LANGUAGE_FAIL:
-    case ticketAction.GET_DEFECTTYPES_SAGA_FAIL:
+    // case ticketAction.GET_DEFECT_LIST_FAIL:
+    // case ticketAction.GET_DEFECT_DETAIL_FAIL:
+    // case ticketAction.GET_DEFECT_LANGUAGE_FAIL:
+    // case ticketAction.GET_DEFECTTYPES_SAGA_FAIL:
     case ticketAction.DEFECT_CREATE_FAIL:
       return state.set('error', Immutable.fromJS(action.error));
   }

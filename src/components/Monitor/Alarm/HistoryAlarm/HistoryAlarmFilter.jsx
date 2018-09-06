@@ -15,6 +15,7 @@ import styles from './historyAlarm.scss';
 class HistoryAlarmFilter extends Component {
   static propTypes = {
     stations: PropTypes.object,
+    deviceTypes: PropTypes.object,
     warningLevel: PropTypes.array,
     stationType: PropTypes.string,
     stationCode: PropTypes.array,

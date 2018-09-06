@@ -9,7 +9,7 @@ import { commonAction } from '../../../../../constants/actionTypes/commonAction'
 class InspectDetail extends Component{
   static propTypes = {
     inspectDetail: PropTypes.object,
-    isFetching: PropTypes.bool,
+    loading: PropTypes.bool,
     inspectId: PropTypes.string,
     getInspectDetail: PropTypes.func,
     getDefectTypes: PropTypes.func,
@@ -118,7 +118,7 @@ class InspectDetail extends Component{
 }
 
 const mapStateToProps = (state) => ({
-  isFetching: state.operation.inspect.get('isFetching'),
+  loading: state.operation.inspect.get('loading'),
   inspectList: state.operation.inspect.get('inspectList'),
   error: state.operation.inspect.get('error'),
   inspectDetail: state.operation.inspect.get('inspectDetail'),
