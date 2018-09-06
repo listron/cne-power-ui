@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import styles from './windStation.scss';
-import { Progress } from "antd";
+import { Progress,message } from "antd";
 import { Link } from 'react-router-dom';
 
 class WindStationItem extends React.Component {
@@ -9,15 +9,25 @@ class WindStationItem extends React.Component {
     stationDataList: PropTypes.array,
   }
   constructor(props, context) {
-    super(props, context)
+    super(props, context) 
+  }
+  
+  showTip = () => {
+    message.config({
+      top: 300,
+      duration: 2,
+      maxCount: 3,
+    });
+    message.warning('电站未接入,无法查看详情',2);
+
   }
   render() {
     const { stationDataList } = this.props;
+   
     return (
-      <div>
         <div className={styles.stationCardContainer}>
-          {
-            stationDataList.map((item, index) => {
+        {
+          stationDataList.map((item, index) => {
               const stationStatus = item.stationStatus || {};
               const stationName = item.stationName || '--';
               const stationPower = item.stationPower || '--';
@@ -25,7 +35,8 @@ class WindStationItem extends React.Component {
               const instantaneous = item.instantaneous || '--';
               const stationUnitCount = item.stationUnitCount || '--';
               return (
-                <div className={stationStatus.stationStatus === '900' ? styles.stationTest : styles.stationCard} key={index}>
+                <div className={stationStatus.stationStatus === '900' ? styles.stationTest : styles.stationCard} key={index} onClick={this.showTip}>
+               
                   <Link to={`/monitor/singleStation/${item.stationCode}`} key={item.stationCode}>
                     <div className={styles.stationCardTitle}>
                       <div className={styles.stationName}>{stationName}</div>
@@ -49,10 +60,9 @@ class WindStationItem extends React.Component {
                   </div>
                 </div>
               )
-            })
-          }
+          })
+        }
         </div>
-      </div>
     )
   }
 }

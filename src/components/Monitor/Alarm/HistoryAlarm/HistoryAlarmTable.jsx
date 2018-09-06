@@ -41,10 +41,10 @@ class HostoryAlarmTable extends Component {
     this.setState({ pageSize, currentPage })
   }
 
-  onTransferChange(visible, operateId, i) {
+  onTransferChange(visible, workOrderId, i) {
     if(visible) {
       this.props.getTicketInfo({
-        operateId
+        workOrderId
       });
     } else {
       this.props.changeAlarmStore({
@@ -169,6 +169,7 @@ class HostoryAlarmTable extends Component {
         title: '告警类型',
         dataIndex: 'warningConfigName',
         key: 'warningConfigName',
+        sorter: true,
       },{
         title: '告警描述',
         dataIndex: 'warningCheckDesc',
@@ -199,7 +200,7 @@ class HostoryAlarmTable extends Component {
               <Popover content={this.renderTransferPopover(index)}
               trigger="click"
               visible={this.state.showTransferPopover[index]}
-              onVisibleChange={(visible)=>this.onTransferChange(visible, record.operateId, index)}
+              onVisibleChange={(visible)=>this.onTransferChange(visible, record.workOrderId, index)}
               >
                 <div className={this.state.showTransferPopover[index]?styles.selected:null}><i className="iconfont icon-tranlist icon-action"></i></div>
               </Popover>

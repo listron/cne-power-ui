@@ -6,7 +6,7 @@ import { ticketAction } from '../../../../constants/actionTypes/operation/ticket
 function* changeShowContainer(action) {
   yield put({ 
     type: ticketAction.CHANGE_SHOW_CONTAINER, 
-    data: action.params
+    payload: action.payload
   }); 
 }
 

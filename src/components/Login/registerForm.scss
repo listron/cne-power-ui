@@ -38,6 +38,7 @@
     }
     .steps-content{
       margin-top: 10px;
+      padding-top: 50px;
     }
     .ant-steps-horizontal:not(.ant-steps-label-vertical) .ant-steps-item{
       background: url(/img/graybg.png) no-repeat 0 center;
@@ -145,6 +146,9 @@
     :global{
       .ant-form input[type="checkbox"]{
         background-color: $themeColor;
+      }
+      .ant-input{
+        width: 220px;
       }
       .is-validating.has-feedback .ant-form-item-children::after{
         content: '';

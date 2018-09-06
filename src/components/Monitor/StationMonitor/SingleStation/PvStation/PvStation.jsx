@@ -34,6 +34,7 @@ class PvStation extends Component {
   onSelectedDeviceType = (e) => {
     const deviceTypeCode = parseInt(e.target.value);
     this.props.changeSingleStationStore({deviceTypeCode});
+    
   }
 
   getDeviceTypeIcon = (e) => {
@@ -61,7 +62,6 @@ class PvStation extends Component {
   }
   
   render(){
-    console.log(this.props);
     const { deviceTypeFlow,stationDeviceList,deviceTypeCode } = this.props;
     const weatherDeviceCode = stationDeviceList && stationDeviceList.deviceCode || 0;
     const { stationCode } = this.props.match.params;

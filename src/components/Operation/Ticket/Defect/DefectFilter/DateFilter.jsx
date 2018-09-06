@@ -6,43 +6,36 @@ import styles from './defectFilter.scss';
 
 class DateFliter extends Component {
   static propTypes = {
-    listQueryParams: PropTypes.object,
     createTimeStart: PropTypes.string,
     createTimeEnd: PropTypes.string,
-    getDefectList: PropTypes.func,
+    onChangeFilter: PropTypes.func,
   }
 
   constructor(props) {
     super(props);
-    this.state = {
-      
-    };
   }
 
   onStartChange = (date,dateString) => {
-    this.props.getDefectList({
-      ...this.props.listQueryParams,
+    this.props.onChangeFilter({
       createTimeStart: dateString,
-    })
+    });
   }
   onEndChange = (date,dateString) => {
-    this.props.getDefectList({
-      ...this.props.listQueryParams,
+    this.props.onChangeFilter({
       createTimeEnd: dateString
-    })
+    });
   }
   resetTime = () => { 
-    this.props.getDefectList({
-      ...this.props.listQueryParams,
+    this.props.onChangeFilter({
       createTimeEnd: '',
       createTimeStart: '',
-    })
+    });
   }
 
   render() {
     const { createTimeStart, createTimeEnd } = this.props;
     return (
-      <div className={styles.dateFilter}>
+      <div className={styles.filterItem}>
         <span onClick={this.resetTime} className={styles.resetTime} >不限</span>
         <DatePicker
           value={createTimeStart ? moment(createTimeStart) : null}

@@ -18,7 +18,6 @@ class PvStation extends React.Component {
     super(props, context);
     this.TabPane = Tabs.TabPane;
     this.state = {
-
       checked: false,
       stationType: 'all',
     }
@@ -38,16 +37,15 @@ class PvStation extends React.Component {
 
     this.props.changeMonitorStationStore({ stationShowType: activekey });
   }
-  render() {
-    let { key, checked, stationType } = this.state;
+  statisticStatusNum = () => {
     const { pvMonitorStation } = this.props;
     const stationDataSummary = pvMonitorStation.stationDataSummary || {};
-    const stationProvinceSummary = stationDataSummary.stationProvinceSummary || [];
     const stationStatusSummary = stationDataSummary.stationStatusSummary || [];
+    //统计各状态下的电站数量
     const normalNum = stationStatusSummary.filter(e => {
       return e && e.stationStatus === 400
     }).length > 0 ? stationStatusSummary.filter(e => {
-      return e.stationStatus === 400
+      return e && e.stationStatus === 400
     })[0].stationNum : '0';
 
     const dataInterruptionNum = stationStatusSummary.filter(e => {
@@ -61,55 +59,35 @@ class PvStation extends React.Component {
     }).length > 0 ? stationStatusSummary.filter(e => {
       return e && e.stationStatus === 900
     })[0].stationNum : '0';
-
+    return {
+      normalNum, 
+      dataInterruptionNum,
+      unconnectionNum
+    }
+  }
+  statusDataList=()=>{
+    let { checked, stationType } = this.state;
+    const { pvMonitorStation } = this.props;
     const stationDataList = pvMonitorStation.stationDataList || [];
     const newStationDataList = stationDataList.filter(e => {
       return !checked || (checked && e.alarmNum > 0)
     }).filter(e => {
+      const stationStatus = e.stationStatus || {};
       if (stationType === 'all') {
         return true
       } else if (stationType === 'normal') {
-        const stationStatus = e.stationStatus || {};
         return stationStatus.stationStatus === '400'
       } else if (stationType === 'dataInterruption') {
-        const stationStatus = e.stationStatus || {};
         return stationStatus.stationStatus === '500'
       } else if (stationType === 'unconnection') {
-        const stationStatus = e.stationStatus || {};
         return stationStatus.stationStatus === '900'
       }
     })
-    const TabPane = Tabs.TabPane;
-    //TABS 筛选
-    const operations = (
-      <div>
-        <Switch onChange={this.onHandleAlarm} />告警
-        <Radio.Group
-          defaultValue="all"
-          buttonStyle="solid"
-          onChange={this.onHandleStation}
-          style={{ margin: '0 30px 0 15px' }}
-        >
-          <Radio.Button value="all">全部</Radio.Button>
-          <Radio.Button value="normal">通讯正常  {normalNum}<span></span></Radio.Button>
-          <Radio.Button value="dataInterruption">信息中断  {dataInterruptionNum}</Radio.Button>
-          <Radio.Button value="unconnection">未接入  {unconnectionNum}</Radio.Button>
-        </Radio.Group>
-      </div>
-    );
-    const province = (
-      <div className={styles.provinceStationTotal}>
-
-        {stationProvinceSummary.map((item, index) => {
-          return (
-            <div key={index} className={styles.provinceBox}>
-              <span>{item.provinceName}</span>
-              <span className={styles.fontColor}>{item.windStationNum}&nbsp;&nbsp;</span>
-            </div>
-          )
-        })}
-      </div>
-    )
+    return newStationDataList
+  }
+  mapData=()=>{
+    const { pvMonitorStation } = this.props;
+    const stationDataList = pvMonitorStation.stationDataList || [];
     let iconArray = [
       {
         "400": ['image://./img/wind-normal.png', 'image://./img/wind-alert.png'],
@@ -139,11 +117,48 @@ class PvStation extends React.Component {
         instantaneous: item.instantaneous
       })
     })
-
+    return data
+  }
+  render() {
+    //let { key, checked, stationType } = this.state;
+    const { pvMonitorStation } = this.props;
+    const stationDataSummary = pvMonitorStation.stationDataSummary || {};
+    const stationProvinceSummary = stationDataSummary.stationProvinceSummary || [];
+    const TabPane = Tabs.TabPane;
+    //状态 筛选
+    const operations = (
+      <div>
+        <Switch onChange={this.onHandleAlarm} />告警
+        <Radio.Group
+          defaultValue="all"
+          buttonStyle="solid"
+          onChange={this.onHandleStation}
+          style={{ margin: '0 30px 0 15px' }}
+        >
+          <Radio.Button value="all">全部</Radio.Button>
+          <Radio.Button value="normal">通讯正常  {this.statisticStatusNum().normalNum}<span></span></Radio.Button>
+          <Radio.Button value="dataInterruption">信息中断  {this.statisticStatusNum().dataInterruptionNum}</Radio.Button>
+          <Radio.Button value="unconnection">未接入  {this.statisticStatusNum().unconnectionNum}</Radio.Button>
+        </Radio.Group>
+      </div>
+    );
+    //省份电站数量
+    const province = (
+      <div className={styles.provinceStationTotal}>
+        {stationProvinceSummary.map((item, index) => {
+          return (
+            <div key={index} className={styles.provinceBox}>
+              <span>{item.provinceName}</span>
+              <span className={styles.fontColor}>{item.lightStationNum}&nbsp;&nbsp;</span>
+            </div>
+          )
+        })}
+      </div>
+    )  
     return (
       <div className={styles.pvStation}>
         <PvStationHeader {...this.props} />
-        <Tabs className={styles.smallTabs} activeKey={this.props.stationShowType} tabBarExtraContent={this.props.stationShowType !== 'stationMap' ? operations : province} onChange={this.setkey}>
+        <Tabs className={styles.containerTabs} activeKey={this.props.stationShowType} tabBarExtraContent={this.props.stationShowType !== 'stationMap' ? operations : province} onChange={this.setkey} animated={false}>
           <TabPane
             tab={
               <span>
@@ -152,7 +167,7 @@ class PvStation extends React.Component {
             }
             key="stationBlock"
           >
-            <PvStationItem {...this.props} stationDataList={newStationDataList} />
+            <PvStationItem {...this.props} stationDataList={this.statusDataList()} />
           </TabPane>
           <TabPane
             tab={
@@ -162,7 +177,7 @@ class PvStation extends React.Component {
             }
             key="stationList"
           >
-            <PvStationList {...this.props} stationDataList={newStationDataList} />
+            <PvStationList {...this.props} stationDataList={this.statusDataList()} />
           </TabPane>
           <TabPane
             tab={
@@ -172,7 +187,7 @@ class PvStation extends React.Component {
             }
             key="stationMap"
           >
-            <Map testId="pv_bmap_station" {...this.props} stationDataList={data} />
+            <Map testId="pv_bmap_station" {...this.props} stationDataList={this.mapData()} />
           </TabPane>
         </Tabs>
       </div>

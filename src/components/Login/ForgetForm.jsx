@@ -17,6 +17,7 @@ class ForgetForm extends Component{
     showResetPassword: PropTypes.number,
     error: PropTypes.object,
     changeLoginStore: PropTypes.func,
+    tmpAuthData: PropTypes.string,
   }
 
   constructor(props){
@@ -39,10 +40,12 @@ class ForgetForm extends Component{
   onResetPassword = () => {
     this.props.form.validateFields(['password','confirmPwd'], (err,values) => {
       if(!err){
+
         this.props.resetPassword({
           phoneNum: this.props.phoneNum,
           password: values.password,
           confirmPwd: values.confirmPwd,
+          tmpAuthData: this.props.tmpAuthData,
         });
       }
     })

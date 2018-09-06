@@ -9,7 +9,7 @@ import { commonAction } from '../../../../../constants/actionTypes/commonAction'
 class InspectDetail extends Component{
   static propTypes = {
     inspectDetail: PropTypes.object,
-    isFetching: PropTypes.bool,
+    loading: PropTypes.bool,
     inspectId: PropTypes.string,
     getInspectDetail: PropTypes.func,
     getDefectTypes: PropTypes.func,
@@ -118,7 +118,7 @@ class InspectDetail extends Component{
 }
 
 const mapStateToProps = (state) => ({
-  isFetching: state.operation.inspect.get('isFetching'),
+  loading: state.operation.inspect.get('loading'),
   inspectList: state.operation.inspect.get('inspectList'),
   error: state.operation.inspect.get('error'),
   inspectDetail: state.operation.inspect.get('inspectDetail'),
@@ -134,7 +134,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   getInspectDetail: params => dispatch({ type: ticketAction.GET_INSPECT_DETAIL_SAGA, params}),
   addInspectAbnormal: params => dispatch({ type: ticketAction.ADD_INSPECT_ABNORMAL_SAGA, params}),
-  getDefectTypes: params => dispatch({ type: ticketAction.GET_DEFECTTYPES_SAGA, params}),
+  getDefectTypes: params => dispatch({ type: ticketAction.GET_DEFECT_TYPE_SAGA, params}),
   transformDefect: params => dispatch({ type: ticketAction.TRANSFORM_DEFECT_SAGA, params}),
   setInspectCheck: params => dispatch({ type: ticketAction.SET_INSPECT_CHECK_SAGA, params}),
   finishInspect: params => dispatch({ type: ticketAction.FINISH_INSPECT_SAGA, params}),

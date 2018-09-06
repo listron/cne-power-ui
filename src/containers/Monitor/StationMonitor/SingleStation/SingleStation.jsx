@@ -35,6 +35,9 @@ class SingleStation extends Component {
   componentDidMount() {
     const { stationCode } = this.props.match.params;
     this.getData(stationCode);
+    this.props.getStationDeviceList({stationCode, deviceTypeCode: 203});//获取单电站气象站信息
+    this.props.getStationList({});
+    // 如果是从设备页面跳转过来的，定位到所在设备位置
     const main = document.getElementById('main');
     const locationSearch  = this.props.location.search;
     let appointDeviceCode = locationSearch.substr(locationSearch.indexOf('=')+1);
@@ -43,7 +46,7 @@ class SingleStation extends Component {
       this.props.changeSingleStationStore({deviceTypeCode: appointDeviceCode});
       main.scrollTo(0, 700);
     }else{
-      this.props.changeSingleStationStore({deviceTypeCode: 509});
+      this.props.changeSingleStationStore({deviceTypeCode: 206});
     }
   }
 
@@ -56,6 +59,7 @@ class SingleStation extends Component {
       this.getData(nextStation);
     }
     this.props.changeSingleStationStore({deviceTypeCode: nextProps.deviceTypeCode});
+    
   }
 
   componentWillUnmount(){
@@ -63,19 +67,15 @@ class SingleStation extends Component {
   }
 
   getData = (stationCode) => {
-    this.props.getStationList({});
+    
     this.props.getSingleStation({stationCode});
     this.props.getCapabilityDiagram({stationCode,startTime: moment().subtract(24, 'hours').utc().format(),endTime: moment().utc().format()});
     this.props.getMonitorPower({stationCode,intervalTime: 0, startTime: moment().set({'year': moment().year(), 'month': 0, 'date': 1, }).format('YYYY-MM-DD'), endTime: moment().format('YYYY-MM-DD')});
     this.props.getOperatorList({stationCode,roleId: '4,5'});
-    this.props.getWeatherList({stationCode});
     this.props.getAlarmList({stationCode});
     this.props.getWorkList({stationCode, startTime: moment().set({'hour': 0, 'minute': 0, 'second': 0, }).utc().format(), endTime: moment().utc().format()});
     this.props.getDeviceTypeFlow({stationCode});
-    this.props.getPvmoduleList({stationCode});
-    this.props.getInverterList({stationCode});
-    this.props.getBoxTransformerList({stationCode});
-    this.props.getStationDeviceList({stationCode, deviceTypeCode: 203});
+    
     this.timeOutId = setTimeout(()=>{
       this.getData(stationCode);
     },10000);

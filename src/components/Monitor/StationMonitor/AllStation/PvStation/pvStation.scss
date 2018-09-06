@@ -1,7 +1,6 @@
 
 .pvStation{
   background: #fff;
-  height: 100%;
   display: flex;
   flex:1;
   flex-direction: column;
@@ -26,6 +25,11 @@
   .ant-radio-button-wrapper:hover, .ant-radio-button-wrapper-focused{
     color: #199475;
   }
+  .ant-tabs.ant-tabs-top.ant-tabs-line{
+    display: flex;
+    flex:1;
+    flex-direction: column;  
+  }  
   .ant-tabs-extra-content {
     line-height: 48px;
   }
@@ -56,7 +60,7 @@
     width: 0;
     height: 0;
   }
-   width: 100%;
+   //width: 100%;
    //tableList的头部宽高
    .ant-table .ant-table-thead > tr > th, .ant-table .ant-table-tbody > tr > td {
     padding: 0px 12px;
@@ -64,7 +68,7 @@
     line-height: 30px;
    }
   }
-  .smallTabs{
+  .containerTabs{
     :global{
       .ant-tabs-bar{
         border:none;
@@ -75,7 +79,25 @@
         border-color: #199475;
         color: #fff;
         margin: 0;
+        
       }
+      .ant-tabs-content.ant-tabs-content-animated{
+        display: flex;
+        flex:1;
+        flex-direction: column;
+      }
+      .ant-tabs-tabpane.ant-tabs-tabpane-inactive{
+
+        max-height: 0;
+      } 
+      .ant-tabs-tabpane.ant-tabs-tabpane-active{
+     
+        display: flex;
+        flex:1;
+       
+      }  
+
+      
     }
   }
   .provinceStationTotal{
@@ -94,7 +116,7 @@
     border-bottom: 1px dashed #dfdfdf;
     height: 100px;
     display: flex;
-    flex:1;
+    // flex:1;
     .typeIcon{
       width: 120px;
       display: flex;
@@ -187,13 +209,20 @@
       }
     }
   }
-  .stationCardContainer {   
+  .stationCardContainer {  
+    :global{
+      .ant-progress-outer{
+        height: 28px;
+      }
+    } 
     display: flex;
     flex-direction: row;
     flex: 1;
     flex-wrap: wrap;
+    align-self: flex-start;
+
     .stationCard {
-      margin: 20px 0 10px 20px;
+      margin: 20px 0 0 24px;
       padding: 8px;
       width: 215px;
       height: 132px;
@@ -212,11 +241,12 @@
         color: #199475;
       }
       i{
+        font-size: 14px;
         color:#e08031;
       }
     }
     .stationTest{
-      margin: 20px 0 10px 20px;
+      margin: 20px 0 0 24px;
       padding: 8px;
       width: 215px;
       height: 132px;
@@ -226,17 +256,16 @@
       flex-direction: column;
       background:#f8f8f8;
       box-shadow:0 1px 4px 0 rgba(0,0,0,0.20);
-      //
       cursor: default;
       opacity: 0.6;
       a{
         pointer-events: none;
         text-decoration: none;
         color: #999;
-      }
-        
+      }      
     }
     .stationCardTitle {
+      height: 26px;
       flex: 1;
       display: flex;
       flex-direction: row;
@@ -246,37 +275,38 @@
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-      }
-     
+      }   
     }
     .stationCardProgress {
+      height: 10px;
       flex: 1;
       display: flex;
       justify-content: center;
       align-items: center;
       flex-direction: row;
     }
-    .stationCardValue {
+    .stationCardValue,.stationCardEquipmentNum  {
+      height: 26px;
       flex: 1;
       display: flex;
       flex-direction: row;
       justify-content: space-between;
+    }  
+    .stationCardWindSpeed {
+      height: 26px;
+      flex: 1;
     }
    
-    .stationCardWindSpeed {
-      flex: 1;
-    }
-    .stationCardEquipmentNum {
-      flex: 1;
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-    }
     .stationWarning {
-      color: red;
+      i{
+        font-size: 14px;
+        color:#a42b2c;
+      }
+      color:#a42b2c;
     }
   }
   .PvStationList{ 
+   flex:1;
     display: flex;
     flex-direction: column;
     a{
@@ -284,7 +314,7 @@
       color:rgba(0, 0, 0, 0.65);
     }
     .pagination{
-      flex:1;
+      //flex:1;
       height: 45px;
       display: flex;
       justify-content: flex-end;
@@ -331,7 +361,8 @@
     }
     .progressInfo{
       .progressData{
-        width: 220px;
+        //width: 220px;
+        padding-right: 16px;
         height: 40px;
         display: flex;
         flex-direction: column;

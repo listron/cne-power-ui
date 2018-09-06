@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import Cookie from 'js-cookie';
+import styles from './defectList.scss';
 import { ticketAction } from '../../../../../constants/actionTypes/operation/ticketAction';
 import DefectTable from '../../../../../components/Operation/Ticket/Defect/DefectTable/DefectTable';
 import DefectFilter from '../../../../../components/Operation/Ticket/Defect/DefectFilter/DefectFilter';
@@ -15,19 +17,19 @@ class DefectList extends Component {
     showTab: PropTypes.string,
     total: PropTypes.number,
     defectStatusStatistics: PropTypes.object,
-    isFetching: PropTypes.bool,
+    loading: PropTypes.bool,
     error: PropTypes.object,
     status: PropTypes.string,
     getDefectList: PropTypes.func,
-    setDefectId: PropTypes.func,
     onBatchDelete: PropTypes.func,
     onBatchSend: PropTypes.func,
     onBatchReject: PropTypes.func,
     onBatchClose: PropTypes.func,
     onBatchCheck: PropTypes.func,
-    onChangeSelectRows: PropTypes.func,
     onChangeShowContainer: PropTypes.func,
     getDefectDetail: PropTypes.func,
+    changeDefectStore: PropTypes.func,
+    getDefectType: PropTypes.func,
   };
   constructor(props,context) {
     super(props);
@@ -45,6 +47,9 @@ class DefectList extends Component {
         sort: this.props.sort
       }
       this.props.getDefectList(params);
+      this.props.getDefectType({
+        stationType: 2//全部
+      }); 
     }
   }
 
@@ -135,7 +140,7 @@ class DefectList extends Component {
         defectId
       });
     }else{
-      this.props.setDefectId(defectId);
+      this.props.changeDefectStore({defectId});
       this.props.onChangeShowContainer({container: 'detail'});
     }
   }
@@ -145,16 +150,10 @@ class DefectList extends Component {
 
   render() {
     return (
-      <div>
+      <div className={styles.defectList}>
         <DefectFilter {...this.props} />
         <DefectTable 
-          list={this.props.defectList} 
-          pageNum={this.props.pageNum}
-          pageSize={this.props.pageSize}
-          total={this.props.total}
-          defectStatusStatistics={this.props.defectStatusStatistics}
-          status={this.props.status}
-          isFetching={this.props.isFetching}
+          {...this.props} 
           onAdd={this.onAdd}
           onChangePage={this.onChangePage}
           onChangePageSize={this.onChangePageSize}
@@ -166,8 +165,7 @@ class DefectList extends Component {
           onReject={this.onBatchReject}
           onClose={this.onBatchClose}
           onCheck={this.onBatchCheck}
-          selectedRowKeys={this.props.selectedRowKeys}
-          onChangeSelectRows={this.props.onChangeSelectRows} />
+           />
       </div>
     );
   }
@@ -176,7 +174,7 @@ class DefectList extends Component {
 const mapStateToProps = (state) => ({
   defectList: state.operation.defect.get('defectList'),
   defectStatusStatistics: state.operation.defect.get('defectStatusStatistics'),
-  isFetching: state.operation.defect.get('isFetching'),
+  loading: state.operation.defect.get('loading'),
   error: state.operation.defect.get('error'),
   total: state.operation.defect.get('total'),
   selectedRowKeys: state.operation.defect.get('selectedRowKeys').toJS(),
@@ -193,24 +191,24 @@ const mapStateToProps = (state) => ({
   createTimeEnd: state.operation.defect.get('createTimeEnd'),	 
   deviceTypeCode: state.operation.defect.get('deviceTypeCode'),	 
   defectTypeCode: state.operation.defect.get('defectTypeCode'),
+  defectTypes: state.operation.defect.get('defectTypes'),
   sort: state.operation.defect.get('sort'),
   selfDefect: state.operation.defect.get('selfDefect'),
-  userName: state.common.get('userName'), 
-  stations: state.common.get('stations').toJS(),
-  deviceTypes: state.common.get('stationDeviceTypes').toJS(),
+  userName: Cookie.get('username'), 
+  stations: state.common.get('stations'),
+  deviceTypes: state.common.get('deviceTypes'),
 });
 
 const mapDispatchToProps = (dispatch) => ({
   changeDefectStore: payload => dispatch({type:ticketAction.CHANGE_DEFECT_STORE_SAGA, payload}),
-  getDefectList: params => dispatch({ type: ticketAction.GET_DEFECT_LIST_SAGA, params }),
-  setDefectId: params => dispatch({ type: ticketAction.SET_DEFECT_ID_SAGA, params }),
-  onBatchDelete: params => dispatch({ type: ticketAction.DELETE_BATCH_DEFECT_SAGA, params }),
-  onBatchSend: params => dispatch({ type: ticketAction.SEND_BATCH_DEFECT_SAGA, params }),
-  onBatchReject: params => dispatch({ type: ticketAction.REJECT_BATCH_DEFECT_SAGA, params }),
-  onBatchClose: params => dispatch({ type: ticketAction.CLOSE_BATCH_DEFECT_SAGA, params }),
-  onBatchCheck: params => dispatch({ type: ticketAction.CHECK_BATCH_DEFECT_SAGA, params }),
-  onChangeSelectRows: params => dispatch({ type: ticketAction.SET_SELECTED_DEFECT_SAGA, params }),
-  getDefectDetail: params => dispatch({ type: ticketAction.GET_DEFECT_DETAIL_SAGA, params }),
+  getDefectList: payload => dispatch({ type: ticketAction.GET_DEFECT_LIST_SAGA, payload }),
+  getDefectType: payload => dispatch({ type: ticketAction.GET_DEFECT_TYPE_SAGA, payload }),
+  onBatchDelete: payload => dispatch({ type: ticketAction.DELETE_BATCH_DEFECT_SAGA, payload }),
+  onBatchSend: payload => dispatch({ type: ticketAction.SEND_BATCH_DEFECT_SAGA, payload }),
+  onBatchReject: payload => dispatch({ type: ticketAction.REJECT_BATCH_DEFECT_SAGA, payload }),
+  onBatchClose: payload => dispatch({ type: ticketAction.CLOSE_BATCH_DEFECT_SAGA, payload }),
+  onBatchCheck: payload => dispatch({ type: ticketAction.CHECK_BATCH_DEFECT_SAGA, payload }),
+  getDefectDetail: payload => dispatch({ type: ticketAction.GET_DEFECT_DETAIL_SAGA, payload }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DefectList);

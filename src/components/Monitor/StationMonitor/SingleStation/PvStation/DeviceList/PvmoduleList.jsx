@@ -8,12 +8,39 @@ import classnames from 'classnames';
 class PvmoduleList extends Component {
   static propTypes = {
     pvmoduleList: PropTypes.array,
+    match: PropTypes.object,
+    getPvmoduleList: PropTypes.func,
   }
 
   constructor(props){
     super(props);
   }
-  
+  componentDidMount(){
+    const { stationCode } = this.props.match.params;
+    this.getData(stationCode);
+  }
+
+  componentWillReceiveProps(nextProps){
+    const { stationCode } = this.props.match.params;
+    const nextParams = nextProps.match.params;
+    const nextStation = nextParams.stationCode;
+    if( nextStation !== stationCode ){
+      clearTimeout(this.timeOutId);
+      this.getData(nextStation);
+    }
+  }
+
+  componentWillUnmount(){
+    clearTimeout(this.timeOutId);
+  }
+
+  getData = (stationCode) => {
+    this.props.getPvmoduleList({stationCode});
+    this.timeOutId = setTimeout(()=>{
+      this.getData(stationCode);
+    }, 10000);
+  }
+
   render(){
     const { pvmoduleList } = this.props;
     const pvmoduleListSet = new Set(pvmoduleList);

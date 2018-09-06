@@ -16,6 +16,10 @@ class ALarmSingleStationStatistic extends React.Component {
     stations: PropTypes.object,
     showPage: PropTypes.string,
     singleStationCode: PropTypes.string,
+    pageSize: PropTypes.number,
+    pageNum: PropTypes.number,
+    orderField: PropTypes.string,
+    orderCommand: PropTypes.string,
     startTime: PropTypes.string,
     endTime: PropTypes.string,
     singleAlarmSummary: PropTypes.object,
@@ -34,34 +38,46 @@ class ALarmSingleStationStatistic extends React.Component {
   }
 
   componentDidMount() {
-    const { singleStationCode, summaryType } = this.props;
+    const { singleStationCode, summaryType, pageSize, pageNum, orderField, orderCommand } = this.props;
     this.props.getSingleStationAlarmStatistic({
       stationCode: singleStationCode,
       startTime: moment().subtract(30, 'days').utc().format(),
       endTime: moment().utc().format(),
-      summaryType
+      summaryType,
+      pageSize,
+      pageNum,
+      orderField,
+      orderCommand
     });
   }
 
   componentWillReceiveProps(nextProps) {
-    const { startTime, endTime, summaryType, singleStationCode } = nextProps;
+    const { startTime, endTime, summaryType, singleStationCode, pageSize, pageNum, orderField, orderCommand } = nextProps;
     if(singleStationCode !== this.props.singleStationCode) {
       this.props.getSingleStationAlarmStatistic({
         stationCode: singleStationCode,
         startTime: startTime,
         endTime: endTime,
-        summaryType
+        summaryType,
+        pageSize,
+        pageNum,
+        orderField,
+        orderCommand
       });
     }
   }
 
   onChangeFilter = (obj) => {
-    const { singleStationCode, startTime, endTime, summaryType } = this.props;
+    const { singleStationCode, startTime, endTime, summaryType, pageSize, pageNum, orderField, orderCommand } = this.props;
     let filter = {
       stationCode: singleStationCode,
       startTime,
       endTime,
-      summaryType
+      summaryType,
+      pageSize,
+      pageNum,
+      orderField,
+      orderCommand
     }
     let newFiter = Object.assign({}, filter, obj);
     this.props.getSingleStationAlarmStatistic(newFiter);
@@ -77,8 +93,32 @@ class ALarmSingleStationStatistic extends React.Component {
     });
   }
 
-  onChangeTab = (activekey) => {
-    this.setState({ key: activekey });
+  onChangeTab = (key) => {
+    this.setState({ key });
+    const { singleStationCode, startTime, endTime, summaryType, pageSize, pageNum, orderField, orderCommand } = this.props;
+    if(key === 'graph') {
+      this.props.getSingleStationAlarmStatistic({
+        stationCode: singleStationCode,
+        startTime,
+        endTime,
+        summaryType,
+        pageSize: null,
+        pageNum: null,
+        orderField: '',
+        orderCommand: ''
+      });
+    } else if(key === 'table') {
+      this.props.getSingleStationAlarmStatistic({
+        stationCode: singleStationCode,
+        startTime,
+        endTime,
+        summaryType,
+        pageSize: pageSize!==null?pageSize:10,
+        pageNum: pageNum!==null?pageNum:1,
+        orderField: orderField!==''?orderField:'',
+        orderCommand: orderField!==''?orderCommand:''
+      });
+    }
   }
 
   onChangeDuration = (value) => {
@@ -107,6 +147,22 @@ class ALarmSingleStationStatistic extends React.Component {
     }
   }
 
+  onCalendarChange = (dates) => {
+    if (dates.length === 1) {
+      this.start = dates[0].format('YYYY-MM-DD');
+    } else {
+      this.start = null;
+    }
+  }
+  disabledDate = (current) => {
+    if(this.start) {
+      const end = moment(this.start).add(30, 'days');
+      return current > moment.min(moment().endOf('day'), end);
+    } else {
+      return current && current > moment().endOf('day')
+    }
+  }
+
   hideStationChange = () => {
     this.setState({
       showStationSelect: false
@@ -127,8 +183,8 @@ class ALarmSingleStationStatistic extends React.Component {
           </div>
           
           <div className={styles.stationStatus}>
-            {`电站状态：${singleAlarmSummary.stationStatusName}`}
-            {singleAlarmSummary.stationStatus===0&&`时间：${singleAlarmSummary.interruptTime}`}
+            <div className={styles.status}>{`电站状态：${singleAlarmSummary.stationStatusName?singleAlarmSummary.stationStatusName:'- -'}`}</div>
+            <div>{singleAlarmSummary.stationStatus==='500'&&`时间：${singleAlarmSummary.interruptTime}`}</div>
           </div>
         </div>
         <Link to="/monitor/alarm/statistic"><Icon type="arrow-left" className={styles.backIcon} onClick={this.onClose} /></Link>
@@ -140,8 +196,8 @@ class ALarmSingleStationStatistic extends React.Component {
     const { showTimeSelect } = this.state;
     return (
       <div className={styles.filter}>
-        <div>筛选条件</div>
-        <Select className={styles.duration} defaultValue="last30" style={{ width: 120 }} onChange={this.onChangeDuration}>
+        <div className={styles.label}>筛选条件</div>
+        <Select className={styles.duration} dropdownClassName={styles.dropdownMenu} defaultValue="last30" style={{ width: 120 }} onChange={this.onChangeDuration}>
           <Option value="today">今天</Option>
           <Option value="yesterday">昨天</Option>
           <Option value="last7">最近7天</Option>
@@ -151,7 +207,10 @@ class ALarmSingleStationStatistic extends React.Component {
         {showTimeSelect&&
           <RangePicker
             showTime={false}
-            format="YYYY-MM-DD HH:mm"
+            disabledDate={this.disabledDate}
+            onCalendarChange={this.onCalendarChange}
+            format="YYYY-MM-DD"
+            format="YYYY-MM-DD"
             placeholder={['Start Time', 'End Time']}
             onChange={this.onChangeTime}
           />
@@ -193,7 +252,7 @@ class ALarmSingleStationStatistic extends React.Component {
   renderContent() {
     const { key } = this.state;
     return (
-      <Tabs activeKey={key} onChange={this.onChangeTab}>
+      <Tabs activeKey={key} onChange={this.onChangeTab} className={styles.tabContainer} animated={false}>
         <TabPane
           tab={<i className="iconfont icon-grid"></i>}
           key="graph"

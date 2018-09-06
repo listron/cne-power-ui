@@ -82,16 +82,18 @@ function *userNameLogin(action){
         data.expires_in && Cookie.set('expireData', moment().add(data.expires_in, 'seconds'));
         data.refresh_token && Cookie.set('refresh_token', data.refresh_token);
         Cookie.set('isNotLogin', 0);
+        data.auto && Cookie.set('auto', data.auto);
 
         data.rightMenu && localStorage.setItem('rightMenu', data.rightMenu); // 权限信息存储
         data.right && localStorage.setItem('rightHandler', data.right); // 权限信息存储
         
-        if(data.auto === '1'){//导入用户/生成用户 无密码
+        if(data.auto === '1'){//导入用户/生成用户 需完善密码
           yield put({ 
             type: loginAction.CHANGE_LOGIN_STORE_SAGA, 
             params: {
-              joinStep: 3,
               importUser: true,
+              pageTab: 'joinIn',
+              joinStep: 3,
             }
           })
           yield put({
@@ -103,16 +105,14 @@ function *userNameLogin(action){
           yield put({
             type: commonAction.CHANGE_COMMON_STORE_SAGA,
             payload: { ...defaultTopMenu },
-          })
-          action.params.history.push('/station/monitor');
+          });
+          // action.params.history.push('/monitor/station');
         }
-        
       } else {
         yield put({ type: loginAction.CHANGE_LOGIN_STORE_SAGA, params});
         if(data.userEnterpriseStatus){
           yield put({ type: loginAction.CHANGE_LOGIN_STORE_SAGA, params: {userEnterpriseStatus: data.userEnterpriseStatus}})
         }
-        // message.error(data.userEnterpriseStatus); 
       }
     } else{
       yield put({ type: loginAction.USER_NAME_LOGIN_FAIL, data: response.data }); 
@@ -157,7 +157,7 @@ function *phoneCodeLogin(action){
     if(response.data.code === '10000'){
       const { data } = response.data;
       if(data.userEnterpriseStatus === 3) {
-        if(params.isNotLogin === 1 || data.enterpriseId !== null) {
+        if(params.isNotLogin === 1 || (data.auto==='0' && data.enterpriseId!==null)) {//非登录/正常用户
           data.access_token && Cookie.set('authData',JSON.stringify(data.access_token));
           data.enterpriseId && Cookie.set('enterpriseId', data.enterpriseId);
           data.enterpriseName && Cookie.set('enterpriseName', data.enterpriseName);
@@ -168,23 +168,31 @@ function *phoneCodeLogin(action){
           data.expires_in && Cookie.set('expireData', moment().add(data.expires_in, 'seconds'));
           data.refresh_token && Cookie.set('refresh_token', data.refresh_token);
           Cookie.set('isNotLogin', action.params.isNotLogin);
+          data.auto && Cookie.set('auto', data.auto);
 
           data.rightMenu && localStorage.setItem('rightMenu', data.rightMenu); // 权限信息存储
           data.right && localStorage.setItem('rightHandler', data.right); // 权限信息存储
         }
-        if(data.auto === '1'){
-          yield put({ type: loginAction.CHANGE_LOGIN_STORE_SAGA, params: {importUser: true}})
-        }else if(data.auto === '0'){
-          if(params.isNotLogin === 0 && data.enterpriseId !== null) {
-            params.history.push('/station/monitor');
-          }
-          yield put({
-            type: loginAction.PHONE_CODE_LOGIN_SUCCESS,
-            params, //params为请求传入的值
-            data, //data为API返回的值
+        
+        if(data.auto==='1'){//auto为1重置密码
+          message.error('请完善密码！');
+          yield put({ 
+            type: loginAction.CHANGE_LOGIN_STORE_SAGA, 
+            params: {
+              importUser: true,
+              pageTab: 'joinIn',
+              joinStep: 3,
+            }
           });
         }
-        
+        // else if(data.auto==='0' && data.enterpriseId!==null){//正常用户 直接登录
+        //   params.history.push('/monitor/station');
+        // }
+        yield put({
+          type: loginAction.PHONE_CODE_LOGIN_SUCCESS,
+          params, //params为请求传入的值
+          data, //data为API返回的值
+        });
       } else {
         yield put({ type: loginAction.CHANGE_LOGIN_STORE_SAGA, params });
         if(data.userEnterpriseStatus){
@@ -192,11 +200,6 @@ function *phoneCodeLogin(action){
         }
         // message.error(data.userEnterpriseStatus);
       }
-      //获取token成功
-      yield put({
-        type: loginAction.PHONE_CODE_REGISTER_SUCCESS,
-        params,
-      });
     }else{
       yield put({ type: loginAction.PHONE_CODE_LOGIN_FAIL, data: response.data });
       yield put({
@@ -222,10 +225,8 @@ function *phoneCodeRegister(action){
     });
     if(response.data.code === '00000' || response.data.code === '20001'){
       yield put({type: loginAction.PHONE_CODE_REGISTER_FAIL, data: response.data});
-      message.error(response.data.message);
     }else{
       yield put({type: loginAction.PHONE_CODE_LOGIN_SAGA, params});
-      // message.success(response.data.message);
     }
   }catch(e){
     console.log(e);
@@ -404,10 +405,15 @@ function *resetPassword(action){
   const url = Path.basePaths.APIBasePath + Path.APISubPaths.resetPassword;
   yield put({type: loginAction.LOGIN_FETCH});
   try{
+    const tmpAuthData = params.tmpAuthData || '';
+    const tmpAuthorization = `bearer ${tmpAuthData}`;
     const response = yield call(axios, {
       method: 'post',
       url,
-      headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'},
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+        Authorization: tmpAuthorization
+      },
       data: stringify({
         'grant_type': "password",
         confirmPwd: params.confirmPwd,
@@ -416,9 +422,12 @@ function *resetPassword(action){
       }),
     });
     if(response.data.code === "10000"){
-      message.success('密码设置成功，请重新登录！')
+      message.success('密码设置成功，请重新登录！');
+      yield put({type: loginAction.CHANGE_LOGIN_STORE_SAGA, params:{pageTab: 'login'}});
+      
     }else{
-      yield put({ type: loginAction.RESET_PASSWORD_FAIL, data: response.data })
+      yield put({ type: loginAction.RESET_PASSWORD_FAIL, data: response.data });
+      message.error('设置失败！');
     }
   }catch(e){
     console.log(e);

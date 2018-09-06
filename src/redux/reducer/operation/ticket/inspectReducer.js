@@ -7,7 +7,7 @@ var initState = Immutable.fromJS({
 
   stationType: '2',    //	电站类型(0:风电，1光伏，2：全部)
   stationCodes: '',    // 电站编码，所有为空字符串
-  timeInterval: '0',   //	String	是	时间段（0：全部，1：今天，2：近三天，3：一周内，4：一个月）
+  timeInterval: '0',   //	String	是	时间段（0：全部，1：今天，2：近三天，3：一周内，4：一个月）app参数，web写死全部
   status:'5',          //	String	是	工单状态代码状态（0：待提交:1：待审核、2：执行中、3：待验收、4：已完成、5：所有）
   pageNum: 1,          //	Int	否	页号
   pageSize: 10,        //	Int	否	每页记录数
@@ -18,7 +18,7 @@ var initState = Immutable.fromJS({
   hasAbnormal: false,  // boolean 默认所有(=>不仅仅是异常)
   selfDefect: false,   // boolean 默认所有人的(->不只是我参与的)缺陷
   
-  isFetching: false,
+  loading: false,
   error: {
     code: '',
     message: ''
@@ -49,7 +49,7 @@ var initState = Immutable.fromJS({
 const inspectReducer = (state = initState, action) => {
   switch (action.type) {
     case ticketAction.TICKET_FETCH:
-      return state.set('isFetching', true);
+      return state.set('loading', true);
     case ticketAction.CHANGE_INSPECT_STORE :
       return state.merge(Immutable.fromJS(action.payload))
     case ticketAction.GET_INSPECT_COMMON_FETCH_SUCCESS :
@@ -57,7 +57,7 @@ const inspectReducer = (state = initState, action) => {
     case ticketAction.CLEAR_INSPECT_STATE:
       return initState;
     // case ticketAction.GET_INSPECT_LIST_SUCCESS:
-    //   return state.set('isFetching', false)
+    //   return state.set('loading', false)
     //               .set('inspectList', Immutable.fromJS(action.data.inspectList))
     //               .set('pageNum', action.params.pageNum + 1)
     //               .set('pageSize', action.params.pageSize)
@@ -68,11 +68,11 @@ const inspectReducer = (state = initState, action) => {
     case ticketAction.SET_INSPECT_ID:
       return state.set('inspectId', action.data);
     case ticketAction.GET_INSPECT_DETAIL_SUCCESS:
-      return state.set('isFetching', false)
+      return state.set('loading', false)
                   .set('inspectDetail', Immutable.fromJS(action.data))
                   .set('inspectId', action.params.inspectId);
     case ticketAction.GET_INSPECT_STANDARD_SUCCESS:
-      return state.set('isFetching', false)
+      return state.set('loading', false)
                   .set('inspectStandard', Immutable.fromJS(action.data.data));
     case ticketAction.GET_INSPECT_LIST_FAIL:
     case ticketAction.GET_INSPECT_DETAIL_FAIL:

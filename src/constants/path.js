@@ -141,7 +141,7 @@ export default {
       getRelieveInfo: '/v3/alarm/getrelievealarm', //屏蔽详情
       transferAlarm: '/v3/alarm',//告警转工单
       relieveAlarm: '/v3/alarm/relievealarm',//屏蔽告警
-      resetRelieveAlarm: '/v3/alarm/relievealarm',//取消屏蔽告警
+      resetRelieveAlarm: '/v3/alarm/delrelievealarm',//取消屏蔽告警
     },
     other: {
       editPassword: '/v3/user/password', // 更变密码

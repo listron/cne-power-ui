@@ -133,7 +133,6 @@ class RealTimeFilteredItems extends Component {
       </div>
     );
   }
-
 }
 
 export default RealTimeFilteredItems;

@@ -1,38 +1,34 @@
 import React from "react";
 import PropTypes from "prop-types";
 import styles from './pvStation.scss';
-import { Progress } from "antd";
+import { Progress,message } from "antd";
 import { Link } from 'react-router-dom';
-import WarningTip from '../../../../Common/WarningTip';
+
 class PvStationItem extends React.Component {
   static propTypes = {
     stationDataList: PropTypes.array,
   }
   constructor(props, context) {
     super(props, context)
-    this.state = {
-      showWarningTip: false
-    }
+    
   }
-  confirmWarningTip = () => {
-    this.setState({
-      showWarningTip: false,
-    })
-  }
+  
   showTip = () => {
-    this.setState({
-      showWarningTip: true,
-    })
+    message.config({
+      top: 300,
+      duration: 2,
+      maxCount: 3,
+    });
+    message.warning('电站未接入,无法查看详情',2);
+    
 
   }
   render() {
     const { stationDataList } = this.props;
-    const { showWarningTip } = this.state;
-
+   
     return (
-
       <div className={styles.stationCardContainer}>
-        {showWarningTip && <WarningTip onOK={this.confirmWarningTip} value={'电站未接入,无法查看详情'} />}
+       
         {
           stationDataList.map((item, index) => {
             const stationStatus = item.stationStatus || {};
@@ -43,8 +39,6 @@ class PvStationItem extends React.Component {
             const stationUnitCount = item.stationUnitCount || '--';
             return (
               <div className={stationStatus.stationStatus === '900' ? styles.stationTest : styles.stationCard} key={index} onClick={this.showTip}>
-
-
                 <Link to={`/monitor/singleStation/${item.stationCode}`} key={item.stationCode}>
                   <div className={styles.stationCardTitle}>
                     <div className={styles.stationName}>{stationName}</div>
@@ -68,11 +62,9 @@ class PvStationItem extends React.Component {
                 </div>
               </div>
             )
-
           })
         }
       </div>
-
     )
   }
 }

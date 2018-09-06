@@ -37,7 +37,7 @@ class EditForm extends Component {
           specialRoleId: values.specialRoleId.join(','),
           userFullName: values.userFullName,
           username: values.username,
-          userLogo: userDetail.get('userLogo'),
+          userLogo: this.props.userLogo,
           userId: userDetail.get('userId'),
         })
         this.props.changeUserStore({

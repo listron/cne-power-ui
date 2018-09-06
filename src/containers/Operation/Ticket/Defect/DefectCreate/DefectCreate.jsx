@@ -66,7 +66,7 @@ class DefectCreate extends Component {
 const mapStateToProps = (state) => ({
     showContainer: state.operation.ticket.get('showContainer'),
     editNewDefect: state.operation.ticket.get('editNewDefect'),
-    isFetching: state.operation.defect.get('isFetching'),
+    loading: state.operation.defect.get('loading'),
     commonFetching: state.common.get('commonFetching'),
     stations: state.common.get('stations').toJS(),
     deviceTypes: state.common.get('stationDeviceTypes').toJS(),
@@ -80,11 +80,11 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  getStations: params => dispatch({ type: commonAction.GET_STATIONS_SAGA, params }),
-  getStationDeviceTypes: params => dispatch({ type: commonAction.GET_STATION_DEVICETYPES_SAGA, params }),
-  getDevices: params => dispatch({ type: commonAction.GET_DEVICES_SAGA, params }),
-  getDefectTypes: params => dispatch({ type: ticketAction.GET_DEFECTTYPES_SAGA, params }),
-  onDefectCreateNew: params => dispatch({type: ticketAction.DEFECT_CREATE_SAGA, params}),
+  getStations: payload => dispatch({ type: commonAction.GET_STATIONS_SAGA, payload }),
+  getStationDeviceTypes: payload => dispatch({ type: commonAction.GET_STATION_DEVICETYPES_SAGA, payload }),
+  getDevices: payload => dispatch({ type: commonAction.GET_DEVICES_SAGA, payload }),
+  getDefectTypes: payload => dispatch({ type: ticketAction.GET_DEFECT_TYPE_SAGA, payload }),
+  onDefectCreateNew: payload => dispatch({type: ticketAction.DEFECT_CREATE_SAGA, payload}),
 });
 
 
