@@ -98,6 +98,10 @@ class AlarmStatisticGraph extends React.Component {
         //data: ['电站1', '电站2', '电站3', '电站4', '电站5', '电站6', '电站7']
         data: stationNameData,
       },
+      // dataZoom: {
+      //   type: 'slide',
+      //   show: stationNameData && stationNameData.length > 30,        
+      // },
       series: [
         {
           name: '平均处理时间',

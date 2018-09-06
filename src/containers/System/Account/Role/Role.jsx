@@ -58,7 +58,7 @@ class Role extends Component {
   }
 }
 const mapStateToProps = (state) => ({
-  isFetching: state.system.role.get('isFetching'),
+  loading: state.system.role.get('loading'),
   showPage: state.system.role.get('showPage'),
   roleData: state.system.role.get('roleData').toJS(),
   menuData: state.system.role.get('menuData').toJS(),

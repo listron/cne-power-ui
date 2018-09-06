@@ -9,8 +9,7 @@ class WindStationItem extends React.Component {
     stationDataList: PropTypes.array,
   }
   constructor(props, context) {
-    super(props, context)
-    
+    super(props, context) 
   }
   
   showTip = () => {
@@ -27,7 +26,6 @@ class WindStationItem extends React.Component {
    
     return (
         <div className={styles.stationCardContainer}>
-      
         {
           stationDataList.map((item, index) => {
               const stationStatus = item.stationStatus || {};

@@ -14,7 +14,6 @@ class DefectTable extends Component {
     onChangeStatus: PropTypes.func,
     onChangePage: PropTypes.func,
     onChangePageSize: PropTypes.func,
-    onChangeSelectRows: PropTypes.func,
     onSorter: PropTypes.func,
     onShowDetail: PropTypes.func,
     onAdd: PropTypes.func,
@@ -23,18 +22,19 @@ class DefectTable extends Component {
     onReject: PropTypes.func,
     onClose: PropTypes.func,
     onCheck: PropTypes.func,
-    list: PropTypes.object,
+    defectList: PropTypes.object,
     pageNum: PropTypes.number,
     pageSize: PropTypes.number,
     total: PropTypes.number,
     defectStatusStatistics: PropTypes.object,
-    isFetching: PropTypes.bool,
+    loading: PropTypes.bool,
     status: PropTypes.string,
-    selectedRowKeys: PropTypes.array
+    selectedRowKeys: PropTypes.array,
+    changeDefectStore: PropTypes.func,
   }
 
   static defaultProps = {
-    list: Immutable.fromJS([]),
+    defectList: Immutable.fromJS([]),
     pageNum: 1
   }
 
@@ -112,7 +112,7 @@ class DefectTable extends Component {
     this.setState({
       currentSelectedStatus: status
     });
-    this.props.onChangeSelectRows(selectedRowKeys);
+    this.props.changeDefectStore(selectedRowKeys);
   }
 
   onChangeTable = (pagination, filters, sorter) => {
@@ -149,7 +149,7 @@ class DefectTable extends Component {
   }
 
   render() {
-    let list = this.props.list;
+    let defectList = this.props.defectList;
     let defectStatusStatistics = this.props.defectStatusStatistics;
     let waitSubmitNum = defectStatusStatistics.get('submitNum');
     let waitReviewNum = defectStatusStatistics.get('examineNum');
@@ -280,10 +280,10 @@ class DefectTable extends Component {
         <Table 
           rowKey={(record)=>{return record.defectId}} 
           rowSelection={rowSelection} 
-          dataSource={list.toJS()} 
+          dataSource={defectList.toJS()} 
           columns={columns} 
           pagination={pagination} 
-          loading={this.props.isFetching}
+          loading={this.props.loading}
           onChange={this.onChangeTable}
         />
       </div>
