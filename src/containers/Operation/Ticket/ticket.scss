@@ -1,15 +1,57 @@
+@import '../../../theme/theme.scss';
 .ticket {
   display: flex;
   flex-direction: column;
   flex: 1;
   min-height: 100%;
+  justify-content: space-between;
+  padding: 24px 24px 0;
+  background-color: #ececec;
   :global {
     .ant-tabs {
       display: flex;
       flex-direction: column;
-      .ant-tabs-tabpane {
+      flex: 1;
+      .ant-tabs-content {
         display: flex;
+        flex-direction: column;
+        flex: 1;
+        .ant-tabs-tabpane-active {
+          display: flex;
+          flex: 1
+        }
+        .ant-tabs-tabpane-inactive {
+          max-height: 0;
+        }
       }
-    }   
+    }
+    .ant-tabs-card {
+      .ant-tabs-bar{
+        margin-bottom: 0px;
+        border-bottom: none;
+        background-color: #f8f8f8;
+        .ant-tabs-nav {
+          display: flex;
+          flex-direction: row;
+          .ant-tabs-tab {
+            width: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: $darkColor;
+            background-color: #f8f8f8;
+            border: none;
+            border-right: 1px $promptColor solid;
+            margin-right: 0px;
+            border-radius: 0px;
+          }
+          .ant-tabs-tab-active {
+            background-color: #fff;
+            color: #000;
+            border-top: 2px $themeColor solid;
+          }
+        }
+      }
+    }  
   }
 }

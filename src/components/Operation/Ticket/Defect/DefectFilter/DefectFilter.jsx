@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {  Button, Switch, Icon } from 'antd';
+import {  Button, Switch, Icon, Radio } from 'antd';
 import DateFilter from './DateFilter';
 import StationTypeFilter from '../../../../Monitor/Alarm/AlarmFilter/StationTypeFilter';
 import StationFilter from '../../../../Monitor/Alarm/AlarmFilter/StationFilter';
@@ -9,6 +9,9 @@ import DefectLevelFilter from './DefectLevelFilter';
 import DefectTypeFilter from './DefectTypeFilter';
 import FilteredItems from './FilteredItems';
 import styles from './defectFilter.scss';
+
+const RadioButton = Radio.Button;
+const RadioGroup = Radio.Group;
 
 class DefectFilter extends Component {
   static propTypes = {
@@ -23,7 +26,9 @@ class DefectFilter extends Component {
     deviceTypeCode: PropTypes.string,
     defectTypeCode: PropTypes.string,
     selfDefect: PropTypes.bool,
+    status: PropTypes.string,
     onChangeFilter: PropTypes.func,
+    defectStatusStatistics: PropTypes.object
   }
 
   constructor(props) {
@@ -54,7 +59,11 @@ class DefectFilter extends Component {
   
   render() {
     const { showFilter } = this.state;
-    const { stations } = this.props;
+    const { stations, defectStatusStatistics } = this.props;
+    const waitSubmitNum = defectStatusStatistics.get('submitNum');
+    const waitReviewNum = defectStatusStatistics.get('examineNum');
+    const inProcessNum = defectStatusStatistics.get('executeNum');
+    const waitCheckNum = defectStatusStatistics.get('checkNum');
     return (
       <div className={styles.defectFilter}>
         <div className={styles.topSearch}>
@@ -90,6 +99,15 @@ class DefectFilter extends Component {
           {showFilter==='defecType' && <DefectTypeFilter {...this.props} />}
         </div>
         <FilteredItems {...this.props} />
+        <div>
+          <RadioGroup onChange={this.onChangeTab} defaultValue="5" value={this.props.status}>
+            <RadioButton value="5">全部</RadioButton>
+            <RadioButton value="0">{`待提交${waitSubmitNum}`}</RadioButton>
+            <RadioButton value="1">{`待审核${waitReviewNum}`}</RadioButton>
+            <RadioButton value="2">{`执行中${inProcessNum}`}</RadioButton>
+            <RadioButton value="3">{`待验收${waitCheckNum}`}</RadioButton>
+          </RadioGroup>
+        </div>
       </div>
     );
   }

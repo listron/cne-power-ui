@@ -4,7 +4,8 @@ import { connect } from 'react-redux';
 import {Tabs} from 'antd';
 import Defect from './Defect/Defect';
 import Inspect from './Inspect/Inspect';
- import { ticketAction } from '../../../constants/actionTypes/operation/ticketAction';
+import Footer from '../../../components/Common/Footer';
+import { ticketAction } from '../../../constants/actionTypes/operation/ticketAction';
 import styles from './ticket.scss';
 
 const TabPane = Tabs.TabPane;
@@ -57,7 +58,7 @@ class Ticket extends Component {
   render() {
     return (
       <div className={styles.ticket}>
-        <Tabs activeKey={this.state.tab} onChange={this.onChangeTab}>
+        <Tabs activeKey={this.state.tab} onChange={this.onChangeTab} type="card">
           <TabPane tab="缺陷" key="defect">
             <Defect showTab={this.state.tab} showContainer={this.props.showContainer} onChangeShowContainer={this.props.onChangeShowContainer} />
           </TabPane>
@@ -65,6 +66,7 @@ class Ticket extends Component {
             <Inspect showTab={this.state.tab} showContainer={this.props.showContainer} onChangeShowContainer={this.props.onChangeShowContainer}  />
           </TabPane>
         </Tabs>
+        <Footer />
       </div>
     );
   }
