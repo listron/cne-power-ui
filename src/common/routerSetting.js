@@ -31,11 +31,6 @@ const routers = [
     component: Exception
   },
   {
-    path: '/login',
-    exact: true,
-    component: Login
-  },
-  {
     path: '/operation/ticket/list',
     exact: true,
     component: Ticket,
