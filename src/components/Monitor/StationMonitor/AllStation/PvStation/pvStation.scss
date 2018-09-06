@@ -347,7 +347,8 @@
     }
     .progressInfo{
       .progressData{
-        width: 220px;
+        //width: 220px;
+        padding-right: 16px;
         height: 40px;
         display: flex;
         flex-direction: column;

@@ -66,7 +66,7 @@ class PvStation extends React.Component {
     }
   }
   statusDataList=()=>{
-    let { key, checked, stationType } = this.state;
+    let { checked, stationType } = this.state;
     const { pvMonitorStation } = this.props;
     const stationDataList = pvMonitorStation.stationDataList || [];
     const newStationDataList = stationDataList.filter(e => {
@@ -149,7 +149,7 @@ class PvStation extends React.Component {
           return (
             <div key={index} className={styles.provinceBox}>
               <span>{item.provinceName}</span>
-              <span className={styles.fontColor}>{item.windStationNum}&nbsp;&nbsp;</span>
+              <span className={styles.fontColor}>{item.lightStationNum}&nbsp;&nbsp;</span>
             </div>
           )
         })}
