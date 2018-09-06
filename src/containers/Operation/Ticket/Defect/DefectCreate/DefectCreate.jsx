@@ -13,7 +13,7 @@ class DefectCreate extends Component {
     deviceTypes: PropTypes.array,
     defectTypes: PropTypes.array,
     getStations: PropTypes.func,
-    editNewDefect: PropTypes.bool,
+    showContainer: PropTypes.string,
     showContainer: PropTypes.string,
     defectDetail: PropTypes.object,
     getStationDeviceTypes: PropTypes.func,
@@ -27,11 +27,11 @@ class DefectCreate extends Component {
     }
   } 
   componentDidMount(){
-    const { editNewDefect } = this.props;
+    const { showContainer } = this.props;
     // this.props.getStations({
     //   enterpriseId: '1010694160817111040'//to do
     // });
-    if(editNewDefect){
+    if(showContainer === 'edit'){
       const { defectDetail } = this.props;
       const stationType = defectDetail.stationType;
       const stationCode = defectDetail.stationCode;
@@ -40,8 +40,8 @@ class DefectCreate extends Component {
     }
   } 
   componentWillReceiveProps(nextProps){
-    const { editNewDefect } = this.props;
-    if(editNewDefect && nextProps.stations.length > 0 && nextProps.deviceTypes.length > 0 && nextProps.defectTypes.length > 0){
+    const { showContainer } = this.props;
+    if(showContainer==='edit' && nextProps.stations.length > 0 && nextProps.deviceTypes.length > 0 && nextProps.defectTypes.length > 0){
       this.setState({
         editDataGet: true,
       })
@@ -65,7 +65,6 @@ class DefectCreate extends Component {
 
 const mapStateToProps = (state) => ({
     showContainer: state.operation.ticket.get('showContainer'),
-    editNewDefect: state.operation.ticket.get('editNewDefect'),
     loading: state.operation.defect.get('loading'),
     commonFetching: state.common.get('commonFetching'),
     stations: state.common.get('stations').toJS(),
