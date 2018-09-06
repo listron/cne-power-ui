@@ -34,7 +34,7 @@ class DefectLevelFilter extends Component {
       value: `${i+1}`
     }))
     return (
-      <div className={styles.defectLevelFilter}>
+      <div className={styles.filterItem}>
         <span onClick={this.resetLevel} className={defectLevel==='0'?styles.selected:styles.all}>不限</span>
         <CheckboxGroup options={levelOptions} value={defectLevel.split(',')} onChange={this.onLevelSelect} />
       </div>

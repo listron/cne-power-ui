@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Cookie from 'js-cookie';
+import styles from './defectList.scss';
 import { ticketAction } from '../../../../../constants/actionTypes/operation/ticketAction';
 import DefectTable from '../../../../../components/Operation/Ticket/Defect/DefectTable/DefectTable';
 import DefectFilter from '../../../../../components/Operation/Ticket/Defect/DefectFilter/DefectFilter';
@@ -28,6 +29,7 @@ class DefectList extends Component {
     onChangeShowContainer: PropTypes.func,
     getDefectDetail: PropTypes.func,
     changeDefectStore: PropTypes.func,
+    getDefectType: PropTypes.func,
   };
   constructor(props,context) {
     super(props);
@@ -45,6 +47,9 @@ class DefectList extends Component {
         sort: this.props.sort
       }
       this.props.getDefectList(params);
+      this.props.getDefectType({
+        stationType: 2//全部
+      }); 
     }
   }
 
@@ -145,7 +150,7 @@ class DefectList extends Component {
 
   render() {
     return (
-      <div>
+      <div className={styles.defectList}>
         <DefectFilter {...this.props} />
         <DefectTable 
           {...this.props} 
@@ -197,6 +202,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   changeDefectStore: payload => dispatch({type:ticketAction.CHANGE_DEFECT_STORE_SAGA, payload}),
   getDefectList: payload => dispatch({ type: ticketAction.GET_DEFECT_LIST_SAGA, payload }),
+  getDefectType: payload => dispatch({ type: ticketAction.GET_DEFECT_TYPE_SAGA, payload }),
   onBatchDelete: payload => dispatch({ type: ticketAction.DELETE_BATCH_DEFECT_SAGA, payload }),
   onBatchSend: payload => dispatch({ type: ticketAction.SEND_BATCH_DEFECT_SAGA, payload }),
   onBatchReject: payload => dispatch({ type: ticketAction.REJECT_BATCH_DEFECT_SAGA, payload }),

@@ -35,7 +35,7 @@ class DateFliter extends Component {
   render() {
     const { createTimeStart, createTimeEnd } = this.props;
     return (
-      <div className={styles.dateFilter}>
+      <div className={styles.filterItem}>
         <span onClick={this.resetTime} className={styles.resetTime} >不限</span>
         <DatePicker
           value={createTimeStart ? moment(createTimeStart) : null}
