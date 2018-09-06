@@ -160,7 +160,6 @@ class RegisterForm extends Component {
   }
 
   renderStepOne(getFieldDecorator, enterpriseId){
-    console.log(enterpriseId)
     const { timeValue } =this.state;
     return (
       <div>

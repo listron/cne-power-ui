@@ -46,6 +46,7 @@ const mapStateToProps = (state) => ({
   enterpriseId: state.login.get('enterpriseId'),
   username: state.login.get('username'),
   error: state.login.get('error'),
+  tmpAuthData: state.login.getIn(['loginData','access_token']),
 })
 
 const mapDispatchToProps = (dispatch) => ({

@@ -105,8 +105,8 @@ function *userNameLogin(action){
           yield put({
             type: commonAction.CHANGE_COMMON_STORE_SAGA,
             payload: { ...defaultTopMenu },
-          })
-          action.params.history.push('/monitor/station');
+          });
+          // action.params.history.push('/monitor/station');
         }
       } else {
         yield put({ type: loginAction.CHANGE_LOGIN_STORE_SAGA, params});
@@ -184,9 +184,10 @@ function *phoneCodeLogin(action){
               joinStep: 3,
             }
           });
-        }else if(data.auto==='0' && data.enterpriseId!==null){//正常用户 直接登录
-          params.history.push('/monitor/station');
         }
+        // else if(data.auto==='0' && data.enterpriseId!==null){//正常用户 直接登录
+        //   params.history.push('/monitor/station');
+        // }
         yield put({
           type: loginAction.PHONE_CODE_LOGIN_SUCCESS,
           params, //params为请求传入的值
@@ -224,10 +225,8 @@ function *phoneCodeRegister(action){
     });
     if(response.data.code === '00000' || response.data.code === '20001'){
       yield put({type: loginAction.PHONE_CODE_REGISTER_FAIL, data: response.data});
-      // message.error(response.data.message);
     }else{
       yield put({type: loginAction.PHONE_CODE_LOGIN_SAGA, params});
-      // message.success(response.data.message);
     }
   }catch(e){
     console.log(e);
@@ -424,7 +423,8 @@ function *resetPassword(action){
     });
     if(response.data.code === "10000"){
       message.success('密码设置成功，请重新登录！');
-      // yield put({type: loginAction.CHANGE_LOGIN_STORE_SAGA, params:{pageTab: 'login'}});
+      yield put({type: loginAction.CHANGE_LOGIN_STORE_SAGA, params:{pageTab: 'login'}});
+      
     }else{
       yield put({ type: loginAction.RESET_PASSWORD_FAIL, data: response.data });
       message.error('设置失败！');
