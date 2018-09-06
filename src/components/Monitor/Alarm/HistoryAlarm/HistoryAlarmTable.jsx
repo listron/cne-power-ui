@@ -169,6 +169,7 @@ class HostoryAlarmTable extends Component {
         title: '告警类型',
         dataIndex: 'warningConfigName',
         key: 'warningConfigName',
+        sorter: true,
       },{
         title: '告警描述',
         dataIndex: 'warningCheckDesc',
