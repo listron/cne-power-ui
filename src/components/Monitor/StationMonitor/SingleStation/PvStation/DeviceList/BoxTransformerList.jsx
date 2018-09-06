@@ -173,7 +173,7 @@ class BoxTransformerList extends Component {
   }
   
   render(){
-    const { boxTransformerList, loading } = this.props;
+    const { boxTransformerList, loading,deviceTypeCode } = this.props;
     const {tmpDeviceList, } = this.state;
     const deviceList = boxTransformerList && boxTransformerList.deviceList;
     const initDeviceList = deviceList && deviceList.map((e,i)=>({...e,key:i}));
@@ -208,6 +208,8 @@ class BoxTransformerList extends Component {
       position: 'top',
       size: 'small',
     }
+    const baseLinkPath = "/hidden/monitorDevice";
+    const { stationCode } = this.props.match.params;
     return (
       <div className={styles.inverterList} >
         <Tabs defaultActiveKey="1" className={styles.inverterTab} tabBarExtraContent={operations}>
@@ -217,15 +219,22 @@ class BoxTransformerList extends Component {
                 <div className={styles.parentDeviceName} >{e && e.parentDeviceName}</div>
                 {e && e.map((item,i)=>{
                   return (<div key={i} className={item.deviceStatus === 900 ? styles.cutOverItem : styles.inverterItem}>
-                    <div className={styles.inverterItemIcon} ><i className="iconfont icon-xb" ></i>{item.alarmNum && <i className="iconfont icon-alarm" ></i>}</div>
-                    <div className={styles.inverterItemR} >
-                      <div>{item.deviceName}</div>
-                      <Progress className={styles.powerProgress} strokeWidth={4} percent={item.devicePower/item.deviceCapacity*100} showInfo={false} />
-                      <div className={styles.inverterItemPower}>
-                        <div>{item.devicePower ? parseFloat(item.devicePower).toFixed(2) : '--'}KW</div>
-                        <div>{item.deviceCapacity ? parseFloat(item.deviceCapacity).toFixed(2) : '--'}KW</div>
-                      </div>
+                    <div className={styles.inverterItemIcon} >
+                      <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${item.deviceCode}`} target="_blank" >
+                        <i className="iconfont icon-xb" ></i>
+                      </Link>
+                        {item.alarmNum && <i className="iconfont icon-alarm" ></i>}
                     </div>
+                    <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${item.deviceCode}`} target="_blank" >
+                      <div className={styles.inverterItemR} >
+                        <div>{item.deviceName}</div>
+                        <Progress className={styles.powerProgress} strokeWidth={4} percent={item.devicePower/item.deviceCapacity*100} showInfo={false} />
+                        <div className={styles.inverterItemPower}>
+                          <div>{item.devicePower ? parseFloat(item.devicePower).toFixed(2) : '--'}KW</div>
+                          <div>{item.deviceCapacity ? parseFloat(item.deviceCapacity).toFixed(2) : '--'}KW</div>
+                        </div>
+                      </div>
+                      </Link>
                   </div>);
                 })}
               </div>);

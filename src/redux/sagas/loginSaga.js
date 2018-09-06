@@ -328,11 +328,13 @@ function *registerEnterprise(action){
           history: params.history,
         }
       });
+      message.success('注册成功！');
     }else{
       yield put({type: loginAction.REGISTER_ENTERPRISE_FAIL, data: response.data });
       if(response.data.code !== '20015') {
         message.error(response.data.message);
       }
+      message.error('注册失败！');
     }
   }catch(e){
     console.log(e);
