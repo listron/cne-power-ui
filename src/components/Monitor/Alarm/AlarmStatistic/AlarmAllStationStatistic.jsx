@@ -11,6 +11,10 @@ class ALarmAllStationStatistic extends React.Component {
     stations: PropTypes.object,
     stationType: PropTypes.string,
     stationCode: PropTypes.array,
+    pageSize: PropTypes.number,
+    pageNum: PropTypes.number,
+    orderField: PropTypes.string,
+    orderCommand: PropTypes.string,
     startTime: PropTypes.string,
     endTime: PropTypes.string,
     history: PropTypes.object,
@@ -23,7 +27,7 @@ class ALarmAllStationStatistic extends React.Component {
     };
   }
   componentDidMount() {
-    const { stationCode, startTime, endTime, stations } = this.props;
+    const { stationCode, startTime, endTime, stations, pageSize, pageNum, orderField, orderCommand } = this.props;
     let stationType = this.props.stationType;
     const stationTypeOne = this.stationIsOneType();
     if(stationTypeOne) {
@@ -34,15 +38,24 @@ class ALarmAllStationStatistic extends React.Component {
       stationCode,
       startTime,
       endTime,
+      pageSize,
+      pageNum,
+      orderField,
+      orderCommand
     });
   }
+
   onChangeFilter = (obj) => {
-    const { stationType, stationCode, startTime, endTime } = this.props;
+    const { stationType, stationCode, startTime, endTime, pageSize, pageNum, orderField, orderCommand } = this.props;
     let filter = {
       stationType,
       stationCode,
       startTime,
       endTime,
+      pageSize,
+      pageNum,
+      orderField,
+      orderCommand
     }
     let newFilter = Object.assign({}, filter, obj);
     console.log(newFilter);
@@ -67,12 +80,16 @@ class ALarmAllStationStatistic extends React.Component {
   }
 
   queryTargetData = (activeKey) => {
-    const { stationCode, startTime, endTime } = this.props;
+    const { stationCode, startTime, endTime, pageSize, pageNum, orderField, orderCommand } = this.props;
     this.props.getStationsAlarmStatistic({
       stationType: activeKey,
       stationCode,
       startTime,
       endTime,
+      pageSize,
+      pageNum,
+      orderField,
+      orderCommand
     });
   }
   render() {

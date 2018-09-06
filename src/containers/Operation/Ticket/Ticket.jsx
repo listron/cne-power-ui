@@ -4,7 +4,8 @@ import { connect } from 'react-redux';
 import {Tabs} from 'antd';
 import Defect from './Defect/Defect';
 import Inspect from './Inspect/Inspect';
- import { ticketAction } from '../../../constants/actionTypes/operation/ticketAction';
+import Footer from '../../../components/Common/Footer';
+import { ticketAction } from '../../../constants/actionTypes/operation/ticketAction';
 import styles from './ticket.scss';
 
 const TabPane = Tabs.TabPane;
@@ -57,7 +58,7 @@ class Ticket extends Component {
   render() {
     return (
       <div className={styles.ticket}>
-        <Tabs activeKey={this.state.tab} onChange={this.onChangeTab}>
+        <Tabs activeKey={this.state.tab} onChange={this.onChangeTab} type="card">
           <TabPane tab="缺陷" key="defect">
             <Defect showTab={this.state.tab} showContainer={this.props.showContainer} onChangeShowContainer={this.props.onChangeShowContainer} />
           </TabPane>
@@ -65,6 +66,7 @@ class Ticket extends Component {
             <Inspect showTab={this.state.tab} showContainer={this.props.showContainer} onChangeShowContainer={this.props.onChangeShowContainer}  />
           </TabPane>
         </Tabs>
+        <Footer />
       </div>
     );
   }
@@ -75,11 +77,11 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  onChangeShowContainer: params => dispatch({ type: ticketAction.CHANGE_SHOW_CONTAINER_SAGA, params }),
-  clearDefectState: params => dispatch({ type: ticketAction.CLEAR_DEFECT_STATE_SAGA, params }),
-  clearInspectState: params => dispatch({ type: ticketAction.CLEAR_INSPECT_STATE_SAGA, params }),
-  getDefectList: params => dispatch({ type: ticketAction.GET_DEFECT_LIST_SAGA, params }),
-  getInspectList: params => dispatch({ type: ticketAction.GET_INSPECT_LIST_SAGA, params }),
+  onChangeShowContainer: payload => dispatch({ type: ticketAction.CHANGE_SHOW_CONTAINER_SAGA, payload }),
+  clearDefectState: payload => dispatch({ type: ticketAction.CLEAR_DEFECT_STATE_SAGA, payload }),
+  clearInspectState: payload => dispatch({ type: ticketAction.CLEAR_INSPECT_STATE_SAGA, payload }),
+  getDefectList: payload => dispatch({ type: ticketAction.GET_DEFECT_LIST_SAGA, payload }),
+  getInspectList: payload => dispatch({ type: ticketAction.GET_INSPECT_LIST_SAGA, payload }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Ticket);

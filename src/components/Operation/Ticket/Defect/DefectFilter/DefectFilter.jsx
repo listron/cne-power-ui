@@ -1,32 +1,34 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {  Button, Switch, Icon } from 'antd';
+import {  Button, Switch, Icon, Radio } from 'antd';
 import DateFilter from './DateFilter';
-import StationTypeFilter from './StationTypeFilter';
-import StationsFilter from './StationsFilter';
-import DeviceTypeFilter from './DeviceTypeFilter';
+import StationTypeFilter from '../../../../Monitor/Alarm/AlarmFilter/StationTypeFilter';
+import StationFilter from '../../../../Monitor/Alarm/AlarmFilter/StationFilter';
+import DeviceTypeFilter from '../../../../Monitor/Alarm/AlarmFilter/DeviceTypeFilter';
 import DefectLevelFilter from './DefectLevelFilter';
+import DefectTypeFilter from './DefectTypeFilter';
 import FilteredItems from './FilteredItems';
 import styles from './defectFilter.scss';
 
+const RadioButton = Radio.Button;
+const RadioGroup = Radio.Group;
+
 class DefectFilter extends Component {
   static propTypes = {
+    stations: PropTypes.object,//电站列表
+    defectTypes: PropTypes.object,//缺陷类型列表
+    deviceTypes: PropTypes.object,//设备类型列表 
     stationType: PropTypes.string,
-    stationCodes: PropTypes.string,
-    defectSource: PropTypes.string,   
+    stationCodes: PropTypes.string, 
     defectLevel: PropTypes.string,	  
-    timeInterval: PropTypes.string,
-    status: PropTypes.string, 
-    pageNum: PropTypes.number,
-    pageSize: PropTypes.number,
     createTimeStart: PropTypes.string,
     createTimeEnd: PropTypes.string, 
     deviceTypeCode: PropTypes.string,
     defectTypeCode: PropTypes.string,
-    userName: PropTypes.string,
-    sort: PropTypes.string,
     selfDefect: PropTypes.bool,
-    getDefectList: PropTypes.func,
+    status: PropTypes.string,
+    onChangeFilter: PropTypes.func,
+    defectStatusStatistics: PropTypes.object
   }
 
   constructor(props) {
@@ -35,6 +37,7 @@ class DefectFilter extends Component {
       showFilter: '',
     };
   }
+
   onFilterShowChange = (filterText) => {
     const { showFilter } = this.state;
     if(showFilter === filterText){
@@ -47,46 +50,20 @@ class DefectFilter extends Component {
       })
     }
   }
-  onUserSelect = (value) => {
-    this.props.getDefectList({
-      stationType: this.props.stationType,
-      stationCodes: this.props.stationCodes,
-      defectSource: this.props.defectSource, 
-      defectLevel: this.props.defectLevel,
-      timeInterval: this.props.timeInterval,
-      status: this.props.status,
-      pageNum: this.props.pageNum + 1,
-      pageSize: this.props.pageSize,
-      createTimeStart: this.props.createTimeStart,
-      createTimeEnd: this.props.createTimeEnd,
-      deviceTypeCode: this.props.deviceTypeCode,
-      defectTypeCode: this.props.defectTypeCode,
-      selfDefect: value,
-      handleUser: value?this.props.userName:'',
-      sort: this.props.sort,
+
+  onUserSelect(selfDefect) {
+    this.props.onChangeFilter({
+      selfDefect
     });
   }
   
-
   render() {
     const { showFilter } = this.state;
-    const listQueryParams = {
-      stationType: this.props.stationType,
-      stationCodes: this.props.stationCodes,
-      defectSource: this.props.defectSource, 
-      defectLevel: this.props.defectLevel,
-      timeInterval: this.props.timeInterval,
-      status: this.props.status,
-      pageNum: this.props.pageNum + 1,
-      pageSize: this.props.pageSize,
-      createTimeStart: this.props.createTimeStart,
-      createTimeEnd: this.props.createTimeEnd,
-      deviceTypeCode: this.props.deviceTypeCode,
-      defectTypeCode: this.props.defectTypeCode,
-      selfDefect: this.props.selfDefect,
-      handleUser: this.props.selfDefect?this.props.userName:'',
-      sort: this.props.sort,
-    }
+    const { stations, defectStatusStatistics } = this.props;
+    const waitSubmitNum = defectStatusStatistics.get('submitNum');
+    const waitReviewNum = defectStatusStatistics.get('examineNum');
+    const inProcessNum = defectStatusStatistics.get('executeNum');
+    const waitCheckNum = defectStatusStatistics.get('checkNum');
     return (
       <div className={styles.defectFilter}>
         <div className={styles.topSearch}>
@@ -94,9 +71,9 @@ class DefectFilter extends Component {
           <Button onClick={()=>this.onFilterShowChange('time')}>
             发生时间{showFilter==='time'?<Icon type="up" />:<Icon type="down" />}
           </Button>
-          <Button onClick={()=>this.onFilterShowChange('stationType')}>
+          {stations && stations.size > 0 && <Button onClick={()=>this.onFilterShowChange('stationType')}>
             电站类型{showFilter==='stationType'?<Icon type="up" />:<Icon type="down" />}
-          </Button>
+          </Button>}
           <Button onClick={()=>this.onFilterShowChange('stationName')}>
             电站名称{showFilter==='stationName'?<Icon type="up" />:<Icon type="down" />}
           </Button>
@@ -106,18 +83,31 @@ class DefectFilter extends Component {
           <Button onClick={()=>this.onFilterShowChange('defectLevel')}>
             缺陷级别{showFilter==='defectLevel'?<Icon type="up" />:<Icon type="down" />}
           </Button>
+          <Button onClick={()=>this.onFilterShowChange('defectType')}>
+            缺陷类型{showFilter==='defectType'?<Icon type="up" />:<Icon type="down" />}
+          </Button>
           <span>
             <Switch onChange={this.onUserSelect} /><span>我参与的</span>
           </span>
         </div>
         <div className={styles.filterBox}>
-          {showFilter==='time' && <DateFilter {...this.props} listQueryParams={listQueryParams} />}
-          {showFilter==='stationType' && <StationTypeFilter {...this.props} listQueryParams={listQueryParams} />}
-          {showFilter==='stationName' && <StationsFilter {...this.props} listQueryParams={listQueryParams} />}
-          {showFilter==='deviceType' && <DeviceTypeFilter {...this.props} listQueryParams={listQueryParams} />}
-          {showFilter==='defectLevel' && <DefectLevelFilter {...this.props} listQueryParams={listQueryParams} />}
+          {showFilter==='time' && <DateFilter {...this.props} />}
+          {showFilter==='stationType' && <StationTypeFilter {...this.props} />}
+          {showFilter==='stationName' && <StationFilter {...this.props} stationCode={this.props.stationCodes.split(',')} />}
+          {showFilter==='deviceType' && <DeviceTypeFilter {...this.props} deviceTypeCode={this.props.deviceTypeCode.split(',')} />}
+          {showFilter==='defectLevel' && <DefectLevelFilter {...this.props} />}
+          {showFilter==='defecType' && <DefectTypeFilter {...this.props} />}
         </div>
-        <FilteredItems {...this.props} listQueryParams={listQueryParams} />
+        <FilteredItems {...this.props} />
+        <div>
+          <RadioGroup onChange={this.onChangeTab} defaultValue="5" value={this.props.status}>
+            <RadioButton value="5">全部</RadioButton>
+            <RadioButton value="0">{`待提交${waitSubmitNum}`}</RadioButton>
+            <RadioButton value="1">{`待审核${waitReviewNum}`}</RadioButton>
+            <RadioButton value="2">{`执行中${inProcessNum}`}</RadioButton>
+            <RadioButton value="3">{`待验收${waitCheckNum}`}</RadioButton>
+          </RadioGroup>
+        </div>
       </div>
     );
   }

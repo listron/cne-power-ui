@@ -147,6 +147,9 @@
       .ant-form input[type="checkbox"]{
         background-color: $themeColor;
       }
+      .ant-input{
+        width: 220px;
+      }
       .is-validating.has-feedback .ant-form-item-children::after{
         content: '';
       }

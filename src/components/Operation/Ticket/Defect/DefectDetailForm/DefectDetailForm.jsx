@@ -9,7 +9,7 @@ import {Icon, Spin} from 'antd';
 class DefectDetailForm extends Component {
   static propTypes = {
     detail: PropTypes.object,
-    isFetching: PropTypes.bool,
+    loading: PropTypes.bool,
     commonList: PropTypes.object,
     onClose: PropTypes.func,
     onSend: PropTypes.func,
@@ -134,7 +134,7 @@ class DefectDetailForm extends Component {
     let detail = this.props.detail;
     return (
       <div className={styles.detailWrap}>
-        <Spin spinning={this.props.isFetching} size="large">
+        <Spin spinning={this.props.loading} size="large">
           <div className={styles.defectDetail}>
             <div className={styles.header}>
               <Icon type="up" onClick={this.props.onPrev} />

@@ -13,7 +13,7 @@ class InspectList extends Component {
     pageSize: PropTypes.number,
     sort: PropTypes.string,
     total: PropTypes.number,
-    isFetching: PropTypes.bool,
+    loading: PropTypes.bool,
     error: PropTypes.object,
     status: PropTypes.string,
     showTab: PropTypes.string,
@@ -115,7 +115,7 @@ class InspectList extends Component {
           pageSize={this.props.pageSize}
           total={this.props.total}
           status={this.props.status}
-          isFetching={this.props.isFetching}
+          loading={this.props.loading}
           onChangeSort={this.onChangeSort}
           onChangePage={this.onChangePage}
           onChangePageSize={this.onChangePageSize}
@@ -132,7 +132,7 @@ class InspectList extends Component {
 
 const mapStateToProps = (state) => ({
   inspectList: state.operation.inspect.get('inspectList'),
-  isFetching: state.operation.inspect.get('isFetching'),
+  loading: state.operation.inspect.get('loading'),
   error: state.operation.inspect.get('error'),
   sort: state.operation.inspect.get('sort'),
   total: state.operation.inspect.get('total'),

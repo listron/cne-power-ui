@@ -5,7 +5,7 @@ module.exports = {
     TICKET_FETCH: null,
     CHANGE_DEFECT_STORE_SAGA: null,
     CHANGE_DEFECT_STORE: null,
-    GET_DEFECT_COMMON_FETCH_SUCCESS: null,
+    GET_DEFECT_FETCH_SUCCESS: null,
     //Defect
     GET_DEFECT_LIST_SAGA: null,
     // GET_DEFECT_LIST_SUCCESS: null,
@@ -46,7 +46,7 @@ module.exports = {
     GET_DEFECT_LANGUAGE_SAGA: null,
     GET_DEFECT_LANGUAGE_SUCCESS: null,
     GET_DEFECT_LANGUAGE_FAIL: null,
-    GET_DEFECTTYPES_SAGA: null,
+    GET_DEFECT_TYPE_SAGA: null,
     GET_DEFECTTYPES_SAGA_SUCCESS: null,
     GET_DEFECTTYPES_SAGA_FAIL: null,
     DEFECT_CREATE_SAGA: null,
