@@ -74,7 +74,13 @@ class EditUser extends Component {
               <span>240px*240px为佳，大小不超过2M</span>
             </div>
           </div>
-          <EditForm userDetail={userDetail} userLogo={userLogo} saveUserInfor={saveUserInfor} loading={loading} {...this.props} />
+          <EditForm 
+            userDetail={userDetail} 
+            userLogo={userLogo} 
+            saveUserInfor={saveUserInfor} 
+            loading={loading} 
+            {...this.props} 
+          />
         </div>
       </div>
     )

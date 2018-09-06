@@ -26,6 +26,9 @@
       .ant-btn {
         color: #999;
       }
+      .ant-spin{//table loading加载中图标颜色
+        color: $themeColor;
+      }
       .ant-checkbox-checked .ant-checkbox-inner, .ant-checkbox-indeterminate .ant-checkbox-inner {
         background-color: $themeColor;
         border-color: $themeColor;
@@ -201,6 +204,7 @@
             :global{
               .ant-select{
                 width: 78px;
+                color: #999;
               }
             }
           }

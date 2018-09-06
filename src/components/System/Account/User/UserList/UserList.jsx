@@ -36,6 +36,7 @@ class UserList extends Component {
     stationName: PropTypes.string,
     phoneNum: PropTypes.string,
     currentPage: PropTypes.number,
+    selectedKey: PropTypes.object,
   }
 
   constructor(props){
@@ -65,13 +66,11 @@ class UserList extends Component {
     this.props.getUserList(params);
   }
 
-  onRowSelect = (selectedRowKeys, selectedRows) => {//行选择
-    // console.log(selectedRowKeys)
-    // console.log(selectedRows)
+  onRowSelect = (record, selected, selectedRows, nativeEvent) => {//行选择
     this.props.changeUserStore({
       selectedUser: selectedRows,
+      selectedKey: selectedRows.map(e=>e.key),
     });
-
   }
   onInviteUser = () => {
     this.props.getInviteLink({enterpriseId: JSON.parse(this.props.enterpriseId), showPage: 'invite'});
@@ -99,7 +98,8 @@ class UserList extends Component {
     const { selectedUserColumns } = this.state;
     let tmpUserColumns = selectedUserColumns;
     if(value === '全选'){
-      tmpUserColumns = new Set(['用户名','真实姓名','电话','角色','特殊权限','所在企业','负责电站','状态']);
+      tmpUserColumns = new Set(['用户名','真实姓名','电话','角色','特殊权限','负责电站','状态']);
+      // tmpUserColumns = new Set(['用户名','真实姓名','电话','角色','特殊权限','所在部门','负责电站','状态']);
     }else{
       tmpUserColumns.has(value) ? tmpUserColumns.delete(value) : tmpUserColumns.add(value);
     }
@@ -146,13 +146,12 @@ class UserList extends Component {
   }
   
   confirmExamineTip = () => {
-    const { selectedUser, enterpriseId, } = this.props;
-    // console.log(selectedUser.toJS())
+    const { selectedUser, enterpriseId,selectedKey } = this.props;
     this.props.changeUserStatus({
       enterpriseId,
       userId: selectedUser.toJS().map(e=>e.userId).toString(),
       enterpriseUserStatus: this.state.examineStatus,
-      // selectedKey: selectedUser.toJS()[0].key || -1,
+      selectedKey: selectedKey || [],
     });
     this.setState({
       showExamineTip: false,
@@ -215,20 +214,19 @@ class UserList extends Component {
         dataIndex: 'roleName',
         key: 'roleName',
         render: (text,record) => (<span>{text}</span>),
-        sorter: true
       }, {
         title: '特殊权限',
         dataIndex: 'spcialRoleName',
         key: 'spcialRoleName',
         render: (text,record) => (<span>{text}</span>),
-        sorter: true
-      }, {
-        title: '所在企业',
-        dataIndex: 'enterpriseName',
-        key: 'enterpriseName',
-        render: (text,record) => (<span>{text}</span>),
-        sorter: true
-      }, {
+      }, 
+      // {
+      //   title: '所在部门',
+      //   dataIndex: 'departmentName',
+      //   key: 'departmentName',
+      //   render: (text,record) => (<span>{text}</span>),
+      // }, 
+      {
         title: '负责电站',
         dataIndex: 'stationName',
         key: 'stationName',
@@ -407,7 +405,7 @@ class UserList extends Component {
   }
 
   render(){
-    const { userData, totalNum, loading, selectedUser } = this.props;
+    const { userData, totalNum, loading, selectedUser,selectedKey } = this.props;
     const { selectedUserColumns,showDeleteTip,showExamineTip,deleteWarningTip, } = this.state;
     const authData = getCookie('authData');
     const columns = [
@@ -438,13 +436,15 @@ class UserList extends Component {
         key: 'spcialRoleName',
         render: (text,record) => (<span>{text}</span>),
         sorter: true
-      }, {
-        title: '所在企业',
-        dataIndex: 'enterpriseId',
-        key: 'enterpriseId',
-        render: (text,record) => (<span>{text}</span>),
-        sorter: true
-      }, {
+      }, 
+      // {
+      //   title: '所在部门',
+      //   dataIndex: 'departmentName',
+      //   key: 'departmentName',
+      //   render: (text,record) => (<span>{text}</span>),
+      //   sorter: true
+      // }, 
+      {
         title: '负责电站',
         dataIndex: 'stationName',
         key: 'stationName',
@@ -561,8 +561,8 @@ class UserList extends Component {
         <Table 
           loading={loading}
           rowSelection={{
-            selectedRowKeys: selectedUser.toJS().map(e=>e.key),
-            onChange: this.onRowSelect,
+            selectedRowKeys: selectedKey.toJS() || [],
+            onSelect: this.onRowSelect,
           }}
           dataSource={userData && userData.toJS().map((e,i)=>({...e,key:i}))} 
           columns={this.tableColumn()} 
