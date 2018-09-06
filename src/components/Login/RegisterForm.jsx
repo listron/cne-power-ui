@@ -208,11 +208,11 @@ class RegisterForm extends Component {
             {getFieldDecorator('enterpriseDomain', {
               rules: [
                 {required: true, message: '请输入企业域名'},
-                {pattern: /[a-zA-Z0-9]{3,}/, message: '英文、数字组合、3个字以上'}
+                {pattern: /[a-zA-Z0-9]{3,}/, message: '英文、数字组合，3个字以上'}
               ]
             })(
               <div className={styles.domain} >
-                <Input placeholder="请输入企业域名"  />
+                <Input placeholder="英文、数字组合，3个字以上"  />
                 <span>.cnecloud.com</span>
               </div>
             )}
@@ -224,7 +224,7 @@ class RegisterForm extends Component {
                 {pattern: /^[a-zA-Z0-9\u4E00-\u9FA5]{1,30}$/, message: '企业名称最长不超过30个字符'}
               ]
             })(
-              <Input placeholder="请输入企业名称" />
+              <Input placeholder="30字以内" />
             )}
           </FormItem>
           <FormItem {...tailFormItemLayout} >
@@ -340,7 +340,6 @@ class RegisterForm extends Component {
         <Steps current={step}  className={styles.registerStepBox}>
           {steps.map(item => <Step key={item.title} title={item.title} />)}
         </Steps>
-        <div className={styles.registerTips} >完善企业信息</div>
         <div className="steps-content">{steps[step].content}</div>
       </div>
     );

@@ -30,6 +30,12 @@ class JoinInForm extends Component{
     locatoion: PropTypes.object,
     inviteUserLink: PropTypes.func,
     inviteValid: PropTypes.bool,
+    username: PropTypes.string,
+    importEnterpriseName: PropTypes.string,
+    importEnterpriseLogo: PropTypes.string,
+    importEnterpriseId: PropTypes.string,
+    resetPassword: PropTypes.func,
+    tmpAuthData: PropTypes.string,
   }
 
   constructor(props){
@@ -63,14 +69,25 @@ class JoinInForm extends Component{
               });
             }
           }, 500);
-          let { phoneNum, enterpriseId, history } =this.props;
-          let params = {
-            phoneNum,
-            enterpriseId,
-            history,
-            ...values,
+          let { phoneNum, enterpriseId, history,importEnterpriseId,importUser,tmpAuthData } =this.props;
+          const enterpriseIds = enterpriseId || importEnterpriseId;
+          if(importUser){//导入用户 重置密码
+            let params = {
+              phoneNum,
+              tmpAuthData,
+              ...values,
+            };
+            this.props.resetPassword(params);
+          }else{//普通用户 加入企业
+            let params = {
+              phoneNum,
+              enterpriseId: enterpriseIds,
+              history,
+              ...values,
+            }
+            this.props.joinEnterprise(params);
           }
-          this.props.joinEnterprise(params);
+          
         }else{
           this.props.form.setFields({
             userAgreement: {
@@ -239,9 +256,9 @@ class JoinInForm extends Component{
       </div>
     );
   }
-  renderStepThree(formItemLayout, tailFormItemLayout,importUser) {
+  renderStepThree(formItemLayout, tailFormItemLayout) {
     const { getFieldDecorator } = this.props.form;
-    const { userEnterpriseStatus,enterpriseName, enterpriseLogo } = this.props;
+    const { userEnterpriseStatus,enterpriseName, enterpriseLogo,username,importUser,importEnterpriseName,importEnterpriseLogo } = this.props;
     const defaultLogo = "/img/nopic.png";
     if(userEnterpriseStatus === 5) {
       return (
@@ -258,12 +275,11 @@ class JoinInForm extends Component{
         </div>
       );
     } else if(userEnterpriseStatus===3 || userEnterpriseStatus===null) {
-      const username= Cookie.get('username');
       return (
         <div className={styles.userInfo} >
           <div className={styles.enterpriseBrief} >
-            <div className={styles.enterpriseLogo} ><img src={enterpriseLogo || defaultLogo} width="60px" height="60px" /></div>
-            <div>{enterpriseName}</div>
+            <div className={styles.enterpriseLogo} ><img src={(importUser ? importEnterpriseLogo : enterpriseLogo) || defaultLogo} width="60px" height="60px" /></div>
+            <div>{importUser ? importEnterpriseName : enterpriseName}</div>
           </div>
           <Form onSubmit={this.onJoinEnterprise}  >
             <FormItem label="用户名" {...formItemLayout}>
@@ -316,7 +332,7 @@ class JoinInForm extends Component{
   }
   
   render(){
-    const { joinStep,importUser } = this.props;
+    const { joinStep } = this.props;
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -343,7 +359,7 @@ class JoinInForm extends Component{
       <div className={styles.comName}>
         {joinStep === 1 && this.renderStepOne(formItemLayout, tailFormItemLayout)}
         {joinStep === 2 && this.renderStepTwo()}
-        {joinStep === 3 && this.renderStepThree(formItemLayout, tailFormItemLayout, importUser)}
+        {joinStep === 3 && this.renderStepThree(formItemLayout, tailFormItemLayout)}
       </div>
     );
   }
