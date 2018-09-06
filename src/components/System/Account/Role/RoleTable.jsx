@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Table, Button, Select, Icon, Popover } from 'antd';
+import { Table, Select, Popover } from 'antd';
 import WarningTip from '../../../Common/WarningTip';
 import PropTypes from 'prop-types';
 import styles from './role.scss';
