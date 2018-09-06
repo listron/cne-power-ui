@@ -149,6 +149,27 @@ function *getPartition(action){
   }
 }
 
+function *getAllDepartment(action){//获取所有部门基础信息
+  const { payload } = action;
+  // const url = '/mock/system/allDepartments';
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.getAllDepartment}/${payload.enterpriseId}`
+  try{
+    yield put({ type: commonAction.COMMON_FETCH });
+    const response = yield call(axios.get,url);
+    if(response.data.code === "10000") {
+      yield put({
+        type: commonAction.GET_DATA_SUCCESS,
+        payload:{
+          allDepartmentData: response.data.data,
+        },
+      });
+    }
+  }catch(e){
+    message.error('获取部门信息失败，请刷新重试!');
+    console.log(e);
+  }
+}
+
 
 /*  --- todo 待后台开发refreshtoken接口后，解开注释并进行refresh token的替换。
   export function* refreshToken(action){ //根据当前的refresh token获取刷新token并替换
@@ -184,6 +205,7 @@ export function* watchCommonStoreChange() {
 }
 export function* watchGetStations() {
   yield takeLatest(commonAction.GET_STATIONS_SAGA, getStations);
+  yield takeLatest(commonAction.GET_ALL_DEPARTMENT_DATA, getAllDepartment);
 }
 export function* watchGetDeviceTypes() {
   yield takeLatest(commonAction.GET_DEVICETYPES_SAGA, getDeviceTypes);
