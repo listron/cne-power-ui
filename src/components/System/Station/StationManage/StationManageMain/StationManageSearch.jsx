@@ -19,15 +19,29 @@ class StationManageSearch extends Component {
     }
   }
 
-  selectStationType = (value) => {
-    console.log(value)
+  onStationTypeSelect = (e) => {
+    console.log(e.target.value);
     const { enterpriseId, getStationList } = this.props;
-    getStationList({ enterpriseId })
+    // getStationList({ enterpriseId })
   }
 
+  onAreaChange = (e) => {
+    console.log(e.target.value);
+  }
+
+  onStationNameChange = (e) => {
+    console.log(e.target.value);
+  }
+
+  searchStationList = () => {
+    console.log('根据条件查询列表')
+  }
+
+  resetSearchInfo = () => {
+    console.log('重置查询条件')
+  }
 
   render(){
-    const selectedStationType = '';
     return (
       <div>
         <Radio.Group onChange={this.selectStationType}>
@@ -35,7 +49,14 @@ class StationManageSearch extends Component {
           <Radio.Button value="default">风电</Radio.Button>
           <Radio.Button value="small">光伏</Radio.Button>
         </Radio.Group>
-        search part wwwwwww 
+        <div>
+          <span>区域</span>
+          <Input placeholder="请输入..." onChange={this.onAreaChange} />
+          <span>电站名称</span>
+          <Input placeholder="请输入..." onChange={this.onStationNameChange} />
+          <Button onClick={this.searchStationList}>查询</Button>
+          <Button onClick={this.resetSearchInfo}>重置</Button>
+        </div>
       </div>
     )
   }
