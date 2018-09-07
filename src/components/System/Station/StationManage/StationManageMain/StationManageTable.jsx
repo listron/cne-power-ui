@@ -10,7 +10,11 @@ import PropTypes from 'prop-types';
 
 class StationManageTable extends Component {
   static propTypes = {
+    totalNum: PropTypes.number,
     loading: PropTypes.bool,
+    queryListParams: PropTypes.object,
+    getStationList: PropTypes.func,
+    changeStationManageStore: PropTypes.func,
     stationList: PropTypes.array,
   }
 
@@ -21,45 +25,63 @@ class StationManageTable extends Component {
     }
   }
 
-  onStationAdd = () => {
+  onStationAdd = () => { // 添加上传电站
     console.log('add 电站')
   }
 
-  onPaginationChange = (...rest) => {
-    console.log(rest)
+  onPaginationChange = ({pageSize, currentPage}) => { // 分页器操作
+    const { getStationList, queryListParams } = this.props;
+    getStationList({
+      queryListParams,
+      pageSize,
+      pageNum: currentPage,
+    })
   }
 
-  downloadTemplet = () => {
+  toStationDetail = (record) => {
+    console.log(record);
+    this.props.changeStationManageStore({
+      showPage: 'detail',
+    })
+  }
+
+  downloadTemplet = () => {  // 下载电站配置模板
     console.log('down load templet')
   }
 
-  tableChange = (pagination,filter,sorter) => {//部门排序
-    const sort = sorter.field;
-    const ascend = sorter.order==='ascend'?'0':'1';
-    console.log(sort, ascend);
-    // this.props.getDepartmentList({
-    //   enterpriseId: this.props.enterpriseId,
-    //   departmentSource: this.props.departmentSource,
-    //   departmentName: this.props.departmentName, 
-    //   parentDepartmentName: this.props.parentDepartmentName, 
-    //   stationName: this.props.stationName, 
-    //   sort:`${sort},${ascend}`, 
-    //   pageNum: this.props.pageNum,
-    //   pageSize: this.props.pageSize,
-    // })
+  tableChange = (pagination, filter, sorter) => { // 部门排序
+    const { getStationList, queryListParams } = this.props;
+    const sortName = sorter.field;
+    // orderField: '', // 排序字段 1：电站名称; 2:区域 ;3:覆盖类型;4:并网类型;5：装机容量;6:发点单元数;7：电站接入
+    const sortInfo = {
+      stationName: '1',
+      area: '2',
+      coverType: '3',
+      connectionType: '4',
+      stationCapacity: '5',
+      series: '6',
+      stationStatus: '7',
+    };
+    const orderField = sortInfo[sortName];
+    const orderCommand = sorter.order==='ascend'?'asc':'desc';
+    getStationList({
+      ...queryListParams,
+      orderField,
+      orderCommand,
+    })
   }
 
   render(){
-    const { loading, stationList } = this.props;
+    const { loading, stationList, totalNum } = this.props;
     const column = [
       {
         title: '电站',
         dataIndex: 'stationName',
         key: 'stationName',
         sorter: true,
-        render: (record) => {
+        render: (text,record) => {
           return (
-            <span className={styles.stationName}>{record.stationName}</span>
+            <span className={styles.stationName} onClick={()=>this.toStationDetail(record)}>{record.stationName}</span>
           )
         }
       },
@@ -69,14 +91,19 @@ class StationManageTable extends Component {
         dataIndex: 'departmentStatus',
         key: 'departmentStatus',
         render: (text, record, index) => {
-          return (<span className={styles.setDepartment}>{record.departmentStatus}</span>)
+          const { departmentStatus } = record;
+          if(departmentStatus){
+            return (<span className={styles.setDepartment}>查看</span>)
+          }else{
+            return (<span className={styles.setDepartment}>设置</span>)
+          }
         }
       },{
         title: '操作',
         dataIndex: 'handler',
         key: 'handler',
         render: (text, record, index) => {
-          return (<span className={styles.handler}>删除</span>)
+          return (<span className={styles.deleteStation}>删除</span>)
         }
       }
     ];
@@ -88,7 +115,7 @@ class StationManageTable extends Component {
             <span>电站</span>
           </Button>
           <Button onClick={this.downloadTemplet}>下载电站配置模板</Button>
-          <CommonPagination total={100} onPaginationChange={this.onPaginationChange} />
+          <CommonPagination total={totalNum} onPaginationChange={this.onPaginationChange} />
         </div>
         <Table 
           loading={loading}
@@ -96,6 +123,7 @@ class StationManageTable extends Component {
           columns={column} 
           onChange={this.tableChange}
           pagination={false}
+          locale={{emptyText:<img width="223" height="164" src="/img/nodata.png" />}}
         />
       </div>
     )

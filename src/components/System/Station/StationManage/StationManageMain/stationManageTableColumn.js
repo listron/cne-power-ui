@@ -29,19 +29,40 @@ const stationManageTableColumn = [{
     dataIndex: 'stationStatus',
     key: 'stationStatus',
     sorter: true,
-    render: (text, record, index) => (<span className={styles.contact}>{record.stationStatus}</span>)
+    render: (text, record, index) => {
+      const { stationStatus } = record; 
+      if(stationStatus){
+        return <span className={styles.contact}>通讯正常</span>
+      }else{
+        return <span className={styles.contact}>未接入</span>
+      }
+    }
   },{
     title: '测点',
     dataIndex: 'pointStatus',
     key: 'pointStatus',
     sorter: true,
-    render: (text, record, index) => (<span className={styles.point}>{record.pointStatus}</span>)
+    render: (text, record, index) => {
+      const { pointStatus } = record; 
+      if(pointStatus){
+        return <span className={styles.point}>已设置</span>
+      }else{
+        return <span className={styles.point}>未设置</span>
+      }
+    }
   },{
     title: '告警配置',
     dataIndex: 'alarmStatus',
     key: 'alarmStatus',
     sorter: true,
-    render: (text, record, index) => (<span className={styles.alarm}>{record.alarmStatus}</span>)
+    render: (text, record, index) => {
+      const { alarmStatus } = record; 
+      if(alarmStatus){
+        return <span className={styles.alarm}>已设置</span>
+      }else{
+        return <span className={styles.alarm}>未设置</span>
+      }
+    }
   }
 ];
 

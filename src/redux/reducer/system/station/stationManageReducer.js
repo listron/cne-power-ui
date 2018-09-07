@@ -4,7 +4,6 @@ import { stationManageAction } from '../../../../constants/actionTypes/system/st
 
 var initState = Immutable.fromJS({
   loading: false,
-  testWords: '电站管理管理的-----测试数据-to  remove',
   showPage: 'list', //默认展示列表页list ,   编辑edit,详情detail,
   stationType: 2, // 电站类型(0-风电、1-光伏、2全部)
   regionName: '', // 电站所属区域:所属电网，模糊匹配

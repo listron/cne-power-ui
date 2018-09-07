@@ -12,6 +12,14 @@ import Cookie from 'js-cookie';
 class StationManage extends Component {
   static propTypes = {
     showPage: PropTypes.string,
+    stationType: PropTypes.number, 
+    regionName: PropTypes.string,
+    stationName: PropTypes.string,
+    pageNum: PropTypes.number,
+    pageSize: PropTypes.number,
+    orderField: PropTypes.string,
+    orderCommand: PropTypes.string,
+
     enterpriseId: PropTypes.string,
     getStationList: PropTypes.func, // 获取电站列表信息
     getAllDepartmentData: PropTypes.func, // 企业下所有部门
@@ -25,9 +33,11 @@ class StationManage extends Component {
   }
 
   componentDidMount(){
-    const { getStationList, enterpriseId, getAllDepartmentData } = this.props;
-    getStationList({ enterpriseId }); // 1.请求stationList
-    getAllDepartmentData({ enterpriseId }) // 2.请求所有部门
+    const { enterpriseId, stationType, regionName, stationName, pageNum, pageSize, orderField, orderCommand } = this.props;
+    this.props.getStationList({ 
+      stationType, regionName, stationName, pageNum, pageSize, orderField, orderCommand,
+    }); // 1.请求stationList
+    this.props.getAllDepartmentData({ enterpriseId }) // 2.请求所有部门
   }
 
   componentWillUnmount(){
@@ -48,11 +58,14 @@ class StationManage extends Component {
   }
 
   render() {
-    const { showPage } = this.props;
+    const { showPage, enterpriseId, stationType, regionName, stationName, pageNum, pageSize, orderField, orderCommand } = this.props;
+    const queryListParams = {
+      enterpriseId, stationType, regionName, stationName, pageNum, pageSize, orderField, orderCommand,
+    }
     const { showSidePage } = this.state;
     return (
       <div className={styles.stationManage}>
-        <StationManageMain {...this.props} />
+        <StationManageMain {...this.props} queryListParams={queryListParams} />
         <TransitionContainer
           show={showPage!=='list'}
           onEnter={this.onToggleSide}
@@ -60,7 +73,12 @@ class StationManage extends Component {
           timeout={500}
           effect="side"
         >
-          <StationManageSide {...this.props} showSidePage={showSidePage} onShowSideChange={this.onShowSideChange} />
+          <StationManageSide 
+            {...this.props} 
+            showSidePage={showSidePage}
+            queryListParams={queryListParams}
+            onShowSideChange={this.onShowSideChange} 
+          />
         </TransitionContainer>
       </div>
 
