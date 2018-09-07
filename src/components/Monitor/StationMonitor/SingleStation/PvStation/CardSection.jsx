@@ -118,12 +118,13 @@ class CardSection extends Component {
                   tmpOperatorList.map((item,index)=>{
                     return (<div key={index} className={styles.operatorContent} >
                       {item.map((e,i)=>{
+                        //console.log(e.userFullName);
                         return (
                           <div key={i} className={styles.userInfo} >
                             <Row>
-                              <Col span={8}><div>{e.userFullName || e.userName}</div></Col>
-                              <Col span={8}><div>{e.roleDesc}</div></Col>
-                              <Col span={8}><div>{e.phoneNum}</div></Col>
+                              <Col span={5} title={e.userFullName|| e.userName}><div  style={{height:'21px',width:'55px',overflow:"hidden"}}>{e.userFullName|| e.userName}</div></Col>
+                              <Col span={9} title={e.roleDesc}><div style={{height:'21px',width:'94px',overflow:"hidden"}}>{e.roleDesc}</div></Col>
+                              <Col span={9} title={e.phoneNum}><div style={{height:'21px',width:'94px',overflow:"hidden"}}>{e.phoneNum}</div></Col>
                             </Row>
                           </div>
                         )
