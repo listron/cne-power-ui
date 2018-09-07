@@ -422,30 +422,34 @@ function *createNewDefect(action){
   const { payload } = action;
   let url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.createNewDefect;
   yield put({ type: ticketAction.TICKET_FETCH });
+  const isContinueAdd = payload.isContinueAdd;
+  delete payload.isContinueAdd;
   try {
     const response = yield call(axios.post, url, payload);
     if(response.data.code === '10000'){
       message.success('创建成功！');
-      const pageSize = yield select(state => state.operation.defect.get('pageSize'));
-      const status = yield select(state => state.operation.defect.get('status'));
-      const sort = yield select(state => state.operation.defect.get('sort'));
-      yield put({ 
-        type: ticketAction.GET_DEFECT_LIST_SAGA, 
-        payload: {
-          defectSource: '3',
-          stationType: '2',
-          status: status,
-          pageNum: 0,
-          pageSize: pageSize,
-          sort: sort
-        }
-      });
-      yield put({
-        type: ticketAction.CHANGE_SHOW_CONTAINER,
-        payload: {
-          container: 'list',
-        },
-      })       
+      if(!isContinueAdd) {
+        const pageSize = yield select(state => state.operation.defect.get('pageSize'));
+        const status = yield select(state => state.operation.defect.get('status'));
+        const sort = yield select(state => state.operation.defect.get('sort'));
+        yield put({ 
+          type: ticketAction.GET_DEFECT_LIST_SAGA, 
+          payload: {
+            defectSource: '3',
+            stationType: '2',
+            status: status,
+            pageNum: 0,
+            pageSize: pageSize,
+            sort: sort
+          }
+        });
+        yield put({
+          type: ticketAction.CHANGE_SHOW_CONTAINER_SAGA,
+          payload: {
+            container: 'list',
+          },
+        })
+      }        
     } else{
       yield put({ 
         type: ticketAction.DEFECT_CREATE_FAIL, 

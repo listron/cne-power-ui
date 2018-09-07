@@ -31,10 +31,8 @@ class LoginForm extends Component {
 
   componentWillMount(){
     const locationSearch = this.props.history.location.search;
-    console.log(locationSearch);
     if(locationSearch){
       const linkId = locationSearch.substr(locationSearch.indexOf('=')+1);
-      console.log(linkId);
       this.props.inviteUserLink({linkId});
     }
     

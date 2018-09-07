@@ -2,15 +2,16 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import StationSelect from '../../../../Common/StationSelect';
 import ImgUploader from '../../../../Common/Uploader/ImgUploader';
-import FormHanleButtons from './FormHanleButtons';
-import SolveTextArea from './SolveTextArea';
-import { Form, Input, Button, Select, Switch } from 'antd';
+import { Form, Input, Button, Select, Switch, Radio } from 'antd';
 import pathConfig from '../../../../../constants/path';
 import styles from './createDefectForm.scss';
 import DeviceName from '../../../../Common/DeviceName';
-const { TextArea } = Input;
+import InputLimit from '../../../../Common/InputLimit';
+import CommonInput from '../../../../Common/CommonInput';
 const FormItem = Form.Item;
 const Option = Select.Option;
+const RadioButton = Radio.Button;
+const RadioGroup = Radio.Group;
 
 class TmpForm extends Component {
   static propTypes = {
@@ -29,11 +30,12 @@ class TmpForm extends Component {
     deviceTypeItems: PropTypes.object,
     deviceAreaItems: PropTypes.object,
     deviceItems: PropTypes.object,
+    commonList: PropTypes.object,
+    error: PropTypes.object,
   };
   constructor(props){
     super(props);
     this.state = {
-      defectFinished: false,
       checked: false,
       deviceAreaCode: '',
     }
@@ -58,16 +60,10 @@ class TmpForm extends Component {
     this.props.getStationDeviceTypes({stationCode})
     this.props.getDefectTypes({stationType})
   }
-  onCancelCreate = () => {
-    this.props.onChangeShowContainer({ container: 'list' })
-  }
-  onDefectFinishChange = (defectFinished) => {
-    this.setState({
-      defectFinished
-    });
-  }
-  onDefectCreate = () => {
-    this.props.form.validateFieldsAndScroll((err, values) => {
+
+  onDefectCreate = (isContinueAdd) => {
+    const { error, form, onDefectCreateNew } = this.props;
+    form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         // 电站类型(0:风电，1光伏，2：全部)
         // stationType:20--光伏---10风
@@ -91,6 +87,7 @@ class TmpForm extends Component {
         delete values.imgHandle;
         let params = {
           ...values,
+          isContinueAdd,
           stationCode,
           stationType,
           deviceCode,
@@ -100,7 +97,10 @@ class TmpForm extends Component {
           photoSolveAddress,
           rotatePhoto,
         };
-        this.props.onDefectCreateNew(params);
+        onDefectCreateNew(params);
+        if(isContinueAdd && error.size === 0) {
+          this.props.form.resetFields();
+        }
       }
     });
   }
@@ -128,19 +128,9 @@ class TmpForm extends Component {
   }
 
   render() {
-    const { defectFinished } = this.state;
     const {stations, deviceTypes, defectTypes, defectDetail, editDataGet, showContainer } = this.props;
     const {getFieldDecorator, getFieldValue} = this.props.form;
-    const formItemLayout = {
-      labelCol: {
-        xs: { span: 24 },
-        sm: { span: 8 },
-      },
-      wrapperCol: {
-        xs: { span: 24 },
-        sm: { span: 16 },
-      },
-    };
+    const defectFinished = getFieldValue('defectSolveResult') === '0';
     const editDefect = showContainer === 'edit';
     const defaultStations = editDefect && stations.filter(e=>e.stationCode===defectDetail.stationCode) || [] ;
     const defaultDeviceType = editDefect && editDataGet && deviceTypes.find(e=>e.deviceTypeCode===defectDetail.deviceTypeCode);
@@ -152,134 +142,156 @@ class TmpForm extends Component {
       thumbUrl: e,  
     }))
     return (
-      <Form className={styles.defectCreate}>
-        <h3>基本信息</h3>
-        <FormItem label={'电站名称：'} {...formItemLayout}>
-          {getFieldDecorator('stations', {
-            rules: [{ required: true, message: '请选择电站' }],
-            initialValue: defaultStations,
-          })(
-            <StationSelect data={stations} multiple={false} onOK={this.onStationSelected} />
-          )}
-        </FormItem>
-        <FormItem label={'设备类型：'} {...formItemLayout}>
-          {getFieldDecorator('deviceTypeCode', {
-            rules: [{ required: true, message: '请选择设备类型' }],
-            initialValue: defaultDeviceType && defaultDeviceType.deviceTypeCode || null,
-          })(
-            <Select placeholder={'请选择设备类型'} disabled={deviceTypes.length === 0}>
-              {deviceTypes.map(e=>(<Option key={e.deviceTypeCode} value={e.deviceTypeCode}>{e.deviceTypeName}</Option>))}
-            </Select>
-          )}
-        </FormItem>
-        <FormItem label={'设备名称：'} {...formItemLayout} >
-          {getFieldDecorator('deviceCode',{
-            rules: [{ required: true, message: '请选择设备名称' }],
-          })(
-            <DeviceName  
-              disabled = {!getFieldValue('deviceTypeCode')}
-              placeholder = "请选择设备名称"
-              stationName = {getFieldValue('stations').length > 0 ? getFieldValue('stations')[0].stationName : ""}
-              deviceType = {this.getDeviceType(getFieldValue('deviceTypeCode'))}
-              deviceAreaCode={this.state.deviceAreaCode}
-              onChangeArea={this.onChangeArea}
-              deviceTypeItems={this.props.deviceTypeItems}
-              deviceAreaItems={this.props.deviceAreaItems}
-              deviceItems={this.props.deviceItems}
-              loadDeviceList={this.loadDeviceList}
-            />
-          )}
-        </FormItem>
-        <FormItem label={'缺陷类型：'} {...formItemLayout}>
-          {getFieldDecorator('defectTypeCode', {
-            rules: [{ required: true, message: '请选择缺陷类型' }],
-            initialValue: defaultDefectType && defaultDefectType.defectTypeCode || null,
-          })(
-            <Select placeholder={'请选择缺陷类型'} disabled={defectTypes.length === 0}>
-              {defectTypes.map(e=>(<Option key={e.defectTypeCode} value={e.defectTypeCode}>{e.defectTypeName}</Option>))}
-            </Select>
-          )}
-        </FormItem>
-        <FormItem  label={'缺陷级别：'} {...formItemLayout}>
-          {getFieldDecorator('defectLevel', {
-            rules: [{ required: true, message: '请选择缺陷级别' }],
-            initialValue: editDefect && defectDetail.defectLevel || null,
-          })(
-            <Select placeholder={'请选择缺陷级别'} disabled={defectTypes.length === 0}>
-              <Option value={1}>一级</Option>
-              <Option value={2}>二级</Option>
-              <Option value={3}>三级</Option>
-              <Option value={4}>四级</Option>
-            </Select>
-          )}
-        </FormItem>
-        <FormItem label={'缺陷描述：'} {...formItemLayout}>
-          {getFieldDecorator('defectDescribe', {
-            rules: [{ required: true, message: '请输入缺陷描述' }],
-            initialValue: editDefect && defectDetail.defectDescribe || null,
-          })(
-            <TextArea placeholder={'请输入缺陷描述'} />
-          )}
-        </FormItem>
-        <FormItem label={'添加图片：'} {...formItemLayout}>
-          {getFieldDecorator('imgDescribe', {
-            rules: [{ required: false, message: '请上传图片' }],
-            initialValue: imgDescribe || [],
-            valuePropName:'data',
-          })(
-            <ImgUploader uploadPath={`${pathConfig.basePaths.APIBasePath}${pathConfig.commonPaths.imgUploads}`} editable={true} />
-          )}
-        </FormItem>
-        <h3>处理信息</h3>
-        <FormItem label={'处理结果：'} {...formItemLayout}>
-          {getFieldDecorator('defectSolveResult', {
-            rules: [{ required: true, message: '选择处理结果' }],
-            initialValue: editDefect && defectDetail.handleData.defectSolveResult || '1',
-          })(
-            <FormHanleButtons onDefectFinishChange={this.onDefectFinishChange} />
-          )}
-        </FormItem>
-        {!defectFinished && <FormItem label={'处理建议：'} {...formItemLayout}>
-          {getFieldDecorator('defectSolveInfo', {
-            rules: [{ required: true, message: '请输入处理建议' }],
-            initialValue: editDefect && defectDetail.handleData.defectSolveInfo || '',
-          })(
-            <TextArea placeholder={'请描述处理建议，不超过80字'} />
-          )}
-        </FormItem>}
-        {defectFinished && <FormItem label={'处理过程：'} {...formItemLayout}>
-          {getFieldDecorator('defectSolveInfo', {
-            rules: [{ required: true, message: '请输入处理过程' }],
-            initialValue: editDefect && defectDetail.handleData.defectSolveInfo || ''
-          })(
-            <SolveTextArea />
-          )}
-        </FormItem>}
-        <FormItem label={'添加照片：'} {...formItemLayout}>
-          {getFieldDecorator('imgHandle', {
-            rules: [{ required: false, message: '请上传图片' }],
-            initialValue: [],
-            valuePropName:'data',
-          })(
-            <ImgUploader uploadPath={`${pathConfig.basePaths.APIBasePath}${pathConfig.commonPaths.imgUploads}`} editable={true} />
-          )}
-        </FormItem>
-        {defectFinished && <FormItem label={'更换部件：'} {...formItemLayout}>
-          <div>
-            <Switch checked={this.state.checked} onChange={this.onChangeReplace} />
-            {this.state.checked && getFieldDecorator('replaceParts', {
-              rules: [{ 
-                required: true, 
-                message: '请输入更换备件'
-              }],
-            })(
-              <Input placeholder={'备件名称+型号'} />
-            )}
+      <Form className={styles.defectCreateForm}>
+        <div className={styles.basicInfo}>
+          <div className={styles.title}>
+            基本信息
+            <i className="iconfont icon-content" />
           </div>
-        </FormItem>}
-        <div>
-          <Button onClick={this.onCancelCreate}>取消</Button>
-          <Button onClick={this.onDefectCreate}>提交</Button>
+          <FormItem label="电站名称" colon={false}>
+            {getFieldDecorator('stations', {
+              rules: [{ required: true, message: '请选择电站' }],
+              initialValue: defaultStations,
+            })(
+              <StationSelect data={stations} multiple={false} onOK={this.onStationSelected} />
+            )}
+            <div className={styles.tipText}>(点击<i className="iconfont icon-filter" />图标可选择)</div>
+          </FormItem>
+          <FormItem label="设备类型" colon={false}>
+            {getFieldDecorator('deviceTypeCode', {
+              rules: [{ required: true, message: '请选择设备类型' }],
+              initialValue: defaultDeviceType && defaultDeviceType.deviceTypeCode || undefined,
+            })(
+              <Select style={{width:198}} placeholder="请选择" disabled={deviceTypes.length === 0}>
+                {deviceTypes.map(e=>(<Option key={e.deviceTypeCode} value={e.deviceTypeCode}>{e.deviceTypeName}</Option>))}
+              </Select>
+            )}
+          </FormItem>
+          <FormItem label="设备名称" colon={false}>
+            {getFieldDecorator('deviceCode',{
+              rules: [{ required: true, message: '请选择设备名称' }],
+            })(
+              <DeviceName  
+                disabled={!getFieldValue('deviceTypeCode')}
+                placeholder="输入关键字快速查询"
+                stationName={getFieldValue('stations').length > 0 ? getFieldValue('stations')[0].stationName : ''}
+                deviceType={this.getDeviceType(getFieldValue('deviceTypeCode'))}
+                deviceAreaCode={this.state.deviceAreaCode}
+                onChangeArea={this.onChangeArea}
+                deviceTypeItems={this.props.deviceTypeItems}
+                deviceAreaItems={this.props.deviceAreaItems}
+                deviceItems={this.props.deviceItems}
+                loadDeviceList={this.loadDeviceList}
+              />
+            )}
+            <div className={styles.tipText}>(点击<i className="iconfont icon-filter" />图标可选择)</div>
+          </FormItem>
+          <FormItem label="缺陷类型" colon={false}>
+            {getFieldDecorator('defectTypeCode', {
+              rules: [{ required: true, message: '请选择缺陷类型' }],
+              initialValue: defaultDefectType && defaultDefectType.defectTypeCode || undefined,
+            })(
+              <Select style={{width:198}} placeholder="请选择" disabled={defectTypes.length === 0}>
+                {defectTypes.map(e=>(<Option key={e.defectTypeCode} value={e.defectTypeCode}>{e.defectTypeName}</Option>))}
+              </Select>
+            )}
+          </FormItem>
+          <FormItem  label="缺陷级别" colon={false}>
+            {getFieldDecorator('defectLevel', {
+              rules: [{ required: true, message: '请选择缺陷级别' }],
+              initialValue: editDefect && defectDetail.defectLevel || undefined,
+            })(
+              <Select style={{width:198}}  placeholder="请选择" disabled={defectTypes.length === 0}>
+                <Option value={1}>一级</Option>
+                <Option value={2}>二级</Option>
+                <Option value={3}>三级</Option>
+                <Option value={4}>四级</Option>
+              </Select>
+            )}
+          </FormItem>
+          <FormItem label="缺陷描述" colon={false}>
+            {getFieldDecorator('defectDescribe', {
+              rules: [{ required: true, message: '请输入缺陷描述' }],
+              initialValue: editDefect && defectDetail.defectDescribe || null,
+            })(
+              <InputLimit placeholder="请描述，不超过80个汉字" />
+            )}
+          </FormItem>
+          <FormItem label="添加图片" colon={false}>
+            <div className={styles.addImg}>
+              <div className={styles.maxTip}>最多4张</div>
+              {getFieldDecorator('imgDescribe', {
+                rules: [{ required: false, message: '请上传图片' }],
+                initialValue: imgDescribe || [],
+                valuePropName:'data',
+              })(
+                <ImgUploader imgStyle={{width:98,height:98}} uploadPath={`${pathConfig.basePaths.APIBasePath}${pathConfig.commonPaths.imgUploads}`} editable={true} />
+              )}
+            </div>
+          </FormItem>
+        </div>
+        <div className={styles.dealInfo}>
+        <div className={styles.title}>
+            处理
+            <i className="iconfont icon-content" />
+          </div>
+          <FormItem label="处理结果" colon={false}>
+            {getFieldDecorator('defectSolveResult', {
+              rules: [{ required: true, message: '选择处理结果' }],
+              initialValue: editDefect && defectDetail.handleData.defectSolveResult || '1',
+            })(
+              <RadioGroup>
+                <RadioButton value="1">未解决</RadioButton>
+                <RadioButton value="0">已解决</RadioButton>
+              </RadioGroup>
+              // <FormHanleButtons onDefectFinishChange={this.onDefectFinishChange} />
+            )}
+          </FormItem>
+          {!defectFinished && <FormItem label="处理建议" colon={false}>
+            {getFieldDecorator('defectSolveInfo', {
+              rules: [{ required: true, message: '请输入处理建议' }],
+              initialValue: editDefect && defectDetail.handleData.defectSolveInfo || '',
+            })(
+              <InputLimit placeholder="请描述，不超过80个汉字" />
+            )}
+          </FormItem>}
+          {defectFinished && <FormItem label="处理过程" colon={false}>
+            {getFieldDecorator('defectSolveInfo', {
+              rules: [{ required: true, message: '请输入处理过程' }],
+              initialValue: editDefect && defectDetail.handleData.defectSolveInfo || ''
+            })(
+              <CommonInput commonList={this.props.commonList} placeholder="请描述，不超过80个汉字" />
+            )}
+          </FormItem>}
+          <FormItem label="添加照片" colon={false}>
+            <div className={styles.addImg}>
+              <div className={styles.maxTip}>最多4张</div>
+              {getFieldDecorator('imgHandle', {
+                rules: [{ required: false, message: '请上传图片' }],
+                initialValue: [],
+                valuePropName:'data',
+              })(
+                <ImgUploader imgStyle={{width:98,height:98}} uploadPath={`${pathConfig.basePaths.APIBasePath}${pathConfig.commonPaths.imgUploads}`} editable={true} />
+              )}
+            </div>
+          </FormItem>
+          {defectFinished && <FormItem label="更换部件" colon={false}>
+            <div>
+              <Switch checked={this.state.checked} onChange={this.onChangeReplace} />
+              {this.state.checked && getFieldDecorator('replaceParts', {
+                rules: [{ 
+                  required: true, 
+                  message: '请输入更换备件'
+                }],
+              })(
+                <Input style={{marginLeft: 20}} placeholder="备件名称+型号" />
+              )}
+            </div>
+          </FormItem>}
+          <div className={styles.actionBar}>
+            <Button className={styles.saveBtn} onClick={()=>this.onDefectCreate(false)}>保存</Button>
+            <Button onClick={()=>this.onDefectCreate(true)}>保存并继续添加</Button>
+          </div>
         </div>
       </Form>
     );

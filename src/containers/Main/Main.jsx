@@ -94,7 +94,7 @@ class Main extends Component {
 
   render() {
     const { setTopMenu, topMenu, changeLoginStore } = this.props;
-    const authData = Cookie.get('authData');
+    const authData = Cookie.get('authData') || null;
     const isNotLogin = Cookie.get('isNotLogin');
     const userRight = Cookie.get('userRight');
     const rightMenu = Cookie.get('rightMenu');

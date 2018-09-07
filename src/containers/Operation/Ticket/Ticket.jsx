@@ -2,11 +2,15 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {Tabs} from 'antd';
-import Defect from './Defect/Defect';
-import Inspect from './Inspect/Inspect';
 import Footer from '../../../components/Common/Footer';
 import { ticketAction } from '../../../constants/actionTypes/operation/ticketAction';
 import styles from './ticket.scss';
+import DefectList from './Defect/DefectList/DefectList';
+import DefectDetail from './Defect/DefectDetail/DefectDetail';
+import DefectCreate from './Defect/DefectCreate/DefectCreate';
+import InspectList from './Inspect/InspectList/InspectList';
+import InspectDetail from './Inspect/InspectDetail/InspectDetail';
+import InspectCreate from './Inspect/InspectCreate/InspectCreate';
 
 const TabPane = Tabs.TabPane;
 
@@ -24,6 +28,12 @@ class Ticket extends Component {
     this.state = {
       tab: "defect",
     };
+  }
+
+  componentWillUnmount() {
+    this.props.clearDefectState();
+    this.props.clearInspectState();
+    this.props.onChangeShowContainer({container: 'list'});
   }
 
   onChangeTab = (tab) => {
@@ -55,17 +65,40 @@ class Ticket extends Component {
     }
   }
 
+  renderContent() {
+    const { showContainer, onChangeShowContainer } = this.props;
+    const { tab } = this.state;
+    if(showContainer === 'list') {
+      return (
+        <Tabs activeKey={tab} onChange={this.onChangeTab} type="card">
+          <TabPane tab="缺陷" key="defect">
+            <DefectList showTab={tab} onChangeShowContainer={onChangeShowContainer} />
+          </TabPane>
+          <TabPane tab="巡检" key="inspect">
+            <InspectList showTab={tab} onChangeShowContainer={onChangeShowContainer}  />
+          </TabPane>
+        </Tabs>
+      );
+    } else if(showContainer === 'detail') {
+      if(tab === 'defect') {
+        return <DefectDetail onChangeShowContainer={this.props.onChangeShowContainer} />;
+      } else {
+        return <InspectDetail onChangeShowContainer={this.props.onChangeShowContainer} />;
+      }
+      
+    } else {
+      if(tab === 'defect') {
+        return <DefectCreate onChangeShowContainer={this.props.onChangeShowContainer} showContainer={showContainer} />;
+      } else {
+        return <InspectCreate onChangeShowContainer={this.props.onChangeShowContainer} showContainer={showContainer} />;
+      }
+    }
+  }
+
   render() {
     return (
       <div className={styles.ticket}>
-        <Tabs activeKey={this.state.tab} onChange={this.onChangeTab} type="card">
-          <TabPane tab="缺陷" key="defect">
-            <Defect showTab={this.state.tab} showContainer={this.props.showContainer} onChangeShowContainer={this.props.onChangeShowContainer} />
-          </TabPane>
-          <TabPane tab="巡检" key="inspect">
-            <Inspect showTab={this.state.tab} showContainer={this.props.showContainer} onChangeShowContainer={this.props.onChangeShowContainer}  />
-          </TabPane>
-        </Tabs>
+        {this.renderContent()}
         <Footer />
       </div>
     );

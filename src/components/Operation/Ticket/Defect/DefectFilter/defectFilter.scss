@@ -94,6 +94,56 @@
   }
 }
 
+.stationFilter {
+  margin-top: 10px;
+  display: flex;
+  flex: 1;
+  flex-shrink: 0;
+  max-height: 190px;
+  min-height: 40px;
+  overflow-y: auto;
+  border-radius: 4px;
+  background-color: #f0f2f5;
+  padding-left: 26px;
+  padding-bottom: 24px;
+}
+.deviceTypeFilter {
+  margin-top: 10px;
+  display: flex;
+  flex: 1;
+  align-items: flex-start;
+  padding: 10px 0;
+  flex-shrink: 0;
+  padding-left: 26px;
+  min-height: 40px;
+  border-radius: 4px;
+  background-color: #f0f2f5;
+  >span {
+    margin-right: 10px;
+  }
+  :global {
+    .ant-checkbox-group-item {
+      margin-bottom: 8px;
+    }
+  }
+  .all {
+    display: inline-block;
+    color: #666;
+    width: 40px;
+    height: 19px;
+    border-bottom: none;
+    cursor: pointer;
+  }
+  .selected {
+    display: inline-block;
+    color: $themeColor;
+    width: 40px;
+    height: 19px;
+    border-bottom: 1px $themeColor solid;
+    cursor: pointer;
+  }
+}
+
 .filteredItems {
   display: flex;
   flex-direction: row;
