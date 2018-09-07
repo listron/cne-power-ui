@@ -7,6 +7,7 @@ import TransitionContainer from '../../../../components/Common/TransitionContain
 import UserSide from '../../../../components/System/Account/User/UserSide/UserSide';
 import UserMain from '../../../../components/System/Account/User/UserList/UserMain';
 import Cookie from 'js-cookie';
+import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 
 class User extends Component {
   static propTypes = {
@@ -42,7 +43,7 @@ class User extends Component {
     }
   }
   componentDidMount() {
-    if(this.props.enterpriseId){
+    if (this.props.enterpriseId) {
       const params = {
         enterpriseId: this.props.enterpriseId,
         roleId: this.props.roleId,
@@ -55,8 +56,8 @@ class User extends Component {
         order: '',
       };
       this.props.getUserList(params);
-      this.props.getRoleAllList({enterpriseId: this.props.enterpriseId, roleType: "0"});
-      this.props.getRoleAllList({enterpriseId: this.props.enterpriseId, roleType: "1"});
+      this.props.getRoleAllList({ enterpriseId: this.props.enterpriseId, roleType: "0" });
+      this.props.getRoleAllList({ enterpriseId: this.props.enterpriseId, roleType: "1" });
     }
   }
 
@@ -112,26 +113,36 @@ class User extends Component {
   render() {
     const { showPage } = this.props;
     const { showSidePage } = this.state;
+    const breadCrumbData = {
+      breadData: [
+        {
+          name: '用户',
+        }
+      ],
+    };
     return (
-      <div className={styles.userContainer}>
-        <UserMain
-          {...this.props}
-          onChangeStatus={this.onChangeStatus}
-          onChangeSort={this.onChangeSort}
-        />
-        <TransitionContainer
-          show={showPage!=='list'}
-          onEnter={this.onToggleSide}
-          onExited={this.onToggleSide}
-          timeout={500}
-          effect="side"
-        >
-          <UserSide {...this.props} showSidePage={showSidePage} onShowSideChange={this.onShowSideChange} />
-        </TransitionContainer>
-        <div className={styles.userFooter}>
-          <span className={styles.footerText}>
-            京ICP备12030847号-2 © 2017-2018 北京动力协合科技有限公司
+      <div className={styles.userContainerBox}>
+        <CommonBreadcrumb  {...breadCrumbData} style={{ marginLeft: '38px' }} />
+        <div className={styles.userContainer}>
+          <UserMain
+            {...this.props}
+            onChangeStatus={this.onChangeStatus}
+            onChangeSort={this.onChangeSort}
+          />
+          <TransitionContainer
+            show={showPage !== 'list'}
+            onEnter={this.onToggleSide}
+            onExited={this.onToggleSide}
+            timeout={500}
+            effect="side"
+          >
+            <UserSide {...this.props} showSidePage={showSidePage} onShowSideChange={this.onShowSideChange} />
+          </TransitionContainer>
+          <div className={styles.userFooter}>
+            <span className={styles.footerText}>
+              京ICP备12030847号-2 © 2017-2018 北京动力协合科技有限公司
           </span>
+          </div>
         </div>
       </div>
     );
@@ -139,24 +150,24 @@ class User extends Component {
 }
 
 const mapStateToProps = state => {
-  let userProps = {}; 
-  [...state.system.user].forEach(e=>userProps[e[0]]=e[1]);
+  let userProps = {};
+  [...state.system.user].forEach(e => userProps[e[0]] = e[1]);
   userProps['roleData'] = state.system.role.get('roleData');
   userProps['enterpriseId'] = Cookie.get('enterpriseId');
   return userProps;
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  changeUserStore: payload => dispatch({type:userAction.CHANGE_USER_STORE_SAGA, payload}),
-  getUserList: payload => dispatch({type:userAction.GET_USER_LIST_SAGA, payload}),
-  getUserDetail: payload => dispatch({type:userAction.GET_USER_DETAIL_SAGA, payload}),
-  changeSelectedUser: payload => dispatch({type:userAction.CHANGE_SELECTED_USER_SAGA, payload}),
-  getRoleAllList: payload => dispatch({type:userAction.GET_ROLE_ALL_LIST_SAGA, payload}),
-  changeUserStatus: payload => dispatch({ type:userAction.CHANGE_USER_STATUS_SAGA, payload}),
-  createUserInfo: payload => dispatch({type:userAction.CREATE_USER_INFO_SAGA, payload}),
-  editUserInfo: payload => dispatch({type:userAction.EDIT_USER_INFO_SAGA, payload}),
-  getInviteLink: payload => dispatch({type:userAction.GET_INVITE_LINK_SAGA, payload}),
-  resetUserState: payload => dispatch({type:userAction.RESET_USER_STATE_SAGA, payload}),
+  changeUserStore: payload => dispatch({ type: userAction.CHANGE_USER_STORE_SAGA, payload }),
+  getUserList: payload => dispatch({ type: userAction.GET_USER_LIST_SAGA, payload }),
+  getUserDetail: payload => dispatch({ type: userAction.GET_USER_DETAIL_SAGA, payload }),
+  changeSelectedUser: payload => dispatch({ type: userAction.CHANGE_SELECTED_USER_SAGA, payload }),
+  getRoleAllList: payload => dispatch({ type: userAction.GET_ROLE_ALL_LIST_SAGA, payload }),
+  changeUserStatus: payload => dispatch({ type: userAction.CHANGE_USER_STATUS_SAGA, payload }),
+  createUserInfo: payload => dispatch({ type: userAction.CREATE_USER_INFO_SAGA, payload }),
+  editUserInfo: payload => dispatch({ type: userAction.EDIT_USER_INFO_SAGA, payload }),
+  getInviteLink: payload => dispatch({ type: userAction.GET_INVITE_LINK_SAGA, payload }),
+  resetUserState: payload => dispatch({ type: userAction.RESET_USER_STATE_SAGA, payload }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(User);
