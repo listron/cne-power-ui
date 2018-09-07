@@ -34,7 +34,7 @@ class PvStation extends Component {
   onSelectedDeviceType = (e) => {
     const deviceTypeCode = parseInt(e.target.value);
     this.props.changeSingleStationStore({deviceTypeCode});
-    
+    console.log(deviceTypeCode);
   }
 
   getDeviceTypeIcon = (e) => {

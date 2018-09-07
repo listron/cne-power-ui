@@ -121,9 +121,9 @@ class CardSection extends Component {
                         return (
                           <div key={i} className={styles.userInfo} >
                             <Row>
-                              <Col span={5}><div>{e.userFullName}</div></Col>
-                              <Col span={9}><div>{e.roleDesc}</div></Col>
-                              <Col span={10}><div>{e.phoneNum}</div></Col>
+                              <Col span={8}><div>{e.userFullName || e.userName}</div></Col>
+                              <Col span={8}><div>{e.roleDesc}</div></Col>
+                              <Col span={8}><div>{e.phoneNum}</div></Col>
                             </Row>
                           </div>
                         )

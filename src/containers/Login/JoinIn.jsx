@@ -2,10 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './loginLayout.scss';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Redirect } from 'react-router-dom';
 import JoinInForm from '../../components/Login/JoinInForm';
 import { loginAction } from '../../constants/actionTypes/loginAction';
-
 class JoinIn extends Component {
   static propTypes = {
     changeLoginStore: PropTypes.func,
@@ -32,6 +31,16 @@ class JoinIn extends Component {
   constructor(props) {
     super(props);
   }
+
+  onLogin = () => {
+    const locationSearch = this.props.history.location.search;
+    if(locationSearch){
+      window.location.href="";
+    }else{
+      this.changePage('login');
+    }
+  }
+
   changePage = (pageTab) =>{
     this.props.changeLoginStore({pageTab, registerStep: 1, joinStep: 1,enterpriseId: ''})
   }
@@ -40,7 +49,7 @@ class JoinIn extends Component {
     return (
       <div className={styles.joinInContent} >
         <div className={styles.goLogin}>
-          <span  onClick={()=>this.changePage('login')}> 登录 </span>
+          <span  onClick={this.onLogin}> 登录 </span>
           <span>|</span>
           <span  onClick={()=>this.changePage('register')}> 注册 </span>
         </div>
@@ -54,7 +63,7 @@ const mapStateToProps = (state) => ({
   enterpriseName: state.login.getIn(['enterpriseInfo','enterpriseName']),
   enterpriseLogo: state.login.getIn(['enterpriseInfo','enterpriseLogo']),
   enterpriseId: state.login.getIn(['enterpriseInfo','enterpriseId']),
-  enterpriseIdToken: state.login.get('enterpriseId'),//命名enterpriseIdToken区别于info里获取的enterpriseId
+  enterpriseIdToken: state.login.getIn(['loginData','enterpriseId']),//命名enterpriseIdToken区别于info里获取的enterpriseId
   enterpriseInfo: state.login.get('enterpriseInfo'),
   joinResult: state.login.get('joinResult'),
   joinStep: state.login.get('joinStep'),
