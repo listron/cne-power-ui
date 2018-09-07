@@ -78,6 +78,7 @@ const mapDispatchToProps = (dispatch) => ({
   getStationList: payload => dispatch({type: stationManageAction.GET_STATION_MANAGE_LIST, payload}),
   getStationDetail: payload => dispatch({type: stationManageAction.GET_STATION_MANAGE_DETAIL, payload}),
   saveStationDetail: payload => dispatch({type: stationManageAction.EDIT_STATION_MANAGE_DETAIL, payload}),
+  deleteStation: payload => dispatch({type: stationManageAction.DELET_STATION_MANAGE, payload}),
   setStationDepartment: payload => dispatch({type: stationManageAction.SET_STATION_MANAGE_DEPARTMENT, payload}),
   getAllDepartmentData: payload => dispatch({type: commonAction.GET_ALL_DEPARTMENT_DATA, payload}),
 });

@@ -18,7 +18,7 @@ function *getStationList(action){ // 请求电站列表信息
   // const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.getStationList}/${payload.enterpriseId}`
   try{
     yield put({ type:stationManageAction.STATION_MANAGE_FETCH });
-    const response = yield call(axios.get, url);
+    const response = yield call(axios.post, url);
     // if(response.data.code === "10000"){
     yield put({
       type: stationManageAction.GET_STATION_MANAGE_FETCH_SUCCESS,
@@ -86,6 +86,31 @@ function *saveStationDetail(action){ // 保存编辑的电站详情；
   }
 }
 
+function *deleteStation(action){ // 删除电站(及以下设备)
+  const { payload } = action;
+  const url = '/mock/system/deleteStation';
+  // const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.deleteStation}/${payload.enterpriseId}`
+  try{
+    yield put({ type:stationManageAction.STATION_MANAGE_FETCH });
+    const response = yield call(axios.post, url, payload);
+    if(response.data.code === "10000"){ // 保存成功后，继续请求电站列表信息
+      yield put({
+        type: stationManageAction.GET_STATION_LIST_SAGA,
+        payload: {}  // --- todo 请求电站信息列表所需参数
+      })
+      yield put({
+        type: stationManageAction.CHANGE_STATION_MANAGE_STORE_SAGA,
+        payload: {
+          showPage: 'list',
+        }
+      })
+    }
+  }catch(e){
+    console.log(e);
+    message.error('保存电站详情失败，请重试');
+  }
+}
+
 function *setStationDepartment(action){ // 保存分配至指定电站的部门；
   const { payload } = action;
   const url = '/mock/system/setDepartment';
@@ -110,6 +135,7 @@ export function* watchStationManage() {
   yield takeLatest(stationManageAction.GET_STATION_MANAGE_LIST, getStationList);
   yield takeLatest(stationManageAction.GET_STATION_MANAGE_DETAIL, getStationDetail);
   yield takeLatest(stationManageAction.EDIT_STATION_MANAGE_DETAIL, saveStationDetail);
+  yield takeLatest(stationManageAction.DELET_STATION_MANAGE, deleteStation);
   yield takeLatest(stationManageAction.SET_STATION_MANAGE_DEPARTMENT, setStationDepartment);
 }
 

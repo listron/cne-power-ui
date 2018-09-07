@@ -20,8 +20,8 @@ class StationManageDetail extends Component {
   }
 
   onShowSideChange = ({showSidePage}) => {
-    this.props.onShowSideChange({showSidePage:'edit'});
-    this.props.changeStationManageStore({showPage: 'edit'});
+    this.props.onShowSideChange({ showSidePage:'edit' });
+    this.props.changeStationManageStore({ showPage: 'edit' });
   }
 
   preDepartment = () => {
@@ -33,7 +33,7 @@ class StationManageDetail extends Component {
   }
   
   backToList = () => {
-    this.props.changeStationManageStore({showPage: 'list'});
+    this.props.changeStationManageStore({ showPage: 'list' });
   }
 
   render(){
