@@ -130,7 +130,6 @@ class TmpForm extends Component {
   render() {
     const {stations, deviceTypes, defectTypes, defectDetail, editDataGet, showContainer } = this.props;
     const {getFieldDecorator, getFieldValue} = this.props.form;
-    const { showWarningTip, warningTipText } = this.state;
     const defectFinished = getFieldValue('defectSolveResult') === '0';
     const editDefect = showContainer === 'edit';
     const defaultStations = editDefect && stations.filter(e=>e.stationCode===defectDetail.stationCode) || [] ;
@@ -219,13 +218,16 @@ class TmpForm extends Component {
             )}
           </FormItem>
           <FormItem label="添加图片" colon={false}>
-            {getFieldDecorator('imgDescribe', {
-              rules: [{ required: false, message: '请上传图片' }],
-              initialValue: imgDescribe || [],
-              valuePropName:'data',
-            })(
-              <ImgUploader imgStyle={{width:98,height:98}} uploadPath={`${pathConfig.basePaths.APIBasePath}${pathConfig.commonPaths.imgUploads}`} editable={true} />
-            )}
+            <div className={styles.addImg}>
+              <div className={styles.maxTip}>最多4张</div>
+              {getFieldDecorator('imgDescribe', {
+                rules: [{ required: false, message: '请上传图片' }],
+                initialValue: imgDescribe || [],
+                valuePropName:'data',
+              })(
+                <ImgUploader imgStyle={{width:98,height:98}} uploadPath={`${pathConfig.basePaths.APIBasePath}${pathConfig.commonPaths.imgUploads}`} editable={true} />
+              )}
+            </div>
           </FormItem>
         </div>
         <div className={styles.dealInfo}>
@@ -262,13 +264,16 @@ class TmpForm extends Component {
             )}
           </FormItem>}
           <FormItem label="添加照片" colon={false}>
-            {getFieldDecorator('imgHandle', {
-              rules: [{ required: false, message: '请上传图片' }],
-              initialValue: [],
-              valuePropName:'data',
-            })(
-              <ImgUploader imgStyle={{width:98,height:98}} uploadPath={`${pathConfig.basePaths.APIBasePath}${pathConfig.commonPaths.imgUploads}`} editable={true} />
-            )}
+            <div className={styles.addImg}>
+              <div className={styles.maxTip}>最多4张</div>
+              {getFieldDecorator('imgHandle', {
+                rules: [{ required: false, message: '请上传图片' }],
+                initialValue: [],
+                valuePropName:'data',
+              })(
+                <ImgUploader imgStyle={{width:98,height:98}} uploadPath={`${pathConfig.basePaths.APIBasePath}${pathConfig.commonPaths.imgUploads}`} editable={true} />
+              )}
+            </div>
           </FormItem>
           {defectFinished && <FormItem label="更换部件" colon={false}>
             <div>

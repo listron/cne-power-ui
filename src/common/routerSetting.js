@@ -47,7 +47,7 @@ const routers = [
   }, {
     path: '/operation/ticket/statistics',
     exact: true,
-    component: Ticket,
+    component: Building,
   }, {
     path: '/operation/twoTickets/typeone',
     exact: true,
