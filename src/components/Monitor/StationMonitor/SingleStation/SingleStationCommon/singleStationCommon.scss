@@ -45,6 +45,9 @@
       text-indent: 1em;
       cursor: pointer;
       color:#999999;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
     .currentStationName{
       display: inline-block;
@@ -55,9 +58,15 @@
       text-indent: 1em;
       cursor: pointer;
       color: $themeColor;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
     .stationName:hover,.stationName:focus{
       color: $themeColor;
+    }
+    .currentStationName:hover, .stationName:hover{
+      overflow: visible;
     }
     .eachStation{
       width: 50%;
