@@ -52,7 +52,7 @@ class UserInfo extends Component{
     );
     return (
       <div className={styles.layoutUser}>
-        <Dropdown overlay={DropdowMenu}>
+        <Dropdown overlay={DropdowMenu} placement="bottomRight">
           <span className={styles.layoutUserContent}>
             {userLogo && <img width="30px" height="30px" src={userLogo} />}
             {!userLogo && <span className={styles.userLogo}>{defaultUserLogo}</span>}
