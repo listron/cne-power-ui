@@ -124,6 +124,12 @@
       .powerScale{
         width: 215px;
       }
+      .stationYearPlan{
+        display: flex;
+        flex:1;
+        align-items: center;
+
+      }
       .annualEnergyScale{
         width: 230px;
       }
@@ -154,7 +160,8 @@
         color: $themeColor;
         font-size: 18px;
         text-align: center;
-        margin-top: 20px;
+        //margin-top: 20px;
+   
       }
     }
   }

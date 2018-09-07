@@ -119,6 +119,7 @@ class PvStationTop extends Component {
             <div className={styles.trueTimeValue}>{singleStationData && singleStationData.monthPower && parseFloat(singleStationData.monthPower).toFixed(4) || 0}</div>
             <div className={styles.trueTimeUnit}>月发电量 万kWh</div>
           </div>
+          <div className={styles.stationYearPlan}>
           <div className={styles.annualEnergyScale} >
             <div className={styles.trueTimeValue}>
               <span>{singleStationData && singleStationData.yearPower && parseFloat(singleStationData.yearPower).toFixed(4) || 0}</span>
@@ -128,6 +129,9 @@ class PvStationTop extends Component {
             <div  className={styles.trueTimeDesc}><span>年累计发电量 万kWh</span><span>计划 万kWh</span></div>
           </div>
           <div className={styles.yearPlanRate} >{singleStationData && singleStationData.yearPlanRate}</div>
+          </div>
+
+
         </div>
       </div>
     )
