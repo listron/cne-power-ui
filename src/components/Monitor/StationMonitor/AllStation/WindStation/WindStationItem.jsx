@@ -16,7 +16,7 @@ class WindStationItem extends React.Component {
     message.config({
       top: 300,
       duration: 2,
-      maxCount: 3,
+      maxCount: 1,
     });
     message.warning('电站未接入,无法查看详情',2);
 

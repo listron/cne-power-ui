@@ -2,7 +2,7 @@
 .layoutUser{
   height: 100%;
   .layoutUserContent{
-    max-width: 120px;
+    //max-width: 120px;
     min-width: 80px;
     height: 100%;
     display: flex;
@@ -29,9 +29,14 @@
   }
 }
 .layoutUserDropdown{
+  height: 100px;
+  width: 100px;
   background:#3e97d1;
   padding: 0;
   margin-top: -4px;
+  position: absolute;
+  top:0;
+  right:0;
   .innerItem{
     height: 50px;
     line-height: 50px;
