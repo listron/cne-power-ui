@@ -1,5 +1,9 @@
 @import '../../../../theme/theme.scss';
-
+.userContainerBox{
+  display: flex;
+  min-height: 100%;
+  flex: 1;
+  flex-direction: column;
 .userContainer{
   display: flex;
   min-height: 100%;
@@ -43,4 +47,5 @@
       color: $themeColor;
     }
   }
+}
 }
