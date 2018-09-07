@@ -25,20 +25,15 @@ import AlarmManage from '../containers/System/Station/AlarmManage/AlarmManage';
   注： path变量中，以/hidden开头的路径，将不展示在菜单中；
 */
 const routers = [
-  {
-    path: '/',
-    exact: true,
-    component: Building
-  }, 
+  // {
+  //   path: '/',
+  //   exact: true,
+  //   component: Building
+  // }, 
   {
     path: '/404',
     exact: true,
     component: Exception
-  },
-  {
-    path: '/login',
-    exact: true,
-    component: Login
   },
   {
     path: '/operation/ticket/list',

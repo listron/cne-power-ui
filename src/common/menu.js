@@ -14,12 +14,12 @@ import { isUrl } from '../utils';
 */
 
 const menuData = [
-  {
-    name: '主页',
-    path: '/',
-    defaultPath: true,
-    rightKey: 'homepage',
-  },
+  // {
+  //   name: '主页',
+  //   path: '/',
+  //   defaultPath: true,
+  //   rightKey: 'homepage',
+  // },
   {
     name: '实时监控',
     path: 'monitor',
