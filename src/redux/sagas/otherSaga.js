@@ -1,5 +1,6 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import axios from 'axios';
+import { stringify } from 'qs';
 import Path from '../../constants/path';
 import { message } from 'antd';
 import { otherAction } from '../../constants/actionTypes/otherAction';
@@ -19,11 +20,16 @@ function *editPassword(action){ // 修改密码
   const { payload } = action;
   const { userId, oldPassword, newPassword, history } = payload;
   try {
-    const response = yield call(axios.put, url, {
-      userId,
-      oldPassword,
-      newPassword,
-    });
+    const response = yield call(axios,{
+      method: 'put',
+      url,
+      headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'},
+      data: stringify({
+        userId,
+        oldPassword,
+        newPassword,
+      }),
+    })
     if(response.data.code === '10000'){
       yield put({
         type: otherAction.GET_OTHER_FETCH_SUCCESS,

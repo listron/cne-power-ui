@@ -65,21 +65,21 @@ class StationManage extends Component {
     const { showSidePage } = this.state;
     return (
       <div className={styles.stationManage}>
-        <StationManageMain {...this.props} queryListParams={queryListParams} />
+        {/* <StationManageMain {...this.props} queryListParams={queryListParams} />
         <TransitionContainer
           show={showPage!=='list'}
           onEnter={this.onToggleSide}
           onExited={this.onToggleSide}
           timeout={500}
           effect="side"
-        >
+        > */}
           <StationManageSide 
             {...this.props} 
             showSidePage={showSidePage}
             queryListParams={queryListParams}
             onShowSideChange={this.onShowSideChange} 
           />
-        </TransitionContainer>
+        {/* </TransitionContainer> */}
       </div>
 
     );
