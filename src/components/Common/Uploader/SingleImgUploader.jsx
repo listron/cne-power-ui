@@ -98,7 +98,7 @@ class SingleImgUploader extends Component {
   }
 
   render(){
-    const authData = Cookie.get('authData') || '';
+    const authData = Cookie.get('authData') || null;
     const { showCurentUpload, currentImgInfor, preInfor } = this.state;
     const { uploadPath, imgStyle } = this.props;
 

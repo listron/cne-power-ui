@@ -36,7 +36,7 @@ class DateFliter extends Component {
     const { createTimeStart, createTimeEnd } = this.props;
     return (
       <div className={styles.filterItem}>
-        <span onClick={this.resetTime} className={styles.resetTime} >不限</span>
+        <span onClick={this.resetTime} className={createTimeStart===''&&createTimeEnd===''?styles.selected:styles.all}>不限</span>
         <DatePicker
           value={createTimeStart ? moment(createTimeStart) : null}
           placeholder="开始时间"

@@ -48,7 +48,7 @@ class InputLimit extends Component {
 
     return ( 
       <div className={styles.inputLimit} style={this.props.style}>
-        <div className={styles.inputCount}>({this.state.current}/{this.props.size})</div>
+        <div className={styles.inputCount}>{this.state.current}/{this.props.size}字</div>
         <TextArea 
           value={this.props.value}
           placeholder={this.props.placeholder}

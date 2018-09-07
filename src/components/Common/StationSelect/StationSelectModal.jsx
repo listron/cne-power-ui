@@ -103,7 +103,7 @@ class StationSelectModal extends Component {
     const { filterStationType, stationType } = this.state;
     return (
       <div className={styles.stationSelectModal}>
-        <Icon type="filter" onClick={showStationModal} />
+        <i className="iconfont icon-filter" onClick={showStationModal} />
         <Modal
           visible={stationModalShow}
           onOk={this.handleOK}

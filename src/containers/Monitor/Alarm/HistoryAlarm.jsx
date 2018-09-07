@@ -4,6 +4,7 @@ import { alarmAction } from '../../../constants/actionTypes/monitor/alarmAction'
 import HistoryAlarmTable from '../../../components/Monitor/Alarm/HistoryAlarm/HistoryAlarmTable';
 import HistoryAlarmFilter from '../../../components/Monitor/Alarm/HistoryAlarm/HistoryAlarmFilter';
 import DeviceNameSearch from '../../../components/Monitor/Alarm/AlarmFilter/DeviceNameSearch';
+import CommonBreadcrumb from '../../../components/Common/CommonBreadcrumb';
 import Footer from '../../../components/Common/Footer';
 import styles from './alarm.scss';
 import PropTypes from 'prop-types';
@@ -70,7 +71,16 @@ class HistoryAlarm extends Component {
   }
 
   render() {
+    const breadCrumbData = {
+      breadData: [
+        {
+          name: '历史告警',
+        }
+      ],
+    };
     return (
+      <div className={styles.historyAlarmBox}>
+      <CommonBreadcrumb  {...breadCrumbData} style={{ marginLeft: '38px' }} />
       <div className={styles.historyAlarmContainer}>
         <div className={styles.historyAlarm}>
           <HistoryAlarmFilter {...this.props} onChangeFilter={this.onChangeFilter} />      
@@ -78,6 +88,7 @@ class HistoryAlarm extends Component {
           <HistoryAlarmTable {...this.props} /> 
         </div>
         <Footer />
+      </div>
       </div>
     );
   }
