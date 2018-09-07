@@ -134,13 +134,14 @@ class ImgUploader extends Component {
       beforeUpload:this.beforeUpload
 		};
     const uploadButton = (
-      <div style={imgStyle}>
-        <Icon type="plus" />
-        <div className="ant-upload-text">Upload</div>
+      <div className={styles.uploadBtn}>
+        <Icon type="plus" className={styles.add} />
+        <div className={styles.text}>点击上传</div>
       </div>
     );
     return (
       <div className={styles.imgUploader}>
+        <div className={styles.maxTip}>最多4张</div>
         {data && data.length > 0 && data.map((e,i)=>(
           <UploadedImg 
             editable={editable}

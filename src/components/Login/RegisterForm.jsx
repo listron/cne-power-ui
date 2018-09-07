@@ -22,6 +22,9 @@ class RegisterForm extends Component {
     error: PropTypes.object,
     history: PropTypes.object,
     changeLoginStore: PropTypes.func,
+    phoneNum: PropTypes.string,
+    enterpriseDomain: PropTypes.string,
+    enterpriseName: PropTypes.string,
   }
 
   constructor(props) {
@@ -94,6 +97,9 @@ class RegisterForm extends Component {
           }
         }, 500);
         this.props.registerEnterprise({
+          phoneNum: this.props.phoneNum,
+          enterpriseDomain: this.props.enterpriseDomain,
+          enterpriseName: this.props.enterpriseName,
           ...values,
           history: this.props.history
         });

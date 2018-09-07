@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import moment from 'moment';
-import { message } from 'antd';
+import { message, Modal, Button } from 'antd';
 import { Route,Redirect, Switch,withRouter} from 'react-router-dom';
 import {routerConfig} from '../../common/routerSetting';
 import { menu } from '../../common/menu';
@@ -77,10 +77,27 @@ class Main extends Component {
     }
   }
 
+  logout = () => { // 删除登录凭证并退出。
+    Cookie.remove('authData');
+    Cookie.remove('enterpriseId');
+    Cookie.remove('enterpriseName');
+    Cookie.remove('enterpriseLogo');
+    Cookie.remove('userId');
+    Cookie.remove('username');
+    Cookie.remove('userLogo');
+    Cookie.remove('expireData');
+    Cookie.remove('refresh_token');
+    Cookie.remove('isNotLogin');
+    this.props.changeLoginStore({pageTab: 'login'});
+    this.props.history.push('/login');
+  }
+
   render() {
     const { setTopMenu, topMenu, changeLoginStore } = this.props;
     const authData = Cookie.get('authData') || null;
     const isNotLogin = Cookie.get('isNotLogin');
+    const userRight = Cookie.get('userRight');
+    const rightMenu = Cookie.get('rightMenu');
     const isTokenValid = moment().isBefore(Cookie.get('expireData'), 'second');
     if(authData && isTokenValid){
       axios.defaults.headers.common['Authorization'] = "bearer " + JSON.parse(authData);
@@ -111,6 +128,16 @@ class Main extends Component {
             </div>
           </div>
           {/* <FixedHelper /> */}
+          <Modal
+            title=""
+            visible={userRight===null&&rightMenu===null?true:false}
+            closable={false}
+            footer={null}
+            wrapClassName={styles.userRightTip}
+          >
+            <p>对不起，您的用户角色尚未设置，请联系管理员进行设置！</p>
+            <Button onClick={this.logout} className={styles.exitSystem} >退出系统</Button>
+          </Modal>
         </div>
       );
     }else{

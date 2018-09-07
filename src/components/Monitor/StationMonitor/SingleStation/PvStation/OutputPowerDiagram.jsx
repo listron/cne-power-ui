@@ -62,12 +62,6 @@ class OutputPowerDiagram extends Component {
       tooltip: {
         trigger: 'axis',
         show: true,
-        axisPointer: {
-          type: 'cross',
-          label: {
-            backgroundColor: '#6a7985'
-          }
-        },
         backgroundColor: '#fff',
         textStyle: {
           color: lineColor,
@@ -90,6 +84,7 @@ class OutputPowerDiagram extends Component {
           axisLabel: {
             color: lineColor,
           },
+          splitNumber: 25,
         }
       ],
       yAxis: [
@@ -103,10 +98,14 @@ class OutputPowerDiagram extends Component {
             color: lineColor,
           },
           axisLine: {
+            show: false,
             lineStyle: {
               color: '#dfdfdf',
             },
           },
+          splitLine:{
+            show: false,
+          }
         },
         {
           name: '瞬时辐照(W/m²)',
@@ -122,6 +121,9 @@ class OutputPowerDiagram extends Component {
               color: '#dfdfdf',
             },
           },
+          splitLine:{
+            show: false,
+          }
         }
       ],
       series: [
@@ -145,7 +147,7 @@ class OutputPowerDiagram extends Component {
             color: "#199475",
           },
           lineStyle: {
-            type: 'dashed',
+            type: 'solid',
           }
         }
       ]              
@@ -181,19 +183,23 @@ class OutputPowerDiagram extends Component {
       tooltip: {
         trigger: 'axis',
         show: true,
-        axisPointer: {
-          type: 'cross',
-          label: {
-            backgroundColor: '#6a7985'
-          }
-        },
         backgroundColor: '#fff',
         textStyle: {
           color: lineColor,
           fontSize: '12px',
+        },
+        formatter: (param) => {
+          let rate=(param[0].value/param[1].value)<1 ? (param[0].value/param[1].value).toFixed(2)+'%' : '100%';
+          return [
+            param[0].name + '<hr size=1 style="margin: 3px 0">',
+            '日曝辐值: ' + param[2].value + '<br/>',
+            '实际发电量: ' + param[0].value + '<br/>',
+            '理论发电量: ' + param[1].value + '<br/>',
+            '完成率: ' + rate + '<br/>',
+          ].join('');
         }
       },
-      calculable: true,
+      calculable: false,
       xAxis: [
         {
           type: 'category',
@@ -206,9 +212,6 @@ class OutputPowerDiagram extends Component {
           },
           axisLabel: {
             color: lineColor,
-          },
-          axisPointer: {
-            type: 'shadow'
           },
           axisTick: {show: false},
           boundaryGap: [true, true],
@@ -229,6 +232,7 @@ class OutputPowerDiagram extends Component {
               color: '#dfdfdf',
             },
           },
+          
         },
         {
           name: '日曝辐值(W/m²)',
@@ -252,7 +256,7 @@ class OutputPowerDiagram extends Component {
           type:'bar',
           data: powerData && powerData.map(e=>e.actualPower),
           label: {
-            show: true,
+            show: false,
             rotate: 90,
             distance: 10,
             color: '#fff',
@@ -268,7 +272,7 @@ class OutputPowerDiagram extends Component {
           type:'bar',
           data: powerData && powerData.map(e=>e.theoryPower),
           label: {
-            show: true,
+            show: false,
             rotate: 90,
             distance: 10,
             color: '#fff',

@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {  Button, Switch, Icon, Radio } from 'antd';
+import { Button, Switch, Icon, Radio } from 'antd';
 import DateFilter from './DateFilter';
-import StationTypeFilter from '../../../../Monitor/Alarm/AlarmFilter/StationTypeFilter';
-import StationFilter from '../../../../Monitor/Alarm/AlarmFilter/StationFilter';
-import DeviceTypeFilter from '../../../../Monitor/Alarm/AlarmFilter/DeviceTypeFilter';
+import StationTypeFilter from './StationTypeFilter';
+import StationFilter from './StationFilter';
+import DeviceTypeFilter from './DeviceTypeFilter';
 import DefectLevelFilter from './DefectLevelFilter';
 import DefectTypeFilter from './DefectTypeFilter';
 import FilteredItems from './FilteredItems';
@@ -67,7 +67,7 @@ class DefectFilter extends Component {
   
   render() {
     const { showFilter } = this.state;
-    const { stations, defectStatusStatistics, handleUser, username } = this.props;
+    const { stations, stationCodes, defectStatusStatistics, handleUser, username, onChangeFilter } = this.props;
     const waitSubmitNum = defectStatusStatistics.get('submitNum');
     const waitReviewNum = defectStatusStatistics.get('examineNum');
     const inProcessNum = defectStatusStatistics.get('executeNum');
@@ -101,8 +101,12 @@ class DefectFilter extends Component {
         <div className={styles.filterBox}>
           {showFilter==='time' && <DateFilter {...this.props} />}
           {showFilter==='stationType' && <StationTypeFilter {...this.props} />}
-          {showFilter==='stationName' && <StationFilter {...this.props} stationCode={this.props.stationCodes.split(',')} />}
-          {showFilter==='deviceType' && <DeviceTypeFilter {...this.props} deviceTypeCode={this.props.deviceTypeCode.split(',')} />}
+          {showFilter==='stationName' && <StationFilter 
+            stationCode={stationCodes}
+            stations={stations}
+            onChangeFilter={onChangeFilter}
+             />}
+          {showFilter==='deviceType' && <DeviceTypeFilter {...this.props} />}
           {showFilter==='defectLevel' && <DefectLevelFilter {...this.props} />}
           {showFilter==='defecType' && <DefectTypeFilter {...this.props} />}
         </div>

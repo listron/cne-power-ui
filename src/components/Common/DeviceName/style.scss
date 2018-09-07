@@ -1,5 +1,18 @@
+@import '../../../theme/theme.scss';
 .deviceName {
-
+  width: 198px;
+  :global {
+    .ant-select:not(.ant-select-disabled):hover {
+      border-color: $themeColor
+    }
+    .ant-select-disabled,.ant-select-disabled:hover {
+      border-color: $promptColor;
+    }
+    .icon-filter {
+      font-size: 14px;
+      color: $lightColor;
+    }
+  }
 }
 
 .deviceNameSelect{
