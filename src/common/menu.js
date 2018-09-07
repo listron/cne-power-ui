@@ -77,6 +77,10 @@ const menuData = [
             path: 'list',
             defaultPath: true,
             rightKey: 'operation_worklist_work',
+          }, {
+            name: '工单统计',
+            path: 'statistics',
+            rightKey: 'operation_worklist_statistics',
           }
         ]
       },{
@@ -301,6 +305,11 @@ const menuData = [
             rightKey: 'system_station',
           }
         ]
+      }, {
+        name: '计划配置',
+        iconStyle: 'icon-elecmanage',
+        path: 'config',
+        rightKey:  'system_config',
       }
     ],
   }

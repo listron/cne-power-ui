@@ -45,6 +45,10 @@ const routers = [
     exact: true,
     component: Ticket,
   }, {
+    path: '/operation/ticket/statistics',
+    exact: true,
+    component: Ticket,
+  }, {
     path: '/operation/tickets/typeone',
     exact: true,
     component: Building,
@@ -123,19 +127,23 @@ const routers = [
   },{ // 系统管理-电站管理-电站
     path: '/system/station/stationManage',
     exact: true,
-    component: StationManage,
+    component: Building,
   },{ // 系统管理-电站管理-设备
     path: '/system/station/deviceManage',
     exact: true,
-    component: DeviceManage
+    component: Building
   },{ // 系统管理-电站管理-测点
     path: '/system/station/pointManage',
     exact: true,
-    component: PointManage
+    component: Building
   },{ // 系统管理-电站管理-测点
     path: '/system/station/alarmManage',
     exact: true,
-    component: AlarmManage
+    component: Building
+  },{ // 系统管理-计划配置
+    path: '/system/config',
+    exact: true,
+    component: Building
   },{
     path: '/statistical/stationaccount/allstation',
     exact: true,

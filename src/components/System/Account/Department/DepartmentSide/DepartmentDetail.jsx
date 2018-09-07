@@ -166,11 +166,15 @@ class DepartmentDetail extends Component {
     const forbiddenEdit = tmpDepartmentSub && tmpDepartmentSub.departmentSource === 0;
     const createTime = departmentDetail.createTime? moment(departmentDetail.createTime).format('YYYY年MM月DD日 HH时mm分'):' -- ';
     const updateTime = departmentDetail.updateTime? moment(departmentDetail.updateTime).format('YYYY年MM月DD日 HH时mm分'):' -- ';
+    const rightHandler = localStorage.getItem('rightHandler');
+    const departmentUpdateRight = rightHandler && rightHandler.includes('account_department_update');
+    const userSetRight = rightHandler && rightHandler.includes('account_department_user');
+    const stationSetRight = rightHandler && rightHandler.includes('account_department_station');
     return (
       <div className={styles.departmentDetail}>
         {showWarningTip && <WarningTip onOK={this.confirmWarningTip} value={warningTipText} />}
         <div className={styles.detailTop}>
-          <Button className={styles.editButton} disabled={forbiddenEdit} onClick={()=>this.onShowSideChange({showSidePage:'eidt'})}>编辑</Button>
+          {departmentUpdateRight && <Button className={styles.editButton} disabled={forbiddenEdit} onClick={()=>this.onShowSideChange({showSidePage:'eidt'})}>编辑</Button>}
           <span className={styles.handleArea} >
             <Icon type="arrow-up" className={styles.previous} title="上一个" onClick={this.preDepartment} />
             <Icon type="arrow-down" className={styles.next} title="下一个" onClick={this.nextDepartment} />
@@ -191,14 +195,14 @@ class DepartmentDetail extends Component {
               <span className={styles.title}>成员</span>
               <div className={styles.memberInfo}>
                 <span className={styles.value}>{userFullNames}</span>
-                <Button className={styles.setting} onClick={this.setDepartmentUser}>设置</Button>
+                {userSetRight && <Button className={styles.setting} onClick={this.setDepartmentUser}>设置</Button>}
               </div>
             </div>
             <div className={styles.eachInfo}>
               <span className={styles.title}>负责电站</span>
               <div className={styles.stationInfo}>
                 <span className={styles.value}>{stationNames}</span> 
-                <Button className={styles.setting} onClick={this.setDepartmentStation} >设置</Button>
+                {stationSetRight && <Button className={styles.setting} onClick={this.setDepartmentStation} >设置</Button>}
               </div>
             </div>
             <div className={styles.line}></div>
