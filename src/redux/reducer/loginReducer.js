@@ -4,7 +4,7 @@ import Cookie from 'js-cookie';
 
 var initState = Immutable.fromJS({
   loading: false,
-  pageTab: 'login',//四个页关键字：lonin,register,joinIn,forget, 
+  pageTab: 'login',//四个页关键字：login,register,joinIn,forget, 
   registerStep: 1,//注册企业步骤，1-账户验证，2-企业信息，3-完善个人信息
   joinStep: 1,//加入企业步骤，1-输入企业，2-手机号验证，3-完善个人信息
   domainIsRegister: '2',//域名 0-无效，1-有效

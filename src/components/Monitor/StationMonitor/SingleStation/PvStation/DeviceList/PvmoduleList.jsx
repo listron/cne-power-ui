@@ -54,7 +54,7 @@ class PvmoduleList extends Component {
         <div className={styles.pvmoduleList} >
           {tmpPvmoduleList && tmpPvmoduleList.map((item,index)=>{
             return (<div key={index} className={styles.pvmoduleItem} >
-              <div><i className="iconfont icon-nb" ></i>{item.deviceCode}</div>
+              <div><i className="iconfont icon-nb" ></i>{item.deviceName}</div>
               {item.electricityList && tmpNBList.map((e,i)=>{
                 let num;
                 let obj = item.electricityList[i];
