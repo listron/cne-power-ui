@@ -11,6 +11,7 @@ import PropTypes from 'prop-types';
 class StationManageTable extends Component {
   static propTypes = {
     loading: PropTypes.bool,
+    stationList: PropTypes.array,
   }
 
   constructor(props){
@@ -49,12 +50,12 @@ class StationManageTable extends Component {
   }
 
   render(){
-    const { loading } = this.props;
+    const { loading, stationList } = this.props;
     const column = [
       {
         title: '电站',
-        dataIndex: 'station',
-        key: 'station',
+        dataIndex: 'stationName',
+        key: 'stationName',
         sorter: true,
         render: (record) => {
           return (
@@ -65,10 +66,10 @@ class StationManageTable extends Component {
       ...stationManageTableColumn,
       {
         title: '部门设置',
-        dataIndex: 'department',
-        key: 'department',
+        dataIndex: 'departmentStatus',
+        key: 'departmentStatus',
         render: (text, record, index) => {
-          return (<span className={styles.setDepartment}>{record.department}</span>)
+          return (<span className={styles.setDepartment}>{record.departmentStatus}</span>)
         }
       },{
         title: '操作',
@@ -91,7 +92,7 @@ class StationManageTable extends Component {
         </div>
         <Table 
           loading={loading}
-          dataSource={[]} 
+          dataSource={ stationList.map((e, i) => ({...e, key: i})) } 
           columns={column} 
           onChange={this.tableChange}
           pagination={false}

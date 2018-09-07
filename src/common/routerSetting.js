@@ -49,15 +49,23 @@ const routers = [
     exact: true,
     component: Ticket,
   }, {
-    path: '/operation/tickets/typeone',
+    path: '/operation/twoTickets/typeone',
     exact: true,
     component: Building,
   }, {
-    path: '/operation/tickets/typetwo',
+    path: '/operation/twoTickets/typetwo',
     exact: true,
     component: Building,
   }, {
-    path: '/operation/ledger',
+    path: '/operation/book/sparePart',
+    exact: true,
+    component: Building,
+  }, {
+    path: '/operation/book/instrument',
+    exact: true,
+    component: Building,
+  },{
+    path: '/operation/running',
     exact: true,
     component: Building,
   }, {

@@ -8,16 +8,16 @@ const stationManageTableColumn = [{
     sorter: true,
   },{
     title: '覆盖类型',
-    dataIndex: 'copyType',
-    key: 'copyType',
+    dataIndex: 'coverType',
+    key: 'coverType',
   },{
     title: '并网类型',
     dataIndex: 'connectionType',
     key: 'connectionType',
   },{
     title: '装机容量',
-    dataIndex: 'capacity',
-    key: 'capacity',
+    dataIndex: 'stationCapacity',
+    key: 'stationCapacity',
     sorter: true,
   },{
     title: '发电单元数',
@@ -26,22 +26,22 @@ const stationManageTableColumn = [{
     sorter: true,
   },{
     title: '电站接入',
-    dataIndex: 'contact',
-    key: 'contact',
+    dataIndex: 'stationStatus',
+    key: 'stationStatus',
     sorter: true,
-    render: (text, record, index) => (<span className={styles.contact}>{record.contact}</span>)
+    render: (text, record, index) => (<span className={styles.contact}>{record.stationStatus}</span>)
   },{
     title: '测点',
-    dataIndex: 'point',
-    key: 'point',
+    dataIndex: 'pointStatus',
+    key: 'pointStatus',
     sorter: true,
-    render: (text, record, index) => (<span className={styles.point}>{record.point}</span>)
+    render: (text, record, index) => (<span className={styles.point}>{record.pointStatus}</span>)
   },{
     title: '告警配置',
-    dataIndex: 'alarm',
-    key: 'alarm',
+    dataIndex: 'alarmStatus',
+    key: 'alarmStatus',
     sorter: true,
-    render: (text, record, index) => (<span className={styles.alarm}>{record.alarm}</span>)
+    render: (text, record, index) => (<span className={styles.alarm}>{record.alarmStatus}</span>)
   }
 ];
 
