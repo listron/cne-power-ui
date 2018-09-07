@@ -43,7 +43,8 @@ class StationManageDetail extends Component {
         <div className={styles.detailTop}>
           <span>电站详情</span>
           {stationDetail.stationStatus?<span>接入时间: 2018-08-08</span>:<span>电站未接入</span>}
-          <Button className={styles.editButton} onClick={()=>this.onShowSideChange({showSidePage:'eidt'})}>编辑</Button>
+          {stationDetail.stationStatus?<span>接入时间: 2018-08-08</span>:<span>电站未接入</span>}
+          {stationDetail.stationStatus?<span>接入时间: 2018-08-08</span>:<span>电站未接入</span>}
           <span className={styles.handleArea} >
             <Icon type="arrow-up" className={styles.previous} title="上一个" onClick={this.preDepartment} />
             <Icon type="arrow-down" className={styles.next} title="下一个" onClick={this.nextDepartment} />
