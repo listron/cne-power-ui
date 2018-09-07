@@ -4,49 +4,43 @@ import { Checkbox } from 'antd';
 import styles from './defectFilter.scss';
 const CheckboxGroup = Checkbox.Group;
 
-class DeviceTypeFilter extends Component {
+class AlarmLevelFilter extends Component {
   static propTypes = {
-    deviceTypes: PropTypes.array,
+    deviceTypes: PropTypes.object,
     deviceTypeCode: PropTypes.string,
-    listQueryParams: PropTypes.object,
-    getDefectList: PropTypes.func,
+    onChangeFilter: PropTypes.func,
   }
 
   constructor(props) {
     super(props);
-    this.state = {
-      
-    };
   }
 
-  onDeviceTypeSelect = (deviceTypeCode) => {
-    this.props.getDefectList({
-      ...this.props.listQueryParams,
-      deviceTypeCode: deviceTypeCode.join(',')
-    })
+  onChange = (value) => {
+    this.props.onChangeFilter({
+      deviceTypeCode: value.join(',')
+    });
   }
 
-  resetDevieType = () => {
-    this.props.getDefectList({
-      ...this.props.listQueryParams,
+  onReset = () => {
+    this.props.onChangeFilter({
       deviceTypeCode: ''
-    })
+    });
   }
 
   render() {
     const { deviceTypes, deviceTypeCode } = this.props;
-    const deviceTypeOptions = deviceTypes.map(e=>({
-      label: e.deviceTypeName,
-      value: e.deviceTypeCode
-    }))
+    const options = deviceTypes.map((item,i)=>({
+      label: item.get('deviceTypeName'),
+      value: item.get('deviceTypeCode').toString()
+    })).toJS();
+    const devieceCodeArr = deviceTypeCode === '' ? [] : deviceTypeCode.split(',');
     return (
       <div className={styles.deviceTypeFilter}>
-        <span onClick={this.resetDevieType} >不限</span>
-        <CheckboxGroup options={deviceTypeOptions} value={deviceTypeCode.split(',').filter(e=>!!e)} onChange={this.onDeviceTypeSelect} />
+        <span onClick={this.onReset} className={deviceTypeCode===''?styles.selected:styles.all}>不限</span>
+        <CheckboxGroup options={options} value={devieceCodeArr} onChange={this.onChange} />
       </div>
     );
   }
-
 }
 
-export default DeviceTypeFilter;
+export default AlarmLevelFilter;

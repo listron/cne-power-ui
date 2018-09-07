@@ -1,5 +1,16 @@
+@import '../../../theme/theme.scss';
 .commonInput {
   .commonList {
-    margin-left: 60px
+    :global {
+      .ant-btn-background-ghost.ant-btn-primary {
+        color: $themeColor;
+        border-color: $themeColor;
+        margin-right: 12px;
+        font-size: 12px;
+        padding: 0 4px;
+        height: 22px;
+        border-radius: 2px;
+      }
+    }
   }
 }

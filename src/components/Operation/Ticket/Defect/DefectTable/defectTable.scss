@@ -40,6 +40,12 @@
       border: 1px solid $themeColor;
       border-radius: 4px;
       margin-right: 12px;
+      color: $themeColor;
+      background-color: #fff;
+      &:hover {
+        background-color: $themeColor;
+        color: #fff;
+      }
       cursor: pointer;
       .add {
         width: 30px;
@@ -49,9 +55,8 @@
         align-items: center;
         justify-content: center;
         color: #fff;
-      }
-      .text {
-        color: $themeColor;
+      }       
+      .text {         
         margin-left: 2px;
       }
     }
