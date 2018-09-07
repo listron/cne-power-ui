@@ -2,7 +2,6 @@ import React from 'react';
 import { Route } from 'react-router-dom';
 import Ticket from '../containers/Operation/Ticket/Ticket';
 import Exception from '../containers/Login/Exception';
-import Login from '../containers/Login/LoginLayout';
 import Power from '../containers/Power';
 import Enterprise from '../containers/System/Account/Enterprise/Enterprise';
 import Department from '../containers/System/Account/Department/Department';
@@ -34,11 +33,6 @@ const routers = [
     path: '/404',
     exact: true,
     component: Exception
-  },
-  {
-    path: '/login',
-    exact: true,
-    component: Login
   },
   {
     path: '/operation/ticket/list',

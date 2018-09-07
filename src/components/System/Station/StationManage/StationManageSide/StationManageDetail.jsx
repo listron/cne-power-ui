@@ -50,9 +50,12 @@ class StationManageDetail extends Component {
             <Icon type="arrow-left" className={styles.backIcon} onClick={this.backToList} />
           </span>
         </div>
-        <div className={styles.departmentBox} >
-          <div className={styles.departmentInfo} >
-            
+        <div className={styles.stationManageContent} >
+          <div className={styles.baseInfo} >
+            <div>
+              <span>基本信息</span>
+              <Button>编辑</Button>
+            </div>
           </div>
         </div>
       </div>
