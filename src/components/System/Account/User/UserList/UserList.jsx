@@ -285,7 +285,9 @@ class UserList extends Component {
     const userDeleteRight = rightHandler && rightHandler.includes('account_user_delete');
     const userEnableRight = rightHandler && rightHandler.includes('account_user_enable');
     const userDisableRight = rightHandler && rightHandler.includes('account_user_disable');
-    const showAllHandler = userDeleteRight || userEnableRight || userDisableRight;
+    const userEditRight = rightHandler && rightHandler.includes('account_user_edit');
+    const userAuditRight = rightHandler && rightHandler.includes('account_user_audit');
+    const showAllHandler = userDeleteRight || userEnableRight || userDisableRight || userEditRight || userAuditRight;
     if(!showAllHandler){ return null;}
     let [editable, deletable, usable, unallowable, examinable] = [ false, false, false, false, false];
     if(selectedUser.length > 0){
@@ -305,11 +307,11 @@ class UserList extends Component {
       [editable, deletable, usable, unallowable, examinable] = [ false, false, false, false, false];
     }
     return (<Select onSelect={this.userHandle} placeholder="操作" value="操作" dropdownMatchSelectWidth={false} dropdownClassName={styles.handleDropdown} >
-      <Option value="edit" disabled={!editable}><i className="iconfont icon-edit"></i><span>编辑</span></Option>
+      {userEditRight && <Option value="edit" disabled={!editable}><i className="iconfont icon-edit"></i><span>编辑</span></Option>}
       {userDeleteRight && <Option value="delete" disabled={!deletable}><i className="iconfont icon-remove"></i><span>移除</span></Option>}
       {userEnableRight && <Option value="use" disabled={!usable}><i className="iconfont icon-enable"></i><span>启用</span></Option>}
       {userDisableRight && <Option value="unallow" disabled={!unallowable}><i className="iconfont icon-disable"></i><span>禁用</span></Option>}
-      <Option value="examine" disabled={!examinable}><i className="iconfont icon-examine1"></i><span>审核</span></Option>
+      {userAuditRight && <Option value="examine" disabled={!examinable}><i className="iconfont icon-examine1"></i><span>审核</span></Option>}
     </Select>)
   } 
   

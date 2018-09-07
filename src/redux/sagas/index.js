@@ -34,6 +34,11 @@ import { watchDepartment } from './system/account/departmentSaga';
 import { watchRole } from './system/account/roleSaga';
 import { watchUser } from './system/account/userSaga';
 
+import { watchStationManage } from './system/station/stationManageSaga';
+import { watchDeviceManage } from './system/station/deviceManageSaga';
+import { watchPointManage } from './system/station/pointManageSaga';
+import { watchAlarmManage } from './system/station/alarmManageSaga';
+
 import { watchSingleStationMonitor } from './monitor/stationMonitor/singleStationSaga'; 
 import { watchDeviceMonitor } from './monitor/stationMonitor/deviceMonitorSaga';
 
@@ -78,6 +83,11 @@ export default function* rootSaga() {
     watchDepartment(),
     watchRole(),
     watchUser(),
+    // system - station
+    watchStationManage(),
+    watchDeviceManage(),
+    watchPointManage(),
+    watchAlarmManage(),
     // monitor
     watchStationMonitor(),
     watchDeviceMonitor(),
