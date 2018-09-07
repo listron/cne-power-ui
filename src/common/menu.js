@@ -77,6 +77,10 @@ const menuData = [
             path: 'list',
             defaultPath: true,
             rightKey: 'operation_worklist_work',
+          }, {
+            name: '工单统计',
+            path: 'statistics',
+            rightKey: 'operation_worklist_statistics',
           }
         ]
       },{
@@ -277,8 +281,38 @@ const menuData = [
           }
         ]
       },
+      {
+        name: '电站管理',
+        iconStyle: 'icon-elecmanage',
+        path: 'station',
+        rightKey:  'system_station',
+        children:[
+          {
+            name: '电站',
+            path: 'stationManage',
+            rightKey: 'system_station',
+          },{
+            name: '设备',
+            path: 'deviceManage',
+            rightKey: 'system_station',
+          },{
+            name: '测点',
+            path: 'pointManage',
+            rightKey: 'system_station',
+          },{
+            name: '告警事件',
+            path: 'alarmManage',
+            rightKey: 'system_station',
+          }
+        ]
+      }, {
+        name: '计划配置',
+        iconStyle: 'icon-elecmanage',
+        path: 'config',
+        rightKey:  'system_config',
+      }
     ],
-  },
+  }
 ]
 
 function formatter(data, parentPath = '/') {

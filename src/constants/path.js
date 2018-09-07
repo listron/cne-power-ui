@@ -98,6 +98,12 @@ export default {
       getInviteLink: '/v3/user/link',//邀请用户
       getRoleAllList: '/v3/role/all/list',//获取企业角色
       importUserBatch: '/v3/user/batch',//批量导入用户
+
+      // 电站管理部分
+      getStationList: '', // 获取电站列表
+      getStationDetail: '', // 获取电站详情
+      saveStationDetail: '', // 获取电站详情
+      setStationDepartment: '', // 分配部门
     },
     monitor: {//实时监控
       getStationType:'/v3/monitor/stations/',
