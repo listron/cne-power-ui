@@ -4,6 +4,10 @@
 .pvmodule{
   .pvmoduleList{
     padding: 16px 25px;
+    .nodata{
+      text-align: center;
+      margin: 30px auto;
+    }
     .pvmoduleItem{
       width: 205px;
       height: 60px;
@@ -64,7 +68,6 @@
       .nodata{
         text-align: center;
         margin: 30px auto;
-
       }
       .inverterItem{
         display: inline-block;

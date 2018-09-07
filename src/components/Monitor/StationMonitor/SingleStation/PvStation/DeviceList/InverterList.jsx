@@ -113,9 +113,9 @@ class InverterList extends Component {
     const { deviceTypeCode, } = this.props;
     const columns = [
       {
-        title: '设备编号',
-        dataIndex: 'deviceCode',
-        key: 'deviceCode',
+        title: '设备名称',
+        dataIndex: 'deviceName',
+        key: 'deviceName',
         render: (text, record, index) => (
           <div className={record.deviceStatus === 900 ? styles.deviceCode : ""} >
             <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${record.deviceCode}`} target="_blank"  >{text}</Link>
@@ -123,8 +123,8 @@ class InverterList extends Component {
         )
       }, {
         title: '所属设备',
-        dataIndex: 'deviceName',
-        key: 'deviceName',
+        dataIndex: 'parentDeviceName',
+        key: 'parentDeviceName',
         render: (text,record,index) => (<span>{text}</span>),
         sorter: (a, b) => a.deviceName.length - b.deviceName.length,
       }, {

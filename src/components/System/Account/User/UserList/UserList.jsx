@@ -541,7 +541,7 @@ class UserList extends Component {
                 dropdownMatchSelectWidth={false}
                 onChange={this.onSelectColumns}
               >
-                <Option key="全选" value="全选" ><Checkbox checked={selectedUserColumns.size === 8} >全选</Checkbox></Option>
+                <Option key="全选" value="全选" ><Checkbox checked={selectedUserColumns.size === 7} >全选</Checkbox></Option>
                 {columns.map(item=>{
                   return (<Option
                             key={item.title}
