@@ -68,7 +68,7 @@ class RegisterForm extends Component {
             }
           }, 500);
           this.props.checkEnterpriseDomain({
-            enterpriseDomain: values.enterpriseDomain,
+            enterpriseDomain: values.enterpriseDomain+'.cnecloud.com',
             enterpriseName: values.enterpriseName,
           });
         }else{

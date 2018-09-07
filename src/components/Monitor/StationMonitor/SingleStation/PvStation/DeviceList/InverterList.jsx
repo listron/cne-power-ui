@@ -123,10 +123,10 @@ class InverterList extends Component {
         )
       }, {
         title: '所属设备',
-        dataIndex: 'parentDeviceName',
-        key: 'parentDeviceName',
+        dataIndex: 'deviceName',
+        key: 'deviceName',
         render: (text,record,index) => (<span>{text}</span>),
-        sorter: (a, b) => a.parentDeviceName.length - b.parentDeviceName.length,
+        sorter: (a, b) => a.deviceName.length - b.deviceName.length,
       }, {
         title: '实时功率(kW)',
         dataIndex: 'devicePower',
