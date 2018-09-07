@@ -24,8 +24,8 @@ function *getStationList(action){ // 请求电站列表信息
       type: stationManageAction.GET_STATION_MANAGE_FETCH_SUCCESS,
       payload: {
         ...payload,
-        stationList: response.data.data.context || [],
-        totalNum: response.data.data.totalNum || 0,
+        stationList: response.data.data.list || [],
+        totalNum: response.data.data.total || 0,
       }
     })
     // }

@@ -8,8 +8,8 @@ module.exports = [
       "code": "10000",
       "message": "请求成功",
       "data": {
-        "totalNum": 95,
-        "context":  [1,2,3,4,5,6,7,8,9,0].map((e,i)=>({
+        "total": 95,
+        "list":  [1,2,3,4,5,6,7,8,9,0].map((e,i)=>({
           stationCode: i,
           stationName: `${i}号电站`,
           stationType: i%2,
@@ -21,6 +21,7 @@ module.exports = [
           alarmStatus: !!(i%2),
           departmentStatus: !(i%2),
           stationStatus: !!(i%2),
+          stationDepartment: ['0','0-1','0-1-1','2']
         }))
       },
       "serviceCode": "3.0"

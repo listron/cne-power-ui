@@ -13,7 +13,6 @@ class StationManageSearch extends Component {
     stationName: PropTypes.string,
     queryListParams: PropTypes.object, // 所有上级传下来用于请求表格的参数集合对象
     getStationList: PropTypes.func,
-    changeStationManageStore: PropTypes.func,
   }
 
   constructor(props){
@@ -67,12 +66,6 @@ class StationManageSearch extends Component {
     })
   }
 
-  showStationDetail = () => { // 返回详情页
-    this.props.changeStationManageStore({
-      showPage: 'detail',
-    })
-  }
-
   render(){
     const { regionName, stationName, stationType} = this.props;
     const showResetButton = regionName || stationName;
@@ -83,7 +76,6 @@ class StationManageSearch extends Component {
           <Radio.Button value={0}>风电</Radio.Button>
           <Radio.Button value={1}>光伏</Radio.Button>
         </Radio.Group>
-        <Button onClick={this.showStationDetail}>测试去详情按钮</Button>
         <div>
           <span>区域</span>
           <Input placeholder="请输入..." onChange={this.onRegionChange} />

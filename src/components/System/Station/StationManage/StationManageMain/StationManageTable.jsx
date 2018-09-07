@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import { Input, Button, Icon, Table } from 'antd';
 import CommonPagination from '../../../../Common/CommonPagination';
 import stationManageTableColumn from './stationManageTableColumn';
+import SetDepartmentModal from './SetDepartmentModal';
 import styles from './stationMain.scss';
 import PropTypes from 'prop-types';
 
@@ -13,6 +14,7 @@ class StationManageTable extends Component {
     totalNum: PropTypes.number,
     loading: PropTypes.bool,
     queryListParams: PropTypes.object,
+    allDepartmentData: PropTypes.array,
     getStationList: PropTypes.func,
     changeStationManageStore: PropTypes.func,
     stationList: PropTypes.array,
@@ -21,7 +23,8 @@ class StationManageTable extends Component {
   constructor(props){
     super(props);
     this.state = {
-
+      departmentModal: false,
+      departmentSetInfo: {},
     }
   }
 
@@ -71,8 +74,33 @@ class StationManageTable extends Component {
     })
   }
 
+  showDepartmentModal = (departmentSetInfo) => {
+    this.setState({
+      departmentModal: true,
+      departmentSetInfo,
+    })
+  }
+
+  closeDepartmentModal = (departmentData) => {
+    if(departmentData){
+      console.log(departmentData);
+    }
+    this.setState({
+      departmentModal: false,
+      departmentSetInfo: {},
+    })
+  }
+
+  hideDepartmentModal = () => {
+    this.setState({
+      departmentModal: false,
+      departmentSetInfo: {},
+    })
+  }
+
   render(){
-    const { loading, stationList, totalNum } = this.props;
+    const { loading, stationList, totalNum, allDepartmentData } = this.props;
+    const { departmentModal, departmentSetInfo } = this.state;
     const column = [
       {
         title: '电站',
@@ -93,9 +121,9 @@ class StationManageTable extends Component {
         render: (text, record, index) => {
           const { departmentStatus } = record;
           if(departmentStatus){
-            return (<span className={styles.setDepartment}>查看</span>)
+            return (<span className={styles.setDepartment} onClick={()=>this.showDepartmentModal(record)}>查看</span>)
           }else{
-            return (<span className={styles.setDepartment}>设置</span>)
+            return (<span className={styles.setDepartment} onClick={()=>this.showDepartmentModal(record)}>设置</span>)
           }
         }
       },{
@@ -125,6 +153,11 @@ class StationManageTable extends Component {
           pagination={false}
           locale={{emptyText:<img width="223" height="164" src="/img/nodata.png" />}}
         />
+        {departmentModal && <SetDepartmentModal
+          departmentSetInfo={departmentSetInfo}
+          closeDepartmentModal={this.closeDepartmentModal}
+          allDepartmentData={allDepartmentData}
+        />}
       </div>
     )
   }
