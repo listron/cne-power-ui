@@ -1,27 +1,37 @@
 import React, { Component } from 'react';
+import styles from './insepectList.scss';
 import InspectTable from '../../../../../components/Operation/Ticket/Inspect/InspectTable/InspectTable';
 import { ticketAction } from '../../../../../constants/actionTypes/operation/ticketAction';
 import InspectFilter from '../../../../../components/Operation/Ticket/Inspect/InspectFilter/InspectFilter';
 import { connect } from "react-redux";
 import PropTypes from 'prop-types';
+import Cookie from 'js-cookie';
 
 class InspectList extends Component {
   static propTypes={
-    inspectList: PropTypes.object,
-    getInspectList: PropTypes.func,
+    stationType: PropTypes.string,
+    stationCodes: PropTypes.string,
+    timeInterval: PropTypes.string,
+    status: PropTypes.string,
     pageNum: PropTypes.number,
     pageSize: PropTypes.number,
     sort: PropTypes.string,
+    createTimeStart: PropTypes.string,
+    createTimeEnd: PropTypes.string,
+    deviceTypeCode: PropTypes.string,
+    handleUser: PropTypes.string,
+    hasAbnormal:  PropTypes.bool,
+
+    selectedRowKeys: PropTypes.array,
     total: PropTypes.number,
+    inspectList: PropTypes.object,
+    inspectStatusStatistics: PropTypes.object,
     loading: PropTypes.bool,
     error: PropTypes.object,
-    status: PropTypes.string,
     showTab: PropTypes.string,
-    inspectStatusStatistics: PropTypes.object,
-    setInspectId: PropTypes.func,
-    onShowInspectDetail: PropTypes.func,
+    getInspectList: PropTypes.func,
+    getInspectDetail: PropTypes.func,
     onChangeShowContainer: PropTypes.func,
-    showContainer: PropTypes.string,
     inspectCheckBatch: PropTypes.func,
   }
 
@@ -31,100 +41,53 @@ class InspectList extends Component {
   }
 
   componentDidMount() {
+    const { stationType, stationCodes, timeInterval, status, pageNum, pageSize, createTimeStart, createTimeEnd, deviceTypeCode, sort, handleUser, hasAbnormal} = this.props;
     if(this.props.showTab === 'inspect') {
       var params = {
-        stationType: '2',
-        status: this.props.status,
-        pageNum: this.props.pageNum - 1,
-        pageSize: this.props.pageSize,
-        sort: this.props.sort
+        stationType,
+        stationCodes,
+        timeInterval,
+        status,
+        pageNum,
+        pageSize,
+        sort,
+        createTimeStart,
+        createTimeEnd,
+        deviceTypeCode,
+        handleUser,
+        hasAbnormal
       }
       this.props.getInspectList(params);
     }
   }
 
-  onChangePageSize = (pageSize) => {
-    if(pageSize !== this.props.pageSize) {
-      let params = {
-        defectSource: '3',
-        stationType: '2',
-        status: this.props.status,
-        pageNum: 0,
-        pageSize: pageSize,
-        sort: this.props.sort,
-      }
-      this.props.getInspectList(params);
-    } 
-  }
-
-  onChangePage = (page) => {
-    if(page !== this.props.pageNum) {
-      let params = {
-        stationType: '2',
-        status: this.props.status,
-        pageNum: page - 1,
-        pageSize: this.props.pageSize,
-        sort: this.props.sort,
-      }
-      this.props.getInspectList(params);
+  onChangeFilter = (obj) => {
+    const { stationType, stationCodes, timeInterval, status, pageNum, pageSize, createTimeStart, createTimeEnd, deviceTypeCode, sort, handleUser, hasAbnormal} = this.props;
+    let filter = {
+      stationType,
+      stationCodes,
+      timeInterval,
+      status,
+      pageNum,
+      pageSize,
+      sort,
+      createTimeStart,
+      createTimeEnd,
+      deviceTypeCode,
+      handleUser,
+      hasAbnormal
     }
-  }
-  
-  onChangeStatus = (status) => {
-    if(status !== this.props.status){
-      let params = {
-        stationType: "2",
-        status: status,
-        pageNum: 0,
-        pageSize: this.props.pageSize,
-        sort: this.props.sort,
-      }
-      this.props.getInspectList(params);
-    }
-  }
-
-  onChangeSort = (sort) => {
-    if(sort !== this.props.sort) {
-      let params = {
-        stationType: "2",
-        status: this.props.status,
-        pageNum: 0,
-        pageSize: this.props.pageSize,
-        sort: sort,
-      }
-      this.props.getInspectList(params);
-    }
-  }
-
-  onShowDetail = (inspectId) => {
-    this.props.setInspectId(inspectId);
-    this.props.onChangeShowContainer({container: 'detail'});
-  }
-
-  onShowCreate = () => {
-    this.props.onChangeShowContainer({container: 'create'});
+    let newFiter = Object.assign({}, filter, obj);
+    this.props.getInspectList(newFiter)
   }  
 
   render() {
     return (
-      <div>
+      <div className={styles.defectList}>
         <InspectFilter {...this.props} />
         <InspectTable 
-          list={this.props.inspectList}
-          pageNum={this.props.pageNum}
-          pageSize={this.props.pageSize}
-          total={this.props.total}
-          status={this.props.status}
-          loading={this.props.loading}
-          onChangeSort={this.onChangeSort}
-          onChangePage={this.onChangePage}
-          onChangePageSize={this.onChangePageSize}
-          onChangeStatus={this.onChangeStatus}
-          onShowDetail={this.onShowDetail}
-          onShowCreate={this.onShowCreate}
-          inspectStatusStatistics={this.props.inspectStatusStatistics}
-          inspectCheckBatch={this.props.inspectCheckBatch}
-        />
+          {...this.props} 
+          onChangeFilter={this.onChangeFilter} />
       </div>
     );
   }
@@ -132,32 +95,33 @@ class InspectList extends Component {
 
 const mapStateToProps = (state) => ({
   inspectList: state.operation.inspect.get('inspectList'),
+  inspectStatusStatistics: state.operation.inspect.get('inspectStatusStatistics'),
   loading: state.operation.inspect.get('loading'),
   error: state.operation.inspect.get('error'),
   sort: state.operation.inspect.get('sort'),
   total: state.operation.inspect.get('total'),
-  inspectStatusStatistics: state.operation.inspect.get('inspectStatusStatistics'),
+  selectedRowKeys: state.operation.defect.get('selectedRowKeys').toJS(),
 
   stationType: state.operation.inspect.get('stationType'),
   stationCodes: state.operation.inspect.get('stationCodes'),      
   timeInterval: state.operation.inspect.get('timeInterval'),   
   status: state.operation.inspect.get('status'),          
   pageNum: state.operation.inspect.get('pageNum'),       
-  pageSize: state.operation.inspect.get('pageSize'),       
+  pageSize: state.operation.inspect.get('pageSize'),
+  sort: state.operation.inspect.get('sort'),       
   createTimeStart: state.operation.inspect.get('createTimeStart'), 
   createTimeEnd: state.operation.inspect.get('createTimeEnd'),	 
   deviceTypeCode: state.operation.inspect.get('deviceTypeCode'),
-  sort: state.operation.inspect.get('sort'),
   selfDefect: state.operation.defect.get('selfDefect'),
-  hasAbnormal: state.operation.inspect.get('hasAbnormal'),
-  userName: state.common.get('userName'), 
-  stations: state.common.get('stations').toJS(),
-  deviceTypes: state.common.get('stationDeviceTypes').toJS(),
+  handleUser: state.operation.defect.get('handleUser'),
+  username: Cookie.get('username'),
+  stations: state.common.get('stations'),
+  deviceTypes: state.common.get('stationDeviceTypes'),
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  getInspectList: params => dispatch({ type: ticketAction.GET_INSPECT_LIST_SAGA, params }),
-  setInspectId: params => dispatch({ type: ticketAction.SET_INSPECT_ID_SAGA, params }),
-  inspectCheckBatch: params => dispatch({ type: ticketAction.INSPECT_CHECK_BATCH_SAGA, params}),
+  getInspectList: payload => dispatch({ type: ticketAction.GET_INSPECT_LIST_SAGA, payload }),
+  getInspectDetail: payload => dispatch({ type: ticketAction.GET_INSPECT_DETAIL_SAGA, payload }),
+  inspectCheckBatch: payload => dispatch({ type: ticketAction.CHECK_BATCH_INSPECT_SAGA, payload}),
 })
-export default connect(mapStateToProps,mapDispatchToProps)(InspectList);
+export default connect(mapStateToProps, mapDispatchToProps)(InspectList);

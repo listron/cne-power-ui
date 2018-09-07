@@ -108,7 +108,7 @@ function* batchDeleteDefect(action) {
       });      
     } else{
       yield put({ 
-        type: ticketAction.DELETE_BATCH_DEFECT_FAIL, 
+        type: ticketAction.SET_DEFECT_FAIL, 
         error:{
           code: response.data.code,
           message: response.data.message
@@ -151,7 +151,7 @@ function* batchCloseDefect(action) {
       });       
     } else{
       yield put({ 
-        type: ticketAction.CLOSE_BATCH_DEFECT_FAIL, 
+        type: ticketAction.SET_DEFECT_FAIL, 
         error:{
           code: response.data.code,
           message: response.data.message
@@ -194,7 +194,7 @@ function* batchSendDefect(action) {
       });       
     } else{
       yield put({ 
-        type: ticketAction.SEND_BATCH_DEFECT_FAIL, 
+        type: ticketAction.SET_DEFECT_FAIL, 
         error:{
           code: response.data.code,
           message: response.data.message
@@ -237,7 +237,7 @@ function* batchRejectDefect(action) {
       });       
     } else{
       yield put({ 
-        type: ticketAction.REJECT_BATCH_DEFECT_FAIL, 
+        type: ticketAction.SET_DEFECT_FAIL, 
         error:{
           code: response.data.code,
           message: response.data.message
@@ -280,7 +280,7 @@ function* batchChecktDefect(action) {
       });       
     } else{
       yield put({ 
-        type: ticketAction.CHECK_BATCH_DEFECT_FAIL, 
+        type: ticketAction.SET_DEFECT_FAIL, 
         error:{
           code: response.data.code,
           message: response.data.message
@@ -307,7 +307,7 @@ function* sendDefect(action) {
       });      
     } else{
       yield put({ 
-        type: ticketAction.SEND_DEFECT_FAIL, 
+        type: ticketAction.SET_DEFECT_FAIL, 
         error:{
           code: response.data.code,
           message: response.data.message
@@ -334,7 +334,7 @@ function* rejectDefect(action) {
       });     
     } else{
       yield put({ 
-        type: ticketAction.REJECT_DEFECT_FAIL, 
+        type: ticketAction.SET_DEFECT_FAIL, 
         error:{
           code: response.data.code,
           message: response.data.message
@@ -361,7 +361,7 @@ function* closeDefect(action) {
       });       
     } else{
       yield put({ 
-        type: ticketAction.CLOSE_DEFECT_FAIL, 
+        type: ticketAction.SET_DEFECT_FAIL, 
         error:{
           code: response.data.code,
           message: response.data.message
@@ -388,7 +388,7 @@ function* handleDefect(action) {
       });   
     } else{
       yield put({ 
-        type: ticketAction.HANDLE_DEFECT_FAIL, 
+        type: ticketAction.SET_DEFECT_FAIL, 
         error:{
           code: response.data.code,
           message: response.data.message
@@ -416,7 +416,7 @@ function* checkDefect(action) {
       });     
     } else{
       yield put({ 
-        type: ticketAction.CHECK_DEFECT_FAIL, 
+        type: ticketAction.SET_DEFECT_FAIL, 
         error:{
           code: response.data.code,
           message: response.data.message
@@ -488,7 +488,7 @@ function *createNewDefect(action){
       }        
     } else{
       yield put({ 
-        type: ticketAction.DEFECT_CREATE_FAIL, 
+        type: ticketAction.SET_DEFECT_FAIL, 
         error:{
           code: response.data.code,
           message: response.data.message
