@@ -57,6 +57,7 @@ class Seriesinverter extends Component {
   render(){
     const {devices, deviceDetail, deviceTenMin, deviceAlarmList, devicePointData, loading } = this.props;
     const { stationCode, deviceTypeCode } = this.props.match.params;
+    const backData={path: `/monitor/singleStation/${stationCode}`,name: '返回电站'};
     const breadCrumbData = {
       breadData:[{
         link: true,
@@ -69,7 +70,7 @@ class Seriesinverter extends Component {
     };
     return (
       <div className={styles.seriesinverter}>
-        <CommonBreadcrumb {...breadCrumbData} />
+        <CommonBreadcrumb {...breadCrumbData} style={{backgroundColor:'#fff'}}  backData={{...backData}} />
         <div className={styles.deviceContent}>
           <InverterHeader deviceDetail={deviceDetail} devices={devices} stationCode={stationCode} deviceTypeCode={deviceTypeCode} />
           <InverterStatistics deviceDetail={deviceDetail} />

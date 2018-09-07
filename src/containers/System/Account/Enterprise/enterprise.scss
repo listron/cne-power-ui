@@ -1,9 +1,14 @@
-
+.enterpriseContainerBox{
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  flex:1;
 .enterpriseContainer{
   display: flex;
   flex-direction: column;
-  width: 100%;
-  min-height: 100%;
+  flex:1;
+  //width: 100%;
+  //min-height: 100%;
   padding: 24px 24px 0;
   background:#ececec;
   justify-content: space-between;
@@ -35,4 +40,5 @@
       transform: translateX(0);
     }
   }
+}
 }

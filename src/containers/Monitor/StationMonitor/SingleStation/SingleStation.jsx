@@ -5,6 +5,7 @@ import styles from './singleStation.scss';
 import { singleStationAction } from '../../../../constants/actionTypes/monitor/stationMonitor/singleStationAction';
 import SingleStationMain from '../../../../components/Monitor/StationMonitor/SingleStation/SingleStationMain';
 import moment from 'moment';
+import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 class SingleStation extends Component {
   static propTypes = {
     match: PropTypes.object,
@@ -82,9 +83,19 @@ class SingleStation extends Component {
   }
 
   render() {
+    const breadCrumbData = {
+      breadData:[   
+       {
+        name: '电站监控',
+       }
+      ],
+    };
     return (
-      <div className={styles.singleStationContainer} >
+      <div className={styles.singleStation}>
+      <CommonBreadcrumb {...breadCrumbData} style={{marginLeft:'38px', backgroundColor:'#fff'}} />
+      <div className={styles.singleStationContainer} >   
         <SingleStationMain {...this.props} getData={this.getData} />
+      </div>
       </div>
     );
   }

@@ -8,6 +8,7 @@ import TransitionContainer from '../../../../components/Common/TransitionContain
 import DepartmentMain from '../../../../components/System/Account/Department/DepartmentMain/DepartmentMain';
 import DepartmentSide from '../../../../components/System/Account/Department/DepartmentSide/DepartmentSide';
 import Cookie from 'js-cookie';
+import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 
 class Department extends Component {
   static propTypes = {
@@ -37,10 +38,10 @@ class Department extends Component {
       showSidePage: 'list'
     }
   }
-  componentDidMount(){
+  componentDidMount() {
     const { enterpriseId } = this.props; //'1010694160817111040', //this.props.enterpriseId;
     const params = {
-      enterpriseId, 
+      enterpriseId,
       departmentSource: this.props.departmentSource,
       departmentName: this.props.departmentName,
       parentDepartmentName: this.props.parentDepartmentName,
@@ -55,11 +56,11 @@ class Department extends Component {
     })
   }
 
-  componentWillUnmount(){
+  componentWillUnmount() {
     this.props.changeDepartmentStore({
       showPage: 'list',
       departmentSource: 0, //部门类型全部2，预设0，自定义1
-      departmentName:'', //部门名称
+      departmentName: '', //部门名称
       parentDepartmentName: '',//所属部门
       stationName: '', //负责电站
       sort: '', //排序 => 'field,0/1'field代表排序字段，0升序,1降序
@@ -70,7 +71,7 @@ class Department extends Component {
   }
 
 
-  onShowSideChange = ({showSidePage}) => {
+  onShowSideChange = ({ showSidePage }) => {
     this.setState({ showSidePage });
   }
 
@@ -84,47 +85,57 @@ class Department extends Component {
   render() {
     const { showPage } = this.props;
     const { showSidePage } = this.state;
+    const breadCrumbData = {
+      breadData: [
+        {
+          name: '部门',
+        }
+      ],
+    };
     return (
-      <div className={styles.departmentContainer}>
-        <DepartmentMain {...this.props} onWarningTipToggle={this.onWarningTipToggle} />
-        <TransitionContainer
-          show={showPage!=='list'}
-          onEnter={this.onToggleSide}
-          onExited={this.onToggleSide}
-          timeout={500}
-          effect="side"
-        >
-          <DepartmentSide {...this.props} showSidePage={showSidePage} onShowSideChange={this.onShowSideChange} />
-        </TransitionContainer>
+      <div className={styles.departmentContainerBox} >
+        <CommonBreadcrumb  {...breadCrumbData} style={{ marginLeft: '38px' }} />
+        <div className={styles.departmentContainer}>
+          <DepartmentMain {...this.props} onWarningTipToggle={this.onWarningTipToggle} />
+          <TransitionContainer
+            show={showPage !== 'list'}
+            onEnter={this.onToggleSide}
+            onExited={this.onToggleSide}
+            timeout={500}
+            effect="side"
+          >
+            <DepartmentSide {...this.props} showSidePage={showSidePage} onShowSideChange={this.onShowSideChange} />
+          </TransitionContainer>
+        </div>
       </div>
 
     );
   }
 }
 const mapStateToProps = (state) => ({
-    ...state.system.department.delete('allDepartment').delete('departmentUser').delete('DepartmentStation').toJS(),
-    allDepartment:state.system.department.get('allDepartment'),
-    departmentUser: state.system.department.get('departmentUser'),
-    DepartmentStation: state.system.department.get('DepartmentStation'),
-    // stations: state.common.get('stations'),
-    enterpriseId: Cookie.get('enterpriseId'),
-    userId: Cookie.get('userId'),
-    enterpriseName: Cookie.get('enterpriseName'),
+  ...state.system.department.delete('allDepartment').delete('departmentUser').delete('DepartmentStation').toJS(),
+  allDepartment: state.system.department.get('allDepartment'),
+  departmentUser: state.system.department.get('departmentUser'),
+  DepartmentStation: state.system.department.get('DepartmentStation'),
+  // stations: state.common.get('stations'),
+  enterpriseId: Cookie.get('enterpriseId'),
+  userId: Cookie.get('userId'),
+  enterpriseName: Cookie.get('enterpriseName'),
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  changeDepartmentStore: payload => dispatch({type:departmentAction.CHANGE_DEPARTMENT_STORE_SAGA, payload}),
-  deleteDepartment: payload => dispatch({type: departmentAction.DELETE_DEPARTMENT_SAGA,payload}),
-  getDepartmentList: payload => dispatch({type:departmentAction.GET_DEPARTMENT_LIST_SAGA, payload}),
-  getDepartmentDetail: payload => dispatch({type:departmentAction.GET_DEPARTMENT_DETAIL_SAGA, payload}),
-  getOtherPageDetail: (payload, {previous}) => dispatch({type:departmentAction.GET_OTHER_PAGE_DEPARTMENT_DETAIL_SAGA, payload, previous}),
-  getDepartmentUser: payload => dispatch({type:departmentAction.GET_DEPARTMENT_USER_SAGA,payload}),
-  getAllDepartment: payload => dispatch({type:departmentAction.GET_ALL_DEPARTMENT_SAGA,payload}),
-  getDepartmentStation: payload => dispatch({type:departmentAction.GET_DEPARTMENT_STATION_SAGA,payload}),
-  setDepartmentUser: payload => dispatch({type:departmentAction.SET_DEPARTMENT_USER_SAGA,payload}),
-  setDepartmentStation: payload => dispatch({type:departmentAction.SET_DEPARTMENT_STATION_SAGA,payload}),
-  addDepartmentInfo: payload => dispatch({type:departmentAction.ADD_DEPARTMENT_INFO_SAGA, payload}),
-  editDepartmentInfo: payload => dispatch({type: departmentAction.EDIT_DEPARTMENT_INFO_SAGA, payload})
+  changeDepartmentStore: payload => dispatch({ type: departmentAction.CHANGE_DEPARTMENT_STORE_SAGA, payload }),
+  deleteDepartment: payload => dispatch({ type: departmentAction.DELETE_DEPARTMENT_SAGA, payload }),
+  getDepartmentList: payload => dispatch({ type: departmentAction.GET_DEPARTMENT_LIST_SAGA, payload }),
+  getDepartmentDetail: payload => dispatch({ type: departmentAction.GET_DEPARTMENT_DETAIL_SAGA, payload }),
+  getOtherPageDetail: (payload, { previous }) => dispatch({ type: departmentAction.GET_OTHER_PAGE_DEPARTMENT_DETAIL_SAGA, payload, previous }),
+  getDepartmentUser: payload => dispatch({ type: departmentAction.GET_DEPARTMENT_USER_SAGA, payload }),
+  getAllDepartment: payload => dispatch({ type: departmentAction.GET_ALL_DEPARTMENT_SAGA, payload }),
+  getDepartmentStation: payload => dispatch({ type: departmentAction.GET_DEPARTMENT_STATION_SAGA, payload }),
+  setDepartmentUser: payload => dispatch({ type: departmentAction.SET_DEPARTMENT_USER_SAGA, payload }),
+  setDepartmentStation: payload => dispatch({ type: departmentAction.SET_DEPARTMENT_STATION_SAGA, payload }),
+  addDepartmentInfo: payload => dispatch({ type: departmentAction.ADD_DEPARTMENT_INFO_SAGA, payload }),
+  editDepartmentInfo: payload => dispatch({ type: departmentAction.EDIT_DEPARTMENT_INFO_SAGA, payload })
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Department);

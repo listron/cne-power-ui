@@ -1,17 +1,28 @@
-.alarmStatistic{ 
+.alarmStatisticBox{
   display: flex;
   flex: 1;
   min-height: 100%;
+  flex-direction: column;
+
+.alarmStatistic{ 
+  display: flex;
+  flex: 1;
+  //min-height: 100%;
   flex-direction: column;
   justify-content: space-between;
   padding: 24px 24px 0;
   background-color: #ececec;
 }
+}
     
-.realTimeAlarmContainer {
+.realTimeAlarmBox{
   display: flex;
   flex: 1;
   min-height: 100%;
+  flex-direction: column;
+.realTimeAlarmContainer {
+  display: flex;
+  flex: 1;
   flex-direction: column;
   justify-content: space-between;
   padding: 24px 24px 0;
@@ -23,11 +34,16 @@
     background-color: #fff;
   }
 }
-
-.historyAlarmContainer {
+}
+.historyAlarmBox{
   display: flex;
   flex: 1;
   min-height: 100%;
+  flex-direction: column;
+.historyAlarmContainer {
+  display: flex;
+  flex: 1;
+ // min-height: 100%;
   flex-direction: column;
   justify-content: space-between;
   padding: 24px 24px 0;
@@ -38,4 +54,5 @@
     flex: 1;
     background: #fff;
   }
+}
 }
