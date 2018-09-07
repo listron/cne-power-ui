@@ -112,9 +112,9 @@ class BoxTransformerList extends Component {
     const { deviceTypeCode, } = this.props;
     const columns = [
       {
-        title: '设备编号',
-        dataIndex: 'deviceCode',
-        key: 'deviceCode',
+        title: '设备名称',
+        dataIndex: 'deviceName',
+        key: 'deviceName',
         render: (text, record, index) => (<div className={record.deviceStatus === 900 ? styles.deviceCode : ""} ><Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${record.deviceCode}`} target="_blank" >{text}</Link></div>)
       }, {
         title: '实时功率(kW)',

@@ -84,7 +84,6 @@ class OutputPowerDiagram extends Component {
           axisLabel: {
             color: lineColor,
           },
-          splitNumber: 25,
         }
       ],
       yAxis: [

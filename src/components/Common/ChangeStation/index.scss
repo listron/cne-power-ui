@@ -1,4 +1,4 @@
-@import '../../../../../theme/theme.scss';
+@import '../../../theme/theme.scss';
 
 .stationChange{
   position: absolute;
@@ -45,12 +45,11 @@
       text-indent: 1em;
       cursor: pointer;
       color:#999999;
+      max-width:120px;
+      word-break: break-all;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
-    }
-    .currentStationName:hover, .stationName:hover{
-      overflow: visible;
     }
     .currentStationName{
       display: inline-block;
@@ -61,6 +60,8 @@
       text-indent: 1em;
       cursor: pointer;
       color: $themeColor;
+      max-width:120px;
+      word-break: break-all;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;

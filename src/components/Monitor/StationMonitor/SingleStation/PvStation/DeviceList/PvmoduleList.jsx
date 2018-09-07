@@ -52,7 +52,7 @@ class PvmoduleList extends Component {
     return (
       <div className={styles.pvmodule}>
         <div className={styles.pvmoduleList} >
-          {tmpPvmoduleList && tmpPvmoduleList.map((item,index)=>{
+          {(tmpPvmoduleList&&tmpPvmoduleList.length>0) ? tmpPvmoduleList.map((item,index)=>{
             return (<div key={index} className={styles.pvmoduleItem} >
               <div><i className="iconfont icon-nb" ></i>{item.deviceName}</div>
               {item.electricityList && tmpNBList.map((e,i)=>{
@@ -76,7 +76,7 @@ class PvmoduleList extends Component {
                 }
               })}
             </div>);
-          })}
+          }) : <div className={styles.nodata} ><img src="/img/nodata.png" /></div>}
         </div>
       </div>
     )
