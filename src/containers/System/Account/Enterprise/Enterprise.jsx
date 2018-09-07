@@ -5,6 +5,7 @@ import Cookie from 'js-cookie';
 import { enterpriseAction } from '../../../../constants/actionTypes/system/account/enterpriseAction';
 import PropTypes from 'prop-types';
 import Footer from '../../../../components/Common/Footer';
+import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 /*
 注： 此3引用在企业列表展示功能中引入，后产品调整为直接展示企业详情，去下企业列表页面展示。请不要删除，可能会重新展示企业列表功能；
 import EnterpriseMain from '../../../../components/System/Account/Enterprise/EnterpriseMain/EnterpriseMain';
@@ -51,7 +52,16 @@ class Enterprise extends Component {
 
   render() {
     const { showPage } = this.props;
+    const breadCrumbData = {
+      breadData: [
+        {
+          name: '企业',
+        }
+      ],
+    };
     return (
+      <div className={styles.enterpriseContainerBox} >
+      <CommonBreadcrumb  {...breadCrumbData} style={{ marginLeft: '38px' }} />
       <div className={styles.enterpriseContainer}>
         {
           showPage==='detail' ?
@@ -70,6 +80,7 @@ class Enterprise extends Component {
         </TransitionContainer>*/}
         <Footer />
         
+      </div>
       </div>
     );
   }

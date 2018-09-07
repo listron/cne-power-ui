@@ -4,6 +4,11 @@
 .breadcrumb{
   height: 40px;
   line-height: 40px;
+  display: flex;
+  justify-content: space-between;
+  
+  
+  .leftText{
   .breadIcon{
     margin-left: 12px;
     margin-right: 8px;
@@ -21,4 +26,13 @@
       color: $lightColor;
     }
   }
+  }
+  .rightText{
+    margin-right: 38px;
+
+    a{
+      color: #199475;
+    }
+  }
+
 }

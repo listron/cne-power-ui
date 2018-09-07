@@ -3,6 +3,17 @@
   display: flex;
   flex-direction: row;
   flex: 1;
+  .addImg {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    margin-left: -65px;
+    .maxTip {
+      width: 65px;
+      color: $promptColor;
+      font-family: MicrosoftYaHei;
+    }
+  }
   .tipText {
     color: $promptColor;
     margin-left: 12px;
