@@ -38,7 +38,8 @@ var initState = Immutable.fromJS({
   deviceTypes: [],
   stationDeviceTypes: [],
   devices: [],
-  partitions: []
+  partitions: [],
+  allDepartmentData: [], // 企业下所有部门(含层级关系)
 });
 
 const defectReducer = (state = initState, action) => {
@@ -47,6 +48,8 @@ const defectReducer = (state = initState, action) => {
       return state.set('commonFetching', true)
     case commonAction.CHANGE_COMMON_STORE: 
       return state.merge(Immutable.fromJS(action.payload))
+    case commonAction.GET_DATA_SUCCESS:
+      return state.merge(Immutable.fromJS(action.payload)).set('loading',false)
     case commonAction.GET_STATIONS_SUCCESS:
       return state.set('commonFetching', false)
                   .set('stations', Immutable.fromJS(action.params.data))

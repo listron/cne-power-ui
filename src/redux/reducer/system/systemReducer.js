@@ -5,6 +5,11 @@ import enterprise from './account/enterpriseReducer';
 import role from './account/roleReducer';
 import user from './account/userReducer';
 
-const systemReducer = combineReducers({ department, enterprise, role, user });
+import alarmManage from './station/alarmManageReducer';
+import stationManage from './station/stationManageReducer';
+import deviceManage from './station/deviceManageReducer';
+import pointManage from './station/pointManageReducer';
+
+const systemReducer = combineReducers({ department, enterprise, role, user, alarmManage, stationManage, deviceManage, pointManage });
 
 export default systemReducer;

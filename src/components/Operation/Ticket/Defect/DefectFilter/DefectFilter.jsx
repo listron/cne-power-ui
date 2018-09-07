@@ -25,7 +25,8 @@ class DefectFilter extends Component {
     createTimeEnd: PropTypes.string, 
     deviceTypeCode: PropTypes.string,
     defectTypeCode: PropTypes.string,
-    selfDefect: PropTypes.bool,
+    handleUser: PropTypes.string,
+    username: PropTypes.string,
     status: PropTypes.string,
     onChangeFilter: PropTypes.func,
     defectStatusStatistics: PropTypes.object
@@ -51,15 +52,22 @@ class DefectFilter extends Component {
     }
   }
 
-  onUserSelect(selfDefect) {
+  onUserSelect = (selfDefect) => {
+    const { username } = this.props;
     this.props.onChangeFilter({
-      selfDefect
+      handleUser: selfDefect ? username : ''
+    });
+  }
+
+  onChangeTab = (e) => {
+    this.props.onChangeFilter({
+      status: e.target.value
     });
   }
   
   render() {
     const { showFilter } = this.state;
-    const { stations, defectStatusStatistics } = this.props;
+    const { stations, defectStatusStatistics, handleUser, username } = this.props;
     const waitSubmitNum = defectStatusStatistics.get('submitNum');
     const waitReviewNum = defectStatusStatistics.get('examineNum');
     const inProcessNum = defectStatusStatistics.get('executeNum');
@@ -87,7 +95,7 @@ class DefectFilter extends Component {
             缺陷类型{showFilter==='defectType'?<Icon type="up" />:<Icon type="down" />}
           </Button>
           <span>
-            <Switch onChange={this.onUserSelect} /><span>我参与的</span>
+            <Switch checked={handleUser===username} onChange={this.onUserSelect} /><span>我参与的</span>
           </span>
         </div>
         <div className={styles.filterBox}>
@@ -99,13 +107,15 @@ class DefectFilter extends Component {
           {showFilter==='defecType' && <DefectTypeFilter {...this.props} />}
         </div>
         <FilteredItems {...this.props} />
-        <div>
+        <div className={styles.statusGroup}>
+          <div className={styles.text}><span>状</span><span>态</span></div>
           <RadioGroup onChange={this.onChangeTab} defaultValue="5" value={this.props.status}>
             <RadioButton value="5">全部</RadioButton>
-            <RadioButton value="0">{`待提交${waitSubmitNum}`}</RadioButton>
-            <RadioButton value="1">{`待审核${waitReviewNum}`}</RadioButton>
-            <RadioButton value="2">{`执行中${inProcessNum}`}</RadioButton>
-            <RadioButton value="3">{`待验收${waitCheckNum}`}</RadioButton>
+            <RadioButton value="0">{`待提交  ${waitSubmitNum}`}</RadioButton>
+            <RadioButton value="1">{`待审核  ${waitReviewNum}`}</RadioButton>
+            <RadioButton value="2">{`执行中  ${inProcessNum}`}</RadioButton>
+            <RadioButton value="3">{`待验收  ${waitCheckNum}`}</RadioButton>
+            <RadioButton value="4">{`已完成`}</RadioButton>
           </RadioGroup>
         </div>
       </div>
