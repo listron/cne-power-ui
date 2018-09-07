@@ -55,6 +55,18 @@
         margin-left: 2px;
       }
     }
+    .operation {
+      display: flex;
+      flex-direction: row;
+      align-items: flex-start;
+      :global {
+        .icon-help {
+          color: #e08031;
+          font-size: 12px;
+          margin-left: 4px;
+        }
+      }
+    }
 
   }
   .tableFooter{
@@ -124,5 +136,12 @@
     .ant-select-dropdown-menu-item-disabled{
       color:$promptColor;
     }
+  }
+}
+:global {
+  .defectTooltip {
+    width: 210px;
+    max-width: 210px;
+    font-size: 12px;
   }
 }

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Table, Icon, Modal, Select } from 'antd';
+import { Table, Icon, Modal, Select, Tooltip } from 'antd';
 import {getLevel, getStatus, getDefectSortField} from '../../../../../constants/ticket';
 import CommonPagination from '../../../../Common/CommonPagination';
 import styles from './defectTable.scss';
@@ -266,18 +266,21 @@ class DefectTable extends Component {
     const { selectedRowKeys } = this.props;
     const { currentSelectedStatus } = this.state;
     const unselected = selectedRowKeys.length===0;
+    const rightHandler = localStorage.getItem('rightHandler');
+    const reviewDefectRight = rightHandler && rightHandler.includes('workExamine_defect_review');
+    const checkDefectRight = rightHandler && rightHandler.includes('workExamine_defect_check');
     return (
       <Select onChange={this.onHandle} value="操作" placeholder="操作" dropdownMatchSelectWidth={false} dropdownClassName={styles.handleDropdown}>
-        <Option value="send" disabled={unselected||currentSelectedStatus!=='1'}>
-          <i className="iconfont icon-release"></i>下发</Option>
-        <Option value="close" disabled={unselected||currentSelectedStatus!=='1'}>
-          <i className="iconfont icon-stop"></i>关闭</Option>
-        <Option value="reject" disabled={unselected||currentSelectedStatus!=='1'}>
-          <i className="iconfont icon-reject"></i>驳回</Option>
-        <Option value="ok" disabled={unselected||currentSelectedStatus!=='3'}>
-          <i className="iconfont icon-done"></i>合格</Option>
-        <Option value="notOk" disabled={unselected||currentSelectedStatus!=='3'}>
-          <i className="iconfont icon-ha"></i>不合格</Option>
+        {reviewDefectRight && <Option value="send" disabled={unselected||currentSelectedStatus!=='1'}>
+          <i className="iconfont icon-release"></i>下发</Option>}
+        {reviewDefectRight && <Option value="close" disabled={unselected||currentSelectedStatus!=='1'}>
+          <i className="iconfont icon-stop"></i>关闭</Option>}
+        {reviewDefectRight && <Option value="reject" disabled={unselected||currentSelectedStatus!=='1'}>
+          <i className="iconfont icon-reject"></i>驳回</Option>}
+        {checkDefectRight &&<Option value="ok" disabled={unselected||currentSelectedStatus!=='3'}>
+          <i className="iconfont icon-done"></i>合格</Option>}
+        {checkDefectRight &&<Option value="notOk" disabled={unselected||currentSelectedStatus!=='3'}>
+          <i className="iconfont icon-ha"></i>不合格</Option>}
         <Option value="delete" disabled={unselected||currentSelectedStatus!=='0'}>
           <i className="iconfont icon-del"></i>删除</Option>
       </Select>
@@ -299,8 +302,13 @@ class DefectTable extends Component {
             <div className={styles.addDefect} onClick={this.onAdd}>
               <Icon className={styles.add} type="plus" />
               <span className={styles.text}>缺陷</span>
-            </div>           
-            {this.renderOperation()}
+            </div>
+            <div className={styles.operation}>         
+              {this.renderOperation()}
+              <Tooltip overlayStyle={{width:220,maxWidth:220,fontSize:'12px'}} placement="top" title="请选择同一状态下的列表项，进行操作">
+                <i className="iconfont icon-help" />
+              </Tooltip>
+            </div> 
           </div>
           <CommonPagination total={total} onPaginationChange={this.onPaginationChange} />
         </div>
