@@ -8,16 +8,16 @@ const stationManageTableColumn = [{
     sorter: true,
   },{
     title: '覆盖类型',
-    dataIndex: 'copyType',
-    key: 'copyType',
+    dataIndex: 'coverType',
+    key: 'coverType',
   },{
     title: '并网类型',
     dataIndex: 'connectionType',
     key: 'connectionType',
   },{
     title: '装机容量',
-    dataIndex: 'capacity',
-    key: 'capacity',
+    dataIndex: 'stationCapacity',
+    key: 'stationCapacity',
     sorter: true,
   },{
     title: '发电单元数',
@@ -26,22 +26,43 @@ const stationManageTableColumn = [{
     sorter: true,
   },{
     title: '电站接入',
-    dataIndex: 'contact',
-    key: 'contact',
+    dataIndex: 'stationStatus',
+    key: 'stationStatus',
     sorter: true,
-    render: (text, record, index) => (<span className={styles.contact}>{record.contact}</span>)
+    render: (text, record, index) => {
+      const { stationStatus } = record; 
+      if(stationStatus){
+        return <span className={styles.contact}>通讯正常</span>
+      }else{
+        return <span className={styles.contact}>未接入</span>
+      }
+    }
   },{
     title: '测点',
-    dataIndex: 'point',
-    key: 'point',
+    dataIndex: 'pointStatus',
+    key: 'pointStatus',
     sorter: true,
-    render: (text, record, index) => (<span className={styles.point}>{record.point}</span>)
+    render: (text, record, index) => {
+      const { pointStatus } = record; 
+      if(pointStatus){
+        return <span className={styles.point}>已设置</span>
+      }else{
+        return <span className={styles.point}>未设置</span>
+      }
+    }
   },{
     title: '告警配置',
-    dataIndex: 'alarm',
-    key: 'alarm',
+    dataIndex: 'alarmStatus',
+    key: 'alarmStatus',
     sorter: true,
-    render: (text, record, index) => (<span className={styles.alarm}>{record.alarm}</span>)
+    render: (text, record, index) => {
+      const { alarmStatus } = record; 
+      if(alarmStatus){
+        return <span className={styles.alarm}>已设置</span>
+      }else{
+        return <span className={styles.alarm}>未设置</span>
+      }
+    }
   }
 ];
 

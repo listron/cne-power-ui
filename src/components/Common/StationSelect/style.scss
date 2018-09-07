@@ -1,17 +1,32 @@
+@import '../../../theme/theme.scss';
 .stationSelect{
   position: relative;
+  width: 198px; 
+  :global {
+    .ant-select:not(.ant-select-disabled) {
+      .ant-select-selection:hover {
+        box-shadow: none;
+      }
+    }
+  }
   .stationSelectModal{
     position: absolute;
     z-index: 9999;
     cursor: pointer;
     font-size: 18px;
-    right: 20px;
-    top: 0;
+    right: 8px;
+    top: 6px;
     height: 30px;
     line-height: 30px;
-    :hover{
-      background-color: rgba(33,33,33,0.2);
+    :global {
+      .icon-filter {
+        font-size: 14px;
+        color: $lightColor;
+      }
     }
+    // :hover{
+    //   background-color: rgba(33,33,33,0.2);
+    // }
   }
 }
 .stationStyleModal{

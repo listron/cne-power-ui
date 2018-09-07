@@ -2,9 +2,11 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import styles from './defectCreate.scss';
+import { Icon } from 'antd';
 import { commonAction } from '../../../../../constants/actionTypes/commonAction';
 import { ticketAction } from '../../../../../constants/actionTypes/operation/ticketAction';
 import DefectCreateForm from '../../../../../components/Operation/Ticket/Defect/DefectCreateForm/DefectCreateForm';
+import WarningTip from '../../../../../components/Common/WarningTip';
 
 class DefectCreate extends Component {
   static propTypes = {
@@ -14,16 +16,18 @@ class DefectCreate extends Component {
     defectTypes: PropTypes.array,
     getStations: PropTypes.func,
     showContainer: PropTypes.string,
-    showContainer: PropTypes.string,
     defectDetail: PropTypes.object,
     getStationDeviceTypes: PropTypes.func,
     getDefectTypes: PropTypes.func,
     getDevices: PropTypes.func,
+    getCommonList: PropTypes.func,
   };
   constructor(props) {
     super(props);
     this.state = {
       editDataGet: false,
+      showWarningTip: false,
+      warningTipText: '',
     }
   } 
   componentDidMount(){
@@ -38,6 +42,9 @@ class DefectCreate extends Component {
       this.props.getStationDeviceTypes({stationCode})
       this.props.getDefectTypes({stationType})
     }
+    this.props.getCommonList({
+      languageType: '1'
+    });
   } 
   componentWillReceiveProps(nextProps){
     const { showContainer } = this.props;
@@ -47,17 +54,40 @@ class DefectCreate extends Component {
       })
     }
   }
-  onChangeShowContainer = () => {
-    this.props.onChangeShowContainer({ container: 'list' })
+
+  onCancelEdit = () => {
+    this.setState({
+      showWarningTip: true,
+      warningTipText: '退出后信息无法保存!'
+    });
   }
-  
+
+  onCancelWarningTip = () => {
+    this.setState({
+      showWarningTip: false,
+    });
+  }
+
+  onConfirmWarningTip = () => {
+    this.setState({
+      showWarningTip: false,
+    });
+    this.props.onChangeShowContainer({ container: 'list' });  
+  }
 
   render() {
-    const {editDataGet} = this.state;
+    const { editDataGet, showWarningTip, warningTipText } = this.state;
+    const { showContainer } = this.props;
     return (
-      <div className={styles.defectCreate} >
-        <h3><span>缺陷创建</span>    <span onClick={this.onChangeShowContainer} className={styles.close}>关闭x</span></h3>
-        <DefectCreateForm {...this.props} editDataGet={editDataGet} />
+      <div className={styles.defectCreate}>
+        {showWarningTip && <WarningTip style={{marginTop:'250px',width: '210px',height:'88px'}} onCancel={this.onCancelWarningTip} onOK={this.onConfirmWarningTip} value={warningTipText} />}
+        <div className={styles.createTop}>
+          <span className={styles.text}>{showContainer==='create'?'新建缺陷':`驳回原因：`}</span>
+          <Icon type="arrow-left" className={styles.backIcon} onClick={this.onCancelEdit} />
+        </div>
+        <div className={styles.createContent}>
+          <DefectCreateForm {...this.props} editDataGet={editDataGet} />
+        </div>
       </div>
     );
   }
@@ -76,11 +106,13 @@ const mapStateToProps = (state) => ({
     deviceTypeItems: state.common.get('stationDeviceTypes'),
     deviceAreaItems: state.common.get('partitions'),
     deviceItems: state.common.get('devices'),
+    commonList: state.operation.defect.get('commonList'),
 });
 
 const mapDispatchToProps = (dispatch) => ({
   getStations: payload => dispatch({ type: commonAction.GET_STATIONS_SAGA, payload }),
   getStationDeviceTypes: payload => dispatch({ type: commonAction.GET_STATION_DEVICETYPES_SAGA, payload }),
+  getCommonList: payload => dispatch({ type: ticketAction.GET_DEFECT_LANGUAGE_SAGA, payload }),
   getDevices: payload => dispatch({ type: commonAction.GET_DEVICES_SAGA, payload }),
   getDefectTypes: payload => dispatch({ type: ticketAction.GET_DEFECT_TYPE_SAGA, payload }),
   onDefectCreateNew: payload => dispatch({type: ticketAction.DEFECT_CREATE_SAGA, payload}),

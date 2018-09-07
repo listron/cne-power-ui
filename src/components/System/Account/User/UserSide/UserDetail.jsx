@@ -80,18 +80,20 @@ class UserDetail extends Component {
   render() {
     const { userDetail} = this.props;
     const { showWarningTip, warningTipText } = this.state;
+    const rightHandler = localStorage.getItem('rightHandler');
+    const userEditRight = rightHandler && rightHandler.includes('account_user_edit');
     return (
       <div className={styles.userDetail}>
         {showWarningTip && (
           <WarningTip onOK={this.confirmWarningTip} value={warningTipText} />
         )}
         <div className={styles.detailTop}>
-          <Button
+          {userEditRight && <Button
             className={styles.editButton}
             onClick={this.onShowSideChange}
           >
             编辑
-          </Button>
+          </Button>}
           <span className={styles.handleArea}>
             <Icon
               type="arrow-up"

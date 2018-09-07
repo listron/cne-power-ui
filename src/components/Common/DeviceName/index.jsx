@@ -29,9 +29,11 @@ class DeviceName extends Component {
   }
 
   onShowDeviceNameModal = () => {
-    this.setState({
-      showDeviceNameModal: true
-    });
+    if(!this.props.disabled) {
+      this.setState({
+        showDeviceNameModal: true
+      });
+    }
   }
 
   onCloseDeviceNameModal = () => {
@@ -66,7 +68,7 @@ class DeviceName extends Component {
     let options = this.getDeviceItems();
     return (
       <div className={styles.deviceName}>
-        <AutoComplete 
+        <AutoComplete
           style={{ width: '100%' }}
           dataSource={options}
           disabled={this.props.disabled}
@@ -79,7 +81,7 @@ class DeviceName extends Component {
             disabled={this.props.disabled}
             value={this.getDeviceName(this.props.value)}
             placeholder={this.props.placeholder} 
-            suffix={<Icon disabled={this.props.disabled} type="filter" onClick={this.onShowDeviceNameModal} />} />
+            suffix={<i className="iconfont icon-filter" onClick={this.onShowDeviceNameModal} />} />
         </AutoComplete>
         {this.state.showDeviceNameModal && <DeviceNameModal
           show={this.state.showDeviceNameModal}

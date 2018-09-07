@@ -85,9 +85,9 @@ const menuData = [
         ]
       },{
         name:'两票管理',
-        path:'tickets',
+        path:'twoTickets',
         iconStyle: 'icon-usermanage',
-        rightKey: 'monitor',
+        rightKey: 'operation_twoTicket',
         children: [
           {
             name: '第一种工作票',
@@ -101,14 +101,30 @@ const menuData = [
         ]
       },{ 
         name:'台账',
-        path:'ledger',
+        path:'book',
         iconStyle: 'icon-usermanage',
-        rightKey: 'monitor',
+        rightKey: 'operation_book',
+        children: [
+          {
+            name: '备品备件',
+            path: 'sparePart',
+            rightKey: 'operation_book_sparePart',
+          },{
+            name: '工器具',
+            path: 'instrument',
+            rightKey: 'operation_book_instrument',
+          }
+        ]
+      },{
+        name:'电站运行',
+        path:'running',
+        iconStyle: 'icon-usermanage',
+        rightKey: 'operation_running',
       },{
         name:'经验库',
         path:'experience',
         iconStyle: 'icon-usermanage',
-        rightKey: 'monitor',
+        rightKey: 'operation_experience',
       }
     ],
   },

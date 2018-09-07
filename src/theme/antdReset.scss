@@ -50,7 +50,7 @@
       }
     }
   }
-  .ant-select{
+  .ant-select:not(.ant-select-disabled){
     .ant-select-selection{
       .ant-select-selection__rendered{
         .ant-select-selection__placeholder{
@@ -112,7 +112,7 @@
   .ant-tabs-ink-bar{
     background-color: $themeColor;
   }
-  .ant-input:hover{
+  .ant-input:not(.ant-input-disabled):hover{
     border-color:$themeColor;
   }
   .ant-input{
@@ -140,7 +140,7 @@
     margin-bottom: 21px;
   }
   /*input的鼠标移上颜色*/
-  .ant-input-affix-wrapper:hover .ant-input:not(.ant-input-disabled) {
+  .ant-input-affix-wrapper:not(ant-input-disabled):hover {
     border-color: $themeColor;
     border-right-width: 1px !important;
   }
@@ -203,5 +203,8 @@
   /*select下拉框背景色*/
   .ant-select-dropdown-menu-item-active {
     background-color: #f8f8f8;
+  }
+  .ant-switch-checked {
+    background-color: $themeColor;
   }
 }

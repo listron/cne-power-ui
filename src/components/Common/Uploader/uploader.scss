@@ -5,6 +5,21 @@
   display: flex;
   justify-content: flex-start;
   flex-wrap: wrap;
+  align-items: flex-end;
+  margin-left: -65px;
+  .maxTip {
+    width: 65px;
+    color: $promptColor;
+    font-family: MicrosoftYaHei;
+  }
+  .uploadBtn {
+    color: $lightColor;
+    .add {
+      margin-bottom: 20px;
+      font-size: 30px;
+      color: $lightColor;
+    }
+  }
   .loaderHandler{
     :global{
       .ant-upload-list-item {
@@ -12,6 +27,13 @@
       }
       .ant-upload-select {
         margin-bottom: 0;
+      }
+      .ant-upload.ant-upload-select-picture-card{
+        width: 98px;
+        height: 98px;
+        &:hover {
+          border-color: $themeColor;
+        }
       }
     }
   }
