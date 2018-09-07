@@ -21,6 +21,7 @@ class CommonInput extends Component {
     onChange: PropTypes.func,
     width: PropTypes.number,
     height: PropTypes.number,
+    style: PropTypes.object,
   }
 
   static defaultProps = {
@@ -55,14 +56,7 @@ class CommonInput extends Component {
   render() {
     return ( 
       <div className={styles.commonInput}>
-        <InputLimit 
-          value={this.props.value}
-          placeholder={this.props.placeholder}
-          size={this.props.size}
-          width={this.props.width}
-          height={this.props.height}
-          onChange={this.props.onChange}
-        />
+        <InputLimit {...this.props} />
         <div className={styles.commonList}>
           {this.renderCommonList()}
         </div>

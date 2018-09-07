@@ -130,7 +130,7 @@
         line-height: 72px;
         display: inline-block;
         :global{
-          .ant-select{
+          .ant-select:not(.ant-select-disabled){
             width: 78px;
             .ant-select-selection{
               .ant-select-selection__rendered{
