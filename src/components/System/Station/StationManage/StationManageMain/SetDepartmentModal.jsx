@@ -36,7 +36,12 @@ class SetDepartmentModal extends Component { // 电站管理列表页
 
   confirmSetting= () => {
     const { checkedKeys } = this.state;
-    this.props.closeDepartmentModal(checkedKeys);
+    const { departmentSetInfo } = this.props;
+    this.props.closeDepartmentModal({
+      stationCode: departmentSetInfo.stationCode,
+      stationName: departmentSetInfo.stationName,
+      departmentIds: checkedKeys,
+    });
   }
 
   cancelSetting = () => {

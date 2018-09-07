@@ -106,7 +106,7 @@ module.exports = [
       "code": "10000",
       "message": "请求成功",
       "data": {
-        text: '删除成功了！'  
+        text: '分配部门成功了！'  
       },
       "serviceCode": "3.0"
     },

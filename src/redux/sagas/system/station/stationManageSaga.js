@@ -1,4 +1,4 @@
-import { call, put, takeLatest } from 'redux-saga/effects';
+import { call, put, takeLatest, select } from 'redux-saga/effects';
 import axios from 'axios';
 import { message } from 'antd';
 import Path from '../../../../constants/path';
@@ -92,11 +92,20 @@ function *deleteStation(action){ // 删除电站(及以下设备)
   // const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.deleteStation}/${payload.enterpriseId}`
   try{
     yield put({ type:stationManageAction.STATION_MANAGE_FETCH });
-    const response = yield call(axios.post, url, payload);
-    if(response.data.code === "10000"){ // 保存成功后，继续请求电站列表信息
+    const response = yield call(axios.delete, url, payload);
+    if(response.data.code === "10000"){ // 删除成功后，继续请求电站列表信息
+      const payload = yield select(state => ({ 
+        stationType: state.system.stationManage.get('stationType'),
+        regionName: state.system.stationManage.get('regionName'),
+        stationName: state.system.stationManage.get('stationName'),
+        pageNum: state.system.stationManage.get('pageNum'),
+        pageSize: state.system.stationManage.get('pageSize'),
+        orderField: state.system.stationManage.get('orderField'),
+        orderCommand: state.system.stationManage.get('orderCommand'),
+      }));
       yield put({
-        type: stationManageAction.GET_STATION_LIST_SAGA,
-        payload: {}  // --- todo 请求电站信息列表所需参数
+        type: stationManageAction.GET_STATION_MANAGE_LIST,
+        payload,
       })
       yield put({
         type: stationManageAction.CHANGE_STATION_MANAGE_STORE_SAGA,
@@ -107,7 +116,7 @@ function *deleteStation(action){ // 删除电站(及以下设备)
     }
   }catch(e){
     console.log(e);
-    message.error('保存电站详情失败，请重试');
+    message.error('删除电站信息失败，请重试');
   }
 }
 
@@ -119,9 +128,18 @@ function *setStationDepartment(action){ // 保存分配至指定电站的部门�
     yield put({ type:stationManageAction.STATION_MANAGE_FETCH });
     const response = yield call(axios.post, url, payload);
     if(response.data.code === "10000"){ // 保存成功后，继续请求电站列表信息
+      const payload = yield select(state => ({ 
+        stationType: state.system.stationManage.get('stationType'),
+        regionName: state.system.stationManage.get('regionName'),
+        stationName: state.system.stationManage.get('stationName'),
+        pageNum: state.system.stationManage.get('pageNum'),
+        pageSize: state.system.stationManage.get('pageSize'),
+        orderField: state.system.stationManage.get('orderField'),
+        orderCommand: state.system.stationManage.get('orderCommand'),
+      }));
       yield put({
-        type: stationManageAction.GET_STATION_LIST_SAGA,
-        payload: {}  // --- todo 请求电站信息列表所需参数
+        type: stationManageAction.GET_STATION_MANAGE_LIST,
+        payload,
       })
     }
   }catch(e){

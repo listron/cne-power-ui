@@ -121,7 +121,7 @@ class ImgUploader extends Component {
   }
 
   render() {
-    const authData = Cookie.get('authData') || '';
+    const authData = Cookie.get('authData') || null;
     const { imageListShow, currentImgIndex, fileList } = this.state;
     const { uploadPath, max,  data, editable, imgStyle } = this.props;
 		const imageProps = {
