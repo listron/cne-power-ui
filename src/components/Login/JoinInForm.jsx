@@ -184,6 +184,8 @@ class JoinInForm extends Component{
   renderStepOne(formItemLayout, tailFormItemLayout) {
     const { getFieldDecorator, getFieldsError } = this.props.form;
     const { enterpriseName, enterpriseInfo } = this.props;
+    console.log(enterpriseInfo);
+    console.log(Object.keys(enterpriseInfo).length);
     const { showEnterpriseInfo } = this.state;
     return (
       <Form onSubmit={this.getEnterpriseInfo} className={styles.joinStepOne} >
@@ -208,6 +210,7 @@ class JoinInForm extends Component{
   renderStepTwo() {
     const { getFieldDecorator } = this.props.form;
     const { enterpriseIdToken,enterpriseName, enterpriseLogo,inviteValid } = this.props;
+    console.log(enterpriseIdToken);
     const { timeValue } = this.state;
     const defaultLogo = "/img/nopic.png";
     return (
@@ -245,7 +248,7 @@ class JoinInForm extends Component{
             <FormItem>
               <Button type="primary" htmlType="submit">下一步</Button>
             </FormItem>
-            {(enterpriseIdToken !== null && enterpriseIdToken.length > 0) ? <p>您已加入企业，请直接登录</p> : null}
+            {(enterpriseIdToken !== null && enterpriseIdToken !== undefined) ? <p>您已加入企业，请直接登录</p> : null}
           </Form>
         :
           <div className={styles.inviteInvalid} >

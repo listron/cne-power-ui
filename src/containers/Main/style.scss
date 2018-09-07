@@ -48,4 +48,21 @@
         overflow-x: hidden;
       }
     }
+    
+  }
+  .userRightTip{
+    .exitSystem{
+      float: right;
+      display: block;
+    } 
+    :global{
+      .ant-modal-body{
+        height: 100px;
+      }
+      .ant-btn:hover, .ant-btn:focus {
+        color: $themeColor;
+        background-color: #fff;
+        border-color: $themeColor;
+      }
+    }
   }

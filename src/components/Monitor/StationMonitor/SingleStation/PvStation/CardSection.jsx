@@ -122,7 +122,7 @@ class CardSection extends Component {
                         return (
                           <div key={i} className={styles.userInfo} >
                             <Row>
-                              <Col span={5} title={e.userFullName}><div className={styles.userName} style={{height:'21px',width:'55px',overflow:"hidden"}}>{e.userFullName}</div></Col>
+                              <Col span={5} title={e.userFullName|| e.userName}><div  style={{height:'21px',width:'55px',overflow:"hidden"}}>{e.userFullName|| e.userName}</div></Col>
                               <Col span={9} title={e.roleDesc}><div style={{height:'21px',width:'94px',overflow:"hidden"}}>{e.roleDesc}</div></Col>
                               <Col span={9} title={e.phoneNum}><div style={{height:'21px',width:'94px',overflow:"hidden"}}>{e.phoneNum}</div></Col>
                             </Row>
