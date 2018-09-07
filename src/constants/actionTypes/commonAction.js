@@ -23,6 +23,9 @@ module.exports = {
     GET_PARTITIONS_SUCCESS: null,
     GET_PARTITIONS_FAIL: null,
     REFRESHTOKEN_SAGE: null, //refreshToken -get 
+
+    GET_ALL_DEPARTMENT_DATA: null, // 获取企业下所有部门(含层级关系);
+    GET_DATA_SUCCESS: null, // 普通api请求成功
   })
 }
 

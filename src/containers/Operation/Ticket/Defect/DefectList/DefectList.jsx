@@ -9,17 +9,29 @@ import DefectFilter from '../../../../../components/Operation/Ticket/Defect/Defe
 
 class DefectList extends Component {
   static propTypes = {
-    defectList: PropTypes.object,
+    stationType: PropTypes.string,
+    stationCodes: PropTypes.string,
+    defectSource: PropTypes.string,
+    defectLevel: PropTypes.string,
+    timeInterval: PropTypes.string,
+    createTimeStart: PropTypes.string,
+    createTimeEnd: PropTypes.string,
+    deviceTypeCode: PropTypes.string,
+    defectTypeCode: PropTypes.string,
+    handleUser: PropTypes.string,
+    status: PropTypes.string,
     pageNum: PropTypes.number,
     pageSize: PropTypes.number,
-    selectedRowKeys: PropTypes.array,
     sort: PropTypes.string,
+
+    selectedRowKeys: PropTypes.array,
     showTab: PropTypes.string,
     total: PropTypes.number,
+    defectList: PropTypes.object,
     defectStatusStatistics: PropTypes.object,
-    loading: PropTypes.bool,
     error: PropTypes.object,
-    status: PropTypes.string,
+    loading: PropTypes.bool,
+
     getDefectList: PropTypes.func,
     onBatchDelete: PropTypes.func,
     onBatchSend: PropTypes.func,
@@ -53,119 +65,35 @@ class DefectList extends Component {
     }
   }
 
-  onChangePage = (page) => {
-    if(page !== this.pageNum) {
-      let params = {
-        defectSource: '3',
-        stationType: '2',
-        status: this.props.status,
-        pageNum: page - 1,
-        pageSize: this.props.pageSize,
-        sort: this.props.sort
-      }
-      this.props.getDefectList(params);
+  onChangeFilter = (obj) => {
+    const { stationType, stationCodes, defectSource, defectLevel, timeInterval, status, pageNum, pageSize, createTimeStart, createTimeEnd, deviceTypeCode, defectTypeCode, sort, handleUser} = this.props;
+    let filter = {
+      stationType,
+      stationCodes,
+      defectSource,
+      defectLevel,
+      timeInterval,
+      status,
+      pageNum,
+      pageSize,
+      createTimeStart,
+      createTimeEnd,
+      deviceTypeCode,
+      defectTypeCode,
+      sort,
+      handleUser
     }
-  }
-
-  onChangePageSize = (pageSize) => {
-    if(pageSize !== this.props.pageSize) {
-      let params = {
-        defectSource: '3',
-        stationType: '2',
-        status: this.props.status,
-        pageNum: 0,
-        pageSize: pageSize,
-        sort: this.props.sort
-      }
-      this.props.getDefectList(params);
-    } 
-  }
-
-  onChangeStatus = (status) => {
-    if(status !== this.props.status) {
-      let params = {
-        defectSource: '3',
-        stationType: '2',
-        status: status,
-        pageNum: 0,
-        pageSize: this.props.pageSize,
-        sort: this.props.sort
-      }
-      this.props.getDefectList(params);
-    }
-  }
-
-  onSorter = (sort) => {
-    if(sort !== this.props.sort) {
-      let params = {
-        defectSource: '3',
-        stationType: '2',
-        status: this.props.status,
-        pageNum: 0,
-        pageSize: this.props.pageSize,
-        sort: sort
-      }
-      this.props.getDefectList(params);
-    }
-  }
-
-  onBatchDelete = (ids) => {
-    this.props.onBatchDelete({defectId: ids.join(',')});
-  }
-
-  onBatchSend = (ids) => {
-    this.props.onBatchSend({defectId: ids.join(',')});
-  }
-
-  onBatchReject = (ids) => {
-    this.props.onBatchReject({defectId: ids.join(',')});
-  }
-
-  onBatchClose = (ids) => {
-    this.props.onBatchClose({defectId: ids.join(',')});
-  }
-
-  onBatchCheck = (ids, checkResult) => {
-    this.props.onBatchCheck({
-      defectId: ids.join(','),
-      checkResult
-    });
-  }
-
-  onShowDetail = (defectId,record) => {
-    if(record.defectStatus === 0 || record.defectStatus === '0'){
-      this.props.getDefectDetail({
-        container: 'create',
-        editNewDefect:true,
-        defectId
-      });
-    }else{
-      this.props.changeDefectStore({defectId});
-      this.props.onChangeShowContainer({container: 'detail'});
-    }
-  }
-  onAdd = () => {
-    this.props.onChangeShowContainer({container: 'create'});
+    let newFiter = Object.assign({}, filter, obj);
+    this.props.getDefectList(newFiter)
   }
 
   render() {
     return (
       <div className={styles.defectList}>
-        <DefectFilter {...this.props} />
+        <DefectFilter {...this.props} onChangeFilter={this.onChangeFilter} />
         <DefectTable 
           {...this.props} 
-          onAdd={this.onAdd}
-          onChangePage={this.onChangePage}
-          onChangePageSize={this.onChangePageSize}
-          onChangeStatus={this.onChangeStatus}
-          onSorter={this.onSorter}
-          onShowDetail={this.onShowDetail}
-          onDelete={this.onBatchDelete}
-          onSend={this.onBatchSend}
-          onReject={this.onBatchReject}
-          onClose={this.onBatchClose}
-          onCheck={this.onBatchCheck}
-           />
+          onChangeFilter={this.onChangeFilter} />
       </div>
     );
   }
@@ -193,8 +121,8 @@ const mapStateToProps = (state) => ({
   defectTypeCode: state.operation.defect.get('defectTypeCode'),
   defectTypes: state.operation.defect.get('defectTypes'),
   sort: state.operation.defect.get('sort'),
-  selfDefect: state.operation.defect.get('selfDefect'),
-  userName: Cookie.get('username'), 
+  handleUser: state.operation.defect.get('handleUser'),
+  username: Cookie.get('username'),
   stations: state.common.get('stations'),
   deviceTypes: state.common.get('deviceTypes'),
 });

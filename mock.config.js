@@ -6,6 +6,7 @@ const enterprise = require('./mock/system/enterprise');
 const department = require('./mock/system/department');
 const getVerificationCode = require('./mock/login/getVerificationCode');
 const user = require('./mock/system/user');
+const stationManage = require('./mock/system/stationManage');
 
 const monitor =require('./mock/monitor/stationMonitor')
 
@@ -24,6 +25,8 @@ exports.mockConfig = [
   ...department,
   ...getVerificationCode,
   ...user,
+
+  ...stationManage, //电站管理-电站
 
   ...monitor,
 

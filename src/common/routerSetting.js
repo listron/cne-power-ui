@@ -16,6 +16,11 @@ import HistoryAlarm from '../containers/Monitor/Alarm/HistoryAlarm';
 import AlarmStatistic from '../containers/Monitor/Alarm/AlarmStatistic';
 import EditPassword from '../containers/Others/EditPassword';
 import Building from '../components/Common/Building/Building';
+
+import StationManage from '../containers/System/Station/StationManage/StationManage';
+import DeviceManage from '../containers/System/Station/DeviceManage/DeviceManage';
+import PointManage from '../containers/System/Station/PointManage/PointManage';
+import AlarmManage from '../containers/System/Station/AlarmManage/AlarmManage';
 /*
   注： path变量中，以/hidden开头的路径，将不展示在菜单中；
 */
@@ -32,6 +37,10 @@ const routers = [
   },
   {
     path: '/operation/ticket/list',
+    exact: true,
+    component: Ticket,
+  }, {
+    path: '/operation/ticket/statistics',
     exact: true,
     component: Ticket,
   }, {
@@ -106,10 +115,30 @@ const routers = [
     path: '/monitor/singleStation/:stationCode',
     exact: true,
     component: SingleStation,
-  }, {
+  }, { // 隐藏页： 修改密码
     path: '/hidden/user/editPassword',
     exact: true,
     component: EditPassword
+  },{ // 系统管理-电站管理-电站
+    path: '/system/station/stationManage',
+    exact: true,
+    component: Building,
+  },{ // 系统管理-电站管理-设备
+    path: '/system/station/deviceManage',
+    exact: true,
+    component: Building
+  },{ // 系统管理-电站管理-测点
+    path: '/system/station/pointManage',
+    exact: true,
+    component: Building
+  },{ // 系统管理-电站管理-测点
+    path: '/system/station/alarmManage',
+    exact: true,
+    component: Building
+  },{ // 系统管理-计划配置
+    path: '/system/config',
+    exact: true,
+    component: Building
   },{
     path: '/statistical/stationaccount/allstation',
     exact: true,

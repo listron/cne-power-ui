@@ -51,15 +51,6 @@ function* getDefectDetail(action) {
           ...payload
         }
       });  
-      if(action.params.editNewDefect){
-        yield put({
-          type: ticketAction.CHANGE_SHOW_CONTAINER,
-          payload: {
-            container: 'create',
-            editNewDefect: true
-          },
-        });
-      }    
     }
   } catch (e) {
     console.log(e);
