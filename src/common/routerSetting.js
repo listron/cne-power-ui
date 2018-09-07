@@ -42,7 +42,7 @@ const routers = [
   }, {
     path: '/operation/ticket/statistics',
     exact: true,
-    component: Ticket,
+    component: Building,
   }, {
     path: '/operation/tickets/typeone',
     exact: true,

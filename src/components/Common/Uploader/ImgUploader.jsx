@@ -141,7 +141,6 @@ class ImgUploader extends Component {
     );
     return (
       <div className={styles.imgUploader}>
-        <div className={styles.maxTip}>最多4张</div>
         {data && data.length > 0 && data.map((e,i)=>(
           <UploadedImg 
             editable={editable}
