@@ -100,10 +100,11 @@ export default {
       importUserBatch: '/v3/user/batch',//批量导入用户
 
       // 电站管理部分
-      getStationList: '', // 获取电站列表
-      getStationDetail: '', // 获取电站详情
-      saveStationDetail: '', // 获取电站详情
-      setStationDepartment: '', // 分配部门
+      getStationList: '/v3/management/stationList', // 获取电站列表
+      getStationDetail: '/v3/management/stationDetail', // 获取电站详情
+      saveStationDetail: '/v3/management/upateStation', // 编辑后保存电站详情
+      deleteStation: '/v3/management/tryDelete', // 删除电站(及以下设备及设备信息)
+      setStationDepartment: '/v3/management/alarmevent/station/department', // 分配部门
     },
     monitor: {//实时监控
       getStationType:'/v3/monitor/stations/',

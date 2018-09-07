@@ -25,15 +25,20 @@ import AlarmManage from '../containers/System/Station/AlarmManage/AlarmManage';
   注： path变量中，以/hidden开头的路径，将不展示在菜单中；
 */
 const routers = [
-  // {
-  //   path: '/',
-  //   exact: true,
-  //   component: Building
-  // }, 
+  {
+    path: '/',
+    exact: true,
+    component: Building
+  }, 
   {
     path: '/404',
     exact: true,
     component: Exception
+  },
+  {
+    path: '/login',
+    exact: true,
+    component: Login
   },
   {
     path: '/operation/ticket/list',
@@ -44,15 +49,23 @@ const routers = [
     exact: true,
     component: Ticket,
   }, {
-    path: '/operation/tickets/typeone',
+    path: '/operation/twoTickets/typeone',
     exact: true,
     component: Building,
   }, {
-    path: '/operation/tickets/typetwo',
+    path: '/operation/twoTickets/typetwo',
     exact: true,
     component: Building,
   }, {
-    path: '/operation/ledger',
+    path: '/operation/book/sparePart',
+    exact: true,
+    component: Building,
+  }, {
+    path: '/operation/book/instrument',
+    exact: true,
+    component: Building,
+  },{
+    path: '/operation/running',
     exact: true,
     component: Building,
   }, {
@@ -122,19 +135,19 @@ const routers = [
   },{ // 系统管理-电站管理-电站
     path: '/system/station/stationManage',
     exact: true,
-    component: Building,
+    component: Building, // Building  StationManage
   },{ // 系统管理-电站管理-设备
     path: '/system/station/deviceManage',
     exact: true,
-    component: Building
+    component: Building // Building  DeviceManage
   },{ // 系统管理-电站管理-测点
     path: '/system/station/pointManage',
     exact: true,
-    component: Building
+    component: Building  // Building  PointManage
   },{ // 系统管理-电站管理-测点
     path: '/system/station/alarmManage',
     exact: true,
-    component: Building
+    component: Building // Building  AlarmManage
   },{ // 系统管理-计划配置
     path: '/system/config',
     exact: true,
