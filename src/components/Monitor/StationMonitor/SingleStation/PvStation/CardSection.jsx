@@ -14,6 +14,7 @@ class CardSection extends Component {
     alarmList: PropTypes.object,
     workList: PropTypes.object,
     getWeatherList: PropTypes.func,
+    getOperatorList: PropTypes.func,
   }
 
   constructor(props){
@@ -47,6 +48,7 @@ class CardSection extends Component {
 
   getData = (stationCode) => {
     this.props.getWeatherList({stationCode});
+    this.props.getOperatorList({stationCode,roleId: '4,5'});
     this.timeOutId = setTimeout(()=>{
       this.getData(stationCode);
     },3600000);
