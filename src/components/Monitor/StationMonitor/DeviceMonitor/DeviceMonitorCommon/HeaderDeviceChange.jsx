@@ -4,8 +4,6 @@ import { Icon } from 'antd';
 import { Link } from 'react-router-dom';
 
 function HeaderDeviceChange({ devices, deviceDetail, baseLinkPath, hideDeviceChange }){
-  console.log(devices);
-  console.log(deviceDetail);
   return (
     <div className={styles.deviceChange}>
       <h4 className={styles.deviceTitle}>
