@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import styles from './pvStation.scss';
 import { Icon, Progress  } from 'antd';
 import moment from 'moment';
-import ChangeStation from '../../../../Common/ChangeStation';
+import ChangeStation from '../SingleStationCommon/ChangeStation';
 import { Link } from 'react-router-dom';
 class PvStationTop extends Component {
   static propTypes = {
@@ -13,7 +13,6 @@ class PvStationTop extends Component {
     singleStationData: PropTypes.object,
     getSingleStation: PropTypes.func,
     stationList: PropTypes.array,
-    getData: PropTypes.func,
     showStationList: PropTypes.bool,
   }
 

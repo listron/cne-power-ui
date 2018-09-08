@@ -31,10 +31,18 @@ class PvStation extends Component {
     }
   }
 
+  // componentWillReceiveProps(nextProps){
+  //   const { stationCode } = this.props.match.params;
+  //   const nextParams = nextProps.match.params;
+  //   const nextStation = nextParams.stationCode;
+  //   if( nextStation !== stationCode ){
+  //     this.props.changeSingleStationStore({deviceTypeCode: 206});
+  //   }
+  // }
+
   onSelectedDeviceType = (e) => {
     const deviceTypeCode = parseInt(e.target.value);
     this.props.changeSingleStationStore({deviceTypeCode});
-    console.log(deviceTypeCode);
   }
 
   getDeviceTypeIcon = (e) => {
@@ -71,7 +79,9 @@ class PvStation extends Component {
     if(appointDeviceCode && appointDeviceCode!=='undefined'){
       appointDeviceCode = parseInt(appointDeviceCode);
     }
-
+    // console.log(appointDeviceCode);
+    // console.log(deviceTypeCode);
+    // console.log(appointDeviceCode || 206);
     return (
       <div className={styles.pvStation}  >
         <PvStationTop {...this.props} hiddenStationList={this.state.hiddenStationList} />
@@ -85,7 +95,7 @@ class PvStation extends Component {
             </TabPane> */}
             <TabPane tab="示意图" key="2">
               <div className={styles.deviceTypeFlow}>
-                {deviceTypeFlow && <RadioGroup defaultValue={appointDeviceCode || deviceTypeCode}  onChange={this.onSelectedDeviceType} >
+                {deviceTypeFlow && <RadioGroup defaultValue={appointDeviceCode || 206}  onChange={this.onSelectedDeviceType} >
                   {deviceTypeFlow && 
                     deviceTypeFlow.map(e=>{
                       return (<RadioButton value={e.deviceTypeCode} className={styles.deviceTypeItem} key={e.deviceTypeCode}>

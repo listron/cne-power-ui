@@ -182,7 +182,15 @@ class InverterList extends Component {
     ];
     return columns;
   }
-  
+  compareName = (a,b) => {
+    return a['deviceName'].localeCompare(b['deviceName']);
+  }
+  compareParentName = (a,b) => {
+    if(a[0]&& b[0]){
+      return a[0]['parentDeviceName'].length-b[0]['parentDeviceName'].length;
+    }
+    
+  }
   render(){
     const { inverterList, loading, deviceTypeCode, } = this.props;
     const {tmpDeviceList, } = this.state;
@@ -225,15 +233,15 @@ class InverterList extends Component {
     
     const baseLinkPath = "/hidden/monitorDevice";
     const { stationCode } = this.props.match.params;
-
+    
     return (
       <div className={styles.inverterList} >
         <Tabs defaultActiveKey="1" className={styles.inverterTab} tabBarExtraContent={operations}>
           <TabPane tab={<span><i className="iconfont icon-grid" ></i></span>} key="1" className={styles.inverterBlockBox} >
-            {(tmpParentDeviceCodes&&tmpParentDeviceCodes.length>0) ? tmpParentDeviceCodes.map((e,index)=>{
+            {(tmpParentDeviceCodes&&tmpParentDeviceCodes.length>0) ? tmpParentDeviceCodes.sort(this.compareParentName).map((e,index)=>{
               return (<div key={index}>
-                <div className={styles.parentDeviceName} >{e && e.parentDeviceName}</div>
-                {e && e.map((item,i)=>{
+                <div className={styles.parentDeviceName} >{e && e[0] && e[0].parentDeviceName}</div>
+                {e && e.sort(this.compareName).map((item,i)=>{
                   return (<div key={i} className={item.deviceStatus === 900 ? styles.cutOverItem : styles.inverterItem} >
                     <div className={styles.inverterItemIcon} >
                       <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${item.deviceCode}`} target="_blank" >
@@ -261,7 +269,7 @@ class InverterList extends Component {
               {/* <CommonPagination total={inverterListNum} onPaginationChange={this.onPaginationChange} /> */}
               <Table 
                 loading={loading}
-                dataSource={tmpDeviceList || initDeviceList} 
+                dataSource={endDeviceList && endDeviceList.sort(this.compareName)} 
                 columns={this.tableColumn()} 
                 onChange={this.tableChange}
                 pagination={pagination}

@@ -19,7 +19,7 @@ class BoxTransformerList extends Component {
   constructor(props){
     super(props);
     this.state = {
-      tmpDeviceList : props.boxTransformerList && props.boxTransformerList.deviceList && props.boxTransformerList.deviceList.map((e,i)=>({...e,key:i})),//暂存的逆变器列表
+      tmpDeviceList : props.boxTransformerList && props.boxTransformerList.deviceList && props.boxTransformerList.deviceList.map((e,i)=>({...e,key:i})),//暂存的箱变列表
       currentStatus: 0,//当前状态值
       alarmSwitch: false,
     }
@@ -172,6 +172,10 @@ class BoxTransformerList extends Component {
     return columns;
   }
   
+  compareName = (a,b) => {
+    return a['deviceName'].localeCompare(b['deviceName']);
+  }
+
   render(){
     const { boxTransformerList, loading,deviceTypeCode } = this.props;
     const {tmpDeviceList, } = this.state;
@@ -184,7 +188,7 @@ class BoxTransformerList extends Component {
     let tmpParentDeviceCodes = [...parentDeviceCodeSet];
     tmpParentDeviceCodes.forEach((value,key)=>{
       tmpParentDeviceCodes[key] = deviceList.filter(e=>value===e.parentDeviceCode);
-    })
+    });
     
     const inverterListNum = deviceList && (deviceList.length || 0);
     const deviceStatus = boxTransformerList && boxTransformerList.deviceStatusSummary;
@@ -210,6 +214,7 @@ class BoxTransformerList extends Component {
     }
     const baseLinkPath = "/hidden/monitorDevice";
     const { stationCode } = this.props.match.params;
+
     return (
       <div className={styles.inverterList} >
         <Tabs defaultActiveKey="1" className={styles.inverterTab} tabBarExtraContent={operations}>
@@ -217,7 +222,8 @@ class BoxTransformerList extends Component {
             {(tmpParentDeviceCodes&&tmpParentDeviceCodes.length>0) ? tmpParentDeviceCodes.map((e,index)=>{
               return (<div key={index}>
                 <div className={styles.parentDeviceName} >{e && e.parentDeviceName}</div>
-                {e && e.map((item,i)=>{
+                {e && e.sort(this.compareName).map((item,i)=>{
+                  
                   return (<div key={i} className={item.deviceStatus === 900 ? styles.cutOverItem : styles.inverterItem}>
                     <div className={styles.inverterItemIcon} >
                       <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${item.deviceCode}`} target="_blank" >
@@ -245,7 +251,7 @@ class BoxTransformerList extends Component {
               {/* <CommonPagination total={inverterListNum} onPaginationChange={this.onPaginationChange} /> */}
               <Table 
                 loading={loading}
-                dataSource={tmpDeviceList || initDeviceList} 
+                dataSource={endDeviceList && endDeviceList.sort(this.compareName)} 
                 columns={this.tableColumn()} 
                 onChange={this.tableChange}
                 pagination={pagination}
