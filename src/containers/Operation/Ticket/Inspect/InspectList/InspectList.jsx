@@ -112,7 +112,6 @@ const mapStateToProps = (state) => ({
   createTimeStart: state.operation.inspect.get('createTimeStart'), 
   createTimeEnd: state.operation.inspect.get('createTimeEnd'),	 
   deviceTypeCode: state.operation.inspect.get('deviceTypeCode'),
-  selfDefect: state.operation.defect.get('selfDefect'),
   handleUser: state.operation.defect.get('handleUser'),
   username: Cookie.get('username'),
   stations: state.common.get('stations'),

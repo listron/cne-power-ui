@@ -59,7 +59,7 @@ class InspectTable extends Component {
       title: '确认全部验收吗？',
       onOk: () => {
         this.props.inspectCheckBatch({
-          defectId: this.props.selectedRowKeys.join(',')
+          inspectId: this.props.selectedRowKeys.join(',')
         });
       },
     });
@@ -189,10 +189,7 @@ class InspectTable extends Component {
 
 
   render(){
-    const { inspectList, selectedRowKeys, total, loading } = this.props;
-    // let statistics = this.props.inspectStatusStatistics;
-    // let inProcessNum = statistics.get("executeNum");
-    // let waitCheckNum = statistics.get("checkNum");   
+    const { inspectList, selectedRowKeys, total, loading } = this.props;  
     const columns = this.initColumn(); 
   
     const rowSelection = {

@@ -8,7 +8,7 @@ const CheckboxGroup = Checkbox.Group;
 
 class StationFilter extends Component {
   static propTypes = {
-    stationCode: PropTypes.string,
+    stationCodes: PropTypes.string,
     stations: PropTypes.object,
     onChangeFilter: PropTypes.func,
   }
@@ -21,21 +21,21 @@ class StationFilter extends Component {
   }
 
   onChangeStation = (checkedValue, provinceCode) => {
-    const { stations, stationCode } = this.props;
-    const stationCodeArr = stationCode === '' ? [] : stationCode.split(',');
+    const { stations, stationCodes } = this.props;
+    const stationCodeArr = stationCodes === '' ? [] : stationCodes.split(',');
     const provinceStation = stations.groupBy(item=>item.get('provinceCode')).toJS()[provinceCode];
     const newStationCode = stationCodeArr.filter(code => {
       return provinceStation.findIndex(station => station.stationCode.toString() === code) === -1
     }).concat(checkedValue);
     this.props.onChangeFilter({
-      stationCode: newStationCode.join(',')
+      stationCodes: newStationCode.join(',')
     });
   }
 
   onChangeProvince = (key) => {
     if(key === 'all') {
       this.props.onChangeFilter({
-        stationCode: ''
+        stationCodes: ''
       });
     }
     this.setState({
@@ -45,8 +45,8 @@ class StationFilter extends Component {
 
   onCheckAll(e, data) {
     const checkedValue = data.map(item=>item.get('stationCode').toString()).toJS();
-    const stationCode = this.props.stationCode;
-    const stationCodeArr = stationCode === '' ? [] : stationCode.split(',');
+    const stationCodes = this.props.stationCodes;
+    const stationCodeArr = stationCodes === '' ? [] : stationCodes.split(',');
     let stationArray, newStationCode;
     if(e.target.checked) {
       stationArray = stationCodeArr.concat(checkedValue);
@@ -56,14 +56,14 @@ class StationFilter extends Component {
       newStationCode = stationArray;
     }
     this.props.onChangeFilter({
-      stationCode: newStationCode.join(',')
+      stationCodes: newStationCode.join(',')
     });
   }
 
   getCheckAll(data) {
     const checkedOption = data.map(item=>item.get('stationCode').toString()).toJS();
-    const stationCode = this.props.stationCode;
-    const stationCodeArr = stationCode === '' ? [] : stationCode.split(',');
+    const stationCodes = this.props.stationCodes;
+    const stationCodeArr = stationCodes === '' ? [] : stationCodes.split(',');
     let result = true;
     checkedOption.forEach(element => {
       if(stationCodeArr.indexOf(element) === -1) {
@@ -75,8 +75,8 @@ class StationFilter extends Component {
   }
 
   renderProvince(stationData) {
-    const stationCode = this.props.stationCode;
-    const stationCodeArr = stationCode === '' ? [] : stationCode.split(',');
+    const stationCodes = this.props.stationCodes;
+    const stationCodeArr = stationCodes === '' ? [] : stationCodes.split(',');
     return stationData.map(provinceItem => {
       const options = provinceItem.map(station=>{
         return {
