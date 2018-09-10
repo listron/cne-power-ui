@@ -327,7 +327,9 @@ class RealTimeAlarmTable extends Component {
           </div>
           <div className={styles.infoItem}>
             <span className={styles.label}>操作时间：</span>
-            <span className={styles.value}>{moment(moment.utc(ticketInfo.operateTime).toDate()).local().format('YYYY-MM-DD HH:mm')}</span>
+            <span className={styles.value}>{moment.utc(ticketInfo.operateTime).format('YYYY-MM-DD HH:mm')}</span>
+            {/* 后期改成utc格式的时间 */}
+            {/* <span className={styles.value}>{moment(moment.utc(ticketInfo.operateTime).toDate()).local().format('YYYY-MM-DD HH:mm')}</span> */}
           </div>
           <div className={styles.infoItem}>
             <span className={styles.label}>缺陷类型：</span>

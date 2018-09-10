@@ -4,7 +4,10 @@
   display: flex;
   flex:1;
   flex-direction: column;
-  :global{  
+  :global{ 
+    .ant-progress-inner{       
+      background: #dfdfdf;
+    } 
     .ant-tabs-nav-container{
       margin: 0;
     }
@@ -113,6 +116,7 @@
     }
   }
   .headStation{
+    color:#999;
     border-bottom: 1px dashed #dfdfdf;
     height: 100px;
     display: flex;
@@ -180,13 +184,13 @@
         display: flex;
         flex-direction: column;
         justify-content: center;
-        align-items: center;
+        //align-items: center;
         // margin-left: 25px;
         .dataValue {
           color:#199475;
           font-size: 24px;
           flex: 1;
-          text-align: center;
+          text-align: left;
           padding-top: 20px;
           font-family:STHeitiSC-Light;
         }
@@ -194,7 +198,7 @@
           color:#e08031;
           font-size: 24px;
           flex: 1;
-          text-align: center;
+          //text-align: center;
           padding-top: 20px;
           font-family:STHeitiSC-Light;
         }
@@ -213,6 +217,9 @@
     :global{
       .ant-progress-outer{
         height: 28px;
+      }
+      .ant-progress-inner{       
+        background: #dfdfdf;
       }
     } 
     display: flex;
@@ -265,6 +272,7 @@
       }      
     }
     .stationCardTitle {
+      color:#666;
       height: 26px;
       flex: 1;
       display: flex;
@@ -310,8 +318,13 @@
     display: flex;
     flex-direction: column;
     a{
-      text-decoration: none;
+      text-decoration:underline;  
       color:rgba(0, 0, 0, 0.65);
+
+      &:hover{
+        color:#199475;
+
+      }
     }
     .pagination{
       //flex:1;
@@ -361,6 +374,11 @@
     }
     .progressInfo{
       .progressData{
+        :global{
+           .ant-progress-inner{       
+       margin-top: 8px;
+      }
+        }
         //width: 220px;
         padding-right: 16px;
         height: 40px;
@@ -368,6 +386,7 @@
         flex-direction: column;
         flex-wrap: wrap;
         .stationValue{
+          margin-top: 5px;
           flex: 1;
           display: flex;
           justify-content: space-between;
