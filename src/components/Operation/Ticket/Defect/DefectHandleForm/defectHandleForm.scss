@@ -1,37 +1,116 @@
+@import '../../../../../theme/theme.scss';
 .handleForm {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
   .title {
     display: flex;
     flex-direction: row;
-    justify-content: center;
-  }
-  .handleForm {
-    :global{
-      .ant-row{
-        display: flex
-      }
-    }
-    .dealProposal {
-      :global {
-        .ant-form-item-control-wrapper {
-          margin-left: -60px;
-          margin-top: 10px;
-        }
-      }
-    }
-    .replacePart {
+    margin-bottom: 24px;
+    align-items: flex-start;
+    .border {
       display: flex;
-      flex-direction: row;
-      margin-top: 10px;
+      flex: 1;
+      height: 16px;
+      border-bottom: 1px #f1f1f1 solid;
     }
-    .actionBar {
+    .text {
+      background:#f8f8f8;
+      border:1px solid #f1f1f1;
+      border-radius:4px;
+      width:95px;
+      height:30px;
       display: flex;
-      flex-direction: row;
+      align-items: center;
       justify-content: center;
     }
   }
-  :global{
-    .ant-btn {
-      margin-right: 10px;
+  .dealForm {
+    display: flex;
+    flex-direction: column;
+    padding: 20px 24px;
+    flex-shrink: 0;
+    :global { 
+      .ant-form-item {
+        display: flex;
+        .ant-form-item-label {
+          flex: 1;
+        }
+        .ant-form-item-control-wrapper{
+          flex: 8;
+        }
+        .ant-form-item-children {
+          display: flex
+        }
+      }
+      .ant-radio-button-wrapper {
+        padding: 0 8px; 
+        color: $darkColor;
+      }
+      .ant-radio-button-wrapper-checked {
+        background-color: $themeColor;
+        border: 1px solid $themeColor;
+        color: #fff;
+      }
+      input::-webkit-input-placeholder,textarea::-webkit-input-placeholder{
+        color:$lightColor;
+      }
+      input:-moz-placeholder, textarea:-moz-placeholder { 
+        color: $lightColor; 
+      }
+      input:-ms-input-placeholder, textarea:-ms-input-placeholder { 
+        color: $lightColor; 
+      } 
+    }
+    .addImg {
+      display: flex;
+      flex-direction: row;
+      align-items: flex-end;
+      margin-left: -65px;
+      .maxTip {
+        width: 65px;
+        color: $promptColor;
+        font-family: MicrosoftYaHei;
+      }
+    }
+    .dealResult {
+      display: flex;
+      flex-direction: row;
+      margin-bottom: 18px;
+      .reviewTitle {
+        color: $darkColor;
+        flex: 1;
+        >span:first-child {
+          display: inline-block;
+          margin-right: 16px;
+        }
+      }
+      .reviewType {
+        display: flex;
+        flex: 8;
+      }
+      :global {
+        button {
+          margin-right: 12px;
+        }
+      }
+    }
+    .actionBar {
+      margin-left: 76px;
+      .cancelBtn {
+        background-color: #f1f1f1;
+        color: $lightColor;
+        margin-right: 10px;
+        border: none;
+      }
+      button {
+        width: 98px;
+        &:hover {
+          background-color: $themeColor;
+          box-shadow:0 2px 8px 0 rgba(0,0,0,0.20);
+          color: #fff;
+        }
+      }
     }
   }
 }

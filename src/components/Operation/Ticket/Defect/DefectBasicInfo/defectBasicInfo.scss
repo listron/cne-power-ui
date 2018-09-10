@@ -1,0 +1,38 @@
+@import '../../../../../theme/theme.scss';
+.basicInfo {
+  .title {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    color: $darkColor;
+    margin-bottom: 21px;
+    :global {
+      .icon-content {
+        margin-left: 6px;
+        font-size: 6px;
+        color: $darkColor;
+      }
+    }
+  }
+  .basicContent {
+    display: flex;
+    flex-direction: column;
+    .basicItem {
+      display: flex;
+      flex-direction: row;
+      line-height: 30px;
+      height: 30px;
+      align-items: center;
+      color: $darkColor;
+      >span {
+        display: inline-block;
+        color: $lightColor;
+        padding-left: 24px;
+      }
+    }
+    .viewImg {
+      margin-top: 10px;
+      margin-left: 80px;
+    }
+  }
+}
