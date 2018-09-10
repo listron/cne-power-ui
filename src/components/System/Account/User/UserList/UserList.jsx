@@ -72,6 +72,12 @@ class UserList extends Component {
       selectedKey: selectedRows.map(e=>e.key),
     });
   }
+  onSelectAll = (selected, selectedRows, changeRows) => {//行选择（全选/反选)
+    this.props.changeUserStore({
+      selectedUser: selectedRows,
+      selectedKey: selectedRows.map(e=>e.key),
+    });
+  }
   onInviteUser = () => {
     this.props.getInviteLink({enterpriseId: JSON.parse(this.props.enterpriseId), showPage: 'invite'});
   }
@@ -276,7 +282,8 @@ class UserList extends Component {
 
   cancelRowSelect = () => {
     this.props.changeUserStore({
-      selectedUser:[]
+      selectedUser:[],
+      selectedKey: [],
     })
   }
 
@@ -563,8 +570,9 @@ class UserList extends Component {
         <Table 
           loading={loading}
           rowSelection={{
-            selectedRowKeys: selectedKey.toJS() || [],
+            selectedRowKeys: selectedKey && selectedKey.toJS() || [],
             onSelect: this.onRowSelect,
+            onSelectAll: this.onSelectAll,
           }}
           dataSource={userData && userData.toJS().map((e,i)=>({...e,key:i}))} 
           columns={this.tableColumn()} 
