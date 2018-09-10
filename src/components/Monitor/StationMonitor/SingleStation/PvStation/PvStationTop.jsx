@@ -13,7 +13,6 @@ class PvStationTop extends Component {
     singleStationData: PropTypes.object,
     getSingleStation: PropTypes.func,
     stationList: PropTypes.array,
-    getData: PropTypes.func,
     showStationList: PropTypes.bool,
   }
 
