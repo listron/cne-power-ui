@@ -76,7 +76,7 @@ class FilteredItems extends Component {
       deviceTypeCode: '',
       defectLevel: '0',
       defectTypeCode: '',
-    })
+    });
   }
 
   render() {
@@ -133,7 +133,7 @@ class FilteredItems extends Component {
             {e.get('defectTypeName')}
           </Tag>
         ))}
-        <Tag closable onClose={this.resetAll} >清空条件</Tag>
+        <Tag closable onClose={this.resetAll}>清空条件</Tag>
       </div>
     );
   }

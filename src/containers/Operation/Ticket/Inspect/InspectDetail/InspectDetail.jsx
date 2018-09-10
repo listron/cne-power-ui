@@ -132,18 +132,18 @@ const mapStateToProps = (state) => ({
 }) 
 
 const mapDispatchToProps = (dispatch) => ({
-  getInspectDetail: params => dispatch({ type: ticketAction.GET_INSPECT_DETAIL_SAGA, params}),
-  addInspectAbnormal: params => dispatch({ type: ticketAction.ADD_INSPECT_ABNORMAL_SAGA, params}),
-  getDefectTypes: params => dispatch({ type: ticketAction.GET_DEFECT_TYPE_SAGA, params}),
-  transformDefect: params => dispatch({ type: ticketAction.TRANSFORM_DEFECT_SAGA, params}),
-  setInspectCheck: params => dispatch({ type: ticketAction.SET_INSPECT_CHECK_SAGA, params}),
-  finishInspect: params => dispatch({ type: ticketAction.FINISH_INSPECT_SAGA, params}),
-  loadDeviceTypeList: params => dispatch({ type: commonAction.GET_STATION_DEVICETYPES_SAGA, params}),
-  loadDeviceAreaList: params => dispatch({ type: commonAction.GET_PARTITIONS_SAGA, params}),
-  loadDeviceList: params => dispatch({ type: commonAction.GET_DEVICES_SAGA, params}),
-  setInspectId: params => dispatch({ type: ticketAction.SET_INSPECT_ID_SAGA, params }),
-  onDeleteAbnormal: params => dispatch({ type: ticketAction.DELETE_ABNORMAL_SAGA, params }),
-  getInspectStandard: params => dispatch({ type: ticketAction.GET_INSPECT_STANDARD_SAGA, params}),
+  getInspectDetail: payload => dispatch({ type: ticketAction.GET_INSPECT_DETAIL_SAGA, payload}),
+  addInspectAbnormal: payload => dispatch({ type: ticketAction.ADD_INSPECT_ABNORMAL_SAGA, payload}),
+  getDefectTypes: payload => dispatch({ type: ticketAction.GET_DEFECT_TYPE_SAGA, payload}),
+  transformDefect: payload => dispatch({ type: ticketAction.TRANSFORM_DEFECT_SAGA, payload}),
+  setInspectCheck: payload => dispatch({ type: ticketAction.SET_INSPECT_CHECK_SAGA, payload}),
+  finishInspect: payload => dispatch({ type: ticketAction.FINISH_INSPECT_SAGA, payload}),
+  loadDeviceTypeList: payload => dispatch({ type: commonAction.GET_STATION_DEVICETYPES_SAGA, payload}),
+  loadDeviceAreaList: payload => dispatch({ type: commonAction.GET_PARTITIONS_SAGA, payload}),
+  loadDeviceList: payload => dispatch({ type: commonAction.GET_DEVICES_SAGA, payload}),
+  setInspectId: payload => dispatch({ type: ticketAction.SET_INSPECT_ID_SAGA, payload }),
+  onDeleteAbnormal: payload => dispatch({ type: ticketAction.DELETE_ABNORMAL_SAGA, payload }),
+  getInspectStandard: payload => dispatch({ type: ticketAction.GET_INSPECT_STANDARD_SAGA, payload}),
 })
 
 export default connect(mapStateToProps,mapDispatchToProps)(InspectDetail);

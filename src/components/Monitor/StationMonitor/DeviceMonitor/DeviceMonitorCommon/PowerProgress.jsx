@@ -15,8 +15,8 @@ function PowerProgress({ devicePower, deviceCapacity }) {
       </div>
       <Progress strokeColor="#199475" strokeWidth={3} percent={percent} showInfo={false} />
       <div className={styles.progressText}>
-        <span className={styles.leftText}>实时功率 MW</span>
-        <span className={styles.rightText}>装机容量 MW</span>
+        <span className={styles.leftText}>实时功率 kW</span>
+        <span className={styles.rightText}>装机容量 kW</span>
       </div>
     </div>
   )

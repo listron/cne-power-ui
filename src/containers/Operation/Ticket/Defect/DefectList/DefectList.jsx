@@ -49,14 +49,23 @@ class DefectList extends Component {
   }
 
   componentDidMount() {
+    const { stationType, stationCodes, defectSource, defectLevel, timeInterval, status, pageNum, pageSize, createTimeStart, createTimeEnd, deviceTypeCode, defectTypeCode, sort, handleUser} = this.props;
     if(this.props.showTab === 'defect') {
       var params = {
-        defectSource: '3',
-        stationType: '2',
-        status: this.props.status,
-        pageNum: this.props.pageNum,
-        pageSize: this.props.pageSize,
-        sort: this.props.sort
+        stationType,
+        stationCodes,
+        defectSource,
+        defectLevel,
+        timeInterval,
+        status,
+        pageNum,
+        pageSize,
+        createTimeStart,
+        createTimeEnd,
+        deviceTypeCode,
+        defectTypeCode,
+        sort,
+        handleUser
       }
       this.props.getDefectList(params);
       this.props.getDefectType({
@@ -114,13 +123,13 @@ const mapStateToProps = (state) => ({
   timeInterval: state.operation.defect.get('timeInterval'),   
   status: state.operation.defect.get('status'),          
   pageNum: state.operation.defect.get('pageNum'),       
-  pageSize: state.operation.defect.get('pageSize'),       
+  pageSize: state.operation.defect.get('pageSize'),
+  sort: state.operation.defect.get('sort'),       
   createTimeStart: state.operation.defect.get('createTimeStart'), 
   createTimeEnd: state.operation.defect.get('createTimeEnd'),	 
   deviceTypeCode: state.operation.defect.get('deviceTypeCode'),	 
   defectTypeCode: state.operation.defect.get('defectTypeCode'),
   defectTypes: state.operation.defect.get('defectTypes'),
-  sort: state.operation.defect.get('sort'),
   handleUser: state.operation.defect.get('handleUser'),
   username: Cookie.get('username'),
   stations: state.common.get('stations'),

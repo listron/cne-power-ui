@@ -254,8 +254,8 @@ class InverterList extends Component {
                         <div>{item.deviceName}</div>
                         <Progress className={styles.powerProgress} strokeWidth={4} percent={item.devicePower/item.deviceCapacity*100} showInfo={false} />
                         <div className={styles.inverterItemPower}>
-                          <div>{item.devicePower ? parseFloat(item.devicePower).toFixed(2) : '--'}KW</div>
-                          <div>{item.deviceCapacity ? parseFloat(item.deviceCapacity).toFixed(2) : '--'}KW</div>
+                          <div>{item.devicePower ? parseFloat(item.devicePower).toFixed(2) : '--'}kW</div>
+                          <div>{item.deviceCapacity ? parseFloat(item.deviceCapacity).toFixed(2) : '--'}kW</div>
                         </div>
                       </div>
                     </Link>

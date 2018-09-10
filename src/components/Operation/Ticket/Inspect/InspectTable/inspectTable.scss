@@ -1,26 +1,136 @@
-.inspectTable{
+@import '../../../../../theme/theme.scss';
+.inspectTable {
   display: flex;
   flex-direction: column;
   flex: 1;
-  .action{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    .add{
-      display: flex;
-      flex-direction: row;
-      justify-content: flex-end;
+  :global {
+    .icon-look {
+      font-size: 18px;
+      cursor: pointer;
+    }
+    .ant-table-placeholder {
+      border-bottom: none;
     }
   }
-  .inspectStatus{
+  .noData {
+    display: flex;
+    justify-content: center;
+    flex: 1;
+    background-color: #fff;
+    margin-top: 48px;
+  }
+  .action {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    margin-left: 28px;
+    margin-bottom: 20px;
     align-items: center;
-    .warning{
+  }
+  .buttonArea {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    .addInspect {
       display: flex;
-      flex-direction: column;
+      flex-direction: row;
+      align-items: center;
+      width: 66px;
+      height: 32px;
+      border: 1px solid $themeColor;
+      border-radius: 4px;
+      margin-right: 12px;
+      color: $themeColor;
+      background-color: #fff;
+      &:hover {
+        background-color: $themeColor;
+        color: #fff;
+      }
+      cursor: pointer;
+      .add {
+        width: 30px;
+        height: 30px;
+        background-color: $themeColor;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+      }       
+      .text {         
+        margin-left: 2px;
+      }
+    }
+    .operation {
+      display: flex;
+      flex-direction: row;
+      align-items: flex-start;
+      :global {
+        .icon-help {
+          color: #e08031;
+          font-size: 12px;
+          margin-left: 4px;
+        }
+      }
+    }
+
+  }
+  .tableFooter{
+    background-color: #fff;
+    height: 45px;
+    line-height: 45px;
+    .info{
+      color: $lightColor;
+      margin-right: 20px;
+      margin-left: 24px;
+      .totalNum{
+        color: rgb(250,185,7);
+        margin: auto 4px;
+      }
+    }
+    .cancel{
+      color: $themeColor;
+      cursor: pointer;
+    }
+  }
+  .defectInspect {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    .warning {
+      display: flex;
+      flex-direction: row;
       font-size: 12px;
+      align-items: center;
+      margin-left: 12px;
+      .overTime {
+        display: flex;
+        align-items: center;
+        color: #a42b2c;
+        border: 1px #a42b2c solid;
+        border-radius: 4px;
+        width: 26px;
+        height: 14px;
+        margin-right: 4px;
+      }
+    }
+  }
+}
+
+.handleDropdown{
+  :global{
+    i.iconfont{ 
+      margin-right: 7px; 
+    }
+    .ant-select-dropdown-menu-item:not(.ant-select-dropdown-menu-item-disabled){
+      background-color: #fff;
+      color:$lightColor;
+      &:hover {
+        background-color: #ceebe0;
+        color: $themeColor;
+      }
+    }
+    .ant-select-dropdown-menu-item-disabled{
+      color:$promptColor;
     }
   }
 }
