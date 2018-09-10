@@ -1,6 +1,8 @@
 
 
 import React, { Component } from 'react';
+import DetailInfoPart from './DetailInfoPart';
+import { baseFun, connectionPriceFun, otherFun } from './detailInformation';
 import { Button, Icon } from 'antd';
 import PropTypes from 'prop-types';
 import styles from './stationSide.scss';
@@ -36,8 +38,15 @@ class StationManageDetail extends Component {
     this.props.changeStationManageStore({ showPage: 'list' });
   }
 
+  editDetail = () => {
+    this.props.changeStationManageStore({ showPage: 'edit' });
+  }
+
   render(){
     const { stationDetail } = this.props;
+    const baseInfo = baseFun(stationDetail);
+    const connectionPriceInfo = connectionPriceFun(stationDetail);
+    const otherInfo = otherFun(stationDetail);
     return (
       <div className={styles.stationManageDetail}>
         <div className={styles.detailTop}>
@@ -52,12 +61,9 @@ class StationManageDetail extends Component {
           </span>
         </div>
         <div className={styles.stationManageContent} >
-          <div className={styles.baseInfo} >
-            <div>
-              <span>基本信息</span>
-              <Button>编辑</Button>
-            </div>
-          </div>
+          <DetailInfoPart title="基本信息" infoArray={baseInfo} handler={this.editDetail} />
+          <DetailInfoPart title="并网信息及电价情况" infoArray={connectionPriceInfo} />
+          <DetailInfoPart title="其他信息" infoArray={otherInfo} />
         </div>
       </div>
     )

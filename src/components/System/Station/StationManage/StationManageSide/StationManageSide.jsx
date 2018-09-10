@@ -19,7 +19,7 @@ class StationManageSide extends Component {
     const { showSidePage } = this.props;
     return (
       <div className={styles.stationManageSide}>
-        <StationManageDetail {...this.props} />
+        <StationManageEdit {...this.props} />
         { showSidePage === 'detail' && <StationManageDetail {...this.props} /> }
         { showSidePage === 'edit' && <StationManageEdit {...this.props} /> }
         <Footer />
