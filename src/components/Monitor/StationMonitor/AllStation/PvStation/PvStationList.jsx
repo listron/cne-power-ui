@@ -34,6 +34,7 @@ class PvStationList extends React.Component {
       {
         title: "电站名称",
         dataIndex: "stationName",
+        //defaultSortOrder: "descend",
         onFilter: (value, record) => record.stationName.indexOf(value) === 0,
         sorter: true,
         //(a, b) => a.stationName.length - b.stationName.length,
@@ -50,7 +51,7 @@ class PvStationList extends React.Component {
       {
         title: "所在省",
         dataIndex: "stationrovince",
-        defaultSortOrder: "descend",
+          //defaultSortOrder: "descend",
         sorter: true,
         //(a, b) => a.stationrovince.localeCompare(b.stationrovince),
         render: (value, record, index) => {
@@ -65,7 +66,7 @@ class PvStationList extends React.Component {
         title: "实时功率(MW)",
 
         dataIndex: "stationPower",
-        defaultSortOrder: "descend",
+        // defaultSortOrder: "descend",
         sorter: true,
         //(a, b) => a.stationPower - b.stationPower,
         render: (value, record, index) => {
@@ -92,7 +93,7 @@ class PvStationList extends React.Component {
       {
         title: "装机容量(MW)",
         dataIndex: "stationCapacity",
-        defaultSortOrder: "descend",
+        // defaultSortOrder: "descend",
         sorter: true,
         //(a, b) => a.stationCapacity - b.stationCapacity,
         render: (value, columns, index) => {
@@ -108,28 +109,28 @@ class PvStationList extends React.Component {
       {
         title: "日曝辐值(W/m²)",
         dataIndex: "windSpeed",
-        defaultSortOrder: "descend",
+        // defaultSortOrder: "descend",
         sorter: true,
         //(a, b) => a.windSpeed - b.windSpeed
       },
       {
         title: "日发电量(万kWh)",
         dataIndex: "dayOutput",
-        defaultSortOrder: "descend",
+        // defaultSortOrder: "descend",
         sorter: true,
         //(a, b) => a.dayOutput - b.dayOutput
       },
       {
         title: "月累计发电量(万kWh)",
         dataIndex: "monthOutput",
-        defaultSortOrder: "descend",
+        // defaultSortOrder: "descend",
         sorter: true,
         //(a, b) => a.monthOutput - b.monthOutput
       },
       {
         title: "年累计发电量(万kWh)",
         dataIndex: "yearOutput",
-        defaultSortOrder: "descend",
+        // defaultSortOrder: "descend",
         sorter: true,
         //(a, b) => a.yearOutput - b.yearOutput,
         render: (value, record, index) => {
@@ -156,7 +157,7 @@ class PvStationList extends React.Component {
       {
         title: "计划发电量(万kWh)",
         dataIndex: "planOutput",
-        defaultSortOrder: "descend",
+        // defaultSortOrder: "descend",
         sorter: true,
         //(a, b) => a.planOutput - b.planOutput,
         render: (value, columns, index) => {
@@ -172,21 +173,21 @@ class PvStationList extends React.Component {
       {
         title: "装机(台)",
         dataIndex: "equipmentNum",
-        defaultSortOrder: "descend",
+        // defaultSortOrder: "descend",
         sorter: true,
         //(a, b) => a.equipmentNum - b.equipmentNum
       },
       {
         title: "告警(个)",
         dataIndex: "alarmNum",
-        defaultSortOrder: "descend",
+        // defaultSortOrder: "descend",
         sorter: true,
         //(a, b) => a.alarmNum - b.alarmNum
       },
       {
         title: "状态",
         dataIndex: "currentStation",
-        defaultSortOrder: "descend",
+        // defaultSortOrder: "descend",
         sorter: true,
         //(a, b) => a.currentStation - b.currentStation,
         render: (value, record, index) => {

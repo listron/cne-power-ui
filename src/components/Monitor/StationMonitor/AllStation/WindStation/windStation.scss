@@ -321,10 +321,13 @@
       }
     }
     .pagination{
+      a{
+        text-decoration: none;
+      }
       height: 45px;
       display: flex;
       justify-content: flex-end;
-     line-height: 45px;
+      line-height: 45px;
 
     }
     .stationName{
