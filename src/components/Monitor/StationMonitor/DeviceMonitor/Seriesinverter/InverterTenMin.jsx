@@ -14,12 +14,13 @@ function InverterTenMin({ deviceTenMin, loading }) {
     // }
     let powerLineData = [], radiationLineData = [], xTime = [];
     deviceTenMin.length > 0 && deviceTenMin.forEach(e=>{
+      //console.log(e.utc);
       //xTime.push(moment(e.utc).format('YYYY-MM-DD hh:mm:ss'));
-      //moment(moment.utc(ticketInfo.operateTime).toDate()).local().format('YYYY-MM-DD HH:mm')
       xTime.push(moment(moment.utc(e.utc).toDate()).local().format('YYYY-MM-DD HH:mm'));
       powerLineData.push(e.stationPower);
       radiationLineData.push(e.instantaneous);
     });
+    
     //console.log(xTime);
 
     const option = {

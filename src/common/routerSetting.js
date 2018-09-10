@@ -129,19 +129,19 @@ const routers = [
   },{ // 系统管理-电站管理-电站
     path: '/system/station/stationManage',
     exact: true,
-    component: Building, // Building  StationManage
+    component: StationManage, // Building  StationManage
   },{ // 系统管理-电站管理-设备
     path: '/system/station/deviceManage',
     exact: true,
-    component: Building // Building  DeviceManage
+    component: DeviceManage // Building  DeviceManage
   },{ // 系统管理-电站管理-测点
     path: '/system/station/pointManage',
     exact: true,
-    component: Building  // Building  PointManage
+    component: PointManage  // Building  PointManage
   },{ // 系统管理-电站管理-测点
     path: '/system/station/alarmManage',
     exact: true,
-    component: Building // Building  AlarmManage
+    component: AlarmManage // Building  AlarmManage
   },{ // 系统管理-计划配置
     path: '/system/config',
     exact: true,

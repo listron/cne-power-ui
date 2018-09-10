@@ -69,9 +69,10 @@ class StationManageTable extends Component {
     return !!validFile
   }
 
-  toStationDetail = (record) => { // 查看详情
+  toStationDetail = (record,selectedStationIndex) => { // 查看详情
     this.props.getStationDetail({
       stationCode: record.stationCode,
+      selectedStationIndex,
     })
   }
 
@@ -126,9 +127,9 @@ class StationManageTable extends Component {
         dataIndex: 'stationName',
         key: 'stationName',
         sorter: true,
-        render: (text,record) => {
+        render: (text,record,index) => {
           return (
-            <span className={styles.stationName} onClick={()=>this.toStationDetail(record)}>{record.stationName}</span>
+            <span className={styles.stationName} onClick={()=>this.toStationDetail(record,index)}>{record.stationName}</span>
           )
         }
       },
