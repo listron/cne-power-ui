@@ -5,6 +5,7 @@ import styles from './stationSide.scss';
 /*
   格式： infoArray: [{name: '', value: '', unit: ''}].
   handler: 点击按钮触发的事件.
+  name必填，value/unit可不填
 */
 
 function DetailInfoPart({ title, infoArray,  handler }){
@@ -25,7 +26,7 @@ function DetailInfoPart({ title, infoArray,  handler }){
           return (<span key={e.name}>
             <span>{e.name}</span>
             <span>{value}</span>
-            <span>{e.unit}</span>
+            <span>{e.unit || ''}</span>
           </span>)
         })}
       </div>
