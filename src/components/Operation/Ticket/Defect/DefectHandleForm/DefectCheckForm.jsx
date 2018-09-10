@@ -1,10 +1,11 @@
 import React,{ Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './defectHandleForm.scss';
-import {Form, Button} from 'antd';
+import { Form, Button, Radio } from 'antd';
 import InputLimit from '../../../../Common/InputLimit';
-import CheckFormButtons from './CheckFormButtons';
 const FormItem = Form.Item;
+const RadioButton = Radio.Button;
+const RadioGroup = Radio.Group;
 
 class DefectCheckForm extends Component {
   static propTypes = {
@@ -32,26 +33,20 @@ class DefectCheckForm extends Component {
   render() {   
     const { getFieldDecorator, getFieldValue } = this.props.form;
     const dealResult = getFieldValue('checkResult');
-    const formItemLayout = {
-      labelCol: { span: 4 },
-      wrapperCol: { span: 32 },
-    }
     return (
-      <Form onSubmit={this.onSubmit} className={styles.handleForm}>
-        <FormItem label="验收结果" {...formItemLayout}>
-        {getFieldDecorator('checkResult', {
-            rules: [{ 
-              required: true 
-            }],
-            initialValue: '0'
+      <Form onSubmit={this.onSubmit} className={styles.dealForm}>
+        <FormItem label="验收结果" colon={false}>
+          {getFieldDecorator('checkResult', {
+            rules: [{ required: true, message: '选择验收结果' }],
+            initialValue: '0',
           })(
-            <CheckFormButtons />
+            <RadioGroup>
+              <RadioButton value="0">合格</RadioButton>
+              <RadioButton value="1">不合格</RadioButton>
+            </RadioGroup>
           )}
         </FormItem>
-        <FormItem
-          {...formItemLayout}
-          className={styles.dealProposal} 
-          label="处理建议">
+        <FormItem label="处理建议" colon={false}>
           {getFieldDecorator('checkInfo', {
             rules: [{ 
               required: dealResult === '1',
@@ -61,10 +56,10 @@ class DefectCheckForm extends Component {
             <InputLimit placeholder="请描述，不超过80个汉字" />
           )}
         </FormItem>
-        <FormItem className={styles.actionBar}>
-          <Button onClick={this.props.onCancel}>取消</Button>
+        <div className={styles.actionBar}>
+          <Button className={styles.cancelBtn} onClick={this.props.onCancel}>重置</Button>
           <Button type="primary" htmlType="submit">提交</Button>
-        </FormItem>
+        </div>
       </Form>
     );
   }  

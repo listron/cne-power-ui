@@ -54,7 +54,7 @@ class RegisterForm extends Component {
               this.props.form.setFields({
                 enterpriseDomain: {
                   value: values.enterpriseDomain,
-                  errors: [new Error('企业域名已存在！')],
+                  errors: [new Error('企业域名已注册！')],
                 },
               });
             }
@@ -62,7 +62,7 @@ class RegisterForm extends Component {
               this.props.form.setFields({
                 enterpriseName: {
                   value: values.enterpriseName,
-                  errors: [new Error('当前企业名已注册，不能重复注册')],
+                  errors: [new Error('当前企业名已注册，不能重复注册！')],
                 },
               });
             }
@@ -125,7 +125,7 @@ class RegisterForm extends Component {
             this.props.form.setFields({
               phoneNum: {
                 value: values.phoneNum,
-                errors: [new Error('此手机号已加入企业，请更换手机号')],
+                errors: [new Error('此手机号已注册过企业，请更换手机号！')],
               },
             });
           }

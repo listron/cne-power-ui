@@ -1,5 +1,5 @@
 @import '../../../../../theme/theme.scss';
-.defectList {
+.defectTable {
   display: flex;
   flex-direction: column;
   flex: 1;
@@ -141,12 +141,5 @@
     .ant-select-dropdown-menu-item-disabled{
       color:$promptColor;
     }
-  }
-}
-:global {
-  .defectTooltip {
-    width: 210px;
-    max-width: 210px;
-    font-size: 12px;
   }
 }

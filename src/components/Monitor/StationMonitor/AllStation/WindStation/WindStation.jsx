@@ -114,7 +114,8 @@ class WindStation extends React.Component {
         alarmNum: item.alarmNum,
         stationPower: item.stationPower,
         stationCapacity: item.stationCapacity,
-        instantaneous: item.instantaneous
+        instantaneous: item.instantaneous,
+        stationCode: item.stationCode,
       })
     })
     return data

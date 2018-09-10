@@ -51,6 +51,7 @@ class UploadedImg extends Component {
     return (
       <div className={styles.uploadedImg}>
         <img 
+          width={100}
           src={ thumbUrl } 
           alt={name} 
           style={imgStyleContr} 

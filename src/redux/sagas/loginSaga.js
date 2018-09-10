@@ -89,7 +89,7 @@ function *userNameLogin(action){
         data.rightMenu && localStorage.setItem('rightMenu', data.rightMenu); // 权限信息存储
         data.right && localStorage.setItem('rightHandler', data.right); // 权限信息存储
         
-        if(data.auto === '1'){//导入用户/生成用户 需完善密码
+        if(data.auto === '1'){//导入用户/生成用户 需走完善密码步骤
           yield put({ 
             type: loginAction.CHANGE_LOGIN_STORE_SAGA, 
             params: {
@@ -102,7 +102,7 @@ function *userNameLogin(action){
             type: commonAction.CHANGE_COMMON_STORE_SAGA,
             payload: { ...defaultTopMenu },
           })
-        }else if(data.auto === '0'){//正常用户
+        }else if(data.auto === '0'){//正常用户，直接登录
           yield put({ type: loginAction.USER_NAME_LOGIN_SUCCESS, data});
           yield put({
             type: commonAction.CHANGE_COMMON_STORE_SAGA,
@@ -118,7 +118,7 @@ function *userNameLogin(action){
       }
     } else{
       yield put({ type: loginAction.USER_NAME_LOGIN_FAIL, data: response.data }); 
-      message.error(response.data.message);    
+      // message.error(response.data.message);    
     }
   } catch (e) {
     console.log(e);
@@ -178,7 +178,7 @@ function *phoneCodeLogin(action){
           data.right && localStorage.setItem('rightHandler', data.right); // 权限信息存储
         }
         
-        if(data.auto==='1'){//auto为1重置密码
+        if(data.auto==='1'){//auto为1导入用户/生成用户 需走完善密码步骤
           message.error('请完善密码！');
           yield put({ 
             type: loginAction.CHANGE_LOGIN_STORE_SAGA, 
@@ -205,6 +205,7 @@ function *phoneCodeLogin(action){
         // message.error(data.userEnterpriseStatus);
       }
     }else{
+      message.error(response.data.message);
       yield put({ type: loginAction.PHONE_CODE_LOGIN_FAIL, data: response.data });
       yield put({
         type: loginAction.CHANGE_LOGIN_STORE_SAGA,

@@ -113,9 +113,9 @@ class InverterList extends Component {
     const { deviceTypeCode, } = this.props;
     const columns = [
       {
-        title: '设备编号',
-        dataIndex: 'deviceCode',
-        key: 'deviceCode',
+        title: '设备名称',
+        dataIndex: 'deviceName',
+        key: 'deviceName',
         render: (text, record, index) => (
           <div className={record.deviceStatus === 900 ? styles.deviceCode : ""} >
             <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${record.deviceCode}`} target="_blank"  >{text}</Link>
@@ -123,8 +123,8 @@ class InverterList extends Component {
         )
       }, {
         title: '所属设备',
-        dataIndex: 'deviceName',
-        key: 'deviceName',
+        dataIndex: 'parentDeviceName',
+        key: 'parentDeviceName',
         render: (text,record,index) => (<span>{text}</span>),
         sorter: (a, b) => a.deviceName.length - b.deviceName.length,
       }, {
@@ -182,7 +182,15 @@ class InverterList extends Component {
     ];
     return columns;
   }
-  
+  compareName = (a,b) => {
+    return a['deviceName'].localeCompare(b['deviceName']);
+  }
+  compareParentName = (a,b) => {
+    if(a[0]&& b[0]){
+      return a[0]['parentDeviceName'].length-b[0]['parentDeviceName'].length;
+    }
+    
+  }
   render(){
     const { inverterList, loading, deviceTypeCode, } = this.props;
     const {tmpDeviceList, } = this.state;
@@ -225,15 +233,15 @@ class InverterList extends Component {
     
     const baseLinkPath = "/hidden/monitorDevice";
     const { stationCode } = this.props.match.params;
-
+    
     return (
       <div className={styles.inverterList} >
         <Tabs defaultActiveKey="1" className={styles.inverterTab} tabBarExtraContent={operations}>
           <TabPane tab={<span><i className="iconfont icon-grid" ></i></span>} key="1" className={styles.inverterBlockBox} >
-            {(tmpParentDeviceCodes&&tmpParentDeviceCodes.length>0) ? tmpParentDeviceCodes.map((e,index)=>{
+            {(tmpParentDeviceCodes&&tmpParentDeviceCodes.length>0) ? tmpParentDeviceCodes.sort(this.compareParentName).map((e,index)=>{
               return (<div key={index}>
-                <div className={styles.parentDeviceName} >{e && e.parentDeviceName}</div>
-                {e && e.map((item,i)=>{
+                <div className={styles.parentDeviceName} >{e && e[0] && e[0].parentDeviceName}</div>
+                {e && e.sort(this.compareName).map((item,i)=>{
                   return (<div key={i} className={item.deviceStatus === 900 ? styles.cutOverItem : styles.inverterItem} >
                     <div className={styles.inverterItemIcon} >
                       <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${item.deviceCode}`} target="_blank" >
@@ -246,8 +254,8 @@ class InverterList extends Component {
                         <div>{item.deviceName}</div>
                         <Progress className={styles.powerProgress} strokeWidth={4} percent={item.devicePower/item.deviceCapacity*100} showInfo={false} />
                         <div className={styles.inverterItemPower}>
-                          <div>{item.devicePower ? parseFloat(item.devicePower).toFixed(2) : '--'}KW</div>
-                          <div>{item.deviceCapacity ? parseFloat(item.deviceCapacity).toFixed(2) : '--'}KW</div>
+                          <div>{item.devicePower ? parseFloat(item.devicePower).toFixed(2) : '--'}kW</div>
+                          <div>{item.deviceCapacity ? parseFloat(item.deviceCapacity).toFixed(2) : '--'}kW</div>
                         </div>
                       </div>
                     </Link>
@@ -261,7 +269,7 @@ class InverterList extends Component {
               {/* <CommonPagination total={inverterListNum} onPaginationChange={this.onPaginationChange} /> */}
               <Table 
                 loading={loading}
-                dataSource={tmpDeviceList || initDeviceList} 
+                dataSource={endDeviceList && endDeviceList.sort(this.compareName)} 
                 columns={this.tableColumn()} 
                 onChange={this.tableChange}
                 pagination={pagination}

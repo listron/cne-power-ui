@@ -61,7 +61,7 @@ export function getHandleStatus(status) {
       result = '合格';
       break;
     case '7':
-      result = '已关闭';
+      result = '关闭';
       break;
   }
   return result;
@@ -90,6 +90,28 @@ export function getDefectSortField(feild) {
       break;
     case 'defectStatus':
       result = '7';
+      break;
+  }
+  return result;
+}
+
+export function getInspectSortField(feild) {
+  var result = '';
+  switch (feild){
+    case "inspectName":
+      result = '0';
+      break;
+    case "stationName":
+      result = '1';
+      break;
+    case "startTime":
+      result = '2';
+      break;
+    case "checkTime":
+      result = '3';
+      break;
+    case "inspectStatus":
+      result = '4';
       break;
   }
   return result;

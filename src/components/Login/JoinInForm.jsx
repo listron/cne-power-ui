@@ -143,7 +143,7 @@ class JoinInForm extends Component{
             this.props.form.setFields({
               phoneNum: {
                 value: values.phoneNum,
-                errors: [new Error('此手机号已经加入企业，不可加入企业')],
+                errors: [new Error('此手机号已注册企业，不可加入企业！')],
               },
             });
           }

@@ -40,7 +40,12 @@ class PvmoduleList extends Component {
       this.getData(stationCode);
     }, 10000);
   }
-
+  compareName = (a,b) => {
+    if(a['deviceName'] && b['deviceName']){
+      return a['deviceName'].localeCompare(b['deviceName']);
+    }
+    
+  }
   render(){
     const { pvmoduleList } = this.props;
     const pvmoduleListSet = new Set(pvmoduleList);
@@ -52,7 +57,7 @@ class PvmoduleList extends Component {
     return (
       <div className={styles.pvmodule}>
         <div className={styles.pvmoduleList} >
-          {tmpPvmoduleList && tmpPvmoduleList.map((item,index)=>{
+          {(tmpPvmoduleList&&tmpPvmoduleList.length>0) ? tmpPvmoduleList.sort(this.compareName).map((item,index)=>{
             return (<div key={index} className={styles.pvmoduleItem} >
               <div><i className="iconfont icon-nb" ></i>{item.deviceName}</div>
               {item.electricityList && tmpNBList.map((e,i)=>{
@@ -76,7 +81,7 @@ class PvmoduleList extends Component {
                 }
               })}
             </div>);
-          })}
+          }) : <div className={styles.nodata} ><img src="/img/nodata.png" /></div>}
         </div>
       </div>
     )

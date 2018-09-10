@@ -25,7 +25,7 @@ class DeviceList extends Component {
 
   render(){
     const { deviceTypeCode } = this.props;
-  
+   
     return (
       <div >
         {deviceTypeCode===509 && <PvmoduleList {...this.props} />}
