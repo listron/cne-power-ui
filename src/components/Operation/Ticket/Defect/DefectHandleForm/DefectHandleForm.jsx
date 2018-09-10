@@ -1,7 +1,6 @@
 import React,{ Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './defectHandleForm.scss';
-import {Tag} from 'antd';
 import DefectReviewForm from './DefectReviewForm';
 import DefectProcessForm from './DefectProcessForm';
 import DefectCheckForm from './DefectCheckForm';
@@ -12,9 +11,6 @@ class DefectHandleForm extends Component {
     onCancel: PropTypes.func,
     status: PropTypes.string,
     commonList: PropTypes.object,
-  }
-
-  static defaultProps = {
   }
 
   constructor(props) {
@@ -62,7 +58,9 @@ class DefectHandleForm extends Component {
     return (
       <div className={styles.handleForm}>
         <div className={styles.title}>
-          <Tag>{titleName}</Tag>
+        <div className={styles.border}></div>
+          <div className={styles.text}>{titleName}</div>
+          <div className={styles.border}></div>
         </div>
         {(status === '1' && reviewDefectRight) ? this.renderReviewForm() : null}
         {status === '2' ? this.renderProcessForm() : null}

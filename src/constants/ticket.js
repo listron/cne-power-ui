@@ -61,7 +61,7 @@ export function getHandleStatus(status) {
       result = '合格';
       break;
     case '7':
-      result = '已关闭';
+      result = '关闭';
       break;
   }
   return result;

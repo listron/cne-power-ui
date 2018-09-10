@@ -31,7 +31,7 @@
       color: $themeColor;
     }
   }
-  .ant-btn-primary{
+  .ant-btn-primary, .ant-btn-primary:active, .ant-btn-primary.active, .ant-btn-primary:focus{
     background-color: $themeColor;
     color: #fff;
     border-color: $themeColor;

@@ -80,9 +80,9 @@ class InspectTable extends Component {
     this.props.changeInspectStore({selectedRowKeys});
   }
 
-  onPaginationChange = ({pageNum, pageSize}) => {
+  onPaginationChange = ({currentPage, pageSize}) => {
     this.props.onChangeFilter({
-      pageNum,
+      pageNum: currentPage,
       pageSize
     });
   }
