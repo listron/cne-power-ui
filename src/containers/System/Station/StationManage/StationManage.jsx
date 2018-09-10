@@ -6,6 +6,7 @@ import { commonAction } from '../../../../constants/actionTypes/commonAction';
 import TransitionContainer from '../../../../components/Common/TransitionContainer';
 import StationManageMain from '../../../../components/System/Station/StationManage/StationManageMain/StationManageMain';
 import StationManageSide from '../../../../components/System/Station/StationManage/StationManageSide/StationManageSide';
+import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import PropTypes from 'prop-types';
 import Cookie from 'js-cookie';
 
@@ -65,24 +66,26 @@ class StationManage extends Component {
     }
     const { showSidePage } = this.state;
     return (
-      <div className={styles.stationManage}>
-        <StationManageMain {...this.props} queryListParams={queryListParams} />
-        <TransitionContainer
-          show={showPage!=='list'}
-          onEnter={this.onToggleSide}
-          onExited={this.onToggleSide}
-          timeout={500}
-          effect="side"
-        >
-          <StationManageSide
-            {...this.props} 
-            showSidePage={showSidePage}
-            queryListParams={queryListParams}
-            onShowSideChange={this.onShowSideChange} 
-          />
-        </TransitionContainer>
+      <div className={styles.stationManageContainer}>
+        <CommonBreadcrumb  breadData={[{name: '电站管理'}]} style={{ marginLeft: '38px',backgroundColor:'#fff' }} />
+        <div className={styles.stationManage}>
+          <StationManageMain {...this.props} queryListParams={queryListParams} />
+          <TransitionContainer
+            show={showPage!=='list'}
+            onEnter={this.onToggleSide}
+            onExited={this.onToggleSide}
+            timeout={500}
+            effect="side"
+          >
+            <StationManageSide
+              {...this.props} 
+              showSidePage={showSidePage}
+              queryListParams={queryListParams}
+              onShowSideChange={this.onShowSideChange} 
+            />
+          </TransitionContainer>
+        </div>
       </div>
-
     );
   }
 }

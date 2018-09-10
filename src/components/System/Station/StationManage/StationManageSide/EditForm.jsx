@@ -43,13 +43,12 @@ class EditForm extends Component {
     ]
     const baseArraySec = [
       { name: '联系电话', value: stationDetail.stationContactNumber },
-      { name: '并网类型', value: '未知字段，暂未定义' }, // 未知
     ]
     const connectionPriceArray = [ // 并网信息及电价
       { name: '通过并网测验', value: stationDetail.gridConnectionDetection?'是':'否' }, // 实际调整
       { name: '调度机构名称', value: stationDetail.dispatchingAgency },
       { name: '调度机构性质', value: stationDetail.agencyType },
-      { name: '并网点电站名称', value: '未知字段待调整' }, 
+      { name: '并网点电站名称', value: stationDetail.gridSubstationName }, 
       { name: '首次并网时间', value: stationDetail.ongridTime }, 
       { name: '全部并网时间', value: stationDetail.fullOngridTime }, 
       { name: '并网电压等级', value: stationDetail.gridVoltageLevel },

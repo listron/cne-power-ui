@@ -23,7 +23,7 @@ export const connectionPriceFun = (detailData) => { // 根据并网类型及电�
     { name: '通过并网测验', value: detailData.gridConnectionDetection?'是':'否', }, // 实际调整
     { name: '调度机构名称', value: detailData.dispatchingAgency, },
     { name: '调度机构性质', value: detailData.agencyType, },
-    { name: '并网点电站名称', value: '字段暂未定义', }, // 未知
+    { name: '并网点电站名称', value: detailData.gridSubstationName, },
     { name: '首次并网时间', value: detailData.ongridTime, }, // 时间格式是否需要转化
     { name: '全部并网时间', value: detailData.fullOngridTime, }, // 时间格式是否需要转化
     { name: '并网电压等级', value: detailData.gridVoltageLevel, },
