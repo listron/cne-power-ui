@@ -5,8 +5,8 @@ import styles from './inspectFilter.scss';
 
 class FilteredItems extends Component {
   static propTypes = {
-    stations: PropTypes.array,
-    deviceTypes: PropTypes.array,
+    stations: PropTypes.object,
+    deviceTypes: PropTypes.object,
     stationType: PropTypes.string,
     stationCodes: PropTypes.string,
     createTimeStart: PropTypes.string,
