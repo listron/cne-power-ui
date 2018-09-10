@@ -6,6 +6,7 @@ import { commonAction } from '../../../../constants/actionTypes/commonAction';
 import TransitionContainer from '../../../../components/Common/TransitionContainer';
 import StationManageMain from '../../../../components/System/Station/StationManage/StationManageMain/StationManageMain';
 import StationManageSide from '../../../../components/System/Station/StationManage/StationManageSide/StationManageSide';
+import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import PropTypes from 'prop-types';
 import Cookie from 'js-cookie';
 
@@ -43,6 +44,7 @@ class StationManage extends Component {
   componentWillUnmount(){
     this.props.changeStationManageStore({
       showPage: 'list',
+      selectedStationIndex: null,
     });
   }
 
@@ -64,24 +66,26 @@ class StationManage extends Component {
     }
     const { showSidePage } = this.state;
     return (
-      <div className={styles.stationManage}>
-        {/* <StationManageMain {...this.props} queryListParams={queryListParams} />
-        <TransitionContainer
-          show={showPage!=='list'}
-          onEnter={this.onToggleSide}
-          onExited={this.onToggleSide}
-          timeout={500}
-          effect="side"
-        > */}
-          <StationManageSide 
-            {...this.props} 
-            showSidePage={showSidePage}
-            queryListParams={queryListParams}
-            onShowSideChange={this.onShowSideChange} 
-          />
-        {/* </TransitionContainer> */}
+      <div className={styles.stationManageContainer}>
+        <CommonBreadcrumb  breadData={[{name: '电站管理'}]} style={{ marginLeft: '38px',backgroundColor:'#fff' }} />
+        <div className={styles.stationManage}>
+          <StationManageMain {...this.props} queryListParams={queryListParams} />
+          <TransitionContainer
+            show={showPage!=='list'}
+            onEnter={this.onToggleSide}
+            onExited={this.onToggleSide}
+            timeout={500}
+            effect="side"
+          >
+            <StationManageSide
+              {...this.props} 
+              showSidePage={showSidePage}
+              queryListParams={queryListParams}
+              onShowSideChange={this.onShowSideChange} 
+            />
+          </TransitionContainer>
+        </div>
       </div>
-
     );
   }
 }
@@ -95,6 +99,7 @@ const mapDispatchToProps = (dispatch) => ({
   changeStationManageStore: payload => dispatch({type:stationManageAction.CHANGE_STATION_MANAGE_STORE_SAGA, payload}),
   getStationList: payload => dispatch({type: stationManageAction.GET_STATION_MANAGE_LIST, payload}),
   getStationDetail: payload => dispatch({type: stationManageAction.GET_STATION_MANAGE_DETAIL, payload}),
+  getOtherPageStationDetail: payload => dispatch({type: stationManageAction.GET_OTHER_PAGE_STATION_MANAGE_DETAIL, payload}),
   saveStationDetail: payload => dispatch({type: stationManageAction.EDIT_STATION_MANAGE_DETAIL, payload}),
   deleteStation: payload => dispatch({type: stationManageAction.DELET_STATION_MANAGE, payload}),
   setStationDepartment: payload => dispatch({type: stationManageAction.SET_STATION_MANAGE_DEPARTMENT, payload}),

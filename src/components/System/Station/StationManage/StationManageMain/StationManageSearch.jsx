@@ -70,13 +70,16 @@ class StationManageSearch extends Component {
     const { regionName, stationName, stationType} = this.props;
     const showResetButton = regionName || stationName;
     return (
-      <div>
-        <Radio.Group value={stationType} onChange={this.onStationTypeSelect}>
-          <Radio.Button value={2}>全部</Radio.Button>
-          <Radio.Button value={0}>风电</Radio.Button>
-          <Radio.Button value={1}>光伏</Radio.Button>
-        </Radio.Group>
-        <div>
+      <div className={styles.stationSearch}>
+        <div className={styles.typeSearch}>
+          <span className={styles.title}>电站类型</span>
+          <Radio.Group value={stationType} onChange={this.onStationTypeSelect}>
+            <Radio.Button value={2} className={styles.eachButton}>全部</Radio.Button>
+            <Radio.Button value={0} className={styles.eachButton}>风电</Radio.Button>
+            <Radio.Button value={1} className={styles.eachButton}>光伏</Radio.Button>
+          </Radio.Group>
+        </div>
+        <div className={styles.inputSearch}>
           <span>区域</span>
           <Input placeholder="请输入..." onChange={this.onRegionChange} />
           <span>电站名称</span>
