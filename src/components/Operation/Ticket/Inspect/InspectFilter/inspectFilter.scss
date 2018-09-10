@@ -22,6 +22,10 @@
       margin-right: 16px;
       color: $lightColor;
     }
+    >span {
+      display: inline-block;
+      margin-right: 16px;
+    }
   }
   .filterBox{
     display: flex;

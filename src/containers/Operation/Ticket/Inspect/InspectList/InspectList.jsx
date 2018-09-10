@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import styles from './insepectList.scss';
+import styles from './inspectList.scss';
 import InspectTable from '../../../../../components/Operation/Ticket/Inspect/InspectTable/InspectTable';
 import { ticketAction } from '../../../../../constants/actionTypes/operation/ticketAction';
 import InspectFilter from '../../../../../components/Operation/Ticket/Inspect/InspectFilter/InspectFilter';
@@ -83,7 +83,7 @@ class InspectList extends Component {
 
   render() {
     return (
-      <div className={styles.defectList}>
+      <div className={styles.inspectList}>
         <InspectFilter {...this.props} />
         <InspectTable 
           {...this.props} 
