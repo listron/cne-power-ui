@@ -41,33 +41,28 @@ class DefectReviewForm extends Component {
   render() {   
     const { getFieldDecorator } = this.props.form;
     const dealResult = this.state.dealResult;
-    const formItemLayout = {
-      labelCol: { span: 4 },
-      wrapperCol: { span: 32 },
-    }
     return (
-      <Form onSubmit={this.onSubmit} className={styles.handleForm}>
-        <div>
-          <span>审   核</span>
-          <Button 
-            type={this.state.dealResult==='send'?'primary':null}
-            onClick={()=>{this.setState({dealResult:'send'})}}
-          >下发</Button>
-          <Button 
-            type={this.state.dealResult==='close'?'primary':null}
-            onClick={()=>{this.setState({dealResult:'close'})}}
-          >关闭</Button>
-          <Button 
-            type={this.state.dealResult==='reject'?'primary':null}
-            onClick={()=>{this.setState({dealResult:'reject'})}}
-          >驳回</Button>
+      <Form onSubmit={this.onSubmit} className={styles.dealForm}>
+        <div className={styles.dealResult}>
+          <div className={styles.reviewTitle}><span>审</span><span>核</span></div>
+          <div className={styles.reviewType}>
+            <Button 
+              type={this.state.dealResult==='send'?'primary':null}
+              onClick={()=>{this.setState({dealResult:'send'})}}
+            >下发</Button>
+            <Button 
+              type={this.state.dealResult==='close'?'primary':null}
+              onClick={()=>{this.setState({dealResult:'close'})}}
+            >关闭</Button>
+            <Button 
+              type={this.state.dealResult==='reject'?'primary':null}
+              onClick={()=>{this.setState({dealResult:'reject'})}}
+            >驳回</Button>
+          </div>
         </div>
 
         {dealResult !== 'reject' && (
-          <FormItem
-            {...formItemLayout}
-            className={styles.dealProposal} 
-            label="处理建议">
+          <FormItem colon={false} label="处理建议">
             {getFieldDecorator('defectProposal')(
               <InputLimit placeholder="请描述，不超过80个汉字" />
             )}
@@ -75,8 +70,7 @@ class DefectReviewForm extends Component {
         )}
         {dealResult === "reject" && (
           <FormItem
-            {...formItemLayout}
-            className={styles.dealProposal} 
+            colon={false}
             label="驳回原因">
             {getFieldDecorator('rejectReason', {
                 rules: [{ 
@@ -89,7 +83,7 @@ class DefectReviewForm extends Component {
           </FormItem>
         )}
         {dealResult === 'send' && (
-          <FormItem label="截止时间" {...formItemLayout}>
+          <FormItem label="截止时间" colon={false}>
             {getFieldDecorator('deadLine')(
               <DatePicker 
                 placeholder="默认当前时间"
@@ -100,10 +94,10 @@ class DefectReviewForm extends Component {
             )}
           </FormItem>
         )}
-        <FormItem className={styles.actionBar}>
-          <Button onClick={this.props.onCancel}>取消</Button>
+        <div className={styles.actionBar}>
+          <Button className={styles.cancelBtn} onClick={this.props.onCancel}>重置</Button>
           <Button type="primary" htmlType="submit">提交</Button>
-        </FormItem>
+        </div>
       </Form>
     );
   }  
