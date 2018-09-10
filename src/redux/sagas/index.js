@@ -1,31 +1,11 @@
 import { all } from 'redux-saga/effects';
-import {
-  watchCommonStoreChange,
-  watchGetStations,
-  watchGetStationDeviceTypes,
-  watchGetDeviceTypes,
-  watchGetDevices,
-  watchGetPartition,
-} from './commonSaga';
+import { watchCommon } from './commonSaga';
 
 import { watchLogin } from './loginSaga';
 
 import { watchDefect } from './operation/ticket/defectSaga'
 
-import {
-  watchGetInspectList,
-  watchGetInspectDetail,
-  watchSetInspectId,
-  watchAddInspectAbnormal,
-  watchClearInspect,
-  watchTransformDefect,
-  watchSetInspectCheck,
-  watchFinishInspect,
-  watchCreateInspect,
-  watchDeleteAbnormal,
-  watchGetInspectStandard,
-  watchInspectCheckBatch,
-} from './operation/ticket/inspectSaga';
+import { watchInspect } from './operation/ticket/inspectSaga';
 
 import { watchChangeShowContainer } from './operation/ticket/ticketSaga';
  
@@ -51,12 +31,7 @@ import { watchOtherSaga } from './otherSaga';
 export default function* rootSaga() {
   yield all([
     //common
-    watchCommonStoreChange(),
-    watchGetStations(),
-    watchGetStationDeviceTypes(),
-    watchGetDeviceTypes(),
-    watchGetDevices(),
-    watchGetPartition(),
+    watchCommon(),
     //登陆注册
     watchLogin(),
     //ticket
@@ -64,18 +39,7 @@ export default function* rootSaga() {
     //Defect
     watchDefect(),
     // 巡检
-    watchGetInspectList(),
-    watchSetInspectId(),
-    watchGetInspectDetail(),
-    watchAddInspectAbnormal(),
-    watchClearInspect(),
-    watchTransformDefect(),
-    watchSetInspectCheck(),
-    watchFinishInspect(),
-    watchCreateInspect(),
-    watchDeleteAbnormal(),
-    watchGetInspectStandard(),
-    watchInspectCheckBatch(),
+    watchInspect(),
     //ticket
 
     //system-enterprise

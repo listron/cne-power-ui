@@ -199,23 +199,13 @@ function *getAllDepartment(action){//获取所有部门基础信息
   }
 */
 
-export function* watchCommonStoreChange() {
+export function* watchCommon() {
   yield takeLatest(commonAction.CHANGE_COMMON_STORE_SAGA, changeCommonStore);
   // yield takeLatest(commonAction.REFRESHTOKEN_SAGE, refreshToken);
-}
-export function* watchGetStations() {
   yield takeLatest(commonAction.GET_STATIONS_SAGA, getStations);
   yield takeLatest(commonAction.GET_ALL_DEPARTMENT_DATA, getAllDepartment);
-}
-export function* watchGetDeviceTypes() {
   yield takeLatest(commonAction.GET_DEVICETYPES_SAGA, getDeviceTypes);
-}
-export function* watchGetStationDeviceTypes() {
   yield takeLatest(commonAction.GET_STATION_DEVICETYPES_SAGA, getStationDeviceTypes);
-}
-export function* watchGetDevices() {
   yield takeLatest(commonAction.GET_DEVICES_SAGA, getDevices);
-}
-export function* watchGetPartition() {
   yield takeLatest(commonAction.GET_PARTITIONS_SAGA, getPartition);
 }

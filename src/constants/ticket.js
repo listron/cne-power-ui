@@ -94,3 +94,25 @@ export function getDefectSortField(feild) {
   }
   return result;
 }
+
+export function getInspectSortField(feild) {
+  var result = '';
+  switch (feild){
+    case "inspectName":
+      result = '0';
+      break;
+    case "stationName":
+      result = '1';
+      break;
+    case "startTime":
+      result = '2';
+      break;
+    case "checkTime":
+      result = '3';
+      break;
+    case "inspectStatus":
+      result = '4';
+      break;
+  }
+  return result;
+}

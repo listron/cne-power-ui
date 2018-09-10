@@ -1,20 +1,17 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Table, Icon, Modal, Select, Tooltip } from 'antd';
-import {getLevel, getStatus, getDefectSortField} from '../../../../../constants/ticket';
+import { getLevel, getStatus, getDefectSortField } from '../../../../../constants/ticket';
 import CommonPagination from '../../../../Common/CommonPagination';
 import styles from './defectTable.scss';
-import Immutable from 'immutable';
 
 const confirm = Modal.confirm;
 const Option = Select.Option;
 
 class DefectTable extends Component {
   static propTypes = {
-    onShowDetail: PropTypes.func,
     onChangeFilter: PropTypes.func,
     onChangeShowContainer: PropTypes.func,
-    onAdd: PropTypes.func,
     onBatchDelete: PropTypes.func,
     onBatchSend: PropTypes.func,
     onBatchReject: PropTypes.func,
@@ -31,10 +28,10 @@ class DefectTable extends Component {
     changeDefectStore: PropTypes.func,
   }
 
-  static defaultProps = {
-    defectList: Immutable.fromJS([]),
-    pageNum: 1
-  }
+  // static defaultProps = {
+  //   defectList: Immutable.fromJS([]),
+  //   pageNum: 1
+  // }
 
   constructor(props) {
     super(props);
@@ -136,8 +133,8 @@ class DefectTable extends Component {
 
   onChangeTable = (pagination, filters, sorter) => {
     if(Object.keys(sorter).length !== 0) {
-      let field = getDefectSortField(sorter.field);
-      let order = sorter.order === 'ascend' ? '0' : '1';
+      const field = getDefectSortField(sorter.field);
+      const order = sorter.order === 'ascend' ? '0' : '1';
       this.props.onChangeFilter({
         sort: field+',' + order
       });
@@ -296,7 +293,7 @@ class DefectTable extends Component {
     };
   
     return (
-      <div className={styles.defectList}>
+      <div className={styles.defectTable}>
         <div className={styles.action}>
           <div className={styles.buttonArea}>
             <div className={styles.addDefect} onClick={this.onAdd}>
