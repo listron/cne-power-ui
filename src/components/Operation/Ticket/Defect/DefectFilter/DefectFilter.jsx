@@ -52,10 +52,10 @@ class DefectFilter extends Component {
     }
   }
 
-  onUserSelect = (selfDefect) => {
+  onUserSelect = (value) => {
     const { username } = this.props;
     this.props.onChangeFilter({
-      handleUser: selfDefect ? username : ''
+      handleUser: value ? username : ''
     });
   }
 
@@ -67,7 +67,7 @@ class DefectFilter extends Component {
   
   render() {
     const { showFilter } = this.state;
-    const { stations, stationCodes, defectStatusStatistics, handleUser, username, onChangeFilter } = this.props;
+    const { stations, defectStatusStatistics, handleUser, username } = this.props;
     const waitSubmitNum = defectStatusStatistics.get('submitNum');
     const waitReviewNum = defectStatusStatistics.get('examineNum');
     const inProcessNum = defectStatusStatistics.get('executeNum');
@@ -101,11 +101,7 @@ class DefectFilter extends Component {
         <div className={styles.filterBox}>
           {showFilter==='time' && <DateFilter {...this.props} />}
           {showFilter==='stationType' && <StationTypeFilter {...this.props} />}
-          {showFilter==='stationName' && <StationFilter 
-            stationCode={stationCodes}
-            stations={stations}
-            onChangeFilter={onChangeFilter}
-             />}
+          {showFilter==='stationName' && <StationFilter {...this.props} />}
           {showFilter==='deviceType' && <DeviceTypeFilter {...this.props} />}
           {showFilter==='defectLevel' && <DefectLevelFilter {...this.props} />}
           {showFilter==='defecType' && <DefectTypeFilter {...this.props} />}
