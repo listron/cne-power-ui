@@ -80,6 +80,12 @@ function *getNormalDeviceData(action){ // 请求单设备-除气象站数据信�
           deviceAlarmList: tmpAlarm.data.data || [],
         },
       })
+    }else{
+      console.log(tmpDevices.data.data)
+      console.log(tmpDetail.data.data)
+      console.log(tmpTenMin.data.data)
+      console.log(tmpPoint.data.data)
+      console.log(tmpAlarm.data.data)
     }
   }catch(e){
     console.log(e);
@@ -118,6 +124,9 @@ function *getWeatherStationData(action){ // 请求气象站设备信息
           deviceAlarmList: tmpAlarm.data.data || [],
         },
       })
+    }else{
+      console.log(tmpDetail.data.data);
+      console.log(tmpAlarm.data.data);
     }
   }catch(e){
     console.log(e);
