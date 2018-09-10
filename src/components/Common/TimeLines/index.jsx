@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { Timeline, Tag, Icon } from 'antd';
+import { Timeline } from 'antd';
 import PropTypes from 'prop-types';
 import styles from './style.scss';
+import moment from 'moment';
 import {getHandleStatus} from '../../../constants/ticket';
 
 /*
@@ -16,20 +17,15 @@ class TimeLines extends Component {
     processData: PropTypes.object,
   }
 
-  static defaultProps = {
-  }
-
   constructor(props) {
     super(props);
-    this.state = {}
   }
 
-  getStatus(){
-    const processStatus = this.props.status;
-    let processData = this.props.processData;
-    let size = processData.size;
-    let status = processData.getIn([size - 1, 'handleStatus']);
-    switch(processStatus){
+  getStatus() {
+    const { status, processData } = this.props;
+    const size = processData.size;
+    const handleStatus = processData.getIn([size - 1, 'handleStatus']);
+    switch(status){
       case '0':
         return (<span>提交缺陷</span>);
       case '1':
@@ -39,45 +35,86 @@ class TimeLines extends Component {
       case '3':
         return (<span>验收工单</span>);
       case '4':
-        return (<span>{status === '7' ? '已关闭' : '已完成'}</span>);
+        return (<span>{handleStatus === '7' ? '已关闭' : '已完成'}</span>);
       default:
         return;
     }
   }
 
-  getItem(item) {
-    let text = item.flowName === '执行工单' ? '处理过程' : '处理建议';
-    let icon;
-    let lastColor = item.get('operateTime') === undefined ? "#7ec5c2" : "#000";
+  renderIcon(handleStatus) {
+    switch(handleStatus){
+      case '1':
+        return <i className="iconfont icon-begin" />;
+      case '3':
+      case '4':
+      case '5':
+      case '6':
+      case '7':
+        return <i className="iconfont icon-review" />;
+      case '0':
+        return <i className="iconfont icon-doing" />;
+      default:
+        return;
+    }
+  }
+
+  renderLastIcon(status) {
+    switch(status){
+      case '0':
+      case '1':
+      case '2':
+      case '3':
+        return null;
+      case '4':
+        return <i className="iconfont icon-doned" />;
+      default:
+        return;
+    }
+  }
+
+  renderItem(item, index) {
+    let flowName;
+    if(index === 0) {
+      flowName = '发现缺陷';
+    } else {
+      flowName = item.get('flowName');
+    }
     return (
-      <div className={styles.processWrap}>
-        <div>
-          <b style={{color: lastColor }}>{item.get('flowName')}</b>
-          <span>{item.get('operateTime')}</span>
-          {item.get('operateUser')}
+      <div className={styles.processItem}>
+        <div className={styles.basic}>
+          <div className={styles.flowName}>{flowName}</div>
+          <div className={styles.operateTime}>{moment(item.get('operateTime')).format('YYYY-MM-DD HH:mm')}</div>
+          <div className={styles.operateUser}>{item.get('operateUser')}</div>
         </div>
-        { item.get("handleStatus") === undefined ? null : (<div><b>{text}</b>{getHandleStatus(item.get("handleStatus"))} | {item.get("defectProposal")}</div>) }
+        <div className={styles.advise}>
+          <div className={styles.text}>处理建议</div>
+          <div className={styles.status}>{getHandleStatus(item.get("handleStatus"))}</div>
+          <div className={styles.defectProposal}>{item.get("defectProposal")}</div>
+        </div>
       </div>
     );
   }
 
   render() {
-    const processData = this.props.processData;
+    const { processData, status } = this.props;
     return (
       <div className={styles.timeLineWrap}>
         <div className={styles.title}>
-          <Tag>流程信息</Tag>
+          <div className={styles.border}></div>
+          <div className={styles.text}>流程信息</div>
+          <div className={styles.border}></div>
         </div>
-        <Timeline className={styles.timeLines}>
+        <Timeline className={styles.timeLines} pending={status!=='4'}>
           {processData.map((item, index)=>{
             return (
-              <Timeline.Item key={'timeline'+index}>
-                {this.getItem(item)}               
+              <Timeline.Item dot={this.renderIcon(item.get('handleStatus'))} key={'timeline'+index}>
+                {this.renderItem(item, index)}               
               </Timeline.Item>
             );
           })}
-          {processData.getIn([0,'defectProposal']) ? <Timeline.Item className={styles.processStatus}>{this.getStatus()}</Timeline.Item> : null}
-          
+          <Timeline.Item dot={this.renderLastIcon(status)} className={styles.processStatus}>
+            {this.getStatus()}
+          </Timeline.Item>
         </Timeline>
       </div> 
     )

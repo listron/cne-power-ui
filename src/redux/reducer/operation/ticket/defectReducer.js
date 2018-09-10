@@ -20,8 +20,7 @@ var initState = Immutable.fromJS({
   deviceTypeCode: '',	 // String	是	设备类型编码
   defectTypeCode: '',	 // String	是	缺陷类型编码
   sort:'',	           // String	是	排序字段，排序方式（缺陷级别：0、电站名称:1、设备名称:2、缺陷类型:3、创建时间:4、截止时间:5、完成时间:6、处理进度:7），格式：排序字段，排序方式（0：升序，1：降序）
-  selfDefect: false,   // boolean 默认所有人的(->不仅仅我参与的)缺陷
-  handleUser: '',//处理人
+  handleUser: '',      //处理人
 
   defectList:[],//渲染为table的缺陷列表
   commonList:[],//获取缺陷常用语列表
@@ -57,44 +56,16 @@ var initState = Immutable.fromJS({
 
 const defectReducer = (state = initState, action) => {
   switch (action.type) {
-    case ticketAction.CHANGE_DEFECT_STORE :
-      return state.merge(Immutable.fromJS(action.payload))
-    case ticketAction.GET_DEFECT_FETCH_SUCCESS :
-      return state.merge(Immutable.fromJS(action.payload)).set('loading',false)
     case ticketAction.TICKET_FETCH:
       return state.set('loading', true);
-    // case ticketAction.GET_DEFECT_LIST_SUCCESS:  
-    //   return state.set('loading', false)
-    //               .set('total', action.data.total)
-    //               .set('defectList', Immutable.fromJS(action.data.defectList))
-    //               .set('selectedRowKeys', Immutable.fromJS([]))
-    //               .set('defectStatusStatistics', Immutable.fromJS(action.data.defectStatusStatistics))
-    //               .set('pageNum', (action.params.pageNum + 1))
-    //               .set('pageSize', action.params.pageSize)
-    //               .set('status', action.params.status)
-    //               .set('sort', action.params.sort);
-    case ticketAction.SET_DEFECT_ID:
-      return state.set('defectId', action.data);
-    case ticketAction.SET_SELECTED_DEFECT:
-      return state.set('selectedRowKeys', Immutable.fromJS(action.data));
+    case ticketAction.CHANGE_DEFECT_STORE :
+      return state.merge(Immutable.fromJS(action.payload));
+    case ticketAction.GET_DEFECT_FETCH_SUCCESS :
+      return state.merge(Immutable.fromJS(action.payload)).set('loading',false);
+    case ticketAction.SET_DEFECT_FAIL:
+      return state.set('error', Immutable.fromJS(action.error));
     case ticketAction.CLEAR_DEFECT_STATE:
       return initState;
-    case ticketAction.GET_DEFECT_DETAIL_SUCCESS: 
-      return state.set('loading', false)
-                  .set('defectDetail', Immutable.fromJS(action.data))
-                  .set('defectId', action.params.defectId);
-    case ticketAction.GET_DEFECT_LANGUAGE_SUCCESS: 
-      return state.set('loading', false)
-                  .set('commonList', Immutable.fromJS(action.data));
-    case ticketAction.GET_DEFECTTYPES_SAGA_SUCCESS:
-      return state.set('loading', false)
-                  .set('defectTypes', Immutable.fromJS(action.params.data));
-    // case ticketAction.GET_DEFECT_LIST_FAIL:
-    // case ticketAction.GET_DEFECT_DETAIL_FAIL:
-    // case ticketAction.GET_DEFECT_LANGUAGE_FAIL:
-    // case ticketAction.GET_DEFECTTYPES_SAGA_FAIL:
-    case ticketAction.DEFECT_CREATE_FAIL:
-      return state.set('error', Immutable.fromJS(action.error));
   }
 
   return state;

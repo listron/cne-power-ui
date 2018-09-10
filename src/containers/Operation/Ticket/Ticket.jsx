@@ -81,16 +81,16 @@ class Ticket extends Component {
       );
     } else if(showContainer === 'detail') {
       if(tab === 'defect') {
-        return <DefectDetail onChangeShowContainer={this.props.onChangeShowContainer} />;
+        return <DefectDetail onChangeShowContainer={onChangeShowContainer} />;
       } else {
-        return <InspectDetail onChangeShowContainer={this.props.onChangeShowContainer} />;
+        return <InspectDetail onChangeShowContainer={onChangeShowContainer} />;
       }
       
     } else {
       if(tab === 'defect') {
-        return <DefectCreate onChangeShowContainer={this.props.onChangeShowContainer} showContainer={showContainer} />;
+        return <DefectCreate onChangeShowContainer={onChangeShowContainer} />;
       } else {
-        return <InspectCreate onChangeShowContainer={this.props.onChangeShowContainer} showContainer={showContainer} />;
+        return <InspectCreate onChangeShowContainer={onChangeShowContainer} />;
       }
     }
   }

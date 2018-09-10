@@ -149,7 +149,7 @@ class AddForm extends Component {
               ))}
             </Select>
           )}
-          <span className={styles.instructionText}>(无角色不能操作系统)</span>
+          <span className={styles.instructionText}>(没有设置角色的用户无法正常使用系统)</span>
         </FormItem>
         <FormItem label="特殊权限" >
           {getFieldDecorator('specialRoleId', {

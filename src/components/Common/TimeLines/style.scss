@@ -1,34 +1,102 @@
-.timeLineWrap{
+@import '../../../theme/theme.scss';
+.timeLineWrap {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
   .title {
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    margin-bottom: 24px;
+    align-items: flex-start;
+    .border {
+      display: flex;
+      flex: 1;
+      height: 16px;
+      border-bottom: 1px #f1f1f1 solid;
+    }
+    .text {
+      background:#f8f8f8;
+      border:1px solid #f1f1f1;
+      border-radius:4px;
+      width:95px;
+      height:30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
   }
-  .timeLines{
-    color:#9b9b9b;
+  .timeLines {
     font-size: 14px;
-    line-height: 30px;
-    background-color:#fafafa; 
-    li{
-      padding-bottom: 0;
-      :global{
-        .ant-timeline-item-head{
-          top:0.25em;
+    .processItem {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 24px;
+      .basic {
+        display: flex;
+        flex-direction: row;
+        margin-bottom: 12px;
+        .flowName {
+          color: $darkColor;
+          margin-right: 24px;
+        }
+        .operateTime {
+          color: $lightColor;
+          margin-right: 12px;
+        }
+        .operateUser {
+          color: $lightColor;
         }
       }
-      .processWrap{
-        b{
-          color: #000;
-          font-weight: normal;
-          margin-right:13px;
+      .advise {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        .text {
+          color: $darkColor;
+          margin-right: 24px;
         }
-        span{
-          margin-right: 13px;
+        .status {
+          border: 1px solid $lightColor;
+          border-radius: 4px;
+          width: 48px;
+          height: 18px;
+          line-height: 18px;
+          margin-right: 4px;
+          margin-top: 2px;
+          color: $lightColor;
+          display: flex;
+          align-items: center;
+          justify-content: center;
         }
-      }      
+        .defectProposal {
+          display: flex;
+          flex-wrap: wrap;
+          color: $lightColor;
+        }
+      }
     }
     .processStatus span{
       color:#7ec5c2;
+    }
+  }
+  :global {
+    .icon-begin, .icon-review, .icon-doing {
+      background-color:#d8d8d8;
+      width:16px;
+      height:16px;
+      border-radius:100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      color: $lightColor;
+    }
+    .icon-doned {
+      color: $themeColor;
+      font-size: 16px;
+    }
+    .ant-timeline-item-head-custom {
+      left: 8px;
     }
   }
 }

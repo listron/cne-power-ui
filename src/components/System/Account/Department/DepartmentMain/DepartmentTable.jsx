@@ -227,7 +227,7 @@ class DepartmentTable extends Component {
           const { departmentName } = record;
           if(stations.length > 1){
             const content = (<ul>
-              {stations.map(e=>(<li key={e} className={styles.eachStation}>
+              {stations.map((e,i)=>(<li key={i} className={styles.eachStation}>
                 <span className={styles.square}></span>
                 <span>{e}</span>
               </li>))}

@@ -120,7 +120,6 @@ class CardSection extends Component {
                   tmpOperatorList.map((item,index)=>{
                     return (<div key={index} className={styles.operatorContent} >
                       {item.map((e,i)=>{
-                        //console.log(e.userFullName);
                         return (
                           <div key={i} className={styles.userInfo} >
                             <Row>
@@ -155,7 +154,7 @@ class CardSection extends Component {
                   if(i<2){
                     return (<div style={{display:'inline-block',margin: '0 5px',}} key={e.date} className="weather"  id={Number(i)} >
                       <div>{i === 0 ? '今天' : (i === 1 ? '明天' : e.date )}</div>
-                      <div><i className="" ></i></div>
+                      <div className={styles.weatherIcon}><img src={`/img/weathercn/${e.day.img}.png`} /></div>
                       <div className={i===0?styles.lightGreen:''}>{e.night.templow}-{e.day.temphigh}℃</div>
                       <div className={i===0?styles.lightGreen:''}>{e.day.weather}</div>
                       <div className={i===0?styles.lightGreen:''}>{e.day.winddirect}{e.day.windpower}</div>
@@ -163,6 +162,7 @@ class CardSection extends Component {
                   }else{
                     return (<div style={{display:'none',margin: '0 5px',}} key={e.date} className="weather" id={Number(i)} >
                       <div>{i === 0 ? '今天' : (i === 1 ? '明天' : e.date )}</div>
+                      <div className={styles.weatherIcon}><img src={`/img/weathercn/${e.day.img}.png`} /></div>
                       <div className={i===0?styles.lightGreen:''}>{e.night.templow}-{e.day.temphigh}℃</div>
                       <div className={i===0?styles.lightGreen:''}>{e.day.weather}</div>
                       <div className={i===0?styles.lightGreen:''}>{e.day.winddirect}{e.day.windpower}</div>

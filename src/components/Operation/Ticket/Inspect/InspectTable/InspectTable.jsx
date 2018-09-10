@@ -1,107 +1,127 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Table, Button, Radio, Icon } from 'antd';
-import { getStatus } from '../../../../../constants/ticket';
+import { Table, Icon, Modal, Select, Tooltip } from 'antd';
+import { getStatus, getInspectSortField } from '../../../../../constants/ticket';
 import styles from './inspectTable.scss';
-import Immutable from 'immutable';
+import CommonPagination from '../../../../Common/CommonPagination';
 
-const RadioButton = Radio.Button;
-const RadioGroup = Radio.Group;
+const confirm = Modal.confirm;
+const Option = Select.Option;
 
 class InspectTable extends Component {  
   static propTypes={
-    list: PropTypes.object,
+    inspectList: PropTypes.object,
+    inspectStatusStatistics: PropTypes.object,
     pageNum: PropTypes.number,
     pageSize: PropTypes.number,
     total: PropTypes.number,
-    onChangePage: PropTypes.func,
-    onChangePageSize: PropTypes.func,
     loading: PropTypes.bool,
     status: PropTypes.string,
-    onChangeStatus: PropTypes.func,
-    inspectStatusStatistics: PropTypes.any,
-    onChangeSort: PropTypes.func,
-    onShowDetail: PropTypes.func,
-    onAdd: PropTypes.func,
-    onShowCreate: PropTypes.func,
+    selectedRowKeys: PropTypes.array,
     inspectCheckBatch: PropTypes.func,
+    onChangeFilter: PropTypes.func,
+    changeInspectStore: PropTypes.func,
+    onChangeShowContainer: PropTypes.func,
   }
 
-  static defaultProps={
-    list: Immutable.fromJS([]),
-    pageNum: 1,
-  }
+  // static defaultProps={
+  //   inspectList: Immutable.fromJS([]),
+  //   pageNum: 1,
+  // }
 
   constructor(props){
     super(props);
     this.state={
-      selectedRowKeys: [],
-      currentSelectedStatus: null,
+      currentSelectedStatus: 5,
     }
   }
 
   onAdd = () => {
-    this.props.onShowCreate();
-  }
-
-  onChangeTab = (e) => {
-    this.props.onChangeStatus(e.target.value);
+    this.props.onChangeShowContainer({container: 'create'});
   }
 
   onChangeTable = (pagination, filter, sorter) => {
     if(Object.keys(sorter).length !== 0) {
-      let sortRules = this.getSortParam(sorter);
-      this.props.onChangeSort(sortRules);
+      const field = getInspectSortField(sorter.filed);
+      const order = sorter.order === 'ascend' ? '0' : '1';
+      this.props.onChangeFilter({
+        sort: field+',' + order
+      });
     } else {
-      this.props.onChangeSort('');
+      this.props.onChangeFilter({
+        sort: ''
+      });
     }
   }
 
   onInspectCheck = () => {
-    this.props.inspectCheckBatch({inspectId: this.state.selectedRowKeys.toString()})
+    confirm({
+      title: '确认全部验收吗？',
+      onOk: () => {
+        this.props.inspectCheckBatch({
+          inspectId: this.props.selectedRowKeys.join(',')
+        });
+      },
+    });
   }
 
-  getSortParam = (sorter) => {
-    var sortField = 0;
-    var sortMode = sorter.order === "ascend" ? 0 : 1;
-    switch (sorter.field){
-      case "inspectName":
-        sortField = 0;
-        break;
-      case "stationName":
-        sortField = 1;
-        break;
-      case "startTime":
-        sortField = 2;
-        break;
-      case "checkTime":
-        sortField = 3;
-        break;
-      case "inspectStatus":
-        sortField = 4;
-        break;
-    }
-    var sortRule = sortField + "," +sortMode;
-    return sortRule;
+  onShowDetail = (inspectId) => {
+    this.props.changeInspectStore({
+      inspectId
+    });
+    this.props.onChangeShowContainer({container: 'detail'});
   }
-  render(){
-    let list = this.props.list;
-    let statistics = this.props.inspectStatusStatistics;
-    let inProcessNum = statistics.get("executeNum");
-    let waitCheckNum = statistics.get("checkNum");   
-    const pagination={
-      total: this.props.total,
-      showQuickJumper: true,
-      showSizeChanger: true,
-      current: this.props.pageNum,
-      pageSize: this.props.pageSize,
-      onShowSizeChange: (current, pageSize) => {
-        this.props.onChangePageSize(pageSize);
-      },
-      onChange: (current) => {
-        this.props.onChangePage(current);
+
+  onSelectChange = (selectedRowKeys, selectedRows) => {
+    let status = this.getSelectedRowsStatus(selectedRows);
+    this.setState({
+      currentSelectedStatus: status
+    });
+    this.props.changeInspectStore({selectedRowKeys});
+  }
+
+  onPaginationChange = ({currentPage, pageSize}) => {
+    this.props.onChangeFilter({
+      pageNum: currentPage,
+      pageSize
+    });
+  }
+
+  onHandle = (value) => {
+    if(value === 'check') {
+      this.onInspectCheck();
+    }
+  }
+
+  getSelectedRowsStatus(selectedRows) {
+    let map = {};
+    let status;
+    for(var i = 0; i < selectedRows.length; i++) {
+      if(!map[selectedRows[i].inspectStatus]) {
+        map[selectedRows[i].inspectStatus] = 1;
+      } else {
+        map[selectedRows[i].inspectStatus] += 1;
       }
-    } 
+    }
+    let values = [];
+    for(var k in map) {
+      values.push(map[k]);
+      status = k;
+    }
+    if(values.length === 1) {
+      return status;
+    } else {
+      return null;
+    }
+  }
+
+  cancelRowSelect = () => {
+    this.props.changeInspectStore({
+      selectedRowKeys: []
+    });
+  }
+
+  initColumn() {
     const columns = [{
       title: '巡检名称',
       dataIndex: 'inspectName',
@@ -135,66 +155,81 @@ class InspectTable extends Component {
         <div className={styles.inspectStatus} >
           <span>{getStatus(value)}</span>
           <div className={styles.warning} >
-            { record.isOvertime === '0' ? <span style={{ color: '#c80000' }}>超时</span> : null }
+            {record.isOvertime === '0' ? <div className={styles.overTime}>超时</div> : null}
           </div>
         </div>
       ),
     },{
       title: '查看',
       render: (text, record) => (
-        <span><Icon type="eye-o" onClick={() => {this.props.onShowDetail(record.inspectId)}} /></span>
+        <span>
+          <i className="iconfont icon-look" onClick={()=>{this.onShowDetail(record.inspectId)}} />
+        </span>
       ),
-    }]
-    const {selectedRowKeys} = this.state;
+    }];
+    return columns;
+  }
+
+  renderOperation() {
+    const { selectedRowKeys } = this.props;
+    const { currentSelectedStatus } = this.state;
+    const unselected = selectedRowKeys.length===0;
+    const rightHandler = localStorage.getItem('rightHandler');
+    const checkInspectRight = rightHandler && rightHandler.includes('workExamine_inspection_check');
+    if(!checkInspectRight) {
+      return null;
+    }
+    return (
+      <Select onChange={this.onHandle} value="操作" placeholder="操作" dropdownMatchSelectWidth={false} dropdownClassName={styles.handleDropdown}>
+        <Option value="send" disabled={unselected||currentSelectedStatus!=='3'}>
+          <i className="iconfont icon-done"></i>验收</Option>
+      </Select>
+    );
+  }
+
+
+  render(){
+    const { inspectList, selectedRowKeys, total, loading } = this.props;  
+    const columns = this.initColumn(); 
+  
     const rowSelection = {
       selectedRowKeys,
-      onChange: (selectedRowKeys, selectedRows) => {
-        var status = this.state.currentSelectedStatus;
-        if(selectedRowKeys.length > 0){
-          const newArray = [...new Set(selectedRows.map(e => e.inspectStatus))];
-          status = newArray.length < 2 ? newArray[0] : 0;
-        }else{
-          status = null;
-        }
-        this.setState({
-          selectedRowKeys: selectedRowKeys,
-          currentSelectedStatus: status,
-        });
-        
-      },
-    }
+      onChange: this.onSelectChange
+    };
 
     return(
       <div className={styles.inspectTable}>
         <div className={styles.action}>
-          <div>
-            <RadioGroup onChange={this.onChangeTab} default="2" value={this.props.status} >
-              <RadioButton value="5">全部</RadioButton>
-              <RadioButton value="2">{`执行中${inProcessNum}`}</RadioButton>
-              <RadioButton value="3">{`待验收${waitCheckNum}`}</RadioButton>
-            </RadioGroup>
+          <div className={styles.buttonArea}>
+            <div className={styles.addInspect} onClick={this.onAdd}>
+              <Icon className={styles.add} type="plus" />
+              <span className={styles.text}>巡检</span>
+            </div>
+            <div className={styles.operation}>         
+              {this.renderOperation()}
+              <Tooltip overlayStyle={{width:220,maxWidth:220,fontSize:'12px'}} placement="top" title="请选择同一状态下的列表项，进行操作">
+                <i className="iconfont icon-help" />
+              </Tooltip>
+            </div> 
           </div>
-          <div className={styles.add}>
-            <Button onClick={this.onAdd}><Icon type="plus" />新建</Button>
-            {
-              this.state.currentSelectedStatus === "3" && 
-                <div>
-                  <Button onClick={this.onInspectCheck}>确认</Button>
-                </div>
-            }
-          </div>
+          <CommonPagination total={total} onPaginationChange={this.onPaginationChange} />
         </div>
         <Table 
           rowKey={(record) => { return record.inspectId }}
-          dataSource={list.toJS()}
+          dataSource={inspectList.toJS()}
           columns= {columns}
           rowSelection={rowSelection}
           onChange={this.onChangeTable}
-          loading={this.props.loading}
-          pagination= {pagination}
+          loading={loading}
+          pagination= {false}
+          locale={{emptyText:<div className={styles.noData}><img src="/img/nodata.png" style={{width: 223,height:164}} /></div>}}
         />
+        {inspectList.size>0&&<div className={styles.tableFooter}>
+          <span className={styles.info}>当前选中<span className={styles.totalNum}>{selectedRowKeys.length}</span>项</span>
+          {selectedRowKeys.length > 0 &&<span className={styles.cancel} onClick={this.cancelRowSelect}>取消选中</span>}
+        </div>}
       </div>
-    )
+    );
   }
 }
 

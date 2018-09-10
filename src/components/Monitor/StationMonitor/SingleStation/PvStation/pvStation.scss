@@ -247,6 +247,12 @@
       .lightGreen{
         color: #78da72;
       }
+      .weatherIcon{
+        img{
+          width: 23px;
+          height: 23px;
+        }
+      }
       .weatherLeft{
         position: absolute;
         left: 20px;
@@ -262,6 +268,13 @@
         width: 33px;
         height: 23px;
         text-align: center;
+      }
+      :global{
+        .ant-btn-primary:focus {
+          color: #fff;
+          background-color: $themeColor;
+          border-color: $themeColor;
+        }
       }
     }
     .operatorList{
