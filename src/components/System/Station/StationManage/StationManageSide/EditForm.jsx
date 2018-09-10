@@ -45,9 +45,8 @@ class EditForm extends Component {
       { name: '联系电话', value: stationDetail.stationContactNumber },
       { name: '并网类型', value: '未知字段，暂未定义' }, // 未知
     ]
-
     const connectionPriceArray = [ // 并网信息及电价
-      { name: '通过并网测验', value: stationDetail.gridConnectionDetection }, 
+      { name: '通过并网测验', value: stationDetail.gridConnectionDetection?'是':'否' }, // 实际调整
       { name: '调度机构名称', value: stationDetail.dispatchingAgency },
       { name: '调度机构性质', value: stationDetail.agencyType },
       { name: '并网点电站名称', value: '未知字段待调整' }, 
@@ -57,14 +56,13 @@ class EditForm extends Component {
       { name: '发电单元个数', value: stationDetail.stationUnitCount },
     ];
     const otherArray = [ // 其他信息
-      { name: '自动有功控制能力', key: 'automaticActiveControl', unit: ''}, // 实际调整
-      { name: '监控系统厂家', key: 'monitoringSystemName', unit: ''},
-      { name: '创建人', key: '', unit: ''}, // 未知
-      { name: '自动无功控制能力', key: 'automaticAeactiveContro', unit: ''}, // 实际调整
-      { name: '监控系统个数', key: 'monitoringSystemCount', unit: ''},
-      { name: '创建时间', key: '', unit: ''}, // 未知
-      { name: '低压穿越(LVRT)', key: 'lowPressureCrossing', unit: ''},  // 未知
-      { name: '电站时区', key: 'timeZone', unit: ''}, // 格式？
+      { name: '自动有功控制能力', value: stationDetail.automaticActiveControl?'是':'否', }, // 实际调整
+      { name: '监控系统厂家', value: stationDetail.monitoringSystemName, },
+      { name: '创建人', value: '未定关键字', }, // 未知
+      { name: '自动无功控制能力', value: stationDetail.automaticAeactiveContro?'是':'否', }, // 实际调整
+      { name: '监控系统个数', value: stationDetail.monitoringSystemCount, },
+      { name: '创建时间', value: '未定关键字', }, // 未知
+      { name: '低压穿越(LVRT)', value: stationDetail.lowPressureCrossing, },  // 未知
     ];
     return (
       <Form className={styles.editPart}>
@@ -124,6 +122,13 @@ class EditForm extends Component {
           <div>其他信息</div>
           <div>
             {otherArray.map((e,i)=>(<EditInfoPart key={i} eachInfo={e} />))}
+            <FormItem label="电站时区" >
+              {getFieldDecorator('coverType',{
+                initialValue: stationDetail.timeZone
+              })(
+                <Input />
+              )}
+            </FormItem>
           </div>
         </div>
       </Form>
