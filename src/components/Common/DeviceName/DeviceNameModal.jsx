@@ -47,6 +47,7 @@ class DeviceNameModal extends Component {
       selectedDeviceAreaCode: value
     });
     this.props.loadDeviceList(value);
+    this.props.onChangeArea(value);
   }
 
   onSave = () => {
