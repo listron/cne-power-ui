@@ -89,7 +89,7 @@ function* changeUserStatus(action) {
       });
     } else if(response.data.code === '20030'){//唯一企业管理员不可删除
       yield put({ type: userAction.GET_USER_FETCH_FAIL })
-      message.error('唯一企业管理员不可更改状态');
+      message.error('唯一企业管理员不可删除！');
     }else {
       yield put({ type: userAction.GET_USER_FETCH_FAIL });
       message.error(response.data.message);

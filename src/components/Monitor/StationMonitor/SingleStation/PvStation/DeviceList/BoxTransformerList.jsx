@@ -130,7 +130,7 @@ class BoxTransformerList extends Component {
                       <div>{record.devicePower}</div>
                       <div>{record.deviceCapacity}</div>
                     </div>
-                    <Progress percent={record.devicePower / record.deviceCapacity * 100} showInfo={false} strokeWidth={6} />
+                    <Progress percent={record.devicePower / record.deviceCapacity * 100} showInfo={false} strokeWidth={3} />
                   </div>
                 </div>
               </div>
@@ -145,6 +145,7 @@ class BoxTransformerList extends Component {
         title: '装机容量(kW)',
         dataIndex: 'deviceCapacity',
         key: 'deviceCapacity',
+        width: '140px',
         render: (value, columns, index) => {
           const obj = {
             children: null,
@@ -229,12 +230,14 @@ class BoxTransformerList extends Component {
                       <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${item.deviceCode}`} target="_blank" >
                         <i className="iconfont icon-xb" ></i>
                       </Link>
+                      <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${item.deviceCode}/?showPart=alarmList`} target="_blank" >
                         {item.alarmNum && <i className="iconfont icon-alarm" ></i>}
+                      </Link>
                     </div>
                     <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${item.deviceCode}`} target="_blank" >
                       <div className={styles.inverterItemR} >
                         <div>{item.deviceName}</div>
-                        <Progress className={styles.powerProgress} strokeWidth={4} percent={item.devicePower/item.deviceCapacity*100} showInfo={false} />
+                        <Progress className={styles.powerProgress} strokeWidth={3} percent={item.devicePower/item.deviceCapacity*100} showInfo={false} />
                         <div className={styles.inverterItemPower}>
                           <div>{item.devicePower ? parseFloat(item.devicePower).toFixed(2) : '--'}kW</div>
                           <div>{item.deviceCapacity ? parseFloat(item.deviceCapacity).toFixed(2) : '--'}kW</div>
@@ -246,9 +249,10 @@ class BoxTransformerList extends Component {
               </div>);
             }) : <div className={styles.nodata} ><img src="/img/nodata.png" /></div>}
           </TabPane>
-          <TabPane tab={<span><i className="iconfont icon-table" ></i></span>} key="2">
+          <TabPane tab={<span><i className="iconfont icon-table" ></i></span>} key="2" className={styles.inverterTableBox} >
             <div>
-              {/* <CommonPagination total={inverterListNum} onPaginationChange={this.onPaginationChange} /> */}
+              
+              {(tmpParentDeviceCodes&&tmpParentDeviceCodes.length>0) ? 
               <Table 
                 loading={loading}
                 dataSource={endDeviceList && endDeviceList.sort(this.compareName)} 
@@ -256,7 +260,7 @@ class BoxTransformerList extends Component {
                 onChange={this.tableChange}
                 pagination={pagination}
                 className={styles.inverterTable}
-              />
+              /> : <div className={styles.nodata} ><img src="/img/nodata.png" /></div>}
             </div>
             
           </TabPane>
