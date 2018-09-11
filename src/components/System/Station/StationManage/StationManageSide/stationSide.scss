@@ -70,6 +70,7 @@
               content: '';
               width: 0px;
               height: 0px;
+              opacity: 0.85;
               margin-left: 4px;
               display: inline-block;
               border-left: 4px solid #000;
@@ -104,7 +105,95 @@
           }
         }
       }
-
+    }
+  }
+  .stationManageEdit{
+    .editPart{
+      .baseEdit, .connectionPriceEdit, .otherEdit{
+        display: flex;
+        flex-wrap: wrap;
+        margin: 0 16px;
+        padding-bottom: 24px;
+        border-bottom: solid 1px $promptColor;
+        .title{
+          width: 100%;
+          display: flex;
+          justify-content: space-between;
+          height: 58px;
+          align-items: center;
+          .titleText{
+            color: rgba(0,0,0,0.85);
+            margin-left: 24px;
+            &::after{
+              content: '';
+              width: 0px;
+              height: 0px;
+              opacity: 0.85;
+              margin-left: 4px;
+              display: inline-block;
+              border-left: 4px solid #000;
+              border-top: 4px solid transparent;
+              border-right: 4px solid transparent;
+              border-bottom: 4px solid transparent;
+            }
+          }
+          .titleHandle{
+            .cancel{
+              cursor: pointer;
+              color: $lightColor;
+            }
+            .save{
+              background-color: $themeColor;
+              color: #fff;
+            }
+          }
+        }
+        .eachInfo{
+          width: 33.33%;
+          display: flex;
+          // line-height: 30px;
+          // height: 30px;
+          margin-bottom: 21px;
+          .infoName{
+            width: 150px;
+            text-align: right;
+            margin-right: 12px;
+            color: $darkColor;
+          }
+          .infoValue{
+            flex: 1;
+            color: $lightColor;
+          }
+        }
+        :global{
+          .ant-form-item{
+            width: 33.33%;
+            display: flex;
+            // line-height: 30px;
+            // height: 30px;
+            .ant-form-item-label{
+              width: 150px;
+              text-align: right;
+              margin-right: 12px;
+              color: $darkColor;
+            }
+            .ant-form-item-control-wrapper{
+              flex: 1;
+              color: $lightColor;
+            }
+          }
+        }
+      }
+      .baseEdit{
+        .titleHandle{
+          .save{
+            margin:0 24px;
+          }
+        }
+      }
+      .otherEdit{
+        border-bottom: none;
+      }
     }
   }
 }

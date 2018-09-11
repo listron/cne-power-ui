@@ -69,21 +69,21 @@ class StationManage extends Component {
       <div className={styles.stationManageContainer}>
         <CommonBreadcrumb  breadData={[{name: '电站管理'}]} style={{ marginLeft: '38px',backgroundColor:'#fff' }} />
         <div className={styles.stationManage}>
-          {/* <StationManageMain {...this.props} queryListParams={queryListParams} /> */}
-          {/* <TransitionContainer
+          <StationManageMain {...this.props} queryListParams={queryListParams} />
+          <TransitionContainer
             show={showPage!=='list'}
             onEnter={this.onToggleSide}
             onExited={this.onToggleSide}
             timeout={500}
             effect="side"
-          > */}
+          >
             <StationManageSide
               {...this.props} 
               showSidePage={showSidePage}
               queryListParams={queryListParams}
               onShowSideChange={this.onShowSideChange} 
             />
-          {/* </TransitionContainer> */}
+          </TransitionContainer>
         </div>
       </div>
     );

@@ -23,10 +23,16 @@ class EditForm extends Component {
     super(props);
   }
 
-  saveEnterprise = () =>{
+  cancelEdit = () => {
+    this.props.backToDetail()
+  }
+
+  saveStationInfo = () => {
     this.props.form.validateFieldsAndScroll((error,values)=>{
       if(!error){
+        const { stationDetail } = this.props;
         this.props.saveStationDetail({
+          ...stationDetail,
           ...values,
         })
       }
@@ -65,25 +71,41 @@ class EditForm extends Component {
     ];
     return (
       <Form className={styles.editPart}>
-        <div >
+        <div className={styles.baseEdit}>
+          <div className={styles.title}>
+            <span className={styles.titleText}>基本信息</span>
+            <div className={styles.titleHandle}>
+              <span className={styles.cancel} onClick={this.cancelEdit}>取消</span>
+              <Button className={styles.save} onClick={this.saveStationInfo}>保存</Button>
+            </div>
+          </div>
           {baseArrayFir.map((e,i)=>(<EditInfoPart key={i} eachInfo={e} />))}
           <FormItem label="所属区域" >
             {getFieldDecorator('regionName',{
-              initialValue: stationDetail.regionName
+              initialValue: stationDetail.regionName,
+              rules: [{
+                required: true, message: '所属区域',
+              }]
             })(
               <Input />
             )}
           </FormItem>
           <FormItem label="并网容量" >
             {getFieldDecorator('stationCapacity',{
-              initialValue: stationDetail.stationCapacity
+              initialValue: stationDetail.stationCapacity,
+              rules: [{
+                required: true, message: '请输入并网容量',
+              }]
             })(
               <Input />
             )}
           </FormItem>
           <FormItem label="设计容量" >
             {getFieldDecorator('designCapacity',{
-              initialValue: stationDetail.designCapacity
+              initialValue: stationDetail.designCapacity,
+              rules: [{
+                required: true, message: '请输入设计容量',
+              }]
             })(
               <Input />
             )}
@@ -91,7 +113,10 @@ class EditForm extends Component {
           {baseArraySec.map((e,i)=>(<EditInfoPart key={i} eachInfo={e} />))}
           <FormItem label="占地面积" >
             {getFieldDecorator('floorArea',{
-              initialValue: stationDetail.floorArea
+              initialValue: stationDetail.floorArea,
+              rules: [{
+                required: true, message: '请输入占地面积',
+              }]
             })(
               <Input />
             )}
@@ -111,24 +136,24 @@ class EditForm extends Component {
             )}
           </FormItem>
         </div>
-        <div>
-          <div>并网信息及电价情况</div>
-          <div>
-            {connectionPriceArray.map((e,i)=>(<EditInfoPart key={i} eachInfo={e} />))}
+        <div className={styles.connectionPriceEdit}>
+          <div className={styles.title}>
+            <span className={styles.titleText}>并网信息及电价情况</span>
           </div>
+          {connectionPriceArray.map((e,i)=>(<EditInfoPart key={i} eachInfo={e} />))}
         </div>
-        <div>
-          <div>其他信息</div>
-          <div>
-            {otherArray.map((e,i)=>(<EditInfoPart key={i} eachInfo={e} />))}
-            <FormItem label="电站时区" >
-              {getFieldDecorator('coverType',{
-                initialValue: stationDetail.timeZone
-              })(
-                <Input />
-              )}
-            </FormItem>
+        <div className={styles.otherEdit}>
+          <div className={styles.title}>
+            <span className={styles.titleText}>其他信息</span>
           </div>
+          {otherArray.map((e,i)=>(<EditInfoPart key={i} eachInfo={e} />))}
+          <FormItem label="电站时区" >
+            {getFieldDecorator('timeZone',{
+              initialValue: stationDetail.timeZone
+            })(
+              <Input />
+            )}
+          </FormItem>
         </div>
       </Form>
     )
