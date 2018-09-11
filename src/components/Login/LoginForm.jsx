@@ -56,8 +56,8 @@ class LoginForm extends Component {
           setTimeout(() => {
             if(this.props.error && this.props.error.get('code') === '20009') {
               this.props.form.setFields({
-                username: {
-                  value: values.username,
+                password: {
+                  value: values.password,
                   errors: [new Error('用户名或密码错误，请重新尝试！')],
                 },
               });

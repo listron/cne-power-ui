@@ -32,15 +32,6 @@ class OutputPowerDiagram extends Component {
     const capabilityDiagram = echarts.init(document.getElementById('capabilityDiagram'));
     const powerDiagram = echarts.init(document.getElementById('powerDiagram'));
     capabilityDiagram.setOption({
-      noDataLoadingOption: {
-        text: '暂无数据',
-        effect: 'bubble',
-        effectOption: {
-          effect: {
-            n: 0
-          }
-        }
-      },
       title: {
         text: '出力图',
         textStyle: {
@@ -91,7 +82,8 @@ class OutputPowerDiagram extends Component {
           name: '功率(MW)',
           type: 'value',
           axisLabel: {
-            formatter: '{value}'
+            formatter: '{value}',
+            color: lineColor,
           },
           nameTextStyle: {
             color: lineColor,
@@ -102,15 +94,17 @@ class OutputPowerDiagram extends Component {
               color: '#dfdfdf',
             },
           },
-          splitLine:{
+          splitLine: false,
+          axisTick: {
             show: false,
-          }
+          },
         },
         {
           name: '瞬时辐照(W/m²)',
           type: 'value',
           axisLabel: {
-            formatter: '{value}'
+            formatter: '{value}',
+            color: lineColor,
           },
           nameTextStyle: {
             color: lineColor,
@@ -120,9 +114,10 @@ class OutputPowerDiagram extends Component {
               color: '#dfdfdf',
             },
           },
-          splitLine:{
+          splitLine: false,
+          axisTick: {
             show: false,
-          }
+          },
         }
       ],
       series: [
@@ -134,7 +129,13 @@ class OutputPowerDiagram extends Component {
           yAxisIndex: 0,
           areaStyle: {
             color: '#fff2f2',
-          }
+          },
+          itemStyle: {
+            opacity: 0,
+          },
+          axisTick: {
+            show: false,
+          },
         },
         {
           name:'瞬时辐照',
@@ -144,27 +145,19 @@ class OutputPowerDiagram extends Component {
           yAxisIndex: 1,
           itemStyle: {
             color: "#199475",
+            opacity: 0,
           },
           lineStyle: {
-            type: 'solid',
-          }
+            type: 'dashed',
+          },
+          axisTick: {
+            show: false,
+          },
         }
       ]              
     });
     
     powerDiagram.setOption({
-      noDataLoadingOption: {
-        text: '暂无数据',
-        effect: 'whirling',
-        textStyle:{
-          fontSize : 20
-        },
-        effectOption: {
-          effect: {
-            n: 0
-          }
-        }
-      },
       color: ['#a42b2c','#c7ceb2','#f7c028'],
       title: {
         text: '发电量',
@@ -175,16 +168,19 @@ class OutputPowerDiagram extends Component {
         },
       },
       legend: {
+        textStyle:{
+          color: lineColor,
+        }
       },
-      grid: {
-        show: true,
-      },
+      // grid: {
+      //   show: false,
+      // },
       tooltip: {
         trigger: 'axis',
         show: true,
         backgroundColor: '#fff',
         textStyle: {
-          color: lineColor,
+          color: '#999',
           fontSize: '12px',
         },
         formatter: (param) => {
@@ -221,32 +217,47 @@ class OutputPowerDiagram extends Component {
           name: '电量(万kWh)',
           type: 'value',
           axisLabel: {
-            formatter: '{value}'
+            formatter: '{value}',
+            color: lineColor,
           },
           nameTextStyle: {
             color: lineColor,
           },
           axisLine: {
-            lineStyle: {
-              color: '#dfdfdf',
-            },
+            show: false,
           },
-          
+          axisTick: {
+            show: false,
+          },
+          splitLine: {
+            lineStyle: {
+              color: '#f1f1f1',
+              type: 'dashed',
+            }
+          }
         },
         {
-          name: '日曝辐值(W/m²)',
+          name: '日曝辐值(MJ/m²)',
           type: 'value',
           axisLabel: {
-            formatter: '{value}'
+            formatter: '{value}',
+            color: lineColor,
           },
           nameTextStyle: {
             color: lineColor,
           },
           axisLine: {
-            lineStyle: {
-              color: '#dfdfdf',
-            },
+            show: false,
           },
+          axisTick: {
+            show: false,
+          },
+          splitLine: {
+            lineStyle: {
+              color: '#f1f1f1',
+              type: 'dashed',
+            }
+          }
         }
       ],
       series: [
@@ -311,7 +322,7 @@ class OutputPowerDiagram extends Component {
     return (
       <div className={styles.outputPowerDiagram}>
         <div className={styles.capabilityDiagramBox} >
-          <div id="capabilityDiagram" style={{ width: "100%", height: "100%",borderRight:"2px solid #dfdfdf",color: '#999', paddingTop: "20px" }}><i className="iconfont icon-more"></i></div>
+          <div id="capabilityDiagram" style={{ width: "100%", height: "100%",borderRight:"1px solid #dfdfdf",color: '#999', paddingTop: "20px" }}><i className="iconfont icon-more"></i></div>
           <Link to={resourceAnalysis} target="_blank"  ><i className="iconfont icon-more"></i></Link>
         </div>
         <div className={styles.powerDiagramBox} >
