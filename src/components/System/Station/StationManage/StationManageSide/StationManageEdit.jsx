@@ -31,8 +31,10 @@ class StationManageEdit extends Component {
     return (
       <div className={styles.stationManageEdit} >
         <div className={styles.detailTop}>
-          <span>电站详情</span>
-          {stationDetail.stationStatus?<span>接入时间: 2018-08-08</span>:<span>电站未接入</span>}
+          <span className={styles.topInfoShow}>
+            <span className={styles.title}>电站详情</span>
+            {stationDetail.stationStatus?<span>接入时间: 2018-08-08</span>:<span>电站未接入</span>}
+          </span>
           <span className={styles.handleArea} >
             <Icon type="arrow-left" className={styles.backIcon} onClick={this.backToDetail} />
           </span>

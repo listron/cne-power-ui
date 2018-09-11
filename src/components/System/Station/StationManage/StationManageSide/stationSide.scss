@@ -1,5 +1,7 @@
 
-.stationManageSide{
+@import '../../../../../theme/theme.scss';
+
+.stationManageSide{ 
   display: flex;
   flex: 1 0 auto;
   flex-direction: column;
@@ -8,9 +10,101 @@
   padding: 24px 24px 0;
   background:#ececec;
   z-index: 9999;
-  .stationManageEdit,.stationManageDetail{
+  .stationManageEdit,.stationManageDetail{ // 电站管理： 编辑，详情
     flex: 1;
     background-color: #fff;
     border: 1px solid #e1e2e2;
+    .detailTop{ // 顶部详情及操作
+      height: 60px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: solid 1px $promptColor; 
+      .topInfoShow{
+        .title{
+          font-size: 18px;
+          color: $darkColor;
+          letter-spacing: 4px;
+          margin-left: 36px;
+          margin-right: 28px;
+        }
+      }
+      .handleArea{ 
+        height: 100%;
+        display: flex;
+        align-items: center;
+        .previous, .next, .backIcon{
+          font-size: 20px;
+          color: $lightColor;
+          height: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        .previous,.next{
+          width: 40px;
+        }
+        .backIcon{
+          width: 60px;
+          border-left: solid 1px $promptColor;
+          margin-left: 20px;
+        }
+      }
+    }
+    
+  }
+  .stationManageDetail{
+    .stationManageContent{ // 各详情展示区
+      .infoBox{
+        margin: 0 16px;
+        border-bottom: solid 1px $promptColor;
+        .infoTitle{
+          display: flex;
+          justify-content: space-between;
+          height: 58px;
+          align-items: center;
+          .titleText{
+            color: rgba(0,0,0,0.85);
+            margin-left: 24px;
+            &::after{
+              content: '';
+              width: 0px;
+              height: 0px;
+              margin-left: 4px;
+              display: inline-block;
+              border-left: 4px solid #000;
+              border-top: 4px solid transparent;
+              border-right: 4px solid transparent;
+              border-bottom: 4px solid transparent;
+            }
+          }
+          .button{
+            margin-right: 24px;
+          }
+        }
+        .infoPart{
+          display: flex;
+          flex-wrap: wrap;
+          margin-bottom: 24px;
+          .eachInfo{
+            width: 33.33%;
+            display: flex;
+            line-height: 30px;
+            height: 30px;
+            .infoName{
+              width: 150px;
+              text-align: right;
+              margin-right: 12px;
+              color: $darkColor;
+            }
+            .infoValue{
+              flex: 1;
+              color: $lightColor;
+            }
+          }
+        }
+      }
+
+    }
   }
 }
