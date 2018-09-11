@@ -28,7 +28,7 @@ class Weatherstation extends Component {
     const nextStation = nextParams.stationCode;
     if( nextDevice !== deviceCode || nextType !== deviceTypeCode || nextStation !== stationCode ){
       clearTimeout(this.timeOutId);
-      this.getData(stationCode, deviceCode, deviceTypeCode);
+      this.getData(nextStation, nextDevice, nextType);
     }
   }
 

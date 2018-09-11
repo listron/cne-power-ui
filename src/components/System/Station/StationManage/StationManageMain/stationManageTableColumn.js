@@ -11,10 +11,6 @@ const stationManageTableColumn = [{
     dataIndex: 'coverType',
     key: 'coverType',
   },{
-    title: '并网类型',
-    dataIndex: 'connectionType',
-    key: 'connectionType',
-  },{
     title: '装机容量',
     dataIndex: 'stationCapacity',
     key: 'stationCapacity',

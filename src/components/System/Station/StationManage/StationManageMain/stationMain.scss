@@ -1,4 +1,5 @@
 
+@import '../../../../../theme/theme.scss';
 
 .stationMain{
   display: flex;
@@ -12,5 +13,35 @@
     background-color: #fff;
     flex: 1;
     border: 1px solid #e1e2e2;
+    .stationSearch{ // 电站搜索区
+      .typeSearch{
+        height: 80px;
+        line-height: 80px;
+        .title{
+          margin-left: 28px;
+          margin-right: 12px;
+          color: $lightColor;
+        }
+        :global{
+          .ant-radio-group{
+            .ant-radio-button-wrapper{
+              color: $darkColor;
+              padding: 0 12px;
+            }
+            .ant-radio-button-wrapper-checked{
+              background-color: $themeColor;
+              border-color: $themeColor;
+              box-shadow: -1px 0 0 0 $themeColor;
+              &>span{
+                color:#fff;
+              }
+            }
+          }
+        }
+      }
+      .inputSearch{
+        background-color: #f9f9f9;
+      }
+    }
   }
 }

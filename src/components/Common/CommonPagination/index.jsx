@@ -35,6 +35,18 @@ class CommonPagination extends Component {
       pageSize: props.pageSizeArray[0]
     }
   }
+  componentWillReceiveProps(nextProps){
+    const { total } = this.props;
+    const { pageSize, currentPage } = this.state;
+    const newTotal = nextProps.total;
+    const shouldChangeCurrentPage = (currentPage - 1) * pageSize >= newTotal;
+    if(total !== newTotal && shouldChangeCurrentPage){
+      const maxPage = Math.ceil(newTotal / pageSize);
+      this.setState({
+        currentPage: maxPage,
+      })
+    }
+  }
   onPageSizeChange = (pageSize) => {
     let { currentPage } = this.state;
     const { total } = this.props;
