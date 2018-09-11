@@ -29,12 +29,12 @@ class DefectBasicInfo extends Component {
   }
 
   renderBasic() {
-    let info = this.props.basicInfo;
+    const info = this.props.basicInfo;
     return (
       <div className={styles.basicContent}>
         <div className={styles.basicItem}>电站名称
           <span>{info.get('stationName')}</span>
-          <span>{info.get('stationtype') === 0 ? <i className="iconfont icon-windlogo"/> :
+          <span>{info.get('stationtype') === 0 ? <i className="iconfont icon-windlogo" /> :
            <i className="iconfont icon-pvs" />}</span>
         </div>
         <div className={styles.basicItem}>设备类型<span>{info.get('deviceTypeName')}</span></div>
@@ -49,12 +49,19 @@ class DefectBasicInfo extends Component {
     );
   }
 
-  render() {   
+  render() {
+    const info = this.props.basicInfo;  
     return (
       <div className={styles.basicInfo}>
         <div className={styles.title}>
-          基本信息
-          <i className="iconfont icon-content" />
+          <div className={styles.text}>
+            基本信息
+            <i className="iconfont icon-content" />
+          </div>
+          <div className={styles.warning}>
+            {info.get('isOvertime') === '0'? <div className={styles.overTime}>超时</div> : null}
+            {info.get('isCoordination') === '0'? <div className={styles.coordinate}>协调</div> : null}
+          </div>
         </div>
         {this.renderBasic()}
       </div>
