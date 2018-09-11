@@ -41,7 +41,9 @@ class AllStation extends Component {
   componentWillUnmount() {
     clearInterval(this.stationInterval);
     this.props.changeMonitorStationStore({
-      stationTypes: null
+      stationTypes: null,
+      stationShowType:'stationBlock'
+
     });
   }
 
