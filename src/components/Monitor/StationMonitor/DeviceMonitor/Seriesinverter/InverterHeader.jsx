@@ -22,6 +22,16 @@ class InverterHeader extends Component {
     }
   }
 
+  componentDidMount(){
+    const main = document.getElementById('main');
+    main && main.addEventListener('click', this.hideDeviceChange,true);
+  }
+
+  componentWillUnmount() {
+    const main = document.getElementById('main');
+    main && main.removeEventListener('click', this.hideDeviceChange,true);
+  }
+
   showDeviceChange = () => {
     this.setState({
       showDeviceChangeBox: true,
@@ -48,7 +58,7 @@ class InverterHeader extends Component {
         {showDeviceChangeBox && <HeaderDeviceChange devices={devices} deviceDetail={deviceDetail} baseLinkPath={baseLinkPath} hideDeviceChange={this.hideDeviceChange} />}
         <div className={styles.deviceName}>
           <Icon type="swap" className={styles.swap} onClick={this.showDeviceChange} />
-          <span className={styles.name}>{deviceDetail.deviceName}</span>
+          <span className={styles.name} onClick={this.showDeviceChange}>{deviceDetail.deviceName}</span>
           <span className={styles.status} >
             <span>设备状态:</span> 
             <span className={deviceStatusInfo && `${deviceStatusInfo.icon} statusIcon` || ''}></span>

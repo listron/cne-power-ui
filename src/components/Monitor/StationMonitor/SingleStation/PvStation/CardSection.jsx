@@ -198,9 +198,9 @@ class CardSection extends Component {
               </div>
               {workList &&
                 <div className={styles.workContent} >
-                  <div><div>{workList.worklistNewNum===null ? '--' : workList.worklistNewNum}</div><div>今日新增</div></div>
-                  <div><div>{workList.worklistHandleNum===null ? '--' : workList.worklistHandleNum}</div><div>处理中</div></div>
-                  <div><div>{workList.worklistCompleteNum===null ? '--' : workList.worklistCompleteNum}</div><div>今日完成</div></div>
+                  <div><div>{workList.worklistNewNum===null ? '--' : workList.worklistNewNum}</div><div className={styles.workListRate} >今日新增</div></div>
+                  <div><div>{workList.worklistHandleNum===null ? '--' : workList.worklistHandleNum}</div><div className={styles.workListRate}>处理中</div></div>
+                  <div><div>{workList.worklistCompleteNum===null ? '--' : workList.worklistCompleteNum}</div><div className={styles.workListRate}>今日完成</div></div>
                 </div>
               }
             </div>
