@@ -31,11 +31,6 @@ class StationManageDetail extends Component {
     }
   }
 
-  onShowSideChange = ({showSidePage}) => {
-    this.props.onShowSideChange({ showSidePage:'edit' });
-    this.props.changeStationManageStore({ showPage: 'edit' });
-  }
-
   preStation = () => { // 上一个电站详情
     const { queryListParams, selectedStationIndex, pageNum, pageSize, getOtherPageStationDetail, getStationDetail } = this.props;
     if(selectedStationIndex === 0 && pageNum === 1){ // 第一页第一条
@@ -95,6 +90,7 @@ class StationManageDetail extends Component {
   }
 
   editDetail = () => { // 编辑页
+    this.props.onShowSideChange({ showSidePage:'edit' });
     this.props.changeStationManageStore({ showPage: 'edit' });
   }
 
