@@ -36,9 +36,19 @@ function InverterTenMin({ deviceTenMin, loading }) {
         data:['功率','斜面辐射'],
         top: 24,
       },
+      // tooltip: {
+      //   show: true,
+      // },
       tooltip: {
+        trigger: 'axis',
         show: true,
+        backgroundColor: '#fff',
+        textStyle: {
+          color: lineColor,
+          fontSize: '12px',
+        }
       },
+      calculable: true,
       grid: {
         top: 95,
         containLabel: true,

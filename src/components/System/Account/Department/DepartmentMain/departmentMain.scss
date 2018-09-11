@@ -111,11 +111,28 @@
         }
       }
       table{
-        .tableDepartmentName{
-          color: $darkColor;
+        a{
+          text-decoration: underline;
+          color: $darkColor;  
           &:hover{
             color: #199475;
           }
+        }
+
+        .tableDepartmentName{
+          color: $darkColor;       
+          &:hover{
+            color: #199475;
+          }
+          .departmentName{           
+          
+            width: 80px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            
+          }
+          
         }
       }
       .stationColumn{

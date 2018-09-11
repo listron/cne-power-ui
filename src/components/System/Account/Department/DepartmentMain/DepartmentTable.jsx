@@ -206,17 +206,21 @@ class DepartmentTable extends Component {
         dataIndex: 'departmentName',
         key: 'departmentName',
         render: (text,record,index) => (
-          <a href={'javascript:void(0);'} className={styles.tableDepartmentName} onClick={()=>this.showDepartmentDetail(record)} >{text}</a>
+          <a href={'javascript:void(0);'} className={styles.tableDepartmentName} onClick={()=>this.showDepartmentDetail(record)} ><div title={text} className={styles.departmentName} >{text}</div></a>
         )
       }, {
         title: '所属部门',
         dataIndex: 'parentDepartmentName',
         key: 'parentDepartmentName',
+        // render: (text,record,index) => (        
+        //  <div className={styles.parentDepartmentName}>{text}</div>
+        // )
+
       }, {
         title: '预设',
         dataIndex: 'departmentSource',
         key: 'departmentSource',
-        render: (text,record) => (<span>{text===0?'是':'否'}</span>),
+        render: (text,record) => (<span className={styles.departmentSource}>{text===0?'是':'否'}</span>),
         sorter: true
       }, {
         title: '负责电站',
