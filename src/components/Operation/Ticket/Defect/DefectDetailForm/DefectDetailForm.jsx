@@ -1,10 +1,10 @@
-import React,{ Component } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import DefectBasicInfo from '../DefectBasicInfo/DefectBasicInfo';
 import DefectHandleForm from '../DefectHandleForm/DefectHandleForm';
 import TimeLines from '../../../../Common/TimeLines';
 import styles from './defectDetailForm.scss';
-import {Icon, Spin} from 'antd';
+import { Icon } from 'antd';
 
 class DefectDetailForm extends Component {
   static propTypes = {
@@ -21,13 +21,8 @@ class DefectDetailForm extends Component {
     onPrev: PropTypes.func
   }
 
-  static defaultProps = {
-  }
-
   constructor(props) {
     super(props);
-    this.state = {
-    };
   }
 
   onSubmit = (data) => {
@@ -130,34 +125,48 @@ class DefectDetailForm extends Component {
     }
   }
 
+  renderTitle() {
+    const status = this.props.detail.get('defectStatus');
+    if(status === '1') {
+      return '审核缺陷';
+    } else if(status === '2') {
+      return '处理缺陷';
+    } else if(status === '3') {
+      return '验收缺陷';
+    } else {
+      return '缺陷详情';
+    }
+  }
+
   render() {
     let detail = this.props.detail;
     return (
       <div className={styles.detailWrap}>
-        <Spin spinning={this.props.loading} size="large">
-          <div className={styles.defectDetail}>
-            <div className={styles.header}>
-              <Icon type="up" onClick={this.props.onPrev} />
-              <Icon type="down" onClick={this.props.onNext} />
-              <Icon type="close" onClick={this.props.onCloseDetail} />
+        <div className={styles.defectDetail}>
+          <div className={styles.header}>
+            <div className={styles.text}>{this.renderTitle()}</div>
+            <div className={styles.action}>
+              <i className="iconfont icon-last" onClick={this.props.onPrev} />
+              <i className="iconfont icon-next" onClick={this.props.onNext} />
+              <Icon type="arrow-left" className={styles.backIcon} onClick={this.props.onCloseDetail} />
+            </div>   
+          </div>
+          <div className={styles.content}>
+            <div className={styles.basic}>
+              <DefectBasicInfo basicInfo={detail} />
             </div>
-            <div className={styles.content}>
-              <div className={styles.basic}>
-                <DefectBasicInfo basicInfo={detail} />
+            <div className={styles.right}>
+              <div className={styles.timeLines}>
+                <TimeLines 
+                  processData={detail.get('processData')}
+                  status={detail.get('defectStatus')} />
               </div>
-              <div className={styles.right}>
-                <div className={styles.timeLines}>
-                  <TimeLines 
-                    processData={detail.get('processData')}
-                    status={detail.get('defectStatus')} />
-                </div>
-                <div className={styles.form}>
-                  {this.renderForm()}
-                </div>
+              <div className={styles.form}>
+                {this.renderForm()}
               </div>
             </div>
           </div>
-        </Spin>
+        </div>
       </div>
     );
   }  

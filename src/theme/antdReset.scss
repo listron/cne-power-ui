@@ -4,6 +4,13 @@
 @import './theme.scss';
 
 :global{
+  
+  .ant-table-column-sorter-up.on .anticon-caret-up {//table表格排序上三角点击后的的颜色
+    color: #199475;
+}
+  .ant-table-column-sorter-down.on .anticon-caret-down {//table表格排序下三角点击后的的颜色
+    color: #199475;
+}
   .ant-table{//table行高，高亮，背景色调整；
     .ant-table-tbody{
       background: #fff;
@@ -31,7 +38,7 @@
       color: $themeColor;
     }
   }
-  .ant-btn-primary{
+  .ant-btn-primary, .ant-btn-primary:active, .ant-btn-primary.active, .ant-btn-primary:focus{
     background-color: $themeColor;
     color: #fff;
     border-color: $themeColor;
@@ -49,6 +56,9 @@
         border-left-color: $themeColor;
       }
     }
+  }
+  .ant-select-dropdown-menu-item:hover{
+    background-color: #ceebe0;
   }
   .ant-select:not(.ant-select-disabled){
     .ant-select-selection{

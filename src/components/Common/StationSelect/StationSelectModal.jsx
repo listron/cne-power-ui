@@ -110,11 +110,11 @@ class StationSelectModal extends Component {
           onCancel={hideStationModal}
           cancelText={'取消'}
           okText={'确定'}
-          width={760}
-          wrapClassName={styles.stationStyleModal}
+          title="请选择"
+          width={625}
         >
-          <div>
-            <div>
+          <div className={styles.stationStyleModal}>
+            <div className={styles.stationType}>
               <RadioGroup onChange={this.onSelectStationType} value={filterStationType}>
                 {stationType.map(e=>(<RadioButton key={e} value={e} >{e===0?'全部':e===10?'光伏':'风电'}</RadioButton>))}
               </RadioGroup>

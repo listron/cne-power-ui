@@ -14,12 +14,13 @@ function InverterTenMin({ deviceTenMin, loading }) {
     // }
     let powerLineData = [], radiationLineData = [], xTime = [];
     deviceTenMin.length > 0 && deviceTenMin.forEach(e=>{
+      //console.log(e.utc);
       //xTime.push(moment(e.utc).format('YYYY-MM-DD hh:mm:ss'));
-      //moment(moment.utc(ticketInfo.operateTime).toDate()).local().format('YYYY-MM-DD HH:mm')
       xTime.push(moment(moment.utc(e.utc).toDate()).local().format('YYYY-MM-DD HH:mm'));
       powerLineData.push(e.stationPower);
       radiationLineData.push(e.instantaneous);
     });
+    
     //console.log(xTime);
 
     const option = {
@@ -35,9 +36,19 @@ function InverterTenMin({ deviceTenMin, loading }) {
         data:['功率','斜面辐射'],
         top: 24,
       },
+      // tooltip: {
+      //   show: true,
+      // },
       tooltip: {
+        trigger: 'axis',
         show: true,
+        backgroundColor: '#fff',
+        textStyle: {
+          color: lineColor,
+          fontSize: '12px',
+        }
       },
+      calculable: true,
       grid: {
         top: 95,
         containLabel: true,

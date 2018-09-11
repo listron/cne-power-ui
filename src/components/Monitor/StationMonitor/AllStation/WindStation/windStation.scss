@@ -5,6 +5,9 @@
   flex:1;
   flex-direction: column;
   :global{ 
+    .ant-progress-inner{       
+      background: #dfdfdf;
+    }
     .ant-switch{
       vertical-align: -5px;
     }
@@ -110,6 +113,7 @@
     border-bottom: 1px dashed #dfdfdf;
     height: 100px;
     display: flex;
+    color:#999;
     .typeIcon{
       width: 120px;
       display: flex;
@@ -172,12 +176,12 @@
         display: flex;
         flex-direction: column;
         justify-content: center;
-        align-items: center;     
+        //align-items: center;     
         .dataValue {
           color:#199475;
           font-size: 24px;
           flex: 1;
-          text-align: center;
+          text-align: left;
           padding-top: 20px;
           font-family:STHeitiSC-Light;
         }
@@ -185,7 +189,7 @@
           color:#3e97d1;
           font-size: 24px;
           flex: 1;
-          text-align: center;
+          //text-align: center;
           padding-top: 20px;
           font-family:STHeitiSC-Light;
         }
@@ -204,6 +208,9 @@
     :global{
       .ant-progress-outer{
         height: 28px;
+      }
+      .ant-progress-inner{       
+        background: #dfdfdf;
       }
     }
    
@@ -258,6 +265,7 @@
         
     }
     .stationCardTitle {
+      color:#666;
       height: 26px;
       flex: 1;
       display: flex;
@@ -306,14 +314,20 @@
     display: flex;
     flex-direction: column;
     a{
-      text-decoration: none;
+      text-decoration:underline;  
       color:rgba(0, 0, 0, 0.65);
+      &:hover{
+        color:#199475;
+      }
     }
     .pagination{
+      a{
+        text-decoration: none;
+      }
       height: 45px;
       display: flex;
       justify-content: flex-end;
-     line-height: 45px;
+      line-height: 45px;
 
     }
     .stationName{
@@ -356,6 +370,11 @@
     
     .progressInfo{
       .progressData{
+        :global{
+          .ant-progress-inner{       
+            margin-top: 8px;
+          }
+        }
         //width: 220px;
         padding-right: 16px;
         height: 40px;
@@ -363,6 +382,7 @@
         flex-direction: column;
         flex-wrap: wrap;
         .stationValue{
+          margin-top: 5px;
           flex: 1;
           display: flex;
           justify-content: space-between;

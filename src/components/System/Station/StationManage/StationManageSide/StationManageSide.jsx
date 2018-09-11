@@ -9,6 +9,7 @@ import Footer from '../../../../Common/Footer';
 class StationManageSide extends Component {
   static propTypes = {
     showSidePage: PropTypes.string,
+    changeStationManageStore: PropTypes.func,
   }
 
   constructor(props){
@@ -19,7 +20,6 @@ class StationManageSide extends Component {
     const { showSidePage } = this.props;
     return (
       <div className={styles.stationManageSide}>
-        <StationManageDetail {...this.props} />
         { showSidePage === 'detail' && <StationManageDetail {...this.props} /> }
         { showSidePage === 'edit' && <StationManageEdit {...this.props} /> }
         <Footer />

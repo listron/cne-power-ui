@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Icon, Checkbox  } from 'antd';
+import { Checkbox  } from 'antd';
 import styles from './style.scss';
 import PropTypes from 'prop-types';
 
@@ -51,14 +51,14 @@ class ProvinceItem extends Component {
     }
     return (
       <div className={styles.provinceItem}>
-        {multiple ? <Checkbox onChange={this.checkProvince} checked={provinceChecked} indeterminate={indeterminate}>{provinceInfor.provinceName}</Checkbox>:<span>{provinceInfor.provinceName}</span>}
+        {multiple ? <Checkbox onChange={this.checkProvince} checked={provinceChecked} indeterminate={indeterminate}>{provinceInfor.provinceName}</Checkbox>:
+        <span className={styles.name}>{provinceInfor.provinceName}</span>}
         <div className={styles.stationList}>
           {provinceInfor.stations.map(m=>{
             let checked = selectedStation.some(e=>e.stationCode===m.stationCode)
-            return <div onClick={()=>this.checkStation(m)} key={m.stationCode} style={{'backgroundColor':checked?'yellowgreen':'transparent'}} className={styles.eachStation} > <span>{ m.stationName }</span> <Icon type="check-circle-o" /> </div>
+            return <div onClick={()=>this.checkStation(m)} key={m.stationCode} style={{'backgroundColor':checked?'#199475':'#f1f1f1',color:checked?'#fff':'#999'}} className={styles.eachStation} > <span>{ m.stationName }</span></div>
           })}
-        </div>
-        
+        </div>  
       </div>
     )
   }

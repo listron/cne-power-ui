@@ -54,10 +54,10 @@ class TmpForm extends Component {
   }
 
   onStationSelected = (stations) =>{
-    const stationCode = (stations && stations[0] && stations[0].stationCode) || 0;
+    const stationCodes = (stations && stations[0] && stations[0].stationCode) || 0;
     const tmpStationType = stations && stations[0] && stations[0].stationType;
     const stationType = tmpStationType===20?1:tmpStationType===10?0:2;
-    this.props.getStationDeviceTypes({stationCode})
+    this.props.getStationDeviceTypes({stationCodes})
     this.props.getDefectTypes({stationType})
   }
 

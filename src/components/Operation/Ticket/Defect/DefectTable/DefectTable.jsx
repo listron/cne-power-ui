@@ -145,9 +145,9 @@ class DefectTable extends Component {
     }
   }
 
-  onPaginationChange = ({pageNum, pageSize}) => {
+  onPaginationChange = ({currentPage, pageSize}) => {
     this.props.onChangeFilter({
-      pageNum,
+      pageNum: currentPage,
       pageSize
     });
   }

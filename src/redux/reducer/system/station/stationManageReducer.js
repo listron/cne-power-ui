@@ -15,7 +15,7 @@ var initState = Immutable.fromJS({
   stationList: [], // 电站列表数据
   totalNum:  0, // 电站总数
 
-  selectedStationId: '', // 正在展示详情的电站id
+  selectedStationIndex: null, // 展示详情的电站index
   stationDetail: {},// 电站详情
 });
 

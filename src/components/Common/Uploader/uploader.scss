@@ -34,6 +34,11 @@
   .uploadedImg{
     position: relative;
     margin-right: 15px;
+    width: 100px;
+    height: 100px;
+    max-width: 100px;
+    display: flex;
+    flex: 1;
     .bottomHandler{
       position: absolute;
       background-color: rgba(0,0,0,0.2);

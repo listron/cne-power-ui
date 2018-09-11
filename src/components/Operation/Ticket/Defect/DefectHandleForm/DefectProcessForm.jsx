@@ -1,11 +1,13 @@
 import React,{ Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './defectHandleForm.scss';
-import {Form, Input, Button, Switch} from 'antd';
+import {Form, Input, Button, Switch, Radio} from 'antd';
+import pathConfig from '../../../../../constants/path';
 import CommonInput from '../../../../Common/CommonInput';
 import ImgUploader from '../../../../Common/Uploader/ImgUploader';
-import ProcessFormButtons from './ProcessFormButtons';
 const FormItem = Form.Item;
+const RadioButton = Radio.Button;
+const RadioGroup = Radio.Group;
 
 class DefectProcessForm extends Component {
   static propTypes = {
@@ -43,26 +45,20 @@ class DefectProcessForm extends Component {
   render() {   
     const { getFieldDecorator, getFieldValue } = this.props.form;
     const dealResult = getFieldValue('defectSolveResult');
-    const formItemLayout = {
-      labelCol: { span: 4 },
-      wrapperCol: { span: 32 },
-    }
     return (
-      <Form onSubmit={this.onSubmit} className={styles.handleForm}>
-        <FormItem label="处理结果" {...formItemLayout}>
-        {getFieldDecorator('defectSolveResult', {
-            rules: [{ 
-              required: true 
-            }],
-            initialValue: '1'
+      <Form onSubmit={this.onSubmit} className={styles.dealForm}>
+        <FormItem label="处理结果" colon={false}>
+          {getFieldDecorator('defectSolveResult', {
+            rules: [{ required: true, message: '选择处理结果' }],
+            initialValue: '1',
           })(
-            <ProcessFormButtons onDefectSolveChange={this.onDefectSolveChange} />
+            <RadioGroup>
+              <RadioButton value="1">未解决</RadioButton>
+              <RadioButton value="0">已解决</RadioButton>
+            </RadioGroup>
           )}
         </FormItem>
-        <FormItem
-          {...formItemLayout}
-          className={styles.dealProposal} 
-          label={dealResult === '0'?'处理过程':'处理建议'}>
+        <FormItem label={dealResult === '0'?'处理过程':'处理建议'} colon={false}>
           {getFieldDecorator('defectSolveInfo', {
               rules: [{ 
                 required: dealResult === '0', 
@@ -75,19 +71,21 @@ class DefectProcessForm extends Component {
               placeholder="请描述，不超过80个汉字" />
           )}
         </FormItem>
-        <FormItem
-          {...formItemLayout}
-          label="添加照片">
-          {getFieldDecorator('photoData', {
-            initialValue: [],
-            valuePropName: 'data'
-          })(
-            <ImgUploader editable={true}  />
-          )}
+        <FormItem label="添加照片" colon={false}>
+        <div className={styles.addImg}>
+          <div className={styles.maxTip}>最多4张</div>
+            {getFieldDecorator('photoData', {
+              rules: [{ required: false, message: '请上传图片' }],
+              initialValue: [],
+              valuePropName:'data',
+            })(
+              <ImgUploader imgStyle={{width:98,height:98}} uploadPath={`${pathConfig.basePaths.APIBasePath}${pathConfig.commonPaths.imgUploads}`} editable={true} />
+            )}
+          </div>
         </FormItem>
         {dealResult === '0' && (
-          <FormItem label="更换备件" {...formItemLayout}>
-            <div className={styles.replacePart}>
+          <FormItem label="更换备件" colon={false}>
+            <div>
               <Switch checked={this.state.replace} onChange={this.onChangeReplace} />
               {this.state.replace && getFieldDecorator('replaceParts', {
                 rules: [{ 
@@ -95,15 +93,15 @@ class DefectProcessForm extends Component {
                   message: '请输入更换备件'
                 }],
               })( 
-                <Input placeholder="备件名称+型号" />
+                <Input style={{marginLeft: 20}} placeholder="备件名称+型号" />
               )}
             </div>
           </FormItem>
         )}
-        <FormItem className={styles.actionBar}>
-          <Button onClick={this.props.onCancel}>取消</Button>
+        <div className={styles.actionBar}>
+          <Button className={styles.cancelBtn} onClick={this.props.onCancel}>重置</Button>
           <Button type="primary" htmlType="submit">提交</Button>
-        </FormItem>
+        </div>
       </Form>
     );
   }  

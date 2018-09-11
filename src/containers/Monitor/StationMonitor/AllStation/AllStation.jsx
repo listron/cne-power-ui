@@ -41,7 +41,9 @@ class AllStation extends Component {
   componentWillUnmount() {
     clearInterval(this.stationInterval);
     this.props.changeMonitorStationStore({
-      stationTypes: '2'
+      stationTypes: null,
+      stationShowType:'stationBlock'
+
     });
   }
 
@@ -80,10 +82,10 @@ class AllStation extends Component {
               {stationTypes === '2' ? <TabPane tab="全部" key="2" >
                 <Allstation {...this.props} />
               </TabPane> : ''}
-              {stationTypes !== '1' ? <TabPane tab="风电" key="0">
+              {(stationTypes === '2' || stationTypes === '0') ? <TabPane tab="风电" key="0">
                 <WindStation {...this.props} />
               </TabPane> : ''}
-              {stationTypes !== '0' ? <TabPane tab="光伏" key="1">
+              {(stationTypes === '2' || stationTypes === '1') ? <TabPane tab="光伏" key="1">
                 <PvStation {...this.props} />
               </TabPane> : ''}
             </Tabs>         

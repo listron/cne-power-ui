@@ -12,6 +12,7 @@ module.exports = {
     EDIT_STATION_MANAGE_DETAIL: null, // 编辑电站详情
     DELET_STATION_MANAGE: null, // 删除电站(及以下设备))所有信息
     SET_STATION_MANAGE_DEPARTMENT: null, // 为指定电站分配部门
+    GET_OTHER_PAGE_STATION_MANAGE_DETAIL: null, // 详情翻页请求下一页/前一页详情
 
     GET_STATION_MANAGE_FETCH_SUCCESS: null, // 电站管理普通api请求成功
   })
