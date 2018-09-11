@@ -38,8 +38,8 @@ class DefectCreate extends Component {
     if(showContainer === 'edit'){
       const { defectDetail } = this.props;
       const stationType = defectDetail.stationType;
-      const stationCode = defectDetail.stationCode;
-      this.props.getStationDeviceTypes({stationCode})
+      const stationCodes = defectDetail.stationCode;
+      this.props.getStationDeviceTypes({stationCodes})
       this.props.getDefectTypes({stationType})
     }
     this.props.getCommonList({
