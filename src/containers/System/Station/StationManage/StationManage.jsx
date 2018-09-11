@@ -60,9 +60,9 @@ class StationManage extends Component {
   }
 
   render() {
-    const { showPage, enterpriseId, stationType, regionName, stationName, pageNum, pageSize, orderField, orderCommand } = this.props;
+    const { showPage, stationType, regionName, stationName, pageNum, pageSize, orderField, orderCommand } = this.props;
     const queryListParams = {
-      enterpriseId, stationType, regionName, stationName, pageNum, pageSize, orderField, orderCommand,
+      stationType, regionName, stationName, pageNum, pageSize, orderField, orderCommand,
     }
     const { showSidePage } = this.state;
     return (

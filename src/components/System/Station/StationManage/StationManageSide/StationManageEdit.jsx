@@ -9,6 +9,7 @@ import EditForm from './EditForm';
 
 class StationManageEdit extends Component {
   static propTypes = {
+    loading: PropTypes.bool,
     stationDetail: PropTypes.object,
     onShowSideChange: PropTypes.func,
     saveStationDetail: PropTypes.func,
@@ -27,7 +28,7 @@ class StationManageEdit extends Component {
   }
 
   render(){
-    const { stationDetail, saveStationDetail } = this.props;
+    const { stationDetail, saveStationDetail, loading } = this.props;
     return (
       <div className={styles.stationManageEdit} >
         <div className={styles.detailTop}>
@@ -39,7 +40,7 @@ class StationManageEdit extends Component {
             <Icon type="arrow-left" className={styles.backIcon} onClick={this.backToDetail} />
           </span>
         </div>
-        <EditForm stationDetail={stationDetail} saveStationDetail={saveStationDetail} backToDetail={this.backToDetail} />
+        <EditForm stationDetail={stationDetail} saveStationDetail={saveStationDetail} backToDetail={this.backToDetail} loading={loading} />
       </div>
     )
   }
