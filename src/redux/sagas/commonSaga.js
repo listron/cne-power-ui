@@ -3,8 +3,6 @@ import axios from 'axios';
 import Path from '../../constants/path';
 import { commonAction } from '../../constants/actionTypes/commonAction';
 import { message } from 'antd';
-import Cookie from 'js-cookie';
-import moment from 'moment';
 
 function *changeCommonStore(action){//存储payload指定参数，替换reducer-store属性。
   const { payload } = action;
@@ -16,25 +14,17 @@ function *changeCommonStore(action){//存储payload指定参数，替换reducer-
 
 //获取所有电站信息
 function *getStations(action){
-  const url = `${Path.basePaths.APIBasePath}${Path.commonPaths.getStations}/`;
+  const url = `${Path.basePaths.APIBasePath}${Path.commonPaths.getStations}`;
   yield put({ type: commonAction.COMMON_FETCH });
   try {
     const response = yield call(axios.get,url);
     if(response.data.code === '10000'){
       yield put({ 
-        type: commonAction.GET_STATIONS_SUCCESS, 
-        params: {
-          data: response.data.data
+        type: commonAction.GET_COMMON_FETCH_SUCCESS, 
+        payload: {
+          stations: response.data.data
         }
       });       
-    } else{
-      yield put({ 
-        type: commonAction.GET_STATIONS_FAIL, 
-        error:{
-          code: response.data.error,
-          message: response.data.error
-        }
-      });        
     }
   } catch (e) {
     console.log(e);
@@ -42,26 +32,18 @@ function *getStations(action){
 }
 //获取用户权限范围内所有设备类型信息
 function *getDeviceTypes(action){
-  const url = `${Path.basePaths.APIBasePath}${Path.commonPaths.getDevicetypes}/`;
+  const url = `${Path.basePaths.APIBasePath}${Path.commonPaths.getDevicetypes}`;
   yield put({ type: commonAction.COMMON_FETCH });
   try {
     const response = yield call(axios.get, url);
     if(response.data.code === '10000'){
       yield put({ 
-        type: commonAction.GET_DEVICETYPES_SUCCESS, 
-        params: {
-          data: response.data.data, 
+        type: commonAction.GET_COMMON_FETCH_SUCCESS, 
+        payload: {
+          deviceTypes: response.data.data, 
         }
       });       
-    } else{
-      yield put({ 
-        type: commonAction.GET_DEVICETYPES_FAIL, 
-        error:{
-          code: response.data.code,
-          message: response.data.message
-        }
-      });        
-    }
+    } 
   } catch (e) {
     console.log(e);
   }
@@ -71,23 +53,14 @@ function *getStationDeviceTypes(action){
   let url = Path.basePaths.APIBasePath + Path.commonPaths.getStationDevicetypes;
   yield put({ type: commonAction.COMMON_FETCH });
   try {
-    const response = yield call(axios.get, url, {params: action.params});
+    const response = yield call(axios.get, url, {params: action.payload});
     if(response.data.code === '10000'){
       yield put({ 
-        type: commonAction.GET_STATION_DEVICETYPES_SUCCESS, 
-        params: {
-          data: response.data.data.data, 
-          params: action.params 
+        type: commonAction.GET_COMMON_FETCH_SUCCESS, 
+        payload: {
+          stationDeviceTypes: response.data.data
         }
       });       
-    } else{
-      yield put({ 
-        type: commonAction.GET_STATION_DEVICETYPES_FAIL, 
-        error:{
-          code: response.data.code,
-          message: response.data.message
-        }
-      });        
     }
   } catch (e) {
     console.log(e);
@@ -98,23 +71,14 @@ function *getDevices(action){
   let url = Path.basePaths.APIBasePath + Path.commonPaths.getDevices;
   yield put({ type: commonAction.COMMON_FETCH });
   try {
-    const response = yield call(axios.get, url, {params: action.params});
+    const response = yield call(axios.get, url, {params: action.payload});
     if(response.data.code === '10000'){
       yield put({ 
-        type: commonAction.GET_DEVICES_SUCCESS, 
-        params: {
-          data: response.data.data.devices, 
-          params: action.params 
+        type: commonAction.GET_COMMON_FETCH_SUCCESS, 
+        payload: {
+          devices: response.data.data.devices, 
         }
       });       
-    } else{
-      yield put({ 
-        type: commonAction.GET_DEVICES_FAIL, 
-        error:{
-          code: response.data.code,
-          message: response.data.message
-        }
-      });        
     }
   } catch (e) {
     console.log(e);
@@ -129,20 +93,11 @@ function *getPartition(action){
     const response = yield call(axios.get, url, {params: action.params});
     if(response.data.code === '10000'){
       yield put({ 
-        type: commonAction.GET_PARTITIONS_SUCCESS, 
-        params: {
-          data: response.data.data.partitions, 
-          params: action.params 
+        type: commonAction.GET_COMMON_FETCH_SUCCESS, 
+        payload: {
+          partitions: response.data.data.partitions
         }
       });       
-    } else{
-      yield put({ 
-        type: commonAction.GET_PARTITIONS_FAIL, 
-        error:{
-          code: response.data.code,
-          message: response.data.message
-        }
-      });        
     }
   } catch (e) {
     console.log(e);
@@ -158,7 +113,7 @@ function *getAllDepartment(action){//获取所有部门基础信息
     const response = yield call(axios.get,url);
     if(response.data.code === "10000") {
       yield put({
-        type: commonAction.GET_DATA_SUCCESS,
+        type: commonAction.GET_COMMON_FETCH_SUCCESS,
         payload:{
           allDepartmentData: response.data.data,
         },
@@ -201,9 +156,9 @@ function *getAllDepartment(action){//获取所有部门基础信息
 
 export function* watchCommon() {
   yield takeLatest(commonAction.CHANGE_COMMON_STORE_SAGA, changeCommonStore);
-  // yield takeLatest(commonAction.REFRESHTOKEN_SAGE, refreshToken);
+  // yield takeLatest(commonAction.REFRESHTOKEN_SAGA, refreshToken);
   yield takeLatest(commonAction.GET_STATIONS_SAGA, getStations);
-  yield takeLatest(commonAction.GET_ALL_DEPARTMENT_DATA, getAllDepartment);
+  yield takeLatest(commonAction.GET_ALL_DEPARTMENT_SAGA, getAllDepartment);
   yield takeLatest(commonAction.GET_DEVICETYPES_SAGA, getDeviceTypes);
   yield takeLatest(commonAction.GET_STATION_DEVICETYPES_SAGA, getStationDeviceTypes);
   yield takeLatest(commonAction.GET_DEVICES_SAGA, getDevices);

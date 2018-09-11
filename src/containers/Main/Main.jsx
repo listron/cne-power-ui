@@ -165,7 +165,7 @@ const mapDispatchToProps = (dispatch) => ({
   getDeviceTypes: payload => dispatch({ type: commonAction.GET_DEVICETYPES_SAGA, payload }),
   setTopMenu: payload => dispatch({ type: commonAction.CHANGE_COMMON_STORE_SAGA, payload }),
   changeLoginStore: params => dispatch({ type: loginAction.CHANGE_LOGIN_STORE_SAGA, params }),
-  // refreshToken: payload => dispatch({ type: commonAction.REFRESHTOKEN_SAGE, payload})
+  // refreshToken: payload => dispatch({ type: commonAction.REFRESHTOKEN_SAGA, payload})
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Main));
