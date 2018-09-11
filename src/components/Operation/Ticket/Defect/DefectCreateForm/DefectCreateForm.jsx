@@ -244,7 +244,6 @@ class TmpForm extends Component {
                 <RadioButton value="1">未解决</RadioButton>
                 <RadioButton value="0">已解决</RadioButton>
               </RadioGroup>
-              // <FormHanleButtons onDefectFinishChange={this.onDefectFinishChange} />
             )}
           </FormItem>
           {!defectFinished && <FormItem label="处理建议" colon={false}>
@@ -290,8 +289,12 @@ class TmpForm extends Component {
           </FormItem>}
           <div className={styles.actionBar}>
             <Button className={styles.saveBtn} onClick={()=>this.onDefectCreate(false)}>保存</Button>
-            <Button onClick={()=>this.onDefectCreate(true)}>保存并继续添加</Button>
+            {!editDefect&&<Button onClick={()=>this.onDefectCreate(true)}>保存并继续添加</Button>}
           </div>
+          {!editDefect&&<div className={styles.addTips}>
+            <span>选择“保存”按钮后将跳转到对应的列表页；</span>
+            <span>选择“保存并继续添加”按钮会停留在添加页面</span>
+          </div>}
         </div>
       </Form>
     );

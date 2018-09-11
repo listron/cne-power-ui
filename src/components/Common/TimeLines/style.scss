@@ -27,15 +27,10 @@
   }
   .timeLines {
     font-size: 14px;
-    :global {
-      .ant-timeline-item {
-        padding: 0;
-      }
-    }
+    
     .processItem {
       display: flex;
       flex-direction: column;
-      margin-bottom: 24px;
       .basic {
         display: flex;
         flex-direction: row;
@@ -100,8 +95,21 @@
       color: $themeColor;
       font-size: 16px;
     }
-    .ant-timeline-item-head-custom {
-      left: 8px;
+    .ant-timeline-item {
+      padding-bottom: 24px;
+      .ant-timeline-item-head-custom {
+        left: 8px;
+      }
+    }
+    .ant-timeline-item-last {
+      .ant-timeline-item-tail {
+        height: 36px;
+      }
+    }
+    .ant-timeline-item-pending {
+      .ant-timeline-item-head-custom {
+        display: none;
+      }
     }
   }
 }
