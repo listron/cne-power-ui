@@ -22,7 +22,7 @@ class InspectCreateForm extends Component{
     super(props);
   }
 
-  onInsepectCreate = (isContinueAdd) => {
+  onInspectCreate = (isContinueAdd) => {
     const { error, form, createInspect } = this.props;
     form.validateFields((err, values) => {
       if(!err){

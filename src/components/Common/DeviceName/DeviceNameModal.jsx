@@ -10,16 +10,13 @@ class DeviceNameModal extends Component {
   static propTypes = {
     show: PropTypes.bool,//控制对话框的显示和关闭
     stationName: PropTypes.string,//电站名称
-    // deviceTypeCode: PropTypes.number,//选中的设备类型编码
     deviceType: PropTypes.string,//选中的设备类型
     deviceCode: PropTypes.string,//选中的设备
-    deviceAreaCode: PropTypes.string,//选中的分区编码
-    // deviceTypeItems: PropTypes.object,//设备类型的选项
+    deviceAreaCode: PropTypes.string,
     deviceAreaItems: PropTypes.object,//电站分区选项
     deviceItems: PropTypes.object,//设备列表
     onSelectDevice: PropTypes.func,
     onCancel: PropTypes.func,
-    // onChangeType: PropTypes.func,
     onChangeArea: PropTypes.func,
     loadDeviceList: PropTypes.func,
   }
@@ -101,18 +98,16 @@ class DeviceNameModal extends Component {
     return (
       <Modal
         visible={this.props.show}
-        closable={false}
+        title="请选择"
         onOk={this.onSave}
         onCancel={this.onCancel}
         destroyOnClose={true}
+        width={635}
         okText="保存"
       >
         <div className={styles.deviceNameSelect}>
           <div className={styles.header}>
-            <div>
-              正在查找<span style={{color:'#7ec5c2'}}>{this.props.stationName}</span>电站设备
-            </div>
-            <div>设备类型<span>{this.props.deviceType}</span></div>
+            <div>设备类型<span className={styles.deviceType}>{this.props.deviceType}</span></div>
             {/* <div>
               设备类型
               <Select
@@ -132,7 +127,7 @@ class DeviceNameModal extends Component {
                     this.onChangeArea(value)
                   }}
                   placeholder="请选择"
-                  style={{ width: 200 }}
+                  style={{ width: 112, marginLeft: 8 }}
                   value={this.state.selectedDeviceAreaCode !== '' ? this.state.selectedDeviceAreaCode : this.props.deviceAreaCode}>
                   {this.renderAreaItems()}
                 </Select>

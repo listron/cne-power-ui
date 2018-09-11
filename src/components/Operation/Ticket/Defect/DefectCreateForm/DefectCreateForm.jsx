@@ -22,6 +22,7 @@ class TmpForm extends Component {
     getStationDeviceTypes: PropTypes.func,
     getDefectTypes: PropTypes.func,
     getDevices: PropTypes.func,
+    getStationAreas: PropTypes.func,
     onDefectCreateNew: PropTypes.func,
     showContainer: PropTypes.string,
     onChangeShowContainer: PropTypes.func,
@@ -49,7 +50,7 @@ class TmpForm extends Component {
 
   onChangeReplace = (checked) => {
     this.setState({
-      checked: checked
+      checked: checked,
     });
   }
 
@@ -57,8 +58,17 @@ class TmpForm extends Component {
     const stationCodes = (stations && stations[0] && stations[0].stationCode) || 0;
     const tmpStationType = stations && stations[0] && stations[0].stationType;
     const stationType = tmpStationType===20?1:tmpStationType===10?0:2;
-    this.props.getStationDeviceTypes({stationCodes})
-    this.props.getDefectTypes({stationType})
+    this.props.getStationDeviceTypes({stationCodes});
+    this.props.getDefectTypes({stationType});
+  }
+
+  onChangeDeviceType = (deviceTypeCode) => {
+    let params = {
+      stationCode: this.props.form.getFieldValue('stations')[0].stationCode,
+      deviceTypeCode
+    };
+    this.props.getDevices(params);
+    this.props.getStationAreas(params);
   }
 
   onDefectCreate = (isContinueAdd) => {
@@ -116,6 +126,8 @@ class TmpForm extends Component {
     return deviceType;
   }
 
+
+
   loadDeviceList = (areaCode) => {
     let params = {
       stationCode: this.props.form.getFieldValue('stations')[0].stationCode,
@@ -128,7 +140,7 @@ class TmpForm extends Component {
   }
 
   render() {
-    const {stations, deviceTypes, defectTypes, defectDetail, editDataGet, showContainer } = this.props;
+    const {stations, deviceTypes, defectTypes,deviceItems, defectDetail, editDataGet, showContainer } = this.props;
     const {getFieldDecorator, getFieldValue} = this.props.form;
     const defectFinished = getFieldValue('defectSolveResult') === '0';
     const editDefect = showContainer === 'edit';
@@ -162,7 +174,7 @@ class TmpForm extends Component {
               rules: [{ required: true, message: '请选择设备类型' }],
               initialValue: defaultDeviceType && defaultDeviceType.deviceTypeCode || undefined,
             })(
-              <Select style={{width:198}} placeholder="请选择" disabled={deviceTypes.length === 0}>
+              <Select style={{width:198}} placeholder="请选择" disabled={deviceTypes.length === 0} onChange={this.onChangeDeviceType}>
                 {deviceTypes.map(e=>(<Option key={e.deviceTypeCode} value={e.deviceTypeCode}>{e.deviceTypeName}</Option>))}
               </Select>
             )}
@@ -172,15 +184,13 @@ class TmpForm extends Component {
               rules: [{ required: true, message: '请选择设备名称' }],
             })(
               <DeviceName  
-                disabled={!getFieldValue('deviceTypeCode')}
+                disabled={deviceItems.size===0}
                 placeholder="输入关键字快速查询"
-                stationName={getFieldValue('stations').length > 0 ? getFieldValue('stations')[0].stationName : ''}
-                deviceType={this.getDeviceType(getFieldValue('deviceTypeCode'))}
-                deviceAreaCode={this.state.deviceAreaCode}
-                onChangeArea={this.onChangeArea}
-                deviceTypeItems={this.props.deviceTypeItems}
                 deviceAreaItems={this.props.deviceAreaItems}
                 deviceItems={this.props.deviceItems}
+                deviceAreaCode={this.state.deviceAreaCode}
+                deviceType={this.getDeviceType(getFieldValue('deviceTypeCode'))}
+                onChangeArea={this.onChangeArea}
                 loadDeviceList={this.loadDeviceList}
               />
             )}
