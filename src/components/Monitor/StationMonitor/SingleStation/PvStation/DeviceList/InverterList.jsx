@@ -118,7 +118,7 @@ class InverterList extends Component {
         key: 'deviceName',
         render: (text, record, index) => (
           <div className={record.deviceStatus === 900 ? styles.deviceCode : ""} >
-            <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${record.deviceCode}`} target="_blank"  >{text}</Link>
+            <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${record.deviceCode}`} target="_blank" className={styles.tableDeviceName} >{text}</Link>
           </div>
         )
       }, {

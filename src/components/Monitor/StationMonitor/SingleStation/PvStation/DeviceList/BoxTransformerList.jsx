@@ -115,7 +115,7 @@ class BoxTransformerList extends Component {
         title: '设备名称',
         dataIndex: 'deviceName',
         key: 'deviceName',
-        render: (text, record, index) => (<div className={record.deviceStatus === 900 ? styles.deviceCode : ""} ><Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${record.deviceCode}`} target="_blank" >{text}</Link></div>)
+        render: (text, record, index) => (<div className={record.deviceStatus === 900 ? styles.deviceCode : ""} ><Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${record.deviceCode}`} target="_blank"  className={styles.tableDeviceName}  >{text}</Link></div>)
       }, {
         title: '实时功率(kW)',
         dataIndex: 'devicePower',
