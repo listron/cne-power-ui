@@ -18,20 +18,45 @@ class OutputPowerDiagram extends Component {
     getMonitorPower: PropTypes.func,
   }
 
-  constructor(props){
+  constructor(props) {
     super(props);
-
-  }
-  componentDidMount(){
-    
   }
 
-  componentWillReceiveProps(nextProps){
+
+  componentWillReceiveProps(nextProps) {
     const { capabilityData, powerData } = nextProps;
     const lineColor = '#999';
+    const stationPowerData = capabilityData && capabilityData.map(e => e.stationPower);
+    const instantaneousData = capabilityData && capabilityData.map(e => e.instantaneous);
+    const filterStationPowerData = capabilityData && capabilityData.filter(e => e.stationPower);
+    const filterInstantaneousData = capabilityData && capabilityData.filter(e => e.instantaneous);
     const capabilityDiagram = echarts.init(document.getElementById('capabilityDiagram'));
     const powerDiagram = echarts.init(document.getElementById('powerDiagram'));
-    capabilityDiagram.setOption({
+
+    const graphicData = ((stationPowerData.length === 0 && filterStationPowerData.length === 0) && (instantaneousData.length === 0 && filterInstantaneousData.length === 0)) ? [
+      {
+        type: 'group',
+        left: 'center',
+        top: 'center',
+        children: [
+          {
+            type: 'text',
+            z: 100,
+            left: 'center',
+            top: 'middle',
+            style: {
+              fill: '#999',
+              text: [
+                '暂无数据'
+              ],
+              font: '14px Microsoft YaHei',
+            }
+          }
+        ]
+      }
+    ] : [];
+
+    const tmpOption = {
       title: {
         text: '出力图',
         textStyle: {
@@ -41,7 +66,7 @@ class OutputPowerDiagram extends Component {
         },
       },
       legend: {
-        data:['功率','瞬时辐照'],
+        data: ['功率', '瞬时辐照'],
         textStyle: {
           color: lineColor,
           fontSize: 12,
@@ -59,12 +84,13 @@ class OutputPowerDiagram extends Component {
           fontSize: '12px',
         }
       },
+      graphic: graphicData,
       calculable: true,
       xAxis: [
         {
           type: 'category',
           boundaryGap: false,
-          data: capabilityData && capabilityData.map(e=>{
+          data: capabilityData && capabilityData.map(e => {
             return moment(moment.utc(e.utc).toDate()).format('MM/DD hh:mm');
           }),
           axisLine: {
@@ -94,8 +120,7 @@ class OutputPowerDiagram extends Component {
               color: '#dfdfdf',
             },
           },
-          splitLine: false,
-          axisTick: {
+          splitLine: {
             show: false,
           },
         },
@@ -114,18 +139,17 @@ class OutputPowerDiagram extends Component {
               color: '#dfdfdf',
             },
           },
-          splitLine: false,
-          axisTick: {
+          splitLine: {
             show: false,
           },
         }
       ],
       series: [
         {
-          name:'功率',
-          type:'line',
-          smooth:true,
-          data: capabilityData && capabilityData.map(e=>e.stationPower),
+          name: '功率',
+          type: 'line',
+          smooth: true,
+          data: stationPowerData,
           yAxisIndex: 0,
           areaStyle: {
             color: '#fff2f2',
@@ -138,10 +162,10 @@ class OutputPowerDiagram extends Component {
           },
         },
         {
-          name:'瞬时辐照',
-          type:'line',
-          smooth:true,
-          data: capabilityData && capabilityData.map(e=>e.instantaneous),
+          name: '瞬时辐照',
+          type: 'line',
+          smooth: true,
+          data: instantaneousData,
           yAxisIndex: 1,
           itemStyle: {
             color: "#199475",
@@ -154,11 +178,51 @@ class OutputPowerDiagram extends Component {
             show: false,
           },
         }
-      ]              
-    });
-    
+      ]
+    }
+   
+
+    capabilityDiagram.setOption(tmpOption);
+
+    if (nextProps.capabilityData !== this.props.capabilityData && nextProps.capabilityData.length !== 0) {
+      echarts.dispose(document.getElementById('capabilityDiagram'));
+      const capabilityDiagram = echarts.init(document.getElementById('capabilityDiagram'));
+      capabilityDiagram.setOption(tmpOption);
+    }
+
+    // if((stationPowerData.length===0&&filterStationPowerData.length===0)&&(instantaneousData.length===0&&filterInstantaneousData.length===0)){
+    //   capabilityDiagram.setOption(tmpOption);
+    // }else{
+    //   echarts.dispose(document.getElementById('capabilityDiagram'));
+    //   const capabilityDiagram = echarts.init(document.getElementById('capabilityDiagram'));
+    //   capabilityDiagram.setOption(tmpOptionTest);
+    // }
+
+
+    // if(graphicData.length === 0){
+    //   echarts.dispose(document.getElementById('capabilityDiagram'));
+    //   const capabilityDiagram = echarts.init(document.getElementById('capabilityDiagram'));
+    //   capabilityDiagram.setOption(tmpOption);
+    // }else{
+    //    capabilityDiagram.setOption(tmpOption);
+    // }
+    // //console.log(tmpOption.graphic)
+    // capabilityDiagram.setOption(tmpOption);
+
     powerDiagram.setOption({
-      color: ['#a42b2c','#c7ceb2','#f7c028'],
+      noDataLoadingOption: {
+        text: '暂无数据',
+        effect: 'whirling',
+        textStyle: {
+          fontSize: 20
+        },
+        effectOption: {
+          effect: {
+            n: 0
+          }
+        }
+      },
+      color: ['#a42b2c', '#c7ceb2', '#f7c028'],
       title: {
         text: '发电量',
         textStyle: {
@@ -184,7 +248,7 @@ class OutputPowerDiagram extends Component {
           fontSize: '12px',
         },
         formatter: (param) => {
-          let rate=(param[0].value/param[1].value)<1 ? (param[0].value/param[1].value).toFixed(2)+'%' : '100%';
+          let rate = (param[0].value / param[1].value) < 1 ? (param[0].value / param[1].value).toFixed(2) + '%' : '100%';
           return [
             param[0].name + '<hr size=1 style="margin: 3px 0">',
             '日曝辐值: ' + param[2].value + '<br/>',
@@ -199,7 +263,7 @@ class OutputPowerDiagram extends Component {
         {
           type: 'category',
           boundaryGap: false,
-          data: powerData && powerData.map(e=>e.time),
+          data: powerData && powerData.map(e => e.time),
           axisLine: {
             lineStyle: {
               color: '#dfdfdf',
@@ -208,7 +272,7 @@ class OutputPowerDiagram extends Component {
           axisLabel: {
             color: lineColor,
           },
-          axisTick: {show: false},
+          axisTick: { show: false },
           boundaryGap: [true, true],
         }
       ],
@@ -226,15 +290,6 @@ class OutputPowerDiagram extends Component {
           axisLine: {
             show: false,
           },
-          axisTick: {
-            show: false,
-          },
-          splitLine: {
-            lineStyle: {
-              color: '#f1f1f1',
-              type: 'dashed',
-            }
-          }
         },
         {
           name: '日曝辐值(MJ/m²)',
@@ -262,9 +317,9 @@ class OutputPowerDiagram extends Component {
       ],
       series: [
         {
-          name:'实际发电量',
-          type:'bar',
-          data: powerData && powerData.map(e=>e.actualPower),
+          name: '实际发电量',
+          type: 'bar',
+          data: powerData && powerData.map(e => e.actualPower),
           label: {
             show: false,
             rotate: 90,
@@ -278,9 +333,9 @@ class OutputPowerDiagram extends Component {
           barWidth: 14,
         },
         {
-          name:'理论发电量',
-          type:'bar',
-          data: powerData && powerData.map(e=>e.theoryPower),
+          name: '理论发电量',
+          type: 'bar',
+          data: powerData && powerData.map(e => e.theoryPower),
           label: {
             show: false,
             rotate: 90,
@@ -293,16 +348,16 @@ class OutputPowerDiagram extends Component {
           barWidth: 14,
         },
         {
-          name:'瞬时辐照',
-          type:'line',
-          data: powerData && powerData.map(e=>e.instantaneous),
+          name: '瞬时辐照',
+          type: 'line',
+          data: powerData && powerData.map(e => e.instantaneous),
           yAxisIndex: 1,
           lineStyle: {
             type: 'solid',
             color: "#f7c028",
           }
         }
-      ]              
+      ]
     })
   }
 
@@ -310,23 +365,23 @@ class OutputPowerDiagram extends Component {
     const { stationCode } = this.props.match.params;
     this.props.getMonitorPower({
       stationCode,
-      intervalTime: parseInt(e.target.value), 
-      startTime: moment().set({'year': moment().year(), 'month': 0, 'date': 1, }).format('YYYY-MM-DD'), 
+      intervalTime: parseInt(e.target.value),
+      startTime: moment().set({ 'year': moment().year(), 'month': 0, 'date': 1, }).format('YYYY-MM-DD'),
       endTime: moment().format('YYYY-MM-DD'),
     });
   }
 
-  render(){
+  render() {
     const resourceAnalysis = "/statistical/stationaccount/resource";
     const productionAnalysis = "/statistical/stationaccount/production";
     return (
       <div className={styles.outputPowerDiagram}>
         <div className={styles.capabilityDiagramBox} >
-          <div id="capabilityDiagram" style={{ width: "100%", height: "100%",borderRight:"1px solid #dfdfdf",color: '#999', paddingTop: "20px" }}><i className="iconfont icon-more"></i></div>
+          <div id="capabilityDiagram" style={{ width: "100%", height: "100%", borderRight: "2px solid #dfdfdf", color: '#999', paddingTop: "20px" }}><i className="iconfont icon-more"></i></div>
           <Link to={resourceAnalysis} target="_blank"  ><i className="iconfont icon-more"></i></Link>
         </div>
         <div className={styles.powerDiagramBox} >
-          <div id="powerDiagram" style={{ width: "100%", height: "100%",color: '#999', paddingTop: "20px" }}></div>
+          <div id="powerDiagram" style={{ width: "100%", height: "100%", color: '#999', paddingTop: "20px" }}></div>
           <div className={styles.powerRadio}>
             <RadioGroup defaultValue="0" size="small" onChange={this.onChangeTimePower} >
               <RadioButton value="0">日</RadioButton>
@@ -336,7 +391,7 @@ class OutputPowerDiagram extends Component {
           </div>
           <Link to={productionAnalysis} target="_blank"  ><i className="iconfont icon-more"></i></Link>
         </div>
-        
+
       </div>
     )
   }
