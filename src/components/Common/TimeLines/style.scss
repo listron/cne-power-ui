@@ -27,6 +27,11 @@
   }
   .timeLines {
     font-size: 14px;
+    :global {
+      .ant-timeline-item {
+        padding: 0;
+      }
+    }
     .processItem {
       display: flex;
       flex-direction: column;
