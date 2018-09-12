@@ -112,5 +112,75 @@ module.exports = [
     },
     delay:1000,
     error:{}
+  },{ // 请求设备列表
+    api: '/mock/system/deviceManage/deviceList',
+    method: 'post',
+    response: {
+      "code": "10000",
+      "message": "请求成功",
+      "data": {
+        "totalNum": 95,
+        "context":  [1,2,3,4,5,6,7,8,9,0].map((e,i)=>({
+          deviceFullCode: i,
+          deviceName: `设备${i}号`,
+          deviceTypeCode: i*2,
+          deviceTypeName: `类${i}型`,
+          deviceTypeCode: i*3,
+          deviceModeCode: i*4,
+          deviceModeName: `型号${i}`,
+          producerCode: i*i,
+          producerName: `型号${i*i}`,
+          connectDeviceFullCode: i*i*2,
+          connectDeviceName: `关联设备名称${i*i*2}`,
+          deviceCapacity: 10*i,
+          enableDisplay: !!(i%2),
+        }))
+      },
+      "serviceCode": "3.0"
+    },
+    delay: 1000,
+    error: {}
+  },{ // 请求测点列表
+    api: '/mock/system/pointManage/pointsList',
+    method: 'post',
+    response: {
+      "code": "10000",
+      "message": "请求成功",
+      "data": {
+        "totalNum": 95,
+        "context":  [1,2,3,4,5,6,7,8,9,0].map((e,i)=>({
+          deviceFullCode: i,
+          deviceName: `测点${i}号`,
+          deviceTypeCode: i*2,
+          deviceTypeName: `类${i}型`,
+          deviceTypeCode: i*3,
+          deviceModeCode: i*4,
+          deviceModeName: `型号${i}`,
+          producerCode: i*i,
+          producerName: `型号${i*i}`,
+          connectDeviceFullCode: i*i*2,
+          connectDeviceName: `关联设备名称${i*i*2}`,
+          deviceCapacity: 10*i,
+          enableDisplay: !!(i%2),
+        }))
+      },
+      "serviceCode": "3.0"
+    },
+    delay: 1000,
+    error: {}
+  },{
+    api: '/mock/system/pointManage/deletePointList',
+    method: 'delete',
+    response: {
+      "code": "10000",
+      "message": "删除成功",
+      "data": {
+        "text": '删除测点成功'
+      },
+      "serviceCode": "3.0"
+    },
+    delay: 1000,
+    error: {}
   }
 ]
+

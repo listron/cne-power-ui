@@ -30,7 +30,24 @@
       background: #f4f4f4;
       color: $lightColor;
     }
+    .ant-table-column-sorter-up.on .anticon-caret-up {//table表格排序上三角点击后的的颜色
+      color: $themeColor;
+    }
+    .ant-table-column-sorter-down.on .anticon-caret-down {//table表格排序下三角点击后的的颜色
+        color: $themeColor;
+    }
   }
+
+  .ant-tree{ // 对antd tree控件的初始化： 高两色调整。
+    .ant-tree-checkbox-checked .ant-tree-checkbox-inner, .ant-tree-checkbox-indeterminate .ant-tree-checkbox-inner{
+      background-color: $themeColor;
+      border-color: $themeColor;
+    }
+    .ant-tree-checkbox-wrapper:hover .ant-tree-checkbox-inner, .ant-tree-checkbox:hover .ant-tree-checkbox-inner, .ant-tree-checkbox-input:focus + .ant-tree-checkbox-inner{
+      border-color: $themeColor;
+    }
+  }
+  
   .ant-btn {   //antd按钮样式调整-高亮
     color: $darkColor;
     @include highLight($themeColor);

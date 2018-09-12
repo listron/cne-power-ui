@@ -29,21 +29,17 @@ class StationManageTable extends Component {
     this.state = {
       departmentModal: false,
       departmentSetInfo: {},
-      uploadLoading: false,
     }
   }
 
   onStationUpload = ({file, fileList}) => { // 添加上传电站
-    this.setState({ uploadLoading: true})
     if (file.status !== 'uploading') {
       console.log(file, fileList);
     }
     if (file.status === 'done') {
       message.success(`${file.name} 文件上传成功`);
-      this.setState({ uploadLoading: false})
     } else if (file.status === 'error') {
       message.error(`${file.name} 文件上传失败!`);
-      this.setState({ uploadLoading: false})
     }
   }
 
@@ -56,7 +52,7 @@ class StationManageTable extends Component {
     })
   }
 
-  onStationDelete = (record) => { // 删除部门
+  onStationDelete = (record) => { // 删除电站
     this.props.deleteStation({stationCode: record.stationCode})
   }
 
@@ -80,7 +76,7 @@ class StationManageTable extends Component {
     console.log('down load templet')
   }
 
-  tableChange = (pagination, filter, sorter) => { // 部门排序
+  tableChange = (pagination, filter, sorter) => { // 电站list排序=>重新请求数据
     const { getStationList, queryListParams } = this.props;
     const sortName = sorter.field;
     // orderField: '', // 排序字段 1：电站名称; 2:区域 ;3:覆盖类型;4:并网类型;5：装机容量;6:发点单元数;7：电站接入
@@ -119,11 +115,11 @@ class StationManageTable extends Component {
 
   render(){
     const { loading, stationList, totalNum, allDepartmentData } = this.props;
-    const { departmentModal, departmentSetInfo, uploadLoading } = this.state;
+    const { departmentModal, departmentSetInfo } = this.state;
     const authData = Cookie.get('authData') || null;
     const column = [
       {
-        title: '电站',
+        title: '电站名称',
         dataIndex: 'stationName',
         key: 'stationName',
         sorter: true,
@@ -139,9 +135,9 @@ class StationManageTable extends Component {
         dataIndex: 'departmentStatus',
         key: 'departmentStatus',
         render: (text, record, index) => {
-          const { departmentStatus } = record;
-          if(departmentStatus){
-            return (<span className={styles.setDepartment} onClick={()=>this.showDepartmentModal(record)}>查看</span>)
+          const { stationDepartments } = record;
+          if(stationDepartments && stationDepartments.length > 0){
+            return (<span className={styles.seeDepartment} onClick={()=>this.showDepartmentModal(record)}>查看</span>)
           }else{
             return (<span className={styles.setDepartment} onClick={()=>this.showDepartmentModal(record)}>设置</span>)
           }
@@ -151,32 +147,40 @@ class StationManageTable extends Component {
         dataIndex: 'handler',
         key: 'handler',
         render: (text, record, index) => {
-          return (<span className={styles.deleteStation} onClick={()=>this.onStationDelete(record)}>删除</span>)
+          const deletable = (!record.stationDepartments || record.stationDepartments.length === 0) && !record.stationStatus;
+          if(deletable){
+            return <span className={styles.deleteStation} onClick={()=>this.onStationDelete(record)}>删除</span>
+          }else{
+            return <span className={styles.deleteDisable}>删除</span>
+          }
         }
       }
     ];
     return (
-      <div>
-        <div>
-          <Upload 
-            action="/api/v3/management/stationimport"
-            className={styles.uploadStation}
-            onChange={this.onStationUpload}
-            headers={{'Authorization': 'bearer ' + JSON.parse(authData)}}
-            beforeUpload={this.beforeUploadStation}
-          >
-            <Button loading={uploadLoading}>
-              <Icon type="plus" />
-              <span>电站</span>
-            </Button>
-          </Upload>
-          <Button href={'www.baidu.com'} download={'www.baidu.com'}  target="_blank"  >下载电站配置模板</Button>
+      <div className={styles.stationList}>
+        <div className={styles.topHandler}>
+          <div className={styles.leftHandler}>
+            <Upload 
+              action="/api/v3/management/stationimport"
+              className={styles.uploadStation}
+              onChange={this.onStationUpload}
+              headers={{'Authorization': 'bearer ' + JSON.parse(authData)}}
+              beforeUpload={this.beforeUploadStation}
+            >
+              <Button className={styles.plusButton}>
+                <Icon type="plus" className={styles.plusIcon} />
+                <span className={styles.plusText}>电站</span>
+              </Button>
+            </Upload>
+            <Button href={'www.baidu.com'} download={'www.baidu.com'}  target="_blank"  >下载电站配置模板</Button>
+          </div>
           <CommonPagination total={totalNum} onPaginationChange={this.onPaginationChange} />
         </div>
         <Table 
           loading={loading}
           dataSource={ stationList.map((e, i) => ({...e, key: i})) } 
           columns={column} 
+          className={styles.stationTable}
           onChange={this.tableChange}
           pagination={false}
           locale={{emptyText:<img width="223" height="164" src="/img/nodata.png" />}}
