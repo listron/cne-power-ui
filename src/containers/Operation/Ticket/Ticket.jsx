@@ -30,6 +30,26 @@ class Ticket extends Component {
     };
   }
 
+  componentDidMount() {
+    var params = {
+      stationType: '2',
+      stationCodes: '',
+      defectSource: '3',
+      defectLevel: '0',
+      timeInterval: '0',
+      status: '5',
+      pageNum: 1,
+      pageSize: 10,
+      createTimeStart: '',
+      createTimeEnd: '',
+      deviceTypeCode: '',
+      defectTypeCode: '',
+      sort: '',
+      handleUser: '',
+    }
+    this.props.getDefectList(params);
+  }
+
   componentWillUnmount() {
     this.props.clearDefectState();
     this.props.clearInspectState();
@@ -44,22 +64,37 @@ class Ticket extends Component {
     if(tab === "inspect") {
       this.props.clearDefectState();//清除缺陷状态
       var params = {
-        stationType: "2",
+        stationType: '2',
+        stationCodes: '',
+        timeInterval: '0',
         status: '5',
-        pageNum: 0,
+        pageNum: 1,
         pageSize: 10,
         sort: '',
+        createTimeStart: '',
+        createTimeEnd: '',
+        deviceTypeCode: '',
+        // handleUser: '',
+        // hasAbnormal: false
       }
       this.props.getInspectList(params);//获取巡检列表
     } else {
       this.props.clearInspectState();//清除巡检状态
       var params = {
-        defectSource: '3',
         stationType: '2',
+        stationCodes: '',
+        defectSource: '3',
+        defectLevel: '0',
+        timeInterval: '0',
         status: '5',
-        pageNum: 0,
+        pageNum: 1,
         pageSize: 10,
-        sort: ''
+        createTimeStart: '',
+        createTimeEnd: '',
+        deviceTypeCode: '',
+        defectTypeCode: '',
+        sort: '',
+        handleUser: '',
       }
       this.props.getDefectList(params);//获取缺陷列表
     }

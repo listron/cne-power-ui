@@ -28,33 +28,33 @@ class OutputPowerDiagram extends Component {
     const lineColor = '#999';
     const stationPowerData = capabilityData && capabilityData.map(e => e.stationPower);
     const instantaneousData = capabilityData && capabilityData.map(e => e.instantaneous);
-    const filterStationPowerData = capabilityData && capabilityData.filter(e => e.stationPower);
-    const filterInstantaneousData = capabilityData && capabilityData.filter(e => e.instantaneous);
+    // const filterStationPowerData = capabilityData && capabilityData.filter(e => e.stationPower);
+    // const filterInstantaneousData = capabilityData && capabilityData.filter(e => e.instantaneous);
     const capabilityDiagram = echarts.init(document.getElementById('capabilityDiagram'));
     const powerDiagram = echarts.init(document.getElementById('powerDiagram'));
 
-    const graphicData = ((stationPowerData.length === 0 && filterStationPowerData.length === 0) && (instantaneousData.length === 0 && filterInstantaneousData.length === 0)) ? [
-      {
-        type: 'group',
-        left: 'center',
-        top: 'center',
-        children: [
-          {
-            type: 'text',
-            z: 100,
-            left: 'center',
-            top: 'middle',
-            style: {
-              fill: '#999',
-              text: [
-                '暂无数据'
-              ],
-              font: '14px Microsoft YaHei',
-            }
-          }
-        ]
-      }
-    ] : [];
+    // const graphicData = ((stationPowerData.length === 0 && filterStationPowerData.length === 0) && (instantaneousData.length === 0 && filterInstantaneousData.length === 0)) ? [
+    //   {
+    //     type: 'group',
+    //     left: 'center',
+    //     top: 'center',
+    //     children: [
+    //       {
+    //         type: 'text',
+    //         z: 100,
+    //         left: 'center',
+    //         top: 'middle',
+    //         style: {
+    //           fill: '#999',
+    //           text: [
+    //             '暂无数据'
+    //           ],
+    //           font: '14px Microsoft YaHei',
+    //         }
+    //       }
+    //     ]
+    //   }
+    // ] : [];
 
     const tmpOption = {
       title: {
@@ -66,32 +66,48 @@ class OutputPowerDiagram extends Component {
         },
       },
       legend: {
-        data: ['功率', '瞬时辐照'],
+        data:['功率','斜面辐射'],
         textStyle: {
           color: lineColor,
           fontSize: 12,
         },
+        itemWidth: 24,
+        itemHeight: 6,
       },
       grid: {
-        show: true,
+        show: false,
       },
       tooltip: {
         trigger: 'axis',
         show: true,
         backgroundColor: '#fff',
         textStyle: {
-          color: lineColor,
+          color: '#999',
           fontSize: '12px',
-        }
+        },
+        axisPointer: {
+          type: 'cross',
+          label: {
+            backgroundColor: '#666',
+          }
+        },
+        formatter: (param) => {
+          return `<div style="width: 128px; height: 75px;font-size:12px;line-height: 24px;background: #fff;box-shadow:0 1px 4px 0 rgba(0,0,0,0.20);border-radius:2px;">
+            <div style="border-bottom: 1px solid #dfdfdf;padding-left: 5px;" >${param[0].name}</div>
+            <div style="padding-left: 5px;" >${param[1].marker}斜面辐射: ${param[1].value}</div>
+            <div style="padding-left: 5px;" >${param[0].marker}功率: ${param[0].value}</div>
+          </div>`;
+        },
+        extraCssText:'background: rgba(0,0,0,0);',
       },
-      graphic: graphicData,
+      // graphic: graphicData,
       calculable: true,
       xAxis: [
         {
           type: 'category',
           boundaryGap: false,
-          data: capabilityData && capabilityData.map(e => {
-            return moment(moment.utc(e.utc).toDate()).format('MM/DD hh:mm');
+          data: capabilityData && capabilityData.map(e=>{
+            return moment(moment.utc(e.utc).toDate()).format('MM-DD hh:mm');
           }),
           axisLine: {
             lineStyle: {
@@ -100,6 +116,9 @@ class OutputPowerDiagram extends Component {
           },
           axisLabel: {
             color: lineColor,
+          },
+          axisTick: {
+            show: false,
           },
         }
       ],
@@ -115,7 +134,7 @@ class OutputPowerDiagram extends Component {
             color: lineColor,
           },
           axisLine: {
-            show: false,
+            show: true,
             lineStyle: {
               color: '#dfdfdf',
             },
@@ -125,7 +144,7 @@ class OutputPowerDiagram extends Component {
           },
         },
         {
-          name: '瞬时辐照(W/m²)',
+          name: '辐射(W/m²)',
           type: 'value',
           axisLabel: {
             formatter: '{value}',
@@ -160,22 +179,28 @@ class OutputPowerDiagram extends Component {
           axisTick: {
             show: false,
           },
+          lineStyle: {
+            type: 'solid',
+            color: '#c57576',
+            width: 1,
+          },
         },
         {
-          name: '瞬时辐照',
+          name:'斜面辐射',
           type: 'line',
-          smooth: true,
           data: instantaneousData,
           yAxisIndex: 1,
           itemStyle: {
             color: "#199475",
             opacity: 0,
           },
-          lineStyle: {
-            type: 'dashed',
-          },
           axisTick: {
             show: false,
+          },
+          lineStyle: {
+            type: 'dotted',
+            color: '#199475',
+            width: 1,
           },
         }
       ]
@@ -184,11 +209,11 @@ class OutputPowerDiagram extends Component {
 
     capabilityDiagram.setOption(tmpOption);
 
-    if (nextProps.capabilityData !== this.props.capabilityData && nextProps.capabilityData.length !== 0) {
-      echarts.dispose(document.getElementById('capabilityDiagram'));
-      const capabilityDiagram = echarts.init(document.getElementById('capabilityDiagram'));
-      capabilityDiagram.setOption(tmpOption);
-    }
+    // if (nextProps.capabilityData !== this.props.capabilityData && nextProps.capabilityData.length !== 0) {
+    //   echarts.dispose(document.getElementById('capabilityDiagram'));
+    //   const capabilityDiagram = echarts.init(document.getElementById('capabilityDiagram'));
+    //   capabilityDiagram.setOption(tmpOption);
+    // }
 
     // if((stationPowerData.length===0&&filterStationPowerData.length===0)&&(instantaneousData.length===0&&filterInstantaneousData.length===0)){
     //   capabilityDiagram.setOption(tmpOption);
@@ -210,18 +235,6 @@ class OutputPowerDiagram extends Component {
     // capabilityDiagram.setOption(tmpOption);
 
     powerDiagram.setOption({
-      noDataLoadingOption: {
-        text: '暂无数据',
-        effect: 'whirling',
-        textStyle: {
-          fontSize: 20
-        },
-        effectOption: {
-          effect: {
-            n: 0
-          }
-        }
-      },
       color: ['#a42b2c', '#c7ceb2', '#f7c028'],
       title: {
         text: '发电量',
@@ -232,13 +245,22 @@ class OutputPowerDiagram extends Component {
         },
       },
       legend: {
+        data: [{
+          name: '实际发电量',
+          icon: 'circle',
+        },{
+          name: '理论发电量',
+          icon: 'circle',
+        },{
+          name: '日曝辐值',
+          icon: 'circle',
+        }],
         textStyle:{
           color: lineColor,
-        }
+        },
+        itemWidth: 5,
+        itemHeight: 5,        
       },
-      // grid: {
-      //   show: false,
-      // },
       tooltip: {
         trigger: 'axis',
         show: true,
@@ -248,15 +270,16 @@ class OutputPowerDiagram extends Component {
           fontSize: '12px',
         },
         formatter: (param) => {
-          let rate = (param[0].value / param[1].value) < 1 ? (param[0].value / param[1].value).toFixed(2) + '%' : '100%';
-          return [
-            param[0].name + '<hr size=1 style="margin: 3px 0">',
-            '日曝辐值: ' + param[2].value + '<br/>',
-            '实际发电量: ' + param[0].value + '<br/>',
-            '理论发电量: ' + param[1].value + '<br/>',
-            '完成率: ' + rate + '<br/>',
-          ].join('');
-        }
+          let rate=(param[0].value/param[1].value)<1 ? (param[0].value/param[1].value).toFixed(2)+'%' : '100%';
+          return `<div style="width: 128px; height: 115px;font-size:12px;line-height: 24px;background: #fff;box-shadow:0 1px 4px 0 rgba(0,0,0,0.20);border-radius:2px;">
+            <div  style="border-bottom: 1px solid #dfdfdf;padding-left: 5px;">${param[0].name}</div>
+            <div style="padding-left: 5px;">日曝辐值: ${param[2].value}</div>
+            <div style="padding-left: 5px;">实际发电量: ${param[0].value}</div>
+            <div style="padding-left: 5px;">理论发电量: ${param[1].value}</div>
+            <div style="padding-left: 5px;">完成率: ${rate}</div>
+          </div>`;
+        },
+        extraCssText:'background: rgba(0,0,0,0);',
       },
       calculable: false,
       xAxis: [
@@ -348,9 +371,9 @@ class OutputPowerDiagram extends Component {
           barWidth: 14,
         },
         {
-          name: '瞬时辐照',
-          type: 'line',
-          data: powerData && powerData.map(e => e.instantaneous),
+          name:'日曝辐值',
+          type:'line',
+          data: powerData && powerData.map(e=>e.instantaneous),
           yAxisIndex: 1,
           lineStyle: {
             type: 'solid',
