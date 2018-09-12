@@ -106,12 +106,17 @@ export default {
       saveStationDetail: '/v3/management/upateStation', // 编辑后保存电站详情
       deleteStation: '/v3/management/tryDelete', // 删除电站(及以下设备及设备信息)
       setStationDepartment: '/v3/management/alarmevent/station/department', // 分配部门
-      importStationInfo: '/v3/management/station/devices', // 导入电站信息
+      importStationInfo: '/v3/management/station/devices', // 导入电站+设备信息
 
       getDeviceList: '/v3/management/devicelist', // 获取设备列表
-      importDeviceInfo: '/v3/management/station/devices', // 导入设备信息
 
+      getPointList: '/v3/management/station/device/point/list', // 获取点表列表
+      deletePoints: '/v3/management/station/device/modes', // 删除点表信息
+      importPointsInfo: '/v3/management/station/device/points', //导入点表信息
       
+      importAlarmInfo: '/v3/management/alarmevent/import', //导入告警信息
+      getAlarmList: '/v3/management/alarmevent/list', //获取告警列表
+      deleteAlarms: '/v3/management/alarmevent/delete', // 删除告警
     },
     monitor: {//实时监控
       getStationType:'/v3/monitor/stations/',

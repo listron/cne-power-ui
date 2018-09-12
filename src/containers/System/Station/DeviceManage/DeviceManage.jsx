@@ -20,6 +20,7 @@ class DeviceManage extends Component {
     pageSize: PropTypes.number,
     sortField: PropTypes.string,
     sortMethod: PropTypes.string,
+    changeDeviceManageStore: PropTypes.func,
   }
   constructor(props) {
     super(props);
@@ -33,11 +34,26 @@ class DeviceManage extends Component {
     })},3000)
   }
 
+  componentWillUnmount(){
+    this.props.changeDeviceManageStore({ // 离开页面前，重置数据。
+      stationCode: '', // 选中的电站
+      deviceTypeCode: '', // 选中的设备类型
+      deviceModelCode: '', // 选中的设备型号
+      pageNum: 1,
+      pageSize: 10,
+      totalNum:  0, // 设备总数
+      sortField: '', // 排序字段
+      sortMethod: 'des',
+      deviceList: []
+    })
+  }
+
   hideManageTip=()=>{
     this.setState({
       showDeviceTip: false
     })
   }
+
 
   render() {
     const { showDeviceTip } = this.state;
