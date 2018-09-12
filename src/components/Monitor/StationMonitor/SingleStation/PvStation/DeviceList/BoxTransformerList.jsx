@@ -5,6 +5,8 @@ import PropTypes from 'prop-types';
 import styles from './deviceList.scss';
 import { Tabs, Switch, Radio, Table, Progress  } from 'antd';
 import { Link } from 'react-router-dom';
+import CommonPagination from '../../../../../Common/CommonPagination/index';
+
 const TabPane = Tabs.TabPane;
 
 class BoxTransformerList extends Component {
@@ -22,6 +24,10 @@ class BoxTransformerList extends Component {
       tmpDeviceList : props.boxTransformerList && props.boxTransformerList.deviceList && props.boxTransformerList.deviceList.map((e,i)=>({...e,key:i})),//暂存的箱变列表
       currentStatus: 0,//当前状态值
       alarmSwitch: false,
+      pageSize: 10, 
+      currentPage: 1,
+      sortName: '',
+      descend : false,
     }
   }
 
@@ -177,9 +183,19 @@ class BoxTransformerList extends Component {
     return a['deviceName'].localeCompare(b['deviceName']);
   }
 
+  changePagination = ({ pageSize, currentPage }) => {
+    this.setState({ pageSize, currentPage })
+  }
+  tableChange = (pagination, filters, sorter) => {
+    this.setState({ 
+      sortName: sorter.field,
+      descend : sorter.order === 'descend'
+    })
+  }
+
   render(){
     const { boxTransformerList, loading,deviceTypeCode } = this.props;
-    const {tmpDeviceList, } = this.state;
+    const {tmpDeviceList,currentPage,pageSize } = this.state;
     const deviceList = boxTransformerList && boxTransformerList.deviceList;
     const initDeviceList = deviceList && deviceList.map((e,i)=>({...e,key:i}));
     
@@ -190,7 +206,7 @@ class BoxTransformerList extends Component {
     tmpParentDeviceCodes.forEach((value,key)=>{
       tmpParentDeviceCodes[key] = deviceList.filter(e=>value===e.parentDeviceCode);
     });
-    
+    const currentDeviceList = endDeviceList && endDeviceList.sort(this.compareName).splice((currentPage-1)*pageSize,pageSize);
     const inverterListNum = deviceList && (deviceList.length || 0);
     const deviceStatus = boxTransformerList && boxTransformerList.deviceStatusSummary;
     const deviceStatusNums=deviceStatus && deviceStatus.map(e=>e.deviceStatusNum);
@@ -251,16 +267,18 @@ class BoxTransformerList extends Component {
           </TabPane>
           <TabPane tab={<span><i className="iconfont icon-table" ></i></span>} key="2" className={styles.inverterTableBox} >
             <div>
-              
-              {(tmpParentDeviceCodes&&tmpParentDeviceCodes.length>0) ? 
+              <div className={styles.pagination} >
+                <CommonPagination onPaginationChange={this.changePagination} total={inverterListNum} />
+              </div>
               <Table 
                 loading={loading}
-                dataSource={endDeviceList && endDeviceList.sort(this.compareName)} 
+                dataSource={currentDeviceList} 
                 columns={this.tableColumn()} 
                 onChange={this.tableChange}
-                pagination={pagination}
+                pagination={false}
                 className={styles.inverterTable}
-              /> : <div className={styles.nodata} ><img src="/img/nodata.png" /></div>}
+                locale={{ emptyText: <div className={styles.noData}><img src="/img/nodata.png" /></div> }}
+              />
             </div>
             
           </TabPane>

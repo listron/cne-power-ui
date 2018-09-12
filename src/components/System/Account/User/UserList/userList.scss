@@ -233,6 +233,10 @@
               margin-left: 20px;
               
               :global{
+                .ant-select-dropdown-menu{
+                  max-height: 300px;
+                  overflow: hidden;
+                }
                 .ant-select-selection__placeholder{
                   display: none;
                 }

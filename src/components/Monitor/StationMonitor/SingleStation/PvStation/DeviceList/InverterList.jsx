@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import styles from './deviceList.scss';
 import { Tabs, Switch, Radio, Table, Progress  } from 'antd';
 import { Link } from 'react-router-dom';
+import CommonPagination from '../../../../../Common/CommonPagination/index';
 
 const TabPane = Tabs.TabPane;
 class InverterList extends Component {
@@ -22,6 +23,10 @@ class InverterList extends Component {
       tmpDeviceList : props.inverterList && props.inverterList.deviceList && props.inverterList.deviceList.map((e,i)=>({...e,key:i})),//暂存的逆变器列表
       currentStatus: 0,//当前状态值
       alarmSwitch: false,
+      pageSize: 10, 
+      currentPage: 1,
+      sortName: '',
+      descend : false,
     }
   }
   
@@ -187,14 +192,40 @@ class InverterList extends Component {
     return a['deviceName'].localeCompare(b['deviceName']);
   }
   compareParentName = (a,b) => {
-    if(a[0]&& b[0]){
+    if(a[0] && b[0] && a[0]['parentDeviceName'] && a[1]['parentDeviceName']){
       return a[0]['parentDeviceName'].length-b[0]['parentDeviceName'].length;
     }
-    
+  }
+  changePagination = ({ pageSize, currentPage }) => {
+    this.setState({ pageSize, currentPage })
+  }
+  tableChange = (pagination, filters, sorter) => {
+    this.setState({ 
+      sortName: sorter.field,
+      descend : sorter.order === 'descend'
+    })
+  }
+  createTableSource = (data) => {
+    const { sortName, descend } = this.state;
+    const tableSource = [...data].map((e, i) => ({
+      ...e,
+      key: i,
+    })).sort((a, b) => { // 排序
+      const sortType = descend ? -1 : 1;
+      const arraySort = ['parentDeviceName','deviceStatus'];
+      const arrayNumSort = ['devicePower', 'deviceCapacity', 'alarmNum',];
+      if (arrayNumSort.includes(sortName)) {
+        return sortType * (a[sortName] - b[sortName]);
+      } else if (arraySort.includes(sortName)) {
+        a[sortName] = a[sortName] ? a[sortName] : '';
+        return sortType * (a[sortName].length - b[sortName].length);
+      }
+    })
+    return tableSource;
   }
   render(){
     const { inverterList, loading, deviceTypeCode, } = this.props;
-    const {tmpDeviceList, } = this.state;
+    const {tmpDeviceList,currentPage, pageSize } = this.state;
     const deviceList = inverterList && inverterList.deviceList;
     const initDeviceList = deviceList && deviceList.map((e,i)=>({...e,key:i}));
     
@@ -202,6 +233,8 @@ class InverterList extends Component {
     let endDeviceList = tmpDeviceList || initDeviceList;
     let parentDeviceCodes = endDeviceList && endDeviceList.map(e=>e.parentDeviceCode);
     
+    const currentDeviceList = endDeviceList && this.createTableSource(endDeviceList).splice((currentPage-1)*pageSize,pageSize);
+
     let parentDeviceCodeSet = new Set(parentDeviceCodes);
     let tmpParentDeviceCodes = [...parentDeviceCodeSet];
     
@@ -269,15 +302,18 @@ class InverterList extends Component {
           </TabPane>
           <TabPane tab={<span><i className="iconfont icon-table" ></i></span>} key="2" className={styles.inverterTableBox} >
             <div>
-              {(tmpParentDeviceCodes&&tmpParentDeviceCodes.length>0) ? 
+              <div className={styles.pagination} >
+                <CommonPagination onPaginationChange={this.changePagination} total={inverterListNum} />
+              </div>
               <Table 
                 loading={loading}
-                dataSource={endDeviceList && endDeviceList.sort(this.compareName)} 
+                dataSource={currentDeviceList} 
                 columns={this.tableColumn()} 
                 onChange={this.tableChange}
-                pagination={pagination}
+                pagination={false}
                 className={styles.inverterTable}
-              /> : <div className={styles.nodata} ><img src="/img/nodata.png" /></div>}
+                locale={{ emptyText: <div className={styles.noData}><img src="/img/nodata.png" /></div> }}
+              />
             </div>
             
           </TabPane>
