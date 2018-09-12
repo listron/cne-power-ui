@@ -4,18 +4,19 @@
 
 
 import React, { Component } from 'react';
-import { Button, Input, Form } from 'antd';
+import { Button, Input, Form, Select } from 'antd';
 import EditInfoPart from './EditInfoPart';
 import PropTypes from 'prop-types';
 import styles from './stationSide.scss';
 const FormItem = Form.Item;
+const { Option } = Select; 
 
 class EditForm extends Component {
   static propTypes = {
     loading: PropTypes.bool,
     form: PropTypes.object,
     stationDetail: PropTypes.object,
-    backToDetail: PropTypes.func,
+    cancelEdit: PropTypes.func,
     saveStationDetail: PropTypes.func,
   }
 
@@ -24,7 +25,7 @@ class EditForm extends Component {
   }
 
   cancelEdit = () => {
-    this.props.backToDetail()
+    this.props.cancelEdit()
   }
 
   saveStationInfo = () => {
@@ -108,49 +109,64 @@ class EditForm extends Component {
               initialValue: stationDetail.stationCapacity,
               rules: [{
                 required: true, message: '请输入并网容量',
+              },{
+                pattern: /^[0-9]*$/, message: '并网容量必须是数字'
               }]
             })(
-              <Input />
+              <Input className={styles.capacity} />
             )}
+            <span>MWp</span>
           </FormItem>
           <FormItem label="设计容量" >
             {getFieldDecorator('designCapacity',{
               initialValue: stationDetail.designCapacity,
               rules: [{
                 required: true, message: '请输入设计容量',
+              },{
+                pattern: /^[0-9]*$/, message: '设计容量必须是数字'
               }]
             })(
-              <Input />
+              <Input className={styles.capacity} />
             )}
+            <span>MWp</span>
           </FormItem>
           <FormItem label="占地面积" >
             {getFieldDecorator('floorArea',{
               initialValue: stationDetail.floorArea,
               rules: [{
                 required: true, message: '请输入占地面积',
+              },{
+                pattern: /^[0-9]*$/, message: '占地面积必须是数字'
               }]
             })(
-              <Input />
+              <Input className={styles.floorArea} />
             )}
+            <span>平方公里</span>
           </FormItem>
           <FormItem label="年利用小时数" >
             {getFieldDecorator('floorArea',{
               initialValue: stationDetail.designUtilizationHours,
               rules: [{
-                required: true, message: '请输入占地面积',
+                required: true, message: '请输入年利用小时数',
+              },{
+                pattern: /^[0-9]*$/, message: '年利用小时数必须是数字'
               }]
             })(
-              <Input />
+              <Input className={styles.designUtilizationHours} />
             )}
+            <span>小时</span>
           </FormItem>
           <FormItem label="是否接入" >
             {getFieldDecorator('stationStatus',{
-              initialValue: stationDetail.stationStatus,
+              initialValue: stationDetail.stationStatus?1:0,
               rules: [{
-                required: true, message: '请输入占地面积',
+                required: true, message: '选择是否接入',
               }]
             })(
-              <Input />
+              <Select style={{width:'145px'}}>
+                <Option value={1}>是</Option>
+                <Option value={0}>否</Option>
+              </Select>
             )}
           </FormItem>
         </div>

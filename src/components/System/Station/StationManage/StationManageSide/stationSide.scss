@@ -179,6 +179,15 @@
             .ant-form-item-control-wrapper{
               flex: 1;
               color: $lightColor;
+              .ant-form-explain{
+                position: absolute;
+              }
+              :local{
+                .capacity, .designUtilizationHours, .floorArea{
+                  width: 145px;
+                  margin-right: 12px;
+                }
+              }
             }
           }
         }
