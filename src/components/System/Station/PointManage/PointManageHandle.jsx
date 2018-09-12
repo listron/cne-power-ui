@@ -51,7 +51,7 @@ class PointManageHandle extends Component {
     const { pointModal } = this.state;
     return (
       <div className={styles.deviceManageHandle}>
-        <Button onClick={this.showAddModal} >
+        <Button onClick={this.showAddPointModal} >
           <span>+</span>
           <span>测点</span>
         </Button>
