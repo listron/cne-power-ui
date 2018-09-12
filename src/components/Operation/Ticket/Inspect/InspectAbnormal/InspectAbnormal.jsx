@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './inspectAbnormal.scss';
-import { Button, Modal, Tabs } from 'antd';
+import { Button, Modal } from 'antd';
 import ImgUploader from '../../../../Common/Uploader/ImgUploader';
 import AbnormalItem from '../AbnormalItem/AbnormalItem';
-
-const TabPane = Tabs.TabPane;
 
 class InspectAbnormal extends Component {
   static propTypes = {
