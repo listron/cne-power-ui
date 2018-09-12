@@ -8,6 +8,7 @@ import Footer from '../../../../components/Common/Footer';
 import TransitionContainer from '../../../../components/Common/TransitionContainer';
 import RoleEdit from '../../../../components/System/Account/Role/RoleEdit';
 import RoleTable from '../../../../components/System/Account/Role/RoleTable';
+import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 
 class Role extends Component {
   static propTypes = {
@@ -25,7 +26,7 @@ class Role extends Component {
   constructor(props) {
     super(props);
   }
-  componentDidMount(){
+  componentDidMount() {
     const params = {
       enterpriseId: this.props.enterpriseId
     }
@@ -37,23 +38,33 @@ class Role extends Component {
 
   render() {
     const { showPage } = this.props;
+    const breadCrumbData = {
+      breadData: [
+        {
+          name: '角色',
+        }
+      ],
+    };
     return (
-      <div className={styles.roleContainer}>
-        <div className={styles.roleMain} style={{visibility: showPage==='list'?'visible':'hidden'}}>
-          <RoleTable {...this.props} />
-          <Footer />
-        </div>
-        <TransitionContainer
-          show={showPage!=='list'}
-          timeout={500}
-          effect="side"
-        >
-          <div className={styles.roleSide}>
-            <RoleEdit {...this.props} />
+      <div className={styles.roleContainerBox} >
+        <CommonBreadcrumb  {...breadCrumbData} style={{ marginLeft: '38px' }} />
+        <div className={styles.roleContainer}>
+          <div className={styles.roleMain} style={{ visibility: showPage === 'list' ? 'visible' : 'hidden' }}>
+            <RoleTable {...this.props} />
             <Footer />
           </div>
-        </TransitionContainer>
-      </div>            
+          <TransitionContainer
+            show={showPage !== 'list'}
+            timeout={500}
+            effect="side"
+          >
+            <div className={styles.roleSide}>
+              <RoleEdit {...this.props} />
+              <Footer />
+            </div>
+          </TransitionContainer>
+        </div>
+      </div>
     );
   }
 }
@@ -69,13 +80,13 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  changeRoleStore: payload => dispatch({type:roleAction.CHANGE_ROLE_STORE_SAGA, payload}),
-  getRoleList: payload => dispatch({type:roleAction.GET_ROLE_LIST_SAGA, payload}),
-  getMenuList: payload => dispatch({type:roleAction.GET_MENU_LIST_SAGA, payload}),
-  onCreateRole: payload => dispatch({type:roleAction.CREATE_ROLE_SAGA, payload}),
-  onEditRole: payload => dispatch({type:roleAction.EDIT_ROLE_SAGA, payload}),
-  onDeleteRole: payload => dispatch({type:roleAction.DELETE_ROLE_SAGA, payload}),
-  resetRole: payload => dispatch({type:roleAction.RESET_ROLE_SAGA, payload}),
+  changeRoleStore: payload => dispatch({ type: roleAction.CHANGE_ROLE_STORE_SAGA, payload }),
+  getRoleList: payload => dispatch({ type: roleAction.GET_ROLE_LIST_SAGA, payload }),
+  getMenuList: payload => dispatch({ type: roleAction.GET_MENU_LIST_SAGA, payload }),
+  onCreateRole: payload => dispatch({ type: roleAction.CREATE_ROLE_SAGA, payload }),
+  onEditRole: payload => dispatch({ type: roleAction.EDIT_ROLE_SAGA, payload }),
+  onDeleteRole: payload => dispatch({ type: roleAction.DELETE_ROLE_SAGA, payload }),
+  resetRole: payload => dispatch({ type: roleAction.RESET_ROLE_SAGA, payload }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Role);

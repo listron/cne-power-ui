@@ -152,17 +152,20 @@
     background-color: #fff;
     .detailTop {
       @include top;
-      justify-content: space-between;
+      display: block;
       .editButton {
         border: 1px solid $themeColor;
         box-shadow: 0 0 2px $themeColor;
         color: $themeColor;
+        float: left;
+        margin-top: 15px;
         &:hover,&:focus {
           background-color: $themeColor;
           color: #fff;
         }
       }
       .handleArea {
+        float: right;
         font-size: 20px;
         .previous {
           margin-right: 20px;

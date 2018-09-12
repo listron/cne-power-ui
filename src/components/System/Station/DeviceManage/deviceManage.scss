@@ -1,0 +1,44 @@
+
+
+.deviceManageTip{ // 顶部提示
+  background-color: #e7f3fc;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 30px;
+  border-radius:4px;
+  border:1px solid #dae9f5;
+  margin-bottom: 16px;
+  .icon{
+    margin-left:16px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    // background-color: lightblue;
+  }
+  .wordTip{
+    margin-left: 8px;
+  }
+  .close{
+    margin-right: 8px;
+  }
+}
+
+.deviceManageSearch{ // 条件查询
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  height: 71px;
+  border-bottom: #f1f1f1;
+}
+
+.deviceManageHandle{ // 导出设备， 翻页器
+  display:flex;
+  justify-content: space-between;
+  height: 100px;
+  align-items: center;
+}
+
+.deviceManageList{ // 设备表格区
+
+}

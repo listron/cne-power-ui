@@ -14,30 +14,51 @@ function InverterTenMin({ deviceTenMin, loading }) {
     // }
     let powerLineData = [], radiationLineData = [], xTime = [];
     deviceTenMin.length > 0 && deviceTenMin.forEach(e=>{
-      xTime.push(moment(e.utc).format('YYYY-MM-DD hh:mm:ss'));
+      //console.log(e.utc);
+      //xTime.push(moment(e.utc).format('YYYY-MM-DD hh:mm:ss'));
+      xTime.push(moment(moment.utc(e.utc).toDate()).local().format('YYYY-MM-DD HH:mm'));
       powerLineData.push(e.stationPower);
       radiationLineData.push(e.instantaneous);
     });
+    
+    //console.log(xTime);
+
     const option = {
       title: {
         text: '时序图',
         textStyle: {
-          color: '#666',
+          color: '#999',
           fontSize: 14,
         },
         left: 60
       },
       legend: {
-        data:['功率','斜面辐射'],
+        data:['功率','瞬时辐照'],
         top: 24,
+        itemWidth: 24,
+        itemHeight: 6,
+        textStyle: {
+          color: lineColor,
+          fontSize: 12,
+        }
       },
+      // tooltip: {
+      //   show: true,
+      // },
       tooltip: {
+        trigger: 'axis',
         show: true,
+        backgroundColor: '#fff',
+        textStyle: {
+          color: lineColor,
+          fontSize: '12px',
+        }
       },
-      grid: {
-        top: 95,
-        containLabel: true,
-      },
+      calculable: true,
+      // grid: {
+      //   top: 95,
+      //   containLabel: true,
+      // },
       xAxis: {
         type: 'category',
         data: xTime,
@@ -93,6 +114,14 @@ function InverterTenMin({ deviceTenMin, loading }) {
         {
           name: '功率',
           type: 'line',
+          lineStyle: {
+            type: 'solid',
+            color: '#c57576',
+            width: 1,
+          },
+          itemStyle:{
+            opacity: 0,
+          },
           areaStyle: {
             normal: {
               opacity: 0.2,
@@ -107,10 +136,15 @@ function InverterTenMin({ deviceTenMin, loading }) {
           data: powerLineData,
         },
         {
-          name: '斜面辐射',
+          name: '瞬时辐照',
           type: 'line',
           lineStyle: {
-            type: 'dashed',
+            type: 'dotted',
+            color: '#199475',
+            width: 1,
+          },
+          itemStyle:{
+            opacity: 0,
           },
           label: {
             normal: {
@@ -125,7 +159,7 @@ function InverterTenMin({ deviceTenMin, loading }) {
     inverterChart.setOption(option);
   }
   return (
-    <div id="inverter_monitor_tenMin" style={{height:"335px"}}></div>
+    <div id="inverter_monitor_tenMin" style={{height:"335px",width: "100%",marginTop: "10px"}}></div>
   );
 }
 

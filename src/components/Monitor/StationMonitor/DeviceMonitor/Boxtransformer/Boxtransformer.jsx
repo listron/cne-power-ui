@@ -33,7 +33,7 @@ class Boxtransformer extends Component {
     const nextStation = nextParams.stationCode;
     if( nextDevice !== deviceCode || nextType !== deviceTypeCode || nextStation !== stationCode ){
       clearTimeout(this.timeOutId);
-      this.getData(stationCode, deviceCode, deviceTypeCode);
+      this.getData(nextStation, nextDevice, nextType);
     }
   }
 
@@ -57,6 +57,7 @@ class Boxtransformer extends Component {
   render(){
     const {devices, deviceDetail, deviceTenMin, deviceAlarmList, devicePointData, loading } = this.props;
     const { stationCode, deviceTypeCode } = this.props.match.params;
+    const backData={path: `/monitor/singleStation/${stationCode}`,name: '返回电站'};
     const breadCrumbData = {
       breadData:[{
         link: true,
@@ -69,7 +70,7 @@ class Boxtransformer extends Component {
     };
     return (
       <div className={styles.boxtransformer}>
-        <CommonBreadcrumb {...breadCrumbData} />
+        <CommonBreadcrumb {...breadCrumbData} style={{backgroundColor:'#fff'}}  backData={{...backData}} />
         <div className={styles.deviceContent}>
           <BoxtransformerHeader deviceDetail={deviceDetail} devices={devices} stationCode={stationCode} deviceTypeCode={deviceTypeCode} />
           <BoxtransformerStatistics deviceDetail={deviceDetail} />

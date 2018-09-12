@@ -27,10 +27,10 @@ class RealTimeAlarmTable extends Component {
     changeAlarmStore: PropTypes.func,
   }
 
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
-      pageSize: 10, 
+      pageSize: 10,
       currentPage: 1,
       showTransferTicketModal: false,
       showRelieveAlarmModal: false,
@@ -48,9 +48,9 @@ class RealTimeAlarmTable extends Component {
   }
 
   onChangeTable = (pagination, filters, sorter) => {
-    this.setState({ 
+    this.setState({
       sortName: sorter.field,
-      descend : sorter.order === 'descend'
+      descend: sorter.order === 'descend'
     });
     this.props.changeAlarmStore({
       sortName: sorter.field,
@@ -62,22 +62,22 @@ class RealTimeAlarmTable extends Component {
   }
 
   onHandle = (value) => {
-    if(value === 'ticket') {
+    if (value === 'ticket') {
       this.setState({
         showTransferTicketModal: true
       });
-    }else if(value === 'relieve') {
+    } else if (value === 'relieve') {
       this.setState({
         showRelieveAlarmModal: true
       });
-    } else if(value === 'resetRelieve') {
+    } else if (value === 'resetRelieve') {
       this.setState({
         showWarningTip: true,
         warningTipText: ' 确定要取消解除么'
       });
     }
   }
-  
+
   onConfirmWarningTip = () => {
     const { selectedRowKeys } = this.props;
     this.setState({
@@ -96,7 +96,7 @@ class RealTimeAlarmTable extends Component {
   }
 
   onTransferChange(visible, workOrderId, i) {
-    if(visible) {
+    if (visible) {
       this.props.getTicketInfo({
         workOrderId
       });
@@ -113,7 +113,7 @@ class RealTimeAlarmTable extends Component {
   }
 
   onRelieveChange(visible, operateId, i) {
-    if(visible) {
+    if (visible) {
       this.props.getRelieveInfo({
         operateId
       });
@@ -130,7 +130,7 @@ class RealTimeAlarmTable extends Component {
   }
 
   cancelRowSelect = () => {
-   this.props.changeAlarmStore({selectedRowKeys:[]});
+    this.props.changeAlarmStore({ selectedRowKeys: [] });
   }
 
   createTableSource(data) {
@@ -140,19 +140,19 @@ class RealTimeAlarmTable extends Component {
       ...e,
       key: i,
     })).sort((a, b) => { // 手动排序
-      const sortType = descend ? -1: 1;
-      if(sortName === 'warningLevel'){
+      const sortType = descend ? -1 : 1;
+      if (sortName === 'warningLevel') {
         return sortType * (a.warningLevel - b.warningLevel);
-      }else if(nameSortArr.includes(sortName)){
+      } else if (nameSortArr.includes(sortName)) {
         return sortType * a[sortName].localeCompare(b[sortName], 'zh');
-      }else if(sortName === 'timeOn'){
+      } else if (sortName === 'timeOn') {
         return sortType * (moment(a.timeOn) - moment(b.timeOn));
-      }else if(sortName === 'durationTime'){
+      } else if (sortName === 'durationTime') {
         return sortType * (moment(b.timeOn) - moment(a.timeOn));
-      }else {
+      } else {
         return a.key - b.key;
       }
-    }).filter((e,i)=>{ // 筛选页面
+    }).filter((e, i) => { // 筛选页面
       const startIndex = (currentPage - 1) * pageSize;
       const endIndex = startIndex + pageSize;
       return (i >= startIndex && i < endIndex);
@@ -161,34 +161,34 @@ class RealTimeAlarmTable extends Component {
   }
 
   initColumn = () => {
-    const level = ['一级', '二级', '三级', '四级']; 
+    const level = ['一级', '二级', '三级', '四级'];
     const { alarmStatus } = this.props;
     const columns = [
       {
         title: '告警级别',
         dataIndex: 'warningLevel',
         key: 'warningLevel',
-        render: (text, record, index)=> {
-          return level[text-1]
+        render: (text, record, index) => {
+          return level[text - 1]
         },
         sorter: true,
-      },{
+      }, {
         title: '电站名称',
         dataIndex: 'stationName',
-        key: 'stationName', 
+        key: 'stationName',
         sorter: true,
-      },{
+      }, {
         title: '设备名称',
         dataIndex: 'deviceName',
         key: 'deviceName',
         render: (text, record) => {
-          if(record.deviceTypeCode === 206) {
+          if (record.deviceTypeCode === 206) {
             return (
               <div className={styles.deviceName}>
                 <Link to={`/hidden/monitorDevice/${record.stationCode}/${record.deviceTypeCode}/${record.deviceFullCode}`} target="_blank">{text}</Link>
               </div>
             );
-          } else if(record.deviceTypeCode === 304) {
+          } else if (record.deviceTypeCode === 304) {
             return (
               <div className={styles.deviceName}>
                 <Link to={`/hidden/monitorDevice/${record.stationCode}/${record.deviceTypeCode}/${record.deviceFullCode}`} target="_blank">{text}</Link>
@@ -198,60 +198,60 @@ class RealTimeAlarmTable extends Component {
             return text;
           }
         }
-      },{
+      }, {
         title: '设备类型',
         dataIndex: 'deviceTypeName',
-        key: 'deviceTypeName', 
+        key: 'deviceTypeName',
         sorter: true,
-      },{
+      }, {
         title: '告警类型',
         dataIndex: 'warningConfigName',
         key: 'warningConfigName',
         sorter: true,
-      },{
+      }, {
         title: '告警描述',
         dataIndex: 'warningCheckDesc',
         key: 'warningCheckDesc',
         render: (text, record) => {
           return <div className={styles.alarmDesc} title={text}>{text}</div>
         }
-      },{
+      }, {
         title: '发生时间',
         dataIndex: 'timeOn',
-        key: 'timeOn', 
+        key: 'timeOn',
         render: (text, record) => moment(text).format('YYYY-MM-DD HH:mm'),
         sorter: true,
-      },{
+      }, {
         title: '持续时间',
         dataIndex: 'durationTime',
         key: 'durationTime',
         sorter: true,
-      },{
+      }, {
         title: '告警处理',
         dataIndex: 'operation',
         key: 'operation',
-        colSpan: alarmStatus === 1 ? 0: null,
+        colSpan: alarmStatus === 1 ? 0 : null,
         render: (text, record, index) => {
-          if(record.isTransferWork === 0) {
+          if (record.isTransferWork === 0) {
             return (
               <Popover content={this.renderTransferPopover(index)}
-              trigger="click"
-              visible={this.state.showTransferPopover[index]}
-              onVisibleChange={(visible)=>this.onTransferChange(visible, record.workOrderId, index)}
+                trigger="click"
+                visible={this.state.showTransferPopover[index]}
+                onVisibleChange={(visible) => this.onTransferChange(visible, record.workOrderId, index)}
               >
-                <div className={this.state.showTransferPopover[index]?styles.selected:null}><i className="iconfont icon-tranlist icon-action"></i></div>
+                <div className={this.state.showTransferPopover[index] ? styles.selected : null}><i className="iconfont icon-tranlist icon-action"></i></div>
               </Popover>
             );
           }
-          if(record.isRelieveAlarm === 0) {
+          if (record.isRelieveAlarm === 0) {
             return (
               <Popover content={this.renderRelievePopover(index)}
-              trigger="click"
-              className={this.state.showRelievePopover[index]?styles.selected:null}
-              visible={this.state.showRelievePopover[index]}
-              onVisibleChange={(visible)=>this.onRelieveChange(visible, record.operateId, index)}
+                trigger="click"
+                className={this.state.showRelievePopover[index] ? styles.selected : null}
+                visible={this.state.showRelievePopover[index]}
+                onVisibleChange={(visible) => this.onRelieveChange(visible, record.operateId, index)}
               >
-                <div className={this.state.showRelievePopover[index]?styles.selected:null}><i className="iconfont icon-manual icon-action"></i></div>
+                <div className={this.state.showRelievePopover[index] ? styles.selected : null}><i className="iconfont icon-manual icon-action"></i></div>
               </Popover>
             );
           }
@@ -264,19 +264,19 @@ class RealTimeAlarmTable extends Component {
 
   renderOperation() {
     const alarmStatus = this.props.alarmStatus;
-    if(alarmStatus===3) {
+    if (alarmStatus === 3) {
       return <div></div>;
     }
     const selectedRowKeys = this.props.selectedRowKeys;
     const rightHandler = localStorage.getItem('rightHandler');
     const removeAlarmRight = rightHandler && rightHandler.includes('alarm_remove');
     const toChangeWorkListRight = rightHandler && rightHandler.includes('alarm_worklist');
-    if(alarmStatus===1&&!removeAlarmRight && !toChangeWorkListRight) {return null;}
+    if (alarmStatus === 1 && !removeAlarmRight && !toChangeWorkListRight) { return null; }
     return (
       <Select onChange={this.onHandle} value="操作" placeholder="操作" dropdownMatchSelectWidth={false} dropdownClassName={styles.handleDropdown}>
-        {toChangeWorkListRight && <Option value="ticket" disabled={selectedRowKeys.length===0}><i className="iconfont icon-tranlist"></i>转工单</Option>}
-        {alarmStatus===1 && removeAlarmRight && <Option value="relieve" disabled={selectedRowKeys.length===0}><i className="iconfont icon-manual"></i>手动解除</Option>}
-        {alarmStatus===2 && removeAlarmRight && <Option value="resetRelieve" disabled={selectedRowKeys.length===0}><i className="iconfont icon-lifted"></i>取消解除</Option>}
+        {toChangeWorkListRight && <Option value="ticket" disabled={selectedRowKeys.length === 0}><i className="iconfont icon-tranlist"></i>转工单</Option>}
+        {alarmStatus === 1 && removeAlarmRight && <Option value="relieve" disabled={selectedRowKeys.length === 0}><i className="iconfont icon-manual"></i>手动解除</Option>}
+        {alarmStatus === 2 && removeAlarmRight && <Option value="resetRelieve" disabled={selectedRowKeys.length === 0}><i className="iconfont icon-lifted"></i>取消解除</Option>}
       </Select>
     );
   }
@@ -284,26 +284,29 @@ class RealTimeAlarmTable extends Component {
   renderTransferModal() {
     return (
       <TransferAlarmModal
-        onCancel={()=>this.setState({showTransferTicketModal:false})}
+        onCancel={() => this.setState({ showTransferTicketModal: false })}
         onTransferAlarm={this.props.onTransferAlarm}
         defectTypes={this.props.defectTypes}
         selectedRowKeys={this.props.selectedRowKeys}
-      />     
+      />
     );
   }
 
   renderRelieveModal() {
     return (
       <RelieveAlarmModal
-        onCancel={()=>this.setState({showRelieveAlarmModal:false})}
+        onCancel={() => this.setState({ showRelieveAlarmModal: false })}
         onRelieveAlarm={this.props.onRelieveAlarm}
         selectedRowKeys={this.props.selectedRowKeys}
-      />     
+      />
     );
   }
 
   renderTransferPopover(i) {
     const ticketInfo = this.props.ticketInfo;
+    //  console.log(ticketInfo.operateTime);
+    //   console.log(moment(moment.utc(ticketInfo.operateTime).toDate()).local().format('YYYY-MM-DD HH:mm'));
+
     return (
       <div className={styles.detailInfo}>
         <div className={styles.header}>
@@ -311,20 +314,22 @@ class RealTimeAlarmTable extends Component {
             <i className="iconfont icon-tranlist icon-action"></i>
             <span className={styles.titleText}>已转工单</span>
           </div>
-          <Icon type="close" onClick={()=>{
+          <Icon type="close" onClick={() => {
             let showTransferPopover = this.state.showTransferPopover;
             showTransferPopover[i] = false;
-            this.setState({showTransferPopover});
+            this.setState({ showTransferPopover });
           }} />
         </div>
         <div className={styles.content}>
           <div className={styles.infoItem}>
             <span className={styles.label}>转工单人：</span>
-            <span className={styles.value}>{ticketInfo.userFullName?ticketInfo.userFullName:ticketInfo.username}</span>
+            <span className={styles.value}>{ticketInfo.userFullName ? ticketInfo.userFullName : ticketInfo.username}</span>
           </div>
           <div className={styles.infoItem}>
             <span className={styles.label}>操作时间：</span>
-            <span className={styles.value}>{moment(ticketInfo.operateTime).format('YYYY-MM-DD HH:mm')}</span>
+            <span className={styles.value}>{moment.utc(ticketInfo.operateTime).format('YYYY-MM-DD HH:mm')}</span>
+            {/* 后期改成utc格式的时间 */}
+            {/* <span className={styles.value}>{moment(moment.utc(ticketInfo.operateTime).toDate()).local().format('YYYY-MM-DD HH:mm')}</span> */}
           </div>
           <div className={styles.infoItem}>
             <span className={styles.label}>缺陷类型：</span>
@@ -335,7 +340,7 @@ class RealTimeAlarmTable extends Component {
             <span className={styles.value}>{ticketInfo.defectDescribe}</span>
           </div>
         </div>
-        <Button className={styles.ticketButton}><Link to={`/operation/ticket/${ticketInfo.defectId}`}>查看工单详情</Link></Button> 
+        <Button className={styles.ticketButton}><Link to={`/operation/ticket/${ticketInfo.defectId}`}>查看工单详情</Link></Button>
       </div>
     );
   }
@@ -349,16 +354,16 @@ class RealTimeAlarmTable extends Component {
             <i className="iconfont icon-manual icon-action"></i>
             <span className={styles.titleText}>手动解除</span>
           </div>
-          <Icon type="close" onClick={()=>{
+          <Icon type="close" onClick={() => {
             let showRelievePopover = this.state.showRelievePopover;
             showRelievePopover[i] = false;
-            this.setState({showRelievePopover});
+            this.setState({ showRelievePopover });
           }} />
         </div>
         <div className={styles.content}>
           <div className={styles.infoItem}>
             <span className={styles.label}>解除人：</span>
-            <span className={styles.value}>{relieveInfo.userFullName?relieveInfo.userFullName:relieveInfo.username}</span>
+            <span className={styles.value}>{relieveInfo.userFullName ? relieveInfo.userFullName : relieveInfo.username}</span>
           </div>
           <div className={styles.infoItem}>
             <span className={styles.label}>操作时间：</span>
@@ -379,7 +384,7 @@ class RealTimeAlarmTable extends Component {
 
   render() {
     const { realtimeAlarm, selectedRowKeys, alarmStatus } = this.props;
-    const { showTransferTicketModal, showRelieveAlarmModal, showWarningTip, warningTipText} = this.state;
+    const { showTransferTicketModal, showRelieveAlarmModal, showWarningTip, warningTipText } = this.state;
     const tableSource = this.createTableSource(realtimeAlarm);
     const columns = this.initColumn();
     const rowSelection = {
@@ -389,10 +394,10 @@ class RealTimeAlarmTable extends Component {
     return (
       <div className={styles.alarmTable}>
         {showWarningTip && <WarningTip
-          style={{marginTop:'350px',width: '210px',height:'88px'}}
-          onCancel={this.onCancelWarningTip} 
+          style={{ marginTop: '350px', width: '210px', height: '88px' }}
+          onCancel={this.onCancelWarningTip}
           hiddenCancel={false}
-          onOK={this.onConfirmWarningTip} 
+          onOK={this.onConfirmWarningTip}
           value={warningTipText} />}
         <div className={styles.tableHeader}>
           {this.renderOperation()}
@@ -400,23 +405,23 @@ class RealTimeAlarmTable extends Component {
         </div>
         <Table
           dataSource={tableSource}
-          rowKey={record=>record.warningLogId}
-          rowSelection={alarmStatus===3?null:rowSelection}
+          rowKey={record => record.warningLogId}
+          rowSelection={alarmStatus === 3 ? null : rowSelection}
           columns={columns}
           pagination={false}
           onChange={this.onChangeTable}
-          locale={{emptyText:<div className={styles.noData}><img src="/img/nodata.png" style={{width: 223,height:164}} /></div>}}
+          locale={{ emptyText: <div className={styles.noData}><img src="/img/nodata.png" style={{ width: 223, height: 164 }} /></div> }}
         />
-        {alarmStatus!==3&&realtimeAlarm.length>0&&<div className={styles.tableFooter}>
-            <span className={styles.info}>当前选中<span className={styles.totalNum}>{selectedRowKeys.length}</span>项</span>
-            {selectedRowKeys.length > 0 &&<span className={styles.cancel} onClick={this.cancelRowSelect}>取消选中</span>}
-          </div>}
-        {showTransferTicketModal&&this.renderTransferModal()}
-        {showRelieveAlarmModal&&this.renderRelieveModal()}
+        {alarmStatus !== 3 && realtimeAlarm.length > 0 && <div className={styles.tableFooter}>
+          <span className={styles.info}>当前选中<span className={styles.totalNum}>{selectedRowKeys.length}</span>项</span>
+          {selectedRowKeys.length > 0 && <span className={styles.cancel} onClick={this.cancelRowSelect}>取消选中</span>}
+        </div>}
+        {showTransferTicketModal && this.renderTransferModal()}
+        {showRelieveAlarmModal && this.renderRelieveModal()}
       </div>
     );
   }
-  
+
 }
 
 export default RealTimeAlarmTable;

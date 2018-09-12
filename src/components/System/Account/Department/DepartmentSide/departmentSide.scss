@@ -100,7 +100,11 @@
         }
       }
       .handleArea{
-        font-size: 20px;
+       font-size: 20px;
+       display: flex;
+       flex:1;
+       justify-content: flex-end;
+       align-items: center;
         .previous{
           margin-right: 20px;
           cursor: pointer;

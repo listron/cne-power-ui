@@ -63,7 +63,7 @@
       .departmentListTop{
         background: #fff;
         display: flex;
-        line-height: 72px;
+        //line-height: 72px;
         justify-content: space-between;
         .addDepartment{
           padding : 0;
@@ -111,11 +111,28 @@
         }
       }
       table{
-        .tableDepartmentName{
-          color: $darkColor;
+        a{
+          text-decoration: underline;
+          color: $darkColor;  
           &:hover{
             color: #199475;
           }
+        }
+
+        .tableDepartmentName{
+          color: $darkColor;       
+          &:hover{
+            color: #199475;
+          }
+          .departmentName{           
+          
+            width: 80px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            
+          }
+          
         }
       }
       .stationColumn{
@@ -151,6 +168,7 @@
     }
   }
 }
+
 
 .departmentHandleDropdown{
   width: 120px;

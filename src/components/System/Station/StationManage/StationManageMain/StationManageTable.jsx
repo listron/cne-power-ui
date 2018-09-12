@@ -1,101 +1,195 @@
 
 
 import React, { Component } from 'react';
-import { Input, Button, Icon, Table } from 'antd';
+import { Upload, Button, Icon, Table, message } from 'antd';
 import CommonPagination from '../../../../Common/CommonPagination';
 import stationManageTableColumn from './stationManageTableColumn';
+import SetDepartmentModal from './SetDepartmentModal';
 import styles from './stationMain.scss';
 import PropTypes from 'prop-types';
+import Cookie from 'js-cookie';
 
 
 class StationManageTable extends Component {
   static propTypes = {
+    totalNum: PropTypes.number,
     loading: PropTypes.bool,
+    queryListParams: PropTypes.object,
+    allDepartmentData: PropTypes.array,
+    getStationList: PropTypes.func,
+    getStationDetail: PropTypes.func,
+    changeStationManageStore: PropTypes.func,
+    setStationDepartment: PropTypes.func,
+    deleteStation: PropTypes.func,
+    stationList: PropTypes.array,
   }
 
   constructor(props){
     super(props);
     this.state = {
-
+      departmentModal: false,
+      departmentSetInfo: {},
     }
   }
 
-  onStationAdd = () => {
-    console.log('add 电站')
+  onStationUpload = ({file, fileList}) => { // 添加上传电站
+    if (file.status !== 'uploading') {
+      console.log(file, fileList);
+    }
+    if (file.status === 'done') {
+      message.success(`${file.name} 文件上传成功`);
+    } else if (file.status === 'error') {
+      message.error(`${file.name} 文件上传失败!`);
+    }
   }
 
-  onPaginationChange = (...rest) => {
-    console.log(rest)
+  onPaginationChange = ({pageSize, currentPage}) => { // 分页器操作
+    const { getStationList, queryListParams } = this.props;
+    getStationList({
+      queryListParams,
+      pageSize,
+      pageNum: currentPage,
+    })
   }
 
-  downloadTemplet = () => {
+  onStationDelete = (record) => { // 删除电站
+    this.props.deleteStation({stationCode: record.stationCode})
+  }
+
+  beforeUploadStation = (file) => { // 上传前的校验
+    const validType = ['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet']; // 暂时不兼容xls : 'application/vnd.ms-excel'
+    const validFile = validType.includes(file.type);
+    if (!validFile) {
+      message.error('只支持上传excel文件!');
+    }
+    return !!validFile
+  }
+
+  toStationDetail = (record,selectedStationIndex) => { // 查看详情
+    this.props.getStationDetail({
+      stationCode: record.stationCode,
+      selectedStationIndex,
+    })
+  }
+
+  downloadTemplet = () => {  // 下载电站配置模板
     console.log('down load templet')
   }
 
-  tableChange = (pagination,filter,sorter) => {//部门排序
-    const sort = sorter.field;
-    const ascend = sorter.order==='ascend'?'0':'1';
-    console.log(sort, ascend);
-    // this.props.getDepartmentList({
-    //   enterpriseId: this.props.enterpriseId,
-    //   departmentSource: this.props.departmentSource,
-    //   departmentName: this.props.departmentName, 
-    //   parentDepartmentName: this.props.parentDepartmentName, 
-    //   stationName: this.props.stationName, 
-    //   sort:`${sort},${ascend}`, 
-    //   pageNum: this.props.pageNum,
-    //   pageSize: this.props.pageSize,
-    // })
+  tableChange = (pagination, filter, sorter) => { // 电站list排序=>重新请求数据
+    const { getStationList, queryListParams } = this.props;
+    const sortName = sorter.field;
+    // orderField: '', // 排序字段 1：电站名称; 2:区域 ;3:覆盖类型;4:并网类型;5：装机容量;6:发点单元数;7：电站接入
+    const sortInfo = {
+      stationName: '1',
+      area: '2',
+      coverType: '3',
+      connectionType: '4',
+      stationCapacity: '5',
+      series: '6',
+      stationStatus: '7',
+    };
+    const orderField = sortInfo[sortName];
+    const orderCommand = sorter.order==='ascend'?'asc':'desc';
+    getStationList({
+      ...queryListParams,
+      orderField,
+      orderCommand,
+    })
+  }
+
+  showDepartmentModal = (departmentSetInfo) => {
+    this.setState({
+      departmentModal: true,
+      departmentSetInfo,
+    })
+  }
+
+  closeDepartmentModal = (params) => { // 关闭模态框，若有参数则发起设置部门请求
+    params && this.props.setStationDepartment(params);
+    this.setState({
+      departmentModal: false,
+      departmentSetInfo: {},
+    })
   }
 
   render(){
-    const { loading } = this.props;
+    const { loading, stationList, totalNum, allDepartmentData } = this.props;
+    const { departmentModal, departmentSetInfo } = this.state;
+    const authData = Cookie.get('authData') || null;
     const column = [
       {
-        title: '电站',
-        dataIndex: 'station',
-        key: 'station',
+        title: '电站名称',
+        dataIndex: 'stationName',
+        key: 'stationName',
         sorter: true,
-        render: (record) => {
+        render: (text,record,index) => {
           return (
-            <span className={styles.stationName}>{record.stationName}</span>
+            <span className={styles.stationName} onClick={()=>this.toStationDetail(record,index)}>{record.stationName}</span>
           )
         }
       },
       ...stationManageTableColumn,
       {
         title: '部门设置',
-        dataIndex: 'department',
-        key: 'department',
+        dataIndex: 'departmentStatus',
+        key: 'departmentStatus',
         render: (text, record, index) => {
-          return (<span className={styles.setDepartment}>{record.department}</span>)
+          const { stationDepartments } = record;
+          if(stationDepartments && stationDepartments.length > 0){
+            return (<span className={styles.seeDepartment} onClick={()=>this.showDepartmentModal(record)}>查看</span>)
+          }else{
+            return (<span className={styles.setDepartment} onClick={()=>this.showDepartmentModal(record)}>设置</span>)
+          }
         }
       },{
         title: '操作',
         dataIndex: 'handler',
         key: 'handler',
         render: (text, record, index) => {
-          return (<span className={styles.handler}>删除</span>)
+          const deletable = (!record.stationDepartments || record.stationDepartments.length === 0) && !record.stationStatus;
+          if(deletable){
+            return <span className={styles.deleteStation} onClick={()=>this.onStationDelete(record)}>删除</span>
+          }else{
+            return <span className={styles.deleteDisable}>删除</span>
+          }
         }
       }
     ];
     return (
-      <div>
-        <div>
-          <Button onClick={this.onStationAdd}>
-            <Icon type="plus" />
-            <span>电站</span>
-          </Button>
-          <Button onClick={this.downloadTemplet}>下载电站配置模板</Button>
-          <CommonPagination total={100} onPaginationChange={this.onPaginationChange} />
+      <div className={styles.stationList}>
+        <div className={styles.topHandler}>
+          <div className={styles.leftHandler}>
+            <Upload 
+              action="/api/v3/management/stationimport"
+              className={styles.uploadStation}
+              onChange={this.onStationUpload}
+              headers={{'Authorization': 'bearer ' + JSON.parse(authData)}}
+              beforeUpload={this.beforeUploadStation}
+            >
+              <Button className={styles.plusButton}>
+                <Icon type="plus" className={styles.plusIcon} />
+                <span className={styles.plusText}>电站</span>
+              </Button>
+            </Upload>
+            <Button href={'www.baidu.com'} download={'www.baidu.com'}  target="_blank"  >下载电站配置模板</Button>
+          </div>
+          <CommonPagination total={totalNum} onPaginationChange={this.onPaginationChange} />
         </div>
         <Table 
           loading={loading}
-          dataSource={[]} 
+          dataSource={ stationList.map((e, i) => ({...e, key: i})) } 
           columns={column} 
+          className={styles.stationTable}
           onChange={this.tableChange}
           pagination={false}
+          locale={{emptyText:<img width="223" height="164" src="/img/nodata.png" />}}
         />
+        {departmentModal && <SetDepartmentModal
+          departmentSetInfo={departmentSetInfo}
+          closeDepartmentModal={this.closeDepartmentModal}
+          allDepartmentData={allDepartmentData}
+        />}
       </div>
     )
   }

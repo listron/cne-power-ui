@@ -66,6 +66,44 @@ function *getStationDeviceTypes(action){
     console.log(e);
   }
 }
+
+function *getStationDeviceModel(action){ // 获取电站设备型号
+  let url = Path.basePaths.APIBasePath + Path.commonPaths.getDeviceModel;
+  yield put({ type: commonAction.COMMON_FETCH });
+  try {
+    const response = yield call(axios.get, url, {params: action.payload});
+    if(response.data.code === '10000'){
+      yield put({ 
+        type: commonAction.GET_COMMON_FETCH_SUCCESS, 
+        payload: {
+          deviceModels: response.data.data
+        }
+      });       
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+function *getStationDevicePoints(action){ // 获取电站设备类型下的测点。 -- todo
+  let url = Path.basePaths.APIBasePath + Path.commonPaths.getDeviceModel;
+  console.log('上面的这个路径不对，需要后天重新添加接口后动态拿到！')
+  yield put({ type: commonAction.COMMON_FETCH });
+  try {
+    const response = yield call(axios.get, url, {params: action.payload});
+    if(response.data.code === '10000'){
+      yield put({ 
+        type: commonAction.GET_COMMON_FETCH_SUCCESS, 
+        payload: {
+          devicePoints: response.data.data
+        }
+      });       
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
+
 //获取设备信息列表
 function *getDevices(action){
   let url = Path.basePaths.APIBasePath + Path.commonPaths.getDevices;
@@ -161,6 +199,8 @@ export function* watchCommon() {
   yield takeLatest(commonAction.GET_ALL_DEPARTMENT_SAGA, getAllDepartment);
   yield takeLatest(commonAction.GET_DEVICETYPES_SAGA, getDeviceTypes);
   yield takeLatest(commonAction.GET_STATION_DEVICETYPES_SAGA, getStationDeviceTypes);
+  yield takeLatest(commonAction.GET_STATION_DEVICEMODEL_SAGA, getStationDeviceModel);
+  yield takeLatest(commonAction.GET_STATION_DEVICEPOINT_SAGA, getStationDevicePoints);
   yield takeLatest(commonAction.GET_DEVICES_SAGA, getDevices);
   yield takeLatest(commonAction.GET_PARTITIONS_SAGA, getPartition);
 }

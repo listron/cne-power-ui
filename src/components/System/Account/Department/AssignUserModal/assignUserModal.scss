@@ -36,6 +36,12 @@
         flex-direction: column;
         flex: 1;
         overflow-y: auto;
+        :global{
+          .ant-avatar.ant-avatar-sm.ant-avatar-circle{
+            background: #c7ceb2;
+
+          }
+        }
         .userListTip {
           margin: 9px 6px 9px 25px;
           color: $lightColor;
@@ -62,6 +68,11 @@
         .userCheck {
           display: flex;
           flex-direction: row;
+          :global{
+            .ant-avatar-sm{
+              background: #c7ceb2;
+            }
+          }
           .userName {
             font-size: 14px;
             color: $darkColor;
@@ -88,7 +99,7 @@
           }
         }
         &:hover {
-          background-color: #f1f1f1;
+          background-color: #ceebe0;
         }
       }  
     }

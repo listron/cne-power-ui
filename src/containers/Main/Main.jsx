@@ -88,13 +88,14 @@ class Main extends Component {
     Cookie.remove('expireData');
     Cookie.remove('refresh_token');
     Cookie.remove('isNotLogin');
+    Cookie.remove('auto');
     this.props.changeLoginStore({pageTab: 'login'});
     this.props.history.push('/login');
   }
 
   render() {
     const { setTopMenu, topMenu, changeLoginStore } = this.props;
-    const authData = Cookie.get('authData');
+    const authData = Cookie.get('authData') || null;
     const isNotLogin = Cookie.get('isNotLogin');
     const userRight = Cookie.get('userRight');
     const rightMenu = Cookie.get('rightMenu');
@@ -130,7 +131,7 @@ class Main extends Component {
           {/* <FixedHelper /> */}
           <Modal
             title=""
-            visible={userRight===null&&rightMenu===null?true:false}
+            visible={!userRight && !rightMenu}
             closable={false}
             footer={null}
             wrapClassName={styles.userRightTip}

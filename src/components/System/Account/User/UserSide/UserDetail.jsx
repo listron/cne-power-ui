@@ -80,18 +80,20 @@ class UserDetail extends Component {
   render() {
     const { userDetail} = this.props;
     const { showWarningTip, warningTipText } = this.state;
+    const rightHandler = localStorage.getItem('rightHandler');
+    const userEditRight = rightHandler && rightHandler.includes('account_user_edit');
     return (
       <div className={styles.userDetail}>
         {showWarningTip && (
           <WarningTip onOK={this.confirmWarningTip} value={warningTipText} />
         )}
         <div className={styles.detailTop}>
-          <Button
+          {userEditRight && <Button
             className={styles.editButton}
             onClick={this.onShowSideChange}
           >
             编辑
-          </Button>
+          </Button>}
           <span className={styles.handleArea}>
             <Icon
               type="arrow-up"
@@ -166,12 +168,12 @@ class UserDetail extends Component {
               </span>
               <div className={styles.enterpriseDepartmentValue}>
                 {userDetail.get('enterpriseData') && 
-                  userDetail.get('enterpriseData').toJS().map(item=>{
-                    return (<div className={styles.departmentDetail} key={item.enterpriseId} >
+                  userDetail.get('enterpriseData').toJS().map((item,index)=>{
+                    return (<div className={styles.departmentDetail} key={index} >
                       <div className={styles.enterpriseName}>{item.enterpriseName}：</div>
                       <div className={styles.enterpriseDetail}>
-                      {item.departmentData && item.departmentData.map(item2=>{
-                        return (<p  key={item2.departmentId} >{item2.departmentName}-（负责电站：{item2.stationData &&
+                      {item.departmentData && item.departmentData.map((item2,i)=>{
+                        return (<p  key={i} >{item2.departmentName}-（负责电站：{item2.stationData &&
                           item2.stationData.map(item3=>{
                             return item3.stationName;
                           })

@@ -5,6 +5,8 @@ import PropTypes from 'prop-types';
 import styles from './deviceList.scss';
 import { Tabs, Switch, Radio, Table, Progress  } from 'antd';
 import { Link } from 'react-router-dom';
+import CommonPagination from '../../../../../Common/CommonPagination/index';
+
 const TabPane = Tabs.TabPane;
 
 class BoxTransformerList extends Component {
@@ -19,9 +21,13 @@ class BoxTransformerList extends Component {
   constructor(props){
     super(props);
     this.state = {
-      tmpDeviceList : props.boxTransformerList && props.boxTransformerList.deviceList && props.boxTransformerList.deviceList.map((e,i)=>({...e,key:i})),//暂存的逆变器列表
+      tmpDeviceList : props.boxTransformerList && props.boxTransformerList.deviceList && props.boxTransformerList.deviceList.map((e,i)=>({...e,key:i})),//暂存的箱变列表
       currentStatus: 0,//当前状态值
       alarmSwitch: false,
+      pageSize: 10, 
+      currentPage: 1,
+      sortName: '',
+      descend : false,
     }
   }
 
@@ -112,10 +118,10 @@ class BoxTransformerList extends Component {
     const { deviceTypeCode, } = this.props;
     const columns = [
       {
-        title: '设备编号',
-        dataIndex: 'deviceCode',
-        key: 'deviceCode',
-        render: (text, record, index) => (<div className={record.deviceStatus === 900 ? styles.deviceCode : ""} ><Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${record.deviceCode}`} target="_blank" >{text}</Link></div>)
+        title: '设备名称',
+        dataIndex: 'deviceName',
+        key: 'deviceName',
+        render: (text, record, index) => (<div className={record.deviceStatus === 900 ? styles.deviceCode : ""} ><Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${record.deviceCode}`} target="_blank"  className={styles.tableDeviceName}  >{text}</Link></div>)
       }, {
         title: '实时功率(kW)',
         dataIndex: 'devicePower',
@@ -130,7 +136,7 @@ class BoxTransformerList extends Component {
                       <div>{record.devicePower}</div>
                       <div>{record.deviceCapacity}</div>
                     </div>
-                    <Progress percent={record.devicePower / record.deviceCapacity * 100} showInfo={false} strokeWidth={6} />
+                    <Progress percent={record.devicePower / record.deviceCapacity * 100} showInfo={false} strokeWidth={3} />
                   </div>
                 </div>
               </div>
@@ -145,6 +151,7 @@ class BoxTransformerList extends Component {
         title: '装机容量(kW)',
         dataIndex: 'deviceCapacity',
         key: 'deviceCapacity',
+        width: '140px',
         render: (value, columns, index) => {
           const obj = {
             children: null,
@@ -172,9 +179,23 @@ class BoxTransformerList extends Component {
     return columns;
   }
   
+  compareName = (a,b) => {
+    return a['deviceName'].localeCompare(b['deviceName']);
+  }
+
+  changePagination = ({ pageSize, currentPage }) => {
+    this.setState({ pageSize, currentPage })
+  }
+  tableChange = (pagination, filters, sorter) => {
+    this.setState({ 
+      sortName: sorter.field,
+      descend : sorter.order === 'descend'
+    })
+  }
+
   render(){
     const { boxTransformerList, loading,deviceTypeCode } = this.props;
-    const {tmpDeviceList, } = this.state;
+    const {tmpDeviceList,currentPage,pageSize } = this.state;
     const deviceList = boxTransformerList && boxTransformerList.deviceList;
     const initDeviceList = deviceList && deviceList.map((e,i)=>({...e,key:i}));
     
@@ -184,20 +205,20 @@ class BoxTransformerList extends Component {
     let tmpParentDeviceCodes = [...parentDeviceCodeSet];
     tmpParentDeviceCodes.forEach((value,key)=>{
       tmpParentDeviceCodes[key] = deviceList.filter(e=>value===e.parentDeviceCode);
-    })
-    
+    });
+    const currentDeviceList = endDeviceList && endDeviceList.sort(this.compareName).splice((currentPage-1)*pageSize,pageSize);
     const inverterListNum = deviceList && (deviceList.length || 0);
     const deviceStatus = boxTransformerList && boxTransformerList.deviceStatusSummary;
     const deviceStatusNums=deviceStatus && deviceStatus.map(e=>e.deviceStatusNum);
     const operations = (<div className={styles.inverterRight} >
-      <Switch defaultChecked={false} onChange={this.onSwitchAlarm}  /> 告警
+      {/* <Switch defaultChecked={false} onChange={this.onSwitchAlarm}  /> 告警
       <Radio.Group defaultValue={0} buttonStyle="solid" className={styles.inverterStatus} onChange={this.onChangeStatus}  >
         <Radio.Button value={0} >全部</Radio.Button>
         <Radio.Button value={100}>正常 {deviceStatusNums && deviceStatusNums[0]}</Radio.Button>
         <Radio.Button value={300}>故障 {deviceStatusNums && deviceStatusNums[2]}</Radio.Button>
         <Radio.Button value={200}>停机 {deviceStatusNums && deviceStatusNums[1]}</Radio.Button>
         <Radio.Button value={900}>未接入 {deviceStatusNums && deviceStatusNums[3]}</Radio.Button>
-      </Radio.Group>
+      </Radio.Group> */}
     </div>);
     const pagination = {
       defaultPageSize: 10,
@@ -210,6 +231,7 @@ class BoxTransformerList extends Component {
     }
     const baseLinkPath = "/hidden/monitorDevice";
     const { stationCode } = this.props.match.params;
+
     return (
       <div className={styles.inverterList} >
         <Tabs defaultActiveKey="1" className={styles.inverterTab} tabBarExtraContent={operations}>
@@ -217,21 +239,24 @@ class BoxTransformerList extends Component {
             {(tmpParentDeviceCodes&&tmpParentDeviceCodes.length>0) ? tmpParentDeviceCodes.map((e,index)=>{
               return (<div key={index}>
                 <div className={styles.parentDeviceName} >{e && e.parentDeviceName}</div>
-                {e && e.map((item,i)=>{
+                {e && e.sort(this.compareName).map((item,i)=>{
+                  
                   return (<div key={i} className={item.deviceStatus === 900 ? styles.cutOverItem : styles.inverterItem}>
                     <div className={styles.inverterItemIcon} >
                       <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${item.deviceCode}`} target="_blank" >
                         <i className="iconfont icon-xb" ></i>
                       </Link>
+                      <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${item.deviceCode}/?showPart=alarmList`} target="_blank" >
                         {item.alarmNum && <i className="iconfont icon-alarm" ></i>}
+                      </Link>
                     </div>
                     <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${item.deviceCode}`} target="_blank" >
                       <div className={styles.inverterItemR} >
                         <div>{item.deviceName}</div>
-                        <Progress className={styles.powerProgress} strokeWidth={4} percent={item.devicePower/item.deviceCapacity*100} showInfo={false} />
+                        <Progress className={styles.powerProgress} strokeWidth={3} percent={item.devicePower/item.deviceCapacity*100} showInfo={false} />
                         <div className={styles.inverterItemPower}>
-                          <div>{item.devicePower ? parseFloat(item.devicePower).toFixed(2) : '--'}KW</div>
-                          <div>{item.deviceCapacity ? parseFloat(item.deviceCapacity).toFixed(2) : '--'}KW</div>
+                          <div>{item.devicePower ? parseFloat(item.devicePower).toFixed(2) : '--'}kW</div>
+                          <div>{item.deviceCapacity ? parseFloat(item.deviceCapacity).toFixed(2) : '--'}kW</div>
                         </div>
                       </div>
                       </Link>
@@ -240,16 +265,19 @@ class BoxTransformerList extends Component {
               </div>);
             }) : <div className={styles.nodata} ><img src="/img/nodata.png" /></div>}
           </TabPane>
-          <TabPane tab={<span><i className="iconfont icon-table" ></i></span>} key="2">
+          <TabPane tab={<span><i className="iconfont icon-table" ></i></span>} key="2" className={styles.inverterTableBox} >
             <div>
-              {/* <CommonPagination total={inverterListNum} onPaginationChange={this.onPaginationChange} /> */}
+              <div className={styles.pagination} >
+                <CommonPagination onPaginationChange={this.changePagination} total={inverterListNum} />
+              </div>
               <Table 
                 loading={loading}
-                dataSource={tmpDeviceList || initDeviceList} 
+                dataSource={currentDeviceList} 
                 columns={this.tableColumn()} 
                 onChange={this.tableChange}
-                pagination={pagination}
+                pagination={false}
                 className={styles.inverterTable}
+                locale={{ emptyText: <div className={styles.noData}><img src="/img/nodata.png" /></div> }}
               />
             </div>
             

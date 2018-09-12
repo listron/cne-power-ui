@@ -1,7 +1,9 @@
 .commonProgress {
+  color:#999;
   :global{
     .ant-progress-inner{
       vertical-align: -3px;
+      background: #dfdfdf;
     }
   }
   .progressInfo{

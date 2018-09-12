@@ -4,6 +4,10 @@
 .pvmodule{
   .pvmoduleList{
     padding: 16px 25px;
+    .nodata{
+      text-align: center;
+      margin: 30px auto;
+    }
     .pvmoduleItem{
       width: 205px;
       height: 60px;
@@ -58,13 +62,13 @@
   .inverterTab{
     .inverterBlockBox{
       padding: 20px 20px 60px;
+      color: #999;
       .parentDeviceName{
         margin: 20px 0;
       } 
       .nodata{
         text-align: center;
         margin: 30px auto;
-
       }
       .inverterItem{
         display: inline-block;
@@ -82,6 +86,10 @@
           margin: 5px;
           position: relative;
           :global{
+            .iconfont{
+              font-size: 22px;
+              color: #dfdfdf;
+            }
             .icon-alarm{
               position: absolute;
               bottom: 0;
@@ -104,6 +112,9 @@
             justify-content: space-between;
             div:first-child{
               color: $themeColor;
+            }
+            div:last-child{
+              color: #999;
             }
           }
           :global{
@@ -153,6 +164,9 @@
             div:first-child{
               color: $themeColor;
             }
+            div:last-child{
+              color: #999;
+            }
           }
           :global{
             .ant-progress-success-bg, .ant-progress-bg{
@@ -162,65 +176,79 @@
         }
       }
     }
-    
-    .inverterTable{
-      .deviceCode{
-        pointer-events: none;
+    .inverterTableBox{
+      .nodata{
+        text-align: center;
+        margin: 30px auto;
       }
-      .devicePower{
-        // position: relative;
-
-        .progressPower{
-          .deviceValue{
-            display: flex;
-            justify-content: space-between;
+      .pagination{
+        margin: 10px ;
+        display: flex;
+        justify-content: flex-end;
+      }
+      .inverterTable{
+        .tableDeviceName{
+          text-decoration: underline;
+        }
+        .deviceCode{
+          pointer-events: none;
+        }
+        .devicePower{
+          .progressPower{
+            .deviceValue{
+              display: flex;
+              justify-content: space-between;
+            }
           }
-          // position: absolute;
-          // left: 0;
-          // bottom: -2px;
         }
-      }
-      .statusColor{
-        background:#199475;
-        border-radius:2px;
-        width:3px;
-        height:16px;
-        margin-right: 5px;
-        display: inline-block;
-        vertical-align: middle;
-      }
-      margin-bottom: 60px;
-      :global{
-        .ant-table-placeholder{
-          z-index: 0;
+        .statusColor{
+          background:#199475;
+          border-radius:2px;
+          width:3px;
+          height:16px;
+          margin-right: 5px;
+          display: inline-block;
+          vertical-align: middle;
         }
-        .ant-progress-success-bg, .ant-progress-bg{
-          background-color: $themeColor;
-        }
-        a{
-          color:#666666;
-        }
-        a:hover{
-          color: $themeColor;
-        }
-        .ant-table-column-sorter-up.on .anticon-caret-up, .ant-table-column-sorter-down.on .anticon-caret-up, .ant-table-column-sorter-up.on .anticon-caret-down, .ant-table-column-sorter-down.on .anticon-caret-down {
-          color: $themeColor;
-        }
-        .ant-pagination-item-active {
-          border-color: $themeColor;
-        }
-        .ant-pagination.mini .ant-pagination-options-quick-jumper input {
-          border: 1px solid $themeColor;
-        }
-        .ant-table-pagination.ant-pagination {
-          margin: 16px;
-          float: right;
-        }
-        .ant-table .ant-table-tbody > tr > td {
-          line-height: 20px;
+        margin-bottom: 60px;
+        :global{
+          .ant-table-placeholder{
+            z-index: 0;
+            border-bottom: 0; 
+          }
+          .ant-progress-success-bg, .ant-progress-bg{
+            background-color: $themeColor;
+          }
+          a{
+            color:#666666;
+          }
+          a:hover{
+            color: $themeColor;
+          }
+          .ant-table-column-sorter-up.on .anticon-caret-up, .ant-table-column-sorter-down.on .anticon-caret-up, .ant-table-column-sorter-up.on .anticon-caret-down, .ant-table-column-sorter-down.on .anticon-caret-down {
+            color: $themeColor;
+          }
+          .ant-pagination-item-active {
+            border-color: $themeColor;
+          }
+          .ant-pagination.mini .ant-pagination-options-quick-jumper input {
+            border: 1px solid $themeColor;
+          }
+          .ant-table-pagination.ant-pagination {
+            margin: 16px;
+            float: right;
+          }
+          .ant-table .ant-table-tbody > tr > td {
+            line-height: 20px;
+          }
+          .ant-table-thead{
+            background: #f4f4f4;
+            color: #999999;
+          }
         }
       }
     }
+    
   }
   
   :global{

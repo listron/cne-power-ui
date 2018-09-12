@@ -5,6 +5,8 @@ import styles from './singleStation.scss';
 import { singleStationAction } from '../../../../constants/actionTypes/monitor/stationMonitor/singleStationAction';
 import SingleStationMain from '../../../../components/Monitor/StationMonitor/SingleStation/SingleStationMain';
 import moment from 'moment';
+import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
+import Footer from '../../../../components/Common/Footer/index';
 class SingleStation extends Component {
   static propTypes = {
     match: PropTypes.object,
@@ -34,9 +36,10 @@ class SingleStation extends Component {
 
   componentDidMount() {
     const { stationCode } = this.props.match.params;
-    this.getData(stationCode);
+    this.getTenSeconds(stationCode);
+    this.getTenMinutes(stationCode);
     this.props.getStationDeviceList({stationCode, deviceTypeCode: 203});//获取单电站气象站信息
-    this.props.getStationList({});
+    this.props.getStationList({});//获取电站列表
     // 如果是从设备页面跳转过来的，定位到所在设备位置
     const main = document.getElementById('main');
     const locationSearch  = this.props.location.search;
@@ -56,35 +59,54 @@ class SingleStation extends Component {
     const nextStation = nextParams.stationCode;
     if( nextStation !== stationCode ){
       clearTimeout(this.timeOutId);
-      this.getData(nextStation);
+      this.getTenSeconds(nextStation);
+      this.getTenMinutes(nextStation);
+      this.props.changeSingleStationStore({deviceTypeCode: 206});
     }
-    this.props.changeSingleStationStore({deviceTypeCode: nextProps.deviceTypeCode});
-    
+    // this.props.changeSingleStationStore({deviceTypeCode: nextProps.deviceTypeCode});
   }
 
   componentWillUnmount(){
     clearTimeout(this.timeOutId);
+    clearTimeout(this.timeOutIdTen);
   }
 
-  getData = (stationCode) => {
+  getTenSeconds = (stationCode) => {
     
     this.props.getSingleStation({stationCode});
-    this.props.getCapabilityDiagram({stationCode,startTime: moment().subtract(24, 'hours').utc().format(),endTime: moment().utc().format()});
-    this.props.getMonitorPower({stationCode,intervalTime: 0, startTime: moment().set({'year': moment().year(), 'month': 0, 'date': 1, }).format('YYYY-MM-DD'), endTime: moment().format('YYYY-MM-DD')});
-    this.props.getOperatorList({stationCode,roleId: '4,5'});
     this.props.getAlarmList({stationCode});
     this.props.getWorkList({stationCode, startTime: moment().set({'hour': 0, 'minute': 0, 'second': 0, }).utc().format(), endTime: moment().utc().format()});
     this.props.getDeviceTypeFlow({stationCode});
     
     this.timeOutId = setTimeout(()=>{
-      this.getData(stationCode);
+      this.getTenSeconds(stationCode);
     },10000);
   }
 
+  getTenMinutes = (stationCode) => {
+    this.props.getCapabilityDiagram({stationCode,startTime: moment().subtract(24, 'hours').utc().format(),endTime: moment().utc().format()});
+    this.props.getMonitorPower({stationCode,intervalTime: 0, startTime: moment().set({'year': moment().year(), 'month': 0, 'date': 1, }).format('YYYY-MM-DD'), endTime: moment().format('YYYY-MM-DD')});
+    
+    this.timeOutIdTen = setTimeout(()=>{
+      this.getTenMinutes(stationCode);
+    },600000);
+  }
+
   render() {
+    const breadCrumbData = {
+      breadData:[   
+       {
+        name: '电站监控',
+       }
+      ],
+    };
     return (
-      <div className={styles.singleStationContainer} >
-        <SingleStationMain {...this.props} getData={this.getData} />
+      <div className={styles.singleStation}>
+      <CommonBreadcrumb {...breadCrumbData} style={{marginLeft:'38px', backgroundColor:'#fff'}} />
+      <div className={styles.singleStationContainer} >   
+        <SingleStationMain {...this.props} />
+        <Footer />
+      </div>
       </div>
     );
   }

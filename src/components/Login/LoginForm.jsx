@@ -53,6 +53,16 @@ class LoginForm extends Component {
     this.props.form.validateFields((err, values) => {
       if (!err) {
         if (this.state.showPasswordLogin) {
+          setTimeout(() => {
+            if(this.props.error && this.props.error.get('code') === '20009') {
+              this.props.form.setFields({
+                password: {
+                  value: values.password,
+                  errors: [new Error('用户名或密码错误，请重新尝试！')],
+                },
+              });
+            }
+          }, 500);
           this.props.fetchLogin({
             ...values,
             history: this.props.history,

@@ -31,9 +31,11 @@ class Seriesinverter extends Component {
     const nextDevice = nextParams.deviceCode;
     const nextType = nextParams.deviceTypeCode;
     const nextStation = nextParams.stationCode;
+    console.log(nextParams)
     if( nextDevice !== deviceCode || nextType !== deviceTypeCode || nextStation !== stationCode ){
+      console.log('into will receive props?????')
       clearTimeout(this.timeOutId);
-      this.getData(stationCode, deviceCode, deviceTypeCode);
+      this.getData(nextStation, nextDevice, nextType);
     }
   }
 
@@ -57,6 +59,8 @@ class Seriesinverter extends Component {
   render(){
     const {devices, deviceDetail, deviceTenMin, deviceAlarmList, devicePointData, loading } = this.props;
     const { stationCode, deviceTypeCode } = this.props.match.params;
+    const backData={path: `/monitor/singleStation/${stationCode}`,name: '返回电站'};
+    //console.log(deviceDetail)
     const breadCrumbData = {
       breadData:[{
         link: true,
@@ -69,7 +73,7 @@ class Seriesinverter extends Component {
     };
     return (
       <div className={styles.seriesinverter}>
-        <CommonBreadcrumb {...breadCrumbData} />
+        <CommonBreadcrumb {...breadCrumbData} style={{backgroundColor:'#fff'}}  backData={{...backData}} />
         <div className={styles.deviceContent}>
           <InverterHeader deviceDetail={deviceDetail} devices={devices} stationCode={stationCode} deviceTypeCode={deviceTypeCode} />
           <InverterStatistics deviceDetail={deviceDetail} />

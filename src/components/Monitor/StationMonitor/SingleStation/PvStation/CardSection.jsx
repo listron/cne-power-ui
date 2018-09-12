@@ -14,6 +14,7 @@ class CardSection extends Component {
     alarmList: PropTypes.object,
     workList: PropTypes.object,
     getWeatherList: PropTypes.func,
+    getOperatorList: PropTypes.func,
   }
 
   constructor(props){
@@ -47,6 +48,7 @@ class CardSection extends Component {
 
   getData = (stationCode) => {
     this.props.getWeatherList({stationCode});
+    this.props.getOperatorList({stationCode,roleId: '4,5'});
     this.timeOutId = setTimeout(()=>{
       this.getData(stationCode);
     },3600000);
@@ -118,12 +120,11 @@ class CardSection extends Component {
                   tmpOperatorList.map((item,index)=>{
                     return (<div key={index} className={styles.operatorContent} >
                       {item.map((e,i)=>{
-                        //console.log(e.userFullName);
                         return (
                           <div key={i} className={styles.userInfo} >
                             <Row>
                               <Col span={5} title={e.userFullName|| e.userName}><div  style={{height:'21px',width:'55px',overflow:"hidden"}}>{e.userFullName|| e.userName}</div></Col>
-                              <Col span={9} title={e.roleDesc}><div style={{height:'21px',width:'94px',overflow:"hidden"}}>{e.roleDesc}</div></Col>
+                              <Col span={10} title={e.roleDesc}><div style={{height:'21px',width:'104px',overflow:"hidden"}}>{e.roleDesc}</div></Col>
                               <Col span={9} title={e.phoneNum}><div style={{height:'21px',width:'94px',overflow:"hidden"}}>{e.phoneNum}</div></Col>
                             </Row>
                           </div>
@@ -153,7 +154,7 @@ class CardSection extends Component {
                   if(i<2){
                     return (<div style={{display:'inline-block',margin: '0 5px',}} key={e.date} className="weather"  id={Number(i)} >
                       <div>{i === 0 ? '今天' : (i === 1 ? '明天' : e.date )}</div>
-                      <div><i className="" ></i></div>
+                      <div className={styles.weatherIcon}><img src={`/img/weathercn/${e.day.img}.png`} /></div>
                       <div className={i===0?styles.lightGreen:''}>{e.night.templow}-{e.day.temphigh}℃</div>
                       <div className={i===0?styles.lightGreen:''}>{e.day.weather}</div>
                       <div className={i===0?styles.lightGreen:''}>{e.day.winddirect}{e.day.windpower}</div>
@@ -161,6 +162,7 @@ class CardSection extends Component {
                   }else{
                     return (<div style={{display:'none',margin: '0 5px',}} key={e.date} className="weather" id={Number(i)} >
                       <div>{i === 0 ? '今天' : (i === 1 ? '明天' : e.date )}</div>
+                      <div className={styles.weatherIcon}><img src={`/img/weathercn/${e.day.img}.png`} /></div>
                       <div className={i===0?styles.lightGreen:''}>{e.night.templow}-{e.day.temphigh}℃</div>
                       <div className={i===0?styles.lightGreen:''}>{e.day.weather}</div>
                       <div className={i===0?styles.lightGreen:''}>{e.day.winddirect}{e.day.windpower}</div>
@@ -196,9 +198,9 @@ class CardSection extends Component {
               </div>
               {workList &&
                 <div className={styles.workContent} >
-                  <div><div>{workList.worklistNewNum===null ? '--' : workList.worklistNewNum}</div><div>今日新增</div></div>
-                  <div><div>{workList.worklistHandleNum===null ? '--' : workList.worklistHandleNum}</div><div>处理中</div></div>
-                  <div><div>{workList.worklistCompleteNum===null ? '--' : workList.worklistCompleteNum}</div><div>今日完成</div></div>
+                  <div><div>{workList.worklistNewNum===null ? '--' : workList.worklistNewNum}</div><div className={styles.workListRate} >今日新增</div></div>
+                  <div><div>{workList.worklistHandleNum===null ? '--' : workList.worklistHandleNum}</div><div className={styles.workListRate}>处理中</div></div>
+                  <div><div>{workList.worklistCompleteNum===null ? '--' : workList.worklistCompleteNum}</div><div className={styles.workListRate}>今日完成</div></div>
                 </div>
               }
             </div>

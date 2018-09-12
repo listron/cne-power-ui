@@ -18,10 +18,12 @@
     height: 65px;
     line-height: 65px;
     margin-bottom: 0px;
+    cursor: pointer;
     .titleIcon{
       cursor: pointer;
       margin-left: 32px;
       margin-right: 12px;
+      color: $themeColor;
     }
   }
   .deviceList{
@@ -47,13 +49,18 @@
   width: 215px;
   margin-top: 24px;
   align-content: flex-start;
+  :global{
+    .ant-progress-inner{
+      background-color: #dfdfdf;
+    }
+  }
   .progressNum, .progressText{
     width: 100%;
     display: flex;
     @include lineheight(24px);
     .leftText, .rightText {
       width: 50%;
-      color: $darkColor;
+      color: $themeColor;
       font-size: 24px;
     }
     .leftText{
@@ -93,6 +100,16 @@
     line-height: 36px;
     .historyButton{
       height: 26px;
+      border: 1px solid $themeColor;
+      color: $themeColor;
+      text-decoration: none;
+      a:focus {
+        text-decoration: none;
+      }
+    }
+    .historyButton:hover{
+      background: $themeColor;
+      color: #fff;
     }
   }
   .level{

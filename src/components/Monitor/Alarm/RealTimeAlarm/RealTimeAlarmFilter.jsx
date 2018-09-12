@@ -32,11 +32,11 @@ class RealTimeAlarmFilter extends Component {
   }
   onFilterShowChange = (filterText) => {
     const { showFilter } = this.state;
-    if(showFilter === filterText) {
+    if (showFilter === filterText) {
       this.setState({
         showFilter: ''
       });
-    } else{
+    } else {
       this.setState({
         showFilter: filterText
       });
@@ -50,32 +50,32 @@ class RealTimeAlarmFilter extends Component {
       <div className={styles.alarmFilter}>
         <div className={styles.topSearch}>
           <span className={styles.text}>筛选条件</span>
-          <Button onClick={()=>this.onFilterShowChange('alarmLevel')}>
-            告警级别{showFilter==='alarmLevel'?<Icon type="up" />:<Icon type="down" />}
+          <Button onClick={() => this.onFilterShowChange('alarmLevel')}>
+            告警级别{showFilter === 'alarmLevel' ? <Icon type="up" /> : <Icon type="down" />}
           </Button>
-          {stations && stations.size > 0 && <Button onClick={()=>this.onFilterShowChange('stationType')}>
-            电站类型{showFilter==='stationType'?<Icon type="up" />:<Icon type="down" />}
+          {stations && stations.size > 0 && <Button onClick={() => this.onFilterShowChange('stationType')}>
+            电站类型{showFilter === 'stationType' ? <Icon type="up" /> : <Icon type="down" />}
           </Button>}
-          <Button onClick={()=>this.onFilterShowChange('stationName')}>
-            电站名称{showFilter==='stationName'?<Icon type="up" />:<Icon type="down" />}
+          <Button onClick={() => this.onFilterShowChange('stationName')}>
+            电站名称{showFilter === 'stationName' ? <Icon type="up" /> : <Icon type="down" />}
           </Button>
-          <Button onClick={()=>this.onFilterShowChange('deviceType')}>
-            设备类型{showFilter==='deviceType'?<Icon type="up" />:<Icon type="down" />}
+          <Button onClick={() => this.onFilterShowChange('deviceType')}>
+            设备类型{showFilter === 'deviceType' ? <Icon type="up" /> : <Icon type="down" />}
           </Button>
-          <Button onClick={()=>this.onFilterShowChange('alarmType')}>
-            告警类型{showFilter==='alarmType'?<Icon type="up" />:<Icon type="down" />}
+          <Button onClick={() => this.onFilterShowChange('alarmType')}>
+            告警类型{showFilter === 'alarmType' ? <Icon type="up" /> : <Icon type="down" />}
           </Button>
-          <Button onClick={()=>this.onFilterShowChange('startTime')}>
-            发生时间{showFilter==='startTime'?<Icon type="up" />:<Icon type="down" />}
+          <Button onClick={() => this.onFilterShowChange('startTime')}>
+            发生时间{showFilter === 'startTime' ? <Icon type="up" /> : <Icon type="down" />}
           </Button>
         </div>
         <div className={styles.filterBox}>
-          {showFilter==='startTime' && <StartTimeFilter {...this.props} />}
-          {showFilter==='alarmLevel' && <AlarmLevelFilter {...this.props} />}
-          {showFilter==='stationType' && <StationTypeFilter {...this.props} />}
-          {showFilter==='stationName' && <StationFilter {...this.props} />}
-          {showFilter==='deviceType' && <DeviceTypeFilter {...this.props} />}
-          {showFilter==='alarmType' && <AlarmTypeFilter {...this.props} />}
+          {showFilter === 'startTime' && <StartTimeFilter {...this.props} />}
+          {showFilter === 'alarmLevel' && <AlarmLevelFilter {...this.props} />}
+          {showFilter === 'stationType' && <StationTypeFilter {...this.props} />}
+          {showFilter === 'stationName' && <StationFilter {...this.props} />}
+          {showFilter === 'deviceType' && <DeviceTypeFilter {...this.props} />}
+          {showFilter === 'alarmType' && <AlarmTypeFilter {...this.props} />}
         </div>
         <RealTimeFilteredItems {...this.props} />
       </div>

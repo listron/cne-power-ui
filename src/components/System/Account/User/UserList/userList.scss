@@ -53,6 +53,7 @@
       .userSearch{
         line-height: 50px;
         background: #fbfbfb;
+        color: #999;
         display: flex;
         padding-left: 14px;
         span{
@@ -86,6 +87,7 @@
           
           .filterCondition{
             margin: 30px 10px 0 26px;
+            color: #999;
           }
         }
         .userStatus{
@@ -233,6 +235,10 @@
               margin-left: 20px;
               
               :global{
+                .ant-select-dropdown-menu{
+                  max-height: 300px;
+                  overflow: hidden;
+                }
                 .ant-select-selection__placeholder{
                   display: none;
                 }

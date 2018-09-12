@@ -9,6 +9,7 @@ import Footer from '../../../../Common/Footer';
 class StationManageSide extends Component {
   static propTypes = {
     showSidePage: PropTypes.string,
+    changeStationManageStore: PropTypes.func,
   }
 
   constructor(props){

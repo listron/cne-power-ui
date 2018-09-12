@@ -28,7 +28,7 @@ class Weatherstation extends Component {
     const nextStation = nextParams.stationCode;
     if( nextDevice !== deviceCode || nextType !== deviceTypeCode || nextStation !== stationCode ){
       clearTimeout(this.timeOutId);
-      this.getData(stationCode, deviceCode, deviceTypeCode);
+      this.getData(nextStation, nextDevice, nextType);
     }
   }
 
@@ -52,6 +52,7 @@ class Weatherstation extends Component {
   render(){
     const { deviceDetail, deviceAlarmList, loading } = this.props;
     const { stationCode } = this.props.match.params;
+    const backData={path: `/monitor/singleStation/${stationCode}`,name: '返回电站'};
     const breadCrumbData = {
       breadData:[{
         link: true,
@@ -64,7 +65,7 @@ class Weatherstation extends Component {
     };
     return (
       <div className={styles.weatherstation}>
-        <CommonBreadcrumb {...breadCrumbData} />
+        <CommonBreadcrumb {...breadCrumbData} style={{backgroundColor:'#fff'}}  backData={{...backData}} />
         <div className={styles.deviceContent}>
           <WeatherStationHeader deviceDetail={deviceDetail} />
           <WeatherStationStatistics deviceDetail={deviceDetail} />

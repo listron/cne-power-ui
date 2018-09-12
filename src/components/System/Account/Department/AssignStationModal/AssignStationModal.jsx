@@ -344,7 +344,7 @@ class AssignStationModal extends Component {
             onCancel={this.onCancelWarningTip} 
             onOK={this.onConfirmWarningTip} value={warningTipText} />}
           <div className={styles.header}>
-            <span>分配用户</span>
+            <span>设置电站</span>
             <Search
               placeholder="搜索电站名称"
               onSearch={this.onSearch}

@@ -9,6 +9,8 @@ import Allstation from '../../../../components/Monitor/StationMonitor/AllStation
 import WindStation from '../../../../components/Monitor/StationMonitor/AllStation/WindStation/WindStation.jsx';
 import PvStation from '../../../../components/Monitor/StationMonitor/AllStation/PvStation/PvStation.jsx';
 import Footer from '../../../../components/Common/Footer';
+import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
+
 
 const TabPane = Tabs.TabPane;
 class AllStation extends Component {
@@ -39,7 +41,9 @@ class AllStation extends Component {
   componentWillUnmount() {
     clearInterval(this.stationInterval);
     this.props.changeMonitorStationStore({
-      stationTypes: '2'
+      stationTypes: null,
+      stationShowType:'stationBlock'
+
     });
   }
 
@@ -57,17 +61,31 @@ class AllStation extends Component {
   }
   render() {
     const { stationTypes } = this.props;
+    const breadCrumbData = {
+      breadData:[
+      //   {
+      //   link: true,
+      //   name: deviceDetail.stationName || '',
+      //   path: `/monitor/singleStation/${stationCode}`,
+      // },
+      {
+        name: '电站监控',
+      }
+    ],
+      //iconName: 'iconfont icon-weather'
+    };
     return (
       <div className={styles.stationMonitor}>
+      <CommonBreadcrumb  {...breadCrumbData} style={{marginLeft: '38px'}} />
         <div className={styles.stationContainer}>         
             <Tabs type="card" activeKey={this.props.stationTypeTabs} onChange={this.queryTargetData} tabBarGutter={0} >
               {stationTypes === '2' ? <TabPane tab="全部" key="2" >
                 <Allstation {...this.props} />
               </TabPane> : ''}
-              {stationTypes !== '1' ? <TabPane tab="风电" key="0">
+              {(stationTypes === '2' || stationTypes === '0') ? <TabPane tab="风电" key="0">
                 <WindStation {...this.props} />
               </TabPane> : ''}
-              {stationTypes !== '0' ? <TabPane tab="光伏" key="1">
+              {(stationTypes === '2' || stationTypes === '1') ? <TabPane tab="光伏" key="1">
                 <PvStation {...this.props} />
               </TabPane> : ''}
             </Tabs>         
