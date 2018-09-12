@@ -15,7 +15,7 @@
         .swap{
           font-size: 18px;
           margin-left: 32px;
-          color: $darkColor;
+          color: $themeColor;
           cursor: pointer;
         }
         .name{
@@ -55,14 +55,17 @@
           line-height: 65px;
           margin-right: 40px;
           .linkName{
-            color: $darkColor;
+            color: $themeColor;
           }
           :global{
             .linkIcon{
-              color: $lightColor;
+              color: $promptColor;
               font-size: 18px;
               vertical-align: middle;
               margin: 0 4px;
+            }
+            .icon-upstream,.icon-downstream{
+              color: #ceebe0;
             }
           }
         }
@@ -80,6 +83,7 @@
         :global{
           .iconfont{
             font-size: 24px;
+            color: $themeColor;
           }
         }
       }
@@ -93,7 +97,7 @@
           font-size: 24px;
           height: 24px;
           line-height: 24px;
-          color: $darkColor;
+          color: $themeColor;
           margin-bottom: 8px;
         }
         .empty{

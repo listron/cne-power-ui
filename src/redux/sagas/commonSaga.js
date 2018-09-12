@@ -114,7 +114,7 @@ function *getDevices(action){
       yield put({ 
         type: commonAction.GET_COMMON_FETCH_SUCCESS, 
         payload: {
-          devices: response.data.data.devices, 
+          devices: response.data.data, 
         }
       });       
     }
@@ -128,7 +128,7 @@ function *getPartition(action){
   let url = Path.basePaths.APIBasePath + Path.commonPaths.getPartitions;
   yield put({ type: commonAction.COMMON_FETCH });
   try {
-    const response = yield call(axios.get, url, {params: action.params});
+    const response = yield call(axios.get, url, {params: action.payload});
     if(response.data.code === '10000'){
       yield put({ 
         type: commonAction.GET_COMMON_FETCH_SUCCESS, 

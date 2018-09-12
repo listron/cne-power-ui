@@ -41,24 +41,24 @@ class InspectList extends Component {
   }
 
   componentDidMount() {
-    const { stationType, stationCodes, timeInterval, status, pageNum, pageSize, createTimeStart, createTimeEnd, deviceTypeCode, sort, handleUser, hasAbnormal} = this.props;
-    if(this.props.showTab === 'inspect') {
-      var params = {
-        stationType,
-        stationCodes,
-        timeInterval,
-        status,
-        pageNum,
-        pageSize,
-        sort,
-        createTimeStart,
-        createTimeEnd,
-        deviceTypeCode,
-        handleUser,
-        hasAbnormal
-      }
-      this.props.getInspectList(params);
-    }
+    // const { stationType, stationCodes, timeInterval, status, pageNum, pageSize, createTimeStart, createTimeEnd, deviceTypeCode, sort, handleUser, hasAbnormal} = this.props;
+    // if(this.props.showTab === 'inspect') {
+    //   var params = {
+    //     stationType,
+    //     stationCodes,
+    //     timeInterval,
+    //     status,
+    //     pageNum,
+    //     pageSize,
+    //     sort,
+    //     createTimeStart,
+    //     createTimeEnd,
+    //     deviceTypeCode,
+    //     handleUser,
+    //     hasAbnormal
+    //   }
+    //   this.props.getInspectList(params);
+    // }
   }
 
   onChangeFilter = (obj) => {
@@ -74,8 +74,8 @@ class InspectList extends Component {
       createTimeStart,
       createTimeEnd,
       deviceTypeCode,
-      handleUser,
-      hasAbnormal
+      // handleUser,
+      // hasAbnormal
     }
     let newFiter = Object.assign({}, filter, obj);
     this.props.getInspectList(newFiter)

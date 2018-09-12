@@ -7,10 +7,10 @@ function DeviceManageTip({ hideManageTip }){
 
   return (<div className={styles.deviceManageTip}>
     <span>
-      <span>i</span>
-      <span>请选择您要查看的电站</span>
+      <span className={styles.icon}>i</span>
+      <span className={styles.wordTip}>请选择电站！</span>
     </span>
-    <span onClick={hideManageTip}>x</span>
+    <span className={styles.close} onClick={hideManageTip}>×</span>
   </div>)
 }
 
