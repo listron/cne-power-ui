@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { Timeline } from 'antd';
 import PropTypes from 'prop-types';
-import styles from './style.scss';
+import styles from './defectTimeLine.scss';
 import moment from 'moment';
-import {getHandleStatus} from '../../../constants/ticket';
+import { getHandleStatus } from '../../../../../constants/ticket';
 
 /*
   时间线组件：
@@ -11,7 +11,7 @@ import {getHandleStatus} from '../../../constants/ticket';
     1.必须传入属性：流程当前状态status,流程信息progressData
  */
 
-class TimeLines extends Component {
+class DefectTimeLine extends Component {
   static propTypes = {
     status: PropTypes.string,
     processData: PropTypes.object,
@@ -121,4 +121,4 @@ class TimeLines extends Component {
   }
 }
 
-export default TimeLines;
+export default DefectTimeLine;

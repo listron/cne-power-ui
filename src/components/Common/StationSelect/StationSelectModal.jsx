@@ -18,8 +18,8 @@ class StationSelectModal extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      filterStationType: 0,//选中电站类型
-      stationType:[0,10,20],//0所有,20光伏，10光伏
+      filterStationType: 2,//选中电站类型
+      stationType:[2,0,1],//0所有,0风电，1光伏
       selectedStation:[], //暂存选中的电站数组
     }
   }
@@ -57,7 +57,7 @@ class StationSelectModal extends Component {
   _filterStation = () => {
     const { data, multiple } = this.props;
     const { filterStationType, selectedStation } = this.state;
-    const tmpStations = filterStationType === 0 ? data : data.filter(e=>(e.stationType === filterStationType));
+    const tmpStations = filterStationType === 2 ? data : data.filter(e=>(e.stationType === filterStationType));
     let filteredStation = [];
     tmpStations && tmpStations.length > 0 && tmpStations.forEach(e=>{
       let findExactStation = false;
@@ -118,7 +118,7 @@ class StationSelectModal extends Component {
           <div className={styles.stationStyleModal}>
             <div className={styles.stationType}>
               <RadioGroup onChange={this.onSelectStationType} value={filterStationType}>
-                {stationType.map(e=>(<RadioButton key={e} value={e} >{e===0?'全部':e===10?'光伏':'风电'}</RadioButton>))}
+                {stationType.map(e=>(<RadioButton key={e} value={e} >{e===2?'全部':e===1?'光伏':'风电'}</RadioButton>))}
               </RadioGroup>
             </div>
             <div className={styles.provinceList}>

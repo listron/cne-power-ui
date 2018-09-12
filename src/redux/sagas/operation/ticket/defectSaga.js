@@ -4,7 +4,7 @@ import Path from '../../../../constants/path';
 import { ticketAction } from '../../../../constants/actionTypes/operation/ticketAction';
 import { message } from 'antd';
 
-function *changeTicketStore(action){//存储payload指定参数，替换reducer-store属性。
+function *changeDefectStore(action){//存储payload指定参数，替换reducer-store属性。
   const { payload } = action;
   yield put({
     type:  ticketAction.CHANGE_DEFECT_STORE,
@@ -301,6 +301,26 @@ function* sendDefect(action) {
     const response = yield call(axios.post, url, payload);
     if(response.data.code === '10000'){
       message.success('下发成功！');
+      const params = yield select(state => ({
+        stationType: state.operation.defect.get('stationType'),
+        stationCodes: state.operation.defect.get('stationCodes'),
+        defectSource: state.operation.defect.get('defectSource'),
+        defectLevel: state.operation.defect.get('defectLevel'),
+        timeInterval: state.operation.defect.get('timeInterval'),
+        status: state.operation.defect.get('status'),
+        pageNum: state.operation.defect.get('pageNum'),
+        pageSize: state.operation.defect.get('pageSize'),
+        createTimeStart: state.operation.defect.get('createTimeStart'),
+        createTimeEnd: state.operation.defect.get('createTimeEnd'),
+        deviceTypeCode: state.operation.defect.get('deviceTypeCode'),
+        defectTypeCode: state.operation.defect.get('defectTypeCode'),
+        sort: state.operation.defect.get('sort'),
+        handleUser: state.operation.defect.get('handleUser'),
+      }));
+      yield put({ 
+        type: ticketAction.GET_DEFECT_LIST_SAGA, 
+        payload: params
+      });
       yield put({
         type: ticketAction.CHANGE_SHOW_CONTAINER_SAGA,
         payload: {container: 'list'},
@@ -328,6 +348,26 @@ function* rejectDefect(action) {
     const response = yield call(axios.post, url, payload);
     if(response.data.code === '10000'){
       message.success('驳回成功！');
+      const params = yield select(state => ({
+        stationType: state.operation.defect.get('stationType'),
+        stationCodes: state.operation.defect.get('stationCodes'),
+        defectSource: state.operation.defect.get('defectSource'),
+        defectLevel: state.operation.defect.get('defectLevel'),
+        timeInterval: state.operation.defect.get('timeInterval'),
+        status: state.operation.defect.get('status'),
+        pageNum: state.operation.defect.get('pageNum'),
+        pageSize: state.operation.defect.get('pageSize'),
+        createTimeStart: state.operation.defect.get('createTimeStart'),
+        createTimeEnd: state.operation.defect.get('createTimeEnd'),
+        deviceTypeCode: state.operation.defect.get('deviceTypeCode'),
+        defectTypeCode: state.operation.defect.get('defectTypeCode'),
+        sort: state.operation.defect.get('sort'),
+        handleUser: state.operation.defect.get('handleUser'),
+      }));
+      yield put({ 
+        type: ticketAction.GET_DEFECT_LIST_SAGA, 
+        payload: params
+      });
       yield put({
         type: ticketAction.CHANGE_SHOW_CONTAINER_SAGA,
         payload: {container: 'list'},
@@ -354,7 +394,27 @@ function* closeDefect(action) {
   try {
     const response = yield call(axios.post, url, payload);
     if(response.data.code === '10000'){
-      message.success('关闭成功！'); 
+      message.success('关闭成功！');
+      const params = yield select(state => ({
+        stationType: state.operation.defect.get('stationType'),
+        stationCodes: state.operation.defect.get('stationCodes'),
+        defectSource: state.operation.defect.get('defectSource'),
+        defectLevel: state.operation.defect.get('defectLevel'),
+        timeInterval: state.operation.defect.get('timeInterval'),
+        status: state.operation.defect.get('status'),
+        pageNum: state.operation.defect.get('pageNum'),
+        pageSize: state.operation.defect.get('pageSize'),
+        createTimeStart: state.operation.defect.get('createTimeStart'),
+        createTimeEnd: state.operation.defect.get('createTimeEnd'),
+        deviceTypeCode: state.operation.defect.get('deviceTypeCode'),
+        defectTypeCode: state.operation.defect.get('defectTypeCode'),
+        sort: state.operation.defect.get('sort'),
+        handleUser: state.operation.defect.get('handleUser'),
+      }));
+      yield put({ 
+        type: ticketAction.GET_DEFECT_LIST_SAGA, 
+        payload: params
+      });
       yield put({
         type: ticketAction.CHANGE_SHOW_CONTAINER_SAGA,
         payload: {container: 'list'},
@@ -382,6 +442,26 @@ function* handleDefect(action) {
     const response = yield call(axios.post, url, payload);
     if(response.data.code === '10000'){
       message.success('处理缺陷成功！');
+      const params = yield select(state => ({
+        stationType: state.operation.defect.get('stationType'),
+        stationCodes: state.operation.defect.get('stationCodes'),
+        defectSource: state.operation.defect.get('defectSource'),
+        defectLevel: state.operation.defect.get('defectLevel'),
+        timeInterval: state.operation.defect.get('timeInterval'),
+        status: state.operation.defect.get('status'),
+        pageNum: state.operation.defect.get('pageNum'),
+        pageSize: state.operation.defect.get('pageSize'),
+        createTimeStart: state.operation.defect.get('createTimeStart'),
+        createTimeEnd: state.operation.defect.get('createTimeEnd'),
+        deviceTypeCode: state.operation.defect.get('deviceTypeCode'),
+        defectTypeCode: state.operation.defect.get('defectTypeCode'),
+        sort: state.operation.defect.get('sort'),
+        handleUser: state.operation.defect.get('handleUser'),
+      }));
+      yield put({ 
+        type: ticketAction.GET_DEFECT_LIST_SAGA, 
+        payload: params
+      });
       yield put({
         type: ticketAction.CHANGE_SHOW_CONTAINER_SAGA,
         payload: {container: 'list'},
@@ -410,6 +490,26 @@ function* checkDefect(action) {
     console.log(response)
     if(response.data.code === '10000'){
       message.success('验收成功！');
+      const params = yield select(state => ({
+        stationType: state.operation.defect.get('stationType'),
+        stationCodes: state.operation.defect.get('stationCodes'),
+        defectSource: state.operation.defect.get('defectSource'),
+        defectLevel: state.operation.defect.get('defectLevel'),
+        timeInterval: state.operation.defect.get('timeInterval'),
+        status: state.operation.defect.get('status'),
+        pageNum: state.operation.defect.get('pageNum'),
+        pageSize: state.operation.defect.get('pageSize'),
+        createTimeStart: state.operation.defect.get('createTimeStart'),
+        createTimeEnd: state.operation.defect.get('createTimeEnd'),
+        deviceTypeCode: state.operation.defect.get('deviceTypeCode'),
+        defectTypeCode: state.operation.defect.get('defectTypeCode'),
+        sort: state.operation.defect.get('sort'),
+        handleUser: state.operation.defect.get('handleUser'),
+      }));
+      yield put({ 
+        type: ticketAction.GET_DEFECT_LIST_SAGA, 
+        payload: params
+      });
       yield put({
         type: ticketAction.CHANGE_SHOW_CONTAINER_SAGA,
         payload: {container: 'list'},
@@ -507,7 +607,7 @@ function* clearDefect(action) {
 
 export function* watchDefect() {
   yield takeLatest(ticketAction.GET_DEFECT_LIST_SAGA, getDefectList);
-  yield takeLatest(ticketAction.CHANGE_DEFECT_STORE_SAGA ,changeTicketStore);
+  yield takeLatest(ticketAction.CHANGE_DEFECT_STORE_SAGA ,changeDefectStore);
   yield takeLatest(ticketAction.DELETE_BATCH_DEFECT_SAGA, batchDeleteDefect);
   yield takeLatest(ticketAction.SEND_BATCH_DEFECT_SAGA, batchSendDefect);
   yield takeLatest(ticketAction.CLOSE_BATCH_DEFECT_SAGA, batchCloseDefect);

@@ -58,7 +58,7 @@ class DefectHandleForm extends Component {
     return (
       <div className={styles.handleForm}>
         <div className={styles.title}>
-        <div className={styles.border}></div>
+          <div className={styles.border}></div>
           <div className={styles.text}>{titleName}</div>
           <div className={styles.border}></div>
         </div>

@@ -85,12 +85,12 @@ class InspectFilter extends Component {
           <Button onClick={()=>this.onFilterShowChange('deviceType')}>
             设备类型{showFilter==='deviceType'?<Icon type="up" />:<Icon type="down" />}
           </Button>
-          <span>
+          {/* <span>
             <Switch checked={handleUser===username} onChange={this.onUserSelect} /><span>我参与的</span>
           </span>
           <span>
             <Switch checked={hasAbnormal} onChange={this.onAbnormalSelect} /><span>有异常</span>
-          </span>
+          </span> */}
         </div>
         <div className={styles.filterBox}>
           {showFilter==='time' && <DateFilter {...this.props} />}

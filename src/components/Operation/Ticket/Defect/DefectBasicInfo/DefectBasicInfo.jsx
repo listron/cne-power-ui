@@ -59,7 +59,7 @@ class DefectBasicInfo extends Component {
             <i className="iconfont icon-content" />
           </div>
           <div className={styles.warning}>
-            {info.get('isOvertime') === '0'? <div className={styles.overTime}>超时</div> : null}
+            {info.get('isOverTime') === '0'? <div className={styles.overTime}>超时</div> : null}
             {info.get('isCoordination') === '0'? <div className={styles.coordinate}>协调</div> : null}
           </div>
         </div>
