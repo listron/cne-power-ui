@@ -3,8 +3,8 @@ import styles from './stationMain.scss';
 
 const stationManageTableColumn = [{
     title: '区域',
-    dataIndex: 'area',
-    key: 'area',
+    dataIndex: 'regionName',
+    key: 'regionName',
     sorter: true,
   },{
     title: '覆盖类型',
@@ -21,17 +21,22 @@ const stationManageTableColumn = [{
     key: 'series',
     sorter: true,
   },{
-    title: '电站接入',
+    title: '是否接入',
+    dataIndex: 'connected',
+    key: 'connected',
+    sorter: true,
+    render: (text, record, index) => {
+      const { stationStatus } = record; 
+      return <span className={styles.contact}>{stationStatus?'是':'否'}</span>
+    }
+  },{
+    title: '电站状态',
     dataIndex: 'stationStatus',
     key: 'stationStatus',
     sorter: true,
     render: (text, record, index) => {
-      const { stationStatus } = record; 
-      if(stationStatus){
-        return <span className={styles.contact}>通讯正常</span>
-      }else{
-        return <span className={styles.contact}>未接入</span>
-      }
+      // const { stationStatus } = record; 
+      return <span className={styles.contact}>{['通讯正常','信息中断','未接入'][index%3]}无字段</span>
     }
   },{
     title: '测点',
@@ -41,9 +46,9 @@ const stationManageTableColumn = [{
     render: (text, record, index) => {
       const { pointStatus } = record; 
       if(pointStatus){
-        return <span className={styles.point}>已设置</span>
+        return <span>已设置</span>
       }else{
-        return <span className={styles.point}>未设置</span>
+        return <span className={styles.notSet}>未设置</span>
       }
     }
   },{
@@ -54,9 +59,9 @@ const stationManageTableColumn = [{
     render: (text, record, index) => {
       const { alarmStatus } = record; 
       if(alarmStatus){
-        return <span className={styles.alarm}>已设置</span>
+        return <span>已设置</span>
       }else{
-        return <span className={styles.alarm}>未设置</span>
+        return <span className={styles.notSet}>未设置</span>
       }
     }
   }

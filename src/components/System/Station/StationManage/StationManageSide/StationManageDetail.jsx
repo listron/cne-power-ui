@@ -31,11 +31,6 @@ class StationManageDetail extends Component {
     }
   }
 
-  onShowSideChange = ({showSidePage}) => {
-    this.props.onShowSideChange({ showSidePage:'edit' });
-    this.props.changeStationManageStore({ showPage: 'edit' });
-  }
-
   preStation = () => { // 上一个电站详情
     const { queryListParams, selectedStationIndex, pageNum, pageSize, getOtherPageStationDetail, getStationDetail } = this.props;
     if(selectedStationIndex === 0 && pageNum === 1){ // 第一页第一条
@@ -95,6 +90,7 @@ class StationManageDetail extends Component {
   }
 
   editDetail = () => { // 编辑页
+    this.props.onShowSideChange({ showSidePage:'edit' });
     this.props.changeStationManageStore({ showPage: 'edit' });
   }
 
@@ -108,8 +104,10 @@ class StationManageDetail extends Component {
       <div className={styles.stationManageDetail}>
         {showWarningTip && <WarningTip onOK={this.confirmWarningTip} value={warningTipText} />}
         <div className={styles.detailTop}>
-          <span>电站详情</span>
-          {stationDetail.stationStatus?<span>接入时间: 2018-08-08</span>:<span>电站未接入</span>}
+          <span className={styles.topInfoShow}>
+            <span className={styles.title}>电站详情</span>
+            {stationDetail.stationStatus?<span>接入时间: 2018-08-08</span>:<span>电站未接入</span>}
+          </span>
           <span className={styles.handleArea} >
             <Icon type="arrow-up" className={styles.previous} title="上一个" onClick={this.preStation} />
             <Icon type="arrow-down" className={styles.next} title="下一个" onClick={this.nextStation} />
@@ -119,7 +117,7 @@ class StationManageDetail extends Component {
         <div className={styles.stationManageContent} >
           <DetailInfoPart title="基本信息" infoArray={baseInfo} handler={this.editDetail} />
           <DetailInfoPart title="并网信息及电价情况" infoArray={connectionPriceInfo} />
-          <DetailInfoPart title="其他信息" infoArray={otherInfo} />
+          <DetailInfoPart title="其他信息" infoArray={otherInfo} noBottomBorder />
         </div>
       </div>
     )

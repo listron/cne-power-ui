@@ -1,4 +1,4 @@
-import { call, put, takeLatest } from 'redux-saga/effects';
+import { call, put, takeLatest, select } from 'redux-saga/effects';
 import axios from 'axios';
 import Path from '../../../../constants/path';
 import { pointManageAction } from '../../../../constants/actionTypes/system/station/pointManageAction';
@@ -10,22 +10,21 @@ function *changePointManageStore(action){ // 存储payload指定参数，替换r
     payload,
   })
 }
-
-// api success => GET_POINT_MANAGE_FETCH_SUCCESS
 // loading: => POINT_MANAGE_FETCH
 
-function *getEnterpriseDetail(action){ // 请求单个详细数据信息
+function *getPointList(action){ // 请求单个详细数据信息
   const { payload } = action;
-  // const url = '/mock/system/enterprisDetail/12';
-  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.getEnterprisDetail}/${payload.enterpriseId}`
+  const url = '/mock/system/pointManage/pointsList';
+  // const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.getPointList}`
   try{
-    yield put({ type:enterpriseAction.ENTERPRISE_FETCH });
-    const response = yield call(axios.get,url);
+    yield put({ type: pointManageAction.POINT_MANAGE_FETCH });
+    const response = yield call(axios.post,url,payload);
     yield put({
-      type:  enterpriseAction.GET_ENTERPRISE_FETCH_SUCCESS,
+      type:  pointManageAction.GET_POINT_MANAGE_FETCH_SUCCESS,
       payload:{
-        enterpriseDetail: response.data.data || {},
-        showPage: 'detail',
+        ...payload,
+        pointList: response.data.data.context || [],
+        totalNum: response.data.data.totalNum || 0,
       },
     });
   }catch(e){
@@ -33,16 +32,28 @@ function *getEnterpriseDetail(action){ // 请求单个详细数据信息
   }
 }
 
-function *ignoreEnterpirseEdit(action){ // 初次进入企业-不再提醒编辑企业详情
+function *deletePointList(action){ // 清除测点列表
   const { payload } = action;
-  const url = '/mock/system/ignoreDetail';
-  // const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.saveEnterpriseDetail}`
+  const url = '/mock/system/pointManage/deletePointList';
+  // const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.deletePoints}/${payload.stationCode}`
+  yield put({ type: pointManageAction.POINT_MANAGE_FETCH });
   try{
-    yield put({ type:enterpriseAction.ENTERPRISE_FETCH });
-    const response = yield call(axios.post,url,payload);
-    if(response.data.code === "10000"){
+    const response = yield call(axios.delete,url);
+    if(response.data.code === '10000'){ // 删除成功后，重新请求已删除测点电站数据。(看是否[]=>校核)
+      const listPayload = yield select(state => ({ 
+        stationCode: payload.stationCode,
+        deviceTypeCode: state.system.pointManage.get('deviceTypeCode'),
+        deviceModelCode: state.system.pointManage.get('deviceModelCode'),
+        pageNum: state.system.pointManage.get('pageNum'),
+        pageSize: state.system.pointManage.get('pageSize'),
+        orderField: state.system.pointManage.get('orderField'),
+        orderType: state.system.pointManage.get('orderType'),
+      }));
       yield put({
-        type:  enterpriseAction.GET_ENTERPRISE_FETCH_SUCCESS,
+        type:  pointManageAction.GET_POINT_MANAGE_LIST,
+        payload:{
+          ...listPayload,
+        },
       });
     }
   }catch(e){
@@ -50,8 +61,9 @@ function *ignoreEnterpirseEdit(action){ // 初次进入企业-不再提醒编辑
   }
 }
 
-
 export function* watchPointManage() {
   yield takeLatest(pointManageAction.CHANGE_POINT_MANAGE_STORE_SAGA, changePointManageStore);
+  yield takeLatest(pointManageAction.GET_POINT_MANAGE_LIST, getPointList)
+  yield takeLatest(pointManageAction.DELETE_POINT_MANAGE_LIST, deletePointList)
 }
 

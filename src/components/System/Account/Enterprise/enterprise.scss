@@ -157,17 +157,21 @@
       }
       .saveInfo{
         margin-left: 94px;
+        color:#199475;
+        border: 1px solid #199475;
       }
       .dealProposal {
         :global {
           .ant-form-item-control-wrapper {
-            margin-left: -60px;
+            // margin-left: -60px;
             margin-top: 10px;
+            margin-bottom: 16px;
           }
         }
       }
       :global{
         .ant-form-item{
+          margin-bottom: 8px;
           display: flex;
           line-height: 40px;
           .ant-form-item-label{
