@@ -28,33 +28,33 @@ class OutputPowerDiagram extends Component {
     const lineColor = '#999';
     const stationPowerData = capabilityData && capabilityData.map(e => e.stationPower);
     const instantaneousData = capabilityData && capabilityData.map(e => e.instantaneous);
-    const filterStationPowerData = capabilityData && capabilityData.filter(e => e.stationPower);
-    const filterInstantaneousData = capabilityData && capabilityData.filter(e => e.instantaneous);
+    // const filterStationPowerData = capabilityData && capabilityData.filter(e => e.stationPower);
+    // const filterInstantaneousData = capabilityData && capabilityData.filter(e => e.instantaneous);
     const capabilityDiagram = echarts.init(document.getElementById('capabilityDiagram'));
     const powerDiagram = echarts.init(document.getElementById('powerDiagram'));
 
-    const graphicData = ((stationPowerData.length === 0 && filterStationPowerData.length === 0) && (instantaneousData.length === 0 && filterInstantaneousData.length === 0)) ? [
-      {
-        type: 'group',
-        left: 'center',
-        top: 'center',
-        children: [
-          {
-            type: 'text',
-            z: 100,
-            left: 'center',
-            top: 'middle',
-            style: {
-              fill: '#999',
-              text: [
-                '暂无数据'
-              ],
-              font: '14px Microsoft YaHei',
-            }
-          }
-        ]
-      }
-    ] : [];
+    // const graphicData = ((stationPowerData.length === 0 && filterStationPowerData.length === 0) && (instantaneousData.length === 0 && filterInstantaneousData.length === 0)) ? [
+    //   {
+    //     type: 'group',
+    //     left: 'center',
+    //     top: 'center',
+    //     children: [
+    //       {
+    //         type: 'text',
+    //         z: 100,
+    //         left: 'center',
+    //         top: 'middle',
+    //         style: {
+    //           fill: '#999',
+    //           text: [
+    //             '暂无数据'
+    //           ],
+    //           font: '14px Microsoft YaHei',
+    //         }
+    //       }
+    //     ]
+    //   }
+    // ] : [];
 
     const tmpOption = {
       title: {
@@ -100,7 +100,7 @@ class OutputPowerDiagram extends Component {
         },
         extraCssText:'background: rgba(0,0,0,0);',
       },
-      graphic: graphicData,
+      // graphic: graphicData,
       calculable: true,
       xAxis: [
         {
@@ -187,6 +187,7 @@ class OutputPowerDiagram extends Component {
         },
         {
           name:'斜面辐射',
+          type: 'line',
           data: instantaneousData,
           yAxisIndex: 1,
           itemStyle: {
@@ -208,11 +209,11 @@ class OutputPowerDiagram extends Component {
 
     capabilityDiagram.setOption(tmpOption);
 
-    if (nextProps.capabilityData !== this.props.capabilityData && nextProps.capabilityData.length !== 0) {
-      echarts.dispose(document.getElementById('capabilityDiagram'));
-      const capabilityDiagram = echarts.init(document.getElementById('capabilityDiagram'));
-      capabilityDiagram.setOption(tmpOption);
-    }
+    // if (nextProps.capabilityData !== this.props.capabilityData && nextProps.capabilityData.length !== 0) {
+    //   echarts.dispose(document.getElementById('capabilityDiagram'));
+    //   const capabilityDiagram = echarts.init(document.getElementById('capabilityDiagram'));
+    //   capabilityDiagram.setOption(tmpOption);
+    // }
 
     // if((stationPowerData.length===0&&filterStationPowerData.length===0)&&(instantaneousData.length===0&&filterInstantaneousData.length===0)){
     //   capabilityDiagram.setOption(tmpOption);
@@ -234,18 +235,6 @@ class OutputPowerDiagram extends Component {
     // capabilityDiagram.setOption(tmpOption);
 
     powerDiagram.setOption({
-      noDataLoadingOption: {
-        text: '暂无数据',
-        effect: 'whirling',
-        textStyle: {
-          fontSize: 20
-        },
-        effectOption: {
-          effect: {
-            n: 0
-          }
-        }
-      },
       color: ['#a42b2c', '#c7ceb2', '#f7c028'],
       title: {
         text: '发电量',
