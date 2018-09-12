@@ -11,7 +11,7 @@ import ThreadList from './DeviceList/ThreadList';
 import { Tabs,Radio  } from 'antd';
 import { Link } from 'react-router-dom';
 
-const TabPane = Tabs.TabPane;
+const { TabPane } = Tabs;
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
 class PvStation extends Component {
@@ -64,7 +64,6 @@ class PvStation extends Component {
     const { deviceTypeFlow,stationDeviceList,deviceTypeCode } = this.props;
     const weatherDeviceCode = stationDeviceList && stationDeviceList.deviceCode || 0;
     const { stationCode } = this.props.match.params;
-    
     const locationSearch  = this.props.location.search;
     let appointDeviceCode = locationSearch.substr(locationSearch.indexOf('=')+1);
     if(appointDeviceCode && appointDeviceCode!=='undefined'){
