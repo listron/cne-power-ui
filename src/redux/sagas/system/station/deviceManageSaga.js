@@ -13,8 +13,8 @@ function *changeDeviceManageStore(action){ // 存储payload指定参数，替换
 
 function *getDeviceList(action){ // 请求单个详细数据信息
   const { payload } = action;
-  // const url = '/mock/system/deviceManage/deviceList';
-  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.getDeviceList}`
+  const url = '/mock/system/deviceManage/deviceList';
+  // const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.getDeviceList}`
   try{
     yield put({ type:deviceManageAction.DEVICE_MANAGE_FETCH });
     const response = yield call(axios.post,url,payload);

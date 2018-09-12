@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import styles from './deviceManage.scss';
-import { devicenManageAction } from '../../../../constants/actionTypes/system/station/deviceManageAction';
+import { deviceManageAction } from '../../../../constants/actionTypes/system/station/deviceManageAction';
 import { commonAction } from '../../../../constants/actionTypes/commonAction';
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import DeviceManageTip from '../../../../components/System/Station/DeviceManage/DeviceManageTip';
@@ -73,8 +73,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  changeDeviceManageStore: payload => dispatch({type:devicenManageAction.CHANGE_DEVICE_MANAGE_STORE_SAGA, payload}),
-  getDeviceList: payload => dispatch({type: devicenManageAction.GET_DEVICE_MANAGE_LIST, payload}),
+  changeDeviceManageStore: payload => dispatch({type:deviceManageAction.CHANGE_DEVICE_MANAGE_STORE_SAGA, payload}),
+  getDeviceList: payload => dispatch({type: deviceManageAction.GET_DEVICE_MANAGE_LIST, payload}),
   getStationDeviceTypes: payload => dispatch({type:commonAction.GET_STATION_DEVICETYPES_SAGA, payload}),
   getStationDeviceModel: payload => dispatch({type:commonAction.GET_STATION_DEVICEMODEL_SAGA, payload}),
 });

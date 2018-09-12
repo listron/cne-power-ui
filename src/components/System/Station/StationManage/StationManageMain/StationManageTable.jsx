@@ -52,7 +52,7 @@ class StationManageTable extends Component {
     })
   }
 
-  onStationDelete = (record) => { // 删除部门
+  onStationDelete = (record) => { // 删除电站
     this.props.deleteStation({stationCode: record.stationCode})
   }
 
@@ -76,7 +76,7 @@ class StationManageTable extends Component {
     console.log('down load templet')
   }
 
-  tableChange = (pagination, filter, sorter) => { // 部门排序
+  tableChange = (pagination, filter, sorter) => { // 电站list排序=>重新请求数据
     const { getStationList, queryListParams } = this.props;
     const sortName = sorter.field;
     // orderField: '', // 排序字段 1：电站名称; 2:区域 ;3:覆盖类型;4:并网类型;5：装机容量;6:发点单元数;7：电站接入
