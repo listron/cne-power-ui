@@ -43,7 +43,7 @@ function *getStationDetail(action){ // 获取选中电站详情；
   const { payload } = action;
   const { selectedStationIndex } = payload;
   const url = '/mock/system/stationDetail/001';
-  // const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.getStationDetail}/${payload.selectedStationIndex}`
+  // const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.getStationDetail}/${payload.stationCode}`
   try{
     const response = yield call(axios.get, url);
     // if(response.data.code === "10000"){
@@ -108,17 +108,31 @@ function *saveStationDetail(action){ // 保存编辑的电站详情；
   // const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.saveStationDetail}/${payload.enterpriseId}`
   try{
     yield put({ type:stationManageAction.STATION_MANAGE_FETCH });
-    const response = yield call(axios.post, url, payload);
-    if(response.data.code === "10000"){ // 保存成功后，继续请求电站列表信息
-      yield put({
-        type: stationManageAction.GET_STATION_LIST_SAGA,
-        payload: {}  // --- todo 请求电站信息列表所需参数
+    const response = yield call(axios.put, url, payload);
+    if(response.data.code === "10000"){ // 保存成功后，继续请求电站列表信息 + 该电站详情
+      const listPayload = yield select(state => ({
+        stationType: state.system.stationManage.get('stationType'),
+        regionName: state.system.stationManage.get('regionName'),
+        stationName: state.system.stationManage.get('stationName'),
+        pageNum: state.system.stationManage.get('pageNum'),
+        pageSize: state.system.stationManage.get('pageSize'),
+        orderField: state.system.stationManage.get('orderField'),
+        orderCommand: state.system.stationManage.get('orderCommand'),
+      }));
+      const selectedStationIndex = yield select(state => state.system.stationManage.get('selectedStationIndex'));
+      const tmpStationList = yield select(state => state.system.stationManage.get('stationList'));
+      const stationList = tmpStationList.toJS();
+      const detailPayload = {
+        stationCode: stationList[selectedStationIndex].stationCode,
+        selectedStationIndex,
+      }
+      yield put({ // 重新请求列表
+        type: stationManageAction.GET_STATION_MANAGE_LIST,
+        payload: { ...listPayload } 
       })
-      yield put({
-        type: stationManageAction.CHANGE_STATION_MANAGE_STORE_SAGA,
-        payload: {
-          showPage: 'list',
-        }
+      yield put({ // 重新请求详情
+        type: stationManageAction.GET_STATION_MANAGE_DETAIL,
+        payload: { ...detailPayload }
       })
     }
   }catch(e){

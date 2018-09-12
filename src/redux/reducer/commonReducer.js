@@ -36,6 +36,7 @@ var initState = Immutable.fromJS({
   loading: false,
   stations: [],
   deviceTypes: [],
+  deviceModels: [], // 设备型号
   stationDeviceTypes: [],
   devices: [],
   partitions: [],

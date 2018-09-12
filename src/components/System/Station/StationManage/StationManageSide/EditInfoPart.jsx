@@ -13,10 +13,9 @@ function EditInfoPart({ eachInfo }){
     value = '--'
   }
   return (
-    <span>
-      <span>{eachInfo.name}</span>
-      <span>{value}</span>
-      <span>{eachInfo.unit || ''}</span>
+    <span className={styles.eachInfo}>
+      <span className={styles.infoName}>{eachInfo.name}</span>
+      <span className={styles.infoValue}>{value}{eachInfo.unit || ''}</span>
     </span>
   )
 }
