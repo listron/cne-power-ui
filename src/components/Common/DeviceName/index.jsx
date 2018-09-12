@@ -1,7 +1,7 @@
 import React,{ Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './style.scss';
-import {AutoComplete, Input, Icon} from 'antd';
+import {AutoComplete, Input} from 'antd';
 const Option = AutoComplete.Option;
 import DeviceNameModal from './DeviceNameModal';
 
@@ -75,7 +75,7 @@ class DeviceName extends Component {
           onSelect={this.props.onChange}
           value={this.getDeviceName(this.props.value)}
           filterOption={(inputValue, option) => 
-          option.props.children.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1}
+            option.props.children&&option.props.children.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1}
         >
           <Input
             disabled={this.props.disabled}

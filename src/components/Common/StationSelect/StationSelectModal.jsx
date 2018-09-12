@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Icon, Modal, Button, Radio  } from 'antd';
+import { Icon, Modal, Radio  } from 'antd';
 import ProvinceItem from './ProvinceItem';
 import styles from './style.scss';
 import PropTypes from 'prop-types';
@@ -76,16 +76,17 @@ class StationSelectModal extends Component {
       }
     })
     return filteredStation.map(e=>(
-      <ProvinceItem key={e.provinceCode} multiple={multiple} checkStation={this.checkStation} provinceInfor={{...e}} selectedStation={selectedStation} />
+      <ProvinceItem key={e.provinceCode} multiple={multiple} checkStation={this.checkStation} provinceInfo={{...e}} selectedStation={selectedStation} />
     ))
   }
   _selectedStation = () => {
     const { selectedStation } = this.state;
     return (
       <div className={styles.selectedStationList}>
-        <h3 className={styles.selectedStationTitle}>
+        <div className={styles.selectedStationTitle}>
           <span>已选电站{selectedStation.length}个</span>
-          <Button onClick={this.onClearSelected}>清空</Button> </h3>
+          {selectedStation.length>0&&<span className={styles.clearAll} onClick={this.onClearSelected}>清空</span>} 
+        </div>
         <div className={styles.innerStationList}>
           {selectedStation.map(e=>{
             return <div key={e.stationCode} className={styles.eachSelectedStation} > <span>{ e.stationName }</span> <Icon type="close" className={styles.deleteIcon} onClick={()=>this.onDeleteOneStation(e)} /> </div>
@@ -112,6 +113,7 @@ class StationSelectModal extends Component {
           okText={'确定'}
           title="请选择"
           width={625}
+          wrapClassName={styles.stationModal}
         >
           <div className={styles.stationStyleModal}>
             <div className={styles.stationType}>
@@ -122,7 +124,7 @@ class StationSelectModal extends Component {
             <div className={styles.provinceList}>
               {this._filterStation()}
             </div>
-            <div>
+            <div className={styles.selectStations}>
               {multiple && this._selectedStation()}
             </div>
           </div>

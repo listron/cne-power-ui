@@ -4,6 +4,9 @@ import { connect } from 'react-redux';
 import InspectCreateForm from '../../../../../components/Operation/Ticket/Inspect/InspectCreateForm/InspectCreateForm';
 import { commonAction } from '../../../../../constants/actionTypes/commonAction';
 import { ticketAction } from '../../../../../constants/actionTypes/operation/ticketAction';
+import { Icon } from 'antd';
+import styles from './inspectCreate.scss';
+import WarningTip from '../../../../../components/Common/WarningTip';
 class InspectCreate extends Component{
   static propTypes = {
     deviceTypeItems: PropTypes.object,
@@ -16,29 +19,49 @@ class InspectCreate extends Component{
   }
   constructor(props){
     super(props);
+    this.state = {
+      editDataGet: false,
+      showWarningTip: false,
+    }
   }
 
   componentDidMount(){
-    // this.props.getStations({
-    //   enterpriseId: '1010694160817111040'//to do
-    // });
   }
 
   onCloseInspectCreate = () => {
-    this.props.onChangeShowContainer({container: 'list'});
+    this.setState({
+      showWarningTip: true,
+      warningTipText: '退出后信息无法保存!'
+    });
+  }
+
+  onCancelWarningTip = () => {
+    this.setState({
+      showWarningTip: false,
+    });
+  }
+
+  onConfirmWarningTip = () => {
+    this.setState({
+      showWarningTip: false,
+    });
+    this.props.onChangeShowContainer({ container: 'list' });  
   }
 
   render(){
+    const { showWarningTip, warningTipText } = this.state;
     return (
-      <InspectCreateForm 
-        deviceTypeItems={this.props.deviceTypeItems}
-        loadDeviceTypeList={this.props.loadDeviceTypeList}
-        onCloseInspectCreate={this.onCloseInspectCreate}
-        createInspect={this.props.createInspect}
-        stations={this.props.stations}
-        getStations={this.props.getStations}
-      />
-    )
+      <div className={styles.inspectCreate}>
+        {showWarningTip && <WarningTip style={{marginTop:'250px',width: '210px',height:'88px'}} onCancel={this.onCancelWarningTip} onOK={this.onConfirmWarningTip} value={warningTipText} />}
+        <div className={styles.createTop}>
+          <span className={styles.text}>新建巡检</span>
+          <Icon type="arrow-left" className={styles.backIcon} onClick={this.onCloseInspectCreate} />
+        </div>
+        <div className={styles.createContent}>
+          <InspectCreateForm {...this.props} />
+        </div>
+      </div>
+    );
   }
 
 }
