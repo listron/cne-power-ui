@@ -8,7 +8,7 @@ import CardSection from './CardSection';
 import styles from './pvStation.scss';
 import DeviceList from './DeviceList/DeviceList';
 import ThreadList from './DeviceList/ThreadList';
-import { Tabs,Radio  } from 'antd';
+import { Tabs, Radio } from 'antd';
 import { Link } from 'react-router-dom';
 
 const { TabPane } = Tabs;
@@ -24,7 +24,7 @@ class PvStation extends Component {
     deviceTypeCode: PropTypes.number,
   }
 
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
       hiddenStationList: false,
@@ -33,11 +33,11 @@ class PvStation extends Component {
 
   onSelectedDeviceType = (e) => {
     const deviceTypeCode = parseInt(e.target.value);
-    this.props.changeSingleStationStore({deviceTypeCode});
+    this.props.changeSingleStationStore({ deviceTypeCode });
   }
 
   getDeviceTypeIcon = (e) => {
-    switch(e){
+    switch (e) {
       case 509:
         return 'iconfont icon-pvs';
       case 206:
@@ -50,7 +50,7 @@ class PvStation extends Component {
       case '10004':
         return 'iconfont icon-elecnetting';
       default:
-        return ;
+        return;
     }
   }
 
@@ -59,21 +59,21 @@ class PvStation extends Component {
       hiddenStationList: true,
     });
   }
-  
-  render(){
-    const { deviceTypeFlow,stationDeviceList,deviceTypeCode } = this.props;
+
+  render() {
+    const { deviceTypeFlow, stationDeviceList, deviceTypeCode } = this.props;
     const weatherDeviceCode = stationDeviceList && stationDeviceList.deviceCode || 0;
     const { stationCode } = this.props.match.params;
-    const locationSearch  = this.props.location.search;
-    let appointDeviceCode = locationSearch.substr(locationSearch.indexOf('=')+1);
-    if(appointDeviceCode && appointDeviceCode!=='undefined'){
+    const locationSearch = this.props.location.search;
+    let appointDeviceCode = locationSearch.substr(locationSearch.indexOf('=') + 1);
+    if (appointDeviceCode && appointDeviceCode !== 'undefined') {
       appointDeviceCode = parseInt(appointDeviceCode);
     }
-    
+
     return (
       <div className={styles.pvStation}  >
         <PvStationTop {...this.props} hiddenStationList={this.state.hiddenStationList} />
-        <OutputPowerDiagram {...this.props} />  
+        <OutputPowerDiagram {...this.props} />
         <CardSection {...this.props} />
         {/* 设备类型流程图切换 */}
         <div className={styles.threadAndDevice} id="deviceType" >
@@ -83,27 +83,27 @@ class PvStation extends Component {
             </TabPane> */}
             <TabPane tab="示意图" key="2">
               <div className={styles.deviceTypeFlow}>
-                {deviceTypeFlow && <RadioGroup defaultValue={appointDeviceCode || 206}  onChange={this.onSelectedDeviceType} >
-                  {deviceTypeFlow && 
-                    deviceTypeFlow.map(e=>{
+                {deviceTypeFlow && <RadioGroup defaultValue={appointDeviceCode || 206} onChange={this.onSelectedDeviceType} >
+                  {deviceTypeFlow &&
+                    deviceTypeFlow.map(e => {
                       return (<RadioButton value={e.deviceTypeCode} className={styles.deviceTypeItem} key={e.deviceTypeCode}>
                         <div className={styles.deviceTypeIcon} ><i className={this.getDeviceTypeIcon(e.deviceTypeCode)} ></i></div><div>{e.deviceTypeName}</div>
-                        </RadioButton>)
+                      </RadioButton>)
                     })
                   }
                 </RadioGroup>}
                 <div className={styles.weatherStation}>
-                  <Link  target="_blank" to={`/hidden/monitorDevice/${stationCode}/203/${weatherDeviceCode}`} ><i className="iconfont icon-weather" ></i></Link>
+                  <Link target="_blank" to={`/hidden/monitorDevice/${stationCode}/203/${weatherDeviceCode}`} ><i className="iconfont icon-weather" ></i></Link>
                   <div>气象站</div>
                 </div>
               </div>
               <div className={styles.deviceList} >
-                <DeviceList {...this.props}  />
+                <DeviceList {...this.props} />
               </div>
             </TabPane>
           </Tabs>
         </div>
-        
+
       </div>
     )
   }
