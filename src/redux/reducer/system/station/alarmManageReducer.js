@@ -4,7 +4,17 @@ import { alarmManageAction } from '../../../../constants/actionTypes/system/stat
 
 var initState = Immutable.fromJS({
   loading: false,
-  testWords: '告警事件管理的-----测试数据',
+  stationCode: '', // 选中的电站
+  deviceTypeCode: '', // 选中的设备类型
+  deviceModelCode: '', // 选中的设备型号
+  pointCode: '', // 选中的测点code
+  pageNum: 1,
+  pageSize: 10,
+  sortField: '', // 排序字段
+  sortOrder: 'asc',
+
+  totalNum:  0, // 告警事件总数
+  alarmList: [], // 设备列表
 });
 
 const alarmManageReducer = (state = initState, action) => {
