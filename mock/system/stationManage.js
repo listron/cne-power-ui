@@ -181,6 +181,40 @@ module.exports = [
     },
     delay: 1000,
     error: {}
+  },{ // 请求告警事件列表
+    api: '/mock/system/alarmManage/alarmList',
+    method: 'post',
+    response: {
+      "code": "10000",
+      "message": "请求成功",
+      "data": {
+        "totalCount": 95,
+        "context":  [1,2,3,4,5,6,7,8,9,0].map((e,i)=>({
+          pointCode: i,
+          warningDescription: `${i}事件告警描述`,
+          warningCheckRule: `告警参数：${i*2}`,
+          deviceTypeName: `告警类${i}型`,
+          warningLevel: i%4,
+          warningEnable: !!(i%2),
+        }))
+      },
+      "serviceCode": "3.0"
+    },
+    delay: 1000,
+    error: {}
+  },{
+    api: '/mock/system/alarmManage/deleteAlarm',
+    method: 'delete',
+    response: {
+      "code": "10000",
+      "message": "删除成功",
+      "data": {
+        "text": '删除测点成功'
+      },
+      "serviceCode": "3.0"
+    },
+    delay: 1000,
+    error: {}
   }
 ]
 

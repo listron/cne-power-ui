@@ -34,9 +34,10 @@ var initState = Immutable.fromJS({
   enterpriseId:'',
   enterpriseName: '',
   loading: false,
-  stations: [],
-  deviceTypes: [],
+  stations: [], // 所有电站
+  deviceTypes: [], // 设备类型
   deviceModels: [], // 设备型号
+  devicePoints: [], // 设备测点
   stationDeviceTypes: [],
   devices: [],
   partitions: [],

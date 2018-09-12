@@ -9,8 +9,8 @@ module.exports = {
 
       GET_POINT_MANAGE_FETCH_SUCCESS: null, // 测点管理普通api请求成功
 
-      GET_POINT_MANAGE_LIST: null, // 获取设备列表
-      DELETE_POINT_MANAGE_LIST: null, // 获取设备列表
+      GET_POINT_MANAGE_LIST: null, // 获取测点列表
+      DELETE_POINT_MANAGE_LIST: null, // 清空电站测点
   })
 }
 
