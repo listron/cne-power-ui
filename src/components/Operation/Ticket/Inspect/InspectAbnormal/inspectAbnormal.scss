@@ -1,0 +1,52 @@
+@import '../../../../../theme/theme.scss';
+.inspectAbnormal {
+  .title {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    color: $darkColor;
+    margin-bottom: 10px;
+    .text {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      color: $darkColor;
+    }
+    .viewStandard {
+      color: $themeColor;
+      border-color: $themeColor;
+      background-color: #fff;
+      &:hover {
+        color: #fff;
+        background-color: $themeColor;
+      }
+    }
+  }
+  .abnormalItems {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  .abnormalDetail {
+    margin-top: 42px;
+    display: flex;
+    flex-direction: column;
+    .viewImg {
+      margin-left: 78px;
+      margin-top: 10px;
+    }
+    .detailItem {
+      display: flex;
+      flex-direction: row;
+      height: 30px;
+      line-height: 30px;
+      color: $darkColor;
+      >span {
+        display: inline-block;
+        margin-left: 24px;
+        color: $lightColor;
+      }
+    }
+  }
+}

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styles from './inspectAbnormal.scss';
 import { Button, Modal, Tabs } from 'antd';
 import ImgUploader from '../../../../Common/Uploader/ImgUploader';
-import AbnormalItem from '../../../../Common/AbnormalItem';
+import AbnormalItem from '../AbnormalItem/AbnormalItem';
 
 const TabPane = Tabs.TabPane;
 
@@ -21,33 +21,29 @@ class InspectAbnormal extends Component {
     inspectDetail: PropTypes.object,
   }
 
-  static defaultProps = {
-
-  }
-
   constructor(props){
     super(props);
     this.state = {
-      showDetailId: null,
-      visible: false,
+      abnormalId: null,
+      showInspectStandard: false,
     };
   }
 
   onShowDetail = (data) => {
     this.setState({
-      showDetailId: data.get('abnormalId')
+      abnormalId: data.get('abnormalId')
     });
   }
 
   onShowModal = () =>{
-    this.setState({visible: true})
+    this.setState({showInspectStandard: true})
     let stationType = this.props.inspectDetail.get('stationType');
     this.props.getInspectStandard({'stationType': stationType});
   }
 
   onCloseModal = () => {
     this.setState({
-      visible: false,
+      showInspectStandard: false,
     })
   }
 
@@ -75,7 +71,7 @@ class InspectAbnormal extends Component {
             key={'abnormal'+index}
             status="delete"
             item={item}
-            selected={this.state.showDetailId === item.get('abnormalId')}
+            selected={this.state.abnormalId === item.get('abnormalId')}
             onShowDetail={this.onShowDetail}
             onDelete={this.props.onDeleteAbnormal}
           />
@@ -86,8 +82,10 @@ class InspectAbnormal extends Component {
             key={'abnormal'+index}
             status="select"
             item={item}
+            onShowDetail={this.onShowDetail}
             disabled={item.get('isTransform') === '1'}
-            selected={this.props.selectedIds.includes(item.get('abnormalId'))}
+            checked={this.props.selectedIds.includes(item.get('abnormalId'))}
+            selected={this.state.abnormalId === item.get('abnormalId')}
             onSelect={this.props.onSelectItem}
           />
         );
@@ -96,8 +94,10 @@ class InspectAbnormal extends Component {
           <AbnormalItem 
             key={'abnormal'+index}
             status="view"
+            onShowDetail={this.onShowDetail}
             item={item}
-            disabled={item.get('isTransform') === '1'} 
+            checked={item.get('isTransform') === '1'}
+            selected={this.state.abnormalId === item.get('abnormalId')}
           />
         );
       }
@@ -108,7 +108,7 @@ class InspectAbnormal extends Component {
     let inspectStandard = this.props.inspectStandard;
     return (
       <Modal 
-        visible={this.state.visible}
+        showInspectStandard={this.state.showInspectStandard}
         onCancel={this.onCloseModal}
         closable={false}
         footer={null}
@@ -128,42 +128,57 @@ class InspectAbnormal extends Component {
   }
 
   renderItemDetail() {
-    let showDetailId = this.state.showDetailId;
-    if(showDetailId) {
+    let abnormalId = this.state.abnormalId;
+    if(abnormalId) {
        let detail = this.props.abnormalItems.find((item) => {
-        return item.get('abnormalId') === showDetailId
+        return item.get('abnormalId') === abnormalId
       });
       if(detail) {
         return (
-          <div>
-            <div>设备类型<span>{detail.get('deviceTypeName')}</span></div>
-            <div>设备名称<span>{detail.get('deviceName')}</span></div>
-            <div>缺陷类型<span>{detail.get('defectTypeName')}</span></div>
-            <div>查看照片
-              <div>
-                <ImgUploader editable={false} data={this.getImagesData(detail)} />
-              </div>
+          <div className={styles.abnormalDetail}>
+            <div className={styles.detailItem}>
+              设备类型<span>{detail.get('deviceTypeName')}</span>
+            </div>
+            <div className={styles.detailItem}>
+              设备名称<span>{detail.get('deviceName')}</span>
+            </div>
+            <div className={styles.detailItem}>
+              缺陷类型<span>{detail.get('defectTypeName')}</span>
+            </div>
+            <div className={styles.detailItem}>
+              异常描述<span>{detail.get('abnormalDescribe')}</span>
+            </div>
+            <div className={styles.viewImg}>
+              <ImgUploader editable={false} data={this.getImagesData(detail)} />
             </div>
           </div>
         );
+      } else {
+        return null;
       }
+    } else {
+      return null;
     }
   }
 
   render(){
     return (
-      <div className={styles.inspectAbnormal} >
-        <div>
-          <span>异常设备</span>
-          <Button onClick={this.onShowModal}>查看巡检标准</Button>
-          {this.renderStandard()}
+      <div className={styles.inspectAbnormal}>
+        <div className={styles.title}>
+          <div className={styles.text}>
+            异常设备
+            <i className="iconfont icon-content" />
+          </div>
+          <Button onClick={this.onShowModal} className={styles.viewStandard}>查看巡检标准</Button>
         </div>
-        {this.renderItems()}
-        {this.props.status === '2' ? this.renderItemDetail() : null}
+        <div className={styles.abnormalItems}>
+          {this.renderItems()}
+        </div>
+        {this.renderItemDetail()}
+        {this.renderStandard()}
       </div>
     )
   }
-
 }
 
 export default InspectAbnormal;
