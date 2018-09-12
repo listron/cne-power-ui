@@ -30,9 +30,21 @@ function BoxtransformerTenMin({ deviceTenMin, loading }) {
       legend: {
         data:['功率','瞬时辐照'],
         top: 24,
+        itemWidth: 24,
+        itemHeight: 6,
+        textStyle: {
+          color: lineColor,
+          fontSize: 12,
+        }
       },
       tooltip: {
+        trigger: 'axis',
         show: true,
+        backgroundColor: '#fff',
+        textStyle: {
+          color: lineColor,
+          fontSize: '12px',
+        }
       },
       grid: {
         top: 95,
@@ -93,6 +105,14 @@ function BoxtransformerTenMin({ deviceTenMin, loading }) {
         {
           name: '功率',
           type: 'line',
+          lineStyle: {
+            type: 'solid',
+            color: '#c57576',
+            width: 1,
+          },
+          itemStyle:{
+            opacity: 0,
+          },
           areaStyle: {
             normal: {
               opacity: 0.2,
@@ -109,8 +129,15 @@ function BoxtransformerTenMin({ deviceTenMin, loading }) {
         {
           name: '瞬时辐照',
           type: 'line',
+          smooth:true,
           lineStyle: {
-            type: 'dashed',
+            type: 'dotted',
+            color: '#199475',
+            width: 1,
+          },
+          itemStyle:{
+            color: "#199475",
+            opacity: 0,
           },
           label: {
             normal: {

@@ -181,6 +181,11 @@
         text-align: center;
         margin: 30px auto;
       }
+      .pagination{
+        margin: 10px ;
+        display: flex;
+        justify-content: flex-end;
+      }
       .inverterTable{
         .tableDeviceName{
           text-decoration: underline;
@@ -209,6 +214,7 @@
         :global{
           .ant-table-placeholder{
             z-index: 0;
+            border-bottom: 0; 
           }
           .ant-progress-success-bg, .ant-progress-bg{
             background-color: $themeColor;
@@ -234,6 +240,10 @@
           }
           .ant-table .ant-table-tbody > tr > td {
             line-height: 20px;
+          }
+          .ant-table-thead{
+            background: #f4f4f4;
+            color: #999999;
           }
         }
       }

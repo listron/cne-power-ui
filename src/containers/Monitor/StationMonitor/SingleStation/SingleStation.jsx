@@ -6,6 +6,7 @@ import { singleStationAction } from '../../../../constants/actionTypes/monitor/s
 import SingleStationMain from '../../../../components/Monitor/StationMonitor/SingleStation/SingleStationMain';
 import moment from 'moment';
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
+import Footer from '../../../../components/Common/Footer/index';
 class SingleStation extends Component {
   static propTypes = {
     match: PropTypes.object,
@@ -103,7 +104,8 @@ class SingleStation extends Component {
       <div className={styles.singleStation}>
       <CommonBreadcrumb {...breadCrumbData} style={{marginLeft:'38px', backgroundColor:'#fff'}} />
       <div className={styles.singleStationContainer} >   
-        <SingleStationMain {...this.props}   />
+        <SingleStationMain {...this.props} />
+        <Footer />
       </div>
       </div>
     );
