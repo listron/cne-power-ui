@@ -80,12 +80,12 @@ class StationManageSearch extends Component {
           </Radio.Group>
         </div>
         <div className={styles.inputSearch}>
-          <span>区域</span>
-          <Input placeholder="请输入..." onChange={this.onRegionChange} />
-          <span>电站名称</span>
-          <Input placeholder="请输入..." onChange={this.onStationNameChange} />
-          <Button onClick={this.searchStationList}>查询</Button>
-          {showResetButton && <Button onClick={this.resetSearchInfo}>重置</Button>}
+          <span className={styles.area}>区域</span>
+          <Input className={styles.searchInput} placeholder="请输入..." onChange={this.onRegionChange} />
+          <span className={styles.name}>电站名称</span>
+          <Input className={styles.searchInput} placeholder="请输入..." onChange={this.onStationNameChange} />
+          <Button onClick={this.searchStationList} className={styles.searchButton}>查询</Button>
+          {showResetButton && <span onClick={this.resetSearchInfo} className={styles.searchReset}>重置</span>}
         </div>
       </div>
     )

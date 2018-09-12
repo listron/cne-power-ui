@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Tree, Modal, message } from 'antd';
+import { Tree, Modal, message, Checkbox, Button } from 'antd';
 import styles from './stationMain.scss'
 const { TreeNode } = Tree;
 
@@ -32,6 +32,28 @@ class SetDepartmentModal extends Component { // 电站管理列表页
   onCheckDepartment = (checkedKeys) => {
     console.log('onCheck', checkedKeys);
     this.setState({ checkedKeys });
+  }
+
+  checkAllDepartment =(e) => {
+    if(!e.target.checked){ // 取消全选时清空。
+      this.setState({ checkedKeys: [] });
+      return
+    }
+    const { allDepartmentData } = this.props;
+    const getAllDepartmentId = (subData) => {
+      let selectArray = [];
+      subData && subData.length > 0 && subData.forEach(e=>{
+        if(e && e.list && e.list.length > 0){
+          selectArray.push(...getAllDepartmentId(e.list));
+        }
+        if(e && e.departmentId){
+          selectArray.push(e.departmentId)
+        }
+      })
+      return selectArray;
+    }
+    const selectDepartment = getAllDepartmentId(allDepartmentData);
+    this.setState({ checkedKeys: selectDepartment });
   }
 
   confirmSetting= () => {
@@ -69,12 +91,17 @@ class SetDepartmentModal extends Component { // 电站管理列表页
       <Modal
         title={<span>部门设置({departmentSetInfo.stationName})</span>}
         visible={true}
-        onOk={this.confirmSetting}
         onCancel={this.cancelSetting}
         okText="保存"
         cancelText="取消"
         wrapClassName={styles.departmentSetting}
+        width={625}
+        footer={<div className={styles.footer}>
+          <Button onClick={this.confirmSetting} className={styles.cancel}>取消</Button>
+          <Button onClick={this.confirmSetting} className={styles.confirm}>保存</Button>
+        </div>}
       >
+        <Checkbox onChange={this.checkAllDepartment}>全选</Checkbox>
         <Tree
           checkable
           autoExpandParent

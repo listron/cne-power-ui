@@ -8,6 +8,8 @@ module.exports = {
       CHANGE_DEVICE_MANAGE_STORE: null, // 替换reducer参数
 
       GET_DEVICE_MANAGE_FETCH_SUCCESS: null, // 设备管理普通api请求成功
+
+      GET_DEVICE_MANAGE_LIST: null, // 获取设备列表
   })
 }
 
