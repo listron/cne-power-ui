@@ -4,12 +4,6 @@
 @import './theme.scss';
 
 :global{
-    .ant-table-column-sorter-up.on .anticon-caret-up {//table表格排序上三角点击后的的颜色
-      color: #199475;
-  }
-    .ant-table-column-sorter-down.on .anticon-caret-down {//table表格排序下三角点击后的的颜色
-      color: #199475;
-  }
   .ant-table{ // 对table样式的初始化： 行高，高亮，背景色调整；
     .ant-table-tbody{
       background: #fff;
@@ -28,6 +22,12 @@
     .ant-table-thead > tr > th{
       background: #f4f4f4;
       color: $lightColor;
+    }
+    .ant-table-column-sorter-up.on .anticon-caret-up {//table表格排序上三角点击后的的颜色
+      color: $themeColor;
+    }
+    .ant-table-column-sorter-down.on .anticon-caret-down {//table表格排序下三角点击后的的颜色
+        color: $themeColor;
     }
   }
 

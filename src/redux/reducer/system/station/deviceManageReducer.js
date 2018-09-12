@@ -4,7 +4,16 @@ import { deviceManageAction } from '../../../../constants/actionTypes/system/sta
 
 var initState = Immutable.fromJS({
   loading: false,
-  testWords: 'shebei device管理管理的-----测试数据',
+  stationCode: '', // 选中的电站
+  deviceTypeCode: '', // 选中的设备类型
+  deviceModelCode: '', // 选中的设备型号
+  pageNum: 1,
+  pageSize: 10,
+  totalNum:  0, // 设备总数
+  sortField: '', // 排序字段
+  sortMethod: 'des',
+  
+  deviceList: [], // 设备列表
 });
 
 const deviceManageReducer = (state = initState, action) => {
