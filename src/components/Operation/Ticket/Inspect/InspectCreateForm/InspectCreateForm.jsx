@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Form, DatePicker, Icon, Modal, Select, Input, Radio, Checkbox } from 'antd';
+import { Button, Form, DatePicker, Select, Input } from 'antd';
 import PropTypes from 'prop-types';
 import styles from './inspectCreateForm.scss';
 import moment from 'moment';
@@ -10,38 +10,33 @@ const Option = Select.Option;
 class InspectCreateForm extends Component{
   static propTypes={
     form: PropTypes.object,
-    onCancel: PropTypes.func,
+    error: PropTypes.object,
     createInspect: PropTypes.func,
-    visible: PropTypes.bool,
     loadDeviceTypeList: PropTypes.func,
-    onCloseInspectCreate: PropTypes.func,
-    getStations: PropTypes.func,
+    onChangeShowContainer: PropTypes.func,
     stations: PropTypes.object,
     deviceTypeItems: PropTypes.object,
   }
 
-  static defaultProps={
-  }
-
   constructor(props){
     super(props);
-    this.state={
-      startValue: null,
-    }
   }
 
-  onHandleSubmit = (e) => {
-    e.preventDefault();
-    this.props.form.validateFields((err, values) => {
+  onInspectCreate = (isContinueAdd) => {
+    const { error, form, createInspect } = this.props;
+    form.validateFields((err, values) => {
       if(!err){
-        this.props.createInspect({
+        createInspect({
           inspectName: values.inspectName,
-          stationCodes: values.stationCodes.map((item) => (item.stationCode)).toString(),
-          deviceTypeCodes: values.deviceTypeCodes.toString(),
+          stationCodes: values.stationCodes.map(item => item.stationCode).join(','),
+          deviceTypeCodes: values.deviceTypeCodes.join(','),
           deadline: values.deadline.format("YYYY-MM-DD hh:mm:ss"),
-        })
+        });
+        if(isContinueAdd && error.size === 0) {
+          form.resetFields();
+        }
       }
-    })
+    });
   }
 
   stationSelected = (stations) => {
@@ -71,74 +66,43 @@ class InspectCreateForm extends Component{
     
 
   render(){
-    const formItemLayout = {
-      labelCol: {
-        xs: { span: 8 },
-        sm: { span: 8 },
-      },
-      wrapperCol: {
-        xs: { span: 16 },
-        sm: { span: 16 },
-      },
-    };
-    const tailFormItemLayout = {
-      wrapperCol: {
-        xs: {
-          span: 8,
-          offset: 8,
-        },
-        sm: {
-          span: 16,
-          offset: 16,
-        },
-      },
-    };
-    
-    const { deviceTypeItems } = this.props;
+    const { deviceTypeItems, stations } = this.props;
     const { getFieldDecorator } = this.props.form;
-    return(
+    return (
       <div>
-        <Form onSubmit={this.onHandleSubmit} >
-          <FormItem
-            {...formItemLayout}
-            label="巡检名称"
-          >
+        <Form className={styles.inspectCreateForm}>
+          <FormItem label="巡检名称" colon={false}>
             {getFieldDecorator('inspectName',{
               rules:[{
                 required: true,
-                message: "",
+                message: "请输入巡检名称",
                 max: 10,
               }]
             })(
               <Input placeholder="必填，10个中文字符以内" />
             )}
+            <div className={styles.tipText}>(10个字以内)</div>
           </FormItem>
-          <FormItem
-            {...formItemLayout}
-            label="电站名称"
-          >
+          <FormItem label="电站名称" colon={false}>
             {getFieldDecorator('stationCodes',{
-              rules:[{
-                required: true,
-              }]
+              rules:[{ required: true, message: '请选择电站' }]
             })(
               <StationSelect 
-                data={this.props.stations.toJS()}
+                data={stations.toJS()}
                 multiple={true}
                 onChange={this.stationSelected}
               />
             )}
+            <div className={styles.tipText}>(点击<i className="iconfont icon-filter" />图标可选择)</div>
           </FormItem>
-          <FormItem
-            {...formItemLayout}
-            label="设备类型"
-          >
+          <FormItem label="设备类型" colon={false}>
             {getFieldDecorator('deviceTypeCodes',{
               rules:[{
                 required: true,
               }]
             })(
               <Select
+                style={{width:200}}
                 mode="multiple"
                 placeholder="请选择设备类型"
                 disabled={deviceTypeItems.size === 0}
@@ -149,34 +113,31 @@ class InspectCreateForm extends Component{
               </Select>
             )}
           </FormItem>
-          <FormItem
-            {...formItemLayout}
-            label="截止时间"
-          >
+          <FormItem label="截止时间" colon={false}>
             {getFieldDecorator('deadline',{
-              rules:[{
-                required: true,
-              }]
+              rules:[{ required: true, message: '请选择截止时间' }]
             })(
               <DatePicker 
                 showTime 
                 format="YYYY-MM-DD HH:mm:ss" 
-                placeholder="请选择截至时间"
+                placeholder="默认当前时间"
                 disabledDate={this.disabledDate}
                 disabledTime={this.disabledTime}
                 language="zh-CN"
               />
             )}
           </FormItem>
-          <FormItem
-            {...tailFormItemLayout}
-          >
-            <Button htmlType="reset" onClick={this.props.onCloseInspectCreate} >取消</Button>
-            <Button type="primary" htmlType="submit" >提交</Button>
-          </FormItem>
+          <div className={styles.actionBar}>
+            <Button className={styles.saveBtn} onClick={()=>this.onInspectCreate(false)}>保存</Button>
+            <Button onClick={()=>this.onInspectCreate(true)}>保存并继续添加</Button>
+          </div>
+          <div className={styles.addTips}>
+            <span>选择“保存”按钮后将跳转到对应的列表页；</span>
+            <span>选择“保存并继续添加”按钮会停留在添加页面</span>
+          </div>
         </Form>
       </div>
-    )
+    );
   }
 
 }

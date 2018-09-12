@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import DefectBasicInfo from '../DefectBasicInfo/DefectBasicInfo';
 import DefectHandleForm from '../DefectHandleForm/DefectHandleForm';
 import TimeLines from '../../../../Common/TimeLines';
+import WarningTip from '../../../../Common/WarningTip';
 import styles from './defectDetailForm.scss';
 import { Icon } from 'antd';
 
@@ -23,6 +24,30 @@ class DefectDetailForm extends Component {
 
   constructor(props) {
     super(props);
+    this.state = {
+      showWarningTip: false,
+      warningTipText: '',
+    }
+  }
+
+  onCancelEdit = () => {
+    this.setState({
+      showWarningTip: true,
+      warningTipText: '退出后信息无法保存!'
+    });
+  }
+
+  onCancelWarningTip = () => {
+    this.setState({
+      showWarningTip: false,
+    });
+  }
+
+  onConfirmWarningTip = () => {
+    this.setState({
+      showWarningTip: false,
+    });
+    this.props.onCloseDetail({ container: 'list' });  
   }
 
   onSubmit = (data) => {
@@ -140,15 +165,17 @@ class DefectDetailForm extends Component {
 
   render() {
     let detail = this.props.detail;
+    const { showWarningTip, warningTipText } = this.state;
     return (
       <div className={styles.detailWrap}>
+        {showWarningTip && <WarningTip style={{marginTop:'250px',width: '210px',height:'88px'}} onCancel={this.onCancelWarningTip} onOK={this.onConfirmWarningTip} value={warningTipText} />}
         <div className={styles.defectDetail}>
           <div className={styles.header}>
             <div className={styles.text}>{this.renderTitle()}</div>
             <div className={styles.action}>
               <i className="iconfont icon-last" onClick={this.props.onPrev} />
               <i className="iconfont icon-next" onClick={this.props.onNext} />
-              <Icon type="arrow-left" className={styles.backIcon} onClick={this.props.onCloseDetail} />
+              <Icon type="arrow-left" className={styles.backIcon} onClick={this.onCancelEdit} />
             </div>   
           </div>
           <div className={styles.content}>
