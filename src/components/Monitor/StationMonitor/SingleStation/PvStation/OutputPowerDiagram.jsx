@@ -108,7 +108,8 @@ class OutputPowerDiagram extends Component {
           name: '功率(MW)',
           type: 'value',
           axisLabel: {
-            formatter: '{value}'
+            formatter: '{value}',
+            color: lineColor,
           },
           nameTextStyle: {
             color: lineColor,
@@ -121,13 +122,14 @@ class OutputPowerDiagram extends Component {
           },
           splitLine: {
             show: false,
-          }
+          },
         },
         {
           name: '瞬时辐照(W/m²)',
           type: 'value',
           axisLabel: {
-            formatter: '{value}'
+            formatter: '{value}',
+            color: lineColor,
           },
           nameTextStyle: {
             color: lineColor,
@@ -139,7 +141,7 @@ class OutputPowerDiagram extends Component {
           },
           splitLine: {
             show: false,
-          }
+          },
         }
       ],
       series: [
@@ -151,7 +153,13 @@ class OutputPowerDiagram extends Component {
           yAxisIndex: 0,
           areaStyle: {
             color: '#fff2f2',
-          }
+          },
+          itemStyle: {
+            opacity: 0,
+          },
+          axisTick: {
+            show: false,
+          },
         },
         {
           name: '瞬时辐照',
@@ -161,10 +169,14 @@ class OutputPowerDiagram extends Component {
           yAxisIndex: 1,
           itemStyle: {
             color: "#199475",
+            opacity: 0,
           },
           lineStyle: {
-            type: 'solid',
-          }
+            type: 'dashed',
+          },
+          axisTick: {
+            show: false,
+          },
         }
       ]
     }
@@ -220,16 +232,19 @@ class OutputPowerDiagram extends Component {
         },
       },
       legend: {
+        textStyle:{
+          color: lineColor,
+        }
       },
-      grid: {
-        show: true,
-      },
+      // grid: {
+      //   show: false,
+      // },
       tooltip: {
         trigger: 'axis',
         show: true,
         backgroundColor: '#fff',
         textStyle: {
-          color: lineColor,
+          color: '#999',
           fontSize: '12px',
         },
         formatter: (param) => {
@@ -266,32 +281,38 @@ class OutputPowerDiagram extends Component {
           name: '电量(万kWh)',
           type: 'value',
           axisLabel: {
-            formatter: '{value}'
+            formatter: '{value}',
+            color: lineColor,
           },
           nameTextStyle: {
             color: lineColor,
           },
           axisLine: {
-            lineStyle: {
-              color: '#dfdfdf',
-            },
+            show: false,
           },
-
         },
         {
-          name: '日曝辐值(W/m²)',
+          name: '日曝辐值(MJ/m²)',
           type: 'value',
           axisLabel: {
-            formatter: '{value}'
+            formatter: '{value}',
+            color: lineColor,
           },
           nameTextStyle: {
             color: lineColor,
           },
           axisLine: {
-            lineStyle: {
-              color: '#dfdfdf',
-            },
+            show: false,
           },
+          axisTick: {
+            show: false,
+          },
+          splitLine: {
+            lineStyle: {
+              color: '#f1f1f1',
+              type: 'dashed',
+            }
+          }
         }
       ],
       series: [
