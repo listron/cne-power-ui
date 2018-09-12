@@ -69,7 +69,7 @@ export default {
       finishInspect: '/v3/inspect/finish',
       createInspect:'/v3/inspect',
       deleteAbnormal: '/v3/inspect/deleteabnormal',
-      getInspectStandard:'/v3/inspect/standard',
+      getInspectStandard:'/v3/inspect/getstandard',
       inspectCheckBatch:'/v3/inspect/check/batch',
     },
     system: {

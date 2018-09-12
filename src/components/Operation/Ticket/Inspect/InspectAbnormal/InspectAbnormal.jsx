@@ -31,14 +31,16 @@ class InspectAbnormal extends Component {
 
   onShowDetail = (data) => {
     this.setState({
-      abnormalId: data.get('abnormalId')
+      abnormalId: data.get('abnormalId'),
+      standardInfo: ''
     });
   }
 
   onShowModal = () =>{
     this.setState({showInspectStandard: true})
-    let stationType = this.props.inspectDetail.get('stationType');
-    this.props.getInspectStandard({'stationType': stationType});
+    const stationType = this.props.inspectDetail.get('stationType');
+    const deviceTypeCodes = this.props.inspectDetail.get('deviceTypeCodes');
+    this.props.getInspectStandard({stationType, deviceTypeCodes});
   }
 
   onCloseModal = () => {
@@ -60,6 +62,12 @@ class InspectAbnormal extends Component {
     } else {
       return [];
     } 
+  }
+
+  getStandardInfo(standardInfo) {
+    this.setState({
+      standardInfo
+    });
   }
 
   renderItems(){
@@ -104,25 +112,48 @@ class InspectAbnormal extends Component {
     });
   }
 
+  renderMenu(inspectStandard) {
+    if(inspectStandard.size === 0) {
+      return null;
+    }
+    return inspectStandard.map((item, index) => {
+      return (
+        <div className={styles.mainMenu} key={index}>
+          <div className={styles.mainMenuTitle}>{item.get('standardTitle')}</div>
+          <div className={styles.subMenu}>
+            {item.get('standardData').map((subItem, i) => {
+              return (
+                <div style={this.state.standardInfo===subItem.get('standardInfo')?{backgroundColor:'#666'}:{}} className={styles.subMenuTitle} key={i} onClick={()=>this.getStandardInfo(subItem.get('standardInfo'))}>
+                  {subItem.get('standardItem')}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      );
+    });
+  }
+
   renderStandard(){
     let inspectStandard = this.props.inspectStandard;
     return (
-      <Modal 
-        showInspectStandard={this.state.showInspectStandard}
-        onCancel={this.onCloseModal}
-        closable={false}
+      <Modal
+        className={styles.defectStandardModal} 
+        visible={true}
         footer={null}
-        width={1050}
+        mask={false}
+        onCancel={this.onCloseModal}
+        width={606}
       >
-        <Tabs defaultActiveKey="1"tabPosition="left" style={{height: 560, width:1000}} >
-          {inspectStandard.map((item,index) => {
-            return (
-              <TabPane tab={item.get('standardItem')} key={item.get('standardItem')} >
-                {item.get('standardInfo')}
-              </TabPane>
-            )
-          })}
-        </Tabs>
+        <div className={styles.defectStandard}>
+          <div className={styles.menu}>
+            {this.renderMenu(inspectStandard)}
+          </div>
+          <div className={styles.content}>
+            <div className={styles.standardTitle}>巡检标准</div>
+            {this.state.standardInfo}
+          </div>
+        </div>
       </Modal>
     )
   }
@@ -175,7 +206,7 @@ class InspectAbnormal extends Component {
           {this.renderItems()}
         </div>
         {this.renderItemDetail()}
-        {this.renderStandard()}
+        {this.state.showInspectStandard&&this.renderStandard()}
       </div>
     )
   }

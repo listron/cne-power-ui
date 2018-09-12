@@ -291,11 +291,12 @@ function *getInspectStandard(action){
   yield put({type: ticketAction.TICKET_FETCH})
   try{
     const response = yield call(axios.get, url, {params: payload} )
-    if(response.data.code === "10000"){
+    if(response.data.code === "10000" && response.data.data.collection !== '0'){
       yield put({
         type: ticketAction.GET_INSPECT_FETCH_SUCCESS,
-        data: response.data.data,
-        params: action.params,
+        payload: {
+          inspectStandard: response.data.data.data,
+        }
       })
     }
   }catch(e){
