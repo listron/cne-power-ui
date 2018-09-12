@@ -1,4 +1,4 @@
-@import '../../../theme/theme.scss';
+@import '../../../../../theme/theme.scss';
 .timeLineWrap {
   display: flex;
   flex: 1;
@@ -76,7 +76,7 @@
       }
     }
     .processStatus span{
-      color:#7ec5c2;
+      color: $themeColor;
     }
   }
   :global {

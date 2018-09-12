@@ -4,7 +4,7 @@ import StationSelect from '../../../../Common/StationSelect';
 import ImgUploader from '../../../../Common/Uploader/ImgUploader';
 import { Form, Input, Button, Select, Switch, Radio } from 'antd';
 import pathConfig from '../../../../../constants/path';
-import styles from './createDefectForm.scss';
+import styles from './defectCreateForm.scss';
 import DeviceName from '../../../../Common/DeviceName';
 import InputLimit from '../../../../Common/InputLimit';
 import CommonInput from '../../../../Common/CommonInput';

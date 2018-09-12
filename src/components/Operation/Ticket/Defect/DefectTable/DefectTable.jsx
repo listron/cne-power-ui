@@ -224,6 +224,9 @@ class DefectTable extends Component {
       title: '缺陷描述',
       dataIndex: 'defectDescribe',
       key: 'defectDescribe',
+      render: (text, record) => {
+        return <div className={styles.defectDesc} title={text}>{text}</div>
+      }
     }, {
       title: '发生时间',
       dataIndex: 'startTime',
@@ -233,6 +236,9 @@ class DefectTable extends Component {
       title: '完成时间',
       dataIndex: 'finishTime',
       key: 'finishTime',
+      render: (text, record) => {
+        return text ? text : '--'
+      },
       sorter: true,
     }, {
       title: '状态',

@@ -100,7 +100,7 @@ const mapStateToProps = (state) => ({
   error: state.operation.inspect.get('error'),
   sort: state.operation.inspect.get('sort'),
   total: state.operation.inspect.get('total'),
-  selectedRowKeys: state.operation.defect.get('selectedRowKeys').toJS(),
+  selectedRowKeys: state.operation.inspect.get('selectedRowKeys').toJS(),
 
   stationType: state.operation.inspect.get('stationType'),
   stationCodes: state.operation.inspect.get('stationCodes'),      
@@ -112,13 +112,14 @@ const mapStateToProps = (state) => ({
   createTimeStart: state.operation.inspect.get('createTimeStart'), 
   createTimeEnd: state.operation.inspect.get('createTimeEnd'),	 
   deviceTypeCode: state.operation.inspect.get('deviceTypeCode'),
-  handleUser: state.operation.defect.get('handleUser'),
+  handleUser: state.operation.inspect.get('handleUser'),
   username: Cookie.get('username'),
   stations: state.common.get('stations'),
   deviceTypes: state.common.get('stationDeviceTypes'),
 })
 
 const mapDispatchToProps = (dispatch) => ({
+  changeInspectStore: payload => dispatch({type:ticketAction.CHANGE_INSPECT_STORE_SAGA, payload}),
   getInspectList: payload => dispatch({ type: ticketAction.GET_INSPECT_LIST_SAGA, payload }),
   getInspectDetail: payload => dispatch({ type: ticketAction.GET_INSPECT_DETAIL_SAGA, payload }),
   inspectCheckBatch: payload => dispatch({ type: ticketAction.CHECK_BATCH_INSPECT_SAGA, payload}),
