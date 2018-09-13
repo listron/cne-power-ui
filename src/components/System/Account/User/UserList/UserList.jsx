@@ -8,6 +8,8 @@ import styles from './userList.scss';
 import { getCookie } from '../../../../../utils/index.js';
 import Path from '../../../../../constants/path';
 import WarningTip from '../../../../Common/WarningTip';
+import {apiUrlReal} from '../../../../../config/apiConfig';
+
 const RadioGroup = Radio.Group;
 
 
@@ -526,6 +528,7 @@ class UserList extends Component {
     const rightHandler = localStorage.getItem('rightHandler');
     const userCreateRight = rightHandler && rightHandler.includes('account_user_create');
     const userImportRight = rightHandler && rightHandler.includes('account_user_batchImport');
+    
     return (
       <div className={styles.userList}>
         {showDeleteTip && <WarningTip onCancel={this.cancelDeleteTip} onOK={this.confirmDeleteTip} value={deleteWarningTip} />}
@@ -537,7 +540,7 @@ class UserList extends Component {
             {userImportRight && <Upload {...uploadProps} className={styles.importUser}>
               <Button>批量导入</Button>
             </Upload>}
-            <Button className={styles.templateDown} href="http://10.10.15.51/template/用户批量导入模板.xlsx" >导入模板下载</Button>
+            <Button className={styles.templateDown} href={`${apiUrlReal}/template/用户批量导入模板.xlsx`} >导入模板下载</Button>
             <div className={selectedUser.toJS().length>0 ? styles.selectedOperate : styles.userOperate} >
               {this._createUserOperate(rightHandler)}
             </div>
