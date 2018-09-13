@@ -8,6 +8,8 @@ import styles from './userList.scss';
 import { getCookie } from '../../../../../utils/index.js';
 import Path from '../../../../../constants/path';
 import WarningTip from '../../../../Common/WarningTip';
+import {apiUrlReal} from '../../../../../config/apiConfig';
+
 const RadioGroup = Radio.Group;
 
 
@@ -528,6 +530,7 @@ class UserList extends Component {
     const userImportRight = rightHandler && rightHandler.includes('account_user_batchImport');
     const userInvite = rightHandler && rightHandler.includes('account_user_invite');
     //console.log(userInvite);
+
     return (
       <div className={styles.userList}>
         {showDeleteTip && <WarningTip onCancel={this.cancelDeleteTip} onOK={this.confirmDeleteTip} value={deleteWarningTip} />}
@@ -540,16 +543,19 @@ class UserList extends Component {
             {userImportRight && <Upload {...uploadProps} className={styles.importUser}>
               <Button>批量导入</Button>
             </Upload>}
-            <Button className={styles.templateDown} href="http://10.10.15.51/template/用户批量导入模板.xlsx" >导入模板下载</Button>
-            <div className={selectedUser.toJS().length > 0 ? styles.selectedOperate : styles.userOperate} >
+            {/* <Button className={styles.templateDown} href="http://10.10.15.51/template/用户批量导入模板.xlsx" >导入模板下载</Button>
+            <div className={selectedUser.toJS().length > 0 ? styles.selectedOperate : styles.userOperate} > */}
+            <Button className={styles.templateDown} href={`${apiUrlReal}/template/用户批量导入模板.xlsx`} >导入模板下载</Button>
+            <div className={selectedUser.toJS().length>0 ? styles.selectedOperate : styles.userOperate} >
               {this._createUserOperate(rightHandler)}
             </div>
             <div className={styles.selectedColumnsBox} >
               <Select
+                dropdownClassName={styles.dropdownMenu} 
                 className={styles.selectedColumns}
                 showArrow={false}
                 dropdownMatchSelectWidth={false}
-                onChange={this.onSelectColumns}
+                onSelect={this.onSelectColumns}
               >
                 <Option key="全选" value="全选" ><Checkbox checked={selectedUserColumns.size === 7} >全选</Checkbox></Option>
                 {columns.map(item => {
