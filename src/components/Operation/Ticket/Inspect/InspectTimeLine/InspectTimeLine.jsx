@@ -23,10 +23,10 @@ class InspectTimeLine extends Component {
   }
 
   renderIcon(item, isLast) {
-    if(isLast) {
-      return null;
-    }
     const flowName = item.get('flowName');
+    if(isLast && flowName!=='已完成') {
+      return <i className="iconfont icon-goon" />;
+    }
     switch(flowName){
       case '创建巡检':
         return <i className="iconfont icon-begin" />;

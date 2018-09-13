@@ -100,9 +100,7 @@ class DefectList extends Component {
     return (
       <div className={styles.defectList}>
         <DefectFilter {...this.props} onChangeFilter={this.onChangeFilter} />
-        <DefectTable 
-          {...this.props} 
-          onChangeFilter={this.onChangeFilter} />
+        <DefectTable {...this.props} onChangeFilter={this.onChangeFilter} />
       </div>
     );
   }
