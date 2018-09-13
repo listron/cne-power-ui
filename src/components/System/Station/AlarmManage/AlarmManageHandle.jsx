@@ -53,15 +53,17 @@ class AlarmManageHandle extends Component {
     const { alarmModal } = this.state;
     return (
       <div className={styles.alarmManageHandle}>
-        <SingleStationImportFileModel 
-          data={stations} 
-          uploadPath={''} 
-          uploaderName={'告警'} 
-          disableStation={[]}
-          uploadExtraData={{}}
-        />
-        <Button disabled={alarmList.length === 0} className={styles.exportInfo}>导出告警事件信息表</Button>
-        <Button disabled={alarmList.length === 0} onClick={this.deleteAlarmList} className={styles.clearAlarm}>清除告警</Button>
+        <div className={styles.leftHandler}>
+          <SingleStationImportFileModel 
+            data={stations} 
+            uploadPath={''} 
+            uploaderName={'告警'} 
+            disableStation={[]}
+            uploadExtraData={['stationCode','stationType']}
+          />
+          <Button disabled={alarmList.length === 0} className={styles.exportInfo}>导出告警事件信息表</Button>
+          <Button disabled={alarmList.length === 0} onClick={this.deleteAlarmList} className={styles.clearAlarm}>清除告警</Button>
+        </div>
         <CommonPagination  total={totalNum} onPaginationChange={this.onPaginationChange} />
         {alarmModal && <div>这个东西啊！</div>}
       </div>

@@ -24,14 +24,17 @@
   justify-content: space-between;
   height: 72px;
   align-items: center;
-  .importInfo{
-    margin-left: 36px;
-  }
-  .exportInfo{
-    margin: 0 12px;
-  }
-  .clearPoint{
+  .leftHandler{
+    display: flex;
+    .importInfo{
+      margin-left: 36px;
+    }
+    .exportInfo{
+      margin: 0 12px;
+    }
+    .clearPoint{
 
+    }
   }
 }
 

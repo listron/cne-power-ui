@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import styles from './pointManage.scss';
 import CommonPagination from '../../../Common/CommonPagination';
+import SingleStationImportFileModel from '../../../Common/SingleStationImportFileModel';
 import { Button } from 'antd';
 import PropTypes from 'prop-types';
 
@@ -47,15 +48,17 @@ class PointManageHandle extends Component {
   }
 
   render() {
-    const { totalNum, pointList } = this.props;
+    const { totalNum, pointList, stations } = this.props;
     const { pointModal } = this.state;
     return (
       <div className={styles.pointManageHandle}>
-        <div>
-          <Button onClick={this.showAddPointModal} className={styles.importInfo} >
-            <span>+</span>
-            <span>测点</span>
-          </Button>
+        <div className={styles.leftHandler}>
+          <SingleStationImportFileModel 
+            data={stations} 
+            uploadPath={''} 
+            uploaderName={'测点'} 
+            uploadExtraData={['stationCode']}
+          />
           <Button disabled={pointList.length === 0} className={styles.exportInfo}>导出测电表</Button>
           {/* <Button disabled={pointList.length === 0}>查看测试状态</Button> */}
           <Button disabled={pointList.length === 0} onClick={this.deletePointList} className={styles.clearPoint}>清除测点</Button>

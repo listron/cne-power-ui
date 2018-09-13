@@ -11,7 +11,7 @@ class StationSelectModal extends Component {
   static propTypes = {
     uploadPath: PropTypes.string, // 上传路径
     uploaderName: PropTypes.string, // 显示名称
-    uploadExtraData: PropTypes.object, // upload额外参数
+    uploadExtraData: PropTypes.array, // upload额外参数
     uploadPath: PropTypes.string, // 上传路径
     disableStation: PropTypes.array, // 不可选电站code 数组
     data: PropTypes.array, // station信息集合
@@ -21,8 +21,8 @@ class StationSelectModal extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      selectedStation: {},
       filterStationType: 0,//选中电站类型
-      selectedStation: [], //暂存选中的电站数组
     }
   }
 
@@ -53,6 +53,7 @@ class StationSelectModal extends Component {
     }
     if (file.status === 'done') {
       message.success(`${file.name} 文件上传成功`);
+      this.props.hideStationModal()
     } else if (file.status === 'error') {
       message.error(`${file.name} 文件上传失败!`);
     }
@@ -60,7 +61,7 @@ class StationSelectModal extends Component {
 
   _filterStation = () => { // 双重遍历，依据省份对电站进行进一步分组。
     const { data, disableStation } = this.props;
-    const { filterStationType } = this.state;
+    const { filterStationType, selectedStation } = this.state;
     const tmpStations = filterStationType === 2 ? data : data.filter(e=>(e.stationType === filterStationType)); // type 2全选。
     let filteredStation = [];
     tmpStations && tmpStations.length > 0 && tmpStations.forEach(e=>{
@@ -81,6 +82,7 @@ class StationSelectModal extends Component {
     })
     return filteredStation.map(e=>(
       <ProvinceItem 
+        selectedStation={selectedStation}
         disableStation={disableStation}
         key={e.provinceCode} 
         checkStation={this.checkStation} 
@@ -91,30 +93,39 @@ class StationSelectModal extends Component {
 
   render() {
     const { hideStationModal, data, uploaderName, uploadPath, uploadExtraData } = this.props;
-    const { filterStationType } = this.state;
+    const { filterStationType, selectedStation } = this.state;
     const tmpStationTypeArray = data.map(e=>e && e.stationType).filter(e=>e);
     const stationTypeSet = new Set(...tmpStationTypeArray);
     const stationTypeArray = Array.from(stationTypeSet);
     const showTypeSelectButton = stationTypeArray.length === 2;
     const authData = Cookie.get('authData') || null;
+    const uploadExtraObject = {};
+    uploadExtraData.forEach(e=>{
+      uploadExtraObject[e] = selectedStation[e];
+    })
     return (
       <Modal
         visible={true}
         onCancel={hideStationModal}
         title="请选择一个电站"
         width={625}
-        wrapClassName={styles.stationModal}
+        wrapClassName={styles.uploadSingleStationModal}
         footer={<Upload
           action={uploadPath}
           className={styles.excelInfoUploader}
           headers={{'Authorization': 'bearer ' + JSON.parse(authData)}}
           beforeUpload={this.beforeUpload}
           onChange={this.excelInfoUpload}
+          data={(file)=>({
+            ...uploadExtraData,
+            ...file,
+
+          })}
         >
           <Button>导入{uploaderName}</Button>
         </Upload>}
       >
-        <div className={styles.stationStyleModal}>
+        <div className={styles.stationModalContent}>
           <div className={styles.stationType}>
             {showTypeSelectButton && <RadioGroup onChange={this.onSelectStationType} value={filterStationType}>
               <RadioButton key={2} value={2} >全部</RadioButton>

@@ -35,21 +35,21 @@ import PropTypes from 'prop-types';
   3. uploaderName = '电站'; 上传组件名
   选填参数： 
   1. disableStation = [21,73,22,25];不可选电站编码数组，默认为[];所有电站均可点击 
-  2. uploadExtraData = {name: '张三', stationCode: 12} 上传file中，额外需要传至url的其他信息, 默认为{};
+  2. uploadExtraData = ['stationCode','stationType'] 上传file中，额外需要传至url的其他电站信息, 默认为[];
 */
 
 class SingleStationImportFileModel extends Component {
   static propTypes = {
     data: PropTypes.array,
     disableStation: PropTypes.array,
-    uploadExtraData: PropTypes.object,
+    uploadExtraData: PropTypes.array,
     uploadPath: PropTypes.string,
     uploaderName: PropTypes.string,
   }
   static defaultProps = {
     data: [],
     disableStation: [],
-    uploadExtraData: {},
+    uploadExtraData: [],
     uploadPath: '',
   }
   constructor(props) {
