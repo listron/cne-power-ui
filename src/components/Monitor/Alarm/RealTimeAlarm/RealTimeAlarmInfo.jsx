@@ -71,7 +71,7 @@ class RealTimeAlarmInfo extends Component {
             <span className={styles.updateTime}>{lastUpdateTime+'-北京时间'}</span>
             <span className={styles.updateTimeText}>本次数据更新时间</span>
           </div>
-          <i className="iconfont icon-refresh" onClick={this.refresh}></i>
+          <div className={styles.refreshIcon} onClick={this.refresh}></div>
           <Tooltip placement="topLeft" overlayStyle={{width:418,maxWidth:500,fontSize:'12px'}} title="数据每隔10秒刷新一次，筛选/查询后不再刷新，如需重置，请点此按钮刷新">
             <i className="iconfont icon-help" onClick={this.refresh}></i>
           </Tooltip>  

@@ -84,10 +84,8 @@ class InspectList extends Component {
   render() {
     return (
       <div className={styles.inspectList}>
-        <InspectFilter {...this.props} />
-        <InspectTable 
-          {...this.props} 
-          onChangeFilter={this.onChangeFilter} />
+        <InspectFilter {...this.props} onChangeFilter={this.onChangeFilter} />
+        <InspectTable {...this.props} onChangeFilter={this.onChangeFilter} />
       </div>
     );
   }

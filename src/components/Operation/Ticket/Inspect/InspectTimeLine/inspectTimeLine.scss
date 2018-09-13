@@ -30,6 +30,7 @@
     .processItem {
       display: flex;
       flex-direction: column;
+      margin-left: 8px;
       .basic {
         display: flex;
         flex-direction: row;
@@ -77,7 +78,7 @@
       font-size: 12px;
       color: $lightColor;
     }
-    .icon-doned {
+    .icon-doned, .icon-goon {
       color: $themeColor;
       font-size: 16px;
     }

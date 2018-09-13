@@ -64,7 +64,7 @@ class DefectTimeLine extends Component {
       case '1':
       case '2':
       case '3':
-        return null;
+        return <i className="iconfont icon-goon" />;
       case '4':
         return <i className="iconfont icon-doned" />;
       default:

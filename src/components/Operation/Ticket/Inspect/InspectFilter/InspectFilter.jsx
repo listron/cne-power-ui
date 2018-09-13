@@ -62,6 +62,11 @@ class InspectFilter extends Component {
       hasAbnormal: value
     });
   }
+  onChangeTab = (e) => {
+    this.props.onChangeFilter({
+      status: e.target.value
+    });
+  }
   
 
   render() {

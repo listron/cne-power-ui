@@ -32,6 +32,16 @@
         color: $lightColor;
       }
     }
+    .refreshIcon {
+      width: 32px;
+      height: 32px;
+      background-image: url(/img/refresh.png);
+      background-position: center center;
+      background-repeat: no-repeat;
+      &:hover {
+        background-image: url(/img/refresh-on.png);
+      }
+    }
   }
   .alarmInfoItem {
     display: flex;

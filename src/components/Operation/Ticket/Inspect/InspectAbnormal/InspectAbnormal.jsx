@@ -117,7 +117,10 @@ class InspectAbnormal extends Component {
     return inspectStandard.map((item, index) => {
       return (
         <div className={styles.mainMenu} key={index}>
-          <div className={styles.mainMenuTitle}>{item.get('standardTitle')}</div>
+          <div className={styles.mainMenuTitle}>
+            {item.get('standardTitle')}
+            <i className="iconfont icon-triangle" />
+          </div>
           <div className={styles.subMenu}>
             {item.get('standardData').map((subItem, i) => {
               return (

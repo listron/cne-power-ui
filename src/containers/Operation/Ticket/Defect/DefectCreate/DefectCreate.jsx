@@ -13,6 +13,7 @@ class DefectCreate extends Component {
     onChangeShowContainer: PropTypes.func,
     stations: PropTypes.array,
     deviceTypes: PropTypes.array,
+    devices: PropTypes.array,
     defectTypes: PropTypes.array,
     getStations: PropTypes.func,
     showContainer: PropTypes.string,
@@ -25,7 +26,6 @@ class DefectCreate extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      editDataGet: false,
       showWarningTip: false,
       warningTipText: '',
     }
@@ -38,22 +38,16 @@ class DefectCreate extends Component {
     if(showContainer === 'edit'){
       const { defectDetail } = this.props;
       const stationType = defectDetail.stationType;
-      const stationCodes = defectDetail.stationCode;
-      this.props.getStationDeviceTypes({stationCodes})
-      this.props.getDefectTypes({stationType})
+      const stationCode = defectDetail.stationCode;
+      const deviceTypeCode = defectDetail.deviceTypeCode;
+      this.props.getStationDeviceTypes({stationCodes:stationCode});
+      this.props.getDefectTypes({stationType});
+      this.props.getDevices({stationCode,deviceTypeCode})
     }
     this.props.getCommonList({
       languageType: '1'
     });
   } 
-  componentWillReceiveProps(nextProps){
-    const { showContainer } = this.props;
-    if(showContainer==='edit' && nextProps.stations.length > 0 && nextProps.deviceTypes.length > 0 && nextProps.defectTypes.length > 0){
-      this.setState({
-        editDataGet: true,
-      })
-    }
-  }
 
   onCancelEdit = () => {
     this.setState({
@@ -76,7 +70,7 @@ class DefectCreate extends Component {
   }
 
   render() {
-    const { editDataGet, showWarningTip, warningTipText } = this.state;
+    const { showWarningTip, warningTipText } = this.state;
     const { showContainer } = this.props;
     return (
       <div className={styles.defectCreate}>
@@ -86,7 +80,7 @@ class DefectCreate extends Component {
           <Icon type="arrow-left" className={styles.backIcon} onClick={this.onCancelEdit} />
         </div>
         <div className={styles.createContent}>
-          <DefectCreateForm {...this.props} editDataGet={editDataGet} />
+          <DefectCreateForm {...this.props} />
         </div>
       </div>
     );
@@ -111,6 +105,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   getStations: payload => dispatch({ type: commonAction.GET_STATIONS_SAGA, payload }),
+  getDefectDetail: payload => dispatch({ type: ticketAction.GET_DEFECT_DETAIL_SAGA, payload }),
   getStationDeviceTypes: payload => dispatch({ type: commonAction.GET_STATION_DEVICETYPES_SAGA, payload }),
   getCommonList: payload => dispatch({ type: ticketAction.GET_DEFECT_LANGUAGE_SAGA, payload }),
   getStationAreas: payload => dispatch({ type: commonAction.GET_PARTITIONS_SAGA, payload}),
