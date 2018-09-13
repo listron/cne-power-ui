@@ -14,6 +14,8 @@ class PvStationTop extends Component {
     getSingleStation: PropTypes.func,
     stationList: PropTypes.array,
     showStationList: PropTypes.bool,
+    changeSingleStationStore: PropTypes.func,
+    onSelectedDeviceType: PropTypes.func,
   }
 
   constructor(props){
@@ -49,6 +51,7 @@ class PvStationTop extends Component {
     this.setState({
       showStationList: false,
     });
+    // this.props.changeSingleStationStore({deviceTypeCode: 206});
   }
   
   render(){

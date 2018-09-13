@@ -193,7 +193,7 @@ class InverterList extends Component {
   }
   compareParentName = (a,b) => {
     if(a[0] && b[0] && a[0]['parentDeviceName'] && a[1]['parentDeviceName']){
-      return a[0]['parentDeviceName'].length-b[0]['parentDeviceName'].length;
+      return a[0]['parentDeviceName'].localeCompare(b[0]['parentDeviceName']);
     }
   }
   changePagination = ({ pageSize, currentPage }) => {
