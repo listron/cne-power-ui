@@ -31,7 +31,7 @@ class DeviceManageHandle extends Component {
     const { totalNum, deviceList } = this.props;
     return (
       <div className={styles.deviceManageHandle}>
-        <Button disabled={deviceList.length === 0}>导出设备信息表</Button>
+        <Button disabled={deviceList.length === 0} className={styles.exportInfo}>导出设备信息表</Button>
         <CommonPagination  total={totalNum} onPaginationChange={this.onPaginationChange} />
       </div>
     );

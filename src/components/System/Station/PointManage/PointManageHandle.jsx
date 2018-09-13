@@ -50,14 +50,16 @@ class PointManageHandle extends Component {
     const { totalNum, pointList } = this.props;
     const { pointModal } = this.state;
     return (
-      <div className={styles.deviceManageHandle}>
-        <Button onClick={this.showAddPointModal} >
-          <span>+</span>
-          <span>测点</span>
-        </Button>
-        <Button disabled={pointList.length === 0}>导出测电表</Button>
-        {/* <Button disabled={pointList.length === 0}>查看测试状态</Button> */}
-        <Button disabled={pointList.length === 0} onClick={this.deletePointList}>清除测点</Button>
+      <div className={styles.pointManageHandle}>
+        <div>
+          <Button onClick={this.showAddPointModal} className={styles.importInfo} >
+            <span>+</span>
+            <span>测点</span>
+          </Button>
+          <Button disabled={pointList.length === 0} className={styles.exportInfo}>导出测电表</Button>
+          {/* <Button disabled={pointList.length === 0}>查看测试状态</Button> */}
+          <Button disabled={pointList.length === 0} onClick={this.deletePointList} className={styles.clearPoint}>清除测点</Button>
+        </div>
         <CommonPagination  total={totalNum} onPaginationChange={this.onPaginationChange} />
         {pointModal && <div>这个东西啊！</div>}
       </div>

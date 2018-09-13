@@ -1,20 +1,43 @@
 
+@import '../../../../theme/theme.scss';
 
 .deviceManageSearch{ // 条件查询
   display: flex;
   align-items: center;
-  justify-content: flex-start;
   height: 71px;
-  border-bottom: #f1f1f1;
+  border-bottom: solid 1px $promptColor;
+  .titleText{
+    color: $lightColor;
+    margin-left: 28px;
+    margin-right: 12px;
+  }
+  .typeSelect,.modelSelect{
+    width: 198px;
+  }
+  .typeSelect{
+    margin: 0 12px;
+  }
 }
 
 .deviceManageHandle{ // 导出设备， 翻页器
   display:flex;
   justify-content: space-between;
-  height: 100px;
+  height: 72px;
   align-items: center;
+  .exportInfo{
+    margin-left: 36px;
+    // background-color: #dfdfdf;
+    // color: #fff;
+  }
 }
 
 .deviceManageList{ // 设备表格区
-
+  border-top: 1px solid $promptColor;
+  :global{
+    .ant-table{
+      .ant-table-placeholder{
+        border-bottom: none;
+      }
+    }
+  }
 }

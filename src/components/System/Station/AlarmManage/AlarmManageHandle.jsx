@@ -50,13 +50,13 @@ class AlarmManageHandle extends Component {
     const { totalNum, alarmList } = this.props;
     const { alarmModal } = this.state;
     return (
-      <div className={styles.deviceManageHandle}>
-        <Button onClick={this.showAddPointModal} >
+      <div className={styles.alarmManageHandle}>
+        <Button onClick={this.showAddPointModal} className={styles.importInfo} >
           <span>+</span>
           <span>告警</span>
         </Button>
-        <Button disabled={alarmList.length === 0}>导出告警事件信息表</Button>
-        <Button disabled={alarmList.length === 0} onClick={this.deleteAlarmList}>清除告警</Button>
+        <Button disabled={alarmList.length === 0} className={styles.exportInfo}>导出告警事件信息表</Button>
+        <Button disabled={alarmList.length === 0} onClick={this.deleteAlarmList} className={styles.clearAlarm}>清除告警</Button>
         <CommonPagination  total={totalNum} onPaginationChange={this.onPaginationChange} />
         {alarmModal && <div>这个东西啊！</div>}
       </div>

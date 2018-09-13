@@ -55,7 +55,7 @@ class AlarmManageList extends Component {
     const { loading, alarmList } = this.props;
 
     return (
-      <div className={styles.deviceManageList}>
+      <div className={styles.alarmManageList}>
         <Table
           loading={loading}
           onChange={this.tableChange}

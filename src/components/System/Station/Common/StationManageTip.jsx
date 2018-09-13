@@ -3,12 +3,12 @@
 import React from 'react';
 import styles from './common.scss';
 
-function StationManageTip({ hideManageTip }){
+function StationManageTip({ hideManageTip, text }){
 
   return (<div className={styles.stationManageTip}>
-    <span>
+    <span className={styles.leftTips} >
       <span className={styles.icon}>i</span>
-      <span className={styles.wordTip}>请选择电站！</span>
+      <span className={styles.wordTip}>{text}</span>
     </span>
     <span className={styles.close} onClick={hideManageTip}>×</span>
   </div>)

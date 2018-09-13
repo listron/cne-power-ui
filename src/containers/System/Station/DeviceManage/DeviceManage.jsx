@@ -69,7 +69,7 @@ class DeviceManage extends Component {
         <CommonBreadcrumb  breadData={[{name: '设备'}]} style={{ marginLeft: '38px',backgroundColor:'#fff' }} />
         <div className={styles.deviceManage}>
           <div className={styles.deviceManageMain}>
-            {true && <StationManageTip hideManageTip={this.hideManageTip} />}
+            {showDeviceTip && <StationManageTip hideManageTip={this.hideManageTip} text="请选择您要查看的电站！" />}
             <div className={styles.deviceManageContent}>
               <DeviceManageSearch queryParams={queryParams} {...this.props} />
               <DeviceManageHandle queryParams={queryParams} {...this.props} />

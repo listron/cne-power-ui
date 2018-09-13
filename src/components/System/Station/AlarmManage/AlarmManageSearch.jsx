@@ -80,24 +80,24 @@ class AlarmManageSearch extends Component {
     const modelSelectDisable = deviceModels.length === 0;
     const pointSelectDisable = devicePoints.length === 0;
     return (
-      <div className={styles.deviceManageSearch}>
-        <span>条件查询</span>
+      <div className={styles.alarmManageSearch}>
+        <span className={styles.titleText}>条件查询</span>
         <StationSelect data={stations} onOK={this.selectStation} />
-        <Select onChange={this.selectDeviceType} value={deviceTypeCode} placeholder="请选择设备类型" disabled={typeSelectDisable}>
+        <Select className={styles.typeSelect} onChange={this.selectDeviceType} value={deviceTypeCode} placeholder="请选择设备类型" disabled={typeSelectDisable}>
           <Option key={''} value={''}>{'全部'}</Option>
           {stationDeviceTypes.map(e=>{
             if(!e){ return null; }
             return <Option key={e.deviceTypeCode} value={e.deviceTypeCode}>{e.deviceTypeName}</Option>
           })}
         </Select>
-        <Select onChange={this.selectDeviceModel} value={deviceModelCode} placeholder="请选择设备型号" disabled={modelSelectDisable}>
+        <Select className={styles.modelSelect} onChange={this.selectDeviceModel} value={deviceModelCode} placeholder="请选择设备型号" disabled={modelSelectDisable}>
           <Option key={''} value={''}>{'全部'}</Option>
           {deviceModels.map(e=>{
             if(!e){ return null; }
             return <Option key={e.deviceModeCode} value={e.deviceModeCode}>{e.deviceModeName}</Option>
           })}
         </Select>
-        <Select onChange={this.selectPoints} value={pointCode} placeholder="请选择测点" disabled={pointSelectDisable}>
+        <Select className={styles.pointSelect} onChange={this.selectPoints} value={pointCode} placeholder="请选择测点" disabled={pointSelectDisable}>
           <Option key={''} value={''}>{'全部'}</Option>
           {devicePoints.map(e=>{
             if(!e){ return null; }

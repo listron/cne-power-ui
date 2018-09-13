@@ -69,7 +69,7 @@ class PointManage extends Component {
         <CommonBreadcrumb  breadData={[{name: '设备'}]} style={{ marginLeft: '38px',backgroundColor:'#fff' }} />
         <div className={styles.pointManage}>
           <div className={styles.pointManageMain}>
-            {true && <StationManageTip hideManageTip={this.hideManageTip} />}
+            {true && <StationManageTip hideManageTip={this.hideManageTip} text="请选择电站！" />}
             <div className={styles.pointManageContent}>
               <PointManageSearch queryParams={queryParams} {...this.props} />
               <PointManageHandle queryParams={queryParams} {...this.props} />
