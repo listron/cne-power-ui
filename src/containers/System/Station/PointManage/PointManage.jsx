@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import styles from './pointManage.scss';
 import { pointManageAction } from '../../../../constants/actionTypes/system/station/pointManageAction';
 import { commonAction } from '../../../../constants/actionTypes/commonAction';
+import { stationManageAction } from '../../../../constants/actionTypes/system/station/stationManageAction';
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import StationManageTip from '../../../../components/System/Station/Common/StationManageTip';
 import PointManageSearch from '../../../../components/System/Station/PointManage/PointManageSearch';
@@ -22,6 +23,7 @@ class PointManage extends Component {
     orderField: PropTypes.string,
     orderType: PropTypes.number,
     changePointManageStore: PropTypes.func,
+    getStationList: PropTypes.func,
   }
   constructor(props) {
     super(props);
@@ -30,6 +32,11 @@ class PointManage extends Component {
     }
   }
   componentDidMount(){
+    this.props.getStationList({ // 请求一次设备列表
+      stationType: 0,
+      pageSize: 1000000,
+      pageNum: 1,
+    })
     this.timeout = setTimeout(()=>{this.setState({
       showPointTip: false
     })},3000)
@@ -87,6 +94,7 @@ const mapStateToProps = (state) => ({
     stations: state.common.get('stations').toJS(),
     deviceModels: state.common.get('deviceModels').toJS(),
     stationDeviceTypes: state.common.get('stationDeviceTypes').toJS(),
+    stationList: state.system.stationManage.get('stationList').toJS(),
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -96,6 +104,8 @@ const mapDispatchToProps = (dispatch) => ({
 
   getStationDeviceTypes: payload => dispatch({type:commonAction.GET_STATION_DEVICETYPES_SAGA, payload}),
   getStationDeviceModel: payload => dispatch({type:commonAction.GET_STATION_DEVICEMODEL_SAGA, payload}),
+
+  getStationList: payload => dispatch({type: stationManageAction.GET_STATION_MANAGE_LIST, payload}),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PointManage);

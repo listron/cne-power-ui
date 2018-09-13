@@ -9,6 +9,8 @@ class PointManageHandle extends Component {
   static propTypes = {
     stationCode: PropTypes.number,
     totalNum: PropTypes.number,
+    stations: PropTypes.array,
+    stationList: PropTypes.array,
     pointList: PropTypes.array,
     queryParams: PropTypes.object,
     getPointList: PropTypes.func,
@@ -48,8 +50,10 @@ class PointManageHandle extends Component {
   }
 
   render() {
-    const { totalNum, pointList, stations } = this.props;
+    const { totalNum, pointList, stations, stationList, stationCode } = this.props;
     const { pointModal } = this.state;
+    const selectedStationInfo = stationList.find(e => e.stationCode === stationCode);
+    const pointForbidClear = !selectedStationInfo || selectedStationInfo.pointStatus === 1; // 未找到电站或电站已导入告警，不可清除
     return (
       <div className={styles.pointManageHandle}>
         <div className={styles.leftHandler}>
@@ -61,7 +65,7 @@ class PointManageHandle extends Component {
           />
           <Button disabled={pointList.length === 0} className={styles.exportInfo}>导出测电表</Button>
           {/* <Button disabled={pointList.length === 0}>查看测试状态</Button> */}
-          <Button disabled={pointList.length === 0} onClick={this.deletePointList} className={styles.clearPoint}>清除测点</Button>
+          <Button disabled={pointList.length === 0 || pointForbidClear} onClick={this.deletePointList} className={styles.clearPoint}>清除测点</Button>
         </div>
         <CommonPagination  total={totalNum} onPaginationChange={this.onPaginationChange} />
         {pointModal && <div>这个东西啊！</div>}

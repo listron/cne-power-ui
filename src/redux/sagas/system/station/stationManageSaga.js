@@ -14,8 +14,8 @@ function *changeStationManageStore(action){ // 存储payload指定参数，替�
 
 function *getStationList(action){ // 请求电站列表信息
   const { payload } = action;
-  const url = '/mock/system/stationList/001';
-  // const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.getStationList}/${payload.enterpriseId}`
+  // const url = '/mock/system/stationList/001';
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.getStationList}`
   try{
     yield put({ type:stationManageAction.STATION_MANAGE_FETCH });
     const response = yield call(axios.post, url, payload);

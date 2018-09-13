@@ -62,6 +62,7 @@ class Main extends Component {
     const isTokenValid = moment().isBefore(Cookie.get('expireData'), 'second');
     if(isTokenValid && authData && this.props.history.location.pathname === '/login'
     && Cookie.get('isNotLogin') === '0') {
+      console.log('is here into history.push?')
       this.props.history.push('/monitor/station');
     }
     if(authData && !isTokenValid && refreshToken){
@@ -74,6 +75,7 @@ class Main extends Component {
     if(nextProps.login.size > 0 && this.props.login.size === 0) {    
       this.props.getStations();
       this.props.getDeviceTypes();
+      console.log('?into here? this is props.login.size seeing')
     }
   }
 
@@ -103,7 +105,7 @@ class Main extends Component {
     if(authData && isTokenValid){
       axios.defaults.headers.common['Authorization'] = "bearer " + JSON.parse(authData);
     }
-    
+    console.log('main rendering')
     if(isTokenValid && authData && (isNotLogin === '0')){
     // if(true){
       return (
@@ -112,7 +114,7 @@ class Main extends Component {
             <div className={styles.headerLeft}>
               <LogoInfo />
               <div className={styles.logo}></div>
-              <TopMenu setTopMenu={setTopMenu} topMenu={topMenu}  />
+              {/* <TopMenu setTopMenu={setTopMenu} topMenu={topMenu}  /> */}
             </div>
             <div className={styles.headerRight}>
               <img width="294px" height="53px" src="/img/topbg02.png" className={styles.powerConfig} />
@@ -120,7 +122,7 @@ class Main extends Component {
             </div>
           </div>
           <div className={styles.appMain}>
-            {topMenu.children && topMenu.children.length > 0 && <SideMenu topMenu={topMenu} />}
+            {/* {topMenu.children && topMenu.children.length > 0 && <SideMenu topMenu={topMenu} />} */}
             <div className={styles.content} id="main" >
               <Switch>
                 {routerConfig}
