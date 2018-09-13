@@ -81,24 +81,16 @@ class DefectDetail extends Component {
     }
   }
 
-  onCloseDetail = () => {
+  onCloseDefectDetail = () => {
     this.props.onChangeShowContainer({container: 'list'});
   }
 
   render() {   
     return (
-      <DefectDetailForm 
-        detail={this.props.defectDetail}
-        loading={this.props.loading}
-        commonList={this.props.commonList}
-        onCloseDetail={this.onCloseDetail}
-        onClose={this.props.onClose}
-        onSend={this.props.onSend}
-        onReject={this.props.onReject}
-        onHandle={this.props.onHandle}
-        onCheck={this.props.onCheck}
-        onNext={this.onNext}
-        onPrev={this.onPrev} />    
+      <DefectDetailForm {...this.props} 
+        onCloseDefectDetail={this.onCloseDefectDetail}
+        onPrev={this.onPrev}
+        onNext={this.onNext} />    
     );
   }
 }

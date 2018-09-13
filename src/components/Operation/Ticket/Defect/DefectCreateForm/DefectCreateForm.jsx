@@ -4,7 +4,7 @@ import StationSelect from '../../../../Common/StationSelect';
 import ImgUploader from '../../../../Common/Uploader/ImgUploader';
 import { Form, Input, Button, Select, Switch, Radio } from 'antd';
 import pathConfig from '../../../../../constants/path';
-import styles from './createDefectForm.scss';
+import styles from './defectCreateForm.scss';
 import DeviceName from '../../../../Common/DeviceName';
 import InputLimit from '../../../../Common/InputLimit';
 import CommonInput from '../../../../Common/CommonInput';
@@ -27,7 +27,6 @@ class TmpForm extends Component {
     showContainer: PropTypes.string,
     onChangeShowContainer: PropTypes.func,
     defectDetail: PropTypes.object,
-    editDataGet: PropTypes.bool,
     deviceTypeItems: PropTypes.object,
     deviceAreaItems: PropTypes.object,
     deviceItems: PropTypes.object,
@@ -56,8 +55,7 @@ class TmpForm extends Component {
 
   onStationSelected = (stations) =>{
     const stationCodes = (stations && stations[0] && stations[0].stationCode) || 0;
-    const tmpStationType = stations && stations[0] && stations[0].stationType;
-    const stationType = tmpStationType===20?1:tmpStationType===10?0:2;
+    const stationType = stations && stations[0] && stations[0].stationType;
     this.props.getStationDeviceTypes({stationCodes});
     this.props.getDefectTypes({stationType});
   }
@@ -76,9 +74,7 @@ class TmpForm extends Component {
     form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         // 电站类型(0:风电，1光伏，2：全部)
-        // stationType:20--光伏---10风
         let {stationCode,stationType} = values.stations[0];
-        stationType = stationType/10 - 1;
         let deviceCode = values.deviceCode;
         let partitionCode = values.stations[0].zoneCode;
         let partitionName = values.stations[0].zoneName;
@@ -140,13 +136,13 @@ class TmpForm extends Component {
   }
 
   render() {
-    const {stations, deviceTypes, defectTypes,deviceItems, defectDetail, editDataGet, showContainer } = this.props;
+    const {stations, deviceTypes, defectTypes,deviceItems, defectDetail, showContainer } = this.props;
     const {getFieldDecorator, getFieldValue} = this.props.form;
     const defectFinished = getFieldValue('defectSolveResult') === '0';
     const editDefect = showContainer === 'edit';
     const defaultStations = editDefect && stations.filter(e=>e.stationCode===defectDetail.stationCode) || [] ;
-    const defaultDeviceType = editDefect && editDataGet && deviceTypes.find(e=>e.deviceTypeCode===defectDetail.deviceTypeCode);
-    const defaultDefectType = editDefect && editDataGet && defectTypes.find(e=>e.defectTypeCode===defectDetail.defectTypeCode) || null ;
+    const defaultDeviceType = editDefect && deviceTypes.find(e=>e.deviceTypeCode===defectDetail.deviceTypeCode) || undefined;
+    const defaultDefectType = editDefect && defectTypes.find(e=>e.defectTypeCode===defectDetail.defectTypeCode) || null ;
     const imgDescribe = editDefect && defectDetail.photoAddress && defectDetail.photoAddress.split(',').filter(e=>!!e).map((e,i)=>({
       uid: i,    
       rotate: 0,  

@@ -19,6 +19,13 @@
     background-color: #fff;
     margin-top: 48px;
   }
+  .defectDesc {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    word-break:keep-all;
+    max-width: 175px;
+  }
   .action {
     display: flex;
     flex-direction: row;
@@ -72,8 +79,8 @@
         }
       }
     }
-
   }
+
   .tableFooter{
     background-color: #fff;
     height: 45px;

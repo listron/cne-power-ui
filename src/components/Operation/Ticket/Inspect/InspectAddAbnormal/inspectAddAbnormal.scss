@@ -1,3 +1,120 @@
+@import '../../../../../theme/theme.scss';
 .inspectHandleForm{
-  height: 530px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  .title {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 18px;
+    align-items: flex-start;
+    .border {
+      display: flex;
+      flex: 1;
+      height: 16px;
+      border-bottom: 1px #f1f1f1 solid;
+    }
+    .text {
+      background:#f8f8f8;
+      border:1px solid #f1f1f1;
+      border-radius:4px;
+      width:95px;
+      height:30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+  .actionBar {
+    margin-bottom: 18px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    .addAbnormal {
+      width: 187px;
+      background-color: #fff;
+      color: $themeColor;
+      border-color: $themeColor;
+      margin-right: 72px;
+      &:hover {
+        background-color: $themeColor;
+        color: #fff;
+      }
+    }
+    .finishInspect {
+      width: 187px;
+      background-color: #f9b600;
+      border-color: #f9b600; 
+      color: #fff;
+    }
+  }
+  .addAbnormalForm {
+    box-shadow: 0 1px 6px 0 rgba(0,0,0,0.20);
+    border-radius: 4px;
+    padding: 18px 45px 16px 18px;
+    :global { 
+      .ant-form-item {
+        display: flex;
+        .ant-form-item-label {
+          width: 76px;
+          margin-right: 12px;
+          display: flex;
+          justify-content: flex-end;
+          label {
+            color: $darkColor;
+          }
+        }
+        .ant-form-item-children {
+          display: flex
+        }
+      }
+      .ant-radio-button-wrapper {
+        padding: 0 8px; 
+        color: $darkColor;
+      }
+      .ant-radio-button-wrapper-checked {
+        background-color: $themeColor;
+        border: 1px solid $themeColor;
+        color: #fff;
+      }
+      input::-webkit-input-placeholder,textarea::-webkit-input-placeholder{
+        color:$lightColor;
+      }
+      input:-moz-placeholder, textarea:-moz-placeholder { 
+        color: $lightColor; 
+      }
+      input:-ms-input-placeholder, textarea:-ms-input-placeholder { 
+        color: $lightColor; 
+      } 
+    }
+    .addImg {
+      display: flex;
+      flex-direction: row;
+      align-items: flex-end;
+      margin-left: -65px;
+      .maxTip {
+        width: 65px;
+        color: $promptColor;
+        font-family: MicrosoftYaHei;
+      }
+    }
+    .formAction {
+      margin-left: 88px;
+      .cancel {
+        margin-right: 12px;
+      }
+    }
+  }
+  .addTips {
+    margin-top: 10px;
+    font-size: 12px;
+    color: #dfdfdf;
+    display: flex;
+    margin-left: 140px;
+    flex-direction: column;
+    >span {
+      display: inline-block;
+      line-height: 24px;
+    }
+  }
 }
