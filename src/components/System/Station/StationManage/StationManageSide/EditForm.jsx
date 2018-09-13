@@ -144,7 +144,7 @@ class EditForm extends Component {
             <span>平方公里</span>
           </FormItem>
           <FormItem label="年利用小时数" >
-            {getFieldDecorator('floorArea',{
+            {getFieldDecorator('designUtilizationHours',{
               initialValue: stationDetail.designUtilizationHours,
               rules: [{
                 required: true, message: '请输入年利用小时数',

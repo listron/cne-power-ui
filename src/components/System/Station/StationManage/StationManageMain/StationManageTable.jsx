@@ -146,8 +146,8 @@ class StationManageTable extends Component {
         title: '操作',
         dataIndex: 'handler',
         key: 'handler',
-        render: (text, record, index) => {
-          const deletable = (!record.stationDepartments || record.stationDepartments.length === 0) && !record.stationStatus;
+        render: (text, record, index) => { // 电站未接入且电站未设置部门时，才能删除。
+          const deletable = (!record.stationDepartments || record.stationDepartments.length === 0) && !record.isConnected;
           if(deletable){
             return <span className={styles.deleteStation} onClick={()=>this.onStationDelete(record)}>删除</span>
           }else{
