@@ -22,6 +22,7 @@ class PvStation extends Component {
     match: PropTypes.object,
     stationDeviceList: PropTypes.array,
     deviceTypeCode: PropTypes.number,
+    stationCode: PropTypes.string,
   }
 
   constructor(props){
@@ -72,7 +73,7 @@ class PvStation extends Component {
     
     return (
       <div className={styles.pvStation}  >
-        <PvStationTop {...this.props} hiddenStationList={this.state.hiddenStationList} />
+        <PvStationTop {...this.props} hiddenStationList={this.state.hiddenStationList} onSelectedDeviceType={this.onSelectedDeviceType} />
         <OutputPowerDiagram {...this.props} />  
         <CardSection {...this.props} />
         {/* 设备类型流程图切换 */}
@@ -83,10 +84,10 @@ class PvStation extends Component {
             </TabPane> */}
             <TabPane tab="示意图" key="2">
               <div className={styles.deviceTypeFlow}>
-                {deviceTypeFlow && <RadioGroup defaultValue={appointDeviceCode || 206}  onChange={this.onSelectedDeviceType} >
+                {deviceTypeFlow && <RadioGroup value={appointDeviceCode || deviceTypeCode}  onChange={this.onSelectedDeviceType} >
                   {deviceTypeFlow && 
                     deviceTypeFlow.map(e=>{
-                      return (<RadioButton value={e.deviceTypeCode} className={styles.deviceTypeItem} key={e.deviceTypeCode}>
+                      return (<RadioButton value={e.deviceTypeCode}  className={styles.deviceTypeItem} key={e.deviceTypeCode}>
                         <div className={styles.deviceTypeIcon} ><i className={this.getDeviceTypeIcon(e.deviceTypeCode)} ></i></div><div>{e.deviceTypeName}</div>
                         </RadioButton>)
                     })

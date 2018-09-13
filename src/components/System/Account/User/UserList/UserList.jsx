@@ -546,7 +546,7 @@ class UserList extends Component {
                 className={styles.selectedColumns} 
                 showArrow={false}
                 dropdownMatchSelectWidth={false}
-                onChange={this.onSelectColumns}
+                onSelect={this.onSelectColumns}
               >
                 <Option key="全选" value="全选" ><Checkbox checked={selectedUserColumns.size === 7} >全选</Checkbox></Option>
                 {columns.map(item=>{
