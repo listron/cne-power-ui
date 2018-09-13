@@ -85,7 +85,7 @@
       max-width: 118px;
       display: flex;
       flex-direction: column;
-      background-color: rgba(153, 153, 153, 0.7);
+      background-color: #757575;
       padding: 30px 0;
       .mainMenu {
         display: flex;
@@ -100,6 +100,12 @@
           text-overflow: ellipsis;
           overflow: hidden;
           word-break:keep-all;
+          :global {
+            .icon-triangle {
+              font-size: 6px;
+              color: #fff;
+            }
+          }
         }
         .subMenu {
           display: flex;
