@@ -2,33 +2,58 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import DefectBasicInfo from '../DefectBasicInfo/DefectBasicInfo';
 import DefectHandleForm from '../DefectHandleForm/DefectHandleForm';
-import TimeLines from '../../../../Common/TimeLines';
+import DefectTimeLine from '../DefectTimeLine/DefectTimeLine';
+import WarningTip from '../../../../Common/WarningTip';
 import styles from './defectDetailForm.scss';
 import { Icon } from 'antd';
 
 class DefectDetailForm extends Component {
   static propTypes = {
-    detail: PropTypes.object,
-    loading: PropTypes.bool,
+    defectDetail: PropTypes.object,
     commonList: PropTypes.object,
     onClose: PropTypes.func,
     onSend: PropTypes.func,
     onReject: PropTypes.func,
     onHandle: PropTypes.func,
     onCheck: PropTypes.func,
-    onCloseDetail: PropTypes.func,
+    onCloseDefectDetail: PropTypes.func,
     onNext: PropTypes.func,
     onPrev: PropTypes.func
   }
 
   constructor(props) {
     super(props);
+    this.state = {
+      showWarningTip: false,
+      warningTipText: '',
+    }
+  }
+
+  onCancelEdit = () => {
+    this.setState({
+      showWarningTip: true,
+      warningTipText: '退出后信息无法保存!'
+    });
+  }
+
+  onCancelWarningTip = () => {
+    this.setState({
+      showWarningTip: false,
+    });
+  }
+
+  onConfirmWarningTip = () => {
+    this.setState({
+      showWarningTip: false,
+    });
+    this.props.onCloseDefectDetail({ container: 'list' });  
   }
 
   onSubmit = (data) => {
     let params = {};
-    const defectId = this.props.detail.get('defectId');
-    let status = this.props.detail.get('defectStatus');
+    const { defectDetail, onSend, onReject, onClose, onHandle, onCheck } = this.props;
+    const defectId = defectDetail.get('defectId');
+    const status = defectDetail.get('defectStatus');
     if(status === '1') {
       switch(data.dealResult) {
         case 'send':
@@ -37,21 +62,21 @@ class DefectDetailForm extends Component {
             defectProposal: !data.defectProposal ? null : data.defectProposal,
             deadLine: !data.deadLine ? null : data.deadLine.format('YYYY-MM-DD')+' 23:59:59'
           };
-          this.props.onSend(params);
+          onSend(params);
           break;
         case 'reject':
           params = {
             defectId,
             rejectReason: !data.rejectReason ? null : data.rejectReason
           };
-          this.props.onReject(params);
+          onReject(params);
           break;
         case 'close':
           params = {
             defectId,
             rejectReason: !data.defectProposal ? null : data.defectProposal
           };
-          this.props.onClose(params);
+          onClose(params);
           break;
       }
     } else if(status === '2') {
@@ -63,14 +88,14 @@ class DefectDetailForm extends Component {
         replaceParts: !data.replaceParts ? null : data.replaceParts,
         ...submitImages
       };
-      this.props.onHandle(params);
+      onHandle(params);
     } else if(status === '3') {
       params = {
         defectId,
         checkResult: data.checkResult,
         checkInfo: !data.checkInfo ? null : data.checkInfo,
       };
-      this.props.onCheck(params);
+      onCheck(params);
     }
     switch(data.dealResult) {
       case 'solve':
@@ -83,7 +108,7 @@ class DefectDetailForm extends Component {
           replaceParts: !data.replaceParts ? '' : data.replaceParts,
           ...submitImages
         };
-        this.props.onHandle(params);
+        onHandle(params);
         break;
       case 'ok':
       case 'notOk':
@@ -92,7 +117,7 @@ class DefectDetailForm extends Component {
           checkResult: data.dealResult === 'ok' ? '0' : '1',
           checkInfo: !data.checkInfo ? '' : data.checkInfo,
         };
-        this.props.onCheck(params);
+        onCheck(params);
         break;
     }
   }
@@ -111,13 +136,14 @@ class DefectDetailForm extends Component {
   }
 
   renderForm() {
-    let status = this.props.detail.get('defectStatus');
+    const { defectDetail, commonList, onCloseDefectDetail } = this.props;
+    const status = defectDetail.get('defectStatus');
     if(status !== '0' && status !== '4') {
       return (
         <DefectHandleForm 
-          commonList={this.props.commonList}
+          commonList={commonList}
           onSubmit={this.onSubmit}
-          onCancel={this.props.onCloseDetail}
+          onCancel={onCloseDefectDetail}
           status={status} />
       )
     } else {
@@ -126,7 +152,7 @@ class DefectDetailForm extends Component {
   }
 
   renderTitle() {
-    const status = this.props.detail.get('defectStatus');
+    const status = this.props.defectDetail.get('defectStatus');
     if(status === '1') {
       return '审核缺陷';
     } else if(status === '2') {
@@ -139,27 +165,29 @@ class DefectDetailForm extends Component {
   }
 
   render() {
-    let detail = this.props.detail;
+    const defectDetail = this.props.defectDetail;
+    const processData = defectDetail.get('processData');
+    const status = defectDetail.get('defectStatus')
+    const { showWarningTip, warningTipText } = this.state;
     return (
       <div className={styles.detailWrap}>
+        {showWarningTip && <WarningTip style={{marginTop:'250px',width: '210px',height:'88px'}} onCancel={this.onCancelWarningTip} onOK={this.onConfirmWarningTip} value={warningTipText} />}
         <div className={styles.defectDetail}>
           <div className={styles.header}>
             <div className={styles.text}>{this.renderTitle()}</div>
             <div className={styles.action}>
               <i className="iconfont icon-last" onClick={this.props.onPrev} />
               <i className="iconfont icon-next" onClick={this.props.onNext} />
-              <Icon type="arrow-left" className={styles.backIcon} onClick={this.props.onCloseDetail} />
+              <Icon type="arrow-left" className={styles.backIcon} onClick={this.onCancelEdit} />
             </div>   
           </div>
           <div className={styles.content}>
             <div className={styles.basic}>
-              <DefectBasicInfo basicInfo={detail} />
+              <DefectBasicInfo basicInfo={defectDetail} />
             </div>
             <div className={styles.right}>
               <div className={styles.timeLines}>
-                <TimeLines 
-                  processData={detail.get('processData')}
-                  status={detail.get('defectStatus')} />
+                <DefectTimeLine processData={processData} status={status} />
               </div>
               <div className={styles.form}>
                 {this.renderForm()}

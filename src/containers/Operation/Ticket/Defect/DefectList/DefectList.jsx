@@ -49,29 +49,29 @@ class DefectList extends Component {
   }
 
   componentDidMount() {
-    const { stationType, stationCodes, defectSource, defectLevel, timeInterval, status, pageNum, pageSize, createTimeStart, createTimeEnd, deviceTypeCode, defectTypeCode, sort, handleUser} = this.props;
-    if(this.props.showTab === 'defect') {
-      var params = {
-        stationType,
-        stationCodes,
-        defectSource,
-        defectLevel,
-        timeInterval,
-        status,
-        pageNum,
-        pageSize,
-        createTimeStart,
-        createTimeEnd,
-        deviceTypeCode,
-        defectTypeCode,
-        sort,
-        handleUser
-      }
-      this.props.getDefectList(params);
-      this.props.getDefectType({
-        stationType: 2//全部
-      }); 
-    }
+    // const { stationType, stationCodes, defectSource, defectLevel, timeInterval, status, pageNum, pageSize, createTimeStart, createTimeEnd, deviceTypeCode, defectTypeCode, sort, handleUser} = this.props;
+    // if(this.props.showTab === 'defect') {
+    //   var params = {
+    //     stationType,
+    //     stationCodes,
+    //     defectSource,
+    //     defectLevel,
+    //     timeInterval,
+    //     status,
+    //     pageNum,
+    //     pageSize,
+    //     createTimeStart,
+    //     createTimeEnd,
+    //     deviceTypeCode,
+    //     defectTypeCode,
+    //     sort,
+    //     handleUser
+    //   }
+    //   this.props.getDefectList(params);
+    //   this.props.getDefectType({
+    //     stationType: 2//全部
+    //   }); 
+    // }
   }
 
   onChangeFilter = (obj) => {
@@ -100,9 +100,7 @@ class DefectList extends Component {
     return (
       <div className={styles.defectList}>
         <DefectFilter {...this.props} onChangeFilter={this.onChangeFilter} />
-        <DefectTable 
-          {...this.props} 
-          onChangeFilter={this.onChangeFilter} />
+        <DefectTable {...this.props} onChangeFilter={this.onChangeFilter} />
       </div>
     );
   }

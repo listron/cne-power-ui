@@ -4,7 +4,13 @@ import { message } from 'antd';
 import Path from '../../../../constants/path';
 import { ticketAction } from '../../../../constants/actionTypes/operation/ticketAction';
 
-
+function *changeInspectStore(action){//存储payload指定参数，替换reducer-store属性。
+  const { payload } = action;
+  yield put({
+    type:  ticketAction.CHANGE_INSPECT_STORE,
+    payload,
+  })
+}
 //获取巡检列表信息
 function* getInspectList(action){
   const { payload } = action;
@@ -15,11 +21,14 @@ function* getInspectList(action){
     if(response.data.code === "10000"){
       yield put({
         type: ticketAction.GET_INSPECT_FETCH_SUCCESS,
-        ...payload,
-        total: response.data.data.total,
-        inspectStatusStatistics: response.data.data.inspectStatusStatistics,
-        inspectList: response.data.data.inspectList,
-        selectedRowKeys: [],
+        payload: {
+          ...payload,
+          total: response.data.data.total,
+          inspectStatusStatistics: response.data.data.inspectStatusStatistics,
+          inspectList: response.data.data.inspectList,
+          selectedRowKeys: [],
+        }
+        
       });
     }
   }catch(e){
@@ -126,18 +135,23 @@ function *setInspectCheck(action){
     const response = yield call(axios.post, url, payload)
     if(response.data.code === "10000"){ 
       message.success('验收成功！');
-      const pageSize = yield select(state => state.operation.inspect.get('pageSize'));
-      const status = yield select(state => state.operation.inspect.get('status'));
-      const sort = yield select(state => state.operation.inspect.get('sort'));
+      const params = yield select(state => ({
+        stationType: state.operation.defect.get('stationType'),
+        stationCodes: state.operation.defect.get('stationCodes'),
+        timeInterval: state.operation.defect.get('timeInterval'),
+        status: state.operation.defect.get('status'),
+        pageNum: state.operation.defect.get('pageNum'),
+        pageSize: state.operation.defect.get('pageSize'),
+        createTimeStart: state.operation.defect.get('createTimeStart'),
+        createTimeEnd: state.operation.defect.get('createTimeEnd'),
+        deviceTypeCode: state.operation.defect.get('deviceTypeCode'),
+        sort: state.operation.defect.get('sort'),
+        // handleUser: state.operation.defect.get('handleUser'),
+        // hasAbnormal: state.operation.defect.get('hasAbnormal'),
+      }));
       yield put({
         type: ticketAction.GET_INSPECT_LIST_SAGA,
-        payload:{
-          stationType: '2',
-          status: status,
-          pageNum: 0,
-          pageSize: pageSize,
-          sort: sort
-        }
+        payload: params
       });
       yield put({
         type: ticketAction.CHANGE_SHOW_CONTAINER_SAGA,
@@ -166,18 +180,23 @@ function *finishInspect(action){
     const response = yield call(axios.post, url, payload)
     if(response.data.code === "10000"){
       message.success('执行工单转入待验收成功！');
-      const pageSize = yield select(state => state.operation.inspect.get('pageSize'));
-      const status = yield select(state => state.operation.inspect.get('status'));
-      const sort = yield select(state => state.operation.inspect.get('sort'));
+      const params = yield select(state => ({
+        stationType: state.operation.defect.get('stationType'),
+        stationCodes: state.operation.defect.get('stationCodes'),
+        timeInterval: state.operation.defect.get('timeInterval'),
+        status: state.operation.defect.get('status'),
+        pageNum: state.operation.defect.get('pageNum'),
+        pageSize: state.operation.defect.get('pageSize'),
+        createTimeStart: state.operation.defect.get('createTimeStart'),
+        createTimeEnd: state.operation.defect.get('createTimeEnd'),
+        deviceTypeCode: state.operation.defect.get('deviceTypeCode'),
+        sort: state.operation.defect.get('sort'),
+        // handleUser: state.operation.defect.get('handleUser'),
+        // hasAbnormal: state.operation.defect.get('hasAbnormal'),
+      }));
       yield put({
         type: ticketAction.GET_INSPECT_LIST_SAGA,
-        payload:{
-          stationType: '2',
-          status: status,
-          pageNum: 0,
-          pageSize: pageSize,
-          sort: sort
-        }
+        payload: params
       });
       yield put({
         type: ticketAction.CHANGE_SHOW_CONTAINER_SAGA,
@@ -272,11 +291,12 @@ function *getInspectStandard(action){
   yield put({type: ticketAction.TICKET_FETCH})
   try{
     const response = yield call(axios.get, url, {params: payload} )
-    if(response.data.code === "10000"){
+    if(response.data.code === "10000" && response.data.data.collection !== '0'){
       yield put({
         type: ticketAction.GET_INSPECT_FETCH_SUCCESS,
-        data: response.data.data,
-        params: action.params,
+        payload: {
+          inspectStandard: response.data.data.data,
+        }
       })
     }
   }catch(e){
@@ -291,19 +311,24 @@ function *inspectCheckBatch(action){
   try{
     const response = yield call(axios.post, url, payload)
     if(response.data.code === "10000"){
-      const pageSize = yield select(state => state.operation.inspect.get('pageSize'));
-      const status = yield select(state => state.operation.inspect.get('status'));
-      const sort = yield select(state => state.operation.inspect.get('sort'));
+      const params = yield select(state => ({
+        stationType: state.operation.defect.get('stationType'),
+        stationCodes: state.operation.defect.get('stationCodes'),
+        timeInterval: state.operation.defect.get('timeInterval'),
+        status: state.operation.defect.get('status'),
+        pageNum: state.operation.defect.get('pageNum'),
+        pageSize: state.operation.defect.get('pageSize'),
+        createTimeStart: state.operation.defect.get('createTimeStart'),
+        createTimeEnd: state.operation.defect.get('createTimeEnd'),
+        deviceTypeCode: state.operation.defect.get('deviceTypeCode'),
+        sort: state.operation.defect.get('sort'),
+        // handleUser: state.operation.defect.get('handleUser'),
+        // hasAbnormal: state.operation.defect.get('hasAbnormal'),
+      }));
       yield put({
         type: ticketAction.GET_INSPECT_LIST_SAGA,
-        payload:{
-          stationType: '2',
-          status: status,
-          pageNum: 0,
-          pageSize: pageSize,
-          sort: sort
-        }
-      })
+        payload: params
+      });
     }else{
       yield put({
         type: ticketAction.SET_INSPECT_FAIL,
@@ -320,6 +345,7 @@ function *inspectCheckBatch(action){
 
 export function* watchInspect() {
   yield takeLatest(ticketAction.GET_INSPECT_DETAIL_SAGA, getInspectDetail);
+  yield takeLatest(ticketAction.CHANGE_INSPECT_STORE_SAGA ,changeInspectStore);
   yield takeLatest(ticketAction.ADD_INSPECT_ABNORMAL_SAGA, addInspectAbnormal);
   yield takeLatest(ticketAction.GET_INSPECT_LIST_SAGA, getInspectList);
   yield takeLatest(ticketAction.CLEAR_INSPECT_STATE_SAGA, clearInspect);

@@ -33,12 +33,6 @@ class InspectDetail extends Component{
   }
   constructor(props){
     super(props);
-    this.state={
-
-    }
-    this.onPrev = this.onPrev.bind(this);
-    this.onNext = this.onNext.bind(this);
-    this.onCloseInspectDetail = this.onCloseInspectDetail.bind(this);
   }
 
   componentDidMount(){
@@ -92,27 +86,10 @@ class InspectDetail extends Component{
   }
   render(){
     return(
-      <InspectDetailForm
-        onNext={this.onNext}
-        onPrev={this.onPrev}
+      <InspectDetailForm {...this.props} 
         onCloseInspectDetail={this.onCloseInspectDetail}
-        defectTypes={this.props.defectTypes}
-        getDefectTypes={this.props.getDefectTypes}
-        inspectDetail={this.props.inspectDetail}
-        transformDefect={this.props.transformDefect}
-        finishInspect={this.props.finishInspect}
-        setInspectCheck={this.props.setInspectCheck}
-        addInspectAbnormal={this.props.addInspectAbnormal}
-        loadDeviceTypeList={this.props.loadDeviceTypeList}
-        loadDeviceAreaList={this.props.loadDeviceAreaList}
-        loadDeviceList={this.props.loadDeviceList}
-        deviceTypeItems={this.props.deviceTypeItems}
-        deviceAreaItems={this.props.deviceAreaItems}
-        deviceItems={this.props.deviceItems}
-        onDeleteAbnormal={this.props.onDeleteAbnormal}
-        getInspectStandard={this.props.getInspectStandard}
-        inspectStandard={this.props.inspectStandard}
-      />
+        onPrev={this.onPrev}
+        onNext={this.onNext} />
     );
   }
 }
