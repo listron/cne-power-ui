@@ -1,0 +1,30 @@
+
+@import '../../../theme/theme.scss';
+
+.singleStationImportFileModel{
+  margin-left: 48px;
+  .addButton{
+    padding: 0;
+    display: flex;
+    align-items: center;
+    .plus{
+      background-color: $themeColor;
+      color: #fff;
+      border-radius: 4px 0 0 4px;
+      line-height: 30px;
+      width: 28px;
+      font-size: 18px;
+    }
+    .name{
+      border-radius: 0 4px 4px 0;
+      color: $themeColor;
+      margin-right: 8px;
+    }
+    :hover{
+      .name{
+        color: #fff;
+        background-color: $themeColor;
+      }
+    }
+  }
+}

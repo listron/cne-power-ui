@@ -26,12 +26,12 @@ class PointManage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      showDeviceTip: true
+      showPointTip: true
     }
   }
   componentDidMount(){
     this.timeout = setTimeout(()=>{this.setState({
-      showDeviceTip: false
+      showPointTip: false
     })},3000)
   }
 
@@ -52,12 +52,12 @@ class PointManage extends Component {
 
   hideManageTip=()=>{
     this.setState({
-      showDeviceTip: false
+      showPointTip: false
     })
   }
 
   render() {
-    const { showDeviceTip } = this.state;
+    const { showPointTip } = this.state;
     const { 
       stationCode, deviceTypeCode, deviceModelCode, pageNum, pageSize, orderField, orderType
     } = this.props;
@@ -69,7 +69,7 @@ class PointManage extends Component {
         <CommonBreadcrumb  breadData={[{name: '设备'}]} style={{ marginLeft: '38px',backgroundColor:'#fff' }} />
         <div className={styles.pointManage}>
           <div className={styles.pointManageMain}>
-            {true && <StationManageTip hideManageTip={this.hideManageTip} text="请选择电站！" />}
+            {showPointTip && <StationManageTip hideManageTip={this.hideManageTip} text="请选择电站！" />}
             <div className={styles.pointManageContent}>
               <PointManageSearch queryParams={queryParams} {...this.props} />
               <PointManageHandle queryParams={queryParams} {...this.props} />

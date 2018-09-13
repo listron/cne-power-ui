@@ -70,7 +70,7 @@ class AlarmManage extends Component {
         <CommonBreadcrumb  breadData={[{name: '设备'}]} style={{ marginLeft: '38px',backgroundColor:'#fff' }} />
         <div className={styles.alarmManage}>
           <div className={styles.alarmManageMain}>
-            {true && <StationManageTip hideManageTip={this.hideManageTip} text="请选择您要查看的电站！" />}
+            {showAlarmTip && <StationManageTip hideManageTip={this.hideManageTip} text="请选择您要查看的电站！" />}
             <div className={styles.alarmManageContent}>
               <AlarmManageSearch queryParams={queryParams} {...this.props} />
               <AlarmManageHandle queryParams={queryParams} {...this.props} />
