@@ -27,7 +27,6 @@ class TmpForm extends Component {
     showContainer: PropTypes.string,
     onChangeShowContainer: PropTypes.func,
     defectDetail: PropTypes.object,
-    // editDataGet: PropTypes.bool,
     deviceTypeItems: PropTypes.object,
     deviceAreaItems: PropTypes.object,
     deviceItems: PropTypes.object,

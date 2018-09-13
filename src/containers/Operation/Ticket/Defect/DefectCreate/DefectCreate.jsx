@@ -26,7 +26,6 @@ class DefectCreate extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      editDataGet: false,
       showWarningTip: false,
       warningTipText: '',
     }
@@ -49,14 +48,6 @@ class DefectCreate extends Component {
       languageType: '1'
     });
   } 
-  componentWillReceiveProps(nextProps){
-    const { showContainer } = this.props;
-    if(showContainer==='edit' && nextProps.stations.length > 0 && nextProps.deviceTypes.length > 0 && nextProps.defectTypes.length > 0){
-      this.setState({
-        editDataGet: true,
-      })
-    }
-  }
 
   onCancelEdit = () => {
     this.setState({
@@ -79,7 +70,7 @@ class DefectCreate extends Component {
   }
 
   render() {
-    const { editDataGet, showWarningTip, warningTipText } = this.state;
+    const { showWarningTip, warningTipText } = this.state;
     const { showContainer } = this.props;
     return (
       <div className={styles.defectCreate}>
@@ -89,7 +80,7 @@ class DefectCreate extends Component {
           <Icon type="arrow-left" className={styles.backIcon} onClick={this.onCancelEdit} />
         </div>
         <div className={styles.createContent}>
-          <DefectCreateForm {...this.props} editDataGet={editDataGet} />
+          <DefectCreateForm {...this.props} />
         </div>
       </div>
     );
