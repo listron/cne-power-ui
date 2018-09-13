@@ -172,7 +172,7 @@ class StationManageTable extends Component {
                 <span className={styles.plusText}>电站</span>
               </Button>
             </Upload>
-            <Button href={'www.baidu.com'} download={'www.baidu.com'}  target="_blank"  >下载电站配置模板</Button>
+            <Button href={'www.baidu.com'} download={'www.baidu.com'}   >下载电站配置模板</Button>
           </div>
           <CommonPagination total={totalNum} onPaginationChange={this.onPaginationChange} />
         </div>

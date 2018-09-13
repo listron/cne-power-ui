@@ -66,14 +66,14 @@ class InverterHeader extends Component {
           </span>
         </div>
         <div className={styles.linkTo}>
-          {parentDeviceTypeCode && parentDeviceCode && <Link target="_blank" to={`/hidden/monitorDevice/${stationCode}/${parentDeviceTypeCode}/${parentDeviceCode}`} className={styles.eachLink}>
+          {parentDeviceTypeCode && parentDeviceCode && <Link  to={`/hidden/monitorDevice/${stationCode}/${parentDeviceTypeCode}/${parentDeviceCode}`} className={styles.eachLink}>
             <span className={parentDeviceBaseInfo && `${parentDeviceBaseInfo.icon} linkIcon`}></span>
             <span className={styles.linkName}>
               {parentDevice && parentDevice.deviceTypeName}{parentDevice && parentDevice.deviceName}详情
             </span>
             <span className="iconfont icon-upstream linkIcon"></span>
           </Link>}
-          <Link target="_blank" to={`/monitor/singleStation/${stationCode}?showPart=509`} className={styles.eachLink}>
+          <Link  to={`/monitor/singleStation/${stationCode}?showPart=509`} className={styles.eachLink}>
             <span className="iconfont icon-pvs linkIcon"></span>
             <span className={styles.linkName}>光伏组串列表</span>
             <span className="iconfont icon-downstream linkIcon"></span>
