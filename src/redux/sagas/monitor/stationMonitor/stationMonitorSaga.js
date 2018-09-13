@@ -15,6 +15,7 @@ function* getMonitorStation(action) {//获取所有/风/光电站信息
           allMonitorStation: response.data.data || {},
         }
         if(payload.getStationTypes === true) {
+          console.log(response);
           let stationTypes = '';
           const stationDataList = response.data.data.stationDataList || [];
           const allDatastationType = stationDataList.map((e, index) => { return e.stationType });

@@ -370,18 +370,20 @@
   }
 }
 
-:global{
-  .ant-select-dropdown-menu{
-    max-height: 300px;
-    overflow: hidden;
-  }
-  .ant-select-dropdown-menu-item{
-    color:$themeColor;
-    i.iconfont{ 
-      margin-right: 7px; 
+.dropdownMenu{
+  :global{
+    .ant-select-dropdown-menu{
+      max-height: 300px;
+      overflow: hidden;
     }
-  }
-  .ant-select-dropdown-menu-item-disabled{
-    color:$promptColor;
+    .ant-select-dropdown-menu-item{
+      color:$themeColor;
+      i.iconfont{ 
+        margin-right: 7px; 
+      }
+    }
+    .ant-select-dropdown-menu-item-disabled{
+      color:$promptColor;
+    }
   }
 }

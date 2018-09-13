@@ -528,7 +528,7 @@ class UserList extends Component {
     const rightHandler = localStorage.getItem('rightHandler');
     const userCreateRight = rightHandler && rightHandler.includes('account_user_create');
     const userImportRight = rightHandler && rightHandler.includes('account_user_batchImport');
-    
+
     return (
       <div className={styles.userList}>
         {showDeleteTip && <WarningTip onCancel={this.cancelDeleteTip} onOK={this.confirmDeleteTip} value={deleteWarningTip} />}
@@ -546,7 +546,8 @@ class UserList extends Component {
             </div>
             <div className={styles.selectedColumnsBox} >
               <Select
-                className={styles.selectedColumns} 
+                dropdownClassName={styles.dropdownMenu} 
+                className={styles.selectedColumns}
                 showArrow={false}
                 dropdownMatchSelectWidth={false}
                 onSelect={this.onSelectColumns}
