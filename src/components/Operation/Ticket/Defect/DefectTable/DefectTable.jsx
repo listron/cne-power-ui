@@ -26,6 +26,7 @@ class DefectTable extends Component {
     status: PropTypes.string,
     selectedRowKeys: PropTypes.array,
     changeDefectStore: PropTypes.func,
+    getDefectDetail: PropTypes.func,
   }
 
   // static defaultProps = {
@@ -117,7 +118,11 @@ class DefectTable extends Component {
       defectId: defect.defectId
     });
     if(defect.defectStatus === '0') {
-      this.props.onChangeShowContainer({container: 'edit'});
+      // this.props.onChangeShowContainer({container: 'edit'});
+      this.props.getDefectDetail({
+        defectId: defect.defectId,
+        isEdit: true
+      });
     } else {
       this.props.onChangeShowContainer({container: 'detail'});
     }

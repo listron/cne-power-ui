@@ -100,6 +100,12 @@
           text-overflow: ellipsis;
           overflow: hidden;
           word-break:keep-all;
+          :global {
+            .icon-triangle {
+              font-size: 6px;
+              color: #fff;
+            }
+          }
         }
         .subMenu {
           display: flex;

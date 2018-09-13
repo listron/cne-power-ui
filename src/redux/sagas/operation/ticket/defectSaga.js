@@ -42,15 +42,20 @@ function* getDefectDetail(action) {
   let url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.getDefectDetail;
   yield put({ type: ticketAction.TICKET_FETCH });
   try {
-    const response = yield call(axios.get, url, {params: payload});
+    const response = yield call(axios.get, url, {params: {defectId:payload.defectId}});
     if(response.data.code === '10000'){
       yield put({ 
         type: ticketAction.GET_DEFECT_FETCH_SUCCESS, 
         payload: {
           defectDetail: response.data.data,
-          ...payload
         }
-      });  
+      });
+      if(payload.isEdit === true) {
+        yield put({
+          type: ticketAction.CHANGE_SHOW_CONTAINER_SAGA,
+          payload: {container: 'edit'},
+        });
+      }  
     }
   } catch (e) {
     console.log(e);
