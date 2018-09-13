@@ -4,7 +4,7 @@ import styles from './deviceManage.scss';
 import { deviceManageAction } from '../../../../constants/actionTypes/system/station/deviceManageAction';
 import { commonAction } from '../../../../constants/actionTypes/commonAction';
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
-import DeviceManageTip from '../../../../components/System/Station/DeviceManage/DeviceManageTip';
+import StationManageTip from '../../../../components/System/Station/Common/StationManageTip';
 import DeviceManageSearch from '../../../../components/System/Station/DeviceManage/DeviceManageSearch';
 import DeviceManageHandle from '../../../../components/System/Station/DeviceManage/DeviceManageHandle';
 import DeviceManageList from '../../../../components/System/Station/DeviceManage/DeviceManageList';
@@ -29,12 +29,13 @@ class DeviceManage extends Component {
     }
   }
   componentDidMount(){
-    setTimeout(()=>{this.setState({
+    this.timeout = setTimeout(()=>{this.setState({
       showDeviceTip: false
     })},3000)
   }
 
   componentWillUnmount(){
+    clearTimeout(this.timeout);
     this.props.changeDeviceManageStore({ // 离开页面前，重置数据。
       stationCode: '', // 选中的电站
       deviceTypeCode: '', // 选中的设备类型
@@ -68,7 +69,7 @@ class DeviceManage extends Component {
         <CommonBreadcrumb  breadData={[{name: '设备'}]} style={{ marginLeft: '38px',backgroundColor:'#fff' }} />
         <div className={styles.deviceManage}>
           <div className={styles.deviceManageMain}>
-            {true && <DeviceManageTip hideManageTip={this.hideManageTip} />}
+            {true && <StationManageTip hideManageTip={this.hideManageTip} />}
             <div className={styles.deviceManageContent}>
               <DeviceManageSearch queryParams={queryParams} {...this.props} />
               <DeviceManageHandle queryParams={queryParams} {...this.props} />

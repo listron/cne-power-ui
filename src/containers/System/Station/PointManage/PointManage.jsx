@@ -5,7 +5,7 @@ import styles from './pointManage.scss';
 import { pointManageAction } from '../../../../constants/actionTypes/system/station/pointManageAction';
 import { commonAction } from '../../../../constants/actionTypes/commonAction';
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
-import PointManageTip from '../../../../components/System/Station/PointManage/PointManageTip';
+import StationManageTip from '../../../../components/System/Station/Common/StationManageTip';
 import PointManageSearch from '../../../../components/System/Station/PointManage/PointManageSearch';
 import PointManageHandle from '../../../../components/System/Station/PointManage/PointManageHandle';
 import PointManageList from '../../../../components/System/Station/PointManage/PointManageList';
@@ -30,12 +30,13 @@ class PointManage extends Component {
     }
   }
   componentDidMount(){
-    setTimeout(()=>{this.setState({
+    this.timeout = setTimeout(()=>{this.setState({
       showDeviceTip: false
     })},3000)
   }
 
   componentWillUnmount(){
+    clearTimeout(this.timeout);
     this.props.changePointManageStore({ // 重置测点数据。
       stationCode: '', // 选中的电站
       deviceTypeCode: '', // 选中的设备类型
@@ -68,7 +69,7 @@ class PointManage extends Component {
         <CommonBreadcrumb  breadData={[{name: '设备'}]} style={{ marginLeft: '38px',backgroundColor:'#fff' }} />
         <div className={styles.pointManage}>
           <div className={styles.pointManageMain}>
-            {true && <PointManageTip hideManageTip={this.hideManageTip} />}
+            {true && <StationManageTip hideManageTip={this.hideManageTip} />}
             <div className={styles.pointManageContent}>
               <PointManageSearch queryParams={queryParams} {...this.props} />
               <PointManageHandle queryParams={queryParams} {...this.props} />

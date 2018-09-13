@@ -4,7 +4,7 @@ import styles from './alarmManage.scss';
 import { alarmManageAction } from '../../../../constants/actionTypes/system/station/alarmManageAction';
 import { commonAction } from '../../../../constants/actionTypes/commonAction';
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
-import AlarmManageTip from '../../../../components/System/Station/AlarmManage/AlarmManageTip';
+import StationManageTip from '../../../../components/System/Station/Common/StationManageTip';
 import AlarmManageSearch from '../../../../components/System/Station/AlarmManage/AlarmManageSearch';
 import AlarmManageHandle from '../../../../components/System/Station/AlarmManage/AlarmManageHandle';
 import AlarmManageList from '../../../../components/System/Station/AlarmManage/AlarmManageList';
@@ -21,7 +21,7 @@ class AlarmManage extends Component {
     pageSize: PropTypes.number,
     sortField: PropTypes.string,
     sortOrder: PropTypes.string,
-    changeDeviceManageStore: PropTypes.func,
+    changeAlarmManageStore: PropTypes.func,
   }
   constructor(props) {
     super(props);
@@ -30,13 +30,14 @@ class AlarmManage extends Component {
     }
   }
   componentDidMount(){
-    setTimeout(()=>{this.setState({
+    this.timeout = setTimeout(()=>{this.setState({
       showAlarmTip: false
     })},3000)
   }
 
   componentWillUnmount(){
-    this.props.changeDeviceManageStore({ // 离开页面前，重置数据。
+    clearTimeout(this.timeout);
+    this.props.changeAlarmManageStore({ // 离开页面前，重置数据。
       stationCode: '',
       deviceTypeCode: '',
       deviceModelCode: '',
@@ -69,7 +70,7 @@ class AlarmManage extends Component {
         <CommonBreadcrumb  breadData={[{name: '设备'}]} style={{ marginLeft: '38px',backgroundColor:'#fff' }} />
         <div className={styles.alarmManage}>
           <div className={styles.alarmManageMain}>
-            {true && <AlarmManageTip hideManageTip={this.hideManageTip} />}
+            {true && <StationManageTip hideManageTip={this.hideManageTip} />}
             <div className={styles.alarmManageContent}>
               <AlarmManageSearch queryParams={queryParams} {...this.props} />
               <AlarmManageHandle queryParams={queryParams} {...this.props} />

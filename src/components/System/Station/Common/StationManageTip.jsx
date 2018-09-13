@@ -1,11 +1,11 @@
 
 
 import React from 'react';
-import styles from './deviceManage.scss';
+import styles from './common.scss';
 
-function DeviceManageTip({ hideManageTip }){
+function StationManageTip({ hideManageTip }){
 
-  return (<div className={styles.deviceManageTip}>
+  return (<div className={styles.stationManageTip}>
     <span>
       <span className={styles.icon}>i</span>
       <span className={styles.wordTip}>请选择电站！</span>
@@ -14,4 +14,4 @@ function DeviceManageTip({ hideManageTip }){
   </div>)
 }
 
-export default DeviceManageTip;
+export default StationManageTip;
