@@ -18,6 +18,7 @@ class Boxtransformer extends Component {
     deviceTenMin: PropTypes.array,
     deviceAlarmList: PropTypes.array,
     devicePointData: PropTypes.array,
+    singleStationData: PropTypes.object,
   }
 
   componentDidMount(){
@@ -55,13 +56,13 @@ class Boxtransformer extends Component {
   }
 
   render(){
-    const {devices, deviceDetail, deviceTenMin, deviceAlarmList, devicePointData, loading } = this.props;
+    const {devices, deviceDetail, deviceTenMin, deviceAlarmList, devicePointData, loading, singleStationData } = this.props;
     const { stationCode, deviceTypeCode } = this.props.match.params;
     const backData={path: `/monitor/singleStation/${stationCode}`,name: '返回电站'};
     const breadCrumbData = {
       breadData:[{
         link: true,
-        name: deviceDetail.stationName || '',
+        name: singleStationData && singleStationData.stationName || '',
         path: `/monitor/singleStation/${stationCode}`,
       },{
         name: '箱变',

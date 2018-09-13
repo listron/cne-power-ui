@@ -1,11 +1,13 @@
 import React from 'react';
 import echarts from 'echarts';
 import moment from 'moment';
+import {showNoData, hiddenNoData} from '../../../../../constants/echartsNoData';
 
 function InverterTenMin({ deviceTenMin, loading }) {
   const echartBox = document.getElementById('inverter_monitor_tenMin');
   const lineColor = '#999';
   if(echartBox){
+    
     const inverterChart = echarts.init(echartBox);
     // if(loading){
     //   inverterChart.showLoading();
@@ -21,9 +23,12 @@ function InverterTenMin({ deviceTenMin, loading }) {
       radiationLineData.push(e.instantaneous);
     });
     
-    //console.log(xTime);
-
+    const filterStationPower = deviceTenMin && deviceTenMin.filter(e=>e.stationPower);
+    const filterInstantaneous = deviceTenMin && deviceTenMin.filter(e=>e.instantaneous);
+    const inverterTenMinGraphic = (deviceTenMin && deviceTenMin.length===0 &&
+      filterStationPower.length===0 && filterInstantaneous.length===0) ? showNoData : hiddenNoData;
     const option = {
+      graphic: inverterTenMinGraphic,
       title: {
         text: '时序图',
         textStyle: {
@@ -52,7 +57,15 @@ function InverterTenMin({ deviceTenMin, loading }) {
         textStyle: {
           color: lineColor,
           fontSize: '12px',
-        }
+        },
+        formatter: (param) => {
+          return `<div style="width: 128px; height: 75px;font-size:12px;line-height: 24px;background: #fff;box-shadow:0 1px 4px 0 rgba(0,0,0,0.20);border-radius:2px;">
+            <div style="border-bottom: 1px solid #dfdfdf;padding-left: 5px;" >${param[0].name}</div>
+            <div style="padding-left: 5px;" ><span style="display: inline-block; background:#ffffff; border:1px solid #199475; width:6px; height:6px; border-radius:100%;"></span> 瞬时辐照: ${param[1].value}</div>
+            <div style="padding-left: 5px;" ><span style="display: inline-block; background:#ffffff; border:1px solid #a42b2c; width:6px; height:6px; border-radius:100%;"></span> 功率: ${param[0].value}</div>
+          </div>`;
+        },
+        extraCssText:'background: rgba(0,0,0,0);',
       },
       calculable: true,
       // grid: {
@@ -144,6 +157,7 @@ function InverterTenMin({ deviceTenMin, loading }) {
             width: 1,
           },
           itemStyle:{
+            color: "#199475",
             opacity: 0,
           },
           label: {

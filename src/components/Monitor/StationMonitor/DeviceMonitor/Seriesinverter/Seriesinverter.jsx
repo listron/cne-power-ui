@@ -18,6 +18,7 @@ class Seriesinverter extends Component {
     deviceTenMin: PropTypes.array,
     deviceAlarmList: PropTypes.array,
     devicePointData: PropTypes.array,
+    singleStationData: PropTypes.object,
   }
 
   componentDidMount(){
@@ -31,7 +32,6 @@ class Seriesinverter extends Component {
     const nextDevice = nextParams.deviceCode;
     const nextType = nextParams.deviceTypeCode;
     const nextStation = nextParams.stationCode;
-    console.log(nextParams)
     if( nextDevice !== deviceCode || nextType !== deviceTypeCode || nextStation !== stationCode ){
       console.log('into will receive props?????')
       clearTimeout(this.timeOutId);
@@ -57,14 +57,13 @@ class Seriesinverter extends Component {
   }
 
   render(){
-    const {devices, deviceDetail, deviceTenMin, deviceAlarmList, devicePointData, loading } = this.props;
+    const {devices, deviceDetail, deviceTenMin, deviceAlarmList, devicePointData, loading,singleStationData } = this.props;
     const { stationCode, deviceTypeCode } = this.props.match.params;
     const backData={path: `/monitor/singleStation/${stationCode}`,name: '返回电站'};
-    //console.log(deviceDetail)
     const breadCrumbData = {
       breadData:[{
         link: true,
-        name: deviceDetail.stationName || '',
+        name: singleStationData && singleStationData.stationName || '',
         path: `/monitor/singleStation/${stationCode}`,
       },{
         name: '逆变器',
