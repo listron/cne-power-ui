@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import InspectBasicInfo from '../InspectBasicInfo/InspectBasicInfo';
-import TimeLines from '../../../../Common/TimeLines';
+import InspectTimeLine from '../InspectTimeLine/InspectTimeLine';
+import WarningTip from '../../../../Common/WarningTip';
 import styles from './inspectDetailForm.scss';
 
 import { Icon, Button, Modal } from 'antd';
@@ -16,56 +17,39 @@ class InspectDetailForm extends Component {
     onPrev: PropTypes.func,
     onNext: PropTypes.func,
     onCloseInspectDetail: PropTypes.func,
-    deviceTypes: PropTypes.object,
-    stationCode: PropTypes.string,
-    defectTypes: PropTypes.object,
-    getDefectTypes: PropTypes.func,
     transformDefect: PropTypes.func,
-    finishInspect: PropTypes.func,
-    addInspectAbnormal: PropTypes.func,
-    loadDeviceTypeList: PropTypes.func,
-    loadDeviceAreaList: PropTypes.func,
-    loadDeviceList: PropTypes.func,
-    deviceTypeItems: PropTypes.object,
-    deviceAreaItems: PropTypes.object,
-    deviceItems: PropTypes.object,
     onDeleteAbnormal: PropTypes.func,
     getInspectStandard: PropTypes.func,
     inspectStandard: PropTypes.object,
+    setInspectCheck: PropTypes.func,
   }
 
   constructor(props){
     super(props);
     this.state={
-      disabled: false,
       abnormalIds: Immutable.fromJS([]),
-      tipColor: "#999",
+      showWarningTip: false,
+      warningTipText: ''
     }
   }
 
   onTransformDefect = () => {
-    let inspectId = this.props.inspectDetail.get('inspectId');
-    if(this.state.abnormalIds.size > 0){
+    const { abnormalIds } = this.state;
+    const inspectId = this.props.inspectDetail.get('inspectId');
+    if(abnormalIds.size > 0){
       confirm({
         title: '确定将选定的异常设备转为工单?',
         onOk: () => {
           this.props.transformDefect({
             inspectId: inspectId,
-            abnormalIds: this.state.abnormalIds.toJS().join(','),
+            abnormalIds: abnormalIds.toJS().join(','),
           })
           this.setState({
             abnormalIds: Immutable.fromJS([]),
           })
-        },
-        onCancel: () => {
-        },
-      })
-    } else {
-      this.setState({
-        tipColor : "#c80000",
+        }
       })
     }
-    
   }
 
   onSelectItem = (abnormalId, checked) => {
@@ -85,52 +69,59 @@ class InspectDetailForm extends Component {
 
   onInspectCheck = () => {
     let inspectId = this.props.inspectDetail.get('inspectId');
-    var that = this;
     confirm({
       title: '确定验收此巡检工单?',
-      onOk() {
-        that.props.setInspectCheck({
+      onOk: () => {
+        this.props.setInspectCheck({
           inspectId: inspectId,
         })
-      },
-      onCancel() {
-      },
+      }
     })
   }
 
+  onCancelEdit = () => {
+    this.setState({
+      showWarningTip: true,
+      warningTipText: '退出后信息无法保存!'
+    });
+  }
+
+  onCancelWarningTip = () => {
+    this.setState({
+      showWarningTip: false,
+    });
+  }
+
+  onConfirmWarningTip = () => {
+    this.setState({
+      showWarningTip: false,
+    });
+    this.props.onCloseInspectDetail({ container: 'list' });  
+  }
+
   renderForm(){
-    let status = this.props.inspectDetail.get('inspectStatus');
+    const status = this.props.inspectDetail.get('inspectStatus');
     const rightHandler = localStorage.getItem('rightHandler');
     const checkInspectRight = rightHandler && rightHandler.includes('workExamine_inspection_check');
+    const abnormalIds = this.state.abnormalIds;
     if(status === "2"){
       return (
-        <InspectAddAbnormal
-          deviceTypes={this.props.deviceTypes}
-          defectTypes={this.props.defectTypes}
-          getDefectTypes={this.props.getDefectTypes}
-          finishInspect={this.props.finishInspect}
-          addInspectAbnormal={this.props.addInspectAbnormal}
-          onCloseInspectDetail={this.props.onCloseInspectDetail}
-          inspectDetail={this.props.inspectDetail}
-          deviceTypeItems={this.props.deviceTypeItems}
-          deviceAreaItems={this.props.deviceAreaItems}
-          deviceItems={this.props.deviceItems}
-          loadDeviceTypeList={this.props.loadDeviceTypeList}
-          loadDeviceAreaList={this.props.loadDeviceAreaList}
-          loadDeviceList={this.props.loadDeviceList}
-        />
+        <InspectAddAbnormal {...this.props} />
       )
-    } else if(status === "3"){
+    } else if(status === "3" && checkInspectRight) {
       return (
-        <div>
-          <div>
-            <Button type="primary" onClick={this.onTransformDefect} disabled={this.state.disabled} >转工单</Button>
-            <div style={{color:this.state.tipColor}}>（请先选择设备，灰色背景为不可选）</div>
+        <div className={styles.checkInspect}>
+          <div className={styles.title}>
+            <div className={styles.border}></div>
+            <div className={styles.text}>巡检处理</div>
+            <div className={styles.border}></div>
           </div>
-          {checkInspectRight && <div>
-            <Button type="primary" onClick={this.onInspectCheck} >验收</Button>
-            <div>（确认验收，请点击按钮）</div>
-          </div>}
+          <Button className={styles.transferBtn} onClick={this.onTransformDefect} disabled={abnormalIds.size===0}>转工单</Button>
+          <div style={{color:abnormalIds.size===0?'#f9b600':'#999'}}>
+            （请先选择异常设备，复选框置灰为不可选）
+          </div>
+          <Button className={styles.checkBtn} onClick={this.onInspectCheck}>验收</Button>
+          <div style={{color:'#999'}}>（确认验收，请点击“验收”按钮）</div>
         </div>
       )
     } else {
@@ -138,15 +129,33 @@ class InspectDetailForm extends Component {
     }
   }
 
+  renderTitle() {
+    const status = this.props.inspectDetail.get('inspectStatus');
+    if(status === '2') {
+      return '执行巡检';
+    } else if(status === '3') {
+      return '验收巡检';
+    } else {
+      return '缺陷详情';
+    }
+  }
+
   render(){
-    let { inspectDetail } = this.props;
-    let progressData = inspectDetail.get('processData');  
+    const { inspectDetail } = this.props;
+    const progressData = inspectDetail.get('processData');
+    const status = inspectDetail.get('inspectStatus'); 
+    const { showWarningTip, warningTipText } = this.state;   
     return (
-      <div className={styles.inspectDetail} >
-        <div className={styles.header} >
-          <Icon type="up" onClick={this.props.onPrev} />
-          <Icon type="down" onClick={this.props.onNext} />
-          <Icon type="close" onClick={this.props.onCloseInspectDetail} />
+      <div className={styles.detailWrap}>
+        {showWarningTip && <WarningTip style={{marginTop:'250px',width: '210px',height:'88px'}} onCancel={this.onCancelWarningTip} onOK={this.onConfirmWarningTip} value={warningTipText} />}
+        <div className={styles.inspectDetail}>
+          <div className={styles.header}>
+            <div className={styles.text}>{this.renderTitle()}</div>
+            <div className={styles.action}>
+              <i className="iconfont icon-last" onClick={this.props.onPrev} />
+              <i className="iconfont icon-next" onClick={this.props.onNext} />
+              <Icon type="arrow-left" className={styles.backIcon} onClick={this.onCancelEdit} />
+            </div>   
         </div>
         <div className={styles.content} >
           <div className={styles.left} >
@@ -168,7 +177,12 @@ class InspectDetailForm extends Component {
           </div>
           <div className={styles.right} >
             <div className={styles.timeLines}>
-              <TimeLines processData={progressData} status={inspectDetail.get("inspectStatus")} />
+              <InspectTimeLine 
+                processData={progressData} 
+                status={status}
+                deviceTypeName={inspectDetail.get('deviceTypeNames')}
+                abnormalItems={inspectDetail.get('abnormalData')}
+              />
             </div>
             <div className={styles.form} >
               {this.renderForm()}
@@ -176,7 +190,8 @@ class InspectDetailForm extends Component {
           </div>
         </div>
       </div>
-    )
+      </div>
+    );
   }
 }
 

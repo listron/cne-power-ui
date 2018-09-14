@@ -4,7 +4,13 @@ import { message } from 'antd';
 import Path from '../../../../constants/path';
 import { ticketAction } from '../../../../constants/actionTypes/operation/ticketAction';
 
-
+function *changeInspectStore(action){//存储payload指定参数，替换reducer-store属性。
+  const { payload } = action;
+  yield put({
+    type:  ticketAction.CHANGE_INSPECT_STORE,
+    payload,
+  })
+}
 //获取巡检列表信息
 function* getInspectList(action){
   const { payload } = action;
@@ -285,11 +291,12 @@ function *getInspectStandard(action){
   yield put({type: ticketAction.TICKET_FETCH})
   try{
     const response = yield call(axios.get, url, {params: payload} )
-    if(response.data.code === "10000"){
+    if(response.data.code === "10000" && response.data.data.collection !== '0'){
       yield put({
         type: ticketAction.GET_INSPECT_FETCH_SUCCESS,
-        data: response.data.data,
-        params: action.params,
+        payload: {
+          inspectStandard: response.data.data.data,
+        }
       })
     }
   }catch(e){
@@ -338,6 +345,7 @@ function *inspectCheckBatch(action){
 
 export function* watchInspect() {
   yield takeLatest(ticketAction.GET_INSPECT_DETAIL_SAGA, getInspectDetail);
+  yield takeLatest(ticketAction.CHANGE_INSPECT_STORE_SAGA ,changeInspectStore);
   yield takeLatest(ticketAction.ADD_INSPECT_ABNORMAL_SAGA, addInspectAbnormal);
   yield takeLatest(ticketAction.GET_INSPECT_LIST_SAGA, getInspectList);
   yield takeLatest(ticketAction.CLEAR_INSPECT_STATE_SAGA, clearInspect);

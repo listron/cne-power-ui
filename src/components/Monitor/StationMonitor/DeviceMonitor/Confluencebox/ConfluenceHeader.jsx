@@ -64,14 +64,14 @@ class ConfluenceHeader extends Component {
           <span className={styles.dispersionRatio}>离散率>{dispersionRatio}%</span>
         </div>
         <div className={styles.linkTo}>
-          {parentDeviceTypeCode && parentDeviceCode && <Link target="_blank" to={`/hidden/monitorDevice/${stationCode}/${parentDeviceTypeCode}/${parentDeviceCode}`} className={styles.eachLink}>
+          {parentDeviceTypeCode && parentDeviceCode && <Link  to={`/hidden/monitorDevice/${stationCode}/${parentDeviceTypeCode}/${parentDeviceCode}`} className={styles.eachLink}>
             <span className={parentDeviceBaseInfo && `${parentDeviceBaseInfo.icon} linkIcon`}></span>
             <span className={styles.linkName}>
               {parentDevice && parentDevice.deviceTypeName}{parentDevice && parentDevice.deviceName}详情
             </span>
             <span className="iconfont icon-upstream linkIcon"></span>
           </Link>}
-          <Link target="_blank" to={`/monitor/singleStation/${stationCode}?showPart=${sonDevice && sonDevice.deviceTypeCode}`} className={styles.eachLink}>
+          <Link  to={`/monitor/singleStation/${stationCode}?showPart=${sonDevice && sonDevice.deviceTypeCode}`} className={styles.eachLink}>
             <span className={sonDeviceBaseInfo && `${sonDeviceBaseInfo.icon} linkIcon`}></span>
             <span className={styles.linkName}>{`${sonDevice?sonDevice.deviceTypeName:''}`}列表</span>
             <span className="iconfont icon-downstream linkIcon"></span>

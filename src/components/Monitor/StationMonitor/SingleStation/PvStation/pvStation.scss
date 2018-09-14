@@ -31,7 +31,7 @@
           margin-right: 20px;
         }
         span{
-          color: #999;
+          color: #666;
           margin-right: 15px;
         }
         :global{
@@ -416,9 +416,18 @@
         padding: 10px;
         border: 0;
         color: #dfdfdf;
+        
         .deviceTypeIcon{
           margin: 10px 10px 0;
+          position: relative;
+          .arrowgo{
+            position: absolute;
+            z-index: 999;
+            right: -44px;
+            top: 12px;
+          }
         }
+        
       }
       :global{
         .ant-radio-button-wrapper:hover, .ant-radio-button-wrapper-focused {

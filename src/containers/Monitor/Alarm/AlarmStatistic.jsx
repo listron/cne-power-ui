@@ -32,38 +32,22 @@ class ALarmStatistic extends Component {
   }
 
   componentDidMount() {
-    const pathname = this.props.location.pathname;
-    const stationCode = pathname.split('/')[4];
-    this.changeStationCode(stationCode);
   }
 
   componentWillReceiveProps(nextProps) {
     const pathname = nextProps.location.pathname;
     const stationCode = pathname.split('/')[4];
     const oldStationCode = this.props.location.pathname.split('/')[4];
-    if (oldStationCode !== stationCode) {
-      this.changeStationCode(stationCode);
+    if (oldStationCode !== stationCode && oldStationCode !== undefined && stationCode !== undefined) {
+      this.props.changeAlarmStatisticStore({
+        singleStationCode: stationCode
+      });
     }
   }
 
   componentWillUnmount() {
     this.props.resetAlarm();
   }
-
-  changeStationCode(stationCode) {
-    if (stationCode) {
-      this.props.changeAlarmStatisticStore({
-        showPage: 'single',
-        singleStationCode: stationCode
-      });
-    } else {
-      this.props.changeAlarmStatisticStore({
-        showPage: 'multiple',
-        singleStationCode: ''
-      });
-    }
-  }
-
 
   render() {
     const { showPage } = this.props;
@@ -111,6 +95,7 @@ const mapDispatchToProps = (dispatch) => ({
   getStationsAlarmStatistic: payload => dispatch({ type: alarmAction.GET_STATIONS_ALARM_STATISTIC_SAGA, payload }),
   getSingleStationAlarmStatistic: payload => dispatch({ type: alarmAction.GET_SINGLESTATION_ALARM_STATISTIC_SAGA, payload }),
   resetAlarm: payload => dispatch({ type: alarmAction.RESET_ALARM_STATISTIC_SAGA, payload }),
+  exportAlarm: payload => dispatch({ type: alarmAction.EXPORT_ALARM_STATISTIC_SAGA, payload }),
 })
 
 

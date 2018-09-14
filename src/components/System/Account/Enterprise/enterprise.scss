@@ -24,6 +24,8 @@
   .detailTop{
     @include top;
     .editButton{
+      border-color: $themeColor;
+      color: $themeColor;
       &:hover{
         background-color: $themeColor;
         color: #fff;

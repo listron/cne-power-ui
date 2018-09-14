@@ -30,15 +30,10 @@ class InspectDetail extends Component{
     onDeleteAbnormal: PropTypes.func,
     getInspectStandard: PropTypes.func,
     inspectStandard: PropTypes.object,
+    changeInspectStore: PropTypes.func,
   }
   constructor(props){
     super(props);
-    this.state={
-
-    }
-    this.onPrev = this.onPrev.bind(this);
-    this.onNext = this.onNext.bind(this);
-    this.onCloseInspectDetail = this.onCloseInspectDetail.bind(this);
   }
 
   componentDidMount(){
@@ -65,7 +60,9 @@ class InspectDetail extends Component{
     })
     if(index !== -1){
       if(index !== 0){
-        this.props.setInspectId(inspectList.getIn([index-1,'inspectId']));
+        this.props.changeInspectStore({
+          inspectId: inspectList.getIn([index-1,'inspectId'])}
+        );
       }else{
         message.info('已经是第一条');
       }
@@ -80,8 +77,10 @@ class InspectDetail extends Component{
     })
     if(index !== -1){
       if(index !== inspectList.size - 1){
-        this.props.setInspectId(inspectList.getIn([index+1,'inspectId']));
-      }else{
+        this.props.changeInspectStore({
+          inspectId: inspectList.getIn([index+1,'inspectId'])}
+        );
+      } else{
         message.info('已经是最后一条')
       }
     }
@@ -92,27 +91,10 @@ class InspectDetail extends Component{
   }
   render(){
     return(
-      <InspectDetailForm
-        onNext={this.onNext}
-        onPrev={this.onPrev}
+      <InspectDetailForm {...this.props} 
         onCloseInspectDetail={this.onCloseInspectDetail}
-        defectTypes={this.props.defectTypes}
-        getDefectTypes={this.props.getDefectTypes}
-        inspectDetail={this.props.inspectDetail}
-        transformDefect={this.props.transformDefect}
-        finishInspect={this.props.finishInspect}
-        setInspectCheck={this.props.setInspectCheck}
-        addInspectAbnormal={this.props.addInspectAbnormal}
-        loadDeviceTypeList={this.props.loadDeviceTypeList}
-        loadDeviceAreaList={this.props.loadDeviceAreaList}
-        loadDeviceList={this.props.loadDeviceList}
-        deviceTypeItems={this.props.deviceTypeItems}
-        deviceAreaItems={this.props.deviceAreaItems}
-        deviceItems={this.props.deviceItems}
-        onDeleteAbnormal={this.props.onDeleteAbnormal}
-        getInspectStandard={this.props.getInspectStandard}
-        inspectStandard={this.props.inspectStandard}
-      />
+        onPrev={this.onPrev}
+        onNext={this.onNext} />
     );
   }
 }
@@ -132,6 +114,7 @@ const mapStateToProps = (state) => ({
 }) 
 
 const mapDispatchToProps = (dispatch) => ({
+  changeInspectStore: payload => dispatch({type:ticketAction.CHANGE_INSPECT_STORE_SAGA, payload}),
   getInspectDetail: payload => dispatch({ type: ticketAction.GET_INSPECT_DETAIL_SAGA, payload}),
   addInspectAbnormal: payload => dispatch({ type: ticketAction.ADD_INSPECT_ABNORMAL_SAGA, payload}),
   getDefectTypes: payload => dispatch({ type: ticketAction.GET_DEFECT_TYPE_SAGA, payload}),

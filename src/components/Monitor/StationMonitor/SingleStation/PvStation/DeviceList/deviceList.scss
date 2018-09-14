@@ -6,29 +6,35 @@
     padding: 16px 25px;
     .nodata{
       text-align: center;
-      margin: 30px auto;
+      margin: 89px auto;
     }
     .pvmoduleItem{
-      width: 205px;
-      height: 60px;
+      width: 224px;
       margin: 0 12px;
       display: inline-block;
       margin-bottom: 20px;
+      .deviceName{
+        font-size: 14px;
+        color: #999;
+      }
       :global{
         .iconfont{
-          width: 21px;
-          height: 26px;
+          width: 23px;
+          height: 30px;
           margin-right: 5px;
+          font-size: 23px;
         }
         .commonStyle{
           background: #f1f1f1;
-          width: 21px;
+          width: 24px;
           height: 18px;
-          display: inline-block;
+          display: block;
+          float: left;
           font-size: 11px;
           color: #fff;
-          margin: 0 2px;
+          margin: 2px;
           border-radius: 2px;
+          text-align: center;
         }
         .normalValue{
           background: #ceebe0;

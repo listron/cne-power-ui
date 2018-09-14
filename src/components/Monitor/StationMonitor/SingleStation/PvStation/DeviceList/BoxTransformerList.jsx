@@ -121,7 +121,7 @@ class BoxTransformerList extends Component {
         title: '设备名称',
         dataIndex: 'deviceName',
         key: 'deviceName',
-        render: (text, record, index) => (<div className={record.deviceStatus === 900 ? styles.deviceCode : ""} ><Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${record.deviceCode}`} target="_blank"  className={styles.tableDeviceName}  >{text}</Link></div>)
+        render: (text, record, index) => (<div className={record.deviceStatus === 900 ? styles.deviceCode : ""} ><Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${record.deviceCode}`}  className={styles.tableDeviceName}  >{text}</Link></div>)
       }, {
         title: '实时功率(kW)',
         dataIndex: 'devicePower',
@@ -243,14 +243,14 @@ class BoxTransformerList extends Component {
                   
                   return (<div key={i} className={item.deviceStatus === 900 ? styles.cutOverItem : styles.inverterItem}>
                     <div className={styles.inverterItemIcon} >
-                      <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${item.deviceCode}`} target="_blank" >
+                      <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${item.deviceCode}`} >
                         <i className="iconfont icon-xb" ></i>
                       </Link>
-                      <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${item.deviceCode}/?showPart=alarmList`} target="_blank" >
+                      <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${item.deviceCode}/?showPart=alarmList`} >
                         {item.alarmNum && <i className="iconfont icon-alarm" ></i>}
                       </Link>
                     </div>
-                    <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${item.deviceCode}`} target="_blank" >
+                    <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${item.deviceCode}`} >
                       <div className={styles.inverterItemR} >
                         <div>{item.deviceName}</div>
                         <Progress className={styles.powerProgress} strokeWidth={3} percent={item.devicePower/item.deviceCapacity*100} showInfo={false} />

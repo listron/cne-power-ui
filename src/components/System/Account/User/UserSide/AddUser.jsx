@@ -8,8 +8,6 @@ import AddForm from './AddForm';
 import SingleImgUploader from '../../../../Common/Uploader/SingleImgUploader';
 import pathConfig from '../../../../../constants/path';
 import WarningTip from '../../../../Common/WarningTip';
-
-//企业信息编辑页
 class AddUser extends Component {
   static propTypes = {
     loading: PropTypes.bool,
@@ -21,7 +19,8 @@ class AddUser extends Component {
   constructor(props){
     super(props);
     this.state={
-      userLogo: props.userDetail && props.userDetail.userLogo,
+      //userLogo: props.userDetail && props.userDetail.userLogo,
+      userLogo:'/img/nopic.png',
       showWarningTip: false,
       warningTipText: '退出后信息无法保存!',
     }

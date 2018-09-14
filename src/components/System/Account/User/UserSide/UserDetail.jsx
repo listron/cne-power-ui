@@ -95,15 +95,11 @@ class UserDetail extends Component {
             编辑
           </Button>}
           <span className={styles.handleArea}>
-            <Icon
-              type="arrow-up"
-              className={styles.previous}
+            <i className="iconfont icon-last" 
               title="上一个"
               onClick={this.prePage}
             />
-            <Icon
-              type="arrow-down"
-              className={styles.next}
+            <i className="iconfont icon-next" 
               title="下一个"
               onClick={this.nextPage}
             />

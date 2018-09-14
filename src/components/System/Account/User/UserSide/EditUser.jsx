@@ -21,7 +21,8 @@ class EditUser extends Component {
   constructor(props){
     super(props);
     this.state={
-      userLogo: props.userDetail && props.userDetail.userLogo,
+      userLogo: props.userDetail && props.userDetail.toJS().userLogo,
+    
       showWarningTip: false,
       warningTipText: '退出后信息无法保存!',
     }

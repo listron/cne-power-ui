@@ -70,7 +70,7 @@ export default {
       finishInspect: '/v3/inspect/finish',
       createInspect:'/v3/inspect',
       deleteAbnormal: '/v3/inspect/deleteabnormal',
-      getInspectStandard:'/v3/inspect/standard',
+      getInspectStandard:'/v3/inspect/getstandard',
       inspectCheckBatch:'/v3/inspect/check/batch',
     },
     system: {
@@ -136,6 +136,7 @@ export default {
       monitorPointData: '/v3/monitor/point', //设备测点数据
       deviceAlarmData: '/v3/alarm/device', // 单设备告警信息
       getRealtimeAlarm: '/v3/alarm/station/alarmlist', //实时告警信息
+      exportAlarmStatistic: '/v3/alarm/station/alarmsummary/export',//导出告警统计
 
       getPvmoduleList: '/v3/monitor/pvmodule/datalist/',//光伏组件实时
       getInverterList: '/v3/monitor/seriesinverter/datalist/',// 组串式逆变器实时

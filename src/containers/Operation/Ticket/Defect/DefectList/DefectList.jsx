@@ -68,10 +68,10 @@ class DefectList extends Component {
     //     handleUser
     //   }
     //   this.props.getDefectList(params);
-    //   this.props.getDefectType({
-    //     stationType: 2//全部
-    //   }); 
     // }
+    this.props.getDefectType({
+      stationType: 2//全部
+    }); 
   }
 
   onChangeFilter = (obj) => {
@@ -100,9 +100,7 @@ class DefectList extends Component {
     return (
       <div className={styles.defectList}>
         <DefectFilter {...this.props} onChangeFilter={this.onChangeFilter} />
-        <DefectTable 
-          {...this.props} 
-          onChangeFilter={this.onChangeFilter} />
+        <DefectTable {...this.props} onChangeFilter={this.onChangeFilter} />
       </div>
     );
   }

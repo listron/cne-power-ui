@@ -138,85 +138,70 @@ class inspectAddAbnormal extends Component {
   }
 
   render(){
-    const { deviceTypeItems, defectTypes, inspectDetail} = this.props;
-    const formItemLayout = {
-      labelCol: {
-        xs: { span: 4 },
-        sm: { span: 4 },
-      },
-      wrapperCol: {
-        xs: { span: 8 },
-        sm: { span: 8 },
-      },
-    };
+    const { deviceTypeItems, defectTypes, deviceItems, deviceAreaItems } = this.props;
     const { getFieldDecorator, getFieldValue } = this.props.form;
     return(
-      <div className={styles.inspectHandleForm} >
-        <div>
-          <Button icon="plus" onClick={this.showAdd} >添加异常</Button>
-          <Button type="primary" onClick={this.onFinishInspect} >完成巡检</Button>
+      <div className={styles.inspectHandleForm}>
+        <div className={styles.title}>
+          <div className={styles.border}></div>
+          <div className={styles.text}>巡检处理</div>
+          <div className={styles.border}></div>
+        </div>
+        <div className={styles.actionBar}>
+          <Button icon="plus" onClick={this.showAdd} className={styles.addAbnormal}>添加异常</Button>
+          <Button onClick={this.onFinishInspect} className={styles.finishInspect}>完成巡检</Button>
         </div>
         {this.state.showAddAbnormal &&
-          <div >
-            <div>添加</div>
+          <div className={styles.addAbnormalForm}>
             <Form onSubmit={this.onHandleSubmit} >
-              <FormItem
-                {...formItemLayout}
-                label="设备类型" 
-              >
+              <FormItem label="设备类型" colon={false}>
                 {getFieldDecorator('deviceTypeCode',{
                   rules:[{
                     required: true,
                   }]
                 })(
                   <Select 
-                    placeholder="必选"
+                    placeholder="请选择"
                     onChange={this.onChangeType}
+                    style={{width: 200}}
                   >
-                  {deviceTypeItems.map((item,index) => {
-                    return (
-                      <Option key={item.get('deviceTypeCode')} value={item.get('deviceTypeCode')} >
-                        {item.get('deviceTypeName')}
-                      </Option>
-                    );
-                  })}
+                    {deviceTypeItems.map((item,index) => {
+                      return (
+                        <Option key={item.get('deviceTypeCode')} value={item.get('deviceTypeCode')} >
+                          {item.get('deviceTypeName')}
+                        </Option>
+                      );
+                    })}
                   </Select>
                 )}
               </FormItem>
-              <FormItem
-                {...formItemLayout}
-                label="设备名称"
-              >
+              <FormItem label="设备名称" colon={false}>
                 {getFieldDecorator('deviceCode',{
                   rules:[{
                     required: true,
                   }]
                 })(
                   <DeviceName
-                    disabled={!getFieldValue('deviceTypeCode')}
+                    disabled={deviceItems.size===0}
                     placeholder="输入关键字快速查询" 
-                    stationName={inspectDetail.get('stationName')}
                     deviceType={this.getDeviceType(getFieldValue('deviceTypeCode'))}
                     deviceAreaCode={this.state.deviceAreaCode}
-                    deviceTypeItems={this.props.deviceTypeItems}
-                    deviceAreaItems={this.props.deviceAreaItems}
-                    deviceItems={this.props.deviceItems}
+                    deviceAreaItems={deviceAreaItems}
+                    deviceItems={deviceItems}
                     loadDeviceList={this.loadDeviceList}
                     onChangeArea={this.onChangeArea}
                   />
                 )}
               </FormItem>
-              <FormItem
-                {...formItemLayout}
-                label="缺陷类型" 
-              >
+              <FormItem label="缺陷类型" colon={false}>
                 {getFieldDecorator('defectTypeCode',{
                   rules:[{
                     required: true,
                   }]
                 })(
                   <Select
-                    placeholder="必选"
+                    placeholder="请选择"
+                    style={{width: 200}}
                   >
                     {defectTypes.map(item => {
                       return(
@@ -228,37 +213,36 @@ class inspectAddAbnormal extends Component {
                   </Select>
                 )}
               </FormItem>
-              <FormItem
-                {...formItemLayout}
-                label="异常描述"
-              >
+              <FormItem label="异常描述" colon={false}>
                 {getFieldDecorator('abnormalDescribe',{
                   rules: [{required: true, message: '请填写异常描述'}],
                 })(
-                  <InputLimit />
+                  <InputLimit placeholder="请描述，不超过80个汉字" />
                 )}
               </FormItem>
-              <FormItem
-                {...formItemLayout}
-                label="添加照片"
-              >
-                {getFieldDecorator('photoData',{
-                  rules: [{required: false,message: '请上传图片'}],
-                  initialValue: [],
-                  valuePropName: 'data',
-                })(
-                  <ImgUploader uploadPath={`${pathConfig.basePaths.APIBasePath}${pathConfig.commonPaths.imgUploads}`} editable={true}  />
-                )}
+              <FormItem label="添加照片" colon={false}>
+                <div className={styles.addImg}>
+                  <div className={styles.maxTip}>最多4张</div>
+                  {getFieldDecorator('photoData',{
+                    rules: [{required: false,message: '请上传图片'}],
+                    initialValue: [],
+                    valuePropName: 'data',
+                  })(
+                    <ImgUploader uploadPath={`${pathConfig.basePaths.APIBasePath}${pathConfig.commonPaths.imgUploads}`} editable={true}  />
+                  )}
+                </div>
               </FormItem>
-              <FormItem
-                {...formItemLayout}
-              >
-                <Button htmlType="reset" onClick={this.hideAdd} >取消</Button>
-                <Button type="primary" htmlType="submit" >添加</Button>
-              </FormItem>
+              <div className={styles.formAction}>
+                <Button htmlType="reset" onClick={this.hideAdd} className={styles.cancel}>取消</Button>
+                <Button type="primary" htmlType="submit">保存</Button>
+              </div>
             </Form>
           </div>
         }
+        <div className={styles.addTips}>
+          <span>（添加异常：记录巡检过程中发现的异常）</span>
+          <span>（完成巡检：确定此工单已经完成，请点击按钮）</span>
+        </div>
       </div>
     )
 

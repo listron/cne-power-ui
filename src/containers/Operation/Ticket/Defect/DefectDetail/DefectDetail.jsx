@@ -21,6 +21,7 @@ class DefectDetail extends Component {
     onHandle: PropTypes.func,
     onCheck: PropTypes.func,
     changeDefectStore: PropTypes.func,
+    location: PropTypes.object,
   };
   constructor(props,context) {
     super(props);
@@ -28,9 +29,15 @@ class DefectDetail extends Component {
   }
 
   componentDidMount() {
-    if(this.props.defectId) {
+    let pathname, defectId;
+    if(this.props.location) {
+      pathname = this.props.location.pathname;
+      defectId = pathname.split('/')[4];
+    }
+    const realDefectId = this.props.defectId || defectId;
+    if(realDefectId) {
       this.props.getDefectDetail({
-        defectId: this.props.defectId
+        defectId: realDefectId
       });
       this.props.getCommonList({
         languageType: '1'
@@ -81,24 +88,22 @@ class DefectDetail extends Component {
     }
   }
 
-  onCloseDetail = () => {
+  onCloseDefectDetail = () => {
     this.props.onChangeShowContainer({container: 'list'});
   }
 
-  render() {   
+  render() {
+    let pathname, defectId;
+    if(this.props.location) {
+      pathname = this.props.location.pathname;
+      defectId = pathname.split('/')[4];
+    }
     return (
-      <DefectDetailForm 
-        detail={this.props.defectDetail}
-        loading={this.props.loading}
-        commonList={this.props.commonList}
-        onCloseDetail={this.onCloseDetail}
-        onClose={this.props.onClose}
-        onSend={this.props.onSend}
-        onReject={this.props.onReject}
-        onHandle={this.props.onHandle}
-        onCheck={this.props.onCheck}
-        onNext={this.onNext}
-        onPrev={this.onPrev} />    
+      <DefectDetailForm {...this.props}
+        onCloseDefectDetail={this.onCloseDefectDetail}
+        isFromAlarm={!!defectId}
+        onPrev={this.onPrev}
+        onNext={this.onNext} />    
     );
   }
 }

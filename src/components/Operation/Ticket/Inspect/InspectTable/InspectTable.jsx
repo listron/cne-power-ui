@@ -41,17 +41,11 @@ class InspectTable extends Component {
   }
 
   onChangeTable = (pagination, filter, sorter) => {
-    if(Object.keys(sorter).length !== 0) {
-      const field = getInspectSortField(sorter.filed);
-      const order = sorter.order === 'ascend' ? '0' : '1';
-      this.props.onChangeFilter({
-        sort: field+',' + order
-      });
-    } else {
-      this.props.onChangeFilter({
-        sort: ''
-      });
-    }
+    const field = getInspectSortField(sorter.field);
+    const order = sorter.order === 'ascend' ? '0' : '1';
+    this.props.onChangeFilter({
+      sort: field+',' + order
+    });  
   }
 
   onInspectCheck = () => {
@@ -133,11 +127,19 @@ class InspectTable extends Component {
       key: 'stationName',
       sorter: true,
     },{
-      title: '巡检描述',
+      title: '工单描述',
       dataIndex: 'deviceTypeName',
       key: 'deviceTypeName',
+      render: (text, record) => {
+        return <div className={styles.inspectDesc} title={text}>{text}</div>
+      }
     },{
-      title: '创建时间',
+      title: '异常数',
+      dataIndex: 'abnormalNum',
+      key: 'abnormalNum',
+      // sorter: true,
+    },{
+      title: '发生时间',
       dataIndex: 'startTime',
       key: 'startTime',
       sorter: true,
@@ -145,9 +147,12 @@ class InspectTable extends Component {
       title: '完成时间',
       dataIndex: 'checkTime',
       key: 'checkTime',
+      render: (text, record) => {
+        return text ? text : '--'
+      },
       sorter: true,
     },{
-      title: '处理进度',
+      title: '状态',
       dataIndex: 'inspectStatus',
       key: 'inspectStatus',
       sorter: true,

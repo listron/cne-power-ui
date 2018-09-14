@@ -107,7 +107,7 @@ class StationFilter extends Component {
 
     return (
       <div className={styles.stationFilter}>
-        <Tabs onChange={this.onChangeProvince} activeKey={activeKey} >
+        <Tabs onChange={this.onChangeProvince} activeKey={activeKey} animated={false} >
           <TabPane tab="不限" key="all">
             {null}
           </TabPane>

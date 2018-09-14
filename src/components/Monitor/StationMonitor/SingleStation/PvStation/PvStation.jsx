@@ -22,6 +22,7 @@ class PvStation extends Component {
     match: PropTypes.object,
     stationDeviceList: PropTypes.array,
     deviceTypeCode: PropTypes.number,
+    stationCode: PropTypes.string,
   }
 
   constructor(props) {
@@ -83,17 +84,21 @@ class PvStation extends Component {
             </TabPane> */}
             <TabPane tab="示意图" key="2">
               <div className={styles.deviceTypeFlow}>
-                {deviceTypeFlow && <RadioGroup defaultValue={appointDeviceCode || 206} onChange={this.onSelectedDeviceType} >
-                  {deviceTypeFlow &&
-                    deviceTypeFlow.map(e => {
-                      return (<RadioButton value={e.deviceTypeCode} className={styles.deviceTypeItem} key={e.deviceTypeCode}>
-                        <div className={styles.deviceTypeIcon} ><i className={this.getDeviceTypeIcon(e.deviceTypeCode)} ></i></div><div>{e.deviceTypeName}</div>
+                {deviceTypeFlow && <RadioGroup value={appointDeviceCode || deviceTypeCode}  onChange={this.onSelectedDeviceType} >
+                  {deviceTypeFlow && 
+                    deviceTypeFlow.map((e,i)=>{
+                      return (<RadioButton value={e.deviceTypeCode}  className={styles.deviceTypeItem} key={i}>
+                        <div className={styles.deviceTypeIcon} >
+                          <i className={this.getDeviceTypeIcon(e.deviceTypeCode)} ></i>
+                          {deviceTypeFlow.length-1 !== i && <img src="/img/arrowgo.png" className={styles.arrowgo} />}
+                        </div>
+                        <div>{e.deviceTypeName}</div>
                       </RadioButton>)
                     })
                   }
                 </RadioGroup>}
                 <div className={styles.weatherStation}>
-                  <Link target="_blank" to={`/hidden/monitorDevice/${stationCode}/203/${weatherDeviceCode}`} ><i className="iconfont icon-weather" ></i></Link>
+                  <Link  to={`/hidden/monitorDevice/${stationCode}/203/${weatherDeviceCode}`} ><i className="iconfont icon-weather" ></i></Link>
                   <div>气象站</div>
                 </div>
               </div>

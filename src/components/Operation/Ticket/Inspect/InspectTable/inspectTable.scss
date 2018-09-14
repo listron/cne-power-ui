@@ -19,6 +19,13 @@
     background-color: #fff;
     margin-top: 48px;
   }
+  .inspectDesc {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    word-break:keep-all;
+    max-width: 225px;
+  }
   .action {
     display: flex;
     flex-direction: row;
@@ -92,7 +99,7 @@
       cursor: pointer;
     }
   }
-  .defectInspect {
+  .inspectStatus {
     display: flex;
     flex-direction: row;
     align-items: center;

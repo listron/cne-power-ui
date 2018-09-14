@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import styles from './deviceMonitor.scss';
 import { deviceAction } from '../../../../constants/actionTypes/monitor/stationMonitor/deviceAction';
+import { singleStationAction } from '../../../../constants/actionTypes/monitor/stationMonitor/singleStationAction';
 import PropTypes from 'prop-types';
 import Seriesinverter from '../../../../components/Monitor/StationMonitor/DeviceMonitor/Seriesinverter/Seriesinverter';
 import Confluencebox from '../../../../components/Monitor/StationMonitor/DeviceMonitor/Confluencebox/Confluencebox';
@@ -13,9 +14,16 @@ class DeviceMonitor extends Component {
   static propTypes = {
     match: PropTypes.object,
     getMonitorDeviceData: PropTypes.func,
+    getSingleStation: PropTypes.func,
+    singleStationData: PropTypes.object,
   }
   constructor(props) {
     super(props);
+  }
+
+  componentDidMount(){
+    const { stationCode } =this.props.match.params;
+    this.props.getSingleStation({stationCode});
   }
 
   render() {
@@ -33,10 +41,12 @@ class DeviceMonitor extends Component {
 }
 const mapStateToProps = (state) => ({
     ...state.monitor.deviceMonitor.toJS(),
+    singleStationData: state.monitor.singleStation.get('singleStationData').toJS(),//获取面包屑电站名称
 });
 
 const mapDispatchToProps = (dispatch) => ({
   getMonitorDeviceData: payload => dispatch({ type: deviceAction.GET_DEVICE_DATA_SAGA, payload }),
+  getSingleStation: payload => dispatch({type:singleStationAction.GET_SINGLE_STATION_SAGA, payload}),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DeviceMonitor);

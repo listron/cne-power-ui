@@ -26,6 +26,7 @@ class DefectTable extends Component {
     status: PropTypes.string,
     selectedRowKeys: PropTypes.array,
     changeDefectStore: PropTypes.func,
+    getDefectDetail: PropTypes.func,
   }
 
   // static defaultProps = {
@@ -117,7 +118,11 @@ class DefectTable extends Component {
       defectId: defect.defectId
     });
     if(defect.defectStatus === '0') {
-      this.props.onChangeShowContainer({container: 'edit'});
+      // this.props.onChangeShowContainer({container: 'edit'});
+      this.props.getDefectDetail({
+        defectId: defect.defectId,
+        isEdit: true
+      });
     } else {
       this.props.onChangeShowContainer({container: 'detail'});
     }
@@ -224,6 +229,9 @@ class DefectTable extends Component {
       title: '缺陷描述',
       dataIndex: 'defectDescribe',
       key: 'defectDescribe',
+      render: (text, record) => {
+        return <div className={styles.defectDesc} title={text}>{text}</div>
+      }
     }, {
       title: '发生时间',
       dataIndex: 'startTime',
@@ -233,6 +241,9 @@ class DefectTable extends Component {
       title: '完成时间',
       dataIndex: 'finishTime',
       key: 'finishTime',
+      render: (text, record) => {
+        return text ? text : '--'
+      },
       sorter: true,
     }, {
       title: '状态',
