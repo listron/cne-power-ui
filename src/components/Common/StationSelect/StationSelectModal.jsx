@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Icon, Modal, Radio  } from 'antd';
 import ProvinceItem from './ProvinceItem';
+import WarningTip from '../WarningTip';
 import styles from './style.scss';
 import PropTypes from 'prop-types';
 const RadioButton = Radio.Button;
@@ -21,6 +22,8 @@ class StationSelectModal extends Component {
       filterStationType: 2,//选中电站类型
       stationType:[2,0,1],//0所有,0风电，1光伏
       selectedStation:[], //暂存选中的电站数组
+      showWarningTip: false,
+      warningTipText: ''
     }
   }
 
@@ -32,8 +35,24 @@ class StationSelectModal extends Component {
 
   onClearSelected = () => {
     this.setState({
+      showWarningTip: true,
+      warningTipText: '确认取消所有已选电站么'
+    });
+  }
+
+  onCancelWarningTip = () => {
+    this.setState({
+      showWarningTip: false,
+    });
+  }
+
+  onConfirmWarningTip = () => {
+    this.setState({
+      showWarningTip: false,
+    });
+    this.setState({
       selectedStation:[]
-    })
+    });
   }
   onDeleteOneStation = (stationInfor) => {
     const { selectedStation } = this.state;
@@ -101,9 +120,10 @@ class StationSelectModal extends Component {
 
   render() {
     const { stationModalShow, hideStationModal, showStationModal, multiple } = this.props;
-    const { filterStationType, stationType } = this.state;
+    const { filterStationType, stationType, showWarningTip, warningTipText } = this.state;
     return (
       <div className={styles.stationSelectModal}>
+        {showWarningTip && <WarningTip style={{marginTop:'250px',width: '210px',height:'88px'}} onCancel={this.onCancelWarningTip} onOK={this.onConfirmWarningTip} value={warningTipText} />}
         <i className="iconfont icon-filter" onClick={showStationModal} />
         <Modal
           visible={stationModalShow}
