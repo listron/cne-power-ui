@@ -15,7 +15,7 @@ function BoxtransformerTenMin({ deviceTenMin, loading }) {
     // }
     let powerLineData = [], instantaneousData = [], xTime = [];
     deviceTenMin.length > 0 && deviceTenMin.forEach(e=>{
-      xTime.push(moment(e.utc).format('YYYY-MM-DD hh:mm:ss'));
+      xTime.push(moment(e.utc).format('YYYY-MM-DD HH:mm:ss'));
       powerLineData.push(e.stationPower);
       instantaneousData.push(e.instantaneous);
     });
