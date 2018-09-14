@@ -94,7 +94,7 @@ class PvStation extends Component {
                   }
                 </RadioGroup>}
                 <div className={styles.weatherStation}>
-                  <Link target="_blank" to={`/hidden/monitorDevice/${stationCode}/203/${weatherDeviceCode}`} ><i className="iconfont icon-weather" ></i></Link>
+                  <Link  to={`/hidden/monitorDevice/${stationCode}/203/${weatherDeviceCode}`} ><i className="iconfont icon-weather" ></i></Link>
                   <div>气象站</div>
                 </div>
               </div>

@@ -64,7 +64,7 @@ class BoxtransformerHeader extends Component {
           </span>
         </div>
         <div className={styles.linkTo}>
-          <Link target="_blank" to={`/monitor/singleStation/${stationCode}?showPart=${sonDevice && sonDevice.deviceTypeCode}`} className={styles.eachLink}>
+          <Link  to={`/monitor/singleStation/${stationCode}?showPart=${sonDevice && sonDevice.deviceTypeCode}`} className={styles.eachLink}>
             <span className={sonDeviceBaseInfo && `${sonDeviceBaseInfo.icon} linkIcon`}></span>
             <span className={styles.linkName}>{`${sonDevice?sonDevice.deviceTypeName:''}`}列表</span>
             <span className="iconfont icon-downstream linkIcon"></span>

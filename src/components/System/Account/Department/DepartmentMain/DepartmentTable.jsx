@@ -161,7 +161,7 @@ class DepartmentTable extends Component {
       }else{
         this.setState({
           showWarningTip: true,
-          warningTipText: '是否确认删除!',
+          warningTipText: '删除后,将取消成员关联!',
           hiddenWarningTipCancelText: false
         })
       }
