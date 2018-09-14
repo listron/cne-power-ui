@@ -42,7 +42,7 @@ class DefectReviewForm extends Component {
     const { getFieldDecorator } = this.props.form;
     const dealResult = this.state.dealResult;
     return (
-      <Form onSubmit={this.onSubmit} className={styles.dealForm}>
+      <Form onSubmit={this.onSubmit} className={styles.dealForm} id="reviewForm" style={{position:'relative'}}>
         <div className={styles.dealResult}>
           <div className={styles.reviewTitle}><span>审</span><span>核</span></div>
           <div className={styles.reviewType}>
@@ -90,6 +90,7 @@ class DefectReviewForm extends Component {
                 format="YYYY-MM-DD"
                 showTime={false}
                 showToday={false}
+                getCalendarContainer={() => document.getElementById('reviewForm')}
                 disabledDate={this.disabledDate} />
             )}
           </FormItem>
