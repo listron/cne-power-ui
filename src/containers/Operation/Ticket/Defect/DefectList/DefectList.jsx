@@ -68,10 +68,10 @@ class DefectList extends Component {
     //     handleUser
     //   }
     //   this.props.getDefectList(params);
-    //   this.props.getDefectType({
-    //     stationType: 2//全部
-    //   }); 
     // }
+    this.props.getDefectType({
+      stationType: 2//全部
+    }); 
   }
 
   onChangeFilter = (obj) => {

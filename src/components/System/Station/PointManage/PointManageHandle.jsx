@@ -1,13 +1,17 @@
 import React, { Component } from 'react';
 import styles from './pointManage.scss';
 import CommonPagination from '../../../Common/CommonPagination';
+import SingleStationImportFileModel from '../../../Common/SingleStationImportFileModel';
 import { Button } from 'antd';
 import PropTypes from 'prop-types';
+import path from '../../../../constants/path';
 
 class PointManageHandle extends Component {
   static propTypes = {
     stationCode: PropTypes.number,
     totalNum: PropTypes.number,
+    stations: PropTypes.array,
+    stationList: PropTypes.array,
     pointList: PropTypes.array,
     queryParams: PropTypes.object,
     getPointList: PropTypes.func,
@@ -16,7 +20,6 @@ class PointManageHandle extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      pointModal: false,
     }
   }
 
@@ -34,32 +37,25 @@ class PointManageHandle extends Component {
     deletePointList({ stationCode });
   }
 
-  showAddPointModal = () => {
-    this.setState({ pointModal: true })
-  }
-
-  hideAddPointModal = () => {
-    this.setState({ pointModal: true })
-  }
-
-  importPointData = () => {
-    this.setState({ pointModal: false })
-  }
-
   render() {
-    const { totalNum, pointList } = this.props;
-    const { pointModal } = this.state;
+    const { totalNum, pointList, stations, stationList, stationCode } = this.props;
+    const selectedStationInfo = stationList.find(e => e.stationCode === stationCode);
+    const pointForbidClear = !selectedStationInfo || selectedStationInfo.pointStatus === 1; // 未找到电站或电站已导入告警，不可清除
+    const downloadHref = `${path.basePaths.APIBasePath}${path.APISubPaths.system.downloadPointInfo}?stationCode=${stationCode}`;
     return (
-      <div className={styles.deviceManageHandle}>
-        <Button onClick={this.showAddPointModal} >
-          <span>+</span>
-          <span>测点</span>
-        </Button>
-        <Button disabled={pointList.length === 0}>导出测电表</Button>
-        {/* <Button disabled={pointList.length === 0}>查看测试状态</Button> */}
-        <Button disabled={pointList.length === 0} onClick={this.deletePointList}>清除测点</Button>
+      <div className={styles.pointManageHandle}>
+        <div className={styles.leftHandler}>
+          <SingleStationImportFileModel 
+            data={stations} 
+            uploadPath={`${path.basePaths.APIBasePath}${path.APISubPaths.system.importPointsInfo}`} 
+            uploaderName={'测点'} 
+            uploadExtraData={['stationCode']}
+          />
+          <Button disabled={pointList.length === 0} className={styles.exportInfo} href={downloadHref} download={downloadHref}>导出测点表</Button>
+          {/* <Button disabled={pointList.length === 0}>查看测试状态</Button> */}
+          <Button disabled={pointList.length === 0 || pointForbidClear} onClick={this.deletePointList} className={styles.clearPoint}>清除测点</Button>
+        </div>
         <CommonPagination  total={totalNum} onPaginationChange={this.onPaginationChange} />
-        {pointModal && <div>这个东西啊！</div>}
       </div>
     );
   }

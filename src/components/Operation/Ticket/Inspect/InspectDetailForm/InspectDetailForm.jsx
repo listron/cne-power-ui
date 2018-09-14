@@ -28,6 +28,8 @@ class InspectDetailForm extends Component {
     super(props);
     this.state={
       abnormalIds: Immutable.fromJS([]),
+      showWarningTip: false,
+      warningTipText: ''
     }
   }
 

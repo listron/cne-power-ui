@@ -34,7 +34,7 @@ class DefectTypeFilter extends Component {
       value: item.get('defectTypeCode').toString()
     })).toJS();
     return (
-      <div className={styles.filterItem}>
+      <div className={styles.defectTypeFilter}>
         <span onClick={this.onReset} className={defectTypeCode.length!==''?styles.selected:styles.all}>不限</span>
         <CheckboxGroup options={options} value={defectTypeCode.split(',')} onChange={this.onChange} />
       </div>

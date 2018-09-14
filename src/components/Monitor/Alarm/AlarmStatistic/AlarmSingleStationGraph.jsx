@@ -95,8 +95,8 @@ class AlarmSingleStationGraph extends React.Component {
           interval: 0,
           rotate: -30
         },
-        //data: timeData,
-        data:['2018-08-01','2018-08-02','2018-08-03','2018-08-04','2018-08-05','2018-08-06','2018-08-07']
+        data: timeData,
+        // data:['2018-08-01','2018-08-02','2018-08-03','2018-08-04','2018-08-05','2018-08-06','2018-08-07']
       },
       series: [
         {
@@ -111,9 +111,9 @@ class AlarmSingleStationGraph extends React.Component {
           itemStyle: {
             color: '#199475'
           },
-           //data: transferWorkRate
+          data: transferWorkRate
           //这是平均处理时间的数据
-          data: [60, 80, 70, 50, 90, 100, 70]
+          // data: [60, 80, 70, 50, 90, 100, 70]
         },
         {
           name: '转工单数',
@@ -122,8 +122,8 @@ class AlarmSingleStationGraph extends React.Component {
           itemStyle: {
             color: '#c7ceb2'
           },
-          data: [15, 10, 5, 5, 10, 10, 5]
-          //data: transferWorkAlarmNum,
+          // data: [15, 10, 5, 5, 10, 10, 5]
+          data: transferWorkAlarmNum,
         },
         {
           name: '未转工单数',
@@ -132,8 +132,8 @@ class AlarmSingleStationGraph extends React.Component {
           itemStyle: {
             color: '#f9b600'
           },
-          //data: noTransferWorkAlarmNum
-          data: [5, 15, 15, 10, 5, 15, 15]
+          data: noTransferWorkAlarmNum
+          // data: [5, 15, 15, 10, 5, 15, 15]
         }
       ]
     };
