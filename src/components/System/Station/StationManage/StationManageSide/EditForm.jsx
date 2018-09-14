@@ -35,6 +35,7 @@ class EditForm extends Component {
         this.props.saveStationDetail({
           ...stationDetail,
           ...values,
+          stationStatus: !!values.stationStatus,
         })
       }
     })

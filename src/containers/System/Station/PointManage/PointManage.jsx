@@ -15,15 +15,16 @@ import PropTypes from 'prop-types';
 
 class PointManage extends Component {
   static propTypes = {
-    stationCode: PropTypes.string,
-    deviceTypeCode: PropTypes.string,
-    deviceModelCode: PropTypes.string,
+    stationCode: PropTypes.number,
+    deviceTypeCode: PropTypes.number,
+    deviceModelCode: PropTypes.number,
     pageNum: PropTypes.number,
     pageSize: PropTypes.number,
     orderField: PropTypes.string,
     orderType: PropTypes.number,
     changePointManageStore: PropTypes.func,
     getStationList: PropTypes.func,
+    changeStationManageStore: PropTypes.func,
   }
   constructor(props) {
     super(props);
@@ -33,7 +34,7 @@ class PointManage extends Component {
   }
   componentDidMount(){
     this.props.getStationList({ // 请求一次设备列表
-      stationType: 0,
+      stationType: "",
       pageSize: 1000000,
       pageNum: 1,
     })
@@ -45,15 +46,29 @@ class PointManage extends Component {
   componentWillUnmount(){
     clearTimeout(this.timeout);
     this.props.changePointManageStore({ // 重置测点数据。
-      stationCode: '', // 选中的电站
-      deviceTypeCode: '', // 选中的设备类型
-      deviceModelCode: '', // 选中的设备型号
+      stationCode: null, // 选中的电站
+      deviceTypeCode: null, // 选中的设备类型
+      deviceModelCode: null, // 选中的设备型号
       pageNum: 1,
       pageSize: 10,
       totalNum:  0, // 设备总数
       orderField: '', // 排序字段
       orderType: 0,
       pointList: [],
+    })
+    this.props.changeStationManageStore({
+      stationList: [],
+      showPage: 'list',
+      selectedStationIndex: null,
+      stationType: "",
+      regionName: '',
+      stationName: '',
+      pageNum: 1,
+      pageSize: 10,
+      orderField: '',
+      orderCommand: '', 
+      stationList: [], 
+      totalNum:  0,
     })
   }
 
@@ -102,10 +117,12 @@ const mapDispatchToProps = (dispatch) => ({
   getPointList: payload => dispatch({type:pointManageAction.GET_POINT_MANAGE_LIST, payload}),
   deletePointList: payload => dispatch({type:pointManageAction.DELETE_POINT_MANAGE_LIST, payload}),
 
+  changeCommonStore: payload => dispatch({type:commonAction.CHANGE_COMMON_STORE_SAGA, payload}),
   getStationDeviceTypes: payload => dispatch({type:commonAction.GET_STATION_DEVICETYPES_SAGA, payload}),
   getStationDeviceModel: payload => dispatch({type:commonAction.GET_STATION_DEVICEMODEL_SAGA, payload}),
 
   getStationList: payload => dispatch({type: stationManageAction.GET_STATION_MANAGE_LIST, payload}),
+  changeStationManageStore: payload => dispatch({type:stationManageAction.CHANGE_STATION_MANAGE_STORE_SAGA, payload}),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PointManage);

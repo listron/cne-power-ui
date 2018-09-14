@@ -8,6 +8,7 @@
   align-items: center;
   height: 71px;
   border-bottom: solid 1px $promptColor;
+  line-height: 40px;
   .titleText{
     color: $lightColor;
     margin-left: 28px;
@@ -16,6 +17,9 @@
   .typeSelect,.modelSelect,.pointSelect{
     width: 198px;
     margin-right: 12px;
+  }
+  .typeSelect {
+    margin-left: 12px;
   }
 }
 
