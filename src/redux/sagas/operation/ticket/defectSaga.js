@@ -48,6 +48,7 @@ function* getDefectDetail(action) {
         type: ticketAction.GET_DEFECT_FETCH_SUCCESS, 
         payload: {
           defectDetail: response.data.data,
+          defectId: payload.defectId,
         }
       });
       if(payload.isEdit === true) {

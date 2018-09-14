@@ -14,6 +14,7 @@ module.exports = {
     GET_ALARM_NUM_SAGA: null,
     GET_TICKET_INFO_SAGA: null,
     GET_RELIEVE_INFO_SAGA: null,
+    EXPORT_ALARM_STATISTIC_SAGA: null,
     RESET_ALARM_SAGA: null,
     RESET_ALARM: null,
     

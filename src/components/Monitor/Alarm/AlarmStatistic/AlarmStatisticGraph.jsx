@@ -41,7 +41,7 @@ class AlarmStatisticGraph extends React.Component {
       return item.fourWarningNum
     });
     const handleAvgTime = alarmStatistic.map((item, index) => {
-      return item.handleAvgTime === null ? 0 : item.handleAvgTime
+      return item.handleAvgTime === null ? null : (item.handleAvgTime/60/60/24).toFixed(2);
     });
     return {
       stationNameData, oneWarningNum, twoWarningNum, threeWarningNum, fourWarningNum, handleAvgTime

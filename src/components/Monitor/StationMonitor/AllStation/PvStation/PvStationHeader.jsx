@@ -21,6 +21,8 @@ class pvStationHeader extends React.Component {
     const yearPower = stationDataSummary.yearPower || ' -- ';
     const yearPlanPower = stationDataSummary.yearPlanPower || ' -- ';
     const yearPlanRate = stationDataSummary.yearPlanRate || ' -- ';
+    // const yearPlanRate =stationDataSummary.yearPlanRate&&stationDataSummary.yearPlanRate!=='0.00%'?stationDataSummary.yearPlanRate:'--';
+    // console.log(yearPlanRate);
     return (     
         <div className={styles.headStation}>
           <div className={styles.typeIcon}>
