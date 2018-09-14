@@ -18,6 +18,7 @@ class AlarmManageSearch extends Component {
     deviceModelCode: PropTypes.number,
     pointCode: PropTypes.string,
     getAlarmList: PropTypes.func,
+    changeCommonStore: PropTypes.func,
     getStationDeviceTypes: PropTypes.func,
     getStationDeviceModel: PropTypes.func,
     getStationDevicePoints: PropTypes.func,
@@ -31,18 +32,25 @@ class AlarmManageSearch extends Component {
   }
 
   selectStation = (stations) => { // 选中电站
-    const { getStationDeviceTypes, getAlarmList, queryParams } = this.props;
+    const { getStationDeviceTypes, getAlarmList, queryParams, changeCommonStore } = this.props;
     getStationDeviceTypes({
       stationCodes: stations[0].stationCode,
     });
     getAlarmList({
       ...queryParams,
       stationCode: stations[0].stationCode,
+      deviceTypeCode: null,
+      deviceModelCode: null,
+      pointCode: '',
+    })
+    changeCommonStore({
+      deviceModels: [], 
+      devicePoints: [],
     })
   }
 
   selectDeviceType = (value) => { // 选中设备类型
-    const { getStationDeviceModel, getAlarmList, queryParams, stationCode } = this.props;
+    const { getStationDeviceModel, getAlarmList, queryParams, stationCode, changeCommonStore } = this.props;
     getStationDeviceModel({
       stationCode,
       deviceTypeCode: value,
@@ -50,6 +58,11 @@ class AlarmManageSearch extends Component {
     getAlarmList({
       ...queryParams,
       deviceTypeCode: value,
+      deviceModelCode: null,
+      pointCode: '',
+    })
+    changeCommonStore({
+      devicePoints: [],
     })
   }
 
@@ -63,6 +76,7 @@ class AlarmManageSearch extends Component {
     getAlarmList({
       ...queryParams,
       deviceModelCode: value,
+      pointCode: '',
     })
   }
 
@@ -79,6 +93,8 @@ class AlarmManageSearch extends Component {
     const typeSelectDisable = stationDeviceTypes.length === 0;
     const modelSelectDisable = deviceModels.length === 0;
     const pointSelectDisable = devicePoints.length === 0;
+    console.log(deviceModels )
+    console.log(devicePoints )
     return (
       <div className={styles.alarmManageSearch}>
         <span className={styles.titleText}>条件查询</span>

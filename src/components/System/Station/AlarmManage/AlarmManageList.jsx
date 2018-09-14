@@ -19,10 +19,11 @@ class AlarmManageList extends Component {
 
   tableChange = (pagination, filter, sorter) => { // 排序触发重新请求设备列表
     const { getAlarmList, queryParams } = this.props;
+    const { field, order } = sorter;
     getAlarmList({
       ...queryParams,
-      sortField: sorter.field,
-      sortOrder: sorter.order==='ascend'?'asc':'desc',
+      sortField: field?field:'',
+      sortOrder: order?(sorter.order==='ascend'?'asc':'desc'):'',
     })
   }
 

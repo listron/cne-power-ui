@@ -54,7 +54,7 @@ function *deletePointList(action){ // 清除测点列表
     const response = yield call(axios.delete,url);
     if(response.data.code === '10000'){ // 删除成功后，清空列表
       yield put({
-        type:  pointManageAction.GET_POINT_MANAGE_LIST,
+        type:  pointManageAction.GET_POINT_MANAGE_FETCH_SUCCESS,
         payload:{
           pointList: [],
           totalNum: 0,

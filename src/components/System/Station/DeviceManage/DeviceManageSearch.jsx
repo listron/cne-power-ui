@@ -15,6 +15,7 @@ class DeviceManageSearch extends Component {
     deviceModels: PropTypes.array,
     deviceTypeCode: PropTypes.number,
     deviceModelCode: PropTypes.number,
+    changeCommonStore: PropTypes.func,
     getDeviceList: PropTypes.func,
     getStationDeviceTypes: PropTypes.func,
     getStationDeviceModel: PropTypes.func,
@@ -28,13 +29,16 @@ class DeviceManageSearch extends Component {
   }
 
   selectStation = (stations) => {
-    const { getStationDeviceTypes, getDeviceList, queryParams } = this.props;
+    const { getStationDeviceTypes, getDeviceList, queryParams, changeCommonStore } = this.props;
     getStationDeviceTypes({
       stationCodes: stations[0].stationCode,
     });
     getDeviceList({
       ...queryParams,
       stationCode: stations[0].stationCode,
+    })
+    changeCommonStore({
+      deviceModels: []
     })
   }
 

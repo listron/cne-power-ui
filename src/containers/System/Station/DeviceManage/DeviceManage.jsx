@@ -94,6 +94,7 @@ const mapDispatchToProps = (dispatch) => ({
   getDeviceList: payload => dispatch({type: deviceManageAction.GET_DEVICE_MANAGE_LIST, payload}),
   getStationDeviceTypes: payload => dispatch({type:commonAction.GET_STATION_DEVICETYPES_SAGA, payload}),
   getStationDeviceModel: payload => dispatch({type:commonAction.GET_STATION_DEVICEMODEL_SAGA, payload}),
+  changeCommonStore: payload => dispatch({type:commonAction.CHANGE_COMMON_STORE_SAGA, payload}),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DeviceManage);

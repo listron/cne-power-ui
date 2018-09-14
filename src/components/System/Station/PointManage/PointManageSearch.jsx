@@ -15,6 +15,7 @@ class PointManageSearch extends Component {
     deviceTypeCode: PropTypes.number,
     deviceModelCode: PropTypes.number,
     getPointList: PropTypes.func,
+    changeCommonStore: PropTypes.func,
     getStationDeviceTypes: PropTypes.func,
     getStationDeviceModel: PropTypes.func,
   }
@@ -27,13 +28,16 @@ class PointManageSearch extends Component {
   }
 
   selectStation = (stations) => {
-    const { getStationDeviceTypes, getPointList, queryParams } = this.props;
+    const { getStationDeviceTypes, getPointList, queryParams, changeCommonStore } = this.props;
     getStationDeviceTypes({
       stationCodes: stations[0].stationCode,
     });
     getPointList({
       ...queryParams,
       stationCode: stations[0].stationCode,
+    })
+    changeCommonStore({
+      deviceModels: []
     })
   }
 

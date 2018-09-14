@@ -1,5 +1,6 @@
 import { call, put, takeLatest, select } from 'redux-saga/effects';
 import axios from 'axios';
+import { message } from 'antd';
 import Path from '../../../../constants/path';
 import { alarmManageAction } from '../../../../constants/actionTypes/system/station/alarmManageAction';
 
@@ -17,7 +18,10 @@ function *getAlarmList(action){ // 请求告警事件列表
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.getAlarmList}`
   try{
     yield put({ type: alarmManageAction.ALARM_MANAGE_FETCH });
-    const response = yield call(axios.post,url,payload);
+    const response = yield call(axios.post,url,{
+      ...payload,
+      sortField: payload.sortField.replace(/[A-Z]/g,e=>`_${e.toLowerCase()}`), //重组字符串
+    });
     yield put({
       type:  alarmManageAction.GET_ALARM_MANAGE_FETCH_SUCCESS,
       payload:{
@@ -44,15 +48,26 @@ function *deleteAlarmList(action){ // 清除电站告警事件
     const response = yield call(axios.delete,url);
     if(response.data.code === '10000'){ // 删除成功后，重置数据至清空状态
       yield put({
-        type:  alarmManageAction.GET_ALARM_MANAGE_LIST,
+        type:  alarmManageAction.GET_ALARM_MANAGE_FETCH_SUCCESS,
         payload:{
           alarmList: [],
           totalNum: 0,
         },
       });
+    }else{
+      message.error('清除告警事件失败！')
+      yield put({
+        type:  alarmManageAction.CHANGE_ALARM_MANAGE_STORE,
+        payload: { loading: false },
+      })
     }
   }catch(e){
     console.log(e);
+    message.error('清除告警事件失败！')
+    yield put({
+      type:  alarmManageAction.CHANGE_ALARM_MANAGE_STORE,
+      payload: { loading: false },
+    })
   }
 }
 
