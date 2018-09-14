@@ -94,8 +94,8 @@ class StationSelectModal extends Component {
   render() {
     const { hideStationModal, data, uploaderName, uploadPath, uploadExtraData } = this.props;
     const { filterStationType, selectedStation } = this.state;
-    const tmpStationTypeArray = data.map(e=>e && e.stationType).filter(e=>e);
-    const stationTypeSet = new Set(...tmpStationTypeArray);
+    const tmpStationTypeArray = data.map(e=>e && e.stationType).filter(e=>(e || e === 0) );
+    const stationTypeSet = new Set(tmpStationTypeArray);
     const stationTypeArray = Array.from(stationTypeSet);
     const showTypeSelectButton = stationTypeArray.length === 2;
     const authData = Cookie.get('authData') || null;
@@ -117,9 +117,8 @@ class StationSelectModal extends Component {
           beforeUpload={this.beforeUpload}
           onChange={this.excelInfoUpload}
           data={(file)=>({
-            ...uploadExtraData,
-            ...file,
-
+            ...uploadExtraObject,
+            file,
           })}
         >
           <Button>导入{uploaderName}</Button>
@@ -133,8 +132,8 @@ class StationSelectModal extends Component {
             </RadioGroup>}
           </div>
           <div className={styles.provinceList}>
-            {this._filterStation()}
-          </div>
+            {this._filterStation()} 
+          </div> 
         </div>
       </Modal>
     )

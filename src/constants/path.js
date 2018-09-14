@@ -101,6 +101,7 @@ export default {
       importUserBatch: '/v3/user/batch',//批量导入用户
 
       // 电站管理部分
+      uploadStationFile: '/api/v3/management/stationimport', // 导入电站信息
       getStationList: '/v3/management/stationList', // 获取电站列表
       getStationDetail: '/v3/management/stationDetail', // 获取电站详情
       saveStationDetail: '/v3/management/upateStation', // 编辑后保存电站详情

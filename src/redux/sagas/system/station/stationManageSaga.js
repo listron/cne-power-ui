@@ -143,8 +143,8 @@ function *saveStationDetail(action){ // 保存编辑的电站详情；
 
 function *deleteStation(action){ // 删除电站(及以下设备)
   const { payload } = action;
-  const url = '/mock/system/deleteStation';
-  // const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.deleteStation}/${payload.enterpriseId}`
+  // const url = '/mock/system/deleteStation';
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.deleteStation}/${payload.stationCode}`
   try{
     yield put({ type:stationManageAction.STATION_MANAGE_FETCH });
     const response = yield call(axios.delete, url, payload);

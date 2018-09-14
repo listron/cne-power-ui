@@ -4,6 +4,7 @@ import CommonPagination from '../../../Common/CommonPagination';
 import SingleStationImportFileModel from '../../../Common/SingleStationImportFileModel';
 import { Button } from 'antd';
 import PropTypes from 'prop-types';
+import path from '../../../../constants/path';
 
 class PointManageHandle extends Component {
   static propTypes = {
@@ -19,7 +20,6 @@ class PointManageHandle extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      pointModal: false,
     }
   }
 
@@ -37,21 +37,8 @@ class PointManageHandle extends Component {
     deletePointList({ stationCode });
   }
 
-  showAddPointModal = () => {
-    this.setState({ pointModal: true })
-  }
-
-  hideAddPointModal = () => {
-    this.setState({ pointModal: true })
-  }
-
-  importPointData = () => {
-    this.setState({ pointModal: false })
-  }
-
   render() {
     const { totalNum, pointList, stations, stationList, stationCode } = this.props;
-    const { pointModal } = this.state;
     const selectedStationInfo = stationList.find(e => e.stationCode === stationCode);
     const pointForbidClear = !selectedStationInfo || selectedStationInfo.pointStatus === 1; // 未找到电站或电站已导入告警，不可清除
     return (
@@ -59,7 +46,7 @@ class PointManageHandle extends Component {
         <div className={styles.leftHandler}>
           <SingleStationImportFileModel 
             data={stations} 
-            uploadPath={''} 
+            uploadPath={`${path.basePaths.APIBasePath}${path.APISubPaths.system.importPointsInfo}`} 
             uploaderName={'测点'} 
             uploadExtraData={['stationCode']}
           />
@@ -68,7 +55,6 @@ class PointManageHandle extends Component {
           <Button disabled={pointList.length === 0 || pointForbidClear} onClick={this.deletePointList} className={styles.clearPoint}>清除测点</Button>
         </div>
         <CommonPagination  total={totalNum} onPaginationChange={this.onPaginationChange} />
-        {pointModal && <div>这个东西啊！</div>}
       </div>
     );
   }

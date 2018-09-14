@@ -4,6 +4,7 @@ import CommonPagination from '../../../Common/CommonPagination';
 import SingleStationImportFileModel from '../../../Common/SingleStationImportFileModel';
 import { Button } from 'antd';
 import PropTypes from 'prop-types';
+import path from '../../../../constants/path';
 
 class AlarmManageHandle extends Component {
   static propTypes = {
@@ -36,27 +37,14 @@ class AlarmManageHandle extends Component {
     deleteAlarmList({ stationCode });
   }
 
-  showAddAlarmModal = () => {
-    this.setState({ alarmModal: true })
-  }
-
-  hideAddAlarmModal = () => {
-    this.setState({ alarmModal: true })
-  }
-
-  importAlarmData = () => {
-    this.setState({ alarmModal: false })
-  }
-
   render() {
     const { totalNum, alarmList, stations } = this.props;
-    const { alarmModal } = this.state;
     return (
       <div className={styles.alarmManageHandle}>
         <div className={styles.leftHandler}>
           <SingleStationImportFileModel 
             data={stations} 
-            uploadPath={''} 
+            uploadPath={`${path.basePaths.APIBasePath}${path.APISubPaths.system.importAlarmInfo}`} 
             uploaderName={'告警'} 
             disableStation={[]}
             uploadExtraData={['stationCode','stationType']}
@@ -65,7 +53,6 @@ class AlarmManageHandle extends Component {
           <Button disabled={alarmList.length === 0} onClick={this.deleteAlarmList} className={styles.clearAlarm}>清除告警</Button>
         </div>
         <CommonPagination  total={totalNum} onPaginationChange={this.onPaginationChange} />
-        {alarmModal && <div>这个东西啊！</div>}
       </div>
     );
   }

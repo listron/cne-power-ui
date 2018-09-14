@@ -8,6 +8,7 @@ import SetDepartmentModal from './SetDepartmentModal';
 import styles from './stationMain.scss';
 import PropTypes from 'prop-types';
 import Cookie from 'js-cookie';
+import path from '../../../../../constants/path';
 
 
 class StationManageTable extends Component {
@@ -161,11 +162,12 @@ class StationManageTable extends Component {
         <div className={styles.topHandler}>
           <div className={styles.leftHandler}>
             <Upload 
-              action="/api/v3/management/stationimport"
+              action={`${path.basePaths.APIBasePath}${path.APISubPaths.system.uploadStationFile}`}
               className={styles.uploadStation}
               onChange={this.onStationUpload}
               headers={{'Authorization': 'bearer ' + JSON.parse(authData)}}
               beforeUpload={this.beforeUploadStation}
+              data={(file)=>({file})}
             >
               <Button className={styles.plusButton}>
                 <Icon type="plus" className={styles.plusIcon} />
