@@ -25,6 +25,7 @@ class OutputPowerDiagram extends Component {
 
   componentWillReceiveProps(nextProps) {
     const { capabilityData, powerData } = nextProps;
+    // console.log(capabilityData);
     const capabilityDiagram = echarts.init(document.getElementById('capabilityDiagram'));
     const powerDiagram = echarts.init(document.getElementById('powerDiagram'));
 
@@ -98,7 +99,8 @@ class OutputPowerDiagram extends Component {
           type: 'category',
           boundaryGap: false,
           data: capabilityData && capabilityData.map(e=>{
-            return moment(moment.utc(e.utc).toDate()).format('MM-DD hh:mm');
+            console.log(capabilityData);
+            return moment(moment.utc(e.utc).toDate()).format('MM-DD HH:mm');
           }),
           axisLine: {
             lineStyle: {
