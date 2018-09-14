@@ -111,6 +111,11 @@ class OutputPowerDiagram extends Component {
           axisTick: {
             show: false,
           },
+          axisPointer:{
+            label: {
+              show: false,
+            }
+          },
         }
       ],
       yAxis: [

@@ -445,6 +445,7 @@ class AssignUserModal extends Component {
         onCancel={this.onCancel}
         width={625}
         className={styles.assignUser}
+        mask={false}
       >
         <div className={styles.assignUserModal}>
           {showWarningTip && 

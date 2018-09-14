@@ -167,15 +167,12 @@
       .handleArea {
         float: right;
         font-size: 20px;
-        .previous {
-          margin-right: 20px;
-          cursor: pointer;
-          color: #999;
-        }
-        .next {
-          margin-right: 28px;
-          cursor: pointer;
-          color: #999;
+        :global{
+          .iconfont{
+            margin-right: 20px;
+            cursor: pointer;
+            color: #999;
+          }
         }
         .backIcon {
           height: 100%;
