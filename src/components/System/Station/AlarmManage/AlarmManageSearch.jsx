@@ -93,8 +93,6 @@ class AlarmManageSearch extends Component {
     const typeSelectDisable = stationDeviceTypes.length === 0;
     const modelSelectDisable = deviceModels.length === 0;
     const pointSelectDisable = devicePoints.length === 0;
-    console.log(deviceModels )
-    console.log(devicePoints )
     return (
       <div className={styles.alarmManageSearch}>
         <span className={styles.titleText}>条件查询</span>

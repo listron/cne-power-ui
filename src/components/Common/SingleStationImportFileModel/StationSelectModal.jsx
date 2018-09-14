@@ -103,6 +103,7 @@ class StationSelectModal extends Component {
     uploadExtraData.forEach(e=>{
       uploadExtraObject[e] = selectedStation[e];
     })
+    const uploadAvailable = selectedStation.stationCode;
     return (
       <Modal
         visible={true}
@@ -116,12 +117,13 @@ class StationSelectModal extends Component {
           headers={{'Authorization': 'bearer ' + JSON.parse(authData)}}
           beforeUpload={this.beforeUpload}
           onChange={this.excelInfoUpload}
+          showUploadList={false}
           data={(file)=>({
             ...uploadExtraObject,
             file,
           })}
         >
-          <Button>导入{uploaderName}</Button>
+          <Button disabled={!uploadAvailable}>导入{uploaderName}</Button>
         </Upload>}
       >
         <div className={styles.stationModalContent}>

@@ -8,7 +8,7 @@ import path from '../../../../constants/path';
 
 class AlarmManageHandle extends Component {
   static propTypes = {
-    stationCode: PropTypes.string,
+    stationCode: PropTypes.number,
     totalNum: PropTypes.number,
     alarmList: PropTypes.array,
     stations: PropTypes.array,

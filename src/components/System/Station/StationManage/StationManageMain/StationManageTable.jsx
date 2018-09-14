@@ -31,12 +31,14 @@ class StationManageTable extends Component {
       uplaoding: false,
       departmentModal: false,
       departmentSetInfo: {},
+      fileList: [],
     }
   }
 
   onStationUpload = ({file, fileList}) => { // 添加上传电站
     this.setState({
       uplaoding: true,
+      fileList,
     })
     if (file.status !== 'uploading') {
       console.log(file, fileList);
@@ -44,11 +46,14 @@ class StationManageTable extends Component {
         uplaoding: false,
       })
     }
-    if (file.status === 'done') {
+    if (file.status === 'done' && file.response && file.response.code === '10000') {
       message.success(`${file.name} 文件上传成功`);
+      this.setState({fileList: []});
       const { getStationList, queryListParams } = this.props;
       getStationList({ ...queryListParams }); //上传成功后，重新请求列表数据
-    } else if (file.status === 'error') {
+    }else if(file.status === 'done' && (!file.response || file.response.code !== '10000')){
+      message.error(`${file.name} 文件上传失败,请重试!`);
+    }else if (file.status === 'error') {
       message.error(`${file.name} 文件上传失败,请重试!`);
     }
   }
@@ -120,7 +125,7 @@ class StationManageTable extends Component {
 
   render(){
     const { loading, stationList, totalNum, allDepartmentData } = this.props;
-    const { departmentModal, departmentSetInfo, uplaoding } = this.state;
+    const { departmentModal, departmentSetInfo, uplaoding, fileList } = this.state;
     const authData = Cookie.get('authData') || null;
     const column = [
       {
@@ -174,6 +179,7 @@ class StationManageTable extends Component {
               beforeUpload={this.beforeUploadStation}
               data={(file)=>({file})}
               showUploadList={false}
+              fileList={fileList}
             >
               <Button className={styles.plusButton} icon="plus" loading={uplaoding}>电站</Button>
             </Upload>

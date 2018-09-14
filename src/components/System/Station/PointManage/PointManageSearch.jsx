@@ -35,6 +35,8 @@ class PointManageSearch extends Component {
     getPointList({
       ...queryParams,
       stationCode: stations[0].stationCode,
+      deviceTypeCode: null,
+      deviceModelCode: null,
     })
     changeCommonStore({
       deviceModels: []
@@ -50,6 +52,7 @@ class PointManageSearch extends Component {
     getPointList({
       ...queryParams,
       deviceTypeCode: value,
+      deviceModelCode: null,
     })
   }
 
