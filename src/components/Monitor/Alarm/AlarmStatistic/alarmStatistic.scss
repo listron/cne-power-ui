@@ -143,7 +143,12 @@
     }
     .tabContainer {
       .exportData{
-        margin-right: 30px;     
+        margin-right: 30px;
+        :global {
+          button:focus {
+            outline: none;
+          }
+        }     
         .exportBtn{
           color: #199475;
           background-color:#fff;

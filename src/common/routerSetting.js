@@ -1,8 +1,8 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
 import Ticket from '../containers/Operation/Ticket/Ticket';
+import DefectDetail from '../containers/Operation/Ticket/Defect/DefectDetail/DefectDetail';
 import Exception from '../containers/Login/Exception';
-import Power from '../containers/Power';
 import Enterprise from '../containers/System/Account/Enterprise/Enterprise';
 import Department from '../containers/System/Account/Department/Department';
 import User from '../containers/System/Account/User/User';
@@ -38,6 +38,10 @@ const routers = [
     path: '/operation/ticket/list',
     exact: true,
     component: Ticket,
+  }, {
+    path: '/operation/ticket/defect/:defectId',
+    exact: true,
+    component: DefectDetail,
   }, {
     path: '/operation/ticket/statistics',
     exact: true,
