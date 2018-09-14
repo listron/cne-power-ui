@@ -77,7 +77,7 @@ class PointManageList extends Component {
     ];
     const { loading, pointList } = this.props;
     return (
-      <div className={styles.deviceManageList}>
+      <div className={styles.pointManageList}>
         <Table
           loading={loading}
           onChange={this.tableChange}

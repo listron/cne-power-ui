@@ -4,14 +4,14 @@ import { deviceManageAction } from '../../../../constants/actionTypes/system/sta
 
 var initState = Immutable.fromJS({
   loading: false,
-  stationCode: '', // 选中的电站
-  deviceTypeCode: '', // 选中的设备类型
-  deviceModelCode: '', // 选中的设备型号
+  stationCode: "", // 选中的电站
+  deviceTypeCode: "", // 选中的设备类型
+  deviceModelCode: "", // 选中的设备型号
   pageNum: 1,
   pageSize: 10,
   totalNum:  0, // 设备总数
   sortField: '', // 排序字段
-  sortMethod: 'des',
+  sortMethod: '', // 排序方式('0':正序,'1': 倒序)
   
   deviceList: [], // 设备列表
 });

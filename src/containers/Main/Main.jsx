@@ -103,7 +103,6 @@ class Main extends Component {
     if(authData && isTokenValid){
       axios.defaults.headers.common['Authorization'] = "bearer " + JSON.parse(authData);
     }
-    
     if(isTokenValid && authData && (isNotLogin === '0')){
     // if(true){
       return (

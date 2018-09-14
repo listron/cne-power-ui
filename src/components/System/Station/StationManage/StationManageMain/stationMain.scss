@@ -78,36 +78,34 @@
           display: flex;
           .uploadStation{
             .plusButton { // 添加电站 
-              padding: 0;
               margin: 0 12px 0 32px;
-              .plusIcon{
-                color: #fff;
-                background-color: $themeColor;
-                height: 100%;
-                border-radius: 4px 0 0 4px;
-                width: 28px;
-                vertical-align: top;
-                line-height: 30px;
-              }
-              .plusText{
+              padding: 0 0 0 15px;
+              background-color: $themeColor;
+              span{
+                background-color: #fff;
+                color:$themeColor;
                 border-radius: 0 4px 4px 0;
                 display: inline-block;
-                color: $themeColor;
                 height: 100%;
                 width: 38px;
                 line-height: 30px; 
                 margin: 0px;
               }
               &:hover{
-                .plusText{
+                span{
                   background-color: $themeColor;
                   color:#fff;
                 }
-              } 
-            }
-            :global{
-              .ant-upload-list{
-                display: none;
+              }
+              :global{
+                .anticon-plus{
+                  color: #fff;
+                  height: 100%;
+                  border-radius: 4px 0 0 4px;
+                  width: 18px;
+                  text-align: left;
+                  line-height: 30px;
+                }
               }
             }
           }

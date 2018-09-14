@@ -16,7 +16,7 @@ class SetDepartmentModal extends Component { // 电站管理列表页
   constructor(props){
     super(props);
     const { departmentSetInfo } = props;
-    const checkedKeys = departmentSetInfo.stationDepartments && departmentSetInfo.stationDepartments.length > 0 || [];
+    const checkedKeys = departmentSetInfo.stationDepartments || [];
     this.state = {
       checkedKeys,
     }
@@ -97,7 +97,7 @@ class SetDepartmentModal extends Component { // 电站管理列表页
         wrapClassName={styles.departmentSetting}
         width={625}
         footer={<div className={styles.footer}>
-          <Button onClick={this.confirmSetting} className={styles.cancel}>取消</Button>
+          <Button onClick={this.cancelSetting} className={styles.cancel}>取消</Button>
           <Button onClick={this.confirmSetting} className={styles.confirm}>保存</Button>
         </div>}
       >

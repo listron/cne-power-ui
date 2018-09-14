@@ -13,7 +13,7 @@ import Cookie from 'js-cookie';
 class StationManage extends Component {
   static propTypes = {
     showPage: PropTypes.string,
-    stationType: PropTypes.number, 
+    stationType: PropTypes.string, 
     regionName: PropTypes.string,
     stationName: PropTypes.string,
     pageNum: PropTypes.number,
@@ -45,6 +45,15 @@ class StationManage extends Component {
     this.props.changeStationManageStore({
       showPage: 'list',
       selectedStationIndex: null,
+      stationType: "",
+      regionName: '',
+      stationName: '',
+      pageNum: 1,
+      pageSize: 10,
+      orderField: '',
+      orderCommand: '', 
+      stationList: [], 
+      totalNum:  0,
     });
   }
 

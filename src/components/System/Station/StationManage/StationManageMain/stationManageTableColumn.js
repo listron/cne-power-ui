@@ -17,17 +17,17 @@ const stationManageTableColumn = [{
     sorter: true,
   },{
     title: '发电单元数',
-    dataIndex: 'series',
-    key: 'series',
+    dataIndex: 'stationUnitCount',
+    key: 'stationUnitCount',
     sorter: true,
   },{
     title: '是否接入',
-    dataIndex: 'connected',
-    key: 'connected',
+    dataIndex: 'isConnected',
+    key: 'isConnected',
     sorter: true,
     render: (text, record, index) => {
-      const { stationStatus } = record; 
-      return <span className={styles.contact}>{stationStatus?'是':'否'}</span>
+      const { isConnected } = record; 
+      return <span className={styles.contact}>{isConnected?'是':'否'}</span>
     }
   },{
     title: '电站状态',
