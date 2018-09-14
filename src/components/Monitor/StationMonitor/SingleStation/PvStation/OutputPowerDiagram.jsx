@@ -111,6 +111,11 @@ class OutputPowerDiagram extends Component {
           axisTick: {
             show: false,
           },
+          axisPointer:{
+            label: {
+              show: false,
+            }
+          },
         }
       ],
       yAxis: [
@@ -197,6 +202,7 @@ class OutputPowerDiagram extends Component {
       ]
     }
     capabilityDiagram.setOption(capabilityOption);
+    capabilityDiagram.resize();
 
     const powerOption = {//实际发电量 理论发电量
       graphic: powerGraphic,
@@ -358,6 +364,7 @@ class OutputPowerDiagram extends Component {
       ]
     }
     powerDiagram.setOption(powerOption);
+    powerDiagram.resize();
   }
 
   onChangeTimePower = (e) => {

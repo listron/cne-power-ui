@@ -52,6 +52,12 @@ function BoxtransformerTenMin({ deviceTenMin, loading }) {
           color: lineColor,
           fontSize: '12px',
         },
+        axisPointer: {
+          type: 'cross',
+          label: {
+            backgroundColor: '#666',
+          }
+        },
         formatter: (param) => {
          
           return `<div style="width: 128px; height: 75px;font-size:12px;line-height: 24px;background: #fff;box-shadow:0 1px 4px 0 rgba(0,0,0,0.20);border-radius:2px;">
@@ -79,6 +85,11 @@ function BoxtransformerTenMin({ deviceTenMin, loading }) {
         },
         axisLabel: {
           color: lineColor,
+        },
+        axisPointer:{
+          label: {
+            show: false,
+          }
         },
       },
       yAxis: [
@@ -166,6 +177,7 @@ function BoxtransformerTenMin({ deviceTenMin, loading }) {
       ]
     };
     boxtransformerChart.setOption(option);
+    boxtransformerChart.resize();
   }
   return (
     <div id="boxtransformer_monitor_tenMin" style={{height:"335px"}}></div>
