@@ -16,6 +16,7 @@ class StationSelectModal extends Component {
     disableStation: PropTypes.array, // 不可选电站code 数组
     data: PropTypes.array, // station信息集合
     hideStationModal: PropTypes.func, // 隐藏
+    loadedCallback: PropTypes.func,
   }
 
   constructor(props) {
@@ -48,12 +49,16 @@ class StationSelectModal extends Component {
   }
 
   excelInfoUpload = ({file, fileList}) => { // 
+    const { loadedCallback, hideStationModal } = this.props;
     if (file.status !== 'uploading') {
       console.log(file, fileList);
     }
-    if (file.status === 'done') {
+    if (file.status === 'done' && file.response && file.response.code === '10000' ) {
       message.success(`${file.name} 文件上传成功`);
-      this.props.hideStationModal()
+      loadedCallback && loadedCallback({file});
+      hideStationModal()
+    }else if(file.status === 'done' && (!file.response || file.response.code !== '10000') ){
+      message.error(`${file.name} 文件上传失败: ${file.response.message},请重试!`);
     } else if (file.status === 'error') {
       message.error(`${file.name} 文件上传失败!`);
     }

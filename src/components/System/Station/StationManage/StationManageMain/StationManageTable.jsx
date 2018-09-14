@@ -52,7 +52,7 @@ class StationManageTable extends Component {
       const { getStationList, queryListParams } = this.props;
       getStationList({ ...queryListParams }); //上传成功后，重新请求列表数据
     }else if(file.status === 'done' && (!file.response || file.response.code !== '10000')){
-      message.error(`${file.name} 文件上传失败,请重试!`);
+      message.error(`${file.name} 文件上传失败: ${file.response.message},请重试!`);
     }else if (file.status === 'error') {
       message.error(`${file.name} 文件上传失败,请重试!`);
     }
