@@ -19,6 +19,8 @@ class ALarmAllStationStatistic extends React.Component {
     endTime: PropTypes.string,
     history: PropTypes.object,
     getStationsAlarmStatistic: PropTypes.func,
+    showPage: PropTypes.string,
+    changeAlarmStatisticStore: PropTypes.func,
   }
   constructor(props) {
     super(props);
@@ -27,22 +29,24 @@ class ALarmAllStationStatistic extends React.Component {
     };
   }
   componentDidMount() {
-    const { stationCode, startTime, endTime, stations, pageSize, pageNum, orderField, orderCommand } = this.props;
-    let stationType = this.props.stationType;
-    const stationTypeOne = this.stationIsOneType();
-    if(stationTypeOne) {
-      stationType = stations.getIn([0, 'stationType']);
+    if(this.props.showPage === 'multiple') {
+      const { stationCode, startTime, endTime, stations, pageSize, pageNum, orderField, orderCommand } = this.props;
+      let stationType = this.props.stationType;
+      const stationTypeOne = this.stationIsOneType();
+      if(stationTypeOne) {
+        stationType = stations.getIn([0, 'stationType']);
+      }
+      this.props.getStationsAlarmStatistic({
+        stationType,
+        stationCode,
+        startTime,
+        endTime,
+        pageSize,
+        pageNum,
+        orderField,
+        orderCommand
+      });
     }
-    this.props.getStationsAlarmStatistic({
-      stationType,
-      stationCode,
-      startTime,
-      endTime,
-      pageSize,
-      pageNum,
-      orderField,
-      orderCommand
-    });
   }
 
   onChangeFilter = (obj) => {
@@ -64,6 +68,10 @@ class ALarmAllStationStatistic extends React.Component {
 
   onChangeStation = (stationCode) => {
     this.props.history.push(`/monitor/alarm/statistic/${stationCode}`);
+    this.props.changeAlarmStatisticStore({
+      showPage: 'single',
+      singleStationCode: stationCode.toString()
+    });
   }
 
 
