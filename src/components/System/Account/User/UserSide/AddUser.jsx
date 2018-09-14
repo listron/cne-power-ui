@@ -8,8 +8,6 @@ import AddForm from './AddForm';
 import SingleImgUploader from '../../../../Common/Uploader/SingleImgUploader';
 import pathConfig from '../../../../../constants/path';
 import WarningTip from '../../../../Common/WarningTip';
-
-//企业信息编辑页
 class AddUser extends Component {
   static propTypes = {
     loading: PropTypes.bool,

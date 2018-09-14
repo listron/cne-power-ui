@@ -14,6 +14,7 @@ class AlarmStatisticByType extends Component {
   static propTypes = {
     stations: PropTypes.object,
     stationCode: PropTypes.array,
+    stationType: PropTypes.string,
     pageSize: PropTypes.number,
     pageNum: PropTypes.number,
     orderField: PropTypes.string,
@@ -21,6 +22,7 @@ class AlarmStatisticByType extends Component {
     startTime: PropTypes.string,
     endTime: PropTypes.string,
     onChangeFilter: PropTypes.func,
+    exportAlarm: PropTypes.func,
   }
   constructor(props) {
     super(props);
@@ -108,6 +110,15 @@ class AlarmStatisticByType extends Component {
       this.start = null;
     }
   }
+  exportAlarm = () => {
+    const { stationCode, startTime, endTime, stationType } = this.props;
+    this.props.exportAlarm({
+      stationCode,
+      startTime,
+      endTime,
+      stationType
+    });
+  }
   disabledDate = (current) => {
     if(this.start) {
       const end = moment(this.start).add(30, 'days');
@@ -122,7 +133,7 @@ class AlarmStatisticByType extends Component {
     //数据导出按钮
     const operations = (
       <div className={styles.exportData}>
-        <button className={styles.exportBtn}>数据导出</button>
+        <button className={styles.exportBtn} onClick={this.exportAlarm}>数据导出</button>
       </div >
     );
     return (

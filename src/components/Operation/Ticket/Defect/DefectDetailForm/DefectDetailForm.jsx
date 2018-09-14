@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import DefectBasicInfo from '../DefectBasicInfo/DefectBasicInfo';
 import DefectHandleForm from '../DefectHandleForm/DefectHandleForm';
 import DefectTimeLine from '../DefectTimeLine/DefectTimeLine';
@@ -18,7 +19,8 @@ class DefectDetailForm extends Component {
     onCheck: PropTypes.func,
     onCloseDefectDetail: PropTypes.func,
     onNext: PropTypes.func,
-    onPrev: PropTypes.func
+    onPrev: PropTypes.func,
+    isFromAlarm: PropTypes.bool,
   }
 
   constructor(props) {
@@ -166,6 +168,7 @@ class DefectDetailForm extends Component {
 
   render() {
     const defectDetail = this.props.defectDetail;
+    const isFromAlarm = this.props.isFromAlarm;
     const processData = defectDetail.get('processData');
     const status = defectDetail.get('defectStatus')
     const { showWarningTip, warningTipText } = this.state;
@@ -175,11 +178,12 @@ class DefectDetailForm extends Component {
         <div className={styles.defectDetail}>
           <div className={styles.header}>
             <div className={styles.text}>{this.renderTitle()}</div>
-            <div className={styles.action}>
+            {!isFromAlarm&&<div className={styles.action}>
               <i className="iconfont icon-last" onClick={this.props.onPrev} />
               <i className="iconfont icon-next" onClick={this.props.onNext} />
               <Icon type="arrow-left" className={styles.backIcon} onClick={this.onCancelEdit} />
-            </div>   
+            </div>}
+            {isFromAlarm&&<div className={styles.backBtn}><Link to="/monitor/alarm/transfer">返回</Link></div>}   
           </div>
           <div className={styles.content}>
             <div className={styles.basic}>

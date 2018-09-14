@@ -105,13 +105,12 @@
        flex:1;
        justify-content: flex-end;
        align-items: center;
-        .previous{
-          margin-right: 20px;
-          cursor: pointer;
-        }
-        .next{
-          margin-right: 28px;
-          cursor: pointer;
+        :global{
+          .iconfont{
+            margin-right: 20px;
+            cursor: pointer;
+            color: #999;
+          }
         }
         .backIcon{
           height: 100%;

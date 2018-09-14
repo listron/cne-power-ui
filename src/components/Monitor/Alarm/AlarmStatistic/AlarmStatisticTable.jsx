@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styles from './alarmStatistic.scss';
 import { Table } from 'antd';
 import CommonPagination from '../../../Common/CommonPagination';
+import moment from 'moment';
 
 class AlarmStatisticTable extends React.Component {
   static propTypes = {
@@ -17,6 +18,7 @@ class AlarmStatisticTable extends React.Component {
   constructor(props) {
     super(props);
   }
+
   onPaginationChange = ({ currentPage, pageSize }) => {//分页器
     this.props.onChangeFilter({
       pageNum: currentPage,
@@ -32,8 +34,20 @@ class AlarmStatisticTable extends React.Component {
       orderCommand: sorter.order === 'ascend' ? '1' : '2'
     });
   }
- 
 
+  getDuration(seconds) {
+    const milliseconds = seconds * 1000;
+    const minuteNum = seconds/60;
+    const duration = moment.duration(milliseconds);
+    const day = parseInt(minuteNum/(60*24)) > 99 ? 99 : parseInt(minuteNum/(60*24));
+    const displayDay = (day < 10 && day!==0) ? "0" + day : day;
+    const hour = duration.hours();
+    const displayHour = hour < 10 ? "0" + hour : hour;
+    const minute = duration.minutes();
+    const displayMiute = minute < 10 ? "0" + minute : minute;
+    return `${displayDay}天${displayHour}小时${displayMiute}分钟`;
+  }
+ 
   renderColumn() {
     const columns = [
       {
@@ -78,30 +92,45 @@ class AlarmStatisticTable extends React.Component {
         title: '平均处理时间',
         dataIndex: 'handleAvgTime',
         key: 'handleAvgTime',
+        render: (text, record) => {
+          return this.getDuration(text);
+        },
         sorter: true,
       },
       {
         title: '一级处理时间',
         dataIndex: 'oneHandleAvgTime',
         key: 'oneHandleAvgTime',
+        render: (text, record) => {
+          return this.getDuration(text);
+        },
         sorter: true,
       },
       {
         title: '二级处理时间',
         dataIndex: 'twoHandleAvgTime',
         key: 'twoHandleAvgTime',
+        render: (text, record) => {
+          return this.getDuration(text);
+        },
         sorter: true,
       },
       {
         title: '三级处理时间',
         dataIndex: 'threeHandleAvgTime',
         key: 'threeHandleAvgTime',
+        render: (text, record) => {
+          return this.getDuration(text);
+        },
         sorter: true,
       },
       {
         title: '四级处理时间',
         dataIndex: 'fourHandleAvgTime',
         key: 'fourHandleAvgTime',
+        render: (text, record) => {
+          return this.getDuration(text);
+        },
         sorter: true,
       },
     ];    
