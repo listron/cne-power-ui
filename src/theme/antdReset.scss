@@ -5,13 +5,13 @@
 
 :global{
   
-  .ant-table-column-sorter-up.on .anticon-caret-up {//table表格排序上三角点击后的的颜色
-    color: $themeColor;
-}
-  .ant-table-column-sorter-down.on .anticon-caret-down {//table表格排序下三角点击后的的颜色
-    color: $themeColor;
-}
   .ant-table{//table行高，高亮，背景色调整；
+    .ant-table-column-sorter-up.on .anticon-caret-up {//table表格排序上三角点击后的的颜色
+      color: $themeColor;
+  }
+    .ant-table-column-sorter-down.on .anticon-caret-down {//table表格排序下三角点击后的的颜色
+      color: $themeColor;
+  }
     .ant-table-tbody{
       background: #fff;
       &>tr:hover{
@@ -36,6 +36,7 @@
     .ant-table-column-sorter-down.on .anticon-caret-down {//table表格排序下三角点击后的的颜色
         color: $themeColor;
     }
+
   }
 
   .ant-tree{ // 对antd tree控件的初始化： 高两色调整。
@@ -107,12 +108,16 @@
   .ant-steps-item-process > .ant-steps-item-content > .ant-steps-item-title,.ant-steps-item-finish > .ant-steps-item-content > .ant-steps-item-title {
     color: #fff;
   }
-  .ant-tabs-ink-bar{
-    color: $themeColor;
-  }
+  // .ant-tabs-ink-bar{
+  //   color: $themeColor;
+  // }
+  // .ant-tabs-ink-bar{
+  //   background-color: $themeColor;
+  // }
 
   .ant-tabs-ink-bar{
     color: $themeColor;
+    background-color: $themeColor;
   }
   
   .ant-tabs-nav ,.ant-tabs-tab-active {
@@ -136,9 +141,7 @@
     color: $themeColor;
   }
 
-  .ant-tabs-ink-bar{
-    background-color: $themeColor;
-  }
+  
   .ant-input:not(.ant-input-disabled):hover{
     border-color:$themeColor;
   }
@@ -236,6 +239,10 @@
   }
   .ant-switch-checked {
     background-color: $themeColor;
+  }
+  // 加载的spin
+  .ant-spin-dot i{
+    background-color: #199475
   }
   
 }

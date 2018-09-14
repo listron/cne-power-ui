@@ -21,7 +21,8 @@ class AddUser extends Component {
   constructor(props){
     super(props);
     this.state={
-      userLogo: props.userDetail && props.userDetail.userLogo,
+      //userLogo: props.userDetail && props.userDetail.userLogo,
+      userLogo:'/img/nopic.png',
       showWarningTip: false,
       warningTipText: '退出后信息无法保存!',
     }
@@ -57,6 +58,8 @@ class AddUser extends Component {
   
   render(){
     const { userLogo } = this.state;
+   
+    console.log(userLogo);
     const { userDetail,saveUserInfor, loading } = this.props;
     const { showWarningTip, warningTipText } = this.state;
     const uploadPath=`${pathConfig.basePaths.APIBasePath}${pathConfig.commonPaths.imgUploads}`;

@@ -63,7 +63,8 @@ class PvStationList extends React.Component {
         }
       },
       {
-        title: "实时功率(MW)",
+         title: "实时功率(MW)",
+        //title: <div style={{display:'flex',flexDirection:'column'}} ><span>实时功率</span><span>(MW)</span></div>,
 
         dataIndex: "stationPower",
         // defaultSortOrder: "descend",
