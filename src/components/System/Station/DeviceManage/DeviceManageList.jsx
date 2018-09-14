@@ -8,7 +8,7 @@ class DeviceManageList extends Component {
     loading: PropTypes.bool,
     queryParams: PropTypes.object,
     deviceList: PropTypes.array,
-    getStationList: PropTypes.func,
+    getDeviceList: PropTypes.func,
   }
   constructor(props) {
     super(props);
@@ -18,9 +18,9 @@ class DeviceManageList extends Component {
   }
 
   tableChange = (pagination, filter, sorter) => { // 排序触发重新请求设备列表
-    const { getStationList, queryParams } = this.props;
+    const { getDeviceList, queryParams } = this.props;
     const { field, order } = sorter;
-    getStationList({
+    getDeviceList({
       ...queryParams,
       sortField: field?field:'',
       sortMethod: order?(sorter.order==='ascend'?'0':'1'):'',

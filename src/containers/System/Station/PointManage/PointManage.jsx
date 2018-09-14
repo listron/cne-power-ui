@@ -15,9 +15,9 @@ import PropTypes from 'prop-types';
 
 class PointManage extends Component {
   static propTypes = {
-    stationCode: PropTypes.string,
-    deviceTypeCode: PropTypes.string,
-    deviceModelCode: PropTypes.string,
+    stationCode: PropTypes.number,
+    deviceTypeCode: PropTypes.number,
+    deviceModelCode: PropTypes.number,
     pageNum: PropTypes.number,
     pageSize: PropTypes.number,
     orderField: PropTypes.string,

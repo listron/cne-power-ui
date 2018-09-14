@@ -10,54 +10,68 @@ function *changePointManageStore(action){ // 存储payload指定参数，替换r
     payload,
   })
 }
-// loading: => POINT_MANAGE_FETCH
 
 function *getPointList(action){ // 请求单个详细数据信息
   const { payload } = action;
-  const url = '/mock/system/pointManage/pointsList';
-  // const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.getPointList}`
+  // const url = '/mock/system/pointManage/pointsList';
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.getPointList}`
   try{
     yield put({ type: pointManageAction.POINT_MANAGE_FETCH });
-    const response = yield call(axios.post,url,payload);
-    yield put({
-      type:  pointManageAction.GET_POINT_MANAGE_FETCH_SUCCESS,
-      payload:{
-        ...payload,
-        pointList: response.data.data.context || [],
-        totalNum: response.data.data.totalNum || 0,
-      },
+    const response = yield call(axios.post,url,{
+      ...payload,
+      orderField: payload.orderField.replace(/[A-Z]/g,e=>`_${e.toLowerCase()}`), //重组字符串
     });
+    if(response.data.code === '10000'){
+      yield put({
+        type:  pointManageAction.GET_POINT_MANAGE_FETCH_SUCCESS,
+        payload:{
+          ...payload,
+          pointList: response.data.data.dataList || [],
+          totalNum: response.data.data.total || 0,
+        },
+      });
+    }else{
+      yield put({
+        type:  pointManageAction.CHANGE_POINT_MANAGE_STORE,
+        payload: { loading: false },
+      })
+    }
   }catch(e){
     console.log(e);
+    yield put({
+      type:  pointManageAction.CHANGE_POINT_MANAGE_STORE,
+      payload: { loading: false },
+    })
   }
 }
 
 function *deletePointList(action){ // 清除测点列表
   const { payload } = action;
-  const url = '/mock/system/pointManage/deletePointList';
-  // const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.deletePoints}/${payload.stationCode}`
+  // const url = '/mock/system/pointManage/deletePointList';
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.deletePoints}/${payload.stationCode}`
   yield put({ type: pointManageAction.POINT_MANAGE_FETCH });
   try{
     const response = yield call(axios.delete,url);
-    if(response.data.code === '10000'){ // 删除成功后，重新请求已删除测点电站数据。(看是否[]=>校核)
-      const listPayload = yield select(state => ({ 
-        stationCode: payload.stationCode,
-        deviceTypeCode: state.system.pointManage.get('deviceTypeCode'),
-        deviceModelCode: state.system.pointManage.get('deviceModelCode'),
-        pageNum: state.system.pointManage.get('pageNum'),
-        pageSize: state.system.pointManage.get('pageSize'),
-        orderField: state.system.pointManage.get('orderField'),
-        orderType: state.system.pointManage.get('orderType'),
-      }));
+    if(response.data.code === '10000'){ // 删除成功后，清空列表
       yield put({
         type:  pointManageAction.GET_POINT_MANAGE_LIST,
         payload:{
-          ...listPayload,
+          pointList: [],
+          totalNum: 0,
         },
       });
+    }else{
+      yield put({
+        type:  pointManageAction.CHANGE_POINT_MANAGE_STORE,
+        payload: { loading: false },
+      })
     }
   }catch(e){
     console.log(e);
+    yield put({
+      type:  pointManageAction.CHANGE_POINT_MANAGE_STORE,
+      payload: { loading: false },
+    })
   }
 }
 

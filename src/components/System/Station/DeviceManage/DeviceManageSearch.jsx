@@ -54,7 +54,7 @@ class DeviceManageSearch extends Component {
     const { getDeviceList, queryParams } = this.props;
     getDeviceList({
       ...queryParams,
-      deviceTypeCode: value,
+      deviceModelCode: value,
     })
   }
 

@@ -85,9 +85,8 @@ function *getStationDeviceModel(action){ // 获取电站设备型号
   }
 }
 
-function *getStationDevicePoints(action){ // 获取电站设备类型下的测点。 -- todo
-  let url = Path.basePaths.APIBasePath + Path.commonPaths.getDeviceModel;
-  console.log('上面的这个路径不对，需要后天重新添加接口后动态拿到！')
+function *getStationDevicePoints(action){ // 获取电站设备类型下的测点
+  let url = Path.basePaths.APIBasePath + Path.commonPaths.getStationPoints;
   yield put({ type: commonAction.COMMON_FETCH });
   try {
     const response = yield call(axios.get, url, {params: action.payload});
@@ -95,7 +94,7 @@ function *getStationDevicePoints(action){ // 获取电站设备类型下的测�
       yield put({ 
         type: commonAction.GET_COMMON_FETCH_SUCCESS, 
         payload: {
-          devicePoints: response.data.data
+          devicePoints: response.data.data || []
         }
       });       
     }

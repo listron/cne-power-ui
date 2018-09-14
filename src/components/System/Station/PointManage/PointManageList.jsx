@@ -8,7 +8,7 @@ class PointManageList extends Component {
     loading: PropTypes.bool,
     queryParams: PropTypes.object,
     pointList: PropTypes.array,
-    getStationList: PropTypes.func,
+    getPointList: PropTypes.func,
   }
   constructor(props) {
     super(props);
@@ -18,11 +18,12 @@ class PointManageList extends Component {
   }
 
   tableChange = (pagination, filter, sorter) => { // 排序触发重新请求设备列表
-    const { getStationList, queryParams } = this.props;
-    getStationList({
+    const { getPointList, queryParams } = this.props;
+    const { field, order } = sorter;
+    getPointList({
       ...queryParams,
-      orderField: sorter.field,
-      orderType: sorter.order==='ascend'?0:1,
+      orderField: field?field:'',
+      orderType: order?(sorter.order==='ascend'?0:1):null,
     })
   }
 
@@ -30,49 +31,49 @@ class PointManageList extends Component {
     const pointListColumn = [
       {
         title: '测点编号',
-        dataIndex: 'deviceName',
-        key: 'deviceName',
+        dataIndex: 'devicePointStandardCode',
+        key: 'devicePointStandardCode',
       },{
         title: '点号描述',
-        dataIndex: 'deviceTypeName',
-        key: 'deviceTypeName',
+        dataIndex: 'devicePointDesc',
+        key: 'devicePointDesc',
         sorter: true,
       },{
         title: '第三方测点名称',
-        dataIndex: 'deviceModeName',
-        key: 'deviceModeName',
+        dataIndex: 'devicePointCode',
+        key: 'devicePointCode',
         sorter: true,
       },{
         title: '英文名称',
-        dataIndex: 'producerName',
-        key: 'producerName',
+        dataIndex: 'devicePointIecname',
+        key: 'devicePointIecname',
         sorter: true,
       },{
         title: '分组名称',
-        dataIndex: 'connectDeviceName',
-        key: 'connectDeviceName',
+        dataIndex: 'groupName',
+        key: 'groupName',
       },{
         title: '数据类型',
-        dataIndex: 'deviceCapacity',
-        key: 'deviceCapacity',
+        dataIndex: 'devicePointDatatype',
+        key: 'devicePointDatatype',
         sorter: true,
       },{
         title: '测点类型',
-        dataIndex: 'pointType',
-        key: 'pointType',
+        dataIndex: 'devicePointType',
+        key: 'devicePointType',
         sorter: true,
       },{
         title: '单位',
-        dataIndex: 'unit',
-        key: 'unit',
+        dataIndex: 'devicePointUnit',
+        key: 'devicePointUnit',
       },{
         title: '系数',
-        dataIndex: 'ratio',
-        key: 'ratio',
+        dataIndex: 'devicePointIndex',
+        key: 'devicePointIndex',
       },{
         title: '点小数位',
-        dataIndex: 'decimalNumber',
-        key: 'decimalNumber',
+        dataIndex: 'devicePointDecimalplace',
+        key: 'devicePointDecimalplace',
       },
     ];
     const { loading, pointList } = this.props;
