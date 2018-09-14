@@ -234,7 +234,7 @@ class ALarmSingleStationStatistic extends React.Component {
           <span className={styles.alarmText}>转工单告警数</span>
         </div>
         <div className={styles.summaryItem}>
-          <span className={styles.alarmNum}>{singleAlarmSummary.transferWorkRate}</span>
+          <span className={styles.alarmNum}>{singleAlarmSummary.transferWorkRate+"%"}</span>
           <span className={styles.alarmText}>转工单率</span>
         </div>
         <div className={styles.summaryItem}>

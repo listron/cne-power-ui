@@ -273,6 +273,39 @@ function *resetRelieveAlarm(action) {  // 取消屏蔽告警
   }
 }
 
+function *exportAlarmStatistic(action) {  // 导出告警统计
+  const { payload } = action;
+  const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.exportAlarmStatistic;
+  try{
+    yield put({ type:alarmAction.ALARM_FETCH });
+    const response = yield call(axios, {
+      method: 'post',
+      url,
+      data: payload,
+      responseType:'blob'
+    });
+    if(response.data) {
+      const content = response.data;
+      const blob = new Blob([content]);
+      const fileName = `告警统计_${moment().format('YYYY-MM-DD')}.xlsx`;
+      if ('download' in document.createElement('a')) { // 非IE下载
+        const elink = document.createElement('a');
+        elink.download = fileName;
+        elink.style.display = 'none';
+        elink.href = URL.createObjectURL(blob);
+        document.body.appendChild(elink);
+        elink.click();
+        URL.revokeObjectURL(elink.href); // 释放URL 对象
+        document.body.removeChild(elink);
+      } else { // IE10+下载
+        navigator.msSaveBlob(blob, fileName);
+      }   
+    }  
+  }catch(e){
+    console.log(e);
+  }
+}
+
 
 export function* watchAlarmMonitor() {
   yield takeLatest(alarmAction.CHANGE_ALARM_STORE_SAGA, changeAlarmStore);
@@ -288,6 +321,7 @@ export function* watchAlarmMonitor() {
   yield takeLatest(alarmAction.TRANSFER_ALARM_SAGA, transferAlarm);
   yield takeLatest(alarmAction.RELIEVE_ALARM_SAGA, relieveAlarm);
   yield takeLatest(alarmAction.RESET_RELIEVE_ALARM_SAGA, resetRelieveAlarm);
+  yield takeLatest(alarmAction.EXPORT_ALARM_STATISTIC_SAGA, exportAlarmStatistic);
 }
 
 

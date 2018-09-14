@@ -33,6 +33,14 @@
         width: 64px;
         cursor: pointer;
       }
+      .backBtn {
+        margin-right: 40px;
+        :global {
+          a {
+            color: $themeColor;
+          }
+        }
+      }
       :global {
         .icon-last, .icon-next {
           font-size: 20px;
