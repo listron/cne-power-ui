@@ -38,7 +38,8 @@ class AlarmManageHandle extends Component {
   }
 
   render() {
-    const { totalNum, alarmList, stations } = this.props;
+    const { totalNum, alarmList, stations, stationCode } = this.props;
+    const downloadHref = `${path.basePaths.APIBasePath}${path.APISubPaths.system.downloadAlarmInfo}?stationCode=${stationCode}`;
     return (
       <div className={styles.alarmManageHandle}>
         <div className={styles.leftHandler}>
@@ -49,7 +50,7 @@ class AlarmManageHandle extends Component {
             disableStation={[]}
             uploadExtraData={['stationCode','stationType']}
           />
-          <Button disabled={alarmList.length === 0} className={styles.exportInfo}>导出告警事件信息表</Button>
+          <Button disabled={alarmList.length === 0} className={styles.exportInfo} href={downloadHref} download={downloadHref}>导出告警事件信息表</Button>
           <Button disabled={alarmList.length === 0} onClick={this.deleteAlarmList} className={styles.clearAlarm}>清除告警</Button>
         </div>
         <CommonPagination  total={totalNum} onPaginationChange={this.onPaginationChange} />

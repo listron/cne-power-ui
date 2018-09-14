@@ -45,6 +45,15 @@ class StationManage extends Component {
     this.props.changeStationManageStore({
       showPage: 'list',
       selectedStationIndex: null,
+      stationType: "",
+      regionName: '',
+      stationName: '',
+      pageNum: 1,
+      pageSize: 10,
+      orderField: '',
+      orderCommand: '', 
+      stationList: [], 
+      totalNum:  0,
     });
   }
 

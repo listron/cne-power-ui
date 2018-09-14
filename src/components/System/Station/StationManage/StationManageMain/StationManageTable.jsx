@@ -46,6 +46,8 @@ class StationManageTable extends Component {
     }
     if (file.status === 'done') {
       message.success(`${file.name} 文件上传成功`);
+      const { getStationList, queryListParams } = this.props;
+      getStationList({ ...queryListParams }); //上传成功后，重新请求列表数据
     } else if (file.status === 'error') {
       message.error(`${file.name} 文件上传失败,请重试!`);
     }
@@ -159,6 +161,7 @@ class StationManageTable extends Component {
         }
       }
     ];
+    const downloadHref = `${path.basePaths.APIBasePath}${path.APISubPaths.system.downloadStationTemplet}`;
     return (
       <div className={styles.stationList}>
         <div className={styles.topHandler}>
@@ -174,7 +177,7 @@ class StationManageTable extends Component {
             >
               <Button className={styles.plusButton} icon="plus" loading={uplaoding}>电站</Button>
             </Upload>
-            <Button href={`${path.basePaths.APIBasePath}${path.APISubPaths.system.downloStationSettingTemplet}`} download={`${path.basePaths.APIBasePath}${path.APISubPaths.system.downloStationSettingTemplet}`}  target="_blank"  >下载电站配置模板</Button>
+            <Button href={downloadHref} download={downloadHref}  target="_blank"  >下载电站配置模板</Button>
           </div>
           <CommonPagination total={totalNum} onPaginationChange={this.onPaginationChange} />
         </div>
