@@ -387,7 +387,7 @@ class AssignUserModal extends Component {
   renderUserList() {
     let {searchUserList, selectedUserList, selectedDepartment} = this.state;
     const disabled = !!selectedDepartment.get('disabled') || (selectedDepartment.get('list')&&selectedDepartment.get('list').size>0);
-    let user = this.tansformUserData(searchUserList!==null?searchUserList:selectedUserList);
+    let user = this.tansformUserData(searchUserList!==null?searchUserList:selectedUserList);  
     return (
       <div className={styles.userListContainer}>
         <div className={styles.userListTip}>父部门不可选择人员</div>       
