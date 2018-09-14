@@ -183,6 +183,7 @@ function InverterTenMin({ deviceTenMin, loading }) {
       ]
     };
     inverterChart.setOption(option);
+    inverterChart.resize();
   }
   return (
     <div id="inverter_monitor_tenMin" style={{height:"335px",width: "100%",flex: 1,marginTop: "10px"}}></div>

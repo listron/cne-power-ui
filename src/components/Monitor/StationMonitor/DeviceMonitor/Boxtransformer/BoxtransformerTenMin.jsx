@@ -177,6 +177,7 @@ function BoxtransformerTenMin({ deviceTenMin, loading }) {
       ]
     };
     boxtransformerChart.setOption(option);
+    boxtransformerChart.resize();
   }
   return (
     <div id="boxtransformer_monitor_tenMin" style={{height:"335px"}}></div>
