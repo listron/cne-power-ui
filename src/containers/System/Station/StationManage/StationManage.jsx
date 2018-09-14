@@ -13,7 +13,7 @@ import Cookie from 'js-cookie';
 class StationManage extends Component {
   static propTypes = {
     showPage: PropTypes.string,
-    stationType: PropTypes.number, 
+    stationType: PropTypes.string, 
     regionName: PropTypes.string,
     stationName: PropTypes.string,
     pageNum: PropTypes.number,

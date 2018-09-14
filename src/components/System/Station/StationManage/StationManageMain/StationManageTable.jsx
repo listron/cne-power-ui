@@ -28,26 +28,33 @@ class StationManageTable extends Component {
   constructor(props){
     super(props);
     this.state = {
+      uplaoding: false,
       departmentModal: false,
       departmentSetInfo: {},
     }
   }
 
   onStationUpload = ({file, fileList}) => { // 添加上传电站
+    this.setState({
+      uplaoding: true,
+    })
     if (file.status !== 'uploading') {
       console.log(file, fileList);
+      this.setState({
+        uplaoding: false,
+      })
     }
     if (file.status === 'done') {
       message.success(`${file.name} 文件上传成功`);
     } else if (file.status === 'error') {
-      message.error(`${file.name} 文件上传失败!`);
+      message.error(`${file.name} 文件上传失败,请重试!`);
     }
   }
 
   onPaginationChange = ({pageSize, currentPage}) => { // 分页器操作
     const { getStationList, queryListParams } = this.props;
     getStationList({
-      queryListParams,
+      ...queryListParams,
       pageSize,
       pageNum: currentPage,
     })
@@ -73,14 +80,9 @@ class StationManageTable extends Component {
     })
   }
 
-  downloadTemplet = () => {  // 下载电站配置模板
-    console.log('down load templet')
-  }
-
   tableChange = (pagination, filter, sorter) => { // 电站list排序=>重新请求数据
     const { getStationList, queryListParams } = this.props;
-    const sortName = sorter.field;
-    // orderField: '', // 排序字段 1：电站名称; 2:区域 ;3:覆盖类型;4:并网类型;5：装机容量;6:发点单元数;7：电站接入
+    const { field, order } = sorter;
     const sortInfo = {
       stationName: '1',
       area: '2',
@@ -90,8 +92,8 @@ class StationManageTable extends Component {
       series: '6',
       stationStatus: '7',
     };
-    const orderField = sortInfo[sortName];
-    const orderCommand = sorter.order==='ascend'?'asc':'desc';
+    const orderField = sorter?sortInfo[field]:'';
+    const orderCommand = order?(sorter.order==='ascend'?'1':'2'):'';
     getStationList({
       ...queryListParams,
       orderField,
@@ -116,7 +118,7 @@ class StationManageTable extends Component {
 
   render(){
     const { loading, stationList, totalNum, allDepartmentData } = this.props;
-    const { departmentModal, departmentSetInfo } = this.state;
+    const { departmentModal, departmentSetInfo, uplaoding } = this.state;
     const authData = Cookie.get('authData') || null;
     const column = [
       {
@@ -168,13 +170,11 @@ class StationManageTable extends Component {
               headers={{'Authorization': 'bearer ' + JSON.parse(authData)}}
               beforeUpload={this.beforeUploadStation}
               data={(file)=>({file})}
+              showUploadList={false}
             >
-              <Button className={styles.plusButton}>
-                <Icon type="plus" className={styles.plusIcon} />
-                <span className={styles.plusText}>电站</span>
-              </Button>
+              <Button className={styles.plusButton} icon="plus" loading={uplaoding}>电站</Button>
             </Upload>
-            <Button href={'www.baidu.com'} download={'www.baidu.com'}  target="_blank"  >下载电站配置模板</Button>
+            <Button href={`${path.basePaths.APIBasePath}${path.APISubPaths.system.downloStationSettingTemplet}`} download={`${path.basePaths.APIBasePath}${path.APISubPaths.system.downloStationSettingTemplet}`}  target="_blank"  >下载电站配置模板</Button>
           </div>
           <CommonPagination total={totalNum} onPaginationChange={this.onPaginationChange} />
         </div>
