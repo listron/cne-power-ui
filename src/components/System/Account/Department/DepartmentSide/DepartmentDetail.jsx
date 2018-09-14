@@ -176,8 +176,8 @@ class DepartmentDetail extends Component {
         <div className={styles.detailTop}>
           {departmentUpdateRight && <Button className={styles.editButton} disabled={forbiddenEdit} onClick={()=>this.onShowSideChange({showSidePage:'edit'})}>编辑</Button>}
           <span className={styles.handleArea} >
-            <Icon type="arrow-up" className={styles.previous} title="上一个" onClick={this.preDepartment} />
-            <Icon type="arrow-down" className={styles.next} title="下一个" onClick={this.nextDepartment} />
+            <i className="iconfont icon-last" title="上一个" onClick={this.preDepartment} />
+            <i className="iconfont icon-next" title="下一个" onClick={this.nextDepartment} />
             <Icon type="arrow-left" className={styles.backIcon} onClick={this.backToList} />
           </span>
         </div>

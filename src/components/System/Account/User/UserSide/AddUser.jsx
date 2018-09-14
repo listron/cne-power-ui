@@ -8,8 +8,6 @@ import AddForm from './AddForm';
 import SingleImgUploader from '../../../../Common/Uploader/SingleImgUploader';
 import pathConfig from '../../../../../constants/path';
 import WarningTip from '../../../../Common/WarningTip';
-
-//企业信息编辑页
 class AddUser extends Component {
   static propTypes = {
     loading: PropTypes.bool,
@@ -58,8 +56,6 @@ class AddUser extends Component {
   
   render(){
     const { userLogo } = this.state;
-   
-    console.log(userLogo);
     const { userDetail,saveUserInfor, loading } = this.props;
     const { showWarningTip, warningTipText } = this.state;
     const uploadPath=`${pathConfig.basePaths.APIBasePath}${pathConfig.commonPaths.imgUploads}`;

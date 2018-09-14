@@ -105,11 +105,12 @@ class RoleTable extends Component {
         key: 'rightData',
         render: (text,record)=>{
           const right = this.renderAuth(text);
+          const {roleDesc}=record;
           const content = (
             <div className={styles.tooltip}>{right.map((item,index)=>(<span key={index}>{item}</span>))}</div>
           );
           return (
-            <Popover title={record.roleDesc} content={content}>
+            <Popover  content={content}  placement="right" trigger="hover"  title={roleDesc}>
               <div className={styles.menu}>{right.join('|')}</div>
             </Popover>
           );
