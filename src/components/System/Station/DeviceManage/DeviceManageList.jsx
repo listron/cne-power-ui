@@ -19,10 +19,11 @@ class DeviceManageList extends Component {
 
   tableChange = (pagination, filter, sorter) => { // 排序触发重新请求设备列表
     const { getStationList, queryParams } = this.props;
+    const { field, order } = sorter;
     getStationList({
       ...queryParams,
-      sortField: sorter.field,
-      sortMethod: sorter.order==='ascend'?'asc':'desc',
+      sortField: field?field:'',
+      sortMethod: order?(sorter.order==='ascend'?'0':'1'):'',
     })
   }
 

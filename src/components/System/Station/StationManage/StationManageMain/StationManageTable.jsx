@@ -94,8 +94,8 @@ class StationManageTable extends Component {
       series: '6',
       stationStatus: '7',
     };
-    const orderField = sorter?sortInfo[field]:'';
-    const orderCommand = order?(sorter.order==='ascend'?'1':'2'):'';
+    const orderField = sortInfo[field] ? sortInfo[field] : '';
+    const orderCommand = order ? (sorter.order === 'ascend' ? '1' : '2') : '';
     getStationList({
       ...queryListParams,
       orderField,
