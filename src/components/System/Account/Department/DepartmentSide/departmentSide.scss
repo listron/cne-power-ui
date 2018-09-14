@@ -157,6 +157,8 @@
         }
         .setting{
           @include lineheight(26px);
+          color:$themeColor;
+          border-color: $themeColor;
         }
       }
       .line{
