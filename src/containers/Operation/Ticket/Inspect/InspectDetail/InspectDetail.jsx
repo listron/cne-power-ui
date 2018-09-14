@@ -30,6 +30,7 @@ class InspectDetail extends Component{
     onDeleteAbnormal: PropTypes.func,
     getInspectStandard: PropTypes.func,
     inspectStandard: PropTypes.object,
+    changeInspectStore: PropTypes.func,
   }
   constructor(props){
     super(props);
@@ -59,7 +60,9 @@ class InspectDetail extends Component{
     })
     if(index !== -1){
       if(index !== 0){
-        this.props.setInspectId(inspectList.getIn([index-1,'inspectId']));
+        this.props.changeInspectStore({
+          inspectId: inspectList.getIn([index-1,'inspectId'])}
+        );
       }else{
         message.info('已经是第一条');
       }
@@ -74,8 +77,10 @@ class InspectDetail extends Component{
     })
     if(index !== -1){
       if(index !== inspectList.size - 1){
-        this.props.setInspectId(inspectList.getIn([index+1,'inspectId']));
-      }else{
+        this.props.changeInspectStore({
+          inspectId: inspectList.getIn([index+1,'inspectId'])}
+        );
+      } else{
         message.info('已经是最后一条')
       }
     }
@@ -109,6 +114,7 @@ const mapStateToProps = (state) => ({
 }) 
 
 const mapDispatchToProps = (dispatch) => ({
+  changeInspectStore: payload => dispatch({type:ticketAction.CHANGE_INSPECT_STORE_SAGA, payload}),
   getInspectDetail: payload => dispatch({ type: ticketAction.GET_INSPECT_DETAIL_SAGA, payload}),
   addInspectAbnormal: payload => dispatch({ type: ticketAction.ADD_INSPECT_ABNORMAL_SAGA, payload}),
   getDefectTypes: payload => dispatch({ type: ticketAction.GET_DEFECT_TYPE_SAGA, payload}),

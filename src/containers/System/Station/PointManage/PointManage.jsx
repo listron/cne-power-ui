@@ -4,8 +4,9 @@ import { connect } from 'react-redux';
 import styles from './pointManage.scss';
 import { pointManageAction } from '../../../../constants/actionTypes/system/station/pointManageAction';
 import { commonAction } from '../../../../constants/actionTypes/commonAction';
+import { stationManageAction } from '../../../../constants/actionTypes/system/station/stationManageAction';
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
-import PointManageTip from '../../../../components/System/Station/PointManage/PointManageTip';
+import StationManageTip from '../../../../components/System/Station/Common/StationManageTip';
 import PointManageSearch from '../../../../components/System/Station/PointManage/PointManageSearch';
 import PointManageHandle from '../../../../components/System/Station/PointManage/PointManageHandle';
 import PointManageList from '../../../../components/System/Station/PointManage/PointManageList';
@@ -22,20 +23,27 @@ class PointManage extends Component {
     orderField: PropTypes.string,
     orderType: PropTypes.number,
     changePointManageStore: PropTypes.func,
+    getStationList: PropTypes.func,
   }
   constructor(props) {
     super(props);
     this.state = {
-      showDeviceTip: true
+      showPointTip: true
     }
   }
   componentDidMount(){
-    setTimeout(()=>{this.setState({
-      showDeviceTip: false
+    this.props.getStationList({ // 请求一次设备列表
+      stationType: 0,
+      pageSize: 1000000,
+      pageNum: 1,
+    })
+    this.timeout = setTimeout(()=>{this.setState({
+      showPointTip: false
     })},3000)
   }
 
   componentWillUnmount(){
+    clearTimeout(this.timeout);
     this.props.changePointManageStore({ // 重置测点数据。
       stationCode: '', // 选中的电站
       deviceTypeCode: '', // 选中的设备类型
@@ -51,12 +59,12 @@ class PointManage extends Component {
 
   hideManageTip=()=>{
     this.setState({
-      showDeviceTip: false
+      showPointTip: false
     })
   }
 
   render() {
-    const { showDeviceTip } = this.state;
+    const { showPointTip } = this.state;
     const { 
       stationCode, deviceTypeCode, deviceModelCode, pageNum, pageSize, orderField, orderType
     } = this.props;
@@ -68,7 +76,7 @@ class PointManage extends Component {
         <CommonBreadcrumb  breadData={[{name: '设备'}]} style={{ marginLeft: '38px',backgroundColor:'#fff' }} />
         <div className={styles.pointManage}>
           <div className={styles.pointManageMain}>
-            {true && <PointManageTip hideManageTip={this.hideManageTip} />}
+            {showPointTip && <StationManageTip hideManageTip={this.hideManageTip} text="请选择电站！" />}
             <div className={styles.pointManageContent}>
               <PointManageSearch queryParams={queryParams} {...this.props} />
               <PointManageHandle queryParams={queryParams} {...this.props} />
@@ -86,6 +94,7 @@ const mapStateToProps = (state) => ({
     stations: state.common.get('stations').toJS(),
     deviceModels: state.common.get('deviceModels').toJS(),
     stationDeviceTypes: state.common.get('stationDeviceTypes').toJS(),
+    stationList: state.system.stationManage.get('stationList').toJS(),
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -95,6 +104,8 @@ const mapDispatchToProps = (dispatch) => ({
 
   getStationDeviceTypes: payload => dispatch({type:commonAction.GET_STATION_DEVICETYPES_SAGA, payload}),
   getStationDeviceModel: payload => dispatch({type:commonAction.GET_STATION_DEVICEMODEL_SAGA, payload}),
+
+  getStationList: payload => dispatch({type: stationManageAction.GET_STATION_MANAGE_LIST, payload}),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PointManage);

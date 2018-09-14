@@ -104,7 +104,7 @@ class DefectFilter extends Component {
           {showFilter==='stationName' && <StationFilter {...this.props} />}
           {showFilter==='deviceType' && <DeviceTypeFilter {...this.props} />}
           {showFilter==='defectLevel' && <DefectLevelFilter {...this.props} />}
-          {showFilter==='defecType' && <DefectTypeFilter {...this.props} />}
+          {showFilter==='defectType' && <DefectTypeFilter {...this.props} />}
         </div>
         <FilteredItems {...this.props} />
         <div className={styles.statusGroup}>

@@ -43,9 +43,13 @@ class EditForm extends Component {
   render(){
     const { getFieldDecorator } = this.props.form;
     const { stationDetail, loading } = this.props;
+
+    const longitude = (stationDetail.longitude || parseFloat(stationDetail.longitude) === 0)? `${stationDetail.longitude}°` : '--';
+    const latitude = (stationDetail.latitude || parseFloat(stationDetail.latitude) === 0)? `${stationDetail.latitude}°` : '--';
+
     const baseArrayFir = [
       { name: '电站类型', value: `${stationDetail.stationType === 0?'风电':'光伏'}` }, // 特殊组合
-      { name: '电站位置', value: `纬度${stationDetail.longitude}经度${stationDetail.longitude}` }, // 特殊组合
+      { name: '电站位置', value: `${longitude} ${latitude}` }, // 特殊组合
     ];
     stationDetail.stationType === 1 && baseArrayFir.push({
       name: '覆盖类型', value: stationDetail.coverType
@@ -144,7 +148,7 @@ class EditForm extends Component {
             <span>平方公里</span>
           </FormItem>
           <FormItem label="年利用小时数" >
-            {getFieldDecorator('floorArea',{
+            {getFieldDecorator('designUtilizationHours',{
               initialValue: stationDetail.designUtilizationHours,
               rules: [{
                 required: true, message: '请输入年利用小时数',

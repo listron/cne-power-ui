@@ -27,6 +27,7 @@ class ALarmSingleStationStatistic extends React.Component {
     summaryType: PropTypes.number,
     getSingleStationAlarmStatistic: PropTypes.func,
     changeAlarmStatisticStore: PropTypes.func,
+    showPage: PropTypes.string,
   }
   constructor(props) {
     super(props);
@@ -38,22 +39,24 @@ class ALarmSingleStationStatistic extends React.Component {
   }
 
   componentDidMount() {
-    const { singleStationCode, summaryType, pageSize, pageNum, orderField, orderCommand } = this.props;
-    this.props.getSingleStationAlarmStatistic({
-      stationCode: singleStationCode,
-      startTime: moment().subtract(30, 'days').utc().format(),
-      endTime: moment().utc().format(),
-      summaryType,
-      pageSize,
-      pageNum,
-      orderField,
-      orderCommand
-    });
+    if(this.props.showPage === 'single') {
+      const { singleStationCode, summaryType, pageSize, pageNum, orderField, orderCommand } = this.props;
+      this.props.getSingleStationAlarmStatistic({
+        stationCode: singleStationCode,
+        startTime: moment().subtract(30, 'days').utc().format(),
+        endTime: moment().utc().format(),
+        summaryType,
+        pageSize,
+        pageNum,
+        orderField,
+        orderCommand
+      });
+    }
   }
 
   componentWillReceiveProps(nextProps) {
-    const { startTime, endTime, summaryType, singleStationCode, pageSize, pageNum, orderField, orderCommand } = nextProps;
-    if(singleStationCode !== this.props.singleStationCode) {
+    const { startTime, endTime, summaryType, singleStationCode, pageSize, pageNum, orderField, orderCommand, showPage } = nextProps;
+    if(singleStationCode !== this.props.singleStationCode && showPage === 'single') {
       this.props.getSingleStationAlarmStatistic({
         stationCode: singleStationCode,
         startTime: startTime,
@@ -90,6 +93,13 @@ class ALarmSingleStationStatistic extends React.Component {
     this.onChangeFilter({
       startTime,
       endTime
+    });
+  }
+
+  onClose = () => {
+    this.props.changeAlarmStatisticStore({
+      showPage: 'multiple',
+      singleStationCode: ''
     });
   }
 
