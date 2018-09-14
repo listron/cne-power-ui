@@ -58,8 +58,6 @@ class AddUser extends Component {
   
   render(){
     const { userLogo } = this.state;
-   
-    console.log(userLogo);
     const { userDetail,saveUserInfor, loading } = this.props;
     const { showWarningTip, warningTipText } = this.state;
     const uploadPath=`${pathConfig.basePaths.APIBasePath}${pathConfig.commonPaths.imgUploads}`;
