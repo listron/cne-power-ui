@@ -4,14 +4,14 @@ import { alarmManageAction } from '../../../../constants/actionTypes/system/stat
 
 var initState = Immutable.fromJS({
   loading: false,
-  stationCode: '', // 选中的电站
-  deviceTypeCode: '', // 选中的设备类型
-  deviceModelCode: '', // 选中的设备型号
+  stationCode: null, // 选中的电站
+  deviceTypeCode: null, // 选中的设备类型
+  deviceModelCode: null, // 选中的设备型号
   pointCode: '', // 选中的测点code
   pageNum: 1,
   pageSize: 10,
   sortField: '', // 排序字段
-  sortOrder: 'asc',
+  sortOrder: '',
 
   totalNum:  0, // 告警事件总数
   alarmList: [], // 设备列表

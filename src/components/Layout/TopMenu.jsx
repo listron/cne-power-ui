@@ -26,7 +26,7 @@ class TopMenu extends Component {
     const { location, topMenu } = nextProps;
     const { pathname } = location;
     const { selectedKeys } = this.state;
-    const resetTopMenu = topMenu.path !== '/' && pathname === '/';
+    const resetTopMenu = topMenu.path && !topMenu.path.includes('/monitor') && pathname === '/monitor';
     const cancelTopMenuSelect = pathname.indexOf('/hidden') === 0;
     if(selectedKeys.length === 0) {  // f5刷新
       const pathArray = pathname.split('/').filter(e=>!!e);
@@ -38,7 +38,6 @@ class TopMenu extends Component {
         topMenu: {},
       })
     }else if(resetTopMenu){ // 404 页面的跳转重置topMenu至电站监控
-      this.setState({ selectedKeys: ['/monitor'] });
       this.props.setTopMenu({ topMenu: {
         name: '实时监控',
         path: '/monitor',
@@ -67,6 +66,7 @@ class TopMenu extends Component {
           }
         ]
       }});
+      this.setState({ selectedKeys: ['/monitor'] });
     }
   }
 

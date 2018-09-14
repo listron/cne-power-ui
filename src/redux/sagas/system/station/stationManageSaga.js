@@ -14,8 +14,8 @@ function *changeStationManageStore(action){ // 存储payload指定参数，替�
 
 function *getStationList(action){ // 请求电站列表信息
   const { payload } = action;
-  const url = '/mock/system/stationList/001';
-  // const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.getStationList}/${payload.enterpriseId}`
+  // const url = '/mock/system/stationList/001';
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.getStationList}`
   try{
     yield put({ type:stationManageAction.STATION_MANAGE_FETCH });
     const response = yield call(axios.post, url, payload);
@@ -42,8 +42,8 @@ function *getStationList(action){ // 请求电站列表信息
 function *getStationDetail(action){ // 获取选中电站详情；
   const { payload } = action;
   const { selectedStationIndex } = payload;
-  const url = '/mock/system/stationDetail/001';
-  // const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.getStationDetail}/${payload.stationCode}`
+  // const url = '/mock/system/stationDetail/001';
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.getStationDetail}/${payload.stationCode}`
   try{
     const response = yield call(axios.get, url);
     // if(response.data.code === "10000"){
@@ -104,8 +104,8 @@ function *getOtherPageStationDetail(action){ // 电站详情页面翻页时请�
 
 function *saveStationDetail(action){ // 保存编辑的电站详情；
   const { payload } = action;
-  const url = '/mock/system/saveStationDetail';
-  // const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.saveStationDetail}/${payload.enterpriseId}`
+  // const url = '/mock/system/saveStationDetail';
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.saveStationDetail}`
   try{
     yield put({ type:stationManageAction.STATION_MANAGE_FETCH });
     const response = yield call(axios.put, url, payload);
@@ -143,8 +143,8 @@ function *saveStationDetail(action){ // 保存编辑的电站详情；
 
 function *deleteStation(action){ // 删除电站(及以下设备)
   const { payload } = action;
-  const url = '/mock/system/deleteStation';
-  // const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.deleteStation}/${payload.enterpriseId}`
+  // const url = '/mock/system/deleteStation';
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.deleteStation}/${payload.stationCode}`
   try{
     yield put({ type:stationManageAction.STATION_MANAGE_FETCH });
     const response = yield call(axios.delete, url, payload);
@@ -177,8 +177,8 @@ function *deleteStation(action){ // 删除电站(及以下设备)
 
 function *setStationDepartment(action){ // 保存分配至指定电站的部门；
   const { payload } = action;
-  const url = '/mock/system/setDepartment';
-  // const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.setStationDepartment}/${payload.enterpriseId}`
+  // const url = '/mock/system/setDepartment';
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.setStationDepartment}`
   try{
     yield put({ type:stationManageAction.STATION_MANAGE_FETCH });
     const response = yield call(axios.post, url, payload);
