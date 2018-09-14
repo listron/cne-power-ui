@@ -17,12 +17,14 @@ class AlarmSingleStationTable extends React.Component {
   constructor(props) {
     super(props);
   }
+
   onPaginationChange = ({ currentPage, pageSize }) => {//分页器
     this.props.onChangeFilter({
       pageNum: currentPage,
       pageSize
     });
   }
+
   onChangeTable = (pagination, filters, sorter) => {
     const field = sorter.field;
     const arr = ['time', 'alarmNum', 'transferWorkAlarmNum', 'noTransferWorkAlarmNum', 'transferWorkRate']
@@ -63,6 +65,7 @@ class AlarmSingleStationTable extends React.Component {
         title: '转工单率',
         dataIndex: 'transferWorkRate',
         dataIndex: 'transferWorkRate',
+        render: (text, record) => `${text}%`,
         sorter: true,
       }
     ];

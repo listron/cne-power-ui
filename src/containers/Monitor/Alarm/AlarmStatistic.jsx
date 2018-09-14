@@ -111,6 +111,7 @@ const mapDispatchToProps = (dispatch) => ({
   getStationsAlarmStatistic: payload => dispatch({ type: alarmAction.GET_STATIONS_ALARM_STATISTIC_SAGA, payload }),
   getSingleStationAlarmStatistic: payload => dispatch({ type: alarmAction.GET_SINGLESTATION_ALARM_STATISTIC_SAGA, payload }),
   resetAlarm: payload => dispatch({ type: alarmAction.RESET_ALARM_STATISTIC_SAGA, payload }),
+  exportAlarm: payload => dispatch({ type: alarmAction.EXPORT_ALARM_STATISTIC_SAGA, payload }),
 })
 
 
