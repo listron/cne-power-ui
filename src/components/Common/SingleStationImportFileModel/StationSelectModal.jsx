@@ -50,12 +50,13 @@ class StationSelectModal extends Component {
 
   excelInfoUpload = ({file, fileList}) => { // 
     const { loadedCallback, hideStationModal } = this.props;
+    const { selectedStation } = this.state;
     if (file.status !== 'uploading') {
       console.log(file, fileList);
     }
     if (file.status === 'done' && file.response && file.response.code === '10000' ) {
       message.success(`${file.name} 文件上传成功`);
-      loadedCallback && loadedCallback({file});
+      loadedCallback && loadedCallback({ file, selectedStation });
       hideStationModal()
     }else if(file.status === 'done' && (!file.response || file.response.code !== '10000') ){
       message.error(`${file.name} 文件上传失败: ${file.response.message},请重试!`);
