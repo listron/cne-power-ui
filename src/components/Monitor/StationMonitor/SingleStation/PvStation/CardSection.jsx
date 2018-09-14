@@ -176,7 +176,7 @@ class CardSection extends Component {
             <div title="活动告警" className={styles.alarmList} >
               <div className={styles.cardTitle}>
                 <span>活动告警</span>
-                <Link to={alarmRealtime} ><i className="iconfont icon-more"></i></Link>
+                <Link to={alarmRealtime} target="_blank"><i className="iconfont icon-more"></i></Link>
               </div>
               {alarmList &&
                 <div className={styles.alarmContent} >
@@ -192,7 +192,7 @@ class CardSection extends Component {
             <div title="电站工单" className={styles.workList} >
               <div className={styles.cardTitle}>
                 <span>电站工单</span>
-                <Link to={ticketList}    >
+                <Link to={ticketList} target="_blank" >
                   <i className="iconfont icon-more" ></i>
                 </Link>
               </div>
