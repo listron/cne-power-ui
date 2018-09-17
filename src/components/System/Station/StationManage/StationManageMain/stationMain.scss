@@ -80,7 +80,6 @@
             .plusButton { // 添加电站 
               margin: 0 12px 0 32px;
               padding: 0 0 0 0;
-              background-color: $themeColor;
               span{
                 background-color: #fff;
                 color:$themeColor;
@@ -98,6 +97,9 @@
                 }
               }
             }
+            .plusButton:hover{
+              border-radius: 6px;
+            }
             :global{
               .anticon-plus{
                 color: #fff;
@@ -106,10 +108,12 @@
                 width: 28px;
                 text-align: center;
                 line-height: 30px;
+                background-color: $themeColor;
               }
               .ant-btn.ant-btn-loading:not(.ant-btn-circle):not(.ant-btn-circle-outline):not(.ant-btn-icon-only) .anticon {
                 margin-left: 0px;
                 width: 28px;
+                color: #999;
               }
             }
           }
