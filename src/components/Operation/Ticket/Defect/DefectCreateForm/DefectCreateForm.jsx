@@ -25,6 +25,7 @@ class TmpForm extends Component {
     getDevices: PropTypes.func,
     getStationAreas: PropTypes.func,
     onDefectCreateNew: PropTypes.func,
+    submitDefect: PropTypes.func,
     showContainer: PropTypes.string,
     onChangeShowContainer: PropTypes.func,
     defectDetail: PropTypes.object,
@@ -71,7 +72,7 @@ class TmpForm extends Component {
   }
 
   onDefectCreate = (isContinueAdd) => {
-    const { error, form, onDefectCreateNew } = this.props;
+    const { error, form, onDefectCreateNew, submitDefect, showContainer, defectDetail } = this.props;
     form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         // 电站类型(0:风电，1光伏，2：全部)
@@ -84,7 +85,7 @@ class TmpForm extends Component {
           rotatePhotoArray.push(`${e.response},${e.rotate}`);
           return e.response
         }).join(',');
-        let photoSolveAddress = values.imgHandle.map(e=>{
+        let photoSolveAddress = values.imgHandle&&values.imgHandle.map(e=>{
           rotatePhotoArray.push(`${e.response},${e.rotate}`);
           return  e.response
         }).join(',');
@@ -104,7 +105,12 @@ class TmpForm extends Component {
           photoSolveAddress,
           rotatePhoto,
         };
-        onDefectCreateNew(params);
+        if(showContainer === 'create') {
+          onDefectCreateNew(params);
+        } else if(showContainer === 'edit') {
+          params.defectId = defectDetail.defectId;
+          submitDefect(params);
+        }
         if(isContinueAdd && error.size === 0) {
           this.props.form.resetFields();
         }
@@ -257,7 +263,6 @@ class TmpForm extends Component {
           </FormItem>
           {!defectFinished && <FormItem label="处理建议" colon={false}>
             {getFieldDecorator('defectSolveInfo', {
-              rules: [{ required: true, message: '请输入处理建议' }],
               initialValue: editDefect && defectDetail.handleData.defectSolveInfo || '',
             })(
               <InputLimit placeholder="请描述，不超过80个汉字" />
@@ -271,7 +276,7 @@ class TmpForm extends Component {
               <CommonInput commonList={this.props.commonList} placeholder="请描述，不超过80个汉字" />
             )}
           </FormItem>}
-          <FormItem label="添加照片" colon={false}>
+          {defectFinished && <FormItem label="添加照片" colon={false}>
             <div className={styles.addImg}>
               <div className={styles.maxTip}>最多4张</div>
               {getFieldDecorator('imgHandle', {
@@ -282,7 +287,7 @@ class TmpForm extends Component {
                 <ImgUploader imgStyle={{width:98,height:98}} uploadPath={`${pathConfig.basePaths.APIBasePath}${pathConfig.commonPaths.imgUploads}`} editable={true} />
               )}
             </div>
-          </FormItem>
+          </FormItem>}
           {defectFinished && <FormItem label="更换部件" colon={false}>
             <div>
               <Switch checked={this.state.checked} onChange={this.onChangeReplace} />

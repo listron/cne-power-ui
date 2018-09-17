@@ -3,6 +3,7 @@ import { Timeline } from 'antd';
 import PropTypes from 'prop-types';
 import styles from './defectTimeLine.scss';
 import moment from 'moment';
+import ImgListModal from '../../../../Common/Uploader/ImgListModal';
 import { getHandleStatus } from '../../../../../constants/ticket';
 
 /*
@@ -19,6 +20,11 @@ class DefectTimeLine extends Component {
 
   constructor(props) {
     super(props);
+    this.state = {
+      showImgModal: false,
+      currentImgIndex: 0,
+      images: []
+    }
   }
 
   getStatus() {
@@ -39,6 +45,33 @@ class DefectTimeLine extends Component {
       default:
         return;
     }
+  }
+
+  showImgs = (photoAddressArr) => {
+    const images =  photoAddressArr.map((item, index) => {
+      return {
+        uid: index,
+        rotate: 0,
+        thumbUrl: item
+      }
+    });
+    
+    this.setState({
+      showImgModal: true,
+      images
+    });
+  }
+
+  closeImgs = () => {
+    this.setState({
+      showImgModal: false
+    });
+  }
+
+  changeCurrentImgIndex = (index) => {
+    this.setState({
+      currentImgIndex: index
+    });
   }
 
   renderIcon(handleStatus) {
@@ -79,17 +112,23 @@ class DefectTimeLine extends Component {
     } else {
       flowName = item.get('flowName');
     }
+    const photoAddress = item.get('photoAddress');
+    const photoAddressArr = !photoAddress ? [] : photoAddress.split(',');
     return (
       <div className={styles.processItem}>
         <div className={styles.basic}>
           <div className={styles.flowName}>{flowName}</div>
           <div className={styles.operateTime}>{moment(item.get('operateTime')).format('YYYY-MM-DD HH:mm')}</div>
           <div className={styles.operateUser}>{item.get('operateUser')}</div>
+          {photoAddressArr.length>0 && <div className={styles.imgList} onClick={()=>this.showImgs(photoAddressArr)}>{`有图${photoAddressArr.length}`}</div>}
         </div>
         <div className={styles.advise}>
           <div className={styles.text}>处理建议</div>
           <div className={styles.status}>{getHandleStatus(item.get("handleStatus"))}</div>
-          <div className={styles.defectProposal}>{item.get("defectProposal")}</div>
+          <div className={styles.defectProposal}>
+            <span>{item.get("defectProposal")}</span>
+            <span>{item.get('replaceParts') ? item.get('replaceParts') : null}</span>
+          </div>
         </div>
       </div>
     );
@@ -97,8 +136,15 @@ class DefectTimeLine extends Component {
 
   render() {
     const { processData, status } = this.props;
+    const { currentImgIndex, showImgModal, images } = this.state;
     return (
       <div className={styles.timeLineWrap}>
+      <ImgListModal 
+        data={images}
+        imageListShow={showImgModal}
+        hideImg={this.closeImgs} 
+        currentImgIndex={currentImgIndex}
+        changeCurrentImgIndex={this.changeCurrentImgIndex} />
         <div className={styles.title}>
           <div className={styles.border}></div>
           <div className={styles.text}>流程信息</div>

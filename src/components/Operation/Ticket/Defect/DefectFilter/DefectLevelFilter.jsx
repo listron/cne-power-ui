@@ -32,11 +32,12 @@ class DefectLevelFilter extends Component {
     const levelOptions = levels.map((e,i)=>({
       label: e,
       value: `${i+1}`
-    }))
+    }));
+    const levelArr = defectLevel==='0' ? []: defectLevel.split(',');
     return (
       <div className={styles.filterItem}>
         <span onClick={this.resetLevel} className={defectLevel==='0'?styles.selected:styles.all}>不限</span>
-        <CheckboxGroup options={levelOptions} value={defectLevel.split(',')} onChange={this.onLevelSelect} />
+        <CheckboxGroup options={levelOptions} value={levelArr} onChange={this.onLevelSelect} />
       </div>
     );
   }
