@@ -12,6 +12,18 @@
     border-bottom: 1px solid $promptColor;
     padding-left: 20px;
     padding-right: 45px;
+    :global{
+      .ant-input{
+        height: 32px;
+      }
+      .ant-input:focus{
+        border-color: $themeColor;
+        box-shadow: 0 0 0 0px $themeColor;
+      }
+      .ant-input-affix-wrapper:hover .ant-input:not(.ant-input-disabled){
+        border-color: $themeColor;
+      }
+    }
   }
   .content {
     display: flex;
@@ -86,7 +98,10 @@
         &:hover {
           background-color: #f1f1f1;
         }
-      }  
+      }
+      .stationItem:hover{
+        background-color: #ceebe0;
+      }
     }
   }
   .selectedStation {

@@ -36,6 +36,7 @@ class UserInfo extends Component{
 
   render(){
     const username = Cookie.get('username');
+    const userFullName = Cookie.get('userFullName');
     const userLogo = Cookie.get('userLogo');
     const defaultUserLogo = username && username[0];
     const DropdowMenu = (
@@ -56,7 +57,7 @@ class UserInfo extends Component{
           <span className={styles.layoutUserContent}>
             {userLogo && <img width="30px" height="30px" src={userLogo} />}
             {!userLogo && <span className={styles.userLogo}>{defaultUserLogo}</span>}
-            <span className={styles.username}>{username}</span>
+            <span className={styles.username}>{userFullName || username}</span>
             <Icon type="down" className={styles.downIcon} />
           </span>
         </Dropdown>
