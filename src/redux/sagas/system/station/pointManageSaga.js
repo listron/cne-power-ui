@@ -21,26 +21,19 @@ function *getPointList(action){ // 请求单个详细数据信息
       ...payload,
       orderField: payload.orderField.replace(/[A-Z]/g,e=>`_${e.toLowerCase()}`), //重组字符串
     });
-    if(response.data.code === '10000'){
-      yield put({
-        type:  pointManageAction.GET_POINT_MANAGE_FETCH_SUCCESS,
-        payload:{
-          ...payload,
-          pointList: response.data.data.dataList || [],
-          totalNum: response.data.data.total || 0,
-        },
-      });
-    }else{
-      yield put({
-        type:  pointManageAction.CHANGE_POINT_MANAGE_STORE,
-        payload: { loading: false },
-      })
-    }
+    yield put({
+      type:  pointManageAction.GET_POINT_MANAGE_FETCH_SUCCESS,
+      payload:{
+        ...payload,
+        pointList: response.data.data.dataList || [],
+        totalNum: response.data.data.total || 0,
+      },
+    });
   }catch(e){
     console.log(e);
     yield put({
       type:  pointManageAction.CHANGE_POINT_MANAGE_STORE,
-      payload: { loading: false },
+      payload: { ...payload, loading: false },
     })
   }
 }
