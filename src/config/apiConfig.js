@@ -20,6 +20,5 @@ module.exports = {
 	tokenUri: apiConfig[environmentUrl].apiUrlReal + '/token',
 	outUrl: '',
 	apiUrlReal: apiConfig[environmentUrl].apiUrlReal,
-	signalrReal: apiConfig[environmentUrl].signalrReal,
 	environment: environmentUrl,
 }
