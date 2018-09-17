@@ -4,6 +4,7 @@ import config from '../config/apiConfig';
 
 export default {
   basePaths:{
+    originUri: config.originUri,
     APIBasePath: config.apiHostUri,
     TokenBasePath: config.tokenUri
   },
@@ -103,7 +104,7 @@ export default {
 
       // 电站管理部分
       uploadStationFile: '/v3/management/stationimport', // 导入电站信息
-      downloadStationTemplet: '/theresNothingTodo', // 下载电站配置模板
+      downloadStationTemplet: '/template/StationInfoTemplate.zip', // 下载电站配置模板
       getStationList: '/v3/management/stationList', // 获取电站列表
       getStationDetail: '/v3/management/stationDetail', // 获取电站详情
       saveStationDetail: '/v3/management/upateStation', // 编辑后保存电站详情
