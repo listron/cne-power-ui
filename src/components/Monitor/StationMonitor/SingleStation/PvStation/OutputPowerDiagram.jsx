@@ -97,6 +97,7 @@ class OutputPowerDiagram extends Component {
       xAxis: [
         {
           type: 'category',
+          splitNumber: 4,
           boundaryGap: false,
           data: capabilityData && capabilityData.map(e=>{
             return moment(moment.utc(e.utc).toDate()).format('MM-DD HH:mm');
@@ -111,6 +112,7 @@ class OutputPowerDiagram extends Component {
           },
           axisTick: {
             show: false,
+            interval: 4,
           },
           axisPointer:{
             label: {
