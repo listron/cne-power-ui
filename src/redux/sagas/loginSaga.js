@@ -78,6 +78,7 @@ function *userNameLogin(action){
         data.enterpriseLogo && Cookie.set('enterpriseLogo', data.enterpriseLogo);
         data.userId && Cookie.set('userId', data.userId);
         data.username && Cookie.set('username', data.username);
+        data.userFullName && Cookie.set('userFullName', data.userFullName);
         data.userLogo && Cookie.set('userLogo', data.userLogo);
         data.expires_in && Cookie.set('expireData', moment().add(data.expires_in, 'seconds'));
         data.refresh_token && Cookie.set('refresh_token', data.refresh_token);
@@ -166,6 +167,7 @@ function *phoneCodeLogin(action){
           data.enterpriseLogo && Cookie.set('enterpriseLogo', data.enterpriseLogo);
           data.userId && Cookie.set('userId', data.userId);
           data.username && Cookie.set('username', data.username);
+          data.userFullName && Cookie.set('userFullName', data.userFullName);
           data.userLogo && Cookie.set('userLogo', data.userLogo);
           data.expires_in && Cookie.set('expireData', moment().add(data.expires_in, 'seconds'));
           data.refresh_token && Cookie.set('refresh_token', data.refresh_token);

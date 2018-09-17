@@ -48,7 +48,7 @@ class FilteredItems extends Component {
       !cancelStations.some(station=>station.get('stationCode').toString()===code)
     );
     onChangeFilter({
-      stationCodes: newStationCode,
+      stationCodes: newStationCode.join(','),
     });
 
   }
@@ -56,14 +56,14 @@ class FilteredItems extends Component {
     const { deviceTypeCode, onChangeFilter } = this.props;
     const newDeviceTypeCode = deviceTypeCode.split(',').filter(e=>e!==cancelCode);
     onChangeFilter({
-      deviceTypeCode: newDeviceTypeCode
+      deviceTypeCode: newDeviceTypeCode.join(',')
     });
   } 
   onCancelLevel = (level) => {//删除某级告警
     const { defectLevel, onChangeFilter } = this.props;
     const levelCodes = defectLevel.split(',').filter(e=>e!==level);
     onChangeFilter({
-      defectLevel: levelCodes,
+      defectLevel: levelCodes.join(','),
     });
   }
   resetAll = () => {//删除所有筛选条件
