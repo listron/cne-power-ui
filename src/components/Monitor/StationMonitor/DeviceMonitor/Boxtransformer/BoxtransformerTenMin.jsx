@@ -13,7 +13,6 @@ function BoxtransformerTenMin({ deviceTenMin, loading }) {
     // }else{
     //   boxtransformerChart.hideLoading();
     // }
-    console.log(deviceTenMin);
     let powerLineData = [], instantaneousData = [], xTime = [];
     deviceTenMin.length > 0 && deviceTenMin.forEach(e=>{
       xTime.push(moment(e.utc).format('YYYY-MM-DD HH:mm:ss'));

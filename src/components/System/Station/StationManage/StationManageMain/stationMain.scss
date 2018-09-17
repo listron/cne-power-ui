@@ -97,19 +97,19 @@
                   color:#fff;
                 }
               }
-              :global{
-                .anticon-plus{
-                  color: #fff;
-                  height: 100%;
-                  border-radius: 4px 0 0 4px;
-                  width: 28px;
-                  text-align: center;
-                  line-height: 30px;
-                }
-                .ant-btn.ant-btn-loading:not(.ant-btn-circle):not(.ant-btn-circle-outline):not(.ant-btn-icon-only) .anticon {
-                  margin-left: -14px;
-                  width: 28px;
-                }
+            }
+            :global{
+              .anticon-plus{
+                color: #fff;
+                height: 100%;
+                border-radius: 4px 0 0 4px;
+                width: 28px;
+                text-align: center;
+                line-height: 30px;
+              }
+              .ant-btn.ant-btn-loading:not(.ant-btn-circle):not(.ant-btn-circle-outline):not(.ant-btn-icon-only) .anticon {
+                margin-left: 0px;
+                width: 28px;
               }
             }
           }
@@ -193,12 +193,5 @@
         }
       }
     }
-  }
-}
-
-:global{
-  .ant-btn.ant-btn-loading:not(.ant-btn-circle):not(.ant-btn-circle-outline):not(.ant-btn-icon-only) .anticon {
-    margin-left: 0px;
-    width: 28px;
   }
 }
