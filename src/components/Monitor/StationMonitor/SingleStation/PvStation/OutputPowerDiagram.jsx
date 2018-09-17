@@ -25,7 +25,7 @@ class OutputPowerDiagram extends Component {
 
   componentWillReceiveProps(nextProps) {
     const { capabilityData, powerData } = nextProps;
-    // console.log(capabilityData);
+    //console.log(capabilityData);
     const capabilityDiagram = echarts.init(document.getElementById('capabilityDiagram'));
     const powerDiagram = echarts.init(document.getElementById('powerDiagram'));
 
@@ -94,32 +94,36 @@ class OutputPowerDiagram extends Component {
         extraCssText:'background: rgba(0,0,0,0);',
       },
       calculable: true,
-      xAxis: [
+      xAxis: 
         {
           type: 'category',
           boundaryGap: false,
           data: capabilityData && capabilityData.map(e=>{
-            console.log(capabilityData);
+            //console.log(capabilityData);
             return moment(moment.utc(e.utc).toDate()).format('MM-DD HH:mm');
           }),
+          //minInterval:'3600*5*1000',
           axisLine: {
             lineStyle: {
               color: '#dfdfdf',
             },
           },
+         
           axisLabel: {
             color: lineColor,
+            interval:30,
+            
           },
           axisTick: {
             show: false,
           },
+         
           axisPointer:{
             label: {
               show: false,
             }
           },
-        }
-      ],
+        },
       yAxis: [
         {
           name: '功率(MW)',
