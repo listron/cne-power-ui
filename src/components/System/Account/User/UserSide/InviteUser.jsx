@@ -21,6 +21,7 @@ class InviteUser extends Component {
       showWarningTip: false,
       warningTipText: '退出后信息无法保存!',
       copied: false,
+      copyTip: '复制成功！',
     }
   }
 
@@ -30,9 +31,15 @@ class InviteUser extends Component {
     })
   }
   
-  onCopy = () => {
-    this.setState({copied: true})
-    setTimeout(()=>this.setState({ copied: false}), 2000);
+  onCopy = (text,result) => {
+    if(result){
+      this.setState({copied: true})
+      setTimeout(()=>this.setState({ copied: false}), 2000);
+    }else{
+      this.setState({copyTip: '复制失败，请重新复制！', copied: true, });
+      setTimeout(()=>this.setState({ copied: false}), 2000);
+    }
+    
   }
 
   cancelWarningTip = () => {
@@ -53,7 +60,7 @@ class InviteUser extends Component {
   
 
   render(){
-    const { showWarningTip, warningTipText, copied } = this.state;
+    const { showWarningTip, warningTipText, copied,copyTip } = this.state;
     const { inviteData } = this.props;
     return (
       <div className={styles.inviteUser} >
@@ -70,7 +77,7 @@ class InviteUser extends Component {
               <CopyToClipboard text={inviteData.get('link')} onCopy={this.onCopy}>
                 <Button className={styles.copyBtn} >复制链接</Button>
               </CopyToClipboard>
-              {copied && <Button>复制成功!</Button>}
+              {copied && <Button>{copyTip}</Button>}
             </div>
             <div className={styles.qrCode} >
               <img src={inviteData.get('QRLink')} />

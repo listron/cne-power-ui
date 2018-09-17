@@ -4,13 +4,13 @@ import { pointManageAction } from '../../../../constants/actionTypes/system/stat
 
 var initState = Immutable.fromJS({
   loading: false,
-  stationCode: '', // 选中的电站
-  deviceTypeCode: '', // 选中的设备类型
-  deviceModelCode: '', // 选中的设备型号
+  stationCode: null, // 选中的电站
+  deviceTypeCode: null, // 选中的设备类型
+  deviceModelCode: null, // 选中的设备型号
   pageNum: 1,
   pageSize: 10,
   orderField: '', // 排序字段
-  orderType: 0, // 排序方式0正序   1倒序
+  orderType: null, // 排序方式0正序   1倒序
   
   totalNum:  0, // 设备总数
   pointList: [], // 设备列表

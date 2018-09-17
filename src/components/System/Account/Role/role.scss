@@ -6,11 +6,18 @@
   align-items: center;
   border-bottom: solid 1px $promptColor;  
 }
+:global{    
+  .ant-popover-content .ant-popover-inner .ant-popover-title{
+    color:$lightColor;
+  }
+}
 .tooltip {
   display: flex;
   flex-direction: column;
+  color:$lightColor;
 }
 .roleList{
+
   width: 100%;
   display: flex;
   flex-direction: column;

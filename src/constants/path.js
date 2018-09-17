@@ -14,7 +14,8 @@ export default {
     getStationDevicetypes: '/v3/station/devicetypes',
     getDevices: '/v3/station/stationdevices',
     getPartitions: '/v3/station/partitions',
-    getDeviceModel: '/v3/management/devicemodecode',
+    getDeviceModel: '/v3/management/devicemodecode', // 获取电站(必填), 设备类型下的设备型号
+    getStationPoints: '/v3/management/devicepointcode', // 电站(必填) 设备类型，设备型号，获取所有测点基本信息
     // getRefreshToken: '/v3/oauth/token' --todo 根据过期token中携带的refreshToken获取新token接口。
   },
   APISubPaths: {
@@ -101,6 +102,8 @@ export default {
       importUserBatch: '/v3/user/batch',//批量导入用户
 
       // 电站管理部分
+      uploadStationFile: '/v3/management/stationimport', // 导入电站信息
+      downloadStationTemplet: '/theresNothingTodo', // 下载电站配置模板
       getStationList: '/v3/management/stationList', // 获取电站列表
       getStationDetail: '/v3/management/stationDetail', // 获取电站详情
       saveStationDetail: '/v3/management/upateStation', // 编辑后保存电站详情
@@ -109,14 +112,17 @@ export default {
       importStationInfo: '/v3/management/station/devices', // 导入电站+设备信息
 
       getDeviceList: '/v3/management/devicelist', // 获取设备列表
+      downloadDeviceInfo: '/v3/management/station/devices', // 导出设备信息表
 
       getPointList: '/v3/management/station/device/point/list', // 获取点表列表
       deletePoints: '/v3/management/station/device/modes', // 删除点表信息
       importPointsInfo: '/v3/management/station/device/points', //导入点表信息
+      downloadPointInfo: '/v3/management/station/device/points', // 导出测点表
       
       importAlarmInfo: '/v3/management/alarmevent/import', //导入告警信息
       getAlarmList: '/v3/management/alarmevent/list', //获取告警列表
       deleteAlarms: '/v3/management/alarmevent/delete', // 删除告警
+      downloadAlarmInfo: '/v3/management/alarmevent/export', // 导出告警事件
     },
     monitor: {//实时监控
       getStationType:'/v3/monitor/stations/',

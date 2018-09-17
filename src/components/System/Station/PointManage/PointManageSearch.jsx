@@ -7,14 +7,15 @@ const { Option } = Select;
 
 class PointManageSearch extends Component {
   static propTypes = {
-    stationCode: PropTypes.string,
+    stationCode: PropTypes.number,
     stations: PropTypes.array,
     queryParams: PropTypes.object,
     stationDeviceTypes: PropTypes.array,
     deviceModels: PropTypes.array,
-    deviceTypeCode: PropTypes.string,
-    deviceModelCode: PropTypes.string,
+    deviceTypeCode: PropTypes.number,
+    deviceModelCode: PropTypes.number,
     getPointList: PropTypes.func,
+    changeCommonStore: PropTypes.func,
     getStationDeviceTypes: PropTypes.func,
     getStationDeviceModel: PropTypes.func,
   }
@@ -27,13 +28,18 @@ class PointManageSearch extends Component {
   }
 
   selectStation = (stations) => {
-    const { getStationDeviceTypes, getPointList, queryParams } = this.props;
+    const { getStationDeviceTypes, getPointList, queryParams, changeCommonStore } = this.props;
     getStationDeviceTypes({
       stationCodes: stations[0].stationCode,
     });
     getPointList({
       ...queryParams,
       stationCode: stations[0].stationCode,
+      deviceTypeCode: null,
+      deviceModelCode: null,
+    })
+    changeCommonStore({
+      deviceModels: []
     })
   }
 
@@ -46,6 +52,7 @@ class PointManageSearch extends Component {
     getPointList({
       ...queryParams,
       deviceTypeCode: value,
+      deviceModelCode: null,
     })
   }
 
@@ -53,7 +60,7 @@ class PointManageSearch extends Component {
     const { getPointList, queryParams } = this.props;
     getPointList({
       ...queryParams,
-      deviceTypeCode: value,
+      deviceModelCode: value,
     })
   }
 
@@ -63,17 +70,17 @@ class PointManageSearch extends Component {
     const modelSelectDisable = deviceModels.length === 0;
     return (
       <div className={styles.pointManageSearch}>
-        <span>条件查询</span>
+        <span className={styles.titleText}>条件查询</span>
         <StationSelect data={stations} onOK={this.selectStation} />
-        <Select onChange={this.selectDeviceType} value={deviceTypeCode} placeholder="请选择设备类型" disabled={typeSelectDisable}>
-          <Option key={''} value={''}>{'全部'}</Option>
+        <Select className={styles.typeSelect} onChange={this.selectDeviceType} value={deviceTypeCode} placeholder="请选择设备类型" disabled={typeSelectDisable}>
+          <Option key={null} value={null}>{'全部'}</Option>
           {stationDeviceTypes.map(e=>{
             if(!e){ return null; }
             return <Option key={e.deviceTypeCode} value={e.deviceTypeCode}>{e.deviceTypeName}</Option>
           })}
         </Select>
-        <Select onChange={this.selectDeviceModel} value={deviceModelCode} placeholder="请选择设备型号" disabled={modelSelectDisable}>
-          <Option key={''} value={''}>{'全部'}</Option>
+        <Select className={styles.modelSelect} onChange={this.selectDeviceModel} value={deviceModelCode} placeholder="请选择设备型号" disabled={modelSelectDisable}>
+          <Option key={null} value={null}>{'全部'}</Option>
           {deviceModels.map(e=>{
             if(!e){ return null; }
             return <Option key={e.deviceModeCode} value={e.deviceModeCode}>{e.deviceModeName}</Option>

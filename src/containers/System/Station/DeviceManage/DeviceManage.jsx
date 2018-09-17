@@ -4,7 +4,7 @@ import styles from './deviceManage.scss';
 import { deviceManageAction } from '../../../../constants/actionTypes/system/station/deviceManageAction';
 import { commonAction } from '../../../../constants/actionTypes/commonAction';
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
-import DeviceManageTip from '../../../../components/System/Station/DeviceManage/DeviceManageTip';
+import StationManageTip from '../../../../components/System/Station/Common/StationManageTip';
 import DeviceManageSearch from '../../../../components/System/Station/DeviceManage/DeviceManageSearch';
 import DeviceManageHandle from '../../../../components/System/Station/DeviceManage/DeviceManageHandle';
 import DeviceManageList from '../../../../components/System/Station/DeviceManage/DeviceManageList';
@@ -13,9 +13,9 @@ import PropTypes from 'prop-types';
 
 class DeviceManage extends Component {
   static propTypes = {
-    stationCode: PropTypes.string,
-    deviceTypeCode: PropTypes.string,
-    deviceModelCode: PropTypes.string,
+    stationCode: PropTypes.number,
+    deviceTypeCode: PropTypes.number,
+    deviceModelCode: PropTypes.number,
     pageNum: PropTypes.number,
     pageSize: PropTypes.number,
     sortField: PropTypes.string,
@@ -29,21 +29,22 @@ class DeviceManage extends Component {
     }
   }
   componentDidMount(){
-    setTimeout(()=>{this.setState({
+    this.timeout = setTimeout(()=>{this.setState({
       showDeviceTip: false
     })},3000)
   }
 
   componentWillUnmount(){
+    clearTimeout(this.timeout);
     this.props.changeDeviceManageStore({ // 离开页面前，重置数据。
-      stationCode: '', // 选中的电站
-      deviceTypeCode: '', // 选中的设备类型
-      deviceModelCode: '', // 选中的设备型号
+      stationCode: null, // 选中的电站
+      deviceTypeCode: null, // 选中的设备类型
+      deviceModelCode: null, // 选中的设备型号
       pageNum: 1,
       pageSize: 10,
       totalNum:  0, // 设备总数
       sortField: '', // 排序字段
-      sortMethod: 'des',
+      sortMethod: '',
       deviceList: []
     })
   }
@@ -68,7 +69,7 @@ class DeviceManage extends Component {
         <CommonBreadcrumb  breadData={[{name: '设备'}]} style={{ marginLeft: '38px',backgroundColor:'#fff' }} />
         <div className={styles.deviceManage}>
           <div className={styles.deviceManageMain}>
-            {true && <DeviceManageTip hideManageTip={this.hideManageTip} />}
+            {showDeviceTip && <StationManageTip hideManageTip={this.hideManageTip} text="请选择您要查看的电站！" />}
             <div className={styles.deviceManageContent}>
               <DeviceManageSearch queryParams={queryParams} {...this.props} />
               <DeviceManageHandle queryParams={queryParams} {...this.props} />
@@ -93,6 +94,7 @@ const mapDispatchToProps = (dispatch) => ({
   getDeviceList: payload => dispatch({type: deviceManageAction.GET_DEVICE_MANAGE_LIST, payload}),
   getStationDeviceTypes: payload => dispatch({type:commonAction.GET_STATION_DEVICETYPES_SAGA, payload}),
   getStationDeviceModel: payload => dispatch({type:commonAction.GET_STATION_DEVICEMODEL_SAGA, payload}),
+  changeCommonStore: payload => dispatch({type:commonAction.CHANGE_COMMON_STORE_SAGA, payload}),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DeviceManage);
