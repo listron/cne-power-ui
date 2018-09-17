@@ -21,30 +21,19 @@ function *getDeviceList(action){ // 请求设备列表
       ...payload,
       sortField: payload.sortField.replace(/[A-Z]/g,e=>`_${e.toLowerCase()}`), //重组字符串
     });
-    if(response.data.code === '10000'){
-      yield put({
-        type:  deviceManageAction.GET_DEVICE_MANAGE_FETCH_SUCCESS,
-        payload:{
-          ...payload,
-          deviceList: response.data.data.context || [],
-          totalNum: response.data.data.totalNum || 0,
-        },
-      });
-    }else{
-      yield put({
-        type:  deviceManageAction.CHANGE_DEVICE_MANAGE_STORE,
-        payload:{
-          loading: false,
-        },
-      })
-    }
+    yield put({
+      type:  deviceManageAction.GET_DEVICE_MANAGE_FETCH_SUCCESS,
+      payload:{
+        ...payload,
+        deviceList: response.data.data.context || [],
+        totalNum: response.data.data.totalNum || 0,
+      },
+    });
   }catch(e){
     console.log(e);
     yield put({
       type:  deviceManageAction.CHANGE_DEVICE_MANAGE_STORE,
-      payload:{
-        loading: false,
-      },
+      payload:{ ...payload, loading: false },
     })
   }
 }

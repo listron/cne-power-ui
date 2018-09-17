@@ -57,16 +57,6 @@ class PointManage extends Component {
       pointList: [],
     })
     this.props.changeStationManageStore({
-      stationList: [],
-      showPage: 'list',
-      selectedStationIndex: null,
-      stationType: "",
-      regionName: '',
-      stationName: '',
-      pageNum: 1,
-      pageSize: 10,
-      orderField: '',
-      orderCommand: '', 
       stationList: [], 
       totalNum:  0,
     })
