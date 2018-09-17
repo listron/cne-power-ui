@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import DetailInfoPart from './DetailInfoPart';
 import { baseFun, connectionPriceFun, otherFun } from './detailInformation';
 import WarningTip from '../../../../Common/WarningTip';
-import { Button, Icon } from 'antd';
+import { Icon } from 'antd';
 import PropTypes from 'prop-types';
 import styles from './stationSide.scss';
 import moment from 'moment';
@@ -15,6 +15,7 @@ class StationManageDetail extends Component {
     pageNum: PropTypes.number,
     pageSize: PropTypes.number,
     selectedStationIndex: PropTypes.number,
+    stationList: PropTypes.array,
     queryListParams: PropTypes.object,
     stationDetail: PropTypes.object,
     onShowSideChange: PropTypes.func,
@@ -32,7 +33,7 @@ class StationManageDetail extends Component {
   }
 
   preStation = () => { // 上一个电站详情
-    const { queryListParams, selectedStationIndex, pageNum, pageSize, getOtherPageStationDetail, getStationDetail } = this.props;
+    const { queryListParams, selectedStationIndex, pageNum, pageSize, getOtherPageStationDetail, getStationDetail, stationList } = this.props;
     if(selectedStationIndex === 0 && pageNum === 1){ // 第一页第一条
       this.setState({
         showWarningTip: true,
@@ -48,12 +49,13 @@ class StationManageDetail extends Component {
       getStationDetail({ // 正常请求上一条电站详情数据
         ...queryListParams,
         selectedStationIndex: selectedStationIndex - 1,
+        stationCode: stationList[selectedStationIndex].stationCode,
       })
     }
   }
 
   nextStation = () => { // 下一个电站详情
-    const { queryListParams, selectedStationIndex, pageNum, pageSize, getOtherPageStationDetail, totalNum, getStationDetail } = this.props;
+    const { queryListParams, selectedStationIndex, pageNum, pageSize, getOtherPageStationDetail, totalNum, getStationDetail, stationList } = this.props;
     const maxPage = Math.ceil(totalNum / pageSize); // 最后一页页码
     const lastPageMaxIndex = totalNum - (maxPage - 1)*pageSize - 1;
     if(selectedStationIndex === lastPageMaxIndex && pageNum === maxPage){ // 最后一页最后一条
@@ -71,6 +73,7 @@ class StationManageDetail extends Component {
       getStationDetail({ // 请求下一条电站详情数据
         ...queryListParams,
         selectedStationIndex: selectedStationIndex + 1,
+        stationCode: stationList[selectedStationIndex].stationCode,
       })
     }
   }

@@ -64,16 +64,16 @@ function *getStationDetail(action){ // 获取选中电站详情；
 
 function *getOtherPageStationDetail(action){ // 电站详情页面翻页时请求详情+table数据翻页
   const { payload } = action;
-  const listUrl = '/mock/system/stationList/001';
-  // const listUrl = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.getStationList}/${payload.enterpriseId}`
-  const detailUrl = '/mock/system/stationDetail/001';
+  // const listUrl = '/mock/system/stationList/001';
+  const listUrl = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.getStationList}`;
+  // const detailUrl = '/mock/system/stationDetail/001';
   try{
     yield put({ type:stationManageAction.STATION_MANAGE_FETCH });
     const { selectedStationIndex } = payload;
-    const listParams = delete payload.selectedStationIndex;
-    const listResponse = yield call(axios.post, listUrl, listParams);
-    const selectedStationId = listResponse.data.data.list[selectedStationIndex];
-    // const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.getStationDetail}/${payload.selectedStationId}`
+    delete payload.selectedStationIndex;
+    const listResponse = yield call(axios.post, listUrl, payload);
+    const selectedStationCode = listResponse.data.data.list[selectedStationIndex].stationCode;
+    const detailUrl = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.getStationDetail}/${selectedStationCode}`
     const detailResponse = yield call(axios.get, detailUrl);
     if(detailResponse.data.code === "10000"){
       yield put({

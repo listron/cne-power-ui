@@ -7,6 +7,6 @@
   "plugins": [
     "transform-runtime",
     "syntax-dynamic-import",
-    ["import", { "libraryName": "antd", "style": "css" }]
+    ["import", { "libraryName": "antd", "style": true }]
   ]
 }

@@ -12,10 +12,10 @@ export const baseFun = (detailData) => { // 根据基础信息配置输出指定
     { name: '所在省市', value: detailData.provinceName, },
     { name: '所属公司', value: detailData.affiliateCompany, },
     { name: '联系电话', value: detailData.stationContactNumber, },
-    { name: '并网容量', value: detailData.stationCapacity, },
-    { name: '设计容量', value: detailData.designCapacity, },
-    { name: '占地面积', value: detailData.floorArea, },
-    { name: '年利用小时数', value: detailData.designUtilizationHours, },
+    { name: '并网容量', value: detailData.stationCapacity, unit:'MWp' },
+    { name: '设计容量', value: detailData.designCapacity, unit:'MWp' },
+    { name: '占地面积', value: detailData.floorArea, unit:'平方公里' },
+    { name: '年利用小时数', value: detailData.designUtilizationHours, unit:'小时' },
     { name: '是否接入', value: detailData.stationStatus?'是':'否', }, // 实际调整
   ];
   if(detailData.stationType === 0){ // 风电场没有覆盖类型
@@ -30,8 +30,12 @@ export const connectionPriceFun = (detailData) => { // 根据并网类型及电�
     { name: '调度机构名称', value: detailData.dispatchingAgency, },
     { name: '调度机构性质', value: detailData.agencyType, },
     { name: '并网点电站名称', value: detailData.gridSubstationName, },
-    { name: '首次并网时间', value: detailData.ongridTime, }, // 时间格式是否需要转化
-    { name: '全部并网时间', value: detailData.fullOngridTime, }, // 时间格式是否需要转化
+    { name: '首次并网时间', 
+      value: detailData.ongridTime?moment(detailData.ongridTime).format('YYYY-MM-DD'):'', 
+    }, // 时间格式是否需要转化
+    { name: '全部并网时间', 
+      value: detailData.fullOngridTime?moment(detailData.fullOngridTime).format('YYYY-MM-DD'):'', 
+    }, // 时间格式是否需要转化
     { name: '并网电压等级', value: detailData.gridVoltageLevel, },
     { name: '发电单元个数', value: detailData.stationUnitCount, },
   ];

@@ -124,11 +124,16 @@
           cursor: pointer;
           text-decoration: underline;
         }
+        :global{
+          .departmentSetting{
+            .iconfont{
+              font-size: 18px;
+              cursor: pointer;
+            }
+          }
+        }
         .notSet{
           color: $lightColor;
-        }
-        .seeDepartment, .setDepartment{
-          cursor: pointer;
         }
         .deleteStation{
           cursor: pointer;

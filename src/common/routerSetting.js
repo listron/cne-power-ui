@@ -15,6 +15,7 @@ import HistoryAlarm from '../containers/Monitor/Alarm/HistoryAlarm';
 import AlarmStatistic from '../containers/Monitor/Alarm/AlarmStatistic';
 import EditPassword from '../containers/Others/EditPassword';
 import Building from '../components/Common/Building/Building';
+import Power from '../containers/Power';
 
 import StationManage from '../containers/System/Station/StationManage/StationManage';
 import DeviceManage from '../containers/System/Station/DeviceManage/DeviceManage';
@@ -27,7 +28,7 @@ const routers = [
   {
     path: '/',
     exact: true,
-    component: Building
+    component: Power,
   }, 
   {
     path: '/404',
