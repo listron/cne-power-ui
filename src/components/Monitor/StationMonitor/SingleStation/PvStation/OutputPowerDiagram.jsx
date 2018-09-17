@@ -25,7 +25,7 @@ class OutputPowerDiagram extends Component {
 
   componentWillReceiveProps(nextProps) {
     const { capabilityData, powerData } = nextProps;
-    // console.log(capabilityData);
+    //console.log(capabilityData);
     const capabilityDiagram = echarts.init(document.getElementById('capabilityDiagram'));
     const powerDiagram = echarts.init(document.getElementById('powerDiagram'));
 
@@ -94,8 +94,7 @@ class OutputPowerDiagram extends Component {
         extraCssText:'background: rgba(0,0,0,0);',
       },
       calculable: true,
-      xAxis: [
-        {
+      xAxis: {
           type: 'category',
           splitNumber: 4,
           boundaryGap: false,
@@ -109,18 +108,20 @@ class OutputPowerDiagram extends Component {
           },
           axisLabel: {
             color: lineColor,
+            interval:20,
+            
           },
           axisTick: {
             show: false,
             interval: 4,
           },
+         
           axisPointer:{
             label: {
               show: false,
             }
           },
-        }
-      ],
+        },
       yAxis: [
         {
           name: '功率(MW)',
@@ -387,7 +388,7 @@ class OutputPowerDiagram extends Component {
       <div className={styles.outputPowerDiagram}>
         <div className={styles.capabilityDiagramBox} >
           <div id="capabilityDiagram" style={{ width: "100%", height: "100%", borderRight: "2px solid #dfdfdf", color: '#999', paddingTop: "20px" }}><i className="iconfont icon-more"></i></div>
-          <Link to={resourceAnalysis}   ><i className="iconfont icon-more"></i></Link>
+          <Link to={resourceAnalysis}  target="_blank" ><i className="iconfont icon-more"></i></Link>
         </div>
         <div className={styles.powerDiagramBox} >
           <div id="powerDiagram" style={{ width: "100%", height: "100%", color: '#999', paddingTop: "20px" }}></div>
@@ -398,7 +399,7 @@ class OutputPowerDiagram extends Component {
               <RadioButton value="2">年</RadioButton>
             </RadioGroup>
           </div>
-          <Link to={productionAnalysis}   ><i className="iconfont icon-more"></i></Link>
+          <Link to={productionAnalysis} target="_blank"  ><i className="iconfont icon-more"></i></Link>
         </div>
       </div>
     )

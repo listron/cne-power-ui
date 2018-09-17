@@ -33,10 +33,11 @@ class DefectTypeFilter extends Component {
       label: item.get('defectTypeName'),
       value: item.get('defectTypeCode').toString()
     })).toJS();
+    const defectTypeCodeArr = defectTypeCode === '' ? [] : defectTypeCode.split(',');
     return (
       <div className={styles.defectTypeFilter}>
         <span onClick={this.onReset} className={defectTypeCode.length!==''?styles.selected:styles.all}>不限</span>
-        <CheckboxGroup options={options} value={defectTypeCode.split(',')} onChange={this.onChange} />
+        <CheckboxGroup options={options} value={defectTypeCodeArr} onChange={this.onChange} />
       </div>
     );
   }

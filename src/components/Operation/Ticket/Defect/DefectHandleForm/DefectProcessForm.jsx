@@ -14,7 +14,6 @@ class DefectProcessForm extends Component {
     form: PropTypes.object,
     commonList: PropTypes.object,
     onSubmit: PropTypes.func,
-    onCancel: PropTypes.func,
   }
 
   static defaultProps = {
@@ -34,6 +33,10 @@ class DefectProcessForm extends Component {
         this.props.onSubmit(values);
       }
     });
+  }
+
+  onReset = () => {
+    this.props.form.resetFields();
   }
 
   onChangeReplace = (checked) => {
@@ -99,7 +102,7 @@ class DefectProcessForm extends Component {
           </FormItem>
         )}
         <div className={styles.actionBar}>
-          <Button className={styles.cancelBtn} onClick={this.props.onCancel}>重置</Button>
+          <Button className={styles.cancelBtn} onClick={this.onReset}>重置</Button>
           <Button type="primary" htmlType="submit">提交</Button>
         </div>
       </Form>
