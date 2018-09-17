@@ -244,5 +244,8 @@
   .ant-spin-dot i{
     background-color: #199475
   }
-  
+  //form表单Input下的提示语定位
+  .has-error .ant-form-explain{
+    position: absolute;
+  }
 }
