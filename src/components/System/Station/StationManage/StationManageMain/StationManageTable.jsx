@@ -166,7 +166,7 @@ class StationManageTable extends Component {
         }
       }
     ];
-    const downloadHref = `${path.basePaths.APIBasePath}${path.APISubPaths.system.downloadStationTemplet}`;
+    const downloadHref = `${path.basePaths.originUri}${path.APISubPaths.system.downloadStationTemplet}`;
     return (
       <div className={styles.stationList}>
         <div className={styles.topHandler}>

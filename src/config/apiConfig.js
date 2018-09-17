@@ -15,6 +15,7 @@ const apiConfig = $.parseJSON(jsonText);
 const environmentUrl = apiConfig.public.environment
 
 module.exports = {
+	originUri: apiConfig[environmentUrl].apiUrlReal,
   apiHostUri: apiConfig[environmentUrl].apiUrlReal + '/api',
 	tokenUri: apiConfig[environmentUrl].apiUrlReal + '/token',
 	outUrl: '',
