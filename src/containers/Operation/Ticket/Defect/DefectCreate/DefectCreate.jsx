@@ -112,6 +112,7 @@ const mapDispatchToProps = (dispatch) => ({
   getDevices: payload => dispatch({ type: commonAction.GET_DEVICES_SAGA, payload }),
   getDefectTypes: payload => dispatch({ type: ticketAction.GET_DEFECT_TYPE_SAGA, payload }),
   onDefectCreateNew: payload => dispatch({type: ticketAction.DEFECT_CREATE_SAGA, payload}),
+  submitDefect: payload => dispatch({type: ticketAction.SUBMIT_DEFECT_SAGA, payload}),
 });
 
 

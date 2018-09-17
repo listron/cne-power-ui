@@ -34,7 +34,7 @@ function *getAlarmList(action){ // 请求告警事件列表
     console.log(e);
     yield put({
       type:  alarmManageAction.CHANGE_ALARM_MANAGE_STORE,
-      payload: { loading: false },
+      payload: { ...payload, loading: false },
     })
   }
 }

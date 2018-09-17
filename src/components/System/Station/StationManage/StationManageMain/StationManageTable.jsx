@@ -28,7 +28,7 @@ class StationManageTable extends Component {
   constructor(props){
     super(props);
     this.state = {
-      uplaoding: false,
+      uploading: false,
       departmentModal: false,
       departmentSetInfo: {},
       fileList: [],
@@ -37,13 +37,13 @@ class StationManageTable extends Component {
 
   onStationUpload = ({file, fileList}) => { // 添加上传电站
     this.setState({
-      uplaoding: true,
+      uploading: true,
       fileList,
     })
     if (file.status !== 'uploading') {
       console.log(file, fileList);
       this.setState({
-        uplaoding: false,
+        uploading: false,
       })
     }
     if (file.status === 'done' && file.response && file.response.code === '10000') {
@@ -125,7 +125,7 @@ class StationManageTable extends Component {
 
   render(){
     const { loading, stationList, totalNum, allDepartmentData } = this.props;
-    const { departmentModal, departmentSetInfo, uplaoding, fileList } = this.state;
+    const { departmentModal, departmentSetInfo, uploading, fileList } = this.state;
     const authData = Cookie.get('authData') || null;
     const column = [
       {
@@ -166,7 +166,7 @@ class StationManageTable extends Component {
         }
       }
     ];
-    const downloadHref = `${path.basePaths.APIBasePath}${path.APISubPaths.system.downloadStationTemplet}`;
+    const downloadHref = `${path.basePaths.originUri}${path.APISubPaths.system.downloadStationTemplet}`;
     return (
       <div className={styles.stationList}>
         <div className={styles.topHandler}>
@@ -181,7 +181,7 @@ class StationManageTable extends Component {
               showUploadList={false}
               fileList={fileList}
             >
-              <Button className={styles.plusButton} icon="plus" loading={uplaoding}>电站</Button>
+              <Button className={styles.plusButton} icon="plus" loading={uploading}>电站</Button>
             </Upload>
             <Button href={downloadHref} download={downloadHref}  target="_blank"  >下载电站配置模板</Button>
           </div>

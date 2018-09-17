@@ -138,14 +138,13 @@ class DefectDetailForm extends Component {
   }
 
   renderForm() {
-    const { defectDetail, commonList, onCloseDefectDetail } = this.props;
+    const { defectDetail, commonList } = this.props;
     const status = defectDetail.get('defectStatus');
     if(status !== '0' && status !== '4') {
       return (
         <DefectHandleForm 
           commonList={commonList}
           onSubmit={this.onSubmit}
-          onCancel={onCloseDefectDetail}
           status={status} />
       )
     } else {
