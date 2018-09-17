@@ -30,7 +30,6 @@ class SetDepartmentModal extends Component { // 电站管理列表页
   }
   
   onCheckDepartment = (checkedKeys) => {
-    console.log('onCheck', checkedKeys);
     this.setState({ checkedKeys });
   }
 
