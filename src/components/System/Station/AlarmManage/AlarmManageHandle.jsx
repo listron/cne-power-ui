@@ -8,7 +8,7 @@ import path from '../../../../constants/path';
 
 class AlarmManageHandle extends Component {
   static propTypes = {
-    stationCode: PropTypes.string,
+    stationCode: PropTypes.number,
     totalNum: PropTypes.number,
     alarmList: PropTypes.array,
     stations: PropTypes.array,
@@ -32,6 +32,11 @@ class AlarmManageHandle extends Component {
     })
   }
 
+  getAlarmList = () => {
+    const { queryParams, getAlarmList } = this.props;
+    getAlarmList({ ...queryParams });
+  }
+
   deleteAlarmList = () => {
     const { deleteAlarmList, stationCode } = this.props;
     deleteAlarmList({ stationCode });
@@ -49,6 +54,7 @@ class AlarmManageHandle extends Component {
             uploaderName={'告警'} 
             disableStation={[]}
             uploadExtraData={['stationCode','stationType']}
+            // loadedCallback={this.getAlarmList}
           />
           <Button disabled={alarmList.length === 0} className={styles.exportInfo} href={downloadHref} download={downloadHref}>导出告警事件信息表</Button>
           <Button disabled={alarmList.length === 0} onClick={this.deleteAlarmList} className={styles.clearAlarm}>清除告警</Button>

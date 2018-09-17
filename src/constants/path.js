@@ -14,7 +14,8 @@ export default {
     getStationDevicetypes: '/v3/station/devicetypes',
     getDevices: '/v3/station/stationdevices',
     getPartitions: '/v3/station/partitions',
-    getDeviceModel: '/v3/management/devicemodecode',
+    getDeviceModel: '/v3/management/devicemodecode', // 获取电站(必填), 设备类型下的设备型号
+    getStationPoints: '/v3/management/devicepointcode', // 电站(必填) 设备类型，设备型号，获取所有测点基本信息
     // getRefreshToken: '/v3/oauth/token' --todo 根据过期token中携带的refreshToken获取新token接口。
   },
   APISubPaths: {

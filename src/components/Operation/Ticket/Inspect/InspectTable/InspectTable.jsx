@@ -186,7 +186,7 @@ class InspectTable extends Component {
     }
     return (
       <Select onChange={this.onHandle} value="操作" placeholder="操作" dropdownMatchSelectWidth={false} dropdownClassName={styles.handleDropdown}>
-        <Option value="send" disabled={unselected||currentSelectedStatus!=='3'}>
+        <Option value="check" disabled={unselected||currentSelectedStatus!=='3'}>
           <i className="iconfont icon-done"></i>验收</Option>
       </Select>
     );
