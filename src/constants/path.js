@@ -66,6 +66,7 @@ export default {
       checkDefect: '/v3/defect/check',
       getDefectTypes: '/v3/defect/type',
       createNewDefect: '/v3/defect',
+      submitDefect: '/v3/defect/reject/change',
       transformDefect: '/v3/inspect/defect',
       setInspectCheck: '/v3/inspect/check',
       finishInspect: '/v3/inspect/finish',

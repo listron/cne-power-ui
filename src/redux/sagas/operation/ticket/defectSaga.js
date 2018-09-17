@@ -605,6 +605,54 @@ function *createNewDefect(action){
     console.log(e);
   }
 }
+//生成缺陷
+function *submitDefect(action){
+  const { payload } = action;
+  let url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.submitDefect;
+  yield put({ type: ticketAction.TICKET_FETCH });
+  try {
+    const response = yield call(axios.post, url, payload);
+    if(response.data.code === '10000'){
+      message.success('提交成功！');
+      const params = yield select(state => ({
+        stationType: state.operation.defect.get('stationType'),
+        stationCodes: state.operation.defect.get('stationCodes'),
+        defectSource: state.operation.defect.get('defectSource'),
+        defectLevel: state.operation.defect.get('defectLevel'),
+        timeInterval: state.operation.defect.get('timeInterval'),
+        status: state.operation.defect.get('status'),
+        pageNum: state.operation.defect.get('pageNum'),
+        pageSize: state.operation.defect.get('pageSize'),
+        createTimeStart: state.operation.defect.get('createTimeStart'),
+        createTimeEnd: state.operation.defect.get('createTimeEnd'),
+        deviceTypeCode: state.operation.defect.get('deviceTypeCode'),
+        defectTypeCode: state.operation.defect.get('defectTypeCode'),
+        sort: state.operation.defect.get('sort'),
+        handleUser: state.operation.defect.get('handleUser'),
+      }));
+      yield put({ 
+        type: ticketAction.GET_DEFECT_LIST_SAGA, 
+        payload: params
+      }); 
+      yield put({
+        type: ticketAction.CHANGE_SHOW_CONTAINER_SAGA,
+        payload: {
+          container: 'list',
+        },
+      })      
+    } else{
+      yield put({ 
+        type: ticketAction.SET_DEFECT_FAIL, 
+        error:{
+          code: response.data.code,
+          message: response.data.message
+        }
+      });        
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
 function* clearDefect(action) {
   yield put({ 
     type: ticketAction.CLEAR_DEFECT_STATE, 
@@ -628,6 +676,7 @@ export function* watchDefect() {
   yield takeLatest(ticketAction.CHECK_DEFECT_SAGA, checkDefect);
   yield takeLatest(ticketAction.GET_DEFECT_TYPE_SAGA, getDefectTypes);
   yield takeLatest(ticketAction.DEFECT_CREATE_SAGA, createNewDefect);
+  yield takeLatest(ticketAction.SUBMIT_DEFECT_SAGA, submitDefect);
   yield takeLatest(ticketAction.CLEAR_DEFECT_STATE_SAGA, clearDefect);
 }
 

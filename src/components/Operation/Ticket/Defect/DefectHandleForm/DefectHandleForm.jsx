@@ -8,7 +8,6 @@ import DefectCheckForm from './DefectCheckForm';
 class DefectHandleForm extends Component {
   static propTypes = {
     onSubmit: PropTypes.func,
-    onCancel: PropTypes.func,
     status: PropTypes.string,
     commonList: PropTypes.object,
   }
@@ -20,8 +19,7 @@ class DefectHandleForm extends Component {
   renderReviewForm() {
     return (     
       <DefectReviewForm 
-        onSubmit={this.props.onSubmit}
-        onCancel={this.props.onCancel} />
+        onSubmit={this.props.onSubmit} />
     );
   }
 
@@ -29,16 +27,14 @@ class DefectHandleForm extends Component {
     return (     
       <DefectProcessForm
         commonList={this.props.commonList} 
-        onSubmit={this.props.onSubmit}
-        onCancel={this.props.onCancel} />
+        onSubmit={this.props.onSubmit} />
     );
   }
 
   renderCheckForm() {
     return (     
       <DefectCheckForm 
-        onSubmit={this.props.onSubmit}
-        onCancel={this.props.onCancel} />
+        onSubmit={this.props.onSubmit} />
     );
   }
   
