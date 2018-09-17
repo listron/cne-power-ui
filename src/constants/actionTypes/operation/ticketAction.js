@@ -18,6 +18,7 @@ module.exports = {
     GET_DEFECT_LANGUAGE_SAGA: null,
     GET_DEFECT_TYPE_SAGA: null,
     DEFECT_CREATE_SAGA: null,
+    SUBMIT_DEFECT_SAGA: null,
     SET_DEFECT_FAIL: null,
 
     //Batch operation

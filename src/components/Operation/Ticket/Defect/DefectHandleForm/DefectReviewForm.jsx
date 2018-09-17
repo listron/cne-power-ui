@@ -10,7 +10,6 @@ class DefectReviewForm extends Component {
   static propTypes = {
     form: PropTypes.object,
     onSubmit: PropTypes.func,
-    onCancel: PropTypes.func,
   }
 
   static defaultProps = {
@@ -31,6 +30,10 @@ class DefectReviewForm extends Component {
         this.props.onSubmit(values);
       }
     });
+  }
+
+  onReset = () => {
+    this.props.form.resetFields();
   }
 
   disabledDate(current) {
@@ -96,7 +99,7 @@ class DefectReviewForm extends Component {
           </FormItem>
         )}
         <div className={styles.actionBar}>
-          <Button className={styles.cancelBtn} onClick={this.props.onCancel}>重置</Button>
+          <Button className={styles.cancelBtn} onClick={this.onReset}>重置</Button>
           <Button type="primary" htmlType="submit">提交</Button>
         </div>
       </Form>

@@ -25,6 +25,7 @@ class TmpForm extends Component {
     getDevices: PropTypes.func,
     getStationAreas: PropTypes.func,
     onDefectCreateNew: PropTypes.func,
+    submitDefect: PropTypes.func,
     showContainer: PropTypes.string,
     onChangeShowContainer: PropTypes.func,
     defectDetail: PropTypes.object,
@@ -71,7 +72,7 @@ class TmpForm extends Component {
   }
 
   onDefectCreate = (isContinueAdd) => {
-    const { error, form, onDefectCreateNew } = this.props;
+    const { error, form, onDefectCreateNew, submitDefect, showContainer } = this.props;
     form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         // 电站类型(0:风电，1光伏，2：全部)
@@ -104,7 +105,11 @@ class TmpForm extends Component {
           photoSolveAddress,
           rotatePhoto,
         };
-        onDefectCreateNew(params);
+        if(showContainer === 'create') {
+          onDefectCreateNew(params);
+        } else if(showContainer === 'edit') {
+          submitDefect(params);
+        }
         if(isContinueAdd && error.size === 0) {
           this.props.form.resetFields();
         }
