@@ -73,7 +73,7 @@ class StationFilter extends Component {
 
   renderProvince(stationData) {
     const stationCode = this.props.stationCode;
-    return stationData.map(provinceItem => {
+    return stationData.map((provinceItem, index) => {
       const options = provinceItem.map(station=>{
         return {
           label: station.get('stationName'),
@@ -87,7 +87,7 @@ class StationFilter extends Component {
         return item.get('stationCode').toString()
       }).toJS();
       return (
-        <TabPane tab={provinceItem.getIn([0,'provinceName'])} key={provinceItem.getIn([0,'provinceCode']).toString()}>
+        <TabPane tab={provinceItem.getIn([0,'provinceName'])} key={index}>
           <Checkbox onChange={(e)=>this.onCheckAll(e, provinceItem)} checked={this.getCheckAll(provinceItem)}>全部</Checkbox>
           <CheckboxGroup 
             options={options}
