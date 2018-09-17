@@ -42,7 +42,7 @@ class FilteredItems extends Component {
       !cancelStations.some(station=>station.get('stationCode').toString()===code)
     );
     onChangeFilter({
-      stationCodes: newStationCode,
+      stationCodes: newStationCode.join(','),
     });
 
   }
@@ -50,7 +50,7 @@ class FilteredItems extends Component {
     const { deviceTypeCode, onChangeFilter } = this.props;
     const newDeviceTypeCode = deviceTypeCode.split(',').filter(e=>e!==cancelCode);
     onChangeFilter({
-      deviceTypeCode: newDeviceTypeCode
+      deviceTypeCode: newDeviceTypeCode.join(',')
     });
   }  
   resetAll = () => {//删除所有筛选条件
