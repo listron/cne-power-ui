@@ -129,8 +129,8 @@ class StationSelectModal extends Component {
           visible={stationModalShow}
           onOk={this.handleOK}
           onCancel={hideStationModal}
-          cancelText={'取消'}
-          okText={'确定'}
+          cancelText="取消"
+          okText="保存"
           title="请选择"
           width={625}
           wrapClassName={styles.stationModal}
