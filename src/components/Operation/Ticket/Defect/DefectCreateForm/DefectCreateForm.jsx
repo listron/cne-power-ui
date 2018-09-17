@@ -18,6 +18,7 @@ class TmpForm extends Component {
     form: PropTypes.object,
     stations: PropTypes.array,
     deviceTypes: PropTypes.array,
+    devices: PropTypes.array,
     defectTypes: PropTypes.array,
     getStationDeviceTypes: PropTypes.func,
     getDefectTypes: PropTypes.func,
@@ -136,12 +137,13 @@ class TmpForm extends Component {
   }
 
   render() {
-    const {stations, deviceTypes, defectTypes,deviceItems, defectDetail, showContainer } = this.props;
+    const {stations, deviceTypes, devices, defectTypes,deviceItems, defectDetail, showContainer } = this.props;
     const {getFieldDecorator, getFieldValue} = this.props.form;
     const defectFinished = getFieldValue('defectSolveResult') === '0';
     const editDefect = showContainer === 'edit';
     const defaultStations = editDefect && stations.filter(e=>e.stationCode===defectDetail.stationCode) || [] ;
-    const defaultDeviceType = editDefect && deviceTypes.find(e=>e.deviceTypeCode===defectDetail.deviceTypeCode) || undefined;
+    const defaultDeviceType = editDefect && deviceTypes.find(e=>e.deviceTypeCode===defectDetail.deviceTypeCode) || null;
+    const defaultDevice = editDefect && devices.find(e=>e.deviceCode===defectDetail.deviceCode) || null;
     const defaultDefectType = editDefect && defectTypes.find(e=>e.defectTypeCode===defectDetail.defectTypeCode) || null ;
     const imgDescribe = editDefect && defectDetail.photoAddress && defectDetail.photoAddress.split(',').filter(e=>!!e).map((e,i)=>({
       uid: i,    
@@ -178,6 +180,7 @@ class TmpForm extends Component {
           <FormItem label="设备名称" colon={false}>
             {getFieldDecorator('deviceCode',{
               rules: [{ required: true, message: '请选择设备名称' }],
+              initialValue: defaultDevice && defaultDevice.deviceCode || undefined
             })(
               <DeviceName  
                 disabled={deviceItems.size===0}
