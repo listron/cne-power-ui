@@ -55,6 +55,24 @@
             }
           }
         ]
+      },{
+        test: /\.less$/,
+        exclude: /src/,
+        use: [{
+          loader: "style-loader" 
+        }, {
+            loader: "css-loader",
+        }, {
+          loader: "less-loader",
+          options: {
+            importLoaders: 1,
+            modifyVars: {
+              'primary-color': '#199475',
+              'link-color': '#199475',
+            },
+            javascriptEnabled: true,
+          },
+        }]
       }, {
         test: /\.scss$/,
         use: [{
