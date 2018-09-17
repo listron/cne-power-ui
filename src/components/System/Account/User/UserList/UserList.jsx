@@ -204,26 +204,31 @@ class UserList extends Component {
     const columns = [
       {
         title: '用户名',
+        width:'200px',
         dataIndex: 'username',
         key: 'username',
         render: (text, record, index) => (<a href={'javascript:void(0)'} className={styles.username} onClick={() => this.showUserDetail(record)} >{text}</a>)
       }, {
         title: '真实姓名',
+        width:'200px',
         dataIndex: 'userFullName',
         key: 'userFullName',
         render: (text, record, index) => (<span>{text}</span>)
       }, {
         title: '电话',
+        width:'200px',
         dataIndex: 'phoneNum',
         key: 'phoneNum',
         render: (text, record) => (<span>{text}</span>),
       }, {
         title: '角色',
+        width:'200px',
         dataIndex: 'roleName',
         key: 'roleName',
         render: (text, record) => (<span>{text}</span>),
       }, {
         title: '特殊权限',
+        width:'200px',
         dataIndex: 'spcialRoleName',
         key: 'spcialRoleName',
         render: (text, record) => (<span>{text}</span>),
@@ -236,6 +241,7 @@ class UserList extends Component {
       // }, 
       {
         title: '负责电站',
+        width:'200px',
         dataIndex: 'stationName',
         key: 'stationName',
         render: (text, record, index) => {
@@ -267,6 +273,7 @@ class UserList extends Component {
         }
       }, {
         title: '状态',
+        width:'200px',
         dataIndex: 'userStatus',
         key: 'userStatus',
         render: (text, record, index) => {

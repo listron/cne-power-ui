@@ -22,8 +22,10 @@ class StationSelectModal extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      uploading: false,
       selectedStation: {},
-      filterStationType: 0,//选中电站类型
+      filterStationType: 2,//选中电站类型 => 默认为全部
+      fileList: [],
     }
   }
 
@@ -51,11 +53,19 @@ class StationSelectModal extends Component {
   excelInfoUpload = ({file, fileList}) => { // 
     const { loadedCallback, hideStationModal } = this.props;
     const { selectedStation } = this.state;
+    this.setState({
+      uploading: true,
+      fileList,
+    })
     if (file.status !== 'uploading') {
       console.log(file, fileList);
+      this.setState({
+        uploading: false,
+      })
     }
     if (file.status === 'done' && file.response && file.response.code === '10000' ) {
       message.success(`${file.name} 文件上传成功`);
+      this.setState({ fileList: [] });
       loadedCallback && loadedCallback({ file, selectedStation });
       hideStationModal()
     }else if(file.status === 'done' && (!file.response || file.response.code !== '10000') ){
@@ -99,7 +109,7 @@ class StationSelectModal extends Component {
 
   render() {
     const { hideStationModal, data, uploaderName, uploadPath, uploadExtraData } = this.props;
-    const { filterStationType, selectedStation } = this.state;
+    const { filterStationType, selectedStation, fileList, uploading } = this.state;
     const tmpStationTypeArray = data.map(e=>e && e.stationType).filter(e=>(e || e === 0) );
     const stationTypeSet = new Set(tmpStationTypeArray);
     const stationTypeArray = Array.from(stationTypeSet);
@@ -124,12 +134,13 @@ class StationSelectModal extends Component {
           beforeUpload={this.beforeUpload}
           onChange={this.excelInfoUpload}
           showUploadList={false}
+          fileList={fileList}
           data={(file)=>({
             ...uploadExtraObject,
             file,
           })}
         >
-          <Button disabled={!uploadAvailable}>导入{uploaderName}</Button>
+          <Button disabled={!uploadAvailable} loading={uploading}>导入{uploaderName}</Button>
         </Upload>}
       >
         <div className={styles.stationModalContent}>

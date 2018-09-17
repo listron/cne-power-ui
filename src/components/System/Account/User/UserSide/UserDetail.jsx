@@ -168,13 +168,17 @@ class UserDetail extends Component {
                     return (<div className={styles.departmentDetail} key={index} >
                       <div className={styles.enterpriseName}>{item.enterpriseName}：</div>
                       <div className={styles.enterpriseDetail}>
-                      {item.departmentData && item.departmentData.map((item2,i)=>{
-                        return (<p  key={i} >{item2.departmentName}-（负责电站：{item2.stationData &&
-                          item2.stationData.map(item3=>{
-                            return item3.stationName;
-                          })
-                        }）</p>)
-                      })}
+                        {item.departmentData && item.departmentData.map((item2,i)=>{
+                          return (<p  key={i} >{item2.departmentName}-（负责电站：{item2.stationData &&
+                            item2.stationData.map((item3,index3)=>{
+                              if(item2.stationData.length-1 === index3){
+                                return item3.stationName;
+                              }else{
+                                return `${item3.stationName}，`;
+                              }
+                            })
+                          }）</p>)
+                        })}
                       </div>
                     </div>)
                   })
