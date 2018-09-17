@@ -113,7 +113,7 @@ class DefectTimeLine extends Component {
       flowName = item.get('flowName');
     }
     const photoAddress = item.get('photoAddress');
-    const photoAddressArr = photoAddress === '' ? [] : photoAddress.split(',');
+    const photoAddressArr = !photoAddress ? [] : photoAddress.split(',');
     return (
       <div className={styles.processItem}>
         <div className={styles.basic}>
@@ -125,7 +125,10 @@ class DefectTimeLine extends Component {
         <div className={styles.advise}>
           <div className={styles.text}>处理建议</div>
           <div className={styles.status}>{getHandleStatus(item.get("handleStatus"))}</div>
-          <div className={styles.defectProposal}>{item.get("defectProposal")}</div>
+          <div className={styles.defectProposal}>
+            <span>{item.get("defectProposal")}</span>
+            <span>{item.get('replaceParts') ? item.get('replaceParts') : null}</span>
+          </div>
         </div>
       </div>
     );
