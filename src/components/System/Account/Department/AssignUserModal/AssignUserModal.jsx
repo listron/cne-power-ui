@@ -111,14 +111,14 @@ class AssignUserModal extends Component {
   onSearch = (value) => {
     let userList = this.state.selectedUserList;
     if(value !== '') {
-      userList = userList.filter((item) => {
-        return item.get('username').indexOf(value) !== -1;
+      userList = userList.filter((item) => {  
+        return item && item.get('username') && item.get('username').indexOf(value) !== -1;
       });
     } else {
       userList = null;
     }
     this.setState({
-      searchUserList: userList
+      searchUserList: userList,
     });  
   }
 
