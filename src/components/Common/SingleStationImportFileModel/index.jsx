@@ -36,6 +36,7 @@ import PropTypes from 'prop-types';
   选填参数： 
   1. disableStation = [21,73,22,25];不可选电站编码数组，默认为[];所有电站均可点击 
   2. uploadExtraData = ['stationCode','stationType'] 上传file中，额外需要传至url的其他电站信息, 默认为[];
+  3. loadedCallback ( func: ({file, selectedStation}) => {} ) )完成上传后执行的回调。
 */
 
 class SingleStationImportFileModel extends Component {
@@ -45,6 +46,7 @@ class SingleStationImportFileModel extends Component {
     uploadExtraData: PropTypes.array,
     uploadPath: PropTypes.string,
     uploaderName: PropTypes.string,
+    loadedCallback: PropTypes.func,
   }
   static defaultProps = {
     data: [],
@@ -72,7 +74,7 @@ class SingleStationImportFileModel extends Component {
   }
 
   render() {
-    const { data, uploaderName, uploadPath, disableStation, uploadExtraData  } = this.props;
+    const { data, uploaderName, uploadPath, disableStation, uploadExtraData, loadedCallback  } = this.props;
     const { modalShow } = this.state;
     return (
       <span className={styles.singleStationImportFileModel}>
@@ -87,6 +89,7 @@ class SingleStationImportFileModel extends Component {
           disableStation={disableStation}
           uploadExtraData={uploadExtraData}
           hideStationModal={this.hideStationModal} 
+          loadedCallback={loadedCallback}
         />}
       </span>
     )
