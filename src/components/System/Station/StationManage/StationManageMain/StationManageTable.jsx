@@ -144,12 +144,13 @@ class StationManageTable extends Component {
         title: '部门设置',
         dataIndex: 'departmentStatus',
         key: 'departmentStatus',
+        className: 'departmentSetting',
         render: (text, record, index) => {
           const { stationDepartments } = record;
           if(stationDepartments && stationDepartments.length > 0){
-            return (<span className={styles.seeDepartment} onClick={()=>this.showDepartmentModal(record)}>查看</span>)
+            return (<span className="iconfont icon-look" onClick={()=>this.showDepartmentModal(record)}></span>)
           }else{
-            return (<span className={styles.setDepartment} onClick={()=>this.showDepartmentModal(record)}>设置</span>)
+            return (<span className="iconfont icon-goset" onClick={()=>this.showDepartmentModal(record)}></span>)
           }
         }
       },{

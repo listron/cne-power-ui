@@ -8,6 +8,7 @@ import { Button, Input, Form, Select } from 'antd';
 import EditInfoPart from './EditInfoPart';
 import PropTypes from 'prop-types';
 import styles from './stationSide.scss';
+import moment from 'moment';
 const FormItem = Form.Item;
 const { Option } = Select; 
 
@@ -47,7 +48,9 @@ class EditForm extends Component {
 
     const longitude = (stationDetail.longitude || parseFloat(stationDetail.longitude) === 0)? `${stationDetail.longitude}°` : '--';
     const latitude = (stationDetail.latitude || parseFloat(stationDetail.latitude) === 0)? `${stationDetail.latitude}°` : '--';
-
+    const ongridTime = stationDetail.ongridTime?moment(stationDetail.ongridTime).format('YYYY-MM-DD'):'';
+    const fullOngridTime = stationDetail.fullOngridTime?moment(stationDetail.fullOngridTime).format('YYYY-MM-DD'):'';
+    
     const baseArrayFir = [
       { name: '电站类型', value: `${stationDetail.stationType === 0?'风电':'光伏'}` }, // 特殊组合
       { name: '电站位置', value: `${longitude} ${latitude}` }, // 特殊组合
@@ -65,8 +68,8 @@ class EditForm extends Component {
       { name: '调度机构名称', value: stationDetail.dispatchingAgency },
       { name: '调度机构性质', value: stationDetail.agencyType },
       { name: '并网点电站名称', value: stationDetail.gridSubstationName }, 
-      { name: '首次并网时间', value: stationDetail.ongridTime }, 
-      { name: '全部并网时间', value: stationDetail.fullOngridTime }, 
+      { name: '首次并网时间', value: ongridTime, }, 
+      { name: '全部并网时间', value: fullOngridTime}, 
       { name: '并网电压等级', value: stationDetail.gridVoltageLevel },
       { name: '发电单元个数', value: stationDetail.stationUnitCount },
     ];
@@ -115,7 +118,7 @@ class EditForm extends Component {
               rules: [{
                 required: true, message: '请输入并网容量',
               },{
-                pattern: /^[0-9]*$/, message: '并网容量必须是数字'
+                pattern: /^-?([1-9]\d*|[1-9]\d*\.\d*|0\.\d*[1-9]\d*|0?\.0+|0)$/, message: '并网容量必须是数字'
               }]
             })(
               <Input className={styles.capacity} />
@@ -128,7 +131,7 @@ class EditForm extends Component {
               rules: [{
                 required: true, message: '请输入设计容量',
               },{
-                pattern: /^[0-9]*$/, message: '设计容量必须是数字'
+                pattern: /^-?([1-9]\d*|[1-9]\d*\.\d*|0\.\d*[1-9]\d*|0?\.0+|0)$/, message: '设计容量必须是数字'
               }]
             })(
               <Input className={styles.capacity} />
@@ -141,7 +144,7 @@ class EditForm extends Component {
               rules: [{
                 required: true, message: '请输入占地面积',
               },{
-                pattern: /^[0-9]*$/, message: '占地面积必须是数字'
+                pattern: /^-?([1-9]\d*|[1-9]\d*\.\d*|0\.\d*[1-9]\d*|0?\.0+|0)$/, message: '占地面积必须是数字'
               }]
             })(
               <Input className={styles.floorArea} />
@@ -154,7 +157,7 @@ class EditForm extends Component {
               rules: [{
                 required: true, message: '请输入年利用小时数',
               },{
-                pattern: /^[0-9]*$/, message: '年利用小时数必须是数字'
+                pattern: /^-?([1-9]\d*|[1-9]\d*\.\d*|0\.\d*[1-9]\d*|0?\.0+|0)$/, message: '年利用小时数必须是数字'
               }]
             })(
               <Input className={styles.designUtilizationHours} />

@@ -101,7 +101,7 @@ class AssignStationModal extends Component {
     let stationList = this.state.selectedStationList;
     if(value !== '') {
       stationList = stationList.filter((item) => {
-        return item.get('stationName').indexOf(value) !== -1;
+        return item && item.get('stationName') && item.get('stationName').indexOf(value) !== -1;
       });
     } else {
       stationList = null;

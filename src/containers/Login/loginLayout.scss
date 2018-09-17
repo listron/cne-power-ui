@@ -197,5 +197,11 @@
     .ant-tabs{
       overflow: visible;
     }
+    //form表单Input下的提示语定位
+    .ant-form-item-control-wrapper{
+      .ant-form-explain{
+        position: absolute;
+      }
+    }
   }
 }

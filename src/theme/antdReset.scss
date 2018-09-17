@@ -244,8 +244,8 @@
   .ant-spin-dot i{
     background-color: #199475
   }
-  //form表单Input下的提示语定位
-  .has-error .ant-form-explain{
-    position: absolute;
+  //ant-select-dropdown-menu下拉框选中的√颜色
+  .ant-select-dropdown.ant-select-dropdown--multiple .ant-select-dropdown-menu-item-selected:after, .ant-select-dropdown.ant-select-dropdown--multiple .ant-select-dropdown-menu-item-selected:hover:after {
+    color: $themeColor;
   }
 }
