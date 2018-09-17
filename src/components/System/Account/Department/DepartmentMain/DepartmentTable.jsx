@@ -203,12 +203,14 @@ class DepartmentTable extends Component {
       {
         title: '部门名称',
         dataIndex: 'departmentName',
+        width:'200px',
         key: 'departmentName',
         render: (text, record, index) => (
           <a href={'javascript:void(0);'} className={styles.tableDepartmentName} onClick={() => this.showDepartmentDetail(record)} ><div title={text} className={styles.departmentName} >{text}</div></a>
         )
       }, {
         title: '所属部门',
+        width:'200px',
         dataIndex: 'parentDepartmentName',
         key: 'parentDepartmentName',
         // render: (text,record,index) => (        
@@ -217,12 +219,14 @@ class DepartmentTable extends Component {
 
       }, {
         title: '预设',
+        width:'200px',
         dataIndex: 'departmentSource',
         key: 'departmentSource',
         render: (text, record) => (<span className={styles.departmentSource}>{text === 0 ? '是' : '否'}</span>),
         sorter: true
       }, {
         title: '负责电站',
+        width:'200px',
         dataIndex: 'stationName',
         key: 'stationName',
         render: (text, record) => {
