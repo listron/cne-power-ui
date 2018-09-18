@@ -536,7 +536,6 @@ class UserList extends Component {
     const userCreateRight = rightHandler && rightHandler.includes('account_user_create');
     const userImportRight = rightHandler && rightHandler.includes('account_user_batchImport');
     const userInvite = rightHandler && rightHandler.includes('account_user_invite');
-    //console.log(userInvite);
 
     return (
       <div className={styles.userList}>

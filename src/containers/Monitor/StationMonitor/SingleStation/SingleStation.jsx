@@ -42,7 +42,7 @@ class SingleStation extends Component {
     this.props.getStationList({});//获取电站列表
     // 如果是从设备页面跳转过来的，定位到所在设备位置
     const main = document.getElementById('main');
-    const locationSearch  = this.props.location.search;
+    const locationSearch = this.props.location.search;
     let appointDeviceCode = locationSearch.substr(locationSearch.indexOf('=')+1);
     if(appointDeviceCode && appointDeviceCode!=='undefined'){
       appointDeviceCode = parseInt(appointDeviceCode);
@@ -77,7 +77,6 @@ class SingleStation extends Component {
     this.props.getAlarmList({stationCode});
     this.props.getWorkList({stationCode, startTime: moment().set({'hour': 0, 'minute': 0, 'second': 0, }).utc().format(), endTime: moment().utc().format()});
     this.props.getDeviceTypeFlow({stationCode});
-    
     this.timeOutId = setTimeout(()=>{
       this.getTenSeconds(stationCode);
     },10000);
@@ -93,6 +92,7 @@ class SingleStation extends Component {
   }
 
   render() {
+    
     const breadCrumbData = {
       breadData:[   
        {
