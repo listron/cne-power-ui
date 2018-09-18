@@ -35,7 +35,7 @@ class AbnormalItem extends Component {
   onDeleteItem = () => {
     confirm({
       title: '确认删除异常设备？',
-      content: '点击确认，删除此异常设备信息，记录将无法保存',
+      content: '如点击确认，将删除此异常设备信息，记录将无法找回',
       okText: '确认',
       onOk: () => {
         this.props.onDelete({abnormalId: this.props.item.get('abnormalId')});

@@ -196,10 +196,20 @@ function *setStationDepartment(action){ // 保存分配至指定电站的部门�
         type: stationManageAction.GET_STATION_MANAGE_LIST,
         payload,
       })
+    }else{
+      message.error('分配部门操作失败，请重试');
+      yield put({
+        type:  stationManageAction.CHANGE_STATION_MANAGE_STORE,
+        payload: { loading: false },
+      })
     }
   }catch(e){
     console.log(e);
     message.error('分配部门操作失败，请重试');
+    yield put({
+      type:  stationManageAction.CHANGE_STATION_MANAGE_STORE,
+      payload: { loading: false },
+    })
   }
 }
 

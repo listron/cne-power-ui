@@ -84,6 +84,7 @@ class Main extends Component {
     Cookie.remove('enterpriseLogo');
     Cookie.remove('userId');
     Cookie.remove('username');
+    Cookie.remove('userFullName');
     Cookie.remove('userLogo');
     Cookie.remove('expireData');
     Cookie.remove('refresh_token');
