@@ -113,7 +113,7 @@ const mapStateToProps = (state) => ({
   handleUser: state.operation.inspect.get('handleUser'),
   username: Cookie.get('username'),
   stations: state.common.get('stations'),
-  deviceTypes: state.common.get('stationDeviceTypes'),
+  deviceTypes: state.common.get('deviceTypes'),
 })
 
 const mapDispatchToProps = (dispatch) => ({

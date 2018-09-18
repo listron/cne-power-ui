@@ -79,14 +79,14 @@ class InspectTimeLine extends Component {
       return (
         <div className={styles.inspectDesc}>
           <div className={styles.text}>异常设备</div>
-          <div className={styles.content}>{abnormalNum}</div>
+          <div className={styles.content}>{`${abnormalNum}个`}</div>
         </div>
       );
     } else if(flowName === '验收工单') {
       return (
         <div className={styles.inspectDesc}>
           <div className={styles.text}>已转工单</div>
-          <div className={styles.content}>{transformNum}</div>
+          <div className={styles.content}>{`${transformNum}个`}</div>
         </div>
       );
     }

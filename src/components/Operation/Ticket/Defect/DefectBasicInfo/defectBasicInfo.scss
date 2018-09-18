@@ -11,7 +11,7 @@
       display: flex;
       flex-direction: row;
       align-items: center;
-      color: $darkColor;
+      color: rgba(0,0,0,0.85);
     }
     .warning {
       display: flex;
@@ -43,7 +43,7 @@
       .icon-content {
         margin-left: 6px;
         font-size: 6px;
-        color: $darkColor;
+        color: rgba(0,0,0,0.85);
       }
     }
   }

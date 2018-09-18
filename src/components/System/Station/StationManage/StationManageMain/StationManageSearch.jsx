@@ -48,6 +48,7 @@ class StationManageSearch extends Component {
     const { regionNameState, stationNameState } = this.state;
     getStationList({
       ...queryListParams,
+      pageNum: 1,
       regionName: regionNameState,
       stationName: stationNameState,
     })
