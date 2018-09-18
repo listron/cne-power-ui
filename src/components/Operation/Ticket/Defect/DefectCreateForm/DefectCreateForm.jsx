@@ -246,8 +246,8 @@ class TmpForm extends Component {
           </FormItem>
         </div>
         <div className={styles.dealInfo}>
-        <div className={styles.title}>
-            处理
+          <div className={styles.title}>
+            处理信息
             <i className="iconfont icon-content" />
           </div>
           <FormItem label="处理结果" colon={false}>
