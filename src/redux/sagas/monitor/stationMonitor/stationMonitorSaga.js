@@ -18,9 +18,12 @@ function* getMonitorStation(action) {//获取所有/风/光电站信息
           let stationTypes = '';
           const stationDataList = response.data.data.stationDataList || [];
           const allDatastationType = stationDataList.map((e, index) => { return e.stationType });
-          const allStationTypeCode = new Set(allDatastationType);     
+          const allStationTypeCode = new Set(allDatastationType); 
+           
           const stationNum = allStationTypeCode.size;
-          if(stationNum > 1) {
+          //此时的长度可能为2但是有可能值都是null，或者其中一个是null
+          // if(stationNum > 1) {
+            if(allStationTypeCode.has('0')&&allStationTypeCode.has('1')) {
             stationTypes = '2';
           } else {
             if(allStationTypeCode.has('0')) {

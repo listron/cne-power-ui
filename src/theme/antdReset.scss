@@ -94,54 +94,36 @@
   .ant-switch-checked{
     color: $themeColor;
   }
-  .ant-steps-item .ant-steps-item-icon{
-    width: 13px;
-    height: 13px;
-  }
-  .ant-steps-item-wait .ant-steps-item-icon > .ant-steps-icon{
-    margin-left: 1px;
-  }
-  .ant-steps-item-finish .ant-steps-item-icon {
-    border-color: $themeColor;
-    background-color: #fff;
-  } 
-  .ant-steps-item-process > .ant-steps-item-content > .ant-steps-item-title,.ant-steps-item-finish > .ant-steps-item-content > .ant-steps-item-title {
-    color: #fff;
-  }
-  // .ant-tabs-ink-bar{
-  //   color: $themeColor;
-  // }
-  // .ant-tabs-ink-bar{
-  //   background-color: $themeColor;
-  // }
 
+.ant-tabs{
   .ant-tabs-ink-bar{
     color: $themeColor;
     background-color: $themeColor;
   }
-  
   .ant-tabs-nav ,.ant-tabs-tab-active {
     color: $themeColor;
   }
   .ant-tabs-nav .ant-tabs-tab-active:hover{
     color: $themeColor;
   }
-
-  .ant-tabs-nav .ant-tabs-tab:hover{
-    color: $themeColor;
-  }
   .ant-tabs-tab{
     color: $darkColor;
   }
-  .ant-tabs-tab-active .ant-tabs-tab{
-    color: $themeColor;
-  }
+  // .ant-tabs-nav .ant-tabs-tab:hover{
+  //   color: $themeColor;
+  // }
+  // .ant-tabs-tab-active .ant-tabs-tab{
+  //   color: $themeColor;
+  // }
 
-  .ant-tabs-nav .ant-tabs-tab-active{
-    color: $themeColor;
-  }
+  // .ant-tabs-nav .ant-tabs-tab-active{
+  //   color: $themeColor;
+  // } 
+  // .ant-tabs-tab-active .ant-tabs-tab{
+  //   color: $themeColor;
+  // }
+}
 
-  
   .ant-input:not(.ant-input-disabled):hover{
     border-color:$themeColor;
   }
@@ -174,48 +156,50 @@
     border-color: $themeColor;
     border-right-width: 1px !important;
   }
-  /*步骤的下边距*/
+
+  /*步骤*/
   .ant-steps{
     margin-bottom: 20px;
-  }
-  /*步骤的标题的字体大小*/
-  .ant-steps-item-title{
-    font-size: 12px;
-  }
-  /* .ant-steps-item-process .ant-steps-item-icon{
-    background: $themeColor;
-  }*/
-
-  /*流程步骤的icon大小形状以及对其*/
-  .ant-steps-item-icon {
-    border: 1px solid rgba(0, 0, 0, 0.25);
-    width: 12px;
-    height: 12px;
-    line-height: 12px;
-    text-align: center;
-    border-radius: 12px;
-    font-size: 12px;
-    margin-right: 8px;
-    vertical-align: -22px;
-    margin-left: 10px;
-  }
-  /*流程步骤的icon颜色背景*/
+      /*步骤的标题的字体大小*/
+    .ant-steps-item-title{
+      font-size: 12px;
+    }
+    //字体颜色
+    .ant-steps-item-process > .ant-steps-item-content > .ant-steps-item-title,.ant-steps-item-finish > .ant-steps-item-content > .ant-steps-item-title {
+      color: #fff;
+    }
+     /*流程步骤的icon大小形状以及对齐*/
+    .ant-steps-item-icon {
+      border: 1px solid rgba(0, 0, 0, 0.25);
+      width: 13px;
+      height: 13px;
+      line-height: 13px;
+      text-align: center;
+      border-radius: 12px;
+      font-size: 12px;
+      margin-right: 7px;
+      vertical-align: -22px;
+      margin-left: 10px;
+    }
+    /*流程步骤的icon颜色背景*/
   .ant-steps-item-process .ant-steps-item-icon,.ant-steps-item-finish .ant-steps-item-icon{
     border-color: $themeColor;
     background: #ceebe0;
     line-height: 13px;
   }
-  .ant-steps-item-process .ant-steps-item-icon > .ant-steps-icon,.ant-steps-item-finish .ant-steps-item-icon > .ant-steps-icon {
-    color: #199475;
-  }
-  /*流程步骤后面的线*/
   .ant-steps-item-title:after{
     width: 0;
   }
+  .ant-steps-item-process .ant-steps-item-icon > .ant-steps-icon,.ant-steps-item-finish .ant-steps-item-icon > .ant-steps-icon {
+    color: $themeColor;
+  }
+  }
+  //控制步骤的背景图的显示问题。
   .ant-steps-horizontal:not(.ant-steps-label-vertical) .ant-steps-item {
     margin-right: 0;
     white-space: nowrap;
   }
+
   .ant-checkbox-checked .ant-checkbox-inner, .ant-checkbox-indeterminate .ant-checkbox-inner{
     background-color: $themeColor;
     border-color: $themeColor;
