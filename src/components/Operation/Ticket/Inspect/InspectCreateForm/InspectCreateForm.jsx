@@ -32,7 +32,7 @@ class InspectCreateForm extends Component{
           deviceTypeCodes: values.deviceTypeCodes.join(','),
           deadline: values.deadline.format("YYYY-MM-DD hh:mm:ss"),
         });
-        if(isContinueAdd && error.size === 0) {
+        if(isContinueAdd && error.get('code') === '') {
           form.resetFields();
         }
       }

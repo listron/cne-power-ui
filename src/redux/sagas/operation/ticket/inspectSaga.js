@@ -225,18 +225,23 @@ function *createInspect(action){
     const response = yield call(axios.post, url, payload)
     if(response.data.code === "10000"){
       message.success('创建成功！')
-      const pageSize = yield select(state => state.operation.inspect.get('pageSize'));
-      const status = yield select(state => state.operation.inspect.get('status'));
-      const sort = yield select(state => state.operation.inspect.get('sort'));
+      const params = yield select(state => ({
+        stationType: state.operation.defect.get('stationType'),
+        stationCodes: state.operation.defect.get('stationCodes'),
+        timeInterval: state.operation.defect.get('timeInterval'),
+        status: state.operation.defect.get('status'),
+        pageNum: state.operation.defect.get('pageNum'),
+        pageSize: state.operation.defect.get('pageSize'),
+        createTimeStart: state.operation.defect.get('createTimeStart'),
+        createTimeEnd: state.operation.defect.get('createTimeEnd'),
+        deviceTypeCode: state.operation.defect.get('deviceTypeCode'),
+        sort: state.operation.defect.get('sort'),
+        // handleUser: state.operation.defect.get('handleUser'),
+        // hasAbnormal: state.operation.defect.get('hasAbnormal'),
+      }));
       yield put({
         type: ticketAction.GET_INSPECT_LIST_SAGA,
-        payload:{
-          stationType: '2',
-          status: status,
-          pageNum: 0,
-          pageSize: pageSize,
-          sort: sort,
-        }
+        payload: params
       })
       yield put({
         type: ticketAction.CHANGE_SHOW_CONTAINER_SAGA,

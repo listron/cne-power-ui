@@ -111,7 +111,7 @@ class TmpForm extends Component {
           params.defectId = defectDetail.defectId;
           submitDefect(params);
         }
-        if(isContinueAdd && error.size === 0) {
+        if(isContinueAdd && error.get('code') === '') {
           this.props.form.resetFields();
         }
       }
@@ -147,10 +147,10 @@ class TmpForm extends Component {
     const {getFieldDecorator, getFieldValue} = this.props.form;
     const defectFinished = getFieldValue('defectSolveResult') === '0';
     const editDefect = showContainer === 'edit';
-    const defaultStations = editDefect && stations.filter(e=>e.stationCode===defectDetail.stationCode) || [] ;
-    const defaultDeviceType = editDefect && deviceTypes.find(e=>e.deviceTypeCode===defectDetail.deviceTypeCode) || null;
-    const defaultDevice = editDefect && devices.find(e=>e.deviceCode===defectDetail.deviceCode) || null;
-    const defaultDefectType = editDefect && defectTypes.find(e=>e.defectTypeCode===defectDetail.defectTypeCode) || null ;
+    const defaultStations = editDefect ? stations.filter(e=>e.stationCode===defectDetail.stationCode) : [] ;
+    const defaultDeviceType = editDefect ? deviceTypes.find(e=>e.deviceTypeCode===defectDetail.deviceTypeCode) : null;
+    const defaultDevice = editDefect ? devices.find(e=>e.deviceCode===defectDetail.deviceCode) : null;
+    const defaultDefectType = editDefect ? defectTypes.find(e=>e.defectTypeCode===defectDetail.defectTypeCode) : null ;
     const imgDescribe = editDefect && defectDetail.photoAddress && defectDetail.photoAddress.split(',').filter(e=>!!e).map((e,i)=>({
       uid: i,    
       rotate: 0,  
@@ -246,8 +246,8 @@ class TmpForm extends Component {
           </FormItem>
         </div>
         <div className={styles.dealInfo}>
-        <div className={styles.title}>
-            处理
+          <div className={styles.title}>
+            处理信息
             <i className="iconfont icon-content" />
           </div>
           <FormItem label="处理结果" colon={false}>
