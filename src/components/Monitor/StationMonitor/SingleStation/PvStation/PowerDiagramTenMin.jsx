@@ -80,13 +80,33 @@ class PowerDiagramTenMin extends Component {
           fontSize: '12px',
         },
         formatter: (param) => {
-          let rate=(param[0].value/param[1].value)<1 ? (param[0].value/param[1].value).toFixed(2)+'%' : '100%';
+          if(!param || param.length === 0){ 
+            return <div></div>
+          }
+          let radi = '', thoryPower = '', actualPower = '', rate = '';
+          const radiObj = param.find(e=>e.seriesName === '日曝辐值');
+          const thoryPowerObj = param.find(e=>e.seriesName === '理论发电量');
+          const actualPowerObj = param.find(e=>e.seriesName === '实际发电量');
+          const tmpRadi = radiObj && radiObj.value && !isNaN(parseFloat(radiObj.value));
+          const tmpThoryPower = thoryPowerObj && thoryPowerObj.value && !isNaN(parseFloat(thoryPowerObj.value));
+          const tmpActualPower = actualPowerObj && actualPowerObj.value && !isNaN(parseFloat(actualPowerObj.value));
+
+          if(tmpRadi){
+            radi = `<div style="padding-left: 5px;"><span style="display: inline-block; background:#f9b600; width:5px; height:5px; border-radius:100%;"></span> 辐射: ${parseFloat(radiObj.value).toFixed(2) || 0}</div>`
+          }
+          if(tmpActualPower){
+            actualPower = `<div style="padding-left: 5px;"><span style="display: inline-block; background:#a42b2c;  width:5px; height:5px; border-radius:100%;"></span> 实际发电量: ${parseFloat(actualPowerObj.value).toFixed(4) || 0}</div>`
+          }
+          if(tmpThoryPower){
+            thoryPower = `<div style="padding-left: 5px;"><span style="display: inline-block; background:#c7ceb2;  width:5px; height:5px; border-radius:100%;"></span> 理论发电量: ${parseFloat(thoryPowerObj.value).toFixed(4) || 0}</div>`
+          }
+          if(tmpActualPower && tmpThoryPower ){
+            const tmpRate = parseFloat(thoryPowerObj.value) === 0 ? '--':(parseFloat(actualPowerObj.value) / parseFloat(thoryPowerObj.value)*100).toFixed(2);
+            rate = `<div style="padding-left: 15px;">完成率: ${tmpRate}%</div>`
+          }
           return `<div style="width: 150px; height: 120px;font-size:12px;line-height: 24px;background: #fff;box-shadow:0 1px 4px 0 rgba(0,0,0,0.20);border-radius:2px;">
-            <div  style="border-bottom: 1px solid #dfdfdf;padding-left: 5px;">${param[0].name}</div>
-            <div style="padding-left: 5px;"><span style="display: inline-block; background:#f9b600; width:5px; height:5px; border-radius:100%;"></span> 辐射: ${parseFloat(param[2].value).toFixed(2) || 0}</div>
-            <div style="padding-left: 5px;"><span style="display: inline-block; background:#a42b2c;  width:5px; height:5px; border-radius:100%;"></span> 实际发电量: ${parseFloat(param[0].value).toFixed(4) || 0}</div>
-            <div style="padding-left: 5px;"><span style="display: inline-block; background:#c7ceb2;  width:5px; height:5px; border-radius:100%;"></span> 理论发电量: ${parseFloat(param[1].value).toFixed(4) || 0}</div>
-            <div style="padding-left: 15px;">完成率: ${rate}</div>
+            <div  style="border-bottom: 1px solid #dfdfdf;padding-left: 5px;">${param[0] && param[0].name}</div>
+            ${radi}${actualPower}${thoryPower}${rate}
           </div>`;
         },
         extraCssText:'background: rgba(0,0,0,0);',
@@ -209,18 +229,7 @@ class PowerDiagramTenMin extends Component {
   onChangeTimePower = (e) => {
     const { stationCode } = this.props.match.params;
     const intervalTime = e.target.value;
-    let startTime = moment().subtract(7,'day').format('YYYY-MM-DD')// 默认是7天前;
-    if(e.target.value === 1){
-      startTime = moment().subtract(6,'month').format('YYYY-MM-DD')
-    }else if(e.target.value === 2){
-      startTime = moment().subtract(6,'year').format('YYYY-MM-DD')
-    }
-    this.props.getPowerDataTenMin({ // 时间格式传出，清空定时器并重新请求数据。
-      stationCode,
-      intervalTime,
-      startTime,
-      endTime: moment().format('YYYY-MM-DD'),
-    });
+    this.props.getPowerDataTenMin( stationCode, intervalTime );// 时间格式传出，清空定时器并重新请求数据。
   }
 
   render() {

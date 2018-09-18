@@ -78,17 +78,14 @@ class AllStation extends Component {
       <div className={styles.stationMonitor}>
       <CommonBreadcrumb  {...breadCrumbData} style={{marginLeft: '38px'}} />
         <div className={styles.stationContainer}>         
-            <Tabs type="card" activeKey={this.props.stationTypeTabs} onChange={this.queryTargetData} tabBarGutter={0} >
-              {stationTypes === '2' ? <TabPane tab="全部" key="2" >
-                <Allstation {...this.props} />
-              </TabPane> : ''}
-              {(stationTypes === '2' || stationTypes === '0') ? <TabPane tab="风电" key="0">
-                <WindStation {...this.props} />
-              </TabPane> : ''}
-              {(stationTypes === '2' || stationTypes === '1') ? <TabPane tab="光伏" key="1">
-                <PvStation {...this.props} />
-              </TabPane> : ''}
-            </Tabs>         
+        {stationTypes === '2' ?
+          <Tabs type="card" activeKey={this.props.stationTypeTabs} onChange={this.queryTargetData} tabBarGutter={0} >
+            <TabPane tab="全部" key="2" ><Allstation {...this.props} /></TabPane>
+            <TabPane tab="风电" key="0"><WindStation {...this.props} /></TabPane>
+            <TabPane tab="光伏" key="1"><PvStation {...this.props} /></TabPane>
+          </Tabs>:  
+          (stationTypes === '0'? <WindStation {...this.props} /> : <PvStation {...this.props} />)
+        }        
         </div>
         <Footer />
       </div>

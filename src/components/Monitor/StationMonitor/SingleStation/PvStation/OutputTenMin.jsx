@@ -36,7 +36,8 @@ class OutputTenMin extends Component {
     if(totalLength < 144 && totalLength > 0){ //假如返回数据不全
       labelInterval = parseInt(totalLength / 3) - 1;
     }
-
+    const minPower = Math.min(...capabilityPower);
+    const minRadiation = Math.min(...capabilityRadiation);
     const capabilityOption = {//出力图
       graphic: capabilityGraphic,
       title: {
@@ -113,6 +114,7 @@ class OutputTenMin extends Component {
         {
           name: '功率(MW)',
           type: 'value',
+          min: minPower < 0? minPower: 0,
           axisLabel: {
             formatter: '{value}',
             color: lineColor,
@@ -133,6 +135,7 @@ class OutputTenMin extends Component {
         {
           name: '辐射(W/m²)',
           type: 'value',
+          min: minRadiation < 0? minRadiation: 0,
           axisLabel: {
             formatter: '{value}',
             color: lineColor,
