@@ -8,6 +8,10 @@
   padding: 24px 24px 0;
   background-color: #ececec;
   :global {
+    .ant-tabs.ant-tabs-card > .ant-tabs-bar .ant-tabs-nav div{
+      display: flex;
+      flex-direction: row;
+    }
     .ant-tabs {
       display: flex;
       flex-direction: column;
