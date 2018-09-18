@@ -37,7 +37,8 @@ class SingleStation extends Component {
   componentDidMount() {
     const { stationCode } = this.props.match.params;
     this.getTenSeconds(stationCode);
-    this.getTenMinutes(stationCode);
+    this.getOutputDataTenMin(stationCode);
+    this.getPowerDataTenMin(stationCode);
     this.props.getStationDeviceList({stationCode, deviceTypeCode: 203});//获取单电站气象站信息
     this.props.getStationList({});//获取电站列表
     // 如果是从设备页面跳转过来的，定位到所在设备位置
@@ -60,7 +61,8 @@ class SingleStation extends Component {
     if( nextStation !== stationCode ){
       clearTimeout(this.timeOutId);
       this.getTenSeconds(nextStation);
-      this.getTenMinutes(nextStation);
+      this.getOutputDataTenMin(nextStation);
+      this.getPowerDataTenMin(nextStation);
       this.props.changeSingleStationStore({deviceTypeCode: 206});
     }
     // this.props.changeSingleStationStore({deviceTypeCode: nextProps.deviceTypeCode});
@@ -68,7 +70,8 @@ class SingleStation extends Component {
 
   componentWillUnmount(){
     clearTimeout(this.timeOutId);
-    clearTimeout(this.timeOutIdTen);
+    clearTimeout(this.timeOutOutputData);
+    clearTimeout(this.timeOutPowerData);
   }
 
   getTenSeconds = (stationCode) => {
@@ -82,12 +85,34 @@ class SingleStation extends Component {
     },10000);
   }
 
-  getTenMinutes = (stationCode) => {
-    this.props.getCapabilityDiagram({stationCode,startTime: moment().subtract(24, 'hours').utc().format(),endTime: moment().utc().format()});
-    this.props.getMonitorPower({stationCode,intervalTime: 0, startTime: moment().set({'year': moment().year(), 'month': 0, 'date': 1, }).format('YYYY-MM-DD'), endTime: moment().format('YYYY-MM-DD')});
-    
-    this.timeOutIdTen = setTimeout(()=>{
-      this.getTenMinutes(stationCode);
+  getOutputDataTenMin = (stationCode) => { // 10min请求一次处理
+    clearTimeout(this.timeOutOutputData);
+    this.props.getCapabilityDiagram({
+      stationCode,
+      startTime: moment().subtract(24, 'hours').utc().format(),
+      endTime: moment().utc().format()
+    });
+    this.timeOutOutputData = setTimeout(()=>{
+      this.getOutputDataTenMin(stationCode);
+    },600000);
+  }
+
+  getPowerDataTenMin = (stationCode, intervalTime = 0) => { // 10min 请求一次发电量(默认请求intervalTime = 0 的日数据)
+    clearTimeout(this.timeOutPowerData);
+    let startTime = moment().subtract(7,'day').format('YYYY-MM-DD')// 默认是7天前;
+    if(intervalTime === 1){
+      startTime = moment().subtract(6,'month').format('YYYY-MM-DD')
+    }else if(intervalTime === 2){
+      startTime = moment().subtract(6,'year').format('YYYY-MM-DD')
+    }
+    this.props.getMonitorPower({
+      stationCode,
+      intervalTime, 
+      startTime, 
+      endTime: moment().format('YYYY-MM-DD')
+    });
+    this.timeOutPowerData = setTimeout(()=>{
+      this.getPowerDataTenMin(stationCode, intervalTime);
     },600000);
   }
 
@@ -104,7 +129,7 @@ class SingleStation extends Component {
       <div className={styles.singleStation}>
       <CommonBreadcrumb {...breadCrumbData} style={{marginLeft:'38px', backgroundColor:'#fff'}} />
       <div className={styles.singleStationContainer} >   
-        <SingleStationMain {...this.props} />
+        <SingleStationMain {...this.props} getPowerDataTenMin={this.getPowerDataTenMin} />
         <Footer />
       </div>
       </div>

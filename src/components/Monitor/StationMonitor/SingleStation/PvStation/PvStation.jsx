@@ -3,11 +3,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import PvStationTop from './PvStationTop';
-import OutputPowerDiagram from './OutputPowerDiagram';
+import OutputTenMin from './OutputTenMin';
+import PowerDiagramTenMin from './PowerDiagramTenMin';
 import CardSection from './CardSection';
 import styles from './pvStation.scss';
 import DeviceList from './DeviceList/DeviceList';
-import ThreadList from './DeviceList/ThreadList';
 import { Tabs, Radio } from 'antd';
 import { Link } from 'react-router-dom';
 
@@ -74,7 +74,10 @@ class PvStation extends Component {
     return (
       <div className={styles.pvStation}  >
         <PvStationTop {...this.props} hiddenStationList={this.state.hiddenStationList} />
-        <OutputPowerDiagram {...this.props} />
+        <div className={styles.outputPowerDiagram}>
+          <OutputTenMin {...this.props} />
+          <PowerDiagramTenMin {...this.props} />
+        </div>
         <CardSection {...this.props} />
         {/* 设备类型流程图切换 */}
         <div className={styles.threadAndDevice} id="deviceType" >

@@ -118,6 +118,8 @@ class AlarmSingleStationGraph extends React.Component {
         {
           name: '转工单数',
           type: 'bar',
+          //单个柱最大宽度
+          barMaxWidth:'200px',
           stack: '总量',
           itemStyle: {
             color: '#c7ceb2'
