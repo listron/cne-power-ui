@@ -22,12 +22,13 @@ class PowerDiagramTenMin extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      intervalTime: '0', // 默认电站发电量时间段， '0'日，'1'月, '2'年
+      intervalTime: 0, // 默认电站发电量时间段， 0日，1月, 2年
     }
   }
 
   componentWillReceiveProps(nextProps) {
     const { powerData } = nextProps;
+    const { intervalTime } = this.state;
     const powerDiagram = echarts.init(document.getElementById('powerDiagram'));
 
     const lineColor = '#999';
@@ -116,7 +117,7 @@ class PowerDiagramTenMin extends Component {
         {
           type: 'category',
           boundaryGap: false,
-          data: powerData && powerData.map(e => e.time),
+          data: powerData && powerData.map(e => intervalTime === 0?moment(e.time).format('MM-DD'):e.time),
           axisLine: {
             lineStyle: {
               color: '#dfdfdf',
@@ -229,6 +230,7 @@ class PowerDiagramTenMin extends Component {
   onChangeTimePower = (e) => {
     const { stationCode } = this.props.match.params;
     const intervalTime = e.target.value;
+    this.setState({ intervalTime });
     this.props.getPowerDataTenMin( stationCode, intervalTime );// 时间格式传出，清空定时器并重新请求数据。
   }
 
