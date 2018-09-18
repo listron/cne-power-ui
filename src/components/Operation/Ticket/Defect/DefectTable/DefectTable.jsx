@@ -160,7 +160,7 @@ class DefectTable extends Component {
   onHandle = (value) => {
     if(value === 'send') {
       this.onSend();
-    } else if(value === 'colse') {
+    } else if(value === 'close') {
       this.onClose();
     } else if(value === 'reject') {
       this.onReject();
