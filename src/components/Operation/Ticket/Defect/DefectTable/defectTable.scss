@@ -73,9 +73,12 @@
       align-items: flex-start;
       :global {
         .icon-help {
-          color: #e08031;
+          color: #dfdfdf;
           font-size: 12px;
           margin-left: 4px;
+          &:hover {
+            color: #e08031;
+          }
         }
       }
     }

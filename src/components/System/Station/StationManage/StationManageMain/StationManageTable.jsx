@@ -148,9 +148,9 @@ class StationManageTable extends Component {
         render: (text, record, index) => {
           const { stationDepartments } = record;
           if(stationDepartments && stationDepartments.length > 0){
-            return (<span className="iconfont icon-look" onClick={()=>this.showDepartmentModal(record)}></span>)
+            return (<span title="查看" className="iconfont icon-look" onClick={()=>this.showDepartmentModal(record)}></span>)
           }else{
-            return (<span className="iconfont icon-goset" onClick={()=>this.showDepartmentModal(record)}></span>)
+            return (<span title="去设置" className="iconfont icon-goset" onClick={()=>this.showDepartmentModal(record)}></span>)
           }
         }
       },{

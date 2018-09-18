@@ -117,7 +117,7 @@ class InspectDetailForm extends Component {
             <div className={styles.border}></div>
           </div>
           <Button className={styles.transferBtn} onClick={this.onTransformDefect} disabled={abnormalIds.size===0}>转工单</Button>
-          <div style={{color:abnormalIds.size===0?'#f9b600':'#999'}}>
+          <div style={{color:'#999'}}>
             （请先选择异常设备，复选框置灰为不可选）
           </div>
           <Button className={styles.checkBtn} onClick={this.onInspectCheck}>验收</Button>

@@ -24,14 +24,23 @@ class InspectAbnormal extends Component {
     this.state = {
       abnormalId: null,
       showInspectStandard: false,
+      showAbnormal: false
     };
   }
 
   onShowDetail = (data) => {
-    this.setState({
-      abnormalId: data.get('abnormalId'),
-      standardInfo: ''
-    });
+    const abnormalId = this.state.abnormalId;
+    if(abnormalId === data.get('abnormalId')) {
+      this.setState({
+        abnormalId: null,
+        showAbnormal: false
+      });
+    } else {
+      this.setState({
+        abnormalId: data.get('abnormalId'),
+        showAbnormal: true
+      });
+    }
   }
 
   onShowModal = () =>{
@@ -206,7 +215,7 @@ class InspectAbnormal extends Component {
         <div className={styles.abnormalItems}>
           {this.renderItems()}
         </div>
-        {this.renderItemDetail()}
+        {this.state.showAbnormal &&this.renderItemDetail()}
         {this.state.showInspectStandard&&this.renderStandard()}
       </div>
     )
