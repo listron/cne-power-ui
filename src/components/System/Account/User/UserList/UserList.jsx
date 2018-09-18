@@ -552,7 +552,7 @@ class UserList extends Component {
             </Upload>}
             {/* <Button className={styles.templateDown} href="http://10.10.15.51/template/用户批量导入模板.xlsx" >导入模板下载</Button>
             <div className={selectedUser.toJS().length > 0 ? styles.selectedOperate : styles.userOperate} > */}
-            <Button className={styles.templateDown} href={`${apiUrlReal}/template/用户批量导入模板.xlsx`} >导入模板下载</Button>
+            <Button className={styles.templateDown} href={`${apiUrlReal}/template/UserInfoTemplate.xlsx`} >导入模板下载</Button>
             <div className={selectedUser.toJS().length>0 ? styles.selectedOperate : styles.userOperate} >
               {this._createUserOperate(rightHandler)}
             </div>
