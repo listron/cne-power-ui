@@ -222,11 +222,19 @@ function *getDeviceTypeFlow(action){
     yield put({type: singleStationAction.SINGLE_STATION_FETCH});
     const response = yield call(axios.get, url, payload);
     if(response.data.code === '10000'){
+      let tmpDeviceTypeFlow = response.data.data || [];
+      let deviceTypeCode;
+      if(tmpDeviceTypeFlow.some(e=>e.deviceTypeCode===201)){
+        deviceTypeCode = 201;
+      }else if(tmpDeviceTypeFlow.some(e=>e.deviceTypeCode===206)){
+        deviceTypeCode = 206;
+      }
       yield put({
         type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
         payload: {
           ...payload,
           deviceTypeFlow: response.data.data || [],
+          deviceTypeCode,
         }
       })
     }else{
