@@ -209,26 +209,17 @@ class BoxTransformerList extends Component {
     const currentDeviceList = endDeviceList && endDeviceList.sort(this.compareName).splice((currentPage-1)*pageSize,pageSize);
     const inverterListNum = deviceList && (deviceList.length || 0);
     const deviceStatus = boxTransformerList && boxTransformerList.deviceStatusSummary;
-    const deviceStatusNums=deviceStatus && deviceStatus.map(e=>e.deviceStatusNum);
+    
     const operations = (<div className={styles.inverterRight} >
-       <Switch defaultChecked={false} onChange={this.onSwitchAlarm}  /> 告警
+      <Switch defaultChecked={false} onChange={this.onSwitchAlarm}  /> 告警
       <Radio.Group defaultValue={0} buttonStyle="solid" className={styles.inverterStatus} onChange={this.onChangeStatus}  >
         <Radio.Button value={0} >全部</Radio.Button>
-        <Radio.Button value={100}>正常 {deviceStatusNums && deviceStatusNums[0]}</Radio.Button>
-        <Radio.Button value={300}>故障 {deviceStatusNums && deviceStatusNums[2]}</Radio.Button>
-        <Radio.Button value={200}>停机 {deviceStatusNums && deviceStatusNums[1]}</Radio.Button>
-        <Radio.Button value={900}>未接入 {deviceStatusNums && deviceStatusNums[3]}</Radio.Button>
+        {deviceStatus && deviceStatus.map(e=>{
+          return <Radio.Button value={e.deviceStatusCode} key={e.deviceStatusCode}>{e.deviceStatusName} {e.deviceStatusNum}</Radio.Button>;
+        })}
       </Radio.Group> 
     </div>);
-    const pagination = {
-      defaultPageSize: 10,
-      defaultCurrent: 1,
-      showQuickJumper: true,
-      total: inverterListNum,
-      showSizeChanger: true,
-      position: 'top',
-      size: 'small',
-    }
+    
     const baseLinkPath = "/hidden/monitorDevice";
     const { stationCode } = this.props.match.params;
 
@@ -247,7 +238,7 @@ class BoxTransformerList extends Component {
                         <i className="iconfont icon-xb" ></i>
                       </Link>
                       <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${item.deviceCode}/?showPart=alarmList`} >
-                        {item.alarmNum && <i className="iconfont icon-alarm" ></i>}
+                        {(item.alarmNum && item.alarmNum>0)? <i className="iconfont icon-alarm" ></i> : <div></div>}
                       </Link>
                     </div>
                     <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${item.deviceCode}`} >
