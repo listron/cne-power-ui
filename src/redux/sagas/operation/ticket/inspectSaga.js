@@ -36,6 +36,26 @@ function* getInspectList(action){
   }
 }
 
+//获取巡检工单Id列表(用于上一个，下一个)
+function* getInspectIdList(action) {
+  const { payload } = action;
+  let url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.getInspectIdList;
+  yield put({ type: ticketAction.TICKET_FETCH });
+  try {
+    const response = yield call(axios.post, url, payload);
+    if(response.data.code === '10000'){
+      yield put({ 
+        type: ticketAction.GET_INSPECT_FETCH_SUCCESS, 
+        payload: {
+          inspectIdList: response.data.data
+        }
+      });      
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
+
 // 获取巡检工单详情
 function* getInspectDetail(action){
   const { payload } = action;
@@ -357,6 +377,7 @@ export function* watchInspect() {
   yield takeLatest(ticketAction.CHANGE_INSPECT_STORE_SAGA ,changeInspectStore);
   yield takeLatest(ticketAction.ADD_INSPECT_ABNORMAL_SAGA, addInspectAbnormal);
   yield takeLatest(ticketAction.GET_INSPECT_LIST_SAGA, getInspectList);
+  yield takeLatest(ticketAction.GET_INSPECT_ID_LIST_SAGA, getInspectIdList);
   yield takeLatest(ticketAction.CLEAR_INSPECT_STATE_SAGA, clearInspect);
   yield takeLatest(ticketAction.TRANSFORM_DEFECT_SAGA, transformDefect);
   yield takeLatest(ticketAction.SET_INSPECT_CHECK_SAGA, setInspectCheck);
