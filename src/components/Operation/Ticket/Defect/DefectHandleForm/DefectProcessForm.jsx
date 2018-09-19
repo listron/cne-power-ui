@@ -74,7 +74,7 @@ class DefectProcessForm extends Component {
               placeholder="请描述，不超过80个汉字" />
           )}
         </FormItem>
-        {dealResult === '1'&&<FormItem label="添加照片" colon={false}>
+        {dealResult === '0'&&<FormItem label="添加照片" colon={false}>
           <div className={styles.addImg}>
             <div className={styles.maxTip}>最多4张</div>
             {getFieldDecorator('photoData', {
