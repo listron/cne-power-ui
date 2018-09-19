@@ -11,7 +11,7 @@ class AlarmManageHandle extends Component {
     stationCode: PropTypes.number,
     totalNum: PropTypes.number,
     alarmList: PropTypes.array,
-    stations: PropTypes.array,
+    allStationBaseInfo: PropTypes.array,
     queryParams: PropTypes.object,
     getAlarmList: PropTypes.func,
     deleteAlarmList: PropTypes.func,
@@ -43,13 +43,13 @@ class AlarmManageHandle extends Component {
   }
 
   render() {
-    const { totalNum, alarmList, stations, stationCode } = this.props;
+    const { totalNum, alarmList, allStationBaseInfo, stationCode } = this.props;
     const downloadHref = `${path.basePaths.APIBasePath}${path.APISubPaths.system.downloadAlarmInfo}?stationCode=${stationCode}`;
     return (
       <div className={styles.alarmManageHandle}>
         <div className={styles.leftHandler}>
           <SingleStationImportFileModel 
-            data={stations} 
+            data={allStationBaseInfo} 
             uploadPath={`${path.basePaths.APIBasePath}${path.APISubPaths.system.importAlarmInfo}`} 
             uploaderName={'告警'} 
             disableStation={[]}

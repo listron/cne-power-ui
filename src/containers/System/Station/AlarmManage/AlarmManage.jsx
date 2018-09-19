@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import styles from './alarmManage.scss';
 import { alarmManageAction } from '../../../../constants/actionTypes/system/station/alarmManageAction';
 import { commonAction } from '../../../../constants/actionTypes/commonAction';
+import { stationManageAction } from '../../../../constants/actionTypes/system/station/stationManageAction';
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import StationManageTip from '../../../../components/System/Station/Common/StationManageTip';
 import AlarmManageSearch from '../../../../components/System/Station/AlarmManage/AlarmManageSearch';
@@ -10,9 +11,11 @@ import AlarmManageHandle from '../../../../components/System/Station/AlarmManage
 import AlarmManageList from '../../../../components/System/Station/AlarmManage/AlarmManageList';
 import Footer from '../../../../components/Common/Footer'
 import PropTypes from 'prop-types';
+import Cookie from 'js-cookie';
 
 class AlarmManage extends Component {
   static propTypes = {
+    enterpriseId: PropTypes.string,
     stationCode: PropTypes.number,
     deviceTypeCode: PropTypes.number,
     deviceModeCode: PropTypes.number,
@@ -22,6 +25,7 @@ class AlarmManage extends Component {
     sortField: PropTypes.string,
     sortOrder: PropTypes.string,
     changeAlarmManageStore: PropTypes.func,
+    getStationOfEnterprise: PropTypes.func,
   }
   constructor(props) {
     super(props);
@@ -30,9 +34,11 @@ class AlarmManage extends Component {
     }
   }
   componentDidMount(){
+    const { enterpriseId, getStationOfEnterprise } = this.props;
     this.timeout = setTimeout(()=>{this.setState({
       showAlarmTip: false
     })},3000)
+    getStationOfEnterprise({ enterpriseId }); // 请求用户所在企业的所有企业
   }
 
   componentWillUnmount(){
@@ -84,11 +90,13 @@ class AlarmManage extends Component {
   }
 }
 const mapStateToProps = (state) => ({
-    ...state.system.alarmManage.toJS(),
-    stations: state.common.get('stations').toJS(),
-    deviceModels: state.common.get('deviceModels').toJS(),
-    stationDeviceTypes: state.common.get('stationDeviceTypes').toJS(),
-    devicePoints: state.common.get('devicePoints').toJS(),
+  enterpriseId: Cookie.get('enterpriseId'),
+  ...state.system.alarmManage.toJS(),
+  stations: state.common.get('stations').toJS(),
+  deviceModels: state.common.get('deviceModels').toJS(),
+  stationDeviceTypes: state.common.get('stationDeviceTypes').toJS(),
+  devicePoints: state.common.get('devicePoints').toJS(),
+  allStationBaseInfo: state.system.stationManage.get('allStationBaseInfo').toJS(),
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -99,6 +107,7 @@ const mapDispatchToProps = (dispatch) => ({
   getStationDeviceTypes: payload => dispatch({type:commonAction.GET_STATION_DEVICETYPES_SAGA, payload}),
   getStationDeviceModel: payload => dispatch({type:commonAction.GET_STATION_DEVICEMODEL_SAGA, payload}),
   getStationDevicePoints: payload => dispatch({type:commonAction.GET_STATION_DEVICEPOINT_SAGA, payload}),
+  getStationOfEnterprise: payload =>dispatch({type: stationManageAction.GET_ALL_STATION_MANAGE_BASE_INFO, payload }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AlarmManage);
