@@ -220,7 +220,7 @@ function* createUserInfo(action) {
   yield put({ type: userAction.USER_FETCH });
   try {
     const response = yield call(axios.post, url, payload);
-    if (response.data.code === '10000' || response.data.code === '20013') {
+    if(response.data.code === '10000' || response.data.code === '20013') {
       yield put({ type: userAction.GET_USER_FETCH_SUCCESS });
       const params = yield select(state => ({//继续请求用户列表
         enterpriseId: Cookie.get('enterpriseId'),
@@ -236,7 +236,11 @@ function* createUserInfo(action) {
         type: userAction.GET_USER_LIST_SAGA,
         payload: params,
       });
-    } else {
+    }else if(response.data.code === '20015'){
+      message.error('用户名已被注册');
+    }else if(response.data.code === '20016'){
+      message.error('手机号已被注册');
+    }else{
       yield put({ type: userAction.GET_USER_FETCH_FAIL });
       message.error(response.data.message);
     }

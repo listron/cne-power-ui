@@ -24,6 +24,7 @@ class Ticket extends Component {
     getDefectIdList: PropTypes.func,
     getInspectList: PropTypes.func,
     getInspectIdList: PropTypes.func,
+    history: PropTypes.object,
   };
   constructor(props) {
     super(props);
@@ -33,9 +34,11 @@ class Ticket extends Component {
   }
 
   componentDidMount() {
+    const searchInfo = this.props.history.location.search;
+    const stationCode = searchInfo.substring(searchInfo.indexOf('=')+1);
     var params = {
       stationType: '2',
-      stationCodes: '',
+      stationCodes: stationCode==='' ? '' : stationCode,
       defectSource: '3',
       defectLevel: '0',
       timeInterval: '0',
