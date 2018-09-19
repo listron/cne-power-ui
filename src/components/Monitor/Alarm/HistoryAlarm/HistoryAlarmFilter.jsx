@@ -49,6 +49,7 @@ class HistoryAlarmFilter extends Component {
   render() {
     const { showFilter } = this.state;
     const { stations } = this.props;
+    const isOneType = stations.groupBy(item=>item.get('stationType')).size === 1;
     return (
       <div className={styles.alarmFilter}>
         <div className={styles.topSearch}>
@@ -56,7 +57,7 @@ class HistoryAlarmFilter extends Component {
           <Button onClick={()=>this.onFilterShowChange('alarmLevel')}>
             告警级别{showFilter==='alarmLevel'?<Icon type="up" />:<Icon type="down" />}
           </Button>
-          { stations && stations.size > 0 && <Button onClick={()=>this.onFilterShowChange('stationType')}>
+          { !isOneType && <Button onClick={()=>this.onFilterShowChange('stationType')}>
             电站类型{showFilter==='stationType'?<Icon type="up" />:<Icon type="down" />}
           </Button>}
           <Button onClick={()=>this.onFilterShowChange('stationName')}>
