@@ -67,6 +67,7 @@ class DeviceManageList extends Component {
       },
     ];
     const { loading, deviceList } = this.props;
+    
     return (
       <div className={styles.deviceManageList}>
         <Table

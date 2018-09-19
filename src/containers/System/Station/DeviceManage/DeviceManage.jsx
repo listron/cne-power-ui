@@ -15,7 +15,7 @@ class DeviceManage extends Component {
   static propTypes = {
     stationCode: PropTypes.number,
     deviceTypeCode: PropTypes.number,
-    deviceModelCode: PropTypes.number,
+    deviceModeCode: PropTypes.number,
     pageNum: PropTypes.number,
     pageSize: PropTypes.number,
     sortField: PropTypes.string,
@@ -39,7 +39,7 @@ class DeviceManage extends Component {
     this.props.changeDeviceManageStore({ // 离开页面前，重置数据。
       stationCode: null, // 选中的电站
       deviceTypeCode: null, // 选中的设备类型
-      deviceModelCode: null, // 选中的设备型号
+      deviceModeCode: null, // 选中的设备型号
       pageNum: 1,
       pageSize: 10,
       totalNum:  0, // 设备总数
@@ -59,10 +59,10 @@ class DeviceManage extends Component {
   render() {
     const { showDeviceTip } = this.state;
     const { 
-      stationCode, deviceTypeCode, deviceModelCode, pageNum, pageSize, sortField, sortMethod
+      stationCode, deviceTypeCode, deviceModeCode, pageNum, pageSize, sortField, sortMethod
     } = this.props;
     const queryParams = { 
-      stationCode, deviceTypeCode, deviceModelCode, pageNum, pageSize, sortField, sortMethod 
+      stationCode, deviceTypeCode, deviceModeCode, pageNum, pageSize, sortField, sortMethod 
     }
     return (
       <div className={styles.deviceManageContainer}>

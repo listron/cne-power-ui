@@ -15,7 +15,7 @@ class AlarmManageSearch extends Component {
     deviceModels: PropTypes.array,
     devicePoints: PropTypes.array,
     deviceTypeCode: PropTypes.number,
-    deviceModelCode: PropTypes.number,
+    deviceModeCode: PropTypes.number,
     pointCode: PropTypes.string,
     getAlarmList: PropTypes.func,
     changeCommonStore: PropTypes.func,
@@ -40,7 +40,7 @@ class AlarmManageSearch extends Component {
       ...queryParams,
       stationCode: stations[0].stationCode,
       deviceTypeCode: null,
-      deviceModelCode: null,
+      deviceModeCode: null,
       pointCode: '',
     })
     changeCommonStore({
@@ -58,7 +58,7 @@ class AlarmManageSearch extends Component {
     getAlarmList({
       ...queryParams,
       deviceTypeCode: value,
-      deviceModelCode: null,
+      deviceModeCode: null,
       pointCode: '',
     })
     changeCommonStore({
@@ -67,15 +67,15 @@ class AlarmManageSearch extends Component {
   }
 
   selectDeviceModel = (value) => { // 选中设备型号
-    const { getAlarmList, queryParams, stationCode, deviceTypeCode, deviceModelCode, getStationDevicePoints } = this.props;
+    const { getAlarmList, queryParams, stationCode, deviceTypeCode, deviceModeCode, getStationDevicePoints } = this.props;
     getStationDevicePoints({
       stationCode,
       deviceTypeCode,
-      deviceModelCode
+      deviceModeCode
     })
     getAlarmList({
       ...queryParams,
-      deviceModelCode: value,
+      deviceModeCode: value,
       pointCode: '',
     })
   }
@@ -89,7 +89,7 @@ class AlarmManageSearch extends Component {
   }
 
   render() {
-    const { stations, stationDeviceTypes, deviceModels, devicePoints, deviceTypeCode, deviceModelCode, pointCode } = this.props;
+    const { stations, stationDeviceTypes, deviceModels, devicePoints, deviceTypeCode, deviceModeCode, pointCode } = this.props;
     const typeSelectDisable = stationDeviceTypes.length === 0;
     const modelSelectDisable = deviceModels.length === 0;
     const pointSelectDisable = devicePoints.length === 0;
@@ -104,7 +104,7 @@ class AlarmManageSearch extends Component {
             return <Option key={e.deviceTypeCode} value={e.deviceTypeCode}>{e.deviceTypeName}</Option>
           })}
         </Select>
-        <Select className={styles.modelSelect} onChange={this.selectDeviceModel} value={deviceModelCode} placeholder="请选择设备型号" disabled={modelSelectDisable}>
+        <Select className={styles.modelSelect} onChange={this.selectDeviceModel} value={deviceModeCode} placeholder="请选择设备型号" disabled={modelSelectDisable}>
           <Option key={null} value={null}>{'全部'}</Option>
           {deviceModels.map(e=>{
             if(!e){ return null; }
