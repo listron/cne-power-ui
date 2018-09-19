@@ -13,7 +13,6 @@ class BoxTransformerList extends Component {
   static propTypes = {
     boxTransformerList: PropTypes.object,
     match: PropTypes.object,
-    loading: PropTypes.bool,
     deviceTypeCode: PropTypes.number,
     getBoxTransformerList: PropTypes.func,
   }
@@ -21,7 +20,6 @@ class BoxTransformerList extends Component {
   constructor(props){
     super(props);
     this.state = {
-      tmpDeviceList : props.boxTransformerList && props.boxTransformerList.deviceList && props.boxTransformerList.deviceList.map((e,i)=>({...e,key:i})),//暂存的箱变列表
       currentStatus: 0,//当前状态值
       alarmSwitch: false,
       pageSize: 10, 
@@ -49,32 +47,14 @@ class BoxTransformerList extends Component {
   componentWillUnmount(){
     clearTimeout(this.timeOutId);
   }
-
   
   onChangeStatus = (e) => {
-    const statusValue = e.target.value;
-    const { boxTransformerList } = this.props; 
-    const { alarmSwitch } = this.state;
-    const deviceList = boxTransformerList && boxTransformerList.deviceList && boxTransformerList.deviceList.map((e,i)=>({...e,key:i}));
-    let selectedList = [];
-    if(alarmSwitch){
-      selectedList = statusValue===0 ? deviceList : deviceList.filter(e=>e.deviceStatus===statusValue&&e.alarmNum!==null);
-    }else{
-      selectedList = statusValue===0 ? deviceList : deviceList.filter(e=>e.deviceStatus===statusValue);
-    }
     this.setState({
-      tmpDeviceList: selectedList,
-      currentStatus: statusValue,
+      currentStatus: e.target.value,
     })
   }
   onSwitchAlarm = (e) => {
-    const { boxTransformerList } = this.props; 
-    const { currentStatus } = this.state; 
-    const deviceList = boxTransformerList && boxTransformerList.deviceList && boxTransformerList.deviceList.map((e,i)=>({...e,key:i}));
-    let selectedList = [];
-    selectedList = e ? deviceList.filter(e=>e.deviceStatus===currentStatus&&e.alarmNum!==null) : deviceList;
     this.setState({
-      tmpDeviceList: selectedList,
       alarmSwitch: e,
     });
   }
@@ -178,10 +158,6 @@ class BoxTransformerList extends Component {
     ];
     return columns;
   }
-  
-  compareName = (a,b) => {
-    return a['deviceName'].localeCompare(b['deviceName']);
-  }
 
   changePagination = ({ pageSize, currentPage }) => {
     this.setState({ pageSize, currentPage })
@@ -192,32 +168,50 @@ class BoxTransformerList extends Component {
       descend : sorter.order === 'descend'
     })
   }
+  createTableSource = (data) => {
+    const { sortName, descend, currentPage, pageSize } = this.state;
+    const tableSource = [...data].map((e, i) => ({
+      ...e,
+      key: i,
+    })).sort((a, b) => { // 排序
+      const sortType = descend ? -1 : 1;
+      const arraySort = ['parentDeviceName','deviceStatus'];
+      const arrayNumSort = ['devicePower', 'deviceCapacity', 'alarmNum',];
+      if (arrayNumSort.includes(sortName)) {
+        return sortType * (a[sortName] - b[sortName]);
+      } else if (arraySort.includes(sortName)) {
+        a[sortName] = a[sortName] ? a[sortName] : '';
+        return sortType * (a[sortName].length - b[sortName].length);
+      }
+    })
+    return tableSource.splice((currentPage-1)*pageSize,pageSize);
+  }
 
   render(){
-    const { boxTransformerList, loading,deviceTypeCode } = this.props;
-    const {tmpDeviceList,currentPage,pageSize } = this.state;
-    const deviceList = boxTransformerList && boxTransformerList.deviceList;
-    const initDeviceList = deviceList && deviceList.map((e,i)=>({...e,key:i}));
-    
-    let endDeviceList = tmpDeviceList || initDeviceList;
-    let parentDeviceCodes = endDeviceList && endDeviceList.map(e=>e.parentDeviceCode);
-    let parentDeviceCodeSet = new Set(parentDeviceCodes);
-    let tmpParentDeviceCodes = [...parentDeviceCodeSet];
-    tmpParentDeviceCodes.forEach((value,key)=>{
-      tmpParentDeviceCodes[key] = deviceList.filter(e=>value===e.parentDeviceCode);
+    const { boxTransformerList, deviceTypeCode, } = this.props;
+    const { currentStatus, alarmSwitch  } = this.state;
+    const initDeviceList = boxTransformerList.deviceList && boxTransformerList.deviceList.map((e,i)=>({...e,key:i})) || []; // 初始化数据
+    const filteredDeviceList = initDeviceList.filter(e=>(!alarmSwitch || (alarmSwitch && e.alarmNum > 0))).filter(e=>{
+      return (currentStatus === 0 || e.deviceStatus === currentStatus);
+    }) // 根据筛选条件处理数据源。
+    const parentDeviceCodeSet = new Set(filteredDeviceList.map(e=>e.parentDeviceCode));
+    const parentDeviceCodes = [...parentDeviceCodeSet].sort((a,b) => {
+      return a.parentDeviceName && a.parentDeviceName.localeCompare(b.parentDeviceName)
     });
-    const currentDeviceList = endDeviceList && endDeviceList.sort(this.compareName).splice((currentPage-1)*pageSize,pageSize);
-    const inverterListNum = deviceList && (deviceList.length || 0);
-    const deviceStatus = boxTransformerList && boxTransformerList.deviceStatusSummary;
-    
+    const deviceGroupedList = parentDeviceCodes.map(e=>{
+      const subDeviceList = filteredDeviceList.filter(item => item.parentDeviceCode === e);
+      return subDeviceList.sort((a,b)=>a.deviceName && a.deviceName.localeCompare(b.deviceName));
+    });
+    const currentTableList = this.createTableSource(filteredDeviceList); // 根据分页，排序筛选表格数据
+    const deviceStatus = boxTransformerList.deviceStatusSummary || [];
     const operations = (<div className={styles.inverterRight} >
       <Switch defaultChecked={false} onChange={this.onSwitchAlarm}  /> 告警
       <Radio.Group defaultValue={0} buttonStyle="solid" className={styles.inverterStatus} onChange={this.onChangeStatus}  >
         <Radio.Button value={0} >全部</Radio.Button>
-        {deviceStatus && deviceStatus.map(e=>{
-          return <Radio.Button value={e.deviceStatusCode} key={e.deviceStatusCode}>{e.deviceStatusName} {e.deviceStatusNum}</Radio.Button>;
-        })}
-      </Radio.Group> 
+        {deviceStatus.map(e=>
+          (<Radio.Button key={e.deviceStatusCode} value={e.deviceStatusCode}>{e.deviceStatusName} {e.deviceStatusNum}</Radio.Button>)
+        )}
+      </Radio.Group>
     </div>);
     
     const baseLinkPath = "/hidden/monitorDevice";
@@ -227,10 +221,10 @@ class BoxTransformerList extends Component {
       <div className={styles.inverterList} >
         <Tabs defaultActiveKey="1" className={styles.inverterTab} tabBarExtraContent={operations}>
           <TabPane tab={<span><i className="iconfont icon-grid" ></i></span>} key="1" className={styles.inverterBlockBox} >
-            {(tmpParentDeviceCodes&&tmpParentDeviceCodes.length>0) ? tmpParentDeviceCodes.map((e,index)=>{
+            {deviceGroupedList.length > 0 ? deviceGroupedList.map((e,index)=>{
               return (<div key={index}>
                 <div className={styles.parentDeviceName} >{e && e.parentDeviceName}</div>
-                {e && e.sort(this.compareName).map((item,i)=>{
+                {e.map((item,i)=>{
                   
                   return (<div key={i} className={item.deviceStatus === 900 ? styles.cutOverItem : styles.inverterItem}>
                     <div className={styles.inverterItemIcon} >
@@ -259,11 +253,10 @@ class BoxTransformerList extends Component {
           <TabPane tab={<span><i className="iconfont icon-table" ></i></span>} key="2" className={styles.inverterTableBox} >
             <div>
               <div className={styles.pagination} >
-                <CommonPagination onPaginationChange={this.changePagination} total={inverterListNum} />
+                <CommonPagination onPaginationChange={this.changePagination} total={filteredDeviceList.length} />
               </div>
-              <Table 
-                loading={loading}
-                dataSource={currentDeviceList} 
+              <Table
+                dataSource={currentTableList} 
                 columns={this.tableColumn()} 
                 onChange={this.tableChange}
                 pagination={false}
@@ -271,10 +264,8 @@ class BoxTransformerList extends Component {
                 locale={{ emptyText: <div className={styles.noData}><img src="/img/nodata.png" /></div> }}
               />
             </div>
-            
           </TabPane>
         </Tabs>
-        
       </div>
     )
   }
