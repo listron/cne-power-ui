@@ -263,7 +263,7 @@ class TmpForm extends Component {
           </FormItem>
           {!defectFinished && <FormItem label="处理建议" colon={false}>
             {getFieldDecorator('defectSolveInfo', {
-              initialValue: editDefect && defectDetail.handleData.defectSolveInfo || '',
+              initialValue: editDefect && defectDetail.handleData.defectProposal || '',
             })(
               <InputLimit placeholder="请描述，不超过80个汉字" />
             )}

@@ -76,12 +76,20 @@ class DefectCreate extends Component {
 
   render() {
     const { showWarningTip, warningTipText } = this.state;
-    const { showContainer } = this.props;
+    const { showContainer, defectDetail } = this.props;
+    let rejectReason;
+    if(showContainer==='edit') {
+      const processData = defectDetail.processData;
+      const processLength = processData.length;
+      if(processLength > 0) {
+        rejectReason = processData[processLength - 1].defectProposal;
+      }
+    }
     return (
       <div className={styles.defectCreate}>
         {showWarningTip && <WarningTip style={{marginTop:'250px',width: '210px',height:'88px'}} onCancel={this.onCancelWarningTip} onOK={this.onConfirmWarningTip} value={warningTipText} />}
         <div className={styles.createTop}>
-          <span className={styles.text}>{showContainer==='create'?'新建缺陷':`驳回原因：`}</span>
+          <span className={styles.text}>{showContainer==='create'?'新建缺陷':rejectReason}</span>
           <Icon type="arrow-left" className={styles.backIcon} onClick={this.onCancelEdit} />
         </div>
         <div className={styles.createContent}>
