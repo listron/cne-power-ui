@@ -15,8 +15,14 @@ class DefectLevelFilter extends Component {
   }
 
   onLevelSelect = (defectLevels) => {
+    let defectLevel;
+    if(defectLevels.length === 0) {
+      defectLevel = '0';
+    } else {
+      defectLevel = defectLevels.join(',');
+    }
     this.props.onChangeFilter({
-      defectLevel: defectLevels.join(',')
+      defectLevel
     });
   }
 
