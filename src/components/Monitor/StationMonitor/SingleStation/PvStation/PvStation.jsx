@@ -78,7 +78,7 @@ class PvStation extends Component {
           <OutputTenMin {...this.props} />
           <PowerDiagramTenMin {...this.props} />
         </div>
-        <CardSection {...this.props} />
+        <CardSection {...this.props} stationCode={stationCode} />
         {/* 设备类型流程图切换 */}
         <div className={styles.threadAndDevice} id="deviceType" >
           <Tabs type="card" defaultActiveKey="2" >

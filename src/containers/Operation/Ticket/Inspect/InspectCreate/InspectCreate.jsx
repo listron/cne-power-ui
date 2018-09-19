@@ -70,6 +70,7 @@ const mapStateToProps = (state) => ({
   showContainer: state.operation.ticket.get('showContainer'),
   deviceTypeItems: state.common.get('stationDeviceTypes'),
   stations: state.common.get('stations'),
+  error: state.operation.inspect.get('error'),
 })
 const mapDispatchToProps = (dispatch) => ({
   loadDeviceTypeList: payload => dispatch({ type: commonAction.GET_STATION_DEVICETYPES_SAGA, payload}),

@@ -11,6 +11,7 @@
   width: 300px;
   max-height: calc(100vh - 83px);
   overflow: auto;
+  
   .stationTitle{
     color: $darkColor;
     font-size: 18px;
@@ -27,6 +28,7 @@
     display: flex;
     flex-direction: column;
     padding-left: 42px;
+    height: 1000px;
     .provinceName{
       color:#999;
       text-align:left;

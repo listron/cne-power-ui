@@ -44,10 +44,15 @@ class AllStation extends Component {
     this.props.changeMonitorStationStore({
       stationTypes: null,
       stationShowType:'stationBlock',
+<<<<<<< HEAD
       windMonitorStation:{},
       pvMonitorStation:{},
       allMonitorStation:{}
 
+=======
+      pvMonitorStation:{},
+      windMonitorStation:{},
+>>>>>>> upstream/dev
     });
   }
 
