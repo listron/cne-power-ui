@@ -212,7 +212,6 @@ class InverterList extends Component {
       return subDeviceList.sort((a,b)=>a.deviceName && a.deviceName.localeCompare(b.deviceName));
     });
     const currentTableList = this.createTableSource(filteredDeviceList); // 根据分页，排序筛选表格数据
-    console.log(deviceGroupedList)
     const deviceStatus = inverterList.deviceStatusSummary || [];
     const operations = (<div className={styles.inverterRight} >
       <Switch defaultChecked={false} onChange={this.onSwitchAlarm}  /> 告警
