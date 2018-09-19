@@ -21,7 +21,9 @@ class Ticket extends Component {
     clearDefectState: PropTypes.func,
     clearInspectState: PropTypes.func,
     getDefectList: PropTypes.func,
+    getDefectIdList: PropTypes.func,
     getInspectList: PropTypes.func,
+    getInspectIdList: PropTypes.func,
     history: PropTypes.object,
   };
   constructor(props) {
@@ -51,6 +53,7 @@ class Ticket extends Component {
       handleUser: '',
     }
     this.props.getDefectList(params);
+    this.props.getDefectIdList(params);
   }
 
   componentWillUnmount() {
@@ -81,6 +84,7 @@ class Ticket extends Component {
         // hasAbnormal: false
       }
       this.props.getInspectList(params);//获取巡检列表
+      this.props.getInspectIdList(params);
     } else {
       this.props.clearInspectState();//清除巡检状态
       var params = {
@@ -100,6 +104,7 @@ class Ticket extends Component {
         handleUser: '',
       }
       this.props.getDefectList(params);//获取缺陷列表
+      this.props.getDefectIdList(params);
     }
   }
 
@@ -152,7 +157,9 @@ const mapDispatchToProps = (dispatch) => ({
   clearDefectState: payload => dispatch({ type: ticketAction.CLEAR_DEFECT_STATE_SAGA, payload }),
   clearInspectState: payload => dispatch({ type: ticketAction.CLEAR_INSPECT_STATE_SAGA, payload }),
   getDefectList: payload => dispatch({ type: ticketAction.GET_DEFECT_LIST_SAGA, payload }),
+  getDefectIdList: payload => dispatch({ type: ticketAction.GET_DEFECT_ID_LIST_SAGA, payload }),
   getInspectList: payload => dispatch({ type: ticketAction.GET_INSPECT_LIST_SAGA, payload }),
+  getInspectIdList: payload => dispatch({ type: ticketAction.GET_INSPECT_ID_LIST_SAGA, payload }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Ticket);

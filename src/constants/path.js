@@ -49,8 +49,10 @@ export default {
 
     ticket: {
       getDefectList: '/v3/defect/worklist/pc',
+      getDefectIdList: '/v3/defect/worklist/getallid',
       batchDeleteDefect: '/v3/defect/delete/batch',
       getInspectList: '/v3/inspect/worklist/pc',
+      getInspectIdList: '/v3/inspect/worklist/getallid',
       batchSendDefect: '/v3/defect/distribute/batch',
       batchCloseDefect: '/v3/defect/close/batch',
       batchRejectDefect: '/v3/defect/reject/batch',

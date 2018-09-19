@@ -4,6 +4,7 @@ import { ticketAction } from '../../../../constants/actionTypes/operation/ticket
 
 var initState = Immutable.fromJS({
   inspectList:[],
+  inspectIdList:[],
   selectedRowKeys: [],
   stationType: '2',    //	电站类型(0:风电，1光伏，2：全部)
   stationCodes: '',    // 电站编码，所有为空字符串

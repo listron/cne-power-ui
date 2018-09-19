@@ -28,6 +28,7 @@ class InspectCreateForm extends Component{
       if(!err){
         createInspect({
           inspectName: values.inspectName,
+          isContinueAdd,
           stationCodes: values.stationCodes.map(item => item.stationCode).join(','),
           deviceTypeCodes: values.deviceTypeCodes.join(','),
           deadline: values.deadline.format("YYYY-MM-DD hh:mm:ss"),
@@ -73,11 +74,10 @@ class InspectCreateForm extends Component{
         <Form className={styles.inspectCreateForm}>
           <FormItem label="巡检名称" colon={false}>
             {getFieldDecorator('inspectName',{
-              rules:[{
-                required: true,
-                message: "请输入巡检名称",
-                max: 10,
-              }]
+              rules:[
+                { required: true, message: "请输入巡检名称"},
+                { max: 10, message: "不超过10个字"},
+              ]
             })(
               <Input placeholder="必填，10个中文字符以内" />
             )}
@@ -85,6 +85,7 @@ class InspectCreateForm extends Component{
           </FormItem>
           <FormItem label="电站名称" colon={false}>
             {getFieldDecorator('stationCodes',{
+              initialValue: [],
               rules:[{ required: true, message: '请选择电站' }]
             })(
               <StationSelect 
@@ -97,9 +98,7 @@ class InspectCreateForm extends Component{
           </FormItem>
           <FormItem label="设备类型" colon={false}>
             {getFieldDecorator('deviceTypeCodes',{
-              rules:[{
-                required: true,
-              }]
+              rules:[{ required: true, message: '请选择设备类型' }]
             })(
               <Select
                 style={{width:200}}

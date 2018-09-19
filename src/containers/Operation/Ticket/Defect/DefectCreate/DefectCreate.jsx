@@ -22,6 +22,7 @@ class DefectCreate extends Component {
     getDefectTypes: PropTypes.func,
     getDevices: PropTypes.func,
     getCommonList: PropTypes.func,
+    changeCommonStore: PropTypes.func,
   };
   constructor(props) {
     super(props);
@@ -66,7 +67,11 @@ class DefectCreate extends Component {
     this.setState({
       showWarningTip: false,
     });
-    this.props.onChangeShowContainer({ container: 'list' });  
+    this.props.onChangeShowContainer({ container: 'list' }); 
+    this.props.changeCommonStore({
+      stationDeviceTypes: [],
+      devices: [],
+    });
   }
 
   render() {
@@ -104,6 +109,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
+  changeCommonStore: payload => dispatch({type:commonAction.CHANGE_COMMON_STORE_SAGA, payload}),
   getStations: payload => dispatch({ type: commonAction.GET_STATIONS_SAGA, payload }),
   getDefectDetail: payload => dispatch({ type: ticketAction.GET_DEFECT_DETAIL_SAGA, payload }),
   getStationDeviceTypes: payload => dispatch({ type: commonAction.GET_STATION_DEVICETYPES_SAGA, payload }),
