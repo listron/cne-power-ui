@@ -63,7 +63,7 @@
   }
   .provinceList{
     border-bottom: 1px #f1f1f1 solid; 
-    padding: 0 24px;
+    padding: 0 20px 0 24px;
     max-height: 344px;
     height: 344px;
     overflow-y: auto;
@@ -94,9 +94,9 @@
           background-color:#f1f1f1;
           color: $lightColor;
         }
-        // .eachStation:nth-of-type(4){
-        //   margin-right: 0;
-        // }
+        .eachStation:nth-of-type(4){
+          margin-right: 0;
+        }
       }
     }
   }

@@ -133,7 +133,7 @@ class InspectAbnormal extends Component {
           <div className={styles.subMenu}>
             {item.get('standardData').map((subItem, i) => {
               return (
-                <div style={this.state.standardInfo===subItem.get('standardInfo')?{backgroundColor:'#666'}:{}} className={styles.subMenuTitle} key={i} onClick={()=>this.getStandardInfo(subItem.get('standardInfo'))}>
+                <div style={this.state.standardInfo===subItem.get('standardInfo')?{backgroundColor:'#666'}:{}} className={styles.subMenuTitle} key={i} onClick={()=>this.getStandardInfo(subItem.get('standardInfo'))} title={subItem.get('standardItem')}>
                   {subItem.get('standardItem')}
                 </div>
               );
