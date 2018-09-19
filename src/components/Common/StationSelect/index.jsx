@@ -62,7 +62,7 @@ class StationSelect extends Component {
   }
   componentWillReceiveProps(nextProps){
     const { data, value } = nextProps;
-    if( data && data.length > 0 && value && value.length > 0){
+    if( data && data.length > 0 && value && value.length >= 0){
       this.setState({
         checkedStations: nextProps.value,
         checkedStationName: nextProps.value.map(e=>e.stationName),
