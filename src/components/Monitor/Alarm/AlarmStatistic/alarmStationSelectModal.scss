@@ -11,18 +11,27 @@
     .ant-modal-body {
       display: flex;
       flex: 1;
+      padding: 0;
+      overflow-y: auto;
     }
   }
   .content {
     display: flex;
     flex-direction: column;
-    padding: 24px 16px;
+    padding: 24px;
     .provinceItem {
       margin-top: 12px;
       margin-bottom: 10px;
+      display: flex;
+      flex-direction: column;
       .provinceName {
         margin-bottom: 12px;
         color: $darkColor;
+      }
+      .stationList {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
       }
       .selectedStationItem {
         color: #fff;
@@ -34,7 +43,7 @@
         background-color: $themeColor;
         display: flex;
         align-items: center;
-        justify-content: center;
+        padding-left: 6px;
       }
       .stationItem {
         color: $lightColor;
@@ -46,7 +55,7 @@
         background-color: #f1f1f1;
         display: flex;
         align-items: center;
-        justify-content: center;
+        padding-left: 6px;
         cursor: pointer;
       }
     }
