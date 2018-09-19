@@ -13,7 +13,7 @@ class PointManageList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      
+
     }
   }
 
@@ -22,8 +22,11 @@ class PointManageList extends Component {
     const { field, order } = sorter;
     getPointList({
       ...queryParams,
-      orderField: field?field:'',
-      orderType: order?(sorter.order==='ascend'?0:1):null,
+      // orderField: field?field:'',
+      sortField: field ? field === 'warningLevel' ? '1' : '2' : '',
+      orderType: order ? (sorter.order === 'ascend' ? 0 : 1) : null,
+
+
     })
   }
 
@@ -33,59 +36,60 @@ class PointManageList extends Component {
         title: '测点编号',
         dataIndex: 'devicePointStandardCode',
         key: 'devicePointStandardCode',
-      },{
+      }, {
         title: '点号描述',
         dataIndex: 'devicePointDesc',
         key: 'devicePointDesc',
         sorter: true,
-      },{
+      }, {
         title: '第三方测点名称',
         dataIndex: 'devicePointCode',
         key: 'devicePointCode',
         sorter: true,
-      },{
+      }, {
         title: '英文名称',
         dataIndex: 'devicePointIecname',
         key: 'devicePointIecname',
         sorter: true,
-      },{
+      }, {
         title: '分组名称',
         dataIndex: 'groupName',
         key: 'groupName',
-      },{
+      }, {
         title: '数据类型',
         dataIndex: 'devicePointDatatype',
         key: 'devicePointDatatype',
         sorter: true,
-      },{
+      }, {
         title: '测点类型',
         dataIndex: 'devicePointType',
         key: 'devicePointType',
         sorter: true,
-      },{
+      }, {
         title: '单位',
         dataIndex: 'devicePointUnit',
         key: 'devicePointUnit',
-      },{
+      }, {
         title: '系数',
         dataIndex: 'devicePointIndex',
         key: 'devicePointIndex',
-      },{
+      }, {
         title: '点小数位',
         dataIndex: 'devicePointDecimalplace',
         key: 'devicePointDecimalplace',
       },
     ];
     const { loading, pointList } = this.props;
+    console.log(pointList);
     return (
       <div className={styles.pointManageList}>
         <Table
           loading={loading}
           onChange={this.tableChange}
           columns={pointListColumn}
-          dataSource={pointList.map((e,i)=>({key: i,...e}))}
+          dataSource={pointList.map((e, i) => ({ key: i, ...e }))}
           pagination={false}
-          locale={{emptyText:<img width="223" height="164" src="/img/nodata.png" />}}
+          locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
         />
       </div>
     );
