@@ -6,7 +6,7 @@ var initState = Immutable.fromJS({
   loading: false,
   stationCode: null, // 选中的电站
   deviceTypeCode: null, // 选中的设备类型
-  deviceModelCode: null, // 选中的设备型号
+  deviceModeCode: null, // 选中的设备型号
   pointCode: '', // 选中的测点code
   pageNum: 1,
   pageSize: 10,
