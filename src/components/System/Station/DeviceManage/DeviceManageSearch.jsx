@@ -14,7 +14,7 @@ class DeviceManageSearch extends Component {
     stationDeviceTypes: PropTypes.array,
     deviceModels: PropTypes.array,
     deviceTypeCode: PropTypes.number,
-    deviceModelCode: PropTypes.number,
+    deviceModeCode: PropTypes.number,
     changeCommonStore: PropTypes.func,
     getDeviceList: PropTypes.func,
     getStationDeviceTypes: PropTypes.func,
@@ -37,7 +37,7 @@ class DeviceManageSearch extends Component {
       ...queryParams,
       stationCode: stations[0].stationCode,
       deviceTypeCode: null,
-      deviceModelCode: null,
+      deviceModeCode: null,
     })
     changeCommonStore({
       deviceModels: []
@@ -53,7 +53,7 @@ class DeviceManageSearch extends Component {
     getDeviceList({
       ...queryParams,
       deviceTypeCode: value,
-      deviceModelCode: null,
+      deviceModeCode: null,
     })
   }
 
@@ -61,12 +61,12 @@ class DeviceManageSearch extends Component {
     const { getDeviceList, queryParams } = this.props;
     getDeviceList({
       ...queryParams,
-      deviceModelCode: value,
+      deviceModeCode: value,
     })
   }
 
   render() {
-    const { stations, stationDeviceTypes, deviceModels, deviceTypeCode, deviceModelCode } = this.props;
+    const { stations, stationDeviceTypes, deviceModels, deviceTypeCode, deviceModeCode } = this.props;
     const typeSelectDisable = stationDeviceTypes.length === 0;
     const modelSelectDisable = deviceModels.length === 0;
     return (
@@ -80,7 +80,7 @@ class DeviceManageSearch extends Component {
             return <Option key={e.deviceTypeCode} value={e.deviceTypeCode}>{e.deviceTypeName}</Option>
           })}
         </Select>
-        <Select className={styles.modelSelect} onChange={this.selectDeviceModel} value={deviceModelCode} placeholder="请选择设备型号" disabled={modelSelectDisable}>
+        <Select className={styles.modelSelect} onChange={this.selectDeviceModel} value={deviceModeCode} placeholder="请选择设备型号" disabled={modelSelectDisable}>
           <Option key={null} value={null}>{'全部'}</Option>
           {deviceModels.map(e=>{
             if(!e){ return null; }

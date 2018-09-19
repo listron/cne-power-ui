@@ -73,7 +73,8 @@ class InspectFilter extends Component {
     const { showFilter } = this.state;
     const { stations, inspectStatusStatistics, handleUser, hasAbnormal, username } = this.props;
     const inProcessNum = inspectStatusStatistics.get("executeNum");
-    const waitCheckNum = inspectStatusStatistics.get("checkNum");  
+    const waitCheckNum = inspectStatusStatistics.get("checkNum");
+    const isOneType = stations.groupBy(item=>item.get('stationType')).size === 1;
     return (
       <div className={styles.inspectFilter}>
         <div className={styles.topSearch}>
@@ -81,7 +82,7 @@ class InspectFilter extends Component {
           <Button onClick={()=>this.onFilterShowChange('time')}>
             创建时间{showFilter==='time'?<Icon type="up" />:<Icon type="down" />}
           </Button>
-          {stations && stations.size > 0 && <Button onClick={()=>this.onFilterShowChange('stationType')}>
+          {!isOneType && <Button onClick={()=>this.onFilterShowChange('stationType')}>
             电站类型{showFilter==='stationType'?<Icon type="up" />:<Icon type="down" />}
           </Button>}
           <Button onClick={()=>this.onFilterShowChange('stationName')}>

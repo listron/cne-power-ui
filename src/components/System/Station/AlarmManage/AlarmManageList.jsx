@@ -13,19 +13,26 @@ class AlarmManageList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      
+     
     }
   }
 
   tableChange = (pagination, filter, sorter) => { // 排序触发重新请求设备列表
     const { getAlarmList, queryParams } = this.props;
     const { field, order } = sorter;
+    
+
     getAlarmList({
       ...queryParams,
-      sortField: field?field:'',
-      sortOrder: order?(sorter.order==='ascend'?'asc':'desc'):'',
+      //sortField: field?field:'',
+      sortField: field?field==='warningLevel'?'1':'2':'',
+      sortOrder: order?(sorter.order==='ascend'?'1':'2'):'',
+
+      // sortOrder: order?(sorter.order==='ascend'?'asc':'desc'):'',
+
     })
   }
+ 
 
   render() {
     const alarmListColumn = [
@@ -45,16 +52,17 @@ class AlarmManageList extends Component {
         title: '告警级别',
         dataIndex: 'warningLevel',
         key: 'warningLevel',
+        sorter: true,
       },{
         title: '是否启用',
         dataIndex: 'warningEnable',
         key: 'warningEnable',
         sorter: true,
-        render: (text, record) => record.enableDisplay?'是':'否',
+        //render: (text, record) => record.enableDisplay?'是':'否',
+        render: (text, record) => record.warningEnable?'是':'否',
       }
     ];
     const { loading, alarmList } = this.props;
-
     return (
       <div className={styles.alarmManageList}>
         <Table

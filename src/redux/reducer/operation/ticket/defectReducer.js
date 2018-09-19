@@ -23,6 +23,7 @@ var initState = Immutable.fromJS({
   handleUser: '',      //处理人
 
   defectList:[],//渲染为table的缺陷列表
+  defectIdList: [],//所有巡检Id
   commonList:[],//获取缺陷常用语列表
   selectedRowKeys: [],
   defectStatusStatistics:{

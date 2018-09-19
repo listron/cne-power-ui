@@ -22,6 +22,7 @@ class InspectDetail extends Component{
     deviceItems: PropTypes.object,
     onChangeShowContainer: PropTypes.func,
     inspectList: PropTypes.object,
+    inspectIdList: PropTypes.object,
     setInspectId: PropTypes.func,
     transformDefect: PropTypes.func,
     finishInspect: PropTypes.func,
@@ -53,15 +54,14 @@ class InspectDetail extends Component{
   }
 
   onPrev = () => {
-    let inspectList = this.props.inspectList;
-    let inspectId = this.props.inspectId;
-    let index = inspectList.findIndex(item => {
-      return item.get('inspectId') === inspectId;
+    const { inspectIdList, inspectId } = this.props;
+    let index = inspectIdList.findIndex(item => {
+      return item === inspectId;
     })
     if(index !== -1){
       if(index !== 0){
         this.props.changeInspectStore({
-          inspectId: inspectList.getIn([index-1,'inspectId'])}
+          inspectId: inspectIdList.get(index-1)}
         );
       }else{
         message.info('已经是第一条');
@@ -70,15 +70,14 @@ class InspectDetail extends Component{
   }
 
   onNext = () => {
-    let inspectList = this.props.inspectList;
-    let inspectId = this.props.inspectId;
-    let index = inspectList.findIndex(item => {
-      return item.get('inspectId') === inspectId;
+    const { inspectIdList, inspectId } = this.props;
+    let index = inspectIdList.findIndex(item => {
+      return item === inspectId;
     })
     if(index !== -1){
-      if(index !== inspectList.size - 1){
+      if(index !== inspectIdList.size - 1){
         this.props.changeInspectStore({
-          inspectId: inspectList.getIn([index+1,'inspectId'])}
+          inspectId: inspectIdList.get(index+1)}
         );
       } else{
         message.info('已经是最后一条')
@@ -102,6 +101,7 @@ class InspectDetail extends Component{
 const mapStateToProps = (state) => ({
   loading: state.operation.inspect.get('loading'),
   inspectList: state.operation.inspect.get('inspectList'),
+  inspectIdList: state.operation.inspect.get('inspectIdList'),
   error: state.operation.inspect.get('error'),
   inspectDetail: state.operation.inspect.get('inspectDetail'),
   inspectId: state.operation.inspect.get('inspectId'),

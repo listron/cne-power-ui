@@ -87,15 +87,16 @@
           border-radius: 4px;
           margin-top: 8px;
           margin-right: 8px;
+          padding-left: 8px;
           align-items: center;
           cursor: pointer;
           display: flex;
           background-color:#f1f1f1;
           color: $lightColor;
         }
-        .eachStation:nth-of-type(4){
-          margin-right: 0;
-        }
+        // .eachStation:nth-of-type(4){
+        //   margin-right: 0;
+        // }
       }
     }
   }
