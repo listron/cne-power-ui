@@ -36,8 +36,10 @@ class AlarmStationSelectModal extends Component {
   }
 
   onOk = () => {
-    this.props.onChangeStation(this.state.stationCode);
-    this.props.onClose();
+    if(this.state.stationCode !== '') {
+      this.props.onChangeStation(this.state.stationCode);
+      this.props.onClose();
+    }
   }
 
   onCancel = () => {
@@ -52,15 +54,17 @@ class AlarmStationSelectModal extends Component {
       return (
         <div className={styles.provinceItem} key={index}>
           <div className={styles.provinceName}>{province.getIn([0, 'provinceName'])}</div>
-          {province.map((station, i) => {
-            return (             
-              <div className={station.get('stationCode')===this.state.stationCode?styles.selectedStationItem:styles.stationItem} 
-                key={i} 
-                onClick={()=>this.onChangeStation(station.get('stationCode'))}>
-                {station.get('stationName')}
-              </div>
-            );
-          })}
+          <div className={styles.stationList}>
+            {province.map((station, i) => {
+              return (             
+                <div className={station.get('stationCode')===this.state.stationCode?styles.selectedStationItem:styles.stationItem} 
+                  key={i} 
+                  onClick={()=>this.onChangeStation(station.get('stationCode'))}>
+                  {station.get('stationName')}
+                </div>
+              );
+            })}
+          </div>
         </div>
       );
     });
@@ -79,6 +83,15 @@ class AlarmStationSelectModal extends Component {
     );
   }
 
+  renderFooter() {
+    return (
+      <div>
+        <Button onClick={this.onCancel}>重置</Button>
+        <Button type="primary" onClick={this.onOk}>确认</Button>
+      </div>
+    )
+  }
+
   render() {
     const title = (
       <span className={styles.title}>
@@ -90,14 +103,12 @@ class AlarmStationSelectModal extends Component {
       <Modal
         wrapClassName={styles.stationSelectModal}
         style={{top:82,right:24,height:'90%',float:'right',paddingBottom:0}}
-        width={600}
+        width={620}
         title={title}
         visible={true}
         mask={false}
-        okText="确认"
-        cancelText="重置"
-        onOk={this.onOk}
-        onCancel={this.onCancel}
+        onCancel={this.props.onClose}
+        footer={this.renderFooter()}
       >
         {this.renderStation()}
       </Modal>

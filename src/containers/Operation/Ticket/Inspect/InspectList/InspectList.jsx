@@ -30,6 +30,7 @@ class InspectList extends Component {
     error: PropTypes.object,
     showTab: PropTypes.string,
     getInspectList: PropTypes.func,
+    getInspectIdList: PropTypes.func,
     getInspectDetail: PropTypes.func,
     onChangeShowContainer: PropTypes.func,
     inspectCheckBatch: PropTypes.func,
@@ -78,7 +79,10 @@ class InspectList extends Component {
       // hasAbnormal
     }
     let newFiter = Object.assign({}, filter, obj);
-    this.props.getInspectList(newFiter)
+    this.props.getInspectList(newFiter);
+    if(!obj.pageNum) {
+      this.props.getInspectIdList(newFiter);
+    }
   }  
 
   render() {
@@ -119,6 +123,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   changeInspectStore: payload => dispatch({type:ticketAction.CHANGE_INSPECT_STORE_SAGA, payload}),
   getInspectList: payload => dispatch({ type: ticketAction.GET_INSPECT_LIST_SAGA, payload }),
+  getInspectIdList: payload => dispatch({ type: ticketAction.GET_INSPECT_ID_LIST_SAGA, payload }),
   getInspectDetail: payload => dispatch({ type: ticketAction.GET_INSPECT_DETAIL_SAGA, payload }),
   inspectCheckBatch: payload => dispatch({ type: ticketAction.CHECK_BATCH_INSPECT_SAGA, payload}),
 })

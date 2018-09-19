@@ -36,6 +36,26 @@ function* getInspectList(action){
   }
 }
 
+//获取巡检工单Id列表(用于上一个，下一个)
+function* getInspectIdList(action) {
+  const { payload } = action;
+  let url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.getInspectIdList;
+  yield put({ type: ticketAction.TICKET_FETCH });
+  try {
+    const response = yield call(axios.post, url, payload);
+    if(response.data.code === '10000'){
+      yield put({ 
+        type: ticketAction.GET_INSPECT_FETCH_SUCCESS, 
+        payload: {
+          inspectIdList: response.data.data
+        }
+      });      
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
+
 // 获取巡检工单详情
 function* getInspectDetail(action){
   const { payload } = action;
@@ -220,33 +240,37 @@ function *finishInspect(action){
 function *createInspect(action){
   const { payload } = action;
   let url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.createInspect;
-  yield put({ type: ticketAction.TICKET_FETCH })
+  yield put({ type: ticketAction.TICKET_FETCH });
+  const isContinueAdd = payload.isContinueAdd;
+  delete payload.isContinueAdd;
   try{
     const response = yield call(axios.post, url, payload)
     if(response.data.code === "10000"){
       message.success('创建成功！')
-      const params = yield select(state => ({
-        stationType: state.operation.defect.get('stationType'),
-        stationCodes: state.operation.defect.get('stationCodes'),
-        timeInterval: state.operation.defect.get('timeInterval'),
-        status: state.operation.defect.get('status'),
-        pageNum: state.operation.defect.get('pageNum'),
-        pageSize: state.operation.defect.get('pageSize'),
-        createTimeStart: state.operation.defect.get('createTimeStart'),
-        createTimeEnd: state.operation.defect.get('createTimeEnd'),
-        deviceTypeCode: state.operation.defect.get('deviceTypeCode'),
-        sort: state.operation.defect.get('sort'),
-        // handleUser: state.operation.defect.get('handleUser'),
-        // hasAbnormal: state.operation.defect.get('hasAbnormal'),
-      }));
-      yield put({
-        type: ticketAction.GET_INSPECT_LIST_SAGA,
-        payload: params
-      })
-      yield put({
-        type: ticketAction.CHANGE_SHOW_CONTAINER_SAGA,
-        payload: {container: 'list'},
-      });
+      if(!isContinueAdd) {
+        const params = yield select(state => ({
+          stationType: state.operation.defect.get('stationType'),
+          stationCodes: state.operation.defect.get('stationCodes'),
+          timeInterval: state.operation.defect.get('timeInterval'),
+          status: state.operation.defect.get('status'),
+          pageNum: state.operation.defect.get('pageNum'),
+          pageSize: state.operation.defect.get('pageSize'),
+          createTimeStart: state.operation.defect.get('createTimeStart'),
+          createTimeEnd: state.operation.defect.get('createTimeEnd'),
+          deviceTypeCode: state.operation.defect.get('deviceTypeCode'),
+          sort: state.operation.defect.get('sort'),
+          // handleUser: state.operation.defect.get('handleUser'),
+          // hasAbnormal: state.operation.defect.get('hasAbnormal'),
+        }));
+        yield put({
+          type: ticketAction.GET_INSPECT_LIST_SAGA,
+          payload: params
+        })
+        yield put({
+          type: ticketAction.CHANGE_SHOW_CONTAINER_SAGA,
+          payload: {container: 'list'},
+        });
+      }
     }else{
       message.error('创建失败！');
       yield put({
@@ -353,6 +377,7 @@ export function* watchInspect() {
   yield takeLatest(ticketAction.CHANGE_INSPECT_STORE_SAGA ,changeInspectStore);
   yield takeLatest(ticketAction.ADD_INSPECT_ABNORMAL_SAGA, addInspectAbnormal);
   yield takeLatest(ticketAction.GET_INSPECT_LIST_SAGA, getInspectList);
+  yield takeLatest(ticketAction.GET_INSPECT_ID_LIST_SAGA, getInspectIdList);
   yield takeLatest(ticketAction.CLEAR_INSPECT_STATE_SAGA, clearInspect);
   yield takeLatest(ticketAction.TRANSFORM_DEFECT_SAGA, transformDefect);
   yield takeLatest(ticketAction.SET_INSPECT_CHECK_SAGA, setInspectCheck);

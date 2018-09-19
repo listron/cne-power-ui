@@ -35,6 +35,25 @@ function* getDefectList(action) {
     console.log(e);
   }
 }
+//获取缺陷工单Id列表(用于上一个，下一个)
+function* getDefectIdList(action) {
+  const { payload } = action;
+  let url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.getDefectIdList;
+  yield put({ type: ticketAction.TICKET_FETCH });
+  try {
+    const response = yield call(axios.post, url, payload);
+    if(response.data.code === '10000'){
+      yield put({ 
+        type: ticketAction.GET_DEFECT_FETCH_SUCCESS, 
+        payload: {
+          defectIdList: response.data.data
+        }
+      });      
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
 
 //获取缺陷工单详情
 function* getDefectDetail(action) {
@@ -110,6 +129,10 @@ function* batchDeleteDefect(action) {
       }));
       yield put({ 
         type: ticketAction.GET_DEFECT_LIST_SAGA, 
+        payload: params
+      });
+      yield put({ 
+        type: ticketAction.GET_DEFECT_ID_LIST_SAGA, 
         payload: params
       });      
     } else{
@@ -584,7 +607,11 @@ function *createNewDefect(action){
         yield put({ 
           type: ticketAction.GET_DEFECT_LIST_SAGA, 
           payload: params
-        }); 
+        });
+        yield put({ 
+          type: ticketAction.GET_DEFECT_ID_LIST_SAGA, 
+          payload: params
+        });
         yield put({
           type: ticketAction.CHANGE_SHOW_CONTAINER_SAGA,
           payload: {
@@ -605,7 +632,7 @@ function *createNewDefect(action){
     console.log(e);
   }
 }
-//生成缺陷
+//提交缺陷
 function *submitDefect(action){
   const { payload } = action;
   let url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.submitDefect;
@@ -661,6 +688,7 @@ function* clearDefect(action) {
 
 export function* watchDefect() {
   yield takeLatest(ticketAction.GET_DEFECT_LIST_SAGA, getDefectList);
+  yield takeLatest(ticketAction.GET_DEFECT_ID_LIST_SAGA, getDefectIdList);
   yield takeLatest(ticketAction.CHANGE_DEFECT_STORE_SAGA ,changeDefectStore);
   yield takeLatest(ticketAction.DELETE_BATCH_DEFECT_SAGA, batchDeleteDefect);
   yield takeLatest(ticketAction.SEND_BATCH_DEFECT_SAGA, batchSendDefect);

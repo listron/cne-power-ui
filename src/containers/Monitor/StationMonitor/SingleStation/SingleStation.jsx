@@ -26,6 +26,7 @@ class SingleStation extends Component {
     changeSingleStationStore: PropTypes.func,
     getStationDeviceList: PropTypes.func,
     deviceTypeCode: PropTypes.number,
+    deviceTypeFlow: PropTypes.array,
   };
   constructor(props) {
     super(props);
@@ -39,8 +40,9 @@ class SingleStation extends Component {
     this.getTenSeconds(stationCode);
     this.getOutputDataTenMin(stationCode);
     this.getPowerDataTenMin(stationCode);
-    this.props.getStationDeviceList({stationCode, deviceTypeCode: 203});//获取单电站气象站信息
+    this.props.getStationDeviceList({stationCode, deviceTypeCode: 203});//获取气象站
     this.props.getStationList({});//获取电站列表
+    this.props.getDeviceTypeFlow({stationCode});//获取设备类型流程图
     // 如果是从设备页面跳转过来的，定位到所在设备位置
     const main = document.getElementById('main');
     const locationSearch = this.props.location.search;
@@ -57,15 +59,14 @@ class SingleStation extends Component {
   componentWillReceiveProps(nextProps){
     const { stationCode } = this.props.match.params;
     const nextParams = nextProps.match.params;
-    const nextStation = nextParams.stationCode;
-    if( nextStation !== stationCode ){
+    const nextStationCode = nextParams.stationCode;
+    if( nextStationCode !== stationCode ){
       clearTimeout(this.timeOutId);
-      this.getTenSeconds(nextStation);
-      this.getOutputDataTenMin(nextStation);
-      this.getPowerDataTenMin(nextStation);
-      this.props.changeSingleStationStore({deviceTypeCode: 206});
+      this.getTenSeconds(nextStationCode);
+      this.getOutputDataTenMin(nextStationCode);
+      this.getPowerDataTenMin(nextStationCode);
+      this.props.getDeviceTypeFlow({stationCode: nextStationCode});//获取设备类型流程图
     }
-    // this.props.changeSingleStationStore({deviceTypeCode: nextProps.deviceTypeCode});
   }
 
   componentWillUnmount(){
@@ -75,14 +76,13 @@ class SingleStation extends Component {
   }
 
   getTenSeconds = (stationCode) => {
-    
     this.props.getSingleStation({stationCode});
     this.props.getAlarmList({stationCode});
     this.props.getWorkList({stationCode, startTime: moment().set({'hour': 0, 'minute': 0, 'second': 0, }).utc().format(), endTime: moment().utc().format()});
-    this.props.getDeviceTypeFlow({stationCode});
-    // this.timeOutId = setTimeout(()=>{
-    //   this.getTenSeconds(stationCode);
-    // },10000);
+    
+    this.timeOutId = setTimeout(()=>{
+      this.getTenSeconds(stationCode);
+    },10000);
   }
 
   getOutputDataTenMin = (stationCode) => { // 10min请求一次处理

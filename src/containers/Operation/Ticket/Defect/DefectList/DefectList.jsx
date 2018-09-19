@@ -33,6 +33,7 @@ class DefectList extends Component {
     loading: PropTypes.bool,
 
     getDefectList: PropTypes.func,
+    getDefectIdList: PropTypes.func,
     onBatchDelete: PropTypes.func,
     onBatchSend: PropTypes.func,
     onBatchReject: PropTypes.func,
@@ -93,7 +94,10 @@ class DefectList extends Component {
       handleUser
     }
     let newFiter = Object.assign({}, filter, obj);
-    this.props.getDefectList(newFiter)
+    this.props.getDefectList(newFiter);
+    if(!obj.pageSize) {
+      this.props.getDefectIdList(newFiter);
+    }
   }
 
   render() {
@@ -137,6 +141,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   changeDefectStore: payload => dispatch({type:ticketAction.CHANGE_DEFECT_STORE_SAGA, payload}),
   getDefectList: payload => dispatch({ type: ticketAction.GET_DEFECT_LIST_SAGA, payload }),
+  getDefectIdList: payload => dispatch({ type: ticketAction.GET_DEFECT_ID_LIST_SAGA, payload }),
   getDefectType: payload => dispatch({ type: ticketAction.GET_DEFECT_TYPE_SAGA, payload }),
   onBatchDelete: payload => dispatch({ type: ticketAction.DELETE_BATCH_DEFECT_SAGA, payload }),
   onBatchSend: payload => dispatch({ type: ticketAction.SEND_BATCH_DEFECT_SAGA, payload }),

@@ -58,8 +58,8 @@ class LoginLayout extends Component {
               {pageTab === 'forget' && <Forget changeLoginStore={changeLoginStore} />}
             </div>
             <div className={styles.contactUs}>
-              <Link to="/userAgreement" target="_blank">用户协议</Link>
-              <Link to="/contactUs" target="_blank">联系我们</Link>
+              <Link to="/userAgreement" >用户协议</Link>
+              <Link to="/contactUs" >联系我们</Link>
             </div>
           </div>
         </div>

@@ -68,6 +68,7 @@ class DefectFilter extends Component {
   render() {
     const { showFilter } = this.state;
     const { stations, defectStatusStatistics, handleUser, username } = this.props;
+    const isOneType = stations.groupBy(item=>item.get('stationType')).size === 1;
     const waitSubmitNum = defectStatusStatistics.get('submitNum');
     const waitReviewNum = defectStatusStatistics.get('examineNum');
     const inProcessNum = defectStatusStatistics.get('executeNum');
@@ -79,7 +80,7 @@ class DefectFilter extends Component {
           <Button onClick={()=>this.onFilterShowChange('time')}>
             发生时间{showFilter==='time'?<Icon type="up" />:<Icon type="down" />}
           </Button>
-          {stations && stations.size > 0 && <Button onClick={()=>this.onFilterShowChange('stationType')}>
+          {!isOneType && <Button onClick={()=>this.onFilterShowChange('stationType')}>
             电站类型{showFilter==='stationType'?<Icon type="up" />:<Icon type="down" />}
           </Button>}
           <Button onClick={()=>this.onFilterShowChange('stationName')}>

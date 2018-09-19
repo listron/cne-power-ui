@@ -15,7 +15,7 @@ class AlarmManage extends Component {
   static propTypes = {
     stationCode: PropTypes.number,
     deviceTypeCode: PropTypes.number,
-    deviceModelCode: PropTypes.number,
+    deviceModeCode: PropTypes.number,
     pointCode: PropTypes.string,
     pageNum: PropTypes.number,
     pageSize: PropTypes.number,
@@ -40,7 +40,7 @@ class AlarmManage extends Component {
     this.props.changeAlarmManageStore({ // 离开页面前，重置数据。
       stationCode: null,
       deviceTypeCode: null,
-      deviceModelCode: null,
+      deviceModeCode: null,
       pointCode: '',
       pageNum: 1,
       pageSize: 10,
@@ -60,10 +60,10 @@ class AlarmManage extends Component {
   render() {
     const { showAlarmTip } = this.state;
     const { 
-      stationCode, deviceTypeCode, deviceModelCode, pointCode, pageNum, pageSize, sortField, sortOrder
+      stationCode, deviceTypeCode, deviceModeCode, pointCode, pageNum, pageSize, sortField, sortOrder
     } = this.props;
     const queryParams = { 
-      stationCode, deviceTypeCode, deviceModelCode, pointCode, pageNum, pageSize, sortField, sortOrder 
+      stationCode, deviceTypeCode, deviceModeCode, pointCode, pageNum, pageSize, sortField, sortOrder 
     }
     return (
       <div className={styles.alarmManageContainer}>

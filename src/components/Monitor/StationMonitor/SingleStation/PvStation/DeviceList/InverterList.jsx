@@ -240,7 +240,7 @@ class InverterList extends Component {
                         <i className="iconfont icon-nb" ></i>
                       </Link>
                       <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${item.deviceCode}/?showPart=alarmList`}  >
-                        {item.alarmNum>0 && <i className="iconfont icon-alarm" ></i>}
+                        {(item.alarmNum && item.alarmNum>0)? <i className="iconfont icon-alarm" ></i> : <div></div>}
                       </Link>
                     </div>
                     <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${item.deviceCode}`}  >
