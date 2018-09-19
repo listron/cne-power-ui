@@ -156,6 +156,7 @@ const mapDispatchToProps = (dispatch) => ({
   getBoxTransformerList: payload => dispatch({type:singleStationAction.GET_BOXTRANSFORMER_LIST_SAGA, payload}),
   getStationList: payload => dispatch({type:singleStationAction.GET_STATION_LIST_SAGA, payload}),
   getStationDeviceList: payload => dispatch({type:singleStationAction.GET_STATION_DEVICELIST_SAGA, payload}),
+  getConfluenceBoxList: payload => dispatch({type:singleStationAction.GET_CONFLUENCEBOX_LIST_SAGA, payload}),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SingleStation);
