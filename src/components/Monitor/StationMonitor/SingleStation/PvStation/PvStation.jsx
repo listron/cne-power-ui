@@ -87,18 +87,16 @@ class PvStation extends Component {
             </TabPane> */}
             <TabPane tab="示意图" key="2">
               <div className={styles.deviceTypeFlow}>
-                {deviceTypeFlow && <RadioGroup value={appointDeviceCode || deviceTypeCode}  onChange={this.onSelectedDeviceType} >
-                  {deviceTypeFlow && 
-                    deviceTypeFlow.map((e,i)=>{
-                      return (<RadioButton value={e.deviceTypeCode}  className={styles.deviceTypeItem} key={i}>
-                        <div className={styles.deviceTypeIcon} >
-                          <i className={this.getDeviceTypeIcon(e.deviceTypeCode)} ></i>
-                          {deviceTypeFlow.length-1 !== i && <img src="/img/arrowgo.png" className={styles.arrowgo} />}
-                        </div>
-                        <div>{e.deviceTypeName}</div>
-                      </RadioButton>)
-                    })
-                  }
+                {deviceTypeFlow.length > 0 && <RadioGroup value={appointDeviceCode || deviceTypeCode}  onChange=         {this.onSelectedDeviceType} >
+                  {deviceTypeFlow.map((e,i)=> (
+                    <RadioButton value={e.deviceTypeCode}  className={styles.deviceTypeItem} key={i}>
+                      <div className={styles.deviceTypeIcon} >
+                        <i className={this.getDeviceTypeIcon(e.deviceTypeCode)} ></i>
+                        {deviceTypeFlow.length-1 !== i && <img src="/img/arrowgo.png" className={styles.arrowgo} />}
+                      </div>
+                      <div>{e.deviceTypeName}</div>
+                    </RadioButton>)
+                  )}
                 </RadioGroup>}
                 <div className={styles.weatherStation}>
                   <Link  to={`/hidden/monitorDevice/${stationCode}/203/${weatherDeviceCode}`} ><i className="iconfont icon-weather" ></i></Link>

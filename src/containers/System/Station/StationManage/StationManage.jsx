@@ -119,6 +119,7 @@ const mapDispatchToProps = (dispatch) => ({
   deleteStation: payload => dispatch({type: stationManageAction.DELET_STATION_MANAGE, payload}),
   setStationDepartment: payload => dispatch({type: stationManageAction.SET_STATION_MANAGE_DEPARTMENT, payload}),
   getAllDepartmentData: payload => dispatch({type: commonAction.GET_ALL_DEPARTMENT_SAGA, payload}),
+  getStationOfEnterprise: payload =>dispatch({type: stationManageAction.GET_ALL_STATION_MANAGE_BASE_INFO, payload }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(StationManage);

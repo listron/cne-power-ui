@@ -12,7 +12,6 @@ class InverterList extends Component {
   static propTypes = {
     inverterList: PropTypes.object,
     match: PropTypes.object,
-    loading: PropTypes.bool,
     deviceTypeCode: PropTypes.number,
     getInverterList: PropTypes.func,
   }
@@ -197,7 +196,7 @@ class InverterList extends Component {
     return tableSource.splice((currentPage-1)*pageSize,pageSize);
   }
   render(){
-    const { inverterList, loading, deviceTypeCode, } = this.props;
+    const { inverterList, deviceTypeCode, } = this.props;
     const { currentStatus, alarmSwitch  } = this.state;
     const initDeviceList = inverterList.deviceList && inverterList.deviceList.map((e,i)=>({...e,key:i})) || []; // 初始化数据
     const filteredDeviceList = initDeviceList.filter(e=>(!alarmSwitch || (alarmSwitch && e.alarmNum > 0))).filter(e=>{
@@ -261,10 +260,9 @@ class InverterList extends Component {
           <TabPane tab={<span><i className="iconfont icon-table" ></i></span>} key="2" className={styles.inverterTableBox} >
             <div>
               <div className={styles.pagination} >
-                <CommonPagination onPaginationChange={this.changePagination} total={inverterList.length} />
+                <CommonPagination onPaginationChange={this.changePagination} total={filteredDeviceList.length} />
               </div>
               <Table 
-                loading={loading}
                 dataSource={currentTableList} 
                 columns={this.tableColumn()} 
                 onChange={this.tableChange}

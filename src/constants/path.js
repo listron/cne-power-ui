@@ -114,6 +114,7 @@ export default {
       deleteStation: '/v3/management/tryDelete', // 删除电站(及以下设备及设备信息)
       setStationDepartment: '/v3/management/alarmevent/station/department', // 分配部门
       importStationInfo: '/v3/management/station/devices', // 导入电站+设备信息
+      getAllStationBaseInfo: '/v3/management/datalist', // 获取该用户所在企业的所有电站(与token无关)
 
       getDeviceList: '/v3/management/devicelist', // 获取设备列表
       downloadDeviceInfo: '/v3/management/station/devices', // 导出设备信息表

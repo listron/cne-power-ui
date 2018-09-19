@@ -49,6 +49,9 @@
     }
     .provinceList{
       margin: 0 4px;
+      max-height: 344px;
+      height: 344px;
+      overflow-y: auto;
       .provinceItem{
         margin-top: 20px;
         .name{
@@ -90,7 +93,7 @@
       }
     }
     .ant-modal-body{
-      padding: 0 20px 12px 20px;
+      padding: 0 0 12px 20px;
     }
   }
 }

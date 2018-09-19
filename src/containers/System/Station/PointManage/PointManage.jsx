@@ -12,9 +12,11 @@ import PointManageHandle from '../../../../components/System/Station/PointManage
 import PointManageList from '../../../../components/System/Station/PointManage/PointManageList';
 import Footer from '../../../../components/Common/Footer'
 import PropTypes from 'prop-types';
+import Cookie from 'js-cookie';
 
 class PointManage extends Component {
   static propTypes = {
+    enterpriseId: PropTypes.string,
     stationCode: PropTypes.number,
     deviceTypeCode: PropTypes.number,
     deviceModeCode: PropTypes.number,
@@ -25,6 +27,7 @@ class PointManage extends Component {
     changePointManageStore: PropTypes.func,
     getStationList: PropTypes.func,
     changeStationManageStore: PropTypes.func,
+    getStationOfEnterprise: PropTypes.func,
   }
   constructor(props) {
     super(props);
@@ -33,11 +36,13 @@ class PointManage extends Component {
     }
   }
   componentDidMount(){
-    this.props.getStationList({ // 请求一次设备列表
+    const { enterpriseId, getStationList, getStationOfEnterprise } = this.props;
+    getStationList({ // 请求一次设备列表
       stationType: "",
       pageSize: 1000000,
       pageNum: 1,
     })
+    getStationOfEnterprise({ enterpriseId }); // 请求用户所在企业的所有企业
     this.timeout = setTimeout(()=>{this.setState({
       showPointTip: false
     })},3000)
@@ -95,11 +100,13 @@ class PointManage extends Component {
   }
 }
 const mapStateToProps = (state) => ({
+    enterpriseId: Cookie.get('enterpriseId'),
     ...state.system.pointManage.toJS(),
     stations: state.common.get('stations').toJS(),
     deviceModels: state.common.get('deviceModels').toJS(),
     stationDeviceTypes: state.common.get('stationDeviceTypes').toJS(),
     stationList: state.system.stationManage.get('stationList').toJS(),
+    allStationBaseInfo: state.system.stationManage.get('allStationBaseInfo').toJS(),
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -113,6 +120,7 @@ const mapDispatchToProps = (dispatch) => ({
 
   getStationList: payload => dispatch({type: stationManageAction.GET_STATION_MANAGE_LIST, payload}),
   changeStationManageStore: payload => dispatch({type:stationManageAction.CHANGE_STATION_MANAGE_STORE_SAGA, payload}),
+  getStationOfEnterprise: payload =>dispatch({type: stationManageAction.GET_ALL_STATION_MANAGE_BASE_INFO, payload }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PointManage);
