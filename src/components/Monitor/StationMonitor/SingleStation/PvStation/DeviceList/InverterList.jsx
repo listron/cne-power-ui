@@ -20,9 +20,8 @@ class InverterList extends Component {
   constructor(props){
     super(props);
     this.state = {
-      tmpDeviceList : props.inverterList && props.inverterList.deviceList && props.inverterList.deviceList.map((e,i)=>({...e,key:i})),//暂存的逆变器列表
-      currentStatus: 0,//当前状态值
-      alarmSwitch: false,
+      currentStatus: 0,//状态：正常/故障/停机
+      alarmSwitch: false, // 是否告警
       pageSize: 10, 
       currentPage: 1,
       sortName: '',
@@ -49,37 +48,19 @@ class InverterList extends Component {
     clearTimeout(this.timeOutId);
   }
 
-  onChangeStatus = (e) => {
-    const statusValue = e.target.value;
-    const { inverterList } = this.props; 
-    const { alarmSwitch } = this.state;
-    const deviceList = inverterList && inverterList.deviceList && inverterList.deviceList.map((e,i)=>({...e,key:i}));
-
-    let selectedList = [];
-    if(alarmSwitch){
-      selectedList = statusValue===0 ? deviceList : deviceList.filter(e=>e.deviceStatus === statusValue && e.alarmNum!==null);
-    }else{
-      selectedList = statusValue===0 ? deviceList : deviceList.filter(e=>e.deviceStatus===statusValue);
-    }
+  onChangeStatus = (e) => { // 切换状态
     this.setState({
-      tmpDeviceList: selectedList,
-      currentStatus: statusValue,
+      currentStatus: e.target.value,
     })
   }
-  onSwitchAlarm = (e) => {
-    const { inverterList } = this.props; 
-    const { currentStatus } = this.state; 
-    const deviceList = inverterList && inverterList.deviceList && inverterList.deviceList.map((e,i)=>({...e,key:i}));
-
-    let selectedList = [];
-    selectedList = e ? deviceList.filter(e=>e.deviceStatus===currentStatus&&e.alarmNum!==null) : deviceList;
+  onSwitchAlarm = (e) => { // 切换告警
     this.setState({
-      tmpDeviceList: selectedList,
       alarmSwitch: e,
     });
   }
   getData = (stationCode) => {
-    this.props.getInverterList({stationCode});
+    const { deviceTypeCode, getInverterList } = this.props;
+    getInverterList({ stationCode, deviceTypeCode });
     this.timeOutId = setTimeout(()=>{
       this.getData(stationCode);
     }, 10000);
@@ -188,14 +169,6 @@ class InverterList extends Component {
     ];
     return columns;
   }
-  compareName = (a,b) => {
-    return a['deviceName'].localeCompare(b['deviceName']);
-  }
-  compareParentName = (a,b) => {
-    if(a[0] && b[0] && a[0]['parentDeviceName'] && a[1]['parentDeviceName']){
-      return a[0]['parentDeviceName'].localeCompare(b[0]['parentDeviceName']);
-    }
-  }
   changePagination = ({ pageSize, currentPage }) => {
     this.setState({ pageSize, currentPage })
   }
@@ -206,7 +179,7 @@ class InverterList extends Component {
     })
   }
   createTableSource = (data) => {
-    const { sortName, descend } = this.state;
+    const { sortName, descend, currentPage, pageSize } = this.state;
     const tableSource = [...data].map((e, i) => ({
       ...e,
       key: i,
@@ -221,38 +194,33 @@ class InverterList extends Component {
         return sortType * (a[sortName].length - b[sortName].length);
       }
     })
-    return tableSource;
+    return tableSource.splice((currentPage-1)*pageSize,pageSize);
   }
   render(){
     const { inverterList, loading, deviceTypeCode, } = this.props;
-    const {tmpDeviceList,currentPage, pageSize } = this.state;
-    const deviceList = inverterList && inverterList.deviceList;
-    const initDeviceList = deviceList && deviceList.map((e,i)=>({...e,key:i}));
-    
-    
-    let endDeviceList = tmpDeviceList || initDeviceList;
-    let parentDeviceCodes = endDeviceList && endDeviceList.map(e=>e.parentDeviceCode);
-    
-    const currentDeviceList = endDeviceList && this.createTableSource(endDeviceList).splice((currentPage-1)*pageSize,pageSize);
-
-    let parentDeviceCodeSet = new Set(parentDeviceCodes);
-    let tmpParentDeviceCodes = [...parentDeviceCodeSet];
-    
-    tmpParentDeviceCodes.forEach((value,key)=>{
-      tmpParentDeviceCodes[key] = deviceList.filter(e=>value===e.parentDeviceCode);
-    })
-    
-    const inverterListNum = deviceList && (deviceList.length || 0);
-    const deviceStatus = inverterList && inverterList.deviceStatusSummary;
-    const deviceStatusNums=deviceStatus && deviceStatus.map(e=>e.deviceStatusNum);
+    const { currentStatus, alarmSwitch  } = this.state;
+    const initDeviceList = inverterList.deviceList && inverterList.deviceList.map((e,i)=>({...e,key:i})) || []; // 初始化数据
+    const filteredDeviceList = initDeviceList.filter(e=>(!alarmSwitch || (alarmSwitch && e.alarmNum > 0))).filter(e=>{
+      return (currentStatus === 0 || e.deviceStatus === currentStatus);
+    }) // 根据筛选条件处理数据源。
+    const parentDeviceCodeSet = new Set(filteredDeviceList.map(e=>e.parentDeviceCode));
+    const parentDeviceCodes = [...parentDeviceCodeSet].sort((a,b) => {
+      return a.parentDeviceName && a.parentDeviceName.localeCompare(b.parentDeviceName)
+    });
+    const deviceGroupedList = parentDeviceCodes.map(e=>{
+      const subDeviceList = filteredDeviceList.filter(item => item.parentDeviceCode === e);
+      return subDeviceList.sort((a,b)=>a.deviceName && a.deviceName.localeCompare(b.deviceName));
+    });
+    const currentTableList = this.createTableSource(filteredDeviceList); // 根据分页，排序筛选表格数据
+    console.log(deviceGroupedList)
+    const deviceStatus = inverterList.deviceStatusSummary || [];
     const operations = (<div className={styles.inverterRight} >
       <Switch defaultChecked={false} onChange={this.onSwitchAlarm}  /> 告警
       <Radio.Group defaultValue={0} buttonStyle="solid" className={styles.inverterStatus} onChange={this.onChangeStatus}  >
         <Radio.Button value={0} >全部</Radio.Button>
-        <Radio.Button value={100}>正常 {deviceStatusNums && deviceStatusNums[0]}</Radio.Button>
-        <Radio.Button value={300}>故障 {deviceStatusNums && deviceStatusNums[2]}</Radio.Button>
-        <Radio.Button value={200}>停机 {deviceStatusNums && deviceStatusNums[1]}</Radio.Button>
-        <Radio.Button value={900}>未接入 {deviceStatusNums && deviceStatusNums[3]}</Radio.Button>
+        {deviceStatus.map(e=>
+          (<Radio.Button key={e.deviceStatusCode} value={e.deviceStatusCode}>{e.deviceStatusName} {e.deviceStatusNum}</Radio.Button>)
+        )}
       </Radio.Group>
     </div>);
     
@@ -263,10 +231,10 @@ class InverterList extends Component {
       <div className={styles.inverterList} >
         <Tabs defaultActiveKey="1" className={styles.inverterTab} tabBarExtraContent={operations}>
           <TabPane tab={<span><i className="iconfont icon-grid" ></i></span>} key="1" className={styles.inverterBlockBox} >
-            {(tmpParentDeviceCodes&&tmpParentDeviceCodes.length>0) ? tmpParentDeviceCodes.sort(this.compareParentName).map((e,index)=>{
+            {deviceGroupedList.length>0 ? deviceGroupedList.map((e,index)=>{
               return (<div key={index}>
                 <div className={styles.parentDeviceName} >{e && e[0] && e[0].parentDeviceName}</div>
-                {e && e.sort(this.compareName).map((item,i)=>{
+                {e.map((item,i)=>{
                   return (<div key={i} className={item.deviceStatus === 900 ? styles.cutOverItem : styles.inverterItem} >
                     <div className={styles.inverterItemIcon} >
                       <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${item.deviceCode}`}  >
@@ -294,11 +262,11 @@ class InverterList extends Component {
           <TabPane tab={<span><i className="iconfont icon-table" ></i></span>} key="2" className={styles.inverterTableBox} >
             <div>
               <div className={styles.pagination} >
-                <CommonPagination onPaginationChange={this.changePagination} total={inverterListNum} />
+                <CommonPagination onPaginationChange={this.changePagination} total={inverterList.length} />
               </div>
               <Table 
                 loading={loading}
-                dataSource={currentDeviceList} 
+                dataSource={currentTableList} 
                 columns={this.tableColumn()} 
                 onChange={this.tableChange}
                 pagination={false}

@@ -27,6 +27,9 @@ class SideMenu extends Component {
 
   componentWillReceiveProps(nextProps){
     const { location,topMenu } = nextProps;
+    const { pathname } = location;
+    // console.log(pathname)
+    // console.log(menu)
     if(nextProps.topMenu.name !== this.props.topMenu.name || location.pathname !== this.props.location.pathname) {
       const {sideMenuData, selectedKeys,openKeys} = this.getMenuData(topMenu, location);
       this.setState({
