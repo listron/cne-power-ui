@@ -15,6 +15,7 @@ class CardSection extends Component {
     workList: PropTypes.object,
     getWeatherList: PropTypes.func,
     getOperatorList: PropTypes.func,
+    stationCode: PropTypes.string,
   }
 
   constructor(props){
@@ -99,7 +100,7 @@ class CardSection extends Component {
     }
   }
   render(){
-    const {operatorList,weatherList,alarmList,workList } = this.props;
+    const {operatorList,weatherList,alarmList,workList,stationCode } = this.props;
     const { disabled1,disabled2,} = this.state;
     let tmpOperatorList = [];
     if(operatorList){
@@ -107,8 +108,8 @@ class CardSection extends Component {
         tmpOperatorList.push(operatorList.slice(i,i+3));
       }
     }
-    const ticketList = "/operation/ticket/list";
-    const  alarmRealtime= "/monitor/alarm/realtime";
+    const ticketList = `/operation/ticket/list?stationCode=${stationCode}`;
+    const alarmRealtime= `/monitor/alarm/realtime?stationCode=${stationCode}`;
     return (
       <div className={styles.cardSection}>
         <Row gutter={16}  type="flex" justify="space-around" >
