@@ -1,5 +1,5 @@
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import styles from './loginLayout.scss';
 import { loginAction } from '../../constants/actionTypes/loginAction';
@@ -22,7 +22,7 @@ class LoginLayout extends Component {
     super(props);
   }
 
-  componentWillUnmount(){
+  componentWillUnmount() {
     this.props.resetLoginState();
   }
 
@@ -33,22 +33,9 @@ class LoginLayout extends Component {
   }
 
   render() {
-    const {pageTab, changeLoginStore} = this.props;
+    const { pageTab, changeLoginStore } = this.props;
     return (
-
       <div className={styles.loginLayout}>
-        <div className={styles.left}>
-          <div className={styles.logoImg}>
-            <div className={styles.loginImg}>
-              <div className={styles.logo}>
-                <div className={styles.pic}><img src={require('../../../assets/img/logo_power.png')} alt="" /></div>
-                <h3>智慧能源运维平台</h3>
-              </div>
-              <img className={styles.bgPic} src={require('../../../assets/img/bg_01.png')} />
-              <span className={styles.comRegisterInfo}>京ICP备12030847号-2 © 2017-2018 北京动力协合科技有限公司</span>
-            </div>
-          </div>
-        </div>
         <div className={styles.right}>
           <div className={styles.rightContent}>
             <div className={styles.mainBox}>
@@ -56,11 +43,15 @@ class LoginLayout extends Component {
               {pageTab === 'register' && <Register changeLoginStore={changeLoginStore} pageTab={pageTab} />}
               {pageTab === 'joinIn' && <JoinIn changeLoginStore={changeLoginStore} />}
               {pageTab === 'forget' && <Forget changeLoginStore={changeLoginStore} />}
+              <div className={styles.contactUs}>
+                <Link to="/userAgreement" >用户协议</Link>
+                <Link to="/contactUs" >联系我们</Link>
+              </div>
+              <div className={styles.footerTitle}>
+              京ICP备12030847号-2 © 2017-2018 北京动力协合科技有限公司        
+              </div>
             </div>
-            <div className={styles.contactUs}>
-              <Link to="/userAgreement" >用户协议</Link>
-              <Link to="/contactUs" >联系我们</Link>
-            </div>
+
           </div>
         </div>
       </div>
