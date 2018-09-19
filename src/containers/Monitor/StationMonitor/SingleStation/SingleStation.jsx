@@ -80,9 +80,9 @@ class SingleStation extends Component {
     this.props.getAlarmList({stationCode});
     this.props.getWorkList({stationCode, startTime: moment().set({'hour': 0, 'minute': 0, 'second': 0, }).utc().format(), endTime: moment().utc().format()});
     this.props.getDeviceTypeFlow({stationCode});
-    this.timeOutId = setTimeout(()=>{
-      this.getTenSeconds(stationCode);
-    },10000);
+    // this.timeOutId = setTimeout(()=>{
+    //   this.getTenSeconds(stationCode);
+    // },10000);
   }
 
   getOutputDataTenMin = (stationCode) => { // 10min请求一次处理

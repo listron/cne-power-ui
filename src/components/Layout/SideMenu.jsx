@@ -122,7 +122,7 @@ class SideMenu extends Component {
             <Link to={e.path}>{e.iconStyle && <i className={`iconfont ${e.iconStyle}`} />}{collapsed ? null: e.name}</Link>
           </Item>
         );
-      }else if(e && e.children && e.children.length > 0){//有三级目录
+      }else if(e && e.children && e.children.length > 0 && rightMenu && rightMenu.includes(e.rightKey)){ // 有三级目录
         let menuTitle = <span>{e.iconStyle && <i className={`iconfont ${e.iconStyle}`} />}<span>{collapsed ? null: e.name}</span></span>
         const filteredMenu = e.children.filter(subItem => rightMenu && rightMenu.includes(subItem.rightKey));
         return (

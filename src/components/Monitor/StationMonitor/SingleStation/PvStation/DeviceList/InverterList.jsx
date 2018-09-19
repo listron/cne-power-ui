@@ -255,15 +255,6 @@ class InverterList extends Component {
         <Radio.Button value={900}>未接入 {deviceStatusNums && deviceStatusNums[3]}</Radio.Button>
       </Radio.Group>
     </div>);
-    const pagination = {
-      defaultPageSize: 10,
-      defaultCurrent: 1,
-      showQuickJumper: true,
-      total: inverterListNum,
-      showSizeChanger: true,
-      position: 'top',
-      size: 'small',
-    }
     
     const baseLinkPath = "/hidden/monitorDevice";
     const { stationCode } = this.props.match.params;
