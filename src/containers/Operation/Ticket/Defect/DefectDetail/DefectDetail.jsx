@@ -10,6 +10,7 @@ class DefectDetail extends Component {
     loading: PropTypes.bool,
     defectId: PropTypes.string,
     defectList: PropTypes.object,
+    defectIdList: PropTypes.object,
     defectDetail: PropTypes.object,
     commonList: PropTypes.object,
     getDefectDetail: PropTypes.func,
@@ -55,15 +56,14 @@ class DefectDetail extends Component {
   }
 
   onPrev = () => {
-    let defectList = this.props.defectList;
-    let defectId = this.props.defectId;
-    let index = defectList.findIndex(item => {
-      return item.get('defectId') === defectId
+    const { defectIdList, defectId } = this.props;
+    let index = defectIdList.findIndex(item => {
+      return item === defectId
     });
     if(index !== -1) {
       if(index !== 0) {
         this.props.changeDefectStore({
-          defectId: defectList.getIn([index-1, 'defectId'])}
+          defectId: defectIdList.get(index-1)}
         );
       } else {
         message.info('已经是第一条');
@@ -72,15 +72,14 @@ class DefectDetail extends Component {
   }
 
   onNext = () => {
-    let defectList = this.props.defectList;
-    let defectId = this.props.defectId;
-    let index = defectList.findIndex(item => {
-      return item.get('defectId') === defectId
+    const { defectIdList, defectId } = this.props;
+    let index = defectIdList.findIndex(item => {
+      return item === defectId
     });
     if(index !== -1) {
-      if(index !== defectList.size - 1) {
+      if(index !== defectIdList.size - 1) {
         this.props.changeDefectStore({
-          defectId: defectList.getIn([index+1, 'defectId'])}
+          defectId: defectIdList.get(index+1)}
         );
       } else {
         message.info('已经是最后一条');
@@ -110,6 +109,7 @@ class DefectDetail extends Component {
 
 const mapStateToProps = (state) => ({
   defectList: state.operation.defect.get('defectList'),
+  defectIdList: state.operation.defect.get('defectIdList'),
   loading: state.operation.defect.get('loading'),
   error: state.operation.defect.get('error'),
   defectDetail: state.operation.defect.get('defectDetail'),

@@ -14,6 +14,7 @@ module.exports = {
     CLEAR_DEFECT_STATE: null,
     GET_DEFECT_FETCH_SUCCESS: null,
     GET_DEFECT_LIST_SAGA: null,
+    GET_DEFECT_ID_LIST_SAGA: null,
     GET_DEFECT_DETAIL_SAGA: null,
     GET_DEFECT_LANGUAGE_SAGA: null,
     GET_DEFECT_TYPE_SAGA: null,
@@ -41,6 +42,7 @@ module.exports = {
     CLEAR_INSPECT_STATE: null,
     GET_INSPECT_FETCH_SUCCESS: null,
     GET_INSPECT_LIST_SAGA: null,
+    GET_INSPECT_ID_LIST_SAGA: null,
     GET_INSPECT_DETAIL_SAGA: null,
     GET_INSPECT_STANDARD_SAGA: null,
 
