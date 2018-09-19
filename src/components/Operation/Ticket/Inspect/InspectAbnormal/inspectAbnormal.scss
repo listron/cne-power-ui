@@ -74,6 +74,7 @@
     .ant-modal-content {
       width: 100%;
       color: #dfdfdf;
+      height: 100%;
       .ant-modal-close {
         color: #fff;
       }
@@ -98,7 +99,7 @@
       background-color: #757575;
       padding: 30px 0;
       .mainMenu {
-        display: flex;
+        // display: flex;
         flex-direction: column;
         .mainMenuTitle {
           height: 36px;
