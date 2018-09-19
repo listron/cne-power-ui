@@ -42,8 +42,9 @@ class AllStation extends Component {
     clearInterval(this.stationInterval);
     this.props.changeMonitorStationStore({
       stationTypes: null,
-      stationShowType:'stationBlock'
-
+      stationShowType:'stationBlock',
+      pvMonitorStation:{},
+      windMonitorStation:{},
     });
   }
 
