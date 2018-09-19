@@ -220,15 +220,7 @@ class BoxTransformerList extends Component {
         <Radio.Button value={900}>未接入 {deviceStatusNums && deviceStatusNums[3]}</Radio.Button>
       </Radio.Group> 
     </div>);
-    const pagination = {
-      defaultPageSize: 10,
-      defaultCurrent: 1,
-      showQuickJumper: true,
-      total: inverterListNum,
-      showSizeChanger: true,
-      position: 'top',
-      size: 'small',
-    }
+    
     const baseLinkPath = "/hidden/monitorDevice";
     const { stationCode } = this.props.match.params;
 
@@ -247,7 +239,7 @@ class BoxTransformerList extends Component {
                         <i className="iconfont icon-xb" ></i>
                       </Link>
                       <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${item.deviceCode}/?showPart=alarmList`} >
-                        {item.alarmNum && <i className="iconfont icon-alarm" ></i>}
+                        {(item.alarmNum && item.alarmNum>0)? <i className="iconfont icon-alarm" ></i> : <div></div>}
                       </Link>
                     </div>
                     <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${item.deviceCode}`} >
