@@ -74,9 +74,9 @@ class DefectProcessForm extends Component {
               placeholder="请描述，不超过80个汉字" />
           )}
         </FormItem>
-        <FormItem label="添加照片" colon={false}>
-        <div className={styles.addImg}>
-          <div className={styles.maxTip}>最多4张</div>
+        {dealResult === '1'&&<FormItem label="添加照片" colon={false}>
+          <div className={styles.addImg}>
+            <div className={styles.maxTip}>最多4张</div>
             {getFieldDecorator('photoData', {
               rules: [{ required: false, message: '请上传图片' }],
               initialValue: [],
@@ -85,7 +85,7 @@ class DefectProcessForm extends Component {
               <ImgUploader imgStyle={{width:98,height:98}} uploadPath={`${pathConfig.basePaths.APIBasePath}${pathConfig.commonPaths.imgUploads}`} editable={true} />
             )}
           </div>
-        </FormItem>
+        </FormItem>}
         {dealResult === '0' && (
           <FormItem label="更换备件" colon={false}>
             <div>
