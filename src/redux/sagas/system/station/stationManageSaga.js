@@ -213,6 +213,29 @@ function *setStationDepartment(action){ // 保存分配至指定电站的部门�
   }
 }
 
+function *getStationOfEnterprise(action){ // 根据企业id获取下面所有电站==>与用户权限无关。
+  const { payload } = action;
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.getAllStationBaseInfo}/${payload.enterpriseId}`;
+  try{
+    yield put({ type:stationManageAction.STATION_MANAGE_FETCH });
+    const response = yield call(axios.get, url);
+    yield put({
+      type: stationManageAction.GET_STATION_MANAGE_FETCH_SUCCESS,
+      payload: {
+        ...payload,
+        allStationBaseInfo: response.data.data || [],
+      }
+    })
+  }catch(e){
+    console.log(e);
+    message.error('分配部门操作失败，请重试');
+    yield put({
+      type:  stationManageAction.CHANGE_STATION_MANAGE_STORE,
+      payload: { loading: false },
+    })
+  }
+}
+
 export function* watchStationManage() {
   yield takeLatest(stationManageAction.CHANGE_STATION_MANAGE_STORE_SAGA, changeStationManageStore);
   yield takeLatest(stationManageAction.GET_STATION_MANAGE_LIST, getStationList);
@@ -221,5 +244,6 @@ export function* watchStationManage() {
   yield takeLatest(stationManageAction.DELET_STATION_MANAGE, deleteStation);
   yield takeLatest(stationManageAction.SET_STATION_MANAGE_DEPARTMENT, setStationDepartment);
   yield takeLatest(stationManageAction.GET_OTHER_PAGE_STATION_MANAGE_DETAIL,getOtherPageStationDetail);
+  yield takeLatest(stationManageAction.GET_ALL_STATION_MANAGE_BASE_INFO, getStationOfEnterprise);
 }
 

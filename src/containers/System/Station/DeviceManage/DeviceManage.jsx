@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import styles from './deviceManage.scss';
 import { deviceManageAction } from '../../../../constants/actionTypes/system/station/deviceManageAction';
 import { commonAction } from '../../../../constants/actionTypes/commonAction';
+import { stationManageAction } from '../../../../constants/actionTypes/system/station/stationManageAction';
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import StationManageTip from '../../../../components/System/Station/Common/StationManageTip';
 import DeviceManageSearch from '../../../../components/System/Station/DeviceManage/DeviceManageSearch';
@@ -10,9 +11,11 @@ import DeviceManageHandle from '../../../../components/System/Station/DeviceMana
 import DeviceManageList from '../../../../components/System/Station/DeviceManage/DeviceManageList';
 import Footer from '../../../../components/Common/Footer'
 import PropTypes from 'prop-types';
+import Cookie from 'js-cookie';
 
 class DeviceManage extends Component {
   static propTypes = {
+    enterpriseId: PropTypes.string,
     stationCode: PropTypes.number,
     deviceTypeCode: PropTypes.number,
     deviceModeCode: PropTypes.number,
@@ -21,6 +24,7 @@ class DeviceManage extends Component {
     sortField: PropTypes.string,
     sortMethod: PropTypes.string,
     changeDeviceManageStore: PropTypes.func,
+    getStationOfEnterprise: PropTypes.func,
   }
   constructor(props) {
     super(props);
@@ -29,6 +33,8 @@ class DeviceManage extends Component {
     }
   }
   componentDidMount(){
+    const { enterpriseId, getStationOfEnterprise } = this.props;
+    getStationOfEnterprise({ enterpriseId }); // 请求用户所在企业的所有企业
     this.timeout = setTimeout(()=>{this.setState({
       showDeviceTip: false
     })},3000)
@@ -83,10 +89,12 @@ class DeviceManage extends Component {
   }
 }
 const mapStateToProps = (state) => ({
-    ...state.system.deviceManage.toJS(),
-    stations: state.common.get('stations').toJS(),
-    deviceModels: state.common.get('deviceModels').toJS(),
-    stationDeviceTypes: state.common.get('stationDeviceTypes').toJS(),
+  enterpriseId: Cookie.get('enterpriseId'),
+  ...state.system.deviceManage.toJS(),
+  stations: state.common.get('stations').toJS(),
+  deviceModels: state.common.get('deviceModels').toJS(),
+  stationDeviceTypes: state.common.get('stationDeviceTypes').toJS(),
+  allStationBaseInfo: state.system.stationManage.get('allStationBaseInfo').toJS(),
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -95,6 +103,7 @@ const mapDispatchToProps = (dispatch) => ({
   getStationDeviceTypes: payload => dispatch({type:commonAction.GET_STATION_DEVICETYPES_SAGA, payload}),
   getStationDeviceModel: payload => dispatch({type:commonAction.GET_STATION_DEVICEMODEL_SAGA, payload}),
   changeCommonStore: payload => dispatch({type:commonAction.CHANGE_COMMON_STORE_SAGA, payload}),
+  getStationOfEnterprise: payload =>dispatch({type: stationManageAction.GET_ALL_STATION_MANAGE_BASE_INFO, payload }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DeviceManage);
