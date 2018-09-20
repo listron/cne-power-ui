@@ -39,9 +39,9 @@ class LoginForm extends Component {
   }
 
   componentWillUnmount = () => {
-    this.setState = (timeValue)=>{
-      return;
-    };
+    this.setState({
+      timeValue: 0,
+    })
     this.props.changeLoginStore({
       userEnterpriseStatus: 3,
       checkLoginPhone: true,

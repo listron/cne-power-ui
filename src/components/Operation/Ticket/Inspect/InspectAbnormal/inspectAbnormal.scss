@@ -22,6 +22,15 @@
         background-color: $themeColor;
       }
     }
+    .disabledStandard {
+      color: $lightColor;
+      border-color: $lightColor;
+      background-color: #fff;
+      &:hover {
+        color: $lightColor;
+        background-color: #fff;
+      }
+    }
     :global {
       .icon-content {
         margin-left: 6px;

@@ -28,6 +28,20 @@ class InspectAbnormal extends Component {
     };
   }
 
+  componentDidMount(){
+    const stationType = this.props.inspectDetail.get('stationType');
+    const deviceTypeCodes = this.props.inspectDetail.get('deviceTypeCodes');
+    this.props.getInspectStandard({stationType, deviceTypeCodes});
+  }
+
+  componentWillReceiveProps(nextProps){
+    if(nextProps.inspectDetail.get('inspectId') !== this.props.inspectDetail.get('inspectId')){
+      const stationType = nextProps.inspectDetail.get('stationType');
+      const deviceTypeCodes = nextProps.inspectDetail.get('deviceTypeCodes');
+      this.props.getInspectStandard({stationType, deviceTypeCodes});
+    }
+  }
+
   onShowDetail = (data) => {
     const abnormalId = this.state.abnormalId;
     if(abnormalId === data.get('abnormalId')) {
@@ -45,9 +59,9 @@ class InspectAbnormal extends Component {
 
   onShowModal = () =>{
     this.setState({showInspectStandard: true})
-    const stationType = this.props.inspectDetail.get('stationType');
-    const deviceTypeCodes = this.props.inspectDetail.get('deviceTypeCodes');
-    this.props.getInspectStandard({stationType, deviceTypeCodes});
+    // const stationType = this.props.inspectDetail.get('stationType');
+    // const deviceTypeCodes = this.props.inspectDetail.get('deviceTypeCodes');
+    // this.props.getInspectStandard({stationType, deviceTypeCodes});
   }
 
   onCloseModal = () => {
@@ -203,6 +217,7 @@ class InspectAbnormal extends Component {
   }
 
   render(){
+    const {inspectStandard} = this.props;
     return (
       <div className={styles.inspectAbnormal}>
         <div className={styles.title}>
@@ -210,7 +225,7 @@ class InspectAbnormal extends Component {
             异常设备
             <i className="iconfont icon-content" />
           </div>
-          <Button onClick={this.onShowModal} className={styles.viewStandard}>查看巡检标准</Button>
+          <Button disabled={inspectStandard && inspectStandard.size < 1} onClick={this.onShowModal} className={inspectStandard && inspectStandard.size < 1 ? styles.disabledStandard : styles.viewStandard}>查看巡检标准</Button>
         </div>
         <div className={styles.abnormalItems}>
           {this.renderItems()}
