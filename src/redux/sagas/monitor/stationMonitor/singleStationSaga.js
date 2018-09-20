@@ -222,19 +222,10 @@ function *getDeviceTypeFlow(action){
     yield put({type: singleStationAction.SINGLE_STATION_FETCH});
     const response = yield call(axios.get, url, payload);
     if(response.data.code === '10000'){
-      let deviceTypeCode;
-      let deviceTypeFlow= response.data.data || [];
-      if(deviceTypeFlow && deviceTypeFlow.some(e=>e.deviceTypeCode===206)){
-        deviceTypeCode = 206;
-      }else if(deviceTypeFlow && deviceTypeFlow.some(e=>e.deviceTypeCode===201)){
-        deviceTypeCode = 201;
-      }
       yield put({
         type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
         payload: {
-          ...payload,
           deviceTypeFlow: response.data.data || [],
-          deviceTypeCode,
         }
       })
     }else{
@@ -258,7 +249,6 @@ function *getPvmoduleList(action){
       yield put({
         type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
         payload: {
-          ...payload,
           pvmoduleList: response.data.data || [],
         }
       });
@@ -283,7 +273,6 @@ function *getInverterList(action){
       yield put({
         type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
         payload: {
-          ...payload,
           inverterList: response.data.data || {},
         }
       })
@@ -308,7 +297,6 @@ function *getBoxTransformerList(action){
       yield put({
         type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
         payload: {
-          ...payload,
           boxTransformerList: response.data.data || {},
         }
       })
@@ -322,7 +310,7 @@ function *getBoxTransformerList(action){
   }
 }
 
-function *getConfluenceBoxList(action){
+function *getConfluenceBoxList(action){ // 获取汇流箱列表
   const { payload } = action;
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.monitor.getConfluenceBoxList}${payload.stationCode}`;
   try{
@@ -332,7 +320,6 @@ function *getConfluenceBoxList(action){
       yield put({
         type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
         payload: {
-          ...payload,
           confluenceBoxList: response.data.data || {},
         }
       })

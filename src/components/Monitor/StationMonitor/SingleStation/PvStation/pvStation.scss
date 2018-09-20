@@ -410,13 +410,12 @@
       color: #dfdfdf;
       background: #f8f8f8;
       padding: 16px 25px 0;
-      .deviceTypeItem{
+      .deviceTypeItem, .elecnettingItem{
         width: 110px;
         height: 90px;
         padding: 10px;
         border: 0;
         color: #dfdfdf;
-        
         .deviceTypeIcon{
           margin: 10px 10px 0;
           position: relative;
@@ -425,9 +424,12 @@
             z-index: 999;
             right: -44px;
             top: 12px;
+            pointer-events: none;
           }
         }
-        
+      }
+      .elecnettingItem{
+        pointer-events: none;
       }
       :global{
         .ant-radio-button-wrapper:hover, .ant-radio-button-wrapper-focused {
