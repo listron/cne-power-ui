@@ -69,16 +69,21 @@ function *getHistoryAlarm(action) {  // 请求历史告警
 
 function *getStationsAlarmStatistic(action) {  // 请求多电站告警统计
   const { payload } = action;
+  //console.log( payload.startTime.hour(0).minute(0).second(0).utc().format());
   const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getStationsAlarmStatistic;
   try{
     yield put({ type:alarmAction.ALARM_FETCH });
-    const response = yield call(axios.post,url,payload);
+    const response = yield call(axios.post,url,{
+      ...payload,
+      startTime: payload.startTime.hour(0).minute(0).second(0).utc().format(),
+      endTime: payload.endTime.hour(23).minute(59).second(59).utc().format()
+    });
     if(response.data.code === '10000') {
       yield put({
         type: alarmAction.GET_ALARM_STATISTIC_FETCH_SUCCESS,
         payload: {
           alarmStatistic: response.data.data,
-          ...payload
+          ...payload,
         }   
       });
     }  

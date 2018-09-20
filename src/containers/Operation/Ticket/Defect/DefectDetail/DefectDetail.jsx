@@ -2,8 +2,11 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import {message} from 'antd';
+import styles from './defectDetail.scss';
 import { ticketAction } from '../../../../../constants/actionTypes/operation/ticketAction';
 import DefectDetailForm from '../../../../../components/Operation/Ticket/Defect/DefectDetailForm/DefectDetailForm';
+import CommonBreadcrumb from '../../../../../components/Common/CommonBreadcrumb';
+import Footer from '../../../../../components/Common/Footer';
 
 class DefectDetail extends Component {
   static propTypes = {
@@ -97,12 +100,24 @@ class DefectDetail extends Component {
       pathname = this.props.location.pathname;
       defectId = pathname.split('/')[4];
     }
+    //先放这，此页面没有徒步导航和尾部
+   // <CommonBreadcrumb  {...breadCrumbData} style={{ marginLeft: '38px' }} />
+   //  <Footer />
+     const breadCrumbData = {
+      breadData: [
+        {
+          name: '工单列表',
+        }
+      ],
+    };
     return (
-      <DefectDetailForm {...this.props}
+      <div className={styles.detailWrapBox}>     
+       <DefectDetailForm {...this.props}
         onCloseDefectDetail={this.onCloseDefectDetail}
         isFromAlarm={!!defectId}
         onPrev={this.onPrev}
-        onNext={this.onNext} />    
+        onNext={this.onNext} />          
+        </div>
     );
   }
 }
