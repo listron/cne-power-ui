@@ -55,9 +55,11 @@
       display: flex;
       flex-direction: row;
       line-height: 30px;
-      height: 30px;
       align-items: center;
       color: $darkColor;
+      >div{
+        white-space: nowrap;
+      }
       >span {
         display: inline-block;
         color: $lightColor;
