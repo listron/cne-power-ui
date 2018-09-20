@@ -25,8 +25,6 @@ class PointManageList extends Component {
       orderField: field?field:'',
       //sortField: field ? field === 'warningLevel' ? '1' : '2' : '',
       orderType: order ? (sorter.order === 'ascend' ? 0 : 1) : null,
-
-
     })
   }
 
@@ -80,7 +78,6 @@ class PointManageList extends Component {
       },
     ];
     const { loading, pointList } = this.props;
-    console.log(pointList);
     return (
       <div className={styles.pointManageList}>
         <Table

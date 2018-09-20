@@ -157,6 +157,15 @@ class RealTimeAlarmTable extends Component {
       const endIndex = startIndex + pageSize;
       return (i >= startIndex && i < endIndex);
     });
+    // const { inverterList } = this.props;
+    // const initDeviceList = inverterList.deviceList || [];
+    // const totalNum = initDeviceList.length || 0;
+    // const maxPage = Math.ceil(totalNum / pageSize);
+    // if(totalNum === 0){ // 总数为0时，展示0页
+    //   currentPage = 0;
+    // }else if(maxPage < currentPage){ // 当前页已超出
+    //   currentPage = maxPage;
+    // }
     return tableSource;
   }
 
@@ -384,7 +393,7 @@ class RealTimeAlarmTable extends Component {
 
   render() {
     const { realtimeAlarm, selectedRowKeys, alarmStatus } = this.props;
-    const { showTransferTicketModal, showRelieveAlarmModal, showWarningTip, warningTipText } = this.state;
+    const { showTransferTicketModal, showRelieveAlarmModal, showWarningTip, warningTipText, pageSize, currentPage } = this.state;
     const tableSource = this.createTableSource(realtimeAlarm);
     const columns = this.initColumn();
     const rowSelection = {
@@ -401,7 +410,7 @@ class RealTimeAlarmTable extends Component {
           value={warningTipText} />}
         <div className={styles.tableHeader}>
           {this.renderOperation()}
-          <CommonPagination onPaginationChange={this.onChangePagination} total={realtimeAlarm.length} />
+          <CommonPagination pageSize={pageSize} currentPage={currentPage} onPaginationChange={this.onChangePagination} total={realtimeAlarm.length} />
         </div>
         <Table
           dataSource={tableSource}

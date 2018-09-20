@@ -86,7 +86,7 @@ class AlarmSingleStationTable extends React.Component {
     return (
       <div className={styles.singleStationTable}>
         <div className={styles.pagination}>
-          <CommonPagination total={totalNum} onPaginationChange={this.onPaginationChange} />
+          <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalNum} onPaginationChange={this.onPaginationChange} />
         </div>
         <Table 
           columns={this.renderColumn()} 

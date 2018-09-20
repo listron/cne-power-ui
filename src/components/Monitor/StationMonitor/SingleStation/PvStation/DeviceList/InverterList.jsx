@@ -169,6 +169,16 @@ class InverterList extends Component {
     return columns;
   }
   changePagination = ({ pageSize, currentPage }) => {
+    // const { inverterList } = this.props;
+    // const initDeviceList = inverterList.deviceList || [];
+    // const totalNum = initDeviceList.length || 0;
+    // const maxPage = Math.ceil(totalNum / pageSize);
+    // if(totalNum === 0){ // 总数为0时，展示0页
+    //   currentPage = 0;
+    // }else if(maxPage < currentPage){ // 当前页已超出
+    //   currentPage = maxPage;
+    // }
+
     this.setState({ pageSize, currentPage })
   }
   tableChange = (pagination, filters, sorter) => {
@@ -197,7 +207,7 @@ class InverterList extends Component {
   }
   render(){
     const { inverterList, deviceTypeCode, } = this.props;
-    const { currentStatus, alarmSwitch  } = this.state;
+    const { currentStatus, alarmSwitch, currentPage, pageSize  } = this.state;
     const initDeviceList = inverterList.deviceList && inverterList.deviceList.map((e,i)=>({...e,key:i})) || []; // 初始化数据
     const filteredDeviceList = initDeviceList.filter(e=>(!alarmSwitch || (alarmSwitch && e.alarmNum > 0))).filter(e=>{
       return (currentStatus === 0 || e.deviceStatus === currentStatus);
@@ -260,7 +270,7 @@ class InverterList extends Component {
           <TabPane tab={<span><i className="iconfont icon-table" ></i></span>} key="2" className={styles.inverterTableBox} >
             <div>
               <div className={styles.pagination} >
-                <CommonPagination onPaginationChange={this.changePagination} total={filteredDeviceList.length} />
+                <CommonPagination pageSize={pageSize} currentPage={currentPage} onPaginationChange={this.changePagination} total={filteredDeviceList.length} />
               </div>
               <Table 
                 dataSource={currentTableList} 
