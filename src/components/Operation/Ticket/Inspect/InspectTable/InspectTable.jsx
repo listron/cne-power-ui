@@ -41,11 +41,14 @@ class InspectTable extends Component {
   }
 
   onChangeTable = (pagination, filter, sorter) => {
-    const field = getInspectSortField(sorter.field);
-    const order = sorter.order === 'ascend' ? '0' : '1';
-    this.props.onChangeFilter({
-      sort: field+',' + order
-    });  
+    if(Object.keys(sorter).length>0){
+      const field = getInspectSortField(sorter.field);
+      const order = sorter.order === 'ascend' ? '0' : '1';
+      this.props.onChangeFilter({
+        sort: field+',' + order
+      }); 
+    }
+     
   }
 
   onInspectCheck = () => {
