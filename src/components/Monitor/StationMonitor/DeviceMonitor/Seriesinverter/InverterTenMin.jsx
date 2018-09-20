@@ -23,10 +23,9 @@ function InverterTenMin({ deviceTenMin, loading }) {
       radiationLineData.push(e.instantaneous);
     });
     
-    const filterStationPower = deviceTenMin && deviceTenMin.filter(e=>e.stationPower);
-    const filterInstantaneous = deviceTenMin && deviceTenMin.filter(e=>e.instantaneous);
-    const inverterTenMinGraphic = (deviceTenMin && deviceTenMin.length===0 &&
-      filterStationPower.length===0 && filterInstantaneous.length===0) ? showNoData : hiddenNoData;
+    const filterStationPower = deviceTenMin.filter(e=>e.stationPower);
+    const filterInstantaneous = deviceTenMin.filter(e=>e.instantaneous);
+    const inverterTenMinGraphic = (filterStationPower.length===0 && filterInstantaneous.length===0) ? showNoData : hiddenNoData;
     const option = {
       graphic: inverterTenMinGraphic,
       title: {

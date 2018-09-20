@@ -1,6 +1,7 @@
 import React from 'react';
 import echarts from 'echarts';
 import moment from 'moment';
+import {showNoData, hiddenNoData} from '../../../../../constants/echartsNoData';
 
 function ConfluenceTenMin({ deviceTenMin, loading }) {
   const echartBox = document.getElementById('confluence_monitor_tenMin');
@@ -18,7 +19,10 @@ function ConfluenceTenMin({ deviceTenMin, loading }) {
       xTime.push(moment(e.utc).format('YYYY-MM-DD HH:mm:ss'));
       dispersionRatio.push(e.dispersionRatio);
     });
+    const filterDispersionRatio = deviceTenMin.filter(e=>e.dispersionRatio);
+    const confluenceTenMinGraphic = filterDispersionRatio.length===0  ? showNoData : hiddenNoData;
     const option = {
+      graphic: confluenceTenMinGraphic,
       title: {
         text: '时序图',
         textStyle: {
