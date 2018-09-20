@@ -246,7 +246,7 @@ class PowerDiagramTenMin extends Component {
             <RadioButton value={2}>年</RadioButton>
           </RadioGroup>
         </div>
-        <Link to={productionAnalysis} target="_blank"  ><i className="iconfont icon-more"></i></Link>
+        <Link to={productionAnalysis} ><i className="iconfont icon-more"></i></Link>
       </div>
     )
   }

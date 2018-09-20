@@ -75,11 +75,11 @@ class AlarmSingleStationTable extends React.Component {
   render() {
     const { singleAlarmStatistic, pageNum, pageSize } = this.props;
    
-    const totalNum = singleAlarmStatistic.length;
+    const totalNum = singleAlarmStatistic && singleAlarmStatistic.length;
     let startRow = (pageNum - 1) * pageSize;
     let endRow = pageNum * pageSize;
     endRow = (endRow > totalNum) ? totalNum : endRow;
-    let data = singleAlarmStatistic.slice(startRow, endRow).map((item,index)=>{
+    let data = singleAlarmStatistic && singleAlarmStatistic.slice(startRow, endRow).map((item,index)=>{
       item.key=index;
       return item;
     });

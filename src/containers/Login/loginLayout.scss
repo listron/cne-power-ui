@@ -87,12 +87,10 @@
           height: 100%;
           position: relative;
           .goLogin {
-            margin-top: 70px;
+            margin: 40px 40px 40px 0;
             height: 20px;
             display: flex;
             justify-content: flex-end;
-            margin-right: 60px;
-            margin-bottom: 50px;
             span {
               color: #199475;
               font-weight: 500;
@@ -152,6 +150,7 @@
     .ant-form-item-control-wrapper{
       .ant-form-explain{
         position: absolute;
+        white-space: nowrap;
       }
     }
   }

@@ -182,6 +182,7 @@ class ALarmSingleStationStatistic extends React.Component {
   renderTitle() {
     const { singleStationCode, singleAlarmSummary, stations } = this.props;
     const { showStationSelect } = this.state;
+    console.log(singleAlarmSummary);
     const stationItem = stations.find(station=>station.get('stationCode').toString() === singleStationCode).toJS();
     return (
       <div className={styles.title}>
@@ -191,10 +192,9 @@ class ALarmSingleStationStatistic extends React.Component {
           <div onClick={()=>this.setState({showStationSelect:true})} className={styles.stationName}>
             <Icon className={styles.icon} type="swap" /><span>{stationItem.stationName}</span>
           </div>
-          
           <div className={styles.stationStatus}>
-            <div className={styles.status}>{`电站状态：${singleAlarmSummary.stationStatusName?singleAlarmSummary.stationStatusName:'- -'}`}</div>
-            <div>{singleAlarmSummary.stationStatus==='500'&&`时间：${singleAlarmSummary.interruptTime}`}</div>
+            <div className={styles.status}>{`电站状态：${singleAlarmSummary && singleAlarmSummary.stationStatusName?singleAlarmSummary.stationStatusName:'- -'}`}</div>
+            <div>{singleAlarmSummary && singleAlarmSummary.stationStatus==='500'&&`时间：${singleAlarmSummary && singleAlarmSummary.interruptTime}`}</div>
           </div>
         </div>
         <Link to="/monitor/alarm/statistic"><Icon type="arrow-left" className={styles.backIcon} onClick={this.onClose} /></Link>
@@ -236,23 +236,23 @@ class ALarmSingleStationStatistic extends React.Component {
       <div className={styles.alarmSummary}>
         <i className={stationItem.stationType === 0 ? "iconfont icon-summary icon-windlogo" : "iconfont icon-summary icon-pvlogo"} />
         <div className={styles.summaryItem}>
-          <span className={styles.alarmNum}>{singleAlarmSummary.alarmNum}</span>
+          <span className={styles.alarmNum}>{singleAlarmSummary && singleAlarmSummary.alarmNum}</span>
           <span className={styles.alarmText}>告警数</span>
         </div>
         <div className={styles.summaryItem}>
-          <span className={styles.alarmNum}>{singleAlarmSummary.transferWorkAlarmNum}</span>
+          <span className={styles.alarmNum}>{singleAlarmSummary && singleAlarmSummary.transferWorkAlarmNum}</span>
           <span className={styles.alarmText}>转工单告警数</span>
         </div>
         <div className={styles.summaryItem}>
-          <span className={styles.alarmNum}>{singleAlarmSummary.transferWorkRate+"%"}</span>
+          <span className={styles.alarmNum}>{singleAlarmSummary && singleAlarmSummary.transferWorkRate+"%"}</span>
           <span className={styles.alarmText}>转工单率</span>
         </div>
         <div className={styles.summaryItem}>
-          <span className={styles.alarmNum}>{singleAlarmSummary.eliminateAlarmNum}</span>
+          <span className={styles.alarmNum}>{singleAlarmSummary && singleAlarmSummary.eliminateAlarmNum}</span>
           <span className={styles.alarmText}>告警消除数</span>
         </div>
         <div className={styles.summaryItem}>
-          <span className={styles.alarmNum}>{singleAlarmSummary.eliminateAlarmAvgTime}</span>
+          <span className={styles.alarmNum}>{singleAlarmSummary && singleAlarmSummary.eliminateAlarmAvgTime}</span>
           <span className={styles.alarmText}>平均处理时间</span>
         </div>
       </div>
