@@ -204,7 +204,7 @@ class OutputTenMin extends Component {
     return (
       <div className={styles.capabilityDiagramBox} >
         <div id="capabilityDiagram" style={{ width: "100%", height: "100%", borderRight: "2px solid #dfdfdf", color: '#999', paddingTop: "20px" }}><i className="iconfont icon-more"></i></div>
-        <Link to={resourceAnalysis}  target="_blank" ><i className="iconfont icon-more"></i></Link>
+        <Link to={resourceAnalysis} ><i className="iconfont icon-more"></i></Link>
       </div>
     )
   }

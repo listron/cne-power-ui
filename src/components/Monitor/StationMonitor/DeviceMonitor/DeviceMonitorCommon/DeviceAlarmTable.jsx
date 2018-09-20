@@ -51,8 +51,8 @@ class DeviceAlarmTable extends Component {
         key: 'warningLevel', 
         sorter: true, // (a,b) => a.warningLevel - b.warningLevel,
         render: (text, record, index) => {
-          const warningInfor = warningLevelArray[text - 1];
-          return (
+          const warningInfor = text && warningLevelArray[text - 1];
+          return (text && 
           <span style={{color: warningInfor.levelColor, border: `1px solid ${warningInfor.levelColor}`}} className={styles.level}>
             {warningInfor.levelName}
           </span>

@@ -45,9 +45,12 @@ class PvStation extends Component {
       case 201:
         return 'iconfont icon-nb';
       case 202:
+      case 207:
         return 'iconfont icon-hl';
       case 304:
         return 'iconfont icon-xb';
+      case 302:
+        return 'iconfont icon-jidian';
       case '10004':
         return 'iconfont icon-elecnetting';
       default:
