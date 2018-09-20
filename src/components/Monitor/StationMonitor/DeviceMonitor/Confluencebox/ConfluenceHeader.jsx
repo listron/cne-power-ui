@@ -48,6 +48,7 @@ class ConfluenceHeader extends Component {
     const { devices, deviceDetail, stationCode, deviceTypeCode } = this.props;
     const { showDeviceChangeBox } = this.state;
     const { deviceStatus, parentDevice, sonDevice, dispersionRatio } = deviceDetail;
+    console.log(sonDevice);
     const deviceStatusInfo = deviceStatusArray.find(e=>parseInt(e.statusCode) === parseInt(deviceStatus));
     const parentDeviceBaseInfo = PVStationTypes.find(e=>parentDevice && parentDevice.deviceTypeCode === e.deviceTypeCode);
     const parentDeviceTypeCode = parentDevice && parentDevice.deviceTypeCode; // 父级设备type

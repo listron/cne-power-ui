@@ -80,7 +80,7 @@ function* changeUserStatus(action) {
         stationName: state.system.user.get('stationName'),
         phoneNum: state.system.user.get('phoneNum'),
         pageSize: state.system.user.get('pageSize'),
-        pageNum: state.system.user.get('pageNum'),
+        pageNum: 1,
         selectedKey: payload.selectedKey,
       }));
       yield put({
@@ -230,7 +230,7 @@ function* createUserInfo(action) {
         stationName: state.system.user.get('stationName'),
         phoneNum: state.system.user.get('phoneNum'),
         pageSize: state.system.user.get('pageSize'),
-        pageNum: state.system.user.get('pageNum'),
+        pageNum: 1,
       }));
       yield put({
         type: userAction.GET_USER_LIST_SAGA,

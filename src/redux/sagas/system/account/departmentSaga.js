@@ -65,7 +65,7 @@ function *deleteDepartment(action){  // 删除部门
         stationName: state.system.department.get('stationName'),
         sort: state.system.department.get('sort'),
         ascend: state.system.department.get('ascend'),
-        pageNum: state.system.department.get('pageNum'),
+        pageNum: 1,
         pageSize: state.system.department.get('pageSize'),
       }));
       yield put({//重新请求所有部门信息
@@ -225,7 +225,7 @@ function *addDepartmentInfo(action){//新建部门信息
         stationName: state.system.department.get('stationName'),
         sort: state.system.department.get('sort'),
         ascend: state.system.department.get('ascend'),
-        pageNum: state.system.department.get('pageNum'),
+        pageNum: 1,
         pageSize: state.system.department.get('pageSize'),
       }));
       yield put({//请求所有部门信息

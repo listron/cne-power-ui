@@ -38,6 +38,7 @@ class DeviceManageSearch extends Component {
       stationCode: stations[0].stationCode,
       deviceTypeCode: null,
       deviceModeCode: null,
+      pageNum: 1,
     })
     changeCommonStore({
       deviceModels: []
@@ -54,6 +55,7 @@ class DeviceManageSearch extends Component {
       ...queryParams,
       deviceTypeCode: value,
       deviceModeCode: null,
+      pageNum: 1,
     })
   }
 
@@ -62,6 +64,7 @@ class DeviceManageSearch extends Component {
     getDeviceList({
       ...queryParams,
       deviceModeCode: value,
+      pageNum: 1,
     })
   }
 

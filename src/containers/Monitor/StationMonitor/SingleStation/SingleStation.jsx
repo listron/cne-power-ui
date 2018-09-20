@@ -43,17 +43,6 @@ class SingleStation extends Component {
     this.props.getStationDeviceList({stationCode, deviceTypeCode: 203});//获取气象站
     this.props.getStationList({});//获取电站列表
     this.props.getDeviceTypeFlow({stationCode});//获取设备类型流程图
-    // 如果是从设备页面跳转过来的，定位到所在设备位置
-    const main = document.getElementById('main');
-    const locationSearch = this.props.location.search;
-    let appointDeviceCode = locationSearch.substr(locationSearch.indexOf('=')+1);
-    if(appointDeviceCode && appointDeviceCode!=='undefined'){
-      appointDeviceCode = parseInt(appointDeviceCode);
-      this.props.changeSingleStationStore({deviceTypeCode: appointDeviceCode});
-      main.scrollTo(0, 700);
-    }else{
-      this.props.changeSingleStationStore({deviceTypeCode: 206});
-    }
   }
 
   componentWillReceiveProps(nextProps){
@@ -156,6 +145,7 @@ const mapDispatchToProps = (dispatch) => ({
   getBoxTransformerList: payload => dispatch({type:singleStationAction.GET_BOXTRANSFORMER_LIST_SAGA, payload}),
   getStationList: payload => dispatch({type:singleStationAction.GET_STATION_LIST_SAGA, payload}),
   getStationDeviceList: payload => dispatch({type:singleStationAction.GET_STATION_DEVICELIST_SAGA, payload}),
+  getConfluenceBoxList: payload => dispatch({type:singleStationAction.GET_CONFLUENCEBOX_LIST_SAGA, payload}),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SingleStation);
