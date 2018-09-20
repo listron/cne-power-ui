@@ -28,7 +28,7 @@ const routers = [
   {
     path: '/',
     exact: true,
-    component: Power,
+    component: Building,
   }, 
   {
     path: '/404',

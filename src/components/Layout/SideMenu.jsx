@@ -31,9 +31,6 @@ class SideMenu extends Component {
   componentWillReceiveProps(nextProps){
     const { pathname } = nextProps.location;
     if(pathname !== this.props.location.pathname) {
-      console.log('sidmenu will receive props')
-      console.log(pathname)
-      console.log(this.props.location.pathname)
       this.getMenuData(pathname);
     }
   }
@@ -48,20 +45,16 @@ class SideMenu extends Component {
     const pathMenuKey = pathname.split('/').filter(e=>e)[0]; // 路径第一个关键字。
     const currentMenuData = menu.find(e=> pathMenuKey && e.path.replace('/','') === pathMenuKey) || {}; // 当前路径对应的菜单组
     const sideMenuData = currentMenuData.children || []; // 侧边栏数据
-    let selectedKeys = []; // 激活菜单选中
     let openKeys = []; // 菜单展开项
     sideMenuData.forEach(e=>{
-      pathname.includes(e.path) && selectedKeys.push(e.path);
       if(e.children && e.children.length>0){
         e.children.forEach(item => {
-          pathname.includes(item.path) && selectedKeys.push(e.path);
           pathname.includes(item.path) && openKeys.push(e.path);
         })
       }
     })
     this.setState({
       sideMenuData,
-      selectedKeys,
       openKeys
     })
   }
@@ -74,7 +67,8 @@ class SideMenu extends Component {
   }
   
   _createSideMenu = (sideMenuData) => {
-    const { collapsed, selectedKeys, openKeys } = this.state;
+    const { collapsed, openKeys } = this.state;
+    const { pathname } = this.props.location;
     if(sideMenuData.length > 0){//至少拥有二级目录
       return (
         <div className={styles.sideLayout}>
@@ -88,7 +82,7 @@ class SideMenu extends Component {
             mode="inline" 
             inlineCollapsed={collapsed} 
             className={styles.menuList} 
-            selectedKeys={selectedKeys} 
+            selectedKeys={[pathname]} 
             openKeys={openKeys}
             onOpenChange={this.onOpenChange}>
             {this.renderSideMenu(sideMenuData)}
