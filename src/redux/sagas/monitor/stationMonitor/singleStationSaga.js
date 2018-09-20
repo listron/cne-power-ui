@@ -222,19 +222,10 @@ function *getDeviceTypeFlow(action){
     yield put({type: singleStationAction.SINGLE_STATION_FETCH});
     const response = yield call(axios.get, url, payload);
     if(response.data.code === '10000'){
-      let deviceTypeCode;
-      let deviceTypeFlow= response.data.data || [];
-      if(deviceTypeFlow && deviceTypeFlow.some(e=>e.deviceTypeCode===206)){
-        deviceTypeCode = 206;
-      }else if(deviceTypeFlow && deviceTypeFlow.some(e=>e.deviceTypeCode===201)){
-        deviceTypeCode = 201;
-      }
       yield put({
         type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
         payload: {
-          ...payload,
           deviceTypeFlow: response.data.data || [],
-          deviceTypeCode,
         }
       })
     }else{
@@ -258,7 +249,6 @@ function *getPvmoduleList(action){
       yield put({
         type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
         payload: {
-          ...payload,
           pvmoduleList: response.data.data || [],
         }
       });
@@ -283,7 +273,6 @@ function *getInverterList(action){
       yield put({
         type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
         payload: {
-          ...payload,
           inverterList: response.data.data || {},
         }
       })
@@ -308,7 +297,6 @@ function *getBoxTransformerList(action){
       yield put({
         type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
         payload: {
-          ...payload,
           boxTransformerList: response.data.data || {},
         }
       })
@@ -321,6 +309,29 @@ function *getBoxTransformerList(action){
     console.log(e);
   }
 }
+
+function *getConfluenceBoxList(action){ // 获取汇流箱列表
+  const { payload } = action;
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.monitor.getConfluenceBoxList}${payload.stationCode}`;
+  try{
+    yield put({type: singleStationAction.SINGLE_STATION_FETCH});
+    const response = yield call(axios.get, url);
+    if(response.data.code === '10000'){
+      yield put({
+        type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
+        payload: {
+          confluenceBoxList: response.data.data || {},
+        }
+      })
+    }else{
+      yield put({ type: singleStationAction.GET_SINGLE_STATION_FAIL, data: response.data});
+    }
+  }catch(e){
+    console.log(e);
+  }
+}
+
+
 // 获取单电站设备列表
 function *getStationDeviceList(action){
   const { payload } = action;
@@ -358,5 +369,6 @@ export function* watchSingleStationMonitor() {
   yield takeLatest(singleStationAction.GET_INVERTER_LIST_SAGA, getInverterList);
   yield takeLatest(singleStationAction.GET_BOXTRANSFORMER_LIST_SAGA, getBoxTransformerList);
   yield takeLatest(singleStationAction.GET_STATION_DEVICELIST_SAGA, getStationDeviceList);
+  yield takeLatest(singleStationAction.GET_CONFLUENCEBOX_LIST_SAGA, getConfluenceBoxList); // 汇流箱列表获取
 }
 

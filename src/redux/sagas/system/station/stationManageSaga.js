@@ -153,7 +153,7 @@ function *deleteStation(action){ // 删除电站(及以下设备)
         stationType: state.system.stationManage.get('stationType'),
         regionName: state.system.stationManage.get('regionName'),
         stationName: state.system.stationManage.get('stationName'),
-        pageNum: state.system.stationManage.get('pageNum'),
+        pageNum: 1,
         pageSize: state.system.stationManage.get('pageSize'),
         orderField: state.system.stationManage.get('orderField'),
         orderCommand: state.system.stationManage.get('orderCommand'),

@@ -19,6 +19,8 @@ module.exports = {
     GET_PVMODULE_LIST_SAGA: null,//光伏组件列表
     GET_INVERTER_LIST_SAGA: null,//组串式逆变器列表
     GET_BOXTRANSFORMER_LIST_SAGA: null,//箱变列表
+    GET_CONFLUENCEBOX_LIST_SAGA: null, // 获取汇流箱列表
     GET_STATION_DEVICELIST_SAGA: null,//获取单电站设备列表
+
   })
 }

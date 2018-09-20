@@ -7,6 +7,11 @@ export const PVStationTypes = [
     deviceConfig: 'seriesinverter',
     icon: 'iconfont icon-nb'
   },{
+    deviceTypeCode: '201',
+    deviceTypeName: '集中式逆变器',
+    deviceConfig: 'seriesinverter',
+    icon: 'iconfont icon-nb'
+  },{
     deviceTypeCode: '202',
     deviceTypeName: '汇流箱',
     deviceConfig: 'confluencebox',
