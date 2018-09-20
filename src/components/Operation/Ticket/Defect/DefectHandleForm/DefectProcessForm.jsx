@@ -4,6 +4,7 @@ import styles from './defectHandleForm.scss';
 import {Form, Input, Button, Switch, Radio} from 'antd';
 import pathConfig from '../../../../../constants/path';
 import CommonInput from '../../../../Common/CommonInput';
+import InputLimit from '../../../../Common/InputLimit';
 import ImgUploader from '../../../../Common/Uploader/ImgUploader';
 const FormItem = Form.Item;
 const RadioButton = Radio.Button;
@@ -60,20 +61,22 @@ class DefectProcessForm extends Component {
               <RadioButton value="0">已解决</RadioButton>
             </RadioGroup>
           )}
-        </FormItem>
-        <FormItem label={dealResult === '0'?'处理过程':'处理建议'} colon={false}>
+        </FormItem>       
+        {dealResult === '1' && <FormItem label="处理建议" colon={false}>
           {getFieldDecorator('defectSolveInfo', {
-              rules: [{ 
-                required: dealResult === '0', 
-                message: '请输入处理过程'
-              }],
               initialValue: ''
             })(
-            <CommonInput 
-              commonList={this.props.commonList} 
-              placeholder="请描述，不超过80个汉字" />
+            <InputLimit placeholder="请描述，不超过80个汉字" />
           )}
-        </FormItem>
+        </FormItem>}
+        {dealResult === '0' && <FormItem label="处理过程" colon={false}>
+          {getFieldDecorator('defectSolveInfo', {
+              rules: [{ required: true, message: '请输入处理过程' }],
+              initialValue: ''
+            })(
+            <CommonInput commonList={this.props.commonList} placeholder="请描述，不超过80个汉字" />
+          )}
+        </FormItem>}
         {dealResult === '0'&&<FormItem label="添加照片" colon={false}>
           <div className={styles.addImg}>
             <div className={styles.maxTip}>最多4张</div>
