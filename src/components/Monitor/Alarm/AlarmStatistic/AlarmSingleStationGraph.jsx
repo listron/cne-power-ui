@@ -22,23 +22,23 @@ class AlarmSingleStationGraph extends React.Component {
     this.renderChart(data);
   }
   transferData(singleAlarmStatistic) {
-    const timeData = singleAlarmStatistic.map((item, index) => {
+    const timeData = singleAlarmStatistic && singleAlarmStatistic.map((item, index) => {
       return moment(item.time).format('YYYY-MM-DD');
     });
 
-    const alarmNum = singleAlarmStatistic.map((item, index) => {
+    const alarmNum = singleAlarmStatistic && singleAlarmStatistic.map((item, index) => {
       return item.alarmNum;
     });
 
-    const transferWorkAlarmNum = singleAlarmStatistic.map((item, index) => {
+    const transferWorkAlarmNum = singleAlarmStatistic && singleAlarmStatistic.map((item, index) => {
       return item.transferWorkAlarmNum;
     });
 
-    const noTransferWorkAlarmNum = singleAlarmStatistic.map((item, index) => {
+    const noTransferWorkAlarmNum = singleAlarmStatistic && singleAlarmStatistic.map((item, index) => {
       return item.noTransferWorkAlarmNum;
     });
 
-    const transferWorkRate = singleAlarmStatistic.map((item, index) => {
+    const transferWorkRate = singleAlarmStatistic && singleAlarmStatistic.map((item, index) => {
       return item.transferWorkRate;
     });
     
@@ -134,7 +134,8 @@ class AlarmSingleStationGraph extends React.Component {
           itemStyle: {
             color: '#f9b600'
           },
-          data: noTransferWorkAlarmNum
+          data: noTransferWorkAlarmNum,
+          barMaxWidth: 6,
           // data: [5, 15, 15, 10, 5, 15, 15]
         }
       ]

@@ -42,6 +42,7 @@ class AlarmManageSearch extends Component {
       deviceTypeCode: null,
       deviceModeCode: null,
       pointCode: '',
+      pageNum: 1,
     })
     changeCommonStore({
       deviceModels: [], 
@@ -60,6 +61,7 @@ class AlarmManageSearch extends Component {
       deviceTypeCode: value,
       deviceModeCode: null,
       pointCode: '',
+      pageNum: 1,
     })
     changeCommonStore({
       devicePoints: [],
@@ -77,6 +79,7 @@ class AlarmManageSearch extends Component {
       ...queryParams,
       deviceModeCode: value,
       pointCode: '',
+      pageNum: 1,
     })
   }
 
@@ -85,6 +88,7 @@ class AlarmManageSearch extends Component {
     getAlarmList({
       ...queryParams,
       pointCode: value,
+      pageNum: 1,
     })
   }
 

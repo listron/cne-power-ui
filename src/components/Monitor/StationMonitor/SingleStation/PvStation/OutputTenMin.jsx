@@ -24,12 +24,11 @@ class OutputTenMin extends Component {
     const { capabilityData } = nextProps;
     const capabilityDiagram = echarts.init(document.getElementById('capabilityDiagram'));
     const lineColor = '#999';
-    const capabilityPower = capabilityData && capabilityData.map(e => e.stationPower);
-    const capabilityRadiation = capabilityData && capabilityData.map(e => e.instantaneous);
-    const filterCapabilityPower = capabilityData && capabilityData.filter(e => e.stationPower);
-    const filterCapabilityRadiation = capabilityData && capabilityData.filter(e => e.instantaneous);
-    const capabilityGraphic = (capabilityData && capabilityData.length === 0 && 
-      filterCapabilityPower.length === 0 && filterCapabilityRadiation.length === 0) ? showNoData : hiddenNoData;
+    const capabilityPower = capabilityData.map(e => e.stationPower);
+    const capabilityRadiation = capabilityData.map(e => e.instantaneous);
+    const filterCapabilityPower = capabilityData.filter(e => e.stationPower);
+    const filterCapabilityRadiation = capabilityData.filter(e => e.instantaneous);
+    const capabilityGraphic = (filterCapabilityPower.length === 0 && filterCapabilityRadiation.length === 0) ? showNoData : hiddenNoData;
     
     let labelInterval = 47 // 10min数据如果不缺失，此时为6(每小时6条)*8(8小时) - 1(除去间隔本身) = 47 个展示一个
     const totalLength = capabilityData.length;
@@ -204,7 +203,7 @@ class OutputTenMin extends Component {
     return (
       <div className={styles.capabilityDiagramBox} >
         <div id="capabilityDiagram" style={{ width: "100%", height: "100%", borderRight: "2px solid #dfdfdf", color: '#999', paddingTop: "20px" }}><i className="iconfont icon-more"></i></div>
-        <Link to={resourceAnalysis}  target="_blank" ><i className="iconfont icon-more"></i></Link>
+        <Link to={resourceAnalysis} ><i className="iconfont icon-more"></i></Link>
       </div>
     )
   }

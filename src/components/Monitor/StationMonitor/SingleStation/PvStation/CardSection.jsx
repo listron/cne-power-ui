@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom';
 class CardSection extends Component {
   static propTypes = {
     match: PropTypes.object,
-    weatherList: PropTypes.array,
+    weatherList: PropTypes.object,
     operatorList: PropTypes.array, 
     alarmList: PropTypes.object,
     workList: PropTypes.object,
@@ -110,6 +110,13 @@ class CardSection extends Component {
     }
     const ticketList = `/operation/ticket/list?stationCode=${stationCode}`;
     const alarmRealtime= `/monitor/alarm/realtime?stationCode=${stationCode}`;
+    
+    const weatherFuture = weatherList && weatherList.future && Object.values(weatherList.future);
+    const weatherSort = weatherFuture && weatherFuture.length>0 && weatherFuture.sort((a,b)=>{
+      if(a.date&&b.date){
+        return a.date.localeCompare(b.date)
+      }
+    });
     return (
       <div className={styles.cardSection}>
         <Row gutter={16}  type="flex" justify="space-around" >
@@ -140,7 +147,7 @@ class CardSection extends Component {
           </Col>
           <Col  span={6}>
             <div className={styles.weatherList}>
-              {weatherList && weatherList.length>0 && 
+              {weatherSort && weatherSort.length>0 && 
                 <div>
                   <Button type="primary" onClick={this.prev} disabled={disabled1} className={styles.weatherLeft} >
                     <Icon type="left" />
@@ -150,23 +157,25 @@ class CardSection extends Component {
                   </Button>
                 </div>
               }
-              {weatherList && weatherList.length>0 ? 
-                weatherList.map((e,i)=>{
+              {weatherSort && weatherSort.length>0 ? 
+                weatherSort && weatherSort.map((e,i)=>{
                   if(i<2){
-                    return (<div style={{display:'inline-block',margin: '0 5px',}} key={e.date} className="weather"  id={Number(i)} >
-                      <div>{i === 0 ? '今天' : (i === 1 ? '明天' : e.date )}</div>
-                      <div className={styles.weatherIcon}><img src={`/img/weathercn/${e.day.img}.png`} /></div>
-                      <div className={i===0?styles.lightGreen:''}>{e.night.templow}-{e.day.temphigh}℃</div>
-                      <div className={i===0?styles.lightGreen:''}>{e.day.weather}</div>
-                      <div className={i===0?styles.lightGreen:''}>{e.day.winddirect}{e.day.windpower}</div>
-                    </div>);
+                    return (
+                    <div style={{display:'inline-block',margin: '0 5px',}} key={i} className="weather"  id={Number(i)} >
+                      <div>{i === 0 ? '今天' : (i===1? '明天': e.date)}</div>
+                      <div className={styles.weatherIcon}><img src={`/img/weathercn/${e.weather_id.fa}.png`} /></div>
+                      <div className={i===0?styles.lightGreen:''}>{e.temperature||''}</div>
+                      <div className={i===0?styles.lightGreen:''}>{e.weather||''}</div>
+                      <div className={i===0?styles.lightGreen:''}>{e.wind||''}</div>
+                    </div>
+                    );
                   }else{
-                    return (<div style={{display:'none',margin: '0 5px',}} key={e.date} className="weather" id={Number(i)} >
-                      <div>{i === 0 ? '今天' : (i === 1 ? '明天' : e.date )}</div>
-                      <div className={styles.weatherIcon}><img src={`/img/weathercn/${e.day.img}.png`} /></div>
-                      <div className={i===0?styles.lightGreen:''}>{e.night.templow}-{e.day.temphigh}℃</div>
-                      <div className={i===0?styles.lightGreen:''}>{e.day.weather}</div>
-                      <div className={i===0?styles.lightGreen:''}>{e.day.winddirect}{e.day.windpower}</div>
+                    return (<div style={{display:'none',margin: '0 5px',}} key={i} className="weather" id={Number(i)} >
+                      <div>{e.date}</div>
+                      <div className={styles.weatherIcon}><img src={`/img/weathercn/${e.weather_id.fa}.png`} /></div>
+                      <div className={i===0?styles.lightGreen:''}>{e.temperature||''}</div>
+                      <div className={i===0?styles.lightGreen:''}>{e.weather||''}</div>
+                      <div className={i===0?styles.lightGreen:''}>{e.wind||''}</div>
                     </div>);
                   }
                 }) : <div className={styles.noweather} >暂无天气数据</div>
@@ -177,7 +186,7 @@ class CardSection extends Component {
             <div title="活动告警" className={styles.alarmList} >
               <div className={styles.cardTitle}>
                 <span>活动告警</span>
-                <Link to={alarmRealtime} target="_blank"><i className="iconfont icon-more"></i></Link>
+                <Link to={alarmRealtime} ><i className="iconfont icon-more"></i></Link>
               </div>
               {alarmList &&
                 <div className={styles.alarmContent} >
@@ -193,7 +202,7 @@ class CardSection extends Component {
             <div title="电站工单" className={styles.workList} >
               <div className={styles.cardTitle}>
                 <span>电站工单</span>
-                <Link to={ticketList} target="_blank" >
+                <Link to={ticketList} >
                   <i className="iconfont icon-more" ></i>
                 </Link>
               </div>

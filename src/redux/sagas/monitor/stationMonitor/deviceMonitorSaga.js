@@ -8,6 +8,10 @@ const monitorPath = {
     detail: path.APISubPaths.monitor.seriesinverterDetail,// '/mock/monitor/seriesinverter',  // path.APISubPaths.monitor.seriesinverterDetail,
     tenMin: path.APISubPaths.monitor.seriesinverterTenMin,// '/mock/monitor/seriesinverterTenMin',   // path.APISubPaths.monitor.seriesinverterTenMin
   },
+  '201': {  // 集中式逆变器：201
+    detail: path.APISubPaths.monitor.seriesinverterDetail,// '/mock/monitor/seriesinverter',  // path.APISubPaths.monitor.seriesinverterDetail,
+    tenMin: path.APISubPaths.monitor.seriesinverterTenMin,// '/mock/monitor/seriesinverterTenMin',   // path.APISubPaths.monitor.seriesinverterTenMin
+  },
   '202': {  // 汇流箱： 202
     detail: path.APISubPaths.monitor.confluenceboxDetail,//'/mock/monitor/confluenceboxDetail',  // path.APISubPaths.monitor.confluenceboxDetail,
     tenMin: path.APISubPaths.monitor.confluenceboxTenMin//'/mock/monitor/confluenceboxTenMin'  // path.APISubPaths.monitor.confluenceboxTenMin

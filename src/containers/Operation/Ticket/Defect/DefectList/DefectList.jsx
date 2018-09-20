@@ -76,7 +76,7 @@ class DefectList extends Component {
   }
 
   onChangeFilter = (obj) => {
-    const { stationType, stationCodes, defectSource, defectLevel, timeInterval, status, pageNum, pageSize, createTimeStart, createTimeEnd, deviceTypeCode, defectTypeCode, sort, handleUser} = this.props;
+    const { stationType, stationCodes, defectSource, defectLevel, timeInterval, status, pageSize, createTimeStart, createTimeEnd, deviceTypeCode, defectTypeCode, sort, handleUser} = this.props;
     let filter = {
       stationType,
       stationCodes,
@@ -84,7 +84,7 @@ class DefectList extends Component {
       defectLevel,
       timeInterval,
       status,
-      pageNum,
+      pageNum: 1,
       pageSize,
       createTimeStart,
       createTimeEnd,

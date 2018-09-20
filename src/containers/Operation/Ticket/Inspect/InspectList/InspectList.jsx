@@ -63,13 +63,13 @@ class InspectList extends Component {
   }
 
   onChangeFilter = (obj) => {
-    const { stationType, stationCodes, timeInterval, status, pageNum, pageSize, createTimeStart, createTimeEnd, deviceTypeCode, sort, handleUser, hasAbnormal} = this.props;
+    const { stationType, stationCodes, timeInterval, status, pageSize, createTimeStart, createTimeEnd, deviceTypeCode, sort, handleUser, hasAbnormal} = this.props;
     let filter = {
       stationType,
       stationCodes,
       timeInterval,
       status,
-      pageNum,
+      pageNum: 1,
       pageSize,
       sort,
       createTimeStart,

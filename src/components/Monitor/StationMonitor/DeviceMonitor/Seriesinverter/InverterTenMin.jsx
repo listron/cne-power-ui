@@ -17,16 +17,15 @@ function InverterTenMin({ deviceTenMin, loading }) {
     let powerLineData = [], radiationLineData = [], xTime = [];
     deviceTenMin.length > 0 && deviceTenMin.forEach(e=>{
       //console.log(e.utc);
-      //xTime.push(moment(e.utc).format('YYYY-MM-DD hh:mm:ss'));
+      //xTime.push(moment(e.utc).format('YYYY-MM-DD HH:mm:ss'));
       xTime.push(moment(moment.utc(e.utc).toDate()).local().format('YYYY-MM-DD HH:mm'));
       powerLineData.push(e.stationPower);
       radiationLineData.push(e.instantaneous);
     });
     
-    const filterStationPower = deviceTenMin && deviceTenMin.filter(e=>e.stationPower);
-    const filterInstantaneous = deviceTenMin && deviceTenMin.filter(e=>e.instantaneous);
-    const inverterTenMinGraphic = (deviceTenMin && deviceTenMin.length===0 &&
-      filterStationPower.length===0 && filterInstantaneous.length===0) ? showNoData : hiddenNoData;
+    const filterStationPower = deviceTenMin.filter(e=>e.stationPower);
+    const filterInstantaneous = deviceTenMin.filter(e=>e.instantaneous);
+    const inverterTenMinGraphic = (filterStationPower.length===0 && filterInstantaneous.length===0) ? showNoData : hiddenNoData;
     const option = {
       graphic: inverterTenMinGraphic,
       title: {

@@ -2,8 +2,7 @@
 
 .comName{
   width: 330px;
-  //margin-left: 70px;
-  margin-left: 24px;
+  margin: 0 auto;
   .userInfo{
     :global{
       .ant-form-item, .ant-form-horizontal {
@@ -93,6 +92,7 @@
   }
   .joinStepOne{
     position: relative;
+    margin-left: -50px;
     :global{
       .ant-input{
         width: 220px;
@@ -105,6 +105,8 @@
       left: 8px;
       width: 416px;
       // margin-left: -40px; 
+      // left: 0;
+     
       text-align: center;
       box-shadow: 0 2px 8px 0 rgba(0,0,0,0.20);
       .enterpriseBack{

@@ -11,32 +11,27 @@ const { SubMenu,Item } = Menu;
 
 class SideMenu extends Component {
   static propTypes = {
-    topMenu: PropTypes.object,
     location: PropTypes.object,
   }
   constructor(props) {
     super(props);
-    const {sideMenuData, selectedKeys, openKeys} = this.getMenuData(props.topMenu, props.location);
     this.state = {
       collapsed: false,
-      sideMenuData,
-      selectedKeys,
-      openKeys
+      selectedKeys: [],
+      openKeys: [],
+      sideMenuData: [],
     };
   }
 
+  componentDidMount(){
+    const { pathname } = this.props.location;
+    this.getMenuData(pathname);
+  }
+
   componentWillReceiveProps(nextProps){
-    const { location,topMenu } = nextProps;
-    const { pathname } = location;
-    // console.log(pathname)
-    // console.log(menu)
-    if(nextProps.topMenu.name !== this.props.topMenu.name || location.pathname !== this.props.location.pathname) {
-      const {sideMenuData, selectedKeys,openKeys} = this.getMenuData(topMenu, location);
-      this.setState({
-        sideMenuData,
-        selectedKeys,
-        openKeys
-      });
+    const { pathname } = nextProps.location;
+    if(pathname !== this.props.location.pathname) {
+      this.getMenuData(pathname);
     }
   }
 
@@ -46,40 +41,24 @@ class SideMenu extends Component {
     });
   }
 
-  getMenuData = (topMenu, location) => {
-    const { pathname } = location;
-    let selectedKeys = [];//激活菜单选中
-    let openKeys = [];
-    let tmpSideMenuData = menu.find(e => e.path === topMenu.path);
-    let sideMenuData = (tmpSideMenuData && tmpSideMenuData.children) ? tmpSideMenuData.children : [];
-    pathname !== '/' && sideMenuData.forEach(e=>{
-      if(e.children){
-        e.children.forEach(m=>{
-          if(pathname.indexOf(m.path) !== -1) {
-            selectedKeys.push(m.path);
-            openKeys.push(e.path);
-          }
-        });
-      }else{
-        e.path === pathname && selectedKeys.push(e.path);
+  getMenuData = (pathname) => {
+    const pathMenuKey = pathname.split('/').filter(e=>e)[0]; // 路径第一个关键字。
+    const currentMenuData = menu.find(e=> pathMenuKey && e.path.replace('/','') === pathMenuKey) || {}; // 当前路径对应的菜单组
+    const sideMenuData = currentMenuData.children || []; // 侧边栏数据
+    let openKeys = []; // 菜单展开项
+    sideMenuData.forEach(e=>{
+      if(e.children && e.children.length>0){
+        e.children.forEach(item => {
+          pathname.includes(item.path) && openKeys.push(e.path);
+        })
       }
     })
-    return {
+    this.setState({
       sideMenuData,
-      selectedKeys,
       openKeys
-    }
+    })
   }
 
-  // getSideMenuData = () => {//根据顶部菜单判定侧边栏菜单数据
-  //   const { topMenu } = this.props;
-  //   let tmpSideMenuData = menu.find(e => e.path === topMenu.path);
-  //   if(tmpSideMenuData && tmpSideMenuData.children){
-  //     return tmpSideMenuData.children
-  //   }else{
-  //     return []
-  //   }
-  // }
   toggleCollapsed = () => {
     const { collapsed } = this.state;
     this.setState({
@@ -88,7 +67,8 @@ class SideMenu extends Component {
   }
   
   _createSideMenu = (sideMenuData) => {
-    const { collapsed, selectedKeys, openKeys } = this.state;
+    const { collapsed, openKeys } = this.state;
+    const { pathname } = this.props.location;
     if(sideMenuData.length > 0){//至少拥有二级目录
       return (
         <div className={styles.sideLayout}>
@@ -102,7 +82,7 @@ class SideMenu extends Component {
             mode="inline" 
             inlineCollapsed={collapsed} 
             className={styles.menuList} 
-            selectedKeys={selectedKeys} 
+            selectedKeys={[pathname]} 
             openKeys={openKeys}
             onOpenChange={this.onOpenChange}>
             {this.renderSideMenu(sideMenuData)}
@@ -145,17 +125,18 @@ class SideMenu extends Component {
     })
   }
 
-
   render() {
-    // const sideMenuData = this.getSideMenuData();
-    const { sideMenuData } = this.state;
+    const { sideMenuData, collapsed } = this.state;
+    const sideStyle = {
+      width: collapsed ? 80 : 180,
+      display: sideMenuData.length > 0?'flex':'none',
+    }
     return (
-      <div className={styles.sideMenu} style={{width: this.state.collapsed ? 80 : 180}}>
+      <div className={styles.sideMenu} style={sideStyle}>
         {this._createSideMenu(sideMenuData)}
       </div>
     );
   }
 }
-
 
 export default withRouter(SideMenu) ;

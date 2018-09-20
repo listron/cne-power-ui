@@ -20,12 +20,11 @@ function BoxtransformerTenMin({ deviceTenMin, loading }) {
       instantaneousData.push(e.instantaneous);
     });
     
-    const filterStationPower = deviceTenMin && deviceTenMin.filter(e=>e.stationPower);
-    const filterInstantaneous = deviceTenMin && deviceTenMin.filter(e=>e.instantaneous);
-    const inverterTenMinGraphic = (deviceTenMin && deviceTenMin.length===0 &&
-      filterStationPower.length===0 && filterInstantaneous.length===0) ? showNoData : hiddenNoData;
+    const filterStationPower = deviceTenMin.filter(e=>e.stationPower);
+    const filterInstantaneous = deviceTenMin.filter(e=>e.instantaneous);
+    const boxtransformerTenMinGraphic = (filterStationPower.length===0 && filterInstantaneous.length===0) ? showNoData : hiddenNoData;
     const option = {
-      graphic: inverterTenMinGraphic,
+      graphic: boxtransformerTenMinGraphic,
       title: {
         text: '时序图',
         textStyle: {

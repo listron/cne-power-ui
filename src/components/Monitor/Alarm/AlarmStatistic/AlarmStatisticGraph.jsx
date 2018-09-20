@@ -52,9 +52,10 @@ class AlarmStatisticGraph extends React.Component {
     const option = {
       tooltip: {
         trigger: 'axis',
-        padding: [4, 0],
+        padding: [4, 20],
         axisPointer: {            // 坐标轴指示器，坐标轴触发有效
-          type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+          type: 'shadow',        // 默认为直线，可选为：'line' | 'shadow'
+          width: '20px',
         },
         textStyle: {
           color: '#999',
@@ -97,6 +98,9 @@ class AlarmStatisticGraph extends React.Component {
         type: 'category',
         //data: ['电站1', '电站2', '电站3', '电站4', '电站5', '电站6', '电站7']
         data: stationNameData,
+        axisTick: {
+          alignWithLabel: true
+        },
       },
       // dataZoom: {
       //   type: 'slide',
@@ -151,7 +155,8 @@ class AlarmStatisticGraph extends React.Component {
           itemStyle: {
             color: '#fbe6e3'
           },
-          data: fourWarningNum
+          data: fourWarningNum,
+          barMaxWidth: '6px',
         }
 
       ]

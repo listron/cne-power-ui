@@ -16,7 +16,6 @@ function *changeSingleStationStore(action){
 //获取单电站实时数据
 function *getSingleStation(action){
   const { payload } = action;
-  // const url = '/mock/api/v3/monitor/station/'+ payload.stationCode;
   const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getSingleStation + payload.stationCode;
   try{
     yield put({type: singleStationAction.SINGLE_STATION_FETCH});
@@ -25,7 +24,7 @@ function *getSingleStation(action){
       yield put({
         type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
         payload: {
-          ...payload,
+          // ...payload,
           singleStationData: response.data.data || {},
         }
       });
@@ -41,7 +40,6 @@ function *getSingleStation(action){
 //获取出力图数据
 function *getCapabilityDiagram(action){
   const { payload } = action;
-  // const url = '/mock/api/v3/monitor/capabilitydiagram/360/24';
   const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getCapabilityDiagram + payload.stationCode+ '/' + payload.startTime+ '/' + payload.endTime;
   try{
     yield put({type: singleStationAction.SINGLE_STATION_FETCH});
@@ -50,7 +48,7 @@ function *getCapabilityDiagram(action){
       yield put({
         type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
         payload: {
-          ...payload,
+          // ...payload,
           capabilityData: response.data.data || [],
         }
       });
@@ -67,7 +65,6 @@ function *getCapabilityDiagram(action){
 //获取理论发电量 实际发电量数据
 function *getMonitorPower(action){
   const { payload } = action;
-  // const url = '/mock/api/v3/monitor/power/'+ payload.stationCode+ '/' + payload.intervalTime;
   const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getMonitorPower + payload.stationCode+ '/' + payload.startTime+ '/' + payload.endTime+ '/' + payload.intervalTime;
   try{
     yield put({type: singleStationAction.SINGLE_STATION_FETCH});
@@ -76,7 +73,7 @@ function *getMonitorPower(action){
       yield put({
         type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
         payload: {
-          ...payload,
+          // ...payload,
           powerData: response.data.data || [],
         }
       })
@@ -92,7 +89,6 @@ function *getMonitorPower(action){
 // 获取电站列表
 function *getStationList(action){
   const { payload } = action;
-  // const url = '/mock/api/v3/station/datalist/';
   const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getStationList;
   try{
     yield put({type: singleStationAction.SINGLE_STATION_FETCH});
@@ -101,7 +97,7 @@ function *getStationList(action){
       yield put({
         type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
         payload: {
-          ...payload,
+          // ...payload,
           stationList: response.data.data || [],
         }
       });
@@ -118,7 +114,6 @@ function *getStationList(action){
 // 获取单电站运维人员列表
 function *getOperatorList(action){
   const { payload } = action;
-  // const url = '/mock/api/v3/station/user/'+ payload.stationCode;
   const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getOperatorList + payload.stationCode + '/' + payload.roleId;
   try{
     yield put({type: singleStationAction.SINGLE_STATION_FETCH});
@@ -127,7 +122,7 @@ function *getOperatorList(action){
       yield put({
         type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
         payload: {
-          ...payload,
+          // ...payload,
           operatorList: response.data.data || [],
         }
       });
@@ -143,7 +138,6 @@ function *getOperatorList(action){
 // 获取单电站未来天气数据
 function *getWeatherList(action){
   const { payload } = action;
-  // const url = '/mock/api/v3/monitor/weather/'+ payload.stationCode;
   const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getWeatherList + payload.stationCode;
   try{
     yield put({type: singleStationAction.SINGLE_STATION_FETCH});
@@ -152,8 +146,8 @@ function *getWeatherList(action){
       yield put({
         type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
         payload: {
-          ...payload,
-          weatherList: response.data.data || [],
+          // ...payload,
+          weatherList: response.data.data || {},
         }
       })
     }else{
@@ -167,7 +161,6 @@ function *getWeatherList(action){
 // 获取单电站活动告警数统计
 function *getAlarmList(action){
   const { payload } = action;
-  // const url = '/mock/api/v3/alarm/station/alarmNum/'+ payload.stationCode;
   const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getAlarmList + payload.stationCode;
   try{
     yield put({type: singleStationAction.SINGLE_STATION_FETCH});
@@ -176,7 +169,7 @@ function *getAlarmList(action){
       yield put({
         type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
         payload: {
-          ...payload,
+          // ...payload,
           alarmList: response.data.data || {},
         }
       })
@@ -192,7 +185,6 @@ function *getAlarmList(action){
 // 获取单电站工单数统计
 function *getWorkList(action){
   const { payload } = action;
-  // const url = '/mock/api/v3/monitor/worklist/'+ payload.stationCode;
   const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getWorkList + payload.stationCode + '/' + payload.startTime + '/' + payload.endTime;
   try{
     yield put({type: singleStationAction.SINGLE_STATION_FETCH});
@@ -201,7 +193,7 @@ function *getWorkList(action){
       yield put({
         type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
         payload: {
-          ...payload,
+          // ...payload,
           workList: response.data.data || {},
         }
       })
@@ -216,25 +208,15 @@ function *getWorkList(action){
 // 获取单电站设备类型流程图(设备示意图)
 function *getDeviceTypeFlow(action){
   const { payload } = action;
-  // const url = '/mock/api/v3/station/devicetypeflow/'+ payload.stationCode;
   const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getDeviceTypeFlow + payload.stationCode;
   try{
     yield put({type: singleStationAction.SINGLE_STATION_FETCH});
     const response = yield call(axios.get, url, payload);
     if(response.data.code === '10000'){
-      let deviceTypeCode;
-      let deviceTypeFlow= response.data.data || [];
-      if(deviceTypeFlow && deviceTypeFlow.some(e=>e.deviceTypeCode===206)){
-        deviceTypeCode = 206;
-      }else if(deviceTypeFlow && deviceTypeFlow.some(e=>e.deviceTypeCode===201)){
-        deviceTypeCode = 201;
-      }
       yield put({
         type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
         payload: {
-          ...payload,
           deviceTypeFlow: response.data.data || [],
-          deviceTypeCode,
         }
       })
     }else{
@@ -249,7 +231,6 @@ function *getDeviceTypeFlow(action){
 // 获取光伏组件列表
 function *getPvmoduleList(action){
   const { payload } = action;
-  // const url = '/mock/api/v3/monitor/pvmodule/datalist/'+ payload.stationCode;
   const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getPvmoduleList + payload.stationCode;
   try{
     yield put({type: singleStationAction.SINGLE_STATION_FETCH});
@@ -258,7 +239,6 @@ function *getPvmoduleList(action){
       yield put({
         type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
         payload: {
-          ...payload,
           pvmoduleList: response.data.data || [],
         }
       });
@@ -274,7 +254,6 @@ function *getPvmoduleList(action){
 // 获取逆变器实时数据列表
 function *getInverterList(action){
   const { payload } = action;
-  // const url = '/mock/api/v3/monitor/pvmodule/datalist/'+ payload.stationCode;
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.monitor.getInverterList}${payload.stationCode}/${payload.deviceTypeCode}`;
   try{
     yield put({type: singleStationAction.SINGLE_STATION_FETCH});
@@ -283,7 +262,6 @@ function *getInverterList(action){
       yield put({
         type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
         payload: {
-          ...payload,
           inverterList: response.data.data || {},
         }
       })
@@ -299,7 +277,6 @@ function *getInverterList(action){
 // 获取箱变列表
 function *getBoxTransformerList(action){
   const { payload } = action;
-  // const url = '/mock/api/v3/monitor/pvmodule/datalist/'+ payload.stationCode;
   const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getBoxTransformerList + payload.stationCode;
   try{
     yield put({type: singleStationAction.SINGLE_STATION_FETCH});
@@ -308,7 +285,6 @@ function *getBoxTransformerList(action){
       yield put({
         type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
         payload: {
-          ...payload,
           boxTransformerList: response.data.data || {},
         }
       })
@@ -321,6 +297,29 @@ function *getBoxTransformerList(action){
     console.log(e);
   }
 }
+
+function *getConfluenceBoxList(action){ // 获取汇流箱列表
+  const { payload } = action;
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.monitor.getConfluenceBoxList}${payload.stationCode}`;
+  try{
+    yield put({type: singleStationAction.SINGLE_STATION_FETCH});
+    const response = yield call(axios.get, url);
+    if(response.data.code === '10000'){
+      yield put({
+        type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
+        payload: {
+          confluenceBoxList: response.data.data || {},
+        }
+      })
+    }else{
+      yield put({ type: singleStationAction.GET_SINGLE_STATION_FAIL, data: response.data});
+    }
+  }catch(e){
+    console.log(e);
+  }
+}
+
+
 // 获取单电站设备列表
 function *getStationDeviceList(action){
   const { payload } = action;
@@ -358,5 +357,6 @@ export function* watchSingleStationMonitor() {
   yield takeLatest(singleStationAction.GET_INVERTER_LIST_SAGA, getInverterList);
   yield takeLatest(singleStationAction.GET_BOXTRANSFORMER_LIST_SAGA, getBoxTransformerList);
   yield takeLatest(singleStationAction.GET_STATION_DEVICELIST_SAGA, getStationDeviceList);
+  yield takeLatest(singleStationAction.GET_CONFLUENCEBOX_LIST_SAGA, getConfluenceBoxList); // 汇流箱列表获取
 }
 
