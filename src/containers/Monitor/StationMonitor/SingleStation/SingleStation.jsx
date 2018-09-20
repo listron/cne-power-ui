@@ -49,6 +49,7 @@ class SingleStation extends Component {
     let appointDeviceCode = locationSearch.substr(locationSearch.indexOf('=')+1);
     if(appointDeviceCode && appointDeviceCode!=='undefined'){
       appointDeviceCode = parseInt(appointDeviceCode);
+      console.log('appointDeviceCode '+appointDeviceCode);
       this.props.changeSingleStationStore({deviceTypeCode: appointDeviceCode});
       main.scrollTo(0, 700);
     }else{

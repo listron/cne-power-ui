@@ -21,7 +21,10 @@ class DefectReviewForm extends Component {
       dealResult: 'send'
     };
   }
-
+  componentDidMount(){
+    console.log(moment().endOf('day'));
+    console.log(moment().minute(Number));
+  }
   onSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
@@ -36,11 +39,25 @@ class DefectReviewForm extends Component {
     this.props.form.resetFields();
   }
 
-  disabledDate(current) {
+  range =(start, end) => {
+    const result = [];
+    for (let i = start; i < end; i++) {
+      result.push(i);
+    }
+    return result;
+  }
+
+  disabledDate(current,item) {
+    console.log(current,item);
     // Can not select days before today
     return current < moment().endOf('day');
   }
-
+  disabledTime = (date) => {
+    return {
+      disabledMinutes: () => this.range(0, moment().minute(Number)),
+      // disabledSeconds: () => [55, 56],
+    };
+  }
   render() {   
     const { getFieldDecorator } = this.props.form;
     const dealResult = this.state.dealResult;
@@ -91,10 +108,12 @@ class DefectReviewForm extends Component {
               <DatePicker 
                 placeholder="默认当前时间"
                 format="YYYY-MM-DD"
-                showTime={false}
+                showTime={true}
                 showToday={false}
                 getCalendarContainer={() => document.getElementById('reviewForm')}
-                disabledDate={this.disabledDate} />
+                disabledDate={this.disabledDate} 
+                disabledTime={this.disabledTime}
+              />
             )}
           </FormItem>
         )}

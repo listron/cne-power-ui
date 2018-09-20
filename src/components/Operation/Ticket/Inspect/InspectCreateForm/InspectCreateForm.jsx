@@ -60,8 +60,8 @@ class InspectCreateForm extends Component{
   disabledTime = (time) => {
     return {
       disabledHours: () => this.timeRange(0, 24).splice(0, moment().hour()),
-      disabledMinutes: () => [],
-      disabledSeconds: () => [],
+      disabledMinutes: () => this.timeRange(0, 60).splice(0, moment().minute()),
+      disabledSeconds: () => this.timeRange(0, 60).splice(0, moment().second()),
     };
   } 
     

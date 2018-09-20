@@ -77,6 +77,7 @@ class ALarmAllStationStatistic extends React.Component {
 
   stationIsOneType() {
     const { stations } = this.props;
+    console.log(stations.toJS());
     const length = stations.map(station => station.get('stationCode')).toSet().size;
     return length === 1;
   }
@@ -88,6 +89,7 @@ class ALarmAllStationStatistic extends React.Component {
   }
 
   queryTargetData = (activeKey) => {
+    console.log(activeKey);
     const { stationCode, startTime, endTime, pageSize, pageNum, orderField, orderCommand } = this.props;
     this.props.getStationsAlarmStatistic({
       stationType: activeKey,
