@@ -33,14 +33,14 @@ class PowerDiagramTenMin extends Component {
 
     const lineColor = '#999';
 
-    const actualPower = powerData && powerData.map(e=>e.actualPower);
-    const filterActualPower = powerData && powerData.filter(e=>e.actualPower);
-    const theoryPower = powerData && powerData.map(e=>e.theoryPower);
-    const filterTheoryPower = powerData && powerData.filter(e=>e.theoryPower);
-    const instantaneous = powerData && powerData.map(e=>e.instantaneous);
-    const filterInstantaneous = powerData && powerData.filter(e=>e.instantaneous);
+    const actualPower = powerData.map(e=>e.actualPower);
+    const filterActualPower = powerData.filter(e=>e.actualPower);
+    const theoryPower = powerData.map(e=>e.theoryPower);
+    const filterTheoryPower = powerData.filter(e=>e.theoryPower);
+    const instantaneous = powerData.map(e=>e.instantaneous);
+    const filterInstantaneous = powerData.filter(e=>e.instantaneous);
 
-    const powerGraphic = (powerData && powerData.length === 0 && 
+    const powerGraphic = (
       filterActualPower.length===0 && filterTheoryPower.length===0 && filterInstantaneous.length===0
     ) ? showNoData : hiddenNoData;
 
