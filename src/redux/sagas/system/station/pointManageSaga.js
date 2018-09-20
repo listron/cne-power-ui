@@ -51,6 +51,7 @@ function *deletePointList(action){ // 清除测点列表
         payload:{
           pointList: [],
           totalNum: 0,
+          pageNum: 1,
         },
       });
     }else{
