@@ -288,7 +288,7 @@ class TmpForm extends Component {
               <div className={styles.maxTip}>最多4张</div>
               {getFieldDecorator('imgHandle', {
                 rules: [{ required: false, message: '请上传图片' }],
-                initialValue: editDefect && defectDetail.defectSolveInfo || [],
+                initialValue: [],
                 valuePropName:'data',
               })(
                 <ImgUploader imgStyle={{width:98,height:98}} uploadPath={`${pathConfig.basePaths.APIBasePath}${pathConfig.commonPaths.imgUploads}`} editable={true} />
