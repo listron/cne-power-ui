@@ -31,7 +31,7 @@ class InspectCreateForm extends Component{
           isContinueAdd,
           stationCodes: values.stationCodes.map(item => item.stationCode).join(','),
           deviceTypeCodes: values.deviceTypeCodes.join(','),
-          deadline: values.deadline.format("YYYY-MM-DD hh:mm:ss"),
+          deadline: values.deadline.format("YYYY-MM-DD HH:mm:ss"),
         });
         if(isContinueAdd && error.get('code') === '') {
           form.resetFields();

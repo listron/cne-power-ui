@@ -37,7 +37,6 @@ class UserList extends Component {
     username: PropTypes.string,
     stationName: PropTypes.string,
     phoneNum: PropTypes.string,
-    currentPage: PropTypes.number,
     selectedKey: PropTypes.object,
   }
 
@@ -48,7 +47,7 @@ class UserList extends Component {
       showDeleteTip: false,
       showExamineTip: false,
       deleteWarningTip: '确认要移除么？',
-      currentPage: 1,
+      pageNum: 1,
       examineStatus: 3,//审核状态 默认通过审核变为启用状态
     }
   }
@@ -61,7 +60,7 @@ class UserList extends Component {
       username: this.props.username,
       phoneNum: this.props.phoneNum,
       stationName: this.props.stationName,
-      pageNum: this.props.currentPage,
+      pageNum: this.props.pageNum,
       pageSize: this.props.pageSize,
       order: '',
     };

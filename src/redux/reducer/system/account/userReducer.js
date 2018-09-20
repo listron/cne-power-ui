@@ -12,7 +12,7 @@ var initState = Immutable.fromJS({
   phoneNum: '',//筛选条件：电话
   stationName: '',//筛选条件：负责电站
   totalNum: 0,//列表页总条数
-  currentPage: 1,//当前页
+  pageNum: 1,//当前页
   pageSize: 10,//每页容纳条数
   userDetail:{},//选中用户详细信息
   selectedUser: [], //table选中用户项

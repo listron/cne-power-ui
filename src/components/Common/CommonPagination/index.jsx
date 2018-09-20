@@ -37,20 +37,18 @@ class CommonPagination extends Component {
   }
   componentWillReceiveProps(nextProps){
     const { total } = this.props;
-    const { pageSize, currentPage } = this.state;
     const newTotal = nextProps.total;
-    const shouldChangeCurrentPage = (currentPage - 1) * pageSize >= newTotal;
-    if(total !== newTotal && shouldChangeCurrentPage){
-      const maxPage = Math.ceil(newTotal / pageSize);
+    if(total !== newTotal){ // 页面数据(>0)总条数发生变化时，页码重置为1。
       this.setState({
-        currentPage: maxPage,
+        currentPage : newTotal === 0 ? 0 : 1,
       })
     }
   }
   onPageSizeChange = (pageSize) => {
     let { currentPage } = this.state;
     const { total } = this.props;
-    currentPage = total/pageSize>currentPage?currentPage:Math.ceil(total/pageSize);
+    currentPage = total/pageSize>currentPage?currentPage:Math.ceil(total/pageSize); 
+    // size变化导致当前页超出total时，currentPage变为最后一页
     this.setState({
       pageSize,
       currentPage
@@ -85,7 +83,7 @@ class CommonPagination extends Component {
         </div>
         <div className={styles.pageSelector} >
           <span>页数：</span>
-          <Pagination simple current={total!==0?currentPage:0} total={total} onChange={this.onPageChange} pageSize={pageSize} />
+          <Pagination simple current={currentPage} total={total} onChange={this.onPageChange} pageSize={pageSize} />
         </div>
       </div>
     )

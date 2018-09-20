@@ -52,6 +52,7 @@ function *deleteAlarmList(action){ // 清除电站告警事件
         payload:{
           alarmList: [],
           totalNum: 0,
+          pageNum: 1,
         },
       });
     }else{

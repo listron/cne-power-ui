@@ -72,7 +72,7 @@ class DeviceAlarmTable extends Component {
         dataIndex: 'timeOn',
         key: 'timeOn', 
         sorter:  true, 
-        render: (text) => moment(text).format('YYYY-MM-DD hh:mm:ss')
+        render: (text) => moment(text).format('YYYY-MM-DD HH:mm')
       },{
         title: '持续时间',
         dataIndex: 'durationTime',

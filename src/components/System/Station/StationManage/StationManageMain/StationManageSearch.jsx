@@ -27,7 +27,8 @@ class StationManageSearch extends Component {
     const { getStationList, queryListParams } = this.props;
     getStationList({
       ...queryListParams,
-      stationType: e.target.value
+      stationType: e.target.value,
+      pageNum: 1,
     })
   }
 
@@ -48,9 +49,9 @@ class StationManageSearch extends Component {
     const { regionNameState, stationNameState } = this.state;
     getStationList({
       ...queryListParams,
-      pageNum: 1,
       regionName: regionNameState,
       stationName: stationNameState,
+      pageNum: 1,
     })
   }
 
@@ -64,6 +65,7 @@ class StationManageSearch extends Component {
       ...queryListParams,
       regionName: '',
       stationName: '',
+      pageNum: 1,
     })
   }
 

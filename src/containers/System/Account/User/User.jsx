@@ -20,7 +20,7 @@ class User extends Component {
     phoneNum: PropTypes.string,
     sort: PropTypes.string,
     ascend: PropTypes.bool,
-    currentPage: PropTypes.number,
+    pageNum: PropTypes.number,
     pageSize: PropTypes.number,
     userDetail: PropTypes.object,
     selectedUser: PropTypes.object,
@@ -51,7 +51,7 @@ class User extends Component {
         username: this.props.username,
         phoneNum: this.props.phoneNum,
         stationName: this.props.stationName,
-        pageNum: this.props.currentPage,
+        pageNum: this.props.pageNum,
         pageSize: this.props.pageSize,
         order: '',
       };
