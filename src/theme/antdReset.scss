@@ -232,4 +232,8 @@
   .ant-select-dropdown.ant-select-dropdown--multiple .ant-select-dropdown-menu-item-selected:after, .ant-select-dropdown.ant-select-dropdown--multiple .ant-select-dropdown-menu-item-selected:hover:after {
     color: $themeColor;
   }
+  // antd提示语图标
+  .ant-message-info .anticon, .ant-message-loading .anticon{
+    color: $themeColor;
+  }
 }

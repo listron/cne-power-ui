@@ -151,7 +151,8 @@ class AlarmStatisticGraph extends React.Component {
           itemStyle: {
             color: '#fbe6e3'
           },
-          data: fourWarningNum
+          data: fourWarningNum,
+          barMaxWidth: '100px',
         }
 
       ]
