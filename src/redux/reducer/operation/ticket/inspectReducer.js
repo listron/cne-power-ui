@@ -52,9 +52,9 @@ const inspectReducer = (state = initState, action) => {
     case ticketAction.TICKET_FETCH:
       return state.set('loading', true);
     case ticketAction.CHANGE_INSPECT_STORE :
-      return state.merge(Immutable.fromJS(action.payload))
+      return state.merge(Immutable.fromJS(action.payload));
     case ticketAction.GET_INSPECT_FETCH_SUCCESS :
-      return state.merge(Immutable.fromJS(action.payload)).set('loading',false)
+      return state.merge(Immutable.fromJS(action.payload)).set('loading',false);
     case ticketAction.SET_DEFECT_FAIL:
       return state.set('error', Immutable.fromJS(action.error));
     case ticketAction.CLEAR_INSPECT_STATE:

@@ -81,10 +81,18 @@ class TmpForm extends Component {
         let partitionCode = values.stations[0].zoneCode;
         let partitionName = values.stations[0].zoneName;
         let rotatePhotoArray = [];
-        let photoAddress = values.imgDescribe.map(e=>{
-          rotatePhotoArray.push(`${e.response},${e.rotate}`);
-          return e.response
-        }).join(',');
+        let photoAddress = [];
+        if(showContainer === 'create') {
+          photoAddress = values.imgDescribe.map(e=>{
+            rotatePhotoArray.push(`${e.response},${e.rotate}`);
+            return e.response;
+          }).join(',');
+        } else if(showContainer === 'edit') {
+          photoAddress = values.imgDescribe.map(e=>{
+            rotatePhotoArray.push(`${e.thumbUrl},${e.rotate}`);
+            return e.thumbUrl;
+          }).join(',');
+        }
         let photoSolveAddress = values.imgHandle&&values.imgHandle.map(e=>{
           rotatePhotoArray.push(`${e.response},${e.rotate}`);
           return  e.response
@@ -128,7 +136,6 @@ class TmpForm extends Component {
     }
     return deviceType;
   }
-
 
 
   loadDeviceList = (areaCode) => {
@@ -263,7 +270,7 @@ class TmpForm extends Component {
           </FormItem>
           {!defectFinished && <FormItem label="处理建议" colon={false}>
             {getFieldDecorator('defectSolveInfo', {
-              initialValue: editDefect && defectDetail.handleData.defectSolveInfo || '',
+              initialValue: editDefect && defectDetail.handleData.defectProposal || '',
             })(
               <InputLimit placeholder="请描述，不超过80个汉字" />
             )}

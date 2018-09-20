@@ -22,8 +22,8 @@ class PointManageList extends Component {
     const { field, order } = sorter;
     getPointList({
       ...queryParams,
-      // orderField: field?field:'',
-      sortField: field ? field === 'warningLevel' ? '1' : '2' : '',
+      orderField: field?field:'',
+      //sortField: field ? field === 'warningLevel' ? '1' : '2' : '',
       orderType: order ? (sorter.order === 'ascend' ? 0 : 1) : null,
 
 
