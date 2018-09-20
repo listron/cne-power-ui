@@ -49,6 +49,7 @@ class DefectProcessForm extends Component {
   render() {   
     const { getFieldDecorator, getFieldValue } = this.props.form;
     const dealResult = getFieldValue('defectSolveResult');
+    const defectFinished = getFieldValue('defectSolveResult') === '0';
     return (
       <Form onSubmit={this.onSubmit} className={styles.dealForm}>
         <FormItem label="处理结果" colon={false}>
@@ -62,14 +63,14 @@ class DefectProcessForm extends Component {
             </RadioGroup>
           )}
         </FormItem>       
-        {dealResult === '1' && <FormItem label="处理建议" colon={false}>
+        {!defectFinished && <FormItem label="处理建议" colon={false}>
           {getFieldDecorator('defectSolveInfo', {
               initialValue: ''
             })(
             <InputLimit placeholder="请描述，不超过80个汉字" />
           )}
         </FormItem>}
-        {dealResult === '0' && <FormItem label="处理过程" colon={false}>
+        {defectFinished && <FormItem label="处理过程" colon={false}>
           {getFieldDecorator('defectSolveInfo', {
               rules: [{ required: true, message: '请输入处理过程' }],
               initialValue: ''
@@ -77,7 +78,7 @@ class DefectProcessForm extends Component {
             <CommonInput commonList={this.props.commonList} placeholder="请描述，不超过80个汉字" />
           )}
         </FormItem>}
-        {dealResult === '0'&&<FormItem label="添加照片" colon={false}>
+        {defectFinished && <FormItem label="添加照片" colon={false}>
           <div className={styles.addImg}>
             <div className={styles.maxTip}>最多4张</div>
             {getFieldDecorator('photoData', {
@@ -89,21 +90,19 @@ class DefectProcessForm extends Component {
             )}
           </div>
         </FormItem>}
-        {dealResult === '0' && (
-          <FormItem label="更换备件" colon={false}>
-            <div>
-              <Switch checked={this.state.replace} onChange={this.onChangeReplace} />
-              {this.state.replace && getFieldDecorator('replaceParts', {
-                rules: [{ 
-                  required: true, 
-                  message: '请输入更换备件'
-                }],
-              })( 
-                <Input style={{marginLeft: 20}} placeholder="备件名称+型号" />
-              )}
-            </div>
-          </FormItem>
-        )}
+        {defectFinished &&  <FormItem label="更换备件" colon={false}>
+          <div>
+            <Switch checked={this.state.replace} onChange={this.onChangeReplace} />
+            {this.state.replace && getFieldDecorator('replaceParts', {
+              rules: [{ 
+                required: true, 
+                message: '请输入更换备件'
+              }],
+            })( 
+              <Input style={{marginLeft: 20}} placeholder="备件名称+型号" />
+            )}
+          </div>
+        </FormItem>}
         <div className={styles.actionBar}>
           <Button className={styles.cancelBtn} onClick={this.onReset}>重置</Button>
           <Button type="primary" htmlType="submit">提交</Button>
