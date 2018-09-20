@@ -76,7 +76,7 @@ class DefectDetailForm extends Component {
         case 'close':
           params = {
             defectId,
-            rejectReason: !data.defectProposal ? null : data.defectProposal
+            defectProposal: !data.defectProposal ? null : data.defectProposal
           };
           onClose(params);
           break;
@@ -99,32 +99,15 @@ class DefectDetailForm extends Component {
       };
       onCheck(params);
     }
-    switch(data.dealResult) {
-      case 'solve':
-      case 'notSolve':
-        let submitImages = this.getSubmitIamges(data.photoData);
-        params = {
-          defectId,
-          defectSolveResult: data.dealResult === 'solve' ? '0' : '1',
-          defectSolveInfo: !data.defectSolveInfo ? '' : data.defectSolveInfo,
-          replaceParts: !data.replaceParts ? '' : data.replaceParts,
-          ...submitImages
-        };
-        onHandle(params);
-        break;
-      case 'ok':
-      case 'notOk':
-        params = {
-          defectId,
-          checkResult: data.dealResult === 'ok' ? '0' : '1',
-          checkInfo: !data.checkInfo ? '' : data.checkInfo,
-        };
-        onCheck(params);
-        break;
-    }
   }
 
   getSubmitIamges(images) {
+    if(!images) {
+      return {
+        photoSolveAddress: null,
+        rotatePhoto: null
+      };
+    }
     let solveAddress = [];
     let rotate = [];
     for(var i = 0; i < images.length; i++) {
