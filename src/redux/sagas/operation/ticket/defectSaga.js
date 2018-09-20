@@ -588,37 +588,37 @@ function *createNewDefect(action){
     if(response.data.code === '10000'){
       message.success('创建成功！');
       if(!isContinueAdd) {
-        const params = yield select(state => ({
-          stationType: state.operation.defect.get('stationType'),
-          stationCodes: state.operation.defect.get('stationCodes'),
-          defectSource: state.operation.defect.get('defectSource'),
-          defectLevel: state.operation.defect.get('defectLevel'),
-          timeInterval: state.operation.defect.get('timeInterval'),
-          status: state.operation.defect.get('status'),
-          pageNum: state.operation.defect.get('pageNum'),
-          pageSize: state.operation.defect.get('pageSize'),
-          createTimeStart: state.operation.defect.get('createTimeStart'),
-          createTimeEnd: state.operation.defect.get('createTimeEnd'),
-          deviceTypeCode: state.operation.defect.get('deviceTypeCode'),
-          defectTypeCode: state.operation.defect.get('defectTypeCode'),
-          sort: state.operation.defect.get('sort'),
-          handleUser: state.operation.defect.get('handleUser'),
-        }));
-        yield put({ 
-          type: ticketAction.GET_DEFECT_LIST_SAGA, 
-          payload: params
-        });
-        yield put({ 
-          type: ticketAction.GET_DEFECT_ID_LIST_SAGA, 
-          payload: params
-        });
         yield put({
           type: ticketAction.CHANGE_SHOW_CONTAINER_SAGA,
           payload: {
             container: 'list',
           },
-        })
-      }        
+        });
+      }
+      const params = yield select(state => ({
+        stationType: state.operation.defect.get('stationType'),
+        stationCodes: state.operation.defect.get('stationCodes'),
+        defectSource: state.operation.defect.get('defectSource'),
+        defectLevel: state.operation.defect.get('defectLevel'),
+        timeInterval: state.operation.defect.get('timeInterval'),
+        status: state.operation.defect.get('status'),
+        pageNum: state.operation.defect.get('pageNum'),
+        pageSize: state.operation.defect.get('pageSize'),
+        createTimeStart: state.operation.defect.get('createTimeStart'),
+        createTimeEnd: state.operation.defect.get('createTimeEnd'),
+        deviceTypeCode: state.operation.defect.get('deviceTypeCode'),
+        defectTypeCode: state.operation.defect.get('defectTypeCode'),
+        sort: state.operation.defect.get('sort'),
+        handleUser: state.operation.defect.get('handleUser'),
+      }));
+      yield put({ 
+        type: ticketAction.GET_DEFECT_LIST_SAGA, 
+        payload: params
+      });
+      yield put({ 
+        type: ticketAction.GET_DEFECT_ID_LIST_SAGA, 
+        payload: params
+      });        
     } else{
       yield put({ 
         type: ticketAction.SET_DEFECT_FAIL, 
