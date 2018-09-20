@@ -10,7 +10,7 @@ class PointManageHandle extends Component {
   static propTypes = {
     stationCode: PropTypes.number,
     totalNum: PropTypes.number,
-    stations: PropTypes.array,
+    allStationBaseInfo: PropTypes.array,
     stationList: PropTypes.array,
     pointList: PropTypes.array,
     queryParams: PropTypes.object,
@@ -43,7 +43,7 @@ class PointManageHandle extends Component {
   }
 
   render() {
-    const { totalNum, pointList, stations, stationList, stationCode } = this.props;
+    const { totalNum, pointList, allStationBaseInfo, stationList, stationCode } = this.props;
     const selectedStationInfo = stationList.find(e => e.stationCode === stationCode);
     const pointForbidClear = !selectedStationInfo || selectedStationInfo.pointStatus === 1; // 未找到电站或电站已导入告警，不可清除
     const downloadHref = `${path.basePaths.APIBasePath}${path.APISubPaths.system.downloadPointInfo}?stationCode=${stationCode}`;
@@ -51,7 +51,7 @@ class PointManageHandle extends Component {
       <div className={styles.pointManageHandle}>
         <div className={styles.leftHandler}>
           <SingleStationImportFileModel 
-            data={stations} 
+            data={allStationBaseInfo} 
             uploadPath={`${path.basePaths.APIBasePath}${path.APISubPaths.system.importPointsInfo}`} 
             uploaderName={'测点'} 
             uploadExtraData={['stationCode']}

@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
 class DeviceManageSearch extends Component {
   static propTypes = {
     stationCode: PropTypes.number,
-    stations: PropTypes.array,
+    allStationBaseInfo: PropTypes.array,
     queryParams: PropTypes.object,
     stationDeviceTypes: PropTypes.array,
     deviceModels: PropTypes.array,
@@ -66,13 +66,13 @@ class DeviceManageSearch extends Component {
   }
 
   render() {
-    const { stations, stationDeviceTypes, deviceModels, deviceTypeCode, deviceModeCode } = this.props;
+    const { allStationBaseInfo, stationDeviceTypes, deviceModels, deviceTypeCode, deviceModeCode } = this.props;
     const typeSelectDisable = stationDeviceTypes.length === 0;
     const modelSelectDisable = deviceModels.length === 0;
     return (
       <div className={styles.deviceManageSearch}>
         <span className={styles.titleText}>条件查询</span>
-        <StationSelect data={stations} onOK={this.selectStation} />
+        <StationSelect data={allStationBaseInfo} onOK={this.selectStation} />
         <Select className={styles.typeSelect} onChange={this.selectDeviceType} value={deviceTypeCode} placeholder="请选择设备类型" disabled={typeSelectDisable}>
           <Option key={null} value={null}>{'全部'}</Option>
           {stationDeviceTypes.map(e=>{

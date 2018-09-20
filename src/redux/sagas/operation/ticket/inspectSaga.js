@@ -271,6 +271,10 @@ function *createInspect(action){
         type: ticketAction.GET_INSPECT_LIST_SAGA,
         payload: params
       });
+      yield put({
+        type: ticketAction.GET_INSPECT_ID_LIST_SAGA,
+        payload: params
+      });
     }else{
       message.error('创建失败！');
       yield put({

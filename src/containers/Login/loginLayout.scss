@@ -2,88 +2,31 @@
 .loginLayout {
   display: flex;
   flex-direction: row;
-  height: 100%;
+  justify-content: center;
+  min-height: 100%;
   flex: 1;
-  background-color: #fff;
-  .left {
-    flex: 1;
-    width: 50%;
-    height: 100%;
-    justify-content: flex-end;
-    background: #199475;
-    display: flex;
-    .logoImg {
-      width: 500px;
-      height: 100%;
-      background: yellow;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      .loginImg {
-        flex: 1;
-        width: 500px;
-        height: 100%;
-        background: #199475;
-        .logo {
-          margin-top: 61px;
-          height: 100px;
-          .pic {
-            width: 120px;
-            height: 40px;
-            float: left;
-            margin-right: 60px;
-          }
-          h3 {
-            padding-top: 7px;
-            font-size: 24px;
-            color: #ffffff;
-            letter-spacing: 4px;
-            text-align: left;
-            display: block;
-            float: left;
-            width: 230px;
-            height: 31px;
-            line-height: 31px;
-          }
-        }
-        .bgPic {
-          position: absolute;
-          top: 170px;
-          width: 450px;
-          height: 375px;
-        }
-        .comRegisterInfo {
-          position: absolute;
-          top: 580px;
-          width: 410px;
-          font-size: 14px;
-          color: #ffffff;
-          height: 20px;
-        }
-      }
-    }
-  }
+  background: url("/img/bigbg.png") no-repeat center center;
+  background-size: 100% 100%;
+  
   .right {
-    flex: 1;
-    width: 50%;
-    height: 100%;
-    display: flex;
+    margin-top: 136px;
+    width: 480px;
+    height: 466px;
+    background: #fff;
+    opacity: 0.85;
     .rightContent {
-      width: 500px;
-      height: 100%;
       display: flex;
       justify-content: center;
       flex: 1;
       position: relative;
       .mainBox {
         width: 100%;
-        height: 100%;
-        
+        height: 100%;        
         //登录/注册
         .login,.registerContent {
           width: 100%;
           height: 100%;
-          padding: 75px 0 0 140px;
+          padding: 24px 130px 0px 130px;
           :global{
             .ant-tabs-nav-wrap{
               .ant-tabs-nav-scroll{
@@ -102,7 +45,8 @@
           .joinTop {
             height: 20px;
             width: 220px;
-            margin-bottom: 60px;
+            margin-bottom: 46px;
+            margin-left: -108px;
             cursor: pointer;
             .fontIcon {
               float: left;
@@ -181,7 +125,7 @@
         left: 170px;
         width: 170px;
         height: 30px;
-        top: 580px;
+        top: 424px;
         a {
           width: 55px;
           margin-right: 30px;
@@ -191,6 +135,13 @@
           cursor: pointer;
         }
       } 
+      .footerTitle{
+        text-align: center;
+        color:#fff;
+        position: absolute;
+        left:41px;
+        top:532px;      
+      }
     }
   }
   :global{
