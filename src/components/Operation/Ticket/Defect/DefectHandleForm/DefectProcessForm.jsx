@@ -48,7 +48,6 @@ class DefectProcessForm extends Component {
 
   render() {   
     const { getFieldDecorator, getFieldValue } = this.props.form;
-    const dealResult = getFieldValue('defectSolveResult');
     const defectFinished = getFieldValue('defectSolveResult') === '0';
     return (
       <Form onSubmit={this.onSubmit} className={styles.dealForm}>
