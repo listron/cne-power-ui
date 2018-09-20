@@ -32,23 +32,6 @@ class PvStation extends Component {
     }
   }
 
-  componentDidMount(){
-    const { search } = this.props.location;
-    const tmpSearchData = search.replace('?','').split('&').filter(e=>e); //  search拆分验证是否有指定展示列表
-    const searchData = tmpSearchData.map(e=>{
-      const subData = e.split('=');
-      return {[subData[0]]: subData[1]}
-    })
-    const deviceTypeInfo = searchData.find(e=>e.showPart > 0);
-    if(deviceTypeInfo){
-      const main = document.getElementById('main');
-      main.scrollTo(0, 700);
-      this.props.changeSingleStationStore({ 
-        deviceTypeCode: parseInt(deviceTypeInfo.showPart),
-      });
-    }
-  }
-
   onSelectedDeviceType = (e) => {
     const deviceTypeCode = parseInt(e.target.value);
     this.props.changeSingleStationStore({ deviceTypeCode });
