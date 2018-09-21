@@ -57,7 +57,7 @@ class WindStationItem extends React.Component {
                     <Link to={`/monitor/singleStation/${item.stationCode}`} key={new Date()}>
                       <div>{stationUnitCount}台</div>
                     </Link>
-                    {item.alarmNum > 0 ? <Link to={`/monitor/alarm/realtime`} key={item.stationCode}><div className={styles.stationWarning}>
+                    {item.alarmNum > 0 ? <Link to={`/monitor/alarm/realtime?stationCode=${item.stationCode}`} key={item.stationCode}><div className={styles.stationWarning}>
                       <i className="iconfont icon-alarm1"></i>{item.alarmNum}</div></Link> : ''}
                   </div>
                 </div>
