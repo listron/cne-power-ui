@@ -156,13 +156,13 @@ class HostoryAlarmTable extends Component {
           if(record.deviceTypeCode === 206) {
             return (
               <div className={styles.deviceName}>
-                <Link to={`/hidden/monitorDevice/${record.stationCode}/${record.deviceTypeCode}/${record.deviceFullCode}`} target="_blank">{text}</Link>
+                <Link to={`/hidden/monitorDevice/${record.stationCode}/${record.deviceTypeCode}/${record.deviceFullCode}`} >{text}</Link>
               </div>
             );
           } else if(record.deviceTypeCode === 304) {
             return (
               <div className={styles.deviceName}>
-                <Link to={`/hidden/monitorDevice/${record.stationCode}/${record.deviceTypeCode}/${record.deviceFullCode}`} target="_blank">{text}</Link>
+                <Link to={`/hidden/monitorDevice/${record.stationCode}/${record.deviceTypeCode}/${record.deviceFullCode}`} >{text}</Link>
               </div>
             );
           } else {

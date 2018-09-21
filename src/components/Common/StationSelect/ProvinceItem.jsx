@@ -59,7 +59,7 @@ class ProvinceItem extends Component {
             indeterminate={indeterminate}>
             {provinceInfo.provinceName}
           </Checkbox>:
-          <span className={styles.name}>{provinceInfo.provinceName}</span>
+          <span className={styles.name} title={provinceInfo.provinceName} >{provinceInfo.provinceName}</span>
         }
         <div className={styles.stationList}>
           {provinceInfo.stations.map(m=>{
@@ -67,13 +67,13 @@ class ProvinceItem extends Component {
             return (
               multiple ? 
               <div 
-                onClick={()=>this.checkStation(m)} 
+                // onClick={()=>this.checkStation(m)} 
                 key={m.stationCode} 
                 style={{'backgroundColor':checked?'#199475':'#f1f1f1'}} 
                 className={styles.eachStation}>
                 <Checkbox
                   style={{color:checked?'#fff':'#999'}}
-                  onChange={()=>this.checkStation(m)} 
+                  onChange={()=>this.checkStation(m)}
                   checked={checked}>
                   {m.stationName}
                 </Checkbox>

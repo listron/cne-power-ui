@@ -94,14 +94,19 @@ class StationManageTable extends Component {
     const { field, order } = sorter;
     const sortInfo = {
       stationName: '1',
-      area: '2',
+      // area: '2',
+      regionName: '2',
       coverType: '3',
       connectionType: '4',
       stationCapacity: '5',
-      series: '6',
-      stationStatus: '7',
+      // series: '6',
+      stationUnitCount: '6',
+      // stationStatus: '7',
+      isConnected: '7',
     };
-    const orderField = sortInfo[field] ? sortInfo[field] : '';
+     const orderField = sortInfo[field] ? sortInfo[field] : '';
+    //const orderField = field ? sortInfo[field] : '';
+    //const orderField = field ? field : '';
     const orderCommand = order ? (sorter.order === 'ascend' ? '1' : '2') : '';
     getStationList({
       ...queryListParams,

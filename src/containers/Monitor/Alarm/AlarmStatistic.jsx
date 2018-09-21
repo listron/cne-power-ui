@@ -16,8 +16,8 @@ class ALarmStatistic extends Component {
     stationType: PropTypes.string,
     stationCode: PropTypes.array,
     singleStationCode: PropTypes.string,
-    startTime: PropTypes.string,
-    endTime: PropTypes.string,
+    // startTime: PropTypes.string,
+    // endTime: PropTypes.string,
     stations: PropTypes.object,
 
     getStationsAlarmStatistic: PropTypes.func,
