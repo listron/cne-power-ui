@@ -80,7 +80,7 @@ class PointManageList extends Component {
       },
     ];
     const { loading, pointList } = this.props;
-    console.log(pointList);
+    // console.log(pointList);
     return (
       <div className={styles.pointManageList}>
         <Table
