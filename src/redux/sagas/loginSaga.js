@@ -8,37 +8,6 @@ import { commonAction } from '../../constants/actionTypes/commonAction';
 import { message } from 'antd';
 import Cookie from 'js-cookie';
 
-const defaultTopMenu = { // 登录成功后，默认跳转页面的对应菜单重置信息
-  topMenu: {
-    name: '实时监控',
-    path: '/monitor',
-    children: [
-      {
-        name: '电站监控',
-        iconStyle: 'home',
-        path: '/monitor/station',
-        defaultPath: true,
-      },{
-        name: '告警',
-        iconStyle: 'exclamation-circle',
-        path: '/monitor/alarm',
-        children: [
-          {
-            name: '实时告警',
-            path: '/monitor/alarm/realtime',
-          },{
-            name: '历史告警',
-            path: '/monitor/alarm/history',
-          },{
-            name: '告警统计',
-            path: '/monitor/alarm/statistic',
-          }
-        ],
-      }
-    ]
-  }
-}
-
 message.config({
   maxCount: 1,
 });
@@ -99,16 +68,8 @@ function *userNameLogin(action){
               joinStep: 3,
             }
           })
-          yield put({
-            type: commonAction.CHANGE_COMMON_STORE_SAGA,
-            payload: { ...defaultTopMenu },
-          })
         }else if(data.auto === '0'){//正常用户，直接登录
           yield put({ type: loginAction.USER_NAME_LOGIN_SUCCESS, data});
-          yield put({
-            type: commonAction.CHANGE_COMMON_STORE_SAGA,
-            payload: { ...defaultTopMenu },
-          });
           // action.params.history.push('/monitor/station');
         }
       } else {

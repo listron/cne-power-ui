@@ -3,34 +3,6 @@ import Immutable from 'immutable';
 import { commonAction } from '../../constants/actionTypes/commonAction';
 
 var initState = Immutable.fromJS({
-  topMenu:{
-    name: '实时监控',
-    path: '/monitor',
-    children: [
-      {
-        name: '电站监控',
-        iconStyle: 'home',
-        path: '/monitor/station',
-        defaultPath: true,
-      },{
-        name: '告警',
-        iconStyle: 'exclamation-circle',
-        path: '/monitor/alarm',
-        children: [
-          {
-            name: '实时告警',
-            path: '/monitor/alarm/realtime',
-          },{
-            name: '历史告警',
-            path: '/monitor/alarm/history',
-          },{
-            name: '告警统计',
-            path: '/monitor/alarm/statistic',
-          }
-        ],
-      }
-    ]
-  },
   enterpriseId:'',
   enterpriseName: '',
   loading: false,
