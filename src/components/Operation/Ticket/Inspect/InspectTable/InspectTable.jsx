@@ -41,11 +41,14 @@ class InspectTable extends Component {
   }
 
   onChangeTable = (pagination, filter, sorter) => {
-    const field = getInspectSortField(sorter.field);
-    const order = sorter.order === 'ascend' ? '0' : '1';
-    this.props.onChangeFilter({
-      sort: field+',' + order
-    });  
+    if(Object.keys(sorter).length>0){
+      const field = getInspectSortField(sorter.field);
+      const order = sorter.order === 'ascend' ? '0' : '1';
+      this.props.onChangeFilter({
+        sort: field+',' + order
+      }); 
+    }
+     
   }
 
   onInspectCheck = () => {
@@ -194,7 +197,7 @@ class InspectTable extends Component {
 
 
   render(){
-    const { inspectList, selectedRowKeys, total, loading } = this.props;  
+    const { pageSize, pageNum, inspectList, selectedRowKeys, total, loading } = this.props;  
     const columns = this.initColumn(); 
   
     const rowSelection = {
@@ -217,7 +220,7 @@ class InspectTable extends Component {
               </Tooltip>
             </div> 
           </div>
-          <CommonPagination total={total} onPaginationChange={this.onPaginationChange} />
+          <CommonPagination pageSize={pageSize} currentPage={pageNum} total={total} onPaginationChange={this.onPaginationChange} />
         </div>
         <Table 
           rowKey={(record) => { return record.inspectId }}

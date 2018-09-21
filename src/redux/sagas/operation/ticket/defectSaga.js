@@ -20,11 +20,20 @@ function* getDefectList(action) {
   try {
     const response = yield call(axios.post, url, payload);
     if(response.data.code === '10000'){
+      const total = response.data.data.total || 0;
+      let { pageNum, pageSize } = payload;
+      const maxPage = Math.ceil(total / pageSize);
+      if(total === 0){ // 总数为0时，展示0页
+        pageNum = 0;
+      }else if(maxPage < pageNum){ // 当前页已超出
+        pageNum = maxPage;
+      }
       yield put({ 
         type: ticketAction.GET_DEFECT_FETCH_SUCCESS, 
         payload: {
           ...payload,
-          total: response.data.data.total,
+          total,
+          pageNum,
           defectList: response.data.data.defectList,
           selectedRowKeys: [],
           defectStatusStatistics: response.data.data.defectStatusStatistics,

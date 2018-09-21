@@ -223,14 +223,22 @@ class WindStationList extends React.Component {
         return sortType * (a[sortName].localeCompare(b[sortName]));
       }
     })
-
+    // const { inverterList } = this.props;
+    // const initDeviceList = inverterList.deviceList || [];
+    // const totalNum = initDeviceList.length || 0;
+    // const maxPage = Math.ceil(totalNum / pageSize);
+    // if(totalNum === 0){ // 总数为0时，展示0页
+    //   currentPage = 0;
+    // }else if(maxPage < currentPage){ // 当前页已超出
+    //   currentPage = maxPage;
+    // }
     return tableSource
   }
   render() {
     const { stationDataList } = this.props;
+    const { pageSize, currentPage } = this.state;
     const columns = this.initColumn()
     const dataSort = this.createTableSource(stationDataList);
-    const { pageSize, currentPage } = this.state;
     let startRow = (currentPage - 1) * pageSize;
     let endRow = currentPage * pageSize;
     endRow = (endRow > totalNum) ? totalNum : endRow;
@@ -261,7 +269,7 @@ class WindStationList extends React.Component {
     return (
       <div className={styles.windStationList}>
         <div className={styles.pagination}>
-          <CommonPagination total={totalNum} onPaginationChange={this.onPaginationChange} />
+          <CommonPagination pageSize={pageSize} currentPage={currentPage} total={totalNum} onPaginationChange={this.onPaginationChange} />
         </div>
 
         <Table columns={columns} dataSource={data} onChange={this.ontableSort} pagination={false} />

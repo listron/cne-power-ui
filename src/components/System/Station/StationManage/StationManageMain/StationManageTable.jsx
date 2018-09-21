@@ -1,7 +1,7 @@
 
 
 import React, { Component } from 'react';
-import { Upload, Button, Icon, Table, message } from 'antd';
+import { Upload, Button, Table, message } from 'antd';
 import CommonPagination from '../../../../Common/CommonPagination';
 import stationManageTableColumn from './stationManageTableColumn';
 import SetDepartmentModal from './SetDepartmentModal';
@@ -14,6 +14,8 @@ import WarningTip from '../../../../Common/WarningTip';
 
 class StationManageTable extends Component {
   static propTypes = {
+    pageNum: PropTypes.number,
+    pageSize: PropTypes.number,
     totalNum: PropTypes.number,
     loading: PropTypes.bool,
     queryListParams: PropTypes.object,
@@ -152,9 +154,8 @@ class StationManageTable extends Component {
   }
 
   render(){
-    const { loading, stationList, totalNum, allDepartmentData } = this.props;
+    const { loading, stationList, totalNum, allDepartmentData, pageNum, pageSize  } = this.props;
     const { departmentModal, departmentSetInfo, uploading, fileList ,showWarningTip, warningTipText,deleteInfo} = this.state;
-    
     const authData = Cookie.get('authData') || null;
     const column = [
       {
@@ -216,7 +217,7 @@ class StationManageTable extends Component {
             </Upload>
             <Button href={downloadHref} download={downloadHref}  target="_blank"  >下载电站配置模板</Button>
           </div>
-          <CommonPagination total={totalNum} onPaginationChange={this.onPaginationChange} />
+          <CommonPagination currentPage={pageNum} pageSize={pageSize} total={totalNum} onPaginationChange={this.onPaginationChange} />
         </div>
         {showWarningTip && <WarningTip onCancel={this.cancelWarningTip} onOK={()=>this.confirmWarningTip(deleteInfo)} value={warningTipText} />}
         <Table 
