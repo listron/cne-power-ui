@@ -20,21 +20,30 @@ class PvStation extends React.Component {
     this.state = {
       checked: false,
       stationType: 'all',
+      currentPage: 1,
+      pageSize: 10,
     }
   }
 
   onHandleAlarm = (checked) => {
     this.setState({
-      checked
+      checked,
+      currentPage: 1,
     })
   }
   onHandleStation = (e) => {
     this.setState({
-      stationType: e.target.value
+      stationType: e.target.value,
+      currentPage: 1,
+    })
+  }
+  onPaginationChange = ({ currentPage, pageSize }) => {//分页器
+    this.setState({
+      currentPage,
+      pageSize
     })
   }
   setkey = (activekey) => {
-
     this.props.changeMonitorStationStore({ stationShowType: activekey });
   }
   statisticStatusNum = () => {
@@ -121,7 +130,7 @@ class PvStation extends React.Component {
     return data
   }
   render() {
-    //let { key, checked, stationType } = this.state;
+    const { currentPage, pageSize, } = this.state;
     const { pvMonitorStation } = this.props;
     const stationDataSummary = pvMonitorStation.stationDataSummary || {};
     const stationProvinceSummary = stationDataSummary.stationProvinceSummary || [];
@@ -178,7 +187,13 @@ class PvStation extends React.Component {
             }
             key="stationList"
           >
-            <PvStationList {...this.props} stationDataList={this.statusDataList()} />
+            <PvStationList 
+            {...this.props} 
+            currentPage={currentPage} 
+            pageSize={pageSize} 
+            onPaginationChange={this.onPaginationChange}
+            stationDataList={this.statusDataList()} 
+            />
           </TabPane>
           <TabPane
             tab={

@@ -81,7 +81,7 @@ class UserDetail extends Component {
     const { userDetail} = this.props;
     const { showWarningTip, warningTipText } = this.state;
     const rightHandler = localStorage.getItem('rightHandler');
-    const userEditRight = rightHandler && rightHandler.includes('account_user_edit');
+    const userEditRight = rightHandler && rightHandler.split(',').includes('account_user_edit');
     return (
       <div className={styles.userDetail}>
         {showWarningTip && (

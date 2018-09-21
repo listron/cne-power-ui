@@ -77,8 +77,8 @@ class RoleTable extends Component {
 
   createHandleOption = (rightHandler) => {//生成操作下拉框
     const { selectedRole } = this.props;
-    // const roleDeleteRight = rightHandler && rightHandler.includes('account_role_delete');
-    // const roleUpdateRight = rightHandler && rightHandler.includes('account_role_update');
+    // const roleDeleteRight = rightHandler && rightHandler.split(',').includes('account_role_delete');
+    // const roleUpdateRight = rightHandler && rightHandler.split(',').includes('account_role_update');
     // const showAllHandler = roleDeleteRight || roleUpdateRight;   权限管理 -- todo
     return (
       <Select onChange={this.roleHandle} value="操作" placeholder="操作" dropdownMatchSelectWidth={false} dropdownClassName={styles.handleDropdown}>
@@ -147,8 +147,8 @@ class RoleTable extends Component {
     const { selectedRole, roleData, loading, showPage } = this.props;
     const { showWarningTip, warningTipText, hiddenWarningTipCancelText } = this.state;
     // const rightHandler = localStorage.getItem('rightHandler');
-    // const roleCreateRight = rightHandler && rightHandler.includes('account_role_create');
-    // const userImportRight = rightHandler && rightHandler.includes('account_user_batchImport');
+    // const roleCreateRight = rightHandler && rightHandler.split(',').includes('account_role_create');
+    // const userImportRight = rightHandler && rightHandler.split(',').includes('account_user_batchImport');
     return (
       <div className={styles.roleList} style={{display: showPage==='list'?'flex':'none'}}>
       {showWarningTip && <WarningTip onOK={this.onConfirmWarningTip} value={warningTipText} hiddenCancel={hiddenWarningTipCancelText} />}
