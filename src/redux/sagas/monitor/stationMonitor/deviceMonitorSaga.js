@@ -2,6 +2,7 @@ import { call, put, takeLatest, all } from 'redux-saga/effects';
 import axios from 'axios';
 import path from '../../../../constants/path';
 import { deviceAction } from '../../../../constants/actionTypes/monitor/stationMonitor/deviceAction';
+import moment from 'moment';
 
 const monitorPath = {
   '206': {  // 组串式逆变器：206
@@ -52,34 +53,32 @@ function *getDeviceMonitorData(action) {  // 请求单设备数据(统计信息�
 function *getNormalDeviceData(action){ // 请求单设备-除气象站数据信息
   const { payload } = action;
   const {stationCode, deviceTypeCode, deviceCode } = payload;
-  const hours = 72;
+  // const hours = 72;
   try{
     // const devicesUrl = '/mock/monitor/deviceList';
     const devicesUrl = `${path.basePaths.APIBasePath}${path.APISubPaths.monitor.stationDeviceList}/${stationCode}/${deviceTypeCode}`;
     // const detailUrl = monitorPath[deviceTypeCode].detail;
     const detailUrl = `${path.basePaths.APIBasePath}${monitorPath[deviceTypeCode].detail}/${deviceCode}`;
     // const tenMinUrl = monitorPath[deviceTypeCode].tenMin;
-    const tenMinUrl = `${path.basePaths.APIBasePath}${monitorPath[deviceTypeCode].tenMin}/${deviceCode}/${hours}`;
+    // const tenMinUrl = `${path.basePaths.APIBasePath}${monitorPath[deviceTypeCode].tenMin}/${deviceCode}/${hours}`;
     // const pointUrl = '/mock/monitor/monitorPointData';
     const pointUrl = `${path.basePaths.APIBasePath}${path.APISubPaths.monitor.monitorPointData}/${deviceCode}`
     // const alarmUrl = '/mock/monitor/deviceAlarm';
     const alarmUrl = `${path.basePaths.APIBasePath}${path.APISubPaths.monitor.deviceAlarmData}/${deviceCode}`
 
     yield put({ type:deviceAction.MONITOR_DEVICE_FETCH });
-    const [tmpDevices, tmpDetail, tmpTenMin, tmpPoint, tmpAlarm] = yield all([
+    const [tmpDevices, tmpDetail, tmpPoint, tmpAlarm] = yield all([
       call(axios.get, devicesUrl),
       call(axios.get, detailUrl),
-      call(axios.get, tenMinUrl),
       call(axios.get, pointUrl),
       call(axios.get, alarmUrl),
     ])
-    if(tmpDevices.data.code === '10000' && tmpDetail.data.code === "10000" && tmpTenMin.data.code === "10000" && tmpPoint.data.code === "10000" && tmpAlarm.data.code === "10000" ){
+    if(tmpDevices.data.code === '10000' && tmpDetail.data.code === "10000" && tmpPoint.data.code === "10000" && tmpAlarm.data.code === "10000" ){
       yield put({
         type: deviceAction.GET_DEVICE_FETCH_SUCCESS,
         payload: {
           devices: tmpDevices.data.data || [],
           deviceDetail: tmpDetail.data.data || {},
-          deviceTenMin: tmpTenMin.data.data || [],
           devicePointData: tmpPoint.data.data || [],
           deviceAlarmList: tmpAlarm.data.data || [],
         },
@@ -87,7 +86,6 @@ function *getNormalDeviceData(action){ // 请求单设备-除气象站数据信�
     }else{
       console.log(tmpDevices.data.data)
       console.log(tmpDetail.data.data)
-      console.log(tmpTenMin.data.data)
       console.log(tmpPoint.data.data)
       console.log(tmpAlarm.data.data)
     }
@@ -98,9 +96,38 @@ function *getNormalDeviceData(action){ // 请求单设备-除气象站数据信�
       payload: {
         devices: [],
         deviceDetail: {},
-        deviceTenMin: [],
         devicePointData: [],
         deviceAlarmList: [],
+        loading: false,
+      },
+    })
+  }
+}
+
+function *getTenMinDeviceData(action){ // 请求10min时序图数据信息
+  const { payload } = action;
+  const { deviceTypeCode, deviceCode, timeParam } = payload;
+  try{
+    const tenMinUrl = `${path.basePaths.APIBasePath}${monitorPath[deviceTypeCode].tenMin}/${deviceCode}/${timeParam}`;
+
+    yield put({ type:deviceAction.MONITOR_DEVICE_FETCH });
+    const tmpTenMin = yield call(axios.get, tenMinUrl);
+    if(tmpTenMin.data.code === "10000"){
+      yield put({
+        type: deviceAction.GET_DEVICE_FETCH_SUCCESS,
+        payload: {
+          deviceTenMin: tmpTenMin.data.data || [],
+        },
+      })
+    }else{
+      console.log(tmpTenMin.data.data)
+    }
+  }catch(e){
+    console.log(e);
+    yield put({  //清空数据
+      type:  deviceAction.CHANGE_DEVICE_MONITOR_STORE,
+      payload: {
+        deviceTenMin: [],
         loading: false,
       },
     })
@@ -149,6 +176,7 @@ export function* watchDeviceMonitor() {
   yield takeLatest(deviceAction.GET_DEVICE_DATA_SAGA, getDeviceMonitorData);
   yield takeLatest(deviceAction.GET_NORMAL_DEVICE_DATA_SAGA, getNormalDeviceData);
   yield takeLatest(deviceAction.GET_WEATHERSTATION_DATA_SAGA, getWeatherStationData);
+  yield takeLatest(deviceAction.GET_DEVICE_MONITOR_TEN_MIN_DATA_SAGA, getTenMinDeviceData);
 }
 
 
