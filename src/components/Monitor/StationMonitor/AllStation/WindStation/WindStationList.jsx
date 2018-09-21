@@ -7,22 +7,17 @@ import { Progress, Table } from "antd";
 class WindStationList extends React.Component {
   static propTypes = {
     stationDataList: PropTypes.array,
+    pageSize: PropTypes.number,
+    currentPage: PropTypes.number,
+    onPaginationChange: PropTypes.func,
   }
 
   constructor(props, context) {
     super(props, context)
     this.state = {
-      currentPage: 1,
-      pageSize: 10,
       sortName: 'stationName',
       descend: false,
     }
-  }
-  onPaginationChange = ({ currentPage, pageSize }) => {//分页器
-    this.setState({
-      currentPage,
-      pageSize
-    })
   }
 
   ontableSort = (pagination, filters, sorter) => {
@@ -235,8 +230,7 @@ class WindStationList extends React.Component {
     return tableSource
   }
   render() {
-    const { stationDataList } = this.props;
-    const { pageSize, currentPage } = this.state;
+    const { stationDataList, pageSize, currentPage, onPaginationChange } = this.props;
     const columns = this.initColumn()
     const dataSort = this.createTableSource(stationDataList);
     let startRow = (currentPage - 1) * pageSize;
@@ -269,7 +263,7 @@ class WindStationList extends React.Component {
     return (
       <div className={styles.windStationList}>
         <div className={styles.pagination}>
-          <CommonPagination pageSize={pageSize} currentPage={currentPage} total={totalNum} onPaginationChange={this.onPaginationChange} />
+          <CommonPagination pageSize={pageSize} currentPage={currentPage} total={totalNum} onPaginationChange={onPaginationChange} />
         </div>
 
         <Table columns={columns} dataSource={data} onChange={this.ontableSort} pagination={false} />

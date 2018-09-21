@@ -24,14 +24,15 @@ class RealTimeAlarmTable extends Component {
     ticketInfo: PropTypes.object,
     relieveInfo: PropTypes.object,
     alarmStatus: PropTypes.number,
+    pageSize: PropTypes.number,
+    currentPage: PropTypes.number,
     changeAlarmStore: PropTypes.func,
+    onPaginationChange: PropTypes.func,
   }
 
   constructor(props) {
     super(props);
     this.state = {
-      pageSize: 10,
-      currentPage: 1,
       showTransferTicketModal: false,
       showRelieveAlarmModal: false,
       showTransferPopover: [],
@@ -41,10 +42,6 @@ class RealTimeAlarmTable extends Component {
       sortName: '',
       descend: false,
     }
-  }
-
-  onChangePagination = ({ pageSize, currentPage }) => {
-    this.setState({ pageSize, currentPage })
   }
 
   onChangeTable = (pagination, filters, sorter) => {
@@ -134,7 +131,8 @@ class RealTimeAlarmTable extends Component {
   }
 
   createTableSource(data) {
-    const { pageSize, currentPage, sortName, descend } = this.state;
+    const { sortName, descend } = this.state;
+    const { pageSize, currentPage } = this.props;
     const nameSortArr = ['stationName', 'deviceTypeName', 'warningConfigName']
     const tableSource = data.map((e, i) => ({
       ...e,
@@ -392,8 +390,8 @@ class RealTimeAlarmTable extends Component {
   }
 
   render() {
-    const { realtimeAlarm, selectedRowKeys, alarmStatus } = this.props;
-    const { showTransferTicketModal, showRelieveAlarmModal, showWarningTip, warningTipText, pageSize, currentPage } = this.state;
+    const { realtimeAlarm, selectedRowKeys, alarmStatus, onPaginationChange, pageSize, currentPage } = this.props;
+    const { showTransferTicketModal, showRelieveAlarmModal, showWarningTip, warningTipText } = this.state;
     const tableSource = this.createTableSource(realtimeAlarm);
     const columns = this.initColumn();
     const rowSelection = {
@@ -410,7 +408,7 @@ class RealTimeAlarmTable extends Component {
           value={warningTipText} />}
         <div className={styles.tableHeader}>
           {this.renderOperation()}
-          <CommonPagination pageSize={pageSize} currentPage={currentPage} onPaginationChange={this.onChangePagination} total={realtimeAlarm.length} />
+          <CommonPagination pageSize={pageSize} currentPage={currentPage} onPaginationChange={onPaginationChange} total={realtimeAlarm.length} />
         </div>
         <Table
           dataSource={tableSource}
@@ -430,7 +428,6 @@ class RealTimeAlarmTable extends Component {
       </div>
     );
   }
-
 }
 
 export default RealTimeAlarmTable;

@@ -8,6 +8,8 @@ import moment from 'moment';
 
 class HostoryAlarmTable extends Component {
   static propTypes = {
+    pageSize: PropTypes.number,
+    currentPage: PropTypes.number,
     historyAlarm: PropTypes.array,
     loading: PropTypes.bool,
     getTicketInfo: PropTypes.func,
@@ -15,13 +17,12 @@ class HostoryAlarmTable extends Component {
     ticketInfo: PropTypes.object,
     relieveInfo: PropTypes.object,
     changeAlarmStore: PropTypes.func,
+    onPaginationChange: PropTypes.func,
   }
 
   constructor(props){
     super(props);
     this.state = {
-      pageSize: 10, 
-      currentPage: 1,
       showTransferPopover: [],
       showRelievePopover: [],
       showAutoRelievePopover: [],
@@ -35,10 +36,6 @@ class HostoryAlarmTable extends Component {
       sortName: sorter.field,
       descend : sorter.order === 'descend'
     });
-  }
-
-  onChangePagination = ({ pageSize, currentPage }) => {
-    this.setState({ pageSize, currentPage })
   }
 
   onTransferChange(visible, workOrderId, i) {
@@ -97,7 +94,8 @@ class HostoryAlarmTable extends Component {
   }
 
   createTableSource(data) {
-    const { pageSize, currentPage, sortName, descend } = this.state;
+    const { sortName, descend } = this.state;
+    const { pageSize, currentPage } = this.props;
     const nameSortArr = ['stationName', 'deviceTypeName', 'warningConfigName']
     const tableSource = data.map((e, i) => ({
       ...e,
@@ -343,15 +341,14 @@ class HostoryAlarmTable extends Component {
   }
 
   render() {
-    const { historyAlarm, loading } = this.props;
+    const { historyAlarm, loading, onPaginationChange, pageSize, currentPage } = this.props;
     const tableSource = this.createTableSource(historyAlarm);
     const columns = this.initColumn();
-    const { pageSize, currentPage } = this.state;
     return (
       <div className={styles.alarmTable}>
         <div className={styles.tableHeader}>
           {this.renderOperation()}
-          <CommonPagination pageSize={pageSize} currentPage={currentPage} onPaginationChange={this.onChangePagination} total={historyAlarm.length} />
+          <CommonPagination pageSize={pageSize} currentPage={currentPage} onPaginationChange={onPaginationChange} total={historyAlarm.length} />
         </div>
         <Table
           loading={loading}

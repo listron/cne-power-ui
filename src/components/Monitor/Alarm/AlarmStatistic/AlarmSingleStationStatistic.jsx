@@ -35,12 +35,15 @@ class ALarmSingleStationStatistic extends React.Component {
       showStationSelect: false,
       showTimeSelect: false,
       key: 'graph',
+      pageNum: 1,
+      pageSize: 10,
     };
   }
 
   componentDidMount() {
     if(this.props.showPage === 'single') {
-      const { singleStationCode, summaryType, pageSize, pageNum, orderField, orderCommand } = this.props;
+      const { singleStationCode, summaryType, orderField, orderCommand } = this.props;
+      const { pageNum, pageSize } = this.state;
       this.props.getSingleStationAlarmStatistic({
         stationCode: singleStationCode,
         startTime: moment().subtract(30, 'days').utc().format(),
@@ -55,7 +58,8 @@ class ALarmSingleStationStatistic extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { startTime, endTime, summaryType, singleStationCode, pageSize, pageNum, orderField, orderCommand, showPage } = nextProps;
+    const { startTime, endTime, summaryType, singleStationCode, orderField, orderCommand, showPage } = nextProps;
+    const { pageSize, pageNum } = this.state;
     if(singleStationCode !== this.props.singleStationCode && showPage === 'single') {
       this.props.getSingleStationAlarmStatistic({
         stationCode: singleStationCode,
@@ -70,29 +74,36 @@ class ALarmSingleStationStatistic extends React.Component {
     }
   }
 
+  onPaginationChange = ({ currentPage, pageSize }) => {//分页器
+    this.setState({
+      pageNum: currentPage,
+      pageSize
+    })
+  }
+
   onChangeFilter = (obj) => {
-    const { singleStationCode, startTime, endTime, summaryType, pageSize, pageNum, orderField, orderCommand } = this.props;
+    const { singleStationCode, startTime, endTime, summaryType, orderField, orderCommand } = this.props;
+    const { pageSize } = this.state;
     let filter = {
       stationCode: singleStationCode,
       startTime,
       endTime,
       summaryType,
       pageSize,
-      pageNum,
       orderField,
       orderCommand
     }
-    let newFiter = Object.assign({}, filter, obj);
+    this.setState({ pageNum: 1 })
+    let newFiter = { ...filter, ...obj, pageNum: 1, };
     this.props.getSingleStationAlarmStatistic(newFiter);
   }
 
   onChangeTime = (value, dateString) => {
     let startTime = value[0].utc().format();
     let endTime = value[1].utc().format();
-
     this.onChangeFilter({
       startTime,
-      endTime
+      endTime,
     });
   }
 
@@ -104,16 +115,15 @@ class ALarmSingleStationStatistic extends React.Component {
   }
 
   onChangeTab = (key) => {
-    this.setState({ key });
-    const { singleStationCode, startTime, endTime, summaryType, pageSize, pageNum, orderField, orderCommand } = this.props;
+    this.setState({ key, pageNum: 1 });
+    const { singleStationCode, startTime, endTime, summaryType, orderField, orderCommand } = this.props;
+    const { pageSize, pageNum } = this.state;
     if(key === 'graph') {
       this.props.getSingleStationAlarmStatistic({
         stationCode: singleStationCode,
         startTime,
         endTime,
         summaryType,
-        pageSize: null,
-        pageNum: null,
         orderField: '',
         orderCommand: ''
       });
@@ -123,8 +133,8 @@ class ALarmSingleStationStatistic extends React.Component {
         startTime,
         endTime,
         summaryType,
-        pageSize: pageSize!==null?pageSize:10,
-        pageNum: pageNum!==null?pageNum:1,
+        pageSize: pageSize?pageSize:10,
+        pageNum: pageNum?pageNum:1,
         orderField: orderField!==''?orderField:'',
         orderCommand: orderField!==''?orderCommand:''
       });
@@ -182,7 +192,6 @@ class ALarmSingleStationStatistic extends React.Component {
   renderTitle() {
     const { singleStationCode, singleAlarmSummary, stations } = this.props;
     const { showStationSelect } = this.state;
-    console.log(singleAlarmSummary);
     const stationItem = stations.find(station=>station.get('stationCode').toString() === singleStationCode).toJS();
     return (
       <div className={styles.title}>
@@ -260,7 +269,7 @@ class ALarmSingleStationStatistic extends React.Component {
   }
 
   renderContent() {
-    const { key } = this.state;
+    const { key, pageNum, pageSize } = this.state;
     return (
       <Tabs activeKey={key} onChange={this.onChangeTab} className={styles.tabContainer} animated={false}>
         <TabPane
@@ -273,7 +282,12 @@ class ALarmSingleStationStatistic extends React.Component {
           tab={<i className="iconfont icon-table"></i>}
           key="table"
         >
-          <AlarmSingleStationTable {...this.props} />
+          <AlarmSingleStationTable 
+            {...this.props} 
+            pageNum={pageNum} 
+            pageSize={pageSize} 
+            onPaginationChange={this.onPaginationChange}
+          />
         </TabPane>
       </Tabs>
     );

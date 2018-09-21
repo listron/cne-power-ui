@@ -19,10 +19,11 @@ class AlarmStatisticByType extends Component {
     pageNum: PropTypes.number,
     orderField: PropTypes.string,
     orderCommand: PropTypes.string,
-    // startTime: PropTypes.string,
-    // endTime: PropTypes.string,
+    startTime: PropTypes.string,
+    endTime: PropTypes.string,
     onChangeFilter: PropTypes.func,
     exportAlarm: PropTypes.func,
+    onTableChange: PropTypes.func,
   }
   constructor(props) {
     super(props);
@@ -47,10 +48,8 @@ class AlarmStatisticByType extends Component {
 
   //改变时间的
   onChangeTime = (value, dateString) => {
- 
-    let startTime = value[0];
-    let endTime = value[1];
-    console.log(value);
+    let startTime = dateString[0];
+    let endTime = dateString[1];
     this.props.onChangeFilter({
       startTime,
       endTime,
@@ -158,11 +157,10 @@ class AlarmStatisticByType extends Component {
             showFilter === 'timeSelect' &&
             <div className={styles.datePicker}><RangePicker
               showTime={false}
-              //value={moment[2019]}
               disabledDate={this.disabledDate}
               onCalendarChange={this.onCalendarChange}
               format="YYYY-MM-DD"
-              placeholder={['Start Time', 'End Time']}
+              placeholder={['开始时间', '结束时间']}
               onChange={this.onChangeTime}
             /></div>
           }
@@ -178,7 +176,7 @@ class AlarmStatisticByType extends Component {
             tab={<i className="iconfont icon-table"></i>}
             key="table"
           >
-            <AlarmStatisticTable {...this.props} />
+            <AlarmStatisticTable {...this.props} onTableChange={this.props.onTableChange} />
           </TabPane>
         </Tabs>
       </div>
