@@ -9,6 +9,7 @@ import styles from './stationMain.scss';
 import PropTypes from 'prop-types';
 import Cookie from 'js-cookie';
 import path from '../../../../../constants/path';
+import WarningTip from '../../../../Common/WarningTip';
 
 
 class StationManageTable extends Component {
@@ -34,8 +35,12 @@ class StationManageTable extends Component {
       departmentModal: false,
       departmentSetInfo: {},
       fileList: [],
+      showWarningTip: false,
+      warningTipText: '确定要删除?',
+      deleteInfo:{},
     }
   }
+  
 
   onStationUpload = ({file, fileList}) => { // 添加上传电站
     this.setState({
@@ -129,10 +134,28 @@ class StationManageTable extends Component {
       departmentSetInfo: {},
     })
   }
+  deleteEdit = (record) => {
+    this.setState({
+      showWarningTip: true,
+      deleteInfo: record,
+    })
+  }
+ 
+  cancelWarningTip = () => {
+    this.setState({
+      showWarningTip: false,
+    })
+  }
+  confirmWarningTip = (deleteInfo) => {
+    this.setState({
+      showWarningTip: false,
+    })
+    this.onStationDelete(deleteInfo)
+  }
 
   render(){
-    const { loading, stationList, totalNum, allDepartmentData, pageNum, pageSize } = this.props;
-    const { departmentModal, departmentSetInfo, uploading, fileList } = this.state;
+    const { loading, stationList, totalNum, allDepartmentData, pageNum, pageSize  } = this.props;
+    const { departmentModal, departmentSetInfo, uploading, fileList ,showWarningTip, warningTipText,deleteInfo} = this.state;
     const authData = Cookie.get('authData') || null;
     const column = [
       {
@@ -165,9 +188,10 @@ class StationManageTable extends Component {
         dataIndex: 'handler',
         key: 'handler',
         render: (text, record, index) => { // 电站未接入且alarmStatus,departmentStatus,deviceStatus,pointStatus全部为0时，才能删除。
+          console.log(record);
           const deletable = !record.alarmStatus && !record.departmentStatus && !record.pointStatus && !record.isConnected;
           if(deletable){
-            return <span className={styles.deleteStation} onClick={()=>this.onStationDelete(record)}>删除</span>
+            return <span className={styles.deleteStation} onClick={()=>this.deleteEdit(record)}>删除</span>
           }else{
             return <span className={styles.deleteDisable}>删除</span>
           }
@@ -195,6 +219,7 @@ class StationManageTable extends Component {
           </div>
           <CommonPagination currentPage={pageNum} pageSize={pageSize} total={totalNum} onPaginationChange={this.onPaginationChange} />
         </div>
+        {showWarningTip && <WarningTip onCancel={this.cancelWarningTip} onOK={()=>this.confirmWarningTip(deleteInfo)} value={warningTipText} />}
         <Table 
           loading={loading}
           dataSource={ stationList.map((e, i) => ({...e, key: i})) } 

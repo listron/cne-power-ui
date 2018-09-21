@@ -248,6 +248,21 @@
       }
     }
   }
+  .AlarmStatisticByTypeBox{
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    .singleAlarmFilter{
+      background:#f8f8f8;
+      width:100%;
+      height:40px;
+      line-height: 40px;
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-end;
+    }
+  } 
+  
 }
 
 
