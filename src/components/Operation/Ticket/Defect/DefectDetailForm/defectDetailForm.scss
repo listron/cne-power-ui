@@ -11,10 +11,14 @@
   flex: 1;
   background-color: #fff;
   flex-direction: column;
+  justify-content: space-between;
+  padding: 24px 24px 0;
+  //  background-color: #ececec;
   .defectDetail{
     display: flex;
     flex-direction: column;
     flex: 1;
+    background: #fff;
     .header {
       @include top;
       justify-content: space-between;

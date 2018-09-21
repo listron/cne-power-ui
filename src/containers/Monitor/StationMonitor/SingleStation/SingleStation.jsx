@@ -40,9 +40,25 @@ class SingleStation extends Component {
     this.getTenSeconds(stationCode);
     this.getOutputDataTenMin(stationCode);
     this.getPowerDataTenMin(stationCode);
+    const { search } = this.props.location;
+    const tmpSearchData = search.replace('?','').split('&').filter(e=>e); //  search拆分验证是否有指定展示列表
+    const searchData = tmpSearchData.map(e=>{
+      const subData = e.split('=');
+      return {[subData[0]]: subData[1]}
+    })
+    const deviceTypeInfo = searchData.find(e=>e.showPart > 0);
+    if(deviceTypeInfo){
+      const main = document.getElementById('main');
+      main.scrollTo(0, 700);
+      this.props.getDeviceTypeFlow({
+        stationCode, 
+        deviceTypeCode: parseInt(deviceTypeInfo.showPart)
+      });//获取设备类型流程图
+    }else{
+      this.props.getDeviceTypeFlow({stationCode});//获取设备类型流程图
+    }
     this.props.getStationDeviceList({stationCode, deviceTypeCode: 203});//获取气象站
     this.props.getStationList({});//获取电站列表
-    this.props.getDeviceTypeFlow({stationCode});//获取设备类型流程图
   }
 
   componentWillReceiveProps(nextProps){

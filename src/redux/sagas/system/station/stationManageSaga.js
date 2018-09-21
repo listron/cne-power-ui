@@ -20,12 +20,21 @@ function *getStationList(action){ // 请求电站列表信息
     yield put({ type:stationManageAction.STATION_MANAGE_FETCH });
     const response = yield call(axios.post, url, payload);
     // if(response.data.code === "10000"){
+    const totalNum = response.data.data.total || 0;
+    let { pageNum, pageSize } = payload;
+    const maxPage = Math.ceil(totalNum / pageSize);
+    if(totalNum === 0){ // 总数为0时，展示0页
+      pageNum = 0;
+    }else if(maxPage < pageNum){ // 当前页已超出
+      pageNum = maxPage;
+    }
     yield put({
       type: stationManageAction.GET_STATION_MANAGE_FETCH_SUCCESS,
       payload: {
         ...payload,
         stationList: response.data.data.list || [],
-        totalNum: response.data.data.total || 0,
+        totalNum,
+        pageNum,
       }
     })
     // }
@@ -153,7 +162,7 @@ function *deleteStation(action){ // 删除电站(及以下设备)
         stationType: state.system.stationManage.get('stationType'),
         regionName: state.system.stationManage.get('regionName'),
         stationName: state.system.stationManage.get('stationName'),
-        pageNum: 1,
+        pageNum: state.system.stationManage.get('pageNum'),
         pageSize: state.system.stationManage.get('pageSize'),
         orderField: state.system.stationManage.get('orderField'),
         orderCommand: state.system.stationManage.get('orderCommand'),

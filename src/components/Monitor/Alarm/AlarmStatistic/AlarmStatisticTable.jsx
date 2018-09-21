@@ -150,7 +150,7 @@ class AlarmStatisticTable extends React.Component {
     return (
       <div className={styles.alarmStatisticTable}>
         <div className={styles.pagination}>
-          <CommonPagination total={totalNum} onPaginationChange={this.onPaginationChange} />
+          <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalNum} onPaginationChange={this.onPaginationChange} />
         </div>
         <Table 
           columns={this.renderColumn()} 

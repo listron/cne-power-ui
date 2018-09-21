@@ -8,6 +8,8 @@ import path from '../../../../constants/path';
 class DeviceManageHandle extends Component {
   static propTypes = {
     stationCode: PropTypes.number,
+    pageSize: PropTypes.number,
+    pageNum: PropTypes.number,
     totalNum: PropTypes.number,
     deviceList: PropTypes.array,
     queryParams: PropTypes.object,
@@ -15,9 +17,6 @@ class DeviceManageHandle extends Component {
   }
   constructor(props) {
     super(props);
-    this.state = {
-      
-    }
   }
 
   onPaginationChange = ({pageSize, currentPage}) => {
@@ -30,12 +29,12 @@ class DeviceManageHandle extends Component {
   }
 
   render() {
-    const { totalNum, deviceList, stationCode } = this.props;
+    const { totalNum, deviceList, stationCode, pageSize, pageNum } = this.props;
     const downloadHref = `${path.basePaths.APIBasePath}${path.APISubPaths.system.downloadDeviceInfo}?stationCode=${stationCode}`;
     return (
       <div className={styles.deviceManageHandle}>
         <Button disabled={deviceList.length === 0} className={styles.exportInfo} href={downloadHref} download={downloadHref}  target="_blank"  >导出设备信息表</Button>
-        <CommonPagination  total={totalNum} onPaginationChange={this.onPaginationChange} />
+        <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalNum} onPaginationChange={this.onPaginationChange} />
       </div>
     );
   }

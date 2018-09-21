@@ -25,7 +25,6 @@ class DepartmentSearch extends Component {
   onDepartmentSearch = () => {
     const { departmentName, parentDepartmentName, stationName, } = this.state;
     this.props.searchDepartment({
-      pageNum: 1,
       departmentName,
       parentDepartmentName,
       stationName
@@ -36,7 +35,6 @@ class DepartmentSearch extends Component {
       departmentName: '',
       parentDepartmentName: '',
       stationName: '',
-      pageNum: 1,
     }
     this.props.searchDepartment({...searchResetInfor})
     this.setState({...searchResetInfor})

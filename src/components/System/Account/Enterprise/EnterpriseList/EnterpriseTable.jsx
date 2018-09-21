@@ -11,6 +11,8 @@ const { Option } = Select;
 class EnterpriseTable extends Component {
   static propTypes = {
     loading: PropTypes.bool,
+    pageSize: PropTypes.number,
+    currentPage: PropTypes.number,
     totalNum: PropTypes.number,
     enterpriseData: PropTypes.array,
     selectedEnterprise: PropTypes.array,//勾选的数组
@@ -22,9 +24,7 @@ class EnterpriseTable extends Component {
     enterpriseName: PropTypes.string, 
     enterprisePhone: PropTypes.string,
     sort: PropTypes.string, 
-    ascend: PropTypes.bool,
-    currentPage: PropTypes.number, 
-    pageSize: PropTypes.number, 
+    ascend: PropTypes.bool, 
   }
 
   constructor(props){
@@ -152,7 +152,7 @@ class EnterpriseTable extends Component {
   }
 
   render(){
-    const { enterpriseData, selectedEnterprise, totalNum, loading } = this.props;
+    const {  pageSize, currentPage, enterpriseData, selectedEnterprise, totalNum, loading } = this.props;
     return (
       <div className={styles.enterpriseList}>
         <div className={styles.enterpriseListTop} >
@@ -165,7 +165,7 @@ class EnterpriseTable extends Component {
               {this._createHandleOption()}
             </div>
           </div>
-          <CommonPagination total={totalNum} onPaginationChange={this.onPaginationChange} />
+          <CommonPagination  pageSize={pageSize} currentPage={currentPage} total={totalNum} onPaginationChange={this.onPaginationChange} />
         </div>
         <Table 
           loading={loading}

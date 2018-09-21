@@ -7,12 +7,14 @@ import ConfluenceHeader from './ConfluenceHeader';
 import CommonBreadcrumb from '../../../../Common/CommonBreadcrumb';
 import PropTypes from 'prop-types';
 import styles from '../eachDeviceMonitor.scss';
+import moment from 'moment';
 
 class Confluencebox extends Component {
   static propTypes = {
     loading: PropTypes.bool,
     match: PropTypes.object,
     getMonitorDeviceData: PropTypes.func,
+    getTenMinDeviceData: PropTypes.func,
     devices: PropTypes.array,
     deviceDetail: PropTypes.object,
     deviceTenMin: PropTypes.array,
@@ -22,6 +24,16 @@ class Confluencebox extends Component {
 
   componentDidMount(){
     const { deviceCode, deviceTypeCode, stationCode } = this.props.match.params;
+    const startTime = moment().utc().format();
+    const endTime = moment().subtract(72,'hours').utc().format();
+    const params = {
+      stationCode,
+      deviceCode,
+      deviceTypeCode,
+      timeParam: `${startTime}/${endTime}`,
+    };
+    this.props.getMonitorDeviceData(params);
+    this.props.getTenMinDeviceData(params);
     this.getData(stationCode, deviceCode, deviceTypeCode);
   }
 
@@ -33,25 +45,33 @@ class Confluencebox extends Component {
     const nextStation = nextParams.stationCode;
     if( nextDevice !== deviceCode || nextType !== deviceTypeCode || nextStation !== stationCode ){
       clearTimeout(this.timeOutId);
+      clearTimeout(this.timeOutTenMin);
       this.getData(nextStation, nextDevice, nextType);
     }
   }
 
   componentWillUnmount(){
-    clearTimeout(this.timeOutId)
+    clearTimeout(this.timeOutId);
+    clearTimeout(this.timeOutTenMin);
   }
 
   getData = (stationCode, deviceCode, deviceTypeCode) => {
+    const startTime = moment().utc().format();
+    const endTime = moment().subtract(72,'hours').utc().format();
     const params = {
       stationCode,
       deviceCode,
       deviceTypeCode,
+      timeParam: `${startTime}/${endTime}`,
     };
-    this.props.getMonitorDeviceData(params);
     this.timeOutId = setTimeout(() => {
       this.props.getMonitorDeviceData(params);
       this.getData(stationCode, deviceCode, deviceTypeCode);
     },10000)
+    this.timeOutTenMin = setTimeout(() => {
+      this.props.getTenMinDeviceData(params);
+      this.getData(stationCode, deviceCode, deviceTypeCode);
+    },600000)
   }
 
   render(){

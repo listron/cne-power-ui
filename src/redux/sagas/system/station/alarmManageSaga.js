@@ -22,12 +22,23 @@ function *getAlarmList(action){ // 请求告警事件列表
       ...payload,
       sortField: payload.sortField.replace(/[A-Z]/g,e=>`_${e.toLowerCase()}`), //重组字符串
     });
+
+    const totalNum = response.data.data && response.data.data[0] && response.data.data[0].totalCount || 0;
+    let { pageNum, pageSize } = payload;
+    const maxPage = Math.ceil(totalNum / pageSize);
+    if(totalNum === 0){ // 总数为0时，展示0页
+      pageNum = 0;
+    }else if(maxPage < pageNum){ // 当前页已超出
+      pageNum = maxPage;
+    }
+
     yield put({
       type:  alarmManageAction.GET_ALARM_MANAGE_FETCH_SUCCESS,
       payload:{
         ...payload,
         alarmList: response.data.data || [],
         totalNum: response.data.data && response.data.data[0] && response.data.data[0].totalCount || 0,
+        pageNum,
       },
     });
   }catch(e){
@@ -52,7 +63,7 @@ function *deleteAlarmList(action){ // 清除电站告警事件
         payload:{
           alarmList: [],
           totalNum: 0,
-          pageNum: 1,
+          pageNum: 0,
         },
       });
     }else{

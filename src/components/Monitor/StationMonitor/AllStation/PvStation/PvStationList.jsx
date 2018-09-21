@@ -223,6 +223,15 @@ class PvStationList extends React.Component {
         return sortType * (a[sortName].localeCompare(b[sortName]));
       }
     })
+    // const { inverterList } = this.props;
+    // const initDeviceList = inverterList.deviceList || [];
+    // const totalNum = initDeviceList.length || 0;
+    // const maxPage = Math.ceil(totalNum / pageSize);
+    // if(totalNum === 0){ // 总数为0时，展示0页
+    //   currentPage = 0;
+    // }else if(maxPage < currentPage){ // 当前页已超出
+    //   currentPage = maxPage;
+    // }
     return tableSource
   }
   render() {
@@ -260,7 +269,7 @@ class PvStationList extends React.Component {
     return (
       <div className={styles.PvStationList}>
         <div className={styles.pagination}>
-          <CommonPagination total={totalNum} onPaginationChange={this.onPaginationChange} />
+          <CommonPagination pageSize={pageSize} currentPage={currentPage} total={totalNum} onPaginationChange={this.onPaginationChange} />
         </div>
         <Table columns={columns} dataSource={data} onChange={this.ontableSort} pagination={false} />
       </div>

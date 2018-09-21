@@ -1,7 +1,7 @@
 
 
 import React, { Component } from 'react';
-import { Upload, Button, Icon, Table, message } from 'antd';
+import { Upload, Button, Table, message } from 'antd';
 import CommonPagination from '../../../../Common/CommonPagination';
 import stationManageTableColumn from './stationManageTableColumn';
 import SetDepartmentModal from './SetDepartmentModal';
@@ -13,6 +13,8 @@ import path from '../../../../../constants/path';
 
 class StationManageTable extends Component {
   static propTypes = {
+    pageNum: PropTypes.number,
+    pageSize: PropTypes.number,
     totalNum: PropTypes.number,
     loading: PropTypes.bool,
     queryListParams: PropTypes.object,
@@ -92,14 +94,19 @@ class StationManageTable extends Component {
     const { field, order } = sorter;
     const sortInfo = {
       stationName: '1',
-      area: '2',
+      // area: '2',
+      regionName: '2',
       coverType: '3',
       connectionType: '4',
       stationCapacity: '5',
-      series: '6',
-      stationStatus: '7',
+      // series: '6',
+      stationUnitCount: '6',
+      // stationStatus: '7',
+      isConnected: '7',
     };
-    const orderField = sortInfo[field] ? sortInfo[field] : '';
+     const orderField = sortInfo[field] ? sortInfo[field] : '';
+    //const orderField = field ? sortInfo[field] : '';
+    //const orderField = field ? field : '';
     const orderCommand = order ? (sorter.order === 'ascend' ? '1' : '2') : '';
     getStationList({
       ...queryListParams,
@@ -124,7 +131,7 @@ class StationManageTable extends Component {
   }
 
   render(){
-    const { loading, stationList, totalNum, allDepartmentData } = this.props;
+    const { loading, stationList, totalNum, allDepartmentData, pageNum, pageSize } = this.props;
     const { departmentModal, departmentSetInfo, uploading, fileList } = this.state;
     const authData = Cookie.get('authData') || null;
     const column = [
@@ -186,7 +193,7 @@ class StationManageTable extends Component {
             </Upload>
             <Button href={downloadHref} download={downloadHref}  target="_blank"  >下载电站配置模板</Button>
           </div>
-          <CommonPagination total={totalNum} onPaginationChange={this.onPaginationChange} />
+          <CommonPagination currentPage={pageNum} pageSize={pageSize} total={totalNum} onPaginationChange={this.onPaginationChange} />
         </div>
         <Table 
           loading={loading}

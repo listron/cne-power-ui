@@ -108,11 +108,21 @@ class DeviceAlarmTable extends Component {
       const endIndex = startIndex + pageSize;
       return (i >= startIndex && i < endIndex);
     });
+    // const { inverterList } = this.props;
+    // const initDeviceList = inverterList.deviceList || [];
+    // const totalNum = initDeviceList.length || 0;
+    // const maxPage = Math.ceil(totalNum / pageSize);
+    // if(totalNum === 0){ // 总数为0时，展示0页
+    //   currentPage = 0;
+    // }else if(maxPage < currentPage){ // 当前页已超出
+    //   currentPage = maxPage;
+    // }
     return tableSource
   }
 
   render() {
     const { deviceAlarmList, loading, deviceDetail } = this.props;
+    const { pageSize, currentPage } = this.state;
     const tableSource = this.createTableSource(deviceAlarmList);
     const columns = this.initColumn();
     return (
@@ -125,7 +135,7 @@ class DeviceAlarmTable extends Component {
           <Button className={styles.historyButton}>
             <Link to="/monitor/alarm/history" target="_blank" >查看告警历史</Link>
           </Button>
-          <CommonPagination onPaginationChange={this.changePagination} total={deviceAlarmList.length} />
+          <CommonPagination pageSize={pageSize} currentPage={currentPage} onPaginationChange={this.changePagination} total={deviceAlarmList.length} />
         </div>
         <Table
           dataSource={tableSource} 

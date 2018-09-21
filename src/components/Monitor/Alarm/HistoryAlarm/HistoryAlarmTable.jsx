@@ -120,6 +120,15 @@ class HostoryAlarmTable extends Component {
       const endIndex = startIndex + pageSize;
       return (i >= startIndex && i < endIndex);
     });
+    // const { inverterList } = this.props;
+    // const initDeviceList = inverterList.deviceList || [];
+    // const totalNum = initDeviceList.length || 0;
+    // const maxPage = Math.ceil(totalNum / pageSize);
+    // if(totalNum === 0){ // 总数为0时，展示0页
+    //   currentPage = 0;
+    // }else if(maxPage < currentPage){ // 当前页已超出
+    //   currentPage = maxPage;
+    // }
     return tableSource;
   }
 
@@ -337,11 +346,12 @@ class HostoryAlarmTable extends Component {
     const { historyAlarm, loading } = this.props;
     const tableSource = this.createTableSource(historyAlarm);
     const columns = this.initColumn();
+    const { pageSize, currentPage } = this.state;
     return (
       <div className={styles.alarmTable}>
         <div className={styles.tableHeader}>
           {this.renderOperation()}
-          <CommonPagination onPaginationChange={this.onChangePagination} total={historyAlarm.length} />
+          <CommonPagination pageSize={pageSize} currentPage={currentPage} onPaginationChange={this.onChangePagination} total={historyAlarm.length} />
         </div>
         <Table
           loading={loading}
