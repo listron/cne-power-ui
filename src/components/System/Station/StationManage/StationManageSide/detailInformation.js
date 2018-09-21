@@ -9,7 +9,7 @@ export const baseFun = (detailData) => { // 根据基础信息配置输出指定
     { name: '电站位置', value: `${longitude} ${latitude}`, }, // 特殊组合
     { name: '覆盖类型', value: detailData.coverType, },
     { name: '所属区域', value: detailData.regionName, },
-    { name: '所在省市', value: detailData.provinceName, },
+    { name: '所在省市', value: `${detailData.provinceName}${detailData.cityName}${detailData.countyName}` },
     { name: '所属公司', value: detailData.affiliateCompany, },
     { name: '联系电话', value: detailData.stationContactNumber, },
     { name: '并网容量', value: detailData.stationCapacity, unit:'MWp' },
@@ -46,12 +46,12 @@ export const otherFun = (detailData) => { // 其他信息配置输出指定规�
   const otherArray = [ // 其他信息
     { name: '自动有功控制能力', value: detailData.automaticActiveControl?'是':'否', }, // 实际调整
     { name: '监控系统厂家', value: detailData.monitoringSystemName, },
-    { name: '创建人', value: '字段未定义', }, // 未知
+    { name: '创建人', value: detailData.createUser, }, // 未知
     { name: '自动无功控制能力', value: detailData.automaticAeactiveContro?'是':'否', }, // 实际调整
     { name: '监控系统个数', value: detailData.monitoringSystemCount, },
-    { name: '创建时间', value: '字段未定义', }, // 未知
-    { name: '低压穿越(LVRT)', value: detailData.lowPressureCrossing, },  
-    { name: '电站时区', value: detailData.timeZone, }, // 格式？
+    { name: '创建时间', value: moment((detailData.createTime)).format('YYYY-MM-DD HH:mm') }, // 未知
+    { name: '低压穿越(LVRT)', value: detailData.lowPressureCrossing?'是':'否', },  
+    { name: '电站时区', value: detailData.timeZone?(detailData.timeZone>0&&detailData.timeZone<10?`UTC+0${detailData.timeZone}:00`:`UTC${detailData.timeZone}:00`):'--', }, // 格式？
   ];
   return otherArray;
 }
