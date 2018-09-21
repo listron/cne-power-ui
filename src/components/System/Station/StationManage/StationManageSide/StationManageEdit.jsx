@@ -58,7 +58,7 @@ class StationManageEdit extends Component {
             <Icon type="arrow-left" className={styles.backIcon} onClick={this.cancelEdit} />
           </span>
         </div>
-        <EditForm stationDetail={stationDetail} saveStationDetail={saveStationDetail} cancelEdit={this.cancelEdit} loading={loading} />
+        <EditForm stationDetail={stationDetail} saveStationDetail={saveStationDetail} cancelEdit={this.cancelEdit} loading={loading}  {...this.props} />
       </div>
     )
   }

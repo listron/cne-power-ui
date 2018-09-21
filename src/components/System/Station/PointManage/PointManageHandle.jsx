@@ -47,7 +47,12 @@ class PointManageHandle extends Component {
   render() {
     const { pageSize, pageNum, totalNum, pointList, allStationBaseInfo, stationList, stationCode } = this.props;
     const selectedStationInfo = stationList.find(e => e.stationCode === stationCode);
-    const pointForbidClear = !selectedStationInfo || selectedStationInfo.pointStatus === 1; // 未找到电站或电站已导入告警，不可清除
+ 
+    const pointForbidClear = !selectedStationInfo || selectedStationInfo.alarmStatus === 1; // 未找到电站或电站已导入告警，不可清除
+
+    
+
+
     const downloadHref = `${path.basePaths.APIBasePath}${path.APISubPaths.system.downloadPointInfo}?stationCode=${stationCode}`;
     return (
       <div className={styles.pointManageHandle}>

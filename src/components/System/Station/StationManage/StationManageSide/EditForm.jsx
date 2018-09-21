@@ -37,9 +37,16 @@ class EditForm extends Component {
           ...stationDetail,
           ...values,
           stationStatus: !!values.stationStatus,
+          
         })
+        this.props.confirmWarningTip()
       }
+      
+      
+     
     })
+    //this.props.changeStationManageStore({showPage: 'detail'});  
+    //this.props.onShowSideChange({showSidePage:'detail'});  
   }
 
   render(){
