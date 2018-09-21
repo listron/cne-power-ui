@@ -3,7 +3,6 @@ import moment from 'moment';
 import { message, Modal, Button } from 'antd';
 import { Route,Redirect, Switch,withRouter} from 'react-router-dom';
 import {routerConfig} from '../../common/routerSetting';
-import { menu } from '../../common/menu';
 import styles from './style.scss';
 import { connect } from 'react-redux';
 import Login from '../Login/LoginLayout';
@@ -22,10 +21,8 @@ import Cookie from 'js-cookie';
 
 class Main extends Component {
   static propTypes = {
-    setTopMenu: PropTypes.func,
     getStations: PropTypes.func,
     getDeviceTypes: PropTypes.func,
-    topMenu: PropTypes.object,
     login: PropTypes.object,
     history: PropTypes.object,
     enterpriseId: PropTypes.string,
@@ -42,12 +39,9 @@ class Main extends Component {
     };
   }
 
-  componentDidMount(){//根据路径缓存topMenu值
+  componentDidMount(){
     const { pathname } = this.props.history.location;
     if(pathname !== '/login') {
-      let pathArray = pathname.split('/').filter(e=>!!e);
-      const params = menu.find(e=>e.path===`/${pathArray[0]?pathArray[0]:''}`);
-      this.props.setTopMenu({ topMenu: params });
       const authData = Cookie.get('authData');
       if(authData) {
         this.props.getStations();
@@ -95,7 +89,7 @@ class Main extends Component {
   }
 
   render() {
-    const { setTopMenu, topMenu, changeLoginStore } = this.props;
+    const { changeLoginStore } = this.props;
     const authData = Cookie.get('authData') || null;
     const isNotLogin = Cookie.get('isNotLogin');
     const userRight = Cookie.get('userRight');
@@ -112,7 +106,7 @@ class Main extends Component {
             <div className={styles.headerLeft}>
               <LogoInfo />
               <div className={styles.logo}></div>
-              <TopMenu setTopMenu={setTopMenu} topMenu={topMenu}  />
+              <TopMenu />
             </div>
             <div className={styles.headerRight}>
               <img width="294px" height="53px" src="/img/topbg02.png" className={styles.powerConfig} />
@@ -120,7 +114,7 @@ class Main extends Component {
             </div>
           </div>
           <div className={styles.appMain}>
-            <SideMenu topMenu={topMenu} />
+            <SideMenu />
             <div className={styles.content} id="main" >
               <Switch>
                 {routerConfig}
@@ -156,7 +150,6 @@ class Main extends Component {
 
 const mapStateToProps = (state) => ({
   login: state.login.get('loginData'),
-  topMenu: state.common.get('topMenu')? state.common.get('topMenu').toJS() : {},
   enterpriseId: state.login.get('enterpriseId'),
   username: state.login.get('username'),
 });
@@ -164,7 +157,6 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   getStations: payload => dispatch({ type: commonAction.GET_STATIONS_SAGA, payload }),
   getDeviceTypes: payload => dispatch({ type: commonAction.GET_DEVICETYPES_SAGA, payload }),
-  setTopMenu: payload => dispatch({ type: commonAction.CHANGE_COMMON_STORE_SAGA, payload }),
   changeLoginStore: params => dispatch({ type: loginAction.CHANGE_LOGIN_STORE_SAGA, params }),
   // refreshToken: payload => dispatch({ type: commonAction.REFRESHTOKEN_SAGA, payload})
 });
