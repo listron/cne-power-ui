@@ -41,7 +41,7 @@ class EnterpriseDetail extends Component {
     const { showInforTip } = this.state;
     const defaultLogo = '/img/nopic.png';
     const rightHandler = localStorage.getItem('rightHandler');
-    const enterpriseUpdateRight = rightHandler && rightHandler.includes('account_enterprise_update');
+    const enterpriseUpdateRight = rightHandler && rightHandler.split(',').includes('account_enterprise_update');
     return (
       <div className={styles.enterpriseDetail}>
         <div className={styles.detailTop}>

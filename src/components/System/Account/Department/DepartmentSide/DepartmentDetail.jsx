@@ -167,9 +167,9 @@ class DepartmentDetail extends Component {
     const createTime = departmentDetail.createTime? moment(departmentDetail.createTime).format('YYYY年MM月DD日 HH时mm分'):' -- ';
     const updateTime = departmentDetail.updateTime? moment(departmentDetail.updateTime).format('YYYY年MM月DD日 HH时mm分'):' -- ';
     const rightHandler = localStorage.getItem('rightHandler');
-    const departmentUpdateRight = rightHandler && rightHandler.includes('account_department_update');
-    const userSetRight = rightHandler && rightHandler.includes('account_department_user');
-    const stationSetRight = rightHandler && rightHandler.includes('account_department_station');
+    const departmentUpdateRight = rightHandler && rightHandler.split(',').includes('account_department_update');
+    const userSetRight = rightHandler && rightHandler.split(',').includes('account_department_user');
+    const stationSetRight = rightHandler && rightHandler.split(',').includes('account_department_station');
     return (
       <div className={styles.departmentDetail}>
         {showWarningTip && <WarningTip onOK={this.confirmWarningTip} value={warningTipText} />}

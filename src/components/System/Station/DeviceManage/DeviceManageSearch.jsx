@@ -77,14 +77,14 @@ class DeviceManageSearch extends Component {
         <span className={styles.titleText}>条件查询</span>
         <StationSelect data={allStationBaseInfo} onOK={this.selectStation} />
         <Select className={styles.typeSelect} onChange={this.selectDeviceType} value={deviceTypeCode} placeholder="请选择设备类型" disabled={typeSelectDisable}>
-          <Option key={null} value={null}>{'全部'}</Option>
+          <Option key={null} value={null}>{'全部设备类型'}</Option>
           {stationDeviceTypes.map(e=>{
             if(!e){ return null; }
             return <Option key={e.deviceTypeCode} value={e.deviceTypeCode}>{e.deviceTypeName}</Option>
           })}
         </Select>
         <Select className={styles.modelSelect} onChange={this.selectDeviceModel} value={deviceModeCode} placeholder="请选择设备型号" disabled={modelSelectDisable}>
-          <Option key={null} value={null}>{'全部'}</Option>
+          <Option key={null} value={null}>{'全部设备型号'}</Option>
           {deviceModels.map(e=>{
             if(!e){ return null; }
             return <Option key={e.deviceModeCode} value={e.deviceModeCode}>{e.deviceModeName}</Option>
