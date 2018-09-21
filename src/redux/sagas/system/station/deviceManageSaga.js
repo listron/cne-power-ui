@@ -21,12 +21,23 @@ function *getDeviceList(action){ // 请求设备列表
       ...payload,
       sortField: payload.sortField.replace(/[A-Z]/g,e=>`_${e.toLowerCase()}`), //重组字符串
     });
+
+    const totalNum = response.data.data.totalNum || 0;
+    let { pageNum, pageSize } = payload;
+    const maxPage = Math.ceil(totalNum / pageSize);
+    if(totalNum === 0){ // 总数为0时，展示0页
+      pageNum = 0;
+    }else if(maxPage < pageNum){ // 当前页已超出
+      pageNum = maxPage;
+    }
+
     yield put({
       type:  deviceManageAction.GET_DEVICE_MANAGE_FETCH_SUCCESS,
       payload:{
         ...payload,
         deviceList: response.data.data.context || [],
-        totalNum: response.data.data.totalNum || 0,
+        totalNum,
+        pageNum,
       },
     });
   }catch(e){

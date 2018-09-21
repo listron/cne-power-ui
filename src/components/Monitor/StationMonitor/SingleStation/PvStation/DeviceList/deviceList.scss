@@ -69,6 +69,8 @@
     .inverterBlockBox{
       padding: 20px 20px 60px;
       color: #999;
+      display: flex;
+      flex-wrap: wrap;
       .parentDeviceName{
         margin: 20px 0;
       } 

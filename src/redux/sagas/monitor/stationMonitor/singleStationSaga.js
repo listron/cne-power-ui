@@ -212,11 +212,20 @@ function *getDeviceTypeFlow(action){
   try{
     yield put({type: singleStationAction.SINGLE_STATION_FETCH});
     const response = yield call(axios.get, url, payload);
+    let deviceTypeCode = 206; // 默认组串式逆变器
+    if(payload.deviceTypeCode){
+      deviceTypeCode = payload.deviceTypeCode
+    }else{
+      const inverterType = [201, 206];
+      const inverterResult = inverterType.filter(e => response.data.data.find(item => item.deviceTypeCode === e));
+      deviceTypeCode = inverterResult[0];
+    }
     if(response.data.code === '10000'){
       yield put({
         type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
         payload: {
           deviceTypeFlow: response.data.data || [],
+          deviceTypeCode,
         }
       })
     }else{

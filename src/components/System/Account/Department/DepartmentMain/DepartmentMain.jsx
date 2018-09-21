@@ -42,7 +42,7 @@ class DepartmentMain extends Component {
       parentDepartmentName,
       stationName,
       sort: this.props.sort,
-      pageNum: this.props.pageNum,
+      pageNum: 1,
       pageSize: this.props.pageSize,
     }
     this.props.getDepartmentList(params)//请求部门列表

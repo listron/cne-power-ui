@@ -22,12 +22,22 @@ function *changeEnterpriseStore(action){
     try{
       yield put({ type:enterpriseAction.ENTERPRISE_FETCH });
       const response = yield call(axios.get,url);
+
+      const totalNum = response.data.data.totalNum || 0;
+      let { currentPage, pageSize } = payload;
+      const maxPage = Math.ceil(totalNum / pageSize);
+      if(totalNum === 0){ // 总数为0时，展示0页
+        currentPage = 0;
+      }else if(maxPage < currentPage){ // 当前页已超出
+        currentPage = maxPage;
+      }
       yield put({
         type:  enterpriseAction.GET_ENTERPRISE_FETCH_SUCCESS,
         payload:{
           ...payload,
           enterpriseData: response.data.data.enterpriseData,
-          totalNum: response.data.data.totalNum,
+          totalNum,
+          currentPage,
         },
       });
     }catch(e){

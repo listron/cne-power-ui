@@ -28,11 +28,22 @@ function* getUserList(action) {
     yield put({ type: userAction.USER_FETCH });
     const response = yield call(axios.post, url, payload);
     if (response.data.code === '10000') {
+
+      const totalNum = response.data.data.totalNum || 0;
+      let { pageNum, pageSize } = payload;
+      const maxPage = Math.ceil(totalNum / pageSize);
+      if(totalNum === 0){ // 总数为0时，展示0页
+        pageNum = 0;
+      }else if(maxPage < pageNum){ // 当前页已超出
+        pageNum = maxPage;
+      }
+
       yield put({
         type: userAction.GET_USER_FETCH_SUCCESS,
         payload: {
           ...payload,
-          totalNum: response.data.data.totalNum || 0,
+          totalNum,
+          pageNum,
           userData: response.data.data.userData || [],
         }
       });
@@ -80,7 +91,7 @@ function* changeUserStatus(action) {
         stationName: state.system.user.get('stationName'),
         phoneNum: state.system.user.get('phoneNum'),
         pageSize: state.system.user.get('pageSize'),
-        pageNum: 1,
+        pageNum: state.system.user.get('pageNum'),
         selectedKey: payload.selectedKey,
       }));
       yield put({
@@ -230,7 +241,7 @@ function* createUserInfo(action) {
         stationName: state.system.user.get('stationName'),
         phoneNum: state.system.user.get('phoneNum'),
         pageSize: state.system.user.get('pageSize'),
-        pageNum: 1,
+        pageNum: state.system.user.get('pageNum'),
       }));
       yield put({
         type: userAction.GET_USER_LIST_SAGA,
@@ -248,7 +259,6 @@ function* createUserInfo(action) {
     console.log(e);
   }
 }
-
 
 export function* watchUser() {
   yield takeLatest(userAction.CHANGE_USER_STORE_SAGA, changeUserStore);

@@ -46,14 +46,14 @@ class EnterpriseMain extends Component {
   }
 
   searchEnterprise = ({enterpriseName,enterprisePhone}) => {//名称+电话 搜索企业
-    const {filterStatus,sort,ascend,currentPage,pageSize} = this.props;
+    const {filterStatus,sort,ascend,pageSize} = this.props;
     this.props.getEnterpriseList({
       filterStatus,
       enterpriseName,
       enterprisePhone,
       sort,
       ascend,
-      currentPage,
+      currentPage: 1,
       pageSize,
     });
   }
