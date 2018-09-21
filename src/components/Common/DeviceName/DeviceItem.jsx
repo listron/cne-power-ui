@@ -24,6 +24,7 @@ class DeviceItem extends Component {
         className={styles.deviceItem}
         style={this.props.selected?{backgroundColor:'#199475',color:'#fff'}:{backgroundColor:'#f1f1f1',color:'#999'}}
         onClick={this.onSelectItem}
+        title={this.props.item.get('deviceName')}
       >
         {this.props.item.get('deviceName')}
       </div>
