@@ -87,7 +87,7 @@ class AllStation extends Component {
             <TabPane tab="光伏" key="1"><PvStation {...this.props} /></TabPane>
           </Tabs>:  
           (stationTypes === '0'? <WindStation {...this.props} /> : <PvStation {...this.props} />)
-        }        
+        }   
         </div>
         <Footer />
       </div>

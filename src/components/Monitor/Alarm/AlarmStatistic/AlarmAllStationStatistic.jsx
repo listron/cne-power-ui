@@ -77,9 +77,8 @@ class ALarmAllStationStatistic extends React.Component {
 
   stationIsOneType() {
     const { stations } = this.props;
-    console.log(stations.toJS());
-    const length = stations.map(station => station.get('stationCode')).toSet().size;
-    return length === 1;
+    const length = stations.map(e => e.get('stationType')).toSet().size;
+    return length === 1;//需求：只有一种类型,不显示tab;两种类型(风电/光伏)才显示tab
   }
 
   showStationSelect = () => {
@@ -115,7 +114,11 @@ class ALarmAllStationStatistic extends React.Component {
     return (
       <div className={styles.alarmStatistTabs}>
         {stationTypeOne ? 
-        <AlarmStatisticByType {...this.props} onChangeFilter={this.onChangeFilter} graphId="station" /> :
+        <div className={styles.AlarmStatisticByTypeBox} >
+          <div className={styles.singleAlarmFilter} >{operations}</div>
+          <AlarmStatisticByType {...this.props} onChangeFilter={this.onChangeFilter} graphId="station" />
+        </div>
+         :
         <Tabs type="card" activeKey={stationType} tabBarExtraContent={operations} onChange={this.queryTargetData} >
           <TabPane tab="风电" key="0">
             <AlarmStatisticByType {...this.props} onChangeFilter={this.onChangeFilter} graphId="windStation" />
