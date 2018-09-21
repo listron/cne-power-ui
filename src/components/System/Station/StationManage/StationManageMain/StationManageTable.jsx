@@ -188,7 +188,7 @@ class StationManageTable extends Component {
         dataIndex: 'handler',
         key: 'handler',
         render: (text, record, index) => { // 电站未接入且alarmStatus,departmentStatus,deviceStatus,pointStatus全部为0时，才能删除。
-          console.log(record);
+      
           const deletable = !record.alarmStatus && !record.departmentStatus && !record.pointStatus && !record.isConnected;
           if(deletable){
             return <span className={styles.deleteStation} onClick={()=>this.deleteEdit(record)}>删除</span>
