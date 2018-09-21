@@ -18,6 +18,8 @@ class PointManageHandle extends Component {
     queryParams: PropTypes.object,
     getPointList: PropTypes.func,
     deletePointList: PropTypes.func,
+    getStationDeviceTypes: PropTypes.func,
+    changeCommonStore: PropTypes.func,
   }
   constructor(props) {
     super(props);
@@ -34,10 +36,22 @@ class PointManageHandle extends Component {
     })
   }
 
-  // getPointList = () => { // 上传成功后重新请求列表
-  //   const { queryParams, getPointList } = this.props;
-  //   getPointList({ ...queryParams });
-  // }
+  getUpdatePointList = ({ file, selectedStation }) => { // 上传成功后重新请求列表
+    const { queryParams, getPointList, getStationDeviceTypes, changeCommonStore } = this.props;
+    getPointList({ 
+      ...queryParams,
+      stationCode: selectedStation.stationCode,
+      deviceTypeCode: null,
+      deviceModeCode: null,
+      pageNum: 1,
+    });
+    getStationDeviceTypes({
+      stationCodes: selectedStation.stationCode,
+    });
+    changeCommonStore({
+      deviceModels: []
+    })
+  }
 
   deletPointList = () => {
     const { deletePointList, stationCode } = this.props;
@@ -62,7 +76,7 @@ class PointManageHandle extends Component {
             uploadPath={`${path.basePaths.APIBasePath}${path.APISubPaths.system.importPointsInfo}`} 
             uploaderName={'测点'} 
             uploadExtraData={['stationCode']}
-            // loadedCallback={this.getPointList}
+            loadedCallback={this.getUpdatePointList}
           />
           <Button disabled={pointList.length === 0} className={styles.exportInfo} href={downloadHref} download={downloadHref}>导出测点表</Button>
           {/* <Button disabled={pointList.length === 0}>查看测试状态</Button> */}
