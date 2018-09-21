@@ -121,7 +121,7 @@ class DeviceAlarmTable extends Component {
   }
 
   render() {
-    const { deviceAlarmList, loading, deviceDetail } = this.props;
+    const { deviceAlarmList, deviceDetail } = this.props;
     const { pageSize, currentPage } = this.state;
     const tableSource = this.createTableSource(deviceAlarmList);
     const columns = this.initColumn();

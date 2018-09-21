@@ -33,6 +33,7 @@ class Boxtransformer extends Component {
     this.props.getMonitorDeviceData(params);
     this.props.getTenMinDeviceData(params);
     this.getData(stationCode, deviceCode, deviceTypeCode);
+    this.getTenMinData(stationCode, deviceCode, deviceTypeCode);
   }
 
   componentWillReceiveProps(nextProps){
@@ -45,6 +46,7 @@ class Boxtransformer extends Component {
       clearTimeout(this.timeOutId);
       clearTimeout(this.timeOutTenMin);
       this.getData(nextStation, nextDevice, nextType);
+      this.getTenMinData(nextStation, nextDevice, nextType);
     }
   }
 
@@ -58,14 +60,22 @@ class Boxtransformer extends Component {
       stationCode,
       deviceCode,
       deviceTypeCode,
-      timeParam: '72',
     };
     this.timeOutId = setTimeout(() => {
     this.props.getMonitorDeviceData(params);
       this.getData(stationCode, deviceCode, deviceTypeCode);
     },10000)
+  }
+
+  getTenMinData = (stationCode, deviceCode, deviceTypeCode) => {
+    const params = {
+      stationCode,
+      deviceCode,
+      deviceTypeCode,
+      timeParam: '72',
+    };
     this.timeOutTenMin = setTimeout(() => {
-    this.props.getTenMinDeviceData(params);
+      this.props.getTenMinDeviceData(params);
       this.getData(stationCode, deviceCode, deviceTypeCode);
     },600000)
   }
