@@ -43,6 +43,10 @@ class RealTimeAlarm extends Component {
   }
   constructor(props) {
     super(props);
+    this.state = {
+      currentPage: 1,
+      pageSize: 10,
+    }
   }
 
   componentDidMount() {
@@ -67,11 +71,16 @@ class RealTimeAlarm extends Component {
     this.alarmInterval = setInterval(() => { this.getAlarmInfo() }, 10000);
   }
 
-
-
   componentWillUnmount() {
     this.props.resetAlarm();
     clearInterval(this.alarmInterval);
+  }
+
+  onPaginationChange = ({ currentPage, pageSize }) => {//分页器
+    this.setState({
+      currentPage,
+      pageSize
+    })
   }
 
   onChangeFilter = (obj) => {
@@ -90,7 +99,10 @@ class RealTimeAlarm extends Component {
       isTransferWork,
       isRelieveAlarm
     }
-    let newFiter = Object.assign({}, filter, obj);
+    const newFiter = { ...filter, ...obj };
+    this.setState({
+      currentPage: 1,
+    })
     this.props.getRealTimeAlarm(newFiter);
     this.props.getAlarmNum({ warningStatus });
     this.alarmInterval = setInterval(() => { this.getAlarmInfo() }, 10000);
@@ -140,6 +152,7 @@ class RealTimeAlarm extends Component {
   render() {
     const status = this.getStatus();
     const alarmStatus = this.getAlarmStatus(status);
+    const { currentPage, pageSize, } = this.state;
     const breadCrumbData = {
       breadData: [
         {
@@ -155,7 +168,13 @@ class RealTimeAlarm extends Component {
             <RealTimeAlarmInfo {...this.props} alarmStatus={alarmStatus} />
             <RealTimeAlarmFilter {...this.props} onChangeFilter={this.onChangeFilter} />
             <DeviceNameSearch onSearch={this.onChangeFilter} deviceName={this.props.deviceName} />
-            <RealTimeAlarmTable {...this.props} alarmStatus={alarmStatus} />
+            <RealTimeAlarmTable 
+              {...this.props} 
+              alarmStatus={alarmStatus} 
+              currentPage={currentPage} 
+              pageSize={pageSize} 
+              onPaginationChange={this.onPaginationChange}
+            />
           </div>
           <Footer />
         </div>

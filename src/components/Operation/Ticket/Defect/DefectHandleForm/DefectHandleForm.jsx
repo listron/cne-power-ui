@@ -40,8 +40,8 @@ class DefectHandleForm extends Component {
   
   render() {
     const rightHandler = localStorage.getItem('rightHandler');
-    const reviewDefectRight = rightHandler && rightHandler.includes('workExamine_defect_review');
-    const checkDefectRight = rightHandler && rightHandler.includes('workExamine_defect_check');
+    const reviewDefectRight = rightHandler && rightHandler.split(',').includes('workExamine_defect_review');
+    const checkDefectRight = rightHandler && rightHandler.split(',').includes('workExamine_defect_check');
     const { status } = this.props;
     let titleName = '';
     if(status === '1' && reviewDefectRight){

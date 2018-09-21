@@ -2,6 +2,14 @@
 @import '../../../../../theme/theme.scss';
 
 .stationManageSide{ 
+  :global{
+    .ant-form-item-required:before{
+      display: none;
+    }
+    .ant-form-item-label label:after{
+      display: none;
+    }
+  }
   display: flex;
   flex: 1 0 auto;
   flex-direction: column;

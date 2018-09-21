@@ -13,25 +13,15 @@ import Footer from '../../../components/Common/Footer';
 class ALarmStatistic extends Component {
   static propTypes = {
     showPage: PropTypes.string,
-    stationType: PropTypes.string,
     stationCode: PropTypes.array,
     singleStationCode: PropTypes.string,
-    // startTime: PropTypes.string,
-    // endTime: PropTypes.string,
-    stations: PropTypes.object,
-
-    getStationsAlarmStatistic: PropTypes.func,
     changeAlarmStatisticStore: PropTypes.func,
     resetAlarm: PropTypes.func,
-    loading: PropTypes.bool,
     location: PropTypes.object,
   }
 
   constructor(props) {
     super(props);
-  }
-
-  componentDidMount() {
   }
 
   componentWillReceiveProps(nextProps) {
