@@ -50,11 +50,13 @@ class InverterList extends Component {
   onChangeStatus = (e) => { // 切换状态
     this.setState({
       currentStatus: e.target.value,
+      currentPage: 1,
     })
   }
   onSwitchAlarm = (e) => { // 切换告警
     this.setState({
       alarmSwitch: e,
+      currentPage: 1,
     });
   }
   getData = (stationCode) => {
@@ -169,16 +171,6 @@ class InverterList extends Component {
     return columns;
   }
   changePagination = ({ pageSize, currentPage }) => {
-    // const { inverterList } = this.props;
-    // const initDeviceList = inverterList.deviceList || [];
-    // const totalNum = initDeviceList.length || 0;
-    // const maxPage = Math.ceil(totalNum / pageSize);
-    // if(totalNum === 0){ // 总数为0时，展示0页
-    //   currentPage = 0;
-    // }else if(maxPage < currentPage){ // 当前页已超出
-    //   currentPage = maxPage;
-    // }
-
     this.setState({ pageSize, currentPage })
   }
   tableChange = (pagination, filters, sorter) => {
@@ -203,6 +195,15 @@ class InverterList extends Component {
         return sortType * (a[sortName].length - b[sortName].length);
       }
     })
+    // const { inverterList } = this.props;
+    // const initDeviceList = inverterList.deviceList || [];
+    // const totalNum = initDeviceList.length || 0;
+    // const maxPage = Math.ceil(totalNum / pageSize);
+    // if(totalNum === 0){ // 总数为0时，展示0页
+    //   currentPage = 0;
+    // }else if(maxPage < currentPage){ // 当前页已超出
+    //   currentPage = maxPage;
+    // }
     return tableSource.splice((currentPage-1)*pageSize,pageSize);
   }
   render(){

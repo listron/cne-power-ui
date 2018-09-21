@@ -51,11 +51,13 @@ class BoxTransformerList extends Component {
   onChangeStatus = (e) => {
     this.setState({
       currentStatus: e.target.value,
+      currentPage: 1,
     })
   }
   onSwitchAlarm = (e) => {
     this.setState({
       alarmSwitch: e,
+      currentPage: 1,
     });
   }
   getData = (stationCode) => {
