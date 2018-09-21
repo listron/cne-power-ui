@@ -126,7 +126,7 @@ class DefectTimeLine extends Component {
           <div className={styles.text}>处理建议</div>
           <div className={styles.status}>{getHandleStatus(item.get("handleStatus"))}</div>
           <div className={styles.defectProposal}>
-            <span>{item.get("defectProposal")}</span>
+            <span>{item.get("defectProposal").length===5 ? `${item.get("defectProposal")}未填写` : item.get("defectProposal")}</span>
             <span>{item.get('replaceParts') ? item.get('replaceParts') : null}</span>
           </div>
         </div>

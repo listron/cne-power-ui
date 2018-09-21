@@ -23,7 +23,7 @@ function* getMonitorStation(action) {//获取所有/风/光电站信息
           const stationNum = allStationTypeCode.size;
           //此时的长度可能为2但是有可能值都是null，或者其中一个是null
           // if(stationNum > 1) {
-            if(allStationTypeCode.has('0')&&allStationTypeCode.has('1')) {
+          if(allStationTypeCode.has('0')&&allStationTypeCode.has('1')) {
             stationTypes = '2';
           } else {
             if(allStationTypeCode.has('0')) {
