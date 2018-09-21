@@ -7,22 +7,20 @@ var initState = Immutable.fromJS({
   //筛选条件
   showPage: 'multiple',//multiple,single
 
-  stationType: '0',//电站类型
+  stationType: '1',//电站类型
   stationCode: [],//电站名称
 
-  startTime: '',//发生时间
-  endTime: '',//结束时间
+  startTime: null,//发生时间
+  endTime: null,//结束时间
   deviceName: '',//设备名称，模糊查询
 
   summaryType: 2,//统计方式：1-按时，2-按日，3-按月
   singleStationCode: '',
 
-  pageSize: null,
-  pageNum: null,
+  pageSize: 10,
+  pageNum: 1,
   orderField: '',
   orderCommand: '',
-
-
 
   alarmStatistic: [],//多电站
   singleAlarmStatistic: [],//单电站

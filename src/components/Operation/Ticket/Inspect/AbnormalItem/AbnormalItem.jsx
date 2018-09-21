@@ -47,7 +47,7 @@ class AbnormalItem extends Component {
 
   render() {
     const rightHandler = localStorage.getItem('rightHandler');
-    const checkInspectRight = rightHandler && rightHandler.includes('workExamine_inspection_check');
+    const checkInspectRight = rightHandler && rightHandler.split(',').includes('workExamine_inspection_check');
     const { item, selected, checked, disabled, status, height, width, onShowDetail } = this.props;
     if(status === 'delete') {
       return (

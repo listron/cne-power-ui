@@ -183,7 +183,7 @@ class InspectTable extends Component {
     const { currentSelectedStatus } = this.state;
     const unselected = selectedRowKeys.length===0;
     const rightHandler = localStorage.getItem('rightHandler');
-    const checkInspectRight = rightHandler && rightHandler.includes('workExamine_inspection_check');
+    const checkInspectRight = rightHandler && rightHandler.split(',').includes('workExamine_inspection_check');
     if(!checkInspectRight) {
       return null;
     }
