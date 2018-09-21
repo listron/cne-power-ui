@@ -52,7 +52,7 @@ class EditForm extends Component {
   render(){
     const { getFieldDecorator } = this.props.form;
     const { stationDetail, loading } = this.props;
-    console.log(stationDetail);
+  
 
     const longitude = (stationDetail.longitude || parseFloat(stationDetail.longitude) === 0)? `${stationDetail.longitude}°` : '--';
     const latitude = (stationDetail.latitude || parseFloat(stationDetail.latitude) === 0)? `${stationDetail.latitude}°` : '--';
@@ -87,7 +87,7 @@ class EditForm extends Component {
       { name: '创建人', value: stationDetail.createUser, }, // 
       { name: '自动无功控制能力', value: stationDetail.automaticAeactiveContro?'是':'否', }, // 实际调整
       { name: '监控系统个数', value: stationDetail.monitoringSystemCount, },
-      { name: '创建时间', value: moment((stationDetail.createTime)).format('YYYY-MM-DD HH:mm'),}, // 
+      { name: '创建时间', value: stationDetail.createTime?moment((stationDetail.createTime)).format('YYYY-MM-DD HH:mm'):'--',}, // 
       { name: '低压穿越(LVRT)', value: stationDetail.lowPressureCrossing?'是':'否', },  // 未知0,1
       { name: '电站时区', value:stationDetail.timeZone?(stationDetail.timeZone>0&&stationDetail.timeZone<10?`UTC+0${stationDetail.timeZone}:00`:`UTC${stationDetail.timeZone}:00`):'--', },  // 未知
     ];
@@ -119,8 +119,8 @@ class EditForm extends Component {
           style={{ width: '198px' }}
           //onChange={this.handleCurrencyChange}
         >
-          <Option value="roof">商用屋顶</Option>
-          <Option value="roof">家用屋顶</Option>      
+          <Option value="businessRoof">商用屋顶</Option>
+          <Option value="homeRoof">家用屋顶</Option>      
           <Option value="floor">地面</Option>
         </Select>
             

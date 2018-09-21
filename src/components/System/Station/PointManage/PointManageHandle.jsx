@@ -39,8 +39,10 @@ class PointManageHandle extends Component {
   //   getPointList({ ...queryParams });
   // }
 
-  deletPointList = () => {
+  deletePointList=()=>{
+    console.log('test');
     const { deletePointList, stationCode } = this.props;
+    console.log(stationCode);
     deletePointList({ stationCode });
   }
 

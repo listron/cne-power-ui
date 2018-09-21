@@ -49,7 +49,7 @@ export const otherFun = (detailData) => { // 其他信息配置输出指定规�
     { name: '创建人', value: detailData.createUser, }, // 未知
     { name: '自动无功控制能力', value: detailData.automaticAeactiveContro?'是':'否', }, // 实际调整
     { name: '监控系统个数', value: detailData.monitoringSystemCount, },
-    { name: '创建时间', value: moment((detailData.createTime)).format('YYYY-MM-DD HH:mm') }, // 未知
+    { name: '创建时间', value: detailData.createTime?moment((detailData.createTime)).format('YYYY-MM-DD HH:mm'):'--' }, // 未知
     { name: '低压穿越(LVRT)', value: detailData.lowPressureCrossing?'是':'否', },  
     { name: '电站时区', value: detailData.timeZone?(detailData.timeZone>0&&detailData.timeZone<10?`UTC+0${detailData.timeZone}:00`:`UTC${detailData.timeZone}:00`):'--', }, // 格式？
   ];
