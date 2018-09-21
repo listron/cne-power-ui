@@ -20,12 +20,23 @@ function *getDepartmentList(action){//请求部门列表数据
   try{
     yield put({ type:departmentAction.DEPARTMENT_FETCH });
     const response = yield call(axios.post,url,payload);
+
+    const totalNum = response.data.data.totalNum || 0;
+    let { pageNum, pageSize } = payload;
+    const maxPage = Math.ceil(totalNum / pageSize);
+    if(totalNum === 0){ // 总数为0时，展示0页
+      pageNum = 0;
+    }else if(maxPage < pageNum){ // 当前页已超出
+      pageNum = maxPage;
+    }
+
     yield put({
       type:  departmentAction.GET_DEPARTMENT_FETCH_SUCCESS,
       payload:{
         ...payload,
         departmentData: response.data.data.context || [],
-        totalNum: response.data.data.totalNum || 0,
+        totalNum,
+        pageNum,
         buttonLoading: false
       },
     });
@@ -65,7 +76,7 @@ function *deleteDepartment(action){  // 删除部门
         stationName: state.system.department.get('stationName'),
         sort: state.system.department.get('sort'),
         ascend: state.system.department.get('ascend'),
-        pageNum: 1,
+        pageNum: state.system.department.get('pageNum'),
         pageSize: state.system.department.get('pageSize'),
       }));
       yield put({//重新请求所有部门信息
@@ -225,7 +236,7 @@ function *addDepartmentInfo(action){//新建部门信息
         stationName: state.system.department.get('stationName'),
         sort: state.system.department.get('sort'),
         ascend: state.system.department.get('ascend'),
-        pageNum: 1,
+        pageNum: state.system.department.get('pageNum'),
         pageSize: state.system.department.get('pageSize'),
       }));
       yield put({//请求所有部门信息

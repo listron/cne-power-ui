@@ -45,7 +45,7 @@
           .joinTop {
             height: 20px;
             width: 220px;
-            margin-bottom: 46px;
+            margin-bottom: 12px;
             margin-left: -108px;
             cursor: pointer;
             .fontIcon {
@@ -87,10 +87,15 @@
           height: 100%;
           position: relative;
           .goLogin {
-            margin: 40px 40px 40px 0;
+            margin-top: 27px;
             height: 20px;
             display: flex;
             justify-content: flex-end;
+            margin-right: 35px;
+            margin-bottom: 12px;
+            //margin: 40px 40px 40px 0;
+         
+           
             span {
               color: #199475;
               font-weight: 500;
@@ -99,6 +104,13 @@
             }
           }
         }
+        .forgetPassword{
+          .goLogin{
+            margin-bottom: 36px;
+          }
+
+        }
+
         :global{
           .ant-tabs-bar {
             width: 220px;

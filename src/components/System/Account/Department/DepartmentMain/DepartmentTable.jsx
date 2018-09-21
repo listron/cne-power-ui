@@ -288,7 +288,7 @@ class DepartmentTable extends Component {
   }
 
   render() {
-    const { departmentData, selectedDepartment, totalNum, loading, showAssignUserModal, showAssignStationModal } = this.props;
+    const { pageSize, pageNum, departmentData, selectedDepartment, totalNum, loading, showAssignUserModal, showAssignStationModal } = this.props;
     const { showWarningTip, warningTipText, hiddenWarningTipCancelText } = this.state;
     const rightHandler = localStorage.getItem('rightHandler');
     const departmentCreateRight = rightHandler && rightHandler.includes('account_department_create');
@@ -305,7 +305,7 @@ class DepartmentTable extends Component {
               {this._createHandleOption(rightHandler)}
             </div>
           </div>
-          <CommonPagination total={totalNum} onPaginationChange={this.onPaginationChange} />
+          <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalNum} onPaginationChange={this.onPaginationChange} />
         </div>
         <Table
           loading={loading}

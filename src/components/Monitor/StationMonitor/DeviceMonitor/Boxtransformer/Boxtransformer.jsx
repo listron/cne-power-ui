@@ -13,6 +13,7 @@ class Boxtransformer extends Component {
     loading: PropTypes.bool,
     match: PropTypes.object,
     getMonitorDeviceData: PropTypes.func,
+    getTenMinDeviceData: PropTypes.func,
     devices: PropTypes.array,
     deviceDetail: PropTypes.object,
     deviceTenMin: PropTypes.array,
@@ -23,6 +24,14 @@ class Boxtransformer extends Component {
 
   componentDidMount(){
     const { deviceCode, deviceTypeCode, stationCode } = this.props.match.params;
+    const params = {
+      stationCode,
+      deviceCode,
+      deviceTypeCode,
+      timeParam: '72',
+    };
+    this.props.getMonitorDeviceData(params);
+    this.props.getTenMinDeviceData(params);
     this.getData(stationCode, deviceCode, deviceTypeCode);
   }
 
@@ -34,12 +43,14 @@ class Boxtransformer extends Component {
     const nextStation = nextParams.stationCode;
     if( nextDevice !== deviceCode || nextType !== deviceTypeCode || nextStation !== stationCode ){
       clearTimeout(this.timeOutId);
+      clearTimeout(this.timeOutTenMin);
       this.getData(nextStation, nextDevice, nextType);
     }
   }
 
   componentWillUnmount(){
-    clearTimeout(this.timeOutId)
+    clearTimeout(this.timeOutId);
+    clearTimeout(this.timeOutTenMin);
   }
 
   getData = (stationCode, deviceCode, deviceTypeCode) => {
@@ -47,12 +58,16 @@ class Boxtransformer extends Component {
       stationCode,
       deviceCode,
       deviceTypeCode,
+      timeParam: '72',
     };
-    this.props.getMonitorDeviceData(params);
     this.timeOutId = setTimeout(() => {
-      this.props.getMonitorDeviceData(params);
+    this.props.getMonitorDeviceData(params);
       this.getData(stationCode, deviceCode, deviceTypeCode);
     },10000)
+    this.timeOutTenMin = setTimeout(() => {
+    this.props.getTenMinDeviceData(params);
+      this.getData(stationCode, deviceCode, deviceTypeCode);
+    },600000)
   }
 
   render(){

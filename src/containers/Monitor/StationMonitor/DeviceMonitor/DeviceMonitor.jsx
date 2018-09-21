@@ -13,7 +13,6 @@ import Footer from '../../../../components/Common/Footer';
 class DeviceMonitor extends Component {
   static propTypes = {
     match: PropTypes.object,
-    getMonitorDeviceData: PropTypes.func,
     getSingleStation: PropTypes.func,
     singleStationData: PropTypes.object,
   }
@@ -46,6 +45,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   getMonitorDeviceData: payload => dispatch({ type: deviceAction.GET_DEVICE_DATA_SAGA, payload }),
+  getTenMinDeviceData: payload => dispatch({ type: deviceAction.GET_DEVICE_MONITOR_TEN_MIN_DATA_SAGA, payload }),
   getSingleStation: payload => dispatch({type:singleStationAction.GET_SINGLE_STATION_SAGA, payload}),
 });
 

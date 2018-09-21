@@ -197,7 +197,7 @@ class InspectTable extends Component {
 
 
   render(){
-    const { inspectList, selectedRowKeys, total, loading } = this.props;  
+    const { pageSize, pageNum, inspectList, selectedRowKeys, total, loading } = this.props;  
     const columns = this.initColumn(); 
   
     const rowSelection = {
@@ -220,7 +220,7 @@ class InspectTable extends Component {
               </Tooltip>
             </div> 
           </div>
-          <CommonPagination total={total} onPaginationChange={this.onPaginationChange} />
+          <CommonPagination pageSize={pageSize} currentPage={pageNum} total={total} onPaginationChange={this.onPaginationChange} />
         </div>
         <Table 
           rowKey={(record) => { return record.inspectId }}

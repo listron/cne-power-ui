@@ -18,6 +18,8 @@ const { Option } = Select;
 class UserList extends Component {
   static propTypes = {
     loading: PropTypes.bool,
+    pageNum: PropTypes.number,
+    pageSize: PropTypes.number,
     totalNum: PropTypes.number,
     userData: PropTypes.object,
     selectedUser: PropTypes.object,//勾选的数组
@@ -28,10 +30,8 @@ class UserList extends Component {
     userStatus: PropTypes.number,
     order: PropTypes.string,
     ascend: PropTypes.bool,
-    pageSize: PropTypes.number,
     changeUserStatus: PropTypes.func,
     enterpriseId: PropTypes.string,
-    pageNum: PropTypes.number,
     roleId: PropTypes.string,
     getInviteLink: PropTypes.func,
     username: PropTypes.string,
@@ -422,7 +422,7 @@ class UserList extends Component {
   }
 
   render() {
-    const { userData, totalNum, loading, selectedUser, selectedKey } = this.props;
+    const { pageSize, pageNum, userData, totalNum, loading, selectedUser, selectedKey } = this.props;
     const { selectedUserColumns, showDeleteTip, showExamineTip, deleteWarningTip, } = this.state;
     const authData = getCookie('authData');
     const columns = [
@@ -577,7 +577,7 @@ class UserList extends Component {
               </Select>
             </div>
           </div>
-          <CommonPagination total={totalNum} onPaginationChange={this.onPaginationChange} />
+          <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalNum} onPaginationChange={this.onPaginationChange} />
         </div>
         <Table
           loading={loading}

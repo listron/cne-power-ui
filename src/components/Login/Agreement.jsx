@@ -7,26 +7,17 @@ const contactHTML = "<div><p style=\"margin:12pt 0pt 3pt; orphans:0; text-align:
 
 function Agreement(){
   return (
-    <div className={styles.loginLayout}>
-      <div className={styles.left}>
-        <div className={styles.logoImg}>
-          <div className={styles.loginImg}>
-            <div className={styles.logo}>
-              <div className={styles.pic}><img src={require('../../../assets/img/logo_power.png')} alt="" /></div>
-              <h3>智慧能源运维平台</h3>
-            </div>
-            <img className={styles.bgPic} src={require('../../../assets/img/bg_01.png')} />
-            <span className={styles.comRegisterInfo}>京ICP备12030847号-2 © 2017-2018 北京动力协合科技有限公司</span>
-          </div>
-        </div>
-      </div>
+    <div className={styles.loginLayout}>   
       <div className={styles.right}>
         <div className={styles.rightContent}>
           <div className={styles.contactAgreement}>
-            <div className={styles.innerContent}>
-              <Link to="/login" >返回登录页面</Link>
-              <h4 className={styles.contentTitle}>用户协议</h4>
-              <div className={styles.content} dangerouslySetInnerHTML={{ __html:contactHTML }}></div>
+            <div className={styles.innerContent}> 
+              <div className={styles.content} dangerouslySetInnerHTML={{ __html:contactHTML }}> 
+              </div>
+              <Link to="/login" className={styles.goBackLogin}>返回登录页面</Link>
+              <div className={styles.footerTitle}>
+              京ICP备12030847号-2 © 2017-2018 北京动力协合科技有限公司        
+              </div>
             </div>
           </div>
         </div>

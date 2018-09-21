@@ -19,8 +19,8 @@ class AlarmStatisticByType extends Component {
     pageNum: PropTypes.number,
     orderField: PropTypes.string,
     orderCommand: PropTypes.string,
-    startTime: PropTypes.string,
-    endTime: PropTypes.string,
+    // startTime: PropTypes.string,
+    // endTime: PropTypes.string,
     onChangeFilter: PropTypes.func,
     exportAlarm: PropTypes.func,
   }
@@ -47,12 +47,13 @@ class AlarmStatisticByType extends Component {
 
   //改变时间的
   onChangeTime = (value, dateString) => {
-    let startTime = value[0].utc().format();
-    let endTime = value[1].utc().format();
-
+ 
+    let startTime = value[0];
+    let endTime = value[1];
+    console.log(value);
     this.props.onChangeFilter({
       startTime,
-      endTime
+      endTime,
     });
   }
   
@@ -91,10 +92,10 @@ class AlarmStatisticByType extends Component {
         startTime = moment().subtract(1, 'days').hour(0).minute(0).second(0).utc().format();
         endTime = moment().subtract(1, 'days').hour(23).minute(59).second(59).utc().format();
       } else if(value === 'last7') {
-        startTime = moment().subtract(7, 'days').utc().format();
+        startTime = moment().subtract(7, 'days').hour(0).minute(0).second(0).utc().format();
         endTime = moment().utc().format();
       } else if(value === 'last30') {
-        startTime = moment().subtract(30, 'days').utc().format();
+        startTime = moment().subtract(30, 'days').hour(0).minute(0).second(0).utc().format();
         endTime = moment().utc().format();
       }
       this.props.onChangeFilter({
@@ -157,6 +158,7 @@ class AlarmStatisticByType extends Component {
             showFilter === 'timeSelect' &&
             <div className={styles.datePicker}><RangePicker
               showTime={false}
+              //value={moment[2019]}
               disabledDate={this.disabledDate}
               onCalendarChange={this.onCalendarChange}
               format="YYYY-MM-DD"

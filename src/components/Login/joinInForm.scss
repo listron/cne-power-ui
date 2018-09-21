@@ -3,10 +3,12 @@
 .comName{
   width: 330px;
   margin: 0 auto;
+
   .userInfo{
     :global{
       .ant-form-item, .ant-form-horizontal {
         width: 330px;
+        margin-bottom: 12px;
       }
       .ant-form{
         width: 330px;
@@ -25,7 +27,7 @@
     }
     .enterpriseBrief{
       text-align: center;
-      margin: 0 0 30px;
+      margin: 0 0 10px;
       padding-left: 70px;
       .enterpriseLogo{
         margin-bottom: 10px;
@@ -92,6 +94,7 @@
   .joinStepOne{
     position: relative;
     margin-left: -50px;
+    margin-top: 40px;
     :global{
       .ant-input{
         width: 220px;
@@ -100,8 +103,12 @@
     .enterpriseInfo{
       position: absolute;
       top: 0;
-      left: 0;
+      // left: 20px;
+      left: 8px;
       width: 416px;
+      // margin-left: -40px; 
+      // left: 0;
+     
       text-align: center;
       box-shadow: 0 2px 8px 0 rgba(0,0,0,0.20);
       .enterpriseBack{

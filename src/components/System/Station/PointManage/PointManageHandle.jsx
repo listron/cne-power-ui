@@ -9,6 +9,8 @@ import path from '../../../../constants/path';
 class PointManageHandle extends Component {
   static propTypes = {
     stationCode: PropTypes.number,
+    pageNum: PropTypes.number,
+    pageSize: PropTypes.number,
     totalNum: PropTypes.number,
     allStationBaseInfo: PropTypes.array,
     stationList: PropTypes.array,
@@ -43,7 +45,7 @@ class PointManageHandle extends Component {
   }
 
   render() {
-    const { totalNum, pointList, allStationBaseInfo, stationList, stationCode } = this.props;
+    const { pageSize, pageNum, totalNum, pointList, allStationBaseInfo, stationList, stationCode } = this.props;
     const selectedStationInfo = stationList.find(e => e.stationCode === stationCode);
     const pointForbidClear = !selectedStationInfo || selectedStationInfo.pointStatus === 1; // 未找到电站或电站已导入告警，不可清除
     const downloadHref = `${path.basePaths.APIBasePath}${path.APISubPaths.system.downloadPointInfo}?stationCode=${stationCode}`;
@@ -61,7 +63,7 @@ class PointManageHandle extends Component {
           {/* <Button disabled={pointList.length === 0}>查看测试状态</Button> */}
           <Button disabled={pointList.length === 0 || pointForbidClear} onClick={this.deletePointList} className={styles.clearPoint}>清除测点</Button>
         </div>
-        <CommonPagination  total={totalNum} onPaginationChange={this.onPaginationChange} />
+        <CommonPagination pageSize={pageSize} currentPage={pageNum}  total={totalNum} onPaginationChange={this.onPaginationChange} />
       </div>
     );
   }

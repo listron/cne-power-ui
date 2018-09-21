@@ -271,7 +271,7 @@ class DefectTable extends Component {
   }
 
   renderOperation() {
-    const { selectedRowKeys } = this.props;
+    const { selectedRowKeys, } = this.props;
     const { currentSelectedStatus } = this.state;
     const unselected = selectedRowKeys.length===0;
     const rightHandler = localStorage.getItem('rightHandler');
@@ -296,7 +296,7 @@ class DefectTable extends Component {
   }
 
   render() {
-    const { defectList, selectedRowKeys, total, loading } = this.props;
+    const {  pageSize, pageNum, defectList, selectedRowKeys, total, loading } = this.props;
     const columns = this.initColumn();
     const rowSelection = {
       selectedRowKeys,
@@ -318,7 +318,7 @@ class DefectTable extends Component {
               </Tooltip>
             </div> 
           </div>
-          <CommonPagination total={total} onPaginationChange={this.onPaginationChange} />
+          <CommonPagination pageSize={pageSize} currentPage={pageNum} total={total} onPaginationChange={this.onPaginationChange} />
         </div>
         <Table 
           rowKey={(record)=>{return record.defectId}} 
