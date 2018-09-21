@@ -248,7 +248,7 @@ class JoinInForm extends Component{
             <FormItem>
               <Button type="primary" htmlType="submit">下一步</Button>
             </FormItem>
-            {(enterpriseIdToken !== null && enterpriseIdToken !== undefined) ? <p>您已加入企业，请直接登录</p> : null}
+            {(enterpriseIdToken !== null && enterpriseIdToken !== undefined) ? <p style="text-align:center">您已加入企业，请直接登录</p> : null}
           </Form>
         :
           <div className={styles.inviteInvalid} >
