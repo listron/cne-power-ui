@@ -54,8 +54,8 @@ class AllStation extends Component {
   }
   queryStationData = (stationType) => {
     clearInterval(this.stationInterval);
-    this.props.getMonitorStation({ stationType });
-    this.stationInterval = setInterval(()=>this.props.getMonitorStation({ stationType }), 10000);
+    this.props.getMonitorStation({ stationType:stationType });
+    this.stationInterval = setInterval(()=>this.props.getMonitorStation({ stationType:stationType }), 10000);
   }
   queryTargetData = (activeKey) => {
     this.props.changeMonitorStationStore({stationTypeTabs:activeKey,stationShowType:'stationBlock'});

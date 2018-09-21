@@ -11,6 +11,7 @@ import DefectCreate from './Defect/DefectCreate/DefectCreate';
 import InspectList from './Inspect/InspectList/InspectList';
 import InspectDetail from './Inspect/InspectDetail/InspectDetail';
 import InspectCreate from './Inspect/InspectCreate/InspectCreate';
+import CommonBreadcrumb from '../../../components/Common/CommonBreadcrumb';
 
 const TabPane = Tabs.TabPane;
 
@@ -139,10 +140,20 @@ class Ticket extends Component {
   }
 
   render() {
+    const breadCrumbData = {
+      breadData: [
+        {
+          name: '工单列表',
+        }
+      ],
+    };
     return (
+      <div className={styles.ticketBox}>
+      <CommonBreadcrumb  {...breadCrumbData} style={{ marginLeft: '38px' }} />
       <div className={styles.ticket}>
         {this.renderContent()}
         <Footer />
+      </div>
       </div>
     );
   }
