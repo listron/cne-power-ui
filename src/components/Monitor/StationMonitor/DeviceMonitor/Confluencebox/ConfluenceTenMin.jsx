@@ -5,7 +5,7 @@ import {showNoData, hiddenNoData} from '../../../../../constants/echartsNoData';
 
 function ConfluenceTenMin({ deviceTenMin, loading }) {
   const echartBox = document.getElementById('confluence_monitor_tenMin');
-  const lineColor = '#999';
+  const lineColor = '#666';
   if(echartBox){
     const confluenceChart = echarts.init(echartBox);
     // if(loading){

@@ -31,7 +31,7 @@ class PowerDiagramTenMin extends Component {
     const { intervalTime } = this.state;
     const powerDiagram = echarts.init(document.getElementById('powerDiagram'));
 
-    const lineColor = '#999';
+    const lineColor = '#666';
 
     const actualPower = powerData.map(e=>e.actualPower);
     const filterActualPower = powerData.filter(e=>e.actualPower);
@@ -77,7 +77,7 @@ class PowerDiagramTenMin extends Component {
         show: true,
         backgroundColor: '#fff',
         textStyle: {
-          color: '#999',
+          color: '#666',
           fontSize: '12px',
         },
         formatter: (param) => {
@@ -238,7 +238,7 @@ class PowerDiagramTenMin extends Component {
     const productionAnalysis = "/statistical/stationaccount/production";
     return (
       <div className={styles.powerDiagramBox} >
-        <div id="powerDiagram" style={{ width: "100%", height: "100%", color: '#999', paddingTop: "20px" }}></div>
+        <div id="powerDiagram" style={{ width: "100%", height: "100%", color: '#666', paddingTop: "20px" }}></div>
         <div className={styles.powerRadio}>
           <RadioGroup defaultValue={0} size="small" onChange={this.onChangeTimePower} >
             <RadioButton value={0}>日</RadioButton>

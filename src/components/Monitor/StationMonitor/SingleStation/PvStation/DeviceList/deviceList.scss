@@ -15,7 +15,7 @@
       margin-bottom: 20px;
       .deviceName{
         font-size: 14px;
-        color: #999;
+        color: #666;
       }
       :global{
         .iconfont{
@@ -68,7 +68,7 @@
   .inverterTab{
     .inverterBlockBox{
       padding: 20px 20px 60px;
-      color: #999;
+      color: #666;
       display: flex;
       flex-wrap: wrap;
       .parentDeviceName{
@@ -123,7 +123,7 @@
               color: $themeColor;
             }
             div:last-child{
-              color: #999;
+              color: #666;
             }
           }
           :global{
@@ -175,7 +175,7 @@
               color: $themeColor;
             }
             div:last-child{
-              color: #999;
+              color: #666;
             }
           }
           :global{
@@ -253,7 +253,7 @@
           }
           .ant-table-thead{
             background: #f4f4f4;
-            color: #999999;
+            color: #666;
           }
         }
       }
@@ -281,7 +281,7 @@
     .ant-tabs-nav .ant-tabs-tab{
       margin: 0;
       background: #f1f1f1;
-      color: #999;
+      color: #666;
     }
     .ant-tabs-nav .ant-tabs-tab:hover {
       color: $themeColor;

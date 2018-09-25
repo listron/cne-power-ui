@@ -310,6 +310,7 @@ function *getBoxTransformerList(action){
 function *getConfluenceBoxList(action){ // 获取汇流箱列表
   const { payload } = action;
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.monitor.getConfluenceBoxList}${payload.stationCode}`;
+  console.log(url)
   try{
     yield put({type: singleStationAction.SINGLE_STATION_FETCH});
     const response = yield call(axios.get, url);

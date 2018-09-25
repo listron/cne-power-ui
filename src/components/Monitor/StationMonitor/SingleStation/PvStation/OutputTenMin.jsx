@@ -23,7 +23,7 @@ class OutputTenMin extends Component {
   componentWillReceiveProps(nextProps) {
     const { capabilityData } = nextProps;
     const capabilityDiagram = echarts.init(document.getElementById('capabilityDiagram'));
-    const lineColor = '#999';
+    const lineColor = '#666';
     const capabilityPower = capabilityData.map(e => e.stationPower);
     const capabilityRadiation = capabilityData.map(e => e.instantaneous);
     const filterCapabilityPower = capabilityData.filter(e => e.stationPower);
@@ -64,7 +64,7 @@ class OutputTenMin extends Component {
         show: true,
         backgroundColor: '#fff',
         textStyle: {
-          color: '#999',
+          color: '#666',
           fontSize: '12px',
         },
         axisPointer: {
@@ -202,7 +202,7 @@ class OutputTenMin extends Component {
     const resourceAnalysis = "/statistical/stationaccount/resource";
     return (
       <div className={styles.capabilityDiagramBox} >
-        <div id="capabilityDiagram" style={{ width: "100%", height: "100%", borderRight: "2px solid #dfdfdf", color: '#999', paddingTop: "20px" }}><i className="iconfont icon-more"></i></div>
+        <div id="capabilityDiagram" style={{ width: "100%", height: "100%", borderRight: "2px solid #dfdfdf", color: '#666', paddingTop: "20px" }}><i className="iconfont icon-more"></i></div>
         <Link to={resourceAnalysis} ><i className="iconfont icon-more"></i></Link>
       </div>
     )
