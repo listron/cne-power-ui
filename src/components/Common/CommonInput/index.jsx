@@ -38,7 +38,12 @@ class CommonInput extends Component {
 
   onClickCommon(text) {
     let value = this.props.value + text;
-    this.props.onChange(value);
+    if(value && value.length > this.props.size){
+      return;
+    }else{
+      this.props.onChange(value);
+    }
+    
   }
 
   renderCommonList() {
