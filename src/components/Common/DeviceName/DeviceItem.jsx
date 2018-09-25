@@ -22,7 +22,7 @@ class DeviceItem extends Component {
     return ( 
       <div 
         className={styles.deviceItem}
-        style={this.props.selected?{backgroundColor:'#199475',color:'#fff'}:{backgroundColor:'#f1f1f1',color:'#999'}}
+        style={this.props.selected?{backgroundColor:'#199475',color:'#fff'}:{backgroundColor:'#f1f1f1',color:'#666'}}
         onClick={this.onSelectItem}
         title={this.props.item.get('deviceName')}
       >

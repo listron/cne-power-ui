@@ -7,6 +7,8 @@ import DefectTimeLine from '../DefectTimeLine/DefectTimeLine';
 import WarningTip from '../../../../Common/WarningTip';
 import styles from './defectDetailForm.scss';
 import { Icon } from 'antd';
+// import CommonBreadcrumb from '../../../../../components/Common/CommonBreadcrumb';
+// import Footer from '../../../../../components/Common/Footer';
 
 class DefectDetailForm extends Component {
   static propTypes = {
@@ -154,7 +156,16 @@ class DefectDetailForm extends Component {
     const processData = defectDetail.get('processData');
     const status = defectDetail.get('defectStatus')
     const { showWarningTip, warningTipText } = this.state;
+    // const breadCrumbData = {
+    //   breadData: [
+    //     {
+    //       name: '工单列表',
+    //     }
+    //   ],
+    // };
     return (
+   
+     
       <div className={styles.detailWrap}>
         {showWarningTip && <WarningTip style={{marginTop:'250px',width: '210px',height:'88px'}} onCancel={this.onCancelWarningTip} onOK={this.onConfirmWarningTip} value={warningTipText} />}
         <div className={styles.defectDetail}>
@@ -182,7 +193,7 @@ class DefectDetailForm extends Component {
           </div>
         </div>
       </div>
-    );
+);
   }  
 }
 

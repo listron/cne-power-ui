@@ -55,7 +55,7 @@ class AlarmSingleStationGraph extends React.Component {
           type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
         },
         textStyle: {
-          color: '#999',
+          color: '#666',
           fontSize: 12,
         },
         extraCssText:'width:128px;height:116px;',

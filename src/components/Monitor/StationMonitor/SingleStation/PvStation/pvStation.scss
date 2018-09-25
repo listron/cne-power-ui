@@ -63,7 +63,7 @@
         width: 60px;
         line-height: 60px;
         text-align: center;
-        color: #999;
+        color: #666;
         cursor: pointer;
         font-size: 18px;
       }
@@ -72,7 +72,7 @@
       height: 100px;
       display: flex;
       padding: 18px 25px;
-      color: #999;
+      color: #666;
       >div{
         margin: 0 12px;
       }
@@ -114,7 +114,7 @@
           margin-top: 21px;
         }
         .trueTimeDesc{
-          color: #999;
+          color: #666;
           display: flex;
           justify-content: space-between;
           
@@ -156,7 +156,7 @@
           }
           
           .ant-radio-button-wrapper:hover, .ant-radio-button-wrapper-focused {
-            color: #999;
+            color: #666;
           }
           .ant-radio-button-wrapper-checked {
             border-color: $themeColor;
@@ -208,7 +208,7 @@
       height: 140px;
       padding: 20px;
       position: relative;
-      color: #999;
+      color: #666;
       :global{
         .ant-btn{
           padding: 0;
@@ -269,7 +269,7 @@
         div{
           float: left;
           margin: 0 25px;
-          color: #999;
+          color: #666;
         }
         img{
           margin: 0 20px;
@@ -281,7 +281,7 @@
           display: flex;
           justify-content: space-around;
           text-align: left;
-          color: #999;
+          color: #666;
           :global{
             .ant-row{
               width: 100%;
@@ -338,19 +338,19 @@
         margin-top: 10px;
         .oneWarning{
           border-bottom: 3px solid #a42b2c;
-          color: #999;
+          color: #666;
         }
         .twoWarning{
           border-bottom: 3px solid #e08031;
-          color: #999;
+          color: #666;
         }
         .threeWarning{
           border-bottom: 3px solid #f9b600;
-          color: #999;
+          color: #666;
         }
         .fourWarning{
           border-bottom: 3px solid #fbe6e3;
-          color: #999;
+          color: #666;
         }
       }
       .cardTitle{
@@ -383,7 +383,7 @@
         line-height: 30px;
         margin-top: 10px;
         .workListRate{
-          color: #999;
+          color: #666;
         }
       }
       .cardTitle{
@@ -514,7 +514,7 @@
         width:80px;
         height:33px;
         text-align: center;
-        color:#999;
+        color:#666;
       }
       .ant-tabs.ant-tabs-card > .ant-tabs-bar .ant-tabs-tab-active {
         background:#f8f8f8;

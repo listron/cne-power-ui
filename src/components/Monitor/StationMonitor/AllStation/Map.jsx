@@ -132,7 +132,7 @@ class Map extends Component {
             'featureType': 'label',
             'elementType': 'labels.text.fill',
             'stylers': {
-              'color': '#999999'
+              'color': '#666999'
             }
           }]
         }//地图样式配置
@@ -180,7 +180,7 @@ class Map extends Component {
 
           backgroundColor: '#fff',
           textStyle: {
-            color: '#999',
+            color: '#666',
           },
           extraCssText: 'box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);',
         },

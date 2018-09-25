@@ -86,7 +86,7 @@ class ConfluenceBoxList extends Component {
       case 100:
         return '#199475';
       case 200:
-        return '#999';
+        return '#666';
       case 300:
         return '#a42b2c';
       case 900:

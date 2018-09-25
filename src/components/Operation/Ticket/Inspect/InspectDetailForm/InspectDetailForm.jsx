@@ -10,9 +10,10 @@ import InspectAddAbnormal from '../InspectAddAbnormal/InspectAddAbnormal';
 import InspectAbnormal from '../InspectAbnormal/InspectAbnormal';
 import Immutable from 'immutable';
 
+
 const confirm = Modal.confirm;
 class InspectDetailForm extends Component {
-  static propTypes={
+  static propTypes = {
     inspectDetail: PropTypes.object,
     onPrev: PropTypes.func,
     onNext: PropTypes.func,
@@ -24,9 +25,9 @@ class InspectDetailForm extends Component {
     setInspectCheck: PropTypes.func,
   }
 
-  constructor(props){
+  constructor(props) {
     super(props);
-    this.state={
+    this.state = {
       abnormalIds: Immutable.fromJS([]),
       showWarningTip: false,
       warningTipText: ''
@@ -36,7 +37,7 @@ class InspectDetailForm extends Component {
   onTransformDefect = () => {
     const { abnormalIds } = this.state;
     const inspectId = this.props.inspectDetail.get('inspectId');
-    if(abnormalIds.size > 0){
+    if (abnormalIds.size > 0) {
       confirm({
         title: '确定将选定的异常设备转为工单?',
         onOk: () => {
@@ -54,7 +55,7 @@ class InspectDetailForm extends Component {
 
   onSelectItem = (abnormalId, checked) => {
     let abnormalIds = this.state.abnormalIds;
-    if(checked) {
+    if (checked) {
       abnormalIds = abnormalIds.push(abnormalId);
     } else {
       let index = abnormalIds.findIndex((item) => {
@@ -96,19 +97,19 @@ class InspectDetailForm extends Component {
     this.setState({
       showWarningTip: false,
     });
-    this.props.onCloseInspectDetail({ container: 'list' });  
+    this.props.onCloseInspectDetail({ container: 'list' });
   }
 
-  renderForm(){
+  renderForm() {
     const status = this.props.inspectDetail.get('inspectStatus');
     const rightHandler = localStorage.getItem('rightHandler');
     const checkInspectRight = rightHandler && rightHandler.split(',').includes('workExamine_inspection_check');
     const abnormalIds = this.state.abnormalIds;
-    if(status === "2"){
+    if (status === "2") {
       return (
         <InspectAddAbnormal {...this.props} />
       )
-    } else if(status === "3" && checkInspectRight) {
+    } else if (status === "3" && checkInspectRight) {
       return (
         <div className={styles.checkInspect}>
           <div className={styles.title}>
@@ -116,12 +117,12 @@ class InspectDetailForm extends Component {
             <div className={styles.text}>巡检处理</div>
             <div className={styles.border}></div>
           </div>
-          <Button className={styles.transferBtn} onClick={this.onTransformDefect} disabled={abnormalIds.size===0}>转工单</Button>
-          <div style={{color:'#999'}}>
+          <Button className={styles.transferBtn} onClick={this.onTransformDefect} disabled={abnormalIds.size === 0}>转工单</Button>
+          <div style={{ color: '#666' }}>
             （请先选择异常设备，复选框置灰为不可选）
           </div>
           <Button className={styles.checkBtn} onClick={this.onInspectCheck}>验收</Button>
-          <div style={{color:'#999'}}>（确认验收，请点击“验收”按钮）</div>
+          <div style={{ color: '#666' }}>（确认验收，请点击“验收”按钮）</div>
         </div>
       )
     } else {
@@ -131,67 +132,70 @@ class InspectDetailForm extends Component {
 
   renderTitle() {
     const status = this.props.inspectDetail.get('inspectStatus');
-    if(status === '2') {
+    if (status === '2') {
       return '执行巡检';
-    } else if(status === '3') {
+    } else if (status === '3') {
       return '验收巡检';
     } else {
       return '缺陷详情';
     }
   }
 
-  render(){
+  render() {
     const { inspectDetail } = this.props;
     const progressData = inspectDetail.get('processData');
-    const status = inspectDetail.get('inspectStatus'); 
-    const { showWarningTip, warningTipText } = this.state;   
+    const status = inspectDetail.get('inspectStatus');
+    const { showWarningTip, warningTipText } = this.state;
+
+
     return (
-      <div className={styles.detailWrap}>
-        {showWarningTip && <WarningTip style={{marginTop:'250px',width: '210px',height:'88px'}} onCancel={this.onCancelWarningTip} onOK={this.onConfirmWarningTip} value={warningTipText} />}
-        <div className={styles.inspectDetail}>
-          <div className={styles.header}>
-            <div className={styles.text}>{this.renderTitle()}</div>
-            <div className={styles.action}>
-              <i className="iconfont icon-last" onClick={this.props.onPrev} />
-              <i className="iconfont icon-next" onClick={this.props.onNext} />
-              <Icon type="arrow-left" className={styles.backIcon} onClick={this.onCancelEdit} />
-            </div>   
-        </div>
-        <div className={styles.content} >
-          <div className={styles.left} >
-            <div className={styles.basic} >
-              <InspectBasicInfo basicInfo={inspectDetail} />
+  
+        <div className={styles.detailWrap}>
+          {showWarningTip && <WarningTip style={{ marginTop: '250px', width: '210px', height: '88px' }} onCancel={this.onCancelWarningTip} onOK={this.onConfirmWarningTip} value={warningTipText} />}
+          <div className={styles.inspectDetail}>
+            <div className={styles.header}>
+              <div className={styles.text}>{this.renderTitle()}</div>
+              <div className={styles.action}>
+                <i className="iconfont icon-last" onClick={this.props.onPrev} />
+                <i className="iconfont icon-next" onClick={this.props.onNext} />
+                <Icon type="arrow-left" className={styles.backIcon} onClick={this.onCancelEdit} />
+              </div>
             </div>
-            <div className={styles.abnormal} >
-              <InspectAbnormal 
-                abnormalItems={inspectDetail.get('abnormalData')}
-                status={inspectDetail.get("inspectStatus")}
-                onDeleteAbnormal={this.props.onDeleteAbnormal}
-                getInspectStandard={this.props.getInspectStandard}
-                inspectDetail={this.props.inspectDetail}
-                inspectStandard={this.props.inspectStandard}
-                selectedIds={this.state.abnormalIds}
-                onSelectItem={this.onSelectItem}
-              />
-            </div>           
+            <div className={styles.content} >
+              <div className={styles.left} >
+                <div className={styles.basic} >
+                  <InspectBasicInfo basicInfo={inspectDetail} />
+                </div>
+                <div className={styles.abnormal} >
+                  <InspectAbnormal
+                    abnormalItems={inspectDetail.get('abnormalData')}
+                    status={inspectDetail.get("inspectStatus")}
+                    onDeleteAbnormal={this.props.onDeleteAbnormal}
+                    getInspectStandard={this.props.getInspectStandard}
+                    inspectDetail={this.props.inspectDetail}
+                    inspectStandard={this.props.inspectStandard}
+                    selectedIds={this.state.abnormalIds}
+                    onSelectItem={this.onSelectItem}
+                  />
+                </div>
+              </div>
+              <div className={styles.right} >
+                <div className={styles.timeLines}>
+                  <InspectTimeLine
+                    processData={progressData}
+                    status={status}
+                    deviceTypeName={inspectDetail.get('deviceTypeNames')}
+                    abnormalItems={inspectDetail.get('abnormalData')}
+                  />
+                </div>
+                <div className={styles.form} >
+                  {this.renderForm()}
+                </div>
+              </div>
+            </div>
           </div>
-          <div className={styles.right} >
-            <div className={styles.timeLines}>
-              <InspectTimeLine 
-                processData={progressData} 
-                status={status}
-                deviceTypeName={inspectDetail.get('deviceTypeNames')}
-                abnormalItems={inspectDetail.get('abnormalData')}
-              />
-            </div>
-            <div className={styles.form} >
-              {this.renderForm()}
-            </div>
-          </div>
         </div>
-      </div>
-      </div>
-    );
+);
   }
 }
 
