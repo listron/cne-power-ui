@@ -10,8 +10,6 @@ const { Item } = Menu;
 
 class TopMenu extends Component {
   static propTypes = {
-    setTopMenu: PropTypes.func,
-    topMenu: PropTypes.object,
     location: PropTypes.object,
     history: PropTypes.object,
   }
@@ -22,52 +20,28 @@ class TopMenu extends Component {
     };
   }
 
+  componentDidMount(){
+    const { pathname } = this.props.location;
+    this.getMenuData(pathname);
+  }
+
   componentWillReceiveProps(nextProps){
-    const { location, topMenu } = nextProps;
-    const { pathname } = location;
-    const { selectedKeys } = this.state;
-    const resetTopMenu = topMenu.path && !topMenu.path.includes('/monitor') && pathname === '/monitor';
-    const cancelTopMenuSelect = pathname.indexOf('/hidden') === 0;
-    if(selectedKeys.length === 0) {  // f5刷新
-      const pathArray = pathname.split('/').filter(e=>!!e);
-      const selectedKeyName = pathArray.length > 0? `/${pathArray[0]}`:'/';
-      this.setState({ selectedKeys:[selectedKeyName] });
-    }else if(cancelTopMenuSelect){ // 跳转至未注册在菜单中的隐藏页面时，取消顶部菜单的选中
-      this.setState({ selectedKeys: [] });
-      this.props.setTopMenu({
-        topMenu: {},
-      })
-    }else if(resetTopMenu){ // 404 页面的跳转重置topMenu至电站监控
-      this.props.setTopMenu({ topMenu: {
-        name: '实时监控',
-        path: '/monitor',
-        children: [
-          {
-            name: '电站监控',
-            iconStyle: 'home',
-            path: '/monitor/station',
-            defaultPath: true,
-          },{
-            name: '告警',
-            iconStyle: 'exclamation-circle',
-            path: '/monitor/alarm',
-            children: [
-              {
-                name: '实时告警',
-                path: '/monitor/alarm/realtime',
-              },{
-                name: '历史告警',
-                path: '/monitor/alarm/history',
-              },{
-                name: '告警统计',
-                path: '/monitor/alarm/statistic',
-              }
-            ],
-          }
-        ]
-      }});
-      this.setState({ selectedKeys: ['/monitor'] });
+    const { pathname } = nextProps.location;
+    if(pathname !== this.props.location.pathname) {
+      this.getMenuData(pathname);
     }
+  }
+
+  getMenuData = (pathname) => { // 根据pathname解析对应选中菜单。
+    let selectedKeys = [];
+    const pathMenuKey = pathname.split('/').filter(e=>e)[0]; // 路径第一个关键字。
+    const currentMenuData = menu.find(e=> pathMenuKey && e.path.replace('/','') === pathMenuKey) || {}; // 当前路径对应的菜单组
+    if(pathname === '/'){
+      selectedKeys.push('/');
+    }else if(currentMenuData && currentMenuData.path){
+      selectedKeys.push(currentMenuData.path);
+    }
+    this.setState({ selectedKeys });
   }
 
   selectTopMenu = ({item,key,selectedKeys}) => {
@@ -82,7 +56,6 @@ class TopMenu extends Component {
       selectedKeys
     });
     this.props.history.push(defaultPath);
-    this.props.setTopMenu({ topMenu: params });
   }
 
   findDefaultPath = (menuArray) => { // 递归查找默认页面。
