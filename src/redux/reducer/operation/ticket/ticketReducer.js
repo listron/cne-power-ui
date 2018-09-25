@@ -8,7 +8,8 @@ var initState = Immutable.fromJS({
 const ticketReducer = (state = initState, action) => {
   switch (action.type) {
     case ticketAction.CHANGE_SHOW_CONTAINER:
-      return state.set('showContainer', action.payload.container);
+      return state.set('showContainer', action.payload.container)
+                  .set('loading', false);
   }
   return state;
 }

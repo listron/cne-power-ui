@@ -218,9 +218,10 @@
         text-align: center;
         height: 100%;
       }
-      .lightGreen{
-        color: #78da72;
+      .today{
+        color: $themeColor;
       }
+
       .weatherIcon{
         img{
           width: 23px;

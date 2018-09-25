@@ -68,6 +68,7 @@ class PvStation extends Component {
     const { deviceTypeFlow, stationDeviceList, deviceTypeCode } = this.props;
     const weatherDeviceCode = stationDeviceList && stationDeviceList.deviceCode || 0;
     const { stationCode } = this.props.match.params;
+    
     return (
       <div className={styles.pvStation}  >
         <PvStationTop {...this.props} hiddenStationList={this.state.hiddenStationList} />
@@ -85,15 +86,17 @@ class PvStation extends Component {
             <TabPane tab="示意图" key="2">
               <div className={styles.deviceTypeFlow}>
                 {deviceTypeFlow.length > 0 && <RadioGroup value={deviceTypeCode} onChange={this.onSelectedDeviceType} >
-                  {deviceTypeFlow.map((e,i)=> (
-                    <RadioButton value={e.deviceTypeCode}  className={styles.deviceTypeItem} key={i}>
+                  {deviceTypeFlow.map((e,i)=> {
+                    const clickable = [509, 201, 206, 304, 207, 202]; // 允许点击及展示列表的设备类型
+                    const pointEventStye = clickable.includes(e.deviceTypeCode)?{}:{pointerEvents:'none'};
+                    return (<RadioButton value={e.deviceTypeCode} style={pointEventStye} className={styles.deviceTypeItem} key={i}>
                       <div className={styles.deviceTypeIcon} >
                         <i className={this.getDeviceTypeIcon(e.deviceTypeCode)} ></i>
                         <img src="/img/arrowgo.png" className={styles.arrowgo} />
                       </div>
                       <div>{e.deviceTypeName}</div>
                     </RadioButton>)
-                  )}
+                  })}
                   <RadioButton className={styles.elecnettingItem}>
                     <div className={styles.deviceTypeIcon} >
                       <i className="iconfont icon-elecnetting" ></i>

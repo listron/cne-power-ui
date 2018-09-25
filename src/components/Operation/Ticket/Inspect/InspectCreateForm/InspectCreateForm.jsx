@@ -35,6 +35,7 @@ class InspectCreateForm extends Component{
         });
         if(isContinueAdd && error.get('code') === '') {
           form.resetFields();
+          this.stationSelected(0);
         }
       }
     });
@@ -46,7 +47,7 @@ class InspectCreateForm extends Component{
   }
 
   disabledDate = (start) => {
-    return start < moment().subtract(1,'day');
+    return start && start < moment().subtract(1, 'day').endOf('day');
   }
 
   timeRange = (start, end) => {
@@ -57,12 +58,15 @@ class InspectCreateForm extends Component{
     return result;
   }
 
-  disabledTime = (time) => {
-    return {
-      disabledHours: () => this.timeRange(0, 24).splice(0, moment().hour()),
-      disabledMinutes: () => this.timeRange(0, 60).splice(0, moment().minute()),
-      disabledSeconds: () => this.timeRange(0, 60).splice(0, moment().second()),
-    };
+  disabledTime = (date) => {
+    if(date && moment().isAfter(date)){
+      return {
+        disabledHours: () => this.timeRange(0, 24).splice(0, moment().hour()),
+        disabledMinutes: () => this.timeRange(0, 60).splice(0, moment().minute()),
+        disabledSeconds: () => this.timeRange(0, 60).splice(0, moment().second()),
+      };
+    }
+    
   } 
     
 

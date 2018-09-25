@@ -117,12 +117,12 @@ class InspectDetailForm extends Component {
             <div className={styles.text}>巡检处理</div>
             <div className={styles.border}></div>
           </div>
-          <Button className={styles.transferBtn} onClick={this.onTransformDefect} disabled={abnormalIds.size === 0}>转工单</Button>
-          <div style={{ color: '#666' }}>
+          <Button className={styles.transferBtn} onClick={this.onTransformDefect} disabled={abnormalIds.size===0}>转工单</Button>
+          <div style={{color:'#666'}}>
             （请先选择异常设备，复选框置灰为不可选）
           </div>
           <Button className={styles.checkBtn} onClick={this.onInspectCheck}>验收</Button>
-          <div style={{ color: '#666' }}>（确认验收，请点击“验收”按钮）</div>
+          <div style={{color:'#666'}}>（确认验收，请点击“验收”按钮）</div>
         </div>
       )
     } else {

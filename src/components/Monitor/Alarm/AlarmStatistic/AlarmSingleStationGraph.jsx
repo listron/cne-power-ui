@@ -47,7 +47,7 @@ class AlarmSingleStationGraph extends React.Component {
     };
   }
   renderChart(data) {
-    const { timeData, alarmNum, transferWorkAlarmNum, noTransferWorkAlarmNum, transferWorkRate } = data;
+    const { timeData, transferWorkAlarmNum, noTransferWorkAlarmNum, transferWorkRate } = data;
     const option = {
       tooltip: {
         trigger: 'axis',

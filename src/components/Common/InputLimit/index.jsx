@@ -5,7 +5,7 @@ const { TextArea } = Input;
 import styles from './style.scss';
 
 /*
-  时间线组件：
+  inputArea组件：
   说明：
     1.要求组件必须传输属性：value
     2.选填属性：输入框容纳最大字数(size默认为:80),输入框宽度(width默认为:440),输入框高度(height默认为:90)
@@ -36,7 +36,19 @@ class InputLimit extends Component {
     }
   }
 
+  componentWillReceiveProps(nextProps){
+    
+    if(nextProps.value!==this.props.value){
+      let inputArea = document.getElementById('inputArea');
+      console.log(inputArea);
+      inputArea && inputArea.addEventListener('changexcx',this.checkWord,true);
+      console.log(nextProps);
+      console.log(this.props);
+    }
+  }
+
   checkWord = (e) => {
+    console.log(e);
     const textValue = e.target.value;
     this.setState({
       current: textValue.length,
@@ -50,6 +62,7 @@ class InputLimit extends Component {
       <div className={styles.inputLimit} style={this.props.style}>
         <div className={styles.inputCount}>{this.state.current}/{this.props.size}字</div>
         <TextArea 
+          id="inputArea"
           value={this.props.value}
           placeholder={this.props.placeholder}
           onChange={this.checkWord} 

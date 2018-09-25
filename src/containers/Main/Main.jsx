@@ -84,6 +84,8 @@ class Main extends Component {
     Cookie.remove('refresh_token');
     Cookie.remove('isNotLogin');
     Cookie.remove('auto');
+    Cookie.remove('userRight');
+    Cookie.remove('rightMenu');
     this.props.changeLoginStore({pageTab: 'login'});
     this.props.history.push('/login');
   }
