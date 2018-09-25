@@ -77,7 +77,7 @@ class PointManageSearch extends Component {
     return (
       <div className={styles.pointManageSearch}>
         <span className={styles.titleText}>条件查询</span>
-        <StationSelect data={allStationBaseInfo} onOK={this.selectStation} value={selectedStationInfo} />
+        <StationSelect data={allStationBaseInfo} onOK={this.selectStation} value={selectedStationInfo}  holderText="请输入电站名称" />
         <Select className={styles.typeSelect} onChange={this.selectDeviceType} value={deviceTypeCode} placeholder="请选择设备类型" disabled={typeSelectDisable}>
           <Option key={null} value={null}>{'全部设备类型'}</Option>
           {stationDeviceTypes.map(e=>{

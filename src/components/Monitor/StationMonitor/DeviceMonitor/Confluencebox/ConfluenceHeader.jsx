@@ -48,12 +48,11 @@ class ConfluenceHeader extends Component {
     const { devices, deviceDetail, stationCode, deviceTypeCode } = this.props;
     const { showDeviceChangeBox } = this.state;
     const { deviceStatus, parentDevice, sonDevice, dispersionRatio } = deviceDetail;
-    console.log(sonDevice);
     const deviceStatusInfo = deviceStatusArray.find(e=>parseInt(e.statusCode) === parseInt(deviceStatus));
     const parentDeviceBaseInfo = PVStationTypes.find(e=>parentDevice && parentDevice.deviceTypeCode === e.deviceTypeCode);
     const parentDeviceTypeCode = parentDevice && parentDevice.deviceTypeCode; // 父级设备type
     const parentDeviceCode = parentDevice && parentDevice.deviceCode; //父级设备code
-    const sonDeviceBaseInfo = PVStationTypes.find(e=>sonDevice && sonDevice.deviceTypeCode === e.deviceTypeCode);
+    const sonDeviceBaseInfo = PVStationTypes.find(e=>sonDevice && `${sonDevice.deviceTypeCode}` === e.deviceTypeCode);
     const baseLinkPath = `/hidden/monitorDevice/${stationCode}/${deviceTypeCode}`;
     return (
       <div className={styles.deviceMonitorHeader} >
@@ -72,11 +71,11 @@ class ConfluenceHeader extends Component {
             </span>
             <span className="iconfont icon-upstream linkIcon"></span>
           </Link>}
-          <Link  to={`/monitor/singleStation/${stationCode}?showPart=${sonDevice && sonDevice.deviceTypeCode}`} className={styles.eachLink}>
+          {sonDevice && sonDevice.deviceTypeCode && <Link  to={`/monitor/singleStation/${stationCode}?showPart=${sonDevice.deviceTypeCode}`} className={styles.eachLink}>
             <span className={sonDeviceBaseInfo && `${sonDeviceBaseInfo.icon} linkIcon`}></span>
             <span className={styles.linkName}>{`${sonDevice?sonDevice.deviceTypeName:''}`}列表</span>
             <span className="iconfont icon-downstream linkIcon"></span>
-          </Link>
+          </Link>}
         </div>
       </div>
     )

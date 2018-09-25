@@ -75,7 +75,7 @@ class DeviceManageSearch extends Component {
     return (
       <div className={styles.deviceManageSearch}>
         <span className={styles.titleText}>条件查询</span>
-        <StationSelect data={allStationBaseInfo} onOK={this.selectStation} />
+        <StationSelect data={allStationBaseInfo} onOK={this.selectStation} holderText="请选择电站" />
         <Select className={styles.typeSelect} onChange={this.selectDeviceType} value={deviceTypeCode} placeholder="请选择设备类型" disabled={typeSelectDisable}>
           <Option key={null} value={null}>{'全部设备类型'}</Option>
           {stationDeviceTypes.map(e=>{
