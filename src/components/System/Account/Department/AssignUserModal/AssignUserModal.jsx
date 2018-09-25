@@ -189,10 +189,11 @@ class AssignUserModal extends Component {
       let userIndex = userList.findIndex((item) => {
         return item.get('userId') === userId && item.get('departmentId') === selectedDepartmentId
       });
+
       if(parentDepartmentId === '0') {//从一级部门里勾掉
         let otherHasCurrent = userList.findIndex((item) => {
           return item.get('userId') === userId && item.get('departmentId') !== null && item.get('departmentId') !== selectedDepartmentId;
-      });
+        });
         if(otherHasCurrent !== -1) {
           userList = userList.delete(userIndex);
         } else {   
@@ -204,30 +205,50 @@ class AssignUserModal extends Component {
           }));
         }
       } else {//当前是二级部门
-      let childHasCurrent = false;
-      let parentDepartment = this.props.departmentList.find((item) => {
-          return item.get('departmentId') === parentDepartmentId;
-      });
-      if(parentDepartment && parentDepartment.get('list').size > 0) {
-        parentDepartment.get('list').forEach((department) => {
-          let index = userList.findIndex((item) => {
-            return department.get('departmentId') === item.get('departmentId') && userId === item.get('userId') && department.get('departmentId') !== selectedDepartmentId;
-          });
-          if(index !== -1) {
-            childHasCurrent = true;
-            return;
-          }
-        })
-      }
-      if(childHasCurrent) {
+        let childHasCurrent = false;
+        let parentDepartment = this.props.departmentList.find((item) => {
+            return item.get('departmentId') === parentDepartmentId;
+        });
+        if(parentDepartment && parentDepartment.get('list').size > 0) { // 选中用户原本是否位于取消分配的同级其他二级部门。
+          parentDepartment.get('list').forEach((department) => {
+            let index = userList.findIndex((item) => {
+              return department.get('departmentId') === item.get('departmentId') && userId === item.get('userId') && department.get('departmentId') !== selectedDepartmentId;
+            });
+            if(index !== -1) {
+              childHasCurrent = true;
+              return;
+            }
+          })
+        }
+        const currentUser = this.props.userList.filter(e => userId === e.get('userId'));
+        const userOriginDepart = currentUser.filter(e=>e.get('departmentId'));
+        console.log(userOriginDepart.toJS())
+        console.log(userOriginDepart.toJS().includes('309717029552128'))
+        console.log(userOriginDepart.includes('309717029552128'))
+        const userInParent = parentDepartment.get('list').filter(e=>userOriginDepart.includes(e.get('departmentId')));
+        console.log(parentDepartment.get('list').toJS())
+        console.log(userInParent.toJS());
+        // const removeUser = userOriginDepart.size === 1 && userOriginDepart.get(0); // 用户原本位于部门
+        console.log(userOriginDepart.size)
+        console.log(userOriginDepart.get(0).toJS())
+        if(childHasCurrent) { // 目的部门的同级其他部门已有该用户。
           userList = userList.delete(userIndex);
-      } else {
-        userList = userList.set(userIndex, Immutable.fromJS({
-          userId: userId,
-          username: username,
-          departmentId: parentDepartmentId,
-          departmentName: parentDepartment.get('departmentName')
+        }else if(true){ // 该用户原本位于目的部门/同级部门，删除该用户=> 未分配人员。
+          userList = userList.set(userIndex, Immutable.fromJS({
+            userId: userId,
+            username: username,
+            departmentId: parentDepartmentId,
+            departmentName: parentDepartment.get('departmentName')
           }));
+        }else if(userOriginDepart.size === 0){ // 原无部门的用户
+          userList = userList.set(userIndex, Immutable.fromJS({
+            userId: userId,
+            username: username,
+            departmentId: null,
+            departmentName: null,
+          }));
+        } else if(userOriginDepart.size > 0) { // 用户原本位于其他不相关部门=>回去未分配
+          userList = userList.delete(userIndex);
         }
       }
       
