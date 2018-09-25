@@ -91,7 +91,11 @@ class PvStationTop extends Component {
           </Link>
         </div>
         <div className={styles.trueTimeData} >
-          <div className={styles.pvlogo} ><i  className="iconfont icon-pvlogo" ></i></div>
+          <div className={styles.pvlogo} >
+            <i className="iconfont icon-pvlogo" ></i>
+            {/* {singleStationData && singleStationData.stationType === '0' ? <i className="iconfont icon-windlogo" /> :
+           <i className="iconfont icon-pvs" />} */}
+          </div>
           <div className={styles.powerScale} >
             <div className={styles.trueTimeValue}>
               <span>{singleStationData && singleStationData.stationPower && parseFloat(singleStationData.stationPower).toFixed(2) || 0}</span>
