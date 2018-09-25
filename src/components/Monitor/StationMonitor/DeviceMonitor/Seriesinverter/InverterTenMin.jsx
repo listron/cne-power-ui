@@ -5,7 +5,7 @@ import {showNoData, hiddenNoData} from '../../../../../constants/echartsNoData';
 
 function InverterTenMin({ deviceTenMin, loading }) {
   const echartBox = document.getElementById('inverter_monitor_tenMin');
-  const lineColor = '#999';
+  const lineColor = '#666';
   if(echartBox){
     
     const inverterChart = echarts.init(echartBox);
@@ -31,7 +31,7 @@ function InverterTenMin({ deviceTenMin, loading }) {
       title: {
         text: '时序图',
         textStyle: {
-          color: '#999',
+          color: '#666',
           fontSize: 14,
         },
         left: 60

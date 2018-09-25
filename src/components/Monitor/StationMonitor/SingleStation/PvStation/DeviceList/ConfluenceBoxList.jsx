@@ -10,10 +10,10 @@ const TabPane = Tabs.TabPane;
 
 class ConfluenceBoxList extends Component {
   static propTypes = {
-    boxTransformerList: PropTypes.object,
+    confluenceBoxList: PropTypes.array,
     match: PropTypes.object,
     deviceTypeCode: PropTypes.number,
-    getBoxTransformerList: PropTypes.func,
+    getConfluenceBoxList: PropTypes.func,
   }
 
   constructor(props){
@@ -62,7 +62,7 @@ class ConfluenceBoxList extends Component {
   }
 
   getData = (stationCode) => {
-    this.props.getBoxTransformerList({stationCode});
+    this.props.getConfluenceBoxList({stationCode});
     this.timeOutId = setTimeout(()=>{
       this.getData(stationCode);
     }, 10000);
@@ -86,7 +86,7 @@ class ConfluenceBoxList extends Component {
       case 100:
         return '#199475';
       case 200:
-        return '#999';
+        return '#666';
       case 300:
         return '#a42b2c';
       case 900:
@@ -199,9 +199,10 @@ class ConfluenceBoxList extends Component {
   }
   
   render(){
-    const { boxTransformerList, deviceTypeCode, } = this.props;
+    const { confluenceBoxList, deviceTypeCode, } = this.props;
     const { currentStatus, alarmSwitch, currentPage, pageSize  } = this.state;
-    const initDeviceList = boxTransformerList.deviceList && boxTransformerList.deviceList.map((e,i)=>({...e,key:i})) || []; // 初始化数据
+    // const initDeviceList = confluenceBoxList.deviceList && confluenceBoxList.deviceList.map((e,i)=>({...e,key:i})) || []; // 初始化数据
+    const initDeviceList = confluenceBoxList && confluenceBoxList.map((e,i)=>({...e,key:i})) || []; // 初始化数据
     const filteredDeviceList = initDeviceList.filter(e=>(!alarmSwitch || (alarmSwitch && e.alarmNum > 0))).filter(e=>{
       return (currentStatus === 0 || e.deviceStatus === currentStatus);
     }) // 根据筛选条件处理数据源。
@@ -214,7 +215,7 @@ class ConfluenceBoxList extends Component {
       return subDeviceList.sort((a,b)=>a.deviceName && a.deviceName.localeCompare(b.deviceName));
     });
     const currentTableList = this.createTableSource(filteredDeviceList); // 根据分页，排序筛选表格数据
-    const deviceStatus = boxTransformerList.deviceStatusSummary || [];
+    const deviceStatus = confluenceBoxList.deviceStatusSummary || [];
     const operations = (<div className={styles.inverterRight} >
       <Switch defaultChecked={false} onChange={this.onSwitchAlarm}  /> 告警
       <Radio.Group defaultValue={0} buttonStyle="solid" className={styles.inverterStatus} onChange={this.onChangeStatus}  >

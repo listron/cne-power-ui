@@ -140,7 +140,7 @@ class InspectAbnormal extends Component {
     return inspectStandard.map((item, index) => {
       return (
         <div className={styles.mainMenu} key={index}>
-          <div className={styles.mainMenuTitle}>
+          <div className={styles.mainMenuTitle} title={item.get('standardTitle')} >
             {item.get('standardTitle')}
             <i className="iconfont icon-triangle" />
           </div>

@@ -58,7 +58,7 @@ class AlarmStatisticGraph extends React.Component {
           width: '20px',
         },
         textStyle: {
-          color: '#999',
+          color: '#666',
           fontSize: 12,
         },
         extraCssText:'width:128px;height:165px;',

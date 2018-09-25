@@ -48,6 +48,12 @@ class AlarmStationSelectModal extends Component {
     });
   }
 
+  stationIsOneType() {
+    const { stations } = this.props;
+    const length = stations.map(e => e.get('stationType')).toSet().size;
+    return length === 1;//需求：只有一种类型,不显示tab;两种类型(风电/光伏)才显示tab
+  }
+
   renderProvinceStation(stations) {
     const provinceStation = stations.groupBy(item=>item.get('provinceCode')).toList();
     return provinceStation.map((province, index) => {

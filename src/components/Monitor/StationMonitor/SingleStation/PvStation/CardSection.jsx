@@ -162,20 +162,20 @@ class CardSection extends Component {
                   if(i<2){
                     return (
                     <div style={{display:'inline-block',margin: '0 5px',}} key={i} className="weather"  id={Number(i)} >
-                      <div>{i === 0 ? '今天' : (i===1? '明天': e.date)}</div>
+                      <div className={i === 0 ? styles.today : ''} >{i === 0 ? '今天' : (i===1? '明天': e.date)}</div>
                       <div className={styles.weatherIcon}><img src={`/img/weathercn/${e.weather_id.fa}.png`} /></div>
-                      <div className={i===0?styles.lightGreen:''}>{e.temperature||''}</div>
-                      <div className={i===0?styles.lightGreen:''}>{e.weather||''}</div>
-                      <div className={i===0?styles.lightGreen:''}>{e.wind||''}</div>
+                      <div>{e.temperature||''}</div>
+                      <div>{e.weather||''}</div>
+                      <div>{e.wind||''}</div>
                     </div>
                     );
                   }else{
                     return (<div style={{display:'none',margin: '0 5px',}} key={i} className="weather" id={Number(i)} >
-                      <div>{e.date}</div>
+                      <div>{e.date.substr(4)}</div>
                       <div className={styles.weatherIcon}><img src={`/img/weathercn/${e.weather_id.fa}.png`} /></div>
-                      <div className={i===0?styles.lightGreen:''}>{e.temperature||''}</div>
-                      <div className={i===0?styles.lightGreen:''}>{e.weather||''}</div>
-                      <div className={i===0?styles.lightGreen:''}>{e.wind||''}</div>
+                      <div>{e.temperature||''}</div>
+                      <div>{e.weather||''}</div>
+                      <div>{e.wind||''}</div>
                     </div>);
                   }
                 }) : <div className={styles.noweather} >暂无天气数据</div>

@@ -5,7 +5,7 @@ import {showNoData, hiddenNoData} from '../../../../../constants/echartsNoData';
 
 function BoxtransformerTenMin({ deviceTenMin, loading }) {
   const echartBox = document.getElementById('boxtransformer_monitor_tenMin');
-  const lineColor = '#999';
+  const lineColor = '#666';
   if(echartBox){
     const boxtransformerChart = echarts.init(echartBox);
     // if(loading){
