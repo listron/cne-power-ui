@@ -17,14 +17,14 @@
     background-color: #fff;
     border: 1px solid #e1e2e2;
     a{
-      color: #999;
+      color: #666;
     }
     a:hover,a:focus{
       color: $themeColor;
     }
     :global{
       .ant-btn {
-        color: #999;
+        color: #666;
       }
       .ant-spin{//table loading加载中图标颜色
         color: $themeColor;
@@ -53,7 +53,7 @@
       .userSearch{
         line-height: 50px;
         background: #fbfbfb;
-        color: #999;
+        color: #666;
         display: flex;
         padding-left: 14px;
         span{
@@ -87,7 +87,7 @@
           
           .filterCondition{
             margin: 30px 10px 0 26px;
-            color: #999;
+            color: #666;
           }
         }
         .userStatus{
@@ -206,7 +206,7 @@
             :global{
               .ant-select{
                 width: 78px;
-                color: #999;
+                color: #666;
               }
             }
           }
@@ -254,7 +254,7 @@
       .tableFooter{
         line-height: 46px;
         height: 46px;
-        color: #999;
+        color: #666;
         .info{
           margin-left: 25px;
           .totalNum{

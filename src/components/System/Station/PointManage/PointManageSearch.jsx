@@ -69,13 +69,15 @@ class PointManageSearch extends Component {
   }
 
   render() {
-    const { allStationBaseInfo, stationDeviceTypes, deviceModels, deviceTypeCode, deviceModeCode } = this.props;
+    const { allStationBaseInfo, stationDeviceTypes, deviceModels, deviceTypeCode, deviceModeCode, stationCode } = this.props;
     const typeSelectDisable = stationDeviceTypes.length === 0;
     const modelSelectDisable = deviceModels.length === 0;
+    const getSelectedStation = allStationBaseInfo.find(e=> e.stationCode === stationCode);
+    const selectedStationInfo = getSelectedStation? [getSelectedStation] : []; 
     return (
       <div className={styles.pointManageSearch}>
         <span className={styles.titleText}>条件查询</span>
-        <StationSelect data={allStationBaseInfo} onOK={this.selectStation} />
+        <StationSelect data={allStationBaseInfo} onOK={this.selectStation} value={selectedStationInfo}  holderText="请输入电站名称" />
         <Select className={styles.typeSelect} onChange={this.selectDeviceType} value={deviceTypeCode} placeholder="请选择设备类型" disabled={typeSelectDisable}>
           <Option key={null} value={null}>{'全部设备类型'}</Option>
           {stationDeviceTypes.map(e=>{

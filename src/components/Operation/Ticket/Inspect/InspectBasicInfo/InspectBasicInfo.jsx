@@ -24,7 +24,7 @@ class InspectBasicInfo extends Component {
         <div className={styles.basicItem}>
           <div>电站名称</div>
           <span>{info.get('stationName')}</span>
-          <span>{info.get('stationtype') === '0' ? <i className="iconfont icon-windlogo" /> :
+          <span>{info.get('stationType') === '0' ? <i className="iconfont icon-windlogo" /> :
            <i className="iconfont icon-pvs" />}</span>
         </div>
         <div className={styles.basicItem}><div>巡检名称</div><span>{info.get('inspectName')}</span></div>
