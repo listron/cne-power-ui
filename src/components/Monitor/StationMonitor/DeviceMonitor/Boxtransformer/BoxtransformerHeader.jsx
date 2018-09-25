@@ -48,7 +48,6 @@ class BoxtransformerHeader extends Component {
     const { devices, deviceDetail, stationCode, deviceTypeCode } = this.props;
     const { showDeviceChangeBox } = this.state;
     const { deviceStatus, sonDevice } = deviceDetail;
-    console.log(sonDevice);
     const deviceStatusInfo = deviceStatusArray.find(e=>parseInt(e.statusCode) === parseInt(deviceStatus));
     const sonDeviceBaseInfo = PVStationTypes.find(e=>sonDevice && sonDevice.deviceTypeCode === e.deviceTypeCode);
     const baseLinkPath = `/hidden/monitorDevice/${stationCode}/${deviceTypeCode}`;
@@ -64,13 +63,13 @@ class BoxtransformerHeader extends Component {
             <span>{ deviceStatusInfo && deviceStatusInfo.statusName || ' '}</span>
           </span>
         </div>
-        <div className={styles.linkTo}>
-          <Link  to={`/monitor/singleStation/${stationCode}?showPart=${sonDevice && sonDevice.deviceTypeCode}`} className={styles.eachLink}>
+        {sonDevice && sonDevice.deviceTypeCode && <div className={styles.linkTo}>
+          <Link  to={`/monitor/singleStation/${stationCode}?showPart=${sonDevice.deviceTypeCode}`} className={styles.eachLink}>
             <span className={sonDeviceBaseInfo && `${sonDeviceBaseInfo.icon} linkIcon`}></span>
             <span className={styles.linkName}>{`${sonDevice?sonDevice.deviceTypeName:''}`}列表</span>
             <span className="iconfont icon-downstream linkIcon"></span>
           </Link>
-        </div>
+        </div>}
       </div>
     )
   }

@@ -17,6 +17,10 @@ const monitorPath = {
     detail: path.APISubPaths.monitor.confluenceboxDetail,//'/mock/monitor/confluenceboxDetail',  // path.APISubPaths.monitor.confluenceboxDetail,
     tenMin: path.APISubPaths.monitor.confluenceboxTenMin//'/mock/monitor/confluenceboxTenMin'  // path.APISubPaths.monitor.confluenceboxTenMin
   },
+  '207': {  // 交流汇流箱
+    detail: path.APISubPaths.monitor.confluenceboxDetail,//'/mock/monitor/confluenceboxDetail',  // path.APISubPaths.monitor.confluenceboxDetail,
+    tenMin: path.APISubPaths.monitor.confluenceboxTenMin//'/mock/monitor/confluenceboxTenMin'  // path.APISubPaths.monitor.confluenceboxTenMin
+  },
   '304': {  // 箱变： 304
     detail: path.APISubPaths.monitor.boxtransformerDetail,//'/mock/monitor/boxtransformerDetail',  // path.APISubPaths.monitor.boxtransformerDetail,
     tenMin: path.APISubPaths.monitor.boxtransformerTenMin//'/mock/monitor/boxtransformerTenMin',  // path.APISubPaths.monitor.boxtransformerTenMin
