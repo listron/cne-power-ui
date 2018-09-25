@@ -147,7 +147,7 @@ export default {
       getPvmoduleList: '/v3/monitor/pvmodule/datalist/',//光伏组件实时
       getInverterList: '/v3/monitor/seriesinverter/datalist/',// 组串式逆变器实时
       getBoxTransformerList: '/v3/monitor/boxtransformer/datalist/',//箱变实时
-      getConfluenceBoxList: '/', // 汇流箱列表
+      getConfluenceBoxList: '/v3/monitor/confluencebox/datalist/', // 汇流箱列表
       getSingleStation: '/v3/monitor/station/',//单电站实时数据
       getCapabilityDiagram: '/v3/monitor/capabilitydiagram/',//单电站出力图表
       getMonitorPower: '/v3/monitor/power/',//单电站理论发电量-实际发电量图表
