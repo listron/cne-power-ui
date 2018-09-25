@@ -35,12 +35,14 @@ const Option = Select.Option;
       zoneName:"辽宁"
     }]
   3. 传递下来的style值，可选填，用于控制筛选组件总体样式 {width:'500px'}
-  4. 输出信息:this.props.onOK(selectedStationArray)为data中筛选的一个或多个，this.props.onChange(form表单用若有会同时触发)
+  4. holderText: string, 可选填，当用户未选择电站时的占位提示文字。 
+  5. 输出信息:this.props.onOK(selectedStationArray)为data中筛选的一个或多个，this.props.onChange(form表单用若有会同时触发)
 */
 
 class StationSelect extends Component {
   static propTypes = {
     multiple: PropTypes.bool,
+    holderText: PropTypes.bool,
     value: PropTypes.array,
     data: PropTypes.array,
     onChange: PropTypes.func,
@@ -49,6 +51,7 @@ class StationSelect extends Component {
   }
   static defaultProps = {
     multiple: false,
+    holderText: '输入关键字快速查询',
     data: [],
   }
   constructor(props) {
@@ -125,14 +128,14 @@ class StationSelect extends Component {
   }
 
   render() {
-    const { data, multiple } = this.props;
+    const { data, multiple, holderText } = this.props;
     const { checkedStationName, stationModalShow, filteredSelectedStation } = this.state;
     return (
       <div className={styles.stationSelect} style={this.props.style}>
         {multiple ? <Select
           mode="multiple"
           style={{ width: '100%' }}
-          placeholder="输入关键字快速查询"
+          placeholder={holderText}
           onChange={this.selectStation}
           value={checkedStationName}
           className={styles.stationSelectMainInput}
@@ -143,7 +146,7 @@ class StationSelect extends Component {
           onSearch={this.handleSearch}
           onSelect={this.onSelect}
           value={checkedStationName}
-          placeholder="输入关键字快速查询"
+          placeholder={holderText}
         >
           {filteredSelectedStation.map((e) => (<Option key={e.stationName}>{e.stationName}</Option>))}
         </AutoComplete>}

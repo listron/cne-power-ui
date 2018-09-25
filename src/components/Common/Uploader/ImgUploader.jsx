@@ -57,6 +57,13 @@ class ImgUploader extends Component {
       fileList: [],
     };
   }
+
+  componentWillReceiveProps(nextProps){
+    if(!nextProps.data || nextProps.data.length === 0){ // 外界要求清空列表时清空已上传文件列表。
+      this.setState({fileList: []})
+    }
+  }
+
   onOK = (imgList,editFileList) => {
     const { onChange,onOK } = this.props
     onOK && onOK(imgList);
