@@ -25,12 +25,12 @@ class ALarmAllStationStatistic extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      showStationSelect: false
+      showStationSelect: false,
     };
   }
   componentDidMount() {
     if(this.props.showPage === 'multiple') {
-      const { stationCode, startTime, endTime, stations, pageSize, pageNum, orderField, orderCommand } = this.props;
+      const { stationCode, stations, orderField, orderCommand, pageSize, pageNum } = this.props;
       let stationType = this.props.stationType;
       const stationTypeOne = this.stationIsOneType();
       if(stationTypeOne) {
@@ -39,8 +39,6 @@ class ALarmAllStationStatistic extends React.Component {
       this.props.getStationsAlarmStatistic({
         stationType,
         stationCode,
-        startTime,
-        endTime,
         pageSize,
         pageNum,
         orderField,
@@ -61,9 +59,25 @@ class ALarmAllStationStatistic extends React.Component {
       orderField,
       orderCommand
     }
-    let newFilter = Object.assign({}, filter, obj);
-    console.log(newFilter);
+    let newFilter = { ...filter, ...obj, pageNum: 1 };
     this.props.getStationsAlarmStatistic(newFilter);
+  }
+
+  onTableChange = (params) => {
+    const { stationType, stationCode, startTime, endTime, pageSize, pageNum, orderField, orderCommand } = this.props;
+    let filter = {
+      stationType,
+      stationCode,
+      startTime,
+      endTime,
+      pageSize,
+      pageNum,
+      orderField,
+      orderCommand
+    }
+    this.props.getStationsAlarmStatistic({
+      ...filter, ...params
+    });
   }
 
   onChangeStation = (stationCode) => {
@@ -88,7 +102,6 @@ class ALarmAllStationStatistic extends React.Component {
   }
 
   queryTargetData = (activeKey) => {
-    console.log(activeKey);
     const { stationCode, startTime, endTime, pageSize, pageNum, orderField, orderCommand } = this.props;
     this.props.getStationsAlarmStatistic({
       stationType: activeKey,
@@ -125,7 +138,12 @@ class ALarmAllStationStatistic extends React.Component {
             <AlarmStatisticByType {...this.props} onChangeFilter={this.onChangeFilter} graphId="windStation" />
           </TabPane>
           <TabPane tab="光伏" key="1">
-            <AlarmStatisticByType {...this.props} onChangeFilter={this.onChangeFilter} graphId="pvStation" />
+            <AlarmStatisticByType 
+              {...this.props} 
+              onChangeFilter={this.onChangeFilter} 
+              graphId="pvStation" 
+              onTableChange={this.onTableChange} 
+            />
           </TabPane>
         </Tabs>
         }

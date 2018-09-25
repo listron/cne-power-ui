@@ -13,14 +13,14 @@ class AlarmStatisticTable extends React.Component {
     orderCommand: PropTypes.string,
     stationDataList: PropTypes.array,
     alarmStatistic:PropTypes.array,
-    onChangeFilter: PropTypes.func,
+    onTableChange: PropTypes.func,
   }
   constructor(props) {
     super(props);
   }
 
   onPaginationChange = ({ currentPage, pageSize }) => {//分页器
-    this.props.onChangeFilter({
+    this.props.onTableChange({
       pageNum: currentPage,
       pageSize
     });
@@ -29,7 +29,7 @@ class AlarmStatisticTable extends React.Component {
   onChangeTable = (pagination, filters, sorter) => {
     const field = sorter.field;
     const arr = ['stationName', 'alarmNum', 'oneWarningNum', 'twoWarningNum', 'threeWarningNum', 'fourWarningNum', 'handleAvgTime', 'oneHandleAvgTime', 'twoHandleAvgTime', 'threeWarningNum', 'fourHandleAvgTime']
-    this.props.onChangeFilter({
+    this.props.onTableChange({
       orderField: (arr.indexOf(field)+1).toString(),
       orderCommand: sorter.order === 'ascend' ? '1' : '2'
     });

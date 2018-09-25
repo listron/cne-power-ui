@@ -18,25 +18,35 @@ class WindStation extends React.Component {
     this.state = {
       checked: false,
       stationType: 'all',
-      totalNum: 0
+      totalNum: 0,
+      currentPage: 1,
+      pageSize: 10,
     }
   }
   onHandleAlarm = (checked) => {
     this.setState({
-      checked
+      checked,
+      currentPage: 1,
     })
   }
   onHandleStation = (e) => {
     this.setState({
-      stationType: e.target.value
+      stationType: e.target.value,
+      currentPage: 1,
     })
   }
+
+  onPaginationChange = ({ currentPage, pageSize }) => {//分页器
+    this.setState({
+      currentPage,
+      pageSize
+    })
+  }
+
   setkey = (activekey) => {
     this.props.changeMonitorStationStore({ stationShowType: activekey });
   }
-  componentUnmount() {
-    //clearTimeout(this.autoTimer)
-  }
+  
   statisticStatusNum = () => {
     const { windMonitorStation } = this.props;
     const stationDataSummary = windMonitorStation.stationDataSummary || {};
@@ -123,13 +133,12 @@ class WindStation extends React.Component {
   }
 
   render() {
-    //let { key, checked, stationType } = this.state;
+    const { currentPage, pageSize, } = this.state;
     const { windMonitorStation } = this.props;
     const stationDataSummary = windMonitorStation.stationDataSummary || {};
     const stationProvinceSummary = stationDataSummary.stationProvinceSummary || []; 
     const TabPane = Tabs.TabPane;
-    //状态筛选部分样式
-    const operations = (
+    const operations = ( // 状态筛选部分样式
       <div style={{ border: 'none' }}>
         <Switch onChange={this.onHandleAlarm} />告警
         <Radio.Group
@@ -182,7 +191,13 @@ class WindStation extends React.Component {
             }
             key="stationList"
           >
-            <WindStationList {...this.props} stationDataList={this.statusDataList()} />
+            <WindStationList 
+              {...this.props} 
+              stationDataList={this.statusDataList()} 
+              currentPage={currentPage} 
+              pageSize={pageSize} 
+              onPaginationChange={this.onPaginationChange}
+            />
 
           </TabPane>
           <TabPane
@@ -192,8 +207,6 @@ class WindStation extends React.Component {
               </span>
             }
             key="stationMap"
-
-
           >
             <Map {...this.props} stationDataList={this.mapData()} testId="wind_bmap_station" />
           </TabPane>

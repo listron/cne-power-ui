@@ -297,11 +297,11 @@ class UserList extends Component {
 
   _createUserOperate = (rightHandler) => {
     let selectedUser = this.props.selectedUser.toJS();
-    const userDeleteRight = rightHandler && rightHandler.includes('account_user_delete');
-    const userEnableRight = rightHandler && rightHandler.includes('account_user_enable');
-    const userDisableRight = rightHandler && rightHandler.includes('account_user_disable');
-    const userEditRight = rightHandler && rightHandler.includes('account_user_edit');
-    const userAuditRight = rightHandler && rightHandler.includes('account_user_audit');
+    const userDeleteRight = rightHandler && rightHandler.split(',').includes('account_user_delete');
+    const userEnableRight = rightHandler && rightHandler.split(',').includes('account_user_enable');
+    const userDisableRight = rightHandler && rightHandler.split(',').includes('account_user_disable');
+    const userEditRight = rightHandler && rightHandler.split(',').includes('account_user_edit');
+    const userAuditRight = rightHandler && rightHandler.split(',').includes('account_user_audit');
     const showAllHandler = userDeleteRight || userEnableRight || userDisableRight || userEditRight || userAuditRight;
     if (!showAllHandler) { return null; }
     let [editable, deletable, usable, unallowable, examinable] = [false, false, false, false, false];
@@ -532,9 +532,9 @@ class UserList extends Component {
       },
     };
     const rightHandler = localStorage.getItem('rightHandler');
-    const userCreateRight = rightHandler && rightHandler.includes('account_user_create');
-    const userImportRight = rightHandler && rightHandler.includes('account_user_batchImport');
-    const userInvite = rightHandler && rightHandler.includes('account_user_invite');
+    const userCreateRight = rightHandler && rightHandler.split(',').includes('account_user_create');
+    const userImportRight = rightHandler && rightHandler.split(',').includes('account_user_batchImport');
+    const userInvite = rightHandler && rightHandler.split(',').includes('account_user_invite');
 
     return (
       <div className={styles.userList}>

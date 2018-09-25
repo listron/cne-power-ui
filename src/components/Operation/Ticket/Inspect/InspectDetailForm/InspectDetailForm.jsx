@@ -102,7 +102,7 @@ class InspectDetailForm extends Component {
   renderForm(){
     const status = this.props.inspectDetail.get('inspectStatus');
     const rightHandler = localStorage.getItem('rightHandler');
-    const checkInspectRight = rightHandler && rightHandler.includes('workExamine_inspection_check');
+    const checkInspectRight = rightHandler && rightHandler.split(',').includes('workExamine_inspection_check');
     const abnormalIds = this.state.abnormalIds;
     if(status === "2"){
       return (

@@ -33,6 +33,10 @@ class HistoryAlarm extends Component {
   }
   constructor(props) {
     super(props);
+    this.state = {
+      currentPage: 1,
+      pageSize: 10,
+    }
   }
 
   componentDidMount() {
@@ -53,6 +57,13 @@ class HistoryAlarm extends Component {
     this.props.resetAlarm();
   }
 
+  onPaginationChange = ({ currentPage, pageSize }) => {//分页器
+    this.setState({
+      currentPage,
+      pageSize
+    })
+  }
+
   onChangeFilter = (obj) => {
     const { warningLevel, stationType, stationCode, deviceTypeCode, warningConfigName, startTime, endTime, warningStatus, deviceName } = this.props;
     let filter = {
@@ -66,6 +77,9 @@ class HistoryAlarm extends Component {
       endTime,
       deviceName,
     }
+    this.setState({
+      currentPage: 1,
+    })
     let newFiter = Object.assign({}, filter, obj);
     this.props.getHistoryAlarm(newFiter);
   }
@@ -78,6 +92,7 @@ class HistoryAlarm extends Component {
         }
       ],
     };
+    const { currentPage, pageSize, } = this.state;
     return (
       <div className={styles.historyAlarmBox}>
       <CommonBreadcrumb  {...breadCrumbData} style={{ marginLeft: '38px' }} />
@@ -85,7 +100,12 @@ class HistoryAlarm extends Component {
         <div className={styles.historyAlarm}>
           <HistoryAlarmFilter {...this.props} onChangeFilter={this.onChangeFilter} />      
           <DeviceNameSearch onSearch={this.onChangeFilter} deviceName={this.props.deviceName} />
-          <HistoryAlarmTable {...this.props} /> 
+          <HistoryAlarmTable 
+            {...this.props} 
+            currentPage={currentPage} 
+            pageSize={pageSize} 
+            onPaginationChange={this.onPaginationChange}
+          /> 
         </div>
         <Footer />
       </div>

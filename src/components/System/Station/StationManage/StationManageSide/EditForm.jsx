@@ -19,6 +19,7 @@ class EditForm extends Component {
     stationDetail: PropTypes.object,
     cancelEdit: PropTypes.func,
     saveStationDetail: PropTypes.func,
+    confirmWarningTip: PropTypes.func,
   }
 
   constructor(props){
@@ -37,14 +38,21 @@ class EditForm extends Component {
           ...stationDetail,
           ...values,
           stationStatus: !!values.stationStatus,
+          
         })
+        this.props.confirmWarningTip()
       }
+      
+      
+     
     })
+  
   }
 
   render(){
     const { getFieldDecorator } = this.props.form;
     const { stationDetail, loading } = this.props;
+  
 
     const longitude = (stationDetail.longitude || parseFloat(stationDetail.longitude) === 0)? `${stationDetail.longitude}°` : '--';
     const latitude = (stationDetail.latitude || parseFloat(stationDetail.latitude) === 0)? `${stationDetail.latitude}°` : '--';
@@ -55,11 +63,11 @@ class EditForm extends Component {
       { name: '电站类型', value: `${stationDetail.stationType === 0?'风电':'光伏'}` }, // 特殊组合
       { name: '电站位置', value: `${longitude} ${latitude}` }, // 特殊组合
     ];
-    stationDetail.stationType === 1 && baseArrayFir.push({
-      name: '覆盖类型', value: stationDetail.coverType
-    })
+    // stationDetail.stationType === 1 && baseArrayFir.push({
+    //   name: '覆盖类型', value: stationDetail.coverType
+    // })
     const baseArraySec = [
-      { name: '所在省市', value: stationDetail.provinceName },
+      { name: '所在省市', value: `${stationDetail.provinceName}${stationDetail.cityName}${stationDetail.countyName}` },
       { name: '所属公司', value: stationDetail.affiliateCompany },
       { name: '联系电话', value: stationDetail.stationContactNumber },
     ]
@@ -76,12 +84,12 @@ class EditForm extends Component {
     const otherArray = [ // 其他信息
       { name: '自动有功控制能力', value: stationDetail.automaticActiveControl?'是':'否', }, // 实际调整
       { name: '监控系统厂家', value: stationDetail.monitoringSystemName, },
-      { name: '创建人', value: '未定关键字', }, // 未知
+      { name: '创建人', value: stationDetail.createUser, }, // 
       { name: '自动无功控制能力', value: stationDetail.automaticAeactiveContro?'是':'否', }, // 实际调整
       { name: '监控系统个数', value: stationDetail.monitoringSystemCount, },
-      { name: '创建时间', value: '未定关键字', }, // 未知
-      { name: '低压穿越(LVRT)', value: stationDetail.lowPressureCrossing, },  // 未知
-      { name: '电站时区', value: stationDetail.timeZone, },  // 未知
+      { name: '创建时间', value: stationDetail.createTime?moment((stationDetail.createTime)).format('YYYY-MM-DD HH:mm'):'--',}, // 
+      { name: '低压穿越(LVRT)', value: stationDetail.lowPressureCrossing?'是':'否', },  // 未知0,1
+      { name: '电站时区', value:stationDetail.timeZone?(stationDetail.timeZone>0&&stationDetail.timeZone<10?`UTC+0${stationDetail.timeZone}:00`:`UTC${stationDetail.timeZone}:00`):'--', },  // 未知
     ];
     return (
       <Form className={styles.editPart}>
@@ -101,6 +109,25 @@ class EditForm extends Component {
             )}
           </FormItem>
           {baseArrayFir.map((e,i)=>(<EditInfoPart key={i} eachInfo={e} />))}
+
+          <FormItem label="覆盖类型" >
+          {getFieldDecorator('coverType',{
+            initialValue: stationDetail.coverType
+          })(
+
+            <Select
+          style={{ width: '198px' }}
+          //onChange={this.handleCurrencyChange}
+        >
+          <Option value="businessRoof">商用屋顶</Option>
+          <Option value="homeRoof">家用屋顶</Option>      
+          <Option value="floor">地面</Option>
+        </Select>
+            
+          )}
+        </FormItem>
+
+
           <FormItem label="所属区域" >
             {getFieldDecorator('regionName',{
               initialValue: stationDetail.regionName,

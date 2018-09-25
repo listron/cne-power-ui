@@ -35,6 +35,7 @@ class Confluencebox extends Component {
     this.props.getMonitorDeviceData(params);
     this.props.getTenMinDeviceData(params);
     this.getData(stationCode, deviceCode, deviceTypeCode);
+    this.getTenMinData(stationCode, deviceCode, deviceTypeCode);
   }
 
   componentWillReceiveProps(nextProps){
@@ -47,6 +48,7 @@ class Confluencebox extends Component {
       clearTimeout(this.timeOutId);
       clearTimeout(this.timeOutTenMin);
       this.getData(nextStation, nextDevice, nextType);
+      this.getTenMinData(nextStation, nextDevice, nextType);
     }
   }
 
@@ -56,6 +58,18 @@ class Confluencebox extends Component {
   }
 
   getData = (stationCode, deviceCode, deviceTypeCode) => {
+    const params = {
+      stationCode,
+      deviceCode,
+      deviceTypeCode,
+    };
+    this.timeOutId = setTimeout(() => {
+      this.props.getMonitorDeviceData(params);
+      this.getData(stationCode, deviceCode, deviceTypeCode);
+    },10000)
+  }
+
+  getTenMinData = (stationCode, deviceCode, deviceTypeCode) => {
     const startTime = moment().utc().format();
     const endTime = moment().subtract(72,'hours').utc().format();
     const params = {
@@ -64,10 +78,6 @@ class Confluencebox extends Component {
       deviceTypeCode,
       timeParam: `${startTime}/${endTime}`,
     };
-    this.timeOutId = setTimeout(() => {
-      this.props.getMonitorDeviceData(params);
-      this.getData(stationCode, deviceCode, deviceTypeCode);
-    },10000)
     this.timeOutTenMin = setTimeout(() => {
       this.props.getTenMinDeviceData(params);
       this.getData(stationCode, deviceCode, deviceTypeCode);

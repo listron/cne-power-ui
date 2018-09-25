@@ -15,7 +15,7 @@ class AlarmStationSelectModal extends Component {
     super(props);
     this.state = {
       stationCode: '',
-      stationType: 0,
+      stationType: 1,
       stationData: props.stations.filter(station=>station.get('stationType')===0)
     };
   }
@@ -78,27 +78,19 @@ class AlarmStationSelectModal extends Component {
 
   renderStation() {
     const stationType = this.state.stationType;
-    const stationTypeOne = this.stationIsOneType();
+    const { stations } = this.props;
+    const stationTypeSet = new Set(stations.toJS().map(e=>e.stationType));
+    const stationTypes = [...stationTypeSet];
+    const showButtonGroup = stationTypes.includes(0) && stationTypes.includes(1)
     return (
       <div className={styles.content}>
-        {!stationTypeOne && 
-          <ButtonGroup>
-            <Button type={stationType===0?'primary':''} onClick={()=>this.onChangeStationType(0)}>风电</Button>
-            <Button type={stationType===1?'primary':''} onClick={()=>this.onChangeStationType(1)}>光伏</Button>
-          </ButtonGroup>
-        }
-        {this.renderProvinceStation(this.state.stationData)}
+        {showButtonGroup && <ButtonGroup>
+          <Button type={stationType===0?'primary':''} onClick={()=>this.onChangeStationType(0)}>风电</Button>
+          <Button type={stationType===1?'primary':''} onClick={()=>this.onChangeStationType(1)}>光伏</Button>
+        </ButtonGroup>}
+        {this.renderProvinceStation(showButtonGroup?this.state.stationData:stations)}
       </div>
     );
-  }
-
-  renderFooter() {
-    return (
-      <div>
-        <Button onClick={this.onCancel}>重置</Button>
-        <Button type="primary" onClick={this.onOk}>确认</Button>
-      </div>
-    )
   }
 
   render() {
@@ -117,7 +109,10 @@ class AlarmStationSelectModal extends Component {
         visible={true}
         mask={false}
         onCancel={this.props.onClose}
-        footer={this.renderFooter()}
+        footer={<div>
+          <Button onClick={this.onCancel}>重置</Button>
+          <Button type="primary" onClick={this.onOk}>确认</Button>
+        </div>}
       >
         {this.renderStation()}
       </Modal>

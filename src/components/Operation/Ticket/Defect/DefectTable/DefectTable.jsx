@@ -275,8 +275,8 @@ class DefectTable extends Component {
     const { currentSelectedStatus } = this.state;
     const unselected = selectedRowKeys.length===0;
     const rightHandler = localStorage.getItem('rightHandler');
-    const reviewDefectRight = rightHandler && rightHandler.includes('workExamine_defect_review');
-    const checkDefectRight = rightHandler && rightHandler.includes('workExamine_defect_check');
+    const reviewDefectRight = rightHandler && rightHandler.split(',').includes('workExamine_defect_review');
+    const checkDefectRight = rightHandler && rightHandler.split(',').includes('workExamine_defect_check');
     return (
       <Select onChange={this.onHandle} value="操作" placeholder="操作" dropdownMatchSelectWidth={false} dropdownClassName={styles.handleDropdown}>
         {reviewDefectRight && <Option value="send" disabled={unselected||currentSelectedStatus!=='1'}>

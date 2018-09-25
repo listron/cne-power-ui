@@ -17,6 +17,8 @@ class AlarmManageHandle extends Component {
     queryParams: PropTypes.object,
     getAlarmList: PropTypes.func,
     deleteAlarmList: PropTypes.func,
+    getStationDeviceTypes: PropTypes.func,
+    changeCommonStore: PropTypes.func,
   }
   constructor(props) {
     super(props);
@@ -34,9 +36,23 @@ class AlarmManageHandle extends Component {
     })
   }
 
-  getAlarmList = () => {
-    const { queryParams, getAlarmList } = this.props;
-    getAlarmList({ ...queryParams });
+  getUpdateAlarmList = ({ file, selectedStation }) => { // 上传成功后重新请求列表
+    const { queryParams, getAlarmList, getStationDeviceTypes, changeCommonStore } = this.props;
+    getAlarmList({ 
+      ...queryParams,
+      stationCode: selectedStation.stationCode,
+      deviceTypeCode: null,
+      deviceModeCode: null,
+      pointCode: '',
+      pageNum: 1,
+    });
+    getStationDeviceTypes({
+      stationCodes: selectedStation.stationCode,
+    });
+    changeCommonStore({
+      deviceModels: [], 
+      devicePoints: [],
+    })
   }
 
   deleteAlarmList = () => {
@@ -56,7 +72,7 @@ class AlarmManageHandle extends Component {
             uploaderName={'告警'} 
             disableStation={[]}
             uploadExtraData={['stationCode','stationType']}
-            // loadedCallback={this.getAlarmList}
+            // loadedCallback={this.getUpdateAlarmList}
           />
           <Button disabled={alarmList.length === 0} className={styles.exportInfo} href={downloadHref} download={downloadHref}>导出告警事件信息表</Button>
           <Button disabled={alarmList.length === 0} onClick={this.deleteAlarmList} className={styles.clearAlarm}>清除告警</Button>

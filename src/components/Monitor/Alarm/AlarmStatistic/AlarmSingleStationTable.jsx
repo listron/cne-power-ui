@@ -13,16 +13,10 @@ class AlarmSingleStationTable extends React.Component {
     orderField: PropTypes.string,
     orderCommand: PropTypes.string,
     onChangeFilter: PropTypes.func,
+    onPaginationChange: PropTypes.func,
   }
   constructor(props) {
     super(props);
-  }
-
-  onPaginationChange = ({ currentPage, pageSize }) => {//分页器
-    this.props.onChangeFilter({
-      pageNum: currentPage,
-      pageSize
-    });
   }
 
   onChangeTable = (pagination, filters, sorter) => {
@@ -73,8 +67,7 @@ class AlarmSingleStationTable extends React.Component {
   }
 
   render() {
-    const { singleAlarmStatistic, pageNum, pageSize } = this.props;
-   
+    const { singleAlarmStatistic, pageNum, pageSize, onPaginationChange } = this.props;
     const totalNum = singleAlarmStatistic && singleAlarmStatistic.length;
     let startRow = (pageNum - 1) * pageSize;
     let endRow = pageNum * pageSize;
@@ -86,7 +79,7 @@ class AlarmSingleStationTable extends React.Component {
     return (
       <div className={styles.singleStationTable}>
         <div className={styles.pagination}>
-          <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalNum} onPaginationChange={this.onPaginationChange} />
+          <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalNum} onPaginationChange={onPaginationChange} />
         </div>
         <Table 
           columns={this.renderColumn()} 
