@@ -69,24 +69,24 @@
           padding : 0;
           margin-left: 24px;
           margin-right: 12px;
+          font-size: 0;      
           border: 1px solid $themeColor;
           i{
-            display: inline-block;
-            background:$themeColor;
+            background-color:$themeColor;
             color: #fff;
+            font-size: 18px;
             vertical-align: top;
             width: 28px;
-            line-height: 30px;
-            height: 100%;
-            border-radius: 4px 0 0 4px;
+            line-height: 30px;       
+            border-radius: 2px 0 0 2px;
           }
           .text{
-            border-radius: 0 4px 4px 0;
-            background:#fff;
+            border-radius: 0 2px 2px 0;
+            font-size: 14px;
+            // background:#fff;
             color:$themeColor;
-            display: inline-block;
-            height: 100%;
-            width: 38px;
+            display: inline-block;   
+            width: 40px;
             line-height: 30px;
             margin: 0px;
             text-align: center;

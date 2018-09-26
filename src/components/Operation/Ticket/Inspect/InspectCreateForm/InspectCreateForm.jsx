@@ -35,7 +35,6 @@ class InspectCreateForm extends Component{
         });
         if(isContinueAdd && error.get('code') === '') {
           form.resetFields();
-          this.stationSelected(0);
         }
       }
     });
@@ -66,9 +65,7 @@ class InspectCreateForm extends Component{
         disabledSeconds: () => this.timeRange(0, 60).splice(0, moment().second()),
       };
     }
-    
   } 
-    
 
   render(){
     const { deviceTypeItems, stations } = this.props;
@@ -124,10 +121,11 @@ class InspectCreateForm extends Component{
           </FormItem>
           <FormItem label="截止时间" colon={false}>
             {getFieldDecorator('deadline',{
-              rules:[{ required: true, message: '请选择截止时间' }]
+              rules:[{ required: true, message: '请选择截止时间' }],
+              initialValue: moment(),
             })(
               <DatePicker 
-                showTime 
+                showTime
                 format="YYYY-MM-DD HH:mm:ss" 
                 placeholder="默认当前时间"
                 disabledDate={this.disabledDate}
