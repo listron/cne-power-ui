@@ -96,7 +96,7 @@ class StationFilter extends Component {
           <CheckboxGroup 
             options={options}
             value={value} 
-            onChange={(checkedValue)=>this.onChangeStation(checkedValue, provinceItem.getIn([0,'provinceCode']).toString())}>
+            onChange={(checkedValue)=>this.onChangeStation(checkedValue, provinceItem.getIn([0,'provinceCode']) && provinceItem.getIn([0,'provinceCode']).toString())}>
           </CheckboxGroup>
         </TabPane>
       );
