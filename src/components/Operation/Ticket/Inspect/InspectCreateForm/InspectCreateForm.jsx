@@ -27,7 +27,7 @@ class InspectCreateForm extends Component{
     form.validateFields((err, values) => {
       if(!err){
         createInspect({
-          inspectName: values.inspectName,
+          inspectName: values.inspectName.trim(),
           isContinueAdd,
           stationCodes: values.stationCodes.map(item => item.stationCode).join(','),
           deviceTypeCodes: values.deviceTypeCodes.join(','),
@@ -35,7 +35,6 @@ class InspectCreateForm extends Component{
         });
         if(isContinueAdd && error.get('code') === '') {
           form.resetFields();
-          this.stationSelected(0);
         }
       }
     });
@@ -66,9 +65,7 @@ class InspectCreateForm extends Component{
         disabledSeconds: () => this.timeRange(0, 60).splice(0, moment().second()),
       };
     }
-    
   } 
-    
 
   render(){
     const { deviceTypeItems, stations } = this.props;
@@ -80,7 +77,13 @@ class InspectCreateForm extends Component{
             {getFieldDecorator('inspectName',{
               rules:[
                 { required: true, message: "请输入巡检名称"},
-                { max: 10, message: "不超过10个字"},
+                { validator: (rule, value, callback)=>{
+                  if(value.trim().length > 10){
+                    callback('不超过10个字');
+                  }else{
+                    callback();
+                  }
+                }}
               ]
             })(
               <Input placeholder="必填，10个中文字符以内" />
@@ -118,10 +121,11 @@ class InspectCreateForm extends Component{
           </FormItem>
           <FormItem label="截止时间" colon={false}>
             {getFieldDecorator('deadline',{
-              rules:[{ required: true, message: '请选择截止时间' }]
+              rules:[{ required: true, message: '请选择截止时间' }],
+              initialValue: moment(),
             })(
               <DatePicker 
-                showTime 
+                showTime
                 format="YYYY-MM-DD HH:mm:ss" 
                 placeholder="默认当前时间"
                 disabledDate={this.disabledDate}

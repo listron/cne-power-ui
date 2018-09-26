@@ -217,12 +217,12 @@ class BoxTransformerList extends Component {
     const deviceStatus = boxTransformerList.deviceStatusSummary || [];
     const operations = (<div className={styles.inverterRight} >
       <Switch defaultChecked={false} onChange={this.onSwitchAlarm}  /> 告警
-      <Radio.Group defaultValue={0} buttonStyle="solid" className={styles.inverterStatus} onChange={this.onChangeStatus}  >
+      {/* <Radio.Group defaultValue={0} buttonStyle="solid" className={styles.inverterStatus} onChange={this.onChangeStatus}  >
         <Radio.Button value={0} >全部</Radio.Button>
         {deviceStatus.map(e=>
           (<Radio.Button key={e.deviceStatusCode} value={e.deviceStatusCode}>{e.deviceStatusName} {e.deviceStatusNum}</Radio.Button>)
         )}
-      </Radio.Group>
+      </Radio.Group> */}
     </div>);
     
     const baseLinkPath = "/hidden/monitorDevice";

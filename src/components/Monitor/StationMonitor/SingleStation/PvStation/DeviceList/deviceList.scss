@@ -116,6 +116,10 @@
           display: inline-block;
           width: 155px;
           color: #666;
+          .hlBlockName{
+            display: flex;
+            justify-content: space-between;
+          }
           .inverterItemPower{
             display: flex;
             justify-content: space-between;
@@ -130,6 +134,13 @@
             .ant-progress-success-bg, .ant-progress-bg{
               background-color: $themeColor;
             }
+          }
+        }
+        .hlBlockFooter{
+          >div{
+            display: inline-block;
+            width: 50%;
+            text-align: left;
           }
         }
       }
@@ -168,6 +179,10 @@
           display: inline-block;
           width: 166px;
           color: #666;
+          .hlBlockName{
+            display: flex;
+            justify-content: space-between;
+          }
           .inverterItemPower{
             display: flex;
             justify-content: space-between;
@@ -182,6 +197,13 @@
             .ant-progress-success-bg, .ant-progress-bg{
               background-color: $themeColor;
             }
+          }
+        }
+        .hlBlockFooter{
+          >div{
+            display: inline-block;
+            width: 50%;
+            text-align: left;
           }
         }
       }
