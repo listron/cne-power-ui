@@ -27,6 +27,7 @@ class DeviceMonitor extends Component {
 
   render() {
     const { deviceTypeCode } = this.props.match.params;
+   
     return (
       <div className={styles.monitorDevice}>
         {(deviceTypeCode === '206' || deviceTypeCode === '201') && <Seriesinverter {...this.props} /> }

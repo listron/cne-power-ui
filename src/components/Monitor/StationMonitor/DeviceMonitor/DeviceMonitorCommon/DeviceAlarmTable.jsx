@@ -25,6 +25,8 @@ class DeviceAlarmTable extends Component {
     deviceDetail: PropTypes.object,
     loading: PropTypes.bool,
     stationCode:PropTypes.string,
+    deviceTypeCode:PropTypes.string,
+    deviceCode:PropTypes.string
     
   }
 
@@ -123,7 +125,7 @@ class DeviceAlarmTable extends Component {
   }
 
   render() {
-    const { deviceAlarmList, deviceDetail,stationCode } = this.props;
+    const { deviceAlarmList, deviceDetail,stationCode,deviceTypeCode,deviceCode } = this.props;
 
     const { pageSize, currentPage } = this.state;
     const tableSource = this.createTableSource(deviceAlarmList);
@@ -136,7 +138,7 @@ class DeviceAlarmTable extends Component {
         </div>
         <div className={styles.tableHeader}>
           <Button className={styles.historyButton}>
-            <Link to={`/monitor/alarm/history?stationCode=${stationCode}` } target="_blank" >查看告警历史</Link>
+            <Link to={`/monitor/alarm/history?stationCode=${stationCode}&deviceTypeCode=${deviceTypeCode}&deviceCode=${deviceCode}` } target="_blank" >查看告警历史</Link>
           </Button>
           <CommonPagination pageSize={pageSize} currentPage={currentPage} onPaginationChange={this.changePagination} total={deviceAlarmList.length} />
         </div>
