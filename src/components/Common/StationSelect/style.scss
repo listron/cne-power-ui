@@ -93,10 +93,21 @@
           display: flex;
           background-color:#f1f1f1;
           color: $lightColor;
-          word-break: break-all;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
+          .eachStationName{
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+            word-break: break-all;
+          }
+          :global{
+            .ant-checkbox-wrapper{
+              flex: 1;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+              overflow: hidden;
+              word-break: break-all;
+            }
+          }
         }
         .eachStation:nth-of-type(4){
           margin-right: 0;

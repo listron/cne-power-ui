@@ -65,9 +65,7 @@ class InspectCreateForm extends Component{
         disabledSeconds: () => this.timeRange(0, 60).splice(0, moment().second()),
       };
     }
-    
   } 
-    
 
   render(){
     const { deviceTypeItems, stations } = this.props;
@@ -79,7 +77,13 @@ class InspectCreateForm extends Component{
             {getFieldDecorator('inspectName',{
               rules:[
                 { required: true, message: "请输入巡检名称"},
-                { max: 10, message: '不超过10个字' },
+                { validator: (rule, value, callback)=>{
+                  if(value.trim().length > 10){
+                    callback('不超过10个字');
+                  }else{
+                    callback();
+                  }
+                }}
               ]
             })(
               <Input placeholder="必填，10个中文字符以内" />

@@ -10,6 +10,7 @@ const RadioGroup = Radio.Group;
 class StationSelectModal extends Component {
   static propTypes = {
     stationModalShow: PropTypes.bool,
+    checkedStations: PropTypes.array,
     data: PropTypes.array,
     multiple: PropTypes.bool,
     hideStationModal: PropTypes.func,
@@ -21,9 +22,22 @@ class StationSelectModal extends Component {
     this.state = {
       filterStationType: 2,//选中电站类型
       stationType:[2,0,1],//0所有,0风电，1光伏
-      selectedStation:[], //暂存选中的电站数组
+      selectedStation: props.checkedStations, //暂存选中的电站数组
       showWarningTip: false,
       warningTipText: ''
+    }
+  }
+
+  componentWillReceiveProps(nextProps){
+    const tmpCheckedStations = this.props.checkedStations;
+    const { checkedStations } = nextProps;
+    const tmpCodes = tmpCheckedStations.map(e=>e.stationCode);
+    const newCodes = checkedStations.map(e=>e.stationCode);
+    const isCodesSame = (tmpCodes.length === newCodes.length) && newCodes.every(e=>tmpCodes.includes(e))
+    if(!isCodesSame){ // 电站数据不同。
+      this.setState({
+        selectedStation: checkedStations,
+      })
     }
   }
 
@@ -114,9 +128,6 @@ class StationSelectModal extends Component {
       </div>
     )
   }
-
-
-
 
   render() {
     const { stationModalShow, hideStationModal, showStationModal, multiple } = this.props;
