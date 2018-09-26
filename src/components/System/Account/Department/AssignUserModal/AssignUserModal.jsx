@@ -220,38 +220,34 @@ class AssignUserModal extends Component {
             }
           })
         }
-        const currentUser = this.props.userList.filter(e => userId === e.get('userId'));
-        const userOriginDepart = currentUser.filter(e=>e.get('departmentId'));
-        console.log(userOriginDepart.toJS())
-        console.log(userOriginDepart.toJS().includes('309717029552128'))
-        console.log(userOriginDepart.includes('309717029552128'))
-        const userInParent = parentDepartment.get('list').filter(e=>userOriginDepart.includes(e.get('departmentId')));
-        console.log(parentDepartment.get('list').toJS())
-        console.log(userInParent.toJS());
-        // const removeUser = userOriginDepart.size === 1 && userOriginDepart.get(0); // 用户原本位于部门
-        console.log(userOriginDepart.size)
-        console.log(userOriginDepart.get(0).toJS())
+        const tmpUserArr = this.props.userList.filter(e => userId === e.get('userId'));
+        const userOriginArr = tmpUserArr.filter(e=>e.get('departmentId'));
+        // 用户原位于几个兄弟部门
+        const userInBrother = parentDepartment.get('list').filter(e=>userOriginArr.some(innerUser => { 
+          return innerUser.get('departmentId') === e.get('departmentId');
+        }));
+        // 用户原位于同级部门未分配
+        const userInParent = userOriginArr.some(e=>e.get('departmentId') === parentDepartment.get('departmentId'))  
         if(childHasCurrent) { // 目的部门的同级其他部门已有该用户。
           userList = userList.delete(userIndex);
-        }else if(true){ // 该用户原本位于目的部门/同级部门，删除该用户=> 未分配人员。
+        }else if(userInBrother.size > 0 || userInParent){ // 该用户原本位于目的部门/同级部门/同级部门未分配人员，删除该用户=> 未分配人员。
           userList = userList.set(userIndex, Immutable.fromJS({
             userId: userId,
             username: username,
             departmentId: parentDepartmentId,
             departmentName: parentDepartment.get('departmentName')
           }));
-        }else if(userOriginDepart.size === 0){ // 原无部门的用户
+        }else if(userOriginArr.size === 0){ // 原无部门的用户
           userList = userList.set(userIndex, Immutable.fromJS({
             userId: userId,
             username: username,
             departmentId: null,
             departmentName: null,
           }));
-        } else if(userOriginDepart.size > 0) { // 用户原本位于其他不相关部门=>回去未分配
+        } else if(userOriginArr.size > 0) { // 用户原本位于其他不相关部门
           userList = userList.delete(userIndex);
         }
       }
-      
     }
     let selectedUserList = this.getDepartmentUserRange(selectedDepartment, userList);
     this.setState({
