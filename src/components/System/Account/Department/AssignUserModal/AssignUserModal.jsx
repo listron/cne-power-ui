@@ -222,12 +222,15 @@ class AssignUserModal extends Component {
         }
         const tmpUserArr = this.props.userList.filter(e => userId === e.get('userId'));
         const userOriginArr = tmpUserArr.filter(e=>e.get('departmentId'));
-        const userInParent = parentDepartment.get('list').filter(e=>userOriginArr.some(innerUser => {
+        // 用户原位于几个兄弟部门
+        const userInBrother = parentDepartment.get('list').filter(e=>userOriginArr.some(innerUser => { 
           return innerUser.get('departmentId') === e.get('departmentId');
         }));
+        // 用户原位于同级部门未分配
+        const userInParent = userOriginArr.some(e=>e.get('departmentId') === parentDepartment.get('departmentId'))  
         if(childHasCurrent) { // 目的部门的同级其他部门已有该用户。
           userList = userList.delete(userIndex);
-        }else if(userInParent.size !== 0 ){ // 该用户原本位于目的部门/同级部门，删除该用户=> 未分配人员。
+        }else if(userInBrother.size > 0 || userInParent){ // 该用户原本位于目的部门/同级部门/同级部门未分配人员，删除该用户=> 未分配人员。
           userList = userList.set(userIndex, Immutable.fromJS({
             userId: userId,
             username: username,
@@ -245,7 +248,6 @@ class AssignUserModal extends Component {
           userList = userList.delete(userIndex);
         }
       }
-      
     }
     let selectedUserList = this.getDepartmentUserRange(selectedDepartment, userList);
     this.setState({
