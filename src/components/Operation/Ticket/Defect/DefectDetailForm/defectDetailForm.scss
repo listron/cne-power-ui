@@ -6,14 +6,21 @@
   align-items: center;
   border-bottom: solid 1px $promptColor;  
 }
+
+// .detailWrapBox{
+//   display: flex;
+//  flex: 1;
+//  min-height: 100%;
+//  flex-direction: column;
+// }
 .detailWrap {
   display: flex;
   flex: 1;
-  background-color: #fff;
+  //background-color: #fff;
   flex-direction: column;
   justify-content: space-between;
-  padding: 24px 24px 0;
-  //  background-color: #ececec;
+  //padding: 24px 24px 0;
+  background-color: #ececec;
   .defectDetail{
     display: flex;
     flex-direction: column;
