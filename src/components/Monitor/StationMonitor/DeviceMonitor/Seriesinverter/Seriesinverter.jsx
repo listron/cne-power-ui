@@ -101,7 +101,7 @@ class Seriesinverter extends Component {
           <InverterHeader deviceDetail={deviceDetail} devices={devices} stationCode={stationCode} deviceTypeCode={deviceTypeCode} />
           <InverterStatistics deviceDetail={deviceDetail} />
           <InverterTenMin deviceTenMin={deviceTenMin} loading={loading} />
-          <DeviceAlarmTable deviceAlarmList={deviceAlarmList} loading={loading} deviceDetail={deviceDetail} />
+          <DeviceAlarmTable deviceAlarmList={deviceAlarmList} loading={loading} deviceDetail={deviceDetail} stationCode={stationCode} {...this.props} />
           <DevicePointsData devicePointData={devicePointData}  deviceDetail={deviceDetail} />
         </div>
       </div>

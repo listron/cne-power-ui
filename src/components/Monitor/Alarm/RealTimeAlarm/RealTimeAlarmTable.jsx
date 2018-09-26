@@ -311,6 +311,7 @@ class RealTimeAlarmTable extends Component {
 
   renderTransferPopover(i) {
     const ticketInfo = this.props.ticketInfo;
+    //console.log(this.props.ticketInfo);
     //  console.log(ticketInfo.operateTime);
     //   console.log(moment(moment.utc(ticketInfo.operateTime).toDate()).local().format('YYYY-MM-DD HH:mm'));
 
@@ -347,13 +348,17 @@ class RealTimeAlarmTable extends Component {
             <span className={styles.value}>{ticketInfo.defectDescribe}</span>
           </div>
         </div>
-        <Button className={styles.ticketButton}><Link to={`/operation/ticket/defect/${ticketInfo.defectId}`}>查看工单详情</Link></Button>
+        <Button className={styles.ticketButton}>
+        <Link to={`/operation/ticket/defect/${ticketInfo.defectId}`}>
+        查看工单详情</Link>
+        </Button>
       </div>
     );
   }
 
   renderRelievePopover(i) {
     const relieveInfo = this.props.relieveInfo;
+    //  
     return (
       <div className={styles.detailInfo}>
         <div className={styles.header}>

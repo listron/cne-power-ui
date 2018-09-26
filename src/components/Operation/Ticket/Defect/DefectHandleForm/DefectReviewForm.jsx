@@ -22,14 +22,14 @@ class DefectReviewForm extends Component {
     };
   }
   componentDidMount(){
-    console.log(moment().endOf('day'));
-    console.log(moment().minute(Number));
+    
   }
   onSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
         values.dealResult = this.state.dealResult;
+        console.log(values);
         this.props.onSubmit(values);
       }
     });
@@ -47,17 +47,40 @@ class DefectReviewForm extends Component {
     return result;
   }
 
-  disabledDate(current,item) {
-    console.log(current,item);
-    // Can not select days before today
-    return current < moment().endOf('day');
-  }
-  disabledTime = (date) => {
+  // disabledDate(current,item) {
+  //   console.log(current,item);
+  //   // Can not select days before today
+  //   return current < moment().endOf('day');
+  // }
+  // disabledTime = (date) => {
+  //   return {
+  //     disabledMinutes: () => this.range(0, moment().minute(Number)),
+  //     // disabledSeconds: () => [55, 56],
+  //   };
+  // }
+  disabledDate = (start) => {
+    return start && start < moment().subtract(1, 'day').endOf('day');
+    }
+    
+    timeRange = (start, end) => {
+    const result = [];
+    for (let i = start; i < end; i++) {
+    result.push(i);
+    }
+    return result;
+    }
+    
+    disabledTime = (date) => {
+    if(date && moment().isAfter(date)){
     return {
-      disabledMinutes: () => this.range(0, moment().minute(Number)),
-      // disabledSeconds: () => [55, 56],
+    disabledHours: () => this.timeRange(0, 24).splice(0, moment().hour()),
+    disabledMinutes: () => this.timeRange(0, 60).splice(0, moment().minute()),
+    disabledSeconds: () => this.timeRange(0, 60).splice(0, moment().second()),
     };
-  }
+    }
+    }
+
+
   render() {   
     const { getFieldDecorator } = this.props.form;
     const dealResult = this.state.dealResult;
