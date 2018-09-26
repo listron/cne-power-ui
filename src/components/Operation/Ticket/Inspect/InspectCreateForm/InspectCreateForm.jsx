@@ -27,7 +27,7 @@ class InspectCreateForm extends Component{
     form.validateFields((err, values) => {
       if(!err){
         createInspect({
-          inspectName: values.inspectName,
+          inspectName: values.inspectName.trim(),
           isContinueAdd,
           stationCodes: values.stationCodes.map(item => item.stationCode).join(','),
           deviceTypeCodes: values.deviceTypeCodes.join(','),
@@ -80,7 +80,13 @@ class InspectCreateForm extends Component{
             {getFieldDecorator('inspectName',{
               rules:[
                 { required: true, message: "请输入巡检名称"},
-                { max: 10, message: "不超过10个字"},
+                { validator: (rule, value, callback)=>{
+                  if(value.trim().length > 10){
+                    callback('不超过10个字');
+                  }else{
+                    callback();
+                  }
+                }}
               ]
             })(
               <Input placeholder="必填，10个中文字符以内" />
