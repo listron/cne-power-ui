@@ -40,15 +40,14 @@ class InputLimit extends Component {
     
     if(nextProps.value!==this.props.value){
       let inputArea = document.getElementById('inputArea');
-      console.log(inputArea);
+
       inputArea && inputArea.addEventListener('changexcx',this.checkWord,true);
-      console.log(nextProps);
-      console.log(this.props);
+
     }
   }
 
   checkWord = (e) => {
-    console.log(e);
+  
     const textValue = e.target.value;
     this.setState({
       current: textValue.length,
