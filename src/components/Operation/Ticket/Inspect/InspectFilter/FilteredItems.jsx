@@ -95,12 +95,12 @@ class FilteredItems extends Component {
         {createTimeEnd !== '' && <Tag style={style} closable onClose={this.onCancelEndTime}>结束 {createTimeEnd}</Tag>}
         {stationType !== '2' && <Tag style={style} closable onClose={this.onCancelStationType}>{stationType === '0'?'风电':'光伏'}</Tag>}
         {selectedStation.size > 0 && selectedStation.map(e=>(
-          <Tag style={style} closable onClose={()=>this.onCancelProvince(e)} key={e.getIn([0, 'provinceCode']).toString()} >
+          <Tag style={style} closable onClose={()=>this.onCancelProvince(e)} key={e.getIn([0, 'provinceCode']) && e.getIn([0, 'provinceCode']).toString()} >
             {`${e.getIn([0, 'provinceName'])} ${e.size}`}
           </Tag>
         ))}
         {selectedDeviceType.size > 0 && selectedDeviceType.map(e=>(
-          <Tag style={style} closable onClose={()=>this.onCancelDeviceType(e.get('deviceTypeCode').toString())} key={e.get('deviceTypeCode').toString()}>
+          <Tag style={style} closable onClose={()=>this.onCancelDeviceType(e.get('deviceTypeCode').toString())} key={e.get('deviceTypeCode') && e.get('deviceTypeCode').toString()}>
             {e.get('deviceTypeName')}
           </Tag>
         ))}

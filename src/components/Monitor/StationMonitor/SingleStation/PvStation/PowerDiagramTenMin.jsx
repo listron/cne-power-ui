@@ -63,7 +63,7 @@ class PowerDiagramTenMin extends Component {
           name: '理论发电量',
           icon: 'circle',
         },{
-          name: '日曝辐值',
+          name: `${intervalTime===0? '日曝辐值' : (intervalTime===1 ? '月辐射总量' : '年辐射总量')}`,
           icon: 'circle',
         }],
         textStyle:{
@@ -93,7 +93,7 @@ class PowerDiagramTenMin extends Component {
           const tmpActualPower = actualPowerObj && actualPowerObj.value && !isNaN(parseFloat(actualPowerObj.value));
 
           if(tmpRadi){
-            radi = `<div style="padding-left: 5px;"><span style="display: inline-block; background:#f9b600; width:5px; height:5px; border-radius:100%;"></span> 辐射: ${parseFloat(radiObj.value).toFixed(2) || 0}</div>`
+            radi = `<div style="padding-left: 5px;"><span style="display: inline-block; background:#f9b600; width:5px; height:5px; border-radius:100%;"></span> ${intervalTime===0? '日曝辐值' : (intervalTime===1 ? '月辐射总量' : '年辐射总量')} : ${parseFloat(radiObj.value).toFixed(2) || 0}</div>`
           }
           if(tmpActualPower){
             actualPower = `<div style="padding-left: 5px;"><span style="display: inline-block; background:#a42b2c;  width:5px; height:5px; border-radius:100%;"></span> 实际发电量: ${parseFloat(actualPowerObj.value).toFixed(4) || 0}</div>`
@@ -156,7 +156,7 @@ class PowerDiagramTenMin extends Component {
           }
         },
         {
-          name: '日曝辐值(MJ/m²)',
+          name: `${intervalTime===0? '日曝辐值' : (intervalTime===1 ? '月辐射总量' : '年辐射总量')}(MJ/m²)`,
           type: 'value',
           axisLabel: {
             formatter: '{value}',
@@ -212,7 +212,7 @@ class PowerDiagramTenMin extends Component {
           barWidth: 14,
         },
         {
-          name:'日曝辐值',
+          name:`${intervalTime===0? '日曝辐值' : (intervalTime===1 ? '月辐射总量' : '年辐射总量')}`,
           type:'line',
           data: instantaneous,
           yAxisIndex: 1,
