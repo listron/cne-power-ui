@@ -72,7 +72,7 @@ class AlarmManageHandle extends Component {
             uploaderName={'告警'} 
             disableStation={[]}
             uploadExtraData={['stationCode','stationType']}
-            // loadedCallback={this.getUpdateAlarmList}
+            loadedCallback={this.getUpdateAlarmList}
           />
           <Button disabled={alarmList.length === 0} className={styles.exportInfo} href={downloadHref} download={downloadHref}>导出告警事件信息表</Button>
           <Button disabled={alarmList.length === 0} onClick={this.deleteAlarmList} className={styles.clearAlarm}>清除告警</Button>
