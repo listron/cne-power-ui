@@ -42,6 +42,7 @@ class ProvinceItem extends Component {
 
   render() {
     const { provinceInfo, selectedStation, multiple } = this.props;
+    // console.log(selectedStation)
     let filterdStations = selectedStation.filter(e=>e.provinceCode === provinceInfo.provinceCode)
     let provinceChecked = false, indeterminate = false;
     if(filterdStations.length > 0 && filterdStations.length < provinceInfo.stations.length ){

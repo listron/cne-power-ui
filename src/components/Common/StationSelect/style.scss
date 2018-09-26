@@ -97,6 +97,11 @@
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
+          :global{
+            .ant-checkbox-wrapper{
+              flex: 1;
+            }
+          }
         }
         .eachStation:nth-of-type(4){
           margin-right: 0;
