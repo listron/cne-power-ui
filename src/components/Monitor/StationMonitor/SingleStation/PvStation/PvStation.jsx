@@ -87,7 +87,7 @@ class PvStation extends Component {
               <div className={styles.deviceTypeFlow}>
                 {deviceTypeFlow.length > 0 && <RadioGroup value={deviceTypeCode} onChange={this.onSelectedDeviceType} >
                   {deviceTypeFlow.map((e,i)=> {
-                    const clickable = [509, 201, 206, 304, 207, 202]; // 允许点击及展示列表的设备类型
+                    const clickable = [509, 201, 206, 304, 202]; // 允许点击及展示列表的设备类型
                     const pointEventStye = clickable.includes(e.deviceTypeCode)?{}:{pointerEvents:'none'};
                     return (<RadioButton value={e.deviceTypeCode} style={pointEventStye} className={styles.deviceTypeItem} key={i}>
                       <div className={styles.deviceTypeIcon} >
