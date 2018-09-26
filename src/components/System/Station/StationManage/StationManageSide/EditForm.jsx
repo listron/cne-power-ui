@@ -112,16 +112,18 @@ class EditForm extends Component {
 
           <FormItem label="覆盖类型" >
           {getFieldDecorator('coverType',{
-            initialValue: stationDetail.coverType
+            initialValue: stationDetail.coverType,
+            rules: [{
+              required: true, message: '选择覆盖类型',
+            }]
           })(
-
             <Select
           style={{ width: '198px' }}
           //onChange={this.handleCurrencyChange}
         >
-          <Option value="businessRoof">商用屋顶</Option>
-          <Option value="homeRoof">家用屋顶</Option>      
-          <Option value="floor">地面</Option>
+          <Option value="商用屋顶">商用屋顶</Option>
+          <Option value="家用屋顶">家用屋顶</Option>      
+          <Option value="地面">地面</Option>
         </Select>
             
           )}

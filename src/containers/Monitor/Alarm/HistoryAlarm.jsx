@@ -30,6 +30,7 @@ class HistoryAlarm extends Component {
     resetAlarm: PropTypes.func,
     ticketInfo: PropTypes.object,
     relieveInfo: PropTypes.object,
+    history: PropTypes.object,
   }
   constructor(props) {
     super(props);
@@ -40,10 +41,13 @@ class HistoryAlarm extends Component {
   }
 
   componentDidMount() {
+    const searchInfo = this.props.history.location.search;
+    const stationCode = searchInfo.substring(searchInfo.indexOf('=')+1);
     this.props.getHistoryAlarm({
       warningLevel: [],
       stationType: '2',
-      stationCode: [],
+      // stationCode: [],
+      stationCode: stationCode==='' ? [] : [stationCode],
       deviceTypeCode: [],
       warningConfigName: [],
       warningStatus: [],

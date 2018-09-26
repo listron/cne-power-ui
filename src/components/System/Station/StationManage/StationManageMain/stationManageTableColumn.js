@@ -1,6 +1,7 @@
 import React from 'react';
 import styles from './stationMain.scss';
 import { deviceStatusArray } from '../../../../../constants/stationBaseInfo';
+import {stationStatusArray}  from '../../../../../constants/stationBaseInfo';
 
 const stationManageTableColumn = [{
     title: '区域',
@@ -34,10 +35,10 @@ const stationManageTableColumn = [{
     title: '电站状态',
     dataIndex: 'stationStatus',
     key: 'stationStatus',
-    sorter: true,
+    // sorter: true,
     render: (text, record, index) => {
       const { stationStatus } = record; 
-      const statusInfo = deviceStatusArray.find(e=>e.statusCode === stationStatus);
+      const statusInfo = stationStatusArray.find(e=>e.statusCode === stationStatus);
       const statusText = statusInfo && statusInfo.statusName || '--'
       return <span className={styles.contact}>{statusText}</span>
     }

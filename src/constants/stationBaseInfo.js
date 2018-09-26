@@ -49,3 +49,19 @@ export const deviceStatusArray = [
   }
 ];
 
+export const stationStatusArray =[
+  {
+    statusCode: '400',
+    statusName: '通讯正常',
+    icon: 'iconfont icon-alarm'
+  },{
+    statusCode: '500',
+    statusName: '信息中断',
+    icon: 'iconfont icon-alarm'
+  },{
+    statusCode: '900',
+    statusName: '未接入',
+    icon: 'iconfont icon-alarm'
+  }
+]
+

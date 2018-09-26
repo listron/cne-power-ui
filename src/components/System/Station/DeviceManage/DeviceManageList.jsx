@@ -23,7 +23,7 @@ class DeviceManageList extends Component {
     getDeviceList({
       ...queryParams,
       sortField: field?field:'',
-      sortMethod: order?(sorter.order==='ascend'?'0':'1'):'',
+      sortMethod: order?(sorter.order==='ascend'?'1':'2'):'',
     })
   }
 
