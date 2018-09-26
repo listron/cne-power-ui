@@ -46,6 +46,14 @@ class Seriesinverter extends Component {
     if( nextDevice !== deviceCode || nextType !== deviceTypeCode || nextStation !== stationCode ){
       clearTimeout(this.timeOutId);
       clearTimeout(this.timeOutTenMin);
+      const params = {
+        stationCode: nextStation,
+        deviceCode: nextDevice,
+        deviceTypeCode: nextType,
+        timeParam: '72',
+      };
+      this.props.getMonitorDeviceData(params);
+      this.props.getTenMinDeviceData(params);
       this.getData(nextStation, nextDevice, nextType);
       this.getTenMinData(nextStation, nextDevice, nextType);
     }

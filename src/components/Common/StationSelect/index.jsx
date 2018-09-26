@@ -130,7 +130,7 @@ class StationSelect extends Component {
 
   render() {
     const { data, multiple, holderText } = this.props;
-    const { checkedStationName, stationModalShow, filteredSelectedStation } = this.state;
+    const { checkedStationName, stationModalShow, filteredSelectedStation, checkedStations } = this.state;
     return (
       <div className={styles.stationSelect} style={this.props.style}>
         {multiple ? <Select
@@ -153,6 +153,7 @@ class StationSelect extends Component {
         </AutoComplete>}
         <StationSelectModal 
           multiple={multiple}
+          checkedStations={checkedStations}
           data={data} 
           handleOK={this.onModalHandelOK}
           stationModalShow={stationModalShow}

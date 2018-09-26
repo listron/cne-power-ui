@@ -2,6 +2,7 @@ import React,{ Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './style.scss';
 import {AutoComplete, Input} from 'antd';
+import Immutable from 'immutable';
 const Option = AutoComplete.Option;
 import DeviceNameModal from './DeviceNameModal';
 
@@ -25,7 +26,20 @@ class DeviceName extends Component {
     super(props);
     this.state = {
       showDeviceNameModal: false,
+      checkedStationName: '', // 选中的设备
+      filteredSelectedStation: Immutable.fromJS([]),
     };
+  }
+
+  componentWillReceiveProps(nextProps){
+    const { value, deviceItems } = nextProps;
+    if(value && deviceItems){
+      const selectedDevice = deviceItems.find(e=> e.get('deviceCode') === value);
+      this.setState({
+        checkedStationName: selectedDevice? selectedDevice.get('deviceName'):'',
+        filteredSelectedStation: deviceItems,
+      })
+    }
   }
 
   onShowDeviceNameModal = () => {
@@ -43,7 +57,8 @@ class DeviceName extends Component {
   }
 
   getDeviceItems() {
-    return this.props.deviceItems.map((item, index) => {
+    const { filteredSelectedStation } = this.state;
+    return filteredSelectedStation.map((item, index) => {
       return (
         <Option key={item.get('deviceCode')} value={item.get('deviceCode')}>
           {item.get('deviceName')}
@@ -52,20 +67,30 @@ class DeviceName extends Component {
     })
   }
 
-  getDeviceName(code) {
-    let deviceName = '';
-    let index = this.props.deviceItems.findIndex((item) => {
-      return item.get('deviceCode') === code
+  handleSearch = (text) => {
+    const { deviceItems } = this.props;
+    let filteredSelectedStation = deviceItems.filter(e=>{
+      const eachDeviceName = e && e.get('deviceName');
+      const deviceShowText = eachDeviceName? eachDeviceName.toLowerCase() : '';
+      const modelText = text?text.toLowerCase():'';
+      return deviceShowText.includes(modelText)
     });
-    if(index !== -1) {
-      deviceName = this.props.deviceItems.getIn([index, 'deviceName']);
-    }
-    return deviceName;
-    
+    this.setState({
+      checkedStationName:text,
+      filteredSelectedStation
+    })
+  }
+
+  handleSelect = (value) => {
+    const { deviceItems, onChange } = this.props;
+    const checkedStationName = deviceItems.find(e=>e.get('deviceCode') === value).get('deviceName');
+    this.setState({ checkedStationName });
+    onChange(value);
   }
 
   render() {
     let options = this.getDeviceItems();
+    const { checkedStationName } = this.state;
     return (
       <div className={styles.deviceName}>
         <AutoComplete
@@ -73,15 +98,10 @@ class DeviceName extends Component {
           dataSource={options}
           disabled={this.props.disabled}
           onSelect={this.props.onChange}
-          value={this.getDeviceName(this.props.value)}
-          filterOption={(inputValue, option) => 
-            option.props.children&&option.props.children.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1}
+          onSearch={this.handleSearch}
+          value={checkedStationName}
         >
-          <Input
-            disabled={this.props.disabled}
-            value={this.getDeviceName(this.props.value)}
-            placeholder={this.props.placeholder} 
-            suffix={<i className="iconfont icon-filter" onClick={this.onShowDeviceNameModal} />} />
+          <Input suffix={<i className="iconfont icon-filter" onClick={this.onShowDeviceNameModal} />} />
         </AutoComplete>
         {this.state.showDeviceNameModal && <DeviceNameModal
           show={this.state.showDeviceNameModal}

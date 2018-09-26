@@ -218,12 +218,12 @@ class ConfluenceBoxList extends Component {
     const deviceStatus = confluenceBoxList.deviceStatusSummary || [];
     const operations = (<div className={styles.inverterRight} >
       <Switch defaultChecked={false} onChange={this.onSwitchAlarm}  /> 告警
-      <Radio.Group defaultValue={0} buttonStyle="solid" className={styles.inverterStatus} onChange={this.onChangeStatus}  >
+      {/* <Radio.Group defaultValue={0} buttonStyle="solid" className={styles.inverterStatus} onChange={this.onChangeStatus}  >
         <Radio.Button value={0} >全部</Radio.Button>
         {deviceStatus.map(e=>
           (<Radio.Button key={e.deviceStatusCode} value={e.deviceStatusCode}>{e.deviceStatusName} {e.deviceStatusNum}</Radio.Button>)
         )}
-      </Radio.Group>
+      </Radio.Group> */}
     </div>);
     
     const baseLinkPath = "/hidden/monitorDevice";
@@ -237,7 +237,7 @@ class ConfluenceBoxList extends Component {
               return (<div key={index}>
                 <div className={styles.parentDeviceName} >{e && e.parentDeviceName}</div>
                 {e.map((item,i)=>{
-                  return (<div key={i} className={item.deviceStatus === 900 ? styles.cutOverItem : styles.inverterItem}>
+                  return (<div key={i} className={item.deviceStatus === 900 ? styles.cutOverItem : styles.inverterItem} style={{height: "121px"}}>
                     <div className={styles.inverterItemIcon} >
                       <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${item.deviceCode}`} >
                         <i className="iconfont icon-hl" ></i>
@@ -248,14 +248,20 @@ class ConfluenceBoxList extends Component {
                     </div>
                     <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${item.deviceCode}`} >
                       <div className={styles.inverterItemR} >
-                        <div>{item.deviceName}</div>
+                        <div className={styles.hlBlockName}><span>{item.deviceName}</span><span>{parseFloat(item.devicePower/item.deviceCapacity*100).toFixed(2)||'--'}%</span></div>
                         <Progress className={styles.powerProgress} strokeWidth={3} percent={item.devicePower/item.deviceCapacity*100} showInfo={false} />
                         <div className={styles.inverterItemPower}>
                           <div>{item.devicePower ? parseFloat(item.devicePower).toFixed(2) : '--'}kW</div>
                           <div>{item.deviceCapacity ? parseFloat(item.deviceCapacity).toFixed(2) : '--'}kW</div>
                         </div>
                       </div>
-                      </Link>
+                    </Link>
+                    <div className={styles.hlBlockFooter} >
+                      <div>电压：{item.electricity || '--'}V</div>
+                      <div>电流：{item.voltage || '--'}A</div>
+                      <div>离散率：{item.dispersionRatio || '--'}%</div>
+                      <div>温度：{item.temp || '--'}℃</div>
+                    </div>
                   </div>);
                 })}
               </div>);
