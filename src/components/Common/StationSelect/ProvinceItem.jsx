@@ -70,6 +70,7 @@ class ProvinceItem extends Component {
               <div 
                 // onClick={()=>this.checkStation(m)} 
                 key={m.stationCode} 
+                title={m.stationName}
                 style={{'backgroundColor':checked?'#199475':'#f1f1f1'}} 
                 className={styles.eachStation}>
                 <Checkbox
@@ -80,11 +81,11 @@ class ProvinceItem extends Component {
                 </Checkbox>
               </div> :
               <div 
-                onClick={()=>this.checkStation(m)} 
-                key={m.stationCode} 
+                onClick={()=>this.checkStation(m)}
+                key={m.stationCode}
                 style={{'backgroundColor':checked?'#199475':'#f1f1f1',color:checked?'#fff':'#666'}} 
                 className={styles.eachStation}>
-                <span>{m.stationName}</span>
+                <span title={m.stationName} className={styles.eachStationName}>{m.stationName}</span>
               </div>
             );
           })}
