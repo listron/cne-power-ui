@@ -42,7 +42,8 @@ const Option = Select.Option;
 class StationSelect extends Component {
   static propTypes = {
     multiple: PropTypes.bool,
-    holderText: PropTypes.bool,
+    // holderText: PropTypes.bool,
+    holderText: PropTypes.string,
     value: PropTypes.array,
     data: PropTypes.array,
     onChange: PropTypes.func,

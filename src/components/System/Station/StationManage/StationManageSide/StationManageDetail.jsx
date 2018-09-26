@@ -129,6 +129,7 @@ class StationManageDetail extends Component {
     const { stationDetail } = this.props;
     const { showWarningTip, warningTipText } = this.state;
     const baseInfo = baseFun(stationDetail);
+  
     const connectionPriceInfo = connectionPriceFun(stationDetail);
     const otherInfo = otherFun(stationDetail);
     const departmentList = stationDetail.departmentList || [];
