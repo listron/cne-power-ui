@@ -39,6 +39,11 @@ class DeviceName extends Component {
         checkedStationName: selectedDevice? selectedDevice.get('deviceName'):'',
         filteredSelectedStation: deviceItems,
       })
+    }else if(!value){
+      this.setState({
+        checkedStationName: '',
+        filteredSelectedStation: deviceItems || [],
+      })
     }
   }
 
