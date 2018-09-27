@@ -52,6 +52,11 @@ class UserDetail extends Component {
       if(index !== 0) {
         this.props.getUserDetail({userId: userData.getIn([index-1, 'userId'])});
       } else {
+         message.config({
+          top: 130,
+          duration: 2,
+          maxCount: 1,
+        });
         message.info('已经是第一条');
       }
     }
@@ -67,6 +72,11 @@ class UserDetail extends Component {
       if(index !== userData.size - 1) {
         this.props.getUserDetail({userId: userData.getIn([index+1, 'userId'])});
       } else {
+        message.config({
+          top: 130,
+          duration: 2,
+          maxCount: 1,
+        });
         message.info('已经是最后一条');
       }
     }

@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
+import { message } from "antd";
 import echarts from 'echarts';
 import bmap from 'echarts/extension/bmap/bmap';
 
@@ -19,11 +20,13 @@ class Map extends Component {
     //   barData: []
     // }
   }
+  
   componentDidMount() {
     const { testId, stationDataList } = this.props;
     const testChart = echarts.init(document.getElementById(testId));
     this.setMapChart(testChart, stationDataList);
   }
+  
   componentWillReceiveProps(nextProps) {
     const { testId, stationDataList } = nextProps;
     if(this.props.stationDataList.length !== nextProps.stationDataList.length) {
@@ -31,6 +34,7 @@ class Map extends Component {
       this.setMapChart(testChart, stationDataList);
     }
   }
+  
   setMapChart = (testChart, stationDataList) => {
     const option = {
       bmap: {
@@ -208,8 +212,22 @@ class Map extends Component {
     };
     testChart.setOption(option)
     testChart.on('click', (params) => {
-      this.props.history.push(`/monitor/singleStation/${params.data.stationCode}`)    
+      if(params.data.stationStatus!=='900'){
+      return this.props.history.push(`/monitor/singleStation/${params.data.stationCode}`)  
+    }else{
+      this.showTip()
+
+    }  
+   
     })
+  }
+  showTip = (e) => { 
+    message.config({
+      top: 225,
+      duration: 200,
+      maxCount: 1,
+    });
+    message.warning('电站未接入,无法查看详情',2);
   }
 
   render() {
@@ -222,3 +240,5 @@ class Map extends Component {
 }
 export default withRouter(Map);
 
+
+  
