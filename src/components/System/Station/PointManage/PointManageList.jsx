@@ -36,8 +36,8 @@ class PointManageList extends Component {
         key: 'devicePointStandardCode',
       }, {
         title: '点号描述',
-        dataIndex: 'devicePointDesc',
-        key: 'devicePointDesc',
+        dataIndex: 'devicePointName',
+        key: 'devicePointName',
         sorter: true,
       }, {
         title: '第三方测点名称',

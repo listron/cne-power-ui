@@ -37,7 +37,7 @@ class InputLimit extends Component {
   }
 
   componentWillReceiveProps(nextProps){
-    if(nextProps.value && nextProps.value!==this.props.value && nextProps.value.length<this.props.size){
+    if(nextProps.value && nextProps.value!==this.props.value && nextProps.value.length<=this.props.size){
       this.setState({
         current: nextProps.value.length,
       });

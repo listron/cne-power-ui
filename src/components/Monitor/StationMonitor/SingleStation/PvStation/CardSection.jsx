@@ -170,8 +170,10 @@ class CardSection extends Component {
                     </div>
                     );
                   }else{
+                    let tmpDate = e.date.substr(4).split('');
+                    tmpDate.splice(2,0,"-");
                     return (<div style={{display:'none',margin: '0 5px',}} key={i} className="weather" id={Number(i)} >
-                      <div>{e.date.substr(4)}</div>
+                      <div>{tmpDate.join('')}</div>
                       <div className={styles.weatherIcon}><img src={`/img/weathercn/${e.weather_id.fa}.png`} /></div>
                       <div>{e.temperature||''}</div>
                       <div>{e.weather||''}</div>
