@@ -16,7 +16,7 @@ class PvStationItem extends React.Component {
   showTip = (e) => {
     
     message.config({
-      top: 300,
+      top: 225,
       duration: 2,
       maxCount: 1,
     });

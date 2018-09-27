@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import styles from './pvStation.scss';
 import CommonPagination from '../../../../Common/CommonPagination';
-import { Progress, Table } from "antd";
+import { Progress, Table,message } from "antd";
 class PvStationList extends React.Component {
   static propTypes = {
     stationDataList: PropTypes.array,
@@ -17,12 +17,21 @@ class PvStationList extends React.Component {
       descend: false,
     }
   }
+  
 
   ontableSort = (pagination, filters, sorter) => {
     this.setState({
       sortName: sorter.field,
       descend: sorter.order === 'descend'
     })
+  }
+  showTip = (e) => {
+    message.config({
+      top: 225,
+      duration: 200,
+      maxCount: 1,
+    });
+    message.warning('电站未接入,无法查看详情',2);
   }
   initColumn = () => {
     const columns = [
@@ -34,19 +43,24 @@ class PvStationList extends React.Component {
         sorter: true,
         //(a, b) => a.stationName.length - b.stationName.length,
         render: (value, record, index) => {
-          return {
-            children: (
-              <a href={`#/monitor/singleStation/${record.key}`}>
-                <div title={record.stationName} className={styles.stationName}>{record.stationName}</div>
-              </a>
-            )
+          if (record.currentStation !== '900') {
+            return {
+              children: (
+                <a href={`#/monitor/singleStation/${record.key}`}>
+                  <div title={record.stationName} className={styles.stationName}>{record.stationName}</div>
+                </a>
+              )
+            }
+          }else{
+            return  <div title={record.stationName} className={styles.stationName} onClick={record.currentStation === '900' ?this.showTip:null}>{record.stationName}</div>
           }
+
         }
       },
       {
         title: "所在省",
         dataIndex: "stationrovince",
-          //defaultSortOrder: "descend",
+        //defaultSortOrder: "descend",
         sorter: true,
         //(a, b) => a.stationrovince.localeCompare(b.stationrovince),
         render: (value, record, index) => {
@@ -58,7 +72,7 @@ class PvStationList extends React.Component {
         }
       },
       {
-         title: "实时功率(MW)",
+        title: "实时功率(MW)",
         //title: <div style={{display:'flex',flexDirection:'column'}} ><span>实时功率</span><span>(MW)</span></div>,
 
         dataIndex: "stationPower",

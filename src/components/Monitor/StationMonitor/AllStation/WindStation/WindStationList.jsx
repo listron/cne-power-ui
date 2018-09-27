@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import styles from './windStation.scss';
 import CommonPagination from '../../../../Common/CommonPagination';
-import { Progress, Table } from "antd";
+import { Progress, Table,message } from "antd";
 
 class WindStationList extends React.Component {
   static propTypes = {
@@ -26,6 +26,14 @@ class WindStationList extends React.Component {
       descend: sorter.order === 'descend'
     })
   }
+  showTip = (e) => {
+    message.config({
+      top: 225,
+      duration: 2,
+      maxCount: 1,
+    });
+    message.warning('电站未接入,无法查看详情',2);
+  }
   initColumn = () => {
     const columns = [
       {
@@ -35,12 +43,16 @@ class WindStationList extends React.Component {
         sorter: true,
         // (a, b) => a.stationName.localeCompare(b.stationName),
         render: (value, record, index) => {
-          return {
-            children: (
-              <a href={`#/monitor/singleStation/${record.key}`}>
-                <div title={record.stationName} className={styles.stationName}>{record.stationName}</div>
-              </a>
-            )
+          if (record.currentStation !== '900') {
+            return {
+              children: (
+                <a href={`#/monitor/singleStation/${record.key}`}>
+                  <div title={record.stationName} className={styles.stationName}>{record.stationName}</div>
+                </a>
+              )
+            }
+          }else{
+            return  <div title={record.stationName} className={styles.stationName} onClick={record.currentStation === '900' ?this.showTip:null}>{record.stationName}</div>
           }
         }
       },

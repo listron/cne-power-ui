@@ -64,6 +64,11 @@ class InspectDetail extends Component{
           inspectId: inspectIdList.get(index-1)}
         );
       }else{
+        message.config({
+          top: 130,
+          duration: 2,
+          maxCount: 1,
+        });
         message.info('已经是第一条');
       }
     }
@@ -80,6 +85,11 @@ class InspectDetail extends Component{
           inspectId: inspectIdList.get(index+1)}
         );
       } else{
+        message.config({
+          top: 130,
+          duration: 2,
+          maxCount: 1,
+        });
         message.info('已经是最后一条')
       }
     }

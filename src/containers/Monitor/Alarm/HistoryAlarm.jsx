@@ -31,6 +31,8 @@ class HistoryAlarm extends Component {
     ticketInfo: PropTypes.object,
     relieveInfo: PropTypes.object,
     history: PropTypes.object,
+    location: PropTypes.object,
+
   }
   constructor(props) {
     super(props);
@@ -42,18 +44,33 @@ class HistoryAlarm extends Component {
 
   componentDidMount() {
     const searchInfo = this.props.history.location.search;
-    const stationCode = searchInfo.substring(searchInfo.indexOf('=')+1);
+    var reg =/([^?=&]+)=([^?=&]+)/g;
+    let obj = {};
+    searchInfo.replace(reg, function(){
+      obj[arguments[1]] = arguments[2];
+    })
+    //console.log(obj);
+    const stationCode = obj["stationCode"]
+   // console.log(stationCode);
+    const deviceTypeCode=obj["deviceTypeCode"]
+    //console.log(deviceTypeCode);
+    const deviceCode=obj["deviceCode"]
+
+    
+
+
     this.props.getHistoryAlarm({
       warningLevel: [],
       stationType: '2',
       // stationCode: [],
-      stationCode: stationCode==='' ? [] : [stationCode],
-      deviceTypeCode: [],
+      stationCode: stationCode?[stationCode] : [] ,
+      deviceTypeCode:deviceTypeCode?[deviceTypeCode]: [],
       warningConfigName: [],
       warningStatus: [],
       startTime: [],
       endTime: [],
       deviceName: '',
+      //deviceCode:deviceCode?['deviceCode']:[],
     });
   }
 
@@ -99,20 +116,20 @@ class HistoryAlarm extends Component {
     const { currentPage, pageSize, } = this.state;
     return (
       <div className={styles.historyAlarmBox}>
-      <CommonBreadcrumb  {...breadCrumbData} style={{ marginLeft: '38px' }} />
-      <div className={styles.historyAlarmContainer}>
-        <div className={styles.historyAlarm}>
-          <HistoryAlarmFilter {...this.props} onChangeFilter={this.onChangeFilter} />      
-          <DeviceNameSearch onSearch={this.onChangeFilter} deviceName={this.props.deviceName} />
-          <HistoryAlarmTable 
-            {...this.props} 
-            currentPage={currentPage} 
-            pageSize={pageSize} 
-            onPaginationChange={this.onPaginationChange}
-          /> 
+        <CommonBreadcrumb  {...breadCrumbData} style={{ marginLeft: '38px' }} />
+        <div className={styles.historyAlarmContainer}>
+          <div className={styles.historyAlarm}>
+            <HistoryAlarmFilter {...this.props} onChangeFilter={this.onChangeFilter} />
+            <DeviceNameSearch onSearch={this.onChangeFilter} deviceName={this.props.deviceName} />
+            <HistoryAlarmTable
+              {...this.props}
+              currentPage={currentPage}
+              pageSize={pageSize}
+              onPaginationChange={this.onPaginationChange}
+            />
+          </div>
+          <Footer />
         </div>
-        <Footer />
-      </div>
       </div>
     );
   }
@@ -135,10 +152,10 @@ const mapStateToProps = (state) => ({
   relieveInfo: state.monitor.alarm.get('relieveInfo').toJS(),
 });
 const mapDispatchToProps = (dispatch) => ({
-  changeAlarmStore: payload => dispatch({type: alarmAction.CHANGE_ALARM_STORE_SAGA, payload}),
-  getHistoryAlarm: payload => dispatch({type: alarmAction.GET_HISTORY_ALARM_SAGA, payload}),
-  getTicketInfo: payload =>dispatch({ type: alarmAction.GET_TICKET_INFO_SAGA, payload }),
-  getRelieveInfo: payload =>dispatch({ type: alarmAction.GET_RELIEVE_INFO_SAGA, payload }),
-  resetAlarm: payload =>dispatch({ type: alarmAction.RESET_ALARM_SAGA, payload }),
+  changeAlarmStore: payload => dispatch({ type: alarmAction.CHANGE_ALARM_STORE_SAGA, payload }),
+  getHistoryAlarm: payload => dispatch({ type: alarmAction.GET_HISTORY_ALARM_SAGA, payload }),
+  getTicketInfo: payload => dispatch({ type: alarmAction.GET_TICKET_INFO_SAGA, payload }),
+  getRelieveInfo: payload => dispatch({ type: alarmAction.GET_RELIEVE_INFO_SAGA, payload }),
+  resetAlarm: payload => dispatch({ type: alarmAction.RESET_ALARM_SAGA, payload }),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(HistoryAlarm);

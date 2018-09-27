@@ -108,6 +108,8 @@ class StationManageTable extends Component {
       stationUnitCount: '6',
       // stationStatus: '7',
       isConnected: '7',
+      pointStatus:'8',
+      alarmStatus:'9'
     };
      const orderField = sortInfo[field] ? sortInfo[field] : '';
     //const orderField = field ? sortInfo[field] : '';

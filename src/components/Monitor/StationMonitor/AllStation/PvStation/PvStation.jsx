@@ -125,6 +125,7 @@ class PvStation extends React.Component {
         stationCapacity: item.stationCapacity,
         instantaneous: item.instantaneous,
         stationCode: item.stationCode,
+        stationStatus:stationStatus,
       })
     })
     return data
