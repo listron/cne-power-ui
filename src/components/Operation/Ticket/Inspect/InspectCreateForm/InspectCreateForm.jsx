@@ -30,7 +30,6 @@ class InspectCreateForm extends Component{
   onInspectCreate = (isContinueAdd) => {
     const { error, form, createInspect } = this.props;
     form.validateFields((err, values) => {
-      console.log(values);
       if(!err){
         createInspect({
           inspectName: values.inspectName.trim(),
@@ -79,14 +78,13 @@ class InspectCreateForm extends Component{
   render(){
     const { deviceTypeItems, stations } = this.props;
     const { getFieldDecorator } = this.props.form;
-    console.log(deviceTypeItems.toJS());
     const deviceTypes= deviceTypeItems && deviceTypeItems.toJS();
     deviceTypes && deviceTypes.forEach((e,i)=>{
       e['title'] = e.deviceTypeName;
       e['key'] = i.toString();
       e['value'] = e.deviceTypeCode.toString();
     });
-    console.log(deviceTypes);
+    
     const treeProps = {
       treeData: deviceTypes,
       onSelect: this.onTreeChange,
