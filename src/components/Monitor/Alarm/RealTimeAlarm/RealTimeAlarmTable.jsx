@@ -133,7 +133,7 @@ class RealTimeAlarmTable extends Component {
   createTableSource(data) {
     const { sortName, descend } = this.state;
     const { pageSize, currentPage } = this.props;
-    const nameSortArr = ['stationName', 'deviceTypeName', 'warningConfigName']
+    const nameSortArr = ['stationName', 'deviceName','deviceTypeName', 'warningConfigName']
     const tableSource = data.map((e, i) => ({
       ...e,
       key: i,
@@ -188,6 +188,7 @@ class RealTimeAlarmTable extends Component {
         title: '设备名称',
         dataIndex: 'deviceName',
         key: 'deviceName',
+        sorter: true,
         render: (text, record) => {
           if (record.deviceTypeCode === 206) {
             return (
@@ -349,7 +350,7 @@ class RealTimeAlarmTable extends Component {
           </div>
         </div>
         <Button className={styles.ticketButton}>
-        <Link to={`/operation/ticket/defect/${ticketInfo.defectId}`}>
+        <Link to={`/monitor/alarm/transfer/${ticketInfo.defectId}`}>
         查看工单详情</Link>
         </Button>
       </div>

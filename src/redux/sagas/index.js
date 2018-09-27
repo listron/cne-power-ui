@@ -11,7 +11,7 @@ import { watchChangeShowContainer } from './operation/ticket/ticketSaga';
  
 import { watchEnterprise } from './system/account/enterpriseSaga';
 import { watchDepartment } from './system/account/departmentSaga';
-import { watchRole } from './system/account/roleSaga';
+import { watchRole } from '../../containers/System/Account/Role/roleSaga';
 import { watchUser } from './system/account/userSaga';
 
 import { watchStationManage } from './system/station/stationManageSaga';

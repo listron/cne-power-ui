@@ -156,17 +156,12 @@ class DefectDetailForm extends Component {
     const processData = defectDetail.get('processData');
     const status = defectDetail.get('defectStatus')
     const { showWarningTip, warningTipText } = this.state;
-    // const breadCrumbData = {
-    //   breadData: [
-    //     {
-    //       name: '工单列表',
-    //     }
-    //   ],
-    // };
+    const alarmPageStyle = {
+      padding: '24px 24px 0',
+      backgroundColor: '#ececec',
+    }
     return (
-   
-     
-      <div className={styles.detailWrap}>
+      <div className={styles.detailWrap} style={isFromAlarm?alarmPageStyle:{}}>
         {showWarningTip && <WarningTip style={{marginTop:'250px',width: '210px',height:'88px'}} onCancel={this.onCancelWarningTip} onOK={this.onConfirmWarningTip} value={warningTipText} />}
         <div className={styles.defectDetail}>
           <div className={styles.header}>

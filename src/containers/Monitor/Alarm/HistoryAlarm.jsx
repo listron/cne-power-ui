@@ -44,7 +44,7 @@ class HistoryAlarm extends Component {
 
   componentDidMount() {
     const searchInfo = this.props.history.location.search;
-    var reg =/([^?=&]+)=([^?=&]+)/g;
+    let reg =/([^?=&]+)=([^?=&]+)/g;
     let obj = {};
     searchInfo.replace(reg, function(){
       obj[arguments[1]] = arguments[2];
@@ -70,7 +70,7 @@ class HistoryAlarm extends Component {
       startTime: [],
       endTime: [],
       deviceName: '',
-      //deviceCode:deviceCode?['deviceCode']:[],
+      deviceCode:deviceCode?[deviceCode]:[],
     });
   }
 
