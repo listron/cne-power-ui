@@ -37,7 +37,6 @@ class EditForm extends Component {
         this.props.saveStationDetail({
           ...stationDetail,
           ...values,
-          stationStatus: !!values.stationStatus,
           
         })
         this.props.confirmWarningTip()
@@ -61,7 +60,7 @@ class EditForm extends Component {
     
     const baseArrayFir = [
       { name: '电站类型', value: `${stationDetail.stationType === 0?'风电':'光伏'}` }, // 特殊组合
-      { name: '电站位置', value: `${longitude} ${latitude}` }, // 特殊组合
+      { name: '电站位置', value: `${longitude}, ${latitude}` }, // 特殊组合
     ];
     // stationDetail.stationType === 1 && baseArrayFir.push({
     //   name: '覆盖类型', value: stationDetail.coverType
@@ -195,7 +194,7 @@ class EditForm extends Component {
           </FormItem>
           <FormItem label="是否接入" >
             {getFieldDecorator('stationStatus',{
-              initialValue: stationDetail.stationStatus?1:0,
+              initialValue: stationDetail.stationStatus===1?1:0,
               rules: [{
                 required: true, message: '选择是否接入',
               }]

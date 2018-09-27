@@ -79,15 +79,20 @@
           .uploadStation{
             .plusButton { // 添加电站 
               margin: 0 12px 0 32px;
-              padding: 0 0 0 0;
+              padding: 0;
+              font-size: 0;
+              i{
+                vertical-align: top;
+                font-size: 14px;
+              }
               span{
                 background-color: #fff;
                 color:$themeColor;
                 border-radius: 0 4px 4px 0;
                 display: inline-block;
-                height: 100%;
-                width: 38px;
-                line-height: 30px; 
+               font-size: 14px;
+                width: 40px;
+                line-height: 29px; 
                 margin: 0px;
               }
               &:hover{
