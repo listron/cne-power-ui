@@ -67,7 +67,7 @@
             margin-top: 8px;
             margin-right: 8px;
             background-color: #f1f1f1;
-            color:$lightColor;
+            color:$darkColor;
             border: none;
           }
           .eachStation:nth-of-type(4){
@@ -88,7 +88,7 @@
       padding: 0 12px 0 20px;
       border-bottom: 1px solid $promptColor;
       .ant-modal-title{
-        color: $lightColor;
+        color: $darkColor;
         line-height: 40px;
       }
     }

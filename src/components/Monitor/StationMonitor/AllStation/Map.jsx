@@ -180,15 +180,12 @@ class Map extends Component {
           },
           // width:'128px',
           // height:'68px',
-
-
           backgroundColor: '#fff',
           textStyle: {
             color: '#666',
           },
           extraCssText: 'box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);',
         },
-
         name: '电站状态',
         // symbol:'image//../../../../../theme/img/wind-normal.png',
         coordinateSystem: 'bmap',
@@ -215,8 +212,7 @@ class Map extends Component {
       if(params.data.stationStatus!=='900'){
       return this.props.history.push(`/monitor/singleStation/${params.data.stationCode}`)  
     }else{
-      this.showTip()
-
+      this.showTip();
     }  
    
     })

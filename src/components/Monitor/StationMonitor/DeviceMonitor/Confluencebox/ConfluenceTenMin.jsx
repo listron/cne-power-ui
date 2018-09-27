@@ -26,7 +26,7 @@ function ConfluenceTenMin({ deviceTenMin, loading }) {
       title: {
         text: '时序图',
         textStyle: {
-          color: '#666',
+          color: lineColor,
           fontSize: 14,
         },
         left: 60
@@ -50,7 +50,7 @@ function ConfluenceTenMin({ deviceTenMin, loading }) {
         },
         axisLine: {
           lineStyle: {
-            color: lineColor
+            color: '#dfdfdf',
           },
         },
         axisLabel: {
@@ -60,12 +60,15 @@ function ConfluenceTenMin({ deviceTenMin, loading }) {
       yAxis: [
         {
           name: '电流(A)',
+          nameTextStyle: {
+            color: lineColor,
+          },
           splitLine:{
             show:false
           },
           axisLine: {
             lineStyle: {
-              color: lineColor
+              color: '#dfdfdf',
             },
           },
           axisLabel: {
@@ -77,12 +80,15 @@ function ConfluenceTenMin({ deviceTenMin, loading }) {
         },
         {
           name: '离散率',
+          nameTextStyle: {
+            color: lineColor,
+          },
           splitLine:{
             show:false
           },
           axisLine: {
             lineStyle: {
-              color: lineColor
+              color: '#dfdfdf',
             },
           },
           axisLabel: {
@@ -96,6 +102,9 @@ function ConfluenceTenMin({ deviceTenMin, loading }) {
       series: [
         {
           name: '离散率',
+          nameTextStyle: {
+            color: lineColor,
+          },
           type: 'line',
           areaStyle: {
             normal: {

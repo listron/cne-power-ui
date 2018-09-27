@@ -27,11 +27,11 @@
         }
         h3{
           font-size: 18px;
-          color: #666;
+          color: $darkColor;
           margin-right: 20px;
         }
         span{
-          color: #666;
+          color: $darkColor;
           margin-right: 15px;
         }
         :global{
@@ -63,7 +63,7 @@
         width: 60px;
         line-height: 60px;
         text-align: center;
-        color: #666;
+        color: $darkColor;
         cursor: pointer;
         font-size: 18px;
       }
@@ -72,9 +72,9 @@
       height: 100px;
       display: flex;
       padding: 18px 25px;
-      color: #666;
+      color: $darkColor;
       >div{
-        margin: 0 12px;
+        margin: 0 6px;
       }
       .pvlogo{
         :global{
@@ -114,7 +114,7 @@
           margin-top: 21px;
         }
         .trueTimeDesc{
-          color: #666;
+          color: $darkColor;
           display: flex;
           justify-content: space-between;
           
@@ -149,14 +149,14 @@
         position: absolute;
         top: 20px;
         right: 30px;
-        color: #666;
+        color: $darkColor;
         :global{
           .ant-radio-button-wrapper-checked:first-child {
             border-color: $themeColor;
           }
           
           .ant-radio-button-wrapper:hover, .ant-radio-button-wrapper-focused {
-            color: #666;
+            color: $darkColor;
           }
           .ant-radio-button-wrapper-checked {
             border-color: $themeColor;
@@ -208,7 +208,7 @@
       height: 140px;
       padding: 20px;
       position: relative;
-      color: #666;
+      color: $darkColor;
       :global{
         .ant-btn{
           padding: 0;
@@ -270,7 +270,7 @@
         div{
           float: left;
           margin: 0 25px;
-          color: #666;
+          color: $darkColor;
         }
         img{
           margin: 0 20px;
@@ -282,7 +282,7 @@
           display: flex;
           justify-content: space-around;
           text-align: left;
-          color: #666;
+          color: $darkColor;
           :global{
             .ant-row{
               width: 100%;
@@ -297,7 +297,7 @@
         
         :global{
           .iconfont{
-            color: #666;
+            color: $darkColor;
             cursor: pointer;
           }
         }
@@ -339,19 +339,19 @@
         margin-top: 10px;
         .oneWarning{
           border-bottom: 3px solid #a42b2c;
-          color: #666;
+          color: $darkColor;
         }
         .twoWarning{
           border-bottom: 3px solid #e08031;
-          color: #666;
+          color: $darkColor;
         }
         .threeWarning{
           border-bottom: 3px solid #f9b600;
-          color: #666;
+          color: $darkColor;
         }
         .fourWarning{
           border-bottom: 3px solid #fbe6e3;
-          color: #666;
+          color: $darkColor;
         }
       }
       .cardTitle{
@@ -362,7 +362,7 @@
         padding-left: 20px;
         :global{
           .iconfont{
-            color: #666;
+            color: $darkColor;
             cursor: pointer;
           }
         }
@@ -384,7 +384,7 @@
         line-height: 30px;
         margin-top: 10px;
         .workListRate{
-          color: #666;
+          color: $darkColor;
         }
       }
       .cardTitle{
@@ -395,7 +395,7 @@
         padding-left: 20px;
         :global{
           .iconfont{
-            color: #666;
+            color: $darkColor;
             cursor: pointer;
           }
         }
@@ -515,7 +515,7 @@
         width:80px;
         height:33px;
         text-align: center;
-        color:#666;
+        color:$darkColor;
       }
       .ant-tabs.ant-tabs-card > .ant-tabs-bar .ant-tabs-tab-active {
         background:#f8f8f8;
@@ -523,7 +523,7 @@
         width:80px;
         height:33px;
         text-align: center;
-        color:#666;
+        color:$darkColor;
       }
     }
     

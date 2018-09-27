@@ -64,7 +64,7 @@
   .enterpriseInfor{//企业主要信息展示区
     margin: 24px 32px 0;
     display: flex;
-    color: $lightColor;
+    color: $darkColor;
     .promptTitle{
       color: $darkColor;
       margin-right: 24px;
@@ -116,7 +116,7 @@
       letter-spacing:4px;
     }
     .backIcon{
-      color: $lightColor;
+      color: $darkColor;
       font-size: 20px;
       border-left: 1px solid $promptColor;
       height: 100%;

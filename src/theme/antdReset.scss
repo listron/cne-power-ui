@@ -28,7 +28,7 @@
     }
     .ant-table-thead > tr > th{
       background: #f4f4f4;
-      color: $lightColor;
+      color: $darkColor;
     }
     .ant-table-column-sorter-up.on .anticon-caret-up {//table表格排序上三角点击后的的颜色
       color: $themeColor;
@@ -82,11 +82,11 @@
     .ant-select-selection{
       .ant-select-selection__rendered{
         .ant-select-selection__placeholder{
-          color: $lightColor;
+          color: $darkColor;
         }
       }
       .ant-select-arrow{
-        color: $lightColor;
+        color: $darkColor;
       }
       @include highLight($themeColor);
     }
@@ -211,7 +211,7 @@
     background-color: #eaeaea;
     border-color: rgba(0,0,0,0.15);
     border-radius:2px;
-    color: #666;
+    color: $darkColor;
   }
   /*ant-btn-dashed:hover ant-btn-dashed:focus颜色*/
   .ant-btn-dashed:hover,.ant-btn-dashed:focus,.ant-btn-dashed::selection {

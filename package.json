@@ -34,13 +34,13 @@
     "style-loader": "^0.20.3",
     "uglifyjs-webpack-plugin": "^1.2.4",
     "url-loader": "^0.6.2",
-    "webpack": "^4.4.1",
+    "webpack": "4.18.1",
     "webpack-cli": "^2.0.13",
     "webpack-dev-server": "^3.1.1",
     "webpack-merge": "^4.1.2"
   },
   "dependencies": {
-    "antd": "^3.7.0",
+    "antd": "^3.8.4",
     "axios": "^0.16.2",
     "classnames": "^2.2.6",
     "copy-to-clipboard": "^3.0.8",
@@ -49,9 +49,7 @@
     "jquery": "^3.3.1",
     "js-cookie": "^2.2.0",
     "keymirror": "0.1.1",
-    "lodash": "^4.17.4",
     "moment": "^2.19.1",
-    "nvm": "^0.0.4",
     "prop-types": "^15.6.0",
     "qs": "^6.5.2",
     "react": "^16.2.0",
@@ -64,7 +62,6 @@
     "redux": "^3.7.2",
     "redux-logger": "^3.0.6",
     "redux-saga": "^0.16.0",
-    "redux-thunk": "^2.2.0",
-    "whatwg-fetch": "^2.0.4"
+    "redux-thunk": "^2.2.0"
   }
 }

@@ -7,11 +7,11 @@
   flex-wrap: wrap;
   align-items: flex-end;
   .uploadBtn {
-    color: $lightColor;
+    color: $darkColor;
     .add {
       margin-bottom: 20px;
       font-size: 30px;
-      color: $lightColor;
+      color: $darkColor;
     }
   }
   .loaderHandler{
@@ -92,13 +92,13 @@
       .plusIcon{
         margin-top: 40px;
         margin-bottom: 48px;
-        color:$lightColor;
+        color:$darkColor;
         &::before{
           font-size: 95px;
         }
       }
       .uploadText{
-        color: $lightColor;
+        color: $darkColor;
       }
     }
     :hover{

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Form, DatePicker, Select, Input } from 'antd';
+import { Button, Form, DatePicker, Select, Input, Check } from 'antd';
 import PropTypes from 'prop-types';
 import styles from './inspectCreateForm.scss';
 import moment from 'moment';
@@ -114,7 +114,9 @@ class InspectCreateForm extends Component{
                 disabled={deviceTypeItems.size === 0}
               >
                 {deviceTypeItems.map((item, index) => (
-                  <Option key={item.get('deviceTypeName')+index} value={item.get('deviceTypeCode')} >{item.get('deviceTypeName')}</Option> 
+                  <Option key={item.get('deviceTypeName')+index} value={item.get('deviceTypeCode')} >
+                  
+                  {item.get('deviceTypeName')}</Option> 
                 ))}
               </Select>
             )}
