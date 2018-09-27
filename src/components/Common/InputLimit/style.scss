@@ -16,13 +16,13 @@
   }
   :global {
     input::-webkit-input-placeholder,textarea::-webkit-input-placeholder{
-      color:$lightColor;
+      color:$darkColor;
     }
     input:-moz-placeholder, textarea:-moz-placeholder { 
-      color: $lightColor; 
+      color: $darkColor; 
     }
     input:-ms-input-placeholder, textarea:-ms-input-placeholder { 
-      color: $lightColor; 
+      color: $darkColor; 
     } 
   }
 }

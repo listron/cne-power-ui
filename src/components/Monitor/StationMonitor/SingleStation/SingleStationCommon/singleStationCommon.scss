@@ -30,7 +30,7 @@
     padding-left: 42px;
     height: 1000px;
     .provinceName{
-      color:#666;
+      color:$darkColor;
       text-align:left;
       line-height: 30px;
       background: #f8f8f8;
@@ -47,7 +47,7 @@
       text-align: left;
       text-indent: 1em;
       cursor: pointer;
-      color:#666;
+      color:$darkColor;
       max-width:120px;
       word-break: break-all;
       overflow: hidden;

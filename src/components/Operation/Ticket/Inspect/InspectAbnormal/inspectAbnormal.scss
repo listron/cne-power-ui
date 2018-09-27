@@ -23,11 +23,11 @@
       }
     }
     .disabledStandard {
-      color: $lightColor;
+      color: $darkColor;
       border-color: $lightColor;
       background-color: #fff;
       &:hover {
-        color: $lightColor;
+        color: $darkColor;
         background-color: #fff;
       }
     }
@@ -64,7 +64,7 @@
       >span {
         display: inline-block;
         margin-left: 24px;
-        color: $lightColor;
+        color: $darkColor;
       }
     }
   }

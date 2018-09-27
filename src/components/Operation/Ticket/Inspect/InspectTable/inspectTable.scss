@@ -89,7 +89,7 @@
     height: 45px;
     line-height: 45px;
     .info{
-      color: $lightColor;
+      color: $darkColor;
       margin-right: 20px;
       margin-left: 24px;
       .totalNum{
@@ -133,7 +133,7 @@
     }
     .ant-select-dropdown-menu-item:not(.ant-select-dropdown-menu-item-disabled){
       background-color: #fff;
-      color:$lightColor;
+      color:$darkColor;
       &:hover {
         background-color: #ceebe0;
         color: $themeColor;
