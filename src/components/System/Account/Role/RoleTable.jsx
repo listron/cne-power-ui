@@ -26,24 +26,80 @@ class RoleTable extends Component {
     };
   }
 
-  onRoleAdd = () =>{//进入添加角色页
-    this.props.changeRoleStore({showPage: 'create'});
-  }
-
   onRowSelect = (selectedRowKeys, selectedRows) => {
     this.props.changeRoleStore({
       selectedRole: selectedRows
     })
   }
-  onConfirmWarningTip = () => {
-    this.setState({
-      showWarningTip: false,
-    });  
-  }
+
   cancelRowSelect = () => {
     this.props.changeRoleStore({
       selectedRole:[]
     })
+  }
+  
+  createRoloeColumn = () => [
+    {
+      title: '名称',
+      dataIndex: 'roleDesc',
+      key: 'roleDesc'
+    }, {
+      title: '预设',
+      dataIndex: 'isPre',
+      key: 'isPre',
+      render: text => (<span>{text?'否':'是'}</span>),
+      sorter: true
+    }, {
+      title: '功能定义',
+      dataIndex: 'rightData',
+      key: 'rightData',
+      render: (text,record)=>{
+        const rightArr = this.renderAuth(text);
+        const {roleDesc}=record;
+        const content = (
+          <div className={styles.tooltip}>{rightArr.map((item,index)=>(<span key={index}>{item}</span>))}</div>
+        );
+        return (
+          <Popover  content={content}  placement="right" trigger="hover"  title={roleDesc}>
+            <div className={styles.menu}>{rightArr.join('|')}</div>
+          </Popover>
+        );
+      }
+    }
+  ];
+
+  renderAuth(rightData) {
+    let result = [];
+    let rightEl = ''
+    this.renderAuthEl(rightData, result, rightEl);
+    return result;
+  }
+
+  renderAuthEl(arr, result, rightEl) {
+    for(var i = 0; i < arr.length; i++) {
+      let name;
+      if(rightEl === '') {
+        name = arr[i].rightName;
+      } else {
+        name = rightEl+'-'+arr[i].rightName;
+      }
+      if(arr[i].childRightData instanceof Array && arr[i].childRightData.length > 0) {
+        this.renderAuthEl(arr[i].childRightData, result, name);
+      } else {
+        result.push(name);
+      }
+    }
+  }
+
+/*
+  onRoleAdd = () =>{//进入添加角色页
+    this.props.changeRoleStore({showPage: 'create'});
+  }
+  
+  onConfirmWarningTip = () => {
+    this.setState({
+      showWarningTip: false,
+    });  
   }
 
   roleHandle = (value) => {//编辑
@@ -87,71 +143,18 @@ class RoleTable extends Component {
       </Select>
     );
   }
-  createTableColumn = () => {//生成表头
-    const columns = [
-      {
-        title: '名称',
-        dataIndex: 'roleDesc',
-        key: 'roleDesc'
-      }, {
-        title: '预设',
-        dataIndex: 'isPre',
-        key: 'isPre',
-        render: (text,record) => (<span>{text===1?'否':'是'}</span>),
-        sorter: (a, b) => a.isPre - b.isPre
-      }, {
-        title: '功能定义',
-        dataIndex: 'rightData',
-        key: 'rightData',
-        render: (text,record)=>{
-          const right = this.renderAuth(text);
-          const {roleDesc}=record;
-          const content = (
-            <div className={styles.tooltip}>{right.map((item,index)=>(<span key={index}>{item}</span>))}</div>
-          );
-          return (
-            <Popover  content={content}  placement="right" trigger="hover"  title={roleDesc}>
-              <div className={styles.menu}>{right.join('|')}</div>
-            </Popover>
-          );
-        }
-      }
-    ];
-    return columns;
-  }
 
-  renderAuth(rightData) {
-    let result = [];
-    let rightEl = ''
-    this.renderAuthEl(rightData, result, rightEl);
-    return result;
-  }
-
-  renderAuthEl(arr, result, rightEl) {
-    for(var i = 0; i < arr.length; i++) {
-      let name;
-      if(rightEl === '') {
-        name = arr[i].rightName;
-      } else {
-        name = rightEl+'-'+arr[i].rightName;
-      }
-      if(arr[i].childRightData instanceof Array && arr[i].childRightData.length > 0) {
-        this.renderAuthEl(arr[i].childRightData, result, name);
-      } else {
-        result.push(name);
-      }
-    }
-  }
-
+  
+*/
   render(){
     const { selectedRole, roleData, loading, showPage } = this.props;
-    const { showWarningTip, warningTipText, hiddenWarningTipCancelText } = this.state;
+    // const { showWarningTip, warningTipText, hiddenWarningTipCancelText } = this.state;
     // const rightHandler = localStorage.getItem('rightHandler');
     // const roleCreateRight = rightHandler && rightHandler.split(',').includes('account_role_create');
     // const userImportRight = rightHandler && rightHandler.split(',').includes('account_user_batchImport');
     return (
       <div className={styles.roleList} style={{display: showPage==='list'?'flex':'none'}}>
-      {showWarningTip && <WarningTip onOK={this.onConfirmWarningTip} value={warningTipText} hiddenCancel={hiddenWarningTipCancelText} />}
+      {/* {showWarningTip && <WarningTip onOK={this.onConfirmWarningTip} value={warningTipText} hiddenCancel={hiddenWarningTipCancelText} />} */}
         {/* <div className={styles.roleListTop} >
           <div>
             <Button className={styles.addRole} onClick={this.onRoleAdd}>
@@ -167,20 +170,20 @@ class RoleTable extends Component {
           <Table 
             loading={loading}
             rowKey={(record)=>{return record.roleId}} 
-            // rowSelection={{
-            //   selectedRowKeys: selectedRole.map(e=>e.roleId),
-            //   onChange: this.onRowSelect
-            // }}
+            rowSelection={{
+              selectedRowKeys: selectedRole.map(e=>e.roleId),
+              onChange: this.onRowSelect
+            }}
             dataSource={roleData} 
-            columns={this.createTableColumn()} 
+            columns={this.createRoloeColumn()} 
             onChange={this.tableChange}
             pagination={false}
           />
         </div>
-        {/* <div className={styles.tableFooter}>
+        <div className={styles.tableFooter}>
           <span className={styles.info}>当前选中<span className={styles.totalNum}>{selectedRole.length}</span>项</span>
           {selectedRole.length > 0 &&<span className={styles.cancel} onClick={this.cancelRowSelect}>取消选中</span>}
-        </div> */}
+        </div>
       </div>
     )
   }
