@@ -48,7 +48,7 @@
         letter-spacing: 4px;
       }
       .backIcon{
-        color: $lightColor;
+        color: $darkColor;
         font-size: 20px;
         border-left: 1px solid #dfdfdf;
         height: 100%;
@@ -171,13 +171,13 @@
           .iconfont{
             margin-right: 20px;
             cursor: pointer;
-            color: #666;
+            color: $darkColor;
           }
         }
         .backIcon {
           height: 100%;
           line-height: 64px;
-          color: #666;
+          color: $darkColor;
           border-left: 1px solid #dfdfdf;
           width: 64px;
           cursor: pointer;
@@ -220,7 +220,7 @@
         .doshLine {
           width: 100%;
           height: 1px;
-          border-top: 1px dashed #666;
+          border-top: 1px dashed #dfdfdf;
         }
         .title {
           display: inline-block;
@@ -231,7 +231,7 @@
         }
         .value {
           display: inline-block;
-          color: #666;
+          color: $darkColor;
           margin-right: 16px;
         }
         .enterpriseDepartment{
@@ -239,7 +239,7 @@
         }
         .enterpriseDepartmentValue{
           display: block;
-          color: #666;
+          color: $darkColor;
           .departmentDetail{
             display: flex;
             flex-direction: row;

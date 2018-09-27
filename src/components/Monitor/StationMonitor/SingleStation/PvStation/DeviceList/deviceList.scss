@@ -15,7 +15,7 @@
       margin-bottom: 20px;
       .deviceName{
         font-size: 14px;
-        color: #666;
+        color: $darkColor;
       }
       :global{
         .iconfont{
@@ -71,7 +71,7 @@
     }
     .inverterBlockBox{
       padding: 20px 20px 60px;
-      color: #666;
+      color: $darkColor;
       display: flex;
       flex-wrap: wrap;
       .parentDeviceName{
@@ -111,14 +111,14 @@
               font-size: 14px;
             }
             a{
-              color: #666;
+              color: $darkColor;
             }
           }
         }
         .inverterItemR{
           display: inline-block;
           width: 155px;
-          color: #666;
+          color: $darkColor;
           .hlBlockName{
             display: flex;
             justify-content: space-between;
@@ -130,7 +130,7 @@
               color: $themeColor;
             }
             div:last-child{
-              color: #666;
+              color: $darkColor;
             }
           }
           :global{
@@ -174,14 +174,14 @@
               font-size: 14px;
             }
             a{
-              color: #666;
+              color: $darkColor;
             }
           }
         }
         .inverterItemR{
           display: inline-block;
           width: 166px;
-          color: #666;
+          color: $darkColor;
           .hlBlockName{
             display: flex;
             justify-content: space-between;
@@ -193,7 +193,7 @@
               color: $themeColor;
             }
             div:last-child{
-              color: #666;
+              color: $darkColor;
             }
           }
           :global{
@@ -278,7 +278,7 @@
           }
           .ant-table-thead{
             background: #f4f4f4;
-            color: #666;
+            color: $darkColor;
           }
         }
       }
@@ -306,7 +306,7 @@
     .ant-tabs-nav .ant-tabs-tab{
       margin: 0;
       background: #f1f1f1;
-      color: #666;
+      color: $darkColor;
     }
     .ant-tabs-nav .ant-tabs-tab:hover {
       color: $themeColor;

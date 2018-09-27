@@ -115,14 +115,14 @@
     width: 220px;
     text-align: center;
     margin-top: 60px;
-    color:#666;
+    color:$darkColor;
     .abnormalIcon{
       display: block;
       margin: 0 auto;
       :global{
         .iconfont{
           font-size: 62px;
-          color: #666;
+          color: $darkColor;
         }
       }
     }
@@ -156,7 +156,7 @@
       text-indent: 2em;
       margin-bottom: 0;
       line-height: 24px;
-      color: #666;
+      color: $darkColor;
       span{
         color: $themeColor;
         cursor: pointer;

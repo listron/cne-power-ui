@@ -29,7 +29,7 @@
         letter-spacing:4px;
       }
       .backIcon{
-        color: $lightColor;
+        color: $darkColor;
         font-size: 20px;
         border-left: 1px solid $promptColor;
         margin-left: 10px;
@@ -50,7 +50,7 @@
         .icon-last, .icon-next {
           font-size: 20px;
           margin-right: 20px;
-          // color: $lightColor;
+          // color: $darkColor;
         }
       }
     }

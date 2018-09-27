@@ -29,7 +29,7 @@
         color: $themeColor;
       }
       .updateTimeText {
-        color: $lightColor;
+        color: $darkColor;
       }
     }
     .refreshIcon {
@@ -55,7 +55,7 @@
     }
     .alarmText {
       font-size: 14px;
-      color: #666;
+      color: $darkColor;
     }
   }
   .alarmNumDetail {
@@ -76,7 +76,7 @@
     align-items: center;
     .alarmText {
       font-size: 14px;
-      color: $lightColor;
+      color: $darkColor;
     }
     &:hover {
       border:1px solid $themeColor;
@@ -96,7 +96,7 @@
     }
     .icon-action {
       font-size: 18px;
-      color: $lightColor;
+      color: $darkColor;
       &:hover {
         color: $themeColor;
       }
@@ -147,12 +147,12 @@
     align-items: center;
     flex-shrink: 0;
     .text {
-      color: $lightColor;
+      color: $darkColor;
       margin-right: 16px;
     }
     button {
       margin-right: 16px;
-      color: $lightColor;
+      color: $darkColor;
     }
   }
   .filterBox {
@@ -205,7 +205,7 @@
     height: 45px;
     line-height: 45px;
     .info{
-      color: $lightColor;
+      color: $darkColor;
       margin-right: 20px;
       margin-left: 24px;
       .totalNum{
@@ -249,7 +249,7 @@
   padding-top: 16px;
   align-items: center;
   >span:first-child {
-    color: $lightColor;
+    color: $darkColor;
     font-size: 14px;
     margin-right: 16px;
   }
@@ -371,7 +371,7 @@
       .value {
         display: flex;
         flex-wrap: wrap;
-        color: $lightColor;
+        color: $darkColor;
         font-size: 14px;
       }
     }
@@ -401,7 +401,7 @@
     }
     .ant-select-dropdown-menu-item:not(.ant-select-dropdown-menu-item-disabled){
       background-color: #fff;
-      color:$lightColor;
+      color:$darkColor;
       &:hover {
         background-color: #ceebe0;
         color: $themeColor;
