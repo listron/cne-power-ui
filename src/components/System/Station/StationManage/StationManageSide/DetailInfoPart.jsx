@@ -25,7 +25,7 @@ function DetailInfoPart({ title, infoArray,  handler, noBottomBorder=false }){
           }else{
             value = '--'
           }
-          console.log(e);
+         
           return (<span key={e.name} className={styles.eachInfo}>
             <span className={styles.infoName}>{e.name}</span>
             <span className={styles.infoValue}>{value}{e.unit || ''}</span>
