@@ -95,6 +95,7 @@
     height: 19px;
     border-bottom: 1px $themeColor solid;
     cursor: pointer;
+    text-align: center;
   }
 }
 
@@ -141,10 +142,12 @@
   .selected {
     display: inline-block;
     color: $themeColor;
-    width: 40px;
+    width: 30px;
     height: 19px;
     border-bottom: 1px $themeColor solid;
     cursor: pointer;
+    text-align: center;
+    white-space:nowrap;
   }
 }
 
