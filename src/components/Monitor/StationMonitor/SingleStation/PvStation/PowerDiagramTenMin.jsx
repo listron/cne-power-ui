@@ -85,7 +85,7 @@ class PowerDiagramTenMin extends Component {
             return <div></div>
           }
           let radi = '', thoryPower = '', actualPower = '', rate = '';
-          const radiObj = param.find(e=>e.seriesName === '日曝辐值');
+          const radiObj = param.find(e=>e.seriesName === (intervalTime===0? '日曝辐值' : (intervalTime===1 ? '月辐射总量' : '年辐射总量')));
           const thoryPowerObj = param.find(e=>e.seriesName === '理论发电量');
           const actualPowerObj = param.find(e=>e.seriesName === '实际发电量');
           const tmpRadi = radiObj && radiObj.value && !isNaN(parseFloat(radiObj.value));
