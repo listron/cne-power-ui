@@ -2,7 +2,7 @@ import { combineReducers } from 'redux';
 
 import department from './account/departmentReducer';
 import enterprise from './account/enterpriseReducer';
-import role from './account/roleReducer';
+import role from '../../../containers/System/Account/Role/roleReducer';
 import user from './account/userReducer';
 
 import alarmManage from './station/alarmManageReducer';

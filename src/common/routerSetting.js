@@ -40,10 +40,6 @@ const routers = [
     exact: true,
     component: Ticket,
   }, {
-    path: '/operation/ticket/defect/:defectId',
-    exact: true,
-    component: DefectDetail,
-  }, {
     path: '/operation/ticket/statistics',
     exact: true,
     component: Building,
@@ -99,6 +95,10 @@ const routers = [
     path: '/monitor/alarm/transfer',
     exact: true,
     component: RealTimeAlarm,
+  }, {
+    path: '/monitor/alarm/transfer/:defectId',
+    exact: true,
+    component: DefectDetail,
   }, {
     path: '/monitor/alarm/relieve',
     exact: true,
