@@ -18,7 +18,7 @@
       text-align: justify;
       line-height: 30px;
       margin: 0 12px 0 24px;
-      color: $lightColor;
+      color: $darkColor;
     }
     .radioGroup{
       :global{
@@ -52,7 +52,7 @@
     line-height: 50px;
     display: flex;
     .searchName,.seachPhone{
-      color: $lightColor;
+      color: $darkColor;
     }
     .searchName{
       margin: 0 12px 0 24px;
@@ -76,7 +76,7 @@
       width: 68px;
       margin-top: 9px;
       margin-right: 12px;
-      color: $lightColor;
+      color: $darkColor;
       border:1px solid $promptColor;
       @include highLight($themeColor);
     }
@@ -135,11 +135,11 @@
             .ant-select-selection{
               .ant-select-selection__rendered{
                 .ant-select-selection__placeholder{
-                  color: $lightColor;
+                  color: $darkColor;
                 }
               }
               .ant-select-arrow{
-                color: $lightColor;
+                color: $darkColor;
               }
               @include highLight($themeColor);
             }
@@ -152,7 +152,7 @@
       height: 45px;
       line-height: 45px;
       .info{
-        color: $lightColor;
+        color: $darkColor;
         margin-right: 20px;
         margin-left: 24px;
         .totalNum{

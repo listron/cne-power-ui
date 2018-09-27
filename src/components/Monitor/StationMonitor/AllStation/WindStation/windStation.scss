@@ -1,3 +1,4 @@
+@import '../../../../../theme/theme.scss';
 
 .WindStation{
   background: #fff;
@@ -113,7 +114,7 @@
     border-bottom: 1px dashed #dfdfdf;
     height: 100px;
     display: flex;
-    color:#666;
+    color:$darkColor;
     .typeIcon{
       width: 120px;
       display: flex;
@@ -226,7 +227,7 @@
       width: 215px;
       height: 132px;
       border-radius:4px;
-      color: #666;
+      color: $darkColor;
       background:#ffffff;
       box-shadow:0 1px 4px 0 ;
       display: flex;
@@ -234,7 +235,7 @@
       cursor: pointer;
       a{
         text-decoration: none;
-        color: #666;
+        color: $darkColor;
       }
       i{
         font-size: 14px;
@@ -250,7 +251,7 @@
       width: 215px;
       height: 132px;
       border-radius:4px;  
-      color: #666;
+      color: $darkColor;
       display: flex;
       flex-direction: column;
       background:#f8f8f8;
@@ -261,12 +262,12 @@
       a{
         pointer-events: none;
         text-decoration: none;
-        color: #666;
+        color: $darkColor;
       }
         
     }
     .stationCardTitle {
-      color:#666;
+      color:$darkColor;
       height: 26px;
       flex: 1;
       display: flex;

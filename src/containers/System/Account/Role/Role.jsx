@@ -69,13 +69,7 @@ class Role extends Component {
   }
 }
 const mapStateToProps = (state) => ({
-  loading: state.system.role.get('loading'),
-  showPage: state.system.role.get('showPage'),
-  roleData: state.system.role.get('roleData').toJS(),
-  menuData: state.system.role.get('menuData').toJS(),
-  selectedRole: state.system.role.get('selectedRole').toJS(),
-  continueAdd: state.system.role.get('continueAdd'),
-  error: state.system.role.get('error'),
+  ...state.system.role.toJS(),
   enterpriseId: Cookie.get('enterpriseId'),
 });
 

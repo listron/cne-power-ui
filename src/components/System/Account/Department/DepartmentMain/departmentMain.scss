@@ -21,7 +21,7 @@
       line-height: 50px;
       display: flex;
       .departmentName,.parentName,.stationName{
-        color: $lightColor;
+        color: $darkColor;
       }
       .departmentName{
         margin: 0 12px 0 24px;
@@ -45,7 +45,7 @@
         width: 68px;
         margin-top: 9px;
         margin-right: 12px;
-        color: $lightColor;
+        color: $darkColor;
         border:1px solid $promptColor;
         @include highLight($themeColor);
         &:hover{
@@ -74,7 +74,7 @@
           i{
             background-color:$themeColor;
             color: #fff;
-            font-size: 18px;
+            font-size: 14px;
             vertical-align: top;
             width: 28px;
             line-height: 30px;       
@@ -147,7 +147,7 @@
         height: 45px;
         line-height: 45px;
         .info{
-          color: $lightColor;
+          color: $darkColor;
           margin-right: 20px;
           margin-left: 24px;
           .totalNum{
@@ -186,7 +186,7 @@
 }
 
 .responsibleDetails{
-  color: $lightColor;
+  color: $darkColor;
   .eachStation{
     .square{
       display: inline-block;
@@ -202,7 +202,7 @@
   
   :global{
     .ant-popover-title{
-      color: $lightColor;
+      color: $darkColor;
     }
   }
 }

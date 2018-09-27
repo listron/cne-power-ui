@@ -31,7 +31,7 @@ function InverterTenMin({ deviceTenMin, loading }) {
       title: {
         text: '时序图',
         textStyle: {
-          color: '#666',
+          color: lineColor,
           fontSize: 14,
         },
         left: 60
@@ -60,7 +60,7 @@ function InverterTenMin({ deviceTenMin, loading }) {
         axisPointer: {
           type: 'cross',
           label: {
-            backgroundColor: '#666',
+            backgroundColor: lineColor,
           }
         },
         formatter: (param) => {
@@ -85,7 +85,7 @@ function InverterTenMin({ deviceTenMin, loading }) {
         },
         axisLine: {
           lineStyle: {
-            color: lineColor
+            color: '#dfdfdf',
           },
         },
         axisLabel: {
@@ -100,12 +100,15 @@ function InverterTenMin({ deviceTenMin, loading }) {
       yAxis: [
         {
           name: '功率(kW)',
+          nameTextStyle: {
+            color: lineColor,
+          },
           splitLine:{
             show:false
           },
           axisLine: {
             lineStyle: {
-              color: lineColor
+              color: '#dfdfdf',
             },
           },
           axisLabel: {
@@ -117,12 +120,15 @@ function InverterTenMin({ deviceTenMin, loading }) {
         },
         {
           name: '瞬时辐照(W/m²)',
+          nameTextStyle: {
+            color: lineColor,
+          },
           splitLine:{
             show:false
           },
           axisLine: {
             lineStyle: {
-              color: lineColor
+              color: '#dfdfdf',
             },
           },
           axisLabel: {

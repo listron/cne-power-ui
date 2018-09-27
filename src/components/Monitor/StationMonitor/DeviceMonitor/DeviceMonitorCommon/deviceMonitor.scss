@@ -75,7 +75,7 @@
     height: 14px;
     .leftText, .rightText {
       font-size: 14px;
-      color: $lightColor;
+      color: $darkColor;
     }
   }
 }
@@ -148,7 +148,7 @@
       .eachData{
         margin-bottom: 4px;
         .pointName{
-          color: $lightColor;
+          color: $darkColor;
           margin-bottom: 0;
         }
         .pointValue{

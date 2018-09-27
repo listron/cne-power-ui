@@ -5,8 +5,8 @@ import {message} from 'antd';
 import styles from './defectDetail.scss';
 import { ticketAction } from '../../../../../constants/actionTypes/operation/ticketAction';
 import DefectDetailForm from '../../../../../components/Operation/Ticket/Defect/DefectDetailForm/DefectDetailForm';
-// import CommonBreadcrumb from '../../../../../components/Common/CommonBreadcrumb';
-// import Footer from '../../../../../components/Common/Footer';
+import CommonBreadcrumb from '../../../../../components/Common/CommonBreadcrumb';
+import Footer from '../../../../../components/Common/Footer';
 
 class DefectDetail extends Component {
   static propTypes = {
@@ -111,25 +111,23 @@ class DefectDetail extends Component {
       pathname = this.props.location.pathname;
       defectId = pathname.split('/')[4];
     }
-    //先放这，此页面没有徒步导航和尾部
-   // <CommonBreadcrumb  {...breadCrumbData} style={{ marginLeft: '38px' }} />
-   //  <Footer />
-    //  const breadCrumbData = {
-    //   breadData: [
-    //     {
-    //       name: '工单列表',
-    //     }
-    //   ],
-    // };
-    return (
-      // <div className={styles.detailWrapBox}>     
-       <DefectDetailForm {...this.props}
+    const isFromAlarm = !!defectId;
+    const DefectDetailFormContent = (
+      <DefectDetailForm {...this.props}
         onCloseDefectDetail={this.onCloseDefectDetail}
-        isFromAlarm={!!defectId}
+        isFromAlarm={isFromAlarm}
         onPrev={this.onPrev}
-        onNext={this.onNext} />          
-        // </div>
-    );
+        onNext={this.onNext} />
+    ) 
+    if(isFromAlarm){
+      return (<div className={styles.detailWrapBox}>
+        <CommonBreadcrumb  breadData={[{name:'实时告警'}]} style={{ marginLeft: '38px' }} />
+        {DefectDetailFormContent}
+        <Footer />
+      </div>)
+    }else{
+      return DefectDetailFormContent;
+    }
   }
 }
 

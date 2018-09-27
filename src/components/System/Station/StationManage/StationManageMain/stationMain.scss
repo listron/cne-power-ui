@@ -20,7 +20,7 @@
         .title{
           margin-left: 28px;
           margin-right: 12px;
-          color: $lightColor;
+          color: $darkColor;
         }
         :global{
           .ant-radio-group{
@@ -48,7 +48,7 @@
           letter-spacing: 25px;
           margin-left: 28px;
           margin-right: 16px;
-          color: $lightColor;
+          color: $darkColor;
         }
         .searchInput{
           width: 160px;
@@ -56,11 +56,11 @@
         .name{
           margin-left: 24px;
           margin-right: 12px;
-          color: $lightColor;
+          color: $darkColor;
         }
         .searchButton{
           margin: 0 12px;
-          color: $lightColor;
+          color: $darkColor;
         }
         .searchReset{
           color: $themeColor;
@@ -79,15 +79,20 @@
           .uploadStation{
             .plusButton { // 添加电站 
               margin: 0 12px 0 32px;
-              padding: 0 0 0 0;
+              padding: 0;
+              font-size: 0;
+              i{
+                vertical-align: top;
+                font-size: 14px;
+              }
               span{
                 background-color: #fff;
                 color:$themeColor;
                 border-radius: 0 4px 4px 0;
                 display: inline-block;
-                height: 100%;
-                width: 38px;
-                line-height: 30px; 
+               font-size: 14px;
+                width: 40px;
+                line-height: 29px; 
                 margin: 0px;
               }
               &:hover{
@@ -113,7 +118,7 @@
               .ant-btn.ant-btn-loading:not(.ant-btn-circle):not(.ant-btn-circle-outline):not(.ant-btn-icon-only) .anticon {
                 margin-left: 0px;
                 width: 28px;
-                color: #666;
+                color: $darkColor;
               }
             }
           }
@@ -133,7 +138,7 @@
           }
         }
         .notSet{
-          color: $lightColor;
+          color: $darkColor;
         }
         .deleteStation{
           cursor: pointer;
@@ -151,7 +156,7 @@
     .cancel, .confirm{
       width: 82px;
       height: 32px;
-      color: $lightColor;
+      color: $darkColor;
       border: solid 1px $lightColor;
       &:hover,&:focus{
         color: $themeColor;
@@ -170,14 +175,14 @@
           width: 40px;
           height: 40px;
           line-height: 40px;
-          color: $lightColor;
+          color: $darkColor;
         }
         .ant-modal-header{
           height: 40px;
           padding: 0 20px 0 12px;
-          color: $lightColor;
+          color: $darkColor;
           .ant-modal-title{
-            color: $lightColor;
+            color: $darkColor;
             line-height: 40px;
           }
         }
@@ -186,13 +191,13 @@
           overflow-y: auto;
           padding-left: 220px;
           .ant-checkbox-wrapper{
-            color: $lightColor;
+            color: $darkColor;
           }
           .ant-checkbox-wrapper:hover .ant-checkbox-inner, .ant-checkbox:hover .ant-checkbox-inner, .ant-checkbox-input:focus + .ant-checkbox-inner{
             border-color: $themeColor;
           }
           .ant-tree-title{
-            color: $lightColor;
+            color: $darkColor;
           }
         }
         .ant-modal-footer{
