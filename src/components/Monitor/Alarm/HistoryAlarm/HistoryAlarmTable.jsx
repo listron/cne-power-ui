@@ -96,7 +96,7 @@ class HostoryAlarmTable extends Component {
   createTableSource(data) {
     const { sortName, descend } = this.state;
     const { pageSize, currentPage } = this.props;
-    const nameSortArr = ['stationName', 'deviceTypeName', 'warningConfigName']
+    const nameSortArr = ['stationName', 'deviceTypeName','deviceName', 'warningConfigName']
     const tableSource = data.map((e, i) => ({
       ...e,
       key: i,
@@ -150,6 +150,7 @@ class HostoryAlarmTable extends Component {
         title: '设备名称',
         dataIndex: 'deviceName',
         key: 'deviceName',
+        sorter: true,
         render: (text, record) => {
           if(record.deviceTypeCode === 206) {
             return (

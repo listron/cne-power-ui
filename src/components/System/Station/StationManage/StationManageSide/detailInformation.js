@@ -6,7 +6,7 @@ export const baseFun = (detailData) => { // 根据基础信息配置输出指定
   const latitude = (detailData.latitude || parseFloat(detailData.latitude) === 0)? `${detailData.latitude}°` : '--';
   let baseArray = [  // 基础信息配置 -- > 
     { name: '电站类型', value: detailData.stationType === 0?'风电':(detailData.stationType === 1?'光伏':''), }, // 实际调整
-    { name: '电站位置', value: `${longitude} ${latitude}`, }, // 特殊组合
+    { name: '电站位置', value: `${longitude}, ${latitude}`, }, // 特殊组合
     { name: '覆盖类型', value: detailData.coverType, },
     { name: '所属区域', value: detailData.regionName, },
     { name: '所在省市', value: `${detailData.provinceName}${detailData.cityName}${detailData.countyName}` },
