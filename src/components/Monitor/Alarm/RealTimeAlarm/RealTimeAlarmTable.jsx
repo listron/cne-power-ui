@@ -349,7 +349,7 @@ class RealTimeAlarmTable extends Component {
           </div>
         </div>
         <Button className={styles.ticketButton}>
-        <Link to={`/operation/ticket/defect/${ticketInfo.defectId}`}>
+        <Link to={`/monitor/alarm/transfer/${ticketInfo.defectId}`}>
         查看工单详情</Link>
         </Button>
       </div>
