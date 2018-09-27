@@ -17,14 +17,14 @@
     background-color: #fff;
     border: 1px solid #e1e2e2;
     a{
-      color: #666;
+      color: $darkColor;
     }
     a:hover,a:focus{
       color: $themeColor;
     }
     :global{
       .ant-btn {
-        color: #666;
+        color: $darkColor;
       }
       .ant-spin{//table loading加载中图标颜色
         color: $themeColor;
@@ -53,7 +53,7 @@
       .userSearch{
         line-height: 50px;
         background: #fbfbfb;
-        color: #666;
+        color: $darkColor;
         display: flex;
         padding-left: 14px;
         span{
@@ -87,7 +87,7 @@
           
           .filterCondition{
             margin: 30px 10px 0 26px;
-            color: #666;
+            color: $darkColor;
           }
         }
         .userStatus{
@@ -208,7 +208,7 @@
             :global{
               .ant-select{
                 width: 78px;
-                color: #666;
+                color: $darkColor;
               }
             }
           }
@@ -256,7 +256,7 @@
       .tableFooter{
         line-height: 46px;
         height: 46px;
-        color: #666;
+        color: $darkColor;
         .info{
           margin-left: 25px;
           .totalNum{
@@ -278,9 +278,9 @@
   
 }
 .responsibleDetails{
-  color: $lightColor;
+  color: $darkColor;
   .eachStation{
-    color:$lightColor;
+    color:$darkColor;
     .square{
       width: 4px;
       height: 4px;
@@ -294,7 +294,7 @@
   }
   :global{
     .ant-popover-title{
-      color: $lightColor;
+      color: $darkColor;
     }
   }
 }
@@ -328,7 +328,7 @@
         border-radius: 4px;
         margin-left: 24px;
         padding:0 8px;
-        color: $lightColor;
+        color: $darkColor;
         
         &:hover{
           background-color: $themeColor;
@@ -342,19 +342,19 @@
     }
     .handleRadio{
       margin-left: 80px;
-      color: #666;
+      color: $darkColor;
       :global{
         .ant-radio:hover .ant-radio-inner, .ant-radio-focused .ant-radio-inner {
-          border-color: #666;
+          border-color: $darkColor;
         }
         .ant-radio-inner:after{
-          background-color: #666;
+          background-color: $darkColor;
         }
         .ant-radio-checked .ant-radio-inner{
-          border: 1px solid #666;
+          border: 1px solid $darkColor;
         }
         .ant-radio-wrapper:hover .ant-radio .ant-radio-inner, .ant-radio:hover .ant-radio-inner, .ant-radio-focused .ant-radio-inner {
-          border-color: #666;
+          border-color: $darkColor;
         }
       }
     }

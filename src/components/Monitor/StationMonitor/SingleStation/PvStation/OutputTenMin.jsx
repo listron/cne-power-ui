@@ -42,7 +42,7 @@ class OutputTenMin extends Component {
       title: {
         text: '出力图',
         textStyle: {
-          color: '#666',
+          color: lineColor,
           fontSize: 14,
           fontWeight: 'normal',
         },
@@ -64,13 +64,13 @@ class OutputTenMin extends Component {
         show: true,
         backgroundColor: '#fff',
         textStyle: {
-          color: '#666',
+          color: lineColor,
           fontSize: '12px',
         },
         axisPointer: {
           type: 'cross',
           label: {
-            backgroundColor: '#666',
+            backgroundColor: lineColor,
           }
         },
         formatter: (param) => {

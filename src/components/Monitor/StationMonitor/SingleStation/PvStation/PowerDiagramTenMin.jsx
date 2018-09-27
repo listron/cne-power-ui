@@ -50,7 +50,7 @@ class PowerDiagramTenMin extends Component {
       title: {
         text: '发电量',
         textStyle: {
-          color: '#666',
+          color: lineColor,
           fontSize: 14,
           fontWeight: 'normal',
         },
@@ -77,7 +77,7 @@ class PowerDiagramTenMin extends Component {
         show: true,
         backgroundColor: '#fff',
         textStyle: {
-          color: '#666',
+          color: lineColor,
           fontSize: '12px',
         },
         formatter: (param) => {

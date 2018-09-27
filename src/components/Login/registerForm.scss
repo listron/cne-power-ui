@@ -48,7 +48,7 @@
       text-align: right;
     }
     .ant-form-item-label label {
-      color: #666;
+      color: $darkColor;
     }
     .ant-form-item-label label:after{
       content: "";
@@ -178,7 +178,7 @@
       width: 55px;
       margin-right: 30px;
       font-size:14px;
-      color:#666;
+      color:$darkColor;
       text-align:left;
     }
   }

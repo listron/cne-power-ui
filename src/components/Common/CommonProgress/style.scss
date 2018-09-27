@@ -1,5 +1,7 @@
+@import '../../../theme/theme.scss';
+
 .commonProgress {
-  color:#666;
+  color: $darkColor;
   :global{
     .ant-progress-inner{
       vertical-align: -3px;
@@ -16,9 +18,6 @@
       display: flex;
       flex-direction: column;
       flex-wrap: wrap;
-     
-
-
       .stationValue{
         flex: 1;
         height: 24px;

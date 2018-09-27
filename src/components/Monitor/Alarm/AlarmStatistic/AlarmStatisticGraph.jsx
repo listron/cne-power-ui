@@ -61,18 +61,49 @@ class AlarmStatisticGraph extends React.Component {
           color: '#666',
           fontSize: 12,
         },
-        extraCssText:'width:128px;height:165px;',
+        extraCssText:'width:128px;height:165px;background: rgba(0,0,0,0);',
         formatter: (params) => {
-          return `<div>
-          <div style="border-bottom: 1px solid #dfdfdf;padding-left:4px;padding-bottom:4px">${params[0].name}</div> 
-          <div style="padding-left:4px;height:22px;line-height:22px"><span style="display:inline-block;padding-right:6px">${params[0].marker}${params[0].seriesName}</span><span>${params[0].value}</span></div>
-          <div style="padding-left:4px;height:22px;line-height:22px"><span style="display:inline-block;padding-right:6px">${params[1].marker}${params[1].seriesName}</span><span>${params[1].value}</span></div>
-          <div style="padding-left:4px;height:22px;line-height:22px"><span style="display:inline-block;padding-right:6px">${params[2].marker}${params[2].seriesName}</span><span>${params[2].value}</span></div> 
-          <div style="padding-left:4px;height:22px;line-height:22px"><span style="display:inline-block;padding-right:6px">${params[3].marker}${params[3].seriesName}</span><span>${params[3].value}</span></div>
-          <div style="padding-left:4px;height:22px;line-height:22px"><span style="display:inline-block;padding-right:6px">${params[4].marker}${params[4].seriesName}</span><span>${params[4].value}</span></div>
-          <div style="padding-left:4px;height:22px;line-height:22px"><span style="display:inline-block;padding-right:6px">总计</span><span>${params[1].value+params[2].value+params[3].value+params[4].value}</span></div> 
-          </div>`
-          },
+          if(!params && params.length===0){
+            return `<div></div>`;
+          }else{
+            let averageTime='',oneWarning= '',twoWarning='',threeWarning= '',fourWarning= '',total= '';
+            const averageObj = params.find(e=>e.seriesName==='平均处理时间');
+            const oneObj = params.find(e=>e.seriesName==='一级');
+            const twoObj = params.find(e=>e.seriesName==='二级');
+            const threeObj = params.find(e=>e.seriesName==='三级');
+            const fourObj = params.find(e=>e.seriesName==='四级');
+
+            const tmpAverageTime = averageObj && !isNaN(parseFloat(averageObj.value));
+            const tmpOneWarning = oneObj && !isNaN(parseInt(oneObj.value));
+            const tmpTwoWarning = twoObj && !isNaN(parseInt(twoObj.value));
+            const tmpThreeWarning = threeObj && !isNaN(parseInt(threeObj.value));
+            const tmpFourWarning = fourObj && !isNaN(parseInt(fourObj.value));
+            
+            if(tmpAverageTime){
+              averageTime = `<div style="padding-left:4px;height:22px;line-height:22px"><span style="display:inline-block;padding-right:6px"><span style="margin: 0 4px;display: inline-block; background:#fff; border: 1px solid #199475; width:4px; height:4px; border-radius: 100%;"></span>平均处理时间</span></span><span>${parseFloat(averageObj.value).toFixed(2)}</span></div>`
+            }
+            if(tmpOneWarning){
+              oneWarning = `<div style="padding-left:4px;height:22px;line-height:22px"><span style="display:inline-block;padding-right:6px"><span style="margin: 0 4px;display: inline-block; background:#a42b2c; width:6px; height:8px;"></span>一级</span></span><span>${oneObj.value}</span></div>`
+            }
+            if(tmpTwoWarning){
+              twoWarning = `<div style="padding-left:4px;height:22px;line-height:22px"><span style="display:inline-block;padding-right:6px"><span style="margin: 0 4px;display: inline-block; background:#e08031; width:6px; height:8px;"></span>二级</span></span><span>${twoObj.value}</span></div>`
+            }
+            if(tmpThreeWarning){
+              threeWarning = `<div style="padding-left:4px;height:22px;line-height:22px"><span style="display:inline-block;padding-right:6px"><span style="margin: 0 4px;display: inline-block; background:#f9b600; width:6px; height:8px;"></span>三级</span></span><span>${threeObj.value}</span></div>`
+            }
+            if(tmpFourWarning){
+              fourWarning = `<div style="padding-left:4px;height:22px;line-height:22px"><span style="display:inline-block;padding-right:6px"><span style="margin: 0 4px;display: inline-block; background:#fbe6e3; width:6px; height:8px;"></span>四级</span></span><span>${fourObj.value}</span></div>`
+            }
+            if(tmpOneWarning && tmpTwoWarning && tmpThreeWarning && tmpFourWarning){
+              total = `<div style="padding-left:4px;height:22px;line-height:22px"><span style="display:inline-block;padding-right:6px">总计</span><span>${oneObj.value + twoObj.value + threeObj.value + fourObj.value}</span></div>`;
+            }
+            return `<div style="width: 150px; height: 170px;font-size:12px;line-height: 24px;background: #fff;box-shadow:0 1px 4px 0 rgba(0,0,0,0.20);border-radius:2px;">
+            <div style="border-bottom: 1px solid #dfdfdf;padding-left:4px;padding-bottom:4px">${params[0].name}</div> 
+            ${averageTime}${oneWarning}${twoWarning}${threeWarning}${fourWarning}${total}
+            </div>`;
+          }
+          
+        },
         backgroundColor: '#fff',
       },
       legend: {
@@ -82,16 +113,42 @@ class AlarmStatisticGraph extends React.Component {
         {
           type: 'value',
           name: '告警数(个)',
+          nameTextStyle: {
+            color: '#666',
+          },
           splitLine: {
             show: false
-          }
+          },
+          axisLine: {
+            show: false,
+          },
+          axisTick: {
+            show: false,
+          },
+          axisLabel: {
+            color: '#666',
+          },
         },
         {
           type: 'value',
           name: '天数(天)',
+          nameTextStyle: {
+            color: '#666',
+          },
           splitLine: {
-            show: false
-          }
+            show: false,
+          },
+          axisTick: {
+            show: false,
+          },
+          axisLine: {
+            lineStyle: {
+              color: '#dfdfdf',
+            },
+          },
+          axisLabel: {
+            color: '#666',
+          },
         },
       ],
       xAxis: {
@@ -100,6 +157,14 @@ class AlarmStatisticGraph extends React.Component {
         data: stationNameData,
         axisTick: {
           alignWithLabel: true
+        },
+        axisLine: {
+          lineStyle: {
+            color: '#dfdfdf',
+          },
+        },
+        axisLabel: {
+          color: '#666',
         },
       },
       // dataZoom: {

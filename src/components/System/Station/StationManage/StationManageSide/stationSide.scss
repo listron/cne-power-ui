@@ -53,7 +53,7 @@
         .previous, .next, .backIcon{
           font-size: 20px;
           cursor: pointer;
-          color: $lightColor;
+          color: $darkColor;
           height: 100%;
           display: flex;
           align-items: center;
@@ -118,7 +118,7 @@
             }
             .infoValue{
               flex: 1;
-              color: $lightColor;
+              color: $darkColor;
             }
           }
         }
@@ -158,7 +158,7 @@
           .titleHandle{
             .cancel{
               cursor: pointer;
-              color: $lightColor;
+              color: $darkColor;
             }
             .save{
               background-color: $themeColor;
@@ -180,7 +180,7 @@
           }
           .infoValue{
             flex: 1;
-            color: $lightColor;
+            color: $darkColor;
           }
         }
         :global{
@@ -195,7 +195,7 @@
             }
             .ant-form-item-control-wrapper{
               flex: 1;
-              color: $lightColor;
+              color: $darkColor;
               .ant-form-explain{
                 position: absolute;
               }

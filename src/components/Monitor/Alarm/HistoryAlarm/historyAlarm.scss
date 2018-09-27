@@ -13,12 +13,12 @@
     align-items: center;
     flex-shrink: 0;
     .text {
-      color: $lightColor;
+      color: $darkColor;
       margin-right: 16px;
     }
     button {
       margin-right: 16px;
-      color: $lightColor;
+      color: $darkColor;
     }
   }
   .filterBox {
@@ -97,7 +97,7 @@
   padding-top: 16px;
   align-items: center;
   >span:first-child {
-    color: $lightColor;
+    color: $darkColor;
     font-size: 14px;
     margin-right: 16px;
   }
@@ -147,7 +147,7 @@
       .value {
         display: flex;
         flex-wrap: wrap;
-        color: $lightColor;
+        color: $darkColor;
         font-size: 14px;
       }
     }

@@ -32,7 +32,7 @@
         letter-spacing:4px;
       }
       .backIcon{
-        color: $lightColor;
+        color: $darkColor;
         font-size: 20px;
         border-left: 1px solid $promptColor;
         height: 100%;
@@ -109,13 +109,13 @@
           .iconfont{
             margin-right: 20px;
             cursor: pointer;
-            color: #666;
+            color: $darkColor;
           }
         }
         .backIcon{
           height: 100%;
           line-height: 64px;
-          color: $lightColor;
+          color: $darkColor;
           border-left: 1px solid $promptColor;
           width: 64px;
           cursor: pointer;
@@ -129,7 +129,7 @@
       display: flex;
       width: 810px;
       flex-direction: column;
-      color: $lightColor;
+      color: $darkColor;
       .eachInfo{
         display: flex;
         .title{
@@ -141,7 +141,7 @@
         }
         .value{
           display: inline-block;
-          color: $lightColor;
+          color: $darkColor;
           margin-right: 16px;
         }
         .stationInfo,.memberInfo{

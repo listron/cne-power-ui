@@ -86,7 +86,7 @@
       padding-left: 32px;
       .stationType {
         margin: 0 16px;
-        color: $lightColor;
+        color: $darkColor;
       }
     }
     .filterBox {
@@ -308,7 +308,7 @@
     }
     .stationStatus {
       margin-left: 50px;
-      color: $lightColor;
+      color: $darkColor;
       display: flex;
       flex-direction: row;
       .status {
@@ -333,13 +333,13 @@
     border-bottom: 1px solid $promptColor;
     .label {
       font-size: 14px;
-      color: $lightColor;
+      color: $darkColor;
     }
     .duration {
       margin: 0 16px; 
       :global {
         .ant-select-selection-selected-value {
-          color: $lightColor;
+          color: $darkColor;
         }
       }
     }
@@ -376,7 +376,7 @@
       }
       .alarmText {
         font-size: 14px;
-        color: #666;
+        color: $darkColor;
       }
     }
   }
@@ -463,7 +463,7 @@
   :global {
     .ant-select-dropdown-menu-item:not(.ant-select-dropdown-menu-item-disabled){
       background-color: #fff;
-      color:$lightColor;
+      color:$darkColor;
       &:hover {
         background-color: #ceebe0;
         color: $themeColor;

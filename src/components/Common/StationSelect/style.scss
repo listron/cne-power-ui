@@ -24,7 +24,7 @@
     :global {
       .icon-filter {
         font-size: 14px;
-        color: $lightColor;
+        color: $darkColor;
       }
     }
     // :hover{
@@ -74,7 +74,7 @@
       .name {
         display: inline-block;
         margin-bottom: 10px;
-        color: $lightColor;
+        color: $darkColor;
       }
       margin-bottom: 20px;
       .stationList{
@@ -92,7 +92,7 @@
           cursor: pointer;
           display: flex;
           background-color:#f1f1f1;
-          color: $lightColor;
+          color: $darkColor;
           .eachStationName{
             text-overflow: ellipsis;
             white-space: nowrap;
@@ -146,7 +146,7 @@
         padding: 0 8px;
         display: flex;
         background-color:#f1f1f1;
-        color: $lightColor;
+        color: $darkColor;
         &:hover {
           background-color: #fbe6e3;
         }
