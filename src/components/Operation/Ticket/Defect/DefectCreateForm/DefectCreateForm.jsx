@@ -28,6 +28,7 @@ class TmpForm extends Component {
     submitDefect: PropTypes.func,
     showContainer: PropTypes.string,
     onChangeShowContainer: PropTypes.func,
+    changeCommonStore: PropTypes.func,
     defectDetail: PropTypes.object,
     deviceTypeItems: PropTypes.object,
     deviceAreaItems: PropTypes.object,
@@ -60,6 +61,8 @@ class TmpForm extends Component {
     const stationType = stations && stations[0] && stations[0].stationType;
     this.props.getStationDeviceTypes({stationCodes});
     this.props.getDefectTypes({stationType});
+    this.props.changeCommonStore({ devices: [] });
+    this.props.form.setFieldsValue({deviceTypeCode: null});
   }
 
   onChangeDeviceType = (deviceTypeCode) => {
@@ -72,7 +75,7 @@ class TmpForm extends Component {
   }
 
   onDefectCreate = (isContinueAdd) => {
-    const { error, form, onDefectCreateNew, submitDefect, showContainer, defectDetail } = this.props;
+    const { error, form, onDefectCreateNew, submitDefect, showContainer, defectDetail, changeCommonStore } = this.props;
     form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         // 电站类型(0:风电，1光伏，2：全部)
@@ -115,6 +118,10 @@ class TmpForm extends Component {
         };
         if(showContainer === 'create') {
           onDefectCreateNew(params);
+          changeCommonStore({
+            stationDeviceTypes: [],
+            devices: [],
+          })
         } else if(showContainer === 'edit') {
           params.defectId = defectDetail.defectId;
           submitDefect(params);
