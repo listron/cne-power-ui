@@ -23,7 +23,6 @@ class InspectCreateForm extends Component{
   constructor(props){
     super(props);
     this.state = {
-      deviceTypeValue: [''], 
     }
   }
 
@@ -45,9 +44,7 @@ class InspectCreateForm extends Component{
       }
     });
   }
-  onTreeChange = (deviceTypeValue) => {
-    this.setState({ deviceTypeValue });
-  }
+  
   stationSelected = (stations) => {
     const stationCodes = (stations && stations[0] && stations[0].stationCode) || 0;
     this.props.loadDeviceTypeList({stationCodes})
@@ -87,7 +84,6 @@ class InspectCreateForm extends Component{
     
     const treeProps = {
       treeData: deviceTypes,
-      onSelect: this.onTreeChange,
       treeCheckable: true,
       filterTreeNode: false,
       showCheckedStrategy: SHOW_PARENT,
