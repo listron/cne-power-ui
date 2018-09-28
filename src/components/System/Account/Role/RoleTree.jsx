@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {Tree, Checkbox} from 'antd';
+import {Tree, Checkbox, Icon} from 'antd';
 import styles from './role.scss';
 const TreeNode = Tree.TreeNode;
 
@@ -62,12 +62,18 @@ class RoleTree extends Component {
 
   renderTreeNodes = (treeData) => {
     const { defaultRootMenu } = this.props;
+    const { expandedKeys } = this.state;
     return treeData.map((item) => {
       const hasChild = item && item.childRightData && item.childRightData.length > 0;
       const treeDisable = defaultRootMenu.includes(item.rightId);
       if(hasChild) {
+        const nodeExpanded =  expandedKeys.includes(item.rightId.toString());
+        const TreeNodeTitle = (<span className={styles.treeNodeTitle}>
+          {item.rightName}
+          <Icon type={nodeExpanded?"up":"down"} className={nodeExpanded?styles.upIcon:styles.downIcon} theme="outlined" />
+        </span>)
         return (
-          <TreeNode title={item.rightName} indeterminate key={item.rightId.toString()} disabled={treeDisable} >
+          <TreeNode title={TreeNodeTitle} indeterminate key={item.rightId.toString()} disabled={treeDisable} >
             {this.renderTreeNodes(item.childRightData)}
           </TreeNode>
         );

@@ -154,6 +154,22 @@
           margin-right: 16px;
         }
       }
+      .treeNodeTitle{
+        .upIcon,.downIcon{
+          margin-left: 16px;
+          font-size: 10px;
+          svg{
+            height: 8px;
+            transform: scaleX(1.2);
+          }
+        }
+        .upIcon{
+          color: $promptColor;
+        }
+        .downIcon{
+          color: $themeColor;
+        }
+      }
       :global{
         .ant-form-item{
           display: flex;
