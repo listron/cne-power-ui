@@ -51,7 +51,7 @@ class Weatherstation extends Component {
 
   render(){
     const { deviceDetail, deviceAlarmList, loading } = this.props;
-    const { stationCode } = this.props.match.params;
+    const { stationCode,deviceCode,deviceTypeCode } = this.props.match.params;
     const backData={path: `/monitor/singleStation/${stationCode}`,name: '返回电站'};
     const breadCrumbData = {
       breadData:[{
@@ -69,7 +69,7 @@ class Weatherstation extends Component {
         <div className={styles.deviceContent}>
           <WeatherStationHeader deviceDetail={deviceDetail} />
           <WeatherStationStatistics deviceDetail={deviceDetail} />
-          <DeviceAlarmTable deviceAlarmList={deviceAlarmList} deviceDetail={deviceDetail} loading={loading} />
+          <DeviceAlarmTable deviceAlarmList={deviceAlarmList} deviceDetail={deviceDetail} loading={loading}stationCode={stationCode} deviceTypeCode={deviceTypeCode} deviceCode={deviceCode} />
         </div>
       </div>
     )

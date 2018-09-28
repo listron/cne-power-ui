@@ -65,13 +65,13 @@ class PvStation extends Component {
   }
 
   render() {
-    const { deviceTypeFlow, stationDeviceList, deviceTypeCode } = this.props;
+    const { deviceTypeFlow, stationDeviceList, deviceTypeCode, } = this.props;
     const weatherDeviceCode = stationDeviceList && stationDeviceList.deviceCode || 0;
     const { stationCode } = this.props.match.params;
     
     return (
       <div className={styles.pvStation}  >
-        <PvStationTop {...this.props} hiddenStationList={this.state.hiddenStationList} />
+        <PvStationTop {...this.props} stationCode={stationCode} hiddenStationList={this.state.hiddenStationList} />
         <div className={styles.outputPowerDiagram}>
           <OutputTenMin {...this.props} />
           <PowerDiagramTenMin {...this.props} />

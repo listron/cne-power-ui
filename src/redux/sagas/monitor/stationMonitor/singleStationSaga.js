@@ -351,6 +351,30 @@ function *getStationDeviceList(action){
     console.log(e);
   }
 }
+//编辑月，年的累计发电量
+function *editData(action){
+  const { payload } = action;
+  const url =`${Path.basePaths.APIBasePath}${Path.APISubPaths.monitor.editData}`;
+  try{
+    yield put({type: singleStationAction.SINGLE_STATION_FETCH});
+    const response = yield call(axios.post, url, payload);
+    console.log(response,'编辑');
+    if(response.data.code==="10000"){
+      yield put({
+        type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
+        payload: {
+          editAllData: response.data.data || [],
+        }
+      })
+    }else{
+      yield put({ type: singleStationAction.GET_SINGLE_STATION_FAIL, data: response.data});
+      // message.error(response.data.message);
+    }
+  }catch(e){
+    console.log(e);
+  }
+
+}
 export function* watchSingleStationMonitor() {
   yield takeLatest(singleStationAction.GET_SINGLE_STATION_SAGA, getSingleStation);
   yield takeLatest(singleStationAction.CHANGE_SINGLE_STATION_STORE_SAGA, changeSingleStationStore);
@@ -367,5 +391,7 @@ export function* watchSingleStationMonitor() {
   yield takeLatest(singleStationAction.GET_BOXTRANSFORMER_LIST_SAGA, getBoxTransformerList);
   yield takeLatest(singleStationAction.GET_STATION_DEVICELIST_SAGA, getStationDeviceList);
   yield takeLatest(singleStationAction.GET_CONFLUENCEBOX_LIST_SAGA, getConfluenceBoxList); // 汇流箱列表获取
+  yield takeLatest(singleStationAction.EDIT_MONTH_YEAR_DATA_SAGA, editData);//编辑月，年的累计发电量
+ 
 }
 
