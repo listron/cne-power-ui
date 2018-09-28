@@ -73,7 +73,7 @@ class AlarmManage extends Component {
     }
     return (
       <div className={styles.alarmManageContainer}>
-        <CommonBreadcrumb  breadData={[{name: '设备'}]} style={{ marginLeft: '38px',backgroundColor:'#fff' }} />
+        <CommonBreadcrumb  breadData={[{name: '告警事件'}]} style={{ marginLeft: '38px',backgroundColor:'#fff' }} />
         <div className={styles.alarmManage}>
           <div className={styles.alarmManageMain}>
             {showAlarmTip && <StationManageTip hideManageTip={this.hideManageTip} text="请选择您要查看的电站！" />}
