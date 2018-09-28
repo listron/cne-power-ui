@@ -36,16 +36,6 @@ class RoleEditForm extends Component {
     const { enterpriseId, selectedRole } = this.props;
     this.props.form.validateFieldsAndScroll((err, values) => {
       if(!err) {
-        setTimeout(() => {
-          if(this.props.error.get('message') === '') {
-            this.props.form.setFields({
-              roleDesc: {
-                value: values.roleDesc,
-                errors: [new Error('角色名称重复')],
-              },
-            });
-          }
-        }, 500);
         if(this.props.showPage === 'create') {
           this.props.onCreateRole({
             roleDesc: values.roleDesc,

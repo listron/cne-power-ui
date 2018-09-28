@@ -25,7 +25,6 @@ class PointManage extends Component {
     orderField: PropTypes.string,
     orderType: PropTypes.number,
     changePointManageStore: PropTypes.func,
-    getStationList: PropTypes.func,
     changeStationManageStore: PropTypes.func,
     getStationOfEnterprise: PropTypes.func,
   }
@@ -36,12 +35,7 @@ class PointManage extends Component {
     }
   }
   componentDidMount(){
-    const { enterpriseId, getStationList, getStationOfEnterprise } = this.props;
-    getStationList({ // 请求一次设备列表
-      stationType: "",
-      pageSize: 1000000,
-      pageNum: 1,
-    })
+    const { enterpriseId, getStationOfEnterprise } = this.props;
     getStationOfEnterprise({ enterpriseId }); // 请求用户所在企业的所有企业
     this.timeout = setTimeout(()=>{this.setState({
       showPointTip: false
@@ -102,7 +96,6 @@ class PointManage extends Component {
 const mapStateToProps = (state) => ({
     enterpriseId: Cookie.get('enterpriseId'),
     ...state.system.pointManage.toJS(),
-    stations: state.common.get('stations').toJS(),
     deviceModels: state.common.get('deviceModels').toJS(),
     stationDeviceTypes: state.common.get('stationDeviceTypes').toJS(),
     stationList: state.system.stationManage.get('stationList').toJS(),
@@ -118,7 +111,6 @@ const mapDispatchToProps = (dispatch) => ({
   getStationDeviceTypes: payload => dispatch({type:commonAction.GET_STATION_DEVICETYPES_SAGA, payload}),
   getStationDeviceModel: payload => dispatch({type:commonAction.GET_STATION_DEVICEMODEL_SAGA, payload}),
 
-  getStationList: payload => dispatch({type: stationManageAction.GET_STATION_MANAGE_LIST, payload}),
   changeStationManageStore: payload => dispatch({type:stationManageAction.CHANGE_STATION_MANAGE_STORE_SAGA, payload}),
   getStationOfEnterprise: payload =>dispatch({type: stationManageAction.GET_ALL_STATION_MANAGE_BASE_INFO, payload }),
 });
