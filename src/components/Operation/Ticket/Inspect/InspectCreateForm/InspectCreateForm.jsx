@@ -77,13 +77,12 @@ class InspectCreateForm extends Component{
     const { getFieldDecorator } = this.props.form;
     const deviceTypes= deviceTypeItems && deviceTypeItems.toJS();
     const tmpDeviceTypes = deviceTypes && deviceTypes.map((e,i)=>{
-      return [{
+      return {
         title : e.deviceTypeName,
         key : i.toString(),
         value : e.deviceTypeCode.toString(),
-      }]
+      }
     });
-    
     const treeProps = {
       treeData: tmpDeviceTypes,
       treeCheckable: true,
