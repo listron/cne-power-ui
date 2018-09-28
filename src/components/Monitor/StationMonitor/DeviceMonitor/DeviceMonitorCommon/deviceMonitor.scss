@@ -82,10 +82,11 @@
 
 .alarmTable{
   border-top: solid 1px $promptColor;
-  padding: 16px 68px 48px 68px;
+  padding: 0px 68px 48px 68px;
   .alarmTip{
-    height: 48px;
-    line-height: 48px;
+    height: 20px;
+    line-height: 20px;
+    margin-top: 20px;
     i{
       margin-left: 4px;
       border-radius: 50%;
@@ -98,6 +99,7 @@
     justify-content: space-between;
     height: 36px;
     line-height: 36px;
+    margin-top: 15px;
     .historyButton{
       height: 26px;
       border: 1px solid $themeColor;

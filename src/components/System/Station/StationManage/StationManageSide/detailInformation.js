@@ -17,6 +17,13 @@ export const baseFun = (detailData) => { // 根据基础信息配置输出指定
     { name: '占地面积', value: detailData.floorArea, unit:'平方公里' },
     { name: '年利用小时数', value: detailData.designUtilizationHours, unit:'小时' },
     { name: '是否接入', value: detailData.stationStatus?'是':'否', }, // 实际调整
+    { name: '安装方式', value: detailData.assemblyType, }, 
+    { name: '组装角度', value: detailData.componentAngle, }, 
+    { name: '上报类型', value: detailData.reportType, }, 
+    { name: '消纳方式', value: detailData.consumptionType, }, 
+    { name: '所属类型', value: detailData.belongType, }, 
+    { name: '新的分类', value: detailData.buildType, }, 
+    { name: '电站主线图', value: detailData.mainWiringDiagram, }, 
   ];
   if(detailData.stationType === 0){ // 风电场没有覆盖类型
     return baseArray.filter(e=> e.name !== '覆盖类型');

@@ -18,6 +18,7 @@
     }
   }
   :global {
+    
     .ant-form-item {
       display: flex;
       .ant-form-item-label {
@@ -46,13 +47,13 @@
       color: #fff;
     }
     input::-webkit-input-placeholder,textarea::-webkit-input-placeholder{
-      color:$darkColor;
+      color:$promptColor;
     }
     input:-moz-placeholder, textarea:-moz-placeholder { 
-      color: $darkColor; 
+      color: $promptColor; 
     }
     input:-ms-input-placeholder, textarea:-ms-input-placeholder { 
-      color: $darkColor; 
+      color: $promptColor; 
     } 
   }
   .actionBar {
@@ -80,6 +81,28 @@
     >span {
       display: inline-block;
       line-height: 24px;
+    }
+  }
+
+}
+.treeDeviceTypes{
+  overflow-y: auto;
+  height: 130px;
+  :global{
+    .ant-select-tree{
+      padding: 0;
+    }
+    .ant-select-tree li {
+      margin: 4px 0;
+    }
+    .ant-select-tree li:hover{
+      background:#ceebe0;
+    }
+    .ant-select-tree li .ant-select-tree-node-content-wrapper:hover {
+      background-color: rgba(0, 0, 0, 0);
+    }
+    .ant-select-tree li span.ant-select-tree-switcher{
+      width: 6px;
     }
   }
 }

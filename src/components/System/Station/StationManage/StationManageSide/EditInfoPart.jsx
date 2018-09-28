@@ -15,7 +15,7 @@ function EditInfoPart({ eachInfo }){
   return (
     <span className={styles.eachInfo}>
       <span className={styles.infoName}>{eachInfo.name}</span>
-      <span className={styles.infoValue}>{value}{eachInfo.unit || ''}</span>
+      <span className={styles.infoValue}>{eachInfo.name==='电站主线图'? (value==='--' ? '--' : <img src={value} style={{color: '#199475',width: '80px', height: '80px'}} />) : `${value}${eachInfo.unit || ''}`}</span>
     </span>
   )
 }
