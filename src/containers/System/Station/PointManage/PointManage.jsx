@@ -77,7 +77,7 @@ class PointManage extends Component {
     }
     return (
       <div className={styles.pointManageContainer}>
-        <CommonBreadcrumb  breadData={[{name: '设备'}]} style={{ marginLeft: '38px',backgroundColor:'#fff' }} />
+        <CommonBreadcrumb  breadData={[{name: '测点'}]} style={{ marginLeft: '38px',backgroundColor:'#fff' }} />
         <div className={styles.pointManage}>
           <div className={styles.pointManageMain}>
             {showPointTip && <StationManageTip hideManageTip={this.hideManageTip} text="请选择电站！" />}
