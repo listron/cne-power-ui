@@ -11,9 +11,9 @@ module.exports = {
 
     GET_ROLE_LIST_SAGA: null,
     GET_MENU_LIST_SAGA: null,
+    GET_DEFAULT_MENU_LIST_SAGA: null,
 
     GET_ROLE_FETCH_SUCCESS: null,
-    MODIFT_ROLE_FAIL: null,
 
     CREATE_ROLE_SAGA: null,
 

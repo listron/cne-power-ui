@@ -6,8 +6,7 @@ import Cookie from 'js-cookie';
 import { roleAction } from '../../../../constants/actionTypes/system/account/roleAction';
 import { message } from 'antd';
 
-//不是异步请求，仅修改reducer的函数
-function *changeRoleStore(action){
+function *changeRoleStore(action){//不是异步请求，仅修改reducer的函数
   const { payload } = action;
   yield put({
     type: roleAction.CHANGE_ROLE_STORE,
@@ -39,17 +38,33 @@ function *getRoleList(action){
   }
 }
 
-//请求功能列表数据
+//请求功能权限列表数据
 function *getMenuList(action){
   const url = Path.basePaths.APIBasePath + Path.APISubPaths.system.getMenuList;
   try{
-    yield put({ type:roleAction.ROLE_FETCH });
     const response = yield call(axios.get,url);
     if(response.data.code === '10000') {
       yield put({
         type:  roleAction.GET_ROLE_FETCH_SUCCESS,
         payload:{
-          menuData: response.data.data,
+          menuData: response.data.data || [],
+        },
+      });
+    }
+  }catch(e){
+    console.log(e);
+  }
+}
+
+function *getDefaultMenuList(action){ // 获取默认权限
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.getDefaultRight}`;
+  try{
+    const response = yield call(axios.get,url);
+    if(response.data.code === '10000') {
+      yield put({
+        type:  roleAction.GET_ROLE_FETCH_SUCCESS,
+        payload:{
+          defaultMenuData: response.data.data || [],
         },
       });
     }
@@ -87,12 +102,9 @@ function *createRole(action){
       });
     } else {
       yield put({
-        type: roleAction.MODIFT_ROLE_FAIL,
+        type: roleAction.CHANGE_ROLE_STORE,
         payload: {
-          error: {
-            code: response.dat.code,
-            message: response.data.message
-          }
+          loading: false,
         }
       });
       message.error(response.data.message);
@@ -117,7 +129,7 @@ function *editRole(action){
         },
       });
       yield put({
-        type: roleAction.CHANGE_ROLE_STORE_SAGA,
+        type: roleAction.CHANGE_ROLE_STORE,
         payload: {
           showPage: 'list',
           selectedRole: []
@@ -125,12 +137,9 @@ function *editRole(action){
       });
     } else {
       yield put({
-        type: roleAction.MODIFT_ROLE_FAIL,
+        type: roleAction.CHANGE_ROLE_STORE,
         payload: {
-          error: {
-            code: response.dat.code,
-            message: response.data.message
-          }
+          loading: false,
         }
       });
       message.error(response.data.message);
@@ -140,8 +149,7 @@ function *editRole(action){
   }
 }
 
-//删除角色
-function *deleteRole(action) {
+function *deleteRole(action) { // 删除角色
   const { payload } = action;
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.deleteRole}/${payload.roleId}`;
   try{
@@ -155,23 +163,31 @@ function *deleteRole(action) {
         },
       });
       yield put({
-        type: roleAction.CHANGE_ROLE_STORE_SAGA,
+        type: roleAction.CHANGE_ROLE_STORE,
         payload: {
           selectedRole: []
         },
       });
-    } else {
+    } else if(response.data.code === '20020') {
+      console.log(response.data)
       yield put({
-        type: roleAction.MODIFT_ROLE_FAIL,
+        type: roleAction.CHANGE_ROLE_STORE,
         payload: {
-          error: {
-            code: response.dat.code,
-            message: response.data.message
-          }
+          loading: false,
         }
       });
+      message.error('有关联用户,取消关联后，可删除');
+    }else{
       message.error(response.data.message);
+      console.log(response.data);
+      yield put({
+        type: roleAction.CHANGE_ROLE_STORE,
+        payload: {
+          loading: false,
+        }
+      });
     }
+    message.error(response.data.message);
   }catch(e){
     console.log(e);
   }
@@ -183,6 +199,7 @@ export function* watchRole() {
   yield takeLatest(roleAction.CHANGE_ROLE_STORE_SAGA, changeRoleStore);
   yield takeLatest(roleAction.GET_ROLE_LIST_SAGA, getRoleList);
   yield takeLatest(roleAction.GET_MENU_LIST_SAGA, getMenuList);
+  yield takeLatest(roleAction.GET_DEFAULT_MENU_LIST_SAGA, getDefaultMenuList);
   yield takeLatest(roleAction.CREATE_ROLE_SAGA, createRole);
   yield takeLatest(roleAction.EDIT_ROLE_SAGA, editRole);
   yield takeLatest(roleAction.DELETE_ROLE_SAGA, deleteRole);

@@ -105,6 +105,7 @@ class DeviceName extends Component {
           onSelect={this.props.onChange}
           onSearch={this.handleSearch}
           value={checkedStationName}
+          placeholder="请输入关键字查询"
         >
           <Input suffix={<i className="iconfont icon-filter" onClick={this.onShowDeviceNameModal} />} />
         </AutoComplete>
