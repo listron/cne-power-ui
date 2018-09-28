@@ -34,7 +34,7 @@ function WeatherStationStatistics({ deviceDetail }) {
       </div>
       <div className={styles.weatherEachData}>
         <div className={styles.genNum}>{instantaneous}</div>
-        <div className={styles.genText}>总辐射 W/㎡</div>
+        <div className={styles.genText}>瞬时辐照 W/㎡</div>
       </div>
       <div className={styles.weatherEachData}>
         <div className={styles.genNum}>{sunshine}</div>

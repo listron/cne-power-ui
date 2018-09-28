@@ -37,7 +37,6 @@ class EditForm extends Component {
         this.props.saveStationDetail({
           ...stationDetail,
           ...values,
-          stationStatus: !!values.stationStatus,
           
         })
         this.props.confirmWarningTip()
@@ -61,7 +60,7 @@ class EditForm extends Component {
     
     const baseArrayFir = [
       { name: '电站类型', value: `${stationDetail.stationType === 0?'风电':'光伏'}` }, // 特殊组合
-      { name: '电站位置', value: `${longitude} ${latitude}` }, // 特殊组合
+      { name: '电站位置', value: `${longitude}, ${latitude}` }, // 特殊组合
     ];
     // stationDetail.stationType === 1 && baseArrayFir.push({
     //   name: '覆盖类型', value: stationDetail.coverType
@@ -70,6 +69,15 @@ class EditForm extends Component {
       { name: '所在省市', value: `${stationDetail.provinceName}${stationDetail.cityName}${stationDetail.countyName}` },
       { name: '所属公司', value: stationDetail.affiliateCompany },
       { name: '联系电话', value: stationDetail.stationContactNumber },
+    ]
+    const baseArrayThi = [
+      { name: '上报类型', value: stationDetail.reportType },
+      { name: '安装方式', value: stationDetail.assemblyType },
+      { name: '组装角度', value: stationDetail.componentAngle },
+      { name: '新的分类', value: stationDetail.buildType },
+      { name: '消纳方式', value: stationDetail.consumptionType },
+      { name: '所属类型', value: stationDetail.belongType },
+      { name: '电站主线图', value: stationDetail.mainWiringDiagram },
     ]
     const connectionPriceArray = [ // 并网信息及电价
       { name: '通过并网测验', value: stationDetail.gridConnectionDetection?'是':'否' }, // 实际调整
@@ -103,7 +111,10 @@ class EditForm extends Component {
           </div>
           <FormItem label="电站名称" >
             {getFieldDecorator('stationName',{
-              initialValue: stationDetail.stationName
+              initialValue: stationDetail.stationName,
+              rules: [{
+                required: true, message: '选择电站名称',
+              }]
             })(
               <Input />
             )}
@@ -195,7 +206,7 @@ class EditForm extends Component {
           </FormItem>
           <FormItem label="是否接入" >
             {getFieldDecorator('stationStatus',{
-              initialValue: stationDetail.stationStatus?1:0,
+              initialValue: stationDetail.stationStatus===1?1:0,
               rules: [{
                 required: true, message: '选择是否接入',
               }]
@@ -206,6 +217,7 @@ class EditForm extends Component {
               </Select>
             )}
           </FormItem>
+          {baseArrayThi.map((e,i)=>(<EditInfoPart key={i} eachInfo={e} />))}
         </div>
         <div className={styles.connectionPriceEdit}>
           <div className={styles.title}>

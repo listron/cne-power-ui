@@ -9,6 +9,9 @@
     .ant-form-item-label label:after{
       display: none;
     }
+    .ant-form-item-label label{
+      color: $darkColor;
+    }
   }
   display: flex;
   flex: 1 0 auto;
@@ -50,6 +53,12 @@
         height: 100%;
         display: flex;
         align-items: center;
+        :global{
+          .iconfont{
+            font-size: 20px;
+            margin-right: 20px;
+          }
+        }
         .previous, .next, .backIcon{
           font-size: 20px;
           cursor: pointer;

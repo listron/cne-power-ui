@@ -62,7 +62,7 @@ class InputLimit extends Component {
           placeholder={this.props.placeholder}
           onChange={this.checkWord} 
           maxLength={this.props.size} 
-          style={{height: this.props.height, width: this.props.width}} />
+          style={{height: this.props.height, width: this.props.width,}} />
       </div>
     );
   }
