@@ -85,11 +85,12 @@
         display: inline-block;
         margin-right: 18px; 
         margin-bottom: 20px;
-        width: 215px;
+        width: 222px;
         height: 76px;
         padding: 5px;
         box-shadow:0 1px 4px 0 rgba(0,0,0,0.20);
         border-radius:4px;
+        font-size: 12px;
         cursor: pointer;
         .inverterItemIcon{
           display: inline-block;
@@ -117,7 +118,7 @@
         }
         .inverterItemR{
           display: inline-block;
-          width: 155px;
+          width: 165px;
           color: $darkColor;
           .hlBlockName{
             display: flex;
@@ -140,6 +141,9 @@
           }
         }
         .hlBlockFooter{
+          line-height: 22px;
+          margin-top: 10px;
+          padding-left: 3px;
           >div{
             display: inline-block;
             width: 50%;
@@ -151,19 +155,23 @@
         display: inline-block;
         margin-right: 18px; 
         margin-bottom: 20px;
-        width: 215px;
+        width: 222px;
         height: 76px;
         padding: 5px;
         box-shadow:0 1px 4px 0 rgba(0,0,0,0.20);
         border-radius:4px;
         background: #f8f8f8;
         pointer-events: none;
+        font-size: 12px;
         .inverterItemIcon{
           display: inline-block;
           vertical-align: top;
           margin: 5px;
           position: relative;
           :global{
+            .icon-xb{
+              font-size: 22px;
+            }
             .icon-alarm{
               position: absolute;
               bottom: 0;
@@ -203,6 +211,9 @@
           }
         }
         .hlBlockFooter{
+          line-height: 22px;
+          margin-top: 10px;
+          padding-left: 3px;
           >div{
             display: inline-block;
             width: 50%;

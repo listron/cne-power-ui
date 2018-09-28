@@ -70,6 +70,15 @@ class EditForm extends Component {
       { name: '所属公司', value: stationDetail.affiliateCompany },
       { name: '联系电话', value: stationDetail.stationContactNumber },
     ]
+    const baseArrayThi = [
+      { name: '上报类型', value: stationDetail.reportType },
+      { name: '安装方式', value: stationDetail.assemblyType },
+      { name: '组装角度', value: stationDetail.componentAngle },
+      { name: '新的分类', value: stationDetail.buildType },
+      { name: '消纳方式', value: stationDetail.consumptionType },
+      { name: '所属类型', value: stationDetail.belongType },
+      { name: '电站主线图', value: stationDetail.mainWiringDiagram },
+    ]
     const connectionPriceArray = [ // 并网信息及电价
       { name: '通过并网测验', value: stationDetail.gridConnectionDetection?'是':'否' }, // 实际调整
       { name: '调度机构名称', value: stationDetail.dispatchingAgency },
@@ -102,7 +111,10 @@ class EditForm extends Component {
           </div>
           <FormItem label="电站名称" >
             {getFieldDecorator('stationName',{
-              initialValue: stationDetail.stationName
+              initialValue: stationDetail.stationName,
+              rules: [{
+                required: true, message: '选择电站名称',
+              }]
             })(
               <Input />
             )}
@@ -205,6 +217,7 @@ class EditForm extends Component {
               </Select>
             )}
           </FormItem>
+          {baseArrayThi.map((e,i)=>(<EditInfoPart key={i} eachInfo={e} />))}
         </div>
         <div className={styles.connectionPriceEdit}>
           <div className={styles.title}>
