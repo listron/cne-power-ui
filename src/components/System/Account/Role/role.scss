@@ -6,15 +6,17 @@
   align-items: center;
   border-bottom: solid 1px $promptColor;  
 }
-:global{    
-  .ant-popover-content .ant-popover-inner .ant-popover-title{
-    color:$darkColor;
-  }
-}
-.tooltip {
+.roleTableTooltip {
   display: flex;
   flex-direction: column;
   color:$darkColor;
+  line-height: 1.5;
+}
+.roleTableTitle{
+  color:$darkColor;
+}
+.roleTableHandleDropdown{
+  width: 110px;
 }
 .roleList{
 

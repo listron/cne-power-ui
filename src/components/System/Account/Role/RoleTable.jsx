@@ -83,10 +83,11 @@ class RoleTable extends Component {
         const rightArr = this.getRightArr(rightData,'');
         const {roleDesc}=record;
         const content = (
-          <div className={styles.tooltip}>{rightArr.map((item,index)=>(<span key={index}>{item}</span>))}</div>
+          <div className={styles.roleTableTooltip}>{rightArr.map((item,index)=>(<span key={index}>{item}</span>))}</div>
         );
+        const title = <span className={styles.roleTableTitle}>{roleDesc}</span>
         return (
-          <Popover  content={content}  placement="right" trigger="hover"  title={roleDesc}>
+          <Popover  content={content}  placement="right" trigger="hover"  title={title}>
             <div className={styles.menu}>{rightArr.join(' | ')}</div>
           </Popover>
         );
@@ -147,7 +148,7 @@ class RoleTable extends Component {
                 <span className={styles.text}>角色</span>
               </Button>}
               <div className={styles.handleRole}>
-              {roleConfigRight && <Select onChange={this.roleHandle} value="操作" placeholder="操作" dropdownMatchSelectWidth={false} dropdownClassName=  {styles.handleDropdown}>
+              {roleConfigRight && <Select onChange={this.roleHandle} value="操作" placeholder="操作" dropdownMatchSelectWidth={false} dropdownClassName=  {styles.roleTableHandleDropdown}>
                 {roleUpdateRight && <Option value="edit" disabled={selectedRole.length !== 1}>编辑</Option>}
                 {roleDeleteRight && <Option value="delete" disabled={selectedRole.length===0}>删除</Option>}
               </Select>}
