@@ -134,6 +134,7 @@ class StationManageDetail extends Component {
     const otherInfo = otherFun(stationDetail);
     const departmentList = stationDetail.departmentList || [];
     const departmentInfo = this.departmentInfoFun(departmentList);
+    console.log(departmentInfo);
     return (
       <div className={styles.stationManageDetail}>
         {showWarningTip && <WarningTip onOK={this.confirmWarningTip} value={warningTipText} />}
@@ -143,7 +144,8 @@ class StationManageDetail extends Component {
             {stationDetail.stationStatus?<span>
               接入时间:{stationDetail.ongridTime?moment(stationDetail.ongridTime).format('YYYY-MM-DD'):'--'} | 
             </span>
-            :<span>电站未接入 | </span>}
+            :<span>电站未接入</span>}
+            {departmentInfo ? ` | ` : ``}
             <span className={styles.departmentInfo} title={departmentInfo}>
               {departmentInfo}
             </span>

@@ -91,6 +91,7 @@
     height: 19px;
     border-bottom: 1px $themeColor solid;
     cursor: pointer;
+    text-align: center;
   }
 }
 
@@ -137,10 +138,12 @@
   .selected {
     display: inline-block;
     color: $themeColor;
-    width: 35px;
+    width: 30px;
     height: 19px;
     border-bottom: 1px $themeColor solid;
     cursor: pointer;
+    text-align: center;
+    white-space:nowrap;
   }
 }
 
@@ -174,10 +177,12 @@
   .selected {
     display: inline-block;
     color: $themeColor;
-    width: 45px;
+    width: 30px;
     height: 19px;
     border-bottom: 1px $themeColor solid;
     cursor: pointer;
+    text-align: center;
+    white-space:nowrap;
   }
 }
 

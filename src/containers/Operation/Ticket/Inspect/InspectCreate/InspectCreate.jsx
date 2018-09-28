@@ -16,6 +16,7 @@ class InspectCreate extends Component{
     stations: PropTypes.object,
     getStations: PropTypes.func,
     showContainer: PropTypes.string,
+    changeInspectStore: PropTypes.func,
   }
   constructor(props){
     super(props);
@@ -76,5 +77,6 @@ const mapDispatchToProps = (dispatch) => ({
   loadDeviceTypeList: payload => dispatch({ type: commonAction.GET_STATION_DEVICETYPES_SAGA, payload}),
   createInspect: payload => dispatch({ type: ticketAction.CREATE_INSPECT_SAGA, payload}),
   getStations: payload => dispatch({ type: commonAction.GET_STATIONS_SAGA, payload }),
+  onChangeCommonStore: payload => dispatch({ type: commonAction.CHANGE_COMMON_STORE_SAGA, payload}),
 })
 export default connect(mapStateToProps,mapDispatchToProps)(InspectCreate);
