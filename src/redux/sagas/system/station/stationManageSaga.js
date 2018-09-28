@@ -22,6 +22,7 @@ function *getStationList(action){ // 请求电站列表信息
     // if(response.data.code === "10000"){
     const totalNum = response.data.data.total || 0;
     let { pageNum, pageSize } = payload;
+
     const maxPage = Math.ceil(totalNum / pageSize);
     if(totalNum === 0){ // 总数为0时，展示0页
       pageNum = 0;

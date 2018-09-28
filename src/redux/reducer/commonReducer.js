@@ -10,7 +10,7 @@ var initState = Immutable.fromJS({
   deviceTypes: [], // 设备类型
   deviceModels: [], // 设备型号
   devicePoints: [], // 设备测点
-  stationDeviceTypes: [],
+  stationDeviceTypes: [],//电站下的设备
   devices: [],
   partitions: [],
   allDepartmentData: [], // 企业下所有部门(含层级关系)

@@ -92,6 +92,7 @@ export default {
 
       getRoleList: '/v3/role/list',
       getMenuList: '/v3/right',
+      getDefaultRight:'/v3/role/defaultright', // 获取角色下的默认权限
       createRole: '/v3/role',
       editRole: '/v3/role/{enterpriseId}',
       deleteRole: '/v3/role',

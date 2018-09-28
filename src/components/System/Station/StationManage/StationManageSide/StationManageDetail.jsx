@@ -122,7 +122,7 @@ class StationManageDetail extends Component {
       }
       return `${e.departmentName}${subInfo}`
     })
-    return departmentInfo.join(';');
+    return departmentInfo.join('；');
   }
 
   render(){
@@ -134,6 +134,7 @@ class StationManageDetail extends Component {
     const otherInfo = otherFun(stationDetail);
     const departmentList = stationDetail.departmentList || [];
     const departmentInfo = this.departmentInfoFun(departmentList);
+    
     return (
       <div className={styles.stationManageDetail}>
         {showWarningTip && <WarningTip onOK={this.confirmWarningTip} value={warningTipText} />}
@@ -141,16 +142,17 @@ class StationManageDetail extends Component {
           <span className={styles.topInfoShow}>
             <span className={styles.title}>电站详情</span>
             {stationDetail.stationStatus?<span>
-              接入时间:{stationDetail.ongridTime?moment(stationDetail.ongridTime).format('YYYY-MM-DD'):'--'} | 
+              接入时间:{stationDetail.ongridTime?moment(stationDetail.ongridTime).format('YYYY-MM-DD'):'--'}
             </span>
-            :<span>电站未接入 | </span>}
+            :<span>电站未接入</span>}
+            {departmentInfo ? ` | ` : ``}
             <span className={styles.departmentInfo} title={departmentInfo}>
               {departmentInfo}
             </span>
           </span>
           <span className={styles.handleArea} >
-            <Icon type="arrow-up" className={styles.previous} title="上一个" onClick={this.preStation} />
-            <Icon type="arrow-down" className={styles.next} title="下一个" onClick={this.nextStation} />
+            <i className="iconfont icon-last" title="上一个" onClick={this.preStation} />
+            <i className="iconfont icon-next"  title="下一个" onClick={this.nextStation} />
             <Icon type="arrow-left" className={styles.backIcon} onClick={this.backToList} />
           </span>
         </div>

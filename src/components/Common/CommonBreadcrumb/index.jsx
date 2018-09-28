@@ -35,7 +35,7 @@ function CommonBreadcrumb({ breadData, iconName, style = {}, backData = {} }) {
           const lastData = i === breadData.length - 1;
           if (e.link) {
             return (<span className={styles.eachPath} key={e.path}>
-              <Link to={e.path}>{e.name}</Link>
+              <Link to={e.path}>{e.name|| '--'} </Link>
               <span>{lastData ? '' : '/'}</span>
             </span>)
           } else {

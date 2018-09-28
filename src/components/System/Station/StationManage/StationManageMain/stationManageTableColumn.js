@@ -1,6 +1,5 @@
 import React from 'react';
 import styles from './stationMain.scss';
-import { deviceStatusArray } from '../../../../../constants/stationBaseInfo';
 import {stationStatusArray}  from '../../../../../constants/stationBaseInfo';
 
 const stationManageTableColumn = [{
@@ -16,6 +15,7 @@ const stationManageTableColumn = [{
     title: '装机容量',
     dataIndex: 'stationCapacity',
     key: 'stationCapacity',
+    render: text=>(<span>{parseInt(text) >= 0 ?`${text}MW`:'--'}</span>),
     sorter: true,
   },{
     title: '发电单元数',

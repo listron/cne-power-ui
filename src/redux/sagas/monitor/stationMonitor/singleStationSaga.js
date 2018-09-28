@@ -317,7 +317,7 @@ function *getConfluenceBoxList(action){ // 获取汇流箱列表
       yield put({
         type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
         payload: {
-          confluenceBoxList: response.data.data || [],
+          confluenceBoxList: response.data.data || {},
         }
       })
     }else{

@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { Button, Form, DatePicker, Select, Input, Check } from 'antd';
+import { Button, Form, DatePicker, Select, Input, TreeSelect } from 'antd';
 import PropTypes from 'prop-types';
 import styles from './inspectCreateForm.scss';
 import moment from 'moment';
 import StationSelect from '../../../../Common/StationSelect';
 
+const SHOW_PARENT = TreeSelect.SHOW_PARENT;
 const FormItem = Form.Item;
 const Option = Select.Option;
 class InspectCreateForm extends Component{
@@ -16,10 +17,13 @@ class InspectCreateForm extends Component{
     onChangeShowContainer: PropTypes.func,
     stations: PropTypes.object,
     deviceTypeItems: PropTypes.object,
+    onChangeCommonStore: PropTypes.func,
   }
 
   constructor(props){
     super(props);
+    this.state = {
+    }
   }
 
   onInspectCreate = (isContinueAdd) => {
@@ -36,10 +40,11 @@ class InspectCreateForm extends Component{
         if(isContinueAdd && error.get('code') === '') {
           form.resetFields();
         }
+        this.props.onChangeCommonStore({stationDeviceTypes: []});
       }
     });
   }
-
+  
   stationSelected = (stations) => {
     const stationCodes = (stations && stations[0] && stations[0].stationCode) || 0;
     this.props.loadDeviceTypeList({stationCodes})
@@ -66,10 +71,29 @@ class InspectCreateForm extends Component{
       };
     }
   } 
-
+  
   render(){
     const { deviceTypeItems, stations } = this.props;
     const { getFieldDecorator } = this.props.form;
+    const deviceTypes= deviceTypeItems && deviceTypeItems.toJS();
+    const tmpDeviceTypes = deviceTypes && deviceTypes.map((e,i)=>{
+      return {
+        title : e.deviceTypeName,
+        key : i.toString(),
+        value : e.deviceTypeCode.toString(),
+      }
+    });
+    const treeProps = {
+      treeData: tmpDeviceTypes,
+      treeCheckable: true,
+      filterTreeNode: false,
+      showCheckedStrategy: SHOW_PARENT,
+      searchPlaceholder: '请选择设备类型',
+      style: {
+        width: 198,
+      },
+      disabled: deviceTypeItems.size === 0,
+    };
     return (
       <div>
         <Form className={styles.inspectCreateForm}>
@@ -107,18 +131,17 @@ class InspectCreateForm extends Component{
             {getFieldDecorator('deviceTypeCodes',{
               rules:[{ required: true, message: '请选择设备类型' }]
             })(
-              <Select
-                style={{width:200}}
-                mode="multiple"
-                placeholder="请选择设备类型"
-                disabled={deviceTypeItems.size === 0}
-              >
-                {deviceTypeItems.map((item, index) => (
-                  <Option key={item.get('deviceTypeName')+index} value={item.get('deviceTypeCode')} >
-                  
-                  {item.get('deviceTypeName')}</Option> 
-                ))}
-              </Select>
+              <TreeSelect {...treeProps} dropdownClassName={styles.treeDeviceTypes} />
+              // <Select
+              //   style={{width:200}}
+              //   mode="multiple"
+              //   placeholder="请选择设备类型"
+              //   disabled={deviceTypeItems.size === 0}
+              // >
+              //   {deviceTypeItems.map((item, index) => (
+              //     <Option key={item.get('deviceTypeName')+index} value={item.get('deviceTypeCode')} >{item.get('deviceTypeName')}</Option> 
+              //   ))}
+              // </Select>
             )}
           </FormItem>
           <FormItem label="截止时间" colon={false}>

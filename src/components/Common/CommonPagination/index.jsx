@@ -36,10 +36,24 @@ class CommonPagination extends Component {
 
   constructor(props){
     super(props);
+    this.state = {
+      pageSize: props.pageSize,
+      currentPage: props.currentPage,
+    }
+  }
+
+  componentWillReceiveProps(nextProps){
+    const { pageSize, currentPage } =nextProps;
+    const lastSize = this.props.pageSize;
+    const lastPage = this.props.currentPage;
+    if(lastSize!==pageSize || lastPage!==currentPage){
+      this.setState({ pageSize, currentPage })
+    }
   }
   
   onPageSizeChange = (pageSize) => { // 每页条数变化
-    let { currentPage, total } = this.props;
+    let { currentPage, total } = this.state;
+    this.setState({ pageSize });
     this.props.onPaginationChange({
       pageSize,
       currentPage: total / pageSize>currentPage ? currentPage: Math.ceil(total/pageSize),
@@ -47,7 +61,8 @@ class CommonPagination extends Component {
   }
 
   onPageChange = (currentPage) => { // 页码变化
-    const { pageSize } = this.props;
+    const { pageSize } = this.state;
+    this.setState({ pageSize })
     this.props.onPaginationChange({
       pageSize,
       currentPage
@@ -55,7 +70,8 @@ class CommonPagination extends Component {
   }
 
   render(){
-    const { total, pageSizeArray, pageSize, currentPage } = this.props;
+    const { total, pageSizeArray } = this.props;
+    const { pageSize, currentPage } = this.state;
     return (
       <div className={styles.commonPagination}>
         <span>合计：{total}</span>

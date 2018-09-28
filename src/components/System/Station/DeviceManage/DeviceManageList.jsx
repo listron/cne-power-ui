@@ -57,6 +57,7 @@ class DeviceManageList extends Component {
         title: '装机容量',
         dataIndex: 'deviceCapacity',
         key: 'deviceCapacity',
+        render: text=>(<span>{parseInt(text) >= 0 ?`${text}MW`:'--'}</span>),
         sorter: true,
       },{
         title: '是否显示',
