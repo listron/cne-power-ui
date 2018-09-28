@@ -20,8 +20,10 @@ class RoleTable extends Component {
   constructor(props){
     super(props);
     this.state = {
-      showWarningTip: false,
-      warningTipText: '',
+      showWarningTip: false, // 提示弹框
+      warningTipText: '', // 提示语
+      showDeleteTip: false, //删除弹框
+      deleteTipText: false, //删除提示语
     };
   }
 
@@ -39,6 +41,12 @@ class RoleTable extends Component {
     this.setState({
       showWarningTip: false,
     });  
+  }
+
+  onCancelDelete = () => {
+    this.setState({
+      showDeleteTip: false,
+    }); 
   }
 
   getRightArr(rightData, frontText='') { // 递归生成权限数组['一级-二级-三级...',...]
@@ -92,35 +100,45 @@ class RoleTable extends Component {
     })
   }
 
-  roleHandle = (value) => {//编辑
-    const { selectedRole, changeRoleStore, onDeleteRole } = this.props;
+  roleHandle = (value) => {//编辑,删除操作
+    const { selectedRole, changeRoleStore } = this.props;
     const isPreUser = selectedRole.some(item=>!item.isPre);
     if(isPreUser){
       const warningTipText = `不得${value === 'edit'?'编辑':'删除'}预设角色`;
       this.setState({
         showWarningTip: true,
         warningTipText,
+        showWarningCancel: false,
       })
     }else{
-      value === 'edit'?changeRoleStore({
+      value === 'edit'?changeRoleStore({ //编辑
         showPage: 'edit',
-      }):onDeleteRole({
-        roleId: selectedRole.map(e=>e.roleId).join(',')
-      });
+      }): this.setState({
+        showDeleteTip: true,
+        warningTipText: '确认要删除么?'
+      }); 
     }
+  }
+
+  deleteRole = () => { // 删除角色
+    const { selectedRole, onDeleteRole } = this.props;
+    onDeleteRole({
+      roleId: selectedRole.map(e=>e.roleId).join(',')
+    })
   }
 
   render(){
     const { selectedRole, roleData, loading, showPage } = this.props;
-    const { showWarningTip, warningTipText } = this.state;
-    const rightHandler = localStorage.getItem('rightHandler');
-    const roleCreateRight = rightHandler && rightHandler.split(',').includes('account_role_create');
-    const roleDeleteRight = rightHandler && rightHandler.split(',').includes('account_role_delete');
-    const roleUpdateRight = rightHandler && rightHandler.split(',').includes('account_role_update');
-    const roleConfigRight = rightHandler && rightHandler.split(',').includes('account_role_config');
+    const { showWarningTip, warningTipText, showDeleteTip } = this.state;
+    const rightHandler = localStorage.getItem('rightHandler') || '';
+    const roleCreateRight = rightHandler.split(',').includes('account_role_create');
+    const roleDeleteRight = rightHandler.split(',').includes('account_role_delete');
+    const roleUpdateRight = rightHandler.split(',').includes('account_role_update');
+    const roleConfigRight = rightHandler.split(',').includes('account_role_config');
     return (
       <div className={styles.roleList} style={{display: showPage==='list'?'flex':'none'}}>
       {showWarningTip && <WarningTip onOK={this.onConfirmWarningTip} value={warningTipText} />}
+      {showDeleteTip && <WarningTip onOK={this.deleteRole} value={warningTipText} onCancel={this.onCancelDelete} />}
         <div className={styles.roleContent}>
           <div className={styles.roleListTop} >
             <div>

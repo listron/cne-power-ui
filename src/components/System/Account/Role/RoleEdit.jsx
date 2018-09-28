@@ -12,6 +12,7 @@ class RoleEdit extends Component {
     showPage: PropTypes.string,
     changeRoleStore: PropTypes.func,
     getMenuList: PropTypes.func,
+    getDefaultMenuList: PropTypes.func,
   }
 
   constructor(props) {
@@ -24,6 +25,7 @@ class RoleEdit extends Component {
 
   componentDidMount() {
     this.props.getMenuList();
+    this.props.getDefaultMenuList();
   }
 
   onCancelEdit = () => {

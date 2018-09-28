@@ -9,11 +9,11 @@ const FormItem = Form.Item;
 class RoleEditForm extends Component {
   static propTypes = {
     form: PropTypes.object,
-    error: PropTypes.object,
     showPage: PropTypes.string,
     enterpriseId: PropTypes.string,
     selectedRole: PropTypes.array,
     menuData: PropTypes.array,
+    defaultMenuData: PropTypes.array,
     onCreateRole: PropTypes.func,
     onEditRole: PropTypes.func,
     changeRoleStore: PropTypes.func,
@@ -23,13 +23,6 @@ class RoleEditForm extends Component {
 
   constructor(props){
     super(props);
-    this.state = {
-      halfCheckedKeys: []
-    };
-  }
-
-  onChangeHalf = (halfCheckedKeys) => {
-    this.setState({halfCheckedKeys});
   }
 
   onSaveRole = () => {
@@ -38,15 +31,15 @@ class RoleEditForm extends Component {
       if(!err) {
         if(this.props.showPage === 'create') {
           this.props.onCreateRole({
-            roleDesc: values.roleDesc,
-            rightId: values.rightId.split(',').concat(this.state.halfCheckedKeys).join(','),
+            roleDesc: values.roleDesc.trim(),
+            rightId: values.rightId.join(','),
             enterpriseId,
             continueAdd: false,
           });
         } else {
           this.props.onEditRole({
-            roleDesc: values.roleDesc,
-            rightId: values.rightId.split(',').concat(this.state.halfCheckedKeys).join(','),
+            roleDesc: values.roleDesc.trim(),
+            rightId: values.rightId.join(','),
             roleId: selectedRole[0].roleId,
             enterpriseId
           })
@@ -56,50 +49,73 @@ class RoleEditForm extends Component {
   }
 
   onSaveRoleAndAdd = () => {
-    const { enterpriseId, error } = this.props;
+    const { enterpriseId } = this.props;
     this.props.form.validateFieldsAndScroll((err, values) => {
       if(!err) {
         this.props.onCreateRole({
-          roleDesc: values.roleDesc,
-          rightId: values.rightId.split(',').concat(this.state.halfCheckedKeys).join(','),
+          roleDesc: values.roleDesc.trim(),
+          rightId: values.rightId.join(','),
           enterpriseId,
           continueAdd: true,
         });
-        if(error.size === 0) {
-          this.props.form.resetFields(); 
-        }  
+        this.props.form.resetFields();
       }
     });
   }
 
-  getIds(data) {
-    let ids = [];
-    this.generateIds(data, ids);
-    return ids.join(',');
+  getRightIdArr = (rightData) => {
+    const treeKey = [];
+    rightData && rightData.length > 0 && rightData.forEach(e=>{
+      const hasChildRight = e && e.childRightData && e.childRightData.length > 0;
+      e.rightId && treeKey.push(e.rightId.toString());
+      if(hasChildRight){
+        treeKey.push(...this.getRightIdArr(e.childRightData));
+      }
+    })
+    return treeKey;
   }
 
-  generateIds(data, ids) {
-    for(var i = 0; i < data.length; i++) {
-      if(data[i].childRightData instanceof Array) {
-        this.generateIds(data[i].childRightData, ids);
-      } else {
-        ids.push(data[i].rightId);
+  getDefaultRootMenu = (rightData) => {
+    const { defaultMenuData } = this.props;
+    let defaultRootMenu = [];
+    rightData && rightData.length > 0 && rightData.forEach(e=>{
+      const hasChildRight = e && e.childRightData && e.childRightData.length > 0;
+
+      if(hasChildRight){
+        defaultRootMenu.push(...this.getDefaultRootMenu(e.childRightData));
+      }else{
+        defaultMenuData.includes(e.rightId) && defaultRootMenu.push(e.rightId);
       }
-    }
+    })
+    return defaultRootMenu;
   }
 
   render(){
     const { getFieldDecorator } = this.props.form;
-    const { showPage, loading, continueAdd } = this.props;
+    const { showPage, loading, continueAdd, selectedRole, menuData } = this.props;
     const isCreate = showPage === 'create';
-    const selectedRole = isCreate? null: this.props.selectedRole[0];
+    const selectedRight = isCreate? [] : selectedRole[0].rightData;
+    let initialRightValue = [];
+    const defaultRootMenu = this.getDefaultRootMenu(menuData);
+    if(isCreate){
+      initialRightValue = defaultRootMenu.map(e=>`${e}`);
+    }else{
+      initialRightValue = this.getRightIdArr(selectedRight);
+    }
     return (     
       <Form onSubmit={this.onSubmit} className={styles.roleEditForm}>
         <FormItem label="角色名称">
           {getFieldDecorator('roleDesc', {
             rules: [{ 
-              required: isCreate,
-              message: '请输入角色名称' 
+              required: true, message: '请输入角色名称',
+            },{
+              validator: (rule, value, callback)=>{
+                if(value.trim().length > 10){
+                  callback('不超过10个字');
+                }else{
+                  callback();
+                }
+              }
             }],
             initialValue: isCreate || !selectedRole ? '' : selectedRole.roleDesc
           })(
@@ -115,9 +131,9 @@ class RoleEditForm extends Component {
               required: true,
               message: '请勾选功能'
             }],
-            initialValue: isCreate || !selectedRole ? '' : this.getIds(selectedRole.rightData)
+            initialValue: initialRightValue,
           })(
-            <RoleTree treeData={this.props.menuData} onChangeHalf={this.onChangeHalf} />
+            <RoleTree treeData={menuData} defaultRootMenu={defaultRootMenu} />
           )}
         </FormItem>
         <div className={styles.buttonGroup}>

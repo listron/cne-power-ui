@@ -9,15 +9,16 @@ const TreeNode = Tree.TreeNode;
 class RoleTree extends Component {
   static propTypes = {
     treeData: PropTypes.array,
-    value: PropTypes.string,
+    value: PropTypes.array,
+    defaultRootMenu: PropTypes.array,
     onChange: PropTypes.func,
-    onChangeHalf: PropTypes.func,
   }
 
   constructor(props) {
     super(props);
     this.state = {
-      expandKeys: [],
+      expandedKeys: [],
+      checkedKeys: props.value,
     }
   }
 
@@ -28,59 +29,69 @@ class RoleTree extends Component {
   }
 
   onCheck = (checkedKeys, e) => {
-    this.props.onChange(checkedKeys.join(','));
-    this.props.onChangeHalf(e.halfCheckedKeys);
+    const outputCheckedKeys = [...checkedKeys,...e.halfCheckedKeys];
+    this.props.onChange(outputCheckedKeys);
+    this.setState({ checkedKeys: checkedKeys});
   }
 
   onCheckAll = (e) => {
-    const checkedKeys = [];
-    const { treeData } = this.props;
+    const { treeData, defaultRootMenu } = this.props;
     const checked = e.target.checked;
     if(checked) {
-      this.getAllKeys(treeData, checkedKeys);
+      const allKeys = this.getAllKeys(treeData);
+      this.setState({ checkedKeys: allKeys });
+      this.props.onChange(allKeys);
+    }else{ // 全不选时恢复默认设定权限。
+      const defaultChecked = defaultRootMenu.map(e=>`${e}`)
+      this.setState({ checkedKeys: defaultChecked });
+      this.props.onChange(defaultChecked);
     }
-    this.props.onChange(checkedKeys.join(','));
   }
 
-  getAllKeys(data, arr) {
-    for(var i = 0; i < data.length; i++) {
-      const item = data[i];
-      arr.push(item.rightId.toString());
-      if(item.childRightData instanceof Array && item.childRightData.length > 0) {
-        this.getAllKeys(item.childRightData, arr);
+  getAllKeys(treeArray) { // 根据数组遍历集合内部权限id生成数组。
+    const treeKey = [];
+    treeArray && treeArray.length > 0 &&treeArray.forEach(e=>{
+      const hasChildRight = e && e.childRightData && e.childRightData.length > 0;
+      e.rightId && treeKey.push(e.rightId.toString());
+      if(hasChildRight){
+        treeKey.push(...this.getAllKeys(e.childRightData));
       }
-    }
+    })
+    return treeKey
   }
 
-  renderTreeNodes = (data) => {
-    return data.map((item) => {
-      if(item.childRightData instanceof Array && item.childRightData.length > 0) {
+  renderTreeNodes = (treeData) => {
+    const { defaultRootMenu } = this.props;
+    return treeData.map((item) => {
+      const hasChild = item && item.childRightData && item.childRightData.length > 0;
+      const treeDisable = defaultRootMenu.includes(item.rightId);
+      if(hasChild) {
         return (
-          <TreeNode title={item.rightName} key={item.rightId.toString()} dataRef={item}>
+          <TreeNode title={item.rightName} indeterminate key={item.rightId.toString()} disabled={treeDisable} >
             {this.renderTreeNodes(item.childRightData)}
           </TreeNode>
         );
       }
-      return <TreeNode title={item.rightName} key={item.rightId.toString()} />;
+      return <TreeNode indeterminate title={item.rightName} key={item.rightId.toString()} disabled={treeDisable} />;
     });
   }
 
   render(){
-    const checkedKeys = [];
-    const { treeData, value } = this.props;
-    this.getAllKeys(treeData, checkedKeys);
+    const { treeData } = this.props;
+    const { checkedKeys, expandKeys } = this.state;
+    const allKeys = this.getAllKeys(treeData);
+    const checkedAll = allKeys.length === checkedKeys.length;
     return (
       <div>
-        <Checkbox style={{marginLeft: 26}} onChange={this.onCheckAll} 
-        checked={this.props.value === checkedKeys.join(',')}>全选</Checkbox>
+        <Checkbox style={{marginLeft: 26}} onChange={this.onCheckAll} checked={checkedAll}>全选</Checkbox>
         <Tree
-          checkable={true}
-          expandKeys={this.state.expandKeys}
-          checkedKeys={value === '' ? []: this.props.value.split(',')}
+          checkable
+          expandKeys={expandKeys}
+          checkedKeys={checkedKeys}
           onExpand={this.onExpand}
           onCheck={this.onCheck}
         >
-          {this.renderTreeNodes(this.props.treeData)}
+          {this.renderTreeNodes(treeData)}
         </Tree>
       </div>
     );
