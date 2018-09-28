@@ -76,14 +76,16 @@ class InspectCreateForm extends Component{
     const { deviceTypeItems, stations } = this.props;
     const { getFieldDecorator } = this.props.form;
     const deviceTypes= deviceTypeItems && deviceTypeItems.toJS();
-    deviceTypes && deviceTypes.forEach((e,i)=>{
-      e['title'] = e.deviceTypeName;
-      e['key'] = i.toString();
-      e['value'] = e.deviceTypeCode.toString();
+    const tmpDeviceTypes = deviceTypes && deviceTypes.map((e,i)=>{
+      return [{
+        title : e.deviceTypeName,
+        key : i.toString(),
+        value : e.deviceTypeCode.toString(),
+      }]
     });
     
     const treeProps = {
-      treeData: deviceTypes,
+      treeData: tmpDeviceTypes,
       treeCheckable: true,
       filterTreeNode: false,
       showCheckedStrategy: SHOW_PARENT,
