@@ -92,7 +92,7 @@ class Seriesinverter extends Component {
   render(){
     const {devices, deviceDetail, deviceTenMin, deviceAlarmList, devicePointData, loading,singleStationData } = this.props;
     const { stationCode, deviceTypeCode,deviceCode } = this.props.match.params;
-    console.log(this.props.match.params);
+    //console.log(this.props.match.params);
    
     const backData={path: `/monitor/singleStation/${stationCode}`,name: '返回电站'};
     const breadCrumbData = {

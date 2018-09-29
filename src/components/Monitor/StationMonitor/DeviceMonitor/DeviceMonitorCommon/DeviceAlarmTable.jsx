@@ -126,7 +126,7 @@ class DeviceAlarmTable extends Component {
 
   render() {
     const { deviceAlarmList, deviceDetail,stationCode,deviceTypeCode,deviceCode } = this.props;
-    console.log(stationCode,deviceTypeCode,deviceCode);
+   // console.log(stationCode,deviceTypeCode,deviceCode);
 
     const { pageSize, currentPage } = this.state;
     const tableSource = this.createTableSource(deviceAlarmList);
