@@ -31,6 +31,10 @@ class PvStation extends Component {
       hiddenStationList: false,
     }
   }
+  
+  componentWillUnmount(){
+    this.props.changeSingleStationStore({ deviceTypeFlow: [] });
+  }
 
   onSelectedDeviceType = (e) => {
     const deviceTypeCode = parseInt(e.target.value);
@@ -64,6 +68,7 @@ class PvStation extends Component {
     });
   }
 
+
   render() {
     const { deviceTypeFlow, stationDeviceList, deviceTypeCode } = this.props;
     const weatherDeviceCode = stationDeviceList && stationDeviceList.deviceCode || 0;
@@ -85,6 +90,10 @@ class PvStation extends Component {
             </TabPane> */}
             <TabPane tab="示意图" key="2">
               <div className={styles.deviceTypeFlow}>
+                <div className={styles.weatherStation}>
+                  <Link  to={`/hidden/monitorDevice/${stationCode}/203/${weatherDeviceCode}`} ><i className="iconfont icon-weather" ></i></Link>
+                  <div>气象站</div>
+                </div>
                 {deviceTypeFlow.length > 0 && <RadioGroup value={deviceTypeCode} onChange={this.onSelectedDeviceType} >
                   {deviceTypeFlow.map((e,i)=> {
                     const clickable = [509, 201, 206, 304, 202]; // 允许点击及展示列表的设备类型
@@ -104,10 +113,6 @@ class PvStation extends Component {
                     <div>电网</div>
                   </RadioButton>
                 </RadioGroup>}
-                <div className={styles.weatherStation}>
-                  <Link  to={`/hidden/monitorDevice/${stationCode}/203/${weatherDeviceCode}`} ><i className="iconfont icon-weather" ></i></Link>
-                  <div>气象站</div>
-                </div>
               </div>
               <div className={styles.deviceList} >
                 <DeviceList {...this.props} />
