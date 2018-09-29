@@ -70,7 +70,7 @@ class HistoryAlarm extends Component {
       startTime: [],
       endTime: [],
       deviceName: '',
-      deviceCode:deviceCode?[deviceCode]:[],
+      deviceCode:deviceCode?deviceCode:[],
     });
   }
 

@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './pvStation.scss';
-import { Icon, Progress,Modal,Input  } from 'antd';
+import { Icon, Progress, Modal, Input } from 'antd';
 import moment from 'moment';
 import ChangeStation from '../SingleStationCommon/ChangeStation';
 import { Link } from 'react-router-dom';
@@ -16,45 +16,53 @@ class PvStationTop extends Component {
     showStationList: PropTypes.bool,
     changeSingleStationStore: PropTypes.func,
     onSelectedDeviceType: PropTypes.func,
+    editData: PropTypes.func,
+    stationCode:PropTypes.string,
   }
 
-  constructor(props){
+  constructor(props) {
     super(props);
-    this.state={
+    this.state = {
       showStationList: false,
       modalMonth: false,
       modalYear: false,
+      editValue: '',
     }
   }
 
-  componentDidMount(){
+  componentDidMount() {
     const main = document.getElementById('main');
-    main && main.addEventListener('click', this.hiddenStationList,true);
+    main && main.addEventListener('click', this.hiddenStationList, true);
   }
 
   componentWillUnmount() {
     const main = document.getElementById('main');
-    main && main.removeEventListener('click', this.hiddenStationList,true);
+    main && main.removeEventListener('click', this.hiddenStationList, true);
   }
 
-
-  onOk=()=>{
-    
-    this.setState({ modalMonth:false,modalYear:false });
-  }
-  onCancel=()=>{
-    this.setState({ modalMonth:false,modalYear:false });
-  }
-  setModalMonth=()=> {
-    this.setState({ modalMonth:true });
-  }
-
-  setModalYear() {
-    this.setState({ modalYear:true });
-  }
+  onChange = (e) => {
+    // let{editValue}=this.state;
+ 
+    this.setState({ editValue: e.target.value })
  
 
-
+  }
+  onOk = () => {
+    const { editData,stationCode } = this.props
+    const { editValue } = this.state;
+    const editTime = moment().format('YYYY-MM-DD');
+    this.state.modalMonth ? editData({ monthGen: editValue, date:editTime, stationCode:stationCode }) : editData({ yearGen: editValue, date:editTime, stationCode:stationCode});
+    this.setState({ modalMonth: false, modalYear: false });
+  }
+  onCancel = () => {
+    this.setState({ modalMonth: false, modalYear: false });
+  }
+  setModalMonth = () => {
+    this.setState({ modalMonth: true });
+  }
+  setModalYear() {
+    this.setState({ modalYear: true });
+  }
   hiddenStationList = () => {
     this.setState({
       showStationList: false,
@@ -72,48 +80,47 @@ class PvStationTop extends Component {
       showStationList: false,
     });
   }
-  
-  render(){
+
+  render() {
     const { singleStationData, stationList } = this.props;
-    const { showStationList } = this.state;
-    
+    const { showStationList, editValue } = this.state;
+
     const stationPower = singleStationData && singleStationData.stationPower;
     const stationCapacity = singleStationData && singleStationData.stationCapacity;
-    const powerPercent = stationPower/stationCapacity*100;
-    
-    const provenceCodes = stationList && stationList.length>0 ? stationList.map(e=>e.provinceCode) : [];
+    const powerPercent = stationPower / stationCapacity * 100;
+
+    const provenceCodes = stationList && stationList.length > 0 ? stationList.map(e => e.provinceCode) : [];
     const stationListSet = new Set(provenceCodes);
     const tmpProvenceCodes = [...stationListSet];
-    tmpProvenceCodes.forEach((value,key)=>{
-      tmpProvenceCodes[key] = stationList.filter(e=>value===e.provinceCode);
+    tmpProvenceCodes.forEach((value, key) => {
+      tmpProvenceCodes[key] = stationList.filter(e => value === e.provinceCode);
     });
 
     let stationStatusTime = singleStationData && singleStationData.stationStatus && singleStationData.stationStatus.stationStatusTime;
-    let localTime = stationStatusTime!==null && moment.utc(stationStatusTime).toDate();
+    let localTime = stationStatusTime !== null && moment.utc(stationStatusTime).toDate();
     let tmpStationStatusTime = localTime && moment(localTime).fromNow();
-    
     const baseLinkPath = `/monitor/singleStation`;
     const pathAllStation = "/monitor/station";
-//权限控制
-    // const rightHandler = localStorage.getItem('rightHandler');
-    
-    // console.log(rightHandler);
-    // const userEdit = rightHandler && rightHandler.split(',').includes('account_user_edit');
-    // console.log(userEdit);
+    //权限控制
+    const rightHandler = localStorage.getItem('rightHandler');
+    const userEditMonth = rightHandler && rightHandler.split(',').includes('month_gen');
+    const userEditYear = rightHandler && rightHandler.split(',').includes('year_gen');
+    //console.log(userEditMonth,userEditYear);   
+
     return (
       <div className={styles.pvStationTop} >
         <div className={styles.pvStationTitle} >
           <div className={styles.pvStationName} >
             {showStationList && <ChangeStation stations={stationList} stationName={singleStationData.stationName} baseLinkPath={baseLinkPath} hideStationChange={this.hideStationChange} />}
-            <div onClick={this.showStationList} className={styles.stationToggle}  id="stationToggle" >
+            <div onClick={this.showStationList} className={styles.stationToggle} id="stationToggle" >
               <Icon type="swap" />
               <h3>{singleStationData && singleStationData.stationName}-{singleStationData && singleStationData.provinceName}</h3>
             </div>
             <span>电站状态：{singleStationData && singleStationData.stationStatus && singleStationData.stationStatus.stationStatusName}</span>
-            {singleStationData && singleStationData.stationStatus && singleStationData.stationStatus.stationStatus !== 400 && stationStatusTime!==null && <span>时间：{tmpStationStatusTime||""}</span>}
+            {singleStationData && singleStationData.stationStatus && singleStationData.stationStatus.stationStatus !== 400 && stationStatusTime !== null && <span>时间：{tmpStationStatusTime || ""}</span>}
           </div>
           <Link to={pathAllStation}  >
-            <Icon type="arrow-left" className={styles.backIcon}  />
+            <Icon type="arrow-left" className={styles.backIcon} />
           </Link>
         </div>
         <div className={styles.trueTimeData} >
@@ -127,19 +134,19 @@ class PvStationTop extends Component {
               <span>{singleStationData && singleStationData.stationPower && parseFloat(singleStationData.stationPower).toFixed(2) || 0}</span>
               <span>{singleStationData && singleStationData.stationCapacity && parseFloat(singleStationData.stationCapacity).toFixed(2) || 0}</span>
             </div>
-            <Progress percent={powerPercent || 0 } showInfo={false} strokeWidth={3} type="line" strokeColor="#199475" />
-            <div  className={styles.trueTimeDesc}><span>实时功率 MW</span><span>装机容量 MW</span></div>
+            <Progress percent={powerPercent || 0} showInfo={false} strokeWidth={3} type="line" strokeColor="#199475" />
+            <div className={styles.trueTimeDesc}><span>实时功率 MW</span><span>装机容量 MW</span></div>
           </div>
           <div>
             <div className={styles.trueTimeValue}>{singleStationData && singleStationData.stationUnitCount || 0}</div>
             <div className={styles.trueTimeUnit}>装机台数 台</div>
           </div>
           <div>
-            <div className={styles.trueTimeValue} style={{color: "#e08031"}}>{singleStationData && singleStationData.instantaneous && parseFloat(singleStationData.instantaneous).toFixed(2) ||0}</div>
+            <div className={styles.trueTimeValue} style={{ color: "#e08031" }}>{singleStationData && singleStationData.instantaneous && parseFloat(singleStationData.instantaneous).toFixed(2) || 0}</div>
             <div className={styles.trueTimeUnit}>瞬时辐照 W/m<sup>2</sup></div>
           </div>
           <div>
-            <div className={styles.trueTimeValue} style={{color: "#e08031"}}>{singleStationData && singleStationData.dayResources || 0}</div>
+            <div className={styles.trueTimeValue} style={{ color: "#e08031" }}>{singleStationData && singleStationData.dayResources || 0}</div>
             <div className={styles.trueTimeUnit}>日曝辐值 MJ/m<sup>2</sup></div>
           </div>
           <div>
@@ -147,30 +154,30 @@ class PvStationTop extends Component {
             <div className={styles.trueTimeUnit}>日发电量 万kWh</div>
           </div>
           <div>
-            <div className={styles.trueTimeValue}><div>{singleStationData && singleStationData.monthPower && parseFloat(singleStationData.monthPower).toFixed(4) || 0}  {0?<span onClick={()=>{this.setModalMonth()}} ><Icon type="form" theme="outlined" /></span>:''}</div></div>
+            <div className={styles.trueTimeValue}><div>{singleStationData && singleStationData.monthPower && parseFloat(singleStationData.monthPower).toFixed(4) || 0}  {1 ? <span onClick={() => { this.setModalMonth() }} ><Icon type="form" theme="outlined" /></span> : ''}</div></div>
             <div className={styles.trueTimeUnit}>月发电量 万kWh</div>
           </div>
           <Modal
-          title="请填写"
-          style={{ top: 300 }}
-          visible={this.state.modalMonth||this.state.modalYear}
-          onOk={this.onOk}
-          onCancel={this.onCancel}
-          mask={false}
-        >
-        {this.state.modalMonth?<div>截止到今日，本月累计发电量  <Input placeholder="请输入" />  万kWh</div>:<div>截止到今日，本年累计发电量  <Input placeholder="请输入" />  万kWh</div>}
-         
-        </Modal>
+            title="请填写"
+            style={{ top: 300 }}
+            visible={this.state.modalMonth || this.state.modalYear}
+            onOk={this.onOk}
+            onCancel={this.onCancel}
+            mask={false}
+          >
+            {this.state.modalMonth ? <div>截止到今日，本月累计发电量  <Input value={editValue} placeholder="请输入" onChange={this.onChange} />  万kWh</div> : <div>截止到今日，本年累计发电量  <Input placeholder="请输入" value={editValue} onChange={this.onChange} />  万kWh</div>}
+
+          </Modal>
           <div className={styles.stationYearPlan}>
-          <div className={styles.annualEnergyScale} >
-            <div className={styles.trueTimeValue}>
-              <span>{singleStationData && singleStationData.yearPower && parseFloat(singleStationData.yearPower).toFixed(4) || 0}  {0?<span onClick={()=>{this.setModalYear()}}><Icon type="form" theme="outlined" /></span>:''}</span>
-              <span>{singleStationData && singleStationData.yearPlanPower && parseFloat(singleStationData.yearPlanPower).toFixed(4) || 0}</span>
+            <div className={styles.annualEnergyScale} >
+              <div className={styles.trueTimeValue}>
+                <span>{singleStationData && singleStationData.yearPower && parseFloat(singleStationData.yearPower).toFixed(4) || 0}  {1 ? <span onClick={() => { this.setModalYear() }}><Icon type="form" theme="outlined" /></span> : ''}</span>
+                <span>{singleStationData && singleStationData.yearPlanPower && parseFloat(singleStationData.yearPlanPower).toFixed(4) || 0}</span>
+              </div>
+              <Progress percent={singleStationData && singleStationData.yearPlanRate * 100 || 0} showInfo={false} strokeWidth={3} type="line" strokeColor="#199475" />
+              <div className={styles.trueTimeDesc}><span>年累计发电量 万kWh</span><span>计划 万kWh</span></div>
             </div>
-            <Progress percent={singleStationData && singleStationData.yearPlanRate*100 || 0} showInfo={false} strokeWidth={3} type="line" strokeColor="#199475" />
-            <div  className={styles.trueTimeDesc}><span>年累计发电量 万kWh</span><span>计划 万kWh</span></div>
-          </div>
-          <div className={styles.yearPlanRate} >{singleStationData && singleStationData.yearPlanRate}</div>
+            <div className={styles.yearPlanRate} >{singleStationData && singleStationData.yearPlanRate}</div>
           </div>
 
 
