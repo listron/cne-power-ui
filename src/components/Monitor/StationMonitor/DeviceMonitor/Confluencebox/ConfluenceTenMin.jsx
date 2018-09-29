@@ -14,17 +14,20 @@ function ConfluenceTenMin({ deviceTenMin, loading }) {
     //   confluenceChart.hideLoading();
     // }
     const HLNames = ['HL001', 'HL002', 'HL003', 'HL004', 'HL005', 'HL006', 'HL007', 'HL008', 'HL009', 'HL010', 'HL011', 'HL012', 'HL013', 'HL014', 'HL015', 'HL016']
-    // const HLNames = [{'HL001':[]}, {'HL002':[]}, {'HL003':[]}, {'HL004':[]}, {'HL005':[]}, {'HL006':[]}, {'HL007':[]}, {'HL008':[]}, {'HL009':[]}, {'HL010':[]}, {'HL011':[]}, {'HL012':[]}, {'HL013':[]}, {'HL014':[]}, {'HL015':[]}, {'HL016':[]},]
+    
     const HLColors = ['#e08031','#f9b600','#fbe6e3','#999999','#ceebe0','#f8e71c','#50e3c2','#c7ceb2','#7ed321','#d0021b','#024d22','#bd10e0','#8b572a','#9013fe','#45a0b3','#000d34',];
     let dispersionRatio = [], xTime = [], HL = [];
-    // HLNames.forEach((e,i)=>{
-    //   e[i]=[];
-    // });
-    deviceTenMin.length > 0 && deviceTenMin.forEach((e,i)=>{
+    deviceTenMin.length > 0 && deviceTenMin.forEach((e,index)=>{
       xTime.push(moment(e.utc).format('YYYY-MM-DD HH:mm:ss'));
       dispersionRatio.push(e.dispersionRatio);
-      // HLNames[i].push(e);
     });
+    for(let i=0;i<16;i++){
+      HL.push()
+      HL[i] = deviceTenMin.length > 0 && deviceTenMin.map((e,index)=>{
+        return e.hLArr[i];
+        
+      });
+    }
     const HLNamesArr = HLNames.map((e,i)=>{
       return {
         name: e,
@@ -36,18 +39,13 @@ function ConfluenceTenMin({ deviceTenMin, loading }) {
           type: 'solid',
           color: HLColors[i],
         },
-        // areaStyle: {
-        //   normal: {
-        //     opacity: 0.2,
-        //   }
-        // },
         label: {
           normal: {
             show: false
           }
         },
-        yAxisIndex: 1,
-        data: deviceTenMin.map(e=>e.hL001),
+        yAxisIndex: 0,
+        data: HL[i],
       }
     });
     const filterDispersionRatio = deviceTenMin.filter(e=>e.dispersionRatio);
@@ -76,13 +74,12 @@ function ConfluenceTenMin({ deviceTenMin, loading }) {
           return [point[0], '10%'];
         },
         formatter: (param) => {
-          console.log(param);
           const HLToolTips = HLNames.map((e,i)=>{
-            return `<div style="padding-left: 5px;background:#fff;" ><span style="display: inline-block; background:${HLColors[i]}; width:6px; height:6px; border-radius:100%;"></span> ${e}: ${param[0] && param[0].value || '--'}</div>`;
+            return `<div style="padding-left: 5px;background:#fff;" ><span style="display: inline-block; background:${HLColors[i]}; width:6px; height:6px; border-radius:100%;"></span> ${e}: ${param[i+1] && param[i+1].value || '--'}</div>`;
           })
           return `<div style="width: 128px; height: 490px;color: #666; line-height: 14px;font-size:12px;background: #fff;box-shadow:0 1px 4px 0 rgba(0,0,0,0.20);border-radius:2px;">
             <div style="height:20px;border-bottom: 1px solid #dfdfdf;padding-left: 5px;line-height: 20px;height:20px;" >${param[0] && param[0].name || '--'}</div>
-            <div style="padding-left: 5px;line-height: 20px;height:20px;" ><span style="display: inline-block; background:#ffffff; border:1px solid #3e97d1; width:6px; height:6px; border-radius:100%;"></span> 离散率: ${param[1] && param[1].value || '--'}</div>
+            <div style="padding-left: 5px;line-height: 20px;height:20px;" ><span style="display: inline-block; background:#ffffff; border:1px solid #3e97d1; width:6px; height:6px; border-radius:100%;"></span> 离散率: ${param[0] && param[0].value || '--'}</div>
             ${HLToolTips}
           </div>`;
         },
