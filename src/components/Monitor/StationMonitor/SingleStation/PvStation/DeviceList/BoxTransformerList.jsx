@@ -205,10 +205,11 @@ class BoxTransformerList extends Component {
     const filteredDeviceList = initDeviceList.filter(e=>(!alarmSwitch || (alarmSwitch && e.alarmNum > 0))).filter(e=>{
       return (currentStatus === 0 || e.deviceStatus === currentStatus);
     }) // 根据筛选条件处理数据源。
-    const parentDeviceCodeSet = new Set(filteredDeviceList.map(e=>e.parentDeviceCode));
-    const parentDeviceCodes = [...parentDeviceCodeSet].sort((a,b) => {
-      return a.parentDeviceName && a.parentDeviceName.localeCompare(b.parentDeviceName)
-    });
+    const sortedParentList = filteredDeviceList.sort((a,b)=>{
+      return a.parentDeviceName && a.parentDeviceName.localeCompare(b.parentDeviceName);
+    })
+    const parentDeviceCodeSet = new Set(sortedParentList.map(e=>e.parentDeviceCode));
+    const parentDeviceCodes = [...parentDeviceCodeSet];
     const deviceGroupedList = parentDeviceCodes.map(e=>{
       const subDeviceList = filteredDeviceList.filter(item => item.parentDeviceCode === e);
       return subDeviceList.sort((a,b)=>a.deviceName && a.deviceName.localeCompare(b.deviceName));
@@ -234,7 +235,7 @@ class BoxTransformerList extends Component {
           <TabPane tab={<span><i className="iconfont icon-grid" ></i></span>} key="1" className={styles.inverterBlockBox} >
             {deviceGroupedList.length > 0 ? deviceGroupedList.map((e,index)=>{
               return (<div key={index}>
-                <div className={styles.parentDeviceName} >{e && e.parentDeviceName}</div>
+                <div className={styles.parentDeviceName} >{e && e[0] && e[0].parentDeviceName}</div>
                 {e.map((item,i)=>{
                   
                   return (<div key={i} className={item.deviceStatus === 900 ? styles.cutOverItem : styles.inverterItem}>

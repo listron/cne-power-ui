@@ -27,6 +27,7 @@ class PointManage extends Component {
     changePointManageStore: PropTypes.func,
     changeStationManageStore: PropTypes.func,
     getStationOfEnterprise: PropTypes.func,
+    getStationPointStatusList: PropTypes.func,
   }
   constructor(props) {
     super(props);
@@ -35,7 +36,8 @@ class PointManage extends Component {
     }
   }
   componentDidMount(){
-    const { enterpriseId, getStationOfEnterprise } = this.props;
+    const { enterpriseId, getStationOfEnterprise, getStationPointStatusList } = this.props;
+    getStationPointStatusList();
     getStationOfEnterprise({ enterpriseId }); // 请求用户所在企业的所有企业
     this.timeout = setTimeout(()=>{this.setState({
       showPointTip: false
@@ -106,6 +108,7 @@ const mapDispatchToProps = (dispatch) => ({
   changePointManageStore: payload => dispatch({type:pointManageAction.CHANGE_POINT_MANAGE_STORE_SAGA, payload}),
   getPointList: payload => dispatch({type:pointManageAction.GET_POINT_MANAGE_LIST, payload}),
   deletePointList: payload => dispatch({type:pointManageAction.DELETE_POINT_MANAGE_LIST, payload}),
+  getStationPointStatusList: payload => dispatch({type: pointManageAction.GET_POINT_MANAGE_ALL_STATION, payload}),
 
   changeCommonStore: payload => dispatch({type:commonAction.CHANGE_COMMON_STORE_SAGA, payload}),
   getStationDeviceTypes: payload => dispatch({type:commonAction.GET_STATION_DEVICETYPES_SAGA, payload}),

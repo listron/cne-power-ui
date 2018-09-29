@@ -21,6 +21,7 @@ module.exports = {
     GET_BOXTRANSFORMER_LIST_SAGA: null,//箱变列表
     GET_CONFLUENCEBOX_LIST_SAGA: null, // 获取汇流箱列表
     GET_STATION_DEVICELIST_SAGA: null,//获取单电站设备列表
+    EDIT_MONTH_YEAR_DATA_SAGA:null,//编辑月/年累计发电量
 
   })
 }
