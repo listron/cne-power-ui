@@ -21,7 +21,6 @@ class Role extends Component {
     resetRole: PropTypes.func,
     enterpriseId: PropTypes.string,
     continueAdd: PropTypes.bool,
-    error: PropTypes.object,
   }
   constructor(props) {
     super(props);
@@ -77,6 +76,7 @@ const mapDispatchToProps = (dispatch) => ({
   changeRoleStore: payload => dispatch({ type: roleAction.CHANGE_ROLE_STORE_SAGA, payload }),
   getRoleList: payload => dispatch({ type: roleAction.GET_ROLE_LIST_SAGA, payload }),
   getMenuList: payload => dispatch({ type: roleAction.GET_MENU_LIST_SAGA, payload }),
+  getDefaultMenuList: payload => dispatch({ type: roleAction.GET_DEFAULT_MENU_LIST_SAGA, payload }),
   onCreateRole: payload => dispatch({ type: roleAction.CREATE_ROLE_SAGA, payload }),
   onEditRole: payload => dispatch({ type: roleAction.EDIT_ROLE_SAGA, payload }),
   onDeleteRole: payload => dispatch({ type: roleAction.DELETE_ROLE_SAGA, payload }),

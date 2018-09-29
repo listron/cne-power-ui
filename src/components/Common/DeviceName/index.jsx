@@ -62,14 +62,42 @@ class DeviceName extends Component {
   }
 
   getDeviceItems() {
-    const { filteredSelectedStation } = this.state;
-    return filteredSelectedStation.map((item, index) => {
-      return (
-        <Option key={item.get('deviceCode')} value={item.get('deviceCode')}>
-          {item.get('deviceName')}
-        </Option>
-      )
-    })
+    // let { filteredSelectedStation } = this.state;
+    // filteredSelectedStation=filteredSelectedStation.toJS().slice(0,20);
+    // return filteredSelectedStation.map((item, index) => {
+    //   return (
+    //     <Option key={item.deviceCode} value={item.deviceCode}>
+    //       {item.deviceName}
+    //     </Option>
+    //   )
+    // })
+
+      let { filteredSelectedStation } = this.state;
+      filteredSelectedStation=filteredSelectedStation.toJS();
+    if (filteredSelectedStation.length < 21) {
+      return filteredSelectedStation.map((item, index) => {
+        return (
+          <Option key={item.deviceCode} value={item.deviceCode}>
+            {item.deviceName}
+          </Option>
+        )
+      })
+    }
+    if (filteredSelectedStation.length > 20) {
+      const littleData = filteredSelectedStation.slice(0, 20);
+      return littleData.map((item, index) => {
+        return (
+          <Option key={item.deviceCode} value={item.deviceCode}>
+            {item.deviceName}
+          </Option>
+        )
+      }).concat([
+        <Option disabled key="all" className="show-all">  
+            点击图标查看所有设备        
+        </Option>,
+      ])
+           
+    }
   }
 
   handleSearch = (text) => {
@@ -97,7 +125,7 @@ class DeviceName extends Component {
     let options = this.getDeviceItems();
     const { checkedStationName } = this.state;
     return (
-      <div className={styles.deviceName}>
+      <div className={styles.deviceName}>  
         <AutoComplete
           style={{ width: '100%' }}
           dataSource={options}
@@ -105,6 +133,7 @@ class DeviceName extends Component {
           onSelect={this.props.onChange}
           onSearch={this.handleSearch}
           value={checkedStationName}
+          placeholder="请输入关键字查询"
         >
           <Input suffix={<i className="iconfont icon-filter" onClick={this.onShowDeviceNameModal} />} />
         </AutoComplete>

@@ -96,7 +96,7 @@ class Confluencebox extends Component {
 
   render(){
     const {devices, deviceDetail, deviceTenMin, deviceAlarmList, devicePointData, loading } = this.props;
-    const { stationCode, deviceTypeCode } = this.props.match.params;
+    const { stationCode, deviceTypeCode,deviceCode } = this.props.match.params;
     const breadCrumbData = {
       breadData:[{
         link: true,
@@ -114,7 +114,7 @@ class Confluencebox extends Component {
           <ConfluenceHeader deviceDetail={deviceDetail} devices={devices} stationCode={stationCode} deviceTypeCode={deviceTypeCode} />
           <ConfluenceStatistics deviceDetail={deviceDetail} />
           <ConfluenceTenMin deviceTenMin={deviceTenMin} loading={loading} />
-          <DeviceAlarmTable deviceAlarmList={deviceAlarmList} loading={loading} deviceDetail={deviceDetail} />
+          <DeviceAlarmTable deviceAlarmList={deviceAlarmList} loading={loading} deviceDetail={deviceDetail} stationCode={stationCode} deviceTypeCode={deviceTypeCode} deviceCode={deviceCode} />
           <DevicePointsData devicePointData={devicePointData}  deviceDetail={deviceDetail} />
         </div>
       </div>

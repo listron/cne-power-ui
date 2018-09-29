@@ -92,6 +92,7 @@ export default {
 
       getRoleList: '/v3/role/list',
       getMenuList: '/v3/right',
+      getDefaultRight:'/v3/role/defaultright', // 获取角色下的默认权限
       createRole: '/v3/role',
       editRole: '/v3/role/{enterpriseId}',
       deleteRole: '/v3/role',
@@ -158,7 +159,8 @@ export default {
       getWorkList: '/v3/monitor/worklist/',//单电站工单数统计
       getDeviceTypeFlow: '/v3/station/devicetypeflow/',//单电站设备类型流程图
       getStationDeviceList: '/v3/station/devicelist/',//单电站设备列表
-      
+      editData:'/v3/management/stationgen',//编辑月，年的累计发电量
+     
       getHistoryAlarm: '/v3/alarm/station/historyalarmlist',//历史告警
       getStationsAlarmStatistic: '/v3/alarm/stations/alarmsummary',//多电站统计
       getSingleStationAlarmStatistic: '/v3/alarm/station/alarmsummary',//单电站统计
