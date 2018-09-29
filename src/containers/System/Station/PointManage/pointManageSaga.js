@@ -1,5 +1,6 @@
-import { call, put, takeLatest, select } from 'redux-saga/effects';
+import { call, put, takeLatest } from 'redux-saga/effects';
 import axios from 'axios';
+import { message } from 'antd';
 import Path from '../../../../constants/path';
 import { pointManageAction } from '../../../../constants/actionTypes/system/station/pointManageAction';
 
@@ -9,6 +10,30 @@ function *changePointManageStore(action){ // 存储payload指定参数，替换r
     type:  pointManageAction.CHANGE_POINT_MANAGE_STORE,
     payload,
   })
+}
+
+function *getStationPointStatusList(){ // 请求所有电站列表=>确认是否可删除测点
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.getStationList}`
+  try{
+    const response = yield call(axios.post, url, {
+        stationType: "",
+        regionName: '',
+        stationName: '',
+        pageNum: 1,
+        pageSize: 10000,
+        orderField: '',
+        orderCommand: '',
+    });
+    yield put({
+      type: pointManageAction.GET_POINT_MANAGE_FETCH_SUCCESS,
+      payload: {
+        stationPointStatusList: response.data.data.list || [],
+      }
+    })
+  }catch(e){
+    console.log(e);
+    message.error('获取电站列表数据失败，请刷新重试');
+  }
 }
 
 function *getPointList(action){ // 请求单个详细数据信息
@@ -82,6 +107,7 @@ function *deletePointList(action){ // 清除测点列表
 
 export function* watchPointManage() {
   yield takeLatest(pointManageAction.CHANGE_POINT_MANAGE_STORE_SAGA, changePointManageStore);
+  yield takeLatest(pointManageAction.GET_POINT_MANAGE_ALL_STATION, getStationPointStatusList);
   yield takeLatest(pointManageAction.GET_POINT_MANAGE_LIST, getPointList)
   yield takeLatest(pointManageAction.DELETE_POINT_MANAGE_LIST, deletePointList)
 }

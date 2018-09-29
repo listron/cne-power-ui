@@ -9,21 +9,21 @@ import { watchInspect } from './operation/ticket/inspectSaga';
 
 import { watchChangeShowContainer } from './operation/ticket/ticketSaga';
  
-import { watchEnterprise } from './system/account/enterpriseSaga';
-import { watchDepartment } from './system/account/departmentSaga';
+import { watchEnterprise } from '../../containers/System/Account/Enterprise/enterpriseSaga';
+import { watchDepartment } from '../../containers/System/Account/Department/departmentSaga';
 import { watchRole } from '../../containers/System/Account/Role/roleSaga';
-import { watchUser } from './system/account/userSaga';
+import { watchUser } from '../../containers/System/Account/User/userSaga';
 
-import { watchStationManage } from './system/station/stationManageSaga';
-import { watchDeviceManage } from './system/station/deviceManageSaga';
-import { watchPointManage } from './system/station/pointManageSaga';
-import { watchAlarmManage } from './system/station/alarmManageSaga';
+import { watchStationManage } from '../../containers/System/Station/StationManage/stationManageSaga';
+import { watchDeviceManage } from '../../containers/System/Station/DeviceManage/deviceManageSaga';
+import { watchPointManage } from '../../containers/System/Station/PointManage/pointManageSaga';
+import { watchAlarmManage } from '../../containers/System/Station/AlarmManage/alarmManageSaga';
 
 import { watchSingleStationMonitor } from './monitor/stationMonitor/singleStationSaga'; 
 import { watchDeviceMonitor } from './monitor/stationMonitor/deviceMonitorSaga';
 
 import {watchStationMonitor} from './monitor/stationMonitor/stationMonitorSaga';
-import {watchAlarmMonitor} from './monitor/alarmSaga';
+import {watchAlarmMonitor} from '../../containers/Monitor/Alarm/alarmSaga';
 
 import { watchOtherSaga } from './otherSaga';
 

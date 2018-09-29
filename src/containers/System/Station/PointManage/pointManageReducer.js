@@ -14,6 +14,7 @@ var initState = Immutable.fromJS({
   
   totalNum:  0, // 设备总数
   pointList: [], // 设备列表
+  stationPointStatusList: [], // 请求所有电站=>匹配选中电站是否可删除测点
 });
 
 const pointManageReducer = (state = initState, action) => {
