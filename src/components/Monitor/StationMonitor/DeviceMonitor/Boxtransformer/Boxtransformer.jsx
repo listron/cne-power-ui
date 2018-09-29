@@ -90,7 +90,7 @@ class Boxtransformer extends Component {
 
   render(){
     const {devices, deviceDetail, deviceTenMin, deviceAlarmList, devicePointData, loading, singleStationData } = this.props;
-    const { stationCode, deviceTypeCode } = this.props.match.params;
+    const { stationCode, deviceTypeCode,deviceCode } = this.props.match.params;
     const backData={path: `/monitor/singleStation/${stationCode}`,name: '返回电站'};
     const breadCrumbData = {
       breadData:[{
@@ -109,7 +109,7 @@ class Boxtransformer extends Component {
           <BoxtransformerHeader deviceDetail={deviceDetail} devices={devices} stationCode={stationCode} deviceTypeCode={deviceTypeCode} />
           <BoxtransformerStatistics deviceDetail={deviceDetail} />
           <BoxtransformerTenMin deviceTenMin={deviceTenMin} loading={loading} />
-          <DeviceAlarmTable deviceAlarmList={deviceAlarmList} loading={loading} deviceDetail={deviceDetail} />
+          <DeviceAlarmTable deviceAlarmList={deviceAlarmList} loading={loading} deviceDetail={deviceDetail} stationCode={stationCode} deviceTypeCode={deviceTypeCode} deviceCode={deviceCode} />
           <DevicePointsData devicePointData={devicePointData}  deviceDetail={deviceDetail} />
         </div>
       </div>

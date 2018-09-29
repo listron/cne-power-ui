@@ -163,6 +163,7 @@ const mapDispatchToProps = (dispatch) => ({
   getStationList: payload => dispatch({type:singleStationAction.GET_STATION_LIST_SAGA, payload}),
   getStationDeviceList: payload => dispatch({type:singleStationAction.GET_STATION_DEVICELIST_SAGA, payload}),
   getConfluenceBoxList: payload => dispatch({type:singleStationAction.GET_CONFLUENCEBOX_LIST_SAGA, payload}),
+  editData:payload=>dispatch({type:singleStationAction.EDIT_MONTH_YEAR_DATA_SAGA, payload})
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SingleStation);

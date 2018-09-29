@@ -86,16 +86,21 @@ class DeviceNameModal extends Component {
   // }
 
   renderAreaItems() {
-    return this.props.deviceAreaItems.map((item, index) => {
+    let {deviceAreaItems}=this.props;
+    deviceAreaItems=deviceAreaItems.toJS();
+    return deviceAreaItems.map((item, index) => {
       return (
-        <Option key={item.get('deviceCode')} value={item.get('deviceCode')}>
-          {item.get('deviceName')}
+        <Option key={item.deviceCode} value={item.deviceCode}>
+          {item.deviceName}
         </Option>                  
       );
     });
   }
 
   render() {
+    let {deviceAreaItems}=this.props;
+    // console.log(deviceAreaItems);
+    // console.log(deviceAreaItems.toJS().slice(0,1)[0].deviceCode);
     return (
       <Modal
         visible={this.props.show}
@@ -129,7 +134,9 @@ class DeviceNameModal extends Component {
                   }}
                   placeholder="请选择"
                   style={{ width: 112, marginLeft: 8 }}
+                  //defaultValue={deviceAreaItems.toJS().slice(0,1)[0].deviceCode}
                   value={this.state.selectedDeviceAreaCode !== '' ? this.state.selectedDeviceAreaCode : this.props.deviceAreaCode}>
+
                   {this.renderAreaItems()}
                 </Select>
               </div>
