@@ -38,6 +38,7 @@ function ConfluenceTenMin({ deviceTenMin, loading }) {
         lineStyle: {
           type: 'solid',
           color: HLColors[i],
+          width: 1,
         },
         label: {
           normal: {
@@ -156,6 +157,7 @@ function ConfluenceTenMin({ deviceTenMin, loading }) {
           lineStyle: {
             type: 'dotted',
             color: '#3e97d1',
+            width: 1,
           },
           // areaStyle: {
           //   normal: {
