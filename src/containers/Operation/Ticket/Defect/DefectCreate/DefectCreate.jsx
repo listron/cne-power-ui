@@ -23,6 +23,7 @@ class DefectCreate extends Component {
     getDevices: PropTypes.func,
     getCommonList: PropTypes.func,
     changeCommonStore: PropTypes.func,
+    getSliceDevices: PropTypes.func,
   };
   constructor(props) {
     super(props);
@@ -114,6 +115,9 @@ const mapStateToProps = (state) => ({
     deviceAreaItems: state.common.get('partitions'),
     deviceItems: state.common.get('devices'),
     commonList: state.operation.defect.get('commonList'),
+    sliceDeviceItems: state.common.get('sliceDevices'),
+    firstPartitionCode: state.common.get('slicePartitionCode'),
+   
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -127,6 +131,7 @@ const mapDispatchToProps = (dispatch) => ({
   getDefectTypes: payload => dispatch({ type: ticketAction.GET_DEFECT_TYPE_SAGA, payload }),
   onDefectCreateNew: payload => dispatch({type: ticketAction.DEFECT_CREATE_SAGA, payload}),
   submitDefect: payload => dispatch({type: ticketAction.SUBMIT_DEFECT_SAGA, payload}),
+  getSliceDevices:payload => dispatch({type: commonAction.GET_SLICE_DEVICES_SAGA, payload}),
 });
 
 

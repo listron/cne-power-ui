@@ -21,7 +21,7 @@ module.exports = {
     DEFECT_CREATE_SAGA: null,
     SUBMIT_DEFECT_SAGA: null,
     SET_DEFECT_FAIL: null,
-
+   
     //Batch operation
     DELETE_BATCH_DEFECT_SAGA: null,
     SEND_BATCH_DEFECT_SAGA: null,
