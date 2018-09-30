@@ -4,7 +4,6 @@ import Path from '../../constants/path';
 import moment from 'moment';
 import { stringify } from 'qs';
 import { loginAction } from '../../constants/actionTypes/loginAction';
-import { commonAction } from '../../constants/actionTypes/commonAction';
 import { message } from 'antd';
 import Cookie from 'js-cookie';
 
