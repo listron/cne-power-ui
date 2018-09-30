@@ -12,8 +12,8 @@ export const baseFun = (detailData) => { // 根据基础信息配置输出指定
     { name: '所在省市', value: `${detailData.provinceName}${detailData.cityName}${detailData.countyName}` },
     { name: '所属公司', value: detailData.affiliateCompany, },
     { name: '联系电话', value: detailData.stationContactNumber, },
-    { name: '并网容量', value: detailData.stationCapacity, unit:'MWp' },
-    { name: '设计容量', value: detailData.designCapacity, unit:'MWp' },
+    { name: '装机容量', value: detailData.stationCapacity, unit:'MW' },
+    { name: '设计容量', value: detailData.designCapacity, unit:'MW' },
     { name: '占地面积', value: detailData.floorArea, unit:'平方公里' },
     { name: '年利用小时数', value: detailData.designUtilizationHours, unit:'小时' },
     { name: '是否接入', value: detailData.stationStatus?'是':'否', }, // 实际调整

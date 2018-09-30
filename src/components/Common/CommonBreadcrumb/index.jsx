@@ -47,7 +47,7 @@ function CommonBreadcrumb({ breadData, iconName, style = {}, backData = {} }) {
       </div>
     <div className={styles.rightText}>
     {backData.path&&<Link to={backData.path}>
-    {backData.name}
+    {backData.name||''}
     </Link>}
     </div>
     </div>

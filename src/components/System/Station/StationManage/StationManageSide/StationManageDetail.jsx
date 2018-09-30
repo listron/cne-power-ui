@@ -134,13 +134,13 @@ class StationManageDetail extends Component {
     const otherInfo = otherFun(stationDetail);
     const departmentList = stationDetail.departmentList || [];
     const departmentInfo = this.departmentInfoFun(departmentList);
-    
+    console.log(stationDetail);
     return (
       <div className={styles.stationManageDetail}>
         {showWarningTip && <WarningTip onOK={this.confirmWarningTip} value={warningTipText} />}
         <div className={styles.detailTop}>
           <span className={styles.topInfoShow}>
-            <span className={styles.title}>电站详情</span>
+            <span className={styles.title}>{stationDetail.stationName||'--'}详情</span>
             {stationDetail.stationStatus?<span>
               接入时间:{stationDetail.ongridTime?moment(stationDetail.ongridTime).format('YYYY-MM-DD'):'--'}
             </span>

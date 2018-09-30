@@ -53,6 +53,10 @@ class InverterHeader extends Component {
     const parentDeviceTypeCode = parentDevice && parentDevice.deviceTypeCode; // 父级设备type
     const parentDeviceCode = parentDevice && parentDevice.deviceCode; //父级设备code
     const baseLinkPath = `/hidden/monitorDevice/${stationCode}/${deviceTypeCode}`;
+
+    console.log(parentDeviceTypeCode);
+    console.log(typeof parentDeviceTypeCode);
+    console.log(parentDeviceCode);
     return (
       <div className={styles.deviceMonitorHeader} >
         {showDeviceChangeBox && <HeaderDeviceChange devices={devices} deviceDetail={deviceDetail} baseLinkPath={baseLinkPath} hideDeviceChange={this.hideDeviceChange} />}
@@ -66,13 +70,21 @@ class InverterHeader extends Component {
           </span>
         </div>
         <div className={styles.linkTo}>
-          {parentDeviceTypeCode && parentDeviceCode && <Link  to={`/hidden/monitorDevice/${stationCode}/${parentDeviceTypeCode}/${parentDeviceCode}`} className={styles.eachLink}>
+          {parentDeviceTypeCode==='207' ? 
+            <span style={{color: '#666',marginRight: '10px'}}>
+              <span className={parentDeviceBaseInfo && `${parentDeviceBaseInfo.icon} linkIcon`}  style={{marginRight: '5px',color: '#dfdfdf',}} ></span>
+              <span className={styles.linkName} style={{marginRight: '5px'}}>
+                {parentDevice && parentDevice.deviceTypeName}{parentDevice && parentDevice.deviceName}详情
+              </span>
+              <span className="iconfont icon-upstream linkIcon" style={{color: '#dfdfdf'}}></span>
+            </span>
+           : (parentDeviceTypeCode && parentDeviceCode && <Link  to={`/hidden/monitorDevice/${stationCode}/${parentDeviceTypeCode}/${parentDeviceCode}`} className={styles.eachLink}>
             <span className={parentDeviceBaseInfo && `${parentDeviceBaseInfo.icon} linkIcon`}></span>
             <span className={styles.linkName}>
               {parentDevice && parentDevice.deviceTypeName}{parentDevice && parentDevice.deviceName}详情
             </span>
             <span className="iconfont icon-upstream linkIcon"></span>
-          </Link>}
+           </Link>)}
           <Link  to={`/monitor/singleStation/${stationCode}?showPart=509`} className={styles.eachLink}>
             <span className="iconfont icon-pvs linkIcon"></span>
             <span className={styles.linkName}>光伏组串列表</span>
