@@ -148,7 +148,7 @@ function* getSliceDevices(action) {
   yield put({ type: commonAction.COMMON_FETCH });
   try {
     const response = yield call(axios.get, getPartitionsUrl, { params: action.payload });
-    console.log(response.data.data.partitions.slice(0, 1)[0].deviceCode);
+  
     if (response.data.code === '10000') {
       const slicePartitionCode = response.data.data.partitions.slice(0, 1)[0].deviceCode;    
       const [responseSliceDevice,devices] = yield all([
