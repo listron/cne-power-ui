@@ -2,7 +2,7 @@ import { call, put, takeLatest,select } from 'redux-saga/effects';
 import axios from 'axios';
 import Path from '../../../../constants/path';
 import { message } from 'antd';
-import { departmentAction } from '../../../../constants/actionTypes/system/account/departmentAction';
+import { departmentAction } from './departmentAction';
 
 
 function *changeDepartmentStore(action){//存储payload指定参数，替换reducer-store属性。

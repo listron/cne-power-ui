@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import styles from './department.scss';
-import { departmentAction } from '../../../../constants/actionTypes/system/account/departmentAction';
-// import { commonAction } from '../../../../constants/actionTypes/commonAction';
+import { departmentAction } from './departmentAction';
 import PropTypes from 'prop-types';
 import TransitionContainer from '../../../../components/Common/TransitionContainer';
 import DepartmentMain from '../../../../components/System/Account/Department/DepartmentMain/DepartmentMain';
