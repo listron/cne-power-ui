@@ -275,12 +275,14 @@ class ConfluenceBoxList extends Component {
                         </div>
                       </div>
                     </Link>
-                    <div className={styles.hlBlockFooter} >
-                      <div>电压：{item.voltage || '--'}V</div>
-                      <div>电流：{item.electricity || '--'}A</div>
-                      <div>离散率：{item.dispersionRatio || '--'}%</div>
-                      <div>温度：{item.temp || '--'}℃</div>
-                    </div>
+                    <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${item.deviceCode}`} className={styles.hlBlockLink} >
+                      <div className={styles.hlBlockFooter} >
+                        <div>电压：{item.voltage || '--'}V</div>
+                        <div>电流：{item.electricity || '--'}A</div>
+                        <div>离散率：{item.dispersionRatio || '--'}%</div>
+                        <div>温度：{item.temp || '--'}℃</div>
+                      </div>
+                    </Link>
                   </div>);
                 })}
               </div>);
