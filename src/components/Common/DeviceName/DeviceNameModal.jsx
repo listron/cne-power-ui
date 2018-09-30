@@ -33,7 +33,9 @@ class DeviceNameModal extends Component {
   }
 
   componentDidMount() {
-    this.props.loadDeviceList(this.props.deviceAreaCode);
+    const{deviceAreaItems}=this.props;
+    const defaultValue= deviceAreaItems.toJS().slice(0,1)[0].deviceCode;
+    this.props.loadDeviceList(defaultValue);
   }
 
   onSelectItem = (value) => {
@@ -99,8 +101,10 @@ class DeviceNameModal extends Component {
 
   render() {
     let {deviceAreaItems}=this.props;
-    // console.log(deviceAreaItems);
-    // console.log(deviceAreaItems.toJS().slice(0,1)[0].deviceCode);
+   
+    
+    const defaultValue= deviceAreaItems.toJS().slice(0,1)[0].deviceCode;
+    
     return (
       <Modal
         visible={this.props.show}
@@ -134,8 +138,9 @@ class DeviceNameModal extends Component {
                   }}
                   placeholder="请选择"
                   style={{ width: 112, marginLeft: 8 }}
-                  //defaultValue={deviceAreaItems.toJS().slice(0,1)[0].deviceCode}
-                  value={this.state.selectedDeviceAreaCode !== '' ? this.state.selectedDeviceAreaCode : this.props.deviceAreaCode}>
+                  defaultValue={defaultValue}
+                  //value={this.state.selectedDeviceAreaCode !== '' ? this.state.selectedDeviceAreaCode : this.props.deviceAreaCode}
+                  >
 
                   {this.renderAreaItems()}
                 </Select>

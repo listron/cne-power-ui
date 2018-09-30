@@ -102,7 +102,6 @@ class OutputTenMin extends Component {
           axisTick: {
             show: false,
           },
-         
           axisPointer:{
             label: {
               show: false,

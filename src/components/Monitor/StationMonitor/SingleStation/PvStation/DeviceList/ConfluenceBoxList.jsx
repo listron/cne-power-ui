@@ -146,11 +146,29 @@ class ConfluenceBoxList extends Component {
         },
         sorter: (a, b) => a.deviceCapacity - b.deviceCapacity,
       }, {
-        title: '告警(个)',
-        dataIndex: 'alarmNum',
-        key: 'alarmNum',
+        title: '电压(V)',
+        dataIndex: 'voltage',
+        key: 'voltage',
         render: (text,record) => (<span>{text || 0}</span>),
-        sorter: (a, b) => a.alarmNum - b.alarmNum,
+        sorter: (a, b) => a.voltage - b.voltage,
+      }, {
+        title: '电流(A)',
+        dataIndex: 'electricity',
+        key: 'electricity',
+        render: (text,record) => (<span>{text || 0}</span>),
+        sorter: (a, b) => a.electricity - b.electricity,
+      }, {
+        title: '离散率(%)',
+        dataIndex: 'dispersionRatio',
+        key: 'dispersionRatio',
+        render: (text,record) => (<span>{text || 0}</span>),
+        sorter: (a, b) => a.dispersionRatio - b.dispersionRatio,
+      }, {
+        title: '温度(℃)',
+        dataIndex: 'temp',
+        key: 'temp',
+        render: (text,record) => (<span>{text || 0}</span>),
+        sorter: (a, b) => a.temp - b.temp,
       }, {
         title: '设备状态',
         dataIndex: 'deviceStatus',
@@ -178,7 +196,7 @@ class ConfluenceBoxList extends Component {
     })).sort((a, b) => { // 排序
       const sortType = descend ? -1 : 1;
       const arraySort = ['parentDeviceName','deviceStatus'];
-      const arrayNumSort = ['devicePower', 'deviceCapacity', 'alarmNum',];
+      const arrayNumSort = ['devicePower', 'deviceCapacity', 'electricity', 'voltage', 'dispersionRatio', 'temp'];
       if (arrayNumSort.includes(sortName)) {
         return sortType * (a[sortName] - b[sortName]);
       } else if (arraySort.includes(sortName)) {
@@ -206,10 +224,11 @@ class ConfluenceBoxList extends Component {
     const filteredDeviceList = initDeviceList.filter(e=>(!alarmSwitch || (alarmSwitch && e.alarmNum > 0))).filter(e=>{
       return (currentStatus === 0 || e.deviceStatus === currentStatus);
     }) // 根据筛选条件处理数据源。
-    const parentDeviceCodeSet = new Set(filteredDeviceList.map(e=>e.parentDeviceCode));
-    const parentDeviceCodes = [...parentDeviceCodeSet].sort((a,b) => {
-      return a.parentDeviceName && a.parentDeviceName.localeCompare(b.parentDeviceName)
-    });
+    const sortedParentList = filteredDeviceList.sort((a,b)=>{
+      return a.parentDeviceName && a.parentDeviceName.localeCompare(b.parentDeviceName);
+    })
+    const parentDeviceCodeSet = new Set(sortedParentList.map(e=>e.parentDeviceCode));
+    const parentDeviceCodes = [...parentDeviceCodeSet];
     const deviceGroupedList = parentDeviceCodes.map(e=>{
       const subDeviceList = filteredDeviceList.filter(item => item.parentDeviceCode === e);
       return subDeviceList.sort((a,b)=>a.deviceName && a.deviceName.localeCompare(b.deviceName));
@@ -235,7 +254,7 @@ class ConfluenceBoxList extends Component {
           <TabPane tab={<span><i className="iconfont icon-grid" ></i></span>} key="1" className={styles.inverterBlockBox} >
             {deviceGroupedList.length > 0 ? deviceGroupedList.map((e,index)=>{
               return (<div key={index}>
-                <div className={styles.parentDeviceName} >{e && e.parentDeviceName}</div>
+                <div className={styles.parentDeviceName} >{e && e[0] && e[0].parentDeviceName}</div>
                 {e.map((item,i)=>{
                   return (<div key={i} className={item.deviceStatus === 900 ? styles.cutOverItem : styles.inverterItem} style={{height: "121px"}}>
                     <div className={styles.inverterItemIcon} >
@@ -248,7 +267,7 @@ class ConfluenceBoxList extends Component {
                     </div>
                     <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${item.deviceCode}`} >
                       <div className={styles.inverterItemR} >
-                        <div className={styles.hlBlockName}><span>{item.deviceName}</span><span>{parseFloat(item.devicePower/item.deviceCapacity*100).toFixed(2)||'--'}%</span></div>
+                        <div className={styles.hlBlockName}><span>{item.deviceName}</span><span>{item.devicePower ? parseFloat(item.devicePower/item.deviceCapacity*100).toFixed(2): '--'}%</span></div>
                         <Progress className={styles.powerProgress} strokeWidth={3} percent={item.devicePower/item.deviceCapacity*100} showInfo={false} />
                         <div className={styles.inverterItemPower}>
                           <div>{item.devicePower ? parseFloat(item.devicePower).toFixed(2) : '--'}kW</div>
@@ -256,12 +275,14 @@ class ConfluenceBoxList extends Component {
                         </div>
                       </div>
                     </Link>
-                    <div className={styles.hlBlockFooter} >
-                      <div>电压：{item.electricity || '--'}V</div>
-                      <div>电流：{item.voltage || '--'}A</div>
-                      <div>离散率：{item.dispersionRatio || '--'}%</div>
-                      <div>温度：{item.temp || '--'}℃</div>
-                    </div>
+                    <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${item.deviceCode}`} className={styles.hlBlockLink} >
+                      <div className={styles.hlBlockFooter} >
+                        <div>电压：{item.voltage || '--'}V</div>
+                        <div>电流：{item.electricity || '--'}A</div>
+                        <div>离散率：{item.dispersionRatio || '--'}%</div>
+                        <div>温度：{item.temp || '--'}℃</div>
+                      </div>
+                    </Link>
                   </div>);
                 })}
               </div>);
