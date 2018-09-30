@@ -1,7 +1,7 @@
-import React,{ Component } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './style.scss';
-import {AutoComplete, Input} from 'antd';
+import { AutoComplete, Input } from 'antd';
 import Immutable from 'immutable';
 const Option = AutoComplete.Option;
 import DeviceNameModal from './DeviceNameModal';
@@ -30,25 +30,43 @@ class DeviceName extends Component {
       filteredSelectedStation: Immutable.fromJS([]),
     };
   }
-
-  componentWillReceiveProps(nextProps){
+  componentDidMount() {
+    // let { stationCode, deviceTypeCode, deviceAreaItems } = this.props;
+    // console.log(stationCode, deviceTypeCode);
+    // this.props.getStationAreas(stationCode, deviceTypeCode);
+    // const partitionCode = deviceAreaItems.toJS().slice(0, 1);
+    // console.log(partitionCode);
+    // this.props.getDevices(stationCode, deviceTypeCode, partitionCode);
+  }
+  componentWillReceiveProps(nextProps) {
     const { value, deviceItems } = nextProps;
-    if(value && deviceItems){
-      const selectedDevice = deviceItems.find(e=> e.get('deviceCode') === value);
+    if (value && deviceItems) {
+      const selectedDevice = deviceItems.find(e => e.get('deviceCode') === value);
       this.setState({
-        checkedStationName: selectedDevice? selectedDevice.get('deviceName'):'',
+        checkedStationName: selectedDevice ? selectedDevice.get('deviceName') : '',
         filteredSelectedStation: deviceItems,
       })
-    }else if(!value){
+    } else if (!value) {
       this.setState({
         checkedStationName: '',
         filteredSelectedStation: deviceItems || [],
       })
     }
+
+
+    // let { stationCode, deviceTypeCode, deviceAreaItems } = nextProps;
+    // console.log(stationCode, deviceTypeCode,deviceAreaItems.toJS());
+    // if (deviceTypeCode!==this.props.deviceTypeCode) {  
+    //   this.props.getStationAreas(stationCode, deviceTypeCode);
+    //   let partitionCode = this.props.deviceAreaItems.toJS().slice(0, 1).deviceCode;
+    //   console.log(partitionCode);
+    //   this.props.getDevices(stationCode, deviceTypeCode, partitionCode);
+    // }
+
   }
 
   onShowDeviceNameModal = () => {
-    if(!this.props.disabled) {
+    if (!this.props.disabled) {
       this.setState({
         showDeviceNameModal: true
       });
@@ -72,8 +90,8 @@ class DeviceName extends Component {
     //   )
     // })
 
-      let { filteredSelectedStation } = this.state;
-      filteredSelectedStation=filteredSelectedStation.toJS();
+    let { filteredSelectedStation } = this.state;
+    filteredSelectedStation = filteredSelectedStation.toJS();
     if (filteredSelectedStation.length < 21) {
       return filteredSelectedStation.map((item, index) => {
         return (
@@ -92,31 +110,31 @@ class DeviceName extends Component {
           </Option>
         )
       }).concat([
-        <Option disabled key="all" className="show-all">  
-            点击图标查看所有设备        
+        <Option disabled key="all" className="show-all">
+          点击图标查看所有设备
         </Option>,
       ])
-           
+
     }
   }
 
   handleSearch = (text) => {
-    const { deviceItems } = this.props;
-    let filteredSelectedStation = deviceItems.filter(e=>{
+    const { deviceItems, } = this.props;
+    let filteredSelectedStation = deviceItems.filter(e => {
       const eachDeviceName = e && e.get('deviceName');
-      const deviceShowText = eachDeviceName? eachDeviceName.toLowerCase() : '';
-      const modelText = text?text.toLowerCase():'';
+      const deviceShowText = eachDeviceName ? eachDeviceName.toLowerCase() : '';
+      const modelText = text ? text.toLowerCase() : '';
       return deviceShowText.includes(modelText)
     });
     this.setState({
-      checkedStationName:text,
+      checkedStationName: text,
       filteredSelectedStation
     })
   }
 
   handleSelect = (value) => {
     const { deviceItems, onChange } = this.props;
-    const checkedStationName = deviceItems.find(e=>e.get('deviceCode') === value).get('deviceName');
+    const checkedStationName = deviceItems.find(e => e.get('deviceCode') === value).get('deviceName');
     this.setState({ checkedStationName });
     onChange(value);
   }
@@ -124,8 +142,11 @@ class DeviceName extends Component {
   render() {
     let options = this.getDeviceItems();
     const { checkedStationName } = this.state;
+    console.log(this.props.deviceAreaItems.toJS());
+
+
     return (
-      <div className={styles.deviceName}>  
+      <div className={styles.deviceName}>
         <AutoComplete
           style={{ width: '100%' }}
           dataSource={options}
@@ -151,7 +172,7 @@ class DeviceName extends Component {
           onChangeArea={this.props.onChangeArea}
         />}
       </div>
-    );  
+    );
   }
 }
 

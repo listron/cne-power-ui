@@ -55,14 +55,9 @@ class HistoryAlarm extends Component {
     const deviceTypeCode=obj["deviceTypeCode"]
     //console.log(deviceTypeCode);
     const deviceCode=obj["deviceCode"]
-
-    
-
-
     this.props.getHistoryAlarm({
       warningLevel: [],
       stationType: '2',
-      // stationCode: [],
       stationCode: stationCode?[stationCode] : [] ,
       deviceTypeCode:deviceTypeCode?[deviceTypeCode]: [],
       warningConfigName: [],
@@ -70,7 +65,7 @@ class HistoryAlarm extends Component {
       startTime: [],
       endTime: [],
       deviceName: '',
-      deviceCode:deviceCode?deviceCode:[],
+      deviceCode:deviceCode?deviceCode:'',
     });
   }
 
@@ -101,7 +96,9 @@ class HistoryAlarm extends Component {
     this.setState({
       currentPage: 1,
     })
-    let newFiter = Object.assign({}, filter, obj);
+    //let newFiter = Object.assign({}, filter, obj);
+    const newFiter = { ...filter, ...obj };
+
     this.props.getHistoryAlarm(newFiter);
   }
 

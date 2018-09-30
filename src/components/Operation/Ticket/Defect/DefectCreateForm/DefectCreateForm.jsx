@@ -36,7 +36,7 @@ class TmpForm extends Component {
     commonList: PropTypes.object,
     error: PropTypes.object,
   };
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
       checked: false,
@@ -56,13 +56,13 @@ class TmpForm extends Component {
     });
   }
 
-  onStationSelected = (stations) =>{
+  onStationSelected = (stations) => {
     const stationCodes = (stations && stations[0] && stations[0].stationCode) || 0;
     const stationType = stations && stations[0] && stations[0].stationType;
-    this.props.getStationDeviceTypes({stationCodes});
-    this.props.getDefectTypes({stationType});
+    this.props.getStationDeviceTypes({ stationCodes });
+    this.props.getDefectTypes({ stationType });
     this.props.changeCommonStore({ devices: [] });
-    this.props.form.setFieldsValue({deviceTypeCode: null});
+    this.props.form.setFieldsValue({ deviceTypeCode: null });
   }
 
   onChangeDeviceType = (deviceTypeCode) => {
@@ -79,26 +79,26 @@ class TmpForm extends Component {
     form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         // 电站类型(0:风电，1光伏，2：全部)
-        let {stationCode,stationType} = values.stations[0];
+        let { stationCode, stationType } = values.stations[0];
         let deviceCode = values.deviceCode;
         let partitionCode = values.stations[0].zoneCode;
         let partitionName = values.stations[0].zoneName;
         let rotatePhotoArray = [];
         let photoAddress = [];
-        if(showContainer === 'create') {
-          photoAddress = values.imgDescribe.map(e=>{
+        if (showContainer === 'create') {
+          photoAddress = values.imgDescribe.map(e => {
             rotatePhotoArray.push(`${e.response},${e.rotate}`);
             return e.response;
           }).join(',');
-        } else if(showContainer === 'edit') {
-          photoAddress = values.imgDescribe.map(e=>{
+        } else if (showContainer === 'edit') {
+          photoAddress = values.imgDescribe.map(e => {
             rotatePhotoArray.push(`${e.thumbUrl},${e.rotate}`);
             return e.thumbUrl;
           }).join(',');
         }
-        let photoSolveAddress = values.imgHandle&&values.imgHandle.map(e=>{
+        let photoSolveAddress = values.imgHandle && values.imgHandle.map(e => {
           rotatePhotoArray.push(`${e.response},${e.rotate}`);
-          return  e.response
+          return e.response
         }).join(',');
         let rotatePhoto = rotatePhotoArray.join(';');
         delete values.stations;
@@ -116,29 +116,29 @@ class TmpForm extends Component {
           photoSolveAddress,
           rotatePhoto,
         };
-        if(showContainer === 'create') {
+        if (showContainer === 'create') {
           onDefectCreateNew(params);
           changeCommonStore({
             stationDeviceTypes: [],
             devices: [],
           })
-        } else if(showContainer === 'edit') {
+        } else if (showContainer === 'edit') {
           params.defectId = defectDetail.defectId;
           submitDefect(params);
         }
-        if(isContinueAdd && error.get('code') === '') {
+        if (isContinueAdd && error.get('code') === '') {
           this.props.form.resetFields();
         }
       }
     });
   }
-  
+
   getDeviceType = (code) => {
     let deviceType = ''
     let index = this.props.deviceTypeItems.findIndex((item) => {
       return item.get('deviceTypeCode') === code
     });
-    if(index !== -1) {
+    if (index !== -1) {
       deviceType = this.props.deviceTypeItems.getIn([index, 'deviceTypeName']);
     }
     return deviceType;
@@ -150,26 +150,29 @@ class TmpForm extends Component {
       stationCode: this.props.form.getFieldValue('stations')[0].stationCode,
       deviceTypeCode: this.props.form.getFieldValue('deviceTypeCode')
     };
-    if(areaCode !== '') {
+    if (areaCode !== '') {
       params.partitionCode = areaCode;
     }
     this.props.getDevices(params);
   }
 
   render() {
-    const {stations, deviceTypes, devices, defectTypes,deviceItems, defectDetail, showContainer } = this.props;
-    const {getFieldDecorator, getFieldValue} = this.props.form;
+    const { stations, deviceTypes, devices, defectTypes, deviceItems, defectDetail, showContainer } = this.props;
+    const { getFieldDecorator, getFieldValue } = this.props.form;
     const defectFinished = getFieldValue('defectSolveResult') === '0';
     const editDefect = showContainer === 'edit';
-    const defaultStations = editDefect ? stations.filter(e=>e.stationCode===defectDetail.stationCode) : [] ;
-    const defaultDeviceType = editDefect ? deviceTypes.find(e=>e.deviceTypeCode===defectDetail.deviceTypeCode) : null;
-    const defaultDevice = editDefect ? devices.find(e=>e.deviceCode===defectDetail.deviceCode) : null;
-    const defaultDefectType = editDefect ? defectTypes.find(e=>e.defectTypeCode===defectDetail.defectTypeCode) : null ;
-    const imgDescribe = editDefect && defectDetail.photoAddress && defectDetail.photoAddress.split(',').filter(e=>!!e).map((e,i)=>({
-      uid: i,    
-      rotate: 0,  
-      status: 'done',  
-      thumbUrl: e,  
+    const stationCode = this.props.form.getFieldValue('stations') ? this.props.form.getFieldValue('stations')[0] ? this.props.form.getFieldValue('stations')[0].stationCode : [] : [];
+    const deviceTypeCode = this.props.form.getFieldValue('deviceTypeCode')?this.props.form.getFieldValue('deviceTypeCode'):'';
+
+    const defaultStations = editDefect ? stations.filter(e => e.stationCode === defectDetail.stationCode) : [];
+    const defaultDeviceType = editDefect ? deviceTypes.find(e => e.deviceTypeCode === defectDetail.deviceTypeCode) : null;
+    const defaultDevice = editDefect ? devices.find(e => e.deviceCode === defectDetail.deviceCode) : null;
+    const defaultDefectType = editDefect ? defectTypes.find(e => e.defectTypeCode === defectDetail.defectTypeCode) : null;
+    const imgDescribe = editDefect && defectDetail.photoAddress && defectDetail.photoAddress.split(',').filter(e => !!e).map((e, i) => ({
+      uid: i,
+      rotate: 0,
+      status: 'done',
+      thumbUrl: e,
     }))
     return (
       <Form className={styles.defectCreateForm}>
@@ -192,25 +195,28 @@ class TmpForm extends Component {
               rules: [{ required: true, message: '请选择设备类型' }],
               initialValue: defaultDeviceType && defaultDeviceType.deviceTypeCode || undefined,
             })(
-              <Select style={{width:198}} placeholder="请选择" disabled={deviceTypes.length === 0} onChange={this.onChangeDeviceType}>
-                {deviceTypes.map(e=>(<Option key={e.deviceTypeCode} value={e.deviceTypeCode}>{e.deviceTypeName}</Option>))}
+              <Select style={{ width: 198 }} placeholder="请选择" disabled={deviceTypes.length === 0} onChange={this.onChangeDeviceType}>
+                {deviceTypes.map(e => (<Option key={e.deviceTypeCode} value={e.deviceTypeCode}>{e.deviceTypeName}</Option>))}
               </Select>
             )}
           </FormItem>
           <FormItem label="设备名称" colon={false}>
-            {getFieldDecorator('deviceCode',{
+            {getFieldDecorator('deviceCode', {
               rules: [{ required: true, message: '请选择设备名称' }],
               initialValue: defaultDevice && defaultDevice.deviceCode || undefined
             })(
-              <DeviceName  
-                disabled={deviceItems.size===0}
+              <DeviceName
+                disabled={deviceItems.size === 0}
                 placeholder="输入关键字快速查询"
                 deviceAreaItems={this.props.deviceAreaItems}
                 deviceItems={this.props.deviceItems}
+                stationCode={stationCode}
+                deviceTypeCode={deviceTypeCode}
                 deviceAreaCode={this.state.deviceAreaCode}
                 deviceType={this.getDeviceType(getFieldValue('deviceTypeCode'))}
                 onChangeArea={this.onChangeArea}
                 loadDeviceList={this.loadDeviceList}
+                {...this.props}
               />
             )}
             <div className={styles.tipText}>(点击<i className="iconfont icon-filter" />图标可选择)</div>
@@ -220,17 +226,17 @@ class TmpForm extends Component {
               rules: [{ required: true, message: '请选择缺陷类型' }],
               initialValue: defaultDefectType && defaultDefectType.defectTypeCode || undefined,
             })(
-              <Select style={{width:198}} placeholder="请选择" disabled={defectTypes.length === 0}>
-                {defectTypes.map(e=>(<Option key={e.defectTypeCode} value={e.defectTypeCode}>{e.defectTypeName}</Option>))}
+              <Select style={{ width: 198 }} placeholder="请选择" disabled={defectTypes.length === 0}>
+                {defectTypes.map(e => (<Option key={e.defectTypeCode} value={e.defectTypeCode}>{e.defectTypeName}</Option>))}
               </Select>
             )}
           </FormItem>
-          <FormItem  label="缺陷级别" colon={false}>
+          <FormItem label="缺陷级别" colon={false}>
             {getFieldDecorator('defectLevel', {
               rules: [{ required: true, message: '请选择缺陷级别' }],
               initialValue: editDefect && defectDetail.defectLevel || undefined,
             })(
-              <Select style={{width:198}}  placeholder="请选择" disabled={defectTypes.length === 0}>
+              <Select style={{ width: 198 }} placeholder="请选择" disabled={defectTypes.length === 0}>
                 <Option value={1}>一级</Option>
                 <Option value={2}>二级</Option>
                 <Option value={3}>三级</Option>
@@ -252,9 +258,9 @@ class TmpForm extends Component {
               {getFieldDecorator('imgDescribe', {
                 rules: [{ required: false, message: '请上传图片' }],
                 initialValue: imgDescribe || [],
-                valuePropName:'data',
+                valuePropName: 'data',
               })(
-                <ImgUploader imgStyle={{width:98,height:98}} uploadPath={`${pathConfig.basePaths.APIBasePath}${pathConfig.commonPaths.imgUploads}`} editable={true} />
+                <ImgUploader imgStyle={{ width: 98, height: 98 }} uploadPath={`${pathConfig.basePaths.APIBasePath}${pathConfig.commonPaths.imgUploads}`} editable={true} />
               )}
             </div>
           </FormItem>
@@ -296,9 +302,9 @@ class TmpForm extends Component {
               {getFieldDecorator('imgHandle', {
                 rules: [{ required: false, message: '请上传图片' }],
                 initialValue: [],
-                valuePropName:'data',
+                valuePropName: 'data',
               })(
-                <ImgUploader imgStyle={{width:98,height:98}} uploadPath={`${pathConfig.basePaths.APIBasePath}${pathConfig.commonPaths.imgUploads}`} editable={true} />
+                <ImgUploader imgStyle={{ width: 98, height: 98 }} uploadPath={`${pathConfig.basePaths.APIBasePath}${pathConfig.commonPaths.imgUploads}`} editable={true} />
               )}
             </div>
           </FormItem>}
@@ -306,20 +312,20 @@ class TmpForm extends Component {
             <div>
               <Switch checked={this.state.checked} onChange={this.onChangeReplace} />
               {this.state.checked && getFieldDecorator('replaceParts', {
-                rules: [{ 
-                  required: true, 
+                rules: [{
+                  required: true,
                   message: '请输入更换备件'
                 }],
               })(
-                <Input style={{marginLeft: 20}} placeholder="备件名称+型号" />
+                <Input style={{ marginLeft: 20 }} placeholder="备件名称+型号" />
               )}
             </div>
           </FormItem>}
           <div className={styles.actionBar}>
-            <Button className={styles.saveBtn} onClick={()=>this.onDefectCreate(false)}>保存</Button>
-            {!editDefect&&<Button onClick={()=>this.onDefectCreate(true)}>保存并继续添加</Button>}
+            <Button className={styles.saveBtn} onClick={() => this.onDefectCreate(false)}>保存</Button>
+            {!editDefect && <Button onClick={() => this.onDefectCreate(true)}>保存并继续添加</Button>}
           </div>
-          {!editDefect&&<div className={styles.addTips}>
+          {!editDefect && <div className={styles.addTips}>
             <span>选择“保存”按钮后将跳转到对应的列表页；</span>
             <span>选择“保存并继续添加”按钮会停留在添加页面</span>
           </div>}

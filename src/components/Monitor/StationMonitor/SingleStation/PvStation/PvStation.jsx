@@ -104,10 +104,14 @@ class PvStation extends Component {
                     <div>电网</div>
                   </RadioButton>
                 </RadioGroup>}
-                <div className={styles.weatherStation}>
-                  <Link  to={`/hidden/monitorDevice/${stationCode}/203/${weatherDeviceCode}`} ><i className="iconfont icon-weather" ></i></Link>
-                  <div>气象站</div>
-                </div>
+            
+                  <Link  to={`/hidden/monitorDevice/${stationCode}/203/${weatherDeviceCode}`} >
+                  <div className={styles.weatherStation}>
+                  <i className="iconfont icon-weather" ></i>
+                  <div className={styles.fontcolor}>气象站</div>
+                  </div>
+                  </Link>
+              
               </div>
               <div className={styles.deviceList} >
                 <DeviceList {...this.props} />
