@@ -67,6 +67,7 @@ class SingleStation extends Component {
     const nextStationCode = nextParams.stationCode;
     if( nextStationCode !== stationCode ){
       clearTimeout(this.timeOutId);
+      this.props.changeSingleStationStore({ deviceTypeFlow: [] });
       this.getTenSeconds(nextStationCode);
       this.getOutputDataTenMin(nextStationCode);
       this.getPowerDataTenMin(nextStationCode);

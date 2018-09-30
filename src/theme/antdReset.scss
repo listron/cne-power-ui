@@ -40,8 +40,12 @@
   }
 
   .ant-tree{ // 对antd tree控件的初始化： 高两色调整。
-    .ant-tree-checkbox-checked .ant-tree-checkbox-inner, .ant-tree-checkbox-indeterminate .ant-tree-checkbox-inner{
+    .ant-tree-checkbox-checked .ant-tree-checkbox-inner{
       background-color: $themeColor;
+      border-color: $themeColor;
+    }
+    .ant-tree-checkbox-indeterminate .ant-tree-checkbox-inner{
+      background-color: #fff;
       border-color: $themeColor;
     }
     .ant-tree-checkbox-wrapper:hover .ant-tree-checkbox-inner, .ant-tree-checkbox:hover .ant-tree-checkbox-inner, .ant-tree-checkbox-input:focus + .ant-tree-checkbox-inner{

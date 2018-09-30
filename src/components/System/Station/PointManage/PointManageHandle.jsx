@@ -14,7 +14,7 @@ class PointManageHandle extends Component {
     pageSize: PropTypes.number,
     totalNum: PropTypes.number,
     allStationBaseInfo: PropTypes.array,
-    stationList: PropTypes.array,
+    stationPointStatusList: PropTypes.array,
     pointList: PropTypes.array,
     queryParams: PropTypes.object,
     getPointList: PropTypes.func,
@@ -81,9 +81,9 @@ class PointManageHandle extends Component {
 
 
   render() {
-    const { pageSize, pageNum, totalNum, pointList, allStationBaseInfo, stationList, stationCode } = this.props;
+    const { pageSize, pageNum, totalNum, pointList, allStationBaseInfo, stationPointStatusList, stationCode } = this.props;
     const { showWarningTip, warningTipText, } = this.state;
-    const selectedStationInfo = stationList.find(e => e.stationCode === stationCode);
+    const selectedStationInfo = stationPointStatusList.find(e => e.stationCode === stationCode);
     const pointForbidClear = !selectedStationInfo || selectedStationInfo.alarmStatus === 1; // 未找到电站或电站已导入告警，不可清除
     const downloadHref = `${path.basePaths.APIBasePath}${path.APISubPaths.system.downloadPointInfo}?stationCode=${stationCode}`;
     return (
