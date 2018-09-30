@@ -45,6 +45,9 @@ function ConfluenceTenMin({ deviceTenMin, loading }) {
             show: false
           }
         },
+        itemStyle: {
+          opacity: 0,
+        },
         yAxisIndex: 0,
         data: HL[i],
       }
@@ -70,18 +73,25 @@ function ConfluenceTenMin({ deviceTenMin, loading }) {
       tooltip: {
         show: true,
         trigger: 'axis',
+        axisPointer: {
+          crossStyle:{
+            color: '#dfdfdf',
+            width: 1,
+            type: 'dotted',
+          }
+        },
         position: function (point, params, dom, rect, size) {
           // 固定在顶部
           return [point[0], '10%'];
         },
         formatter: (param) => {
           const HLToolTips = HLNames.map((e,i)=>{
-            return `<div style="padding-left: 5px;background:#fff;" ><span style="display: inline-block; background:${HLColors[i]}; width:6px; height:6px; border-radius:100%;"></span> ${e}: ${param[i+1] && param[i+1].value || '--'}</div>`;
-          })
-          return `<div style="width: 128px; height: 490px;color: #666; line-height: 14px;font-size:12px;background: #fff;box-shadow:0 1px 4px 0 rgba(0,0,0,0.20);border-radius:2px;">
-            <div style="height:20px;border-bottom: 1px solid #dfdfdf;padding-left: 5px;line-height: 20px;height:20px;" >${param[0] && param[0].name || '--'}</div>
+            return `<div style="padding-left: 5px;background:#fff; line-height: 20px;height:20px;" ><span style="display: inline-block; background:${HLColors[i]}; width:6px; height:6px; border-radius:100%;"></span> ${e}: ${param[i+1] && param[i+1].value || '--'}</div>`;
+          });
+          return `<div style="width: 128px; height: 380px;color: #666; line-height: 14px;font-size:12px;background: #fff;box-shadow:0 1px 4px 0 rgba(0,0,0,0.20);border-radius:2px;">
+            <div style="border-bottom: 1px solid #dfdfdf;padding-left: 5px;line-height: 25px;height:25px;" >${param[0] && param[0].name || '--'}</div>
             <div style="padding-left: 5px;line-height: 20px;height:20px;" ><span style="display: inline-block; background:#ffffff; border:1px solid #3e97d1; width:6px; height:6px; border-radius:100%;"></span> 离散率: ${param[0] && param[0].value || '--'}</div>
-            ${HLToolTips}
+            ${HLToolTips.join('')}
           </div>`;
         },
         extraCssText:'background: rgba(0,0,0,0);',

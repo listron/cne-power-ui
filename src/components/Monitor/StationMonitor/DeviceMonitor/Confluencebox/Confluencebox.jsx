@@ -107,7 +107,6 @@ class Confluencebox extends Component {
       }],
       iconName: 'iconfont icon-hl'
     };
-    console.log(deviceTenMin);
     return (
       <div className={styles.confluencebox}>
         <CommonBreadcrumb {...breadCrumbData} />

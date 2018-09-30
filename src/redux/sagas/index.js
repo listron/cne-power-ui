@@ -1,7 +1,7 @@
 import { all } from 'redux-saga/effects';
 import { watchCommon } from './commonSaga';
 
-import { watchLogin } from './loginSaga';
+import { watchLogin } from '../../containers/Login/loginSaga';
 
 import { watchDefect } from './operation/ticket/defectSaga'
 
@@ -19,10 +19,9 @@ import { watchDeviceManage } from '../../containers/System/Station/DeviceManage/
 import { watchPointManage } from '../../containers/System/Station/PointManage/pointManageSaga';
 import { watchAlarmManage } from '../../containers/System/Station/AlarmManage/alarmManageSaga';
 
-import { watchSingleStationMonitor } from './monitor/stationMonitor/singleStationSaga'; 
-import { watchDeviceMonitor } from './monitor/stationMonitor/deviceMonitorSaga';
-
-import {watchStationMonitor} from './monitor/stationMonitor/stationMonitorSaga';
+import { watchSingleStationMonitor } from '../../containers/Monitor/StationMonitor/SingleStation/singleStationSaga';
+import { watchDeviceMonitor } from '../../containers/Monitor/StationMonitor/DeviceMonitor/deviceMonitorSaga';
+import {watchStationMonitor} from '../../containers/Monitor/StationMonitor/AllStation/stationMonitorSaga';
 import {watchAlarmMonitor} from '../../containers/Monitor/Alarm/alarmSaga';
 
 import { watchOtherSaga } from './otherSaga';

@@ -163,7 +163,7 @@ class EditForm extends Component {
             })(
               <Input className={styles.capacity} />
             )}
-            <span>MWp</span>
+            <span>MW</span>
           </FormItem>
           <FormItem label="设计容量" >
             {getFieldDecorator('designCapacity',{
@@ -176,7 +176,7 @@ class EditForm extends Component {
             })(
               <Input className={styles.capacity} />
             )}
-            <span>MWp</span>
+            <span>MW</span>
           </FormItem>
           <FormItem label="占地面积" >
             {getFieldDecorator('floorArea',{
