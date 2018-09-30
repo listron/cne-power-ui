@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import styles from './enterprise.scss';
 import Cookie from 'js-cookie';
-import { enterpriseAction } from '../../../../constants/actionTypes/system/account/enterpriseAction';
+import { enterpriseAction } from './enterpriseAction';
 import PropTypes from 'prop-types';
 import Footer from '../../../../components/Common/Footer';
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
@@ -91,12 +91,12 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  changeEnterpriseStore: payload => dispatch({type:enterpriseAction.CHANGE_ENTERPRISE_STORE_SAGA, payload}),
-  getEnterpriseList: payload => dispatch({type:enterpriseAction.GET_ENTERPRISE_LIST_SAGA, payload}),
-  getEnterpriseDetail: payload => dispatch({type:enterpriseAction.GET_ENTERPRISE_DETAIL_SAGA, payload}),
+  changeEnterpriseStore: payload => dispatch({type:enterpriseAction.changeEnterpriseStore, payload}),
+  getEnterpriseList: payload => dispatch({type:enterpriseAction.getEnterprisList, payload}),
+  getEnterpriseDetail: payload => dispatch({type:enterpriseAction.getEnterpriseDetail, payload}),
   changeSelectedEnterprise: payload => dispatch({type:enterpriseAction.CHANGE_SELECTED_ENTERPRISE_SAGA, payload}),
-  saveEnterpriseInfor: payload => dispatch({type:enterpriseAction.SAVE_ENTERPRISE_INFO_SAGA, payload}),
-  ignoreEnterpirseEdit: payload => dispatch({type: enterpriseAction.IGNORE_ENTERPRISE_EDIT,payload})
+  saveEnterpriseInfor: payload => dispatch({type:enterpriseAction.saveEnterpriseInfor, payload}),
+  ignoreEnterpirseEdit: payload => dispatch({type: enterpriseAction.ignoreEnterpirseEdit,payload})
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Enterprise);
