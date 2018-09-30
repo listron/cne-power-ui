@@ -469,24 +469,30 @@
         margin-right: 60px;
         margin-bottom: 18px;
         cursor: pointer;
-        :global{
-          .icon-weather{
-            display: block;
-            color:#dfdfdf;
-          }
-          .icon-weather:hover{
-            color: #fff;
-          }
-          .icon-weather:before {
-            content: "\e68e";
-            width: 30px;
-            height: 31px;
-          }
+        i{
+          color:#dfdfdf;
         }
+        // :global{
+        //   .icon-weather{
+        //     display: block;
+        //     color:#dfdfdf;
+        //   }
+        //   .icon-weather:hover{
+        //     color: #fff;
+        //   }
+        //   .icon-weather:before {
+        //     content: "\e68e";
+        //     width: 30px;
+        //     height: 31px;
+        //   }
+        // }
       }
       .weatherStation:hover{
         border:1px solid $themeColor;
         background: $themeColor;
+        i{
+          color: #fff;
+        }
         color: #fff;
       }
     }

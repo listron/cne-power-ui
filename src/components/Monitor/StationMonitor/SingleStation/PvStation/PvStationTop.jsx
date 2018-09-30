@@ -103,9 +103,9 @@ class PvStationTop extends Component {
     const pathAllStation = "/monitor/station";
     //权限控制
     const rightHandler = localStorage.getItem('rightHandler');
-    const userEditMonth = rightHandler && rightHandler.split(',').includes('month_gen');
-    const userEditYear = rightHandler && rightHandler.split(',').includes('year_gen');
-    //console.log(userEditMonth,userEditYear);   
+
+    const powerUpdate= rightHandler && rightHandler.split(',').includes('monitor_powerUpdate');
+
 
     return (
       <div className={styles.pvStationTop} >
@@ -154,7 +154,7 @@ class PvStationTop extends Component {
             <div className={styles.trueTimeUnit}>日发电量 万kWh</div>
           </div>
           <div>
-            <div className={styles.trueTimeValue}><div>{singleStationData && singleStationData.monthPower && parseFloat(singleStationData.monthPower).toFixed(4) || 0}  {1 ? <span onClick={() => { this.setModalMonth() }} ><Icon type="form" theme="outlined" /></span> : ''}</div></div>
+            <div className={styles.trueTimeValue}><div>{singleStationData && singleStationData.monthPower && parseFloat(singleStationData.monthPower).toFixed(4) || 0}  {powerUpdate ? <span onClick={() => { this.setModalMonth() }} ><Icon type="form" theme="outlined" /></span> : ''}</div></div>
             <div className={styles.trueTimeUnit}>月发电量 万kWh</div>
           </div>
           <Modal
@@ -171,7 +171,7 @@ class PvStationTop extends Component {
           <div className={styles.stationYearPlan}>
             <div className={styles.annualEnergyScale} >
               <div className={styles.trueTimeValue}>
-                <span>{singleStationData && singleStationData.yearPower && parseFloat(singleStationData.yearPower).toFixed(4) || 0}  {1 ? <span onClick={() => { this.setModalYear() }}><Icon type="form" theme="outlined" /></span> : ''}</span>
+                <span>{singleStationData && singleStationData.yearPower && parseFloat(singleStationData.yearPower).toFixed(4) || 0}  {powerUpdate ? <span onClick={() => { this.setModalYear() }}><Icon type="form" theme="outlined" /></span> : ''}</span>
                 <span>{singleStationData && singleStationData.yearPlanPower && parseFloat(singleStationData.yearPlanPower).toFixed(4) || 0}</span>
               </div>
               <Progress percent={singleStationData && singleStationData.yearPlanRate * 100 || 0} showInfo={false} strokeWidth={3} type="line" strokeColor="#199475" />

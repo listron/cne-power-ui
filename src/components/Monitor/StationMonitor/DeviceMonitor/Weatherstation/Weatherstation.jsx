@@ -51,6 +51,7 @@ class Weatherstation extends Component {
 
   render(){
     const { deviceDetail, deviceAlarmList, loading } = this.props;
+    console.log(deviceDetail);
     const { stationCode,deviceCode,deviceTypeCode } = this.props.match.params;
     const backData={path: `/monitor/singleStation/${stationCode}`,name: '返回电站'};
     const breadCrumbData = {
