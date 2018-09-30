@@ -150,6 +150,9 @@
             text-align: left;
           }
         }
+        .hlBlockLink:hover{
+          color: $darkColor;
+        }
       }
       .cutOverItem{
         display: inline-block;

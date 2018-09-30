@@ -3,8 +3,8 @@ import { combineReducers } from 'redux'
 import common from './commonReducer';
 import operation from './operation/operationReducer';
 import system from '../../containers/System/systemReducer';
-import login from './loginReducer';
-import monitor from './monitor/monitorReduce';
+import login from '../../containers/Login/loginReducer';
+import monitor from '../../containers/Monitor/monitorReduce';
 import alarmReducer from '../../containers/Monitor/Alarm/alarmReducer';
 import otherReducer from './otherReducer';
 
