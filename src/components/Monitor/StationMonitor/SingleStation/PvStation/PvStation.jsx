@@ -105,7 +105,7 @@ class PvStation extends Component {
                         <i className={this.getDeviceTypeIcon(e.deviceTypeCode)} ></i>
                         <img src="/img/arrowgo.png" className={styles.arrowgo} />
                       </div>
-                      <div>{e.deviceTypeName}</div>
+                      <div>{e.deviceTypeName==='箱变'?'箱式变压器':e.deviceTypeName}</div>
                     </RadioButton>)
                   })}
                   <RadioButton className={styles.elecnettingItem}>
