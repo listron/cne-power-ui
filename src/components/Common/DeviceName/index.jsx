@@ -117,6 +117,7 @@ class DeviceName extends Component {
     let options = this.getDeviceItems();
     const { checkedStationName } = this.state;
     console.log(this.props.deviceItems);
+  
 
     return (
       <div className={styles.deviceName}>

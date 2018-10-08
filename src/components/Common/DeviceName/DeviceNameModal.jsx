@@ -20,6 +20,7 @@ class DeviceNameModal extends Component {
     onChangeArea: PropTypes.func,
     loadDeviceList: PropTypes.func,
     firstPartitionCode: PropTypes.string,
+    deviceTypeCode:PropTypes.string,
   }
 
   static defaultProps = {
@@ -103,6 +104,7 @@ class DeviceNameModal extends Component {
 
   render() {
     let { firstPartitionCode } = this.props;
+    firstPartitionCode=this.props.deviceType==='汇流箱'?firstPartitionCode:'';
 
 
     return (

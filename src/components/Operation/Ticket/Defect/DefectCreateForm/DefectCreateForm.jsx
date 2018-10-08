@@ -176,9 +176,10 @@ class TmpForm extends Component {
     const editDefect = showContainer === 'edit';
     const stationCode = this.props.form.getFieldValue('stations') ? this.props.form.getFieldValue('stations')[0] ? this.props.form.getFieldValue('stations')[0].stationCode : [] : [];
     const deviceTypeCode = this.props.form.getFieldValue('deviceTypeCode')?this.props.form.getFieldValue('deviceTypeCode'):'';
-    
      //const deviceItemsData=deviceTypeCode===202&&this.params.partitionsCode===firstPartitionCode?sliceDeviceItems:deviceItems;
-    const deviceItemsData=deviceTypeCode===202?sliceDeviceItems:deviceItems;
+    //  console.log(deviceTypeCode===202&&!this.state.deviceAreaCode);
+    //const deviceItemsData=deviceTypeCode===202?sliceDeviceItems:deviceItems;
+    const deviceItemsData=deviceTypeCode===202&&!this.state.deviceAreaCode?sliceDeviceItems:deviceItems;
  
 
     const defaultStations = editDefect ? stations.filter(e => e.stationCode === defectDetail.stationCode) : [];
