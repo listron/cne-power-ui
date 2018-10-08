@@ -1,6 +1,6 @@
 import Immutable from 'immutable';
 
-import { stationManageAction } from '../../../../constants/actionTypes/system/station/stationManageAction';
+import { stationManageAction } from './stationManageAction';
 
 var initState = Immutable.fromJS({
   loading: false,

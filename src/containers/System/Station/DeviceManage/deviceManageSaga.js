@@ -1,7 +1,7 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import axios from 'axios';
 import Path from '../../../../constants/path';
-import { deviceManageAction } from '../../../../constants/actionTypes/system/station/deviceManageAction';
+import { deviceManageAction } from './deviceManageAction';
 
 function *changeDeviceManageStore(action){ // 存储payload指定参数，替换reducer-store属性。
   const { payload } = action;

@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import InspectCreateForm from '../../../../../components/Operation/Ticket/Inspect/InspectCreateForm/InspectCreateForm';
-import { commonAction } from '../../../../../constants/actionTypes/commonAction';
-import { ticketAction } from '../../../../../constants/actionTypes/operation/ticketAction';
+import { commonAction } from '../../../../alphaRedux/commonAction';
+import { ticketAction } from '../../ticketAction';
 import { Icon } from 'antd';
 import styles from './inspectCreate.scss';
 import WarningTip from '../../../../../components/Common/WarningTip';
@@ -74,9 +74,9 @@ const mapStateToProps = (state) => ({
   error: state.operation.inspect.get('error'),
 })
 const mapDispatchToProps = (dispatch) => ({
-  loadDeviceTypeList: payload => dispatch({ type: commonAction.GET_STATION_DEVICETYPES_SAGA, payload}),
+  loadDeviceTypeList: payload => dispatch({ type: commonAction.getStationDeviceTypes, payload}),
   createInspect: payload => dispatch({ type: ticketAction.CREATE_INSPECT_SAGA, payload}),
-  getStations: payload => dispatch({ type: commonAction.GET_STATIONS_SAGA, payload }),
-  onChangeCommonStore: payload => dispatch({ type: commonAction.CHANGE_COMMON_STORE_SAGA, payload}),
+  getStations: payload => dispatch({ type: commonAction.getStations, payload }),
+  onChangeCommonStore: payload => dispatch({ type: commonAction.changeCommonStore, payload}),
 })
 export default connect(mapStateToProps,mapDispatchToProps)(InspectCreate);

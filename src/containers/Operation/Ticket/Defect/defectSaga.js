@@ -1,7 +1,7 @@
 import { call, put, takeLatest, select } from 'redux-saga/effects';
 import axios from 'axios';
 import Path from '../../../../constants/path';
-import { ticketAction } from '../../../../constants/actionTypes/operation/ticketAction';
+import { ticketAction } from '../ticketAction';
 import { message } from 'antd';
 
 function *changeDefectStore(action){//存储payload指定参数，替换reducer-store属性。

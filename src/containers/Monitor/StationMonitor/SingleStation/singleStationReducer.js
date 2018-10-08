@@ -1,5 +1,5 @@
 import Immutable from 'immutable';
-import { singleStationAction } from '../../../../constants/actionTypes/monitor/stationMonitor/singleStationAction';
+import { singleStationAction } from './singleStationAction';
 
 var initState = Immutable.fromJS({
   loading: false,//加载状态

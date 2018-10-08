@@ -2,7 +2,7 @@ import { call, put, takeLatest, select } from 'redux-saga/effects';
 import axios from 'axios';
 import { message } from 'antd';
 import Path from '../../../../constants/path';
-import { alarmManageAction } from '../../../../constants/actionTypes/system/station/alarmManageAction';
+import { alarmManageAction } from './alarmManageAction';
 
 function *changeAlarmManageStore(action){ // 存储payload指定参数，替换reducer-store属性。
   const { payload } = action;

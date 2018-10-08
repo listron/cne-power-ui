@@ -1,5 +1,5 @@
 import Immutable from 'immutable';
-import { otherAction } from '../../constants/actionTypes/otherAction';
+import { otherAction } from './otherAction';
 
 var initState = Immutable.fromJS({
   loading: false,

@@ -1,5 +1,5 @@
 import { put, takeLatest } from 'redux-saga/effects';
-import { ticketAction } from '../../../constants/actionTypes/operation/ticketAction';
+import { ticketAction } from './ticketAction';
 
 
 //改变显示的组件：detail，list，create

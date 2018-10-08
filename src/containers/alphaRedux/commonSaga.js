@@ -1,7 +1,7 @@
 import { call, put, takeLatest,all } from 'redux-saga/effects';
 import axios from 'axios';
 import Path from '../../constants/path';
-import { commonAction } from '../../constants/actionTypes/commonAction';
+import { commonAction } from './commonAction';
 import { message } from 'antd';
 
 function* changeCommonStore(action) {//存储payload指定参数，替换reducer-store属性。
@@ -227,15 +227,15 @@ function* getAllDepartment(action) {//获取所有部门基础信息
 */
 
 export function* watchCommon() {
-  yield takeLatest(commonAction.CHANGE_COMMON_STORE_SAGA, changeCommonStore);
+  yield takeLatest(commonAction.changeCommonStore, changeCommonStore);
   // yield takeLatest(commonAction.REFRESHTOKEN_SAGA, refreshToken);
-  yield takeLatest(commonAction.GET_STATIONS_SAGA, getStations);
-  yield takeLatest(commonAction.GET_ALL_DEPARTMENT_SAGA, getAllDepartment);
-  yield takeLatest(commonAction.GET_DEVICETYPES_SAGA, getDeviceTypes);
-  yield takeLatest(commonAction.GET_STATION_DEVICETYPES_SAGA, getStationDeviceTypes);
-  yield takeLatest(commonAction.GET_STATION_DEVICEMODEL_SAGA, getStationDeviceModel);
-  yield takeLatest(commonAction.GET_STATION_DEVICEPOINT_SAGA, getStationDevicePoints);
-  yield takeLatest(commonAction.GET_DEVICES_SAGA, getDevices);
-  yield takeLatest(commonAction.GET_PARTITIONS_SAGA, getPartition);
-  yield takeLatest(commonAction.GET_SLICE_DEVICES_SAGA, getSliceDevices);
+  yield takeLatest(commonAction.getStations, getStations);
+  yield takeLatest(commonAction.getAllDepartment, getAllDepartment);
+  yield takeLatest(commonAction.getDeviceTypes, getDeviceTypes);
+  yield takeLatest(commonAction.getStationDeviceTypes, getStationDeviceTypes);
+  yield takeLatest(commonAction.getStationDeviceModel, getStationDeviceModel);
+  yield takeLatest(commonAction.getStationDevicePoints, getStationDevicePoints);
+  yield takeLatest(commonAction.getDevices, getDevices);
+  yield takeLatest(commonAction.getPartition, getPartition);
+  yield takeLatest(commonAction.getSliceDevices, getSliceDevices);
 }

@@ -2,13 +2,13 @@ import { call, put, takeLatest } from 'redux-saga/effects';
 import axios from 'axios';
 import Path from '../../../../constants/path';
 import Cookie from 'js-cookie';
-import { enterpriseAction } from '../../../../constants/actionTypes/system/account/enterpriseAction';
+import { enterpriseAction } from './enterpriseAction';
 
 //存储payload指定参数，替换reducer-store属性。
 function *changeEnterpriseStore(action){
   const { payload } = action;
   yield put({
-    type:  enterpriseAction.CHANGE_ENTERPRISE_STORE,
+    type:  enterpriseAction.enterpriseRuducerReplace,
     payload,
   })
 }
@@ -20,7 +20,7 @@ function *changeEnterpriseStore(action){
     const url = '/mock/system/enterprisList';
     // const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.getEnterprisList}/${payload.userID}`
     try{
-      yield put({ type:enterpriseAction.ENTERPRISE_FETCH });
+      yield put({ type:enterpriseAction.fetching });
       const response = yield call(axios.get,url);
 
       const totalNum = response.data.data.totalNum || 0;
@@ -32,7 +32,7 @@ function *changeEnterpriseStore(action){
         currentPage = maxPage;
       }
       yield put({
-        type:  enterpriseAction.GET_ENTERPRISE_FETCH_SUCCESS,
+        type:  enterpriseAction.enterpriseFetchSuccess,
         payload:{
           ...payload,
           enterpriseData: response.data.data.enterpriseData,
@@ -52,10 +52,10 @@ function *getEnterpriseDetail(action){
   // const url = '/mock/system/enterprisDetail/12';
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.getEnterprisDetail}/${payload.enterpriseId}`
   try{
-    yield put({ type:enterpriseAction.ENTERPRISE_FETCH });
+    yield put({ type:enterpriseAction.fetching });
     const response = yield call(axios.get,url);
     yield put({
-      type:  enterpriseAction.GET_ENTERPRISE_FETCH_SUCCESS,
+      type:  enterpriseAction.enterpriseFetchSuccess,
       payload:{
         enterpriseDetail: response.data.data || {},
         showPage: 'detail',
@@ -71,11 +71,11 @@ function *ignoreEnterpirseEdit(action){
   const url = '/mock/system/ignoreDetail';
   // const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.saveEnterpriseDetail}`
   try{
-    yield put({ type:enterpriseAction.ENTERPRISE_FETCH });
+    yield put({ type:enterpriseAction.fetching });
     const response = yield call(axios.post,url,payload);
     if(response.data.code === "10000"){
       yield put({
-        type:  enterpriseAction.GET_ENTERPRISE_FETCH_SUCCESS,
+        type:  enterpriseAction.enterpriseFetchSuccess,
       });
     }
   }catch(e){
@@ -88,13 +88,13 @@ function *saveEnterpriseInfor(action){
   // const url = '/mock/system/changeEnterprise';
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.saveEnterpriseDetail}`
   try{
-    yield put({ type:enterpriseAction.ENTERPRISE_FETCH });
+    yield put({ type:enterpriseAction.fetching });
     const response = yield call(axios.put,url,payload);
     if(response.data.code === "10000"){
       const { enterpriseLogo } = payload;
       enterpriseLogo && Cookie.set('enterpriseLogo', enterpriseLogo);
       yield put({
-        type:  enterpriseAction.GET_ENTERPRISE_DETAIL_SAGA,
+        type:  enterpriseAction.getEnterpriseDetail,
         payload:{
           enterpriseId: payload.enterpriseId
         }
@@ -107,11 +107,11 @@ function *saveEnterpriseInfor(action){
 
 
 export function* watchEnterprise() {
-  yield takeLatest(enterpriseAction.CHANGE_ENTERPRISE_STORE_SAGA, changeEnterpriseStore);
-  // yield takeLatest(enterpriseAction.GET_ENTERPRISE_LIST_SAGA, getEnterprisList);
-  yield takeLatest(enterpriseAction.GET_ENTERPRISE_DETAIL_SAGA, getEnterpriseDetail);
-  yield takeLatest(enterpriseAction.SAVE_ENTERPRISE_INFO_SAGA, saveEnterpriseInfor);
-  yield takeLatest(enterpriseAction.IGNORE_ENTERPRISE_EDIT,ignoreEnterpirseEdit);
+  yield takeLatest(enterpriseAction.changeEnterpriseStore, changeEnterpriseStore);
+  // yield takeLatest(enterpriseAction.getEnterprisList, getEnterprisList);
+  yield takeLatest(enterpriseAction.getEnterpriseDetail, getEnterpriseDetail);
+  yield takeLatest(enterpriseAction.saveEnterpriseInfor, saveEnterpriseInfor);
+  yield takeLatest(enterpriseAction.ignoreEnterpirseEdit,ignoreEnterpirseEdit);
 
 }
 
