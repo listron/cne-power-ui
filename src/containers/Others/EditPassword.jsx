@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import styles from './editPassword.scss';
 import EditPasswordForm from '../../components/Others/EditPasswordForm';
-import { otherAction } from '../../constants/actionTypes/otherAction';
+import { otherAction } from '../alphaRedux/otherAction';
 import { connect } from 'react-redux';
 
 class EditPassword extends Component {
@@ -26,7 +26,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  editPassword: payload => dispatch({ type: otherAction.EDIT_PASSWORD_SAGA, payload, }),
+  editPassword: payload => dispatch({ type: otherAction.editPassword, payload, }),
 })
 
 export default connect(mapStateToProps,mapDispatchToProps)(EditPassword);

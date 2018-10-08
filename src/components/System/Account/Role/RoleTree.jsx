@@ -29,9 +29,10 @@ class RoleTree extends Component {
   }
 
   onCheck = (checkedKeys, e) => {
-    const outputCheckedKeys = [...checkedKeys,...e.halfCheckedKeys];
-    this.props.onChange(outputCheckedKeys);
-    this.setState({ checkedKeys: checkedKeys});
+    const { defaultRootMenu } = this.props;
+    const checkedKeyResult = [...checkedKeys, ...defaultRootMenu.map(e=>`${e}`)];
+    this.props.onChange([...checkedKeyResult, ...e.halfCheckedKeys]);
+    this.setState({ checkedKeys: checkedKeyResult});
   }
 
   onCheckAll = (e) => {
@@ -61,11 +62,9 @@ class RoleTree extends Component {
   }
 
   renderTreeNodes = (treeData) => {
-    const { defaultRootMenu } = this.props;
     const { expandedKeys } = this.state;
     return treeData.map((item) => {
       const hasChild = item && item.childRightData && item.childRightData.length > 0;
-      const treeDisable = defaultRootMenu.includes(item.rightId);
       if(hasChild) {
         const nodeExpanded =  expandedKeys.includes(item.rightId.toString());
         const TreeNodeTitle = (<span className={styles.treeNodeTitle}>
@@ -73,12 +72,12 @@ class RoleTree extends Component {
           <Icon type={nodeExpanded?"up":"down"} className={nodeExpanded?styles.upIcon:styles.downIcon} theme="outlined" />
         </span>)
         return (
-          <TreeNode title={TreeNodeTitle} indeterminate key={item.rightId.toString()} disabled={treeDisable} >
+          <TreeNode title={TreeNodeTitle} key={item.rightId.toString()} >
             {this.renderTreeNodes(item.childRightData)}
           </TreeNode>
         );
       }
-      return <TreeNode indeterminate title={item.rightName} key={item.rightId.toString()} disabled={treeDisable} />;
+      return <TreeNode title={item.rightName} key={item.rightId.toString()} />;
     });
   }
 

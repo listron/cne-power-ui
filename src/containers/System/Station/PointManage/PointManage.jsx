@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import styles from './pointManage.scss';
 import { pointManageAction } from './pointManageAction';
-import { commonAction } from '../../../../constants/actionTypes/commonAction';
+import { commonAction } from '../../../alphaRedux/commonAction';
 import { stationManageAction } from '../StationManage/stationManageAction';
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import StationManageTip from '../../../../components/System/Station/Common/StationManageTip';
@@ -110,9 +110,9 @@ const mapDispatchToProps = (dispatch) => ({
   deletePointList: payload => dispatch({type:pointManageAction.DELETE_POINT_MANAGE_LIST, payload}),
   getStationPointStatusList: payload => dispatch({type: pointManageAction.GET_POINT_MANAGE_ALL_STATION, payload}),
 
-  changeCommonStore: payload => dispatch({type:commonAction.CHANGE_COMMON_STORE_SAGA, payload}),
-  getStationDeviceTypes: payload => dispatch({type:commonAction.GET_STATION_DEVICETYPES_SAGA, payload}),
-  getStationDeviceModel: payload => dispatch({type:commonAction.GET_STATION_DEVICEMODEL_SAGA, payload}),
+  changeCommonStore: payload => dispatch({type:commonAction.changeCommonStore, payload}),
+  getStationDeviceTypes: payload => dispatch({type:commonAction.getStationDeviceTypes, payload}),
+  getStationDeviceModel: payload => dispatch({type:commonAction.getStationDeviceModel, payload}),
 
   changeStationManageStore: payload => dispatch({type:stationManageAction.CHANGE_STATION_MANAGE_STORE_SAGA, payload}),
   getStationOfEnterprise: payload =>dispatch({type: stationManageAction.GET_ALL_STATION_MANAGE_BASE_INFO, payload }),

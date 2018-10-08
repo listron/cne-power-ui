@@ -3,7 +3,7 @@ import axios from 'axios';
 import { stringify } from 'qs';
 import Path from '../../constants/path';
 import { message } from 'antd';
-import { otherAction } from '../../constants/actionTypes/otherAction';
+import { otherAction } from './otherAction';
 
 function *changeOtherStore(action){
   let { payload } = action;
@@ -41,7 +41,7 @@ function *editPassword(action){ // 修改密码
       },2000)
     } else{
       yield put({ 
-        type: otherAction.CHANGE_OTHER_STORE_SAGA, 
+        type: otherAction.changeOtherStore, 
         payload: { loading:false },
       }); 
       message.error(`密码修改失败，请重试:${response.data.message}`);    
@@ -52,6 +52,6 @@ function *editPassword(action){ // 修改密码
 }
 
 export function* watchOtherSaga() {
-  yield takeLatest(otherAction.EDIT_PASSWORD_SAGA, editPassword);
-  yield takeLatest(otherAction.CHANGE_OTHER_STORE_SAGA, changeOtherStore);
+  yield takeLatest(otherAction.editPassword, editPassword);
+  yield takeLatest(otherAction.changeOtherStore, changeOtherStore);
 }

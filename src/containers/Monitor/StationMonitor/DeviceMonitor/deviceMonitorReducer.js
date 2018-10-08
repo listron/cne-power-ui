@@ -1,5 +1,5 @@
 import Immutable from 'immutable';
-import { deviceAction } from '../../../../constants/actionTypes/monitor/stationMonitor/deviceAction';
+import { deviceAction } from './deviceAction';
 
 var initState = Immutable.fromJS({
   loading: false,

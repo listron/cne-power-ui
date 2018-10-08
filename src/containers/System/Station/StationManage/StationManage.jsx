@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import styles from './stationManage.scss';
 import { stationManageAction } from './stationManageAction';
-import { commonAction } from '../../../../constants/actionTypes/commonAction';
+import { commonAction } from '../../../alphaRedux/commonAction';
 import TransitionContainer from '../../../../components/Common/TransitionContainer';
 import StationManageMain from '../../../../components/System/Station/StationManage/StationManageMain/StationManageMain';
 import StationManageSide from '../../../../components/System/Station/StationManage/StationManageSide/StationManageSide';
@@ -118,7 +118,7 @@ const mapDispatchToProps = (dispatch) => ({
   saveStationDetail: payload => dispatch({type: stationManageAction.EDIT_STATION_MANAGE_DETAIL, payload}),
   deleteStation: payload => dispatch({type: stationManageAction.DELET_STATION_MANAGE, payload}),
   setStationDepartment: payload => dispatch({type: stationManageAction.SET_STATION_MANAGE_DEPARTMENT, payload}),
-  getAllDepartmentData: payload => dispatch({type: commonAction.GET_ALL_DEPARTMENT_SAGA, payload}),
+  getAllDepartmentData: payload => dispatch({type: commonAction.getAllDepartment, payload}),
   getStationOfEnterprise: payload =>dispatch({type: stationManageAction.GET_ALL_STATION_MANAGE_BASE_INFO, payload }),
 });
 

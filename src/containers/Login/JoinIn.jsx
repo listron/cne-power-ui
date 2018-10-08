@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './loginLayout.scss';
 import { connect } from 'react-redux';
-import { withRouter, Redirect } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import JoinInForm from '../../components/Login/JoinInForm';
-import { loginAction } from '../../constants/actionTypes/loginAction';
+import { loginAction } from './loginAction';
 class JoinIn extends Component {
   static propTypes = {
     changeLoginStore: PropTypes.func,

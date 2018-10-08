@@ -1,7 +1,7 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import axios from 'axios';
 import Path from '../../../../constants/path';
-import { singleStationAction } from '../../../../constants/actionTypes/monitor/stationMonitor/singleStationAction';
+import { singleStationAction } from './singleStationAction';
 import { message } from 'antd';
 
 //改变单电站实时数据store
