@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import styles from './loginLayout.scss';
 import LoginForm from '../../components/Login/LoginForm';
 import RegisterForm from '../../components/Login/RegisterForm';
-import {loginAction} from '../../constants/actionTypes/loginAction';
+import {loginAction} from './loginAction';
 
 const {TabPane} = Tabs;
 

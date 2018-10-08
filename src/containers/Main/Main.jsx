@@ -12,7 +12,7 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 // import FixedHelper from '../../components/Common/FixedHelper/FixedHelper'; 暂不实现。
 import { commonAction } from '../alphaRedux/commonAction';
-import { loginAction } from '../../constants/actionTypes/loginAction';
+import { loginAction } from '../Login/loginAction';
 import TopMenu from '../../components/Layout/TopMenu';
 import SideMenu from '../../components/Layout/SideMenu';
 import LogoInfo from '../../components/Layout/LogoInfo';
