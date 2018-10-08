@@ -1,6 +1,6 @@
 import Immutable from 'immutable';
 
-import { allStationAction } from '../../../../constants/actionTypes/monitor/stationMonitor/allStationAction.js';
+import { allStationAction } from './allStationAction.js';
 
 var initState = Immutable.fromJS({
    loading: false,

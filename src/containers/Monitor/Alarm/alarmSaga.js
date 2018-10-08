@@ -2,7 +2,7 @@ import { call, put, takeLatest, select } from 'redux-saga/effects';
 import axios from 'axios';
 import moment from 'moment'
 import Path from '../../../constants/path';
-import { alarmAction } from '../../../constants/actionTypes/monitor/alarmAction';
+import { alarmAction } from './alarmAction';
 
 function *changeAlarmStore(action) {//存储payload指定参数，替换reducer-store属性。
   const { payload } = action;

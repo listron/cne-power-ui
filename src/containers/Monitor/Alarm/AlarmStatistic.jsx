@@ -5,7 +5,7 @@ import styles from "./alarm.scss";
 import PropTypes from "prop-types";
 import AlarmAllStationStatistic from '../../../components/Monitor/Alarm/AlarmStatistic/AlarmAllStationStatistic';
 import AlarmSingleStationStatistic from '../../../components/Monitor/Alarm/AlarmStatistic/AlarmSingleStationStatistic'
-import { alarmAction } from '../../../constants/actionTypes/monitor/alarmAction';
+import { alarmAction } from './alarmAction';
 import CommonBreadcrumb from '../../../components/Common/CommonBreadcrumb';
 import Footer from '../../../components/Common/Footer';
 

@@ -1,8 +1,7 @@
 import { call, put, takeLatest, all } from 'redux-saga/effects';
 import axios from 'axios';
 import path from '../../../../constants/path';
-import { deviceAction } from '../../../../constants/actionTypes/monitor/stationMonitor/deviceAction';
-import moment from 'moment';
+import { deviceAction } from './deviceAction';
 
 const monitorPath = {
   '206': {  // 组串式逆变器：206

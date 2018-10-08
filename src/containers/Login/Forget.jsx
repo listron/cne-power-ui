@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './loginLayout.scss';
 import ForgetForm from '../../components/Login/ForgetForm';
-import { loginAction } from '../../constants/actionTypes/loginAction';
+import { loginAction } from './loginAction';
 import { connect } from 'react-redux';
 class Forget extends Component {
   static propTypes = {

@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import styles from "./allstation.scss";
 import PropTypes from "prop-types";
 import { Tabs } from 'antd';
-import { allStationAction } from '../../../../constants/actionTypes/monitor/stationMonitor/allStationAction';
+import { allStationAction } from './allStationAction';
 import Allstation from '../../../../components/Monitor/StationMonitor/AllStation/AllStation.jsx';
 import WindStation from '../../../../components/Monitor/StationMonitor/AllStation/WindStation/WindStation.jsx';
 import PvStation from '../../../../components/Monitor/StationMonitor/AllStation/PvStation/PvStation.jsx';

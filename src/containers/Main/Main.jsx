@@ -11,8 +11,8 @@ import Agreement from '../../components/Login/Agreement';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 // import FixedHelper from '../../components/Common/FixedHelper/FixedHelper'; 暂不实现。
-import { commonAction } from '../../constants/actionTypes/commonAction';
-import { loginAction } from '../../constants/actionTypes/loginAction';
+import { commonAction } from '../alphaRedux/commonAction';
+import { loginAction } from '../Login/loginAction';
 import TopMenu from '../../components/Layout/TopMenu';
 import SideMenu from '../../components/Layout/SideMenu';
 import LogoInfo from '../../components/Layout/LogoInfo';
@@ -157,8 +157,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  getStations: payload => dispatch({ type: commonAction.GET_STATIONS_SAGA, payload }),
-  getDeviceTypes: payload => dispatch({ type: commonAction.GET_DEVICETYPES_SAGA, payload }),
+  getStations: payload => dispatch({ type: commonAction.getStations, payload }),
+  getDeviceTypes: payload => dispatch({ type: commonAction.getDeviceTypes, payload }),
   changeLoginStore: params => dispatch({ type: loginAction.CHANGE_LOGIN_STORE_SAGA, params }),
   // refreshToken: payload => dispatch({ type: commonAction.REFRESHTOKEN_SAGA, payload})
 });

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import styles from './deviceMonitor.scss';
-import { deviceAction } from '../../../../constants/actionTypes/monitor/stationMonitor/deviceAction';
-import { singleStationAction } from '../../../../constants/actionTypes/monitor/stationMonitor/singleStationAction';
+import { deviceAction } from './deviceAction';
+import { singleStationAction } from '../SingleStation/singleStationAction';
 import PropTypes from 'prop-types';
 import Seriesinverter from '../../../../components/Monitor/StationMonitor/DeviceMonitor/Seriesinverter/Seriesinverter';
 import Confluencebox from '../../../../components/Monitor/StationMonitor/DeviceMonitor/Confluencebox/Confluencebox';

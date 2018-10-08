@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {Tabs} from 'antd';
 import Footer from '../../../components/Common/Footer';
-import { ticketAction } from '../../../constants/actionTypes/operation/ticketAction';
+import { ticketAction } from './ticketAction';
 import styles from './ticket.scss';
 import DefectList from './Defect/DefectList/DefectList';
 import DefectDetail from './Defect/DefectDetail/DefectDetail';
