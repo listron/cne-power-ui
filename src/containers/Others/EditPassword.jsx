@@ -26,7 +26,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  editPassword: payload => dispatch({ type: otherAction.EDIT_PASSWORD_SAGA, payload, }),
+  editPassword: payload => dispatch({ type: otherAction.editPassword, payload, }),
 })
 
 export default connect(mapStateToProps,mapDispatchToProps)(EditPassword);
