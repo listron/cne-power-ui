@@ -157,8 +157,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  getStations: payload => dispatch({ type: commonAction.GET_STATIONS_SAGA, payload }),
-  getDeviceTypes: payload => dispatch({ type: commonAction.GET_DEVICETYPES_SAGA, payload }),
+  getStations: payload => dispatch({ type: commonAction.getStations, payload }),
+  getDeviceTypes: payload => dispatch({ type: commonAction.getDeviceTypes, payload }),
   changeLoginStore: params => dispatch({ type: loginAction.CHANGE_LOGIN_STORE_SAGA, params }),
   // refreshToken: payload => dispatch({ type: commonAction.REFRESHTOKEN_SAGA, payload})
 });

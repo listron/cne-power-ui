@@ -2,21 +2,21 @@
 
 export const commonAction = {
   COMMON_FETCH: Symbol('COMMON_FETCH'),
-  CHANGE_COMMON_STORE_SAGA: Symbol('CHANGE_COMMON_STORE_SAGA'),
+  changeCommonStore: Symbol('changeCommonStore'),
   CHANGE_COMMON_STORE: Symbol('CHANGE_COMMON_STORE'),
-  GET_STATIONS_SAGA: Symbol('GET_STATIONS_SAGA'),
+  getStations: Symbol('getStations'),
   //获取所有设备类型，用户权限相关
-  GET_DEVICETYPES_SAGA: Symbol('GET_DEVICETYPES_SAGA'),
+  getDeviceTypes: Symbol('getDeviceTypes'),
   //获取某电站下所有设备类型
-  GET_STATION_DEVICETYPES_SAGA: Symbol('GET_STATION_DEVICETYPES_SAGA'),
-  GET_STATION_DEVICEMODEL_SAGA: Symbol('GET_STATION_DEVICEMODEL_SAGA'), // 获取设备型号
-  GET_STATION_DEVICEPOINT_SAGA: Symbol('GET_STATION_DEVICEPOINT_SAGA'), // 获取设备测点
-  GET_DEVICES_SAGA: Symbol('GET_DEVICES_SAGA'),
-  GET_PARTITIONS_SAGA: Symbol('GET_PARTITIONS_SAGA'),
+  getStationDeviceTypes: Symbol('getStationDeviceTypes'),
+  getStationDeviceModel: Symbol('getStationDeviceModel'), // 获取设备型号
+  getStationDevicePoints: Symbol('getStationDevicePoints'), // 获取设备测点
+  getDevices: Symbol('getDevices'),
+  getPartition: Symbol('getPartition'),
   REFRESHTOKEN_SAGA: Symbol('REFRESHTOKEN_SAGA'), //refreshToken -get 
 
-  GET_ALL_DEPARTMENT_SAGA: Symbol('GET_ALL_DEPARTMENT_SAGA'), // 获取企业下所有部门(含层级关系);
+  getAllDepartment: Symbol('getAllDepartment'), // 获取企业下所有部门(含层级关系);
   GET_COMMON_FETCH_SUCCESS: Symbol('GET_COMMON_FETCH_SUCCESS'), // 普通api请求成功
-  GET_SLICE_DEVICES_SAGA: Symbol('GET_SLICE_DEVICES_SAGA'),//获取光伏截取数据
+  getSliceDevices: Symbol('getSliceDevices'),//获取光伏截取数据
 }
 

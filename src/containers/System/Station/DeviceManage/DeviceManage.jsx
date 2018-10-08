@@ -100,9 +100,9 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   changeDeviceManageStore: payload => dispatch({type:deviceManageAction.CHANGE_DEVICE_MANAGE_STORE_SAGA, payload}),
   getDeviceList: payload => dispatch({type: deviceManageAction.GET_DEVICE_MANAGE_LIST, payload}),
-  getStationDeviceTypes: payload => dispatch({type:commonAction.GET_STATION_DEVICETYPES_SAGA, payload}),
-  getStationDeviceModel: payload => dispatch({type:commonAction.GET_STATION_DEVICEMODEL_SAGA, payload}),
-  changeCommonStore: payload => dispatch({type:commonAction.CHANGE_COMMON_STORE_SAGA, payload}),
+  getStationDeviceTypes: payload => dispatch({type:commonAction.getStationDeviceTypes, payload}),
+  getStationDeviceModel: payload => dispatch({type:commonAction.getStationDeviceModel, payload}),
+  changeCommonStore: payload => dispatch({type:commonAction.changeCommonStore, payload}),
   getStationOfEnterprise: payload =>dispatch({type: stationManageAction.GET_ALL_STATION_MANAGE_BASE_INFO, payload }),
 });
 
