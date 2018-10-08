@@ -146,15 +146,6 @@ class JoinInForm extends Component{
       console.log(err);
       if(!err){
         setTimeout(() => {
-          // const { enterpriseInfo } = this.props;
-          // if(enterpriseInfo.get('enterpriseId') !== Cookie.get('enterpriseId')){
-          //   this.props.form.setFields({
-          //     phoneNum: {
-          //       value: values.phoneNum,
-          //       errors: [new Error('此手机号已注册企业，不可加入企业！')],
-          //     },
-          //   });
-          // }
           if(this.props.error && (this.props.error.get('message') === '验证码错误' || this.props.error.get('message') === '验证码已失效')) {
             this.props.form.setFields({
               verificationCode: {
