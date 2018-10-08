@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import styles from './loginLayout.scss';
-import { loginAction } from '../../constants/actionTypes/loginAction';
+import { loginAction } from './loginAction';
 import PropTypes from 'prop-types';
 import Login from './Login';
 import Register from './Register';

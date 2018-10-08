@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import DeviceItem from './DeviceItem';
-import {Select, Modal} from 'antd';
+import { Select, Modal } from 'antd';
 const Option = Select.Option;
 import styles from './style.scss';
 
@@ -19,6 +19,8 @@ class DeviceNameModal extends Component {
     onCancel: PropTypes.func,
     onChangeArea: PropTypes.func,
     loadDeviceList: PropTypes.func,
+    firstPartitionCode: PropTypes.string,
+    deviceTypeCode:PropTypes.string,
   }
 
   static defaultProps = {
@@ -33,9 +35,10 @@ class DeviceNameModal extends Component {
   }
 
   componentDidMount() {
-    const{deviceAreaItems}=this.props;
-    const defaultValue= deviceAreaItems.toJS().slice(0,1)[0].deviceCode;
-    this.props.loadDeviceList(defaultValue);
+    // const{deviceAreaItems}=this.props;
+    // const defaultValue= deviceAreaItems.toJS().slice(0,1)[0].deviceCode;
+    // this.props.loadDeviceList(defaultValue);
+    this.props.loadDeviceList(this.props.deviceAreaCode)
   }
 
   onSelectItem = (value) => {
@@ -67,14 +70,14 @@ class DeviceNameModal extends Component {
     return this.props.deviceItems.map((item, index) => {
       return (
         <DeviceItem
-          key={'device'+index}
+          key={'device' + index}
           item={item}
           selected={selectedDeviceCode === item.get('deviceCode')}
           onSelect={this.onSelectItem}
-       />
+        />
       );
     });
-    
+
   }
 
   // renderTypeItems() {
@@ -88,23 +91,22 @@ class DeviceNameModal extends Component {
   // }
 
   renderAreaItems() {
-    let {deviceAreaItems}=this.props;
-    deviceAreaItems=deviceAreaItems.toJS();
+    let { deviceAreaItems } = this.props;
+    deviceAreaItems = deviceAreaItems.toJS();
     return deviceAreaItems.map((item, index) => {
       return (
         <Option key={item.deviceCode} value={item.deviceCode}>
           {item.deviceName}
-        </Option>                  
+        </Option>
       );
     });
   }
 
   render() {
-    let {deviceAreaItems}=this.props;
-   
-    
-    const defaultValue= deviceAreaItems.toJS().slice(0,1)[0].deviceCode;
-    
+    let { firstPartitionCode } = this.props;
+    firstPartitionCode=this.props.deviceType==='汇流箱'?firstPartitionCode:'';
+
+
     return (
       <Modal
         visible={this.props.show}
@@ -132,15 +134,15 @@ class DeviceNameModal extends Component {
             {this.props.deviceAreaItems && this.props.deviceAreaItems.size > 0 &&
               <div>
                 所属分区
-                <Select 
-                  onChange={(value)=>{
+                <Select
+                  onChange={(value) => {
                     this.onChangeArea(value)
                   }}
                   placeholder="请选择"
                   style={{ width: 112, marginLeft: 8 }}
-                  defaultValue={defaultValue}
-                  //value={this.state.selectedDeviceAreaCode !== '' ? this.state.selectedDeviceAreaCode : this.props.deviceAreaCode}
-                  >
+                  defaultValue={firstPartitionCode}
+                // value={this.state.selectedDeviceAreaCode !== '' ? this.state.selectedDeviceAreaCode : this.props.deviceAreaCode}
+                >
 
                   {this.renderAreaItems()}
                 </Select>

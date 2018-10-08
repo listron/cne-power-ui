@@ -1,5 +1,5 @@
 import Immutable from 'immutable';
-import { loginAction } from '../../constants/actionTypes/loginAction';
+import { loginAction } from './loginAction';
 import Cookie from 'js-cookie';
 
 var initState = Immutable.fromJS({

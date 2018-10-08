@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import {message} from 'antd';
 import styles from './defectDetail.scss';
-import { ticketAction } from '../../../../../constants/actionTypes/operation/ticketAction';
+import { ticketAction } from '../../ticketAction';
 import DefectDetailForm from '../../../../../components/Operation/Ticket/Defect/DefectDetailForm/DefectDetailForm';
 import CommonBreadcrumb from '../../../../../components/Common/CommonBreadcrumb';
 import Footer from '../../../../../components/Common/Footer';

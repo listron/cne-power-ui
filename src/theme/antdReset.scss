@@ -204,8 +204,12 @@
     white-space: nowrap;
   }
 
-  .ant-checkbox-checked .ant-checkbox-inner, .ant-checkbox-indeterminate .ant-checkbox-inner{
+  .ant-checkbox-checked .ant-checkbox-inner{
     background-color: $themeColor;
+    border-color: $themeColor;
+  }
+  .ant-checkbox-indeterminate .ant-checkbox-inner{
+    background-color: #fff;
     border-color: $themeColor;
   }
   .ant-checkbox-wrapper:hover .ant-checkbox-inner, .ant-checkbox:hover .ant-checkbox-inner, .ant-checkbox-input:focus + .ant-checkbox-inner {

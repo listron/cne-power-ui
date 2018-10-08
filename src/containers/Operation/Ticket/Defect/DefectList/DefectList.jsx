@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Cookie from 'js-cookie';
 import styles from './defectList.scss';
-import { ticketAction } from '../../../../../constants/actionTypes/operation/ticketAction';
+import { ticketAction } from '../../ticketAction';
 import DefectTable from '../../../../../components/Operation/Ticket/Defect/DefectTable/DefectTable';
 import DefectFilter from '../../../../../components/Operation/Ticket/Defect/DefectFilter/DefectFilter';
 

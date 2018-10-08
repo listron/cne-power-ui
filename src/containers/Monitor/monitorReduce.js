@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux';
 
-import stationMonitor from './stationMonitor/AllStation/stationMonitorReducer';
-import deviceMonitor from './stationMonitor/DeviceMonitor/deviceMonitorReducer';
-import singleStation from './stationMonitor/SingleStation/singleStationReducer';
+import stationMonitor from './StationMonitor/AllStation/stationMonitorReducer';
+import deviceMonitor from './StationMonitor/DeviceMonitor/deviceMonitorReducer';
+import singleStation from './StationMonitor/SingleStation/singleStationReducer';
 import alarm from './Alarm/alarmReducer';
 import alarmStatistic from './Alarm/alarmStatisticReducer';
 

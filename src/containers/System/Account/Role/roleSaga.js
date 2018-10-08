@@ -3,7 +3,7 @@ import axios from 'axios';
 import Path from '../../../../constants/path';
 import { replacePathParams } from '../../../../utils';
 import Cookie from 'js-cookie';
-import { roleAction } from '../../../../constants/actionTypes/system/account/roleAction';
+import { roleAction } from './roleAction';
 import { message } from 'antd';
 
 function *changeRoleStore(action){//不是异步请求，仅修改reducer的函数

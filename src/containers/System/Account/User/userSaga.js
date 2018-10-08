@@ -2,7 +2,7 @@ import { call, put, takeLatest, select, takeEvery } from 'redux-saga/effects';
 import axios from 'axios';
 import Path from '../../../../constants/path';
 import { message } from 'antd';
-import { userAction } from '../../../../constants/actionTypes/system/account/userAction';
+import { userAction } from './userAction';
 import Cookie from 'js-cookie';
 
 // 切换页面 -> 列表页 详情页 编辑页

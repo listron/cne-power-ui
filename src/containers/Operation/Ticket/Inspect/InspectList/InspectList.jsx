@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import styles from './inspectList.scss';
 import InspectTable from '../../../../../components/Operation/Ticket/Inspect/InspectTable/InspectTable';
-import { ticketAction } from '../../../../../constants/actionTypes/operation/ticketAction';
+import { ticketAction } from '../../ticketAction';
 import InspectFilter from '../../../../../components/Operation/Ticket/Inspect/InspectFilter/InspectFilter';
 import { connect } from "react-redux";
 import PropTypes from 'prop-types';

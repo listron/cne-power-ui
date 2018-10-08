@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import styles from './role.scss';
 import Cookie from 'js-cookie';
-import { roleAction } from '../../../../constants/actionTypes/system/account/roleAction';
+import { roleAction } from './roleAction';
 import PropTypes from 'prop-types';
 import Footer from '../../../../components/Common/Footer';
 import TransitionContainer from '../../../../components/Common/TransitionContainer';

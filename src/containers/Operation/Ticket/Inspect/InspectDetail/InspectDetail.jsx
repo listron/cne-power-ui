@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { message } from 'antd';
 import InspectDetailForm from '../../../../../components/Operation/Ticket/Inspect/InspectDetailForm/InspectDetailForm';
-import { ticketAction } from '../../../../../constants/actionTypes/operation/ticketAction';
-import { commonAction } from '../../../../../constants/actionTypes/commonAction';
+import { ticketAction } from '../../ticketAction';
+import { commonAction } from '../../../../alphaRedux/commonAction';
 
 class InspectDetail extends Component{
   static propTypes = {
@@ -131,9 +131,9 @@ const mapDispatchToProps = (dispatch) => ({
   transformDefect: payload => dispatch({ type: ticketAction.TRANSFORM_DEFECT_SAGA, payload}),
   setInspectCheck: payload => dispatch({ type: ticketAction.SET_INSPECT_CHECK_SAGA, payload}),
   finishInspect: payload => dispatch({ type: ticketAction.FINISH_INSPECT_SAGA, payload}),
-  loadDeviceTypeList: payload => dispatch({ type: commonAction.GET_STATION_DEVICETYPES_SAGA, payload}),
-  loadDeviceAreaList: payload => dispatch({ type: commonAction.GET_PARTITIONS_SAGA, payload}),
-  loadDeviceList: payload => dispatch({ type: commonAction.GET_DEVICES_SAGA, payload}),
+  loadDeviceTypeList: payload => dispatch({ type: commonAction.getStationDeviceTypes, payload}),
+  loadDeviceAreaList: payload => dispatch({ type: commonAction.getPartition, payload}),
+  loadDeviceList: payload => dispatch({ type: commonAction.getDevices, payload}),
   setInspectId: payload => dispatch({ type: ticketAction.SET_INSPECT_ID_SAGA, payload }),
   onDeleteAbnormal: payload => dispatch({ type: ticketAction.DELETE_ABNORMAL_SAGA, payload }),
   getInspectStandard: payload => dispatch({ type: ticketAction.GET_INSPECT_STANDARD_SAGA, payload}),
