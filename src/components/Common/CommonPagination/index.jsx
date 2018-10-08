@@ -52,7 +52,8 @@ class CommonPagination extends Component {
   }
   
   onPageSizeChange = (pageSize) => { // 每页条数变化
-    let { currentPage, total } = this.state;
+    let { currentPage } = this.state;
+    const { total } = this.props;
     this.setState({ pageSize });
     this.props.onPaginationChange({
       pageSize,
