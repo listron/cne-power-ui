@@ -14,6 +14,8 @@ var initState = Immutable.fromJS({
   devices: [],
   partitions: [],
   allDepartmentData: [], // 企业下所有部门(含层级关系)
+  sliceDevices:[],//光伏组件截取的设备数
+  slicePartitionCode:'',//光伏组件截取的第一项
 });
 
 const defectReducer = (state = initState, action) => {

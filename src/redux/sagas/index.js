@@ -3,11 +3,14 @@ import { watchCommon } from './commonSaga';
 
 import { watchLogin } from '../../containers/Login/loginSaga';
 
-import { watchDefect } from './operation/ticket/defectSaga'
+import { watchDefect } from '../../containers/Operation/Ticket/Defect/defectSaga';
 
-import { watchInspect } from './operation/ticket/inspectSaga';
 
-import { watchChangeShowContainer } from './operation/ticket/ticketSaga';
+import { watchInspect } from '../../containers/Operation/Ticket/Inspect/inspectSaga';
+
+
+import { watchChangeShowContainer } from '../../containers/Operation/Ticket/ticketSaga';
+
  
 import { watchEnterprise } from '../../containers/System/Account/Enterprise/enterpriseSaga';
 import { watchDepartment } from '../../containers/System/Account/Department/departmentSaga';
