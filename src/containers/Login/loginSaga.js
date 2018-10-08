@@ -104,7 +104,8 @@ function *getVerificationCode(action){
 function *phoneCodeLogin(action){
   const { params } = action;
   const url = Path.basePaths.APIBasePath + Path.APISubPaths.phoneCodeLogin;
-  yield put({ type: loginAction.LOGIN_FETCH})
+  yield put({ type: loginAction.LOGIN_FETCH});
+  console.log(params);
   try{
     const response = yield call(axios, {
       method: 'post',
@@ -151,9 +152,7 @@ function *phoneCodeLogin(action){
             }
           });
         }
-        // else if(data.auto==='0' && data.enterpriseId!==null){//正常用户 直接登录
-        //   params.history.push('/monitor/station');
-        // }
+
         yield put({
           type: loginAction.PHONE_CODE_LOGIN_SUCCESS,
           params, //params为请求传入的值
@@ -185,14 +184,19 @@ function *phoneCodeLogin(action){
 function *phoneCodeRegister(action){
   const { params } = action;
   let url = Path.basePaths.APIBasePath + Path.APISubPaths.phoneCodeRegister;
+  console.log(params);
   try{
     const response = yield call(axios.post, url, {
       phoneNum: params.phoneNum, 
       verificationCode: params.verificationCode,
     });
-    if(response.data.code === '00000' || response.data.code === '20001'){
+    console.log(response.data);
+    if(response.data.code === '00000'){
       yield put({type: loginAction.PHONE_CODE_REGISTER_FAIL, data: response.data});
-    }else{
+    }else if(response.data.code === '20001'){
+      yield put({type: loginAction.PHONE_CODE_LOGIN_SAGA, params});
+    }
+    else{
       yield put({type: loginAction.PHONE_CODE_LOGIN_SAGA, params});
     }
   }catch(e){
