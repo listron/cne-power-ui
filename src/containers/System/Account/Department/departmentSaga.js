@@ -84,7 +84,7 @@ function *deleteDepartment(action){  // 删除部门
         payload: { enterpriseId: payload.enterpriseId},
       })
       yield put({
-        type:  departmentAction.GET_DEPARTMENT_LIST_SAGA,
+        type:  departmentAction.getDepartmentList,
         payload: params,
       });
     }
@@ -244,7 +244,7 @@ function *addDepartmentInfo(action){//新建部门信息
         payload: { enterpriseId: payload.enterpriseId},
       })
       yield put({
-        type:  departmentAction.GET_DEPARTMENT_LIST_SAGA,
+        type:  departmentAction.getDepartmentList,
         payload: params,
       });
     }else{
@@ -301,7 +301,7 @@ function *editDepartmentInfo(action){//编辑部门信息
         pageSize: state.system.department.get('pageSize'),
       }));
       yield put({
-        type:  departmentAction.GET_DEPARTMENT_LIST_SAGA,
+        type:  departmentAction.getDepartmentList,
         payload: params,
       });
     }
@@ -334,7 +334,7 @@ function *setDepartmentUser(action) {
       const departmentId = yield select(state => state.system.department.getIn(['departmentDetail', 'departmentId']));
       if(showPage === 'detail') {
         yield put({
-          type:  departmentAction.GET_DEPARTMENT_DETAIL_SAGA,
+          type:  departmentAction.getDepartmentDetail,
           payload:{
             departmentId: departmentId,
           }
@@ -363,7 +363,7 @@ function *setDepartmentStation(action) {
       const departmentId = yield select(state => state.system.department.getIn(['departmentDetail', 'departmentId']));
       if(showPage === 'detail') {
         yield put({
-          type:  departmentAction.GET_DEPARTMENT_DETAIL_SAGA,
+          type:  departmentAction.getDepartmentDetail,
           payload:{
             departmentId: departmentId,
           }
@@ -381,7 +381,7 @@ function *setDepartmentStation(action) {
         pageSize: state.system.department.get('pageSize'),
       }));
       yield put({
-        type:  departmentAction.GET_DEPARTMENT_LIST_SAGA,
+        type:  departmentAction.getDepartmentList,
         payload: params,
       });
     }
@@ -393,16 +393,16 @@ function *setDepartmentStation(action) {
 
 export function* watchDepartment() {
   yield takeLatest(departmentAction.CHANGE_DEPARTMENT_STORE_SAGA, changeDepartmentStore);
-  yield takeLatest(departmentAction.GET_DEPARTMENT_LIST_SAGA, getDepartmentList);
-  yield takeLatest(departmentAction.DELETE_DEPARTMENT_SAGA,deleteDepartment);
-  yield takeLatest(departmentAction.GET_DEPARTMENT_USER_SAGA,getDepartmentUser);
+  yield takeLatest(departmentAction.getDepartmentList, getDepartmentList);
+  yield takeLatest(departmentAction.deleteDepartment,deleteDepartment);
+  yield takeLatest(departmentAction.getDepartmentUser,getDepartmentUser);
   yield takeLatest(departmentAction.GET_ALL_DEPARTMENT_SAGA,getAllDepartment);
   yield takeLatest(departmentAction.GET_DEPARTMENT_STATION_SAGA,getDepartmentStation);
-  yield takeLatest(departmentAction.GET_DEPARTMENT_DETAIL_SAGA, getDepartmentDetail);
-  yield takeLatest(departmentAction.GET_OTHER_PAGE_DEPARTMENT_DETAIL_SAGA,getOtherPageDetail);
-  yield takeLatest(departmentAction.ADD_DEPARTMENT_INFO_SAGA, addDepartmentInfo);
-  yield takeLatest(departmentAction.EDIT_DEPARTMENT_INFO_SAGA,editDepartmentInfo);
-  yield takeLatest(departmentAction.SET_DEPARTMENT_USER_SAGA,setDepartmentUser);
+  yield takeLatest(departmentAction.getDepartmentDetail, getDepartmentDetail);
+  yield takeLatest(departmentAction.getOtherPageDetail,getOtherPageDetail);
+  yield takeLatest(departmentAction.addDepartmentInfo, addDepartmentInfo);
+  yield takeLatest(departmentAction.editDepartmentInfo,editDepartmentInfo);
+  yield takeLatest(departmentAction.setDepartmentUser,setDepartmentUser);
   yield takeLatest(departmentAction.SET_DEPARTMENT_STATION_SAGA,setDepartmentStation);
 }
 

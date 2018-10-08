@@ -124,17 +124,17 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   changeDepartmentStore: payload => dispatch({ type: departmentAction.CHANGE_DEPARTMENT_STORE_SAGA, payload }),
-  deleteDepartment: payload => dispatch({ type: departmentAction.DELETE_DEPARTMENT_SAGA, payload }),
-  getDepartmentList: payload => dispatch({ type: departmentAction.GET_DEPARTMENT_LIST_SAGA, payload }),
-  getDepartmentDetail: payload => dispatch({ type: departmentAction.GET_DEPARTMENT_DETAIL_SAGA, payload }),
-  getOtherPageDetail: (payload, { previous }) => dispatch({ type: departmentAction.GET_OTHER_PAGE_DEPARTMENT_DETAIL_SAGA, payload, previous }),
-  getDepartmentUser: payload => dispatch({ type: departmentAction.GET_DEPARTMENT_USER_SAGA, payload }),
+  deleteDepartment: payload => dispatch({ type: departmentAction.deleteDepartment, payload }),
+  getDepartmentList: payload => dispatch({ type: departmentAction.getDepartmentList, payload }),
+  getDepartmentDetail: payload => dispatch({ type: departmentAction.getDepartmentDetail, payload }),
+  getOtherPageDetail: (payload, { previous }) => dispatch({ type: departmentAction.getOtherPageDetail, payload, previous }),
+  getDepartmentUser: payload => dispatch({ type: departmentAction.getDepartmentUser, payload }),
   getAllDepartment: payload => dispatch({ type: departmentAction.GET_ALL_DEPARTMENT_SAGA, payload }),
   getDepartmentStation: payload => dispatch({ type: departmentAction.GET_DEPARTMENT_STATION_SAGA, payload }),
-  setDepartmentUser: payload => dispatch({ type: departmentAction.SET_DEPARTMENT_USER_SAGA, payload }),
+  setDepartmentUser: payload => dispatch({ type: departmentAction.setDepartmentUser, payload }),
   setDepartmentStation: payload => dispatch({ type: departmentAction.SET_DEPARTMENT_STATION_SAGA, payload }),
-  addDepartmentInfo: payload => dispatch({ type: departmentAction.ADD_DEPARTMENT_INFO_SAGA, payload }),
-  editDepartmentInfo: payload => dispatch({ type: departmentAction.EDIT_DEPARTMENT_INFO_SAGA, payload })
+  addDepartmentInfo: payload => dispatch({ type: departmentAction.addDepartmentInfo, payload }),
+  editDepartmentInfo: payload => dispatch({ type: departmentAction.editDepartmentInfo, payload })
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Department);
