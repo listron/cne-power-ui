@@ -20,6 +20,7 @@ class DeviceName extends Component {
     onChange: PropTypes.func,
     loadDeviceList: PropTypes.func,
     onChangeArea: PropTypes.func,
+    firstPartitionCode:PropTypes.string,
   }
 
   constructor(props) {
@@ -62,15 +63,6 @@ class DeviceName extends Component {
   }
 
   getDeviceItems() {
-    // let { filteredSelectedStation } = this.state;
-    // filteredSelectedStation=filteredSelectedStation.toJS().slice(0,20);
-    // return filteredSelectedStation.map((item, index) => {
-    //   return (
-    //     <Option key={item.deviceCode} value={item.deviceCode}>
-    //       {item.deviceName}
-    //     </Option>
-    //   )
-    // })
 
     let { filteredSelectedStation } = this.state;
     filteredSelectedStation = filteredSelectedStation.toJS();
@@ -124,6 +116,7 @@ class DeviceName extends Component {
   render() {
     let options = this.getDeviceItems();
     const { checkedStationName } = this.state;
+    console.log(this.props.deviceItems);
 
     return (
       <div className={styles.deviceName}>
@@ -145,12 +138,13 @@ class DeviceName extends Component {
           deviceCode={this.props.value}
           deviceAreaCode={this.props.deviceAreaCode}
           deviceAreaItems={this.props.deviceAreaItems}
-          
+          deviceItems={this.props.deviceItems}
           onSelectDevice={this.props.onChange}
           onCancel={this.onCloseDeviceNameModal}
           loadDeviceList={this.props.loadDeviceList}
           onChangeArea={this.props.onChangeArea}
-          {...this.props}
+         
+          firstPartitionCode={this.props.firstPartitionCode}
         />}
       </div>
     );

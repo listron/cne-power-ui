@@ -164,16 +164,20 @@ class TmpForm extends Component {
     if (areaCode !== '') {
       params.partitionCode = areaCode;
     }
+    
     this.props.getDevices(params);
+
   }
 
   render() {
-    const { stations, deviceTypes, devices, defectTypes, deviceItems, defectDetail, showContainer,sliceDeviceItems,firstPartitionCode } = this.props;
+    let { stations, deviceTypes, devices, defectTypes, deviceItems, defectDetail, showContainer,sliceDeviceItems,firstPartitionCode } = this.props;
     const { getFieldDecorator, getFieldValue } = this.props.form;
     const defectFinished = getFieldValue('defectSolveResult') === '0';
     const editDefect = showContainer === 'edit';
     const stationCode = this.props.form.getFieldValue('stations') ? this.props.form.getFieldValue('stations')[0] ? this.props.form.getFieldValue('stations')[0].stationCode : [] : [];
     const deviceTypeCode = this.props.form.getFieldValue('deviceTypeCode')?this.props.form.getFieldValue('deviceTypeCode'):'';
+    
+     //const deviceItemsData=deviceTypeCode===202&&this.params.partitionsCode===firstPartitionCode?sliceDeviceItems:deviceItems;
     const deviceItemsData=deviceTypeCode===202?sliceDeviceItems:deviceItems;
  
 
