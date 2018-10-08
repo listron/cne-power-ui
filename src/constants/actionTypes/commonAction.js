@@ -18,6 +18,7 @@ module.exports = {
 
     GET_ALL_DEPARTMENT_SAGA: null, // 获取企业下所有部门(含层级关系);
     GET_COMMON_FETCH_SUCCESS: null, // 普通api请求成功
+    GET_SLICE_DEVICES_SAGA:null,//获取光伏截取数据
   })
 }
 
