@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import styles from './alarmManage.scss';
-import { alarmManageAction } from '../../../../constants/actionTypes/system/station/alarmManageAction';
+import { alarmManageAction } from './alarmManageAction';
 import { commonAction } from '../../../../constants/actionTypes/commonAction';
 import { stationManageAction } from '../../../../constants/actionTypes/system/station/stationManageAction';
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';

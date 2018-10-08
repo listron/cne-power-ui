@@ -1,6 +1,6 @@
 import Immutable from 'immutable';
 
-import { alarmManageAction } from '../../../../constants/actionTypes/system/station/alarmManageAction';
+import { alarmManageAction } from './alarmManageAction';
 
 var initState = Immutable.fromJS({
   loading: false,
