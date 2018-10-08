@@ -17,6 +17,11 @@ export const PVStationTypes = [
     deviceConfig: 'confluencebox',
     icon: 'iconfont icon-hl'
   },{
+    deviceTypeCode: '207',
+    deviceTypeName: '交流汇流箱',
+    deviceConfig: 'confluencebox',
+    icon: 'iconfont icon-hl'
+  },{
     deviceTypeCode: '304',
     deviceTypeName: '箱变',
     deviceConfig: 'boxtransformer',

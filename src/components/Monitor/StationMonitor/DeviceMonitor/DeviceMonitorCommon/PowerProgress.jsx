@@ -10,8 +10,8 @@ function PowerProgress({ devicePower, deviceCapacity }) {
   return (
     <div className={styles.powerProgress} >
       <div className={styles.progressNum}>
-        <span className={styles.leftText}>{showDevicePower}</span>
-        <span className={styles.rightText}>{showCapacityPower}</span>
+        <span className={styles.leftText}>{showDevicePower||'--'}</span>
+        <span className={styles.rightText}>{showCapacityPower||'--'}</span>
       </div>
       <Progress strokeColor="#199475" strokeWidth={3} percent={percent} showInfo={false} />
       <div className={styles.progressText}>

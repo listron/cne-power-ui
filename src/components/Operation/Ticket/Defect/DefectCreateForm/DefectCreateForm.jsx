@@ -35,6 +35,9 @@ class TmpForm extends Component {
     deviceItems: PropTypes.object,
     commonList: PropTypes.object,
     error: PropTypes.object,
+    getSliceDevices: PropTypes.func,
+    sliceDeviceItems:PropTypes.object,
+    firstPartitionCode:PropTypes.string,
   };
   constructor(props) {
     super(props);
@@ -70,8 +73,16 @@ class TmpForm extends Component {
       stationCode: this.props.form.getFieldValue('stations')[0].stationCode,
       deviceTypeCode
     };
-    this.props.getDevices(params);
-    this.props.getStationAreas(params);
+    
+    if(deviceTypeCode===202){
+       this.props.getSliceDevices(params);
+       //this.props.getStationAreas(params);
+     }else{
+       this.props.getDevices(params);
+       this.props.getStationAreas(params);
+      
+     }
+ 
   }
 
   onDefectCreate = (isContinueAdd) => {
@@ -153,16 +164,23 @@ class TmpForm extends Component {
     if (areaCode !== '') {
       params.partitionCode = areaCode;
     }
+    
     this.props.getDevices(params);
+
   }
 
   render() {
-    const { stations, deviceTypes, devices, defectTypes, deviceItems, defectDetail, showContainer } = this.props;
+    let { stations, deviceTypes, devices, defectTypes, deviceItems, defectDetail, showContainer,sliceDeviceItems,firstPartitionCode } = this.props;
     const { getFieldDecorator, getFieldValue } = this.props.form;
     const defectFinished = getFieldValue('defectSolveResult') === '0';
     const editDefect = showContainer === 'edit';
     const stationCode = this.props.form.getFieldValue('stations') ? this.props.form.getFieldValue('stations')[0] ? this.props.form.getFieldValue('stations')[0].stationCode : [] : [];
     const deviceTypeCode = this.props.form.getFieldValue('deviceTypeCode')?this.props.form.getFieldValue('deviceTypeCode'):'';
+     //const deviceItemsData=deviceTypeCode===202&&this.params.partitionsCode===firstPartitionCode?sliceDeviceItems:deviceItems;
+    //  console.log(deviceTypeCode===202&&!this.state.deviceAreaCode);
+    //const deviceItemsData=deviceTypeCode===202?sliceDeviceItems:deviceItems;
+    const deviceItemsData=deviceTypeCode===202&&!this.state.deviceAreaCode?sliceDeviceItems:deviceItems;
+ 
 
     const defaultStations = editDefect ? stations.filter(e => e.stationCode === defectDetail.stationCode) : [];
     const defaultDeviceType = editDefect ? deviceTypes.find(e => e.deviceTypeCode === defectDetail.deviceTypeCode) : null;
@@ -206,17 +224,18 @@ class TmpForm extends Component {
               initialValue: defaultDevice && defaultDevice.deviceCode || undefined
             })(
               <DeviceName
+                {...this.props}
                 disabled={deviceItems.size === 0}
                 placeholder="输入关键字快速查询"
                 deviceAreaItems={this.props.deviceAreaItems}
-                deviceItems={this.props.deviceItems}
+                deviceItems={deviceItemsData}
                 stationCode={stationCode}
                 deviceTypeCode={deviceTypeCode}
                 deviceAreaCode={this.state.deviceAreaCode}
                 deviceType={this.getDeviceType(getFieldValue('deviceTypeCode'))}
                 onChangeArea={this.onChangeArea}
                 loadDeviceList={this.loadDeviceList}
-                {...this.props}
+                firstPartitionCode={firstPartitionCode}
               />
             )}
             <div className={styles.tipText}>(点击<i className="iconfont icon-filter" />图标可选择)</div>

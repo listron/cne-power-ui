@@ -20,6 +20,7 @@ class DeviceName extends Component {
     onChange: PropTypes.func,
     loadDeviceList: PropTypes.func,
     onChangeArea: PropTypes.func,
+    firstPartitionCode:PropTypes.string,
   }
 
   constructor(props) {
@@ -30,14 +31,7 @@ class DeviceName extends Component {
       filteredSelectedStation: Immutable.fromJS([]),
     };
   }
-  componentDidMount() {
-    // let { stationCode, deviceTypeCode, deviceAreaItems } = this.props;
-    // console.log(stationCode, deviceTypeCode);
-    // this.props.getStationAreas(stationCode, deviceTypeCode);
-    // const partitionCode = deviceAreaItems.toJS().slice(0, 1);
-    // console.log(partitionCode);
-    // this.props.getDevices(stationCode, deviceTypeCode, partitionCode);
-  }
+
   componentWillReceiveProps(nextProps) {
     const { value, deviceItems } = nextProps;
     if (value && deviceItems) {
@@ -52,17 +46,6 @@ class DeviceName extends Component {
         filteredSelectedStation: deviceItems || [],
       })
     }
-
-
-    // let { stationCode, deviceTypeCode, deviceAreaItems } = nextProps;
-    // console.log(stationCode, deviceTypeCode,deviceAreaItems.toJS());
-    // if (deviceTypeCode!==this.props.deviceTypeCode) {  
-    //   this.props.getStationAreas(stationCode, deviceTypeCode);
-    //   let partitionCode = this.props.deviceAreaItems.toJS().slice(0, 1).deviceCode;
-    //   console.log(partitionCode);
-    //   this.props.getDevices(stationCode, deviceTypeCode, partitionCode);
-    // }
-
   }
 
   onShowDeviceNameModal = () => {
@@ -80,15 +63,6 @@ class DeviceName extends Component {
   }
 
   getDeviceItems() {
-    // let { filteredSelectedStation } = this.state;
-    // filteredSelectedStation=filteredSelectedStation.toJS().slice(0,20);
-    // return filteredSelectedStation.map((item, index) => {
-    //   return (
-    //     <Option key={item.deviceCode} value={item.deviceCode}>
-    //       {item.deviceName}
-    //     </Option>
-    //   )
-    // })
 
     let { filteredSelectedStation } = this.state;
     filteredSelectedStation = filteredSelectedStation.toJS();
@@ -142,8 +116,8 @@ class DeviceName extends Component {
   render() {
     let options = this.getDeviceItems();
     const { checkedStationName } = this.state;
-    console.log(this.props.deviceAreaItems.toJS());
-
+    console.log(this.props.deviceItems);
+  
 
     return (
       <div className={styles.deviceName}>
@@ -170,6 +144,8 @@ class DeviceName extends Component {
           onCancel={this.onCloseDeviceNameModal}
           loadDeviceList={this.props.loadDeviceList}
           onChangeArea={this.props.onChangeArea}
+         
+          firstPartitionCode={this.props.firstPartitionCode}
         />}
       </div>
     );
