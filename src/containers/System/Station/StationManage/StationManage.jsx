@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import styles from './stationManage.scss';
-import { stationManageAction } from '../../../../constants/actionTypes/system/station/stationManageAction';
+import { stationManageAction } from './stationManageAction';
 import { commonAction } from '../../../../constants/actionTypes/commonAction';
 import TransitionContainer from '../../../../components/Common/TransitionContainer';
 import StationManageMain from '../../../../components/System/Station/StationManage/StationManageMain/StationManageMain';

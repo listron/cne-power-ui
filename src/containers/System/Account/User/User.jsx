@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import styles from './user.scss';
-import { userAction } from '../../../../constants/actionTypes/system/account/userAction';
+import { userAction } from './userAction';
 import PropTypes from 'prop-types';
 import TransitionContainer from '../../../../components/Common/TransitionContainer';
 import UserSide from '../../../../components/System/Account/User/UserSide/UserSide';

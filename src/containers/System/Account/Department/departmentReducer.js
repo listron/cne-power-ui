@@ -1,6 +1,6 @@
 import Immutable from 'immutable';
 
-import { departmentAction } from '../../../../constants/actionTypes/system/account/departmentAction';
+import { departmentAction } from './departmentAction';
 
 var initState = Immutable.fromJS({
   loading: false,

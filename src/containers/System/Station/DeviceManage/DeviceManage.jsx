@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import styles from './deviceManage.scss';
-import { deviceManageAction } from '../../../../constants/actionTypes/system/station/deviceManageAction';
+import { deviceManageAction } from './deviceManageAction';
 import { commonAction } from '../../../../constants/actionTypes/commonAction';
-import { stationManageAction } from '../../../../constants/actionTypes/system/station/stationManageAction';
+import { stationManageAction } from '../StationManage/stationManageAction';
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import StationManageTip from '../../../../components/System/Station/Common/StationManageTip';
 import DeviceManageSearch from '../../../../components/System/Station/DeviceManage/DeviceManageSearch';

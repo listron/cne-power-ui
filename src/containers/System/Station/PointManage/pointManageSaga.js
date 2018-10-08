@@ -2,7 +2,7 @@ import { call, put, takeLatest } from 'redux-saga/effects';
 import axios from 'axios';
 import { message } from 'antd';
 import Path from '../../../../constants/path';
-import { pointManageAction } from '../../../../constants/actionTypes/system/station/pointManageAction';
+import { pointManageAction } from './pointManageAction';
 
 function *changePointManageStore(action){ // 存储payload指定参数，替换reducer-store属性。
   const { payload } = action;

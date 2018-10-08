@@ -2,9 +2,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import styles from './pointManage.scss';
-import { pointManageAction } from '../../../../constants/actionTypes/system/station/pointManageAction';
+import { pointManageAction } from './pointManageAction';
 import { commonAction } from '../../../../constants/actionTypes/commonAction';
-import { stationManageAction } from '../../../../constants/actionTypes/system/station/stationManageAction';
+import { stationManageAction } from '../StationManage/stationManageAction';
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import StationManageTip from '../../../../components/System/Station/Common/StationManageTip';
 import PointManageSearch from '../../../../components/System/Station/PointManage/PointManageSearch';
