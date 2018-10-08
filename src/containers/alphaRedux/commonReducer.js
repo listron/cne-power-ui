@@ -1,6 +1,6 @@
 import Immutable from 'immutable';
 
-import { commonAction } from '../../constants/actionTypes/commonAction';
+import { commonAction } from './commonAction';
 
 var initState = Immutable.fromJS({
   enterpriseId:'',

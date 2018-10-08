@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import styles from './alarmManage.scss';
 import { alarmManageAction } from './alarmManageAction';
-import { commonAction } from '../../../../constants/actionTypes/commonAction';
+import { commonAction } from '../../../alphaRedux/commonAction';
 import { stationManageAction } from '../StationManage/stationManageAction';
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import StationManageTip from '../../../../components/System/Station/Common/StationManageTip';

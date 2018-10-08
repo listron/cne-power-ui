@@ -3,7 +3,7 @@ import axios from 'axios';
 import { stringify } from 'qs';
 import Path from '../../constants/path';
 import { message } from 'antd';
-import { otherAction } from '../../constants/actionTypes/otherAction';
+import { otherAction } from './otherAction';
 
 function *changeOtherStore(action){
   let { payload } = action;

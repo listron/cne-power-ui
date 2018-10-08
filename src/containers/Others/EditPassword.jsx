@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import styles from './editPassword.scss';
 import EditPasswordForm from '../../components/Others/EditPasswordForm';
-import { otherAction } from '../../constants/actionTypes/otherAction';
+import { otherAction } from '../alphaRedux/otherAction';
 import { connect } from 'react-redux';
 
 class EditPassword extends Component {

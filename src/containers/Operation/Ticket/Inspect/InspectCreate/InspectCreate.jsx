@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import InspectCreateForm from '../../../../../components/Operation/Ticket/Inspect/InspectCreateForm/InspectCreateForm';
-import { commonAction } from '../../../../../constants/actionTypes/commonAction';
+import { commonAction } from '../../../../alphaRedux/commonAction';
 import { ticketAction } from '../../../../../constants/actionTypes/operation/ticketAction';
 import { Icon } from 'antd';
 import styles from './inspectCreate.scss';

@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { message } from 'antd';
 import InspectDetailForm from '../../../../../components/Operation/Ticket/Inspect/InspectDetailForm/InspectDetailForm';
 import { ticketAction } from '../../../../../constants/actionTypes/operation/ticketAction';
-import { commonAction } from '../../../../../constants/actionTypes/commonAction';
+import { commonAction } from '../../../../alphaRedux/commonAction';
 
 class InspectDetail extends Component{
   static propTypes = {

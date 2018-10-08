@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import styles from './defectCreate.scss';
 import { Icon } from 'antd';
-import { commonAction } from '../../../../../constants/actionTypes/commonAction';
+import { commonAction } from '../../../../alphaRedux/commonAction';
 import { ticketAction } from '../../../../../constants/actionTypes/operation/ticketAction';
 import DefectCreateForm from '../../../../../components/Operation/Ticket/Defect/DefectCreateForm/DefectCreateForm';
 import WarningTip from '../../../../../components/Common/WarningTip';
