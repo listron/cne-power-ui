@@ -1,5 +1,5 @@
 import Immutable from 'immutable';
-import { ticketAction } from '../../../../constants/actionTypes/operation/ticketAction';
+import { ticketAction } from '../ticketAction';
 
 var initState = Immutable.fromJS({
   loading: false,
