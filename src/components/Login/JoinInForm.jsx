@@ -55,6 +55,12 @@ class JoinInForm extends Component{
     });
   }
 
+  componentWillUnmount = () => {
+    this.props.changeLoginStore({
+      loginData: {},
+    });
+  }
+
   onJoinEnterprise = () => {
     this.props.form.validateFields(['username','password','confirmPwd','userAgreement',],(err,values) => {
       if(!err){
@@ -137,17 +143,18 @@ class JoinInForm extends Component{
 
   phoneCodeRegister = () => {
     this.props.form.validateFields(['phoneNum','verificationCode',], (err, values) => {
+      console.log(err);
       if(!err){
         setTimeout(() => {
-          if(this.props.error && this.props.error.get('code') === '20001') {
-            this.props.form.setFields({
-              phoneNum: {
-                value: values.phoneNum,
-                errors: [new Error('此手机号已注册企业，不可加入企业！')],
-              },
-            });
-          }
-          // server validate
+          // const { enterpriseInfo } = this.props;
+          // if(enterpriseInfo.get('enterpriseId') !== Cookie.get('enterpriseId')){
+          //   this.props.form.setFields({
+          //     phoneNum: {
+          //       value: values.phoneNum,
+          //       errors: [new Error('此手机号已注册企业，不可加入企业！')],
+          //     },
+          //   });
+          // }
           if(this.props.error && (this.props.error.get('message') === '验证码错误' || this.props.error.get('message') === '验证码已失效')) {
             this.props.form.setFields({
               verificationCode: {
@@ -157,7 +164,7 @@ class JoinInForm extends Component{
             });
           }      
         }, 500);
-        this.props.phoneCodeRegister({...values,joinStep: 3, isNotLogin: 1 });
+        this.props.phoneCodeRegister({...values,joinStep: 3, isNotLogin: 1});
         
       }
     })
@@ -184,8 +191,6 @@ class JoinInForm extends Component{
   renderStepOne(formItemLayout, tailFormItemLayout) {
     const { getFieldDecorator, getFieldsError } = this.props.form;
     const { enterpriseName, enterpriseInfo } = this.props;
-    console.log(enterpriseInfo);
-    console.log(Object.keys(enterpriseInfo).length);
     const { showEnterpriseInfo } = this.state;
     return (
       <Form onSubmit={this.getEnterpriseInfo} className={styles.joinStepOne} >
@@ -201,7 +206,7 @@ class JoinInForm extends Component{
         </FormItem>
         {showEnterpriseInfo && <Card className={styles.enterpriseInfo} >
           {enterpriseName === null ? <div>没有此企业，请重新输入</div> : <div>点击确认要加入的企业</div>}
-          {Object.keys(enterpriseInfo).length>0 && enterpriseName === null ? <div></div> : <Button className={styles.enterpriseBtn} style={{marginTop: '40px'}} onClick={this.changeJoinStep }>{enterpriseName}</Button>}
+          {Object.keys(enterpriseInfo).length>0 && enterpriseName === null ? <div></div> : <Button className={styles.enterpriseBtn} onClick={this.changeJoinStep }>{enterpriseName}</Button>}
           <div className={styles.enterpriseBack} ><Icon type="arrow-left" /><span  onClick={this.handleCancel}>返回</span></div>
         </Card>}
       </Form>
@@ -210,7 +215,6 @@ class JoinInForm extends Component{
   renderStepTwo() {
     const { getFieldDecorator } = this.props.form;
     const { enterpriseIdToken,enterpriseName, enterpriseLogo,inviteValid } = this.props;
-    console.log(enterpriseIdToken);
     const { timeValue } = this.state;
     const defaultLogo = "/img/nopic.png";
     return (
@@ -248,7 +252,7 @@ class JoinInForm extends Component{
             <FormItem>
               <Button type="primary" htmlType="submit">下一步</Button>
             </FormItem>
-            {(enterpriseIdToken !== null && enterpriseIdToken !== undefined) ? <p style="text-align:center">您已加入企业，请直接登录</p> : null}
+            {(enterpriseIdToken !== null && enterpriseIdToken !== undefined) ? <p style={{textAlign: 'center'}}>您已加入企业，请直接登录</p> : null}
           </Form>
         :
           <div className={styles.inviteInvalid} >
