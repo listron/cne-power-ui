@@ -1,5 +1,5 @@
 import Immutable from 'immutable';
-import { alarmAction } from '../../../constants/actionTypes/monitor/alarmAction';
+import { alarmAction } from './alarmAction';
 
 var initState = Immutable.fromJS({
   loading: false,

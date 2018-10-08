@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { alarmAction } from '../../../constants/actionTypes/monitor/alarmAction';
+import { alarmAction } from './alarmAction';
 import HistoryAlarmTable from '../../../components/Monitor/Alarm/HistoryAlarm/HistoryAlarmTable';
 import HistoryAlarmFilter from '../../../components/Monitor/Alarm/HistoryAlarm/HistoryAlarmFilter';
 import DeviceNameSearch from '../../../components/Monitor/Alarm/AlarmFilter/DeviceNameSearch';
