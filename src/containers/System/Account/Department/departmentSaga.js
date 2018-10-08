@@ -80,7 +80,7 @@ function *deleteDepartment(action){  // 删除部门
         pageSize: state.system.department.get('pageSize'),
       }));
       yield put({//重新请求所有部门信息
-        type:  departmentAction.GET_ALL_DEPARTMENT_SAGA,
+        type:  departmentAction.getAllDepartment,
         payload: { enterpriseId: payload.enterpriseId},
       })
       yield put({
@@ -240,7 +240,7 @@ function *addDepartmentInfo(action){//新建部门信息
         pageSize: state.system.department.get('pageSize'),
       }));
       yield put({//请求所有部门信息
-        type:  departmentAction.GET_ALL_DEPARTMENT_SAGA,
+        type:  departmentAction.getAllDepartment,
         payload: { enterpriseId: payload.enterpriseId},
       })
       yield put({
@@ -392,17 +392,17 @@ function *setDepartmentStation(action) {
 
 
 export function* watchDepartment() {
-  yield takeLatest(departmentAction.CHANGE_DEPARTMENT_STORE_SAGA, changeDepartmentStore);
+  yield takeLatest(departmentAction.changeDepartmentStore, changeDepartmentStore);
   yield takeLatest(departmentAction.getDepartmentList, getDepartmentList);
   yield takeLatest(departmentAction.deleteDepartment,deleteDepartment);
   yield takeLatest(departmentAction.getDepartmentUser,getDepartmentUser);
-  yield takeLatest(departmentAction.GET_ALL_DEPARTMENT_SAGA,getAllDepartment);
-  yield takeLatest(departmentAction.GET_DEPARTMENT_STATION_SAGA,getDepartmentStation);
+  yield takeLatest(departmentAction.getAllDepartment,getAllDepartment);
+  yield takeLatest(departmentAction.getDepartmentStation,getDepartmentStation);
   yield takeLatest(departmentAction.getDepartmentDetail, getDepartmentDetail);
   yield takeLatest(departmentAction.getOtherPageDetail,getOtherPageDetail);
   yield takeLatest(departmentAction.addDepartmentInfo, addDepartmentInfo);
   yield takeLatest(departmentAction.editDepartmentInfo,editDepartmentInfo);
   yield takeLatest(departmentAction.setDepartmentUser,setDepartmentUser);
-  yield takeLatest(departmentAction.SET_DEPARTMENT_STATION_SAGA,setDepartmentStation);
+  yield takeLatest(departmentAction.setDepartmentStation,setDepartmentStation);
 }
 

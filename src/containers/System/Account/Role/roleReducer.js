@@ -1,6 +1,6 @@
 import Immutable from 'immutable';
 
-import { roleAction } from '../../../../constants/actionTypes/system/account/roleAction';
+import { roleAction } from './roleAction';
 
 var initState = Immutable.fromJS({
   loading: false,
