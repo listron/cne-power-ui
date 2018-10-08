@@ -1,6 +1,6 @@
 import Immutable from 'immutable';
 
-import { deviceManageAction } from '../../../../constants/actionTypes/system/station/deviceManageAction';
+import { deviceManageAction } from './deviceManageAction';
 
 var initState = Immutable.fromJS({
   loading: false,

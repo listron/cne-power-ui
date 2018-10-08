@@ -1,6 +1,6 @@
 import Immutable from 'immutable';
 
-import { enterpriseAction } from '../../../../constants/actionTypes/system/account/enterpriseAction';
+import { enterpriseAction } from './enterpriseAction';
 
 var initState = Immutable.fromJS({
   loading: false,
@@ -20,11 +20,11 @@ var initState = Immutable.fromJS({
 
 const enterpriseReducer = (state = initState, action) => {
   switch (action.type) {
-    case enterpriseAction.ENTERPRISE_FETCH:
+    case enterpriseAction.fetching:
       return state.set('loading',true)
-    case enterpriseAction.GET_ENTERPRISE_FETCH_SUCCESS :
+    case enterpriseAction.enterpriseFetchSuccess :
       return state.merge(Immutable.fromJS(action.payload)).set('loading',false)
-    case enterpriseAction.CHANGE_ENTERPRISE_STORE:
+    case enterpriseAction.enterpriseRuducerReplace:
       return state.merge(Immutable.fromJS(action.payload))
   }
   return state;

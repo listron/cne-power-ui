@@ -2,7 +2,7 @@ import { call, put, takeLatest, select } from 'redux-saga/effects';
 import axios from 'axios';
 import { message } from 'antd';
 import Path from '../../../../constants/path';
-import { stationManageAction } from '../../../../constants/actionTypes/system/station/stationManageAction';
+import { stationManageAction } from './stationManageAction';
 
 function *changeStationManageStore(action){ // 存储payload指定参数，替换reducer-store属性。
   const { payload } = action;
@@ -226,6 +226,7 @@ function *setStationDepartment(action){ // 保存分配至指定电站的部门�
 function *getStationOfEnterprise(action){ // 根据企业id获取下面所有电站==>与用户权限无关。
   const { payload } = action;
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.getAllStationBaseInfo}/${payload.enterpriseId}`;
+  console.log(url)
   try{
     yield put({ type:stationManageAction.STATION_MANAGE_FETCH });
     const response = yield call(axios.get, url);
