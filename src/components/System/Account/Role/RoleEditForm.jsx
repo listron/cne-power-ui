@@ -117,7 +117,7 @@ class RoleEditForm extends Component {
                 }
               }
             }],
-            initialValue: isCreate || !selectedRole ? '' : selectedRole.roleDesc
+            initialValue: (isCreate || !selectedRole[0]) ? '' : selectedRole[0].roleDesc
           })(
             <Input placeholder="请输入..." />
           )}
