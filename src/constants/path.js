@@ -47,7 +47,7 @@ export default {
     phoneCodeRegister: '/v3/login/phoneregister',
     inviteUserLink: '/v3/user/link',
 
-    ticket: {
+    ticket: { // 工单
       getDefectList: '/v3/defect/worklist/pc',
       getDefectIdList: '/v3/defect/worklist/getallid',
       batchDeleteDefect: '/v3/defect/delete/batch',
@@ -78,6 +78,12 @@ export default {
       getInspectStandard:'/v3/inspect/getstandard',
       inspectCheckBatch:'/v3/inspect/check/batch',
     },
+    operation: { // 运维管理
+      getDayReportList: '/v3/performance/dailyReportList', //获取各电站日报统计列表
+      dayReportConfig: '/v3/performance/conf', // 获取日报上报必填项配置
+      dayReportDetail: '/v3/performance/detail', // 获取选中日报详情
+      dayReportUpdate: '/v3/performance/dailyReport/mulitUpdate', // 日报详情编辑
+    }, 
     system: {
       getEnterprisList: '/v3/enterprise/list',//企业列表
       getEnterprisDetail: '/v3/enterprise',//企业详情获取

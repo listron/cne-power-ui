@@ -3,14 +3,10 @@ import { watchCommon } from './alphaRedux/commonSaga';
 
 import { watchLogin } from './Login/loginSaga';
 
-import { watchDefect } from './Operation/Ticket/Defect/defectSaga';
-
-
-import { watchInspect } from './Operation/Ticket/Inspect/inspectSaga';
-
-
 import { watchChangeShowContainer } from './Operation/Ticket/ticketSaga';
-
+import { watchDefect } from './Operation/Ticket/Defect/defectSaga';
+import { watchInspect } from './Operation/Ticket/Inspect/inspectSaga';
+import { watchDayReport } from './Operation/Running/DayReport/dayReportSaga';
  
 import { watchEnterprise } from './System/Account/Enterprise/enterpriseSaga';
 import { watchDepartment } from './System/Account/Department/departmentSaga';
@@ -38,11 +34,9 @@ export default function* rootSaga() {
     watchLogin(),
     //ticket
     watchChangeShowContainer(),
-    //Defect
-    watchDefect(),
-    // 巡检
-    watchInspect(),
-    //ticket
+    watchDefect(),//Defect
+    watchInspect(),// 巡检
+    watchDayReport(), // operation- 日报
 
     //system-enterprise
     watchEnterprise(),
