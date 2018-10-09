@@ -34,7 +34,7 @@ function *getDayReportList(action){//请求日报基本列表数据
       type:  dayReportAction.dayReportFetchSuccess,
       payload:{
         ...payload,
-        departmentData: response.data.data.list || [],
+        dayReportList: response.data.data.list || [],
         totalNum,
         pageNum,
         buttonLoading: false
@@ -47,7 +47,7 @@ function *getDayReportList(action){//请求日报基本列表数据
       type:  dayReportAction.changeDayReportStore,
       payload:{
         loading: false,
-        departmentData: [],
+        dayReportList: [],
       },
     });
   }

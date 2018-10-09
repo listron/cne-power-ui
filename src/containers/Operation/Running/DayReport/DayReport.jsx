@@ -1,53 +1,71 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import TransitionContainer from '../../../../components/Common/TransitionContainer';
+import DayReportMainList from '../../../../components/Operation/Running/DayReport/DayReportMainList';
+import DayReportSide from '../../../../components/Operation/Running/DayReport/DayReportSide';
 import { dayReportAction } from './dayReportAction';
 import PropTypes from 'prop-types';
 import styles from './dayReport.scss';
 import Cookie from 'js-cookie';
+import moment from 'moment';
 
 class DayReport extends Component {
   static propTypes = {
     showPage: PropTypes.string,
+    startTime: PropTypes.string, // 日报查询月,
+    pageSize: PropTypes.number, 
+    pageNum: PropTypes.number,
+    stationType: PropTypes.number, // 筛选的电站类型
+    stationSort: PropTypes.string, // 排序方式
+    getDayReportList: PropTypes.func, // 日报列表
   }
   constructor(props) {
     super(props);
     this.state = {
-      showPage: 'list'
+      sidePage: 'report',
     }
   }
 
   componentDidMount(){
-
+    this.props.getDayReportList({
+      startTime: moment().format('YYYY-MM'),
+      pageSize: 10, 
+      pageNum: 1,
+      stationType: 2, // 筛选的电站类型
+      stationSort: '', // 排序方式
+    });
   }
 
   componentWillUnmount(){
     
   }
 
-  onShowSideChange = ({ showSidePage }) => {
+  onSidePageChange = ({ showSidePage }) => {
     this.setState({ showSidePage });
   }
 
   onToggleSide = () => {
     const { showPage } = this.props;
     this.setState({
-      showSidePage: showPage
+      sidePage: showPage
     });
   }
 
   render() {
-    const { showPage } = this.state;
+    const { showPage } = this.props;
+    const { sidePage } = this.state;
     return (
       <div className={styles.dayReport}>
-        日报主页！！！
         <div className={styles.dayReportContainer} >
+          <DayReportMainList {...this.props} />
           <TransitionContainer
-            show={false}
+            show={showPage !== 'list'}
+            onEnter={this.onToggleSide}
+            onExited={this.onToggleSide}
             timeout={500}
             effect="side"
           >
-            <div>这个！</div>
+            <DayReportSide {...this.props} sidePage={sidePage} onSidePageChange={this.onSidePageChange} />
           </TransitionContainer>
         </div>
       </div>
@@ -56,7 +74,7 @@ class DayReport extends Component {
 }
 const mapStateToProps = (state) => ({
   ...state.operation.dayReport.toJS(),
-  stations: state.common.get('stations'),
+  stations: state.common.get('stations').toJS(),
   enterpriseId: Cookie.get('enterpriseId'),
   userId: Cookie.get('userId'),
 });
