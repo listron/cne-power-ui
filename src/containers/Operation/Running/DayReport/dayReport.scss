@@ -1,0 +1,10 @@
+.dayReport{
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 100%;
+  .dayReportContainer{
+    display: flex;
+    flex: 1;
+  }
+}
