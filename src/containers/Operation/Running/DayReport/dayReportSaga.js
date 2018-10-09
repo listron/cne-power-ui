@@ -16,8 +16,8 @@ function *toChangeDayReportStore(action){ // 存储payload指定参数，替换r
 
 function *getDayReportList(action){//请求日报基本列表数据
   const { payload } = action;
-  // const url = '/mock/operation/dayReport/list';
-  const url = `${APIBasePath}${operation.getDayReportList}`
+  const url = '/mock/operation/dayReport/list';
+  // const url = `${APIBasePath}${operation.getDayReportList}`
   try{
     yield put({ type:dayReportAction.dayReportLoading });
     const response = yield call(axios.post,url,payload);
@@ -57,8 +57,8 @@ function *dayReportConfig(action){ // 日报必填项配置
   const { payload } = action;
   try{
     const { enterpriseId, module, type} = payload;
-    // const url = '/mock/operation/dayReport/config';
-    const url = `${APIBasePath}${operation.dayReportConfig}/${enterpriseId}/${module}/${type}`;
+    const url = '/mock/operation/dayReport/config';
+    // const url = `${APIBasePath}${operation.dayReportConfig}/${enterpriseId}/${module}/${type}`;
     const response = yield call(axios.get,url);
     yield put({
       type:  dayReportAction.dayReportFetchSuccess,
@@ -77,8 +77,8 @@ function *dayReportDetail(action){ // 日报详情
   try{
     yield put({ type:dayReportAction.dayReportLoading });
     const { stationCode, reportDate } = payload;
-    // const url = '/mock/operation/dayReport/detail';
-    const url = `${APIBasePath}${operation.dayReportDetail}/${stationCode}/${reportDate}`;
+    const url = '/mock/operation/dayReport/detail';
+    // const url = `${APIBasePath}${operation.dayReportDetail}/${stationCode}/${reportDate}`;
     const response = yield call(axios.get,url);
     yield put({
       type:  dayReportAction.dayReportFetchSuccess,
@@ -103,8 +103,8 @@ function *dayReportUpdate(action){ // 日报编辑
   const { payload } = action;
   try{
     yield put({ type:dayReportAction.dayReportLoading });
-    // const url = '/mock/operation/dayReport/detail';
-    const url = `${APIBasePath}${operation.dayReportUpdate}`;
+    const url = '/mock/operation/dayReport/update';
+    // const url = `${APIBasePath}${operation.dayReportUpdate}`;
     const response = yield call(axios.put,url, payload);
     if(response.data.code === '10000'){
       //重新请求列表 - todo
