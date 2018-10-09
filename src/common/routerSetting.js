@@ -66,7 +66,7 @@ const routers = [
   },{ // 运维管理-电站运行-日报
     path: '/operation/running/dayReport',
     exact: true,
-    component: Building,
+    component: DayReport,
   }, {
     path: '/operation/experience',
     exact: true,

@@ -104,8 +104,8 @@
             }
             .icon-alarm{
               position: absolute;
-              bottom: 0;
-              right: 0;
+              bottom: 10px;
+              right: 2px;
               width: 10px;
               height: 10px;
               color: #a42b2c;
@@ -172,13 +172,14 @@
           margin: 5px;
           position: relative;
           :global{
-            .icon-xb{
+            .iconfont{
               font-size: 22px;
+              color: #dfdfdf;
             }
             .icon-alarm{
               position: absolute;
-              bottom: 0;
-              right: 0;
+              bottom: 10px;
+              right: 2px;
               width: 10px;
               height: 10px;
               color: #a42b2c;
