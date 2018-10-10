@@ -1,7 +1,7 @@
 import React from "react";
 import styles from './targetTabs.scss';
 import { Tabs } from 'antd';
-import BarGraph from './commonGraph/BarGraph/index.js';
+import BarGraph from './CommonGraph/BarGraph/index.js';
 import TargetStatisticPieGraph from './TargetStatisticPieGraph.jsx';
 import StationStatisticList from './StationStatisticList.jsx';
 

@@ -6,7 +6,7 @@ import styles from './allStationStatistic.scss';
 // import AlarmStatisticByType from './AlarmStatisticByType';
 import StationSelectModal from './StationSelectModal.jsx';
 import TimeSelect from '../../../Common/TimeSelect';
-import PlanCompletionRate from './commonGraph/PlanCompletionRate';
+import PlanCompletionRate from './CommonGraph/PlanCompletionRate';
 import TargetTabs from './TargetTabs.jsx';
 
 

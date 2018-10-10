@@ -3,9 +3,8 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import styles from "./allStationAnalysis.scss";
 import PropTypes from "prop-types";
-import AllStationStatistic from '../../../../components/statisticalAnalysis/stationAnalysis/allStationAnalysis/AllStationStatistic';
-import SingStationStatistic from '../../../../components/statisticalAnalysis/stationAnalysis/allStationAnalysis/SingStationStatistic.jsx';
-import { allStationAnalysisAction } from './AllStationAnalysisAction';
+import AllStationStatistic from '../../../../components/StatisticalAnalysis/StationAnalysis/AllStationAnalysis/AllStationStatistic';
+import SingStationStatistic from '../../../../components/StatisticalAnalysis/StationAnalysis/AllStationAnalysis/SingStationStatistic';
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import Footer from '../../../../components/Common/Footer';
 
