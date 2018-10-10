@@ -1,0 +1,67 @@
+.allStationData{
+ 
+  .textStyle{
+    height: 50px;
+    line-height: 50px;
+    margin-left: 24px;
+  }
+  .allStationDataContainer{
+    height: 160px;
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #ececec;
+   
+    .stationTargetValue{
+      font-size: 20px;
+      color:#199475;
+
+    }
+    .stationTargetName{
+      color:#666;
+    
+    }
+    .leftPic{
+      margin-left: 32px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+    }
+    .powerGeneration{
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border-right: 1px solid #ececec;
+      .stationTargetData{
+        display: flex;
+        flex:1;
+        flex-direction: column;
+        justify-content: space-between;
+        margin: 20px 30px;
+  
+      }
+
+    }
+    .dataSummary{
+      display: flex;   
+      justify-content: space-between;
+     
+      .rightDataSummary{
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        .stationTargetData{
+          display: flex;
+          flex:1;
+          flex-direction: column;
+          justify-content: space-between;
+          margin: 20px 30px;
+        }
+
+ 
+      }
+   
+    }
+  }
+}

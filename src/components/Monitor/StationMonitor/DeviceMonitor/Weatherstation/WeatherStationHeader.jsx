@@ -4,7 +4,6 @@ import styles from '../eachDeviceMonitor.scss';
 
 const WeatherStationHeader = ({ deviceDetail }) => {
   const { deviceStatus } = deviceDetail;
-  console.log(deviceStatus);
   const deviceStatusInfo = deviceStatusArray.find(e=>parseInt(e.statusCode) === parseInt(deviceStatus));
   return (
     <div className={styles.deviceMonitorHeader} >

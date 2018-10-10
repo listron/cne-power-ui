@@ -16,7 +16,7 @@ const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
 class PvStation extends Component {
   static propTypes = {
-    deviceTypeFlow: PropTypes.array,
+    deviceTypeFlow: PropTypes.object,
     changeSingleStationStore: PropTypes.func,
     location: PropTypes.object,
     match: PropTypes.object,
@@ -33,7 +33,7 @@ class PvStation extends Component {
   }
   
   componentWillUnmount(){
-    this.props.changeSingleStationStore({ deviceTypeFlow: [] });
+    this.props.changeSingleStationStore({ deviceTypeFlow: {} });
   }
 
   onSelectedDeviceType = (e) => {
@@ -55,8 +55,6 @@ class PvStation extends Component {
         return 'iconfont icon-xb';
       case 302:
         return 'iconfont icon-jidian';
-      case '10004':
-        return 'iconfont icon-elecnetting';
       default:
         return;
     }
@@ -73,7 +71,8 @@ class PvStation extends Component {
     const { deviceTypeFlow, stationDeviceList, deviceTypeCode, } = this.props;
     const weatherDeviceCode = stationDeviceList && stationDeviceList.deviceCode || 0;
     const { stationCode } = this.props.match.params;
-    
+    const deviceFlowTypes = deviceTypeFlow && deviceTypeFlow.deviceFlowTypes;
+    const isCombinedType = deviceFlowTypes && deviceFlowTypes.some(e=>e.deviceTypes.length > 1);
     return (
       <div className={styles.pvStation}  >
         <PvStationTop {...this.props} stationCode={stationCode} hiddenStationList={this.state.hiddenStationList} />
@@ -91,24 +90,41 @@ class PvStation extends Component {
             <TabPane tab="示意图" key="2">
               <div className={styles.deviceTypeFlow}>
                 <Link  to={`/hidden/monitorDevice/${stationCode}/203/${weatherDeviceCode}`}  className={styles.weatherStationLink} >
-                  <div className={styles.weatherStation}>
+                  <div className={isCombinedType ? styles.combinedTypeWeatherStation : styles.weatherStation}>
                     <i className="iconfont icon-weather" ></i>
                     <div className={styles.fontcolor}>气象站</div>
                   </div>
                 </Link>
-                {deviceTypeFlow.length > 0 && <RadioGroup value={deviceTypeCode} onChange={this.onSelectedDeviceType} >
-                  {deviceTypeFlow.map((e,i)=> {
+                {deviceFlowTypes && <RadioGroup value={deviceTypeCode} onChange={this.onSelectedDeviceType} >
+                  {deviceFlowTypes.map((e,i)=> {
+                    const nextFlowTypesLen = deviceFlowTypes[i+1] && deviceFlowTypes[i+1].deviceTypes.length;
                     const clickable = [509, 201, 206, 304, 202]; // 允许点击及展示列表的设备类型
-                    const pointEventStye = clickable.includes(e.deviceTypeCode)?{}:{pointerEvents:'none'};
-                    return (<RadioButton value={e.deviceTypeCode} style={pointEventStye} className={styles.deviceTypeItem} key={i}>
-                      <div className={styles.deviceTypeIcon} >
-                        <i className={this.getDeviceTypeIcon(e.deviceTypeCode)} ></i>
-                        <img src="/img/arrowgo.png" className={styles.arrowgo} />
+                    const pointEventStye = clickable.includes(e.deviceTypes[0].deviceTypeCode)?{}:{pointerEvents:'none'};
+                    if(e.deviceTypes.length > 1){//组合式光伏电站上下排列
+                      return (<div className={styles.combinedType} style={{display: 'flex',flexDirection: 'column'}}  key={i} >
+                        {e.deviceTypes.map((item,indexI)=>{
+                          return (<RadioButton value={item.deviceTypeCode} style={pointEventStye} className={styles.deviceTypeItemInner} key={indexI}>
+                            <div className={styles.deviceTypeIcon} >
+                              <i className={this.getDeviceTypeIcon(item.deviceTypeCode)} ></i>
+                              {nextFlowTypesLen > 1 ? <img src="/img/arrowgo.png" className={nextFlowTypesLen > 1 ? styles.arrowgo : styles.arrowgoInner} /> : 
+                                (indexI===0 && <img src="/img/arrowgo.png" className={nextFlowTypesLen > 1 ? styles.arrowgo : styles.arrowgoInner} />)}
+                            </div>
+                            <div>{item.deviceTypeName==='箱变'?'箱式变压器':item.deviceTypeName}</div>
+                          </RadioButton>)
+                        })}
                       </div>
-                      <div>{e.deviceTypeName==='箱变'?'箱式变压器':e.deviceTypeName}</div>
-                    </RadioButton>)
+                      )
+                    }else{
+                      return (<RadioButton value={e.deviceTypes[0].deviceTypeCode} style={pointEventStye} className={isCombinedType ? styles.combinedDeviceTypeItem : styles.deviceTypeItem} key={i}>
+                        <div className={styles.deviceTypeIcon} >
+                          <i className={this.getDeviceTypeIcon(e.deviceTypes[0].deviceTypeCode)} ></i>
+                          <img src="/img/arrowgo.png" className={styles.arrowgo} />
+                        </div>
+                        <div>{e.deviceTypes[0].deviceTypeName==='箱变'?'箱式变压器':e.deviceTypes[0].deviceTypeName}</div>
+                      </RadioButton>)
+                    }
                   })}
-                  <RadioButton className={styles.elecnettingItem}>
+                  <RadioButton className={isCombinedType ? styles.combinedElecnettingItem : styles.elecnettingItem}>
                     <div className={styles.deviceTypeIcon} >
                       <i className="iconfont icon-elecnetting" ></i>
                     </div>
