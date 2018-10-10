@@ -28,7 +28,7 @@ import AlarmStatistic from '../containers/Monitor/Alarm/AlarmStatistic';
 import EditPassword from '../containers/Others/EditPassword'; // 更改密码
 
 import Building from '../components/Common/Building/Building';
-import AllStationAnalysis from '../containers/StatisticalAnalysis/StationAnalysis/AllStationAnalysis/allStationAnalysis';
+import AllStationAnalysis from '../containers/StatisticalAnalysis/StationAnalysis/AllStationAnalysis/AllStationAnalysis';
 import Power from '../containers/Power';
 
 /*
