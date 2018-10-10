@@ -3,8 +3,8 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import styles from "./allStationAnalysis.scss";
 import PropTypes from "prop-types";
-// import AllStationStatistic from '../../../../components/StatisticalAnalysis/StationAnalysis/AllStationAnalysis/AllStationStatistic';
-// import SingStationStatistic from '../../../../components/StatisticalAnalysis/StationAnalysis/AllStationAnalysis/SingStationStatistic';
+import AllStationStatistic from '../../../../components/StatisticalAnalysis/StationAnalysis/AllStationAnalysis/AllStationStatistic';
+import SingStationStatistic from '../../../../components/StatisticalAnalysis/StationAnalysis/AllStationAnalysis/SingStationStatistic';
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import Footer from '../../../../components/Common/Footer';
 
@@ -45,8 +45,8 @@ class ALarmStatistic extends Component {
       <div className={styles.allStationAnalysisBox} >
         <CommonBreadcrumb  {...breadCrumbData} style={{ marginLeft: '38px' }} />
         <div className={styles.allStationStatistic}>     
-          {/* <AllStationStatistic {...this.props} /> */}
-          {/* {showPage === 'single' && <SingStationStatistic {...this.props} />}      */}
+          <AllStationStatistic {...this.props} />
+          {showPage === 'single' && <SingStationStatistic {...this.props} />}     
          
         </div>
         <Footer />
