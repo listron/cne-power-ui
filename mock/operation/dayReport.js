@@ -27,6 +27,30 @@ module.exports = [
     },
     delay: 1000,
     error: {}
+  },{ // 选中电站+时间后基础电站报表数据
+    api: '/mock/operation/dayReport/baseInfo',
+    method: 'post',
+    response: {
+      "code": "10000",
+      "message": "请求成功",
+      "data": {
+        "total": 12,
+        "list":  [1,2,3,4,5,6].map((e,i)=>({
+          stationCode: e,
+          id: i,
+          stationName: `${i}号电站`,
+          reportDate: '2018-01-12',
+          deviceCapacity: e*12-3,
+          modelInverterCapacity: e*7,
+          modelInverterPowerGen: e*3,
+          defectId: !!e%2,
+        }))
+      },
+      "serviceCode": "3.0"
+    },
+    delay: 1000,
+    error: {}
+    
   },{ // 日报配置
     api: '/mock/operation/dayReport/config',
     method: 'get',
