@@ -1,0 +1,19 @@
+.targetTabs{
+  display: flex;
+  flex:1;
+  flex-direction: column;
+  :global{
+
+  }
+
+  .tabContainer{
+    display: flex;
+    flex-direction: column;
+    .dataGraph{
+      display: flex;    
+      flex-direction: row;
+      border-bottom: 1px solid #ececec;
+    }
+  }
+ 
+}

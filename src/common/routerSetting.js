@@ -28,6 +28,7 @@ import AlarmStatistic from '../containers/Monitor/Alarm/AlarmStatistic';
 import EditPassword from '../containers/Others/EditPassword'; // 更改密码
 
 import Building from '../components/Common/Building/Building';
+import AllStationAnalysis from '../containers/StatisticalAnalysis/StationAnalysis/AllStationAnalysis/allStationAnalysis';
 import Power from '../containers/Power';
 
 /*
@@ -158,7 +159,7 @@ const routers = [
   },{
     path: '/statistical/stationaccount/allstation',
     exact: true,
-    component: Building
+    component: AllStationAnalysis
   },{
     path: '/statistical/stationaccount/production',
     exact: true,
