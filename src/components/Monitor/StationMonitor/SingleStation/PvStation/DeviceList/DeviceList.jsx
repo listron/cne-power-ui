@@ -11,7 +11,6 @@ import BoxTransformerList from './BoxTransformerList';
 class DeviceList extends Component {
   static propTypes = {
     deviceTypeCode: PropTypes.number,
-    deviceTypeFlow: PropTypes.array,
     location: PropTypes.object,
     changeSingleStationStore: PropTypes.func,
   }

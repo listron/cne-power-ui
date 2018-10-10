@@ -413,6 +413,7 @@
       background: #f8f8f8;
       padding: 16px 25px 0;
       .deviceTypeItem, .elecnettingItem{
+        margin-top: 0px;
         width: 110px;
         height: 90px;
         padding: 10px;
@@ -430,10 +431,43 @@
           }
         }
       }
+      .deviceTypeItemInner{
+        width: 110px;
+        height: 90px;
+        padding: 10px;
+        border: 0;
+        color: #dfdfdf;
+        .deviceTypeIcon{
+          margin: 10px 10px 0;
+          position: relative;
+          .arrowgo{
+            position: absolute;
+            z-index: 999;
+            right: -44px;
+            top: 12px;
+            pointer-events: none;
+          }
+          .arrowgoInner{
+            position: absolute;
+            z-index: 999;
+            right: -44px;
+            top: 58px;
+            pointer-events: none;
+          }
+        }
+      }
       .elecnettingItem{
         pointer-events: none;
       }
       :global{
+        .ant-radio-group{
+          display: flex;
+          :local{
+            .deviceTypeItem, .elecnettingItem{
+              margin-top: 45px;
+            }
+          }
+        }
         .ant-radio-button-wrapper:hover, .ant-radio-button-wrapper-focused {
           color: $themeColor;
           position: relative;
@@ -466,6 +500,27 @@
       }
       .weatherStationLink{
         color: '#dfdfdf';
+        .combinedTypeWeatherStation{
+          margin-top: 45px;
+          border:1px solid #dfdfdf;
+          border-radius:4px;
+          width:72px;
+          height:72px;
+          margin-right: 60px;
+          margin-bottom: 18px;
+          cursor: pointer;
+          i{
+            color:#dfdfdf;
+          }
+          &:hover{
+            border:1px solid $themeColor;
+            background: $themeColor;
+            color: #fff;
+            i{
+              color: #fff;
+            }
+          }
+        }
         .weatherStation{
           border:1px solid #dfdfdf;
           border-radius:4px;
@@ -477,28 +532,14 @@
           i{
             color:#dfdfdf;
           }
-          // :global{
-          //   .icon-weather{
-          //     display: block;
-          //     color:#dfdfdf;
-          //   }
-          //   .icon-weather:hover{
-          //     color: #fff;
-          //   }
-          //   .icon-weather:before {
-          //     content: "\e68e";
-          //     width: 30px;
-          //     height: 31px;
-          //   }
-          // }
-        }
-        .weatherStation:hover{
-          border:1px solid $themeColor;
-          background: $themeColor;
-          i{
+          &:hover{
+            border:1px solid $themeColor;
+            background: $themeColor;
             color: #fff;
+            i{
+              color: #fff;
+            }
           }
-          color: #fff;
         }
       }
       .weatherStationLink:hover{

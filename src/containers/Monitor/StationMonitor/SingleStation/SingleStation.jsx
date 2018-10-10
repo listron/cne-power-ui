@@ -26,7 +26,7 @@ class SingleStation extends Component {
     changeSingleStationStore: PropTypes.func,
     getStationDeviceList: PropTypes.func,
     deviceTypeCode: PropTypes.number,
-    deviceTypeFlow: PropTypes.array,
+    deviceTypeFlow: PropTypes.object,
   };
   constructor(props) {
     super(props);
@@ -67,7 +67,7 @@ class SingleStation extends Component {
     const nextStationCode = nextParams.stationCode;
     if( nextStationCode !== stationCode ){
       clearTimeout(this.timeOutId);
-      this.props.changeSingleStationStore({ deviceTypeFlow: [] });
+      this.props.changeSingleStationStore({ deviceTypeFlow: {} });
       this.getTenSeconds(nextStationCode);
       this.getOutputDataTenMin(nextStationCode);
       this.getPowerDataTenMin(nextStationCode);
