@@ -456,16 +456,37 @@
           }
         }
       }
-      .elecnettingItem{
+      .elecnettingItem, .combinedElecnettingItem{
         pointer-events: none;
       }
       :global{
         .ant-radio-group{
           display: flex;
           :local{
-            .deviceTypeItem, .elecnettingItem{
+            .combinedDeviceTypeItem, .combinedElecnettingItem{
               margin-top: 45px;
+              width: 110px;
+              height: 90px;
+              padding: 10px;
+              border: 0;
+              color: #dfdfdf;
+              .deviceTypeIcon{
+                margin: 10px 10px 0;
+                position: relative;
+                .arrowgo{
+                  position: absolute;
+                  z-index: 999;
+                  right: -44px;
+                  top: 12px;
+                  pointer-events: none;
+                }
+              }
             }
+          }
+          .ant-radio-button-wrapper-checked{
+            background: #fff;
+            border-color: $themeColor;
+            color: $themeColor;
           }
         }
         .ant-radio-button-wrapper:hover, .ant-radio-button-wrapper-focused {

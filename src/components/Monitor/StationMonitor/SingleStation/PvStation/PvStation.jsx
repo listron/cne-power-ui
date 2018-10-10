@@ -72,7 +72,8 @@ class PvStation extends Component {
     const weatherDeviceCode = stationDeviceList && stationDeviceList.deviceCode || 0;
     const { stationCode } = this.props.match.params;
     const deviceFlowTypes = deviceTypeFlow && deviceTypeFlow.deviceFlowTypes;
-    const flowType = deviceTypeFlow && deviceTypeFlow.flowType;
+    const isCombinedType = deviceFlowTypes && deviceFlowTypes.some(e=>e.deviceTypes.length > 1);
+    console.log(deviceTypeCode);
     return (
       <div className={styles.pvStation}  >
         <PvStationTop {...this.props} stationCode={stationCode} hiddenStationList={this.state.hiddenStationList} />
@@ -90,7 +91,7 @@ class PvStation extends Component {
             <TabPane tab="示意图" key="2">
               <div className={styles.deviceTypeFlow}>
                 <Link  to={`/hidden/monitorDevice/${stationCode}/203/${weatherDeviceCode}`}  className={styles.weatherStationLink} >
-                  <div className={deviceFlowTypes && deviceFlowTypes.some(e=>e.deviceTypes.length > 1) ? styles.combinedTypeWeatherStation : styles.weatherStation}>
+                  <div className={isCombinedType ? styles.combinedTypeWeatherStation : styles.weatherStation}>
                     <i className="iconfont icon-weather" ></i>
                     <div className={styles.fontcolor}>气象站</div>
                   </div>
@@ -103,7 +104,7 @@ class PvStation extends Component {
                     if(e.deviceTypes.length > 1){//组合式光伏电站上下排列
                       return (<div className={styles.combinedType} style={{display: 'flex',flexDirection: 'column'}}  key={i} >
                         {e.deviceTypes.map((item,indexI)=>{
-                          return (<RadioButton value={item.deviceTypeCode} style={pointEventStye} className={styles.deviceTypeItemInner} key={item.deviceTypeCode+indexI}>
+                          return (<RadioButton value={item.deviceTypeCode} style={pointEventStye} className={styles.deviceTypeItemInner} key={indexI}>
                             <div className={styles.deviceTypeIcon} >
                               <i className={this.getDeviceTypeIcon(item.deviceTypeCode)} ></i>
                               {nextFlowTypesLen > 1 ? <img src="/img/arrowgo.png" className={nextFlowTypesLen > 1 ? styles.arrowgo : styles.arrowgoInner} /> : 
@@ -115,7 +116,7 @@ class PvStation extends Component {
                       </div>
                       )
                     }else{
-                      return (<RadioButton value={e.deviceTypes[0].deviceTypeCode} style={pointEventStye} className={styles.deviceTypeItem} key={i}>
+                      return (<RadioButton value={e.deviceTypes[0].deviceTypeCode} style={pointEventStye} className={isCombinedType ? styles.combinedDeviceTypeItem : styles.deviceTypeItem} key={i}>
                         <div className={styles.deviceTypeIcon} >
                           <i className={this.getDeviceTypeIcon(e.deviceTypes[0].deviceTypeCode)} ></i>
                           <img src="/img/arrowgo.png" className={styles.arrowgo} />
@@ -124,7 +125,7 @@ class PvStation extends Component {
                       </RadioButton>)
                     }
                   })}
-                  <RadioButton className={styles.elecnettingItem}>
+                  <RadioButton className={isCombinedType ? styles.combinedElecnettingItem : styles.elecnettingItem}>
                     <div className={styles.deviceTypeIcon} >
                       <i className="iconfont icon-elecnetting" ></i>
                     </div>
