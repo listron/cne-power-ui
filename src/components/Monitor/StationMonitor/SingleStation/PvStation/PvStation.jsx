@@ -73,7 +73,6 @@ class PvStation extends Component {
     const { stationCode } = this.props.match.params;
     const deviceFlowTypes = deviceTypeFlow && deviceTypeFlow.deviceFlowTypes;
     const isCombinedType = deviceFlowTypes && deviceFlowTypes.some(e=>e.deviceTypes.length > 1);
-    console.log(deviceTypeCode);
     return (
       <div className={styles.pvStation}  >
         <PvStationTop {...this.props} stationCode={stationCode} hiddenStationList={this.state.hiddenStationList} />
