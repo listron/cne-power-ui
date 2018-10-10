@@ -26,20 +26,24 @@ class RoleEditForm extends Component {
   }
 
   onSaveRole = () => {
-    const { enterpriseId, selectedRole } = this.props;
+    const { enterpriseId, selectedRole, defaultMenuData } = this.props;
     this.props.form.validateFieldsAndScroll((err, values) => {
       if(!err) {
+        const { roleDesc, rightId} = values;
+        const tmpDefault = defaultMenuData.map(e=>`${e}`);
+        const outputRightSet = new Set([...rightId,...tmpDefault]);
+        const outputRightArr = [...outputRightSet];
         if(this.props.showPage === 'create') {
           this.props.onCreateRole({
-            roleDesc: values.roleDesc.trim(),
-            rightId: values.rightId.join(','),
+            roleDesc: roleDesc.trim(),
+            rightId: outputRightArr.join(','),
             enterpriseId,
             continueAdd: false,
           });
         } else {
           this.props.onEditRole({
-            roleDesc: values.roleDesc.trim(),
-            rightId: values.rightId.join(','),
+            roleDesc: roleDesc.trim(),
+            rightId: outputRightArr.join(','),
             roleId: selectedRole[0].roleId,
             enterpriseId
           })

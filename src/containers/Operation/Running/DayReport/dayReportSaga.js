@@ -36,8 +36,7 @@ function *getDayReportList(action){//请求日报基本列表数据
         ...payload,
         dayReportList: response.data.data.list || [],
         totalNum,
-        pageNum,
-        buttonLoading: false
+        pageNum
       },
     });
   }catch(e){
@@ -53,6 +52,32 @@ function *getDayReportList(action){//请求日报基本列表数据
   }
 }
 
+function *getStationBaseReport(action){ // 选中日期+电站后各待上传数据电站基础情况
+  const { payload } = action;
+  const url = '/mock/operation/dayReport/baseInfo';
+  // const url = `${APIBasePath}${operation.getStationBaseReport}`
+  try{
+    const response = yield call(axios.post,url,payload);
+    yield put({
+      type:  dayReportAction.dayReportFetchSuccess,
+      payload:{
+        stationReportBaseData: response.data.data || [],
+        showReportInputList: true,
+      },
+    });
+  }catch(e){
+    console.log(e);
+    message.error('获取电站基础数据失败，请重试');
+    yield put({
+      type:  dayReportAction.changeDayReportStore,
+      payload:{
+        loading: false,
+        stationReportBaseData: [],
+      },
+    });
+  }
+}
+
 function *dayReportConfig(action){ // 日报必填项配置
   const { payload } = action;
   try{
@@ -63,7 +88,7 @@ function *dayReportConfig(action){ // 日报必填项配置
     yield put({
       type:  dayReportAction.dayReportFetchSuccess,
       payload:{
-        dayReportConfig: response.data.data || {},
+        dayReportConfig: response.data.data || [],
       },
     });
   }catch(e){
@@ -131,6 +156,7 @@ export function* watchDayReport() {
   yield takeLatest(dayReportAction.toChangeDayReportStore, toChangeDayReportStore);
   yield takeLatest(dayReportAction.getDayReportList, getDayReportList);
   yield takeLatest(dayReportAction.dayReportConfig, dayReportConfig);
+  yield takeLatest(dayReportAction.getStationBaseReport, getStationBaseReport);
   yield takeLatest(dayReportAction.dayReportDetail, dayReportDetail);
   yield takeLatest(dayReportAction.dayReportUpdate, dayReportUpdate);
 }

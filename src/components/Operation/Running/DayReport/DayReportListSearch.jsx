@@ -15,8 +15,8 @@ class DayReportListSearch extends Component {
     stationType: PropTypes.number,
     pageSize: PropTypes.number,
     pageNum: PropTypes.number, 
-    reportRegion: PropTypes.number,
-    stationSort: PropTypes.string, 
+    regionCode: PropTypes.number,
+    stationNameSort: PropTypes.number, 
     stations: PropTypes.array,
     getDayReportList: PropTypes.func,
   }
@@ -27,43 +27,43 @@ class DayReportListSearch extends Component {
 
   startTimeChange = (value) => {
     const startTime = value?value.format('YYYY-MM'):moment().format('YYYY-MM');
-    const { getDayReportList, stationType, stationSort, pageSize, pageNum, reportRegion  } = this.props;
+    const { getDayReportList, stationType, stationNameSort, pageSize, pageNum, regionCode  } = this.props;
     getDayReportList({
       startTime,
       pageSize, 
       pageNum,
       stationType,
-      stationSort,
-      reportRegion,
+      stationNameSort,
+      regionCode,
     });
   }
 
   regionSelect = (value) => {
-    const { getDayReportList, stationType, stationSort, pageSize, pageNum, startTime  } = this.props;
+    const { getDayReportList, stationType, stationNameSort, pageSize, pageNum, startTime  } = this.props;
     getDayReportList({
       startTime,
       pageSize, 
       pageNum,
       stationType,
-      stationSort,
-      reportRegion: value
+      stationNameSort,
+      regionCode: value
     });
   }
 
   stationTypeChange = (e) => {
-    const { getDayReportList, stationSort, pageSize, pageNum, startTime, reportRegion } = this.props;
+    const { getDayReportList, stationNameSort, pageSize, pageNum, startTime, regionCode } = this.props;
     getDayReportList({
       startTime,
       pageSize, 
       pageNum,
       stationType: e.target.value,
-      stationSort,
-      reportRegion
+      stationNameSort,
+      regionCode
     });
   }
 
   render() {
-    const { startTime, stations, reportRegion, stationType } = this.props;
+    const { startTime, stations, regionCode, stationType } = this.props;
     let regionArr = [], regionSet = new Set(), stationTypeSet = new Set();
     stations.forEach(e=>{
       !regionSet.has(e.regionCode) && regionSet.add(e.regionCode) && regionArr.push({
@@ -77,7 +77,7 @@ class DayReportListSearch extends Component {
         <div className={styles.search}>
           <span>条件查询</span>
           <MonthPicker value={moment(startTime)} onChange={this.startTimeChange} />
-          <Select onChange={this.regionSelect} value={reportRegion}>
+          <Select onChange={this.regionSelect} value={regionCode}>
             <Option value={null}>全部</Option>
             {regionArr.map(e=>(
               <Option value={e.regionCode}>{e.regionName}</Option>

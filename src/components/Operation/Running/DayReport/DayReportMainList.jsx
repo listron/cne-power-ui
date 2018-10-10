@@ -15,8 +15,8 @@ class DayReportMainList extends Component {
     pageSize: PropTypes.number,
     pageNum: PropTypes.number, 
     totalNum: PropTypes.number,
-    stationSort: PropTypes.string, 
-    reportRegion: PropTypes.number,
+    stationNameSort: PropTypes.number, 
+    regionCode: PropTypes.number,
     startTime: PropTypes.string,
     dayReportList: PropTypes.array,
     getDayReportList: PropTypes.func,
@@ -28,28 +28,28 @@ class DayReportMainList extends Component {
   }
 
   onPaginationChange = ({ currentPage, pageSize }) => { // 分页器
-    const { getDayReportList, stationType, stationSort, startTime, reportRegion  } = this.props;
+    const { getDayReportList, stationType, stationNameSort, startTime, regionCode  } = this.props;
     getDayReportList({
       startTime,
       pageSize, 
       pageNum: currentPage,
-      reportRegion,
+      regionCode,
       stationType,
-      stationSort,
+      stationNameSort,
     });
   }
 
   tableChange = (pagination, filter, sorter) => { // 部门排序
     const { order } = sorter;
-    const stationSort = order ? (order === 'ascend' ? true : false) : null;
-    const { getDayReportList, pageSize, pageNum, stationType, startTime, reportRegion  } = this.props;
+    const stationNameSort = order ? (order === 'ascend' ? 1 : 0) : 0;
+    const { getDayReportList, pageSize, pageNum, stationType, startTime, regionCode  } = this.props;
     getDayReportList({
       startTime,
       pageSize, 
       pageNum,
-      reportRegion,
+      regionCode,
       stationType,
-      stationSort,
+      stationNameSort,
     });
   }
 
@@ -87,15 +87,14 @@ class DayReportMainList extends Component {
     let columns = [{
       title: '电站名称',
       dataIndex: 'stationName',
-      key: 'stationName',
+      sorter: true,
     }]
     if(dayReportList.length > 0 && dayReportList[0].dateList){
       const { dateList } = dayReportList[0];
-      dateList && dateList.length > 0 && dateList.forEach(e=>{
+      dateList && dateList.length > 0 && dateList.forEach((e,i)=>{
         columns.push({
           title: e.reportDate,
           dataIndex: e.reportDate,
-          key: e.reportDate,
           render: (text, record, index) => {
             const showWarningIcon = text && record.status; // 展示黄色图标提示未完成损失电量的填写。true展示，false不展示。
             if(text){
