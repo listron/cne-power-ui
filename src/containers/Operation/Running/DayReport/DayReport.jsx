@@ -19,7 +19,7 @@ class DayReport extends Component {
     stationType: PropTypes.number, // 筛选的电站类型
     stationNameSort: PropTypes.number, // 排序方式
     getDayReportList: PropTypes.func, // 日报列表
-    dayReportConfig: PropTypes.func, // 日报配置
+    getDayReportConfig: PropTypes.func, // 日报配置
   }
   constructor(props) {
     super(props);
@@ -36,11 +36,13 @@ class DayReport extends Component {
       stationType: 2, // 筛选的电站类型
       stationNameSort: 0, // 排序方式
     });
-    this.props.dayReportConfig({ // 请求上报日报配置信息
+    this.props.getDayReportConfig({ // 请求上报日报配置信息
       enterpriseId: this.props.enterpriseId, 
       module: 'report', 
       type: '-1'
     })
+    this.props.getStationBaseReport({}) //  调试用，用于直接展示电站数据，后期删掉。
+    this.props.toChangeDayReportStore({ showReportInputList: true }) // 调试用，用于直接展示电站数据，后期删掉。
   }
 
   componentWillUnmount(){
@@ -64,7 +66,7 @@ class DayReport extends Component {
     return (
       <div className={styles.dayReport}>
         <div className={styles.dayReportContainer} >
-          <DayReportMainList {...this.props} />
+          {/* <DayReportMainList {...this.props} /> */}
           <TransitionContainer
             show={showPage !== 'list'}
             onEnter={this.onToggleSide}
@@ -90,7 +92,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   toChangeDayReportStore: payload => dispatch({type: dayReportAction.toChangeDayReportStore, payload}),
   getDayReportList: payload => dispatch({type: dayReportAction.getDayReportList, payload}),
-  dayReportConfig: payload => dispatch({type: dayReportAction.dayReportConfig, payload}),
+  getDayReportConfig: payload => dispatch({type: dayReportAction.getDayReportConfig, payload}),
   getStationBaseReport: payload => dispatch({type: dayReportAction.getStationBaseReport, payload}),
   dayReportDetail: payload => dispatch({type: dayReportAction.dayReportDetail, payload}),
   dayReportUpdate: payload => dispatch({type: dayReportAction.dayReportUpdate, payload}),

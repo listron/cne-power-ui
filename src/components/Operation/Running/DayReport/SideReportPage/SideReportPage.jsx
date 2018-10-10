@@ -13,6 +13,7 @@ class SideReportPage extends Component {
     sidePage: PropTypes.string,
     stations: PropTypes.array,
     reportStation: PropTypes.array,
+    stationReportBaseData: PropTypes.array,
     toChangeDayReportStore: PropTypes.func,
     getStationBaseReport: PropTypes.func,
     showReportInputList: PropTypes.bool,
@@ -23,6 +24,22 @@ class SideReportPage extends Component {
     this.state = {
       reportDay: '',
       reportStation: [],
+      dayReportTotalInfoArr: [], //用于上传日报的所有信息
+    }
+  }
+
+  componentWillReceiveProps(nextProps){
+    const { stationReportBaseData } = this.props;
+    const nextReportBaseData = nextProps.stationReportBaseData;
+    if( nextReportBaseData.length > 0 && stationReportBaseData.length === 0){ // 得到初始化列表数据
+      const dayReportTotalInfoArr = nextReportBaseData.map(e=>({
+        dailyReport: { ...e },
+        // dailyDetailList: e.defectId && e.defectId.split(',').filter(e=>!!e).map(m=>({ // todo-后续放开。
+        //   defectId: m
+        // })) || [],
+      }))
+      console.log(dayReportTotalInfoArr)
+      this.setState({ dayReportTotalInfoArr })
     }
   }
 
@@ -62,9 +79,15 @@ class SideReportPage extends Component {
     console.log('save report info')
   }
 
+  totalReportInfoChange = (dayReportTotalInfoArr) => { // 用于上报的所有电站日报数据。
+    this.setState({ dayReportTotalInfoArr }); //-- todo 改变的infoAr需要根据规则，对onchange的数据进行校验，根据校验结果给出提示。
+    console.log(dayReportTotalInfoArr)
+  }
+
   render(){
     const { reportDay, stations, reportStation, showReportInputList } = this.props;
     const canReport = reportDay && reportStation && reportStation.length > 0;
+    const { dayReportTotalInfoArr } = this.state;
     return (
       <div className={styles.sideReportPage}>
         <div>
@@ -91,7 +114,13 @@ class SideReportPage extends Component {
             <Button onClick={this.toReportStations} disabled={!canReport} >下一步</Button>
           </div>
         </div>}
-        {showReportInputList && <UploadReportList {...this.props} />}
+        {showReportInputList && <UploadReportList 
+          {...this.props} 
+          totalReportInfoChange={this.totalReportInfoChange}
+          dayReportTotalInfoArr={dayReportTotalInfoArr} 
+        />}
+        <span>请填写数字，最多填写小数点后两位 -- todo</span>
+        <span>请填写数字，最多填写小数点后四位 -- todo</span>
       </div>
     )
   }
