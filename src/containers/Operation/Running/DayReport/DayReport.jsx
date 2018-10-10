@@ -13,11 +13,13 @@ class DayReport extends Component {
   static propTypes = {
     showPage: PropTypes.string,
     startTime: PropTypes.string, // 日报查询月,
+    enterpriseId: PropTypes.string,
     pageSize: PropTypes.number, 
     pageNum: PropTypes.number,
     stationType: PropTypes.number, // 筛选的电站类型
-    stationSort: PropTypes.string, // 排序方式
+    stationNameSort: PropTypes.number, // 排序方式
     getDayReportList: PropTypes.func, // 日报列表
+    dayReportConfig: PropTypes.func, // 日报配置
   }
   constructor(props) {
     super(props);
@@ -32,8 +34,13 @@ class DayReport extends Component {
       pageSize: 10, 
       pageNum: 1,
       stationType: 2, // 筛选的电站类型
-      stationSort: '', // 排序方式
+      stationNameSort: 0, // 排序方式
     });
+    this.props.dayReportConfig({ // 请求上报日报配置信息
+      enterpriseId: this.props.enterpriseId, 
+      module: 'report', 
+      type: '-1'
+    })
   }
 
   componentWillUnmount(){
@@ -72,6 +79,7 @@ class DayReport extends Component {
     );
   }
 }
+
 const mapStateToProps = (state) => ({
   ...state.operation.dayReport.toJS(),
   stations: state.common.get('stations').toJS(),
@@ -83,6 +91,7 @@ const mapDispatchToProps = (dispatch) => ({
   toChangeDayReportStore: payload => dispatch({type: dayReportAction.toChangeDayReportStore, payload}),
   getDayReportList: payload => dispatch({type: dayReportAction.getDayReportList, payload}),
   dayReportConfig: payload => dispatch({type: dayReportAction.dayReportConfig, payload}),
+  getStationBaseReport: payload => dispatch({type: dayReportAction.getStationBaseReport, payload}),
   dayReportDetail: payload => dispatch({type: dayReportAction.dayReportDetail, payload}),
   dayReportUpdate: payload => dispatch({type: dayReportAction.dayReportUpdate, payload}),
 });

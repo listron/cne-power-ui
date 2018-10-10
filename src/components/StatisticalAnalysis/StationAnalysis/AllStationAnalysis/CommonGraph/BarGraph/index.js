@@ -9,7 +9,6 @@ class barGraph extends React.Component{
     }
     
     componentDidMount(){
-     
         // const { barData } = nextProps;
         const targetChart = echarts.init(document.getElementById('graphId'));
         const targetOption={
@@ -94,7 +93,7 @@ class barGraph extends React.Component{
         const { graphId } = this.props;
         return(
             
-            <div id="graphId" className={styles.statisticGraph} style={{ width: "900px", height: "600px",  }}> </div>
+            <div id="graphId" className={styles.statisticGraph} style={{ display:'flex',flex:2,width:'812px', height: "300px",  }}> </div>
          
         )
     }
