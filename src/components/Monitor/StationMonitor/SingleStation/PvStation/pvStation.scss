@@ -88,6 +88,11 @@
           .iconfont:hover{
             color: $themeColor;
           }
+         
+
+
+
+
         }
       }
       .powerScale{
@@ -109,6 +114,9 @@
           display: flex;
           justify-content: space-between;
           line-height: 24px;
+          .iconStyle{
+            cursor: pointer;
+          }
         }
         .trueTimeUnit{
           margin-top: 21px;

@@ -244,4 +244,16 @@
   .ant-message-info .anticon, .ant-message-loading .anticon{
     color: $themeColor;
   }
+  //modal框
+  .ant-modal-wrap {
+    .ant-modal{
+      .ant-modal-content{
+        .ant-modal-footer{
+          border-top: 0;
+              
+        }
+      }
+    }
+    
+  }
 }

@@ -53,9 +53,11 @@ class PvStationTop extends Component {
     const editTime = moment().format('YYYY-MM-DD');
     this.state.modalMonth ? editData({ monthGen: editValue, date:editTime, stationCode:stationCode }) : editData({ yearGen: editValue, date:editTime, stationCode:stationCode});
     this.setState({ modalMonth: false, modalYear: false });
+    this.setState({ editValue: '' })
   }
   onCancel = () => {
     this.setState({ modalMonth: false, modalYear: false });
+    this.setState({ editValue: '' })
   }
   setModalMonth = () => {
     this.setState({ modalMonth: true });
@@ -154,7 +156,7 @@ class PvStationTop extends Component {
             <div className={styles.trueTimeUnit}>日发电量 万kWh</div>
           </div>
           <div>
-            <div className={styles.trueTimeValue}><div>{singleStationData && singleStationData.monthPower && parseFloat(singleStationData.monthPower).toFixed(4) || 0}  {powerUpdate ? <span onClick={() => { this.setModalMonth() }} ><Icon type="form" theme="outlined" /></span> : ''}</div></div>
+            <div className={styles.trueTimeValue}><div>{singleStationData && singleStationData.monthPower && parseFloat(singleStationData.monthPower).toFixed(4) || 0}  {powerUpdate ? <span className={styles.iconStyle} onClick={() => { this.setModalMonth() }} ><Icon type="form" theme="outlined" /></span> : ''}</div></div>
             <div className={styles.trueTimeUnit}>月发电量 万kWh</div>
           </div>
           <Modal
@@ -164,6 +166,9 @@ class PvStationTop extends Component {
             onOk={this.onOk}
             onCancel={this.onCancel}
             mask={false}
+            closable={false}
+            maskClosable={false}
+            
           >
             {this.state.modalMonth ? <div>截止到今日，本月累计发电量  <Input value={editValue} placeholder="请输入" onChange={this.onChange} />  万kWh</div> : <div>截止到今日，本年累计发电量  <Input placeholder="请输入" value={editValue} onChange={this.onChange} />  万kWh</div>}
 
@@ -171,7 +176,7 @@ class PvStationTop extends Component {
           <div className={styles.stationYearPlan}>
             <div className={styles.annualEnergyScale} >
               <div className={styles.trueTimeValue}>
-                <span>{singleStationData && singleStationData.yearPower && parseFloat(singleStationData.yearPower).toFixed(4) || 0}  {powerUpdate ? <span onClick={() => { this.setModalYear() }}><Icon type="form" theme="outlined" /></span> : ''}</span>
+                <span>{singleStationData && singleStationData.yearPower && parseFloat(singleStationData.yearPower).toFixed(4) || 0}  {powerUpdate ? <span className={styles.iconStyle} onClick={() => { this.setModalYear() }}><Icon type="form" theme="outlined" /></span> : ''}</span>
                 <span>{singleStationData && singleStationData.yearPlanPower && parseFloat(singleStationData.yearPlanPower).toFixed(4) || 0}</span>
               </div>
               <Progress percent={singleStationData && singleStationData.yearPlanRate * 100 || 0} showInfo={false} strokeWidth={3} type="line" strokeColor="#199475" />
