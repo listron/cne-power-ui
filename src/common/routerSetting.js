@@ -1,27 +1,36 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
+// 运维管理-工单
 import Ticket from '../containers/Operation/Ticket/Ticket';
 import DefectDetail from '../containers/Operation/Ticket/Defect/DefectDetail/DefectDetail';
-import Exception from '../containers/Login/Exception';
+
+import DayReport from '../containers/Operation/Running/DayReport/DayReport'; // 日报
+
+//系统管理-用户管理
 import Enterprise from '../containers/System/Account/Enterprise/Enterprise';
 import Department from '../containers/System/Account/Department/Department';
 import User from '../containers/System/Account/User/User';
-import AllStation from '../containers/Monitor/StationMonitor/AllStation/AllStation';
-import DeviceMonitor from '../containers/Monitor/StationMonitor/DeviceMonitor/DeviceMonitor';
 import Role from '../containers/System/Account/Role/Role';
-import SingleStation from '../containers/Monitor/StationMonitor/SingleStation/SingleStation';
-import RealTimeAlarm from '../containers/Monitor/Alarm/RealTimeAlarm';
-import HistoryAlarm from '../containers/Monitor/Alarm/HistoryAlarm';
-import AlarmStatistic from '../containers/Monitor/Alarm/AlarmStatistic';
-import EditPassword from '../containers/Others/EditPassword';
-import Building from '../components/Common/Building/Building';
-import AllStationAnalysis from '../containers/StatisticalAnalysis/StationAnalysis/AllStationAnalysis/allStationAnalysis';
-import Power from '../containers/Power';
-
+// 系统管理-电站管理
 import StationManage from '../containers/System/Station/StationManage/StationManage';
 import DeviceManage from '../containers/System/Station/DeviceManage/DeviceManage';
 import PointManage from '../containers/System/Station/PointManage/PointManage';
 import AlarmManage from '../containers/System/Station/AlarmManage/AlarmManage';
+// 实时监控-电站监控
+import AllStation from '../containers/Monitor/StationMonitor/AllStation/AllStation';
+import DeviceMonitor from '../containers/Monitor/StationMonitor/DeviceMonitor/DeviceMonitor';
+import SingleStation from '../containers/Monitor/StationMonitor/SingleStation/SingleStation';
+// 实时监控-告警
+import RealTimeAlarm from '../containers/Monitor/Alarm/RealTimeAlarm';
+import HistoryAlarm from '../containers/Monitor/Alarm/HistoryAlarm';
+import AlarmStatistic from '../containers/Monitor/Alarm/AlarmStatistic';
+
+import EditPassword from '../containers/Others/EditPassword'; // 更改密码
+
+import Building from '../components/Common/Building/Building';
+import AllStationAnalysis from '../containers/StatisticalAnalysis/StationAnalysis/AllStationAnalysis/allStationAnalysis';
+import Power from '../containers/Power';
+
 /*
   注： path变量中，以/hidden开头的路径，将不展示在菜单中；
 */
@@ -31,16 +40,11 @@ const routers = [
     exact: true,
     component: Building,
   }, 
-  {
-    path: '/404',
-    exact: true,
-    component: Exception
-  },
-  {
+  { // 运维管理-工单-工单列表
     path: '/operation/ticket/list',
     exact: true,
     component: Ticket,
-  }, {
+  }, { // 运维管理-工单-工单统计
     path: '/operation/ticket/statistics',
     exact: true,
     component: Building,
@@ -60,10 +64,10 @@ const routers = [
     path: '/operation/book/instrument',
     exact: true,
     component: Building,
-  },{
-    path: '/operation/running',
+  },{ // 运维管理-电站运行-日报
+    path: '/operation/running/dayReport',
     exact: true,
-    component: Building,
+    component: DayReport,
   }, {
     path: '/operation/experience',
     exact: true,

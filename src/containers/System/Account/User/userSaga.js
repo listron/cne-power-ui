@@ -248,8 +248,10 @@ function* createUserInfo(action) {
         payload: params,
       });
     }else if(response.data.code === '20015'){
+      yield put({ type: userAction.GET_USER_FETCH_FAIL });
       message.error('用户名已被注册');
     }else if(response.data.code === '20016'){
+      yield put({ type: userAction.GET_USER_FETCH_FAIL });
       message.error('手机号已被注册');
     }else{
       yield put({ type: userAction.GET_USER_FETCH_FAIL });

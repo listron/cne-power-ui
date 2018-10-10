@@ -114,10 +114,7 @@ class PvStation extends Component {
                     </div>
                     <div>电网</div>
                   </RadioButton>
-                </RadioGroup>}
-            
-                 
-              
+                </RadioGroup>}              
               </div>
               <div className={styles.deviceList} >
                 <DeviceList {...this.props} />
