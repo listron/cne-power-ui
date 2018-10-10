@@ -64,12 +64,8 @@ class AllStationStatistic extends React.Component {
           <div className={styles.componentContainer}>
           <TimeSelect day={true} />
           <PlanCompletionRate />
-          <TargetTabs />
-         
-          
-          </div>
-
-            
+          <TargetTabs />    
+          </div>          
           </TabPane>
           <TabPane tab="风电" key="0">
           </TabPane>

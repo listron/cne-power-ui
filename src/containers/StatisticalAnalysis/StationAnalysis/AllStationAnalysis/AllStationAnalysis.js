@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import styles from "./allStationAnalysis.scss";
 import PropTypes from "prop-types";
-import AllStationStatistic from '../../../../components/statisticalAnalysis/stationAnalysis/allStationAnalysis/AllStationStatistic.jsx';
+import AllStationStatistic from '../../../../components/statisticalAnalysis/stationAnalysis/allStationAnalysis/AllStationStatistic';
 import SingStationStatistic from '../../../../components/statisticalAnalysis/stationAnalysis/allStationAnalysis/SingStationStatistic.jsx';
 import { allStationAnalysisAction } from './AllStationAnalysisAction';
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
