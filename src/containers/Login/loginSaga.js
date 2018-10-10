@@ -24,6 +24,7 @@ function *changeLoginStore(action){
 function *userNameLogin(action){
   const url = Path.basePaths.APIBasePath + Path.APISubPaths.userNameLogin;
   const {params} = action;
+  console.log(params);
   yield put({ type: loginAction.LOGIN_FETCH });
   try {
     const response = yield call(axios, {
@@ -309,6 +310,7 @@ function *registerEnterprise(action){
     }
   }catch(e){
     console.log(e);
+    message.error('服务器异常！');
   }
 }
 // 获取企业信息
