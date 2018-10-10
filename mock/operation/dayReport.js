@@ -1,0 +1,122 @@
+
+const arr = [1,2,3,4,5,6,7,8,9,10,11,12];
+
+
+
+module.exports = [
+  { // 日报列表
+    api: '/mock/operation/dayReport/list',
+    method: 'post',
+    response: {
+      "code": "10000",
+      "message": "请求成功",
+      "data": {
+        "total": 12,
+        "list":  [1,2,3,4,5,6].map((e,i)=>({
+          stationCode: e,
+          stationName: `${i}号电站`,
+          userId: `${e}${e+2}${e+5}${e+9}${e*2}${e}${e*7}`,
+          dateList: arr.map(e=>({
+            reportDate: `${e}`,
+            isUpload: !!(e%2),
+            status: !!e%2 && !!e%3,
+          }))
+        }))
+      },
+      "serviceCode": "3.0"
+    },
+    delay: 1000,
+    error: {}
+  },{ // 日报配置
+    api: '/mock/operation/dayReport/config',
+    method: 'get',
+    response: {
+      "code": "10000",
+      "message": "请求成功",
+      "data": [{
+        radiation: 'MJ/㎡',
+        power: 'kWh',
+        speed: 'm/s',
+      },{
+        internetPowe: '1',
+        inverterPower: '1',
+        radiation: '1',
+        inverterCapacity: '1',
+        buyPower: '1',
+      },{
+        stander: '1'
+      }],
+      "serviceCode": "3.0"
+    },
+    delay: 1000,
+    error: {}
+  },{ // 详情
+    api: '/mock/operation/dayReport/detail',
+    method: 'get',
+    response: {
+      "code": "10000",
+      "message": "请求成功",
+      "data": {
+        reportDate: '2018-01-12',
+        reportId: '112',
+        weather: '好天气',
+        temperature: '121',
+        stationCode: '121',
+        stationName: 'zhel',
+        stationType: 'fwejl',
+        machineCount: 'fewjlfew',
+        realCapacity: 'fjewlk',
+        resourceValue: 'fewjl',
+        genIntegrated: 'sjdkf',
+        genInternet: 'sfa',
+        genInverter: 'saf',
+        equivalentHours: 'saf',
+        modelInverterCapacity: 'af',
+        modelInverterPowerGen: 'afsa',
+        buyPower: 'saf',
+        errorInfo: 'afds',
+        userName: 'saf',
+        userFullName: 'sdfa',
+        createTimer: 'sdaf',
+        updateTimer: 'sdf',
+        faultList: [1,2].map(e=>({
+          deviceName: `${e}${e*2}${e*3}`,
+          defectId: `${e*3}${e*5}${e*7}`,
+          startTime: '2018-01-12',
+          endTime: '2018-02-12',
+          lostPower: e*1213,
+          resean: 'esfjlekw',
+          process: 'fjewlkfjeklw',
+          faultId: 'sflewkf',
+          faultType: 'sjflwejfew',
+        })),
+        limitList: [1].map(e=>({
+          deviceName: `${e}${e*2}${e*3}`,
+          startTime: '2018-01-12',
+          endTime: '2018-02-12',
+          lostPower: e*1213,
+          resean: 'esfjlekw',
+          limitPower: '0.12',
+          faultId: 'sflewkf',
+        })),
+      },
+      "serviceCode": "3.0"
+    },
+    delay: 1000,
+    error: {}
+  },{ // 更新日报
+    api: '/mock/operation/dayReport/update',
+    method: 'put',
+    response: {
+      "code": "10000",
+      "message": "请求成功",
+      "data": {
+        
+      },
+      "serviceCode": "3.0"
+    },
+    delay: 1000,
+    error: {}
+  }
+]
+

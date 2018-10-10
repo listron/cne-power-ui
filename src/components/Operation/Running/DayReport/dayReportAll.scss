@@ -1,0 +1,33 @@
+
+
+
+.dayReportMain{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 1 0 auto;
+  width: 100%;
+  padding: 24px 24px 0;
+  background:#ececec;
+  .contentMain{
+    background-color: #fff;
+    flex: 1;
+    border: 1px solid #e1e2e2;
+  }
+}
+
+.dayReportSide{
+  display: flex;
+  flex: 1 0 auto;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  padding: 24px 24px 0;
+  background:#ececec;
+  //todo - next class should has 
+  // .sfjlk{
+  //   flex: 1;
+  //   background-color: #fff;
+  //   border: 1px solid #e1e2e2;
+  // }
+}
