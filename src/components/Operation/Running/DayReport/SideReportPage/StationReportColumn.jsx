@@ -11,27 +11,31 @@ function StationReportColumn({ dayReportConfig, stationType }){
   const genUtil = configUtil.power || '--'; // 辐射单位
   const requiredTargetObj = dayReportConfig[1] || {}; // 是否必填(展示*)
   return (<Row className={styles.stationReportColumn}>
-    <Col>电站名称</Col>
-    <Col>
+    <Col span={3} >电站名称</Col>
+    <Col className={styles.withBorder} span={2} >
       <span>日辐射总量</span>
       <span>{stationType === 0 ?speedUtil: radiaUtil}</span>
       {requiredTargetObj.resourceValue && '*'}
     </Col>
-    <Col>
-      <span>年累计发电量{genUtil}</span>
-      <span>逆变器{requiredTargetObj.yearGenInverter && '*'}</span>
-      <span>集电线路{requiredTargetObj.yearGenIntegrated && '*'}</span>
-      <span>上网电量{requiredTargetObj.yearGenInternet && '*'}</span>
+    <Col span={6} >
+      <div className={styles.withBorderBottom}>年累计发电量{genUtil}</div>
+      <Row >
+        <Col span={8}>逆变器{requiredTargetObj.yearGenInverter && '*'}</Col>
+        <Col span={8}>集电线路{requiredTargetObj.yearGenIntegrated && '*'}</Col>
+        <Col span={8}>上网电量{requiredTargetObj.yearGenInternet && '*'}</Col>
+      </Row>
     </Col>
-    <Col>等效小时数(h){requiredTargetObj.hour && '*'}</Col>
-    <Col>年累计购网电量{genUtil}{requiredTargetObj.buyPower && '*'}</Col>
-    <Col>
-      <span>样板逆变器{genUtil}</span>
-      <span>容量{requiredTargetObj.modelInverterCapacity && '*'}</span>
-      <span>日发电量{requiredTargetObj.modelInverterPowerGen && '*'}</span>
+    <Col className={styles.withBorder} span={2} >等效小时数(h){requiredTargetObj.hour && '*'}</Col>
+    <Col span={2} >年累计购网电量{genUtil}<i className={styles.withRequired}>{requiredTargetObj.buyPower && '*'}</i></Col>
+    <Col className={styles.withBorder} span={4} >
+      <div className={styles.withBorderBottom}>样板逆变器{genUtil}</div>
+      <Row >
+        <Col  span={12}>容量{requiredTargetObj.modelInverterCapacity && '*'}</Col>
+        <Col span={12}>日发电量{requiredTargetObj.modelInverterPowerGen && '*'}</Col>
+      </Row>
     </Col>
-    <Col>装机容量(MW)</Col>
-    <Col>操作</Col>
+    <Col span={2}>装机容量(MW)</Col>
+    <Col className={styles.withBorder} span={3} >操作</Col>
   </Row>)
 }
 
