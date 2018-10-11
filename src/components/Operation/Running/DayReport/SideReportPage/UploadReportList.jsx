@@ -7,7 +7,8 @@ import StationReportColumn from './StationReportColumn';
 class UploadReportList extends Component {
   static propTypes = {
     reportDay: PropTypes.string,
-    dayReportConfig: PropTypes.array
+    dayReportConfig: PropTypes.array,
+    reportStation: PropTypes.array,
   }
 
   constructor(props){
@@ -15,7 +16,8 @@ class UploadReportList extends Component {
   }
 
   render(){
-    const { reportDay, dayReportConfig } = this.props;
+    const { reportDay, dayReportConfig, reportStation } = this.props;
+    console.log(reportStation);
     return (
       <div className={styles.uploadReportList}>
         <div className={styles.uploadReportTip} >{reportDay} <span>新添加<i></i>条</span></div>
