@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './sideReportPage.scss';
-import { DatePicker, Button } from 'antd';
+import { DatePicker, Button, Alert } from 'antd';
 import StationSelect from '../../../../Common/StationSelect';
 import UploadReportList from './UploadReportList';
 import moment from 'moment';
@@ -32,13 +32,19 @@ class SideReportPage extends Component {
     const { stationReportBaseData } = this.props;
     const nextReportBaseData = nextProps.stationReportBaseData;
     if( nextReportBaseData.length > 0 && stationReportBaseData.length === 0){ // 得到初始化列表数据
-      const dayReportTotalInfoArr = nextReportBaseData.map(e=>({
-        dailyReport: { ...e },
-        dailyDetailList: e.defectId && e.defectId.split(',').filter(e=>!!e).map(m=>({
-          defectId: m
-        })) || [],
-      }))
-      console.log(dayReportTotalInfoArr)
+      const dayReportTotalInfoArr = nextReportBaseData.map(e=>{
+        let dailyReport = {...e};
+        let dailyDetailList = e.dailyDetailList.map(fault=>({
+          ...fault,
+          startTime: fault.startTime?moment(fault.startTime): null,
+          endTime: fault.endTime?moment(fault.endTime): null,
+          handle: false, // api返回的故障信息不可编辑
+        })) || [];
+        delete dailyReport.dailyDetailList;
+        return {
+          dailyReport, dailyDetailList
+        }
+      })
       this.setState({ dayReportTotalInfoArr })
     }
   }
@@ -114,13 +120,14 @@ class SideReportPage extends Component {
             <Button onClick={this.toReportStations} disabled={!canReport} >下一步</Button>
           </div>
         </div>}
-        {showReportInputList && <dailyReport
+        {showReportInputList && <UploadReportList
           {...this.props} 
           totalReportInfoChange={this.totalReportInfoChange}
           dayReportTotalInfoArr={dayReportTotalInfoArr} 
         />}
-        <span>请填写数字，最多填写小数点后两位 -- todo</span>
-        <span>请填写数字，最多填写小数点后四位 -- todo</span>
+        <Alert message="请填写数字，最多填写小数点后四位 -- todo" type="warning" />
+        <Alert message="请填写数字，最多填写小数点后四位 -- todo" type="warning" />
+        <Alert message="请填写！xxx必填！" type="warning" />
       </div>
     )
   }

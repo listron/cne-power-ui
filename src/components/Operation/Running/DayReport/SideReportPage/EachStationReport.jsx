@@ -9,6 +9,7 @@ class EachStationReport extends Component {
     dayReportTotalInfoArr: PropTypes.array,
     stationInfo: PropTypes.object,
     totalReportInfoChange: PropTypes.func,
+    addAbnormalInfo: PropTypes.func,
   }
 
   constructor(props){
@@ -31,20 +32,21 @@ class EachStationReport extends Component {
   }
 
   addAbnormal= () => {
-    const { stationInfo, dayReportTotalInfoArr } = this.props;
+    const { stationInfo, dayReportTotalInfoArr, addAbnormalInfo } = this.props;
     const { stationCode } = stationInfo;
-    const abnormalParams = dayReportTotalInfoArr.filter(info=>stationCode === info.dailyReport.stationCode)
-    console.log(abnormalParams)
-    // abnormalModal(abnormalParams.dailyDetailList);
+    const abnormalParams = dayReportTotalInfoArr.find(info=>stationCode === info.dailyReport.stationCode)
+    abnormalParams && addAbnormalInfo(abnormalParams.dailyReport, abnormalParams.dailyDetailList);
   }
 
   removeStation = () => { //删除，放弃日报上传。
     const { stationInfo } = this.props;
-
+    console.log('我要删掉这个电站上传咯！')
   }
 
   render(){
     const { stationInfo } = this.props;
+    const stationCapacity = isNaN(parseInt(stationInfo.stationCapacity))?'--':stationInfo.stationCapacity;
+    const eqpHour = isNaN(parseInt(stationInfo.eqpHour))?'--':stationInfo.eqpHour;
     return (
       <Row className={styles.eachStationReport}>
         <Col span={2}>{stationInfo.stationName}</Col>
@@ -61,7 +63,7 @@ class EachStationReport extends Component {
           <Input placeholder="--" onChange={(e)=>this.valueChange({ yearGenInternet: e.target.value })} />
         </Col>
         <Col span={2}>
-          <span>等效小时数</span>
+          <span>{eqpHour}</span>
         </Col>
         <Col span={2}>
           <Input placeholder="--" onChange={(e)=>this.valueChange({ buyPower: e.target.value })} />
@@ -73,7 +75,7 @@ class EachStationReport extends Component {
           <Input placeholder="--" onChange={(e)=>this.valueChange({ modelInverterPowerGen: e.target.value })} />
         </Col>
         <Col span={2}>
-          <span>装机容量</span>
+          <span>{stationCapacity}</span>
         </Col>
         <Col span={2}>
           <span onClick={this.addAbnormal} >添加异常</span>

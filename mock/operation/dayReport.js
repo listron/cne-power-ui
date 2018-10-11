@@ -38,10 +38,23 @@ module.exports = [
         id: i,
         stationName: `${i}号电站`,
         reportDate: '2018-01-12',
-        deviceCapacity: e*12-3,
+        stationCapacity: e*12-3,
         modelInverterCapacity: e*7,
         modelInverterPowerGen: e*3,
         defectId: `${e}`,
+        warning: !!e%2,
+        dailyDetailList: [1,2,3].map(e=>({
+          id: e,
+          dailyReportId: e,
+          deviceName: `${e}损失设备123`,
+          faultId: e,
+          faultName: `${e}就是不发点了`,
+          reason: `${e}娃娃设备`,
+          startTime: `${e}2017-01-12`,
+          endTime: `${e}2017-11-12`,
+          process: `${e}啊！蒸菜处理`,
+          lostPower: e*17+e*e
+        }))
       })),
       "serviceCode": "3.0"
     },
