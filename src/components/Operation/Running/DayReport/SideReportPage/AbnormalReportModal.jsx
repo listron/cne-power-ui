@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import styles from './sideReportPage.scss';
 import { Modal, Button } from 'antd';
 import LostGenTable from './LostGenTable';
+import LostAddForm from './LostAddForm';
 
 class AbnormalReportModal extends Component {
   static propTypes = {
@@ -16,6 +17,7 @@ class AbnormalReportModal extends Component {
   constructor(props){
     super(props);
     this.state = {
+      addLostFormShow: false,
       faultGenList: props.abnormalList, // 选中电站故障损失。
       limitGenList: [], // 选中电站限电损失。
       electricInfo: {}, // 发电信息
@@ -26,14 +28,21 @@ class AbnormalReportModal extends Component {
     console.log('确认保存异常！')
   }
 
-  changeFaultList = (faultGenList) => {
+  changeFaultList = (faultGenList, closeAddForm=false) => { // 修改损失电量信息
     console.log(faultGenList)
+    const newState = {faultGenList};
+    closeAddForm && (newState.addLostFormShow = false);
+    this.setState({ ...newState });
+  }
+
+
+  toAddGenLost = () => { // 添加损失电量信息=>展示form添加框
     this.setState({
-      faultGenList
+      addLostFormShow: true
     })
   }
 
-  changeLimitList = (limitGenList) => {
+  changeLimitList = (limitGenList) => { // -- todo 限电信息table内调整
     this.setState({
       limitGenList
     })
@@ -41,7 +50,7 @@ class AbnormalReportModal extends Component {
 
   render(){
     const { abnormalModalshow, abnormalInfo, hideAbnormalModal} = this.props;
-    const { faultGenList, limitGenList } = this.state;
+    const { addLostFormShow, faultGenList, limitGenList } = this.state;
     return (
       <Modal
           title={`添加异常-${abnormalInfo.stationName}`}
@@ -52,9 +61,10 @@ class AbnormalReportModal extends Component {
         >
           <div>
             <span>损失电量信息</span>
-            <Button>添加</Button>
+            <Button onClick={this.toAddGenLost} disabled={addLostFormShow} >添加</Button>
           </div>
           <LostGenTable faultGenList={faultGenList} abnormalInfo={abnormalInfo} changeFaultList={this.changeFaultList} />
+          {addLostFormShow && <LostAddForm faultGenList={faultGenList} changeFaultList={this.changeFaultList} />}
         </Modal>
     )
   }

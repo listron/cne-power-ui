@@ -7,7 +7,7 @@ import moment from 'moment';
 
 class LostGenTable extends Component {
   static propTypes = {
-    form: PropTypes.form,
+    form: PropTypes.object,
     faultGenList: PropTypes.array,
     abnormalInfo: PropTypes.object,
     getFieldDecorator: PropTypes.func,
@@ -42,6 +42,16 @@ class LostGenTable extends Component {
       },{
         title: '发生时间',
         dataIndex: 'startTime',
+        render : (text, record) => {
+          return (<Form.Item>
+            {getFieldDecorator(`${record.id}_startTime`, {
+              rules: [{ required: true, message: '开始时间' }],
+              initialValue: record.startTime,
+            })(
+              <DatePicker placeholder="开始时间" />
+            )}
+          </Form.Item>)
+        }
       },{
         title: '结束时间',
         dataIndex: 'endTime',
@@ -99,7 +109,7 @@ class LostGenTable extends Component {
       <Form>
         <Table 
           columns={this._loseColumn()} 
-          dataSource={faultGenList}
+          dataSource={faultGenList.map((e,i)=>({ ...e, key: i,}))}
           pagination={false}
         />
       </Form>
