@@ -317,7 +317,7 @@ class JoinInForm extends Component{
               })(
                 <Checkbox className={styles.userArgee}  >
                   同意
-                  <Link className={styles.userAgreeTip} to="/userAgreement" target="_blank">用户协议</Link>
+                  <Link className={styles.userAgreeTip} to="/userAgreement" >用户协议</Link>
                 </Checkbox>
               )}
             </FormItem>
