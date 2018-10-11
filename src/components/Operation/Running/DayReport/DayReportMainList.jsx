@@ -55,7 +55,7 @@ class DayReportMainList extends Component {
 
   toUploadPage = () => { // 去上传页面
     this.props.toChangeDayReportStore({
-      showPage: 'report'
+      showPage: 'report',
     })
   }
 
@@ -69,12 +69,12 @@ class DayReportMainList extends Component {
   }
 
   toUploadReport = (record, reportDate) => { // 去上传指定电站+日期日报
-    console.log( 'to upload !!!!')
-    console.log(reportDate);
-    console.log(record);
+    // console.log( 'to upload !!!!')
+    // console.log(`${this.props.startTime}-${reportDate}`);
+    // console.log(record);
     this.props.toChangeDayReportStore({
       showPage: 'report',
-      reportDay: reportDate,
+      reportDay: `${this.props.startTime}-${reportDate}`,
       reportStation: [{
         stationCode: record.stationCode,
         stationName: record.stationName
@@ -84,7 +84,6 @@ class DayReportMainList extends Component {
 
   render() {
     const { pageSize, pageNum, totalNum, dayReportList, loading } = this.props;
-    console.log(dayReportList);
     let columns = [{
       title: '电站名称',
       dataIndex: 'stationName',
@@ -92,16 +91,11 @@ class DayReportMainList extends Component {
     }]
     if(dayReportList.length > 0 && dayReportList[0].dateList){
       const { dateList } = dayReportList[0];
-      console.log(dayReportList);
-      console.log(dayReportList[0]);
-      console.log(dateList);
       dateList && dateList.length > 0 && dateList.forEach((e,i)=>{
-        console.log(e,i);
         columns.push({
           title: e.reportDate,
           dataIndex: e.reportDate,
           render: (text, record, index) => {
-            // console.log(text, record, index);
             const showWarningIcon = text && record.status; // 展示黄色图标提示未完成损失电量的填写。true展示，false不展示。
             if(text){
               return <span onClick={()=>this.toReportDetail(record, e.reportDate)}><i className="iconfont icon-look">{showWarningIcon && <i className="iconfont icon-alert_01" ></i>}</i></span>
@@ -112,7 +106,6 @@ class DayReportMainList extends Component {
         });
       })
     }
-    console.log(columns);
     return (
         <div className={styles.dayReportMain}>
           <div className={styles.contentMain}>
@@ -125,12 +118,12 @@ class DayReportMainList extends Component {
               loading={loading}
               dataSource={dayReportList.map((e, i) => { // 二维数据结构调整解析至页面
                 const { dateList } = e;
-                delete e.dateList;
                 let dataObj = { key: i, ...e };
                 dateList && dateList.length > 0 && dateList.forEach(m=>{
                   dataObj[m.reportDate] = m.isUpload;
                   dataObj.status = m.status;
                 })
+                delete dataObj.dateList;
                 return dataObj;
               })}
               columns={columns}

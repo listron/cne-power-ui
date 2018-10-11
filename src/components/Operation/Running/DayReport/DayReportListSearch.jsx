@@ -63,6 +63,10 @@ class DayReportListSearch extends Component {
     });
   }
 
+  disabledDate = (start) => {
+    return start && start > moment();
+  }
+
   render() {
     const { startTime, stations, regionCode, stationType } = this.props;
     let regionArr = [], regionSet = new Set(), stationTypeSet = new Set();
@@ -77,7 +81,7 @@ class DayReportListSearch extends Component {
     return (
       <div className={styles.search}>
         <span>条件查询</span>
-        <MonthPicker value={moment(startTime)} className={styles.monthSearch} onChange={this.startTimeChange} />
+        <MonthPicker value={moment(startTime)} className={styles.monthSearch} onChange={this.startTimeChange} disabledDate={this.disabledDate} format="YYYY[年]MM[月]" />
         <Select onChange={this.regionSelect} value={regionCode} className={styles.regionSearch} >
           <Option value={null}>全部</Option>
           {regionArr.map(e=>(
