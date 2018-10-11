@@ -26,6 +26,7 @@ class DayReportListSearch extends Component {
   }
 
   startTimeChange = (value) => {
+    console.log(value);
     const startTime = value?value.format('YYYY-MM'):moment().format('YYYY-MM');
     const { getDayReportList, stationType, stationNameSort, pageSize, pageNum, regionCode  } = this.props;
     getDayReportList({
@@ -69,29 +70,29 @@ class DayReportListSearch extends Component {
       !regionSet.has(e.regionCode) && regionSet.add(e.regionCode) && regionArr.push({
         regionCode: e.regionCode,
         regionName: e.regionName,
-      })
-      stationTypeSet.add(e.stationType)
-    })
+      });
+      stationTypeSet.add(e.stationType);
+    });
     const showTypeChangeButtonGroup = stationTypeSet.size > 1; // 两种类型电站以上，才显示电站类型选择
     return (
-        <div className={styles.search}>
-          <span>条件查询</span>
-          <MonthPicker value={moment(startTime)} onChange={this.startTimeChange} />
-          <Select onChange={this.regionSelect} value={regionCode}>
-            <Option value={null}>全部</Option>
-            {regionArr.map(e=>(
-              <Option value={e.regionCode}>{e.regionName}</Option>
-            ))}
-          </Select>
-          {showTypeChangeButtonGroup && <span>
-            <span>电站类型</span>
-            <Radio.Group value={stationType} onChange={this.stationTypeChange}>
-              <Radio.Button value={2}>全部</Radio.Button>
-              <Radio.Button value={0}>风电</Radio.Button>
-              <Radio.Button value={1}>光伏</Radio.Button>
-            </Radio.Group>
-          </span>}
-        </div>
+      <div className={styles.search}>
+        <span>条件查询</span>
+        <MonthPicker value={moment(startTime)} className={styles.monthSearch} onChange={this.startTimeChange} />
+        <Select onChange={this.regionSelect} value={regionCode} className={styles.regionSearch} >
+          <Option value={null}>全部</Option>
+          {regionArr.map(e=>(
+            <Option value={e.regionCode}>{e.regionName}</Option>
+          ))}
+        </Select>
+        {showTypeChangeButtonGroup && <span>
+          <span>电站类型</span>
+          <Radio.Group value={stationType} onChange={this.stationTypeChange} className={styles.typeSearch} >
+            <Radio.Button value={2}>全部</Radio.Button>
+            <Radio.Button value={0}>风电</Radio.Button>
+            <Radio.Button value={1}>光伏</Radio.Button>
+          </Radio.Group>
+        </span>}
+      </div>
       
     )
   }

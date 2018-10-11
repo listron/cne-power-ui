@@ -6,7 +6,7 @@ import DayReportListSearch from './DayReportListSearch';
 import Footer from '../../../Common/Footer';
 import CommonPagination from '../../../Common/CommonPagination';
 import styles from './dayReportAll.scss';
-import { Button, Table } from 'antd';
+import { Button, Table,Icon } from 'antd';
 
 class DayReportMainList extends Component {
   static propTypes = {
@@ -26,7 +26,7 @@ class DayReportMainList extends Component {
   constructor(props) {
     super(props);
   }
-
+  
   onPaginationChange = ({ currentPage, pageSize }) => { // 分页器
     const { getDayReportList, stationType, stationNameSort, startTime, regionCode  } = this.props;
     getDayReportList({
@@ -84,6 +84,7 @@ class DayReportMainList extends Component {
 
   render() {
     const { pageSize, pageNum, totalNum, dayReportList, loading } = this.props;
+    console.log(dayReportList);
     let columns = [{
       title: '电站名称',
       dataIndex: 'stationName',
@@ -91,27 +92,33 @@ class DayReportMainList extends Component {
     }]
     if(dayReportList.length > 0 && dayReportList[0].dateList){
       const { dateList } = dayReportList[0];
+      console.log(dayReportList);
+      console.log(dayReportList[0]);
+      console.log(dateList);
       dateList && dateList.length > 0 && dateList.forEach((e,i)=>{
+        console.log(e,i);
         columns.push({
           title: e.reportDate,
           dataIndex: e.reportDate,
           render: (text, record, index) => {
+            // console.log(text, record, index);
             const showWarningIcon = text && record.status; // 展示黄色图标提示未完成损失电量的填写。true展示，false不展示。
             if(text){
-              return <span onClick={()=>this.toReportDetail(record, e.reportDate)}>查看</span>
+              return <span onClick={()=>this.toReportDetail(record, e.reportDate)}><i className="iconfont icon-look">{showWarningIcon && <i className="iconfont icon-alert_01" ></i>}</i></span>
             }else{
-              return <span onClick={()=>this.toUploadReport(record, e.reportDate)}>上传</span>
+              return <span onClick={()=>this.toUploadReport(record, e.reportDate)}><Icon type="plus-circle" theme="outlined" /></span>
             }
           }
         });
       })
     }
+    console.log(columns);
     return (
         <div className={styles.dayReportMain}>
           <div className={styles.contentMain}>
             <DayReportListSearch {...this.props} /> 
-            <div>
-              <Button onClick={this.toUploadPage}>上传日报</Button>
+            <div className={styles.operateDayReport} >
+              <Button onClick={this.toUploadPage} icon="plus" className={styles.uploadReport} ><span>上传日报</span></Button>
               <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalNum} onPaginationChange={this.onPaginationChange} />
             </div>
             <Table

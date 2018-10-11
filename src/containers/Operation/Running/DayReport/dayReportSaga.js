@@ -21,7 +21,7 @@ function *getDayReportList(action){//请求日报基本列表数据
   try{
     yield put({ type:dayReportAction.dayReportLoading });
     const response = yield call(axios.post,url,payload);
-
+    console.log(response);
     const totalNum = response.data.data.total || 0;
     let { pageNum, pageSize } = payload;
     const maxPage = Math.ceil(totalNum / pageSize);
