@@ -45,14 +45,15 @@ class UploadReportList extends Component {
   render(){
     const { reportDay, dayReportConfig, reportStation, totalReportInfoChange, dayReportTotalInfoArr } = this.props;
     const { abnormalModalshow, abnormalInfo, abnormalList } = this.state;
-    // const stationType = reportStation[0].stationType; //注意： 后期解开。不能删。
-    const stationType = 1; //注意： 调试用，后期删掉
+    const stationType = reportStation[0].stationType; //注意： 后期解开。不能删。
+    // const stationType = 1; //注意： 调试用，后期删掉
     return (
       <div className={styles.uploadReportList}>
         <div>{reportDay}</div>
         <div>
           <StationReportColumn dayReportConfig={dayReportConfig} stationType={stationType} />
-          {dayReportTotalInfoArr.map(e=>(<EachStationReport 
+          {dayReportTotalInfoArr.map(e=>(<EachStationReport
+            key={e.dailyReport.stationCode}
             stationInfo={e.dailyReport}
             addAbnormalInfo={this.addAbnormalInfo}
             totalReportInfoChange={totalReportInfoChange}
