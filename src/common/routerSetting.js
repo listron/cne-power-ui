@@ -21,6 +21,8 @@ import StationManage from '../containers/System/Station/StationManage/StationMan
 import DeviceManage from '../containers/System/Station/DeviceManage/DeviceManage';
 import PointManage from '../containers/System/Station/PointManage/PointManage';
 import AlarmManage from '../containers/System/Station/AlarmManage/AlarmManage';
+
+import Plan from "../containers/System/Production/Plan/Plan";
 /*
   注： path变量中，以/hidden开头的路径，将不展示在菜单中；
 */
@@ -29,7 +31,7 @@ const routers = [
     path: '/',
     exact: true,
     component: Building,
-  }, 
+  },
   {
     path: '/404',
     exact: true,
@@ -147,10 +149,10 @@ const routers = [
     path: '/system/station/alarmManage',
     exact: true,
     component: AlarmManage // Building  AlarmManage
-  },{ // 系统管理-计划配置
-    path: '/system/config',
+  },{ // 系统管理-计划配置-
+    path: '/system/config/plan',
     exact: true,
-    component: Building
+    component: Plan
   },{
     path: '/statistical/stationaccount/allstation',
     exact: true,

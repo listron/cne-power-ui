@@ -14,7 +14,7 @@ const singleStationMonitor = require('./mock/monitor/singleStationMonitor');
 const monitorDevice = require('./mock/monitor/deviceMonitor');
 const others = require('./mock/others/other');
 
-
+const plan = require('./mock/system/plan');
 // as
 exports.mockConfig = [
   ...homeData,
@@ -25,6 +25,7 @@ exports.mockConfig = [
   ...department,
   ...getVerificationCode,
   ...user,
+  ...plan,
 
   ...stationManage, //电站管理-电站
 

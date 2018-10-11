@@ -11,7 +11,7 @@ import { watchInspect } from './Operation/Ticket/Inspect/inspectSaga';
 
 import { watchChangeShowContainer } from './Operation/Ticket/ticketSaga';
 
- 
+
 import { watchEnterprise } from './System/Account/Enterprise/enterpriseSaga';
 import { watchDepartment } from './System/Account/Department/departmentSaga';
 import { watchRole } from './System/Account/Role/roleSaga';
@@ -28,6 +28,8 @@ import {watchStationMonitor} from './Monitor/StationMonitor/AllStation/stationMo
 import {watchAlarmMonitor} from './Monitor/Alarm/alarmSaga';
 
 import { watchOtherSaga } from './alphaRedux/otherSaga';
+
+import { watchPlan } from './System/Production/Plan/planSaga';
 
 // root saga
 export default function* rootSaga() {
@@ -54,6 +56,8 @@ export default function* rootSaga() {
     watchDeviceManage(),
     watchPointManage(),
     watchAlarmManage(),
+    // system-production
+    watchPlan(),
     // monitor
     watchStationMonitor(),
     watchDeviceMonitor(),
