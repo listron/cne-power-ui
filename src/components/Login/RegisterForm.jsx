@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Form, Icon, Input, Button, Steps, Checkbox} from 'antd';
+import {Form, Input, Button, Steps, Checkbox} from 'antd';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import styles from './registerForm.scss';
@@ -97,10 +97,10 @@ class RegisterForm extends Component {
           }
         }, 500);
         this.props.registerEnterprise({
+          ...values,
           phoneNum: this.props.phoneNum,
           enterpriseDomain: this.props.enterpriseDomain,
           enterpriseName: this.props.enterpriseName,
-          ...values,
           history: this.props.history
         });
       }

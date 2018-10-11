@@ -51,12 +51,6 @@ class JoinInForm extends Component{
       return;
     };
     this.props.changeLoginStore({
-      userEnterpriseStatus: 3,
-    });
-  }
-
-  componentWillUnmount = () => {
-    this.props.changeLoginStore({
       loginData: {},
       userEnterpriseStatus: 3,
     });

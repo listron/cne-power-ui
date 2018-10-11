@@ -18,7 +18,7 @@ class UploadReportList extends Component {
     const { reportDay, dayReportConfig } = this.props;
     return (
       <div className={styles.uploadReportList}>
-        <div>{reportDay}</div>
+        <div className={styles.uploadReportTip} >{reportDay} <span>新添加<i></i>条</span></div>
         <div>
           <StationReportColumn dayReportConfig={dayReportConfig} />
         </div>
