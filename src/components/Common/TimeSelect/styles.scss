@@ -1,0 +1,16 @@
+.timeSelect{
+  height: 100px;
+  line-height: 100px;
+  display: flex;
+
+  align-items: center;
+  border-bottom: 1px solid #ececec;
+  .textStyle{
+    letter-spacing: 4px;
+    margin-left: 24px;
+    margin-right: 8px;
+  }
+  .buttonStyle{
+    margin-right: 4px;
+  }
+}

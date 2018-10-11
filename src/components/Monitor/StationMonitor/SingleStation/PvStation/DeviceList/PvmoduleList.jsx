@@ -58,6 +58,7 @@ class PvmoduleList extends Component {
       <div className={styles.pvmodule}>
         <div className={styles.pvmoduleList} >
           {(tmpPvmoduleList&&tmpPvmoduleList.length>0) ? tmpPvmoduleList.sort(this.compareName).map((item,index)=>{
+            
             return (
               <div key={index} className={styles.pvmoduleItem} >
                 <div className={styles.deviceName} ><i className="iconfont icon-nb" ></i>{item.deviceName}</div>
@@ -66,18 +67,17 @@ class PvmoduleList extends Component {
                   let obj = item.electricityList[i];
                   if(obj){
                     for(let key in obj){
-                      if(key.indexOf('NB') === 0){
+                      if(key.indexOf('pointValue') === 0){
                         num = obj[key];
                       }
                     }
-                    
                     return (<span className={classnames({
                       normalValue: !!num,
                       // stopValue: obj.pointStatus === 200,
                       // breakValue: obj.pointStatus === 300,
                       // noValue: obj.pointStatus === 900,
                       commonStyle: true,
-                    })} key={i} >{num || ''}</span>)
+                    })} key={i} >{num || ''}</span>);
                   }else{
                     return (<span className={classnames({
                       commonStyle: true,

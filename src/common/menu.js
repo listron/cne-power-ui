@@ -121,6 +121,13 @@ const menuData = [
         path: 'running',
         iconStyle: 'icon-usermanage',
         rightKey: 'operation_running',
+        children: [
+          {
+            name: '日报',
+            path: 'dayReport',
+            rightKey: 'operation_running',
+          }
+        ]
       }, {
         name: '经验库',
         path: 'experience',

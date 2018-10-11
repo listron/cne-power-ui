@@ -12,6 +12,7 @@ class RoleTable extends Component {
     totalNum: PropTypes.number,
     roleData: PropTypes.array,
     selectedRole: PropTypes.array,//勾选的数组
+    defaultMenuData: PropTypes.array,
     getRoleList: PropTypes.func,
     changeRoleStore: PropTypes.func,
     onDeleteRole: PropTypes.func,
@@ -50,6 +51,7 @@ class RoleTable extends Component {
   }
 
   getRightArr(rightData, frontText='') { // 递归生成权限数组['一级-二级-三级...',...]
+    const { defaultMenuData } = this.props;
     let dataInfoArr = [];
     rightData && rightData.length > 0 && rightData.forEach(e=>{
       const hasChildRight = e && e.childRightData && e.childRightData.length > 0
@@ -57,8 +59,9 @@ class RoleTable extends Component {
         const innerData = this.getRightArr(e.childRightData, e.rightName);
         dataInfoArr.push(...innerData);
       }else{
-        const rightText = `${frontText?`${frontText}-`:''}${e.rightName}`
-        e && e.rightName && dataInfoArr.push(rightText);
+        const isDefaultRight = defaultMenuData.includes(parseInt(e.rightId)); // 默认权限不显示
+        const rightText = `${frontText?`${frontText}-`:''}${e.rightName}`;
+        e && e.rightName && !isDefaultRight && dataInfoArr.push(rightText);
       }
     })
     return dataInfoArr;
@@ -83,12 +86,17 @@ class RoleTable extends Component {
         const rightArr = this.getRightArr(rightData,'');
         const {roleDesc}=record;
         const content = (
-          <div className={styles.roleTableTooltip}>{rightArr.map((item,index)=>(<span key={index}>{item}</span>))}</div>
+          <div className={styles.roleTableTooltip}>
+            <span>基础权限</span>
+            {rightArr.map((item,index)=>(<span key={index}>{item}</span>))}
+          </div>
         );
+        let tableRightArr = [...rightArr];
+        tableRightArr.unshift('基础权限');
         const title = <span className={styles.roleTableTitle}>{roleDesc}</span>
         return (
           <Popover  content={content}  placement="right" trigger="hover"  title={title}>
-            <div className={styles.menu}>{rightArr.join(' | ')}</div>
+            <div className={styles.menu}>{tableRightArr.join(' | ')}</div>
           </Popover>
         );
       }
@@ -125,6 +133,9 @@ class RoleTable extends Component {
     const { selectedRole, onDeleteRole } = this.props;
     onDeleteRole({
       roleId: selectedRole.map(e=>e.roleId).join(',')
+    });
+    this.setState({
+      showDeleteTip: false,
     })
   }
 

@@ -168,6 +168,7 @@ function *deleteRole(action) { // 删除角色
           selectedRole: []
         },
       });
+      message.success('角色删除成功!');
     } else if(response.data.code === '20020') {
       console.log(response.data)
       yield put({
@@ -176,7 +177,7 @@ function *deleteRole(action) { // 删除角色
           loading: false,
         }
       });
-      message.error('有关联用户,取消关联后，可删除');
+      message.error('有关联用户,取消关联后，可删除', 2);
     }else{
       message.error(response.data.message);
       console.log(response.data);
@@ -187,7 +188,6 @@ function *deleteRole(action) { // 删除角色
         }
       });
     }
-    message.error(response.data.message);
   }catch(e){
     console.log(e);
   }
