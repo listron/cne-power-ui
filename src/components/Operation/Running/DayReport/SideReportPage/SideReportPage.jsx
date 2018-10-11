@@ -34,9 +34,9 @@ class SideReportPage extends Component {
     if( nextReportBaseData.length > 0 && stationReportBaseData.length === 0){ // 得到初始化列表数据
       const dayReportTotalInfoArr = nextReportBaseData.map(e=>({
         dailyReport: { ...e },
-        // dailyDetailList: e.defectId && e.defectId.split(',').filter(e=>!!e).map(m=>({ // todo-后续放开。
-        //   defectId: m
-        // })) || [],
+        dailyDetailList: e.defectId && e.defectId.split(',').filter(e=>!!e).map(m=>({
+          defectId: m
+        })) || [],
       }))
       console.log(dayReportTotalInfoArr)
       this.setState({ dayReportTotalInfoArr })
@@ -114,7 +114,7 @@ class SideReportPage extends Component {
             <Button onClick={this.toReportStations} disabled={!canReport} >下一步</Button>
           </div>
         </div>}
-        {showReportInputList && <UploadReportList 
+        {showReportInputList && <dailyReport
           {...this.props} 
           totalReportInfoChange={this.totalReportInfoChange}
           dayReportTotalInfoArr={dayReportTotalInfoArr} 

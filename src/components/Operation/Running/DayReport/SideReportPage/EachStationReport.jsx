@@ -31,10 +31,15 @@ class EachStationReport extends Component {
   }
 
   addAbnormal= () => {
-
+    const { stationInfo, dayReportTotalInfoArr } = this.props;
+    const { stationCode } = stationInfo;
+    const abnormalParams = dayReportTotalInfoArr.filter(info=>stationCode === info.dailyReport.stationCode)
+    console.log(abnormalParams)
+    // abnormalModal(abnormalParams.dailyDetailList);
   }
 
   removeStation = () => { //删除，放弃日报上传。
+    const { stationInfo } = this.props;
 
   }
 

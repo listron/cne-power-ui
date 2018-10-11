@@ -10,7 +10,6 @@ class UploadReportList extends Component {
     reportDay: PropTypes.string,
     dayReportConfig: PropTypes.array,
     reportStation: PropTypes.array,
-    stationReportBaseData: PropTypes.array,
     dayReportTotalInfoArr: PropTypes.array,
     toChangeDayReportStore: PropTypes.func,
     totalReportInfoChange: PropTypes.func,
@@ -32,7 +31,7 @@ class UploadReportList extends Component {
 
 
   render(){
-    const { reportDay, dayReportConfig, reportStation, stationReportBaseData, totalReportInfoChange, dayReportTotalInfoArr } = this.props;
+    const { reportDay, dayReportConfig, reportStation, totalReportInfoChange, dayReportTotalInfoArr } = this.props;
     // const stationType = reportStation[0].stationType; //注意： 后期解开。不能删。
     const stationType = 1; //注意： 调试用，后期删掉
     return (
@@ -40,8 +39,8 @@ class UploadReportList extends Component {
         <div>{reportDay}</div>
         <div>
           <StationReportColumn dayReportConfig={dayReportConfig} stationType={stationType} />
-          {stationReportBaseData.map(e=>(<EachStationReport 
-            stationInfo={e}
+          {dayReportTotalInfoArr.map(e=>(<EachStationReport 
+            stationInfo={e.dailyReport}
             removeStation={this.removeStation}
             addAbnormalInfo={this.addAbnormalInfo}
             totalReportInfoChange={totalReportInfoChange}
