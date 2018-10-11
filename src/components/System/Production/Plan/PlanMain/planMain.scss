@@ -1,0 +1,185 @@
+@import '../../../../../theme/theme.scss';
+
+.planMain {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 1 0 auto;
+  width: 100%;
+  .contentMain {
+    background-color: #fff;
+    flex: 1;
+    border: 1px solid #e1e2e2;
+    .departmentSearch { //部门搜索
+      background: #f9f9f9;
+      height: 50px;
+      line-height: 50px;
+      display: flex;
+      .departmentName, .parentName, .stationName {
+        color: $darkColor;
+      }
+      .departmentName {
+        margin: 0 12px 0 24px;
+      }
+      .parentName, .stationName {
+        margin-right: 12px;
+      }
+      .departmentInput, .parentInput, .stationInput {
+        margin-top: 9px;
+        position: static;
+        width: 160px;
+        @include highLight($themeColor);
+      }
+      .departmentInput, .parentInput, {
+        margin-right: 40px;
+      }
+      .stationInput {
+        margin-right: 12px;
+      }
+      .searchButton {
+        width: 68px;
+        margin-top: 9px;
+        margin-right: 12px;
+        color: $darkColor;
+        border: 1px solid $promptColor;
+        @include highLight($themeColor);
+        &:hover {
+          background-color: $themeColor;
+          border-color: $themeColor;
+          color: #fff;
+        }
+      }
+      .clearButton {
+        cursor: pointer;
+        color: $themeColor;
+      }
+    }
+    .planList { //部门列表
+      .planListTop {
+        background: #fff;
+        display: flex;
+        //line-height: 72px;
+        justify-content: space-between;
+        .addplan {
+          padding: 0;
+          margin-left: 24px;
+          margin-right: 12px;
+          font-size: 0;
+          border: 1px solid $themeColor;
+          i {
+            background-color: $themeColor;
+            color: #fff;
+            font-size: 14px;
+            vertical-align: top;
+            width: 28px;
+            line-height: 30px;
+            border-radius: 2px 0 0 2px;
+          }
+          .text {
+            border-radius: 0 2px 2px 0;
+            font-size: 14px;
+            // background:#fff;
+            color: $themeColor;
+            display: inline-block;
+            width: 40px;
+            line-height: 30px;
+            margin: 0px;
+            text-align: center;
+          }
+          @include highLight($themeColor);
+          &:hover {
+            .text {
+              background: $themeColor;
+              color: #fff;
+            }
+          }
+        }
+      }
+      table {
+        a {
+          text-decoration: underline;
+          color: $darkColor;
+          &:hover {
+            color: #199475;
+          }
+        }
+
+        .tableDepartmentName {
+          color: $darkColor;
+          &:hover {
+            color: #199475;
+          }
+          .departmentName {
+
+            width: 80px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+
+          }
+
+        }
+      }
+      .stationColumn {
+        .others {
+          cursor: pointer;
+          font-size: 24px;
+          vertical-align: middle;
+        }
+      }
+      .tableFooter {
+        background-color: #fff;
+        height: 45px;
+        line-height: 45px;
+        .info {
+          color: $darkColor;
+          margin-right: 20px;
+          margin-left: 24px;
+          .totalNum {
+            color: rgb(250, 185, 7);
+            margin: auto 4px;
+          }
+        }
+        .cancel {
+          color: $themeColor;
+          cursor: pointer;
+        }
+      }
+      :global {
+        .ant-table-placeholder {
+          z-index: auto;
+        }
+      }
+    }
+  }
+}
+
+
+.tableList {
+  :global {
+    .ant-input {
+      width: 48px;
+      padding: 0 5px;
+      background:#fcffe5;
+      border:1px solid #f9b600;
+    }
+    .ant-table .ant-table-thead > tr > th, .ant-table .ant-table-tbody > tr > td{
+      padding: 0 3px;
+      line-height: 1;
+    }
+    .ant-table .ant-table-thead > tr > th{
+      height: 62px;
+    }
+    .ant-input.ant-input-disabled{
+      background:#f8f8f8;
+      border:1px solid #dfdfdf;
+    }
+    .ant-input:focus{
+      background: #ffffff;
+      border: 1px solid #dfdfdf;
+      //outline: none;
+      -webkit-tap-highlight-color: rgba(0,0,0,0);
+    }
+  }
+
+}

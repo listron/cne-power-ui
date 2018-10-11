@@ -1,9 +1,9 @@
-import { isUrl } from '../utils';
+import {isUrl} from '../utils';
 
 /*
   文件说明： 菜单配置项
   页面显示展示的菜单集中管理，点击后页面跳转至对应路径。设计菜单最多包含三级。
-  参数说明： 
+  参数说明：
   1. name：该级菜单对应名称，
   2. path: 对应url路径；
       要求：一级路径，必须不得重复！！且不得包含任何特殊字符只能以小驼峰单词命名！！=>菜单解析规则，未遵守必出bug！！
@@ -84,9 +84,9 @@ const menuData = [
             rightKey: 'operation_worklist_statistics',
           }
         ]
-      },{
-        name:'两票管理',
-        path:'twoTickets',
+      }, {
+        name: '两票管理',
+        path: 'twoTickets',
         iconStyle: 'icon-usermanage',
         rightKey: 'operation_twoTicket',
         children: [
@@ -100,9 +100,9 @@ const menuData = [
             rightKey: 'monitor',
           }
         ]
-      },{ 
-        name:'台账',
-        path:'book',
+      }, {
+        name: '台账',
+        path: 'book',
         iconStyle: 'icon-usermanage',
         rightKey: 'operation_book',
         children: [
@@ -110,15 +110,15 @@ const menuData = [
             name: '备品备件',
             path: 'sparePart',
             rightKey: 'operation_book_sparePart',
-          },{
+          }, {
             name: '工器具',
             path: 'instrument',
             rightKey: 'operation_book_instrument',
           }
         ]
-      },{
-        name:'电站运行',
-        path:'running',
+      }, {
+        name: '电站运行',
+        path: 'running',
         iconStyle: 'icon-usermanage',
         rightKey: 'operation_running',
         children: [
@@ -128,15 +128,15 @@ const menuData = [
             rightKey: 'operation_running',
           }
         ]
-      },{
-        name:'经验库',
-        path:'experience',
+      }, {
+        name: '经验库',
+        path: 'experience',
         iconStyle: 'icon-usermanage',
         rightKey: 'operation_experience',
       }
     ],
   },
- {
+  {
     name: '统计分析',
     path: 'statistical',
     rightKey: 'statistics',
@@ -170,8 +170,8 @@ const menuData = [
             rightKey: 'monitor',
           }
         ]
-      },{
-        name:'设备分析',
+      }, {
+        name: '设备分析',
         path: 'equipment',
         iconStyle: 'icon-usermanage',
         rightKey: 'statistics_device',
@@ -179,7 +179,7 @@ const menuData = [
           {
             name: '设备性能分析',
             path: 'performance',
-            rightKey: 'monitor',        
+            rightKey: 'monitor',
           }, {
             name: '设备厂家对比',
             path: 'manufacturers',
@@ -187,8 +187,8 @@ const menuData = [
           }
         ]
 
-      },{
-        name:'统计报表',
+      }, {
+        name: '统计报表',
         path: 'statement',
         iconStyle: 'icon-usermanage',
         rightKey: 'statistics_report',
@@ -196,7 +196,7 @@ const menuData = [
           {
             name: '日报月报',
             path: 'daily',
-            rightKey: 'monitor',        
+            rightKey: 'monitor',
           }, {
             name: '定制报表',
             path: 'customization',
@@ -211,8 +211,8 @@ const menuData = [
     rightKey: 'analysis',
     children: [
       {
-        name:'光伏发电量评估',
-        path:'assess',
+        name: '光伏发电量评估',
+        path: 'assess',
         defaultPath: true,
         iconStyle: 'icon-usermanage',
         rightKey: 'analysis_powerGeneration',
@@ -238,25 +238,25 @@ const menuData = [
             rightKey: 'monitor',
           }
         ]
-      },{
-        name:'组串异常检测',
-        path:'formation',
+      }, {
+        name: '组串异常检测',
+        path: 'formation',
         iconStyle: 'icon-usermanage',
         rightKey: 'analysis_inefficientDetect',
         children: [
           {
             name: '组串异常分析',
             path: 'abnormal',
-            rightKey: 'monitor',         
+            rightKey: 'monitor',
           }, {
             name: '预警事件配置',
             path: 'warning',
             rightKey: 'monitor',
           }
         ]
-      },{
-        name:'偏航对风分析',
-        path:'yaw',
+      }, {
+        name: '偏航对风分析',
+        path: 'yaw',
         iconStyle: 'icon-usermanage',
         rightKey: 'analysis_yaw',
         children: [
@@ -274,7 +274,7 @@ const menuData = [
       }
 
     ]
-  },  {
+  }, {
     name: '系统管理',
     path: 'system',
     rightKey: 'system',
@@ -309,21 +309,21 @@ const menuData = [
         name: '电站管理',
         iconStyle: 'icon-elecmanage',
         path: 'station',
-        rightKey:  'system_station',
-        children:[
+        rightKey: 'system_station',
+        children: [
           {
             name: '电站',
             path: 'stationManage',
             rightKey: 'system_station',
-          },{
+          }, {
             name: '设备',
             path: 'deviceManage',
             rightKey: 'system_station',
-          },{
+          }, {
             name: '测点',
             path: 'pointManage',
             rightKey: 'system_station',
-          },{
+          }, {
             name: '告警事件',
             path: 'alarmManage',
             rightKey: 'system_station',
@@ -333,7 +333,12 @@ const menuData = [
         name: '计划配置',
         iconStyle: 'icon-elecmanage',
         path: 'config',
-        rightKey:  'system_config',
+        rightKey: 'system_config',
+        children: [{
+          name: '生产计划',
+          path: 'plan',
+          rightKey: 'system_config',
+        }]
       }
     ],
   }
@@ -341,7 +346,7 @@ const menuData = [
 
 function formatter(data, parentPath = '/') {
   return data.map(item => {
-    let { path } = item;
+    let {path} = item;
     if (!isUrl(path) && path !== '/') {
       path = parentPath + item.path;
     }

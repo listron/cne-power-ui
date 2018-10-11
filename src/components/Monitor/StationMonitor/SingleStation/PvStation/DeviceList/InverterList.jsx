@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './deviceList.scss';
-import { Tabs, Switch, Radio, Table, Progress  } from 'antd';
+import { Tabs, Switch, Radio, Table, Progress,Spin  } from 'antd';
 import { Link } from 'react-router-dom';
 import CommonPagination from '../../../../../Common/CommonPagination/index';
 
@@ -14,6 +14,7 @@ class InverterList extends Component {
     match: PropTypes.object,
     deviceTypeCode: PropTypes.number,
     getInverterList: PropTypes.func,
+    loading: PropTypes.bool,
   }
 
   constructor(props){
@@ -25,6 +26,7 @@ class InverterList extends Component {
       currentPage: 1,
       sortName: '',
       descend : false,
+      firstLoad : true,
     }
   }
   
@@ -61,8 +63,12 @@ class InverterList extends Component {
   }
   getData = (stationCode) => {
     const { deviceTypeCode, getInverterList } = this.props;
-    getInverterList({ stationCode, deviceTypeCode });
+    const { firstLoad } = this.state;
+    getInverterList({ stationCode, deviceTypeCode,firstLoad });
     this.timeOutId = setTimeout(()=>{
+      if(firstLoad){
+        this.setState({firstLoad: false});
+      }
       this.getData(stationCode);
     }, 10000);
   }
@@ -207,7 +213,7 @@ class InverterList extends Component {
     return tableSource.splice((currentPage-1)*pageSize,pageSize);
   }
   render(){
-    const { inverterList, deviceTypeCode, } = this.props;
+    const { inverterList, deviceTypeCode,loading } = this.props;
     const { currentStatus, alarmSwitch, currentPage, pageSize  } = this.state;
     const initDeviceList = inverterList.deviceList && inverterList.deviceList.map((e,i)=>({...e,key:i})) || []; // 初始化数据
     const filteredDeviceList = initDeviceList.filter(e=>(!alarmSwitch || (alarmSwitch && e.alarmNum > 0))).filter(e=>{
@@ -241,33 +247,35 @@ class InverterList extends Component {
       <div className={styles.inverterList} >
         <Tabs defaultActiveKey="1" className={styles.inverterTab} tabBarExtraContent={operations}>
           <TabPane tab={<span><i className="iconfont icon-grid" ></i></span>} key="1" className={styles.inverterBlockBox} >
-            {deviceGroupedList.length>0 ? deviceGroupedList.map((e,index)=>{
-              return (<div key={index}>
-                <div className={styles.parentDeviceName} >{e && e[0] && e[0].parentDeviceName}</div>
-                {e.map((item,i)=>{
-                  return (<div key={i} className={item.deviceStatus === 900 ? styles.cutOverItem : styles.inverterItem} >
-                    <div className={styles.inverterItemIcon} >
-                      <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${item.deviceCode}`}  >
-                        <i className="iconfont icon-nb" ></i>
-                      </Link>
-                      <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${item.deviceCode}/?showPart=alarmList`}  >
-                        {(item.alarmNum && item.alarmNum>0)? <i className="iconfont icon-alarm" ></i> : <div></div>}
-                      </Link>
-                    </div>
-                    <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${item.deviceCode}`}  >
-                      <div className={styles.inverterItemR} >
-                        <div>{item.deviceName}</div>
-                        <Progress className={styles.powerProgress} strokeWidth={3} percent={item.devicePower/item.deviceCapacity*100} showInfo={false} />
-                        <div className={styles.inverterItemPower}>
-                          <div>{item.devicePower ? parseFloat(item.devicePower).toFixed(2) : '--'}kW</div>
-                          <div>{item.deviceCapacity ? parseFloat(item.deviceCapacity).toFixed(2) : '--'}kW</div>
-                        </div>
+            {loading ? <Spin  size="large" style={{height: '100px',margin: '200px auto',width: '100%'}} /> : 
+              (deviceGroupedList.length>0 ? deviceGroupedList.map((e,index)=>{
+                return (<div key={index}>
+                  <div className={styles.parentDeviceName} >{e && e[0] && e[0].parentDeviceName}</div>
+                  {e.map((item,i)=>{
+                    return (<div key={i} className={item.deviceStatus === 900 ? styles.cutOverItem : styles.inverterItem} >
+                      <div className={styles.inverterItemIcon} >
+                        <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${item.deviceCode}`}  >
+                          <i className="iconfont icon-nb" ></i>
+                        </Link>
+                        <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${item.deviceCode}/?showPart=alarmList`}  >
+                          {(item.alarmNum && item.alarmNum>0)? <i className="iconfont icon-alarm" ></i> : <div></div>}
+                        </Link>
                       </div>
-                    </Link>
-                  </div>);
-                })}
-              </div>);
-            }) : <div className={styles.nodata} ><img src="/img/nodata.png" /></div>}
+                      <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${item.deviceCode}`}  >
+                        <div className={styles.inverterItemR} >
+                          <div>{item.deviceName}</div>
+                          <Progress className={styles.powerProgress} strokeWidth={3} percent={item.devicePower/item.deviceCapacity*100} showInfo={false} />
+                          <div className={styles.inverterItemPower}>
+                            <div>{item.devicePower ? parseFloat(item.devicePower).toFixed(2) : '--'}kW</div>
+                            <div>{item.deviceCapacity ? parseFloat(item.deviceCapacity).toFixed(2) : '--'}kW</div>
+                          </div>
+                        </div>
+                      </Link>
+                    </div>);
+                  })}
+                </div>);
+              }) : <div className={styles.nodata} ><img src="/img/nodata.png" /></div>)
+            }
           </TabPane>
           <TabPane tab={<span><i className="iconfont icon-table" ></i></span>} key="2" className={styles.inverterTableBox} >
             <div>
