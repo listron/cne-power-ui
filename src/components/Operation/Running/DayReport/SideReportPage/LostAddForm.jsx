@@ -7,47 +7,60 @@ import moment from 'moment';
 
 class LostAddForm extends Component {
   static propTypes = {
+    deviceExistLoading: PropTypes.bool,
     form: PropTypes.object,
     faultGenList: PropTypes.array,
     changeFaultList: PropTypes.func,
+    checkDeviceExist: PropTypes.func,
   }
 
   constructor(props){
     super(props);
     this.state = {
-
+      deviceExistInfo: ''
     }
   }
 
-  // {
-  //   title: '设备名称',
-  //   dataIndex: 'deviceName',
-  // },{
-  //   title: '损失电量类型',
-  //   dataIndex: 'faultName',
-  // },{
-  //   title: '原因说明',
-  //   dataIndex: 'reason',
-  // },{
-  //   title: '发生时间',
-  //   dataIndex: 'startTime',
-  // },{
-  //   title: '结束时间',
-  //   dataIndex: 'endTime',
-  // },{
-  //   title: '处理进展及问题',
-  //   dataIndex: 'process',
-  // },{
-  //   title: '日损失电量',
-  //   dataIndex: 'lostPower',
-  // },{
-  //   title: '操作',
-  //   dataIndex: 'handle',
-  // }
+  componentWillReceiveProps(nextProp){ // 验证设备是否存在功能。
+    const { deviceExistLoading } = this.props;
+    const nextDeviceLoading = nextProp.deviceExistLoading;
+    if(deviceExistLoading && !nextDeviceLoading){
+      console.log('我就是个测试文案')
+      console.log(nextProp)
+      this.setState({
+        deviceExistInfo: '我就是个测试文案'
+      })
+    }
+  }
+
+  confirmAddFault = () => {
+    const { form, checkDeviceExist } = this.props;
+    form.validateFields((err, values) => {
+      if (!err) {
+        const { deviceName } = values;
+        const deviceArr = deviceName.trim().replace('/ /g',',').split(',').filter(e=>!!e)
+        // checkDeviceExist(deviceArr) -- todo 验证设备是否存在
+      }
+    });
+  }
+
+  cancelAddFault = () => {
+    const { faultGenList, changeFaultList } = this.props;
+    changeFaultList(faultGenList);
+  }
+
   render(){
-    const { getFieldDecorator } = this.props.form;
+    const { form } = this.props;
+    const { getFieldDecorator, getFieldValue } = form;
     return (
       <Form>
+        <Form.Item label="损失电量类型">
+          {getFieldDecorator('faultName', {
+            rules: [{ required: true, message: '损失电量类型' }],
+          })(
+            <Input placeholder="损失电量类型" />
+          )}
+        </Form.Item>
         <Form.Item label="设备名称">
           {getFieldDecorator('deviceName', {
             rules: [{ required: true, message: '设备名称' }],
@@ -55,6 +68,8 @@ class LostAddForm extends Component {
             <Input placeholder="设备名称" />
           )}
         </Form.Item>
+        <span>多个设备请以空格隔开，设备较多时，可填写上级设备</span>
+        <span></span>
         <Form.Item label="发生时间">
           {getFieldDecorator('startTime', {
             rules: [{ required: true, message: '开始时间' }],
@@ -68,7 +83,36 @@ class LostAddForm extends Component {
           })(
             <DatePicker placeholder="结束时间" />
           )}
+          <span>未结束不填写</span>
         </Form.Item>
+        <Form.Item label="日损失电量">
+          {getFieldDecorator('lostPower', {
+            rules: [{ required: true, message: '日损失电量' }],
+          })(
+            <Input placeholder="日损失电量" />
+          )}
+          <span>kWh</span>
+        </Form.Item>
+        <Form.Item label="原因说明">
+          {getFieldDecorator('reason', {
+            rules: [{ required: true, message: '原因说明' }],
+          })(
+            <Input.TextArea placeholder="原因说明" />
+          )}
+          <span>{getFieldValue('reason')?getFieldValue('reason').length:0}/30</span>
+        </Form.Item>
+        <Form.Item label="处理进展及说明">
+          {getFieldDecorator('process', {
+            rules: [{ required: true, message: '处理进展及说明' }],
+          })(
+            <Input.TextArea placeholder="处理进展及说明" />
+          )}
+          <span>{getFieldValue('process')?getFieldValue('process').length:0}/30</span>
+        </Form.Item>
+        <div>
+          <Button onClick={this.confirmAddFault}>确定</Button>
+          <Button onClick={this.cancelAddFault}>取消</Button>
+        </div>
       </Form>
     )
   }
