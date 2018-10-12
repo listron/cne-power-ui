@@ -48,7 +48,7 @@ class LostGenTable extends Component {
               rules: [{ required: true, message: '开始时间' }],
               initialValue: record.startTime,
             })(
-              <DatePicker placeholder="开始时间" />
+              <DatePicker placeholder="开始时间" showTime={true} format="YYYY-MM-DD hh:mm"  />
             )}
           </Form.Item>)
         }
@@ -61,7 +61,7 @@ class LostGenTable extends Component {
               rules: [{ required: true, message: '结束时间' }],
               initialValue: record.endTime,
             })(
-              <DatePicker placeholder="结束时间" />
+              <DatePicker placeholder="结束时间" showTime={true} format="YYYY-MM-DD hh:mm"  />
             )}
           </Form.Item>)
         }

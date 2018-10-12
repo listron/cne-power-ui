@@ -122,16 +122,16 @@ class LostAddForm extends Component {
               {getFieldDecorator('startTime', {
                 rules: [{ required: true, message: '开始时间' }],
               })(
-                <DatePicker placeholder="开始时间" />
+                <DatePicker placeholder="开始时间" showTime={true} format="YYYY-MM-DD hh:mm" />
               )}
             </Form.Item>
           </Col>
           <Col span={16}>
             <Form.Item label="结束时间" {...formItemLayout2} >
               {getFieldDecorator('endTime', {
-                rules: [{ required: true, message: '结束时间' }],
+                // rules: [{ required: true, message: '结束时间' }],
               })(
-                <DatePicker placeholder="结束时间" />
+                <DatePicker placeholder="结束时间"  showTime={true} format="YYYY-MM-DD hh:mm" />
               )}
               <span className={styles.lostInputTip}>未结束不填写</span>
             </Form.Item>
