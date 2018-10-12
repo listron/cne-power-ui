@@ -8,10 +8,10 @@ import PlanTable from './PlanTable'
 import PlanSearch from './PlanSearch'
 
 
-//部门主页面。部门查询组件，分页及表格组件；
 class PlanMain extends Component {
   static propTypes = {
     changePlanStore: PropTypes.func,
+    planData:PropTypes.array,
   }
 
   constructor(props) {
