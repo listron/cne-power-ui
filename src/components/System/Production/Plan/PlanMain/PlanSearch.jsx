@@ -60,7 +60,7 @@ class planSearch extends Component {
     return (
       <div className={styles.planSearch}>
         <div>
-          <span>时间选择</span>
+          <span className={styles.year}>年份选择</span>
           <DatePicker
             defaultValue={moment('2015', dateFormat)}
             format={dateFormat}
@@ -71,8 +71,8 @@ class planSearch extends Component {
             onPanelChange={(value,mode)=>(this.onPanelChange(value,mode))}
           />
         </div>
-        <div>
-          <label htmlFor="label">电站选择</label>
+        <div className={styles.topLeft}>
+          <label htmlFor="label" className={styles.station}>电站选择</label>
           <StationSelect
             data={stations.toJS()}
             multiple={true}
@@ -80,7 +80,7 @@ class planSearch extends Component {
             id="label"
           />
         </div>
-        <Button className={styles.searchButton} onClick={this.selectValue}>下一步</Button>
+        <Button className={styles.searchButton} onClick={this.selectValue}>提交</Button>
       </div>
     )
   }

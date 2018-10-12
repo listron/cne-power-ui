@@ -62,6 +62,7 @@
         display: flex;
         //line-height: 72px;
         justify-content: space-between;
+        margin-bottom: 8px;
         .addplan {
           padding: 0;
           margin-left: 24px;
@@ -157,12 +158,34 @@
 }
 
 .planSearch {
+  display:flex;
+  padding:26px 0px 27px 22px;
+  align-items: center;
+  .year{
+    margin-right: 8px;
+  }
+  :global{
+    .ant-calendar-picker{
+      input{
+        width: 105px;
+      }
+    }
+  }
+  .topLeft{
+    display: flex;
+    margin:0 10px 0 10px;
+    .station{
+      margin-right:10px;
+      padding-top: 6px;
+    }
+  }
+
   .searchButton {
-    width: 68px;
-    margin-top: 9px;
+    // width: 68px;
+    // margin-top: 9px;
     margin-right: 12px;
-    color: $darkColor;
-    border: 1px solid $promptColor;
+    color: $themeColor;
+    border: 1px solid $themeColor;
     @include highLight($themeColor);
     &:hover {
       background-color: $themeColor;
@@ -173,6 +196,9 @@
 }
 
 .tableList {
+  .yearPlanPower{
+    text-align:center;
+  }
   :global {
     .ant-input {
       width: 48px;
@@ -181,11 +207,15 @@
       border: 1px solid #f9b600;
     }
     .ant-table .ant-table-thead > tr > th, .ant-table .ant-table-tbody > tr > td {
-      padding: 0 3px;
+      min-width: 57px;
+      padding: 0 0 0 17px;
       line-height: 1;
     }
     .ant-table .ant-table-thead > tr > th {
       height: 62px;
+    }
+    .ant-table .ant-table-thead > tr > th.yearPlanPower {
+      text-align:center;
     }
     .ant-input.ant-input-disabled {
       background: #f8f8f8;
