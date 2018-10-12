@@ -212,6 +212,14 @@
       .ant-form-item, .ant-form-horizontal {
         margin-bottom: 0px;
       }
+      .ant-form-horizontal{
+        display: flex;
+        flex-direction: column;
+      }
+      .ant-form-item{
+        display: flex;
+        flex-direction: row;
+      }
     }
   }
 }
@@ -245,4 +253,29 @@
   height:357px;
   margin: 0 20px;
   padding: 20px 0 0 80px;
+  .horizontal{
+    display: flex;
+    flex-direction: row;
+
+  }
+  .confirmAddFault{
+    margin: 0 20px 0 10px;
+    background: $themeColor;
+    color: #fff;
+    &:hover{
+      background: $themeColor;
+      color: #fff;
+    }
+  }
+  :global{
+    .ant-form-item-children{
+      display: flex;
+      width: 600px;
+      textarea.ant-input{
+        width: 520px;
+        max-width: 530px;
+        height: 64px;
+      }
+    }
+  }
 }
