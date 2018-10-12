@@ -22,7 +22,6 @@ class PlanSide extends Component {
       <div className={styles.planSide}>
         { showSidePage === 'add' && <AddPlan {...this.props} /> }
         { showSidePage === 'edit' && <EditPlan {...this.props} /> }
-        <Footer />
       </div>
     )
   }
