@@ -21,6 +21,7 @@ class DayReportMainList extends Component {
     dayReportList: PropTypes.array,
     getDayReportList: PropTypes.func,
     toChangeDayReportStore: PropTypes.func,
+    getStationBaseReport: PropTypes.func,
   }
 
   constructor(props) {
@@ -69,17 +70,11 @@ class DayReportMainList extends Component {
   }
 
   toUploadReport = (record, reportDate) => { // 去上传指定电站+日期日报
-    // console.log( 'to upload !!!!')
-    // console.log(`${this.props.startTime}-${reportDate}`);
-    // console.log(record);
-    this.props.toChangeDayReportStore({
-      showPage: 'report',
-      reportDay: `${this.props.startTime}-${reportDate}`,
-      reportStation: [{
-        stationCode: record.stationCode,
-        stationName: record.stationName
-      }]
-    })
+    const { reportDay } = `${this.props.startTime}-${reportDate}`;
+    this.props.getStationBaseReport({
+      reportDay,
+      reportStation: [record.stationCode],
+    });
   }
 
   render() {

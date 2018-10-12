@@ -27,12 +27,6 @@ class SideReportPage extends Component {
       dayReportTotalInfoArr: [], //用于上传日报的所有信息
     }
   }
-  
-  componentDidMount(){
-    this.props.toChangeDayReportStore({
-      reportDay: moment().subtract(1, 'days').format('YYYY-MM-DD'),
-    })
-  }
 
   componentWillReceiveProps(nextProps){
     const { stationReportBaseData } = this.props;
@@ -60,7 +54,8 @@ class SideReportPage extends Component {
   toReportList = () => { // 回日报列表页
     this.props.toChangeDayReportStore({
       showPage: 'list',
-      reportDay: '', 
+      reportDay: moment().subtract(1,'day').format('YYYY-MM-DD'),
+      showReportInputList: false,
       reportStation: [],
     })
   }
@@ -108,7 +103,6 @@ class SideReportPage extends Component {
     const { reportDay, stations, reportStation, showReportInputList } = this.props;
     const canReport = reportDay && reportStation && reportStation.length > 0;
     const { dayReportTotalInfoArr } = this.state;
-    const tmpReportDay = reportDay.replace(/[年]|[月]/g,'-').replace(/[日]/g,'');
     return (
       <div className={styles.sideReportPage}>
         <div className={styles.sideReportTitle} >
@@ -122,7 +116,7 @@ class SideReportPage extends Component {
         {!showReportInputList && <div className={styles.sideReportContent}>
           <div className={styles.selectTime} >
             <span><i>*</i>日报时间</span>
-            <DatePicker onChange={this.selectReportTime} value={reportDay ? moment(tmpReportDay) : moment().subtract(1, 'days')} format="YYYY[年]MM[月]DD[日]" disabledDate={this.disabledDate} />
+            <DatePicker onChange={this.selectReportTime} value={moment(reportDay)} disabledDate={this.disabledDate} />
           </div>
           <div className={styles.selectStation} >
             <span><i>*</i>电站选择</span>

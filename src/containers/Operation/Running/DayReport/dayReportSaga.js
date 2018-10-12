@@ -60,6 +60,8 @@ function *getStationBaseReport(action){ // 选中日期+电站后各待上传数
     yield put({
       type:  dayReportAction.dayReportFetchSuccess,
       payload:{
+        showPage: 'report',
+        ...payload,
         stationReportBaseData: response.data.data || [],
         showReportInputList: true,
       },

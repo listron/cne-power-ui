@@ -1,5 +1,6 @@
 import Immutable from 'immutable';
 import { dayReportAction } from './dayReportAction';
+import moment from 'moment';
 
 const initState = Immutable.fromJS({
   loading: false,
@@ -11,7 +12,7 @@ const initState = Immutable.fromJS({
   stationType: 2, // 查询日报的电站类型;
   regionCode: null, // 选中的上报区域;
   
-  reportDay: '', // 选中的上报日报的日期;
+  reportDay: moment().subtract(1,'day').format('YYYY-MM-DD'), // 选中的上报日报的日期;
   reportStation: [], // 选中的上报日报的电站;
   showReportInputList: false, // 上报日报信息填写列表;
 
