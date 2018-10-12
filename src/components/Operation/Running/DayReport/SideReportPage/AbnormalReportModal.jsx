@@ -64,7 +64,7 @@ class AbnormalReportModal extends Component {
             <Button onClick={this.toAddGenLost} disabled={addLostFormShow} >添加</Button>
           </div>
           <LostGenTable faultGenList={faultGenList} abnormalInfo={abnormalInfo} changeFaultList={this.changeFaultList} />
-          {addLostFormShow && <LostAddForm faultGenList={faultGenList} changeFaultList={this.changeFaultList} />}
+          {addLostFormShow && <LostAddForm faultGenList={faultGenList} changeFaultList={this.changeFaultList} abnormalInfo={abnormalInfo} />}
         </Modal>
     )
   }

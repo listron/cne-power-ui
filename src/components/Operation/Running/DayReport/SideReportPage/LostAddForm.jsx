@@ -9,37 +9,44 @@ class LostAddForm extends Component {
   static propTypes = {
     deviceExistLoading: PropTypes.bool,
     form: PropTypes.object,
+    abnormalInfo: PropTypes.object,
+    deviceExistInfo: PropTypes.object,
     faultGenList: PropTypes.array,
     changeFaultList: PropTypes.func,
-    checkDeviceExist: PropTypes.func,
+    findDeviceExist: PropTypes.func,
   }
 
   constructor(props){
     super(props);
     this.state = {
-      deviceExistInfo: ''
+      deviceNameErroShow: false, // 设备验证失败的提示框展示与否，
+      deviceNameErroInfo: '', // 设备验证失败的提示信息，
     }
   }
 
   componentWillReceiveProps(nextProp){ // 验证设备是否存在功能。
     const { deviceExistLoading } = this.props;
     const nextDeviceLoading = nextProp.deviceExistLoading;
-    if(deviceExistLoading && !nextDeviceLoading){
-      console.log('我就是个测试文案')
-      console.log(nextProp)
-      this.setState({
-        deviceExistInfo: '我就是个测试文案'
+    const { deviceExistInfo } = nextProp;
+    if(deviceExistLoading && !nextDeviceLoading && deviceExistInfo.existError){ // 设备名称验证后
+      deviceExistInfo.existError && this.setState({
+        deviceNameErroShow: true,
+        deviceNameErroInfo : `${deviceExistInfo.existErrorData.join(',')}不存在!`
       })
+      !deviceExistInfo.existError && console.log('这个设备验证成功了。')
     }
   }
 
   confirmAddFault = () => {
-    const { form, checkDeviceExist } = this.props;
+    const { form, findDeviceExist, abnormalInfo } = this.props;
     form.validateFields((err, values) => {
       if (!err) {
         const { deviceName } = values;
-        const deviceArr = deviceName.trim().replace('/ /g',',').split(',').filter(e=>!!e)
-        // checkDeviceExist(deviceArr) -- todo 验证设备是否存在
+        const tmpDeviceName = deviceName.trim().replace('/\s+/g',',');
+        findDeviceExist({
+          deviceName: tmpDeviceName,
+          stationCode: abnormalInfo.stationCode,
+        })
       }
     });
   }
