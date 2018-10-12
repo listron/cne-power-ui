@@ -127,6 +127,7 @@ function *dayReportDetail(action){ // 日报详情
     yield put({
       type:  dayReportAction.dayReportFetchSuccess,
       payload:{
+        showPage: 'detail',
         selectedDayReportDetail: response.data.data || {}
       },
     });
