@@ -24,6 +24,7 @@ function *changeLoginStore(action){
 function *userNameLogin(action){
   const url = Path.basePaths.APIBasePath + Path.APISubPaths.userNameLogin;
   const {params} = action;
+  console.log(params);
   yield put({ type: loginAction.LOGIN_FETCH });
   try {
     const response = yield call(axios, {
@@ -57,7 +58,6 @@ function *userNameLogin(action){
 
         data.rightMenu && localStorage.setItem('rightMenu', data.rightMenu); // 权限信息存储
         data.right && localStorage.setItem('rightHandler', data.right); // 权限信息存储
-        
         if(data.auto === '1'){//导入用户/生成用户 需走完善密码步骤
           yield put({ 
             type: loginAction.CHANGE_LOGIN_STORE_SAGA, 
@@ -274,6 +274,7 @@ function *registerEnterprise(action){
   const url = Path.basePaths.APIBasePath + Path.APISubPaths.registerEnterprise;
   yield put({ type: loginAction.LOGIN_FETCH});
   try{
+    message.success("params");
     const response = yield call(axios, {
       method: 'post',
       url,
@@ -282,15 +283,17 @@ function *registerEnterprise(action){
       },
       data: stringify({
         'grant_type': "password",
-        confirmPwd: params.confirmPwd,
+        phoneNum: params.phoneNum,
         enterpriseDomain: params.enterpriseDomain,
         enterpriseName: params.enterpriseName,
-        password: params.password,
-        phoneNum: params.phoneNum,
         username: params.username,
+        password: params.password,
+        confirmPwd: params.confirmPwd,        
       }),
     });
+    message.success("请求成功");
     if(response.data.code === '10000'){
+      message.success('注册成功！');
       yield put({
         type: loginAction.USER_NAME_LOGIN_SAGA,
         params:{
@@ -299,16 +302,16 @@ function *registerEnterprise(action){
           history: params.history,
         }
       });
-      message.success('注册成功！');
     }else{
+      message.error('注册失败！');
       yield put({type: loginAction.REGISTER_ENTERPRISE_FAIL, data: response.data });
       if(response.data.code !== '20015') {
         message.error(response.data.message);
       }
-      message.error('注册失败！');
     }
   }catch(e){
     console.log(e);
+    message.error('服务器异常！');
   }
 }
 // 获取企业信息
