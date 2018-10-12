@@ -24,12 +24,9 @@ import {watchStationMonitor} from './Monitor/StationMonitor/AllStation/stationMo
 import {watchAlarmMonitor} from './Monitor/Alarm/alarmSaga';
 
 import { watchOtherSaga } from './alphaRedux/otherSaga';
-<<<<<<< HEAD
 import { watchAllStationSaga } from './StatisticalAnalysis/StationAnalysis/AllStationAnalysis/allStationAnalysisSaga';
 
-=======
 import { watchPlan } from './System/Production/Plan/planSaga';
->>>>>>> upstream/dev
 // root saga
 export default function* rootSaga() {
   yield all([
