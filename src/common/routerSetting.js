@@ -161,6 +161,10 @@ const routers = [
     exact: true,
     component: AllStationAnalysis
   },{
+    path: '/statistical/stationaccount/allstation/:stationCode',
+    exact: true,
+    component: AllStationAnalysis
+  },{
     path: '/statistical/stationaccount/production',
     exact: true,
     component: Building

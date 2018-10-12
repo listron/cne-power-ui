@@ -36,6 +36,14 @@ class AllStationStatistic extends React.Component {
   componentDidMount() {
 
   }
+ 
+  onChangeStation = (stationCode) => {
+    this.props.history.push(` statistical/stationaccount/allstation`);
+    this.props.changeAllStationStore({
+      showPage: 'single',
+      singleStationCode: stationCode.toString()
+    });
+  }
 
   showStationSelect = () => {
     this.setState({
@@ -47,32 +55,28 @@ class AllStationStatistic extends React.Component {
 
   render() {
     const TabPane = Tabs.TabPane;
-
     const operations = (
       <div className={styles.operation} style={{ marginRight: '50px', color: '#199475' }} onClick={this.showStationSelect}>
         单电站告警统计
         <i className="iconfont icon-filter"></i>
       </div>
     );
-    const { stationType, stations } = this.props;
+    const { stationType, stations,timeSelect } = this.props;
     const { showStationSelect } = this.state;
-
     return (
       <div className={styles.allStationTypeTabs}>
         <Tabs type="card" tabBarExtraContent={operations}  >
           <TabPane tab="光伏" key="1">
           <div className={styles.componentContainer}>
-          <TimeSelect day={true} />
-          <PlanCompletionRate />
-          <TargetTabs />    
+          <TimeSelect day={true} {...this.props} />
+          <PlanCompletionRate timeSelect={timeSelect} />
+          <TargetTabs {...this.props} />    
           </div>          
           </TabPane>
           <TabPane tab="风电" key="0">
           </TabPane>
-
-
         </Tabs>
-        {/*
+       
            
          {showStationSelect &&
           <StationSelectModal
@@ -80,7 +84,7 @@ class AllStationStatistic extends React.Component {
             onClose={() => this.setState({ showStationSelect: false })}
             onChangeStation={this.onChangeStation} />}
   
-        */}
+       
        
 
       </div>
