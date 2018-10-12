@@ -261,7 +261,7 @@ class PlanTable extends Component {
         title: '区域',
         dataIndex: 'region',
         key: 'region',
-        width: '50px',
+        // width: '50px',
         sorter: true,
       },
       {
@@ -275,7 +275,7 @@ class PlanTable extends Component {
       {
         title: '装机容量(MW)',
         dataIndex: 'stationCapacity',
-        width: '80px',
+        // width: '80px',
         key: 'stationCapacity',
         sorter: true,
       },
@@ -290,7 +290,8 @@ class PlanTable extends Component {
         title: '年计划发电量(万kWh)',
         dataIndex: 'planPower',
         key: 'planPower',
-        width: '130px',
+        // width: '130px',
+        className:styles.yearPlanPower,
         sorter: true,
       },
       {
@@ -298,6 +299,7 @@ class PlanTable extends Component {
         dataIndex: 'yearPR',
         key: 'yearPR',
         editable: true,
+        width:'100px',
         render: text => {
           const textValue = text ? text : '--';
           return (<span><Input defaultValue={textValue} disabled={true}/>%</span>)
