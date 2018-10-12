@@ -111,7 +111,7 @@ class LostAddForm extends Component {
               })(
                 <Input placeholder="设备名称" />
               )}
-              <span>多个设备请以空格隔开，设备较多时，可填写上级设备</span>
+              <span className={styles.lostInputTip} >多个设备请以空格隔开，设备较多时，可填写上级设备</span>
               <span></span>
             </Form.Item>
           </Col>
@@ -133,11 +133,11 @@ class LostAddForm extends Component {
               })(
                 <DatePicker placeholder="结束时间" />
               )}
-              <span>未结束不填写</span>
+              <span className={styles.lostInputTip}>未结束不填写</span>
             </Form.Item>
           </Col>
         </Row>
-        <Row>
+        <Row className={styles.horizontal} >
           <Col span={8}>
             <Form.Item label="日损失电量" {...formItemLayout1} >
               {getFieldDecorator('lostPower', {
@@ -145,11 +145,11 @@ class LostAddForm extends Component {
               })(
                 <Input placeholder="日损失电量" />
               )}
-              <span>kWh</span>
+              <span className={styles.lostInputTip}>kWh</span>
             </Form.Item>
           </Col>
         </Row>
-        <Row style={{margin: '10px 0'}} >
+        <Row className={styles.reasonBox} >
           <Col span={8}>
             <Form.Item label="原因说明" {...formItemLayout1} >
               {getFieldDecorator('reason', {
@@ -157,11 +157,11 @@ class LostAddForm extends Component {
               })(
                 <Input.TextArea placeholder="原因说明" className={styles.reasonArea} />
               )}
-              <span>{getFieldValue('reason')?getFieldValue('reason').length:0}/30</span>
+              <span className={styles.lostInputTip}>({getFieldValue('reason')?getFieldValue('reason').length:0}/30)</span>
             </Form.Item>
           </Col>
         </Row>
-        <Row style={{margin: '10px 15px 0 0'}} >
+        <Row className={styles.reasonBox}>
           <Col span={8}>
             <Form.Item label="处理进展及说明" {...formItemLayout1} >
               {getFieldDecorator('process', {
@@ -169,11 +169,11 @@ class LostAddForm extends Component {
               })(
                 <Input.TextArea placeholder="处理进展及说明"  className={styles.reasonArea}  />
               )}
-              <span>{getFieldValue('process')?getFieldValue('process').length:0}/30</span>
+              <span className={styles.lostInputTip}>({getFieldValue('process')?getFieldValue('process').length:0}/30)</span>
             </Form.Item>
           </Col>
         </Row>
-        <Row style={{marginTop: '15px'}}>
+        <Row style={{marginTop: '0px'}}>
           <Col span={8}>
             <Form.Item {...tailFormItemLayout}>
               <Button onClick={this.confirmAddFault} className={styles.confirmAddFault} >确定</Button>

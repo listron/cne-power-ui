@@ -252,11 +252,11 @@
   border-radius:4px;
   height:357px;
   margin: 0 20px;
-  padding: 20px 0 0 80px;
+  padding: 10px 0 0 80px;
   .horizontal{
     display: flex;
     flex-direction: row;
-
+    height: 49px;
   }
   .confirmAddFault{
     margin: 0 20px 0 10px;
@@ -267,15 +267,45 @@
       color: #fff;
     }
   }
+  .reasonBox{
+    margin-bottom: 21px;
+    :global{
+      .has-error{
+        .ant-form-item-children{
+          height: 60px;
+        }
+      }
+    }
+  }
   :global{
+    .has-error{
+      .ant-form-item-children{
+        height: 30px;
+      }
+    }
+    //form表单Input下的提示语定位
+    .ant-form-item-control-wrapper{
+      .ant-form-explain{
+        position: absolute;
+        white-space: nowrap;
+      }
+    }
     .ant-form-item-children{
       display: flex;
       width: 600px;
+      :local{
+        .lostInputTip{
+          margin:0 5px;
+        }
+      }
       textarea.ant-input{
         width: 520px;
         max-width: 530px;
-        height: 64px;
+        height: 60px;
       }
+    }
+    .ant-form-item{
+      margin-bottom: 21px;
     }
   }
 }
