@@ -12,6 +12,7 @@ class UploadReportList extends Component {
     dayReportConfig: PropTypes.array,
     reportStation: PropTypes.array,
     dayReportTotalInfoArr: PropTypes.array,
+    deviceExistInfo: PropTypes.object,
     toChangeDayReportStore: PropTypes.func,
     totalReportInfoChange: PropTypes.func,
   }
@@ -43,13 +44,16 @@ class UploadReportList extends Component {
   }
 
   render(){
-    const { reportDay, dayReportConfig, reportStation, totalReportInfoChange, dayReportTotalInfoArr } = this.props;
+    const { reportDay, dayReportConfig, reportStation, deviceExistInfo, totalReportInfoChange, dayReportTotalInfoArr } = this.props;
     const { abnormalModalshow, abnormalInfo, abnormalList } = this.state;
     const stationType = reportStation[0].stationType; //注意： 后期解开。不能删。
     // const stationType = 1; //注意： 调试用，后期删掉
+    console.log(reportStation);
+    console.log(dayReportTotalInfoArr);
+    
     return (
       <div className={styles.uploadReportList}>
-        <div className={styles.uploadReportTip} >{reportDay} <span>新添加<i></i>条</span></div>
+        <div className={styles.uploadReportTip} >{reportDay} <span>新添加<i>{dayReportTotalInfoArr && dayReportTotalInfoArr.length || '--'}</i>条</span></div>
         <div>
           <StationReportColumn dayReportConfig={dayReportConfig} stationType={stationType} />
           {dayReportTotalInfoArr.map(e=>(<EachStationReport
@@ -61,6 +65,7 @@ class UploadReportList extends Component {
           />))}
         </div>
         {abnormalModalshow && <AbnormalReportModal 
+          deviceExistInfo={deviceExistInfo}
           abnormalInfo={abnormalInfo}
           abnormalList={abnormalList}
           abnormalModalshow={abnormalModalshow}

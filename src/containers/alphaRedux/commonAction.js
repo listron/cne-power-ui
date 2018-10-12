@@ -18,5 +18,6 @@ export const commonAction = {
   getAllDepartment: Symbol('getAllDepartment'), // 获取企业下所有部门(含层级关系);
   GET_COMMON_FETCH_SUCCESS: Symbol('GET_COMMON_FETCH_SUCCESS'), // 普通api请求成功
   getSliceDevices: Symbol('getSliceDevices'),//获取光伏截取数据
+  findDeviceExist: Symbol('findDeviceExist'), // 验证设备是否存在
 }
 

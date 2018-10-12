@@ -18,7 +18,6 @@ class PlanSide extends Component {
     return (
       <div className={styles.planSide}>
         我是增加页面
-        <Footer />
       </div>
     )
   }

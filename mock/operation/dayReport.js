@@ -151,6 +151,18 @@ module.exports = [
     },
     delay: 1000,
     error: {}
+  },{ // 验证设备是否存在
+    api: '/mock/operation/dayReport/findDeviceExist',
+    method: 'post',
+    response: {
+      "code": "10000",
+      "message": "请求成功",
+      "data": ['hhh','112','223'],
+      "serviceCode": "3.0"
+    },
+    delay: 1000,
+    error: {}
+
   }
 ]
 

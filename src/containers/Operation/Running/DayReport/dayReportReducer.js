@@ -3,6 +3,7 @@ import { dayReportAction } from './dayReportAction';
 
 const initState = Immutable.fromJS({
   loading: false,
+  deviceExistLoading: false, // 验证设备是否存在loading态
   showPage: 'list',//默认展示列表页list,上报日报页report, 详情页detail, 编辑页edit
   startTime: '', // 日报主页查询月,
   pageSize: 10,
