@@ -4,9 +4,10 @@ import React, { Component } from 'react';
 import { Input, Button ,DatePicker} from 'antd';
 import styles from './planMain.scss';
 import PropTypes from 'prop-types';
-const { MonthPicker, RangePicker } = DatePicker;
 import moment from 'moment';
 import StationSelect from '../../../../Common/StationSelect';
+
+const { MonthPicker, RangePicker } = DatePicker;
 class planSearch extends Component {
   static propTypes = {
     stations: PropTypes.object,
@@ -65,7 +66,6 @@ class planSearch extends Component {
             format={dateFormat}
             mode='year'
             open={this.state.open}
-            focus={this.focus}
             value={moment(this.state.dateValue, dateFormat)}
             onOpenChange={this.onOpenChange}
             onPanelChange={(value,mode)=>(this.onPanelChange(value,mode))}
