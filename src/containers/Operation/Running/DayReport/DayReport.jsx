@@ -42,8 +42,8 @@ class DayReport extends Component {
       module: 'report', 
       type: '-1'
     })
-    // this.props.getStationBaseReport({}) //  调试用，用于直接展示电站数据，后期删掉。
-    // this.props.toChangeDayReportStore({ showReportInputList: true }) // 调试用，用于直接展示电站数据，后期删掉。
+    this.props.getStationBaseReport({}) //  调试用，用于直接展示电站数据，后期删掉。
+    this.props.toChangeDayReportStore({ showReportInputList: true }) // 调试用，用于直接展示电站数据，后期删掉。
   }
 
   componentWillUnmount(){
@@ -67,7 +67,7 @@ class DayReport extends Component {
     return (
       <div className={styles.dayReport}>
         <div className={styles.dayReportContainer} >
-          <DayReportMainList {...this.props} />
+          {/* <DayReportMainList {...this.props} /> */}
           <TransitionContainer
             show={showPage !== 'list'}
             onEnter={this.onToggleSide}
@@ -91,11 +91,13 @@ const mapStateToProps = (state) => ({
   userId: Cookie.get('userId'),
 });
 
+console.log(commonAction)
 const mapDispatchToProps = (dispatch) => ({
   toChangeDayReportStore: payload => dispatch({type: dayReportAction.toChangeDayReportStore, payload}),
   getDayReportList: payload => dispatch({type: dayReportAction.getDayReportList, payload}),
   getDayReportConfig: payload => dispatch({type: dayReportAction.getDayReportConfig, payload}),
   getStationBaseReport: payload => dispatch({type: dayReportAction.getStationBaseReport, payload}),
+  getReportUploadedStation: payload => dispatch({type: dayReportAction.getReportUploadedStation, payload}),
   dayReportDetail: payload => dispatch({type: dayReportAction.dayReportDetail, payload}),
   dayReportUpdate: payload => dispatch({type: dayReportAction.dayReportUpdate, payload}),
   findDeviceExist: payload => dispatch({ type: commonAction.findDeviceExist, payload }),

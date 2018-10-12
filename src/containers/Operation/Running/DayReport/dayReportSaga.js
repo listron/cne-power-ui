@@ -96,6 +96,24 @@ function *getDayReportConfig(action){ // 日报必填项配置
   }
 }
 
+function *getReportUploadedStation(action){ // 选定日期已上传过日报电站编码获取
+  const { payload } = action;
+  try{
+    const { reportDate } = payload;
+    const url = '/mock/operation/dayReport/getReportUploadedStation';
+    // const url = `${APIBasePath}${operation.getReportUploadedStation}/${reportDate}`;
+    const response = yield call(axios.get,url);
+    yield put({
+      type:  dayReportAction.dayReportFetchSuccess,
+      payload:{
+        reportDisableStation: response.data.data || [],
+      },
+    });
+  }catch(error){
+    message.error('获取已上传日报的电站列表失败，请重试');
+  }
+}
+
 function *dayReportDetail(action){ // 日报详情
   const { payload } = action;
   try{
@@ -156,6 +174,7 @@ export function* watchDayReport() {
   yield takeLatest(dayReportAction.getDayReportList, getDayReportList);
   yield takeLatest(dayReportAction.getDayReportConfig, getDayReportConfig);
   yield takeLatest(dayReportAction.getStationBaseReport, getStationBaseReport);
+  yield takeLatest(dayReportAction.getReportUploadedStation, getReportUploadedStation);
   yield takeLatest(dayReportAction.dayReportDetail, dayReportDetail);
   yield takeLatest(dayReportAction.dayReportUpdate, dayReportUpdate);
 }

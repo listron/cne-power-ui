@@ -22,7 +22,7 @@ class LostGenTable extends Component {
   }
 
   removeFaultInfo = (id) => {
-    const { faultGenList, changeFaultList } = props;
+    const { faultGenList, changeFaultList } = this.props;
     const newFaultGenList = faultGenList.filter(e=>id !== e.id);
     changeFaultList(newFaultGenList);
   }

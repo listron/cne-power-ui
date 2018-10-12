@@ -9,15 +9,18 @@ import LostAddForm from './LostAddForm';
 class AbnormalReportModal extends Component {
   static propTypes = {
     abnormalInfo: PropTypes.object,
+    deviceExistInfo: PropTypes.object,
     abnormalList: PropTypes.array,
     abnormalModalshow: PropTypes.bool,
     hideAbnormalModal: PropTypes.func,
+    findDeviceExist: PropTypes.func,
   }
 
   constructor(props){
     super(props);
     this.state = {
       addLostFormShow: false,
+      addLimitFormShow: false, // 限电损失添加form框。
       faultGenList: props.abnormalList, // 选中电站故障损失。
       limitGenList: [], // 选中电站限电损失。
       electricInfo: {}, // 发电信息
@@ -42,15 +45,21 @@ class AbnormalReportModal extends Component {
     })
   }
 
-  changeLimitList = (limitGenList) => { // -- todo 限电信息table内调整
+  toAddGenLimit = () => { // 添加限电信息 =>展示限电form
+    this.setState({
+      addLimitFormShow: true
+    })
+  }
+
+  changeLimitList = (limitGenList, closeAddForm=false) => { // -- todo 限电信息table内调整
     this.setState({
       limitGenList
     })
   }
 
   render(){
-    const { abnormalModalshow, abnormalInfo, hideAbnormalModal} = this.props;
-    const { addLostFormShow, faultGenList, limitGenList } = this.state;
+    const { abnormalModalshow, abnormalInfo, hideAbnormalModal, findDeviceExist, deviceExistInfo} = this.props;
+    const { addLostFormShow, faultGenList, limitGenList, addLimitFormShow } = this.state;
     return (
       <Modal
           title={`添加异常-${abnormalInfo.stationName}`}
@@ -65,7 +74,20 @@ class AbnormalReportModal extends Component {
           <Button onClick={this.toAddGenLost} disabled={addLostFormShow} icon="plus" className={styles.uploadGenLost} >添加</Button>
         </div>
         <LostGenTable faultGenList={faultGenList} abnormalInfo={abnormalInfo} changeFaultList={this.changeFaultList} />
-        {addLostFormShow && <LostAddForm faultGenList={faultGenList} changeFaultList={this.changeFaultList}  abnormalInfo={abnormalInfo} /> }
+        {addLostFormShow && <LostAddForm 
+          findDeviceExist={findDeviceExist} 
+          faultGenList={faultGenList} 
+          changeFaultList={this.changeFaultList}  
+          abnormalInfo={abnormalInfo}
+          deviceExistInfo={deviceExistInfo} 
+        /> }
+        <div>
+          <span>限电信息</span>
+          <Button disabled={addLimitFormShow} onClick={this.toAddGenLimit} >添加</Button>
+        </div>
+        
+        {addLimitFormShow && <div>添加限电信息框</div>}
+
       </Modal>
     )
   }

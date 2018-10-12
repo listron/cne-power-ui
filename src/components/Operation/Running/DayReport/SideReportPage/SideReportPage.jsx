@@ -39,7 +39,6 @@ class SideReportPage extends Component {
     const nextReportBaseData = nextProps.stationReportBaseData;
     if( nextReportBaseData.length > 0 && stationReportBaseData.length === 0){ // 得到初始化列表数据
       const dayReportTotalInfoArr = nextReportBaseData.map(e=>{
-        console.log(e);
         let dailyReport = {...e};
         let dailyDetailList = e.dailyDetailList.map(fault=>({
           ...fault,
@@ -109,7 +108,6 @@ class SideReportPage extends Component {
     const canReport = reportDay && reportStation && reportStation.length > 0;
     const { dayReportTotalInfoArr } = this.state;
     const tmpReportDay = reportDay.replace(/[年]|[月]/g,'-').replace(/[日]/g,'');
-    console.log(dayReportTotalInfoArr);
     return (
       <div className={styles.sideReportPage}>
         <div className={styles.sideReportTitle} >

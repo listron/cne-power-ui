@@ -15,6 +15,7 @@ class UploadReportList extends Component {
     deviceExistInfo: PropTypes.object,
     toChangeDayReportStore: PropTypes.func,
     totalReportInfoChange: PropTypes.func,
+    findDeviceExist: PropTypes.func,
   }
 
   constructor(props){
@@ -44,13 +45,10 @@ class UploadReportList extends Component {
   }
 
   render(){
-    const { reportDay, dayReportConfig, reportStation, deviceExistInfo, totalReportInfoChange, dayReportTotalInfoArr } = this.props;
+    const { reportDay, dayReportConfig, reportStation, findDeviceExist, deviceExistInfo, totalReportInfoChange, dayReportTotalInfoArr } = this.props;
     const { abnormalModalshow, abnormalInfo, abnormalList } = this.state;
-    const stationType = reportStation[0].stationType; //注意： 后期解开。不能删。
-    // const stationType = 1; //注意： 调试用，后期删掉
-    console.log(reportStation);
-    console.log(dayReportTotalInfoArr);
-    
+    // const stationType = reportStation[0].stationType; //注意： 后期解开。不能删。
+    const stationType = 1; //注意： 调试用，后期删掉
     return (
       <div className={styles.uploadReportList}>
         <div className={styles.uploadReportTip} >{reportDay} <span>新添加<i>{dayReportTotalInfoArr && dayReportTotalInfoArr.length || '--'}</i>条</span></div>
@@ -65,6 +63,7 @@ class UploadReportList extends Component {
           />))}
         </div>
         {abnormalModalshow && <AbnormalReportModal 
+          findDeviceExist={findDeviceExist}
           deviceExistInfo={deviceExistInfo}
           abnormalInfo={abnormalInfo}
           abnormalList={abnormalList}

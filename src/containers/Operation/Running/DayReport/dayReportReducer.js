@@ -3,7 +3,6 @@ import { dayReportAction } from './dayReportAction';
 
 const initState = Immutable.fromJS({
   loading: false,
-  deviceExistLoading: false, // 验证设备是否存在loading态
   showPage: 'list',//默认展示列表页list,上报日报页report, 详情页detail, 编辑页edit
   startTime: '', // 日报主页查询月,
   pageSize: 10,
@@ -20,6 +19,7 @@ const initState = Immutable.fromJS({
   dayReportList: [], // api- 日报主页各电站报表情况;
   totalNum: 0, // api - 所有日报总数。
   dayReportConfig: [], // api -  日报相关配置信息
+  reportDisableStation: [], // api - 选中日期已上传过日报的电站编码数组
   stationReportBaseData: [], // api - 选中日期+电站后各待上传数据电站基础情况
   selectedDayReportDetail: {}, // api - 选中日报详情
 });

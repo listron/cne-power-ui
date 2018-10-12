@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './sideReportPage.scss';
-import { Form, Input, DatePicker } from 'antd';
+import { Form, Input, DatePicker, Button } from 'antd';
 import moment from 'moment';
 
 class LostAddForm extends Component {
@@ -25,15 +25,22 @@ class LostAddForm extends Component {
   }
 
   componentWillReceiveProps(nextProp){ // 验证设备是否存在功能。
-    const { deviceExistLoading } = this.props;
-    const nextDeviceLoading = nextProp.deviceExistLoading;
-    const { deviceExistInfo } = nextProp;
-    if(deviceExistLoading && !nextDeviceLoading && deviceExistInfo.existError){ // 设备名称验证后
-      deviceExistInfo.existError && this.setState({
-        deviceNameErroShow: true,
-        deviceNameErroInfo : `${deviceExistInfo.existErrorData.join(',')}不存在!`
-      })
-      !deviceExistInfo.existError && console.log('这个设备验证成功了。')
+    const { deviceExistInfo } = this.props;
+    const newDeviceExistInfo = nextProp.deviceExistInfo;
+    if(deviceExistInfo.existLoading && !newDeviceExistInfo.existLoading){ // 设备名称验证后
+      if(deviceExistInfo.existError){ // 设备验证未通过，有未存在设备
+        this.setState({
+          deviceNameErroShow: true,
+          deviceNameErroInfo : `${deviceExistInfo.existErrorData.join(',')}不存在!`
+        })
+      }else{ // 设备验证通过
+        const { form, changeFaultList, faultGenList } = this.props;
+        const { getFieldsValue } = form;
+        const lostInfo = getFieldsValue();
+        lostInfo.id = `tmpAdd${faultGenList.length}`;
+        lostInfo.handle = true;
+        changeFaultList([...faultGenList,lostInfo], true);
+      }
     }
   }
 
@@ -53,12 +60,13 @@ class LostAddForm extends Component {
 
   cancelAddFault = () => {
     const { faultGenList, changeFaultList } = this.props;
-    changeFaultList(faultGenList);
+    changeFaultList(faultGenList, true);
   }
 
   render(){
     const { form } = this.props;
     const { getFieldDecorator, getFieldValue } = form;
+    const { deviceNameErroShow, deviceNameErroInfo } = this.state;
     return (
       <Form>
         <Form.Item label="损失电量类型">
@@ -76,7 +84,7 @@ class LostAddForm extends Component {
           )}
         </Form.Item>
         <span>多个设备请以空格隔开，设备较多时，可填写上级设备</span>
-        <span></span>
+        {deviceNameErroShow && <span>{deviceNameErroInfo}</span>}
         <Form.Item label="发生时间">
           {getFieldDecorator('startTime', {
             rules: [{ required: true, message: '开始时间' }],
