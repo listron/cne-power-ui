@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './sideReportPage.scss';
-import { Modal, Button } from 'antd';
+import { Modal, Button, Icon } from 'antd';
 import LostGenTable from './LostGenTable';
 import LostAddForm from './LostAddForm';
 
@@ -58,14 +58,15 @@ class AbnormalReportModal extends Component {
           onOk={this.confirmAbnormal}
           onCancel={hideAbnormalModal}
           width={1200}
+          wrapClassName={styles.addAbnormalModal}
         >
-          <div>
-            <span>损失电量信息</span>
-            <Button onClick={this.toAddGenLost} disabled={addLostFormShow} >添加</Button>
-          </div>
-          <LostGenTable faultGenList={faultGenList} abnormalInfo={abnormalInfo} changeFaultList={this.changeFaultList} />
-          {addLostFormShow && <LostAddForm faultGenList={faultGenList} changeFaultList={this.changeFaultList} />}
-        </Modal>
+        <div className={styles.addGenLostHeader} >
+          <span>损失电量信息<Icon type="caret-right" theme="outlined" /></span>
+          <Button onClick={this.toAddGenLost} disabled={addLostFormShow} icon="plus" className={styles.uploadGenLost} >添加</Button>
+        </div>
+        <LostGenTable faultGenList={faultGenList} abnormalInfo={abnormalInfo} changeFaultList={this.changeFaultList} />
+        {addLostFormShow && <LostAddForm faultGenList={faultGenList} changeFaultList={this.changeFaultList} />}
+      </Modal>
     )
   }
 }

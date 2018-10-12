@@ -24,7 +24,6 @@ function *changeLoginStore(action){
 function *userNameLogin(action){
   const url = Path.basePaths.APIBasePath + Path.APISubPaths.userNameLogin;
   const {params} = action;
-  console.log(params);
   yield put({ type: loginAction.LOGIN_FETCH });
   try {
     const response = yield call(axios, {
@@ -105,7 +104,6 @@ function *phoneCodeLogin(action){
   const { params } = action;
   const url = Path.basePaths.APIBasePath + Path.APISubPaths.phoneCodeLogin;
   yield put({ type: loginAction.LOGIN_FETCH});
-  console.log(params);
   try{
     const response = yield call(axios, {
       method: 'post',

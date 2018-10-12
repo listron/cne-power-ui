@@ -27,12 +27,19 @@ class SideReportPage extends Component {
       dayReportTotalInfoArr: [], //用于上传日报的所有信息
     }
   }
+  
+  componentDidMount(){
+    this.props.toChangeDayReportStore({
+      reportDay: moment().subtract(1, 'days').format('YYYY-MM-DD'),
+    })
+  }
 
   componentWillReceiveProps(nextProps){
     const { stationReportBaseData } = this.props;
     const nextReportBaseData = nextProps.stationReportBaseData;
     if( nextReportBaseData.length > 0 && stationReportBaseData.length === 0){ // 得到初始化列表数据
       const dayReportTotalInfoArr = nextReportBaseData.map(e=>{
+        console.log(e);
         let dailyReport = {...e};
         let dailyDetailList = e.dailyDetailList.map(fault=>({
           ...fault,
@@ -44,15 +51,10 @@ class SideReportPage extends Component {
         return {
           dailyReport, dailyDetailList
         }
-      })
+      });
+      console.log(dayReportTotalInfoArr);
       this.setState({ dayReportTotalInfoArr })
     }
-  }
-
-  componentDidMount(){
-    this.props.toChangeDayReportStore({
-      reportDay: moment().subtract(1, 'days').format('YYYY-MM-DD'),
-    })
   }
 
   toReportList = () => { // 回日报列表页
@@ -86,7 +88,7 @@ class SideReportPage extends Component {
     this.props.getStationBaseReport({
       reportDay,
       reportStation: reportStation.map(e=>`${e.stationCode}`)
-    })
+    });
   }
 
   saveDayReport = () => {
@@ -107,6 +109,7 @@ class SideReportPage extends Component {
     const canReport = reportDay && reportStation && reportStation.length > 0;
     const { dayReportTotalInfoArr } = this.state;
     const tmpReportDay = reportDay.replace(/[年]|[月]/g,'-').replace(/[日]/g,'');
+    console.log(dayReportTotalInfoArr);
     return (
       <div className={styles.sideReportPage}>
         <div className={styles.sideReportTitle} >

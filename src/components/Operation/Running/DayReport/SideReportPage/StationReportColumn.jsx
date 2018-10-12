@@ -14,24 +14,24 @@ function StationReportColumn({ dayReportConfig, stationType }){
     <Col span={3} >电站名称</Col>
     <Col className={styles.withBorder} span={2} >
       <span>日辐射总量</span>
-      <span>{stationType === 0 ?speedUtil: radiaUtil}</span>
-      {requiredTargetObj.resourceValue && '*'}
+      <span>{stationType === 0 ?`(${speedUtil})` : `(${radiaUtil})`}</span>
+      <i className={styles.withRequired}>{requiredTargetObj.resourceValue && '*'}</i>
     </Col>
     <Col span={6} >
-      <div className={styles.withBorderBottom}>年累计发电量{genUtil}</div>
+      <div className={styles.withBorderBottom}>年累计发电量({genUtil})</div>
       <Row >
-        <Col span={8}>逆变器{requiredTargetObj.yearGenInverter && '*'}</Col>
-        <Col span={8}>集电线路{requiredTargetObj.yearGenIntegrated && '*'}</Col>
-        <Col span={8}>上网电量{requiredTargetObj.yearGenInternet && '*'}</Col>
+        <Col span={8}>逆变器<i className={styles.withRequired}>{requiredTargetObj.yearGenInverter && '*'}</i></Col>
+        <Col span={8}>集电线路<i className={styles.withRequired}>{requiredTargetObj.yearGenIntegrated && '*'}</i></Col>
+        <Col span={8}>上网电量<i className={styles.withRequired}>{requiredTargetObj.yearGenInternet && '*'}</i></Col>
       </Row>
     </Col>
-    <Col className={styles.withBorder} span={2} >等效小时数(h){requiredTargetObj.hour && '*'}</Col>
-    <Col span={2} >年累计购网电量{genUtil}<i className={styles.withRequired}>{requiredTargetObj.buyPower && '*'}</i></Col>
+    <Col className={styles.withBorder} span={2} >等效小时数(h)<i className={styles.withRequired}>{requiredTargetObj.hour && '*'}</i></Col>
+    <Col span={2} >年累计购网电量({genUtil})<i className={styles.withRequired}>{requiredTargetObj.buyPower && '*'}</i></Col>
     <Col className={styles.withBorder} span={4} >
-      <div className={styles.withBorderBottom}>样板逆变器{genUtil}</div>
+      <div className={styles.withBorderBottom}>样板逆变器({genUtil})</div>
       <Row >
-        <Col  span={12}>容量{requiredTargetObj.modelInverterCapacity && '*'}</Col>
-        <Col span={12}>日发电量{requiredTargetObj.modelInverterPowerGen && '*'}</Col>
+        <Col  span={12}>容量<i className={styles.withRequired}>{requiredTargetObj.modelInverterCapacity && '*'}</i></Col>
+        <Col span={12}>日发电量<i className={styles.withRequired}>{requiredTargetObj.modelInverterPowerGen && '*'}</i></Col>
       </Row>
     </Col>
     <Col span={2}>装机容量(MW)</Col>
