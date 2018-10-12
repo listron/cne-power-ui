@@ -3,6 +3,7 @@ import axios from 'axios';
 import Path from '../../../../constants/path';
 import { message } from 'antd';
 import { planAction } from './planAction';
+import {userAction} from "../../Account/User/userAction";
 
 
 function *changePlanStore(action){//存储payload指定参数，替换reducer-store属性。
@@ -54,10 +55,39 @@ function *getPlanList(action){//请求部门列表数据
   }
 }
 
+function *editPlanInfo(action){
+  const { payload } = action;
+  const url = '/mock/system/editPlanInfo';
+  try {
+    yield put({ type: planAction.PLAN_FETCH  });
+    const response = yield call(axios.put, url, payload);
+    if (response.data.code === '10000') {
+      yield put({ type: planAction.GET_PLAN_FETCH_SUCCESS });
+      const params = yield select(state => ({//继续请求生产计划列表
+        year: state.system.plan.get('year'),
+        stationCodes: state.system.plan.get('stationCodes'),
+        sortField: state.system.plan.get('sortField'),
+        sortMethod: state.system.plan.get('sortMethod'),
+        pageSize: state.system.plan.get('pageSize'),
+        pageNum: state.system.plan.get('pageNum'),
+      }));
+      yield put({
+        type: planAction.getPlanList,
+        payload: params,
+      });
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
 
+function *addPlanInfo(action){}
 
 export function* watchPlan() {
   yield takeLatest(planAction.changePlanStore, changePlanStore);
   yield takeLatest(planAction.getPlanList, getPlanList);
+  yield takeLatest(planAction.editPlanInfo, editPlanInfo);
+  yield takeLatest(planAction.addPlanInfo, addPlanInfo);
+
 }
 

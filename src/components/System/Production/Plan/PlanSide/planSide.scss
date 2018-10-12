@@ -1,0 +1,28 @@
+
+
+
+@import '../../../../../theme/theme.scss';
+
+@mixin top(){//详情，编辑通用顶部基础样式
+  @include lineheight(64px);
+  display: flex;
+  padding-left: 32px;
+  align-items: center;
+  border-bottom: solid 1px $promptColor;
+}
+
+
+.planSide {
+  display: flex;
+  flex: 1 0 auto;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  padding: 24px 24px 0;
+  background:#ececec;
+  .addPlan,.editPlan{
+    flex: 1;
+    background-color: #fff;
+    border: 1px solid #e1e2e2;
+  }
+}

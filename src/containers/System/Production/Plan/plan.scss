@@ -3,71 +3,12 @@
     flex: 1;
     min-height: 100%;
     flex-direction: column;
-    .planContainer{
-        display: flex;
-        flex: 1 0 auto;
-        flex-direction: column;
-        padding:24px 24px 0;
-        width:100%;
-        background-color: #f2f3f4;
-        .productionPlanMain{
-            display: flex;
-            flex-direction: column;
-            flex: 1;
-            background-color: #fff;
-            padding:26px 22px 0 22px;
-            .productionPlanSearch{
-                margin-bottom:20px;
-                .yearTitle{
-                    display: inline-block;
-                    margin-right: 8px;
-                }
-                :global{
-                    .ant-calendar-picker{
-                        margin-right: 10px;
-                    }
-                }
-                .stationTitle{
-                    display: inline-block;
-                    margin-right: 8px;
-                }
-            }
-            .productionPlanContent{
-                display: flex;
-                justify-content: space-between;
-                .planButton{
-                    display: flex;
-                    .buttonIcon{
-                        display: inline-block;
-                        width: 28px;
-                        height: 32px;
-                        line-height: 32px;
-                        background-color: #199475;
-                        color: #fff;
-                        font-size: 20px;
-                        text-align: center;
-                        border-radius: 5px 0 0 5px;
-                        cursor: pointer;
-                    }
-                    :global{
-                        .ant-btn{
-                            border-radius: 0 5px 5px 0;
-                            border:1px solid #199475;
-                            width:50px;
-                            padding: 0;
-                        }
-                        .ant-btn:hover{
-                            background-color: #199475;
-                            color:#fff;
-                            box-shadow: none;
-                        }
-                    }
-                }
-            }
-            .planTable{
-                margin-top:8px;
-            }
-        }
+}
 
-    }
+.planContainer{
+  display: flex;
+  min-height: 100%;
+  flex: 1;
+  overflow: hidden;
+  background:#ececec;
 }

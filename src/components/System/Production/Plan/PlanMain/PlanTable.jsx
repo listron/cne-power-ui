@@ -1,16 +1,19 @@
 import React, {Component} from 'react';
-import {Table, Button, Select, Icon, Popover, InputNumber, Input, Form, Tooltip,message} from 'antd';
+import {Table, Button, Select, Icon, Popover, Input, Form, message} from 'antd';
 import CommonPagination from '../../../../Common/CommonPagination';
 import PropTypes from 'prop-types';
 import styles from './planMain.scss';
-import WarningTip from '../../../../Common/WarningTip';
+import {getMonth} from './plan';
 
 const {Option} = Select;
+
+
+
+
 
 const FormItem = Form.Item;
 const EditableContext = React.createContext();
 
-// 一行的数据
 const EditableRow = ({form, index, ...props}) => {
   return (<EditableContext.Provider value={form}>
     <tr {...props} />
@@ -23,13 +26,13 @@ class EditableCell extends React.Component {
   getInput = (form) => {
     const {dataIndex, record} = this.props;
     if (dataIndex === 'yearPR') {
-      return(<span> <Input onBlur={(e) => this.yearChange(e,form, dataIndex,record)} defaultValue={record[dataIndex]}/>%</span>);
+      return (<span> <Input onBlur={(e) => this.yearChange(e, form, dataIndex, record)}
+                            defaultValue={record[dataIndex]}/>%</span>);
     }
-    return <Input onChange={this.ValueChange}  onBlur={(e) => this.valueChange(e,form, dataIndex,record)}/>;
+    return <Input onChange={this.ValueChange} onBlur={(e) => this.valueChange(e, form, dataIndex, record)}/>;
   };
 
-  yearChange=(e,form, dataIndex,record)=>{
-    console.log(7427,dataIndex)
+  yearChange = (e, form, dataIndex, record) => {//PR 数据修改
     const number = e.target.value;
     if (isNaN(number)) {
       message.warning('只可以填写数字,可精确到小数点后两位');
@@ -41,8 +44,7 @@ class EditableCell extends React.Component {
     }
   };
 
-
-  valueChange = (e,form,dataIndex,record) => {//月份的修改，修改完毕之后年计划跟着变化
+  valueChange = (e, form, dataIndex, record) => {//月份的修改，修改完毕之后年计划跟着变化
     const number = e.target.value;
     if (isNaN(number)) {
       message.warning('只可以填写数字,可精确到小数点后四位');
@@ -50,11 +52,10 @@ class EditableCell extends React.Component {
         [dataIndex]: '',
       });
       return false;
-    } else{
-      let tabelKey = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-      const index=tabelKey.findIndex(item => dataIndex === item);
-      record.monthPlanPowers[index]=number;
-      this.props.handlechange(record)
+    } else {
+      const index=getMonth(dataIndex)-1;
+      record.monthPlanPowers.planMonthGen[index] = number;
+      this.props.handlevaluechange(record,dataIndex,number)
     }
   };
 
@@ -63,7 +64,7 @@ class EditableCell extends React.Component {
       editing,
       dataIndex,
       record,
-      handlechange,
+      handlevaluechange,
       ...restProps
     } = this.props;
 
@@ -98,17 +99,19 @@ class PlanTable extends Component {
   static propTypes = {
     loading: PropTypes.bool,
     changeDepartmentStore: PropTypes.func,
+    planData:PropTypes.array,
     getPlanList: PropTypes.func,
+    editPlanInfo: PropTypes.func,
+    changePlanStore: PropTypes.func,
+
   }
 
   constructor(props) {
     super(props);
     this.state = {
-      showWarningTip: false,
-      warningTipText: '',
-      hiddenWarningTipCancelText: false,
-      data: '',
-      editingKey: ''
+      data: [],
+      editingKey: '',
+      monthPowers:{},
     }
   }
 
@@ -164,10 +167,12 @@ class PlanTable extends Component {
   }
 
 
-
   // 是否可以编辑
   isEditing = (record) => {
-    return record.key === this.state.editingKey;
+    const currentYear=new Date().getFullYear();
+    if(!currentYear-record.planYear>=0){
+      return record.key === this.state.editingKey;
+    }
   };
 
   // 编辑
@@ -194,7 +199,25 @@ class PlanTable extends Component {
           ...item,
           ...row,
         });
-        this.setState({data: newData, editingKey: ''});
+
+        const newItemData = {...item, ...row};
+        let monthPowers=this.state.monthPowers;
+        let month=[];
+        let monthPower=[];
+        for(let key in monthPowers){
+          month.push(getMonth(key));
+          monthPower.push(monthPowers[key]);
+        }
+        const params = {
+            year: newItemData.planYear,
+            stationCodes: newItemData.stationCode,
+            month: month,
+            monthPower: monthPower,
+            planPower: newItemData.planPower,
+            yearPR:newItemData.yearPR,
+          };
+        month.length>0? this.props.editPlanInfo(params):'';
+        this.setState({editingKey: '',monthPowers:{}});
       }
     });
   }
@@ -204,34 +227,35 @@ class PlanTable extends Component {
     this._dealTableData(nextProps.planData)
   }
 
-  _MonthColum = () => {
-    let tabelKey = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-    return tabelKey.map((item, index) => {
-      return {
-        title: index + 1 + '月',
-        dataIndex: item,
-        width: '40px',
-        key: item,
-        editable: true,
-        render: (text, record, index) => {
-          const textValue = text ? text : '--';
-          const editable = this.isEditing(record);
-          return (
-            <div>
-              {
-                editable ? (
-                    <Input defaultValue={textValue} disabled={false}/>) :
-                  (<Input defaultValue={textValue} disabled={true}/>)
-              }
-            </div>
-          )
-        }
-      }
-    })
-  };
-
   _createTableColumn = () => {//生成表头
-    const MonthColum = this._MonthColum();
+    const _this = this;
+
+    function _MonthColumns() {
+      let tabelKey = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+      return tabelKey.map((item, index) => {
+        return {
+          title: index + 1 + '月',
+          dataIndex: item,
+          width: '40px',
+          key: item,
+          editable: true,
+          render: (text, record, index) => {
+            const textValue = text ? text : '--';
+            const editable = _this.isEditing(record);
+            return (
+              <div>
+                {
+                  editable ? (
+                      <Input defaultValue={textValue} disabled={false}/>) :
+                    (<Input defaultValue={textValue} disabled={true}/>)
+                }
+              </div>
+            )
+          }
+        }
+      })
+    };
+    const MonthColumn = _MonthColumns();
     const columns = [
       {
         title: '区域',
@@ -276,7 +300,7 @@ class PlanTable extends Component {
         editable: true,
         render: text => {
           const textValue = text ? text : '--';
-          return (<span><Input defaultValue={textValue}  disabled={true}/>%</span>)
+          return (<span><Input defaultValue={textValue} disabled={true}/>%</span>)
         }
       },
       {
@@ -308,8 +332,8 @@ class PlanTable extends Component {
           );
         },
       }];
-    MonthColum.unshift(5, 0);
-    Array.prototype.splice.apply(columns, MonthColum);
+    MonthColumn.unshift(5, 0);
+    Array.prototype.splice.apply(columns, MonthColumn);
     const columnList = columns.map((col) => {
       if (!col.editable) {
         return col;
@@ -332,21 +356,26 @@ class PlanTable extends Component {
     let TabelKey = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     planData.map((list, index) => {
       for (let i = 0; i < 12; i++) {
-        list[TabelKey[i]] = list.monthPlanPowers[i]
+        list[TabelKey[i]] = list.monthPlanPowers.planMonthGen[i]
       }
       function sum(arr) {
-        return arr.reduce(function(prev, curr, idx, arr){
+        return arr.reduce(function (prev, curr, idx, arr) {
           return Number(prev) + Number(curr);
         });
       }
-      const planPower=sum(list.monthPlanPowers);
+      const planPower = sum(list.monthPlanPowers.planMonthGen);
       list.key = index;
-      list.planPower=planPower;
+      list.planPower = planPower;
     });
     this.setState({data: planData})
   };
 
-  handlechange=(row)=>{
+  handlevaluechange = (row,month,value) => {
+    let monthPowers=this.state.monthPowers;
+    monthPowers[month]=value;
+    this.setState({
+      monthPowers:monthPowers
+    });
     const newData = [...this.state.data];
     const index = newData.findIndex(item => row.key === item.key);
     if (index > -1) {
@@ -359,12 +388,15 @@ class PlanTable extends Component {
     this._dealTableData(newData)
   };
 
+
   render() {
-    const {pageSize, pageNum, totalNum, loading, planData} = this.props;
+    const {pageSize, pageNum, totalNum, loading, planData,} = this.props;
     const components = {
       body: {
-        row: (...rest)=>{return <EditableFormRow {...rest[0]}/>},
-        cell: (...rest)=>{return <EditableCell {...rest[0]} handlechange={this.handlechange} />},
+        row: EditableFormRow,
+        cell: (...rest) => {
+          return <EditableCell {...rest[0]} handlevaluechange={this.handlevaluechange}/>
+        },
       },
     };
 
@@ -373,25 +405,20 @@ class PlanTable extends Component {
         <div className={styles.planListTop}>
           <Button className={styles.addplan} onClick={this.onPlanAdd}>
             <Icon type="plus"/>
-            <span className={styles.text}>添加</span>
+            <span className={styles.text} >添加</span>
           </Button>
           <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalNum}
                             onPaginationChange={this.onPaginationChange}/>
         </div>
-        {this.state.data ? <Table
+        <Table
           className={styles.tableList}
           loading={loading}
-          // rowSelection={{
-          //   selectedRowKeys: selectedDepartment.map(e => e.key),
-          //   onChange: this.onRowSelect
-          // }}
           pagination={false}
           components={components}
           dataSource={this.state.data}
+          locale={{emptyText:<img width="223" height="164" src="/img/nodata.png" />}}
           columns={this._createTableColumn()}
-          // rowClassName="editable-row"
-        /> : 'null'}
-
+        />
       </div>
     )
   }
