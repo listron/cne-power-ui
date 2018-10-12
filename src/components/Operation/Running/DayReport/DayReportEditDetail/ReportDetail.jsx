@@ -48,7 +48,7 @@ const limitColumn = [
   }
 ]
 
-const ReportDetail = ({ selectedDayReportDetail, toChangeDayReportStore }) => {
+const ReportDetail = ({ selectedDayReportDetail, toChangeDayReportStore, onSidePageChange }) => {
   const faultList = selectedDayReportDetail.faultList || [];
   const limitList = selectedDayReportDetail.limitList || [];
 
@@ -60,6 +60,7 @@ const ReportDetail = ({ selectedDayReportDetail, toChangeDayReportStore }) => {
   }
 
   const toEditDetail = () => {
+    onSidePageChange({ sidePage : 'edit'});
     toChangeDayReportStore({
       showPage: 'edit'
     })

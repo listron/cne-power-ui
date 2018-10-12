@@ -50,8 +50,8 @@ class DayReport extends Component {
     
   }
 
-  onSidePageChange = ({ showSidePage }) => {
-    this.setState({ showSidePage });
+  onSidePageChange = ({ sidePage }) => {
+    this.setState({ sidePage });
   }
 
   onToggleSide = () => {

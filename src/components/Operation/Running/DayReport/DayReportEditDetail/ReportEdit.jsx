@@ -5,7 +5,8 @@ import { Button } from 'antd';
 
 class ReportEdit extends Component {
   static propTypes = {
-    toChangeDayReportStore: PropTypes.object,
+    onSidePageChange: PropTypes.func,
+    toChangeDayReportStore: PropTypes.func,
   }
 
   constructor(props){
@@ -13,6 +14,7 @@ class ReportEdit extends Component {
   }
 
   backToDetail = () => {
+    this.props.onSidePageChange({ sidePage : 'detail'});
     this.props.toChangeDayReportStore({
       showPage: 'detail'
     })
