@@ -95,6 +95,12 @@
     margin-top: 10px;
     line-height: 40px;
     margin-left: 30px;
+    span{
+      i{
+        color: $themeColor;
+        font-style: normal;
+      }
+    }
   }
 }
 
@@ -121,5 +127,107 @@
   }
   .withBorderBottom{
     border-bottom: 1px solid $promptColor;
+  }
+}
+
+.eachStationReport{
+  height: 40px;
+  border-bottom: 1px solid #dfdfdf;
+  text-align: center;
+  line-height: 40px;
+  .deleteStationReport{
+    text-align: left;
+    color: $themeColor;
+  }
+  .addAbnormal{
+    color: $themeColor;
+    cursor: pointer;
+  }
+  :global{
+    .ant-input{
+      background:#fcffe5;
+      border:1px solid #f9b600;
+      border-radius:4px;
+      width:76px;
+      height:24px;
+      text-align: center;
+      margin: 7px auto;
+      line-height: 24px;
+      &:hover{
+        border:1px solid #f9b600;
+      }
+    }
+    .ant-input:not(.ant-input-disabled):hover {
+      border-color: #f9b600;
+    }
+    .ant-input:focus {
+      box-shadow: 0 0 0 0;
+      background: #fff;
+      border:1px solid #dfdfdf;
+    }
+    .icon-alert_01:before{
+      font-size: 12px;
+      color: #f9b600;
+      margin-left: 3px;
+    }
+  }
+}
+
+.addAbnormalModal{
+  .addGenLostHeader{
+    .uploadGenLost{
+      width: 70px;
+      padding: 0;
+      margin-left: 20px;
+      span{
+        margin-left: 0px;
+        display: inline-block;
+        width: 44px;
+        text-align: center;
+      }
+      :global{
+        .anticon{
+          width: 28px;
+          height: 30px;
+          line-height: 32px;
+          background: $themeColor;
+          color: #fff;
+          border-top-left-radius: 4px;
+          border-bottom-left-radius: 4px;
+        }
+      }
+    }
+  }
+  :global{
+    .ant-modal-header{
+      padding: 10px 24px;
+    }
+    .ant-modal-close-x{
+      height: 42px;
+      line-height: 42px;
+    }
+    .ant-modal-body{
+      padding: 10px 20px;
+      height: 690px;
+    }
+  }
+}
+
+.lostGenTable{
+  padding: 20px;
+  :global{
+    .ant-table .ant-table-thead > tr > th, .ant-table .ant-table-tbody > tr > td{
+      padding: 0 0;
+      text-align: center;
+    }
+    .ant-form-item, .ant-form-horizontal {
+      margin-bottom: 0px;
+    }
+    .ant-input{
+      width: 161px;
+    }
+  }
+  .lostPower{
+    width: 100px;
   }
 }

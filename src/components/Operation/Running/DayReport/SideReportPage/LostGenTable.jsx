@@ -87,7 +87,7 @@ class LostGenTable extends Component {
               rules: [{ required: true, message: '日损失电量' }],
               initialValue: record.lostPower,
             })(
-              <Input placeholder="日损失电量" />
+              <Input placeholder="日损失电量"  className={styles.lostPower} />
             )}
           </Form.Item>)
         }
@@ -111,6 +111,7 @@ class LostGenTable extends Component {
           columns={this._loseColumn()} 
           dataSource={faultGenList.map((e,i)=>({ ...e, key: i,}))}
           pagination={false}
+          className={styles.lostGenTable}
         />
       </Form>
     )
