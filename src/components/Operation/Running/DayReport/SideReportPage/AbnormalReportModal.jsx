@@ -17,7 +17,7 @@ class AbnormalReportModal extends Component {
     abnormalModalshow: PropTypes.bool,
     hideAbnormalModal: PropTypes.func,
     findDeviceExist: PropTypes.func,
-    totalReportInfoChange: PropTypes.func,
+    totalInfoChange: PropTypes.func,
   }
 
   constructor(props){
@@ -32,9 +32,9 @@ class AbnormalReportModal extends Component {
     }
   }
 
-  confirmAbnormal = () => {
+  confirmAbnormal = () => { // 确认提交异常信息
     const {faultGenList, limitGenList, abnormalText} = this.state;
-    const { abnormalInfo, dayReportTotalInfoArr, totalReportInfoChange } = this.props;
+    const { abnormalInfo, dayReportTotalInfoArr, totalInfoChange } = this.props;
     const uploadParams = dayReportTotalInfoArr.map(info=>{
       if(info.dailyReport.stationCode === abnormalInfo.stationCode){
         const { dailyReport } = info;
@@ -45,7 +45,7 @@ class AbnormalReportModal extends Component {
       }
       return info;
     })
-    totalReportInfoChange(uploadParams);
+    totalInfoChange(uploadParams, true);
   }
 
   changeFaultList = (faultGenList, closeAddForm=false) => { // 修改损失电量信息
