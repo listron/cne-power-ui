@@ -4,6 +4,7 @@ import TransitionContainer from '../../../../components/Common/TransitionContain
 import DayReportMainList from '../../../../components/Operation/Running/DayReport/DayReportMainList';
 import DayReportSide from '../../../../components/Operation/Running/DayReport/DayReportSide';
 import { dayReportAction } from './dayReportAction';
+import { commonAction } from '../../../alphaRedux/commonAction';
 import PropTypes from 'prop-types';
 import styles from './dayReport.scss';
 import Cookie from 'js-cookie';
@@ -85,6 +86,7 @@ class DayReport extends Component {
 const mapStateToProps = (state) => ({
   ...state.operation.dayReport.toJS(),
   stations: state.common.get('stations').toJS(),
+  deviceExistInfo: state.common.get('deviceExistInfo').toJS(),
   enterpriseId: Cookie.get('enterpriseId'),
   userId: Cookie.get('userId'),
 });
@@ -96,6 +98,7 @@ const mapDispatchToProps = (dispatch) => ({
   getStationBaseReport: payload => dispatch({type: dayReportAction.getStationBaseReport, payload}),
   dayReportDetail: payload => dispatch({type: dayReportAction.dayReportDetail, payload}),
   dayReportUpdate: payload => dispatch({type: dayReportAction.dayReportUpdate, payload}),
+  findDeviceExist: payload => dispatch({ type: commonAction.findDeviceExist, payload }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DayReport);
