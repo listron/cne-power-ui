@@ -47,7 +47,7 @@ class LostAddForm extends Component {
   render(){
     const { getFieldDecorator } = this.props.form;
     return (
-      <Form>
+      <Form className={styles.lostAddForm} >
         <Form.Item label="设备名称">
           {getFieldDecorator('deviceName', {
             rules: [{ required: true, message: '设备名称' }],

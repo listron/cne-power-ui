@@ -209,6 +209,9 @@
     .ant-modal-body{
       padding: 10px 20px;
       height: 690px;
+      .ant-form-item, .ant-form-horizontal {
+        margin-bottom: 0px;
+      }
     }
   }
 }
@@ -233,4 +236,13 @@
   .lostPower{
     width: 100px;
   }
+}
+
+.lostAddForm{
+  background:#f0f2f5;
+  border:1px solid #dfdfdf;
+  border-radius:4px;
+  height:357px;
+  margin: 0 20px;
+  padding: 20px 0 0 80px;
 }
