@@ -2,6 +2,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import styles from "./allStationAnalysis.scss";
+import { allStationAnalysisAction } from './allStationAnalysisAction.js';
 import PropTypes from "prop-types";
 import AllStationStatistic from '../../../../components/StatisticalAnalysis/StationAnalysis/AllStationAnalysis/AllStationStatistic';
 import SingStationStatistic from '../../../../components/StatisticalAnalysis/StationAnalysis/AllStationAnalysis/SingStationStatistic';
@@ -44,10 +45,9 @@ class ALarmStatistic extends Component {
     return (
       <div className={styles.allStationAnalysisBox} >
         <CommonBreadcrumb  {...breadCrumbData} style={{ marginLeft: '38px' }} />
-        <div className={styles.allStationStatistic}>     
-          <AllStationStatistic {...this.props} />
-          {showPage === 'single' && <SingStationStatistic {...this.props} />}     
-         
+        <div className={styles.allStationStatistic}>         
+         {showPage === 'multiple'&& <AllStationStatistic {...this.props} />}
+          {showPage === 'single' && <SingStationStatistic {...this.props} />}        
         </div>
         <Footer />
       </div>
@@ -56,16 +56,15 @@ class ALarmStatistic extends Component {
 }
 const mapStateToProps = (state) => {
   return {
-    // ...state.monitor.alarmStatistic.toJS(),
-    // stations: state.common.get('stations'),
+     ...state.statisticalAnalysisReducer.allStationAnalysis.toJS(),
+     stations: state.common.get('stations'),
+     
+     
   }
 }
 const mapDispatchToProps = (dispatch) => ({
-  // changeAlarmStatisticStore: payload => dispatch({ type: alarmAction.CHANGE_ALARM_STATISTIC_STORE_SAGA, payload }),
-  // getStationsAlarmStatistic: payload => dispatch({ type: alarmAction.GET_STATIONS_ALARM_STATISTIC_SAGA, payload }),
-  // getSingleStationAlarmStatistic: payload => dispatch({ type: alarmAction.GET_SINGLESTATION_ALARM_STATISTIC_SAGA, payload }),
-  // resetAlarm: payload => dispatch({ type: alarmAction.RESET_ALARM_STATISTIC_SAGA, payload }),
-  // exportAlarm: payload => dispatch({ type: alarmAction.EXPORT_ALARM_STATISTIC_SAGA, payload }),
+   changeAllStationStore: payload => dispatch({ type: allStationAnalysisAction.CHANGE_ALLSTATIONDATA_STORE_SAGA, payload }),
+  
 })
 
 

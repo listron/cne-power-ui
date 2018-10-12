@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './sideReportPage.scss';
-import { Row, Col, Input } from 'antd';
+import { Row, Col, Input, Icon } from 'antd';
 
 class EachStationReport extends Component {
   static propTypes = {
@@ -26,9 +26,9 @@ class EachStationReport extends Component {
           dailyDetailList,
         }
       }
-      return info
+      return info;
     })
-    totalReportInfoChange(uploadParams)
+    totalReportInfoChange(uploadParams);
   }
 
   addAbnormal= () => {
@@ -49,7 +49,7 @@ class EachStationReport extends Component {
     const eqpHour = isNaN(parseInt(stationInfo.eqpHour))?'--':stationInfo.eqpHour;
     return (
       <Row className={styles.eachStationReport}>
-        <Col span={2}>{stationInfo.stationName}</Col>
+        <Col span={3}>{stationInfo.stationName}</Col>
         <Col span={2}>
           <Input placeholder="--" onChange={(e)=>this.valueChange({ resourceValue: e.target.value })} />
         </Col>
@@ -77,12 +77,12 @@ class EachStationReport extends Component {
         <Col span={2}>
           <span>{stationCapacity}</span>
         </Col>
-        <Col span={2}>
+        <Col span={2} className={styles.addAbnormal}>
           <span onClick={this.addAbnormal} >添加异常</span>
-          <span>!!!</span>
+          <span><i className="iconfont icon-alert_01" ></i></span>
         </Col>
-        <Col span={2}>
-          <span onClick={this.removeStation}>删除</span>
+        <Col span={1} className={styles.deleteStationReport} >
+          <span onClick={this.removeStation}><Icon type="close-circle" theme="outlined" /></span>
         </Col>
       </Row>
     )
