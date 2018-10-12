@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './deviceList.scss';
-import { Tabs, Switch, Radio, Table, Progress  } from 'antd';
+import { Tabs, Switch, Spin, Table, Progress  } from 'antd';
 import { Link } from 'react-router-dom';
 import CommonPagination from '../../../../../Common/CommonPagination/index';
 const TabPane = Tabs.TabPane;
@@ -14,6 +14,7 @@ class ConfluenceBoxList extends Component {
     match: PropTypes.object,
     deviceTypeCode: PropTypes.number,
     getConfluenceBoxList: PropTypes.func,
+    loading: PropTypes.bool,
   }
 
   constructor(props){
@@ -25,6 +26,7 @@ class ConfluenceBoxList extends Component {
       currentPage: 1,
       sortName: '',
       descend : false,
+      firstLoad : true,
     }
   }
 
@@ -62,8 +64,12 @@ class ConfluenceBoxList extends Component {
   }
 
   getData = (stationCode) => {
-    this.props.getConfluenceBoxList({stationCode});
+    const { firstLoad } = this.state;
+    this.props.getConfluenceBoxList({stationCode,firstLoad});
     this.timeOutId = setTimeout(()=>{
+      if(firstLoad){
+        this.setState({firstLoad: false});
+      }
       this.getData(stationCode);
     }, 10000);
   }
@@ -217,7 +223,7 @@ class ConfluenceBoxList extends Component {
   }
   
   render(){
-    const { confluenceBoxList, deviceTypeCode, } = this.props;
+    const { confluenceBoxList, deviceTypeCode,loading } = this.props;
     const { currentStatus, alarmSwitch, currentPage, pageSize  } = this.state;
     const initDeviceList = confluenceBoxList.deviceList && confluenceBoxList.deviceList.map((e,i)=>({...e,key:i})) || []; // 初始化数据
     // const initDeviceList = confluenceBoxList && confluenceBoxList.map((e,i)=>({...e,key:i})) || []; // 初始化数据
@@ -252,41 +258,43 @@ class ConfluenceBoxList extends Component {
       <div className={styles.inverterList} >
         <Tabs defaultActiveKey="1" className={styles.inverterTab} tabBarExtraContent={operations}>
           <TabPane tab={<span><i className="iconfont icon-grid" ></i></span>} key="1" className={styles.inverterBlockBox} >
-            {deviceGroupedList.length > 0 ? deviceGroupedList.map((e,index)=>{
-              return (<div key={index}>
-                <div className={styles.parentDeviceName} >{e && e[0] && e[0].parentDeviceName}</div>
-                {e.map((item,i)=>{
-                  return (<div key={i} className={item.deviceStatus === 900 ? styles.cutOverItem : styles.inverterItem} style={{height: "121px"}}>
-                    <div className={styles.inverterItemIcon} >
+            {loading ? <Spin  size="large" style={{height: '100px',margin: '200px auto',width: '100%'}} /> : 
+              (deviceGroupedList.length > 0 ? deviceGroupedList.map((e,index)=>{
+                return (<div key={index}>
+                  <div className={styles.parentDeviceName} >{e && e[0] && e[0].parentDeviceName}</div>
+                  {e.map((item,i)=>{
+                    return (<div key={i} className={item.deviceStatus === 900 ? styles.cutOverItem : styles.inverterItem} style={{height: "121px"}}>
+                      <div className={styles.inverterItemIcon} >
+                        <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${item.deviceCode}`} >
+                          <i className="iconfont icon-hl" ></i>
+                        </Link>
+                        <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${item.deviceCode}/?showPart=alarmList`} >
+                          {(item.alarmNum && item.alarmNum>0)? <i className="iconfont icon-alarm" ></i> : <div></div>}
+                        </Link>
+                      </div>
                       <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${item.deviceCode}`} >
-                        <i className="iconfont icon-hl" ></i>
-                      </Link>
-                      <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${item.deviceCode}/?showPart=alarmList`} >
-                        {(item.alarmNum && item.alarmNum>0)? <i className="iconfont icon-alarm" ></i> : <div></div>}
-                      </Link>
-                    </div>
-                    <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${item.deviceCode}`} >
-                      <div className={styles.inverterItemR} >
-                        <div className={styles.hlBlockName}><span>{item.deviceName}</span><span>{item.devicePower ? parseFloat(item.devicePower/item.deviceCapacity*100).toFixed(2): '--'}%</span></div>
-                        <Progress className={styles.powerProgress} strokeWidth={3} percent={item.devicePower/item.deviceCapacity*100} showInfo={false} />
-                        <div className={styles.inverterItemPower}>
-                          <div>{item.devicePower ? parseFloat(item.devicePower).toFixed(2) : '--'}kW</div>
-                          <div>{item.deviceCapacity ? parseFloat(item.deviceCapacity).toFixed(2) : '--'}kW</div>
+                        <div className={styles.inverterItemR} >
+                          <div className={styles.hlBlockName}><span>{item.deviceName}</span><span>{item.devicePower ? parseFloat(item.devicePower/item.deviceCapacity*100).toFixed(2): '--'}%</span></div>
+                          <Progress className={styles.powerProgress} strokeWidth={3} percent={item.devicePower/item.deviceCapacity*100} showInfo={false} />
+                          <div className={styles.inverterItemPower}>
+                            <div>{item.devicePower ? parseFloat(item.devicePower).toFixed(2) : '--'}kW</div>
+                            <div>{item.deviceCapacity ? parseFloat(item.deviceCapacity).toFixed(2) : '--'}kW</div>
+                          </div>
                         </div>
-                      </div>
-                    </Link>
-                    <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${item.deviceCode}`} className={styles.hlBlockLink} >
-                      <div className={styles.hlBlockFooter} >
-                        <div>电压：{item.voltage || '--'}V</div>
-                        <div>电流：{item.electricity || '--'}A</div>
-                        <div>离散率：{item.dispersionRatio || '--'}%</div>
-                        <div>温度：{item.temp || '--'}℃</div>
-                      </div>
-                    </Link>
-                  </div>);
-                })}
-              </div>);
-            }) : <div className={styles.nodata} ><img src="/img/nodata.png" /></div>}
+                      </Link>
+                      <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${item.deviceCode}`} className={styles.hlBlockLink} >
+                        <div className={styles.hlBlockFooter} >
+                          <div>电压：{item.voltage || '--'}V</div>
+                          <div>电流：{item.electricity || '--'}A</div>
+                          <div>离散率：{item.dispersionRatio || '--'}%</div>
+                          <div>温度：{item.temp || '--'}℃</div>
+                        </div>
+                      </Link>
+                    </div>);
+                  })}
+                </div>);
+              }) : <div className={styles.nodata} ><img src="/img/nodata.png" /></div>)
+            }
           </TabPane>
           <TabPane tab={<span><i className="iconfont icon-table" ></i></span>} key="2" className={styles.inverterTableBox} >
             <div>

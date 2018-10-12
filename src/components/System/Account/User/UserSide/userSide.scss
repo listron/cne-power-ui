@@ -165,7 +165,11 @@
         }
       }
       .handleArea {
-        float: right;
+        height: 64px;
+        display: flex;
+        flex: 1;
+        justify-content: flex-end;
+        align-items: center;
         font-size: 20px;
         :global{
           .iconfont{

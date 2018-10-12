@@ -14,7 +14,6 @@ const initState = Immutable.fromJS({
   reportDay: '', // 选中的上报日报的日期;
   reportStation: [], // 选中的上报日报的电站;
   showReportInputList: false, // 上报日报信息填写列表;
-  dayReportTotalInfoArr: [], // 所有电站全部日报信息=>用于上传日报
 
   disableReportStation: [],//api- 选中日期已上报过日报的电站code组
   dayReportList: [], // api- 日报主页各电站报表情况;

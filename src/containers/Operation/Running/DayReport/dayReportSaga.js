@@ -21,7 +21,6 @@ function *getDayReportList(action){//请求日报基本列表数据
   try{
     yield put({ type:dayReportAction.dayReportLoading });
     const response = yield call(axios.post,url,payload);
-
     const totalNum = response.data.data.total || 0;
     let { pageNum, pageSize } = payload;
     const maxPage = Math.ceil(totalNum / pageSize);
@@ -78,12 +77,12 @@ function *getStationBaseReport(action){ // 选中日期+电站后各待上传数
   }
 }
 
-function *dayReportConfig(action){ // 日报必填项配置
+function *getDayReportConfig(action){ // 日报必填项配置
   const { payload } = action;
   try{
     const { enterpriseId, module, type} = payload;
     const url = '/mock/operation/dayReport/config';
-    // const url = `${APIBasePath}${operation.dayReportConfig}/${enterpriseId}/${module}/${type}`;
+    // const url = `${APIBasePath}${operation.getDayReportConfig}/${enterpriseId}/${module}/${type}`;
     const response = yield call(axios.get,url);
     yield put({
       type:  dayReportAction.dayReportFetchSuccess,
@@ -155,7 +154,7 @@ function *dayReportUpdate(action){ // 日报编辑
 export function* watchDayReport() {
   yield takeLatest(dayReportAction.toChangeDayReportStore, toChangeDayReportStore);
   yield takeLatest(dayReportAction.getDayReportList, getDayReportList);
-  yield takeLatest(dayReportAction.dayReportConfig, dayReportConfig);
+  yield takeLatest(dayReportAction.getDayReportConfig, getDayReportConfig);
   yield takeLatest(dayReportAction.getStationBaseReport, getStationBaseReport);
   yield takeLatest(dayReportAction.dayReportDetail, dayReportDetail);
   yield takeLatest(dayReportAction.dayReportUpdate, dayReportUpdate);
