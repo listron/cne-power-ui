@@ -215,6 +215,9 @@
 
 .lostGenTable{
   padding: 20px;
+  .removeFaultInfo{
+    color: $themeColor;
+  }
   :global{
     .ant-table .ant-table-thead > tr > th, .ant-table .ant-table-tbody > tr > td{
       padding: 0 0;
