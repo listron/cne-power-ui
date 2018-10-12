@@ -4,6 +4,7 @@ import Path from '../../../../constants/path';
 import { message } from 'antd';
 import { planAction } from './planAction';
 import {userAction} from "../../Account/User/userAction";
+import {commonAction} from "../../../alphaRedux/commonAction";
 
 
 function *changePlanStore(action){//存储payload指定参数，替换reducer-store属性。
@@ -81,13 +82,37 @@ function *editPlanInfo(action){
   }
 }
 
+//获取所有电站信息
+function* getStations(action) {
+  const { payload } = action;
+  const url = `${Path.basePaths.APIBasePath}${Path.commonPaths.getStations}`;
+  yield put({ type: planAction.PLAN_FETCH });
+  try {
+    const response = yield call(axios.get, url,payload);
+    if (response.data.code === '10000') {
+      console.log('测试一下电站',response.data.code);
+      yield put({
+        type: planAction.GET_PLAN_FETCH_SUCCESS,
+        payload: {
+          planStations: response.data.data
+        }
+      });
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
+
 function *addPlanInfo(action){}
+
+
 
 export function* watchPlan() {
   yield takeLatest(planAction.changePlanStore, changePlanStore);
   yield takeLatest(planAction.getPlanList, getPlanList);
   yield takeLatest(planAction.editPlanInfo, editPlanInfo);
   yield takeLatest(planAction.addPlanInfo, addPlanInfo);
+  yield takeLatest(planAction.getStations, getStations);
 
 }
 
