@@ -69,6 +69,8 @@ class UploadReportList extends Component {
           abnormalList={abnormalList}
           abnormalModalshow={abnormalModalshow}
           hideAbnormalModal={this.hideAbnormalModal}
+          totalReportInfoChange={totalReportInfoChange}
+          dayReportTotalInfoArr={dayReportTotalInfoArr}
         />}
       </div>
     )

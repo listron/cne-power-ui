@@ -40,8 +40,9 @@ class SideReportPage extends Component {
     if( nextReportBaseData.length > 0 && stationReportBaseData.length === 0){ // 得到初始化列表数据
       const dayReportTotalInfoArr = nextReportBaseData.map(e=>{
         let dailyReport = {...e};
-        let dailyDetailList = e.dailyDetailList.map(fault=>({
+        let dailyDetailList = e.dailyDetailList.map((fault,index)=>({
           ...fault,
+          id: fault.defectId?fault.defectId:`lostAdd${index}`, // 若关联工单则使用，若非，由前端手动生成。=>上报前去掉。
           startTime: fault.startTime?moment(fault.startTime): null,
           endTime: fault.endTime?moment(fault.endTime): null,
           handle: false, // api返回的故障信息不可编辑

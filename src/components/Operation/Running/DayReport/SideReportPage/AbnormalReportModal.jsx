@@ -2,18 +2,22 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './sideReportPage.scss';
-import { Modal, Button, Icon } from 'antd';
+import { Modal, Button, Icon, Checkbox, Input } from 'antd';
 import LostGenTable from './LostGenTable';
+import LimitGenTable from './LimitGenTable';
 import LostAddForm from './LostAddForm';
+import LimitAddForm from './LimitAddForm';
 
 class AbnormalReportModal extends Component {
   static propTypes = {
     abnormalInfo: PropTypes.object,
     deviceExistInfo: PropTypes.object,
     abnormalList: PropTypes.array,
+    dayReportTotalInfoArr: PropTypes.array,
     abnormalModalshow: PropTypes.bool,
     hideAbnormalModal: PropTypes.func,
     findDeviceExist: PropTypes.func,
+    totalReportInfoChange: PropTypes.func,
   }
 
   constructor(props){
@@ -23,16 +27,28 @@ class AbnormalReportModal extends Component {
       addLimitFormShow: false, // 限电损失添加form框。
       faultGenList: props.abnormalList, // 选中电站故障损失。
       limitGenList: [], // 选中电站限电损失。
-      electricInfo: {}, // 发电信息
+      abnormalTextShow: false,
+      abnormalText: '', // 发电信息-异常信息
     }
   }
 
   confirmAbnormal = () => {
-    console.log('确认保存异常！')
+    const {faultGenList, limitGenList, abnormalText} = this.state;
+    const { abnormalInfo, dayReportTotalInfoArr, totalReportInfoChange } = this.props;
+    const uploadParams = dayReportTotalInfoArr.map(info=>{
+      if(info.dailyReport.stationCode === abnormalInfo.stationCode){
+        const { dailyReport } = info;
+        return {
+          dailyReport: {...dailyReport, errorInfo: abnormalText},
+          dailyDetailList: [...faultGenList, ...limitGenList],
+        }
+      }
+      return info;
+    })
+    totalReportInfoChange(uploadParams);
   }
 
   changeFaultList = (faultGenList, closeAddForm=false) => { // 修改损失电量信息
-    console.log(faultGenList)
     const newState = {faultGenList};
     closeAddForm && (newState.addLostFormShow = false);
     this.setState({ ...newState });
@@ -51,15 +67,41 @@ class AbnormalReportModal extends Component {
     })
   }
 
-  changeLimitList = (limitGenList, closeAddForm=false) => { // -- todo 限电信息table内调整
+  changeLimitList = (limitGenList, closeAddForm=false) => { // 限电信息修改
+    const newState = {limitGenList};
+    closeAddForm && (newState.addLimitFormShow = false);
+    this.setState({ ...newState });
+  }
+
+  checkAbnormal = (e) => {
+    const abnormalTextShow = e.target.checked;
+    let abnormalText = '';
+    if(abnormalTextShow){
+      const { faultGenList } = this.state;
+      const faultShortInfo =  faultGenList.map(e=>{
+        let { deviceName, startTime, endTime, reason, faultName } = e;
+        startTime = startTime && startTime.format('YYYY-MM-DD');
+        endTime = endTime && endTime.format('YYYY-MM-DD');
+        const tmpTextArr = [deviceName, startTime, endTime, reason, faultName].filter(e=>e);
+        return tmpTextArr.join('+')
+      })
+      abnormalText = faultShortInfo.join(';\n');
+    }
     this.setState({
-      limitGenList
+      abnormalTextShow,
+      abnormalText,
+    })
+  }
+
+  reportAbnormalText = (e) => {
+    this.setState({
+      abnormalText: e.target.value,
     })
   }
 
   render(){
     const { abnormalModalshow, abnormalInfo, hideAbnormalModal, findDeviceExist, deviceExistInfo} = this.props;
-    const { addLostFormShow, faultGenList, limitGenList, addLimitFormShow } = this.state;
+    const { addLostFormShow, faultGenList, limitGenList, addLimitFormShow, abnormalTextShow, abnormalText } = this.state;
     return (
       <Modal
           title={`添加异常-${abnormalInfo.stationName}`}
@@ -85,9 +127,19 @@ class AbnormalReportModal extends Component {
           <span>限电信息</span>
           <Button disabled={addLimitFormShow} onClick={this.toAddGenLimit} >添加</Button>
         </div>
-        
-        {addLimitFormShow && <div>添加限电信息框</div>}
-
+        <LimitGenTable limitGenList={limitGenList} abnormalInfo={abnormalInfo} changeLimitList={this.changeLimitList} />
+        {addLimitFormShow && <LimitAddForm
+          findDeviceExist={findDeviceExist} 
+          limitGenList={limitGenList} 
+          changeLimitList={this.changeLimitList}  
+          abnormalInfo={abnormalInfo}
+          deviceExistInfo={deviceExistInfo}
+        />}
+        <div>
+          <span>发电信息</span>
+          <Checkbox onChange={this.checkAbnormal}>存在异常</Checkbox>
+          {abnormalTextShow && <Input.TextArea onChange={this.reportAbnormalText} value={abnormalText} />}
+        </div>
       </Modal>
     )
   }
