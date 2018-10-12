@@ -154,32 +154,49 @@
   }
 }
 
+.planSearch {
+  .searchButton {
+    width: 68px;
+    margin-top: 9px;
+    margin-right: 12px;
+    color: $darkColor;
+    border: 1px solid $promptColor;
+    @include highLight($themeColor);
+    &:hover {
+      background-color: $themeColor;
+      border-color: $themeColor;
+      color: #fff;
+    }
+  }
+}
 
 .tableList {
   :global {
     .ant-input {
       width: 48px;
       padding: 0 5px;
-      background:#fcffe5;
-      border:1px solid #f9b600;
+      background: #fcffe5;
+      border: 1px solid #f9b600;
     }
-    .ant-table .ant-table-thead > tr > th, .ant-table .ant-table-tbody > tr > td{
+    .ant-table .ant-table-thead > tr > th, .ant-table .ant-table-tbody > tr > td {
       padding: 0 3px;
       line-height: 1;
     }
-    .ant-table .ant-table-thead > tr > th{
+    .ant-table .ant-table-thead > tr > th {
       height: 62px;
     }
-    .ant-input.ant-input-disabled{
-      background:#f8f8f8;
-      border:1px solid #dfdfdf;
+    .ant-input.ant-input-disabled {
+      background: #f8f8f8;
+      border: 1px solid #dfdfdf;
     }
-    .ant-input:focus{
+    .ant-input:focus {
       background: #ffffff;
       border: 1px solid #dfdfdf;
       //outline: none;
-      -webkit-tap-highlight-color: rgba(0,0,0,0);
+      -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
     }
   }
 
 }
+
+
