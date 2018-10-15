@@ -197,6 +197,57 @@ function* getAllDepartment(action) {//获取所有部门基础信息
   }
 }
 
+function* findDeviceExist(action){ // 查询设备是否存在
+  const { payload } = action;
+  const url = '/mock/operation/dayReport/findDeviceExist';
+  // const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.common.findDeviceExist}`
+  try {
+    yield put({ 
+      type: commonAction.CHANGE_COMMON_STORE, 
+      payload: {
+        deviceExistInfo: {
+          existLoading:true,
+        }
+      }
+    });
+    const response = yield call(axios.post, url, payload);
+
+    if (response.data.code === "20022") { // 设备不存在
+      yield put({ 
+        type: commonAction.CHANGE_COMMON_STORE, 
+        payload: {
+          deviceExistInfo: {
+            existLoading:false,
+            existError: true,
+            existErrorData: response.data.data || [],
+            existErroMessage: response.data.message,
+          }
+        }
+      });
+    }else{
+      yield put({ 
+        type: commonAction.CHANGE_COMMON_STORE, 
+        payload: {
+          deviceExistInfo: {
+            existLoading:false, 
+            existError: false,
+          }
+        }
+      });
+    }
+  } catch (e) {
+    message.error('请求失败，请重试!');
+    yield put({ 
+      type: commonAction.CHANGE_COMMON_STORE, 
+      payload: {
+        deviceExistInfo: {
+          existLoading:false,
+        }
+      }
+    });
+    console.log(e);
+  }
+}
 
 /*  --- todo 待后台开发refreshtoken接口后，解开注释并进行refresh token的替换。
   export function* refreshToken(action){ //根据当前的refresh token获取刷新token并替换
@@ -238,4 +289,5 @@ export function* watchCommon() {
   yield takeLatest(commonAction.getDevices, getDevices);
   yield takeLatest(commonAction.getPartition, getPartition);
   yield takeLatest(commonAction.getSliceDevices, getSliceDevices);
+  yield takeLatest(commonAction.findDeviceExist, findDeviceExist);
 }

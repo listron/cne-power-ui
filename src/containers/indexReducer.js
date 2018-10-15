@@ -7,8 +7,9 @@ import login from './Login/loginReducer';
 import monitor from './Monitor/monitorReduce';
 import alarmReducer from './Monitor/Alarm/alarmReducer';
 import otherReducer from './alphaRedux/otherReducer';
+import statisticalAnalysisReducer from './StatisticalAnalysis/statisticalAnalysisReducer';
 
-const appReducer = combineReducers({common, operation, login, system ,monitor, alarmReducer, otherReducer});
+const appReducer = combineReducers({common, operation, login, system ,monitor, alarmReducer, otherReducer,statisticalAnalysisReducer});
 
 
 export default appReducer

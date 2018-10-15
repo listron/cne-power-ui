@@ -44,16 +44,7 @@ class RealTimeAlarmTable extends Component {
     }
   }
 
-  onChangeTable = (pagination, filters, sorter) => {
-    console.log(sorter);
-    this.setState({
-      sortName: sorter.field,
-      descend: sorter.order === 'descend'
-    });
-    this.props.changeAlarmStore({
-      sortName: sorter.field,
-    });
-  }
+  
 
   onSelectChange = (selectedRowKeys) => {
     this.props.changeAlarmStore({ selectedRowKeys });
@@ -126,7 +117,16 @@ class RealTimeAlarmTable extends Component {
       showRelievePopover
     });
   }
-
+  tableChange = (pagination, filters, sorter) => {
+    console.log(sorter);
+    this.setState({
+      sortName: sorter.field,
+      descend: sorter.order === 'descend'
+    });
+    this.props.changeAlarmStore({
+      sortName: sorter.field,
+    });
+  }
   cancelRowSelect = () => {
     this.props.changeAlarmStore({ selectedRowKeys: [] });
   }
@@ -424,7 +424,7 @@ class RealTimeAlarmTable extends Component {
           rowSelection={alarmStatus === 3 ? null : rowSelection}
           columns={columns}
           pagination={false}
-          onChange={this.onChangeTable}
+          onChange={this.tableChange}
           locale={{ emptyText: <div className={styles.noData}><img src="/img/nodata.png" style={{ width: 223, height: 164 }} /></div> }}
         />
         {alarmStatus !== 3 && realtimeAlarm.length > 0 && <div className={styles.tableFooter}>
