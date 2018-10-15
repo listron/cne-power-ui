@@ -99,3 +99,32 @@
   }
 
 }
+
+.editResourceInfo{
+  padding: 15px 0 30px 30px;
+  :global{
+    .ant-form{
+      .ant-form-inline .ant-form-item {
+        width: 33.33%;
+        margin-right: 0px;
+        .ant-form-item-control-wrapper{
+          .ant-input{
+            width: 80px;
+          }
+        }
+      }
+    }
+  }
+  .resourceInfoCon{
+    padding: 20px 100px 0;
+    .eachResourceInfo{
+      display: inline-block;
+      width: 33.33%;
+      line-height: 40px;
+      .eachResourceInfoName{
+        width: 100px;
+        text-align: right;
+      }
+    }
+  }
+}
