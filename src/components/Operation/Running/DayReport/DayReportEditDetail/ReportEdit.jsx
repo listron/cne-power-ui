@@ -1,10 +1,13 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button } from 'antd';
+import { Button, Checkbox, Input } from 'antd';
 import ResourceElecInfo from './ResourceElecInfo';
 import LostAddForm from '../SideReportPage/LostAddForm';
 import LimitAddForm from '../SideReportPage/LimitAddForm';
+import LostGenTable from '../SideReportPage/LostGenTable';
+import LimitGenTable from '../SideReportPage/LimitGenTable';
+import moment from 'moment';
 
 class ReportEdit extends Component {
   static propTypes = {
@@ -20,6 +23,7 @@ class ReportEdit extends Component {
     this.state = {
       addLostFormShow: false,
       addLimitFormShow: false,
+      abnormalTextShow: false,
       updateDayReportDetail: props.selectedDayReportDetail,
     }
   }
@@ -42,6 +46,40 @@ class ReportEdit extends Component {
       addLimitFormShow: true
     })
   }
+
+  checkAbnormal = (e) => { // 发电信息-存在异常
+    const abnormalTextShow = e.target.checked;
+    let abnormalText = '';
+    const { updateDayReportDetail } = this.state;
+    if(abnormalTextShow){
+      const { faultList } = updateDayReportDetail;
+      const faultShortInfo =  faultList.map(e=>{
+        let { deviceName, startTime, endTime, reason, faultName } = e;
+        startTime = startTime && startTime.format('YYYY-MM-DD');
+        endTime = endTime && endTime.format('YYYY-MM-DD');
+        const tmpTextArr = [deviceName, startTime, endTime, reason, faultName].filter(e=>e);
+        return tmpTextArr.join('+')
+      })
+      abnormalText = faultShortInfo.join(';\n');
+    }
+    this.setState({
+      abnormalTextShow,
+      updateDayReportDetail: {
+        ...updateDayReportDetail,
+        errorInfo: abnormalText,
+      }
+    })
+  }
+
+  reportAbnormalText = (e) => {
+    const { updateDayReportDetail } = this.state;
+    this.setState({
+      updateDayReportDetail:{ 
+        ...updateDayReportDetail,
+        errorInfo: e.target.value
+      },
+    })
+  } 
 
   updateReport = () => { // 确认上传更新后的日报详情
     console.log('保存编辑页面相关功能!!');
@@ -70,7 +108,7 @@ class ReportEdit extends Component {
   }
 
   render(){
-    const { updateDayReportDetail, addLostFormShow, addLimitFormShow } = this.state;
+    const { updateDayReportDetail, addLostFormShow, addLimitFormShow, abnormalTextShow } = this.state;
     const { findDeviceExist, deviceExistInfo } = this.props;
     return (
       <div>
@@ -84,7 +122,12 @@ class ReportEdit extends Component {
           <span>损失电量信息</span>
           <Button onClick={this.toAddGenLost} disabled={addLostFormShow}>添加</Button>
         </div>
-        {/* <LostGenTable faultGenList={faultGenList} abnormalInfo={abnormalInfo} changeFaultList={this.changeFaultList} />*/}
+        <LostGenTable 
+          faultGenList={updateDayReportDetail.faultList.map(
+            e=>({...e,startTime: moment(e.startTime), endTime: moment(e.endTime)})
+          )}
+          changeFaultList={this.faultListInfoChange} 
+        />
         {addLostFormShow && <LostAddForm
           findDeviceExist={findDeviceExist}
           faultGenList={updateDayReportDetail.faultList}
@@ -96,7 +139,12 @@ class ReportEdit extends Component {
           <span>限电信息</span>
           <Button disabled={addLimitFormShow} onClick={this.toAddGenLimit} >添加</Button>
         </div>
-        {/* <LimitGenTable limitGenList={limitGenList} abnormalInfo={abnormalInfo} changeLimitList={this.changeLimitList} />  */}
+        <LimitGenTable 
+          limitGenList={updateDayReportDetail.limitList.map(
+            e=>({...e,startTime: moment(e.startTime), endTime: moment(e.endTime)})
+          )}
+          changeLimitList={this.limitListInfoChange}
+        />
         {addLimitFormShow && <LimitAddForm
           findDeviceExist={findDeviceExist} 
           limitGenList={updateDayReportDetail.limitList} 
@@ -104,11 +152,11 @@ class ReportEdit extends Component {
           stationCode={updateDayReportDetail.stationCode}
           deviceExistInfo={deviceExistInfo}
         />}
-        {/* <div>
+        <div>
           <span>发电信息</span>
           <Checkbox onChange={this.checkAbnormal}>存在异常</Checkbox>
-          {abnormalTextShow && <Input.TextArea onChange={this.reportAbnormalText} value={abnormalText} />}
-        </div> */}
+          {abnormalTextShow && <Input.TextArea onChange={this.reportAbnormalText} value={updateDayReportDetail.errorInfo} />}
+        </div>
       </div>
     )
   }
