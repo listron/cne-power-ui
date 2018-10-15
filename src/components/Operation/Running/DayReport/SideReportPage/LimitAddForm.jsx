@@ -5,13 +5,13 @@ import styles from './sideReportPage.scss';
 import { Form, Input, DatePicker, Button } from 'antd';
 import moment from 'moment';
 
-class LostAddForm extends Component {
+class LimitAddForm extends Component {
   static propTypes = {
     form: PropTypes.object,
     abnormalInfo: PropTypes.object,
     deviceExistInfo: PropTypes.object,
-    faultGenList: PropTypes.array,
-    changeFaultList: PropTypes.func,
+    limitGenList: PropTypes.array,
+    changeLimitList: PropTypes.func,
     findDeviceExist: PropTypes.func,
   }
 
@@ -33,19 +33,19 @@ class LostAddForm extends Component {
           deviceNameErroInfo : `${deviceExistInfo.existErrorData.join(',')}不存在!`
         })
       }else{ // 设备验证通过
-        const { form, changeFaultList, faultGenList } = this.props;
+        const { form, changeLimitList, limitGenList } = this.props;
         const { getFieldsValue } = form;
-        const lostInfo = getFieldsValue();
-        lostInfo.id = `lostAdd${faultGenList.length}`;
-        lostInfo.handle = true;
-        lostInfo.deviceName = lostInfo.deviceName.trim().replace('/\s+/g',',');
-        lostInfo.type = 1;  // 损失type 1 => 后台接收。
-        changeFaultList([...faultGenList,lostInfo], true);
+        const limitInfo = getFieldsValue();
+        limitInfo.id = `limitAdd${limitGenList.length}`;
+        limitInfo.handle = true;
+        limitInfo.deviceName = limitInfo.deviceName.trim().replace('/\s+/g',',');
+        limitInfo.type = 0;  // 限电type 0 => 后台接收。
+        changeLimitList([...limitGenList,limitInfo], true);
       }
     }
   }
 
-  confirmAddFault = () => {
+  confirmAddLimit = () => {
     const { form, findDeviceExist, abnormalInfo } = this.props;
     form.validateFields((err, values) => {
       if (!err) {
@@ -59,9 +59,9 @@ class LostAddForm extends Component {
     });
   }
 
-  cancelAddFault = () => {
-    const { faultGenList, changeFaultList } = this.props;
-    changeFaultList(faultGenList, true);
+  cancelAddLimit = () => { // 取消限电添加
+    const { limitGenList, changeLimitList } = this.props;
+    changeLimitList(limitGenList, true);
   }
 
   render(){
@@ -70,13 +70,6 @@ class LostAddForm extends Component {
     const { deviceNameErroShow, deviceNameErroInfo } = this.state;
     return (
       <Form>
-        <Form.Item label="损失电量类型">
-          {getFieldDecorator('faultName', {
-            rules: [{ required: true, message: '损失电量类型' }],
-          })(
-            <Input placeholder="损失电量类型" />
-          )}
-        </Form.Item>
         <Form.Item label="设备名称">
           {getFieldDecorator('deviceName', {
             rules: [{ required: true, message: '设备名称' }],
@@ -86,11 +79,18 @@ class LostAddForm extends Component {
         </Form.Item>
         <span>多个设备请以空格隔开，设备较多时，可填写上级设备</span>
         {deviceNameErroShow && <span>{deviceNameErroInfo}</span>}
+        <Form.Item label="限功率">
+          {getFieldDecorator('limitPower', {
+            rules: [{ required: true, message: '限功率' }],
+          })(
+            <Input placeholder="限功率" />
+          )}
+        </Form.Item>
         <Form.Item label="发生时间">
           {getFieldDecorator('startTime', {
-            rules: [{ required: true, message: '开始时间' }],
+            rules: [{ required: true, message: '发生时间' }],
           })(
-            <DatePicker placeholder="开始时间" />
+            <DatePicker placeholder="发生时间" />
           )}
         </Form.Item>
         <Form.Item label="结束时间">
@@ -117,21 +117,13 @@ class LostAddForm extends Component {
           )}
           <span>{getFieldValue('reason')?getFieldValue('reason').length:0}/30</span>
         </Form.Item>
-        <Form.Item label="处理进展及说明">
-          {getFieldDecorator('process', {
-            rules: [{ required: true, message: '处理进展及说明' }],
-          })(
-            <Input.TextArea placeholder="处理进展及说明" />
-          )}
-          <span>{getFieldValue('process')?getFieldValue('process').length:0}/30</span>
-        </Form.Item>
         <div>
-          <Button onClick={this.confirmAddFault}>确定</Button>
-          <Button onClick={this.cancelAddFault}>取消</Button>
+          <Button onClick={this.confirmAddLimit}>确定</Button>
+          <Button onClick={this.cancelAddLimit}>取消</Button>
         </div>
       </Form>
     )
   }
 }
 
-export default Form.create()(LostAddForm);
+export default Form.create()(LimitAddForm);

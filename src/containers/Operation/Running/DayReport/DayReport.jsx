@@ -50,8 +50,8 @@ class DayReport extends Component {
     
   }
 
-  onSidePageChange = ({ showSidePage }) => {
-    this.setState({ showSidePage });
+  onSidePageChange = ({ sidePage }) => {
+    this.setState({ sidePage });
   }
 
   onToggleSide = () => {
@@ -96,6 +96,7 @@ const mapDispatchToProps = (dispatch) => ({
   getDayReportList: payload => dispatch({type: dayReportAction.getDayReportList, payload}),
   getDayReportConfig: payload => dispatch({type: dayReportAction.getDayReportConfig, payload}),
   getStationBaseReport: payload => dispatch({type: dayReportAction.getStationBaseReport, payload}),
+  getReportUploadedStation: payload => dispatch({type: dayReportAction.getReportUploadedStation, payload}),
   dayReportDetail: payload => dispatch({type: dayReportAction.dayReportDetail, payload}),
   dayReportUpdate: payload => dispatch({type: dayReportAction.dayReportUpdate, payload}),
   findDeviceExist: payload => dispatch({ type: commonAction.findDeviceExist, payload }),
