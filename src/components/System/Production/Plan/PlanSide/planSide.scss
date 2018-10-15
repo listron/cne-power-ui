@@ -43,7 +43,29 @@
       }
     }
     .mainPart{
-
+      display: flex;
+      margin:20px 0 0 22px;
+      .year{
+        margin-right: 8px;
+      }
+      .topLeft{
+        display:flex;
+        margin-left:10px;
+        .station{
+          margin-right:10px;
+          padding-top: 6px;
+        }
+        .btn{
+          margin-left: 10px;
+          color: $themeColor;
+          border: 1px solid $themeColor;
+          &:hover {
+            background-color: $themeColor;
+            border-color: $themeColor;
+            color: #fff;
+          }
+        }
+      }
     }
   }
 }

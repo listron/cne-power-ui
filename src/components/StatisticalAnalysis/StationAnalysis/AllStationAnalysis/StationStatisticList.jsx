@@ -136,15 +136,15 @@ class StationStatisticList extends React.Component {
   }
 
   render() {
-    const {timeSelect}=this.props;
+    const {dateType}=this.props;
     const columns = this.initColumn();
     return (
       <div className={styles.stationStatisticList}>
         <div className={styles.stationStatisticFilter}>
           <div className={styles.leftTime}>
             <div>综合指标统计表</div>
-            {timeSelect==='month'?this.selectTime():''}
-            {timeSelect==='year'?this.selectYear():''}
+            {dateType==='month'?this.selectTime():''}
+            {dateType==='year'?this.selectYear():''}
           </div>
           <Pagination />
         </div>

@@ -80,7 +80,7 @@ class PlanSide extends Component {
         </div>
         <div className={styles.mainPart}>
           <div>
-            <span>年份填写</span>
+            <span className={styles.year}>年份填写</span>
             <DatePicker
               format={dateFormat}
               mode='year'
@@ -93,8 +93,8 @@ class PlanSide extends Component {
               onPanelChange={(value,mode)=>(this.onPanelChange(value,mode))}
               />
           </div>
-          <div>
-            <span>电站选择</span>
+          <div className={styles.topLeft}>
+            <span className={styles.station}>电站选择</span>
             <StationSelect
               // value={stations}
               data={stations.toJS()}
@@ -102,7 +102,7 @@ class PlanSide extends Component {
               onChange={this.stationSelected}
               disabled={planStations}
             />
-            <Button onClick={this.toReportStations} disabled={!canAddPlan} >下一步</Button>
+            <Button onClick={this.toReportStations} disabled={!canAddPlan} className={styles.btn}>下一步</Button>
           </div>
         </div>
 
