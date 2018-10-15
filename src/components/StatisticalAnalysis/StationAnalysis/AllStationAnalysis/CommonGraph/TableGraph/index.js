@@ -48,13 +48,13 @@ class TableGraph extends React.Component {
       <div className={styles.TableGraphContainer} >
         <div className={styles.TableGraphContainerTitle}>
           <div>
-            损失电量同比降幅排名
+            计划完成率最低排名
           </div>
           <div>
-            损失电量：万kWh
+            发电量：万kWh
           </div>
         </div>
-        <Table columns={columns} dataSource={data} pagination={false} scroll={{ y: 260 }} size="small" onRow={(record) => { return { onMouseEnter:this.onMouseEnter} }} />
+        <Table className={styles.tableList} columns={columns} dataSource={data} pagination={false} scroll={{ y: 260 }} size="small" onRow={(record) => { return { onMouseEnter:this.onMouseEnter} }} />
       </div>
     )
   }
