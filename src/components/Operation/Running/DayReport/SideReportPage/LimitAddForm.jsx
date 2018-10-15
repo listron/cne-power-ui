@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './sideReportPage.scss';
-import { Form, Input, DatePicker, Button } from 'antd';
+import { Form, Input, DatePicker, Button,Row,Col } from 'antd';
 import moment from 'moment';
 
 class LimitAddForm extends Component {
@@ -68,60 +68,143 @@ class LimitAddForm extends Component {
     const { form } = this.props;
     const { getFieldDecorator, getFieldValue } = form;
     const { deviceNameErroShow, deviceNameErroInfo } = this.state;
+    const formItemLayout1 = {
+      labelCol: {
+        xs: { span: 24 },
+        sm: { span: 8 },
+      },
+      wrapperCol: {
+        xs: { span: 24 },
+        sm: { span: 16 },
+      },
+    };
+    const formItemLayout2 = {
+      labelCol: {
+        xs: { span: 24 },
+        sm: { span: 4 },
+      },
+      wrapperCol: {
+        xs: { span: 24 },
+        sm: { span: 20 },
+      },
+    };
+    const tailFormItemLayout = {
+      wrapperCol: {
+        xs: {
+          span: 24,
+          offset: 0,
+        },
+        sm: {
+          span: 16,
+          offset: 8,
+        },
+      },
+    };
     return (
-      <Form>
-        <Form.Item label="设备名称">
-          {getFieldDecorator('deviceName', {
-            rules: [{ required: true, message: '设备名称' }],
-          })(
-            <Input placeholder="设备名称" />
-          )}
-        </Form.Item>
-        <span>多个设备请以空格隔开，设备较多时，可填写上级设备</span>
-        {deviceNameErroShow && <span>{deviceNameErroInfo}</span>}
-        <Form.Item label="限功率">
-          {getFieldDecorator('limitPower', {
-            rules: [{ required: true, message: '限功率' }],
-          })(
-            <Input placeholder="限功率" />
-          )}
-        </Form.Item>
-        <Form.Item label="发生时间">
-          {getFieldDecorator('startTime', {
-            rules: [{ required: true, message: '发生时间' }],
-          })(
-            <DatePicker placeholder="发生时间" />
-          )}
-        </Form.Item>
-        <Form.Item label="结束时间">
-          {getFieldDecorator('endTime', {
-            rules: [{ required: true, message: '结束时间' }],
-          })(
-            <DatePicker placeholder="结束时间" />
-          )}
-          <span>未结束不填写</span>
-        </Form.Item>
-        <Form.Item label="日损失电量">
-          {getFieldDecorator('lostPower', {
-            rules: [{ required: true, message: '日损失电量' }],
-          })(
-            <Input placeholder="日损失电量" />
-          )}
-          <span>kWh</span>
-        </Form.Item>
-        <Form.Item label="原因说明">
-          {getFieldDecorator('reason', {
-            rules: [{ required: true, message: '原因说明' }],
-          })(
-            <Input.TextArea placeholder="原因说明" />
-          )}
-          <span>{getFieldValue('reason')?getFieldValue('reason').length:0}/30</span>
-        </Form.Item>
-        <div>
-          <Button onClick={this.confirmAddLimit}>确定</Button>
-          <Button onClick={this.cancelAddLimit}>取消</Button>
-        </div>
+      <Form className={styles.lostAddForm} >
+        <Row className={styles.horizontal} >
+          <Col span={8}>
+            <Form.Item label="设备名称" {...formItemLayout1} >
+              {getFieldDecorator('deviceName', {
+                rules: [{ required: true, message: '设备名称' }],
+              })(
+                <Input placeholder="设备名称" />
+              )}
+              <span className={styles.lostInputTip}>多个设备请以空格隔开，设备较多时，可填写上级设备</span>
+              {deviceNameErroShow && <span>{deviceNameErroInfo}</span>}
+            </Form.Item>
+          </Col>
+        </Row>
+        <Row className={styles.horizontal} >
+          <Col span={8}>
+            <Form.Item label="限功率" {...formItemLayout1} >
+              {getFieldDecorator('limitPower', {
+                rules: [{ required: true, message: '限功率' }],
+              })(
+                <Input placeholder="限功率" />
+              )}
+              <span className={styles.lostInputTip}>%</span>
+            </Form.Item> 
+          </Col>
+        </Row>
+        <Row className={styles.horizontal} >
+          <Col span={8}>
+            <Form.Item label="发生时间" {...formItemLayout1} >
+              {getFieldDecorator('startTime', {
+                rules: [{ required: true, message: '发生时间' }],
+              })(
+                <DatePicker placeholder="发生时间" showTime={true} format="YYYY-MM-DD hh:mm"  />
+              )}
+            </Form.Item>
+          </Col>
+          <Col span={16}>
+            <Form.Item label="结束时间" {...formItemLayout2} >
+              {getFieldDecorator('endTime', {
+                // rules: [{ required: true, message: '结束时间' }],
+              })(
+                <DatePicker placeholder="结束时间"  showTime={true} format="YYYY-MM-DD hh:mm" />
+              )}
+              <span className={styles.lostInputTip}>未结束不填写</span>
+            </Form.Item>
+          </Col>
+        </Row>
+        <Row className={styles.horizontal} >
+          <Col span={8}>
+            <Form.Item label="日损失电量" {...formItemLayout1} >
+              {getFieldDecorator('lostPower', {
+                rules: [{ required: true, message: '日损失电量' }],
+              })(
+                <Input placeholder="日损失电量" />
+              )}
+              <span className={styles.lostInputTip}>kWh</span>
+            </Form.Item>
+          </Col>
+        </Row>
+        <Row className={styles.reasonBox} >
+          <Col span={8}>
+            <Form.Item label="原因说明" {...formItemLayout1} >
+              {getFieldDecorator('reason', {
+                rules: [{ required: true, message: '原因说明' }],
+              })(
+                <Input.TextArea placeholder="原因说明" className={styles.reasonArea} />
+              )}
+              <span className={styles.lostInputTip}>({getFieldValue('reason')?getFieldValue('reason').length:0}/30)</span>
+            </Form.Item>
+          </Col>
+        </Row>
+        <Row className={styles.reasonBox}>
+          <Col span={8}>
+            <Form.Item label="处理进展及说明" {...formItemLayout1} >
+              {getFieldDecorator('process', {
+                rules: [{ required: true, message: '处理进展及说明' }],
+              })(
+                <Input.TextArea placeholder="处理进展及说明"  className={styles.reasonArea}  />
+              )}
+              <span className={styles.lostInputTip}>({getFieldValue('process')?getFieldValue('process').length:0}/30)</span>
+            </Form.Item>
+          </Col>
+        </Row>
+        <Row style={{marginTop: '0px'}}>
+          <Col span={8}>
+            <Form.Item {...tailFormItemLayout}>
+              <Button onClick={this.confirmAddLimit} className={styles.confirmAddFault} >确定</Button>
+              <Button onClick={this.cancelAddLimit} className={styles.cancelAddFault} >取消</Button>
+            </Form.Item>
+          </Col>
+        </Row>
       </Form>
+      // <Form>
+        
+        
+        
+        
+        
+        
+      //   <div>
+      //     <Button onClick={this.confirmAddLimit}>确定</Button>
+      //     <Button onClick={this.cancelAddLimit}>取消</Button>
+      //   </div>
+      // </Form>
     )
   }
 }

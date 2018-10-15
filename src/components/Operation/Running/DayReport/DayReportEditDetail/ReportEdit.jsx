@@ -1,13 +1,14 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Checkbox, Input } from 'antd';
+import { Button, Checkbox, Input, Icon } from 'antd';
 import ResourceElecInfo from './ResourceElecInfo';
 import LostAddForm from '../SideReportPage/LostAddForm';
 import LimitAddForm from '../SideReportPage/LimitAddForm';
 import LostGenTable from '../SideReportPage/LostGenTable';
 import LimitGenTable from '../SideReportPage/LimitGenTable';
 import moment from 'moment';
+import styles from './reportDetail.scss';
 
 class ReportEdit extends Component {
   static propTypes = {
@@ -111,11 +112,13 @@ class ReportEdit extends Component {
     const { updateDayReportDetail, addLostFormShow, addLimitFormShow, abnormalTextShow } = this.state;
     const { findDeviceExist, deviceExistInfo } = this.props;
     return (
-      <div>
-        <div>
-          <span>日报编辑</span>
-          <Button onClick={this.updateReport}>保存--注意，保存应该在这里</Button>
-          <Button onClick={this.backToDetail}>返回</Button>
+      <div className={styles.reportDetail} >
+        <div className={styles.reportDetailTitle} >
+          <span className={styles.reportDetailTitleTip}>日报编辑</span>
+          <div className={styles.reportDetailTitleRight}>
+            <Button onClick={this.updateReport} className={styles.reportEdit}>保存</Button>
+            <Icon type="arrow-left" className={styles.backIcon}  onClick={this.backToDetail} />
+          </div>
         </div>
         <ResourceElecInfo changeReportDetail={this.changeReportDetail} updateDayReportDetail={updateDayReportDetail} />
         <div>

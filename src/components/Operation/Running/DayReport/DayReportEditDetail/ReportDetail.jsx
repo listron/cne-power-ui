@@ -1,6 +1,8 @@
 
 import React from 'react';
-import { Button, Table } from 'antd';
+import { Button, Table, Icon } from 'antd';
+// import { styles } from 'ansi-colors';
+import styles from './reportDetail.scss';
 
 const loseColumn = [
   {
@@ -83,59 +85,64 @@ const ReportDetail = ({ selectedDayReportDetail, toChangeDayReportStore, onSideP
     {name: '样本逆变器发电量', value: 'modelInverterPowerGen', unit: ''},
   ]
 
-  return (<div>
-    <div>
-      <span>日报详情</span>
-      <Button onClick={toEditDetail}>编辑--注意，编辑应该在这里。</Button>
-      <span onClick={toReportList}>返回</span>
+  return (
+  <div className={styles.reportDetail} >
+    <div className={styles.reportDetailTitle} >
+      <span className={styles.reportDetailTitleTip}>日报详情</span>
+      <div className={styles.reportDetailTitleRight}>
+        <Button onClick={toEditDetail}  className={styles.reportEdit}>编辑</Button>
+        <Icon type="arrow-left" className={styles.backIcon}  onClick={toReportList} />
+      </div>
     </div>
-    <div>
-      <h4>资源电量信息</h4>
-      <div>
+    <div className={styles.resourceInfo} >
+      <h4 className={styles.reportSubTitle} >资源电量信息<Icon type="caret-right" theme="outlined" /></h4>
+      <div className={styles.resourceInfoCon}>
         {sourceInfoArr.map(e=>{
           const targetValue = selectedDayReportDetail[e.value];
           const stationValue = targetValue || targetValue === 0 || '--';
-          return (<span key={e.name}>
-            <span>{e.name}</span>
-            <span>{stationValue}</span>
-            <span>{e.unit}</span>
+          return (<span key={e.name} className={styles.eachResourceInfo} >
+            <span className={styles.eachResourceInfoName} >{e.name}</span>
+            <span className={styles.eachResourceInfoValue} >{stationValue}</span>
+            <span className={styles.eachResourceInfoUnit} >{e.unit}</span>
           </span>)
         })}
       </div>
     </div>
-    <div>
-      <h4>损失电量信息</h4>
+    <div className={styles.lostInfo} >
+      <h4 className={styles.reportSubTitle} >损失电量信息<Icon type="caret-right" theme="outlined" /></h4>
       <Table 
         columns={loseColumn} 
         dataSource={faultList.map((e,i)=>({...e,key: i}))}
         pagination={false}
+        className={styles.lostInfoTable}
       />
     </div>
-    <div>
-      <h4>限电信息</h4>
+    <div className={styles.limitInfo} >
+      <h4 className={styles.reportSubTitle} >限电信息<Icon type="caret-right" theme="outlined" /></h4>
       <Table 
         columns={limitColumn} 
         dataSource={limitList.map((e,i)=>({...e,key: i}))}
         pagination={false}
+        className={styles.limitInfoTable}
       />
     </div>
-    <div>
-      <h4>发电信息</h4>
-      <p>{selectedDayReportDetail.errorInfo}</p>
+    <div className={styles.powerGenInfo} >
+      <h4 className={styles.reportSubTitle} >发电信息<Icon type="caret-right" theme="outlined" /></h4>
+      <p className={styles.powerGenInfoCon}>{selectedDayReportDetail.errorInfo}</p>
     </div>
-    <div>
-      <h4>操作信息</h4>
-      <div>
+    <div className={styles.operateInfo} >
+      <h4 className={styles.reportSubTitle} >操作信息<Icon type="caret-right" theme="outlined" /></h4>
+      <div className={styles.operateInfoCon}>
         <span>
-          <span>上传人</span>
+          <span className={styles.operateInfoName}>上传人</span>
           <span>{selectedDayReportDetail.userFullName || '--'}</span>
         </span>
         <span>
-          <span>上传时间</span>
+          <span className={styles.operateInfoName}>上传时间</span>
           <span>{selectedDayReportDetail.createTimer || '--'}</span>
         </span>
         <span>
-          <span>最新更新时间</span>
+          <span className={styles.operateInfoName}>最新更新时间</span>
           <span>{selectedDayReportDetail.updateTimer || '--'}</span>
         </span>
       </div>
