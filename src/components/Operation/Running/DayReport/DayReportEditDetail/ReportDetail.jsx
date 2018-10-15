@@ -50,9 +50,14 @@ const limitColumn = [
   }
 ]
 
-const ReportDetail = ({ selectedDayReportDetail, toChangeDayReportStore, onSidePageChange }) => {
+const ReportDetail = ({ selectedDayReportDetail, toChangeDayReportStore , dayReportConfig, onSidePageChange }) => {
   const faultList = selectedDayReportDetail.faultList || [];
   const limitList = selectedDayReportDetail.limitList || [];
+  const configUtil = dayReportConfig[0] || {};
+  const radiationUnit = configUtil.radiation || '';
+  const speedUnit = configUtil.speed || '';
+  const genUnit = configUtil.power || '';
+  const { stationType } = selectedDayReportDetail;
 
   const toReportList = () => {
     toChangeDayReportStore({
@@ -67,7 +72,8 @@ const ReportDetail = ({ selectedDayReportDetail, toChangeDayReportStore, onSideP
       showPage: 'edit'
     })
   }
-  const { stationType } = selectedDayReportDetail;
+  // const genUnit = dayReportConfig;
+  // const radiationUnit = dayReportConfig
   const sourceInfoArr = [ // todo 单位问题待完善。是否需要根据api进行动态配置？
     {name: '日报日期', value: 'reportDate', unit: ''},
     {name: '天气', value: 'weather', unit: ''},
@@ -75,14 +81,18 @@ const ReportDetail = ({ selectedDayReportDetail, toChangeDayReportStore, onSideP
     {name: '电站名称', value: 'stationName', unit: ''},
     {name: '实际容量', value: 'realCapacity', unit: ''},
     {name: '装机台数', value: 'machineCount', unit: '台'},
-    {name: stationType>0?'日辐射总量(斜面)':'平均风速', value: 'resourceValue', unit: stationType>0?'kWh':'m/s'},
-    {name: '日发电量(逆变器)', value: 'genInverter', unit: ''},
-    {name: '日发电量(集电线路)', value: 'genIntegrated', unit: ''},
-    {name: '日发电量(上网电量)', value: 'genInternet', unit: ''},
-    {name: '日购网电量', value: 'buyPower', unit: ''},
-    {name: '等效小时数', value: 'equivalentHours', unit: ''},
-    {name: '样本逆变器容量', value: 'modelInverterCapacity', unit: ''},
-    {name: '样本逆变器发电量', value: 'modelInverterPowerGen', unit: ''},
+    {
+      name: stationType>0? '日辐射总量(斜面)': '平均风速',
+      value: 'resourceValue', 
+      unit: stationType>0? radiationUnit: speedUnit,
+    },
+    {name: '日发电量(逆变器)', value: 'genInverter', unit: genUnit},
+    {name: '日发电量(集电线路)', value: 'genIntegrated', unit: genUnit},
+    {name: '日发电量(上网电量)', value: 'genInternet', unit: genUnit},
+    {name: '日购网电量', value: 'buyPower', unit: genUnit},
+    {name: '等效小时数', value: 'equivalentHours', unit: 'h'},
+    {name: '样本逆变器容量', value: 'modelInverterCapacity', unit: 'kW'},
+    {name: '样本逆变器发电量', value: 'modelInverterPowerGen', unit: genUnit},
   ]
 
   return (

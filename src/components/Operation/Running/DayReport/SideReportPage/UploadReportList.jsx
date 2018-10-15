@@ -24,6 +24,8 @@ class UploadReportList extends Component {
       abnormalInfo : {},
       abnormalList: [],
       abnormalModalshow: false,
+      dataErrorText: '', // 日报数据错误提示文字
+      showDataError: false, // 日报数据错误弹框展示。
     }
   }
 
@@ -45,6 +47,7 @@ class UploadReportList extends Component {
 
   totalInfoChange = (uploadParams, showModal=false) => {
     const { totalReportInfoChange } = this.props;
+    // 于此处检查上传数据项的必填+是否数字+小数。
     totalReportInfoChange(uploadParams)
     showModal && this.setState({ // 关闭弹框
       abnormalModalshow: false,
@@ -53,9 +56,8 @@ class UploadReportList extends Component {
 
   render(){
     const { reportDay, dayReportConfig, reportStation, findDeviceExist, deviceExistInfo, dayReportTotalInfoArr } = this.props;
-    const { abnormalModalshow, abnormalInfo, abnormalList } = this.state;
-    const stationType = reportStation[0].stationType; //注意： 后期解开。不能删。
-    // const stationType = 1; //注意： 调试用，后期删掉
+    const { abnormalModalshow, abnormalInfo, abnormalList, dataErrorText, showDataError } = this.state;
+    const stationType = reportStation[0] && reportStation[0].stationType || 1; 
     return (
       <div className={styles.uploadReportList}>
         <div className={styles.uploadReportTip} >{reportDay} <span>新添加<i>{dayReportTotalInfoArr && dayReportTotalInfoArr.length || '--'}</i>条</span></div>
@@ -79,6 +81,7 @@ class UploadReportList extends Component {
           totalInfoChange={this.totalInfoChange}
           dayReportTotalInfoArr={dayReportTotalInfoArr}
         />}
+        {showDataError && <span>{dataErrorText}</span>}
       </div>
     )
   }
