@@ -102,7 +102,6 @@ class DayReportMainList extends Component {
         });
       })
     }
-    console.log(columns)
     return (
         <div className={styles.dayReportMain}>
           <div className={styles.contentMain}>

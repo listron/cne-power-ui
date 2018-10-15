@@ -54,7 +54,6 @@ class SideReportPage extends Component {
           dailyReport, dailyDetailList
         }
       });
-      console.log(dayReportTotalInfoArr);
       this.setState({ dayReportTotalInfoArr })
     }
   }
@@ -94,13 +93,13 @@ class SideReportPage extends Component {
     });
   }
 
-  saveDayReport = () => {
-    console.log('save report info')
+  saveDayReport = () => { // 确认上报日报
+    const { dayReportTotalInfoArr } = this.state;
+
   }
 
   totalReportInfoChange = (dayReportTotalInfoArr) => { // 用于上报的所有电站日报数据。
     this.setState({ dayReportTotalInfoArr }); //-- todo 改变的infoAr需要根据规则，对onchange的数据进行校验，根据校验结果给出提示。
-    console.log(dayReportTotalInfoArr)
   }
 
   disabledDate = (start) => {
