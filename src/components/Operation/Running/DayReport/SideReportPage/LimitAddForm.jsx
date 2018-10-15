@@ -8,7 +8,7 @@ import moment from 'moment';
 class LimitAddForm extends Component {
   static propTypes = {
     form: PropTypes.object,
-    abnormalInfo: PropTypes.object,
+    stationCode: PropTypes.number,
     deviceExistInfo: PropTypes.object,
     limitGenList: PropTypes.array,
     changeLimitList: PropTypes.func,
@@ -46,14 +46,14 @@ class LimitAddForm extends Component {
   }
 
   confirmAddLimit = () => {
-    const { form, findDeviceExist, abnormalInfo } = this.props;
+    const { form, findDeviceExist, stationCode } = this.props;
     form.validateFields((err, values) => {
       if (!err) {
         const { deviceName } = values;
         const tmpDeviceName = deviceName.trim().replace('/\s+/g',',');
         findDeviceExist({
           deviceName: tmpDeviceName,
-          stationCode: abnormalInfo.stationCode,
+          stationCode,
         })
       }
     });

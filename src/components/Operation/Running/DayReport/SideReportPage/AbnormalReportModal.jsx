@@ -121,7 +121,7 @@ class AbnormalReportModal extends Component {
           findDeviceExist={findDeviceExist} 
           faultGenList={faultGenList} 
           changeFaultList={this.changeFaultList}  
-          abnormalInfo={abnormalInfo}
+          stationCode={abnormalInfo.stationCode}
           deviceExistInfo={deviceExistInfo} 
         /> }
         <div className={styles.addLimitGenHeader} >
@@ -133,7 +133,7 @@ class AbnormalReportModal extends Component {
           findDeviceExist={findDeviceExist} 
           limitGenList={limitGenList} 
           changeLimitList={this.changeLimitList}  
-          abnormalInfo={abnormalInfo}
+          stationCode={abnormalInfo.stationCode}
           deviceExistInfo={deviceExistInfo}
         />}
         <div className={styles.addPowerGenInfo} >

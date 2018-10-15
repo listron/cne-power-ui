@@ -9,7 +9,6 @@ class LostGenTable extends Component {
   static propTypes = {
     form: PropTypes.object,
     faultGenList: PropTypes.array,
-    abnormalInfo: PropTypes.object,
     changeFaultList: PropTypes.func,
   }
 
