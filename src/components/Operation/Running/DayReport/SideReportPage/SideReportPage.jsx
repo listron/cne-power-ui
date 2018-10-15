@@ -14,7 +14,9 @@ class SideReportPage extends Component {
     stations: PropTypes.array,
     reportStation: PropTypes.array,
     stationReportBaseData: PropTypes.array,
+    reportDisableStation: PropTypes.array,
     toChangeDayReportStore: PropTypes.func,
+    getReportUploadedStation: PropTypes.func,
     getStationBaseReport: PropTypes.func,
     showReportInputList: PropTypes.bool,
   }
@@ -26,6 +28,12 @@ class SideReportPage extends Component {
       reportStation: [],
       dayReportTotalInfoArr: [], //用于上传日报的所有信息
     }
+  }
+
+  componentDidMount(){ // 默认日期禁选电站列表。
+    this.props.getReportUploadedStation({
+      reportDay: moment().subtract(1,'day').format('YYYY-MM-DD'),
+    })
   }
 
   componentWillReceiveProps(nextProps){
@@ -60,8 +68,8 @@ class SideReportPage extends Component {
     })
   }
 
-  selectReportTime = (reportMoment,reportDay) => { // 存储选中日报时间
-    this.props.toChangeDayReportStore({
+  selectReportTime = (reportMoment,reportDay) => { // 存储选中日报时间并获取不可选电站列表
+    reportDay && this.props.getReportUploadedStation({
       reportDay,
     })
   }
@@ -82,7 +90,7 @@ class SideReportPage extends Component {
     const { reportDay, reportStation } = this.props;
     this.props.getStationBaseReport({
       reportDay,
-      reportStation: reportStation.map(e=>`${e.stationCode}`)
+      reportStation,
     });
   }
 
@@ -100,7 +108,7 @@ class SideReportPage extends Component {
   }
 
   render(){
-    const { reportDay, stations, reportStation, showReportInputList } = this.props;
+    const { reportDay, stations, reportStation, showReportInputList, reportDisableStation } = this.props;
     const canReport = reportDay && reportStation && reportStation.length > 0;
     const { dayReportTotalInfoArr } = this.state;
     return (
@@ -124,6 +132,7 @@ class SideReportPage extends Component {
               value={reportStation}
               data={stations}
               multiple={true}
+              disabledStation={reportDisableStation}
               onChange={this.stationSelected}
             />
             <Button onClick={this.toReportStations} disabled={!canReport} className={canReport ? styles.dayReportNext : styles.dayReportNextDisabled} >下一步</Button>

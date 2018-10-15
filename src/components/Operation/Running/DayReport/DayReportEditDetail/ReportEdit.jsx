@@ -14,6 +14,7 @@ class ReportEdit extends Component {
   static propTypes = {
     deviceExistInfo: PropTypes.object,
     selectedDayReportDetail: PropTypes.object,
+    dayReportConfig: PropTypes.array,
     onSidePageChange: PropTypes.func,
     toChangeDayReportStore: PropTypes.func,
     findDeviceExist: PropTypes.func,
@@ -110,7 +111,7 @@ class ReportEdit extends Component {
 
   render(){
     const { updateDayReportDetail, addLostFormShow, addLimitFormShow, abnormalTextShow } = this.state;
-    const { findDeviceExist, deviceExistInfo } = this.props;
+    const { findDeviceExist, deviceExistInfo, dayReportConfig } = this.props;
     return (
       <div className={styles.reportDetail} >
         <div className={styles.reportDetailTitle} >
@@ -120,7 +121,11 @@ class ReportEdit extends Component {
             <Icon type="arrow-left" className={styles.backIcon}  onClick={this.backToDetail} />
           </div>
         </div>
-        <ResourceElecInfo changeReportDetail={this.changeReportDetail} updateDayReportDetail={updateDayReportDetail} />
+        <ResourceElecInfo 
+          changeReportDetail={this.changeReportDetail} 
+          updateDayReportDetail={updateDayReportDetail}
+          dayReportConfig={dayReportConfig}
+        />
         <div>
           <span>损失电量信息</span>
           <Button onClick={this.toAddGenLost} disabled={addLostFormShow}>添加</Button>
