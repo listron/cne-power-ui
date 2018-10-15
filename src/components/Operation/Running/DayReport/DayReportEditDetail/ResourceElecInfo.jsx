@@ -1,10 +1,13 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Form, Input } from 'antd';
+import { Button, Form, Input, Icon } from 'antd';
+// import { styles } from 'ansi-colors';
+import styles from './reportDetail.scss';
 
 class ResourceElecInfo extends Component {
   static propTypes = {
+    dayReportConfig: PropTypes.array,
     form: PropTypes.object,
     updateDayReportDetail: PropTypes.object,
   }
@@ -14,7 +17,12 @@ class ResourceElecInfo extends Component {
   }
 
   render(){
-    const { updateDayReportDetail } = this.props;
+    const { updateDayReportDetail, dayReportConfig } = this.props;
+    const configUtil = dayReportConfig[0] || {};
+    const radiationUnit = configUtil.radiation || '';
+    const speedUnit = configUtil.speed || '';
+    const genUnit = configUtil.power || '';
+    const { stationType } = updateDayReportDetail;
     const sourceInfoArr = [
       {name: '日报日期', value: 'reportDate', unit: ''},
       {name: '天气', value: 'weather', unit: ''},
@@ -25,14 +33,14 @@ class ResourceElecInfo extends Component {
     ];
     const { getFieldDecorator } = this.props.form;
     return (
-      <div>
-        <h4>资源电量信息</h4>
-        <Form layout="inline">
+      <div className={styles.editResourceInfo} >
+        <h4>资源电量信息<Icon type="caret-right" theme="outlined" /></h4>
+        <Form layout="inline" className={styles.resourceInfoCon} >
           {sourceInfoArr.map(e=>{
             const targetValue = updateDayReportDetail[e.value];
             const stationValue = targetValue || targetValue === 0 || '--';
-            return (<span key={e.name}>
-              <span>{e.name}</span>
+            return (<span key={e.name} className={styles.eachResourceInfo} >
+              <span className={styles.eachResourceInfoName}>{e.name}</span>
               <span>{stationValue}</span>
               <span>{e.unit}</span>
             </span>)
@@ -44,6 +52,7 @@ class ResourceElecInfo extends Component {
             })(
               <Input placeholder="日辐射总量" />
             )}
+            <span>{stationType>0?radiationUnit:speedUnit}</span>
           </Form.Item>
           <Form.Item label="日发电量(逆变器)">
             {getFieldDecorator('genInverter', {
@@ -52,6 +61,7 @@ class ResourceElecInfo extends Component {
             })(
               <Input placeholder="日发电量" />
             )}
+            <span>{genUnit}</span>
           </Form.Item>
           <Form.Item label="日发电量(集电线路)">
             {getFieldDecorator('genIntegrated', {
@@ -60,6 +70,7 @@ class ResourceElecInfo extends Component {
             })(
               <Input placeholder="日辐射总量" />
             )}
+            <span>{genUnit}</span>
           </Form.Item>
           <Form.Item label="日发电量(上网电量)">
             {getFieldDecorator('genInternet', {
@@ -68,6 +79,7 @@ class ResourceElecInfo extends Component {
             })(
               <Input placeholder="日辐射总量" />
             )}
+            <span>{genUnit}</span>
           </Form.Item>
           <Form.Item label="日购网电量">
             {getFieldDecorator('buyPower', {
@@ -76,6 +88,7 @@ class ResourceElecInfo extends Component {
             })(
               <Input placeholder="购网电量" />
             )}
+            <span>{genUnit}</span>
           </Form.Item>
           <Form.Item label="样本逆变器容量">
             {getFieldDecorator('modelInverterCapacity', {
@@ -84,6 +97,7 @@ class ResourceElecInfo extends Component {
             })(
               <Input placeholder="日辐射总量" />
             )}
+            <span>kW</span>
           </Form.Item>
           <Form.Item label="样本逆变器发电量">
             {getFieldDecorator('modelInverterPowerGen', {
@@ -92,6 +106,7 @@ class ResourceElecInfo extends Component {
             })(
               <Input placeholder="日辐射总量" />
             )}
+            <span>{genUnit}</span>
           </Form.Item>
         </Form>
       </div>

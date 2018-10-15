@@ -174,15 +174,13 @@
   .topLeft{
     display: flex;
     margin:0 10px 0 10px;
+    line-height: 40px;
     .station{
       margin-right:10px;
-      padding-top: 6px;
     }
   }
 
   .searchButton {
-    // width: 68px;
-    // margin-top: 9px;
     margin-right: 12px;
     color: $themeColor;
     border: 1px solid $themeColor;
@@ -224,7 +222,6 @@
     .ant-input:focus {
       background: #ffffff;
       border: 1px solid #dfdfdf;
-      //outline: none;
       -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
     }
   }
