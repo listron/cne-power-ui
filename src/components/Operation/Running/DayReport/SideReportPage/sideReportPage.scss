@@ -20,8 +20,10 @@
       .dayReportPrev{
         margin-top: 15px;
         border: 1px solid $themeColor;
-        box-shadow: 0 0 2px $themeColor;
         color: $themeColor;
+        &:hover,&:focus{
+          box-shadow: 0 0 2px $themeColor;
+        }
       }
       .saveDayReport{
         margin: 15px 10px 0 22px;

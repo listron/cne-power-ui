@@ -30,11 +30,6 @@ class ReportEdit extends Component {
             <Icon type="arrow-left" className={styles.backIcon}  onClick={this.backToDetail} />
           </div>
         </div>
-        {/* <div>
-          <span>日报编辑</span>
-          <Button>保存--注意，保存应该在这里</Button>
-          <Button onClick={this.backToDetail}><Icon type="arrow-left" className={styles.backIcon}  onClick={toReportList} /></Button>
-        </div> */}
         
       </div>
     )
