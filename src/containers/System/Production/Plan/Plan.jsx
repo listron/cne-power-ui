@@ -86,7 +86,7 @@ class Plan extends Component {
         <div className={styles.planContainer}>
           <PlanMain {...this.props} onWarningTipToggle={this.onWarningTipToggle}/>
           <TransitionContainer
-            show={showPage !== 'list'}
+            show={showPage  !== 'list'}
             onEnter={this.onToggleSide}
             onExited={this.onToggleSide}
             timeout={500}

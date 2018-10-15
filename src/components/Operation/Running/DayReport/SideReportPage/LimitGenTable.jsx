@@ -5,11 +5,11 @@ import styles from './sideReportPage.scss';
 import { Table, Form, Input, DatePicker } from 'antd';
 import moment from 'moment';
 
-class LostGenTable extends Component {
+class LimitGenTable extends Component {
   static propTypes = {
     form: PropTypes.object,
-    faultGenList: PropTypes.array,
-    changeFaultList: PropTypes.func,
+    limitGenList: PropTypes.array,
+    changeLimitList: PropTypes.func,
   }
 
   constructor(props){
@@ -19,10 +19,10 @@ class LostGenTable extends Component {
     }
   }
 
-  removeFaultInfo = (id) => {
-    const { faultGenList, changeFaultList } = this.props;
-    const newFaultGenList = faultGenList.filter(e=>id !== e.id);
-    changeFaultList(newFaultGenList);
+  removeListInfo = (id) => {
+    const { limitGenList, changeLimitList } = this.props;
+    const newLimitGenList = limitGenList.filter(e=>id !== e.id);
+    changeLimitList(newLimitGenList);
   }
 
   _loseColumn = () => {
@@ -32,8 +32,8 @@ class LostGenTable extends Component {
         title: '设备名称',
         dataIndex: 'deviceName',
       },{
-        title: '损失电量类型',
-        dataIndex: 'faultName',
+        title: '限功率',
+        dataIndex: 'limitPower',
       },{
         title: '原因说明',
         dataIndex: 'reason',
@@ -46,7 +46,7 @@ class LostGenTable extends Component {
               rules: [{ required: true, message: '开始时间' }],
               initialValue: record.startTime,
             })(
-              <DatePicker placeholder="开始时间" showTime={true} format="YYYY-MM-DD hh:mm"  />
+              <DatePicker placeholder="开始时间" />
             )}
           </Form.Item>)
         }
@@ -59,20 +59,7 @@ class LostGenTable extends Component {
               rules: [{ required: true, message: '结束时间' }],
               initialValue: record.endTime,
             })(
-              <DatePicker placeholder="结束时间" showTime={true} format="YYYY-MM-DD hh:mm"  />
-            )}
-          </Form.Item>)
-        }
-      },{
-        title: '处理进展及问题',
-        dataIndex: 'process',
-        render : (text, record) => {
-          return (<Form.Item>
-            {getFieldDecorator(`${record.id}_process`, {
-              rules: [{ required: true, message: '处理进展及问题' }],
-              initialValue: record.process,
-            })(
-              <Input placeholder="处理进展" />
+              <DatePicker placeholder="结束时间" />
             )}
           </Form.Item>)
         }
@@ -94,7 +81,7 @@ class LostGenTable extends Component {
         dataIndex: 'handle',
         render : (text, record) => {
           const { id } = record;
-          return text?<span onClick={()=>this.removeFaultInfo(id)} className={styles.removeFaultInfo} ><i className="iconfont icon-del" ></i></span>:<span></span>
+          return text?<span onClick={()=>this.removeListInfo(id)}>删除</span>:<span></span>
         }
       }
     ]
@@ -102,12 +89,13 @@ class LostGenTable extends Component {
   }
 
   render(){
-    const { faultGenList } = this.props;
+    const { limitGenList } = this.props;
+    
     return (
       <Form>
         <Table 
           columns={this._loseColumn()} 
-          dataSource={faultGenList.map((e,i)=>({ ...e, key: i,}))}
+          dataSource={limitGenList.map((e,i)=>({ ...e, key: i,}))}
           pagination={false}
           className={styles.lostGenTable}
         />
@@ -118,7 +106,7 @@ class LostGenTable extends Component {
 
 export default Form.create({ // 上述form值变化调整对应数据并保存对应数据。
   onValuesChange:(props, changedValues, allValues)=>{
-    const { faultGenList, changeFaultList } = props;
+    const { limitGenList, changeLimitList } = props;
     const changeArr = Object.entries(changedValues)[0] || [];
     const recordBase = changeArr[0] || '';
     if(!recordBase){
@@ -127,12 +115,12 @@ export default Form.create({ // 上述form值变化调整对应数据并保存�
     const recordId = recordBase.split('_')[0];
     const recordName = recordBase.split('_')[1];
     let recordValue = changeArr[1];
-    const newFaultGenList = faultGenList.map(e=>{
+    const newLimitGenList = limitGenList.map(e=>{
       if(`${e.id}` === recordId){
         e[recordName] = recordValue;
       }
       return e
     })
-    changeFaultList(newFaultGenList);
+    changeLimitList(newLimitGenList);
   }
-})(LostGenTable);
+})(LimitGenTable);

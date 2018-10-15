@@ -136,19 +136,7 @@ class DefectTable extends Component {
     this.props.changeDefectStore({selectedRowKeys});
   }
 
-  onChangeTable = (pagination, filters, sorter) => {
-    if(Object.keys(sorter).length !== 0) {
-      const field = getDefectSortField(sorter.field);
-      const order = sorter.order === 'ascend' ? '0' : '1';
-      this.props.onChangeFilter({
-        sort: field+',' + order
-      });
-    } else {
-      this.props.onChangeFilter({
-        sort: ''
-      });
-    }
-  }
+  
 
   onPaginationChange = ({currentPage, pageSize}) => {
     this.props.onChangeFilter({
@@ -194,7 +182,20 @@ class DefectTable extends Component {
       return null;
     }
   }
-
+  tableChange = (pagination, filter, sorter) => {
+    console.log(sorter);
+    if(Object.keys(sorter).length !== 0) {
+      const field = getDefectSortField(sorter.field);
+      const order = sorter.order ? (sorter.order === 'ascend' ? '0' : '1') : '';
+      this.props.onChangeFilter({
+        sort: field+',' + order
+      });
+    } else {
+      this.props.onChangeFilter({
+        sort: ''
+      });
+    }
+  }
   cancelRowSelect = () => {
     this.props.changeDefectStore({
       selectedRowKeys: []
@@ -323,11 +324,11 @@ class DefectTable extends Component {
         <Table 
           rowKey={(record)=>{return record.defectId}} 
           rowSelection={rowSelection} 
-          dataSource={defectList.toJS()} 
+          dataSource={defectList.toJS().map((e,i)=>({...e,key: i}))} 
           columns={columns} 
           pagination={false} 
           loading={loading}
-          onChange={this.onChangeTable}
+          onChange={this.tableChange}
           locale={{emptyText:<div className={styles.noData}><img src="/img/nodata.png" style={{width: 223,height:164}} /></div>}}
         />
         {defectList.size>0&&<div className={styles.tableFooter}>
