@@ -95,6 +95,7 @@ class StationManageTable extends Component {
   }
 
   tableChange = (pagination, filter, sorter) => { // 电站list排序=>重新请求数据
+    console.log(sorter);
     const { getStationList, queryListParams } = this.props;
     const { field, order } = sorter;
     const sortInfo = {

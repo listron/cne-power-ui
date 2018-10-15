@@ -47,7 +47,7 @@ class LostGenTable extends Component {
               rules: [{ required: true, message: '开始时间' }],
               initialValue: record.startTime,
             })(
-              <DatePicker placeholder="开始时间" />
+              <DatePicker placeholder="开始时间" showTime={true} format="YYYY-MM-DD hh:mm"  />
             )}
           </Form.Item>)
         }
@@ -60,7 +60,7 @@ class LostGenTable extends Component {
               rules: [{ required: true, message: '结束时间' }],
               initialValue: record.endTime,
             })(
-              <DatePicker placeholder="结束时间" />
+              <DatePicker placeholder="结束时间" showTime={true} format="YYYY-MM-DD hh:mm"  />
             )}
           </Form.Item>)
         }
@@ -95,7 +95,7 @@ class LostGenTable extends Component {
         dataIndex: 'handle',
         render : (text, record) => {
           const { id } = record;
-          return text?<span onClick={()=>this.removeFaultInfo(id)}>删除</span>:<span></span>
+          return text?<span onClick={()=>this.removeFaultInfo(id)} className={styles.removeFaultInfo} ><i className="iconfont icon-del" ></i></span>:<span></span>
         }
       }
     ]
