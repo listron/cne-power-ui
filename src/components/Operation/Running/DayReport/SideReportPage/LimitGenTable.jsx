@@ -9,7 +9,6 @@ class LimitGenTable extends Component {
   static propTypes = {
     form: PropTypes.object,
     limitGenList: PropTypes.array,
-    abnormalInfo: PropTypes.object,
     changeLimitList: PropTypes.func,
   }
 

@@ -9,6 +9,7 @@ class ProvinceItem extends Component {
     multiple: PropTypes.bool,
     provinceInfo: PropTypes.object,
     selectedStation: PropTypes.array,
+    disabledStation: PropTypes.array,
   }
   
   constructor(props) {
@@ -41,7 +42,7 @@ class ProvinceItem extends Component {
   }
 
   render() {
-    const { provinceInfo, selectedStation, multiple } = this.props;
+    const { provinceInfo, selectedStation, multiple, disabledStation } = this.props;
     // console.log(selectedStation)
     let filterdStations = selectedStation.filter(e=>e.provinceCode === provinceInfo.provinceCode)
     let provinceChecked = false, indeterminate = false;
@@ -64,7 +65,8 @@ class ProvinceItem extends Component {
         }
         <div className={styles.stationList}>
           {provinceInfo.stations.map(m=>{
-            let checked = selectedStation.some(e=>e.stationCode===m.stationCode)
+            let checked = selectedStation.some(e=>e.stationCode===m.stationCode);
+            const disableCheck = disabledStation.includes(m.stationCode);
             return (
               multiple ? 
               <div 
@@ -76,14 +78,22 @@ class ProvinceItem extends Component {
                 <Checkbox
                   style={{color:checked?'#fff':'#666'}}
                   onChange={()=>this.checkStation(m)}
-                  checked={checked}>
+                  checked={checked}
+                  disabled={disableCheck}
+                >
                   {m.stationName}
                 </Checkbox>
               </div> :
               <div 
-                onClick={()=>this.checkStation(m)}
+                onClick={disableCheck?null:()=>this.checkStation(m)}
                 key={m.stationCode}
-                style={{'backgroundColor':checked?'#199475':'#f1f1f1',color:checked?'#fff':'#666'}} 
+                style={
+                  {
+                    'backgroundColor':checked?'#199475':'#f1f1f1',
+                    'color':checked?'#fff':'#666',
+                    cursor: disableCheck?'not-allowed':'pointer',
+                  }
+                } 
                 className={styles.eachStation}>
                 <span title={m.stationName} className={styles.eachStationName}>{m.stationName}</span>
               </div>

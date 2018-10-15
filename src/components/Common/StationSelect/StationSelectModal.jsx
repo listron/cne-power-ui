@@ -12,6 +12,7 @@ class StationSelectModal extends Component {
     stationModalShow: PropTypes.bool,
     checkedStations: PropTypes.array,
     data: PropTypes.array,
+    disabledStation: PropTypes.array,
     multiple: PropTypes.bool,
     hideStationModal: PropTypes.func,
     showStationModal: PropTypes.func,
@@ -88,7 +89,7 @@ class StationSelectModal extends Component {
 
 
   _filterStation = () => {
-    const { data, multiple } = this.props;
+    const { data, multiple, disabledStation } = this.props;
     const { filterStationType, selectedStation } = this.state;
     const tmpStations = filterStationType === 2 ? data : data.filter(e=>(e.stationType === filterStationType));
     let filteredStation = [];
@@ -109,7 +110,14 @@ class StationSelectModal extends Component {
       }
     })
     return filteredStation.map(e=>(
-      <ProvinceItem key={e.provinceCode} multiple={multiple} checkStation={this.checkStation} provinceInfo={{...e}} selectedStation={selectedStation} />
+      <ProvinceItem 
+        key={e.provinceCode} 
+        disabledStation={disabledStation}
+        multiple={multiple} 
+        checkStation={this.checkStation} 
+        provinceInfo={{...e}} 
+        selectedStation={selectedStation} 
+      />
     ))
   }
   _selectedStation = () => {
