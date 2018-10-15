@@ -7,7 +7,7 @@ class TableGraph extends React.Component {
     super(props, context)
   }
   onMouseEnter=(record)=>{
-    console.log('record');
+   
     return(
       <div>xuanfukuang</div>
     )
@@ -54,9 +54,7 @@ class TableGraph extends React.Component {
             损失电量：万kWh
           </div>
         </div>
-        <Table columns={columns} dataSource={data} pagination={false} scroll={{ y: 260 }} size="small" onRow={(record) => { return { onMouseEnter:(record)=>{
-         
-        }} }} />
+        <Table columns={columns} dataSource={data} pagination={false} scroll={{ y: 260 }} size="small" onRow={(record) => { return { onMouseEnter:this.onMouseEnter} }} />
       </div>
     )
   }

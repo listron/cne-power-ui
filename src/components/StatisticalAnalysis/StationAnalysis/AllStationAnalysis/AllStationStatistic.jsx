@@ -38,7 +38,7 @@ class AllStationStatistic extends React.Component {
   }
  
   onChangeStation = (stationCode) => {
-    this.props.history.push(` statistical/stationaccount/allstation`);
+    this.props.history.push(`/statistical/stationaccount/allstation`);
     this.props.changeAllStationStore({
       showPage: 'single',
       singleStationCode: stationCode.toString()
@@ -61,15 +61,15 @@ class AllStationStatistic extends React.Component {
         <i className="iconfont icon-filter"></i>
       </div>
     );
-    const { stationType, stations,timeSelect } = this.props;
+    const { stationType, stations,dateType } = this.props;
     const { showStationSelect } = this.state;
     return (
       <div className={styles.allStationTypeTabs}>
         <Tabs type="card" tabBarExtraContent={operations}  >
           <TabPane tab="光伏" key="1">
           <div className={styles.componentContainer}>
-          <TimeSelect day={true} {...this.props} />
-          <PlanCompletionRate timeSelect={timeSelect} />
+          <TimeSelect  {...this.props} />
+          <PlanCompletionRate dateType={dateType} />
           <TargetTabs {...this.props} />    
           </div>          
           </TabPane>

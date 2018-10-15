@@ -31,7 +31,8 @@ class TimeSelect extends React.Component {
     this.setState({
       timeType: e.target.value,
     })
-    this.props.changeAllStationStore({ timeSelect: e.target.value })
+    this.props.changeAllStationStore({ dateType: e.target.value })
+
 
   }
   onPanelChange = (value, mode) => {
@@ -58,7 +59,7 @@ class TimeSelect extends React.Component {
   render() {
     const { MonthPicker, RangePicker } = DatePicker;
     const { value, mode } = this.state;
-    const { timeSelect } = this.props;
+    const { dateType } = this.props;
     const dateFormat = 'YYYY'
 
 

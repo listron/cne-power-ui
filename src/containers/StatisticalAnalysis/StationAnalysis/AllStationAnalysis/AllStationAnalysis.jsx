@@ -10,7 +10,7 @@ import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import Footer from '../../../../components/Common/Footer';
 
 
-class ALarmStatistic extends Component {
+class AllStationAnalysis extends Component {
   static propTypes = {
     showPage: PropTypes.string,
     stationCode: PropTypes.array,
@@ -64,11 +64,27 @@ const mapStateToProps = (state) => {
 }
 const mapDispatchToProps = (dispatch) => ({
    changeAllStationStore: payload => dispatch({ type: allStationAnalysisAction.CHANGE_ALLSTATIONDATA_STORE_SAGA, payload }),
+   getAllStationStatisticData: payload => dispatch({ type: allStationAnalysisAction.getAllStationStatisticData, payload }),
+   getAllStationStatisticTableData: payload => dispatch({ type: allStationAnalysisAction.getAllStationStatisticTableData, payload }),
+   getAllStationMonthBarData: payload => dispatch({ type: allStationAnalysisAction.getAllStationMonthBarData, payload }),
+   getAllStationMonthPieData: payload => dispatch({ type: allStationAnalysisAction.getAllStationMonthPieData, payload }),
+   getAllStationYearBarData: payload => dispatch({ type: allStationAnalysisAction.getAllStationYearBarData, payload }),
+   getSingleStationStatisticData: payload => dispatch({ type: allStationAnalysisAction.getSingleStationStatisticData, payload }),
+   getSingleStationTargetData: payload => dispatch({ type: allStationAnalysisAction.getSingleStationTargetData, payload }),
+   getSingleStationMonthPieData: payload => dispatch({ type: allStationAnalysisAction.getSingleStationMonthPieData, payload }),
+   getSingleStationYearTargetData: payload => dispatch({ type: allStationAnalysisAction.getSingleStationYearTargetData, payload }),
+   getSingleStationPlanRateData: payload => dispatch({ type: allStationAnalysisAction.getSingleStationPlanRateData, payload }),
+   getSingleStationDayCompleteRateData: payload => dispatch({ type: allStationAnalysisAction.getSingleStationDayCompleteRateData, payload }),
+   getSingleStationPvCompareData: payload => dispatch({ type: allStationAnalysisAction.getSingleStationPvCompareData, payload }),
+   getSingleStationYearPvCompareData: payload => dispatch({ type: allStationAnalysisAction.getSingleStationYearPvCompareData, payload }),
+   getSingleStationPowerEffectiveData: payload => dispatch({ type: allStationAnalysisAction.getSingleStationPowerEffectiveData, payload }),
+
+
   
 })
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(ALarmStatistic);
+export default connect(mapStateToProps, mapDispatchToProps)(AllStationAnalysis);
 
 
 
