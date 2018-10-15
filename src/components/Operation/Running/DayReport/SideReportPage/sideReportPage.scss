@@ -174,31 +174,65 @@
 }
 
 .addAbnormalModal{
-  .addGenLostHeader{
-    .uploadGenLost{
-      width: 70px;
-      padding: 0;
+  
+  .addLimitGenHeader{
+    margin-top: 30px; 
+  }
+  .addPowerGenInfo{
+    margin-bottom: 30px;
+    margin-top: 25px;
+    display: flex;
+    flex-direction: row;
+    .addPowerGenInfoR{
+      display: flex;
+      flex-direction: column;
       margin-left: 20px;
-      span{
-        margin-left: 0px;
-        display: inline-block;
-        width: 44px;
-        text-align: center;
+      .abnormalTextArea{
+        margin-top: 10px;
+        height: 190px;
+        width: 1000px;
+        padding: 10px 20px;
       }
-      :global{
-        .anticon{
-          width: 28px;
-          height: 30px;
-          line-height: 32px;
-          background: $themeColor;
-          color: #fff;
-          border-top-left-radius: 4px;
-          border-bottom-left-radius: 4px;
-        }
+    }
+  }
+  .uploadGenLost{
+    width: 70px;
+    padding: 0;
+    margin-left: 20px;
+    span{
+      margin-left: 0px;
+      display: inline-block;
+      width: 44px;
+      text-align: center;
+    }
+    :global{
+      .anticon{
+        width: 28px;
+        height: 30px;
+        line-height: 32px;
+        background: $themeColor;
+        color: #fff;
+        border-top-left-radius: 4px;
+        border-bottom-left-radius: 4px;
       }
     }
   }
   :global{
+    .ant-modal{
+      margin: 0;
+      top: 86px;
+      left: 201px;
+    }
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 200px;
+      background-color: #fff;
+    }
+    ::-webkit-scrollbar-thumb{
+      border-radius: 3px;
+      background-color: #555;
+      opacity: .5;
+    }
     .ant-modal-header{
       padding: 10px 24px;
     }
@@ -208,7 +242,8 @@
     }
     .ant-modal-body{
       padding: 10px 20px;
-      height: 690px;
+      height: 666px;
+      overflow: auto;
       .ant-form-item, .ant-form-horizontal {
         margin-bottom: 0px;
       }
@@ -220,6 +255,10 @@
         display: flex;
         flex-direction: row;
       }
+    }
+    .ant-modal-footer{
+      background: #f1f1f1;
+      padding: 25px 35px;
     }
   }
 }
@@ -240,6 +279,9 @@
     .ant-input{
       width: 161px;
     }
+    .ant-calendar-picker-clear, .ant-calendar-picker-icon{
+      right: 22px;
+    }
   }
   .lostPower{
     width: 100px;
@@ -250,9 +292,8 @@
   background:#f0f2f5;
   border:1px solid #dfdfdf;
   border-radius:4px;
-  height:357px;
   margin: 0 20px;
-  padding: 10px 0 0 80px;
+  padding: 10px 0 15px 80px;
   .horizontal{
     display: flex;
     flex-direction: row;
