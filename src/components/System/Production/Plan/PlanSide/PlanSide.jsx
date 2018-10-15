@@ -10,6 +10,7 @@ import Footer from '../../../../Common/Footer';
 class PlanSide extends Component {
   static propTypes = {
     showSidePage: PropTypes.string,
+    addStationCodes:PropTypes.array,
   }
 
   constructor(props){
@@ -20,9 +21,9 @@ class PlanSide extends Component {
     const { showSidePage } = this.props;
     return (
       <div className={styles.planSide}>
-        <AddPlan {...this.props} />
-        {/*{ showSidePage === 'add' && <AddPlan {...this.props} /> }*/}
-        {/*{ showSidePage === 'edit' && <EditPlan {...this.props} /> }*/}
+        {/*<AddPlan {...this.props} />*/}
+        { showSidePage === 'add' && <AddPlan {...this.props} /> }
+        { showSidePage === 'edit' && <EditPlan {...this.props} /> }
         <Footer />
       </div>
     )

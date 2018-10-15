@@ -38,6 +38,7 @@ class Plan extends Component {
   }
 
   onShowSideChange = ({ showSidePage }) => {
+    console.log("父",showSidePage)
     this.setState({ showSidePage });
   }
   onToggleSide = () => {
@@ -52,7 +53,7 @@ class Plan extends Component {
       year: this.props.planYear || new Date().getFullYear(), // 年份 默认是当前年
       stationCodes: this.props.stationCodes, // 电站编码
       sortField: this.props.sortField, // 1:区域 2：电站名称 3:装机容量 4:年份 5: 年计划发电量
-      sortMethod: this.props.sort, //排序 => 'field,0/1'field代表排序字段，0升序,1降序
+      sortMethod: this.props.sortMethod, //排序 => 'field,0/1'field代表排序字段，0升序,1降序
       pageNum: this.props.pageNum,
       pageSize: this.props.pageSize,
     };
@@ -79,7 +80,6 @@ class Plan extends Component {
     const breadCrumbData = {
       breadData: [{name: '生产计划',}],
     };
-
     return (
       <div className={styles.planContainerBox}>
         <CommonBreadcrumb  {...breadCrumbData} style={{marginLeft: '38px'}}/>
@@ -87,6 +87,7 @@ class Plan extends Component {
           <PlanMain {...this.props} onWarningTipToggle={this.onWarningTipToggle}/>
           <TransitionContainer
             show={showPage  !== 'list'}
+            // show={true}
             onEnter={this.onToggleSide}
             onExited={this.onToggleSide}
             timeout={500}
@@ -110,6 +111,7 @@ const mapDispatchToProps = (dispatch) => ({
   getPlanList: payload => dispatch({type: planAction.getPlanList, payload}),
   editPlanInfo: payload => dispatch({type: planAction.editPlanInfo, payload}),
   getStations: payload => dispatch({ type: commonAction.getStations, payload }),
+  getOwnStations: payload => dispatch({ type: planAction.getOwnStations, payload }),
 
 });
 

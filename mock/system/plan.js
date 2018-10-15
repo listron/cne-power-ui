@@ -13,7 +13,7 @@ module.exports = [
           stationName: `第${i}个部门`,
           stationType: i,
           stationCapacity: '234252',
-          planYear: 2017,
+          planYear: 2018,
           planPower: parseInt(Math.random()*100000+1000),
           currentYear: 2018,
           currentMonth: 10,

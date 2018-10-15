@@ -10,6 +10,7 @@ export const planAction = {
   editPlanInfo: Symbol('editPlanInfo'),//编辑生产计划的数据
   addPlanInfo: Symbol('addPlanInfo'),//添加生产计划的数据
   getStations: Symbol('getStations'),//查看电站信息
+  getOwnStations: Symbol('getOwnStations'),//查看电站信息
 };
 
 

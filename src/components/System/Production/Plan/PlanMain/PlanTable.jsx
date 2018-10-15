@@ -26,13 +26,13 @@ class EditableCell extends React.Component {
   getInput = (form) => {
     const {dataIndex, record} = this.props;
     if (dataIndex === 'yearPR') {
-      return (<span> <Input onBlur={(e) => this.yearChange(e, form, dataIndex, record)}
+      return (<span> <Input onBlur={(e) => this.yearPRChange(e, form, dataIndex, record)}
                             defaultValue={record[dataIndex]}/>%</span>);
     }
     return <Input onChange={this.ValueChange} onBlur={(e) => this.valueChange(e, form, dataIndex, record)}/>;
   };
 
-  yearChange = (e, form, dataIndex, record) => {//PR 数据修改
+  yearPRChange = (e, form, dataIndex, record) => {//PR 数据修改
     const number = e.target.value;
     if (isNaN(number)) {
       message.warning('只可以填写数字,可精确到小数点后两位');
@@ -170,7 +170,8 @@ class PlanTable extends Component {
   // 是否可以编辑
   isEditing = (record) => {
     const currentYear=new Date().getFullYear();
-    if(!currentYear-record.planYear>=0){
+    // console.log(123,currentYear-record.planYear>=0)
+    if(currentYear-record.planYear>=0){
       return record.key === this.state.editingKey;
     }
   };
