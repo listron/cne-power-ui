@@ -3,6 +3,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './dayReportAll.scss';
 import SideReportPage from './SideReportPage/SideReportPage';
+import ReportDetail from './DayReportEditDetail/ReportDetail';
+import ReportEdit from './DayReportEditDetail/ReportEdit';
 import Footer from '../../../Common/Footer';
 
 class DayReportSide extends Component {
@@ -19,8 +21,8 @@ class DayReportSide extends Component {
     return (
       <div className={styles.dayReportSide}>
         { sidePage === 'report' && <SideReportPage {...this.props} /> }
-        { sidePage === 'detail' && <div>详情页面</div> }
-        { sidePage === 'edit' && <div>编辑页面</div> }
+        { sidePage === 'detail' && <ReportDetail {...this.props} /> }
+        { sidePage === 'edit' && <ReportEdit {...this.props} /> }
         <Footer />
       </div>
     )

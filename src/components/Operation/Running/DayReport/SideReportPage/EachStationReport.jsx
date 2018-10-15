@@ -8,7 +8,7 @@ class EachStationReport extends Component {
   static propTypes = {
     dayReportTotalInfoArr: PropTypes.array,
     stationInfo: PropTypes.object,
-    totalReportInfoChange: PropTypes.func,
+    totalInfoChange: PropTypes.func,
     addAbnormalInfo: PropTypes.func,
   }
 
@@ -17,7 +17,7 @@ class EachStationReport extends Component {
   }
 
   valueChange = (param) => {
-    const { stationInfo, totalReportInfoChange, dayReportTotalInfoArr} = this.props;
+    const { stationInfo, totalInfoChange, dayReportTotalInfoArr} = this.props;
     const uploadParams = dayReportTotalInfoArr.map(info=>{
       if(info.dailyReport.stationCode === stationInfo.stationCode){
         const { dailyReport, dailyDetailList } = info;
@@ -28,7 +28,7 @@ class EachStationReport extends Component {
       }
       return info;
     })
-    totalReportInfoChange(uploadParams);
+    totalInfoChange(uploadParams);
   }
 
   addAbnormal= () => {
@@ -39,8 +39,9 @@ class EachStationReport extends Component {
   }
 
   removeStation = () => { //删除，放弃日报上传。
-    const { stationInfo } = this.props;
-    console.log('我要删掉这个电站上传咯！')
+    const { stationInfo, totalInfoChange, dayReportTotalInfoArr } = this.props;
+    const uploadParams = dayReportTotalInfoArr.filter(info=>info.dailyReport.stationCode !== stationInfo.stationCode);
+    totalInfoChange(uploadParams);
   }
 
   render(){

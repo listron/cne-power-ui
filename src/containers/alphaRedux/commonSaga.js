@@ -199,8 +199,8 @@ function* getAllDepartment(action) {//获取所有部门基础信息
 
 function* findDeviceExist(action){ // 查询设备是否存在
   const { payload } = action;
-  // const url = '/mock/operation/dayReport/findDeviceExist';
-  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.common.findDeviceExist}`
+  const url = '/mock/operation/dayReport/findDeviceExist';
+  // const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.common.findDeviceExist}`
   try {
     yield put({ 
       type: commonAction.CHANGE_COMMON_STORE, 
@@ -224,23 +224,13 @@ function* findDeviceExist(action){ // 查询设备是否存在
           }
         }
       });
-    }else if(response.data.code === "10000"){ // 设备验证成功
+    }else{
       yield put({ 
         type: commonAction.CHANGE_COMMON_STORE, 
         payload: {
           deviceExistInfo: {
-            existLoading:false,
+            existLoading:false, 
             existError: false,
-          }
-        }
-      });
-    }else{ // 
-      message.error('请求失败，请重试!');
-      yield put({ 
-        type: commonAction.CHANGE_COMMON_STORE, 
-        payload: {
-          deviceExistInfo: {
-            existLoading:false,
           }
         }
       });
