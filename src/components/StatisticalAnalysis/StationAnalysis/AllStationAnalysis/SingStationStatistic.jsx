@@ -81,6 +81,7 @@ class AllStationStatistic extends React.Component {
     const { showStationSelect } = this.state;
     const stationItem = stations.find(station => station.get('stationCode').toString() === singleStationCode).toJS();
     //拿到单电站的类型，弄个数组，把对应的iconfont加上，在下面调用
+    console.log(stationItem);
     return (
       <div className={styles.singleStationType}>
         <div className={styles.componentContainer}>
@@ -172,7 +173,7 @@ class AllStationStatistic extends React.Component {
 
 
           </div>
-          <div></div>
+      
         </div>
 
 

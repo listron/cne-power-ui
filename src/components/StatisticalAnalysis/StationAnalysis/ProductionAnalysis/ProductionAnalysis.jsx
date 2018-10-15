@@ -1,15 +1,17 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Tabs, TimePicker ,Icon} from 'antd';
+import { Tabs, TimePicker, Icon } from 'antd';
 import { withRouter } from 'react-router-dom';
 import styles from './productionAnalysis.scss';
 // import AlarmStatisticByType from './AlarmStatisticByType';
 
 import TimeSelect from '../../../Common/TimeSelect';
 import BarGraph from '../AllStationAnalysis/CommonGraph/BarGraph';
-import PlanCompletionRate from '../AllStationAnalysis/CommonGraph/PlanCompletionRate';
+
 import PlanCompleteRateAnalysisBar from '../AllStationAnalysis/CommonGraph/PlanCompleteRateAnalysisBar';
 import TableGraph from '../AllStationAnalysis/CommonGraph/TableGraph';
+import WaterWave from '../AllStationAnalysis/CommonGraph/PlanCompletionRate/WaterWave';
+
 
 
 
@@ -33,67 +35,86 @@ class ProductionAnalysis extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-    
+
     };
   }
   componentDidMount() {
 
   }
- 
- 
+
+
 
 
 
   render() {
-  
-    const { stationType, stations,dateType } = this.props;
-  
- 
+
+    const { stationType, stations, dateType } = this.props;
+
+
     return (
       <div className={styles.singleStationType}>
-        <div className={styles.componentContainer}>
-          <div className={styles.title}>
-            
-            <div className={styles.titleLeft}>
-              
-              <div className={styles.stationStatus}>
-                <div className={styles.status}>
-                  <span className={styles.stationIcon}><i className="iconfont icon-pvlogo"></i></span>
-                  {`电站名-区域：xxxxxx}`}
-                </div>
-                <div>
-                  <span>并网时间:2018年3月10号</span>
-                  <span>数据统计截止时间8月20日</span>
-                </div>
-              </div>
-            </div>
-            
+        <div className={styles.stationTimeFilter}>
+          <div className={styles.leftFilter}>
+            <div className={styles.stationFilter}>条件查询</div>
+            <TimeSelect day={true} {...this.props} />
           </div>
-          <TimeSelect day={true} {...this.props} />
-          <PlanCompletionRate dateType={dateType} />
+          <span className={styles.rightContent}>数据统计截止时间8月20日</span>
+        </div>
+
+        <div className={styles.componentContainer}>
+
+
+          <div className={styles.title}>
+
+            <div className={styles.stationStatus}>
+              <div className={styles.status}>
+                <span className={styles.stationIcon}><i className="iconfont icon-pvlogo"></i></span>
+                {`电站名-区域：xxxxxx`}
+                计划完成情况{}
+              </div>
+
+              <span className={styles.rightFont}>并网时间:2018年3月10号</span>
+
+            </div>
+            <div className={styles.graph}>
+              <WaterWave percent={30} height={100} />
+              <div className={styles.stationTargetData}>
+               <div className={styles.stationTargetValue}>1333.30</div>
+               <div className={styles.stationTargetName}>{dateType==='month'||dateType==='year'?'年':'月'}实际发电量 万kWh</div>
+               </div>
+               <div className={styles.stationTargetData}>
+               <div className={styles.stationTargetValue}>1333.30</div>
+               <div className={styles.stationTargetName}>{dateType==='month'||dateType==='year'?'年':'月'}计划发电量 万kWh</div>
+               </div>
+               <div className={styles.stationTargetData}>
+               <div className={styles.stationTargetValue}>1333.30</div>
+               <div className={styles.stationTargetName}>上网电量 万kWh</div>
+               </div>
+               <div className={styles.stationTargetData}>
+               <div className={styles.stationTargetValue}>1333.30</div>
+               <div className={styles.stationTargetName}>购网电量 万kWh</div>
+               </div>
+            </div>
+
+          </div>
+
+
           <div className={styles.targetGraphContainer}>
-
-
-           
             <div className={styles.tabContainer}>
               <div className={styles.dataGraph}>
                 <BarGraph graphId={'power'} yAxisName={'发电量 (万kWh)'} xAxisName={'发电量'} dateType={dateType} />
                 <TableGraph />
-              </div>          
+              </div>
             </div>
 
-            
-              {dateType==='month'||dateType==='year'?<div className={styles.tabContainer}>
+
+            {dateType === 'month' || dateType === 'year' ? <div className={styles.tabContainer}>
               <div className={styles.dataGraph}>
                 <PlanCompleteRateAnalysisBar graphId={'productionPlanCompleteRate'} yAxisName={'发电量 (万kWh)'} xAxisName={'发电量'} dateType={dateType} />
                 <TableGraph />
               </div>
-            </div>:''}
-                
-             
+            </div> : ''}
 
-
-          
             <div className={styles.tabContainer}>
               <div className={styles.dataGraph}>
                 <BarGraph graphId={'buyPower'} yAxisName={'购网电量 (万kWh)'} xAxisName={'发电量'} dateType={dateType} />
@@ -101,9 +122,7 @@ class ProductionAnalysis extends React.Component {
               </div>
             </div>
 
-
           </div>
-          <div></div>
         </div>
 
 
