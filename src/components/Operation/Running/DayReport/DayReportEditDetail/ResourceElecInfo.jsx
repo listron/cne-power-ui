@@ -1,7 +1,9 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Form, Input } from 'antd';
+import { Button, Form, Input, Icon } from 'antd';
+// import { styles } from 'ansi-colors';
+import styles from './reportDetail.scss';
 
 class ResourceElecInfo extends Component {
   static propTypes = {
@@ -25,14 +27,14 @@ class ResourceElecInfo extends Component {
     ];
     const { getFieldDecorator } = this.props.form;
     return (
-      <div>
-        <h4>资源电量信息</h4>
-        <Form layout="inline">
+      <div className={styles.editResourceInfo} >
+        <h4>资源电量信息<Icon type="caret-right" theme="outlined" /></h4>
+        <Form layout="inline" className={styles.resourceInfoCon} >
           {sourceInfoArr.map(e=>{
             const targetValue = updateDayReportDetail[e.value];
             const stationValue = targetValue || targetValue === 0 || '--';
-            return (<span key={e.name}>
-              <span>{e.name}</span>
+            return (<span key={e.name} className={styles.eachResourceInfo} >
+              <span className={styles.eachResourceInfoName}>{e.name}</span>
               <span>{stationValue}</span>
               <span>{e.unit}</span>
             </span>)
