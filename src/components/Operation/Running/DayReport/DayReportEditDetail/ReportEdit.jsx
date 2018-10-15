@@ -14,6 +14,7 @@ class ReportEdit extends Component {
   static propTypes = {
     deviceExistInfo: PropTypes.object,
     selectedDayReportDetail: PropTypes.object,
+    dayReportConfig: PropTypes.array,
     onSidePageChange: PropTypes.func,
     toChangeDayReportStore: PropTypes.func,
     findDeviceExist: PropTypes.func,
@@ -111,7 +112,7 @@ class ReportEdit extends Component {
 
   render(){
     const { updateDayReportDetail, addLostFormShow, addLimitFormShow, abnormalTextShow } = this.state;
-    const { findDeviceExist, deviceExistInfo } = this.props;
+    const { findDeviceExist, deviceExistInfo, dayReportConfig } = this.props;
     return (
       <div className={styles.reportEdit} >
         <div className={styles.reportDetailTitle} >
@@ -121,7 +122,11 @@ class ReportEdit extends Component {
             <Icon type="arrow-left" className={styles.backIcon}  onClick={this.backToDetail} />
           </div>
         </div>
-        <ResourceElecInfo changeReportDetail={this.changeReportDetail} updateDayReportDetail={updateDayReportDetail} />
+        <ResourceElecInfo 
+          changeReportDetail={this.changeReportDetail} 
+          updateDayReportDetail={updateDayReportDetail}
+          dayReportConfig={dayReportConfig}
+        />
         <div className={styles.lostElecInfo} >
           <span className={styles.reportSubTitle}>损失电量信息<Icon type="caret-right" theme="outlined"  /></span>
           <Button onClick={this.toAddGenLost} disabled={addLostFormShow} icon="plus" className={styles.uploadGenLost}>添加</Button>
@@ -132,7 +137,7 @@ class ReportEdit extends Component {
               e=>({...e,startTime: moment(e.startTime), endTime: moment(e.endTime)})
             )}
             changeFaultList={this.faultListInfoChange} 
-          />
+          />5a1307fe2e7dbde8ba88fc245f91c781ed
         </div>
         {addLostFormShow && <LostAddForm
           findDeviceExist={findDeviceExist}
