@@ -19,6 +19,7 @@ class DayReportMainList extends Component {
     regionCode: PropTypes.number,
     startTime: PropTypes.string,
     dayReportList: PropTypes.array,
+    stations: PropTypes.array,
     getDayReportList: PropTypes.func,
     toChangeDayReportStore: PropTypes.func,
     getStationBaseReport: PropTypes.func,
@@ -70,9 +71,10 @@ class DayReportMainList extends Component {
 
   toUploadReport = (record, reportDate) => { // 去上传指定电站+日期日报
     const { reportDay } = `${this.props.startTime}-${reportDate}`;
+    const { stations } = this.props;
     this.props.getStationBaseReport({
       reportDay,
-      reportStation: [record.stationCode],
+      reportStation: stations.find(e=>e.stationCode === record.stationCode),
     });
   }
 
