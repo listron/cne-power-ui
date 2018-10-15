@@ -1,0 +1,86 @@
+@import '../../../../theme/theme.scss';
+.singleStationType{
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  background: #fff;
+  .componentContainer{
+    display: flex;
+    flex:1;
+    flex-direction: column;
+    .title {
+      display: flex;
+      position: relative;
+      flex-direction: row;
+      padding-left: 28px;
+      height: 60px;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #ececec;
+      .titleLeft {
+        display: flex;
+        flex-direction: row;
+        flex:1;
+        align-items: center;
+      }
+      .stationName {
+        &:hover{
+          color: #199475;
+        }
+        .icon {
+          color: $themeColor;
+          margin-right: 15px;
+          font-size: 18px;
+        }
+        >span {
+          font-size: 18px;
+        }
+      }
+      .stationStatus {
+        margin-left: 50px;
+        color: $darkColor;
+        display: flex;
+        flex:1;
+        flex-direction: row;
+        justify-content: space-between;
+        .stationIcon{
+          i{
+            color:$themeColor;
+          }
+        }
+        .status {
+          margin-right: 4px;
+        }
+      }
+      .backIcon{
+        border-left: 1px solid #dfdfdf;
+        width: 60px;
+        line-height: 60px;
+        text-align: center;
+        color: $darkColor;
+        cursor: pointer;
+      }
+    }
+    .targetGraphContainer{
+      .bgStyle{
+        background: #f1f1f1;
+        .fontStyle{
+          border-top:1px solid #199475;
+          width: 160px;
+          color: #666;
+        }
+      }
+      .tabContainer{
+        display: flex;
+        flex:1;
+        flex-direction: column;
+        .dataGraph{
+          display: flex;    
+          flex-direction: row;
+          border-bottom: 1px solid #ececec;
+        }
+      }
+    }
+   
+  }
+} 

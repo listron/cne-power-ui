@@ -4,8 +4,12 @@ import { allStationAnalysisAction } from './allStationAnalysisAction.js';
 
 var initState = Immutable.fromJS({
   loading: false,
-  timeSelect:'month',
-  showPage: 'multiple',
+  dateType:'month',
+  showPage: 'multiple',//默认展示多电站分析
+  year:'2018',
+  pageNum: 1, // 当前页
+  pageSize: 10, // 每页条数
+  totalNum:  0,//总数
 
 
 });
