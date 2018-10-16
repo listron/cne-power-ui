@@ -9,7 +9,6 @@ import PropTypes from 'prop-types';
 import styles from './dayReport.scss';
 import Cookie from 'js-cookie';
 import moment from 'moment';
-import { message } from 'antd'
 
 class DayReport extends Component {
   static propTypes = {
@@ -31,7 +30,6 @@ class DayReport extends Component {
   }
 
   componentDidMount(){
-    message.error('试试看！')
     this.props.getDayReportList({
       startTime: moment().format('YYYY-MM'),
       pageSize: 10, 
