@@ -178,8 +178,8 @@ function *dayReportDetail(action){ // 日报详情
   try{
     yield put({ type:dayReportAction.dayReportLoading });
     const { stationCode, reportDate } = payload;
-    const url = '/mock/operation/dayReport/detail';
-    // const url = `${APIBasePath}${operation.dayReportDetail}/${stationCode}/${reportDate}`;
+    // const url = '/mock/operation/dayReport/detail';
+    const url = `${APIBasePath}${operation.dayReportDetail}/${stationCode}/${reportDate}`;
     const response = yield call(axios.get,url);
     yield put({
       type:  dayReportAction.dayReportFetchSuccess,

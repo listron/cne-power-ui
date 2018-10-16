@@ -64,11 +64,11 @@ class DayReportMainList extends Component {
     })
   }
 
-  toReportDetail = (record, reportDay) => { // 去查看指定电站+日期日报详情
+  toReportDetail = (record, reportDate) => { // 去查看指定电站+日期日报详情
     this.props.dayReportDetail({ // 去查看详情
       stationCode: record.stationCode,
-      // reportDay: `${this.props.startTime}-${reportDay}`,
-      reportDay
+      // reportDate: `${this.props.startTime}-${reportDate}`,
+      reportDate
     })
   }
 
