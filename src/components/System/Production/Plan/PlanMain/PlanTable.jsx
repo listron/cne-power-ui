@@ -3,12 +3,9 @@ import {Table, Button, Select, Icon, Popover, Input, Form, message} from 'antd';
 import CommonPagination from '../../../../Common/CommonPagination';
 import PropTypes from 'prop-types';
 import styles from './planMain.scss';
-import {getMonth} from './plan';
+import {getMonth} from '../plan';
 
 const {Option} = Select;
-
-
-
 
 
 const FormItem = Form.Item;
@@ -26,17 +23,16 @@ class EditableCell extends React.Component {
   getInput = (form) => {
     const {dataIndex, record} = this.props;
     if (dataIndex === 'yearPR') {
-      return (<span> <Input onBlur={(e) => this.yearChange(e, form, dataIndex, record)}
+      return (<span> <Input onBlur={(e) => this.yearPRChange(e, form, dataIndex, record)}
                             defaultValue={record[dataIndex]}/>%</span>);
     }
     return <Input onChange={this.ValueChange} onBlur={(e) => this.valueChange(e, form, dataIndex, record)}/>;
   };
 
-  yearChange = (e, form, dataIndex, record) => {//PR 数据修改
+  yearPRChange = (e, form, dataIndex, record) => {//PR 数据修改
     const number = e.target.value;
     if (isNaN(number)) {
       message.warning('只可以填写数字,可精确到小数点后两位');
-
       form.setFieldsValue({
         [dataIndex]: '',
       });
@@ -53,9 +49,16 @@ class EditableCell extends React.Component {
       });
       return false;
     } else {
-      const index=getMonth(dataIndex)-1;
-      record.monthPlanPowers.planMonthGen[index] = number;
-      this.props.handlevaluechange(record,dataIndex,number)
+      const index = getMonth(dataIndex) - 1;
+      record.planMonthGen[index] = number;
+      record.dataIndex=number;
+      function sum(arr) {
+        return arr.reduce(function (prev, curr, idx, arr) {
+          return Number(prev) + Number(curr);
+        });
+      }
+      record.planPower=sum(record.planMonthGen);
+      this.props.handlevaluechange(record, dataIndex, number)
     }
   };
 
@@ -99,7 +102,7 @@ class PlanTable extends Component {
   static propTypes = {
     loading: PropTypes.bool,
     changeDepartmentStore: PropTypes.func,
-    planData:PropTypes.array,
+    planData: PropTypes.array,
     getPlanList: PropTypes.func,
     editPlanInfo: PropTypes.func,
     changePlanStore: PropTypes.func,
@@ -111,13 +114,14 @@ class PlanTable extends Component {
     this.state = {
       data: [],
       editingKey: '',
-      monthPowers:{},
+      monthPowers: {},
     }
+    this.handlevaluechange=this.handlevaluechange.bind(this);
   }
 
   onPlanAdd = () => {//进入添加计划页
     this.props.changePlanStore({showPage: 'add'});
-  }
+  };
 
   onPaginationChange = ({currentPage, pageSize}) => {//分页器
     this.props.getPlanList({
@@ -169,8 +173,8 @@ class PlanTable extends Component {
 
   // 是否可以编辑
   isEditing = (record) => {
-    const currentYear=new Date().getFullYear();
-    if(!currentYear-record.planYear>=0){
+    const currentYear = new Date().getFullYear();
+    if (currentYear - record.planYear >= 0) {
       return record.key === this.state.editingKey;
     }
   };
@@ -201,27 +205,27 @@ class PlanTable extends Component {
         });
 
         const newItemData = {...item, ...row};
-        let monthPowers=this.state.monthPowers;
-        let month=[];
-        let monthPower=[];
-        for(let key in monthPowers){
+        let monthPowers = this.state.monthPowers;
+        let month = [];
+        let monthPower = [];
+
+        for (let key in monthPowers) {
           month.push(getMonth(key));
           monthPower.push(monthPowers[key]);
         }
         const params = {
-            year: newItemData.planYear,
-            stationCodes: newItemData.stationCode,
-            month: month,
-            monthPower: monthPower,
-            planPower: newItemData.planPower,
-            yearPR:newItemData.yearPR,
-          };
-        month.length>0? this.props.editPlanInfo(params):'';
-        this.setState({editingKey: '',monthPowers:{}});
+          year: newItemData.planYear,
+          stationCodes: newItemData.stationCode,
+          month: month,
+          monthPower: monthPower,
+          planPower: newItemData.planPower,
+          yearPR: newItemData.yearPR,
+        };
+        month.length > 0 ? this.props.editPlanInfo(params) : '';
+        this.setState({editingKey: '', monthPowers: {}});
       }
     });
   }
-
 
   componentWillReceiveProps(nextProps) {
     this._dealTableData(nextProps.planData)
@@ -261,8 +265,11 @@ class PlanTable extends Component {
         title: '区域',
         dataIndex: 'region',
         key: 'region',
-        // width: '50px',
+        width: '50px',
         sorter: true,
+        render: text => {
+          return text ? text : '--'
+        }
       },
       {
         title: '电站名称',
@@ -275,7 +282,7 @@ class PlanTable extends Component {
       {
         title: '装机容量(MW)',
         dataIndex: 'stationCapacity',
-        // width: '80px',
+        width: '80px',
         key: 'stationCapacity',
         sorter: true,
       },
@@ -290,16 +297,17 @@ class PlanTable extends Component {
         title: '年计划发电量(万kWh)',
         dataIndex: 'planPower',
         key: 'planPower',
-        // width: '130px',
-        className:styles.yearPlanPower,
+        width: '130px',
         sorter: true,
+        render: text => {
+          return text ? text : '--'
+        }
       },
       {
         title: 'PR年计划',
         dataIndex: 'yearPR',
         key: 'yearPR',
         editable: true,
-        width:'100px',
         render: text => {
           const textValue = text ? text : '--';
           return (<span><Input defaultValue={textValue} disabled={true}/>%</span>)
@@ -356,27 +364,35 @@ class PlanTable extends Component {
 
   _dealTableData = (planData) => { //将12个月的数据分开
     let TabelKey = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-    planData.map((list, index) => {
-      for (let i = 0; i < 12; i++) {
-        list[TabelKey[i]] = list.monthPlanPowers.planMonthGen[i]
-      }
-      function sum(arr) {
-        return arr.reduce(function (prev, curr, idx, arr) {
-          return Number(prev) + Number(curr);
-        });
-      }
-      const planPower = sum(list.monthPlanPowers.planMonthGen);
-      list.key = index;
-      list.planPower = planPower;
-    });
-    this.setState({data: planData})
+    let initPlanData=[];
+    if (planData.length > 0) {
+      initPlanData= planData.map((list, index) => {
+        for (let i = 0; i < 12; i++) {
+          list[TabelKey[i]] = (list.planMonthGen && list.planMonthGen[i]) || ""
+        }
+        function sum(arr) {
+          return arr.reduce(function (prev, curr, idx, arr) {
+            return Number(prev) + Number(curr);
+          });
+        }
+        if(list.planMonthGen){
+          list.planMonthGen.length>=1 ? list.planPower = sum(list.planMonthGen) : list.planPower = "";
+        }
+        list.planMonthGen=[];
+        list.key = index;
+        return list;
+      })
+    } else {
+      this.setState({data:[]})
+    }
+    this.setState({data: initPlanData})
   };
 
-  handlevaluechange = (row,month,value) => {
-    let monthPowers=this.state.monthPowers;
-    monthPowers[month]=value;
+  handlevaluechange = (row, month,value) => {
+    let initMonthValue=this.state.monthPowers;
+    initMonthValue[month]=value;
     this.setState({
-      monthPowers:monthPowers
+      monthPowers:  initMonthValue
     });
     const newData = [...this.state.data];
     const index = newData.findIndex(item => row.key === item.key);
@@ -387,7 +403,7 @@ class PlanTable extends Component {
         ...row,
       });
     }
-    this._dealTableData(newData)
+    this.setState({data:newData})
   };
 
 
@@ -401,13 +417,12 @@ class PlanTable extends Component {
         },
       },
     };
-
     return (
       <div className={styles.planList}>
         <div className={styles.planListTop}>
           <Button className={styles.addplan} onClick={this.onPlanAdd}>
             <Icon type="plus"/>
-            <span className={styles.text} >添加</span>
+            <span className={styles.text}>添加</span>
           </Button>
           <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalNum}
                             onPaginationChange={this.onPaginationChange}/>
@@ -418,7 +433,7 @@ class PlanTable extends Component {
           pagination={false}
           components={components}
           dataSource={this.state.data}
-          locale={{emptyText:<img width="223" height="164" src="/img/nodata.png" />}}
+          locale={{emptyText: <img width="223" height="164" src="/img/nodata.png"/>}}
           columns={this._createTableColumn()}
         />
       </div>
