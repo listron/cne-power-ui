@@ -217,7 +217,8 @@ class Map extends Component {
    
     })
   }
-  showTip = (e) => { 
+  showTip = (e) => {
+    message.destroy();
     message.config({
       top: 225,
       duration: 200,

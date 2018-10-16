@@ -57,6 +57,7 @@ class DayReportMainList extends Component {
   }
 
   toUploadPage = () => { // 去上传页面
+    console.log('report页面');
     this.props.toChangeDayReportStore({
       showPage: 'report',
     })
