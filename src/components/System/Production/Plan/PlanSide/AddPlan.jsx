@@ -19,9 +19,9 @@ class AddPlan extends Component {
     getOwnStations: PropTypes.func,
     onShowSideChange: PropTypes.func,
     continueAdd: PropTypes.bool,
-    stations:PropTypes.object,
-    addPlanYear:PropTypes.string,
-    addStationCodes:PropTypes.array,
+    stations: PropTypes.object,
+    addPlanYear: PropTypes.string,
+    addStationCodes: PropTypes.array,
 
   };
 
@@ -34,6 +34,16 @@ class AddPlan extends Component {
       dateValue: '2018',
     }
 
+  }
+  componentWillReceiveProps(nextProps) {
+  }
+
+  componentWillUnmount(){
+    this.props.changePlanStore({
+      planStations:[],
+      addPlanYear:'',
+      addStationCodes:[],
+    })
   }
 
   onWarningTipShow = () => {
@@ -57,32 +67,30 @@ class AddPlan extends Component {
   };
 
 
-  componentWillReceiveProps(nextProps){}
-
   selectTime = (value) => {
     this.props.getOwnStations({
       planYear: value
     });
     this.props.changePlanStore({
-      addPlanYear:value
+      addPlanYear: value
     })
   };
-
-  selectStation=(stations)=>{
+  selectStation = (stations) => {
     this.props.changePlanStore({
-      addStationCodes:stations
+      addStationCodes: stations
     })
   };
-
-  toPlanStations=()=>{
-    this.props.onShowSideChange({showSidePage:'edit'});
+  toPlanStations = () => {
+    this.props.onShowSideChange({showSidePage: 'edit'});
   };
 
   render() {
     const {showWarningTip, warningTipText} = this.state;
-    const {planStations, stations, continueAdd,addPlanYear,addStationCodes} = this.props;
+    const {planStations, stations, continueAdd, addPlanYear, addStationCodes} = this.props;
     const canAdd = addPlanYear && addStationCodes && addStationCodes.length > 0;
-
+    const currentYear = new Date().getFullYear();
+    let year = [currentYear + 1, currentYear];
+    console.log('continueAdd',continueAdd);
     return (
       <div className={styles.addPlan}>
         {showWarningTip &&
@@ -92,24 +100,26 @@ class AddPlan extends Component {
           <Icon type="arrow-left" className={styles.backIcon} onClick={this.onWarningTipShow}/>
         </div>
         <div className={styles.mainPart}>
-          <div className={styles.selectTime} >
+          <div className={styles.selectTime}>
             <span><i>*</i>日报时间</span>
-            <Select style={{width: 120}} onChange={this.selectTime}  value={addPlanYear || '--'}>
-              <Option value="2019">2019</Option>
-              <Option value="2018">2018</Option>
+            <Select style={{width: 105}} onChange={this.selectTime} value={addPlanYear || '--'}>
+              {year.map((year) => {
+                return <Option value={String(year)} key={year}>{year}</Option>
+              })}
             </Select>
           </div>
-          <div className={styles.selectStation} >
+          <div className={styles.selectStation}>
             <span><i>*</i>电站选择</span>
             <StationSelect
               value={addStationCodes}
               data={stations.toJS()}
               multiple={true}
               onChange={this.selectStation}
-              disabled={ continueAdd ? false : true}
+              disabled={continueAdd ? false : true}
               disabledStation={planStations}
             />
-            <Button onClick={this.toPlanStations} disabled={!canAdd} className={canAdd ? styles.addPlanNext : styles.addPlanNextDisabled} >下一步</Button>
+            <Button onClick={this.toPlanStations} disabled={!canAdd}
+                    className={canAdd ? styles.addPlanNext : styles.addPlanNextDisabled}>下一步</Button>
           </div>
         </div>
       </div>

@@ -205,10 +205,10 @@
       border: 1px solid #f9b600;
     }
     .ant-table .ant-table-thead > tr > th, .ant-table .ant-table-tbody > tr > td {
-      min-width: 57px;
-      padding: 0 0 0 17px;
-      line-height: 1;
-    }
+        min-width: 48px;
+        padding: 0 10px 0 0px;
+        line-height: 1;
+      }
     .ant-table .ant-table-thead > tr > th {
       height: 62px;
     }
@@ -225,7 +225,26 @@
       -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
     }
   }
-
+  .stationNameBox{
+    min-width:80px !important;
+  }
+  .stationName{
+    width: 80px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .stationCapacity{
+    min-width: 56px !important;
+    padding: 0 10px 0 0;
+  }
+  .planPower{
+    min-width: 84px !important;
+    padding: 0 10px 0 0;
+  }
+  .yearPR{
+    min-width: 72px !important;
+  }
 }
 
 
