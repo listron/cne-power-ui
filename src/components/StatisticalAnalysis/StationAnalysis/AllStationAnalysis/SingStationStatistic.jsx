@@ -81,6 +81,7 @@ class AllStationStatistic extends React.Component {
     const { showStationSelect } = this.state;
     const stationItem = stations.find(station => station.get('stationCode').toString() === singleStationCode).toJS();
     //拿到单电站的类型，弄个数组，把对应的iconfont加上，在下面调用
+    console.log(stationItem);
     return (
       <div className={styles.singleStationType}>
         <div className={styles.componentContainer}>
@@ -97,9 +98,9 @@ class AllStationStatistic extends React.Component {
                   <span className={styles.stationIcon}><i className="iconfont icon-pvlogo"></i></span>
                   {`电站名-区域：${singleAlarmSummary && singleAlarmSummary.stationStatusName ? singleAlarmSummary.stationStatusName : '- -'}`}
                 </div>
-                <div>
-                  <span>并网时间:2018年3月10号</span>
-                  <span>数据统计截止时间8月20日</span>
+                <div className={styles.time}>
+                  <span className={styles.gridTime}>并网时间：2018年3月10号</span>
+                  <span className={styles.deadline}>数据统计截止时间8月20日</span>
                 </div>
               </div>
             </div>
@@ -172,7 +173,7 @@ class AllStationStatistic extends React.Component {
 
 
           </div>
-          <div></div>
+      
         </div>
 
 

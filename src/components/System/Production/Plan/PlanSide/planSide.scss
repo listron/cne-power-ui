@@ -20,10 +20,12 @@
   width: 100%;
   padding: 24px 24px 0;
   background:#ececec;
-  .addPlan,.editPlan{
+  z-index: 15;
+  .addPlan{
     flex: 1;
     background-color: #fff;
     border: 1px solid #e1e2e2;
+    z-index: 15;
     .editTop{
       @include top;
       justify-content: space-between;
@@ -43,29 +45,122 @@
       }
     }
     .mainPart{
+      margin-top: 25px;
       display: flex;
-      margin:20px 0 0 22px;
-      .year{
-        margin-right: 8px;
-      }
-      .topLeft{
-        display:flex;
-        margin-left:10px;
-        .station{
-          margin-right:10px;
-          padding-top: 6px;
+      flex-direction: row;
+      line-height: 32px;
+      .selectTime{
+        margin-left: 50px;
+        margin-right: 40px;
+        :global{
+          .ant-input{
+            width: 142px;
+          }
         }
-        .btn{
-          margin-left: 10px;
-          color: $themeColor;
-          border: 1px solid $themeColor;
-          &:hover {
-            background-color: $themeColor;
-            border-color: $themeColor;
+
+        >span{
+          margin-right: 5px;
+          >i{
+            color:#d0021b;
+            margin-right: 3px;
+          }
+        }
+      }
+      .selectStation{
+        display: flex;
+        flex-direction: row;
+        :global{
+          .ant-input{
+            width: 200px;
+          }
+        }
+        >span{
+          margin-right: 5px;
+          >i{
+            color:#d0021b;
+            margin-right: 3px;
+          }
+        }
+        .addPlanNext{
+          margin-left: 12px;
+          &:hover{
+            background: $themeColor;
             color: #fff;
           }
+        }
+        .addPlanNextDisabled{
+          margin-left: 12px;
         }
       }
     }
   }
+  .editPlan{
+    flex: 1;
+    background-color: #fff;
+    border: 1px solid #e1e2e2;
+    z-index: 15;
+    .editPlanTitle{
+      height: 64px;
+      border-bottom: 1px solid $promptColor;
+      line-height: 64px;
+      display: flex;
+      justify-content: space-between;
+      .sideEidtTitleTip{
+        margin-left: 30px;
+        font-size: 18px;
+      }
+      .sideEditTitleRight{
+        display: flex;
+        justify-content: flex-end;
+        .addPlanPrev{
+          margin-top: 15px;
+          border: 1px solid $themeColor;
+          box-shadow: 0 0 2px $themeColor;
+          color: $themeColor;
+        }
+        .savePlan{
+          margin: 15px 10px 0 22px;
+          background: $themeColor;
+          color: #fff;
+        }
+        .backIcon{
+          width: 64px;
+          border-left: 1px solid $promptColor;
+          text-align: center;
+          font-size: 20px;
+          line-height: 64px;
+          cursor: pointer;
+        }
+      }
+    }
+    .mainPart{
+      :global {
+        .ant-input {
+          width: 48px;
+          padding: 0 5px;
+          background: #fcffe5;
+          border: 1px solid #f9b600;
+        }
+        .ant-table .ant-table-thead > tr > th, .ant-table .ant-table-tbody > tr > td {
+          padding: 0 3px;
+          line-height: 1;
+        }
+        .ant-table .ant-table-thead > tr > th {
+          height: 62px;
+        }
+        .ant-input.ant-input-disabled {
+          background: #f8f8f8;
+          border: 1px solid #dfdfdf;
+        }
+        .ant-input:focus {
+          background: #ffffff;
+          border: 1px solid #dfdfdf;
+          //outline: none;
+          -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+        }
+      }
+    }
+  }
+
 }
+

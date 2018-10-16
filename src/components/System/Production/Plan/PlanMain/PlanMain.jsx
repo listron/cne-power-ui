@@ -1,6 +1,4 @@
-
-
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import Footer from '../../../../Common/Footer';
 import styles from './planMain.scss';
@@ -11,7 +9,7 @@ import PlanSearch from './PlanSearch'
 class PlanMain extends Component {
   static propTypes = {
     changePlanStore: PropTypes.func,
-    planData:PropTypes.array,
+    planData: PropTypes.array,
   }
 
   constructor(props) {
@@ -23,16 +21,15 @@ class PlanMain extends Component {
   }
 
 
-
   render() {
     return (
-        <div className={styles.planMain}>
-          <div className={styles.contentMain}>
-            <PlanSearch {...this.props}/>
-            {this.props.planData.length>0 ? <PlanTable {...this.props}/>:''}
-          </div>
-          <Footer />
+      <div className={styles.planMain}>
+        <div className={styles.contentMain}>
+          <PlanSearch {...this.props}/>
+          <PlanTable {...this.props}/>
         </div>
+        <Footer/>
+      </div>
 
     )
   }
