@@ -118,7 +118,7 @@ class LostAddForm extends Component {
                 rules: [{ required: true, message: '请选择损失电量类型' }],
               })(
                 <Select placeholder="请选择">
-                  {lostGenTypes.map(e=>(
+                  {lostGenTypes && lostGenTypes.length>0 && lostGenTypes.map(e=>(
                     <Option key={e.id} value={e.id}>{e.faultName}</Option>
                   ))}
                 </Select>
