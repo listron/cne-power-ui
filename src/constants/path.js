@@ -85,6 +85,7 @@ export default {
       getDayReportConfig: '/v3/performance/conf', // 获取日报上报必填项配置
       getStationBaseReport: '/v3/performance/ownstationcodeextlist', // 选中日期+电站后各待上传数据电站基础情况
       getReportUploadedStation: '/v3/performance/getdailyreportstation', // 选中日期已上报日报电站组
+      uploadDayReport: '/v3/performance/dailyreport', // 上报日报
       dayReportDetail: '/v3/performance/detail', // 获取选中日报详情
       dayReportUpdate: '/v3/performance/dailyReport/mulitUpdate', // 日报详情编辑
     },

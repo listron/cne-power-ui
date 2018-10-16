@@ -27,10 +27,10 @@ class LimitAddForm extends Component {
     const { deviceExistInfo } = this.props;
     const newDeviceExistInfo = nextProp.deviceExistInfo;
     if(deviceExistInfo.existLoading && !newDeviceExistInfo.existLoading){ // 设备名称验证后
-      if(deviceExistInfo.existError){ // 设备验证未通过，有未存在设备
+      if(newDeviceExistInfo.existError){ // 设备验证未通过，有未存在设备
         this.setState({
           deviceNameErroShow: true,
-          deviceNameErroInfo : `${deviceExistInfo.existErrorData.join(',')}不存在!`
+          deviceNameErroInfo : `${newDeviceExistInfo.existErrorData.join(',')}不存在!`
         });
         setTimeout(()=>{
           this.setState({
@@ -73,7 +73,6 @@ class LimitAddForm extends Component {
     const { form } = this.props;
     const { getFieldDecorator, getFieldValue } = form;
     const { deviceNameErroShow, deviceNameErroInfo } = this.state;
-    console.log(deviceNameErroShow);
     const formItemLayout1 = {
       labelCol: {
         xs: { span: 24 },
