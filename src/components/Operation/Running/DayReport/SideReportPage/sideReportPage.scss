@@ -150,6 +150,7 @@
     line-height: 22px;
     flex-direction: row;
     margin: 0 auto;
+
     :global{
       .icon-alert_01{
         margin-right: 5px;
@@ -315,6 +316,28 @@
   border-radius:4px;
   margin: 0 20px;
   padding: 10px 0 15px 80px;
+  .dataErrorText{
+    z-index: 10;
+    background:#ffffff;
+    box-shadow:0 2px 8px 0 rgba(0,0,0,0.20);
+    border-radius:4px;
+    width:268px;
+    height: auto;
+    display: flex;
+    padding: 10px;
+    text-align: left;
+    line-height: 22px;
+    flex-direction: row;
+    margin: 0 auto;
+    position: absolute;
+    left: 200px;
+    :global{
+      .icon-alert_01{
+        margin-right: 5px;
+        color: #f9b600;
+      }
+    }
+  }
   .horizontal{
     display: flex;
     flex-direction: row;
