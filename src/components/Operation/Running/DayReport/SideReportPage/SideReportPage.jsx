@@ -95,7 +95,8 @@ class SideReportPage extends Component {
 
   saveDayReport = () => { // 确认上报日报
     const { dayReportTotalInfoArr } = this.state;
-
+    // 检测基础信息的必填项
+    // 检测基础信息数据及格式-数字+小数点位数。
   }
 
   totalReportInfoChange = (dayReportTotalInfoArr) => { // 用于上报的所有电站日报数据。
@@ -142,9 +143,6 @@ class SideReportPage extends Component {
           totalReportInfoChange={this.totalReportInfoChange}
           dayReportTotalInfoArr={dayReportTotalInfoArr} 
         />}
-        <Alert message="请填写数字，最多填写小数点后四位 -- todo" type="warning" />
-        <Alert message="请填写数字，最多填写小数点后四位 -- todo" type="warning" />
-        <Alert message="请填写！xxx必填！" type="warning" />
       </div>
     )
   }

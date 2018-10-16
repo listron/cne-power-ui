@@ -54,16 +54,19 @@ function *getDayReportList(action){//请求日报基本列表数据
 function *getStationBaseReport(action){ // 选中日期+电站后各待上传数据电站基础情况
   const { payload } = action;
   const { reportStation, reportDay } = payload
-  const url = '/mock/operation/dayReport/baseInfo';
-  // const url = `${APIBasePath}${operation.getStationBaseReport}`
+  // const url = '/mock/operation/dayReport/baseInfo';
+  const url = `${APIBasePath}${operation.getStationBaseReport}`;
   try{
-    const response = yield call(axios.post,url,payload);
+    const response = yield call(axios.post,url,{
+      reportDay,
+      stationCode: reportStation.map(e=>`${e.stationCode}`)
+    });
     yield put({
       type:  dayReportAction.dayReportFetchSuccess,
       payload:{
         showPage: 'report',
         reportDay,
-        reportStation: reportStation.map(e=>`${e.stationCode}`),
+        reportStation,
         stationReportBaseData: response.data.data || [],
         showReportInputList: true,
       },

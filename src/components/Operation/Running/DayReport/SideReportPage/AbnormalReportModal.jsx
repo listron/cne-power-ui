@@ -45,6 +45,7 @@ class AbnormalReportModal extends Component {
       }
       return info;
     })
+    // todo-此处需判断上传的必填信息是否均已填写！
     totalInfoChange(uploadParams, true);
   }
 

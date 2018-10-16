@@ -138,7 +138,6 @@ class ReportEdit extends Component {
             )}
             changeFaultList={this.faultListInfoChange} 
           />
-          {/* 5a1307fe2e7dbde8ba88fc245f91c781ed */}
         </div>
         {addLostFormShow && <LostAddForm
           findDeviceExist={findDeviceExist}
