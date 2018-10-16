@@ -52,7 +52,7 @@ class planSearch extends Component {
     let {stationCodes} = this.state;
     const params = {
       year: this.state.dateValue,
-      stationCodes: stationCodes.length < 1 ? this.props.stationCodes : stationCodes,
+      stationCodes: stationCodes.length > 0 ? stationCodes: null,
       sortField: this.props.sortField,
       sortMethod: this.props.sortMethod,
       pageNum: this.props.pageNum,
