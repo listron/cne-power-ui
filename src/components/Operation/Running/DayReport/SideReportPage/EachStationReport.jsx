@@ -4,12 +4,7 @@ import PropTypes from 'prop-types';
 import styles from './sideReportPage.scss';
 import { Row, Col, Input, Icon,message } from 'antd';
 import { reportBasefun } from '../reportBaseFun';
-message.config({
-  top: 400,
-  duration: 2,
-  maxCount: 1,
-  getContainer: () => document.getElementById('sideReportPage'),
-});
+
 class EachStationReport extends Component {
   static propTypes = {
     dayReportTotalInfoArr: PropTypes.array,
@@ -93,7 +88,18 @@ class EachStationReport extends Component {
     });
     setTimeout(()=>{this.setState({
       showDataError: false,
-    })},2000)
+    })},2000);
+    this.messageWarning();
+  }
+
+  messageWarning = () => {
+    message.config({
+      top: 400,
+      duration: 2,
+      maxCount: 1,
+      getContainer: () => document.getElementById('sideReportPage'),
+    });
+    message.warning(this.state.dataErrorText,2);
   }
 
   render(){
@@ -140,7 +146,8 @@ class EachStationReport extends Component {
         </Col>
         {/* {showDataError && <span>{dataErrorText}</span>} */}
         {/* {true && <div className={styles.dataErrorText}><i className="iconfont icon-alert_01" ></i><span>{dataErrorText}</span></div>} */}
-        {showDataError && message.warning(dataErrorText, 2)}
+        {/* {showDataError && message.warning(dataErrorText, 2)} */}
+        {/* {showDataError && this.messageWarning} */}
       </Row>
     )
   }
