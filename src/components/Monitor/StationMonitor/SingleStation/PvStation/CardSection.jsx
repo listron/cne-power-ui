@@ -56,19 +56,15 @@ class CardSection extends Component {
 
   prev = () => {
     let weatherIndex = this.state.weatherIndex;
-    const { weatherList } = this.props;
     this.setState({
       disabled2: false
-    })
+    });
     let list = document.getElementsByClassName('weather');
     for (let i = 0; i < list.length; i++) {
       list[i].style.display = 'none';
     }
-    console.log(weatherIndex);
-    if(weatherIndex>0){
-      document.getElementById(weatherIndex).style.display = 'inline-block';
-      document.getElementById(weatherIndex + 1).style.display = 'inline-block';
-    }
+    document.getElementById(weatherIndex).style.display = 'inline-block';
+    document.getElementById(weatherIndex + 1).style.display = 'inline-block';
     
     if (weatherIndex === 0) {
       this.setState({
@@ -83,7 +79,6 @@ class CardSection extends Component {
   next = () => {
     let weatherIndex = this.state.weatherIndex;
     const {weatherList } = this.props;
-    console.log(weatherList);
     this.setState({
       disabled1: false,
     })
