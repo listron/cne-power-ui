@@ -9,7 +9,6 @@ class LimitGenTable extends Component {
   static propTypes = {
     form: PropTypes.object,
     limitGenList: PropTypes.array,
-    abnormalInfo: PropTypes.object,
     changeLimitList: PropTypes.func,
   }
 
@@ -91,12 +90,14 @@ class LimitGenTable extends Component {
 
   render(){
     const { limitGenList } = this.props;
+    
     return (
       <Form>
         <Table 
           columns={this._loseColumn()} 
           dataSource={limitGenList.map((e,i)=>({ ...e, key: i,}))}
           pagination={false}
+          className={styles.lostGenTable}
         />
       </Form>
     )

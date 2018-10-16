@@ -42,8 +42,6 @@ class DayReport extends Component {
       module: 'report', 
       type: '-1'
     })
-    // this.props.getStationBaseReport({}) //  调试用，用于直接展示电站数据，后期删掉。
-    // this.props.toChangeDayReportStore({ showReportInputList: true }) // 调试用，用于直接展示电站数据，后期删掉。
   }
 
   componentWillUnmount(){

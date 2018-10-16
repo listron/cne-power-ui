@@ -13,7 +13,12 @@ import TimeSelect from '../../../Common/TimeSelect';
 import PlanCompletionRate from './CommonGraph/PlanCompletionRate';
 import TargetTabs from './TargetTabs.jsx';
 import ChangeStation from '../../../Monitor/StationMonitor/SingleStation/SingleStationCommon/ChangeStation';
-import TableGraph from './CommonGraph/TableGraph'
+import TableGraph from './CommonGraph/TableGraph';
+import PowerEfficency from './CommonGraph/PowerEfficency';
+import PlanCompleteRateAnalysisBar from './CommonGraph/PlanCompleteRateAnalysisBar';
+import LightResource from './CommonGraph/LightResource';
+import CurrentMonthCompleteRate from './CommonGraph/CurrentMonthCompleteRate';
+
 
 
 
@@ -72,10 +77,11 @@ class AllStationStatistic extends React.Component {
         <i className="iconfont icon-filter"></i>
       </div>
     );
-    const { stationType, stations, timeSelect, singleStationCode, singleAlarmSummary } = this.props;
+    const { stationType, stations, dateType, singleStationCode, singleAlarmSummary } = this.props;
     const { showStationSelect } = this.state;
     const stationItem = stations.find(station => station.get('stationCode').toString() === singleStationCode).toJS();
     //拿到单电站的类型，弄个数组，把对应的iconfont加上，在下面调用
+    console.log(stationItem);
     return (
       <div className={styles.singleStationType}>
         <div className={styles.componentContainer}>
@@ -92,9 +98,9 @@ class AllStationStatistic extends React.Component {
                   <span className={styles.stationIcon}><i className="iconfont icon-pvlogo"></i></span>
                   {`电站名-区域：${singleAlarmSummary && singleAlarmSummary.stationStatusName ? singleAlarmSummary.stationStatusName : '- -'}`}
                 </div>
-                <div>
-                  <span>并网时间:2018年3月10号</span>
-                  <span>数据统计截止时间8月20日</span>
+                <div className={styles.time}>
+                  <span className={styles.gridTime}>并网时间：2018年3月10号</span>
+                  <span className={styles.deadline}>数据统计截止时间8月20日</span>
                 </div>
               </div>
             </div>
@@ -103,45 +109,71 @@ class AllStationStatistic extends React.Component {
             </Link>
           </div>
           <TimeSelect day={true} {...this.props} />
-          <PlanCompletionRate timeSelect={timeSelect} />
+          <PlanCompletionRate dateType={dateType} />
           <div className={styles.targetGraphContainer}>
+
+
             <div className={styles.bgStyle}>
               <div className={styles.fontStyle}>发电量分析</div>
             </div>
             <div className={styles.tabContainer}>
               <div className={styles.dataGraph}>
-                <BarGraph graphId={'power'} yAxisName={'发电量 (万kWh)'} xAxisName={'发电量'} timeSelect={timeSelect} />
+                <BarGraph graphId={'power'} yAxisName={'发电量 (万kWh)'} xAxisName={'发电量'} dateType={dateType} />
                 <TargetStatisticPieGraph pieGraphId={'powerPie'} />
+
+              </div>
+              {dateType === 'day' ? <CurrentMonthCompleteRate graphId={'CurrentMonthCompleteRate'} /> : ''}
+            </div>
+
+
+
+            {dateType === 'month' ?
+              <div>
+                <div className={styles.bgStyle}>
+                  <div className={styles.fontStyle}>计划完成率分析</div>
+                </div>
+                <div className={styles.tabContainer}>
+                  <div className={styles.dataGraph}>
+                    <PlanCompleteRateAnalysisBar graphId={'planCompleteRate'} yAxisName={'发电量 (万kWh)'} xAxisName={'发电量'} dateType={dateType} />
+                    <TableGraph />
+                  </div>
+                </div>
+              </div> : ''}
+
+
+
+
+            <div className={styles.bgStyle}>
+              <div className={styles.fontStyle}>发电效率分析</div>
+            </div>
+
+            {dateType === 'month' ? <div className={styles.tabContainer}>
+              <div className={styles.dataGraph}>
+                <LightResource graphId={'MonthlightResource'} yAxisName={'辐射总量 (万kWh)'} xAxisName={'发电量'} dateType={dateType} />
+                <TableGraph />
+              </div>
+            </div> : ''}
+            <div className={styles.tabContainer}>
+              <div className={styles.dataGraph}>
+                <PowerEfficency graphId={'powerEfficency'} yAxisName={'损失电量 (万kWh)'} xAxisName={'发电量'} dateType={dateType} />
+                <TableGraph />
               </div>
             </div>
-            <div className={styles.bgStyle}>
-            <div className={styles.fontStyle}>发电效率分析</div>
-          </div>
-          <div className={styles.tabContainer}>
-            <div className={styles.dataGraph}>
-              <BarGraph graphId={'test1'} yAxisName={'损失电量 (万kWh)'} xAxisName={'发电量'} timeSelect={timeSelect} />
-              <TableGraph />
-            </div>
-          </div>
-          <div className={styles.tabContainer}>
-          <div className={styles.dataGraph}>
-            <BarGraph graphId={'test2'} yAxisName={'损失电量 (万kWh)'} xAxisName={'发电量'} timeSelect={timeSelect} />
-            <TableGraph />
-          </div>
-        </div>
+
+
             <div className={styles.bgStyle}>
               <div className={styles.fontStyle}>损失电量分析</div>
             </div>
             <div className={styles.tabContainer}>
               <div className={styles.dataGraph}>
-                <BarGraph graphId={'lostPower'} yAxisName={'损失电量 (万kWh)'} xAxisName={'发电量'} timeSelect={timeSelect} />
+                <BarGraph graphId={'lostPower'} yAxisName={'损失电量 (万kWh)'} xAxisName={'发电量'} dateType={dateType} />
                 <TableGraph />
               </div>
             </div>
-            
+
 
           </div>
-          <div></div>
+      
         </div>
 
 

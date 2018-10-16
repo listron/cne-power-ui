@@ -1,5 +1,8 @@
 @import '../../../../theme/theme.scss';
 .stationSelectModal {
+  .title{
+    color:#199475;
+  }
   :global {
     .ant-modal-content {
       display: flex;
@@ -7,6 +10,9 @@
       height: 100%;
       flex-direction: column;
       justify-content: space-between;
+      .ant-modal-footer{
+        background-color: #ececec;
+      }
     }
     .ant-modal-body {
       display: flex;

@@ -9,8 +9,8 @@ class barGraph extends React.Component {
   }
 
   componentDidMount() {
-    const { graphId, yAxisName,xAxisName, timeSelect } = this.props;
-    if (timeSelect === 'month') {
+    const { graphId, yAxisName,xAxisName, dateType } = this.props;
+    if (dateType === 'month') {
       const targetChart = echarts.init(document.getElementById(graphId));
       const targetMonthOption = {
         tooltip: {
@@ -106,7 +106,7 @@ class barGraph extends React.Component {
       targetChart.setOption(targetMonthOption)
       targetChart.resize();
     }
-    if (timeSelect === 'year') {
+    if (dateType === 'year') {
       const targetChart = echarts.init(document.getElementById(graphId));
       const targetYearOption = {
         tooltip: {
@@ -200,8 +200,8 @@ class barGraph extends React.Component {
     }  
   }
   componentWillReceiveProps(nextProps) {
-    const { graphId, yAxisName,xAxisName, timeSelect }  = nextProps;
-    if (timeSelect === 'year') {
+    const { graphId, yAxisName,xAxisName, dateType }  = nextProps;
+    if (dateType === 'year') {
       const targetChart = echarts.init(document.getElementById(graphId));
       const targetYearOption = {
         tooltip: {
@@ -293,7 +293,7 @@ class barGraph extends React.Component {
       targetChart.setOption(targetYearOption)
       targetChart.resize();
     } 
-    if (timeSelect === 'month') {
+    if (dateType === 'month') {
       const targetChart = echarts.init(document.getElementById(graphId));
       const targetMonthOption = {
         tooltip: {
@@ -391,7 +391,7 @@ class barGraph extends React.Component {
     } 
   }
   render() {
-    const { graphId,timeSelect } = this.props;
+    const { graphId,dateType } = this.props;
     return (
 
       <div id={graphId} className={styles.statisticGraph} style={{ width: '55%', height: "300px", }}> </div>

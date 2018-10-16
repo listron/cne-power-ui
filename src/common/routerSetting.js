@@ -28,7 +28,12 @@ import AlarmStatistic from '../containers/Monitor/Alarm/AlarmStatistic';
 import EditPassword from '../containers/Others/EditPassword'; // 更改密码
 
 import Building from '../components/Common/Building/Building';
+
+//电站分析
 import AllStationAnalysis from '../containers/StatisticalAnalysis/StationAnalysis/AllStationAnalysis/AllStationAnalysis';
+import ProductionAnalysis from '../containers/StatisticalAnalysis/StationAnalysis/ProductionAnalysis/ProductionAnalysis';
+import OperateAnalysis from '../containers/StatisticalAnalysis/StationAnalysis/OperateAnalysis/OperateAnalysis';
+
 import Power from '../containers/Power';
 
 import Plan from "../containers/System/Production/Plan/Plan";
@@ -168,11 +173,11 @@ const routers = [
   },{
     path: '/statistical/stationaccount/production',
     exact: true,
-    component: Building
+    component: ProductionAnalysis
   },{
     path: '/statistical/stationaccount/operate',
     exact: true,
-    component: Building
+    component: OperateAnalysis
   },{
     path: '/statistical/stationaccount/resource',
     exact: true,

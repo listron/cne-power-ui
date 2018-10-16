@@ -108,7 +108,8 @@ class AbnormalReportModal extends Component {
           visible={abnormalModalshow}
           onOk={this.confirmAbnormal}
           onCancel={hideAbnormalModal}
-          width={1200}
+          width="calc(100vw - 229px)"
+          okText="保存"
           wrapClassName={styles.addAbnormalModal}
         >
         <div className={styles.addGenLostHeader} >
@@ -120,25 +121,27 @@ class AbnormalReportModal extends Component {
           findDeviceExist={findDeviceExist} 
           faultGenList={faultGenList} 
           changeFaultList={this.changeFaultList}  
-          abnormalInfo={abnormalInfo}
+          stationCode={abnormalInfo.stationCode}
           deviceExistInfo={deviceExistInfo} 
         /> }
-        <div>
-          <span>限电信息</span>
-          <Button disabled={addLimitFormShow} onClick={this.toAddGenLimit} >添加</Button>
+        <div className={styles.addLimitGenHeader} >
+          <span>限电信息<Icon type="caret-right" theme="outlined" /></span>
+          <Button disabled={addLimitFormShow} onClick={this.toAddGenLimit} icon="plus" className={styles.uploadGenLost}  >添加</Button>
         </div>
         <LimitGenTable limitGenList={limitGenList} abnormalInfo={abnormalInfo} changeLimitList={this.changeLimitList} />
         {addLimitFormShow && <LimitAddForm
           findDeviceExist={findDeviceExist} 
           limitGenList={limitGenList} 
           changeLimitList={this.changeLimitList}  
-          abnormalInfo={abnormalInfo}
+          stationCode={abnormalInfo.stationCode}
           deviceExistInfo={deviceExistInfo}
         />}
-        <div>
-          <span>发电信息</span>
-          <Checkbox onChange={this.checkAbnormal}>存在异常</Checkbox>
-          {abnormalTextShow && <Input.TextArea onChange={this.reportAbnormalText} value={abnormalText} />}
+        <div className={styles.addPowerGenInfo} >
+          <span>发电信息<Icon type="caret-right" theme="outlined" /></span>
+          <div className={styles.addPowerGenInfoR} >
+            <Checkbox onChange={this.checkAbnormal} >存在异常</Checkbox>
+            {abnormalTextShow && <Input.TextArea className={styles.abnormalTextArea} onChange={this.reportAbnormalText} value={abnormalText} />}
+          </div>
         </div>
       </Modal>
     )

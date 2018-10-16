@@ -22,10 +22,11 @@ class PlancompletionRate extends React.Component{
         )
       }
     render(){
-        const{timeSelect}=this.props;
+        const {dateType}=this.props;
+       
         return(
             <div className={styles.allStationData}>
-               <div className={styles.textStyle}>计划完成情况{timeSelect==='year'?this.selectYear():''}</div>
+               <div className={styles.textStyle}>计划完成情况{dateType==='year'?this.selectYear():''}</div>
                <div className={styles.allStationDataContainer}>
                <div className={styles.leftPic}>
                <WaterWave percent={30} height={100} title="" />

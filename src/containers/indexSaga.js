@@ -25,6 +25,8 @@ import {watchAlarmMonitor} from './Monitor/Alarm/alarmSaga';
 
 import { watchOtherSaga } from './alphaRedux/otherSaga';
 import { watchAllStationSaga } from './StatisticalAnalysis/StationAnalysis/AllStationAnalysis/allStationAnalysisSaga';
+import { watchProductionStationSaga } from './StatisticalAnalysis/StationAnalysis/ProductionAnalysis/productionAnalysisSaga';
+import { watchOperateStationSaga } from './StatisticalAnalysis/StationAnalysis/OperateAnalysis/operateAnalysisSaga';
 
 import { watchPlan } from './System/Production/Plan/planSaga';
 // root saga
@@ -61,5 +63,7 @@ export default function* rootSaga() {
     watchOtherSaga(),
     //统计分析的全部电站
     watchAllStationSaga(),
+    watchProductionStationSaga(),
+    watchOperateStationSaga(),
   ])
 }

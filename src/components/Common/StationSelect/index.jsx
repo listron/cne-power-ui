@@ -6,10 +6,10 @@ import PropTypes from 'prop-types';
 const Option = Select.Option;
 /*
   电站选择组件：
-  必须参数:
-  1. 电站选择是否多选: multiple, 选填，默认为单选(false)。
-  2. 组件生成时默认已选中的电站(value)(value形式与data相同[object])
-  3. 电站基本信息数组(data),包含信息如下：
+  参数:
+  1. 选填 - 电站选择是否多选: multiple, 选填，默认为单选(false)。
+  2. 选填 - 组件生成时默认已选中的电站(value)(value形式与data相同[object])
+  3. 必填 - 电站基本信息数组(data),包含信息如下：
     [{
       commissioningDate:"2012-04-15T00:00:00"
       enterpriseId:"1"
@@ -34,9 +34,10 @@ const Option = Select.Option;
       zoneCode:10
       zoneName:"辽宁"
     }]
-  3. 传递下来的style值，可选填，用于控制筛选组件总体样式 {width:'500px'}
-  4. holderText: string, 可选填，当用户未选择电站时的占位提示文字。 
-  5. 输出信息:this.props.onOK(selectedStationArray)为data中筛选的一个或多个，this.props.onChange(form表单用若有会同时触发)
+  3. 选填 - 传递下来的style值，可选填，用于控制筛选组件总体样式 {width:'500px'}
+  4. 选填 - holderText: string, 可选填，当用户未选择电站时的占位提示文字。 
+  5. 必填 - 输出信息:this.props.onOK(selectedStationArray)为data中筛选的一个或多个，this.props.onChange(form表单用若有会同时触发)
+  6. 选填 - disabledStation指定的不可选电站codes数组 - int[] ; 默认为[]
 */
 
 class StationSelect extends Component {
@@ -46,6 +47,7 @@ class StationSelect extends Component {
     holderText: PropTypes.string,
     value: PropTypes.array,
     data: PropTypes.array,
+    disabledStation: PropTypes.array,
     onChange: PropTypes.func,
     onOK: PropTypes.func,
     style: PropTypes.object
@@ -54,6 +56,8 @@ class StationSelect extends Component {
     multiple: false,
     holderText: '输入关键字快速查询',
     data: [],
+    value: [],
+    disabledStation: [],
   }
   constructor(props) {
     super(props);
@@ -103,8 +107,12 @@ class StationSelect extends Component {
     })
   }
   handleSearch = (text) => {
-    const { data } = this.props;
-    let filteredSelectedStation = data.filter(e=>e.stationName.indexOf(text) >= 0)
+    const { data, disabledStation } = this.props;
+    let filteredSelectedStation = data.filter(
+      e=> !disabledStation.includes(e.stationCode) // 剔除禁选电站
+    ).filter(
+      e=>e.stationName.indexOf(text) >= 0
+    );
     this.setState({
       checkedStationName:[text],
       filteredSelectedStation
@@ -129,7 +137,7 @@ class StationSelect extends Component {
   }
 
   render() {
-    const { data, multiple, holderText } = this.props;
+    const { data, multiple, holderText, disabledStation } = this.props;
     const { checkedStationName, stationModalShow, filteredSelectedStation, checkedStations } = this.state;
     return (
       <div className={styles.stationSelect} style={this.props.style}>
@@ -141,7 +149,9 @@ class StationSelect extends Component {
           value={checkedStationName}
           className={styles.stationSelectMainInput}
         >
-          {data.map(e=>(<Option key={e.stationName}>{e.stationName}</Option>))}
+          {data.filter(e=>!disabledStation.includes(e.stationCode)).map(e=>(
+            <Option key={e.stationName}>{e.stationName}</Option>
+          ))}
         </Select>:<AutoComplete
           style={{ width: '100%' }}
           onSearch={this.handleSearch}
@@ -153,6 +163,7 @@ class StationSelect extends Component {
         </AutoComplete>}
         <StationSelectModal 
           multiple={multiple}
+          disabledStation={disabledStation}
           checkedStations={checkedStations}
           data={data} 
           handleOK={this.onModalHandelOK}
