@@ -56,7 +56,7 @@ class CardSection extends Component {
 
   prev = () => {
     let weatherIndex = this.state.weatherIndex;
-    const {weatherList } = this.props;
+    const { weatherList } = this.props;
     this.setState({
       disabled2: false
     })
