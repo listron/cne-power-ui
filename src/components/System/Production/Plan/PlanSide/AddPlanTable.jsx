@@ -170,7 +170,7 @@ class PlanAddTable extends React.Component {
         title: '区域',
         dataIndex: 'regionName',
         key: 'regionName',
-        width: '50px',
+        // width: '50px',
         render: text => {
           return text ? text : '--';
         }
@@ -188,7 +188,7 @@ class PlanAddTable extends React.Component {
       {
         title: '装机容量(MW)',
         dataIndex: 'stationCapacity',
-        width: '80px',
+        // width: '80px',
         key: 'stationCapacity',
         render: text => {
           return text ? text : '--';
@@ -206,7 +206,7 @@ class PlanAddTable extends React.Component {
         title: '年计划发电量(万kWh)',
         dataIndex: 'planPower',
         key: 'planPower',
-        width: '130px',
+        // width: '130px',
         render: text => {
           return text ? text : '--';
         }

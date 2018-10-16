@@ -274,7 +274,7 @@ class PlanTable extends Component {
         title: '区域',
         dataIndex: 'regionName',
         key: 'regionName',
-        width: '50px',
+        // width: '50px',
         sorter: true,
         render: text => {
           return text ? text : '--'
@@ -284,7 +284,7 @@ class PlanTable extends Component {
         title: '电站名称',
         dataIndex: 'stationName',
         key: 'stationName',
-        width:'100px',
+        // width:'100px',
         className:styles.stationNameBox,
         defaultSortOrder: 'descend',
         sorter: true,
@@ -296,7 +296,7 @@ class PlanTable extends Component {
       {
         title: '装机容量(MW)',
         dataIndex: 'stationCapacity',
-        width: '80px',
+        // width: '80px',
         key: 'stationCapacity',
         sorter: true,
         className:styles.stationCapacity,
