@@ -68,7 +68,7 @@ class AllStationStatistic extends React.Component {
         <Tabs type="card" tabBarExtraContent={operations}  >
           <TabPane tab="光伏" key="1">
           <div className={styles.componentContainer}>
-          <TimeSelect  {...this.props} />
+          <TimeSelect text={'统计时间选择'} {...this.props} />
           <PlanCompletionRate dateType={dateType} />
           <TargetTabs {...this.props} />    
           </div>          

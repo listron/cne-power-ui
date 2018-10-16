@@ -108,7 +108,7 @@ class AllStationStatistic extends React.Component {
               <Icon type="arrow-left" className={styles.backIcon} onClick={this.onClose} />
             </Link>
           </div>
-          <TimeSelect day={true} {...this.props} />
+          <TimeSelect text={'统计时间选择'} day={true} {...this.props} />
           <PlanCompletionRate dateType={dateType} />
           <div className={styles.targetGraphContainer}>
 

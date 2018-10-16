@@ -17,6 +17,19 @@
       .stationFilter{
         display: flex;
         align-items: center;
+        :global{
+          .ant-form-item, .ant-form-horizontal{
+            margin-bottom: 0;
+            display: flex;
+
+          }
+          .ant-form-item{
+            margin-bottom: 0;
+          }
+          .ant-form-item-required:before{
+            display:none;
+          }
+        }
       }
     }
     .rightContent{
@@ -28,7 +41,6 @@
     display: flex;
     flex:1;
     flex-direction: column;
-    
     .title {
       display: flex;
       flex-direction: column;
