@@ -7,7 +7,7 @@ function* changeOperateStationStore(action) {//存储payload指定参数，替�
   const { payload } = action;
 
   yield put({
-    type: operateAnalysisAction.CHANGE_PRODUCTIONSTATIONDATA_STORE,
+    type: operateAnalysisAction.CHANGE_OPERATESTATIONDATA_STORE,
     payload
   })
 }

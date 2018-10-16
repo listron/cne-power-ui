@@ -114,7 +114,7 @@ class LimitAddForm extends Component {
               {getFieldDecorator('deviceName', {
                 rules: [{ required: true, message: '设备名称' }],
               })(
-                <Input placeholder="设备名称" />
+                <Input />
               )}
               <span className={styles.lostInputTip}>多个设备请以空格隔开，设备较多时，可填写上级设备</span>
               {deviceNameErroShow && <div className={styles.dataErrorText}><i className="iconfont icon-alert_01" ></i><span>{deviceNameErroInfo}</span></div>}
@@ -126,9 +126,9 @@ class LimitAddForm extends Component {
           <Col span={8}>
             <Form.Item label="限功率" {...formItemLayout1} >
               {getFieldDecorator('limitPower', {
-                rules: [{ required: true, message: '限功率' }],
+                rules: [{ required: true, message: '请填写正确的限功率数字!', pattern: /^(-?\d+)(\.\d+)?$/ }],
               })(
-                <Input placeholder="限功率" />
+                <Input />
               )}
               <span className={styles.lostInputTip}>%</span>
             </Form.Item> 
@@ -138,9 +138,9 @@ class LimitAddForm extends Component {
           <Col span={8}>
             <Form.Item label="发生时间" {...formItemLayout1} >
               {getFieldDecorator('startTime', {
-                rules: [{ required: true, message: '发生时间' }],
+                rules: [{ required: true, message: '请选择发生时间' }],
               })(
-                <DatePicker placeholder="发生时间" showTime={true} format="YYYY-MM-DD hh:mm"  />
+                <DatePicker showTime={true} format="YYYY-MM-DD hh:mm"  />
               )}
             </Form.Item>
           </Col>
@@ -149,7 +149,7 @@ class LimitAddForm extends Component {
               {getFieldDecorator('endTime', {
                 // rules: [{ required: true, message: '结束时间' }],
               })(
-                <DatePicker placeholder="结束时间"  showTime={true} format="YYYY-MM-DD hh:mm" />
+                <DatePicker showTime={true} format="YYYY-MM-DD hh:mm" />
               )}
               <span className={styles.lostInputTip}>未结束不填写</span>
             </Form.Item>
@@ -159,9 +159,9 @@ class LimitAddForm extends Component {
           <Col span={8}>
             <Form.Item label="日损失电量" {...formItemLayout1} >
               {getFieldDecorator('lostPower', {
-                rules: [{ required: true, message: '日损失电量' }],
+                rules: [{ required: true, message: '请填写正确的日损失电量!', pattern: /^(-?\d+)(\.\d+)?$/ }],
               })(
-                <Input placeholder="日损失电量" />
+                <Input />
               )}
               <span className={styles.lostInputTip}>kWh</span>
             </Form.Item>
@@ -171,9 +171,9 @@ class LimitAddForm extends Component {
           <Col span={8}>
             <Form.Item label="原因说明" {...formItemLayout1} >
               {getFieldDecorator('reason', {
-                rules: [{ required: true, message: '原因说明' }],
+                rules: [{ required: true, message: '请填写原因说明' }],
               })(
-                <Input.TextArea placeholder="原因说明" className={styles.reasonArea} />
+                <Input.TextArea className={styles.reasonArea} />
               )}
               <span className={styles.lostInputTip}>({getFieldValue('reason')?getFieldValue('reason').length:0}/30)</span>
             </Form.Item>
@@ -183,9 +183,9 @@ class LimitAddForm extends Component {
           <Col span={8}>
             <Form.Item label="处理进展及说明" {...formItemLayout1} >
               {getFieldDecorator('process', {
-                rules: [{ required: true, message: '处理进展及说明' }],
+                rules: [{ required: true, message: '请填写处理进展及说明' }],
               })(
-                <Input.TextArea placeholder="处理进展及说明"  className={styles.reasonArea}  />
+                <Input.TextArea className={styles.reasonArea}  />
               )}
               <span className={styles.lostInputTip}>({getFieldValue('process')?getFieldValue('process').length:0}/30)</span>
             </Form.Item>
