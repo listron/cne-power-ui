@@ -1,4 +1,4 @@
-import { call, put, takeLatest } from 'redux-saga/effects';
+import { call, put, takeLatest, select } from 'redux-saga/effects';
 import axios from 'axios';
 import Path from '../../../../constants/path';
 import { message } from 'antd';
@@ -130,6 +130,49 @@ function *getReportUploadedStation(action){ // 选定日期已上传过日报电
   }
 }
 
+function *uploadDayReport(action){ // 日报上报
+  const { payload } = action;
+  const url = '/mock/operation/dayReport/uploadDayReport';
+  // const url = `${APIBasePath}${operation.uploadDayReport}`
+  try{
+    yield put({ type:dayReportAction.dayReportLoading });
+    const response = yield call(axios.post,url,payload);
+    if(response.data.code === '10000'){ // 日报上报成功
+      const params = yield select(state => ({ // 重新请求日报列表
+        startTime: state.operation.dayReport.get('startTime'),
+        pageSize: state.operation.dayReport.get('pageSize'),
+        pageNum: state.operation.dayReport.get('pageNum'),
+        stationNameSort: state.operation.dayReport.get('stationNameSort'),
+        stationType: state.operation.dayReport.get('stationType'),
+        regionCode: state.operation.dayReport.get('regionCode')
+      }));
+      yield put({
+        type:  dayReportAction.changeDayReportStore,
+        payload:{
+          showPage: 'list'
+        },
+      })
+      yield put({
+        type:  dayReportAction.getDayReportList,
+        payload:{ ...params },
+      });
+    }else{
+      message.error(`日报上传失败!${response.data.message}`);
+      yield put({
+        type:  dayReportAction.changeDayReportStore,
+        payload: { loading: false },
+      });
+    }
+  }catch(e){
+    console.log(e);
+    message.error(`日报上传失败!`);
+    yield put({
+      type:  dayReportAction.changeDayReportStore,
+      payload: { loading: false },
+    });
+  }
+}
+
 function *dayReportDetail(action){ // 日报详情
   const { payload } = action;
   try{
@@ -192,6 +235,7 @@ export function* watchDayReport() {
   yield takeLatest(dayReportAction.getDayReportConfig, getDayReportConfig);
   yield takeLatest(dayReportAction.getStationBaseReport, getStationBaseReport);
   yield takeLatest(dayReportAction.getReportUploadedStation, getReportUploadedStation);
+  yield takeLatest(dayReportAction.uploadDayReport, uploadDayReport);
   yield takeLatest(dayReportAction.dayReportDetail, dayReportDetail);
   yield takeLatest(dayReportAction.dayReportUpdate, dayReportUpdate);
 }

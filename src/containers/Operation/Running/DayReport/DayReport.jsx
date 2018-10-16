@@ -97,6 +97,7 @@ const mapDispatchToProps = (dispatch) => ({
   getDayReportConfig: payload => dispatch({type: dayReportAction.getDayReportConfig, payload}),
   getStationBaseReport: payload => dispatch({type: dayReportAction.getStationBaseReport, payload}),
   getReportUploadedStation: payload => dispatch({type: dayReportAction.getReportUploadedStation, payload}),
+  uploadDayReport: payload => dispatch({ type: dayReportAction.uploadDayReport, payload}),
   dayReportDetail: payload => dispatch({type: dayReportAction.dayReportDetail, payload}),
   dayReportUpdate: payload => dispatch({type: dayReportAction.dayReportUpdate, payload}),
   findDeviceExist: payload => dispatch({ type: commonAction.findDeviceExist, payload }),
