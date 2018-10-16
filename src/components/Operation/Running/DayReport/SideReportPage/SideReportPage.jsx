@@ -15,6 +15,7 @@ class SideReportPage extends Component {
     reportStation: PropTypes.array,
     stationReportBaseData: PropTypes.array,
     reportDisableStation: PropTypes.array,
+    dayReportConfig: PropTypes.array,
     toChangeDayReportStore: PropTypes.func,
     getReportUploadedStation: PropTypes.func,
     getStationBaseReport: PropTypes.func,
@@ -95,12 +96,40 @@ class SideReportPage extends Component {
 
   saveDayReport = () => { // 确认上报日报
     const { dayReportTotalInfoArr } = this.state;
+    const { dayReportConfig } = this.props;
+    const unitConfig = dayReportConfig[0] || {}; // 电量单位
+    console.log(dayReportTotalInfoArr)
     // 检测基础信息的必填项
+
     // 检测基础信息数据及格式-数字+小数点位数。
+
+    // const { stationInfo, totalInfoChange, dayReportTotalInfoArr, dayReportConfig} = this.props;
+    // 
+    // const genCalcType = dayReportConfig[2] || {}; // 发电量的计算方式 - '1'逆变器，'2'上网电量
+    // const genUnit = unitConfig.power || 'kWh'; // kWh两位小数，万kWh四位小数。
+    // const paramName = Object.keys(param)[0]; // 填写项属性
+    // const paramValue = Object.values(param)[0]; // 填写值
+    // const tmpReportBaseInfo = reportBasefun(stationInfo.stationType, genUnit); // 指标数组
+    // const requireTargetObj = dayReportConfig[1] || {};
+    // const requireTargetArr = Object.keys(requireTargetObj); // 指标必填项
+
+    // const reportBaseInfo = tmpReportBaseInfo.find(e=>e.configName === paramName) || {};
+    // const maxPointLength = reportBaseInfo.pointLength; // 指定的最大小数点位数
+
+    // const requireError = requireTargetArr.includes(reportBaseInfo.configName) && !paramValue; // 必填项未填。
+    // const paramPointLength = paramValue.split('.')[1] ? paramValue.split('.')[1].length : 0;
+    // const dataFormatError = isNaN(paramValue) || (maxPointLength && paramPointLength > maxPointLength); // 数据格式错误;
+    // if(requireError){ // 必填值未填
+    //   this.reportInforErrorShow(`请填写${stationInfo.stationName}${reportBaseInfo.configText}!`);
+    // }else if(dataFormatError){ // 数据格式错误
+    //   this.reportInforErrorShow(
+    //     `${stationInfo.stationName}${reportBaseInfo.configText}请填写数字,最多填写小数点后${maxPointLength}位`
+    //   );
+    // }
   }
 
   totalReportInfoChange = (dayReportTotalInfoArr) => { // 用于上报的所有电站日报数据。
-    this.setState({ dayReportTotalInfoArr }); //-- todo 改变的infoAr需要根据规则，对onchange的数据进行校验，根据校验结果给出提示。
+    this.setState({ dayReportTotalInfoArr });
   }
 
   disabledDate = (start) => {

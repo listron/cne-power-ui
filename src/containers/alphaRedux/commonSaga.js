@@ -199,8 +199,8 @@ function* getAllDepartment(action) {//获取所有部门基础信息
 
 function* findDeviceExist(action){ // 查询设备是否存在
   const { payload } = action;
-  const url = '/mock/operation/dayReport/findDeviceExist';
-  // const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.common.findDeviceExist}`
+  // const url = '/mock/operation/dayReport/findDeviceExist';
+  const url = `${Path.basePaths.APIBasePath}${Path.commonPaths.findDeviceExist}`
   try {
     yield put({ 
       type: commonAction.CHANGE_COMMON_STORE, 
@@ -249,6 +249,21 @@ function* findDeviceExist(action){ // 查询设备是否存在
   }
 }
 
+function *getLostGenType(action){ // 根据电站类型等指标查询电站故障类型
+  const { payload } = action;
+  const { stationType, defectType, type } = payload;
+  const url = `${Path.basePaths.APIBasePath}${Path.commonPaths.getLostGenType}/${stationType}/${defectType}/${type}`;
+  try{
+    const response = yield call(axios.get, url);
+    yield put({
+      type: commonAction.GET_COMMON_FETCH_SUCCESS,
+      payload: { lostGenTypes: response.data.data || []}
+    })
+  }catch(error){
+    message.error('获取故障类型失败!');
+  }
+}
+
 /*  --- todo 待后台开发refreshtoken接口后，解开注释并进行refresh token的替换。
   export function* refreshToken(action){ //根据当前的refresh token获取刷新token并替换
     const { payload } = action;
@@ -290,4 +305,5 @@ export function* watchCommon() {
   yield takeLatest(commonAction.getPartition, getPartition);
   yield takeLatest(commonAction.getSliceDevices, getSliceDevices);
   yield takeLatest(commonAction.findDeviceExist, findDeviceExist);
+  yield takeLatest(commonAction.getLostGenType, getLostGenType);
 }

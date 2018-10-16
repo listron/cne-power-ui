@@ -17,6 +17,7 @@ var initState = Immutable.fromJS({
   sliceDevices:[],//光伏组件截取的设备数
   slicePartitionCode:'',//光伏组件截取的第一项
   deviceExistInfo: {}, // 验证设备是否存在
+  lostGenTypes: [], // 所有故障类型
 });
 
 const defectReducer = (state = initState, action) => {
