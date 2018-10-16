@@ -122,14 +122,15 @@ function *getOperatorList(action){
 // 获取单电站未来天气数据
 function *getWeatherList(action){
   const { payload } = action;
-  const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getWeatherList + payload.stationCode;
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.monitor.getWeatherList}?stationCode=${payload.stationCode}`;
   try{
     const response = yield call(axios.get, url, payload);
+    console.log(response);
     if(response.data.code==='10000'){
       yield put({
         type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
         payload: {
-          weatherList: response.data.data || {},
+          weatherList: response.data.data || [],
         }
       })
     }else{

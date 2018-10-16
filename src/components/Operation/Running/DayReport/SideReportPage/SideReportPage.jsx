@@ -141,7 +141,7 @@ class SideReportPage extends Component {
     const canReport = reportDay && reportStation && reportStation.length > 0;
     const { dayReportTotalInfoArr } = this.state;
     return (
-      <div className={styles.sideReportPage}>
+      <div className={styles.sideReportPage} id="sideReportPage" >
         <div className={styles.sideReportTitle} >
           <span className={styles.sideReportTitleTip} >上报日报</span>
           <div className={styles.sideReportTitleRight} >

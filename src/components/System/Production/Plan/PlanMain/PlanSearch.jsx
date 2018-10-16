@@ -15,6 +15,7 @@ class planSearch extends Component {
     getPlanList: PropTypes.func,
     sortField: PropTypes.string,
     sortMethod: PropTypes.string,
+    stationCodes: PropTypes.array,
   }
 
   constructor(props) {
@@ -39,6 +40,7 @@ class planSearch extends Component {
     const stationCode = rest.map((item, index) => {
       return item.stationCode
     });
+    console.log(123, stationCode)
     this.setState({stationCode: stationCode})
   };
 
@@ -47,7 +49,7 @@ class planSearch extends Component {
     let {stationCode} = this.state;
     const params = {
       year: this.state.dateValue,
-      stationCodes: stationCode.length<1?this.props.stationCodes:stationCode,
+      stationCodes: stationCode.length < 1 ? this.props.stationCodes : stationCode,
       sortField: this.props.sortField,
       sortMethod: this.props.sortMethod,
       pageNum: this.props.pageNum,
@@ -75,12 +77,12 @@ class planSearch extends Component {
           />
         </div>
         <div className={styles.topLeft}>
-          <label htmlFor="label" className={styles.station}>电站选择</label>
+          <label className={styles.station}>电站选择</label>
           <StationSelect
             data={stations.toJS()}
             multiple={true}
+            values={stations.toJS()}
             onChange={this.stationSelected}
-            id="label"
           />
         </div>
         <Button className={styles.searchButton} onClick={this.selectValue}>查询</Button>

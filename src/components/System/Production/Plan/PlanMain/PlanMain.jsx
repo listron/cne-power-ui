@@ -16,10 +16,6 @@ class PlanMain extends Component {
     super(props);
   }
 
-  componentWillUnmount() {
-
-  }
-
 
   render() {
     return (

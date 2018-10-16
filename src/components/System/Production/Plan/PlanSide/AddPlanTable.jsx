@@ -16,11 +16,15 @@ const EditableRow = ({form, index, ...props}) => (
 const EditableFormRow = Form.create()(EditableRow);
 
 class EditableCell extends React.Component {
+  static propTypes = {
+    dataIndex:PropTypes.string,
+    record:PropTypes.object,
+  };
   getInput = (form) => {
     const {dataIndex, record} = this.props;
     if(record.onGridTime){
        if(getMonth(dataIndex)<Number(record.onGridTime)){
-         return <Input  disabled={true} />
+         return <Input  disabled={true} placeholder="--"/>
        }else{
          return <Input  onBlur={(e) => this.valueChange(e, form, dataIndex, record)} placeholder="--"/>;
        }
@@ -153,7 +157,10 @@ class PlanAddTable extends React.Component {
           dataIndex: item,
           width: '40px',
           key: item,
-          editable: true
+          editable: true,
+          render: text => {
+            return text ? text : '--';
+          }
         }
       })
     };
@@ -161,9 +168,12 @@ class PlanAddTable extends React.Component {
     const columns = [
       {
         title: '区域',
-        dataIndex: 'region',
-        key: 'region',
+        dataIndex: 'regionName',
+        key: 'regionName',
         width: '50px',
+        render: text => {
+          return text ? text : '--';
+        }
       },
       {
         title: '电站名称',
@@ -171,18 +181,26 @@ class PlanAddTable extends React.Component {
         key: 'stationName',
         // width:'100px',
         defaultSortOrder: 'descend',
+        render: text => {
+          return text ? text : '--';
+        }
       },
       {
         title: '装机容量(MW)',
         dataIndex: 'stationCapacity',
         width: '80px',
         key: 'stationCapacity',
+        render: text => {
+          return text ? text : '--';
+        }
       },
       {
         title: '年份',
         dataIndex: 'planYear',
         key: 'planYear',
-        // width:'50px',
+        render: text => {
+          return text ? text : '--';
+        }
       },
       {
         title: '年计划发电量(万kWh)',
@@ -241,13 +259,13 @@ class PlanAddTable extends React.Component {
         AddPlanstaion.onGridTime=onGridMonth;
         AddPlanstaion.planPower = list.planPower;
         for (let i = 0; i < Number(onGridMonth); i++) {
-          AddPlanstaion[TabelKey[i]] = ''
+          AddPlanstaion[TabelKey[i]] = null;
         }
         // AddPlanstaion.monthPower=list.planMonthGen;
         // AddPlanstaion.planPower = sum(list.planMonthGen);
       }
       AddPlanstaion.key=index;
-      AddPlanstaion.region = list.regionName;  //区域
+      AddPlanstaion.regionName = list.regionName;  //区域
       AddPlanstaion.stationName = list.stationName; //电站名称
       AddPlanstaion.stationCapacity = list.stationCapacity; //装机容量
       AddPlanstaion.planYear=addPlanYear; //  年份
@@ -259,7 +277,6 @@ class PlanAddTable extends React.Component {
   };
 
   render() {
-    const {addStationCodes, addPlanYear} = this.props;
     const {AddPlandata}=this.state;
     const components = {
       body: {
@@ -276,6 +293,7 @@ class PlanAddTable extends React.Component {
         pagination={false}
         dataSource={AddPlandata}
         columns={this._createTableColumn()}
+        locale={{emptyText: <img width="223" height="164" src="/img/nodata.png"/>}}
       />
     );
   }

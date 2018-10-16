@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './planSide.scss';
 import AddPlan from './AddPlan';
-import EditPlan from './EditPlan';
+import AddEditPlan from './AddEditPlan';
 
 import Footer from '../../../../Common/Footer';
 
@@ -18,14 +18,7 @@ class PlanSide extends Component {
     super(props);
   }
 
-  componentWillUnmount(){
-    this.props.changePlanStore({
-      planStations:[],
-      continueAdd:false,
-      addPlanYear:'',
-      addStationCodes:[],
-    })
-  }
+
 
   render(){
     const { showSidePage } = this.props;
@@ -33,7 +26,7 @@ class PlanSide extends Component {
       <div className={styles.planSide}>
         {/*<AddPlan {...this.props} />*/}
         { showSidePage === 'add' && <AddPlan {...this.props} /> }
-        { showSidePage === 'edit' && <EditPlan {...this.props} /> }
+        { showSidePage === 'edit' && <AddEditPlan {...this.props} /> }
         <Footer />
       </div>
     )
