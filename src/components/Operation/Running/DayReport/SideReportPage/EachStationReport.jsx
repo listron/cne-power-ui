@@ -19,7 +19,6 @@ class EachStationReport extends Component {
     this.state = {
       showDataError: false, 
       dataErrorText: '',
-      errorInputArr: [],
     }
   }
 

@@ -111,6 +111,7 @@ class SideReportPage extends Component {
     const { reportDay, stations, reportStation, showReportInputList, reportDisableStation } = this.props;
     const canReport = reportDay && reportStation && reportStation.length > 0;
     const { dayReportTotalInfoArr } = this.state;
+    console.log(reportStation)
     return (
       <div className={styles.sideReportPage}>
         <div className={styles.sideReportTitle} >
