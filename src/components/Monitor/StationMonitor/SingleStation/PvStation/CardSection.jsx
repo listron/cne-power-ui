@@ -40,7 +40,6 @@ class CardSection extends Component {
       clearTimeout(this.timeOutId);
       this.getData(nextStation);
     }
-    // this.props.changeSingleStationStore({deviceTypeCode: nextProps.deviceTypeCode});
   }
 
   componentWillUnmount(){
@@ -110,7 +109,7 @@ class CardSection extends Component {
     }
     const ticketList = `/operation/ticket/list?stationCode=${stationCode}`;
     const alarmRealtime= `/monitor/alarm/realtime?stationCode=${stationCode}`;
-    
+    console.log(weatherList);
     const weatherFuture = weatherList && weatherList.future && Object.values(weatherList.future);
     const weatherSort = weatherFuture && weatherFuture.length>0 && weatherFuture.sort((a,b)=>{
       if(a.date&&b.date){

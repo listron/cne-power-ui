@@ -137,7 +137,8 @@ class ReportEdit extends Component {
               e=>({...e,startTime: moment(e.startTime), endTime: moment(e.endTime)})
             )}
             changeFaultList={this.faultListInfoChange} 
-          />5a1307fe2e7dbde8ba88fc245f91c781ed
+          />
+          {/* 5a1307fe2e7dbde8ba88fc245f91c781ed */}
         </div>
         {addLostFormShow && <LostAddForm
           findDeviceExist={findDeviceExist}
