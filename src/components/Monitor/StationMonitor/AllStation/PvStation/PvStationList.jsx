@@ -26,6 +26,7 @@ class PvStationList extends React.Component {
     })
   }
   showTip = (e) => {
+    message.destroy();
     message.config({
       top: 225,
       duration: 200,

@@ -22,6 +22,10 @@ class EachStationReport extends Component {
     }
   }
 
+  componentWillUnmount = () => {
+    // message.destroy();
+  }
+
   valueChange = (param) => {
     const { stationInfo, totalInfoChange, dayReportTotalInfoArr, dayReportConfig} = this.props;
     const unitConfig = dayReportConfig[0] || {}; // 电量单位
@@ -88,17 +92,17 @@ class EachStationReport extends Component {
     setTimeout(()=>{this.setState({
       showDataError: false,
     })},2000);
-    this.messageWarning();
+    this.messageWarning(dataErrorText);
   }
 
-  messageWarning = () => {
+  messageWarning = (dataErrorText) => {
+    message.destroy();
     message.config({
       top: 400,
       duration: 2,
       maxCount: 1,
-      getContainer: () => document.getElementById('sideReportPage'),
     });
-    message.warning(this.state.dataErrorText,2);
+    message.warning(dataErrorText,2);
   }
 
   render(){
@@ -145,8 +149,7 @@ class EachStationReport extends Component {
         </Col>
         {/* {showDataError && <span>{dataErrorText}</span>} */}
         {/* {true && <div className={styles.dataErrorText}><i className="iconfont icon-alert_01" ></i><span>{dataErrorText}</span></div>} */}
-        {/* {showDataError && message.warning(dataErrorText, 2)} */}
-        {/* {showDataError && this.messageWarning} */}
+        
       </Row>
     )
   }
