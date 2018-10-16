@@ -67,8 +67,8 @@ class StationSelect extends Component {
     super(props);
     this.state = {
       stationModalShow: false,
-      checkedStations: [],
-      checkedStationName: [],
+      checkedStations: props.value,
+      checkedStationName: props.value.map(e=>e.stationName),
       filteredSelectedStation: [],
     }
   }
