@@ -12,10 +12,12 @@ class UploadReportList extends Component {
     dayReportConfig: PropTypes.array,
     reportStation: PropTypes.array,
     dayReportTotalInfoArr: PropTypes.array,
+    lostGenTypes: PropTypes.array,
     deviceExistInfo: PropTypes.object,
     toChangeDayReportStore: PropTypes.func,
     totalReportInfoChange: PropTypes.func,
     findDeviceExist: PropTypes.func,
+    getLostGenType: PropTypes.func,
   }
 
   constructor(props){
@@ -25,6 +27,16 @@ class UploadReportList extends Component {
       abnormalList: [],
       abnormalModalshow: false,
     }
+  }
+
+  componentDidMount(){
+    const { reportStation, getLostGenType } = this.props;
+    const stationType = reportStation[0] && reportStation[0].stationType || 1; 
+    getLostGenType({ // 选中电站的所有故障类型
+      stationType, 
+      defectType: -1, 
+      type: 0,
+    })
   }
 
   addAbnormalInfo = (abnormalInfo, abnormalList) => {
@@ -91,7 +103,7 @@ class UploadReportList extends Component {
   // }
 
   render(){
-    const { reportDay, dayReportConfig, reportStation, findDeviceExist, deviceExistInfo, dayReportTotalInfoArr } = this.props;
+    const { reportDay, dayReportConfig, reportStation, findDeviceExist, deviceExistInfo, dayReportTotalInfoArr, lostGenTypes } = this.props;
     const { abnormalModalshow, abnormalInfo, abnormalList } = this.state;
     const stationType = reportStation[0] && reportStation[0].stationType || 1; 
     return (
@@ -110,6 +122,7 @@ class UploadReportList extends Component {
         </div>
         {abnormalModalshow && <AbnormalReportModal 
           findDeviceExist={findDeviceExist}
+          lostGenTypes={lostGenTypes}
           deviceExistInfo={deviceExistInfo}
           abnormalInfo={abnormalInfo}
           abnormalList={abnormalList}

@@ -14,6 +14,7 @@ class AbnormalReportModal extends Component {
     deviceExistInfo: PropTypes.object,
     abnormalList: PropTypes.array,
     dayReportTotalInfoArr: PropTypes.array,
+    lostGenTypes: PropTypes.array,
     abnormalModalshow: PropTypes.bool,
     hideAbnormalModal: PropTypes.func,
     findDeviceExist: PropTypes.func,
@@ -46,6 +47,9 @@ class AbnormalReportModal extends Component {
       return info;
     })
     // todo-此处需判断上传的必填信息是否均已填写！
+    console.log(faultGenList)
+    console.log(limitGenList)
+    return 
     totalInfoChange(uploadParams, true);
   }
 
@@ -101,7 +105,7 @@ class AbnormalReportModal extends Component {
   }
 
   render(){
-    const { abnormalModalshow, abnormalInfo, hideAbnormalModal, findDeviceExist, deviceExistInfo} = this.props;
+    const { abnormalModalshow, abnormalInfo, hideAbnormalModal, findDeviceExist, deviceExistInfo, lostGenTypes} = this.props;
     const { addLostFormShow, faultGenList, limitGenList, addLimitFormShow, abnormalTextShow, abnormalText } = this.state;
     return (
       <Modal
@@ -119,6 +123,7 @@ class AbnormalReportModal extends Component {
         </div>
         <LostGenTable faultGenList={faultGenList} abnormalInfo={abnormalInfo} changeFaultList={this.changeFaultList} />
         {addLostFormShow && <LostAddForm 
+          lostGenTypes={lostGenTypes}
           findDeviceExist={findDeviceExist} 
           faultGenList={faultGenList} 
           changeFaultList={this.changeFaultList}  
