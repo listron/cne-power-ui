@@ -24,8 +24,6 @@ class UploadReportList extends Component {
       abnormalInfo : {},
       abnormalList: [],
       abnormalModalshow: false,
-      dataErrorText: '', // 日报数据错误提示文字
-      showDataError: false, // 日报数据错误弹框展示。
     }
   }
 
@@ -94,7 +92,7 @@ class UploadReportList extends Component {
 
   render(){
     const { reportDay, dayReportConfig, reportStation, findDeviceExist, deviceExistInfo, dayReportTotalInfoArr } = this.props;
-    const { abnormalModalshow, abnormalInfo, abnormalList, dataErrorText, showDataError } = this.state;
+    const { abnormalModalshow, abnormalInfo, abnormalList } = this.state;
     const stationType = reportStation[0] && reportStation[0].stationType || 1; 
     return (
       <div className={styles.uploadReportList}>

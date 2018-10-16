@@ -7,9 +7,7 @@ const Option = Select.Option;
 /*
   电站选择组件：
   参数:
-  1. 选填 - 电站选择是否多选: multiple, 选填，默认为单选(false)。
-  2. 选填 - 组件生成时默认已选中的电站(value)(value形式与data相同[object])
-  3. 必填 - 电站基本信息数组(data),包含信息如下：
+  1. 必填 - 电站基本信息数组(data),包含信息如下：
     [{
       commissioningDate:"2012-04-15T00:00:00"
       enterpriseId:"1"
@@ -34,15 +32,20 @@ const Option = Select.Option;
       zoneCode:10
       zoneName:"辽宁"
     }]
-  3. 选填 - 传递下来的style值，可选填，用于控制筛选组件总体样式 {width:'500px'}
-  4. 选填 - holderText: string, 可选填，当用户未选择电站时的占位提示文字。 
-  5. 必填 - 输出信息:this.props.onOK(selectedStationArray)为data中筛选的一个或多个，this.props.onChange(form表单用若有会同时触发)
-  6. 选填 - disabledStation指定的不可选电站codes数组 - int[] ; 默认为[]
+  2. 必填 - 输出信息:this.props.onOK(selectedStationArray)为data中筛选的一个或多个，this.props.onChange(form表单用若有会同时触发)
+
+  3. 选填 - 电站选择是否多选: multiple, 选填，默认为单选(false)。
+  4. 选填 - 组件生成时默认已选中的电站(value)(value形式与data相同[object])
+  5. 选填 - 传递下来的style值，可选填，用于控制筛选组件总体样式 {width:'500px'}
+  6. 选填 - holderText: string, 可选填，当用户未选择电站时的占位提示文字。 
+  7. 选填 - disabledStation指定的不可选电站codes数组 - int[] ; 默认为[]
+  8. 选填 - disabled: bool; 默认false， 传入true值时组件为禁用状态。
 */
 
 class StationSelect extends Component {
   static propTypes = {
     multiple: PropTypes.bool,
+    disabled: PropTypes.bool,
     // holderText: PropTypes.bool,
     holderText: PropTypes.string,
     value: PropTypes.array,
@@ -55,6 +58,7 @@ class StationSelect extends Component {
   static defaultProps = {
     multiple: false,
     holderText: '输入关键字快速查询',
+    disabled: false,
     data: [],
     value: [],
     disabledStation: [],
@@ -131,18 +135,19 @@ class StationSelect extends Component {
   }
   
   showStationModal = () => {
-    this.setState({
+    !this.props.disabled && this.setState({
       stationModalShow: true,
     })
   }
 
   render() {
-    const { data, multiple, holderText, disabledStation } = this.props;
+    const { data, multiple, holderText, disabledStation, disabled } = this.props;
     const { checkedStationName, stationModalShow, filteredSelectedStation, checkedStations } = this.state;
     return (
       <div className={styles.stationSelect} style={this.props.style}>
         {multiple ? <Select
           mode="multiple"
+          disabled={disabled}
           style={{ width: '100%' }}
           placeholder={holderText}
           onChange={this.selectStation}
@@ -153,6 +158,7 @@ class StationSelect extends Component {
             <Option key={e.stationName}>{e.stationName}</Option>
           ))}
         </Select>:<AutoComplete
+          disabled={disabled}
           style={{ width: '100%' }}
           onSearch={this.handleSearch}
           onSelect={this.onSelect}
@@ -163,6 +169,7 @@ class StationSelect extends Component {
         </AutoComplete>}
         <StationSelectModal 
           multiple={multiple}
+          disabled={disabled}
           disabledStation={disabledStation}
           checkedStations={checkedStations}
           data={data} 
