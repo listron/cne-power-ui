@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './pvStation.scss';
-import { Icon, Progress, Modal, Input } from 'antd';
+import { Icon, Progress, Modal, Input} from 'antd';
 import moment from 'moment';
 import ChangeStation from '../SingleStationCommon/ChangeStation';
 import { Link } from 'react-router-dom';
@@ -41,11 +41,7 @@ class PvStationTop extends Component {
   }
 
   onChange = (e) => {
-    // let{editValue}=this.state;
- 
-    this.setState({ editValue: e.target.value })
- 
-
+    this.setState({ editValue: e.target.value });
   }
   onOk = () => {
     const { editData,stationCode } = this.props

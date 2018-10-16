@@ -4,17 +4,16 @@
 
 .loginLayout {
   :global{
-    
-::-webkit-scrollbar {
-  width: 6px;
-  height: 200px;
-  background-color: #fff;
-}
-::-webkit-scrollbar-thumb{
-  border-radius: 3px;
-  background-color: #555;
-  opacity: .5;
-}
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 200px;
+      background-color: #fff;
+    }
+    ::-webkit-scrollbar-thumb{
+      border-radius: 3px;
+      background-color: #555;
+      opacity: .5;
+    }
   }
   
   display: flex;

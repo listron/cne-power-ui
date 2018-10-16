@@ -1,5 +1,5 @@
 
-const arr = [1,2,3,4,5,6,7,8,9,10,11,12];
+const arr = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31];
 
 
 
@@ -16,7 +16,7 @@ module.exports = [
           stationCode: e,
           stationName: `${i}号电站`,
           userId: `${e}${e+2}${e+5}${e+9}${e*2}${e}${e*7}`,
-          dateList: arr.map(e=>({
+          dateList: arr.map((e,i)=>({
             reportDate: `${e}`,
             isUpload: !!(e%2),
             status: !!e%2 && !!e%3,
@@ -33,19 +33,29 @@ module.exports = [
     response: {
       "code": "10000",
       "message": "请求成功",
-      "data": {
-        "total": 12,
-        "list":  [1,2,3,4,5,6].map((e,i)=>({
-          stationCode: e,
-          id: i,
-          stationName: `${i}号电站`,
-          reportDate: '2018-01-12',
-          deviceCapacity: e*12-3,
-          modelInverterCapacity: e*7,
-          modelInverterPowerGen: e*3,
-          defectId: !!e%2,
+      "data": [1,2,3,4,5,6].map((e,i)=>({
+        stationCode: e,
+        id: i,
+        stationName: `${i}号电站`,
+        reportDate: '2018-01-12',
+        stationCapacity: e*12-3,
+        modelInverterCapacity: e*7,
+        modelInverterPowerGen: e*3,
+        defectId: `${e}`,
+        warning: !!e%2,
+        dailyDetailList: [1,2,3].map(e=>({
+          id: e,
+          dailyReportId: e,
+          deviceName: `${e}损失设备123`,
+          faultId: e,
+          faultName: `${e}就是不发点了`,
+          reason: `${e}娃娃设备`,
+          startTime: `${e}2017-01-12`,
+          endTime: `${e}2017-11-12`,
+          process: `${e}啊！蒸菜处理`,
+          lostPower: e*17+e*e
         }))
-      },
+      })),
       "serviceCode": "3.0"
     },
     delay: 1000,
@@ -141,6 +151,29 @@ module.exports = [
     },
     delay: 1000,
     error: {}
+  },{ // 验证设备是否存在
+    api: '/mock/operation/dayReport/findDeviceExist',
+    method: 'post',
+    response: {
+      "code": "10000",
+      "message": "请求成功",
+      "data": ['hhh','112','223'],
+      "serviceCode": "3.0"
+    },
+    delay: 1000,
+    error: {}
+  },{
+    api: '/mock/operation/dayReport/getReportUploadedStation',
+    method: 'get',
+    response: {
+      "code": "10000",
+      "message": "请求成功",
+      "data": [380,56,360,54],
+      "serviceCode": "3.0"
+    },
+    delay: 1000,
+    error: {}
+    
   }
 ]
 

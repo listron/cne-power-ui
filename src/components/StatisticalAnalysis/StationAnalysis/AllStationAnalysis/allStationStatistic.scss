@@ -1,3 +1,4 @@
+@import '../../../../theme/theme.scss';
 .allStationTypeTabs{
   display: flex;
   flex-direction: column;
@@ -33,22 +34,24 @@
         max-height: 0;
       }
     }
-    .ant-tabs.ant-tabs-card > .ant-tabs-bar .ant-tabs-tab-active {
-      background: #fff;
-      border-color: #e8e8e8;
-      color: #199475;
-      margin: 0;
-
-    }
     .ant-tabs.ant-tabs-card > .ant-tabs-bar .ant-tabs-tab {
-      margin: 0;
-      border: 1px solid #e8e8e8;
-      border-bottom: 0;
-      border-radius: 4px 4px 0 0;
-      background: #fafafa;
-      padding: 0 16px; 
-      line-height: 38px;
+      border: 0;
+      width: 120px;
+      color: #666;
+      border-right: 1px #dfdfdf solid;
+      margin-right: 0px;
+      border-radius: 0px;
   }
+    .ant-tabs.ant-tabs-card > .ant-tabs-bar .ant-tabs-tab-active {
+      color: #000;
+      font-weight: bold;
+      margin: 0;
+      border-top:2px #199475 solid;
+    }
+
+    .ant-tabs.ant-tabs-card > .ant-tabs-bar .ant-tabs-tab:hover{
+      color:#666;
+    }
     .ant-tabs-nav .ant-tabs-tab {
       display: inline-block;
       text-align: center;
@@ -60,7 +63,9 @@
       text-decoration: none;
       width: 120px;     
     } 
-      
+    .ant-input{
+      width: 100px;
+    }
   }
   .componentContainer{
     display: flex;
@@ -68,4 +73,96 @@
     // height:5000px;
     flex-direction: column;
   }
-  }   
+  }  
+  .singleStationType{
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    background: #fff;
+    .componentContainer{
+      display: flex;
+      flex:1;
+      flex-direction: column;
+      .title {
+        display: flex;
+        position: relative;
+        flex-direction: row;
+        padding-left: 28px;
+        height: 60px;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 1px solid #ececec;
+        .titleLeft {
+          display: flex;
+          flex-direction: row;
+          flex:1;
+          align-items: center;
+        }
+        .stationName {
+          &:hover{
+            color: #199475;
+          }
+          .icon {
+            color: $themeColor;
+            margin-right: 15px;
+            font-size: 18px;
+          }
+          >span {
+            font-size: 18px;
+          }
+        }
+        .stationStatus {
+          margin-left: 50px;
+          color: $darkColor;
+          display: flex;
+          flex:1;
+          flex-direction: row;
+          justify-content: space-between;
+          .stationIcon{
+            i{
+              color:$themeColor;
+            }
+          }
+          .status {
+            margin-right: 4px;
+          }
+          .time{
+            .gridTime,.deadline{
+              margin-right: 30px;
+            }
+          }
+        }
+        .backIcon{
+          border-left: 1px solid #dfdfdf;
+          width: 60px;
+          line-height: 60px;
+          text-align: center;
+          color: $darkColor;
+          cursor: pointer;
+        }
+      }
+
+      .targetGraphContainer{
+        .bgStyle{
+          background: #f1f1f1;
+          .fontStyle{
+            border-top:2px solid #199475;
+            width: 160px;
+            color: #666;
+            text-align: center;
+          }
+        }
+        .tabContainer{
+          display: flex;
+          flex:1;
+          flex-direction: column;
+          .dataGraph{
+            display: flex;    
+            flex-direction: row;
+            border-bottom: 1px solid #ececec;
+          }
+        }
+      }
+     
+    }
+  } 

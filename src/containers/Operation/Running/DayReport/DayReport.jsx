@@ -4,6 +4,7 @@ import TransitionContainer from '../../../../components/Common/TransitionContain
 import DayReportMainList from '../../../../components/Operation/Running/DayReport/DayReportMainList';
 import DayReportSide from '../../../../components/Operation/Running/DayReport/DayReportSide';
 import { dayReportAction } from './dayReportAction';
+import { commonAction } from '../../../alphaRedux/commonAction';
 import PropTypes from 'prop-types';
 import styles from './dayReport.scss';
 import Cookie from 'js-cookie';
@@ -19,7 +20,7 @@ class DayReport extends Component {
     stationType: PropTypes.number, // 筛选的电站类型
     stationNameSort: PropTypes.number, // 排序方式
     getDayReportList: PropTypes.func, // 日报列表
-    dayReportConfig: PropTypes.func, // 日报配置
+    getDayReportConfig: PropTypes.func, // 日报配置
   }
   constructor(props) {
     super(props);
@@ -36,7 +37,7 @@ class DayReport extends Component {
       stationType: 2, // 筛选的电站类型
       stationNameSort: 0, // 排序方式
     });
-    this.props.dayReportConfig({ // 请求上报日报配置信息
+    this.props.getDayReportConfig({ // 请求上报日报配置信息
       enterpriseId: this.props.enterpriseId, 
       module: 'report', 
       type: '-1'
@@ -47,8 +48,8 @@ class DayReport extends Component {
     
   }
 
-  onSidePageChange = ({ showSidePage }) => {
-    this.setState({ showSidePage });
+  onSidePageChange = ({ sidePage }) => {
+    this.setState({ sidePage });
   }
 
   onToggleSide = () => {
@@ -83,6 +84,7 @@ class DayReport extends Component {
 const mapStateToProps = (state) => ({
   ...state.operation.dayReport.toJS(),
   stations: state.common.get('stations').toJS(),
+  deviceExistInfo: state.common.get('deviceExistInfo').toJS(),
   enterpriseId: Cookie.get('enterpriseId'),
   userId: Cookie.get('userId'),
 });
@@ -90,10 +92,12 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   toChangeDayReportStore: payload => dispatch({type: dayReportAction.toChangeDayReportStore, payload}),
   getDayReportList: payload => dispatch({type: dayReportAction.getDayReportList, payload}),
-  dayReportConfig: payload => dispatch({type: dayReportAction.dayReportConfig, payload}),
+  getDayReportConfig: payload => dispatch({type: dayReportAction.getDayReportConfig, payload}),
   getStationBaseReport: payload => dispatch({type: dayReportAction.getStationBaseReport, payload}),
+  getReportUploadedStation: payload => dispatch({type: dayReportAction.getReportUploadedStation, payload}),
   dayReportDetail: payload => dispatch({type: dayReportAction.dayReportDetail, payload}),
   dayReportUpdate: payload => dispatch({type: dayReportAction.dayReportUpdate, payload}),
+  findDeviceExist: payload => dispatch({ type: commonAction.findDeviceExist, payload }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DayReport);

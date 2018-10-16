@@ -2,7 +2,6 @@ import { call, put, takeLatest } from 'redux-saga/effects';
 import axios from 'axios';
 import Path from '../../../../constants/path';
 import { singleStationAction } from './singleStationAction';
-import { message } from 'antd';
 
 //改变单电站实时数据store
 function *changeSingleStationStore(action){
@@ -18,19 +17,16 @@ function *getSingleStation(action){
   const { payload } = action;
   const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getSingleStation + payload.stationCode;
   try{
-    yield put({type: singleStationAction.SINGLE_STATION_FETCH});
     const response = yield call(axios.get, url);
     if(response.data.code === '10000'){
       yield put({
         type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
         payload: {
-          // ...payload,
           singleStationData: response.data.data || {},
         }
       });
     }else{
       yield put({ type: singleStationAction.GET_SINGLE_STATION_FAIL, data: response.data});
-      // message.error(response.data.message);
     }
   }catch(e){
     console.log(e);
@@ -42,19 +38,16 @@ function *getCapabilityDiagram(action){
   const { payload } = action;
   const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getCapabilityDiagram + payload.stationCode+ '/' + payload.startTime+ '/' + payload.endTime;
   try{
-    yield put({type: singleStationAction.SINGLE_STATION_FETCH});
     const response = yield call(axios.get, url);
     if(response.data.code === '10000'){
       yield put({
         type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
         payload: {
-          // ...payload,
           capabilityData: response.data.data || [],
         }
       });
     }else{
       yield put({ type: singleStationAction.GET_SINGLE_STATION_FAIL, data: response.data});
-      // message.error(response.data.message);
     }
     
   }catch(e){
@@ -67,19 +60,16 @@ function *getMonitorPower(action){
   const { payload } = action;
   const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getMonitorPower + payload.stationCode+ '/' + payload.startTime+ '/' + payload.endTime+ '/' + payload.intervalTime;
   try{
-    yield put({type: singleStationAction.SINGLE_STATION_FETCH});
     const response = yield call(axios.get, url);
     if(response.data.code==="10000"){
       yield put({
         type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
         payload: {
-          // ...payload,
           powerData: response.data.data || [],
         }
       })
     }else{
       yield put({ type: singleStationAction.GET_SINGLE_STATION_FAIL, data: response.data});
-      // message.error(response.data.message);
     }
     
   }catch(e){
@@ -91,19 +81,16 @@ function *getStationList(action){
   const { payload } = action;
   const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getStationList;
   try{
-    yield put({type: singleStationAction.SINGLE_STATION_FETCH});
     const response = yield call(axios.get, url, payload);
     if(response.data.code === '10000'){
       yield put({
         type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
         payload: {
-          // ...payload,
           stationList: response.data.data || [],
         }
       });
     }else{
       yield put({ type: singleStationAction.GET_SINGLE_STATION_FAIL, data: response.data});
-      // message.error(response.data.message);
     }
     
   }catch(e){
@@ -116,19 +103,16 @@ function *getOperatorList(action){
   const { payload } = action;
   const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getOperatorList + payload.stationCode + '/' + payload.roleId;
   try{
-    yield put({type: singleStationAction.SINGLE_STATION_FETCH});
     const response = yield call(axios.get, url, payload);
     if(response.data.code === '10000'){
       yield put({
         type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
         payload: {
-          // ...payload,
           operatorList: response.data.data || [],
         }
       });
     }else{
       yield put({ type: singleStationAction.GET_SINGLE_STATION_FAIL, data: response.data});
-      // message.error(response.data.message);
     }
     
   }catch(e){
@@ -138,21 +122,19 @@ function *getOperatorList(action){
 // 获取单电站未来天气数据
 function *getWeatherList(action){
   const { payload } = action;
-  const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getWeatherList + payload.stationCode;
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.monitor.getWeatherList}?stationCode=${payload.stationCode}`;
   try{
-    yield put({type: singleStationAction.SINGLE_STATION_FETCH});
     const response = yield call(axios.get, url, payload);
+    console.log(response);
     if(response.data.code==='10000'){
       yield put({
         type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
         payload: {
-          // ...payload,
-          weatherList: response.data.data || {},
+          weatherList: response.data.data || [],
         }
       })
     }else{
       yield put({ type: singleStationAction.GET_SINGLE_STATION_FAIL, data: response.data});
-      // message.error(response.data.message);
     }
   }catch(e){
     console.log(e);
@@ -163,19 +145,16 @@ function *getAlarmList(action){
   const { payload } = action;
   const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getAlarmList + payload.stationCode;
   try{
-    yield put({type: singleStationAction.SINGLE_STATION_FETCH});
     const response = yield call(axios.get, url, payload);
     if(response.data.code === '10000'){
       yield put({
         type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
         payload: {
-          // ...payload,
           alarmList: response.data.data || {},
         }
       })
     }else{
       yield put({ type: singleStationAction.GET_SINGLE_STATION_FAIL, data: response.data});
-      // message.error(response.data.message);
     }
     
   }catch(e){
@@ -187,19 +166,16 @@ function *getWorkList(action){
   const { payload } = action;
   const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getWorkList + payload.stationCode + '/' + payload.startTime + '/' + payload.endTime;
   try{
-    yield put({type: singleStationAction.SINGLE_STATION_FETCH});
     const response = yield call(axios.get, url, payload);
     if(response.data.code === '10000'){
       yield put({
         type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
         payload: {
-          // ...payload,
           workList: response.data.data || {},
         }
       })
     }else{
       yield put({ type: singleStationAction.GET_SINGLE_STATION_FAIL, data: response.data});
-      // message.error(response.data.message);
     }
   }catch(e){
     console.log(e);
@@ -210,7 +186,6 @@ function *getDeviceTypeFlow(action){
   const { payload } = action;
   const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getDeviceTypeFlow + payload.stationCode;
   try{
-    yield put({type: singleStationAction.SINGLE_STATION_FETCH});
     const response = yield call(axios.get, url, payload);
     let deviceTypeCode = 206; // 默认组串式逆变器
     if(payload.deviceTypeCode){
@@ -240,7 +215,6 @@ function *getDeviceTypeFlow(action){
       })
     }else{
       yield put({ type: singleStationAction.GET_SINGLE_STATION_FAIL, data: response.data});
-      // message.error(response.data.message);
     }
     
   }catch(e){
@@ -252,7 +226,9 @@ function *getPvmoduleList(action){
   const { payload } = action;
   const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getPvmoduleList + payload.stationCode;
   try{
-    yield put({type: singleStationAction.SINGLE_STATION_FETCH});
+    if(payload.firstLoad){
+      yield put({type: singleStationAction.SINGLE_STATION_FETCH});
+    }
     const response = yield call(axios.get, url, payload);
     if(response.data.code === '10000'){
       yield put({
@@ -263,7 +239,6 @@ function *getPvmoduleList(action){
       });
     }else{
       yield put({ type: singleStationAction.GET_SINGLE_STATION_FAIL, data: response.data});
-      // message.error(response.data.message);
     }
     
   }catch(e){
@@ -275,7 +250,9 @@ function *getInverterList(action){
   const { payload } = action;
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.monitor.getInverterList}${payload.stationCode}/${payload.deviceTypeCode}`;
   try{
-    yield put({type: singleStationAction.SINGLE_STATION_FETCH});
+    if(payload.firstLoad){
+      yield put({type: singleStationAction.SINGLE_STATION_FETCH});
+    }
     const response = yield call(axios.get, url, payload);
     if(response.data.code === '10000'){
       yield put({
@@ -286,7 +263,6 @@ function *getInverterList(action){
       })
     }else{
       yield put({ type: singleStationAction.GET_SINGLE_STATION_FAIL, data: response.data});
-      // message.error(response.data.message);
     }
     
   }catch(e){
@@ -298,7 +274,9 @@ function *getBoxTransformerList(action){
   const { payload } = action;
   const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getBoxTransformerList + payload.stationCode;
   try{
-    yield put({type: singleStationAction.SINGLE_STATION_FETCH});
+    if(payload.firstLoad){
+      yield put({type: singleStationAction.SINGLE_STATION_FETCH});
+    }
     const response = yield call(axios.get, url, payload);
     if(response.data.code === '10000'){
       yield put({
@@ -309,9 +287,7 @@ function *getBoxTransformerList(action){
       })
     }else{
       yield put({ type: singleStationAction.GET_SINGLE_STATION_FAIL, data: response.data});
-      // message.error(response.data.message);
     }
-    
   }catch(e){
     console.log(e);
   }
@@ -321,7 +297,9 @@ function *getConfluenceBoxList(action){ // 获取汇流箱列表
   const { payload } = action;
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.monitor.getConfluenceBoxList}${payload.stationCode}`;
   try{
-    yield put({type: singleStationAction.SINGLE_STATION_FETCH});
+    if(payload.firstLoad){
+      yield put({type: singleStationAction.SINGLE_STATION_FETCH});
+    }
     const response = yield call(axios.get, url);
     if(response.data.code === '10000'){
       yield put({
@@ -344,7 +322,6 @@ function *getStationDeviceList(action){
   const { payload } = action;
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.monitor.getStationDeviceList}${payload.stationCode}/${payload.deviceTypeCode}`;
   try{
-    yield put({type: singleStationAction.SINGLE_STATION_FETCH});
     const response = yield call(axios.get, url, payload);
     if(response.data.code === '10000'){
       yield put({
@@ -355,7 +332,6 @@ function *getStationDeviceList(action){
       })
     }else{
       yield put({ type: singleStationAction.GET_SINGLE_STATION_FAIL, data: response.data});
-      // message.error(response.data.message);
     }
   }catch(e){
     console.log(e);
@@ -366,7 +342,6 @@ function *editData(action){
   const { payload } = action;
   const url =`${Path.basePaths.APIBasePath}${Path.APISubPaths.monitor.editData}`;
   try{
-    yield put({type: singleStationAction.SINGLE_STATION_FETCH});
     const response = yield call(axios.post, url, payload);
     console.log(response,'编辑');
     if(response.data.code==="10000"){
@@ -378,7 +353,6 @@ function *editData(action){
       })
     }else{
       yield put({ type: singleStationAction.GET_SINGLE_STATION_FAIL, data: response.data});
-      // message.error(response.data.message);
     }
   }catch(e){
     console.log(e);

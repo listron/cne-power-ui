@@ -14,7 +14,7 @@ function ConfluenceStatistics({ deviceDetail }) {
         <span className="iconfont icon-hl"></span>
       </div>
       <PowerProgress devicePower={devicePower} deviceCapacity={deviceCapacity} />
-      <div className={styles.timerDayGen}>
+      {/* <div className={styles.timerDayGen}>
         <div className={styles.genNum}>{powerDay}</div>
         <div className={styles.empty}></div>
         <div className={styles.genText}>日发电量 万kWh</div>
@@ -28,7 +28,7 @@ function ConfluenceStatistics({ deviceDetail }) {
         <div className={styles.genNum}>{powerYear}</div>
         <div className={styles.empty}></div>
         <div className={styles.genText}>年发电量 万kWh</div>
-      </div>
+      </div> */}
     </div>
   )
 }

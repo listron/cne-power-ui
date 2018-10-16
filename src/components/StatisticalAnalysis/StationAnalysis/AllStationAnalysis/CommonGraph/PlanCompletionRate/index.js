@@ -1,15 +1,32 @@
 import React from "react";
 import styles from './styles.scss';
-import WaterWave from './WaterWave'
+import WaterWave from './WaterWave';
+import {  Table,  Radio } from "antd";
 
 class PlancompletionRate extends React.Component{
     constructor(props,context){
         super(props,context)
     }
+    selectYear() {
+        return (
+          <Radio.Group defaultValue="2019"  buttonStyle="solid">
+           {['2014','2015','2016','2017','2018','2019'].map((e,index)=>{
+             if(true){
+              return   <Radio.Button value={e} key={index}  style={{margin:'0 5px'}}>{e}年</Radio.Button>
+             }else{
+              return   <Radio.Button value={e} key={index} disabled style={{margin:'0 5px'}}>{e}月</Radio.Button>
+             }      
+           }       
+           )}        
+          </Radio.Group>
+        )
+      }
     render(){
+        const {dateType}=this.props;
+       
         return(
             <div className={styles.allStationData}>
-               <div className={styles.textStyle}>计划完成情况</div>
+               <div className={styles.textStyle}>计划完成情况{dateType==='year'?this.selectYear():''}</div>
                <div className={styles.allStationDataContainer}>
                <div className={styles.leftPic}>
                <WaterWave percent={30} height={100} title="" />

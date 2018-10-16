@@ -1,3 +1,373 @@
+@import '../../../../../theme/theme';
+
 .sideReportPage{
+  background: #fff;
+  flex: 1;
+  border: 1px solid #e1e2e2;
+  .sideReportTitle{
+    height: 64px;
+    border-bottom: 1px solid $promptColor;
+    line-height: 64px;
+    display: flex;
+    justify-content: space-between;
+    .sideReportTitleTip{
+      margin-left: 30px;
+      font-size: 18px;
+    }
+    .sideReportTitleRight{
+      display: flex;
+      justify-content: flex-end;
+      .dayReportPrev{
+        margin-top: 15px;
+        border: 1px solid $themeColor;
+        color: $themeColor;
+        &:hover,&:focus{
+          box-shadow: 0 0 2px $themeColor;
+        }
+      }
+      .saveDayReport{
+        margin: 15px 10px 0 22px;
+        background: $themeColor;
+        color: #fff;
+      }
+      .backIcon{
+        width: 64px;
+        border-left: 1px solid $promptColor;
+        text-align: center;
+        font-size: 20px;
+        line-height: 64px;
+        cursor: pointer;
+      }
+    }
+  }
+  .sideReportContent{
+    margin-top: 25px;
+    display: flex;
+    flex-direction: row;
+    line-height: 32px;
+    .selectTime{
+      margin-left: 50px;
+      margin-right: 40px;
+      :global{
+        .ant-input{
+          width: 142px;
+        }
+      }
+      
+      >span{
+        margin-right: 5px;
+        >i{
+          color:#d0021b;
+          margin-right: 3px;
+        }
+      }
+    }
+    .selectStation{
+      display: flex;
+      flex-direction: row;
+      :global{
+        .ant-input{
+          width: 200px;
+        }
+      }
+      >span{
+        margin-right: 5px;
+        >i{
+          color:#d0021b;
+          margin-right: 3px;
+        }
+      }
+      .dayReportNext{
+        margin-left: 12px;
+        &:hover{
+          background: $themeColor;
+          color: #fff;
+        }
+      }
+      .dayReportNextDisabled{
+        margin-left: 12px;
+      }
+    }
+  }
+}
+
+.uploadReportList{
+  .uploadReportTip{
+    height: 40px;
+    margin-top: 10px;
+    line-height: 40px;
+    margin-left: 30px;
+    span{
+      i{
+        color: $themeColor;
+        font-style: normal;
+      }
+    }
+  }
+}
+
+.stationReportColumn{
+  display: flex;
+  flex-direction: row;
+  border-top: 1px solid $promptColor;
+  border-bottom: 1px solid $promptColor;
+  justify-content: space-between;
+  height: 60px;
+  line-height: 30px;
+  text-align: center;
+  background: #f4f4f4;
+  .withRequired{
+    color: #d0021b;
+  }
+  .withBorder{
+    border-left: 1px solid $promptColor;
+    border-right: 1px solid $promptColor;
+    
+  }
+  .withBorder:last-child{
+    border-right: 0px;
+  }
+  .withBorderBottom{
+    border-bottom: 1px solid $promptColor;
+  }
+}
+
+.eachStationReport{
+  height: 40px;
+  border-bottom: 1px solid #dfdfdf;
+  text-align: center;
+  line-height: 40px;
+  .dataErrorText{
+    z-index: 10;
+    background:#ffffff;
+    box-shadow:0 2px 8px 0 rgba(0,0,0,0.20);
+    border-radius:4px;
+    width:268px;
+    height: auto;
+    display: flex;
+    padding: 10px;
+    text-align: left;
+    line-height: 22px;
+    flex-direction: row;
+    margin: 0 auto;
+    :global{
+      .icon-alert_01{
+        margin-right: 5px;
+      }
+    }
+  }
+  .deleteStationReport{
+    text-align: left;
+    color: $themeColor;
+  }
+  .addAbnormal{
+    color: $themeColor;
+    cursor: pointer;
+  }
+  :global{
+    .ant-input{
+      background:#fcffe5;
+      border:1px solid #f9b600;
+      border-radius:4px;
+      width:76px;
+      height:24px;
+      text-align: center;
+      margin: 7px auto;
+      line-height: 24px;
+      &:hover{
+        border:1px solid #f9b600;
+      }
+    }
+    .ant-input:not(.ant-input-disabled):hover {
+      border-color: #f9b600;
+    }
+    .ant-input:focus {
+      box-shadow: 0 0 0 0;
+      background: #fff;
+      border:1px solid #dfdfdf;
+    }
+    .icon-alert_01:before{
+      font-size: 12px;
+      color: #f9b600;
+      margin-left: 3px;
+    }
+  }
+}
+
+.addAbnormalModal{
   
+  .addLimitGenHeader{
+    margin-top: 30px; 
+  }
+  .addPowerGenInfo{
+    margin-bottom: 30px;
+    margin-top: 25px;
+    display: flex;
+    flex-direction: row;
+    .addPowerGenInfoR{
+      display: flex;
+      flex-direction: column;
+      margin-left: 20px;
+      .abnormalTextArea{
+        margin-top: 10px;
+        height: 190px;
+        width: 1000px;
+        padding: 10px 20px;
+      }
+    }
+  }
+  .uploadGenLost{
+    width: 70px;
+    padding: 0;
+    margin-left: 20px;
+    span{
+      margin-left: 0px;
+      display: inline-block;
+      width: 44px;
+      text-align: center;
+    }
+    :global{
+      .anticon{
+        width: 28px;
+        height: 30px;
+        line-height: 32px;
+        background: $themeColor;
+        color: #fff;
+        border-top-left-radius: 4px;
+        border-bottom-left-radius: 4px;
+      }
+    }
+  }
+  :global{
+    .ant-modal{
+      margin: 0;
+      top: 86px;
+      left: 201px;
+    }
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 200px;
+      background-color: #fff;
+    }
+    ::-webkit-scrollbar-thumb{
+      border-radius: 3px;
+      background-color: #555;
+      opacity: .5;
+    }
+    .ant-modal-header{
+      padding: 10px 24px;
+    }
+    .ant-modal-close-x{
+      height: 42px;
+      line-height: 42px;
+    }
+    .ant-modal-body{
+      padding: 10px 20px;
+      height: 666px;
+      overflow: auto;
+      .ant-form-item, .ant-form-horizontal {
+        margin-bottom: 0px;
+      }
+      .ant-form-horizontal{
+        display: flex;
+        flex-direction: column;
+      }
+      .ant-form-item{
+        display: flex;
+        flex-direction: row;
+      }
+    }
+    .ant-modal-footer{
+      background: #f1f1f1;
+      padding: 25px 35px;
+    }
+  }
+}
+
+.lostGenTable{
+  padding: 20px;
+  .removeFaultInfo{
+    color: $themeColor;
+  }
+  :global{
+    .ant-table .ant-table-thead > tr > th, .ant-table .ant-table-tbody > tr > td{
+      padding: 0 0;
+      text-align: center;
+    }
+    .ant-form-item, .ant-form-horizontal {
+      margin-bottom: 0px;
+    }
+    .ant-input{
+      width: 161px;
+    }
+    .ant-calendar-picker-clear, .ant-calendar-picker-icon{
+      right: 22px;
+    }
+  }
+  .lostPower{
+    width: 100px;
+  }
+}
+
+.lostAddForm{
+  background:#f0f2f5;
+  border:1px solid #dfdfdf;
+  border-radius:4px;
+  margin: 0 20px;
+  padding: 10px 0 15px 80px;
+  .horizontal{
+    display: flex;
+    flex-direction: row;
+    height: 49px;
+  }
+  .confirmAddFault{
+    margin: 0 20px 0 10px;
+    background: $themeColor;
+    color: #fff;
+    &:hover{
+      background: $themeColor;
+      color: #fff;
+    }
+  }
+  .reasonBox{
+    margin-bottom: 21px;
+    :global{
+      .has-error{
+        .ant-form-item-children{
+          height: 60px;
+        }
+      }
+    }
+  }
+  :global{
+    .has-error{
+      .ant-form-item-children{
+        height: 30px;
+      }
+    }
+    //form表单Input下的提示语定位
+    .ant-form-item-control-wrapper{
+      .ant-form-explain{
+        position: absolute;
+        white-space: nowrap;
+      }
+    }
+    .ant-form-item-children{
+      display: flex;
+      width: 600px;
+      :local{
+        .lostInputTip{
+          margin:0 5px;
+        }
+      }
+      textarea.ant-input{
+        width: 520px;
+        max-width: 530px;
+        height: 60px;
+      }
+    }
+    .ant-form-item{
+      margin-bottom: 21px;
+    }
+  }
 }

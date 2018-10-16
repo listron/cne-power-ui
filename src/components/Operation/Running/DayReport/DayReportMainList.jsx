@@ -6,7 +6,7 @@ import DayReportListSearch from './DayReportListSearch';
 import Footer from '../../../Common/Footer';
 import CommonPagination from '../../../Common/CommonPagination';
 import styles from './dayReportAll.scss';
-import { Button, Table } from 'antd';
+import { Button, Table,Icon } from 'antd';
 
 class DayReportMainList extends Component {
   static propTypes = {
@@ -19,14 +19,17 @@ class DayReportMainList extends Component {
     regionCode: PropTypes.number,
     startTime: PropTypes.string,
     dayReportList: PropTypes.array,
+    stations: PropTypes.array,
     getDayReportList: PropTypes.func,
     toChangeDayReportStore: PropTypes.func,
+    getStationBaseReport: PropTypes.func,
+    dayReportDetail: PropTypes.func,
   }
 
   constructor(props) {
     super(props);
   }
-
+  
   onPaginationChange = ({ currentPage, pageSize }) => { // 分页器
     const { getDayReportList, stationType, stationNameSort, startTime, regionCode  } = this.props;
     getDayReportList({
@@ -55,31 +58,24 @@ class DayReportMainList extends Component {
 
   toUploadPage = () => { // 去上传页面
     this.props.toChangeDayReportStore({
-      showPage: 'report'
+      showPage: 'report',
     })
   }
 
-  toReportDetail = (record, reportDate) => { // 去查看指定电站+日期日报详情 == todo
-    console.log( 'to report detail !!!!')
-    console.log(record);
-    console.log(reportDate);
-    this.props.toChangeDayReportStore({
-      showPage: 'detail',
+  toReportDetail = (record, reportDate) => { // 去查看指定电站+日期日报详情
+    this.props.dayReportDetail({ // 去查看详情
+      stationCode: record.stationCode,
+      reportDate: `${this.props.startTime}-${reportDate}`,
     })
   }
 
   toUploadReport = (record, reportDate) => { // 去上传指定电站+日期日报
-    console.log( 'to upload !!!!')
-    console.log(reportDate);
-    console.log(record);
-    this.props.toChangeDayReportStore({
-      showPage: 'report',
-      reportDay: reportDate,
-      reportStation: [{
-        stationCode: record.stationCode,
-        stationName: record.stationName
-      }]
-    })
+    const { reportDay } = `${this.props.startTime}-${reportDate}`;
+    const { stations } = this.props;
+    this.props.getStationBaseReport({
+      reportDay,
+      reportStation: stations.find(e=>e.stationCode === record.stationCode),
+    });
   }
 
   render() {
@@ -98,9 +94,9 @@ class DayReportMainList extends Component {
           render: (text, record, index) => {
             const showWarningIcon = text && record.status; // 展示黄色图标提示未完成损失电量的填写。true展示，false不展示。
             if(text){
-              return <span onClick={()=>this.toReportDetail(record, e.reportDate)}>查看</span>
+              return <span onClick={()=>this.toReportDetail(record, e.reportDate)}><i className="iconfont icon-look">{showWarningIcon && <i className="iconfont icon-alert_01" ></i>}</i></span>
             }else{
-              return <span onClick={()=>this.toUploadReport(record, e.reportDate)}>上传</span>
+              return <span onClick={()=>this.toUploadReport(record, e.reportDate)}><Icon type="plus-circle" theme="outlined" /></span>
             }
           }
         });
@@ -110,20 +106,20 @@ class DayReportMainList extends Component {
         <div className={styles.dayReportMain}>
           <div className={styles.contentMain}>
             <DayReportListSearch {...this.props} /> 
-            <div>
-              <Button onClick={this.toUploadPage}>上传日报</Button>
+            <div className={styles.operateDayReport} >
+              <Button onClick={this.toUploadPage} icon="plus" className={styles.uploadReport} ><span>上传日报</span></Button>
               <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalNum} onPaginationChange={this.onPaginationChange} />
             </div>
             <Table
               loading={loading}
               dataSource={dayReportList.map((e, i) => { // 二维数据结构调整解析至页面
                 const { dateList } = e;
-                delete e.dateList;
                 let dataObj = { key: i, ...e };
                 dateList && dateList.length > 0 && dateList.forEach(m=>{
                   dataObj[m.reportDate] = m.isUpload;
                   dataObj.status = m.status;
                 })
+                delete dataObj.dateList;
                 return dataObj;
               })}
               columns={columns}

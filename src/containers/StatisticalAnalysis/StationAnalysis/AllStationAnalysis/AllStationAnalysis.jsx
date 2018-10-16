@@ -2,6 +2,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import styles from "./allStationAnalysis.scss";
+import { allStationAnalysisAction } from './allStationAnalysisAction.js';
 import PropTypes from "prop-types";
 import AllStationStatistic from '../../../../components/StatisticalAnalysis/StationAnalysis/AllStationAnalysis/AllStationStatistic';
 import SingStationStatistic from '../../../../components/StatisticalAnalysis/StationAnalysis/AllStationAnalysis/SingStationStatistic';
@@ -9,7 +10,7 @@ import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import Footer from '../../../../components/Common/Footer';
 
 
-class ALarmStatistic extends Component {
+class AllStationAnalysis extends Component {
   static propTypes = {
     showPage: PropTypes.string,
     stationCode: PropTypes.array,
@@ -44,10 +45,9 @@ class ALarmStatistic extends Component {
     return (
       <div className={styles.allStationAnalysisBox} >
         <CommonBreadcrumb  {...breadCrumbData} style={{ marginLeft: '38px' }} />
-        <div className={styles.allStationStatistic}>     
-          <AllStationStatistic {...this.props} />
-          {showPage === 'single' && <SingStationStatistic {...this.props} />}     
-         
+        <div className={styles.allStationStatistic}>         
+         {showPage === 'multiple'&& <AllStationStatistic {...this.props} />}
+          {showPage === 'single' && <SingStationStatistic {...this.props} />}        
         </div>
         <Footer />
       </div>
@@ -56,20 +56,35 @@ class ALarmStatistic extends Component {
 }
 const mapStateToProps = (state) => {
   return {
-    // ...state.monitor.alarmStatistic.toJS(),
-    // stations: state.common.get('stations'),
+     ...state.statisticalAnalysisReducer.allStationAnalysis.toJS(),
+     stations: state.common.get('stations'),
+     
+     
   }
 }
 const mapDispatchToProps = (dispatch) => ({
-  // changeAlarmStatisticStore: payload => dispatch({ type: alarmAction.CHANGE_ALARM_STATISTIC_STORE_SAGA, payload }),
-  // getStationsAlarmStatistic: payload => dispatch({ type: alarmAction.GET_STATIONS_ALARM_STATISTIC_SAGA, payload }),
-  // getSingleStationAlarmStatistic: payload => dispatch({ type: alarmAction.GET_SINGLESTATION_ALARM_STATISTIC_SAGA, payload }),
-  // resetAlarm: payload => dispatch({ type: alarmAction.RESET_ALARM_STATISTIC_SAGA, payload }),
-  // exportAlarm: payload => dispatch({ type: alarmAction.EXPORT_ALARM_STATISTIC_SAGA, payload }),
+   changeAllStationStore: payload => dispatch({ type: allStationAnalysisAction.CHANGE_ALLSTATIONDATA_STORE_SAGA, payload }),
+   getAllStationStatisticData: payload => dispatch({ type: allStationAnalysisAction.getAllStationStatisticData, payload }),
+   getAllStationStatisticTableData: payload => dispatch({ type: allStationAnalysisAction.getAllStationStatisticTableData, payload }),
+   getAllStationMonthBarData: payload => dispatch({ type: allStationAnalysisAction.getAllStationMonthBarData, payload }),
+   getAllStationMonthPieData: payload => dispatch({ type: allStationAnalysisAction.getAllStationMonthPieData, payload }),
+   getAllStationYearBarData: payload => dispatch({ type: allStationAnalysisAction.getAllStationYearBarData, payload }),
+   getSingleStationStatisticData: payload => dispatch({ type: allStationAnalysisAction.getSingleStationStatisticData, payload }),
+   getSingleStationTargetData: payload => dispatch({ type: allStationAnalysisAction.getSingleStationTargetData, payload }),
+   getSingleStationMonthPieData: payload => dispatch({ type: allStationAnalysisAction.getSingleStationMonthPieData, payload }),
+   getSingleStationYearTargetData: payload => dispatch({ type: allStationAnalysisAction.getSingleStationYearTargetData, payload }),
+   getSingleStationPlanRateData: payload => dispatch({ type: allStationAnalysisAction.getSingleStationPlanRateData, payload }),
+   getSingleStationDayCompleteRateData: payload => dispatch({ type: allStationAnalysisAction.getSingleStationDayCompleteRateData, payload }),
+   getSingleStationPvCompareData: payload => dispatch({ type: allStationAnalysisAction.getSingleStationPvCompareData, payload }),
+   getSingleStationYearPvCompareData: payload => dispatch({ type: allStationAnalysisAction.getSingleStationYearPvCompareData, payload }),
+   getSingleStationPowerEffectiveData: payload => dispatch({ type: allStationAnalysisAction.getSingleStationPowerEffectiveData, payload }),
+
+
+  
 })
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(ALarmStatistic);
+export default connect(mapStateToProps, mapDispatchToProps)(AllStationAnalysis);
 
 
 

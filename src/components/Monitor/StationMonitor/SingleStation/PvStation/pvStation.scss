@@ -66,6 +66,7 @@
         color: $darkColor;
         cursor: pointer;
         font-size: 18px;
+        display: block;
       }
     }
     .trueTimeData{
@@ -74,7 +75,7 @@
       padding: 18px 25px;
       color: $darkColor;
       >div{
-        margin: 0 6px;
+        margin: 0 4px;
       }
       .pvlogo{
         :global{

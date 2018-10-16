@@ -3,11 +3,17 @@
   flex:1;
   flex-direction: column;
   :global{
-
+    .ant-tabs:not(.ant-tabs-vertical) > .ant-tabs-content > .ant-tabs-tabpane {
+      //width: 0ch;
+      display: flex;
+      justify-content:space-between;
+     
+  }
   }
 
   .tabContainer{
     display: flex;
+    flex:1;
     flex-direction: column;
     .dataGraph{
       display: flex;    

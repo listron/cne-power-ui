@@ -28,9 +28,15 @@ import AlarmStatistic from '../containers/Monitor/Alarm/AlarmStatistic';
 import EditPassword from '../containers/Others/EditPassword'; // 更改密码
 
 import Building from '../components/Common/Building/Building';
+
+//电站分析
 import AllStationAnalysis from '../containers/StatisticalAnalysis/StationAnalysis/AllStationAnalysis/AllStationAnalysis';
+import ProductionAnalysis from '../containers/StatisticalAnalysis/StationAnalysis/ProductionAnalysis/ProductionAnalysis';
+import OperateAnalysis from '../containers/StatisticalAnalysis/StationAnalysis/OperateAnalysis/OperateAnalysis';
+
 import Power from '../containers/Power';
 
+import Plan from "../containers/System/Production/Plan/Plan";
 /*
   注： path变量中，以/hidden开头的路径，将不展示在菜单中；
 */
@@ -39,7 +45,7 @@ const routers = [
     path: '/',
     exact: true,
     component: Building,
-  }, 
+  },
   { // 运维管理-工单-工单列表
     path: '/operation/ticket/list',
     exact: true,
@@ -153,21 +159,25 @@ const routers = [
     exact: true,
     component: AlarmManage // Building  AlarmManage
   },{ // 系统管理-计划配置
-    path: '/system/config',
+    path: '/system/config/plan',
     exact: true,
-    component: Building
+    component:Plan
   },{
     path: '/statistical/stationaccount/allstation',
     exact: true,
     component: AllStationAnalysis
   },{
+    path: '/statistical/stationaccount/allstation/:stationCode',
+    exact: true,
+    component: AllStationAnalysis
+  },{
     path: '/statistical/stationaccount/production',
     exact: true,
-    component: Building
+    component: ProductionAnalysis
   },{
     path: '/statistical/stationaccount/operate',
     exact: true,
-    component: Building
+    component: OperateAnalysis
   },{
     path: '/statistical/stationaccount/resource',
     exact: true,
@@ -239,7 +249,6 @@ const RouteWithSubRoutes = route => (
   />
 );
 export const routerConfig = routers.map((route, i) => <RouteWithSubRoutes key={i} {...route} />);
-
 
 
 

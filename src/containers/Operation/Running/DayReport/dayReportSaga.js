@@ -21,7 +21,6 @@ function *getDayReportList(action){//请求日报基本列表数据
   try{
     yield put({ type:dayReportAction.dayReportLoading });
     const response = yield call(axios.post,url,payload);
-
     const totalNum = response.data.data.total || 0;
     let { pageNum, pageSize } = payload;
     const maxPage = Math.ceil(totalNum / pageSize);
@@ -54,13 +53,20 @@ function *getDayReportList(action){//请求日报基本列表数据
 
 function *getStationBaseReport(action){ // 选中日期+电站后各待上传数据电站基础情况
   const { payload } = action;
-  const url = '/mock/operation/dayReport/baseInfo';
-  // const url = `${APIBasePath}${operation.getStationBaseReport}`
+  const { reportStation, reportDay } = payload
+  // const url = '/mock/operation/dayReport/baseInfo';
+  const url = `${APIBasePath}${operation.getStationBaseReport}`;
   try{
-    const response = yield call(axios.post,url,payload);
+    const response = yield call(axios.post,url,{
+      reportDay,
+      stationCode: reportStation.map(e=>`${e.stationCode}`)
+    });
     yield put({
       type:  dayReportAction.dayReportFetchSuccess,
       payload:{
+        showPage: 'report',
+        reportDay,
+        reportStation,
         stationReportBaseData: response.data.data || [],
         showReportInputList: true,
       },
@@ -78,12 +84,12 @@ function *getStationBaseReport(action){ // 选中日期+电站后各待上传数
   }
 }
 
-function *dayReportConfig(action){ // 日报必填项配置
+function *getDayReportConfig(action){ // 日报必填项配置
   const { payload } = action;
   try{
     const { enterpriseId, module, type} = payload;
-    const url = '/mock/operation/dayReport/config';
-    // const url = `${APIBasePath}${operation.dayReportConfig}/${enterpriseId}/${module}/${type}`;
+    // const url = '/mock/operation/dayReport/config';
+    const url = `${APIBasePath}${operation.getDayReportConfig}/${enterpriseId}/${module}/${type}`;
     const response = yield call(axios.get,url);
     yield put({
       type:  dayReportAction.dayReportFetchSuccess,
@@ -94,6 +100,33 @@ function *dayReportConfig(action){ // 日报必填项配置
   }catch(e){
     console.log(e);
     message.error('获取日报配置信息失败，请刷新重试');
+  }
+}
+
+function *getReportUploadedStation(action){ // 选定日期已上传过日报电站编码获取
+  const { payload } = action;
+  try{
+    const { reportDay } = payload;
+    // const url = '/mock/operation/dayReport/getReportUploadedStation';
+    const url = `${APIBasePath}${operation.getReportUploadedStation}/${reportDay}`;
+    const response = yield call(axios.get,url);
+    yield put({
+      type:  dayReportAction.dayReportFetchSuccess,
+      payload:{
+        reportDisableStation: response.data.data || [],
+        reportDay,
+        reportStation: [], // 清空已选电站
+      },
+    });
+  }catch(error){
+    message.error('获取已上传日报的电站列表失败，请重试');
+    console.log(error);
+    yield put({
+      type:  dayReportAction.changeDayReportStore,
+      payload:{
+        reportDay: payload.reportDay,
+      },
+    });
   }
 }
 
@@ -108,6 +141,7 @@ function *dayReportDetail(action){ // 日报详情
     yield put({
       type:  dayReportAction.dayReportFetchSuccess,
       payload:{
+        showPage: 'detail',
         selectedDayReportDetail: response.data.data || {}
       },
     });
@@ -155,8 +189,9 @@ function *dayReportUpdate(action){ // 日报编辑
 export function* watchDayReport() {
   yield takeLatest(dayReportAction.toChangeDayReportStore, toChangeDayReportStore);
   yield takeLatest(dayReportAction.getDayReportList, getDayReportList);
-  yield takeLatest(dayReportAction.dayReportConfig, dayReportConfig);
+  yield takeLatest(dayReportAction.getDayReportConfig, getDayReportConfig);
   yield takeLatest(dayReportAction.getStationBaseReport, getStationBaseReport);
+  yield takeLatest(dayReportAction.getReportUploadedStation, getReportUploadedStation);
   yield takeLatest(dayReportAction.dayReportDetail, dayReportDetail);
   yield takeLatest(dayReportAction.dayReportUpdate, dayReportUpdate);
 }

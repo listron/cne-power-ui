@@ -10,6 +10,8 @@ import stationManage from './Station/StationManage/stationManageReducer';
 import deviceManage from './Station/DeviceManage/deviceManageReducer';
 import pointManage from './Station/PointManage/pointManageReducer';
 
-const systemReducer = combineReducers({ department, enterprise, role, user, alarmManage, stationManage, deviceManage, pointManage });
+import plan from './Production/Plan/planReducer';
+
+const systemReducer = combineReducers({ department, enterprise, role, user, alarmManage, stationManage, deviceManage, pointManage, plan });
 
 export default systemReducer;

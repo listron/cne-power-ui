@@ -109,7 +109,7 @@ class StationSelectModal extends Component {
         visible={true}
         mask={false}
         onCancel={this.props.onClose}
-        footer={<div>
+        footer={<div className={styles.btn}>
           <Button onClick={this.onCancel}>重置</Button>
           <Button type="primary" onClick={this.onOk}>确认</Button>
         </div>}
