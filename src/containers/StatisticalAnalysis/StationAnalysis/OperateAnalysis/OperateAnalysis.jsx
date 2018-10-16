@@ -13,7 +13,7 @@ import Footer from '../../../../components/Common/Footer';
 class OperateAnalysisContainer extends Component {
   static propTypes = {
     stationCode: PropTypes.array,
-    changeAlarmStatisticStore: PropTypes.func,
+    
     location: PropTypes.object,
   }
 
