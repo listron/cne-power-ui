@@ -12,7 +12,7 @@ class CardSection extends Component {
     weatherList: PropTypes.object,
     operatorList: PropTypes.array, 
     alarmList: PropTypes.object,
-    workList: PropTypes.object,
+    workList: PropTypes.array,
     getWeatherList: PropTypes.func,
     getOperatorList: PropTypes.func,
     stationCode: PropTypes.string,
@@ -40,7 +40,6 @@ class CardSection extends Component {
       clearTimeout(this.timeOutId);
       this.getData(nextStation);
     }
-    // this.props.changeSingleStationStore({deviceTypeCode: nextProps.deviceTypeCode});
   }
 
   componentWillUnmount(){
@@ -59,13 +58,14 @@ class CardSection extends Component {
     let weatherIndex = this.state.weatherIndex;
     this.setState({
       disabled2: false
-    })
+    });
     let list = document.getElementsByClassName('weather');
     for (let i = 0; i < list.length; i++) {
       list[i].style.display = 'none';
     }
     document.getElementById(weatherIndex).style.display = 'inline-block';
     document.getElementById(weatherIndex + 1).style.display = 'inline-block';
+    
     if (weatherIndex === 0) {
       this.setState({
         disabled1: true
@@ -78,18 +78,19 @@ class CardSection extends Component {
   }
   next = () => {
     let weatherIndex = this.state.weatherIndex;
+    const {weatherList } = this.props;
     this.setState({
-      disabled1: false
+      disabled1: false,
     })
     let list = document.getElementsByClassName('weather');
     for (let i = 0; i < list.length; i++) {
       list[i].style.display = 'none';
     }
     document.getElementById(weatherIndex + 2).style.display = 'inline-block';
-    if (weatherIndex !== 4) {
+    if (weatherList.length>2 && (weatherIndex !== weatherList.length-2) && document.getElementById(weatherIndex + 3)) {
       document.getElementById(weatherIndex + 3).style.display = 'inline-block';
     }
-    if (weatherIndex === 4) {
+    if (weatherIndex === weatherList.length-2) {
       this.setState({
         disabled2: true
       })
@@ -111,12 +112,6 @@ class CardSection extends Component {
     const ticketList = `/operation/ticket/list?stationCode=${stationCode}`;
     const alarmRealtime= `/monitor/alarm/realtime?stationCode=${stationCode}`;
     
-    const weatherFuture = weatherList && weatherList.future && Object.values(weatherList.future);
-    const weatherSort = weatherFuture && weatherFuture.length>0 && weatherFuture.sort((a,b)=>{
-      if(a.date&&b.date){
-        return a.date.localeCompare(b.date)
-      }
-    });
     return (
       <div className={styles.cardSection}>
         <Row gutter={16}  type="flex" justify="space-around" >
@@ -147,34 +142,34 @@ class CardSection extends Component {
           </Col>
           <Col  span={6}>
             <div className={styles.weatherList}>
-              {weatherSort && weatherSort.length>0 && 
+              {weatherList && weatherList.length>0 && 
                 <div>
                   <Button type="primary" onClick={this.prev} disabled={disabled1} className={styles.weatherLeft} >
                     <Icon type="left" />
                   </Button>
-                  <Button  type="primary" onClick={this.next} disabled={disabled2} className={styles.next} className={styles.weatherRight} >
+                  <Button  type="primary" onClick={this.next} disabled={weatherList.length===2 ? true : disabled2} className={styles.next} className={styles.weatherRight} >
                     <Icon type="right" />
                   </Button>
                 </div>
               }
-              {weatherSort && weatherSort.length>0 ? 
-                weatherSort && weatherSort.map((e,i)=>{
+              {weatherList && weatherList.length>0 ? 
+                weatherList && weatherList.map((e,i)=>{
                   if(i<2){
                     return (
                     <div style={{display:'inline-block',margin: '0 5px',}} key={i} className="weather"  id={Number(i)} >
-                      <div className={i === 0 ? styles.today : ''} >{i === 0 ? '今天' : (i===1? '明天': e.date)}</div>
-                      <div className={styles.weatherIcon}><img src={`/img/weathercn/${e.weather_id.fa}.png`} /></div>
+                      <div className={i === 0 ? styles.today : ''} >{i === 0 ? '今天' : (i===1? '明天': e.weatherDate)}</div>
+                      <div className={styles.weatherIcon}><img src={`/img/weathercn/${e.weatherId.split(',')[0]}.png`} /></div>
                       <div>{e.temperature||''}</div>
                       <div>{e.weather||''}</div>
                       <div>{e.wind||''}</div>
                     </div>
                     );
                   }else{
-                    let tmpDate = e.date.substr(4).split('');
-                    tmpDate.splice(2,0,"-");
+                    let tmpDate = e.weatherDate.substr(5);
+                    // tmpDate.splice(2,0,"-");
                     return (<div style={{display:'none',margin: '0 5px',}} key={i} className="weather" id={Number(i)} >
-                      <div>{tmpDate.join('')}</div>
-                      <div className={styles.weatherIcon}><img src={`/img/weathercn/${e.weather_id.fa}.png`} /></div>
+                      <div>{tmpDate}</div>
+                      <div className={styles.weatherIcon}><img src={`/img/weathercn/${e.weatherId.split(',')[0]}.png`} /></div>
                       <div>{e.temperature||''}</div>
                       <div>{e.weather||''}</div>
                       <div>{e.wind||''}</div>

@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './sideReportPage.scss';
-import { Row, Col, Input, Icon } from 'antd';
+import { Row, Col, Input, Icon,message } from 'antd';
 import { reportBasefun } from '../reportBaseFun';
 
 class EachStationReport extends Component {
@@ -88,7 +88,18 @@ class EachStationReport extends Component {
     });
     setTimeout(()=>{this.setState({
       showDataError: false,
-    })},2000)
+    })},2000);
+    this.messageWarning();
+  }
+
+  messageWarning = () => {
+    message.config({
+      top: 400,
+      duration: 2,
+      maxCount: 1,
+      getContainer: () => document.getElementById('sideReportPage'),
+    });
+    message.warning(this.state.dataErrorText,2);
   }
 
   render(){
@@ -133,7 +144,10 @@ class EachStationReport extends Component {
         <Col span={1} className={styles.deleteStationReport} >
           <span onClick={this.removeStation}><Icon type="close-circle" theme="outlined" /></span>
         </Col>
-        {showDataError && <span>{dataErrorText}</span>}
+        {/* {showDataError && <span>{dataErrorText}</span>} */}
+        {/* {true && <div className={styles.dataErrorText}><i className="iconfont icon-alert_01" ></i><span>{dataErrorText}</span></div>} */}
+        {/* {showDataError && message.warning(dataErrorText, 2)} */}
+        {/* {showDataError && this.messageWarning} */}
       </Row>
     )
   }

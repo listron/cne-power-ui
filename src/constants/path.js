@@ -167,7 +167,7 @@ export default {
       getCapabilityDiagram: '/v3/monitor/capabilitydiagram/',//单电站出力图表
       getMonitorPower: '/v3/monitor/power/',//单电站理论发电量-实际发电量图表
       getStationList: '/v3/station/datalist/',//电站列表
-      getWeatherList: '/v3/monitor/weather/',//单电站未来天气
+      getWeatherList: '/v3/monitor/weather',//单电站未来天气
       getOperatorList: '/v3/station/user/',//单电站运维人员列表
       getAlarmList: '/v3/alarm/station/alarmnum/',//单电站活动告警数统计
       getWorkList: '/v3/monitor/worklist/',//单电站工单数统计

@@ -137,6 +137,25 @@
   border-bottom: 1px solid #dfdfdf;
   text-align: center;
   line-height: 40px;
+  .dataErrorText{
+    z-index: 10;
+    background:#ffffff;
+    box-shadow:0 2px 8px 0 rgba(0,0,0,0.20);
+    border-radius:4px;
+    width:268px;
+    height: auto;
+    display: flex;
+    padding: 10px;
+    text-align: left;
+    line-height: 22px;
+    flex-direction: row;
+    margin: 0 auto;
+    :global{
+      .icon-alert_01{
+        margin-right: 5px;
+      }
+    }
+  }
   .deleteStationReport{
     text-align: left;
     color: $themeColor;
