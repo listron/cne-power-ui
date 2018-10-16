@@ -85,6 +85,8 @@ const mapStateToProps = (state) => ({
   ...state.operation.dayReport.toJS(),
   stations: state.common.get('stations').toJS(),
   deviceExistInfo: state.common.get('deviceExistInfo').toJS(),
+  deviceExistInfo: state.common.get('deviceExistInfo').toJS(),
+  lostGenTypes: state.common.get('lostGenTypes').toJS(),
   enterpriseId: Cookie.get('enterpriseId'),
   userId: Cookie.get('userId'),
 });
@@ -95,9 +97,11 @@ const mapDispatchToProps = (dispatch) => ({
   getDayReportConfig: payload => dispatch({type: dayReportAction.getDayReportConfig, payload}),
   getStationBaseReport: payload => dispatch({type: dayReportAction.getStationBaseReport, payload}),
   getReportUploadedStation: payload => dispatch({type: dayReportAction.getReportUploadedStation, payload}),
+  uploadDayReport: payload => dispatch({ type: dayReportAction.uploadDayReport, payload}),
   dayReportDetail: payload => dispatch({type: dayReportAction.dayReportDetail, payload}),
   dayReportUpdate: payload => dispatch({type: dayReportAction.dayReportUpdate, payload}),
   findDeviceExist: payload => dispatch({ type: commonAction.findDeviceExist, payload }),
+  getLostGenType: payload => dispatch({ type: commonAction.getLostGenType, payload }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DayReport);

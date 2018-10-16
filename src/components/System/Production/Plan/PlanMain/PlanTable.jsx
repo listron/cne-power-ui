@@ -20,17 +20,27 @@ const EditableRow = ({form, index, ...props}) => {
 const EditableFormRow = Form.create()(EditableRow);
 
 class EditableCell extends React.Component {
+  static propTypes = {
+    record: PropTypes.object,
+    dataIndex: PropTypes.string,
+  };
   getInput = (form) => {
     const {dataIndex, record} = this.props;
-    if (dataIndex === 'yearPR') {
+    if (dataIndex === 'yearPR') { // PR年计划
       return (<span> <Input onBlur={(e) => this.yearPRChange(e, form, dataIndex, record)}
                             defaultValue={record[dataIndex]}/>%</span>);
     }
-    return <Input onChange={this.ValueChange} onBlur={(e) => this.valueChange(e, form, dataIndex, record)}/>;
+    if (record.setGridTime) {// 并网数据
+      if (getMonth(dataIndex) < Number(record.setGridTime)) {
+        return <Input disabled={true} placeholder="--"/>
+      }
+    }
+    return <Input onChange={this.ValueChange} onBlur={(e) => this.valueChange(e, form, dataIndex, record)} placeholder="--"/>;
   };
 
   yearPRChange = (e, form, dataIndex, record) => {//PR 数据修改
     const number = e.target.value;
+    // number==""
     if (isNaN(number)) {
       message.warning('只可以填写数字,可精确到小数点后两位');
       form.setFieldsValue({
@@ -45,19 +55,29 @@ class EditableCell extends React.Component {
     if (isNaN(number)) {
       message.warning('只可以填写数字,可精确到小数点后四位');
       form.setFieldsValue({
-        [dataIndex]: '',
+        [dataIndex]: record[dataIndex],
       });
       return false;
     } else {
       const index = getMonth(dataIndex) - 1;
-      record.planMonthGen[index] = number;
-      record.dataIndex=number;
+      record.planMonthGens[index] = number;
+      record.dataIndex = number;
+
       function sum(arr) {
         return arr.reduce(function (prev, curr, idx, arr) {
           return Number(prev) + Number(curr);
         });
       }
-      record.planPower=sum(record.planMonthGen);
+      let planMonthValue=[];
+      if (record.setGridTime) {// 并网数据
+        for(let i=Number(record.setGridTime)-1;i<12;i++){
+          planMonthValue.push(record.planMonthGens[i])
+        }
+      }else{
+        planMonthValue=record.planMonthGens
+      }
+
+      record.planPower = sum(planMonthValue);
       this.props.handlevaluechange(record, dataIndex, number)
     }
   };
@@ -70,7 +90,6 @@ class EditableCell extends React.Component {
       handlevaluechange,
       ...restProps
     } = this.props;
-
     return (
       <EditableContext.Consumer>
         {(form) => {
@@ -85,7 +104,7 @@ class EditableCell extends React.Component {
                       // message: `只可以填写数字,可精确到小数点后四位`,
                       // type:'number',
                     }],
-                    initialValue: record[dataIndex],
+                    initialValue: record[dataIndex] === "null" ? '--' : record[dataIndex],
                   })(this.getInput(form))}
                 </FormItem>
               ) : restProps.children}
@@ -106,8 +125,9 @@ class PlanTable extends Component {
     getPlanList: PropTypes.func,
     editPlanInfo: PropTypes.func,
     changePlanStore: PropTypes.func,
-
-  }
+    pageNum: PropTypes.number,
+    pageSize: PropTypes.number,
+  };
 
   constructor(props) {
     super(props);
@@ -116,7 +136,11 @@ class PlanTable extends Component {
       editingKey: '',
       monthPowers: {},
     }
-    this.handlevaluechange=this.handlevaluechange.bind(this);
+    this.handlevaluechange = this.handlevaluechange.bind(this);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this._dealTableData(nextProps.planData)
   }
 
   onPlanAdd = () => {//进入添加计划页
@@ -157,9 +181,9 @@ class PlanTable extends Component {
   }
 
   tableChange = (pagination, filter, sorter) => {//计划排序 排序还有误
-    // console.log("计划排序", pagination, filter, sorter);
     const sortField = this.getDefectSortField(sorter.field);
-    const ascend = sorter.order === 'ascend' ? '0' : '1';
+    const ascend = sorter.order === 'ascend' ? '0' : '1' || '';
+    // console.log("计划排序", pagination, sortField, ascend);
     this.props.getPlanList({
       year: this.props.planYear || new Date().getFullYear(), // 年份 默认是当前年
       stationCodes: this.props.stationCodes, // 电站编码
@@ -174,7 +198,7 @@ class PlanTable extends Component {
   // 是否可以编辑
   isEditing = (record) => {
     const currentYear = new Date().getFullYear();
-    if (currentYear - record.planYear >= 0) {
+    if (currentYear - record.planYear <= 0) {
       return record.key === this.state.editingKey;
     }
   };
@@ -215,7 +239,7 @@ class PlanTable extends Component {
         }
         const params = {
           year: newItemData.planYear,
-          stationCodes: newItemData.stationCode,
+          stationCode: newItemData.stationCode,
           month: month,
           monthPower: monthPower,
           planPower: newItemData.planPower,
@@ -225,10 +249,6 @@ class PlanTable extends Component {
         this.setState({editingKey: '', monthPowers: {}});
       }
     });
-  }
-
-  componentWillReceiveProps(nextProps) {
-    this._dealTableData(nextProps.planData)
   }
 
   _createTableColumn = () => {//生成表头
@@ -243,6 +263,7 @@ class PlanTable extends Component {
           width: '40px',
           key: item,
           editable: true,
+          className:styles.month,
           render: (text, record, index) => {
             const textValue = text ? text : '--';
             const editable = _this.isEditing(record);
@@ -250,8 +271,8 @@ class PlanTable extends Component {
               <div>
                 {
                   editable ? (
-                      <Input defaultValue={textValue} disabled={false}/>) :
-                    (<Input defaultValue={textValue} disabled={true}/>)
+                      <Input defaultValue={textValue} disabled={false} placeholder="--"/>) :
+                    (<Input defaultValue={textValue} disabled={true} placeholder="--"/>)
                 }
               </div>
             )
@@ -263,8 +284,8 @@ class PlanTable extends Component {
     const columns = [
       {
         title: '区域',
-        dataIndex: 'region',
-        key: 'region',
+        dataIndex: 'regionName',
+        key: 'regionName',
         width: '50px',
         sorter: true,
         render: text => {
@@ -275,9 +296,14 @@ class PlanTable extends Component {
         title: '电站名称',
         dataIndex: 'stationName',
         key: 'stationName',
-        // width:'100px',
+        width:'100px',
+        className:styles.stationNameBox,
         defaultSortOrder: 'descend',
         sorter: true,
+        render:(text,record)=>{
+          const textValue=text? text :'--';
+          return <div title={record.stationName} className={styles.stationName}>{textValue}</div>
+        }
       },
       {
         title: '装机容量(MW)',
@@ -285,22 +311,23 @@ class PlanTable extends Component {
         width: '80px',
         key: 'stationCapacity',
         sorter: true,
+        className:styles.stationCapacity,
       },
       {
         title: '年份',
         dataIndex: 'planYear',
         key: 'planYear',
-        // width:'50px',
         sorter: true,
       },
       {
         title: '年计划发电量(万kWh)',
         dataIndex: 'planPower',
         key: 'planPower',
-        width: '130px',
+        className:styles.planPower,
         sorter: true,
-        render: text => {
-          return text ? text : '--'
+        render:(text,record)=>{
+          const textValue=text? text :'--';
+          return <div className={this.isEditing(record) ? styles.save :''}>{textValue}</div>
         }
       },
       {
@@ -308,6 +335,7 @@ class PlanTable extends Component {
         dataIndex: 'yearPR',
         key: 'yearPR',
         editable: true,
+        className:styles.yearPR,
         render: text => {
           const textValue = text ? text : '--';
           return (<span><Input defaultValue={textValue} disabled={true}/>%</span>)
@@ -327,6 +355,7 @@ class PlanTable extends Component {
                     {form => (
                       <a
                         href="javascript:;"
+                        className={styles.save}
                         onClick={() => this.save(form, record.key)}
                         style={{marginRight: 8}}
                       >
@@ -336,7 +365,7 @@ class PlanTable extends Component {
                   </EditableContext.Consumer>
                 </span>
               ) : (
-                <a onClick={() => this.edit(record.key)}>编辑</a>
+                <a onClick={() => this.edit(record.key)} className={styles.edit}>编辑</a>
               )}
             </div>
           );
@@ -364,35 +393,28 @@ class PlanTable extends Component {
 
   _dealTableData = (planData) => { //将12个月的数据分开
     let TabelKey = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-    let initPlanData=[];
+    let initPlanData = [];
     if (planData.length > 0) {
-      initPlanData= planData.map((list, index) => {
+      initPlanData = planData.map((list, index) => {
         for (let i = 0; i < 12; i++) {
-          list[TabelKey[i]] = (list.planMonthGen && list.planMonthGen[i]) || ""
+          list[TabelKey[i]] = (list.planMonthGens && list.planMonthGens[i]==="null"? "--": list.planMonthGens[i] )|| ""
         }
-        function sum(arr) {
-          return arr.reduce(function (prev, curr, idx, arr) {
-            return Number(prev) + Number(curr);
-          });
+        if(list.onGridTime){
+          const onGridMonth = list.onGridTime.split('-')[1];
+          list.setGridTime = onGridMonth;
         }
-        if(list.planMonthGen){
-          list.planMonthGen.length>=1 ? list.planPower = sum(list.planMonthGen) : list.planPower = "";
-        }
-        list.planMonthGen=[];
         list.key = index;
         return list;
       })
-    } else {
-      this.setState({data:[]})
     }
     this.setState({data: initPlanData})
   };
 
-  handlevaluechange = (row, month,value) => {
-    let initMonthValue=this.state.monthPowers;
-    initMonthValue[month]=value;
+  handlevaluechange = (row, month, value) => {
+    let initMonthValue = this.state.monthPowers;
+    initMonthValue[month] = value;
     this.setState({
-      monthPowers:  initMonthValue
+      monthPowers: initMonthValue
     });
     const newData = [...this.state.data];
     const index = newData.findIndex(item => row.key === item.key);
@@ -403,7 +425,7 @@ class PlanTable extends Component {
         ...row,
       });
     }
-    this.setState({data:newData})
+    this.setState({data: newData})
   };
 
 
@@ -433,6 +455,7 @@ class PlanTable extends Component {
           pagination={false}
           components={components}
           dataSource={this.state.data}
+          onChange={this.tableChange}
           locale={{emptyText: <img width="223" height="164" src="/img/nodata.png"/>}}
           columns={this._createTableColumn()}
         />

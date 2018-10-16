@@ -69,6 +69,7 @@ class DefectDetail extends Component {
           defectId: defectIdList.get(index-1)}
         );
       } else {
+        message.destroy();
         message.config({
           top: 130,
           duration: 2,

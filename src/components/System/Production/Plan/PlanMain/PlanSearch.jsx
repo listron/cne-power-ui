@@ -15,6 +15,7 @@ class planSearch extends Component {
     getPlanList: PropTypes.func,
     sortField: PropTypes.string,
     sortMethod: PropTypes.string,
+    stationCodes: PropTypes.array,
   }
 
   constructor(props) {
@@ -22,7 +23,8 @@ class planSearch extends Component {
     this.state = {
       open: false,
       dateValue: '2018',
-      stationCode: []
+      stationCodes: [],
+      selectStation :[],
     }
   }
 
@@ -36,18 +38,21 @@ class planSearch extends Component {
   };
 
   stationSelected = (rest) => {
-    const stationCode = rest.map((item, index) => {
+    const stationCodes = rest.map((item, index) => {
       return item.stationCode
     });
-    this.setState({stationCode: stationCode})
+    this.setState({
+      selectStation:rest,
+      stationCodes: stationCodes
+    });
   };
 
 
   selectValue = () => {
-    let {stationCode} = this.state;
+    let {stationCodes} = this.state;
     const params = {
       year: this.state.dateValue,
-      stationCodes: stationCode.length<1?this.props.stationCodes:stationCode,
+      stationCodes: stationCodes.length > 0 ? stationCodes: null,
       sortField: this.props.sortField,
       sortMethod: this.props.sortMethod,
       pageNum: this.props.pageNum,
@@ -59,6 +64,7 @@ class planSearch extends Component {
 
   render() {
     const {stations} = this.props;
+    const {selectStation}=this.state;
     const dateFormat = 'YYYY';
     return (
       <div className={styles.planSearch}>
@@ -75,12 +81,12 @@ class planSearch extends Component {
           />
         </div>
         <div className={styles.topLeft}>
-          <label htmlFor="label" className={styles.station}>电站选择</label>
+          <label className={styles.station}>电站选择</label>
           <StationSelect
             data={stations.toJS()}
             multiple={true}
+            value={selectStation}
             onChange={this.stationSelected}
-            id="label"
           />
         </div>
         <Button className={styles.searchButton} onClick={this.selectValue}>查询</Button>

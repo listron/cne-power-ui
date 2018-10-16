@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styles from './planSide.scss';
 import {Input, Button, DatePicker, Icon, Select, Form} from 'antd';
 import WarningTip from '../../../../Common/WarningTip';
-import PlanAddTable from './PlanAddTable'
+import PlanAddTable from './AddPlanTable'
 
 class PlanSide extends Component {
   static propTypes = {
@@ -12,7 +12,8 @@ class PlanSide extends Component {
     changePlanStore: PropTypes.func,
     addPlanInfo: PropTypes.func,
     addPlanYear: PropTypes.string,
-    addStationCodes: PropTypes.array
+    addStationCodes: PropTypes.array,
+
   };
 
   constructor(props) {
@@ -22,58 +23,78 @@ class PlanSide extends Component {
       warningTipText: '退出后信息无法保存!',
       addValueChange: '', // 信息是否修改过
       leave: '', //判断离开之后返回到什么页面
-      addSave: 'false' // 是否保存
+      addSave: 'false', // 是否保存
+      warningTipSaveText:'请先填写完整之后再保存',
+      showSaveWarningTip:false
     }
-
   }
 
-  onWarningTipShow = (name) => {
+  onWarningTipShow = (name) => { // 上一步按钮
     if (this.state.addValueChange === "change") {
       this.setState({
         showWarningTip: true,
         leave: name
       })
     } else {
-      name === 'quit' ? this.props.changePlanStore({showPage: 'list'}) : this.props.onShowSideChange({showSidePage: 'add'});
+      name === 'quit' ?
+        this.props.changePlanStore({
+          showPage: 'list',
+          loading:false,
+          planStations:[],
+          addPlanYear:'',
+          continueAdd:false,
+          addStationCodes:[],
+        }) :
+        this.props.onShowSideChange({showSidePage: 'add'});
     }
   };
-
-  confirmWarningTip = () => {
+  confirmWarningTip = () => { // 上一步
     this.setState({
       showWarningTip: false,
     });
-    this.state.leave === 'quit' ? this.props.changePlanStore({showPage: 'list'}) : this.props.onShowSideChange({showSidePage: 'add'});
+    this.state.leave === 'quit' ?
+      this.props.changePlanStore({
+        showPage: 'list',
+        loading:false,
+        planStations:[],
+        addPlanYear:'',
+        continueAdd:false,
+        addStationCodes:[],
+      }) :
+      this.props.onShowSideChange({showSidePage: 'add'});
   };
-  cancelWarningTip = () => {
+  cancelWarningTip = () => { // 上一步
     this.setState({
       showWarningTip: false,
     })
   };
+  addValueChange = (e) => {  // 判断数据是否修改， change ""
+    this.setState({
+      addValueChange: e
+    })
+  };
 
-  save = () => {
+  save = () => { // 保存按钮
     this.setState({
       addSave: 'true'
     })
   };
-
   addPlanSave = (stations) => { // 保存数据判断
-    let continueAdd = stations.every((list, index) => { //判断是否可以保存
+    let continueSave = stations.every((list, index) => { //判断是否可以保存
       let saveAddStation = list.yearPR && list.monthPower.length === 12;
       if (!saveAddStation) {
         　return false;
       }
       let startIndex = 0;
       list.onGridTime ? startIndex = Number(list.onGridTime) : startIndex = 0;
-      for (let i = startIndex; i < list.monthPower.length; i++) {
+      for (let i = startIndex-1; i < list.monthPower.length; i++) {
         if (list.monthPower[i] === "" || typeof(list.monthPower[i]) === "undefined") {
          return false
-        }else{
-          return true
         }
       }
+      return true
     });
-
-    if(continueAdd){
+    if(continueSave){
      let data= stations.map((list,index)=>{
         let station = {};
         station.year = Number(list.planYear);
@@ -83,39 +104,30 @@ class PlanSide extends Component {
         station.stationCode = list.stationCode;
         return station
       });
-      this.setState({addSave:'false'})
-      this.props.addPlanInfo({"data": data})
-      // this.props.changePlanStore({showPage: 'list'})
+      this.setState({addSave:'false'});
+      this.props.addPlanInfo({"data": data});
     }else{
-
-      alert(" 请先填写完整之后再保存")
       this.setState({
         addSave:'false',
-        // warningTipText:"请先填写完整之后再保存",
-        // showWarningTip:true,
+        showSaveWarningTip:true,
       })
-
     }
-
-
   };
 
-
-  addValueChange = (e) => {
+  saveWarningTip =()=>{
     this.setState({
-      addValueChange: e
+      showSaveWarningTip:false
     })
   };
 
   render() {
-    const {addPlanYear, addStationCodes} = this.props;
-    const {showWarningTip, warningTipText, addSave} = this.state;
+    const {showWarningTip, warningTipText, addSave,warningTipSaveText,showSaveWarningTip} = this.state;
+    const {addStationCodes}=this.props;
     return (
       <div className={styles.editPlan}>
         {showWarningTip &&
         <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText}/>}
-
-        {/*{}*/}
+        { showSaveWarningTip && <WarningTip  onOK={this.saveWarningTip} value={warningTipSaveText}/>}
         <div className={styles.editPlanTitle}>
           <span className={styles.sideEidtTitleTip}>添加</span>
           <div className={styles.sideEditTitleRight}>
@@ -129,6 +141,9 @@ class PlanSide extends Component {
           </div>
         </div>
         <div className={styles.mainPart}>
+          <div className={styles.mainPartTop}>
+            <p>新添加<span>{addStationCodes.length}</span>条</p>
+          </div>
           <PlanAddTable
             addValueChange={this.addValueChange}
             save={addSave}

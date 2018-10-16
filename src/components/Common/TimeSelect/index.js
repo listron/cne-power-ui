@@ -59,14 +59,14 @@ class TimeSelect extends React.Component {
   render() {
     const { MonthPicker, RangePicker } = DatePicker;
     const { value, mode } = this.state;
-    const { dateType } = this.props;
+    const { dateType, } = this.props;
     const dateFormat = 'YYYY'
 
 
     const format = 'YYYY:MM';
     return (
       <div className={styles.timeSelect}>
-        <div className={styles.textStyle}>统计时间选择</div>
+        <div className={styles.textStyle}>{this.props.text}</div>
         <div className={styles.buttonStyle}>
           <Radio.Group defaultValue="month" buttonStyle="solid" onChange={this.onHandleTime}>
             <Radio.Button value="year">年</Radio.Button>
