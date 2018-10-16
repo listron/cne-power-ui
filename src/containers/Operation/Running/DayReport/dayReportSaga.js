@@ -16,8 +16,8 @@ function *toChangeDayReportStore(action){ // 存储payload指定参数，替换r
 
 function *getDayReportList(action){//请求日报基本列表数据
   const { payload } = action;
-  const url = '/mock/operation/dayReport/list';
-  // const url = `${APIBasePath}${operation.getDayReportList}`
+  // const url = '/mock/operation/dayReport/list';
+  const url = `${APIBasePath}${operation.getDayReportList}`
   try{
     yield put({ type:dayReportAction.dayReportLoading });
     const response = yield call(axios.post,url,payload);

@@ -20,6 +20,7 @@ class SideReportPage extends Component {
     toChangeDayReportStore: PropTypes.func,
     getReportUploadedStation: PropTypes.func,
     getStationBaseReport: PropTypes.func,
+    uploadDayReport: PropTypes.func,
     showReportInputList: PropTypes.bool,
   }
 
@@ -155,7 +156,7 @@ class SideReportPage extends Component {
         })
         return { dailyReport, dailyDetailList: newDailyDetailList};
       })
-      this.props.
+      this.props.uploadDayReport({allStationDailyDetailList: uploadInfo})
     }
   }
 

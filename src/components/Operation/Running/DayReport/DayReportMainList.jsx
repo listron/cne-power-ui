@@ -7,6 +7,7 @@ import Footer from '../../../Common/Footer';
 import CommonPagination from '../../../Common/CommonPagination';
 import styles from './dayReportAll.scss';
 import { Button, Table,Icon } from 'antd';
+import moment from 'moment';
 
 class DayReportMainList extends Component {
   static propTypes = {
@@ -86,9 +87,10 @@ class DayReportMainList extends Component {
       dataIndex: 'stationName',
       sorter: true,
     }]
-    if(dayReportList.length > 0 && dayReportList[0].dateList){
-      const { dateList } = dayReportList[0];
-      dateList && dateList.length > 0 && dateList.forEach((e,i)=>{
+    console.log(moment('2018-10-16').format('DD'));
+    if(dayReportList.length > 0 && dayReportList[0].dataList){
+      const { dataList } = dayReportList[0];
+      dataList && dataList.length > 0 && dataList.forEach(e=>{
         columns.push({
           title: e.reportDate,
           dataIndex: e.reportDate,
@@ -103,6 +105,8 @@ class DayReportMainList extends Component {
         });
       })
     }
+    console.log(dayReportList)
+    console.log(columns)
     return (
         <div className={styles.dayReportMain}>
           <div className={styles.contentMain}>
