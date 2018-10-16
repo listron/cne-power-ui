@@ -85,7 +85,7 @@ export default {
       getStationBaseReport: '/v3/performance/dailystationcode', // 选中日期+电站后各待上传数据电站基础情况
       dayReportDetail: '/v3/performance/detail', // 获取选中日报详情
       dayReportUpdate: '/v3/performance/dailyReport/mulitUpdate', // 日报详情编辑
-    }, 
+    },
     system: {
       getEnterprisList: '/v3/enterprise/list',//企业列表
       getEnterprisDetail: '/v3/enterprise',//企业详情获取
@@ -132,11 +132,16 @@ export default {
       deletePoints: '/v3/management/station/device/modes', // 删除点表信息
       importPointsInfo: '/v3/management/station/device/points', //导入点表信息
       downloadPointInfo: '/v3/management/station/device/points', // 导出测点表
-      
+
       importAlarmInfo: '/v3/management/alarmevent/import', //导入告警信息
       getAlarmList: '/v3/management/alarmevent/list', //获取告警列表
       deleteAlarms: '/v3/management/alarmevent/delete', // 删除告警
       downloadAlarmInfo: '/v3/management/alarmevent/export', // 导出告警事件
+
+      //  生产计划
+      getPlanList:'/v3/performance/stationplanlist', //查看生产计划列表
+      addPlanList:'/v3/performance/stationplan', //  添加生产计划
+      eddPlanList:'/v3/performance/stationplan' //  编辑生产计划
     },
     monitor: {//实时监控
       getStationType:'/v3/monitor/stations/',
@@ -168,7 +173,7 @@ export default {
       getDeviceTypeFlow: '/v3/station/devicetypeflow/',//单电站设备类型流程图
       getStationDeviceList: '/v3/station/devicelist/',//单电站设备列表
       editData:'/v3/management/stationgen',//编辑月，年的累计发电量
-     
+
       getHistoryAlarm: '/v3/alarm/station/historyalarmlist',//历史告警
       getStationsAlarmStatistic: '/v3/alarm/stations/alarmsummary',//多电站统计
       getSingleStationAlarmStatistic: '/v3/alarm/station/alarmsummary',//单电站统计

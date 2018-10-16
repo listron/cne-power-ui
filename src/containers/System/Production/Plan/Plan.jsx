@@ -38,7 +38,6 @@ class Plan extends Component {
   }
 
   onShowSideChange = ({ showSidePage }) => {
-    console.log("父",showSidePage)
     this.setState({ showSidePage });
   }
   onToggleSide = () => {
@@ -68,7 +67,7 @@ class Plan extends Component {
       pageNum: 1,//当前页号
       pageSize: 10,//每页容纳条数
       year: '', // 选择年份 默认当前年
-      stationCodes: [],
+      stationCodes: null,
     });
   }
 
@@ -112,6 +111,8 @@ const mapDispatchToProps = (dispatch) => ({
   editPlanInfo: payload => dispatch({type: planAction.editPlanInfo, payload}),
   getStations: payload => dispatch({ type: commonAction.getStations, payload }),
   getOwnStations: payload => dispatch({ type: planAction.getOwnStations, payload }),
+  addPlanInfo: payload => dispatch({ type: planAction.addPlanInfo, payload }),
+
 
 });
 

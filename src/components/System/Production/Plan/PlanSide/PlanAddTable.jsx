@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import styles from './planSide.scss';
-import {Table, Input, Button, DatePicker, Icon, Select, Form} from 'antd';
+import {Table, Input,Form,message} from 'antd';
+import {getMonth} from "../plan";
 
 const FormItem = Form.Item;
 const EditableContext = React.createContext();
@@ -15,97 +16,71 @@ const EditableRow = ({form, index, ...props}) => (
 const EditableFormRow = Form.create()(EditableRow);
 
 class EditableCell extends React.Component {
-  state = {
-    editing: false,
-  }
-
-  componentDidMount() {
-
-  }
-
-  componentWillUnmount() {
-
-  }
-
-  toggleEdit = () => {
-    const editing = !this.state.editing;
-    this.setState({editing}, () => {
-      if (editing) {
-        this.input.focus();
-      }
-    });
-  }
-
-  handleClickOutside = (e) => {
-    const {editing} = this.state;
-    if (editing && this.cell !== e.target && !this.cell.contains(e.target)) {
-      this.save();
+  getInput = (form) => {
+    const {dataIndex, record} = this.props;
+    if(record.onGridTime){
+       if(getMonth(dataIndex)<Number(record.onGridTime)){
+         return <Input  disabled={true} />
+       }else{
+         return <Input  onBlur={(e) => this.valueChange(e, form, dataIndex, record)} placeholder="--"/>;
+       }
+    }else{
+      return <Input  onBlur={(e) => this.valueChange(e, form, dataIndex, record)} placeholder="--"/>;
     }
-  }
-
-  save = () => {
-    const {record, handleSave} = this.props;
-    this.form.validateFields((error, values) => {
-      if (error) {
-        return;
+  };
+  valueChange = (e, form, dataIndex, record) => {//月份的修改，修改完毕之后年计划跟着变化
+    const number = e.target.value;
+    if (isNaN(number)) {
+      message.warning('只可以填写数字,可精确到小数点后四位');
+      form.setFieldsValue({
+        [dataIndex]: '',
+      });
+      return false;
+    } else {
+      const index=getMonth(dataIndex)-1;
+      record.monthPower[index] = number;
+      record[dataIndex] = number;
+      function sum(arr) {
+        return arr.reduce(function (prev, curr, idx, arr) {
+          return Number(prev) + Number(curr);
+        });
       }
-      this.toggleEdit();
-      handleSave({...record, ...values});
-    });
-  }
-
+      record.planPower=sum(record.monthPower);
+      this.props.handlevaluechange(record)
+    }
+  };
   render() {
-    const {editing} = this.state;
     const {
-      editable,
+      editing,
       dataIndex,
-      title,
       record,
-      index,
-      handleSave,
+      handlevaluechange,
       ...restProps
     } = this.props;
+
     return (
-      <td ref={node => (this.cell = node)} {...restProps}>
-        {editable ? (
-          <EditableContext.Consumer>
-            {(form) => {
-              this.form = form;
-              return (
-                editing ? (
-                  <FormItem style={{margin: 0}}>
-                    {form.getFieldDecorator(dataIndex, {
-                      rules: [{
-                        required: true,
-                        message: `${title} is required.`,
-                      }],
-                      initialValue: record[dataIndex],
-                    })(
-                      <Input
-                        ref={node => (this.input = node)}
-                        onPressEnter={this.save}
-                      />
-                    )}
-                  </FormItem>
-                ) : (
-                  <div
-                    className="editable-cell-value-wrap"
-                    style={{paddingRight: 24}}
-                    onClick={this.toggleEdit}
-                  >
-                    {restProps.children}
-                  </div>
-                )
-              );
-            }}
-          </EditableContext.Consumer>
-        ) : restProps.children}
-      </td>
+      <EditableContext.Consumer>
+        {(form) => {
+          const {getFieldDecorator} = form;
+          return (
+            <td {...restProps}>
+              {editing ? (
+                <FormItem style={{margin: 0}}>
+                  {getFieldDecorator(dataIndex, {
+                    rules: [{
+                      required: false,
+                    }],
+                    initialValue: record[dataIndex],
+                  })(this.getInput(form))}
+                </FormItem>
+              ) : restProps.children}
+            </td>
+          );
+        }}
+      </EditableContext.Consumer>
     );
   }
 }
-
-
 
 class PlanAddTable extends React.Component {
 
@@ -113,13 +88,27 @@ class PlanAddTable extends React.Component {
     showSidePage: PropTypes.string,
     addStationCodes: PropTypes.array,
     addPlanYear: PropTypes.string,
+    save: PropTypes.string,
+    addValueChange:PropTypes.func,
+    addplansave:PropTypes.func,
   };
 
   constructor(props) {
     super(props);
     this.state = {
-      AddPlandata:{}
-    };
+      AddPlandata:[]
+    }
+  }
+  componentWillMount(){
+    const {addStationCodes,addPlanYear}=this.props;
+    this._dealTableData(addStationCodes,addPlanYear)
+  }
+
+  componentWillReceiveProps(nextProps){
+    if(this.state.save===nextProps.save){
+      return false
+    }
+    nextProps.save==='true'? this.props.addplansave(this.state.AddPlandata):'';
   }
 
   // 删除的时候
@@ -128,25 +117,34 @@ class PlanAddTable extends React.Component {
     this.setState({AddPlandata: AddPlandata.filter(item => item.key !== key)});
   };
 
-
-  handleSave = (row) => {
-    const newData = [...this.state.dataSource];
+  handlevaluechange = (row) => {
+    const newData = [...this.state.AddPlandata];
     const index = newData.findIndex(item => row.key === item.key);
-    const item = newData[index];
-    newData.splice(index, 1, {
-      ...item,
-      ...row,
-    });
-    this.setState({dataSource: newData});
-  }
+    if (index > -1) {
+      const item = newData[index];
+      newData.splice(index, 1, {
+        ...item,
+        ...row,
+      });
+    }
+    this.setState({AddPlandata:newData});
+    this.props.addValueChange("change"); // 数据是否修改
+  };
 
-  componentWillReceiveProps(nextProps) {
-    this._dealTableData(nextProps.addStationCodes, nextProps.addPlanYear)
-  }
+  yearPRChange = (e,row) => {//PR 数据修改
+    const number = e.target.value;
+    if (isNaN(number)) {
+      message.warning('只可以填写数字,可精确到小数点后两位');
+      row.yearPR="";
+      return false;
+    }else{
+      row.yearPR=number;
+    }
+    this.handlevaluechange(row)
+  };
 
   _createTableColumn = () => {//生成表头
     const _this = this;
-
     function _MonthColumns() {
       let tabelKey = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
       return tabelKey.map((item, index) => {
@@ -155,11 +153,7 @@ class PlanAddTable extends React.Component {
           dataIndex: item,
           width: '40px',
           key: item,
-          editable: true,
-          render: text => {
-            const textValue = text ? text : '--';
-            return <Input defaultValue={textValue} disabled={false}/>
-          }
+          editable: true
         }
       })
     };
@@ -203,9 +197,9 @@ class PlanAddTable extends React.Component {
         title: 'PR年计划',
         dataIndex: 'yearPR',
         key: 'yearPR',
-        render: text => {
+        render: (text,record) => {
           const textValue = text ? text : '--';
-          return (<span><Input defaultValue={textValue} disabled={true}/>%</span>)
+          return (<span><Input defaultValue={textValue} onBlur={(e) => this.yearPRChange(e,record)}/>%</span>)
         }
       },
       {
@@ -230,6 +224,7 @@ class PlanAddTable extends React.Component {
           record,
           dataIndex: col.dataIndex,
           title: col.title,
+          editing:col.editable
         }),
       };
     });
@@ -240,36 +235,27 @@ class PlanAddTable extends React.Component {
     let TabelKey = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     const addPlanStations=addStationCodes.map((list, index) => {
       const AddPlanstaion={};
-      if (list.onGridTime) {
-        //  有了并网时间
+      AddPlanstaion.monthPower=[]; //1-12月每月的计划发电量
+      if (list.onGridTime) {//  有了并网时间
+        const onGridMonth = list.onGridTime.split('-')[1];
+        AddPlanstaion.onGridTime=onGridMonth;
         AddPlanstaion.planPower = list.planPower;
-        for (let i = 0; i < 12; i++) {
-          AddPlanstaion[TabelKey[i]] = list.monthPlanPowers.planMonthGen[i]
+        for (let i = 0; i < Number(onGridMonth); i++) {
+          AddPlanstaion[TabelKey[i]] = ''
         }
+        // AddPlanstaion.monthPower=list.planMonthGen;
+        // AddPlanstaion.planPower = sum(list.planMonthGen);
       }
+      AddPlanstaion.key=index;
       AddPlanstaion.region = list.regionName;  //区域
       AddPlanstaion.stationName = list.stationName; //电站名称
       AddPlanstaion.stationCapacity = list.stationCapacity; //装机容量
       AddPlanstaion.planYear=addPlanYear; //  年份
+      AddPlanstaion.stationCode=list.stationCode; // 电站编码
       return AddPlanstaion
-
-      // // 计算年计划发电量
-      // function sum(arr) {
-      //   return arr.reduce(function (prev, curr, idx, arr) {
-      //     return Number(prev) + Number(curr);
-      //   });
-      // }
-      //
-      // const planPower = sum(list.monthPlanPowers.planMonthGen);
-      // list.key = index;
-      // list.planYear = addPlanYear;
-      // list.planPower = planPower;
     });
 
     this.setState({AddPlandata: addPlanStations})
-    return addPlanStations
-    // console.log(12323,addPlanStations)
-
   };
 
   render() {
@@ -278,11 +264,11 @@ class PlanAddTable extends React.Component {
     const components = {
       body: {
         row: EditableFormRow,
-        cell: EditableCell,
+        cell: (...rest) => {
+          return <EditableCell {...rest[0]} handlevaluechange={this.handlevaluechange}/>
+        },
       },
     };
-    console.log(addStationCodes, addPlanYear);
-    // this._dealTableData(addStationCodes,addPlanYear);
     return (
       <Table
         components={components}

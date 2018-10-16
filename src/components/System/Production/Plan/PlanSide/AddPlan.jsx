@@ -107,7 +107,7 @@ class AddPlan extends Component {
               multiple={true}
               onChange={this.selectStation}
               disabled={ continueAdd ? false : true}
-              disabledStaion={planStations}
+              disabledStation={planStations}
             />
             <Button onClick={this.toPlanStations} disabled={!canAdd} className={canAdd ? styles.addPlanNext : styles.addPlanNextDisabled} >下一步</Button>
           </div>

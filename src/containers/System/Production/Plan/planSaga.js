@@ -17,10 +17,11 @@ function* changePlanStore(action) {//存储payload指定参数，替换reducer-s
 
 function* getPlanList(action) {//请求生产计划列表数据
   const {payload} = action;
-  const url = '/mock/system/planList';
-  // const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.getDepartmentList}`
+  // const url = '/mock/system/planList';
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.getPlanList}`
   try {
     yield put({type: planAction.PLAN_FETCH});
+    console.log(payload,payload);
     const response = yield call(axios.post, url, payload);
 
     const totalNum = response.data.data.totalNum || 0;
@@ -32,6 +33,7 @@ function* getPlanList(action) {//请求生产计划列表数据
       pageNum = maxPage;
     }
 
+    console.log(123,response.data.data);
     yield put({
       type: planAction.GET_PLAN_FETCH_SUCCESS,
       payload: {
@@ -39,26 +41,27 @@ function* getPlanList(action) {//请求生产计划列表数据
         planData: response.data.data.planData || [],
         totalNum,
         pageNum,
-        buttonLoading: false
       },
     });
   } catch (e) {
     yield put({
-      type: planAction.GET_PLAN_FETCH_SUCCESS,
+      type: planAction.CHANGE_PLAN_STORE,
       payload: {
-        ...payload,
-        planData: [],
         totalNum: 0,
-        buttonLoading: false
+        loading: false
       },
     });
     console.log(e);
   }
+
+
 }
 
 function* editPlanInfo(action) {
   const {payload} = action;
-  const url = '/mock/system/editPlanInfo';
+  // const url = '/mock/system/editPlanInfo';
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.eddPlanList}`
+
   try {
     yield put({type: planAction.PLAN_FETCH});
     const response = yield call(axios.put, url, payload);
@@ -78,7 +81,12 @@ function* editPlanInfo(action) {
       });
     }
   } catch (e) {
-    console.log(e);
+    yield put({
+      type: planAction.CHANGE_PLAN_STORE,
+      payload: {
+        loading: false
+      },
+    });
   }
 }
 
@@ -108,6 +116,31 @@ function* getOwnStations(action) {
 }
 
 function* addPlanInfo(action) {
+  const {payload} = action;
+  // const url = '/mock/system/editPlanInfo';
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.addPlanList}`
+
+  try {
+    yield put({type: planAction.PLAN_FETCH});
+    const response = yield call(axios.put, url, payload);
+    if (response.data.code === '10000') {
+      yield put({type: planAction.GET_PLAN_FETCH_SUCCESS});
+      const params = yield select(state => ({//继续请求生产计划列表
+        year: state.system.plan.get('year'),
+        stationCodes: state.system.plan.get('stationCodes'),
+        sortField: state.system.plan.get('sortField'),
+        sortMethod: state.system.plan.get('sortMethod'),
+        pageSize: state.system.plan.get('pageSize'),
+        pageNum: state.system.plan.get('pageNum'),
+      }));
+      yield put({
+        type: planAction.getPlanList,
+        payload: params,
+      });
+    }
+  } catch (e) {
+    console.log(e);
+  }
 }
 
 
@@ -116,5 +149,6 @@ export function* watchPlan() {
   yield takeLatest(planAction.getPlanList, getPlanList);
   yield takeLatest(planAction.editPlanInfo, editPlanInfo);
   yield takeLatest(planAction.getOwnStations, getOwnStations);
+  yield takeLatest(planAction.addPlanInfo, addPlanInfo);
 }
 

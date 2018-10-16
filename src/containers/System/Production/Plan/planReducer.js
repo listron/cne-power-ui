@@ -17,7 +17,7 @@ var initState = Immutable.fromJS({
   planData: [],//生产计划列表数据
   planStations:[],// 已经添加过的电站
   continueAdd: false,//继续添加生产计划按钮
-  addPlanYear:'', //计划生产的年俸
+  addPlanYear:'', //计划生产的年份
   addStationCodes:[], // 计划生产的电站
 });
 

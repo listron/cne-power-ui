@@ -11,10 +11,20 @@ class PlanSide extends Component {
   static propTypes = {
     showSidePage: PropTypes.string,
     addStationCodes:PropTypes.array,
+    changePlanStore:PropTypes.func,
   }
 
   constructor(props){
     super(props);
+  }
+
+  componentWillUnmount(){
+    this.props.changePlanStore({
+      planStations:[],
+      continueAdd:false,
+      addPlanYear:'',
+      addStationCodes:[],
+    })
   }
 
   render(){
