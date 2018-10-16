@@ -9,7 +9,7 @@ var initState = Immutable.fromJS({
   capabilityData: [],//出力图数据
   powerData: [],//理论发电量 实际发电量数据
   operatorList: [],//企业运维人员列表
-  weatherList: {},//天气列表
+  weatherList: [],//天气列表
   alarmList: {},//告警数统计
   workList: {},//工单数统计
   deviceTypeFlow: {},//设备类型示意图

@@ -82,11 +82,11 @@ export default {
     operation: { // 运维管理
       getDayReportList: '/v3/performance/dailyreportlist', //获取各电站日报统计列表
       getDayReportConfig: '/v3/performance/conf', // 获取日报上报必填项配置
-      getStationBaseReport: '/v3/performance/dailystationcode', // 选中日期+电站后各待上传数据电站基础情况
+      getStationBaseReport: '/v3/performance/ownstationcodeextlist', // 选中日期+电站后各待上传数据电站基础情况
       getReportUploadedStation: '/v3/performance/getdailyreportstation', // 选中日期已上报日报电站组
       dayReportDetail: '/v3/performance/detail', // 获取选中日报详情
       dayReportUpdate: '/v3/performance/dailyReport/mulitUpdate', // 日报详情编辑
-    }, 
+    },
     system: {
       getEnterprisList: '/v3/enterprise/list',//企业列表
       getEnterprisDetail: '/v3/enterprise',//企业详情获取
@@ -133,11 +133,16 @@ export default {
       deletePoints: '/v3/management/station/device/modes', // 删除点表信息
       importPointsInfo: '/v3/management/station/device/points', //导入点表信息
       downloadPointInfo: '/v3/management/station/device/points', // 导出测点表
-      
+
       importAlarmInfo: '/v3/management/alarmevent/import', //导入告警信息
       getAlarmList: '/v3/management/alarmevent/list', //获取告警列表
       deleteAlarms: '/v3/management/alarmevent/delete', // 删除告警
       downloadAlarmInfo: '/v3/management/alarmevent/export', // 导出告警事件
+
+      //  生产计划
+      getPlanList:'/v3/performance/stationplanlist', //查看生产计划列表
+      addPlanList:'/v3/performance/stationplan', //  添加生产计划
+      eddPlanList:'/v3/performance/stationplan' //  编辑生产计划
     },
     monitor: {//实时监控
       getStationType:'/v3/monitor/stations/',
@@ -162,14 +167,14 @@ export default {
       getCapabilityDiagram: '/v3/monitor/capabilitydiagram/',//单电站出力图表
       getMonitorPower: '/v3/monitor/power/',//单电站理论发电量-实际发电量图表
       getStationList: '/v3/station/datalist/',//电站列表
-      getWeatherList: '/v3/monitor/weather/',//单电站未来天气
+      getWeatherList: '/v3/monitor/weather',//单电站未来天气
       getOperatorList: '/v3/station/user/',//单电站运维人员列表
       getAlarmList: '/v3/alarm/station/alarmnum/',//单电站活动告警数统计
       getWorkList: '/v3/monitor/worklist/',//单电站工单数统计
       getDeviceTypeFlow: '/v3/station/devicetypeflow/',//单电站设备类型流程图
       getStationDeviceList: '/v3/station/devicelist/',//单电站设备列表
       editData:'/v3/management/stationgen',//编辑月，年的累计发电量
-     
+
       getHistoryAlarm: '/v3/alarm/station/historyalarmlist',//历史告警
       getStationsAlarmStatistic: '/v3/alarm/stations/alarmsummary',//多电站统计
       getSingleStationAlarmStatistic: '/v3/alarm/station/alarmsummary',//单电站统计

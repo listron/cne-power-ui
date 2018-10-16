@@ -1,37 +1,56 @@
-
-import React, { Component } from 'react';
-import { Input, Button ,DatePicker,Icon} from 'antd';
+import React, {Component} from 'react';
+import {Input, Button, DatePicker, Icon, Select, Form} from 'antd';
 import moment from 'moment';
 import StationSelect from '../../../../Common/StationSelect';
 import PropTypes from 'prop-types';
 import styles from './planSide.scss';
 import WarningTip from '../../../../Common/WarningTip';
-const { MonthPicker, RangePicker } = DatePicker;
+// const { MonthPicker, RangePicker } = DatePicker;
+const Option = Select.Option;
+const FormItem = Form.Item;
 
-class PlanSide extends Component {
+class AddPlan extends Component {
   static propTypes = {
     showSidePage: PropTypes.string,
     changePlanStore: PropTypes.func,
-    planStations:PropTypes.array,
+    planStations: PropTypes.array,
+    form: PropTypes.object,
+    getStations: PropTypes.func,
+    getOwnStations: PropTypes.func,
+    onShowSideChange: PropTypes.func,
+    continueAdd: PropTypes.bool,
+    stations: PropTypes.object,
+    addPlanYear: PropTypes.string,
+    addStationCodes: PropTypes.array,
+
   };
 
-  constructor(props){
+  constructor(props) {
     super(props);
-    this.state={
+    this.state = {
       showWarningTip: false,
       warningTipText: '退出后信息无法保存!',
-      open:false,
-      dateValue:'2018',
+      open: false,
+      dateValue: '2018',
     }
 
   }
+  componentWillReceiveProps(nextProps) {
+  }
 
-  onWarningTipShow = () =>{
+  componentWillUnmount(){
+    this.props.changePlanStore({
+      planStations:[],
+      addPlanYear:'',
+      addStationCodes:[],
+    })
+  }
+
+  onWarningTipShow = () => {
     this.setState({
       showWarningTip: true,
     })
   };
-
   confirmWarningTip = () => {
     this.setState({
       showWarningTip: false,
@@ -41,7 +60,6 @@ class PlanSide extends Component {
     });
 
   };
-
   cancelWarningTip = () => {
     this.setState({
       showWarningTip: false,
@@ -49,66 +67,65 @@ class PlanSide extends Component {
   };
 
 
-  onPanelChange=(value,mode)=>{
-    let data=new Date(value._d).getFullYear()
-    this.setState({open:false,dateValue:data})
+  selectTime = (value) => {
+    this.props.getOwnStations({
+      planYear: value
+    });
+    this.props.changePlanStore({
+      addPlanYear: value
+    })
+  };
+  selectStation = (stations) => {
+    this.props.changePlanStore({
+      addStationCodes: stations
+    })
+  };
+  toPlanStations = () => {
+    this.props.onShowSideChange({showSidePage: 'edit'});
   };
 
-  onOpenChange=()=>{
-    this.setState({open:true})
-  };
-
-  disabledEndDate = (endValue) => {
-    // const startValue = this.state.startValue;
-    // if (!endValue || !startValue) {
-    //   return false;
-    // }
-    // return endValue.valueOf() <= startValue.valueOf();
-  }
-
-  render(){
-    const { showWarningTip, warningTipText } = this.state;
-    const {planStations,stations}= this.props;
-    const canAddPlan = true ;
-    const dateFormat = 'YYYY';
+  render() {
+    const {showWarningTip, warningTipText} = this.state;
+    const {planStations, stations, continueAdd, addPlanYear, addStationCodes} = this.props;
+    const canAdd = addPlanYear && addStationCodes && addStationCodes.length > 0;
+    const currentYear = new Date().getFullYear();
+    let year = [currentYear + 1, currentYear];
+    console.log('continueAdd',continueAdd);
     return (
       <div className={styles.addPlan}>
-        {showWarningTip && <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}
+        {showWarningTip &&
+        <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText}/>}
         <div className={styles.editTop}>
           <span className={styles.text}>添加</span>
-          <Icon type="arrow-left" className={styles.backIcon} onClick={this.onWarningTipShow} />
+          <Icon type="arrow-left" className={styles.backIcon} onClick={this.onWarningTipShow}/>
         </div>
         <div className={styles.mainPart}>
-          <div>
-            <span className={styles.year}>年份填写</span>
-            <DatePicker
-              format={dateFormat}
-              mode='year'
-              open={this.state.open}
-              focus={this.focus}
-              value={moment(this.state.dateValue, dateFormat)}
-              onOpenChange={this.onOpenChange}
-              placeholder="--"
-              disabledDate={this.disabledStartDate}
-              onPanelChange={(value,mode)=>(this.onPanelChange(value,mode))}
-              />
+          <div className={styles.selectTime}>
+            <span><i>*</i>日报时间</span>
+            <Select style={{width: 105}} onChange={this.selectTime} value={addPlanYear || '--'}>
+              {year.map((year) => {
+                return <Option value={String(year)} key={year}>{year}</Option>
+              })}
+            </Select>
           </div>
-          <div className={styles.topLeft}>
-            <span className={styles.station}>电站选择</span>
+          <div className={styles.selectStation}>
+            <span><i>*</i>电站选择</span>
             <StationSelect
-              // value={stations}
+              value={addStationCodes}
               data={stations.toJS()}
               multiple={true}
-              onChange={this.stationSelected}
-              disabled={planStations}
+              onChange={this.selectStation}
+              disabled={continueAdd ? false : true}
+              disabledStation={planStations}
             />
-            <Button onClick={this.toReportStations} disabled={!canAddPlan} className={styles.btn}>下一步</Button>
+            <Button onClick={this.toPlanStations} disabled={!canAdd}
+                    className={canAdd ? styles.addPlanNext : styles.addPlanNextDisabled}>下一步</Button>
           </div>
         </div>
-
       </div>
     )
   }
 }
 
-export default PlanSide;
+
+export default Form.create({})(AddPlan);

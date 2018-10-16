@@ -36,6 +36,7 @@ class SingleStation extends Component {
   }
 
   componentDidMount() {
+    
     const { stationCode } = this.props.match.params;
     this.getTenSeconds(stationCode);
     this.getOutputDataTenMin(stationCode);
