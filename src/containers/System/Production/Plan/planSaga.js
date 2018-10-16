@@ -88,8 +88,8 @@ function* editPlanInfo(action) {
   }
 }
 
-//获取所有电站信息
-function* getOwnStations(action) {
+
+function* getOwnStations(action) {//获取所有电站信息
   const {payload} = action;
   const url = `${Path.basePaths.APIBasePath}${Path.commonPaths.getStations}`;
   const antherUrl=url+'?planYear='+payload.planYear;
@@ -118,7 +118,6 @@ function* addPlanInfo(action) {
   const {payload} = action;
   // const url = '/mock/system/editPlanInfo';
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.addPlanList}`
-
   try {
     yield put({type: planAction.PLAN_FETCH});
     const response = yield call(axios.post, url, payload);
@@ -134,14 +133,24 @@ function* addPlanInfo(action) {
       }));
       yield put({
         type: planAction.getPlanList,
-        payload: params,
+        payload: {
+          ...params,
+          showPage:'list'
+        },
+      });
+    }else if(response.data.code === '10001'){
+      yield put({
+        type: planAction.getPlanList,
+        payload: {
+          showPage:'list'
+        },
       });
     }
   } catch (e) {
     yield put({
       type: planAction.CHANGE_PLAN_STORE,
       payload: {
-        loading: false
+        loading: false,
       },
     });
   }

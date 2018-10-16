@@ -23,7 +23,8 @@ class planSearch extends Component {
     this.state = {
       open: false,
       dateValue: '2018',
-      stationCode: []
+      stationCodes: [],
+      selectStation :[],
     }
   }
 
@@ -37,19 +38,21 @@ class planSearch extends Component {
   };
 
   stationSelected = (rest) => {
-    const stationCode = rest.map((item, index) => {
+    const stationCodes = rest.map((item, index) => {
       return item.stationCode
     });
-    console.log(123, stationCode)
-    this.setState({stationCode: stationCode})
+    this.setState({
+      selectStation:rest,
+      stationCodes: stationCodes
+    });
   };
 
 
   selectValue = () => {
-    let {stationCode} = this.state;
+    let {stationCodes} = this.state;
     const params = {
       year: this.state.dateValue,
-      stationCodes: stationCode.length < 1 ? this.props.stationCodes : stationCode,
+      stationCodes: stationCodes.length < 1 ? this.props.stationCodes : stationCodes,
       sortField: this.props.sortField,
       sortMethod: this.props.sortMethod,
       pageNum: this.props.pageNum,
@@ -61,6 +64,7 @@ class planSearch extends Component {
 
   render() {
     const {stations} = this.props;
+    const {selectStation}=this.state;
     const dateFormat = 'YYYY';
     return (
       <div className={styles.planSearch}>
@@ -81,7 +85,7 @@ class planSearch extends Component {
           <StationSelect
             data={stations.toJS()}
             multiple={true}
-            values={stations.toJS()}
+            value={selectStation}
             onChange={this.stationSelected}
           />
         </div>

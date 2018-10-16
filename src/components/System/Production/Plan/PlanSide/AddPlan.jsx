@@ -38,13 +38,13 @@ class AddPlan extends Component {
   componentWillReceiveProps(nextProps) {
   }
 
-  componentWillUnmount(){
-    this.props.changePlanStore({
-      planStations:[],
-      addPlanYear:'',
-      addStationCodes:[],
-    })
-  }
+  // componentWillUnmount(){
+  //   this.props.changePlanStore({
+  //     planStations:[],
+  //     addPlanYear:'',
+  //     addStationCodes:[],
+  //   })
+  // }
 
   onWarningTipShow = () => {
     this.setState({
@@ -57,6 +57,11 @@ class AddPlan extends Component {
     });
     this.props.changePlanStore({
       showPage: 'list',
+      loading:false,
+      planStations:[],
+      addPlanYear:'',
+      continueAdd:false,
+      addStationCodes:[],
     });
 
   };
@@ -90,7 +95,6 @@ class AddPlan extends Component {
     const canAdd = addPlanYear && addStationCodes && addStationCodes.length > 0;
     const currentYear = new Date().getFullYear();
     let year = [currentYear + 1, currentYear];
-    console.log('continueAdd',continueAdd);
     return (
       <div className={styles.addPlan}>
         {showWarningTip &&
@@ -101,7 +105,7 @@ class AddPlan extends Component {
         </div>
         <div className={styles.mainPart}>
           <div className={styles.selectTime}>
-            <span><i>*</i>日报时间</span>
+            <span><i>*</i>年份填写</span>
             <Select style={{width: 105}} onChange={this.selectTime} value={addPlanYear || '--'}>
               {year.map((year) => {
                 return <Option value={String(year)} key={year}>{year}</Option>
