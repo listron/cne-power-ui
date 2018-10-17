@@ -89,7 +89,7 @@ class ReportEdit extends Component {
   updateReport = () => { // 确认上传更新后的日报详情
     console.log(this.state.updateDayReportDetail);
     const { updateDayReportDetail } = this.state;
-    cosnt { dayReportConfig } = this.props;
+    const { dayReportConfig } = this.props;
     let { faultList, limitList } = updateDayReportDetail;
 
     const unitConfig = dayReportConfig[0] || {}; // 电量单位
