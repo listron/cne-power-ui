@@ -162,6 +162,7 @@ class PlanAddTable extends React.Component {
           dataIndex: item,
           width: '40px',
           key: item,
+          className:'month',
           editable: true,
           render: text => {
             return text ? text : '--';
@@ -176,6 +177,7 @@ class PlanAddTable extends React.Component {
         dataIndex: 'regionName',
         key: 'regionName',
         width: '50px',
+        className:styles.regionName,
         render: text => {
           return text ? text : '--';
         }
@@ -184,7 +186,7 @@ class PlanAddTable extends React.Component {
         title: '电站名称',
         dataIndex: 'stationName',
         key: 'stationName',
-        // width:'100px',
+        className:styles.stationName,
         defaultSortOrder: 'descend',
         render: text => {
           return text ? text : '--';
@@ -193,8 +195,8 @@ class PlanAddTable extends React.Component {
       {
         title: '装机容量(MW)',
         dataIndex: 'stationCapacity',
-        width: '80px',
         key: 'stationCapacity',
+        className:styles.stationCapacity,
         render: text => {
           return text ? text : '--';
         }
@@ -203,6 +205,7 @@ class PlanAddTable extends React.Component {
         title: '年份',
         dataIndex: 'planYear',
         key: 'planYear',
+        className:styles.planYear,
         render: text => {
           return text ? text : '--';
         }
@@ -211,24 +214,26 @@ class PlanAddTable extends React.Component {
         title: '年计划发电量(万kWh)',
         dataIndex: 'planPower',
         key: 'planPower',
-        width: '130px',
+        className:styles.planPower,
         render: text => {
-          return text ? text : '--';
+          var textValue=text ? Number(text).toFixed(4) : '--';
+          return <span className={text ? styles.save:''}>{textValue}</span>
         }
       },
       {
         title: 'PR年计划',
         dataIndex: 'yearPR',
         key: 'yearPR',
+        className:'yearPR',
         render: (text, record) => {
-          const textValue = text ? text : '--';
-          return (<span><Input defaultValue={textValue} onBlur={(e) => this.yearPRChange(e, record)}/>%</span>)
+          return (<span><Input defaultValue={record.yearPR} onBlur={(e) => this.yearPRChange(e, record)} placeholder="--" />%</span>)
         }
       },
       {
         title: '操作',
         dataIndex: 'operation',
         key: 'operation',
+        className:styles.operation,
         render: (text, record) => {
           return (
             <span onClick={() => this.handleDelete(record.key)} className={styles.delete}><Icon type="close-circle" theme="outlined"/></span>
@@ -253,6 +258,7 @@ class PlanAddTable extends React.Component {
     });
     return columnList
   };
+
 
   _dealTableData = (addStationCodes, addPlanYear) => { //将12个月的数据分开
     let TabelKey = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];

@@ -7,7 +7,7 @@
   flex: 1 0 auto;
   width: 100%;
   padding: 24px 24px 0;
-  background:#ececec;
+  background: #ececec;
   .contentMain {
     background-color: #fff;
     flex: 1;
@@ -16,25 +16,25 @@
 }
 
 .planSearch {
-  display:flex;
-  padding:26px 0px 20px 22px;
+  display: flex;
+  padding: 26px 0px 20px 22px;
   align-items: center;
-  .year{
+  .year {
     margin-right: 8px;
   }
-  :global{
-    .ant-calendar-picker{
-      input{
+  :global {
+    .ant-calendar-picker {
+      input {
         width: 105px;
       }
     }
   }
-  .topLeft{
+  .topLeft {
     display: flex;
-    margin:0 10px 0 10px;
+    margin: 0 10px 0 10px;
     line-height: 40px;
-    .station{
-      margin-right:10px;
+    .station {
+      margin-right: 10px;
     }
   }
 
@@ -93,38 +93,30 @@
     }
   }
   .tableList {
-    .yearPlanPower{
-      text-align:center;
-    }
-    .edit{
+    .edit {
       color: $themeColor;
     }
-    .save{
-       color: #f9b600;
+    .save {
+      color: #f9b600;
+      margin-right: 0 !important;
     }
     :global {
-      .ant-table-placeholder {
-        z-index: auto;
-      }
-      .ant-table-placeholder{
-        border: none;
-      }
-      .ant-input {
+      .month .ant-input, .yearPR .ant-input {
         width: 48px;
-        padding: 0 5px;
         background: #fcffe5;
+        padding: 0 3px;
         border: 1px solid #f9b600;
       }
       .ant-table .ant-table-thead > tr > th, .ant-table .ant-table-tbody > tr > td {
-        min-width: 48px;
-        padding: 0 10px 0 0px;
+        padding: 0 3px;
         line-height: 1;
       }
-      .ant-table .ant-table-thead > tr > th {
-        height: 62px;
+      .ant-table .ant-table-thead > tr > th.month, .ant-table .ant-table-tbody > tr > td.month {
+        min-width: 48px;
       }
-      .ant-table .ant-table-thead > tr > th.yearPlanPower {
-        text-align:center;
+      .ant-table .ant-table-thead > tr > th.yearPR, .ant-table .ant-table-tbody > tr > td.yearPR {
+        min-width: 72px;
+        width:72px;
       }
       .ant-input.ant-input-disabled {
         background: #f8f8f8;
@@ -136,25 +128,32 @@
         -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
       }
     }
-    .stationNameBox{
-      min-width:80px !important;
+    .regionName {
+      min-width: 50px;
+      width: 6%;
+      padding-left: 10px!important;
     }
-    .stationName{
-      width: 80px;
+    .stationName {
+      width: 90px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
+    .operation {
+      width: 2.7%;
+      min-width: 38px;
+    }
+    .planYear {
+      width: 6.2%;
+      min-width: 40px;
+    }
+    .planPower {
+      width: 9%;
+      min-width: 89px;
+    }
     .stationCapacity{
-      min-width: 56px !important;
-      padding: 0 10px 0 0;
-    }
-    .planPower{
-      min-width: 84px !important;
-      padding: 0 10px 0 0;
-    }
-    .yearPR{
-      min-width: 72px !important;
+      width: 7.5%;
+      min-width: 70px;
     }
   }
   table {
