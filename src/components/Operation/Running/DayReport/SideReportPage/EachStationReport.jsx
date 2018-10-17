@@ -16,14 +16,6 @@ class EachStationReport extends Component {
 
   constructor(props){
     super(props);
-    this.state = {
-      showDataError: false, 
-      dataErrorText: '',
-    }
-  }
-
-  componentWillUnmount = () => {
-    // message.destroy();
   }
 
   valueChange = (param) => {
@@ -44,9 +36,9 @@ class EachStationReport extends Component {
     const paramPointLength = paramValue.split('.')[1] ? paramValue.split('.')[1].length : 0;
     const dataFormatError = isNaN(paramValue) || (maxPointLength && paramPointLength > maxPointLength); // 数据格式错误;
     if(requireError){ // 必填值未填
-      this.reportInforErrorShow(`请填写${stationInfo.stationName}${reportBaseInfo.configText}!`);
+      this.messageWarning(`请填写${stationInfo.stationName}${reportBaseInfo.configText}!`);
     }else if(dataFormatError){ // 数据格式错误
-      this.reportInforErrorShow(
+      this.messageWarning(
         `${stationInfo.stationName}${reportBaseInfo.configText}请填写数字,最多填写小数点后${maxPointLength}位`
       );
     }
@@ -84,30 +76,18 @@ class EachStationReport extends Component {
     totalInfoChange(uploadParams);
   }
 
-  reportInforErrorShow = (dataErrorText) => { // 错误信息展示2s
-    this.setState({
-      showDataError: true,
-      dataErrorText
-    });
-    setTimeout(()=>{this.setState({
-      showDataError: false,
-    })},2000);
-    this.messageWarning(dataErrorText);
-  }
-
-  messageWarning = (dataErrorText) => {
+  messageWarning = (text) => {
     message.destroy();
     message.config({
       top: 400,
       duration: 2,
       maxCount: 1,
     });
-    message.warning(dataErrorText,2);
+    message.warning(text,2);
   }
 
   render(){
     const { stationInfo } = this.props;
-    const { showDataError, dataErrorText } = this.state;
     const stationCapacity = isNaN(stationInfo.stationCapacity)?'--':stationInfo.stationCapacity;
     const eqpHour = isNaN(stationInfo.hour)?'--':stationInfo.hour;
     return (
@@ -147,9 +127,6 @@ class EachStationReport extends Component {
         <Col span={1} className={styles.deleteStationReport} >
           <span onClick={this.removeStation}><Icon type="close-circle" theme="outlined" /></span>
         </Col>
-        {/* {showDataError && <span>{dataErrorText}</span>} */}
-        {/* {true && <div className={styles.dataErrorText}><i className="iconfont icon-alert_01" ></i><span>{dataErrorText}</span></div>} */}
-        
       </Row>
     )
   }

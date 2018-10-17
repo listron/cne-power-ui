@@ -205,8 +205,8 @@ function *dayReportUpdate(action){ // 日报编辑
   const { payload } = action;
   try{
     yield put({ type:dayReportAction.dayReportLoading });
-    const url = '/mock/operation/dayReport/update';
-    // const url = `${APIBasePath}${operation.dayReportUpdate}`;
+    // const url = '/mock/operation/dayReport/update';
+    const url = `${APIBasePath}${operation.dayReportUpdate}`;
     const response = yield call(axios.put,url, payload);
     if(response.data.code === '10000'){
       //重新请求列表 - todo

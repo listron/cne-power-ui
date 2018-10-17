@@ -30,8 +30,6 @@ class SideReportPage extends Component {
       reportDay: '',
       reportStation: [],
       dayReportTotalInfoArr: [], //用于上传日报的所有信息
-      reportInfoErrorText: '',
-      showReportError: false,
     }
   }
 
@@ -49,7 +47,7 @@ class SideReportPage extends Component {
         let dailyReport = {...e};
         let dailyDetailList = e.dailyDetailList.map((fault,index)=>({
           ...fault,
-          id: fault.defectId?fault.defectId:`lostAdd${index}`, // 若关联工单则使用，若非，由前端手动生成。=>上报前去掉。
+          id: `${index}`, // 若关联工单则使用，若非，由前端手动生成。=>上报前去掉。
           startTime: fault.startTime?moment(fault.startTime): null,
           endTime: fault.endTime?moment(fault.endTime): null,
           handle: false, // api返回的故障信息不可编辑
@@ -108,7 +106,7 @@ class SideReportPage extends Component {
     const currentStationType = dayReportTotalInfoArr[0].dailyReport.stationType;
     const tmpReportBaseInfo = reportBasefun(currentStationType, genUnit); // 指标数组
 
-    console.log(dayReportTotalInfoArr)
+    console.log(dayReportTotalInfoArr);
     let errorText = '';
     const totalInfoError = dayReportTotalInfoArr.find(info=>{ // 寻找错误数据并提取错误信息
       const eachStationInfo = info.dailyReport;
@@ -131,10 +129,6 @@ class SideReportPage extends Component {
     })
     if(totalInfoError){ // 数据错误存在，提示
       this.messageWarning(errorText);
-      this.setState({ 
-        reportInfoErrorText: errorText,
-        showReportError: true,
-      })
     }else{ // 数据无误，调整数据结构并提交
       console.log('数据正确无误!')
     //to check 接口返回装机容量为stationCapacity，文档要求上传为realCapacity；
@@ -142,6 +136,8 @@ class SideReportPage extends Component {
         let { dailyReport, dailyDetailList } = e;
         delete dailyReport.warning;
         delete dailyReport.stationType;
+        dailyReport.realCapacity = dailyReport.stationCapacity;
+        delete dailyReport.stationCapacity; // 基础信息字段调整
         const newDailyDetailList = dailyDetailList.map(eachLost=>{
           const lostInfo = {
             deviceName: eachLost.deviceName,

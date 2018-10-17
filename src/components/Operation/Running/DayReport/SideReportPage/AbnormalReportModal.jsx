@@ -26,12 +26,10 @@ class AbnormalReportModal extends Component {
     this.state = {
       addLostFormShow: false,
       addLimitFormShow: false, // 限电损失添加form框。
-      faultGenList: props.abnormalList, // 选中电站故障损失。todo .filter(e=>e.type === 1)
-      limitGenList: [], // 选中电站限电损失。 todo  props.abnormalList.filter(e=>e.type === 0)
+      faultGenList: props.abnormalList.filter(e=>e.type === 1), // 选中电站故障损失
+      limitGenList: props.abnormalList.filter(e=>e.type === 0), // 选中电站限电损失
       abnormalTextShow: false,
       abnormalText: '', // 发电信息-异常信息
-      showDataError: false, 
-      dataErrorText: '',
     }
   }
 
@@ -61,10 +59,7 @@ class AbnormalReportModal extends Component {
     const limitListError = limitGenList.find(e=>{ // 保证已填写限电损失电量
       const limitPowerMiss = !e.lostPower;
       if(limitPowerMiss){
-        this.setState({
-          showDataError: true, 
-          dataErrorText: '限电损失电量未填写!',
-        })
+        this.messageWarning('限电损失电量未填写!');
       }
       return limitPowerMiss;
     });
@@ -129,19 +124,19 @@ class AbnormalReportModal extends Component {
     })
   }
 
-  messageWarning = (dataErrorText) => { // 信息错误展示
+  messageWarning = (text) => { // 信息错误展示
     message.destroy();
     message.config({
       top: 400,
       duration: 2,
       maxCount: 1,
     });
-    message.warning(dataErrorText,2);
+    message.warning(text,2);
   }
 
   render(){
     const { abnormalModalshow, abnormalInfo, hideAbnormalModal, findDeviceExist, deviceExistInfo, lostGenTypes} = this.props;
-    const { addLostFormShow, faultGenList, limitGenList, addLimitFormShow, abnormalTextShow, abnormalText, showDataError, dataErrorText } = this.state;
+    const { addLostFormShow, faultGenList, limitGenList, addLimitFormShow, abnormalTextShow, abnormalText } = this.state;
     return (
       <Modal
           title={`添加异常-${abnormalInfo.stationName}`}
@@ -156,7 +151,7 @@ class AbnormalReportModal extends Component {
           <span>损失电量信息<Icon type="caret-right" theme="outlined" /></span>
           <Button onClick={this.toAddGenLost} disabled={addLostFormShow} icon="plus" className={styles.uploadGenLost} >添加</Button>
         </div>
-        <LostGenTable faultGenList={faultGenList} abnormalInfo={abnormalInfo} changeFaultList={this.changeFaultList} />
+        <LostGenTable lostGenTypes={lostGenTypes} faultGenList={faultGenList} abnormalInfo={abnormalInfo} changeFaultList={this.changeFaultList} />
         {addLostFormShow && <LostAddForm 
           lostGenTypes={lostGenTypes}
           findDeviceExist={findDeviceExist} 
@@ -184,7 +179,6 @@ class AbnormalReportModal extends Component {
             {abnormalTextShow && <Input.TextArea className={styles.abnormalTextArea} onChange={this.reportAbnormalText} value={abnormalText} />}
           </div>
         </div>
-        {showDataError && <span>{dataErrorText}</span>}
       </Modal>
     )
   }

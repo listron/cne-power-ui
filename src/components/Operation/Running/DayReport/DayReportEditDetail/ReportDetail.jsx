@@ -1,8 +1,8 @@
 
 import React from 'react';
 import { Button, Table, Icon } from 'antd';
-// import { styles } from 'ansi-colors';
 import styles from './reportDetail.scss';
+import moment from 'moment';
 
 const loseColumn = [
   {
@@ -70,12 +70,9 @@ const ReportDetail = ({ selectedDayReportDetail, toChangeDayReportStore , dayRep
     onSidePageChange({ sidePage : 'edit'});
     toChangeDayReportStore({
       showPage: 'edit'
-    })
+    });
   }
-  // const genUnit = dayReportConfig;
-  // const radiationUnit = dayReportConfig
-  const sourceInfoArr = [ // todo 单位问题待完善。是否需要根据api进行动态配置？
-    {name: '日报日期', value: 'reportDate', unit: ''},
+  const sourceInfoArr = [
     {name: '天气', value: 'weather', unit: ''},
     {name: '温度', value: 'temperature', unit: '℃'},
     {name: '电站名称', value: 'stationName', unit: ''},
@@ -94,7 +91,10 @@ const ReportDetail = ({ selectedDayReportDetail, toChangeDayReportStore , dayRep
     {name: '样本逆变器容量', value: 'modelInverterCapacity', unit: 'kW'},
     {name: '样本逆变器发电量', value: 'modelInverterPowerGen', unit: genUnit},
   ]
-
+  let { reportDate, createTimer, updateTimer } = selectedDayReportDetail;
+  reportDate = reportDate? moment(reportDate).format('YYYY-MM-DD'): '--';
+  createTimer = createTimer? moment(createTimer).format('YYYY-MM-DD HH:mm'): '--';
+  updateTimer = updateTimer? moment(updateTimer).format('YYYY-MM-DD HH:mm'): '--';
   return (
   <div className={styles.reportDetail} >
     <div className={styles.reportDetailTitle} >
@@ -107,8 +107,12 @@ const ReportDetail = ({ selectedDayReportDetail, toChangeDayReportStore , dayRep
     <div className={styles.resourceInfo} >
       <h4 className={styles.reportSubTitle} >资源电量信息<Icon type="caret-right" theme="outlined" /></h4>
       <div className={styles.resourceInfoCon}>
+        <span className={styles.eachResourceInfo} >
+          <span className={styles.eachResourceInfoName} >日报日期</span>
+          <span className={styles.eachResourceInfoValue} >{reportDate}</span>
+        </span>
         {sourceInfoArr.map(e=>{
-          const targetValue = selectedDayReportDetail[e.value];
+          let targetValue = selectedDayReportDetail[e.value];
           const stationValue = targetValue || targetValue === 0 || '--';
           return (<span key={e.name} className={styles.eachResourceInfo} >
             <span className={styles.eachResourceInfoName} >{e.name}</span>
@@ -149,11 +153,11 @@ const ReportDetail = ({ selectedDayReportDetail, toChangeDayReportStore , dayRep
         </span>
         <span>
           <span className={styles.operateInfoName}>上传时间</span>
-          <span>{selectedDayReportDetail.createTimer || '--'}</span>
+          <span>{createTimer}</span>
         </span>
         <span>
           <span className={styles.operateInfoName}>最新更新时间</span>
-          <span>{selectedDayReportDetail.updateTimer || '--'}</span>
+          <span>{updateTimer}</span>
         </span>
       </div>
     </div>

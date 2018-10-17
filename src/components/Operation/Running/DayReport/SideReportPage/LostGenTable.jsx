@@ -9,6 +9,7 @@ class LostGenTable extends Component {
   static propTypes = {
     form: PropTypes.object,
     faultGenList: PropTypes.array,
+    lostGenTypes: PropTypes.array,
     changeFaultList: PropTypes.func,
   }
 
@@ -34,6 +35,10 @@ class LostGenTable extends Component {
       },{
         title: '损失电量类型',
         dataIndex: 'faultName',
+        render : (text, record) => {
+          const faultInfo = this.props.lostGenTypes.find(e=>parseInt(e.id) === parseInt(record.faultId));
+          return faultInfo? faultInfo.faultName: ' -- ';
+        }
       },{
         title: '原因说明',
         dataIndex: 'reason',

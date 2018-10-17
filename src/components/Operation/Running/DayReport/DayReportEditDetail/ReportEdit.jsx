@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Checkbox, Input, Icon } from 'antd';
+import { Button, Checkbox, Input, Icon, message } from 'antd';
 import ResourceElecInfo from './ResourceElecInfo';
 import LostAddForm from '../SideReportPage/LostAddForm';
 import LimitAddForm from '../SideReportPage/LimitAddForm';
@@ -9,6 +9,7 @@ import LostGenTable from '../SideReportPage/LostGenTable';
 import LimitGenTable from '../SideReportPage/LimitGenTable';
 import moment from 'moment';
 import styles from './reportDetail.scss';
+import { reportBasefun } from '../reportBaseFun';
 
 class ReportEdit extends Component {
   static propTypes = {
@@ -18,6 +19,7 @@ class ReportEdit extends Component {
     onSidePageChange: PropTypes.func,
     toChangeDayReportStore: PropTypes.func,
     findDeviceExist: PropTypes.func,
+    dayReportUpdate: PropTypes.func,
   }
 
   constructor(props){
@@ -85,13 +87,76 @@ class ReportEdit extends Component {
   } 
 
   updateReport = () => { // 确认上传更新后的日报详情
-    console.log('保存编辑页面相关功能!!');
     console.log(this.state.updateDayReportDetail);
+    const { updateDayReportDetail } = this.state;
+    cosnt { dayReportConfig } = this.props;
+    let { faultList, limitList } = updateDayReportDetail;
+
+    const unitConfig = dayReportConfig[0] || {}; // 电量单位
+    const requireTargetObj = dayReportConfig[1] || {}; 
+    const tmpRequireTargetArr = Object.keys(requireTargetObj); // 指标必填信息数组(有多余信息)
+    const genUnit = unitConfig.power || 'kWh'; // kWh两位小数，万kWh四位小数。
+    const currentStationType = updateDayReportDetail.stationType;
+    const tmpReportBaseInfo = reportBasefun(currentStationType, genUnit); // 指标数组
+
+    let errorText = '';
+    tmpReportBaseInfo.find(config => { 
+      const configRequired = tmpRequireTargetArr.includes(config.configName); // 必填数据项
+      const requiredValue = updateDayReportDetail[config.configName];
+      const maxPointLength = config.pointLength; // 指定的最大小数点位数
+      const paramPointLength = (requiredValue && requiredValue.split('.')[1]) ? requiredValue.split('.')[1].length : 0;
+      const dataFormatError = isNaN(requiredValue) || (maxPointLength && paramPointLength > maxPointLength); // 数据格式错误;
+      if(configRequired && !requiredValue && requiredValue !== 0){ // 必填项未填
+        errorText = `${updateDayReportDetail.stationName}${config.configText}未填写!`;
+        return true;
+      }else if(dataFormatError){ // 填写数据不规范
+        errorText = `${updateDayReportDetail.stationName}${config.configText}请填写数字,不超过${maxPointLength}位小数!`;
+        return true;
+      }
+      return false;
+    })
+    faultList.find(e=>{
+      !e.process && (errorText = '损失电量进展未填写!');
+      !e.lostPower && (errorText = '损失电量未填写!');
+      return !e.process || !e.lostPower;
+    })
+    limitList.find(e=>{
+      !e.lostPower && (errorText = '限电损失电量未填写!');
+      return !e.lostPower;
+    })
+    if(errorText){ // 数据错误存在，提示
+      this.messageWarning(errorText);
+    }else{ // 无错误，提交信息。
+      const newFaultList = faultList?faultList.map(e=>{
+        !(e.id > 0) && delete e.id;
+        return e;
+      }): [];
+      const newLimitList = limitList?limitList.map(e=>{
+        !(e.id > 0) && delete e.id;
+        return e;
+      }): [];
+      const reportInfo = {
+        ...updateDayReportDetail,
+        faultList: newFaultList,
+        limitList: newLimitList,
+      }
+      this.props.dayReportUpdate(reportInfo)
+    }
+  }
+
+  messageWarning = (dataErrorText) => { // 信息错误展示
+    message.destroy();
+    message.config({
+      top: 400,
+      duration: 2,
+      maxCount: 1,
+    });
+    message.warning(dataErrorText,2);
   }
 
   changeReportDetail = (updateDayReportDetail) => { // 更变详情
-    console.log(updateDayReportDetail)
-    this.setState({ updateDayReportDetail })
+    console.log(updateDayReportDetail);
+    this.setState({ updateDayReportDetail });
   }
 
   faultListInfoChange = (faultList, closeAddForm = false) => { // 损失电量信息编辑
@@ -112,7 +177,7 @@ class ReportEdit extends Component {
 
   render(){
     const { updateDayReportDetail, addLostFormShow, addLimitFormShow, abnormalTextShow } = this.state;
-    const { findDeviceExist, deviceExistInfo, dayReportConfig } = this.props;
+    const { findDeviceExist, deviceExistInfo, dayReportConfig, lostGenTypes } = this.props;
     return (
       <div className={styles.reportEdit} >
         <div className={styles.reportDetailTitle} >
@@ -136,6 +201,7 @@ class ReportEdit extends Component {
             faultGenList={updateDayReportDetail.faultList.map(
               e=>({...e,startTime: moment(e.startTime), endTime: moment(e.endTime)})
             )}
+            lostGenTypes={lostGenTypes}
             changeFaultList={this.faultListInfoChange} 
           />
         </div>
