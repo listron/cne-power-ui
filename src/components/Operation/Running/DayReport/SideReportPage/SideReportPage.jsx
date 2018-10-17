@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './sideReportPage.scss';
-import { DatePicker, Button, Alert, Icon } from 'antd';
+import { DatePicker, Button, Icon, message } from 'antd';
 import StationSelect from '../../../../Common/StationSelect';
 import UploadReportList from './UploadReportList';
 import moment from 'moment';
@@ -127,9 +127,10 @@ class SideReportPage extends Component {
         }
         return false;
       })
-      return eachInfoError
+      return eachInfoError;
     })
     if(totalInfoError){ // 数据错误存在，提示
+      this.messageWarning(errorText);
       this.setState({ 
         reportInfoErrorText: errorText,
         showReportError: true,
@@ -148,6 +149,7 @@ class SideReportPage extends Component {
             endTime: eachLost.endTime && eachLost.endTime.format('YYYY-MM-DD HH:mm'),
             reason: eachLost.reason,
             lostPower: eachLost.lostPower,
+            limitPower: eachLost.limitPower,
             process: eachLost.process,
             type: eachLost.type,
           }
@@ -166,6 +168,16 @@ class SideReportPage extends Component {
 
   disabledDate = (start) => {
     return start && start > moment();
+  }
+
+  messageWarning = (dataErrorText) => { // 信息错误展示
+    message.destroy();
+    message.config({
+      top: 400,
+      duration: 2,
+      maxCount: 1,
+    });
+    message.warning(dataErrorText,2);
   }
 
   render(){

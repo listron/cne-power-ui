@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './sideReportPage.scss';
-import { Modal, Button, Icon, Checkbox, Input } from 'antd';
+import { Modal, Button, Icon, Checkbox, Input, message } from 'antd';
 import LostGenTable from './LostGenTable';
 import LimitGenTable from './LimitGenTable';
 import LostAddForm from './LostAddForm';
@@ -52,15 +52,9 @@ class AbnormalReportModal extends Component {
       const processMiss = !e.process;
       const lostPowerMiss = !e.lostPower;
       if(lostPowerMiss){
-        this.setState({
-          showDataError: true, 
-          dataErrorText: '损失电量未填写!',
-        })
+        this.messageWarning('损失电量未填写!');
       }else if(processMiss){
-        this.setState({
-          showDataError: true, 
-          dataErrorText: '处理进展及问题未填写!',
-        })
+        this.messageWarning('处理进展及问题未填写!');
       }
       return lostPowerMiss || processMiss;
     })
@@ -133,6 +127,16 @@ class AbnormalReportModal extends Component {
     this.setState({
       abnormalText: e.target.value,
     })
+  }
+
+  messageWarning = (dataErrorText) => { // 信息错误展示
+    message.destroy();
+    message.config({
+      top: 400,
+      duration: 2,
+      maxCount: 1,
+    });
+    message.warning(dataErrorText,2);
   }
 
   render(){
