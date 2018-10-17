@@ -7,6 +7,7 @@ import Footer from '../../../Common/Footer';
 import CommonPagination from '../../../Common/CommonPagination';
 import styles from './dayReportAll.scss';
 import { Button, Table,Icon } from 'antd';
+import moment from 'moment';
 
 class DayReportMainList extends Component {
   static propTypes = {
@@ -57,6 +58,7 @@ class DayReportMainList extends Component {
   }
 
   toUploadPage = () => { // 去上传页面
+    console.log('report页面');
     this.props.toChangeDayReportStore({
       showPage: 'report',
     })
@@ -65,16 +67,17 @@ class DayReportMainList extends Component {
   toReportDetail = (record, reportDate) => { // 去查看指定电站+日期日报详情
     this.props.dayReportDetail({ // 去查看详情
       stationCode: record.stationCode,
-      reportDate: `${this.props.startTime}-${reportDate}`,
+      // reportDate: `${this.props.startTime}-${reportDate}`,
+      reportDate
     })
   }
 
-  toUploadReport = (record, reportDate) => { // 去上传指定电站+日期日报
-    const { reportDay } = `${this.props.startTime}-${reportDate}`;
+  toUploadReport = (record, reportDay) => { // 去上传指定电站+日期日报
+    // const reportDay = `${this.props.startTime}-${reportDay}`;
     const { stations } = this.props;
     this.props.getStationBaseReport({
       reportDay,
-      reportStation: stations.find(e=>e.stationCode === record.stationCode),
+      reportStation: [stations.find(e=>e.stationCode === record.stationCode)],
     });
   }
 
@@ -85,15 +88,17 @@ class DayReportMainList extends Component {
       dataIndex: 'stationName',
       sorter: true,
     }]
-    if(dayReportList.length > 0 && dayReportList[0].dateList){
-      const { dateList } = dayReportList[0];
-      dateList && dateList.length > 0 && dateList.forEach((e,i)=>{
+    if(dayReportList.length > 0 && dayReportList[0].dataList){
+      const { dataList } = dayReportList[0];
+      dataList && dataList.length > 0 && dataList.forEach(e=>{
         columns.push({
-          title: e.reportDate,
+          title: moment(e.reportDate).format('DD'),
           dataIndex: e.reportDate,
-          render: (text, record, index) => {
-            const showWarningIcon = text && record.status; // 展示黄色图标提示未完成损失电量的填写。true展示，false不展示。
-            if(text){
+          render: (text, record) => {
+            const stationDayInfo = record.dataList.find(info=>info.reportDate === e.reportDate);
+            const { isUpload, status} = stationDayInfo;
+            const showWarningIcon = isUpload && status; // 展示黄色图标提示未完成损失电量的填写。true展示，false不展示。
+            if(isUpload){
               return <span onClick={()=>this.toReportDetail(record, e.reportDate)}><i className="iconfont icon-look">{showWarningIcon && <i className="iconfont icon-alert_01" ></i>}</i></span>
             }else{
               return <span onClick={()=>this.toUploadReport(record, e.reportDate)}><Icon type="plus-circle" theme="outlined" /></span>

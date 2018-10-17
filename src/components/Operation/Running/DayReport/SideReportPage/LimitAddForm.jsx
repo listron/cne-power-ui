@@ -27,11 +27,16 @@ class LimitAddForm extends Component {
     const { deviceExistInfo } = this.props;
     const newDeviceExistInfo = nextProp.deviceExistInfo;
     if(deviceExistInfo.existLoading && !newDeviceExistInfo.existLoading){ // 设备名称验证后
-      if(deviceExistInfo.existError){ // 设备验证未通过，有未存在设备
+      if(newDeviceExistInfo.existError){ // 设备验证未通过，有未存在设备
         this.setState({
           deviceNameErroShow: true,
-          deviceNameErroInfo : `${deviceExistInfo.existErrorData.join(',')}不存在!`
-        })
+          deviceNameErroInfo : `${newDeviceExistInfo.existErrorData.join(',')}不存在!`
+        });
+        setTimeout(()=>{
+          this.setState({
+            deviceNameErroShow: false,
+          });
+        },2000);
       }else{ // 设备验证通过
         const { form, changeLimitList, limitGenList } = this.props;
         const { getFieldsValue } = form;
@@ -111,7 +116,8 @@ class LimitAddForm extends Component {
                 <Input />
               )}
               <span className={styles.lostInputTip}>多个设备请以空格隔开，设备较多时，可填写上级设备</span>
-              {deviceNameErroShow && <span>{deviceNameErroInfo}</span>}
+              {deviceNameErroShow && <div className={styles.dataErrorText}><i className="iconfont icon-alert_01" ></i><span>{deviceNameErroInfo}</span></div>}
+              {/* {deviceNameErroShow && <span>{deviceNameErroInfo}</span>} */}
             </Form.Item>
           </Col>
         </Row>

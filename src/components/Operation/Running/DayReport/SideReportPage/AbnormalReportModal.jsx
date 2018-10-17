@@ -26,8 +26,8 @@ class AbnormalReportModal extends Component {
     this.state = {
       addLostFormShow: false,
       addLimitFormShow: false, // 限电损失添加form框。
-      faultGenList: props.abnormalList, // 选中电站故障损失。
-      limitGenList: [], // 选中电站限电损失。
+      faultGenList: props.abnormalList, // 选中电站故障损失。todo .filter(e=>e.type === 1)
+      limitGenList: [], // 选中电站限电损失。 todo  props.abnormalList.filter(e=>e.type === 0)
       abnormalTextShow: false,
       abnormalText: '', // 发电信息-异常信息
       showDataError: false, 
