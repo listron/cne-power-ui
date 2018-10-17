@@ -20,14 +20,18 @@ const EditableRow = ({form, index, ...props}) => {
 const EditableFormRow = Form.create()(EditableRow);
 
 class EditableCell extends React.Component {
+  static propTypes = {
+    record: PropTypes.object,
+    dataIndex: PropTypes.string,
+  };
   getInput = (form) => {
     const {dataIndex, record} = this.props;
     if (dataIndex === 'yearPR') { // PR年计划
       return (<span> <Input onBlur={(e) => this.yearPRChange(e, form, dataIndex, record)}
                             defaultValue={record[dataIndex]}/>%</span>);
     }
-    if (record.onGridTime) {// 并网数据
-      if (getMonth(dataIndex) < Number(record.onGridTime)) {
+    if (record.setGridTime) {// 并网数据
+      if (getMonth(dataIndex) < Number(record.setGridTime)) {
         return <Input disabled={true} placeholder="--"/>
       }
     }
@@ -64,8 +68,16 @@ class EditableCell extends React.Component {
           return Number(prev) + Number(curr);
         });
       }
+      let planMonthValue=[];
+      if (record.setGridTime) {// 并网数据
+        for(let i=Number(record.setGridTime)-1;i<12;i++){
+          planMonthValue.push(record.planMonthGens[i])
+        }
+      }else{
+        planMonthValue=record.planMonthGens
+      }
 
-      record.planPower = sum(record.planMonthGens);
+      record.planPower = sum(planMonthValue);
       this.props.handlevaluechange(record, dataIndex, number)
     }
   };
@@ -313,8 +325,9 @@ class PlanTable extends Component {
         key: 'planPower',
         className:styles.planPower,
         sorter: true,
-        render: text => {
-          return text ? text : '--'
+        render:(text,record)=>{
+          const textValue=text? text :'--';
+          return <div className={this.isEditing(record) ? styles.save :''}>{textValue}</div>
         }
       },
       {
@@ -342,6 +355,7 @@ class PlanTable extends Component {
                     {form => (
                       <a
                         href="javascript:;"
+                        className={styles.save}
                         onClick={() => this.save(form, record.key)}
                         style={{marginRight: 8}}
                       >
@@ -351,7 +365,7 @@ class PlanTable extends Component {
                   </EditableContext.Consumer>
                 </span>
               ) : (
-                <a onClick={() => this.edit(record.key)}>编辑</a>
+                <a onClick={() => this.edit(record.key)} className={styles.edit}>编辑</a>
               )}
             </div>
           );
@@ -385,9 +399,9 @@ class PlanTable extends Component {
         for (let i = 0; i < 12; i++) {
           list[TabelKey[i]] = (list.planMonthGens && list.planMonthGens[i]==="null"? "--": list.planMonthGens[i] )|| ""
         }
-        if (list.onGridTime) {//  有了并网时间
+        if(list.onGridTime){
           const onGridMonth = list.onGridTime.split('-')[1];
-          list.onGridTime = onGridMonth;
+          list.setGridTime = onGridMonth;
         }
         list.key = index;
         return list;

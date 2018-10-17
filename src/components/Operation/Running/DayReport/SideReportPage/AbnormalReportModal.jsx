@@ -14,6 +14,7 @@ class AbnormalReportModal extends Component {
     deviceExistInfo: PropTypes.object,
     abnormalList: PropTypes.array,
     dayReportTotalInfoArr: PropTypes.array,
+    lostGenTypes: PropTypes.array,
     abnormalModalshow: PropTypes.bool,
     hideAbnormalModal: PropTypes.func,
     findDeviceExist: PropTypes.func,
@@ -25,10 +26,12 @@ class AbnormalReportModal extends Component {
     this.state = {
       addLostFormShow: false,
       addLimitFormShow: false, // 限电损失添加form框。
-      faultGenList: props.abnormalList, // 选中电站故障损失。
-      limitGenList: [], // 选中电站限电损失。
+      faultGenList: props.abnormalList, // 选中电站故障损失。todo .filter(e=>e.type === 1)
+      limitGenList: [], // 选中电站限电损失。 todo  props.abnormalList.filter(e=>e.type === 0)
       abnormalTextShow: false,
       abnormalText: '', // 发电信息-异常信息
+      showDataError: false, 
+      dataErrorText: '',
     }
   }
 
@@ -45,8 +48,33 @@ class AbnormalReportModal extends Component {
       }
       return info;
     })
-    // todo-此处需判断上传的必填信息是否均已填写！
-    totalInfoChange(uploadParams, true);
+    const faultListError = faultGenList.find(e=>{ // 保证损失电量，处理进展填写
+      const processMiss = !e.process;
+      const lostPowerMiss = !e.lostPower;
+      if(lostPowerMiss){
+        this.setState({
+          showDataError: true, 
+          dataErrorText: '损失电量未填写!',
+        })
+      }else if(processMiss){
+        this.setState({
+          showDataError: true, 
+          dataErrorText: '处理进展及问题未填写!',
+        })
+      }
+      return lostPowerMiss || processMiss;
+    })
+    const limitListError = limitGenList.find(e=>{ // 保证已填写限电损失电量
+      const limitPowerMiss = !e.lostPower;
+      if(limitPowerMiss){
+        this.setState({
+          showDataError: true, 
+          dataErrorText: '限电损失电量未填写!',
+        })
+      }
+      return limitPowerMiss;
+    });
+    !faultListError && !limitListError && totalInfoChange(uploadParams, true); // 验证通过后方能保存
   }
 
   changeFaultList = (faultGenList, closeAddForm=false) => { // 修改损失电量信息
@@ -78,15 +106,22 @@ class AbnormalReportModal extends Component {
     const abnormalTextShow = e.target.checked;
     let abnormalText = '';
     if(abnormalTextShow){
-      const { faultGenList } = this.state;
+      const { faultGenList, limitGenList } = this.state;
       const faultShortInfo =  faultGenList.map(e=>{
         let { deviceName, startTime, endTime, reason, faultName } = e;
-        startTime = startTime && startTime.format('YYYY-MM-DD');
-        endTime = endTime && endTime.format('YYYY-MM-DD');
+        startTime = startTime && startTime.format('YYYY-MM-DD HH:mm');
+        endTime = endTime && endTime.format('YYYY-MM-DD HH:mm');
         const tmpTextArr = [deviceName, startTime, endTime, reason, faultName].filter(e=>e);
-        return tmpTextArr.join('+')
+        return tmpTextArr.join('+');
       })
-      abnormalText = faultShortInfo.join(';\n');
+      const limitShortInfo = limitGenList.map(e=>{
+        let { deviceName, startTime, endTime, reason, limitPower } = e;
+        startTime = startTime && startTime.format('YYYY-MM-DD HH:mm');
+        endTime = endTime && endTime.format('YYYY-MM-DD HH:mm');
+        const tmpTextArr = [deviceName, startTime, endTime, reason, limitPower].filter(e=>e);
+        return tmpTextArr.join('+');
+      })
+      abnormalText = `${faultShortInfo.join(';\n')};\n${limitShortInfo.join(';\n')}`;
     }
     this.setState({
       abnormalTextShow,
@@ -101,8 +136,8 @@ class AbnormalReportModal extends Component {
   }
 
   render(){
-    const { abnormalModalshow, abnormalInfo, hideAbnormalModal, findDeviceExist, deviceExistInfo} = this.props;
-    const { addLostFormShow, faultGenList, limitGenList, addLimitFormShow, abnormalTextShow, abnormalText } = this.state;
+    const { abnormalModalshow, abnormalInfo, hideAbnormalModal, findDeviceExist, deviceExistInfo, lostGenTypes} = this.props;
+    const { addLostFormShow, faultGenList, limitGenList, addLimitFormShow, abnormalTextShow, abnormalText, showDataError, dataErrorText } = this.state;
     return (
       <Modal
           title={`添加异常-${abnormalInfo.stationName}`}
@@ -119,6 +154,7 @@ class AbnormalReportModal extends Component {
         </div>
         <LostGenTable faultGenList={faultGenList} abnormalInfo={abnormalInfo} changeFaultList={this.changeFaultList} />
         {addLostFormShow && <LostAddForm 
+          lostGenTypes={lostGenTypes}
           findDeviceExist={findDeviceExist} 
           faultGenList={faultGenList} 
           changeFaultList={this.changeFaultList}  
@@ -144,6 +180,7 @@ class AbnormalReportModal extends Component {
             {abnormalTextShow && <Input.TextArea className={styles.abnormalTextArea} onChange={this.reportAbnormalText} value={abnormalText} />}
           </div>
         </div>
+        {showDataError && <span>{dataErrorText}</span>}
       </Modal>
     )
   }

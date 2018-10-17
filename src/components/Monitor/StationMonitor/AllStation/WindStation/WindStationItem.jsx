@@ -13,6 +13,7 @@ class WindStationItem extends React.Component {
   }
   
   showTip = () => {
+    message.destroy();
     message.config({
       top: 225,
       duration: 2,

@@ -11,6 +11,7 @@ export const dayReportAction = {
   getReportUploadedStation: Symbol('getReportUploadedStation'), // 获取指定日期已上传电站列表
   getDayReportConfig: Symbol('getDayReportConfig'), // 获取日报配置
   getStationBaseReport: Symbol('getStationBaseReport'), // 选中日期+电站后各待上传数据电站基础情况
+  uploadDayReport: Symbol('uploadDayReport'), // 上报日报
   dayReportDetail: Symbol('dayReportDetail'), // 获取选中日报详情
   dayReportUpdate: Symbol('dayReportUpdate'), // 更新日报数据
 } 

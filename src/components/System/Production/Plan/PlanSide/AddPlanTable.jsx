@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import styles from './planSide.scss';
-import {Table, Input,Form,message} from 'antd';
+import {Table, Input, Form, message, Icon} from 'antd';
 import {getMonth} from "../plan";
 
 const FormItem = Form.Item;
@@ -17,19 +17,19 @@ const EditableFormRow = Form.create()(EditableRow);
 
 class EditableCell extends React.Component {
   static propTypes = {
-    dataIndex:PropTypes.string,
-    record:PropTypes.object,
+    dataIndex: PropTypes.string,
+    record: PropTypes.object,
   };
   getInput = (form) => {
     const {dataIndex, record} = this.props;
-    if(record.onGridTime){
-       if(getMonth(dataIndex)<Number(record.onGridTime)){
-         return <Input  disabled={true} placeholder="--"/>
-       }else{
-         return <Input  onBlur={(e) => this.valueChange(e, form, dataIndex, record)} placeholder="--"/>;
-       }
-    }else{
-      return <Input  onBlur={(e) => this.valueChange(e, form, dataIndex, record)} placeholder="--"/>;
+    if (record.onGridTime) {
+      if (getMonth(dataIndex) < Number(record.onGridTime)) {
+        return <Input disabled={true} placeholder="--"/>
+      } else {
+        return <Input onBlur={(e) => this.valueChange(e, form, dataIndex, record)} placeholder="--"/>;
+      }
+    } else {
+      return <Input onBlur={(e) => this.valueChange(e, form, dataIndex, record)} placeholder="--"/>;
     }
   };
   valueChange = (e, form, dataIndex, record) => {//月份的修改，修改完毕之后年计划跟着变化
@@ -41,18 +41,21 @@ class EditableCell extends React.Component {
       });
       return false;
     } else {
-      const index=getMonth(dataIndex)-1;
+      const index = getMonth(dataIndex) - 1;
       record.monthPower[index] = number;
       record[dataIndex] = number;
+
       function sum(arr) {
         return arr.reduce(function (prev, curr, idx, arr) {
           return Number(prev) + Number(curr);
         });
       }
-      record.planPower=sum(record.monthPower);
+
+      record.planPower = sum(record.monthPower);
       this.props.handlevaluechange(record)
     }
   };
+
   render() {
     const {
       editing,
@@ -93,26 +96,27 @@ class PlanAddTable extends React.Component {
     addStationCodes: PropTypes.array,
     addPlanYear: PropTypes.string,
     save: PropTypes.string,
-    addValueChange:PropTypes.func,
-    addplansave:PropTypes.func,
+    addValueChange: PropTypes.func,
+    addplansave: PropTypes.func,
   };
 
   constructor(props) {
     super(props);
     this.state = {
-      AddPlandata:[]
+      AddPlandata: []
     }
-  }
-  componentWillMount(){
-    const {addStationCodes,addPlanYear}=this.props;
-    this._dealTableData(addStationCodes,addPlanYear)
   }
 
-  componentWillReceiveProps(nextProps){
-    if(this.state.save===nextProps.save){
+  componentWillMount() {
+    const {addStationCodes, addPlanYear} = this.props;
+    this._dealTableData(addStationCodes, addPlanYear)
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.state.save === nextProps.save) {
       return false
     }
-    nextProps.save==='true'? this.props.addplansave(this.state.AddPlandata):'';
+    nextProps.save === 'true' ? this.props.addplansave(this.state.AddPlandata) : '';
   }
 
   // 删除的时候
@@ -131,24 +135,25 @@ class PlanAddTable extends React.Component {
         ...row,
       });
     }
-    this.setState({AddPlandata:newData});
+    this.setState({AddPlandata: newData});
     this.props.addValueChange("change"); // 数据是否修改
   };
 
-  yearPRChange = (e,row) => {//PR 数据修改
+  yearPRChange = (e, row) => {//PR 数据修改
     const number = e.target.value;
     if (isNaN(number)) {
       message.warning('只可以填写数字,可精确到小数点后两位');
-      row.yearPR="";
+      row.yearPR = "";
       return false;
-    }else{
-      row.yearPR=number;
+    } else {
+      row.yearPR = number;
     }
     this.handlevaluechange(row)
   };
 
   _createTableColumn = () => {//生成表头
     const _this = this;
+
     function _MonthColumns() {
       let tabelKey = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
       return tabelKey.map((item, index) => {
@@ -215,9 +220,9 @@ class PlanAddTable extends React.Component {
         title: 'PR年计划',
         dataIndex: 'yearPR',
         key: 'yearPR',
-        render: (text,record) => {
+        render: (text, record) => {
           const textValue = text ? text : '--';
-          return (<span><Input defaultValue={textValue} onBlur={(e) => this.yearPRChange(e,record)}/>%</span>)
+          return (<span><Input defaultValue={textValue} onBlur={(e) => this.yearPRChange(e, record)}/>%</span>)
         }
       },
       {
@@ -226,7 +231,7 @@ class PlanAddTable extends React.Component {
         key: 'operation',
         render: (text, record) => {
           return (
-            <a onClick={() => this.handleDelete(record.key)}>删除</a>
+            <span onClick={() => this.handleDelete(record.key)} className={styles.delete}><Icon type="close-circle" theme="outlined"/></span>
           );
         },
       }];
@@ -242,7 +247,7 @@ class PlanAddTable extends React.Component {
           record,
           dataIndex: col.dataIndex,
           title: col.title,
-          editing:col.editable
+          editing: col.editable
         }),
       };
     });
@@ -251,12 +256,12 @@ class PlanAddTable extends React.Component {
 
   _dealTableData = (addStationCodes, addPlanYear) => { //将12个月的数据分开
     let TabelKey = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-    const addPlanStations=addStationCodes.map((list, index) => {
-      const AddPlanstaion={};
-      AddPlanstaion.monthPower=[]; //1-12月每月的计划发电量
+    const addPlanStations = addStationCodes.map((list, index) => {
+      const AddPlanstaion = {};
+      AddPlanstaion.monthPower = []; //1-12月每月的计划发电量
       if (list.onGridTime) {//  有了并网时间
         const onGridMonth = list.onGridTime.split('-')[1];
-        AddPlanstaion.onGridTime=onGridMonth;
+        AddPlanstaion.onGridTime = onGridMonth;
         AddPlanstaion.planPower = list.planPower;
         for (let i = 0; i < Number(onGridMonth); i++) {
           AddPlanstaion[TabelKey[i]] = null;
@@ -264,12 +269,12 @@ class PlanAddTable extends React.Component {
         // AddPlanstaion.monthPower=list.planMonthGen;
         // AddPlanstaion.planPower = sum(list.planMonthGen);
       }
-      AddPlanstaion.key=index;
+      AddPlanstaion.key = index;
       AddPlanstaion.regionName = list.regionName;  //区域
       AddPlanstaion.stationName = list.stationName; //电站名称
       AddPlanstaion.stationCapacity = list.stationCapacity; //装机容量
-      AddPlanstaion.planYear=addPlanYear; //  年份
-      AddPlanstaion.stationCode=list.stationCode; // 电站编码
+      AddPlanstaion.planYear = addPlanYear; //  年份
+      AddPlanstaion.stationCode = list.stationCode; // 电站编码
       return AddPlanstaion
     });
 
@@ -277,7 +282,7 @@ class PlanAddTable extends React.Component {
   };
 
   render() {
-    const {AddPlandata}=this.state;
+    const {AddPlandata} = this.state;
     const components = {
       body: {
         row: EditableFormRow,

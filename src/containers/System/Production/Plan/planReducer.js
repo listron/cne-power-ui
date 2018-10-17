@@ -5,7 +5,7 @@ import { planAction } from './planAction';
 
 var initState = Immutable.fromJS({
   loading: false,
-  buttonLoading: false,//普通按钮交互loading
+  // buttonLoading: false,//普通按钮交互loading
   showPage: 'list',//默认展示列表页list,可展示新建add,编辑edit
   planYear: null, // 年份选择，默认是当前年
   sortMethod: '', //排序 => 'field,0/1'field代表排序字段，0升序,1降序
