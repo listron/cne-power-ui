@@ -58,7 +58,6 @@ class DayReportMainList extends Component {
   }
 
   toUploadPage = () => { // 去上传页面
-    console.log('report页面');
     this.props.toChangeDayReportStore({
       showPage: 'report',
     })
@@ -94,13 +93,16 @@ class DayReportMainList extends Component {
         columns.push({
           title: moment(e.reportDate).format('DD'),
           dataIndex: e.reportDate,
-          render: (text, record) => {
+          render: (text, record) => { // available是否展示图表, isUpload是否已上传日报, status是否有异常信息未填。
             const stationDayInfo = record.dataList.find(info=>info.reportDate === e.reportDate);
-            const { isUpload, status} = stationDayInfo;
+            const { available, isUpload, status} = stationDayInfo;
             const showWarningIcon = isUpload && status; // 展示黄色图标提示未完成损失电量的填写。true展示，false不展示。
-            if(isUpload){
+            // if(!available){ // 不可上传
+            //   return <span></span>
+            // }else if(isUpload){ // 已上传日报=>查看详情
+            if(isUpload){ // 已上传日报=>查看详情
               return <span onClick={()=>this.toReportDetail(record, e.reportDate)}><i className="iconfont icon-look">{showWarningIcon && <i className="iconfont icon-alert_01" ></i>}</i></span>
-            }else{
+            }else{ // 未上传日报 => 点击上传
               return <span onClick={()=>this.toUploadReport(record, e.reportDate)}><Icon type="plus-circle" theme="outlined" /></span>
             }
           }
