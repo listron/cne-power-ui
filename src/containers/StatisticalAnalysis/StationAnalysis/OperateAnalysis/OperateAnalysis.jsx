@@ -60,6 +60,15 @@ const mapStateToProps = (state) => {
 }
 const mapDispatchToProps = (dispatch) => ({
   changeAllStationStore: payload => dispatch({ type: operateAnalysisAction.CHANGE_OPERATESTATIONDATA_STORE_SAGA, payload }),
+  getOperatePlanComplete: payload => dispatch({ type: operateAnalysisAction.getOperatePlanComplete, payload }),
+  getComponentPowerStatistic: payload => dispatch({ type: operateAnalysisAction.getComponentPowerStatistic, payload }),
+  getUsageRate: payload => dispatch({ type: operateAnalysisAction.getUsageRate, payload }),
+  getLostPowerType: payload => dispatch({ type: operateAnalysisAction.getLostPowerType, payload }),
+  getLimitPowerRate: payload => dispatch({ type: operateAnalysisAction.getLimitPowerRate, payload }),
+  getYearLimitPowerRate: payload => dispatch({ type: operateAnalysisAction.getYearLimitPowerRate, payload }),
+  getPlantPower: payload => dispatch({ type: operateAnalysisAction.getPlantPower, payload }),
+  
+
 
 
   

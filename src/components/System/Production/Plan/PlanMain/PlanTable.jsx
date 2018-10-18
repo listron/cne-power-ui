@@ -77,7 +77,7 @@ class EditableCell extends React.Component {
         planMonthValue=record.planMonthGens
       }
 
-      record.planPower = sum(planMonthValue);
+      record.planPower = sum(planMonthValue).toFixed(4);
       this.props.handlevaluechange(record, dataIndex, number)
     }
   };
@@ -245,7 +245,7 @@ class PlanTable extends Component {
           planPower: newItemData.planPower,
           yearPR: newItemData.yearPR,
         };
-        month.length > 0 ? this.props.editPlanInfo(params) : '';
+        this.props.editPlanInfo(params);
         this.setState({editingKey: '', monthPowers: {}});
       }
     });
@@ -263,7 +263,7 @@ class PlanTable extends Component {
           width: '40px',
           key: item,
           editable: true,
-          className:styles.month,
+          className:"month",
           render: (text, record, index) => {
             const textValue = text ? text : '--';
             const editable = _this.isEditing(record);
@@ -286,7 +286,8 @@ class PlanTable extends Component {
         title: '区域',
         dataIndex: 'regionName',
         key: 'regionName',
-        // width: '50px',
+        width: '50px',
+        className:styles.regionName,
         sorter: true,
         render: text => {
           return text ? text : '--'
@@ -318,6 +319,7 @@ class PlanTable extends Component {
         dataIndex: 'planYear',
         key: 'planYear',
         sorter: true,
+        className:styles.planYear
       },
       {
         title: '年计划发电量(万kWh)',
@@ -327,7 +329,7 @@ class PlanTable extends Component {
         sorter: true,
         render:(text,record)=>{
           const textValue=text? text :'--';
-          return <div className={this.isEditing(record) ? styles.save :''}>{textValue}</div>
+          return <div className={this.isEditing(record) ? styles.save :"" }>{textValue}</div>
         }
       },
       {
@@ -335,7 +337,7 @@ class PlanTable extends Component {
         dataIndex: 'yearPR',
         key: 'yearPR',
         editable: true,
-        className:styles.yearPR,
+        className:"yearPR",
         render: text => {
           const textValue = text ? text : '--';
           return (<span><Input defaultValue={textValue} disabled={true}/>%</span>)
@@ -345,6 +347,7 @@ class PlanTable extends Component {
         title: '操作',
         dataIndex: 'operation',
         key: 'operation',
+        className:styles.operation,
         render: (text, record) => {
           const editable = this.isEditing(record);
           return (
