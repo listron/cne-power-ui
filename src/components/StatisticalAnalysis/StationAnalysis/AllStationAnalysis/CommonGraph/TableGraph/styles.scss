@@ -1,14 +1,16 @@
 .TableGraphContainer{
   .TableGraphContainerTitle{
     height:40px;
-    line-height: 40px;
+    // line-height: 40px;
     display: flex;
     flex:1;
     justify-content: space-between;
+    .unit{
+      color: #999;
+    }
   }
   .tableList {
     width: 520px;
-    height: 247px;
     overflow: hidden;
     border-bottom:1px solid #e8e8e8;
     :global{

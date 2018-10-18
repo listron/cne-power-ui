@@ -18,7 +18,10 @@
       .stationFilter{
         display: flex;
         align-items: center;
-        
+        line-height: 43px;
+        .text{
+          margin-right: 10px;
+        }
       }
     }
     .rightContent{
@@ -38,7 +41,7 @@
       // padding-left: 30px;    
       justify-content: space-between;
       border-bottom: 2px solid #ececec;
-     
+      padding-top: 10px;
       .stationStatus {
         margin-left: 30px;
         color: $darkColor;
@@ -130,11 +133,11 @@
         display: flex;
         flex:1;
         flex-direction: column;
-        padding:10px 0;
+        padding: 20px 0;
+        border-bottom: 1px solid #ececec;
         .dataGraph{
           display: flex;    
           flex-direction: row;
-          border-bottom: 1px solid #ececec;
           .LostPowerTypeRate{
             width: 50%;
             // display: flex;

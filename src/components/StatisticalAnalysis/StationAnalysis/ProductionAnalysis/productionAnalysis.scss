@@ -16,10 +16,12 @@
       flex-direction: row;
       margin-left: 30px;
       .stationFilter{
-        padding-left: 30px;
         display: flex;
         align-items: center;
-       
+        line-height: 43px;
+        .text{
+          margin-right: 10px;
+        }
       }
     }
     .rightContent{
@@ -38,7 +40,7 @@
       flex-direction: column;
       padding-left: 28px;
       height: 160px;
-     
+      padding-top: 10px;
       justify-content: space-between;
       border-bottom: 1px solid #ececec;
      
@@ -97,10 +99,11 @@
         display: flex;
         flex:1;
         flex-direction: column;
+        padding: 20px 0;
+        border-bottom: 1px solid #ececec;
         .dataGraph{
           display: flex;    
           flex-direction: row;
-          border-bottom: 1px solid #ececec;
         }
       }
     }
