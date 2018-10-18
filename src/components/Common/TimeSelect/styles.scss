@@ -1,3 +1,4 @@
+@import '../../../theme/theme.scss';
 .timeSelect{
   height: 100px;
   line-height: 100px;
@@ -6,11 +7,12 @@
   align-items: center;
   border-bottom: 1px solid #ececec;
   .textStyle{
-    letter-spacing: 4px;
+    letter-spacing: 1px;
     margin-left: 24px;
     margin-right: 8px;
+    color:$lightColor;
   }
   .buttonStyle{
-    margin-right: 4px;
+    margin-right: 7px;
   }
 }

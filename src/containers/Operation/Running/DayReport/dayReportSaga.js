@@ -124,6 +124,7 @@ function *getReportUploadedStation(action){ // 选定日期已上传过日报电
     yield put({
       type:  dayReportAction.changeDayReportStore,
       payload:{
+        reportDisableStation: [],
         reportDay: payload.reportDay,
       },
     });
@@ -132,8 +133,8 @@ function *getReportUploadedStation(action){ // 选定日期已上传过日报电
 
 function *uploadDayReport(action){ // 日报上报
   const { payload } = action;
-  const url = '/mock/operation/dayReport/uploadDayReport';
-  // const url = `${APIBasePath}${operation.uploadDayReport}`
+  // const url = '/mock/operation/dayReport/uploadDayReport';
+  const url = `${APIBasePath}${operation.uploadDayReport}`
   try{
     yield put({ type:dayReportAction.dayReportLoading });
     const response = yield call(axios.post,url,payload);
@@ -205,14 +206,33 @@ function *dayReportUpdate(action){ // 日报编辑
   const { payload } = action;
   try{
     yield put({ type:dayReportAction.dayReportLoading });
-    const url = '/mock/operation/dayReport/update';
-    // const url = `${APIBasePath}${operation.dayReportUpdate}`;
+    // const url = '/mock/operation/dayReport/update';
+    const url = `${APIBasePath}${operation.dayReportUpdate}`;
     const response = yield call(axios.put,url, payload);
-    if(response.data.code === '10000'){
-      //重新请求列表 - todo
+    if(response.data.code === '10000'){ // 日报编辑成功，重新请求日报列表
+      const params = yield select(state => ({
+        startTime: state.operation.dayReport.get('startTime'),
+        pageSize: state.operation.dayReport.get('pageSize'),
+        pageNum: state.operation.dayReport.get('pageNum'),
+        stationNameSort: state.operation.dayReport.get('stationNameSort'),
+        stationType: state.operation.dayReport.get('stationType'),
+        regionCode: state.operation.dayReport.get('regionCode')
+      }));
       yield put({
-        type:  dayReportAction.dayReportFetchSuccess,
-        payload:{ },
+        type:  dayReportAction.changeDayReportStore,
+        payload:{
+          showPage: 'detail', // 回详情页。
+        },
+      })
+      yield put({
+        type:  dayReportAction.getDayReportList,
+        payload:{ ...params },
+      });
+    }else{
+      message.error(`日报编辑失败!${response.data.message}`);
+      yield put({
+        type:  dayReportAction.changeDayReportStore,
+        payload: { loading: false },
       });
     }
   }catch(e){

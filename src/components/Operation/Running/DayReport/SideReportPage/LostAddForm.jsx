@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './sideReportPage.scss';
 import { Form, Input, DatePicker, Button,Row,Col } from 'antd';
-import moment from 'moment';
 import { Select } from 'antd';
 const { Option } = Select;
 
@@ -30,7 +29,8 @@ class LostAddForm extends Component {
     const { deviceExistInfo } = this.props;
     const newDeviceExistInfo = nextProp.deviceExistInfo;
     if(deviceExistInfo.existLoading && !newDeviceExistInfo.existLoading){ // 设备名称验证后
-      if(newDeviceExistInfo.existError){ // 设备验证未通过，有未存在设备
+      // if(false){
+      if(deviceExistInfo.existError){// 设备验证未通过，有未存在设备
         this.setState({
           deviceNameErroShow: true,
           deviceNameErroInfo : `${deviceExistInfo.existErrorData.join(',')}不存在!`
@@ -41,11 +41,12 @@ class LostAddForm extends Component {
           });
         },2000);
       }else{ // 设备验证通过
-        const { form, changeFaultList, faultGenList } = this.props;
+        const { form, changeFaultList, faultGenList, lostGenTypes } = this.props;
         const { getFieldsValue } = form;
         const lostInfo = getFieldsValue();
         lostInfo.id = `lostAdd${faultGenList.length}`;
         lostInfo.handle = true;
+        lostInfo.faultName = lostGenTypes.find(e=>e.id === lostInfo.faultId).faultName;
         lostInfo.deviceName = lostInfo.deviceName.trim().replace('/\s+/g',',');
         lostInfo.type = 1;  // 损失type 1 => 后台接收。
         changeFaultList([...faultGenList,lostInfo], true);
@@ -114,7 +115,7 @@ class LostAddForm extends Component {
         <Row className={styles.horizontal} >
           <Col span={8}>
             <Form.Item label="损失电量类型" {...formItemLayout1} >
-              {getFieldDecorator('faultName', {
+              {getFieldDecorator('faultId', {
                 rules: [{ required: true, message: '请选择损失电量类型' }],
               })(
                 <Select placeholder="请选择">

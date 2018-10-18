@@ -46,7 +46,7 @@ class LimitGenTable extends Component {
               rules: [{ required: true, message: '开始时间' }],
               initialValue: record.startTime,
             })(
-              <DatePicker placeholder="开始时间" />
+              <DatePicker placeholder="开始时间" showTime={true} format="YYYY-MM-DD HH:mm"  />
             )}
           </Form.Item>)
         }
