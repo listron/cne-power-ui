@@ -14,6 +14,7 @@ class StationContrastDetail extends Component {
   static propTypes = {
     stationContrastDetail: PropTypes.array,
     column: PropTypes.string,
+    loading: PropTypes.bool,
   }
 
   constructor(props) {
@@ -26,7 +27,7 @@ class StationContrastDetail extends Component {
   componentWillReceiveProps(nextProps) {
     const { stationContrastDetail, column } = nextProps;
     const stationContrastDiagram = echarts.init(document.getElementById(`stationContrastDiagram_${column}`));
-    
+  
     const lineColor = '#666';
     const stationNames = stationContrastDetail.map(e => e.stationName);
     const contrastYears = stationContrastDetail.map(e => e.year);
@@ -134,16 +135,15 @@ class StationContrastDetail extends Component {
     }
     stationContrastDiagram.setOption(stationContrastOption);
     
+    
+    
   }
 
   render() {
     const { column,loading } = this.props;
     return (
       <div className={styles.capabilityDiagramBox} >
-        {loading ? <Spin size="large" id={`stationContrastDiagram_${column}`} style={{ width: "800px", height: "360px",lineHeight:'360px', borderRadius: "4px", paddingTop: "20px" }} />
-          : <div id={`stationContrastDiagram_${column}`} style={{ width: "800px", height: "360px", borderRadius: "4px", paddingTop: "20px" }}></div>
-        }
-        
+        <div id={`stationContrastDiagram_${column}`} style={{ width: "800px", height: "360px", borderRadius: "4px", paddingTop: "20px" }}></div>
       </div>
     )
   }

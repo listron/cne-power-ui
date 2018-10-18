@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { TimePicker, Icon, Button, Form, DatePicker, Select,  } from 'antd';
 import { withRouter } from 'react-router-dom';
 import styles from './stationContrast.scss';
-import StationSelect from '../../../Common/StationSelect';
+import StationSelectContrast from './StationSelectContrast/index';
 import TimeSelect from '../../../Common/TimeSelect';
 import StationContrastTable from './StationContrastTable';
 const FormItem = Form.Item;
@@ -50,7 +50,7 @@ class StationContrast extends React.Component {
         <div className={styles.stationTimeFilter}>
           <div className={styles.leftFilter}>
             <div className={styles.stationFilter}>
-              <StationSelect
+              <StationSelectContrast
                 data={stations}
                 holderText={'请选择两个电站对比'}
                 multiple={true}
