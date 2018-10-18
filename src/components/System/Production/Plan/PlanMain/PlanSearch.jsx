@@ -75,7 +75,7 @@ class planSearch extends Component {
             format={dateFormat}
             mode='year'
             open={this.state.open}
-            value={moment(this.state.dateValue, dateFormat)}
+            // value={this.state.dateValue?moment(this.state.dateValue, dateFormat):''}
             onOpenChange={this.onOpenChange}
             onPanelChange={(value, mode) => (this.onPanelChange(value, mode))}
           />

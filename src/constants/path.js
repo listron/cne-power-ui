@@ -189,6 +189,27 @@ export default {
     },
     other: {
       editPassword: '/v3/user/password', // 更变密码
+    },
+    statisticalAnalysis:{
+      getAllStationAvaliba:'/v3/performance/comprehensive/dataavaliba',
+      getAllStationStatistic:'v3/performance/comprehensive/plans',
+      getAllStationStatisticTable:'v3/performance/comprehensive/statistics',
+      getAllStationMonthBar:'v3/performance/comprehensive/chart/month',
+      getAllStationMonthPie:'v3/performance/comprehensive/piecharts/month',
+      getAllStationYearBar:'v3/performance/comprehensive/chart/year',
+      getSingleStationStatistic:'v3/performance/comprehensive/plan',
+      getSingleStationTarget:'v3/performance/comprehensive/power/months',
+      getSingleStationMonthPie:'v3/performance/comprehensive/piechart/month',
+      getSingleStationYearTarget:'v3/performance/comprehensive/power/year',
+      getSingleStationPlanRate:'v3/performance/comprehensive/planrate/years',
+      getSingleStationDayCompleteRate:'v3/performance/comprehensive/planrate/day',
+      getSingleStationPvCompare:'v3/performance/comprehensive/light/months',
+      getSingleStationYearPvCompare:'v3/performance/comprehensive/light/year',
+      getSingleStationPowerEffective:'v3/performance/comprehensive/efficiencygen',
+     
+
+
+
     }
     // monitor:{
     //   getStationType:'v3/monitor/stations/stationType',

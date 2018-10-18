@@ -1,46 +1,54 @@
 import React from "react";
+import PropTypes from "prop-types";
 import styles from './stationStatisticList.scss';
 import Pagination from '../../../../components/Common/CommonPagination/index';
 import {  Table,  Radio } from "antd";
+import moment from 'moment';
 
 
 class StationStatisticList extends React.Component {
+  static propTypes = {
+    AllStationAvalibaData: PropTypes.array,
+    dateType: PropTypes.string,
+  }
   constructor(props, context) {
     super(props, context)
   }
-  //时间选择按钮
-      //这里可以判断是否是空数据
-      //要先判断筛选的时间，如果是2014-2018，用for循环从2014年开始到2018年结束
-      //如果是2018年，直接12个月，或者取当年月份，从1月循环到本月
+  
   selectTime() {
+    const {AllStationAvalibaData,}=this.props; 
+    const currentMonth=moment().format('MM');
     return (
-      <Radio.Group defaultValue="4"  buttonStyle="solid">
-       {["1","2","3","4","5","6","7","8","9"].map((e,index)=>{
-         if(e<7){
-          return   <Radio.Button value={e} key={index}  style={{margin:'0 5px'}}>{e}月</Radio.Button>
+      <Radio.Group defaultValue={currentMonth}  buttonStyle="solid">
+       {AllStationAvalibaData.map((e,index)=>{        
+         if(e.isTrue==='1'){
+          return   <Radio.Button value={e.year} key={index}  style={{margin:'0 5px'}}>{e.year}月</Radio.Button>
          }else{
-          return   <Radio.Button value={e} key={index} disabled style={{margin:'0 5px'}}>{e}月</Radio.Button>
+          return   <Radio.Button value={e.year} key={index} disabled style={{margin:'0 5px'}}>{e.year}月</Radio.Button>
          }      
-       }       
+       }      
        )}        
       </Radio.Group>
-    )
+    ) 
   }
   selectYear() {
+    const {AllStationAvalibaData}=this.props;
+    const currentYear=moment().format('YYYY');
+    console.log(currentYear); 
     return (
-      <Radio.Group defaultValue="2019"  buttonStyle="solid">
-       {['2014','2015','2016','2017','2018','2019'].map((e,index)=>{
-         if(true){
-          return   <Radio.Button value={e} key={index}  style={{margin:'0 5px'}}>{e}年</Radio.Button>
+      <Radio.Group defaultValue={currentYear}  buttonStyle="solid">
+       {AllStationAvalibaData.map((e,index)=>{        
+         if(e.isTrue==='1'){
+          return   <Radio.Button value={e.year} key={index}  style={{margin:'0 5px'}}>{e.year}年</Radio.Button>
          }else{
-          return   <Radio.Button value={e} key={index} disabled style={{margin:'0 5px'}}>{e}月</Radio.Button>
+          return   <Radio.Button value={e.year} key={index} disabled style={{margin:'0 5px'}}>{e.year}年</Radio.Button>
          }      
-       }       
+       }      
        )}        
       </Radio.Group>
-    )
+    )  
   }
-
+  
 
 
 
@@ -136,7 +144,8 @@ class StationStatisticList extends React.Component {
   }
 
   render() {
-    const {dateType}=this.props;
+    const {dateType,AllStationAvalibaData}=this.props;
+    console.log(AllStationAvalibaData);
     const columns = this.initColumn();
     return (
       <div className={styles.stationStatisticList}>
@@ -145,6 +154,7 @@ class StationStatisticList extends React.Component {
             <div>综合指标统计表</div>
             {dateType==='month'?this.selectTime():''}
             {dateType==='year'?this.selectYear():''}
+           
           </div>
           <Pagination />
         </div>

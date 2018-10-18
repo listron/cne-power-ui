@@ -24,7 +24,7 @@ class TargetTabs extends React.Component {
             <div className={styles.tabContainer}>
               <div className={styles.dataGraph}>
                 <BarGraph graphId={'power'} yAxisName={'发电量 (万kWh)'}  xAxisName={'发电量'} dateType={dateType} />
-                <TargetStatisticPieGraph pieGraphId={'powerPie'} />
+               {dateType==='month'?<TargetStatisticPieGraph pieGraphId={'powerPie'} />:''} 
               </div>
               <StationStatisticList {...this.props} />
             </div>
@@ -33,7 +33,7 @@ class TargetTabs extends React.Component {
             <div className={styles.tabContainer}>
               <div className={styles.dataGraph}>
                 <BarGraph graphId={'radiationBar'} yAxisName={'辐射总量 (MJ/㎡)'} xAxisName={'辐射总量'} dateType={dateType} />
-                <AllStationMonthPie allStationMonthpie={'radiationPie'} />
+                {dateType==='month'?<AllStationMonthPie allStationMonthpie={'radiationPie'} />:''}
               </div>
             </div>
           </TabPane>
@@ -41,7 +41,7 @@ class TargetTabs extends React.Component {
             <div className={styles.tabContainer}>
               <div className={styles.dataGraph}>
                 <BarGraph graphId={'userTime'} yAxisName={'等效利用小时数 (h)'}  xAxisName={'等效利用小时数'} dateType={dateType} />
-                <AllStationMonthPie allStationMonthpie={'userTimePie'} />
+                {dateType==='month'?<AllStationMonthPie allStationMonthpie={'userTimePie'} />:''}
               </div>
             </div>
           </TabPane>
@@ -49,7 +49,7 @@ class TargetTabs extends React.Component {
             <div className={styles.tabContainer}>
               <div className={styles.dataGraph}>
                 <BarGraph graphId={'PR'} yAxisName={'PR'}  xAxisName={'PR'} dateType={dateType} />
-                <AllStationMonthPie allStationMonthpie={'PRPie'} />
+                {dateType==='month'?<AllStationMonthPie allStationMonthpie={'PRPie'} />:''}
               </div>
             </div>
           </TabPane>
@@ -57,7 +57,7 @@ class TargetTabs extends React.Component {
             <div className={styles.tabContainer}>
               <div className={styles.dataGraph}>
                 <BarGraph graphId={'lostPower'} yAxisName={'损失电量 (万kWh)'}  xAxisName={'损失电量'} dateType={dateType} />
-                <AllStationMonthPie allStationMonthpie={'lostPowerPie'} />
+                {dateType==='month'?<AllStationMonthPie allStationMonthpie={'lostPowerPie'} />:''}
               </div>
             </div>
           </TabPane>
@@ -65,7 +65,7 @@ class TargetTabs extends React.Component {
             <div className={styles.tabContainer}>
               <div className={styles.dataGraph}>
                 <BarGraph graphId={'lostPowertime'} yAxisName={'发电量 (h)'}  xAxisName={'损失电量等效时'} dateType={dateType} />
-                <AllStationMonthPie allStationMonthpie={'lostPowertimePie'} />
+                {dateType==='month'?<AllStationMonthPie allStationMonthpie={'lostPowertimePie'} />:''}
               </div>
             </div>
           </TabPane>
