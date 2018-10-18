@@ -9,15 +9,11 @@ class LostGenTable extends Component {
   static propTypes = {
     form: PropTypes.object,
     faultGenList: PropTypes.array,
-    lostGenTypes: PropTypes.array,
     changeFaultList: PropTypes.func,
   }
 
   constructor(props){
     super(props);
-    this.state = {
-
-    }
   }
 
   removeFaultInfo = (id) => {
@@ -34,11 +30,7 @@ class LostGenTable extends Component {
         dataIndex: 'deviceName',
       },{
         title: '损失电量类型',
-        dataIndex: 'faultName',
-        render : (text, record) => {
-          const faultInfo = this.props.lostGenTypes.find(e=>parseInt(e.id) === parseInt(record.faultId));
-          return faultInfo? faultInfo.faultName: ' -- ';
-        }
+        dataIndex: 'faultName'
       },{
         title: '原因说明',
         dataIndex: 'reason',
@@ -46,14 +38,16 @@ class LostGenTable extends Component {
         title: '发生时间',
         dataIndex: 'startTime',
         render : (text, record) => {
-          return (<Form.Item>
+          return record.typeSource === 0?<span>
+            {moment(record.startTime).format('YYYY-MM-DD HH:mm')}
+          </span>:<Form.Item>
             {getFieldDecorator(`${record.id}_startTime`, {
               rules: [{ required: true, message: '开始时间' }],
               initialValue: record.startTime,
             })(
-              <DatePicker placeholder="开始时间" showTime={true} format="YYYY-MM-DD hh:mm"  />
+              <DatePicker placeholder="开始时间" showTime={true} format="YYYY-MM-DD HH:mm"  />
             )}
-          </Form.Item>)
+          </Form.Item>
         }
       },{
         title: '结束时间',

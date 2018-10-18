@@ -59,7 +59,7 @@ class ResourceElecInfo extends Component {
           </Form.Item>
           <Form.Item label="日发电量(逆变器)">
             {getFieldDecorator('genInverter', {
-              rules: [{ required: requireTargetArr.includes('yearGenInverter'), message: '请填写逆变器日发电量' }],
+              rules: [{ required: requireTargetArr.includes('genInverter'), message: '请填写逆变器日发电量' }],
               initialValue: updateDayReportDetail.genInverter,
             })(
               <Input placeholder="日发电量" />
@@ -68,7 +68,7 @@ class ResourceElecInfo extends Component {
           </Form.Item>
           <Form.Item label="日发电量(集电线路)">
             {getFieldDecorator('genIntegrated', {
-              rules: [{ required: requireTargetArr.includes('yearGenIntegrated'), message: '请填写集电线路日发电量' }],
+              rules: [{ required: requireTargetArr.includes('genIntegrated'), message: '请填写集电线路日发电量' }],
               initialValue: updateDayReportDetail.genIntegrated,
             })(
               <Input />
@@ -77,7 +77,7 @@ class ResourceElecInfo extends Component {
           </Form.Item>
           <Form.Item label="日发电量(上网电量)">
             {getFieldDecorator('genInternet', {
-              rules: [{ required: requireTargetArr.includes('yearGenInternet'), message: '请填写上网电量日发电量' }],
+              rules: [{ required: requireTargetArr.includes('genInternet'), message: '请填写上网电量日发电量' }],
               initialValue: updateDayReportDetail.genInternet,
             })(
               <Input />

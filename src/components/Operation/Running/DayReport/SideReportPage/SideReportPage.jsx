@@ -7,6 +7,7 @@ import StationSelect from '../../../../Common/StationSelect';
 import UploadReportList from './UploadReportList';
 import moment from 'moment';
 import { reportBasefun } from '../reportBaseFun';
+import WarningTip from '../../../../Common/WarningTip';
 
 class SideReportPage extends Component {
   static propTypes = {
@@ -30,6 +31,8 @@ class SideReportPage extends Component {
       reportDay: '',
       reportStation: [],
       dayReportTotalInfoArr: [], //用于上传日报的所有信息
+      showBackWarningTip: false,
+      warningTipText: '',
     }
   }
 
@@ -47,7 +50,7 @@ class SideReportPage extends Component {
         let dailyReport = {...e};
         let dailyDetailList = e.dailyDetailList.map((fault,index)=>({
           ...fault,
-          id: `${index}`, // 若关联工单则使用，若非，由前端手动生成。=>上报前去掉。
+          id: `${index}`, // 用于确定数据是从前端生成还是后台给予，上报前去掉。
           startTime: fault.startTime?moment(fault.startTime): null,
           endTime: fault.endTime?moment(fault.endTime): null,
           handle: false, // api返回的故障信息不可编辑
@@ -59,6 +62,20 @@ class SideReportPage extends Component {
       });
       this.setState({ dayReportTotalInfoArr })
     }
+  }
+
+  showBackTip = () => { // 提示框-提醒用户是否确认返回列表
+    this.setState({
+      showBackWarningTip: true,
+      warningTipText: '确认放弃日报上传?',
+    })
+  }
+
+  cancelWarningTip = () => { // 取消返回列表
+    this.setState({
+      showBackWarningTip: false,
+      warningTipText: '',
+    })
   }
 
   toReportList = () => { // 回日报列表页
@@ -131,7 +148,6 @@ class SideReportPage extends Component {
       this.messageWarning(errorText);
     }else{ // 数据无误，调整数据结构并提交
       console.log('数据正确无误!')
-    //to check 接口返回装机容量为stationCapacity，文档要求上传为realCapacity；
       const uploadInfo = dayReportTotalInfoArr.map(e=>{
         let { dailyReport, dailyDetailList } = e;
         delete dailyReport.warning;
@@ -147,13 +163,15 @@ class SideReportPage extends Component {
             lostPower: eachLost.lostPower,
             limitPower: eachLost.limitPower,
             process: eachLost.process,
+            faultId: eachLost.faultId,
+            faultName: eachLost.faultName,
             type: eachLost.type,
           }
-          eachLost.id > 0 && (lostInfo.id = eachLost);
           return lostInfo;
         })
         return { dailyReport, dailyDetailList: newDailyDetailList};
       })
+      console.log(uploadInfo)
       this.props.uploadDayReport({allStationDailyDetailList: uploadInfo})
     }
   }
@@ -179,7 +197,7 @@ class SideReportPage extends Component {
   render(){
     const { reportDay, stations, reportStation, showReportInputList, reportDisableStation } = this.props;
     const canReport = reportDay && reportStation && reportStation.length > 0;
-    const { dayReportTotalInfoArr } = this.state;
+    const { dayReportTotalInfoArr, showBackWarningTip, warningTipText } = this.state;
     return (
       <div className={styles.sideReportPage} >
         <div className={styles.sideReportTitle} >
@@ -187,7 +205,7 @@ class SideReportPage extends Component {
           <div className={styles.sideReportTitleRight} >
             {showReportInputList && <Button onClick={this.toSelectCondition} className={styles.dayReportPrev} >上一步</Button>}
             {showReportInputList && <Button onClick={this.saveDayReport} className={styles.saveDayReport} >保存</Button>}
-            <Icon type="arrow-left" className={styles.backIcon}  onClick={this.toReportList} />
+            <Icon type="arrow-left" className={styles.backIcon}  onClick={this.showBackTip} />
           </div>
         </div>
         {!showReportInputList && <div className={styles.sideReportContent}>
@@ -212,6 +230,7 @@ class SideReportPage extends Component {
           totalReportInfoChange={this.totalReportInfoChange}
           dayReportTotalInfoArr={dayReportTotalInfoArr} 
         />}
+        {showBackWarningTip && <WarningTip onOK={this.toReportList} onCancel={this.cancelWarningTip} value={warningTipText} />}
       </div>
     )
   }

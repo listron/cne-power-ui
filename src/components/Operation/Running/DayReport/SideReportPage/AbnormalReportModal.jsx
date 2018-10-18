@@ -151,7 +151,7 @@ class AbnormalReportModal extends Component {
           <span>损失电量信息<Icon type="caret-right" theme="outlined" /></span>
           <Button onClick={this.toAddGenLost} disabled={addLostFormShow} icon="plus" className={styles.uploadGenLost} >添加</Button>
         </div>
-        <LostGenTable lostGenTypes={lostGenTypes} faultGenList={faultGenList} abnormalInfo={abnormalInfo} changeFaultList={this.changeFaultList} />
+        <LostGenTable faultGenList={faultGenList} abnormalInfo={abnormalInfo} changeFaultList={this.changeFaultList} />
         {addLostFormShow && <LostAddForm 
           lostGenTypes={lostGenTypes}
           findDeviceExist={findDeviceExist} 

@@ -7,12 +7,15 @@ import LostAddForm from '../SideReportPage/LostAddForm';
 import LimitAddForm from '../SideReportPage/LimitAddForm';
 import LostGenTable from '../SideReportPage/LostGenTable';
 import LimitGenTable from '../SideReportPage/LimitGenTable';
+import WarningTip from '../../../../Common/WarningTip';
 import moment from 'moment';
 import styles from './reportDetail.scss';
 import { reportBasefun } from '../reportBaseFun';
 
 class ReportEdit extends Component {
   static propTypes = {
+    showPage: PropTypes.string,
+    lostGenTypes: PropTypes.array,
     deviceExistInfo: PropTypes.object,
     selectedDayReportDetail: PropTypes.object,
     dayReportConfig: PropTypes.array,
@@ -20,6 +23,7 @@ class ReportEdit extends Component {
     toChangeDayReportStore: PropTypes.func,
     findDeviceExist: PropTypes.func,
     dayReportUpdate: PropTypes.func,
+    getLostGenType: PropTypes.func,
   }
 
   constructor(props){
@@ -29,7 +33,39 @@ class ReportEdit extends Component {
       addLimitFormShow: false,
       abnormalTextShow: false,
       updateDayReportDetail: props.selectedDayReportDetail,
+      showBackWarningTip: false,
+      warningTipText: '',
     }
+  }
+
+  componentDidMount(){
+    this.props.getLostGenType({
+      stationType: this.props.selectedDayReportDetail.stationType, 
+      defectType: -1, 
+      type: 0,
+    })
+  }
+
+  componentWillReceiveProps(nextProps){
+    const newShowPage = nextProps.showPage;
+    const { showPage } = this.props;
+    if(showPage === 'edit' && newShowPage === 'detail'){ // 编辑请求成功
+      this.props.onSidePageChange({ sidePage : 'detail'});
+    }
+  }
+
+  showDetaiTip = () => { // 提示框
+    this.setState({
+      showBackWarningTip: true,
+      warningTipText: '确认放弃编辑?',
+    })
+  }
+
+  cancelDetaiTip = () => { // 取消返回列表
+    this.setState({
+      showBackWarningTip: false,
+      warningTipText: '',
+    })
   }
 
   backToDetail = () => { // 返回详情
@@ -57,15 +93,22 @@ class ReportEdit extends Component {
     const { updateDayReportDetail } = this.state;
     console.log(updateDayReportDetail);
     if(abnormalTextShow){
-      const { faultList } = updateDayReportDetail;
+      const { faultList, limitList } = updateDayReportDetail;
       const faultShortInfo =  faultList.map(e=>{
         let { deviceName, startTime, endTime, reason, faultName } = e;
         // startTime = startTime && startTime.format('YYYY-MM-DD');
         // endTime = endTime && endTime.format('YYYY-MM-DD');
         const tmpTextArr = [deviceName, startTime, endTime, reason, faultName].filter(e=>e);
-        return tmpTextArr.join('+')
+        return tmpTextArr.join('+');
       })
-      abnormalText = faultShortInfo.join(';\n');
+      const limitShortInfo = limitList.map(e=>{
+        let { deviceName, startTime, endTime, reason, limitPower } = e;
+        // startTime = startTime && startTime.format('YYYY-MM-DD');
+        // endTime = endTime && endTime.format('YYYY-MM-DD');
+        const tmpTextArr = [deviceName, startTime, endTime, reason, limitPower].filter(e=>e);
+        return tmpTextArr.join('+');
+      })
+      abnormalText = `${faultShortInfo.join(';\n')};\n${limitShortInfo.join(';\n')}`;
     }
     this.setState({
       abnormalTextShow,
@@ -104,7 +147,8 @@ class ReportEdit extends Component {
       const configRequired = tmpRequireTargetArr.includes(config.configName); // 必填数据项
       const requiredValue = updateDayReportDetail[config.configName];
       const maxPointLength = config.pointLength; // 指定的最大小数点位数
-      const paramPointLength = (requiredValue && requiredValue.split('.')[1]) ? requiredValue.split('.')[1].length : 0;
+      const decimalData = requiredValue && `${requiredValue}`.split('.')[1];
+      const paramPointLength = decimalData ? decimalData.length : 0;
       const dataFormatError = isNaN(requiredValue) || (maxPointLength && paramPointLength > maxPointLength); // 数据格式错误;
       if(configRequired && !requiredValue && requiredValue !== 0){ // 必填项未填
         errorText = `${updateDayReportDetail.stationName}${config.configText}未填写!`;
@@ -128,18 +172,41 @@ class ReportEdit extends Component {
       this.messageWarning(errorText);
     }else{ // 无错误，提交信息。
       const newFaultList = faultList?faultList.map(e=>{
-        !(e.id > 0) && delete e.id;
-        return e;
+        delete e.id;
+        delete e.handle;
+        return { 
+          ...e,
+          startTime: e.startTime?moment(e.startTime).format('YYYY-MM-DD HH:mm'): null,
+          endTime: e.endTime?moment(e.endTime).format('YYYY-MM-DD HH:mm'): null,
+        };
       }): [];
       const newLimitList = limitList?limitList.map(e=>{
-        !(e.id > 0) && delete e.id;
-        return e;
+        delete e.id;
+        delete e.handle;
+        return {
+          ...e,
+          startTime: e.startTime?moment(e.startTime).format('YYYY-MM-DD HH:mm'): null,
+          endTime: e.endTime?moment(e.endTime).format('YYYY-MM-DD HH:mm'): null,
+        };
       }): [];
       const reportInfo = {
-        ...updateDayReportDetail,
+        reportDate: moment(updateDayReportDetail.reportDate).format('YYYY-MM-DD'),
+        reportId: updateDayReportDetail.reportId,
+        realCapacity: updateDayReportDetail.realCapacity,
+        machineCount: updateDayReportDetail.machineCount,
+        resourceValue: updateDayReportDetail.resourceValue, // to 亚东
+        genInternet: updateDayReportDetail.genInternet,
+        genInverter: updateDayReportDetail.genInverter,
+        genIntegrated: updateDayReportDetail.genIntegrated,
+        equivalentHours: updateDayReportDetail.equivalentHours,
+        modelInverterCapacity: updateDayReportDetail.modelInverterCapacity,
+        modelInverterPowerGen: updateDayReportDetail.modelInverterPowerGen,
+        buyPower: updateDayReportDetail.buyPower,
+        errorInfo: updateDayReportDetail.errorInfo,
         faultList: newFaultList,
         limitList: newLimitList,
       }
+      console.log(reportInfo)
       this.props.dayReportUpdate(reportInfo)
     }
   }
@@ -155,7 +222,6 @@ class ReportEdit extends Component {
   }
 
   changeReportDetail = (updateDayReportDetail) => { // 更变详情
-    console.log(updateDayReportDetail);
     this.setState({ updateDayReportDetail });
   }
 
@@ -176,7 +242,7 @@ class ReportEdit extends Component {
   }
 
   render(){
-    const { updateDayReportDetail, addLostFormShow, addLimitFormShow, abnormalTextShow } = this.state;
+    const { updateDayReportDetail, addLostFormShow, addLimitFormShow, abnormalTextShow, showBackWarningTip, warningTipText } = this.state;
     const { findDeviceExist, deviceExistInfo, dayReportConfig, lostGenTypes } = this.props;
     return (
       <div className={styles.reportEdit} >
@@ -184,7 +250,7 @@ class ReportEdit extends Component {
           <span className={styles.reportDetailTitleTip}>日报编辑</span>
           <div className={styles.reportDetailTitleRight}>
             <Button onClick={this.updateReport} className={styles.reportEdit}>保存</Button>
-            <Icon type="arrow-left" className={styles.backIcon}  onClick={this.backToDetail} />
+            <Icon type="arrow-left" className={styles.backIcon}  onClick={this.showDetaiTip} />
           </div>
         </div>
         <ResourceElecInfo 
@@ -201,13 +267,13 @@ class ReportEdit extends Component {
             faultGenList={updateDayReportDetail.faultList.map(
               e=>({...e,startTime: moment(e.startTime), endTime: moment(e.endTime)})
             )}
-            lostGenTypes={lostGenTypes}
             changeFaultList={this.faultListInfoChange} 
           />
         </div>
         {addLostFormShow && <LostAddForm
           findDeviceExist={findDeviceExist}
-          faultGenList={updateDayReportDetail.faultList}
+          lostGenTypes={lostGenTypes}
+          faultGenList={updateDayReportDetail.faultList || []}
           changeFaultList={this.faultListInfoChange}
           stationCode={updateDayReportDetail.stationCode}
           deviceExistInfo={deviceExistInfo}
@@ -226,7 +292,7 @@ class ReportEdit extends Component {
         </div>
         {addLimitFormShow && <LimitAddForm
           findDeviceExist={findDeviceExist} 
-          limitGenList={updateDayReportDetail.limitList} 
+          limitGenList={updateDayReportDetail.limitList || []} 
           changeLimitList={this.limitListInfoChange}  
           stationCode={updateDayReportDetail.stationCode}
           deviceExistInfo={deviceExistInfo}
@@ -237,8 +303,8 @@ class ReportEdit extends Component {
             <Checkbox onChange={this.checkAbnormal}>存在异常</Checkbox>
             {abnormalTextShow && <Input.TextArea className={styles.abnormalTextArea}  onChange={this.reportAbnormalText} value={updateDayReportDetail.errorInfo} />}
           </div>
-          
         </div>
+        {showBackWarningTip && <WarningTip onOK={this.backToDetail} onCancel={this.cancelDetaiTip} value={warningTipText} />}
       </div>
     )
   }
