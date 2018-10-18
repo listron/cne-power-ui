@@ -139,6 +139,10 @@
       .delete{
         color: $themeColor;
       }
+      .save {
+        color: #f9b600;
+        //margin-right: 0 !important;
+      }
       .mainPartTop{
         height: 60px;
         line-height: 60px;
@@ -150,18 +154,22 @@
         }
       }
       :global {
-        .ant-input {
-          width: 48px;
-          padding: 0 5px;
+        .month .ant-input, .yearPR .ant-input {
+          width: 52px;
           background: #fcffe5;
+          padding: 0 5px;
           border: 1px solid #f9b600;
         }
         .ant-table .ant-table-thead > tr > th, .ant-table .ant-table-tbody > tr > td {
           padding: 0 3px;
           line-height: 1;
         }
-        .ant-table .ant-table-thead > tr > th {
-          height: 62px;
+        .ant-table .ant-table-thead > tr > th.month, .ant-table .ant-table-tbody > tr > td.month {
+          min-width: 48px;
+        }
+        .ant-table .ant-table-thead > tr > th.yearPR, .ant-table .ant-table-tbody > tr > td.yearPR {
+          min-width: 72px;
+          width:72px;
         }
         .ant-input.ant-input-disabled {
           background: #f8f8f8;
@@ -170,9 +178,35 @@
         .ant-input:focus {
           background: #ffffff;
           border: 1px solid #dfdfdf;
-          //outline: none;
           -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
         }
+      }
+      .regionName {
+        min-width: 50px;
+        width: 6%;
+        padding-left: 10px !important;
+      }
+      .stationName {
+        width: 90px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .operation {
+        width: 2.7%;
+        min-width: 38px;
+      }
+      .planYear {
+        width: 6.2%;
+        min-width: 40px;
+      }
+      .planPower {
+        width: 9%;
+        min-width: 89px;
+      }
+      .stationCapacity{
+        width: 9%;
+        min-width: 70px;
       }
     }
   }
