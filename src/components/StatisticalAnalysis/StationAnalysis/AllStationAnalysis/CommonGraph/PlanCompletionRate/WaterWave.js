@@ -46,7 +46,7 @@ class WaterWave extends PureComponent {
   renderChart() {
     const {
       percent,
-      color = '#52d8d6'
+      color = '#199475'
     } = this.props;
     const data = percent / 100;
     const self = this;
@@ -115,7 +115,7 @@ class WaterWave extends PureComponent {
 
       const gradient = ctx.createLinearGradient(0, 0, 0, canvasHeight);
       gradient.addColorStop(0, '#ffffff');
-      gradient.addColorStop(1, '#348c9a');
+      gradient.addColorStop(1, 'rgba(25, 148, 117, 0.8)');
       ctx.fillStyle = gradient;
       ctx.fill();
       ctx.restore();
@@ -145,7 +145,7 @@ class WaterWave extends PureComponent {
 
           ctx.restore();
           ctx.clip();
-          ctx.fillStyle = '#348c9a';
+          ctx.fillStyle = '#199475';
         }
       } else {
         if (data >= 0.85) {

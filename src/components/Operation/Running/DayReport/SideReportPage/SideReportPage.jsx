@@ -6,6 +6,7 @@ import { DatePicker, Button, Alert, Icon } from 'antd';
 import StationSelect from '../../../../Common/StationSelect';
 import UploadReportList from './UploadReportList';
 import moment from 'moment';
+import { reportBasefun } from '../reportBaseFun';
 
 class SideReportPage extends Component {
   static propTypes = {
@@ -19,6 +20,7 @@ class SideReportPage extends Component {
     toChangeDayReportStore: PropTypes.func,
     getReportUploadedStation: PropTypes.func,
     getStationBaseReport: PropTypes.func,
+    uploadDayReport: PropTypes.func,
     showReportInputList: PropTypes.bool,
   }
 
@@ -28,6 +30,8 @@ class SideReportPage extends Component {
       reportDay: '',
       reportStation: [],
       dayReportTotalInfoArr: [], //用于上传日报的所有信息
+      reportInfoErrorText: '',
+      showReportError: false,
     }
   }
 
@@ -98,34 +102,62 @@ class SideReportPage extends Component {
     const { dayReportTotalInfoArr } = this.state;
     const { dayReportConfig } = this.props;
     const unitConfig = dayReportConfig[0] || {}; // 电量单位
+    const requireTargetObj = dayReportConfig[1] || {}; 
+    const tmpRequireTargetArr = Object.keys(requireTargetObj); // 指标必填信息数组(有多余信息)
+    const genUnit = unitConfig.power || 'kWh'; // kWh两位小数，万kWh四位小数。
+    const currentStationType = dayReportTotalInfoArr[0].dailyReport.stationType;
+    const tmpReportBaseInfo = reportBasefun(currentStationType, genUnit); // 指标数组
+
     console.log(dayReportTotalInfoArr)
-    // 检测基础信息的必填项
-
-    // 检测基础信息数据及格式-数字+小数点位数。
-
-    // const { stationInfo, totalInfoChange, dayReportTotalInfoArr, dayReportConfig} = this.props;
-    // 
-    // const genCalcType = dayReportConfig[2] || {}; // 发电量的计算方式 - '1'逆变器，'2'上网电量
-    // const genUnit = unitConfig.power || 'kWh'; // kWh两位小数，万kWh四位小数。
-    // const paramName = Object.keys(param)[0]; // 填写项属性
-    // const paramValue = Object.values(param)[0]; // 填写值
-    // const tmpReportBaseInfo = reportBasefun(stationInfo.stationType, genUnit); // 指标数组
-    // const requireTargetObj = dayReportConfig[1] || {};
-    // const requireTargetArr = Object.keys(requireTargetObj); // 指标必填项
-
-    // const reportBaseInfo = tmpReportBaseInfo.find(e=>e.configName === paramName) || {};
-    // const maxPointLength = reportBaseInfo.pointLength; // 指定的最大小数点位数
-
-    // const requireError = requireTargetArr.includes(reportBaseInfo.configName) && !paramValue; // 必填项未填。
-    // const paramPointLength = paramValue.split('.')[1] ? paramValue.split('.')[1].length : 0;
-    // const dataFormatError = isNaN(paramValue) || (maxPointLength && paramPointLength > maxPointLength); // 数据格式错误;
-    // if(requireError){ // 必填值未填
-    //   this.reportInforErrorShow(`请填写${stationInfo.stationName}${reportBaseInfo.configText}!`);
-    // }else if(dataFormatError){ // 数据格式错误
-    //   this.reportInforErrorShow(
-    //     `${stationInfo.stationName}${reportBaseInfo.configText}请填写数字,最多填写小数点后${maxPointLength}位`
-    //   );
-    // }
+    let errorText = '';
+    const totalInfoError = dayReportTotalInfoArr.find(info=>{ // 寻找错误数据并提取错误信息
+      const eachStationInfo = info.dailyReport;
+      const eachInfoError = tmpReportBaseInfo.find(config => { 
+        const configRequired = tmpRequireTargetArr.includes(config.configName); // 必填数据项
+        const requiredValue = eachStationInfo[config.configName];
+        const maxPointLength = config.pointLength; // 指定的最大小数点位数
+        const paramPointLength = (requiredValue && requiredValue.split('.')[1]) ? requiredValue.split('.')[1].length : 0;
+        const dataFormatError = isNaN(requiredValue) || (maxPointLength && paramPointLength > maxPointLength); // 数据格式错误;
+        if(configRequired && !requiredValue && requiredValue !== 0){ // 必填项未填
+          errorText = `${eachStationInfo.stationName}${config.configText}未填写!`;
+          return true;
+        }else if(dataFormatError){ // 填写数据不规范
+          errorText = `${eachStationInfo.stationName}${config.configText}请填写数字,不超过${maxPointLength}位小数!`;
+          return true;
+        }
+        return false;
+      })
+      return eachInfoError
+    })
+    if(totalInfoError){ // 数据错误存在，提示
+      this.setState({ 
+        reportInfoErrorText: errorText,
+        showReportError: true,
+      })
+    }else{ // 数据无误，调整数据结构并提交
+      console.log('数据正确无误!')
+    //to check 接口返回装机容量为stationCapacity，文档要求上传为realCapacity；
+      const uploadInfo = dayReportTotalInfoArr.map(e=>{
+        let { dailyReport, dailyDetailList } = e;
+        delete dailyReport.warning;
+        delete dailyReport.stationType;
+        const newDailyDetailList = dailyDetailList.map(eachLost=>{
+          const lostInfo = {
+            deviceName: eachLost.deviceName,
+            startTime: eachLost.startTime.format('YYYY-MM-DD HH:mm'),
+            endTime: eachLost.endTime && eachLost.endTime.format('YYYY-MM-DD HH:mm'),
+            reason: eachLost.reason,
+            lostPower: eachLost.lostPower,
+            process: eachLost.process,
+            type: eachLost.type,
+          }
+          eachLost.id > 0 && (lostInfo.id = eachLost);
+          return lostInfo;
+        })
+        return { dailyReport, dailyDetailList: newDailyDetailList};
+      })
+      this.props.uploadDayReport({allStationDailyDetailList: uploadInfo})
+    }
   }
 
   totalReportInfoChange = (dayReportTotalInfoArr) => { // 用于上报的所有电站日报数据。

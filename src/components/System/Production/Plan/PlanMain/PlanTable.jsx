@@ -20,14 +20,18 @@ const EditableRow = ({form, index, ...props}) => {
 const EditableFormRow = Form.create()(EditableRow);
 
 class EditableCell extends React.Component {
+  static propTypes = {
+    record: PropTypes.object,
+    dataIndex: PropTypes.string,
+  };
   getInput = (form) => {
     const {dataIndex, record} = this.props;
     if (dataIndex === 'yearPR') { // PR年计划
       return (<span> <Input onBlur={(e) => this.yearPRChange(e, form, dataIndex, record)}
                             defaultValue={record[dataIndex]}/>%</span>);
     }
-    if (record.onGridTime) {// 并网数据
-      if (getMonth(dataIndex) < Number(record.onGridTime)) {
+    if (record.setGridTime) {// 并网数据
+      if (getMonth(dataIndex) < Number(record.setGridTime)) {
         return <Input disabled={true} placeholder="--"/>
       }
     }
@@ -64,8 +68,16 @@ class EditableCell extends React.Component {
           return Number(prev) + Number(curr);
         });
       }
+      let planMonthValue=[];
+      if (record.setGridTime) {// 并网数据
+        for(let i=Number(record.setGridTime)-1;i<12;i++){
+          planMonthValue.push(record.planMonthGens[i])
+        }
+      }else{
+        planMonthValue=record.planMonthGens
+      }
 
-      record.planPower = sum(record.planMonthGens);
+      record.planPower = sum(planMonthValue).toFixed(4);
       this.props.handlevaluechange(record, dataIndex, number)
     }
   };
@@ -233,7 +245,7 @@ class PlanTable extends Component {
           planPower: newItemData.planPower,
           yearPR: newItemData.yearPR,
         };
-        month.length > 0 ? this.props.editPlanInfo(params) : '';
+        this.props.editPlanInfo(params);
         this.setState({editingKey: '', monthPowers: {}});
       }
     });
@@ -251,7 +263,7 @@ class PlanTable extends Component {
           width: '40px',
           key: item,
           editable: true,
-          className:styles.month,
+          className:"month",
           render: (text, record, index) => {
             const textValue = text ? text : '--';
             const editable = _this.isEditing(record);
@@ -275,6 +287,7 @@ class PlanTable extends Component {
         dataIndex: 'regionName',
         key: 'regionName',
         width: '50px',
+        className:styles.regionName,
         sorter: true,
         render: text => {
           return text ? text : '--'
@@ -284,7 +297,7 @@ class PlanTable extends Component {
         title: '电站名称',
         dataIndex: 'stationName',
         key: 'stationName',
-        width:'100px',
+        // width:'100px',
         className:styles.stationNameBox,
         defaultSortOrder: 'descend',
         sorter: true,
@@ -296,7 +309,7 @@ class PlanTable extends Component {
       {
         title: '装机容量(MW)',
         dataIndex: 'stationCapacity',
-        width: '80px',
+        // width: '80px',
         key: 'stationCapacity',
         sorter: true,
         className:styles.stationCapacity,
@@ -306,6 +319,7 @@ class PlanTable extends Component {
         dataIndex: 'planYear',
         key: 'planYear',
         sorter: true,
+        className:styles.planYear
       },
       {
         title: '年计划发电量(万kWh)',
@@ -313,8 +327,9 @@ class PlanTable extends Component {
         key: 'planPower',
         className:styles.planPower,
         sorter: true,
-        render: text => {
-          return text ? text : '--'
+        render:(text,record)=>{
+          const textValue=text? text :'--';
+          return <div className={this.isEditing(record) ? styles.save :"" }>{textValue}</div>
         }
       },
       {
@@ -322,7 +337,7 @@ class PlanTable extends Component {
         dataIndex: 'yearPR',
         key: 'yearPR',
         editable: true,
-        className:styles.yearPR,
+        className:"yearPR",
         render: text => {
           const textValue = text ? text : '--';
           return (<span><Input defaultValue={textValue} disabled={true}/>%</span>)
@@ -332,6 +347,7 @@ class PlanTable extends Component {
         title: '操作',
         dataIndex: 'operation',
         key: 'operation',
+        className:styles.operation,
         render: (text, record) => {
           const editable = this.isEditing(record);
           return (
@@ -342,6 +358,7 @@ class PlanTable extends Component {
                     {form => (
                       <a
                         href="javascript:;"
+                        className={styles.save}
                         onClick={() => this.save(form, record.key)}
                         style={{marginRight: 8}}
                       >
@@ -351,7 +368,7 @@ class PlanTable extends Component {
                   </EditableContext.Consumer>
                 </span>
               ) : (
-                <a onClick={() => this.edit(record.key)}>编辑</a>
+                <a onClick={() => this.edit(record.key)} className={styles.edit}>编辑</a>
               )}
             </div>
           );
@@ -385,9 +402,9 @@ class PlanTable extends Component {
         for (let i = 0; i < 12; i++) {
           list[TabelKey[i]] = (list.planMonthGens && list.planMonthGens[i]==="null"? "--": list.planMonthGens[i] )|| ""
         }
-        if (list.onGridTime) {//  有了并网时间
+        if(list.onGridTime){
           const onGridMonth = list.onGridTime.split('-')[1];
-          list.onGridTime = onGridMonth;
+          list.setGridTime = onGridMonth;
         }
         list.key = index;
         return list;

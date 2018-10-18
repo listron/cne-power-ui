@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { TimePicker, Icon, Button, Form, DatePicker, Select,  } from 'antd';
+import { TimePicker, Icon, Button, DatePicker, Select,  } from 'antd';
 import { withRouter } from 'react-router-dom';
 import styles from './operateAnalysis.scss';
 import StationSelect from '../../../Common/StationSelect';
@@ -17,7 +17,7 @@ import LostPowerTypeRate from './LostPowerTypeRate';
 import LimitPowerRate from './LimitPowerRate';
 import LimitPowerRateTable from './LimitPowerRateTable';
 
-const FormItem = Form.Item;
+
 const Option = Select.Option;
 class OperateAnalysis extends React.Component {
   static propTypes = {
@@ -47,28 +47,20 @@ class OperateAnalysis extends React.Component {
 
   render() {
     const { stationType, stations, dateType } = this.props;
-    const { getFieldDecorator } = this.props.form;
+
     return (
       <div className={styles.singleStationType}>
         <div className={styles.stationTimeFilter}>
           <div className={styles.leftFilter}>
             <div className={styles.stationFilter}>
-              <Form>
-                <FormItem label="条件查询" colon={false}>
-                  {getFieldDecorator('stationCodes', {
-                    initialValue: [],
-                    rules: [{ required: true, message: '请选择电站' }]
-                  })(
+             <span className={styles.text}>条件查询</span>
                     <StationSelect
                       data={stations.toJS()}
                       holderText={'电站名-区域'}
                       // multiple={true}
                       onChange={this.stationSelected}
                     />
-                  )}
-                  { /*<div className={styles.tipText}>(点击<i className="iconfont icon-filter" />图标可选择)</div>*/}
-                </FormItem>
-              </Form>
+                 
             </div>
             <TimeSelect day={true} {...this.props} />
           </div>
@@ -221,4 +213,4 @@ class OperateAnalysis extends React.Component {
     );
   }
 }
-export default Form.create()(OperateAnalysis);
+export default (OperateAnalysis);

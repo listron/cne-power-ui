@@ -12,8 +12,15 @@
     .ant-tabs-bar{
       border:none;
       margin-bottom: 0;
-      background-color: #f8f8f8; 
+      // background-color: #f8f8f8; 
       margin: 0;  
+      .ant-tabs-extra-content{
+        background-color: #f8f8f8; 
+       .iconfont{
+         margin-left:5px;
+         vertical-align: middle;
+       }     
+      }
     }
     .ant-tabs {
       display: flex;
@@ -63,9 +70,6 @@
       text-decoration: none;
       width: 120px;     
     } 
-    .ant-input{
-      width: 100px;
-    }
   }
   .componentContainer{
     display: flex;
@@ -121,6 +125,7 @@
           .stationIcon{
             i{
               color:$themeColor;
+              margin-right: 4px;
             }
           }
           .status {
@@ -129,6 +134,7 @@
           .time{
             .gridTime,.deadline{
               margin-right: 30px;
+              color:$lightColor;
             }
           }
         }
@@ -145,6 +151,8 @@
       .targetGraphContainer{
         .bgStyle{
           background: #f1f1f1;
+          height: 30px;
+          line-height: 30px;
           .fontStyle{
             border-top:2px solid #199475;
             width: 160px;
@@ -156,10 +164,11 @@
           display: flex;
           flex:1;
           flex-direction: column;
+          padding: 20px 0;
+          border-bottom: 1px solid #ececec;
           .dataGraph{
             display: flex;    
             flex-direction: row;
-            border-bottom: 1px solid #ececec;
           }
         }
       }
