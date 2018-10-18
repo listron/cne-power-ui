@@ -50,7 +50,7 @@
     .title {
       display: flex;
       flex-direction: column;
-      padding-left: 30px;    
+      // padding-left: 30px;    
       justify-content: space-between;
       border-bottom: 2px solid #ececec;
      
@@ -83,6 +83,7 @@
       }
       .graph{
         display: flex;
+        padding-left: 30px;
         .stationTargetData{
           display: flex;
           flex-direction: column;
