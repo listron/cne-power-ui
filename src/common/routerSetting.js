@@ -33,7 +33,7 @@ import Building from '../components/Common/Building/Building';
 import AllStationAnalysis from '../containers/StatisticalAnalysis/StationAnalysis/AllStationAnalysis/AllStationAnalysis';
 import ProductionAnalysis from '../containers/StatisticalAnalysis/StationAnalysis/ProductionAnalysis/ProductionAnalysis';
 import OperateAnalysis from '../containers/StatisticalAnalysis/StationAnalysis/OperateAnalysis/OperateAnalysis';
-
+import StationContrast from '../containers/StatisticalAnalysis/StationAnalysis/StationContrast/StationContrast';
 import Power from '../containers/Power';
 
 import Plan from "../containers/System/Production/Plan/Plan";
@@ -185,7 +185,7 @@ const routers = [
   },{
     path: '/statistical/stationaccount/contrast',
     exact: true,
-    component: Building
+    component: StationContrast
   },{
     path: '/statistical/equipment/performance',
     exact: true,

@@ -95,16 +95,14 @@ class PvStationTop extends Component {
     });
 
     let stationStatusTime = singleStationData && singleStationData.stationStatus && singleStationData.stationStatus.stationStatusTime;
-    let localTime = stationStatusTime !== null && moment.utc(stationStatusTime).toDate();
+    let localTime = stationStatusTime && moment.utc(stationStatusTime).toDate();
     let tmpStationStatusTime = localTime && moment(localTime).fromNow();
+    
     const baseLinkPath = `/monitor/singleStation`;
     const pathAllStation = "/monitor/station";
     //权限控制
     const rightHandler = localStorage.getItem('rightHandler');
-
     const powerUpdate= rightHandler && rightHandler.split(',').includes('monitor_powerUpdate');
-
-
     return (
       <div className={styles.pvStationTop} >
         <div className={styles.pvStationTitle} >

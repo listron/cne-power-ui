@@ -27,6 +27,7 @@ import { watchOtherSaga } from './alphaRedux/otherSaga';
 import { watchAllStationSaga } from './StatisticalAnalysis/StationAnalysis/AllStationAnalysis/allStationAnalysisSaga';
 import { watchProductionStationSaga } from './StatisticalAnalysis/StationAnalysis/ProductionAnalysis/productionAnalysisSaga';
 import { watchOperateStationSaga } from './StatisticalAnalysis/StationAnalysis/OperateAnalysis/operateAnalysisSaga';
+import { watchStationContrastSaga } from './StatisticalAnalysis/StationAnalysis/StationContrast/stationContrastSaga';
 
 import { watchPlan } from './System/Production/Plan/planSaga';
 // root saga
@@ -65,5 +66,6 @@ export default function* rootSaga() {
     watchAllStationSaga(),
     watchProductionStationSaga(),
     watchOperateStationSaga(),
+    watchStationContrastSaga(),
   ])
 }

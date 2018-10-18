@@ -125,7 +125,6 @@ function *getWeatherList(action){
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.monitor.getWeatherList}?stationCode=${payload.stationCode}`;
   try{
     const response = yield call(axios.get, url, payload);
-    console.log(response);
     if(response.data.code==='10000'){
       yield put({
         type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
