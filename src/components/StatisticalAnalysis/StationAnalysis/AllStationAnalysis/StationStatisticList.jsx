@@ -61,7 +61,6 @@ class StationStatisticList extends React.Component {
 
         onFilter: (value, record) => record.stationName.indexOf(value) === 0,
         sorter: true,
-
         render: (value, record, index) => {
           if (record.currentStation !== '900') {
             return {
@@ -103,7 +102,7 @@ class StationStatisticList extends React.Component {
         sorter: true,
       },
       {
-        title: "发电量环比(MW)",
+        title: "发电量环比",
         dataIndex: "stationCapacity",
         sorter: true,
 

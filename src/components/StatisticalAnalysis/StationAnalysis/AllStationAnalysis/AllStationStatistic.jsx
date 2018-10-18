@@ -113,7 +113,7 @@ class AllStationStatistic extends React.Component {
     const TabPane = Tabs.TabPane;
     const operations = (
       <div className={styles.operation} style={{ marginRight: '50px', color: '#199475' }} onClick={this.showStationSelect}>
-        单电站告警统计
+        查看单电站
         <i className="iconfont icon-filter"></i>
       </div>
     );

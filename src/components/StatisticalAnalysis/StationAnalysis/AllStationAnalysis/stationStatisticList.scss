@@ -1,17 +1,38 @@
 .stationStatisticList{
   display: flex;
   flex-direction: column;
+  :global{
+    .ant-table .ant-table-thead > tr > th, .ant-table .ant-table-tbody > tr > td{
+      padding: 0 10px;
+    }
+  }
   .stationStatisticFilter{
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    height: 40px;
-    line-height: 40px;
+    height: 60px;
+    // line-height: 40px;
+    padding-top:20px;
+    align-items: center;
     
     .leftTime{
       display: flex;
       flex-direction: row;
+      padding-left: 20px;
+      :global{
+        .ant-radio-button-wrapper{
+          height: 19px;
+          line-height: 18px;
+          padding: 0 5px;
+        }
+        .ant-radio-button-wrapper-disabled{
+          border-color: #d9d9d9;
+          background-color: #d9d9d9;
+          color: #ffffffff;
+        }
+      }
     }
   
   }
+  
 }

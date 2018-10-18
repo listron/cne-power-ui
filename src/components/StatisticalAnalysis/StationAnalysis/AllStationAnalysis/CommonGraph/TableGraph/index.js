@@ -50,11 +50,11 @@ class TableGraph extends React.Component {
           <div>
             计划完成率最低排名
           </div>
-          <div>
+          <div className={styles.unit}>
             发电量：万kWh
           </div>
         </div>
-        <Table className={styles.tableList} columns={columns} dataSource={data} pagination={false} scroll={{ y: 260 }} size="small" onRow={(record) => { return { onMouseEnter:this.onMouseEnter} }} />
+        <Table className={styles.tableList} columns={columns} dataSource={data} pagination={false} scroll={{ y: 204 }} size="small" onRow={(record) => { return { onMouseEnter:this.onMouseEnter} }} />
       </div>
     )
   }

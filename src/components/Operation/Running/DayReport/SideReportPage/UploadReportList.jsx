@@ -72,14 +72,18 @@ class UploadReportList extends Component {
         <div className={styles.uploadReportTip} >{reportDay} <span>新添加<i>{dayReportTotalInfoArr && dayReportTotalInfoArr.length || '--'}</i>条</span></div>
         <div>
           <StationReportColumn dayReportConfig={dayReportConfig} stationType={stationType} />
-          {dayReportTotalInfoArr.map(e=>(<EachStationReport
-            key={e.dailyReport.stationCode}
-            dayReportConfig={dayReportConfig}
-            stationInfo={e.dailyReport}
-            addAbnormalInfo={this.addAbnormalInfo}
-            totalInfoChange={this.totalInfoChange}
-            dayReportTotalInfoArr={dayReportTotalInfoArr}
-          />))}
+          {dayReportTotalInfoArr.map(e=> {// 判定是否有图表提示添加异常损失
+            const hasAbnormal = e.dailyDetailList.find(e=>(!e.lostPower && e.lostPower!== 0));
+            return (<EachStationReport
+              hasAbnormal={hasAbnormal}
+              key={e.dailyReport.stationCode}
+              dayReportConfig={dayReportConfig}
+              stationInfo={e.dailyReport}
+              addAbnormalInfo={this.addAbnormalInfo}
+              totalInfoChange={this.totalInfoChange}
+              dayReportTotalInfoArr={dayReportTotalInfoArr}
+            />)
+          })}
         </div>
         {abnormalModalshow && <AbnormalReportModal 
           findDeviceExist={findDeviceExist}

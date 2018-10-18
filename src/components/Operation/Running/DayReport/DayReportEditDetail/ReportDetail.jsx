@@ -1,8 +1,8 @@
 
 import React from 'react';
 import { Button, Table, Icon } from 'antd';
-// import { styles } from 'ansi-colors';
 import styles from './reportDetail.scss';
+import moment from 'moment';
 
 const loseColumn = [
   {
@@ -70,14 +70,11 @@ const ReportDetail = ({ selectedDayReportDetail, toChangeDayReportStore , dayRep
     onSidePageChange({ sidePage : 'edit'});
     toChangeDayReportStore({
       showPage: 'edit'
-    })
+    });
   }
-  // const genUnit = dayReportConfig;
-  // const radiationUnit = dayReportConfig
-  const sourceInfoArr = [ // todo 单位问题待完善。是否需要根据api进行动态配置？
-    {name: '日报日期', value: 'reportDate', unit: ''},
+  const sourceInfoArr = [
     {name: '天气', value: 'weather', unit: ''},
-    {name: '温度', value: 'temperature', unit: '℃'},
+    {name: '温度', value: 'temperature', unit: ''},
     {name: '电站名称', value: 'stationName', unit: ''},
     {name: '实际容量', value: 'realCapacity', unit: ''},
     {name: '装机台数', value: 'machineCount', unit: '台'},
@@ -94,7 +91,11 @@ const ReportDetail = ({ selectedDayReportDetail, toChangeDayReportStore , dayRep
     {name: '样本逆变器容量', value: 'modelInverterCapacity', unit: 'kW'},
     {name: '样本逆变器发电量', value: 'modelInverterPowerGen', unit: genUnit},
   ]
-
+  let { reportDate, createTimer, updateTimer } = selectedDayReportDetail;
+  reportDate = reportDate? moment(reportDate).format('YYYY-MM-DD'): '--';
+  createTimer = createTimer? moment(createTimer).format('YYYY-MM-DD HH:mm'): '--';
+  updateTimer = updateTimer? moment(updateTimer).format('YYYY-MM-DD HH:mm'): '--';
+  const { errorInfo } = selectedDayReportDetail
   return (
   <div className={styles.reportDetail} >
     <div className={styles.reportDetailTitle} >
@@ -107,8 +108,12 @@ const ReportDetail = ({ selectedDayReportDetail, toChangeDayReportStore , dayRep
     <div className={styles.resourceInfo} >
       <h4 className={styles.reportSubTitle} >资源电量信息<Icon type="caret-right" theme="outlined" /></h4>
       <div className={styles.resourceInfoCon}>
+        <span className={styles.eachResourceInfo} >
+          <span className={styles.eachResourceInfoName} >日报日期</span>
+          <span className={styles.eachResourceInfoValue} >{reportDate}</span>
+        </span>
         {sourceInfoArr.map(e=>{
-          const targetValue = selectedDayReportDetail[e.value];
+          let targetValue = selectedDayReportDetail[e.value];
           const stationValue = targetValue || targetValue === 0 || '--';
           return (<span key={e.name} className={styles.eachResourceInfo} >
             <span className={styles.eachResourceInfoName} >{e.name}</span>
@@ -120,25 +125,25 @@ const ReportDetail = ({ selectedDayReportDetail, toChangeDayReportStore , dayRep
     </div>
     <div className={styles.lostInfo} >
       <h4 className={styles.reportSubTitle} >损失电量信息<Icon type="caret-right" theme="outlined" /></h4>
-      <Table 
+      {faultList.length === 0 ? <span className={styles.noListData}>无</span>:<Table 
         columns={loseColumn} 
         dataSource={faultList.map((e,i)=>({...e,key: i}))}
         pagination={false}
         className={styles.lostInfoTable}
-      />
+      />}
     </div>
     <div className={styles.limitInfo} >
       <h4 className={styles.reportSubTitle} >限电信息<Icon type="caret-right" theme="outlined" /></h4>
-      <Table 
+      {limitList.length === 0 ? <span className={styles.noListData}>无</span>:<Table 
         columns={limitColumn} 
         dataSource={limitList.map((e,i)=>({...e,key: i}))}
         pagination={false}
         className={styles.limitInfoTable}
-      />
+      />}
     </div>
     <div className={styles.powerGenInfo} >
       <h4 className={styles.reportSubTitle} >发电信息<Icon type="caret-right" theme="outlined" /></h4>
-      <p className={styles.powerGenInfoCon}>{selectedDayReportDetail.errorInfo}</p>
+      <p className={styles.powerGenInfoCon}>{errorInfo?errorInfo:'正常'}</p>
     </div>
     <div className={styles.operateInfo} >
       <h4 className={styles.reportSubTitle} >操作信息<Icon type="caret-right" theme="outlined" /></h4>
@@ -149,11 +154,11 @@ const ReportDetail = ({ selectedDayReportDetail, toChangeDayReportStore , dayRep
         </span>
         <span>
           <span className={styles.operateInfoName}>上传时间</span>
-          <span>{selectedDayReportDetail.createTimer || '--'}</span>
+          <span>{createTimer}</span>
         </span>
         <span>
           <span className={styles.operateInfoName}>最新更新时间</span>
-          <span>{selectedDayReportDetail.updateTimer || '--'}</span>
+          <span>{updateTimer}</span>
         </span>
       </div>
     </div>

@@ -42,7 +42,7 @@ class ProductionAnalysis extends React.Component {
         <div className={styles.stationTimeFilter}>
           <div className={styles.leftFilter}>
             <div className={styles.stationFilter}>
-            条件查询
+              <span className={styles.text}>条件查询</span>
                 <StationSelect
                   data={stations.toJS()}
                   holderText={'电站名-区域'}

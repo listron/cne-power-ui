@@ -18,11 +18,15 @@
       .stationFilter{
         display: flex;
         align-items: center;
-        
+        line-height: 43px;
+        .text{
+          margin-right: 10px;
+        }
       }
     }
     .rightContent{
       margin-right: 30px;
+      color: $lightColor;
     }
   }
   .componentContainer{
@@ -34,10 +38,10 @@
     .title {
       display: flex;
       flex-direction: column;
-      padding-left: 30px;    
+      // padding-left: 30px;    
       justify-content: space-between;
       border-bottom: 2px solid #ececec;
-     
+      padding-top: 10px;
       .stationStatus {
         margin-left: 30px;
         color: $darkColor;
@@ -54,20 +58,27 @@
         }
         .status {
           margin-right: 4px;
+          :global{
+            .iconfont{
+              margin-right: 4px;
+            }
+          }
         }
         .rightFont{
           margin-right: 30px;
+          color: $lightColor;
         }
       }
       .graph{
         display: flex;
+        padding-left: 30px;
         .stationTargetData{
           display: flex;
           flex-direction: column;
           justify-content: space-between;
           margin: 20px 30px;
           .stationTargetValue{
-            font-size: 20px;
+            font-size: 26px;
             color:#199475;
       
           }
@@ -78,11 +89,17 @@
     .cardContainer{
       display: flex;
       align-items: center; 
+      padding:30px 0;
       .cardList{
         display: flex;
         align-items: center;
         justify-content: center;
         padding-left: 30px;
+        :global{
+          .anticon{
+            color:$lightColor;
+          }
+        }
       }
 
       .cardItem{       
@@ -92,6 +109,9 @@
         background: #199475;
         width: 210px;
         height: 130px;
+        border-radius: 5px;
+        color: #fff;
+        padding:20px 10px 30px 20px;
       }
       i{
         font-size: 20px
@@ -104,16 +124,20 @@
           border-top:1px solid #199475;
           width: 160px;
           color: #666;
+          height: 30px;
+          line-height: 30px;
+          text-align: center;
         }
       }
       .tabContainer{
         display: flex;
         flex:1;
         flex-direction: column;
+        padding: 20px 0;
+        border-bottom: 1px solid #ececec;
         .dataGraph{
           display: flex;    
           flex-direction: row;
-          border-bottom: 1px solid #ececec;
           .LostPowerTypeRate{
             width: 50%;
             // display: flex;
