@@ -1,13 +1,15 @@
 import React from "react";
 import PropTypes from "prop-types";
 import {  Select } from 'antd';
-import styles from './productionAnalysis.scss';
+import styles from './stationResourceAnalysis.scss';
 import StationSelect from '../../../Common/StationSelect';
 import TimeSelect from '../../../Common/TimeSelect';
 import BarGraph from '../AllStationAnalysis/CommonGraph/BarGraph';
-import PlanCompleteRateAnalysisBar from '../AllStationAnalysis/CommonGraph/PlanCompleteRateAnalysisBar';
+import LightDistribution from './LightDistribution';
 import TableGraph from '../AllStationAnalysis/CommonGraph/TableGraph';
-import WaterWave from '../AllStationAnalysis/CommonGraph/PlanCompletionRate/WaterWave';
+import YearLightDistributionTable from './YearLightDistributionTable';
+import WeatherStatus from './WeatherStatus';
+import LostPowerTypeRate from '../OperateAnalysis/LostPowerTypeRate';
 
 
 class ProductionAnalysis extends React.Component {
@@ -42,14 +44,14 @@ class ProductionAnalysis extends React.Component {
         <div className={styles.stationTimeFilter}>
           <div className={styles.leftFilter}>
             <div className={styles.stationFilter}>
-              <span className={styles.text}>条件查询</span>
+            <span className={styles.text}>条件查询</span>
                 <StationSelect
                   data={stations.toJS()}
                   holderText={'电站名-区域'}
                   // multiple={true}
                   onChange={this.stationSelected}
                 />
-            </div>
+             </div>
             <TimeSelect day={true} {...this.props} />
           </div>
           <span className={styles.rightContent}>数据统计截止时间8月20日</span>
@@ -71,22 +73,19 @@ class ProductionAnalysis extends React.Component {
 
             </div>
             <div className={styles.graph}>
-              <WaterWave percent={30} height={100} />
-              <div className={styles.stationTargetData}>
-               <div className={styles.stationTargetValue}>1333.30</div>
-               <div className={styles.stationTargetName}>{dateType==='month'||dateType==='year'?'年':'月'}实际发电量 万kWh</div>
+              
+              
+               <div className={styles.stationTargetData}>
+               <div className={styles.stationTargetValue}>821.22</div>
+               <div className={styles.stationTargetName}>斜面辐射总量 MJ/㎡ </div>
                </div>
                <div className={styles.stationTargetData}>
-               <div className={styles.stationTargetValue}>1333.30</div>
-               <div className={styles.stationTargetName}>{dateType==='month'||dateType==='year'?'年':'月'}计划发电量 万kWh</div>
+               <div className={styles.stationTargetValue}>800</div>
+               <div className={styles.stationTargetName}>日照时数 h </div>
                </div>
                <div className={styles.stationTargetData}>
-               <div className={styles.stationTargetValue}>1333.30</div>
-               <div className={styles.stationTargetName}>上网电量 万kWh</div>
-               </div>
-               <div className={styles.stationTargetData}>
-               <div className={styles.stationTargetValue}>1333.30</div>
-               <div className={styles.stationTargetName}>购网电量 万kWh</div>
+               <div className={styles.stationTargetValue}>21.01</div>
+               <div className={styles.stationTargetName}>平均气温 ℃</div>
                </div>
             </div>
 
@@ -96,23 +95,29 @@ class ProductionAnalysis extends React.Component {
           <div className={styles.targetGraphContainer}>
             <div className={styles.tabContainer}>
               <div className={styles.dataGraph}>
-                <BarGraph graphId={'power'} yAxisName={'发电量 (万kWh)'} xAxisName={'发电量'} dateType={dateType} />
+                <BarGraph graphId={'power'} yAxisName={'辐射总量 (MJ/㎡)'} xAxisName={'辐射总量 '} dateType={dateType} />
                 <TableGraph />
               </div>
             </div>
 
 
-            {dateType === 'month' || dateType === 'year' ? <div className={styles.tabContainer}>
+             <div className={styles.tabContainer}>
               <div className={styles.dataGraph}>
-                <PlanCompleteRateAnalysisBar graphId={'productionPlanCompleteRate'} yAxisName={'发电量 (万kWh)'} xAxisName={'发电量'} dateType={dateType} />
-                <TableGraph />
+                <LightDistribution graphId={'LightDistribution'} yAxisName={'发电量 (万kWh)'} xAxisName={'发电量'} dateType={dateType} />
+               {dateType==='year'?<YearLightDistributionTable />:<TableGraph />} 
               </div>
-            </div> : ''}
+            </div> 
 
             <div className={styles.tabContainer}>
               <div className={styles.dataGraph}>
-                <BarGraph graphId={'buyPower'} yAxisName={'购网电量 (万kWh)'} xAxisName={'发电量'} dateType={dateType} />
-                <BarGraph graphId={'savePower'} yAxisName={'上网电量 (万kWh)'} xAxisName={'发电量'} dateType={dateType} />
+                <WeatherStatus graphId={'weatherId'} yAxisName={'损失电量 (万kWh)'} xAxisName={'发电量'} dateType={dateType} />
+                <div className={styles.LostPowerTypeRate}>
+                  <div className={styles.LostPowerTypeTitle}>
+                    <div>天气情况占比{}</div>
+                    
+                  </div>
+                  <LostPowerTypeRate graphId={'weatherRate'} />
+                </div>
               </div>
             </div>
 
