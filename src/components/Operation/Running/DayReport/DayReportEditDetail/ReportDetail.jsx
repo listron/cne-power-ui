@@ -74,7 +74,7 @@ const ReportDetail = ({ selectedDayReportDetail, toChangeDayReportStore , dayRep
   }
   const sourceInfoArr = [
     {name: '天气', value: 'weather', unit: ''},
-    {name: '温度', value: 'temperature', unit: '℃'},
+    {name: '温度', value: 'temperature', unit: ''},
     {name: '电站名称', value: 'stationName', unit: ''},
     {name: '实际容量', value: 'realCapacity', unit: ''},
     {name: '装机台数', value: 'machineCount', unit: '台'},
@@ -95,6 +95,7 @@ const ReportDetail = ({ selectedDayReportDetail, toChangeDayReportStore , dayRep
   reportDate = reportDate? moment(reportDate).format('YYYY-MM-DD'): '--';
   createTimer = createTimer? moment(createTimer).format('YYYY-MM-DD HH:mm'): '--';
   updateTimer = updateTimer? moment(updateTimer).format('YYYY-MM-DD HH:mm'): '--';
+  const { errorInfo } = selectedDayReportDetail
   return (
   <div className={styles.reportDetail} >
     <div className={styles.reportDetailTitle} >
@@ -124,25 +125,25 @@ const ReportDetail = ({ selectedDayReportDetail, toChangeDayReportStore , dayRep
     </div>
     <div className={styles.lostInfo} >
       <h4 className={styles.reportSubTitle} >损失电量信息<Icon type="caret-right" theme="outlined" /></h4>
-      <Table 
+      {faultList.length === 0 ? <span className={styles.noListData}>无</span>:<Table 
         columns={loseColumn} 
         dataSource={faultList.map((e,i)=>({...e,key: i}))}
         pagination={false}
         className={styles.lostInfoTable}
-      />
+      />}
     </div>
     <div className={styles.limitInfo} >
       <h4 className={styles.reportSubTitle} >限电信息<Icon type="caret-right" theme="outlined" /></h4>
-      <Table 
+      {limitList.length === 0 ? <span className={styles.noListData}>无</span>:<Table 
         columns={limitColumn} 
         dataSource={limitList.map((e,i)=>({...e,key: i}))}
         pagination={false}
         className={styles.limitInfoTable}
-      />
+      />}
     </div>
     <div className={styles.powerGenInfo} >
       <h4 className={styles.reportSubTitle} >发电信息<Icon type="caret-right" theme="outlined" /></h4>
-      <p className={styles.powerGenInfoCon}>{selectedDayReportDetail.errorInfo}</p>
+      <p className={styles.powerGenInfoCon}>{errorInfo?errorInfo:'正常'}</p>
     </div>
     <div className={styles.operateInfo} >
       <h4 className={styles.reportSubTitle} >操作信息<Icon type="caret-right" theme="outlined" /></h4>

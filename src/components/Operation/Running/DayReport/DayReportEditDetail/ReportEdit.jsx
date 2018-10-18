@@ -91,7 +91,6 @@ class ReportEdit extends Component {
     const abnormalTextShow = e.target.checked;
     let abnormalText = '';
     const { updateDayReportDetail } = this.state;
-    console.log(updateDayReportDetail);
     if(abnormalTextShow){
       const { faultList, limitList } = updateDayReportDetail;
       const faultShortInfo =  faultList.map(e=>{
@@ -130,7 +129,6 @@ class ReportEdit extends Component {
   } 
 
   updateReport = () => { // 确认上传更新后的日报详情
-    console.log(this.state.updateDayReportDetail);
     const { updateDayReportDetail } = this.state;
     const { dayReportConfig } = this.props;
     let { faultList, limitList } = updateDayReportDetail;
@@ -206,7 +204,6 @@ class ReportEdit extends Component {
         faultList: newFaultList,
         limitList: newLimitList,
       }
-      console.log(reportInfo)
       this.props.dayReportUpdate(reportInfo)
     }
   }

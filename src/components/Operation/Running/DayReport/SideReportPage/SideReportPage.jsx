@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './sideReportPage.scss';
-import { DatePicker, Button, Icon, message } from 'antd';
+import { DatePicker, Button, Icon, message, Alert } from 'antd';
 import StationSelect from '../../../../Common/StationSelect';
 import UploadReportList from './UploadReportList';
 import moment from 'moment';
@@ -123,7 +123,6 @@ class SideReportPage extends Component {
     const currentStationType = dayReportTotalInfoArr[0].dailyReport.stationType;
     const tmpReportBaseInfo = reportBasefun(currentStationType, genUnit); // 指标数组
 
-    console.log(dayReportTotalInfoArr);
     let errorText = '';
     const totalInfoError = dayReportTotalInfoArr.find(info=>{ // 寻找错误数据并提取错误信息
       const eachStationInfo = info.dailyReport;
@@ -137,7 +136,7 @@ class SideReportPage extends Component {
           errorText = `${eachStationInfo.stationName}${config.configText}未填写!`;
           return true;
         }else if(dataFormatError){ // 填写数据不规范
-          errorText = `${eachStationInfo.stationName}${config.configText}请填写数字,不超过${maxPointLength}位小数!`;
+          errorText = `${eachStationInfo.stationName}${config.configText}需填写数字,且不超${maxPointLength}位小数!`;
           return true;
         }
         return false;
@@ -147,7 +146,6 @@ class SideReportPage extends Component {
     if(totalInfoError){ // 数据错误存在，提示
       this.messageWarning(errorText);
     }else{ // 数据无误，调整数据结构并提交
-      console.log('数据正确无误!')
       const uploadInfo = dayReportTotalInfoArr.map(e=>{
         let { dailyReport, dailyDetailList } = e;
         delete dailyReport.warning;
@@ -171,7 +169,6 @@ class SideReportPage extends Component {
         })
         return { dailyReport, dailyDetailList: newDailyDetailList};
       })
-      console.log(uploadInfo)
       this.props.uploadDayReport({allStationDailyDetailList: uploadInfo})
     }
   }
@@ -217,14 +214,18 @@ class SideReportPage extends Component {
             <span><i>*</i>电站选择</span>
             <StationSelect 
               value={reportStation}
-              data={stations}
+              data={stations.filter(e=>!reportDisableStation.includes(e.stationCode))}
               multiple={true}
-              disabledStation={reportDisableStation}
               onChange={this.stationSelected}
             />
             <Button onClick={this.toReportStations} disabled={!canReport} className={canReport ? styles.dayReportNext : styles.dayReportNextDisabled} >下一步</Button>
           </div>
         </div>}
+        {!showReportInputList && <Alert 
+          message="当日已上传日报电站不可选, 前一日未上传日报电站不可选!" 
+          type="info" 
+          className={styles.infoAlert} 
+        />}
         {showReportInputList && <UploadReportList
           {...this.props} 
           totalReportInfoChange={this.totalReportInfoChange}

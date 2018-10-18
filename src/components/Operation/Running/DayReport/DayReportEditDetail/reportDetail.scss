@@ -6,6 +6,9 @@
   .reportSubTitle{
     width: 100px;
     text-align: right;
+    svg{
+      font-size: 10px;
+    }
   }
   .reportDetailTitle{
     height: 64px;
@@ -180,6 +183,9 @@
       width: 100px;
       text-align: right;
       display: inline-block;
+      svg{
+        font-size: 10px;
+      }
     }
     .uploadGenLost{
       width: 70px;
@@ -223,6 +229,9 @@
     .reportSubTitle{
       width: 100px;
       text-align: right;
+      svg{
+        font-size: 10px;
+      }
     }
     .addPowerGenInfoR{
       display: flex;

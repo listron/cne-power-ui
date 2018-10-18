@@ -97,10 +97,10 @@ class DayReportMainList extends Component {
             const stationDayInfo = record.dataList.find(info=>info.reportDate === e.reportDate);
             const { available, isUpload, status} = stationDayInfo;
             const showWarningIcon = isUpload && status; // 展示黄色图标提示未完成损失电量的填写。true展示，false不展示。
-            if(!available){ // 不可上传
-              return <span></span>
-            }else if(isUpload){ // 已上传日报=>查看详情
-            // if(isUpload){ // 已上传日报=>查看详情
+            // if(!available){ // 不可上传
+            //   return <span></span>
+            // }else if(isUpload){ // 已上传日报=>查看详情
+            if(isUpload){ // 已上传日报=>查看详情
               return <span onClick={()=>this.toReportDetail(record, e.reportDate)}><i className="iconfont icon-look">{showWarningIcon && <i className="iconfont icon-alert_01" ></i>}</i></span>
             }else{ // 未上传日报 => 点击上传
               return <span onClick={()=>this.toUploadReport(record, e.reportDate)}><Icon type="plus-circle" theme="outlined" /></span>

@@ -7,6 +7,7 @@ import { reportBasefun } from '../reportBaseFun';
 
 class EachStationReport extends Component {
   static propTypes = {
+    hasAbnormal: PropTypes.bool,
     dayReportTotalInfoArr: PropTypes.array,
     dayReportConfig: PropTypes.array,
     stationInfo: PropTypes.object,
@@ -39,7 +40,7 @@ class EachStationReport extends Component {
       this.messageWarning(`请填写${stationInfo.stationName}${reportBaseInfo.configText}!`);
     }else if(dataFormatError){ // 数据格式错误
       this.messageWarning(
-        `${stationInfo.stationName}${reportBaseInfo.configText}请填写数字,最多填写小数点后${maxPointLength}位`
+        `${stationInfo.stationName}${reportBaseInfo.configText}需填数字,且不超过${maxPointLength}位小数`
       );
     }
 
@@ -87,7 +88,7 @@ class EachStationReport extends Component {
   }
 
   render(){
-    const { stationInfo } = this.props;
+    const { stationInfo, hasAbnormal } = this.props;
     const stationCapacity = isNaN(stationInfo.stationCapacity)?'--':stationInfo.stationCapacity;
     const eqpHour = isNaN(stationInfo.hour)?'--':stationInfo.hour;
     return (
@@ -122,7 +123,7 @@ class EachStationReport extends Component {
         </Col>
         <Col span={2} className={styles.addAbnormal}>
           <span onClick={this.addAbnormal} >添加异常</span>
-          <span><i className="iconfont icon-alert_01" ></i></span>
+          {hasAbnormal && <span><i className="iconfont icon-alert_01" ></i></span>}
         </Col>
         <Col span={1} className={styles.deleteStationReport} >
           <span onClick={this.removeStation}><Icon type="close-circle" theme="outlined" /></span>

@@ -29,7 +29,7 @@ class ResourceElecInfo extends Component {
     const sourceInfoArr = [
       {name: '日报日期', value: 'reportDate', unit: ''},
       {name: '天气', value: 'weather', unit: ''},
-      {name: '温度', value: 'temperature', unit: '℃'},
+      {name: '温度', value: 'temperature', unit: ''},
       {name: '电站名称', value: 'stationName', unit: ''},
       {name: '实际容量', value: 'realCapacity', unit: ''},
       {name: '装机台数', value: 'machineCount', unit: '台'},

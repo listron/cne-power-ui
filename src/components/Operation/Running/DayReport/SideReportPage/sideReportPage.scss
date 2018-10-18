@@ -44,7 +44,8 @@
     margin-top: 25px;
     display: flex;
     flex-direction: row;
-    line-height: 32px;
+    line-height: 40px;
+    align-items: center;
     .selectTime{
       margin-left: 50px;
       margin-right: 40px;
@@ -65,6 +66,7 @@
     .selectStation{
       display: flex;
       flex-direction: row;
+      align-items: center;
       :global{
         .ant-input{
           width: 200px;
@@ -88,6 +90,11 @@
         margin-left: 12px;
       }
     }
+  }
+  .infoAlert{
+    width: 400px;
+    margin-left: 50px;
+    margin-top: 20px;
   }
 }
 
