@@ -1,25 +1,34 @@
 import React from "react";
 import styles from './styles.scss';
+import PropTypes from "prop-types";
 import WaterWave from './WaterWave';
-import {  Table,  Radio } from "antd";
+import {    Radio } from "antd";
+import moment from 'moment';
 
 class PlancompletionRate extends React.Component{
+    static propTypes = {
+        AllStationAvalibaData: PropTypes.array,
+        dateType: PropTypes.string,
+      }
     constructor(props,context){
         super(props,context)
     }
     selectYear() {
+        const {AllStationAvalibaData}=this.props;
+        const currentYear=moment().format('YYYY');
         return (
-          <Radio.Group defaultValue="2019"  buttonStyle="solid">
-           {['2014','2015','2016','2017','2018','2019'].map((e,index)=>{
-             if(true){
-              return   <Radio.Button value={e} key={index}  style={{margin:'0 5px'}}>{e}年</Radio.Button>
+          <Radio.Group defaultValue={currentYear}  buttonStyle="solid">
+           {AllStationAvalibaData.map((e,index)=>{        
+             if(e.isTrue==='1'){
+              return   <Radio.Button value={e.year} key={index}  style={{margin:'0 5px'}}>{e.year}年</Radio.Button>
              }else{
-              return   <Radio.Button value={e} key={index} disabled style={{margin:'0 5px'}}>{e}月</Radio.Button>
+              return   <Radio.Button value={e.year} key={index} disabled style={{margin:'0 5px'}}>{e.year}年</Radio.Button>
              }      
-           }       
+           }      
            )}        
           </Radio.Group>
         )
+      
       }
     render(){
         const {dateType}=this.props;

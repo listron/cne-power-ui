@@ -15,6 +15,8 @@ const monitorDevice = require('./mock/monitor/deviceMonitor');
 const others = require('./mock/others/other');
 
 const plan = require('./mock/system/plan');
+const allstationanalysis = require('./mock/statisticalAnalysis/allstationanalysis');
+
 // as
 exports.mockConfig = [
   ...inspectionList,
@@ -34,4 +36,5 @@ exports.mockConfig = [
   ...singleStationMonitor,
   ...monitorDevice, //监控-单设备详情
   ...others,
+  ...allstationanalysis,//电站分析
 ]
