@@ -127,7 +127,12 @@ const ReportDetail = ({ selectedDayReportDetail, toChangeDayReportStore , dayRep
       <h4 className={styles.reportSubTitle} >损失电量信息<Icon type="caret-right" theme="outlined" /></h4>
       {faultList.length === 0 ? <span className={styles.noListData}>无</span>:<Table 
         columns={loseColumn} 
-        dataSource={faultList.map((e,i)=>({...e,key: i}))}
+        dataSource={faultList.map((e,i)=>({
+          ...e,
+          key: i,
+          startTime: e.startTime?moment(e.startTime).format('YYYY-MM-DD'):'--',
+          endTime: e.endTime?moment(e.endTime).format('YYYY-MM-DD'):'--',
+        }))}
         pagination={false}
         className={styles.lostInfoTable}
       />}
@@ -136,7 +141,12 @@ const ReportDetail = ({ selectedDayReportDetail, toChangeDayReportStore , dayRep
       <h4 className={styles.reportSubTitle} >限电信息<Icon type="caret-right" theme="outlined" /></h4>
       {limitList.length === 0 ? <span className={styles.noListData}>无</span>:<Table 
         columns={limitColumn} 
-        dataSource={limitList.map((e,i)=>({...e,key: i}))}
+        dataSource={limitList.map((e,i)=>({
+          ...e,
+          key: i,
+          startTime: e.startTime?moment(e.startTime).format('YYYY-MM-DD'):'--',
+          endTime: e.endTime?moment(e.endTime).format('YYYY-MM-DD'):'--',
+        }))}
         pagination={false}
         className={styles.limitInfoTable}
       />}
