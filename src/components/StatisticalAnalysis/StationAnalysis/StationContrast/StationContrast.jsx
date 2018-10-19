@@ -1,12 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { TimePicker, Icon, Button, Form, DatePicker, Select,  } from 'antd';
-import { withRouter } from 'react-router-dom';
 import styles from './stationContrast.scss';
-import StationSelectContrast from './StationSelectContrast/index';
+import StationSelectContrast from './StationSelectContrast';
 import TimeSelect from '../../../Common/TimeSelect';
 import StationContrastTable from './StationContrastTable';
-const FormItem = Form.Item;
 
 class StationContrast extends React.Component {
   static propTypes = {
@@ -31,7 +28,7 @@ class StationContrast extends React.Component {
   }
 
   stationSelected = (stations) => {
-    const { stationCode, dateType, year } = this.props;
+    const { dateType, year } = this.props;
     console.log(stations);
     this.props.toChangeStationContrastStore({
       stationCode: stations.map(e=>e.stationCode),
@@ -52,9 +49,9 @@ class StationContrast extends React.Component {
             <div className={styles.stationFilter}>
               <StationSelectContrast
                 data={stations}
-                holderText={'请选择两个电站对比'}
+                holderText={'请选择两个同一类型的电站进行对比'}
                 multiple={true}
-                onOK={this.stationSelected}
+                onChange={this.stationSelected}
               />
             </div>
             <TimeSelect day={true} {...this.props} />
@@ -75,4 +72,4 @@ class StationContrast extends React.Component {
     );
   }
 }
-export default Form.create()(StationContrast);
+export default StationContrast;
