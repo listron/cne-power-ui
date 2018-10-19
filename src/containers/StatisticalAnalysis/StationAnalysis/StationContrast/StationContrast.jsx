@@ -10,7 +10,7 @@ import Footer from '../../../../components/Common/Footer';
 
 class StationContrastContainer extends Component {
   static propTypes = {
-    stationCode: PropTypes.string,
+    stationCode: PropTypes.array,
     location: PropTypes.object,
   }
 

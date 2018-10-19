@@ -52,7 +52,7 @@ function *getStationContrastDetail(action){ // 请求两电站列对比详细内
     yield put({
       type:  stationContrastAction.stationContrastFetchSuccess,
       payload:{
-        ...payload,
+        // ...payload,
         stationContrastDetail: response.data.data || [],
       },
     });

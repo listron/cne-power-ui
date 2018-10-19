@@ -4,10 +4,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './stationContrast.scss';
 import echarts from 'echarts';
-import moment from 'moment';
-import { Link } from 'react-router-dom';
-import {showNoData, hiddenNoData} from '../../../../constants/echartsNoData';
-import {stationContrastBaseInfo} from '../../../../constants/stationContrastBaseInfo';
+import { showNoData, hiddenNoData } from '../../../../constants/echartsNoData';
+import { stationContrastBaseInfo,stationContrastDataInfo } from '../../../../constants/stationContrastBaseInfo';
 import {Spin} from 'antd';
 
 class StationContrastDetail extends Component {
@@ -26,27 +24,46 @@ class StationContrastDetail extends Component {
   
   componentWillReceiveProps(nextProps) {
     const { stationContrastDetail, column } = nextProps;
+    console.log(column);
     const stationContrastDiagram = echarts.init(document.getElementById(`stationContrastDiagram_${column}`));
-    
+    // const tmpstationContrastBaseInfo = Object.keys(stationContrastBaseInfo);
+    // console.log(tmpstationContrastBaseInfo);
     const columnName = stationContrastBaseInfo[column].substring(0,stationContrastBaseInfo[column].indexOf('（'));
     const columnUnit = stationContrastBaseInfo[column].substring(stationContrastBaseInfo[column].indexOf('（'));
     
     const lineColor = '#666';
     const stationNames = stationContrastDetail.map(e => e.stationName);
-    const contrastYears = stationContrastDetail.map(e => e.year);
+    const contrastYears = stationContrastDetail.map(e => e.years);
     const contrastValues = stationContrastDetail.map(e => e.value);
-    const capabilityGraphic = stationContrastDetail.length === 0 ? showNoData : hiddenNoData;
+    console.log(stationNames);
+    console.log(contrastYears);
+    console.log(contrastValues);
+    const contrastValuesIsNull = contrastValues.every(item=>item.every(e=>e===null));
+    const capabilityGraphic = contrastValuesIsNull ? showNoData : hiddenNoData;
     const stationContrastOption = {
       graphic: capabilityGraphic,
       legend: {
-        data: ['Forest', 'Steppe',],
+        data: [{
+          name: stationNames[0],
+          icon: 'circle',
+        },{
+          name: stationNames[1],
+          icon: 'circle',
+        }],
+        textStyle:{
+          color: lineColor,
+        },
+        itemWidth: 5,
+        itemHeight: 5,        
       },
       title: {
-        text: column,
+        text: `${columnName}`,
+        left: '35px',
         textStyle: {
           color: lineColor,
           fontSize: 14,
           fontWeight: 'normal',
+          
         },
       },
       tooltip: {
@@ -95,7 +112,7 @@ class StationContrastDetail extends Component {
       },
       yAxis: [
         {
-          name: `${columnName}\n${columnUnit}`,
+          name: `${columnUnit}`,
           type: 'value',
           axisLabel: {
             formatter: '{value}',

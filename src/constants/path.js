@@ -48,12 +48,7 @@ export default {
     checkUserRegister: '/v3/login/userregister',
     phoneCodeRegister: '/v3/login/phoneregister',
     inviteUserLink: '/v3/user/link',
-    statisticalAnalysis: {//统计分析
-      // 电站对比
-      getStationContrast: '/v3/performance/stationcontrast',
-      getStationContrastDetail: '/v3/performance/stationcontrast/list',
-      
-    },
+    
     ticket: { // 工单
       getDefectList: '/v3/defect/worklist/pc',
       getDefectIdList: '/v3/defect/worklist/getallid',
@@ -211,7 +206,9 @@ export default {
       getSingleStationPvCompare:'v3/performance/comprehensive/light/months',
       getSingleStationYearPvCompare:'v3/performance/comprehensive/light/year',
       getSingleStationPowerEffective:'v3/performance/comprehensive/efficiencygen',
-     
+      // 电站对比
+      getStationContrast: '/v3/performance/stationcontrast',
+      getStationContrastDetail: '/v3/performance/stationcontrast/list',
 
 
 

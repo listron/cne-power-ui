@@ -10,14 +10,13 @@ const FormItem = Form.Item;
 
 class StationContrast extends React.Component {
   static propTypes = {
-    history: PropTypes.object,
     form: PropTypes.object,
     stations: PropTypes.array,
     toChangeStationContrastStore: PropTypes.func,
     getStationContrast: PropTypes.func,
     stationCode: PropTypes.array,
     dateType: PropTypes.string,
-    year: PropTypes.string,
+    year: PropTypes.array,
     stationContrastDetail: PropTypes.array,
     stationContrastList: PropTypes.array,
   }

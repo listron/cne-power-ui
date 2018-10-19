@@ -61,7 +61,12 @@ function* getUserList(action) {
         })
       }
     } else {
-      yield put({ type: userAction.GET_USER_FETCH_FAIL });
+      yield put({
+        type: userAction.CHANGE_USER_STORE,
+        payload: {
+          userData: [],
+        },
+      });
       message.error(response.data.message);
     }
   } catch (e) {
@@ -126,7 +131,12 @@ function* getUserDetail(action) {
         }
       })
     } else {
-      yield put({ type: userAction.GET_USER_FETCH_FAIL });
+      yield put({
+        type: userAction.CHANGE_USER_STORE,
+        payload: {
+          userDetail: {},
+        },
+      });
       message.error(response.data.message);
     }
   }
@@ -151,7 +161,12 @@ function* getInviteLink(action) {
         }
       })
     } else {
-      yield put({ type: userAction.GET_USER_FETCH_FAIL });
+      yield put({
+        type: userAction.CHANGE_USER_STORE,
+        payload: {
+          inviteData: {},
+        },
+      });
       message.error(response.data.message);
     }
   }
