@@ -22,7 +22,7 @@ function ChangeStation({ stations, stationName, baseLinkPath, hideStationChange 
           return (<div key={index} >
             <div className={styles.provinceName} >{item[0].provinceName}</div>
             {item && item.map((e,i)=>{
-              return (<Link to={`${baseLinkPath}/${e.stationCode}`} key={i} title={e.stationName} className={stationName===e.stationName ? styles.currentStationName : styles.stationName} onClick={hideStationChange} >
+              return (<Link to={`${baseLinkPath}/${e.stationCode}`}  key={i} title={e.stationName} className={stationName===e.stationName ? styles.currentStationName : styles.stationName} onClick={hideStationChange} >
               {e.stationName}
               </Link>)
             })}

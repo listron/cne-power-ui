@@ -21,13 +21,23 @@ function *getStationContrast(action){//请求两电站对比数据
   try{
     yield put({ type:stationContrastAction.stationContrastLoading });
     const response = yield call(axios.post,url,payload);
-    yield put({
-      type:  stationContrastAction.stationContrastFetchSuccess,
-      payload:{
-        ...payload,
-        stationContrastList: response.data.data || [],
-      },
-    });
+    if(response.data.code==='10000'){
+      yield put({
+        type:  stationContrastAction.stationContrastFetchSuccess,
+        payload:{
+          ...payload,
+          stationContrastList: response.data.data || [],
+        },
+      });
+    }else{
+      yield put({
+        type: stationContrastAction.changeStationContrastStore,
+        payload:{
+          ...payload,
+          stationContrastList: [],
+        },
+      });
+    }
   }catch(e){
     console.log(e);
     message.error('获取两电站对比数据失败，请重试');
@@ -48,14 +58,22 @@ function *getStationContrastDetail(action){ // 请求两电站列对比详细内
   try{
     yield put({ type:stationContrastAction.stationContrastLoading });
     const response = yield call(axios.post,url,payload);
-    console.log(response);
-    yield put({
-      type:  stationContrastAction.stationContrastFetchSuccess,
-      payload:{
-        // ...payload,
-        stationContrastDetail: response.data.data || [],
-      },
-    });
+    if(response.data.code==='10000'){
+      yield put({
+        type: stationContrastAction.stationContrastFetchSuccess,
+        payload:{
+          stationContrastDetail: response.data.data || [],
+        },
+      });
+    }else{
+      yield put({
+        type: stationContrastAction.changeStationContrastStore,
+        payload:{
+          stationContrastDetail: [],
+        },
+      });
+    }
+    
   }catch(e){
     console.log(e);
     message.error('获取两电站列对比详细内容数据失败，请重试');
