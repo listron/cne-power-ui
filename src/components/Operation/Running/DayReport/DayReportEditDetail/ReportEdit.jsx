@@ -170,8 +170,8 @@ class ReportEdit extends Component {
       this.messageWarning(errorText);
     }else{ // 无错误，提交信息。
       const newFaultList = faultList?faultList.map(e=>{
-        delete e.id;
         delete e.handle;
+        e.id > 0? null: delete e.id;
         return { 
           ...e,
           startTime: e.startTime?moment(e.startTime).format('YYYY-MM-DD HH:mm'): null,
@@ -179,8 +179,8 @@ class ReportEdit extends Component {
         };
       }): [];
       const newLimitList = limitList?limitList.map(e=>{
-        delete e.id;
         delete e.handle;
+        e.id > 0? null: delete e.id;
         return {
           ...e,
           startTime: e.startTime?moment(e.startTime).format('YYYY-MM-DD HH:mm'): null,
