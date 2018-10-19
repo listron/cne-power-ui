@@ -48,9 +48,8 @@ function *getStationContrastDetail(action){ // 请求两电站列对比详细内
   try{
     yield put({ type:stationContrastAction.stationContrastLoading });
     const response = yield call(axios.post,url,payload);
-    console.log(response);
     yield put({
-      type:  stationContrastAction.stationContrastFetchSuccess,
+      type: stationContrastAction.stationContrastFetchSuccess,
       payload:{
         // ...payload,
         stationContrastDetail: response.data.data || [],
