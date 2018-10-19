@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Icon, Modal, Radio  } from 'antd';
+import { Icon, Modal, Radio,message  } from 'antd';
 import ProvinceItem from './ProvinceItem';
 import WarningTip from '../../../../Common/WarningTip';
 import styles from './style.scss';
@@ -78,7 +78,13 @@ class StationSelectModal extends Component {
   }
   
   handleOK = () => {
-    this.props.handleOK(this.state.selectedStation)
+    const { selectedStation } = this.state;
+    const tmpStationType = new Set(selectedStation.map(e=>e.stationType));
+    if(selectedStation.length > 2 || selectedStation.length === 1 || tmpStationType.size !== 1){
+      message.warning('请选择两个同一类型的电站进行对比!');
+    }else{
+      this.props.handleOK(selectedStation);
+    }
   }
 
   checkStation = (selectedStation) => {

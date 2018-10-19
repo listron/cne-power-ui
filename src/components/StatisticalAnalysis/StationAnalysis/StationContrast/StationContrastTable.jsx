@@ -13,7 +13,7 @@ class StationContrastTable extends React.Component {
     getStationContrast: PropTypes.func,
     stationCode: PropTypes.string,
     dateType: PropTypes.string,
-    year: PropTypes.number,
+    year: PropTypes.string,
     getStationContrastDetail: PropTypes.func,
     month: PropTypes.string,
     stationContrastDetail: PropTypes.array,
@@ -149,31 +149,31 @@ class StationContrastTable extends React.Component {
         {stationContrastList && stationContrastList.length===2 && 
           (<Col className={styles.stationOne} span={18} >
             <div>
-              <div  className={styles.baseInfoBg} >{stationContrastList[0].stationName}</div>
-              <div  className={styles.baseInfoBg} >{stationContrastList[1].stationName}</div>
+              <div  className={styles.baseInfoBg} >{stationContrastList[0].stationName || '--'}</div>
+              <div  className={styles.baseInfoBg} >{stationContrastList[1].stationName || '--'}</div>
             </div>
             <div>
-              <div className={styles.baseInfoBg} >{stationContrastList[0].ongridTime}</div>
-              <div className={styles.baseInfoBg} >{stationContrastList[1].ongridTime}</div>
+              <div className={styles.baseInfoBg} >{stationContrastList[0].ongridTime || '--'}</div>
+              <div className={styles.baseInfoBg} >{stationContrastList[1].ongridTime || '--'}</div>
             </div>
             <div>
-              <div className={styles.baseInfoBg} >{stationContrastList[0].capacity}</div>
-              <div className={styles.baseInfoBg} >{stationContrastList[1].capacity}</div>
+              <div className={styles.baseInfoBg} >{stationContrastList[0].capacity || '--'}</div>
+              <div className={styles.baseInfoBg} >{stationContrastList[1].capacity || '--'}</div>
             </div>
             <div>
-              <div className={styles.baseInfoBg} >{stationContrastList[0].regionName}</div>
-              <div className={styles.baseInfoBg} >{stationContrastList[1].regionName}</div>
+              <div className={styles.baseInfoBg} >{stationContrastList[0].regionName || '--'}</div>
+              <div className={styles.baseInfoBg} >{stationContrastList[1].regionName || '--'}</div>
             </div>
             <div>
-              <div className={styles.baseInfoBg} >{stationContrastList[0].unitCount}</div>
-              <div className={styles.baseInfoBg} >{stationContrastList[1].unitCount}</div>
+              <div className={styles.baseInfoBg} >{stationContrastList[0].unitCount || '--'}</div>
+              <div className={styles.baseInfoBg} >{stationContrastList[1].unitCount || '--'}</div>
             </div>
             {columnName.map((item,index)=>{
               return (
                 <div key={index} data-rowname={item} onClick={this.showContrastDetail} >
                   <Popover content={content} trigger="click" className={styles.contrastDetailPopover} placement="bottom" overlayClassName={styles.contrastOverlayClassName} >
-                    <span className={styles.stationOne} >{stationContrastList[0][item]}</span>
-                    <span className={styles.stationTwo} >{stationContrastList[1][item]}</span>
+                    <span className={styles.stationOne} >{stationContrastList[0][item] || '--'}</span>
+                    <span className={styles.stationTwo} >{stationContrastList[1][item] || '--'}</span>
                   </Popover>
                 </div>
               );

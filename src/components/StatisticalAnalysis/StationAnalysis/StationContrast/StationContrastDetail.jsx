@@ -27,7 +27,10 @@ class StationContrastDetail extends Component {
   componentWillReceiveProps(nextProps) {
     const { stationContrastDetail, column } = nextProps;
     const stationContrastDiagram = echarts.init(document.getElementById(`stationContrastDiagram_${column}`));
-  
+    
+    const columnName = stationContrastBaseInfo[column].substring(0,stationContrastBaseInfo[column].indexOf('（'));
+    const columnUnit = stationContrastBaseInfo[column].substring(stationContrastBaseInfo[column].indexOf('（'));
+    
     const lineColor = '#666';
     const stationNames = stationContrastDetail.map(e => e.stationName);
     const contrastYears = stationContrastDetail.map(e => e.year);
@@ -38,38 +41,37 @@ class StationContrastDetail extends Component {
       legend: {
         data: ['Forest', 'Steppe',],
       },
-      // title: {
-      //   text: column,
-      //   textStyle: {
-      //     color: lineColor,
-      //     fontSize: 14,
-      //     fontWeight: 'normal',
-      //   },
-      // },
-      // tooltip: {
-      //   trigger: 'axis',
-      //   show: true,
-      //   backgroundColor: '#fff',
-      //   textStyle: {
-      //     color: lineColor,
-      //     fontSize: '12px',
-      //   },
-      //   axisPointer: {
-      //     type: 'cross',
-      //     label: {
-      //       backgroundColor: lineColor,
-      //     }
-      //   },
-      //   formatter: (param) => {
-      //     console.log(param);
-      //     return `<div style="width: 128px; height: 75px;font-size:12px;line-height: 24px;background: #fff;box-shadow:0 1px 4px 0 rgba(0,0,0,0.20);border-radius:2px;">
-      //       <div style="border-bottom: 1px solid #dfdfdf;padding-left: 5px;" >${param[0] && param[0].name || '--'}</div>
-      //       <div style="padding-left: 5px;" ><span style="display: inline-block; background:#ffffff; border:1px solid #199475; width:6px; height:6px; border-radius:100%;"></span> 斜面辐射: ${param[1] && param[1].value || '--'}</div>
-      //       <div style="padding-left: 5px;" ><span style="display: inline-block; background:#ffffff; border:1px solid #a42b2c; width:6px; height:6px; border-radius:100%;"></span> 功率: ${param[0] && param[0].value || '--'}</div>
-      //     </div>`;
-      //   },
-      //   extraCssText:'background: rgba(0,0,0,0);',
-      // },
+      title: {
+        text: column,
+        textStyle: {
+          color: lineColor,
+          fontSize: 14,
+          fontWeight: 'normal',
+        },
+      },
+      tooltip: {
+        trigger: 'axis',
+        show: true,
+        backgroundColor: '#fff',
+        textStyle: {
+          color: lineColor,
+          fontSize: '12px',
+        },
+        axisPointer: {
+          type: 'cross',
+          label: {
+            backgroundColor: lineColor,
+          }
+        },
+        formatter: (param) => {
+          return `<div style="width: 170px; height: 93px;font-size:12px;line-height: 24px;background: #fff;box-shadow:0 1px 4px 0 rgba(0,0,0,0.20);border-radius:2px;">
+            <div style="border-bottom: 1px solid #dfdfdf;padding:0px 15px; display:flex;justify-content: space-between;" ><span>${param[0] && param[0].name || '--'}</span><span>${columnName}</span></div>
+            <div style="padding: 6px 15px 0px;" ><span style="display: inline-block; margin-right:5px; background:#199475; width:6px; height:6px; border-radius:100%;"></span>${stationNames[0]} ${param[1] && param[1].value || '--'}</div>
+            <div style="padding: 6px 15px 0px;" ><span style="display: inline-block; margin-right:5px; background:#c7ceb2; width:6px; height:6px; border-radius:100%;"></span>${stationNames[1]} ${param[0] && param[0].value || '--'}</div>
+          </div>`;
+        },
+        extraCssText:'background: rgba(0,0,0,0);',
+      },
       xAxis: {
         type: 'category',
         data: contrastYears && contrastYears[0] && contrastYears[0].map(e=>e.toString()),
@@ -93,7 +95,7 @@ class StationContrastDetail extends Component {
       },
       yAxis: [
         {
-          name: stationContrastBaseInfo[column],
+          name: `${columnName}\n${columnUnit}`,
           type: 'value',
           axisLabel: {
             formatter: '{value}',
@@ -101,6 +103,7 @@ class StationContrastDetail extends Component {
           },
           nameTextStyle: {
             color: lineColor,
+            lineHeight: 30,
           },
           axisLine: {
             show: false,
@@ -143,7 +146,7 @@ class StationContrastDetail extends Component {
     const { column,loading } = this.props;
     return (
       <div className={styles.capabilityDiagramBox} >
-        <div id={`stationContrastDiagram_${column}`} style={{ width: "800px", height: "360px", borderRadius: "4px", paddingTop: "20px" }}></div>
+        <div id={`stationContrastDiagram_${column}`} style={{ width: "848px", height: "364px", borderRadius: "4px", paddingTop: "20px" }}></div>
       </div>
     )
   }

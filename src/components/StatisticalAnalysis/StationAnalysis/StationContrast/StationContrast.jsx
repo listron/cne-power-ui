@@ -15,9 +15,9 @@ class StationContrast extends React.Component {
     stations: PropTypes.array,
     toChangeStationContrastStore: PropTypes.func,
     getStationContrast: PropTypes.func,
-    stationCode: PropTypes.string,
+    stationCode: PropTypes.array,
     dateType: PropTypes.string,
-    year: PropTypes.number,
+    year: PropTypes.string,
     stationContrastDetail: PropTypes.array,
     stationContrastList: PropTypes.array,
   }
@@ -33,11 +33,12 @@ class StationContrast extends React.Component {
 
   stationSelected = (stations) => {
     const { stationCode, dateType, year } = this.props;
+    console.log(stations);
     this.props.toChangeStationContrastStore({
-      stationCode: stations.map(e=>e.stationCode).join(','),
+      stationCode: stations.map(e=>e.stationCode),
     });
     this.props.getStationContrast({
-      stationCode: stations.map(e=>e.stationCode).join(','),
+      stationCode: stations.map(e=>e.stationCode),
       dateType,
       year,
     });

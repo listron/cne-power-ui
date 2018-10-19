@@ -16,8 +16,8 @@ function *toChangeStationContrastStore(action){ // 存储payload指定参数，�
 
 function *getStationContrast(action){//请求两电站对比数据
   const { payload } = action;
-  const url = '/mock/statisticalAnalysis/MockStationContrast';
-  // const url = `${APIBasePath}${statisticalAnalysis.getStationContrast}`;
+  // const url = '/mock/statisticalAnalysis/MockStationContrast';
+  const url = `${APIBasePath}${statisticalAnalysis.getStationContrast}`;
   try{
     yield put({ type:stationContrastAction.stationContrastLoading });
     const response = yield call(axios.post,url,payload);
@@ -43,8 +43,8 @@ function *getStationContrast(action){//请求两电站对比数据
 
 function *getStationContrastDetail(action){ // 请求两电站列对比详细内容
   const { payload } = action;
-  const url = '/mock/statisticalAnalysis/MockStationContrast/detail';
-  // const url = `${APIBasePath}${statisticalAnalysis.getStationContrastDetail}`;
+  // const url = '/mock/statisticalAnalysis/MockStationContrast/detail';
+  const url = `${APIBasePath}${statisticalAnalysis.getStationContrastDetail}`;
   try{
     yield put({ type:stationContrastAction.stationContrastLoading });
     const response = yield call(axios.post,url,payload);
