@@ -151,7 +151,11 @@ class AbnormalReportModal extends Component {
           <span>损失电量信息<Icon type="caret-right" theme="outlined" /></span>
           <Button onClick={this.toAddGenLost} disabled={addLostFormShow} icon="plus" className={styles.uploadGenLost} >添加</Button>
         </div>
-        <LostGenTable faultGenList={faultGenList} abnormalInfo={abnormalInfo} changeFaultList={this.changeFaultList} />
+        {(faultGenList && faultGenList.length > 0) ? <LostGenTable 
+          faultGenList={faultGenList} 
+          abnormalInfo={abnormalInfo} 
+          changeFaultList={this.changeFaultList} 
+        />: null}
         {addLostFormShow && <LostAddForm 
           lostGenTypes={lostGenTypes}
           findDeviceExist={findDeviceExist} 
@@ -164,7 +168,11 @@ class AbnormalReportModal extends Component {
           <span>限电信息<Icon type="caret-right" theme="outlined" /></span>
           <Button disabled={addLimitFormShow} onClick={this.toAddGenLimit} icon="plus" className={styles.uploadGenLost}  >添加</Button>
         </div>
-        <LimitGenTable limitGenList={limitGenList} abnormalInfo={abnormalInfo} changeLimitList={this.changeLimitList} />
+        {(limitGenList && limitGenList.length > 0)? <LimitGenTable 
+          limitGenList={limitGenList} 
+          abnormalInfo={abnormalInfo} 
+          changeLimitList={this.changeLimitList} 
+        /> :null}
         {addLimitFormShow && <LimitAddForm
           findDeviceExist={findDeviceExist} 
           limitGenList={limitGenList} 
