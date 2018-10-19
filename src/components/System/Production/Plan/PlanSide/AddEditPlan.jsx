@@ -20,7 +20,7 @@ class PlanSide extends Component {
     super(props);
     this.state = {
       showWarningTip: false,
-      warningTipText: '退出后信息无法保存!',
+      warningTipText: '是否放弃当前的修改!',
       addValueChange: '', // 信息是否修改过
       leave: '', //判断离开之后返回到什么页面
       addSave: 'false', // 是否保存
@@ -86,8 +86,8 @@ class PlanSide extends Component {
         　return false;
       }
       let startIndex = 0;
-      list.onGridTime ? startIndex = Number(list.onGridTime) : startIndex = 0;
-      for (let i = startIndex-1; i < list.monthPower.length; i++) {
+      list.setGridTime ? startIndex = Number(list.setGridTime)-1 : startIndex = 0;
+      for (let i = startIndex; i < list.monthPower.length; i++) {
         if (list.monthPower[i] === "" || typeof(list.monthPower[i]) === "undefined") {
          return false
         }
@@ -106,6 +106,10 @@ class PlanSide extends Component {
       });
       this.setState({addSave:'false'});
       this.props.addPlanInfo({"data": data});
+      this.props.changePlanStore({
+        addPlanYear:'', //计划生产的年份
+        addStationCodes:[], // 计划生产的电站
+      })
     }else{
       this.setState({
         addSave:'false',
@@ -126,7 +130,7 @@ class PlanSide extends Component {
     return (
       <div className={styles.editPlan}>
         {showWarningTip &&
-        <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText}/>}
+        <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}
         { showSaveWarningTip && <WarningTip  onOK={this.saveWarningTip} value={warningTipSaveText}/>}
         <div className={styles.editPlanTitle}>
           <span className={styles.sideEidtTitleTip}>添加</span>
