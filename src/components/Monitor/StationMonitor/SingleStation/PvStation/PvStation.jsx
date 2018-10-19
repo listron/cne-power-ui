@@ -99,7 +99,9 @@ class PvStation extends Component {
                   {deviceFlowTypes.map((e,i)=> {
                     const nextFlowTypesLen = deviceFlowTypes[i+1] && deviceFlowTypes[i+1].deviceTypes.length;
                     const clickable = [509, 201, 206, 304, 202]; // 允许点击及展示列表的设备类型
-                    const pointEventStye = clickable.includes(e.deviceTypes[0].deviceTypeCode)?{}:{pointerEvents:'none'};
+                    
+                    const pointEventStye = e.deviceTypes.length===1 ? (clickable.includes(e.deviceTypes[0].deviceTypeCode)?{}:{pointerEvents:'none'}) : clickable.includes(e.deviceTypes[1].deviceTypeCode)?{}:{pointerEvents:'none'};
+                    // const pointEventStye = clickable.includes(e.deviceTypes[0].deviceTypeCode)?{}:{pointerEvents:'none'};
                     if(e.deviceTypes.length > 1){//组合式光伏电站上下排列
                       return (<div className={styles.combinedType} style={{display: 'flex',flexDirection: 'column'}}  key={i} >
                         {e.deviceTypes.map((item,indexI)=>{

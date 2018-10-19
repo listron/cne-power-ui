@@ -26,7 +26,12 @@ function *getSingleStation(action){
         }
       });
     }else{
-      yield put({ type: singleStationAction.GET_SINGLE_STATION_FAIL, data: response.data});
+      yield put({ 
+        type: singleStationAction.CHANGE_SINGLE_STATION_STORE, 
+        payload: {
+          singleStationData: {},
+        }
+      });
     }
   }catch(e){
     console.log(e);
@@ -47,7 +52,12 @@ function *getCapabilityDiagram(action){
         }
       });
     }else{
-      yield put({ type: singleStationAction.GET_SINGLE_STATION_FAIL, data: response.data});
+      yield put({ 
+        type: singleStationAction.CHANGE_SINGLE_STATION_STORE, 
+        payload: {
+          capabilityData: [],
+        }
+      });
     }
     
   }catch(e){
@@ -69,7 +79,12 @@ function *getMonitorPower(action){
         }
       })
     }else{
-      yield put({ type: singleStationAction.GET_SINGLE_STATION_FAIL, data: response.data});
+      yield put({ 
+        type: singleStationAction.CHANGE_SINGLE_STATION_STORE, 
+        payload: {
+          powerData: [],
+        }
+      });
     }
     
   }catch(e){
@@ -90,7 +105,12 @@ function *getStationList(action){
         }
       });
     }else{
-      yield put({ type: singleStationAction.GET_SINGLE_STATION_FAIL, data: response.data});
+      yield put({ 
+        type: singleStationAction.CHANGE_SINGLE_STATION_STORE, 
+        payload: {
+          stationList: [],
+        }
+      });
     }
     
   }catch(e){
@@ -112,7 +132,12 @@ function *getOperatorList(action){
         }
       });
     }else{
-      yield put({ type: singleStationAction.GET_SINGLE_STATION_FAIL, data: response.data});
+      yield put({ 
+        type: singleStationAction.CHANGE_SINGLE_STATION_STORE, 
+        payload: {
+          operatorList: [],
+        }
+      });
     }
     
   }catch(e){
@@ -125,7 +150,6 @@ function *getWeatherList(action){
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.monitor.getWeatherList}?stationCode=${payload.stationCode}`;
   try{
     const response = yield call(axios.get, url, payload);
-    console.log(response);
     if(response.data.code==='10000'){
       yield put({
         type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
@@ -134,7 +158,12 @@ function *getWeatherList(action){
         }
       })
     }else{
-      yield put({ type: singleStationAction.GET_SINGLE_STATION_FAIL, data: response.data});
+      yield put({ 
+        type: singleStationAction.CHANGE_SINGLE_STATION_STORE, 
+        payload: {
+          weatherList: [],
+        }
+      });
     }
   }catch(e){
     console.log(e);
@@ -154,7 +183,12 @@ function *getAlarmList(action){
         }
       })
     }else{
-      yield put({ type: singleStationAction.GET_SINGLE_STATION_FAIL, data: response.data});
+      yield put({ 
+        type: singleStationAction.CHANGE_SINGLE_STATION_STORE, 
+        payload: {
+          alarmList: {},
+        }
+      });
     }
     
   }catch(e){
@@ -175,7 +209,12 @@ function *getWorkList(action){
         }
       })
     }else{
-      yield put({ type: singleStationAction.GET_SINGLE_STATION_FAIL, data: response.data});
+      yield put({ 
+        type: singleStationAction.CHANGE_SINGLE_STATION_STORE, 
+        payload: {
+          workList: {},
+        }
+      });
     }
   }catch(e){
     console.log(e);
@@ -214,7 +253,12 @@ function *getDeviceTypeFlow(action){
         }
       })
     }else{
-      yield put({ type: singleStationAction.GET_SINGLE_STATION_FAIL, data: response.data});
+      yield put({ 
+        type: singleStationAction.CHANGE_SINGLE_STATION_STORE, 
+        payload: {
+          deviceTypeFlow: {},
+        }
+      });
     }
     
   }catch(e){
@@ -238,7 +282,12 @@ function *getPvmoduleList(action){
         }
       });
     }else{
-      yield put({ type: singleStationAction.GET_SINGLE_STATION_FAIL, data: response.data});
+      yield put({ 
+        type: singleStationAction.CHANGE_SINGLE_STATION_STORE, 
+        payload: {
+          pvmoduleList: [],
+        }
+      });
     }
     
   }catch(e){
@@ -262,7 +311,12 @@ function *getInverterList(action){
         }
       })
     }else{
-      yield put({ type: singleStationAction.GET_SINGLE_STATION_FAIL, data: response.data});
+      yield put({ 
+        type: singleStationAction.CHANGE_SINGLE_STATION_STORE, 
+        payload: {
+          inverterList: {},
+        }
+      });
     }
     
   }catch(e){
@@ -286,7 +340,12 @@ function *getBoxTransformerList(action){
         }
       })
     }else{
-      yield put({ type: singleStationAction.GET_SINGLE_STATION_FAIL, data: response.data});
+      yield put({ 
+        type: singleStationAction.CHANGE_SINGLE_STATION_STORE, 
+        payload: {
+          boxTransformerList: {},
+        }
+      });
     }
   }catch(e){
     console.log(e);
@@ -309,7 +368,12 @@ function *getConfluenceBoxList(action){ // 获取汇流箱列表
         }
       })
     }else{
-      yield put({ type: singleStationAction.GET_SINGLE_STATION_FAIL, data: response.data});
+      yield put({ 
+        type: singleStationAction.CHANGE_SINGLE_STATION_STORE, 
+        payload: {
+          confluenceBoxList: {},
+        }
+      });
     }
   }catch(e){
     console.log(e);
@@ -331,7 +395,12 @@ function *getStationDeviceList(action){
         }
       })
     }else{
-      yield put({ type: singleStationAction.GET_SINGLE_STATION_FAIL, data: response.data});
+      yield put({ 
+        type: singleStationAction.CHANGE_SINGLE_STATION_STORE, 
+        payload: {
+          stationDeviceList: [],
+        }
+      });
     }
   }catch(e){
     console.log(e);
@@ -352,7 +421,12 @@ function *editData(action){
         }
       })
     }else{
-      yield put({ type: singleStationAction.GET_SINGLE_STATION_FAIL, data: response.data});
+      yield put({ 
+        type: singleStationAction.CHANGE_SINGLE_STATION_STORE, 
+        payload: {
+          editAllData: [],
+        }
+      });
     }
   }catch(e){
     console.log(e);

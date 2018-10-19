@@ -13,7 +13,7 @@ const monitor =require('./mock/monitor/stationMonitor')
 const singleStationMonitor = require('./mock/monitor/singleStationMonitor');
 const monitorDevice = require('./mock/monitor/deviceMonitor');
 const others = require('./mock/others/other');
-
+const MockStationContrast = require('./mock/statisticalAnalysis/MockStationContrast');
 const plan = require('./mock/system/plan');
 const allstationanalysis = require('./mock/statisticalAnalysis/allstationanalysis');
 
@@ -36,5 +36,6 @@ exports.mockConfig = [
   ...singleStationMonitor,
   ...monitorDevice, //监控-单设备详情
   ...others,
+  ...MockStationContrast,//统计分析-电站对比
   ...allstationanalysis,//电站分析
 ]
