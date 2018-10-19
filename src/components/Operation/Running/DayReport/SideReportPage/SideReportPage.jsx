@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './sideReportPage.scss';
-import { DatePicker, Button, Icon, message, Alert } from 'antd';
+import { DatePicker, Button, Icon, message } from 'antd';
 import StationSelect from '../../../../Common/StationSelect';
 import UploadReportList from './UploadReportList';
 import moment from 'moment';
@@ -221,11 +221,6 @@ class SideReportPage extends Component {
             <Button onClick={this.toReportStations} disabled={!canReport} className={canReport ? styles.dayReportNext : styles.dayReportNextDisabled} >下一步</Button>
           </div>
         </div>}
-        {!showReportInputList && <Alert 
-          message="当日已上传日报电站不可选, 前一日未上传日报电站不可选!" 
-          type="info" 
-          className={styles.infoAlert} 
-        />}
         {showReportInputList && <UploadReportList
           {...this.props} 
           totalReportInfoChange={this.totalReportInfoChange}
