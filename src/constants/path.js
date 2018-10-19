@@ -48,7 +48,7 @@ export default {
     checkUserRegister: '/v3/login/userregister',
     phoneCodeRegister: '/v3/login/phoneregister',
     inviteUserLink: '/v3/user/link',
-
+    
     ticket: { // 工单
       getDefectList: '/v3/defect/worklist/pc',
       getDefectIdList: '/v3/defect/worklist/getallid',
@@ -89,7 +89,7 @@ export default {
       dayReportDetail: '/v3/performance/detail', // 获取选中日报详情
       dayReportUpdate: '/v3/performance/dailyReport/mulitUpdate', // 日报详情编辑
     },
-    system: {
+    system: {//系统管理
       getEnterprisList: '/v3/enterprise/list',//企业列表
       getEnterprisDetail: '/v3/enterprise',//企业详情获取
       saveEnterpriseDetail: '/v3/enterprise/change',//保存企业详情
@@ -190,9 +190,29 @@ export default {
     },
     other: {
       editPassword: '/v3/user/password', // 更变密码
+    },
+    statisticalAnalysis:{
+      getAllStationAvaliba:'/v3/performance/comprehensive/dataavaliba',
+      getAllStationStatistic:'v3/performance/comprehensive/plans',
+      getAllStationStatisticTable:'v3/performance/comprehensive/statistics',
+      getAllStationMonthBar:'v3/performance/comprehensive/chart/month',
+      getAllStationMonthPie:'v3/performance/comprehensive/piecharts/month',
+      getAllStationYearBar:'v3/performance/comprehensive/chart/year',
+      getSingleStationStatistic:'v3/performance/comprehensive/plan',
+      getSingleStationTarget:'v3/performance/comprehensive/power/months',
+      getSingleStationMonthPie:'v3/performance/comprehensive/piechart/month',
+      getSingleStationYearTarget:'v3/performance/comprehensive/power/year',
+      getSingleStationPlanRate:'v3/performance/comprehensive/planrate/years',
+      getSingleStationDayCompleteRate:'v3/performance/comprehensive/planrate/day',
+      getSingleStationPvCompare:'v3/performance/comprehensive/light/months',
+      getSingleStationYearPvCompare:'v3/performance/comprehensive/light/year',
+      getSingleStationPowerEffective:'v3/performance/comprehensive/efficiencygen',
+      // 电站对比
+      getStationContrast: '/v3/performance/stationcontrast',
+      getStationContrastDetail: '/v3/performance/stationcontrast/list',
+
+
+
     }
-    // monitor:{
-    //   getStationType:'v3/monitor/stations/stationType',
-    // }
   }
 }

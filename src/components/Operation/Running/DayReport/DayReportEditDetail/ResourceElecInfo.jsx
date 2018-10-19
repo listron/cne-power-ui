@@ -2,8 +2,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Form, Input, Icon } from 'antd';
-// import { styles } from 'ansi-colors';
 import styles from './reportDetail.scss';
+import moment from 'moment';
 
 class ResourceElecInfo extends Component {
   static propTypes = {
@@ -18,24 +18,32 @@ class ResourceElecInfo extends Component {
 
   render(){
     const { updateDayReportDetail, dayReportConfig } = this.props;
+    const requireTargetObj = dayReportConfig[1] || {};
+    const requireTargetArr = Object.keys(requireTargetObj); // 指标必填项
+
     const configUtil = dayReportConfig[0] || {};
     const radiationUnit = configUtil.radiation || '';
     const speedUnit = configUtil.speed || '';
     const genUnit = configUtil.power || '';
-    const { stationType } = updateDayReportDetail;
+    const { stationType, reportDate } = updateDayReportDetail;
     const sourceInfoArr = [
       {name: '日报日期', value: 'reportDate', unit: ''},
       {name: '天气', value: 'weather', unit: ''},
-      {name: '温度', value: 'temperature', unit: '℃'},
+      {name: '温度', value: 'temperature', unit: ''},
       {name: '电站名称', value: 'stationName', unit: ''},
       {name: '实际容量', value: 'realCapacity', unit: ''},
       {name: '装机台数', value: 'machineCount', unit: '台'},
     ];
+    const reportDateValue = reportDate?moment(reportDate).format('YYYY-MM-DD'):'--';
     const { getFieldDecorator } = this.props.form;
     return (
       <div className={styles.editResourceInfo} >
         <h4>资源电量信息<Icon type="caret-right" theme="outlined" /></h4>
         <Form layout="inline" className={styles.resourceInfoCon} >
+          <span className={styles.eachResourceInfo} >
+            <span className={styles.eachResourceInfoName}>日报日期</span>
+            <span>{reportDateValue}</span>
+          </span>
           {sourceInfoArr.map(e=>{
             const targetValue = updateDayReportDetail[e.value];
             const stationValue = targetValue || targetValue === 0 || '--';
@@ -47,16 +55,16 @@ class ResourceElecInfo extends Component {
           })}
           <Form.Item label="日辐射总量(斜面)">
             {getFieldDecorator('resourceValue', {
-              rules: [{ required: true, message: '日辐射总量' }],
+              rules: [{ required: requireTargetArr.includes('resourceValue'), message: '请填写日辐射总量',pattern: /^(-?\d+)(\.\d+)?$/ }],
               initialValue: updateDayReportDetail.resourceValue,
             })(
-              <Input placeholder="日辐射总量" />
+              <Input />
             )}
             <span>{stationType>0?radiationUnit:speedUnit}</span>
           </Form.Item>
           <Form.Item label="日发电量(逆变器)">
             {getFieldDecorator('genInverter', {
-              rules: [{ required: true, message: '日发电量' }],
+              rules: [{ required: requireTargetArr.includes('genInverter'), message: '请填写逆变器日发电量' }],
               initialValue: updateDayReportDetail.genInverter,
             })(
               <Input placeholder="日发电量" />
@@ -65,46 +73,46 @@ class ResourceElecInfo extends Component {
           </Form.Item>
           <Form.Item label="日发电量(集电线路)">
             {getFieldDecorator('genIntegrated', {
-              rules: [{ required: true, message: '日发电量' }],
+              rules: [{ required: requireTargetArr.includes('genIntegrated'), message: '请填写集电线路日发电量' }],
               initialValue: updateDayReportDetail.genIntegrated,
             })(
-              <Input placeholder="日辐射总量" />
+              <Input />
             )}
             <span>{genUnit}</span>
           </Form.Item>
           <Form.Item label="日发电量(上网电量)">
             {getFieldDecorator('genInternet', {
-              rules: [{ required: true, message: '日发电量' }],
+              rules: [{ required: requireTargetArr.includes('genInternet'), message: '请填写上网电量日发电量' }],
               initialValue: updateDayReportDetail.genInternet,
             })(
-              <Input placeholder="日辐射总量" />
+              <Input />
             )}
             <span>{genUnit}</span>
           </Form.Item>
           <Form.Item label="日购网电量">
             {getFieldDecorator('buyPower', {
-              rules: [{ required: true, message: '购网电量' }],
+              rules: [{ required: requireTargetArr.includes('buyPower'), message: '请填写购网电量' }],
               initialValue: updateDayReportDetail.buyPower,
             })(
-              <Input placeholder="购网电量" />
+              <Input />
             )}
             <span>{genUnit}</span>
           </Form.Item>
           <Form.Item label="样本逆变器容量">
             {getFieldDecorator('modelInverterCapacity', {
-              rules: [{ required: true, message: '日发电量' }],
+              rules: [{ required: requireTargetArr.includes('modelInverterCapacity'), message: '请填写样本逆变器容量',pattern: /^(-?\d+)(\.\d+)?$/ }],
               initialValue: updateDayReportDetail.modelInverterCapacity,
             })(
-              <Input placeholder="日辐射总量" />
+              <Input />
             )}
             <span>kW</span>
           </Form.Item>
           <Form.Item label="样本逆变器发电量">
             {getFieldDecorator('modelInverterPowerGen', {
-              rules: [{ required: true, message: '日发电量' }],
+              rules: [{ required: requireTargetArr.includes('modelInverterPowerGen'), message: '请填写样本逆变器发电量' }],
               initialValue: updateDayReportDetail.modelInverterPowerGen,
             })(
-              <Input placeholder="日辐射总量" />
+              <Input />
             )}
             <span>{genUnit}</span>
           </Form.Item>

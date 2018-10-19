@@ -9,10 +9,10 @@ import { Link } from 'react-router-dom';
 class CardSection extends Component {
   static propTypes = {
     match: PropTypes.object,
-    weatherList: PropTypes.object,
+    weatherList: PropTypes.array,
     operatorList: PropTypes.array, 
     alarmList: PropTypes.object,
-    workList: PropTypes.array,
+    workList: PropTypes.object,
     getWeatherList: PropTypes.func,
     getOperatorList: PropTypes.func,
     stationCode: PropTypes.string,

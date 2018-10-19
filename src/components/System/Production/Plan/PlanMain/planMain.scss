@@ -110,6 +110,7 @@
       .ant-table .ant-table-thead > tr > th, .ant-table .ant-table-tbody > tr > td {
         padding: 0 3px;
         line-height: 1;
+        min-width: 48px;
       }
       .ant-table .ant-table-thead > tr > th.month, .ant-table .ant-table-tbody > tr > td.month {
         min-width: 48px;

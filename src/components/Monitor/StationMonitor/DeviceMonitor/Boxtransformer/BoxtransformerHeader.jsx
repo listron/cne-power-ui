@@ -35,13 +35,13 @@ class BoxtransformerHeader extends Component {
   showDeviceChange = () => {
     this.setState({
       showDeviceChangeBox: true,
-    })
+    });
   }
 
   hideDeviceChange = () => {
     this.setState({
       showDeviceChangeBox: false,
-    })
+    });
   }
 
   render() {

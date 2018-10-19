@@ -155,7 +155,6 @@ function* getYearList(action){
         pageNum: state.system.plan.get('pageNum'),
       })
     });
-    console.log('params',params);
     if(response.data.code==='10000'){
       yield put({type: planAction.GET_PLAN_FETCH_SUCCESS});
       yield put({

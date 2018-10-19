@@ -2,11 +2,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './sideReportPage.scss';
-import { DatePicker, Button, Alert, Icon } from 'antd';
+import { DatePicker, Button, Icon, message } from 'antd';
 import StationSelect from '../../../../Common/StationSelect';
 import UploadReportList from './UploadReportList';
 import moment from 'moment';
 import { reportBasefun } from '../reportBaseFun';
+import WarningTip from '../../../../Common/WarningTip';
 
 class SideReportPage extends Component {
   static propTypes = {
@@ -30,37 +31,56 @@ class SideReportPage extends Component {
       reportDay: '',
       reportStation: [],
       dayReportTotalInfoArr: [], //用于上传日报的所有信息
-      reportInfoErrorText: '',
-      showReportError: false,
+      showBackWarningTip: false,
+      warningTipText: '',
     }
   }
 
   componentDidMount(){ // 默认日期禁选电站列表。
-    this.props.getReportUploadedStation({
+    const { stationReportBaseData, showReportInputList, getReportUploadedStation } = this.props;
+    getReportUploadedStation({
       reportDay: moment().subtract(1,'day').format('YYYY-MM-DD'),
     })
+    showReportInputList && this.setOriginState(stationReportBaseData);
   }
 
   componentWillReceiveProps(nextProps){
-    const { stationReportBaseData } = this.props;
+    const { showReportInputList } = this.props;
     const nextReportBaseData = nextProps.stationReportBaseData;
-    if( nextReportBaseData.length > 0 && stationReportBaseData.length === 0){ // 得到初始化列表数据
-      const dayReportTotalInfoArr = nextReportBaseData.map(e=>{
-        let dailyReport = {...e};
-        let dailyDetailList = e.dailyDetailList.map((fault,index)=>({
-          ...fault,
-          id: fault.defectId?fault.defectId:`lostAdd${index}`, // 若关联工单则使用，若非，由前端手动生成。=>上报前去掉。
-          startTime: fault.startTime?moment(fault.startTime): null,
-          endTime: fault.endTime?moment(fault.endTime): null,
-          handle: false, // api返回的故障信息不可编辑
-        })) || [];
-        delete dailyReport.dailyDetailList;
-        return {
-          dailyReport, dailyDetailList
-        }
-      });
-      this.setState({ dayReportTotalInfoArr })
-    }
+    const nextShowList = nextProps.showReportInputList;
+    !showReportInputList && nextShowList && this.setOriginState(nextReportBaseData);
+  }
+
+  setOriginState = data => { // 远端数据存为本地state待填充处理。
+    const dayReportTotalInfoArr = data.map(e=>{
+      let dailyReport = {...e};
+      let dailyDetailList = e.dailyDetailList.map((fault,index)=>({
+        ...fault,
+        id: `${index}`, // 用于确定数据是从前端生成还是后台给予，上报前去掉。
+        startTime: fault.startTime?moment(fault.startTime): null,
+        endTime: fault.endTime?moment(fault.endTime): null,
+        handle: false, // api返回的故障信息不可编辑
+      })) || [];
+      delete dailyReport.dailyDetailList;
+      return {
+        dailyReport, dailyDetailList
+      }
+    });
+    this.setState({ dayReportTotalInfoArr })
+  }
+
+  showBackTip = () => { // 提示框-提醒用户是否确认返回列表
+    this.setState({
+      showBackWarningTip: true,
+      warningTipText: '确认放弃日报上传?',
+    })
+  }
+
+  cancelWarningTip = () => { // 取消返回列表
+    this.setState({
+      showBackWarningTip: false,
+      warningTipText: '',
+    })
   }
 
   toReportList = () => { // 回日报列表页
@@ -108,7 +128,6 @@ class SideReportPage extends Component {
     const currentStationType = dayReportTotalInfoArr[0].dailyReport.stationType;
     const tmpReportBaseInfo = reportBasefun(currentStationType, genUnit); // 指标数组
 
-    console.log(dayReportTotalInfoArr)
     let errorText = '';
     const totalInfoError = dayReportTotalInfoArr.find(info=>{ // 寻找错误数据并提取错误信息
       const eachStationInfo = info.dailyReport;
@@ -122,25 +141,22 @@ class SideReportPage extends Component {
           errorText = `${eachStationInfo.stationName}${config.configText}未填写!`;
           return true;
         }else if(dataFormatError){ // 填写数据不规范
-          errorText = `${eachStationInfo.stationName}${config.configText}请填写数字,不超过${maxPointLength}位小数!`;
+          errorText = `${eachStationInfo.stationName}${config.configText}需填写数字,且不超${maxPointLength}位小数!`;
           return true;
         }
         return false;
       })
-      return eachInfoError
+      return eachInfoError;
     })
     if(totalInfoError){ // 数据错误存在，提示
-      this.setState({ 
-        reportInfoErrorText: errorText,
-        showReportError: true,
-      })
+      this.messageWarning(errorText);
     }else{ // 数据无误，调整数据结构并提交
-      console.log('数据正确无误!')
-    //to check 接口返回装机容量为stationCapacity，文档要求上传为realCapacity；
+      console.log(dayReportTotalInfoArr)
       const uploadInfo = dayReportTotalInfoArr.map(e=>{
         let { dailyReport, dailyDetailList } = e;
         delete dailyReport.warning;
-        delete dailyReport.stationType;
+        dailyReport.realCapacity = dailyReport.stationCapacity;
+        delete dailyReport.stationCapacity; // 基础信息字段调整
         const newDailyDetailList = dailyDetailList.map(eachLost=>{
           const lostInfo = {
             deviceName: eachLost.deviceName,
@@ -148,10 +164,12 @@ class SideReportPage extends Component {
             endTime: eachLost.endTime && eachLost.endTime.format('YYYY-MM-DD HH:mm'),
             reason: eachLost.reason,
             lostPower: eachLost.lostPower,
+            limitPower: eachLost.limitPower,
             process: eachLost.process,
+            faultId: eachLost.faultId,
+            faultName: eachLost.faultName,
             type: eachLost.type,
           }
-          eachLost.id > 0 && (lostInfo.id = eachLost);
           return lostInfo;
         })
         return { dailyReport, dailyDetailList: newDailyDetailList};
@@ -168,10 +186,20 @@ class SideReportPage extends Component {
     return start && start > moment();
   }
 
+  messageWarning = (dataErrorText) => { // 信息错误展示
+    message.destroy();
+    message.config({
+      top: 400,
+      duration: 2,
+      maxCount: 1,
+    });
+    message.warning(dataErrorText,2);
+  }
+
   render(){
     const { reportDay, stations, reportStation, showReportInputList, reportDisableStation } = this.props;
     const canReport = reportDay && reportStation && reportStation.length > 0;
-    const { dayReportTotalInfoArr } = this.state;
+    const { dayReportTotalInfoArr, showBackWarningTip, warningTipText } = this.state;
     return (
       <div className={styles.sideReportPage} >
         <div className={styles.sideReportTitle} >
@@ -179,7 +207,7 @@ class SideReportPage extends Component {
           <div className={styles.sideReportTitleRight} >
             {showReportInputList && <Button onClick={this.toSelectCondition} className={styles.dayReportPrev} >上一步</Button>}
             {showReportInputList && <Button onClick={this.saveDayReport} className={styles.saveDayReport} >保存</Button>}
-            <Icon type="arrow-left" className={styles.backIcon}  onClick={this.toReportList} />
+            <Icon type="arrow-left" className={styles.backIcon}  onClick={this.showBackTip} />
           </div>
         </div>
         {!showReportInputList && <div className={styles.sideReportContent}>
@@ -191,9 +219,8 @@ class SideReportPage extends Component {
             <span><i>*</i>电站选择</span>
             <StationSelect 
               value={reportStation}
-              data={stations}
+              data={stations.filter(e=>!reportDisableStation.includes(e.stationCode))}
               multiple={true}
-              disabledStation={reportDisableStation}
               onChange={this.stationSelected}
             />
             <Button onClick={this.toReportStations} disabled={!canReport} className={canReport ? styles.dayReportNext : styles.dayReportNextDisabled} >下一步</Button>
@@ -204,6 +231,7 @@ class SideReportPage extends Component {
           totalReportInfoChange={this.totalReportInfoChange}
           dayReportTotalInfoArr={dayReportTotalInfoArr} 
         />}
+        {showBackWarningTip && <WarningTip onOK={this.toReportList} onCancel={this.cancelWarningTip} value={warningTipText} />}
       </div>
     )
   }

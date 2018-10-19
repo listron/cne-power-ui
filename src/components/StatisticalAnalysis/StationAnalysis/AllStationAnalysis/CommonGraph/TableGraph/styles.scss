@@ -1,14 +1,18 @@
 .TableGraphContainer{
   .TableGraphContainerTitle{
     height:40px;
-    line-height: 40px;
+    // line-height: 40px;
     display: flex;
     flex:1;
     justify-content: space-between;
+    .unit{
+      color: #999;
+    }
   }
   .tableList {
-    height: 247px;
+    width: 520px;
     overflow: hidden;
+    border-bottom:1px solid #e8e8e8;
     :global{
       .ant-table-small > .ant-table-content > .ant-table-scroll > .ant-table-header > table > .ant-table-thead > tr > th{
         background-color: #199475;
