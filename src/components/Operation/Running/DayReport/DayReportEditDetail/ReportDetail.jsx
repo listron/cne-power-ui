@@ -143,7 +143,7 @@ const ReportDetail = ({ selectedDayReportDetail, toChangeDayReportStore , dayRep
     </div>
     <div className={styles.powerGenInfo} >
       <h4 className={styles.reportSubTitle} >发电信息<Icon type="caret-right" theme="outlined" /></h4>
-      <p className={styles.powerGenInfoCon}>{errorInfo?errorInfo:'正常'}</p>
+      <span className={styles.powerGenInfoCon}>{errorInfo?errorInfo:'正常'}</span>
     </div>
     <div className={styles.operateInfo} >
       <h4 className={styles.reportSubTitle} >操作信息<Icon type="caret-right" theme="outlined" /></h4>

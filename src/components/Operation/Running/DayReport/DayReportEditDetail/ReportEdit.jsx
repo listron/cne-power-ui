@@ -187,12 +187,14 @@ class ReportEdit extends Component {
           endTime: e.endTime?moment(e.endTime).format('YYYY-MM-DD HH:mm'): null,
         };
       }): [];
+      console.log(updateDayReportDetail)
       const reportInfo = {
+        stationCode: updateDayReportDetail.stationCode,
         reportDate: moment(updateDayReportDetail.reportDate).format('YYYY-MM-DD'),
         reportId: updateDayReportDetail.reportId,
         realCapacity: updateDayReportDetail.realCapacity,
         machineCount: updateDayReportDetail.machineCount,
-        resourceValue: updateDayReportDetail.resourceValue, // to 亚东
+        resourceValue: updateDayReportDetail.resourceValue,
         genInternet: updateDayReportDetail.genInternet,
         genInverter: updateDayReportDetail.genInverter,
         genIntegrated: updateDayReportDetail.genIntegrated,
