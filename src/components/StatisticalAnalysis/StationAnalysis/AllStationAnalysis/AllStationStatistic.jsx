@@ -8,24 +8,24 @@ import StationSelectModal from './StationSelectModal.jsx';
 import TimeSelect from '../../../Common/TimeSelect';
 import PlanCompletionRate from './CommonGraph/PlanCompletionRate';
 import TargetTabs from './TargetTabs.jsx';
-
+import { getCookie } from '../../../../utils/index.js';
+import moment from 'moment';
 
 
 class AllStationStatistic extends React.Component {
   static propTypes = {
     stations: PropTypes.object,
+
     stationType: PropTypes.string,
     stationCode: PropTypes.array,
+    AllStationAvalibaData: PropTypes.array,
     pageSize: PropTypes.number,
     pageNum: PropTypes.number,
-    orderField: PropTypes.string,
-    orderCommand: PropTypes.string,
-    startTime: PropTypes.string,
-    endTime: PropTypes.string,
     history: PropTypes.object,
-    getStationsAlarmStatistic: PropTypes.func,
     showPage: PropTypes.string,
-    changeAlarmStatisticStore: PropTypes.func,
+    dateType: PropTypes.string,
+    changeAllStationStore: PropTypes.func,
+    getAllStationAvalibaData: PropTypes.func,
   }
   constructor(props) {
     super(props);
@@ -34,9 +34,65 @@ class AllStationStatistic extends React.Component {
     };
   }
   componentDidMount() {
-
+    const { getAllStationAvalibaData, year, dateType } = this.props;
+    const currentYear = moment().format('YYYY');
+    let time = year ? year : [`${currentYear}`];
+    console.log(time);
+    const userId = getCookie('userId');
+    getAllStationAvalibaData(
+      {
+        userId: userId,
+        year: time,
+        dateType,
+      }
+    )
   }
- 
+  componentWillReceiveProps(nextProps) {
+    const { getAllStationAvalibaData, year, dateType } = this.props;
+    const userId = getCookie('userId');
+    const currentYear = moment().format('YYYY');
+    const rangeYear = [moment().subtract(5, 'year').format('YYYY'), moment().format('YYYY')]
+    // console.log(nextProps.year[0] !== this.props.year[0]);
+    if (dateType === 'month' && nextProps.dateType === 'month') {
+      if (nextProps.year[0] !== this.props.year[0]) {
+        getAllStationAvalibaData(
+          {
+            userId: userId,
+            year: nextProps.year,
+            dateType,
+          }
+        )
+      }
+    }
+    if (dateType !== nextProps.dateType && nextProps.dateType === 'year') {
+      getAllStationAvalibaData(
+        {
+          userId: userId,
+          year: rangeYear,
+          dateType: nextProps.dateType,
+        })
+    }
+    if (dateType !== nextProps.dateType && nextProps.dateType === 'month') {
+      getAllStationAvalibaData(
+        {
+          userId: userId,
+          year:currentYear ,
+          dateType: nextProps.dateType,
+        })
+    }
+    if (dateType === 'year' && nextProps.dateType === 'year') {
+      if (nextProps.year[0] !== this.props.year[0] || nextProps.year[1] !== this.props.year[1]) {
+        getAllStationAvalibaData(
+          {
+            userId: userId,
+            year: nextProps.year,
+            dateType,
+          }
+        )
+      }
+    }
+  }
+
   onChangeStation = (stationCode) => {
     this.props.history.push(`/statistical/stationaccount/allstation`);
     this.props.changeAllStationStore({
@@ -61,31 +117,32 @@ class AllStationStatistic extends React.Component {
         <i className="iconfont icon-filter"></i>
       </div>
     );
-    const { stationType, stations,dateType } = this.props;
+    const { stationType, stations, dateType, year,AllStationAvalibaData } = this.props;
     const { showStationSelect } = this.state;
+    console.log(dateType, year);
     return (
       <div className={styles.allStationTypeTabs}>
         <Tabs type="card" tabBarExtraContent={operations}  >
           <TabPane tab="光伏" key="1">
-          <div className={styles.componentContainer}>
-          <TimeSelect text={'统计时间选择'} {...this.props} />
-          <PlanCompletionRate dateType={dateType} />
-          <TargetTabs {...this.props} />    
-          </div>          
+            <div className={styles.componentContainer}>
+              <TimeSelect text={'统计时间选择'} {...this.props} />
+              <PlanCompletionRate dateType={dateType} AllStationAvalibaData={AllStationAvalibaData} />
+              <TargetTabs {...this.props} />
+            </div>
           </TabPane>
           <TabPane tab="风电" key="0">
           </TabPane>
         </Tabs>
-       
-           
-         {showStationSelect &&
+
+
+        {showStationSelect &&
           <StationSelectModal
             stations={stations}
             onClose={() => this.setState({ showStationSelect: false })}
             onChangeStation={this.onChangeStation} />}
-  
-       
-       
+
+
+
 
       </div>
     );
