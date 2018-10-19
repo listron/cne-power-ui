@@ -33,6 +33,8 @@ const singleStationReducer = (state = initState, action) => {
     case singleStationAction.GET_SINGLE_STATION_FAIL:
       return state.set('loading', false)
                   .set('error', Immutable.fromJS(action.data));
+    case singleStationAction.RESET_SINGLE_STATION_SUCCESS:
+      return initState;
   }
   return state;
 }

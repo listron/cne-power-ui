@@ -42,7 +42,7 @@ const Option = Select.Option;
   8. 选填 - disabled: bool; 默认false， 传入true值时组件为禁用状态。
 */
 
-class StationSelect extends Component {
+class StationSelectContrast extends Component {
   static propTypes = {
     multiple: PropTypes.bool,
     disabled: PropTypes.bool,
@@ -143,7 +143,6 @@ class StationSelect extends Component {
   render() {
     const { data, multiple, holderText, disabledStation, disabled } = this.props;
     const { checkedStationName, stationModalShow, filteredSelectedStation, checkedStations } = this.state;
-    console.log(checkedStationName);
     return (
       <div className={styles.stationSelect} style={this.props.style}>
         {multiple ? <Select
@@ -184,4 +183,4 @@ class StationSelect extends Component {
     
   }
 }
-export default StationSelect;
+export default StationSelectContrast;

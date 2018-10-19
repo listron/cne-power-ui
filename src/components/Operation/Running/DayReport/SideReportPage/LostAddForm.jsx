@@ -29,8 +29,8 @@ class LostAddForm extends Component {
     const { deviceExistInfo } = this.props;
     const newDeviceExistInfo = nextProp.deviceExistInfo;
     if(deviceExistInfo.existLoading && !newDeviceExistInfo.existLoading){ // 设备名称验证后
-      // if(false){
-      if(deviceExistInfo.existError){// 设备验证未通过，有未存在设备
+      if(false){
+      // if(newDeviceExistInfo.existError){// 设备验证未通过，有未存在设备
         this.setState({
           deviceNameErroShow: true,
           deviceNameErroInfo : `${deviceExistInfo.existErrorData.join(',')}不存在!`

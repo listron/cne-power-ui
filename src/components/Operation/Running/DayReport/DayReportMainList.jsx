@@ -6,7 +6,7 @@ import DayReportListSearch from './DayReportListSearch';
 import Footer from '../../../Common/Footer';
 import CommonPagination from '../../../Common/CommonPagination';
 import styles from './dayReportAll.scss';
-import { Button, Table,Icon } from 'antd';
+import { Button, Table, Icon, Tooltip } from 'antd';
 import moment from 'moment';
 
 class DayReportMainList extends Component {
@@ -118,12 +118,26 @@ class DayReportMainList extends Component {
         });
       })
     }
+    const content = (<ul>
+      <li>1. 支持单日批量和单个电站上传日报;</li>
+      <li>2. 单个电站的日报必须按照时间顺序逐一上传;</li>
+      <li>3. 单个电站当日日报只能上传一次;</li>
+      <li>4. 没发生的日期不支持上传日报;</li>
+      <li>5. 在日报详情页面中支持编辑修改。</li>
+    </ul>)
     return (
         <div className={styles.dayReportMain}>
           <div className={styles.contentMain}>
             <DayReportListSearch {...this.props} /> 
             <div className={styles.operateDayReport} >
-              <Button onClick={this.toUploadPage} icon="plus" className={styles.uploadReport} ><span>上传日报</span></Button>
+              <span>
+                <Button onClick={this.toUploadPage} icon="plus" className={styles.uploadReport} >
+                  <span>上传日报</span>
+                </Button>
+                <Tooltip placement="topLeft" title={content} overlayClassName={styles.toolInfo}>
+                  <Icon type="exclamation-circle" theme="outlined" className={styles.infoTooltip} />
+                </Tooltip>
+              </span>
               <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalNum} onPaginationChange={this.onPaginationChange} />
             </div>
             <Table

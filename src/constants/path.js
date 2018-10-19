@@ -48,7 +48,7 @@ export default {
     checkUserRegister: '/v3/login/userregister',
     phoneCodeRegister: '/v3/login/phoneregister',
     inviteUserLink: '/v3/user/link',
-
+    
     ticket: { // 工单
       getDefectList: '/v3/defect/worklist/pc',
       getDefectIdList: '/v3/defect/worklist/getallid',
@@ -89,7 +89,7 @@ export default {
       dayReportDetail: '/v3/performance/detail', // 获取选中日报详情
       dayReportUpdate: '/v3/performance/dailyReport/mulitUpdate', // 日报详情编辑
     },
-    system: {
+    system: {//系统管理
       getEnterprisList: '/v3/enterprise/list',//企业列表
       getEnterprisDetail: '/v3/enterprise',//企业详情获取
       saveEnterpriseDetail: '/v3/enterprise/change',//保存企业详情
@@ -206,13 +206,12 @@ export default {
       getSingleStationPvCompare:'v3/performance/comprehensive/light/months',
       getSingleStationYearPvCompare:'v3/performance/comprehensive/light/year',
       getSingleStationPowerEffective:'v3/performance/comprehensive/efficiencygen',
-     
+      // 电站对比
+      getStationContrast: '/v3/performance/stationcontrast',
+      getStationContrastDetail: '/v3/performance/stationcontrast/list',
 
 
 
     }
-    // monitor:{
-    //   getStationType:'v3/monitor/stations/stationType',
-    // }
   }
 }

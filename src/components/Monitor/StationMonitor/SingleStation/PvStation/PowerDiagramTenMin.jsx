@@ -101,7 +101,7 @@ class PowerDiagramTenMin extends Component {
           if(tmpThoryPower){
             thoryPower = `<div style="padding-left: 5px;"><span style="display: inline-block; background:#c7ceb2;  width:5px; height:5px; border-radius:100%;"></span> 理论发电量: ${parseFloat(thoryPowerObj.value).toFixed(4) || 0}</div>`
           }
-          if(tmpActualPower && tmpThoryPower ){
+          if(tmpActualPower && tmpThoryPower && intervalTime!==0 ){
             const tmpRate = parseFloat(thoryPowerObj.value) === 0 ? '--':(parseFloat(actualPowerObj.value) / parseFloat(thoryPowerObj.value)*100).toFixed(2);
             rate = `<div style="padding-left: 15px;">完成率: ${tmpRate}%</div>`
           }
