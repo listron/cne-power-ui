@@ -17,6 +17,7 @@ const initState = Immutable.fromJS({
 });
 
 const stationContrastReducer = (state = initState, action) => {
+  console.log(action);
   switch (action.type) {
     case stationContrastAction.stationContrastLoading: // loading状态
       return state.set('loading',true);

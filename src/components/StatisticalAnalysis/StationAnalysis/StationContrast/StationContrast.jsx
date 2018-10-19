@@ -23,9 +23,6 @@ class StationContrast extends React.Component {
 
     };
   }
-  componentDidMount() {
-
-  }
 
   stationSelected = (stations) => {
     const { dateType, year } = this.props;
@@ -40,8 +37,24 @@ class StationContrast extends React.Component {
     });
   }
 
+  stationTimeSelected = (value) => {
+    console.log(value);
+    const { stationCode, year } = this.props;
+    this.props.toChangeStationContrastStore({
+      dateType: value.dateType,
+    });
+    if(stationCode.length===2){
+      this.props.getStationContrast({
+        stationCode: stationCode,
+        dateType: value.dateType,
+        year,
+      });
+    }
+  }
+
   render() {
     const { stations ,stationContrastList, stationContrastDetail } = this.props;
+    console.log(stationContrastList);
     return (
       <div className={styles.singleStationType}>
         <div className={styles.stationTimeFilter}>
@@ -49,21 +62,25 @@ class StationContrast extends React.Component {
             <div className={styles.stationFilter}>
               <StationSelectContrast
                 data={stations}
-                holderText={'请选择两个同一类型的电站进行对比'}
+                holderText={'请选择两个电站对比'}
                 multiple={true}
                 onChange={this.stationSelected}
               />
             </div>
-            <TimeSelect day={true} {...this.props} />
+            <TimeSelect 
+              day={true} 
+              {...this.props}
+              changeAllStationStore={this.stationTimeSelected}
+            />
           </div>
           <span className={styles.rightContent}>数据统计截止时间8月20日</span>
         </div>
         <div className={styles.componentContainer}>
           <div className={styles.componentContainerTip} >
             <span>电站数据</span>
-            {stationContrastList && stationContrastList.length===0 && <span>点击表格数据，可查看详细</span>}
+            {stationContrastList && stationContrastList.length!==2 && <span>点击表格数据，可查看详细</span>}
           </div>
-          {stationContrastList && stationContrastList.length===0?
+          {stationContrastList && stationContrastList.length!==2?
             <div className={styles.nodata} ><img src="/img/nodata.png" /></div>
             : <StationContrastTable {...this.props} />
           }
