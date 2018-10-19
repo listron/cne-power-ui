@@ -39,6 +39,12 @@ class UploadReportList extends Component {
     })
   }
 
+  componentWillUnmount(){
+    this.props.toChangeDayReportStore({
+      stationReportBaseData: [],
+    })
+  }
+
   addAbnormalInfo = (abnormalInfo, abnormalList) => {
     this.setState({
       abnormalModalshow: true,

@@ -5,12 +5,15 @@ import { allStationAnalysisAction } from './allStationAnalysisAction.js';
 var initState = Immutable.fromJS({
   loading: false,
   dateType:'month',
+  stationCode: null, // 选中的电站
   showPage: 'multiple',//默认展示多电站分析
-  year:'2018',
+  year:'',
   pageNum: 1, // 当前页
   pageSize: 10, // 每页条数
   totalNum:  0,//总数
-
+  sortType:null,//排序方式（asc-升序，desc-降序）
+  sort:null,//按什么排序（电站名称、区域、计划发电量、实际发电量、计划完成率、发电量环比、辐射总量、资源环比、等效利用小时数、pr、损失电量、损失电量等效时）
+  AllStationAvalibaData:[],//有数据的年/月
 
 });
 const allStationAnalysisReducer = (state = initState, action) => {

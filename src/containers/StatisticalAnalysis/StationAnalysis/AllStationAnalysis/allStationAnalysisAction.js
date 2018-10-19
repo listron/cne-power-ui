@@ -4,6 +4,7 @@ export const allStationAnalysisAction = {
   GET_ALLSTATIONDATA_FETCH_SUCCESS: Symbol('GET_ALLSTATIONDATA_FETCH_SUCCESS'),//请求成功 
   CHANGE_ALLSTATIONDATA_STORE_SAGA: Symbol('CHANGE_ALLSTATIONDATA_STORE_SAGA'),
   CHANGE_ALLSTATIONDATA_STORE: Symbol('CHANGE_ALLSTATIONDATA_STORE'),
+  getAllStationAvalibaData:Symbol('getAllStationAvalibaData'),
   getAllStationStatisticData:Symbol('getAllStationStatisticData'),
   getAllStationStatisticTableData:Symbol('getAllStationStatisticTableData'),
   getAllStationMonthBarData:Symbol('getAllStationMonthBarData'),

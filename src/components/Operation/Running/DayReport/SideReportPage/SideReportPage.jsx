@@ -146,10 +146,10 @@ class SideReportPage extends Component {
     if(totalInfoError){ // 数据错误存在，提示
       this.messageWarning(errorText);
     }else{ // 数据无误，调整数据结构并提交
+      console.log(dayReportTotalInfoArr)
       const uploadInfo = dayReportTotalInfoArr.map(e=>{
         let { dailyReport, dailyDetailList } = e;
         delete dailyReport.warning;
-        delete dailyReport.stationType;
         dailyReport.realCapacity = dailyReport.stationCapacity;
         delete dailyReport.stationCapacity; // 基础信息字段调整
         const newDailyDetailList = dailyDetailList.map(eachLost=>{
