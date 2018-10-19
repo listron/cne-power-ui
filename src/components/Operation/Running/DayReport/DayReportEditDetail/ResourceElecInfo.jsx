@@ -2,8 +2,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Form, Input, Icon } from 'antd';
-// import { styles } from 'ansi-colors';
 import styles from './reportDetail.scss';
+import moment from 'moment';
 
 class ResourceElecInfo extends Component {
   static propTypes = {
@@ -25,7 +25,7 @@ class ResourceElecInfo extends Component {
     const radiationUnit = configUtil.radiation || '';
     const speedUnit = configUtil.speed || '';
     const genUnit = configUtil.power || '';
-    const { stationType } = updateDayReportDetail;
+    const { stationType, reportDate } = updateDayReportDetail;
     const sourceInfoArr = [
       {name: '日报日期', value: 'reportDate', unit: ''},
       {name: '天气', value: 'weather', unit: ''},
@@ -34,11 +34,16 @@ class ResourceElecInfo extends Component {
       {name: '实际容量', value: 'realCapacity', unit: ''},
       {name: '装机台数', value: 'machineCount', unit: '台'},
     ];
+    const reportDateValue = reportDate?moment(reportDate).format('YYYY-MM-DD'):'--';
     const { getFieldDecorator } = this.props.form;
     return (
       <div className={styles.editResourceInfo} >
         <h4>资源电量信息<Icon type="caret-right" theme="outlined" /></h4>
         <Form layout="inline" className={styles.resourceInfoCon} >
+          <span className={styles.eachResourceInfo} >
+            <span className={styles.eachResourceInfoName}>日报日期</span>
+            <span>{reportDateValue}</span>
+          </span>
           {sourceInfoArr.map(e=>{
             const targetValue = updateDayReportDetail[e.value];
             const stationValue = targetValue || targetValue === 0 || '--';
@@ -50,7 +55,7 @@ class ResourceElecInfo extends Component {
           })}
           <Form.Item label="日辐射总量(斜面)">
             {getFieldDecorator('resourceValue', {
-              rules: [{ required: requireTargetArr.includes('resourceValue'), message: '请填写日辐射总量' }],
+              rules: [{ required: requireTargetArr.includes('resourceValue'), message: '请填写日辐射总量',pattern: /^(-?\d+)(\.\d+)?$/ }],
               initialValue: updateDayReportDetail.resourceValue,
             })(
               <Input />
@@ -95,7 +100,7 @@ class ResourceElecInfo extends Component {
           </Form.Item>
           <Form.Item label="样本逆变器容量">
             {getFieldDecorator('modelInverterCapacity', {
-              rules: [{ required: requireTargetArr.includes('modelInverterCapacity'), message: '请填写样本逆变器容量' }],
+              rules: [{ required: requireTargetArr.includes('modelInverterCapacity'), message: '请填写样本逆变器容量',pattern: /^(-?\d+)(\.\d+)?$/ }],
               initialValue: updateDayReportDetail.modelInverterCapacity,
             })(
               <Input />

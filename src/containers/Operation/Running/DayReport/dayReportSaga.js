@@ -69,7 +69,7 @@ function *getStationBaseReport(action){ // 选中日期+电站后各待上传数
   const url = `${APIBasePath}${operation.getStationBaseReport}`;
   try{
     const response = yield call(axios.post,url,{
-      reportDay,
+      reportDate: reportDay,
       stationCode: reportStation.map(e=>`${e.stationCode}`)
     });
     if(response.data.code === '10000'){
@@ -129,7 +129,7 @@ function *getReportUploadedStation(action){ // 选定日期已上传过日报电
       yield put({
         type:  dayReportAction.dayReportFetchSuccess,
         payload:{
-          reportDisableStation: response.data.data || [],
+          reportDisableStation: response.data.data.map(e=>parseInt(e)) || [],
           reportDay,
           reportStation: [], // 清空已选电站
         },
