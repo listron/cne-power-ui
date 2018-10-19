@@ -11,7 +11,12 @@ function *changeSingleStationStore(action){
     payload,
   })
 }
-
+// 重置store状态
+function* resetSingleStationStore(action) {
+  yield put({
+    type: singleStationAction.RESET_SINGLE_STATION_SUCCESS,
+  });
+}
 //获取单电站实时数据
 function *getSingleStation(action){
   const { payload } = action;
@@ -450,6 +455,6 @@ export function* watchSingleStationMonitor() {
   yield takeLatest(singleStationAction.GET_STATION_DEVICELIST_SAGA, getStationDeviceList);
   yield takeLatest(singleStationAction.GET_CONFLUENCEBOX_LIST_SAGA, getConfluenceBoxList); // 汇流箱列表获取
   yield takeLatest(singleStationAction.EDIT_MONTH_YEAR_DATA_SAGA, editData);//编辑月，年的累计发电量
- 
+  yield takeLatest(singleStationAction.RESET_SINGLE_STATION_STORE, resetSingleStationStore);
 }
 

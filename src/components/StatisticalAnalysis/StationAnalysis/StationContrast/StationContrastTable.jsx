@@ -49,8 +49,7 @@ class StationContrastTable extends React.Component {
         />
       </div>
     );
-    console.log(stationContrastDataInfo);
-    console.log(Object.entries(stationContrastDataInfo));
+    
     return (
       <Row className={styles.stationContrastTable} >
         <Col span={6} className={styles.baseNameBox} >
