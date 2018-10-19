@@ -129,7 +129,7 @@ function *getReportUploadedStation(action){ // 选定日期已上传过日报电
       yield put({
         type:  dayReportAction.dayReportFetchSuccess,
         payload:{
-          reportDisableStation: response.data.data || [],
+          reportDisableStation: response.data.data.map(e=>parseInt(e)) || [],
           reportDay,
           reportStation: [], // 清空已选电站
         },

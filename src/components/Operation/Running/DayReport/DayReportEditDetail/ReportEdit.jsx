@@ -10,7 +10,7 @@ import LimitGenTable from '../SideReportPage/LimitGenTable';
 import WarningTip from '../../../../Common/WarningTip';
 import moment from 'moment';
 import styles from './reportDetail.scss';
-import { reportBasefun } from '../reportBaseFun';
+import { reportEditFun } from '../reportBaseFun';
 
 class ReportEdit extends Component {
   static propTypes = {
@@ -138,7 +138,7 @@ class ReportEdit extends Component {
     const tmpRequireTargetArr = Object.keys(requireTargetObj); // 指标必填信息数组(有多余信息)
     const genUnit = unitConfig.power || 'kWh'; // kWh两位小数，万kWh四位小数。
     const currentStationType = updateDayReportDetail.stationType;
-    const tmpReportBaseInfo = reportBasefun(currentStationType, genUnit); // 指标数组
+    const tmpReportBaseInfo = reportEditFun(currentStationType, genUnit); // 指标数组
 
     let errorText = '';
     tmpReportBaseInfo.find(config => { 

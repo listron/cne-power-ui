@@ -37,31 +37,36 @@ class SideReportPage extends Component {
   }
 
   componentDidMount(){ // 默认日期禁选电站列表。
-    this.props.getReportUploadedStation({
+    const { stationReportBaseData, showReportInputList, getReportUploadedStation } = this.props;
+    getReportUploadedStation({
       reportDay: moment().subtract(1,'day').format('YYYY-MM-DD'),
     })
+    showReportInputList && this.setOriginState(stationReportBaseData);
   }
 
   componentWillReceiveProps(nextProps){
-    const { stationReportBaseData } = this.props;
+    const { showReportInputList } = this.props;
     const nextReportBaseData = nextProps.stationReportBaseData;
-    if( nextReportBaseData.length > 0 && stationReportBaseData.length === 0){ // 得到初始化列表数据
-      const dayReportTotalInfoArr = nextReportBaseData.map(e=>{
-        let dailyReport = {...e};
-        let dailyDetailList = e.dailyDetailList.map((fault,index)=>({
-          ...fault,
-          id: `${index}`, // 用于确定数据是从前端生成还是后台给予，上报前去掉。
-          startTime: fault.startTime?moment(fault.startTime): null,
-          endTime: fault.endTime?moment(fault.endTime): null,
-          handle: false, // api返回的故障信息不可编辑
-        })) || [];
-        delete dailyReport.dailyDetailList;
-        return {
-          dailyReport, dailyDetailList
-        }
-      });
-      this.setState({ dayReportTotalInfoArr })
-    }
+    const nextShowList = nextProps.showReportInputList;
+    !showReportInputList && nextShowList && this.setOriginState(nextReportBaseData);
+  }
+
+  setOriginState = data => { // 远端数据存为本地state待填充处理。
+    const dayReportTotalInfoArr = data.map(e=>{
+      let dailyReport = {...e};
+      let dailyDetailList = e.dailyDetailList.map((fault,index)=>({
+        ...fault,
+        id: `${index}`, // 用于确定数据是从前端生成还是后台给予，上报前去掉。
+        startTime: fault.startTime?moment(fault.startTime): null,
+        endTime: fault.endTime?moment(fault.endTime): null,
+        handle: false, // api返回的故障信息不可编辑
+      })) || [];
+      delete dailyReport.dailyDetailList;
+      return {
+        dailyReport, dailyDetailList
+      }
+    });
+    this.setState({ dayReportTotalInfoArr })
   }
 
   showBackTip = () => { // 提示框-提醒用户是否确认返回列表
