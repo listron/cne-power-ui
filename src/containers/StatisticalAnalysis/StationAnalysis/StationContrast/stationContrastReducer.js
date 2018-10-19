@@ -7,7 +7,7 @@ const initState = Immutable.fromJS({
   stationCode: [],//两个电站的编码
   dateType: 'month', //日期类型，默认月  year年 month月 day日
   year: [parseInt(moment().format('YYYY'))],//默认年
-  month: '',//默认月
+  month: 0,//默认月
   
   column: '',//选中的行名
   stationContrastList:[],//两电站对比内容
