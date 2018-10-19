@@ -243,6 +243,7 @@ class ReportEdit extends Component {
   render(){
     const { updateDayReportDetail, addLostFormShow, addLimitFormShow, abnormalTextShow, showBackWarningTip, warningTipText } = this.state;
     const { findDeviceExist, deviceExistInfo, dayReportConfig, lostGenTypes } = this.props;
+    const {faultList, limitList, stationCode, errorInfo} = updateDayReportDetail;
     return (
       <div className={styles.reportEdit} >
         <div className={styles.reportDetailTitle} >
@@ -261,46 +262,46 @@ class ReportEdit extends Component {
           <span className={styles.reportSubTitle}>损失电量信息<Icon type="caret-right" theme="outlined"  /></span>
           <Button onClick={this.toAddGenLost} disabled={addLostFormShow} icon="plus" className={styles.uploadGenLost}>添加</Button>
         </div>
-        <div className={styles.lostGenTableBox} >
+        {faultList.length > 0?<div className={styles.lostGenTableBox} >
           <LostGenTable 
-            faultGenList={updateDayReportDetail.faultList.map(
+            faultGenList={faultList.map(
               e=>({...e,startTime: moment(e.startTime), endTime: moment(e.endTime)})
             )}
             changeFaultList={this.faultListInfoChange} 
           />
-        </div>
+        </div>: null}
         {addLostFormShow && <LostAddForm
           findDeviceExist={findDeviceExist}
           lostGenTypes={lostGenTypes}
-          faultGenList={updateDayReportDetail.faultList || []}
+          faultGenList={faultList}
           changeFaultList={this.faultListInfoChange}
-          stationCode={updateDayReportDetail.stationCode}
+          stationCode={stationCode}
           deviceExistInfo={deviceExistInfo}
         />}
         <div className={styles.lostElecInfo} >
           <span className={styles.reportSubTitle}>限电信息<Icon type="caret-right" theme="outlined" /></span>
           <Button disabled={addLimitFormShow} onClick={this.toAddGenLimit}  icon="plus" className={styles.uploadGenLost}>添加</Button>
         </div>
-        <div className={styles.lostGenTableBox} >
+        {limitList.length > 0 ?<div className={styles.lostGenTableBox} >
           <LimitGenTable 
-            limitGenList={updateDayReportDetail.limitList.map(
+            limitGenList={limitList.map(
               e=>({...e,startTime: moment(e.startTime), endTime: moment(e.endTime)})
             )}
             changeLimitList={this.limitListInfoChange}
           />
-        </div>
+        </div>:null}
         {addLimitFormShow && <LimitAddForm
           findDeviceExist={findDeviceExist} 
-          limitGenList={updateDayReportDetail.limitList || []} 
+          limitGenList={limitList} 
           changeLimitList={this.limitListInfoChange}  
-          stationCode={updateDayReportDetail.stationCode}
+          stationCode={stationCode}
           deviceExistInfo={deviceExistInfo}
         />}
         <div className={styles.addPowerGenInfo}  >
           <span className={styles.reportSubTitle}>发电信息<Icon type="caret-right" theme="outlined" /></span>
           <div className={styles.addPowerGenInfoR} >
             <Checkbox onChange={this.checkAbnormal}>存在异常</Checkbox>
-            {abnormalTextShow && <Input.TextArea className={styles.abnormalTextArea}  onChange={this.reportAbnormalText} value={updateDayReportDetail.errorInfo} />}
+            {abnormalTextShow && <Input.TextArea className={styles.abnormalTextArea}  onChange={this.reportAbnormalText} value={errorInfo} />}
           </div>
         </div>
         {showBackWarningTip && <WarningTip onOK={this.backToDetail} onCancel={this.cancelDetaiTip} value={warningTipText} />}
