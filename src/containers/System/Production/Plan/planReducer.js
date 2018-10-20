@@ -1,9 +1,7 @@
 import Immutable from 'immutable';
-
 import { planAction } from './planAction';
 
-
-var initState = Immutable.fromJS({
+let initState = Immutable.fromJS({
   loading: false,
   // buttonLoading: false,//普通按钮交互loading
   showPage: 'list',//默认展示列表页list,可展示新建add,编辑edit
@@ -19,6 +17,7 @@ var initState = Immutable.fromJS({
   continueAdd: false,//继续添加生产计划按钮
   addPlanYear:'', //计划生产的年份
   addStationCodes:[], // 计划生产的电站
+  planYearList:[],
 });
 
 const planReducer = (state = initState, action) => {
@@ -31,7 +30,7 @@ const planReducer = (state = initState, action) => {
       return state.merge(Immutable.fromJS(action.payload))
   }
   return state;
-}
+};
 
 
 export default planReducer;
