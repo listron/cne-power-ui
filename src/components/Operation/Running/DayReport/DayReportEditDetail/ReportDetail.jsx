@@ -86,7 +86,7 @@ const ReportDetail = ({ selectedDayReportDetail, toChangeDayReportStore , dayRep
     {name: '日发电量(逆变器)', value: 'genInverter', unit: genUnit},
     {name: '日发电量(集电线路)', value: 'genIntegrated', unit: genUnit},
     {name: '日发电量(上网电量)', value: 'genInternet', unit: genUnit},
-    {name: '日购网电量', value: 'buyPower', unit: genUnit},
+    {name: '日购网电量', value: 'dailyBuyPower', unit: genUnit},
     {name: '等效小时数', value: 'equivalentHours', unit: 'h'},
     {name: '样本逆变器容量', value: 'modelInverterCapacity', unit: 'kW'},
     {name: '样本逆变器发电量', value: 'modelInverterPowerGen', unit: genUnit},
