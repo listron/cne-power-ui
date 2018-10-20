@@ -175,6 +175,8 @@ class ReportEdit extends Component {
         e.id>0 && newFaultList.push({id: e.id});
         delete e.handle;
         delete e.id;
+        delete e.reportDate;
+        delete e.stationCode;
         newFaultList.push({ ...e,
           startTime: e.startTime?moment(e.startTime).format('YYYY-MM-DD HH:mm'): null,
           endTime: e.endTime?moment(e.endTime).format('YYYY-MM-DD HH:mm'): null,
@@ -183,7 +185,9 @@ class ReportEdit extends Component {
       limitList.forEach(e=>{
         e.id>0 && newLimitList.push({id: e.id});
         delete e.handle;
-        delete e.id
+        delete e.id;
+        delete e.reportDate;
+        delete e.stationCode;
         newLimitList.push({
           ...e,
           startTime: e.startTime?moment(e.startTime).format('YYYY-MM-DD HH:mm'): null,
