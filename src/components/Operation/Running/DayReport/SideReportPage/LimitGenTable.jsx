@@ -82,7 +82,7 @@ class LimitGenTable extends Component {
         dataIndex: 'handle',
         render : (text, record) => {
           const { id } = record;
-          return text?<span onClick={()=>this.removeListInfo(id)}>删除</span>:<span></span>
+          return text?<span onClick={()=>this.removeListInfo(id)} className={styles.removeFaultInfo}><i className="iconfont icon-del" ></i></span>:<span></span>
         }
       }
     ]
