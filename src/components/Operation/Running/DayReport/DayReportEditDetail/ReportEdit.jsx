@@ -171,8 +171,13 @@ class ReportEdit extends Component {
       this.messageWarning(errorText);
     }else{ // 无错误，提交信息。
       const newFaultList = faultList?faultList.map(e=>{
-        delete e.handle;
+        if(e.rememberRemove && e.id > 0 ){//  删除的数据是后台传过来的故障损失=>单独通知后台删除某条(id)数据
+          return {id: e.id};
+        }
         e.id > 0? null: delete e.id;
+        delete e.stationCode;
+        delete e.handle;
+        delete e.reportDate;
         return { 
           ...e,
           startTime: e.startTime?moment(e.startTime).format('YYYY-MM-DD HH:mm'): null,
@@ -180,8 +185,13 @@ class ReportEdit extends Component {
         };
       }): [];
       const newLimitList = limitList?limitList.map(e=>{
-        delete e.handle;
+        if(e.rememberRemove && e.id > 0 ){ // 删除的数据是后台传过来的限电=>单独通知后台删除某条(id)数据
+          return {id: e.id};
+        }
         e.id > 0? null: delete e.id;
+        delete e.handle;
+        delete e.handle;
+        delete e.reportDate;
         return {
           ...e,
           startTime: e.startTime?moment(e.startTime).format('YYYY-MM-DD HH:mm'): null,
@@ -195,12 +205,16 @@ class ReportEdit extends Component {
         realCapacity: updateDayReportDetail.realCapacity,
         machineCount: updateDayReportDetail.machineCount,
         resourceValue: updateDayReportDetail.resourceValue,
+        yearGenInverter: updateDayReportDetail.yearGenInverter,
+        yearGenIntegrated: updateDayReportDetail.yearGenIntegrated,
+        yearGenInternet: updateDayReportDetail.yearGenInternet,
         genInternet: updateDayReportDetail.genInternet,
         genInverter: updateDayReportDetail.genInverter,
         genIntegrated: updateDayReportDetail.genIntegrated,
         equivalentHours: updateDayReportDetail.equivalentHours,
         modelInverterCapacity: updateDayReportDetail.modelInverterCapacity,
         modelInverterPowerGen: updateDayReportDetail.modelInverterPowerGen,
+        dailyBuyPower: updateDayReportDetail.dailyBuyPower,
         buyPower: updateDayReportDetail.buyPower,
         errorInfo: updateDayReportDetail.errorInfo,
         faultList: newFaultList,
@@ -265,8 +279,12 @@ class ReportEdit extends Component {
         {faultList.length > 0?<div className={styles.lostGenTableBox} >
           <LostGenTable 
             faultGenList={faultList.map(
-              e=>({...e,startTime: moment(e.startTime), endTime: moment(e.endTime)})
+              e=>({...e,
+                startTime: e.startTime?moment(e.startTime):null, 
+                endTime: e.endTime?moment(e.endTime):null
+              })
             )}
+            rememberRemove={true}
             changeFaultList={this.faultListInfoChange} 
           />
         </div>: null}
@@ -285,8 +303,12 @@ class ReportEdit extends Component {
         {limitList.length > 0 ?<div className={styles.lostGenTableBox} >
           <LimitGenTable 
             limitGenList={limitList.map(
-              e=>({...e,startTime: moment(e.startTime), endTime: moment(e.endTime)})
+              e=>({...e,
+                startTime: e.startTime?moment(e.startTime): null, 
+                endTime: e.endTime?moment(e.endTime):null,
+              })
             )}
+            rememberRemove={true}
             changeLimitList={this.limitListInfoChange}
           />
         </div>:null}

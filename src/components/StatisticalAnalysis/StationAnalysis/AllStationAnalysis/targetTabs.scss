@@ -7,7 +7,7 @@
       //width: 0ch;
       display: flex;
       justify-content:space-between;
-     
+
   }
   }
 
@@ -16,10 +16,14 @@
     flex:1;
     flex-direction: column;
     .dataGraph{
-      display: flex;    
+      display: flex;
       flex-direction: row;
       border-bottom: 1px solid #ececec;
     }
   }
- 
+
+  .hjl{
+     background: pink;
+  }
+
 }

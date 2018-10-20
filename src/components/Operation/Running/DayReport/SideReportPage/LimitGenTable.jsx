@@ -7,6 +7,7 @@ import moment from 'moment';
 
 class LimitGenTable extends Component {
   static propTypes = {
+    rememberRemove: PropTypes.bool,
     form: PropTypes.object,
     limitGenList: PropTypes.array,
     changeLimitList: PropTypes.func,
@@ -20,8 +21,11 @@ class LimitGenTable extends Component {
   }
 
   removeListInfo = (id) => {
-    const { limitGenList, changeLimitList } = this.props;
-    const newLimitGenList = limitGenList.filter(e=>id !== e.id);
+    const { limitGenList, changeLimitList, rememberRemove } = this.props;
+    const newLimitGenList = limitGenList.filter(e=>id !== e.id).map(e=>{
+      rememberRemove && (e.handleRemove = true); // 编辑时删除某条后台数据
+      return e
+    });
     changeLimitList(newLimitGenList);
   }
 
@@ -43,7 +47,6 @@ class LimitGenTable extends Component {
         render : (text, record) => {
           return (<Form.Item>
             {getFieldDecorator(`${record.id}_startTime`, {
-              rules: [{ required: true, message: '开始时间' }],
               initialValue: record.startTime,
             })(
               <DatePicker placeholder="开始时间" showTime={true} format="YYYY-MM-DD HH:mm"  />
@@ -56,7 +59,6 @@ class LimitGenTable extends Component {
         render : (text, record) => {
           return (<Form.Item>
             {getFieldDecorator(`${record.id}_endTime`, {
-              rules: [{ required: true, message: '结束时间' }],
               initialValue: record.endTime,
             })(
               <DatePicker placeholder="结束时间" />
@@ -69,7 +71,6 @@ class LimitGenTable extends Component {
         render : (text, record) => {
           return (<Form.Item>
             {getFieldDecorator(`${record.id}_lostPower`, {
-              rules: [{ required: true, message: '日损失电量' }],
               initialValue: record.lostPower,
             })(
               <Input placeholder="日损失电量"  className={styles.lostPower} />
@@ -81,7 +82,7 @@ class LimitGenTable extends Component {
         dataIndex: 'handle',
         render : (text, record) => {
           const { id } = record;
-          return text?<span onClick={()=>this.removeListInfo(id)}>删除</span>:<span></span>
+          return text?<span onClick={()=>this.removeListInfo(id)} className={styles.removeFaultInfo}><i className="iconfont icon-del" ></i></span>:<span></span>
         }
       }
     ]
