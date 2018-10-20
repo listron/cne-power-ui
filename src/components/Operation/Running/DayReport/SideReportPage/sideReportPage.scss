@@ -293,6 +293,7 @@
   padding: 20px;
   .removeFaultInfo{
     color: $themeColor;
+    cursor: pointer;
   }
   :global{
     .ant-table .ant-table-thead > tr > th, .ant-table .ant-table-tbody > tr > td{
