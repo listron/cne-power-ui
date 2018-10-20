@@ -80,7 +80,12 @@ class DayReportListSearch extends Component {
     return (
       <div className={styles.search}>
         <span>条件查询</span>
-        <MonthPicker value={moment(startTime)} className={styles.monthSearch} onChange={this.startTimeChange} disabledDate={this.disabledDate} />
+        <MonthPicker 
+          value={startTime?moment(startTime):null} 
+          className={styles.monthSearch} 
+          onChange={this.startTimeChange} 
+          disabledDate={this.disabledDate} 
+        />
         <Select onChange={this.regionSelect} value={regionCode} className={styles.regionSearch} >
           <Option value={null}>全部</Option>
           {regionArr.map(e=>(

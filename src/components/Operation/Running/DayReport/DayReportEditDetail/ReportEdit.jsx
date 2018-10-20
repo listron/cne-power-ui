@@ -170,30 +170,34 @@ class ReportEdit extends Component {
     if(errorText){ // 数据错误存在，提示
       this.messageWarning(errorText);
     }else{ // 无错误，提交信息。
-      let newFaultList = [], newLimitList = [];
-      faultList.forEach(e=>{
-        e.id>0 && newFaultList.push({id: e.id});
-        delete e.handle;
-        delete e.id;
-        delete e.reportDate;
+      const newFaultList = faultList?faultList.map(e=>{
+        if(e.rememberRemove && e.id > 0 ){//  删除的数据是后台传过来的故障损失=>单独通知后台删除某条(id)数据
+          return {id: e.id};
+        }
+        e.id > 0? null: delete e.id;
         delete e.stationCode;
-        newFaultList.push({ ...e,
-          startTime: e.startTime?moment(e.startTime).format('YYYY-MM-DD HH:mm'): null,
-          endTime: e.endTime?moment(e.endTime).format('YYYY-MM-DD HH:mm'): null,
-        }) 
-      })
-      limitList.forEach(e=>{
-        e.id>0 && newLimitList.push({id: e.id});
         delete e.handle;
-        delete e.id;
         delete e.reportDate;
-        delete e.stationCode;
-        newLimitList.push({
+        return { 
           ...e,
           startTime: e.startTime?moment(e.startTime).format('YYYY-MM-DD HH:mm'): null,
           endTime: e.endTime?moment(e.endTime).format('YYYY-MM-DD HH:mm'): null,
-        })
-      });
+        };
+      }): [];
+      const newLimitList = limitList?limitList.map(e=>{
+        if(e.rememberRemove && e.id > 0 ){ // 删除的数据是后台传过来的限电=>单独通知后台删除某条(id)数据
+          return {id: e.id};
+        }
+        e.id > 0? null: delete e.id;
+        delete e.handle;
+        delete e.handle;
+        delete e.reportDate;
+        return {
+          ...e,
+          startTime: e.startTime?moment(e.startTime).format('YYYY-MM-DD HH:mm'): null,
+          endTime: e.endTime?moment(e.endTime).format('YYYY-MM-DD HH:mm'): null,
+        };
+      }): [];
       const reportInfo = {
         stationCode: updateDayReportDetail.stationCode,
         reportDate: moment(updateDayReportDetail.reportDate).format('YYYY-MM-DD'),
@@ -281,6 +285,7 @@ class ReportEdit extends Component {
                 endTime: e.endTime?moment(e.endTime):null
               })
             )}
+            rememberRemove={true}
             changeFaultList={this.faultListInfoChange} 
           />
         </div>: null}
@@ -304,6 +309,7 @@ class ReportEdit extends Component {
                 endTime: e.endTime?moment(e.endTime):null,
               })
             )}
+            rememberRemove={true}
             changeLimitList={this.limitListInfoChange}
           />
         </div>:null}
