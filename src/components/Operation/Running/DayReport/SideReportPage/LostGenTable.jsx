@@ -38,11 +38,11 @@ class LostGenTable extends Component {
         title: '发生时间',
         dataIndex: 'startTime',
         render : (text, record) => {
+          console.log(record)
           return record.typeSource === 0?<span>
             {moment(record.startTime).format('YYYY-MM-DD HH:mm')}
           </span>:<Form.Item>
             {getFieldDecorator(`${record.id}_startTime`, {
-              rules: [{ required: true, message: '开始时间' }],
               initialValue: record.startTime,
             })(
               <DatePicker placeholder="开始时间" showTime={true} format="YYYY-MM-DD HH:mm"  />
@@ -53,9 +53,9 @@ class LostGenTable extends Component {
         title: '结束时间',
         dataIndex: 'endTime',
         render : (text, record) => {
+          console.log(record)
           return (<Form.Item>
             {getFieldDecorator(`${record.id}_endTime`, {
-              rules: [{ required: true, message: '结束时间' }],
               initialValue: record.endTime,
             })(
               <DatePicker placeholder="结束时间" showTime={true} format="YYYY-MM-DD hh:mm"  />
@@ -68,7 +68,6 @@ class LostGenTable extends Component {
         render : (text, record) => {
           return (<Form.Item>
             {getFieldDecorator(`${record.id}_process`, {
-              rules: [{ required: true, message: '处理进展及问题' }],
               initialValue: record.process,
             })(
               <Input placeholder="处理进展" />
@@ -81,7 +80,6 @@ class LostGenTable extends Component {
         render : (text, record) => {
           return (<Form.Item>
             {getFieldDecorator(`${record.id}_lostPower`, {
-              rules: [{ required: true, message: '日损失电量' }],
               initialValue: record.lostPower,
             })(
               <Input placeholder="日损失电量"  className={styles.lostPower} />

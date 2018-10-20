@@ -170,24 +170,26 @@ class ReportEdit extends Component {
     if(errorText){ // 数据错误存在，提示
       this.messageWarning(errorText);
     }else{ // 无错误，提交信息。
-      const newFaultList = faultList?faultList.map(e=>{
+      let newFaultList = [], newLimitList = [];
+      faultList.forEach(e=>{
+        e.id>0 && newFaultList.push({id: e.id});
         delete e.handle;
-        e.id > 0? null: delete e.id;
-        return { 
+        delete e.id;
+        newFaultList.push({ ...e,
+          startTime: e.startTime?moment(e.startTime).format('YYYY-MM-DD HH:mm'): null,
+          endTime: e.endTime?moment(e.endTime).format('YYYY-MM-DD HH:mm'): null,
+        }) 
+      })
+      limitList.forEach(e=>{
+        e.id>0 && newLimitList.push({id: e.id});
+        delete e.handle;
+        delete e.id
+        newLimitList.push({
           ...e,
           startTime: e.startTime?moment(e.startTime).format('YYYY-MM-DD HH:mm'): null,
           endTime: e.endTime?moment(e.endTime).format('YYYY-MM-DD HH:mm'): null,
-        };
-      }): [];
-      const newLimitList = limitList?limitList.map(e=>{
-        delete e.handle;
-        e.id > 0? null: delete e.id;
-        return {
-          ...e,
-          startTime: e.startTime?moment(e.startTime).format('YYYY-MM-DD HH:mm'): null,
-          endTime: e.endTime?moment(e.endTime).format('YYYY-MM-DD HH:mm'): null,
-        };
-      }): [];
+        })
+      });
       const reportInfo = {
         stationCode: updateDayReportDetail.stationCode,
         reportDate: moment(updateDayReportDetail.reportDate).format('YYYY-MM-DD'),
@@ -195,12 +197,16 @@ class ReportEdit extends Component {
         realCapacity: updateDayReportDetail.realCapacity,
         machineCount: updateDayReportDetail.machineCount,
         resourceValue: updateDayReportDetail.resourceValue,
+        yearGenInverter: updateDayReportDetail.yearGenInverter,
+        yearGenIntegrated: updateDayReportDetail.yearGenIntegrated,
+        yearGenInternet: updateDayReportDetail.yearGenInternet,
         genInternet: updateDayReportDetail.genInternet,
         genInverter: updateDayReportDetail.genInverter,
         genIntegrated: updateDayReportDetail.genIntegrated,
         equivalentHours: updateDayReportDetail.equivalentHours,
         modelInverterCapacity: updateDayReportDetail.modelInverterCapacity,
         modelInverterPowerGen: updateDayReportDetail.modelInverterPowerGen,
+        dailyBuyPower: updateDayReportDetail.dailyBuyPower,
         buyPower: updateDayReportDetail.buyPower,
         errorInfo: updateDayReportDetail.errorInfo,
         faultList: newFaultList,
@@ -244,6 +250,7 @@ class ReportEdit extends Component {
     const { updateDayReportDetail, addLostFormShow, addLimitFormShow, abnormalTextShow, showBackWarningTip, warningTipText } = this.state;
     const { findDeviceExist, deviceExistInfo, dayReportConfig, lostGenTypes } = this.props;
     const {faultList, limitList, stationCode, errorInfo} = updateDayReportDetail;
+    console.log(updateDayReportDetail)
     return (
       <div className={styles.reportEdit} >
         <div className={styles.reportDetailTitle} >
@@ -265,7 +272,10 @@ class ReportEdit extends Component {
         {faultList.length > 0?<div className={styles.lostGenTableBox} >
           <LostGenTable 
             faultGenList={faultList.map(
-              e=>({...e,startTime: moment(e.startTime), endTime: moment(e.endTime)})
+              e=>({...e,
+                startTime: e.startTime?moment(e.startTime):null, 
+                endTime: e.endTime?moment(e.endTime):null
+              })
             )}
             changeFaultList={this.faultListInfoChange} 
           />
@@ -285,7 +295,10 @@ class ReportEdit extends Component {
         {limitList.length > 0 ?<div className={styles.lostGenTableBox} >
           <LimitGenTable 
             limitGenList={limitList.map(
-              e=>({...e,startTime: moment(e.startTime), endTime: moment(e.endTime)})
+              e=>({...e,
+                startTime: e.startTime?moment(e.startTime): null, 
+                endTime: e.endTime?moment(e.endTime):null,
+              })
             )}
             changeLimitList={this.limitListInfoChange}
           />

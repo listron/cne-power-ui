@@ -43,7 +43,6 @@ class LimitGenTable extends Component {
         render : (text, record) => {
           return (<Form.Item>
             {getFieldDecorator(`${record.id}_startTime`, {
-              rules: [{ required: true, message: '开始时间' }],
               initialValue: record.startTime,
             })(
               <DatePicker placeholder="开始时间" showTime={true} format="YYYY-MM-DD HH:mm"  />
@@ -56,7 +55,6 @@ class LimitGenTable extends Component {
         render : (text, record) => {
           return (<Form.Item>
             {getFieldDecorator(`${record.id}_endTime`, {
-              rules: [{ required: true, message: '结束时间' }],
               initialValue: record.endTime,
             })(
               <DatePicker placeholder="结束时间" />
@@ -69,7 +67,6 @@ class LimitGenTable extends Component {
         render : (text, record) => {
           return (<Form.Item>
             {getFieldDecorator(`${record.id}_lostPower`, {
-              rules: [{ required: true, message: '日损失电量' }],
               initialValue: record.lostPower,
             })(
               <Input placeholder="日损失电量"  className={styles.lostPower} />
