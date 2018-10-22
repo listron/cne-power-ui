@@ -137,6 +137,9 @@ class PlanTable extends Component {
     changePlanStore: PropTypes.func,
     pageNum: PropTypes.number,
     pageSize: PropTypes.number,
+    stationCodes: PropTypes.number,
+    sortField:PropTypes.string,
+    sort:PropTypes.string,
   };
 
   constructor(props) {
@@ -169,22 +172,26 @@ class PlanTable extends Component {
       pageNum: currentPage,
       pageSize
     })
-  }
+  };
 
 
   tableChange = (pagination, filter, sorter) => {//计划排序 排序还有误
     const sortField = getDefectSortField(sorter.field);
     const ascend = sorter.order === 'ascend' ? '0' : '1' || '';
-    console.log("计划排序", pagination, sortField, ascend);
-    this.props.getPlanList({
-      year: this.props.planYear, // 年份 默认是当前年
-      stationCodes: this.props.stationCodes, // 电站编码
-      sortField, // 1:区域 2：电站名称 3:装机容量 4:年份 5: 年计划发电量
-      sortMethod: ascend, //排序 => 'field,0/1'field代表排序字段，0升序,1降序
-      pageNum: this.props.pageNum,
-      pageSize: this.props.pageSize
-    })
-  }
+    // console.log("计划排序", pagination, sortField, ascend);
+    if(sortField==='4'){
+      return false
+    }else{
+      this.props.getPlanList({
+        year: this.props.planYear, // 年份 默认是当前年
+        stationCodes: this.props.stationCodes, // 电站编码
+        sortField, // 1:区域 2：电站名称 3:装机容量 4:年份 5: 年计划发电量
+        sortMethod: ascend, //排序 => 'field,0/1'field代表排序字段，0升序,1降序
+        pageNum: this.props.pageNum,
+        pageSize: this.props.pageSize
+      })
+    }
+  };
 
 
   // 是否可以编辑
@@ -374,21 +381,23 @@ class PlanTable extends Component {
       }];
     MonthColumn.unshift(5, 0);
     Array.prototype.splice.apply(columns, MonthColumn);
-    const columnList = columns.map((col) => {
+    let columnList = columns.map((col) => {
       if (!col.editable) {
         return col;
       }
       return {
         ...col,
-        onCell: record => ({
-          record,
-          dataIndex: col.dataIndex,
-          // title: col.title,
-          editing: this.isEditing(record),
-        }),
+        onCell: record =>{
+          return ({
+            record,
+            dataIndex: col.dataIndex,
+            title: record[col.dataIndex],
+            editing: this.isEditing(record),
+          })
+        }
       };
     });
-    return columnList
+    return columnList;
   };
 
   _dealTableData = (planData) => { //将12个月的数据分开
