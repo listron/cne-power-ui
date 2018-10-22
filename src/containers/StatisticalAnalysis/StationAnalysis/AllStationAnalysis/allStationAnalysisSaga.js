@@ -17,7 +17,7 @@ function* getAllStationAvalibaData(action) {//综合指标年月判断
     try{
       yield put({ type:allStationAnalysisAction.ALLSTATIONDATA_FETCH });
       const response = yield call(axios.post,url,payload);
-      console.log(response.data.data);
+      console.log(response.data.data,'有数据的年或者月');
       if(response.data.code === '10000') {
         yield put({
           type: allStationAnalysisAction.GET_ALLSTATIONDATA_FETCH_SUCCESS,
@@ -32,16 +32,17 @@ function* getAllStationAvalibaData(action) {//综合指标年月判断
 }
 function* getAllStationStatisticData(action) {//月/年多电站计划完成、
   const { payload } = action;
-    //const url = '';
+    const url = '/mock/api/v3/performance/comprehensive/plans';
     //const url= `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getAllStationStatistic}`
     try{
       yield put({ type:allStationAnalysisAction.ALLSTATIONDATA_FETCH });
       const response = yield call(axios.post,url,payload);
+      console.log(response.data.data,'计划完成情况');
       if(response.data.code === '10000') {
         yield put({
           type: allStationAnalysisAction.GET_ALLSTATIONDATA_FETCH_SUCCESS,
           payload: {
-            AllStationStatisticData: response.data.data,          
+            AllStationStatisticData: response.data.data||{},          
           },
         });     
       }  
@@ -51,16 +52,27 @@ function* getAllStationStatisticData(action) {//月/年多电站计划完成、
 }
 function* getAllStationStatisticTableData(action) {//月/年多电站table数据、
   const { payload } = action;
-    //const url = '';
+    const url = '/mock/api/v3/performance/comprehensive/statistics';
     //const url= `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getAllStationStatisticTable}`
     try{
       yield put({ type:allStationAnalysisAction.ALLSTATIONDATA_FETCH });
       const response = yield call(axios.post,url,payload);
+      console.log(response.data.data,'电站发电量的table表格');
+      const totalNum = response.data.data.pageCount||0;
+      let { pageNum, pageSize } = payload;
+      const maxPage = Math.ceil(totalNum / pageSize);
+      if(totalNum === 0){ // 总数为0时，展示0页
+        pageNum = 0;
+      }else if(maxPage < pageNum){ // 当前页已超出
+        pageNum = maxPage;
+      }
       if(response.data.code === '10000') {
         yield put({
           type: allStationAnalysisAction.GET_ALLSTATIONDATA_FETCH_SUCCESS,
           payload: {
-            AllStationStatisticTableData: response.data.data,          
+            AllStationStatisticTableData: response.data.data.statisticsList||[], 
+            totalNum,
+            pageNum,
           },
         });     
       }  

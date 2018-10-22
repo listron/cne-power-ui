@@ -2,58 +2,129 @@ import React from "react";
 import PropTypes from "prop-types";
 import styles from './stationStatisticList.scss';
 import Pagination from '../../../../components/Common/CommonPagination/index';
-import {  Table,  Radio } from "antd";
+import { Table, Radio } from "antd";
 import moment from 'moment';
+import { getCookie } from '../../../../utils/index.js';
 
 
 class StationStatisticList extends React.Component {
   static propTypes = {
     AllStationAvalibaData: PropTypes.array,
     dateType: PropTypes.string,
+    sortType: PropTypes.string,
+    AllStationStatisticTableData: PropTypes.array,
+    getAllStationStatisticTableData: PropTypes.func,
+    changeAllStationStore: PropTypes.func,
+    pageNum: PropTypes.number,
+    pageSize: PropTypes.number,
+    totalNum: PropTypes.number,
   }
   constructor(props, context) {
-    super(props, context)
+    super(props, context),
+    this.state={
+      // month:0,
+      // year:0
+    }
   }
-  
+ 
+  onPaginationChange = ({pageSize, currentPage}) => { // 分页器操作
+    const { getAllStationStatisticTableData, dateType, pageNum, sortType ,month} = this.props;
+    const userId = getCookie('userId');
+   
+    getAllStationStatisticTableData({
+      userId: userId,
+      year: year,
+      dateType,
+      pageSize,
+      sortType,
+      sort: '计划完成率',
+      month: month,
+      pageNum: currentPage,
+    })
+  }
+  handleTime = (e) => {
+    const changeMonth = Number(e.target.value);
+    console.log(changeMonth);
+    // this.setState({
+    //   month:changeMonth
+    // })
+    const { changeAllStationStore,getAllStationStatisticTableData, dateType, pageNum, pageSize, sortType,year } = this.props;
+    const curYear = Number(moment().format('YYYY'));
+    const userId = getCookie('userId');
+    changeAllStationStore({month:changeMonth})
+    getAllStationStatisticTableData(
+      {
+        userId: userId,
+        year: year,
+        dateType,
+        month: changeMonth,//
+        pageNum, // 当前页
+        pageSize, // 每页条数
+        sortType,
+        sort: '计划完成率'
+
+      }
+    )
+
+  }
+  handleYearTime = (e) => {
+    const changeYear = Number(e.target.value);
+    console.log(changeYear);
+    const { getAllStationStatisticTableData, dateType, pageNum, pageSize, sortType } = this.props;
+    const curYear = Number(moment().format('YYYY'));
+    const userId = getCookie('userId');
+    // this.props.changeAllStationStore()
+    getAllStationStatisticTableData(
+      {
+        userId: userId,
+        year: changeYear,
+        dateType,
+        pageNum, // 当前页
+        pageSize, // 每页条数
+        sortType,
+        sort: '计划完成率'
+
+      }
+    )
+
+  }
+
   selectTime() {
-    const {AllStationAvalibaData,}=this.props; 
-    const currentMonth=moment().format('MM');
+    const { AllStationAvalibaData, } = this.props;
+    const currentMonth = moment().format('MM');
     return (
-      <Radio.Group defaultValue={currentMonth}  buttonStyle="solid">
-       {AllStationAvalibaData.map((e,index)=>{        
-         if(e.isTrue==='1'){
-          return   <Radio.Button value={e.year} key={index}  style={{margin:'0 5px'}}>{e.year}月</Radio.Button>
-         }else{
-          return   <Radio.Button value={e.year} key={index} disabled style={{margin:'0 5px'}}>{e.year}月</Radio.Button>
-         }      
-       }      
-       )}        
+      <Radio.Group defaultValue={currentMonth} buttonStyle="solid" onChange={this.handleTime}>
+        {AllStationAvalibaData.map((e, index) => {
+          if (e.isTrue === '1') {
+            return <Radio.Button value={e.year} key={index} style={{ margin: '0 5px' }}>{e.year}月</Radio.Button>
+          } else {
+            return <Radio.Button value={e.year} key={index} disabled style={{ margin: '0 5px' }}>{e.year}月</Radio.Button>
+          }
+        }
+        )}
       </Radio.Group>
-    ) 
+    )
   }
   selectYear() {
-    const {AllStationAvalibaData}=this.props;
-    const currentYear=moment().format('YYYY');
-    console.log(currentYear); 
+    const { AllStationAvalibaData } = this.props;
+    const currentYear = moment().format('YYYY');
+    console.log(currentYear);
     return (
-      <Radio.Group defaultValue={currentYear}  buttonStyle="solid">
-       {AllStationAvalibaData.map((e,index)=>{        
-         if(e.isTrue==='1'){
-          return   <Radio.Button value={e.year} key={index}  style={{margin:'0 5px'}}>{e.year}年</Radio.Button>
-         }else{
-          return   <Radio.Button value={e.year} key={index} disabled style={{margin:'0 5px'}}>{e.year}年</Radio.Button>
-         }      
-       }      
-       )}        
+      <Radio.Group defaultValue={currentYear} buttonStyle="solid" onChange={this.handleYearTime}>
+        {AllStationAvalibaData.map((e, index) => {
+          if (e.isTrue === '1') {
+            return <Radio.Button value={e.year} key={index} style={{ margin: '0 5px' }}>{e.year}年</Radio.Button>
+          } else {
+            return <Radio.Button value={e.year} key={index} disabled style={{ margin: '0 5px' }}>{e.year}年</Radio.Button>
+          }
+        }
+        )}
       </Radio.Group>
-    )  
+    )
   }
-  
 
-
-
-  //table表
-  initColumn = () => {
+  //月table表
+  initMonthColumn = () => {
     const columns = [
       {
         title: "电站名称",
@@ -62,79 +133,162 @@ class StationStatisticList extends React.Component {
         onFilter: (value, record) => record.stationName.indexOf(value) === 0,
         sorter: true,
         render: (value, record, index) => {
-          if (record.currentStation !== '900') {
-            return {
-              children: (
-                <a href={`#/monitor/singleStation/${record.key}`}>
-                  <div title={record.stationName} className={styles.stationName}>{record.stationName}</div>
-                </a>
-              )
-            }
-          } else {
-            return <div title={record.stationName} className={styles.stationName} onClick={record.currentStation === '900' ? this.showTip : null}>{record.stationName}</div>
+          return {
+            children: (
+              <a href={`#/statistical/stationaccount/allstation/${record.key}`}>
+                <div title={record.stationName} className={styles.stationName}>{record.stationName}</div>
+              </a>
+            )
           }
         }
+
       },
       {
         title: "区域",
-        dataIndex: "stationrovince",
+        dataIndex: "region",
         sorter: true,
         render: (value, record, index) => {
           return {
             children: (
-              <div className={styles.stationrovince}>{record.stationrovince}</div>
+              <div className={styles.region}>{record.region}</div>
             )
           }
         }
       }, {
         title: "月计划发电量(万kWh)",
-        dataIndex: "monthOutput",
+        dataIndex: "planGen",
         sorter: true,
       },
       {
         title: "月实际发电量(万kWh)",
-        dataIndex: "yearOutput",
+        dataIndex: "genValid",
         sorter: true,
       },
       {
         title: "计划完成率",
-        dataIndex: "stationPower",
+        dataIndex: "planGenRate",
         sorter: true,
       },
       {
-        title: "发电量环比",
-        dataIndex: "stationCapacity",
+        title: "发电量同比",
+        dataIndex: "powerRate",
         sorter: true,
 
       },
       {
         title: "辐值总量(MJ/m²)",
-        dataIndex: "windSpeed",
+        dataIndex: "resourceValue",
+        sorter: true,
+      },
+
+      {
+        title: "资源同比",
+        dataIndex: "resourceRate",
+        sorter: true,
+      },
+      {
+        title: "等效利用小时数 (h)",
+        dataIndex: "equivalentHours",
+        sorter: true,
+      },
+      {
+        title: "PR",
+        dataIndex: "pr",
+        sorter: true,
+      }, {
+        title: "损失电量(万kWh)",
+        dataIndex: "lostPower",
+        sorter: true,
+      },
+      {
+        title: "损失电量等效时",
+        dataIndex: "limitPowerHours",
+        sorter: true,
+
+      }
+    ];
+    return columns
+  }
+  //年table表
+  initYearColumn = () => {
+    const columns = [
+      {
+        title: "电站名称",
+        dataIndex: "stationName",
+
+        onFilter: (value, record) => record.stationName.indexOf(value) === 0,
+        sorter: true,
+        render: (value, record, index) => {
+          return {
+            children: (
+              <a href={`#/statistical/stationaccount/allstation/${record.key}`}>
+                <div title={record.stationName} className={styles.stationName}>{record.stationName}</div>
+              </a>
+            )
+          }
+        }
+
+      },
+      {
+        title: "区域",
+        dataIndex: "region",
+        sorter: true,
+        render: (value, record, index) => {
+          return {
+            children: (
+              <div className={styles.region}>{record.region}</div>
+            )
+          }
+        }
+      }, {
+        title: "年计划发电量(万kWh)",
+        dataIndex: "planGen",
+        sorter: true,
+      },
+      {
+        title: "年实际发电量(万kWh)",
+        dataIndex: "genValid",
+        sorter: true,
+      },
+      {
+        title: "计划完成率",
+        dataIndex: "planGenRate",
+        sorter: true,
+      },
+      {
+        title: "发电量环比",
+        dataIndex: "powerRate",
+        sorter: true,
+
+      },
+      {
+        title: "辐值总量(MJ/m²)",
+        dataIndex: "resourceValue",
         sorter: true,
       },
 
       {
         title: "资源环比",
-        dataIndex: "planOutput",
+        dataIndex: "resourceRate",
         sorter: true,
       },
       {
         title: "等效利用小时数 (h)",
-        dataIndex: "equipmentNum",
+        dataIndex: "equivalentHours",
         sorter: true,
       },
       {
         title: "PR",
-        dataIndex: "alarmNum",
+        dataIndex: "pr",
         sorter: true,
       }, {
         title: "损失电量(万kWh)",
-        dataIndex: "dayOutput",
+        dataIndex: "lostPower",
         sorter: true,
       },
       {
         title: "损失电量等效时",
-        dataIndex: "currentStation",
+        dataIndex: "limitPowerHours",
         sorter: true,
 
       }
@@ -143,22 +297,23 @@ class StationStatisticList extends React.Component {
   }
 
   render() {
-    const {dateType,AllStationAvalibaData}=this.props;
-    console.log(AllStationAvalibaData);
-    const columns = this.initColumn();
+    const { dateType, AllStationStatisticTableData,totalNum,pageSize ,pageNum} = this.props;
+    console.log(AllStationStatisticTableData);
+    const columns = dateType === 'month' ? this.initMonthColumn() : this.initYearColumn();
     return (
       <div className={styles.stationStatisticList}>
         <div className={styles.stationStatisticFilter}>
           <div className={styles.leftTime}>
             <div>综合指标统计表</div>
-            {dateType==='month'?this.selectTime():''}
-            {dateType==='year'?this.selectYear():''}
-           
+            {dateType === 'month' ? this.selectTime() : ''}
+            {dateType === 'year' ? this.selectYear() : ''}
+
           </div>
-          <Pagination />
+           
+          <Pagination total={totalNum} currentPage={pageNum} pageSize={pageSize} onPaginationChange={this.onPaginationChange} />
         </div>
         <div>
-          <Table columns={columns} dataSource={[]} onChange={this.ontableSort} pagination={false} />
+          <Table columns={columns} dataSource={AllStationStatisticTableData.map((e, i) => ({ ...e, key: i }))} onChange={this.ontableSort} pagination={false} />
         </div>
 
 

@@ -9,12 +9,13 @@ module.exports = [{
     "message": "请求成功",
     "data": 
       [
-        {"year":'2014',isTrue:'0'},
-        {"year":'10',isTrue:'1'},
+        {"year":'2014',isTrue:'0'},      
         {"year":'2015',isTrue:'1'},
         {"year":'2016',isTrue:'0'},
         {"year":'2017',isTrue:'1'},
-        {"year":'2018',isTrue:'1'},],
+        {"year":'2018',isTrue:'1'},
+        {"year":'10',isTrue:'1'},
+      ],
    
     "serviceCode": "3.0"
   },
@@ -42,7 +43,7 @@ module.exports = [{
           lostPowerRate: '3', 
           completeRate: '4'
         }],
-        "statisticsList": [1, 2, 3, 4],
+       
       },
       "serviceCode": "3.0"
     },
@@ -55,8 +56,27 @@ module.exports = [{
       "code": "10000",
       "message": "请求成功",
       "data": {
-        statisticsList: [],
-        PageNum: 6
+        statisticsList: [1,2,3,4,5,6,7,8,9,10,11].map((e,i)=>({
+          
+            yearOrMonth:`${e}`,
+            stationCode:`${e}`,
+            stationName:`洱源${e}`,
+            region:`${e}`,
+            planGen:`${e}`,
+            genValid:`${e}`,
+            planGenRate:`${e}`,
+            powerRate:`${e}`,
+            resourceValue:`${e}`,
+            resourceRate:`${e}`,
+            equivalentHours:`${e}`,
+            pr:`${e}`,
+            lostPower:`${e}`,
+            limitPowerHours:`${e}`,
+  
+  
+        
+        })),
+        pageCount: 11
       },
       "serviceCode": "3.0"
     },
