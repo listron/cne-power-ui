@@ -16,8 +16,10 @@ class AllStationStatistic extends React.Component {
   static propTypes = {
     stations: PropTypes.object,
 
+    userId: PropTypes.string,
     stationType: PropTypes.string,
     sortType: PropTypes.string,
+    sort: PropTypes.string,
     stationCode: PropTypes.array,
     AllStationAvalibaData: PropTypes.array,
     AllStationStatisticData: PropTypes.object,
@@ -30,6 +32,8 @@ class AllStationStatistic extends React.Component {
     getAllStationAvalibaData: PropTypes.func,
     getAllStationStatisticData: PropTypes.func,
     getAllStationStatisticTableData: PropTypes.func,
+    getAllStationMonthBarData: PropTypes.func,
+    getAllStationMonthPieData: PropTypes.func,
   }
   constructor(props) {
     super(props);
@@ -38,14 +42,15 @@ class AllStationStatistic extends React.Component {
     };
   }
   componentDidMount() {
-    const { getAllStationAvalibaData, getAllStationStatisticData, getAllStationStatisticTableData, year, sortType, dateType, pageNum, pageSize } = this.props;
+    const { getAllStationAvalibaData,changeAllStationStore, getAllStationStatisticData, getAllStationStatisticTableData,getAllStationMonthBarData,getAllStationMonthPieData, year, sortType, dateType, pageNum, pageSize,sort } = this.props;
     const currentYear = moment().format('YYYY');
     const curYear = Number(moment().format('YYYY'));
-
+   
     const currentMonth = Number(moment().format('MM'));
     let time = year ? year : [`${currentYear}`];
     console.log(time);
     const userId = getCookie('userId');
+    changeAllStationStore({year:[`${currentYear}`],month:currentMonth})
     getAllStationAvalibaData(
       {
         userId: userId,
@@ -56,29 +61,40 @@ class AllStationStatistic extends React.Component {
     getAllStationStatisticData(
       {
         userId: userId,
-        year: time,
+        year: curYear,
         dateType,
       }
     )
     getAllStationStatisticTableData(
       {
-        userId: userId,
+        
         year: curYear,
         dateType,
         month: currentMonth,//默认当前月
         pageNum, // 当前页
         pageSize, // 每页条数
         sortType,
-        sort: '计划完成率'
+        sort,
 
       }
     )
+    getAllStationMonthBarData({
+      userId: userId,
+      year: time,
+      dateType,
+      dataType:'EqpGen'
+
+    })
+    getAllStationMonthPieData({
+      userId: userId,
+      year: curYear,
+      dataType:'EqpGen'
+    })
 
   }
   componentWillReceiveProps(nextProps) {
-    const { getAllStationAvalibaData, year, dateType } = this.props;
-    const userId = getCookie('userId');
-    const currentYear = moment().format('YYYY');
+    const { getAllStationAvalibaData,getAllStationMonthBarData, year, dateType ,userId} = this.props;
+    const currentYear = [moment().format('YYYY')];
     const selectYear = [Number(moment().subtract(5, 'year').format('YYYY')), Number(moment().format('YYYY'))];
     let rangeYear = [];
     for (let i = selectYear[0]; i < selectYear[1]+1; i++) {
@@ -106,6 +122,14 @@ class AllStationStatistic extends React.Component {
           year: rangeYear,
           dateType: nextProps.dateType,
         })
+        getAllStationMonthBarData({
+          userId,
+          year:rangeYear,
+          dateType:nextProps.dateType,
+          dataType:'EqpGen'
+
+        })
+
     }
     //年->月
     if (dateType !== nextProps.dateType && nextProps.dateType === 'month') {
@@ -140,7 +164,8 @@ class AllStationStatistic extends React.Component {
 
   showStationSelect = () => {
     this.setState({
-      showStationSelect: true
+      showStationSelect: true,
+     
     });
   }
 

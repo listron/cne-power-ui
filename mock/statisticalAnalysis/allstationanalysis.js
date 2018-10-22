@@ -83,31 +83,37 @@ module.exports = [{
     delay: 1000,
     error: {}
   }, {
-    api: '/mock/api/v3/performance/comprehensive/chart/month/{userId}/{year}/{dataType}',
-    method: 'get',
+    api: '/mock/api/v3/performance/comprehensive/chart/monthOrYear',
+    method: 'post',
     response: {
       "code": "10000",
       "message": "请求成功",
-      "data": [{
-        thatYearData: '新能源崛起！',
-        lastYearData: '2',
-        yearOnYear: '孙思邈',
-        month: 15214449995,
-      }],
+      "data": [1,2,3,4,5,6,7,8,9,10,11,12].map((e,i)=>({
+        
+          thatYearData: `${e+1}00`,
+          lastYearData: `${e}00`,
+          yearOnYear: `${e}%`,
+          month: `${e}月`,
+        
+      })),
 
       "serviceCode": "3.0"
     },
     delay: 1000,
     error: {}
   }, {
-    api: '/mock/api/v3/performance/comprehensive/piecharts/month/{userId}/{year}',
+    api: '/mock/api/v3/performance/comprehensive/piecharts/month/userId/year',
     method: 'get',
     response: {
       "code": "10000",
       "message": "请求成功",
       "data": {
-        monthPowerData: [],
-        planRate: '2',
+        monthPowerData: [1,2,3,4,5,6,7,8,9,10,11,12].map((e,i)=>({      
+          monthPower: `${e}0`,
+          monthPalnRate: `${e}%`,       
+          month: `${e}月`,       
+      })),
+        planRate: '20',
 
       },
 

@@ -13,9 +13,13 @@ class TargetStatisticPieGraph extends React.Component {
   componentDidMount() {
     this.drawChart(this.props);
   }
+  componentWillReceiveProps(nextProps) {
+    this.drawChart(nextProps);
+  }
 
   drawChart = (param) => {
-    const {pieGraphId} = param;
+    const {pieGraphId,pieData ,pieComplete} = param;
+    console.log(pieData,pieComplete);
     const targetPieChart = echarts.init(document.getElementById(pieGraphId));
     targetPieChart.resize();
     targetPieChart.clear();
@@ -47,18 +51,19 @@ class TargetStatisticPieGraph extends React.Component {
           label: {
             show:false,
             position: 'inner',
-            // formatter: '{b}: {d}',
+            //formatter: '{b}: {d}',
           },
           labelLine: {
             normal: {
               show: false
             }
           },
-          data: [
-            {value: 679, name: '已完成'},
-            {value: 335, name: '未完成',},
+          // data: [
+          //   {value: 679, name: '已完成'},
+          //   {value: 335, name: '未完成',},
 
-          ]
+          // ]
+          data:pieComplete
         },
         {
           name: '发电量',
@@ -74,20 +79,21 @@ class TargetStatisticPieGraph extends React.Component {
               show: false
             }
           },
-          data: [
-            {value: 335, name: '1月'},
-            {value: 310, name: '2月'},
-            {value: 234, name: '3月'},
-            {value: 135, name: '4月'},
-            {value: 1048, name: '5月'},
-            {value: 251, name: '6月'},
-            {value: 147, name: '7月'},
-            {value: 102, name: '8月'},
-            {value: 135, name: '9月'},
-            {value: 1048, name: '10月'},
-            {value: 251, name: '11月'},
-            {value: 234, name: '12月'},
-          ]
+          // data: [
+          //   {value: 335, name: '1月'},
+          //   {value: 310, name: '2月'},
+          //   {value: 234, name: '3月'},
+          //   {value: 135, name: '4月'},
+          //   {value: 1048, name: '5月'},
+          //   {value: 251, name: '6月'},
+          //   {value: 147, name: '7月'},
+          //   {value: 102, name: '8月'},
+          //   {value: 135, name: '9月'},
+          //   {value: 1048, name: '10月'},
+          //   {value: 251, name: '11月'},
+          //   {value: 234, name: '12月'},
+          // ]
+          data:pieData
         }
       ]
     };

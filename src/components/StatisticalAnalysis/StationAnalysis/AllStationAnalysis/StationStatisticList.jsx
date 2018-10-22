@@ -11,57 +11,95 @@ class StationStatisticList extends React.Component {
   static propTypes = {
     AllStationAvalibaData: PropTypes.array,
     dateType: PropTypes.string,
+    showPage: PropTypes.string,
     sortType: PropTypes.string,
+    sort: PropTypes.string,
     AllStationStatisticTableData: PropTypes.array,
     getAllStationStatisticTableData: PropTypes.func,
     changeAllStationStore: PropTypes.func,
     pageNum: PropTypes.number,
     pageSize: PropTypes.number,
     totalNum: PropTypes.number,
+    AllStationAvalibaData: PropTypes.array,
+
   }
   constructor(props, context) {
     super(props, context),
-    this.state={
-      // month:0,
-      // year:0
-    }
+      this.state = {
+        // month:0,
+        // year:0
+      }
   }
- 
-  onPaginationChange = ({pageSize, currentPage}) => { // 分页器操作
-    const { getAllStationStatisticTableData, dateType, pageNum, sortType ,month} = this.props;
-    const userId = getCookie('userId');
-   
+  ontableSort = (pagination, filter, sorter) => {
+
+    console.log(sorter);
+    const { getAllStationStatisticTableData, queryListParams, year, month, dateType, pageSize, pageNum } = this.props;
+    const curYear = Number(year);
+    //console.log(this.props);
+    const { field, order } = sorter;
+    const sortInfo = {
+      stationName: '电站名称',
+      region: '区域',
+      planGen: '计划发电量',
+      genValid: '实际发电量',
+      planGenRate: '计划完成率',
+      powerRate: '发电量同比',
+      resourceValue: '辐值总量',
+      resourceRate: '资源同比',
+      equivalentHours: '等效利用小时数',
+      pr: 'PR',
+      lostPower: '损失电量'
+    };
+    const sort = sortInfo[field] ? sortInfo[field] : '';
+    const sortType = order ? (sorter.order === 'descend' ? 'desc' : 'asc') : '';
     getAllStationStatisticTableData({
-      userId: userId,
-      year: year,
+      pageNum,
+      pageSize,
+      year:curYear,
+      month,
+      dateType,
+      sort,
+      sortType,
+    })
+
+  }
+
+  onPaginationChange = ({ pageSize, currentPage }) => { // 分页器操作
+    const { getAllStationStatisticTableData, dateType, sortType, month, year,sort } = this.props;
+    const curYear = Number(year);
+    this.props.changeAllStationStore({ pageNum: currentPage })
+    getAllStationStatisticTableData({
+      year: curYear,
       dateType,
       pageSize,
       sortType,
-      sort: '计划完成率',
+      sort,
       month: month,
       pageNum: currentPage,
     })
   }
   handleTime = (e) => {
     const changeMonth = Number(e.target.value);
-    console.log(changeMonth);
+   // console.log(changeMonth);
     // this.setState({
     //   month:changeMonth
     // })
-    const { changeAllStationStore,getAllStationStatisticTableData, dateType, pageNum, pageSize, sortType,year } = this.props;
-    const curYear = Number(moment().format('YYYY'));
+    const { changeAllStationStore, getAllStationStatisticTableData, dateType, pageNum, pageSize, sortType, year,sort } = this.props;
+    const curYear = Number(year);
+    
+   
     const userId = getCookie('userId');
-    changeAllStationStore({month:changeMonth})
+    changeAllStationStore({ month: changeMonth })
     getAllStationStatisticTableData(
       {
         userId: userId,
-        year: year,
+        year: curYear,
         dateType,
         month: changeMonth,//
         pageNum, // 当前页
         pageSize, // 每页条数
         sortType,
-        sort: '计划完成率'
+        sort,
 
       }
     )
@@ -69,20 +107,19 @@ class StationStatisticList extends React.Component {
   }
   handleYearTime = (e) => {
     const changeYear = Number(e.target.value);
-    console.log(changeYear);
-    const { getAllStationStatisticTableData, dateType, pageNum, pageSize, sortType } = this.props;
+    //console.log(changeYear);
+    const { getAllStationStatisticTableData, dateType, pageNum, pageSize, sortType, sort } = this.props;
     const curYear = Number(moment().format('YYYY'));
-    const userId = getCookie('userId');
+
     // this.props.changeAllStationStore()
     getAllStationStatisticTableData(
       {
-        userId: userId,
         year: changeYear,
         dateType,
         pageNum, // 当前页
         pageSize, // 每页条数
         sortType,
-        sort: '计划完成率'
+        sort,
 
       }
     )
@@ -108,7 +145,7 @@ class StationStatisticList extends React.Component {
   selectYear() {
     const { AllStationAvalibaData } = this.props;
     const currentYear = moment().format('YYYY');
-    console.log(currentYear);
+    //console.log(currentYear);
     return (
       <Radio.Group defaultValue={currentYear} buttonStyle="solid" onChange={this.handleYearTime}>
         {AllStationAvalibaData.map((e, index) => {
@@ -297,7 +334,7 @@ class StationStatisticList extends React.Component {
   }
 
   render() {
-    const { dateType, AllStationStatisticTableData,totalNum,pageSize ,pageNum} = this.props;
+    const { dateType, AllStationStatisticTableData, totalNum, pageSize, pageNum, showPage } = this.props;
     console.log(AllStationStatisticTableData);
     const columns = dateType === 'month' ? this.initMonthColumn() : this.initYearColumn();
     return (
@@ -306,10 +343,10 @@ class StationStatisticList extends React.Component {
           <div className={styles.leftTime}>
             <div>综合指标统计表</div>
             {dateType === 'month' ? this.selectTime() : ''}
-            {dateType === 'year' ? this.selectYear() : ''}
+            {dateType === 'year' && showPage === 'multiple' ? this.selectYear() : ''}
 
           </div>
-           
+
           <Pagination total={totalNum} currentPage={pageNum} pageSize={pageSize} onPaginationChange={this.onPaginationChange} />
         </div>
         <div>
