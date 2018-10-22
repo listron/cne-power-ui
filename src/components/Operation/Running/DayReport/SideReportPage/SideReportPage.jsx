@@ -37,10 +37,7 @@ class SideReportPage extends Component {
   }
 
   componentDidMount(){ // 默认日期禁选电站列表。
-    const { stationReportBaseData, showReportInputList, getReportUploadedStation } = this.props;
-    getReportUploadedStation({
-      reportDay: moment().subtract(1,'day').format('YYYY-MM-DD'),
-    })
+    const { stationReportBaseData, showReportInputList } = this.props;
     showReportInputList && this.setOriginState(stationReportBaseData);
   }
 

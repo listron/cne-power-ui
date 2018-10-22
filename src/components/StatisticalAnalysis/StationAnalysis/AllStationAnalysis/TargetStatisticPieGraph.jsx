@@ -1,35 +1,53 @@
 import React from "react";
 import echarts from 'echarts';
+import PropTypes from 'prop-types';
 
 class TargetStatisticPieGraph extends React.Component {
+  static propTypes = {
+    graphId: PropTypes.string,
+  };
   constructor(props, context) {
     super(props, context)
   }
-  componentDidMount() {
 
-    const { pieGraphId } = this.props;
+  componentDidMount() {
+    this.drawChart(this.props);
+  }
+
+  drawChart = (param) => {
+    const {pieGraphId} = param;
     const targetPieChart = echarts.init(document.getElementById(pieGraphId));
+    targetPieChart.resize();
+    targetPieChart.clear();
     const targetPieOption = {
       tooltip: {
         trigger: 'item',
-        formatter: "{a} <br/>{b}: {c} ({d}%)"
+        backgroundColor: '#fff',
+        formatter: function (params) {
+          if(params.seriesIndex===1){
+            return '<div style="border-bottom: 1px solid #ccc; font-size: 12px;padding-bottom: 7px;margin-bottom: 7px;width:180px;overflow:hidden;">'+params.name+'</div>'
+              + '月计划发电量' + '：' + params.value + '万kwh<br>'
+              + '年计划完成率' + '：' + params.percent + '%<br>'
+          }
+        },
+        padding: 10,
+        textStyle: {
+          color: 'rgba(0, 0, 0, 0.65)',
+          fontSize: 12,
+        },
+        // formatter: "{a} <br/>{b}: {c} ({d}%)"
       },
-      // legend: {
-      //     orient: 'vertical',
-      //     x: 'left',
-      //     data:['直达','营销广告','搜索引擎','邮件营销','联盟广告','视频广告','百度','谷歌','必应','其他']
-      // },
       series: [
         {
           name: '发电量',
           type: 'pie',
-          selectedMode: 'single',
+          color:['#199475','#eee'],
+          center: ['50%', '50%'],
           radius: [0, '30%'],
-
           label: {
-            normal: {
-              position: 'inner'
-            }
+            show:false,
+            position: 'inner',
+            // formatter: '{b}: {d}',
           },
           labelLine: {
             normal: {
@@ -37,14 +55,16 @@ class TargetStatisticPieGraph extends React.Component {
             }
           },
           data: [
-            { value: 335, name: '未完成', },
-            { value: 679, name: '已完成' },
+            {value: 679, name: '已完成'},
+            {value: 335, name: '未完成',},
 
           ]
         },
         {
           name: '发电量',
           type: 'pie',
+          color:['#a42b2c','#fbe6e3','#199475','#c7ceb2','#ceebe0','#f9b600'],
+          center: ['50%', '50%'],
           radius: ['40%', '55%'],
           label: {
             normal: {
@@ -55,32 +75,31 @@ class TargetStatisticPieGraph extends React.Component {
             }
           },
           data: [
-            { value: 335, name: '1月' },
-            { value: 310, name: '2月' },
-            { value: 234, name: '3月' },
-            { value: 135, name: '4月' },
-            { value: 1048, name: '5月' },
-            { value: 251, name: '6月' },
-            { value: 147, name: '7月' },
-            { value: 102, name: '8月' },
-            { value: 135, name: '9月' },
-            { value: 1048, name: '10月' },
-            { value: 251, name: '11月' },
-            { value: 234, name: '12月' },
+            {value: 335, name: '1月'},
+            {value: 310, name: '2月'},
+            {value: 234, name: '3月'},
+            {value: 135, name: '4月'},
+            {value: 1048, name: '5月'},
+            {value: 251, name: '6月'},
+            {value: 147, name: '7月'},
+            {value: 102, name: '8月'},
+            {value: 135, name: '9月'},
+            {value: 1048, name: '10月'},
+            {value: 251, name: '11月'},
+            {value: 234, name: '12月'},
           ]
         }
       ]
     };
-
     targetPieChart.setOption(targetPieOption);
+  };
 
-    targetPieChart.resize();
-  }
   render() {
-    const { pieGraphId } = this.props;
+    const {pieGraphId} = this.props;
     return (
-      <div id={pieGraphId} style={{ width: '30%', height: "300px", }}> </div>
+      <div id={pieGraphId} style={{width: '30%', height: "300px",}}></div>
     )
   }
 }
+
 export default (TargetStatisticPieGraph)

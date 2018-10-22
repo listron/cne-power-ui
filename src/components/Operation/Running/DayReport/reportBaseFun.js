@@ -39,8 +39,8 @@ export const reportEditFun = (stationType, powerUnit='kWh') => { // 电站编辑
       configText: stationType>0?'日斜面辐射总量':'日平均风速',
       configName: 'resourceValue'
     },{
-      configText: '购网电量',
-      configName: 'buyPower',
+      configText: '日购网电量',
+      configName: 'dailyBuyPower',
       pointLength: powerUnit==='kWh'?2:4
     },{
       configText: '样板逆变器容量',

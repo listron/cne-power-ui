@@ -144,7 +144,8 @@ export default {
       //  生产计划
       getPlanList:'/v3/performance/stationplanlist', //查看生产计划列表
       addPlanList:'/v3/performance/stationplan', //  添加生产计划
-      eddPlanList:'/v3/performance/stationplan' //  编辑生产计划
+      eddPlanList:'/v3/performance/stationplan', //  编辑生产计划
+      getYearList:'/v3/station/yearlist',// 生产计划的年份
     },
     monitor: {//实时监控
       getStationType:'/v3/monitor/stations/',

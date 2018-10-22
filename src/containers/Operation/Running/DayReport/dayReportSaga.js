@@ -233,7 +233,6 @@ function *dayReportDetail(action){ // 日报详情
 function *dayReportUpdate(action){ // 日报编辑
   const { payload } = action;
   const { stationCode, reportDate } = payload;
-  delete payload.stationCode, payload.reportDate;
   try{
     yield put({ type:dayReportAction.dayReportLoading });
     // const url = '/mock/operation/dayReport/update';

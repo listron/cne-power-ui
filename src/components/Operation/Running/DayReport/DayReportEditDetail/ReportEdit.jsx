@@ -31,10 +31,11 @@ class ReportEdit extends Component {
     this.state = {
       addLostFormShow: false,
       addLimitFormShow: false,
-      abnormalTextShow: false,
+      abnormalTextShow: props.selectedDayReportDetail.errorInfo?true:false,
       updateDayReportDetail: props.selectedDayReportDetail,
       showBackWarningTip: false,
       warningTipText: '',
+      errorInfo: props.selectedDayReportDetail.errorInfo,
     }
   }
 
@@ -95,15 +96,15 @@ class ReportEdit extends Component {
       const { faultList, limitList } = updateDayReportDetail;
       const faultShortInfo =  faultList.map(e=>{
         let { deviceName, startTime, endTime, reason, faultName } = e;
-        // startTime = startTime && startTime.format('YYYY-MM-DD');
-        // endTime = endTime && endTime.format('YYYY-MM-DD');
+        startTime = startTime && moment(startTime).format('YYYY-MM-DD');
+        endTime = endTime && moment(endTime).format('YYYY-MM-DD');
         const tmpTextArr = [deviceName, startTime, endTime, reason, faultName].filter(e=>e);
         return tmpTextArr.join('+');
       })
       const limitShortInfo = limitList.map(e=>{
         let { deviceName, startTime, endTime, reason, limitPower } = e;
-        // startTime = startTime && startTime.format('YYYY-MM-DD');
-        // endTime = endTime && endTime.format('YYYY-MM-DD');
+        startTime = startTime && moment(startTime).format('YYYY-MM-DD');
+        endTime = endTime && moment(endTime).format('YYYY-MM-DD');
         const tmpTextArr = [deviceName, startTime, endTime, reason, limitPower].filter(e=>e);
         return tmpTextArr.join('+');
       })
@@ -170,8 +171,13 @@ class ReportEdit extends Component {
       this.messageWarning(errorText);
     }else{ // 无错误，提交信息。
       const newFaultList = faultList?faultList.map(e=>{
-        delete e.handle;
+        if(e.rememberRemove && e.id > 0 ){//  删除的数据是后台传过来的故障损失=>单独通知后台删除某条(id)数据
+          return {id: e.id};
+        }
         e.id > 0? null: delete e.id;
+        delete e.stationCode;
+        delete e.handle;
+        delete e.reportDate;
         return { 
           ...e,
           startTime: e.startTime?moment(e.startTime).format('YYYY-MM-DD HH:mm'): null,
@@ -179,15 +185,19 @@ class ReportEdit extends Component {
         };
       }): [];
       const newLimitList = limitList?limitList.map(e=>{
-        delete e.handle;
+        if(e.rememberRemove && e.id > 0 ){ // 删除的数据是后台传过来的限电=>单独通知后台删除某条(id)数据
+          return {id: e.id};
+        }
         e.id > 0? null: delete e.id;
+        delete e.handle;
+        delete e.handle;
+        delete e.reportDate;
         return {
           ...e,
           startTime: e.startTime?moment(e.startTime).format('YYYY-MM-DD HH:mm'): null,
           endTime: e.endTime?moment(e.endTime).format('YYYY-MM-DD HH:mm'): null,
         };
       }): [];
-      console.log(updateDayReportDetail)
       const reportInfo = {
         stationCode: updateDayReportDetail.stationCode,
         reportDate: moment(updateDayReportDetail.reportDate).format('YYYY-MM-DD'),
@@ -195,12 +205,16 @@ class ReportEdit extends Component {
         realCapacity: updateDayReportDetail.realCapacity,
         machineCount: updateDayReportDetail.machineCount,
         resourceValue: updateDayReportDetail.resourceValue,
+        yearGenInverter: updateDayReportDetail.yearGenInverter,
+        yearGenIntegrated: updateDayReportDetail.yearGenIntegrated,
+        yearGenInternet: updateDayReportDetail.yearGenInternet,
         genInternet: updateDayReportDetail.genInternet,
         genInverter: updateDayReportDetail.genInverter,
         genIntegrated: updateDayReportDetail.genIntegrated,
         equivalentHours: updateDayReportDetail.equivalentHours,
         modelInverterCapacity: updateDayReportDetail.modelInverterCapacity,
         modelInverterPowerGen: updateDayReportDetail.modelInverterPowerGen,
+        dailyBuyPower: updateDayReportDetail.dailyBuyPower,
         buyPower: updateDayReportDetail.buyPower,
         errorInfo: updateDayReportDetail.errorInfo,
         faultList: newFaultList,
@@ -265,8 +279,12 @@ class ReportEdit extends Component {
         {faultList.length > 0?<div className={styles.lostGenTableBox} >
           <LostGenTable 
             faultGenList={faultList.map(
-              e=>({...e,startTime: moment(e.startTime), endTime: moment(e.endTime)})
+              e=>({...e,
+                startTime: e.startTime?moment(e.startTime):null, 
+                endTime: e.endTime?moment(e.endTime):null
+              })
             )}
+            rememberRemove={true}
             changeFaultList={this.faultListInfoChange} 
           />
         </div>: null}
@@ -285,8 +303,12 @@ class ReportEdit extends Component {
         {limitList.length > 0 ?<div className={styles.lostGenTableBox} >
           <LimitGenTable 
             limitGenList={limitList.map(
-              e=>({...e,startTime: moment(e.startTime), endTime: moment(e.endTime)})
+              e=>({...e,
+                startTime: e.startTime?moment(e.startTime): null, 
+                endTime: e.endTime?moment(e.endTime):null,
+              })
             )}
+            rememberRemove={true}
             changeLimitList={this.limitListInfoChange}
           />
         </div>:null}
@@ -300,7 +322,7 @@ class ReportEdit extends Component {
         <div className={styles.addPowerGenInfo}  >
           <span className={styles.reportSubTitle}>发电信息<Icon type="caret-right" theme="outlined" /></span>
           <div className={styles.addPowerGenInfoR} >
-            <Checkbox onChange={this.checkAbnormal}>存在异常</Checkbox>
+            <Checkbox checked={abnormalTextShow} onChange={this.checkAbnormal}>存在异常</Checkbox>
             {abnormalTextShow && <Input.TextArea className={styles.abnormalTextArea}  onChange={this.reportAbnormalText} value={errorInfo} />}
           </div>
         </div>

@@ -27,7 +27,6 @@ class ResourceElecInfo extends Component {
     const genUnit = configUtil.power || '';
     const { stationType, reportDate } = updateDayReportDetail;
     const sourceInfoArr = [
-      {name: '日报日期', value: 'reportDate', unit: ''},
       {name: '天气', value: 'weather', unit: ''},
       {name: '温度', value: 'temperature', unit: ''},
       {name: '电站名称', value: 'stationName', unit: ''},
@@ -90,9 +89,9 @@ class ResourceElecInfo extends Component {
             <span>{genUnit}</span>
           </Form.Item>
           <Form.Item label="日购网电量">
-            {getFieldDecorator('buyPower', {
-              rules: [{ required: requireTargetArr.includes('buyPower'), message: '请填写购网电量' }],
-              initialValue: updateDayReportDetail.buyPower,
+            {getFieldDecorator('dailyBuyPower', {
+              rules: [{ required: requireTargetArr.includes('dailyBuyPower'), message: '请填写日购网电量' }],
+              initialValue: updateDayReportDetail.dailyBuyPower,
             })(
               <Input />
             )}

@@ -25,6 +25,7 @@ class DayReportMainList extends Component {
     toChangeDayReportStore: PropTypes.func,
     getStationBaseReport: PropTypes.func,
     dayReportDetail: PropTypes.func,
+    getReportUploadedStation: PropTypes.func,
   }
 
   constructor(props) {
@@ -60,6 +61,9 @@ class DayReportMainList extends Component {
   toUploadPage = () => { // 去上传页面
     this.props.toChangeDayReportStore({
       showPage: 'report',
+    });
+    this.props.getReportUploadedStation({ // 请求初始默认时间下已上传电站列表。
+      reportDay: moment().subtract(1,'day').format('YYYY-MM-DD'),
     })
   }
 
@@ -102,10 +106,10 @@ class DayReportMainList extends Component {
               isUpload: false正常,true有未上报损失异常, 
             */  
             const showWarningIcon = status && isUpload; // 展示黄色图标提示未完成损失电量的填写。true展示，false不展示。
-            // if(!available){ // 不可上传
-            //   return <span></span>
-            // }else if(isUpload){ // 已上传日报=>查看详情
-            if(status){ // 已上传日报=>查看详情
+            if(!available){ // 不可上传
+              return <span></span>
+            }else if(status){ // 已上传日报=>查看详情
+            // if(status){ // 已上传日报=>查看详情
               return (<span onClick={()=>this.toReportDetail(record, e.reportDate)}>
                 <i className="iconfont icon-look">
                   {showWarningIcon && <i className="iconfont icon-alert_01" ></i>}
