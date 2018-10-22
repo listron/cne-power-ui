@@ -50,11 +50,11 @@ class StationContrastDetail extends Component {
           name: stationNames[1],
           icon: 'circle',
         }],
-        textStyle:{
-          color: lineColor,
-        },
-        itemWidth: 5,
-        itemHeight: 5,        
+        // textStyle:{
+        //   color: lineColor,
+        // },
+        // itemWidth: 5,
+        // itemHeight: 5,        
       },
       title: {
         text: `${columnName}`,
