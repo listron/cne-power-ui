@@ -107,6 +107,7 @@ class PlanSide extends Component {
       this.setState({addSave:'false'});
       this.props.addPlanInfo({"data": data});
       this.props.changePlanStore({
+        showPage:'list',
         addPlanYear:'', //计划生产的年份
         addStationCodes:[], // 计划生产的电站
       })

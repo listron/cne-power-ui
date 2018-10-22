@@ -36,6 +36,7 @@ function* getPlanList(action) {//请求生产计划列表数据
         planData: response.data.data.planData || [],
         totalNum,
         pageNum,
+        showPage:'list',
         loading: false
       },
     });
@@ -44,6 +45,7 @@ function* getPlanList(action) {//请求生产计划列表数据
       type: planAction.CHANGE_PLAN_STORE,
       payload: {
         totalNum: 0,
+        showPage:'list',
         loading: false
       },
     });
@@ -161,6 +163,7 @@ function* getYearList(action){
         type: planAction.CHANGE_PLAN_STORE,
         payload: {
           planYearList:planYearList,
+          planYear:selectYear,
         },
       });
       yield put({
