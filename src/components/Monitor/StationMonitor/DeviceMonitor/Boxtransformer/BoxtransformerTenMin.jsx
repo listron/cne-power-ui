@@ -67,10 +67,10 @@ function BoxtransformerTenMin({ deviceTenMin, loading }) {
           const tmpIrradiation = irradiationObj && irradiationObj.value && !isNaN(parseFloat(irradiationObj.value));
           const tmpPower = powerObj && powerObj.value && !isNaN(parseFloat(powerObj.value));
           if(tmpIrradiation){
-            irradiation = `<div style="padding-left: 5px;" ><span style="display: inline-block; background:#ffffff; border:1px solid #199475; width:6px; height:6px; border-radius:100%;"></span> 瞬时辐照: ${tmpIrradiation}</div>`;
+            irradiation = `<div style="padding-left: 5px;" ><span style="display: inline-block; background:#ffffff; border:1px solid #199475; width:6px; height:6px; border-radius:100%;"></span> 瞬时辐照: ${parseFloat(irradiationObj.value) || 0}</div>`;
           }
           if(tmpPower){
-            power = `<div style="padding-left: 5px;" ><span style="display: inline-block; background:#ffffff; border:1px solid #a42b2c; width:6px; height:6px; border-radius:100%;"></span> 功率: ${tmpPower}</div>`;
+            power = `<div style="padding-left: 5px;" ><span style="display: inline-block; background:#ffffff; border:1px solid #a42b2c; width:6px; height:6px; border-radius:100%;"></span> 功率: ${parseFloat(powerObj.value) || 0}</div>`;
           }
           return `<div style="width: 128px; height: 75px;font-size:12px;line-height: 24px;background: #fff;box-shadow:0 1px 4px 0 rgba(0,0,0,0.20);border-radius:2px;">
             <div style="border-bottom: 1px solid #dfdfdf;padding-left: 5px;" >${param[0] && param[0].name}</div>

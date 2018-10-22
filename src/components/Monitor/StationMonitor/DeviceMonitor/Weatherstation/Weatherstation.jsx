@@ -14,6 +14,7 @@ class Weatherstation extends Component {
     deviceDetail: PropTypes.object,
     deviceAlarmList: PropTypes.array,
     singleStationData: PropTypes.object,
+    resetDeviceStore: PropTypes.func,
   }
 
   componentDidMount(){
@@ -34,7 +35,8 @@ class Weatherstation extends Component {
   }
 
   componentWillUnmount(){
-    clearTimeout(this.timeOutId)
+    clearTimeout(this.timeOutId);
+    this.props.resetDeviceStore();
   }
 
   getData = (stationCode, deviceCode, deviceTypeCode) => {

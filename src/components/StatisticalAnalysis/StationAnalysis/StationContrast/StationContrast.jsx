@@ -78,12 +78,12 @@ class StationContrast extends React.Component {
               changeAllStationStore={this.stationTimeSelected}
             />
           </div>
-          <span className={styles.rightContent}>数据统计截止时间8月20日</span>
+          <span className={styles.rightContent}>数据统计截止时间{moment().subtract(1, 'days').format('MM[月]DD[日]')}</span>
         </div>
         <div className={styles.componentContainer}>
           <div className={styles.componentContainerTip} >
             <span>电站数据</span>
-            {stationContrastList && stationContrastList.length!==2 && <span>点击表格数据，可查看详细</span>}
+            {stationContrastList && stationContrastList.length===2 && <span>点击表格数据，可查看详细</span>}
           </div>
           {stationContrastList && stationContrastList.length!==2?
             <div className={styles.nodata} ><img src="/img/nodata.png" /></div>

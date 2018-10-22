@@ -53,10 +53,7 @@ class InverterHeader extends Component {
     const parentDeviceTypeCode = parentDevice && parentDevice.deviceTypeCode; // 父级设备type
     const parentDeviceCode = parentDevice && parentDevice.deviceCode; //父级设备code
     const baseLinkPath = `/hidden/monitorDevice/${stationCode}/${deviceTypeCode}`;
-
-    console.log(parentDeviceTypeCode);
-    console.log(typeof parentDeviceTypeCode);
-    console.log(parentDeviceCode);
+    
     return (
       <div className={styles.deviceMonitorHeader} >
         {showDeviceChangeBox && <HeaderDeviceChange devices={devices} deviceDetail={deviceDetail} baseLinkPath={baseLinkPath} hideDeviceChange={this.hideDeviceChange} />}
