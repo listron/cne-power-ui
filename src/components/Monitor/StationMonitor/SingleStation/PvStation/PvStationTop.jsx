@@ -167,7 +167,7 @@ class PvStationTop extends Component {
             <div className={styles.trueTimeValue}>
               <div>
                 {singleStationData && singleStationData.monthPower && parseFloat(singleStationData.monthPower).toFixed(4) || 0}
-                {powerUpdate ? <span className={styles.iconStyle} onClick={() => { this.setModalMonth() }} ><Icon type="form" theme="outlined" /></span> : ''}
+                {powerUpdate ? <span className={styles.iconStyle} onClick={() => { this.setModalMonth() }} ><i className="iconfont icon-edit"></i></span> : ''}
               </div>
             </div>
             <div className={styles.trueTimeUnit}>月发电量 万kWh</div>
@@ -197,7 +197,7 @@ class PvStationTop extends Component {
               <div className={styles.trueTimeValue}>
                 <div>
                   <span>{singleStationData && singleStationData.yearPower && parseFloat(singleStationData.yearPower).toFixed(4) || 0}</span>
-                  {powerUpdate ? <span className={styles.iconStyle} onClick={() => { this.setModalYear() }}><Icon type="form" theme="outlined" /></span> : ''}
+                  {powerUpdate ? <span className={styles.iconStyle} onClick={() => { this.setModalYear() }}><i className="iconfont icon-edit"></i></span> : ''}
                 </div>
                 <span>{singleStationData && singleStationData.yearPlanPower && parseFloat(singleStationData.yearPlanPower).toFixed(4) || 0}</span>
               </div>

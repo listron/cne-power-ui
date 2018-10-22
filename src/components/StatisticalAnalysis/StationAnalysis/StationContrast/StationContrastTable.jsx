@@ -42,6 +42,7 @@ class StationContrastTable extends React.Component {
   }
   render() {
     const { stationContrastList  } = this.props;
+    console.log(this.props);
     const content = (
       <div>
         <StationContrastDetail 

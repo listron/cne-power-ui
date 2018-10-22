@@ -37,6 +37,14 @@ function *changeDeviceStore(action) {//存储payload指定参数，替换reducer
   })
 }
 
+function *resetDeviceStore(action){
+  const { payload } =action;
+  yield put({
+    type: deviceAction.RESET_DEVICE_MONITOR_STORE_SUCCESS,
+    payload,
+  })
+}
+
 function *getDeviceMonitorData(action) {  // 请求单设备数据(统计信息，十分钟数据，告警，测点数据)入口
   const { payload } = action;
   const { deviceTypeCode } = payload;
@@ -180,6 +188,7 @@ export function* watchDeviceMonitor() {
   yield takeLatest(deviceAction.GET_NORMAL_DEVICE_DATA_SAGA, getNormalDeviceData);
   yield takeLatest(deviceAction.GET_WEATHERSTATION_DATA_SAGA, getWeatherStationData);
   yield takeLatest(deviceAction.GET_DEVICE_MONITOR_TEN_MIN_DATA_SAGA, getTenMinDeviceData);
+  yield takeLatest(deviceAction.RESET_DEVICE_MONITOR_STORE,resetDeviceStore);
 }
 
 

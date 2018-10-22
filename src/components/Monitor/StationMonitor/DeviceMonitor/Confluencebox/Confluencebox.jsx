@@ -20,6 +20,7 @@ class Confluencebox extends Component {
     deviceTenMin: PropTypes.array,
     deviceAlarmList: PropTypes.array,
     devicePointData: PropTypes.array,
+    resetDeviceStore: PropTypes.func,
   }
 
   componentDidMount(){
@@ -65,6 +66,7 @@ class Confluencebox extends Component {
   componentWillUnmount(){
     clearTimeout(this.timeOutId);
     clearTimeout(this.timeOutTenMin);
+    this.props.resetDeviceStore();
   }
 
   getData = (stationCode, deviceCode, deviceTypeCode) => {
