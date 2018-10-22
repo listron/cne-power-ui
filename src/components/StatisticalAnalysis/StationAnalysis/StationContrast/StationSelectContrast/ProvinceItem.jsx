@@ -64,14 +64,14 @@ class ProvinceItem extends Component {
           <span className={styles.name} title={provinceInfo.provinceName} >{provinceInfo.provinceName}</span>
         }
         <div className={styles.stationList}>
-          {provinceInfo.stations.map(m=>{
+          {provinceInfo.stations.map((m,i)=>{
             let checked = selectedStation.some(e=>e.stationCode===m.stationCode);
             const disableCheck = disabledStation.includes(m.stationCode);
             return (
               multiple ? 
               <div 
                 // onClick={()=>this.checkStation(m)} 
-                key={m.stationCode} 
+                key={i} 
                 title={m.stationName}
                 style={{'backgroundColor':checked?'#199475':'#f1f1f1'}} 
                 className={styles.eachStation}>
@@ -86,7 +86,7 @@ class ProvinceItem extends Component {
               </div> :
               <div 
                 onClick={disableCheck?null:()=>this.checkStation(m)}
-                key={m.stationCode}
+                key={i}
                 style={
                   {
                     'backgroundColor':checked?'#199475':'#f1f1f1',

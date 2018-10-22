@@ -55,7 +55,7 @@ class StationContrastTable extends React.Component {
         <Col span={6} className={styles.baseNameBox} >
           {stationContrastBaseName.map((e,i)=> {
             return (<Row className={styles.baseName} key={i}>
-              <Col className={styles.baseClassifyName} span={4}>{e.baseClassifyName}</Col>
+              <Col className={styles.baseClassifyName} span={4}><span>{e.baseClassifyName}</span></Col>
               <Col className={styles.rowName} span={20}>
                 {e.rowName.map((item,index)=>{
                   return (<div key={index}>{item}</div>)
@@ -87,9 +87,10 @@ class StationContrastTable extends React.Component {
               <div className={styles.baseInfoBg} >{stationContrastList[1].unitCount || '--'}</div>
             </div>
             {Object.entries(stationContrastDataInfo).map((item,index)=>{
+              const differHighLight = stationContrastList[0][item[0]] && stationContrastList[1][item[0]] && ((Math.abs(stationContrastList[0][item[0]]-stationContrastList[1][item[0]])/stationContrastList[1][item[0]])>0.2);
               return (
                 <div key={index} data-rowname={item[0]} data-datafieldname={item[1]} onClick={this.showContrastDetail} >
-                  <Popover content={content} trigger="click" className={styles.contrastDetailPopover} placement="bottom" overlayClassName={styles.contrastOverlayClassName} >
+                  <Popover content={content} trigger="click" className={differHighLight ? styles.differHighLight:styles.contrastDetailPopover} placement="bottom" overlayClassName={styles.contrastOverlayClassName} >
                     <span className={styles.stationOne} >{stationContrastList[0][item[0]] || '--'}</span>
                     <span className={styles.stationTwo} >{stationContrastList[1][item[0]] || '--'}</span>
                   </Popover>
