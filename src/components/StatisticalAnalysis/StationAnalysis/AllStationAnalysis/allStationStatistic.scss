@@ -4,7 +4,7 @@
   flex-direction: column;
   flex: 1;
   background: #fff;
- 
+
   :global{
     .ant-tabs-nav-scroll{
       background-color: #f8f8f8;
@@ -12,14 +12,14 @@
     .ant-tabs-bar{
       border:none;
       margin-bottom: 0;
-      // background-color: #f8f8f8; 
-      margin: 0;  
+      // background-color: #f8f8f8;
+      margin: 0;
       .ant-tabs-extra-content{
-        background-color: #f8f8f8; 
+        background-color: #f8f8f8;
        .iconfont{
          margin-left:5px;
          vertical-align: middle;
-       }     
+       }
       }
     }
     .ant-tabs {
@@ -68,16 +68,17 @@
       position: relative;
       cursor: pointer;
       text-decoration: none;
-      width: 120px;     
-    } 
+      width: 120px;
+    }
   }
   .componentContainer{
     display: flex;
     flex:1;
+    width: 100%;
     // height:5000px;
     flex-direction: column;
   }
-  }  
+  }
   .singleStationType{
     display: flex;
     flex-direction: column;
@@ -167,11 +168,19 @@
           padding: 20px 0;
           border-bottom: 1px solid #ececec;
           .dataGraph{
-            display: flex;    
+            display: flex;
             flex-direction: row;
+            width: 100%;
+            height: 300px;
+            >div:nth-child(1){
+              flex: 7;
+            }
+            >div:nth-child(2){
+              flex: 3;
+            }
           }
         }
       }
-     
+
     }
-  } 
+  }

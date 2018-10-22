@@ -28,22 +28,22 @@ class BarGraph extends React.Component {
     let result = '';
     switch (xAxisName) {
       case '发电量':
-        result = '#199475';
+        result = ['#dfdfdf','#199475','#f9b600'];
         break;
       case '辐射总量':
-        result = '#a42b2c';
+        result = ['#dfdfdf','#a42b2c','#f9b600'];
         break;
       case '等效利用小时数':
-        result = '#ceebe0';
+        result = ['#dfdfdf','#ceebe0','#f9b600'];
         break;
       case 'PR':
-        result = '#3e97d1';
+        result = ['#dfdfdf','#3e97d1','#f9b600'];
         break;
       case '损失电量':
-        result = '#c7ceb2';
+        result = ['#dfdfdf','#c7ceb2','#f9b600'];
         break;
       case '损失电量等效时':
-        result = '#199475';
+        result = ['#dfdfdf','#199475','#f9b600'];
         break;
       default:
         result = '#ccc';
@@ -72,7 +72,7 @@ class BarGraph extends React.Component {
     let color = this.getColor(xAxisName);
     if (dateType === 'month') {
       targetOption = {
-        color: ['#ccc', color],
+        color: color,
         tooltip: {
           trigger: 'axis',
           axisPointer: {
@@ -89,12 +89,12 @@ class BarGraph extends React.Component {
           },
           extraCssText: 'box-shadow: 0 0 3px rgba(0, 0, 0, 0.3)',
           formatter: function (params) {
+            let paramsItem='';
+            params.map((item,index)=>{
+              return paramsItem+= `<div> <span style="display: inline-block;width: 5px;height: 5px;border-radius: 50%;background:${color[index]};vertical-align: 3px;margin-right: 3px;"> </span> ${params[index].seriesName} :${ params[index].value}</div>`
+            });
             return `<div  style="border-bottom: 1px solid #ccc;padding-bottom: 7px;margin-bottom: 7px;width:180px;overflow:hidden;"> <span style="float: left">${params[0].name} </span><span style="float: right">${xAxisName} </span>
-            </div>
-            <div> <span style="display: inline-block;width: 5px;height: 5px;border-radius: 50%;background: #ccc;vertical-align: 3px;margin-right: 3px;"> </span> ${params[0].seriesName} :${ params[0].value}</div>
-            <div> <span style="display: inline-block;width: 5px;height: 5px;border-radius: 50%;background:${color}; vertical-align: 3px;margin-right: 3px;"> </span> ${params[1].seriesName} :${ params[1].value}</div>
-            <div> <span style="display: inline-block;width: 5px;height: 5px;border-radius: 50%;background: #f9b600;vertical-align: 3px;margin-right: 3px;"> </span> ${params[2].seriesName} :${ params[2].value}</div>`
-
+            </div>${paramsItem}`
           }
         },
         legend: {
@@ -158,9 +158,6 @@ class BarGraph extends React.Component {
             nameTextStyle: {
               color: '#666',
             },
-            // scale:true,
-            // splitNumber:4,
-            // interval:4,
             axisLabel: {
               formatter: '{value} %',
               color: '#666',
@@ -186,30 +183,24 @@ class BarGraph extends React.Component {
             type: 'bar',
             data: [2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4, 3.3],
             itemStyle: {
-              barBorderRadius: 10,
+              barBorderRadius: 3,
             },
-            barWidth: 10,
+            barWidth: 5,
           },
           {
             name: '2018年',
             type: 'bar',
             data: [2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0, 2.3],
             itemStyle: {
-              barBorderRadius: 10,
+              barBorderRadius: 3,
             },
-            barWidth: 10,
+            barWidth:5,
           },
           {
             name: '同比',
             type: 'line',
             yAxisIndex: 1,
             data: [2.0, 2.2, 3.3, 4.5, 6.3, 10.2, 20.3, 23.4, 23.0, 16.5, 12.0, 6.2],
-            lineStyle: {
-              color: '#f9b600'
-            },
-            itemStyle: {
-              color: '#f9b600'
-            }
           }
         ]
       };
@@ -226,10 +217,13 @@ class BarGraph extends React.Component {
           },
           backgroundColor: '#fff',
           formatter: function (params) {
+            let paramsItem='';
+            params.map((item,index)=>{
+              return paramsItem+= `<div> <span style="display: inline-block;width: 5px;height: 5px;border-radius: 50%;background:${color[index+1]};vertical-align: 3px;margin-right: 3px;"> </span> ${params[index].seriesName} :${ params[index].value}</div>`
+            });
             return `<div  style="border-bottom: 1px solid #ccc;padding-bottom: 7px;margin-bottom: 7px;width:180px;overflow:hidden;"> <span style="float: left">${params[0].name} </span>
             </div>
-            <div> <span style="display: inline-block;width: 5px;height: 5px;border-radius: 50%;background:${color}; vertical-align: 3px;margin-right: 3px;"> </span> ${params[0].seriesName} :${ params[0].value}</div>
-            <div> <span style="display: inline-block;width: 5px;height: 5px;border-radius: 50%;background: #f9b600;vertical-align: 3px;margin-right: 3px;"> </span> ${params[1].seriesName} :${ params[1].value}</div>`
+           ${paramsItem}`
           },
           padding: 10,
           textStyle: {
@@ -262,7 +256,7 @@ class BarGraph extends React.Component {
             },
           }
         ],
-        color: color,
+        color: color.slice(1),
         yAxis: [
           {
             type: 'value',
@@ -301,6 +295,7 @@ class BarGraph extends React.Component {
             interval: 5,
             axisLabel: {
               color: '#666',
+              formatter: '{value} %'
             },
             axisLine: {
               show: false,
@@ -331,25 +326,19 @@ class BarGraph extends React.Component {
             name: '环比',
             type: 'line',
             yAxisIndex: 1,
-            data: [2.0, 2.2, 3.3, 4.5, 6.3, 10.2,],
-            lineStyle: {
-              color: '#f9b600'
-            },
-            itemStyle: {
-              color: '#f9b600'
-            }
+            data: [2.0, 2.2, 3.3, 4.5, 6.3, 10.2,]
           }
         ]
       }
     }
     targetChart.setOption(targetOption)
-
-  }
+  };
 
   render() {
     const {graphId, dateType} = this.props;
     return (
-      <div id={graphId} className={styles.statisticGraph} style={{width: '60%', height: "300px"}}></div>
+      <div id={graphId} className={styles.statisticGraph}> </div>
+      // <div id={graphId} className={styles.statisticGraph} style={{width: '100%', height: "100%"}}></div>
     )
   }
 }

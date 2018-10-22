@@ -10,7 +10,7 @@ import TimeSelect from '../../../Common/TimeSelect';
 import BarGraph from '../AllStationAnalysis/CommonGraph/BarGraph';
 import PlanCompleteRateAnalysisBar from '../AllStationAnalysis/CommonGraph/PlanCompleteRateAnalysisBar';
 import TableGraph from '../AllStationAnalysis/CommonGraph/TableGraph';
-import PowerEfficency from '../AllStationAnalysis/CommonGraph/PowerEfficency';
+import PowerEfficency from '../AllStationAnalysis/CommonGraph/ThreeYaxis';
 import UsageRate from './UsageRate';
 import LostPowerType from './LostPowerType';
 import LostPowerTypeRate from './LostPowerTypeRate';
@@ -31,8 +31,8 @@ class OperateAnalysis extends React.Component {
     startTime: PropTypes.string,
     endTime: PropTypes.string,
     history: PropTypes.object,
- 
-  
+
+
   }
   constructor(props) {
     super(props);
@@ -60,7 +60,7 @@ class OperateAnalysis extends React.Component {
                       // multiple={true}
                       onChange={this.stationSelected}
                     />
-                 
+
             </div>
             <TimeSelect day={true} {...this.props} />
           </div>

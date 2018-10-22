@@ -18,21 +18,21 @@ class PlancompletionRate extends React.Component{
         const currentYear=moment().format('YYYY');
         return (
           <Radio.Group defaultValue={currentYear}  buttonStyle="solid">
-           {AllStationAvalibaData.map((e,index)=>{        
+           {['2013','2014'].map((e,index)=>{
              if(e.isTrue==='1'){
               return   <Radio.Button value={e.year} key={index}  style={{margin:'0 5px'}}>{e.year}年</Radio.Button>
              }else{
               return   <Radio.Button value={e.year} key={index} disabled style={{margin:'0 5px'}}>{e.year}年</Radio.Button>
-             }      
-           }      
-           )}        
+             }
+           }
+           )}
           </Radio.Group>
         )
-      
+
       }
     render(){
         const {dateType}=this.props;
-       
+
         return(
             <div className={styles.allStationData}>
                <div className={styles.textStyle}>计划完成情况{dateType==='year'?this.selectYear():''}</div>
@@ -90,7 +90,7 @@ class PlancompletionRate extends React.Component{
                <div className={styles.stationTargetValue}>0.40%</div>
                <div className={styles.stationTargetName}>限电率</div>
                </div>
-               </div>    
+               </div>
                </div>
              </div>
 

@@ -12,12 +12,17 @@ class AllStationMonthPie extends React.Component {
   componentDidMount() {
     this.drawChart(this.props)
   }
+  componentWillReceiveProps(){
+    this.drawChart(this.props);
+  }
 
   drawChart=(param)=>{
     const { allStationMonthpie,yAxisName } = param;
     const targetPieChart = echarts.init(document.getElementById(allStationMonthpie));
     let reg=/\(([^()]+)\)/g;
     let unit=reg.exec(yAxisName)[1];
+    targetPieChart.clear();
+    targetPieChart.resize();
     const targetPieOption = {
       tooltip: {
         trigger: 'item',
@@ -37,7 +42,7 @@ class AllStationMonthPie extends React.Component {
         {
           name: '发电量',
           type: 'pie',
-          color:['#a42b2c','#fbe6e3','#199475','#c7ceb2','#ceebe0','#f9b600'],
+          color:['#a42b2c','#d48265','#91c7af','#749f83','#ca8622','#bda29a','#546570','#6e7074','#9b9b9b','#ceebe0'],
           radius: '55%',
           center: ['50%', '50%'],
           data: [
@@ -73,13 +78,12 @@ class AllStationMonthPie extends React.Component {
       ]
     };
     targetPieChart.setOption(targetPieOption);
-    targetPieChart.resize();
   };
 
   render() {
     const { allStationMonthpie } = this.props;
     return (
-      <div id={ allStationMonthpie } style={{ width: '30%', height: "300px", }}> </div>
+      <div id={ allStationMonthpie}  > </div>
     )
   }
 }
