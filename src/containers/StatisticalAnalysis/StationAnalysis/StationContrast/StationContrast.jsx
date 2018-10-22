@@ -50,6 +50,8 @@ const mapDispatchToProps = (dispatch) => ({
   toChangeStationContrastStore: payload => dispatch({ type: stationContrastAction.toChangeStationContrastStore, payload }),
   getStationContrast: payload => dispatch({ type: stationContrastAction.getStationContrast, payload}),
   getStationContrastDetail: payload => dispatch({ type: stationContrastAction.getStationContrastDetail, payload}),
+  resetStationContrastStore: payload => dispatch({ type: stationContrastAction.resetStationContrastStore, payload}),
+  
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(StationContrastContainer);

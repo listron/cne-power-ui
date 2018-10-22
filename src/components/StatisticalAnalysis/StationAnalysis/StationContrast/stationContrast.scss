@@ -113,6 +113,23 @@
         border-right: 1px solid #dfdfdf; 
       }
     }
+    .differHighLight{
+      display: flex;
+      flex-direction: row;
+      background: #fcffe5;
+      &:hover,&:active,&:focus,&:visited{
+        background: #ceebe0;
+      }
+      .stationOne{
+        width: 50%;
+        border-right: 1px solid #dfdfdf; 
+        border-left: 0;
+      }
+      .stationTwo{
+        width: 50%;
+        border-right: 1px solid #dfdfdf; 
+      }
+    }
   }
   .baseNameBox{
     display: flex;
@@ -123,8 +140,12 @@
       background:#f8f8f8;
       .baseClassifyName{
         border-bottom: 1px solid #dfdfdf;
-        writing-mode: vertical-lr;
         text-align: center;
+        display: flex;
+        justify-content: center;
+        span{
+          writing-mode: vertical-rl;
+        }
       }
       .rowName{
         display: flex;
@@ -142,9 +163,30 @@
   
 }
 .contrastOverlayClassName{
+  
   :global{
-    .ant-popover-inner-content {
-      padding: 0px;
+    .ant-popover-content{
+      width: 848px;
+      height: 360px;
+      .ant-popover-inner{
+        width: 100%;
+        height: 100%;
+        .ant-popover-inner-content {
+          line-height: 360px;
+          text-align: center;
+          padding: 0px;
+        }
+      }
+      
     }
+    
   }
+}
+
+.stationContrastDetailBox{
+  width: "848px";
+  height: "364px";
+  border-radius: "4px";
+  padding-top: "20px";
+  line-height: "360px";
 }

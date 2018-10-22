@@ -13,7 +13,13 @@ function *toChangeStationContrastStore(action){ // 存储payload指定参数，�
     payload,
   })
 }
-
+function *resetStationContrastStore(action){
+  const {payload} =action;
+  yield put({
+    type: stationContrastAction.resetStationContrastStoreSuccess,
+    payload,
+  })
+}
 function *getStationContrast(action){//请求两电站对比数据
   const { payload } = action;
   // const url = '/mock/statisticalAnalysis/MockStationContrast';
@@ -31,7 +37,7 @@ function *getStationContrast(action){//请求两电站对比数据
       });
     }else{
       yield put({
-        type: stationContrastAction.changeStationContrastStore,
+        type: stationContrastAction.toChangeStationContrastStore,
         payload:{
           ...payload,
           stationContrastList: [],
@@ -42,7 +48,7 @@ function *getStationContrast(action){//请求两电站对比数据
     console.log(e);
     message.error('获取两电站对比数据失败，请重试');
     yield put({
-      type:  stationContrastAction.changeStationContrastStore,
+      type:  stationContrastAction.toChangeStationContrastStore,
       payload:{
         loading: false,
         stationContrastList: [],
@@ -59,15 +65,22 @@ function *getStationContrastDetail(action){ // 请求两电站列对比详细内
     yield put({ type:stationContrastAction.stationContrastLoading });
     const response = yield call(axios.post,url,payload);
     if(response.data.code==='10000'){
+      const tmpStationContrastDetail = response.data.data;
+      tmpStationContrastDetail.sort((a,b)=>{
+        const stationCode = payload.stationCode;
+        console.log(stationCode);
+        return stationCode.indexOf(a.stationCode)-stationCode.indexOf(b.stationCode);
+      });
+      console.log(tmpStationContrastDetail);
       yield put({
         type: stationContrastAction.stationContrastFetchSuccess,
         payload:{
-          stationContrastDetail: response.data.data || [],
+          stationContrastDetail: tmpStationContrastDetail || [],
         },
       });
     }else{
       yield put({
-        type: stationContrastAction.changeStationContrastStore,
+        type: stationContrastAction.toChangeStationContrastStore,
         payload:{
           stationContrastDetail: [],
         },
@@ -78,7 +91,7 @@ function *getStationContrastDetail(action){ // 请求两电站列对比详细内
     console.log(e);
     message.error('获取两电站列对比详细内容数据失败，请重试');
     yield put({
-      type:  stationContrastAction.changeStationContrastStore,
+      type:  stationContrastAction.toChangeStationContrastStore,
       payload:{
         loading: false,
         stationContrastDetail: [],
@@ -94,5 +107,6 @@ export function* watchStationContrastSaga() {
   yield takeLatest(stationContrastAction.toChangeStationContrastStore, toChangeStationContrastStore);
   yield takeLatest(stationContrastAction.getStationContrast, getStationContrast);
   yield takeLatest(stationContrastAction.getStationContrastDetail, getStationContrastDetail);
+  yield takeLatest(stationContrastAction.resetStationContrastStore,resetStationContrastStore);
 }
 

@@ -74,7 +74,7 @@ class StationSelectContrast extends Component {
   }
   componentWillReceiveProps(nextProps){
     const { data, value } = nextProps;
-    if( data && data.length > 0 && value && value.length >= 0){
+    if( data && data.length > 0 && value && value.length === 2){
       this.setState({
         checkedStations: nextProps.value,
         checkedStationName: nextProps.value.map(e=>e.stationName),
@@ -89,11 +89,11 @@ class StationSelectContrast extends Component {
   onModalHandelOK = (stations) => {
     const checkedStationName = stations.map(e=>e.stationName);
     this.setState({
-      stationModalShow: false,
       checkedStationName,
-      checkedStations:stations
-    })
-    this.onOK(stations)
+      checkedStations:stations,
+      stationModalShow: false,
+    },()=>this.onOK(stations));
+    
   }
   onSelect = (stationName) =>{
     const { data } = this.props;
@@ -125,7 +125,7 @@ class StationSelectContrast extends Component {
   selectStation = (stations) => {//stations:选中的电站名称数组
     const { data } = this.props;
     const checkedStations = data.filter(e=>stations.includes(e.stationName))
-    const checkedStationName = stations
+    const checkedStationName = stations;
     this.setState({
       stationModalShow: false,
       checkedStationName,
@@ -143,10 +143,11 @@ class StationSelectContrast extends Component {
   render() {
     const { data, multiple, holderText, disabledStation, disabled } = this.props;
     const { checkedStationName, stationModalShow, filteredSelectedStation, checkedStations } = this.state;
+    
     return (
       <div className={styles.stationSelect} style={this.props.style}>
-        {multiple ? <Select
-          mode="multiple"
+        <Select
+          mode="multiple"  
           disabled={disabled}
           style={{ width: '100%' }}
           placeholder={holderText}
@@ -154,19 +155,8 @@ class StationSelectContrast extends Component {
           value={checkedStationName}
           className={styles.stationSelectMainInput}
         >
-          {data.filter(e=>!disabledStation.includes(e.stationCode)).map(e=>(
-            <Option key={e.stationName}>{e.stationName}</Option>
-          ))}
-        </Select>:<AutoComplete
-          disabled={disabled}
-          style={{ width: '100%' }}
-          onSearch={this.handleSearch}
-          onSelect={this.onSelect}
-          value={checkedStationName}
-          placeholder={holderText}
-        >
-          {filteredSelectedStation.map((e) => (<Option key={e.stationName}>{e.stationName}</Option>))}
-        </AutoComplete>}
+          
+        </Select>
         <StationSelectModal 
           multiple={multiple}
           disabled={disabled}
