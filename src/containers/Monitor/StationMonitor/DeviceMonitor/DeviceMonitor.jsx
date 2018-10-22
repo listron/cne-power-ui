@@ -47,7 +47,9 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   getMonitorDeviceData: payload => dispatch({ type: deviceAction.GET_DEVICE_DATA_SAGA, payload }),
   getTenMinDeviceData: payload => dispatch({ type: deviceAction.GET_DEVICE_MONITOR_TEN_MIN_DATA_SAGA, payload }),
-  getSingleStation: payload => dispatch({type:singleStationAction.GET_SINGLE_STATION_SAGA, payload}),
+  getSingleStation: payload => dispatch({type: singleStationAction.GET_SINGLE_STATION_SAGA, payload}),
+  resetDeviceStore: payload => dispatch({type: deviceAction.RESET_DEVICE_MONITOR_STORE, payload}),
+
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DeviceMonitor);

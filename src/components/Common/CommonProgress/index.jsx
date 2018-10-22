@@ -36,7 +36,7 @@ class CommonProgress extends Component {
             <div className={styles.progressData}>
               <div className={styles.stationValue}>
                 <div>{value}</div>
-                <div>{total}</div>
+                <div className={styles.planOutput}>{total}</div>
               </div>
               <div className={styles.progressBar}>
                 <Progress strokeWidth={3}  percent={value / total * 100} showInfo={false} status="active" />

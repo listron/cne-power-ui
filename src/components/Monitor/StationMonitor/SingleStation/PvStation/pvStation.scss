@@ -121,6 +121,11 @@
           }
           .iconStyle{
             cursor: pointer;
+            :global{
+              .iconfont{
+                font-size: 24px;
+              }
+            }
           }
         }
         .trueTimeUnit{
