@@ -27,6 +27,7 @@ class SingleStation extends Component {
     getStationDeviceList: PropTypes.func,
     deviceTypeCode: PropTypes.number,
     deviceTypeFlow: PropTypes.object,
+    resetSingleStationStore: PropTypes.func,
   };
   constructor(props) {
     super(props);
@@ -68,7 +69,9 @@ class SingleStation extends Component {
     const nextStationCode = nextParams.stationCode;
     if( nextStationCode !== stationCode ){
       clearTimeout(this.timeOutId);
-      this.props.changeSingleStationStore({ deviceTypeFlow: {} });
+      // this.props.changeSingleStationStore({ deviceTypeFlow: {} });
+      this.props.resetSingleStationStore();
+      this.props.getStationList({})
       this.getTenSeconds(nextStationCode);
       this.getOutputDataTenMin(nextStationCode);
       this.getPowerDataTenMin(nextStationCode);
@@ -80,6 +83,7 @@ class SingleStation extends Component {
     clearTimeout(this.timeOutId);
     clearTimeout(this.timeOutOutputData);
     clearTimeout(this.timeOutPowerData);
+    this.props.resetSingleStationStore();
   }
 
   getTenSeconds = (stationCode) => {
@@ -164,7 +168,8 @@ const mapDispatchToProps = (dispatch) => ({
   getStationList: payload => dispatch({type:singleStationAction.GET_STATION_LIST_SAGA, payload}),
   getStationDeviceList: payload => dispatch({type:singleStationAction.GET_STATION_DEVICELIST_SAGA, payload}),
   getConfluenceBoxList: payload => dispatch({type:singleStationAction.GET_CONFLUENCEBOX_LIST_SAGA, payload}),
-  editData:payload=>dispatch({type:singleStationAction.EDIT_MONTH_YEAR_DATA_SAGA, payload})
+  editData:payload=>dispatch({type:singleStationAction.EDIT_MONTH_YEAR_DATA_SAGA, payload}),
+  resetSingleStationStore: payload => dispatch({type: singleStationAction.RESET_SINGLE_STATION_STORE}),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SingleStation);

@@ -11,7 +11,12 @@ function *changeSingleStationStore(action){
     payload,
   })
 }
-
+// 重置store状态
+function* resetSingleStationStore(action) {
+  yield put({
+    type: singleStationAction.RESET_SINGLE_STATION_SUCCESS,
+  });
+}
 //获取单电站实时数据
 function *getSingleStation(action){
   const { payload } = action;
@@ -26,7 +31,12 @@ function *getSingleStation(action){
         }
       });
     }else{
-      yield put({ type: singleStationAction.GET_SINGLE_STATION_FAIL, data: response.data});
+      yield put({ 
+        type: singleStationAction.CHANGE_SINGLE_STATION_STORE, 
+        payload: {
+          singleStationData: {},
+        }
+      });
     }
   }catch(e){
     console.log(e);
@@ -47,7 +57,12 @@ function *getCapabilityDiagram(action){
         }
       });
     }else{
-      yield put({ type: singleStationAction.GET_SINGLE_STATION_FAIL, data: response.data});
+      yield put({ 
+        type: singleStationAction.CHANGE_SINGLE_STATION_STORE, 
+        payload: {
+          capabilityData: [],
+        }
+      });
     }
     
   }catch(e){
@@ -69,7 +84,12 @@ function *getMonitorPower(action){
         }
       })
     }else{
-      yield put({ type: singleStationAction.GET_SINGLE_STATION_FAIL, data: response.data});
+      yield put({ 
+        type: singleStationAction.CHANGE_SINGLE_STATION_STORE, 
+        payload: {
+          powerData: [],
+        }
+      });
     }
     
   }catch(e){
@@ -90,7 +110,12 @@ function *getStationList(action){
         }
       });
     }else{
-      yield put({ type: singleStationAction.GET_SINGLE_STATION_FAIL, data: response.data});
+      yield put({ 
+        type: singleStationAction.CHANGE_SINGLE_STATION_STORE, 
+        payload: {
+          stationList: [],
+        }
+      });
     }
     
   }catch(e){
@@ -112,7 +137,12 @@ function *getOperatorList(action){
         }
       });
     }else{
-      yield put({ type: singleStationAction.GET_SINGLE_STATION_FAIL, data: response.data});
+      yield put({ 
+        type: singleStationAction.CHANGE_SINGLE_STATION_STORE, 
+        payload: {
+          operatorList: [],
+        }
+      });
     }
     
   }catch(e){
@@ -125,7 +155,6 @@ function *getWeatherList(action){
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.monitor.getWeatherList}?stationCode=${payload.stationCode}`;
   try{
     const response = yield call(axios.get, url, payload);
-    console.log(response);
     if(response.data.code==='10000'){
       yield put({
         type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
@@ -134,7 +163,12 @@ function *getWeatherList(action){
         }
       })
     }else{
-      yield put({ type: singleStationAction.GET_SINGLE_STATION_FAIL, data: response.data});
+      yield put({ 
+        type: singleStationAction.CHANGE_SINGLE_STATION_STORE, 
+        payload: {
+          weatherList: [],
+        }
+      });
     }
   }catch(e){
     console.log(e);
@@ -154,7 +188,12 @@ function *getAlarmList(action){
         }
       })
     }else{
-      yield put({ type: singleStationAction.GET_SINGLE_STATION_FAIL, data: response.data});
+      yield put({ 
+        type: singleStationAction.CHANGE_SINGLE_STATION_STORE, 
+        payload: {
+          alarmList: {},
+        }
+      });
     }
     
   }catch(e){
@@ -175,7 +214,12 @@ function *getWorkList(action){
         }
       })
     }else{
-      yield put({ type: singleStationAction.GET_SINGLE_STATION_FAIL, data: response.data});
+      yield put({ 
+        type: singleStationAction.CHANGE_SINGLE_STATION_STORE, 
+        payload: {
+          workList: {},
+        }
+      });
     }
   }catch(e){
     console.log(e);
@@ -214,7 +258,12 @@ function *getDeviceTypeFlow(action){
         }
       })
     }else{
-      yield put({ type: singleStationAction.GET_SINGLE_STATION_FAIL, data: response.data});
+      yield put({ 
+        type: singleStationAction.CHANGE_SINGLE_STATION_STORE, 
+        payload: {
+          deviceTypeFlow: {},
+        }
+      });
     }
     
   }catch(e){
@@ -238,7 +287,12 @@ function *getPvmoduleList(action){
         }
       });
     }else{
-      yield put({ type: singleStationAction.GET_SINGLE_STATION_FAIL, data: response.data});
+      yield put({ 
+        type: singleStationAction.CHANGE_SINGLE_STATION_STORE, 
+        payload: {
+          pvmoduleList: [],
+        }
+      });
     }
     
   }catch(e){
@@ -262,7 +316,12 @@ function *getInverterList(action){
         }
       })
     }else{
-      yield put({ type: singleStationAction.GET_SINGLE_STATION_FAIL, data: response.data});
+      yield put({ 
+        type: singleStationAction.CHANGE_SINGLE_STATION_STORE, 
+        payload: {
+          inverterList: {},
+        }
+      });
     }
     
   }catch(e){
@@ -286,7 +345,12 @@ function *getBoxTransformerList(action){
         }
       })
     }else{
-      yield put({ type: singleStationAction.GET_SINGLE_STATION_FAIL, data: response.data});
+      yield put({ 
+        type: singleStationAction.CHANGE_SINGLE_STATION_STORE, 
+        payload: {
+          boxTransformerList: {},
+        }
+      });
     }
   }catch(e){
     console.log(e);
@@ -309,7 +373,12 @@ function *getConfluenceBoxList(action){ // 获取汇流箱列表
         }
       })
     }else{
-      yield put({ type: singleStationAction.GET_SINGLE_STATION_FAIL, data: response.data});
+      yield put({ 
+        type: singleStationAction.CHANGE_SINGLE_STATION_STORE, 
+        payload: {
+          confluenceBoxList: {},
+        }
+      });
     }
   }catch(e){
     console.log(e);
@@ -331,7 +400,12 @@ function *getStationDeviceList(action){
         }
       })
     }else{
-      yield put({ type: singleStationAction.GET_SINGLE_STATION_FAIL, data: response.data});
+      yield put({ 
+        type: singleStationAction.CHANGE_SINGLE_STATION_STORE, 
+        payload: {
+          stationDeviceList: [],
+        }
+      });
     }
   }catch(e){
     console.log(e);
@@ -352,7 +426,12 @@ function *editData(action){
         }
       })
     }else{
-      yield put({ type: singleStationAction.GET_SINGLE_STATION_FAIL, data: response.data});
+      yield put({ 
+        type: singleStationAction.CHANGE_SINGLE_STATION_STORE, 
+        payload: {
+          editAllData: [],
+        }
+      });
     }
   }catch(e){
     console.log(e);
@@ -376,6 +455,6 @@ export function* watchSingleStationMonitor() {
   yield takeLatest(singleStationAction.GET_STATION_DEVICELIST_SAGA, getStationDeviceList);
   yield takeLatest(singleStationAction.GET_CONFLUENCEBOX_LIST_SAGA, getConfluenceBoxList); // 汇流箱列表获取
   yield takeLatest(singleStationAction.EDIT_MONTH_YEAR_DATA_SAGA, editData);//编辑月，年的累计发电量
- 
+  yield takeLatest(singleStationAction.RESET_SINGLE_STATION_STORE, resetSingleStationStore);
 }
 

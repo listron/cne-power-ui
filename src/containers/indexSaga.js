@@ -28,6 +28,7 @@ import { watchAllStationSaga } from './StatisticalAnalysis/StationAnalysis/AllSt
 import { watchProductionStationSaga } from './StatisticalAnalysis/StationAnalysis/ProductionAnalysis/productionAnalysisSaga';
 import { watchStationResourceStationSaga } from './StatisticalAnalysis/StationAnalysis/StationResourceAnalysis/stationResourceAnalysisSaga';
 import { watchOperateStationSaga } from './StatisticalAnalysis/StationAnalysis/OperateAnalysis/operateAnalysisSaga';
+import { watchStationContrastSaga } from './StatisticalAnalysis/StationAnalysis/StationContrast/stationContrastSaga';
 
 
 
@@ -68,6 +69,7 @@ export default function* rootSaga() {
     watchAllStationSaga(),
     watchProductionStationSaga(),
     watchOperateStationSaga(),
+    watchStationContrastSaga(),
     watchStationResourceStationSaga(),
   ])
 }

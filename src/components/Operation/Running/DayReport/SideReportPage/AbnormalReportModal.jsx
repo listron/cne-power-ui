@@ -28,8 +28,8 @@ class AbnormalReportModal extends Component {
       addLimitFormShow: false, // 限电损失添加form框。
       faultGenList: props.abnormalList.filter(e=>e.type === 1), // 选中电站故障损失
       limitGenList: props.abnormalList.filter(e=>e.type === 0), // 选中电站限电损失
-      abnormalTextShow: false,
-      abnormalText: '', // 发电信息-异常信息
+      abnormalTextShow: props.abnormalInfo.errorInfo?true:false,
+      abnormalText: props.abnormalInfo.errorInfo, // 发电信息-异常信息
     }
   }
 
@@ -151,7 +151,11 @@ class AbnormalReportModal extends Component {
           <span>损失电量信息<Icon type="caret-right" theme="outlined" /></span>
           <Button onClick={this.toAddGenLost} disabled={addLostFormShow} icon="plus" className={styles.uploadGenLost} >添加</Button>
         </div>
-        <LostGenTable faultGenList={faultGenList} abnormalInfo={abnormalInfo} changeFaultList={this.changeFaultList} />
+        {(faultGenList && faultGenList.length > 0) ? <LostGenTable 
+          faultGenList={faultGenList} 
+          abnormalInfo={abnormalInfo} 
+          changeFaultList={this.changeFaultList} 
+        />: null}
         {addLostFormShow && <LostAddForm 
           lostGenTypes={lostGenTypes}
           findDeviceExist={findDeviceExist} 
@@ -164,7 +168,11 @@ class AbnormalReportModal extends Component {
           <span>限电信息<Icon type="caret-right" theme="outlined" /></span>
           <Button disabled={addLimitFormShow} onClick={this.toAddGenLimit} icon="plus" className={styles.uploadGenLost}  >添加</Button>
         </div>
-        <LimitGenTable limitGenList={limitGenList} abnormalInfo={abnormalInfo} changeLimitList={this.changeLimitList} />
+        {(limitGenList && limitGenList.length > 0)? <LimitGenTable 
+          limitGenList={limitGenList} 
+          abnormalInfo={abnormalInfo} 
+          changeLimitList={this.changeLimitList} 
+        /> :null}
         {addLimitFormShow && <LimitAddForm
           findDeviceExist={findDeviceExist} 
           limitGenList={limitGenList} 
@@ -175,7 +183,7 @@ class AbnormalReportModal extends Component {
         <div className={styles.addPowerGenInfo} >
           <span>发电信息<Icon type="caret-right" theme="outlined" /></span>
           <div className={styles.addPowerGenInfoR} >
-            <Checkbox onChange={this.checkAbnormal} >存在异常</Checkbox>
+            <Checkbox checked={abnormalTextShow} onChange={this.checkAbnormal} >存在异常</Checkbox>
             {abnormalTextShow && <Input.TextArea className={styles.abnormalTextArea} onChange={this.reportAbnormalText} value={abnormalText} />}
           </div>
         </div>

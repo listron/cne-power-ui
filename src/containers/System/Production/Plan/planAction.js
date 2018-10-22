@@ -11,6 +11,7 @@ export const planAction = {
   addPlanInfo: Symbol('addPlanInfo'),//添加生产计划的数据
   getStations: Symbol('getStations'),//查看电站信息
   getOwnStations: Symbol('getOwnStations'),//查看电站信息
+  getYearList: Symbol('getYearList'),// 生产计划的年份
 };
 
 

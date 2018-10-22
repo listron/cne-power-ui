@@ -1,10 +1,8 @@
 import {call, put, takeLatest, select} from 'redux-saga/effects';
 import axios from 'axios';
 import Path from '../../../../constants/path';
-import {message} from 'antd';
 import {planAction} from './planAction';
-import {userAction} from "../../Account/User/userAction";
-import {commonAction} from "../../../alphaRedux/commonAction";
+
 
 
 function* changePlanStore(action) {//存储payload指定参数，替换reducer-store属性。
@@ -18,11 +16,10 @@ function* changePlanStore(action) {//存储payload指定参数，替换reducer-s
 function* getPlanList(action) {//请求生产计划列表数据
   const {payload} = action;
   // const url = '/mock/system/planList';
-  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.getPlanList}`
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.getPlanList}`;
   try {
     yield put({type: planAction.PLAN_FETCH});
     const response = yield call(axios.post, url, payload);
-
     const totalNum = response.data.data.totalNum || 0;
     let {pageNum, pageSize} = payload;
     const maxPage = Math.ceil(totalNum / pageSize);
@@ -39,6 +36,7 @@ function* getPlanList(action) {//请求生产计划列表数据
         planData: response.data.data.planData || [],
         totalNum,
         pageNum,
+        loading: false
       },
     });
   } catch (e) {
@@ -51,15 +49,12 @@ function* getPlanList(action) {//请求生产计划列表数据
     });
     console.log(e);
   }
-
-
 }
 
 function* editPlanInfo(action) {
   const {payload} = action;
   // const url = '/mock/system/editPlanInfo';
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.eddPlanList}`
-
   try {
     yield put({type: planAction.PLAN_FETCH});
     const response = yield call(axios.put, url, payload);
@@ -87,7 +82,6 @@ function* editPlanInfo(action) {
     });
   }
 }
-
 
 function* getOwnStations(action) {//获取所有电站信息
   const {payload} = action;
@@ -123,27 +117,12 @@ function* addPlanInfo(action) {
     const response = yield call(axios.post, url, payload);
     if (response.data.code === '10000') {
       yield put({type: planAction.GET_PLAN_FETCH_SUCCESS});
-      const params = yield select(state => ({//继续请求生产计划列表
-        year: state.system.plan.get('year'),
-        stationCodes: state.system.plan.get('stationCodes'),
-        sortField: state.system.plan.get('sortField'),
-        sortMethod: state.system.plan.get('sortMethod'),
-        pageSize: state.system.plan.get('pageSize'),
-        pageNum: state.system.plan.get('pageNum'),
-      }));
       yield put({
-        type: planAction.getPlanList,
-        payload: {
-          ...params,
-          showPage:'list'
-        },
+        type: planAction.getYearList,
       });
     }else if(response.data.code === '10001'){
       yield put({
-        type: planAction.getPlanList,
-        payload: {
-          showPage:'list'
-        },
+        type: planAction.getYearList,
       });
     }
   } catch (e) {
@@ -156,9 +135,54 @@ function* addPlanInfo(action) {
   }
 }
 
+function* getYearList(action){
+  const {payload} = action;
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.getYearList}`;
+  try {
+    yield put({type: planAction.PLAN_FETCH});
+    const response = yield call(axios.get, url);
+    const planYearList=response.data.data.yearPlan;
+    let selectYear='';
+    const currentYear=new Date().getFullYear();
+    planYearList.indexOf(currentYear) > -1 ? selectYear=currentYear :selectYear=planYearList[0];
+    const params = yield select(state => {
+      return({//继续请求生产计划列表
+        year: state.system.plan.get('planYear') || selectYear,
+        stationCodes: state.system.plan.get('stationCodes'),
+        sortField: state.system.plan.get('sortField'),
+        sortMethod: state.system.plan.get('sortMethod'),
+        pageSize: state.system.plan.get('pageSize'),
+        pageNum: state.system.plan.get('pageNum'),
+      })
+    });
+    if(response.data.code==='10000'){
+      yield put({type: planAction.GET_PLAN_FETCH_SUCCESS});
+      yield put({
+        type: planAction.CHANGE_PLAN_STORE,
+        payload: {
+          planYearList:planYearList,
+        },
+      });
+      yield put({
+        type: planAction.getPlanList,
+        payload: {
+          ...params,
+        },
+      });
+    }
+  } catch (e) {
+    yield put({
+      type: planAction.CHANGE_PLAN_STORE,
+      payload: {
+        loading: false
+      },
+    });
+  }
+}
 
 export function* watchPlan() {
   yield takeLatest(planAction.changePlanStore, changePlanStore);
+  yield takeLatest(planAction.getYearList, getYearList);
   yield takeLatest(planAction.getPlanList, getPlanList);
   yield takeLatest(planAction.editPlanInfo, editPlanInfo);
   yield takeLatest(planAction.getOwnStations, getOwnStations);

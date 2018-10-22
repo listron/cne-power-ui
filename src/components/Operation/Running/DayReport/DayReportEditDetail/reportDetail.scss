@@ -6,8 +6,10 @@
   .reportSubTitle{
     width: 100px;
     text-align: right;
+
     svg{
       font-size: 10px;
+      width: 8px;
     }
   }
   .reportDetailTitle{
@@ -65,25 +67,21 @@
 
     }
   }
-  .lostInfo{
+  .lostInfo, .limitInfo, .powerGenInfo{
     padding: 20px 25px;
     border-bottom:1px #dfdfdf dashed;
-    .lostInfoTable{
-      padding: 0 56px;
+    .noListData{
+      display: inline-block;
+      width: 100px;
+      text-align: right;
     }
-  }
-  .limitInfo{
-    padding: 20px 25px;
-    border-bottom:1px #dfdfdf dashed;
-    .limitInfoTable{
+    .lostInfoTable, .limitInfoTable, .powerGenInfoCon{
       padding: 0 56px;
     }
   }
   .powerGenInfo{
-    padding: 20px 25px;
-    border-bottom:1px #dfdfdf dashed;
     .powerGenInfoCon{
-      padding: 0 56px;
+      padding-left: 71px;
     }
   }
   .operateInfo{
@@ -149,14 +147,26 @@
       .ant-form-inline .ant-form-item {
         width: 33.33%;
         margin-right: 0px;
+        margin-bottom: 21px;
         > .ant-form-item-label {
           width: 145px;
           text-align: right;
           margin-right: 12px;
+          label{
+            color: $darkColor;
+            &::after{
+              content: '';
+            }
+          }
         }
         .ant-form-item-control-wrapper{
           .ant-input{
             width: 80px;
+          }
+          .ant-form-item-control has-error{
+            .ant-form-explain{
+              position: absolute;
+            }
           }
         }
       }
@@ -185,6 +195,7 @@
       display: inline-block;
       svg{
         font-size: 10px;
+        width: 8px;
       }
     }
     .uploadGenLost{
@@ -231,6 +242,7 @@
       text-align: right;
       svg{
         font-size: 10px;
+        width: 8px;
       }
     }
     .addPowerGenInfoR{

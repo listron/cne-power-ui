@@ -55,6 +55,7 @@
       .uploadReport{
         width: 98px;
         padding: 0;
+        margin-right: 12px;
         span{
           margin-left: 0px;
           display: inline-block;
@@ -71,6 +72,16 @@
             margin-left: -4px;
           }
           
+        }
+      }
+      .infoTooltip{
+        svg{
+          border-radius: 50%;
+          color: $darkColor;
+          &:hover{
+            color: #fff;
+            background-color: #f9b600;
+          }
         }
       }
     }
@@ -117,6 +128,19 @@
         color: #fff;
         z-index: 0;
       }
+    }
+  }
+}
+
+.toolInfo{
+  ul{
+    li{
+      font-size: 10px;
+    }
+  }
+  :global{
+    .ant-tooltip-inner{
+      background-color: rgba(0, 0, 0, 0.7);
     }
   }
 }

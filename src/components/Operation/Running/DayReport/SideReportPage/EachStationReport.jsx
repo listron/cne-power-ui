@@ -122,11 +122,13 @@ class EachStationReport extends Component {
           <span>{stationCapacity}</span>
         </Col>
         <Col span={2} className={styles.addAbnormal}>
-          <span onClick={this.addAbnormal} >添加异常</span>
-          {hasAbnormal && <span><i className="iconfont icon-alert_01" ></i></span>}
+          <span className={styles.abnormalText}>
+            <span onClick={this.addAbnormal} >添加异常</span>
+            {hasAbnormal && <span><i className="iconfont icon-alert_01" ></i></span>}
+          </span>
         </Col>
         <Col span={1} className={styles.deleteStationReport} >
-          <span onClick={this.removeStation}><Icon type="close-circle" theme="outlined" /></span>
+          <span onClick={this.removeStation} className={styles.removeStation}><Icon type="close-circle" theme="outlined" /></span>
         </Col>
       </Row>
     )
