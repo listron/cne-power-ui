@@ -13,7 +13,13 @@ function *toChangeStationContrastStore(action){ // 存储payload指定参数，�
     payload,
   })
 }
-
+function *resetStationContrastStore(action){
+  const {payload} =action;
+  yield put({
+    type: stationContrastAction.resetStationContrastStoreSuccess,
+    payload,
+  })
+}
 function *getStationContrast(action){//请求两电站对比数据
   const { payload } = action;
   // const url = '/mock/statisticalAnalysis/MockStationContrast';
@@ -94,5 +100,6 @@ export function* watchStationContrastSaga() {
   yield takeLatest(stationContrastAction.toChangeStationContrastStore, toChangeStationContrastStore);
   yield takeLatest(stationContrastAction.getStationContrast, getStationContrast);
   yield takeLatest(stationContrastAction.getStationContrastDetail, getStationContrastDetail);
+  yield takeLatest(stationContrastAction.resetStationContrastStore,resetStationContrastStore);
 }
 

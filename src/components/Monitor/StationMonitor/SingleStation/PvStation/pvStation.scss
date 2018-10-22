@@ -115,6 +115,10 @@
           display: flex;
           justify-content: space-between;
           line-height: 24px;
+          >div{
+            display: flex;
+            justify-content: space-between;
+          }
           .iconStyle{
             cursor: pointer;
           }

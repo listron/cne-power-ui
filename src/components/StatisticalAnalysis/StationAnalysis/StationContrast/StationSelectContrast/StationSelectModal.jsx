@@ -115,9 +115,9 @@ class StationSelectModal extends Component {
         })
       }
     })
-    return filteredStation.map(e=>(
+    return filteredStation.map((e,i)=>(
       <ProvinceItem 
-        key={e.provinceCode} 
+        key={i} 
         disabledStation={disabledStation}
         multiple={multiple} 
         checkStation={this.checkStation} 
@@ -135,8 +135,8 @@ class StationSelectModal extends Component {
           {selectedStation.length>0&&<span className={styles.clearAll} onClick={this.onClearSelected}>清空</span>} 
         </div>
         <div className={styles.innerStationList}>
-          {selectedStation.map(e=>{
-            return <div key={e.stationCode} className={styles.eachSelectedStation} > <span>{ e.stationName }</span> <Icon type="close" className={styles.deleteIcon} onClick={()=>this.onDeleteOneStation(e)} /> </div>
+          {selectedStation.map((e,i)=>{
+            return <div key={i} className={styles.eachSelectedStation} > <span>{ e.stationName }</span> <Icon type="close" className={styles.deleteIcon} onClick={()=>this.onDeleteOneStation(e)} /> </div>
           })}
         </div>
       </div>
@@ -163,7 +163,7 @@ class StationSelectModal extends Component {
           <div className={styles.stationStyleModal}>
             <div className={styles.stationType}>
               <RadioGroup onChange={this.onSelectStationType} value={filterStationType}>
-                {stationType.map(e=>(<RadioButton key={e} value={e} >{e===2?'全部':e===1?'光伏':'风电'}</RadioButton>))}
+                {stationType.map((e,i)=>(<RadioButton key={i} value={e} >{e===2?'全部':e===1?'光伏':'风电'}</RadioButton>))}
               </RadioGroup>
             </div>
             <div className={styles.provinceList}>

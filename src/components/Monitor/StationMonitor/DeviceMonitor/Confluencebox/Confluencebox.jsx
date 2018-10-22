@@ -97,6 +97,7 @@ class Confluencebox extends Component {
   render(){
     const {devices, deviceDetail, deviceTenMin, deviceAlarmList, devicePointData, loading } = this.props;
     const { stationCode, deviceTypeCode,deviceCode } = this.props.match.params;
+    const backData={path: `/monitor/singleStation/${stationCode}`,name: '返回电站'};
     const breadCrumbData = {
       breadData:[{
         link: true,
@@ -109,7 +110,7 @@ class Confluencebox extends Component {
     };
     return (
       <div className={styles.confluencebox}>
-        <CommonBreadcrumb {...breadCrumbData} />
+        <CommonBreadcrumb {...breadCrumbData} style={{backgroundColor:'#fff'}}  backData={{...backData}} />
         <div className={styles.deviceContent}>
           <ConfluenceHeader deviceDetail={deviceDetail} devices={devices} stationCode={stationCode} deviceTypeCode={deviceTypeCode} />
           <ConfluenceStatistics deviceDetail={deviceDetail} />

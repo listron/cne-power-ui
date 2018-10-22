@@ -61,7 +61,7 @@ class ConfluenceHeader extends Component {
           <Icon type="swap" className={styles.swap} onClick={this.showDeviceChange} />
           <span className={styles.name} onClick={this.showDeviceChange}>{deviceDetail.deviceName}</span>
           <span className={styles.status} >设备状态: { deviceStatusInfo && deviceStatusInfo.statusName || ''}</span>
-          <span className={styles.dispersionRatio}>离散率>{dispersionRatio||'--'}%</span>
+          <span className={styles.dispersionRatio}>离散率>{dispersionRatio||'--'}</span>
         </div>
         <div className={styles.linkTo}>
           {parentDeviceTypeCode && parentDeviceCode && <Link  to={`/hidden/monitorDevice/${stationCode}/${parentDeviceTypeCode}/${parentDeviceCode}`} className={styles.eachLink}>
