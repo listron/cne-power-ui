@@ -3,6 +3,7 @@ export const stationContrastAction = {
   changeStationContrastStore: Symbol('changeStationContrastStore'), // store变化
   toChangeStationContrastStore: Symbol('toChangeStationContrastStore'), // 发起改变store
   resetStationContrastStore: Symbol('resetStationContrastStore'), // reset store数据
+  resetStationContrastStoreSuccess: Symbol('resetStationContrastStoreSuccess'), // reset store数据
   
   stationContrastFetchSuccess: Symbol('stationContrastFetchSuccess'), // api成功调用
   

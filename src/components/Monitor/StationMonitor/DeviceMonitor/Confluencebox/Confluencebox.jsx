@@ -20,6 +20,7 @@ class Confluencebox extends Component {
     deviceTenMin: PropTypes.array,
     deviceAlarmList: PropTypes.array,
     devicePointData: PropTypes.array,
+    resetDeviceStore: PropTypes.func,
   }
 
   componentDidMount(){
@@ -65,6 +66,7 @@ class Confluencebox extends Component {
   componentWillUnmount(){
     clearTimeout(this.timeOutId);
     clearTimeout(this.timeOutTenMin);
+    this.props.resetDeviceStore();
   }
 
   getData = (stationCode, deviceCode, deviceTypeCode) => {
@@ -97,6 +99,7 @@ class Confluencebox extends Component {
   render(){
     const {devices, deviceDetail, deviceTenMin, deviceAlarmList, devicePointData, loading } = this.props;
     const { stationCode, deviceTypeCode,deviceCode } = this.props.match.params;
+    const backData={path: `/monitor/singleStation/${stationCode}`,name: '返回电站'};
     const breadCrumbData = {
       breadData:[{
         link: true,
@@ -109,7 +112,7 @@ class Confluencebox extends Component {
     };
     return (
       <div className={styles.confluencebox}>
-        <CommonBreadcrumb {...breadCrumbData} />
+        <CommonBreadcrumb {...breadCrumbData} style={{backgroundColor:'#fff'}}  backData={{...backData}} />
         <div className={styles.deviceContent}>
           <ConfluenceHeader deviceDetail={deviceDetail} devices={devices} stationCode={stationCode} deviceTypeCode={deviceTypeCode} />
           <ConfluenceStatistics deviceDetail={deviceDetail} />

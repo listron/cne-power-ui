@@ -149,6 +149,9 @@
           display: flex;
           justify-content: space-between;
           padding-top: 20px;
+          .planOutput{
+            margin-left: 10px;
+          }
         }
         .progressBar{
           flex: 1;
@@ -392,6 +395,9 @@
           flex: 1;
           display: flex;
           justify-content: space-between;
+          .planOutput{
+            margin-left: 10px;
+          }
         }
         .progressBar{
           flex: 1;

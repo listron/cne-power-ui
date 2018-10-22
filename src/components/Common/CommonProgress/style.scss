@@ -29,7 +29,9 @@
         text-align:left;
         justify-content: space-between;
         padding-top: 20px;
-
+        .planOutput{
+          margin-left: 10px;
+        }
       }
       .progressBar{
         flex: 1;
