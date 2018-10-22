@@ -25,6 +25,7 @@ class DayReportMainList extends Component {
     toChangeDayReportStore: PropTypes.func,
     getStationBaseReport: PropTypes.func,
     dayReportDetail: PropTypes.func,
+    getReportUploadedStation: PropTypes.func,
   }
 
   constructor(props) {
@@ -60,6 +61,9 @@ class DayReportMainList extends Component {
   toUploadPage = () => { // 去上传页面
     this.props.toChangeDayReportStore({
       showPage: 'report',
+    });
+    this.props.getReportUploadedStation({ // 请求初始默认时间下已上传电站列表。
+      reportDay: moment().subtract(1,'day').format('YYYY-MM-DD'),
     })
   }
 
