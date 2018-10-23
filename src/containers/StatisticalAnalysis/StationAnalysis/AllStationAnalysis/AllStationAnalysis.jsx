@@ -52,6 +52,7 @@ class AllStationAnalysis extends Component {
 
   render() {
     const { showPage, dateType, year } = this.props;
+    const userId = getCookie('userId');
     // console.log(year); 
     const breadCrumbData = {
       breadData: [
@@ -77,7 +78,7 @@ const mapStateToProps = (state) => {
   return {
     ...state.statisticalAnalysisReducer.allStationAnalysis.toJS(),
     stations: state.common.get('stations'),
-
+     userId : getCookie('userId'),
 
   }
 }
