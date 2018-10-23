@@ -27,7 +27,9 @@ function DetailInfoPart({ title, infoArray,  handler, noBottomBorder=false }){
           }
           return (<span key={e.name} className={styles.eachInfo}>
             <span className={styles.infoName}>{e.name}</span>
-            <span className={styles.infoValue}>{e.name==='电站主线图'? (value!=='--' ? <a href={value} target="_blank" style={{color: '#199475'}} >查看</a> : '--') : `${value}${e.unit || ''}`}</span>
+            <span className={styles.infoValue} 
+              title={e.name==='电站主线图'? e.name : `${value}${e.unit || ''}`}
+            >{e.name==='电站主线图'? (value!=='--' ? <a href={value} target="_blank" style={{color: '#199475'}} >查看</a> : '--') : `${value}${e.unit || ''}`}</span>
           </span>)
         })}
       </div>

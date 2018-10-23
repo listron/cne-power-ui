@@ -142,6 +142,7 @@ class StationSelect extends Component {
 
   render() {
     const { data, multiple, holderText, disabledStation, disabled } = this.props;
+    console.log(data);
     const { checkedStationName, stationModalShow, filteredSelectedStation, checkedStations } = this.state;
     return (
       <div className={styles.stationSelect} style={this.props.style}>

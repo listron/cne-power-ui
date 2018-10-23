@@ -24,9 +24,7 @@ function ConfluenceTenMin({ deviceTenMin, loading }) {
     for(let i=0;i<16;i++){
       HL.push();
       HL[i] = deviceTenMin.length > 0 && deviceTenMin.map((e,index)=>{
-        console.log(e);
         return e.hLArr[i];
-        
       });
     }
     const HLNamesArr = HLNames.map((e,i)=>{

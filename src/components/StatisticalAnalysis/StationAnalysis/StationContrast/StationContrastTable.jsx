@@ -40,6 +40,15 @@ class StationContrastTable extends React.Component {
       column: e.currentTarget.getAttribute('data-datafieldname'),
     });
   }
+
+  onVisibleChange = (item) => {
+    if(!item){
+      this.props.toChangeStationContrastStore({
+        stationContrastDetail:[],
+      });
+    }
+  }
+
   render() {
     const { stationContrastList  } = this.props;
     const content = (
@@ -88,9 +97,20 @@ class StationContrastTable extends React.Component {
             </div>
             {Object.entries(stationContrastDataInfo).map((item,index)=>{
               const differHighLight = stationContrastList[0][item[0]] && stationContrastList[1][item[0]] && ((Math.abs(stationContrastList[0][item[0]]-stationContrastList[1][item[0]])/stationContrastList[1][item[0]])>0.2);
+              const highLightColumn = [
+                'equivalentHours',
+                'lostPowerHours',
+                'limitPowerHours',
+                'subStatioinHours',
+                'planShutdownHours',
+                'faultPowerHours',
+                'technicalHours',
+                'courtHours',
+              ];
+              
               return (
                 <div key={index} data-rowname={item[0]} data-datafieldname={item[1]} onClick={this.showContrastDetail} >
-                  <Popover content={content} trigger="click" className={differHighLight ? styles.differHighLight:styles.contrastDetailPopover} placement="bottom" overlayClassName={styles.contrastOverlayClassName} >
+                  <Popover content={content} trigger="click" onVisibleChange={item=>this.onVisibleChange(item)} className={highLightColumn.includes(item[0]) ? (differHighLight ? styles.differHighLight:styles.contrastDetailPopover) : styles.contrastDetailPopover} placement="bottom" overlayClassName={styles.contrastOverlayClassName} >
                     <span className={styles.stationOne} >{stationContrastList[0][item[0]] || '--'}</span>
                     <span className={styles.stationTwo} >{stationContrastList[1][item[0]] || '--'}</span>
                   </Popover>
