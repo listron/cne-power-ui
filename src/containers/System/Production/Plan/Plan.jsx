@@ -21,13 +21,13 @@ class Plan extends Component {
     pageSize: PropTypes.number,
     stationCodes:PropTypes.array,
     sortField:PropTypes.string,
-    planYear:PropTypes.number,
+    planYear:PropTypes.string,
     sortMethod:PropTypes.string,
     changePlanStore:PropTypes.func,
     getPlanList: PropTypes.func,
     editPlanInfo: PropTypes.func,
     getStations: PropTypes.func,
-
+    getYearList: PropTypes.func,
   };
 
   constructor(props) {
@@ -37,26 +37,24 @@ class Plan extends Component {
     }
   }
 
-  onShowSideChange = ({ showSidePage }) => {
-    this.setState({ showSidePage });
-  }
-  onToggleSide = () => {
-    const { showPage } = this.props;
-    this.setState({
-      showSidePage: showPage
-    });
+  componentWillMount(){
+    this.props.getYearList();
   }
 
   componentDidMount() {
-    const params = {
-      year: this.props.planYear || new Date().getFullYear(), // 年份 默认是当前年
-      stationCodes: this.props.stationCodes, // 电站编码
-      sortField: this.props.sortField, // 1:区域 2：电站名称 3:装机容量 4:年份 5: 年计划发电量
-      sortMethod: this.props.sortMethod, //排序 => 'field,0/1'field代表排序字段，0升序,1降序
-      pageNum: this.props.pageNum,
-      pageSize: this.props.pageSize,
-    };
-    this.props.getPlanList(params)
+    // const params = {
+    //   year: this.props.planYear, // 年份 默认是当前年
+    //   stationCodes: this.props.stationCodes, // 电站编码
+    //   sortField: this.props.sortField, // 1:区域 2：电站名称 3:装机容量 4:年份 5: 年计划发电量
+    //   sortMethod: this.props.sortMethod, //排序 => 'field,0/1'field代表排序字段，0升序,1降序
+    //   pageNum: this.props.pageNum,
+    //   pageSize: this.props.pageSize,
+    // };
+    // this.props.getPlanList(params);
+  }
+
+  componentWillReceiveProps(nextProps){
+
   }
 
   componentWillUnmount() {
@@ -66,13 +64,25 @@ class Plan extends Component {
       sortMethod:'',
       pageNum: 1,//当前页号
       pageSize: 10,//每页容纳条数
-      year: '', // 选择年份 默认当前年
       stationCodes: null,
+      loading:false,
+      planStations:[],
+      addPlanYear:'',
+      continueAdd:false,
+      addStationCodes:[],
+      planYear:'',
     });
   }
 
-
-
+  onShowSideChange = ({ showSidePage }) => {
+    this.setState({ showSidePage });
+  };
+  onToggleSide = () => {
+    const { showPage } = this.props;
+    this.setState({
+      showSidePage: showPage
+    });
+  };
   render() {
     const { showPage } = this.props;
     const { showSidePage } = this.state;
@@ -107,13 +117,12 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   changePlanStore: payload => dispatch({type: planAction.changePlanStore, payload}),
+  getYearList: payload => dispatch({ type: planAction.getYearList, payload }),
   getPlanList: payload => dispatch({type: planAction.getPlanList, payload}),
   editPlanInfo: payload => dispatch({type: planAction.editPlanInfo, payload}),
   getStations: payload => dispatch({ type: commonAction.getStations, payload }),
   getOwnStations: payload => dispatch({ type: planAction.getOwnStations, payload }),
   addPlanInfo: payload => dispatch({ type: planAction.addPlanInfo, payload }),
-
-
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Plan);

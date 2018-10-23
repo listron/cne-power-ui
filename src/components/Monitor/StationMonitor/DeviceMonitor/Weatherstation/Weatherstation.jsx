@@ -13,6 +13,8 @@ class Weatherstation extends Component {
     getMonitorDeviceData: PropTypes.func,
     deviceDetail: PropTypes.object,
     deviceAlarmList: PropTypes.array,
+    singleStationData: PropTypes.object,
+    resetDeviceStore: PropTypes.func,
   }
 
   componentDidMount(){
@@ -33,7 +35,8 @@ class Weatherstation extends Component {
   }
 
   componentWillUnmount(){
-    clearTimeout(this.timeOutId)
+    clearTimeout(this.timeOutId);
+    this.props.resetDeviceStore();
   }
 
   getData = (stationCode, deviceCode, deviceTypeCode) => {
@@ -50,14 +53,13 @@ class Weatherstation extends Component {
   }
 
   render(){
-    const { deviceDetail, deviceAlarmList, loading } = this.props;
-   // console.log(deviceDetail);
+    const { deviceDetail, deviceAlarmList, loading, singleStationData } = this.props;
     const { stationCode,deviceCode,deviceTypeCode } = this.props.match.params;
     const backData={path: `/monitor/singleStation/${stationCode}`,name: '返回电站'};
     const breadCrumbData = {
       breadData:[{
         link: true,
-        name: deviceDetail.stationName || '',
+        name: singleStationData.stationName || '',
         path: `/monitor/singleStation/${stationCode}`,
       },{
         name: '气象站',

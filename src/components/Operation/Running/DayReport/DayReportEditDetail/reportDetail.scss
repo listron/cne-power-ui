@@ -147,14 +147,26 @@
       .ant-form-inline .ant-form-item {
         width: 33.33%;
         margin-right: 0px;
+        margin-bottom: 21px;
         > .ant-form-item-label {
           width: 145px;
           text-align: right;
           margin-right: 12px;
+          label{
+            color: $darkColor;
+            &::after{
+              content: '';
+            }
+          }
         }
         .ant-form-item-control-wrapper{
           .ant-input{
             width: 80px;
+          }
+          .ant-form-item-control has-error{
+            .ant-form-explain{
+              position: absolute;
+            }
           }
         }
       }
@@ -183,6 +195,7 @@
       display: inline-block;
       svg{
         font-size: 10px;
+        width: 8px;
       }
     }
     .uploadGenLost{
@@ -229,6 +242,7 @@
       text-align: right;
       svg{
         font-size: 10px;
+        width: 8px;
       }
     }
     .addPowerGenInfoR{

@@ -65,11 +65,7 @@ class AllStation extends Component {
     const { stationTypes } = this.props;
     const breadCrumbData = {
       breadData:[
-      //   {
-      //   link: true,
-      //   name: deviceDetail.stationName || '',
-      //   path: `/monitor/singleStation/${stationCode}`,
-      // },
+     
       {
         name: '电站监控',
       }

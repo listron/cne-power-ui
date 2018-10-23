@@ -272,7 +272,6 @@ function *registerEnterprise(action){
   const url = Path.basePaths.APIBasePath + Path.APISubPaths.registerEnterprise;
   yield put({ type: loginAction.LOGIN_FETCH});
   try{
-    message.success("params");
     const response = yield call(axios, {
       method: 'post',
       url,

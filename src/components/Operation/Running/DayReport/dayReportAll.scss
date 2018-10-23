@@ -55,6 +55,7 @@
       .uploadReport{
         width: 98px;
         padding: 0;
+        margin-right: 12px;
         span{
           margin-left: 0px;
           display: inline-block;
@@ -73,6 +74,16 @@
           
         }
       }
+      .infoTooltip{
+        svg{
+          border-radius: 50%;
+          color: $darkColor;
+          &:hover{
+            color: #fff;
+            background-color: #f9b600;
+          }
+        }
+      }
     }
   }
 }
@@ -85,12 +96,7 @@
   width: 100%;
   padding: 24px 24px 0;
   background:#ececec;
-  //todo - next class should has 
-  // .sfjlk{
-  //   flex: 1;
-  //   background-color: #fff;
-  //   border: 1px solid #e1e2e2;
-  // }
+  z-index: 99;
 }
 
 .search{
@@ -117,6 +123,19 @@
         color: #fff;
         z-index: 0;
       }
+    }
+  }
+}
+
+.toolInfo{
+  ul{
+    li{
+      font-size: 10px;
+    }
+  }
+  :global{
+    .ant-tooltip-inner{
+      background-color: rgba(0, 0, 0, 0.7);
     }
   }
 }

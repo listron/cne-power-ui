@@ -3,7 +3,8 @@ import {Table, Button, Select, Icon, Popover, Input, Form, message} from 'antd';
 import CommonPagination from '../../../../Common/CommonPagination';
 import PropTypes from 'prop-types';
 import styles from './planMain.scss';
-import {getMonth} from '../plan';
+import {getMonth, getDefectSortField, getDefaultMonth} from '../plan';
+import WarningTip from '../../../../Common/WarningTip';
 
 const {Option} = Select;
 
@@ -20,10 +21,12 @@ const EditableRow = ({form, index, ...props}) => {
 const EditableFormRow = Form.create()(EditableRow);
 
 class EditableCell extends React.Component {
+
   static propTypes = {
     record: PropTypes.object,
     dataIndex: PropTypes.string,
   };
+
   getInput = (form) => {
     const {dataIndex, record} = this.props;
     if (dataIndex === 'yearPR') { // PR年计划
@@ -35,24 +38,30 @@ class EditableCell extends React.Component {
         return <Input disabled={true} placeholder="--"/>
       }
     }
-    return <Input onChange={this.ValueChange} onBlur={(e) => this.valueChange(e, form, dataIndex, record)} placeholder="--"/>;
+    return <Input onBlur={(e) => this.valueChange(e, form, dataIndex, record)}
+                  placeholder="--"/>;
   };
 
   yearPRChange = (e, form, dataIndex, record) => {//PR 数据修改
     const number = e.target.value;
-    // number==""
-    if (isNaN(number)) {
+    const pointLength = number.split('.')[1] ? number.split('.')[1].length : 0;
+    if (isNaN(number) || pointLength > 2) {
+      message.config({top: 300,});
       message.warning('只可以填写数字,可精确到小数点后两位');
       form.setFieldsValue({
         [dataIndex]: '',
       });
       return false;
+    } else {
+      record.yearPR = number;
+      this.props.handlevaluechange(record, dataIndex, number, 'PR')
     }
   };
 
   valueChange = (e, form, dataIndex, record) => {//月份的修改，修改完毕之后年计划跟着变化
     const number = e.target.value;
-    if (isNaN(number)) {
+    const pointLength = number.split('.')[1] ? number.split('.')[1].length : 0;
+    if (isNaN(number) || pointLength > 4) {
       message.warning('只可以填写数字,可精确到小数点后四位');
       form.setFieldsValue({
         [dataIndex]: record[dataIndex],
@@ -68,17 +77,18 @@ class EditableCell extends React.Component {
           return Number(prev) + Number(curr);
         });
       }
-      let planMonthValue=[];
+
+      let planMonthValue = [];
       if (record.setGridTime) {// 并网数据
-        for(let i=Number(record.setGridTime)-1;i<12;i++){
+        for (let i = Number(record.setGridTime) - 1; i < 12; i++) {
           planMonthValue.push(record.planMonthGens[i])
         }
-      }else{
-        planMonthValue=record.planMonthGens
+      } else {
+        planMonthValue = record.planMonthGens
       }
 
       record.planPower = sum(planMonthValue).toFixed(4);
-      this.props.handlevaluechange(record, dataIndex, number)
+      this.props.handlevaluechange(record, dataIndex, number, 'month')
     }
   };
 
@@ -127,6 +137,9 @@ class PlanTable extends Component {
     changePlanStore: PropTypes.func,
     pageNum: PropTypes.number,
     pageSize: PropTypes.number,
+    stationCodes: PropTypes.number,
+    sortField:PropTypes.string,
+    sort:PropTypes.string,
   };
 
   constructor(props) {
@@ -135,7 +148,10 @@ class PlanTable extends Component {
       data: [],
       editingKey: '',
       monthPowers: {},
-    }
+      warningTipText: '是否放弃当前修改',
+      showWarningTip: false,
+      currentClickKey: ''
+    };
     this.handlevaluechange = this.handlevaluechange.bind(this);
   }
 
@@ -149,50 +165,33 @@ class PlanTable extends Component {
 
   onPaginationChange = ({currentPage, pageSize}) => {//分页器
     this.props.getPlanList({
-      year: this.props.planYear || new Date().getFullYear(), // 年份 默认是当前年
+      year: this.props.planYear, // 年份 默认是当前年
       stationCodes: this.props.stationCodes, // 电站编码
       sortField: this.props.sortField, // 1:区域 2：电站名称 3:装机容量 4:年份 5: 年计划发电量
       sortMethod: this.props.sort, //排序 => 'field,0/1'field代表排序字段，0升序,1降序
       pageNum: currentPage,
       pageSize
     })
-  }
+  };
 
-  getDefectSortField = (feild) => { // 根据排序
-    var result = '';
-    switch (feild) {
-      case 'region':
-        result = '1';
-        break;
-      case 'stationName':
-        result = '2';
-        break;
-      case 'stationCapacity':
-        result = '3';
-        break;
-      case 'planYear':
-        result = '4';
-        break;
-      case 'planPower':
-        result = '5';
-        break;
-    }
-    return result;
-  }
 
   tableChange = (pagination, filter, sorter) => {//计划排序 排序还有误
-    const sortField = this.getDefectSortField(sorter.field);
+    const sortField = getDefectSortField(sorter.field);
     const ascend = sorter.order === 'ascend' ? '0' : '1' || '';
     // console.log("计划排序", pagination, sortField, ascend);
-    this.props.getPlanList({
-      year: this.props.planYear || new Date().getFullYear(), // 年份 默认是当前年
-      stationCodes: this.props.stationCodes, // 电站编码
-      sortField, // 1:区域 2：电站名称 3:装机容量 4:年份 5: 年计划发电量
-      sortMethod: ascend, //排序 => 'field,0/1'field代表排序字段，0升序,1降序
-      pageNum: this.props.pageNum,
-      pageSize: this.props.pageSize
-    })
-  }
+    if(sortField==='4'){
+      return false
+    }else{
+      this.props.getPlanList({
+        year: this.props.planYear, // 年份 默认是当前年
+        stationCodes: this.props.stationCodes, // 电站编码
+        sortField, // 1:区域 2：电站名称 3:装机容量 4:年份 5: 年计划发电量
+        sortMethod: ascend, //排序 => 'field,0/1'field代表排序字段，0升序,1降序
+        pageNum: this.props.pageNum,
+        pageSize: this.props.pageSize
+      })
+    }
+  };
 
 
   // 是否可以编辑
@@ -206,10 +205,17 @@ class PlanTable extends Component {
   // 编辑
   edit(key) {// 如果存在编辑，则不允许其他操作
     const {editingKey} = this.state;
-    if (typeof editingKey === "string") {
-      this.setState({editingKey: key});
+    this.setState({currentClickKey: key});
+    if (typeof editingKey !== "string") {
+      if (key === editingKey) {
+        this.setState({editingKey: key, showWarningTip: false});
+      } else {
+        this.setState({
+          showWarningTip: true,
+        });
+      }
     } else {
-      return false
+      this.setState({editingKey: key});
     }
   }
 
@@ -263,7 +269,7 @@ class PlanTable extends Component {
           width: '40px',
           key: item,
           editable: true,
-          className:"month",
+          className: "month",
           render: (text, record, index) => {
             const textValue = text ? text : '--';
             const editable = _this.isEditing(record);
@@ -287,7 +293,7 @@ class PlanTable extends Component {
         dataIndex: 'regionName',
         key: 'regionName',
         width: '50px',
-        className:styles.regionName,
+        className: styles.regionName,
         sorter: true,
         render: text => {
           return text ? text : '--'
@@ -297,12 +303,11 @@ class PlanTable extends Component {
         title: '电站名称',
         dataIndex: 'stationName',
         key: 'stationName',
-        // width:'100px',
-        className:styles.stationNameBox,
+        className: styles.stationNameBox,
         defaultSortOrder: 'descend',
         sorter: true,
-        render:(text,record)=>{
-          const textValue=text? text :'--';
+        render: (text, record) => {
+          const textValue = text ? text : '--';
           return <div title={record.stationName} className={styles.stationName}>{textValue}</div>
         }
       },
@@ -312,24 +317,24 @@ class PlanTable extends Component {
         // width: '80px',
         key: 'stationCapacity',
         sorter: true,
-        className:styles.stationCapacity,
+        className: styles.stationCapacity,
       },
       {
         title: '年份',
         dataIndex: 'planYear',
         key: 'planYear',
-        sorter: true,
-        className:styles.planYear
+        sorter: false, // 暂时不排序了
+        className: styles.planYear
       },
       {
         title: '年计划发电量(万kWh)',
         dataIndex: 'planPower',
         key: 'planPower',
-        className:styles.planPower,
+        className: styles.planPower,
         sorter: true,
-        render:(text,record)=>{
-          const textValue=text? text :'--';
-          return <div className={this.isEditing(record) ? styles.save :"" }>{textValue}</div>
+        render: (text, record) => {
+          const textValue = text ? text : '--';
+          return <div className={this.isEditing(record) ? styles.save : ""}>{textValue}</div>
         }
       },
       {
@@ -337,7 +342,7 @@ class PlanTable extends Component {
         dataIndex: 'yearPR',
         key: 'yearPR',
         editable: true,
-        className:"yearPR",
+        className: "yearPR",
         render: text => {
           const textValue = text ? text : '--';
           return (<span><Input defaultValue={textValue} disabled={true}/>%</span>)
@@ -347,7 +352,7 @@ class PlanTable extends Component {
         title: '操作',
         dataIndex: 'operation',
         key: 'operation',
-        className:styles.operation,
+        className: styles.operation,
         render: (text, record) => {
           const editable = this.isEditing(record);
           return (
@@ -376,49 +381,54 @@ class PlanTable extends Component {
       }];
     MonthColumn.unshift(5, 0);
     Array.prototype.splice.apply(columns, MonthColumn);
-    const columnList = columns.map((col) => {
+    let columnList = columns.map((col) => {
       if (!col.editable) {
         return col;
       }
-
       return {
         ...col,
-        onCell: record => ({
-          record,
-          dataIndex: col.dataIndex,
-          title: col.title,
-          editing: this.isEditing(record),
-        }),
+        onCell: record =>{
+          return ({
+            record,
+            dataIndex: col.dataIndex,
+            title: record[col.dataIndex],
+            editing: this.isEditing(record),
+          })
+        }
       };
     });
-    return columnList
+    return columnList;
   };
 
   _dealTableData = (planData) => { //将12个月的数据分开
-    let TabelKey = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-    let initPlanData = [];
-    if (planData.length > 0) {
-      initPlanData = planData.map((list, index) => {
-        for (let i = 0; i < 12; i++) {
-          list[TabelKey[i]] = (list.planMonthGens && list.planMonthGens[i]==="null"? "--": list.planMonthGens[i] )|| ""
-        }
-        if(list.onGridTime){
-          const onGridMonth = list.onGridTime.split('-')[1];
-          list.setGridTime = onGridMonth;
-        }
-        list.key = index;
-        return list;
-      })
+    if (planData.length < 0) {
+      return false
     }
+    let initPlanData = planData.map((list, index) => {
+      for (let i = 0; i < 12; i++) {
+        list[getDefaultMonth(i + 1)] = (list.planMonthGens && list.planMonthGens[i] === "null" ? "--" : list.planMonthGens[i]) || " "
+      }
+      if (list.onGridTime) {
+        const planYear = list.planYear;  // 生产计划的年份
+        const onGridYear = list.onGridTime.split('-')[0];
+        if (planYear - onGridYear === 0) {
+          list.setGridTime = list.onGridTime.split('-')[1];
+        }
+      }
+      list.key = index;
+      return list;
+    });
     this.setState({data: initPlanData})
   };
 
-  handlevaluechange = (row, month, value) => {
-    let initMonthValue = this.state.monthPowers;
-    initMonthValue[month] = value;
-    this.setState({
-      monthPowers: initMonthValue
-    });
+  handlevaluechange = (row, month, value, type) => {
+    if (type === 'month') {
+      let initMonthValue = this.state.monthPowers;
+      initMonthValue[month] = value;
+      this.setState({
+        monthPowers: initMonthValue
+      });
+    }
     const newData = [...this.state.data];
     const index = newData.findIndex(item => row.key === item.key);
     if (index > -1) {
@@ -431,9 +441,23 @@ class PlanTable extends Component {
     this.setState({data: newData})
   };
 
+  cancelWarningTip = () => {
+    this.setState({
+      showWarningTip: false,
+    })
+  };
+
+  confirmWarningTip = () => {
+    this.setState({showWarningTip: false});
+    const {currentClickKey} = this.state;
+    this.setState({editingKey: currentClickKey}, () => {
+      this.edit(currentClickKey);
+    });
+  };
 
   render() {
     const {pageSize, pageNum, totalNum, loading, planData,} = this.props;
+    const {showWarningTip, warningTipText} = this.state;
     const components = {
       body: {
         row: EditableFormRow,
@@ -444,6 +468,8 @@ class PlanTable extends Component {
     };
     return (
       <div className={styles.planList}>
+        {showWarningTip &&
+        <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText}/>}
         <div className={styles.planListTop}>
           <Button className={styles.addplan} onClick={this.onPlanAdd}>
             <Icon type="plus"/>

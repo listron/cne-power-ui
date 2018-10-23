@@ -1,11 +1,10 @@
 import React, {Component} from 'react';
-import {Input, Button, DatePicker} from 'antd';
+import { Button,Select} from 'antd';
 import styles from './planMain.scss';
 import PropTypes from 'prop-types';
-import moment from 'moment';
 import StationSelect from '../../../../Common/StationSelect';
 
-const {MonthPicker, RangePicker} = DatePicker;
+const Option = Select.Option;
 
 class planSearch extends Component {
   static propTypes = {
@@ -16,26 +15,18 @@ class planSearch extends Component {
     sortField: PropTypes.string,
     sortMethod: PropTypes.string,
     stationCodes: PropTypes.array,
-  }
+    planYearList: PropTypes.array,
+    changePlanStore: PropTypes.func,
+  };
 
   constructor(props) {
     super(props);
     this.state = {
-      open: false,
-      dateValue: '2018',
+      dateValue: '',
       stationCodes: [],
       selectStation :[],
     }
   }
-
-  onPanelChange = (value, mode) => {
-    let data = new Date(value._d).getFullYear()
-    this.setState({open: false, dateValue: data})
-  };
-
-  onOpenChange = () => {
-    this.setState({open: true})
-  };
 
   stationSelected = (rest) => {
     const stationCodes = rest.map((item, index) => {
@@ -47,11 +38,10 @@ class planSearch extends Component {
     });
   };
 
-
   selectValue = () => {
-    let {stationCodes} = this.state;
+    let {stationCodes,dateValue} = this.state;
     const params = {
-      year: this.state.dateValue,
+      year: dateValue || this.props.planYearList[0],
       stationCodes: stationCodes.length > 0 ? stationCodes: null,
       sortField: this.props.sortField,
       sortMethod: this.props.sortMethod,
@@ -61,24 +51,26 @@ class planSearch extends Component {
     this.props.getPlanList(params)
   };
 
+  selectYear=(e)=>{
+    this.setState({dateValue:e})
+    this.props.changePlanStore({planYear: e});
+  };
 
   render() {
-    const {stations} = this.props;
-    const {selectStation}=this.state;
-    const dateFormat = 'YYYY';
+    const {stations,planYearList} = this.props;
+    const {selectStation,dateValue}=this.state;
+    const currentYear=new Date().getFullYear().toString();
+    const index=planYearList.indexOf(currentYear);
+    const defaultValue=dateValue || (index >-1 ? currentYear : planYearList[0])
     return (
       <div className={styles.planSearch}>
         <div>
           <span className={styles.year}>年份选择</span>
-          <DatePicker
-            defaultValue={moment('2015', dateFormat)}
-            format={dateFormat}
-            mode='year'
-            open={this.state.open}
-            // value={this.state.dateValue?moment(this.state.dateValue, dateFormat):''}
-            onOpenChange={this.onOpenChange}
-            onPanelChange={(value, mode) => (this.onPanelChange(value, mode))}
-          />
+          <Select style={{width: 105}} onChange={this.selectYear} placeholder="--" value={defaultValue}>
+            {planYearList.map((year,index) => {
+              return <Option value={String(year)} key={year} selected>{year}</Option>
+            })}
+          </Select>
         </div>
         <div className={styles.topLeft}>
           <label className={styles.station}>电站选择</label>

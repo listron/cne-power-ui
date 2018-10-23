@@ -27,6 +27,7 @@ class PvStationTop extends Component {
       modalMonth: false,
       modalYear: false,
       editValue: '',
+      editInfoError: false,
     }
   }
 
@@ -41,19 +42,32 @@ class PvStationTop extends Component {
   }
 
   onChange = (e) => {
-    this.setState({ editValue: e.target.value });
+    const editValue = e.target.value;
+    this.setState({ 
+      editValue,
+      editInfoError: (!editValue || isNaN(editValue))?true: false,
+    });
   }
   onOk = () => {
     const { editData,stationCode } = this.props
     const { editValue } = this.state;
+    if(!editValue || isNaN(editValue)){
+      return;
+    }
     const editTime = moment().format('YYYY-MM-DD');
-    this.state.modalMonth ? editData({ monthGen: editValue, date:editTime, stationCode:stationCode }) : editData({ yearGen: editValue, date:editTime, stationCode:stationCode});
-    this.setState({ modalMonth: false, modalYear: false });
-    this.setState({ editValue: '' })
+    this.state.modalMonth ? editData({ 
+      monthGen: editValue, 
+      date:editTime, 
+      stationCode:stationCode 
+    }) : editData({ 
+      yearGen: editValue, 
+      date:editTime, 
+      stationCode:stationCode
+    });
+    this.setState({ modalMonth: false, modalYear: false, editValue: '' });
   }
   onCancel = () => {
-    this.setState({ modalMonth: false, modalYear: false });
-    this.setState({ editValue: '' })
+    this.setState({ modalMonth: false, modalYear: false, editValue: '' });
   }
   setModalMonth = () => {
     this.setState({ modalMonth: true });
@@ -95,16 +109,14 @@ class PvStationTop extends Component {
     });
 
     let stationStatusTime = singleStationData && singleStationData.stationStatus && singleStationData.stationStatus.stationStatusTime;
-    let localTime = stationStatusTime !== null && moment.utc(stationStatusTime).toDate();
+    let localTime = stationStatusTime && moment.utc(stationStatusTime).toDate();
     let tmpStationStatusTime = localTime && moment(localTime).fromNow();
+    
     const baseLinkPath = `/monitor/singleStation`;
     const pathAllStation = "/monitor/station";
     //权限控制
     const rightHandler = localStorage.getItem('rightHandler');
-
     const powerUpdate= rightHandler && rightHandler.split(',').includes('monitor_powerUpdate');
-
-
     return (
       <div className={styles.pvStationTop} >
         <div className={styles.pvStationTitle} >
@@ -152,7 +164,12 @@ class PvStationTop extends Component {
             <div className={styles.trueTimeUnit}>日发电量 万kWh</div>
           </div>
           <div>
-            <div className={styles.trueTimeValue}><div>{singleStationData && singleStationData.monthPower && parseFloat(singleStationData.monthPower).toFixed(4) || 0}  {powerUpdate ? <span className={styles.iconStyle} onClick={() => { this.setModalMonth() }} ><Icon type="form" theme="outlined" /></span> : ''}</div></div>
+            <div className={styles.trueTimeValue}>
+              <div>
+                {singleStationData && singleStationData.monthPower && parseFloat(singleStationData.monthPower).toFixed(4) || 0}
+                {powerUpdate ? <span className={styles.iconStyle} onClick={() => { this.setModalMonth() }} ><i className="iconfont icon-edit"></i></span> : ''}
+              </div>
+            </div>
             <div className={styles.trueTimeUnit}>月发电量 万kWh</div>
           </div>
           <Modal
@@ -166,13 +183,22 @@ class PvStationTop extends Component {
             maskClosable={false}
             
           >
-            {this.state.modalMonth ? <div>截止到今日，本月累计发电量  <Input value={editValue} placeholder="请输入" onChange={this.onChange} />  万kWh</div> : <div>截止到今日，本年累计发电量  <Input placeholder="请输入" value={editValue} onChange={this.onChange} />  万kWh</div>}
+            {this.state.modalMonth ? <div>
+              截止到今日，本月累计发电量  
+              <Input value={editValue} placeholder="请输入" onChange={this.onChange} />  万kWh
+              </div> : <div>
+                截止到今日，本年累计发电量  
+                <Input placeholder="请输入" value={editValue} onChange={this.onChange} />  万kWh
+              </div>}
 
           </Modal>
           <div className={styles.stationYearPlan}>
             <div className={styles.annualEnergyScale} >
               <div className={styles.trueTimeValue}>
-                <span>{singleStationData && singleStationData.yearPower && parseFloat(singleStationData.yearPower).toFixed(4) || 0}  {powerUpdate ? <span className={styles.iconStyle} onClick={() => { this.setModalYear() }}><Icon type="form" theme="outlined" /></span> : ''}</span>
+                <div>
+                  <span>{singleStationData && singleStationData.yearPower && parseFloat(singleStationData.yearPower).toFixed(4) || 0}</span>
+                  {powerUpdate ? <span className={styles.iconStyle} onClick={() => { this.setModalYear() }}><i className="iconfont icon-edit"></i></span> : ''}
+                </div>
                 <span>{singleStationData && singleStationData.yearPlanPower && parseFloat(singleStationData.yearPlanPower).toFixed(4) || 0}</span>
               </div>
               <Progress percent={singleStationData && singleStationData.yearPlanRate * 100 || 0} showInfo={false} strokeWidth={3} type="line" strokeColor="#199475" />

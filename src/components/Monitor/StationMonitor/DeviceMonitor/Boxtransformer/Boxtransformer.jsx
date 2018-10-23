@@ -20,6 +20,7 @@ class Boxtransformer extends Component {
     deviceAlarmList: PropTypes.array,
     devicePointData: PropTypes.array,
     singleStationData: PropTypes.object,
+    resetDeviceStore: PropTypes.func,
   }
 
   componentDidMount(){
@@ -61,6 +62,7 @@ class Boxtransformer extends Component {
   componentWillUnmount(){
     clearTimeout(this.timeOutId);
     clearTimeout(this.timeOutTenMin);
+    this.props.resetDeviceStore();
   }
 
   getData = (stationCode, deviceCode, deviceTypeCode) => {

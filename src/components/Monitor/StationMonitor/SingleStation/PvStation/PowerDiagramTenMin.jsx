@@ -85,7 +85,7 @@ class PowerDiagramTenMin extends Component {
             return <div></div>
           }
           let radi = '', thoryPower = '', actualPower = '', rate = '';
-          const radiObj = param.find(e=>e.seriesName === (intervalTime===0? '日曝辐值' : (intervalTime===1 ? '月辐射总量' : '年辐射总量')));
+          const radiObj = param.find(e=>e.seriesName === (intervalTime===0 ? '日曝辐值' : (intervalTime===1 ? '月辐射总量' : '年辐射总量')));
           const thoryPowerObj = param.find(e=>e.seriesName === '理论发电量');
           const actualPowerObj = param.find(e=>e.seriesName === '实际发电量');
           const tmpRadi = radiObj && radiObj.value && !isNaN(parseFloat(radiObj.value));
@@ -101,14 +101,22 @@ class PowerDiagramTenMin extends Component {
           if(tmpThoryPower){
             thoryPower = `<div style="padding-left: 5px;"><span style="display: inline-block; background:#c7ceb2;  width:5px; height:5px; border-radius:100%;"></span> 理论发电量: ${parseFloat(thoryPowerObj.value).toFixed(4) || 0}</div>`
           }
-          if(tmpActualPower && tmpThoryPower ){
+          if(tmpActualPower && tmpThoryPower && intervalTime!==0 ){
             const tmpRate = parseFloat(thoryPowerObj.value) === 0 ? '--':(parseFloat(actualPowerObj.value) / parseFloat(thoryPowerObj.value)*100).toFixed(2);
             rate = `<div style="padding-left: 15px;">完成率: ${tmpRate}%</div>`
           }
-          return `<div style="width: 150px; height: 120px;font-size:12px;line-height: 24px;background: #fff;box-shadow:0 1px 4px 0 rgba(0,0,0,0.20);border-radius:2px;">
-            <div  style="border-bottom: 1px solid #dfdfdf;padding-left: 5px;">${param[0] && param[0].name}</div>
-            ${radi}${actualPower}${thoryPower}${rate}
-          </div>`;
+          if(intervalTime!==0){
+            return `<div style="width: 150px; height: 120px;font-size:12px;line-height: 24px;background: #fff;box-shadow:0 1px 4px 0 rgba(0,0,0,0.20);border-radius:2px;">
+              <div  style="border-bottom: 1px solid #dfdfdf;padding-left: 5px;">${param[0] && param[0].name}</div>
+              ${radi}${actualPower}${thoryPower}${rate}
+            </div>`;
+          }else{
+            return `<div style="width: 150px; height: 100px;font-size:12px;line-height: 24px;background: #fff;box-shadow:0 1px 4px 0 rgba(0,0,0,0.20);border-radius:2px;">
+              <div  style="border-bottom: 1px solid #dfdfdf;padding-left: 5px;">${param[0] && param[0].name}</div>
+              ${radi}${actualPower}${thoryPower}${rate}
+            </div>`;
+          }
+          
         },
         extraCssText:'background: rgba(0,0,0,0);',
       },
