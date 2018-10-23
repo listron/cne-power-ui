@@ -56,14 +56,18 @@ class TimeSelect extends React.Component {
   };
   handlePanelChange = (value, mode) => {
     console.log(moment(value[0]).format('YYYY'), moment(value[1]).format('YYYY'));
-
+    const selectYear = [Number(moment(value[0]).format('YYYY')), Number(moment(value[1]).format('YYYY'))];
+    let rangeYear = [];
+    for (let i = selectYear[0]; i < selectYear[1]+1; i++) {
+      rangeYear.push(i.toString())
+    }
     this.setState({
       value,
       mode: [
         'year', 'year'
       ],
     });
-    this.props.changeAllStationStore({ year: [moment(value[0]).format('YYYY'), moment(value[1]).format('YYYY')] })
+    this.props.changeAllStationStore({ year: rangeYear })
 
   }
 
