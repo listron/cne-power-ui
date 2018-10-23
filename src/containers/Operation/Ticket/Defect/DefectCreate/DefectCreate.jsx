@@ -115,8 +115,8 @@ const mapStateToProps = (state) => ({
     deviceAreaItems: state.common.get('partitions'),
     deviceItems: state.common.get('devices'),
     commonList: state.operation.defect.get('commonList'),
-    sliceDeviceItems: state.common.get('sliceDevices'),
-    firstPartitionCode: state.common.get('slicePartitionCode'),
+    allSeries: state.common.get('allSeries'), // 所有光伏组件
+    firstPartitionCode: state.common.get('firstPartitionCode'),
    
 });
 

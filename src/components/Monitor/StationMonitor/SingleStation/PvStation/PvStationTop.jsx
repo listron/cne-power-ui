@@ -67,7 +67,12 @@ class PvStationTop extends Component {
     this.setState({ modalMonth: false, modalYear: false, editValue: '' });
   }
   onCancel = () => {
-    this.setState({ modalMonth: false, modalYear: false, editValue: '' });
+    this.setState({ 
+      modalMonth: false, 
+      modalYear: false, 
+      editValue: '',
+      editInfoError: false,
+    });
   }
   setModalMonth = () => {
     this.setState({ modalMonth: true });
@@ -95,7 +100,7 @@ class PvStationTop extends Component {
 
   render() {
     const { singleStationData, stationList } = this.props;
-    const { showStationList, editValue } = this.state;
+    const { showStationList, editValue, editInfoError } = this.state;
 
     const stationPower = singleStationData && singleStationData.stationPower;
     const stationCapacity = singleStationData && singleStationData.stationCapacity;
@@ -183,12 +188,14 @@ class PvStationTop extends Component {
             maskClosable={false}
             
           >
-            {this.state.modalMonth ? <div>
+            {this.state.modalMonth ? <div className={styles.editElecDataModal}>
               截止到今日，本月累计发电量  
               <Input value={editValue} placeholder="请输入" onChange={this.onChange} />  万kWh
+                {editInfoError && <div className={styles.warningInfo}>请输入数字</div>}
               </div> : <div>
                 截止到今日，本年累计发电量  
                 <Input placeholder="请输入" value={editValue} onChange={this.onChange} />  万kWh
+                {editInfoError && <div className={styles.warningInfo}>请输入数字</div>}
               </div>}
 
           </Modal>
