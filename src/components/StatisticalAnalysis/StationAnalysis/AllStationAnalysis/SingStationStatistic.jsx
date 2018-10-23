@@ -48,13 +48,13 @@ class AllStationStatistic extends React.Component {
 
     this.props.changeAllStationStore({ year: [`${currentYear}`], month: currentMonth })
 
-    getSingleStationYearTargetData(
-      {
-        stationCode,
-        year: time,
-        dateType,
-      }
-    )
+    // getSingleStationYearTargetData(
+    //   {
+    //     stationCode,
+    //     year: time,
+    //     dateType,
+    //   }
+    // )
 
 
 
@@ -140,7 +140,7 @@ class AllStationStatistic extends React.Component {
                   <ThreeYaxis
                     graphId={'yearPowerEfficency'}
                     // dateType={dateType}
-                    title='发电效率'
+                    title="发电效率"
                   />
                   <TableGraph />
                 </div>
@@ -191,7 +191,7 @@ class AllStationStatistic extends React.Component {
                     yAxisName={'辐射总量 (万kWh)'}
                     xAxisName={'辐射总量'}
                     dateType={dateType}
-                    title='光资源同比' />
+                    title="光资源同比" />
                   <TableGraph />
                 </div>
               </div>
@@ -202,7 +202,7 @@ class AllStationStatistic extends React.Component {
                     yAxisName={'损失电量 (万kWh)'}
                     xAxisName={'发电量'}
                     dateType={dateType}
-                    title='发电效率'
+                    title="发电效率"
                   />
                   <TableGraph />
                 </div>
@@ -252,7 +252,7 @@ class AllStationStatistic extends React.Component {
                 <div className={styles.dataGraph}>
                   <ThreeYaxis
                     graphId={'dayPowerEfficency'}
-                    title='发电效率'
+                    title="发电效率"
                   />
                   <TableGraph />
                 </div>

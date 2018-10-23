@@ -13,7 +13,7 @@ function* changeAllStationStore(action) {//存储payload指定参数，替换red
 function* getAllStationAvalibaData(action) {//综合指标年月判断
   const { payload } = action;
     const url = '/mock/api/v3/performance/comprehensive/dataavaliba';
-   // const url= `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getAllStationAvaliba}`
+   //const url= `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getAllStationAvaliba}`
     try{
       yield put({ type:allStationAnalysisAction.ALLSTATIONDATA_FETCH });
       const response = yield call(axios.post,url,payload);
@@ -32,8 +32,8 @@ function* getAllStationAvalibaData(action) {//综合指标年月判断
 }
 function* getAllStationStatisticData(action) {//月/年多电站计划完成、
   const { payload } = action;
-    const url = '/mock/api/v3/performance/comprehensive/plans';
-    //const url= `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getAllStationStatistic}`
+   // const url = '/mock/api/v3/performance/comprehensive/plans';
+    const url= `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getAllStationStatistic}`
     try{
       yield put({ type:allStationAnalysisAction.ALLSTATIONDATA_FETCH });
       const response = yield call(axios.post,url,payload);
@@ -52,8 +52,8 @@ function* getAllStationStatisticData(action) {//月/年多电站计划完成、
 }
 function* getAllStationStatisticTableData(action) {//月/年多电站table数据、
   const { payload } = action;
-    const url = '/mock/api/v3/performance/comprehensive/statistics';
-    //const url= `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getAllStationStatisticTable}`
+    //const url = '/mock/api/v3/performance/comprehensive/statistics';
+    const url= `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getAllStationStatisticTable}`
     try{
       yield put({ type:allStationAnalysisAction.ALLSTATIONDATA_FETCH });
       const response = yield call(axios.post,url,payload);
@@ -82,9 +82,9 @@ function* getAllStationStatisticTableData(action) {//月/年多电站table数据
 }
 function* getAllStationMonthBarData(action) {//月多电站bar数据、
   const { payload } = action;
-    const url = '/mock/api/v3/performance/comprehensive/chart/monthOrYear';
+    //const url = '/mock/api/v3/performance/comprehensive/chart/monthOrYear';
    
-    //const url= `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getAllStationMonthBar}`
+    const url= `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getAllStationMonthBar}`
     try{
       yield put({ type:allStationAnalysisAction.ALLSTATIONDATA_FETCH });
       const response = yield call(axios.post,url,payload);
@@ -103,8 +103,8 @@ function* getAllStationMonthBarData(action) {//月多电站bar数据、
 }
 function* getAllStationMonthPieData(action) {//月/年多电站pie数据、
   const { payload } = action;
-    const url = '/mock/api/v3/performance/comprehensive/piecharts/month/userId/year';
-    //const url= `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getAllStationMonthPie}`
+    //const url = '/mock/api/v3/performance/comprehensive/piecharts/month/userId/dataType/year';
+    const url= `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getAllStationMonthPie}/${payload.userId}/${payload.dataType}/${payload.year}`
     try{
       yield put({ type:allStationAnalysisAction.ALLSTATIONDATA_FETCH });
       const response = yield call(axios.get,url,payload);
@@ -123,28 +123,28 @@ function* getAllStationMonthPieData(action) {//月/年多电站pie数据、
       console.log(e);
     }
 }
-function* getAllStationYearBarData(action) {//年多电站图表
-  const { payload } = action;
-    //const url = '';
-    //const url= `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getAllStationYearBar}`
-    try{
-      yield put({ type:allStationAnalysisAction.ALLSTATIONDATA_FETCH });
-      const response = yield call(axios.post,url,payload);
-      if(response.data.code === '10000') {
-        yield put({
-          type: allStationAnalysisAction.GET_ALLSTATIONDATA_FETCH_SUCCESS,
-          payload: {
-            AllStationYearBarData: response.data.data,          
-          },
-        });     
-      }  
-    }catch(e){
-      console.log(e);
-    }
-}
+// function* getAllStationYearBarData(action) {//年多电站图表
+//   const { payload } = action;
+//     //const url = '';
+//     //const url= `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getAllStationYearBar}`
+//     try{
+//       yield put({ type:allStationAnalysisAction.ALLSTATIONDATA_FETCH });
+//       const response = yield call(axios.post,url,payload);
+//       if(response.data.code === '10000') {
+//         yield put({
+//           type: allStationAnalysisAction.GET_ALLSTATIONDATA_FETCH_SUCCESS,
+//           payload: {
+//             AllStationYearBarData: response.data.data,          
+//           },
+//         });     
+//       }  
+//     }catch(e){
+//       console.log(e);
+//     }
+// }
 function* getSingleStationStatisticData(action) {//月/年/日单电站计划完成情况
   const { payload } = action;
-    //const url = '';
+    const url = '/mock/api/v3/performance/comprehensive/power/year';
     //const url= `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getSingleStationStatistic}`
     try{
       yield put({ type:allStationAnalysisAction.ALLSTATIONDATA_FETCH });
@@ -163,7 +163,7 @@ function* getSingleStationStatisticData(action) {//月/年/日单电站计划完
 }
 function* getSingleStationTargetData(action) {//月/日单电站发电量分析/损失电量/购网电量/上网电量、
   const { payload } = action;
-    //const url = '';
+    const url = '/mock/api/v3/performance/comprehensive/power/monthsorYear';
     //const url= `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getSingleStationTarget}`
     try{
       yield put({ type:allStationAnalysisAction.ALLSTATIONDATA_FETCH });
@@ -182,7 +182,7 @@ function* getSingleStationTargetData(action) {//月/日单电站发电量分析/
 }
 function* getSingleStationMonthPieData(action) {//年单电站发电量分析/损失电量/购网电量/上网电量
   const { payload } = action;
-    //const url = '';
+    const url = '/mock/api/v3/performance/comprehensive/piechart/month/stationCode/year';
     //const url= `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getSingleStationMonthPie}`
     try{
       yield put({ type:allStationAnalysisAction.ALLSTATIONDATA_FETCH });
@@ -199,25 +199,25 @@ function* getSingleStationMonthPieData(action) {//年单电站发电量分析/�
       console.log(e);
     }
 }
-function* getSingleStationYearTargetData(action) {//月/年单电站计划完成率分析、
-  const { payload } = action;
-    const url = '/mock/api/v3/performance/comprehensive/plan';
-    //const url= `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getSingleStationYearTarget}`
-    try{
-      yield put({ type:allStationAnalysisAction.ALLSTATIONDATA_FETCH });
-      const response = yield call(axios.post,url,payload);
-      if(response.data.code === '10000') {
-        yield put({
-          type: allStationAnalysisAction.GET_ALLSTATIONDATA_FETCH_SUCCESS,
-          payload: {
-            SingleStationYearTargetData: response.data.data,          
-          },
-        });     
-      }  
-    }catch(e){
-      console.log(e);
-    }
-}
+// function* getSingleStationYearTargetData(action) {//月/年单电站计划完成率分析、
+//   const { payload } = action;
+//     const url = '/mock/api/v3/performance/comprehensive/plan';
+//     //const url= `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getSingleStationYearTarget}`
+//     try{
+//       yield put({ type:allStationAnalysisAction.ALLSTATIONDATA_FETCH });
+//       const response = yield call(axios.post,url,payload);
+//       if(response.data.code === '10000') {
+//         yield put({
+//           type: allStationAnalysisAction.GET_ALLSTATIONDATA_FETCH_SUCCESS,
+//           payload: {
+//             SingleStationYearTargetData: response.data.data,          
+//           },
+//         });     
+//       }  
+//     }catch(e){
+//       console.log(e);
+//     }
+// }
 function* getSingleStationPlanRateData(action) {//日单电站当月累计完成率、
   const { payload } = action;
     //const url = '';
@@ -322,11 +322,11 @@ export function* watchAllStationSaga() {
   yield takeLatest(allStationAnalysisAction.getAllStationStatisticTableData, getAllStationStatisticTableData);
   yield takeLatest(allStationAnalysisAction.getAllStationMonthBarData, getAllStationMonthBarData);
   yield takeLatest(allStationAnalysisAction.getAllStationMonthPieData, getAllStationMonthPieData);
-  yield takeLatest(allStationAnalysisAction.getAllStationYearBarData, getAllStationYearBarData);
+  //yield takeLatest(allStationAnalysisAction.getAllStationYearBarData, getAllStationYearBarData);
   yield takeLatest(allStationAnalysisAction.getSingleStationStatisticData, getSingleStationStatisticData);
   yield takeLatest(allStationAnalysisAction.getSingleStationTargetData, getSingleStationTargetData);
   yield takeLatest(allStationAnalysisAction.getSingleStationMonthPieData, getSingleStationMonthPieData);
-  yield takeLatest(allStationAnalysisAction.getSingleStationYearTargetData, getSingleStationYearTargetData);
+  //yield takeLatest(allStationAnalysisAction.getSingleStationYearTargetData, getSingleStationYearTargetData);
   yield takeLatest(allStationAnalysisAction.getSingleStationPlanRateData, getSingleStationPlanRateData);
   yield takeLatest(allStationAnalysisAction.getSingleStationDayCompleteRateData, getSingleStationDayCompleteRateData);
   yield takeLatest(allStationAnalysisAction.getSingleStationPvCompareData, getSingleStationPvCompareData);

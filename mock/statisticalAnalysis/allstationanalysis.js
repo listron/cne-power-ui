@@ -102,7 +102,7 @@ module.exports = [{
     delay: 1000,
     error: {}
   }, {
-    api: '/mock/api/v3/performance/comprehensive/piecharts/month/userId/year',
+    api: '/mock/api/v3/performance/comprehensive/piecharts/month/userId/dataType/year',
     method: 'get',
     response: {
       "code": "10000",
@@ -163,7 +163,7 @@ module.exports = [{
     delay: 1000,
     error: {}
   }, {
-    api: '/mock/api/v3/performance/comprehensive/chart/year',
+    api: '/mock/api/v3/performance/comprehensive/power/monthsorYear',
     method: 'post',
     response: {
       "code": "10000",
@@ -180,7 +180,7 @@ module.exports = [{
     delay: 1000,
     error: {}
   }, {
-    api: '/mock/api/v3/performance/comprehensive/piechart/month/{stationCode}/{year}',
+    api: '/mock/api/v3/performance/comprehensive/piechart/month/stationCode/year',
     method: 'get',
     response: {
       "code": "10000",
