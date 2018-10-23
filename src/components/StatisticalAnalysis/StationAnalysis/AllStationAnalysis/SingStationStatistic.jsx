@@ -49,13 +49,13 @@ class AllStationStatistic extends React.Component {
 
     this.props.changeAllStationStore({ year: [`${currentYear}`], month: currentMonth })
 
-    getSingleStationYearTargetData(
-      {
-        stationCode,
-        year: time,
-        dateType,
-      }
-    )
+    // getSingleStationYearTargetData(
+    //   {
+    //     stationCode,
+    //     year: time,
+    //     dateType,
+    //   }
+    // )
 
 
 
