@@ -1,12 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Link } from 'react-router-dom';
-import { Tabs, TimePicker, Icon } from 'antd';
+import { Tabs, Icon } from 'antd';
 import { withRouter } from 'react-router-dom';
 import styles from './allStationStatistic.scss';
 import BarGraph from './CommonGraph/BarGraph/index.js';
 import TargetStatisticPieGraph from './TargetStatisticPieGraph.jsx';
-
+import moment from 'moment';
 // import AlarmStatisticByType from './AlarmStatisticByType';
 import StationSelectModal from './StationSelectModal.jsx';
 import TimeSelect from '../../../Common/TimeSelect';
@@ -27,16 +27,9 @@ class AllStationStatistic extends React.Component {
     stations: PropTypes.object,
     stationType: PropTypes.string,
     stationCode: PropTypes.array,
-    pageSize: PropTypes.number,
-    pageNum: PropTypes.number,
-    orderField: PropTypes.string,
-    orderCommand: PropTypes.string,
-    startTime: PropTypes.string,
-    endTime: PropTypes.string,
-    history: PropTypes.object,
-    getStationsAlarmStatistic: PropTypes.func,
     showPage: PropTypes.string,
-    changeAlarmStatisticStore: PropTypes.func,
+    changeAllStationStore: PropTypes.func,
+    getSingleStationYearTargetData: PropTypes.func,
   }
   constructor(props) {
     super(props);
@@ -46,6 +39,25 @@ class AllStationStatistic extends React.Component {
     };
   }
   componentDidMount() {
+    const { year, dateType, stationCode, getSingleStationYearTargetData } = this.props;
+    console.log(stationCode);
+    const currentYear = moment().format('YYYY');
+    const curYear = Number(moment().format('YYYY'));
+    const currentMonth = Number(moment().format('MM'));
+    let time = year ? year : [`${currentYear}`];
+    //console.log(time);
+
+    this.props.changeAllStationStore({ year: [`${currentYear}`], month: currentMonth })
+
+    getSingleStationYearTargetData(
+      {
+        stationCode,
+        year: time,
+        dateType,
+      }
+    )
+
+
 
   }
 
@@ -78,6 +90,7 @@ class AllStationStatistic extends React.Component {
       </div>
     );
     const { stationType, stations, dateType, singleStationCode, singleAlarmSummary } = this.props;
+    console.log(stations.toJS());
     const { showStationSelect } = this.state;
     const stationItem = stations.find(station => station.get('stationCode').toString() === singleStationCode).toJS();
     //拿到单电站的类型，弄个数组，把对应的iconfont加上，在下面调用
@@ -109,7 +122,7 @@ class AllStationStatistic extends React.Component {
             </Link>
           </div>
           <TimeSelect text={'统计时间选择'} day={true} {...this.props} />
-          <PlanCompletionRate dateType={dateType} />
+          <PlanCompletionRate {...this.props} dateType={dateType} />
           <div className={styles.targetGraphContainer}>
             <div className={styles.bgStyle}>
               <div className={styles.fontStyle}>发电量分析</div>
