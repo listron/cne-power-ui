@@ -52,6 +52,7 @@ class AllStationAnalysis extends Component {
 
   render() {
     const { showPage, dateType, year } = this.props;
+    const userId = getCookie('userId');
     // console.log(year); 
     const breadCrumbData = {
       breadData: [
@@ -77,7 +78,7 @@ const mapStateToProps = (state) => {
   return {
     ...state.statisticalAnalysisReducer.allStationAnalysis.toJS(),
     stations: state.common.get('stations'),
-
+     userId : getCookie('userId'),
 
   }
 }
@@ -88,11 +89,11 @@ const mapDispatchToProps = (dispatch) => ({
   getAllStationStatisticTableData: payload => dispatch({ type: allStationAnalysisAction.getAllStationStatisticTableData, payload }),
   getAllStationMonthBarData: payload => dispatch({ type: allStationAnalysisAction.getAllStationMonthBarData, payload }),
   getAllStationMonthPieData: payload => dispatch({ type: allStationAnalysisAction.getAllStationMonthPieData, payload }),
-  getAllStationYearBarData: payload => dispatch({ type: allStationAnalysisAction.getAllStationYearBarData, payload }),
+  //getAllStationYearBarData: payload => dispatch({ type: allStationAnalysisAction.getAllStationYearBarData, payload }),
   getSingleStationStatisticData: payload => dispatch({ type: allStationAnalysisAction.getSingleStationStatisticData, payload }),
   getSingleStationTargetData: payload => dispatch({ type: allStationAnalysisAction.getSingleStationTargetData, payload }),
   getSingleStationMonthPieData: payload => dispatch({ type: allStationAnalysisAction.getSingleStationMonthPieData, payload }),
-  getSingleStationYearTargetData: payload => dispatch({ type: allStationAnalysisAction.getSingleStationYearTargetData, payload }),
+  //getSingleStationYearTargetData: payload => dispatch({ type: allStationAnalysisAction.getSingleStationYearTargetData, payload }),
   getSingleStationPlanRateData: payload => dispatch({ type: allStationAnalysisAction.getSingleStationPlanRateData, payload }),
   getSingleStationDayCompleteRateData: payload => dispatch({ type: allStationAnalysisAction.getSingleStationDayCompleteRateData, payload }),
   getSingleStationPvCompareData: payload => dispatch({ type: allStationAnalysisAction.getSingleStationPvCompareData, payload }),
