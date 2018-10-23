@@ -21,7 +21,6 @@ import CurrentMonthCompleteRate from './CommonGraph/CurrentMonthCompleteRate';
 
 
 
-
 class AllStationStatistic extends React.Component {
   static propTypes = {
     stations: PropTypes.object,
@@ -124,81 +123,159 @@ class AllStationStatistic extends React.Component {
           <TimeSelect text={'统计时间选择'} day={true} {...this.props} />
           <PlanCompletionRate {...this.props} dateType={dateType} />
           <div className={styles.targetGraphContainer}>
-            <div className={styles.bgStyle}>
-              <div className={styles.fontStyle}>发电量分析</div>
-            </div>
-            <div className={styles.tabContainer}>
-              <div className={styles.dataGraph}>
-                <BarGraph graphId={'power'} yAxisName={'发电量 (万kWh)'} xAxisName={'发电量'} dateType={dateType} title='光资源同比'/>
-                <TargetStatisticPieGraph pieGraphId={'powerPie'} />
-              </div>
-              {dateType === 'day' ? <CurrentMonthCompleteRate graphId={'CurrentMonthCompleteRate'} /> : ''}
-            </div>
-            {dateType === 'month' ?
-              <div>
-                <div className={styles.bgStyle}>
-                  <div className={styles.fontStyle}>计划完成率分析</div>
+            {dateType === 'year' && <div>
+              <div className={styles.tabContainer}>
+                <div className={styles.dataGraph}>
+                  <BarGraph
+                    graphId={'power'}
+                    yAxisName={'发电量 (万kWh)'}
+                    xAxisName={'发电量'}
+                    dateType={dateType}
+                  />
+                  <TableGraph />
                 </div>
-                <div className={styles.tabContainer}>
-                  <div className={styles.dataGraph}>
-                    <PlanCompleteRateAnalysisBar graphId={'planCompleteRate'} yAxisName={'发电量 (万kWh)'}  dateType={dateType} title={'计划完成率'}/>
-                    <TableGraph />
-                  </div>
-                </div>
-              </div> : ''}
-
-
-
-
-            <div className={styles.bgStyle}>
-              <div className={styles.fontStyle}>发电效率分析</div>
-            </div>
-            {dateType === 'month' ? <div className={styles.tabContainer}>
-              <div className={styles.dataGraph}>
-                <LightResource
-                  graphId={'MonthlightResource'}
-                  yAxisName={'辐射总量 (万kWh)'}
-                  xAxisName={'辐射总量'}
-                  dateType={dateType}
-                  title='光资源同比' />
-                <TableGraph />
               </div>
-            </div> : ''}
-            <div className={styles.tabContainer}>
-              <div className={styles.dataGraph}>
-                <ThreeYaxis
-                  graphId={'powerEfficency'}
-                  yAxisName={'损失电量 (万kWh)'}
-                  xAxisName={'发电量'}
-                  dateType={dateType}
-                  title='发电效率'
+              <div className={styles.tabContainer}>
+                <div className={styles.dataGraph}>
+                  <ThreeYaxis
+                    graphId={'yearPowerEfficency'}
+                    // dateType={dateType}
+                    title='发电效率'
+                  />
+                  <TableGraph />
+                </div>
+              </div>
+              <div className={styles.tabContainer}>
+                <div className={styles.dataGraph}>
+                  <BarGraph
+                    graphId={'yearLostPower'}
+                    yAxisName={'损失电量 (万kWh)'}
+                    xAxisName={'损失电量'}
+                    title={'损失电量同比'}
+                    dateType={dateType} />
+                  <TableGraph />
+                </div>
+              </div>
+            </div>}
+            {dateType === 'month' && <div>
+              <div className={styles.bgStyle}>
+                <div className={styles.fontStyle}>发电量分析</div>
+              </div>
+              <div className={styles.tabContainer}>
+                <div className={styles.dataGraph}>
+                  <BarGraph
+                    graphId={'power'}
+                    yAxisName={'发电量 (万kWh)'}
+                    xAxisName={'发电量'}
+                    dateType={dateType}
+                  />
+                  <TargetStatisticPieGraph pieGraphId={'powerPie'} />
+                </div>
+              </div>
+              <div className={styles.bgStyle}>
+                <div className={styles.fontStyle}>计划完成率分析</div>
+              </div>
+              <div className={styles.tabContainer}>
+                <div className={styles.dataGraph}>
+                  <PlanCompleteRateAnalysisBar graphId={'planCompleteRate'} yAxisName={'发电量 (万kWh)'} dateType={dateType} title={'计划完成率'} />
+                  <TableGraph />
+                </div>
+              </div>
+              <div className={styles.bgStyle}>
+                <div className={styles.fontStyle}>发电效率分析</div>
+              </div>
+              <div className={styles.tabContainer}>
+                <div className={styles.dataGraph}>
+                  <LightResource
+                    graphId={'MonthlightResource'}
+                    yAxisName={'辐射总量 (万kWh)'}
+                    xAxisName={'辐射总量'}
+                    dateType={dateType}
+                    title='光资源同比' />
+                  <TableGraph />
+                </div>
+              </div>
+              <div className={styles.tabContainer}>
+                <div className={styles.dataGraph}>
+                  <ThreeYaxis
+                    graphId={'powerEfficency'}
+                    yAxisName={'损失电量 (万kWh)'}
+                    xAxisName={'发电量'}
+                    dateType={dateType}
+                    title='发电效率'
+                  />
+                  <TableGraph />
+                </div>
+              </div>
+              <div className={styles.bgStyle}>
+                <div className={styles.fontStyle}>损失电量分析</div>
+              </div>
+              <div className={styles.tabContainer}>
+                <div className={styles.dataGraph}>
+                  <BarGraph
+                    graphId={'lostPower'}
+                    yAxisName={'损失电量 (万kWh)'}
+                    xAxisName={'损失电量'}
+                    title={'损失电量同比'}
+                    dateType={dateType} />
+                  <TableGraph />
+                </div>
+              </div>
+            </div>}
+            {dateType === 'day' && <div>
+              <div className={styles.bgStyle}>
+                <div className={styles.fontStyle}>发电量同比</div>
+              </div>
+              <div className={styles.tabContainer}>
+                <div className={styles.dataGraph}>
+                  <BarGraph
+                    graphId={'dayPower'}
+                    yAxisName={'发电量 (万kWh)'}
+                    xAxisName={'发电量'}
+                    dateType={dateType}
+                  />
+                  <TableGraph />
+                </div>
+              </div>
+              <div className={styles.tabContainer}>
+                <CurrentMonthCompleteRate
+                  graphId={'CurrentMonthCompleteRate'}
+                  title={'当月累计完成率'}
+                  yAxisName={'当月累计完成率'}
+                  xAxisName={'累计完成率'}
                 />
-                <TableGraph />
               </div>
-            </div>
-
-
-            <div className={styles.bgStyle}>
-              <div className={styles.fontStyle}>损失电量分析</div>
-            </div>
-            <div className={styles.tabContainer}>
-              <div className={styles.dataGraph}>
-                <BarGraph graphId={'lostPower'} yAxisName={'损失电量 (万kWh)'} xAxisName={'发电量'} dateType={dateType} />
-                <TableGraph />
+              <div className={styles.bgStyle}>
+                <div className={styles.fontStyle}>发电量效率分析</div>
               </div>
-            </div>
-
-
+              <div className={styles.tabContainer}>
+                <div className={styles.dataGraph}>
+                  <ThreeYaxis
+                    graphId={'dayPowerEfficency'}
+                    title='发电效率'
+                  />
+                  <TableGraph />
+                </div>
+              </div>
+              <div className={styles.bgStyle}>
+                <div className={styles.fontStyle}>损失电量分析</div>
+              </div>
+              <div className={styles.tabContainer}>
+                <div className={styles.dataGraph}>
+                  <BarGraph
+                    graphId={'dayLostPower'}
+                    yAxisName={'发电量 (万kWh)'}
+                    xAxisName={'损失电量同比'}
+                    dateType={dateType}
+                    title={'损失电量同比'}
+                  />
+                  <TableGraph />
+                </div>
+              </div>
+            </div>}
           </div>
-
         </div>
-
-
-
-
-
-
-      </div>
+      </div >
     );
   }
 }

@@ -2,6 +2,15 @@ import React from "react";
 import styles from './styles.scss';
 import echarts from 'echarts';
 import PropTypes from 'prop-types';
+/*
+  双柱单折线组件：
+  参数:
+  1  必填 -每一个图表的ID：graphId 不能重复
+  2. 选填 -第一个y轴的name  yAxisName
+  3. 选填 -判断颜色 以及tooltip 的提示框右侧的文字显示  xAxisName
+  4. 选填 -判断是单柱 单折线 还是双柱单折线 dateType  month|day 双柱单折线 year 单柱 单折线
+  5. 选填 -判断是否有title  title
+*/
 
 class BarGraph extends React.Component {
   static propTypes = {
@@ -17,10 +26,12 @@ class BarGraph extends React.Component {
   }
 
   componentDidMount() {
+    // const {graphId, yAxisName, xAxisName, dateType,title} = this.props;
     this.drawCharts(this.props);
   }
 
   componentWillReceiveProps(nextProps) {
+    // const {graphId, yAxisName, xAxisName, dateType,title} = nextProps;
     this.drawCharts(nextProps);
   }
 
@@ -28,22 +39,25 @@ class BarGraph extends React.Component {
     let result = '';
     switch (xAxisName) {
       case '发电量':
-        result = ['#dfdfdf','#199475','#f9b600'];
+        result = ['#dfdfdf', '#199475', '#f9b600'];
         break;
       case '辐射总量':
-        result = ['#dfdfdf','#a42b2c','#f9b600'];
+        result = ['#dfdfdf', '#a42b2c', '#f9b600'];
         break;
       case '等效利用小时数':
-        result = ['#dfdfdf','#ceebe0','#f9b600'];
+        result = ['#dfdfdf', '#ceebe0', '#f9b600'];
         break;
       case 'PR':
-        result = ['#dfdfdf','#3e97d1','#f9b600'];
+        result = ['#dfdfdf', '#3e97d1', '#f9b600'];
         break;
       case '损失电量':
-        result = ['#dfdfdf','#c7ceb2','#f9b600'];
+        result = ['#dfdfdf', '#c7ceb2', '#f9b600'];
         break;
       case '损失电量等效时':
-        result = ['#dfdfdf','#199475','#f9b600'];
+        result = ['#dfdfdf', '#199475', '#f9b600'];
+        break;
+      case '损失电量同比':
+        result = ['#dfdfdf', '#199475', '#f9b600'];
         break;
       default:
         result = '#ccc';
@@ -52,27 +66,37 @@ class BarGraph extends React.Component {
   };
 
 
-  tooltip=(params)=> {
+  tooltip = (params) => {
     return `<div  style="border-bottom: 1px solid #ccc;line-height:30px;width:180px;overflow:hidden;"> 
               <span style="float: left">${params[0].name} </span>
               <span style="float: right">${xAxisName} </span>
             </div>
-            <div> <span style="display: inline-block;width: 5px;height: 5px;border-radius: 50%;color: #ccc;"> ${params[0].seriesName} :</span> ${ params[0].value}</div>
-            <div><span style="display: inline-block;width: 5px;height: 5px;border-radius: 50%;color:${color}">${params[1].seriesName} </span> ${ params[1].value}</div>
-            <div><span style="display: inline-block;width: 5px;height: 5px;border-radius: 50%;color: #ccc;">${params[2].seriesName} </span> ${ params[2].value}</div>`
-  }
-
+            <div> <span style="display: inline-block;width: 5px;height: 5px;border-radius: 50%;color: #ccc;"> ${params[0].seriesName} :</span> ${params[0].value}</div>
+            <div><span style="display: inline-block;width: 5px;height: 5px;border-radius: 50%;color:${color}">${params[1].seriesName} </span> ${params[1].value}</div>
+            <div><span style="display: inline-block;width: 5px;height: 5px;border-radius: 50%;color: #ccc;">${params[2].seriesName} </span> ${params[2].value}</div>`
+  };
 
   drawCharts = (param) => {
-    const {graphId, yAxisName, xAxisName, dateType,barGraphThatYear,barGraphLastYear,barGraphmonth,barGraphYearOnYear,lastYear,currentYear} = param;
+    const {graphId, yAxisName, xAxisName, dateType,barGraphThatYear,barGraphLastYear,barGraphmonth,barGraphYearOnYear,lastYear,currentYear,title} = param;
     const targetChart = echarts.init(document.getElementById(graphId));
     let targetOption = {};
     targetChart.clear();
     targetChart.resize();
     let color = this.getColor(xAxisName);
-    if (dateType === 'month') {
+    if (dateType === 'month' || dateType === 'day') {
       targetOption = {
         color: color,
+        title: {
+          text: title,
+          show: title ? 'show' : false,
+          left: '23',
+          top: 'top',
+          textStyle: {
+            color: '#666',
+            fontSize: 14,
+            fontWeight: 'normal',
+          }
+        },
         tooltip: {
           trigger: 'axis',
           axisPointer: {
@@ -89,9 +113,9 @@ class BarGraph extends React.Component {
           },
           extraCssText: 'box-shadow: 0 0 3px rgba(0, 0, 0, 0.3)',
           formatter: function (params) {
-            let paramsItem='';
-            params.map((item,index)=>{
-              return paramsItem+= `<div> <span style="display: inline-block;width: 5px;height: 5px;border-radius: 50%;background:${color[index]};vertical-align: 3px;margin-right: 3px;"> </span> ${params[index].seriesName} :${ params[index].value}</div>`
+            let paramsItem = '';
+            params.forEach((item, index) => {
+              return paramsItem += `<div> <span style="display: inline-block;width: 5px;height: 5px;border-radius: 50%;background:${color[index]};vertical-align: 3px;margin-right: 3px;"> </span> ${params[index].seriesName} :${params[index].value}</div>`
             });
             return `<div  style="border-bottom: 1px solid #ccc;padding-bottom: 7px;margin-bottom: 7px;width:180px;overflow:hidden;"> <span style="float: left">${params[0].name} </span><span style="float: right">${xAxisName} </span>
             </div>${paramsItem}`
@@ -172,7 +196,7 @@ class BarGraph extends React.Component {
             splitLine: {
               show: false,
               lineStyle: {
-                color: '#999',
+                color: '#f1f1f1',
                 type: 'dashed'
               }
             },
@@ -201,7 +225,7 @@ class BarGraph extends React.Component {
             itemStyle: {
               barBorderRadius: 3,
             },
-            barWidth:5,
+            barWidth: 5,
           },
           {
             name: '同比',
@@ -209,7 +233,7 @@ class BarGraph extends React.Component {
             yAxisIndex: 1,
             // data: [2.0, 2.2, 3.3, 4.5, 6.3, 10.2, 20.3, 23.4, 23.0, 16.5, 12.0, 6.2],
             data: barGraphYearOnYear,
-            
+
           }
         ]
       };
@@ -226,9 +250,9 @@ class BarGraph extends React.Component {
           },
           backgroundColor: '#fff',
           formatter: function (params) {
-            let paramsItem='';
-            params.map((item,index)=>{
-              return paramsItem+= `<div> <span style="display: inline-block;width: 5px;height: 5px;border-radius: 50%;background:${color[index+1]};vertical-align: 3px;margin-right: 3px;"> </span> ${params[index].seriesName} :${ params[index].value}</div>`
+            let paramsItem = '';
+            params.forEach((item, index) => {
+              return paramsItem += `<div> <span style="display: inline-block;width: 5px;height: 5px;border-radius: 50%;background:${color[index + 1]};vertical-align: 3px;margin-right: 3px;"> </span> ${params[index].seriesName} :${params[index].value}</div>`
             });
             return `<div  style="border-bottom: 1px solid #ccc;padding-bottom: 7px;margin-bottom: 7px;width:180px;overflow:hidden;"> <span style="float: left">${params[0].name} </span>
             </div>
@@ -274,7 +298,7 @@ class BarGraph extends React.Component {
             nameTextStyle: {
               color: '#666',
             },
-           
+
             axisLabel: {
               color: '#666',
             },
@@ -287,7 +311,7 @@ class BarGraph extends React.Component {
             splitLine: {
               // show:false,
               lineStyle: {
-                color: '#666',
+                color: '##f1f1f1',
                 type: 'dashed'
               }
             },
@@ -298,7 +322,7 @@ class BarGraph extends React.Component {
             nameTextStyle: {
               color: '#666',
             },
-           
+
             axisLabel: {
               color: '#666',
               formatter: '{value} %'
@@ -336,7 +360,7 @@ class BarGraph extends React.Component {
             yAxisIndex: 1,
              data: [2.0, 2.2, 3.3, 4.5, 6.3, 10.2,],
            // data: barGraphYearOnYear,
-           
+
           }
         ]
       }
@@ -345,7 +369,7 @@ class BarGraph extends React.Component {
   };
 
   render() {
-    const {graphId, dateType} = this.props;
+    const { graphId, dateType } = this.props;
     return (
       <div id={graphId} className={styles.statisticGraph}> </div>
       // <div id={graphId} className={styles.statisticGraph} style={{width: '100%', height: "100%"}}></div>
