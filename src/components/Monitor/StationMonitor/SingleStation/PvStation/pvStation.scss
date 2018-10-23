@@ -625,3 +625,13 @@
     
   }
 }
+
+.editElecDataModal{
+  position: relative;
+  .warningInfo{
+    color: #f5222d;
+    position: absolute;
+    top: 30px;
+    left: 180px;
+  }
+}

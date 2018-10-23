@@ -9,12 +9,13 @@ import DeviceNameModal from './DeviceNameModal';
 class DeviceName extends Component {
   static propTypes = {
     disabled: PropTypes.bool,
+    allSeries: PropTypes.object,
     placeholder: PropTypes.string,
     stationName: PropTypes.string,//电站名称
     deviceType: PropTypes.string,//设备类型
+    deviceTypeCode: PropTypes.number, // 设备类型编码
     deviceAreaCode: PropTypes.string,//选中的设备分区编码
     value: PropTypes.string,//选中的设备编码
-    deviceTypeItems: PropTypes.object,//电站类型的选项
     deviceAreaItems: PropTypes.object,//电站分区选项
     deviceItems: PropTypes.object,//设备列表
     onChange: PropTypes.func,
@@ -62,33 +63,41 @@ class DeviceName extends Component {
     })
   }
 
-  getDeviceItems() {
-
+  getDeviceItems() { // 设备input下拉框数据
+    const { allSeries, deviceTypeCode } = this.props;
     let { filteredSelectedStation } = this.state;
     filteredSelectedStation = filteredSelectedStation.toJS();
-    if (filteredSelectedStation.length < 21) {
-      return filteredSelectedStation.map((item, index) => {
-        return (
-          <Option key={item.deviceCode} value={item.deviceCode}>
-            {item.deviceName}
-          </Option>
-        )
-      })
-    }
-    if (filteredSelectedStation.length > 20) {
-      const littleData = filteredSelectedStation.slice(0, 20);
-      return littleData.map((item, index) => {
-        return (
-          <Option key={item.deviceCode} value={item.deviceCode}>
-            {item.deviceName}
-          </Option>
-        )
-      }).concat([
+    const allSeriesArray = allSeries.toJS();
+    if(deviceTypeCode === 509 && allSeriesArray.length > 20){ // 组串=>根据allSeries展示
+      return allSeriesArray.slice(0, 20).map((item, index) => (
+        <Option key={item.deviceCode} value={item.deviceCode}>
+          {item.deviceName}
+        </Option>)).concat([
         <Option disabled key="all" className="show-all">
           点击图标查看所有设备
         </Option>,
       ])
-
+    }else if(deviceTypeCode === 509 && allSeriesArray.length <= 20){ // 所有组串不足20项
+      return allSeriesArray.map((item, index) => (
+        <Option key={item.deviceCode} value={item.deviceCode}>
+          {item.deviceName}
+        </Option>
+      ))
+    }else if(filteredSelectedStation.length > 20){ // 其他设备且超过20项
+      return filteredSelectedStation.slice(0, 20).map((item, index) => (
+        <Option key={item.deviceCode} value={item.deviceCode}>
+          {item.deviceName}
+        </Option>)).concat([
+        <Option disabled key="all" className="show-all">
+          点击图标查看所有设备
+        </Option>,
+      ])
+    }else{ // 其他设备，且不足20项
+      return filteredSelectedStation.map((item, index) => (
+        <Option key={item.deviceCode} value={item.deviceCode}>
+          {item.deviceName}
+        </Option>
+      ))
     }
   }
 
@@ -116,9 +125,6 @@ class DeviceName extends Component {
   render() {
     let options = this.getDeviceItems();
     const { checkedStationName } = this.state;
-    console.log(this.props.deviceItems);
-  
-
     return (
       <div className={styles.deviceName}>
         <AutoComplete
@@ -144,7 +150,7 @@ class DeviceName extends Component {
           onCancel={this.onCloseDeviceNameModal}
           loadDeviceList={this.props.loadDeviceList}
           onChangeArea={this.props.onChangeArea}
-         
+          deviceTypeCode={this.props.deviceTypeCode}
           firstPartitionCode={this.props.firstPartitionCode}
         />}
       </div>

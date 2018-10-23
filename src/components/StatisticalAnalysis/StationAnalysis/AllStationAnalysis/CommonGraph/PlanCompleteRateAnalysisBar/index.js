@@ -1,9 +1,15 @@
 import React from "react";
 //import styles from './styles.scss';
 import echarts from 'echarts';
-
+import PropTypes from 'prop-types';
 
 class PlanCompleteRateAnalysisBar extends React.Component {
+  static propTypes = {
+    graphId: PropTypes.string,
+    yAxisName: PropTypes.string,
+    xAxisName: PropTypes.string,
+    dateType: PropTypes.string,
+  };
   constructor(props, context) {
     super(props, context)
   }
@@ -170,7 +176,8 @@ class PlanCompleteRateAnalysisBar extends React.Component {
     const { graphId,dateType } = this.props;
     return (
 
-      <div id={graphId}  style={{ width: '55%', height: "300px", }}> </div>
+      // <div id={graphId}  style={{ width: '55%', height: "300px", }}> </div>
+      <div id={graphId}> </div>
 
     )
   }

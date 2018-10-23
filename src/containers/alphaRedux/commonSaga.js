@@ -141,27 +141,26 @@ function* getPartition(action) {
   }
 }
 
-//获取光伏组件下设备类型信息
-function* getSliceDevices(action) {
+function* getSliceDevices(action) { // 获取第一个分区光伏组件设备+所有光伏组件信息
   let getPartitionsUrl = Path.basePaths.APIBasePath + Path.commonPaths.getPartitions;
   let getDevicesUrl = Path.basePaths.APIBasePath + Path.commonPaths.getDevices;
   yield put({ type: commonAction.COMMON_FETCH });
   try {
-    const response = yield call(axios.get, getPartitionsUrl, { params: action.payload });
+    const response = yield call(axios.get, getPartitionsUrl, { params: action.payload }); // 所有分区信息
   
     if (response.data.code === '10000') {
-      const slicePartitionCode = response.data.data.partitions.slice(0, 1)[0].deviceCode;    
-      const [responseSliceDevice,devices] = yield all([
-        call(axios.get, getDevicesUrl, { params: { ...action.payload, partitionCode: slicePartitionCode } }),
+      const partitionCode = response.data.data.partitions[0].deviceCode; // 第一分区code   
+      const [devices,allSeries] = yield all([
+        call(axios.get, getDevicesUrl, { params: { ...action.payload, partitionCode } }),
         call(axios.get, getDevicesUrl, { params: action.payload })
       ]);
-      if(responseSliceDevice.data.code==='10000'&&devices.data.code==='10000'){
+      if(devices.data.code==='10000' && allSeries.data.code==='10000'){
         yield put({
           type: commonAction.GET_COMMON_FETCH_SUCCESS,
           payload: {
-            sliceDevices: responseSliceDevice.data.data,//光伏组件截取的设备数
+            allSeries, // 所有光伏组件
             devices: devices.data.data,
-            slicePartitionCode:response.data.data.partitions.slice(0, 1)[0].deviceCode,
+            firstPartitionCode:partitionCode,
             partitions: response.data.data.partitions
           }
         })

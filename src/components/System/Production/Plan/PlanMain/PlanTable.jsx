@@ -46,7 +46,11 @@ class EditableCell extends React.Component {
     const number = e.target.value;
     const pointLength = number.split('.')[1] ? number.split('.')[1].length : 0;
     if (isNaN(number) || pointLength > 2) {
-      message.config({top: 300,});
+      message.config({
+        top: 400,
+        duration: 2,
+        maxCount: 1,
+      })
       message.warning('只可以填写数字,可精确到小数点后两位');
       form.setFieldsValue({
         [dataIndex]: '',
@@ -62,6 +66,11 @@ class EditableCell extends React.Component {
     const number = e.target.value;
     const pointLength = number.split('.')[1] ? number.split('.')[1].length : 0;
     if (isNaN(number) || pointLength > 4) {
+      message.config({
+        top: 400,
+        duration: 2,
+        maxCount: 1,
+      })
       message.warning('只可以填写数字,可精确到小数点后四位');
       form.setFieldsValue({
         [dataIndex]: record[dataIndex],

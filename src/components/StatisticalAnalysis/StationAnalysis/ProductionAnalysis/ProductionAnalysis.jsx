@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import {  Select } from 'antd';
+import { Select } from 'antd';
 import styles from './productionAnalysis.scss';
 import StationSelect from '../../../Common/StationSelect';
 import TimeSelect from '../../../Common/TimeSelect';
@@ -8,6 +8,7 @@ import BarGraph from '../AllStationAnalysis/CommonGraph/BarGraph';
 import PlanCompleteRateAnalysisBar from '../AllStationAnalysis/CommonGraph/PlanCompleteRateAnalysisBar';
 import TableGraph from '../AllStationAnalysis/CommonGraph/TableGraph';
 import WaterWave from '../AllStationAnalysis/CommonGraph/PlanCompletionRate/WaterWave';
+import ThreeYaxis from '../AllStationAnalysis/CommonGraph/ThreeYaxis';
 
 
 class ProductionAnalysis extends React.Component {
@@ -35,20 +36,20 @@ class ProductionAnalysis extends React.Component {
   render() {
 
     const { stationType, stations, dateType } = this.props;
-
-
+    console.log(123,dateType )
+    
     return (
       <div className={styles.singleStationType}>
         <div className={styles.stationTimeFilter}>
           <div className={styles.leftFilter}>
             <div className={styles.stationFilter}>
               <span className={styles.text}>条件查询</span>
-                <StationSelect
-                  data={stations.toJS()}
-                  holderText={'电站名-区域'}
-                  // multiple={true}
-                  onChange={this.stationSelected}
-                />
+              <StationSelect
+                data={stations.toJS()}
+                holderText={'电站名-区域'}
+                // multiple={true}
+                onChange={this.stationSelected}
+              />
             </div>
             <TimeSelect day={true} {...this.props} />
           </div>
@@ -73,21 +74,21 @@ class ProductionAnalysis extends React.Component {
             <div className={styles.graph}>
               <WaterWave percent={30} height={100} />
               <div className={styles.stationTargetData}>
-               <div className={styles.stationTargetValue}>1333.30</div>
-               <div className={styles.stationTargetName}>{dateType==='month'||dateType==='year'?'年':'月'}实际发电量 万kWh</div>
-               </div>
-               <div className={styles.stationTargetData}>
-               <div className={styles.stationTargetValue}>1333.30</div>
-               <div className={styles.stationTargetName}>{dateType==='month'||dateType==='year'?'年':'月'}计划发电量 万kWh</div>
-               </div>
-               <div className={styles.stationTargetData}>
-               <div className={styles.stationTargetValue}>1333.30</div>
-               <div className={styles.stationTargetName}>上网电量 万kWh</div>
-               </div>
-               <div className={styles.stationTargetData}>
-               <div className={styles.stationTargetValue}>1333.30</div>
-               <div className={styles.stationTargetName}>购网电量 万kWh</div>
-               </div>
+                <div className={styles.stationTargetValue}>1333.30</div>
+                <div className={styles.stationTargetName}>{dateType === 'month' || dateType === 'year' ? '年' : '月'}实际发电量 万kWh</div>
+              </div>
+              <div className={styles.stationTargetData}>
+                <div className={styles.stationTargetValue}>1333.30</div>
+                <div className={styles.stationTargetName}>{dateType === 'month' || dateType === 'year' ? '年' : '月'}计划发电量 万kWh</div>
+              </div>
+              <div className={styles.stationTargetData}>
+                <div className={styles.stationTargetValue}>1333.30</div>
+                <div className={styles.stationTargetName}>上网电量 万kWh</div>
+              </div>
+              <div className={styles.stationTargetData}>
+                <div className={styles.stationTargetValue}>1333.30</div>
+                <div className={styles.stationTargetName}>购网电量 万kWh</div>
+              </div>
             </div>
 
           </div>
@@ -96,7 +97,12 @@ class ProductionAnalysis extends React.Component {
           <div className={styles.targetGraphContainer}>
             <div className={styles.tabContainer}>
               <div className={styles.dataGraph}>
-                <BarGraph graphId={'power'} yAxisName={'发电量 (万kWh)'} xAxisName={'发电量'} dateType={dateType} />
+                <BarGraph
+                  graphId={'power'}
+                  yAxisName={'发电量 (万kWh)'}
+                  xAxisName={'发电量'}
+                  title={dateType==='year'?'发电量环比':'发电量同比'}
+                  dateType={dateType} />
                 <TableGraph />
               </div>
             </div>
@@ -104,15 +110,26 @@ class ProductionAnalysis extends React.Component {
 
             {dateType === 'month' || dateType === 'year' ? <div className={styles.tabContainer}>
               <div className={styles.dataGraph}>
-                <PlanCompleteRateAnalysisBar graphId={'productionPlanCompleteRate'} yAxisName={'发电量 (万kWh)'} xAxisName={'发电量'} dateType={dateType} />
+                <ThreeYaxis
+                  graphId={'productionPlanCompleteRate'}
+                  // dateType={dateType}
+                  title="计划完成率"
+                />
                 <TableGraph />
               </div>
             </div> : ''}
 
             <div className={styles.tabContainer}>
-              <div className={styles.dataGraph}>
-                <BarGraph graphId={'buyPower'} yAxisName={'购网电量 (万kWh)'} xAxisName={'发电量'} dateType={dateType} />
-                <BarGraph graphId={'savePower'} yAxisName={'上网电量 (万kWh)'} xAxisName={'发电量'} dateType={dateType} />
+              <div className={styles.dataGraphs}>
+                <BarGraph 
+                graphId={'buyPower'} 
+                yAxisName={'购网电量 (万kWh)'} 
+                xAxisName={'购网电量'} 
+                dateType={dateType} 
+                title={dateType==='year'?'购网电量环比':'购网电量同比'}
+                />
+                <BarGraph graphId={'savePower'} yAxisName={'上网电量 (万kWh)'} xAxisName={'上网电量'} dateType={dateType}            title={dateType==='year'?'上网电量环比':'上网电量同比'}
+                />
               </div>
             </div>
 
