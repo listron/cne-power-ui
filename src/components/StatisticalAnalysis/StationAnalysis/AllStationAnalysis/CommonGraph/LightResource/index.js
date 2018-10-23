@@ -189,7 +189,8 @@ class LightResource extends React.Component {
   render() {
     const {graphId} = this.props;
     return (
-      <div id={graphId} style={{width: '55%', height: "300px"}}></div>
+      // <div id={graphId} style={{width: '55%', height: "300px"}}></div>
+      <div id={graphId}></div>
 
     )
   }
