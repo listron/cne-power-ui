@@ -68,10 +68,8 @@ function *getStationContrastDetail(action){ // 请求两电站列对比详细内
       const tmpStationContrastDetail = response.data.data;
       tmpStationContrastDetail.sort((a,b)=>{
         const stationCode = payload.stationCode;
-        console.log(stationCode);
-        return stationCode.indexOf(a.stationCode)-stationCode.indexOf(b.stationCode);
+        return stationCode.indexOf(parseInt(a.stationCodes))-stationCode.indexOf(parseInt(b.stationCodes));
       });
-      console.log(tmpStationContrastDetail);
       yield put({
         type: stationContrastAction.stationContrastFetchSuccess,
         payload:{

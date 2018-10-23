@@ -38,17 +38,18 @@ class StationStatisticList extends React.Component {
     //console.log(this.props);
     const { field, order } = sorter;
     const sortInfo = {
-      stationName: '电站名称',
-      region: '区域',
-      planGen: '计划发电量',
-      genValid: '实际发电量',
-      planGenRate: '计划完成率',
-      powerRate: '发电量同比',
-      resourceValue: '辐值总量',
-      resourceRate: '资源同比',
-      equivalentHours: '等效利用小时数',
-      pr: 'PR',
-      lostPower: '损失电量'
+      stationName: 'stationName',
+      region: 'region',
+      planGen: 'planGen',
+      genValid: 'genValid',
+      planGenRate: 'planGenRate',
+      powerRate: 'powerRate',
+      resourceValue: 'resourceValue',
+      resourceRate: 'resourceRate',
+      equivalentHours: 'equivalentHours',
+      pr: 'pr',
+      lostPower: 'lostPower',
+      limitPowerHours:'limitPowerHours'
     };
     const sort = sortInfo[field] ? sortInfo[field] : '';
     const sortType = order ? (sorter.order === 'descend' ? 'desc' : 'asc') : '';
@@ -144,7 +145,9 @@ class StationStatisticList extends React.Component {
   }
   selectYear() {
     const { AllStationAvalibaData } = this.props;
-    const currentYear = moment().format('YYYY');
+    let yearArray=AllStationAvalibaData.map((e,i)=>(Number(e.year))) ;
+    let currentYear=Math.max(...yearArray).toString();
+    //const currentYear = moment().format('YYYY');
     //console.log(currentYear);
     return (
       <Radio.Group defaultValue={currentYear} buttonStyle="solid" onChange={this.handleYearTime}>
