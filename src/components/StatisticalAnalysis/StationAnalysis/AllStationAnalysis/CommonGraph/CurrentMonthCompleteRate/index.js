@@ -1,195 +1,173 @@
 import React from "react";
-
 import echarts from 'echarts';
 
-
 class barGraph extends React.Component {
-  constructor(props, context) {
-    super(props, context)
-  }
+    constructor(props, context) {
+        super(props, context)
+    }
 
-  componentDidMount() {
-    const { graphId, yAxisName,xAxisName, dateType } = this.props;
-  
-      const targetChart = echarts.init(document.getElementById(graphId));
-    
-      const targetMonthOption = {
-        title: {
-            text: '堆叠区域图'
-        },
-        tooltip : {
-            trigger: 'axis',
-            axisPointer: {
-                type: 'cross',
-                label: {
-                    backgroundColor: '#6a7985'
+    componentDidMount() {
+        this.drawChart(this.props);
+        const { graphId, yAxisName, xAxisName, dateType } = this.props;
+
+    }
+    componentWillReceiveProps(nextProps) {
+        this.drawChart(nextProps);
+    }
+
+    drawChart = (params) => {
+        const { graphId, yAxisName, xAxisName, title } = params;
+        const targetChart = echarts.init(document.getElementById(graphId));
+        targetChart.resize();
+        let color = ['#a42b2c', '#199475', '#f9b600'];
+        const targetDayOption = {
+            title: {
+                text: title,
+                left: '23',
+                top: 'top',
+                show: title ? 'show' : false,
+                textStyle: {
+                    color: '#666',
+                    fontSize: 14,
+                    fontWeight: 'normal',
                 }
-            }
-        },
-        legend: {
-            data:['2017','2018','同比']
-        },
-        
-        grid: {
-            left: '3%',
-            right: '4%',
-            bottom: '3%',
-            containLabel: true
-        },
-        xAxis : [
-            {
-                type : 'category',
-                boundaryGap : false,
-                data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
-            }
-        ],
-        yAxis : [
-            {
-              type : 'value',    name: '当月累计完成率',
-            },{
-              type : 'value',    name: '同比',
-            }
-        ],
-        series : [
-            {
-                name:'2017',
-                type:'line',
-                lineStyle: {
-                  normal: {
-                      color: 'red',
-                      width: 2,
-                      type: 'dashed'
-                  }
-              },
-                // stack: '总量',
-              
-                data:[320, 332, 301, 334, 390, 330, 320]
-              
             },
-           
-            {
-                name:'2018',
-                type:'line',
-                // stack: '总量',
-                areaStyle: {normal: {}},
-                data:[820, 932, 901, 934, 1290, 1330, 1320]
-              
-            },
-            {
-                name:'同比',
-                type:'line',
-                // stack: '总量',
-                // label: {
-                //     normal: {
-                //         show: true,
-                //         position: 'top'
-                //     }
-                // },
-                // areaStyle: {normal: {}},
-                data:[120, 132, 101, 134, 90, 230, 210]
-            }
-        ]
-    };
-    
-      targetChart.setOption(targetMonthOption)
-      targetChart.resize();
-    
-  
-  }
-  componentWillReceiveProps(nextProps) {
-    const { graphId, yAxisName,xAxisName, dateType }  = nextProps;
-    if (dateType === 'day') {
-      const targetChart = echarts.init(document.getElementById(graphId));
-      const targetDayOption = {
-        title: {
-            text: '堆叠区域图'
-        },
-        tooltip : {
-            trigger: 'axis',
-            axisPointer: {
-                type: 'cross',
-                label: {
-                    backgroundColor: '#6a7985'
+            color: color,
+            tooltip: {
+              trigger: 'axis',
+                axisPointer: { type: 'cross' },
+                backgroundColor: '#fff',
+                padding: 10,
+                textStyle: {
+                    color: 'rgba(0, 0, 0, 0.65)',
+                    fontSize: 12,
+                },
+                extraCssText: 'box-shadow: 0 0 3px rgba(0, 0, 0, 0.3)',
+                formatter: function (params) {
+                    let paramsItem = '';
+                    params.forEach((item, index) => {
+                        return paramsItem += `<div> <span style="display: inline-block;width: 5px;height: 5px;border-radius: 50%;background:${color[index]};vertical-align: 3px;margin-right: 3px;"> </span> ${params[index].seriesName} :${params[index].value}</div>`
+                    });
+                    return `<div  style="border-bottom: 1px solid #ccc;padding-bottom: 7px;margin-bottom: 7px;width:180px;overflow:hidden;"> <span style="float: left">${params[0].name} </span><span style="float: right">${xAxisName} </span>
+                    </div>${paramsItem}`
                 }
-            }
-        },
-        legend: {
-            data:['2017','2018','同比']
-        },
-        
-        grid: {
-            left: '3%',
-            right: '4%',
-            bottom: '3%',
-            containLabel: true
-        },
-        xAxis : [
-            {
-                type : 'category',
-                boundaryGap : false,
-                data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
-            }
-        ],
-        yAxis : [
-            {
-              type : 'value',    name: '当月累计完成率',
-            },{
-              type : 'value',    name: '同比',
-            }
-        ],
-        series : [
-            {
-                name:'2017',
-                type:'line',
-                lineStyle: {
-                  normal: {
-                      color: 'red',
-                      width: 2,
-                      type: 'dashed'
-                  }
-              },
-                // stack: '总量',
-              
-                data:[320, 332, 301, 334, 390, 330, 320]
-              
             },
-           
-            {
-                name:'2018',
-                type:'line',
-                // stack: '总量',
-                areaStyle: {normal: {}},
-                data:[820, 932, 901, 934, 1290, 1330, 1320]
-              
+            legend: {
+                icon: 'circle',
+                left: 'center',
+                itemWidth: 5,
+                itemHeight: 5,
             },
-            {
-                name:'同比',
-                type:'line',
-                // stack: '总量',
-                // label: {
-                //     normal: {
-                //         show: true,
-                //         position: 'top'
-                //     }
-                // },
-                // areaStyle: {normal: {}},
-                data:[120, 132, 101, 134, 90, 230, 210]
-            }
-        ]
-    };
-      targetChart.setOption(targetDayOption)
-      targetChart.resize();
-    } 
-   
+            grid: {
+                left: '8%',
+                right: '8%',
+            },
+            xAxis: [
+                {
+                    type: 'category',
+                    data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+                    axisPointer: {
+                        type: 'shadow'
+                    },
+                    axisLine: {
+                        show: true,
+                        lineStyle: {
+                            color: '#dfdfdf',
+                        }
+                    },
+                    axisLabel: {
+                        color: '#666',
+                    },
+                    axisTick: {
+                        show: false,
+                    },
+                }
+            ],
+            yAxis: [
+                {
+                    type: 'value',
+                    name: yAxisName,
+                    nameTextStyle: {
+                        color: '#666',
+                    },
+                    // min: 0,
+                    splitNumber: 5,
+                    scale: true,
+                    axisLabel: {
+                        color: '#666',
+                    },
+                    axisLine: {
+                        show: false,
+                    },
+                    axisTick: {
+                        show: false,
+                    },
+                    splitLine: {
+                        // show:false,
+                        lineStyle: {
+                            color: '#666',
+                            type: 'dashed'
+                        }
+                    },
+                },
+                {
+                    type: 'value',
+                    name: '同比',
+                    nameTextStyle: {
+                        color: '#666',
+                    },
+                    axisLabel: {
+                        formatter: '{value} %',
+                        color: '#666',
+                    },
+                    axisTick: {
+                        show: false,
+                    },
+                    axisLine: {
+                        show: false,
+                    },
+                    splitLine: {
+                        show: false,
+                        lineStyle: {
+                            color: '#f1f1f1',
+                            type: 'dashed'
+                        }
+                    },
+                }
+            ],
+            series: [
+                {
+                    name: '2017年',
+                    type: 'line',
+                    lineStyle: {
+                        type: 'dashed'
+                    },
+                    data: [320, 332, 301, 334, 390, 330, 320]
+                },
+                {
+                    name: '2018年',
+                    type: 'line',
+                    areaStyle: {
+                        color: '#ceebe0'
+                    },
+                    data: [820, 932, 901, 934, 1290, 1330, 1320]
+                },
+                {
+                    name: '同比',
+                    type: 'line',
+                    yAxisIndex: 1,
+                    data: [120, 132, 101, 134, 90, 230, 210, 340]
+                }
+            ]
+        };
+        targetChart.setOption(targetDayOption)
 
-  }
-  render() {
-    const { graphId,dateType } = this.props;
-    return (
-
-      <div id={graphId} style={{ width: '100%', height: "300px", }}> </div>
-
-    )
-  }
+    }
+    render() {
+        const { graphId, dateType } = this.props;
+        return (
+            <div id={graphId} style={{ width: '100%', height: "300px", }}> </div>
+        )
+    }
 }
 export default (barGraph)
