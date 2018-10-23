@@ -40,12 +40,12 @@ class PlancompletionRate extends React.Component{
               return   <Radio.Button value={e.year} key={index}  style={{margin:'0 5px'}}>{e.year}年</Radio.Button>
              }else{
               return   <Radio.Button value={e.year} key={index} disabled style={{margin:'0 5px'}}>{e.year}年</Radio.Button>
-             }      
-           }      
-           )}        
+             }
+           }
+           )}
           </Radio.Group>
         )
-      
+
       }
     render(){
         const {dateType,AllStationStatisticData}=this.props;
@@ -119,7 +119,7 @@ class PlancompletionRate extends React.Component{
                <div className={styles.stationTargetValue}>{lostPowerRate}</div>
                <div className={styles.stationTargetName}>限电率</div>
                </div>
-               </div>    
+               </div>
                </div>
              </div>
 

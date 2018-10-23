@@ -145,7 +145,7 @@ function* getYearList(action){
     const response = yield call(axios.get, url);
     const planYearList=response.data.data.yearPlan;
     let selectYear='';
-    const currentYear=new Date().getFullYear();
+    const currentYear=new Date().getFullYear().toString();
     planYearList.indexOf(currentYear) > -1 ? selectYear=currentYear :selectYear=planYearList[0];
     const params = yield select(state => {
       return({//继续请求生产计划列表

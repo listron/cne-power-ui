@@ -14,7 +14,7 @@ import PlanCompletionRate from './CommonGraph/PlanCompletionRate';
 import TargetTabs from './TargetTabs.jsx';
 import ChangeStation from '../../../Monitor/StationMonitor/SingleStation/SingleStationCommon/ChangeStation';
 import TableGraph from './CommonGraph/TableGraph';
-import PowerEfficency from './CommonGraph/PowerEfficency';
+import ThreeYaxis from './CommonGraph/ThreeYaxis';
 import PlanCompleteRateAnalysisBar from './CommonGraph/PlanCompleteRateAnalysisBar';
 import LightResource from './CommonGraph/LightResource';
 import CurrentMonthCompleteRate from './CommonGraph/CurrentMonthCompleteRate';
@@ -124,22 +124,16 @@ class AllStationStatistic extends React.Component {
           <TimeSelect text={'统计时间选择'} day={true} {...this.props} />
           <PlanCompletionRate {...this.props} dateType={dateType} />
           <div className={styles.targetGraphContainer}>
-
-
             <div className={styles.bgStyle}>
               <div className={styles.fontStyle}>发电量分析</div>
             </div>
             <div className={styles.tabContainer}>
               <div className={styles.dataGraph}>
-                <BarGraph graphId={'power'} yAxisName={'发电量 (万kWh)'} xAxisName={'发电量'} dateType={dateType} />
+                <BarGraph graphId={'power'} yAxisName={'发电量 (万kWh)'} xAxisName={'发电量'} dateType={dateType} title='光资源同比'/>
                 <TargetStatisticPieGraph pieGraphId={'powerPie'} />
-
               </div>
               {dateType === 'day' ? <CurrentMonthCompleteRate graphId={'CurrentMonthCompleteRate'} /> : ''}
             </div>
-
-
-
             {dateType === 'month' ?
               <div>
                 <div className={styles.bgStyle}>
@@ -147,7 +141,7 @@ class AllStationStatistic extends React.Component {
                 </div>
                 <div className={styles.tabContainer}>
                   <div className={styles.dataGraph}>
-                    <PlanCompleteRateAnalysisBar graphId={'planCompleteRate'} yAxisName={'发电量 (万kWh)'} xAxisName={'发电量'} dateType={dateType} />
+                    <PlanCompleteRateAnalysisBar graphId={'planCompleteRate'} yAxisName={'发电量 (万kWh)'}  dateType={dateType} title={'计划完成率'}/>
                     <TableGraph />
                   </div>
                 </div>
@@ -159,16 +153,26 @@ class AllStationStatistic extends React.Component {
             <div className={styles.bgStyle}>
               <div className={styles.fontStyle}>发电效率分析</div>
             </div>
-
             {dateType === 'month' ? <div className={styles.tabContainer}>
               <div className={styles.dataGraph}>
-                <LightResource graphId={'MonthlightResource'} yAxisName={'辐射总量 (万kWh)'} xAxisName={'发电量'} dateType={dateType} />
+                <LightResource
+                  graphId={'MonthlightResource'}
+                  yAxisName={'辐射总量 (万kWh)'}
+                  xAxisName={'辐射总量'}
+                  dateType={dateType}
+                  title='光资源同比' />
                 <TableGraph />
               </div>
             </div> : ''}
             <div className={styles.tabContainer}>
               <div className={styles.dataGraph}>
-                <PowerEfficency graphId={'powerEfficency'} yAxisName={'损失电量 (万kWh)'} xAxisName={'发电量'} dateType={dateType} />
+                <ThreeYaxis
+                  graphId={'powerEfficency'}
+                  yAxisName={'损失电量 (万kWh)'}
+                  xAxisName={'发电量'}
+                  dateType={dateType}
+                  title='发电效率'
+                />
                 <TableGraph />
               </div>
             </div>

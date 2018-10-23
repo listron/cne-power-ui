@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 class TargetStatisticPieGraph extends React.Component {
   static propTypes = {
-    graphId: PropTypes.string,
+    pieGraphId: PropTypes.string,
   };
   constructor(props, context) {
     super(props, context)
@@ -15,6 +15,10 @@ class TargetStatisticPieGraph extends React.Component {
   }
   componentWillReceiveProps(nextProps) {
     this.drawChart(nextProps);
+  }
+
+  componentWillReceiveProps(){
+    this.drawChart(this.props);
   }
 
   drawChart = (param) => {
@@ -30,7 +34,7 @@ class TargetStatisticPieGraph extends React.Component {
         formatter: function (params) {
           if(params.seriesIndex===1){
             return '<div style="border-bottom: 1px solid #ccc; font-size: 12px;padding-bottom: 7px;margin-bottom: 7px;width:180px;overflow:hidden;">'+params.name+'</div>'
-              + '月计划发电量' + '：' + params.value + '万kwh<br>'
+              + '月发电量' + '：' + params.value + '万kwh<br>'
               + '年计划完成率' + '：' + params.percent + '%<br>'
           }
         },
@@ -45,7 +49,7 @@ class TargetStatisticPieGraph extends React.Component {
         {
           name: '发电量',
           type: 'pie',
-          color:['#199475','#eee'],
+          color:['#199475','#f1f1f1'],
           center: ['50%', '50%'],
           radius: [0, '30%'],
           label: {
@@ -68,7 +72,7 @@ class TargetStatisticPieGraph extends React.Component {
         {
           name: '发电量',
           type: 'pie',
-          color:['#a42b2c','#fbe6e3','#199475','#c7ceb2','#ceebe0','#f9b600'],
+          color:['#a42b2c','#d48265','#91c7af','#749f83','#ca8622','#bda29a','#546570','#6e7074','#9b9b9b','#ceebe0'],
           center: ['50%', '50%'],
           radius: ['40%', '55%'],
           label: {
@@ -103,7 +107,7 @@ class TargetStatisticPieGraph extends React.Component {
   render() {
     const {pieGraphId} = this.props;
     return (
-      <div id={pieGraphId} style={{width: '30%', height: "300px",}}></div>
+      <div id={pieGraphId}> </div>
     )
   }
 }
