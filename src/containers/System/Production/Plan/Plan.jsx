@@ -64,13 +64,13 @@ class Plan extends Component {
       sortMethod:'',
       pageNum: 1,//当前页号
       pageSize: 10,//每页容纳条数
-      year: '', // 选择年份 默认当前年
       stationCodes: null,
       loading:false,
       planStations:[],
       addPlanYear:'',
       continueAdd:false,
       addStationCodes:[],
+      planYear:'',
     });
   }
 

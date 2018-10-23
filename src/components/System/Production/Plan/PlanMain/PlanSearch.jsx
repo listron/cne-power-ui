@@ -59,7 +59,7 @@ class planSearch extends Component {
   render() {
     const {stations,planYearList} = this.props;
     const {selectStation,dateValue}=this.state;
-    const currentYear=new Date().getFullYear();
+    const currentYear=new Date().getFullYear().toString();
     const index=planYearList.indexOf(currentYear);
     const defaultValue=dateValue || (index >-1 ? currentYear : planYearList[0])
     return (
