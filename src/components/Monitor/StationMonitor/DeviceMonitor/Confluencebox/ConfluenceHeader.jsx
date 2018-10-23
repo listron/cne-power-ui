@@ -51,6 +51,7 @@ class ConfluenceHeader extends Component {
     const deviceStatusInfo = deviceStatusArray.find(e=>parseInt(e.statusCode) === parseInt(deviceStatus));
     const parentDeviceBaseInfo = PVStationTypes.find(e=>parentDevice && parentDevice.deviceTypeCode === e.deviceTypeCode);
     const parentDeviceTypeCode = parentDevice && parentDevice.deviceTypeCode; // 父级设备type
+    
     const parentDeviceCode = parentDevice && parentDevice.deviceCode; //父级设备code
     const sonDeviceBaseInfo = PVStationTypes.find(e=>sonDevice && `${sonDevice.deviceTypeCode}` === e.deviceTypeCode);
     const baseLinkPath = `/hidden/monitorDevice/${stationCode}/${deviceTypeCode}`;

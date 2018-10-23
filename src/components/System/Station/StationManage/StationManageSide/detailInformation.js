@@ -2,14 +2,14 @@
 import moment from 'moment';
 
 export const baseFun = (detailData) => { // 根据基础信息配置输出指定规则数据。
-  const longitude = (detailData.longitude || parseFloat(detailData.longitude) === 0)? `${detailData.longitude}°` : '--';
-  const latitude = (detailData.latitude || parseFloat(detailData.latitude) === 0)? `${detailData.latitude}°` : '--';
+  const longitude = (detailData.longitude || parseFloat(detailData.longitude) === 0)? `${parseFloat(detailData.longitude).toFixed(2)}°` : '--';
+  const latitude = (detailData.latitude || parseFloat(detailData.latitude) === 0)? `${parseFloat(detailData.latitude).toFixed(2)}°` : '--';
   let baseArray = [  // 基础信息配置 -- > 
     { name: '电站类型', value: detailData.stationType === 0?'风电':(detailData.stationType === 1?'光伏':''), }, // 实际调整
     { name: '电站位置', value: `${longitude}, ${latitude}`, }, // 特殊组合
     { name: '覆盖类型', value: detailData.coverType, },
     { name: '所属区域', value: detailData.regionName, },
-    { name: '所在省市', value: `${detailData.provinceName}${detailData.cityName}${detailData.countyName}` },
+    { name: '所在省市', value: `${detailData.provinceName||'--'}${detailData.cityName||'--'}${detailData.countyName||'--'}` },
     { name: '所属公司', value: detailData.affiliateCompany, },
     { name: '联系电话', value: detailData.stationContactNumber, },
     { name: '装机容量', value: detailData.stationCapacity, unit:'MW' },
