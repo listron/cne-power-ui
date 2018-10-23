@@ -240,6 +240,17 @@ class BarGraph extends React.Component {
     }
     if (dateType === 'year') {
       targetOption = {
+        title: {
+          text: title,
+          show: title ? 'show' : false,
+          left: '23',
+          top: 'top',
+          textStyle: {
+            color: '#666',
+            fontSize: 14,
+            fontWeight: 'normal',
+          }
+        },
         tooltip: {
           trigger: 'axis',
           axisPointer: {
@@ -369,7 +380,7 @@ class BarGraph extends React.Component {
   };
 
   render() {
-    const { graphId, dateType } = this.props;
+    const { graphId} = this.props;
     return (
       <div id={graphId} className={styles.statisticGraph}> </div>
       // <div id={graphId} className={styles.statisticGraph} style={{width: '100%', height: "100%"}}></div>
