@@ -129,7 +129,7 @@ class AllStationStatistic extends React.Component {
             </div>
             <div className={styles.tabContainer}>
               <div className={styles.dataGraph}>
-                <BarGraph graphId={'power'} yAxisName={'发电量 (万kWh)'} xAxisName={'发电量'} dateType={dateType} title='光资源同比'/>
+                <BarGraph graphId={'power'} yAxisName={'发电量 (万kWh)'} xAxisName={'发电量'} dateType={dateType} title="光资源同比" />
                 <TargetStatisticPieGraph pieGraphId={'powerPie'} />
               </div>
               {dateType === 'day' ? <CurrentMonthCompleteRate graphId={'CurrentMonthCompleteRate'} /> : ''}
@@ -160,7 +160,7 @@ class AllStationStatistic extends React.Component {
                   yAxisName={'辐射总量 (万kWh)'}
                   xAxisName={'辐射总量'}
                   dateType={dateType}
-                  title='光资源同比' />
+                  title="光资源同比" />
                 <TableGraph />
               </div>
             </div> : ''}
@@ -171,7 +171,7 @@ class AllStationStatistic extends React.Component {
                   yAxisName={'损失电量 (万kWh)'}
                   xAxisName={'发电量'}
                   dateType={dateType}
-                  title='发电效率'
+                  title="发电效率"
                 />
                 <TableGraph />
               </div>
