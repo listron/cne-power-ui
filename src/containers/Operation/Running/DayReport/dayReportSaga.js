@@ -175,7 +175,7 @@ function *uploadDayReport(action){ // 日报上报
         payload:{ ...params },
       });
     }else{
-      message.error(`日报上传失败!${response.data.message}`);
+      message.error(`日报上报失败!${response.data.message}`);
       yield put({
         type:  dayReportAction.changeDayReportStore,
         payload: { loading: false },
@@ -183,7 +183,7 @@ function *uploadDayReport(action){ // 日报上报
     }
   }catch(e){
     console.log(e);
-    message.error(`日报上传失败!`);
+    message.error(`日报上报失败!`);
     yield put({
       type:  dayReportAction.changeDayReportStore,
       payload: { loading: false },

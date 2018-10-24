@@ -1,5 +1,5 @@
 
-export const reportBasefun = (stationType, powerUnit='kWh') => { // 电站日报基础配置信息填写
+export const reportBasefun = (stationType = 0, powerUnit='kWh') => { // 电站日报基础配置信息填写
   // pointLength: 允许填写的小数点位数，根据电量单位判定，kWh为2位，万kWh为4位
   return [
     {
@@ -34,7 +34,7 @@ export const reportBasefun = (stationType, powerUnit='kWh') => { // 电站日报
   ]
 }
 
-export const reportEditFun = (stationType, powerUnit='kWh') => { // 电站编辑数据信息填写
+export const reportEditFun = (stationType = 0, powerUnit='kWh') => { // 电站编辑数据信息填写
   // pointLength: 允许填写的小数点位数，根据电量单位判定，kWh为2位，万kWh为4位
   return [
     {

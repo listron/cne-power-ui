@@ -71,7 +71,7 @@ class EachStationReport extends Component {
     abnormalParams && addAbnormalInfo(abnormalParams.dailyReport, abnormalParams.dailyDetailList);
   }
 
-  removeStation = () => { //删除，放弃日报上传。
+  removeStation = () => { //删除，放弃日报上报。
     const { stationInfo, totalInfoChange, dayReportTotalInfoArr } = this.props;
     const uploadParams = dayReportTotalInfoArr.filter(info=>info.dailyReport.stationCode !== stationInfo.stationCode);
     totalInfoChange(uploadParams);

@@ -66,11 +66,26 @@ class SideReportPage extends Component {
     this.setState({ dayReportTotalInfoArr })
   }
 
-  showBackTip = () => { // 提示框-提醒用户是否确认返回列表
-    this.setState({
-      showBackWarningTip: true,
-      warningTipText: '确认放弃日报上传?',
+  showBackTip = () => {
+    const { dayReportTotalInfoArr } = this.state;
+    const configInfoArr = reportBasefun();
+    const uploadInfoExist = dayReportTotalInfoArr.find(eachInfo => {
+      const eachStationInfo = eachInfo.dailyReport;
+      return configInfoArr.find(config => eachStationInfo[config.configName]);
     })
+    if(uploadInfoExist){ // 已有数据添加
+      this.setState({ // 提示框-提醒用户是否确认返回列表
+        showBackWarningTip: true,
+        warningTipText: '确认放弃日报上报?',
+      })
+    }else{ // 未添加数据任何数据
+      this.props.toChangeDayReportStore({ // 未进入上报数据页或未填写数据则直接返回列表页
+        showPage: 'list',
+        reportDay: moment().subtract(1,'day').format('YYYY-MM-DD'),
+        showReportInputList: false,
+        reportStation: [],
+      })
+    }
   }
 
   cancelWarningTip = () => { // 取消返回列表

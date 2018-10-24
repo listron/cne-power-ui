@@ -58,7 +58,7 @@ class DayReportMainList extends Component {
     });
   }
 
-  toUploadPage = () => { // 去上传页面
+  toUploadPage = () => { // 去上报页面
     this.props.toChangeDayReportStore({
       showPage: 'report',
     });
@@ -75,7 +75,7 @@ class DayReportMainList extends Component {
     })
   }
 
-  toUploadReport = (record, reportDay) => { // 去上传指定电站+日期日报
+  toUploadReport = (record, reportDay) => { // 去上报指定电站+日期日报
     // const reportDay = `${this.props.startTime}-${reportDay}`;
     const { stations } = this.props;
     this.props.getStationBaseReport({
@@ -97,25 +97,25 @@ class DayReportMainList extends Component {
         columns.push({
           title: moment(e.reportDate).format('DD'),
           dataIndex: e.reportDate,
-          render: (text, record) => { // available是否展示图表, isUpload是否已上传日报, status是否有异常信息未填。
+          render: (text, record) => { // available是否展示图表, isUpload是否已上报日报, status是否有异常信息未填。
             const stationDayInfo = record.dataList.find(info=>info.reportDate === e.reportDate);
             const { available, isUpload, status} = stationDayInfo;
             /*
-              available: true可以进行日报上传/查看, false不可进行任何操作-->直到选中日前一天日报数据上传
-              status: false未上传日报，true已上传。
+              available: true可以进行日报上报/查看, false不可进行任何操作-->直到选中日前一天日报数据上报
+              status: false未上报日报，true已上传。
               isUpload: false正常,true有未上报损失异常, 
             */  
             const showWarningIcon = status && isUpload; // 展示黄色图标提示未完成损失电量的填写。true展示，false不展示。
             if(!available){ // 不可上传
               return <span></span>
-            }else if(status){ // 已上传日报=>查看详情
-            // if(status){ // 已上传日报=>查看详情
+            }else if(status){ // 已上报日报=>查看详情
+            // if(status){ // 已上报日报=>查看详情
               return (<span onClick={()=>this.toReportDetail(record, e.reportDate)}>
                 <i className="iconfont icon-look">
                   {showWarningIcon && <i className="iconfont icon-alert_01" ></i>}
                 </i>
               </span>)
-            }else{ // 未上传日报 => 点击上传
+            }else{ // 未上报日报 => 点击上报
               return <span onClick={()=>this.toUploadReport(record, e.reportDate)}><Icon type="plus-circle" theme="outlined" /></span>
             }
           }
@@ -133,10 +133,10 @@ class DayReportMainList extends Component {
       columns.push(...emptyDateArr);
     }
     const content = (<ul>
-      <li>1. 支持单日批量和单个电站上传日报;</li>
-      <li>2. 单个电站的日报必须按照时间顺序逐一上传;</li>
-      <li>3. 单个电站当日日报只能上传一次;</li>
-      <li>4. 没发生的日期不支持上传日报;</li>
+      <li>1. 支持单日批量和单个电站上报日报;</li>
+      <li>2. 单个电站的日报必须按照时间顺序逐一上报;</li>
+      <li>3. 单个电站当日日报只能上报一次;</li>
+      <li>4. 没发生的日期不支持上报日报;</li>
       <li>5. 在日报详情页面中支持编辑修改。</li>
     </ul>)
     return (
@@ -146,7 +146,7 @@ class DayReportMainList extends Component {
             <div className={styles.operateDayReport} >
               <span>
                 <Button onClick={this.toUploadPage} icon="plus" className={styles.uploadReport} >
-                  <span>上传日报</span>
+                  <span>上报日报</span>
                 </Button>
                 <Tooltip placement="topLeft" title={content} overlayClassName={styles.toolInfo}>
                   <Icon type="info-circle" theme="outlined" className={styles.infoTooltip} />
