@@ -160,7 +160,7 @@ class LimitAddForm extends Component {
           <Col span={8}>
             <Form.Item label="日损失电量" {...formItemLayout1} >
               {getFieldDecorator('lostPower', {
-                rules: [{ required: true, message: '请填写正确的日损失电量!', pattern: /^(-?\d+)(\.\d+)?$/ }],
+                rules: [{ message: '请填写正确的日损失电量!', pattern: /^(-?\d+)(\.\d+)?$/ }],
               })(
                 <Input />
               )}
