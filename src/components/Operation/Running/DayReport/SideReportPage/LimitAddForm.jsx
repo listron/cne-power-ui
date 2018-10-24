@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './sideReportPage.scss';
 import { Form, Input, DatePicker, Button,Row,Col } from 'antd';
+import InputLimit from '../../../../Common/InputLimit';
 import moment from 'moment';
 
 class LimitAddForm extends Component {
@@ -159,7 +160,7 @@ class LimitAddForm extends Component {
           <Col span={8}>
             <Form.Item label="日损失电量" {...formItemLayout1} >
               {getFieldDecorator('lostPower', {
-                rules: [{ required: true, message: '请填写正确的日损失电量!', pattern: /^(-?\d+)(\.\d+)?$/ }],
+                rules: [{ message: '请填写正确的日损失电量!', pattern: /^(-?\d+)(\.\d+)?$/ }],
               })(
                 <Input />
               )}
@@ -173,13 +174,13 @@ class LimitAddForm extends Component {
               {getFieldDecorator('reason', {
                 rules: [{ required: true, message: '请填写原因说明' }],
               })(
-                <Input.TextArea className={styles.reasonArea} />
+                <InputLimit size={30} className={styles.reasonArea} numberIsShow={false} width={520} />
               )}
               <span className={styles.lostInputTip}>({getFieldValue('reason')?getFieldValue('reason').length:0}/30)</span>
             </Form.Item>
           </Col>
         </Row>
-        <Row className={styles.reasonBox}>
+        {/* <Row className={styles.reasonBox}>
           <Col span={8}>
             <Form.Item label="处理进展及说明" {...formItemLayout1} >
               {getFieldDecorator('process', {
@@ -190,7 +191,7 @@ class LimitAddForm extends Component {
               <span className={styles.lostInputTip}>({getFieldValue('process')?getFieldValue('process').length:0}/30)</span>
             </Form.Item>
           </Col>
-        </Row>
+        </Row> */}
         <Row style={{marginTop: '0px'}}>
           <Col span={8}>
             <Form.Item {...tailFormItemLayout}>
