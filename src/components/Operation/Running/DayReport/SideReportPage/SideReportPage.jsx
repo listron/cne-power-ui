@@ -130,11 +130,11 @@ class SideReportPage extends Component {
       const eachStationInfo = info.dailyReport;
       const eachInfoError = tmpReportBaseInfo.find(config => { 
         const configRequired = tmpRequireTargetArr.includes(config.configName); // 必填数据项
-        const requiredValue = eachStationInfo[config.configName];
+        const eachReportValue = eachStationInfo[config.configName]; // 每一项指标数据
         const maxPointLength = config.pointLength; // 指定的最大小数点位数
-        const paramPointLength = (requiredValue && requiredValue.split('.')[1]) ? requiredValue.split('.')[1].length : 0;
-        const dataFormatError = isNaN(requiredValue) || (maxPointLength && paramPointLength > maxPointLength); // 数据格式错误;
-        if(configRequired && !requiredValue && requiredValue !== 0){ // 必填项未填
+        const paramPointLength = (eachReportValue && eachReportValue.split('.')[1]) ? eachReportValue.split('.')[1].length : 0;
+        const dataFormatError = (eachReportValue && isNaN(eachReportValue)) || paramPointLength > maxPointLength; // 数据格式错误;
+        if(configRequired && !eachReportValue && eachReportValue !== 0){ // 必填项未填
           errorText = `${eachStationInfo.stationName}${config.configText}未填写!`;
           return true;
         }else if(dataFormatError){ // 填写数据不规范
@@ -148,7 +148,6 @@ class SideReportPage extends Component {
     if(totalInfoError){ // 数据错误存在，提示
       this.messageWarning(errorText);
     }else{ // 数据无误，调整数据结构并提交
-      console.log(dayReportTotalInfoArr)
       const uploadInfo = dayReportTotalInfoArr.map(e=>{
         let { dailyReport, dailyDetailList } = e;
         delete dailyReport.warning;
