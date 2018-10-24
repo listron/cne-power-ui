@@ -45,7 +45,7 @@ class LimitAddForm extends Component {
         const limitInfo = getFieldsValue();
         limitInfo.id = `limitAdd${limitGenList.length}`;
         limitInfo.handle = true;
-        limitInfo.deviceName = limitInfo.deviceName.trim().replace('/\s+/g',',');
+        limitInfo.deviceName = limitInfo.deviceName.trim().replace(/\s+/g,',');
         limitInfo.type = 0;  // 限电type 0 => 后台接收。
         changeLimitList([...limitGenList,limitInfo], true);
       }
@@ -57,7 +57,7 @@ class LimitAddForm extends Component {
     form.validateFields((err, values) => {
       if (!err) {
         const { deviceName } = values;
-        const tmpDeviceName = deviceName.trim().replace('/\s+/g',',');
+        const tmpDeviceName = deviceName.trim().replace(/\s+/g,',');
         findDeviceExist({
           deviceName: tmpDeviceName,
           stationCode,
