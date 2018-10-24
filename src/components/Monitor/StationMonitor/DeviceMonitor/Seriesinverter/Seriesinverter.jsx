@@ -103,7 +103,7 @@ class Seriesinverter extends Component {
         name: singleStationData && singleStationData.stationName || '',
         path: `/monitor/singleStation/${stationCode}`,
       },{
-        name: '逆变器',
+        name: deviceTypeCode==='201'?'集中式逆变器': '组串式逆变器',
       }],
       iconName: 'iconfont icon-nb'
     };
