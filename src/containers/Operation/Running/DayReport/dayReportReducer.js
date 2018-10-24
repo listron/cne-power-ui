@@ -10,7 +10,7 @@ const initState = Immutable.fromJS({
   pageNum: 1,
   stationNameSort: 0, // 电站的默认排序方式;1 升序 0 降序，默认降序；
   stationType: 2, // 查询日报的电站类型;
-  regionCode: null, // 选中的上报区域;
+  regionName: null, // 选中的上报区域;
   
   reportDay: '', // 选中的上报日报的日期;
   reportStation: [], // 选中的上报日报的电站;

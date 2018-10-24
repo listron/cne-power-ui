@@ -17,7 +17,7 @@ class DayReportMainList extends Component {
     pageNum: PropTypes.number, 
     totalNum: PropTypes.number,
     stationNameSort: PropTypes.number, 
-    regionCode: PropTypes.number,
+    regionName: PropTypes.string,
     startTime: PropTypes.string,
     dayReportList: PropTypes.array,
     stations: PropTypes.array,
@@ -33,12 +33,12 @@ class DayReportMainList extends Component {
   }
   
   onPaginationChange = ({ currentPage, pageSize }) => { // 分页器
-    const { getDayReportList, stationType, stationNameSort, startTime, regionCode  } = this.props;
+    const { getDayReportList, stationType, stationNameSort, startTime, regionName  } = this.props;
     getDayReportList({
       startTime,
       pageSize, 
       pageNum: currentPage,
-      regionCode,
+      regionName,
       stationType,
       stationNameSort,
     });
@@ -47,12 +47,12 @@ class DayReportMainList extends Component {
   tableChange = (pagination, filter, sorter) => { // 部门排序
     const { order } = sorter;
     const stationNameSort = order ? (order === 'ascend' ? 1 : 0) : 0;
-    const { getDayReportList, pageSize, pageNum, stationType, startTime, regionCode  } = this.props;
+    const { getDayReportList, pageSize, pageNum, stationType, startTime, regionName  } = this.props;
     getDayReportList({
       startTime,
       pageSize, 
       pageNum,
-      regionCode,
+      regionName,
       stationType,
       stationNameSort,
     });

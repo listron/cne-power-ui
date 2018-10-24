@@ -162,7 +162,7 @@ function *uploadDayReport(action){ // 日报上报
         pageNum: state.operation.dayReport.get('pageNum'),
         stationNameSort: state.operation.dayReport.get('stationNameSort'),
         stationType: state.operation.dayReport.get('stationType'),
-        regionCode: state.operation.dayReport.get('regionCode')
+        regionName: state.operation.dayReport.get('regionName')
       }));
       yield put({
         type:  dayReportAction.changeDayReportStore,
@@ -245,7 +245,7 @@ function *dayReportUpdate(action){ // 日报编辑
         pageNum: state.operation.dayReport.get('pageNum'),
         stationNameSort: state.operation.dayReport.get('stationNameSort'),
         stationType: state.operation.dayReport.get('stationType'),
-        regionCode: state.operation.dayReport.get('regionCode')
+        regionName: state.operation.dayReport.get('regionName')
       }));
       yield put({ // 请求请求详情页数据
         type: dayReportAction.dayReportDetail,
