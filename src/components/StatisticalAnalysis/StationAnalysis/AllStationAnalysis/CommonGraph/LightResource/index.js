@@ -22,10 +22,10 @@ class LightResource extends React.Component {
   componentWillReceiveProps(nextProps) {
     this.drawChart(nextProps);
   }
-
-  drawChart = (params) => {
-    const {graphId, yAxisName, xAxisName,title} = params;
-    console.log('title',title);
+  
+  drawChart = (params) => { 
+    const {graphId, yAxisName, xAxisName,title,currentYear,lastYear,lightCompareDataThatYear,lightCompareDataLastYear,lightCompareDataLight,lightCompareDataPower,lightCompareDataDate} = params;
+    //console.log('title',title);
     const targetChart = echarts.init(document.getElementById(graphId));
     let targetMonthOption={};
     targetChart.resize();
@@ -73,7 +73,8 @@ class LightResource extends React.Component {
       },
       xAxis: {
         type: 'category',
-        data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+        data: lightCompareDataDate,
+        // data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
         axisPointer: {
           type: 'shadow'
         },
@@ -149,28 +150,33 @@ class LightResource extends React.Component {
       ],
       series: [
         {
-          name: '2017年',
+          name: lastYear,
+          // name: '2017年',
           type: 'bar',
           itemStyle: {
             barBorderRadius: 3,
           },
           barWidth: 5,
-          data: [2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4, 3.3]
+          data:lightCompareDataLastYear
+          // data: [2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4, 3.3]
         },
         {
-          name: '2018年',
+          name: currentYear,
+          // name: '2018年',
           type: 'bar',
           itemStyle: {
             barBorderRadius: 3,
           },
           barWidth: 5,
-          data: [2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0, 2.3]
+          data: lightCompareDataThatYear
+          // data: [2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0, 2.3]
         },
         {
           name: '辐射总量同比',
           type: 'line',
           yAxisIndex: 1,
-          data: [2.0, 2.2, 3.3, 4.5, 6.3, 10.2, 20.3, 23.4, 23.0, 16.5, 12.0, 6.2],
+          data: lightCompareDataLight,
+          // data: [2.0, 2.2, 3.3, 4.5, 6.3, 10.2, 20.3, 23.4, 23.0, 16.5, 12.0, 6.2],
           lineStyle:{
             type:'dotted'
           }
@@ -178,7 +184,8 @@ class LightResource extends React.Component {
           name: '发电量同比',
           type: 'line',
           yAxisIndex: 1,
-          data: [2.0, 2.2, 6.3, 4.5, 6.3, 4.2, 10.3, 23.4, 10.0, 16.5, 12.0, 6.2]
+          data: lightCompareDataPower
+          // data: [2.0, 2.2, 6.3, 4.5, 6.3, 4.2, 10.3, 23.4, 10.0, 16.5, 12.0, 6.2]
         }
       ]
     };
