@@ -149,7 +149,7 @@ class DayReportMainList extends Component {
                   <span>上传日报</span>
                 </Button>
                 <Tooltip placement="topLeft" title={content} overlayClassName={styles.toolInfo}>
-                  <Icon type="exclamation-circle" theme="outlined" className={styles.infoTooltip} />
+                  <Icon type="info-circle" theme="outlined" className={styles.infoTooltip} />
                 </Tooltip>
               </span>
               <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalNum} onPaginationChange={this.onPaginationChange} />
