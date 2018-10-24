@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import styles from './sideReportPage.scss';
 import { Form, Input, DatePicker, Button,Row,Col } from 'antd';
 import { Select } from 'antd';
+import InputLimit from '../../../../Common/InputLimit';
 const { Option } = Select;
 
 class LostAddForm extends Component {
@@ -48,7 +49,7 @@ class LostAddForm extends Component {
         lostInfo.id = `lostAdd${faultGenList.length}`;
         lostInfo.handle = true;
         lostInfo.faultName = lostGenTypes.find(e=>e.id === lostInfo.faultId).faultName;
-        lostInfo.deviceName = lostInfo.deviceName.trim().replace('/\s+/g',',');
+        lostInfo.deviceName = lostInfo.deviceName.trim().replace(/\s+/g,',');
         lostInfo.type = 1;  // 损失type 1 => 后台接收。
         changeFaultList([...faultGenList,lostInfo], true);
       }
@@ -60,7 +61,7 @@ class LostAddForm extends Component {
     form.validateFields((err, values) => {
       if (!err) {
         const { deviceName } = values;
-        const tmpDeviceName = deviceName.trim().replace('/\s+/g',',');
+        const tmpDeviceName = deviceName.trim().replace(/\s+/g,',');
         findDeviceExist({
           deviceName: tmpDeviceName,
           stationCode,
@@ -164,7 +165,7 @@ class LostAddForm extends Component {
           <Col span={8}>
             <Form.Item label="日损失电量" {...formItemLayout1} >
               {getFieldDecorator('lostPower', {
-                rules: [{ required: true, message: '请填写正确的日损失电量数字!',pattern: /^(-?\d+)(\.\d+)?$/ }],
+                rules: [{ message: '请填写正确的日损失电量数字!',pattern: /^(-?\d+)(\.\d+)?$/ }],
               })(
                 <Input />
               )}
@@ -178,7 +179,7 @@ class LostAddForm extends Component {
               {getFieldDecorator('reason', {
                 rules: [{ required: true, message: '请填写原因说明' }],
               })(
-                <Input.TextArea className={styles.reasonArea} />
+                <InputLimit size={30} className={styles.reasonArea} numberIsShow={false} width={520} />
               )}
               <span className={styles.lostInputTip}>({getFieldValue('reason')?getFieldValue('reason').length:0}/30)</span>
             </Form.Item>
@@ -190,7 +191,7 @@ class LostAddForm extends Component {
               {getFieldDecorator('process', {
                 rules: [{ required: true, message: '请填写处理进展及说明' }],
               })(
-                <Input.TextArea className={styles.reasonArea}  />
+                <InputLimit size={30} className={styles.reasonArea} numberIsShow={false} width={520} />
               )}
               <span className={styles.lostInputTip}>({getFieldValue('process')?getFieldValue('process').length:0}/30)</span>
             </Form.Item>
