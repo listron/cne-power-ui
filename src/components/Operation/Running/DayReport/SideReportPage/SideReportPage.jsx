@@ -66,11 +66,26 @@ class SideReportPage extends Component {
     this.setState({ dayReportTotalInfoArr })
   }
 
-  showBackTip = () => { // 提示框-提醒用户是否确认返回列表
-    this.setState({
-      showBackWarningTip: true,
-      warningTipText: '确认放弃日报上传?',
+  showBackTip = () => {
+    const { dayReportTotalInfoArr } = this.state;
+    const configInfoArr = reportBasefun();
+    const uploadInfoExist = dayReportTotalInfoArr.find(eachInfo => {
+      const eachStationInfo = eachInfo.dailyReport;
+      return configInfoArr.find(config => eachStationInfo[config.configName]);
     })
+    if(uploadInfoExist){ // 已有数据添加
+      this.setState({ // 提示框-提醒用户是否确认返回列表
+        showBackWarningTip: true,
+        warningTipText: '确认放弃日报上报?',
+      })
+    }else{ // 未添加数据任何数据
+      this.props.toChangeDayReportStore({ // 未进入上报数据页或未填写数据则直接返回列表页
+        showPage: 'list',
+        reportDay: moment().subtract(1,'day').format('YYYY-MM-DD'),
+        showReportInputList: false,
+        reportStation: [],
+      })
+    }
   }
 
   cancelWarningTip = () => { // 取消返回列表
@@ -130,11 +145,11 @@ class SideReportPage extends Component {
       const eachStationInfo = info.dailyReport;
       const eachInfoError = tmpReportBaseInfo.find(config => { 
         const configRequired = tmpRequireTargetArr.includes(config.configName); // 必填数据项
-        const requiredValue = eachStationInfo[config.configName];
+        const eachReportValue = eachStationInfo[config.configName]; // 每一项指标数据
         const maxPointLength = config.pointLength; // 指定的最大小数点位数
-        const paramPointLength = (requiredValue && requiredValue.split('.')[1]) ? requiredValue.split('.')[1].length : 0;
-        const dataFormatError = isNaN(requiredValue) || (maxPointLength && paramPointLength > maxPointLength); // 数据格式错误;
-        if(configRequired && !requiredValue && requiredValue !== 0){ // 必填项未填
+        const paramPointLength = (eachReportValue && eachReportValue.split('.')[1]) ? eachReportValue.split('.')[1].length : 0;
+        const dataFormatError = (eachReportValue && isNaN(eachReportValue)) || paramPointLength > maxPointLength; // 数据格式错误;
+        if(configRequired && !eachReportValue && eachReportValue !== 0){ // 必填项未填
           errorText = `${eachStationInfo.stationName}${config.configText}未填写!`;
           return true;
         }else if(dataFormatError){ // 填写数据不规范
@@ -148,7 +163,6 @@ class SideReportPage extends Component {
     if(totalInfoError){ // 数据错误存在，提示
       this.messageWarning(errorText);
     }else{ // 数据无误，调整数据结构并提交
-      console.log(dayReportTotalInfoArr)
       const uploadInfo = dayReportTotalInfoArr.map(e=>{
         let { dailyReport, dailyDetailList } = e;
         delete dailyReport.warning;
