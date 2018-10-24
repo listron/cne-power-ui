@@ -85,13 +85,13 @@ class DayReportMainList extends Component {
   }
 
   render() {
-    const { pageSize, pageNum, totalNum, dayReportList, loading } = this.props;
+    const { pageSize, pageNum, totalNum, dayReportList, loading, startTime } = this.props;
     let columns = [{
       title: '电站名称',
       dataIndex: 'stationName',
       sorter: true,
-    }]
-    if(dayReportList.length > 0 && dayReportList[0].dataList){
+    }];
+    if(dayReportList.length > 0 && dayReportList[0].dataList){ // 有数据
       const { dataList } = dayReportList[0];
       dataList && dataList.length > 0 && dataList.forEach(e=>{
         columns.push({
@@ -121,6 +121,16 @@ class DayReportMainList extends Component {
           }
         });
       })
+    }else{ // 无数据
+      const dayLength = startTime? moment(startTime).daysInMonth(): 0;
+      let daysArr = []; 
+      daysArr.length = dayLength;
+      daysArr.fill(0);
+      const emptyDateArr = daysArr.map((e,i)=>({
+        title: i>8?`${i+1}`:`0${i+1}`,
+        dataIndex: `${i+1}`,
+      }))
+      columns.push(...emptyDateArr);
     }
     const content = (<ul>
       <li>1. 支持单日批量和单个电站上传日报;</li>
@@ -156,6 +166,7 @@ class DayReportMainList extends Component {
                 delete dataObj.dateList;
                 return dataObj;
               })}
+              locale={{emptyText:<img width="223" height="164" src="/img/nodata.png" />}}
               columns={columns}
               onChange={this.tableChange}
               pagination={false}

@@ -5,7 +5,7 @@ import moment from 'moment';
 const initState = Immutable.fromJS({
   loading: false,
   showPage: 'list',//默认展示列表页list,上报日报页report, 详情页detail, 编辑页edit
-  startTime: '', // 日报主页查询月,
+  startTime: moment().format('YYYY-MM'), // 日报主页查询月,
   pageSize: 10,
   pageNum: 1,
   stationNameSort: 0, // 电站的默认排序方式;1 升序 0 降序，默认降序；

@@ -35,7 +35,7 @@ class EachStationReport extends Component {
 
     const requireError = requireTargetArr.includes(reportBaseInfo.configName) && !paramValue; // 必填项未填。
     const paramPointLength = paramValue.split('.')[1] ? paramValue.split('.')[1].length : 0;
-    const dataFormatError = isNaN(paramValue) || (maxPointLength && paramPointLength > maxPointLength); // 数据格式错误;
+    const dataFormatError = isNaN(paramValue) || paramPointLength > maxPointLength; // 数据格式错误;
     if(requireError){ // 必填值未填
       this.messageWarning(`请填写${stationInfo.stationName}${reportBaseInfo.configText}!`);
     }else if(dataFormatError){ // 数据格式错误
