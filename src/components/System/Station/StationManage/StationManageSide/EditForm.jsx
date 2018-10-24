@@ -53,8 +53,8 @@ class EditForm extends Component {
     const { stationDetail, loading } = this.props;
   
 
-    const longitude = (stationDetail.longitude || parseFloat(stationDetail.longitude) === 0)? `${stationDetail.longitude}°` : '--';
-    const latitude = (stationDetail.latitude || parseFloat(stationDetail.latitude) === 0)? `${stationDetail.latitude}°` : '--';
+    const longitude = (stationDetail.longitude || parseFloat(stationDetail.longitude) === 0)? `${parseFloat(stationDetail.longitude).toFixed(2)}°` : '--';
+    const latitude = (stationDetail.latitude || parseFloat(stationDetail.latitude) === 0)? `${parseFloat(stationDetail.latitude).toFixed(2)}°` : '--';
     const ongridTime = stationDetail.ongridTime?moment(stationDetail.ongridTime).format('YYYY-MM-DD'):'';
     const fullOngridTime = stationDetail.fullOngridTime?moment(stationDetail.fullOngridTime).format('YYYY-MM-DD'):'';
     
@@ -66,7 +66,7 @@ class EditForm extends Component {
     //   name: '覆盖类型', value: stationDetail.coverType
     // })
     const baseArraySec = [
-      { name: '所在省市', value: `${stationDetail.provinceName}${stationDetail.cityName}${stationDetail.countyName}` },
+      { name: '所在省市', value: `${stationDetail.provinceName||'--'}${stationDetail.cityName||'--'}${stationDetail.countyName||'--'}` },
       { name: '所属公司', value: stationDetail.affiliateCompany },
       { name: '联系电话', value: stationDetail.stationContactNumber },
     ]

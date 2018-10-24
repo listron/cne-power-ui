@@ -134,7 +134,6 @@ class StationManageDetail extends Component {
     const otherInfo = otherFun(stationDetail);
     const departmentList = stationDetail.departmentList || [];
     const departmentInfo = this.departmentInfoFun(departmentList);
-    console.log(stationDetail);
     return (
       <div className={styles.stationManageDetail}>
         {showWarningTip && <WarningTip onOK={this.confirmWarningTip} value={warningTipText} />}

@@ -46,7 +46,7 @@ class TargetTabs extends React.Component {
   // console.log(currentYear,lastYear);
 
     const { AllStationMonthBarData, AllStationMonthPieData, AllStationMonthComplete } = this.props;
-    //console.log(AllStationMonthBarData,AllStationMonthPieData,AllStationMonthComplete);
+    console.log(12345,AllStationMonthBarData,AllStationMonthPieData,AllStationMonthComplete);
     const barGraphThatYear = AllStationMonthBarData.map((e, i) => (e.thatYearData))
     const barGraphLastYear = AllStationMonthBarData.map((e, i) => (e.lastYearData))
     const barGraphmonth = AllStationMonthBarData.map((e, i) => (e.month))
