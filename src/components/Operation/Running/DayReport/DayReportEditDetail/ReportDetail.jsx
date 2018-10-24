@@ -114,7 +114,7 @@ const ReportDetail = ({ selectedDayReportDetail, toChangeDayReportStore , dayRep
         </span>
         {sourceInfoArr.map(e=>{
           let targetValue = selectedDayReportDetail[e.value];
-          const stationValue = targetValue || targetValue === 0 || '--';
+          const stationValue = (targetValue || targetValue === 0)?targetValue: '--';
           return (<span key={e.name} className={styles.eachResourceInfo} >
             <span className={styles.eachResourceInfoName} >{e.name}</span>
             <span className={styles.eachResourceInfoValue} >{stationValue}</span>
