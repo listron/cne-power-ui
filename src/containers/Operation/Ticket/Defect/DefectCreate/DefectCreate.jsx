@@ -107,13 +107,13 @@ const mapStateToProps = (state) => ({
     commonFetching: state.common.get('commonFetching'),
     stations: state.common.get('stations').toJS(),
     deviceTypes: state.operation.defect.get('deviceTypes').toJS(),
-    devices: state.common.get('devices').toJS(),
+    devices: state.operation.defect.get('devices').toJS(),
     error: state.operation.defect.get('error'),
     defectTypes: state.operation.defect.get('defectTypes').toJS(),
     defectDetail: state.operation.defect.get('defectDetail').toJS(),
     deviceTypeItems: state.common.get('deviceTypes'),
     deviceAreaItems: state.common.get('partitions'),
-    deviceItems: state.common.get('devices'),
+    deviceItems: state.operation.defect.get('devices'),
     commonList: state.operation.defect.get('commonList'),
     allSeries: state.common.get('allSeries'), // 所有光伏组件
     firstPartitionCode: state.common.get('firstPartitionCode'),
@@ -126,7 +126,6 @@ const mapDispatchToProps = (dispatch) => ({
   getDefectDetail: payload => dispatch({ type: ticketAction.GET_DEFECT_DETAIL_SAGA, payload }),
   getCommonList: payload => dispatch({ type: ticketAction.GET_DEFECT_LANGUAGE_SAGA, payload }),
   getStationAreas: payload => dispatch({ type: commonAction.getPartition, payload}),
-  getDevices: payload => dispatch({ type: commonAction.getDevices, payload }),
   getDefectTypes: payload => dispatch({ type: ticketAction.GET_DEFECT_TYPE_SAGA, payload }),
   onDefectCreateNew: payload => dispatch({type: ticketAction.DEFECT_CREATE_SAGA, payload}),
   submitDefect: payload => dispatch({type: ticketAction.SUBMIT_DEFECT_SAGA, payload}),
@@ -137,6 +136,14 @@ const mapDispatchToProps = (dispatch) => ({
       params, 
       deviceTypeAction: ticketAction.GET_DEFECT_FETCH_SUCCESS,
       resultName: 'deviceTypes'
+    }
+  }),
+  getDevices: params => dispatch({
+    type: commonAction.getDevices,
+    payload: {
+      params, 
+      actionName: ticketAction.GET_DEFECT_FETCH_SUCCESS,
+      resultName: 'devices'
     }
   })
 });

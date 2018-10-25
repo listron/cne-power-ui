@@ -54,6 +54,7 @@ var initState = Immutable.fromJS({
     processData: []
   },
   defectTypes: [],
+  devices: [], // 设备列表
 });
 
 const defectReducer = (state = initState, action) => {

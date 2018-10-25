@@ -88,16 +88,17 @@ function* getDeviceModel(action) { // 新共用接口，获取电站设备类型
   }
 }
 
-function* getStationDevicePoints(action) { // 获取电站设备类型下的测点
-  let url = Path.basePaths.APIBasePath + Path.commonPaths.getStationPoints;
-  yield put({ type: commonAction.COMMON_FETCH });
+function *getPoints(action){ // 新-获取电站下测点数据
+  const url = `${APIBasePath}${commonPaths.getStationPoints}`;
+  const { payload } = action;
   try {
-    const response = yield call(axios.get, url, { params: action.payload });
+    const { params, actionName, resultName } = payload;
+    const response = yield call(axios.get, url, { params });
     if (response.data.code === '10000') {
       yield put({
-        type: commonAction.GET_COMMON_FETCH_SUCCESS,
+        type: actionName,
         payload: {
-          devicePoints: response.data.data || []
+          [resultName]: response.data.data || [],
         }
       });
     }
@@ -106,17 +107,17 @@ function* getStationDevicePoints(action) { // 获取电站设备类型下的测�
   }
 }
 
-//获取设备信息列表
-function* getDevices(action) {
-  let url = Path.basePaths.APIBasePath + Path.commonPaths.getDevices;
-  yield put({ type: commonAction.COMMON_FETCH });
+function* getDevices(action) { // 新-获取设备信息列表
+  const url = `${APIBasePath}${commonPaths.getDevices}`;
+  const { payload } = action;
   try {
-    const response = yield call(axios.get, url, { params: action.payload });
+    const { params, actionName, resultName } = payload;
+    const response = yield call(axios.get, url, { params });
     if (response.data.code === '10000') {
       yield put({
-        type: commonAction.GET_COMMON_FETCH_SUCCESS,
+        type: actionName,
         payload: {
-          devices: response.data.data,
+          [resultName]: response.data.data,
         }
       });
     }
@@ -253,10 +254,9 @@ function* findDeviceExist(action){ // 查询设备是否存在
 
 function *getLostGenType(action){ // 根据电站类型等指标查询电站故障类型
   const { payload } = action;
-  const { stationType, defectType, type } = payload;
-  const url = `${Path.basePaths.APIBasePath}${Path.commonPaths.getLostGenType}/${stationType}/${defectType}/${type}`;
+  const url = `${Path.basePaths.APIBasePath}${Path.commonPaths.getLostGenType}`;
   try{
-    const response = yield call(axios.get, url);
+    const response = yield call(axios.get, url, payload);
     yield put({
       type: commonAction.GET_COMMON_FETCH_SUCCESS,
       payload: { lostGenTypes: response.data.data || []}
@@ -299,10 +299,8 @@ export function* watchCommon() {
   // yield takeLatest(commonAction.REFRESHTOKEN_SAGA, refreshToken);
   yield takeLatest(commonAction.getStations, getStations);
   yield takeLatest(commonAction.getAllDepartment, getAllDepartment);
-  
   yield takeLatest(commonAction.getDeviceTypes, getDeviceTypes);
-  yield takeLatest(commonAction.getStationDevicePoints, getStationDevicePoints);
-  yield takeLatest(commonAction.getDevices, getDevices);
+  
   yield takeLatest(commonAction.getPartition, getPartition);
   yield takeLatest(commonAction.getSliceDevices, getSliceDevices);
   yield takeLatest(commonAction.findDeviceExist, findDeviceExist);
@@ -310,4 +308,6 @@ export function* watchCommon() {
 
   yield takeLatest(commonAction.getStationDeviceTypes, getStationDeviceTypes);
   yield takeLatest(commonAction.getDeviceModel, getDeviceModel);
+  yield takeLatest(commonAction.getPoints, getPoints);
+  yield takeLatest(commonAction.getDevices, getDevices);
 }

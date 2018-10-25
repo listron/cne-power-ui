@@ -18,6 +18,7 @@ class LostAddForm extends Component {
     changeFaultList: PropTypes.func,
     findDeviceExist: PropTypes.func,
     getStationDeviceTypes: PropTypes.func,
+    getLostGenType: PropTypes.func,
   }
 
   constructor(props){
@@ -82,10 +83,26 @@ class LostAddForm extends Component {
     changeFaultList(faultGenList, true);
   }
 
+  createAllLostGenTypes = (dataArr) => {
+    let outputGenTypes = [];
+    dataArr.forEach(info=>{
+      if(info && info.list && info.list.length > 0){
+        outputGenTypes.push(...this.createAllLostGenTypes(info.list));
+      }else if(info.id && info.name){
+        outputGenTypes.push({
+          id: info.id,
+          name: info.name,
+        })
+      }
+    })
+    return outputGenTypes;
+  }
+
   render(){
     const { form, lostGenTypes, stationDeviceTypes } = this.props;
     const { getFieldDecorator, getFieldValue } = form;
     const { deviceNameErroShow, deviceNameErroInfo } = this.state;
+    const allLostGenTypes = this.createAllLostGenTypes(lostGenTypes);
     const formItemLayout1 = {
       labelCol: {
         xs: { span: 24 },
@@ -140,8 +157,8 @@ class LostAddForm extends Component {
                 rules: [{ required: true, message: '请选择损失电量类型' }],
               })(
                 <Select placeholder="请选择">
-                  {lostGenTypes && lostGenTypes.length>0 && lostGenTypes.map(e=>(
-                    <Option key={e.id} value={e.id}>{e.faultName}</Option>
+                  {allLostGenTypes && allLostGenTypes.length>0 && allLostGenTypes.map(e=>(
+                    <Option key={e.id} value={e.id}>{e.name}</Option>
                   ))}
                 </Select>
               )}

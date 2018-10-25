@@ -36,8 +36,7 @@ class UploadReportList extends Component {
     const stationType = reportStation[0] && reportStation[0].stationType || 1; 
     getLostGenType({ // 选中电站的所有故障类型
       stationType, 
-      defectType: -1, 
-      type: 0,
+      objectType: 1, 
     })
   }
 
@@ -66,7 +65,7 @@ class UploadReportList extends Component {
   }
 
   render(){
-    const { reportDay,stationDeviceTypes, getStationDeviceTypes, dayReportConfig, reportStation, findDeviceExist, deviceExistInfo, dayReportTotalInfoArr, lostGenTypes } = this.props;
+    const { reportDay,stationDeviceTypes, getStationDeviceTypes, dayReportConfig, reportStation, findDeviceExist, deviceExistInfo, dayReportTotalInfoArr, lostGenTypes, getLostGenType } = this.props;
     const { abnormalModalshow, abnormalInfo, abnormalList } = this.state;
     const stationType = reportStation[0] && reportStation[0].stationType || 1; 
     return (
@@ -100,6 +99,7 @@ class UploadReportList extends Component {
           dayReportTotalInfoArr={dayReportTotalInfoArr}
           stationDeviceTypes={stationDeviceTypes}
           getStationDeviceTypes={getStationDeviceTypes}
+          getLostGenType={getLostGenType}
         />}
         
       </div>

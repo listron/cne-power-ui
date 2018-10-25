@@ -119,7 +119,7 @@ const mapStateToProps = (state) => ({
   defectTypes: state.operation.defect.get('defectTypes'),
   deviceTypeItems: state.operation.inspect.get('deviceTypeItems'),
   deviceAreaItems: state.common.get('partitions'),
-  deviceItems: state.common.get('devices'),
+  deviceItems: state.operation.inspect.get('devices'),
   inspectStandard: state.operation.inspect.get('inspectStandard'),
 }) 
 
@@ -131,7 +131,7 @@ const mapDispatchToProps = (dispatch) => ({
   transformDefect: payload => dispatch({ type: ticketAction.TRANSFORM_DEFECT_SAGA, payload}),
   setInspectCheck: payload => dispatch({ type: ticketAction.SET_INSPECT_CHECK_SAGA, payload}),
   finishInspect: payload => dispatch({ type: ticketAction.FINISH_INSPECT_SAGA, payload}),
-  getStationDeviceTypes: params => dispatch({
+  getStationDeviceTypes: params => dispatch({ // 设备类型共用接口
     type: commonAction.getStationDeviceTypes,
     payload: {
       params, 
@@ -139,8 +139,15 @@ const mapDispatchToProps = (dispatch) => ({
       resultName: 'deviceTypeItems'
     }
   }),
+  loadDeviceList: params => dispatch({ // 设备列表共用接口
+    type: commonAction.getDevices,
+    payload: {
+      params, 
+      actionName: ticketAction.GET_INSPECT_FETCH_SUCCESS,
+      resultName: 'devices'
+    }
+  }),
   loadDeviceAreaList: payload => dispatch({ type: commonAction.getPartition, payload}),
-  loadDeviceList: payload => dispatch({ type: commonAction.getDevices, payload}),
   setInspectId: payload => dispatch({ type: ticketAction.SET_INSPECT_ID_SAGA, payload }),
   onDeleteAbnormal: payload => dispatch({ type: ticketAction.DELETE_ABNORMAL_SAGA, payload }),
   getInspectStandard: payload => dispatch({ type: ticketAction.GET_INSPECT_STANDARD_SAGA, payload}),
