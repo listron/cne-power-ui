@@ -105,9 +105,8 @@ class StationManage extends Component {
   }
 }
 const mapStateToProps = (state) => ({
-    ...state.system.stationManage.toJS(),
-    enterpriseId: Cookie.get('enterpriseId'),
-    allDepartmentData: state.common.get('allDepartmentData').toJS(),
+  ...state.system.stationManage.toJS(),
+  enterpriseId: Cookie.get('enterpriseId'),
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -118,8 +117,15 @@ const mapDispatchToProps = (dispatch) => ({
   saveStationDetail: payload => dispatch({type: stationManageAction.EDIT_STATION_MANAGE_DETAIL, payload}),
   deleteStation: payload => dispatch({type: stationManageAction.DELET_STATION_MANAGE, payload}),
   setStationDepartment: payload => dispatch({type: stationManageAction.SET_STATION_MANAGE_DEPARTMENT, payload}),
-  getAllDepartmentData: payload => dispatch({type: commonAction.getAllDepartment, payload}),
   getStationOfEnterprise: payload =>dispatch({type: stationManageAction.GET_ALL_STATION_MANAGE_BASE_INFO, payload }),
+  getAllDepartmentData: params => dispatch({
+    type: commonAction.getAllDepartment,
+    payload: {
+      params, 
+      actionName: stationManageAction.GET_STATION_MANAGE_FETCH_SUCCESS,
+      resultName: 'allDepartmentData'
+    }
+  }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(StationManage);
