@@ -14,8 +14,10 @@ class LostAddForm extends Component {
     deviceExistInfo: PropTypes.object,
     faultGenList: PropTypes.array,
     lostGenTypes: PropTypes.array,
+    stationDeviceTypes: PropTypes.array,
     changeFaultList: PropTypes.func,
     findDeviceExist: PropTypes.func,
+    getStaionsDeviceTypes: PropTypes.func,
   }
 
   constructor(props){
@@ -24,6 +26,11 @@ class LostAddForm extends Component {
       deviceNameErroShow: false, // 设备验证失败的提示框展示与否，
       deviceNameErroInfo: '', // 设备验证失败的提示信息，
     }
+  }
+
+  componentDidMount(){ // 电站下设备类型获取。
+    const { stationCode, getStaionsDeviceTypes } = this.props;
+    getStaionsDeviceTypes({ stationCodes: stationCode });
   }
 
   componentWillReceiveProps(nextProp){ // 验证设备是否存在功能。
@@ -76,7 +83,7 @@ class LostAddForm extends Component {
   }
 
   render(){
-    const { form, lostGenTypes } = this.props;
+    const { form, lostGenTypes, stationDeviceTypes } = this.props;
     const { getFieldDecorator, getFieldValue } = form;
     const { deviceNameErroShow, deviceNameErroInfo } = this.state;
     const formItemLayout1 = {
@@ -111,11 +118,23 @@ class LostAddForm extends Component {
         },
       },
     };
-
     return (
       <Form className={styles.lostAddForm} >
         <Row className={styles.horizontal} >
           <Col span={8}>
+            <Form.Item label="设备类型" {...formItemLayout1} >
+              {getFieldDecorator('deviceTypeCode', {
+                rules: [{ required: true, message: '请选择设备类型' }],
+              })(
+                <Select placeholder="请选择">
+                  {stationDeviceTypes && stationDeviceTypes.length>0 && stationDeviceTypes.map(e=>(
+                    <Option key={e.deviceTypeCode} value={e.deviceTypeCode}>{e.deviceTypeName}</Option>
+                  ))}
+                </Select>
+              )}
+            </Form.Item>
+          </Col>
+          <Col span={16}>
             <Form.Item label="损失电量类型" {...formItemLayout1} >
               {getFieldDecorator('faultId', {
                 rules: [{ required: true, message: '请选择损失电量类型' }],
@@ -128,8 +147,10 @@ class LostAddForm extends Component {
               )}
             </Form.Item>
           </Col>
-          <Col span={16}>
-            <Form.Item label="设备名称" {...formItemLayout2} >
+        </Row>
+        <Row className={styles.horizontal} >
+          <Col span={24}>
+            <Form.Item label="设备名称" labelCol={{ sm: 2 }} wrapperCol={{ sm: 22 }}>
               {getFieldDecorator('deviceName', {
                 rules: [{ required: true, message: '请填写设备名称' }],
               })(

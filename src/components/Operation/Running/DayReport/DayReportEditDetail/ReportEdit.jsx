@@ -16,6 +16,7 @@ class ReportEdit extends Component {
   static propTypes = {
     showPage: PropTypes.string,
     lostGenTypes: PropTypes.array,
+    stationDeviceTypes: PropTypes.array,
     deviceExistInfo: PropTypes.object,
     selectedDayReportDetail: PropTypes.object,
     dayReportConfig: PropTypes.array,
@@ -24,6 +25,7 @@ class ReportEdit extends Component {
     findDeviceExist: PropTypes.func,
     dayReportUpdate: PropTypes.func,
     getLostGenType: PropTypes.func,
+    getStaionsDeviceTypes: PropTypes.func,
   }
 
   constructor(props){
@@ -256,7 +258,7 @@ class ReportEdit extends Component {
 
   render(){
     const { updateDayReportDetail, addLostFormShow, addLimitFormShow, abnormalTextShow, showBackWarningTip, warningTipText } = this.state;
-    const { findDeviceExist, deviceExistInfo, dayReportConfig, lostGenTypes } = this.props;
+    const { findDeviceExist, deviceExistInfo, dayReportConfig, lostGenTypes, getStaionsDeviceTypes, stationDeviceTypes } = this.props;
     const {faultList, limitList, stationCode, errorInfo} = updateDayReportDetail;
     return (
       <div className={styles.reportEdit} >
@@ -295,6 +297,8 @@ class ReportEdit extends Component {
           changeFaultList={this.faultListInfoChange}
           stationCode={stationCode}
           deviceExistInfo={deviceExistInfo}
+          stationDeviceTypes={stationDeviceTypes}
+          getStaionsDeviceTypes={getStaionsDeviceTypes}
         />}
         <div className={styles.lostElecInfo} >
           <span className={styles.reportSubTitle}>限电信息<Icon type="caret-right" theme="outlined" /></span>

@@ -20,5 +20,11 @@ export const commonAction = {
   getSliceDevices: Symbol('getSliceDevices'),//获取光伏截取数据
   findDeviceExist: Symbol('findDeviceExist'), // 验证设备是否存在
   getLostGenType: Symbol('getLostGenType'), // 查询所有故障类型
+
+
+
+
+
+  getStaionsDeviceTypes: Symbol('getStaionsDeviceTypes'), // new电站下设备类型获取
 }
 

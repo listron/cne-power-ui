@@ -14,12 +14,14 @@ class AbnormalReportModal extends Component {
     deviceExistInfo: PropTypes.object,
     abnormalList: PropTypes.array,
     dayReportTotalInfoArr: PropTypes.array,
+    stationDeviceTypes: PropTypes.array,
     dayReportConfig: PropTypes.array,
     lostGenTypes: PropTypes.array,
     abnormalModalshow: PropTypes.bool,
     hideAbnormalModal: PropTypes.func,
     findDeviceExist: PropTypes.func,
     totalInfoChange: PropTypes.func,
+    getStaionsDeviceTypes: PropTypes.func,
   }
 
   constructor(props){
@@ -136,7 +138,7 @@ class AbnormalReportModal extends Component {
   }
 
   render(){
-    const { abnormalModalshow, abnormalInfo, hideAbnormalModal, findDeviceExist, deviceExistInfo, lostGenTypes, dayReportConfig} = this.props;
+    const { abnormalModalshow, stationDeviceTypes, abnormalInfo, hideAbnormalModal, findDeviceExist, deviceExistInfo, lostGenTypes, dayReportConfig, getStaionsDeviceTypes} = this.props;
     const { addLostFormShow, faultGenList, limitGenList, addLimitFormShow, abnormalTextShow, abnormalText } = this.state;
     const { modelInverterPowerGen, modelInverterCapacity, stationCapacity } = abnormalInfo;
     let defaultLimitLost; // 默认限电剩余损失电量
@@ -182,11 +184,13 @@ class AbnormalReportModal extends Component {
         />: null}
         {addLostFormShow && <LostAddForm 
           lostGenTypes={lostGenTypes}
+          stationDeviceTypes={stationDeviceTypes}
           findDeviceExist={findDeviceExist} 
           faultGenList={faultGenList} 
           changeFaultList={this.changeFaultList}  
           stationCode={abnormalInfo.stationCode}
           deviceExistInfo={deviceExistInfo} 
+          getStaionsDeviceTypes={getStaionsDeviceTypes}
         /> }
         <div className={styles.addLimitGenHeader} >
           <span>限电信息<Icon type="caret-right" theme="outlined" /></span>

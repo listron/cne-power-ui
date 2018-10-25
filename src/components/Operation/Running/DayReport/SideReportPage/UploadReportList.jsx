@@ -12,12 +12,14 @@ class UploadReportList extends Component {
     dayReportConfig: PropTypes.array,
     reportStation: PropTypes.array,
     dayReportTotalInfoArr: PropTypes.array,
+    stationDeviceTypes: PropTypes.array,
     lostGenTypes: PropTypes.array,
     deviceExistInfo: PropTypes.object,
     toChangeDayReportStore: PropTypes.func,
     totalReportInfoChange: PropTypes.func,
     findDeviceExist: PropTypes.func,
     getLostGenType: PropTypes.func,
+    getStaionsDeviceTypes: PropTypes.func,
   }
 
   constructor(props){
@@ -64,7 +66,7 @@ class UploadReportList extends Component {
   }
 
   render(){
-    const { reportDay, dayReportConfig, reportStation, findDeviceExist, deviceExistInfo, dayReportTotalInfoArr, lostGenTypes } = this.props;
+    const { reportDay,stationDeviceTypes, getStaionsDeviceTypes, dayReportConfig, reportStation, findDeviceExist, deviceExistInfo, dayReportTotalInfoArr, lostGenTypes } = this.props;
     const { abnormalModalshow, abnormalInfo, abnormalList } = this.state;
     const stationType = reportStation[0] && reportStation[0].stationType || 1; 
     return (
@@ -96,6 +98,8 @@ class UploadReportList extends Component {
           hideAbnormalModal={this.hideAbnormalModal}
           totalInfoChange={this.totalInfoChange}
           dayReportTotalInfoArr={dayReportTotalInfoArr}
+          stationDeviceTypes={stationDeviceTypes}
+          getStaionsDeviceTypes={getStaionsDeviceTypes}
         />}
         
       </div>

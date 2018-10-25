@@ -3,6 +3,8 @@ import axios from 'axios';
 import Path from '../../constants/path';
 import { commonAction } from './commonAction';
 import { message } from 'antd';
+const { basePaths, commonPaths } = Path;
+const { APIBasePath } = basePaths;
 
 function* changeCommonStore(action) {//存储payload指定参数，替换reducer-store属性。
   const { payload } = action;
@@ -12,8 +14,7 @@ function* changeCommonStore(action) {//存储payload指定参数，替换reducer
   })
 }
 
-//获取所有电站信息
-function* getStations(action) {
+function* getStations(action) { // 通用：获取所有电站信息
   const url = `${Path.basePaths.APIBasePath}${Path.commonPaths.getStations}`;
   yield put({ type: commonAction.COMMON_FETCH });
   try {
@@ -30,8 +31,8 @@ function* getStations(action) {
     console.log(e);
   }
 }
-//获取用户权限范围内所有设备类型信息
-function* getDeviceTypes(action) {
+
+function* getDeviceTypes(action) { // 通用： 获取用户权限范围内所有设备类型信息
   const url = `${Path.basePaths.APIBasePath}${Path.commonPaths.getDevicetypes}`;
   yield put({ type: commonAction.COMMON_FETCH });
   try {
@@ -48,8 +49,8 @@ function* getDeviceTypes(action) {
     console.log(e);
   }
 }
-//获取电站下设备类型信息
-function* getStationDeviceTypes(action) {
+
+function* getStationDeviceTypes(action) { // 待废弃共用接口。获取电站下设备类型信息
   let url = Path.basePaths.APIBasePath + Path.commonPaths.getStationDevicetypes;
   yield put({ type: commonAction.COMMON_FETCH });
   try {
@@ -64,6 +65,25 @@ function* getStationDeviceTypes(action) {
     }
   } catch (e) {
     console.log(e);
+  }
+}
+
+function *getStaionsDeviceTypes(action){ // 新共用接口，获取电站下设备类型。
+  const url = `${APIBasePath}${commonPaths.getStationDevicetypes}`;
+  try{
+    const { payload } = action;
+    const { params, deviceTypeAction, resultName } = payload;
+    const response = yield call(axios.get, url, { params });
+    if(response.data.code === '10000'){
+      yield put({
+        type: deviceTypeAction,
+        payload: {
+          [resultName]: response.data.data || [],
+        }
+      })
+    }
+  }catch(e){
+    console.log(e)
   }
 }
 
@@ -296,6 +316,7 @@ export function* watchCommon() {
   // yield takeLatest(commonAction.REFRESHTOKEN_SAGA, refreshToken);
   yield takeLatest(commonAction.getStations, getStations);
   yield takeLatest(commonAction.getAllDepartment, getAllDepartment);
+
   yield takeLatest(commonAction.getDeviceTypes, getDeviceTypes);
   yield takeLatest(commonAction.getStationDeviceTypes, getStationDeviceTypes);
   yield takeLatest(commonAction.getStationDeviceModel, getStationDeviceModel);
@@ -305,4 +326,6 @@ export function* watchCommon() {
   yield takeLatest(commonAction.getSliceDevices, getSliceDevices);
   yield takeLatest(commonAction.findDeviceExist, findDeviceExist);
   yield takeLatest(commonAction.getLostGenType, getLostGenType);
+
+  yield takeLatest(commonAction.getStaionsDeviceTypes, getStaionsDeviceTypes);
 }
