@@ -49,7 +49,7 @@ class LostAddForm extends Component {
         lostInfo.id = `lostAdd${faultGenList.length}`;
         lostInfo.handle = true;
         lostInfo.faultName = lostGenTypes.find(e=>e.id === lostInfo.faultId).faultName;
-        lostInfo.deviceName = lostInfo.deviceName.trim().replace('/\s+/g',',');
+        lostInfo.deviceName = lostInfo.deviceName.trim().replace(/\s+/g,',');
         lostInfo.type = 1;  // 损失type 1 => 后台接收。
         changeFaultList([...faultGenList,lostInfo], true);
       }
@@ -61,7 +61,7 @@ class LostAddForm extends Component {
     form.validateFields((err, values) => {
       if (!err) {
         const { deviceName } = values;
-        const tmpDeviceName = deviceName.trim().replace('/\s+/g',',');
+        const tmpDeviceName = deviceName.trim().replace(/\s+/g,',');
         findDeviceExist({
           deviceName: tmpDeviceName,
           stationCode,
