@@ -6,6 +6,7 @@ var initState = Immutable.fromJS({
   loading: false,
   dateType:'month',
   stationCode: null, // 选中的电站
+  singleStationCode:'',
   showPage: 'multiple',//默认展示多电站分析
   year:'',
   month:'',
