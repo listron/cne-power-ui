@@ -148,7 +148,7 @@ class ReportEdit extends Component {
       const maxPointLength = config.pointLength; // 指定的最大小数点位数
       const decimalData = requiredValue && `${requiredValue}`.split('.')[1];
       const paramPointLength = decimalData ? decimalData.length : 0;
-      const dataFormatError = isNaN(requiredValue) || (maxPointLength && paramPointLength > maxPointLength); // 数据格式错误;
+      const dataFormatError = (requiredValue && isNaN(requiredValue)) || paramPointLength > maxPointLength; // 数据格式错误;
       if(configRequired && !requiredValue && requiredValue !== 0){ // 必填项未填
         errorText = `${updateDayReportDetail.stationName}${config.configText}未填写!`;
         return true;

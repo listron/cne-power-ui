@@ -16,6 +16,7 @@ const RadioGroup = Radio.Group;
 class TmpForm extends Component {
   static propTypes = {
     form: PropTypes.object,
+    stationName: PropTypes.string,//电站名称
     stations: PropTypes.array,
     deviceTypes: PropTypes.array,
     devices: PropTypes.array,
@@ -36,7 +37,7 @@ class TmpForm extends Component {
     commonList: PropTypes.object,
     error: PropTypes.object,
     getSliceDevices: PropTypes.func,
-    sliceDeviceItems:PropTypes.object,
+    allSeries:PropTypes.object,
     firstPartitionCode:PropTypes.string,
   };
   constructor(props) {
@@ -74,13 +75,11 @@ class TmpForm extends Component {
       deviceTypeCode
     };
     
-    if(deviceTypeCode===202){
+    if(deviceTypeCode === 509){ //组串时，请求调整
        this.props.getSliceDevices(params);
-       //this.props.getStationAreas(params);
      }else{
        this.props.getDevices(params);
        this.props.getStationAreas(params);
-      
      }
  
   }
@@ -157,30 +156,26 @@ class TmpForm extends Component {
 
 
   loadDeviceList = (areaCode) => {
+    const { form, getDevices, getSliceDevices } = this.props;
+    const deviceTypeCode = form.getFieldValue('deviceTypeCode');
     let params = {
-      stationCode: this.props.form.getFieldValue('stations')[0].stationCode,
-      deviceTypeCode: this.props.form.getFieldValue('deviceTypeCode')
+      stationCode: form.getFieldValue('stations')[0].stationCode,
+      deviceTypeCode,
     };
-    if (areaCode !== '') {
-      params.partitionCode = areaCode;
+    areaCode && (params.partitionCode = areaCode);
+    if(deviceTypeCode === 509 && !areaCode){ // 光伏组件卸载。
+      getSliceDevices(params);
+    }else{
+      getDevices(params);
     }
-    
-    this.props.getDevices(params);
-
   }
 
   render() {
-    let { stations, deviceTypes, devices, defectTypes, deviceItems, defectDetail, showContainer,sliceDeviceItems,firstPartitionCode } = this.props;
+    let { stations, stationName, deviceTypes, devices, defectTypes, deviceItems, defectDetail, showContainer,allSeries,firstPartitionCode } = this.props;
     const { getFieldDecorator, getFieldValue } = this.props.form;
     const defectFinished = getFieldValue('defectSolveResult') === '0';
     const editDefect = showContainer === 'edit';
     const stationCode = this.props.form.getFieldValue('stations') ? this.props.form.getFieldValue('stations')[0] ? this.props.form.getFieldValue('stations')[0].stationCode : [] : [];
-    const deviceTypeCode = this.props.form.getFieldValue('deviceTypeCode')?this.props.form.getFieldValue('deviceTypeCode'):'';
-     //const deviceItemsData=deviceTypeCode===202&&this.params.partitionsCode===firstPartitionCode?sliceDeviceItems:deviceItems;
-    //  console.log(deviceTypeCode===202&&!this.state.deviceAreaCode);
-    //const deviceItemsData=deviceTypeCode===202?sliceDeviceItems:deviceItems;
-    const deviceItemsData=deviceTypeCode===202&&!this.state.deviceAreaCode?sliceDeviceItems:deviceItems;
- 
 
     const defaultStations = editDefect ? stations.filter(e => e.stationCode === defectDetail.stationCode) : [];
     const defaultDeviceType = editDefect ? deviceTypes.find(e => e.deviceTypeCode === defectDetail.deviceTypeCode) : null;
@@ -224,14 +219,15 @@ class TmpForm extends Component {
               initialValue: defaultDevice && defaultDevice.deviceCode || undefined
             })(
               <DeviceName
-                {...this.props}
+                stationName={stationName}
+                allSeries={allSeries}
                 disabled={deviceItems.size === 0}
                 placeholder="输入关键字快速查询"
                 deviceAreaItems={this.props.deviceAreaItems}
-                deviceItems={deviceItemsData}
+                deviceItems={deviceItems}
                 stationCode={stationCode}
-                deviceTypeCode={deviceTypeCode}
                 deviceAreaCode={this.state.deviceAreaCode}
+                deviceTypeCode={getFieldValue('deviceTypeCode')}
                 deviceType={this.getDeviceType(getFieldValue('deviceTypeCode'))}
                 onChangeArea={this.onChangeArea}
                 loadDeviceList={this.loadDeviceList}

@@ -59,6 +59,7 @@
           .iconfont{
             font-size: 20px;
             margin-right: 20px;
+            cursor: pointer;
           }
         }
         .previous, .next, .backIcon{
@@ -130,6 +131,9 @@
             .infoValue{
               flex: 1;
               color: $darkColor;
+              white-space: nowrap;
+              text-overflow: ellipsis;
+              overflow: hidden;
             }
           }
         }
@@ -192,6 +196,9 @@
           .infoValue{
             flex: 1;
             color: $darkColor;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
           }
         }
         :global{

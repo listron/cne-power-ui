@@ -15,6 +15,7 @@ class PowerEfficency extends React.Component {
   constructor(props, context) {
     super(props, context)
   }
+  
 
  
   componentDidMount() {
@@ -25,20 +26,21 @@ class PowerEfficency extends React.Component {
     this.drawChart(nextProps);
   }
   getYaxisName = (title) => {
-    let result = '';
+    let result = " ";
     switch (title) {
-      case '发电效率':
-        result = ['等效利用小时数(h)', '辐射总量(MJ/㎡)', 'PR'];
+      case "发电效率":
+        result = ["等效利用小时数(h)", "辐射总量(MJ/㎡)", "PR"];
         break;
-      case '计划完成率':
-        result = ['发电量(万kWh)', '辐射总量(MJ/㎡)', '完成率'];
+      case "计划完成率":
+        result = ["发电量(万kWh)", "辐射总量(MJ/㎡)", "完成率"];
         break;
       default:
-        result = '';
+        result = " ";
     }
     return result;
   };
 
+  
   getColor = (title) => {
     let result = '';
     switch (title) {
@@ -55,6 +57,7 @@ class PowerEfficency extends React.Component {
   };
 
   
+
   drawChart = (params) => {
     const {graphId, title,PowerEffectiveDateData,PowerEffectiveHoursData,PowerEffectiveLightData,PowerEffectivePrData,} = params;
     const targetChart = echarts.init(document.getElementById(graphId));
@@ -210,7 +213,8 @@ class PowerEfficency extends React.Component {
   render() {
     const {graphId,} = this.props;
     return (
-      <div id={graphId} style={{width: '55%', height: "300px",}}></div>
+      // <div id={graphId} style={{width: '55%', height: "300px",}}></div>
+      <div id={graphId}></div>
     )
   }
 }

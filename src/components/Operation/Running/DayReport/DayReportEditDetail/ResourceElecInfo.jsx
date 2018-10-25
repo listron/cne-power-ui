@@ -104,7 +104,7 @@ class ResourceElecInfo extends Component {
             })(
               <Input />
             )}
-            <span>kW</span>
+            <span>MW</span>
           </Form.Item>
           <Form.Item label="样本逆变器发电量">
             {getFieldDecorator('modelInverterPowerGen', {

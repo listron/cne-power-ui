@@ -14,8 +14,8 @@ var initState = Immutable.fromJS({
   devices: [],
   partitions: [],
   allDepartmentData: [], // 企业下所有部门(含层级关系)
-  sliceDevices:[],//光伏组件截取的设备数
-  slicePartitionCode:'',//光伏组件截取的第一项
+  allSeries:[],//所有光伏组件
+  firstPartitionCode:'',//光伏组件截取的第一项code
   deviceExistInfo: {}, // 验证设备是否存在
   lostGenTypes: [], // 所有故障类型
 });

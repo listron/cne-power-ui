@@ -40,6 +40,9 @@
         background: #ceebe0;
         color: $themeColor;
       }
+      .ant-table-placeholder{
+        border-bottom: none;
+      }
     }
     .operateDayReport{
       display: flex;

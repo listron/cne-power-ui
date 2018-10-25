@@ -21,6 +21,7 @@ class DayReport extends Component {
     stationNameSort: PropTypes.number, // 排序方式
     getDayReportList: PropTypes.func, // 日报列表
     getDayReportConfig: PropTypes.func, // 日报配置
+    toChangeDayReportStore: PropTypes.func,
   }
   constructor(props) {
     super(props);
@@ -45,7 +46,9 @@ class DayReport extends Component {
   }
 
   componentWillUnmount(){
-    
+    this.props.toChangeDayReportStore({ // 离开重置数据。
+      showPage: 'list',
+    });
   }
 
   onSidePageChange = ({ sidePage }) => {

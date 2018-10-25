@@ -9,7 +9,6 @@ import styles from './style.scss';
 class DeviceNameModal extends Component {
   static propTypes = {
     show: PropTypes.bool,//控制对话框的显示和关闭
-    stationName: PropTypes.string,//电站名称
     deviceType: PropTypes.string,//选中的设备类型
     deviceCode: PropTypes.string,//选中的设备
     deviceAreaCode: PropTypes.string,
@@ -32,13 +31,6 @@ class DeviceNameModal extends Component {
       selectedDeviceCode: '',
       selectedDeviceAreaCode: ''
     };
-  }
-
-  componentDidMount() {
-    // const{deviceAreaItems}=this.props;
-    // const defaultValue= deviceAreaItems.toJS().slice(0,1)[0].deviceCode;
-    // this.props.loadDeviceList(defaultValue);
-    this.props.loadDeviceList(this.props.deviceAreaCode)
   }
 
   onSelectItem = (value) => {
@@ -77,18 +69,7 @@ class DeviceNameModal extends Component {
         />
       );
     });
-
   }
-
-  // renderTypeItems() {
-  //   return this.props.deviceTypeItems.map((item, index) => {
-  //     return (
-  //       <Option key={item.get('deviceTypeCode')} value={item.get('deviceTypeCode')}>
-  //         {item.get('deviceTypeName')}
-  //       </Option>                  
-  //     );
-  //   });
-  // }
 
   renderAreaItems() {
     let { deviceAreaItems } = this.props;
@@ -103,10 +84,7 @@ class DeviceNameModal extends Component {
   }
 
   render() {
-    let { firstPartitionCode } = this.props;
-    firstPartitionCode=this.props.deviceType==='汇流箱'?firstPartitionCode:'';
-
-
+    let { firstPartitionCode, deviceTypeCode } = this.props;
     return (
       <Modal
         visible={this.props.show}
@@ -120,17 +98,6 @@ class DeviceNameModal extends Component {
         <div className={styles.deviceNameSelect}>
           <div className={styles.header}>
             <div>设备类型<span className={styles.deviceType}>{this.props.deviceType}</span></div>
-            {/* <div>
-              设备类型
-              <Select
-                onChange={(value)=>{
-                  this.props.onChangeType(value)
-                }}
-                style={{ width: 200 }}
-                value={this.props.deviceTypeCode}>
-                {this.renderTypeItems()}
-              </Select>
-            </div> */}
             {this.props.deviceAreaItems && this.props.deviceAreaItems.size > 0 &&
               <div>
                 所属分区
@@ -140,10 +107,8 @@ class DeviceNameModal extends Component {
                   }}
                   placeholder="请选择"
                   style={{ width: 112, marginLeft: 8 }}
-                  defaultValue={firstPartitionCode}
-                // value={this.state.selectedDeviceAreaCode !== '' ? this.state.selectedDeviceAreaCode : this.props.deviceAreaCode}
+                  defaultValue={deviceTypeCode===509?firstPartitionCode:null}
                 >
-
                   {this.renderAreaItems()}
                 </Select>
               </div>
