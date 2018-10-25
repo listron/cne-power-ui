@@ -45,7 +45,6 @@ class LostGenTable extends Component {
         title: '发生时间',
         dataIndex: 'startTime',
         render : (text, record) => {
-          console.log(record)
           return record.typeSource === 0?<span>
             {moment(record.startTime).format('YYYY-MM-DD HH:mm')}
           </span>:<Form.Item>
@@ -60,7 +59,6 @@ class LostGenTable extends Component {
         title: '结束时间',
         dataIndex: 'endTime',
         render : (text, record) => {
-          console.log(record)
           return (<Form.Item>
             {getFieldDecorator(`${record.id}_endTime`, {
               initialValue: record.endTime,
