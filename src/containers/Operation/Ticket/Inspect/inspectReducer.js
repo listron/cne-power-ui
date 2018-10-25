@@ -45,6 +45,8 @@ var initState = Immutable.fromJS({
     abnormalIsShow: false,
   },
   inspectStandard: [],
+  deviceTypeItems: [], // 电站下的设备类型
+  devices: [], // 设备列表
 });
 
 const inspectReducer = (state = initState, action) => {

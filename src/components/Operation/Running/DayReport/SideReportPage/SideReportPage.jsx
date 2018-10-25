@@ -170,6 +170,7 @@ class SideReportPage extends Component {
         delete dailyReport.stationCapacity; // 基础信息字段调整
         const newDailyDetailList = dailyDetailList.map(eachLost=>{
           const lostInfo = {
+            deviceTypeCode: eachLost.deviceTypeCode,
             deviceName: eachLost.deviceName,
             startTime: eachLost.startTime.format('YYYY-MM-DD HH:mm'),
             endTime: eachLost.endTime && eachLost.endTime.format('YYYY-MM-DD HH:mm'),

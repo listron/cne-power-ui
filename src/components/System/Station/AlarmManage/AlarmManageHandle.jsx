@@ -19,6 +19,7 @@ class AlarmManageHandle extends Component {
     deleteAlarmList: PropTypes.func,
     getStationDeviceTypes: PropTypes.func,
     changeCommonStore: PropTypes.func,
+    changeAlarmManageStore: PropTypes.func,
   }
   constructor(props) {
     super(props);
@@ -37,7 +38,7 @@ class AlarmManageHandle extends Component {
   }
 
   getUpdateAlarmList = ({ file, selectedStation }) => { // 上传成功后重新请求列表
-    const { queryParams, getAlarmList, getStationDeviceTypes, changeCommonStore } = this.props;
+    const { queryParams, getAlarmList, getStationDeviceTypes, changeAlarmManageStore } = this.props;
     getAlarmList({ 
       ...queryParams,
       stationCode: selectedStation.stationCode,
@@ -49,7 +50,7 @@ class AlarmManageHandle extends Component {
     getStationDeviceTypes({
       stationCodes: selectedStation.stationCode,
     });
-    changeCommonStore({
+    changeAlarmManageStore({
       deviceModels: [], 
       devicePoints: [],
     })

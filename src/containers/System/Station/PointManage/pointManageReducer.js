@@ -13,6 +13,8 @@ var initState = Immutable.fromJS({
   orderType: null, // 排序方式0正序   1倒序
   
   totalNum:  0, // 设备总数
+  stationDeviceTypes: [], // 电站下设备类型。
+  deviceModels: [], // 电站设备类型下设备型号
   pointList: [], // 设备列表
   stationPointStatusList: [], // 请求所有电站=>匹配选中电站是否可删除测点
 });
