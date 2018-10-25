@@ -174,7 +174,7 @@ class LimitAddForm extends Component {
               {getFieldDecorator('reason', {
                 rules: [{ required: true, message: '请填写原因说明' }],
               })(
-                <InputLimit size={30} className={styles.reasonArea} numberIsShow={false} width={520} />
+                <InputLimit size={30} className={styles.reasonArea} numberIsShow={false} width={520} height={60} />
               )}
               <span className={styles.lostInputTip}>({getFieldValue('reason')?getFieldValue('reason').length:0}/30)</span>
             </Form.Item>
