@@ -4,10 +4,10 @@ export const commonAction = {
   COMMON_FETCH: Symbol('COMMON_FETCH'),
   changeCommonStore: Symbol('changeCommonStore'),
   CHANGE_COMMON_STORE: Symbol('CHANGE_COMMON_STORE'),
-  getStations: Symbol('getStations'),
+  getStations: Symbol('getStations'), // 获取电站
   //获取所有设备类型，用户权限相关
-  getDeviceTypes: Symbol('getDeviceTypes'),
-  getStationDeviceModel: Symbol('getStationDeviceModel'), // 获取设备型号
+  getDeviceTypes: Symbol('getDeviceTypes'), // 获取用户下所有设备类型
+
   getStationDevicePoints: Symbol('getStationDevicePoints'), // 获取设备测点
   getDevices: Symbol('getDevices'),
   getPartition: Symbol('getPartition'),
@@ -24,5 +24,6 @@ export const commonAction = {
 
 
   getStationDeviceTypes: Symbol('getStationDeviceTypes'), // 电站下设备类型获取
+  getDeviceModel: Symbol('getDeviceModel'), // 电站设备类型下设备型号获取
 }
 

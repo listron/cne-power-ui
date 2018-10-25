@@ -69,16 +69,17 @@ function *getStationDeviceTypes(action){ // 新共用接口，获取电站下设
   }
 }
 
-function* getStationDeviceModel(action) { // 获取电站设备型号
-  let url = Path.basePaths.APIBasePath + Path.commonPaths.getDeviceModel;
-  yield put({ type: commonAction.COMMON_FETCH });
+function* getDeviceModel(action) { // 新共用接口，获取电站设备类型下设备型号
+  const url = `${APIBasePath}${commonPaths.getDeviceModel}`;
+  const { payload } = action;
   try {
-    const response = yield call(axios.get, url, { params: action.payload });
+    const { params, actionName, resultName } = payload;
+    const response = yield call(axios.get, url, { params });
     if (response.data.code === '10000') {
       yield put({
-        type: commonAction.GET_COMMON_FETCH_SUCCESS,
+        type: actionName,
         payload: {
-          deviceModels: response.data.data
+          [resultName]: response.data.data || [],
         }
       });
     }
@@ -298,8 +299,8 @@ export function* watchCommon() {
   // yield takeLatest(commonAction.REFRESHTOKEN_SAGA, refreshToken);
   yield takeLatest(commonAction.getStations, getStations);
   yield takeLatest(commonAction.getAllDepartment, getAllDepartment);
+  
   yield takeLatest(commonAction.getDeviceTypes, getDeviceTypes);
-  yield takeLatest(commonAction.getStationDeviceModel, getStationDeviceModel);
   yield takeLatest(commonAction.getStationDevicePoints, getStationDevicePoints);
   yield takeLatest(commonAction.getDevices, getDevices);
   yield takeLatest(commonAction.getPartition, getPartition);
@@ -308,4 +309,5 @@ export function* watchCommon() {
   yield takeLatest(commonAction.getLostGenType, getLostGenType);
 
   yield takeLatest(commonAction.getStationDeviceTypes, getStationDeviceTypes);
+  yield takeLatest(commonAction.getDeviceModel, getDeviceModel);
 }

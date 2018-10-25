@@ -16,6 +16,7 @@ var initState = Immutable.fromJS({
   totalNum:  0, // 告警事件总数
   alarmList: [], // 设备列表
   stationDeviceTypes: [], // 电站下设备类型
+  deviceModels: [], // 电站设备类型下设备型号
 });
 
 const alarmManageReducer = (state = initState, action) => {

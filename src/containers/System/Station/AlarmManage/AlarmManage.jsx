@@ -93,7 +93,6 @@ const mapStateToProps = (state) => ({
   enterpriseId: Cookie.get('enterpriseId'),
   ...state.system.alarmManage.toJS(),
   stations: state.common.get('stations').toJS(),
-  deviceModels: state.common.get('deviceModels').toJS(),
   devicePoints: state.common.get('devicePoints').toJS(),
   allStationBaseInfo: state.system.stationManage.get('allStationBaseInfo').toJS(),
 });
@@ -111,7 +110,14 @@ const mapDispatchToProps = (dispatch) => ({
       resultName: 'stationDeviceTypes'
     }
   }),
-  getStationDeviceModel: payload => dispatch({type:commonAction.getStationDeviceModel, payload}),
+  getDeviceModel: params => dispatch({
+    type: commonAction.getDeviceModel,
+    payload: {
+      params, 
+      actionName: alarmManageAction.GET_ALARM_MANAGE_FETCH_SUCCESS,
+      resultName: 'deviceModels'
+    }
+  }),
   getStationDevicePoints: payload => dispatch({type:commonAction.getStationDevicePoints, payload}),
   getStationOfEnterprise: payload =>dispatch({type: stationManageAction.GET_ALL_STATION_MANAGE_BASE_INFO, payload }),
 });

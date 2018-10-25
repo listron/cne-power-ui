@@ -20,7 +20,7 @@ class AlarmManageSearch extends Component {
     getAlarmList: PropTypes.func,
     changeCommonStore: PropTypes.func,
     getStationDeviceTypes: PropTypes.func,
-    getStationDeviceModel: PropTypes.func,
+    getDeviceModel: PropTypes.func,
     getStationDevicePoints: PropTypes.func,
     changeAlarmManageStore: PropTypes.func,
   }
@@ -52,8 +52,8 @@ class AlarmManageSearch extends Component {
   }
 
   selectDeviceType = (value) => { // 选中设备类型
-    const { getStationDeviceModel, getAlarmList, queryParams, stationCode, changeCommonStore } = this.props;
-    getStationDeviceModel({
+    const { getDeviceModel, getAlarmList, queryParams, stationCode, changeAlarmManageStore } = this.props;
+    getDeviceModel({
       stationCode,
       deviceTypeCode: value,
     });
@@ -64,7 +64,7 @@ class AlarmManageSearch extends Component {
       pointCode: '',
       pageNum: 1,
     })
-    changeCommonStore({
+    changeAlarmManageStore({
       devicePoints: [],
     })
   }
