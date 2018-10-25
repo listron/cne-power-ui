@@ -1,11 +1,11 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Select } from 'antd';
+import { Select,Radio } from 'antd';
 import styles from './productionAnalysis.scss';
 import StationSelect from '../../../Common/StationSelect';
 import TimeSelect from '../../../Common/TimeSelect';
 import BarGraph from '../AllStationAnalysis/CommonGraph/BarGraph';
-import PlanCompleteRateAnalysisBar from '../AllStationAnalysis/CommonGraph/PlanCompleteRateAnalysisBar';
+//import PlanCompleteRateAnalysisBar from '../AllStationAnalysis/CommonGraph/PlanCompleteRateAnalysisBar';
 import TableGraph from '../AllStationAnalysis/CommonGraph/TableGraph';
 import WaterWave from '../AllStationAnalysis/CommonGraph/PlanCompletionRate/WaterWave';
 import ThreeYaxis from '../AllStationAnalysis/CommonGraph/ThreeYaxis';
@@ -16,6 +16,7 @@ class ProductionAnalysis extends React.Component {
     stations: PropTypes.object,
     stationType: PropTypes.string,
     stationCode: PropTypes.array,
+    allStationAvalibaData: PropTypes.array,
     pageSize: PropTypes.number,
     pageNum: PropTypes.number,
     orderField: PropTypes.string,
@@ -30,12 +31,43 @@ class ProductionAnalysis extends React.Component {
     };
   }
   componentDidMount() {
+    const { getAllStationAvalibaData, changeAllStationStore,  getAllStationStatisticTableData, getAllStationMonthBarData, getAllStationMonthPieData, year, sortType, dateType, pageNum, pageSize, sort } = this.props;
+    const currentYear = moment().format('YYYY');
+    const curYear = Number(moment().format('YYYY'));
+
+    const currentMonth = Number(moment().format('MM'));
+    let time = year ? year : [`${currentYear}`];
+    changeAllStationStore({ year: [`${currentYear}`], month: currentMonth })
+    getAllStationAvalibaData(
+      {
+        userId: userId,
+        year: time,
+        dateType,
+      }
+    )
+  }
+  selectYear() {
+    const {allStationAvalibaData}=this.props;
+    let yearArray=allStationAvalibaData&&allStationAvalibaData.map((e,i)=>(Number(e.year))) ;
+    let currentYear=Math.max(...yearArray).toString()
+ 
+    return (
+      <Radio.Group defaultValue={currentYear}  buttonStyle="solid" onChange={this.handleTime}>
+       {allStationAvalibaData&&allStationAvalibaData.map((e,index)=>{        
+         if(e.isTrue===true){
+          return   <Radio.Button value={e.year} key={index}  style={{margin:'0 5px'}}>{e.year}年</Radio.Button>
+         }else{
+          return   <Radio.Button value={e.year} key={index} disabled style={{margin:'0 5px'}}>{e.year}年</Radio.Button>
+         }
+       }
+       )}
+      </Radio.Group>
+    )
 
   }
-
   render() {
 
-    const { stationType, stations, dateType } = this.props;
+    const { stationType, stations, dateType ,year} = this.props;
     console.log(123,dateType )
     
     return (
@@ -64,8 +96,8 @@ class ProductionAnalysis extends React.Component {
             <div className={styles.stationStatus}>
               <div className={styles.status}>
                 <span className={styles.stationIcon}><i className="iconfont icon-pvlogo"></i></span>
-                {`电站名-区域：xxxxxx`}
-                计划完成情况{}
+                {`电站名-区域：`}
+                计划完成情况{dateType==='year'?this.selectYear():`(  ${Number(year)}年  ) `}
               </div>
 
               <span className={styles.rightFont}>并网时间:2018年3月10号</span>

@@ -166,7 +166,7 @@ class TableGraph extends React.Component {
 
   }
   render() {
-    const { tableType, currentYear, dateType,lastYear, SingleStationPlanRateData, SingleStationPvCompareData, SingleStationPowerEffectiveData, SingleStationLostPowerData } = this.props;
+    const { tableType, currentYear, dateType,lastYear, singleStationPlanRateData, singleStationPvCompareData, singleStationPowerEffectiveData, singleStationLostPowerData } = this.props;
     //console.log(currentYear,lastYear);
     // columnsArray.map((e, i) => ({
     //   title: e.title,
@@ -179,19 +179,19 @@ class TableGraph extends React.Component {
     let data = []
     switch (tableType) {
       case 'plan':
-        data = SingleStationPlanRateData && SingleStationPlanRateData.map((e, i) => ({ ...e, key: i, date: `${e.date}${dateType === 'month' ? '月' : (dateType === 'day' ? '日' : '')}` }))
+        data = singleStationPlanRateData && singleStationPlanRateData.map((e, i) => ({ ...e, key: i, date: `${e.date}${dateType === 'month' ? '月' : (dateType === 'day' ? '日' : '')}` }))
         break;
       case 'power':
-        data = SingleStationLostPowerData && SingleStationLostPowerData.map((e, i) => ({ ...e, key: i, date: `${e.date}${dateType === 'month' ? '月' : (dateType === 'day' ? '日' : '')}` }))
+        data = singleStationLostPowerData && singleStationLostPowerData.map((e, i) => ({ ...e, key: i, date: `${e.date}${dateType === 'month' ? '月' : (dateType === 'day' ? '日' : '')}` }))
         break;
       case 'light':
-        data = SingleStationPvCompareData && SingleStationPvCompareData.map((e, i) => ({ ...e, key: i, monthOrDay: `${e.monthOrDay}${dateType === 'month' ? '月' : (dateType === 'day' ? '日' : '')}` }))
+        data = singleStationPvCompareData && singleStationPvCompareData.map((e, i) => ({ ...e, key: i, monthOrDay: `${e.monthOrDay}${dateType === 'month' ? '月' : (dateType === 'day' ? '日' : '')}` }))
         break;
       case 'powerEffective':
-        data = SingleStationPowerEffectiveData && SingleStationPowerEffectiveData.map((e, i) => ({ ...e, key: i, date: `${e.date}${dateType === 'month' ? '月' : (dateType === 'day' ? '日' : '')}` }))
+        data = singleStationPowerEffectiveData && singleStationPowerEffectiveData.map((e, i) => ({ ...e, key: i, date: `${e.date}${dateType === 'month' ? '月' : (dateType === 'day' ? '日' : '')}` }))
         break;
         case 'yearRing':
-        data = SingleStationLostPowerData && SingleStationLostPowerData.map((e, i) => ({ ...e, key: i, date: `${e.date}${dateType === 'month' ? '月' : (dateType === 'day' ? '日' : '')}` }))
+        data = singleStationLostPowerData && singleStationLostPowerData.map((e, i) => ({ ...e, key: i, date: `${e.date}${dateType === 'month' ? '月' : (dateType === 'day' ? '日' : '')}` }))
         break;
 
     }
