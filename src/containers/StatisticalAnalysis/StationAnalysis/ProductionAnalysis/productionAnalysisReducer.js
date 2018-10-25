@@ -5,7 +5,8 @@ import { productionAnalysisAction } from './productionAnalysisAction';
 var initState = Immutable.fromJS({
   loading: false,
   dateType:'month',
-  year:'2018',
+  year:'',
+  month:'',
  
 
 
