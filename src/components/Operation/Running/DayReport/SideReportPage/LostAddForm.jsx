@@ -145,7 +145,7 @@ class LostAddForm extends Component {
               {getFieldDecorator('startTime', {
                 rules: [{ required: true, message: '请选择发生时间' }],
               })(
-                <DatePicker placeholder="请选择" showTime={true} format="YYYY-MM-DD hh:mm" />
+                <DatePicker placeholder="请选择" showTime={true} format="YYYY-MM-DD HH:mm" />
               )}
             </Form.Item>
           </Col>
@@ -154,7 +154,7 @@ class LostAddForm extends Component {
               {getFieldDecorator('endTime', {
                 // rules: [{ required: true, message: '结束时间' }],
               })(
-                <DatePicker placeholder="结束时间"  showTime={true} format="YYYY-MM-DD hh:mm" />
+                <DatePicker placeholder="结束时间"  showTime={true} format="YYYY-MM-DD HH:mm" />
               )}
               <span className={styles.lostInputTip}>未结束不填写</span>
             </Form.Item>

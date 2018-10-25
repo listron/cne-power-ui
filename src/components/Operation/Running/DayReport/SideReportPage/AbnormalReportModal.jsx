@@ -14,6 +14,7 @@ class AbnormalReportModal extends Component {
     deviceExistInfo: PropTypes.object,
     abnormalList: PropTypes.array,
     dayReportTotalInfoArr: PropTypes.array,
+    dayReportConfig: PropTypes.array,
     lostGenTypes: PropTypes.array,
     abnormalModalshow: PropTypes.bool,
     hideAbnormalModal: PropTypes.func,
@@ -135,8 +136,20 @@ class AbnormalReportModal extends Component {
   }
 
   render(){
-    const { abnormalModalshow, abnormalInfo, hideAbnormalModal, findDeviceExist, deviceExistInfo, lostGenTypes} = this.props;
+    const { abnormalModalshow, abnormalInfo, hideAbnormalModal, findDeviceExist, deviceExistInfo, lostGenTypes, dayReportConfig} = this.props;
     const { addLostFormShow, faultGenList, limitGenList, addLimitFormShow, abnormalTextShow, abnormalText } = this.state;
+    const { modelInverterPowerGen, modelInverterCapacity, stationCapacity } = abnormalInfo;
+    let defaultLimitLost; // 默认限电剩余损失电量
+    if(modelInverterCapacity > 0){
+      const tmpTheoryGen = modelInverterPowerGen / modelInverterCapacity * stationCapacity; // 理论发电量
+      const unitConfig = dayReportConfig[0] || {}; // 电量单位
+      const genUnit = unitConfig.power === 'kWh'?1: 10000; // kWh和万kWh。
+      const theryGen = tmpTheoryGen * genUnit;
+      const faultLostPower = faultGenList.reduce((pre,cur)=>parseFloat(pre) + parseFloat(cur.lostPower),0);
+      const limitLostPower = limitGenList.reduce((pre,cur)=>parseFloat(pre) + parseFloat(cur.lostPower),0);
+      const tmpDefaultList = theryGen - faultLostPower - limitLostPower;
+      tmpDefaultList > 0 && (defaultLimitLost = tmpDefaultList.toFixed(2));
+    }
     return (
       <Modal
           title={`添加异常-${abnormalInfo.stationName}`}
@@ -179,6 +192,7 @@ class AbnormalReportModal extends Component {
           changeLimitList={this.changeLimitList}  
           stationCode={abnormalInfo.stationCode}
           deviceExistInfo={deviceExistInfo}
+          defaultLimitLost={defaultLimitLost}
         />}
         <div className={styles.addPowerGenInfo} >
           <span>发电信息<Icon type="caret-right" theme="outlined" /></span>

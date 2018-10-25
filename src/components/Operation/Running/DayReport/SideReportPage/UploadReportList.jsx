@@ -86,6 +86,7 @@ class UploadReportList extends Component {
           })}
         </div>
         {abnormalModalshow && <AbnormalReportModal 
+          dayReportConfig={dayReportConfig}
           findDeviceExist={findDeviceExist}
           lostGenTypes={lostGenTypes}
           deviceExistInfo={deviceExistInfo}
