@@ -30,6 +30,7 @@ class TimeSelect extends React.Component {
   onHandleDay = (date, dateString) => {
     let data = new Date(date._d)
     console.log(dateString);
+    this.props.changeAllStationStore({ year: [`${dateString}`] })
   }
 
 
