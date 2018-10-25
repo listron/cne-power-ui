@@ -1,10 +1,11 @@
 
-export const reportBasefun = (stationType, powerUnit='kWh') => { // 电站日报基础配置信息填写
+export const reportBasefun = (stationType = 0, powerUnit='kWh') => { // 电站日报基础配置信息填写
   // pointLength: 允许填写的小数点位数，根据电量单位判定，kWh为2位，万kWh为4位
   return [
     {
       configText: stationType>0?'日斜面辐射总量':'日平均风速',
-      configName: 'resourceValue'
+      configName: 'resourceValue',
+      pointLength: 2,
     },{
       configText: '逆变器累计发电量',
       configName: 'yearGenInverter',
@@ -23,7 +24,8 @@ export const reportBasefun = (stationType, powerUnit='kWh') => { // 电站日报
       pointLength: powerUnit==='kWh'?2:4
     },{
       configText: '样板逆变器容量',
-      configName: 'modelInverterCapacity'
+      configName: 'modelInverterCapacity',
+      pointLength: 2,
     },{
       configText: '样板逆变器发电量',
       configName: 'modelInverterPowerGen',
@@ -32,12 +34,13 @@ export const reportBasefun = (stationType, powerUnit='kWh') => { // 电站日报
   ]
 }
 
-export const reportEditFun = (stationType, powerUnit='kWh') => { // 电站编辑数据信息填写
+export const reportEditFun = (stationType = 0, powerUnit='kWh') => { // 电站编辑数据信息填写
   // pointLength: 允许填写的小数点位数，根据电量单位判定，kWh为2位，万kWh为4位
   return [
     {
       configText: stationType>0?'日斜面辐射总量':'日平均风速',
-      configName: 'resourceValue'
+      configName: 'resourceValue',
+      pointLength: 2,
     },{
       configText: '日购网电量',
       configName: 'dailyBuyPower',

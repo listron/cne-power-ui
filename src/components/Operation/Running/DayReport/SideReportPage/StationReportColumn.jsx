@@ -13,11 +13,11 @@ function StationReportColumn({ dayReportConfig, stationType }){
   return (<Row className={styles.stationReportColumn}>
     <Col span={3} >电站名称</Col>
     <Col className={styles.withBorder} span={2} >
-      <span>日辐射总量</span>
+      <span>日斜面辐射总量</span>
       <span>{stationType === 0 ?`(${speedUtil})` : `(${radiaUtil})`}</span>
       <i className={styles.withRequired}>{requiredTargetObj.resourceValue && '*'}</i>
     </Col>
-    <Col span={6} >
+    <Col span={5} >
       <div className={styles.withBorderBottom}>年累计发电量({genUtil})</div>
       <Row >
         <Col span={8}>逆变器<i className={styles.withRequired}>{requiredTargetObj.yearGenInverter && '*'}</i></Col>
@@ -27,11 +27,11 @@ function StationReportColumn({ dayReportConfig, stationType }){
     </Col>
     <Col className={styles.withBorder} span={2} >等效小时数(h)<i className={styles.withRequired}>{requiredTargetObj.hour && '*'}</i></Col>
     <Col span={2} >年累计购网电量({genUtil})<i className={styles.withRequired}>{requiredTargetObj.buyPower && '*'}</i></Col>
-    <Col className={styles.withBorder} span={4} >
-      <div className={styles.withBorderBottom}>样板逆变器({genUtil})</div>
+    <Col className={styles.withBorder} span={5} >
+      <div className={styles.withBorderBottom}>样板逆变器</div>
       <Row >
-        <Col  span={12}>容量<i className={styles.withRequired}>{requiredTargetObj.modelInverterCapacity && '*'}</i></Col>
-        <Col span={12}>日发电量<i className={styles.withRequired}>{requiredTargetObj.modelInverterPowerGen && '*'}</i></Col>
+        <Col  span={10}>容量(MW)<i className={styles.withRequired}>{requiredTargetObj.modelInverterCapacity && '*'}</i></Col>
+        <Col span={14}>日发电量({genUtil})<i className={styles.withRequired}>{requiredTargetObj.modelInverterPowerGen && '*'}</i></Col>
       </Row>
     </Col>
     <Col span={2}>装机容量(MW)</Col>

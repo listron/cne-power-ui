@@ -15,7 +15,7 @@ class DayReportListSearch extends Component {
     stationType: PropTypes.number,
     pageSize: PropTypes.number,
     pageNum: PropTypes.number, 
-    regionCode: PropTypes.number,
+    regionName: PropTypes.sting,
     stationNameSort: PropTypes.number, 
     stations: PropTypes.array,
     getDayReportList: PropTypes.func,
@@ -27,14 +27,14 @@ class DayReportListSearch extends Component {
 
   startTimeChange = (value) => {
     const startTime = value?value.format('YYYY-MM'):moment().format('YYYY-MM');
-    const { getDayReportList, stationType, stationNameSort, pageSize, pageNum, regionCode  } = this.props;
+    const { getDayReportList, stationType, stationNameSort, pageSize, pageNum, regionName  } = this.props;
     getDayReportList({
       startTime,
       pageSize, 
       pageNum,
       stationType,
       stationNameSort,
-      regionCode,
+      regionName,
     });
   }
 
@@ -46,19 +46,19 @@ class DayReportListSearch extends Component {
       pageNum,
       stationType,
       stationNameSort,
-      regionCode: value
+      regionName: value
     });
   }
 
   stationTypeChange = (e) => {
-    const { getDayReportList, stationNameSort, pageSize, pageNum, startTime, regionCode } = this.props;
+    const { getDayReportList, stationNameSort, pageSize, pageNum, startTime, regionName } = this.props;
     getDayReportList({
       startTime,
       pageSize, 
       pageNum,
       stationType: e.target.value,
       stationNameSort,
-      regionCode
+      regionName
     });
   }
 
@@ -67,13 +67,10 @@ class DayReportListSearch extends Component {
   }
 
   render() {
-    const { startTime, stations, regionCode, stationType } = this.props;
-    let regionArr = [], regionSet = new Set(), stationTypeSet = new Set();
+    const { startTime, stations, regionName, stationType } = this.props;
+    let regionSet = new Set(), stationTypeSet = new Set();
     stations.forEach(e=>{
-      !regionSet.has(e.regionCode) && regionSet.add(e.regionCode) && regionArr.push({
-        regionCode: e.regionCode,
-        regionName: e.regionName,
-      });
+      regionSet.add(e.regionName);
       stationTypeSet.add(e.stationType);
     });
     const showTypeChangeButtonGroup = stationTypeSet.size > 1; // 两种类型电站以上，才显示电站类型选择
@@ -86,10 +83,10 @@ class DayReportListSearch extends Component {
           onChange={this.startTimeChange} 
           disabledDate={this.disabledDate} 
         />
-        <Select onChange={this.regionSelect} value={regionCode} className={styles.regionSearch} >
+        <Select onChange={this.regionSelect} value={regionName} className={styles.regionSearch} >
           <Option value={null}>全部</Option>
-          {regionArr.map(e=>(
-            <Option value={e.regionCode}>{e.regionName}</Option>
+          {[...regionSet].map(e=>(
+            <Option value={e}>{e}</Option>
           ))}
         </Select>
         {showTypeChangeButtonGroup && <span>

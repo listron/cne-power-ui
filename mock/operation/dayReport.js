@@ -179,7 +179,7 @@ module.exports = [
     method: 'post',
     response: {
       "code": "10000",
-      "message": "日报上传成功",
+      "message": "日报上报成功",
       "data": 'success',
       "serviceCode": "3.0"
     },

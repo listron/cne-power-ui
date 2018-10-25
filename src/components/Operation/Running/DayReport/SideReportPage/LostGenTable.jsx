@@ -38,6 +38,9 @@ class LostGenTable extends Component {
       },{
         title: '原因说明',
         dataIndex: 'reason',
+        render: (text, record) => {
+          return (<span title={text} >{text}</span>)
+        }
       },{
         title: '发生时间',
         dataIndex: 'startTime',
@@ -74,7 +77,7 @@ class LostGenTable extends Component {
             {getFieldDecorator(`${record.id}_process`, {
               initialValue: record.process,
             })(
-              <Input placeholder="处理进展" />
+              <Input placeholder="处理进展"  />
             )}
           </Form.Item>)
         }

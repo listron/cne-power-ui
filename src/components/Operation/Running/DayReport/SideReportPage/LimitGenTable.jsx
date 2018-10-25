@@ -61,7 +61,7 @@ class LimitGenTable extends Component {
             {getFieldDecorator(`${record.id}_endTime`, {
               initialValue: record.endTime,
             })(
-              <DatePicker placeholder="结束时间" />
+              <DatePicker placeholder="结束时间" showTime={true} format="YYYY-MM-DD hh:mm"   />
             )}
           </Form.Item>)
         }
