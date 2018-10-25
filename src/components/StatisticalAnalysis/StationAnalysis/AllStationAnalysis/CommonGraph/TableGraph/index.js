@@ -18,6 +18,28 @@ class TableGraph extends React.Component {
   getColumnsArray = (tableType, lastYear, currentYear) => {
     let columns = [];
     switch (tableType) {
+      case 'yearRing':
+      columns = [{
+        title: '日期',
+        dataIndex: 'date',
+        width: 200,
+        //sorter: true,
+        sorter: (a, b) => (a.date)-(b.date),
+      }, {
+        title: '发电量',
+        dataIndex: 'thatYearData',
+        width: 200,
+        //sorter: true,
+        sorter: (a, b) => a.thatYearData - b.thatYearData,
+      }, {
+        title: '环比',
+        dataIndex: 'ringRatio',
+        width: 200,
+        // sorter: true,
+        //defaultSortOrder: 'descend',
+        sorter: (a, b) => a.ringRatio - b.ringRatio,
+      }];
+      break;
       case 'plan':
         columns = [{
           title: '日期',
@@ -144,7 +166,7 @@ class TableGraph extends React.Component {
 
   }
   render() {
-    const { tableType, currentYear, lastYear, SingleStationPlanRateData, SingleStationPvCompareData, SingleStationPowerEffectiveData, SingleStationLostPowerData } = this.props;
+    const { tableType, currentYear, dateType,lastYear, SingleStationPlanRateData, SingleStationPvCompareData, SingleStationPowerEffectiveData, SingleStationLostPowerData } = this.props;
     //console.log(currentYear,lastYear);
     // columnsArray.map((e, i) => ({
     //   title: e.title,
@@ -157,16 +179,19 @@ class TableGraph extends React.Component {
     let data = []
     switch (tableType) {
       case 'plan':
-        data = SingleStationPlanRateData && SingleStationPlanRateData.map((e, i) => ({ ...e, key: i, date: `${e.date}月` }))
+        data = SingleStationPlanRateData && SingleStationPlanRateData.map((e, i) => ({ ...e, key: i, date: `${e.date}${dateType === 'month' ? '月' : (dateType === 'day' ? '日' : '')}` }))
         break;
       case 'power':
-        data = SingleStationLostPowerData && SingleStationLostPowerData.map((e, i) => ({ ...e, key: i, date: `${e.date}月` }))
+        data = SingleStationLostPowerData && SingleStationLostPowerData.map((e, i) => ({ ...e, key: i, date: `${e.date}${dateType === 'month' ? '月' : (dateType === 'day' ? '日' : '')}` }))
         break;
       case 'light':
-        data = SingleStationPvCompareData && SingleStationPvCompareData.map((e, i) => ({ ...e, key: i, monthOrDay: `${e.monthOrDay}月` }))
+        data = SingleStationPvCompareData && SingleStationPvCompareData.map((e, i) => ({ ...e, key: i, monthOrDay: `${e.monthOrDay}${dateType === 'month' ? '月' : (dateType === 'day' ? '日' : '')}` }))
         break;
       case 'powerEffective':
-        data = SingleStationPowerEffectiveData && SingleStationPowerEffectiveData.map((e, i) => ({ ...e, key: i, date: `${e.date}月` }))
+        data = SingleStationPowerEffectiveData && SingleStationPowerEffectiveData.map((e, i) => ({ ...e, key: i, date: `${e.date}${dateType === 'month' ? '月' : (dateType === 'day' ? '日' : '')}` }))
+        break;
+        case 'yearRing':
+        data = SingleStationLostPowerData && SingleStationLostPowerData.map((e, i) => ({ ...e, key: i, date: `${e.date}${dateType === 'month' ? '月' : (dateType === 'day' ? '日' : '')}` }))
         break;
 
     }

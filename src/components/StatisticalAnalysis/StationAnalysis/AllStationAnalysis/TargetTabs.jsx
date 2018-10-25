@@ -44,7 +44,7 @@ class TargetTabs extends React.Component {
    const currentYear=parseInt(year).toString();
    const lastYear=(parseInt(year)-1).toString();
     const { AllStationMonthBarData, AllStationMonthPieData, AllStationMonthComplete } = this.props;
-    console.log(12345,AllStationMonthBarData,AllStationMonthPieData,AllStationMonthComplete);
+   
     const barGraphThatYear = AllStationMonthBarData.map((e, i) => (e.thatYearData))
     const barGraphLastYear = AllStationMonthBarData.map((e, i) => (e.lastYearData))
     const barGraphmonth = AllStationMonthBarData.map((e, i) => (`${e.month}月`))
