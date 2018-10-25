@@ -149,8 +149,8 @@ class LostAddForm extends Component {
           </Col>
         </Row>
         <Row className={styles.horizontal} >
-          <Col span={24}>
-            <Form.Item label="设备名称" labelCol={{ sm: 2 }} wrapperCol={{ sm: 22 }}>
+          <Col span={8}>
+            <Form.Item label="设备名称" {...formItemLayout1}>
               {getFieldDecorator('deviceName', {
                 rules: [{ required: true, message: '请填写设备名称' }],
               })(
