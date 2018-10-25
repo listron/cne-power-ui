@@ -145,8 +145,18 @@ class AbnormalReportModal extends Component {
       const unitConfig = dayReportConfig[0] || {}; // 电量单位
       const genUnit = unitConfig.power === 'kWh'?1: 10000; // kWh和万kWh。
       const theryGen = tmpTheoryGen * genUnit;
-      const faultLostPower = faultGenList.reduce((pre,cur)=>parseFloat(pre) + parseFloat(cur.lostPower),0);
-      const limitLostPower = limitGenList.reduce((pre,cur)=>parseFloat(pre) + parseFloat(cur.lostPower),0);
+      const faultLostPower = faultGenList.reduce((pre,cur) => {
+        if(cur.lostPower || cur.lostPower === 0){
+          return pre + parseFloat(cur.lostPower);
+        }
+        return pre;
+      },0);
+      const limitLostPower = limitGenList.reduce((pre,cur) => {
+        if(cur.lostPower || cur.lostPower === 0){
+          return pre + parseFloat(cur.lostPower);
+        }
+        return pre;
+      },0);
       const tmpDefaultList = theryGen - faultLostPower - limitLostPower;
       tmpDefaultList > 0 && (defaultLimitLost = tmpDefaultList.toFixed(2));
     }
