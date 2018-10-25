@@ -20,6 +20,14 @@ var initState = Immutable.fromJS({
   AllStationMonthPieData:[],//pie图
   AllStationMonthComplete:'',//计划完成率
   AllStationMonthBarData:[],//发电量的bar图
+  SingleStationStatisticData:{},//单电站计划完成情况
+  SingleStationPowerData:[],//发电量分析数据
+  SingleStationLostPowerData:[],//损失电量分析数据
+  SingleStationMonthPieData:[],//发电量饼图
+  SingleStationPlanRateData:[],//计划完成率分析
+  SingleStationPvCompareData:[],//光资源同比
+  SingleStationPowerEffectiveData:[],//发电效率
+  SingleStationDayCompleteRateData:[],//单电站累计完成率
 
 });
 const allStationAnalysisReducer = (state = initState, action) => {

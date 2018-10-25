@@ -21,12 +21,14 @@ class InputLimit extends Component {
     width: PropTypes.number,
     height: PropTypes.number,
     style: PropTypes.object,
+    numberIsShow: PropTypes.bool,
   }
 
   static defaultProps = {
     size: 80,
     width: 440,
-    height: 90
+    height: 90,
+    numberIsShow: true,
   }
 
   constructor(props) {
@@ -53,10 +55,10 @@ class InputLimit extends Component {
   }
 
   render() {
-
+    const { numberIsShow } = this.props;
     return ( 
       <div className={styles.inputLimit} style={this.props.style}>
-        <div className={styles.inputCount}>{this.state.current}/{this.props.size}字</div>
+        <div className={styles.inputCount}>{numberIsShow && <span>{this.state.current}/{this.props.size}字</span>}</div>
         <TextArea 
           value={this.props.value}
           placeholder={this.props.placeholder}

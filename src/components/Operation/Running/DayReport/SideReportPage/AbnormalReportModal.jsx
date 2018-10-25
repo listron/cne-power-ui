@@ -169,6 +169,7 @@ class AbnormalReportModal extends Component {
           width="calc(100vw - 229px)"
           okText="保存"
           wrapClassName={styles.addAbnormalModal}
+          mask={false}
         >
         <div className={styles.addGenLostHeader} >
           <span>损失电量信息<Icon type="caret-right" theme="outlined" /></span>

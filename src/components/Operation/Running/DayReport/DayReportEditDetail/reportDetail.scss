@@ -48,6 +48,13 @@
     padding: 20px 25px;
     border-bottom:1px #dfdfdf dashed;
     .resourceInfoCon{
+      :global{
+        .ant-form-item-label{
+          label::after{
+            margin:0px;
+          }
+        } 
+      }
       padding: 0 100px;
       .eachResourceInfo{
         display: inline-block;
@@ -173,6 +180,13 @@
     }
     .resourceInfoCon{
       padding: 20px 100px 0;
+      :global{
+        .ant-form-item-label{
+          label::after{
+            margin:0px;
+          }
+        } 
+      }
       .eachResourceInfo{
         display: inline-block;
         width: 33.33%;
@@ -189,6 +203,7 @@
 
   .lostElecInfo{
     padding: 0 0 0 30px;
+    margin-bottom: 10px;
     .reportSubTitle{
       width: 100px;
       text-align: right;

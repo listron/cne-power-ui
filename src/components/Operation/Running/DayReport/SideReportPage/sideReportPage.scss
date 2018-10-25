@@ -246,8 +246,8 @@
   :global{
     .ant-modal{
       margin: 0;
-      top: 86px;
-      left: 201px;
+      top: 84px;
+      left: 204px;
     }
     ::-webkit-scrollbar {
       width: 6px;
@@ -268,18 +268,24 @@
     }
     .ant-modal-body{
       padding: 10px 20px;
-      height: 666px;
+      height: 668px;
       overflow: auto;
+      overflow-y: auto;
+      overflow-x: hidden;
       .ant-form-item, .ant-form-horizontal {
         margin-bottom: 0px;
       }
       .ant-form-horizontal{
         display: flex;
         flex-direction: column;
+        margin-top: 5px;
       }
       .ant-form-item{
         display: flex;
         flex-direction: row;
+        .ant-form-item-control-wrapper{
+          margin: 0 auto;
+        }
       }
     }
     .ant-modal-footer{
@@ -326,6 +332,7 @@
   border-radius:4px;
   margin: 0 20px;
   padding: 10px 0 15px 80px;
+  margin-top: 10px;
   .dataErrorText{
     z-index: 10;
     background:#ffffff;
