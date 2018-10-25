@@ -18,7 +18,8 @@ class DeviceManageSearch extends Component {
     changeCommonStore: PropTypes.func,
     getDeviceList: PropTypes.func,
     getStationDeviceTypes: PropTypes.func,
-    getStationDeviceModel: PropTypes.func,
+    getDeviceModel: PropTypes.func,
+    changeDeviceManageStore: PropTypes.func,
   }
 
   constructor(props) {
@@ -29,7 +30,7 @@ class DeviceManageSearch extends Component {
   }
 
   selectStation = (stations) => {
-    const { getStationDeviceTypes, getDeviceList, queryParams, changeCommonStore } = this.props;
+    const { getStationDeviceTypes, getDeviceList, queryParams, changeDeviceManageStore } = this.props;
     getStationDeviceTypes({
       stationCodes: stations[0].stationCode,
     });
@@ -40,14 +41,14 @@ class DeviceManageSearch extends Component {
       deviceModeCode: null,
       pageNum: 1,
     })
-    changeCommonStore({
+    changeDeviceManageStore({
       deviceModels: []
     })
   }
 
   selectDeviceType = (value) => {
-    const { getStationDeviceModel, getDeviceList, queryParams, stationCode } = this.props;
-    getStationDeviceModel({
+    const { getDeviceModel, getDeviceList, queryParams, stationCode } = this.props;
+    getDeviceModel({
       stationCode,
       deviceTypeCode: value,
     });

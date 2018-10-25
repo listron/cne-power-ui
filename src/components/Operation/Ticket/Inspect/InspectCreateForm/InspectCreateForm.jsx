@@ -13,7 +13,7 @@ class InspectCreateForm extends Component{
     form: PropTypes.object,
     error: PropTypes.object,
     createInspect: PropTypes.func,
-    loadDeviceTypeList: PropTypes.func,
+    getStationDeviceTypes: PropTypes.func,
     onChangeShowContainer: PropTypes.func,
     stations: PropTypes.object,
     deviceTypeItems: PropTypes.object,
@@ -47,7 +47,7 @@ class InspectCreateForm extends Component{
   
   stationSelected = (stations) => {
     const stationCodes = (stations && stations[0] && stations[0].stationCode) || 0;
-    this.props.loadDeviceTypeList({stationCodes})
+    this.props.getStationDeviceTypes({stationCodes})
   }
 
   disabledDate = (start) => {

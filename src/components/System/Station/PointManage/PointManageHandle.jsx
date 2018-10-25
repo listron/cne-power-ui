@@ -21,6 +21,7 @@ class PointManageHandle extends Component {
     deletePointList: PropTypes.func,
     getStationDeviceTypes: PropTypes.func,
     changeCommonStore: PropTypes.func,
+    changePointManageStore: PropTypes.func,
   }
   constructor(props) {
     super(props);
@@ -40,7 +41,7 @@ class PointManageHandle extends Component {
   }
 
   getUpdatePointList = ({ file, selectedStation }) => { // 上传成功后重新请求列表
-    const { queryParams, getPointList, getStationDeviceTypes, changeCommonStore } = this.props;
+    const { queryParams, getPointList, getStationDeviceTypes, changePointManageStore } = this.props;
     getPointList({
       ...queryParams,
       stationCode: selectedStation.stationCode,
@@ -51,7 +52,7 @@ class PointManageHandle extends Component {
     getStationDeviceTypes({
       stationCodes: selectedStation.stationCode,
     });
-    changeCommonStore({
+    changePointManageStore({
       deviceModels: []
     })
   }

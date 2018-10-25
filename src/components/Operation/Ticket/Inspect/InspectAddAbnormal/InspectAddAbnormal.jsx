@@ -19,7 +19,7 @@ class inspectAddAbnormal extends Component {
     deviceTypeItems: PropTypes.object,
     deviceAreaItems: PropTypes.object,
     deviceItems: PropTypes.object,
-    loadDeviceTypeList: PropTypes.func,
+    getStationDeviceTypes: PropTypes.func,
     loadDeviceAreaList: PropTypes.func,
     loadDeviceList: PropTypes.func,
     inspectDetail: PropTypes.object,
@@ -127,7 +127,7 @@ class inspectAddAbnormal extends Component {
     })
     let stationCode = this.props.inspectDetail.get('stationCode'); 
     let stationType = this.props.inspectDetail.get('stationType');
-    this.props.loadDeviceTypeList({stationCodes: stationCode}); 
+    this.props.getStationDeviceTypes({stationCodes: stationCode}); 
     this.props.getDefectTypes({stationType: stationType});
   }
 
