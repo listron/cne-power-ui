@@ -7,8 +7,6 @@ export const commonAction = {
   getStations: Symbol('getStations'),
   //获取所有设备类型，用户权限相关
   getDeviceTypes: Symbol('getDeviceTypes'),
-  //获取某电站下所有设备类型
-  getStationDeviceTypes: Symbol('getStationDeviceTypes'),
   getStationDeviceModel: Symbol('getStationDeviceModel'), // 获取设备型号
   getStationDevicePoints: Symbol('getStationDevicePoints'), // 获取设备测点
   getDevices: Symbol('getDevices'),
@@ -25,6 +23,6 @@ export const commonAction = {
 
 
 
-  getStaionsDeviceTypes: Symbol('getStaionsDeviceTypes'), // new电站下设备类型获取
+  getStationDeviceTypes: Symbol('getStationDeviceTypes'), // 电站下设备类型获取
 }
 

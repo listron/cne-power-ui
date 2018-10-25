@@ -106,14 +106,14 @@ const mapDispatchToProps = (dispatch) => ({
   findDeviceExist: payload => dispatch({ type: commonAction.findDeviceExist, payload }),
   getLostGenType: payload => dispatch({ type: commonAction.getLostGenType, payload }),
 
-  getStaionsDeviceTypes: params => dispatch({
-    type: commonAction.getStaionsDeviceTypes,
+  getStationDeviceTypes: params => dispatch({
+    type: commonAction.getStationDeviceTypes,
     payload: {
       params, 
       deviceTypeAction: dayReportAction.dayReportFetchSuccess,
       resultName: 'stationDeviceTypes'
     }
-  })
+  }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DayReport);

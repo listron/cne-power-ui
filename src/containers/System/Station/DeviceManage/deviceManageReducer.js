@@ -14,6 +14,7 @@ var initState = Immutable.fromJS({
   sortMethod: '', // 排序方式('0':正序,'1': 倒序)
   
   deviceList: [], // 设备列表
+  stationDeviceTypes: [], //电站下设备类型
 });
 
 const deviceManageReducer = (state = initState, action) => {

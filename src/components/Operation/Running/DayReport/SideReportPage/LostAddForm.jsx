@@ -17,7 +17,7 @@ class LostAddForm extends Component {
     stationDeviceTypes: PropTypes.array,
     changeFaultList: PropTypes.func,
     findDeviceExist: PropTypes.func,
-    getStaionsDeviceTypes: PropTypes.func,
+    getStationDeviceTypes: PropTypes.func,
   }
 
   constructor(props){
@@ -29,8 +29,8 @@ class LostAddForm extends Component {
   }
 
   componentDidMount(){ // 电站下设备类型获取。
-    const { stationCode, getStaionsDeviceTypes } = this.props;
-    getStaionsDeviceTypes({ stationCodes: stationCode });
+    const { stationCode, getStationDeviceTypes } = this.props;
+    getStationDeviceTypes({ stationCodes: stationCode });
   }
 
   componentWillReceiveProps(nextProp){ // 验证设备是否存在功能。

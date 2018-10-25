@@ -106,12 +106,12 @@ const mapStateToProps = (state) => ({
     loading: state.operation.defect.get('loading'),
     commonFetching: state.common.get('commonFetching'),
     stations: state.common.get('stations').toJS(),
-    deviceTypes: state.common.get('stationDeviceTypes').toJS(),
+    deviceTypes: state.operation.defect.get('deviceTypes').toJS(),
     devices: state.common.get('devices').toJS(),
     error: state.operation.defect.get('error'),
     defectTypes: state.operation.defect.get('defectTypes').toJS(),
     defectDetail: state.operation.defect.get('defectDetail').toJS(),
-    deviceTypeItems: state.common.get('stationDeviceTypes'),
+    deviceTypeItems: state.common.get('deviceTypes'),
     deviceAreaItems: state.common.get('partitions'),
     deviceItems: state.common.get('devices'),
     commonList: state.operation.defect.get('commonList'),
@@ -124,7 +124,6 @@ const mapDispatchToProps = (dispatch) => ({
   changeCommonStore: payload => dispatch({type:commonAction.changeCommonStore, payload}),
   getStations: payload => dispatch({ type: commonAction.getStations, payload }),
   getDefectDetail: payload => dispatch({ type: ticketAction.GET_DEFECT_DETAIL_SAGA, payload }),
-  getStationDeviceTypes: payload => dispatch({ type: commonAction.getStationDeviceTypes, payload }),
   getCommonList: payload => dispatch({ type: ticketAction.GET_DEFECT_LANGUAGE_SAGA, payload }),
   getStationAreas: payload => dispatch({ type: commonAction.getPartition, payload}),
   getDevices: payload => dispatch({ type: commonAction.getDevices, payload }),
@@ -132,6 +131,14 @@ const mapDispatchToProps = (dispatch) => ({
   onDefectCreateNew: payload => dispatch({type: ticketAction.DEFECT_CREATE_SAGA, payload}),
   submitDefect: payload => dispatch({type: ticketAction.SUBMIT_DEFECT_SAGA, payload}),
   getSliceDevices:payload => dispatch({type: commonAction.getSliceDevices, payload}),
+  getStationDeviceTypes: params => dispatch({
+    type: commonAction.getStationDeviceTypes,
+    payload: {
+      params, 
+      deviceTypeAction: ticketAction.GET_DEFECT_FETCH_SUCCESS,
+      resultName: 'deviceTypes'
+    }
+  })
 });
 
 

@@ -19,6 +19,7 @@ class PointManageSearch extends Component {
     changeCommonStore: PropTypes.func,
     getStationDeviceTypes: PropTypes.func,
     getStationDeviceModel: PropTypes.func,
+    changePointManageStore: PropTypes.func,
   }
 
   constructor(props) {
@@ -29,7 +30,7 @@ class PointManageSearch extends Component {
   }
 
   selectStation = (stations) => {
-    const { getStationDeviceTypes, getPointList, queryParams, changeCommonStore } = this.props;
+    const { getStationDeviceTypes, getPointList, queryParams, changePointManageStore } = this.props;
     getStationDeviceTypes({
       stationCodes: stations[0].stationCode,
     });
@@ -40,7 +41,7 @@ class PointManageSearch extends Component {
       deviceModeCode: null,
       pageNum: 1,
     })
-    changeCommonStore({
+    changePointManageStore({
       deviceModels: []
     })
   }

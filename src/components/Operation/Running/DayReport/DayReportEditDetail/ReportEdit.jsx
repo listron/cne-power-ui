@@ -25,7 +25,7 @@ class ReportEdit extends Component {
     findDeviceExist: PropTypes.func,
     dayReportUpdate: PropTypes.func,
     getLostGenType: PropTypes.func,
-    getStaionsDeviceTypes: PropTypes.func,
+    getStationDeviceTypes: PropTypes.func,
   }
 
   constructor(props){
@@ -258,7 +258,7 @@ class ReportEdit extends Component {
 
   render(){
     const { updateDayReportDetail, addLostFormShow, addLimitFormShow, abnormalTextShow, showBackWarningTip, warningTipText } = this.state;
-    const { findDeviceExist, deviceExistInfo, dayReportConfig, lostGenTypes, getStaionsDeviceTypes, stationDeviceTypes } = this.props;
+    const { findDeviceExist, deviceExistInfo, dayReportConfig, lostGenTypes, getStationDeviceTypes, stationDeviceTypes } = this.props;
     const {faultList, limitList, stationCode, errorInfo} = updateDayReportDetail;
     return (
       <div className={styles.reportEdit} >
@@ -298,7 +298,7 @@ class ReportEdit extends Component {
           stationCode={stationCode}
           deviceExistInfo={deviceExistInfo}
           stationDeviceTypes={stationDeviceTypes}
-          getStaionsDeviceTypes={getStaionsDeviceTypes}
+          getStationDeviceTypes={getStationDeviceTypes}
         />}
         <div className={styles.lostElecInfo} >
           <span className={styles.reportSubTitle}>限电信息<Icon type="caret-right" theme="outlined" /></span>

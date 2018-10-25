@@ -94,7 +94,6 @@ const mapStateToProps = (state) => ({
   ...state.system.alarmManage.toJS(),
   stations: state.common.get('stations').toJS(),
   deviceModels: state.common.get('deviceModels').toJS(),
-  stationDeviceTypes: state.common.get('stationDeviceTypes').toJS(),
   devicePoints: state.common.get('devicePoints').toJS(),
   allStationBaseInfo: state.system.stationManage.get('allStationBaseInfo').toJS(),
 });
@@ -104,7 +103,14 @@ const mapDispatchToProps = (dispatch) => ({
   getAlarmList: payload => dispatch({type: alarmManageAction.GET_ALARM_MANAGE_LIST, payload}),
   deleteAlarmList: payload => dispatch({type: alarmManageAction.DELETE_ALARM_MANAGE_LIST, payload}),
   changeCommonStore: payload => dispatch({type:commonAction.changeCommonStore, payload}),
-  getStationDeviceTypes: payload => dispatch({type:commonAction.getStationDeviceTypes, payload}),
+  getStationDeviceTypes: params => dispatch({
+    type: commonAction.getStationDeviceTypes,
+    payload: {
+      params, 
+      deviceTypeAction: alarmManageAction.GET_ALARM_MANAGE_FETCH_SUCCESS,
+      resultName: 'stationDeviceTypes'
+    }
+  }),
   getStationDeviceModel: payload => dispatch({type:commonAction.getStationDeviceModel, payload}),
   getStationDevicePoints: payload => dispatch({type:commonAction.getStationDevicePoints, payload}),
   getStationOfEnterprise: payload =>dispatch({type: stationManageAction.GET_ALL_STATION_MANAGE_BASE_INFO, payload }),
