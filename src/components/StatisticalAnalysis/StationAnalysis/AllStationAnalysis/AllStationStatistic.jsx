@@ -21,8 +21,8 @@ class AllStationStatistic extends React.Component {
     sortType: PropTypes.string,
     sort: PropTypes.string,
     stationCode: PropTypes.array,
-    AllStationAvalibaData: PropTypes.array,
-    AllStationStatisticData: PropTypes.object,
+    allStationAvalibaData: PropTypes.array,
+    allStationStatisticData: PropTypes.object,
     pageSize: PropTypes.number,
     pageNum: PropTypes.number,
     history: PropTypes.object,
@@ -301,7 +301,7 @@ class AllStationStatistic extends React.Component {
         <i className="iconfont icon-filter"></i>
       </div>
     );
-    const { stationType, stations, dateType, year, AllStationAvalibaData, AllStationStatisticData, getAllStationStatisticData } = this.props;
+    const { stationType, stations, dateType, year, allStationAvalibaData, allStationStatisticData, getAllStationStatisticData } = this.props;
     const { showStationSelect } = this.state;
     //console.log(dateType, year);
     return (
@@ -310,7 +310,7 @@ class AllStationStatistic extends React.Component {
           <TabPane tab="光伏" key="1">
             <div className={styles.componentContainer}>
               <TimeSelect text={'统计时间选择'} {...this.props} />
-              <PlanCompletionRate dateType={dateType} AllStationAvalibaData={AllStationAvalibaData} AllStationStatisticData={AllStationStatisticData} getAllStationStatisticData={getAllStationStatisticData} year={year}/>
+              <PlanCompletionRate dateType={dateType} allStationAvalibaData={allStationAvalibaData} allStationStatisticData={allStationStatisticData} getAllStationStatisticData={getAllStationStatisticData} year={year} />
               <TargetTabs {...this.props} />
             </div>
           </TabPane>
