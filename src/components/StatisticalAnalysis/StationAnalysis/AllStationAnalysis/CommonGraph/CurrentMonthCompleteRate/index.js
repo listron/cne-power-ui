@@ -16,7 +16,7 @@ class barGraph extends React.Component {
     }
 
     drawChart = (params) => {
-        const { graphId, yAxisName, xAxisName, title } = params;
+        const { graphId, yAxisName, xAxisName, title,dayCompleteRate,dayCompleteRateDateData,dayCompleteRateLastYearData,dayCompleteRateThatYearData,lastYear,currentYear } = params;
         const targetChart = echarts.init(document.getElementById(graphId));
         targetChart.resize();
         let color = ['#a42b2c', '#199475', '#f9b600'];
@@ -65,7 +65,8 @@ class barGraph extends React.Component {
             xAxis: [
                 {
                     type: 'category',
-                    data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+                    data: dayCompleteRateDateData,
+                    // data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
                     axisPointer: {
                         type: 'shadow'
                     },
@@ -137,26 +138,29 @@ class barGraph extends React.Component {
             ],
             series: [
                 {
-                    name: '2017年',
+                    name: lastYear,
                     type: 'line',
                     lineStyle: {
                         type: 'dashed'
                     },
-                    data: [320, 332, 301, 334, 390, 330, 320]
+                    data: dayCompleteRateLastYearData
+                    // data: [320, 332, 301, 334, 390, 330, 320]
                 },
                 {
-                    name: '2018年',
+                    name: currentYear,
                     type: 'line',
                     areaStyle: {
                         color: '#ceebe0'
                     },
-                    data: [820, 932, 901, 934, 1290, 1330, 1320]
+                    data: dayCompleteRateThatYearData
+                    // data: [820, 932, 901, 934, 1290, 1330, 1320]
                 },
                 {
                     name: '同比',
                     type: 'line',
                     yAxisIndex: 1,
-                    data: [120, 132, 101, 134, 90, 230, 210, 340]
+                    data: dayCompleteRate
+                    // data: [120, 132, 101, 134, 90, 230, 210, 340]
                 }
             ]
         };

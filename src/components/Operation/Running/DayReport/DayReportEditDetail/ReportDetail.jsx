@@ -8,12 +8,21 @@ const loseColumn = [
   {
     title: '设备名称',
     dataIndex: 'deviceName',
+    render: (text, record) => (
+      <span title={text} >{text}</span>
+    ),
   },{
     title: '损失电量类型',
     dataIndex: 'faultName',
+    render: (text, record) => (
+      <span title={text} >{text}</span>
+    ),
   },{
     title: '原因说明',
     dataIndex: 'reason',
+    render: (text, record) => (
+      <span title={text} >{text}</span>
+    ),
   },{
     title: '发生时间',
     dataIndex: 'startTime',
@@ -23,6 +32,9 @@ const loseColumn = [
   },{
     title: '处理进展及问题',
     dataIndex: 'process',
+    render: (text, record) => (
+      <span title={text} >{text}</span>
+    ),
   },{
     title: '日损失电量',
     dataIndex: 'lostPower',
@@ -32,12 +44,18 @@ const limitColumn = [
   {
     title: '设备名称',
     dataIndex: 'deviceName',
+    render: (text, record) => (
+      <span title={text} >{text}</span>
+    ),
   },{
     title: '限功率',
     dataIndex: 'limitPower',
   },{
     title: '原因说明',
     dataIndex: 'reason',
+    render: (text, record) => (
+      <span title={text} >{text}</span>
+    ),
   },{
     title: '发生时间',
     dataIndex: 'startTime',
