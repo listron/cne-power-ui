@@ -48,7 +48,7 @@ class AllStationStatistic extends React.Component {
 
     const currentMonth = Number(moment().format('MM'));
     let time = year ? year : [`${currentYear}`];
-    console.log(time);
+    //console.log(time);
     const userId = getCookie('userId');
     changeAllStationStore({ year: [`${currentYear}`], month: currentMonth })
     getAllStationAvalibaData(
@@ -166,7 +166,7 @@ class AllStationStatistic extends React.Component {
         {
           userId: userId,
           year: curYearPlan,
-          dateType,
+          dateType: nextProps.dateType,
         }
       )
       getAllStationMonthBarData({
@@ -179,7 +179,7 @@ class AllStationStatistic extends React.Component {
       getAllStationStatisticTableData(
         {
           year: currentTableYear,
-          dateType,
+          dateType: nextProps.dateType,
           month: currentMonth,//默认当前月
           // pageNum: nextProps.pageNum, // 当前页
           pageNum: 1, // 当前页
@@ -277,7 +277,7 @@ class AllStationStatistic extends React.Component {
   }
 
   onChangeStation = (stationCode) => {
-    this.props.history.push(`/statistical/stationaccount/allstation`);
+    this.props.history.push(`/statistical/stationaccount/allstation/${stationCode}`);
     this.props.changeAllStationStore({
       showPage: 'single',
       singleStationCode: stationCode.toString()
@@ -303,14 +303,14 @@ class AllStationStatistic extends React.Component {
     );
     const { stationType, stations, dateType, year, AllStationAvalibaData, AllStationStatisticData, getAllStationStatisticData } = this.props;
     const { showStationSelect } = this.state;
-    console.log(dateType, year);
+    //console.log(dateType, year);
     return (
       <div className={styles.allStationTypeTabs}>
         <Tabs type="card" tabBarExtraContent={operations}  >
           <TabPane tab="光伏" key="1">
             <div className={styles.componentContainer}>
               <TimeSelect text={'统计时间选择'} {...this.props} />
-              <PlanCompletionRate dateType={dateType} AllStationAvalibaData={AllStationAvalibaData} AllStationStatisticData={AllStationStatisticData} getAllStationStatisticData={getAllStationStatisticData} />
+              <PlanCompletionRate dateType={dateType} AllStationAvalibaData={AllStationAvalibaData} AllStationStatisticData={AllStationStatisticData} getAllStationStatisticData={getAllStationStatisticData} year={year}/>
               <TargetTabs {...this.props} />
             </div>
           </TabPane>

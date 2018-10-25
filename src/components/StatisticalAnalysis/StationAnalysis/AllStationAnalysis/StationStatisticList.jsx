@@ -338,7 +338,7 @@ class StationStatisticList extends React.Component {
 
   render() {
     const { dateType, AllStationStatisticTableData, totalNum, pageSize, pageNum, showPage } = this.props;
-    console.log(AllStationStatisticTableData);
+    //console.log(AllStationStatisticTableData);
     const columns = dateType === 'month' ? this.initMonthColumn() : this.initYearColumn();
     return (
       <div className={styles.stationStatisticList}>
