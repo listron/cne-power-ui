@@ -99,14 +99,14 @@ class ReportEdit extends Component {
         startTime = startTime && moment(startTime).format('YYYY-MM-DD');
         endTime = endTime && moment(endTime).format('YYYY-MM-DD');
         const tmpTextArr = [deviceName, startTime, endTime&&(`到${endTime}`), reason, faultName].filter(e=>e);
-        return tmpTextArr.join('');
+        return tmpTextArr.join(' ');
       })
       const limitShortInfo = limitList.map(e=>{
         let { deviceName, startTime, endTime, reason, limitPower } = e;
         startTime = startTime && moment(startTime).format('YYYY-MM-DD');
         endTime = endTime && moment(endTime).format('YYYY-MM-DD');
         const tmpTextArr = [deviceName, startTime, endTime&&(`到${endTime}`), reason, limitPower].filter(e=>e);
-        return tmpTextArr.join('');
+        return tmpTextArr.join(' ');
       })
       abnormalText = `${faultShortInfo.join(';\n')};\n${limitShortInfo.join(';\n')}`;
     }
