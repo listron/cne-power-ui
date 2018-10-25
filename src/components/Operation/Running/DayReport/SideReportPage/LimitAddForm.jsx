@@ -142,7 +142,7 @@ class LimitAddForm extends Component {
               {getFieldDecorator('startTime', {
                 rules: [{ required: true, message: '请选择发生时间' }],
               })(
-                <DatePicker showTime={true} format="YYYY-MM-DD HH:mm"  />
+                <DatePicker showTime={{format: 'HH:mm'}} format="YYYY-MM-DD HH:mm"  />
               )}
             </Form.Item>
           </Col>
@@ -151,7 +151,7 @@ class LimitAddForm extends Component {
               {getFieldDecorator('endTime', {
                 // rules: [{ required: true, message: '结束时间' }],
               })(
-                <DatePicker showTime={true} format="YYYY-MM-DD HH:mm" />
+                <DatePicker showTime={{format: 'HH:mm'}} format="YYYY-MM-DD HH:mm" />
               )}
               <span className={styles.lostInputTip}>未结束不填写</span>
             </Form.Item>
