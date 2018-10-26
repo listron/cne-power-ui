@@ -161,11 +161,11 @@ class ReportEdit extends Component {
     })
     faultList.find(e=>{
       !e.process && (errorText = '损失电量进展未填写!');
-      !e.lostPower && (errorText = '损失电量未填写!');
+      // !e.lostPower && (errorText = '损失电量未填写!');
       return !e.process || !e.lostPower;
     })
     limitList.find(e=>{
-      !e.lostPower && (errorText = '限电损失电量未填写!');
+      // !e.lostPower && (errorText = '限电损失电量未填写!');
       return !e.lostPower;
     })
     if(errorText){ // 数据错误存在，提示
