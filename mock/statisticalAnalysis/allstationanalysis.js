@@ -195,23 +195,7 @@ module.exports = [{
     },
     delay: 1000,
     error: {}
-  }, {
-    api: '/mock/api/v3/performance/comprehensive/power/year',
-    method: 'post',
-    response: {
-      "code": "10000",
-      "message": "请求成功",
-      "data": [{
-        thatYearData: '新能源崛起！',
-        ringRatio: '2',
-        year: 15214449995,
-      }],
-
-      "serviceCode": "3.0"
-    },
-    delay: 1000,
-    error: {}
-  }, {
+  },  {
     api: '/mock/api/v3/performance/comprehensive/planrate/years',
     method: 'post',
     response: {

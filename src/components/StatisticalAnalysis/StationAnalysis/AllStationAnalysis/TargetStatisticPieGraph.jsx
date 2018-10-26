@@ -23,7 +23,7 @@ class TargetStatisticPieGraph extends React.Component {
 
   drawChart = (param) => {
     const {pieGraphId,pieData ,pieComplete} = param;
-    console.log(pieData,pieComplete);
+    //console.log(pieData,pieComplete);
     const targetPieChart = echarts.init(document.getElementById(pieGraphId));
     targetPieChart.resize();
     targetPieChart.clear();

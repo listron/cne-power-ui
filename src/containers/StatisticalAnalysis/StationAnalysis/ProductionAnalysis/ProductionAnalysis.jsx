@@ -3,6 +3,8 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import styles from "./productionAnalusis.scss";
 import { productionAnalysisAction } from './productionAnalysisAction';
+import { allStationAnalysisAction } from '../AllStationAnalysis/allStationAnalysisAction';
+import { getCookie } from '../../../../utils/index.js';
 import PropTypes from "prop-types";
 import ProductionAnalysis from '../../../../components/StatisticalAnalysis/StationAnalysis/ProductionAnalysis/ProductionAnalysis';
 
@@ -19,17 +21,18 @@ class ProductionAnalysisContainer extends Component {
   constructor(props) {
     super(props);
   }
+  componentDidMount() {
 
+  }
   componentWillReceiveProps(nextProps) {
-  
+
   }
 
   componentWillUnmount() {
-   
+
   }
 
   render() {
-    const { showPage } = this.props;
     const breadCrumbData = {
       breadData: [
         {
@@ -37,12 +40,12 @@ class ProductionAnalysisContainer extends Component {
         }
       ],
     };
-  
+
     return (
       <div className={styles.productionAnalysisBox} >
         <CommonBreadcrumb  {...breadCrumbData} style={{ marginLeft: '38px' }} />
-        <div className={styles.productionAnalysis}>         
-        <ProductionAnalysis {...this.props} />        
+        <div className={styles.productionAnalysis}>
+          <ProductionAnalysis {...this.props} />
         </div>
         <Footer />
       </div>
@@ -51,19 +54,20 @@ class ProductionAnalysisContainer extends Component {
 }
 const mapStateToProps = (state) => {
   return {
-     ...state.statisticalAnalysisReducer.productionAnalysisReducer.toJS(),
-     stations: state.common.get('stations'),
-     
-     
+    ...state.statisticalAnalysisReducer.productionAnalysisReducer.toJS(),
+    stations: state.common.get('stations'),
+    userId : getCookie('userId'),
+
   }
 }
 const mapDispatchToProps = (dispatch) => ({
   changeAllStationStore: payload => dispatch({ type: productionAnalysisAction.CHANGE_PRODUCTIONSTATIONDATA_STORE_SAGA, payload }),
+  getAllStationAvalibaData: payload => dispatch({ type: allStationAnalysisAction.getAllStationAvalibaData, payload }),
   ProductionPlanComplete: payload => dispatch({ type: productionAnalysisAction.ProductionPlanComplete, payload }),
+  getSingleStationTargetData: payload => dispatch({ type: allStationAnalysisAction.getSingleStationTargetData, payload }),
+  getSingleStationPlanRateData: payload => dispatch({ type: allStationAnalysisAction.getSingleStationPlanRateData, payload }),
 
 
-
-  
 })
 
 

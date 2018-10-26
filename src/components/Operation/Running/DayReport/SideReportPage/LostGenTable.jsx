@@ -45,14 +45,13 @@ class LostGenTable extends Component {
         title: '发生时间',
         dataIndex: 'startTime',
         render : (text, record) => {
-          console.log(record)
           return record.typeSource === 0?<span>
             {moment(record.startTime).format('YYYY-MM-DD HH:mm')}
           </span>:<Form.Item>
             {getFieldDecorator(`${record.id}_startTime`, {
               initialValue: record.startTime,
             })(
-              <DatePicker placeholder="开始时间" showTime={true} format="YYYY-MM-DD HH:mm"  />
+              <DatePicker placeholder="开始时间" showTime={{format: 'HH:mm'}} format="YYYY-MM-DD HH:mm"  />
             )}
           </Form.Item>
         }
@@ -60,12 +59,11 @@ class LostGenTable extends Component {
         title: '结束时间',
         dataIndex: 'endTime',
         render : (text, record) => {
-          console.log(record)
           return (<Form.Item>
             {getFieldDecorator(`${record.id}_endTime`, {
               initialValue: record.endTime,
             })(
-              <DatePicker placeholder="结束时间" showTime={true} format="YYYY-MM-DD hh:mm"  />
+              <DatePicker placeholder="结束时间" showTime={{format: 'HH:mm'}} format="YYYY-MM-DD hh:mm"  />
             )}
           </Form.Item>)
         }

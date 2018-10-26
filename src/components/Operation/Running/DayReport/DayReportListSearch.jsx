@@ -15,7 +15,7 @@ class DayReportListSearch extends Component {
     stationType: PropTypes.number,
     pageSize: PropTypes.number,
     pageNum: PropTypes.number, 
-    regionName: PropTypes.sting,
+    regionName: PropTypes.string,
     stationNameSort: PropTypes.number, 
     stations: PropTypes.array,
     getDayReportList: PropTypes.func,
@@ -86,7 +86,7 @@ class DayReportListSearch extends Component {
         <Select onChange={this.regionSelect} value={regionName} className={styles.regionSearch} >
           <Option value={null}>全部</Option>
           {[...regionSet].map(e=>(
-            <Option value={e}>{e}</Option>
+            <Option value={e} key={e}>{e}</Option>
           ))}
         </Select>
         {showTypeChangeButtonGroup && <span>

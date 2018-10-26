@@ -16,6 +16,8 @@ class PowerEfficency extends React.Component {
     super(props, context)
   }
   
+
+ 
   componentDidMount() {
     this.drawChart(this.props);
   }
@@ -23,7 +25,6 @@ class PowerEfficency extends React.Component {
   componentWillReceiveProps(nextProps) {
     this.drawChart(nextProps);
   }
-
   getYaxisName = (title) => {
     let result = " ";
     switch (title) {
@@ -55,9 +56,10 @@ class PowerEfficency extends React.Component {
     return result;
   };
 
+  
 
   drawChart = (params) => {
-    const {graphId, title} = params;
+    const {graphId, title,PowerEffectiveDateData,PowerEffectiveHoursData,PowerEffectiveLightData,PowerEffectivePrData,} = params;
     const targetChart = echarts.init(document.getElementById(graphId));
     let color=this.getColor(title);
     const targetMonthOption = {
@@ -102,7 +104,8 @@ class PowerEfficency extends React.Component {
       },
       xAxis: {
         type: 'category',
-        data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+        data: PowerEffectiveDateData,
+        // data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
         axisPointer: {
           type: 'shadow'
         },
@@ -180,7 +183,8 @@ class PowerEfficency extends React.Component {
           name: '等效利用小时数',
           type: 'bar',
           yAxisIndex: 0,
-          data: [2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4, 3.3],
+          data:PowerEffectiveHoursData,
+          // data: [2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4, 3.3],
           itemStyle: {
             barBorderRadius: 3,
           },
@@ -190,13 +194,15 @@ class PowerEfficency extends React.Component {
           name: '辐射总量',
           type: 'line',
           yAxisIndex: 1,
-          data: [2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0, 2.3],
+          data: PowerEffectiveLightData,
+          // data: [2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0, 2.3],
         },
         {
           name: 'PR',
           type: 'line',
           yAxisIndex: 2,
-          data: [2.0, 2.2, 3.3, 4.5, 6.3, 10.2, 20.3, 23.4, 23.0, 16.5, 12.0, 6.2]
+          data: PowerEffectivePrData
+          // data: [2.0, 2.2, 3.3, 4.5, 6.3, 10.2, 20.3, 23.4, 23.0, 16.5, 12.0, 6.2]
         }
       ]
     };

@@ -13,10 +13,10 @@ class TargetTabs extends React.Component {
   static propTypes = {
     stations: PropTypes.object,
     stationType: PropTypes.string,
-    AllStationMonthComplete: PropTypes.string,
+    allStationMonthComplete: PropTypes.string,
     stationCode: PropTypes.array,
-    AllStationMonthBarData: PropTypes.array,
-    AllStationMonthPieData: PropTypes.array,
+    allStationMonthBarData: PropTypes.array,
+    allStationMonthPieData: PropTypes.array,
     dateType: PropTypes.string,
     changeAllStationStore: PropTypes.func,
     getAllStationMonthPieData: PropTypes.func,
@@ -43,21 +43,19 @@ class TargetTabs extends React.Component {
     const { dateType,year } = this.props;
    const currentYear=parseInt(year).toString();
    const lastYear=(parseInt(year)-1).toString();
-  // console.log(currentYear,lastYear);
-
-    const { AllStationMonthBarData, AllStationMonthPieData, AllStationMonthComplete } = this.props;
-    console.log(12345,AllStationMonthBarData,AllStationMonthPieData,AllStationMonthComplete);
-    const barGraphThatYear = AllStationMonthBarData.map((e, i) => (e.thatYearData))
-    const barGraphLastYear = AllStationMonthBarData.map((e, i) => (e.lastYearData))
-    const barGraphmonth = AllStationMonthBarData.map((e, i) => (e.month))
-    const barGraphYearOnYear = AllStationMonthBarData.map((e, i) => (e.yearOnYear))
+    const { allStationMonthBarData, allStationMonthPieData, allStationMonthComplete } = this.props;
+   
+    const barGraphThatYear = allStationMonthBarData&&allStationMonthBarData.map((e, i) => (e.thatYearData))
+    const barGraphLastYear = allStationMonthBarData&&allStationMonthBarData.map((e, i) => (e.lastYearData))
+    const barGraphmonth = allStationMonthBarData&&allStationMonthBarData.map((e, i) => (`${e.month}月`))
+    const barGraphYearOnYear = allStationMonthBarData&&allStationMonthBarData.map((e, i) => (e.yearOnYear))
     // console.log(barGraphThatYear,barGraphLastYear,barGraphmonth,barGraphYearOnYear);
-    const pieData = AllStationMonthPieData.map((e, i) => ({ value: Number(e.monthPower), name: e.month }));
+    const pieData = allStationMonthPieData.map((e, i) => ({ value: Number(e.monthPower), name: `${e.month}月` }));
     //const pieData=[{value:22,name:'1月'},{value:28,name:'2月'},{value:52,name:'3月'},{value:42,name:'4月'}];
-    const pieCompleteValue = Number(AllStationMonthComplete)
+    const pieCompleteValue = Number(allStationMonthComplete)
     const pieComplete = [{ value: pieCompleteValue, name: '已完成' }, { value: 100 - pieCompleteValue, name: '未完成' }];
     // console.log(pieData, pieComplete);
-    const pieTargetData=AllStationMonthBarData.map((e,i)=>({value:e.thatYearData,name:e.month}))
+    const pieTargetData=allStationMonthBarData&&allStationMonthBarData.map((e,i)=>({value:e.thatYearData,name:`${e.month}月`}))
    
 
 

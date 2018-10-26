@@ -192,7 +192,7 @@ class PvStationTop extends Component {
               截止到今日，本月累计发电量  
               <Input value={editValue} placeholder="请输入" onChange={this.onChange} />  万kWh
                 {editInfoError && <div className={styles.warningInfo}>请输入数字</div>}
-              </div> : <div>
+              </div> : <div className={styles.editElecDataModal}>
                 截止到今日，本年累计发电量  
                 <Input placeholder="请输入" value={editValue} onChange={this.onChange} />  万kWh
                 {editInfoError && <div className={styles.warningInfo}>请输入数字</div>}
