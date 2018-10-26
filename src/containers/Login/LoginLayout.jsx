@@ -38,7 +38,7 @@ class LoginLayout extends Component {
     return (
       <div className={styles.loginLayout}>
         <div>
-          <ReactPlayer url='/video/01-1000.mp4' autoPlay loop onReady playing={true} className={styles.bg} width='auto' height='auto' />
+          <ReactPlayer url='/video/01-1000.mp4' muted autoPlay loop onReady playing={true} className={styles.bg} width='auto' height='auto' />
         </div>
         <div className={styles.right}>
           <div className={styles.rightContent}>
