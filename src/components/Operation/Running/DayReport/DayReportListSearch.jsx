@@ -28,37 +28,28 @@ class DayReportListSearch extends Component {
   startTimeChange = (value) => {
     const startTime = value?value.format('YYYY-MM'):moment().format('YYYY-MM');
     const { getDayReportList, stationType, stationNameSort, pageSize, pageNum, regionName  } = this.props;
+    const params = { stationType, stationNameSort, pageSize, pageNum };
+    regionName && (params.regionName = regionName);
     getDayReportList({
+      ...params,
       startTime,
-      pageSize, 
-      pageNum,
-      stationType,
-      stationNameSort,
-      regionName,
     });
   }
 
   regionSelect = (value) => {
     const { getDayReportList, stationType, stationNameSort, pageSize, pageNum, startTime  } = this.props;
-    getDayReportList({
-      startTime,
-      pageSize, 
-      pageNum,
-      stationType,
-      stationNameSort,
-      regionName: value
-    });
+    let params = { stationType, stationNameSort, pageSize, pageNum, startTime };
+    value && (params.regionName = value);
+    getDayReportList({ ...params });
   }
 
   stationTypeChange = (e) => {
     const { getDayReportList, stationNameSort, pageSize, pageNum, startTime, regionName } = this.props;
+    let params = { stationNameSort, pageSize, pageNum, startTime };
+    regionName && (params.regionName = regionName);
     getDayReportList({
-      startTime,
-      pageSize, 
-      pageNum,
+      ...params,
       stationType: e.target.value,
-      stationNameSort,
-      regionName
     });
   }
 
