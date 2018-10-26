@@ -122,7 +122,7 @@ class BarGraph extends React.Component {
           }
         },
         legend: {
-          top: 20,
+          top: title ? 0 :20,
           left: 'center',
           icon: 'circle',
           itemWidth: 5,
@@ -345,7 +345,7 @@ class BarGraph extends React.Component {
               show: false,
             },
             splitLine: {
-              // show:false,
+              show:false,
               lineStyle: {
                 color: '#666',
                 type: 'dashed'

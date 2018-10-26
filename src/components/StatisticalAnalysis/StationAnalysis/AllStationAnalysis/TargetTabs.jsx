@@ -46,14 +46,14 @@ class TargetTabs extends React.Component {
   // console.log(currentYear,lastYear);
 
     const { AllStationMonthBarData, AllStationMonthPieData, AllStationMonthComplete } = this.props;
-    console.log(12345,AllStationMonthBarData,AllStationMonthPieData,AllStationMonthComplete);
+    // console.log(12345,AllStationMonthBarData,AllStationMonthPieData,AllStationMonthComplete);
     const barGraphThatYear = AllStationMonthBarData.map((e, i) => (e.thatYearData))
     const barGraphLastYear = AllStationMonthBarData.map((e, i) => (e.lastYearData))
     const barGraphmonth = AllStationMonthBarData.map((e, i) => (e.month))
     const barGraphYearOnYear = AllStationMonthBarData.map((e, i) => (e.yearOnYear))
     // console.log(barGraphThatYear,barGraphLastYear,barGraphmonth,barGraphYearOnYear);
-    const pieData = AllStationMonthPieData.map((e, i) => ({ value: Number(e.monthPower), name: e.month }));
-    //const pieData=[{value:22,name:'1月'},{value:28,name:'2月'},{value:52,name:'3月'},{value:42,name:'4月'}];
+    // const pieData = AllStationMonthPieData.map((e, i) => ({ value: Number(e.monthPower), name: e.month }));
+    const pieData=[{value:22,name:'1月'},{value:28,name:'2月'},{value:52,name:'3月'},{value:42,name:'4月'}];
     const pieCompleteValue = Number(AllStationMonthComplete)
     const pieComplete = [{ value: pieCompleteValue, name: '已完成' }, { value: 100 - pieCompleteValue, name: '未完成' }];
     // console.log(pieData, pieComplete);
