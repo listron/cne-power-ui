@@ -14,8 +14,11 @@ class LostAddForm extends Component {
     deviceExistInfo: PropTypes.object,
     faultGenList: PropTypes.array,
     lostGenTypes: PropTypes.array,
+    stationDeviceTypes: PropTypes.array,
     changeFaultList: PropTypes.func,
     findDeviceExist: PropTypes.func,
+    getStationDeviceTypes: PropTypes.func,
+    getLostGenType: PropTypes.func,
   }
 
   constructor(props){
@@ -24,6 +27,11 @@ class LostAddForm extends Component {
       deviceNameErroShow: false, // 设备验证失败的提示框展示与否，
       deviceNameErroInfo: '', // 设备验证失败的提示信息，
     }
+  }
+
+  componentDidMount(){ // 电站下设备类型获取。
+    const { stationCode, getStationDeviceTypes } = this.props;
+    getStationDeviceTypes({ stationCodes: stationCode });
   }
 
   componentWillReceiveProps(nextProp){ // 验证设备是否存在功能。
@@ -75,10 +83,26 @@ class LostAddForm extends Component {
     changeFaultList(faultGenList, true);
   }
 
+  createAllLostGenTypes = (dataArr) => {
+    let outputGenTypes = [];
+    dataArr.forEach(info=>{
+      if(info && info.list && info.list.length > 0){
+        outputGenTypes.push(...this.createAllLostGenTypes(info.list));
+      }else if(info.id && info.name){
+        outputGenTypes.push({
+          id: info.id,
+          name: info.name,
+        })
+      }
+    })
+    return outputGenTypes;
+  }
+
   render(){
-    const { form, lostGenTypes } = this.props;
+    const { form, lostGenTypes, stationDeviceTypes } = this.props;
     const { getFieldDecorator, getFieldValue } = form;
     const { deviceNameErroShow, deviceNameErroInfo } = this.state;
+    const allLostGenTypes = this.createAllLostGenTypes(lostGenTypes);
     const formItemLayout1 = {
       labelCol: {
         xs: { span: 24 },
@@ -111,25 +135,39 @@ class LostAddForm extends Component {
         },
       },
     };
-
     return (
       <Form className={styles.lostAddForm} >
         <Row className={styles.horizontal} >
           <Col span={8}>
-            <Form.Item label="损失电量类型" {...formItemLayout1} >
-              {getFieldDecorator('faultId', {
-                rules: [{ required: true, message: '请选择损失电量类型' }],
+            <Form.Item label="设备类型" {...formItemLayout1} >
+              {getFieldDecorator('deviceTypeCode', {
+                rules: [{ required: true, message: '请选择设备类型' }],
               })(
                 <Select placeholder="请选择">
-                  {lostGenTypes && lostGenTypes.length>0 && lostGenTypes.map(e=>(
-                    <Option key={e.id} value={e.id}>{e.faultName}</Option>
+                  {stationDeviceTypes && stationDeviceTypes.length>0 && stationDeviceTypes.map(e=>(
+                    <Option key={e.deviceTypeCode} value={e.deviceTypeCode}>{e.deviceTypeName}</Option>
                   ))}
                 </Select>
               )}
             </Form.Item>
           </Col>
           <Col span={16}>
-            <Form.Item label="设备名称" {...formItemLayout2} >
+            <Form.Item label="损失电量类型" {...formItemLayout1} >
+              {getFieldDecorator('faultId', {
+                rules: [{ required: true, message: '请选择损失电量类型' }],
+              })(
+                <Select placeholder="请选择">
+                  {allLostGenTypes && allLostGenTypes.length>0 && allLostGenTypes.map(e=>(
+                    <Option key={e.id} value={e.id}>{e.name}</Option>
+                  ))}
+                </Select>
+              )}
+            </Form.Item>
+          </Col>
+        </Row>
+        <Row className={styles.horizontal} >
+          <Col span={8}>
+            <Form.Item label="设备名称" {...formItemLayout1}>
               {getFieldDecorator('deviceName', {
                 rules: [{ required: true, message: '请填写设备名称' }],
               })(
@@ -146,7 +184,7 @@ class LostAddForm extends Component {
               {getFieldDecorator('startTime', {
                 rules: [{ required: true, message: '请选择发生时间' }],
               })(
-                <DatePicker placeholder="请选择" showTime={true} format="YYYY-MM-DD hh:mm" />
+                <DatePicker placeholder="请选择" showTime={{format: 'HH:mm'}} format="YYYY-MM-DD HH:mm" />
               )}
             </Form.Item>
           </Col>
@@ -155,7 +193,7 @@ class LostAddForm extends Component {
               {getFieldDecorator('endTime', {
                 // rules: [{ required: true, message: '结束时间' }],
               })(
-                <DatePicker placeholder="结束时间"  showTime={true} format="YYYY-MM-DD hh:mm" />
+                <DatePicker placeholder="结束时间" showTime={{format: 'HH:mm'}} format="YYYY-MM-DD HH:mm" />
               )}
               <span className={styles.lostInputTip}>未结束不填写</span>
             </Form.Item>
@@ -179,7 +217,7 @@ class LostAddForm extends Component {
               {getFieldDecorator('reason', {
                 rules: [{ required: true, message: '请填写原因说明' }],
               })(
-                <InputLimit size={30} className={styles.reasonArea} numberIsShow={false} width={520} />
+                <InputLimit size={30} className={styles.reasonArea} numberIsShow={false} width={520} height={60} />
               )}
               <span className={styles.lostInputTip}>({getFieldValue('reason')?getFieldValue('reason').length:0}/30)</span>
             </Form.Item>
@@ -191,7 +229,7 @@ class LostAddForm extends Component {
               {getFieldDecorator('process', {
                 rules: [{ required: true, message: '请填写处理进展及说明' }],
               })(
-                <InputLimit size={30} className={styles.reasonArea} numberIsShow={false} width={520} />
+                <InputLimit size={30} className={styles.reasonArea} numberIsShow={false} width={520} height={60} />
               )}
               <span className={styles.lostInputTip}>({getFieldValue('process')?getFieldValue('process').length:0}/30)</span>
             </Form.Item>

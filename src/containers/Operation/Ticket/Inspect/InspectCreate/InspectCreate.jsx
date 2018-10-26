@@ -10,7 +10,6 @@ import WarningTip from '../../../../../components/Common/WarningTip';
 class InspectCreate extends Component{
   static propTypes = {
     deviceTypeItems: PropTypes.object,
-    loadDeviceTypeList: PropTypes.func,
     onChangeShowContainer: PropTypes.func,
     createInspect: PropTypes.func,
     stations: PropTypes.object,
@@ -69,14 +68,21 @@ class InspectCreate extends Component{
 
 const mapStateToProps = (state) => ({
   showContainer: state.operation.ticket.get('showContainer'),
-  deviceTypeItems: state.common.get('stationDeviceTypes'),
   stations: state.common.get('stations'),
   error: state.operation.inspect.get('error'),
+  deviceTypeItems: state.operation.inspect.get('deviceTypeItems'),
 })
 const mapDispatchToProps = (dispatch) => ({
-  loadDeviceTypeList: payload => dispatch({ type: commonAction.getStationDeviceTypes, payload}),
   createInspect: payload => dispatch({ type: ticketAction.CREATE_INSPECT_SAGA, payload}),
   getStations: payload => dispatch({ type: commonAction.getStations, payload }),
   onChangeCommonStore: payload => dispatch({ type: commonAction.changeCommonStore, payload}),
+  getStationDeviceTypes: params => dispatch({
+    type: commonAction.getStationDeviceTypes,
+    payload: {
+      params, 
+      deviceTypeAction: ticketAction.GET_INSPECT_FETCH_SUCCESS,
+      resultName: 'deviceTypeItems'
+    }
+  }),
 })
 export default connect(mapStateToProps,mapDispatchToProps)(InspectCreate);

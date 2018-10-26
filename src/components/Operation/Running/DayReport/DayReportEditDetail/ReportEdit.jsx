@@ -16,6 +16,7 @@ class ReportEdit extends Component {
   static propTypes = {
     showPage: PropTypes.string,
     lostGenTypes: PropTypes.array,
+    stationDeviceTypes: PropTypes.array,
     deviceExistInfo: PropTypes.object,
     selectedDayReportDetail: PropTypes.object,
     dayReportConfig: PropTypes.array,
@@ -24,6 +25,7 @@ class ReportEdit extends Component {
     findDeviceExist: PropTypes.func,
     dayReportUpdate: PropTypes.func,
     getLostGenType: PropTypes.func,
+    getStationDeviceTypes: PropTypes.func,
   }
 
   constructor(props){
@@ -42,8 +44,7 @@ class ReportEdit extends Component {
   componentDidMount(){
     this.props.getLostGenType({
       stationType: this.props.selectedDayReportDetail.stationType, 
-      defectType: -1, 
-      type: 0,
+      objectType: 1, 
     })
   }
 
@@ -98,15 +99,15 @@ class ReportEdit extends Component {
         let { deviceName, startTime, endTime, reason, faultName } = e;
         startTime = startTime && moment(startTime).format('YYYY-MM-DD');
         endTime = endTime && moment(endTime).format('YYYY-MM-DD');
-        const tmpTextArr = [deviceName, startTime, endTime, reason, faultName].filter(e=>e);
-        return tmpTextArr.join('+');
+        const tmpTextArr = [deviceName, startTime, endTime&&(`到${endTime}`), reason, faultName].filter(e=>e);
+        return tmpTextArr.join(' ');
       })
       const limitShortInfo = limitList.map(e=>{
         let { deviceName, startTime, endTime, reason, limitPower } = e;
         startTime = startTime && moment(startTime).format('YYYY-MM-DD');
         endTime = endTime && moment(endTime).format('YYYY-MM-DD');
-        const tmpTextArr = [deviceName, startTime, endTime, reason, limitPower].filter(e=>e);
-        return tmpTextArr.join('+');
+        const tmpTextArr = [deviceName, startTime, endTime&&(`到${endTime}`), reason, limitPower].filter(e=>e);
+        return tmpTextArr.join(' ');
       })
       abnormalText = `${faultShortInfo.join(';\n')};\n${limitShortInfo.join(';\n')}`;
     }
@@ -256,7 +257,7 @@ class ReportEdit extends Component {
 
   render(){
     const { updateDayReportDetail, addLostFormShow, addLimitFormShow, abnormalTextShow, showBackWarningTip, warningTipText } = this.state;
-    const { findDeviceExist, deviceExistInfo, dayReportConfig, lostGenTypes } = this.props;
+    const { findDeviceExist, deviceExistInfo, dayReportConfig, lostGenTypes, getStationDeviceTypes, stationDeviceTypes, getLostGenType } = this.props;
     const {faultList, limitList, stationCode, errorInfo} = updateDayReportDetail;
     return (
       <div className={styles.reportEdit} >
@@ -295,6 +296,9 @@ class ReportEdit extends Component {
           changeFaultList={this.faultListInfoChange}
           stationCode={stationCode}
           deviceExistInfo={deviceExistInfo}
+          stationDeviceTypes={stationDeviceTypes}
+          getStationDeviceTypes={getStationDeviceTypes}
+          getLostGenType={getLostGenType}
         />}
         <div className={styles.lostElecInfo} >
           <span className={styles.reportSubTitle}>限电信息<Icon type="caret-right" theme="outlined" /></span>

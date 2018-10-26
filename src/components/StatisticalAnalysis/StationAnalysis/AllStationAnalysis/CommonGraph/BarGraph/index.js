@@ -77,7 +77,7 @@ class BarGraph extends React.Component {
   };
 
   drawCharts = (param) => {
-    const {graphId, yAxisName, xAxisName, dateType,barGraphThatYear,barGraphLastYear,barGraphmonth,barGraphYearOnYear,lastYear,currentYear,title} = param;
+    const {graphId, yAxisName, xAxisName, dateType,barGraphThatYear,barGraphLastYear,barGraphmonth,barGraphYearOnYear,lastYear,barGraphRingRatio,currentYear,title} = param;
     const targetChart = echarts.init(document.getElementById(graphId));
     let targetOption = {};
     targetChart.clear();
@@ -286,8 +286,9 @@ class BarGraph extends React.Component {
         xAxis: [
           {
             type: 'category',
-            data: ['2014年', '2015年', '2016年', '2017年', '2018年', '2019年',],
-            //data:barGraphmonth,
+            // data: ['2014年', '2015年', '2016年', '2017年', '2018年', '2019年',],
+            data: barGraphmonth,
+            
             axisPointer: {
               type: 'shadow'
             },
@@ -357,7 +358,8 @@ class BarGraph extends React.Component {
           {
             name: xAxisName,
             type: 'bar',
-            data: [2.0, 4.9, 7.0, 23.2, 25.6, 76.7,],
+            data: barGraphThatYear,
+            // data: [2.0, 4.9, 7.0, 23.2, 25.6, 76.7,],
             //年的数据没有mock,要看接口
             //data:barGraphThatYear,
             itemStyle: {
@@ -369,8 +371,9 @@ class BarGraph extends React.Component {
             name: '环比',
             type: 'line',
             yAxisIndex: 1,
-             data: [2.0, 2.2, 3.3, 4.5, 6.3, 10.2,],
-           // data: barGraphYearOnYear,
+             data: barGraphRingRatio,
+            //  data: [2.0, 2.2, 3.3, 4.5, 6.3, 10.2,],
+          
 
           }
         ]

@@ -332,6 +332,7 @@
   border-radius:4px;
   margin: 0 20px;
   padding: 10px 0 15px 80px;
+  margin-top: 10px;
   .dataErrorText{
     z-index: 10;
     background:#ffffff;
@@ -346,7 +347,7 @@
     flex-direction: row;
     margin: 0 auto;
     position: absolute;
-    left: 200px;
+    left: 600px;
     :global{
       .icon-alert_01{
         margin-right: 5px;

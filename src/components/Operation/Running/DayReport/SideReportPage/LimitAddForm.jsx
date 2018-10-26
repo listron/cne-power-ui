@@ -10,6 +10,7 @@ class LimitAddForm extends Component {
   static propTypes = {
     form: PropTypes.object,
     stationCode: PropTypes.number,
+    defaultLimitLost: PropTypes.string,
     deviceExistInfo: PropTypes.object,
     limitGenList: PropTypes.array,
     changeLimitList: PropTypes.func,
@@ -73,7 +74,7 @@ class LimitAddForm extends Component {
   }
 
   render(){
-    const { form } = this.props;
+    const { form, defaultLimitLost } = this.props;
     const { getFieldDecorator, getFieldValue } = form;
     const { deviceNameErroShow, deviceNameErroInfo } = this.state;
     const formItemLayout1 = {
@@ -108,6 +109,7 @@ class LimitAddForm extends Component {
         },
       },
     };
+    // const defaultLostPower = 0 ;
     return (
       <Form className={styles.lostAddForm} >
         <Row className={styles.horizontal} >
@@ -141,7 +143,7 @@ class LimitAddForm extends Component {
               {getFieldDecorator('startTime', {
                 rules: [{ required: true, message: '请选择发生时间' }],
               })(
-                <DatePicker showTime={true} format="YYYY-MM-DD hh:mm"  />
+                <DatePicker showTime={{format: 'HH:mm'}} format="YYYY-MM-DD HH:mm"  />
               )}
             </Form.Item>
           </Col>
@@ -150,7 +152,7 @@ class LimitAddForm extends Component {
               {getFieldDecorator('endTime', {
                 // rules: [{ required: true, message: '结束时间' }],
               })(
-                <DatePicker showTime={true} format="YYYY-MM-DD hh:mm" />
+                <DatePicker showTime={{format: 'HH:mm'}} format="YYYY-MM-DD HH:mm" />
               )}
               <span className={styles.lostInputTip}>未结束不填写</span>
             </Form.Item>
@@ -161,6 +163,7 @@ class LimitAddForm extends Component {
             <Form.Item label="日损失电量" {...formItemLayout1} >
               {getFieldDecorator('lostPower', {
                 rules: [{ message: '请填写正确的日损失电量!', pattern: /^(-?\d+)(\.\d+)?$/ }],
+                initialValue: defaultLimitLost || '',
               })(
                 <Input />
               )}
@@ -174,7 +177,7 @@ class LimitAddForm extends Component {
               {getFieldDecorator('reason', {
                 rules: [{ required: true, message: '请填写原因说明' }],
               })(
-                <InputLimit size={30} className={styles.reasonArea} numberIsShow={false} width={520} />
+                <InputLimit size={30} className={styles.reasonArea} numberIsShow={false} width={520} height={60} />
               )}
               <span className={styles.lostInputTip}>({getFieldValue('reason')?getFieldValue('reason').length:0}/30)</span>
             </Form.Item>
