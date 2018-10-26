@@ -41,7 +41,7 @@ function* getOperatePlanComplete(action) {//年/月/日计划完成情况
       yield put({
         type: operateAnalysisAction.GET_OPERATESTATIONDATA_FETCH_SUCCESS,
         payload: {
-          operatePlanCompleteData: response.data.data,
+          operatePlanCompleteData: response.data.data || [],
         },
       });
     }
@@ -49,42 +49,101 @@ function* getOperatePlanComplete(action) {//年/月/日计划完成情况
     console.log(e);
   }
 }
-function* getComponentPowerStatistic(action) {//月/年/日组件发电量统计/可利用率
+function* getComponentPowerStatistic(action) {//月/年/日组件发电量统计
   const { payload } = action;
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getOperateComponentPower}`;
   try {
-    const powerUrl = `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getOperateComponentPower}`; //组件发电量统计
-    const usageUrl = `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getOperateUsageRate}`; // 可利用率
     yield put({ type: operateAnalysisAction.OPERATESTATIONDATA_FETCH });
-    const [componentPowerStatisticData, usageRatecData] = yield all([
-      call(axios.post, powerUrl, payload),
-      call(axios.post, usageUrl, payload),
-    ])
-    if (componentPowerStatisticData.data.code === '10000') {
+    const response = yield call(axios.post, url, payload);
+    if (response.data.code === '10000') {
       yield put({
         type: operateAnalysisAction.GET_OPERATESTATIONDATA_FETCH_SUCCESS,
         payload: {
-          componentPowerStatisticData,
+          powerData: response.data.data || [],
         },
       });
-    } else {
-      throw console.error('请求失败');
     }
-
-    if (usageRatecData.data.code === '10000') {
-      yield put({
-        type: operateAnalysisAction.GET_OPERATESTATIONDATA_FETCH_SUCCESS,
-        payload: {
-          usageRatecData,
-        },
-      });
-    } else {
-      throw console.error('请求失败');
-    }
-
   } catch (e) {
     console.log(e);
   }
 }
+
+function* getPowerEfficiency(action){ // 月/年/日发电效率
+  const { payload } = action;
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getSingleStationPowerEffective}`;
+  try {
+    yield put({ type: operateAnalysisAction.OPERATESTATIONDATA_FETCH });
+    const response = yield call(axios.post, url, payload);
+    if (response.data.code === '10000') {
+      yield put({
+        type: operateAnalysisAction.GET_OPERATESTATIONDATA_FETCH_SUCCESS,
+        payload: {
+          efficiencyData: response.data.data || [],
+        },
+      });
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+function* getUsageRate(action) {//月/年/日组件可利用率
+  const { payload } = action;
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getOperateUsageRate}`;
+  try {
+    yield put({ type: operateAnalysisAction.OPERATESTATIONDATA_FETCH });
+    const response = yield call(axios.post, url, payload);
+    console.log(123,response.data.data)
+    if (response.data.code === '10000') {
+      yield put({
+        type: operateAnalysisAction.GET_OPERATESTATIONDATA_FETCH_SUCCESS,
+        payload: {
+          usageData: response.data.data || [],
+        },
+      });
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+// function* getComponentPowerStatistic(action) {//月/年/日组件发电量统计/可利用率
+//   const { payload } = action;
+//   try {
+//     const powerUrl = `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getOperateComponentPower}`; //组件发电量统计
+//     const usageUrl = `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getOperateUsageRate}`; // 可利用率
+//     yield put({ type: operateAnalysisAction.OPERATESTATIONDATA_FETCH });
+//     const [componentPowerStatisticData, usageRatecData] = yield all([
+//       call(axios.post, powerUrl, payload),
+//       call(axios.post, usageUrl, payload),
+//     ])
+//     if (componentPowerStatisticData.data.code === '10000') {
+//       yield put({
+//         type: operateAnalysisAction.GET_OPERATESTATIONDATA_FETCH_SUCCESS,
+//         payload: {
+//           componentPowerStatisticData,
+//         },
+//       });
+//     } else {
+//       throw console.error('请求失败');
+//     }
+
+//     if (usageRatecData.data.code === '10000') {
+//       yield put({
+//         type: operateAnalysisAction.GET_OPERATESTATIONDATA_FETCH_SUCCESS,
+//         payload: {
+//           usageRatecData,
+//         },
+//       });
+//     } else {
+//       throw console.error('请求失败');
+//     }
+
+//   } catch (e) {
+//     console.log(e);
+//   }
+// }
+
 function* getLostPowerType(action) {//月/年/日电量损失类型
   const { payload } = action;
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getOperateLostPowerType}`;
@@ -167,4 +226,6 @@ export function* watchOperateStationSaga() {
   yield takeLatest(operateAnalysisAction.getLimitPowerRate, getLimitPowerRate);
   yield takeLatest(operateAnalysisAction.getYearLimitPowerRate, getYearLimitPowerRate);
   yield takeLatest(operateAnalysisAction.getPlantPower, getPlantPower);
+  yield takeLatest(operateAnalysisAction.getUsageRate, getUsageRate);
+  yield takeLatest(operateAnalysisAction.getPowerEfficiency, getPowerEfficiency);
 }

@@ -19,27 +19,27 @@ class TableGraph extends React.Component {
     let columns = [];
     switch (tableType) {
       case 'yearRing':
-      columns = [{
-        title: '日期',
-        dataIndex: 'date',
-        width: 200,
-        //sorter: true,
-        sorter: (a, b) => (a.date)-(b.date),
-      }, {
-        title: '发电量',
-        dataIndex: 'thatYearData',
-        width: 200,
-        //sorter: true,
-        sorter: (a, b) => a.thatYearData - b.thatYearData,
-      }, {
-        title: '环比',
-        dataIndex: 'ringRatio',
-        width: 200,
-        // sorter: true,
-        //defaultSortOrder: 'descend',
-        sorter: (a, b) => a.ringRatio - b.ringRatio,
-      }];
-      break;
+        columns = [{
+          title: '日期',
+          dataIndex: 'date',
+          width: 200,
+          //sorter: true,
+          sorter: (a, b) => (a.date) - (b.date),
+        }, {
+          title: '发电量',
+          dataIndex: 'thatYearData',
+          width: 200,
+          //sorter: true,
+          sorter: (a, b) => a.thatYearData - b.thatYearData,
+        }, {
+          title: '环比',
+          dataIndex: 'ringRatio',
+          width: 200,
+          // sorter: true,
+          //defaultSortOrder: 'descend',
+          sorter: (a, b) => a.ringRatio - b.ringRatio,
+        }];
+        break;
       case 'plan':
         columns = [{
           title: '日期',
@@ -158,6 +158,28 @@ class TableGraph extends React.Component {
           sorter: (a, b) => a.yearOnYear - b.yearOnYear,
         }];
         break;
+      case 'Utilization':
+        columns = [{
+          title: '日期',
+          dataIndex: 'date',
+          // width: 150,
+          // sorter: true,
+          sorter: (a, b) => (a.date).localeCompare(b.date),
+        }, {
+          title:'电站可利用率' ,
+          dataIndex: 'stationUtilization',
+          // width: 150,
+          // sorter: true,
+          sorter: (a, b) => a.stationUtilization - b.stationUtilization,
+        }, {
+
+          title: '发电系统可利用率',
+          dataIndex: 'deviceUtilization',
+          // width: 150,
+          // sorter: true,
+          sorter: (a, b) => a.deviceUtilization - b.deviceUtilization,
+        }];
+        break;
       default:
         columns = [];
 
@@ -166,7 +188,7 @@ class TableGraph extends React.Component {
 
   }
   render() {
-    const { tableType, currentYear, dateType,lastYear, singleStationPlanRateData, singleStationPvCompareData, singleStationPowerEffectiveData, singleStationLostPowerData } = this.props;
+    const { tableType, title,unit,currentYear, dateType, lastYear, singleStationPlanRateData, singleStationPvCompareData, singleStationPowerEffectiveData, singleStationLostPowerData,usageData } = this.props;
     //console.log(currentYear,lastYear);
     // columnsArray.map((e, i) => ({
     //   title: e.title,
@@ -190,8 +212,11 @@ class TableGraph extends React.Component {
       case 'powerEffective':
         data = singleStationPowerEffectiveData && singleStationPowerEffectiveData.map((e, i) => ({ ...e, key: i, date: `${e.date}${dateType === 'month' ? '月' : (dateType === 'day' ? '日' : '')}` }))
         break;
-        case 'yearRing':
+      case 'yearRing':
         data = singleStationLostPowerData && singleStationLostPowerData.map((e, i) => ({ ...e, key: i, date: `${e.date}${dateType === 'month' ? '月' : (dateType === 'day' ? '日' : '')}` }))
+        break;
+        case 'Utilization':
+        data = usageData && usageData.map((e, i) => ({ ...e, key: i, date: `${e.date}${dateType === 'month' ? '月' : (dateType === 'day' ? '日' : '')}` }))
         break;
 
     }
@@ -200,10 +225,10 @@ class TableGraph extends React.Component {
       <div className={styles.TableGraphContainer} >
         <div className={styles.TableGraphContainerTitle}>
           <div>
-            计划完成率最低排名
+            {title ? title :'计划完成率最低排名'}
           </div>
           <div className={styles.unit}>
-            发电量：万kWh
+            {unit ? unit :'发电量：万kWh'}
           </div>
         </div>
         <Table className={styles.tableList} columns={columns} dataSource={data} pagination={false} scroll={{ y: 204 }} size="small" onRow={(record) => { return { onMouseEnter: this.onMouseEnter } }} />
