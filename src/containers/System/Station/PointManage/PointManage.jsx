@@ -98,8 +98,6 @@ class PointManage extends Component {
 const mapStateToProps = (state) => ({
     enterpriseId: Cookie.get('enterpriseId'),
     ...state.system.pointManage.toJS(),
-    deviceModels: state.common.get('deviceModels').toJS(),
-    stationDeviceTypes: state.common.get('stationDeviceTypes').toJS(),
     stationList: state.system.stationManage.get('stationList').toJS(),
     allStationBaseInfo: state.system.stationManage.get('allStationBaseInfo').toJS(),
 });
@@ -111,9 +109,22 @@ const mapDispatchToProps = (dispatch) => ({
   getStationPointStatusList: payload => dispatch({type: pointManageAction.GET_POINT_MANAGE_ALL_STATION, payload}),
 
   changeCommonStore: payload => dispatch({type:commonAction.changeCommonStore, payload}),
-  getStationDeviceTypes: payload => dispatch({type:commonAction.getStationDeviceTypes, payload}),
-  getStationDeviceModel: payload => dispatch({type:commonAction.getStationDeviceModel, payload}),
-
+  getStationDeviceTypes: params => dispatch({
+    type: commonAction.getStationDeviceTypes,
+    payload: {
+      params, 
+      deviceTypeAction: pointManageAction.GET_POINT_MANAGE_FETCH_SUCCESS,
+      resultName: 'stationDeviceTypes'
+    }
+  }),
+  getDeviceModel: params => dispatch({
+    type: commonAction.getDeviceModel,
+    payload: {
+      params, 
+      actionName: pointManageAction.GET_POINT_MANAGE_FETCH_SUCCESS,
+      resultName: 'deviceModels'
+    }
+  }),
   changeStationManageStore: payload => dispatch({type:stationManageAction.CHANGE_STATION_MANAGE_STORE_SAGA, payload}),
   getStationOfEnterprise: payload =>dispatch({type: stationManageAction.GET_ALL_STATION_MANAGE_BASE_INFO, payload }),
 });

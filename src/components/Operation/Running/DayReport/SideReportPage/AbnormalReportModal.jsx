@@ -14,12 +14,15 @@ class AbnormalReportModal extends Component {
     deviceExistInfo: PropTypes.object,
     abnormalList: PropTypes.array,
     dayReportTotalInfoArr: PropTypes.array,
+    stationDeviceTypes: PropTypes.array,
     dayReportConfig: PropTypes.array,
     lostGenTypes: PropTypes.array,
     abnormalModalshow: PropTypes.bool,
     hideAbnormalModal: PropTypes.func,
     findDeviceExist: PropTypes.func,
     totalInfoChange: PropTypes.func,
+    getStationDeviceTypes: PropTypes.func,
+    getLostGenType: PropTypes.func,
   }
 
   constructor(props){
@@ -49,22 +52,12 @@ class AbnormalReportModal extends Component {
     })
     const faultListError = faultGenList.find(e=>{ // 保证损失电量，处理进展填写
       const processMiss = !e.process;
-      const lostPowerMiss = !e.lostPower;
-      if(lostPowerMiss){
-        this.messageWarning('损失电量未填写!');
-      }else if(processMiss){
+      if(processMiss){
         this.messageWarning('处理进展及问题未填写!');
       }
-      return lostPowerMiss || processMiss;
+      return processMiss;
     })
-    const limitListError = limitGenList.find(e=>{ // 保证已填写限电损失电量
-      const limitPowerMiss = !e.lostPower;
-      if(limitPowerMiss){
-        this.messageWarning('限电损失电量未填写!');
-      }
-      return limitPowerMiss;
-    });
-    !faultListError && !limitListError && totalInfoChange(uploadParams, true); // 验证通过后方能保存
+    !faultListError && totalInfoChange(uploadParams, true); // 验证通过后方能保存
   }
 
   changeFaultList = (faultGenList, closeAddForm=false) => { // 修改损失电量信息
@@ -136,7 +129,7 @@ class AbnormalReportModal extends Component {
   }
 
   render(){
-    const { abnormalModalshow, abnormalInfo, hideAbnormalModal, findDeviceExist, deviceExistInfo, lostGenTypes, dayReportConfig} = this.props;
+    const { abnormalModalshow, stationDeviceTypes, abnormalInfo, hideAbnormalModal, findDeviceExist, deviceExistInfo, lostGenTypes, dayReportConfig, getStationDeviceTypes, getLostGenType} = this.props;
     const { addLostFormShow, faultGenList, limitGenList, addLimitFormShow, abnormalTextShow, abnormalText } = this.state;
     const { modelInverterPowerGen, modelInverterCapacity, stationCapacity } = abnormalInfo;
     let defaultLimitLost; // 默认限电剩余损失电量
@@ -182,11 +175,14 @@ class AbnormalReportModal extends Component {
         />: null}
         {addLostFormShow && <LostAddForm 
           lostGenTypes={lostGenTypes}
+          stationDeviceTypes={stationDeviceTypes}
           findDeviceExist={findDeviceExist} 
           faultGenList={faultGenList} 
           changeFaultList={this.changeFaultList}  
           stationCode={abnormalInfo.stationCode}
           deviceExistInfo={deviceExistInfo} 
+          getStationDeviceTypes={getStationDeviceTypes}
+          getLostGenType={getLostGenType}
         /> }
         <div className={styles.addLimitGenHeader} >
           <span>限电信息<Icon type="caret-right" theme="outlined" /></span>

@@ -3,6 +3,8 @@ import axios from 'axios';
 import Path from '../../constants/path';
 import { commonAction } from './commonAction';
 import { message } from 'antd';
+const { basePaths, commonPaths } = Path;
+const { APIBasePath } = basePaths;
 
 function* changeCommonStore(action) {//存储payload指定参数，替换reducer-store属性。
   const { payload } = action;
@@ -12,8 +14,7 @@ function* changeCommonStore(action) {//存储payload指定参数，替换reducer
   })
 }
 
-//获取所有电站信息
-function* getStations(action) {
+function* getStations(action) { // 通用：获取所有电站信息
   const url = `${Path.basePaths.APIBasePath}${Path.commonPaths.getStations}`;
   yield put({ type: commonAction.COMMON_FETCH });
   try {
@@ -30,8 +31,8 @@ function* getStations(action) {
     console.log(e);
   }
 }
-//获取用户权限范围内所有设备类型信息
-function* getDeviceTypes(action) {
+
+function* getDeviceTypes(action) { // 通用： 获取用户权限范围内所有设备类型信息
   const url = `${Path.basePaths.APIBasePath}${Path.commonPaths.getDevicetypes}`;
   yield put({ type: commonAction.COMMON_FETCH });
   try {
@@ -48,17 +49,37 @@ function* getDeviceTypes(action) {
     console.log(e);
   }
 }
-//获取电站下设备类型信息
-function* getStationDeviceTypes(action) {
-  let url = Path.basePaths.APIBasePath + Path.commonPaths.getStationDevicetypes;
-  yield put({ type: commonAction.COMMON_FETCH });
+
+function *getStationDeviceTypes(action){ // 新共用接口，获取电站下设备类型。
+  const url = `${APIBasePath}${commonPaths.getStationDevicetypes}`;
+  try{
+    const { payload } = action;
+    const { params, deviceTypeAction, resultName } = payload;
+    const response = yield call(axios.get, url, { params });
+    if(response.data.code === '10000'){
+      yield put({
+        type: deviceTypeAction,
+        payload: {
+          [resultName]: response.data.data || [],
+        }
+      })
+    }
+  }catch(e){
+    console.log(e)
+  }
+}
+
+function* getDeviceModel(action) { // 新共用接口，获取电站设备类型下设备型号
+  const url = `${APIBasePath}${commonPaths.getDeviceModel}`;
+  const { payload } = action;
   try {
-    const response = yield call(axios.get, url, { params: action.payload });
+    const { params, actionName, resultName } = payload;
+    const response = yield call(axios.get, url, { params });
     if (response.data.code === '10000') {
       yield put({
-        type: commonAction.GET_COMMON_FETCH_SUCCESS,
+        type: actionName,
         payload: {
-          stationDeviceTypes: response.data.data
+          [resultName]: response.data.data || [],
         }
       });
     }
@@ -67,16 +88,17 @@ function* getStationDeviceTypes(action) {
   }
 }
 
-function* getStationDeviceModel(action) { // 获取电站设备型号
-  let url = Path.basePaths.APIBasePath + Path.commonPaths.getDeviceModel;
-  yield put({ type: commonAction.COMMON_FETCH });
+function *getPoints(action){ // 新-获取电站下测点数据
+  const url = `${APIBasePath}${commonPaths.getStationPoints}`;
+  const { payload } = action;
   try {
-    const response = yield call(axios.get, url, { params: action.payload });
+    const { params, actionName, resultName } = payload;
+    const response = yield call(axios.get, url, { params });
     if (response.data.code === '10000') {
       yield put({
-        type: commonAction.GET_COMMON_FETCH_SUCCESS,
+        type: actionName,
         payload: {
-          deviceModels: response.data.data
+          [resultName]: response.data.data || [],
         }
       });
     }
@@ -85,35 +107,17 @@ function* getStationDeviceModel(action) { // 获取电站设备型号
   }
 }
 
-function* getStationDevicePoints(action) { // 获取电站设备类型下的测点
-  let url = Path.basePaths.APIBasePath + Path.commonPaths.getStationPoints;
-  yield put({ type: commonAction.COMMON_FETCH });
+function* getDevices(action) { // 新-获取设备信息列表
+  const url = `${APIBasePath}${commonPaths.getDevices}`;
+  const { payload } = action;
   try {
-    const response = yield call(axios.get, url, { params: action.payload });
+    const { params, actionName, resultName } = payload;
+    const response = yield call(axios.get, url, { params });
     if (response.data.code === '10000') {
       yield put({
-        type: commonAction.GET_COMMON_FETCH_SUCCESS,
+        type: actionName,
         payload: {
-          devicePoints: response.data.data || []
-        }
-      });
-    }
-  } catch (e) {
-    console.log(e);
-  }
-}
-
-//获取设备信息列表
-function* getDevices(action) {
-  let url = Path.basePaths.APIBasePath + Path.commonPaths.getDevices;
-  yield put({ type: commonAction.COMMON_FETCH });
-  try {
-    const response = yield call(axios.get, url, { params: action.payload });
-    if (response.data.code === '10000') {
-      yield put({
-        type: commonAction.GET_COMMON_FETCH_SUCCESS,
-        payload: {
-          devices: response.data.data,
+          [resultName]: response.data.data,
         }
       });
     }
@@ -250,10 +254,9 @@ function* findDeviceExist(action){ // 查询设备是否存在
 
 function *getLostGenType(action){ // 根据电站类型等指标查询电站故障类型
   const { payload } = action;
-  const { stationType, defectType, type } = payload;
-  const url = `${Path.basePaths.APIBasePath}${Path.commonPaths.getLostGenType}/${stationType}/${defectType}/${type}`;
+  const url = `${Path.basePaths.APIBasePath}${Path.commonPaths.getLostGenType}`;
   try{
-    const response = yield call(axios.get, url);
+    const response = yield call(axios.get, url, payload);
     yield put({
       type: commonAction.GET_COMMON_FETCH_SUCCESS,
       payload: { lostGenTypes: response.data.data || []}
@@ -297,12 +300,14 @@ export function* watchCommon() {
   yield takeLatest(commonAction.getStations, getStations);
   yield takeLatest(commonAction.getAllDepartment, getAllDepartment);
   yield takeLatest(commonAction.getDeviceTypes, getDeviceTypes);
-  yield takeLatest(commonAction.getStationDeviceTypes, getStationDeviceTypes);
-  yield takeLatest(commonAction.getStationDeviceModel, getStationDeviceModel);
-  yield takeLatest(commonAction.getStationDevicePoints, getStationDevicePoints);
-  yield takeLatest(commonAction.getDevices, getDevices);
+  
   yield takeLatest(commonAction.getPartition, getPartition);
   yield takeLatest(commonAction.getSliceDevices, getSliceDevices);
   yield takeLatest(commonAction.findDeviceExist, findDeviceExist);
   yield takeLatest(commonAction.getLostGenType, getLostGenType);
+
+  yield takeLatest(commonAction.getStationDeviceTypes, getStationDeviceTypes);
+  yield takeLatest(commonAction.getDeviceModel, getDeviceModel);
+  yield takeLatest(commonAction.getPoints, getPoints);
+  yield takeLatest(commonAction.getDevices, getDevices);
 }
