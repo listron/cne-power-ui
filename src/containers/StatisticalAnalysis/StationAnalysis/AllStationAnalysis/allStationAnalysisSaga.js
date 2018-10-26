@@ -114,8 +114,8 @@ function* getAllStationMonthPieData(action) {//月/年多电站pie数据、
         yield put({
           type: allStationAnalysisAction.GET_ALLSTATIONDATA_FETCH_SUCCESS,
           payload: {
-            allStationMonthPieData: response.data.data&&response.data.data.monthPowerData,
-            allStationMonthComplete: response.data.data&&response.data.data.planRate
+            allStationMonthPieData: response.data.data&&response.data.data.monthPowerData||[],
+            allStationMonthComplete: response.data.data&&response.data.data.planRate||''
           },
         });     
       }  
@@ -172,8 +172,8 @@ function* getSingleStationTargetData(action) {//月/日单电站发电量分析/
         yield put({
           type: allStationAnalysisAction.GET_ALLSTATIONDATA_FETCH_SUCCESS,
           payload: {
-            singleStationPowerData: powerData.data.data,          
-            singleStationLostPowerData: lostPowerData.data.data,          
+            singleStationPowerData: powerData.data.data||[],          
+            singleStationLostPowerData: lostPowerData.data.data||[],          
           },
         });     
       }  
@@ -192,8 +192,8 @@ function* getSingleStationMonthPieData(action) {//月单电站图表-饼图
         yield put({
           type: allStationAnalysisAction.GET_ALLSTATIONDATA_FETCH_SUCCESS,
           payload: {
-            singleStationMonthPieData: response.data.data&&response.data.data.monthPowerData,  
-            singleStationPlanRate:response.data.data&&response.data.data.planRate  
+            singleStationMonthPieData: response.data.data&&response.data.data.monthPowerData||[],  
+            singleStationPlanRate:response.data.data&&response.data.data.planRate||''  
           },
         });     
       }  
@@ -289,7 +289,7 @@ function* getSingleStationYearPvCompareData(action) {//年单电站光资源环�
         yield put({
           type: allStationAnalysisAction.GET_ALLSTATIONDATA_FETCH_SUCCESS,
           payload: {
-            SingleStationYearPvCompareData: response.data.data,          
+            SingleStationYearPvCompareData: response.data.data||[],          
           },
         });     
       }  
