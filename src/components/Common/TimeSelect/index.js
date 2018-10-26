@@ -6,6 +6,7 @@ import moment from 'moment';
 /* 
 
 1.年、月、日，年和月默认存在，日day选填，值类型为布尔，如day={ture}
+2.changeAllStationStore必传，改变存在reducer里的year
 
 */
 
@@ -29,7 +30,7 @@ class TimeSelect extends React.Component {
 
   onHandleDay = (date, dateString) => {
     let data = new Date(date._d)
-    console.log(dateString);
+    //console.log(dateString);
     this.props.changeAllStationStore({ year: [`${dateString}`] })
   }
 
@@ -44,7 +45,7 @@ class TimeSelect extends React.Component {
 
   onPanelChange = (value, mode) => { // shijian
     let data = new Date(value._d).getFullYear()
-    console.log('date', data)
+    //console.log('date', data)
     this.setState({ open: false, dateValue: data })
     this.props.changeAllStationStore({ year: [`${data}`] })
 
@@ -56,7 +57,7 @@ class TimeSelect extends React.Component {
     this.setState({ open: true })
   };
   handlePanelChange = (value, mode) => {
-    console.log(moment(value[0]).format('YYYY'), moment(value[1]).format('YYYY'));
+    //console.log(moment(value[0]).format('YYYY'), moment(value[1]).format('YYYY'));
     const selectYear = [Number(moment(value[0]).format('YYYY')), Number(moment(value[1]).format('YYYY'))];
     let rangeYear = [];
     for (let i = selectYear[0]; i < selectYear[1]+1; i++) {

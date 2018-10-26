@@ -167,9 +167,12 @@ class SideReportPage extends Component {
         let { dailyReport, dailyDetailList } = e;
         delete dailyReport.warning;
         dailyReport.realCapacity = dailyReport.stationCapacity;
+        dailyReport.equivalentHours = dailyReport.hour;
         delete dailyReport.stationCapacity; // 基础信息字段调整
+        delete dailyReport.hour;
         const newDailyDetailList = dailyDetailList.map(eachLost=>{
           const lostInfo = {
+            deviceTypeCode: eachLost.deviceTypeCode,
             deviceName: eachLost.deviceName,
             startTime: eachLost.startTime.format('YYYY-MM-DD HH:mm'),
             endTime: eachLost.endTime && eachLost.endTime.format('YYYY-MM-DD HH:mm'),

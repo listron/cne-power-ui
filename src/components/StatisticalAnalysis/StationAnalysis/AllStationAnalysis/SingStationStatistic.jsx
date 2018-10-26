@@ -19,21 +19,21 @@ import CurrentMonthCompleteRate from './CommonGraph/CurrentMonthCompleteRate';
 class SingleStationStatistic extends React.Component {
   static propTypes = {
     stations: PropTypes.object,
-    SingleStationStatisticData: PropTypes.object,
+    singleStationStatisticData: PropTypes.object,
     singleStationCode: PropTypes.string,
     stationType: PropTypes.string,
     stationCode: PropTypes.array,
-    SingleStationPowerData: PropTypes.array,
-    SingleStationLostPowerData: PropTypes.array,
-    AllStationAvalibaData: PropTypes.array,
-    SingleStationMonthPieData: PropTypes.array,
+    singleStationPowerData: PropTypes.array,
+    singleStationLostPowerData: PropTypes.array,
+    allStationAvalibaData: PropTypes.array,
+    singleStationMonthPieData: PropTypes.array,
     showPage: PropTypes.string,
     dateType: PropTypes.string,
-    SingleStationPlanRate: PropTypes.string,
-    SingleStationPowerEffectiveData: PropTypes.array,
-    SingleStationDayCompleteRateData: PropTypes.array,
-    SingleStationPlanRateData: PropTypes.array,
-    SingleStationPvCompareData: PropTypes.array,
+    singleStationPlanRate: PropTypes.string,
+    singleStationPowerEffectiveData: PropTypes.array,
+    singleStationDayCompleteRateData: PropTypes.array,
+    singleStationPlanRateData: PropTypes.array,
+    singleStationPvCompareData: PropTypes.array,
     changeAllStationStore: PropTypes.func,
     getSingleStationTargetData: PropTypes.func,
     getSingleStationStatisticData: PropTypes.func,
@@ -400,51 +400,51 @@ class SingleStationStatistic extends React.Component {
    
    
 
-    const { stationType, stations, dateType, singleStationCode, year, SingleStationStatisticData, showPage,  SingleStationPlanRateData, SingleStationPvCompareData,  SingleStationPowerData, SingleStationLostPowerData, SingleStationMonthPieData, SingleStationPlanRate, AllStationAvalibaData,SingleStationDayCompleteRateData, SingleStationPowerEffectiveData } = this.props;
+    const { stationType, stations, dateType, singleStationCode, year, singleStationStatisticData, showPage,  singleStationPlanRateData, singleStationPvCompareData,  singleStationPowerData, singleStationLostPowerData, singleStationMonthPieData, singleStationPlanRate, allStationAvalibaData,singleStationDayCompleteRateData, singleStationPowerEffectiveData } = this.props;
     const statisticTime=moment().subtract(1, 'days').format('YYYY年MM月DD日');
     //console.log(statisticTime);
     const currentYear = parseInt(year).toString();
     const lastYear = (parseInt(year) - 1).toString();
     //console.log(currentYear,lastYear);
     //发电量数据
-    const barGraphThatYear = SingleStationPowerData.map((e, i) => (e.thatYearData))
-    const barGraphLastYear = SingleStationPowerData.map((e, i) => (e.lastYearData))
-    const barGraphmonth = SingleStationPowerData.map((e, i) => (`${e.date}${dateType === 'month' ? '月' : (dateType === 'day' ? '日' : '')}`))
-    const barGraphYearOnYear = SingleStationPowerData.map((e, i) => (e.yearOnYear))
-    const barGraphRingRatio= SingleStationPowerData.map((e, i) => (e.ringRatio))
+    const barGraphThatYear = singleStationPowerData.map((e, i) => (e.thatYearData))
+    const barGraphLastYear = singleStationPowerData.map((e, i) => (e.lastYearData))
+    const barGraphmonth = singleStationPowerData.map((e, i) => (`${e.date}${dateType === 'month' ? '月' : (dateType === 'day' ? '日' : '')}`))
+    const barGraphYearOnYear = singleStationPowerData.map((e, i) => (e.yearOnYear))
+    const barGraphRingRatio= singleStationPowerData.map((e, i) => (e.ringRatio))
     //单电站累计完成率
-    const dayCompleteRateThatYearData = SingleStationDayCompleteRateData.map((e, i) => (e.thatYearData))
-    const dayCompleteRateLastYearData = SingleStationDayCompleteRateData.map((e, i) => (e.lastYearData))
-    const dayCompleteRateDateData = SingleStationDayCompleteRateData.map((e, i) => (`${e.day}日`))
-    const dayCompleteRate = SingleStationDayCompleteRateData.map((e, i) => (e.yearOnYear))
+    const dayCompleteRateThatYearData = singleStationDayCompleteRateData.map((e, i) => (e.thatYearData))
+    const dayCompleteRateLastYearData = singleStationDayCompleteRateData.map((e, i) => (e.lastYearData))
+    const dayCompleteRateDateData = singleStationDayCompleteRateData.map((e, i) => (`${e.day}日`))
+    const dayCompleteRate = singleStationDayCompleteRateData.map((e, i) => (e.yearOnYear))
     //发电量饼图
-    const pieData = SingleStationMonthPieData.map((e, i) => ({ value: Number(e.monthPower), name: `${e.month}月` }));
-    const pieCompleteValue = Number(SingleStationPlanRate)
+    const pieData = singleStationMonthPieData.map((e, i) => ({ value: Number(e.monthPower), name: `${e.month}月` }));
+    const pieCompleteValue = Number(singleStationPlanRate)
     const pieComplete = [{ value: pieCompleteValue, name: '已完成' }, { value: 100 - pieCompleteValue, name: '未完成' }];
     // console.log(pieData, pieComplete);
     //计划完成率
-    //console.log(SingleStationPlanRateData);
-    const xAxisData = SingleStationPlanRateData.map((e, i) => (`${e.date}月`))
-    const planPowerData = SingleStationPlanRateData.map((e, i) => (e.planPower))
-    const actualPowerData = SingleStationPlanRateData.map((e, i) => (e.actualPower))
-    const planRateData = SingleStationPlanRateData.map((e, i) => (e.per))
+    //console.log(singleStationPlanRateData);
+    const xAxisData = singleStationPlanRateData.map((e, i) => (`${e.date}月`))
+    const planPowerData = singleStationPlanRateData.map((e, i) => (e.planPower))
+    const actualPowerData = singleStationPlanRateData.map((e, i) => (e.actualPower))
+    const planRateData = singleStationPlanRateData.map((e, i) => (e.per))
     //光资源分析
-    const lightCompareDataThatYear = SingleStationPvCompareData.map((e, i) => (e.thatYearData))
-    const lightCompareDataLastYear = SingleStationPvCompareData.map((e, i) => (e.lastYearData))
-    const lightCompareDataDate = SingleStationPvCompareData.map((e, i) => (`${e.monthOrDay}月`))
-    const lightCompareDataLight = SingleStationPvCompareData.map((e, i) => (e.lightYearOnYear))
-    const lightCompareDataPower = SingleStationPvCompareData.map((e, i) => (e.powerYearOnYear))
+    const lightCompareDataThatYear = singleStationPvCompareData.map((e, i) => (e.thatYearData))
+    const lightCompareDataLastYear = singleStationPvCompareData.map((e, i) => (e.lastYearData))
+    const lightCompareDataDate = singleStationPvCompareData.map((e, i) => (`${e.monthOrDay}月`))
+    const lightCompareDataLight = singleStationPvCompareData.map((e, i) => (e.lightYearOnYear))
+    const lightCompareDataPower = singleStationPvCompareData.map((e, i) => (e.powerYearOnYear))
     //发电效率分析
-    const PowerEffectiveDateData = SingleStationPowerEffectiveData.map((e, i) => (`${e.date}${dateType === 'month' ? '月' : (dateType === 'day' ? '日' : '')}`))
-    const PowerEffectiveHoursData = SingleStationPowerEffectiveData.map((e, i) => (e.hours))
-    const PowerEffectiveLightData = SingleStationPowerEffectiveData.map((e, i) => (e.light))
-    const PowerEffectivePrData = SingleStationPowerEffectiveData.map((e, i) => (e.pr))
+    const PowerEffectiveDateData = singleStationPowerEffectiveData.map((e, i) => (`${e.date}${dateType === 'month' ? '月' : (dateType === 'day' ? '日' : '')}`))
+    const PowerEffectiveHoursData = singleStationPowerEffectiveData.map((e, i) => (e.hours))
+    const PowerEffectiveLightData = singleStationPowerEffectiveData.map((e, i) => (e.light))
+    const PowerEffectivePrData = singleStationPowerEffectiveData.map((e, i) => (e.pr))
     //损失电量数据
-    const lostPowerThatYear = SingleStationLostPowerData.map((e, i) => (e.thatYearData))
-    const lostPowerLastYear = SingleStationLostPowerData.map((e, i) => (e.lastYearData))
-    const lostPowerRingRatio = SingleStationLostPowerData.map((e, i) => (e.ringRatio))
-    const lostPowermonth = SingleStationLostPowerData.map((e, i) => (`${e.date}${dateType === 'month' ? '月' : (dateType === 'day' ? '日' : '')}`))
-    const lostPowerYearOnYear = SingleStationLostPowerData.map((e, i) => (e.yearOnYear))
+    const lostPowerThatYear = singleStationLostPowerData.map((e, i) => (e.thatYearData))
+    const lostPowerLastYear = singleStationLostPowerData.map((e, i) => (e.lastYearData))
+    const lostPowerRingRatio = singleStationLostPowerData.map((e, i) => (e.ringRatio))
+    const lostPowermonth = singleStationLostPowerData.map((e, i) => (`${e.date}${dateType === 'month' ? '月' : (dateType === 'day' ? '日' : '')}`))
+    const lostPowerYearOnYear = singleStationLostPowerData.map((e, i) => (e.yearOnYear))
     //console.log(singleStationCode);
    // console.log(stations.toJS());
     const { showStationSelect } = this.state;
@@ -482,7 +482,7 @@ class SingleStationStatistic extends React.Component {
             </Link>
           </div>
           <TimeSelect text={'统计时间选择'} day={true} {...this.props} />
-          <PlanCompletionRate dateType={dateType} AllStationStatisticData={SingleStationStatisticData} showPage={showPage} year={year} AllStationAvalibaData={AllStationAvalibaData} />
+          <PlanCompletionRate dateType={dateType} allStationStatisticData={singleStationStatisticData} showPage={showPage} year={year} allStationAvalibaData={allStationAvalibaData} />
           <div className={styles.targetGraphContainer}>
             {dateType === 'year' && <div>
               <div className={styles.tabContainer}>
@@ -498,7 +498,7 @@ class SingleStationStatistic extends React.Component {
                   />
                   <TableGraph
                   dateType={dateType} 
-                  tableType={'yearRing'}  SingleStationLostPowerData={SingleStationPowerData}
+                  tableType={'yearRing'}  singleStationLostPowerData={singleStationPowerData}
                   />
                 </div>
               </div>
@@ -515,7 +515,7 @@ class SingleStationStatistic extends React.Component {
                   />
                   <TableGraph
                   dateType={dateType} tableType={'powerEffective'}
-                  SingleStationPowerEffectiveData={SingleStationPowerEffectiveData} />
+                  singleStationPowerEffectiveData={singleStationPowerEffectiveData} />
                 </div>
               </div>
               <div className={styles.tabContainer}>
@@ -532,7 +532,7 @@ class SingleStationStatistic extends React.Component {
                   
                     />
                   <TableGraph
-                  dateType={dateType} tableType={'yearRing'}  SingleStationLostPowerData={SingleStationLostPowerData} />
+                  dateType={dateType} tableType={'yearRing'}  singleStationLostPowerData={singleStationLostPowerData} />
                 </div>
               </div>
             </div>}
@@ -564,7 +564,7 @@ class SingleStationStatistic extends React.Component {
                 <div className={styles.dataGraph}>
                   <PlanCompleteRateAnalysisBar graphId={'planCompleteRate'} yAxisName={'发电量 (万kWh)'} dateType={dateType} title={'计划完成率'} xAxisData={xAxisData} planPowerData={planPowerData} actualPowerData={actualPowerData} planRateData={planRateData} />
                   <TableGraph
-                  dateType={dateType} tableType={'plan'} SingleStationPlanRateData={SingleStationPlanRateData} />
+                  dateType={dateType} tableType={'plan'} singleStationPlanRateData={singleStationPlanRateData} />
                 </div>
               </div>
               <div className={styles.bgStyle}>
@@ -588,7 +588,7 @@ class SingleStationStatistic extends React.Component {
                   />
                   <TableGraph
                   dateType={dateType} tableType={'light'} currentYear={currentYear}
-                    lastYear={lastYear} SingleStationPvCompareData={SingleStationPvCompareData} />
+                    lastYear={lastYear} singleStationPvCompareData={singleStationPvCompareData} />
                 </div>
               </div>
               <div className={styles.tabContainer}>
@@ -606,7 +606,7 @@ class SingleStationStatistic extends React.Component {
                   <TableGraph
                   dateType={dateType}
                     tableType={'powerEffective'}
-                    SingleStationPowerEffectiveData={SingleStationPowerEffectiveData}
+                    singleStationPowerEffectiveData={singleStationPowerEffectiveData}
                   />
                 </div>
               </div>
@@ -630,7 +630,7 @@ class SingleStationStatistic extends React.Component {
                   />
                   <TableGraph
                   dateType={dateType} tableType={'power'} currentYear={currentYear}
-                    lastYear={lastYear} SingleStationLostPowerData={SingleStationLostPowerData} />
+                    lastYear={lastYear} singleStationLostPowerData={singleStationLostPowerData} />
                 </div>
               </div>
             </div>}
@@ -654,7 +654,7 @@ class SingleStationStatistic extends React.Component {
                   />
                   <TableGraph
                   dateType={dateType} tableType={'power'} currentYear={currentYear}
-                    lastYear={lastYear} SingleStationLostPowerData={SingleStationPowerData} />
+                    lastYear={lastYear} singleStationLostPowerData={singleStationPowerData} />
                 </div>
               </div>
               <div className={styles.tabContainer}>
@@ -687,7 +687,7 @@ class SingleStationStatistic extends React.Component {
                   <TableGraph
                   dateType={dateType}
                     tableType={'powerEffective'}
-                    SingleStationPowerEffectiveData={SingleStationPowerEffectiveData}
+                    singleStationPowerEffectiveData={singleStationPowerEffectiveData}
                   />
                 </div>
               </div>
@@ -713,7 +713,7 @@ class SingleStationStatistic extends React.Component {
                   <TableGraph
                   dateType={dateType}
                     tableType={'power'} currentYear={currentYear}
-                    lastYear={lastYear} SingleStationLostPowerData={SingleStationLostPowerData}
+                    lastYear={lastYear} singleStationLostPowerData={singleStationLostPowerData}
                   />
                 </div>
               </div>

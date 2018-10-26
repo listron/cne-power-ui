@@ -18,6 +18,7 @@ var initState = Immutable.fromJS({
 
   selectedStationIndex: null, // 展示详情的电站index
   stationDetail: {},// 电站详情
+  allDepartmentData: [], // 所有部分列表信息
 });
 
 const stationManageReducer = (state = initState, action) => {

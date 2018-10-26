@@ -8,8 +8,8 @@ import { getCookie } from '../../../../../../utils/index.js';
 
 class PlancompletionRate extends React.Component{
     static propTypes = {
-        AllStationAvalibaData: PropTypes.array,
-        AllStationStatisticData: PropTypes.object,
+      allStationAvalibaData: PropTypes.array,
+      allStationStatisticData: PropTypes.object,
         getAllStationStatisticData: PropTypes.func,
         dateType: PropTypes.string,
         showPage: PropTypes.string,
@@ -19,7 +19,7 @@ class PlancompletionRate extends React.Component{
     }
     handleTime = (e) => {
         const changeYear = Number(e.target.value);
-        console.log(changeYear);   
+       // console.log(changeYear);   
         const { getAllStationStatisticData, dateType } = this.props;
         const userId = getCookie('userId');
         getAllStationStatisticData(
@@ -32,14 +32,14 @@ class PlancompletionRate extends React.Component{
     
       }
     selectYear() {
-        const {AllStationAvalibaData}=this.props;
-        let yearArray=AllStationAvalibaData.map((e,i)=>(Number(e.year))) ;
+        const {allStationAvalibaData}=this.props;
+        let yearArray=allStationAvalibaData.map((e,i)=>(Number(e.year))) ;
         let currentYear=Math.max(...yearArray).toString()
      
         return (
           <Radio.Group defaultValue={currentYear}  buttonStyle="solid" onChange={this.handleTime}>
-           {AllStationAvalibaData.map((e,index)=>{        
-             if(e.isTrue==='1'){
+           {allStationAvalibaData.map((e,index)=>{        
+             if(e.isTrue===true){
               return   <Radio.Button value={e.year} key={index}  style={{margin:'0 5px'}}>{e.year}年</Radio.Button>
              }else{
               return   <Radio.Button value={e.year} key={index} disabled style={{margin:'0 5px'}}>{e.year}年</Radio.Button>
@@ -51,9 +51,9 @@ class PlancompletionRate extends React.Component{
 
       }
     render(){
-        const {dateType,AllStationStatisticData,showPage,year}=this.props;
+        const {dateType,allStationStatisticData,showPage,year}=this.props;
        
-        let planSummary = showPage==='single'?AllStationStatisticData:(AllStationStatisticData&&AllStationStatisticData.planSummary&&AllStationStatisticData.planSummary[0])
+        let planSummary = showPage==='single'?allStationStatisticData:(allStationStatisticData&&allStationStatisticData.planSummary&&allStationStatisticData.planSummary[0])
         const actualPower=planSummary&&planSummary.actualPower?planSummary.actualPower:'--';
         const planPower=planSummary&&planSummary.planPower?planSummary.planPower:'--';
         const rayRadiation=planSummary&&planSummary.rayRadiation?planSummary.rayRadiation:'--';

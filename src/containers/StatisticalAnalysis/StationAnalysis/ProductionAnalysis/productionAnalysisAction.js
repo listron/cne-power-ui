@@ -4,6 +4,8 @@ export const productionAnalysisAction = {
   CHANGE_PRODUCTIONSTATIONDATA_STORE_SAGA: Symbol('CHANGE_PRODUCTIONSTATIONDATA_STORE_SAGA'),//改变默认参数
   CHANGE_PRODUCTIONSTATIONDATA_STORE: Symbol('CHANGE_PRODUCTIONSTATIONDATA_STORE'),//改变默认参数
   ProductionPlanComplete: Symbol('ProductionPlanComplete'),//
+  getSingleStationProductionData: Symbol('getSingleStationProductionData'),
+ 
   
  
  

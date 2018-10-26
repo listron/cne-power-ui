@@ -49,7 +49,7 @@ class LimitGenTable extends Component {
             {getFieldDecorator(`${record.id}_startTime`, {
               initialValue: record.startTime,
             })(
-              <DatePicker placeholder="开始时间" showTime={true} format="YYYY-MM-DD HH:mm"  />
+              <DatePicker placeholder="开始时间" showTime={{format: 'HH:mm'}} format="YYYY-MM-DD HH:mm"  />
             )}
           </Form.Item>)
         }
@@ -61,7 +61,7 @@ class LimitGenTable extends Component {
             {getFieldDecorator(`${record.id}_endTime`, {
               initialValue: record.endTime,
             })(
-              <DatePicker placeholder="结束时间" showTime={true} format="YYYY-MM-DD hh:mm"   />
+              <DatePicker placeholder="结束时间" showTime={{format: 'HH:mm'}} format="YYYY-MM-DD hh:mm"   />
             )}
           </Form.Item>)
         }

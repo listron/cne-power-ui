@@ -9,18 +9,18 @@ import { getCookie } from '../../../../utils/index.js';
 
 class StationStatisticList extends React.Component {
   static propTypes = {
-    AllStationAvalibaData: PropTypes.array,
+    allStationAvalibaData: PropTypes.array,
     dateType: PropTypes.string,
     showPage: PropTypes.string,
     sortType: PropTypes.string,
     sort: PropTypes.string,
-    AllStationStatisticTableData: PropTypes.array,
+    allStationStatisticTableData: PropTypes.array,
     getAllStationStatisticTableData: PropTypes.func,
     changeAllStationStore: PropTypes.func,
     pageNum: PropTypes.number,
     pageSize: PropTypes.number,
     totalNum: PropTypes.number,
-    AllStationAvalibaData: PropTypes.array,
+    allStationAvalibaData: PropTypes.array,
 
   }
   constructor(props, context) {
@@ -128,12 +128,12 @@ class StationStatisticList extends React.Component {
   }
 
   selectTime() {
-    const { AllStationAvalibaData, } = this.props;
+    const { allStationAvalibaData } = this.props;
     const currentMonth = moment().format('MM');
     return (
       <Radio.Group defaultValue={currentMonth} buttonStyle="solid" onChange={this.handleTime}>
-        {AllStationAvalibaData.map((e, index) => {
-          if (e.isTrue === '1') {
+        {allStationAvalibaData.map((e, index) => {
+          if (e.isTrue === true) {
             return <Radio.Button value={e.year} key={index} style={{ margin: '0 5px' }}>{e.year}月</Radio.Button>
           } else {
             return <Radio.Button value={e.year} key={index} disabled style={{ margin: '0 5px' }}>{e.year}月</Radio.Button>
@@ -144,15 +144,15 @@ class StationStatisticList extends React.Component {
     )
   }
   selectYear() {
-    const { AllStationAvalibaData } = this.props;
-    let yearArray=AllStationAvalibaData.map((e,i)=>(Number(e.year))) ;
+    const { allStationAvalibaData } = this.props;
+    let yearArray=allStationAvalibaData.map((e,i)=>(Number(e.year))) ;
     let currentYear=Math.max(...yearArray).toString();
     //const currentYear = moment().format('YYYY');
     //console.log(currentYear);
     return (
       <Radio.Group defaultValue={currentYear} buttonStyle="solid" onChange={this.handleYearTime}>
-        {AllStationAvalibaData.map((e, index) => {
-          if (e.isTrue === '1') {
+        {allStationAvalibaData.map((e, index) => {
+          if (e.isTrue === true) {
             return <Radio.Button value={e.year} key={index} style={{ margin: '0 5px' }}>{e.year}年</Radio.Button>
           } else {
             return <Radio.Button value={e.year} key={index} disabled style={{ margin: '0 5px' }}>{e.year}年</Radio.Button>
@@ -337,8 +337,8 @@ class StationStatisticList extends React.Component {
   }
 
   render() {
-    const { dateType, AllStationStatisticTableData, totalNum, pageSize, pageNum, showPage } = this.props;
-    //console.log(AllStationStatisticTableData);
+    const { dateType, allStationStatisticTableData, totalNum, pageSize, pageNum, showPage } = this.props;
+    console.log(allStationStatisticTableData);
     const columns = dateType === 'month' ? this.initMonthColumn() : this.initYearColumn();
     return (
       <div className={styles.stationStatisticList}>
@@ -353,7 +353,7 @@ class StationStatisticList extends React.Component {
           <Pagination total={totalNum} currentPage={pageNum} pageSize={pageSize} onPaginationChange={this.onPaginationChange} />
         </div>
         <div>
-          <Table columns={columns} dataSource={AllStationStatisticTableData.map((e, i) => ({ ...e, key: i }))} onChange={this.ontableSort} pagination={false} />
+          <Table columns={columns} dataSource={allStationStatisticTableData&&allStationStatisticTableData.map((e, i) => ({ ...e, key: i }))} onChange={this.ontableSort} pagination={false} />
         </div>
 
 

@@ -20,8 +20,9 @@ class AlarmManageSearch extends Component {
     getAlarmList: PropTypes.func,
     changeCommonStore: PropTypes.func,
     getStationDeviceTypes: PropTypes.func,
-    getStationDeviceModel: PropTypes.func,
-    getStationDevicePoints: PropTypes.func,
+    getDeviceModel: PropTypes.func,
+    getPoints: PropTypes.func,
+    changeAlarmManageStore: PropTypes.func,
   }
 
   constructor(props) {
@@ -32,7 +33,7 @@ class AlarmManageSearch extends Component {
   }
 
   selectStation = (stations) => { // 选中电站
-    const { getStationDeviceTypes, getAlarmList, queryParams, changeCommonStore } = this.props;
+    const { getStationDeviceTypes, getAlarmList, queryParams, changeAlarmManageStore } = this.props;
     getStationDeviceTypes({
       stationCodes: stations[0].stationCode,
     });
@@ -44,15 +45,15 @@ class AlarmManageSearch extends Component {
       pointCode: '',
       pageNum: 1,
     })
-    changeCommonStore({
+    changeAlarmManageStore({
       deviceModels: [], 
       devicePoints: [],
     })
   }
 
   selectDeviceType = (value) => { // 选中设备类型
-    const { getStationDeviceModel, getAlarmList, queryParams, stationCode, changeCommonStore } = this.props;
-    getStationDeviceModel({
+    const { getDeviceModel, getAlarmList, queryParams, stationCode, changeAlarmManageStore } = this.props;
+    getDeviceModel({
       stationCode,
       deviceTypeCode: value,
     });
@@ -63,14 +64,14 @@ class AlarmManageSearch extends Component {
       pointCode: '',
       pageNum: 1,
     })
-    changeCommonStore({
+    changeAlarmManageStore({
       devicePoints: [],
     })
   }
 
   selectDeviceModel = (value) => { // 选中设备型号
-    const { getAlarmList, queryParams, stationCode, deviceTypeCode, deviceModeCode, getStationDevicePoints } = this.props;
-    getStationDevicePoints({
+    const { getAlarmList, queryParams, stationCode, deviceTypeCode, deviceModeCode, getPoints } = this.props;
+    getPoints({
       stationCode,
       deviceTypeCode,
       deviceModeCode

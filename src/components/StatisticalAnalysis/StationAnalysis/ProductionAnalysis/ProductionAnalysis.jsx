@@ -1,14 +1,15 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Select } from 'antd';
+import { Radio } from 'antd';
 import styles from './productionAnalysis.scss';
 import StationSelect from '../../../Common/StationSelect';
 import TimeSelect from '../../../Common/TimeSelect';
 import BarGraph from '../AllStationAnalysis/CommonGraph/BarGraph';
-import PlanCompleteRateAnalysisBar from '../AllStationAnalysis/CommonGraph/PlanCompleteRateAnalysisBar';
+//import PlanCompleteRateAnalysisBar from '../AllStationAnalysis/CommonGraph/PlanCompleteRateAnalysisBar';
 import TableGraph from '../AllStationAnalysis/CommonGraph/TableGraph';
 import WaterWave from '../AllStationAnalysis/CommonGraph/PlanCompletionRate/WaterWave';
 import ThreeYaxis from '../AllStationAnalysis/CommonGraph/ThreeYaxis';
+import moment from 'moment';
 
 
 class ProductionAnalysis extends React.Component {
@@ -16,13 +17,13 @@ class ProductionAnalysis extends React.Component {
     stations: PropTypes.object,
     stationType: PropTypes.string,
     stationCode: PropTypes.array,
-    pageSize: PropTypes.number,
-    pageNum: PropTypes.number,
-    orderField: PropTypes.string,
-    orderCommand: PropTypes.string,
-    startTime: PropTypes.string,
-    endTime: PropTypes.string,
+    allStationAvalibaData: PropTypes.array,  
     history: PropTypes.object,
+    getAllStationAvalibaData: PropTypes.func,
+    changeAllStationStore: PropTypes.func,
+    ProductionPlanComplete: PropTypes.func,
+    getSingleStationProductionData: PropTypes.func,
+    getSingleStationPlanRateData: PropTypes.func,
   }
   constructor(props) {
     super(props);
@@ -30,13 +31,69 @@ class ProductionAnalysis extends React.Component {
     };
   }
   componentDidMount() {
+    const { getAllStationAvalibaData,userId, changeAllStationStore, ProductionPlanComplete,getSingleStationProductionData,getSingleStationPlanRateData,  year, dateType,  } = this.props;
+    const currentYear = moment().format('YYYY');
+    const curYear = Number(moment().format('YYYY'));
+
+    const currentMonth = Number(moment().format('MM'));
+    let time = year ? year : [`${currentYear}`];
+    changeAllStationStore({ year: [`${currentYear}`], month: currentMonth })
+    getAllStationAvalibaData(
+      {
+        userId: userId,
+        year: time,
+        dateType,
+      }
+    )
+    ProductionPlanComplete({
+      stationCode: "360",
+      year:curYear,
+      dateType:'month',
+    
+
+    })
+    getSingleStationProductionData({
+      stationCode: '360',
+      dateType:'month',
+      // dataType:'power',
+      year: curYear,
+
+    })
+    getSingleStationPlanRateData({
+      stationCode:'360',
+      year:[curYear],
+      dateType:'month'
+
+    })
+  }
+  selectYear() {
+    const {allStationAvalibaData}=this.props;
+    let yearArray=allStationAvalibaData.map((e,i)=>(Number(e.year))) ;
+    let currentYear=Math.max(...yearArray).toString()
+ 
+    return (
+      <Radio.Group defaultValue={currentYear}  buttonStyle="solid" onChange={this.handleTime}>
+       {allStationAvalibaData.map((e,index)=>{        
+         if(e.isTrue===true){
+          return   <Radio.Button value={e.year} key={index}  style={{margin:'0 5px'}}>{e.year}年</Radio.Button>
+         }else{
+          return   <Radio.Button value={e.year} key={index} disabled style={{margin:'0 5px'}}>{e.year}年</Radio.Button>
+         }
+       }
+       )}
+      </Radio.Group>
+    )
 
   }
-
   render() {
 
-    const { stationType, stations, dateType } = this.props;
-    console.log(123,dateType )
+    const { stationType, stations, dateType ,year,changeAllStationStore} = this.props;
+    //console.log(123,dateType )
+    const statisticTime=moment().subtract(1, 'days').format('YYYY年MM月DD日');
+    const stationItem = stations.toJS();
+    console.log(stationItem);
+    const stationGridTime = 0?stationItem.onGridTime.moment().format('YYYY年MM月DD日'):'--';
+
     
     return (
       <div className={styles.singleStationType}>
@@ -51,9 +108,9 @@ class ProductionAnalysis extends React.Component {
                 onChange={this.stationSelected}
               />
             </div>
-            <TimeSelect day={true} {...this.props} />
+            <TimeSelect day={true} changeAllStationStore={changeAllStationStore} dateType={dateType} />
           </div>
-          <span className={styles.rightContent}>数据统计截止时间8月20日</span>
+          <span className={styles.rightContent}>数据统计截止时间{statisticTime}</span>
         </div>
 
         <div className={styles.componentContainer}>
@@ -64,11 +121,11 @@ class ProductionAnalysis extends React.Component {
             <div className={styles.stationStatus}>
               <div className={styles.status}>
                 <span className={styles.stationIcon}><i className="iconfont icon-pvlogo"></i></span>
-                {`电站名-区域：xxxxxx`}
-                计划完成情况{}
+                {`电站名-区域：`}
+                计划完成情况{dateType==='year'?this.selectYear():`(  ${Number(year)}年  ) `}
               </div>
 
-              <span className={styles.rightFont}>并网时间:2018年3月10号</span>
+              <span className={styles.rightFont}>并网时间{stationGridTime}</span>
 
             </div>
             <div className={styles.graph}>

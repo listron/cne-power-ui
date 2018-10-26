@@ -23,6 +23,10 @@ const initState = Immutable.fromJS({
   reportDisableStation: [], // api - 选中日期已上传过日报的电站编码数组
   stationReportBaseData: [], // api - 选中日期+电站后各待上传数据电站基础情况
   selectedDayReportDetail: {}, // api - 选中日报详情
+  
+  stationDeviceTypes: [], // 电站下各设备类型。
+  deviceExistInfo: {}, // 设备是否存在验证信息
+  lostGenTypes: [], // 损失类型数组。
 });
 
 const dayReportReducer = (state = initState, action) => {

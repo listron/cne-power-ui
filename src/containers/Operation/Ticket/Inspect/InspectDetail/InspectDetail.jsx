@@ -14,7 +14,6 @@ class InspectDetail extends Component{
     getInspectDetail: PropTypes.func,
     getDefectTypes: PropTypes.func,
     defectTypes: PropTypes.object,
-    loadDeviceTypeList: PropTypes.func,
     loadDeviceAreaList: PropTypes.func,
     loadDeviceList: PropTypes.func,
     deviceTypeItems: PropTypes.object,
@@ -118,9 +117,9 @@ const mapStateToProps = (state) => ({
   inspectId: state.operation.inspect.get('inspectId'),
   commonFetching: state.common.get('commonFetching'),
   defectTypes: state.operation.defect.get('defectTypes'),
-  deviceTypeItems: state.common.get('stationDeviceTypes'),
-  deviceAreaItems: state.common.get('partitions'),
-  deviceItems: state.common.get('devices'),
+  deviceTypeItems: state.operation.inspect.get('deviceTypeItems'),
+  deviceAreaItems: state.operation.defect.get('partitions'),
+  deviceItems: state.operation.inspect.get('devices'),
   inspectStandard: state.operation.inspect.get('inspectStandard'),
 }) 
 
@@ -132,9 +131,30 @@ const mapDispatchToProps = (dispatch) => ({
   transformDefect: payload => dispatch({ type: ticketAction.TRANSFORM_DEFECT_SAGA, payload}),
   setInspectCheck: payload => dispatch({ type: ticketAction.SET_INSPECT_CHECK_SAGA, payload}),
   finishInspect: payload => dispatch({ type: ticketAction.FINISH_INSPECT_SAGA, payload}),
-  loadDeviceTypeList: payload => dispatch({ type: commonAction.getStationDeviceTypes, payload}),
-  loadDeviceAreaList: payload => dispatch({ type: commonAction.getPartition, payload}),
-  loadDeviceList: payload => dispatch({ type: commonAction.getDevices, payload}),
+  getStationDeviceTypes: params => dispatch({ // 设备类型共用接口
+    type: commonAction.getStationDeviceTypes,
+    payload: {
+      params, 
+      deviceTypeAction: ticketAction.GET_INSPECT_FETCH_SUCCESS,
+      resultName: 'deviceTypeItems'
+    }
+  }),
+  loadDeviceList: params => dispatch({ // 设备列表共用接口
+    type: commonAction.getDevices,
+    payload: {
+      params, 
+      actionName: ticketAction.GET_INSPECT_FETCH_SUCCESS,
+      resultName: 'devices'
+    }
+  }),
+  loadDeviceAreaList: params => dispatch({ // 设备列表共用接口
+    type: commonAction.getPartition,
+    payload: {
+      params, 
+      actionName: ticketAction.GET_INSPECT_FETCH_SUCCESS,
+      resultName: 'partitions'
+    }
+  }),
   setInspectId: payload => dispatch({ type: ticketAction.SET_INSPECT_ID_SAGA, payload }),
   onDeleteAbnormal: payload => dispatch({ type: ticketAction.DELETE_ABNORMAL_SAGA, payload }),
   getInspectStandard: payload => dispatch({ type: ticketAction.GET_INSPECT_STANDARD_SAGA, payload}),

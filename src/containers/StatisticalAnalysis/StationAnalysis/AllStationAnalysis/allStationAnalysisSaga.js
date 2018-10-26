@@ -22,7 +22,7 @@ function* getAllStationAvalibaData(action) {//综合指标年月判断
         yield put({
           type: allStationAnalysisAction.GET_ALLSTATIONDATA_FETCH_SUCCESS,
           payload: {
-            AllStationAvalibaData: response.data.data||[],          
+            allStationAvalibaData: response.data.data||[],          
           },
         });     
       }  
@@ -42,7 +42,7 @@ function* getAllStationStatisticData(action) {//月/年多电站计划完成、
         yield put({
           type: allStationAnalysisAction.GET_ALLSTATIONDATA_FETCH_SUCCESS,
           payload: {
-            AllStationStatisticData: response.data.data||{},          
+            allStationStatisticData: response.data.data||{},          
           },
         });     
       }  
@@ -70,7 +70,7 @@ function* getAllStationStatisticTableData(action) {//月/年多电站table数据
         yield put({
           type: allStationAnalysisAction.GET_ALLSTATIONDATA_FETCH_SUCCESS,
           payload: {
-            AllStationStatisticTableData: response.data.data.statisticsList||[], 
+            allStationStatisticTableData: response.data.data.statisticsList||[], 
             totalNum,
             pageNum,
           },
@@ -93,7 +93,7 @@ function* getAllStationMonthBarData(action) {//月多电站bar数据、
         yield put({
           type: allStationAnalysisAction.GET_ALLSTATIONDATA_FETCH_SUCCESS,
           payload: {
-            AllStationMonthBarData: response.data.data||[],          
+            allStationMonthBarData: response.data.data||[],          
           },
         });     
       }  
@@ -114,8 +114,8 @@ function* getAllStationMonthPieData(action) {//月/年多电站pie数据、
         yield put({
           type: allStationAnalysisAction.GET_ALLSTATIONDATA_FETCH_SUCCESS,
           payload: {
-            AllStationMonthPieData: response.data.data&&response.data.data.monthPowerData,
-            AllStationMonthComplete: response.data.data&&response.data.data.planRate
+            allStationMonthPieData: response.data.data&&response.data.data.monthPowerData||[],
+            allStationMonthComplete: response.data.data&&response.data.data.planRate||''
           },
         });     
       }  
@@ -153,7 +153,7 @@ function* getSingleStationStatisticData(action) {//月/年/日单电站计划完
         yield put({
           type: allStationAnalysisAction.GET_ALLSTATIONDATA_FETCH_SUCCESS,
           payload: {
-            SingleStationStatisticData: response.data.data||{},          
+            singleStationStatisticData: response.data.data||{},          
           },
         });     
       }  
@@ -172,8 +172,8 @@ function* getSingleStationTargetData(action) {//月/日单电站发电量分析/
         yield put({
           type: allStationAnalysisAction.GET_ALLSTATIONDATA_FETCH_SUCCESS,
           payload: {
-            SingleStationPowerData: powerData.data.data,          
-            SingleStationLostPowerData: lostPowerData.data.data,          
+            singleStationPowerData: powerData.data.data||[],          
+            singleStationLostPowerData: lostPowerData.data.data||[],          
           },
         });     
       }  
@@ -192,8 +192,8 @@ function* getSingleStationMonthPieData(action) {//月单电站图表-饼图
         yield put({
           type: allStationAnalysisAction.GET_ALLSTATIONDATA_FETCH_SUCCESS,
           payload: {
-            SingleStationMonthPieData: response.data.data&&response.data.data.monthPowerData,  
-            SingleStationPlanRate:response.data.data&&response.data.data.planRate  
+            singleStationMonthPieData: response.data.data&&response.data.data.monthPowerData||[],  
+            singleStationPlanRate:response.data.data&&response.data.data.planRate||''  
           },
         });     
       }  
@@ -232,7 +232,7 @@ function* getSingleStationPlanRateData(action) {//月/年单电站计划完成�
         yield put({
           type: allStationAnalysisAction.GET_ALLSTATIONDATA_FETCH_SUCCESS,
           payload: {
-            SingleStationPlanRateData: response.data.data||[],          
+            singleStationPlanRateData: response.data.data||[],          
           },
         });     
       }  
@@ -251,7 +251,7 @@ function* getSingleStationDayCompleteRateData(action) {//日单电站当月累�
         yield put({
           type: allStationAnalysisAction.GET_ALLSTATIONDATA_FETCH_SUCCESS,
           payload: {
-            SingleStationDayCompleteRateData: response.data.data||[],          
+            singleStationDayCompleteRateData: response.data.data||[],          
           },
         });     
       }  
@@ -270,7 +270,7 @@ function* getSingleStationPvCompareData(action) {//月/日单电站光资源同�
         yield put({
           type: allStationAnalysisAction.GET_ALLSTATIONDATA_FETCH_SUCCESS,
           payload: {
-            SingleStationPvCompareData: response.data.data||[],          
+            singleStationPvCompareData: response.data.data||[],          
           },
         });     
       }  
@@ -289,7 +289,7 @@ function* getSingleStationYearPvCompareData(action) {//年单电站光资源环�
         yield put({
           type: allStationAnalysisAction.GET_ALLSTATIONDATA_FETCH_SUCCESS,
           payload: {
-            SingleStationYearPvCompareData: response.data.data,          
+            SingleStationYearPvCompareData: response.data.data||[],          
           },
         });     
       }  
@@ -309,7 +309,7 @@ function* getSingleStationPowerEffectiveData(action) {////月/年/日单电站�
         yield put({
           type: allStationAnalysisAction.GET_ALLSTATIONDATA_FETCH_SUCCESS,
           payload: {
-            SingleStationPowerEffectiveData: response.data.data||[],          
+            singleStationPowerEffectiveData: response.data.data||[],          
           },
         });     
       }  
