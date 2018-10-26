@@ -194,7 +194,9 @@ class AbnormalReportModal extends Component {
           changeLimitList={this.changeLimitList} 
         /> :null}
         {addLimitFormShow && <LimitAddForm
-          findDeviceExist={findDeviceExist} 
+          findDeviceExist={findDeviceExist}
+          stationDeviceTypes={stationDeviceTypes}
+          getStationDeviceTypes={getStationDeviceTypes} 
           limitGenList={limitGenList} 
           changeLimitList={this.changeLimitList}  
           stationCode={abnormalInfo.stationCode}
