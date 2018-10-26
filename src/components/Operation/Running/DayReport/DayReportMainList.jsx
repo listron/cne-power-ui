@@ -34,13 +34,12 @@ class DayReportMainList extends Component {
   
   onPaginationChange = ({ currentPage, pageSize }) => { // 分页器
     const { getDayReportList, stationType, stationNameSort, startTime, regionName  } = this.props;
-    getDayReportList({
-      startTime,
+    let params = { stationType, stationNameSort, startTime };
+    regionName && (params.regionName = regionName);
+    getDayReportList({ 
+      ...params,
       pageSize, 
-      pageNum: currentPage,
-      regionName,
-      stationType,
-      stationNameSort,
+      pageNum: currentPage
     });
   }
 
@@ -48,14 +47,9 @@ class DayReportMainList extends Component {
     const { order } = sorter;
     const stationNameSort = order ? (order === 'ascend' ? 1 : 0) : 0;
     const { getDayReportList, pageSize, pageNum, stationType, startTime, regionName  } = this.props;
-    getDayReportList({
-      startTime,
-      pageSize, 
-      pageNum,
-      regionName,
-      stationType,
-      stationNameSort,
-    });
+    let params = { pageSize, pageNum, stationType, startTime};
+    regionName && (params.regionName = regionName);
+    getDayReportList({ ...params, stationNameSort });
   }
 
   toUploadPage = () => { // 去上报页面
