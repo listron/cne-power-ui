@@ -43,8 +43,7 @@ class ReportEdit extends Component {
 
   componentDidMount(){
     this.props.getLostGenType({
-      stationType: this.props.selectedDayReportDetail.stationType, 
-      objectType: 1, 
+      stationType: this.props.selectedDayReportDetail.stationType,
     })
   }
 
@@ -161,11 +160,11 @@ class ReportEdit extends Component {
     })
     faultList.find(e=>{
       !e.process && (errorText = '损失电量进展未填写!');
-      !e.lostPower && (errorText = '损失电量未填写!');
+      // !e.lostPower && (errorText = '损失电量未填写!');
       return !e.process || !e.lostPower;
     })
     limitList.find(e=>{
-      !e.lostPower && (errorText = '限电损失电量未填写!');
+      // !e.lostPower && (errorText = '限电损失电量未填写!');
       return !e.lostPower;
     })
     if(errorText){ // 数据错误存在，提示
@@ -258,7 +257,7 @@ class ReportEdit extends Component {
   render(){
     const { updateDayReportDetail, addLostFormShow, addLimitFormShow, abnormalTextShow, showBackWarningTip, warningTipText } = this.state;
     const { findDeviceExist, deviceExistInfo, dayReportConfig, lostGenTypes, getStationDeviceTypes, stationDeviceTypes, getLostGenType } = this.props;
-    const {faultList, limitList, stationCode, errorInfo} = updateDayReportDetail;
+    const {faultList, limitList, stationCode, errorInfo, stationType} = updateDayReportDetail;
     return (
       <div className={styles.reportEdit} >
         <div className={styles.reportDetailTitle} >
@@ -299,6 +298,7 @@ class ReportEdit extends Component {
           stationDeviceTypes={stationDeviceTypes}
           getStationDeviceTypes={getStationDeviceTypes}
           getLostGenType={getLostGenType}
+          stationType={stationType}
         />}
         <div className={styles.lostElecInfo} >
           <span className={styles.reportSubTitle}>限电信息<Icon type="caret-right" theme="outlined" /></span>
@@ -321,6 +321,8 @@ class ReportEdit extends Component {
           limitGenList={limitList} 
           changeLimitList={this.limitListInfoChange}  
           stationCode={stationCode}
+          stationDeviceTypes={stationDeviceTypes}
+          getStationDeviceTypes={getStationDeviceTypes}
           deviceExistInfo={deviceExistInfo}
         />}
         <div className={styles.addPowerGenInfo}  >

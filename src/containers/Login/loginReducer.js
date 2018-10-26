@@ -24,8 +24,8 @@ var initState = Immutable.fromJS({
   enterpriseName: null,//注册企业名称
   joinResult: 0,//0 加入失败，1，加入待审核
   enterpriseId: Cookie.get('enterpriseId'),
-  inviteUser: false,//false普通用户加入 true为邀请用户加入
-  importUser: false,//普通用户加入false,导入用户加入true
+  inviteUser: false,//false普通用户加入 true邀请用户加入
+  importUser: false,//false普通用户加入,true导入用户加入
   inviteValid: true,//true邀请链接默认有效 
   userEnterpriseStatus: 3,//用户企业状态  默认3启用
   checkLoginPhone: true,//登录用手机号错误

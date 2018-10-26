@@ -10,6 +10,7 @@ import LimitAddForm from './LimitAddForm';
 
 class AbnormalReportModal extends Component {
   static propTypes = {
+    stationType: PropTypes.number,
     abnormalInfo: PropTypes.object,
     deviceExistInfo: PropTypes.object,
     abnormalList: PropTypes.array,
@@ -129,7 +130,7 @@ class AbnormalReportModal extends Component {
   }
 
   render(){
-    const { abnormalModalshow, stationDeviceTypes, abnormalInfo, hideAbnormalModal, findDeviceExist, deviceExistInfo, lostGenTypes, dayReportConfig, getStationDeviceTypes, getLostGenType} = this.props;
+    const { abnormalModalshow, stationDeviceTypes, abnormalInfo, hideAbnormalModal, findDeviceExist, deviceExistInfo, lostGenTypes, dayReportConfig, getStationDeviceTypes, getLostGenType, stationType} = this.props;
     const { addLostFormShow, faultGenList, limitGenList, addLimitFormShow, abnormalTextShow, abnormalText } = this.state;
     const { modelInverterPowerGen, modelInverterCapacity, stationCapacity } = abnormalInfo;
     let defaultLimitLost; // 默认限电剩余损失电量
@@ -173,7 +174,8 @@ class AbnormalReportModal extends Component {
           abnormalInfo={abnormalInfo} 
           changeFaultList={this.changeFaultList} 
         />: null}
-        {addLostFormShow && <LostAddForm 
+        {addLostFormShow && <LostAddForm
+          stationType={stationType} 
           lostGenTypes={lostGenTypes}
           stationDeviceTypes={stationDeviceTypes}
           findDeviceExist={findDeviceExist} 
@@ -194,7 +196,9 @@ class AbnormalReportModal extends Component {
           changeLimitList={this.changeLimitList} 
         /> :null}
         {addLimitFormShow && <LimitAddForm
-          findDeviceExist={findDeviceExist} 
+          findDeviceExist={findDeviceExist}
+          stationDeviceTypes={stationDeviceTypes}
+          getStationDeviceTypes={getStationDeviceTypes} 
           limitGenList={limitGenList} 
           changeLimitList={this.changeLimitList}  
           stationCode={abnormalInfo.stationCode}
