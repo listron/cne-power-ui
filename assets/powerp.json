@@ -6,7 +6,7 @@
 		"logoText": "",
 		"needLogin": true,
 		"biUriPrefix": "/bi/",
-		"environment": "test"
+		"environment": "develop"
 	},
 	"demo": {
 		"apiUrlReal": "http://cnedemoapi.chinacloudsites.cn"

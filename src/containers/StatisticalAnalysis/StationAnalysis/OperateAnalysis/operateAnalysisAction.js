@@ -12,4 +12,5 @@ export const operateAnalysisAction = {
   getLimitPowerRate: Symbol('getLimitPowerRate'),//月/日限电率同比
   getYearLimitPowerRate: Symbol('getYearLimitPowerRate'),//月/日年限电率环比
   getPlantPower: Symbol('getPlantPower'),//月/年/日厂用电情况/厂损情况
+  getPowerEfficiency: Symbol('getPowerEfficiency'),//月/年/日发电效率
 }

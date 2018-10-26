@@ -38,7 +38,7 @@ class PowerDiagramTenMin extends Component {
     const filterTheoryPower = powerData.filter(e => e.theoryPower);
     const instantaneous = powerData.map(e => e.instantaneous);
     const filterInstantaneous = powerData.filter(e => e.instantaneous);
-    const completeRate=powerData.filter(e => e.completeRate);
+    const completeRate = powerData.filter(e => e.completeRate);
 
     const powerGraphic = (
       filterActualPower.length === 0 && filterTheoryPower.length === 0 && filterInstantaneous.length === 0
@@ -91,7 +91,7 @@ class PowerDiagramTenMin extends Component {
           const tmpRadi = radiObj && radiObj.value && !isNaN(parseFloat(radiObj.value));
           const tmpThoryPower = thoryPowerObj && thoryPowerObj.value && !isNaN(parseFloat(thoryPowerObj.value));
           const tmpActualPower = actualPowerObj && actualPowerObj.value && !isNaN(parseFloat(actualPowerObj.value));
-          // const 
+
 
           if (tmpRadi) {
             radi = `<div style="padding-left: 5px;"><span style="display: inline-block; background:#f9b600; width:5px; height:5px; border-radius:100%;"></span> ${intervalTime === 0 ? '日曝辐值' : (intervalTime === 1 ? '月辐射总量' : '年辐射总量')} : ${parseFloat(radiObj.value).toFixed(2) || 0}</div>`
@@ -103,8 +103,11 @@ class PowerDiagramTenMin extends Component {
             thoryPower = `<div style="padding-left: 5px;"><span style="display: inline-block; background:#c7ceb2;  width:5px; height:5px; border-radius:100%;"></span> 理论发电量: ${parseFloat(thoryPowerObj.value).toFixed(4) || 0}</div>`
           }
           if (completeRate && intervalTime !== 0) {
+            const hasRate = completeRate && completeRate.map(e=>e.completeRate) 
+            
             // const tmpRate = parseFloat(thoryPowerObj.value) === 0 ? '--' : (parseFloat(actualPowerObj.value) / parseFloat(thoryPowerObj.value) * 100).toFixed(2);
-            const tmpRate=completeRate[param[2].dataIndex].completeRate;          
+            let tmpRate = " "
+            hasRate ? tmpRate = parseFloat((completeRate[param[2].dataIndex].completeRate) * 100).toFixed(2) : tmpRate = "--";
             rate = `<div style="padding-left: 15px;">完成率: ${tmpRate}%</div>`
           }
           if (intervalTime !== 0) {
