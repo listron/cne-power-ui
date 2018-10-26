@@ -213,7 +213,14 @@ export default {
       getStationContrastDetail: '/v3/performance/stationcontrast/list',
 
 
-
+      // 运行分析
+      getOperatePlanComplete: '/v3/performance/operationanalysis/plan',
+      getOperateComponentPower: '/v3/performance/operationanalysis/devicepower',
+      getOperateUsageRate: '/v3/performance/operationanalysis/utilizationratio',
+      getOperateLostPowerType: '/v3/performance/operationanalysis/lostpower',
+      getOperateLimitPowerRate: '/v3/performance/operationanalysis/limitpower/months',
+      getOperateYearLimitPower: '/v3/performance/operationanalysis/limitpower/year',
+      getOperatePlantPower: '/v3/performance/operationanalysis/plantpower',
     }
   }
 }
