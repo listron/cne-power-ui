@@ -321,6 +321,8 @@ class ReportEdit extends Component {
           limitGenList={limitList} 
           changeLimitList={this.limitListInfoChange}  
           stationCode={stationCode}
+          stationDeviceTypes={stationDeviceTypes}
+          getStationDeviceTypes={getStationDeviceTypes}
           deviceExistInfo={deviceExistInfo}
         />}
         <div className={styles.addPowerGenInfo}  >

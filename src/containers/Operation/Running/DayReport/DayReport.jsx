@@ -112,7 +112,7 @@ const mapDispatchToProps = (dispatch) => ({
     type: commonAction.findDeviceExist,
     payload: {
       params, 
-      deviceTypeAction: dayReportAction.changeDayReportStore,
+      actionName: dayReportAction.changeDayReportStore,
       resultName: 'deviceExistInfo'
     }
   }),
@@ -120,7 +120,7 @@ const mapDispatchToProps = (dispatch) => ({
     type: commonAction.getLostGenType,
     payload: {
       params, 
-      deviceTypeAction: dayReportAction.dayReportFetchSuccess,
+      actionName: dayReportAction.dayReportFetchSuccess,
       resultName: 'lostGenTypes'
     }
   }),
