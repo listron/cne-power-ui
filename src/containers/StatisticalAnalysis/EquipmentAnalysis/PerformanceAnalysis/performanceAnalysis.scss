@@ -25,6 +25,7 @@
         flex-direction: column;
         .conditionalQuery{
           margin-bottom: 15px;
+          display: flex;
           .searchText{
             margin-right: 10px;
           }
@@ -44,12 +45,7 @@
           }
         }
       }
-      .chart{
-        display: flex;
-        flex-direction: column;
-        background-color: #fff;
-        padding:30px 25px;
-      }
+
     }
   }
 }

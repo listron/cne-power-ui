@@ -1,8 +1,8 @@
-import { call, put, takeLatest } from 'redux-saga/effects';
+import { call, takeLatest } from 'redux-saga/effects';
 import axios from "axios";
 import { performanceAnalysisAction } from "./performanceAnalysisAction";
 
-function* getConversionEfficiency(action){
+function* getEquipmentSelection(action){
   const { payload } = action;
   const url = '';
   try {
@@ -14,5 +14,5 @@ function* getConversionEfficiency(action){
 }
 
 export function* watchPerformanceAnalysisSaga() {
-  yield takeLatest(performanceAnalysisAction.getConversionEfficiency, getConversionEfficiency);
+  yield takeLatest(performanceAnalysisAction.getEquipmentSelection, getEquipmentSelection);
 }
