@@ -51,19 +51,21 @@ function* ProductionPlanComplete(action) {//年/月/日计划完成情况
       console.log(e);
     }
 }
-function* getSingleStationTargetData(action) {//月/日单电站发电量分析/损失电量/购网电量/上网电量、
+function* getSingleStationProductionData(action) {//月/日单电站发电量分析/损失电量/购网电量/上网电量、
   const { payload } = action;
     //const url = '/mock/api/v3/performance/comprehensive/power/monthsorYear';
     const url= `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getSingleStationTarget}`
     try{
-      yield put({ type:allStationAnalysisAction.ALLSTATIONDATA_FETCH });
-      const [powerData,lostPowerData] = yield all([call(axios.post,url,{...payload,dataType:'power'}),call(axios.post,url,{...payload,dataType:'lostPower'})]);
-      if(powerData.data.code === '10000'&&lostPowerData.data.code==='10000') {
+      yield put({ type:productionAnalysisAction.PRODUCTIONSTATIONDATA_FETCH });
+      const [powerData,buyPower,saledGen] = yield all([call(axios.post,url,{...payload,dataType:'power'}),call(axios.post,url,{...payload,dataType:'buyPower'}),call(axios.post,url,{...payload,dataType:'saledGen'})]);
+      if(powerData.data.code === '10000'&&buyPower.data.code==='10000'&&saledGen.data.code==='10000') {
         yield put({
-          type: allStationAnalysisAction.GET_ALLSTATIONDATA_FETCH_SUCCESS,
+          type: productionAnalysisAction.GET_PRODUCTIONSTATIONDATA_FETCH_SUCCESS,
           payload: {
-            singleStationPowerData: powerData.data.data,          
-            singleStationLostPowerData: lostPowerData.data.data,          
+            singleStationPowerData: powerData.data.data||[],          
+            singleStationBuyPowerData: buyPower.data.data||[],          
+            singleStationSalePowerData: saledGen.data.data||[],          
+                     
           },
         });     
       }  
@@ -96,7 +98,7 @@ export function* watchProductionStationSaga() {
   yield takeLatest(productionAnalysisAction.ProductionPlanComplete, ProductionPlanComplete);
   yield takeLatest(allStationAnalysisAction.getAllStationAvalibaData, getAllStationAvalibaData);
   yield takeLatest(allStationAnalysisAction.getSingleStationPlanRateData, getSingleStationPlanRateData);
-  yield takeLatest(allStationAnalysisAction.getSingleStationTargetData, getSingleStationTargetData);
+  yield takeLatest(productionAnalysisAction.getSingleStationProductionData, getSingleStationProductionData);
   
 
 }
