@@ -259,7 +259,7 @@ function *getLostGenType(action){ // 根据电站类型等指标查询电站故�
   const url = `${Path.basePaths.APIBasePath}${Path.commonPaths.getLostGenType}`;
   try{
     const { params, actionName, resultName } = payload;
-    const response = yield call(axios.get, url, params);
+    const response = yield call(axios.get, url, {params});
     yield put({
       type: actionName,
       payload: { [resultName]: response.data.data || []}
