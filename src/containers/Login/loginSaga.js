@@ -6,7 +6,8 @@ import { stringify } from 'qs';
 import { loginAction } from './loginAction';
 import { message } from 'antd';
 import Cookie from 'js-cookie';
-
+const { APIBasePath } = Path.basePaths;
+const { login } = Path.APISubPaths;
 message.config({
   maxCount: 1,
 });
@@ -22,7 +23,7 @@ function *changeLoginStore(action){
 
 //账号密码登录
 function *userNameLogin(action){
-  const url = Path.basePaths.APIBasePath + Path.APISubPaths.userNameLogin;
+  const url = `${APIBasePath}${login.userNameLogin}`;
   const {params} = action;
   yield put({ type: loginAction.LOGIN_FETCH });
   try {
@@ -39,7 +40,7 @@ function *userNameLogin(action){
     });
     if(response.data.code === '10000' && response.data.data.userEnterpriseStatus){
       const { data } = response.data;
-      if(data.userEnterpriseStatus === 3) {
+      if(data.userEnterpriseStatus === 3) {//3启用状态
         data.access_token && Cookie.set('authData',JSON.stringify(data.access_token));
         data.enterpriseId && Cookie.set('enterpriseId', data.enterpriseId);
         data.enterpriseName && Cookie.set('enterpriseName', data.enterpriseName);
@@ -87,7 +88,7 @@ function *userNameLogin(action){
 //获取短信验证码
 function *getVerificationCode(action){
   const { params } = action;
-  const url = Path.basePaths.APIBasePath + Path.APISubPaths.getVerificationCode + '/' + params.phoneNum;
+  const url = `${APIBasePath}${login.getVerificationCode}/${params.phoneNum}`;
   try{
     const response = yield call(axios.get, url);
     if(response.data.code === "10000"){
@@ -102,7 +103,7 @@ function *getVerificationCode(action){
 //手机+验证码登录
 function *phoneCodeLogin(action){
   const { params } = action;
-  const url = Path.basePaths.APIBasePath + Path.APISubPaths.phoneCodeLogin;
+  const url = `${APIBasePath}${login.phoneCodeLogin}`;
   yield put({ type: loginAction.LOGIN_FETCH});
   try{
     const response = yield call(axios, {
@@ -181,7 +182,7 @@ function *phoneCodeLogin(action){
 // 验证手机号和验证码是否正确（加入企业/注册企业，手机验证码正确会调用手机号验证码登录获取token）
 function *phoneCodeRegister(action){
   const { params } = action;
-  let url = Path.basePaths.APIBasePath + Path.APISubPaths.phoneCodeRegister;
+  let url = `${APIBasePath}${login.phoneCodeRegister}`;
   console.log(params);
   try{
     const response = yield call(axios.post, url, {
@@ -203,7 +204,7 @@ function *phoneCodeRegister(action){
 }
 // 注册验证手机号是否已存在(此接口暂时弃用)
 function *checkPhoneRegister(action){
-  let url = Path.basePaths.APIBasePath + Path.APISubPaths.loginPhoneRegister + '/' + action.params;
+  let url = `${APIBasePath}${login.loginPhoneRegister}/${action.params}`;
   try{
     const response = yield call(axios.get, url);
     if(response.data.code === '10000'){
@@ -219,7 +220,7 @@ function *checkPhoneRegister(action){
 // 验证企业域名是否有效
 function *checkEnterpriseDomain(action){
   const { params } = action;
-  let url = Path.basePaths.APIBasePath + Path.APISubPaths.checkEnterpriseDomain + '/' + params.enterpriseDomain;
+  let url = `${APIBasePath}${login.checkEnterpriseDomain}/${params.enterpriseDomain}`;
   try{
     const response = yield call(axios.get, url);
     if(response.data.code === '10000'){
@@ -242,7 +243,7 @@ function *checkEnterpriseDomain(action){
 // 验证企业名是否已注册
 function *checkEnterpriseName(action){
   const { params } = action;
-  const url = Path.basePaths.APIBasePath + Path.APISubPaths.checkEnterpriseName + '/' + params.enterpriseName;
+  const url = `${APIBasePath}${login.checkEnterpriseName}/${params.enterpriseName}`;
   try{
     const response = yield call(axios.get, url);
     if(response.data.code === '10000'){
@@ -269,7 +270,7 @@ function *checkEnterpriseName(action){
 // 注册企业 完善个人信息
 function *registerEnterprise(action){
   const { params } = action;
-  const url = Path.basePaths.APIBasePath + Path.APISubPaths.registerEnterprise;
+  const url = `${APIBasePath}${login.registerEnterprise}`;
   yield put({ type: loginAction.LOGIN_FETCH});
   try{
     const response = yield call(axios, {
@@ -314,7 +315,7 @@ function *registerEnterprise(action){
 // 获取企业信息
 function *getEnterPriseInfo(action){
   const { params } = action;
-  const url = Path.basePaths.APIBasePath + Path.APISubPaths.getEnterpriseInfo + '/' + params.enterpriseName;
+  const url = `${APIBasePath}${login.getEnterpriseInfo}/${params.enterpriseName}`;
   try{
     yield put({ type: loginAction.LOGIN_FETCH});
     const response = yield call(axios.get, url);
@@ -335,7 +336,7 @@ function *getEnterPriseInfo(action){
 // 加入企业
 function *joinEnterprise(action){
   const { params } = action;
-  const url = Path.basePaths.APIBasePath + Path.APISubPaths.joinEnterprise;
+  const url = `${APIBasePath}${login.joinEnterprise}`;
   try{
     yield put({ type: loginAction.LOGIN_FETCH });
     const response = yield call(axios, {
@@ -375,7 +376,7 @@ function *joinEnterprise(action){
 // 设置新密码
 function *resetPassword(action){
   const { params } = action;
-  const url = Path.basePaths.APIBasePath + Path.APISubPaths.resetPassword;
+  const url = `${APIBasePath}${login.resetPassword}`;
   yield put({type: loginAction.LOGIN_FETCH});
   try{
     const tmpAuthData = params.tmpAuthData || '';
@@ -409,7 +410,7 @@ function *resetPassword(action){
 // （暂时弃用）动态验证用户名是否注册
 function *checkUserRegister(action){
   const { params } = action;
-  const url = Path.basePaths.APIBasePath + Path.APISubPaths.checkUserRegister + '/' + params.username;
+  const url = `${APIBasePath}${login.checkUserRegister}/${params.username}`;
   yield put({type: loginAction.LOGIN_FETCH});
   try{
     const response = yield call(axios.get, url);
@@ -422,17 +423,19 @@ function *checkUserRegister(action){
     console.log(e);
   }
 }
+
 // 离开重置state
 function* resetLoginStore(action) {
   yield put({
     type: loginAction.RESET_LOGIN_STORE_SUCCESS,
   });
 }
+
 // 邀请用户加入企业(获取邀请企业信息)
 function *inviteUserLink(action){
   const { params } = action;
   console.log(params)
-  const url = Path.basePaths.APIBasePath + Path.APISubPaths.inviteUserLink + '/' + params.linkId;
+  const url = `${APIBasePath}${login.inviteUserLink}/${params.linkId}`;
   yield put({type: loginAction.LOGIN_FETCH});
   try{
     const response = yield call(axios.post, url,params);
