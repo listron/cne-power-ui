@@ -203,8 +203,8 @@ class PlanTable extends Component {
   };
 
 
-  // 是否可以编辑
-  isEditing = (record) => {
+  
+  isEditing = (record) => { // 是否可以编辑
     const currentYear = new Date().getFullYear();
     if (currentYear - record.planYear <= 0) {
       return record.key === this.state.editingKey;
@@ -212,7 +212,7 @@ class PlanTable extends Component {
   };
 
   // 编辑
-  edit(key) {// 如果存在编辑，则不允许其他操作
+  edit(key) { // 如果存在编辑，则不允许其他操作
     const {editingKey} = this.state;
     this.setState({currentClickKey: key});
     if (typeof editingKey !== "string") {
