@@ -22,18 +22,6 @@ export default {
     // getRefreshToken: '/v3/oauth/token' --todo 根据过期token中携带的refreshToken获取新token接口。
   },
   APISubPaths: {
-    // getCompInfo: '/v3/enterprise/domainLogin',
-    // checkPhone: '/v3/user/validateEnterpriseRegPhoneNum',
-    // sendCode: '/v3/common/requestSmsCode',
-    // checkCode: '/v3/user/validateCaptcha',
-    // logout: '/v3/user/logout',
-    // createRegister: '/v3/link/createRegisterLink',
-    // getCompInfoBylink: '/v3/link/queryEnterpriseInfoByLinkCode',
-    // changePassword: '/v3/user/changeUserPassword',
-    // signup: '/v3/user/userRegister',
-    // signupSendCode: '/v3/common/requestSmsCode',
-    // getShowStatus: '/v3/relation/queryShowStatus',
-    // changeShowStatus: '/v3/relation/changeShowStatus',
     // 新的登陆注册接口
     userNameLogin: '/v3/login',
     getVerificationCode: '/v3/login/verificationcode',
@@ -48,7 +36,21 @@ export default {
     checkUserRegister: '/v3/login/userregister',
     phoneCodeRegister: '/v3/login/phoneregister',
     inviteUserLink: '/v3/user/link',
-    
+    login: {
+      userNameLogin: '/v3/login',
+      getVerificationCode: '/v3/login/verificationcode',
+      getEnterpriseInfo: '/v3/login/enterpriseinfo',
+      phoneCodeLogin: '/v3/login/phonecode',
+      joinEnterprise: '/v3/login/userenterprise',
+      loginPhoneRegister: '/v3/login/phoneregister',
+      checkEnterpriseDomain: '/v3/login/enterprisedomain',
+      checkEnterpriseName: '/v3/login/enterprise',
+      resetPassword: '/v3/login/password',
+      registerEnterprise: '/v3/login/enterpriseregister',
+      checkUserRegister: '/v3/login/userregister',
+      phoneCodeRegister: '/v3/login/phoneregister',
+      inviteUserLink: '/v3/user/link',
+    },
     ticket: { // 工单
       getDefectList: '/v3/defect/worklist/pc',
       getDefectIdList: '/v3/defect/worklist/getallid',
@@ -215,7 +217,14 @@ export default {
       ProductionPlanComplete:'/v3/performance/productanalysis/plan',
 
 
-
+      // 运行分析
+      getOperatePlanComplete: '/v3/performance/operationanalysis/plan',
+      getOperateComponentPower: '/v3/performance/operationanalysis/devicepower',
+      getOperateUsageRate: '/v3/performance/operationanalysis/utilizationratio',
+      getOperateLostPowerType: '/v3/performance/operationanalysis/lostpower',
+      getOperateLimitPowerRate: '/v3/performance/operationanalysis/limitpower/months',
+      getOperateYearLimitPower: '/v3/performance/operationanalysis/limitpower/year',
+      getOperatePlantPower: '/v3/performance/operationanalysis/plantpower',
     }
   }
 }

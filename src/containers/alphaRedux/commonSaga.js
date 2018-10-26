@@ -3,7 +3,7 @@ import axios from 'axios';
 import Path from '../../constants/path';
 import { commonAction } from './commonAction';
 import { message } from 'antd';
-const { basePaths, commonPaths } = Path;
+const { basePaths, commonPaths, APISubPaths } = Path;
 const { APIBasePath } = basePaths;
 
 function* changeCommonStore(action) {//存储payload指定参数，替换reducer-store属性。
@@ -117,7 +117,7 @@ function* getDevices(action) { // 新-获取设备信息列表
       yield put({
         type: actionName,
         payload: {
-          [resultName]: response.data.data,
+          [resultName]: response.data.data || [],
         }
       });
     }
@@ -126,17 +126,17 @@ function* getDevices(action) { // 新-获取设备信息列表
   }
 }
 
-//获取方阵列表
-function* getPartition(action) {
-  let url = Path.basePaths.APIBasePath + Path.commonPaths.getPartitions;
-  yield put({ type: commonAction.COMMON_FETCH });
+function* getPartition(action) { //新-获取方阵列表
+  let url = `${APIBasePath}${commonPaths.getPartitions}`;
+  const { payload } = action;
   try {
-    const response = yield call(axios.get, url, { params: action.payload });
+    const { params, actionName, resultName } = payload;
+    const response = yield call(axios.get, url, { params });
     if (response.data.code === '10000') {
       yield put({
-        type: commonAction.GET_COMMON_FETCH_SUCCESS,
+        type: actionName,
         payload: {
-          partitions: response.data.data.partitions
+          [resultName]: response.data.data.partitions || [],
         }
       });
     }
@@ -145,27 +145,27 @@ function* getPartition(action) {
   }
 }
 
-function* getSliceDevices(action) { // 获取第一个分区光伏组件设备+所有光伏组件信息
-  let getPartitionsUrl = Path.basePaths.APIBasePath + Path.commonPaths.getPartitions;
-  let getDevicesUrl = Path.basePaths.APIBasePath + Path.commonPaths.getDevices;
-  yield put({ type: commonAction.COMMON_FETCH });
+function* getSliceDevices(action) { // 新-获取第一个分区光伏组件设备+所有光伏组件信息
+  let getPartitionsUrl = `${APIBasePath}${commonPaths.getPartitions}`;
+  let getDevicesUrl = `${APIBasePath}${commonPaths.getDevices}`;
+  const { payload } = action;
   try {
-    const response = yield call(axios.get, getPartitionsUrl, { params: action.payload }); // 所有分区信息
-  
+    const { params, actionName } = payload;
+    const response = yield call(axios.get, getPartitionsUrl, { params }); // 所有分区信息
     if (response.data.code === '10000') {
       const partitionCode = response.data.data.partitions[0].deviceCode; // 第一分区code   
-      const [devices,allSeries] = yield all([
-        call(axios.get, getDevicesUrl, { params: { ...action.payload, partitionCode } }),
-        call(axios.get, getDevicesUrl, { params: action.payload })
+      const [ devices,allSeries ] = yield all([
+        call(axios.get, getDevicesUrl, { params: { ...params, partitionCode } }),
+        call(axios.get, getDevicesUrl, { params })
       ]);
       if(devices.data.code==='10000' && allSeries.data.code==='10000'){
         yield put({
-          type: commonAction.GET_COMMON_FETCH_SUCCESS,
+          type: actionName,
           payload: {
             allSeries, // 所有光伏组件
-            devices: devices.data.data,
+            devices: devices.data.data || [],
             firstPartitionCode:partitionCode,
-            partitions: response.data.data.partitions
+            partitions: response.data.data.partitions || [],
           }
         })
       }
@@ -182,15 +182,15 @@ function* getSliceDevices(action) { // 获取第一个分区光伏组件设备+�
 function* getAllDepartment(action) {//获取所有部门基础信息
   const { payload } = action;
   // const url = '/mock/system/allDepartments';
-  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.getAllDepartment}/${payload.enterpriseId}`
   try {
-    yield put({ type: commonAction.COMMON_FETCH });
+    const { params, actionName, resultName } = payload;
+    const url = `${APIBasePath}${APISubPaths.system.getAllDepartment}/${params.enterpriseId}`
     const response = yield call(axios.get, url);
     if (response.data.code === "10000") {
       yield put({
-        type: commonAction.GET_COMMON_FETCH_SUCCESS,
+        type: actionName,
         payload: {
-          allDepartmentData: response.data.data,
+          [resultName]: response.data.data || [],
         },
       });
     }
@@ -201,25 +201,26 @@ function* getAllDepartment(action) {//获取所有部门基础信息
 }
 
 function* findDeviceExist(action){ // 查询设备是否存在
-  const { payload } = action;
   // const url = '/mock/operation/dayReport/findDeviceExist';
-  const url = `${Path.basePaths.APIBasePath}${Path.commonPaths.findDeviceExist}`
+  const url = `${Path.basePaths.APIBasePath}${Path.commonPaths.findDeviceExist}`;
+  const { payload } = action;
   try {
+    const { params, actionName, resultName } = payload;
     yield put({ 
-      type: commonAction.CHANGE_COMMON_STORE, 
+      type: actionName, 
       payload: {
-        deviceExistInfo: {
+        [resultName]: {
           existLoading:true,
         }
       }
     });
-    const response = yield call(axios.post, url, payload);
+    const response = yield call(axios.post, url, params);
 
     if (response.data.code === "20022") { // 设备不存在
       yield put({ 
-        type: commonAction.CHANGE_COMMON_STORE, 
+        type: actionName, 
         payload: {
-          deviceExistInfo: {
+          [resultName]: {
             existLoading:false,
             existError: true,
             existErrorData: response.data.data || [],
@@ -229,9 +230,9 @@ function* findDeviceExist(action){ // 查询设备是否存在
       });
     }else{
       yield put({ 
-        type: commonAction.CHANGE_COMMON_STORE, 
+        type: actionName, 
         payload: {
-          deviceExistInfo: {
+          [resultName]: {
             existLoading:false, 
             existError: false,
           }
@@ -239,11 +240,12 @@ function* findDeviceExist(action){ // 查询设备是否存在
       });
     }
   } catch (e) {
+    const { actionName, resultName } = payload;
     message.error('请求失败，请重试!');
     yield put({ 
-      type: commonAction.CHANGE_COMMON_STORE, 
+      type: actionName, 
       payload: {
-        deviceExistInfo: {
+        [resultName]: {
           existLoading:false,
         }
       }
@@ -256,10 +258,11 @@ function *getLostGenType(action){ // 根据电站类型等指标查询电站故�
   const { payload } = action;
   const url = `${Path.basePaths.APIBasePath}${Path.commonPaths.getLostGenType}`;
   try{
-    const response = yield call(axios.get, url, payload);
+    const { params, actionName, resultName } = payload;
+    const response = yield call(axios.get, url, {params});
     yield put({
-      type: commonAction.GET_COMMON_FETCH_SUCCESS,
-      payload: { lostGenTypes: response.data.data || []}
+      type: actionName,
+      payload: { [resultName]: response.data.data || []}
     })
   }catch(error){
     message.error('获取故障类型失败!');

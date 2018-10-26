@@ -7,7 +7,7 @@ import echarts from 'echarts';
 import { Radio } from 'antd';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
-import {showNoData, hiddenNoData} from '../../../../../constants/echartsNoData';
+import { showNoData, hiddenNoData } from '../../../../../constants/echartsNoData';
 
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
@@ -32,16 +32,16 @@ class PowerDiagramTenMin extends Component {
     const powerDiagram = echarts.init(document.getElementById('powerDiagram'));
 
     const lineColor = '#666';
-
-    const actualPower = powerData.map(e=>e.actualPower);
-    const filterActualPower = powerData.filter(e=>e.actualPower);
-    const theoryPower = powerData.map(e=>e.theoryPower);
-    const filterTheoryPower = powerData.filter(e=>e.theoryPower);
-    const instantaneous = powerData.map(e=>e.instantaneous);
-    const filterInstantaneous = powerData.filter(e=>e.instantaneous);
+    const actualPower = powerData.map(e => e.actualPower);
+    const filterActualPower = powerData.filter(e => e.actualPower);
+    const theoryPower = powerData.map(e => e.theoryPower);
+    const filterTheoryPower = powerData.filter(e => e.theoryPower);
+    const instantaneous = powerData.map(e => e.instantaneous);
+    const filterInstantaneous = powerData.filter(e => e.instantaneous);
+    const completeRate = powerData.filter(e => e.completeRate);
 
     const powerGraphic = (
-      filterActualPower.length===0 && filterTheoryPower.length===0 && filterInstantaneous.length===0
+      filterActualPower.length === 0 && filterTheoryPower.length === 0 && filterInstantaneous.length === 0
     ) ? showNoData : hiddenNoData;
 
     const powerOption = {//实际发电量 理论发电量
@@ -59,18 +59,18 @@ class PowerDiagramTenMin extends Component {
         data: [{
           name: '实际发电量',
           icon: 'circle',
-        },{
+        }, {
           name: '理论发电量',
           icon: 'circle',
-        },{
-          name: `${intervalTime===0? '日曝辐值' : (intervalTime===1 ? '月辐射总量' : '年辐射总量')}`,
+        }, {
+          name: `${intervalTime === 0 ? '日曝辐值' : (intervalTime === 1 ? '月辐射总量' : '年辐射总量')}`,
           icon: 'circle',
         }],
-        textStyle:{
+        textStyle: {
           color: lineColor,
         },
         itemWidth: 5,
-        itemHeight: 5,        
+        itemHeight: 5,
       },
       tooltip: {
         trigger: 'axis',
@@ -81,51 +81,56 @@ class PowerDiagramTenMin extends Component {
           fontSize: '12px',
         },
         formatter: (param) => {
-          if(!param || param.length === 0){ 
+          if (!param || param.length === 0) {
             return <div></div>
           }
           let radi = '', thoryPower = '', actualPower = '', rate = '';
-          const radiObj = param.find(e=>e.seriesName === (intervalTime===0 ? '日曝辐值' : (intervalTime===1 ? '月辐射总量' : '年辐射总量')));
-          const thoryPowerObj = param.find(e=>e.seriesName === '理论发电量');
-          const actualPowerObj = param.find(e=>e.seriesName === '实际发电量');
+          const radiObj = param.find(e => e.seriesName === (intervalTime === 0 ? '日曝辐值' : (intervalTime === 1 ? '月辐射总量' : '年辐射总量')));
+          const thoryPowerObj = param.find(e => e.seriesName === '理论发电量');
+          const actualPowerObj = param.find(e => e.seriesName === '实际发电量');
           const tmpRadi = radiObj && radiObj.value && !isNaN(parseFloat(radiObj.value));
           const tmpThoryPower = thoryPowerObj && thoryPowerObj.value && !isNaN(parseFloat(thoryPowerObj.value));
           const tmpActualPower = actualPowerObj && actualPowerObj.value && !isNaN(parseFloat(actualPowerObj.value));
 
-          if(tmpRadi){
-            radi = `<div style="padding-left: 5px;"><span style="display: inline-block; background:#f9b600; width:5px; height:5px; border-radius:100%;"></span> ${intervalTime===0? '日曝辐值' : (intervalTime===1 ? '月辐射总量' : '年辐射总量')} : ${parseFloat(radiObj.value).toFixed(2) || 0}</div>`
+
+          if (tmpRadi) {
+            radi = `<div style="padding-left: 5px;"><span style="display: inline-block; background:#f9b600; width:5px; height:5px; border-radius:100%;"></span> ${intervalTime === 0 ? '日曝辐值' : (intervalTime === 1 ? '月辐射总量' : '年辐射总量')} : ${parseFloat(radiObj.value).toFixed(2) || 0}</div>`
           }
-          if(tmpActualPower){
+          if (tmpActualPower) {
             actualPower = `<div style="padding-left: 5px;"><span style="display: inline-block; background:#a42b2c;  width:5px; height:5px; border-radius:100%;"></span> 实际发电量: ${parseFloat(actualPowerObj.value).toFixed(4) || 0}</div>`
           }
-          if(tmpThoryPower){
+          if (tmpThoryPower) {
             thoryPower = `<div style="padding-left: 5px;"><span style="display: inline-block; background:#c7ceb2;  width:5px; height:5px; border-radius:100%;"></span> 理论发电量: ${parseFloat(thoryPowerObj.value).toFixed(4) || 0}</div>`
           }
-          if(tmpActualPower && tmpThoryPower && intervalTime!==0 ){
-            const tmpRate = parseFloat(thoryPowerObj.value) === 0 ? '--':(parseFloat(actualPowerObj.value) / parseFloat(thoryPowerObj.value)*100).toFixed(2);
+          if (completeRate && intervalTime !== 0) {
+            const hasRate = completeRate && completeRate.map(e=>e.completeRate) 
+            
+            // const tmpRate = parseFloat(thoryPowerObj.value) === 0 ? '--' : (parseFloat(actualPowerObj.value) / parseFloat(thoryPowerObj.value) * 100).toFixed(2);
+            let tmpRate = " "
+            hasRate ? tmpRate = parseFloat((completeRate[param[2].dataIndex].completeRate) * 100).toFixed(2) : tmpRate = "--";
             rate = `<div style="padding-left: 15px;">完成率: ${tmpRate}%</div>`
           }
-          if(intervalTime!==0){
+          if (intervalTime !== 0) {
             return `<div style="width: 150px; height: 120px;font-size:12px;line-height: 24px;background: #fff;box-shadow:0 1px 4px 0 rgba(0,0,0,0.20);border-radius:2px;">
               <div  style="border-bottom: 1px solid #dfdfdf;padding-left: 5px;">${param[0] && param[0].name}</div>
               ${radi}${actualPower}${thoryPower}${rate}
             </div>`;
-          }else{
+          } else {
             return `<div style="width: 150px; height: 100px;font-size:12px;line-height: 24px;background: #fff;box-shadow:0 1px 4px 0 rgba(0,0,0,0.20);border-radius:2px;">
               <div  style="border-bottom: 1px solid #dfdfdf;padding-left: 5px;">${param[0] && param[0].name}</div>
               ${radi}${actualPower}${thoryPower}${rate}
             </div>`;
           }
-          
+
         },
-        extraCssText:'background: rgba(0,0,0,0);',
+        extraCssText: 'background: rgba(0,0,0,0);',
       },
       calculable: false,
       xAxis: [
         {
           type: 'category',
           boundaryGap: false,
-          data: powerData && powerData.map(e => intervalTime === 0?moment(e.time).format('MM-DD'):e.time),
+          data: powerData && powerData.map(e => intervalTime === 0 ? moment(e.time).format('MM-DD') : e.time),
           axisLine: {
             lineStyle: {
               color: '#dfdfdf',
@@ -164,7 +169,7 @@ class PowerDiagramTenMin extends Component {
           }
         },
         {
-          name: `${intervalTime===0? '日曝辐值' : (intervalTime===1 ? '月辐射总量' : '年辐射总量')}(MJ/m²)`,
+          name: `${intervalTime === 0 ? '日曝辐值' : (intervalTime === 1 ? '月辐射总量' : '年辐射总量')}(MJ/m²)`,
           type: 'value',
           axisLabel: {
             formatter: '{value}',
@@ -220,14 +225,14 @@ class PowerDiagramTenMin extends Component {
           barWidth: 14,
         },
         {
-          name:`${intervalTime===0? '日曝辐值' : (intervalTime===1 ? '月辐射总量' : '年辐射总量')}`,
-          type:'line',
+          name: `${intervalTime === 0 ? '日曝辐值' : (intervalTime === 1 ? '月辐射总量' : '年辐射总量')}`,
+          type: 'line',
           data: instantaneous,
           yAxisIndex: 1,
           lineStyle: {
             type: 'solid',
             color: "#f7c028",
-          }
+          },
         }
       ]
     }
@@ -239,7 +244,7 @@ class PowerDiagramTenMin extends Component {
     const { stationCode } = this.props.match.params;
     const intervalTime = e.target.value;
     this.setState({ intervalTime });
-    this.props.getPowerDataTenMin( stationCode, intervalTime );// 时间格式传出，清空定时器并重新请求数据。
+    this.props.getPowerDataTenMin(stationCode, intervalTime);// 时间格式传出，清空定时器并重新请求数据。
   }
 
   render() {

@@ -5,7 +5,6 @@ export const commonAction = {
   changeCommonStore: Symbol('changeCommonStore'),
   CHANGE_COMMON_STORE: Symbol('CHANGE_COMMON_STORE'),
   getStations: Symbol('getStations'), // 获取电站
-  //获取所有设备类型，用户权限相关
   getDeviceTypes: Symbol('getDeviceTypes'), // 获取用户下所有设备类型
   
   getDevices: Symbol('getDevices'),

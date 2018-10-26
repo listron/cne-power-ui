@@ -1,13 +1,15 @@
 import Immutable from 'immutable';
+import moment from 'moment';
 
 import { operateAnalysisAction } from './operateAnalysisAction';
 
 var initState = Immutable.fromJS({
   loading: false,
   dateType:'month',
-  year:'2018',
- 
-
+  year:null,
+  // year:Number(moment().format('YYYY')),
+  stationCode:null,
+  month:'',
 
 });
 const operateStationAnalysisReducer = (state = initState, action) => {
