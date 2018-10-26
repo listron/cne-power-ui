@@ -36,6 +36,7 @@ function* getAllStationAvalibaData(action) {//综合指标年月判断
 function* ProductionPlanComplete(action) {//年/月/日计划完成情况
   const { payload } = action;
     //const url = '';
+    const url= `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.ProductionPlanComplete}`
     try{
       yield put({ type:productionAnalysisAction.PRODUCTIONSTATIONDATA_FETCH });
       const response = yield call(axios.post,url,payload);
@@ -43,7 +44,7 @@ function* ProductionPlanComplete(action) {//年/月/日计划完成情况
         yield put({
           type: productionAnalysisAction.GET_PRODUCTIONSTATIONDATA_FETCH_SUCCESS,
           payload: {
-            productionPlanCompleteData: response.data.data,          
+            productionPlanCompleteData: response.data.data||[],          
           },
         });     
       }  

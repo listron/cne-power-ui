@@ -211,6 +211,8 @@ export default {
       // 电站对比
       getStationContrast: '/v3/performance/stationcontrast',
       getStationContrastDetail: '/v3/performance/stationcontrast/list',
+      //生产分析
+      ProductionPlanComplete:'/v3/performance/productanalysis/plan',
 
 
 

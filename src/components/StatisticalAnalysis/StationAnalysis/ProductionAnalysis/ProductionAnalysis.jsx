@@ -15,8 +15,8 @@ import moment from 'moment';
 class ProductionAnalysis extends React.Component {
   static propTypes = {
     stations: PropTypes.object,
+    match: PropTypes.object,
     stationType: PropTypes.string,
-    stationCode: PropTypes.array,
     allStationAvalibaData: PropTypes.array,  
     history: PropTypes.object,
     getAllStationAvalibaData: PropTypes.func,
@@ -31,7 +31,9 @@ class ProductionAnalysis extends React.Component {
     };
   }
   componentDidMount() {
-    const { getAllStationAvalibaData,userId, changeAllStationStore, ProductionPlanComplete,getSingleStationProductionData,getSingleStationPlanRateData,  year, dateType,  } = this.props;
+    const { getAllStationAvalibaData,stations,userId,stationCode, changeAllStationStore, ProductionPlanComplete,getSingleStationProductionData,getSingleStationPlanRateData,  year, dateType,  } = this.props;
+    console.log(stationCode);
+   
     const currentYear = moment().format('YYYY');
     const curYear = Number(moment().format('YYYY'));
 
@@ -43,6 +45,7 @@ class ProductionAnalysis extends React.Component {
         userId: userId,
         year: time,
         dateType,
+        stationCode:'360',
       }
     )
     ProductionPlanComplete({
@@ -55,8 +58,7 @@ class ProductionAnalysis extends React.Component {
     getSingleStationProductionData({
       stationCode: '360',
       dateType:'month',
-      // dataType:'power',
-      year: curYear,
+      year: currentYear,
 
     })
     getSingleStationPlanRateData({
@@ -66,14 +68,202 @@ class ProductionAnalysis extends React.Component {
 
     })
   }
+  componentWillReceiveProps(nextProps) {
+    const { year,userId, dateType, stations,changeAllStationStore, ProductionPlanComplete,getAllStationAvalibaData,getSingleStationProductionData,getSingleStationPlanRateData  } = this.props;
+    const stationItems = stations.toJS();
+    const stationItem = stationItems&&stationItems[0];
+    let stationCode=stationItem&&stationItem.stationCode;
+    console.log(stationCode);
+    // if(stationCode){
+    //   this.props.changeAllStationStore({stationCode})
+    // }
+    console.log(this.props.stationCode);
+    console.log(nextProps.stationCode);
+    const currentYear = [moment().format('YYYY')];
+    const currentTableYear = Number(moment().format('YYYY'));
+    const currentMonth = Number(moment().format('MM'));
+    const curYearNum=nextProps.year[0].split('-')[0];
+    const curMonthNum=nextProps.year[0].split('-')[1];
+    // console.log(curYearNum,curMonthNum);
+
+    const curMonth = moment().format('YYYY-MM');
+    const curMonthArray = [moment().format('YYYY-MM')]
+
+    const curYear = Number(nextProps.year)
+    const curYearPlan = nextProps.year[nextProps.year.length - 1];
+    const selectYear = [Number(moment().subtract(5, 'year').format('YYYY')), Number(moment().format('YYYY'))];
+    let rangeYear = [];
+    for (let i = selectYear[0]; i < selectYear[1] + 1; i++) {
+      rangeYear.push(i.toString())
+    }
+    const nextPropsSelectYear=[Number(nextProps.year[0]),Number(nextProps.year[1])]
+    let nextRangeYear = [];
+    for (let i = nextPropsSelectYear[0]; i < nextPropsSelectYear[1] + 1; i++) {
+      nextRangeYear.push(i.toString())
+    }
+   
+  
+    //月->月
+    if (dateType === 'month' && nextProps.dateType === 'month') {
+      if (nextProps.year[0] !== this.props.year[0]){
+        ProductionPlanComplete({
+          stationCode: "360",
+          year:curYear,
+          dateType:'month',   
+        })
+        getSingleStationProductionData({
+          stationCode: '360',
+          dateType:'month',
+          year: currentYear,
+    
+        })
+        getSingleStationPlanRateData({
+          stationCode:'360',
+          year:[curYear],
+          dateType:'month'
+    
+        })
+      }
+    }
+    //月/年->日
+    if (dateType !== nextProps.dateType && nextProps.dateType === 'day') {
+      ProductionPlanComplete({
+        stationCode: "360",
+        year:curYear,
+        month:10,
+        dateType:'day',  
+      })
+      getSingleStationProductionData({
+        stationCode: '360',
+        dateType:'day',
+        year: currentYear,
+  
+      })
+
+
+    }
+    //日->日
+    if (dateType === 'day' && nextProps.dateType === 'day') {
+      if (nextProps.year[0] !== this.props.year[0]) {
+
+        ProductionPlanComplete({
+          stationCode: "360",
+          year:curYear,
+          month:10,
+          dateType:'day',
+        
+    
+        })
+        getSingleStationProductionData({
+          stationCode: '360',
+          dateType:'day',
+          year: nextProps.year,
+    
+        })
+      }
+    }
+
+    //月/日->年
+    if (dateType !== nextProps.dateType && nextProps.dateType === 'year') {
+      getAllStationAvalibaData(
+        {
+          userId: userId,
+          year: rangeYear,
+          dateType:nextProps.dateType,
+          stationCode:'360'
+        }
+      )
+      ProductionPlanComplete({
+        stationCode: "360",
+        year:curYear,
+        dateType:nextProps.dateType
+      
+  
+      })
+      getSingleStationProductionData({
+        stationCode: '360',
+        dateType:nextProps.dateType,
+        year: currentYear,
+  
+      })
+      getSingleStationPlanRateData({
+        stationCode:'360',
+        year:selectYear,
+        dateType:nextProps.dateType,
+  
+      })
+
+
+    }
+    //年/日->月
+    if (dateType !== nextProps.dateType && nextProps.dateType === 'month') {
+      ProductionPlanComplete({
+        stationCode: "360",
+        year:curYear,
+        dateType:nextProps.dateType,
+      
+  
+      })
+      getSingleStationProductionData({
+        stationCode: '360',
+        dateType:nextProps.dateType,
+        year: currentYear,
+  
+      })
+      getSingleStationPlanRateData({
+        stationCode:'360',
+        year:[curYear],
+        dateType:nextProps.dateType,
+  
+      })
+
+    }
+    //年->年
+    if (dateType === 'year' && nextProps.dateType === 'year') {
+      if (nextProps.year[0] !== this.props.year[0] || nextProps.year[1] !== this.props.year[1]) {
+        getAllStationAvalibaData(
+          {
+            userId: userId,
+            year: nextRangeYear,
+            dateType,
+            stationCode:'360'
+          }
+        )
+        ProductionPlanComplete({
+          stationCode: "360",
+          year:Number(nextProps.year[1]),
+          dateType,
+        
+    
+        })
+        getSingleStationProductionData({
+          stationCode: '360',        
+          year: nextRangeYear,
+          dateType,
+    
+        })
+        getSingleStationPlanRateData({
+          stationCode:'360',
+          year:nextPropsSelectYear,
+          dateType,    
+        })
+      }
+    }
+  }
+  stationSelected = (stationSelect) => { // 存储选中的电站
+    this.props.changeAllStationStore({
+      stationCode:stationSelect[0].stationCode
+    })
+  }
   selectYear() {
     const {allStationAvalibaData}=this.props;
-    let yearArray=allStationAvalibaData.map((e,i)=>(Number(e.year))) ;
+    console.log(allStationAvalibaData);
+    let yearArray=[].map((e,i)=>(Number(e.year))) ;
     let currentYear=Math.max(...yearArray).toString()
  
     return (
       <Radio.Group defaultValue={currentYear}  buttonStyle="solid" onChange={this.handleTime}>
-       {allStationAvalibaData.map((e,index)=>{        
+       {[].map((e,index)=>{        
          if(e.isTrue===true){
           return   <Radio.Button value={e.year} key={index}  style={{margin:'0 5px'}}>{e.year}年</Radio.Button>
          }else{
@@ -91,8 +281,10 @@ class ProductionAnalysis extends React.Component {
     //console.log(123,dateType )
     const statisticTime=moment().subtract(1, 'days').format('YYYY年MM月DD日');
     const stationItem = stations.toJS();
-    console.log(stationItem);
+    //console.log(stationItem[0]);
+ 
     const stationGridTime = 0?stationItem.onGridTime.moment().format('YYYY年MM月DD日'):'--';
+   
 
     
     return (
