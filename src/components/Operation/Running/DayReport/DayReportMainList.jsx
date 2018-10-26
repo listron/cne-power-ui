@@ -94,22 +94,23 @@ class DayReportMainList extends Component {
           render: (text, record) => { // available是否展示图表, isUpload是否已上报日报, status是否有异常信息未填。
             const stationDayInfo = record.dataList.find(info=>info.reportDate === e.reportDate);
             const { available, isUpload, status} = stationDayInfo;
+            const afterToday = moment(e.reportDate) > moment();
             /*
               available: true可以进行日报上报/查看, false不可进行任何操作-->直到选中日前一天日报数据上报
               status: false未上报日报，true已上传。
               isUpload: false正常,true有未上报损失异常, 
             */  
             const showWarningIcon = status && isUpload; // 展示黄色图标提示未完成损失电量的填写。true展示，false不展示。
-            if(!available){ // 不可上传
+            if(!available || afterToday){ // 不可上传
               return <span></span>
-            }else if(status){ // 已上报日报=>查看详情
+            }else if(available && status){ // 已上报日报=>查看详情
             // if(status){ // 已上报日报=>查看详情
               return (<span onClick={()=>this.toReportDetail(record, e.reportDate)}>
                 <i className="iconfont icon-look">
                   {showWarningIcon && <i className="iconfont icon-alert_01" ></i>}
                 </i>
               </span>)
-            }else{ // 未上报日报 => 点击上报
+            }else if(available && !status){ // 未上报日报 => 点击上报
               return <span onClick={()=>this.toUploadReport(record, e.reportDate)}><Icon type="plus-circle" theme="outlined" /></span>
             }
           }
