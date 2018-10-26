@@ -105,7 +105,7 @@ class UsageRate extends React.Component {
           let paramsItem = "";
           params.forEach((item, index) => {
             return (paramsItem += `<div> <span style="display: inline-block;width: 5px;height: 5px;border-radius: 50%;background:${
-              color[index + 1]
+              color[index]
             };vertical-align: 3px;margin-right: 3px;"> </span> ${
               params[index].seriesName
             } :${params[index].value}</div>`);
@@ -197,12 +197,12 @@ class UsageRate extends React.Component {
           nameTextStyle: {
             color: '#666',
           },
-          axisLine: {
-            show: true,
-            lineStyle: {
-              color: "#dfdfdf"
-            }
-          },
+          // axisLine: {
+          //   show: true,
+          //   lineStyle: {
+          //     color: "#dfdfdf"
+          //   }
+          // },
           axisLabel: {
             color: '#666',
             formatter: "{value} %"

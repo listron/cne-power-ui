@@ -29,16 +29,18 @@ class OperateAnalysis extends React.Component {
     getLostPowerType: PropTypes.func,
     getYearLimitPowerRate: PropTypes.func,
     getPlantPower: PropTypes.func,
+    getUsageRate: PropTypes.func,
+    getPowerEfficiency: PropTypes.func,
     dateType: PropTypes.string,
-    // year: PropTypes.string,
+    year: PropTypes.number,
     month: PropTypes.string,
     stations: PropTypes.object,
     // operatePlanCompleteData: PropTypes.object,
     componentPowerStatisticData: PropTypes.object,
     usageRatecData: PropTypes.object,
     lostPowerTypeData: PropTypes.object,
-    limitPowerData: PropTypes.array,
-    yearLimitPowerData: PropTypes.object,
+    limitpowerData: PropTypes.array,
+    yearLimitpowerData: PropTypes.object,
     plantPowerDat: PropTypes.object,
   };
   constructor(props) {
@@ -81,7 +83,6 @@ class OperateAnalysis extends React.Component {
       year: curYear,
     }
 
-
     // let color = ['#a42b2c',]
     if (year) {
       if (dateType === "month" && this.props.year !== year) {
@@ -89,6 +90,12 @@ class OperateAnalysis extends React.Component {
         this.props.changeOperateStationStore(prams)
         nextProps.getOperatePlanComplete(yearPrams)
         nextProps.getComponentPowerStatistic(yearPrams)
+        nextProps.getPowerEfficiency({
+          stationCode: stations.toJS()[0].stationCode,
+          dateType,
+          year: [curYear],
+        })
+        nextProps.getUsageRate(prams)
         nextProps.getLostPowerType(prams)
         nextProps.getLimitPowerRate(prams)
         // nextProps.getYearLimitPowerRate(prams)
@@ -105,37 +112,48 @@ class OperateAnalysis extends React.Component {
   stationSelected = (rest) => {
     console.log('stationCode', rest.stationCode)
   }
-  render() {
-    const { stationType, stations, dateType, stationCode, year, operateAvalibaData, operatePlanCompleteData, componentPowerStatisticData, usageRatecData, lostPowerTypeData, limitPowerData,
-      yearLimitPowerData, plantPowerData } = this.props;
 
-    // let onGridTime = stationCode ? this.state.stationName : stations.toJS().length > 0 && stations.toJS()[0].onGridTime;
-    // let stationName = stationCode ? this.state.stationName : stations.toJS().length > 0 && stations.toJS()[0].stationName;
-    // let selectYear = year ? year : moment().format('YYYY')
-    // console.log(operateAvalibaData,operatePlanCompleteData,componentPowerStatisticData,usageRatecData,lostPowerTypeData,limitPowerData,yearLimitPowerData,plantPowerData)
-    // console.log('getOperatePlanComplete',stationCode)
+   addName=(value,dateType)=>{
+    let result='';
+    switch (dateType) {
+      case 'month':
+      result=value + ' 月'
+        break;
+      case 'year':
+      result=value
+      case 'day':
+      result=value + ' 日';
+      default:
+        break;
+    }
+    return result
+   }
+  
+  render() {
+    const { stationType, stations, dateType, stationCode, year, operateAvalibaData, operatePlanCompleteData, powerData, efficiencyData,usageData, lostPowerTypeData, limitpowerData,
+      yearLimitpowerData, plantpowerData } = this.props;
+   
+    console.log('efficiencyData',efficiencyData)
+    
+    
+    let stationUtilization=usageData && usageData.map((e, i) =>(e.stationUtilization ? parseFloat(e.stationUtilization).toFixed(2) : "--"));
+    let deviceUtilization=usageData && usageData.map((e, i) =>(e.deviceUtilization ? parseFloat(e.deviceUtilization).toFixed(2):"--"));
+    let xData=usageData && usageData.map((e, i) => {return this.addName(e.date,dateType)})
     let station=''
     stationCode ? station =stations.toJS().filter(e=>e.stationCode===stationCode):'';
     let lineData = {
-      xData: [
-        "1月",
-        "2月",
-        "3月",
-        "4月",
-        "5月",
-        "6月",
-        "7月",
-        "8月",
-        "9月",
-        "10月",
-        "11月",
-        "12月"
-      ],
+      xData: xData,
       yData: [
-        [13, 14, 15, 16, 19, 16, 20, 20, 20, 20, 50, 30, 2, 0],
-        [11, 11, 15, 13, 12, 13, 10, 1, 2, 2, 5, 3, 2, 0]
+        stationUtilization,
+        deviceUtilization
       ]
     };
+
+    const  PowerEffectiveDateData=efficiencyData && efficiencyData.map((e, i) => {return this.addName(e.date,dateType)})
+    const PowerEffectiveHoursData=efficiencyData && efficiencyData.map((e, i) =>(e.hours ? parseFloat(e.hours).toFixed(2) : "--"));
+    const PowerEffectiveLightData=efficiencyData && efficiencyData.map((e, i) =>(e.light ? parseFloat(e.light).toFixed(2) : "--"));
+    const PowerEffectivePrData=efficiencyData && efficiencyData.map((e, i) =>(e.pr ? parseFloat(e.pr).toFixed(2) : "--"));
+    console.log('lineData', PowerEffectiveDateData,PowerEffectiveHoursData,PowerEffectiveLightData,PowerEffectivePrData)
 
     let lostpower = {
       date: [
@@ -222,40 +240,40 @@ class OperateAnalysis extends React.Component {
               </div>
             </div>
           </div>
-
           <div className={styles.cardContainer}>
             <div className={styles.cardList}>
               <div className={styles.cardItem}>
                 <div>光资源</div>
-                <div>辐射总量 888MJ/㎡</div>
-                <div>理论发电量 888万kWh</div>
+                <div>辐射总量 {powerData && powerData.resourceValue}MJ/㎡</div>
+                <div>理论发电量 {powerData && powerData.theoryGen}万kWh</div>
               </div>
               <Icon type="double-right" theme="outlined" />
               <div className={styles.cardItem}>
-                <div>光资源</div>
-                <div>辐射总量 888MJ/㎡</div>
-                <div>理论发电量 888万kWh</div>
+                <div>光伏组件</div>
+                <div>发电量 {powerData && powerData.componentGen}万kWh</div>
+                <div>光伏组件吸收损耗 {powerData && powerData.componentLost}万kWh</div>
               </div>
               <Icon type="double-right" theme="outlined" />
               <div className={styles.cardItem}>
-                <div>光资源</div>
-                <div>辐射总量 888MJ/㎡</div>
-                <div>理论发电量 888万kWh</div>
+                <div>逆变器</div>
+                <div>发电量 {powerData && powerData.inverterGen}万kWh</div>
+                <div>逆变器损耗 {powerData && powerData.inverterLost}万kWh</div>
               </div>
               <Icon type="double-right" theme="outlined" />
               <div className={styles.cardItem}>
-                <div>光资源</div>
-                <div>辐射总量 888MJ/㎡</div>
-                <div>理论发电量 888万kWh</div>
+                <div>集电线路</div>
+                <div>发电量 {powerData && powerData.integratedGen}万kWh</div>
+                <div>集电线路及箱变损耗 {powerData && powerData.integratedLost}万kWh</div>
               </div>
               <Icon type="double-right" theme="outlined" />
               <div className={styles.cardItem}>
-                <div>光资源</div>
-                <div>辐射总量 888MJ/㎡</div>
-                <div>理论发电量 888万kWh</div>
+                <div>升压站/关口表</div>
+                <div>上网电量 {powerData && powerData.internetGen}万kWh</div>
+                <div>升压站损耗 {powerData && powerData.internetLost}万kWh</div>
               </div>
             </div>
           </div>
+          
           <div className={styles.targetGraphContainer}>
             <div className={styles.bgStyle}>
               <div className={styles.fontStyle}>发电效率分析</div>
@@ -266,8 +284,12 @@ class OperateAnalysis extends React.Component {
                   graphId={"powerEfficency"}
                   dateType={dateType}
                   title={"发电效率"}
+                  PowerEffectiveDateData={PowerEffectiveDateData}
+                  PowerEffectiveHoursData={PowerEffectiveHoursData}
+                  PowerEffectiveLightData={PowerEffectiveLightData}
+                  PowerEffectivePrData={PowerEffectivePrData}
                 />
-                <TableGraph />
+                <TableGraph title="PR最低排名" unit="等效利用小时数：h/辐射总量：MJ/㎡" tableType={'powerEffective'} singleStationPowerEffectiveData={efficiencyData} />
               </div>
             </div>
             <div className={styles.tabContainer}>
@@ -281,7 +303,7 @@ class OperateAnalysis extends React.Component {
                     data={lineData}
                   />
                 )}
-                <TableGraph />
+                <TableGraph title="可利用率最低排名" unit=" " tableType={'Utilization'} usageData={usageData} />
               </div>
             </div>
 
@@ -297,7 +319,7 @@ class OperateAnalysis extends React.Component {
                   dateType={dateType}
                   title={dateType === "year" ? "损失电量环比" : "损失电量同比"}
                 />
-                <TableGraph />
+                <TableGraph title={"电站可利用率"} />
               </div>
             </div>
             <div className={styles.tabContainer}>

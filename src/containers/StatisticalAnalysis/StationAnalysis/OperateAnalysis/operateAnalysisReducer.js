@@ -6,7 +6,7 @@ import { operateAnalysisAction } from './operateAnalysisAction';
 var initState = Immutable.fromJS({
   loading: false,
   dateType:'month',
-  year:'',
+  year:null,
   // year:Number(moment().format('YYYY')),
   stationCode:null,
   month:'',
