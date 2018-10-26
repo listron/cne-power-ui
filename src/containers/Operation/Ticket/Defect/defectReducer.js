@@ -55,6 +55,9 @@ var initState = Immutable.fromJS({
   },
   defectTypes: [],
   devices: [], // 设备列表
+  partitions: [], // 设备列表
+  allSeries: [], // 所有光伏组件
+  firstPartitionCode: null,
 });
 
 const defectReducer = (state = initState, action) => {

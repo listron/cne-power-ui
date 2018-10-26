@@ -25,6 +25,8 @@ const initState = Immutable.fromJS({
   selectedDayReportDetail: {}, // api - 选中日报详情
   
   stationDeviceTypes: [], // 电站下各设备类型。
+  deviceExistInfo: {}, // 设备是否存在验证信息
+  lostGenTypes: [], // 损失类型数组。
 });
 
 const dayReportReducer = (state = initState, action) => {
