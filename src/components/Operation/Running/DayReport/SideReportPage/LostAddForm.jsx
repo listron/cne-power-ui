@@ -46,7 +46,7 @@ class LostAddForm extends Component {
         const existErrorData = newDeviceExistInfo.existErrorData || [];
         this.setState({
           deviceNameErroShow: true,
-          deviceNameErroInfo : `设备${existErrorData.join(',')}不存在!`
+          deviceNameErroInfo : `设备${existErrorData}不存在!`
         });
         setTimeout(()=>{
           this.setState({
@@ -61,8 +61,9 @@ class LostAddForm extends Component {
         lostInfo.id = `lostAdd${faultGenList.length}`;
         lostInfo.handle = true;
         lostInfo.faultName = selectLostTypeName;
+        lostInfo.deviceId = newDeviceExistInfo.existErrorData;
         lostInfo.faultId = lostInfo.faultId[lostInfo.faultId.length - 1];
-        lostInfo.deviceName = lostInfo.deviceName.trim().replace(/\s+/g,',');
+        lostInfo.deviceName = [...new Set(lostInfo.deviceName.split(' ').filter(e=>!!e))].join(',');
         lostInfo.type = 1;  // 损失type 1 => 后台接收。
         changeFaultList([...faultGenList,lostInfo], true);
       }
@@ -75,9 +76,10 @@ class LostAddForm extends Component {
     form.validateFields((err, values) => {
       if (!err) {
         const { deviceName } = values;
-        const tmpDeviceName = deviceName.trim().replace(/\s+/g,',');
+        const tmpDeviceName = deviceName.split(' ').filter(e=>!!e);
+        const newDeviceName = [...new Set(tmpDeviceName)].join(',');
         findDeviceExist({
-          deviceName: tmpDeviceName,
+          deviceName: newDeviceName,
           stationCode,
           deviceTypeCode,
         })
