@@ -109,10 +109,10 @@ const ReportDetail = ({ selectedDayReportDetail, toChangeDayReportStore , dayRep
     {name: '样本逆变器容量', value: 'modelInverterCapacity', unit: 'MW'},
     {name: '样本逆变器发电量', value: 'modelInverterPowerGen', unit: genUnit},
   ]
-  let { reportDate, createTimer, updateTimer } = selectedDayReportDetail;
+  let { reportDate, createTime, updateTime } = selectedDayReportDetail;
   reportDate = reportDate? moment(reportDate).format('YYYY-MM-DD'): '--';
-  createTimer = createTimer? moment(createTimer).format('YYYY-MM-DD HH:mm'): '--';
-  updateTimer = updateTimer? moment(updateTimer).format('YYYY-MM-DD HH:mm'): '--';
+  createTime = createTime? moment(createTime).format('YYYY-MM-DD HH:mm'): '--';
+  updateTime = updateTime? moment(updateTime).format('YYYY-MM-DD HH:mm'): '--';
   const { errorInfo } = selectedDayReportDetail
   return (
   <div className={styles.reportDetail} >
@@ -178,15 +178,15 @@ const ReportDetail = ({ selectedDayReportDetail, toChangeDayReportStore , dayRep
       <div className={styles.operateInfoCon}>
         <span>
           <span className={styles.operateInfoName}>上传人</span>
-          <span>{selectedDayReportDetail.userFullName || '--'}</span>
+          <span>{selectedDayReportDetail.userFullName || selectedDayReportDetail.userName || '--'}</span>
         </span>
         <span>
           <span className={styles.operateInfoName}>上传时间</span>
-          <span>{createTimer}</span>
+          <span>{createTime}</span>
         </span>
         <span>
           <span className={styles.operateInfoName}>最新更新时间</span>
-          <span>{updateTimer}</span>
+          <span>{updateTime}</span>
         </span>
       </div>
     </div>

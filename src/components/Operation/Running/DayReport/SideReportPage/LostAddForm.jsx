@@ -61,6 +61,7 @@ class LostAddForm extends Component {
         lostInfo.id = `lostAdd${faultGenList.length}`;
         lostInfo.handle = true;
         lostInfo.faultName = selectLostTypeName;
+        lostInfo.faultId = lostInfo.faultId[lostInfo.faultId.length - 1];
         lostInfo.deviceName = lostInfo.deviceName.trim().replace(/\s+/g,',');
         lostInfo.type = 1;  // 损失type 1 => 后台接收。
         changeFaultList([...faultGenList,lostInfo], true);
