@@ -223,7 +223,7 @@ function* findDeviceExist(action){ // 查询设备是否存在
           [resultName]: {
             existLoading:false,
             existError: true,
-            existErrorData: response.data.data || [],
+            existErrorData: response.data.data || '',
             existErroMessage: response.data.message,
           }
         }
@@ -234,6 +234,7 @@ function* findDeviceExist(action){ // 查询设备是否存在
         payload: {
           [resultName]: {
             existLoading:false, 
+            existErrorData: response.data.data || '',
             existError: false,
           }
         }
