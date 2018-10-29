@@ -17,7 +17,7 @@ class UsageRate extends React.Component {
   drawChart = param => {
     const { graphId, yAxisName, xAxisName, data, title } = param;
     const targetChart = echarts.init(document.getElementById(graphId));
-    let color = ["#a42b2c", "#f9b600", "#f9b600", "#199475", "#ceebe0"];
+    const color = ["#f9b600","#a42b2c", "#fbe6e3", "#199475", "#ceebe0"];
     const targetMonthOption = {
       tooltip: {
         trigger: "axis",
