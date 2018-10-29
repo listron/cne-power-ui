@@ -8,8 +8,7 @@ import Login from './Login';
 import Register from './Register';
 import JoinIn from './JoinIn';
 import Forget from './Forget';
-import Contact from '../../components/Login/Contact';
-import Agreement from '../../components/Login/Agreement';
+import ReactPlayer from 'react-player';
 
 class LoginLayout extends Component {
   static propTypes = {
@@ -32,10 +31,31 @@ class LoginLayout extends Component {
     })
   }
 
+  playerVideoError = () => { // 媒体错误
+    const videoPlayer = document.querySelector('#videoPlayer');
+    videoPlayer.style.backgroundImage = 'url(/img/bigbg.png)';
+    videoPlayer.style.backgroundPosition = 'center center';
+    videoPlayer.style.backgroundSize = '100% 100%';
+    videoPlayer.style.width = '100%';
+    videoPlayer.style.height = '100%';
+  }
+
   render() {
     const { pageTab, changeLoginStore } = this.props;
     return (
       <div className={styles.loginLayout}>
+          <ReactPlayer 
+            url="/video/01-1000.mp4" 
+            id="videoPlayer"
+            muted 
+            autoPlay 
+            loop
+            playing={true} 
+            className={styles.backgroundVideo}
+            onError={this.playerVideoError}
+            width="auto"
+            height="auto" 
+          />
         <div className={styles.right}>
           <div className={styles.rightContent}>
             <div className={styles.mainBox}>

@@ -20,7 +20,6 @@ function* getAllStationAvalibaData(action) {//综合指标年月判断
     try{
       yield put({ type:allStationAnalysisAction.ALLSTATIONDATA_FETCH });
       const response = yield call(axios.post,url,payload);
-      console.log(response.data.data,'有数据的年或者月');
       if(response.data.code === '10000') {
         yield put({
           type: allStationAnalysisAction.GET_ALLSTATIONDATA_FETCH_SUCCESS,

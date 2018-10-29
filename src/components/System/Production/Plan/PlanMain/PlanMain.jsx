@@ -21,10 +21,10 @@ class PlanMain extends Component {
     return (
       <div className={styles.planMain}>
         <div className={styles.contentMain}>
-          <PlanSearch {...this.props}/>
-          <PlanTable {...this.props}/>
+          <PlanSearch {...this.props} />
+          <PlanTable {...this.props} />
         </div>
-        <Footer/>
+        <Footer />
       </div>
 
     )

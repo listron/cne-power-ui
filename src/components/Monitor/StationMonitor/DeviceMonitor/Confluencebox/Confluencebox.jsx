@@ -110,7 +110,6 @@ class Confluencebox extends Component {
       }],
       iconName: 'iconfont icon-hl'
     };
-    console.log(deviceDetail);
     return (
       <div className={styles.confluencebox}>
         <CommonBreadcrumb {...breadCrumbData} style={{backgroundColor:'#fff'}}  backData={{...backData}} />

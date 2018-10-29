@@ -1,0 +1,51 @@
+@import '../../../../theme/theme.scss';
+
+.PerformanceAnalysisContainerBox{
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 100%;
+  .PerformanceAnalysisContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex: 1;
+    // width: 100%;
+    background-color:#ececec;
+    padding:24px 24px 0;
+    .PerformanceAnalysisMain{
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      .performanceSearch{
+        padding:30px 25px;
+        margin-bottom: 20px;
+        display: flex;
+        background-color: #fff;
+        flex-direction: column;
+        .conditionalQuery{
+          margin-bottom: 15px;
+          display: flex;
+          .searchText{
+            margin-right: 10px;
+          }
+          .switch{
+            margin-left: 120px;
+          }
+          .duration{
+            margin: 0 10px;
+          }
+          .switchText{
+            margin-left: 10px;
+          }
+        }
+        .equipmentSelection{
+          .equipmentText{
+            margin-right: 10px;
+          }
+        }
+      }
+
+    }
+  }
+}

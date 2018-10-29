@@ -6,15 +6,19 @@
   justify-content: center;
   min-height: 100%;
   flex: 1;
-  background: url("/img/bigbg.png") no-repeat center center;
-  background-size: 100% 100%;
-  
+  .backgroundVideo{
+    position: fixed; 
+    left: 0; 
+    top: 0;
+    z-index: 1;      
+  }
   .right {
     margin-top: 136px;
     width: 480px;
     height: 466px;
     background: #fff;
     opacity: 0.85;
+    z-index: 99;
     .rightContent {
       display: flex;
       justify-content: center;
