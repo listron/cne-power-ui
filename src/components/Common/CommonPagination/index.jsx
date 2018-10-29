@@ -43,11 +43,16 @@ class CommonPagination extends Component {
   }
 
   componentWillReceiveProps(nextProps){
-    const { pageSize, currentPage } =nextProps;
+    const { pageSize, currentPage, total } =nextProps;
     const lastSize = this.props.pageSize;
     const lastPage = this.props.currentPage;
-    if(lastSize!==pageSize || lastPage!==currentPage){
-      this.setState({ pageSize, currentPage })
+    const lastTotal = this.props.total;
+    if(total === 0){ // 初始无数据
+      this.setState({ currentPage: 0 });
+    }else if(total > 0 && lastTotal === 0){ // 第一次得到数据
+      this.setState({ pageSize, currentPage });
+    }else if(lastSize !== pageSize || lastPage !== currentPage){ // 强制页码改变
+      this.setState({ pageSize, currentPage });
     }
   }
   

@@ -9,18 +9,53 @@ class PlanCompleteRateAnalysisBar extends React.Component {
   }
 
   componentDidMount() {
-    this.drawChart(this.props) 
+    this.drawChart(this.props)
   }
   componentWillReceiveProps(nextProps) {
     this.drawChart(nextProps)
   }
 
 
-  drawChart = (param)=>{
-    const { graphId, yAxisName,xAxisName, dateType ,title} =param;
+  getName = (type,currentYear, lastYear) => { // 获取对应的name
+    let name = '';
+    switch (type) {
+      case 'thatYearLostPower': name=currentYear + '年限电损失';break;
+      case 'lastyearLostPower': name=lastYear + '年限电损失'; break;
+      case 'thatYearLostPowerRate': name=currentYear + '年限电率'; break;
+      case 'lastyearLostPowerRate': name=lastYear + '年限电率'; break;
+      case 'lostPowerRateYearOnYear': name='限电率同比'; break;
+      case 'limitPower': name='限电损失'; break;
+      case 'limitPowerRate': name='限电率'; break;
+      case 'ringRatio': name='限电率环比'; break;
+    }
+    return name;
+  }
+
+  drawChart = (param) => {
+    const { graphId, yAxisName, xAxisName, dateType, title, data,currentYear, lastYear } = param;
     const targetChart = echarts.init(document.getElementById(graphId));
-    const color=['#dfdfdf','#dfdfdf','##999999','#3e97d1','#f9b600']
-    const targetYearOption = {
+    const color = ['#dfdfdf', '#f9b600', '##999999', '#3e97d1', '#f9b600'];
+    let seriesData=[];
+    const lineData=data.yData.lineData;
+    const barData=data.yData.barData;
+    for (var bar in barData) {
+      var json = { 
+        name: this.getName(bar,currentYear, lastYear), 
+        data: barData[bar],
+        type: 'bar',
+      };
+      seriesData.push(json);
+    }
+    for (var line in lineData) {
+      var json = { 
+        name: this.getName(line,currentYear, lastYear), 
+        data:lineData[line],
+        type: 'line',
+        yAxisIndex: 1,
+      };
+      seriesData.push(json);
+    }
+    const targetOption = {
       color: color,
       title: {
         text: title,
@@ -58,7 +93,7 @@ class PlanCompleteRateAnalysisBar extends React.Component {
         }
       },
       legend: {
-        top: title ? 0 :20,
+        top: title ? 0 : 20,
         left: 'center',
         icon: 'circle',
         itemWidth: 5,
@@ -67,8 +102,8 @@ class PlanCompleteRateAnalysisBar extends React.Component {
       xAxis: [
         {
           type: 'category',
-          data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
-          // data:barGraphmonth,
+          // data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+          data: data.xData,
           axisPointer: {
             type: 'shadow'
           },
@@ -138,31 +173,14 @@ class PlanCompleteRateAnalysisBar extends React.Component {
           },
         }
       ],
-      series: [
-        {
-          name: '限电损失',
-          type: 'bar',
-          data: [2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0, 2.3]
-        },
-       {
-          name: '限电率',
-          type: 'line',
-          yAxisIndex: 1,
-          data: [2.0, 2.2, 6.3, 4.5, 6.3, 4.2, 10.3, 23.4, 10.0, 16.5, 12.0, 6.2]
-        }, {
-          name: '限电率环比',
-          type: 'line',
-          yAxisIndex: 1,
-          data: [2.0, 2.2, 6.3,  3.3, 4.5,  3.3, 4.5, 6.3, 10.2, 20.3, 12.0, 6.2]
-        }
-      ]
-
+      series: seriesData
     };
-    targetChart.setOption(targetYearOption)
-    targetChart.resize();
+    setTimeout(()=>{targetChart.resize();},1000)
+    targetChart.setOption(targetOption)
+  
   }
   render() {
-    const { graphId,dateType } = this.props;
+    const { graphId, dateType } = this.props;
     return (
       <div id={graphId}> </div>
     )

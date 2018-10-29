@@ -238,7 +238,7 @@ class PvStationList extends React.Component {
     // const totalNum = initDeviceList.length || 0;
     // const maxPage = Math.ceil(totalNum / pageSize);
     // if(totalNum === 0){ // 总数为0时，展示0页
-    //   currentPage = 0;
+    //   currentPage = 1;
     // }else if(maxPage < currentPage){ // 当前页已超出
     //   currentPage = maxPage;
     // }
