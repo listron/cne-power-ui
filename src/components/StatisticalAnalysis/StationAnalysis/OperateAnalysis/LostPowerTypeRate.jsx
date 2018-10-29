@@ -84,7 +84,7 @@ class LostPowerTypeRate extends React.Component {
   render() {
     const { graphId } = this.props;
     return (
-      <div id={graphId} style={{ display: 'flex', flex: 1, height: 250 }}> </div>
+      <div id={graphId}> </div>
     )
   }
 }

@@ -94,7 +94,6 @@ function* getUsageRate(action) {//月/年/日组件可利用率
   try {
     yield put({ type: operateAnalysisAction.OPERATESTATIONDATA_FETCH });
     const response = yield call(axios.post, url, payload);
-    console.log(123,response.data.data)
     if (response.data.code === '10000') {
       yield put({
         type: operateAnalysisAction.GET_OPERATESTATIONDATA_FETCH_SUCCESS,

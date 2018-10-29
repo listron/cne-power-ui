@@ -129,7 +129,7 @@ class TableGraph extends React.Component {
           bordered
           dataSource={dataSource}
           pagination={false}
-          scroll={{ y: 260 }}
+          scroll={{ y: 120 }}
           size="small" onRow={(record) => { return { onMouseEnter: this.onMouseEnter } }} />
       </div>
     )

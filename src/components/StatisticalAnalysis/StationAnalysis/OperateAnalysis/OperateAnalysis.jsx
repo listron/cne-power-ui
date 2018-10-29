@@ -73,6 +73,7 @@ class OperateAnalysis extends React.Component {
   componentWillReceiveProps(nextProps) {
     const { dateType, year, month, stations, stationCode } = nextProps;
     const curYear = Number(moment().format('YYYY'));
+    console.log("nextProps", nextProps)
     let prams = {
       stationCode: stationCode ? stationCode : stations.toJS()[0].stationCode,
       dateType,
@@ -122,7 +123,7 @@ class OperateAnalysis extends React.Component {
     this.props.changeOperateStationStore({ stationCode })
   }
 
-  addName = (value, dateType) => {
+  addXaixsName = (value, dateType) => {
     let result = '';
     switch (dateType) {
       case 'month':
@@ -138,16 +139,33 @@ class OperateAnalysis extends React.Component {
     return result
   }
 
+  changeDate = (data) => {
+    console.log(123, data);
+    this.changeOperateStationStore(data)
+  }
+
   render() {
     const { stationType, stations, dateType, stationCode, year, operateAvalibaData, operatePlanCompleteData, powerData, lostPowerData, efficiencyData, usageData, lostPowerTypeDatas, limitPowerData,
-      yearLimitpowerData, plantpowerData } = this.props;
+      yearLimitpowerData, plantPowerData } = this.props;
 
-    // console.log('limitPowerData', limitPowerData)
+    // 发电效率    
+    const PowerEffectiveData={
+      xData:efficiencyData && efficiencyData.map((e, i) => { return this.addXaixsName(e.date, dateType) }),
+      yData:{
+        barData:{
+          hours:efficiencyData && efficiencyData.map((e, i) => (e.hours ? parseFloat(e.hours).toFixed(2) : "--"))
+        },
+        lineData:{
+          light: efficiencyData && efficiencyData.map((e, i) => (e.light ? parseFloat(e.light).toFixed(2) : "--")),
+          pr:efficiencyData && efficiencyData.map((e, i) => (e.pr ? parseFloat(e.pr).toFixed(2) : "--"))
+        }
+      }
+    }
 
-    // 发电效率
+    // 可利用率
     let stationUtilization = usageData && usageData.map((e, i) => (e.stationUtilization ? parseFloat(e.stationUtilization).toFixed(2) : "--"));
     let deviceUtilization = usageData && usageData.map((e, i) => (e.deviceUtilization ? parseFloat(e.deviceUtilization).toFixed(2) : "--"));
-    let xData = usageData && usageData.map((e, i) => { return this.addName(e.date, dateType) })
+    let xData = usageData && usageData.map((e, i) => { return this.addXaixsName(e.date, dateType) })
     let station = ''
     stationCode ? station = stations.toJS().filter(e => e.stationCode === stationCode) : '';
     let lineData = {
@@ -158,24 +176,20 @@ class OperateAnalysis extends React.Component {
       ]
     };
 
-    // 可利用率
-    const PowerEffectiveDateData = efficiencyData && efficiencyData.map((e, i) => { return this.addName(e.date, dateType) })
-    const PowerEffectiveHoursData = efficiencyData && efficiencyData.map((e, i) => (e.hours ? parseFloat(e.hours).toFixed(2) : "--"));
-    const PowerEffectiveLightData = efficiencyData && efficiencyData.map((e, i) => (e.light ? parseFloat(e.light).toFixed(2) : "--"));
-    const PowerEffectivePrData = efficiencyData && efficiencyData.map((e, i) => (e.pr ? parseFloat(e.pr).toFixed(2) : "--"));
+
 
     // 损失电量
     const currentYear = parseInt(year).toString();
     const lastYear = (parseInt(year) - 1).toString();
     const barGraphThatYear = lostPowerData && lostPowerData.map((e, i) => (e.thatYearData ? parseFloat(e.thatYearData).toFixed(2) : "--"));
     const barGraphLastYear = lostPowerData && lostPowerData.map((e, i) => (e.lastYearData ? parseFloat(e.lastYearData).toFixed(2) : "--"));
-    const barGraphmonth = lostPowerData && lostPowerData.map((e, i) => { return this.addName(e.date, dateType) });
+    const barGraphmonth = lostPowerData && lostPowerData.map((e, i) => { return this.addXaixsName(e.date, dateType) });
     const barGraphYearOnYear = lostPowerData && lostPowerData.map((e, i) => (e.yearOnYear ? parseFloat(e.yearOnYear).toFixed(2) : "--"));
 
     //损失电站类型
     const lostPowerTypeData = lostPowerTypeDatas && lostPowerTypeDatas.lostpower;
     let lostpower = {
-      date: lostPowerTypeData && lostPowerTypeData.map((e, i) => { return this.addName(e.date, dateType) }),
+      date: lostPowerTypeData && lostPowerTypeData.map((e, i) => { return this.addXaixsName(e.date, dateType) }),
       limit: lostPowerTypeData && lostPowerTypeData.map((e, i) => (e.limit ? parseFloat(e.limit).toFixed(2) : "--")),
       electric: lostPowerTypeData && lostPowerTypeData.map((e, i) => (e.electric ? parseFloat(e.electric).toFixed(2) : "--")),
       plane: lostPowerTypeData && lostPowerTypeData.map((e, i) => (e.plane ? parseFloat(e.plane).toFixed(2) : "--")),
@@ -183,6 +197,40 @@ class OperateAnalysis extends React.Component {
       other: lostPowerTypeData && lostPowerTypeData.map((e, i) => (e.other ? parseFloat(e.other).toFixed(2) : "--"))
     };
     let summary = lostPowerTypeDatas && lostPowerTypeDatas.summary;
+
+
+    // 限电率同比
+    const limitPower = {
+      xData: limitPowerData && limitPowerData.map((e, i) => { return this.addXaixsName(e.date, dateType) }),
+      yData: {
+        lineData: {
+          thatYearLostPowerRate: limitPowerData && limitPowerData.map((e, i) => (e.thatYearLostPowerRate ? parseFloat(e.thatYearLostPowerRate).toFixed(2) : "--")),
+          lastyearLostPowerRate: limitPowerData && limitPowerData.map((e, i) => (e.lastyearLostPowerRate ? parseFloat(e.lastyearLostPowerRate).toFixed(2) : "--")),
+          lostPowerRateYearOnYear: limitPowerData && limitPowerData.map((e, i) => (e.lostPowerRateYearOnYear ? parseFloat(e.lostPowerRateYearOnYear).toFixed(2) : "--")),
+        },
+        barData: {
+          thatYearLostPower: limitPowerData && limitPowerData.map((e, i) => (e.thatYearLostPower ? parseFloat(e.thatYearLostPower).toFixed(2) : "--")),
+          lastyearLostPower: limitPowerData && limitPowerData.map((e, i) => (e.lastyearLostPower ? parseFloat(e.lastyearLostPower).toFixed(2) : "--"))
+        }
+      }
+    }
+
+    // 能耗分析
+    let plantLost = {
+      xData: plantPowerData && plantPowerData.map((e, i) => { return this.addXaixsName(e.date, dateType) }),
+      yData: [
+        plantPowerData && plantPowerData.map((e, i) => (e.plantPower ? parseFloat(e.plantPower).toFixed(2) : "--")),
+        plantPowerData && plantPowerData.map((e, i) => (e.comPlant ? parseFloat(e.comPlant).toFixed(2) : "--"))
+      ]
+    };
+    const useLost = {
+      xData: plantPowerData && plantPowerData.map((e, i) => { return this.addXaixsName(e.date, dateType) }),
+      yData: [
+        plantPowerData && plantPowerData.map((e, i) => (e.sendLine ? parseFloat(e.sendLine).toFixed(2) : "--")),
+        plantPowerData && plantPowerData.map((e, i) => (e.plantLoss ? parseFloat(e.plantLoss).toFixed(2) : "--"))
+      ]
+    };
+
 
     return (
       <div className={styles.singleStationType}>
@@ -193,13 +241,14 @@ class OperateAnalysis extends React.Component {
               <StationSelect
                 data={stations.toJS()}
                 holderText={"电站名-区域"}
+                value={this.state.staionCode}
                 // multiple={true}
                 onChange={this.stationSelected}
               />
             </div>
-            <TimeSelect day={true} {...this.props} />
+            <TimeSelect day={true} {...this.props} changeAllStationStore={this.changeDate} />
           </div>
-          <span className={styles.rightContent}>数据统计截止时间8月20日</span>
+          <span className={styles.rightContent}>数据统计截止时间{moment().subtract(1, 'days').format('YYYY年MM月DD日')}</span>
         </div>
 
         <div className={styles.componentContainer}>
@@ -213,27 +262,27 @@ class OperateAnalysis extends React.Component {
                 <span>计划完成情况({operatePlanCompleteData && operatePlanCompleteData.date})</span>
               </div>
 
-              <span className={styles.rightFont}>并网时间:{station && station[0].onGridTime}</span>
+              <span className={styles.rightFont}>并网时间:{moment(station && station[0].onGridTime).format('YYYY年MM月DD日') || "--"}</span>
             </div>
             <div className={styles.graph}>
               <div className={styles.stationTargetData}>
-                <div className={styles.stationTargetValue}>{operatePlanCompleteData && operatePlanCompleteData.pr}</div>
+                <div className={styles.stationTargetValue}>{operatePlanCompleteData && operatePlanCompleteData.pr || '--'}</div>
                 <div className={styles.stationTargetName}>PR </div>
               </div>
               <div className={styles.stationTargetData}>
-                <div className={styles.stationTargetValue}>{operatePlanCompleteData && operatePlanCompleteData.cpr}</div>
+                <div className={styles.stationTargetValue}>{operatePlanCompleteData && operatePlanCompleteData.cpr || '--'}</div>
                 <div className={styles.stationTargetName}>CPR </div>
               </div>
               <div className={styles.stationTargetData}>
-                <div className={styles.stationTargetValue}>{operatePlanCompleteData && operatePlanCompleteData.theoryPower}</div>
+                <div className={styles.stationTargetValue}>{operatePlanCompleteData && operatePlanCompleteData.theoryPower || '--'}</div>
                 <div className={styles.stationTargetName}>理论发电量 万kWh</div>
               </div>
               <div className={styles.stationTargetData}>
-                <div className={styles.stationTargetValue}>{operatePlanCompleteData && operatePlanCompleteData.actualPower}</div>
+                <div className={styles.stationTargetValue}>{operatePlanCompleteData && operatePlanCompleteData.actualPower || '--'}</div>
                 <div className={styles.stationTargetName}>实际发电量 万kWh</div>
               </div>
               <div className={styles.stationTargetData}>
-                <div className={styles.stationTargetValue}>{operatePlanCompleteData && operatePlanCompleteData.lostPower}</div>
+                <div className={styles.stationTargetValue}>{operatePlanCompleteData && operatePlanCompleteData.lostPower || '--'}</div>
                 <div className={styles.stationTargetName}>损失电量 万kWh</div>
               </div>
             </div>
@@ -242,32 +291,32 @@ class OperateAnalysis extends React.Component {
             <div className={styles.cardList}>
               <div className={styles.cardItem}>
                 <div>光资源</div>
-                <div>辐射总量 {powerData && powerData.resourceValue}MJ/㎡</div>
-                <div>理论发电量 {powerData && powerData.theoryGen}万kWh</div>
+                <div>辐射总量 {powerData && powerData.resourceValue || '--'}MJ/㎡</div>
+                <div>理论发电量 {powerData && powerData.theoryGen || '--'}万kWh</div>
               </div>
               <Icon type="double-right" theme="outlined" />
               <div className={styles.cardItem}>
                 <div>光伏组件</div>
-                <div>发电量 {powerData && powerData.componentGen}万kWh</div>
-                <div>光伏组件吸收损耗 {powerData && powerData.componentLost}万kWh</div>
+                <div>发电量 {powerData && powerData.componentGen || '--'}万kWh</div>
+                <div>光伏组件吸收损耗 {powerData && powerData.componentLost || '--'}万kWh</div>
               </div>
               <Icon type="double-right" theme="outlined" />
               <div className={styles.cardItem}>
                 <div>逆变器</div>
-                <div>发电量 {powerData && powerData.inverterGen}万kWh</div>
-                <div>逆变器损耗 {powerData && powerData.inverterLost}万kWh</div>
+                <div>发电量 {powerData && powerData.inverterGen || '--'}万kWh</div>
+                <div>逆变器损耗 {powerData && powerData.inverterLost || '--'}万kWh</div>
               </div>
               <Icon type="double-right" theme="outlined" />
               <div className={styles.cardItem}>
                 <div>集电线路</div>
-                <div>发电量 {powerData && powerData.integratedGen}万kWh</div>
-                <div>集电线路及箱变损耗 {powerData && powerData.integratedLost}万kWh</div>
+                <div>发电量 {powerData && powerData.integratedGen || '--'}万kWh</div>
+                <div>集电线路及箱变损耗 {powerData && powerData.integratedLost || '--'}万kWh</div>
               </div>
               <Icon type="double-right" theme="outlined" />
               <div className={styles.cardItem}>
                 <div>升压站/关口表</div>
-                <div>上网电量 {powerData && powerData.internetGen}万kWh</div>
-                <div>升压站损耗 {powerData && powerData.internetLost}万kWh</div>
+                <div>上网电量 {powerData && powerData.internetGen || '--'}万kWh</div>
+                <div>升压站损耗 {powerData && powerData.internetLost || '--'}万kWh</div>
               </div>
             </div>
           </div>
@@ -282,10 +331,7 @@ class OperateAnalysis extends React.Component {
                   graphId={"powerEfficency"}
                   dateType={dateType}
                   title={"发电效率"}
-                  PowerEffectiveDateData={PowerEffectiveDateData}
-                  PowerEffectiveHoursData={PowerEffectiveHoursData}
-                  PowerEffectiveLightData={PowerEffectiveLightData}
-                  PowerEffectivePrData={PowerEffectivePrData}
+                  data={PowerEffectiveData}
                 />
                 <TableGraph
                   tableType={'pr'}
@@ -368,6 +414,9 @@ class OperateAnalysis extends React.Component {
                   xAxisName={"发电量"}
                   title={'限电率同比'}
                   dateType={dateType}
+                  data={limitPower}
+                  currentYear={currentYear}
+                  lastYear={lastYear}
                 />
                 <LimitPowerRateTable
                   tableType={'limitPower'}
@@ -388,14 +437,14 @@ class OperateAnalysis extends React.Component {
                   title={"厂用电情况"}
                   yAxisName={["厂用电率", "综合厂用电率"]}
                   xAxisName={"厂用电情况"}
-                  data={lineData}
+                  data={plantLost}
                 />
                 <UsageRate
                   graphId={"usageRateId3"}
                   title={"厂损情况"}
                   xAxisName={"厂损情况"}
                   yAxisName={["送出线损率", "厂损率"]}
-                  data={lineData}
+                  data={useLost}
                 />
               </div>
             </div>
