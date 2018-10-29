@@ -27,7 +27,7 @@ function *getAlarmList(action){ // 请求告警事件列表
     let { pageNum, pageSize } = payload;
     const maxPage = Math.ceil(totalNum / pageSize);
     if(totalNum === 0){ // 总数为0时，展示0页
-      pageNum = 0;
+      pageNum = 1;
     }else if(maxPage < pageNum){ // 当前页已超出
       pageNum = maxPage;
     }
