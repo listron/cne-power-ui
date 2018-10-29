@@ -434,11 +434,19 @@ class SingleStationStatistic extends React.Component {
     const lightCompareDataDate = singleStationPvCompareData.map((e, i) => (`${e.monthOrDay}月`))
     const lightCompareDataLight = singleStationPvCompareData.map((e, i) => (e.lightYearOnYear))
     const lightCompareDataPower = singleStationPvCompareData.map((e, i) => (e.powerYearOnYear))
-    //发电效率分析
-    const PowerEffectiveDateData = singleStationPowerEffectiveData.map((e, i) => (`${e.date}${dateType === 'month' ? '月' : (dateType === 'day' ? '日' : '')}`))
-    const PowerEffectiveHoursData = singleStationPowerEffectiveData.map((e, i) => (e.hours))
-    const PowerEffectiveLightData = singleStationPowerEffectiveData.map((e, i) => (e.light))
-    const PowerEffectivePrData = singleStationPowerEffectiveData.map((e, i) => (e.pr))
+    //发电效率分析 
+    const PowerEffectiveData = {
+      xData: singleStationPowerEffectiveData.map((e, i) => (`${e.date}${dateType === 'month' ? '月' : (dateType === 'day' ? '日' : '')}`)),
+      yData: {
+        barData: {
+          hours: singleStationPowerEffectiveData && singleStationPowerEffectiveData.map((e, i) => (e.hours ? parseFloat(e.hours).toFixed(2) : "--"))
+        },
+        lineData: {
+          light: singleStationPowerEffectiveData && singleStationPowerEffectiveData.map((e, i) => (e.light ? parseFloat(e.light).toFixed(2) : "--")),
+          pr: singleStationPowerEffectiveData && singleStationPowerEffectiveData.map((e, i) => (e.pr ? parseFloat(e.pr).toFixed(2) : "--"))
+        }
+      }
+    }
     //损失电量数据
     const lostPowerThatYear = singleStationLostPowerData.map((e, i) => (e.thatYearData))
     const lostPowerLastYear = singleStationLostPowerData.map((e, i) => (e.lastYearData))
@@ -509,10 +517,7 @@ class SingleStationStatistic extends React.Component {
                     graphId={'yearPowerEfficency'}
                     //  dateType={dateType}
                     title="发电效率"
-                    PowerEffectiveDateData={PowerEffectiveDateData}
-                    PowerEffectiveHoursData={PowerEffectiveHoursData}
-                    PowerEffectiveLightData={PowerEffectiveLightData}
-                    PowerEffectivePrData={PowerEffectivePrData}
+                    data={PowerEffectiveData}
                   />
                   <TableGraph
                     dateType={dateType}
@@ -606,10 +611,7 @@ class SingleStationStatistic extends React.Component {
                     graphId={'powerEfficency'}
                     dateType={dateType}
                     title="发电效率"
-                    PowerEffectiveDateData={PowerEffectiveDateData}
-                    PowerEffectiveHoursData={PowerEffectiveHoursData}
-                    PowerEffectiveLightData={PowerEffectiveLightData}
-                    PowerEffectivePrData={PowerEffectivePrData}
+                    data={PowerEffectiveData}
                   />
                   <TableGraph
                     dateType={dateType}
@@ -693,10 +695,7 @@ class SingleStationStatistic extends React.Component {
                   <ThreeYaxis
                     graphId={'dayPowerEfficency'}
                     title="发电效率"
-                    PowerEffectiveDateData={PowerEffectiveDateData}
-                    PowerEffectiveHoursData={PowerEffectiveHoursData}
-                    PowerEffectiveLightData={PowerEffectiveLightData}
-                    PowerEffectivePrData={PowerEffectivePrData}
+                    data={PowerEffectiveData}
                   />
                   <TableGraph
                     dateType={dateType}
