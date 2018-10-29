@@ -43,7 +43,7 @@ class LimitAddForm extends Component {
         const existErrorData = newDeviceExistInfo.existErrorData || [];
         this.setState({
           deviceNameErroShow: true,
-          deviceNameErroInfo : `设备${existErrorData.join(',')}不存在!`
+          deviceNameErroInfo : `设备${existErrorData}不存在!`
         });
         setTimeout(()=>{
           this.setState({
@@ -56,7 +56,8 @@ class LimitAddForm extends Component {
         const limitInfo = getFieldsValue();
         limitInfo.id = `limitAdd${limitGenList.length}`;
         limitInfo.handle = true;
-        limitInfo.deviceName = limitInfo.deviceName.trim().replace(/\s+/g,',');
+        limitInfo.deviceId = newDeviceExistInfo.existErrorData;
+        limitInfo.deviceName = [...new Set(limitInfo.deviceName.split(' ').filter(e=>!!e))].join(',');
         limitInfo.type = 0;  // 限电type 0 => 后台接收。
         changeLimitList([...limitGenList,limitInfo], true);
       }
@@ -69,9 +70,10 @@ class LimitAddForm extends Component {
     form.validateFields((err, values) => {
       if (!err) {
         const { deviceName } = values;
-        const tmpDeviceName = deviceName.trim().replace(/\s+/g,',');
+        const tmpDeviceName = deviceName.split(' ').filter(e=>!!e);
+        const newDeviceName = [...new Set(tmpDeviceName)].join(',');
         findDeviceExist({
-          deviceName: tmpDeviceName,
+          deviceName: newDeviceName,
           stationCode,
           deviceTypeCode
         })
