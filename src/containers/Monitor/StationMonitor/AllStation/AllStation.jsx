@@ -21,21 +21,22 @@ class AllStation extends Component {
     windMonitorStation: PropTypes.object,
     pvMonitorStation: PropTypes.object,
     stationTypes: PropTypes.string,
-    stationTypeTabs:PropTypes.string,
+    stationTypeTabs: PropTypes.string,
     changeMonitorStationStore: PropTypes.func
   }
   constructor(props) {
     super(props);
   }
-  componentDidMount() {
+  componentDidMount() { 
     this.props.getMonitorStation({ stationType: '2', getStationTypes: true });
-    this.stationInterval = setInterval(()=>this.props.getMonitorStation({ stationType: '2' }), 10000);
+    this.stationInterval = setInterval(() => this.props.getMonitorStation({ stationType: this.props.stationTypeTabs }), 10000);
   }
 
   componentWillReceiveProps(nextProps) {
-    if(nextProps.stationTypes !== this.props.stationTypes && nextProps.stationTypes !== '2') {
+    if (nextProps.stationTypes !== this.props.stationTypes && nextProps.stationTypes !== '2') {
       this.autoUpdate(nextProps.stationTypes);
     }
+
   }
 
   componentWillUnmount() {
@@ -43,9 +44,9 @@ class AllStation extends Component {
     //this.props.getMonitorStation({stationType:0})
     this.props.changeMonitorStationStore({
       stationTypes: null,
-      stationShowType:'stationBlock',
-      pvMonitorStation:{},
-      windMonitorStation:{},
+      stationShowType: 'stationBlock',
+      pvMonitorStation: {},
+      windMonitorStation: {},
     });
   }
 
@@ -54,36 +55,37 @@ class AllStation extends Component {
   }
   queryStationData = (stationType) => {
     clearInterval(this.stationInterval);
-    this.props.getMonitorStation({ stationType:stationType });
-    this.stationInterval = setInterval(()=>this.props.getMonitorStation({ stationType:stationType }), 10000);
+    this.props.getMonitorStation({ stationType: stationType });
+    this.stationInterval = setInterval(() => this.props.getMonitorStation({ stationType: stationType }), 10000);
   }
   queryTargetData = (activeKey) => {
-    this.props.changeMonitorStationStore({stationTypeTabs:activeKey,stationShowType:'stationBlock'});
+    this.props.changeMonitorStationStore({ stationTypeTabs: activeKey, stationShowType: 'stationBlock' });
     this.queryStationData(activeKey);
   }
   render() {
-    const { stationTypes } = this.props;
+    const { stationTypes, stationTypeTabs } = this.props;
+    console.log(stationTypeTabs, '11111');
     const breadCrumbData = {
-      breadData:[
-     
-      {
-        name: '电站监控',
-      }
-    ],
+      breadData: [
+
+        {
+          name: '电站监控',
+        }
+      ],
       //iconName: 'iconfont icon-weather'
     };
     return (
       <div className={styles.stationMonitor}>
-      <CommonBreadcrumb  {...breadCrumbData} style={{marginLeft: '38px'}} />
-        <div className={styles.stationContainer}>         
-        {stationTypes === '2' ?
-          <Tabs type="card" activeKey={this.props.stationTypeTabs} onChange={this.queryTargetData} tabBarGutter={0} >
-            <TabPane tab="全部" key="2" ><Allstation {...this.props} /></TabPane>
-            <TabPane tab="风电" key="0"><WindStation {...this.props} /></TabPane>
-            <TabPane tab="光伏" key="1"><PvStation {...this.props} /></TabPane>
-          </Tabs>:  
-          (stationTypes === '0'? <WindStation {...this.props} /> : <PvStation {...this.props} />)
-        }   
+        <CommonBreadcrumb  {...breadCrumbData} style={{ marginLeft: '38px' }} />
+        <div className={styles.stationContainer}>
+          {stationTypes === '2' ?
+            <Tabs type="card" activeKey={this.props.stationTypeTabs} onChange={this.queryTargetData} tabBarGutter={0} >
+              <TabPane tab="全部" key="2" ><Allstation {...this.props} /></TabPane>
+              <TabPane tab="风电" key="0"><WindStation {...this.props} /></TabPane>
+              <TabPane tab="光伏" key="1"><PvStation {...this.props} /></TabPane>
+            </Tabs> :
+            (stationTypes === '0' ? <WindStation {...this.props} /> : <PvStation {...this.props} />)
+          }
         </div>
         <Footer />
       </div>

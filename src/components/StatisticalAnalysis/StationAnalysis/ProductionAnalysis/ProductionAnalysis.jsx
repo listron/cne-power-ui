@@ -37,8 +37,11 @@ class ProductionAnalysis extends React.Component {
   }
   componentDidMount() {
     const { getAllStationAvalibaData, stations, userId, stationCode, changeAllStationStore, ProductionPlanComplete, getSingleStationProductionData, getSingleStationPlanRateData, year, dateType, } = this.props;
-    console.log(stationCode);
+   // console.log(stationCode);
+   console.log(stations.toJS());
 
+   stations&&stations.toJS().length>0?changeAllStationStore({stationCode:stations.toJS()[0].stationCode.toString()}):console.log('no');
+console.log(stationCode);
     const currentYear = moment().format('YYYY');
     const curYear = Number(moment().format('YYYY'));
 
@@ -50,24 +53,24 @@ class ProductionAnalysis extends React.Component {
         userId: userId,
         year: time,
         dateType,
-        stationCode: '360',
+        stationCode: stationCode,
       }
     )
     ProductionPlanComplete({
-      stationCode: "360",
+      stationCode: stationCode,
       year: curYear,
       dateType: 'month',
 
 
     })
     getSingleStationProductionData({
-      stationCode: '360',
+      stationCode: stationCode,
       dateType: 'month',
-      year: currentYear,
+      year:[currentYear],
 
     })
     getSingleStationPlanRateData({
-      stationCode: '360',
+      stationCode: stationCode,
       year: [curYear],
       dateType: 'month'
 
@@ -75,15 +78,24 @@ class ProductionAnalysis extends React.Component {
   }
   componentWillReceiveProps(nextProps) {
     const { year, userId, dateType, stations, changeAllStationStore, ProductionPlanComplete, getAllStationAvalibaData, getSingleStationProductionData, getSingleStationPlanRateData } = this.props;
-    const stationItems = stations.toJS();
-    const stationItem = stationItems && stationItems[0];
-    let stationCode = stationItem && stationItem.stationCode;
-    console.log(stationCode);
-    // if(stationCode){
-    //   this.props.changeAllStationStore({stationCode})
-    // }
-    console.log(this.props.stationCode);
-    console.log(nextProps.stationCode);
+    // const stationItems = stations.toJS();
+    // console.log(stationItems);
+    // console.log(nextProps.stations.toJS());
+    // const stationItem = stationItems && stationItems[0];
+    // let stationCode = stationItem && stationItem.stationCode;
+    // console.log(stationCode);
+if(stations.toJS().length===0&&nextProps.stations.toJS().length!==0){
+  changeAllStationStore({stationCode:nextProps.stations.toJS()[0].stationCode})
+  // console.log(stationCode,'willReceiveProps');
+}
+console.log(nextProps.stationCode,'willReceiveProps2');
+
+    // console.log(stationCode);
+    // // if(stationCode){
+    // //   this.props.changeAllStationStore({stationCode})
+    // // }
+    // console.log(this.props.stationCode);
+    // console.log(nextProps.stationCode);
     const currentYear = [moment().format('YYYY')];
     const currentTableYear = Number(moment().format('YYYY'));
     const currentMonth = Number(moment().format('MM'));
@@ -112,18 +124,18 @@ class ProductionAnalysis extends React.Component {
     if (dateType === 'month' && nextProps.dateType === 'month') {
       if (nextProps.year[0] !== this.props.year[0]) {
         ProductionPlanComplete({
-          stationCode: "360",
+          stationCode: nextProps.stationCode,
           year: curYear,
           dateType: 'month',
         })
         getSingleStationProductionData({
-          stationCode: '360',
+          stationCode: nextProps.stationCode,
           dateType: 'month',
           year: currentYear,
 
         })
         getSingleStationPlanRateData({
-          stationCode: '360',
+          stationCode: nextProps.stationCode,
           year: [curYear],
           dateType: 'month'
 
@@ -133,13 +145,13 @@ class ProductionAnalysis extends React.Component {
     //月/年->日
     if (dateType !== nextProps.dateType && nextProps.dateType === 'day') {
       ProductionPlanComplete({
-        stationCode: "360",
+        stationCode: nextProps.stationCode,
         year: curYear,
         month: 10,
         dateType: 'day',
       })
       getSingleStationProductionData({
-        stationCode: '360',
+        stationCode: nextProps.stationCode,
         dateType: 'day',
         year: currentYear,
 
@@ -152,7 +164,7 @@ class ProductionAnalysis extends React.Component {
       if (nextProps.year[0] !== this.props.year[0]) {
 
         ProductionPlanComplete({
-          stationCode: "360",
+          stationCode: nextProps.stationCode,
           year: curYear,
           month: 10,
           dateType: 'day',
@@ -160,7 +172,7 @@ class ProductionAnalysis extends React.Component {
 
         })
         getSingleStationProductionData({
-          stationCode: '360',
+          stationCode: nextProps.stationCode,
           dateType: 'day',
           year: nextProps.year,
 
@@ -175,24 +187,24 @@ class ProductionAnalysis extends React.Component {
           userId: userId,
           year: rangeYear,
           dateType: nextProps.dateType,
-          stationCode: '360'
+          stationCode: nextProps.stationCode
         }
       )
       ProductionPlanComplete({
-        stationCode: "360",
+        stationCode: nextProps.stationCode,
         year: curYear,
         dateType: nextProps.dateType
 
 
       })
       getSingleStationProductionData({
-        stationCode: '360',
+        stationCode: nextProps.stationCode,
         dateType: nextProps.dateType,
         year: currentYear,
 
       })
       getSingleStationPlanRateData({
-        stationCode: '360',
+        stationCode: nextProps.stationCode,
         year: selectYear,
         dateType: nextProps.dateType,
 
@@ -203,20 +215,20 @@ class ProductionAnalysis extends React.Component {
     //年/日->月
     if (dateType !== nextProps.dateType && nextProps.dateType === 'month') {
       ProductionPlanComplete({
-        stationCode: "360",
+        stationCode: nextProps.stationCode,
         year: curYear,
         dateType: nextProps.dateType,
 
 
       })
       getSingleStationProductionData({
-        stationCode: '360',
+        stationCode: nextProps.stationCode,
         dateType: nextProps.dateType,
         year: currentYear,
 
       })
       getSingleStationPlanRateData({
-        stationCode: '360',
+        stationCode: nextProps.stationCode,
         year: [curYear],
         dateType: nextProps.dateType,
 
@@ -231,7 +243,7 @@ class ProductionAnalysis extends React.Component {
             userId: userId,
             year: nextRangeYear,
             dateType,
-            stationCode: '360'
+            stationCode: nextProps.stationCode
           }
         )
         ProductionPlanComplete({
@@ -242,13 +254,13 @@ class ProductionAnalysis extends React.Component {
 
         })
         getSingleStationProductionData({
-          stationCode: '360',
+          stationCode: nextProps.stationCode,
           year: nextRangeYear,
           dateType,
 
         })
         getSingleStationPlanRateData({
-          stationCode: '360',
+          stationCode: nextProps.stationCode,
           year: nextPropsSelectYear,
           dateType,
         })
@@ -259,10 +271,11 @@ class ProductionAnalysis extends React.Component {
     this.props.changeAllStationStore({
       stationCode: stationSelect[0].stationCode
     })
+    console.log(this.props.stationCode);
   }
   selectYear() {
     const { allStationAvalibaData } = this.props;
-    console.log(allStationAvalibaData);
+   // console.log(allStationAvalibaData);
 
     //let yearArray=.map((e,i)=>(Number(e.year))) ;
     let yearArray = [].map((e, i) => (Number(e.year)));
@@ -309,26 +322,27 @@ class ProductionAnalysis extends React.Component {
     const barGraphYearOnYear = singleStationPowerData.map((e, i) => (e.yearOnYear||'--'))
     const barGraphRingRatio = singleStationPowerData.map((e, i) => (e.ringRatio||'--'))
     //上网电量
-    const salePowerThatYear = singleStationSalePowerData.map((e, i) => (e.thatYearData))
-    const salePowerLastYear = singleStationSalePowerData.map((e, i) => (e.lastYearData))
-    const salePowerRingRatio = singleStationSalePowerData.map((e, i) => (e.ringRatio))
+    const salePowerThatYear = singleStationSalePowerData.map((e, i) => (e.thatYearData||'--'))
+    const salePowerLastYear = singleStationSalePowerData.map((e, i) => (e.lastYearData||'--'))
+    const salePowerRingRatio = singleStationSalePowerData.map((e, i) => (e.ringRatio||'--'))
     const salePowermonth = singleStationSalePowerData.map((e, i) => (`${e.date}${dateType === 'month' ? '月' : (dateType === 'day' ? '日' : '')}`))
-    const salePowerYearOnYear = singleStationSalePowerData.map((e, i) => (e.yearOnYear))
+    const salePowerYearOnYear = singleStationSalePowerData.map((e, i) => (e.yearOnYear||'--'))
 
 
     //购网电量
-    const buyPowerThatYear = singleStationBuyPowerData.map((e, i) => (e.thatYearData))
-    const buyPowerLastYear = singleStationBuyPowerData.map((e, i) => (e.lastYearData))
-    const buyPowerRingRatio = singleStationBuyPowerData.map((e, i) => (e.ringRatio))
+    const buyPowerThatYear = singleStationBuyPowerData.map((e, i) => (e.thatYearData||'--'))
+    const buyPowerLastYear = singleStationBuyPowerData.map((e, i) => (e.lastYearData||'--'))
+    const buyPowerRingRatio = singleStationBuyPowerData.map((e, i) => (e.ringRatio||'--'))
     const buyPowermonth = singleStationBuyPowerData.map((e, i) => (`${e.date}${dateType === 'month' ? '月' : (dateType === 'day' ? '日' : '')}`))
-    const buyPowerYearOnYear = singleStationBuyPowerData.map((e, i) => (e.yearOnYear))
+    const buyPowerYearOnYear = singleStationBuyPowerData.map((e, i) => (e.yearOnYear||'--'))
 
     //计划完成率
+    //console.log(singleStationPlanRateData);
     const xAxisData = singleStationPlanRateData.map((e, i) => (`${e.date}月`))
-    const planPowerData = singleStationPlanRateData.map((e, i) => (e.planPower))
-    const actualPowerData = singleStationPlanRateData.map((e, i) => (e.actualPower))
-    const planRateData = singleStationPlanRateData.map((e, i) => (e.per))
-    const resourceData = singleStationPlanRateData.map((e, i) => (e.resourceValue))
+    const planPowerData = singleStationPlanRateData.map((e, i) => (e.planPower||'--'))
+    const actualPowerData = singleStationPlanRateData.map((e, i) => (e.actualPower||'--'))
+    const planRateData = singleStationPlanRateData.map((e, i) => (e.per||'--'))
+    const resourceData = singleStationPlanRateData.map((e, i) => (e.resourceValue||'--'))
 
     return (
       <div className={styles.singleStationType}>
@@ -339,6 +353,7 @@ class ProductionAnalysis extends React.Component {
               <StationSelect
                 data={stations.toJS()}
                 holderText={'电站名-区域'}
+                value={this.props.stationCode?this.props.stationCode:[]}
                 // multiple={true}
                 onChange={this.stationSelected}
               />
@@ -400,10 +415,12 @@ class ProductionAnalysis extends React.Component {
                   barGraphThatYear={barGraphThatYear}
                   barGraphLastYear={barGraphLastYear}
                   barGraphmonth={barGraphmonth}
-                  barGraphYearOnYear={dateType==='year'?barGraphRingRatio:barGraphYearOnYear} />
+                  barGraphYearOnYear={barGraphYearOnYear} 
+                  barGraphRingRatio={barGraphRingRatio} />
+                 
                 <TableGraph
-                  dateType={dateType} tableType={'power'} currentYear={currentYear}
-                  lastYear={lastYear} singleStationLostPowerData={singleStationPowerData} />
+                  dateType={dateType} tableType={'lostPowerTB'} currentYear={currentYear}
+                  lastYear={lastYear} dataArray={singleStationPowerData} />
               </div>
             </div>
 
@@ -420,7 +437,7 @@ class ProductionAnalysis extends React.Component {
                 // PowerEffectiveLightData={PowerEffectiveLightData}
                 // PowerEffectivePrData={PowerEffectivePrData}
                 />
-                <TableGraph />
+                <TableGraph dateType={dateType} tableType={'plan'}  dataArray={singleStationPlanRateData} />
               </div>
             </div> : ''}
 
@@ -437,7 +454,8 @@ class ProductionAnalysis extends React.Component {
                   barGraphThatYear={buyPowerThatYear}
                   barGraphLastYear={buyPowerLastYear}
                   barGraphmonth={buyPowermonth}
-                  barGraphYearOnYear={dateType === 'year' ? buyPowerRingRatio : buyPowerYearOnYear}
+                  barGraphYearOnYear={buyPowerYearOnYear}
+                  barGraphRingRatio={buyPowerRingRatio}
                 />
                 <BarGraph graphId={'savePower'}
                   yAxisName={'上网电量 (万kWh)'}
@@ -449,7 +467,8 @@ class ProductionAnalysis extends React.Component {
                   barGraphThatYear={salePowerThatYear}
                   barGraphLastYear={salePowerLastYear}
                   barGraphmonth={salePowermonth}
-                  barGraphYearOnYear={dateType === 'year' ? salePowerRingRatio : salePowerYearOnYear}
+                  barGraphYearOnYear={ salePowerYearOnYear}
+                  barGraphRingRatio={salePowerRingRatio}
                 />
               </div>
             </div>
