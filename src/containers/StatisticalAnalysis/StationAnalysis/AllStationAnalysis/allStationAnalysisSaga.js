@@ -17,7 +17,6 @@ function* getAllStationAvalibaData(action) {//综合指标年月判断
     try{
       yield put({ type:allStationAnalysisAction.ALLSTATIONDATA_FETCH });
       const response = yield call(axios.post,url,payload);
-      console.log(response.data.data,'有数据的年或者月');
       if(response.data.code === '10000') {
         yield put({
           type: allStationAnalysisAction.GET_ALLSTATIONDATA_FETCH_SUCCESS,
@@ -37,7 +36,6 @@ function* getAllStationStatisticData(action) {//月/年多电站计划完成、
     try{
       yield put({ type:allStationAnalysisAction.ALLSTATIONDATA_FETCH });
       const response = yield call(axios.post,url,payload);
-      console.log(response.data.data,'计划完成情况');
       if(response.data.code === '10000') {
         yield put({
           type: allStationAnalysisAction.GET_ALLSTATIONDATA_FETCH_SUCCESS,
@@ -57,7 +55,6 @@ function* getAllStationStatisticTableData(action) {//月/年多电站table数据
     try{
       yield put({ type:allStationAnalysisAction.ALLSTATIONDATA_FETCH });
       const response = yield call(axios.post,url,payload);
-      console.log(response.data.data,'电站发电量的table表格');
       const totalNum = response.data.data.pageCount||0;
       let { pageNum, pageSize } = payload;
       const maxPage = Math.ceil(totalNum / pageSize);
@@ -88,7 +85,6 @@ function* getAllStationMonthBarData(action) {//月多电站bar数据、
     try{
       yield put({ type:allStationAnalysisAction.ALLSTATIONDATA_FETCH });
       const response = yield call(axios.post,url,payload);
-      console.log(response.data.data,'月多电站bar数据');
       if(response.data.code === '10000') {
         yield put({
           type: allStationAnalysisAction.GET_ALLSTATIONDATA_FETCH_SUCCESS,
@@ -108,8 +104,6 @@ function* getAllStationMonthPieData(action) {//月/年多电站pie数据、
     try{
       yield put({ type:allStationAnalysisAction.ALLSTATIONDATA_FETCH });
       const response = yield call(axios.get,url,payload);
-      console.log(response.data.data,'月多电站pie数据');
-
       if(response.data.code === '10000') {
         yield put({
           type: allStationAnalysisAction.GET_ALLSTATIONDATA_FETCH_SUCCESS,
