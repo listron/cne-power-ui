@@ -45,10 +45,10 @@ class TargetTabs extends React.Component {
    const lastYear=(parseInt(year)-1).toString();
     const { allStationMonthBarData, allStationMonthPieData, allStationMonthComplete } = this.props;
    
-    const barGraphThatYear = allStationMonthBarData.map((e, i) => (e.thatYearData))
-    const barGraphLastYear = allStationMonthBarData.map((e, i) => (e.lastYearData))
+    const barGraphThatYear = allStationMonthBarData.map((e, i) => (e.thatYearData||'--'))
+    const barGraphLastYear = allStationMonthBarData.map((e, i) => (e.lastYearData||'--'))
     const barGraphmonth = allStationMonthBarData.map((e, i) => (`${e.month}月`))
-    const barGraphYearOnYear = allStationMonthBarData.map((e, i) => (e.yearOnYear))
+    const barGraphYearOnYear = allStationMonthBarData.map((e, i) => (e.yearOnYear||'--'))
     // console.log(barGraphThatYear,barGraphLastYear,barGraphmonth,barGraphYearOnYear);
     const pieData = allStationMonthPieData.map((e, i) => ({ value: Number(e.monthPower), name: `${e.month}月` }));
     //const pieData=[{value:22,name:'1月'},{value:28,name:'2月'},{value:52,name:'3月'},{value:42,name:'4月'}];
