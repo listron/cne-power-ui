@@ -10,6 +10,7 @@ import Footer from '../../../../components/Common/Footer';
 import {performanceAnalysisAction} from "./performanceAnalysisAction";
 import { commonAction } from '../../../alphaRedux/commonAction';
 import StationSelect from "../../../../components/Common/StationSelect";
+import TimeSelect from '../../../../components/Common/TimeSelect/TimeSelectIndex';
 const {Option} = Select;
 
 class PerformanceAnalysis extends Component{
@@ -71,7 +72,6 @@ class PerformanceAnalysis extends Component{
   }
 
   render(){
-    console.log(this.props);
     const {stationCode,stations,deviceTypeCode,stationDeviceTypes,deviceModeCode,deviceModels} = this.props;
     const {selectStation} = this.state;
 
@@ -86,6 +86,7 @@ class PerformanceAnalysis extends Component{
     return(
       <div className={styles.PerformanceAnalysisContainerBox}> 
         <CommonBreadcrumb {...breadCrumbData} style={{marginLeft:'38px'}}></CommonBreadcrumb>
+        <TimeSelect onChange={(time)=>console.log(time)} />
         <div className={styles.PerformanceAnalysisContainer}>
           <div className={styles.PerformanceAnalysisMain}>
             <div className={styles.performanceSearch}>
