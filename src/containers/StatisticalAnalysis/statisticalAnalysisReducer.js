@@ -5,6 +5,7 @@ import productionAnalysisReducer from './StationAnalysis/ProductionAnalysis/prod
 import stationResourceAnalysisReducer from './StationAnalysis/StationResourceAnalysis/stationResourceAnalysisReducer';
 import operateAnalysisReducer from './StationAnalysis/OperateAnalysis/operateAnalysisReducer';
 import stationContrastReducer from './StationAnalysis/StationContrast/stationContrastReducer';
+import performanceAnalysisReducer from "./EquipmentAnalysis/PerformanceAnalysis/performanceAnalysisReducer";
 
 const statisticalAnalysisReducer = combineReducers({ 
   allStationAnalysis,
@@ -12,6 +13,7 @@ const statisticalAnalysisReducer = combineReducers({
   operateAnalysisReducer,
   stationResourceAnalysisReducer,
   stationContrastReducer,
+  performanceAnalysisReducer,
 });
 
 export default statisticalAnalysisReducer;
