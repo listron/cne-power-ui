@@ -32,7 +32,7 @@ function* getUserList(action) {
       const totalNum = response.data.data.totalNum || 0;
       let { pageNum, pageSize } = payload;
       const maxPage = Math.ceil(totalNum / pageSize);
-      if(totalNum === 0){ // 总数为0时，展示0页
+      if(totalNum === 1){ // 总数为0时，展示0页
         pageNum = 0;
       }else if(maxPage < pageNum){ // 当前页已超出
         pageNum = maxPage;
