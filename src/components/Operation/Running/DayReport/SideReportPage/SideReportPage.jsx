@@ -172,7 +172,6 @@ class SideReportPage extends Component {
         delete dailyReport.hour;
         const newDailyDetailList = dailyDetailList.map(eachLost=>{
           const lostInfo = {
-            deviceTypeCode: eachLost.deviceTypeCode,
             deviceName: eachLost.deviceName,
             startTime: eachLost.startTime.format('YYYY-MM-DD HH:mm'),
             endTime: eachLost.endTime && eachLost.endTime.format('YYYY-MM-DD HH:mm'),
@@ -182,6 +181,8 @@ class SideReportPage extends Component {
             process: eachLost.process,
             faultId: eachLost.faultId,
             faultName: eachLost.faultName,
+            deviceTypeCode: eachLost.deviceTypeCode,
+            deviceId: eachLost.deviceId,
             type: eachLost.type,
           }
           return lostInfo;
