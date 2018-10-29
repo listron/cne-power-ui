@@ -53,7 +53,6 @@
     "prop-types": "^15.6.0",
     "qs": "^6.5.2",
     "react": "^16.2.0",
-    "react-audio-player": "^0.11.0",
     "react-copy-to-clipboard": "^5.0.1",
     "react-dom": "^16.2.0",
     "react-loadable": "^5.3.1",
@@ -64,7 +63,6 @@
     "redux": "^3.7.2",
     "redux-logger": "^3.0.6",
     "redux-saga": "^0.16.0",
-    "redux-thunk": "^2.2.0",
-    "video-react": "^0.13.0"
+    "redux-thunk": "^2.2.0"
   }
 }
