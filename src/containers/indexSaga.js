@@ -29,7 +29,7 @@ import { watchProductionStationSaga } from './StatisticalAnalysis/StationAnalysi
 import { watchStationResourceStationSaga } from './StatisticalAnalysis/StationAnalysis/StationResourceAnalysis/stationResourceAnalysisSaga';
 import { watchOperateStationSaga } from './StatisticalAnalysis/StationAnalysis/OperateAnalysis/operateAnalysisSaga';
 import { watchStationContrastSaga } from './StatisticalAnalysis/StationAnalysis/StationContrast/stationContrastSaga';
-
+import { watchPerformanceAnalysisSaga } from "./StatisticalAnalysis/EquipmentAnalysis/PerformanceAnalysis/performanceAnalysisSaga";
 
 
 import { watchPlan } from './System/Production/Plan/planSaga';
@@ -71,5 +71,7 @@ export default function* rootSaga() {
     watchOperateStationSaga(),
     watchStationContrastSaga(),
     watchStationResourceStationSaga(),
+    //设备分析
+    watchPerformanceAnalysisSaga(),
   ])
 }

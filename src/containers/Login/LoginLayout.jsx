@@ -10,6 +10,7 @@ import JoinIn from './JoinIn';
 import Forget from './Forget';
 import Contact from '../../components/Login/Contact';
 import Agreement from '../../components/Login/Agreement';
+import ReactPlayer from 'react-player';
 
 class LoginLayout extends Component {
   static propTypes = {
@@ -36,6 +37,9 @@ class LoginLayout extends Component {
     const { pageTab, changeLoginStore } = this.props;
     return (
       <div className={styles.loginLayout}>
+        <div>
+          <ReactPlayer url='/video/01-1000.mp4' muted autoPlay loop onReady playing={true} className={styles.bg} width='auto' height='auto' />
+        </div>
         <div className={styles.right}>
           <div className={styles.rightContent}>
             <div className={styles.mainBox}>

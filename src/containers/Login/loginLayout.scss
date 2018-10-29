@@ -6,9 +6,22 @@
   justify-content: center;
   min-height: 100%;
   flex: 1;
-  background: url("/img/bigbg.png") no-repeat center center;
+  // background: url("/img/bigbg.png") no-repeat center center;
   background-size: 100% 100%;
-  
+  .bg{
+    position: fixed; 
+    right: 0; 
+    bottom: 0;      
+    min-width: 100%;
+    min-height: 100%;
+    z-index: -100;      
+    background-size: cover; 
+    video{
+      position: absolute;
+      left: 0;
+      bottom: 0;
+    }
+  }
   .right {
     margin-top: 136px;
     width: 480px;

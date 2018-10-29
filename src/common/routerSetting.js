@@ -35,6 +35,7 @@ import ProductionAnalysis from '../containers/StatisticalAnalysis/StationAnalysi
 import StationResourceAnalysis from '../containers/StatisticalAnalysis/StationAnalysis/StationResourceAnalysis/StationResourceAnalysis';
 import OperateAnalysis from '../containers/StatisticalAnalysis/StationAnalysis/OperateAnalysis/OperateAnalysis';
 import StationContrast from '../containers/StatisticalAnalysis/StationAnalysis/StationContrast/StationContrast';
+import PerformanceAnalysis from "../containers/StatisticalAnalysis/EquipmentAnalysis/PerformanceAnalysis/PerformanceAnalysis";
 
 import Power from '../containers/Power';
 
@@ -191,7 +192,7 @@ const routers = [
   },{
     path: '/statistical/equipment/performance',
     exact: true,
-    component: Building
+    component: PerformanceAnalysis
   },{
     path: '/statistical/equipment/manufacturers',
     exact: true,
