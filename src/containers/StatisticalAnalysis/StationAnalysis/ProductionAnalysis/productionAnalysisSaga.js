@@ -18,12 +18,12 @@ function* getAllStationAvalibaData(action) {//综合指标年月判断
     //const url = '/mock/api/v3/performance/comprehensive/dataavaliba';
    const url= `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getAllStationAvaliba}`
     try{
-      yield put({ type:allStationAnalysisAction.ALLSTATIONDATA_FETCH });
+      yield put({ type:productionAnalysisAction.PRODUCTIONSTATIONDATA_FETCH });
       const response = yield call(axios.post,url,payload);
       console.log(response.data.data,'有数据的年或者月');
       if(response.data.code === '10000') {
         yield put({
-          type: allStationAnalysisAction.GET_ALLSTATIONDATA_FETCH_SUCCESS,
+          type: productionAnalysisAction.GET_PRODUCTIONSTATIONDATA_FETCH_SUCCESS,
           payload: {
             allStationAvalibaData: response.data.data||[],          
           },
