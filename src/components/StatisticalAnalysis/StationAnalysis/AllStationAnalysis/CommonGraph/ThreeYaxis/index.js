@@ -86,8 +86,8 @@ class PowerEfficency extends React.Component {
     const targetChart = echarts.init(document.getElementById(graphId));
     let color = this.getColor(title);
     let seriesData = [];
-    const lineData = data.yData.lineData;
-    const barData = data.yData.barData;
+    const lineData =data && data.yData.lineData;
+    const barData = data && data.yData.barData;
     for (var bar in barData) {
       var json = {
         name: this.getName(bar),
@@ -160,7 +160,7 @@ class PowerEfficency extends React.Component {
       },
       xAxis: {
         type: 'category',
-        data: data.xData,
+        data: data && data.xData,
         // data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
         axisPointer: {
           type: 'shadow'
@@ -234,7 +234,7 @@ class PowerEfficency extends React.Component {
           }
         }
       ],
-      series:seriesData
+      series:seriesData || []
     };
     targetChart.setOption(targetMonthOption)
     targetChart.resize();
