@@ -25,6 +25,7 @@ class LimitAddForm extends Component {
     this.state = {
       deviceNameErroShow: false, // 设备验证失败的提示框展示与否，
       deviceNameErroInfo: '', // 设备验证失败的提示信息，
+      deviceTypeCode: null, // 选中添加限电的设备类型
     }
   }
 
@@ -42,7 +43,7 @@ class LimitAddForm extends Component {
         const existErrorData = newDeviceExistInfo.existErrorData || [];
         this.setState({
           deviceNameErroShow: true,
-          deviceNameErroInfo : `设备${existErrorData.join(',')}不存在!`
+          deviceNameErroInfo : `设备${existErrorData}不存在!`
         });
         setTimeout(()=>{
           this.setState({
@@ -55,7 +56,8 @@ class LimitAddForm extends Component {
         const limitInfo = getFieldsValue();
         limitInfo.id = `limitAdd${limitGenList.length}`;
         limitInfo.handle = true;
-        limitInfo.deviceName = limitInfo.deviceName.trim().replace(/\s+/g,',');
+        limitInfo.deviceId = newDeviceExistInfo.existErrorData;
+        limitInfo.deviceName = [...new Set(limitInfo.deviceName.split(' ').filter(e=>!!e))].join(',');
         limitInfo.type = 0;  // 限电type 0 => 后台接收。
         changeLimitList([...limitGenList,limitInfo], true);
       }
@@ -64,16 +66,26 @@ class LimitAddForm extends Component {
 
   confirmAddLimit = () => {
     const { form, findDeviceExist, stationCode } = this.props;
+    const { deviceTypeCode } = this.state;
     form.validateFields((err, values) => {
       if (!err) {
         const { deviceName } = values;
-        const tmpDeviceName = deviceName.trim().replace(/\s+/g,',');
+        const tmpDeviceName = deviceName.split(' ').filter(e=>!!e);
+        const newDeviceName = [...new Set(tmpDeviceName)].join(',');
         findDeviceExist({
-          deviceName: tmpDeviceName,
+          deviceName: newDeviceName,
           stationCode,
+          deviceTypeCode
         })
       }
     });
+  }
+
+  selectDeviceType = (value) => {
+    this.setState({
+      deviceTypeCode: value,
+    })
+    return value
   }
 
   cancelAddLimit = () => { // 取消限电添加
@@ -126,7 +138,7 @@ class LimitAddForm extends Component {
               {getFieldDecorator('deviceTypeCode', {
                 rules: [{ required: true, message: '请选择设备类型' }],
               })(
-                <Select placeholder="请选择">
+                <Select placeholder="请选择" onChange={this.selectDeviceType}>
                   {stationDeviceTypes && stationDeviceTypes.length>0 && stationDeviceTypes.map(e=>(
                     <Option key={e.deviceTypeCode} value={e.deviceTypeCode}>{e.deviceTypeName}</Option>
                   ))}

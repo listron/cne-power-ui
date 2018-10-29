@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './sideReportPage.scss';
 import { Form, Input, DatePicker, Button,Row,Col } from 'antd';
-import { Select } from 'antd';
+import { Select, Cascader } from 'antd';
 import InputLimit from '../../../../Common/InputLimit';
 const { Option } = Select;
 
@@ -11,6 +11,7 @@ class LostAddForm extends Component {
   static propTypes = {
     form: PropTypes.object,
     stationCode: PropTypes.number,
+    stationType: PropTypes.number,
     deviceExistInfo: PropTypes.object,
     faultGenList: PropTypes.array,
     lostGenTypes: PropTypes.array,
@@ -24,8 +25,10 @@ class LostAddForm extends Component {
   constructor(props){
     super(props);
     this.state = {
+      selectLostTypeName: '', // 暂存的
       deviceNameErroShow: false, // 设备验证失败的提示框展示与否，
       deviceNameErroInfo: '', // 设备验证失败的提示信息，
+      deviceTypeCode: null, // 选中的设备类型
     }
   }
 
@@ -43,7 +46,7 @@ class LostAddForm extends Component {
         const existErrorData = newDeviceExistInfo.existErrorData || [];
         this.setState({
           deviceNameErroShow: true,
-          deviceNameErroInfo : `设备${existErrorData.join(',')}不存在!`
+          deviceNameErroInfo : `设备${existErrorData}不存在!`
         });
         setTimeout(()=>{
           this.setState({
@@ -51,13 +54,16 @@ class LostAddForm extends Component {
           });
         },2000);
       }else{ // 设备验证通过
-        const { form, changeFaultList, faultGenList, lostGenTypes } = this.props;
+        const { form, changeFaultList, faultGenList } = this.props;
+        const { selectLostTypeName } = this.state;
         const { getFieldsValue } = form;
         const lostInfo = getFieldsValue();
         lostInfo.id = `lostAdd${faultGenList.length}`;
         lostInfo.handle = true;
-        lostInfo.faultName = lostGenTypes.find(e=>e.id === lostInfo.faultId).faultName;
-        lostInfo.deviceName = lostInfo.deviceName.trim().replace(/\s+/g,',');
+        lostInfo.faultName = selectLostTypeName;
+        lostInfo.deviceId = newDeviceExistInfo.existErrorData;
+        lostInfo.faultId = lostInfo.faultId[lostInfo.faultId.length - 1];
+        lostInfo.deviceName = [...new Set(lostInfo.deviceName.split(' ').filter(e=>!!e))].join(',');
         lostInfo.type = 1;  // 损失type 1 => 后台接收。
         changeFaultList([...faultGenList,lostInfo], true);
       }
@@ -66,43 +72,66 @@ class LostAddForm extends Component {
 
   confirmAddFault = () => {
     const { form, findDeviceExist, stationCode } = this.props;
+    const { deviceTypeCode } = this.state;
     form.validateFields((err, values) => {
       if (!err) {
         const { deviceName } = values;
-        const tmpDeviceName = deviceName.trim().replace(/\s+/g,',');
+        const tmpDeviceName = deviceName.split(' ').filter(e=>!!e);
+        const newDeviceName = [...new Set(tmpDeviceName)].join(',');
         findDeviceExist({
-          deviceName: tmpDeviceName,
+          deviceName: newDeviceName,
           stationCode,
+          deviceTypeCode,
         })
       }
     });
   }
+
+  selectDeviceType = (value) => {
+    const { stationType, getLostGenType, form } = this.props;
+    getLostGenType({ // 选中电站的所有故障类型
+      stationType,
+      deviceTypeCode: value
+    })
+    this.setState({
+      deviceTypeCode: value,
+    })
+    form.setFieldsValue({ faultId: null });
+    return value
+  }
+
+  selectLostType=(value,selectOption)=>{
+    this.setState({
+      selectLostTypeName: selectOption[selectOption.length - 1].label,
+    })
+    return value
+  }
+
+
 
   cancelAddFault = () => {
     const { faultGenList, changeFaultList } = this.props;
     changeFaultList(faultGenList, true);
   }
 
-  createAllLostGenTypes = (dataArr) => {
-    let outputGenTypes = [];
-    dataArr.forEach(info=>{
-      if(info && info.list && info.list.length > 0){
-        outputGenTypes.push(...this.createAllLostGenTypes(info.list));
-      }else if(info.id && info.name){
-        outputGenTypes.push({
-          id: info.id,
-          name: info.name,
-        })
-      }
-    })
-    return outputGenTypes;
-  }
-
   render(){
     const { form, lostGenTypes, stationDeviceTypes } = this.props;
     const { getFieldDecorator, getFieldValue } = form;
     const { deviceNameErroShow, deviceNameErroInfo } = this.state;
-    const allLostGenTypes = this.createAllLostGenTypes(lostGenTypes);
+    let tmpGenTypes = [];
+    lostGenTypes.forEach(e=>e && e.list && e.list.length > 0 && tmpGenTypes.push(...e.list));
+    const groupedLostGenTypes = tmpGenTypes.map(ele=>{
+      let innerArr = {children: []};
+      innerArr.label= ele.name;
+      innerArr.value= ele.id;
+      ele && ele.list && ele.list.length > 0 && ele.list.forEach(innerInfo => {
+        innerArr.children.push({
+          label: innerInfo.name,
+          value: innerInfo.id,
+        });
+      })
+      return innerArr;
+    })
     const formItemLayout1 = {
       labelCol: {
         xs: { span: 24 },
@@ -143,7 +172,7 @@ class LostAddForm extends Component {
               {getFieldDecorator('deviceTypeCode', {
                 rules: [{ required: true, message: '请选择设备类型' }],
               })(
-                <Select placeholder="请选择">
+                <Select placeholder="请选择" onChange={this.selectDeviceType}>
                   {stationDeviceTypes && stationDeviceTypes.length>0 && stationDeviceTypes.map(e=>(
                     <Option key={e.deviceTypeCode} value={e.deviceTypeCode}>{e.deviceTypeName}</Option>
                   ))}
@@ -156,11 +185,13 @@ class LostAddForm extends Component {
               {getFieldDecorator('faultId', {
                 rules: [{ required: true, message: '请选择损失电量类型' }],
               })(
-                <Select placeholder="请选择">
-                  {allLostGenTypes && allLostGenTypes.length>0 && allLostGenTypes.map(e=>(
-                    <Option key={e.id} value={e.id}>{e.name}</Option>
-                  ))}
-                </Select>
+                <Cascader
+                  options={groupedLostGenTypes}
+                  expandTrigger="hover"
+                  placeholder="请选择"
+                  className={styles.lostTypeSelector}
+                  onChange={this.selectLostType}
+                />
               )}
             </Form.Item>
           </Col>

@@ -43,8 +43,7 @@ class ReportEdit extends Component {
 
   componentDidMount(){
     this.props.getLostGenType({
-      stationType: this.props.selectedDayReportDetail.stationType, 
-      objectType: 1, 
+      stationType: this.props.selectedDayReportDetail.stationType,
     })
   }
 
@@ -258,7 +257,7 @@ class ReportEdit extends Component {
   render(){
     const { updateDayReportDetail, addLostFormShow, addLimitFormShow, abnormalTextShow, showBackWarningTip, warningTipText } = this.state;
     const { findDeviceExist, deviceExistInfo, dayReportConfig, lostGenTypes, getStationDeviceTypes, stationDeviceTypes, getLostGenType } = this.props;
-    const {faultList, limitList, stationCode, errorInfo} = updateDayReportDetail;
+    const {faultList, limitList, stationCode, errorInfo, stationType} = updateDayReportDetail;
     return (
       <div className={styles.reportEdit} >
         <div className={styles.reportDetailTitle} >
@@ -299,6 +298,7 @@ class ReportEdit extends Component {
           stationDeviceTypes={stationDeviceTypes}
           getStationDeviceTypes={getStationDeviceTypes}
           getLostGenType={getLostGenType}
+          stationType={stationType}
         />}
         <div className={styles.lostElecInfo} >
           <span className={styles.reportSubTitle}>限电信息<Icon type="caret-right" theme="outlined" /></span>

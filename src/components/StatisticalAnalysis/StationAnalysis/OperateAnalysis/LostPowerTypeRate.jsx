@@ -6,39 +6,65 @@ class LostPowerTypeRate extends React.Component {
     super(props, context)
   }
   componentDidMount() {
+    this.drawCharts(this.props);
+  }
+  componentWillReceiveProps(nextProps) {
+    this.drawCharts(nextProps)
+  }
 
-    const { graphId } = this.props;
+  getName = (type) => {
+    let name = '';
+    switch (type) {
+      case 'eletric': name = '变电故障'; break;
+      case 'limit': name = '限电'; break;
+      case 'plane': name = '计划停机'; break;
+      case 'system': name = '光伏发电系统故障'; break;
+      case 'other': name = '场外因素'; break;
+    }
+    return name;
+  }
+
+  drawCharts = (params) => {
+    const { graphId, data, yAxisName } = params;
     const targetPieChart = echarts.init(document.getElementById(graphId));
-    let color = ["#a42b2c", "#f9b600", "#f9b600", "#199475", "#ceebe0"];
+    let color = ["#f9b600", "#a42b2c", "#fbe6e3", "#199475", "#ceebe0"];
+    // let color = ["#a42b2c", "#d48265", "#91c7af", "#749f83", "#ca8622", "#bda29a", "#546570", "#6e7074", "#9b9b9b", "#ceebe0", "#199475", "#f1f1f1"];
+    let seriesData = [];
+    for (var tests in data) {
+      if (tests !== 'date') {
+        var json = { name: this.getName(tests), value: data[tests] };
+        seriesData.push(json);
+      }
+    }
     const targetPieOption = {
-      title: {
-       
-      },
       tooltip: {
         trigger: 'item',
-        formatter: " <br/>{b} : {c} ({d}%)"
+        backgroundColor: '#fff',
+        formatter: function (params) {
+          return '<div style="border-bottom: 1px solid #ccc; font-size: 12px;padding-bottom: 7px;margin-bottom: 7px;width:180px;overflow:hidden;">' + params.name + '</div>'
+            + '损失电量' + '：' + params.value +'<br>'
+            + '所占比例' + '：' + params.percent + '%<br>';
+        },
+        padding: 10,
+        textStyle: {
+          color: 'rgba(0, 0, 0, 0.65)',
+          fontSize: 12,
+        },
       },
-      color:color,
+      color: color,
       series: [
         {
           name: '发电量',
           type: 'pie',
-          radius: '55%',
+          radius: '70%',
           center: ['50%', '50%'],
-          data: [
-            { value: 335, name: '限电' },
-            { value: 310, name: '变电故障' },
-            { value: 234, name: '计划停机' },
-            { value: 135, name: '光伏发电系统故障' },
-            { value: 1048, name: '技改大修' },
-            { value: 251, name: '场外因素' },          
-          ],
+          data: seriesData,
           label: {
             normal: {
-                show: false
+              show: false
             },
             emphasis: {
-                show: false
+              show: false
             }
           },
           itemStyle: {
@@ -51,13 +77,14 @@ class LostPowerTypeRate extends React.Component {
         }
       ]
     };
-    setTimeout(()=>{targetPieChart.resize();},1000) 
+    setTimeout(() => { targetPieChart.resize(); }, 1000)
     targetPieChart.setOption(targetPieOption);
   }
+
   render() {
     const { graphId } = this.props;
     return (
-      <div id={ graphId } style={{ display:'flex',flex:1 }}> </div>
+      <div id={graphId} style={{ display: 'flex', flex: 1, height: 250 }}> </div>
     )
   }
 }

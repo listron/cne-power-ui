@@ -246,8 +246,46 @@
   :global{
     .ant-modal{
       margin: 0;
-      top: 84px;
+      top: 83px;
       left: 204px;
+      height: calc(100vh - 119px);
+      .ant-modal-content{
+        display: flex;
+        height: 100%;
+        flex-direction: column;
+        .ant-modal-header{
+          padding: 10px 24px;
+        }
+        .ant-modal-close-x{
+          height: 42px;
+          line-height: 42px;
+        }
+        .ant-modal-body{
+          padding: 10px 20px;
+          overflow-y: auto;
+          overflow-x: hidden;
+          flex: 1;
+          .ant-form-item, .ant-form-horizontal {
+            margin-bottom: 0px;
+          }
+          .ant-form-horizontal{
+            display: flex;
+            flex-direction: column;
+            margin-top: 5px;
+          }
+          .ant-form-item{
+            display: flex;
+            flex-direction: row;
+            .ant-form-item-control-wrapper{
+              margin: 0 auto;
+            }
+          }
+        }
+        .ant-modal-footer{
+          background: #f1f1f1;
+          padding: 25px 35px;
+        }
+      }
     }
     ::-webkit-scrollbar {
       width: 6px;
@@ -259,39 +297,9 @@
       background-color: #555;
       opacity: .5;
     }
-    .ant-modal-header{
-      padding: 10px 24px;
-    }
-    .ant-modal-close-x{
-      height: 42px;
-      line-height: 42px;
-    }
-    .ant-modal-body{
-      padding: 10px 20px;
-      height: 668px;
-      overflow: auto;
-      overflow-y: auto;
-      overflow-x: hidden;
-      .ant-form-item, .ant-form-horizontal {
-        margin-bottom: 0px;
-      }
-      .ant-form-horizontal{
-        display: flex;
-        flex-direction: column;
-        margin-top: 5px;
-      }
-      .ant-form-item{
-        display: flex;
-        flex-direction: row;
-        .ant-form-item-control-wrapper{
-          margin: 0 auto;
-        }
-      }
-    }
-    .ant-modal-footer{
-      background: #f1f1f1;
-      padding: 25px 35px;
-    }
+    
+    
+    
   }
 }
 
@@ -359,6 +367,9 @@
     display: flex;
     flex-direction: row;
     height: 49px;
+    .lostTypeSelector{
+      width: 300px;
+    }
   }
   .confirmAddFault{
     margin: 0 20px 0 10px;
@@ -425,3 +436,5 @@
     }
   }
 }
+
+
