@@ -64,9 +64,5 @@
     "redux-logger": "^3.0.6",
     "redux-saga": "^0.16.0",
     "redux-thunk": "^2.2.0"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git@10.10.15.200:haojianling/cne-power-ui.git"
   }
 }
