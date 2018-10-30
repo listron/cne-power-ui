@@ -5,9 +5,10 @@ import PropTypes from 'prop-types';
 import styles from './planMain.scss';
 import {getMonth, getDefectSortField, getDefaultMonth} from '../plan';
 import WarningTip from '../../../../Common/WarningTip';
-import EditableCell from './EditableCell';
 
 const {Option} = Select;
+
+
 const FormItem = Form.Item;
 const EditableContext = React.createContext();
 
@@ -16,7 +17,124 @@ const EditableRow = ({form, index, ...props}) => {
     <tr {...props} />
   </EditableContext.Provider>)
 };
+
 const EditableFormRow = Form.create()(EditableRow);
+
+class EditableCell extends React.Component {
+
+  static propTypes = {
+    record: PropTypes.object,
+    dataIndex: PropTypes.string,
+  };
+
+  getInput = (form) => {
+    const {dataIndex, record} = this.props;
+    if (dataIndex === 'yearPR') { // PR年计划
+      return (<span> <Input onBlur={(e) => this.yearPRChange(e, form, dataIndex, record)}
+                            defaultValue={record[dataIndex]}/>%</span>);
+    }
+    if (record.setGridTime) {// 并网数据
+      if (getMonth(dataIndex) < Number(record.setGridTime)) {
+        return <Input disabled={true} placeholder="--"/>
+      }
+    }
+    return <Input onBlur={(e) => this.valueChange(e, form, dataIndex, record)}
+                  placeholder="--"/>;
+  };
+
+  yearPRChange = (e, form, dataIndex, record) => {//PR 数据修改
+    const number = e.target.value;
+    const pointLength = number.split('.')[1] ? number.split('.')[1].length : 0;
+    if (isNaN(number) || pointLength > 2) {
+      message.config({
+        top: 400,
+        duration: 2,
+        maxCount: 1,
+      })
+      message.warning('只可以填写数字,可精确到小数点后两位');
+      form.setFieldsValue({
+        [dataIndex]: '',
+      });
+      return false;
+    } else {
+      record.yearPR = number;
+      this.props.handlevaluechange(record, dataIndex, number, 'PR')
+    }
+  };
+
+  valueChange = (e, form, dataIndex, record) => {//月份的修改，修改完毕之后年计划跟着变化
+    const number = e.target.value;
+    const pointLength = number.split('.')[1] ? number.split('.')[1].length : 0;
+    if (isNaN(number) || pointLength > 4) {
+      message.config({
+        top: 400,
+        duration: 2,
+        maxCount: 1,
+      })
+      message.warning('只可以填写数字,可精确到小数点后四位');
+      form.setFieldsValue({
+        [dataIndex]: record[dataIndex],
+      });
+      return false;
+    } else {
+      const index = getMonth(dataIndex) - 1;
+      record.planMonthGens[index] = number;
+      record.dataIndex = number;
+
+      function sum(arr) {
+        return arr.reduce(function (prev, curr, idx, arr) {
+          return Number(prev) + Number(curr);
+        });
+      }
+
+      let planMonthValue = [];
+      if (record.setGridTime) {// 并网数据
+        for (let i = Number(record.setGridTime) - 1; i < 12; i++) {
+          planMonthValue.push(record.planMonthGens[i])
+        }
+      } else {
+        planMonthValue = record.planMonthGens
+      }
+
+      record.planPower = sum(planMonthValue).toFixed(4);
+      this.props.handlevaluechange(record, dataIndex, number, 'month')
+    }
+  };
+
+  render() {
+    const {
+      editing,
+      dataIndex,
+      record,
+      handlevaluechange,
+      ...restProps
+    } = this.props;
+    return (
+      <EditableContext.Consumer>
+        {(form) => {
+          const {getFieldDecorator} = form;
+          return (
+            <td {...restProps}>
+              {editing ? (
+                <FormItem style={{margin: 0}}>
+                  {getFieldDecorator(dataIndex, {
+                    rules: [{
+                      required: false,
+                      // message: `只可以填写数字,可精确到小数点后四位`,
+                      // type:'number',
+                    }],
+                    initialValue: record[dataIndex] === "null" ? '--' : record[dataIndex],
+                  })(this.getInput(form))}
+                </FormItem>
+              ) : restProps.children}
+            </td>
+          );
+        }}
+      </EditableContext.Consumer>
+    );
+  }
+}
+
 
 class PlanTable extends Component {
   static propTypes = {
@@ -43,6 +161,7 @@ class PlanTable extends Component {
       showWarningTip: false,
       currentClickKey: ''
     };
+    this.handlevaluechange = this.handlevaluechange.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -82,6 +201,8 @@ class PlanTable extends Component {
       })
     }
   };
+
+
   
   isEditing = (record) => { // 是否可以编辑
     const currentYear = new Date().getFullYear();
@@ -113,20 +234,8 @@ class PlanTable extends Component {
       if (error) {
         return;
       }
-      const { data } = this.state;
-      //1. const newData = data.map(station => {
-      //   if(station.key === key){
-      //     return { ...station, ...row }
-      //   }else{
-      //     return station
-      //   }
-      // })
-
-      //2. let saveData = data.find(station => station.key === key)
-      // saveData = { ...saveData, ...row };
-      
       const newData = [...this.state.data];
-      const index = newData.find(item => key === item.key);
+      const index = newData.findIndex(item => key === item.key);
       if (index > -1) {
         const item = newData[index];
         newData.splice(index, 1, {
@@ -177,15 +286,15 @@ class PlanTable extends Component {
               <div>
                 {
                   editable ? (
-                      <Input defaultValue={textValue} disabled={false} placeholder="--" />) :
-                    (<Input defaultValue={textValue} disabled={true} placeholder="--" />)
+                      <Input defaultValue={textValue} disabled={false} placeholder="--"/>) :
+                    (<Input defaultValue={textValue} disabled={true} placeholder="--"/>)
                 }
               </div>
             )
           }
         }
       })
-    }
+    };
     const MonthColumn = _MonthColumns();
     const columns = [
       {
@@ -232,14 +341,6 @@ class PlanTable extends Component {
         key: 'planPower',
         className: styles.planPower,
         sorter: true,
-        onCell: record =>{
-          return ({
-            record,
-            dataIndex: 'planPower',
-            title: '年计划发电量(万kWh)',
-            editing: this.isEditing(record),
-          })
-        },
         render: (text, record) => {
           const textValue = text ? text : '--';
           return <div className={this.isEditing(record) ? styles.save : ""}>{textValue}</div>
@@ -329,25 +430,25 @@ class PlanTable extends Component {
     this.setState({data: initPlanData})
   };
 
-  // handlevaluechange = (row, month, value, type) => {
-  //   if (type === 'month') {
-  //     let initMonthValue = this.state.monthPowers;
-  //     initMonthValue[month] = value;
-  //     this.setState({
-  //       monthPowers: initMonthValue
-  //     });
-  //   }
-  //   const newData = [...this.state.data];
-  //   const index = newData.findIndex(item => row.key === item.key);
-  //   if (index > -1) {
-  //     const item = newData[index];
-  //     newData.splice(index, 1, {
-  //       ...item,
-  //       ...row,
-  //     });
-  //   }
-  //   this.setState({data: newData})
-  // };
+  handlevaluechange = (row, month, value, type) => {
+    if (type === 'month') {
+      let initMonthValue = this.state.monthPowers;
+      initMonthValue[month] = value;
+      this.setState({
+        monthPowers: initMonthValue
+      });
+    }
+    const newData = [...this.state.data];
+    const index = newData.findIndex(item => row.key === item.key);
+    if (index > -1) {
+      const item = newData[index];
+      newData.splice(index, 1, {
+        ...item,
+        ...row,
+      });
+    }
+    this.setState({data: newData})
+  };
 
   cancelWarningTip = () => {
     this.setState({
@@ -370,11 +471,7 @@ class PlanTable extends Component {
       body: {
         row: EditableFormRow,
         cell: (...rest) => {
-          return (<EditableContext.Consumer>
-            {form => {
-              return <EditableCell form={form} {...rest[0]} handlevaluechange={this.handlevaluechange}/>
-            }}
-          </EditableContext.Consumer>)
+          return <EditableCell {...rest[0]} handlevaluechange={this.handlevaluechange}/>
         },
       },
     };
