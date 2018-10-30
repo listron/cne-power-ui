@@ -63,7 +63,7 @@ class LostGenTable extends Component {
             {getFieldDecorator(`${record.id}_endTime`, {
               initialValue: record.endTime,
             })(
-              <DatePicker placeholder="结束时间" showTime={{format: 'HH:mm'}} format="YYYY-MM-DD hh:mm"  />
+              <DatePicker placeholder="结束时间" showTime={{format: 'HH:mm'}} format="YYYY-MM-DD HH:mm"  />
             )}
           </Form.Item>)
         }
@@ -80,7 +80,7 @@ class LostGenTable extends Component {
           </Form.Item>)
         }
       },{
-        title: '日损失电量',
+        title: '日损失电量(kWh)',
         dataIndex: 'lostPower',
         render : (text, record) => {
           return (<Form.Item>
