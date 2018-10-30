@@ -31,11 +31,8 @@ class StationStatisticList extends React.Component {
       }
   }
   ontableSort = (pagination, filter, sorter) => {
-
-    console.log(sorter);
     const { getAllStationStatisticTableData, queryListParams, year, month, dateType, pageSize, pageNum } = this.props;
     const curYear = Number(year);
-    //console.log(this.props);
     const { field, order } = sorter;
     const sortInfo = {
       stationName: 'stationName',
@@ -81,7 +78,6 @@ class StationStatisticList extends React.Component {
   }
   handleTime = (e) => {
     const changeMonth = Number(e.target.value);
-   // console.log(changeMonth);
     // this.setState({
     //   month:changeMonth
     // })
@@ -108,7 +104,6 @@ class StationStatisticList extends React.Component {
   }
   handleYearTime = (e) => {
     const changeYear = Number(e.target.value);
-    //console.log(changeYear);
     const { getAllStationStatisticTableData, dateType, pageNum, pageSize, sortType, sort } = this.props;
     const curYear = Number(moment().format('YYYY'));
 
@@ -148,7 +143,6 @@ class StationStatisticList extends React.Component {
     let yearArray=allStationAvalibaData.map((e,i)=>(Number(e.year))) ;
     let currentYear=Math.max(...yearArray).toString();
     //const currentYear = moment().format('YYYY');
-    //console.log(currentYear);
     return (
       <Radio.Group defaultValue={currentYear} buttonStyle="solid" onChange={this.handleYearTime}>
         {allStationAvalibaData.map((e, index) => {
@@ -338,7 +332,7 @@ class StationStatisticList extends React.Component {
 
   render() {
     const { dateType, allStationStatisticTableData, totalNum, pageSize, pageNum, showPage } = this.props;
-    console.log(allStationStatisticTableData);
+   
     const columns = dateType === 'month' ? this.initMonthColumn() : this.initYearColumn();
     return (
       <div className={styles.stationStatisticList}>

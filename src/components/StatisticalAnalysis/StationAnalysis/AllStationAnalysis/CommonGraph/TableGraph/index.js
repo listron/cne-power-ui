@@ -402,7 +402,7 @@ class TableGraph extends React.Component {
         unit = ['光资源同比降幅排名', '瞬时辐射区间：w/㎡，辐射总量：MJ/㎡'];
         break;
       default:
-        data = [];
+        unit = [];
         break;
     }
     return unit;

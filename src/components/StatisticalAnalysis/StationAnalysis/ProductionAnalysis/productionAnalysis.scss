@@ -104,6 +104,7 @@
         .dataGraph{
           display: flex;    
           flex-direction: row;
+          height: 300px;
           >div:nth-child(1){
             flex: 5;
           }
