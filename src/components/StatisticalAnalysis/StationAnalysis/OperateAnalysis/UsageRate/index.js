@@ -2,6 +2,7 @@ import React from "react";
 import echarts from "echarts";
 import { setTimeout } from "timers";
 import PropTypes from "prop-types";
+import { showNoData, hiddenNoData } from '../../../../../constants/echartsNoData';
 
 class UsageRate extends React.Component {
   static propTypes = {
@@ -64,7 +65,8 @@ class UsageRate extends React.Component {
       yAxisName,
       xAxisName,
       title,
-      data
+      data,
+      hasData
       // showyAxis,
     } = param;
     const targetChart = echarts.init(document.getElementById(graphId));
@@ -79,7 +81,12 @@ class UsageRate extends React.Component {
         data: item
       };
     });
+    
+    // const initHasData= hasData ? 
+    // const confluenceTenMinGraphic = initHasData? hiddenNoData :showNoData;
+    // console.log('confluenceTenMinGraphic',confluenceTenMinGraphic)
     const targetMonthOption = {
+      // graphic: confluenceTenMinGraphic,
       title: {
         text: title,
         show: title ? "show" : false,
@@ -101,18 +108,18 @@ class UsageRate extends React.Component {
           }
         },
         backgroundColor: "#fff",
-        formatter: function(params) {
+        formatter: function (params) {
           let paramsItem = "";
           params.forEach((item, index) => {
             return (paramsItem += `<div> <span style="display: inline-block;width: 5px;height: 5px;border-radius: 50%;background:${
               color[index]
-            };vertical-align: 3px;margin-right: 3px;"> </span> ${
+              };vertical-align: 3px;margin-right: 3px;"> </span> ${
               params[index].seriesName
-            } :${params[index].value}</div>`);
+              } :${+params[index].value === 0 || params[index].value ? params[index].value : '--'}</div>`);
           });
           return `<div  style="border-bottom: 1px solid #ccc;padding-bottom: 7px;margin-bottom: 7px;width:180px;overflow:hidden;"> <span style="float: left">${
             params[0].name
-          } </span>
+            } </span>
           </div>
          ${paramsItem}`;
         },
@@ -123,11 +130,11 @@ class UsageRate extends React.Component {
         },
         extraCssText: "box-shadow: 0 0 3px rgba(0, 0, 0, 0.3)"
       },
-      grid:{
-        right:'15%'
+      grid: {
+        right: '15%'
       },
       legend: {
-        top: title ? 0 :20,
+        top: title ? 0 : 20,
         left: "center",
         // icon: "circle",
         itemWidth: 5,
@@ -188,7 +195,7 @@ class UsageRate extends React.Component {
             show: false,
           },
           splitLine: {
-            show:false,
+            show: false,
           },
         },
         {
@@ -211,7 +218,7 @@ class UsageRate extends React.Component {
             show: false,
           },
           splitLine: {
-            show:false,
+            show: false,
           },
         }
       ],
@@ -222,6 +229,8 @@ class UsageRate extends React.Component {
     }, 100);
     targetChart.setOption(targetMonthOption);
   };
+
+
   render() {
     const { graphId } = this.props;
     return <div id={graphId} />;

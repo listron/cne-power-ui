@@ -34,8 +34,7 @@ class DayReportMainList extends Component {
   
   onPaginationChange = ({ currentPage, pageSize }) => { // 分页器
     const { getDayReportList, stationType, stationNameSort, startTime, regionName  } = this.props;
-    let params = { stationType, stationNameSort, startTime };
-    regionName && (params.regionName = regionName);
+    let params = { stationType, stationNameSort, startTime, regionName };
     getDayReportList({ 
       ...params,
       pageSize, 
@@ -47,8 +46,7 @@ class DayReportMainList extends Component {
     const { order } = sorter;
     const stationNameSort = order ? (order === 'ascend' ? 1 : 0) : 0;
     const { getDayReportList, pageSize, pageNum, stationType, startTime, regionName  } = this.props;
-    let params = { pageSize, pageNum, stationType, startTime};
-    regionName && (params.regionName = regionName);
+    let params = { pageSize, pageNum, stationType, startTime, regionName};
     getDayReportList({ ...params, stationNameSort });
   }
 

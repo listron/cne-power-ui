@@ -11,14 +11,13 @@ function* changeOperateStationStore(action) {//存储payload指定参数，替�
   })
 }
 
-function* getAllStationAvalibaData(action) {//综合指标年月判断
+function* getAllStationAvalibaData(action) {//判断是否有数据
   const { payload } = action;
   const url = '/mock/api/v3/performance/comprehensive/dataavaliba';
   //const url= `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getAllStationAvaliba}`
   try {
     yield put({ type: operateAnalysisAction.OPERATESTATIONDATA_FETCH });
     const response = yield call(axios.post, url, payload);
-    console.log(response.data.data, '有数据的年或者月');
     if (response.data.code === '10000') {
       yield put({
         type: operateAnalysisAction.GET_OPERATESTATIONDATA_FETCH_SUCCESS,
@@ -44,9 +43,21 @@ function* getOperatePlanComplete(action) {//年/月/日计划完成情况
           operatePlanCompleteData: response.data.data || [],
         },
       });
+    }else{
+      yield put({
+        type: operateAnalysisAction.GET_OPERATESTATIONDATA_FETCH_SUCCESS,
+        payload: {
+          operatePlanCompleteData: [],
+        },
+      });
     }
   } catch (e) {
-    console.log(e);
+    yield put({
+      type: operateAnalysisAction.GET_OPERATESTATIONDATA_FETCH_SUCCESS,
+      payload: {
+        operatePlanCompleteData: [],
+      },
+    });
   }
 }
 function* getComponentPowerStatistic(action) {//月/年/日组件发电量统计
@@ -62,11 +73,23 @@ function* getComponentPowerStatistic(action) {//月/年/日组件发电量统计
           powerData: response.data.data || [],
         },
       });
+    }else{
+      yield put({
+        type: operateAnalysisAction.GET_OPERATESTATIONDATA_FETCH_SUCCESS,
+        payload: {
+          powerData: [],
+        },
+      });
     }
   } catch (e) {
-    console.log(e);
+    yield put({
+      type: operateAnalysisAction.GET_OPERATESTATIONDATA_FETCH_SUCCESS,
+      payload: {
+        powerData: [],
+      },
+    });
   }
-};
+}
 
 
 function* getPowerEfficiency(action){ // 月/年/日发电效率
@@ -82,9 +105,21 @@ function* getPowerEfficiency(action){ // 月/年/日发电效率
           efficiencyData: response.data.data || [],
         },
       });
+    }else{
+      yield put({
+        type: operateAnalysisAction.GET_OPERATESTATIONDATA_FETCH_SUCCESS,
+        payload: {
+          efficiencyData: [],
+        },
+      });
     }
   } catch (e) {
-    console.log(e);
+    yield put({
+      type: operateAnalysisAction.GET_OPERATESTATIONDATA_FETCH_SUCCESS,
+      payload: {
+        efficiencyData: [],
+      },
+    });
   }
 }
 
@@ -101,9 +136,21 @@ function* getUsageRate(action) {//月/年/日组件可利用率
           usageData: response.data.data || [],
         },
       });
+    }else{
+      yield put({
+        type: operateAnalysisAction.GET_OPERATESTATIONDATA_FETCH_SUCCESS,
+        payload: {
+          usageData: [],
+        },
+      });
     }
   } catch (e) {
-    console.log(e);
+    yield put({
+      type: operateAnalysisAction.GET_OPERATESTATIONDATA_FETCH_SUCCESS,
+      payload: {
+        usageData: [],
+      },
+    });
   }
 }
 
@@ -114,7 +161,6 @@ function* getlostPower(action){ // 年/月/日单电站 损失电量
     try {
       yield put({ type: operateAnalysisAction.OPERATESTATIONDATA_FETCH });
       const response = yield call(axios.post, url, payload);
-      console.log('payload',payload,response.data.data)
       if (response.data.code === '10000') {
         yield put({
           type: operateAnalysisAction.GET_OPERATESTATIONDATA_FETCH_SUCCESS,
@@ -122,9 +168,21 @@ function* getlostPower(action){ // 年/月/日单电站 损失电量
             lostPowerData: response.data.data || [],
           },
         });
+      }else{
+        yield put({
+          type: operateAnalysisAction.GET_OPERATESTATIONDATA_FETCH_SUCCESS,
+          payload: {
+            lostPowerData: [],
+          },
+        });
       }
     } catch (e) {
-      console.log(e);
+      yield put({
+        type: operateAnalysisAction.GET_OPERATESTATIONDATA_FETCH_SUCCESS,
+        payload: {
+          lostPowerData: [],
+        },
+      });
     }
 }
 
@@ -141,9 +199,21 @@ function* getLostPowerType(action) {//月/年/日电量损失类型
           lostPowerTypeDatas: response.data.data,
         },
       });
+    }else{
+      yield put({
+        type: operateAnalysisAction.GET_OPERATESTATIONDATA_FETCH_SUCCESS,
+        payload: {
+          lostPowerTypeDatas: [],
+        },
+      });
     }
   } catch (e) {
-    console.log(e);
+    yield put({
+      type: operateAnalysisAction.GET_OPERATESTATIONDATA_FETCH_SUCCESS,
+      payload: {
+        lostPowerTypeDatas: [],
+      },
+    });
   }
 }
 function* getLimitPowerRate(action) {//月/日限电率同比
@@ -159,9 +229,21 @@ function* getLimitPowerRate(action) {//月/日限电率同比
           limitPowerData: response.data.data,
         },
       });
+    }else{
+      yield put({
+        type: operateAnalysisAction.GET_OPERATESTATIONDATA_FETCH_SUCCESS,
+        payload: {
+          limitPowerData: [],
+        },
+      });
     }
   } catch (e) {
-    console.log(e);
+    yield put({
+      type: operateAnalysisAction.GET_OPERATESTATIONDATA_FETCH_SUCCESS,
+      payload: {
+        limitPowerData: [],
+      },
+    });
   }
 }
 function* getYearLimitPowerRate(action) {//年限电率环比
@@ -177,9 +259,21 @@ function* getYearLimitPowerRate(action) {//年限电率环比
           yearLimitPowerData: response.data.data,
         },
       });
+    }else{
+      yield put({
+        type: operateAnalysisAction.GET_OPERATESTATIONDATA_FETCH_SUCCESS,
+        payload: {
+          yearLimitPowerData: [],
+        },
+      });
     }
   } catch (e) {
-    console.log(e);
+    yield put({
+      type: operateAnalysisAction.GET_OPERATESTATIONDATA_FETCH_SUCCESS,
+      payload: {
+        yearLimitPowerData: [],
+      },
+    });
   }
 }
 function* getPlantPower(action) {//月/年/日厂用电情况/厂损情况
@@ -195,9 +289,21 @@ function* getPlantPower(action) {//月/年/日厂用电情况/厂损情况
           plantPowerData: response.data.data,
         },
       });
+    }else{
+      yield put({
+        type: operateAnalysisAction.GET_OPERATESTATIONDATA_FETCH_SUCCESS,
+        payload: {
+          yearLimitPowerData: [],
+        },
+      });
     }
   } catch (e) {
-    console.log(e);
+    yield put({
+      type: operateAnalysisAction.GET_OPERATESTATIONDATA_FETCH_SUCCESS,
+      payload: {
+        yearLimitPowerData: [],
+      },
+    });
   }
 }
 

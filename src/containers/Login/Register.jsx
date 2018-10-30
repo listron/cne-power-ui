@@ -5,7 +5,7 @@ import styles from './loginLayout.scss';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import LoginForm from '../../components/Login/LoginForm';
-import RegisterForm from '../../components/Login/RegisterForm';
+// import RegisterForm from '../../components/Login/RegisterForm';
 import { loginAction } from './loginAction';
 const { TabPane } = Tabs;
 
@@ -67,12 +67,12 @@ class Register extends Component {
             <TabPane tab="登录" key="login">
               <LoginForm changeLoginStore={this.props.changeLoginStore} />
             </TabPane>
-            <TabPane tab="注册企业" key="register">
+            {/* <TabPane tab="注册企业" key="register">
               <RegisterForm 
                 {...this.props}
                 history={history}
               />
-            </TabPane>
+            </TabPane> */}
           </Tabs>
         </div>
       </div>
