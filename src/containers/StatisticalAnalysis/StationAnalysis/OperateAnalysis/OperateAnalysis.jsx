@@ -72,6 +72,7 @@ const mapDispatchToProps = (dispatch) => ({
   getPlantPower: payload => dispatch({ type: operateAnalysisAction.getPlantPower, payload }),
   getPowerEfficiency: payload => dispatch({ type: operateAnalysisAction.getPowerEfficiency, payload }),
   getlostPower: payload => dispatch({ type: operateAnalysisAction.getlostPower, payload }),
+  getAllStationAvalibaData: payload => dispatch({ type: operateAnalysisAction.getAllStationAvalibaData, payload }),
 
 })
 
