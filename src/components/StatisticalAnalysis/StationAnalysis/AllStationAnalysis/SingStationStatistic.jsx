@@ -112,17 +112,14 @@ class SingleStationStatistic extends React.Component {
   componentWillReceiveProps(nextProps) {
     const { year, userId, dateType, singleStationCode, changeAllStationStore, getSingleStationStatisticData, getAllStationAvalibaData, getSingleStationPowerEffectiveData, getSingleStationPvCompareData, getSingleStationTargetData, getSingleStationPlanRateData, getSingleStationMonthPieData, getSingleStationDayCompleteRateData } = this.props;
     const { stationCode } = this.props.match.params;
-
     const currentYear = [moment().format('YYYY')];
     const currentTableYear = Number(moment().format('YYYY'));
     const currentMonth = Number(moment().format('MM'));
     const curYearNum = nextProps.year[0].split('-')[0];
     const curMonthNum = nextProps.year[0].split('-')[1];
     // console.log(curYearNum,curMonthNum);
-
     const curMonth = moment().format('YYYY-MM');
     const curMonthArray = [moment().format('YYYY-MM')]
-
     const curYear = Number(nextProps.year)
     const curYearPlan = nextProps.year[nextProps.year.length - 1];
     const selectYear = [Number(moment().subtract(5, 'year').format('YYYY')), Number(moment().format('YYYY'))];
@@ -135,53 +132,51 @@ class SingleStationStatistic extends React.Component {
     for (let i = nextPropsSelectYear[0]; i < nextPropsSelectYear[1] + 1; i++) {
       nextrRangeYear.push(i.toString())
     }
-
     //月->月
-    if (dateType === 'month' && nextProps.dateType === 'month') {
-      if (nextProps.year[0] !== this.props.year[0]) {
-        getSingleStationStatisticData(
-          {
-            stationCode: nextProps.singleStationCode,
-            year: nextProps.year[0],
-            dateType,
-          }
-        )
-        //发电量和损失电量两个请求
-        getSingleStationTargetData({
-          stationCode: nextProps.singleStationCode,
-          dateType,
-          // dataType:'power',
-          year: nextProps.year,
-          sort: 'date',
-          sortType: 'asc',
-        })
-        getSingleStationMonthPieData({
-          stationCode: nextProps.singleStationCode,
-          year: curYear
-        })
-        getSingleStationPlanRateData({
-          stationCode: nextProps.singleStationCode,
-          year: nextProps.year,
-          dateType,
-          sort: 'date',
-          sortType: 'asc',
+    //if ((dateType==='month'&&nextProps.dateType === 'month')&&(year[0]!==nextProps.year[0]||stationCode!==nextProps.stationCode)) {
+    if ((dateType === 'month' && nextProps.dateType === 'month') && (year[0] !== nextProps.year[0] || singleStationCode !== nextProps.singleStationCode)) {
 
-        })
-        getSingleStationPvCompareData({
+      getSingleStationStatisticData(
+        {
           stationCode: nextProps.singleStationCode,
-          year: curYear,
+          year: nextProps.year[0],
           dateType,
-          sort: 'date',
-          sortType: 'asc',
-        })
-        getSingleStationPowerEffectiveData({
-          stationCode: nextProps.singleStationCode,
-          year: nextProps.year,
-          dateType,
-          sort: 'date',
-          sortType: 'asc',
-        })
-      }
+        }
+      )
+      //发电量和损失电量两个请求
+      getSingleStationTargetData({
+        stationCode: nextProps.singleStationCode,
+        dateType,
+        // dataType:'power',
+        year: nextProps.year,
+        sort: 'date',
+        sortType: 'asc',
+      })
+      getSingleStationMonthPieData({
+        stationCode: nextProps.singleStationCode,
+        year: curYear
+      })
+      getSingleStationPlanRateData({
+        stationCode: nextProps.singleStationCode,
+        year: nextProps.year,
+        dateType,
+        sort: 'date',
+        sortType: 'asc',
+      })
+      getSingleStationPvCompareData({
+        stationCode: nextProps.singleStationCode,
+        year: curYear,
+        dateType,
+        sort: 'date',
+        sortType: 'asc',
+      })
+      getSingleStationPowerEffectiveData({
+        stationCode: nextProps.singleStationCode,
+        year: nextProps.year,
+        dateType,
+        sort: 'date',
+        sortType: 'asc',
+      })
     }
     //月/年->日
     if (dateType !== nextProps.dateType && nextProps.dateType === 'day') {
@@ -206,7 +201,6 @@ class SingleStationStatistic extends React.Component {
         year: currentTableYear,
         month: currentMonth
       })
-
       getSingleStationPowerEffectiveData({
         stationCode: nextProps.singleStationCode,
         year: currentYear,
@@ -215,46 +209,39 @@ class SingleStationStatistic extends React.Component {
         sort: 'date',
         sortType: 'asc',
       })
-
-
     }
     //日->日
-    if (dateType === 'day' && nextProps.dateType === 'day') {
-      if (nextProps.year[0] !== this.props.year[0]) {
-
-        getSingleStationStatisticData(
-          {
-            stationCode: nextProps.singleStationCode,
-            year: nextProps.year[0],
-            dateType,
-          }
-        )
-        //发电量和损失电量两个请求
-        getSingleStationTargetData({
+    if ((dateType === 'day' && nextProps.dateType === 'day') && (year[0] !== nextProps.year[0] || singleStationCode !== nextProps.singleStationCode)) {
+      getSingleStationStatisticData(
+        {
           stationCode: nextProps.singleStationCode,
-          dateType,
-          // dataType:'power',
-          year: nextProps.year,
-          sort: 'date',
-          sortType: 'asc',
-        })
-        getSingleStationDayCompleteRateData({
-          stationCode: nextProps.singleStationCode,
-          year: curYearNum,
-          month: curMonthNum
-        })
-
-        getSingleStationPowerEffectiveData({
-          stationCode: nextProps.singleStationCode,
-          year: [curYearNum],
-          month: curMonthNum,
-          dateType,
-          sort: 'date',
-          sortType: 'asc',
-        })
-      }
+          year: nextProps.year[0],
+          dateType: nextProps.dateType,
+        }
+      )
+      //发电量和损失电量两个请求
+      getSingleStationTargetData({
+        stationCode: nextProps.singleStationCode,
+        dateType: nextProps.dateType,
+        // dataType:'power',
+        year: nextProps.year,
+        sort: 'date',
+        sortType: 'asc',
+      })
+      getSingleStationDayCompleteRateData({
+        stationCode: nextProps.singleStationCode,
+        year: curYearNum,
+        month: curMonthNum
+      })
+      getSingleStationPowerEffectiveData({
+        stationCode: nextProps.singleStationCode,
+        year: [curYearNum],
+        month: curMonthNum,
+        dateType: nextProps.dateType,
+        sort: 'date',
+        sortType: 'asc',
+      })
     }
-
     //月/日->年
     if (dateType !== nextProps.dateType && nextProps.dateType === 'year') {
       getAllStationAvalibaData(
@@ -335,40 +322,37 @@ class SingleStationStatistic extends React.Component {
 
     }
     //年->年
-    if (dateType === 'year' && nextProps.dateType === 'year') {
-      if (nextProps.year[0] !== this.props.year[0] || nextProps.year[1] !== this.props.year[1]) {
-        getAllStationAvalibaData(
-          {
-            userId: userId,
-            year: rangeYear,
-            dateType,
-          })
-        getSingleStationStatisticData(
-          {
-            stationCode: nextProps.singleStationCode,
-            year: curYearPlan,
-            dateType,
-          }
-        )
-        getSingleStationTargetData({
-          stationCode: nextProps.singleStationCode,
-          dateType,
-          // dataType:'power',
-          year: nextrRangeYear,
-          sort: 'date',
-          sortType: 'asc',
+    if ((dateType === 'year' && nextProps.dateType === 'year') && (nextProps.year[0] !== this.props.year[0] || nextProps.year[1] !== this.props.year[1] || singleStationCode !== nextProps.singleStationCode)) {
+
+      getAllStationAvalibaData(
+        {
+          userId: userId,
+          year: rangeYear,
+          dateType: nextProps.dateType,
         })
-        getSingleStationPowerEffectiveData({
+      getSingleStationStatisticData(
+        {
           stationCode: nextProps.singleStationCode,
-          year: nextrRangeYear,
-          dateType,
-          sort: 'date',
-          sortType: 'asc',
-        })
+          year: curYearPlan,
+          dateType: nextProps.dateType,
+        }
+      )
+      getSingleStationTargetData({
+        stationCode: nextProps.singleStationCode,
+        dateType: nextProps.dateType,
+        // dataType:'power',
+        year: nextrRangeYear,
+        sort: 'date',
+        sortType: 'asc',
+      })
+      getSingleStationPowerEffectiveData({
+        stationCode: nextProps.singleStationCode,
+        year: nextrRangeYear,
+        dateType: nextProps.dateType,
+        sort: 'date',
+        sortType: 'asc',
+      })
 
-
-
-      }
     }
   }
   onClose = () => {
@@ -389,34 +373,25 @@ class SingleStationStatistic extends React.Component {
     });
   }
   render() {
-
-    //const locationSearch = this.props.history.location.pathname;
-    // console.log(this.props.match);
     const { stationCode } = this.props.match.params;
     if (stationCode !== singleStationCode) {
       this.props.changeAllStationStore({ singleStationCode: stationCode });
     }
-
-
-
-
     const { stationType, stations, dateType, singleStationCode, year, singleStationStatisticData, showPage, singleStationPlanRateData, singleStationPvCompareData, singleStationPowerData, singleStationLostPowerData, singleStationMonthPieData, singleStationPlanRate, allStationAvalibaData, singleStationDayCompleteRateData, singleStationPowerEffectiveData } = this.props;
     const statisticTime = moment().subtract(1, 'days').format('YYYY年MM月DD日');
-    //console.log(statisticTime);
     const currentYear = parseInt(year).toString();
     const lastYear = (parseInt(year) - 1).toString();
-    //console.log(currentYear,lastYear);
     //发电量数据
-    const barGraphThatYear = singleStationPowerData.map((e, i) => (e.thatYearData||'--'))
-    const barGraphLastYear = singleStationPowerData.map((e, i) => (e.lastYearData||'--'))
+    const barGraphThatYear = singleStationPowerData.map((e, i) => ((e.thatYearData || e.thatYearData === 0) ? e.thatYearData : '--'))
+    const barGraphLastYear = singleStationPowerData.map((e, i) => ((e.lastYearData || e.lastYearData === 0) ? e.lastYearData : '--'))
     const barGraphmonth = singleStationPowerData.map((e, i) => (`${e.date}${dateType === 'month' ? '月' : (dateType === 'day' ? '日' : '')}`))
-    const barGraphYearOnYear = singleStationPowerData.map((e, i) => (e.yearOnYear||'--'))
-    const barGraphRingRatio = singleStationPowerData.map((e, i) => (e.ringRatio||'--'))
+    const barGraphYearOnYear = singleStationPowerData.map((e, i) => ((e.yearOnYear || e.yearOnYear === '0') ? e.yearOnYear : '--'))
+    const barGraphRingRatio = singleStationPowerData.map((e, i) => ((e.ringRatio || e.ringRatio === '0') ? e.ringRatio : '--'))
     //单电站累计完成率
-    const dayCompleteRateThatYearData = singleStationDayCompleteRateData.map((e, i) => (e.thatYearData||'--'))
-    const dayCompleteRateLastYearData = singleStationDayCompleteRateData.map((e, i) => (e.lastYearData||'--'))
+    const dayCompleteRateThatYearData = singleStationDayCompleteRateData.map((e, i) => ((e.thatYearData || e.thatYearData === 0) ? e.thatYearData : '--'))
+    const dayCompleteRateLastYearData = singleStationDayCompleteRateData.map((e, i) => ((e.lastYearData || e.lastYearData === 0) ? e.lastYearData : '--'))
     const dayCompleteRateDateData = singleStationDayCompleteRateData.map((e, i) => (`${e.day}日`))
-    const dayCompleteRate = singleStationDayCompleteRateData.map((e, i) => (e.yearOnYear||'--'))
+    const dayCompleteRate = singleStationDayCompleteRateData.map((e, i) => ((e.yearOnYear || e.yearOnYear === '0') ? e.yearOnYear : '--'))
     //发电量饼图
     const pieData = singleStationMonthPieData.map((e, i) => ({ value: Number(e.monthPower), name: `${e.month}月` }));
     const pieCompleteValue = Number(singleStationPlanRate)
@@ -425,20 +400,16 @@ class SingleStationStatistic extends React.Component {
     //计划完成率
     //console.log(singleStationPlanRateData);
     const xAxisData = singleStationPlanRateData.map((e, i) => (`${e.date}月`))
-    const planPowerData = singleStationPlanRateData.map((e, i) => (e.planPower||'--'))
-    const actualPowerData = singleStationPlanRateData.map((e, i) => (e.actualPower||'--'))
-    const planRateData = singleStationPlanRateData.map((e, i) => (e.per||'--'))
+    const planPowerData = singleStationPlanRateData.map((e, i) => ((e.planPower || e.planPower === '0') ? e.planPower : '--'))
+    const actualPowerData = singleStationPlanRateData.map((e, i) => ((e.actualPower || e.actualPower === '0') ? e.actualPower : '--'))
+    const planRateData = singleStationPlanRateData.map((e, i) => ((e.per || e.per === '0') ? e.per : '--'))
     //光资源分析
-    const lightCompareDataThatYear = singleStationPvCompareData.map((e, i) => (e.thatYearData||'--'))
-    const lightCompareDataLastYear = singleStationPvCompareData.map((e, i) => (e.lastYearData||'--'))
+    const lightCompareDataThatYear = singleStationPvCompareData.map((e, i) => ((e.thatYearData || e.thatYearData === 0) ? e.thatYearData : '--'))
+    const lightCompareDataLastYear = singleStationPvCompareData.map((e, i) => ((e.lastYearData || e.lastYearData === 0) ? e.lastYearData : '--'))
     const lightCompareDataDate = singleStationPvCompareData.map((e, i) => (`${e.monthOrDay}月`))
-    const lightCompareDataLight = singleStationPvCompareData.map((e, i) => (e.lightYearOnYear||'--'))
-    const lightCompareDataPower = singleStationPvCompareData.map((e, i) => (e.powerYearOnYear||'--'))
-    //发电效率分析
-    // const PowerEffectiveDateData = singleStationPowerEffectiveData.map((e, i) => (`${e.date}${dateType === 'month' ? '月' : (dateType === 'day' ? '日' : '')}`))
-    // const PowerEffectiveHoursData = singleStationPowerEffectiveData.map((e, i) => (e.hours||'--'))
-    // const PowerEffectiveLightData = singleStationPowerEffectiveData.map((e, i) => (e.light||'--'))
-    // const PowerEffectivePrData = singleStationPowerEffectiveData.map((e, i) => (e.pr||'--'))
+    const lightCompareDataLight = singleStationPvCompareData.map((e, i) => ((e.lightYearOnYear || e.lightYearOnYear === '0') ? e.lightYearOnYear : '--'))
+    const lightCompareDataPower = singleStationPvCompareData.map((e, i) => ((e.powerYearOnYear || e.powerYearOnYear === '0') ? e.powerYearOnYear : '--'))
+    
     //发电效率分析 
     const PowerEffectiveData = {
       xData: singleStationPowerEffectiveData.map((e, i) => (`${e.date}${dateType === 'month' ? '月' : (dateType === 'day' ? '日' : '')}`)),
@@ -453,21 +424,18 @@ class SingleStationStatistic extends React.Component {
       }
     }
     //损失电量数据
-    const lostPowerThatYear = singleStationLostPowerData.map((e, i) => (e.thatYearData||'--'))
-    const lostPowerLastYear = singleStationLostPowerData.map((e, i) => (e.lastYearData||'--'))
-    const lostPowerRingRatio = singleStationLostPowerData.map((e, i) => (e.ringRatio||'--'))
+    const lostPowerThatYear = singleStationLostPowerData.map((e, i) => ((e.thatYearData || e.thatYearData === 0) ? e.thatYearData : '--'))
+    const lostPowerLastYear = singleStationLostPowerData.map((e, i) => ((e.lastYearData || e.lastYearData === 0) ? e.lastYearData : '--'))
+    const lostPowerRingRatio = singleStationLostPowerData.map((e, i) => ((e.ringRatio || e.ringRatio === '0') ? e.ringRatio : '--'))
     const lostPowermonth = singleStationLostPowerData.map((e, i) => (`${e.date}${dateType === 'month' ? '月' : (dateType === 'day' ? '日' : '')}`))
-    const lostPowerYearOnYear = singleStationLostPowerData.map((e, i) => (e.yearOnYear||'--'))
-    //console.log(singleStationCode);
-    // console.log(stations.toJS());
+    const lostPowerYearOnYear = singleStationLostPowerData.map((e, i) => ((e.yearOnYear || e.yearOnYear === '0') ? e.yearOnYear : '--'))
     const { showStationSelect } = this.state;
-    const stationItem = stations.find(station => station.get('stationCode').toString() === singleStationCode).toJS();
-    const stationGridTime = 0 ? stationItem.onGridTime.moment().format('YYYY年MM月DD日') : '--';
-
+    const stationItems = stations.toJS();
+    const stationItem = stationItems.filter(e => (e.stationCode.toString() === singleStationCode))[0];
+    const stationGridTime = stationItem.onGridTime ? moment(stationItem.onGridTime).format('YYYY年MM月DD日') : '--';
     //console.log(stationItem);
     //拿到单电站的类型，弄个数组，把对应的iconfont加上，在下面调用
     //console.log(stationItem);
-
     return (
       <div className={styles.singleStationType}>
         <div className={styles.componentContainer}>
