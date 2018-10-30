@@ -34,8 +34,7 @@ class PlancompletionRate extends React.Component{
     selectYear() {
         const {allStationAvalibaData}=this.props;
         let yearArray=allStationAvalibaData.map((e,i)=>(Number(e.year))) ;
-        let currentYear=Math.max(...yearArray).toString()
-     
+        let currentYear=(Math.max(...yearArray)).toString();     
         return (
           <Radio.Group defaultValue={currentYear}  buttonStyle="solid" onChange={this.handleTime}>
            {allStationAvalibaData.map((e,index)=>{        
@@ -52,6 +51,7 @@ class PlancompletionRate extends React.Component{
       }
     render(){
         const {dateType,allStationStatisticData,showPage,year}=this.props;
+        // console.log(year);
        
         let planSummary = showPage==='single'?allStationStatisticData:(allStationStatisticData&&allStationStatisticData.planSummary&&allStationStatisticData.planSummary[0])
         const actualPower=planSummary&&planSummary.actualPower?planSummary.actualPower:'--';

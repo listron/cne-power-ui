@@ -93,7 +93,7 @@ class AllStationStatistic extends React.Component {
 
   }
   componentWillReceiveProps(nextProps) {
-    const { getAllStationAvalibaData, getAllStationMonthBarData, getAllStationStatisticData, getAllStationStatisticTableData, getAllStationMonthPieData, dateType, userId, pageNum, sortType, sort, pageSize } = this.props;
+    const { getAllStationAvalibaData, getAllStationMonthBarData,changeAllStationStore, getAllStationStatisticData, getAllStationStatisticTableData, getAllStationMonthPieData, dateType, userId, pageNum, sortType, sort, pageSize } = this.props;
     //console.log(pageNum);
     const currentYear = [moment().format('YYYY')];
     const currentTableYear = Number(moment().format('YYYY'));
@@ -156,6 +156,9 @@ class AllStationStatistic extends React.Component {
     }
     //月->年
     if (dateType !== nextProps.dateType && nextProps.dateType === 'year') {
+      changeAllStationStore({
+        year:rangeYear
+      })
       getAllStationAvalibaData(
         {
           userId: userId,
@@ -192,6 +195,7 @@ class AllStationStatistic extends React.Component {
     }
     //年->月
     if (dateType !== nextProps.dateType && nextProps.dateType === 'month') {
+      changeAllStationStore({ year: currentYear, month: currentMonth })
       getAllStationAvalibaData(
         {
           userId: userId,
@@ -209,7 +213,7 @@ class AllStationStatistic extends React.Component {
         getAllStationStatisticTableData(
           {
     
-            year: currentYear,
+            year: currentTableYear,
             dateType:nextProps.dateType,
             month: currentMonth,//默认当前月
             pageNum:1, // 当前页
@@ -303,7 +307,7 @@ class AllStationStatistic extends React.Component {
     );
     const { stationType, stations, dateType, year, allStationAvalibaData, allStationStatisticData, getAllStationStatisticData } = this.props;
     const { showStationSelect } = this.state;
-    //console.log(dateType, year);
+   
     return (
       <div className={styles.allStationTypeTabs}>
         <Tabs type="card" tabBarExtraContent={operations}  >

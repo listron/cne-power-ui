@@ -407,16 +407,16 @@ class SingleStationStatistic extends React.Component {
     const lastYear = (parseInt(year) - 1).toString();
     //console.log(currentYear,lastYear);
     //发电量数据
-    const barGraphThatYear = singleStationPowerData.map((e, i) => (e.thatYearData))
-    const barGraphLastYear = singleStationPowerData.map((e, i) => (e.lastYearData))
+    const barGraphThatYear = singleStationPowerData.map((e, i) => (e.thatYearData||'--'))
+    const barGraphLastYear = singleStationPowerData.map((e, i) => (e.lastYearData||'--'))
     const barGraphmonth = singleStationPowerData.map((e, i) => (`${e.date}${dateType === 'month' ? '月' : (dateType === 'day' ? '日' : '')}`))
-    const barGraphYearOnYear = singleStationPowerData.map((e, i) => (e.yearOnYear))
-    const barGraphRingRatio = singleStationPowerData.map((e, i) => (e.ringRatio))
+    const barGraphYearOnYear = singleStationPowerData.map((e, i) => (e.yearOnYear||'--'))
+    const barGraphRingRatio = singleStationPowerData.map((e, i) => (e.ringRatio||'--'))
     //单电站累计完成率
-    const dayCompleteRateThatYearData = singleStationDayCompleteRateData.map((e, i) => (e.thatYearData))
-    const dayCompleteRateLastYearData = singleStationDayCompleteRateData.map((e, i) => (e.lastYearData))
+    const dayCompleteRateThatYearData = singleStationDayCompleteRateData.map((e, i) => (e.thatYearData||'--'))
+    const dayCompleteRateLastYearData = singleStationDayCompleteRateData.map((e, i) => (e.lastYearData||'--'))
     const dayCompleteRateDateData = singleStationDayCompleteRateData.map((e, i) => (`${e.day}日`))
-    const dayCompleteRate = singleStationDayCompleteRateData.map((e, i) => (e.yearOnYear))
+    const dayCompleteRate = singleStationDayCompleteRateData.map((e, i) => (e.yearOnYear||'--'))
     //发电量饼图
     const pieData = singleStationMonthPieData.map((e, i) => ({ value: Number(e.monthPower), name: `${e.month}月` }));
     const pieCompleteValue = Number(singleStationPlanRate)
@@ -425,15 +425,20 @@ class SingleStationStatistic extends React.Component {
     //计划完成率
     //console.log(singleStationPlanRateData);
     const xAxisData = singleStationPlanRateData.map((e, i) => (`${e.date}月`))
-    const planPowerData = singleStationPlanRateData.map((e, i) => (e.planPower))
-    const actualPowerData = singleStationPlanRateData.map((e, i) => (e.actualPower))
-    const planRateData = singleStationPlanRateData.map((e, i) => (e.per))
+    const planPowerData = singleStationPlanRateData.map((e, i) => (e.planPower||'--'))
+    const actualPowerData = singleStationPlanRateData.map((e, i) => (e.actualPower||'--'))
+    const planRateData = singleStationPlanRateData.map((e, i) => (e.per||'--'))
     //光资源分析
-    const lightCompareDataThatYear = singleStationPvCompareData.map((e, i) => (e.thatYearData))
-    const lightCompareDataLastYear = singleStationPvCompareData.map((e, i) => (e.lastYearData))
+    const lightCompareDataThatYear = singleStationPvCompareData.map((e, i) => (e.thatYearData||'--'))
+    const lightCompareDataLastYear = singleStationPvCompareData.map((e, i) => (e.lastYearData||'--'))
     const lightCompareDataDate = singleStationPvCompareData.map((e, i) => (`${e.monthOrDay}月`))
-    const lightCompareDataLight = singleStationPvCompareData.map((e, i) => (e.lightYearOnYear))
-    const lightCompareDataPower = singleStationPvCompareData.map((e, i) => (e.powerYearOnYear))
+    const lightCompareDataLight = singleStationPvCompareData.map((e, i) => (e.lightYearOnYear||'--'))
+    const lightCompareDataPower = singleStationPvCompareData.map((e, i) => (e.powerYearOnYear||'--'))
+    //发电效率分析
+    // const PowerEffectiveDateData = singleStationPowerEffectiveData.map((e, i) => (`${e.date}${dateType === 'month' ? '月' : (dateType === 'day' ? '日' : '')}`))
+    // const PowerEffectiveHoursData = singleStationPowerEffectiveData.map((e, i) => (e.hours||'--'))
+    // const PowerEffectiveLightData = singleStationPowerEffectiveData.map((e, i) => (e.light||'--'))
+    // const PowerEffectivePrData = singleStationPowerEffectiveData.map((e, i) => (e.pr||'--'))
     //发电效率分析 
     const PowerEffectiveData = {
       xData: singleStationPowerEffectiveData.map((e, i) => (`${e.date}${dateType === 'month' ? '月' : (dateType === 'day' ? '日' : '')}`)),
@@ -448,11 +453,11 @@ class SingleStationStatistic extends React.Component {
       }
     }
     //损失电量数据
-    const lostPowerThatYear = singleStationLostPowerData.map((e, i) => (e.thatYearData))
-    const lostPowerLastYear = singleStationLostPowerData.map((e, i) => (e.lastYearData))
-    const lostPowerRingRatio = singleStationLostPowerData.map((e, i) => (e.ringRatio))
+    const lostPowerThatYear = singleStationLostPowerData.map((e, i) => (e.thatYearData||'--'))
+    const lostPowerLastYear = singleStationLostPowerData.map((e, i) => (e.lastYearData||'--'))
+    const lostPowerRingRatio = singleStationLostPowerData.map((e, i) => (e.ringRatio||'--'))
     const lostPowermonth = singleStationLostPowerData.map((e, i) => (`${e.date}${dateType === 'month' ? '月' : (dateType === 'day' ? '日' : '')}`))
-    const lostPowerYearOnYear = singleStationLostPowerData.map((e, i) => (e.yearOnYear))
+    const lostPowerYearOnYear = singleStationLostPowerData.map((e, i) => (e.yearOnYear||'--'))
     //console.log(singleStationCode);
     // console.log(stations.toJS());
     const { showStationSelect } = this.state;

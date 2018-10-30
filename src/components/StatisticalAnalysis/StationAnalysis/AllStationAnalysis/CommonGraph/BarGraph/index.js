@@ -59,6 +59,12 @@ class BarGraph extends React.Component {
       case '损失电量同比':
         result = ['#dfdfdf', '#199475', '#f9b600'];
         break;
+      case '购网电量':
+        result = ['#dfdfdf', '#199475', '#f9b600'];
+        break;
+      case '上网电量':
+        result = ['#dfdfdf', '#3e97d1', '#f9b600'];
+        break;
       default:
         result = '#ccc';
     }
@@ -77,7 +83,7 @@ class BarGraph extends React.Component {
   };
 
   drawCharts = (param) => {
-    const {graphId, yAxisName, xAxisName, dateType,barGraphThatYear,barGraphLastYear,barGraphmonth,barGraphYearOnYear,lastYear,barGraphRingRatio,currentYear,title} = param;
+    const { graphId, yAxisName, xAxisName, dateType, barGraphThatYear, barGraphLastYear, barGraphmonth, barGraphYearOnYear, lastYear, barGraphRingRatio, currentYear, title } = param;
     const targetChart = echarts.init(document.getElementById(graphId));
     let targetOption = {};
     targetChart.clear();
@@ -122,7 +128,7 @@ class BarGraph extends React.Component {
           }
         },
         legend: {
-          top: title ? 0 :20,
+          top: title ? 0 : 20,
           left: 'center',
           icon: 'circle',
           itemWidth: 5,
@@ -132,7 +138,7 @@ class BarGraph extends React.Component {
           {
             type: 'category',
             // data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
-            data:barGraphmonth,
+            data: barGraphmonth,
             axisPointer: {
               type: 'shadow'
             },
@@ -263,11 +269,11 @@ class BarGraph extends React.Component {
           formatter: function (params) {
             let paramsItem = '';
             params.forEach((item, index) => {
-              return paramsItem += `<div> <span style="display: inline-block;width: 5px;height: 5px;border-radius: 50%;background:${color[index + 1]};vertical-align: 3px;margin-right: 3px;"> </span> ${params[index].seriesName} :${params[index].value}</div>`
+              return paramsItem += `<div> <span style="display: inline-block;width: 5px;height: 5px;border-radius: 50%;background:${color[index]};vertical-align: 3px;margin-right: 3px;"> </span> ${params[index].seriesName} :${params[index].value}</div>`
             });
-            return `<div  style="border-bottom: 1px solid #ccc;padding-bottom: 7px;margin-bottom: 7px;width:180px;overflow:hidden;"> <span style="float: left">${params[0].name} </span>
-            </div>
-           ${paramsItem}`
+            return `<div  style="border-bottom: 1px solid #ccc;padding-bottom: 7px;margin-bottom: 7px;width:180px;overflow:hidden;"> <span style="float: left">${params[0].name} </span><span style="float: right">${xAxisName} </span>
+            </div>${paramsItem}`
+          
           },
           padding: 10,
           textStyle: {
@@ -288,7 +294,7 @@ class BarGraph extends React.Component {
             type: 'category',
             // data: ['2014年', '2015年', '2016年', '2017年', '2018年', '2019年',],
             data: barGraphmonth,
-            
+
             axisPointer: {
               type: 'shadow'
             },
@@ -346,7 +352,7 @@ class BarGraph extends React.Component {
               show: false,
             },
             splitLine: {
-              show:false,
+              show: false,
               lineStyle: {
                 color: '#666',
                 type: 'dashed'
@@ -371,9 +377,9 @@ class BarGraph extends React.Component {
             name: '环比',
             type: 'line',
             yAxisIndex: 1,
-             data: barGraphRingRatio,
+            data: barGraphRingRatio,
             //  data: [2.0, 2.2, 3.3, 4.5, 6.3, 10.2,],
-          
+
 
           }
         ]
@@ -383,7 +389,7 @@ class BarGraph extends React.Component {
   };
 
   render() {
-    const { graphId} = this.props;
+    const { graphId } = this.props;
     return (
       <div id={graphId} className={styles.statisticGraph}> </div>
       // <div id={graphId} className={styles.statisticGraph} style={{width: '100%', height: "100%"}}></div>

@@ -14,7 +14,7 @@ import Footer from '../../../../components/Common/Footer';
 
 class ProductionAnalysisContainer extends Component {
   static propTypes = {
-    stationCode: PropTypes.array,
+    
     location: PropTypes.object,
   }
 
