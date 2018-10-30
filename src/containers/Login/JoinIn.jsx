@@ -50,8 +50,8 @@ class JoinIn extends Component {
       <div className={styles.joinInContent} >
         <div className={styles.goLogin}>
           <span onClick={this.onLogin}> 登录 </span>
-          <span>|</span>
-          <span onClick={() => this.changePage('register')}> 注册 </span>
+          {/* <span>|</span>
+          <span onClick={() => this.changePage('register')}> 注册 </span> */}
         </div>
         <JoinInForm  {...this.props} />
         

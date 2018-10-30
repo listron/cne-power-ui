@@ -221,7 +221,7 @@ class LoginForm extends Component {
             {checkLoginPhone ? <div></div>
               : 
               <div className={styles.checkLoginPhone} >
-                <p>如未注册企业，请<span onClick={()=>this.props.changeLoginStore({pageTab: 'register'})}>注册</span>！</p>
+                {/* <p>如未注册企业，请<span onClick={()=>this.props.changeLoginStore({pageTab: 'register'})}>注册</span>！</p> */}
                 <p>如需加入企业，请<span onClick={()=>this.props.changeLoginStore({pageTab: 'joinIn'})}>加入企业</span>！</p>
               </div>
             }
