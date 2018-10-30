@@ -5,7 +5,7 @@ import {Tabs, message} from 'antd';
 import PropTypes from 'prop-types';
 import styles from './loginLayout.scss';
 import LoginForm from '../../components/Login/LoginForm';
-import RegisterForm from '../../components/Login/RegisterForm';
+// import RegisterForm from '../../components/Login/RegisterForm';
 import {loginAction} from './loginAction';
 
 const {TabPane} = Tabs;
@@ -54,16 +54,16 @@ class Login extends Component {
           <div className={styles.join} >加入企业</div>
         </div>
         <div className={styles.loginTab}>
-          <Tabs onChange={this.changePage} animated={false} activeKey={pageTab}>
+          <Tabs onChange={this.changePage} animated={false} activeKey={pageTab} className={styles.tab}>
             <TabPane tab="登录" key="login">
               <LoginForm
                 {...this.props}
                 history={history}
               />
             </TabPane>
-            <TabPane tab="注册企业" key="register">
+            {/* <TabPane tab="注册企业" key="register">
               <RegisterForm />
-            </TabPane>
+            </TabPane> */}
           </Tabs>
         </div>
       </div>

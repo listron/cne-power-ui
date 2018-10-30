@@ -15,7 +15,7 @@ const { MonthPicker } = DatePicker;
   不同timeStyle : year, month,day 对应输入输出格式。
   year: 2018 => 2028; 
   month : 2018-01 => 2018-12; 
-  day: 2018-02-12 => 2018-12-11;
+  day: 2018-02=> 2018-02;
 2.接收必填的组件输出函数onChange = (timObj)=>{}输出timObj格式同上;
 3.可选参数输入showYearPick(默认true) , showMonthPick(默认true), showDayPick(默认true); 均为bool
 4.可选展示参数timerText: string; 默认'统计时间选择'

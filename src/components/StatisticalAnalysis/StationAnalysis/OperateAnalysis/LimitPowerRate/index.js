@@ -16,46 +16,48 @@ class PlanCompleteRateAnalysisBar extends React.Component {
   }
 
 
-  getName = (type,currentYear, lastYear) => { // 获取对应的name
+  getName = (type, currentYear, lastYear) => { // 获取对应的name
     let name = '';
     switch (type) {
-      case 'thatYearLostPower': name=currentYear + '年限电损失';break;
-      case 'lastyearLostPower': name=lastYear + '年限电损失'; break;
-      case 'thatYearLostPowerRate': name=currentYear + '年限电率'; break;
-      case 'lastyearLostPowerRate': name=lastYear + '年限电率'; break;
-      case 'lostPowerRateYearOnYear': name='限电率同比'; break;
-      case 'limitPower': name='限电损失'; break;
-      case 'limitPowerRate': name='限电率'; break;
-      case 'ringRatio': name='限电率环比'; break;
+      case 'thatYearLostPower': name = currentYear + '年限电损失'; break;
+      case 'lastyearLostPower': name = lastYear + '年限电损失'; break;
+      case 'thatYearLostPowerRate': name = currentYear + '年限电率'; break;
+      case 'lastyearLostPowerRate': name = lastYear + '年限电率'; break;
+      case 'lostPowerRateYearOnYear': name = '限电率同比'; break;
+      case 'limitPower': name = '限电损失'; break;
+      case 'limitPowerRate': name = '限电率'; break;
+      case 'ringRatio': name = '限电率环比'; break;
     }
     return name;
   }
 
   drawChart = (param) => {
-    const { graphId, yAxisName, xAxisName, dateType, title, data,currentYear, lastYear } = param;
+    const { graphId, yAxisName, xAxisName, dateType, title, data, currentYear, lastYear } = param;
     const targetChart = echarts.init(document.getElementById(graphId));
+    targetChart.clear();
     const color = ['#dfdfdf', '#f9b600', '##999999', '#3e97d1', '#f9b600'];
-    let seriesData=[];
-    const lineData=data.yData.lineData;
-    const barData=data.yData.barData;
+    let seriesData = [];
+    const lineData = data.yData.lineData;
+    const barData = data.yData.barData;
+    let targetOption={};
     for (var bar in barData) {
-      var json = { 
-        name: this.getName(bar,currentYear, lastYear), 
+      var json = {
+        name: this.getName(bar, currentYear, lastYear),
         data: barData[bar],
         type: 'bar',
       };
       seriesData.push(json);
     }
     for (var line in lineData) {
-      var json = { 
-        name: this.getName(line,currentYear, lastYear), 
-        data:lineData[line],
+      var json = {
+        name: this.getName(line, currentYear, lastYear),
+        data: lineData[line],
         type: 'line',
         yAxisIndex: 1,
       };
       seriesData.push(json);
     }
-    const targetOption = {
+    targetOption = {
       color: color,
       title: {
         text: title,
@@ -150,7 +152,7 @@ class PlanCompleteRateAnalysisBar extends React.Component {
         },
         {
           type: 'value',
-          name: '同比',
+          name: dateType==="year"?'环比':'同比',
           nameTextStyle: {
             color: '#666',
           },
@@ -175,9 +177,9 @@ class PlanCompleteRateAnalysisBar extends React.Component {
       ],
       series: seriesData
     };
-    setTimeout(()=>{targetChart.resize();},1000)
+    setTimeout(() => { targetChart.resize(); }, 1000)
     targetChart.setOption(targetOption)
-  
+
   }
   render() {
     const { graphId, dateType } = this.props;

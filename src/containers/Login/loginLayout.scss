@@ -42,7 +42,7 @@
             }
             .ant-tabs-nav .ant-tabs-tab{
               margin: 0;
-              width: 50%;
+              width: 100%;
               text-align: center;
               font-size: 18px;
             }
@@ -78,12 +78,12 @@
             }
             
           }
-          .joinTop:hover {
-            color: #199475;
-            .join:hover{
-              color: #199475;
-            }
-          }
+          // .joinTop:hover {
+          //   color: #199475;
+          //   .join:hover{
+          //     color: #199475;
+          //   }
+          // }
         }
         //忘记密码/加入企业
         .forgetPassword,.joinInContent {
@@ -118,6 +118,7 @@
         :global{
           .ant-tabs-bar {
             width: 220px;
+            border:none;
           }
           /*流程步骤的总长度*/
           .ant-tabs:not(.ant-tabs-vertical) > .ant-tabs-content {

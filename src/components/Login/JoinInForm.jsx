@@ -198,6 +198,9 @@ class JoinInForm extends Component{
       </Form>
     );
   }
+  changePage = (pageTab) =>{
+    this.props.changeLoginStore({pageTab, registerStep: 1, joinStep: 1,enterpriseId: ''})
+  }
   renderStepTwo() {
     const { getFieldDecorator } = this.props.form;
     const { enterpriseIdToken,enterpriseName, enterpriseLogo,inviteValid } = this.props;
@@ -238,7 +241,7 @@ class JoinInForm extends Component{
             <FormItem>
               <Button type="primary" htmlType="submit">下一步</Button>
             </FormItem>
-            {(enterpriseIdToken !== null && enterpriseIdToken !== undefined) ? <p style={{textAlign: 'center'}}>您已加入企业，请直接登录</p> : null}
+            {(enterpriseIdToken !== null && enterpriseIdToken !== undefined) ? <p style={{textAlign: 'center'}}>您已加入企业，请直接<span style={{color:'#199475',cursor: 'pointer'}}  onClick={()=>this.changePage('login')}>登录</span></p> : null}
           </Form>
         :
           <div className={styles.inviteInvalid} >
