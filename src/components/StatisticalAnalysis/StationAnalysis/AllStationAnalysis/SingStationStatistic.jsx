@@ -7,7 +7,8 @@ import styles from './allStationStatistic.scss';
 import BarGraph from './CommonGraph/BarGraph/index.js';
 import TargetStatisticPieGraph from './TargetStatisticPieGraph.jsx';
 import moment from 'moment';
-import TimeSelect from '../../../Common/TimeSelect';
+// import TimeSelect from '../../../Common/TimeSelect';
+import TimeSelect from '../../../Common/TimeSelect/TimeSelectIndex';
 import PlanCompletionRate from './CommonGraph/PlanCompletionRate';
 import ChangeStation from '../../../Monitor/StationMonitor/SingleStation/SingleStationCommon/ChangeStation';
 import TableGraph from './CommonGraph/TableGraph';
@@ -355,6 +356,10 @@ class SingleStationStatistic extends React.Component {
 
     }
   }
+  onTimeChange=(timeObj)=>{
+    console.log(timeObj);
+    timeObj.timeStyle === 'year' ? this.props.changeAllStationStore({ dateType: timeObj.timeStyle, year: [timeObj.startTime, timeObj.endTime] }) :this.props.changeAllStationStore({ dateType: timeObj.timeStyle, year: [timeObj.startTime] })
+  }
   onClose = () => {
     this.props.changeAllStationStore({
       showPage: 'multiple',
@@ -462,7 +467,7 @@ class SingleStationStatistic extends React.Component {
               <Icon type="arrow-left" className={styles.backIcon} onClick={this.onClose} />
             </Link>
           </div>
-          <TimeSelect text={'统计时间选择'} day={true} {...this.props} />
+          <TimeSelect onChange={this.onTimeChange} />
           <PlanCompletionRate dateType={dateType} allStationStatisticData={singleStationStatisticData} showPage={showPage} year={year} allStationAvalibaData={allStationAvalibaData} />
           <div className={styles.targetGraphContainer}>
             {dateType === 'year' && <div>

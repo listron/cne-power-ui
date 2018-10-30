@@ -51,7 +51,10 @@ class PlancompletionRate extends React.Component{
       }
     render(){
         const {dateType,allStationStatisticData,showPage,year}=this.props;
-        // console.log(year);
+         console.log(year);
+         console.log( );
+       
+
        
         let planSummary = showPage==='single'?allStationStatisticData:(allStationStatisticData&&allStationStatisticData.planSummary&&allStationStatisticData.planSummary[0])
         const actualPower=planSummary&&planSummary.actualPower?planSummary.actualPower:'--';
@@ -68,7 +71,7 @@ class PlancompletionRate extends React.Component{
       
         return(
             <div className={styles.allStationData}>
-               <div className={styles.textStyle}>计划完成情况{dateType==='year'?this.selectYear():`(  ${Number(year)}年  ) `}</div>
+               <div className={styles.textStyle}>计划完成情况{dateType==='year'?this.selectYear():dateType==='month'?`(  ${moment(year).year()}年  ) `:`(${ moment(year[0]).format('YYYY年MM月')})`}</div>
                <div className={styles.allStationDataContainer}>
                <div className={styles.leftPic}>
                <WaterWave percent={completeRate} height={100} title="" />

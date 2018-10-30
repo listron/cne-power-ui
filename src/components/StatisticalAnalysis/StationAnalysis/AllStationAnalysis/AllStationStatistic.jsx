@@ -5,7 +5,8 @@ import { withRouter } from 'react-router-dom';
 import styles from './allStationStatistic.scss';
 // import AlarmStatisticByType from './AlarmStatisticByType';
 import StationSelectModal from './StationSelectModal.jsx';
-import TimeSelect from '../../../Common/TimeSelect';
+// import TimeSelect from '../../../Common/TimeSelect';
+import TimeSelect from '../../../Common/TimeSelect/TimeSelectIndex';
 import PlanCompletionRate from './CommonGraph/PlanCompletionRate';
 import TargetTabs from './TargetTabs.jsx';
 import { getCookie } from '../../../../utils/index.js';
@@ -261,6 +262,10 @@ class AllStationStatistic extends React.Component {
       }
     }
   }
+  onTimeChange=(timeObj)=>{
+    console.log(timeObj);
+    timeObj.timeStyle === 'year' ? this.props.changeAllStationStore({ dateType: timeObj.timeStyle, year: [timeObj.startTime, timeObj.endTime] }) :this.props.changeAllStationStore({ dateType: timeObj.timeStyle, year: [timeObj.startTime] })
+  }
 
   onChangeStation = (stationCode) => {
     this.props.history.push(`/statistical/stationaccount/allstation/${stationCode}`);
@@ -289,7 +294,7 @@ class AllStationStatistic extends React.Component {
         <Tabs type="card" tabBarExtraContent={operations}  >
           <TabPane tab="光伏" key="1">
             <div className={styles.componentContainer}>
-              <TimeSelect text={'统计时间选择'} {...this.props} />
+              <TimeSelect showDayPick={false} onChange={this.onTimeChange} />
               <PlanCompletionRate dateType={dateType} allStationAvalibaData={allStationAvalibaData} allStationStatisticData={allStationStatisticData} getAllStationStatisticData={getAllStationStatisticData} year={year} />
               <TargetTabs {...this.props} />
             </div>
