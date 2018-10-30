@@ -28,8 +28,7 @@ class DayReportListSearch extends Component {
   startTimeChange = (value) => {
     const startTime = value?value.format('YYYY-MM'):moment().format('YYYY-MM');
     const { getDayReportList, stationType, stationNameSort, pageSize, pageNum, regionName  } = this.props;
-    const params = { stationType, stationNameSort, pageSize, pageNum };
-    regionName && (params.regionName = regionName);
+    const params = { stationType, stationNameSort, pageSize, pageNum, regionName };
     getDayReportList({
       ...params,
       startTime,
@@ -39,14 +38,12 @@ class DayReportListSearch extends Component {
   regionSelect = (value) => {
     const { getDayReportList, stationType, stationNameSort, pageSize, pageNum, startTime  } = this.props;
     let params = { stationType, stationNameSort, pageSize, pageNum, startTime };
-    value && (params.regionName = value);
-    getDayReportList({ ...params });
+    getDayReportList({ ...params, regionName: value });
   }
 
   stationTypeChange = (e) => {
     const { getDayReportList, stationNameSort, pageSize, pageNum, startTime, regionName } = this.props;
-    let params = { stationNameSort, pageSize, pageNum, startTime };
-    regionName && (params.regionName = regionName);
+    let params = { stationNameSort, pageSize, pageNum, startTime, regionName };
     getDayReportList({
       ...params,
       stationType: e.target.value,
@@ -61,7 +58,7 @@ class DayReportListSearch extends Component {
     const { startTime, stations, regionName, stationType } = this.props;
     let regionSet = new Set(), stationTypeSet = new Set();
     stations.forEach(e=>{
-      regionSet.add(e.regionName);
+      e.regionName && regionSet.add(e.regionName);
       stationTypeSet.add(e.stationType);
     });
     const showTypeChangeButtonGroup = stationTypeSet.size > 1; // 两种类型电站以上，才显示电站类型选择
@@ -74,7 +71,7 @@ class DayReportListSearch extends Component {
           onChange={this.startTimeChange} 
           disabledDate={this.disabledDate} 
         />
-        <Select onChange={this.regionSelect} value={regionName} className={styles.regionSearch} >
+        <Select onChange={this.regionSelect} placeholder="区域" value={!regionName? undefined: regionName} className={styles.regionSearch} >
           <Option value={null}>全部</Option>
           {[...regionSet].map(e=>(
             <Option value={e} key={e}>{e}</Option>
