@@ -29,12 +29,13 @@ class AllStation extends Component {
   }
   componentDidMount() { 
     this.props.getMonitorStation({ stationType: '2', getStationTypes: true });
+    setTimeout(()=>this.props.getMonitorStation({ stationType: this.props.stationTypeTabs,getStationTypes:false }),500);
     this.stationInterval = setInterval(() => this.props.getMonitorStation({ stationType: this.props.stationTypeTabs }), 10000);
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.stationTypes !== this.props.stationTypes && nextProps.stationTypes !== '2') {
-      this.autoUpdate(nextProps.stationTypes);
+      this.autoUpdate(nextProps.stationTypes);   
     }
 
   }
