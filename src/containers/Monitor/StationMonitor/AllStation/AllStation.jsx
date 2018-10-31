@@ -64,8 +64,7 @@ class AllStation extends Component {
     this.queryStationData(activeKey);
   }
   render() {
-    const { stationTypes, stationTypeTabs } = this.props;
-    console.log(stationTypeTabs, '11111');
+    const { stationTypes } = this.props;
     const breadCrumbData = {
       breadData: [
 
