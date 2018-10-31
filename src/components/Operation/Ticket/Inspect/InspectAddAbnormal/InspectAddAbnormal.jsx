@@ -90,7 +90,6 @@ class inspectAddAbnormal extends Component {
       stationCode: this.props.inspectDetail.get('stationCode'),
       deviceTypeCode
     };
-    console.log(params)
     if(deviceTypeCode === 509){ //组串时，请求调整
        this.props.getSliceDevices(params);
      }else{
@@ -161,8 +160,6 @@ class inspectAddAbnormal extends Component {
     const { deviceTypeItems, defectTypes, deviceItems, deviceAreaItems, inspectDetail, allSeries, firstPartitionCode } = this.props;
     const { getFieldDecorator, getFieldValue } = this.props.form;
     const { stationName, stationCode } = inspectDetail;
-    console.log(this.props)
-    console.log(inspectDetail.toJS())
     return(
       <div className={styles.inspectHandleForm}>
         <div className={styles.title}>
