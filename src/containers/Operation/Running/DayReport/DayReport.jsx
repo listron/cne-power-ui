@@ -22,6 +22,7 @@ class DayReport extends Component {
     getDayReportList: PropTypes.func, // 日报列表
     getDayReportConfig: PropTypes.func, // 日报配置
     toChangeDayReportStore: PropTypes.func,
+    resetStore: PropTypes.func,
   }
   constructor(props) {
     super(props);
@@ -46,9 +47,7 @@ class DayReport extends Component {
   }
 
   componentWillUnmount(){
-    this.props.toChangeDayReportStore({ // 离开重置数据。
-      showPage: 'list',
-    });
+    this.props.resetStore();
   }
 
   onSidePageChange = ({ sidePage }) => {
@@ -93,6 +92,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   toChangeDayReportStore: payload => dispatch({type: dayReportAction.toChangeDayReportStore, payload}),
+  resetStore: () => dispatch({ type: dayReportAction.resetStore }),
   getDayReportList: payload => dispatch({type: dayReportAction.getDayReportList, payload}),
   getDayReportConfig: payload => dispatch({type: dayReportAction.getDayReportConfig, payload}),
   getStationBaseReport: payload => dispatch({type: dayReportAction.getStationBaseReport, payload}),

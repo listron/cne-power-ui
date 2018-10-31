@@ -148,8 +148,8 @@ const ReportDetail = ({ selectedDayReportDetail, toChangeDayReportStore , dayRep
         dataSource={faultList.map((e,i)=>({
           ...e,
           key: i,
-          startTime: e.startTime?moment(e.startTime).format('YYYY-MM-DD'):'--',
-          endTime: e.endTime?moment(e.endTime).format('YYYY-MM-DD'):'--',
+          startTime: e.startTime?moment(e.startTime).format('YYYY-MM-DD HH:mm'):'--',
+          endTime: e.endTime?moment(e.endTime).format('YYYY-MM-DD HH:mm'):'--',
         }))}
         pagination={false}
         className={styles.lostInfoTable}
@@ -162,8 +162,8 @@ const ReportDetail = ({ selectedDayReportDetail, toChangeDayReportStore , dayRep
         dataSource={limitList.map((e,i)=>({
           ...e,
           key: i,
-          startTime: e.startTime?moment(e.startTime).format('YYYY-MM-DD'):'--',
-          endTime: e.endTime?moment(e.endTime).format('YYYY-MM-DD'):'--',
+          startTime: e.startTime?moment(e.startTime).format('YYYY-MM-DD HH:mm'):'--',
+          endTime: e.endTime?moment(e.endTime).format('YYYY-MM-DD HH:mm'):'--',
         }))}
         pagination={false}
         className={styles.limitInfoTable}

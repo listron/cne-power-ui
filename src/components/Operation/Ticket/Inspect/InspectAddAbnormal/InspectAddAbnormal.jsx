@@ -26,6 +26,9 @@ class inspectAddAbnormal extends Component {
     getDefectTypes: PropTypes.func,
     finishInspect: PropTypes.func,
     addInspectAbnormal: PropTypes.func,
+    getSliceDevices: PropTypes.func,
+    allSeries: PropTypes.array, 
+    firstPartitionCode: PropTypes.string, 
   }
 
   static defaultProps={
@@ -76,21 +79,23 @@ class inspectAddAbnormal extends Component {
     })
   }
 
-  onChangeType = (value) => {
+  onChangeDeviceType = (deviceTypeCode) => {
     this.props.form.setFieldsValue({
       deviceCode: ''
     });
     this.setState({
       deviceAreaCode: ''
     });
-    this.props.loadDeviceAreaList({
+    let params = {
       stationCode: this.props.inspectDetail.get('stationCode'),
-      deviceTypeCode: value
-    });
-    this.props.loadDeviceList({
-      stationCode: this.props.inspectDetail.get('stationCode'),
-      deviceTypeCode: value
-    });
+      deviceTypeCode
+    };
+    if(deviceTypeCode === 509){ //组串时，请求调整
+       this.props.getSliceDevices(params);
+     }else{
+       this.props.loadDeviceList(params);
+       this.props.loadDeviceAreaList(params);
+     }
   }
 
   onChangeArea = (value) => {
@@ -110,15 +115,29 @@ class inspectAddAbnormal extends Component {
     return deviceType;
   }
 
+  // loadDeviceList = (areaCode) => {
+  //   let params = {
+  //     stationCode: this.props.inspectDetail.get('stationCode'),
+  //     deviceTypeCode: this.props.form.getFieldValue('deviceTypeCode')
+  //   };
+  //   if(areaCode !== '') {
+  //     params.partitionCode = areaCode;
+  //   }
+  //   this.props.loadDeviceList(params);
+  // }
   loadDeviceList = (areaCode) => {
+    const { form, getSliceDevices } = this.props;
+    const deviceTypeCode = form.getFieldValue('deviceTypeCode');
     let params = {
-      stationCode: this.props.inspectDetail.get('stationCode'),
-      deviceTypeCode: this.props.form.getFieldValue('deviceTypeCode')
+      stationCode:  this.props.inspectDetail.get('stationCode'),
+      deviceTypeCode,
     };
-    if(areaCode !== '') {
-      params.partitionCode = areaCode;
+    areaCode && (params.partitionCode = areaCode);
+    if(deviceTypeCode === 509 && !areaCode){ // 光伏组件卸载。
+      getSliceDevices(params);
+    }else{
+      this.props.loadDeviceList(params);
     }
-    this.props.loadDeviceList(params);
   }
 
   showAdd = () => {
@@ -138,8 +157,9 @@ class inspectAddAbnormal extends Component {
   }
 
   render(){
-    const { deviceTypeItems, defectTypes, deviceItems, deviceAreaItems } = this.props;
+    const { deviceTypeItems, defectTypes, deviceItems, deviceAreaItems, inspectDetail, allSeries, firstPartitionCode } = this.props;
     const { getFieldDecorator, getFieldValue } = this.props.form;
+    const { stationName, stationCode } = inspectDetail;
     return(
       <div className={styles.inspectHandleForm}>
         <div className={styles.title}>
@@ -162,7 +182,7 @@ class inspectAddAbnormal extends Component {
                 })(
                   <Select 
                     placeholder="请选择"
-                    onChange={this.onChangeType}
+                    onChange={this.onChangeDeviceType}
                     style={{width: 200}}
                   >
                     {deviceTypeItems.map((item,index) => {
@@ -183,13 +203,18 @@ class inspectAddAbnormal extends Component {
                 })(
                   <DeviceName
                     disabled={deviceItems.size===0}
+                    stationName={stationName}
+                    stationCode={stationCode}
                     placeholder="输入关键字快速查询" 
                     deviceType={this.getDeviceType(getFieldValue('deviceTypeCode'))}
+                    deviceTypeCode={getFieldValue('deviceTypeCode')}
                     deviceAreaCode={this.state.deviceAreaCode}
                     deviceAreaItems={deviceAreaItems}
                     deviceItems={deviceItems}
                     loadDeviceList={this.loadDeviceList}
                     onChangeArea={this.onChangeArea}
+                    allSeries={allSeries}
+                    firstPartitionCode={firstPartitionCode}
                   />
                 )}
               </FormItem>

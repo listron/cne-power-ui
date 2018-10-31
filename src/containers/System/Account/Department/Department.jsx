@@ -30,6 +30,7 @@ class Department extends Component {
     setDepartmentUser: PropTypes.func,
     setDepartmentStation: PropTypes.func,
     changeDepartmentStore: PropTypes.func,
+    resetStore: PropTypes.func,
   }
   constructor(props) {
     super(props);
@@ -56,17 +57,7 @@ class Department extends Component {
   }
 
   componentWillUnmount() {
-    this.props.changeDepartmentStore({
-      showPage: 'list',
-      departmentSource: 0, //部门类型全部2，预设0，自定义1
-      departmentName: '', //部门名称
-      parentDepartmentName: '',//所属部门
-      stationName: '', //负责电站
-      sort: '', //排序 => 'field,0/1'field代表排序字段，0升序,1降序
-      totalNum: 0,//部门总数
-      pageNum: 1,//当前页号
-      pageSize: 10,//每页容纳条数
-    });
+    this.props.resetStore()
   }
 
 
@@ -124,6 +115,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   changeDepartmentStore: payload => dispatch({ type: departmentAction.changeDepartmentStore, payload }),
+  resetStore: () => dispatch({ type: departmentAction.resetStore }),
   deleteDepartment: payload => dispatch({ type: departmentAction.deleteDepartment, payload }),
   getDepartmentList: payload => dispatch({ type: departmentAction.getDepartmentList, payload }),
   getDepartmentDetail: payload => dispatch({ type: departmentAction.getDepartmentDetail, payload }),

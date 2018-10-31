@@ -17,6 +17,7 @@ var initState = Immutable.fromJS({
   deviceModels: [], // 电站设备类型下设备型号
   pointList: [], // 设备列表
   stationPointStatusList: [], // 请求所有电站=>匹配选中电站是否可删除测点
+  allStationBaseInfo: [], // 用户所在企业下所有电站基本信息(与用户token无关)
 });
 
 const pointManageReducer = (state = initState, action) => {
@@ -27,6 +28,8 @@ const pointManageReducer = (state = initState, action) => {
       return state.merge(Immutable.fromJS(action.payload)).set('loading',false)
     case pointManageAction.CHANGE_POINT_MANAGE_STORE:
       return state.merge(Immutable.fromJS(action.payload))
+    case pointManageAction.RESET_STORE:
+      return initState
   }
   return state;
 }
