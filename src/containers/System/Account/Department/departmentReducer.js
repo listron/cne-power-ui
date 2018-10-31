@@ -35,6 +35,8 @@ const departmentReducer = (state = initState, action) => {
       return state.merge(Immutable.fromJS(action.payload)).set('loading',false)
     case departmentAction.CHANGE_DEPARTMENT_STORE:
       return state.merge(Immutable.fromJS(action.payload))
+    case departmentAction.RESET_STORE:
+      return initState
   }
   return state;
 }
