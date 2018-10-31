@@ -20,6 +20,7 @@ class AlarmManageHandle extends Component {
     getStationDeviceTypes: PropTypes.func,
     changeCommonStore: PropTypes.func,
     changeAlarmManageStore: PropTypes.func,
+    downloadAlarmExcel: PropTypes.func,
   }
   constructor(props) {
     super(props);
@@ -61,9 +62,14 @@ class AlarmManageHandle extends Component {
     deleteAlarmList({ stationCode });
   }
 
+  downloadAlarmExcel = () => {
+    const { stationCode, allStationBaseInfo } = this.props;
+    const stationName = allStationBaseInfo.find(e=>e.stationCode === stationCode).stationName;
+    this.props.downloadAlarmExcel({ stationCode, stationName })
+  }
+
   render() {
-    const { pageSize, pageNum, totalNum, alarmList, allStationBaseInfo, stationCode } = this.props;
-    const downloadHref = `${path.basePaths.APIBasePath}${path.APISubPaths.system.downloadAlarmInfo}?stationCode=${stationCode}`;
+    const { pageSize, pageNum, totalNum, alarmList, allStationBaseInfo } = this.props;
     return (
       <div className={styles.alarmManageHandle}>
         <div className={styles.leftHandler}>
@@ -75,7 +81,8 @@ class AlarmManageHandle extends Component {
             uploadExtraData={['stationCode','stationType']}
             loadedCallback={this.getUpdateAlarmList}
           />
-          <Button disabled={alarmList.length === 0} className={styles.exportInfo} href={downloadHref} download={downloadHref}>导出告警事件信息表</Button>
+          {/* <Button disabled={alarmList.length === 0} className={styles.exportInfo} href={downloadHref} download={downloadHref}>导出告警事件信息表</Button> */}
+          <Button disabled={alarmList.length === 0} className={styles.exportInfo} onClick={this.downloadAlarmExcel}>导出告警事件信息表</Button>
           <Button disabled={alarmList.length === 0} onClick={this.deleteAlarmList} className={styles.clearAlarm}>清除告警</Button>
         </div>
         <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalNum} onPaginationChange={this.onPaginationChange} />

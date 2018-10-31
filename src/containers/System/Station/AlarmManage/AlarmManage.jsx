@@ -89,6 +89,7 @@ const mapDispatchToProps = (dispatch) => ({
   changeAlarmManageStore: payload => dispatch({type:alarmManageAction.CHANGE_ALARM_MANAGE_STORE_SAGA, payload}),
   resetStore: () => dispatch({ type: alarmManageAction.resetStore }),
   getAlarmList: payload => dispatch({type: alarmManageAction.GET_ALARM_MANAGE_LIST, payload}),
+  downloadAlarmExcel: payload => dispatch({type: alarmManageAction.downloadAlarmExcel, payload}),
   deleteAlarmList: payload => dispatch({type: alarmManageAction.DELETE_ALARM_MANAGE_LIST, payload}),
   changeCommonStore: payload => dispatch({type:commonAction.changeCommonStore, payload}),
   getStationDeviceTypes: params => dispatch({
