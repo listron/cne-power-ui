@@ -293,8 +293,8 @@ class ProductionAnalysis extends React.Component {
     const saledPower = planSummary && planSummary.saledPower ? planSummary.saledPower : '--';
     const buyPower = planSummary && planSummary.buyPower ? planSummary.buyPower : '--';
     //发电量
-    const barGraphThatYear = singleStationPowerData.map((e, i) => ((e.thatYearData || e.thatYearData === '0') ? e.thatYearData : '--'))
-    const barGraphLastYear = singleStationPowerData.map((e, i) => ((e.lastYearData || e.lastYearDta === '0') ? e.lastYearData : '--'))
+    const barGraphThatYear = singleStationPowerData.map((e, i) => ((e.thatYearData || e.thatYearData === 0) ? e.thatYearData : '--'))
+    const barGraphLastYear = singleStationPowerData.map((e, i) => ((e.lastYearData || e.lastYearDta === 0) ? e.lastYearData : '--'))
     const barGraphmonth = singleStationPowerData.map((e, i) => (`${e.date}${dateType === 'month' ? '月' : (dateType === 'day' ? '日' : '')}`))
     const barGraphYearOnYear = singleStationPowerData.map((e, i) => ((e.yearOnYear || e.yearOnYear === '0') ? e.yearOnYear : '--'))
     const barGraphRingRatio = singleStationPowerData.map((e, i) => ((e.ringRatio || e.ringRatio === '0') ? e.ringRatio : '--'))
@@ -315,12 +315,12 @@ class ProductionAnalysis extends React.Component {
       xData: singleStationPlanRateData.map((e, i) => (`${e.date}${dateType === 'month' ? '月' : (dateType === 'day' ? '日' : '')}`)),
       yData: {
         barData: {
-          planPower: singleStationPlanRateData && singleStationPlanRateData.map((e, i) => (e.planPower ? parseFloat(e.planPower).toFixed(2) : "--")),
-          actualPower: singleStationPlanRateData && singleStationPlanRateData.map((e, i) => (e.actualPower ? parseFloat(e.actualPower).toFixed(2) : "--")),
+          planPower: singleStationPlanRateData && singleStationPlanRateData.map((e, i) => ((e.planPower||e.planPower===0) ? parseFloat(e.planPower).toFixed(2) : "--")),
+          actualPower: singleStationPlanRateData && singleStationPlanRateData.map((e, i) => ((e.actualPower||e.actualPower===0) ? parseFloat(e.actualPower).toFixed(2) : "--")),
         },
         lineData: {
-          planRate: singleStationPlanRateData && singleStationPlanRateData.map((e, i) => (e.planRate ? parseFloat(e.planRate).toFixed(2) : "--")),
-          resourceValue: singleStationPlanRateData && singleStationPlanRateData.map((e, i) => (e.resourceValue ? parseFloat(e.resourceValue).toFixed(2) : "--"))
+          planRate: singleStationPlanRateData && singleStationPlanRateData.map((e, i) => ((e.per||e.per==='0') ? parseFloat(e.per).toFixed(2) : "--")),
+          resourceValue: singleStationPlanRateData && singleStationPlanRateData.map((e, i) => ((e.resourceValue||e.resourceValue===0) ? parseFloat(e.resourceValue).toFixed(2) : "--"))
         }
       }
     }
