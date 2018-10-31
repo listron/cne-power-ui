@@ -1,0 +1,144 @@
+@import '../../../../theme/theme';
+
+
+.dayReportMain{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 1 0 auto;
+  width: 100%;
+  padding: 24px 24px 0;
+  background:#ececec;
+  .contentMain{
+    background-color: #fff;
+    flex: 1;
+    border: 1px solid #e1e2e2;
+    :global{
+      .anticon-plus-circle{
+        color: $themeColor;
+        cursor: pointer;
+      }
+      .icon-look{
+        cursor: pointer;
+        position: relative;
+        :global{
+          .icon-alert_01:before{
+            font-size: 12px;
+            color: #f9b600;
+            position: absolute;
+            right: -3px;
+            top: -20px;
+          }
+        }
+      }
+      .ant-table .ant-table-thead > tr > th, .ant-table .ant-table-tbody > tr > td{
+        padding: 0;
+        text-align: center;
+        border: 1px solid #dfdfdf;
+      }
+      .ant-table .ant-table-tbody > tr > td:hover{
+        background: #ceebe0;
+        color: $themeColor;
+      }
+      .ant-table-placeholder{
+        border-bottom: none;
+      }
+    }
+    .operateDayReport{
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      margin: 25px;
+      :global{
+        .ant-btn{
+          border-color: $themeColor;
+          color: $themeColor;
+        }
+      }
+      .uploadReport{
+        width: 98px;
+        padding: 0;
+        margin-right: 12px;
+        span{
+          margin-left: 0px;
+          display: inline-block;
+          width: 64px;
+          text-align: center;
+        }
+        :global{
+          .anticon{
+            width: 28px;
+            height: 30px;
+            line-height: 32px;
+            background: $themeColor;
+            color: #fff;
+            margin-left: -4px;
+          }
+          
+        }
+      }
+      .infoTooltip{
+        svg{
+          border-radius: 50%;
+          color: $darkColor;
+          &:hover{
+            color: #fff;
+            background-color: #f9b600;
+          }
+        }
+      }
+    }
+  }
+}
+
+.dayReportSide{
+  display: flex;
+  flex: 1 0 auto;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  padding: 24px 24px 0;
+  background:#ececec;
+  z-index: 99;
+}
+
+.search{
+  margin:25px;
+  .monthSearch{
+    margin: 0 12px;
+    width: 105px;
+    :global{
+      .ant-input{
+        width: 105px;
+        padding: 4px;
+      }
+    }
+  }
+  .regionSearch{
+    width: 115px;
+    margin-right: 40px;
+  }
+  .typeSearch{
+    margin-left: 10px;
+    :global{
+      .ant-radio-button-wrapper-checked {
+        background: $themeColor;
+        color: #fff;
+        z-index: 0;
+      }
+    }
+  }
+}
+
+.toolInfo{
+  ul{
+    li{
+      font-size: 10px;
+    }
+  }
+  :global{
+    .ant-tooltip-inner{
+      background-color: rgba(0, 0, 0, 0.7);
+    }
+  }
+}

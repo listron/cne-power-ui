@@ -1,0 +1,224 @@
+@import '../../../../theme/theme.scss';
+.singleStationType{
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+
+  .stationTimeFilter{
+    background: #fff;
+    display: flex;
+    justify-content: space-between;
+    flex:1;
+    align-items: center;
+    margin-bottom: 20px;
+    .leftFilter{
+      padding-left: 30px;
+      display: flex;
+      flex-direction: row;
+      .timeSelectBox{
+        :global{
+          .ant-input{
+            width: 143px !important;
+          }
+        }
+      }   
+      .stationFilter{
+        display: flex;
+        align-items: center;
+        line-height: 43px;
+        .text{
+          margin-right: 10px;
+        }
+      }
+    }z
+    .rightContent{
+      margin-right: 30px;
+      color: $lightColor;
+    }
+  }
+  .componentContainer{
+    background: #fff;
+    display: flex;
+    flex:1;
+    flex-direction: column;
+    
+    .title {
+      display: flex;
+      flex-direction: column;
+      // padding-left: 30px;    
+      justify-content: space-between;
+      border-bottom: 2px solid #ececec;
+      padding-top: 10px;
+      .stationStatus {
+        margin-left: 30px;
+        color: $darkColor;
+        height: 40px;
+        line-height: 40px;
+        display: flex;
+        flex:1;
+        flex-direction: row;
+        justify-content: space-between;
+        .stationIcon{
+          i{
+            color:$themeColor;
+          }
+        }
+        .status {
+          margin-right: 4px;
+          display: flex;
+          :global{
+            .iconfont{
+              margin-right: 4px;
+            }
+          }
+          .plan{
+            margin-left: 24px;
+          }
+          .choiceYear{
+            display: inline-block;
+            :global{
+              .active{
+                background: #199475;
+                color: #fff;
+                border:none;
+              }
+            }    
+            span{ 
+              background: #fff;
+              color: #999999;
+              border: 1px solid #dfdfdf;
+              border-radius: 2px;
+              width: 45px;
+              line-height: 30px;
+              height: 30px;
+              cursor: pointer;
+              display: inline-block;
+              margin: 0 4px;
+              text-align: center;
+            }
+                   
+          }
+        }
+        .rightFont{
+          margin-right: 30px;
+          color: $lightColor;
+        }
+      }
+      .graph{
+        display: flex;
+        padding-left: 30px;
+        .stationTargetData{
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          margin: 20px 30px;
+          .stationTargetValue{
+            font-size: 26px;
+            color:#199475;
+      
+          }
+        }
+      }
+     
+    }
+    .cardContainer{
+      display: flex;
+      align-items: center; 
+      padding:30px 0;
+      .cardList{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding-left: 30px;
+        :global{
+          .anticon{
+            color:$lightColor;
+          }
+        }
+      }
+
+      .cardItem{       
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        background: #199475;
+        width: 210px;
+        height: 130px;
+        border-radius: 5px;
+        color: #fff;
+        padding:20px 10px 30px 20px;
+      }
+      i{
+        font-size: 20px
+      }
+    }
+    .targetGraphContainer{
+      .bgStyle{
+        background: #f1f1f1;
+        .fontStyle{
+          border-top:1px solid #199475;
+          width: 160px;
+          color: #666;
+          height: 30px;
+          line-height: 30px;
+          margin-left: 30px;
+        }
+      }
+      .tabContainer{
+        display: flex;
+        flex:1;
+        flex-direction: column;
+        padding: 20px 0;
+        border-bottom: 1px solid #ececec;
+        .dataGraph{
+          display: flex;    
+          flex-direction: row;
+          height: 300px;
+          flex:1;
+          margin-right: 24px;
+          >div:nth-child(1){
+            flex: 5;
+          }
+          >div:nth-child(2){
+            flex: 3;
+          }
+
+          .LostPowerTypeRate{
+            height:300px;
+            .LostPowerTypeTitle{
+              display: flex;
+              justify-content: space-between;
+              height: 40px;
+              line-height: 40px;
+              flex-direction: row;
+              >div:nth-child(1){
+                flex: 1;
+                text-align: left
+              }
+              >div:nth-child(2){
+                flex: 1;
+                text-align: right;
+              }
+            }
+            >div:nth-child(2){
+              flex: 1;
+              height:250 ;
+            }
+          }
+        }
+        .dataGraphs{
+          display: flex;    
+          flex-direction: row;
+          height: 300px;
+          >div:nth-child(1){
+            flex: 1;
+          }
+          >div:nth-child(2){
+            flex: 1;
+          }
+        }
+      }
+    }
+   
+  }
+} 

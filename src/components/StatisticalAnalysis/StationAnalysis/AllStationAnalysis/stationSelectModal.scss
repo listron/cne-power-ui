@@ -1,0 +1,67 @@
+@import '../../../../theme/theme.scss';
+.stationSelectModal {
+  .title{
+    color:#199475;
+  }
+  :global {
+    .ant-modal-content {
+      display: flex;
+      flex: 1;
+      height: 100%;
+      flex-direction: column;
+      justify-content: space-between;
+      .ant-modal-footer{
+        background-color: #ececec;
+      }
+    }
+    .ant-modal-body {
+      display: flex;
+      flex: 1;
+      padding: 0;
+      overflow-y: auto;
+    }
+  }
+  .content {
+    padding: 24px;
+    .provinceItem {
+      margin-top: 12px;
+      margin-bottom: 10px;
+      display: flex;
+      flex-direction: column;
+      .provinceName {
+        margin-bottom: 12px;
+        color: $darkColor;
+      }
+      .stationList {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+      }
+      .selectedStationItem {
+        color: #fff;
+        margin-right: 8px;
+        margin-bottom: 8px;
+        width: 135px;
+        height: 24px;
+        border-radius: 4px;
+        background-color: $themeColor;
+        display: flex;
+        align-items: center;
+        padding-left: 6px;
+      }
+      .stationItem {
+        color: $darkColor;
+        margin-right: 8px;
+        margin-bottom: 8px;
+        width: 135px;
+        height: 24px;
+        border-radius: 4px;
+        background-color: #f1f1f1;
+        display: flex;
+        align-items: center;
+        padding-left: 6px;
+        cursor: pointer;
+      }
+    }
+  }
+}

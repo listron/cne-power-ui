@@ -1,0 +1,166 @@
+
+@import '../../../../../theme/theme.scss';
+
+.deviceChange{
+  position: absolute;
+  background-color: #fff;
+  border-right: 1px solid $promptColor;
+  border-bottom: 1px solid $promptColor;
+  z-index: 9999;
+  left: 0px;
+  top: 0px;
+  width: 300px;
+  max-height: calc(100vh - 83px);
+  overflow: auto;
+  .deviceTitle{
+    color: $darkColor;
+    font-size: 18px;
+    height: 65px;
+    line-height: 65px;
+    margin-bottom: 0px;
+    cursor: pointer;
+    .titleIcon{
+      cursor: pointer;
+      margin-left: 32px;
+      margin-right: 12px;
+      color: $themeColor;
+    }
+  }
+  .deviceList{
+    display: flex;
+    flex-wrap: wrap;
+    .eachDevice{
+      width: 50%;
+      padding-left: 40px;
+      cursor: pointer;
+      color: $darkColor;
+      height: 28px;
+      line-height: 28px;
+      &:hover{
+        background-color: #eee;
+      }
+    }
+  }
+}
+
+.powerProgress{
+  display: flex;
+  flex-wrap: wrap;
+  width: 215px;
+  margin-top: 24px;
+  align-content: flex-start;
+  :global{
+    .ant-progress-inner{
+      background-color: #dfdfdf;
+    }
+  }
+  .progressNum, .progressText{
+    width: 100%;
+    display: flex;
+    @include lineheight(24px);
+    .leftText, .rightText {
+      width: 50%;
+      color: $themeColor;
+      font-size: 24px;
+    }
+    .leftText{
+      text-align: left;
+    }
+    .rightText{
+      text-align: right;
+    }
+  }
+  .progressText{
+    @include lineheight(14px);
+    height: 14px;
+    .leftText, .rightText {
+      font-size: 14px;
+      color: $darkColor;
+    }
+  }
+}
+
+.alarmTable{
+  border-top: solid 1px $promptColor;
+  padding: 0px 68px 48px 68px;
+  .alarmTip{
+    height: 20px;
+    line-height: 20px;
+    margin-top: 20px;
+    i{
+      margin-left: 4px;
+      border-radius: 50%;
+      background-color: $promptColor;
+      color: #fff;
+    }
+  }
+  .tableHeader{
+    display: flex;
+    justify-content: space-between;
+    height: 36px;
+    line-height: 36px;
+    margin-top: 15px;
+    .historyButton{
+      height: 26px;
+      border: 1px solid $themeColor;
+      color: $themeColor;
+      text-decoration: none;
+      a:focus {
+        text-decoration: none;
+      }
+    }
+    .historyButton:hover{
+      background: $themeColor;
+      color: #fff;
+    }
+  }
+  .level{
+    border-radius: 2px;
+    display: inline-block;
+    height: 18px;
+    line-height: 18px;
+    padding: 0 4px;
+  }
+  :global{
+    .ant-table{
+      .ant-table-placeholder{
+        border-bottom: none;
+        img{
+          margin-top: 15px;
+        }
+      }
+    }
+  }
+}
+
+.pointData{
+  background-color: #f8f8f8;
+  padding: 20px 60px 80px 60px;
+  .pointTitle{
+    color: $darkColor;
+  }
+  .pointDataList{
+    display: flex;
+    flex-wrap: wrap;
+    .eachGroup{
+      min-width: 20%;
+      padding-left: 20px;
+      margin: 16px 0;
+      border-right: dotted 1px $promptColor;
+      .eachData{
+        margin-bottom: 4px;
+        .pointName{
+          color: $darkColor;
+          margin-bottom: 0;
+        }
+        .pointValue{
+          color: #199475;
+          margin-bottom: 0;
+        }
+      }
+    }
+    .eachGroup:last-child{
+      border-right: none;
+    }
+  }
+}

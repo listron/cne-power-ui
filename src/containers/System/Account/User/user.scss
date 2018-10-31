@@ -1,0 +1,51 @@
+@import '../../../../theme/theme.scss';
+.userContainerBox{
+  display: flex;
+  min-height: 100%;
+  flex: 1;
+  flex-direction: column;
+.userContainer{
+  display: flex;
+  min-height: 100%;
+  flex: 1;
+  overflow: hidden;
+  background:#ececec;
+  .userFooter{
+    text-align: right;
+    height: 60px;
+    line-height: 60px;
+    color:#666666;
+  }
+  :global{
+    .userSide-enter{
+      transform: translateX(0);
+    }
+    // .ant-input,.ant-input:focus, .ant-input:active, .ant-select-focused .ant-select-selection, .ant-select-selection:focus, .ant-select-selection:active {
+    //   border-color: $themeColor;
+    // }
+    .userSide-enter-active{
+      transform: translateX(-100%);
+      transition: all 500ms ease;
+    }
+    .userSide-enter-done{
+      transform: translateX(-100%);
+    }
+    .userSide-exit{
+      transform: translateX(-100%);
+    }
+    .userSide-exit-active{
+      transform: translateX(0);
+      transition: all 500ms ease;
+    }
+    .userSide-exit-done{
+      transform: translateX(0);
+    }
+    .ant-table-placeholder{
+      z-index: 0;
+    }
+    .ant-btn:hover, .ant-btn:focus, .ant-btn::selection{
+      color: $themeColor;
+    }
+  }
+}
+}

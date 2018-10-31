@@ -1,0 +1,222 @@
+
+
+
+@import '../../../../../theme/theme.scss';
+
+@mixin top(){//详情，编辑通用顶部基础样式
+  @include lineheight(64px);
+  display: flex;
+  padding-left: 32px;
+  align-items: center;
+  border-bottom: solid 1px $promptColor;
+}
+
+
+.planSide {
+  display: flex;
+  flex: 1 0 auto;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  padding: 24px 24px 0;
+  background:#ececec;
+  z-index: 15;
+  .addPlan{
+    flex: 1;
+    background-color: #fff;
+    border: 1px solid #e1e2e2;
+    z-index: 15;
+    .editTop{
+      @include top;
+      justify-content: space-between;
+      .text{
+        font-size:18px;
+        color: $darkColor;
+        letter-spacing:4px;
+      }
+      .backIcon{
+        color: $darkColor;
+        font-size: 20px;
+        border-left: 1px solid $promptColor;
+        height: 100%;
+        line-height: 64px;
+        width: 64px;
+        cursor: pointer;
+      }
+    }
+    .mainPart{
+      margin-top: 25px;
+      display: flex;
+      flex-direction: row;
+      line-height: 40px;
+      .selectTime{
+        margin-left: 50px;
+        margin-right: 40px;
+        :global{
+          .ant-input{
+            width: 142px;
+          }
+        }
+
+        >span{
+          margin-right: 5px;
+          >i{
+            color:#d0021b;
+            margin-right: 3px;
+          }
+        }
+      }
+      .selectStation{
+        display: flex;
+        flex-direction: row;
+        :global{
+          .ant-input{
+            width: 200px;
+          }
+        }
+        >span{
+          margin-right: 5px;
+          >i{
+            color:#d0021b;
+            margin-right: 3px;
+          }
+        }
+        .addPlanNext{
+          margin-left: 12px;
+          margin-top: 4px;
+          &:hover{
+            background: $themeColor;
+            color: #fff;
+          }
+        }
+        .addPlanNextDisabled{
+          margin-left: 12px;
+          margin-top: 4px;
+        }
+      }
+    }
+  }
+  .editPlan{
+    flex: 1;
+    background-color: #fff;
+    border: 1px solid #e1e2e2;
+    z-index: 15;
+    .editPlanTitle{
+      height: 64px;
+      border-bottom: 1px solid $promptColor;
+      line-height: 64px;
+      display: flex;
+      justify-content: space-between;
+      .sideEidtTitleTip{
+        margin-left: 30px;
+        font-size: 18px;
+      }
+      .sideEditTitleRight{
+        display: flex;
+        justify-content: flex-end;
+        .addPlanPrev{
+          margin-top: 15px;
+          border: 1px solid $themeColor;
+          box-shadow: 0 0 2px $themeColor;
+          color: $themeColor;
+        }
+        .savePlan{
+          margin: 15px 10px 0 22px;
+          background: $themeColor;
+          color: #fff;
+        }
+        .backIcon{
+          width: 64px;
+          border-left: 1px solid $promptColor;
+          text-align: center;
+          font-size: 20px;
+          line-height: 64px;
+          cursor: pointer;
+        }
+      }
+    }
+    .mainPart{
+      .delete{
+        color: $themeColor;
+        cursor: pointer;
+        line-height: 38px;
+        display: block;
+      }
+      .save {
+        color: #f9b600;
+        //margin-right: 0 !important;
+      }
+      .mainPartTop{
+        height: 60px;
+        line-height: 60px;
+        font-size:14px;
+        color:#666666;
+        margin-left: 30px;
+        span{
+          color: #199475;
+        }
+      }
+      :global {
+        .month .ant-input, .yearPR .ant-input {
+          width: 52px;
+          background: #fcffe5;
+          padding: 0 5px;
+          border: 1px solid #f9b600;
+        }
+        .ant-table .ant-table-thead > tr > th, .ant-table .ant-table-tbody > tr > td {
+          padding: 0 0 0 5px;
+          line-height: 1;
+          // min-width: 57px;
+        }
+        .ant-table .ant-table-thead > tr > th.month, .ant-table .ant-table-tbody > tr > td.month {
+          min-width: 48px;
+        }
+        .ant-table .ant-table-thead > tr > th.yearPR, .ant-table .ant-table-tbody > tr > td.yearPR {
+          min-width: 72px;
+          width:72px;
+        }
+        .ant-input.ant-input-disabled {
+          background: #f8f8f8;
+          border: 1px solid #dfdfdf;
+        }
+        .ant-input:focus {
+          background: #ffffff;
+          border: 1px solid #dfdfdf;
+          -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+        }
+        .ant-table-placeholder{
+          border: none;
+        }
+      }
+      .regionName {
+        min-width: 50px;
+        width: 6%;
+        padding-left: 10px !important;
+      }
+      .stationName {
+        width: 90px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .operation {
+        width: 2.7%;
+        min-width: 38px;
+      }
+      .planYear {
+        width: 6.2%;
+        min-width: 40px;
+      }
+      .planPower {
+        width: 9%;
+        min-width: 89px;
+      }
+      .stationCapacity{
+        width: 9%;
+        min-width: 70px;
+      }
+    }
+  }
+
+}
+

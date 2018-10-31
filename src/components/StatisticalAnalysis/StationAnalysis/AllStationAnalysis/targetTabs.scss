@@ -1,0 +1,41 @@
+.targetTabs{
+  display: flex;
+  flex:1;
+  flex-direction: column;
+  :global{
+    .ant-tabs:not(.ant-tabs-vertical) > .ant-tabs-content > .ant-tabs-tabpane {
+      //width: 0ch;
+      display: flex;
+      justify-content:space-between;
+
+  }
+  }
+
+  .tabContainer{
+    display: flex;
+    flex:1;
+    width: 100%;
+    flex-direction: column;
+    overflow: hidden;
+    .dataGraph,.selectMonth{
+      display: flex;
+      flex: 1;
+      width: 100%;
+      flex-direction: row;
+      border-bottom: 1px solid #ececec;
+      height: 300px;
+      overflow: hidden;
+    }
+    .dataGraph>div{
+      flex: 1;
+      height: 300px;
+    }
+    .dataGraph.selectMonth>div:nth-child(1){
+      flex: 7;
+    }
+    .dataGraph.selectMonth>div:nth-child(2){
+      flex: 3;
+    }
+
+  }
+}

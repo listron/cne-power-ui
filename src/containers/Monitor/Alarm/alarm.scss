@@ -1,0 +1,58 @@
+.alarmStatisticBox{
+  display: flex;
+  flex: 1;
+  min-height: 100%;
+  flex-direction: column;
+
+.alarmStatistic{ 
+  display: flex;
+  flex: 1;
+  //min-height: 100%;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 24px 24px 0;
+  background-color: #ececec;
+}
+}
+    
+.realTimeAlarmBox{
+  display: flex;
+  flex: 1;
+  min-height: 100%;
+  flex-direction: column;
+.realTimeAlarmContainer {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 24px 24px 0;
+  background-color: #ececec;
+  .realTimeAlarm {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    background-color: #fff;
+  }
+}
+}
+.historyAlarmBox{
+  display: flex;
+  flex: 1;
+  min-height: 100%;
+  flex-direction: column;
+.historyAlarmContainer {
+  display: flex;
+  flex: 1;
+ // min-height: 100%;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 24px 24px 0;
+  background-color: #ececec;
+  .historyAlarm {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    background: #fff;
+  }
+}
+}
