@@ -1,14 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { TimePicker, Icon, Button, DatePicker, Select } from "antd";
-import { withRouter } from "react-router-dom";
+import {  Icon, Select } from "antd";
 import styles from "./operateAnalysis.scss";
 import StationSelect from "../../../Common/StationSelect";
-// import AlarmStatisticByType from './AlarmStatisticByType';
-
 import TimeSelect from '../../../../components/Common/TimeSelect/TimeSelectIndex';
 import BarGraph from "../AllStationAnalysis/CommonGraph/BarGraph";
-import PlanCompleteRateAnalysisBar from "../AllStationAnalysis/CommonGraph/PlanCompleteRateAnalysisBar";
 import TableGraph from "../AllStationAnalysis/CommonGraph/TableGraph";
 import PowerEfficency from "../AllStationAnalysis/CommonGraph/ThreeYaxis";
 import UsageRate from "./UsageRate";

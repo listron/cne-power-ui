@@ -35,7 +35,7 @@ class YearSelect extends React.Component {
     return (
       <DatePicker
         placeholder="选择年"
-        format="YYYY"
+        format="YYYY年"
         mode="year"
         open={panelOpen}
         value={yearValue?moment(yearValue):null}

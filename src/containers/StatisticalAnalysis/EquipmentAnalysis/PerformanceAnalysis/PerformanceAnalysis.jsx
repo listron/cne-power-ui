@@ -74,7 +74,7 @@ class PerformanceAnalysis extends Component{
   render(){
     const {stationCode,stations,deviceTypeCode,stationDeviceTypes,deviceModeCode,deviceModels} = this.props;
     const {selectStation} = this.state;
-    console.log(stations.toJS());
+    
 
     const breadCrumbData = {
         breadData:[
