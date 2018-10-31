@@ -14,6 +14,12 @@ function *toChangeDayReportStore(action){ // 存储payload指定参数，替换r
   })
 }
 
+function *resetStore(){
+  yield put({
+    type:  dayReportAction.RESET_STORE
+  })
+}
+
 function *getDayReportList(action){//请求日报基本列表数据
   const { payload } = action;
   // const url = '/mock/operation/dayReport/list';
@@ -282,6 +288,7 @@ function *dayReportUpdate(action){ // 日报编辑
 
 export function* watchDayReport() {
   yield takeLatest(dayReportAction.toChangeDayReportStore, toChangeDayReportStore);
+  yield takeLatest(dayReportAction.resetStore, resetStore);
   yield takeLatest(dayReportAction.getDayReportList, getDayReportList);
   yield takeLatest(dayReportAction.getDayReportConfig, getDayReportConfig);
   yield takeLatest(dayReportAction.getStationBaseReport, getStationBaseReport);

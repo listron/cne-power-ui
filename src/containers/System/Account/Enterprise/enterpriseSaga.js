@@ -13,6 +13,12 @@ function *changeEnterpriseStore(action){
   })
 }
 
+function *resetStore(){
+  yield put({
+    type:  enterpriseAction.RESET_STORE
+  })
+}
+
 //请求企业列表数据--暂不删除，以后可能恢复企业列表
 /*
   function *getEnterprisList(action){
@@ -108,6 +114,7 @@ function *saveEnterpriseInfor(action){
 
 export function* watchEnterprise() {
   yield takeLatest(enterpriseAction.changeEnterpriseStore, changeEnterpriseStore);
+  yield takeLatest(enterpriseAction.resetStore, resetStore);
   // yield takeLatest(enterpriseAction.getEnterprisList, getEnterprisList);
   yield takeLatest(enterpriseAction.getEnterpriseDetail, getEnterpriseDetail);
   yield takeLatest(enterpriseAction.saveEnterpriseInfor, saveEnterpriseInfor);

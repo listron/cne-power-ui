@@ -170,6 +170,9 @@ class SideReportPage extends Component {
         dailyReport.equivalentHours = dailyReport.hour;
         delete dailyReport.stationCapacity; // 基础信息字段调整
         delete dailyReport.hour;
+        delete dailyReport.yesterdayyearGenIntegrated;
+        delete dailyReport.yesterdayyearGenInternet;
+        delete dailyReport.yesterdayyearGenInverter;
         const newDailyDetailList = dailyDetailList.map(eachLost=>{
           const lostInfo = {
             deviceName: eachLost.deviceName,

@@ -8,6 +8,8 @@ export const deviceManageAction = {
   GET_DEVICE_MANAGE_FETCH_SUCCESS: Symbol('GET_DEVICE_MANAGE_FETCH_SUCCESS'), // 设备管理普通api请求成功
 
   GET_DEVICE_MANAGE_LIST: Symbol('GET_DEVICE_MANAGE_LIST'), // 获取设备列表
+  resetStore: Symbol('resetStore'), // 发起重置数据请求
+  RESET_STORE: Symbol('RESET_STORE'), // 重置数据
 }
 
 

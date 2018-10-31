@@ -14,6 +14,7 @@ class DeviceMonitor extends Component {
   static propTypes = {
     match: PropTypes.object,
     getSingleStation: PropTypes.func,
+    resetDeviceStore: PropTypes.func,
     singleStationData: PropTypes.object,
   }
   constructor(props) {
@@ -23,6 +24,10 @@ class DeviceMonitor extends Component {
   componentDidMount(){
     const { stationCode } =this.props.match.params;
     this.props.getSingleStation({stationCode});
+  }
+
+  componentWillUnmount(){
+    this.props.resetDeviceStore()
   }
 
   render() {

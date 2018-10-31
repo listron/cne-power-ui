@@ -11,9 +11,10 @@ export const stationManageAction = {
   DELET_STATION_MANAGE: Symbol('DELET_STATION_MANAGE'), // 删除电站(及以下设备))所有信息
   SET_STATION_MANAGE_DEPARTMENT: Symbol('SET_STATION_MANAGE_DEPARTMENT'), // 为指定电站分配部门
   GET_OTHER_PAGE_STATION_MANAGE_DETAIL: Symbol('GET_OTHER_PAGE_STATION_MANAGE_DETAIL'), // 详情翻页请求下一页/前一页详情
-  GET_ALL_STATION_MANAGE_BASE_INFO: Symbol('GET_ALL_STATION_MANAGE_BASE_INFO'), // 获取用户所在企业下所有电站(与token无关)
 
   GET_STATION_MANAGE_FETCH_SUCCESS: Symbol('GET_STATION_MANAGE_FETCH_SUCCESS'), // 电站管理普通api请求成功
+  resetStore: Symbol('resetStore'), // 发起重置数据请求
+  RESET_STORE: Symbol('RESET_STORE'), // 重置数据
 }
 
 
