@@ -61,20 +61,20 @@ class TableGraph extends React.Component {
           dataIndex: 'planPower',
           // width: 150,
           sorter: (a, b) => a.planPower - b.planPower,
-          render: text =>  text ? text :'--'
+          render: text =>  (text||text===0) ? text :'--'
         }, {
           title: '实际发电量',
           dataIndex: 'actualPower',
           // width: 150,
           sorter: (a, b) => a.actualPower - b.actualPower,
-          render: text =>  text ? text :'--'
+          render: text =>  (text||text===0) ? text :'--'
         }, {
           title: '计划完成率',
           dataIndex: 'per',
           // width: 150,
           defaultSortOrder: 'descend',
           sorter: (a, b) => a.per - b.per,
-          render: text =>  text ? text+'%' :'--'
+          render: text =>  (text||text===0) ? text+'%' :'--'
         }];
         break;
       case "lightTB": // 光资源同比降幅排名
@@ -88,26 +88,26 @@ class TableGraph extends React.Component {
           dataIndex: 'lastYearData',
           width: 150,
           sorter: (a, b) => a.lastYearData - b.lastYearData,
-          render: text =>  text ? text :'--'
+          render: text =>  (text||text===0) ? text :'--'
         }, {
           title: currentYear,
           dataIndex: 'thatYearData',
           width: 150,
           sorter: (a, b) => a.thatYearData - b.thatYearData,
-          render: text =>  text ? text :'--'
+          render: text =>  (text||text===0) ? text :'--'
         }, {
           title: '辐射总量同比',
           dataIndex: 'lightYearOnYear',
           width: 170,
           defaultSortOrder: 'descend',
           sorter: (a, b) => a.lightYearOnYear - b.lightYearOnYear,
-          render: text =>  text ? text+'%':'--'
+          render: text =>  (text||text===0) ? text+'%':'--'
         }, {
           title: '发电量同比',
           dataIndex: 'powerYearOnYear',
           width: 150,
           sorter: (a, b) => a.powerYearOnYear - b.powerYearOnYear,
-          render: text =>  text ? text+'%' :'--'
+          render: text =>  (text||text===0) ? text+'%' :'--'
         }];
         break;
       case "pr": //PR 最低排名
@@ -146,21 +146,21 @@ class TableGraph extends React.Component {
           dataIndex: 'lastYearData',
           // width: 150,
           sorter: (a, b) => a.lastYearData - b.lastYearData,
-          render: text =>  text ? text :'--'
+          render: text =>  (text||text===0) ? text :'--'
         }, {
 
           title: currentYear,
           dataIndex: 'thatYearData',
           // width: 150,
           sorter: (a, b) => a.thatYearData - b.thatYearData,
-          render: text =>  text ? text :'--'
+          render: text =>  (text||text===0) ? text :'--'
         }, {
           title: '同比',
           dataIndex: 'yearOnYear',
           // width: 150,
           defaultSortOrder: 'descend',
           sorter: (a, b) => a.yearOnYear - b.yearOnYear,
-          render: text =>  text ? text+'%' :'--'
+          render: text =>  (text||text===0) ? text+'%' :'--'
         }];
         break;
       case "powerGenTB": // 发电量同比降幅排名
@@ -169,27 +169,27 @@ class TableGraph extends React.Component {
           dataIndex: 'date',
           // width: 150,
           sorter: (a, b) => (a.date) - (b.date),
-          render: text =>  text ? text :'--'
+          render: text =>  (text||text===0) ? text :'--'
         }, {
           title: lastYear,
           dataIndex: 'lastYearData',
           // width: 150,
           sorter: (a, b) => a.lastYearData - b.lastYearData,
-          render: text =>  text ? text :'--'
+          render: text =>  (text||text===0) ? text :'--'
         }, {
 
           title: currentYear,
           dataIndex: 'thatYearData',
           // width: 150,
           sorter: (a, b) => a.thatYearData - b.thatYearData,
-          render: text =>  text ? text :'--'
+          render: text =>  (text||text===0) ? text :'--'
         }, {
           title: '同比',
           dataIndex: 'yearOnYear',
           // width: 150,
           defaultSortOrder: 'descend',
           sorter: (a, b) => a.yearOnYear - b.yearOnYear,
-          render: text =>  text ? text+'%' :'--'
+          render: text =>  (text||text===0) ? text+'%' :'--'
         }];
         break;
       case "powerGenRatio": // 发电量环比降幅排名
@@ -198,20 +198,20 @@ class TableGraph extends React.Component {
           dataIndex: 'date',
           width: 200,
           sorter: (a, b) => (a.date) - (b.date),
-          render: text =>  text ? text :'--'
+          render: text =>  (text||text===0) ? text :'--'
         }, {
           title: '发电量',
           dataIndex: 'thatYearData',
           width: 200,
           sorter: (a, b) => a.thatYearData - b.thatYearData,
-          render: text =>  text ? text :'--'
+          render: text =>  (text||text===0) ? text :'--'
         }, {
           title: '环比',
           dataIndex: 'ringRatio',
           width: 200,
           defaultSortOrder: 'descend',
           sorter: (a, b) => a.ringRatio - b.ringRatio,
-          render: text =>  text ? text+'%' :'--'
+          render: text =>  (text||text===0) ? text+'%' :'--'
         }];
         break;
       case "lostPowerRatio": // 损失电量环比降幅排名
@@ -225,14 +225,14 @@ class TableGraph extends React.Component {
           dataIndex: 'thatYearData',
           width: 200,
           sorter: (a, b) => a.thatYearData - b.thatYearData,
-          render: text =>  text ? text :'--'
+          render: text =>  (text||text===0) ? text :'--'
         }, {
           title: '环比',
           dataIndex: 'ringRatio',
           width: 200,
           defaultSortOrder: 'descend',
           sorter: (a, b) => a.ringRatio - b.ringRatio,
-          render: text =>  text ? text+'%' :'--'
+          render: text =>  (text||text===0) ? text+'%' :'--'
         }];
         break;
       case "utilization": // 可利用率最低排名
@@ -241,19 +241,19 @@ class TableGraph extends React.Component {
           dataIndex: 'date',
           // width: 150,
           sorter: (a, b) => (a.date).localeCompare(b.date),
-          render: text =>  text ? text :'--'
+          render: text =>  (text||text===0) ? text :'--'
         }, {
           title: '电站可利用率',
           dataIndex: 'stationUtilization',
           // width: 150,
           sorter: (a, b) => a.stationUtilization - b.stationUtilization,
-          render: text =>  text ? text+'%' :'--'
+          render: text =>  (text||text===0) ? text+'%' :'--'
         }, {
           title: '发电系统可利用率',
           dataIndex: 'deviceUtilization',
           defaultSortOrder: 'descend',
           sorter: (a, b) => a.deviceUtilization - b.deviceUtilization,
-          render: text =>  text ? text+'%' :'--'
+          render: text =>  (text||text===0) ? text+'%' :'--'
         }];
         break;
       case "powerLimitRatio": // 限电率环比升幅排名
@@ -267,21 +267,21 @@ class TableGraph extends React.Component {
           dataIndex: 'limitPower',
           // width: 200,
           sorter: (a, b) => a.limitPower - b.limitPower,
-          render: text =>  text ? text :'--'
+          render: text =>  (text||text===0) ? text :'--'
         },
         {
           title: '限电率',
           dataIndex: 'limitPowerRate',
           // width: 200,
           sorter: (a, b) => a.limitPowerRate - b.limitPowerRate,
-          render: text =>  text ? text+'%' :'--'
+          render: text =>  (text||text===0) ? text+'%' :'--'
         }, {
           title: '限电率环比',
           dataIndex: 'ringRatio',
           // width: 200,
           defaultSortOrder: 'descend',
           sorter: (a, b) => a.ringRatio - b.ringRatio,
-          render: text =>  text ? text+'%' :'--'
+          render: text =>  (text||text===0) ? text+'%' :'--'
         }];
         break;
       case "lightDistributed": // 光资源分布排名
@@ -291,19 +291,19 @@ class TableGraph extends React.Component {
           width: 200,
           defaultSortOrder: 'descend',
           sorter: (a, b) => (a.date) - (b.date),
-          render: text =>  text ? text :'--'
+          render: text =>  (text||text===0) ? text :'--'
         }, {
           title: '辐射总量',
           dataIndex: 'thatYearData',
           width: 200,
           sorter: (a, b) => a.thatYearData - b.thatYearData,
-          render: text =>  text ? text :'--'
+          render: text =>  (text||text===0) ? text :'--'
         }, {
           title: '占比',
           dataIndex: 'ringRatio',
           width: 200,
           sorter: (a, b) => a.ringRatio - b.ringRatio,
-          render: text =>  text ? text+'%' :'--'
+          render: text =>  (text||text===0) ? text+'%' :'--'
         }];
         break;
       case "lightDistributedTB": // 光资源同比降幅排名
@@ -312,27 +312,27 @@ class TableGraph extends React.Component {
           dataIndex: 'date',
           width: 150,
           sorter: (a, b) => (a.date).localeCompare(b.date),
-          render: text =>  text ? text :'--'
+          render: text =>  (text||text===0) ? text :'--'
         }, {
           title: lastYear,
           dataIndex: 'lastYearData',
           // width: 150,
           sorter: (a, b) => a.lastYearData - b.lastYearData,
-          render: text =>  text ? text :'--'
+          render: text =>  (text||text===0) ? text :'--'
         }, {
 
           title: currentYear,
           dataIndex: 'thatYearData',
           // width: 150,
           sorter: (a, b) => a.thatYearData - b.thatYearData,
-          render: text =>  text ? text :'--'
+          render: text =>  (text||text===0) ? text :'--'
         }, {
           title: '同比',
           dataIndex: 'yearOnYear',
           // width: 150,
           defaultSortOrder: 'descend',
           sorter: (a, b) => a.yearOnYear - b.yearOnYear,
-          render: text =>  text ? text+'%' :'--'
+          render: text =>  (text||text===0) ? text+'%' :'--'
         }];
         break;
       default:
