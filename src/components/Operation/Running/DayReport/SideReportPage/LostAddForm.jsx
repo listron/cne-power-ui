@@ -260,9 +260,9 @@ class LostAddForm extends Component {
               {getFieldDecorator('process', {
                 rules: [{ required: true, message: '请填写处理进展及说明' }],
               })(
-                <InputLimit size={30} className={styles.reasonArea} numberIsShow={false} width={520} height={60} />
+                <InputLimit size={80} className={styles.reasonArea} numberIsShow={false} width={520} height={60} />
               )}
-              <span className={styles.lostInputTip}>({getFieldValue('process')?getFieldValue('process').length:0}/30)</span>
+              <span className={styles.lostInputTip}>({getFieldValue('process')?getFieldValue('process').length:0}/80)</span>
             </Form.Item>
           </Col>
         </Row>
