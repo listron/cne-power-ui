@@ -14,7 +14,6 @@ var initState = Immutable.fromJS({
   orderCommand: '', // 排序方式 ;"1"升序; "2"降序
   stationList: [], // 电站列表数据
   totalNum:  0, // 电站总数
-  allStationBaseInfo: [], // 用户所在企业下所有电站基本信息(与用户token无关)
 
   selectedStationIndex: null, // 展示详情的电站index
   stationDetail: {},// 电站详情
@@ -29,6 +28,8 @@ const stationManageReducer = (state = initState, action) => {
       return state.merge(Immutable.fromJS(action.payload)).set('loading',false)
     case stationManageAction.CHANGE_STATION_MANAGE_STORE:
       return state.merge(Immutable.fromJS(action.payload))
+    case stationManageAction.RESET_STORE:
+      return initState
   }
   return state;
 }

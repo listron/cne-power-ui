@@ -93,7 +93,6 @@ const mapStateToProps = (state) => ({
   enterpriseId: Cookie.get('enterpriseId'),
   ...state.system.alarmManage.toJS(),
   stations: state.common.get('stations').toJS(),
-  allStationBaseInfo: state.system.stationManage.get('allStationBaseInfo').toJS(),
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -125,7 +124,14 @@ const mapDispatchToProps = (dispatch) => ({
       resultName: 'devicePoints'
     }
   }),
-  getStationOfEnterprise: payload =>dispatch({type: stationManageAction.GET_ALL_STATION_MANAGE_BASE_INFO, payload }),
+  getStationOfEnterprise: params =>dispatch({
+    type: commonAction.getStationOfEnterprise, 
+    payload: {
+      params, 
+      actionName: alarmManageAction.GET_ALARM_MANAGE_FETCH_SUCCESS,
+      resultName: 'allStationBaseInfo'
+    } 
+  }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AlarmManage);

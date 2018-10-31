@@ -18,6 +18,7 @@ var initState = Immutable.fromJS({
   stationDeviceTypes: [], // 电站下设备类型
   deviceModels: [], // 电站设备类型下设备型号
   devicePoints: [], // 设备测点列表
+  allStationBaseInfo: [], // 用户所在企业下所有电站基本信息(与用户token无关)
 });
 
 const alarmManageReducer = (state = initState, action) => {

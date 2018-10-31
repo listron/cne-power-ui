@@ -92,7 +92,6 @@ const mapStateToProps = (state) => ({
   enterpriseId: Cookie.get('enterpriseId'),
   ...state.system.deviceManage.toJS(),
   stations: state.common.get('stations').toJS(),
-  allStationBaseInfo: state.system.stationManage.get('allStationBaseInfo').toJS(),
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -114,8 +113,15 @@ const mapDispatchToProps = (dispatch) => ({
       resultName: 'deviceModels'
     }
   }),
+  getStationOfEnterprise: params =>dispatch({
+    type: commonAction.getStationOfEnterprise, 
+    payload: {
+      params, 
+      actionName: deviceManageAction.GET_DEVICE_MANAGE_FETCH_SUCCESS,
+      resultName: 'allStationBaseInfo'
+    } 
+  }),
   changeCommonStore: payload => dispatch({type:commonAction.changeCommonStore, payload}),
-  getStationOfEnterprise: payload =>dispatch({type: stationManageAction.GET_ALL_STATION_MANAGE_BASE_INFO, payload }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DeviceManage);
