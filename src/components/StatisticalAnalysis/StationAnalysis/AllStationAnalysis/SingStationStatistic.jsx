@@ -389,13 +389,13 @@ class SingleStationStatistic extends React.Component {
     //发电量数据
     const barGraphThatYear = singleStationPowerData.map((e, i) => ((e.thatYearData || e.thatYearData === 0) ? e.thatYearData : '--'))
     const barGraphLastYear = singleStationPowerData.map((e, i) => ((e.lastYearData || e.lastYearData === 0) ? e.lastYearData : '--'))
-    const barGraphmonth = singleStationPowerData.map((e, i) => (`${e.date}${dateType === 'month' ? '月' : (dateType === 'day' ? '日' : '')}`))
+    const barGraphmonth = singleStationPowerData.map((e, i) => (`${e.date}${dateType === 'month' ? '月' :''}`))
     const barGraphYearOnYear = singleStationPowerData.map((e, i) => ((e.yearOnYear || e.yearOnYear === '0') ? e.yearOnYear : '--'))
     const barGraphRingRatio = singleStationPowerData.map((e, i) => ((e.ringRatio || e.ringRatio === '0') ? e.ringRatio : '--'))
     //单电站累计完成率
     const dayCompleteRateThatYearData = singleStationDayCompleteRateData.map((e, i) => ((e.thatYearData || e.thatYearData === 0) ? e.thatYearData : '--'))
     const dayCompleteRateLastYearData = singleStationDayCompleteRateData.map((e, i) => ((e.lastYearData || e.lastYearData === 0) ? e.lastYearData : '--'))
-    const dayCompleteRateDateData = singleStationDayCompleteRateData.map((e, i) => (`${e.day}日`))
+    const dayCompleteRateDateData = singleStationDayCompleteRateData.map((e, i) => (`${e.day}`))
     const dayCompleteRate = singleStationDayCompleteRateData.map((e, i) => ((e.yearOnYear || e.yearOnYear === '0') ? e.yearOnYear : '--'))
     //发电量饼图
     const pieData = singleStationMonthPieData.map((e, i) => ({ value: Number(e.monthPower), name: `${e.month}月` }));
@@ -417,7 +417,7 @@ class SingleStationStatistic extends React.Component {
     
     //发电效率分析 
     const PowerEffectiveData = {
-      xData: singleStationPowerEffectiveData.map((e, i) => (`${e.date}${dateType === 'month' ? '月' : (dateType === 'day' ? '日' : '')}`)),
+      xData: singleStationPowerEffectiveData.map((e, i) => (`${e.date}${dateType === 'month' ? '月' : ''}`)),
       yData: {
         barData: {
           hours: singleStationPowerEffectiveData && singleStationPowerEffectiveData.map((e, i) => (e.hours ? parseFloat(e.hours).toFixed(2) : "--"))
@@ -432,10 +432,10 @@ class SingleStationStatistic extends React.Component {
     const lostPowerThatYear = singleStationLostPowerData.map((e, i) => ((e.thatYearData || e.thatYearData === 0) ? e.thatYearData : '--'))
     const lostPowerLastYear = singleStationLostPowerData.map((e, i) => ((e.lastYearData || e.lastYearData === 0) ? e.lastYearData : '--'))
     const lostPowerRingRatio = singleStationLostPowerData.map((e, i) => ((e.ringRatio || e.ringRatio === '0') ? e.ringRatio : '--'))
-    const lostPowermonth = singleStationLostPowerData.map((e, i) => (`${e.date}${dateType === 'month' ? '月' : (dateType === 'day' ? '日' : '')}`))
+    const lostPowermonth = singleStationLostPowerData.map((e, i) => (`${e.date}${dateType === 'month' ? '月' :  ''}`))
     const lostPowerYearOnYear = singleStationLostPowerData.map((e, i) => ((e.yearOnYear || e.yearOnYear === '0') ? e.yearOnYear : '--'))
     const { showStationSelect } = this.state;
-    const stationItems = stations.toJS();
+    const stationItems = stations&&stations.toJS();
     const stationItem = stationItems.filter(e => (e.stationCode.toString() === singleStationCode))[0];
     const stationGridTime = stationItem.onGridTime ? moment(stationItem.onGridTime).format('YYYY年MM月DD日') : '--';
     //console.log(stationItem);
@@ -446,7 +446,7 @@ class SingleStationStatistic extends React.Component {
         <div className={styles.componentContainer}>
           <div className={styles.title}>
             {showStationSelect &&
-              <ChangeStation stations={stations.toJS()} stationName={stationItem.stationName} baseLinkPath="/statistical/stationaccount/allstation" hideStationChange={this.hideStationChange} />
+              <ChangeStation stations={stationItems} stationName={stationItem.stationName} baseLinkPath="/statistical/stationaccount/allstation" hideStationChange={this.hideStationChange} />
             }
             <div className={styles.titleLeft}>
               <div onClick={() => this.setState({ showStationSelect: true })} className={styles.stationName}>
@@ -658,7 +658,7 @@ class SingleStationStatistic extends React.Component {
                   yAxisName={'当月累计完成率'}
                   xAxisName={'累计完成率'}
                   lastYear={lastYear}
-                  currentYear={lastYear}
+                  currentYear={currentYear}
                   dayCompleteRate={dayCompleteRate}
                   dayCompleteRateDateData={dayCompleteRateDateData}
                   dayCompleteRateLastYearData={dayCompleteRateLastYearData}
