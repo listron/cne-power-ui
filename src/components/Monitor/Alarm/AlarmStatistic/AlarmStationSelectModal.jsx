@@ -16,7 +16,7 @@ class AlarmStationSelectModal extends Component {
     this.state = {
       stationCode: '',
       stationType: 1,
-      stationData: props.stations.filter(station=>station.get('stationType')===0)
+      stationData: props.stations.filter(station=>station.get('stationType')===1)
     };
   }
 

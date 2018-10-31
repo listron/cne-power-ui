@@ -54,7 +54,7 @@ class TableGraph extends React.Component {
         columns = [{
           title: '日期',
           dataIndex: 'date',
-          width: 150,
+          //width: 150,
           sorter: (a, b) => (a.date).localeCompare(b.date),
         }, {
           title: '计划发电量',
@@ -167,21 +167,28 @@ class TableGraph extends React.Component {
         columns = [{
           title: '日期',
           dataIndex: 'date',
-          width: 200,
+          // width: 150,
           sorter: (a, b) => (a.date) - (b.date),
           render: text =>  text ? text :'--'
         }, {
-          title: '发电量',
+          title: lastYear,
+          dataIndex: 'lastYearData',
+          // width: 150,
+          sorter: (a, b) => a.lastYearData - b.lastYearData,
+          render: text =>  text ? text :'--'
+        }, {
+
+          title: currentYear,
           dataIndex: 'thatYearData',
-          width: 200,
+          // width: 150,
           sorter: (a, b) => a.thatYearData - b.thatYearData,
           render: text =>  text ? text :'--'
         }, {
-          title: '环比',
-          dataIndex: 'ringRatio',
-          width: 200,
+          title: '同比',
+          dataIndex: 'yearOnYear',
+          // width: 150,
           defaultSortOrder: 'descend',
-          sorter: (a, b) => a.ringRatio - b.ringRatio,
+          sorter: (a, b) => a.yearOnYear - b.yearOnYear,
           render: text =>  text ? text+'%' :'--'
         }];
         break;

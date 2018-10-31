@@ -10,8 +10,6 @@ import WindStation from '../../../../components/Monitor/StationMonitor/AllStatio
 import PvStation from '../../../../components/Monitor/StationMonitor/AllStation/PvStation/PvStation.jsx';
 import Footer from '../../../../components/Common/Footer';
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
-
-
 const TabPane = Tabs.TabPane;
 class AllStation extends Component {
   static propTypes = {
@@ -64,8 +62,7 @@ class AllStation extends Component {
     this.queryStationData(activeKey);
   }
   render() {
-    const { stationTypes, stationTypeTabs } = this.props;
-    console.log(stationTypeTabs, '11111');
+    const { stationTypes } = this.props;
     const breadCrumbData = {
       breadData: [
 
