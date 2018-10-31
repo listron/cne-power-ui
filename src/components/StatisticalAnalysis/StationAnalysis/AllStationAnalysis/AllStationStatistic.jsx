@@ -262,6 +262,18 @@ class AllStationStatistic extends React.Component {
       }
     }
   }
+  componentWillUnmount() {
+   
+    this.props.changeAllStationStore({
+      //stationTypes: null,   
+      dateType:'month',
+      year:'',
+      month:'',
+      pageNum: 1, // 当前页
+      pageSize: 10, // 每页条数
+      totalNum:  0,//总数
+    });
+  }
   onTimeChange=(timeObj)=>{
     console.log(timeObj);
     timeObj.timeStyle === 'year' ? this.props.changeAllStationStore({ dateType: timeObj.timeStyle, year: [timeObj.startTime, timeObj.endTime] }) :this.props.changeAllStationStore({ dateType: timeObj.timeStyle, year: [timeObj.startTime] })

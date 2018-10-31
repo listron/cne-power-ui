@@ -192,7 +192,7 @@ const routers = [
   },{
     path: '/statistical/equipment/performance',
     exact: true,
-    component: PerformanceAnalysis
+    component: Building
   },{
     path: '/statistical/equipment/manufacturers',
     exact: true,

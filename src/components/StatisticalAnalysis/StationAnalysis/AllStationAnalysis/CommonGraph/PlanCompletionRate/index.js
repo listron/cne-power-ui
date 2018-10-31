@@ -50,12 +50,7 @@ class PlancompletionRate extends React.Component{
 
       }
     render(){
-        const {dateType,allStationStatisticData,showPage,year}=this.props;
-         console.log(year);
-         console.log( );
-       
-
-       
+        const {dateType,allStationStatisticData,showPage,year}=this.props;     
         let planSummary = showPage==='single'?allStationStatisticData:(allStationStatisticData&&allStationStatisticData.planSummary&&allStationStatisticData.planSummary[0])
         const actualPower=planSummary&&planSummary.actualPower?planSummary.actualPower:'--';
         const planPower=planSummary&&planSummary.planPower?planSummary.planPower:'--';

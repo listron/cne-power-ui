@@ -356,6 +356,13 @@ class SingleStationStatistic extends React.Component {
 
     }
   }
+  componentWillUnmount() {
+    this.props.changeAllStationStore({
+      //stationTypes: null,
+      showPage: 'multiple',
+      singleStationCode: ''
+    });
+  }
   onTimeChange=(timeObj)=>{
     console.log(timeObj);
     timeObj.timeStyle === 'year' ? this.props.changeAllStationStore({ dateType: timeObj.timeStyle, year: [timeObj.startTime, timeObj.endTime] }) :this.props.changeAllStationStore({ dateType: timeObj.timeStyle, year: [timeObj.startTime] })
