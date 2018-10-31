@@ -288,7 +288,7 @@ function *dayReportUpdate(action){ // 日报编辑
 
 export function* watchDayReport() {
   yield takeLatest(dayReportAction.toChangeDayReportStore, toChangeDayReportStore);
-  yield takeLatest(dayReportAction.resetStore, toChangeDayReportStore);
+  yield takeLatest(dayReportAction.resetStore, resetStore);
   yield takeLatest(dayReportAction.getDayReportList, getDayReportList);
   yield takeLatest(dayReportAction.getDayReportConfig, getDayReportConfig);
   yield takeLatest(dayReportAction.getStationBaseReport, getStationBaseReport);
