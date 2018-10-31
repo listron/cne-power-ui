@@ -164,7 +164,6 @@ function *uploadDayReport(action){ // 日报上报
         stationType: state.operation.dayReport.get('stationType'),
         regionName: state.operation.dayReport.get('regionName')
       }));
-      !params.regionName && delete params.regionName;
       yield put({ // 清空缓存的相关数据
         type:  dayReportAction.changeDayReportStore,
         payload:{
@@ -252,7 +251,6 @@ function *dayReportUpdate(action){ // 日报编辑
         stationType: state.operation.dayReport.get('stationType'),
         regionName: state.operation.dayReport.get('regionName')
       }));
-      !params.regionName && delete params.regionName;
       yield put({ // 请求请求详情页数据
         type: dayReportAction.dayReportDetail,
         payload: { stationCode, reportDate }
