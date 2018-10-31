@@ -28,6 +28,8 @@ const pointManageReducer = (state = initState, action) => {
       return state.merge(Immutable.fromJS(action.payload)).set('loading',false)
     case pointManageAction.CHANGE_POINT_MANAGE_STORE:
       return state.merge(Immutable.fromJS(action.payload))
+    case pointManageAction.RESET_STORE:
+      return initState
   }
   return state;
 }

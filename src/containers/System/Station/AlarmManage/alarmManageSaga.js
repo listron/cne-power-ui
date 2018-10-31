@@ -12,6 +12,12 @@ function *changeAlarmManageStore(action){ // 存储payload指定参数，替换r
   })
 }
 
+function *resetStore(){
+  yield put({
+    type:  alarmManageAction.RESET_STORE
+  })
+}
+
 function *getAlarmList(action){ // 请求告警事件列表
   const { payload } = action;
   // const url = '/mock/system/alarmManage/alarmList';
@@ -85,6 +91,7 @@ function *deleteAlarmList(action){ // 清除电站告警事件
 
 export function* watchAlarmManage() {
   yield takeLatest(alarmManageAction.CHANGE_ALARM_MANAGE_STORE_SAGA, changeAlarmManageStore);
+  yield takeLatest(alarmManageAction.resetStore, resetStore);
   yield takeLatest(alarmManageAction.GET_ALARM_MANAGE_LIST, getAlarmList);
   yield takeLatest(alarmManageAction.DELETE_ALARM_MANAGE_LIST, deleteAlarmList);
 }

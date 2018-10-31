@@ -2,7 +2,7 @@ import Immutable from 'immutable';
 
 import { deviceManageAction } from './deviceManageAction';
 
-var initState = Immutable.fromJS({
+const initState = Immutable.fromJS({
   loading: false,
   stationCode: null, // 选中的电站
   deviceTypeCode: null, // 选中的设备类型
@@ -27,6 +27,8 @@ const deviceManageReducer = (state = initState, action) => {
       return state.merge(Immutable.fromJS(action.payload)).set('loading',false)
     case deviceManageAction.CHANGE_DEVICE_MANAGE_STORE:
       return state.merge(Immutable.fromJS(action.payload))
+    case deviceManageAction.RESET_STORE:
+      return initState
   }
   return state;
 }

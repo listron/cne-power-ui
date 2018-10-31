@@ -29,6 +29,8 @@ const alarmManageReducer = (state = initState, action) => {
       return state.merge(Immutable.fromJS(action.payload)).set('loading',false)
     case alarmManageAction.CHANGE_ALARM_MANAGE_STORE:
       return state.merge(Immutable.fromJS(action.payload))
+    case alarmManageAction.RESET_STORE:
+      return initState
   }
   return state;
 }

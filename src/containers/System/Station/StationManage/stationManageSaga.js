@@ -12,7 +12,7 @@ function *changeStationManageStore(action){ // 存储payload指定参数，替�
   })
 }
 
-function *resetStore(){ // 存储payload指定参数，替换reducer-store属性。
+function *resetStore(){
   yield put({
     type:  stationManageAction.RESET_STORE
   })

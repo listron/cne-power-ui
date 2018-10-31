@@ -26,6 +26,7 @@ class AlarmManage extends Component {
     sortOrder: PropTypes.string,
     changeAlarmManageStore: PropTypes.func,
     getStationOfEnterprise: PropTypes.func,
+    resetStore: PropTypes.func,
   }
   constructor(props) {
     super(props);
@@ -43,18 +44,7 @@ class AlarmManage extends Component {
 
   componentWillUnmount(){
     clearTimeout(this.timeout);
-    this.props.changeAlarmManageStore({ // 离开页面前，重置数据。
-      stationCode: null,
-      deviceTypeCode: null,
-      deviceModeCode: null,
-      pointCode: '',
-      pageNum: 1,
-      pageSize: 10,
-      totalNum:  0,
-      sortField: '',
-      sortOrder: '',
-      alarmList: []
-    })
+    this.props.resetStore(); // 重置数据
   }
 
   hideManageTip=()=>{
@@ -97,6 +87,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   changeAlarmManageStore: payload => dispatch({type:alarmManageAction.CHANGE_ALARM_MANAGE_STORE_SAGA, payload}),
+  resetStore: () => dispatch({ type: alarmManageAction.resetStore }),
   getAlarmList: payload => dispatch({type: alarmManageAction.GET_ALARM_MANAGE_LIST, payload}),
   deleteAlarmList: payload => dispatch({type: alarmManageAction.DELETE_ALARM_MANAGE_LIST, payload}),
   changeCommonStore: payload => dispatch({type:commonAction.changeCommonStore, payload}),

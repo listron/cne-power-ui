@@ -25,6 +25,7 @@ class DeviceManage extends Component {
     sortMethod: PropTypes.string,
     changeDeviceManageStore: PropTypes.func,
     getStationOfEnterprise: PropTypes.func,
+    resetStore: PropTypes.func,
   }
   constructor(props) {
     super(props);
@@ -42,17 +43,7 @@ class DeviceManage extends Component {
 
   componentWillUnmount(){
     clearTimeout(this.timeout);
-    this.props.changeDeviceManageStore({ // 离开页面前，重置数据。
-      stationCode: null, // 选中的电站
-      deviceTypeCode: null, // 选中的设备类型
-      deviceModeCode: null, // 选中的设备型号
-      pageNum: 1,
-      pageSize: 10,
-      totalNum:  0, // 设备总数
-      sortField: '', // 排序字段
-      sortMethod: '',
-      deviceList: []
-    })
+    this.props.resetStore(); // 重置数据
   }
 
   hideManageTip=()=>{
@@ -97,6 +88,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   changeDeviceManageStore: payload => dispatch({type:deviceManageAction.CHANGE_DEVICE_MANAGE_STORE_SAGA, payload}),
   getDeviceList: payload => dispatch({type: deviceManageAction.GET_DEVICE_MANAGE_LIST, payload}),
+  resetStore: () => dispatch({ type: deviceManageAction.resetStore }),
   getStationDeviceTypes: params => dispatch({
     type: commonAction.getStationDeviceTypes,
     payload: {
