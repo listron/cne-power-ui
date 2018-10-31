@@ -45,12 +45,12 @@ class TargetTabs extends React.Component {
    const lastYear=(parseInt(year)-1).toString();
     const { allStationMonthBarData, allStationMonthPieData, allStationMonthComplete } = this.props;
    
-    const barGraphThatYear = allStationMonthBarData.map((e, i) => (e.thatYearData||'--'))
-    const barGraphLastYear = allStationMonthBarData.map((e, i) => (e.lastYearData||'--'))
+    const barGraphThatYear = allStationMonthBarData.map((e, i) => ((e.thatYearData||e.thatYearData===0)?e.thatYearData:'--'))
+    const barGraphLastYear = allStationMonthBarData.map((e, i) => ((e.lastYearData||e.lastYearData===0)?e.lastYearData:'--'))
     const barGraphmonth = allStationMonthBarData.map((e, i) => (`${e.month}月`))
     const barGraphYear = allStationMonthBarData.map((e, i) => (`${e.year}年`))
-    const barGraphYearOnYear = allStationMonthBarData.map((e, i) => (e.yearOnYear||'--'))
-    const barGraphRingRatio = allStationMonthBarData.map((e, i) => (e.ringRatio||'--'))
+    const barGraphYearOnYear = allStationMonthBarData.map((e, i) => ((e.yearOnYear||e.yearOnYear==='0')?e.yearOnYear:'--'))
+    const barGraphRingRatio = allStationMonthBarData.map((e, i) => ((e.ringRatio||e.ringRatio==='0')?e.ringRatio:'--'))
     // console.log(barGraphThatYear,barGraphLastYear,barGraphmonth,barGraphYearOnYear);
     const pieData = allStationMonthPieData.map((e, i) => ({ value: Number(e.monthPower), name: `${e.month}月` }));
     //const pieData=[{value:22,name:'1月'},{value:28,name:'2月'},{value:52,name:'3月'},{value:42,name:'4月'}];
@@ -59,6 +59,8 @@ class TargetTabs extends React.Component {
     // console.log(pieData, pieComplete);
     const pieTargetData=allStationMonthBarData.map((e,i)=>({value:e.thatYearData,name:`${e.month}月`}))
    
+    // let test=0;
+    // test?console.log('ok'):console.log('no');
 
 
     return (
