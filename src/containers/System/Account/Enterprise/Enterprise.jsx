@@ -20,6 +20,7 @@ class Enterprise extends Component {
     showPage: PropTypes.string,
     enterpriseId: PropTypes.string,
     getEnterpriseDetail: PropTypes.func,
+    resetStore: PropTypes.func,
   }
   constructor(props) {
     super(props);
@@ -41,6 +42,10 @@ class Enterprise extends Component {
       // enterpriseName:"协合新能源"
       enterpriseId, //this.props.enterpriseId //'1010694160817111040',
     })
+  }
+
+  componentWillUnmount(){
+    this.props.resetStore()
   }
 
   onShowSide = () => {
@@ -92,6 +97,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   changeEnterpriseStore: payload => dispatch({type:enterpriseAction.changeEnterpriseStore, payload}),
+  resetStore: () => dispatch({ type: enterpriseAction.resetStore }),
   getEnterpriseList: payload => dispatch({type:enterpriseAction.getEnterprisList, payload}),
   getEnterpriseDetail: payload => dispatch({type:enterpriseAction.getEnterpriseDetail, payload}),
   changeSelectedEnterprise: payload => dispatch({type:enterpriseAction.CHANGE_SELECTED_ENTERPRISE_SAGA, payload}),

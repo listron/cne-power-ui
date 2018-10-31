@@ -63,7 +63,7 @@ class LostGenTable extends Component {
             {getFieldDecorator(`${record.id}_endTime`, {
               initialValue: record.endTime,
             })(
-              <DatePicker placeholder="结束时间" showTime={{format: 'HH:mm'}} format="YYYY-MM-DD hh:mm"  />
+              <DatePicker placeholder="结束时间" showTime={{format: 'HH:mm'}} format="YYYY-MM-DD HH:mm"  />
             )}
           </Form.Item>)
         }
@@ -80,7 +80,7 @@ class LostGenTable extends Component {
           </Form.Item>)
         }
       },{
-        title: '日损失电量',
+        title: '日损失电量(kWh)',
         dataIndex: 'lostPower',
         render : (text, record) => {
           return (<Form.Item>
@@ -95,8 +95,11 @@ class LostGenTable extends Component {
         title: '操作',
         dataIndex: 'handle',
         render : (text, record) => {
-          const { id } = record;
-          return text?<span onClick={()=>this.removeFaultInfo(id)} className={styles.removeFaultInfo} ><i className="iconfont icon-del" ></i></span>:<span></span>
+          const { id, reportDate, defectId } = record;
+          const refuseDelete = moment().isSame(moment(reportDate),'day') && defectId; // 今天且关联缺陷时，不可删除。
+          return refuseDelete?<span></span>:<span onClick={()=>this.removeFaultInfo(id)} className={styles.removeFaultInfo} >
+            <i className="iconfont icon-del" ></i>
+          </span>
         }
       }
     ]
