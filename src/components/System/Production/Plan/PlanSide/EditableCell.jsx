@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import {  Input, Form, message } from 'antd';
+import { Input, Form, message } from 'antd';
 import PropTypes from 'prop-types';
-import styles from './planMain.scss';
 import { getMonth, } from '../plan';
+import styles from './planSide.scss'
+import { timingSafeEqual } from 'crypto';
 
 const FormItem = Form.Item;
 
@@ -13,27 +14,31 @@ class EditableCell extends React.Component {
     form: PropTypes.object,
     record: PropTypes.object,
     dataIndex: PropTypes.string,
+    changePlanStore: PropTypes.func,
+    AddPlandata: PropTypes.array
   };
+
+ 
 
   getInput = (form) => {
     const { dataIndex, record } = this.props;
     if (dataIndex === 'yearPR') { // PR年计划
       return (<span>
-        <Input onChange={(e) => this.valueChange(e, dataIndex, record, 'pr')}
-          defaultValue={record[dataIndex]} />%</span>);
+        <Input onChange={(e) => this.valueChange(e, form, dataIndex, record, 'pr')}
+          defaultValue={record[dataIndex]} placeholder="--" />%</span>);
     }
     if (record.setGridTime) {// 并网数据
       if (getMonth(dataIndex) < +(record.setGridTime)) {
         return <Input disabled={true} placeholder="--" />
       }
     }
-    return (<Input onChange={(e) => this.valueChange(e, dataIndex, record)}
+    return (<Input onChange={(e) => this.valueChange(e, form, dataIndex, record)}
       placeholder="--" />);
   };
 
 
 
-  valueChange = (e, dataIndex, record, type) => {//月份的修改，修改完毕之后年计划跟着变化
+  valueChange = (e, form, dataIndex, record, type) => {//月份的修改，修改完毕之后年计划跟着变化
     const number = e.target.value;
     const pointLength = number.split('.')[1] ? number.split('.')[1].length : 0;
     const limitPointLength = type === 'pr' ? 2 : 4
@@ -47,21 +52,26 @@ class EditableCell extends React.Component {
     } else {
       const index = getMonth(dataIndex) - 1;
       if(index>=0){
-        record.planMonthGens[index] = number;
+        record.monthPower[index] = number;
       }
-      let planMonthValue = record.planMonthGens.filter(e => e !== "null");
+      let planMonthValue = record.monthPower.filter(e => e !== "null");
       const planPower = planMonthValue.reduce((prev, next) => (+prev) + (+next), 0)
+      record.planPower=planPower;
       this.props.form.setFieldsValue({ planPower });
       type === 'pr' ? record.yearPR = number : '';
+      record.eddit="true"
     }
+
   };
 
+  
   render() {
     const {
       form,
       editing,
       dataIndex,
       record,
+      valueChange,
       ...restProps
     } = this.props;
     const { getFieldDecorator } = form;
@@ -69,8 +79,8 @@ class EditableCell extends React.Component {
       <td {...restProps}>
         {editing && dataIndex === 'planPower' && <FormItem style={{ margin: 0 }}>
           {getFieldDecorator(dataIndex, {
-            initialValue: record[dataIndex] === "null" ? '--' : record[dataIndex],
-          })(<div className={styles.save}>{form.getFieldValue('planPower')}</div>)}
+            initialValue: record[dataIndex] ? '--' : record[dataIndex],
+          })(<div className={styles.save}>{form.getFieldValue('planPower') || '--'}</div>)}
         </FormItem>}
         {editing && dataIndex !== 'planPower' && <FormItem style={{ margin: 0 }}>
           {getFieldDecorator(dataIndex, {
