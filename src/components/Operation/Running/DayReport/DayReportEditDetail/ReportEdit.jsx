@@ -261,7 +261,7 @@ class ReportEdit extends Component {
   render(){
     const { updateDayReportDetail, addLostFormShow, addLimitFormShow, abnormalTextShow, showBackWarningTip, warningTipText } = this.state;
     const { findDeviceExist, deviceExistInfo, dayReportConfig, lostGenTypes, getStationDeviceTypes, stationDeviceTypes, getLostGenType } = this.props;
-    const {faultList, limitList, stationCode, errorInfo, stationType} = updateDayReportDetail;
+    const {faultList, limitList, stationCode, errorInfo, stationType, reportDate} = updateDayReportDetail;
     return (
       <div className={styles.reportEdit} >
         <div className={styles.reportDetailTitle} >
@@ -288,6 +288,7 @@ class ReportEdit extends Component {
                 endTime: e.endTime?moment(e.endTime):null
               })
             )}
+            reportDate={reportDate}
             rememberRemove={this.rememberRemove}
             changeFaultList={this.faultListInfoChange} 
           />
@@ -316,6 +317,7 @@ class ReportEdit extends Component {
                 endTime: e.endTime?moment(e.endTime):null,
               })
             )}
+            reportDate={reportDate}
             rememberRemove={this.rememberRemove}
             changeLimitList={this.limitListInfoChange}
           />

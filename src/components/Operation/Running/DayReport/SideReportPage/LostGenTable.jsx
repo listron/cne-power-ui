@@ -9,6 +9,7 @@ class LostGenTable extends Component {
   static propTypes = {
     rememberRemove: PropTypes.func,
     form: PropTypes.object,
+    reportDate: PropTypes.string,
     faultGenList: PropTypes.array,
     changeFaultList: PropTypes.func,
   }
@@ -45,15 +46,18 @@ class LostGenTable extends Component {
         title: '发生时间',
         dataIndex: 'startTime',
         render : (text, record) => {
-          return record.typeSource === 0?<span>
-            {moment(record.startTime).format('YYYY-MM-DD HH:mm')}
-          </span>:<Form.Item>
-            {getFieldDecorator(`${record.id}_startTime`, {
-              initialValue: record.startTime,
+          const { reportDate, startTime, id } = record;
+          let tableReportDate = this.props.reportDate; // 正在处理的日报日期.
+          const allowDelete = moment(tableReportDate).isSame(moment(reportDate),'day'); // 日报日期当天添加的故障起始时间才可编辑。
+          return allowDelete?<Form.Item>
+            {getFieldDecorator(`${id}_startTime`, {
+              initialValue: startTime,
             })(
               <DatePicker placeholder="开始时间" showTime={{format: 'HH:mm'}} format="YYYY-MM-DD HH:mm"  />
             )}
-          </Form.Item>
+          </Form.Item>:<span>
+            {moment(startTime).format('YYYY-MM-DD HH:mm')}
+          </span>
         }
       },{
         title: '结束时间',

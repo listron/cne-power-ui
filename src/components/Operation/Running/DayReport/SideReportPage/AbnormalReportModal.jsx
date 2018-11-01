@@ -132,7 +132,7 @@ class AbnormalReportModal extends Component {
   render(){
     const { abnormalModalshow, stationDeviceTypes, abnormalInfo, hideAbnormalModal, findDeviceExist, deviceExistInfo, lostGenTypes, dayReportConfig, getStationDeviceTypes, getLostGenType, stationType} = this.props;
     const { addLostFormShow, faultGenList, limitGenList, addLimitFormShow, abnormalTextShow, abnormalText } = this.state;
-    const { modelInverterPowerGen, modelInverterCapacity, stationCapacity } = abnormalInfo;
+    const { modelInverterPowerGen, modelInverterCapacity, stationCapacity, reportDate } = abnormalInfo;
     let defaultLimitLost; // 默认限电剩余损失电量
     if(modelInverterCapacity > 0){
       const tmpTheoryGen = modelInverterPowerGen / modelInverterCapacity * stationCapacity; // 理论发电量
@@ -171,7 +171,8 @@ class AbnormalReportModal extends Component {
         </div>
         {(faultGenList && faultGenList.length > 0) ? <LostGenTable 
           faultGenList={faultGenList} 
-          abnormalInfo={abnormalInfo} 
+          abnormalInfo={abnormalInfo}
+          reportDate={reportDate} 
           changeFaultList={this.changeFaultList} 
         />: null}
         {addLostFormShow && <LostAddForm
@@ -192,7 +193,8 @@ class AbnormalReportModal extends Component {
         </div>
         {(limitGenList && limitGenList.length > 0)? <LimitGenTable 
           limitGenList={limitGenList} 
-          abnormalInfo={abnormalInfo} 
+          abnormalInfo={abnormalInfo}
+          reportDate={reportDate} 
           changeLimitList={this.changeLimitList} 
         /> :null}
         {addLimitFormShow && <LimitAddForm
