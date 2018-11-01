@@ -10,6 +10,7 @@ export const alarmManageAction = {
 
   GET_ALARM_MANAGE_LIST: Symbol('GET_ALARM_MANAGE_LIST'), // 获取告警事件列表
   DELETE_ALARM_MANAGE_LIST: Symbol('DELETE_ALARM_MANAGE_LIST'), // 清空电站内告警事件
+  getDownLoadAlarmManage:Symbol('getDownLoadAlarmManage')
 }
 
 

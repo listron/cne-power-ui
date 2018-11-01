@@ -168,27 +168,33 @@ const routers = [
   },{
     path: '/statistical/stationaccount/allstation',
     exact: true,
-    component: Building
+    component: AllStationAnalysis
+    // component: Building
   },{
     path: '/statistical/stationaccount/allstation/:stationCode',
     exact: true,
-    component: Building
+    component: AllStationAnalysis
+    // component: Building
   },{
     path: '/statistical/stationaccount/production',
     exact: true,
-    component: Building
+    component: ProductionAnalysis
+    // component: Building
   },{
     path: '/statistical/stationaccount/operate',
     exact: true,
-    component: Building
+    component: OperateAnalysis
+    // component: Building
   },{
     path: '/statistical/stationaccount/resource',
     exact: true,
-    component: Building
+    component: StationResourceAnalysis
+    // component: Building
   },{
     path: '/statistical/stationaccount/contrast',
     exact: true,
-    component: Building
+    component: StationContrast
+    // component: Building
   },{
     path: '/statistical/equipment/performance',
     exact: true,

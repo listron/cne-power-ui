@@ -100,6 +100,7 @@ const mapDispatchToProps = (dispatch) => ({
   changeAlarmManageStore: payload => dispatch({type:alarmManageAction.CHANGE_ALARM_MANAGE_STORE_SAGA, payload}),
   getAlarmList: payload => dispatch({type: alarmManageAction.GET_ALARM_MANAGE_LIST, payload}),
   deleteAlarmList: payload => dispatch({type: alarmManageAction.DELETE_ALARM_MANAGE_LIST, payload}),
+  getDownLoadAlarmManage: payload => dispatch({type: alarmManageAction.getDownLoadAlarmManage, payload}),
   changeCommonStore: payload => dispatch({type:commonAction.changeCommonStore, payload}),
   getStationDeviceTypes: params => dispatch({
     type: commonAction.getStationDeviceTypes,
@@ -127,5 +128,7 @@ const mapDispatchToProps = (dispatch) => ({
   }),
   getStationOfEnterprise: payload =>dispatch({type: stationManageAction.GET_ALL_STATION_MANAGE_BASE_INFO, payload }),
 });
+
+
 
 export default connect(mapStateToProps, mapDispatchToProps)(AlarmManage);
