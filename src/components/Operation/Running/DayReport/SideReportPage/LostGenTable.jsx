@@ -7,7 +7,7 @@ import moment from 'moment';
 
 class LostGenTable extends Component {
   static propTypes = {
-    rememberRemove: PropTypes.bool,
+    rememberRemove: PropTypes.func,
     form: PropTypes.object,
     faultGenList: PropTypes.array,
     changeFaultList: PropTypes.func,
@@ -19,9 +19,9 @@ class LostGenTable extends Component {
 
   removeFaultInfo = (id) => {
     const { faultGenList, changeFaultList, rememberRemove } = this.props;
-    const newFaultGenList = faultGenList.filter(e=>id !== e.id).map(e=>{
-      rememberRemove && (e.handleRemove = true); // 编辑时删除某条后台数据
-      return e
+    const newFaultGenList = faultGenList.filter(e=>{
+      rememberRemove && id === e.id && id > 0 && rememberRemove({faultId: id}); // 要删除的id需暂存
+      return id !== e.id
     });
     changeFaultList(newFaultGenList);
   }

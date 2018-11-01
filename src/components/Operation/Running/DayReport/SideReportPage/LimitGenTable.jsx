@@ -7,7 +7,7 @@ import moment from 'moment';
 
 class LimitGenTable extends Component {
   static propTypes = {
-    rememberRemove: PropTypes.bool,
+    rememberRemove: PropTypes.func,
     form: PropTypes.object,
     limitGenList: PropTypes.array,
     changeLimitList: PropTypes.func,
@@ -22,9 +22,9 @@ class LimitGenTable extends Component {
 
   removeListInfo = (id) => {
     const { limitGenList, changeLimitList, rememberRemove } = this.props;
-    const newLimitGenList = limitGenList.filter(e=>id !== e.id).map(e=>{
-      rememberRemove && (e.handleRemove = true); // 编辑时删除某条后台数据
-      return e
+    const newLimitGenList = limitGenList.filter(e=>{
+      rememberRemove && id === e.id && id > 0 && rememberRemove({limitId: id}); // 要删除的id需暂存
+      return id !== e.id
     });
     changeLimitList(newLimitGenList);
   }

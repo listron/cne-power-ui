@@ -38,6 +38,8 @@ class ReportEdit extends Component {
       showBackWarningTip: false,
       warningTipText: '',
       errorInfo: props.selectedDayReportDetail.errorInfo,
+      removeFaultArr: [], // 欲删除的故障id数组
+      removeLimitArr: [], // 欲删除的限电id数组
     }
   }
 
@@ -130,7 +132,7 @@ class ReportEdit extends Component {
   } 
 
   updateReport = () => { // 确认上传更新后的日报详情
-    const { updateDayReportDetail } = this.state;
+    const { updateDayReportDetail, removeFaultArr, removeLimitArr } = this.state;
     const { dayReportConfig } = this.props;
     let { faultList, limitList } = updateDayReportDetail;
 
@@ -171,9 +173,6 @@ class ReportEdit extends Component {
       this.messageWarning(errorText);
     }else{ // 无错误，提交信息。
       const newFaultList = faultList?faultList.map(e=>{
-        if(e.rememberRemove && e.id > 0 ){//  删除的数据是后台传过来的故障损失=>单独通知后台删除某条(id)数据
-          return {id: e.id};
-        }
         e.id > 0? null: delete e.id;
         delete e.stationCode;
         delete e.handle;
@@ -183,11 +182,8 @@ class ReportEdit extends Component {
           startTime: e.startTime?moment(e.startTime).format('YYYY-MM-DD HH:mm'): null,
           endTime: e.endTime?moment(e.endTime).format('YYYY-MM-DD HH:mm'): null,
         };
-      }): [];
+      }).concat(...removeFaultArr): [];
       const newLimitList = limitList?limitList.map(e=>{
-        if(e.rememberRemove && e.id > 0 ){ // 删除的数据是后台传过来的限电=>单独通知后台删除某条(id)数据
-          return {id: e.id};
-        }
         e.id > 0? null: delete e.id;
         delete e.handle;
         delete e.handle;
@@ -197,7 +193,7 @@ class ReportEdit extends Component {
           startTime: e.startTime?moment(e.startTime).format('YYYY-MM-DD HH:mm'): null,
           endTime: e.endTime?moment(e.endTime).format('YYYY-MM-DD HH:mm'): null,
         };
-      }): [];
+      }).concat(...removeLimitArr): [];
       const reportInfo = {
         stationCode: updateDayReportDetail.stationCode,
         reportDate: moment(updateDayReportDetail.reportDate).format('YYYY-MM-DD'),
@@ -254,6 +250,14 @@ class ReportEdit extends Component {
     this.setState({ ...newState });
   }
 
+  rememberRemove = ({faultId, limitId}) => { // 记录要移除的损失记录
+    let { removeFaultArr, removeLimitArr } = this.state;
+    this.setState({ 
+      removeFaultArr: faultId?[...removeFaultArr, {id: faultId}]: removeFaultArr,
+      removeLimitArr: limitId?[...removeLimitArr, {id: limitId}]: removeLimitArr,
+    })
+  }
+
   render(){
     const { updateDayReportDetail, addLostFormShow, addLimitFormShow, abnormalTextShow, showBackWarningTip, warningTipText } = this.state;
     const { findDeviceExist, deviceExistInfo, dayReportConfig, lostGenTypes, getStationDeviceTypes, stationDeviceTypes, getLostGenType } = this.props;
@@ -284,7 +288,7 @@ class ReportEdit extends Component {
                 endTime: e.endTime?moment(e.endTime):null
               })
             )}
-            rememberRemove={true}
+            rememberRemove={this.rememberRemove}
             changeFaultList={this.faultListInfoChange} 
           />
         </div>: null}
@@ -312,7 +316,7 @@ class ReportEdit extends Component {
                 endTime: e.endTime?moment(e.endTime):null,
               })
             )}
-            rememberRemove={true}
+            rememberRemove={this.rememberRemove}
             changeLimitList={this.limitListInfoChange}
           />
         </div>:null}
