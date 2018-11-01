@@ -30,7 +30,7 @@ class ResourceElecInfo extends Component {
       {name: '天气', value: 'weather', unit: ''},
       {name: '温度', value: 'temperature', unit: ''},
       {name: '电站名称', value: 'stationName', unit: ''},
-      {name: '实际容量', value: 'realCapacity', unit: ''},
+      {name: '实际容量', value: 'realCapacity', unit: 'MW'},
       {name: '装机台数', value: 'machineCount', unit: '台'},
     ];
     const reportDateValue = reportDate?moment(reportDate).format('YYYY-MM-DD'):'--';

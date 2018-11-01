@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import styles from './sideReportPage.scss';
 import { Row, Col, Input, Icon,message } from 'antd';
 import { reportBasefun } from '../reportBaseFun';
+import moment from 'moment';
 
 class EachStationReport extends Component {
   static propTypes = {
@@ -43,16 +44,18 @@ class EachStationReport extends Component {
         `${stationInfo.stationName}${reportBaseInfo.configText}需填数字,且不超过${maxPointLength}位小数`
       );
     }
-    
     const valueGenUnit = genUnit === 'kWh'?1:10000; // 发电量单位转换
-    const { stationCapacity } = stationInfo;
+    const { stationCapacity, reportDate } = stationInfo;
+    const startOfYear = moment(reportDate).startOf('year').isSame(moment(reportDate), 'day');
     if(genCalcType.stander === '1' && paramName === 'yearGenInverter' && stationCapacity > 0){ // 逆变器发电量计算等效小时数
-      const { yesterdayyearGenInverter } = stationInfo;
+      let { yesterdayyearGenInverter } = stationInfo;
+      startOfYear && (yesterdayyearGenInverter = 0); 
       const dayGen = (yesterdayyearGenInverter || yesterdayyearGenInverter === 0)?
         (paramValue-yesterdayyearGenInverter):paramValue;
       param.hour = (dayGen*valueGenUnit/1000/stationCapacity).toFixed(2);
     }else if(genCalcType.stander === '2' && paramName === 'yearGenInternet' && stationCapacity > 0){
-      const { yesterdayyearGenInternet } = stationInfo;
+      let { yesterdayyearGenInternet } = stationInfo;
+      startOfYear && (yesterdayyearGenInternet = 0);
       const dayGen = (yesterdayyearGenInternet || yesterdayyearGenInternet === 0)?
         (paramValue-yesterdayyearGenInternet):paramValue;
       param.hour = (dayGen*valueGenUnit/1000/stationCapacity).toFixed(2);

@@ -95,7 +95,7 @@ function *downloadAlarmExcel(action){ // 导出告警时间
     const { stationCode, stationName } = payload;
     const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.downloadAlarmInfo}/${stationCode}`
     const response = yield call(axios, {
-      method: 'post',
+      method: 'get',
       url,
       responseType:'blob'
     });

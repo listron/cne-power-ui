@@ -118,7 +118,7 @@ const mapStateToProps = (state) => ({
   commonFetching: state.common.get('commonFetching'),
   defectTypes: state.operation.defect.get('defectTypes'),
   deviceTypeItems: state.operation.inspect.get('deviceTypeItems'),
-  deviceAreaItems: state.operation.defect.get('partitions'),
+  deviceAreaItems: state.operation.inspect.get('partitions'),
   deviceItems: state.operation.inspect.get('devices'),
   inspectStandard: state.operation.inspect.get('inspectStandard'),
   allSeries: state.operation.inspect.get('allSeries'),
@@ -161,7 +161,7 @@ const mapDispatchToProps = (dispatch) => ({
     type: commonAction.getSliceDevices,
     payload: {
       params, 
-      deviceTypeAction: ticketAction.GET_INSPECT_FETCH_SUCCESS,
+      actionName: ticketAction.GET_INSPECT_FETCH_SUCCESS,
     }
   }),
   setInspectId: payload => dispatch({ type: ticketAction.SET_INSPECT_ID_SAGA, payload }),
