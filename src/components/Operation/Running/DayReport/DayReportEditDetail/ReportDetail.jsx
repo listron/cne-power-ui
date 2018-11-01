@@ -20,6 +20,7 @@ const loseColumn = [
   },{
     title: '原因说明',
     dataIndex: 'reason',
+    className: 'reason',
     render: (text, record) => (
       <span title={text} >{text}</span>
     ),
@@ -32,11 +33,12 @@ const loseColumn = [
   },{
     title: '处理进展及问题',
     dataIndex: 'process',
+    className: 'process',
     render: (text, record) => (
       <span title={text} >{text}</span>
     ),
   },{
-    title: '日损失电量',
+    title: '日损失电量(kWh)',
     dataIndex: 'lostPower',
   }
 ]
@@ -53,6 +55,7 @@ const limitColumn = [
   },{
     title: '原因说明',
     dataIndex: 'reason',
+    className: 'reason',
     render: (text, record) => (
       <span title={text} >{text}</span>
     ),
@@ -63,7 +66,7 @@ const limitColumn = [
     title: '结束时间',
     dataIndex: 'endTime',
   },{
-    title: '日损失电量',
+    title: '日损失电量(kWh)',
     dataIndex: 'lostPower',
   }
 ]

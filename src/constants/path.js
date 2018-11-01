@@ -216,7 +216,6 @@ export default {
       //生产分析
       ProductionPlanComplete:'/v3/performance/productanalysis/plan',
 
-
       // 运行分析
       getOperatePlanComplete: '/v3/performance/operationanalysis/plan',
       getOperateComponentPower: '/v3/performance/operationanalysis/devicepower',
@@ -225,6 +224,13 @@ export default {
       getOperateLimitPowerRate: '/v3/performance/operationanalysis/limitpower/months',
       getOperateYearLimitPower: '/v3/performance/operationanalysis/limitpower/year',
       getOperatePlantPower: '/v3/performance/operationanalysis/plantpower',
+
+     // 资源分析
+     getResourcePlan:'/v3/performance/resource/plan',
+     getResourceMonthLight:'/v3/performance/resource/distribution/months',
+     getResourceYearLight:'/v3/performance/resource/distribution/year',
+     getResourceMonthWeather:'/v3/performance/resource/weather/years',
+     getResourceDayWeather:'/v3/performance/resource/weather/day',
     }
   }
 }

@@ -4,11 +4,13 @@ import { stationResourceAnalysisAction } from './stationResourceAnalysisAction';
 
 var initState = Immutable.fromJS({
   loading: false,
-  dateType:'month',
-  year:'2018',
- 
-
-
+  dateType: 'month',
+  year: null,
+  stationCode: null,
+  month: '',
+  startTime: '',
+  endTime: '',
+  selectYear:'',
 });
 const stationResourceAnalysisReducer = (state = initState, action) => {
   switch (action.type) {
