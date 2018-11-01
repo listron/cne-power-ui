@@ -36,7 +36,7 @@ const loseColumn = [
       <span title={text} >{text}</span>
     ),
   },{
-    title: '日损失电量',
+    title: '日损失电量(kWh)',
     dataIndex: 'lostPower',
   }
 ]
@@ -63,7 +63,7 @@ const limitColumn = [
     title: '结束时间',
     dataIndex: 'endTime',
   },{
-    title: '日损失电量',
+    title: '日损失电量(kWh)',
     dataIndex: 'lostPower',
   }
 ]

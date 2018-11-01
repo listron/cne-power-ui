@@ -72,7 +72,7 @@ class LimitGenTable extends Component {
           </Form.Item>)
         }
       },{
-        title: '日损失电量',
+        title: '日损失电量(kWh)',
         dataIndex: 'lostPower',
         render : (text, record) => {
           return (<Form.Item>
