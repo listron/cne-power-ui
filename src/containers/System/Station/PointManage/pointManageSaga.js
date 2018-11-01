@@ -12,6 +12,12 @@ function *changePointManageStore(action){ // 存储payload指定参数，替换r
   })
 }
 
+function *resetStore(){ // 存储payload指定参数，替换reducer-store属性。
+  yield put({
+    type:  pointManageAction.RESET_STORE
+  })
+}
+
 function *getStationPointStatusList(){ // 请求所有电站列表=>确认是否可删除测点
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.getStationList}`
   try{
@@ -107,6 +113,7 @@ function *deletePointList(action){ // 清除测点列表
 
 export function* watchPointManage() {
   yield takeLatest(pointManageAction.CHANGE_POINT_MANAGE_STORE_SAGA, changePointManageStore);
+  yield takeLatest(pointManageAction.resetStore, resetStore);
   yield takeLatest(pointManageAction.GET_POINT_MANAGE_ALL_STATION, getStationPointStatusList);
   yield takeLatest(pointManageAction.GET_POINT_MANAGE_LIST, getPointList)
   yield takeLatest(pointManageAction.DELETE_POINT_MANAGE_LIST, deletePointList)

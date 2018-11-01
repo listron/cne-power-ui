@@ -5,7 +5,7 @@ import styles from './loginLayout.scss';
 import { loginAction } from './loginAction';
 import PropTypes from 'prop-types';
 import Login from './Login';
-import Register from './Register';
+// import Register from './Register';
 import JoinIn from './JoinIn';
 import Forget from './Forget';
 import ReactPlayer from 'react-player';
@@ -60,7 +60,7 @@ class LoginLayout extends Component {
           <div className={styles.rightContent}>
             <div className={styles.mainBox}>
               {pageTab === 'login' && <Login changeLoginStore={changeLoginStore} pageTab={pageTab} />}
-              {pageTab === 'register' && <Register changeLoginStore={changeLoginStore} pageTab={pageTab} />}
+              {/* {pageTab === 'register' && <Register changeLoginStore={changeLoginStore} pageTab={pageTab} />} */}
               {pageTab === 'joinIn' && <JoinIn changeLoginStore={changeLoginStore} />}
               {pageTab === 'forget' && <Forget changeLoginStore={changeLoginStore} />}
               <div className={styles.contactUs}>

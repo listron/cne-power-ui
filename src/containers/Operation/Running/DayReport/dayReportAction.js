@@ -14,4 +14,6 @@ export const dayReportAction = {
   uploadDayReport: Symbol('uploadDayReport'), // 上报日报
   dayReportDetail: Symbol('dayReportDetail'), // 获取选中日报详情
   dayReportUpdate: Symbol('dayReportUpdate'), // 更新日报数据
+  resetStore: Symbol('resetStore'), // 发起重置数据请求
+  RESET_STORE: Symbol('RESET_STORE'), // 重置数据
 } 

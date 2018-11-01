@@ -56,7 +56,7 @@ class TableGraph extends React.Component {
         columns = [{
           title: '日期',
           dataIndex: 'date',
-          width: 150,
+          //width: 150,
           sorter: (a, b) => (a.date).localeCompare(b.date),
         }, {
           title: '计划发电量',
@@ -64,7 +64,6 @@ class TableGraph extends React.Component {
           // width: 150,
           sorter: (a, b) => a.planPower - b.planPower,
           render: text =>  (text||text===0) ? text :'--'
-          
         }, {
           title: '实际发电量',
           dataIndex: 'actualPower',
@@ -91,20 +90,20 @@ class TableGraph extends React.Component {
           dataIndex: 'lastYearData',
           width: 150,
           sorter: (a, b) => a.lastYearData - b.lastYearData,
-         render: text =>  (text||text===0) ? text :'--'
+          render: text =>  (text||text===0) ? text :'--'
         }, {
           title: currentYear,
           dataIndex: 'thatYearData',
           width: 150,
           sorter: (a, b) => a.thatYearData - b.thatYearData,
-         render: text =>  (text||text===0) ? text :'--'
+          render: text =>  (text||text===0) ? text :'--'
         }, {
           title: '辐射总量同比',
           dataIndex: 'lightYearOnYear',
           width: 170,
           defaultSortOrder: 'descend',
           sorter: (a, b) => a.lightYearOnYear - b.lightYearOnYear,
-          render: text =>  (text||text===0) ? text+'%' :'--'
+          render: text =>  (text||text===0) ? text+'%':'--'
         }, {
           title: '发电量同比',
           dataIndex: 'powerYearOnYear',
@@ -176,14 +175,14 @@ class TableGraph extends React.Component {
           dataIndex: 'lastYearData',
           // width: 150,
           sorter: (a, b) => a.lastYearData - b.lastYearData,
-         render: text =>  (text||text===0) ? text :'--'
+          render: text =>  (text||text===0) ? text :'--'
         }, {
 
           title: currentYear,
           dataIndex: 'thatYearData',
           // width: 150,
           sorter: (a, b) => a.thatYearData - b.thatYearData,
-         render: text =>  (text||text===0) ? text :'--'
+          render: text =>  (text||text===0) ? text :'--'
         }, {
           title: '同比',
           dataIndex: 'yearOnYear',
@@ -197,21 +196,28 @@ class TableGraph extends React.Component {
         columns = [{
           title: '日期',
           dataIndex: 'date',
-          width: 200,
+          // width: 150,
           sorter: (a, b) => (a.date) - (b.date),
          render: text =>  (text||text===0) ? text :'--'
         }, {
-          title: '发电量',
-          dataIndex: 'thatYearData',
-          width: 200,
-          sorter: (a, b) => a.thatYearData - b.thatYearData,
-         render: text =>  (text||text===0) ? text :'--'
+          title: lastYear,
+          dataIndex: 'lastYearData',
+          // width: 150,
+          sorter: (a, b) => a.lastYearData - b.lastYearData,
+          render: text =>  (text||text===0) ? text :'--'
         }, {
-          title: '环比',
-          dataIndex: 'ringRatio',
-          width: 200,
+
+          title: currentYear,
+          dataIndex: 'thatYearData',
+          // width: 150,
+          sorter: (a, b) => a.thatYearData - b.thatYearData,
+          render: text =>  (text||text===0) ? text :'--'
+        }, {
+          title: '同比',
+          dataIndex: 'yearOnYear',
+          // width: 150,
           defaultSortOrder: 'descend',
-          sorter: (a, b) => a.ringRatio - b.ringRatio,
+          sorter: (a, b) => a.yearOnYear - b.yearOnYear,
           render: text =>  (text||text===0) ? text+'%' :'--'
         }];
         break;
@@ -221,13 +227,13 @@ class TableGraph extends React.Component {
           dataIndex: 'date',
           width: 200,
           sorter: (a, b) => (a.date) - (b.date),
-         render: text =>  (text||text===0) ? text :'--'
+          render: text =>  (text||text===0) ? text :'--'
         }, {
           title: '发电量',
           dataIndex: 'thatYearData',
           width: 200,
           sorter: (a, b) => a.thatYearData - b.thatYearData,
-         render: text =>  (text||text===0) ? text :'--'
+          render: text =>  (text||text===0) ? text :'--'
         }, {
           title: '环比',
           dataIndex: 'ringRatio',
@@ -248,7 +254,7 @@ class TableGraph extends React.Component {
           dataIndex: 'thatYearData',
           width: 200,
           sorter: (a, b) => a.thatYearData - b.thatYearData,
-         render: text =>  (text||text===0) ? text :'--'
+          render: text =>  (text||text===0) ? text :'--'
         }, {
           title: '环比',
           dataIndex: 'ringRatio',
@@ -264,7 +270,7 @@ class TableGraph extends React.Component {
           dataIndex: 'date',
           // width: 150,
           sorter: (a, b) => (a.date).localeCompare(b.date),
-         render: text =>  (text||text===0) ? text :'--'
+          render: text =>  (text||text===0) ? text :'--'
         }, {
           title: '电站可利用率',
           dataIndex: 'stationUtilization',
@@ -290,7 +296,7 @@ class TableGraph extends React.Component {
           dataIndex: 'limitPower',
           // width: 200,
           sorter: (a, b) => a.limitPower - b.limitPower,
-         render: text =>  (text||text===0) ? text :'--'
+          render: text =>  (text||text===0) ? text :'--'
         },
         {
           title: '限电率',
@@ -310,18 +316,22 @@ class TableGraph extends React.Component {
       case "lightDistributed": // 光资源分布排名
         columns = [{
           title: '瞬时辐射区间',
-          dataIndex: 'radiationInterval',
-          sorter: (a, b) => (a.radiationInterval) - (b.radiationInterval),
-         render: text =>  (text||text===0) ? text :'--'
+          dataIndex: 'date',
+          width: 200,
+          defaultSortOrder: 'descend',
+          sorter: (a, b) => (a.date) - (b.date),
+          render: text =>  (text||text===0) ? text :'--'
         }, {
           title: '辐射总量',
-          dataIndex: 'radiationSum',
-          sorter: (a, b) => a.radiationSum - b.radiationSum,
-         render: text =>  (text||text===0) ? text :'--'
+          dataIndex: 'thatYearData',
+          width: 200,
+          sorter: (a, b) => a.thatYearData - b.thatYearData,
+          render: text =>  (text||text===0) ? text :'--'
         }, {
           title: '占比',
-          dataIndex: 'ration',
-          sorter: (a, b) => a.ration - b.ration,
+          dataIndex: 'ringRatio',
+          width: 200,
+          sorter: (a, b) => a.ringRatio - b.ringRatio,
           render: text =>  (text||text===0) ? text+'%' :'--'
         }];
         break;
@@ -331,20 +341,20 @@ class TableGraph extends React.Component {
           dataIndex: 'date',
           width: 150,
           sorter: (a, b) => (a.date).localeCompare(b.date),
-         render: text =>  (text||text===0) ? text :'--'
+          render: text =>  (text||text===0) ? text :'--'
         }, {
           title: lastYear,
           dataIndex: 'lastYearData',
           // width: 150,
           sorter: (a, b) => a.lastYearData - b.lastYearData,
-         render: text =>  (text||text===0) ? text :'--'
+          render: text =>  (text||text===0) ? text :'--'
         }, {
 
           title: currentYear,
           dataIndex: 'thatYearData',
           // width: 150,
           sorter: (a, b) => a.thatYearData - b.thatYearData,
-         render: text =>  (text||text===0) ? text :'--'
+          render: text =>  (text||text===0) ? text :'--'
         }, {
           title: '同比',
           dataIndex: 'yearOnYear',

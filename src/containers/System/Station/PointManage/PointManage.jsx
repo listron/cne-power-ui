@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import styles from './pointManage.scss';
 import { pointManageAction } from './pointManageAction';
 import { commonAction } from '../../../alphaRedux/commonAction';
-import { stationManageAction } from '../StationManage/stationManageAction';
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import StationManageTip from '../../../../components/System/Station/Common/StationManageTip';
 import PointManageSearch from '../../../../components/System/Station/PointManage/PointManageSearch';
@@ -28,6 +27,7 @@ class PointManage extends Component {
     changeStationManageStore: PropTypes.func,
     getStationOfEnterprise: PropTypes.func,
     getStationPointStatusList: PropTypes.func,
+    resetStore: PropTypes.func,
   }
   constructor(props) {
     super(props);
@@ -46,21 +46,7 @@ class PointManage extends Component {
 
   componentWillUnmount(){
     clearTimeout(this.timeout);
-    this.props.changePointManageStore({ // 重置测点数据。
-      stationCode: null, // 选中的电站
-      deviceTypeCode: null, // 选中的设备类型
-      deviceModeCode: null, // 选中的设备型号
-      pageNum: 1,
-      pageSize: 10,
-      totalNum:  0, // 设备总数
-      orderField: '', // 排序字段
-      orderType: 0,
-      pointList: [],
-    })
-    this.props.changeStationManageStore({
-      stationList: [], 
-      totalNum:  0,
-    })
+    this.props.resetStore() // 重置数据
   }
 
   hideManageTip=()=>{
@@ -99,7 +85,6 @@ const mapStateToProps = (state) => ({
     enterpriseId: Cookie.get('enterpriseId'),
     ...state.system.pointManage.toJS(),
     stationList: state.system.stationManage.get('stationList').toJS(),
-    allStationBaseInfo: state.system.stationManage.get('allStationBaseInfo').toJS(),
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -107,6 +92,7 @@ const mapDispatchToProps = (dispatch) => ({
   getPointList: payload => dispatch({type:pointManageAction.GET_POINT_MANAGE_LIST, payload}),
   deletePointList: payload => dispatch({type:pointManageAction.DELETE_POINT_MANAGE_LIST, payload}),
   getStationPointStatusList: payload => dispatch({type: pointManageAction.GET_POINT_MANAGE_ALL_STATION, payload}),
+  resetStore: () => dispatch({ type: pointManageAction.resetStore }),
 
   changeCommonStore: payload => dispatch({type:commonAction.changeCommonStore, payload}),
   getStationDeviceTypes: params => dispatch({
@@ -125,8 +111,14 @@ const mapDispatchToProps = (dispatch) => ({
       resultName: 'deviceModels'
     }
   }),
-  changeStationManageStore: payload => dispatch({type:stationManageAction.CHANGE_STATION_MANAGE_STORE_SAGA, payload}),
-  getStationOfEnterprise: payload =>dispatch({type: stationManageAction.GET_ALL_STATION_MANAGE_BASE_INFO, payload }),
+  getStationOfEnterprise: params =>dispatch({
+    type: commonAction.getStationOfEnterprise, 
+    payload: {
+      params, 
+      actionName: pointManageAction.GET_POINT_MANAGE_FETCH_SUCCESS,
+      resultName: 'allStationBaseInfo'
+    } 
+  }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PointManage);

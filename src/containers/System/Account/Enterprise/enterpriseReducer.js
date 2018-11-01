@@ -26,6 +26,8 @@ const enterpriseReducer = (state = initState, action) => {
       return state.merge(Immutable.fromJS(action.payload)).set('loading',false)
     case enterpriseAction.enterpriseRuducerReplace:
       return state.merge(Immutable.fromJS(action.payload))
+    case enterpriseAction.RESET_STORE:
+      return initState
   }
   return state;
 }

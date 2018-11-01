@@ -24,7 +24,7 @@ class StationManage extends Component {
     enterpriseId: PropTypes.string,
     getStationList: PropTypes.func, // 获取电站列表信息
     getAllDepartmentData: PropTypes.func, // 企业下所有部门
-    changeStationManageStore: PropTypes.func,
+    resetStore: PropTypes.func, // 重置数据
   }
   constructor(props) {
     super(props);
@@ -48,19 +48,7 @@ class StationManage extends Component {
   }
 
   componentWillUnmount(){
-    this.props.changeStationManageStore({
-      showPage: 'list',
-      selectedStationIndex: null,
-      stationType: "",
-      regionName: '',
-      stationName: '',
-      pageNum: 1,
-      pageSize: 10,
-      orderField: '',
-      orderCommand: '', 
-      stationList: [], 
-      totalNum:  0,
-    });
+    this.props.resetStore();
   }
 
   onShowSideChange = ({showSidePage}) => {
@@ -117,7 +105,7 @@ const mapDispatchToProps = (dispatch) => ({
   saveStationDetail: payload => dispatch({type: stationManageAction.EDIT_STATION_MANAGE_DETAIL, payload}),
   deleteStation: payload => dispatch({type: stationManageAction.DELET_STATION_MANAGE, payload}),
   setStationDepartment: payload => dispatch({type: stationManageAction.SET_STATION_MANAGE_DEPARTMENT, payload}),
-  getStationOfEnterprise: payload =>dispatch({type: stationManageAction.GET_ALL_STATION_MANAGE_BASE_INFO, payload }),
+  resetStore: () => dispatch({ type: stationManageAction.resetStore }),
   getAllDepartmentData: params => dispatch({
     type: commonAction.getAllDepartment,
     payload: {
