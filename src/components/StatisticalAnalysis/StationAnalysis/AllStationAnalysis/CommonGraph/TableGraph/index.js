@@ -6,7 +6,8 @@ import PropTypes from 'prop-types';
 /*
 *  type
 *  计划完成率最低排名  plan
-*  光资源同比降幅排名  lightTB
+*  光资源同比降幅排名  lightTB  日期 前一年 当年 辐射总量同比 发电量同比
+   光资源同比降幅排名  lightAnotherTB  日期 前一年 当年 发电量同比
 *  PR 最低排名  pr
 *  发电量同比降幅排名   powerGenTB
 *  发电量环比降幅排名   powerGenRatio
@@ -15,7 +16,8 @@ import PropTypes from 'prop-types';
 *  可利用率最低排名     utilization
 *  限电率环比升幅排名    powerLimitRatio
 *  光资源分布排名      lightDistributed
-*  光资源同比降幅排名   lightDistributedTB
+*  光资源环比排名   lightDistributedTB
+
 *
 *  1 必填 类型 参见上面  tableType
 *  2 必填 时间 dateType ／year/month/day
@@ -110,6 +112,33 @@ class TableGraph extends React.Component {
           render: text =>  (text||text===0) ? text+'%' :'--'
         }];
         break;
+      case "lightAnotherTB": // 光资源同比降幅排名(资源)
+        columns = [{
+          title: '日期',
+          dataIndex: 'monthOrDay',
+          width: 120,
+          sorter: (a, b) => (a.monthOrDay).localeCompare(b.monthOrDay),
+        }, {
+          title: lastYear,
+          dataIndex: 'lastYearData',
+          // width: 150,
+          sorter: (a, b) => a.lastYearData - b.lastYearData,
+         render: text =>  (text||text===0) ? text :'--'
+        }, {
+          title: currentYear,
+          dataIndex: 'thatYearData',
+          // width: 150,
+          defaultSortOrder: 'descend',
+          sorter: (a, b) => a.thatYearData - b.thatYearData,
+         render: text =>  (text||text===0) ? text :'--'
+        }, {
+          title: '同比',
+          dataIndex: 'lightYearOnYear',
+          width: 150,
+          sorter: (a, b) => a.lightYearOnYear - b.lightYearOnYear,
+          render: text =>  (text||text===0) ? text+'%' :'--'
+        }];
+        break;
       case "pr": //PR 最低排名
         columns = [{
           title: '日期',
@@ -169,7 +198,7 @@ class TableGraph extends React.Component {
           dataIndex: 'date',
           // width: 150,
           sorter: (a, b) => (a.date) - (b.date),
-          render: text =>  (text||text===0) ? text :'--'
+         render: text =>  (text||text===0) ? text :'--'
         }, {
           title: lastYear,
           dataIndex: 'lastYearData',
@@ -360,7 +389,8 @@ class TableGraph extends React.Component {
       case "utilization": // 可利用率最低排名
       case "powerLimitRatio": // 限电率环比升幅排名
       case "lightDistributed": // 光资源分布排名
-      case "lightDistributedTB": // 光资源同比降幅排名
+      case "lightDistributedTB": // 光资源环比降幅排名
+      case "lightAnotherTB": // 光资源同比降幅排名(  四列)
         data = columnData;
         break;
       default:
@@ -405,8 +435,11 @@ class TableGraph extends React.Component {
       case "lightDistributed": // 光资源分布排名
         unit = ['光资源分布排名', '瞬时辐射区间：w/㎡，辐射总量：MJ/㎡'];
         break;
-      case "lightDistributedTB": // 光资源同比降幅排名
+      case "lightDistributedTB": // 光资源环比降幅排名
         unit = ['光资源同比降幅排名', '瞬时辐射区间：w/㎡，辐射总量：MJ/㎡'];
+        break;
+      case "lightAnotherTB": // 光资源同比降幅排名
+        unit = ['光资源同比降幅排名', '辐射总量：MJ/㎡'];
         break;
       default:
         unit = [];
@@ -420,7 +453,7 @@ class TableGraph extends React.Component {
     const { tableType, title, unit, currentYear, dateType, lastYear, dataArray } = this.props;
     const columns = this.getColumnsArray(tableType, lastYear, currentYear);
     const dataSource = this.getDataArray(tableType, dataArray, dateType);
-    const getTitle=this.getTitle(tableType);   
+    const getTitle = this.getTitle(tableType);
     return (
       <div className={styles.TableGraphContainer} >
         <div className={styles.TableGraphContainerTitle}>

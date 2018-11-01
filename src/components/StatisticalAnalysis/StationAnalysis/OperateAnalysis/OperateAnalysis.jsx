@@ -563,6 +563,7 @@ class OperateAnalysis extends React.Component {
                   yAxisName={["厂用电率", "综合厂用电率"]}
                   xAxisName={"厂用电情况"}
                   data={plantLost}
+                  hasData={true}
                 />
                 <UsageRate
                   graphId={"usageRateId3"}
@@ -570,6 +571,7 @@ class OperateAnalysis extends React.Component {
                   xAxisName={"厂损情况"}
                   yAxisName={["送出线损率", "厂损率"]}
                   data={useLost}
+                  hasData={true}
                 />
               </div>
             </div>
