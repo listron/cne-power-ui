@@ -25,32 +25,18 @@ class PlanSide extends Component {
       leave: '', //判断离开之后返回到什么页面
       addSave: 'false', // 是否保存
       warningTipSaveText:'请先填写完整之后再保存',
-      showSaveWarningTip:false
+      showSaveWarningTip:false,
+      prev:'false'
     }
   }
 
   onWarningTipShow = (name) => { // 上一步按钮
-    if (this.state.addValueChange === "change") {
-      this.setState({
-        showWarningTip: true,
-        leave: name
-      })
-    } else {
-      name === 'quit' ?
-        this.props.changePlanStore({
-          showPage: 'list',
-          loading:false,
-          planStations:[],
-          addPlanYear:'',
-          continueAdd:false,
-          addStationCodes:[],
-        }) :
-        this.props.onShowSideChange({showSidePage: 'add'});
-    }
+    this.setState({prev:"true",leave: name})
   };
   confirmWarningTip = () => { // 上一步
     this.setState({
       showWarningTip: false,
+      prev:'false'
     });
     this.state.leave === 'quit' ?
       this.props.changePlanStore({
@@ -66,14 +52,10 @@ class PlanSide extends Component {
   cancelWarningTip = () => { // 上一步
     this.setState({
       showWarningTip: false,
+      prev:'false'
     })
   };
-  addValueChange = (e) => {  // 判断数据是否修改， change ""
-    this.setState({
-      addValueChange: e
-    })
-  };
-
+ 
   save = () => { // 保存按钮
     this.setState({
       addSave: 'true'
@@ -125,8 +107,27 @@ class PlanSide extends Component {
     })
   };
 
+  addValueChange=(stations)=>{
+    if ( stations.some(e=>e.eddit==="true")) {
+      this.setState({
+        showWarningTip: true, 
+        prev:'flase'
+      })
+    } else {
+      this.state.leave === 'quit' ?
+        this.props.changePlanStore({
+          showPage: 'list',
+          loading:false,
+          planStations:[],
+          addPlanYear:'',
+          continueAdd:false,
+          addStationCodes:[],
+        }) :
+        this.props.onShowSideChange({showSidePage: 'add'});
+    }
+  }
   render() {
-    const {showWarningTip, warningTipText, addSave,warningTipSaveText,showSaveWarningTip} = this.state;
+    const {showWarningTip, warningTipText, addSave,warningTipSaveText,showSaveWarningTip,prev} = this.state;
     const {addStationCodes}=this.props;
     return (
       <div className={styles.editPlan}>
@@ -152,6 +153,7 @@ class PlanSide extends Component {
           <PlanAddTable
             addValueChange={this.addValueChange}
             save={addSave}
+            prev={prev}
             addplansave={this.addPlanSave}
             {...this.props}
           />
