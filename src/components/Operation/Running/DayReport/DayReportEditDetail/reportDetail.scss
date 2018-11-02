@@ -84,6 +84,14 @@
     }
     .lostInfoTable, .limitInfoTable, .powerGenInfoCon{
       padding: 0 56px;
+      :global{
+        .reason, .process{
+          max-width: 180px;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+        }
+      }
     }
   }
   .powerGenInfo{

@@ -48,6 +48,8 @@ var initState = Immutable.fromJS({
   deviceTypeItems: [], // 电站下的设备类型
   devices: [], // 设备列表
   partitions: [], // 方阵列表
+  allSeries: [], // 所有光伏组件
+  firstPartitionCode: null,
 });
 
 const inspectReducer = (state = initState, action) => {

@@ -17,7 +17,8 @@ let initState = Immutable.fromJS({
   continueAdd: false,//继续添加生产计划按钮
   addPlanYear:'', //计划生产的年份
   addStationCodes:[], // 计划生产的电站
-  planYearList:[],
+  planYearList:[], //生产计划的年份(已有的生产计划)
+  hasEdit:false, // 添加页面是否编辑
 });
 
 const planReducer = (state = initState, action) => {

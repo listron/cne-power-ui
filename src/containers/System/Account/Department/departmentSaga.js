@@ -13,6 +13,12 @@ function *changeDepartmentStore(action){//存储payload指定参数，替换redu
   })
 }
 
+function *resetStore(){
+  yield put({
+    type:  departmentAction.RESET_STORE
+  })
+}
+
 function *getDepartmentList(action){//请求部门列表数据
   const { payload } = action;
   // const url = '/mock/system/departmentList';
@@ -393,6 +399,7 @@ function *setDepartmentStation(action) {
 
 export function* watchDepartment() {
   yield takeLatest(departmentAction.changeDepartmentStore, changeDepartmentStore);
+  yield takeLatest(departmentAction.resetStore, resetStore);
   yield takeLatest(departmentAction.getDepartmentList, getDepartmentList);
   yield takeLatest(departmentAction.deleteDepartment,deleteDepartment);
   yield takeLatest(departmentAction.getDepartmentUser,getDepartmentUser);

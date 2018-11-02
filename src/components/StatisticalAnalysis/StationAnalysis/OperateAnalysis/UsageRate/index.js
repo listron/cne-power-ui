@@ -81,12 +81,10 @@ class UsageRate extends React.Component {
         data: item
       };
     });
-    
-    // const initHasData= hasData ? 
-    // const confluenceTenMinGraphic = initHasData? hiddenNoData :showNoData;
-    // console.log('confluenceTenMinGraphic',confluenceTenMinGraphic)
+
+    const confluenceTenMinGraphic = hasData? hiddenNoData :showNoData;
     const targetMonthOption = {
-      // graphic: confluenceTenMinGraphic,
+      graphic: confluenceTenMinGraphic,
       title: {
         text: title,
         show: title ? "show" : false,

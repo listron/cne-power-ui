@@ -170,6 +170,9 @@ class SideReportPage extends Component {
         dailyReport.equivalentHours = dailyReport.hour;
         delete dailyReport.stationCapacity; // 基础信息字段调整
         delete dailyReport.hour;
+        delete dailyReport.yesterdayyearGenIntegrated;
+        delete dailyReport.yesterdayyearGenInternet;
+        delete dailyReport.yesterdayyearGenInverter;
         const newDailyDetailList = dailyDetailList.map(eachLost=>{
           const lostInfo = {
             deviceName: eachLost.deviceName,
@@ -237,6 +240,7 @@ class SideReportPage extends Component {
               data={stations.filter(e=>!reportDisableStation.includes(e.stationCode))}
               multiple={true}
               onChange={this.stationSelected}
+              oneStyleOnly={true}
             />
             <Button onClick={this.toReportStations} disabled={!canReport} className={canReport ? styles.dayReportNext : styles.dayReportNextDisabled} >下一步</Button>
           </div>

@@ -173,13 +173,17 @@ class JoinInForm extends Component{
     e.preventDefault();
     this.props.changeLoginStore({'joinStep': 2})
   }
+  
+  changePage = (pageTab) =>{
+    this.props.changeLoginStore({pageTab, registerStep: 1, joinStep: 1,enterpriseId: ''})
+  }
 
   renderStepOne(formItemLayout, tailFormItemLayout) {
     const { getFieldDecorator, getFieldsError } = this.props.form;
     const { enterpriseName, enterpriseInfo } = this.props;
     const { showEnterpriseInfo } = this.state;
     return (
-      <Form onSubmit={this.getEnterpriseInfo} className={styles.joinStepOne} >
+      <Form className={styles.joinStepOne} >
         <FormItem label="企业名称" {...formItemLayout}>
           {getFieldDecorator('enterpriseName',{
             rules: [{required: true, message: '请输入企业名称/企业域名'}]
@@ -188,7 +192,7 @@ class JoinInForm extends Component{
           )}
         </FormItem>
         <FormItem {...tailFormItemLayout}>
-          <Button type="primary" htmlType="submit" disabled={this.hasErrors(getFieldsError())} >下一步</Button>
+          <Button type="primary" onClick={this.getEnterpriseInfo} disabled={this.hasErrors(getFieldsError())} >下一步</Button>
         </FormItem>
         {showEnterpriseInfo && <Card className={styles.enterpriseInfo} >
           {enterpriseName === null ? <div>没有此企业，请重新输入</div> : <div>点击确认要加入的企业</div>}
@@ -198,9 +202,7 @@ class JoinInForm extends Component{
       </Form>
     );
   }
-  changePage = (pageTab) =>{
-    this.props.changeLoginStore({pageTab, registerStep: 1, joinStep: 1,enterpriseId: ''})
-  }
+
   renderStepTwo() {
     const { getFieldDecorator } = this.props.form;
     const { enterpriseIdToken,enterpriseName, enterpriseLogo,inviteValid } = this.props;
@@ -213,7 +215,7 @@ class JoinInForm extends Component{
           <div>{enterpriseName}</div>
         </div>
         {inviteValid ? 
-          <Form onSubmit={this.phoneCodeRegister} >
+          <Form >
             <div>
               <FormItem>
                 {getFieldDecorator('phoneNum', {
@@ -239,7 +241,7 @@ class JoinInForm extends Component{
               </Button>
             </div>
             <FormItem>
-              <Button type="primary" htmlType="submit">下一步</Button>
+              <Button type="primary" onClick={this.phoneCodeRegister}>下一步</Button>
             </FormItem>
             {(enterpriseIdToken !== null && enterpriseIdToken !== undefined) ? <p style={{textAlign: 'center'}}>您已加入企业，请直接<span style={{color:'#199475',cursor: 'pointer'}}  onClick={()=>this.changePage('login')}>登录</span></p> : null}
           </Form>
@@ -277,7 +279,7 @@ class JoinInForm extends Component{
             <div className={styles.enterpriseLogo} ><img src={(importUser ? importEnterpriseLogo : enterpriseLogo) || defaultLogo} width="60px" height="60px" /></div>
             <div>{importUser ? importEnterpriseName : enterpriseName}</div>
           </div>
-          <Form onSubmit={this.onJoinEnterprise}  >
+          <Form >
             <FormItem label="用户名" {...formItemLayout}>
               {getFieldDecorator('username', {
                 rules: [
@@ -319,7 +321,7 @@ class JoinInForm extends Component{
               )}
             </FormItem>
             <FormItem {...tailFormItemLayout} >
-              <Button type="primary" htmlType="submit" className="login-form-button"  >加入企业</Button>
+              <Button type="primary" onClick={this.onJoinEnterprise} className="login-form-button"  >加入企业</Button>
             </FormItem>
           </Form>
         </div>

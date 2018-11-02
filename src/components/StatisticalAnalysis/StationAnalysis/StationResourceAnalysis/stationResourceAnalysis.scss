@@ -103,6 +103,16 @@
         .dataGraph{
           display: flex;    
           flex-direction: row;
+          height: 300px;
+          flex:1;
+          margin-right: 24px;
+  
+          >div:nth-child(1){
+            flex: 5;
+          }
+          >div:nth-child(2){
+            flex: 3;
+          }
           .LostPowerTypeRate{
             width: 50%;
             // display: flex;

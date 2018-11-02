@@ -50,6 +50,25 @@ function* getDeviceTypes(action) { // 通用： 获取用户权限范围内所�
   }
 }
 
+function *getStationOfEnterprise(action){ // 根据企业id获取下面所有电站==>与用户权限无关。
+  try{
+    const { payload } = action;
+    const { params, actionName, resultName } = payload;
+    const url = `${APIBasePath}${APISubPaths.system.getAllStationBaseInfo}/${params.enterpriseId}`;
+    const response = yield call(axios.get, url);
+    if(response.data.code === '10000'){
+      yield put({
+        type: actionName,
+        payload: {
+          [resultName]: response.data.data || [],
+        }
+      })
+    }
+  }catch(e){
+    console.log(e)
+  }
+}
+
 function *getStationDeviceTypes(action){ // 新共用接口，获取电站下设备类型。
   const url = `${APIBasePath}${commonPaths.getStationDevicetypes}`;
   try{
@@ -303,6 +322,7 @@ export function* watchCommon() {
   // yield takeLatest(commonAction.REFRESHTOKEN_SAGA, refreshToken);
   yield takeLatest(commonAction.getStations, getStations);
   yield takeLatest(commonAction.getAllDepartment, getAllDepartment);
+  yield takeLatest(commonAction.getStationOfEnterprise, getStationOfEnterprise);
   yield takeLatest(commonAction.getDeviceTypes, getDeviceTypes);
   
   yield takeLatest(commonAction.getPartition, getPartition);

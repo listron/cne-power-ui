@@ -26,6 +26,7 @@ class AlarmManage extends Component {
     sortOrder: PropTypes.string,
     changeAlarmManageStore: PropTypes.func,
     getStationOfEnterprise: PropTypes.func,
+    resetStore: PropTypes.func,
   }
   constructor(props) {
     super(props);
@@ -43,18 +44,7 @@ class AlarmManage extends Component {
 
   componentWillUnmount(){
     clearTimeout(this.timeout);
-    this.props.changeAlarmManageStore({ // 离开页面前，重置数据。
-      stationCode: null,
-      deviceTypeCode: null,
-      deviceModeCode: null,
-      pointCode: '',
-      pageNum: 1,
-      pageSize: 10,
-      totalNum:  0,
-      sortField: '',
-      sortOrder: '',
-      alarmList: []
-    })
+    this.props.resetStore(); // 重置数据
   }
 
   hideManageTip=()=>{
@@ -93,12 +83,13 @@ const mapStateToProps = (state) => ({
   enterpriseId: Cookie.get('enterpriseId'),
   ...state.system.alarmManage.toJS(),
   stations: state.common.get('stations').toJS(),
-  allStationBaseInfo: state.system.stationManage.get('allStationBaseInfo').toJS(),
 });
 
 const mapDispatchToProps = (dispatch) => ({
   changeAlarmManageStore: payload => dispatch({type:alarmManageAction.CHANGE_ALARM_MANAGE_STORE_SAGA, payload}),
+  resetStore: () => dispatch({ type: alarmManageAction.resetStore }),
   getAlarmList: payload => dispatch({type: alarmManageAction.GET_ALARM_MANAGE_LIST, payload}),
+  downloadAlarmExcel: payload => dispatch({type: alarmManageAction.downloadAlarmExcel, payload}),
   deleteAlarmList: payload => dispatch({type: alarmManageAction.DELETE_ALARM_MANAGE_LIST, payload}),
   getDownLoadAlarmManage: payload => dispatch({type: alarmManageAction.getDownLoadAlarmManage, payload}),
   changeCommonStore: payload => dispatch({type:commonAction.changeCommonStore, payload}),
@@ -126,7 +117,14 @@ const mapDispatchToProps = (dispatch) => ({
       resultName: 'devicePoints'
     }
   }),
-  getStationOfEnterprise: payload =>dispatch({type: stationManageAction.GET_ALL_STATION_MANAGE_BASE_INFO, payload }),
+  getStationOfEnterprise: params =>dispatch({
+    type: commonAction.getStationOfEnterprise, 
+    payload: {
+      params, 
+      actionName: alarmManageAction.GET_ALARM_MANAGE_FETCH_SUCCESS,
+      resultName: 'allStationBaseInfo'
+    } 
+  }),
 });
 
 
