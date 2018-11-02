@@ -57,8 +57,6 @@ class TransferAlarmModal extends Component {
     const { getFieldDecorator } = this.props.form;
     const { showWarningTip, warningTipText } = this.state;
     let tmpGenTypes = [];
-    console.log(defectTypes)
-    console.log(defectTypes.toJS())
     defectTypes.toJS().forEach(e=>e && e.list && e.list.length > 0 && tmpGenTypes.push(...e.list));
     const groupedLostGenTypes = tmpGenTypes.map(ele=>{
       let innerArr = {children: []};
