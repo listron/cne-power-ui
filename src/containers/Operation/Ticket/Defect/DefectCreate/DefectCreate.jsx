@@ -24,6 +24,7 @@ class DefectCreate extends Component {
     getCommonList: PropTypes.func,
     changeCommonStore: PropTypes.func,
     getSliceDevices: PropTypes.func,
+    getLostGenType: PropTypes.func,
   };
   constructor(props) {
     super(props);
@@ -39,11 +40,10 @@ class DefectCreate extends Component {
     // });
     if(showContainer === 'edit'){
       const { defectDetail } = this.props;
-      const stationType = defectDetail.stationType;
       const stationCode = defectDetail.stationCode;
       const deviceTypeCode = defectDetail.deviceTypeCode;
       this.props.getStationDeviceTypes({stationCodes:stationCode});
-      this.props.getDefectTypes({stationType});
+      this.props.getLostGenType({stationCode, objectType: 1});
       this.props.getDevices({stationCode,deviceTypeCode})
     }
     this.props.getCommonList({
