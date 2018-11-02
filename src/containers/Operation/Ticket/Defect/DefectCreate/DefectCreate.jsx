@@ -131,7 +131,7 @@ const mapDispatchToProps = (dispatch) => ({
     type: commonAction.getSliceDevices,
     payload: {
       params, 
-      deviceTypeAction: ticketAction.GET_DEFECT_FETCH_SUCCESS,
+      actionName: ticketAction.GET_DEFECT_FETCH_SUCCESS,
     }
   }),
   getStationDeviceTypes: params => dispatch({
@@ -156,6 +156,14 @@ const mapDispatchToProps = (dispatch) => ({
       params, 
       actionName: ticketAction.GET_DEFECT_FETCH_SUCCESS,
       resultName: 'partitions'
+    }
+  }),
+  getLostGenType: params => dispatch({
+    type: commonAction.getLostGenType,
+    payload: {
+      params, 
+      actionName: ticketAction.GET_DEFECT_FETCH_SUCCESS, 
+      resultName: 'defectTypes'
     }
   }),
 });

@@ -118,10 +118,7 @@ class FilteredItems extends Component {
         m === e.get('stationCode').toString()
       )).groupBy(item=>item.get('provinceCode')).toList();//选中电站详情,按省分组
     const selectedDeviceType = deviceTypes.filter(e=>tmpSelectedDeviceType.some(m=>m===e.get('deviceTypeCode').toString()));//选中的设备类型详情
-    console.log(defectTypes)
-    console.log(tmpSelectedDefectType)
     const defectInfoArr = this.getDefectInfoArr(defectTypes.toJS(), tmpSelectedDefectType); //选中的缺陷类型数组
-    console.log(defectInfoArr)
     if(createTimeStart===''&&createTimeEnd===''&&stationType==='2'&&stationCodes===''&&deviceTypeCode===''&&defectLevel==='0'&&defectTypeCode==='') {
       return null;
     }
