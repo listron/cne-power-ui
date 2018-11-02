@@ -28,7 +28,7 @@ function StationReportColumn({ dayReportConfig, stationType }){
     <Col className={styles.withBorder} span={2} >等效小时数(h)<i className={styles.withRequired}>{requiredTargetObj.hour && '*'}</i></Col>
     <Col span={2} >年累计购网电量({genUtil})<i className={styles.withRequired}>{requiredTargetObj.buyPower && '*'}</i></Col>
     <Col className={styles.withBorder} span={5} >
-      <div className={styles.withBorderBottom}>样板逆变器</div>
+      <div className={styles.withBorderBottom}>{stationType > 0 ?'样板逆变器' :'样板风机' }</div>
       <Row >
         <Col  span={10}>容量(MW)<i className={styles.withRequired}>{requiredTargetObj.modelInverterCapacity && '*'}</i></Col>
         <Col span={14}>日发电量({genUtil})<i className={styles.withRequired}>{requiredTargetObj.modelInverterPowerGen && '*'}</i></Col>
