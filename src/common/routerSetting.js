@@ -178,18 +178,18 @@ const routers = [
   },{
     path: '/statistical/stationaccount/production',
     exact: true,
-    // component: Building
-    component: ProductionAnalysis
+    component: Building
+    // component: ProductionAnalysis
   },{
     path: '/statistical/stationaccount/operate',
     exact: true,
-    component: OperateAnalysis
-    // component: Building
+    // component: OperateAnalysis
+    component: Building
   },{
     path: '/statistical/stationaccount/resource',
     exact: true,
-    component: StationResourceAnalysis
-    // component: Building
+    // component: StationResourceAnalysis
+    component: Building
   },{
     path: '/statistical/stationaccount/contrast',
     exact: true,
