@@ -27,7 +27,7 @@ class inspectAddAbnormal extends Component {
     finishInspect: PropTypes.func,
     addInspectAbnormal: PropTypes.func,
     getSliceDevices: PropTypes.func,
-    allSeries: PropTypes.array, 
+    allSeries: PropTypes.object, 
     firstPartitionCode: PropTypes.string, 
   }
 
