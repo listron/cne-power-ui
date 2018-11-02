@@ -52,9 +52,9 @@ class ResourceElecInfo extends Component {
               <span>{e.unit}</span>
             </span>)
           })}
-          <Form.Item label="日辐射总量(斜面)">
+          <Form.Item label={stationType>0?'日辐射总量(斜面)':'平均风速'}>
             {getFieldDecorator('resourceValue', {
-              rules: [{ required: requireTargetArr.includes('resourceValue'), message: '请填写日辐射总量',pattern: /^(-?\d+)(\.\d+)?$/ }],
+              rules: [{ required: requireTargetArr.includes('resourceValue'), message: `请填写${stationType>0?'日辐射总量':'平均风速'}`,pattern: /^(-?\d+)(\.\d+)?$/ }],
               initialValue: updateDayReportDetail.resourceValue,
             })(
               <Input />

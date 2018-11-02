@@ -7,14 +7,14 @@ function StationReportColumn({ dayReportConfig, stationType }){
   // stationType === 0 : 风电站； // stationType === 1 :光伏电站
   const configUtil = dayReportConfig[0] || {};
   const radiaUtil = configUtil.radiation || '--'; // 辐射单位;
-  const speedUtil = configUtil.radiation || '--'; // 风速单位;
+  const speedUtil = configUtil.speed || '--'; // 风速单位;
   const genUtil = configUtil.power || '--'; // 辐射单位
   const requiredTargetObj = dayReportConfig[1] || {}; // 是否必填(展示*)
   return (<Row className={styles.stationReportColumn}>
     <Col span={3} >电站名称</Col>
     <Col className={styles.withBorder} span={2} >
-      <span>日斜面辐射总量</span>
-      <span>{stationType === 0 ?`(${speedUtil})` : `(${radiaUtil})`}</span>
+      <span>{stationType > 0 ?'日斜面辐射总量' :'平均风速' }</span>
+      <span>{stationType > 0 ?`(${radiaUtil})` :`(${speedUtil})` }</span>
       <i className={styles.withRequired}>{requiredTargetObj.resourceValue && '*'}</i>
     </Col>
     <Col span={5} >

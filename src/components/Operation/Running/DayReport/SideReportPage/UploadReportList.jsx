@@ -66,7 +66,7 @@ class UploadReportList extends Component {
   render(){
     const { reportDay,stationDeviceTypes, getStationDeviceTypes, dayReportConfig, reportStation, findDeviceExist, deviceExistInfo, dayReportTotalInfoArr, lostGenTypes, getLostGenType } = this.props;
     const { abnormalModalshow, abnormalInfo, abnormalList } = this.state;
-    const stationType = reportStation[0] && reportStation[0].stationType || 1; 
+    const stationType = reportStation[0] && reportStation[0].stationType; 
     return (
       <div className={styles.uploadReportList}>
         <div className={styles.uploadReportTip} >{reportDay} <span>新添加<i>{dayReportTotalInfoArr && dayReportTotalInfoArr.length || '--'}</i>条</span></div>
