@@ -20,6 +20,7 @@ const loseColumn = [
   },{
     title: '原因说明',
     dataIndex: 'reason',
+    className: 'reason',
     render: (text, record) => (
       <span title={text} >{text}</span>
     ),
@@ -32,11 +33,12 @@ const loseColumn = [
   },{
     title: '处理进展及问题',
     dataIndex: 'process',
+    className: 'process',
     render: (text, record) => (
       <span title={text} >{text}</span>
     ),
   },{
-    title: '日损失电量',
+    title: '日损失电量(kWh)',
     dataIndex: 'lostPower',
   }
 ]
@@ -53,6 +55,7 @@ const limitColumn = [
   },{
     title: '原因说明',
     dataIndex: 'reason',
+    className: 'reason',
     render: (text, record) => (
       <span title={text} >{text}</span>
     ),
@@ -63,7 +66,7 @@ const limitColumn = [
     title: '结束时间',
     dataIndex: 'endTime',
   },{
-    title: '日损失电量',
+    title: '日损失电量(kWh)',
     dataIndex: 'lostPower',
   }
 ]
@@ -148,8 +151,8 @@ const ReportDetail = ({ selectedDayReportDetail, toChangeDayReportStore , dayRep
         dataSource={faultList.map((e,i)=>({
           ...e,
           key: i,
-          startTime: e.startTime?moment(e.startTime).format('YYYY-MM-DD'):'--',
-          endTime: e.endTime?moment(e.endTime).format('YYYY-MM-DD'):'--',
+          startTime: e.startTime?moment(e.startTime).format('YYYY-MM-DD HH:mm'):'--',
+          endTime: e.endTime?moment(e.endTime).format('YYYY-MM-DD HH:mm'):'--',
         }))}
         pagination={false}
         className={styles.lostInfoTable}
@@ -162,8 +165,8 @@ const ReportDetail = ({ selectedDayReportDetail, toChangeDayReportStore , dayRep
         dataSource={limitList.map((e,i)=>({
           ...e,
           key: i,
-          startTime: e.startTime?moment(e.startTime).format('YYYY-MM-DD'):'--',
-          endTime: e.endTime?moment(e.endTime).format('YYYY-MM-DD'):'--',
+          startTime: e.startTime?moment(e.startTime).format('YYYY-MM-DD HH:mm'):'--',
+          endTime: e.endTime?moment(e.endTime).format('YYYY-MM-DD HH:mm'):'--',
         }))}
         pagination={false}
         className={styles.limitInfoTable}

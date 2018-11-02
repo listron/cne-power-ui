@@ -11,6 +11,12 @@ function *changeDeviceManageStore(action){ // 存储payload指定参数，替换
   })
 }
 
+function *resetStore(){
+  yield put({
+    type:  deviceManageAction.RESET_STORE
+  })
+}
+
 function *getDeviceList(action){ // 请求设备列表
   const { payload } = action;
   // const url = '/mock/system/deviceManage/deviceList';
@@ -52,6 +58,7 @@ function *getDeviceList(action){ // 请求设备列表
 
 export function* watchDeviceManage() {
   yield takeLatest(deviceManageAction.CHANGE_DEVICE_MANAGE_STORE_SAGA, changeDeviceManageStore);
-  yield takeLatest(deviceManageAction.GET_DEVICE_MANAGE_LIST,getDeviceList)
+  yield takeLatest(deviceManageAction.resetStore, resetStore);
+  yield takeLatest(deviceManageAction.GET_DEVICE_MANAGE_LIST,getDeviceList);
 }
 

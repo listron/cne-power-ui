@@ -7,8 +7,9 @@ import moment from 'moment';
 
 class LostGenTable extends Component {
   static propTypes = {
-    rememberRemove: PropTypes.bool,
+    rememberRemove: PropTypes.func,
     form: PropTypes.object,
+    reportDate: PropTypes.string,
     faultGenList: PropTypes.array,
     changeFaultList: PropTypes.func,
   }
@@ -19,9 +20,9 @@ class LostGenTable extends Component {
 
   removeFaultInfo = (id) => {
     const { faultGenList, changeFaultList, rememberRemove } = this.props;
-    const newFaultGenList = faultGenList.filter(e=>id !== e.id).map(e=>{
-      rememberRemove && (e.handleRemove = true); // 编辑时删除某条后台数据
-      return e
+    const newFaultGenList = faultGenList.filter(e=>{
+      rememberRemove && id === e.id && id > 0 && rememberRemove({faultId: id}); // 要删除的id需暂存
+      return id !== e.id
     });
     changeFaultList(newFaultGenList);
   }
@@ -45,15 +46,18 @@ class LostGenTable extends Component {
         title: '发生时间',
         dataIndex: 'startTime',
         render : (text, record) => {
-          return record.typeSource === 0?<span>
-            {moment(record.startTime).format('YYYY-MM-DD HH:mm')}
-          </span>:<Form.Item>
-            {getFieldDecorator(`${record.id}_startTime`, {
-              initialValue: record.startTime,
+          const { reportDate, startTime, id } = record;
+          let tableReportDate = this.props.reportDate; // 正在处理的日报日期.
+          const allowDelete = moment(tableReportDate).isSame(moment(reportDate),'day'); // 日报日期当天添加的故障起始时间才可编辑。
+          return allowDelete?<Form.Item>
+            {getFieldDecorator(`${id}_startTime`, {
+              initialValue: startTime,
             })(
               <DatePicker placeholder="开始时间" showTime={{format: 'HH:mm'}} format="YYYY-MM-DD HH:mm"  />
             )}
-          </Form.Item>
+          </Form.Item>:<span>
+            {moment(startTime).format('YYYY-MM-DD HH:mm')}
+          </span>
         }
       },{
         title: '结束时间',
@@ -63,7 +67,7 @@ class LostGenTable extends Component {
             {getFieldDecorator(`${record.id}_endTime`, {
               initialValue: record.endTime,
             })(
-              <DatePicker placeholder="结束时间" showTime={{format: 'HH:mm'}} format="YYYY-MM-DD hh:mm"  />
+              <DatePicker placeholder="结束时间" showTime={{format: 'HH:mm'}} format="YYYY-MM-DD HH:mm"  />
             )}
           </Form.Item>)
         }
@@ -80,7 +84,7 @@ class LostGenTable extends Component {
           </Form.Item>)
         }
       },{
-        title: '日损失电量',
+        title: '日损失电量(kWh)',
         dataIndex: 'lostPower',
         render : (text, record) => {
           return (<Form.Item>
@@ -95,8 +99,11 @@ class LostGenTable extends Component {
         title: '操作',
         dataIndex: 'handle',
         render : (text, record) => {
-          const { id } = record;
-          return text?<span onClick={()=>this.removeFaultInfo(id)} className={styles.removeFaultInfo} ><i className="iconfont icon-del" ></i></span>:<span></span>
+          const { id, reportDate, defectId } = record;
+          const refuseDelete = moment().isSame(moment(reportDate),'day') && defectId; // 今天且关联缺陷时，不可删除。
+          return refuseDelete?<span></span>:<span onClick={()=>this.removeFaultInfo(id)} className={styles.removeFaultInfo} >
+            <i className="iconfont icon-del" ></i>
+          </span>
         }
       }
     ]

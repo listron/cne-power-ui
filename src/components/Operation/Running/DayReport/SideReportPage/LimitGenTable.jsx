@@ -7,10 +7,11 @@ import moment from 'moment';
 
 class LimitGenTable extends Component {
   static propTypes = {
-    rememberRemove: PropTypes.bool,
+    rememberRemove: PropTypes.func,
     form: PropTypes.object,
     limitGenList: PropTypes.array,
     changeLimitList: PropTypes.func,
+    reportDate: PropTypes.string,
   }
 
   constructor(props){
@@ -22,9 +23,9 @@ class LimitGenTable extends Component {
 
   removeListInfo = (id) => {
     const { limitGenList, changeLimitList, rememberRemove } = this.props;
-    const newLimitGenList = limitGenList.filter(e=>id !== e.id).map(e=>{
-      rememberRemove && (e.handleRemove = true); // 编辑时删除某条后台数据
-      return e
+    const newLimitGenList = limitGenList.filter(e=>{
+      rememberRemove && id === e.id && id > 0 && rememberRemove({limitId: id}); // 要删除的id需暂存
+      return id !== e.id
     });
     changeLimitList(newLimitGenList);
   }
@@ -45,13 +46,18 @@ class LimitGenTable extends Component {
         title: '发生时间',
         dataIndex: 'startTime',
         render : (text, record) => {
-          return (<Form.Item>
-            {getFieldDecorator(`${record.id}_startTime`, {
-              initialValue: record.startTime,
+          const { reportDate, startTime, id } = record;
+          let tableReportDate = this.props.reportDate; // 正在处理的日报日期.
+          const allowDelete = moment(tableReportDate).isSame(moment(reportDate),'day'); // 日报日期当天添加的故障起始时间才可编辑。
+          return allowDelete?<Form.Item>
+            {getFieldDecorator(`${id}_startTime`, {
+              initialValue: startTime,
             })(
               <DatePicker placeholder="开始时间" showTime={{format: 'HH:mm'}} format="YYYY-MM-DD HH:mm"  />
             )}
-          </Form.Item>)
+          </Form.Item>:<span>
+            {moment(startTime).format('YYYY-MM-DD HH:mm')}
+          </span>
         }
       },{
         title: '结束时间',
@@ -66,7 +72,7 @@ class LimitGenTable extends Component {
           </Form.Item>)
         }
       },{
-        title: '日损失电量',
+        title: '日损失电量(kWh)',
         dataIndex: 'lostPower',
         render : (text, record) => {
           return (<Form.Item>
@@ -82,7 +88,10 @@ class LimitGenTable extends Component {
         dataIndex: 'handle',
         render : (text, record) => {
           const { id } = record;
-          return text?<span onClick={()=>this.removeListInfo(id)} className={styles.removeFaultInfo}><i className="iconfont icon-del" ></i></span>:<span></span>
+          // return text?<span onClick={()=>this.removeListInfo(id)} className={styles.removeFaultInfo}><i className="iconfont icon-del" ></i></span>:<span></span>
+          return (<span onClick={()=>this.removeListInfo(id)} className={styles.removeFaultInfo}>
+            <i className="iconfont icon-del" ></i>
+          </span>)
         }
       }
     ]

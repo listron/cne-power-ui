@@ -64,9 +64,36 @@
             }
           }
         }
+        .plan{
+          margin-left: 24px;
+        }
         .rightFont{
           margin-right: 30px;
           color: $lightColor;
+        }
+        .choiceYear{
+          display: inline-block;
+          :global{
+            .active{
+              background: #199475;
+              color: #fff;
+              border:none;
+            }
+          }    
+          span{ 
+            background: #fff;
+            color: #999999;
+            border: 1px solid #dfdfdf;
+            border-radius: 2px;
+            width: 45px;
+            line-height: 30px;
+            height: 30px;
+            cursor: pointer;
+            display: inline-block;
+            margin: 0 4px;
+            text-align: center;
+          }
+                 
         }
       }
       .graph{
@@ -103,6 +130,16 @@
         .dataGraph{
           display: flex;    
           flex-direction: row;
+          height: 300px;
+          flex:1;
+          margin-right: 24px;
+  
+          >div:nth-child(1){
+            flex: 5;
+          }
+          >div:nth-child(2){
+            flex: 3;
+          }
           .LostPowerTypeRate{
             width: 50%;
             // display: flex;

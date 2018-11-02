@@ -95,15 +95,15 @@ class AbnormalReportModal extends Component {
         let { deviceName, startTime, endTime, reason, faultName } = e;
         startTime = startTime && startTime.format('YYYY-MM-DD HH:mm');
         endTime = endTime && endTime.format('YYYY-MM-DD HH:mm');
-        const tmpTextArr = [deviceName, startTime, endTime, reason, faultName].filter(e=>e);
-        return tmpTextArr.join('+');
+        const tmpTextArr = [deviceName, startTime, endTime && (`到${endTime}`), faultName, reason].filter(e=>e);
+        return tmpTextArr.join(' ');
       })
       const limitShortInfo = limitGenList.map(e=>{
         let { deviceName, startTime, endTime, reason, limitPower } = e;
         startTime = startTime && startTime.format('YYYY-MM-DD HH:mm');
         endTime = endTime && endTime.format('YYYY-MM-DD HH:mm');
-        const tmpTextArr = [deviceName, startTime, endTime, reason, limitPower].filter(e=>e);
-        return tmpTextArr.join('+');
+        const tmpTextArr = [deviceName, startTime, endTime && (`到${endTime}`), reason, limitPower].filter(e=>e);
+        return tmpTextArr.join(' ');
       })
       abnormalText = `${faultShortInfo.join(';\n')};\n${limitShortInfo.join(';\n')}`;
     }
@@ -132,7 +132,7 @@ class AbnormalReportModal extends Component {
   render(){
     const { abnormalModalshow, stationDeviceTypes, abnormalInfo, hideAbnormalModal, findDeviceExist, deviceExistInfo, lostGenTypes, dayReportConfig, getStationDeviceTypes, getLostGenType, stationType} = this.props;
     const { addLostFormShow, faultGenList, limitGenList, addLimitFormShow, abnormalTextShow, abnormalText } = this.state;
-    const { modelInverterPowerGen, modelInverterCapacity, stationCapacity } = abnormalInfo;
+    const { modelInverterPowerGen, modelInverterCapacity, stationCapacity, reportDate } = abnormalInfo;
     let defaultLimitLost; // 默认限电剩余损失电量
     if(modelInverterCapacity > 0){
       const tmpTheoryGen = modelInverterPowerGen / modelInverterCapacity * stationCapacity; // 理论发电量
@@ -171,7 +171,8 @@ class AbnormalReportModal extends Component {
         </div>
         {(faultGenList && faultGenList.length > 0) ? <LostGenTable 
           faultGenList={faultGenList} 
-          abnormalInfo={abnormalInfo} 
+          abnormalInfo={abnormalInfo}
+          reportDate={reportDate} 
           changeFaultList={this.changeFaultList} 
         />: null}
         {addLostFormShow && <LostAddForm
@@ -192,7 +193,8 @@ class AbnormalReportModal extends Component {
         </div>
         {(limitGenList && limitGenList.length > 0)? <LimitGenTable 
           limitGenList={limitGenList} 
-          abnormalInfo={abnormalInfo} 
+          abnormalInfo={abnormalInfo}
+          reportDate={reportDate} 
           changeLimitList={this.changeLimitList} 
         /> :null}
         {addLimitFormShow && <LimitAddForm

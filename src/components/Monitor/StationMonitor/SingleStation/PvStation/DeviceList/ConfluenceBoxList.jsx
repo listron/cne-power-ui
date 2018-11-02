@@ -253,7 +253,16 @@ class ConfluenceBoxList extends Component {
     
     const baseLinkPath = "/hidden/monitorDevice";
     const { stationCode } = this.props.match.params;
-    
+    const transData = (value, pointLength) => { // 数据转换。
+      let tmpValue = parseFloat(value);
+      let tmpBackData;
+      if(tmpValue || tmpValue === 0 ){
+        tmpBackData = (pointLength || pointLength === 0)?tmpValue.toFixed(pointLength):tmpValue;
+      }else{
+        tmpBackData = '--'
+      }
+      return tmpBackData;
+    }
     return (
       <div className={styles.inverterList} >
         <Tabs defaultActiveKey="1" className={styles.inverterTab} tabBarExtraContent={operations}>
@@ -263,6 +272,20 @@ class ConfluenceBoxList extends Component {
                 return (<div key={index}>
                   <div className={styles.parentDeviceName} >{e && e[0] && e[0].parentDeviceName}</div>
                   {e.map((item,i)=>{
+                    const { devicePower, deviceCapacity, voltage, electricity, dispersionRatio, temp } = item;
+                    const showDevicePower = transData(devicePower,2);
+                    const showDeviceCapacity = transData(deviceCapacity,2);
+                    const showVoltage = transData(voltage);
+                    const showElectricity = transData(electricity);
+                    const showTemp = transData(temp);
+                    let percent, progressPercent;
+                    if(!deviceCapacity || isNaN(deviceCapacity)){
+                      percent = '--';
+                      progressPercent = 0;
+                    }else{
+                      percent = transData(devicePower/deviceCapacity*100,2);
+                      progressPercent = percent;
+                    }
                     return (<div key={i} className={item.deviceStatus === 900 ? styles.cutOverItem : styles.inverterItem} style={{height: "121px"}}>
                       <div className={styles.inverterItemIcon} >
                         <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${item.deviceCode}`} >
@@ -274,20 +297,20 @@ class ConfluenceBoxList extends Component {
                       </div>
                       <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${item.deviceCode}`} >
                         <div className={styles.inverterItemR} >
-                          <div className={styles.hlBlockName}><span>{item.deviceName}</span><span>{item.devicePower ? parseFloat(item.devicePower/item.deviceCapacity*100).toFixed(2): '--'}%</span></div>
-                          <Progress className={styles.powerProgress} strokeWidth={3} percent={item.devicePower/item.deviceCapacity*100} showInfo={false} />
+                          <div className={styles.hlBlockName}><span>{item.deviceName}</span><span>{percent}%</span></div>
+                          <Progress className={styles.powerProgress} strokeWidth={3} percent={progressPercent} showInfo={false} />
                           <div className={styles.inverterItemPower}>
-                            <div>{item.devicePower ? parseFloat(item.devicePower).toFixed(2) : '--'}kW</div>
-                            <div>{item.deviceCapacity ? parseFloat(item.deviceCapacity).toFixed(2) : '--'}kW</div>
+                            <div>{showDevicePower}kW</div>
+                            <div>{showDeviceCapacity}kW</div>
                           </div>
                         </div>
                       </Link>
                       <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${item.deviceCode}`} className={styles.hlBlockLink} >
                         <div className={styles.hlBlockFooter} >
-                          <div>电压：{item.voltage || '--'}V</div>
-                          <div>电流：{item.electricity || '--'}A</div>
-                          <div>离散率：{item.dispersionRatio || '--'}</div>
-                          <div>温度：{item.temp || '--'}℃</div>
+                          <div>电压：{showVoltage}V</div>
+                          <div>电流：{showElectricity}A</div>
+                          <div>离散率：{dispersionRatio || '--'}</div>
+                          <div>温度：{showTemp}℃</div>
                         </div>
                       </Link>
                     </div>);

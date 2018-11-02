@@ -37,8 +37,8 @@ const dayReportReducer = (state = initState, action) => {
       return state.merge(Immutable.fromJS(action.payload)).set('loading',false);
     case dayReportAction.changeDayReportStore: // 直接替换store值
       return state.merge(Immutable.fromJS(action.payload));
-    case dayReportAction.resetDayReportStore: //重置参数
-      return initState;
+    case dayReportAction.RESET_STORE:
+      return initState
   }
   return state;
 }

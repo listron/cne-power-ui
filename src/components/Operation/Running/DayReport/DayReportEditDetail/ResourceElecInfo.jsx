@@ -30,7 +30,7 @@ class ResourceElecInfo extends Component {
       {name: '天气', value: 'weather', unit: ''},
       {name: '温度', value: 'temperature', unit: ''},
       {name: '电站名称', value: 'stationName', unit: ''},
-      {name: '实际容量', value: 'realCapacity', unit: ''},
+      {name: '实际容量', value: 'realCapacity', unit: 'MW'},
       {name: '装机台数', value: 'machineCount', unit: '台'},
     ];
     const reportDateValue = reportDate?moment(reportDate).format('YYYY-MM-DD'):'--';
@@ -52,9 +52,9 @@ class ResourceElecInfo extends Component {
               <span>{e.unit}</span>
             </span>)
           })}
-          <Form.Item label="日辐射总量(斜面)">
+          <Form.Item label={stationType>0?'日辐射总量(斜面)':'平均风速'}>
             {getFieldDecorator('resourceValue', {
-              rules: [{ required: requireTargetArr.includes('resourceValue'), message: '请填写日辐射总量',pattern: /^(-?\d+)(\.\d+)?$/ }],
+              rules: [{ required: requireTargetArr.includes('resourceValue'), message: `请填写${stationType>0?'日辐射总量':'平均风速'}`,pattern: /^(-?\d+)(\.\d+)?$/ }],
               initialValue: updateDayReportDetail.resourceValue,
             })(
               <Input />

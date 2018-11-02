@@ -3,8 +3,10 @@ import PropTypes from 'prop-types';
 import styles from './planSide.scss';
 import { Table, Input, Form, message, Icon } from 'antd';
 import { getMonth } from "../plan";
+import EditableCell from './EditableCell';
 const FormItem = Form.Item;
 const EditableContext = React.createContext();
+
 
 const EditableRow = ({ form, index, ...props }) => (
   <EditableContext.Provider value={form}>
@@ -14,85 +16,6 @@ const EditableRow = ({ form, index, ...props }) => (
 
 const EditableFormRow = Form.create()(EditableRow);
 
-class EditableCell extends React.Component {
-  static propTypes = {
-    dataIndex: PropTypes.string,
-    record: PropTypes.object,
-  };
-  getInput = (form) => {
-    const { dataIndex, record } = this.props;
-    if (record.setGridTime) {
-      if (getMonth(dataIndex) < Number(record.setGridTime)) {
-        return <Input disabled={true} placeholder="--" />
-      } else {
-        return <Input onBlur={(e) => this.valueChange(e, form, dataIndex, record)} placeholder="--" />;
-      }
-    } else {
-      return <Input onBlur={(e) => this.valueChange(e, form, dataIndex, record)} placeholder="--" />;
-    }
-  };
-  valueChange = (e, form, dataIndex, record) => {//月份的修改，修改完毕之后年计划跟着变化
-    const number = e.target.value;
-    const pointLength = number.split('.')[1] ? number.split('.')[1].length : 0;
-    if (isNaN(number) || pointLength > 4) {
-      message.config({
-        top: 400,
-        duration: 2,
-        maxCount: 1,
-      })
-      message.warning('只可以填写数字,可精确到小数点后四位');
-      form.setFieldsValue({
-        [dataIndex]: '',
-      });
-      return false;
-    } else {
-      const index = getMonth(dataIndex) - 1;
-      record.monthPower[index] = number;
-      record[dataIndex] = number;
-
-      function sum(arr) {
-        return arr.reduce(function (prev, curr, idx, arr) {
-          return Number(prev) + Number(curr);
-        });
-      }
-
-      record.planPower = sum(record.monthPower);
-      this.props.handlevaluechange(record)
-    }
-  };
-
-  render() {
-    const {
-      editing,
-      dataIndex,
-      record,
-      handlevaluechange,
-      ...restProps
-    } = this.props;
-
-    return (
-      <EditableContext.Consumer>
-        {(form) => {
-          const { getFieldDecorator } = form;
-          return (
-            <td {...restProps}>
-              {editing ? (
-                <FormItem style={{ margin: 0 }}>
-                  {getFieldDecorator(dataIndex, {
-                    rules: [{
-                      required: false,
-                    }],
-                    initialValue: record[dataIndex],
-                  })(this.getInput(form))}
-                </FormItem>
-              ) : restProps.children}
-            </td>
-          );
-        }}
-      </EditableContext.Consumer>
-    );
-  }
-}
 
 class PlanAddTable extends React.Component {
   static propTypes = {
@@ -113,53 +36,17 @@ class PlanAddTable extends React.Component {
 
   componentWillMount() {
     const { addStationCodes, addPlanYear } = this.props;
-    console.log('this.props',addStationCodes);
     this._dealTableData(addStationCodes, addPlanYear)
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.state.save === nextProps.save) {
-      return false
-    }
     nextProps.save === 'true' ? this.props.addplansave(this.state.AddPlandata) : '';
+    nextProps.prev === 'true' ? this.props.addValueChange(this.state.AddPlandata) : '';
   }
 
-  // 删除的时候
-  handleDelete = (key) => {
+  handleDelete = (key) => {   // 删除
     const AddPlandata = [...this.state.AddPlandata];
     this.setState({ AddPlandata: AddPlandata.filter(item => item.key !== key) });
-  };
-
-  handlevaluechange = (row) => {
-    const newData = [...this.state.AddPlandata];
-    const index = newData.findIndex(item => row.key === item.key);
-    if (index > -1) {
-      const item = newData[index];
-      newData.splice(index, 1, {
-        ...item,
-        ...row,
-      });
-    }
-    this.setState({ AddPlandata: newData });
-    this.props.addValueChange("change"); // 数据是否修改
-  };
-
-  yearPRChange = (e, row) => {//PR 数据修改
-    const number = e.target.value;
-    const pointLength = number.split('.')[1] ? number.split('.')[1].length : 0;
-    if (isNaN(number) || pointLength > 2) {
-      message.config({
-        top: 400,
-        duration: 2,
-        maxCount: 1,
-      })
-      message.warning('只可以填写数字,可精确到小数点后两位');
-      row.yearPR = "";
-      return false;
-    } else {
-      row.yearPR = number;
-    }
-    this.handlevaluechange(row)
   };
 
   _createTableColumn = () => {//生成表头
@@ -224,6 +111,7 @@ class PlanAddTable extends React.Component {
         title: '年计划发电量(万kWh)',
         dataIndex: 'planPower',
         key: 'planPower',
+        editable: true,
         className: styles.planPower,
         render: text => {
           var textValue = text ? Number(text).toFixed(4) : '--';
@@ -235,10 +123,7 @@ class PlanAddTable extends React.Component {
         dataIndex: 'yearPR',
         key: 'yearPR',
         className: 'yearPR',
-        render: (text, record) => {
-          return (<span><Input defaultValue={record.yearPR} onBlur={(e) => this.yearPRChange(e, record)}
-            placeholder="--" />%</span>)
-        }
+        editable: true,
       },
       {
         title: '操作',
@@ -284,20 +169,22 @@ class PlanAddTable extends React.Component {
           for (let i = 0; i < Number(onGridMonth); i++) {
             AddPlanstaion[TabelKey[i]] = null;
           }
-        }
-        AddPlanstaion.planPower = list.planPower;
+        }   
       }
+      AddPlanstaion.planPower = list.planPower;
       AddPlanstaion.key = index;
       AddPlanstaion.regionName = list.regionName;  //区域
       AddPlanstaion.stationName = list.stationName; //电站名称
       AddPlanstaion.stationCapacity = list.stationCapacity; //装机容量
       AddPlanstaion.planYear = addPlanYear; //  年份
       AddPlanstaion.stationCode = list.stationCode; // 电站编码
+
       return AddPlanstaion
     });
 
     this.setState({ AddPlandata: addPlanStations })
   };
+  
 
   render() {
     const { AddPlandata } = this.state;
@@ -305,7 +192,11 @@ class PlanAddTable extends React.Component {
       body: {
         row: EditableFormRow,
         cell: (...rest) => {
-          return <EditableCell {...rest[0]} handlevaluechange={this.handlevaluechange} />
+          return (<EditableContext.Consumer>
+            {form => {
+              return <EditableCell form={form} {...rest[0]} valueChange={this.valueChange} />
+            }}
+          </EditableContext.Consumer>)
         },
       },
     };

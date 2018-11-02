@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import {  Icon, Select } from "antd";
+import {  Icon } from "antd";
 import styles from "./operateAnalysis.scss";
 import StationSelect from "../../../Common/StationSelect";
 import TimeSelect from '../../../../components/Common/TimeSelect/TimeSelectIndex';
@@ -8,13 +8,12 @@ import BarGraph from "../AllStationAnalysis/CommonGraph/BarGraph";
 import TableGraph from "../AllStationAnalysis/CommonGraph/TableGraph";
 import PowerEfficency from "../AllStationAnalysis/CommonGraph/ThreeYaxis";
 import UsageRate from "./UsageRate";
-import LostPowerType from "./LostPowerType";
+import LostPowerType from "../commonGraph/barStack";
 import LostPowerTypeRate from "./LostPowerTypeRate";
 import LimitPowerRate from "./LimitPowerRate";
 import LimitPowerRateTable from "./LimitPowerRateTable";
 import moment from 'moment';
 
-const Option = Select.Option;
 class OperateAnalysis extends React.Component {
   static propTypes = {
     stationType: PropTypes.string,
@@ -234,8 +233,8 @@ class OperateAnalysis extends React.Component {
 
     let station = ''
     stationCode ? station = stations.toJS().filter(e => e.stationCode === stationCode) : '';
-    let dataAvalibale = operateAvalibaData && operateAvalibaData.filter(e => e.isTrue === '1') || [];
-    // 发电效率    
+    let dataAvalibale = operateAvalibaData && operateAvalibaData.filter(e => e.isTrue) || [];
+    // 发电效率
     const PowerEffectiveData = {
       xData: efficiencyData && efficiencyData.map((e, i) => { return this.addXaixsName(e.date, dateType) }),
       yData: {
@@ -253,7 +252,7 @@ class OperateAnalysis extends React.Component {
       (e.light ? parseFloat(e.light).toFixed(2) : "--")
     })
 
-    
+
     // 可利用率
     let stationUtilization= usageData && usageData.map(e => e.stationUtilization);
     let deviceUtilization= usageData && usageData.map(e => e.deviceUtilization)
@@ -364,9 +363,9 @@ class OperateAnalysis extends React.Component {
                   <i className="iconfont icon-pvlogo" />
                 </span>
                 {`${station && station[0].stationName}-${station && station[0].regionName || "--"}`}
-                <span className={styles.plan}>计划完成情况 (
-                {dateType === "day" && year + '年' + month + '月'}
-                  {dateType === "month" && year + '年'})
+                <span className={styles.plan}>计划完成情况
+                {dateType === "day" && (year + '年' + month + '月')}
+                  {dateType === "month" &&( year + '年')}
                 </span>
                 <div className={styles.choiceYear}>{
                   dateType === "year" && dataAvalibale.length > 0 && dataAvalibale.map((item, index) => {
@@ -519,7 +518,7 @@ class OperateAnalysis extends React.Component {
                     </div>
                     <div>损失电量:万kWh</div>
                   </div>
-                  <LostPowerTypeRate graphId={"lostPowerTypeRate"} data={summary} yAxisName={'损失电量'} />
+                  <LostPowerTypeRate graphId={"lostPowerTypeRate"} data={summary} yAxisName={'光伏发电系统故障'} xAxisName={'损失电量'} />
                 </div>
               </div>
             </div>
@@ -563,6 +562,7 @@ class OperateAnalysis extends React.Component {
                   yAxisName={["厂用电率", "综合厂用电率"]}
                   xAxisName={"厂用电情况"}
                   data={plantLost}
+                  hasData={true}
                 />
                 <UsageRate
                   graphId={"usageRateId3"}
@@ -570,6 +570,7 @@ class OperateAnalysis extends React.Component {
                   xAxisName={"厂损情况"}
                   yAxisName={["送出线损率", "厂损率"]}
                   data={useLost}
+                  hasData={true}
                 />
               </div>
             </div>

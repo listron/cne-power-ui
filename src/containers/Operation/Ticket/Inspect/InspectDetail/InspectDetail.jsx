@@ -118,9 +118,11 @@ const mapStateToProps = (state) => ({
   commonFetching: state.common.get('commonFetching'),
   defectTypes: state.operation.defect.get('defectTypes'),
   deviceTypeItems: state.operation.inspect.get('deviceTypeItems'),
-  deviceAreaItems: state.operation.defect.get('partitions'),
+  deviceAreaItems: state.operation.inspect.get('partitions'),
   deviceItems: state.operation.inspect.get('devices'),
   inspectStandard: state.operation.inspect.get('inspectStandard'),
+  allSeries: state.operation.inspect.get('allSeries'),
+  firstPartitionCode: state.operation.inspect.get('firstPartitionCode'),
 }) 
 
 const mapDispatchToProps = (dispatch) => ({
@@ -153,6 +155,13 @@ const mapDispatchToProps = (dispatch) => ({
       params, 
       actionName: ticketAction.GET_INSPECT_FETCH_SUCCESS,
       resultName: 'partitions'
+    }
+  }),
+  getSliceDevices: params => dispatch({
+    type: commonAction.getSliceDevices,
+    payload: {
+      params, 
+      actionName: ticketAction.GET_INSPECT_FETCH_SUCCESS,
     }
   }),
   setInspectId: payload => dispatch({ type: ticketAction.SET_INSPECT_ID_SAGA, payload }),

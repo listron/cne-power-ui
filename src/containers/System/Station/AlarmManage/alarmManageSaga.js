@@ -12,6 +12,11 @@ function *changeAlarmManageStore(action){ // 存储payload指定参数，替换r
   })
 }
 
+function *resetStore(){
+  yield put({
+    type:  alarmManageAction.RESET_STORE
+  })
+}
 
 function *getAlarmList(action){ // 请求告警事件列表
   const { payload } = action;
@@ -84,8 +89,43 @@ function *deleteAlarmList(action){ // 清除电站告警事件
   }
 }
 
-export function* watchAlarmManage() {
+function *downloadAlarmExcel(action){ // 导出告警时间
+  const { payload } = action;
+  try{
+    const { stationCode, stationName } = payload;
+    const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.downloadAlarmInfo}/${stationCode}`
+    const response = yield call(axios, {
+      method: 'get',
+      url,
+      responseType:'blob'
+    });
+    if(response.data) {
+      const content = response.data;
+      const blob = new Blob([content]);
+      const fileName = `${stationName}告警事件信息表.xlsx`;
+      if ('download' in document.createElement('a')) { // 非IE下载
+        const elink = document.createElement('a');
+        elink.download = fileName;
+        elink.style.display = 'none';
+        elink.href = URL.createObjectURL(blob);
+        document.body.appendChild(elink);
+        elink.click();
+        URL.revokeObjectURL(elink.href); // 释放URL 对象
+        document.body.removeChild(elink);
+      } else { // IE10+下载
+        navigator.msSaveBlob(blob, fileName);
+      }   
+    }
+  }catch(e){
+    console.log(e);
+    message.error(`导出告警事件失败!${e}`)
+  }
+}
+
+export function* watchAlarmManage() {downloadAlarmExcel
   yield takeLatest(alarmManageAction.CHANGE_ALARM_MANAGE_STORE_SAGA, changeAlarmManageStore);
+  yield takeLatest(alarmManageAction.resetStore, resetStore);
+  yield takeLatest(alarmManageAction.downloadAlarmExcel, downloadAlarmExcel);
   yield takeLatest(alarmManageAction.GET_ALARM_MANAGE_LIST, getAlarmList);
   yield takeLatest(alarmManageAction.DELETE_ALARM_MANAGE_LIST, deleteAlarmList);
 }

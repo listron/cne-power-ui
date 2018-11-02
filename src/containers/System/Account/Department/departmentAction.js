@@ -18,6 +18,8 @@ export const departmentAction = {
   setDepartmentStation: Symbol('setDepartmentStation'),//分配部门电站
   getDepartmentDetail: Symbol('getDepartmentDetail'),//获取部门详情
   getOtherPageDetail: Symbol('getOtherPageDetail'),//获取其他页某一条部门详情
+  resetStore: Symbol('resetStore'), // 发起重置数据请求
+  RESET_STORE: Symbol('RESET_STORE'), // 重置数据
 }
 
 

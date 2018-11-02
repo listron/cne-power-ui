@@ -4,15 +4,15 @@ import { connect } from "react-redux";
 import styles from "./stationResourceAnalysis.scss";
 import { stationResourceAnalysisAction } from './stationResourceAnalysisAction';
 import PropTypes from "prop-types";
+import { getCookie } from '../../../../utils/index.js';
 import StationResourceAnalysis from '../../../../components/StatisticalAnalysis/StationAnalysis/StationResourceAnalysis/StationResourceAnalysis';
 
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import Footer from '../../../../components/Common/Footer';
 
 
-class ProductionAnalysisContainer extends Component {
+class ResourceAnalysisContainer extends Component {
   static propTypes = {
-    stationCode: PropTypes.array,
     location: PropTypes.object,
   }
 
@@ -52,22 +52,26 @@ class ProductionAnalysisContainer extends Component {
 const mapStateToProps = (state) => {
   return {
      ...state.statisticalAnalysisReducer.stationResourceAnalysisReducer.toJS(),
-     stations: state.common.get('stations'),
+    stations: state.common.get('stations'),
+    userId : getCookie('userId'),
      
      
   }
 }
 const mapDispatchToProps = (dispatch) => ({
-  changeAllStationStore: payload => dispatch({ type: stationResourceAnalysisAction.CHANGE_STATIONRESOURCESTATIONDATA_STORE_SAGA, payload }),
- 
-
-
-
-  
+  changeResourceStore: payload => dispatch({ type: stationResourceAnalysisAction.CHANGE_STATIONRESOURCESTATIONDATA_STORE_SAGA, payload }),
+  getAllStationAvalibaData: payload => dispatch({ type: stationResourceAnalysisAction.getAllStationAvalibaData, payload }),
+  getResourcePlan: payload => dispatch({ type: stationResourceAnalysisAction.getResourcePlan, payload }),
+  getResourceMonthLight: payload => dispatch({ type: stationResourceAnalysisAction.getResourceMonthLight, payload }),
+  getResourceYearLight: payload => dispatch({ type: stationResourceAnalysisAction.getResourceYearLight, payload }),
+  getResourceMonthWeather: payload => dispatch({ type: stationResourceAnalysisAction.getResourceMonthWeather, payload }),
+  getResourceDayWeather: payload => dispatch({ type: stationResourceAnalysisAction.getResourceDayWeather, payload }),
+  getResourcePvCompare: payload => dispatch({ type: stationResourceAnalysisAction.getResourcePvCompare, payload }),
+  getResourceYearPvCompare: payload => dispatch({ type: stationResourceAnalysisAction.getResourceYearPvCompare, payload }),  
 })
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProductionAnalysisContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(ResourceAnalysisContainer);
 
 
 
