@@ -11,9 +11,7 @@ import InspectRecordFilter from '../../../../../components/Operation/Ticket/Insp
 import InspectRecordTable from '../../../../../components/Operation/Ticket/Inspect/InspectRecord/InspectRecordTable';
 class inspectRecord extends Component {
   static propTypes = {
-    deviceTypeItems: PropTypes.object,
-    onChangeShowContainer: PropTypes.func,
-    createInspect: PropTypes.func,
+    onChangeShowContainer: PropTypes.func, 
     stations: PropTypes.object,
     getStations: PropTypes.func,
     showContainer: PropTypes.string,
@@ -70,7 +68,7 @@ class inspectRecord extends Component {
 }
 
 const mapStateToProps = (state) => ({
-
+...state.operation.inspect.toJS()
 })
 const mapDispatchToProps = (dispatch) => ({
   onChangeFilter: payload => dispatch({type:ticketAction.CHANGE_INSPECT_STORE_SAGA, payload}),

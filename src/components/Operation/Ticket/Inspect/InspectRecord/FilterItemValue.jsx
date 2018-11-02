@@ -7,8 +7,8 @@ class FilteredItems extends Component {
   static propTypes = {
     stations: PropTypes.object,
    
-    createTimeStart: PropTypes.string,
-    createTimeEnd: PropTypes.string, 
+    inspectTimeStart: PropTypes.string,
+    inspectTimeEnd: PropTypes.string, 
     deviceTypeCode: PropTypes.string,
     onChangeFilter: PropTypes.func,
   }
@@ -19,13 +19,13 @@ class FilteredItems extends Component {
   onCancelStartTime = () => {//取消开始时间
     const { onChangeFilter } = this.props;
     onChangeFilter({
-      createTimeStart: '',
+      inspectTimeStart: '',
     });
   }
   onCancelEndTime = () => { //取消结束时间
     const { onChangeFilter } = this.props;
     onChangeFilter({
-      createTimeEnd: '',
+      inspectTimeEnd: '',
     })
   }
   
@@ -33,24 +33,14 @@ class FilteredItems extends Component {
   resetAll = () => {//删除所有筛选条件
     const { onChangeFilter } = this.props;
     onChangeFilter({
-      createTimeStart: '',
-      createTimeEnd: '',
+      inspectTimeStart: '',
+      inspectTimeEnd: '',
      
     });
   }
 
   render() {
-    const {createTimeStart, createTimeEnd, stations } = this.props;
-
-   
-    const selectedStation = stations.filter(e=>
-      tmpSelectedStation.some(m=>
-        m === e.get('stationCode').toString()
-      )).groupBy(item=>item.get('provinceCode')).toList();//选中电站详情,按省分组
-    const selectedDeviceType = deviceTypes.filter(e=>tmpSelectedDeviceType.some(m=>m===e.get('deviceTypeCode').toString()));//选中的设备类型详情
-    if(createTimeStart===''&&createTimeEnd===''&&stationType==='2'&&stationCodes===''&&deviceTypeCode==='') {
-      return null;
-    }
+    const {inspectTimeStart, inspectTimeEnd,  } = this.props;  
     const style = {
       background: '#fff', 
       borderStyle: 'dashed',
@@ -65,11 +55,9 @@ class FilteredItems extends Component {
     return (
       <div className={styles.filteredItems}>
         <span>已选条件</span>
-        {createTimeStart !== '' && <Tag style={style} closable onClose={this.onCancelStartTime}>开始 {createTimeStart}</Tag>}
-        {createTimeEnd !== '' && <Tag style={style} closable onClose={this.onCancelEndTime}>结束 {createTimeEnd}</Tag>}
-       
-       
-        
+        {inspectTimeStart !== '' && <Tag style={style} closable onClose={this.onCancelStartTime}>开始 {inspectTimeStart}</Tag>}
+        {inspectTimeEnd !== '' && <Tag style={style} closable onClose={this.onCancelEndTime}>结束 {inspectTimeEnd}</Tag>}
+              
         <Tag closable onClose={this.resetAll}>清空条件</Tag>
       </div>
     );

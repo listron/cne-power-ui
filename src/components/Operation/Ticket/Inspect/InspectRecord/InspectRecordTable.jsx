@@ -1,16 +1,15 @@
-import React, { Component } from 'react';
+import { Modal, Select, Table } from 'antd';
 import PropTypes from 'prop-types';
-import { Table, Icon, Modal, Select, Tooltip } from 'antd';
-import { getStatus, getInspectSortField } from '../../../../../constants/ticket';
-import styles from './inspectRecord.scss';
+import React, { Component } from 'react';
+import { getInspectSortField, getStatus } from '../../../../../constants/ticket';
 import CommonPagination from '../../../../Common/CommonPagination';
+import styles from './inspectRecord.scss';
 
 const confirm = Modal.confirm;
 const Option = Select.Option;
 
 class InspectRecordTable extends Component {
   static propTypes = {
-    inspectList: PropTypes.object,
     inspectStatusStatistics: PropTypes.object,
     pageNum: PropTypes.number,
     pageSize: PropTypes.number,
@@ -23,11 +22,6 @@ class InspectRecordTable extends Component {
     changeInspectStore: PropTypes.func,
     onChangeShowContainer: PropTypes.func,
   }
-
-  // static defaultProps={
-  //   inspectList: Immutable.fromJS([]),
-  //   pageNum: 1,
-  // }
 
   constructor(props) {
     super(props);

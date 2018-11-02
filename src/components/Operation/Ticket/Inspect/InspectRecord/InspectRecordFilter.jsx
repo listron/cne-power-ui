@@ -4,7 +4,7 @@ import { Button, Switch, Icon, Radio, DatePicker } from 'antd';
 import StationFilter from '../../Defect/DefectFilter/StationFilter';
 import DeviceTypeFilter from '../../Defect/DefectFilter/DeviceTypeFilter';
 import styles from './inspectRecord.scss';
-import FilteredItems from './FilterItemValue.jsx';
+import FilterItemValue from './FilterItemValue.jsx';
 import moment from 'moment';
 
 const RadioButton = Radio.Button;
@@ -127,7 +127,7 @@ class InspectRecordFilter extends Component {
           {showFilter === 'inspectUserName' && <StationFilter {...this.props} />}
           {showFilter === 'inspectStatus' && <DeviceTypeFilter {...this.props} />}
         </div>
-        
+        <FilterItemValue {...this.props} />
 
       </div>
     );
@@ -136,5 +136,3 @@ class InspectRecordFilter extends Component {
 }
 
 export default InspectRecordFilter;
-// <InspectStartTime {...this.props} onChangeFilter={onChangeFilter} />
-// <InspectEndTime {...this.props} onChangeFilter={onChangeFilter} />
