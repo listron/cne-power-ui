@@ -240,6 +240,7 @@ class SideReportPage extends Component {
               data={stations.filter(e=>!reportDisableStation.includes(e.stationCode))}
               multiple={true}
               onChange={this.stationSelected}
+              oneStyleOnly={true}
             />
             <Button onClick={this.toReportStations} disabled={!canReport} className={canReport ? styles.dayReportNext : styles.dayReportNextDisabled} >下一步</Button>
           </div>

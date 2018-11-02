@@ -10,6 +10,7 @@ const RadioGroup = Radio.Group;
 class StationSelectModal extends Component {
   static propTypes = {
     stationModalShow: PropTypes.bool,
+    oneStyleOnly: PropTypes.bool,
     checkedStations: PropTypes.array,
     data: PropTypes.array,
     disabledStation: PropTypes.array,
@@ -89,7 +90,7 @@ class StationSelectModal extends Component {
 
 
   _filterStation = () => {
-    const { data, multiple, disabledStation } = this.props;
+    const { data, multiple, disabledStation, oneStyleOnly } = this.props;
     const { filterStationType, selectedStation } = this.state;
     const tmpStations = filterStationType === 2 ? data : data.filter(e=>(e.stationType === filterStationType));
     let filteredStation = [];
@@ -112,6 +113,7 @@ class StationSelectModal extends Component {
     return filteredStation.map(e=>(
       <ProvinceItem 
         key={e.provinceCode} 
+        oneStyleOnly={oneStyleOnly}
         disabledStation={disabledStation}
         multiple={multiple} 
         checkStation={this.checkStation} 
