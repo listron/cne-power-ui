@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Select ,AutoComplete  } from 'antd';
+import { Select ,AutoComplete, message  } from 'antd';
 import StationSelectModal from './StationSelectModal'
 import styles from './style.scss';
 import PropTypes from 'prop-types';
@@ -40,12 +40,14 @@ const Option = Select.Option;
   6. 选填 - holderText: string, 可选填，当用户未选择电站时的占位提示文字。 
   7. 选填 - disabledStation指定的不可选电站codes数组 - int[] ; 默认为[]
   8. 选填 - disabled: bool; 默认false， 传入true值时组件为禁用状态。
+  9. 选填 - oneStyleOnly : bool; 默认为false，用于控制用户是否只能选一种类型的电站(默认都可以)。
 */
 
 class StationSelect extends Component {
   static propTypes = {
     multiple: PropTypes.bool,
     disabled: PropTypes.bool,
+    oneStyleOnly: PropTypes.bool,
     // holderText: PropTypes.bool,
     holderText: PropTypes.string,
     value: PropTypes.array,
@@ -57,6 +59,7 @@ class StationSelect extends Component {
   }
   static defaultProps = {
     multiple: false,
+    oneStyleOnly: false,
     holderText: '输入关键字快速查询',
     disabled: false,
     data: [],
@@ -123,8 +126,16 @@ class StationSelect extends Component {
     })
   }
   selectStation = (stations) => {//stations:选中的电站名称数组
-    const { data } = this.props;
+    const { data, oneStyleOnly } = this.props;
     const checkedStations = data.filter(e=>stations.includes(e.stationName))
+    if(oneStyleOnly){ // 只能选择一种类型电站
+      const stationTypeSet = new Set();
+      checkedStations.forEach(e=>{stationTypeSet.add(e.stationType)});
+      if(stationTypeSet.size > 1){ // 选择了多种类型电站
+        message.error('请选择同为风电或光伏的电站!')
+        return;
+      }
+    }
     const checkedStationName = stations
     this.setState({
       stationModalShow: false,
@@ -141,7 +152,7 @@ class StationSelect extends Component {
   }
 
   render() {
-    const { data, multiple, holderText, disabledStation, disabled } = this.props;
+    const { data, multiple, holderText, disabledStation, disabled, oneStyleOnly } = this.props;
     const { checkedStationName, stationModalShow, filteredSelectedStation, checkedStations } = this.state;
     return (
       <div className={styles.stationSelect} style={this.props.style}>
@@ -169,6 +180,7 @@ class StationSelect extends Component {
         </AutoComplete>}
         <StationSelectModal 
           multiple={multiple}
+          oneStyleOnly={oneStyleOnly}
           disabled={disabled}
           disabledStation={disabledStation}
           checkedStations={checkedStations}
