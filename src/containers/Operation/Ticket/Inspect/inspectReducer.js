@@ -48,6 +48,10 @@ var initState = Immutable.fromJS({
   deviceTypeItems: [], // 电站下的设备类型
   devices: [], // 设备列表
   partitions: [], // 方阵列表
+  inspectTimeStart:'',//巡检开始时间
+  inspectTimeEnd:'',//巡检结束时间
+
+
 });
 
 const inspectReducer = (state = initState, action) => {

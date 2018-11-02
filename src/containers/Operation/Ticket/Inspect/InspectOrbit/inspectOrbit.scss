@@ -1,0 +1,42 @@
+
+
+@import '../../../../../theme/theme.scss';
+@mixin top(){//详情，编辑通用顶部基础样式
+  @include lineheight(64px);
+  display: flex;
+  padding-left: 32px;
+  align-items: center;
+  border-bottom: solid 1px $promptColor;  
+}
+
+.inspectCreate {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  background-color: #fff;
+  .createTop {
+    @include top;
+    justify-content: space-between;
+    .text{
+      font-size:18px;
+      color: $darkColor;
+      letter-spacing:4px;
+    }
+    .backIcon{
+      color: $darkColor;
+      font-size: 20px;
+      border-left: 1px solid $promptColor;
+      height: 100%;
+      line-height: 64px;
+      width: 64px;
+      cursor: pointer;
+    }
+  }
+  .createContent {
+    display: flex;
+    flex-direction: row;
+    // padding: 56px 36px;
+    justify-content: center;
+    flex: 1;
+  }
+}

@@ -11,25 +11,7 @@ function *changeAlarmManageStore(action){ // 存储payload指定参数，替换r
     payload,
   })
 }
-function *getDownLoadAlarmManage(action){ // 请求告警事件列表
-  const { payload } = action;
-  // const url = '/mock/system/alarmManage/alarmList';
-  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.downloadAlarmInfo}/${payload.stationCode}`;
-  try{
-    yield put({ type:alarmManageAction.ALARM_MANAGE_FETCH });
-    const response = yield call(axios.post,url,payload);
-    if(response.data.code === '10000') {
-      yield put({
-        type: alarmManageAction.GET_ALARM_MANAGE_FETCH_SUCCESS,
-        payload: {
-          getAlarmManage: response.data.data||[],          
-        },
-      });     
-    }  
-  }catch(e){
-    console.log(e);
-  }
-}
+
 
 function *getAlarmList(action){ // 请求告警事件列表
   const { payload } = action;
@@ -106,6 +88,5 @@ export function* watchAlarmManage() {
   yield takeLatest(alarmManageAction.CHANGE_ALARM_MANAGE_STORE_SAGA, changeAlarmManageStore);
   yield takeLatest(alarmManageAction.GET_ALARM_MANAGE_LIST, getAlarmList);
   yield takeLatest(alarmManageAction.DELETE_ALARM_MANAGE_LIST, deleteAlarmList);
-  yield takeLatest(alarmManageAction.getDownLoadAlarmManage, getDownLoadAlarmManage);
 }
 
