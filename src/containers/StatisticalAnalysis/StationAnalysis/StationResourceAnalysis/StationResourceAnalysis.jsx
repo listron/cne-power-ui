@@ -13,7 +13,6 @@ import Footer from '../../../../components/Common/Footer';
 
 class ResourceAnalysisContainer extends Component {
   static propTypes = {
-    stationCode: PropTypes.array,
     location: PropTypes.object,
   }
 

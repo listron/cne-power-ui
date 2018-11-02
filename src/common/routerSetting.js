@@ -168,13 +168,13 @@ const routers = [
   },{
     path: '/statistical/stationaccount/allstation',
     exact: true,
-    // component: AllStationAnalysis
-    component: Building
+    component: AllStationAnalysis
+    // component: Building
   },{
     path: '/statistical/stationaccount/allstation/:stationCode',
     exact: true,
-    // component: AllStationAnalysis
-    component: Building
+    component: AllStationAnalysis
+    // component: Building
   },{
     path: '/statistical/stationaccount/production',
     exact: true,
@@ -193,8 +193,8 @@ const routers = [
   },{
     path: '/statistical/stationaccount/contrast',
     exact: true,
-    // component: StationContrast
-    component: Building
+    component: StationContrast
+    // component: Building
   },{
     path: '/statistical/equipment/performance',
     exact: true,
