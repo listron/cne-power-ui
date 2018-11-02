@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Checkbox  } from 'antd';
+import { Checkbox, message } from 'antd';
 import styles from './style.scss';
 import PropTypes from 'prop-types';
 
@@ -7,6 +7,7 @@ class ProvinceItem extends Component {
   static propTypes = {
     checkStation: PropTypes.func,
     multiple: PropTypes.bool,
+    oneStyleOnly: PropTypes.bool,
     provinceInfo: PropTypes.object,
     selectedStation: PropTypes.array,
     disabledStation: PropTypes.array,
@@ -18,23 +19,36 @@ class ProvinceItem extends Component {
     }
   }
   checkStation = (station) => {
-    const { selectedStation, multiple } = this.props;
+    const { selectedStation, multiple, oneStyleOnly } = this.props;
     let cancelCheck = selectedStation.some(e=>e.stationCode===station.stationCode)
     let newStations = [];
     if(cancelCheck){
       newStations = selectedStation.filter(e=>e.stationCode!==station.stationCode);
     }else{
+      const hasMultipleStyle = oneStyleOnly && selectedStation.find(e=>e.stationType !== station.stationType);
+      if(hasMultipleStyle){ // 选中了多种电站
+        message.error('请选择同为风电或光伏的电站!');
+        return;
+      }
       newStations = multiple?[station,...selectedStation]:[station];
     }
     this.props.checkStation(newStations)
   }
   checkProvince = (e) => {
     const { checked } = e.target;
-    const { selectedStation, provinceInfo } = this.props;
+    const { selectedStation, provinceInfo, oneStyleOnly } = this.props;
     let newSelectedStation = [];
     if(checked){
       let tmpStations = selectedStation.filter(e=>e.provinceCode !== provinceInfo.provinceCode)
-      newSelectedStation = [...tmpStations, ...provinceInfo.stations]
+      newSelectedStation = [...tmpStations, ...provinceInfo.stations];
+      if(oneStyleOnly){ // 只能选一种类型电站
+        const stationTypeSet = new Set();
+        newSelectedStation.forEach(e=>{stationTypeSet.add(e.stationType)});
+        if(stationTypeSet.size > 1){ // 选择了多种类型电站
+          message.error('请选择同为风电或光伏的电站!')
+          return;
+        }
+      }
     }else{
       newSelectedStation = selectedStation.filter(e=>e.provinceCode !== provinceInfo.provinceCode)
     }

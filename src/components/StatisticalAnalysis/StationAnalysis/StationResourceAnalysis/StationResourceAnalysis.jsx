@@ -6,7 +6,7 @@ import StationSelect from '../../../Common/StationSelect';
 import TimeSelect from '../../../../components/Common/TimeSelect/TimeSelectIndex';
 import BarGraph from '../AllStationAnalysis/CommonGraph/BarGraph';
 import LightDistribution from './LightDistribution/monthBar';
-import LightYearDistrubution from './LightDistribution/YearBar';
+import LightYearDistrubution from './LightDistribution/yearBar';
 import TableGraph from '../AllStationAnalysis/CommonGraph/TableGraph';
 import YearLightDistributionTable from "./YearLightDistributionTable"
 import WeatherStatus from '../commonGraph/barStack';
