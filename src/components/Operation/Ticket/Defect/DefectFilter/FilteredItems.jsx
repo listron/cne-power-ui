@@ -66,6 +66,29 @@ class FilteredItems extends Component {
       defectLevel: levelCodes.join(','),
     });
   }
+
+  onCancelDefectType = (cancelId) => { // 删除缺陷
+    const { defectTypeCode, onChangeFilter } = this.props;
+    const newDefectTypeCode = defectTypeCode.split(',').filter(e=>!!e && e!==cancelId);
+    onChangeFilter({ defectTypeCode: newDefectTypeCode.join(',') });
+  }
+
+  getDefectInfoArr = (defectTypes, selectedTypes) => {
+    let defectInfoArr = [];
+    defectTypes.forEach(e=>{
+      if(e.list && e.list.length > 0){
+        defectInfoArr.push(...this.getDefectInfoArr(e.list, selectedTypes));
+      }
+      if(selectedTypes.includes(e.id)){
+        defectInfoArr.push({
+          name: e.name,
+          id: e.id
+        })
+      }
+    })
+    return defectInfoArr;
+  }
+
   resetAll = () => {//删除所有筛选条件
     const { onChangeFilter } = this.props;
     onChangeFilter({
@@ -78,6 +101,7 @@ class FilteredItems extends Component {
       defectTypeCode: '',
     });
   }
+
 
   render() {
     const {createTimeStart, createTimeEnd, stationType, stationCodes, deviceTypeCode, defectTypeCode, defectLevel, stations, deviceTypes, defectTypes } = this.props;
@@ -94,7 +118,10 @@ class FilteredItems extends Component {
         m === e.get('stationCode').toString()
       )).groupBy(item=>item.get('provinceCode')).toList();//选中电站详情,按省分组
     const selectedDeviceType = deviceTypes.filter(e=>tmpSelectedDeviceType.some(m=>m===e.get('deviceTypeCode').toString()));//选中的设备类型详情
-    const selectedDefectType = defectTypes.filter(e=>tmpSelectedDefectType.some(m=>m===e.get('defectTypeCode').toString()));//选中的缺陷类型详情
+    console.log(defectTypes)
+    console.log(tmpSelectedDefectType)
+    const defectInfoArr = this.getDefectInfoArr(defectTypes.toJS(), tmpSelectedDefectType); //选中的缺陷类型数组
+    console.log(defectInfoArr)
     if(createTimeStart===''&&createTimeEnd===''&&stationType==='2'&&stationCodes===''&&deviceTypeCode===''&&defectLevel==='0'&&defectTypeCode==='') {
       return null;
     }
@@ -128,9 +155,9 @@ class FilteredItems extends Component {
         {defectLevelArray.length > 0 && defectLevelArray.map(e=>(
           <Tag style={style} key={e.value} closable onClose={()=>this.onCancelLevel(e.value)}>{e.label}</Tag>
         ))}
-        {selectedDefectType.size > 0 && selectedDefectType.map(e=>(
-          <Tag style={style} closable onClose={()=>this.onCancelDeviceType(e.get('defectTypeCode').toString())} key={e.get('defectTypeCode').toString()}>
-            {e.get('defectTypeName')}
+        {defectInfoArr.length > 0 && defectInfoArr.map(e=>(
+          <Tag style={style} closable onClose={()=>this.onCancelDeviceType(e.id)} key={e.id}>
+            {e.name}
           </Tag>
         ))}
         <Tag closable onClose={this.resetAll}>清空条件</Tag>
