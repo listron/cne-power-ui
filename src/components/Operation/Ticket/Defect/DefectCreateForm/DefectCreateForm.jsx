@@ -77,7 +77,7 @@ class TmpForm extends Component {
     
     if(deviceTypeCode === 509){ //组串时，请求调整
        this.props.getSliceDevices(params);
-     }else{
+     }else{//test
        this.props.getDevices(params);
        this.props.getStationAreas(params);
      }
