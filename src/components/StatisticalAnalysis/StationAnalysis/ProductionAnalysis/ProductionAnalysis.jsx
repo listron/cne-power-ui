@@ -34,7 +34,7 @@ class ProductionAnalysis extends React.Component {
   }
   componentDidMount() {
     const { getAllStationAvalibaData, stations, userId, stationCode, changeAllStationStore, ProductionPlanComplete, getSingleStationProductionData, getSingleStationPlanRateData, year, dateType, } = this.props;
-    stations && stations.toJS().length > 0 ? changeAllStationStore({ stationCode: stations.toJS()[0].stationCode.toString() }) : console.log('no');
+    stations && stations.toJS().length > 0 ? changeAllStationStore({ stationCode: stations.toJS()[0].stationCode.toString() }) : console.log('no_stations');
     const currentYear = moment().format('YYYY');
     const curYear = Number(moment().format('YYYY'));
     const currentMonth = Number(moment().format('MM'));
@@ -100,8 +100,6 @@ class ProductionAnalysis extends React.Component {
     for (let i = nextPropsSelectYear[0]; i < nextPropsSelectYear[1] + 1; i++) {
       nextRangeYear.push(i.toString())
     }
-    console.log(dateType, nextProps.dateType);
-    console.log(stationCode, nextProps.stationCode);
     //月->月
     if ((dateType === 'month' && nextProps.dateType === 'month') && (year[0] !== nextProps.year[0] || stationCode !== nextProps.stationCode)) {
       ProductionPlanComplete({
@@ -274,13 +272,14 @@ class ProductionAnalysis extends React.Component {
   }
 
   render() {
-    const { stationType, stations, dateType, year, changeAllStationStore, allStationAvalibaData, productionPlanCompleteData, singleStationPowerData, singleStationBuyPowerData, singleStationSalePowerData, singleStationPlanRateData } = this.props;
+    const { stationType, stations, dateType, year,stationCode, changeAllStationStore, allStationAvalibaData, productionPlanCompleteData, singleStationPowerData, singleStationBuyPowerData, singleStationSalePowerData, singleStationPlanRateData } = this.props;
     // 截止时间
     const statisticTime = moment().subtract(1, 'days').format('YYYY年MM月DD日');
     // 并网时间
     const stationItems = stations.toJS();
     const stationItem = stationItems && stationItems.filter(e => (e.stationCode === this.props.stationCode))[0];
     const stationGridTime = stationItem ? moment(stationItem.onGridTime).format('YYYY年MM月DD日') : '--';
+    let station=stationCode ?stations.toJS().filter(e => e.stationCode === stationCode) : '';
     //电站名-区域
     const provinceName = stationItem && stationItem.provinceName;
     const stationName = stationItem && stationItem.stationName;
@@ -333,7 +332,7 @@ class ProductionAnalysis extends React.Component {
               <StationSelect
                 data={stations.toJS()}
                 holderText={'电站名-区域'}
-                value={this.props.stationCode ? [this.props.stationCode] : []}
+                value={station.length > 0 ? station : []}
                 onChange={this.stationSelected}
               />
             </div>

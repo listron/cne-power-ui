@@ -27,6 +27,13 @@ class StationContrastTable extends React.Component {
     };
   }
 
+  onVisibleChange = (item) => {
+    if(!item){
+      this.props.toChangeStationContrastStore({
+        stationContrastDetail:[],
+      });
+    }
+  }
   showContrastDetail = (e) => {
     const { stations, stationCode, dateType, year, month } = this.props;
     this.props.toChangeStationContrastStore({
@@ -39,14 +46,6 @@ class StationContrastTable extends React.Component {
       month,
       column: e.currentTarget.getAttribute('data-datafieldname'),
     });
-  }
-
-  onVisibleChange = (item) => {
-    if(!item){
-      this.props.toChangeStationContrastStore({
-        stationContrastDetail:[],
-      });
-    }
   }
 
   render() {

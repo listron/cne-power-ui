@@ -3,13 +3,13 @@ import PropTypes from "prop-types";
 import { Tabs } from 'antd';
 import { withRouter } from 'react-router-dom';
 import styles from './allStationStatistic.scss';
-// import AlarmStatisticByType from './AlarmStatisticByType';
 import StationSelectModal from './StationSelectModal.jsx';
 // import TimeSelect from '../../../Common/TimeSelect';
 import TimeSelect from '../../../Common/TimeSelect/TimeSelectIndex';
 import PlanCompletionRate from '../CommonGraph/PlanCompletionRate';
 import TargetTabs from './TargetTabs.jsx';
-import { getCookie } from '../../../../utils/index.js';
+// import { getCookie } from '../../../../utils/index.js';
+import Cookie from 'js-cookie';
 import moment from 'moment';
 class AllStationStatistic extends React.Component {
   static propTypes = {
@@ -47,8 +47,7 @@ class AllStationStatistic extends React.Component {
 
     const currentMonth = Number(moment().format('MM'));
     let time = year ? year : [`${currentYear}`];
-    //console.log(time);
-    const userId = getCookie('userId');
+    const userId = Cookie.get('userId')
     changeAllStationStore({ year: [`${currentYear}`], month: currentMonth })
     getAllStationAvalibaData(
       {
@@ -263,20 +262,20 @@ class AllStationStatistic extends React.Component {
     }
   }
   componentWillUnmount() {
-   
+
     this.props.changeAllStationStore({
       //stationTypes: null,   
-      dateType:'month',
-      year:'',
-      month:'',
+      dateType: 'month',
+      year: '',
+      month: '',
       pageNum: 1, // 当前页
       pageSize: 10, // 每页条数
-      totalNum:  0,//总数
+      totalNum: 0,//总数
     });
   }
-  onTimeChange=(timeObj)=>{
+  onTimeChange = (timeObj) => {
     console.log(timeObj);
-    timeObj.timeStyle === 'year' ? this.props.changeAllStationStore({ dateType: timeObj.timeStyle, year: [timeObj.startTime, timeObj.endTime] }) :this.props.changeAllStationStore({ dateType: timeObj.timeStyle, year: [timeObj.startTime] })
+    timeObj.timeStyle === 'year' ? this.props.changeAllStationStore({ dateType: timeObj.timeStyle, year: [timeObj.startTime, timeObj.endTime] }) : this.props.changeAllStationStore({ dateType: timeObj.timeStyle, year: [timeObj.startTime] })
   }
 
   onChangeStation = (stationCode) => {

@@ -5,7 +5,8 @@ import styles from "./operateAnalysis.scss";
 import { operateAnalysisAction } from './operateAnalysisAction';
 import PropTypes from "prop-types";
 import OperateAnalysis from '../../../../components/StatisticalAnalysis/StationAnalysis/OperateAnalysis/OperateAnalysis';
-import { getCookie } from '../../../../utils/index.js';
+// import { getCookie } from '../../../../utils/index.js';
+import Cookie from 'js-cookie';
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import Footer from '../../../../components/Common/Footer';
 
@@ -58,7 +59,7 @@ const mapStateToProps = (state) => {
   return {
     ...state.statisticalAnalysisReducer.operateAnalysisReducer.toJS(),
     stations: state.common.get('stations'),
-    userId : getCookie('userId'),
+    userId : Cookie.get('userId'),
   }
 }
 const mapDispatchToProps = (dispatch) => ({
