@@ -4,14 +4,14 @@ import { Select } from 'antd';
 import styles from './stationResourceAnalysis.scss';
 import StationSelect from '../../../Common/StationSelect';
 import TimeSelect from '../../../../components/Common/TimeSelect/TimeSelectIndex';
-import BarGraph from '../AllStationAnalysis/CommonGraph/BarGraph';
-import LightDistribution from './LightDistribution/monthBar';
-import LightYearDistrubution from './LightDistribution/yearBar';
-import TableGraph from '../AllStationAnalysis/CommonGraph/TableGraph';
-import YearLightDistributionTable from "./YearLightDistributionTable"
-import WeatherStatus from '../commonGraph/barStack';
-import WeatherRate from './WeatherRate/index';
-import WeatherDayStatus from './WeatherDaychart'
+import BarGraph from '../CommonGraph/BarGraph';
+import LightDistribution from './Charts/distributionMonthBar';
+import LightYearDistrubution from './Charts/distributionYearBar';
+import TableGraph from '../CommonGraph/TableGraph';
+import YearLightDistributionTable from "./Table/yearDistribution"
+import WeatherStatus from '../CommonGraph/barStack';
+import WeatherRate from './Charts/weatherRate';
+import WeatherDayStatus from './Charts/weatherDayChart'
 import moment from 'moment';
 
 class ProductionAnalysis extends React.Component {
@@ -21,6 +21,7 @@ class ProductionAnalysis extends React.Component {
     month: PropTypes.string,
     startTime: PropTypes.string,
     endTime: PropTypes.string,
+    getResourcePlan: PropTypes.func,
   }
   constructor(props) {
     super(props);
@@ -36,32 +37,29 @@ class ProductionAnalysis extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     const { dateType, year, month, startTime, endTime, stationCode } = nextProps;
-    if (year) {
-      if (dateType === "month" && (this.props.year !== year || this.props.stationCode !== stationCode)) {
-        this.getMonthData(nextProps)
-      } else if (dateType === "month" && this.props.dateType !== 'month') {
-        this.getMonthData(nextProps)
-      }
-
-      if (dateType === 'day' && this.props.dateType !== 'day') {
-        this.getDayData(nextProps)
-      } else {
-        if (dateType === 'day' && (this.props.month !== month || this.props.year !== year || this.props.stationCode !== stationCode)) {
-          this.getDayData(nextProps)
-        }
-      }
-
-      if (dateType === 'year' && this.props.dateType !== 'year') {
-        this.getYearData(nextProps)
-      } else {
-        if (dateType === 'year' && (this.props.startTime !== startTime || this.props.endTime !== endTime || this.props.stationCode !== stationCode)) {
-          this.getYearData(nextProps)
-        }
-      }
-
-    } else {
+    if (!year) {
       this.getMonthData(nextProps)
     }
+    if (year) {
+      if (dateType === "month" && (this.props.dateType !== 'month' ||
+        (this.props.year !== year || this.props.stationCode !== stationCode))) {
+        this.getMonthData(nextProps)
+      }
+
+      if (dateType === 'day' && (this.props.dateType !== 'day' ||
+        (this.props.month !== month || this.props.year !== year || this.props.stationCode !== stationCode))) {
+        this.getDayData(nextProps)
+      }
+
+      if (dateType === 'year' && (this.props.dateType !== 'year' ||
+        (this.props.startTime !== startTime || this.props.endTime !== endTime || this.props.stationCode !== stationCode))) {
+        this.getYearData(nextProps)
+      }
+    }
+  }
+
+  componentWillUnmount() {
+    this.props.changeResourceStore()
   }
 
   getMonthData = (props) => { // 月的时间选择 初始加载
@@ -72,14 +70,8 @@ class ProductionAnalysis extends React.Component {
       dateType,
       year: choiceYear
     }
-    let specilPrams = {
-      stationCode: stationCode ? stationCode : stations.toJS()[0].stationCode,
-      dateType: "year",
-      year: choiceYear,
-    }
-
     props.changeResourceStore({ ...prams, selectYear: choiceYear })
-    props.getResourcePlan(specilPrams)
+    props.getResourcePlan({ ...prams, dateType: "year", })
     props.getResourcePvCompare(prams)
     props.getResourceMonthLight(prams)
     props.getResourceMonthWeather({ ...prams, year: [choiceYear] })
@@ -176,7 +168,7 @@ class ProductionAnalysis extends React.Component {
 
 
   render() {
-    const { stations, dateType, stationCode, year, month, resourceAvalibaData, resourcePlanData, PvCompareData, resourceMonthLight, selectYear, resourceMonthWeather, YearPvCompareData, resourceYearLight, resourceDayWeather } = this.props;
+    const { stations, dateType, stationCode, year, month, resourceAvalibaData, resourcePlanData, PvCompareData, resourceMonthLight, selectYear, resourceMonthWeather, YearPvCompareData, resourceYearLight, resourceDayWeather, startTime, endTime } = this.props;
     let station = ''
     stationCode ? station = stations.toJS().filter(e => e.stationCode === stationCode) : '';
     let dataAvalibale = resourceAvalibaData && resourceAvalibaData.filter(e => e.isTrue) || [];
@@ -280,7 +272,6 @@ class ProductionAnalysis extends React.Component {
                 data={stations.toJS()}
                 holderText={"电站名-区域"}
                 value={station.length > 0 ? station : []}
-                // multiple={true}
                 onChange={this.stationSelected}
               />
             </div>
@@ -319,7 +310,7 @@ class ProductionAnalysis extends React.Component {
             </div>
             <div className={styles.graph}>
               <div className={styles.stationTargetData}>
-                <div className={styles.stationTargetValue}>{resourcePlanData && resourcePlanData.length > 0 && (resourcePlanData[0].resourceValue || resourcePlanData[0].resourceValue === 0 )? resourcePlanData[0].resourceValue : "--"}</div>
+                <div className={styles.stationTargetValue}>{resourcePlanData && resourcePlanData.length > 0 && (resourcePlanData[0].resourceValue || resourcePlanData[0].resourceValue === 0) ? resourcePlanData[0].resourceValue : "--"}</div>
                 <div className={styles.stationTargetName}>斜面辐射总量 MJ/㎡ </div>
               </div>
               <div className={styles.stationTargetData}>
@@ -393,7 +384,6 @@ class ProductionAnalysis extends React.Component {
                     tableType={'lightDistributed'}
                     dateType={dateType}
                     dataArray={radiationIntervalList}
-
                   />}
               </div>
             </div>
@@ -422,7 +412,11 @@ class ProductionAnalysis extends React.Component {
 
                 <div className={styles.LostPowerTypeRate}>
                   <div className={styles.LostPowerTypeTitle}>
-                    <div>天气情况占比{year}</div>
+                    <div>天气情况占比
+                      {dateType === "year" && ' ( ' + startTime + '-' + endTime + ' )'}
+                      {dateType === "month" && ' ( ' + year + ' 年 )'}
+                      {dateType === 'day' && ' ( ' + year + '年' + month + '月 )'}
+                    </div>
                   </div>
                   <WeatherRate
                     graphId={"weatherRate"}

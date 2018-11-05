@@ -4,18 +4,18 @@ import { Link } from 'react-router-dom';
 import { Icon } from 'antd';
 import { withRouter } from 'react-router-dom';
 import styles from './allStationStatistic.scss';
-import BarGraph from './CommonGraph/BarGraph/index.js';
+import BarGraph from '../CommonGraph/BarGraph/index.js';
 import TargetStatisticPieGraph from './TargetStatisticPieGraph.jsx';
 import moment from 'moment';
 // import TimeSelect from '../../../Common/TimeSelect';
 import TimeSelect from '../../../Common/TimeSelect/TimeSelectIndex';
-import PlanCompletionRate from './CommonGraph/PlanCompletionRate';
+import PlanCompletionRate from '../CommonGraph/PlanCompletionRate';
 import ChangeStation from '../../../Monitor/StationMonitor/SingleStation/SingleStationCommon/ChangeStation';
-import TableGraph from './CommonGraph/TableGraph';
-import ThreeYaxis from './CommonGraph/ThreeYaxis';
-import PlanCompleteRateAnalysisBar from './CommonGraph/PlanCompleteRateAnalysisBar';
-import LightResource from './CommonGraph/LightResource';
-import CurrentMonthCompleteRate from './CommonGraph/CurrentMonthCompleteRate';
+import TableGraph from '../CommonGraph/TableGraph';
+import ThreeYaxis from '../CommonGraph/ThreeYaxis';
+import PlanCompleteRateAnalysisBar from '../CommonGraph/PlanCompleteRateAnalysisBar';
+import LightResource from '../CommonGraph/LightResource';
+import CurrentMonthCompleteRate from '../CommonGraph/CurrentMonthCompleteRate';
 
 class SingleStationStatistic extends React.Component {
   static propTypes = {

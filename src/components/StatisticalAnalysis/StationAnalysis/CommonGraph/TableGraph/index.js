@@ -465,6 +465,7 @@ class TableGraph extends React.Component {
         break;
       case "lightAnotherTB": // 光资源同比降幅排名
         unit = ['光资源同比降幅排名', '辐射总量：MJ/㎡'];
+        break;
       default:
         unit = [];
         break;
