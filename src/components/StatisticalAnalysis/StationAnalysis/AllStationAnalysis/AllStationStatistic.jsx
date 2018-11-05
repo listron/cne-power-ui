@@ -7,7 +7,7 @@ import styles from './allStationStatistic.scss';
 import StationSelectModal from './StationSelectModal.jsx';
 // import TimeSelect from '../../../Common/TimeSelect';
 import TimeSelect from '../../../Common/TimeSelect/TimeSelectIndex';
-import PlanCompletionRate from './CommonGraph/PlanCompletionRate';
+import PlanCompletionRate from '../CommonGraph/PlanCompletionRate';
 import TargetTabs from './TargetTabs.jsx';
 import { getCookie } from '../../../../utils/index.js';
 import moment from 'moment';

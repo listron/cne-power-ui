@@ -4,15 +4,16 @@ import {  Icon } from "antd";
 import styles from "./operateAnalysis.scss";
 import StationSelect from "../../../Common/StationSelect";
 import TimeSelect from '../../../../components/Common/TimeSelect/TimeSelectIndex';
-import BarGraph from "../AllStationAnalysis/CommonGraph/BarGraph";
-import TableGraph from "../AllStationAnalysis/CommonGraph/TableGraph";
-import PowerEfficency from "../AllStationAnalysis/CommonGraph/ThreeYaxis";
+import BarGraph from "../CommonGraph/BarGraph";
+import TableGraph from "../CommonGraph/TableGraph";
+import PowerEfficency from "../CommonGraph/ThreeYaxis";
 import UsageRate from "./UsageRate";
-import LostPowerType from "../commonGraph/barStack";
+import LostPowerType from "../CommonGraph/barStack";
 import LostPowerTypeRate from "./LostPowerTypeRate";
 import LimitPowerRate from "./LimitPowerRate";
 import LimitPowerRateTable from "./LimitPowerRateTable";
 import moment from 'moment';
+import classNames from "classnames";
 
 class OperateAnalysis extends React.Component {
   static propTypes = {
@@ -405,31 +406,31 @@ class OperateAnalysis extends React.Component {
           </div>
           <div className={styles.cardContainer}>
             <div className={styles.cardList}>
-              <div className={styles.cardItem}>
+              <div className={styles.cardItem+" "+styles.lightResourcesn}>
                 <div>光资源</div>
                 <div>辐射总量 {powerData && powerData.resourceValue || '--'}MJ/㎡</div>
                 <div>理论发电量 {powerData && powerData.theoryGen || '--'}万kWh</div>
               </div>
               <Icon type="double-right" theme="outlined" />
-              <div className={styles.cardItem}>
+              <div className={styles.cardItem+" "+styles.photovoltaicModule}>
                 <div>光伏组件</div>
                 <div>发电量 {powerData && powerData.componentGen || '--'}万kWh</div>
                 <div>光伏组件吸收损耗 {powerData && powerData.componentLost || '--'}万kWh</div>
               </div>
               <Icon type="double-right" theme="outlined" />
-              <div className={styles.cardItem}>
+              <div className={styles.cardItem+" "+styles.inverter}>
                 <div>逆变器</div>
                 <div>发电量 {powerData && powerData.inverterGen || '--'}万kWh</div>
                 <div>逆变器损耗 {powerData && powerData.inverterLost || '--'}万kWh</div>
               </div>
               <Icon type="double-right" theme="outlined" />
-              <div className={styles.cardItem}>
+              <div className={styles.cardItem+" "+styles.electricPowerLine}>
                 <div>集电线路</div>
                 <div>发电量 {powerData && powerData.integratedGen || '--'}万kWh</div>
                 <div>集电线路及箱变损耗 {powerData && powerData.integratedLost || '--'}万kWh</div>
               </div>
               <Icon type="double-right" theme="outlined" />
-              <div className={styles.cardItem}>
+              <div className={styles.cardItem+" "+styles.boosterStation}>
                 <div>升压站/关口表</div>
                 <div>上网电量 {powerData && powerData.internetGen || '--'}万kWh</div>
                 <div>升压站损耗 {powerData && powerData.internetLost || '--'}万kWh</div>
