@@ -4,10 +4,10 @@ import { Radio } from 'antd';
 import styles from './productionAnalysis.scss';
 import StationSelect from '../../../Common/StationSelect';
 import TimeSelect from '../../../Common/TimeSelect/TimeSelectIndex';
-import BarGraph from '../AllStationAnalysis/CommonGraph/BarGraph';
-import TableGraph from '../AllStationAnalysis/CommonGraph/TableGraph';
-import WaterWave from '../AllStationAnalysis/CommonGraph/PlanCompletionRate/WaterWave';
-import ThreeYaxis from '../AllStationAnalysis/CommonGraph/ThreeYaxis';
+import BarGraph from '../CommonGraph/BarGraph';
+import TableGraph from '../CommonGraph/TableGraph';
+import WaterWave from '../CommonGraph/PlanCompletionRate/WaterWave';
+import ThreeYaxis from '../CommonGraph/ThreeYaxis';
 import moment from 'moment';
 
 
