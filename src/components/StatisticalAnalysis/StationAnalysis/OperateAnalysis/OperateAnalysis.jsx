@@ -510,6 +510,7 @@ class OperateAnalysis extends React.Component {
                   xAxisName={"损失电量"}
                   dateType={dateType}
                   data={lostpower}
+                  hasData={true}
                 />
                 <div className={styles.LostPowerTypeRate}>
                   <div className={styles.LostPowerTypeTitle}>
