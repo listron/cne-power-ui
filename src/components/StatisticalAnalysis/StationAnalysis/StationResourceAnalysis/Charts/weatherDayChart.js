@@ -24,25 +24,31 @@ class WeatherDayChart extends React.Component {
       case '1': name = '雪'; break;
       case '3': name = '霾'; break;
       case '0': name = '其他'; break;
-      default: name="" ;break;
+      default: name = ""; break;
     }
     return name;
   }
 
   drawChart = param => {
-    const { graphId, yAxisName, xAxisName, yData, xData,title,hasData } = param;
-    
+    const { graphId, yAxisName, xAxisName, yData, xData, title, hasData } = param;
+
     const targetChart = echarts.init(document.getElementById(graphId));
-    let color=["#f9b600",'#999999','#199475','#c7ceb2','#a42b2c','#ceebe0']
-    let seriesData=yData.map(e=>{
-        return {
-            name:this.getName(e.weather),
-            type:'bar',
-            barWidth:13,
-            data:[e.temp]
-        }
+    let color = ["#f9b600", '#999999', '#199475', '#c7ceb2', '#a42b2c', '#ceebe0']
+    let seriesData = [];
+    let legendData=[];
+    yData.forEach(e => {
+      seriesData.push({
+        name: this.getName(e.weather),
+        type: 'bar',
+        barWidth: 13,
+        data: [e.temp]
+      })
+      legendData.push({
+        name: this.getName(e.weather),
+      })
+
     })
-    const confluenceTenMinGraphic = hasData? hiddenNoData :showNoData;
+    const confluenceTenMinGraphic = hasData ? hiddenNoData : showNoData;
     const targetMonthOption = {
       graphic: confluenceTenMinGraphic,
       tooltip: {
@@ -58,13 +64,13 @@ class WeatherDayChart extends React.Component {
         },
         extraCssText: 'box-shadow: 0 0 3px rgba(0, 0, 0, 0.3)',
         formatter: function (params) {
-            let paramsItem = '';
-            params.forEach((item, index) => {
-              return paramsItem += `<div> <span style="display: inline-block;width: 5px;height: 5px;border-radius: 50%;background:${color[index]};vertical-align: 3px;margin-right: 3px;"> </span> ${params[index].seriesName} :${params[index].value==='0'  || params[index].value || '--'}</div>`
-            });
-            return `<div  style="border-bottom: 1px solid #ccc;padding-bottom: 7px;margin-bottom: 7px;width:180px;overflow:hidden;"> <span style="float: left">${params[0].name} </span>
+          let paramsItem = '';
+          params.forEach((item, index) => {
+            return paramsItem += `<div> <span style="display: inline-block;width: 5px;height: 5px;border-radius: 50%;background:${color[index]};vertical-align: 3px;margin-right: 3px;"> </span> ${params[index].seriesName} :${params[index].value === '0' || params[index].value || '--'}</div>`
+          });
+          return `<div  style="border-bottom: 1px solid #ccc;padding-bottom: 7px;margin-bottom: 7px;width:180px;overflow:hidden;"> <span style="float: left">${params[0].name} </span>
             </div>${paramsItem}`
-          }
+        }
       },
       title: {
         text: title,
@@ -82,7 +88,7 @@ class WeatherDayChart extends React.Component {
         left: "center",
         icon: "circle",
         itemWidth: 5,
-        itemHeight: 5
+        itemHeight: 5,
       },
       yAxis: {
         type: "value",

@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import WaterWave from './WaterWave';
 import {    Radio } from "antd";
 import moment from 'moment';
-import { getCookie } from '../../../../../../utils/index.js';
+import { getCookie } from '../../../../../utils/index.js';
 
 class PlancompletionRate extends React.Component{
     static propTypes = {
@@ -19,7 +19,7 @@ class PlancompletionRate extends React.Component{
     }
     handleTime = (e) => {
         const changeYear = Number(e.target.value);
-       // console.log(changeYear);   
+       // console.log(changeYear);
         const { getAllStationStatisticData, dateType } = this.props;
         const userId = getCookie('userId');
         getAllStationStatisticData(
@@ -29,15 +29,15 @@ class PlancompletionRate extends React.Component{
             dateType,
           }
         )
-    
+
       }
     selectYear() {
         const {allStationAvalibaData}=this.props;
         let yearArray=allStationAvalibaData.map((e,i)=>(Number(e.year))) ;
-        let currentYear=(Math.max(...yearArray)).toString();     
+        let currentYear=(Math.max(...yearArray)).toString();
         return (
           <Radio.Group defaultValue={currentYear}  buttonStyle="solid" onChange={this.handleTime}>
-           {allStationAvalibaData.map((e,index)=>{        
+           {allStationAvalibaData.map((e,index)=>{
              if(e.isTrue===true){
               return   <Radio.Button value={e.year} key={index}  style={{margin:'0 5px'}}>{e.year}年</Radio.Button>
              }else{
@@ -50,7 +50,7 @@ class PlancompletionRate extends React.Component{
 
       }
     render(){
-        const {dateType,allStationStatisticData,showPage,year}=this.props;     
+        const {dateType,allStationStatisticData,showPage,year}=this.props;
         let planSummary = showPage==='single'?allStationStatisticData:(allStationStatisticData&&allStationStatisticData.planSummary&&allStationStatisticData.planSummary[0])
         const actualPower=planSummary&&planSummary.actualPower?planSummary.actualPower:'--';
         const planPower=planSummary&&planSummary.planPower?planSummary.planPower:'--';
@@ -63,7 +63,7 @@ class PlancompletionRate extends React.Component{
         const pr=planSummary&&planSummary.pr?planSummary.pr:'--';
         const lostPowerRate=planSummary&&planSummary.lostPowerRate?planSummary.lostPowerRate:'--';
         const completeRate=planSummary&&planSummary.completeRate?planSummary.completeRate:'--';
-      
+
         return(
             <div className={styles.allStationData}>
                <div className={styles.textStyle}>计划完成情况{dateType==='year'?this.selectYear():dateType==='month'?`(  ${moment(year).year()}年  ) `:`(${ moment(year[0]).format('YYYY年MM月')})`}</div>
