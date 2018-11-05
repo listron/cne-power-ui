@@ -30,6 +30,7 @@ var initState = Immutable.fromJS({
     executeNum: 0
   },
   inspectId: '',
+  defectTypes: [],
   inspectDetail: {//巡检详情
     inspectId: '',
     stationCode: '',
