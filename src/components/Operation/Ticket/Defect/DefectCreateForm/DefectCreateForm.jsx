@@ -74,7 +74,7 @@ class TmpForm extends Component {
     this.props.form.setFieldsValue({ deviceTypeCode: null, defectTypeCode: null });
   }
 
-  onChangeDeviceType = (deviceTypeCode) => {
+  onChangeDeviceType = (deviceTypeCode) => { // 设备
     const { stations, form } = this.props;
     const stationCode = form.getFieldValue('stations')[0].stationCode;
     const selectedStationInfo = stations.find(e=>e.stationCode === stationCode) || {};
