@@ -31,12 +31,14 @@ class InspectDetail extends Component{
     getInspectStandard: PropTypes.func,
     inspectStandard: PropTypes.object,
     changeInspectStore: PropTypes.func,
+    getLostGenType: PropTypes.func,
   }
   constructor(props){
     super(props);
   }
 
   componentDidMount(){
+    this.props.getLostGenType({objectType: 1});
     if(this.props.inspectId) {
       this.props.getInspectDetail({
         inspectId: this.props.inspectId,
@@ -116,9 +118,9 @@ const mapStateToProps = (state) => ({
   inspectDetail: state.operation.inspect.get('inspectDetail'),
   inspectId: state.operation.inspect.get('inspectId'),
   commonFetching: state.common.get('commonFetching'),
-  defectTypes: state.operation.defect.get('defectTypes'),
+  defectTypes: state.operation.inspect.get('defectTypes'),
   deviceTypeItems: state.operation.inspect.get('deviceTypeItems'),
-  deviceAreaItems: state.operation.defect.get('partitions'),
+  deviceAreaItems: state.operation.inspect.get('partitions'),
   deviceItems: state.operation.inspect.get('devices'),
   inspectStandard: state.operation.inspect.get('inspectStandard'),
   allSeries: state.operation.inspect.get('allSeries'),
@@ -161,7 +163,15 @@ const mapDispatchToProps = (dispatch) => ({
     type: commonAction.getSliceDevices,
     payload: {
       params, 
-      deviceTypeAction: ticketAction.GET_INSPECT_FETCH_SUCCESS,
+      actionName: ticketAction.GET_INSPECT_FETCH_SUCCESS,
+    }
+  }),
+  getLostGenType: params => dispatch({
+    type: commonAction.getLostGenType,
+    payload: {
+      params, 
+      actionName: ticketAction.GET_INSPECT_FETCH_SUCCESS, 
+      resultName: 'defectTypes'
     }
   }),
   setInspectId: payload => dispatch({ type: ticketAction.SET_INSPECT_ID_SAGA, payload }),

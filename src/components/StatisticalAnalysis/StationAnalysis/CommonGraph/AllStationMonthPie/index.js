@@ -14,8 +14,6 @@ class AllStationMonthPie extends React.Component {
   }
   componentWillReceiveProps(nextProps) {
     this.drawChart(nextProps)
-  // componentWillReceiveProps(){
-  //   this.drawChart(this.props);
   }
 
   drawChart=(param)=>{
@@ -29,15 +27,15 @@ class AllStationMonthPie extends React.Component {
       tooltip: {
         trigger: 'item',
         backgroundColor: '#fff',
-        formatter: function (params) {
-          return '<div style="border-bottom: 1px solid #ccc; font-size: 12px;padding-bottom: 7px;margin-bottom: 7px;width:180px;overflow:hidden;">'+params.name+'</div>'
-            + yAxisName.split('(')[0] + '：' + params.value +unit+ '<br>'
-            + '同比' + '：' + params.percent + '%<br>';
-        },
         padding: 10,
         textStyle: {
           color: 'rgba(0, 0, 0, 0.65)',
           fontSize: 12,
+        },
+        formatter: function (params) {
+          return '<div style="border-bottom: 1px solid #ccc; font-size: 12px;padding-bottom: 7px;margin-bottom: 7px;width:180px;overflow:hidden;">'+params.name+'</div>'
+            + yAxisName.split('(')[0] + '：' + params.value +unit+ '<br>'
+            + '同比' + '：' + params.percent + '%<br>';
         },
       },
       series: [
@@ -47,20 +45,6 @@ class AllStationMonthPie extends React.Component {
           color:['#a42b2c','#d48265','#91c7af','#749f83','#ca8622','#bda29a','#546570','#6e7074','#9b9b9b','#ceebe0'],
           radius: '55%',
           center: ['50%', '50%'],
-          // data: [
-          //   { value: 335, name: '1月' },
-          //   { value: 310, name: '2月' },
-          //   { value: 234, name: '3月' },
-          //   { value: 135, name: '4月' },
-          //   { value: 1048, name: '5月' },
-          //   { value: 251, name: '6月' },
-          //   { value: 147, name: '7月' },
-          //   { value: 102, name: '8月' },
-          //   { value: 135, name: '9月' },
-          //   { value: 1048, name: '10月' },
-          //   { value: 251, name: '11月' },
-          //   { value: 234, name: '12月' },
-          // ],
           data:pieTargetData,
           label: {
             normal: {

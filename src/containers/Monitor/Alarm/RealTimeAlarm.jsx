@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { alarmAction } from './alarmAction';
 import { ticketAction } from '../../Operation/Ticket/ticketAction';
+import { commonAction } from '../../alphaRedux/commonAction';
 import RealTimeAlarmTable from '../../../components/Monitor/Alarm/RealTimeAlarm/RealTimeAlarmTable';
 import RealTimeAlarmFilter from '../../../components/Monitor/Alarm/RealTimeAlarm/RealTimeAlarmFilter';
 import RealTimeAlarmInfo from '../../../components/Monitor/Alarm/RealTimeAlarm/RealTimeAlarmInfo';
@@ -40,6 +41,7 @@ class RealTimeAlarm extends Component {
     isTransferWork: PropTypes.number,
     isRelieveAlarm: PropTypes.number,
     history: PropTypes.object,
+    getLostGenType: PropTypes.func,
   }
   constructor(props) {
     super(props);
@@ -66,7 +68,7 @@ class RealTimeAlarm extends Component {
       isTransferWork: status === 'transfer' ? 0 : 1,
       isRelieveAlarm: status === 'relieve' ? 0 : 1
     });
-    this.props.getDefectTypes({ stationType: 1 });
+    this.props.getLostGenType({ objectType: 1 });
     this.props.getAlarmNum({ warningStatus });
     this.alarmInterval = setInterval(() => { this.getAlarmInfo() }, 10000);
   }
@@ -150,6 +152,7 @@ class RealTimeAlarm extends Component {
   }
 
   render() {
+    console.log(this.props.defectTypes)
     const status = this.getStatus();
     const alarmStatus = this.getAlarmStatus(status);
     const { currentPage, pageSize, } = this.state;
@@ -198,7 +201,7 @@ const mapStateToProps = (state) => ({
   alarmNum: state.monitor.alarm.get('alarmNum').toJS(),
   isTransferWork: state.monitor.alarm.get('isTransferWork'),
   isRelieveAlarm: state.monitor.alarm.get('isRelieveAlarm'),
-  defectTypes: state.operation.defect.get('defectTypes'),
+  defectTypes: state.monitor.alarm.get('defectTypes'),
   lastUpdateTime: state.monitor.alarm.get('lastUpdateTime'),
   ticketInfo: state.monitor.alarm.get('ticketInfo').toJS(),
   relieveInfo: state.monitor.alarm.get('relieveInfo').toJS(),
@@ -215,5 +218,13 @@ const mapDispatchToProps = (dispatch) => ({
   getTicketInfo: payload => dispatch({ type: alarmAction.GET_TICKET_INFO_SAGA, payload }),
   getRelieveInfo: payload => dispatch({ type: alarmAction.GET_RELIEVE_INFO_SAGA, payload }),
   resetAlarm: payload => dispatch({ type: alarmAction.RESET_ALARM_SAGA, payload }),
+  getLostGenType: params => dispatch({
+    type: commonAction.getLostGenType,
+    payload: {
+      params, 
+      actionName: alarmAction.GET_ALARM_FETCH_SUCCESS, 
+      resultName: 'defectTypes'
+    }
+  }),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(RealTimeAlarm);

@@ -242,7 +242,16 @@ class InverterList extends Component {
     
     const baseLinkPath = "/hidden/monitorDevice";
     const { stationCode } = this.props.match.params;
-    
+    const transData = (value, pointLength) => { // 数据转换。
+      let tmpValue = parseFloat(value);
+      let tmpBackData;
+      if(tmpValue || tmpValue === 0 ){
+        tmpBackData = (pointLength || pointLength === 0)?tmpValue.toFixed(pointLength):tmpValue;
+      }else{
+        tmpBackData = '--'
+      }
+      return tmpBackData;
+    }
     return (
       <div className={styles.inverterList} >
         <Tabs defaultActiveKey="1" className={styles.inverterTab} tabBarExtraContent={operations}>
@@ -252,6 +261,15 @@ class InverterList extends Component {
                 return (<div key={index}>
                   <div className={styles.parentDeviceName} >{e && e[0] && e[0].parentDeviceName}</div>
                   {e.map((item,i)=>{
+                    const { devicePower, deviceCapacity } = item;
+                    const showDevicePower = transData(devicePower,2);
+                    const showDeviceCapacity = transData(deviceCapacity,2);
+                    let progressPercent;
+                    if(!deviceCapacity || isNaN(deviceCapacity)){
+                      progressPercent = 0;
+                    }else{
+                      progressPercent = transData(devicePower/deviceCapacity*100);
+                    }
                     return (<div key={i} className={item.deviceStatus === 900 ? styles.cutOverItem : styles.inverterItem} >
                       <div className={styles.inverterItemIcon} >
                         <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${item.deviceCode}`}  >
@@ -264,10 +282,10 @@ class InverterList extends Component {
                       <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${item.deviceCode}`}  >
                         <div className={styles.inverterItemR} >
                           <div>{item.deviceName}</div>
-                          <Progress className={styles.powerProgress} strokeWidth={3} percent={item.devicePower/item.deviceCapacity*100} showInfo={false} />
+                          <Progress className={styles.powerProgress} strokeWidth={3} percent={progressPercent} showInfo={false} />
                           <div className={styles.inverterItemPower}>
-                            <div>{item.devicePower ? parseFloat(item.devicePower).toFixed(2) : '--'}kW</div>
-                            <div>{item.deviceCapacity ? parseFloat(item.deviceCapacity).toFixed(2) : '--'}kW</div>
+                            <div>{showDevicePower}kW</div>
+                            <div>{showDeviceCapacity}kW</div>
                           </div>
                         </div>
                       </Link>

@@ -1,20 +1,20 @@
 import React from "react";
 import PropTypes from "prop-types";
-import {  Icon, Select } from "antd";
+import {  Icon } from "antd";
 import styles from "./operateAnalysis.scss";
 import StationSelect from "../../../Common/StationSelect";
 import TimeSelect from '../../../../components/Common/TimeSelect/TimeSelectIndex';
-import BarGraph from "../AllStationAnalysis/CommonGraph/BarGraph";
-import TableGraph from "../AllStationAnalysis/CommonGraph/TableGraph";
-import PowerEfficency from "../AllStationAnalysis/CommonGraph/ThreeYaxis";
+import BarGraph from "../CommonGraph/BarGraph";
+import TableGraph from "../CommonGraph/TableGraph";
+import PowerEfficency from "../CommonGraph/ThreeYaxis";
 import UsageRate from "./UsageRate";
-import LostPowerType from "./LostPowerType";
+import LostPowerType from "../CommonGraph/barStack";
 import LostPowerTypeRate from "./LostPowerTypeRate";
 import LimitPowerRate from "./LimitPowerRate";
 import LimitPowerRateTable from "./LimitPowerRateTable";
 import moment from 'moment';
+import classNames from "classnames";
 
-const Option = Select.Option;
 class OperateAnalysis extends React.Component {
   static propTypes = {
     stationType: PropTypes.string,
@@ -234,8 +234,8 @@ class OperateAnalysis extends React.Component {
 
     let station = ''
     stationCode ? station = stations.toJS().filter(e => e.stationCode === stationCode) : '';
-    let dataAvalibale = operateAvalibaData && operateAvalibaData.filter(e => e.isTrue === '1') || [];
-    // 发电效率    
+    let dataAvalibale = operateAvalibaData && operateAvalibaData.filter(e => e.isTrue) || [];
+    // 发电效率
     const PowerEffectiveData = {
       xData: efficiencyData && efficiencyData.map((e, i) => { return this.addXaixsName(e.date, dateType) }),
       yData: {
@@ -253,7 +253,7 @@ class OperateAnalysis extends React.Component {
       (e.light ? parseFloat(e.light).toFixed(2) : "--")
     })
 
-    
+
     // 可利用率
     let stationUtilization= usageData && usageData.map(e => e.stationUtilization);
     let deviceUtilization= usageData && usageData.map(e => e.deviceUtilization)
@@ -364,9 +364,9 @@ class OperateAnalysis extends React.Component {
                   <i className="iconfont icon-pvlogo" />
                 </span>
                 {`${station && station[0].stationName}-${station && station[0].regionName || "--"}`}
-                <span className={styles.plan}>计划完成情况 (
-                {dateType === "day" && year + '年' + month + '月'}
-                  {dateType === "month" && year + '年'})
+                <span className={styles.plan}>计划完成情况
+                {dateType === "day" && (year + '年' + month + '月')}
+                  {dateType === "month" &&( year + '年')}
                 </span>
                 <div className={styles.choiceYear}>{
                   dateType === "year" && dataAvalibale.length > 0 && dataAvalibale.map((item, index) => {
@@ -406,31 +406,31 @@ class OperateAnalysis extends React.Component {
           </div>
           <div className={styles.cardContainer}>
             <div className={styles.cardList}>
-              <div className={styles.cardItem}>
+              <div className={styles.cardItem+" "+styles.lightResourcesn}>
                 <div>光资源</div>
                 <div>辐射总量 {powerData && powerData.resourceValue || '--'}MJ/㎡</div>
                 <div>理论发电量 {powerData && powerData.theoryGen || '--'}万kWh</div>
               </div>
               <Icon type="double-right" theme="outlined" />
-              <div className={styles.cardItem}>
+              <div className={styles.cardItem+" "+styles.photovoltaicModule}>
                 <div>光伏组件</div>
                 <div>发电量 {powerData && powerData.componentGen || '--'}万kWh</div>
                 <div>光伏组件吸收损耗 {powerData && powerData.componentLost || '--'}万kWh</div>
               </div>
               <Icon type="double-right" theme="outlined" />
-              <div className={styles.cardItem}>
+              <div className={styles.cardItem+" "+styles.inverter}>
                 <div>逆变器</div>
                 <div>发电量 {powerData && powerData.inverterGen || '--'}万kWh</div>
                 <div>逆变器损耗 {powerData && powerData.inverterLost || '--'}万kWh</div>
               </div>
               <Icon type="double-right" theme="outlined" />
-              <div className={styles.cardItem}>
+              <div className={styles.cardItem+" "+styles.electricPowerLine}>
                 <div>集电线路</div>
                 <div>发电量 {powerData && powerData.integratedGen || '--'}万kWh</div>
                 <div>集电线路及箱变损耗 {powerData && powerData.integratedLost || '--'}万kWh</div>
               </div>
               <Icon type="double-right" theme="outlined" />
-              <div className={styles.cardItem}>
+              <div className={styles.cardItem+" "+styles.boosterStation}>
                 <div>升压站/关口表</div>
                 <div>上网电量 {powerData && powerData.internetGen || '--'}万kWh</div>
                 <div>升压站损耗 {powerData && powerData.internetLost || '--'}万kWh</div>
@@ -510,6 +510,7 @@ class OperateAnalysis extends React.Component {
                   xAxisName={"损失电量"}
                   dateType={dateType}
                   data={lostpower}
+                  hasData={true}
                 />
                 <div className={styles.LostPowerTypeRate}>
                   <div className={styles.LostPowerTypeTitle}>
@@ -519,7 +520,7 @@ class OperateAnalysis extends React.Component {
                     </div>
                     <div>损失电量:万kWh</div>
                   </div>
-                  <LostPowerTypeRate graphId={"lostPowerTypeRate"} data={summary} yAxisName={'损失电量'} />
+                  <LostPowerTypeRate graphId={"lostPowerTypeRate"} data={summary} yAxisName={'光伏发电系统故障'} xAxisName={'损失电量'} />
                 </div>
               </div>
             </div>

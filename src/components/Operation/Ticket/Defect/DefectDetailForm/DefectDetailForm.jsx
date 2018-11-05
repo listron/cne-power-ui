@@ -23,6 +23,7 @@ class DefectDetailForm extends Component {
     onNext: PropTypes.func,
     onPrev: PropTypes.func,
     isFromAlarm: PropTypes.bool,
+    defectTypes: PropTypes.object,
   }
 
   constructor(props) {
@@ -151,8 +152,7 @@ class DefectDetailForm extends Component {
   }
 
   render() {
-    const defectDetail = this.props.defectDetail;
-    const isFromAlarm = this.props.isFromAlarm;
+    const { defectTypes, defectDetail, isFromAlarm } = this.props;
     const processData = defectDetail.get('processData');
     const status = defectDetail.get('defectStatus')
     const { showWarningTip, warningTipText } = this.state;
@@ -175,7 +175,7 @@ class DefectDetailForm extends Component {
           </div>
           <div className={styles.content}>
             <div className={styles.basic}>
-              <DefectBasicInfo basicInfo={defectDetail} />
+              <DefectBasicInfo basicInfo={defectDetail} defectTypes={defectTypes} />
             </div>
             <div className={styles.right}>
               <div className={styles.timeLines}>

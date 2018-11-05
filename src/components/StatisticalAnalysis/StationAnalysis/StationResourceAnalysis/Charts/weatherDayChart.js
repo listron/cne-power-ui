@@ -1,8 +1,8 @@
 import React from "react";
-
 import echarts from "echarts";
+import { showNoData, hiddenNoData } from '../../../../../constants/echartsNoData';
 
-class UsageRate extends React.Component {
+class WeatherDayChart extends React.Component {
   constructor(props, context) {
     super(props, context);
   }
@@ -14,11 +14,43 @@ class UsageRate extends React.Component {
     this.drawChart(nextProps);
   }
 
+  getName = (type) => {
+    let name = '';
+    switch (type) {
+      // "雪1", "雨2", "霾3", "阴4", "晴5","其他0"
+      case '5': name = '晴'; break;
+      case '4': name = '阴'; break;
+      case '2': name = '雨'; break;
+      case '1': name = '雪'; break;
+      case '3': name = '霾'; break;
+      case '0': name = '其他'; break;
+      default: name = ""; break;
+    }
+    return name;
+  }
+
   drawChart = param => {
-    const { graphId, yAxisName, xAxisName, data, title } = param;
+    const { graphId, yAxisName, xAxisName, yData, xData, title, hasData } = param;
+
     const targetChart = echarts.init(document.getElementById(graphId));
-    const color = ["#f9b600","#a42b2c", "#fbe6e3", "#199475", "#ceebe0"];
+    let color = ["#f9b600", '#999999', '#199475', '#c7ceb2', '#a42b2c', '#ceebe0']
+    let seriesData = [];
+    let legendData=[];
+    yData.forEach(e => {
+      seriesData.push({
+        name: this.getName(e.weather),
+        type: 'bar',
+        barWidth: 13,
+        data: [e.temp]
+      })
+      legendData.push({
+        name: this.getName(e.weather),
+      })
+
+    })
+    const confluenceTenMinGraphic = hasData ? hiddenNoData : showNoData;
     const targetMonthOption = {
+      graphic: confluenceTenMinGraphic,
       tooltip: {
         trigger: "axis",
         axisPointer: {
@@ -32,13 +64,13 @@ class UsageRate extends React.Component {
         },
         extraCssText: 'box-shadow: 0 0 3px rgba(0, 0, 0, 0.3)',
         formatter: function (params) {
-            let paramsItem = '';
-            params.forEach((item, index) => {
-              return paramsItem += `<div> <span style="display: inline-block;width: 5px;height: 5px;border-radius: 50%;background:${color[index]};vertical-align: 3px;margin-right: 3px;"> </span> ${params[index].seriesName} :${params[index].value}</div>`
-            });
-            return `<div  style="border-bottom: 1px solid #ccc;padding-bottom: 7px;margin-bottom: 7px;width:180px;overflow:hidden;"> <span style="float: left">${params[0].name} </span><span style="float: right">${xAxisName} </span>
+          let paramsItem = '';
+          params.forEach((item, index) => {
+            return paramsItem += `<div> <span style="display: inline-block;width: 5px;height: 5px;border-radius: 50%;background:${color[index]};vertical-align: 3px;margin-right: 3px;"> </span> ${params[index].seriesName} :${params[index].value === '0' || params[index].value || '--'}</div>`
+          });
+          return `<div  style="border-bottom: 1px solid #ccc;padding-bottom: 7px;margin-bottom: 7px;width:180px;overflow:hidden;"> <span style="float: left">${params[0].name} </span>
             </div>${paramsItem}`
-          }
+        }
       },
       title: {
         text: title,
@@ -56,7 +88,7 @@ class UsageRate extends React.Component {
         left: "center",
         icon: "circle",
         itemWidth: 5,
-        itemHeight: 5
+        itemHeight: 5,
       },
       yAxis: {
         type: "value",
@@ -84,7 +116,7 @@ class UsageRate extends React.Component {
       },
       xAxis: {
         type: "category",
-        data: data.date,
+        data: xData,
         axisLine: {
           lineStyle: {
             color: "#dfdfdf"
@@ -94,38 +126,7 @@ class UsageRate extends React.Component {
           color: "#666"
         }
       },
-      series: [
-        {
-          name: "限电",
-          type: "bar",
-          stack: "总量",
-          data: data.limit
-        },
-        {
-          name: "变电故障",
-          type: "bar",
-          stack: "总量",
-          data: data.electric
-        },
-        {
-          name: "计划停机",
-          type: "bar",
-          stack: "总量",
-          data: data.plane
-        },
-        {
-          name: "光伏发电系统故障",
-          type: "bar",
-          stack: "总量",
-          data: data.system
-        },
-        {
-          name: "场外因素",
-          type: "bar",
-          stack: "总量",
-          data: data.other
-        }
-      ]
+      series: seriesData
     };
     setTimeout(() => {
       targetChart.resize();
@@ -137,4 +138,4 @@ class UsageRate extends React.Component {
     return <div id={graphId}> </div>;
   }
 }
-export default UsageRate;
+export default WeatherDayChart;

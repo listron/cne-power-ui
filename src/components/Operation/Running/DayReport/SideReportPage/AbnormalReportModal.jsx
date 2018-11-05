@@ -95,15 +95,15 @@ class AbnormalReportModal extends Component {
         let { deviceName, startTime, endTime, reason, faultName } = e;
         startTime = startTime && startTime.format('YYYY-MM-DD HH:mm');
         endTime = endTime && endTime.format('YYYY-MM-DD HH:mm');
-        const tmpTextArr = [deviceName, startTime, endTime, reason, faultName].filter(e=>e);
-        return tmpTextArr.join('+');
+        const tmpTextArr = [deviceName, startTime, endTime && (`到${endTime}`), faultName, reason].filter(e=>e);
+        return tmpTextArr.join(' ');
       })
       const limitShortInfo = limitGenList.map(e=>{
         let { deviceName, startTime, endTime, reason, limitPower } = e;
         startTime = startTime && startTime.format('YYYY-MM-DD HH:mm');
         endTime = endTime && endTime.format('YYYY-MM-DD HH:mm');
-        const tmpTextArr = [deviceName, startTime, endTime, reason, limitPower].filter(e=>e);
-        return tmpTextArr.join('+');
+        const tmpTextArr = [deviceName, startTime, endTime && (`到${endTime}`), reason, limitPower].filter(e=>e);
+        return tmpTextArr.join(' ');
       })
       abnormalText = `${faultShortInfo.join(';\n')};\n${limitShortInfo.join(';\n')}`;
     }
@@ -132,26 +132,34 @@ class AbnormalReportModal extends Component {
   render(){
     const { abnormalModalshow, stationDeviceTypes, abnormalInfo, hideAbnormalModal, findDeviceExist, deviceExistInfo, lostGenTypes, dayReportConfig, getStationDeviceTypes, getLostGenType, stationType} = this.props;
     const { addLostFormShow, faultGenList, limitGenList, addLimitFormShow, abnormalTextShow, abnormalText } = this.state;
-    const { modelInverterPowerGen, modelInverterCapacity, stationCapacity } = abnormalInfo;
-    let defaultLimitLost; // 默认限电剩余损失电量
+    const { modelInverterPowerGen, modelInverterCapacity, stationCapacity, reportDate } = abnormalInfo;
+
+    let defaultLimitLost, tmpRealityGen = 0; // 默认限电剩余损失电量, 
     if(modelInverterCapacity > 0){
       const tmpTheoryGen = modelInverterPowerGen / modelInverterCapacity * stationCapacity; // 理论发电量
       const unitConfig = dayReportConfig[0] || {}; // 电量单位
+      const genCalcType = dayReportConfig[2] || {}; // 实际发电量的计算方式 - '1'逆变器，'2'上网电量
+      if(genCalcType.stander === '1'){ // 逆变器计算实际发电量
+        tmpRealityGen = abnormalInfo.yearGenInverter - abnormalInfo.yesterdayyearGenInverter || 0;
+      }else if(genCalcType.stander === '2'){ // 上网电量计算实际发电量
+        tmpRealityGen = abnormalInfo.yearGenInternet - abnormalInfo.yesterdayyearGenInternet || 0;
+      }
       const genUnit = unitConfig.power === 'kWh'?1: 10000; // kWh和万kWh。
       const theryGen = tmpTheoryGen * genUnit;
-      const faultLostPower = faultGenList.reduce((pre,cur) => {
+      const realityGen = tmpRealityGen * genUnit;
+      const faultLostPower = faultGenList.reduce((pre,cur) => { // 故障损失
         if(cur.lostPower || cur.lostPower === 0){
           return pre + parseFloat(cur.lostPower);
         }
         return pre;
       },0);
-      const limitLostPower = limitGenList.reduce((pre,cur) => {
+      const limitLostPower = limitGenList.reduce((pre,cur) => { // 限电损失
         if(cur.lostPower || cur.lostPower === 0){
           return pre + parseFloat(cur.lostPower);
         }
         return pre;
       },0);
-      const tmpDefaultList = theryGen - faultLostPower - limitLostPower;
+      const tmpDefaultList = theryGen - realityGen - faultLostPower - limitLostPower;
       tmpDefaultList > 0 && (defaultLimitLost = tmpDefaultList.toFixed(2));
     }
     return (
@@ -171,7 +179,8 @@ class AbnormalReportModal extends Component {
         </div>
         {(faultGenList && faultGenList.length > 0) ? <LostGenTable 
           faultGenList={faultGenList} 
-          abnormalInfo={abnormalInfo} 
+          abnormalInfo={abnormalInfo}
+          reportDate={reportDate} 
           changeFaultList={this.changeFaultList} 
         />: null}
         {addLostFormShow && <LostAddForm
@@ -192,7 +201,8 @@ class AbnormalReportModal extends Component {
         </div>
         {(limitGenList && limitGenList.length > 0)? <LimitGenTable 
           limitGenList={limitGenList} 
-          abnormalInfo={abnormalInfo} 
+          abnormalInfo={abnormalInfo}
+          reportDate={reportDate} 
           changeLimitList={this.changeLimitList} 
         /> :null}
         {addLimitFormShow && <LimitAddForm
