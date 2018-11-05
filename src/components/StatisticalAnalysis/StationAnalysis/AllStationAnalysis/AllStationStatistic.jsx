@@ -14,7 +14,6 @@ import moment from 'moment';
 class AllStationStatistic extends React.Component {
   static propTypes = {
     stations: PropTypes.object,
-
     userId: PropTypes.string,
     stationType: PropTypes.string,
     sortType: PropTypes.string,
@@ -41,10 +40,9 @@ class AllStationStatistic extends React.Component {
     };
   }
   componentDidMount() {
-    const { getAllStationAvalibaData, changeAllStationStore, getAllStationStatisticData, getAllStationStatisticTableData, getAllStationMonthBarData, getAllStationMonthPieData, year, sortType, dateType, pageNum, pageSize, sort } = this.props;
+    const { getAllStationAvalibaData, changeAllStationStore, getAllStationStatisticData, getAllStationStatisticTableData, getAllStationMonthBarData, getAllStationMonthPieData, year, stationType, sortType, dateType, pageNum, pageSize, sort } = this.props;
     const currentYear = moment().format('YYYY');
     const curYear = Number(moment().format('YYYY'));
-
     const currentMonth = Number(moment().format('MM'));
     let time = year ? year : [`${currentYear}`];
     const userId = Cookie.get('userId')
@@ -61,6 +59,7 @@ class AllStationStatistic extends React.Component {
         userId: userId,
         year: curYear,
         dateType,
+        stationType
       }
     )
     getAllStationStatisticTableData(
@@ -73,6 +72,7 @@ class AllStationStatistic extends React.Component {
         pageSize, // 每页条数
         sortType,
         sort,
+        stationType
 
       }
     )
@@ -80,18 +80,20 @@ class AllStationStatistic extends React.Component {
       userId: userId,
       year: time,
       dateType,
-      dataType: 'EqpGen'
+      dataType: 'EqpGen',
+      stationType
 
     })
     getAllStationMonthPieData({
       userId: userId,
       year: curYear,
-      dataType: 'EqpGen'
+      dataType: 'EqpGen',
+      stationType
     })
 
   }
   componentWillReceiveProps(nextProps) {
-    const { getAllStationAvalibaData, getAllStationMonthBarData, changeAllStationStore, getAllStationStatisticData, getAllStationStatisticTableData, getAllStationMonthPieData, dateType, userId, pageNum, sortType, sort, pageSize } = this.props;
+    const { getAllStationAvalibaData, getAllStationMonthBarData, changeAllStationStore, getAllStationStatisticData, getAllStationStatisticTableData, getAllStationMonthPieData, dateType, userId, pageNum, stationType, sortType, sort, pageSize } = this.props;
     const currentYear = [moment().format('YYYY')];
     const currentTableYear = Number(moment().format('YYYY'));
     const currentMonth = Number(moment().format('MM'));
@@ -116,18 +118,20 @@ class AllStationStatistic extends React.Component {
             userId,
             year: curYear,
             dateType,
+            stationType
           })
         getAllStationMonthBarData({
           userId: userId,
           year: nextProps.year,
           dateType,
-          dataType: 'EqpGen'
+          dataType: 'EqpGen',
+          stationType
 
         })
         getAllStationMonthPieData({
           userId: userId,
           year: nextProps.year,
-          dataType: 'EqpGen'
+          dataType: 'EqpGen', stationType
         })
         getAllStationStatisticTableData(
           {
@@ -135,11 +139,12 @@ class AllStationStatistic extends React.Component {
             year: curYear,
             dateType,
             month: nextProps.month,//默认当前月
-            // pageNum: nextProps.pageNum, // 当前页
-            pageNum: 1, // 当前页
+            pageNum: nextProps.pageNum, // 当前页
+            //pageNum: 1, // 当前页
             pageSize: nextProps.pageSize, // 每页条数
             sortType: nextProps.sortType,
             sort: nextProps.sort,
+            stationType
 
           })
       }
@@ -174,8 +179,8 @@ class AllStationStatistic extends React.Component {
           year: currentTableYear,
           dateType: nextProps.dateType,
           month: currentMonth,//默认当前月
-          // pageNum: nextProps.pageNum, // 当前页
-          pageNum: 1, // 当前页
+          pageNum: nextProps.pageNum, // 当前页
+          //pageNum: 1, // 当前页
           pageSize, // 每页条数
           sortType,
           sort,
@@ -206,7 +211,7 @@ class AllStationStatistic extends React.Component {
           year: currentTableYear,
           dateType: nextProps.dateType,
           month: currentMonth,//默认当前月
-          pageNum: 1, // 当前页
+          pageNum: nextProps.pageNum, // 当前页
           pageSize, // 每页条数
           sortType,
           sort,
@@ -251,8 +256,8 @@ class AllStationStatistic extends React.Component {
           {
             year: curYearPlan,
             dateType,
-            pageNum: 1, // 当前页
-            // pageNum: nextProps.pageNum, // 当前页
+            //pageNum: 1, // 当前页
+            pageNum: nextProps.pageNum, // 当前页
             pageSize: nextProps.pageSize, // 每页条数
             sortType: nextProps.sortType,
             sort: nextProps.sort,
@@ -290,6 +295,12 @@ class AllStationStatistic extends React.Component {
       showStationSelect: true,
     });
   }
+  queryTargetData = (activeKey) => {
+    const { stationType } = this.props;
+    this.props.changeAllStationStore({
+      stationType: activeKey
+    });
+  }
   render() {
     const TabPane = Tabs.TabPane;
     const operations = (
@@ -302,7 +313,7 @@ class AllStationStatistic extends React.Component {
     const { showStationSelect } = this.state;
     return (
       <div className={styles.allStationTypeTabs}>
-        <Tabs type="card" tabBarExtraContent={operations}  >
+        <Tabs type="card" tabBarExtraContent={operations} activeKey={stationType} onChange={this.queryTargetData} >
           <TabPane tab="光伏" key="1">
             <div className={styles.componentContainer}>
               <TimeSelect showDayPick={false} onChange={this.onTimeChange} />

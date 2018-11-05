@@ -82,6 +82,11 @@ const menuData = [
             name: '工单统计',
             path: 'statistics',
             rightKey: 'operation_worklist_statistics',
+          },{
+            name: '员工定位',
+            path: 'gps',
+            rightKey: 'operation_worklist_statistics',
+            //rightKey: 'operation_worklist_gps',
           }
         ]
       }, {

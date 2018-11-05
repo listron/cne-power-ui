@@ -18,7 +18,6 @@ class InspectOrbit extends Component{
   constructor(props){
     super(props);
     this.state = {
-      editDataGet: false,
       showWarningTip: false,
     }
   }
