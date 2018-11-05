@@ -71,7 +71,7 @@ class TmpForm extends Component {
       objectType:1
     });
     this.props.changeCommonStore({ devices: [] });
-    this.props.form.setFieldsValue({ deviceTypeCode: null });
+    this.props.form.setFieldsValue({ deviceTypeCode: null, defectTypeCode: null });
   }
 
   onChangeDeviceType = (deviceTypeCode) => {
@@ -295,10 +295,9 @@ class TmpForm extends Component {
               initialValue: editDefect && defectDetail.defectLevel || undefined,
             })(
               <Select style={{ width: 198 }} placeholder="请选择" disabled={defectTypes.length === 0}>
-                <Option value={1}>一级</Option>
-                <Option value={2}>二级</Option>
-                <Option value={3}>三级</Option>
-                <Option value={4}>四级</Option>
+                <Option value={1}>A级</Option>
+                <Option value={2}>B级</Option>
+                <Option value={3}>C级</Option>
               </Select>
             )}
           </FormItem>
