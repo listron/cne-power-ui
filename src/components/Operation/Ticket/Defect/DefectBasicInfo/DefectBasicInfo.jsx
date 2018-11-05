@@ -6,7 +6,8 @@ import ImgUploader from '../../../../Common/Uploader/ImgUploader';
 
 class DefectBasicInfo extends Component {
   static propTypes = {
-    basicInfo: PropTypes.object
+    basicInfo: PropTypes.object,
+    defectTypes: PropTypes.object,
   }
 
   constructor(props) {
@@ -30,6 +31,17 @@ class DefectBasicInfo extends Component {
 
   renderBasic() {
     const info = this.props.basicInfo;
+    const { defectTypes } = this.props;
+    const defectTypeCode = info.get('defectTypeCode');
+    let tmpGenTypes = [];
+    let defectShowText = '';
+    defectTypes.toJS().forEach(e=>e && e.list && e.list.length > 0 && tmpGenTypes.push(...e.list));
+    tmpGenTypes.forEach(e=>{ // 解析展示的缺陷类型。
+      const innerDefect = e.list || [];
+      innerDefect.forEach(inner=>{
+        `${inner.id}` === `${defectTypeCode}` && (defectShowText = `${e.name}/${inner.name}`);
+      })
+    });
     return (
       <div className={styles.basicContent}>
         <div className={styles.basicItem}>
@@ -40,7 +52,7 @@ class DefectBasicInfo extends Component {
         </div>
         <div className={styles.basicItem}><div>设备类型</div><span>{info.get('deviceTypeName')}</span></div>
         <div className={styles.basicItem}><div>设备名称</div><span>{info.get('deviceName')}</span></div>
-        <div className={styles.basicItem}><div>缺陷类型</div><span>{info.get('defectTypeName')}</span></div>
+        <div className={styles.basicItem}><div>缺陷类型</div><span>{defectShowText}</span></div>
         <div className={styles.basicItem}><div>缺陷级别</div><span>{getLevel(info.get('defectLevel').toString())}</span></div>
         <div className={styles.basicItem}><div>缺陷描述</div><span>{info.get('defectDescribe')}</span></div>
         <div className={styles.viewImg}>
