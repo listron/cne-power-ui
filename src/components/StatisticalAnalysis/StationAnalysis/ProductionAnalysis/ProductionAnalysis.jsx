@@ -100,8 +100,8 @@ class ProductionAnalysis extends React.Component {
     for (let i = nextPropsSelectYear[0]; i < nextPropsSelectYear[1] + 1; i++) {
       nextRangeYear.push(i.toString())
     }
-    console.log(dateType, nextProps.dateType);
-    console.log(stationCode, nextProps.stationCode);
+    // console.log(dateType, nextProps.dateType);
+    // console.log(stationCode, nextProps.stationCode);
     //月->月
     if ((dateType === 'month' && nextProps.dateType === 'month') && (year[0] !== nextProps.year[0] || stationCode !== nextProps.stationCode)) {
       ProductionPlanComplete({
@@ -234,7 +234,7 @@ class ProductionAnalysis extends React.Component {
     }
   }
   onTimeChange = (timeObj) => {
-    console.log(timeObj);
+    // console.log(timeObj);
     timeObj.timeStyle === 'year' ? this.props.changeAllStationStore({ dateType: timeObj.timeStyle, year: [timeObj.startTime, timeObj.endTime] }) :this.props.changeAllStationStore({ dateType: timeObj.timeStyle, year: [timeObj.startTime] })
   }
   stationSelected = (stationSelect) => { // 存储选中的电站
