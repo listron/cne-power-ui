@@ -2,10 +2,10 @@ import React from "react";
 import PropTypes from "prop-types";
 import styles from './targetTabs.scss';
 import { Tabs } from 'antd';
-import BarGraph from './CommonGraph/BarGraph/index.js';
+import BarGraph from '../CommonGraph/BarGraph/index.js';
 import TargetStatisticPieGraph from './TargetStatisticPieGraph.jsx';
 import StationStatisticList from './StationStatisticList.jsx';
-import AllStationMonthPie from './CommonGraph/AllStationMonthPie';
+import AllStationMonthPie from '../CommonGraph/AllStationMonthPie';
 import { getCookie } from '../../../../utils/index.js';
 import moment from 'moment';
 
@@ -44,7 +44,7 @@ class TargetTabs extends React.Component {
    const currentYear=parseInt(year).toString();
    const lastYear=(parseInt(year)-1).toString();
     const { allStationMonthBarData, allStationMonthPieData, allStationMonthComplete } = this.props;
-   
+
     const barGraphThatYear = allStationMonthBarData.map((e, i) => ((e.thatYearData||e.thatYearData===0)?e.thatYearData:'--'))
     const barGraphLastYear = allStationMonthBarData.map((e, i) => ((e.lastYearData||e.lastYearData===0)?e.lastYearData:'--'))
     const barGraphmonth = allStationMonthBarData.map((e, i) => (`${e.month}月`))
@@ -58,7 +58,7 @@ class TargetTabs extends React.Component {
     const pieComplete = [{ value: pieCompleteValue, name: '已完成' }, { value: 100 - pieCompleteValue, name: '未完成' }];
     // console.log(pieData, pieComplete);
     const pieTargetData=allStationMonthBarData.map((e,i)=>({value:e.thatYearData,name:`${e.month}月`}))
-   
+
     // let test=0;
     // test?console.log('ok'):console.log('no');
 
