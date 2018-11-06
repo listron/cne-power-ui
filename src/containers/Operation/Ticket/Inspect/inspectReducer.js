@@ -52,6 +52,7 @@ var initState = Immutable.fromJS({
   inspectTimeEnd:'',//巡检结束时间
   allSeries: [], // 所有光伏组件
   firstPartitionCode: null,
+  inspectUserId:'',//巡检人id
 });
 
 const inspectReducer = (state = initState, action) => {

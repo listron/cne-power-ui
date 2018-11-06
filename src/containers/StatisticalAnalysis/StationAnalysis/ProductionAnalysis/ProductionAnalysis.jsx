@@ -15,7 +15,6 @@ import Footer from '../../../../components/Common/Footer';
 
 class ProductionAnalysisContainer extends Component {
   static propTypes = {
-    
     location: PropTypes.object,
   }
 

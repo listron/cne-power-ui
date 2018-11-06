@@ -46,7 +46,6 @@ const mapStateToProps = (state) => {
   }
 }
 const mapDispatchToProps = (dispatch) => ({
-  changeAllStationStore: payload => dispatch({ type: stationContrastAction.toChangeStationContrastStore, payload }),
   toChangeStationContrastStore: payload => dispatch({ type: stationContrastAction.toChangeStationContrastStore, payload }),
   getStationContrast: payload => dispatch({ type: stationContrastAction.getStationContrast, payload}),
   getStationContrastDetail: payload => dispatch({ type: stationContrastAction.getStationContrastDetail, payload}),
