@@ -30,6 +30,23 @@
   .filterBox{
     display: flex;
     flex-shrink: 0;
+    .all {
+      display: inline-block;
+      color: $darkColor;
+      width: 29px;
+      height: 19px;
+      border-bottom: none;
+      cursor: pointer;
+    }
+    .selected {
+      display: inline-block;
+      color: $themeColor;
+      width: 29px;
+      height: 19px;
+      border-bottom: 1px $themeColor solid;
+      cursor: pointer;
+      text-align: center;
+    }
   }
   .statusGroup {
     margin-top: 16px;
@@ -98,6 +115,46 @@
     text-align: center;
   }
 }
+.filterItem {
+  margin-top: 10px;
+  display: flex;
+  flex: 1;
+  align-items: center;
+  flex-shrink: 0;
+  padding-left: 26px;
+  min-height: 40px;
+  border-radius: 4px;
+  background-color: #f0f2f5;
+  >span {
+    margin-right: 10px;
+  }
+  :global {
+    .ant-input {
+      width: 300px;
+      &:hover {
+        border-color:$themeColor;
+      }
+    }
+  }
+  .all {
+    display: inline-block;
+    color: $darkColor;
+    width: 29px;
+    height: 19px;
+    border-bottom: none;
+    cursor: pointer;
+  }
+  .selected {
+    display: inline-block;
+    color: $themeColor;
+    width: 29px;
+    height: 19px;
+    border-bottom: 1px $themeColor solid;
+    cursor: pointer;
+    text-align: center;
+  }
+}
+
 
 .stationFilter {
   margin-top: 10px;

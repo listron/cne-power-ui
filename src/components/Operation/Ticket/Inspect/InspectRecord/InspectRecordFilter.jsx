@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Switch, Icon, Radio, DatePicker } from 'antd';
+import { Button, Switch, Icon, Radio, DatePicker, Checkbox } from 'antd';
 import StationFilter from '../../Defect/DefectFilter/StationFilter';
 import DeviceTypeFilter from '../../Defect/DefectFilter/DeviceTypeFilter';
+import DateFilter from './DateFilter';
 import styles from './inspectRecord.scss';
 import FilterItemValue from './FilterItemValue.jsx';
 import moment from 'moment';
@@ -14,18 +15,12 @@ class InspectRecordFilter extends Component {
   static propTypes = {
     inspectStatusStatistics: PropTypes.object,
     stations: PropTypes.object,
-    deviceTypes: PropTypes.object,//设备类型列表
-    stationType: PropTypes.string,
-    stationCodes: PropTypes.string,
-    timeInterval: PropTypes.string,
-    status: PropTypes.string,
+
     pageNum: PropTypes.number,
     pageSize: PropTypes.number,
     createTimeStart: PropTypes.string,
     createTimeEnd: PropTypes.string,
-    deviceTypeCode: PropTypes.string,
-    sort: PropTypes.string,
-    hasAbnormal: PropTypes.bool,
+
     username: PropTypes.string,
     handleUser: PropTypes.string,
     inspectTimeStart: PropTypes.string,
@@ -62,7 +57,18 @@ class InspectRecordFilter extends Component {
       })
     }
   }
-
+  //筛选巡检人员的
+  onChange = (value) => {
+    this.props.onChangeFilter({
+      inspectUserId: value.join(',')
+    });
+  }
+  //筛选巡检人员的全部，和取消
+  onReset = () => {
+    this.props.onChangeFilter({
+      inspectUserId: ''
+    });
+  }
   disabledStartDate = (current) => {
     const inspectTimeEnd = this.props.inspectTimeEnd;
     if (inspectTimeEnd && current) {
@@ -82,23 +88,25 @@ class InspectRecordFilter extends Component {
 
   render() {
     const { showFilter } = this.state;
-    const { stations, inspectStatusStatistics, handleUser, hasAbnormal, username, onChangeFilter } = this.props;
-    const { inspectTimeStart, inspectTimeEnd } = this.props;
-    const inProcessNum = '';
-    // const inProcessNum = inspectStatusStatistics.get("executeNum");
-    const waitCheckNum = '';
-    // const waitCheckNum = inspectStatusStatistics.get("checkNum");
+    const CheckboxGroup = Checkbox.Group;
+    const { inspectTimeStart, inspectTimeEnd, inspectUserId } = this.props;
+    //巡检人员的筛选
+    const inspectPersonList = [{ inspectUserName: '陈一', inspectUserId: '1' }, { inspectUserName: '王二', inspectUserId: '2' }, { inspectUserName: '张三', inspectUserId: '3' }, { inspectUserName: '小四', inspectUserId: '4' }];
+    const options = inspectPersonList.map((item, i) => ({
+      label: item.inspectUserName,
+      value: item.inspectUserId
+    }));
+    const inspectPersonArray = inspectUserId === '' ? [] : inspectUserId.split(',');
+
 
     return (
       <div className={styles.inspectFilter}>
         <div className={styles.topSearch}>
           <span className={styles.text}>筛选条件</span>
-          <Button onClick={() => this.onFilterShowChange('startTime')}>
-            开始时间{showFilter === 'startTime' ? <Icon type="up" /> : <Icon type="down" />}
+          <Button onClick={() => this.onFilterShowChange('recordTime')}>
+            记录时间{showFilter === 'recordTime' ? <Icon type="up" /> : <Icon type="down" />}
           </Button>
-          <Button onClick={() => this.onFilterShowChange('endTime')}>
-            结束时间{showFilter === 'endTime' ? <Icon type="up" /> : <Icon type="down" />}
-          </Button>
+
           <Button onClick={() => this.onFilterShowChange('inspectUserName')}>
             参与人名称{showFilter === 'inspectUserName' ? <Icon type="up" /> : <Icon type="down" />}
           </Button>
@@ -108,26 +116,15 @@ class InspectRecordFilter extends Component {
 
         </div>
         <div className={styles.filterBox}>
-          {showFilter === 'startTime' &&
-            <DatePicker
-              disabledDate={this.disabledStartDate}
-              value={inspectTimeStart ? moment(inspectTimeStart) : null}
-              placeholder="开始时间"
-              onChange={this.onStartChange}
-            />
-          }
-          {showFilter === 'endTime' &&
-            <DatePicker
-              disabledDate={this.disabledEndDate}
-              value={inspectTimeEnd ? moment(inspectTimeEnd) : null}
-              placeholder="截止时间"
-              onChange={this.onEndChange}
-            />
-          }
-          {showFilter === 'inspectUserName' && <StationFilter {...this.props} />}
-          {showFilter === 'inspectStatus' && <DeviceTypeFilter {...this.props} />}
+          {showFilter === 'recordTime' && <DateFilter {...this.props} />}
+          {showFilter === 'inspectUserName' &&
+            <div className={styles.inspectUserFilter}>
+              <span onClick={this.onReset} className={inspectUserId === '' ? styles.selected : styles.all}>不限</span>
+              <CheckboxGroup options={options} value={inspectPersonArray} defaultValue={['1']} onChange={this.onChange} />
+            </div>}
+          {showFilter === 'inspectStatus' && <div></div>}
         </div>
-        <FilterItemValue {...this.props} />
+        <FilterItemValue {...this.props} inspectPersonList={inspectPersonList} />
 
       </div>
     );
@@ -136,3 +133,19 @@ class InspectRecordFilter extends Component {
 }
 
 export default InspectRecordFilter;
+// {showFilter === 'startTime' &&
+// <DatePicker
+// disabledDate={this.disabledStartDate}
+// value={inspectTimeStart ? moment(inspectTimeStart) : null}
+// placeholder="开始时间"
+// onChange={this.onStartChange}
+// />
+// }
+// {showFilter === 'endTime' &&
+// <DatePicker
+// disabledDate={this.disabledEndDate}
+// value={inspectTimeEnd ? moment(inspectTimeEnd) : null}
+// placeholder="截止时间"
+// onChange={this.onEndChange}
+// />
+// }
