@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import WaterWave from './WaterWave';
 import {    Radio } from "antd";
 import moment from 'moment';
-import { getCookie } from '../../../../../utils/index.js';
+import { getCookie } from '../../../../../../utils/index.js';
 
 class PlancompletionRate extends React.Component{
     static propTypes = {
