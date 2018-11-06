@@ -214,7 +214,7 @@ class TmpForm extends Component {
       innerArr.label= ele.name;
       innerArr.value= ele.id;
       ele && ele.list && ele.list.length > 0 && ele.list.forEach(innerInfo => {
-        if(editDefect && defectDetail.defectTypeCode === innerInfo.id){
+        if(editDefect && `${defectDetail.defectTypeCode}` === `${innerInfo.id}`){
           defaultDefectType = [ele.id, innerInfo.id];
         }
         innerArr.children.push({

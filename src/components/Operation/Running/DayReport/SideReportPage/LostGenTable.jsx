@@ -100,7 +100,8 @@ class LostGenTable extends Component {
         dataIndex: 'handle',
         render : (text, record) => {
           const { id, reportDate, defectId } = record;
-          const refuseDelete = moment().isSame(moment(reportDate),'day') && defectId; // 今天且关联缺陷时，不可删除。
+          let tableReportDate = this.props.reportDate; // 正在处理的日报日期.
+          const refuseDelete = moment(tableReportDate).isSame(moment(reportDate),'day') && defectId; // 今天且关联缺陷时，不可删除。
           return refuseDelete?<span></span>:<span onClick={()=>this.removeFaultInfo(id)} className={styles.removeFaultInfo} >
             <i className="iconfont icon-del" ></i>
           </span>

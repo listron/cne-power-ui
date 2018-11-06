@@ -68,13 +68,84 @@ class PvStation extends Component {
     });
   }
 
+  createFlowButton = (typeCode, typeName, buttonClass, imgClass,clickable = true) => ( // 设备流程生成函数
+    <RadioButton value={typeCode} className={styles[buttonClass]}  style={clickable?null:{pointerEvents:'none'}}>
+      <div className={styles.deviceTypeIcon} >
+        <i className={this.getDeviceTypeIcon(typeCode)} ></i>
+        <img src="/img/arrowgo.png" className={styles[imgClass]} />
+      </div>
+      <div>{typeName}</div>
+    </RadioButton>
+  )
+
 
   render() {
+    const clickable = [509, 201, 206, 304, 202];
     const { deviceTypeFlow, stationDeviceList, deviceTypeCode, } = this.props;
     const weatherDeviceCode = stationDeviceList && stationDeviceList.deviceCode || 0;
     const { stationCode } = this.props.match.params;
-    const deviceFlowTypes = deviceTypeFlow && deviceTypeFlow.deviceFlowTypes;
-    const isCombinedType = deviceFlowTypes && deviceFlowTypes.some(e=>e.deviceTypes.length > 1);
+    const deviceFlowTypes = deviceTypeFlow && deviceTypeFlow.deviceFlowTypes || [];
+    const isCombinedType = deviceFlowTypes.some(e=>e.deviceTypes.length > 1);
+    let seriesInfo = {}, boxConfluentInfo = {}, integrateInfo = {}, deviceFlowRowTwo = [], deviceFlowRowThree = [];
+    deviceFlowTypes.forEach(device => { // 抽取各设备类型信息
+      const deviceTypes = device.deviceTypes || [];
+      let tmpSeriesInfo = deviceTypes.find(e=>e.deviceTypeCode === 509); // 组串
+      let tmpBoxConfluentInfo = deviceTypes.find(e=>e.deviceTypeCode === 304); // 汇流箱
+      let tmpIntegrateInfo = deviceTypes.find(e=>e.deviceTypeCode === 302); // 集电线路
+      tmpSeriesInfo && (seriesInfo = tmpSeriesInfo);
+      tmpBoxConfluentInfo && (boxConfluentInfo = tmpBoxConfluentInfo);
+      tmpIntegrateInfo && (integrateInfo = tmpIntegrateInfo);
+
+      let tmpRowTwo = deviceTypes.filter(e=> (e.deviceTypeCode === 202 || e.deviceTypeCode === 206))// 汇流箱或者组串式逆变器
+      let tmpRowThree = deviceTypes.filter(e=> (e.deviceTypeCode === 201 || e.deviceTypeCode === 207))// 集中式逆变器或者交流汇流箱
+      tmpRowTwo.length > 0 && (deviceFlowRowTwo = tmpRowTwo);
+      tmpRowThree.length > 0 && (deviceFlowRowThree = tmpRowThree);
+    });
+    let RowTwoButton,RowThreeButton,needClassBox; // needClassBox需要双层结构包装
+    if(deviceFlowRowTwo.length === 1 && deviceFlowRowThree.length === 1){ // 设备顺序流程为一行。
+      const stepTwoInfo = deviceFlowRowTwo[0];
+      const stepThreeInfo = deviceFlowRowThree[0];
+      RowTwoButton = this.createFlowButton(stepTwoInfo.deviceTypeCode, stepTwoInfo.deviceTypeName, 'deviceTypeItem', 'arrowgo',clickable.includes(stepTwoInfo.deviceTypeCode));
+      RowThreeButton = this.createFlowButton(stepThreeInfo.deviceTypeCode, stepThreeInfo.deviceTypeName, 'deviceTypeItem', 'arrowgo',clickable.includes(stepThreeInfo.deviceTypeCode));
+    }else if(deviceFlowRowTwo.length === 2 && deviceFlowRowThree.length === 2){ // 两行4种设备类型顺序。
+      needClassBox = true;
+      const acConflu = deviceFlowRowThree.find(e=>e.deviceTypeCode === 207); // 有交流汇流箱
+      const seriesInver = deviceFlowRowTwo.find(e=>e.deviceTypeCode === 206); // 有组串式逆变器
+      const concentrateConflu = deviceFlowRowTwo.find(e=>e.deviceTypeCode === 202); // 有汇流箱
+      const concentrateInver = deviceFlowRowThree.find(e=>e.deviceTypeCode === 201); // 有集中式逆变器
+      RowTwoButton = (<div>
+        {this.createFlowButton(concentrateConflu.deviceTypeCode, concentrateConflu.deviceTypeName, 'innerItem', 'innerArrow',clickable.includes(concentrateConflu.deviceTypeCode))}
+        {this.createFlowButton(concentrateInver.deviceTypeCode, concentrateInver.deviceTypeName, 'innerItem', 'hideArrow',clickable.includes(concentrateInver.deviceTypeCode))}
+      </div>)
+      RowThreeButton = (<div>
+        {this.createFlowButton(seriesInver.deviceTypeCode, seriesInver.deviceTypeName, 'innerItem', 'innerArrow',clickable.includes(seriesInver.deviceTypeCode))}
+        {this.createFlowButton(acConflu.deviceTypeCode, acConflu.deviceTypeName, 'innerItem', 'hideArrow',clickable.includes(acConflu.deviceTypeCode))}
+      </div>)
+    }else{  // 1 + 2设备类型情况
+      needClassBox = true;
+      const acConflu = deviceFlowRowThree.find(e=>e.deviceTypeCode === 207); // 有交流汇流箱
+      const seriesInver = deviceFlowRowTwo.find(e=>e.deviceTypeCode === 206); // 有组串式逆变器
+      const concentrateConflu = deviceFlowRowTwo.find(e=>e.deviceTypeCode === 202); // 有汇流箱
+      const concentrateInver = deviceFlowRowThree.find(e=>e.deviceTypeCode === 201); // 有集中式逆变器
+
+      const concentrateType = concentrateInver && concentrateConflu // 有集中光伏电站流程
+      const distributeType = seriesInver && acConflu // 有分布光伏电站流程
+      if(concentrateType){  // 有集中光伏电站流程-顶部为集中流程，底部为分布式居中
+        RowTwoButton = (<div> 
+          {this.createFlowButton(concentrateConflu.deviceTypeCode, concentrateConflu.deviceTypeName, 'innerItem', 'innerArrow',clickable.includes(concentrateConflu.deviceTypeCode))}
+          {this.createFlowButton(concentrateInver.deviceTypeCode, concentrateInver.deviceTypeName, 'innerItem', 'hideArrow',clickable.includes(concentrateInver.deviceTypeCode))}
+        </div>)
+        RowThreeButton = acConflu?this.createFlowButton(acConflu.deviceTypeCode, acConflu.deviceTypeName, 'innerItem', 'hideArrow',clickable.includes(acConflu.deviceTypeCode))
+        :this.createFlowButton(seriesInver.deviceTypeCode, seriesInver.deviceTypeName, 'innerItem', 'hideArrow',clickable.includes(seriesInver.deviceTypeCode));
+      }else if(distributeType){ // 有分布光伏流程-顶部为集中流程居中，底部为分布式流程
+        RowTwoButton = (<div>
+          {this.createFlowButton(seriesInver.deviceTypeCode, seriesInver.deviceTypeName, 'innerItem', 'innerArrow',clickable.includes(seriesInver.deviceTypeCode))}
+          {this.createFlowButton(acConflu.deviceTypeCode, acConflu.deviceTypeName, 'innerItem', 'hideArrow',clickable.includes(acConflu.deviceTypeCode))}
+        </div>)
+        RowThreeButton = concentrateConflu?this.createFlowButton(concentrateConflu.deviceTypeCode, concentrateConflu.deviceTypeName, 'innerItem', 'hideArrow',clickable.includes(concentrateConflu.deviceTypeCode))
+        :this.createFlowButton(concentrateInver.deviceTypeCode, concentrateInver.deviceTypeName, 'innerItem', 'hideArrow',clickable.includes(concentrateInver.deviceTypeCode));
+      }
+    }
     return (
       <div className={styles.pvStation}  >
         <PvStationTop {...this.props} stationCode={stationCode} hiddenStationList={this.state.hiddenStationList} />
@@ -97,44 +168,24 @@ class PvStation extends Component {
                     <div className={styles.fontcolor}>气象站</div>
                   </div>
                 </Link>
-                {deviceFlowTypes && <RadioGroup value={deviceTypeCode} onChange={this.onSelectedDeviceType} >
-                  {deviceFlowTypes.map((e,i)=> {
-                    const nextFlowTypesLen = deviceFlowTypes[i+1] && deviceFlowTypes[i+1].deviceTypes.length;
-                    const clickable = [509, 201, 206, 304, 202]; // 允许点击及展示列表的设备类型
-                    
-                    const pointEventStye = e.deviceTypes.length===1 ? (clickable.includes(e.deviceTypes[0].deviceTypeCode)?{}:{pointerEvents:'none'}) : clickable.includes(e.deviceTypes[1].deviceTypeCode)?{}:{pointerEvents:'none'};
-                    
-                    if(e.deviceTypes.length > 1){//组合式光伏电站上下排列
-                      return (<div className={styles.combinedType} style={{display: 'flex',flexDirection: 'column'}}  key={i} >
-                        {e.deviceTypes.map((item,indexI)=>{
-                          return (<RadioButton value={item.deviceTypeCode} style={pointEventStye} className={styles.deviceTypeItemInner} key={indexI}>
-                            <div className={styles.deviceTypeIcon} >
-                              <i className={this.getDeviceTypeIcon(item.deviceTypeCode)} ></i>
-                              {nextFlowTypesLen > 1 ? <img src="/img/arrowgo.png" className={nextFlowTypesLen > 1 ? styles.arrowgo : styles.arrowgoInner} /> : 
-                                (indexI===0 && <img src="/img/arrowgo.png" className={nextFlowTypesLen > 1 ? styles.arrowgo : styles.arrowgoInner} />)}
-                            </div>
-                            <div>{item.deviceTypeName==='箱变'?'箱式变压器':item.deviceTypeName}</div>
-                          </RadioButton>)
-                        })}
-                      </div>
-                      )
-                    }else{
-                      return (<RadioButton value={e.deviceTypes[0].deviceTypeCode} style={pointEventStye} className={isCombinedType ? styles.combinedDeviceTypeItem : styles.deviceTypeItem} key={i}>
-                        <div className={styles.deviceTypeIcon} >
-                          <i className={this.getDeviceTypeIcon(e.deviceTypes[0].deviceTypeCode)} ></i>
-                          <img src="/img/arrowgo.png" className={styles.arrowgo} />
-                        </div>
-                        <div>{e.deviceTypes[0].deviceTypeName==='箱变'?'箱式变压器':e.deviceTypes[0].deviceTypeName}</div>
-                      </RadioButton>)
-                    }
-                  })}
-                  <RadioButton className={isCombinedType ? styles.combinedElecnettingItem : styles.elecnettingItem}>
+                <RadioGroup value={deviceTypeCode} onChange={this.onSelectedDeviceType} >
+                  {seriesInfo.deviceTypeCode && this.createFlowButton(seriesInfo.deviceTypeCode, seriesInfo.deviceTypeName, 'deviceTypeItem', 'arrowgo',clickable.includes(seriesInfo.deviceTypeCode))}
+                  {!needClassBox && RowTwoButton}
+                  {!needClassBox && RowThreeButton}
+                  {needClassBox && <div className={styles.multipleType}>
+                    {RowTwoButton}
+                    {RowThreeButton}
+                    <img src="/img/arrowgo.png" className={styles.rightArrow} />
+                  </div>}
+                  {boxConfluentInfo.deviceTypeCode && this.createFlowButton(boxConfluentInfo.deviceTypeCode, boxConfluentInfo.deviceTypeName, 'deviceTypeItem', 'arrowgo',clickable.includes(boxConfluentInfo.deviceTypeCode))}
+                  {integrateInfo.deviceTypeCode && this.createFlowButton(integrateInfo.deviceTypeCode, integrateInfo.deviceTypeName, 'deviceTypeItem', 'arrowgo',clickable.includes(integrateInfo.deviceTypeCode))}
+                  <RadioButton className={styles.elecnettingItem}>
                     <div className={styles.deviceTypeIcon} >
                       <i className="iconfont icon-elecnetting" ></i>
                     </div>
                     <div>电网</div>
                   </RadioButton>
-                </RadioGroup>}              
+                </RadioGroup>             
               </div>
               <div className={styles.deviceList} >
                 <DeviceList {...this.props} />
