@@ -72,5 +72,13 @@ const mapStateToProps = (state) => ({
 })
 const mapDispatchToProps = (dispatch) => ({
   onChangeFilter: payload => dispatch({type:ticketAction.CHANGE_INSPECT_STORE_SAGA, payload}),
+  getStationDeviceTypes: params => dispatch({
+    type: commonAction.getStationDeviceTypes,
+    payload: {
+      params, 
+      deviceTypeAction: ticketAction.GET_INSPECT_FETCH_SUCCESS,
+      resultName: 'stationDeviceTypes'
+    }
+  }),
 })
 export default connect(mapStateToProps, mapDispatchToProps)(inspectRecord);

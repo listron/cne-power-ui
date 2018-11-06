@@ -48,14 +48,7 @@ class FilteredItems extends Component {
   render() {
     const { inspectTimeStart, inspectTimeEnd, inspectUserId, inspectPersonList } = this.props;
     const inspectUserArray = inspectUserId.split(',');
-    // console.log(inspectPersonList);
-    // console.log(inspectUserArray);
-
-
-    const selectedInspectPerson = inspectUserArray.map(e => {
-      return inspectPersonList.filter(item => item.inspectUserId === e)
-    });
-   // console.log(selectedInspectPerson);
+    const selectedInspectPerson = inspectPersonList.filter(e => inspectUserArray.some(m => m === e.inspectUserId.toString()));
     const style = {
       background: '#fff',
       borderStyle: 'dashed',
@@ -72,9 +65,9 @@ class FilteredItems extends Component {
         <span>已选条件</span>
         {inspectTimeStart !== '' && <Tag style={style} closable onClose={this.onCancelStartTime}>开始 {inspectTimeStart}</Tag>}
         {inspectTimeEnd !== '' && <Tag style={style} closable onClose={this.onCancelEndTime}>结束 {inspectTimeEnd}</Tag>}
-        {selectedInspectPerson.length > 0 && selectedInspectPerson.map((e,i) => (
+        {selectedInspectPerson.length > 0 && selectedInspectPerson.map((e, i) => (
           <Tag style={style} closable onClose={() => this.onCancelDeviceType(e.inspectUserId)} key={i}>
-            {e[0]&&e[0].inspectUserName}
+            {e && e.inspectUserName}
           </Tag>
         ))}
         <Tag closable onClose={this.resetAll}>清空条件</Tag>

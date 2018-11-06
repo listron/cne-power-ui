@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Switch, Icon, Radio, DatePicker, Checkbox } from 'antd';
-import StationFilter from '../../Defect/DefectFilter/StationFilter';
+import { Button, Icon, Radio, Checkbox } from 'antd';
 import DeviceTypeFilter from '../../Defect/DefectFilter/DeviceTypeFilter';
 import DateFilter from './DateFilter';
 import styles from './inspectRecord.scss';
@@ -113,6 +112,9 @@ class InspectRecordFilter extends Component {
           <Button onClick={() => this.onFilterShowChange('inspectStatus')}>
             巡检状态{showFilter === 'inspectStatus' ? <Icon type="up" /> : <Icon type="down" />}
           </Button>
+          <Button onClick={()=>this.onFilterShowChange('deviceType')}>
+          设备类型{showFilter==='deviceType'?<Icon type="up" />:<Icon type="down" />}
+        </Button>
 
         </div>
         <div className={styles.filterBox}>
@@ -123,6 +125,7 @@ class InspectRecordFilter extends Component {
               <CheckboxGroup options={options} value={inspectPersonArray} defaultValue={['1']} onChange={this.onChange} />
             </div>}
           {showFilter === 'inspectStatus' && <div></div>}
+          {showFilter==='deviceType' && <DeviceTypeFilter {...this.props} />}
         </div>
         <FilterItemValue {...this.props} inspectPersonList={inspectPersonList} />
 
