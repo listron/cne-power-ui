@@ -4,7 +4,8 @@ import { connect } from "react-redux";
 import styles from "./stationResourceAnalysis.scss";
 import { stationResourceAnalysisAction } from './stationResourceAnalysisAction';
 import PropTypes from "prop-types";
-import { getCookie } from '../../../../utils/index.js';
+// import { getCookie } from '../../../../utils/index.js';
+import Cookie from 'js-cookie';
 import StationResourceAnalysis from '../../../../components/StatisticalAnalysis/StationAnalysis/StationResourceAnalysis/StationResourceAnalysis';
 
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
@@ -54,7 +55,7 @@ const mapStateToProps = (state) => {
   return {
      ...state.statisticalAnalysisReducer.stationResourceAnalysisReducer.toJS(),
     stations: state.common.get('stations'),
-    userId : getCookie('userId'),
+    userId : Cookie.get('userId'),
      
      
   }

@@ -70,6 +70,7 @@ class TimeSelect extends React.Component {
 
   onMonthSelect = (dateMoment, dateString)=>{ // 选择月份。
     const { timeStyle } = this.state;
+    
     const params = {
       timeStyle,
       startTime: dateString,

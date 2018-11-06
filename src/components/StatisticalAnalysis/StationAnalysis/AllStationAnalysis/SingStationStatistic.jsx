@@ -359,7 +359,8 @@ class SingleStationStatistic extends React.Component {
   componentWillUnmount() {
     this.props.changeAllStationStore({
       showPage: 'multiple',
-      singleStationCode: ''
+      singleStationCode: '',
+      dateType:'month',
     });
   }
   onTimeChange=(timeObj)=>{

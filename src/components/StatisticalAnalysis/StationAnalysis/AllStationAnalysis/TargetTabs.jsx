@@ -5,8 +5,10 @@ import { Tabs } from 'antd';
 import BarGraph from '../CommonGraph/BarGraph/index.js';
 import TargetStatisticPieGraph from './Chart/TargetStatisticPieGraph.jsx';
 import StationStatisticList from './StationStatisticList.jsx';
-import AllStationMonthPie from './Chart/AllStationMonthPie';
 import { getCookie } from '../../../../utils/index.js';
+import AllStationMonthPie from './Chart/AllStationMonthPie/index';
+//import { getCookie } from '../../../../utils/index.js';
+import Cookie from 'js-cookie';
 import moment from 'moment';
 
 class TargetTabs extends React.Component {
@@ -27,7 +29,7 @@ class TargetTabs extends React.Component {
   }
   queryTargetData = (activeKey) => {
     const { changeAllStationStore, getAllStationMonthBarData, getAllStationMonthPieData, year, dateType, } = this.props;
-    const userId = getCookie('userId');
+    const userId = Cookie.get('userId')
     //console.log(activeKey);
     getAllStationMonthBarData({
       userId: userId,

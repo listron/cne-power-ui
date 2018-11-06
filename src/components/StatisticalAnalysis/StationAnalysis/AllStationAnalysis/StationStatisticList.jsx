@@ -4,8 +4,8 @@ import styles from './stationStatisticList.scss';
 import Pagination from '../../../../components/Common/CommonPagination/index';
 import { Table, Radio } from "antd";
 import moment from 'moment';
-import { getCookie } from '../../../../utils/index.js';
-
+// import { getCookie } from '../../../../utils/index.js';
+import Cookie from 'js-cookie';
 
 class StationStatisticList extends React.Component {
   static propTypes = {
@@ -85,7 +85,7 @@ class StationStatisticList extends React.Component {
     const curYear = Number(year);
     
    
-    const userId = getCookie('userId');
+   const userId = Cookie.get('userId')
     changeAllStationStore({ month: changeMonth })
     getAllStationStatisticTableData(
       {

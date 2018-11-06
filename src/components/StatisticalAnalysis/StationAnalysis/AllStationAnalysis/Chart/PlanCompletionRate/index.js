@@ -4,7 +4,8 @@ import PropTypes from "prop-types";
 import WaterWave from './WaterWave';
 import {    Radio } from "antd";
 import moment from 'moment';
-import { getCookie } from '../../../../../../utils/index.js';
+import Cookie from 'js-cookie';
+
 
 class PlancompletionRate extends React.Component{
     static propTypes = {
@@ -21,7 +22,7 @@ class PlancompletionRate extends React.Component{
         const changeYear = Number(e.target.value);
        // console.log(changeYear);
         const { getAllStationStatisticData, dateType } = this.props;
-        const userId = getCookie('userId');
+       const userId = Cookie.get('userId')
         getAllStationStatisticData(
           {
             userId: userId,
