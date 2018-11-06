@@ -77,7 +77,13 @@ class DefectTypeFilter extends Component {
             const allChecked = allIds.every(id => selectDefectArr.includes(id));
             return (
               <TabPane tab={e.name} key={e.id}>
-                <Checkbox onChange={event=>this.onCheckAll(event,allIds)} checked={allChecked}>全部</Checkbox>
+                <Checkbox 
+                  className={styles.allCheck} 
+                  onChange={event=>this.onCheckAll(event,allIds)} 
+                  checked={allChecked}
+                >
+                  全部
+                </Checkbox>
                 <CheckboxGroup 
                   options={options}
                   value={selectDefectArr}
