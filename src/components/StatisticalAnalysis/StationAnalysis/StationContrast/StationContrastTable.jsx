@@ -27,6 +27,13 @@ class StationContrastTable extends React.Component {
     };
   }
 
+  onVisibleChange = (item) => {
+    if(!item){
+      this.props.toChangeStationContrastStore({
+        stationContrastDetail:[],
+      });
+    }
+  }
   showContrastDetail = (e) => {
     const { stations, stationCode, dateType, year, month } = this.props;
     this.props.toChangeStationContrastStore({
@@ -39,14 +46,6 @@ class StationContrastTable extends React.Component {
       month,
       column: e.currentTarget.getAttribute('data-datafieldname'),
     });
-  }
-
-  onVisibleChange = (item) => {
-    if(!item){
-      this.props.toChangeStationContrastStore({
-        stationContrastDetail:[],
-      });
-    }
   }
 
   render() {
@@ -111,8 +110,8 @@ class StationContrastTable extends React.Component {
               return (
                 <div key={index} data-rowname={item[0]} data-datafieldname={item[1]} onClick={this.showContrastDetail} >
                   <Popover content={content} trigger="click" onVisibleChange={item=>this.onVisibleChange(item)} className={highLightColumn.includes(item[0]) ? (differHighLight ? styles.differHighLight:styles.contrastDetailPopover) : styles.contrastDetailPopover} placement="bottom" overlayClassName={styles.contrastOverlayClassName} >
-                    <span className={styles.stationOne} >{stationContrastList[0][item[0]] || '--'}</span>
-                    <span className={styles.stationTwo} >{stationContrastList[1][item[0]] || '--'}</span>
+                    <div className={styles.stationContrastOne} >{stationContrastList[0][item[0]] || '--'}</div>
+                    <div className={styles.stationContrastTwo} >{stationContrastList[1][item[0]] || '--'}</div>
                   </Popover>
                 </div>
               );

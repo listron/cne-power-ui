@@ -135,18 +135,34 @@
             color:$lightColor;
           }
         }
+      
       }
 
       .cardItem{       
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        background: #199475;
+        background: #199475;          
         width: 210px;
         height: 130px;
         border-radius: 5px;
         color: #fff;
         padding:20px 10px 30px 20px;
+      }
+      .lightResourcesn{
+        background: url('/img/operateBg1.png') no-repeat center;
+      }
+      .photovoltaicModule{
+        background: url('/img/operateBg2.png') no-repeat center;
+      }
+      .inverter{
+        background: url('/img/operateBg3.png') no-repeat center;
+      }
+      .electricPowerLine{
+        background: url('/img/operateBg4.png') no-repeat center;
+      }
+      .boosterStation{
+        background: url('/img/operateBg5.png') no-repeat center;
       }
       i{
         font-size: 20px
@@ -180,7 +196,7 @@
             flex: 5;
           }
           >div:nth-child(2){
-            flex: 3;
+            flex: 4;
           }
 
           .LostPowerTypeRate{
