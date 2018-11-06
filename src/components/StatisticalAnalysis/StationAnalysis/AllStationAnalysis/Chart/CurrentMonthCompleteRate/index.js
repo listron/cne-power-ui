@@ -1,6 +1,6 @@
 import React from "react";
 import echarts from 'echarts';
-
+import { showNoData, hiddenNoData } from '../../../../../../constants/echartsNoData';
 class barGraph extends React.Component {
     constructor(props, context) {
         super(props, context)
@@ -8,7 +8,6 @@ class barGraph extends React.Component {
 
     componentDidMount() {
         this.drawChart(this.props);
-        const { graphId, yAxisName, xAxisName, dateType } = this.props;
 
     }
     componentWillReceiveProps(nextProps) {
@@ -16,11 +15,13 @@ class barGraph extends React.Component {
     }
 
     drawChart = (params) => {
-        const { graphId, yAxisName, xAxisName, title,dayCompleteRate,dayCompleteRateDateData,dayCompleteRateLastYearData,dayCompleteRateThatYearData,lastYear,currentYear } = params;
+        const { graphId, yAxisName, xAxisName, title,dayCompleteRate,dayCompleteRateDateData,dayCompleteRateLastYearData,dayCompleteRateThatYearData,lastYear,currentYear,hasData } = params;
         const targetChart = echarts.init(document.getElementById(graphId));
         targetChart.resize();
         let color = ['#a42b2c', '#199475', '#f9b600'];
+        const confluenceTenMinGraphic = (hasData || hasData === false) && (hasData === true ? hiddenNoData : showNoData) || " ";
         const targetDayOption = {
+            graphic: confluenceTenMinGraphic,
             title: {
                 text: title,
                 left: '23',
@@ -46,7 +47,7 @@ class barGraph extends React.Component {
                 formatter: function (params) {
                     let paramsItem = '';
                     params.forEach((item, index) => {
-                        return paramsItem += `<div> <span style="display: inline-block;width: 5px;height: 5px;border-radius: 50%;background:${color[index]};vertical-align: 3px;margin-right: 3px;"> </span> ${params[index].seriesName} :${params[index].value}</div>`
+                        return paramsItem += `<div> <span style="display: inline-block;width: 5px;height: 5px;border-radius: 50%;background:${color[index]};vertical-align: 3px;margin-right: 3px;"> </span> ${params[index].seriesName} :${params[index].value === 0 || params[index].value ? params[index].value : '--'}</div>`
                     });
                     return `<div  style="border-bottom: 1px solid #ccc;padding-bottom: 7px;margin-bottom: 7px;width:180px;overflow:hidden;"> <span style="float: left">${params[0].name} </span><span style="float: right">${xAxisName} </span>
                     </div>${paramsItem}`
@@ -144,7 +145,6 @@ class barGraph extends React.Component {
                         type: 'dashed'
                     },
                     data: dayCompleteRateLastYearData
-                    // data: [320, 332, 301, 334, 390, 330, 320]
                 },
                 {
                     name: currentYear,
@@ -153,14 +153,12 @@ class barGraph extends React.Component {
                         color: '#ceebe0'
                     },
                     data: dayCompleteRateThatYearData
-                    // data: [820, 932, 901, 934, 1290, 1330, 1320]
                 },
                 {
                     name: '同比',
                     type: 'line',
                     yAxisIndex: 1,
                     data: dayCompleteRate
-                    // data: [120, 132, 101, 134, 90, 230, 210, 340]
                 }
             ]
         };
@@ -168,7 +166,7 @@ class barGraph extends React.Component {
 
     }
     render() {
-        const { graphId, dateType } = this.props;
+        const { graphId} = this.props;
         return (
             <div id={graphId} style={{ width: '100%', height: "300px", }}> </div>
         )

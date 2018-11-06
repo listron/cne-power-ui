@@ -2,6 +2,7 @@ import React from "react";
 //import styles from './styles.scss';
 import echarts from 'echarts';
 import PropTypes from 'prop-types';
+import { showNoData, hiddenNoData } from '../../../../../../constants/echartsNoData';
 
 class LightResource extends React.Component {
   static propTypes = {
@@ -24,13 +25,15 @@ class LightResource extends React.Component {
   }
   
   drawChart = (params) => { 
-    const {graphId, yAxisName, xAxisName,title,currentYear,lastYear,lightCompareDataThatYear,lightCompareDataLastYear,lightCompareDataLight,lightCompareDataPower,lightCompareDataDate} = params;
+    const {graphId, yAxisName, xAxisName,title,currentYear,lastYear,lightCompareDataThatYear,lightCompareDataLastYear,lightCompareDataLight,lightCompareDataPower,lightCompareDataDate,hasData} = params;
     //console.log('title',title);
     const targetChart = echarts.init(document.getElementById(graphId));
     let targetMonthOption={};
     targetChart.resize();
     const color=['#dfdfdf','#a42b2c','#a42b2c','#f9b600'];
+    const confluenceTenMinGraphic = (hasData || hasData === false) && (hasData === true ? hiddenNoData : showNoData) || " ";
     targetMonthOption = {
+      graphic: confluenceTenMinGraphic,
       title: {
         text: title,
         left: '23',
@@ -65,7 +68,7 @@ class LightResource extends React.Component {
         formatter: function (params) {
           let paramsItem='';
           params.map((item,index)=>{
-            return paramsItem+= `<div> <span style="display: inline-block;width: 5px;height: 5px;border-radius: 50%;background:${color[index]};vertical-align: 3px;margin-right: 3px;"> </span> ${params[index].seriesName} :${ params[index].value}</div>`
+            return paramsItem+= `<div> <span style="display: inline-block;width: 5px;height: 5px;border-radius: 50%;background:${color[index]};vertical-align: 3px;margin-right: 3px;"> </span> ${params[index].seriesName} :${params[index].value === 0 || params[index].value ? params[index].value : '--'}</div>`
           });
           return `<div  style="border-bottom: 1px solid #ccc;padding-bottom: 7px;margin-bottom: 7px;width:180px;overflow:hidden;"> <span style="float: left">${params[0].name} </span><span style="float: right">${xAxisName} </span>
             </div>${paramsItem}`
@@ -196,9 +199,7 @@ class LightResource extends React.Component {
   render() {
     const {graphId} = this.props;
     return (
-      // <div id={graphId} style={{width: '55%', height: "300px"}}></div>
       <div id={graphId}></div>
-
     )
   }
 }

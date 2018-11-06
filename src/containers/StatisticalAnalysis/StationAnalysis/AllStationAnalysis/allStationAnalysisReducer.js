@@ -5,6 +5,7 @@ import { allStationAnalysisAction } from './allStationAnalysisAction.js';
 var initState = Immutable.fromJS({
   loading: false,
   dateType:'month',
+  stationType:'1',//默认展示光电站tab。
   stationCode: null, // 选中的电站
   singleStationCode:'',
   showPage: 'multiple',//默认展示多电站分析

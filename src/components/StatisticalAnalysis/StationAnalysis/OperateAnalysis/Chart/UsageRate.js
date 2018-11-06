@@ -4,6 +4,14 @@ import { setTimeout } from "timers";
 import PropTypes from "prop-types";
 import { showNoData, hiddenNoData } from '../../../../../constants/echartsNoData';
 
+/* 
+     1 必填 graphId, 根据ID确定图表
+     2 选填 yAxisName, y轴的name
+     3 选填 xAxisName,
+     4 选填 title,图表的title
+     5 必填 data, 数据 data=[[],[]] 其中为line的数据数组
+     6 选填 hasData 是否有数据 如果有数据为true，否则为false
+*/
 class UsageRate extends React.Component {
   static propTypes = {
     graphId: PropTypes.string,
@@ -67,11 +75,9 @@ class UsageRate extends React.Component {
       title,
       data,
       hasData
-      // showyAxis,
     } = param;
     const targetChart = echarts.init(document.getElementById(graphId));
     let color = this.getColor(xAxisName);
-    // let yAxisNames=this.getYaxisName(yAxisName)
     let yData = (data && data.yData) || [];
     let series = yData.map((item, index) => {
       return {
@@ -82,7 +88,7 @@ class UsageRate extends React.Component {
       };
     });
 
-    const confluenceTenMinGraphic = hasData? hiddenNoData :showNoData;
+    const confluenceTenMinGraphic = (hasData || hasData === false) && (hasData === true ? hiddenNoData : showNoData) || " ";
     const targetMonthOption = {
       graphic: confluenceTenMinGraphic,
       title: {
@@ -113,7 +119,7 @@ class UsageRate extends React.Component {
               color[index]
               };vertical-align: 3px;margin-right: 3px;"> </span> ${
               params[index].seriesName
-              } :${+params[index].value === 0 || params[index].value ? params[index].value : '--'}</div>`);
+              } :${params[index].value === 0 || params[index].value ? params[index].value : '--'}</div>`);
           });
           return `<div  style="border-bottom: 1px solid #ccc;padding-bottom: 7px;margin-bottom: 7px;width:180px;overflow:hidden;"> <span style="float: left">${
             params[0].name
