@@ -15,6 +15,7 @@ import Footer from '../../../../components/Common/Footer';
 class ResourceAnalysisContainer extends Component {
   static propTypes = {
     location: PropTypes.object,
+    resetStore: PropTypes.func,
   }
 
   constructor(props) {
@@ -26,7 +27,7 @@ class ResourceAnalysisContainer extends Component {
   }
 
   componentWillUnmount() {
-   
+  //  this.props.resetStore()
   }
 
   render() {
@@ -69,6 +70,7 @@ const mapDispatchToProps = (dispatch) => ({
   getResourceDayWeather: payload => dispatch({ type: stationResourceAnalysisAction.getResourceDayWeather, payload }),
   getResourcePvCompare: payload => dispatch({ type: stationResourceAnalysisAction.getResourcePvCompare, payload }),
   getResourceYearPvCompare: payload => dispatch({ type: stationResourceAnalysisAction.getResourceYearPvCompare, payload }),  
+  resetStore: payload => dispatch({ type: stationResourceAnalysisAction.resetStore, payload }),  
 })
 
 

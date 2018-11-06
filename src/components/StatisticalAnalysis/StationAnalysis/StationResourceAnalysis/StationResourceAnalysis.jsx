@@ -5,13 +5,13 @@ import styles from './stationResourceAnalysis.scss';
 import StationSelect from '../../../Common/StationSelect';
 import TimeSelect from '../../../../components/Common/TimeSelect/TimeSelectIndex';
 import BarGraph from '../CommonGraph/BarGraph';
-import LightDistribution from './Charts/distributionMonthBar';
-import LightYearDistrubution from './Charts/distributionYearBar';
+import LightDistribution from './Charts/DistributionMonthBar';
+import LightYearDistrubution from './Charts/DistributionYearBar';
 import TableGraph from '../CommonGraph/TableGraph';
 import YearLightDistributionTable from "./Table/yearDistribution"
 import WeatherStatus from '../CommonGraph/barStack';
-import WeatherRate from './Charts/weatherRate';
-import WeatherDayStatus from './Charts/weatherDayChart'
+import WeatherRate from './Charts/WeatherRate';
+import WeatherDayStatus from './Charts/WeatherDayChart'
 import moment from 'moment';
 
 class ProductionAnalysis extends React.Component {
@@ -22,6 +22,7 @@ class ProductionAnalysis extends React.Component {
     startTime: PropTypes.string,
     endTime: PropTypes.string,
     getResourcePlan: PropTypes.func,
+    resetStore: PropTypes.func,
   }
   constructor(props) {
     super(props);
@@ -58,10 +59,6 @@ class ProductionAnalysis extends React.Component {
     }
   }
 
-  componentWillUnmount() {
-    this.props.changeResourceStore()
-  }
-
   getMonthData = (props) => { // 月的时间选择 初始加载
     const { dateType, year, stations, stationCode } = props;
     const choiceYear = year ? year : moment().year();
@@ -92,7 +89,6 @@ class ProductionAnalysis extends React.Component {
     props.getResourcePlan(prams)
     props.getResourcePvCompare(prams)
     props.getResourceMonthLight(prams)
-    props.getResourceMonthWeather({ ...prams, year: [choiceYear] })
     props.getResourceDayWeather(prams)
   }
 
@@ -107,14 +103,13 @@ class ProductionAnalysis extends React.Component {
     let prams = {
       stationCode: stationCode,
       dateType,
-      year: [startYear, endYear],
+      year: [+startYear, +endYear],
     }
     props.getAllStationAvalibaData({ ...prams, "userId": userId, "year": rangeYear })
     props.changeResourceStore({ startTime: startYear, endTime: endYear })
     props.getResourcePlan({ ...prams, year: endYear, })
     props.getResourceYearPvCompare(prams)
     props.getResourceYearLight(prams)
-    props.getResourceMonthLight(prams)
     props.getResourceMonthWeather(prams)
   }
 
@@ -176,13 +171,14 @@ class ProductionAnalysis extends React.Component {
     const lastYear = (parseInt(year) - 1).toString();
 
     // 光资源同比/环比
-    const resourceLight = PvCompareData || YearPvCompareData || [];
-    const lightLastYear = resourceLight.map(e => e.lastYearData ? parseFloat(e.lastYearData).toFixed(2) : "--")
-    const lightThatYea = resourceLight.map(e => e.thatYearData ? parseFloat(e.thatYearData).toFixed(2) : "--")
-    const lightYearOnYear = resourceLight.map(e => e.lightYearOnYear ? parseFloat(e.lightYearOnYear).toFixed(2) : "--")
+    const resourceLight = dateType === 'year' ? YearPvCompareData || [] : PvCompareData || [];
+    const lightLastYear = resourceLight ? resourceLight.map(e => e.lastYearData) : []
+    const lightThatYea = resourceLight.map(e => e.thatYearData)
+    const lightYearOnYear = resourceLight.map(e => e.lightYearOnYear)
     const lightMonth = resourceLight.map((e, i) => { return this.addXaixsName(e.monthOrDay, dateType) });
     const lightYear = YearPvCompareData && YearPvCompareData.map(e => e.year);
-    const lightRingRatio = resourceLight.map(e => e.ringRatio ? parseFloat(e.ringRatio).toFixed(2) : "--")
+    const lightRingRatio = resourceLight.map(e => e.ringRatio)
+    const resourceLightHasData=resourceLight.length>0 
 
 
     // 光资源分布
@@ -190,7 +186,7 @@ class ProductionAnalysis extends React.Component {
     const radiationInterval = radiationIntervalList.map(e => e.radiationInterval)
     const radiationSum = radiationIntervalList.map(e => e.radiationSum)
     const ration = radiationIntervalList.map(e => e.ration)
-    const resourceDisData = resourceMonthLight && radiationSum.some(e => e) && ration.some(e => e);
+    const resourceDisData = resourceMonthLight && (radiationSum.some(e => e || e===0) || ration.some(e => e|| e===0));
     let resourceData = {
       xData: radiationInterval,
       yData: {
@@ -201,7 +197,6 @@ class ProductionAnalysis extends React.Component {
 
     // 年光资源分布
     let distributionYear = resourceYearLight && resourceYearLight.map(e => e.date) || [];
-    // const distribution
     const radiationIntervalLists = resourceYearLight && resourceYearLight.map(e => e.radiationIntervalList) || [];
     const name = radiationIntervalLists.length > 0 && radiationIntervalLists[0].map(e => e.radiationInterval) || [];
     let allData = [];
@@ -226,12 +221,16 @@ class ProductionAnalysis extends React.Component {
       distributionTable.push(tableList)
     })
 
+    // const radiationSum2=resourceYearLight && resourceYearLight.map((e)=>e.radiationIntervalList.map(e=>e.radiationSum)
+    // )
+    // console.log("distributionTable",radiationSum2 && radiationSum2.join(',').split(','))
+
 
 
 
     // 天气情况
     let WeatherStatusDatas = resourceMonthWeather && resourceMonthWeather.chartData || [];
-    const weatherDate = WeatherStatusDatas.map(e => e.year)
+    const weatherDate = WeatherStatusDatas.map(e => { return this.addXaixsName(e.year, dateType) })
     const otherWeather = [], sunny = [], cloudy = [], rain = [], snow = [], haze = []; //"雪1", "雨2", "霾3", "阴4", "晴5","其他0"
     const weather = [otherWeather, snow, rain, haze, cloudy, sunny]
     WeatherStatusDatas.map((item, index) => {
@@ -259,8 +258,8 @@ class ProductionAnalysis extends React.Component {
     // 天气情况日
     let WeatherDayData = resourceDayWeather && resourceDayWeather.chartData || [];
     let weatherDayRate = resourceDayWeather && resourceDayWeather.pitChartData || [];
-    let WeatherDayXData = WeatherDayData.map(e => e.day)
-    let WeatherDayHasData = WeatherDayData.map(e => e.temp).some(e => e)
+    let WeatherDayXData = WeatherDayData.map(e => { return this.addXaixsName(e.day, dateType) })
+    let WeatherDayHasData = WeatherDayData.map(e => e.temp).some(e => e|| e===0)
 
     return (
       <div className={styles.singleStationType}>
@@ -341,6 +340,7 @@ class ProductionAnalysis extends React.Component {
                   currentYear={currentYear}
                   lastYear={lastYear}
                   barGraphRingRatio={lightRingRatio}
+                  hasData={resourceLightHasData}
                 />
                 <TableGraph
                   tableType={dateType === "year" ? 'lightRatio' : 'lightAnotherTB'}

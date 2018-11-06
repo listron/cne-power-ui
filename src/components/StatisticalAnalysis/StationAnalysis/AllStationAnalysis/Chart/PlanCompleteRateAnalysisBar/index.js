@@ -2,7 +2,7 @@ import React from "react";
 //import styles from './styles.scss';
 import echarts from 'echarts';
 import PropTypes from 'prop-types';
-
+import { showNoData, hiddenNoData } from '../../../../../../constants/echartsNoData';
 class PlanCompleteRateAnalysisBar extends React.Component {
   static propTypes = {
     graphId: PropTypes.string,
@@ -22,13 +22,15 @@ class PlanCompleteRateAnalysisBar extends React.Component {
   }
 
   drawCharts = (param) => {
-    const {graphId, yAxisName, title,xAxisData ,planPowerData, actualPowerData ,planRateData} = param;
+    const {graphId, yAxisName, title,xAxisData ,planPowerData, actualPowerData ,planRateData,hasData} = param;
     const targetChart = echarts.init(document.getElementById(graphId));
     let targetOption = {};
     targetChart.clear();
     targetChart.resize();
     let color =['#dfdfdf','#f9b600','#3e97d1'];
+    const confluenceTenMinGraphic = (hasData || hasData === false) && (hasData === true ? hiddenNoData : showNoData) || " ";
     targetOption = {
+      graphic: confluenceTenMinGraphic,
       color: color,
       title: {
         text: title,
@@ -58,7 +60,7 @@ class PlanCompleteRateAnalysisBar extends React.Component {
         formatter: function (params) {
           let paramsItem='';
           params.forEach((item,index) => {
-             paramsItem+= `<div> <span style="display: inline-block;width: 5px;height: 5px;border-radius: 50%;background:${color[index]};vertical-align: 3px;margin-right: 3px;"> </span> ${params[index].seriesName} :${ params[index].value}</div>`
+             paramsItem+= `<div> <span style="display: inline-block;width: 5px;height: 5px;border-radius: 50%;background:${color[index]};vertical-align: 3px;margin-right: 3px;"> </span> ${params[index].seriesName} :${params[index].value === 0 || params[index].value ? params[index].value : '--'}</div>`
           });
           return `<div  style="border-bottom: 1px solid #ccc;padding-bottom: 7px;margin-bottom: 7px;width:180px;overflow:hidden;"> <span style="float: left">${params[0].name} </span></div>${paramsItem}`
         }

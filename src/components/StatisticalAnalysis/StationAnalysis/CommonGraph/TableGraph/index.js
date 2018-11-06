@@ -164,22 +164,22 @@ class TableGraph extends React.Component {
         columns = [{
           title: '日期',
           dataIndex: 'date',
-          width: 150,
+          width: 110,
           sorter: (a, b) => (a.date).localeCompare(b.date),
         }, {
           title: '等效利用小时数',
           dataIndex: 'hours',
-          width: 150,
+          // width: 150,
           sorter: (a, b) => a.hours - b.hours,
         }, {
           title: '辐射总量',
           dataIndex: 'light',
-          width: 150,
+          // width: 150,
           sorter: (a, b) => a.light - b.light,
         }, {
           title: 'PR',
           dataIndex: 'pr',
-          width: 150,
+          // width: 150,
           defaultSortOrder: 'descend',
           sorter: (a, b) => a.pr - b.pr,
         }

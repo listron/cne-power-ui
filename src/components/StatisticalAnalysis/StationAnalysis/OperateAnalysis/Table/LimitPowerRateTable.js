@@ -24,7 +24,7 @@ class TableGraph extends React.Component {
             dataIndex: 'date',
             key: 'time',
             sorter: true,
-            width: 80,
+            width: 70,
             sorter: (a, b) => (a.date).localeCompare(b.date),
           }, {
             title: lastYear,
@@ -33,7 +33,7 @@ class TableGraph extends React.Component {
               dataIndex: 'lastyearLostPower',
               key: 'lastyearLostPower',
               sorter: true,
-              width: 80,
+              width: 90,
               sorter: (a, b) => a.lastyearLostPower - b.lastyearLostPower,
               render: text => text ? text : '--'
             }, {
@@ -52,7 +52,7 @@ class TableGraph extends React.Component {
               dataIndex: 'thatYearLostPower',
               key: 'thatYearLostPower',
               sorter: true,
-              width: 80,
+              width: 90,
               sorter: (a, b) => a.thatYearLostPower - b.thatYearLostPower,
               render: text => text ? text : '--'
             }, {
@@ -69,7 +69,7 @@ class TableGraph extends React.Component {
             dataIndex: 'lostPowerRateYearOnYear',
             key: 'lostPowerRateYearOnYear',
             sorter: true,
-            width: 80,
+            width: 105,
             sorter: (a, b) => a.lostPowerRateYearOnYear - b.lostPowerRateYearOnYear,
             render: text => text ? text : '--'
           }];
