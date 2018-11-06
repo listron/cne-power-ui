@@ -11,6 +11,8 @@ import DefectCreate from './Defect/DefectCreate/DefectCreate';
 import InspectList from './Inspect/InspectList/InspectList';
 import InspectDetail from './Inspect/InspectDetail/InspectDetail';
 import InspectCreate from './Inspect/InspectCreate/InspectCreate';
+import InspectOrbit from './Inspect/InspectOrbit/InspectOrbit';
+import InspectRecord from './Inspect/InspectRecord/InspectRecord';
 import CommonBreadcrumb from '../../../components/Common/CommonBreadcrumb';
 
 const TabPane = Tabs.TabPane;
@@ -130,6 +132,12 @@ class Ticket extends Component {
         return <InspectDetail onChangeShowContainer={onChangeShowContainer} />;
       }
       
+    }else if(showContainer==='inspectOrbit'){
+      return(<InspectOrbit onChangeShowContainer={onChangeShowContainer} />)
+
+    }else if(showContainer==='inspectRecord'){
+      return(<InspectRecord onChangeShowContainer={onChangeShowContainer} />)
+
     } else {
       if(tab === 'defect') {
         return <DefectCreate onChangeShowContainer={onChangeShowContainer} />;
