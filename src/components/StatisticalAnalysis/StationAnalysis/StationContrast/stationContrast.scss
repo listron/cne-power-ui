@@ -4,13 +4,11 @@
   display: flex;
   flex-direction: column;
   flex: 1;
-  padding: 24px 24px 0;
-  background-color: #ececec;
+
   .stationTimeFilter{
     background: #fff;
     display: flex;
     justify-content: space-between;
-    flex:1;
     align-items: center;
     margin-bottom: 20px;
     border:1px solid #e1e2e2;
@@ -92,26 +90,37 @@
         width: 50%;
       }
       >span{
-        width: 100%;
-        height: 100%;
-        display: block;
+        // width: 100%;
+        // height: 100%;
+        //display: block;
+        display:flex;
+        flex:1;
       }
     }
     .contrastDetailPopover{
       display: flex;
       flex-direction: row;
+      flex:1;
       &:hover,&:active,&:focus,&:visited{
         background: #ceebe0;
       }
-      .stationOne{
-        width: 50%;
-        border-right: 1px solid #dfdfdf; 
-        border-left: 0;
-      }
-      .stationTwo{
-        width: 50%;
-        border-right: 1px solid #dfdfdf; 
-      }
+      
+    }
+    .stationContrastOne{
+      //width: 50%;
+      display: flex;
+      flex:1;
+
+      border-right: 1px solid #dfdfdf; 
+      border-left: 0;
+      justify-content: center;
+    }
+    .stationContrastTwo{
+      //width: 50%;
+      display: flex;
+      border-right: 1px solid #dfdfdf; 
+      flex:1;
+      justify-content: center;
     }
     .differHighLight{
       display: flex;
@@ -120,14 +129,17 @@
       &:hover,&:active,&:focus,&:visited{
         background: #ceebe0;
       }
-      .stationOne{
-        width: 50%;
+      .stationContrastOne{
+        display: flex;
         border-right: 1px solid #dfdfdf; 
-        border-left: 0;
+        flex:1;
+        justify-content: center;
       }
-      .stationTwo{
-        width: 50%;
+      .stationContrastTwo{
+        display: flex;
         border-right: 1px solid #dfdfdf; 
+        flex:1;
+        justify-content: center;
       }
     }
   }

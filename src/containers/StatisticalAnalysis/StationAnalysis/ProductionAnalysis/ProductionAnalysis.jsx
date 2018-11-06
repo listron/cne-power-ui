@@ -4,7 +4,8 @@ import { connect } from "react-redux";
 import styles from "./productionAnalusis.scss";
 import { productionAnalysisAction } from './productionAnalysisAction';
 import { allStationAnalysisAction } from '../AllStationAnalysis/allStationAnalysisAction';
-import { getCookie } from '../../../../utils/index.js';
+// import { getCookie } from '../../../../utils/index.js';
+import Cookie from 'js-cookie';
 import PropTypes from "prop-types";
 import ProductionAnalysis from '../../../../components/StatisticalAnalysis/StationAnalysis/ProductionAnalysis/ProductionAnalysis';
 
@@ -14,7 +15,6 @@ import Footer from '../../../../components/Common/Footer';
 
 class ProductionAnalysisContainer extends Component {
   static propTypes = {
-    
     location: PropTypes.object,
   }
 
@@ -56,7 +56,7 @@ const mapStateToProps = (state) => {
   return {
     ...state.statisticalAnalysisReducer.productionAnalysisReducer.toJS(),
     stations: state.common.get('stations'),
-    userId : getCookie('userId'),
+    userId :Cookie.get('userId'),
 
   }
 }
