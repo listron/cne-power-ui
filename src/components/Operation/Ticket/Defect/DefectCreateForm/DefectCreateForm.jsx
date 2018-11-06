@@ -62,18 +62,23 @@ class TmpForm extends Component {
   }
 
   onStationSelected = (stations) => {
-    const stationCodes = (stations && stations[0] && stations[0].stationCode) || 0;
+    const selectedStation = stations && stations[0] || {};
+    const stationCodes = selectedStation.stationCode || 0;
+    const stationType = selectedStation.stationType;
     this.props.getStationDeviceTypes({ stationCodes });
     this.props.getLostGenType({
-      stationCode: stationCodes,
+      stationType,
       objectType:1
     });
     this.props.changeCommonStore({ devices: [] });
-    this.props.form.setFieldsValue({ deviceTypeCode: null });
+    this.props.form.setFieldsValue({ deviceTypeCode: null, defectTypeCode: null });
   }
 
   onChangeDeviceType = (deviceTypeCode) => {
-    const stationCode = this.props.form.getFieldValue('stations')[0].stationCode;
+    const { stations, form } = this.props;
+    const stationCode = form.getFieldValue('stations')[0].stationCode;
+    const selectedStationInfo = stations.find(e=>e.stationCode === stationCode) || {};
+    const stationType = selectedStationInfo.stationType; 
     let params = {
       stationCode,
       deviceTypeCode
@@ -82,7 +87,7 @@ class TmpForm extends Component {
     if(deviceTypeCode === 509){ //组串时，请求调整
         this.props.getSliceDevices(params);
         this.props.getLostGenType({
-          stationCode,
+          stationType,
           objectType:1,
           deviceTypeCode
         })
@@ -90,7 +95,7 @@ class TmpForm extends Component {
         this.props.getDevices(params);
         this.props.getStationAreas(params);
         this.props.getLostGenType({
-          stationCode,
+          stationType,
           objectType:1,
           deviceTypeCode
         })
@@ -209,7 +214,7 @@ class TmpForm extends Component {
       innerArr.label= ele.name;
       innerArr.value= ele.id;
       ele && ele.list && ele.list.length > 0 && ele.list.forEach(innerInfo => {
-        if(editDefect && defectDetail.defectTypeCode === innerInfo.id){
+        if(editDefect && `${defectDetail.defectTypeCode}` === `${innerInfo.id}`){
           defaultDefectType = [ele.id, innerInfo.id];
         }
         innerArr.children.push({
@@ -219,6 +224,7 @@ class TmpForm extends Component {
       })
       return innerArr;
     })
+    const canSelectDefectType = getFieldValue('stations') && getFieldValue('deviceTypeCode');
     return (
       <Form className={styles.defectCreateForm}>
         <div className={styles.basicInfo}>
@@ -274,7 +280,7 @@ class TmpForm extends Component {
               initialValue: defaultDefectType,
             })(
               <Cascader
-                disabled={groupedLostGenTypes.length === 0}
+                disabled={!canSelectDefectType}
                 style={{ width: 198 }}
                 options={groupedLostGenTypes}
                 expandTrigger="hover"
@@ -289,10 +295,9 @@ class TmpForm extends Component {
               initialValue: editDefect && defectDetail.defectLevel || undefined,
             })(
               <Select style={{ width: 198 }} placeholder="请选择" disabled={defectTypes.length === 0}>
-                <Option value={1}>一级</Option>
-                <Option value={2}>二级</Option>
-                <Option value={3}>三级</Option>
-                <Option value={4}>四级</Option>
+                <Option value={1}>A级</Option>
+                <Option value={2}>B级</Option>
+                <Option value={3}>C级</Option>
               </Select>
             )}
           </FormItem>

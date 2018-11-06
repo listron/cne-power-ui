@@ -61,7 +61,8 @@ const routers = [
   }, { // 运维管理-工单-员工定位
     path: '/operation/ticket/gps',
     exact: true,
-    component: PersonnelGps,
+    component: Building,
+    // component: PersonnelGps,
   },{
     path: '/operation/twoTickets/typeone',
     exact: true,

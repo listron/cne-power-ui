@@ -34,7 +34,7 @@ class DefectLevelFilter extends Component {
 
   render() {
     const { defectLevel } = this.props;
-    const levels = ['一级','二级','三级','四级'];
+    const levels = ['A级','B级','C级'];
     const levelOptions = levels.map((e,i)=>({
       label: e,
       value: `${i+1}`

@@ -430,7 +430,7 @@
       color: #dfdfdf;
       background: #f8f8f8;
       padding: 16px 25px 0;
-      .deviceTypeItem, .elecnettingItem{
+      .deviceTypeItem, .elecnettingItem{ // 正常单线流程
         margin-top: 0px;
         width: 110px;
         height: 90px;
@@ -449,58 +449,45 @@
           }
         }
       }
-      .deviceTypeItemInner{
-        width: 110px;
-        height: 90px;
-        padding: 10px;
-        border: 0;
-        color: #dfdfdf;
-        .deviceTypeIcon{
-          margin: 10px 10px 0;
-          position: relative;
-          .arrowgo{
-            position: absolute;
-            z-index: 999;
-            right: -44px;
-            top: 12px;
-            pointer-events: none;
-          }
-          .arrowgoInner{
-            position: absolute;
-            z-index: 999;
-            right: -44px;
-            top: 58px;
-            pointer-events: none;
+      .multipleType{ // 上下设备两层展示
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        .innerItem{
+          margin-top: 0px;
+          width: 110px;
+          height: 90px;
+          padding: 10px;
+          border: 0;
+          color: #dfdfdf;
+          .deviceTypeIcon{
+            margin: 10px 10px 0;
+            position: relative;
+            .innerArrow{
+              position: absolute;
+              z-index: 999;
+              right: -44px;
+              top: 12px;
+              pointer-events: none;
+            }
+            .hideArrow{
+              display: none;
+            }
           }
         }
+        .rightArrow{
+          transform: translate(110px,-100px);
+          z-index: 999;
+        }
       }
-      .elecnettingItem, .combinedElecnettingItem{
+
+      .elecnettingItem {
         pointer-events: none;
       }
       :global{
         .ant-radio-group{
           display: flex;
-          :local{
-            .combinedDeviceTypeItem, .combinedElecnettingItem{
-              margin-top: 45px;
-              width: 110px;
-              height: 90px;
-              padding: 10px;
-              border: 0;
-              color: #dfdfdf;
-              .deviceTypeIcon{
-                margin: 10px 10px 0;
-                position: relative;
-                .arrowgo{
-                  position: absolute;
-                  z-index: 999;
-                  right: -44px;
-                  top: 12px;
-                  pointer-events: none;
-                }
-              }
-            }
-          }
+          align-items: center;
           .ant-radio-button-wrapper-checked{
             background: #fff;
             border-color: $themeColor;
