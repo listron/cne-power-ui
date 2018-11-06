@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import styles from './stationContrast.scss';
 import StationSelectContrast from './StationSelectContrast';
-import TimeSelect from '../../../Common/TimeSelect';
+import TimeSelect from '../../../Common/TimeSelect/TimeSelectIndex';
 import StationContrastTable from './StationContrastTable';
 import moment from 'moment';
 class StationContrast extends React.Component {
@@ -29,7 +29,18 @@ class StationContrast extends React.Component {
   componentWillUnmount(){
     this.props.resetStationContrastStore();
   }
-
+  onTimeChange = (timeObj) => {
+    console.log(timeObj);
+    const { stationCode, year ,toChangeStationContrastStore} = this.props;
+    timeObj.timeStyle === 'year' ? toChangeStationContrastStore({ dateType: timeObj.timeStyle, year: [timeObj.startTime, timeObj.endTime] }) : toChangeStationContrastStore({ dateType: timeObj.timeStyle, year: [timeObj.startTime] })
+    if(stationCode.length===2){
+      this.props.getStationContrast({
+        stationCode: stationCode,
+        dateType: timeObj.timeStyle,
+        year,
+      });
+    }
+  }
   stationSelected = (stations) => {
     const { dateType, year } = this.props;
     this.props.toChangeStationContrastStore({
@@ -56,6 +67,7 @@ class StationContrast extends React.Component {
       });
     }
   }
+  
 
   render() {
     const { stations ,stationContrastList,selectedStations } = this.props;
@@ -72,11 +84,12 @@ class StationContrast extends React.Component {
                 value={selectedStations}
               />
             </div>
-            <TimeSelect 
+            {/*<TimeSelect 
               day={true} 
               {...this.props}
               changeAllStationStore={this.stationTimeSelected}
-            />
+            />*/}
+            <TimeSelect timerText="" onChange={this.onTimeChange} />
           </div>
           <span className={styles.rightContent}>数据统计截止时间{moment().subtract(1, 'days').format('MM[月]DD[日]')}</span>
         </div>
