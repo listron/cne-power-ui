@@ -58,11 +58,11 @@ class InspectTimeLine extends Component {
             <div className={styles.flowName}>{item.get('flowName')}</div>
             <div className={styles.operateTime}>{moment(item.get('operateTime')).format('YYYY-MM-DD HH:mm')}</div>
             <div className={styles.operateUser}>{item.get('operateUser')}</div>
-            {flowName === '执行工单' ? 
+           { /*{flowName === '执行工单' ? 
             <div>
               <Button className={styles.viewStandard} onClick={this.onInspectOrbit }>查看巡检轨迹</Button>
               <Button className={styles.viewStandard} onClick={this.onInspectRecord}>详细巡检记录</Button>
-            </div> :''}
+      </div> :''}*/}
           </div>
           {this.renderDetail(item)}
         </div>
