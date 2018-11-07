@@ -373,7 +373,7 @@ class OperateAnalysis extends React.Component {
                 <span className={styles.stationIcon}>
                   <i className="iconfont icon-pvlogo" />
                 </span>
-                {`${station && station[0].stationName}-${station && station[0].regionName || "--"}`}
+                {`${station.length>0 && station[0].stationName}-${station && station[0].regionName || "--"}`}
                 <span className={styles.plan}>计划完成情况
                 {dateType === "day" && (year + '年' + month + '月')}
                   {dateType === "month" && (year + '年')}

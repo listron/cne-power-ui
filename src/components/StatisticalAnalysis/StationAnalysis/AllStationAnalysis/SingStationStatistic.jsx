@@ -440,13 +440,12 @@ class SingleStationStatistic extends React.Component {
     }
     const LightHasData=hours.some(e=>e||e===0) ||light.some(e=>e||e===0)||pr.some(e=>e||e===0)
     //损失电量数据
-    const lostPowerThatYear = singleStationLostPowerData.map(e =>e.thatYearDat) || [];
+    const lostPowerThatYear = singleStationLostPowerData.map(e =>e.thatYearData) || [];
     const lostPowerLastYear = singleStationLostPowerData.map(e =>e.lastYearData) ||[];
     const lostPowerRingRatio = singleStationLostPowerData.map(e=> e.ringRatio) ||[];
     const lostPowermonth = singleStationLostPowerData.map(e => (`${e.date}${dateType === 'month' ? '月' :  ''}`));
     const lostPowerYearOnYear = singleStationLostPowerData.map(e => e.yearOnYear) ||[];
     const lostHasData=lostPowerThatYear.some(e=>e||e===0)||lostPowerLastYear.some(e=>e||e===0)||lostPowerRingRatio.some(e=>e||e===0)||lostPowerYearOnYear.some(e=>e||e===0)
-
     const { showStationSelect } = this.state;
     const stationItems = stations&&stations.toJS();
     const stationItem = stationItems.filter(e => (e.stationCode.toString() === singleStationCode))[0];
