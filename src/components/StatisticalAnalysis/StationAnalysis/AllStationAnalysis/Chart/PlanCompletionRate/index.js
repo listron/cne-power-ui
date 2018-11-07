@@ -89,7 +89,7 @@ class PlancompletionRate extends React.Component{
                <div className={styles.stationTargetName}>累计光辐射总量 MJ/㎡</div>
                </div>
                <div className={styles.stationTargetData}>
-               <div className={styles.stationTargetValue}>{stationAvailability}</div>
+               <div className={styles.stationTargetValue}>{stationAvailability}%</div>
                <div className={styles.stationTargetName}>电站可利用率</div>
                </div>
                </div>
@@ -115,11 +115,11 @@ class PlancompletionRate extends React.Component{
                </div>
                <div className={styles.rightDataSummary}>
                <div className={styles.stationTargetData}>
-               <div className={styles.stationTargetValue}>{pr}</div>
+               <div className={styles.stationTargetValue}>{pr}%</div>
                <div className={styles.stationTargetName}>PR</div>
                </div>
                <div className={styles.stationTargetData}>
-               <div className={styles.stationTargetValue}>{lostPowerRate}</div>
+               <div className={styles.stationTargetValue}>{lostPowerRate}%</div>
                <div className={styles.stationTargetName}>限电率</div>
                </div>
                </div>
