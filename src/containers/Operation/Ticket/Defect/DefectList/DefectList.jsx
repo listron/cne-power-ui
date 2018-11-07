@@ -6,6 +6,7 @@ import styles from './defectList.scss';
 import { ticketAction } from '../../ticketAction';
 import DefectTable from '../../../../../components/Operation/Ticket/Defect/DefectTable/DefectTable';
 import DefectFilter from '../../../../../components/Operation/Ticket/Defect/DefectFilter/DefectFilter';
+import { commonAction } from '../../../../alphaRedux/commonAction';
 
 class DefectList extends Component {
   static propTypes = {
@@ -42,7 +43,7 @@ class DefectList extends Component {
     onChangeShowContainer: PropTypes.func,
     getDefectDetail: PropTypes.func,
     changeDefectStore: PropTypes.func,
-    getDefectType: PropTypes.func,
+    getLostGenType: PropTypes.func,
   };
   constructor(props,context) {
     super(props);
@@ -70,9 +71,9 @@ class DefectList extends Component {
     //   }
     //   this.props.getDefectList(params);
     // }
-    this.props.getDefectType({
-      stationType: 2//全部
-    }); 
+    this.props.getLostGenType({ //获取所有损失缺陷类型
+      objectType: 1
+    }) 
   }
 
   onChangeFilter = (obj) => {
@@ -149,6 +150,15 @@ const mapDispatchToProps = (dispatch) => ({
   onBatchClose: payload => dispatch({ type: ticketAction.CLOSE_BATCH_DEFECT_SAGA, payload }),
   onBatchCheck: payload => dispatch({ type: ticketAction.CHECK_BATCH_DEFECT_SAGA, payload }),
   getDefectDetail: payload => dispatch({ type: ticketAction.GET_DEFECT_DETAIL_SAGA, payload }),
+
+  getLostGenType: params => dispatch({
+    type: commonAction.getLostGenType,
+    payload: {
+      params, 
+      actionName: ticketAction.GET_DEFECT_FETCH_SUCCESS, 
+      resultName: 'defectTypes'
+    }
+  }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DefectList);

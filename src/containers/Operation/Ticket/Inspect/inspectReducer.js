@@ -30,6 +30,7 @@ var initState = Immutable.fromJS({
     executeNum: 0
   },
   inspectId: '',
+  defectTypes: [],
   inspectDetail: {//巡检详情
     inspectId: '',
     stationCode: '',
@@ -48,8 +49,11 @@ var initState = Immutable.fromJS({
   deviceTypeItems: [], // 电站下的设备类型
   devices: [], // 设备列表
   partitions: [], // 方阵列表
+  inspectTimeStart:'',//巡检开始时间
+  inspectTimeEnd:'',//巡检结束时间
   allSeries: [], // 所有光伏组件
   firstPartitionCode: null,
+  inspectUserId:'',//巡检人id
 });
 
 const inspectReducer = (state = initState, action) => {

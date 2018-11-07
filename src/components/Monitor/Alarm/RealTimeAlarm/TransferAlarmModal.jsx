@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Select, Form, Modal } from 'antd';
+import { Select, Form, Modal, Cascader } from 'antd';
 import PropTypes from 'prop-types';
 import styles from './realTimeAlarm.scss';
 import InputLimit from '../../../Common/InputLimit';
@@ -37,6 +37,7 @@ class TransferAlarmModal extends Component {
       if(!err) {
         this.props.onTransferAlarm({
           ...values,
+          defectTypeCode: values.defectTypeCode[1],
           warningLogId: this.props.selectedRowKeys,
         });
         this.props.onCancel();
@@ -52,8 +53,23 @@ class TransferAlarmModal extends Component {
   }
 
   render(){
+    const { defectTypes } = this.props;
     const { getFieldDecorator } = this.props.form;
     const { showWarningTip, warningTipText } = this.state;
+    let tmpGenTypes = [];
+    defectTypes.toJS().forEach(e=>e && e.list && e.list.length > 0 && tmpGenTypes.push(...e.list));
+    const groupedLostGenTypes = tmpGenTypes.map(ele=>{
+      let innerArr = {children: []};
+      innerArr.label= ele.name;
+      innerArr.value= ele.id;
+      ele && ele.list && ele.list.length > 0 && ele.list.forEach(innerInfo => {
+        innerArr.children.push({
+          label: innerInfo.name,
+          value: innerInfo.id,
+        });
+      })
+      return innerArr;
+    })
     return (     
       <Form>
         {showWarningTip && <WarningTip
@@ -76,13 +92,13 @@ class TransferAlarmModal extends Component {
                 message: '请选择缺陷类型'
               }],
             })(
-              <Select placeholder="请选择" style={{width:200}}>
-                {this.props.defectTypes.map((item, i) => {
-                  return (
-                    <Option key={i} value={item.get('defectTypeCode')}>{item.get('defectTypeName')}</Option>
-                  );
-                })}
-              </Select>
+              <Cascader
+                disabled={groupedLostGenTypes.length === 0}
+                style={{ width: 200 }}
+                options={groupedLostGenTypes}
+                expandTrigger="hover"
+                placeholder="请选择"
+              />
             )}
           </FormItem>
           <FormItem className={styles.formItem} label="缺陷描述">

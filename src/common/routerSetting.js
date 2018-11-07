@@ -3,6 +3,7 @@ import { Route } from 'react-router-dom';
 // 运维管理-工单
 import Ticket from '../containers/Operation/Ticket/Ticket';
 import DefectDetail from '../containers/Operation/Ticket/Defect/DefectDetail/DefectDetail';
+import PersonnelGps from '../containers/Operation/Ticket/PersonnelGps/PersonnelGps';
 
 import DayReport from '../containers/Operation/Running/DayReport/DayReport'; // 日报
 
@@ -57,7 +58,12 @@ const routers = [
     path: '/operation/ticket/statistics',
     exact: true,
     component: Building,
-  }, {
+  }, { // 运维管理-工单-员工定位
+    path: '/operation/ticket/gps',
+    exact: true,
+    component: Building,
+    // component: PersonnelGps,
+  },{
     path: '/operation/twoTickets/typeone',
     exact: true,
     component: Building,
@@ -168,6 +174,7 @@ const routers = [
   },{
     path: '/statistical/stationaccount/allstation',
     exact: true,
+<<<<<<< HEAD
     // component: AllStationAnalysis
     component: Building
   },{
@@ -195,6 +202,35 @@ const routers = [
     exact: true,
     // component: StationContrast
     component: Building
+=======
+    component: AllStationAnalysis
+    // component: Building
+  },{
+    path: '/statistical/stationaccount/allstation/:stationCode',
+    exact: true,
+    component: AllStationAnalysis
+    // component: Building
+  },{
+    path: '/statistical/stationaccount/production',
+    exact: true,
+    component: ProductionAnalysis
+    // component: Building
+  },{
+    path: '/statistical/stationaccount/operate',
+    exact: true,
+    component: OperateAnalysis
+    // component: Building
+  },{
+    path: '/statistical/stationaccount/resource',
+    exact: true,
+    component: StationResourceAnalysis
+    // component: Building
+  },{
+    path: '/statistical/stationaccount/contrast',
+    exact: true,
+    component: StationContrast
+    // component: Building
+>>>>>>> upstream/ui_dev
   },{
     path: '/statistical/equipment/performance',
     exact: true,
