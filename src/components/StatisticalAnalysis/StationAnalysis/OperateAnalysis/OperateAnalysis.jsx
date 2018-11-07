@@ -393,11 +393,11 @@ class OperateAnalysis extends React.Component {
             </div>
             <div className={styles.graph}>
               <div className={styles.stationTargetData}>
-                <div className={styles.stationTargetValue}>{operatePlanCompleteData && operatePlanCompleteData.pr || '--'}</div>
+                <div className={styles.stationTargetValue}>{operatePlanCompleteData && operatePlanCompleteData.pr || '--'}%</div>
                 <div className={styles.stationTargetName}>PR </div>
               </div>
               <div className={styles.stationTargetData}>
-                <div className={styles.stationTargetValue}>{operatePlanCompleteData && operatePlanCompleteData.cpr || '--'}</div>
+                <div className={styles.stationTargetValue}>{operatePlanCompleteData && operatePlanCompleteData.cpr || '--'}%</div>
                 <div className={styles.stationTargetName}>CPR </div>
               </div>
               <div className={styles.stationTargetData}>

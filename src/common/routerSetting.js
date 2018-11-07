@@ -174,35 +174,6 @@ const routers = [
   },{
     path: '/statistical/stationaccount/allstation',
     exact: true,
-<<<<<<< HEAD
-    // component: AllStationAnalysis
-    component: Building
-  },{
-    path: '/statistical/stationaccount/allstation/:stationCode',
-    exact: true,
-    // component: AllStationAnalysis
-    component: Building
-  },{
-    path: '/statistical/stationaccount/production',
-    exact: true,
-    component: Building
-    // component: ProductionAnalysis
-  },{
-    path: '/statistical/stationaccount/operate',
-    exact: true,
-    // component: OperateAnalysis
-    component: Building
-  },{
-    path: '/statistical/stationaccount/resource',
-    exact: true,
-    // component: StationResourceAnalysis
-    component: Building
-  },{
-    path: '/statistical/stationaccount/contrast',
-    exact: true,
-    // component: StationContrast
-    component: Building
-=======
     component: AllStationAnalysis
     // component: Building
   },{
@@ -230,7 +201,6 @@ const routers = [
     exact: true,
     component: StationContrast
     // component: Building
->>>>>>> upstream/ui_dev
   },{
     path: '/statistical/equipment/performance',
     exact: true,
