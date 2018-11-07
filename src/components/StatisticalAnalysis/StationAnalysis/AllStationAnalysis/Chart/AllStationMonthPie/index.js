@@ -1,6 +1,7 @@
 import React from "react";
 import echarts from 'echarts';
 import PropTypes from 'prop-types';
+import { showNoData, hiddenNoData } from '../../../../../../constants/echartsNoData';
 
 class AllStationMonthPie extends React.Component {
   static propTypes = {
@@ -17,13 +18,15 @@ class AllStationMonthPie extends React.Component {
   }
 
   drawChart=(param)=>{
-    const { allStationMonthpie,yAxisName,pieTargetData, } = param;
+    const { allStationMonthpie,yAxisName,pieTargetData, hasData} = param;
     const targetPieChart = echarts.init(document.getElementById(allStationMonthpie));
     let reg=/\(([^()]+)\)/g;
     let unit=reg.exec(yAxisName)[1];
     targetPieChart.clear();
     targetPieChart.resize();
+    const confluenceTenMinGraphic = (hasData || hasData === false) && (hasData === true ? hiddenNoData : showNoData) || " ";
     const targetPieOption = {
+      graphic: confluenceTenMinGraphic,
       tooltip: {
         trigger: 'item',
         backgroundColor: '#fff',

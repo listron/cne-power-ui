@@ -1,9 +1,16 @@
 import React from "react";
-//import styles from './styles.scss';
 import echarts from 'echarts';
+import PropTypes from "prop-types";
+import { showNoData, hiddenNoData } from '../../../../../constants/echartsNoData';
 
 
-class PlanCompleteRateAnalysisBar extends React.Component {
+class BarGraph extends React.Component {
+  static propTypes = {
+    graphId: PropTypes.string,
+    yAxisName: PropTypes.string,
+    xAxisName: PropTypes.string,
+    dateType: PropTypes.string,
+  }
   constructor(props, context) {
     super(props, context)
   }
@@ -15,49 +22,13 @@ class PlanCompleteRateAnalysisBar extends React.Component {
     this.drawChart(nextProps)
   }
 
-
-  getName = (type, currentYear, lastYear) => { // 获取对应的name
-    let name = '';
-    switch (type) {
-      case 'thatYearLostPower': name = currentYear + '年限电损失'; break;
-      case 'lastyearLostPower': name = lastYear + '年限电损失'; break;
-      case 'thatYearLostPowerRate': name = currentYear + '年限电率'; break;
-      case 'lastyearLostPowerRate': name = lastYear + '年限电率'; break;
-      case 'lostPowerRateYearOnYear': name = '限电率同比'; break;
-      case 'limitPower': name = '限电损失'; break;
-      case 'limitPowerRate': name = '限电率'; break;
-      case 'ringRatio': name = '限电率环比'; break;
-    }
-    return name;
-  }
-
   drawChart = (param) => {
-    const { graphId, yAxisName, xAxisName, dateType, title, data, currentYear, lastYear } = param;
+    const { graphId, yAxisName, xAxisName, dateType, title, data, hasData } = param;
     const targetChart = echarts.init(document.getElementById(graphId));
-    targetChart.clear();
-    const color = ['#dfdfdf', '#f9b600', '##999999', '#3e97d1', '#f9b600'];
-    let seriesData = [];
-    const lineData = data.yData.lineData;
-    const barData = data.yData.barData;
-    let targetOption={};
-    for (var bar in barData) {
-      var json = {
-        name: this.getName(bar, currentYear, lastYear),
-        data: barData[bar],
-        type: 'bar',
-      };
-      seriesData.push(json);
-    }
-    for (var line in lineData) {
-      var json = {
-        name: this.getName(line, currentYear, lastYear),
-        data: lineData[line],
-        type: 'line',
-        yAxisIndex: 1,
-      };
-      seriesData.push(json);
-    }
-    targetOption = {
+    const confluenceTenMinGraphic = (hasData || hasData === false) && (hasData === true ? hiddenNoData : showNoData) || " ";
+    const color = ['#199475', '#e08031'];
+    const targetOption = {
+      graphic: confluenceTenMinGraphic,
       color: color,
       title: {
         text: title,
@@ -79,12 +50,6 @@ class PlanCompleteRateAnalysisBar extends React.Component {
           }
         },
         backgroundColor: '#fff',
-        padding: 10,
-        textStyle: {
-          color: 'rgba(0, 0, 0, 0.65)',
-          fontSize: 12,
-        },
-        extraCssText: 'box-shadow: 0 0 3px rgba(0, 0, 0, 0.3)',
         formatter: function (params) {
           let paramsItem = '';
           params.forEach((item, index) => {
@@ -92,10 +57,17 @@ class PlanCompleteRateAnalysisBar extends React.Component {
           });
           return `<div  style="border-bottom: 1px solid #ccc;padding-bottom: 7px;margin-bottom: 7px;width:180px;overflow:hidden;"> <span style="float: left">${params[0].name} </span><span style="float: right">${xAxisName} </span>
           </div>${paramsItem}`
-        }
+
+        },
+        padding: 10,
+        textStyle: {
+          color: 'rgba(0, 0, 0, 0.65)',
+          fontSize: 12,
+        },
+        extraCssText: 'box-shadow: 0 0 3px rgba(0, 0, 0, 0.3)',
       },
       legend: {
-        top: title ? 0 : 20,
+        top: 20,
         left: 'center',
         icon: 'circle',
         itemWidth: 5,
@@ -104,23 +76,23 @@ class PlanCompleteRateAnalysisBar extends React.Component {
       xAxis: [
         {
           type: 'category',
-          // data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
-          data: data.xData,
+          axisLabel: {
+            color: '#666',
+            interval: 0,
+            rotate: -30
+          },
+          data: data && data.xData,
           axisPointer: {
             type: 'shadow'
           },
           axisLine: {
-            show: true,
             lineStyle: {
               color: '#dfdfdf',
-            }
+            },
           },
           axisLabel: {
             color: '#666',
-          },
-          axisTick: {
-            show: false,
-          },
+          }
         }
       ],
       yAxis: [
@@ -130,9 +102,7 @@ class PlanCompleteRateAnalysisBar extends React.Component {
           nameTextStyle: {
             color: '#666',
           },
-          // min: 0,
-          splitNumber: 5,
-          scale: true,
+
           axisLabel: {
             color: '#666',
           },
@@ -143,49 +113,65 @@ class PlanCompleteRateAnalysisBar extends React.Component {
             show: false,
           },
           splitLine: {
-            // show:false,
             lineStyle: {
-              color: '#666',
+              color: '##f1f1f1',
               type: 'dashed'
             }
           },
         },
         {
           type: 'value',
-          name: dateType==="year"?'环比':'同比',
+          name: '占比',
           nameTextStyle: {
             color: '#666',
           },
+
           axisLabel: {
-            formatter: '{value} %',
             color: '#666',
-          },
-          axisTick: {
-            show: false,
+            formatter: '{value} %'
           },
           axisLine: {
+            show: false,
+          },
+          axisTick: {
             show: false,
           },
           splitLine: {
             show: false,
             lineStyle: {
-              color: '#f1f1f1',
+              color: '#666',
               type: 'dashed'
             }
           },
         }
       ],
-      series: seriesData
+      series: [
+        {
+          name: '辐射总量',
+          type: 'bar',
+          data: data && data.yData.barData,
+          itemStyle: {
+            barBorderRadius: 10,
+          },
+          barWidth: 10,
+        },
+        {
+          name: '占比',
+          type: 'line',
+          yAxisIndex: 1,
+          data: data && data.yData.lineData
+        }
+      ]
     };
     setTimeout(() => { targetChart.resize(); }, 1000)
     targetChart.setOption(targetOption)
 
   }
   render() {
-    const { graphId, dateType } = this.props;
+    const { graphId } = this.props;
     return (
       <div id={graphId}> </div>
     )
   }
 }
-export default (PlanCompleteRateAnalysisBar)
+export default (BarGraph)

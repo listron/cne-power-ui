@@ -7,16 +7,16 @@ module.exports = [{
   response: {
     "code": "10000",
     "message": "请求成功",
-    "data": 
+    "data":
       [
-        {"year":'2014',isTrue:'0'},      
+        {"year":'2014',isTrue:'0'},
         {"year":'2015',isTrue:'1'},
         {"year":'2016',isTrue:'0'},
         {"year":'2017',isTrue:'1'},
         {"year":'2018',isTrue:'1'},
         {"year":'10',isTrue:'1'},
       ],
-   
+
     "serviceCode": "3.0"
   },
   delay: 1000,
@@ -32,18 +32,18 @@ module.exports = [{
         "planSummary": [{
           year: 2018,
           actualPower: '1',
-          planPower: '2', 
-          rayRadiation: '3', 
-          stationAvailability: '4', 
-          equivalentHours: '5', 
-          lostPower: '6', 
-          realCapacity: '7', 
-          faultDeviceNum: '8', 
-          pr: '2', 
-          lostPowerRate: '3', 
+          planPower: '2',
+          rayRadiation: '3',
+          stationAvailability: '4',
+          equivalentHours: '5',
+          lostPower: '6',
+          realCapacity: '7',
+          faultDeviceNum: '8',
+          pr: '2',
+          lostPowerRate: '3',
           completeRate: '4'
         }],
-       
+
       },
       "serviceCode": "3.0"
     },
@@ -57,7 +57,7 @@ module.exports = [{
       "message": "请求成功",
       "data": {
         statisticsList: [1,2,3,4,5,6,7,8,9,10,11].map((e,i)=>({
-          
+
             yearOrMonth:`${e}`,
             stationCode:`${e}`,
             stationName:`洱源${e}`,
@@ -72,9 +72,9 @@ module.exports = [{
             pr:`${e}`,
             lostPower:`${e}`,
             limitPowerHours:`${e}`,
-  
-  
-        
+
+
+
         })),
         pageCount: 11
       },
@@ -83,18 +83,18 @@ module.exports = [{
     delay: 1000,
     error: {}
   }, {
-    api: '/mock/api/v3/performance/comprehensive/chart/monthOrYear',
+    api: '/mock/api/v3/performance/comprehensive/Chart/monthOrYear',
     method: 'post',
     response: {
       "code": "10000",
       "message": "请求成功",
       "data": [1,2,3,4,5,6,7,8,9,10,11,12].map((e,i)=>({
-        
+
           thatYearData: `${e+1}00`,
           lastYearData: `${e}00`,
           yearOnYear: `${e}%`,
           month: `${e}月`,
-        
+
       })),
 
       "serviceCode": "3.0"
@@ -108,10 +108,10 @@ module.exports = [{
       "code": "10000",
       "message": "请求成功",
       "data": {
-        monthPowerData: [1,2,3,4,5,6,7,8,9,10,11,12].map((e,i)=>({      
+        monthPowerData: [1,2,3,4,5,6,7,8,9,10,11,12].map((e,i)=>({
           monthPower: `${e}0`,
-          monthPalnRate: `${e}%`,       
-          month: `${e}月`,       
+          monthPalnRate: `${e}%`,
+          month: `${e}月`,
       })),
         planRate: '20',
 
@@ -122,7 +122,7 @@ module.exports = [{
     delay: 1000,
     error: {}
   }, {
-    api: '/mock/api/v3/performance/comprehensive/chart/year',
+    api: '/mock/api/v3/performance/comprehensive/Chart/year',
     method: 'post',
     response: {
       "code": "10000",

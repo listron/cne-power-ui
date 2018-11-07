@@ -172,8 +172,9 @@
           .dataGraph{
             display: flex;
             flex-direction: row;
-            width: 100%;
+            flex: 1;
             height: 300px;
+            margin-right: 24px;
             >div:nth-child(1){
               flex: 6;
             }

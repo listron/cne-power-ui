@@ -122,6 +122,7 @@ class TimeSelect extends React.Component {
           </Radio.Group>
         </div>
         {timeStyle === 'day' && <MonthPicker 
+          // format="YYYY年MM月"
           value={moment(startTime)} 
           onChange={this.onMonthSelect} 
           placeholder="选择月份" 

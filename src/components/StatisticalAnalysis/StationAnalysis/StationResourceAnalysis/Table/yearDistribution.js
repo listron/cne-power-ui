@@ -20,7 +20,7 @@ class TableGraph extends React.Component {
         dataIndex: item,
         key: item,
         sorter: (a, b) => a.item - b.item,
-        width: 100,
+        width: 90,
         render: text => (text || text === 0) ? text : '--'
       }
     })
@@ -29,8 +29,8 @@ class TableGraph extends React.Component {
         title: '瞬时辐射区间',
         dataIndex: 'radiationInterval',
         key: 'radiationInterval',
-        width: 110,
-        fixed: 'left',
+        width: 120,
+        // fixed: 'left',
         sorter: (a, b) => a.lastYearData - b.lastYearData,
         render: text => (text || text === 0) ? text : '--'
       }, {
@@ -54,7 +54,7 @@ class TableGraph extends React.Component {
         bordered 
         dataSource={data} 
         pagination={false} 
-        scroll={{ x:'150%' , y: 220 }}
+        scroll={{ x:'150%' , y: 151 }}
         size="small" 
         onRow={(record) => { return { onMouseEnter: this.onMouseEnter } }} />
       </div>

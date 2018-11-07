@@ -33,22 +33,19 @@ class WeatherDayChart extends React.Component {
     const { graphId, yAxisName, xAxisName, yData, xData, title, hasData } = param;
 
     const targetChart = echarts.init(document.getElementById(graphId));
-    let color = ["#f9b600", '#999999', '#199475', '#c7ceb2', '#a42b2c', '#ceebe0']
+    let color=['#ceebe0','#c7ceb2','#199475','#a42b2c', '#dfdfdf',"#f9b600"]
     let seriesData = [];
-    let legendData=[];
     yData.forEach(e => {
       seriesData.push({
         name: this.getName(e.weather),
-        type: 'bar',
         barWidth: 13,
-        data: [e.temp]
+        value: [e.temp],
+        itemStyle:{
+          color:color[+e.weather]
+        }
       })
-      legendData.push({
-        name: this.getName(e.weather),
-      })
-
     })
-    const confluenceTenMinGraphic = hasData ? hiddenNoData : showNoData;
+    const confluenceTenMinGraphic = (hasData || hasData === false) && (hasData === true ? hiddenNoData : showNoData) || " ";
     const targetMonthOption = {
       graphic: confluenceTenMinGraphic,
       tooltip: {
@@ -126,7 +123,11 @@ class WeatherDayChart extends React.Component {
           color: "#666"
         }
       },
-      series: seriesData
+      series: {
+        name:'天气',
+        type:"bar",
+        data:seriesData
+      }
     };
     setTimeout(() => {
       targetChart.resize();
