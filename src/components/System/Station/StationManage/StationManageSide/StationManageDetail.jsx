@@ -128,9 +128,7 @@ class StationManageDetail extends Component {
   render(){
     const { stationDetail } = this.props;
     const { showWarningTip, warningTipText } = this.state;
-    stationDetail.stationType = 0;
     const baseInfo = baseFun(stationDetail);
-  
     const connectionPriceInfo = connectionPriceFun(stationDetail);
     const otherInfo = otherFun(stationDetail);
     const stationBelongInfo = stationBelongFun(stationDetail);
