@@ -587,7 +587,7 @@ class SingleStationStatistic extends React.Component {
                 <div className={styles.dataGraph}>
                   <LightResource
                     graphId={'MonthlightResource'}
-                    yAxisName={'辐射总量 (万kWh)'}
+                    yAxisName={'辐射总量 (MJ/㎡)'}
                     xAxisName={'辐射总量'}
                     dateType={dateType}
                     title="光资源同比"
