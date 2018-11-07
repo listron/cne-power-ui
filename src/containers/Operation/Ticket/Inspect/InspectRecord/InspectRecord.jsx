@@ -50,6 +50,8 @@ class inspectRecord extends Component {
 
   render() {
     const { showWarningTip, warningTipText } = this.state;
+    const{inspectDeviceType}=this.props;
+    // console.log(inspectDeviceType);
     return (
       <div className={styles.inspectCreate}>
         {showWarningTip && <WarningTip style={{ marginTop: '250px', width: '210px', height: '88px' }} onCancel={this.onCancelWarningTip} onOK={this.onConfirmWarningTip} value={warningTipText} />}
@@ -72,13 +74,13 @@ const mapStateToProps = (state) => ({
 })
 const mapDispatchToProps = (dispatch) => ({
   onChangeFilter: payload => dispatch({type:ticketAction.CHANGE_INSPECT_STORE_SAGA, payload}),
-  getStationDeviceTypes: params => dispatch({
-    type: commonAction.getStationDeviceTypes,
-    payload: {
-      params, 
-      deviceTypeAction: ticketAction.GET_INSPECT_FETCH_SUCCESS,
-      resultName: 'stationDeviceTypes'
-    }
-  }),
+  // getStationDeviceTypes: params => dispatch({
+  //   type: commonAction.getStationDeviceTypes,
+  //   payload: {
+  //     params, 
+  //     deviceTypeAction: ticketAction.GET_INSPECT_FETCH_SUCCESS,
+  //     resultName: 'stationDeviceTypes'
+  //   }
+  // }),
 })
 export default connect(mapStateToProps, mapDispatchToProps)(inspectRecord);

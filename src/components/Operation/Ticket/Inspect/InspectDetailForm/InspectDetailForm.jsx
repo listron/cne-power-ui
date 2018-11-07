@@ -20,6 +20,8 @@ class InspectDetailForm extends Component {
     onCloseInspectDetail: PropTypes.func,
     transformDefect: PropTypes.func,
     onDeleteAbnormal: PropTypes.func,
+    changeInspectStore: PropTypes.func,
+    getInspectDetailRecord: PropTypes.func,
     getInspectStandard: PropTypes.func,
     inspectStandard: PropTypes.object,
     setInspectCheck: PropTypes.func,
@@ -118,12 +120,12 @@ class InspectDetailForm extends Component {
             <div className={styles.text}>巡检处理</div>
             <div className={styles.border}></div>
           </div>
-          <Button className={styles.transferBtn} onClick={this.onTransformDefect} disabled={abnormalIds.size===0}>转工单</Button>
-          <div style={{color:'#666'}}>
+          <Button className={styles.transferBtn} onClick={this.onTransformDefect} disabled={abnormalIds.size === 0}>转工单</Button>
+          <div style={{ color: '#666' }}>
             （请先选择异常设备，复选框置灰为不可选）
           </div>
           <Button className={styles.checkBtn} onClick={this.onInspectCheck}>验收</Button>
-          <div style={{color:'#666'}}>（确认验收，请点击“验收”按钮）</div>
+          <div style={{ color: '#666' }}>（确认验收，请点击“验收”按钮）</div>
         </div>
       )
     } else {
@@ -143,61 +145,74 @@ class InspectDetailForm extends Component {
   }
 
   render() {
-    const { inspectDetail,onChangeShowContainer } = this.props;
+    const { inspectDetail, onChangeShowContainer, changeInspectStore } = this.props;
     const progressData = inspectDetail.get('processData');
+    const inspectId = inspectDetail.get('inspectId');
+    //是为了把此工单里的设备名以及设备code进行组装，传到巡检记录详情里供筛选框使用
+    const deviceTypeCodes = inspectDetail.get('deviceTypeCodes') && inspectDetail.get('deviceTypeCodes').split(',');
+    const deviceTypeNames = inspectDetail.get('deviceTypeNames') && inspectDetail.get('deviceTypeNames').split(',');
+    let inspectDeviceType = [];
+    if (deviceTypeCodes) {
+      for (let i = 0; i < deviceTypeCodes.length; i++) {
+        inspectDeviceType.push({ "deviceTypeCodes": deviceTypeCodes[i], "deviceTypeNames": deviceTypeNames[i] })
+      }
+    }
     const status = inspectDetail.get('inspectStatus');
     const { showWarningTip, warningTipText } = this.state;
-
-
     return (
-  
-        <div className={styles.detailWrap}>
-          {showWarningTip && <WarningTip style={{ marginTop: '250px', width: '210px', height: '88px' }} onCancel={this.onCancelWarningTip} onOK={this.onConfirmWarningTip} value={warningTipText} />}
-          <div className={styles.inspectDetail}>
-            <div className={styles.header}>
-              <div className={styles.text}>{this.renderTitle()}</div>
-              <div className={styles.action}>
-                <i className="iconfont icon-last" onClick={this.props.onPrev} />
-                <i className="iconfont icon-next" onClick={this.props.onNext} />
-                <Icon type="arrow-left" className={styles.backIcon} onClick={this.onCancelEdit} />
+
+      <div className={styles.detailWrap}>
+        {showWarningTip && <WarningTip style={{ marginTop: '250px', width: '210px', height: '88px' }} onCancel={this.onCancelWarningTip} onOK={this.onConfirmWarningTip} value={warningTipText} />}
+        <div className={styles.inspectDetail}>
+          <div className={styles.header}>
+            <div className={styles.text}>{this.renderTitle()}</div>
+            <div className={styles.action}>
+              <i className="iconfont icon-last" onClick={this.props.onPrev} />
+              <i className="iconfont icon-next" onClick={this.props.onNext} />
+              <Icon type="arrow-left" className={styles.backIcon} onClick={this.onCancelEdit} />
+            </div>
+          </div>
+          <div className={styles.content} >
+            <div className={styles.left} >
+              <div className={styles.basic} >
+                <InspectBasicInfo basicInfo={inspectDetail} />
+              </div>
+              <div className={styles.abnormal} >
+                <InspectAbnormal
+                  abnormalItems={inspectDetail.get('abnormalData')}
+                  status={inspectDetail.get("inspectStatus")}
+                  onDeleteAbnormal={this.props.onDeleteAbnormal}
+                  getInspectStandard={this.props.getInspectStandard}
+                  inspectDetail={this.props.inspectDetail}
+                  inspectStandard={this.props.inspectStandard}
+                  selectedIds={this.state.abnormalIds}
+                  onSelectItem={this.onSelectItem}
+                />
               </div>
             </div>
-            <div className={styles.content} >
-              <div className={styles.left} >
-                <div className={styles.basic} >
-                  <InspectBasicInfo basicInfo={inspectDetail} />
-                </div>
-                <div className={styles.abnormal} >
-                  <InspectAbnormal
-                    abnormalItems={inspectDetail.get('abnormalData')}
-                    status={inspectDetail.get("inspectStatus")}
-                    onDeleteAbnormal={this.props.onDeleteAbnormal}
-                    getInspectStandard={this.props.getInspectStandard}
-                    inspectDetail={this.props.inspectDetail}
-                    inspectStandard={this.props.inspectStandard}
-                    selectedIds={this.state.abnormalIds}
-                    onSelectItem={this.onSelectItem}
-                  />
-                </div>
+            <div className={styles.right} >
+              <div className={styles.timeLines}>
+                <InspectTimeLine
+                  processData={progressData}
+                  status={status}
+                  deviceTypeName={inspectDetail.get('deviceTypeNames')}
+                  abnormalItems={inspectDetail.get('abnormalData')}
+                  onChangeShowContainer={onChangeShowContainer}
+                  getInspectDetailRecord={this.props.getInspectDetailRecord}
+                  changeInspectStore={changeInspectStore}
+                  inspectId={inspectId}
+                  inspectDeviceType={inspectDeviceType}
+
+                />
               </div>
-              <div className={styles.right} >
-                <div className={styles.timeLines}>
-                  <InspectTimeLine
-                    processData={progressData}
-                    status={status}
-                    deviceTypeName={inspectDetail.get('deviceTypeNames')}
-                    abnormalItems={inspectDetail.get('abnormalData')} 
-                    onChangeShowContainer={onChangeShowContainer}                  
-                  />
-                </div>
-                <div className={styles.form} >
-                  {this.renderForm()}
-                </div>
+              <div className={styles.form} >
+                {this.renderForm()}
               </div>
             </div>
           </div>
         </div>
-);
+      </div>
+    );
   }
 }
 

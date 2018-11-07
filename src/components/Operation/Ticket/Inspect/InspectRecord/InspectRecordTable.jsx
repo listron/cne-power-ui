@@ -119,16 +119,11 @@ class InspectRecordTable extends Component {
       key: 'inspectName',
       sorter: true,
     }, {
-      title: '开始时间',
+      title: '记录时间',
       dataIndex: 'stationName',
       key: 'stationName',
       sorter: true,
-    }, {
-      title: '结束时间',
-      dataIndex: 'deviceTypeName',
-      key: 'deviceTypeName',
-      sorter: true,
-    }, {
+    },  {
       title: '巡检状态',
       dataIndex: 'abnormalNum',
       key: 'abnormalNum',
@@ -137,7 +132,7 @@ class InspectRecordTable extends Component {
       title: '异常设备类型',
       dataIndex: 'startTime',
       key: 'startTime',
-      sorter: true,
+      // sorter: true,
     }, {
       title: '异常设备名称',
       dataIndex: 'checkTime',
@@ -145,7 +140,7 @@ class InspectRecordTable extends Component {
       render: (text, record) => {
         return text ? text : '--'
       },
-      sorter: true,
+      // sorter: true,
     },{
       title: '缺陷类型',
       dataIndex: '1',
@@ -153,7 +148,7 @@ class InspectRecordTable extends Component {
       render: (text, record) => {
         return text ? text : '--'
       },
-      sorter: true,
+      // sorter: true,
     },{
       title: '缺陷描述',
       dataIndex: '22',
@@ -161,21 +156,8 @@ class InspectRecordTable extends Component {
       render: (text, record) => {
         return text ? text : '--'
       },
-      sorter: true,
-    }, {
-      title: '无异常描述',
-      dataIndex: '33',
-      key: '33',
-      sorter: true,
-      render: (value, record, index) => (
-        <div className={styles.inspectStatus} >
-          <span>{getStatus(value)}</span>
-          <div className={styles.warning} >
-            {record.isOvertime === '0' ? <div className={styles.overTime}>超时</div> : null}
-          </div>
-        </div>
-      ),
-    }, {
+      // sorter: true,
+    },  {
       title: '查看照片',
       render: (text, record) => (
         <span>

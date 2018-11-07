@@ -52,4 +52,9 @@ export const ticketAction = {
     CHECK_BATCH_INSPECT_SAGA: Symbol('CHECK_BATCH_INSPECT_SAGA'),
     TRANSFORM_DEFECT_SAGA: Symbol('TRANSFORM_DEFECT_SAGA'),
     SET_INSPECT_FAIL: Symbol('SET_INSPECT_FAIL'),
+    getInspectDetailRecord: Symbol('getInspectDetailRecord'),
+    
+
+
+
 };

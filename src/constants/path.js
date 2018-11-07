@@ -81,6 +81,7 @@ export default {
       deleteAbnormal: '/v3/inspect/deleteabnormal',
       getInspectStandard:'/v3/inspect/getstandard',
       inspectCheckBatch:'/v3/inspect/check/batch',
+      getInspectDetailRecord:'/v3/inspect/record',
     },
     operation: { // 运维管理
       getDayReportList: '/v3/performance/dailyreportlist', //获取各电站日报统计列表
