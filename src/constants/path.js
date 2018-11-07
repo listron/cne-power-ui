@@ -19,6 +19,7 @@ export default {
     getStationPoints: '/v3/management/devicepointcode', // 电站(必填) 设备类型，设备型号，获取所有测点基本信息
     findDeviceExist: '/v3/performance/queryByDeviceName', // 验证设备是否存在
     getLostGenType: '/v3/faulttype/getlist', // 故障损失类型
+    getStationBelongTypes: '/v3/management/total', // 获取电站可能的所属的各种分类信息
     // getRefreshToken: '/v3/oauth/token' --todo 根据过期token中携带的refreshToken获取新token接口。
   },
   APISubPaths: {

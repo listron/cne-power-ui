@@ -289,6 +289,21 @@ function *getLostGenType(action){ // 根据电站类型等指标查询电站故�
   }
 }
 
+function *getStationBelongTypes(action){ // 获取电站可能的所属的各种分类信息
+  const { payload } = action;
+  const url = `${Path.basePaths.APIBasePath}${Path.commonPaths.getStationBelongTypes}`;
+  try{
+    const { actionName, resultName } = payload;
+    const response = yield call(axios.get, url);
+    yield put({
+      type: actionName,
+      payload: { [resultName]: response.data.data || {}}
+    })
+  }catch(error){
+    message.error('获取电站类型失败!');
+  }
+}
+
 /*  --- todo 待后台开发refreshtoken接口后，解开注释并进行refresh token的替换。
   export function* refreshToken(action){ //根据当前的refresh token获取刷新token并替换
     const { payload } = action;
@@ -334,4 +349,6 @@ export function* watchCommon() {
   yield takeLatest(commonAction.getDeviceModel, getDeviceModel);
   yield takeLatest(commonAction.getPoints, getPoints);
   yield takeLatest(commonAction.getDevices, getDevices);
+  yield takeLatest(commonAction.getStationBelongTypes, getStationBelongTypes);
+  
 }

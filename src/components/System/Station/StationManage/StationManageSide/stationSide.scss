@@ -136,6 +136,30 @@
               overflow: hidden;
             }
           }
+          .windInfo{
+            display: flex;
+            width: 100%;
+            justify-content: flex-end;
+            line-height: 30px;
+            height: 30px;
+            .titleStart{
+              width: 215px;
+              margin-right: 12px;
+              text-align: right;
+            }
+            .valueStart{
+              width: calc(33.33% - 227px);
+            }
+            .titleEnd{
+              width: 215px;
+              margin-right: 12px;
+              text-align: right;
+            }
+            .valueEnd{
+              width: calc(33.33% - 162px);
+            }
+            
+          }
         }
       }
     }

@@ -25,6 +25,7 @@ class StationManage extends Component {
     getStationList: PropTypes.func, // 获取电站列表信息
     getAllDepartmentData: PropTypes.func, // 企业下所有部门
     resetStore: PropTypes.func, // 重置数据
+    getStationBelongTypes: PropTypes.func,
   }
   constructor(props) {
     super(props);
@@ -44,6 +45,7 @@ class StationManage extends Component {
       orderField: '',
       orderCommand: '',
     });
+    this.props.getStationBelongTypes()
     this.props.getAllDepartmentData({ enterpriseId }) // 2.请求所有部门
   }
 
@@ -112,6 +114,14 @@ const mapDispatchToProps = (dispatch) => ({
       params, 
       actionName: stationManageAction.GET_STATION_MANAGE_FETCH_SUCCESS,
       resultName: 'allDepartmentData'
+    }
+  }),
+  getStationBelongTypes: params => dispatch({
+    type: commonAction.getStationBelongTypes,
+    payload: {
+      params, 
+      actionName: stationManageAction.GET_STATION_MANAGE_FETCH_SUCCESS,
+      resultName: 'stationBelongInfo'
     }
   }),
 });

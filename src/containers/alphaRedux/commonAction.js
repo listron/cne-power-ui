@@ -9,6 +9,7 @@ export const commonAction = {
   
   getDevices: Symbol('getDevices'),
   getPartition: Symbol('getPartition'),
+  getStationBelongTypes: Symbol('getStationBelongTypes'), // 获取电站可能的所属的各种分类信息
   REFRESHTOKEN_SAGA: Symbol('REFRESHTOKEN_SAGA'), //refreshToken -get 
 
   getAllDepartment: Symbol('getAllDepartment'), // 获取企业下所有部门(含层级关系);

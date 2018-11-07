@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react';
 import DetailInfoPart from './DetailInfoPart';
-import { baseFun, connectionPriceFun, otherFun } from './detailInformation';
+import { baseFun, stationBelongFun, connectionPriceFun, otherFun } from './detailInformation';
 import WarningTip from '../../../../Common/WarningTip';
 import { Icon } from 'antd';
 import PropTypes from 'prop-types';
@@ -128,12 +128,16 @@ class StationManageDetail extends Component {
   render(){
     const { stationDetail } = this.props;
     const { showWarningTip, warningTipText } = this.state;
+    stationDetail.stationType = 0;
     const baseInfo = baseFun(stationDetail);
   
     const connectionPriceInfo = connectionPriceFun(stationDetail);
     const otherInfo = otherFun(stationDetail);
+    const stationBelongInfo = stationBelongFun(stationDetail);
     const departmentList = stationDetail.departmentList || [];
     const departmentInfo = this.departmentInfoFun(departmentList);
+    const isPv = stationDetail.stationType === 0;
+    const isWind = stationDetail.stationType === 0;
     return (
       <div className={styles.stationManageDetail}>
         {showWarningTip && <WarningTip onOK={this.confirmWarningTip} value={warningTipText} />}
@@ -156,7 +160,20 @@ class StationManageDetail extends Component {
           </span>
         </div>
         <div className={styles.stationManageContent} >
-          <DetailInfoPart title="基本信息" infoArray={baseInfo} handler={this.editDetail} />
+          <DetailInfoPart 
+            title="基本信息" 
+            infoArray={baseInfo} 
+            handler={this.editDetail} 
+            extraInfo={
+              isWind? <div className={styles.windInfo}>
+                <span className={styles.titleStart}>可研报告轮毂高度年平均风速</span>
+                <span className={styles.valueStart}>{stationDetail.hubAnnualAverageSpeed || '--'}m/s</span>
+                <span className={styles.titleEnd}>可研报告轮毂高度年平均功率密度</span>
+                <span className={styles.valueEnd}>{stationDetail.hubAnnualAveragePower || '--'}W/㎡</span>
+              </div>: null
+            } 
+          />
+          {isPv && <DetailInfoPart title="电站分类" infoArray={stationBelongInfo} />}
           <DetailInfoPart title="并网信息及电价情况" infoArray={connectionPriceInfo} />
           <DetailInfoPart title="其他信息" infoArray={otherInfo} noBottomBorder />
         </div>
