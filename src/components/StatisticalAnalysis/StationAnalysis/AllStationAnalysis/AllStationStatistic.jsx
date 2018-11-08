@@ -171,7 +171,8 @@ class AllStationStatistic extends React.Component {
         userId,
         year: rangeYear,
         dateType: nextProps.dateType,
-        dataType: 'EqpGen'
+        dataType: 'EqpGen',
+        stationType
 
       })
       getAllStationStatisticTableData(
@@ -221,7 +222,8 @@ class AllStationStatistic extends React.Component {
         userId: userId,
         year: currentYear,
         dateType: nextProps.dateType,
-        dataType: 'EqpGen'
+        dataType: 'EqpGen',
+        stationType
       })
       getAllStationMonthPieData({
         userId: userId,
@@ -250,7 +252,8 @@ class AllStationStatistic extends React.Component {
           userId: userId,
           year: nextProps.year,
           dateType,
-          dataType: 'EqpGen'
+          dataType: 'EqpGen',
+          stationType
         })
         getAllStationStatisticTableData(
           {
@@ -316,7 +319,7 @@ class AllStationStatistic extends React.Component {
           <TabPane tab="光伏" key="1">
             <div className={styles.componentContainer}>
               <TimeSelect showDayPick={false} onChange={this.onTimeChange} />
-              <PlanCompletionRate dateType={dateType} allStationAvalibaData={allStationAvalibaData} allStationStatisticData={allStationStatisticData} getAllStationStatisticData={getAllStationStatisticData} year={year} />
+              <PlanCompletionRate dateType={dateType} stationType={stationType} allStationAvalibaData={allStationAvalibaData} allStationStatisticData={allStationStatisticData} getAllStationStatisticData={getAllStationStatisticData} year={year} />
               <TargetTabs {...this.props} />
             </div>
           </TabPane>

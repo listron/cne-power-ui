@@ -223,9 +223,11 @@ class ProductionAnalysis extends React.Component {
     timeObj.timeStyle === 'year' ? this.props.changeAllStationStore({ dateType: timeObj.timeStyle, year: [timeObj.startTime, timeObj.endTime] }) : this.props.changeAllStationStore({ dateType: timeObj.timeStyle, year: [timeObj.startTime] })
   }
   stationSelected = (stationSelect) => { // 存储选中的电站
-    this.props.changeAllStationStore({
-      stationCode: stationSelect[0].stationCode
-    })
+    const stationCode = stationSelect[0].stationCode
+    this.props.changeAllStationStore({ stationCode })
+    // this.props.changeAllStationStore({
+    //   stationCode: stationSelect[0].stationCode
+    // })
   }
   selectYear = () => {
     const { allStationAvalibaData } = this.props;
@@ -260,16 +262,18 @@ class ProductionAnalysis extends React.Component {
 
   render() {
     const { stationType, stations, dateType, year, stationCode, changeAllStationStore, allStationAvalibaData, productionPlanCompleteData, singleStationPowerData, singleStationBuyPowerData, singleStationSalePowerData, singleStationPlanRateData } = this.props;
+
     // 截止时间
     const statisticTime = moment().subtract(1, 'days').format('YYYY年MM月DD日');
     // 并网时间
     const stationItems = stations.toJS();
-    let station = stationCode ? stationItems.filter(e => e.stationCode.toString() === stationCode) : '';
-    const stationItem = stationItems && stationItems.filter(e => (e.stationCode.toString() === this.props.stationCode))[0];
+    let station = stationCode ? stationItems.filter(e => e.stationCode.toString() === stationCode.toString()) : '';
+    const stationItem = stationItems && stationItems.filter(e => (e.stationCode.toString() === stationCode.toString()))[0];
     const stationGridTime = stationItem ? moment(stationItem.onGridTime).format('YYYY年MM月DD日') : '--';
     //电站名-区域
     const provinceName = stationItem && stationItem.provinceName;
     const stationName = stationItem && stationItem.stationName;
+
     const currentYear = parseInt(year).toString();
     const lastYear = (parseInt(year) - 1).toString();
     const planSummary = productionPlanCompleteData && productionPlanCompleteData[0];
