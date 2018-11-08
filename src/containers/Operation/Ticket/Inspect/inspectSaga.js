@@ -386,7 +386,8 @@ function *inspectCheckBatch(action){
 }
 function *getInspectDetailRecord(action){
   const { payload } = action;
-  let url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.getInspectDetailRecord;
+  let url='/mock/operation/inspectionList';
+  //let url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.getInspectDetailRecord;
   yield put({type: ticketAction.TICKET_FETCH})
   try{
     const response = yield call(axios.get, url, {params: payload} )
@@ -394,7 +395,33 @@ function *getInspectDetailRecord(action){
       yield put({
         type: ticketAction.GET_INSPECT_FETCH_SUCCESS,
         payload: {
-          allStationAvalibaData: response.data.data||[],          
+          inspectDetailRecord: response.data.data.recordData||[],
+          totalCount:response.data.data.totalCount||0    
+        },
+      });     
+    }  else{
+      yield put({
+        type: ticketAction.SET_INSPECT_FAIL,
+        error: {
+          code: response.data.code,
+          message: response.data.message,
+        }
+      })
+    }
+  }catch(e){
+    console.log(e)
+  }
+}
+function *getInspectUsers(action){
+  let url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.getInspectUsers;
+  yield put({type: ticketAction.TICKET_FETCH})
+  try{
+    const response = yield call(axios.get, url )
+    if(response.data.code === '10000') {
+      yield put({
+        type: ticketAction.GET_INSPECT_FETCH_SUCCESS,
+        payload: {
+          inspectUsers: response.data.data||[],          
         },
       });     
     }  else{
@@ -426,4 +453,5 @@ export function* watchInspect() {
   yield takeLatest(ticketAction.GET_INSPECT_STANDARD_SAGA, getInspectStandard);
   yield takeLatest(ticketAction.CHECK_BATCH_INSPECT_SAGA, inspectCheckBatch);
   yield takeLatest(ticketAction.getInspectDetailRecord, getInspectDetailRecord);
+  yield takeLatest(ticketAction.getInspectUsers, getInspectUsers);
 }

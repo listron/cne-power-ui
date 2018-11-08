@@ -9,9 +9,8 @@ import bmap from 'echarts/extension/bmap/bmap';
 
 class GpsMap extends Component {
   static propTypes = {
-    allMonitorStation: PropTypes.object,
     testId: PropTypes.string,
-    stationDataList: PropTypes.array,
+    personnelGpsData: PropTypes.array,
      history: PropTypes.object,
   }
   constructor(props) {
@@ -22,20 +21,20 @@ class GpsMap extends Component {
   }
   
   componentDidMount() {
-    const { testId, stationDataList } = this.props;
+    const { testId, personnelGpsData } = this.props;
     const testChart = echarts.init(document.getElementById(testId));
-    this.setMapChart(testChart, stationDataList);
+    this.setMapChart(testChart, personnelGpsData);
   }
   
   componentWillReceiveProps(nextProps) {
-    const { testId, stationDataList } = nextProps;
-    if(this.props.stationDataList.length !== nextProps.stationDataList.length) {
+    const { testId, personnelGpsData } = nextProps;
+    if(this.props.personnelGpsData.length !== nextProps.personnelGpsData.length) {
       const testChart = echarts.init(document.getElementById(testId));
-      this.setMapChart(testChart, stationDataList);
+      this.setMapChart(testChart, personnelGpsData);
     }
   }
   
-  setMapChart = (testChart, stationDataList) => {
+  setMapChart = (testChart, personnelGpsData) => {
     const option = {
       bmap: {
         center: [116.46, 39.92],//中心点
@@ -175,7 +174,7 @@ class GpsMap extends Component {
           { name: 'dali',value: [116, 39.92]},
           { name: 'daliaa' ,value: [117, 39.92]},
         ],
-        // data: stationDataList,
+        // data: personnelGpsData,
         symbolSize:[10,10],
         label: {
           normal: {

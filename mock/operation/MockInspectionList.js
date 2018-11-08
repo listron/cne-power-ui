@@ -214,5 +214,32 @@ module.exports = [
     },
     delay:1000,
     error:{}
+  },
+  { 
+      api:'/mock/operation/inspectionList',
+      method:'get',
+      response:{
+        "code": "10000",
+        "message": "操作成功",
+        "data":  [ 1,2,3,4,5,6,7,8,9,10,11].map((e,i)=>(
+            {
+                "recordId": `${i}`,
+                "username": `${i}`,
+                "stationName": `${i}`,
+                "recordDate": `${i}`,
+                "recordStatus": i>6?0:1,
+                "deviceTypeName": `${i}`,
+                "deviceName": `${i}`,
+                "faultTypeName": `${i}`,
+                "recordDesc": `${i}`,
+                "phoneAddress":`${i}`,
+                "defectId": `${i}`,               
+            }
+        )),
+        "serviceCode": "3.0"
+    },
+    delay:1000,
+    error:{}
+
   }
 ]

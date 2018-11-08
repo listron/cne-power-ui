@@ -14,9 +14,14 @@ class InspectTimeLine extends Component {
   static propTypes = {
     status: PropTypes.string,
     processData: PropTypes.object,
+    inspectDeviceType: PropTypes.array,
     deviceTypeName: PropTypes.string,
+    inspectId: PropTypes.string,
     abnormalItems: PropTypes.object,
     onChangeShowContainer: PropTypes.func,
+    getInspectUsers: PropTypes.func,
+    getInspectDetailRecord: PropTypes.func,
+    changeInspectStore: PropTypes.func,
   }
 
   constructor(props) {
@@ -26,10 +31,12 @@ class InspectTimeLine extends Component {
     this.props.onChangeShowContainer({ container: 'inspectOrbit' });
   }
   onInspectRecord = () => {
+    const{inspectDeviceType,inspectId,getInspectDetailRecord,changeInspectStore,getInspectUsers}=this.props;
     this.props.onChangeShowContainer({ container: 'inspectRecord' });
     //在这发巡检记录的请求
-    // this.props.getInspectDetailRecord({inspectId:this.props.inspectId})
-    this.props.changeInspectStore({inspectDeviceType:this.props.inspectDeviceType})
+    getInspectDetailRecord({inspectId})
+    getInspectUsers()
+    changeInspectStore({inspectDeviceType:inspectDeviceType,pageNum:1,inspectId:inspectId})
   }
 
   renderIcon(item, isLast) {

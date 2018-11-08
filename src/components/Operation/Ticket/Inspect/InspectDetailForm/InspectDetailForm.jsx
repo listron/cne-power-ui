@@ -23,6 +23,7 @@ class InspectDetailForm extends Component {
     changeInspectStore: PropTypes.func,
     getInspectDetailRecord: PropTypes.func,
     getInspectStandard: PropTypes.func,
+    getInspectUsers: PropTypes.func,
     inspectStandard: PropTypes.object,
     setInspectCheck: PropTypes.func,
     onChangeShowContainer: PropTypes.func,
@@ -145,7 +146,7 @@ class InspectDetailForm extends Component {
   }
 
   render() {
-    const { inspectDetail, onChangeShowContainer, changeInspectStore } = this.props;
+    const { inspectDetail, onChangeShowContainer, changeInspectStore,getInspectDetailRecord,getInspectUsers } = this.props;
     const progressData = inspectDetail.get('processData');
     const inspectId = inspectDetail.get('inspectId');
     //是为了把此工单里的设备名以及设备code进行组装，传到巡检记录详情里供筛选框使用
@@ -198,10 +199,13 @@ class InspectDetailForm extends Component {
                   deviceTypeName={inspectDetail.get('deviceTypeNames')}
                   abnormalItems={inspectDetail.get('abnormalData')}
                   onChangeShowContainer={onChangeShowContainer}
+                  getInspectDetailRecord={getInspectDetailRecord}
                   getInspectDetailRecord={this.props.getInspectDetailRecord}
                   changeInspectStore={changeInspectStore}
                   inspectId={inspectId}
                   inspectDeviceType={inspectDeviceType}
+                  getInspectUsers={getInspectUsers}
+                  
 
                 />
               </div>

@@ -177,6 +177,9 @@ const mapDispatchToProps = (dispatch) => ({
   setInspectId: payload => dispatch({ type: ticketAction.SET_INSPECT_ID_SAGA, payload }),
   onDeleteAbnormal: payload => dispatch({ type: ticketAction.DELETE_ABNORMAL_SAGA, payload }),
   getInspectStandard: payload => dispatch({ type: ticketAction.GET_INSPECT_STANDARD_SAGA, payload}),
+  getInspectDetailRecord: payload => dispatch({ type: ticketAction.getInspectDetailRecord, payload}),
+  getInspectUsers: payload => dispatch({ type: ticketAction.getInspectUsers, payload}),
+  
 })
 
 export default connect(mapStateToProps,mapDispatchToProps)(InspectDetail);

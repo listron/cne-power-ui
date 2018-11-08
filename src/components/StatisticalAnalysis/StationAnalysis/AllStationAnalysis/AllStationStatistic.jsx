@@ -163,6 +163,7 @@ class AllStationStatistic extends React.Component {
           userId: userId,
           year: curYearPlan,
           dateType: nextProps.dateType,
+          stationType
         }
       )
       getAllStationMonthBarData({
@@ -202,6 +203,7 @@ class AllStationStatistic extends React.Component {
           userId: userId,
           year: currentTableYear,
           dateType: nextProps.dateType,
+          stationType
         }
       )
       getAllStationStatisticTableData(
@@ -244,6 +246,7 @@ class AllStationStatistic extends React.Component {
             userId: userId,
             year: curYearPlan,
             dateType,
+            stationType
           }
         )
         getAllStationMonthBarData({

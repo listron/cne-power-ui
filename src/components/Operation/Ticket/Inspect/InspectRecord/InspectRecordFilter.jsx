@@ -104,13 +104,19 @@ class InspectRecordFilter extends Component {
   render() {
     const { showFilter } = this.state;
     const CheckboxGroup = Checkbox.Group;
-    const { startDate, endDate, userId,DeviceTypeId, inspectDeviceType } = this.props;
-    //巡检人员的筛选
-    const inspectPersonList = [{ inspectUserName: '陈一', userId: '1' }, { inspectUserName: '王二', userId: '2' }, { inspectUserName: '张三', userId: '3' }, { inspectUserName: '小四', userId: '4' }];
-    const options = inspectPersonList.map((item, i) => ({
-      label: item.inspectUserName,
-      value: item.userId
+    const { startDate, endDate, userId,DeviceTypeId, inspectDeviceType, inspectUsers} = this.props;
+    console.log(inspectUsers);
+   
+    const options = inspectUsers.map((item, i) => ({
+      label: item&&item.name,
+      value: item&&item.id
     }));
+    //巡检人员的筛选
+    // const inspectPersonList = [{ inspectUserName: '陈一', userId: '1' }, { inspectUserName: '王二', userId: '2' }, { inspectUserName: '张三', userId: '3' }, { inspectUserName: '小四', userId: '4' }];
+    // const options = inspectPersonList.map((item, i) => ({
+    //   label: item.inspectUserName,
+    //   value: item.userId
+    // }));
     const inspectPersonArray = userId === '' ? [] : userId.split(',');
     //巡检记录的设备类型
     const inspectOptions = inspectDeviceType.map((item, i) => ({
@@ -148,7 +154,7 @@ class InspectRecordFilter extends Component {
           {showFilter === 'inspectUserName' &&
             <div className={styles.inspectUserFilter}>
               <span onClick={this.onReset} className={userId === '' ? styles.selected : styles.all}>不限</span>
-              <CheckboxGroup options={options} value={inspectPersonArray} defaultValue={['1']} onChange={this.onChange} />
+              <CheckboxGroup options={options} value={inspectPersonArray}  onChange={this.onChange} />
             </div>}
           {showFilter === 'deviceType' && 
           <div className={styles.inspectUserFilter}>
@@ -156,7 +162,7 @@ class InspectRecordFilter extends Component {
             <CheckboxGroup options={inspectOptions} value={inspectDeviceArray} defaultValue={['1']} onChange={this.onDeviceTypeChange} />
           </div>}
         </div>
-        <FilterItemValue {...this.props} inspectPersonList={inspectPersonList} inspectDeviceType={inspectDeviceType} />
+        <FilterItemValue {...this.props} inspectUsers={inspectUsers} inspectDeviceType={inspectDeviceType} />
 
       </div>
     );

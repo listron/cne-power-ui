@@ -126,6 +126,6 @@ const mapDispatchToProps = (dispatch) => ({
   getInspectIdList: payload => dispatch({ type: ticketAction.GET_INSPECT_ID_LIST_SAGA, payload }),
   getInspectDetail: payload => dispatch({ type: ticketAction.GET_INSPECT_DETAIL_SAGA, payload }),
   inspectCheckBatch: payload => dispatch({ type: ticketAction.CHECK_BATCH_INSPECT_SAGA, payload}),
-  getInspectDetailRecord: payload => dispatch({ type: ticketAction.getInspectDetailRecord, payload}),
+
 })
 export default connect(mapStateToProps, mapDispatchToProps)(InspectList);

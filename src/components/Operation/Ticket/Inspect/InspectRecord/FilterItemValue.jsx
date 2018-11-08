@@ -56,7 +56,7 @@ class FilteredItems extends Component {
       startDate: '',
       endDate: '',
       userId: '',
-      DeviceTypeId:'',
+      DeviceTypeId: '',
       inspectStatus: null,
     });
   }
@@ -64,9 +64,9 @@ class FilteredItems extends Component {
   render() {
     //inspectDeviceType是从巡检工单里传过来的设备类型，其中包括设备名以及设备code
     //inspectPersonList是用户名以及用户id
-    const { startDate, endDate, userId, inspectStatus, inspectPersonList,DeviceTypeId,inspectDeviceType } = this.props;
+    const { startDate, endDate, userId, inspectStatus, inspectUsers, DeviceTypeId, inspectDeviceType } = this.props;
     const inspectUserArray = userId.split(',');
-    const selectedInspectPerson = inspectPersonList.filter(e => inspectUserArray.some(m => m === e.userId.toString()));
+    const selectedInspectPerson = inspectUsers.filter(e => inspectUserArray.some(m => m === `${e.id}`));
     const inspectDevice = DeviceTypeId.split(',');
     const selectedInspectDevice = inspectDeviceType.filter(e => inspectDevice.some(m => m === e.deviceTypeCodes));
     //console.log(selectedInspectDevice);
@@ -87,12 +87,12 @@ class FilteredItems extends Component {
         {startDate !== '' && <Tag style={style} closable onClose={this.onCancelStartTime}>开始 {startDate}</Tag>}
         {endDate !== '' && <Tag style={style} closable onClose={this.onCancelEndTime}>结束 {endDate}</Tag>}
         {selectedInspectPerson.length > 0 && selectedInspectPerson.map((e, i) => (
-          <Tag style={style} closable onClose={() => this.onCancelUserId(e.userId)} key={i}>
-            {e && e.inspectUserName}
+          <Tag style={style} closable onClose={() => this.onCancelUserId(e.id)} key={i}>
+            {e && e.name}
           </Tag>
         ))}
         {inspectStatus && <Tag style={style} closable onClose={this.onCancelInspectStatus}>
-          {inspectStatus==='1'?'有异常':'无异常'}
+          {inspectStatus === '1' ? '有异常' : '无异常'}
         </Tag>}
         {selectedInspectDevice.length > 0 && selectedInspectDevice.map((e, i) => (
           <Tag style={style} closable onClose={() => this.onCancelDeviceType(e.deviceTypeCodes)} key={i}>

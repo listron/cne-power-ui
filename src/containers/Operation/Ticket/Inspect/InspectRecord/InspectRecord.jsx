@@ -74,6 +74,7 @@ const mapStateToProps = (state) => ({
 })
 const mapDispatchToProps = (dispatch) => ({
   onChangeFilter: payload => dispatch({type:ticketAction.CHANGE_INSPECT_STORE_SAGA, payload}),
+  getInspectDetailRecord: payload => dispatch({ type: ticketAction.getInspectDetailRecord, payload}),
   // getStationDeviceTypes: params => dispatch({
   //   type: commonAction.getStationDeviceTypes,
   //   payload: {
