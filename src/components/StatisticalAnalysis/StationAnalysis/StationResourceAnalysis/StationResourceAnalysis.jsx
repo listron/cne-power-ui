@@ -166,7 +166,7 @@ class ProductionAnalysis extends React.Component {
     const { stations, dateType, stationCode, year, month, resourceAvalibaData, resourcePlanData, PvCompareData, resourceMonthLight, selectYear, resourceMonthWeather, YearPvCompareData, resourceYearLight, resourceDayWeather, startTime, endTime } = this.props;
     let station = ''
     stationCode ? station = stations.toJS().filter(e => e.stationCode === stationCode) : '';
-    let dataAvalibale = resourceAvalibaData && resourceAvalibaData.filter(e => e.isTrue) || [];
+    // let dataAvalibale = resourceAvalibaData && resourceAvalibaData.filter(e => e.isTrue) || [];
     const currentYear = parseInt(year).toString();
     const lastYear = (parseInt(year) - 1).toString();
 
@@ -220,11 +220,7 @@ class ProductionAnalysis extends React.Component {
       })
       distributionTable.push(tableList)
     })
-
-    // const radiationSum2=resourceYearLight && resourceYearLight.map((e)=>e.radiationIntervalList.map(e=>e.radiationSum)
-    // )
-    // console.log("distributionTable",radiationSum2 && radiationSum2.join(',').split(','))
-
+    const distributionYearHasData=allData && allData.map(e=>e.radiationSum).some(e => e || e===0)
 
 
 
@@ -289,17 +285,23 @@ class ProductionAnalysis extends React.Component {
                 <span className={styles.stationIcon}>
                   <i className="iconfont icon-pvlogo" />
                 </span>
-                {`${station && station[0].stationName}-${station && station[0].regionName || "--"}`}
+                {`${station.length > 0 && station[0].stationName}-${station.length>0 && station[0].regionName || "--"}`}
                 <span className={styles.plan}>计划完成情况
                 {dateType === "day" && '(' + year + '年' + month + '月' + ')'}
                   {dateType === "month" && '(' + year + '年)'}
                 </span>
                 <div className={styles.choiceYear}>{
-                  dateType === "year" && dataAvalibale.length > 0 && dataAvalibale.map((item, index) => {
-                    return (<span key={index}
-                      className={+item.year === +selectYear ? "active" : ''}
-                      onClick={() => { this.selctYear(item.year) }}
-                    >{item.year}</span>)
+                  dateType === "year" && resourceAvalibaData && resourceAvalibaData.map((item, index) => {
+                    if(item.isTrue === false) {
+                      return (<span key={index}
+                        className={styles.noSelect}
+                      >{item.year}</span>)
+                    } else {
+                      return (<span key={index}
+                        className={+item.year === +selectYear ? "active" : ''}
+                        onClick={() => { this.selctYear(item.year) }}
+                      >{item.year}</span>)
+                    }
                   })
                 }
                 </div>
@@ -364,6 +366,7 @@ class ProductionAnalysis extends React.Component {
                     xAxisName={'瞬时辐射区间'}
                     graphId={'yearLightDistribution'}
                     dateType={dateType}
+                    hasData={distributionYearHasData}
                   />
                   :
                   <LightDistribution
@@ -423,7 +426,9 @@ class ProductionAnalysis extends React.Component {
                     data={dateType === 'day' ? weatherDayRate : weatherRate}
                     yAxisName={'光伏发电系统故障'}
                     hasData={dateType === 'day' ? (weatherRate || false) : (weatherDayRate || false)}
-                    xAxisName={'损失电量'} />
+                    xAxisName={'损失电量'} 
+                    hasData={dateType==="day"? WeatherDayHasData:WeatherStatusHasData}
+                    />
                 </div>
               </div>
             </div>

@@ -50,9 +50,9 @@ class barStack extends React.Component {
       }
     }
 
-    debugger;
+  
     const confluenceTenMinGraphic = (hasData || hasData === false) && (hasData === true ? hiddenNoData : showNoData) || " ";
-    console.log("90",confluenceTenMinGraphic)
+    //console.log("90",confluenceTenMinGraphic)
     const targetMonthOption = {
       graphic: confluenceTenMinGraphic,
       tooltip: {

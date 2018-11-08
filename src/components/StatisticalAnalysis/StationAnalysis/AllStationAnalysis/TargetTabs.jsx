@@ -28,13 +28,14 @@ class TargetTabs extends React.Component {
     super(props, context)
   }
   queryTargetData = (activeKey) => {
-    const { changeAllStationStore, getAllStationMonthBarData, getAllStationMonthPieData, year, dateType, } = this.props;
+    const { changeAllStationStore, getAllStationMonthBarData, getAllStationMonthPieData, year, dateType,stationType } = this.props;
     const userId = Cookie.get('userId')
     //console.log(activeKey);
     getAllStationMonthBarData({
       userId: userId,
       year,
       dateType,
+      stationType,
       dataType: activeKey
 
     })
@@ -56,11 +57,10 @@ class TargetTabs extends React.Component {
     const hasData=barGraphThatYear.some(e=>e || e===0) || barGraphLastYear.some(e=>e || e===0)|| barGraphYearOnYear.some(e=>e || e===0)|| barGraphRingRatio.some(e=>e || e===0)
 
     // console.log(barGraphThatYear,barGraphLastYear,barGraphmonth,barGraphYearOnYear);
-    const pieData = allStationMonthPieData.map((e, i) => ({ value: Number(e.monthPower), name: `${e.month}月` }));
+    const pieData = allStationMonthPieData.map((e, i) => ({ value: +e.monthPower===0 ? '':e.monthPower, name: `${e.month}月` }));
     //const pieData=[{value:22,name:'1月'},{value:28,name:'2月'},{value:52,name:'3月'},{value:42,name:'4月'}];
     const pieCompleteValue = Number(allStationMonthComplete)
     const pieComplete = [{ value: pieCompleteValue, name: '已完成' }, { value: 100 - pieCompleteValue, name: '未完成' }];
-    // console.log(pieData, pieComplete);
     const pieTargetData=allStationMonthBarData.map((e,i)=>({value:e.thatYearData,name:`${e.month}月`}))
     const pieHasData=pieTargetData.map(e=>e.value).some(e=>e ||e===0)
     // let test=0;
@@ -91,7 +91,7 @@ class TargetTabs extends React.Component {
                 dateType={dateType} 
                 hasData={hasData}
                 />
-                {dateType === 'month' ? <TargetStatisticPieGraph pieGraphId={'powerPie'} yAxisName={'发电量 (万kWh)'} pieData={pieData} pieComplete={pieComplete} /> : ''}
+                {dateType === 'month' ? <TargetStatisticPieGraph pieGraphId={'powerPie'} yAxisName={'发电量 (万kWh)'} pieData={pieData} pieComplete={pieComplete} hasData={false} /> : ''}
               </div>
               <StationStatisticList {...this.props} />
             </div>
@@ -112,7 +112,13 @@ class TargetTabs extends React.Component {
                 barGraphYearOnYear={barGraphYearOnYear} 
                 barGraphRingRatio={barGraphRingRatio} 
                 hasData={hasData} />
-                {dateType === 'month' ? <AllStationMonthPie allStationMonthpie={'radiationPie'} yAxisName={'辐射总量 (MJ/㎡)'} pieTargetData={pieTargetData} barGraphYearOnYear={barGraphYearOnYear} hasData={pieHasData} /> : ''}
+                {dateType === 'month' ? 
+                <AllStationMonthPie 
+                allStationMonthpie={'radiationPie'} 
+                yAxisName={'辐射总量 (MJ/㎡)'} 
+                pieTargetData={pieTargetData} 
+                barGraphYearOnYear={barGraphYearOnYear} 
+                hasData={pieHasData} /> : ''}
               </div>
             </div>
           </TabPane>
@@ -136,7 +142,7 @@ class TargetTabs extends React.Component {
               </div>
             </div>
           </TabPane>
-          <TabPane tab="PR" key="pr-pr">
+          <TabPane tab="PR" key="pr">
             <div className={styles.tabContainer}>
               <div className={styles.dataGraph}>
                 <BarGraph 
@@ -158,7 +164,7 @@ class TargetTabs extends React.Component {
               </div>
             </div>
           </TabPane>
-          <TabPane tab="损失电量" key="损失电量">
+          <TabPane tab="损失电量" key="lostPower">
             <div className={styles.tabContainer}>
               <div className={styles.dataGraph}>
                 <BarGraph 

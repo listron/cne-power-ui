@@ -155,7 +155,7 @@ class SingleStationStatistic extends React.Component {
       })
       getSingleStationMonthPieData({
         stationCode: nextProps.singleStationCode,
-        year: curYear
+        year: curYear,
       })
       getSingleStationPlanRateData({
         stationCode: nextProps.singleStationCode,
@@ -268,7 +268,7 @@ class SingleStationStatistic extends React.Component {
       })
       getSingleStationPowerEffectiveData({
         stationCode: nextProps.singleStationCode,
-        year: rangeYear,
+        year: selectYear,
         dateType: nextProps.dateType,
         sort: 'date',
         sortType: 'asc',
@@ -348,7 +348,7 @@ class SingleStationStatistic extends React.Component {
       })
       getSingleStationPowerEffectiveData({
         stationCode: nextProps.singleStationCode,
-        year: nextrRangeYear,
+        year: nextPropsSelectYear,
         dateType: nextProps.dateType,
         sort: 'date',
         sortType: 'asc',
@@ -408,8 +408,8 @@ class SingleStationStatistic extends React.Component {
     const dayCompleteRate = singleStationDayCompleteRateData.map(e=>e.yearOnYear)||[];
     const dayCompleteRateHasData=dayCompleteRateThatYearData.some(e=>e||e===0)||dayCompleteRateLastYearData.some(e=>e||e===0)||dayCompleteRate.some(e=>e||e===0)
     //发电量饼图
-    const pieData = singleStationMonthPieData.map((e, i) => ({ value: Number(e.monthPower), name: `${e.month}月` }));
-    const pieCompleteValue = Number(singleStationPlanRate)
+    const pieData = singleStationMonthPieData.map((e, i) => ({ value: +e.monthPower===0 ?'':e.monthPower, name: `${e.month}月` }));
+    const pieCompleteValue = Number(singleStationPlanRate) 
     const pieComplete = [{ value: pieCompleteValue, name: '已完成' }, { value: 100 - pieCompleteValue, name: '未完成' }];
     // console.log(pieData, pieComplete);
     //计划完成率
@@ -555,7 +555,9 @@ class SingleStationStatistic extends React.Component {
                     barGraphYearOnYear={barGraphYearOnYear}
                     hasData={barGraphHasData}
                   />
-                  <TargetStatisticPieGraph pieGraphId={'powerPie'} pieData={pieData} pieComplete={pieComplete} />
+                  <TargetStatisticPieGraph pieGraphId={'powerPie'} pieData={pieData} pieComplete={pieComplete}
+                  hasData={false}
+                  />
                 </div>
               </div>
               <div className={styles.bgStyle}>
