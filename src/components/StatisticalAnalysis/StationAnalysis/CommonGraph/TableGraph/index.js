@@ -58,7 +58,7 @@ class TableGraph extends React.Component {
         columns = [{
           title: '日期',
           dataIndex: 'date',
-          //width: 150,
+          width: 120,
           sorter: (a, b) => (a.date).localeCompare(b.date),
         }, {
           title: '计划发电量',
@@ -85,7 +85,7 @@ class TableGraph extends React.Component {
         columns = [{
           title: '日期',
           dataIndex: 'monthOrDay',
-          width: 120,
+          width: 100,
           sorter: (a, b) => (a.monthOrDay).localeCompare(b.monthOrDay),
         }, {
           title: lastYear,
@@ -164,24 +164,25 @@ class TableGraph extends React.Component {
         columns = [{
           title: '日期',
           dataIndex: 'date',
-          width: 110,
+          width: 90,
           sorter: (a, b) => (a.date).localeCompare(b.date),
         }, {
           title: '等效利用小时数',
           dataIndex: 'hours',
-          // width: 150,
+          width: 150,
           sorter: (a, b) => a.hours - b.hours,
         }, {
           title: '辐射总量',
           dataIndex: 'light',
-          // width: 150,
+          width: 150,
           sorter: (a, b) => a.light - b.light,
         }, {
           title: 'PR',
           dataIndex: 'pr',
-          // width: 150,
+          width: 150,
           defaultSortOrder: 'descend',
           sorter: (a, b) => a.pr - b.pr,
+          render: text => (text || text === 0) ? text + '%' : '--'
         }
         ];
         break;
@@ -189,7 +190,7 @@ class TableGraph extends React.Component {
         columns = [{
           title: '日期',
           dataIndex: 'date',
-          width: 150,
+          width: 120,
           sorter: (a, b) => (a.date).localeCompare(b.date),
         }, {
           title: lastYear,
@@ -268,7 +269,7 @@ class TableGraph extends React.Component {
         columns = [{
           title: '日期',
           dataIndex: 'date',
-          width: 200,
+          width: 120,
           sorter: (a, b) => (a.date) - (b.date),
         }, {
           title: '发电量',
@@ -289,7 +290,7 @@ class TableGraph extends React.Component {
         columns = [{
           title: '日期',
           dataIndex: 'date',
-          // width: 150,
+          width: 120,
           sorter: (a, b) => (a.date).localeCompare(b.date),
           render: text => (text || text === 0) ? text : '--'
         }, {

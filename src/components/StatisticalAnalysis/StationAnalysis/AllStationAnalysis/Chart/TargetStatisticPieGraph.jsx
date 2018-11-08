@@ -42,7 +42,6 @@ class TargetStatisticPieGraph extends React.Component {
           color: 'rgba(0, 0, 0, 0.65)',
           fontSize: 12,
         },
-        // formatter: "{a} <br/>{b}: {c} ({d}%)"
       },
       series: [
         {
@@ -54,24 +53,22 @@ class TargetStatisticPieGraph extends React.Component {
           label: {
             show:false,
             position: 'inner',
-            //formatter: '{b}: {d}',
           },
           labelLine: {
             normal: {
               show: false
+            },
+            emphasis:{
+              show:false
             }
           },
-          // data: [
-          //   {value: 679, name: '已完成'},
-          //   {value: 335, name: '未完成',},
-
-          // ]
+          hoverAnimation:false,
           data:pieComplete
         },
         {
           name: '发电量',
           type: 'pie',
-          color:['#a42b2c','#d48265','#91c7af','#749f83','#ca8622','#bda29a','#546570','#6e7074','#9b9b9b','#ceebe0'],
+          color:['#a42b2c','#d48265','#91c7af','#749f83','#ca8622','#efc17e','#d8907a','#bda29a','#546570','#6e7074','#9b9b9b','#ceebe0'],
           center: ['50%', '50%'],
           radius: ['40%', '55%'],
           label: {
@@ -82,20 +79,6 @@ class TargetStatisticPieGraph extends React.Component {
               show: false
             }
           },
-          // data: [
-          //   {value: 335, name: '1月'},
-          //   {value: 310, name: '2月'},
-          //   {value: 234, name: '3月'},
-          //   {value: 135, name: '4月'},
-          //   {value: 1048, name: '5月'},
-          //   {value: 251, name: '6月'},
-          //   {value: 147, name: '7月'},
-          //   {value: 102, name: '8月'},
-          //   {value: 135, name: '9月'},
-          //   {value: 1048, name: '10月'},
-          //   {value: 251, name: '11月'},
-          //   {value: 234, name: '12月'},
-          // ]
           data:pieData
         }
       ]
