@@ -267,8 +267,8 @@ class ProductionAnalysis extends React.Component {
     const statisticTime = moment().subtract(1, 'days').format('YYYY年MM月DD日');
     // 并网时间
     const stationItems = stations.toJS();
-    let station = stationCode ? stationItems.filter(e => e.stationCode.toString() === stationCode.toString()) : '';
-    const stationItem = stationItems && stationItems.filter(e => (e.stationCode.toString() === stationCode.toString()))[0];
+    let station = stationCode ? stationItems.filter(e =>`${e.stationCode}` === `${stationCode}`) : '';
+    const stationItem = stationItems && stationItems.filter(e => (`${e.stationCode}` === `${stationCode}`))[0];
     const stationGridTime = stationItem ? moment(stationItem.onGridTime).format('YYYY年MM月DD日') : '--';
     //电站名-区域
     const provinceName = stationItem && stationItem.provinceName;
