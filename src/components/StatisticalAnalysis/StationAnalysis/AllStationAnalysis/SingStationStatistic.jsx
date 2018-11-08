@@ -268,7 +268,7 @@ class SingleStationStatistic extends React.Component {
       })
       getSingleStationPowerEffectiveData({
         stationCode: nextProps.singleStationCode,
-        year: rangeYear,
+        year: selectYear,
         dateType: nextProps.dateType,
         sort: 'date',
         sortType: 'asc',
@@ -348,7 +348,7 @@ class SingleStationStatistic extends React.Component {
       })
       getSingleStationPowerEffectiveData({
         stationCode: nextProps.singleStationCode,
-        year: nextrRangeYear,
+        year: nextPropsSelectYear,
         dateType: nextProps.dateType,
         sort: 'date',
         sortType: 'asc',

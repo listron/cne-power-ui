@@ -21,13 +21,14 @@ class PlancompletionRate extends React.Component{
     handleTime = (e) => {
         const changeYear = Number(e.target.value);
        // console.log(changeYear);
-        const { getAllStationStatisticData, dateType } = this.props;
+        const { getAllStationStatisticData, dateType ,stationType} = this.props;
        const userId = Cookie.get('userId')
         getAllStationStatisticData(
           {
             userId: userId,
             year: changeYear,
             dateType,
+            stationType
           }
         )
 
