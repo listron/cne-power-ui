@@ -20,7 +20,7 @@ function StationReportColumn({ dayReportConfig, stationType }){
     <Col span={5} >
       <div className={styles.withBorderBottom}>年累计发电量({genUtil})</div>
       <Row >
-        <Col span={8}>逆变器<i className={styles.withRequired}>{requiredTargetObj.yearGenInverter && '*'}</i></Col>
+        <Col span={8}>{stationType > 0 ?'逆变器' :'风机机组' }<i className={styles.withRequired}>{requiredTargetObj.yearGenInverter && '*'}</i></Col>
         <Col span={8}>集电线路<i className={styles.withRequired}>{requiredTargetObj.yearGenIntegrated && '*'}</i></Col>
         <Col span={8}>上网电量<i className={styles.withRequired}>{requiredTargetObj.yearGenInternet && '*'}</i></Col>
       </Row>

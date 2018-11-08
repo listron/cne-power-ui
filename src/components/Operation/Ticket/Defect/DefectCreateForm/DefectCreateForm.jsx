@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import StationSelect from '../../../../Common/StationSelect';
 import ImgUploader from '../../../../Common/Uploader/ImgUploader';
-import { Form, Input, Button, Select, Switch, Radio } from 'antd';
+import { Form, Input, Button, Select, Switch, Radio, Cascader } from 'antd';
 import pathConfig from '../../../../../constants/path';
 import styles from './defectCreateForm.scss';
 import DeviceName from '../../../../Common/DeviceName';
@@ -37,6 +37,7 @@ class TmpForm extends Component {
     commonList: PropTypes.object,
     error: PropTypes.object,
     getSliceDevices: PropTypes.func,
+    getLostGenType: PropTypes.func,
     allSeries:PropTypes.object,
     firstPartitionCode:PropTypes.string,
   };
@@ -61,26 +62,44 @@ class TmpForm extends Component {
   }
 
   onStationSelected = (stations) => {
-    const stationCodes = (stations && stations[0] && stations[0].stationCode) || 0;
-    const stationType = stations && stations[0] && stations[0].stationType;
+    const selectedStation = stations && stations[0] || {};
+    const stationCodes = selectedStation.stationCode || 0;
+    const stationType = selectedStation.stationType;
     this.props.getStationDeviceTypes({ stationCodes });
-    this.props.getDefectTypes({ stationType });
+    this.props.getLostGenType({
+      stationType,
+      objectType:1
+    });
     this.props.changeCommonStore({ devices: [] });
-    this.props.form.setFieldsValue({ deviceTypeCode: null });
+    this.props.form.setFieldsValue({ deviceTypeCode: null, defectTypeCode: null });
   }
 
   onChangeDeviceType = (deviceTypeCode) => {
+    const { stations, form } = this.props;
+    const stationCode = form.getFieldValue('stations')[0].stationCode;
+    const selectedStationInfo = stations.find(e=>e.stationCode === stationCode) || {};
+    const stationType = selectedStationInfo.stationType; 
     let params = {
-      stationCode: this.props.form.getFieldValue('stations')[0].stationCode,
+      stationCode,
       deviceTypeCode
     };
     
     if(deviceTypeCode === 509){ //组串时，请求调整
-       this.props.getSliceDevices(params);
-     }else{
-       this.props.getDevices(params);
-       this.props.getStationAreas(params);
-     }
+        this.props.getSliceDevices(params);
+        this.props.getLostGenType({
+          stationType,
+          objectType:1,
+          deviceTypeCode
+        })
+      }else{
+        this.props.getDevices(params);
+        this.props.getStationAreas(params);
+        this.props.getLostGenType({
+          stationType,
+          objectType:1,
+          deviceTypeCode
+        })
+      }
  
   }
 
@@ -116,6 +135,7 @@ class TmpForm extends Component {
         delete values.imgHandle;
         let params = {
           ...values,
+          defectTypeCode: values.defectTypeCode[1],
           isContinueAdd,
           stationCode,
           stationType,
@@ -154,7 +174,6 @@ class TmpForm extends Component {
     return deviceType;
   }
 
-
   loadDeviceList = (areaCode) => {
     const { form, getDevices, getSliceDevices } = this.props;
     const deviceTypeCode = form.getFieldValue('deviceTypeCode');
@@ -170,6 +189,7 @@ class TmpForm extends Component {
     }
   }
 
+
   render() {
     let { stations, stationName, deviceTypes, devices, defectTypes, deviceItems, defectDetail, showContainer,allSeries,firstPartitionCode } = this.props;
     const { getFieldDecorator, getFieldValue } = this.props.form;
@@ -180,13 +200,31 @@ class TmpForm extends Component {
     const defaultStations = editDefect ? stations.filter(e => e.stationCode === defectDetail.stationCode) : [];
     const defaultDeviceType = editDefect ? deviceTypes.find(e => e.deviceTypeCode === defectDetail.deviceTypeCode) : null;
     const defaultDevice = editDefect ? devices.find(e => e.deviceCode === defectDetail.deviceCode) : null;
-    const defaultDefectType = editDefect ? defectTypes.find(e => e.defectTypeCode === defectDetail.defectTypeCode) : null;
     const imgDescribe = editDefect && defectDetail.photoAddress && defectDetail.photoAddress.split(',').filter(e => !!e).map((e, i) => ({
       uid: i,
       rotate: 0,
       status: 'done',
       thumbUrl: e,
-    }))
+    }));
+    let tmpGenTypes = [];
+    let defaultDefectType = [];
+    defectTypes.forEach(e=>e && e.list && e.list.length > 0 && tmpGenTypes.push(...e.list));
+    const groupedLostGenTypes = tmpGenTypes.map(ele=>{
+      let innerArr = {children: []};
+      innerArr.label= ele.name;
+      innerArr.value= ele.id;
+      ele && ele.list && ele.list.length > 0 && ele.list.forEach(innerInfo => {
+        if(editDefect && `${defectDetail.defectTypeCode}` === `${innerInfo.id}`){
+          defaultDefectType = [ele.id, innerInfo.id];
+        }
+        innerArr.children.push({
+          label: innerInfo.name,
+          value: innerInfo.id,
+        });
+      })
+      return innerArr;
+    })
+    const canSelectDefectType = getFieldValue('stations') && getFieldValue('deviceTypeCode');
     return (
       <Form className={styles.defectCreateForm}>
         <div className={styles.basicInfo}>
@@ -239,11 +277,16 @@ class TmpForm extends Component {
           <FormItem label="缺陷类型" colon={false}>
             {getFieldDecorator('defectTypeCode', {
               rules: [{ required: true, message: '请选择缺陷类型' }],
-              initialValue: defaultDefectType && defaultDefectType.defectTypeCode || undefined,
+              initialValue: defaultDefectType,
             })(
-              <Select style={{ width: 198 }} placeholder="请选择" disabled={defectTypes.length === 0}>
-                {defectTypes.map(e => (<Option key={e.defectTypeCode} value={e.defectTypeCode}>{e.defectTypeName}</Option>))}
-              </Select>
+              <Cascader
+                disabled={!canSelectDefectType}
+                style={{ width: 198 }}
+                options={groupedLostGenTypes}
+                expandTrigger="hover"
+                placeholder="请选择"
+                className={styles.lostTypeSelector}
+              />
             )}
           </FormItem>
           <FormItem label="缺陷级别" colon={false}>
@@ -252,10 +295,9 @@ class TmpForm extends Component {
               initialValue: editDefect && defectDetail.defectLevel || undefined,
             })(
               <Select style={{ width: 198 }} placeholder="请选择" disabled={defectTypes.length === 0}>
-                <Option value={1}>一级</Option>
-                <Option value={2}>二级</Option>
-                <Option value={3}>三级</Option>
-                <Option value={4}>四级</Option>
+                <Option value={1}>A级</Option>
+                <Option value={2}>B级</Option>
+                <Option value={3}>C级</Option>
               </Select>
             )}
           </FormItem>

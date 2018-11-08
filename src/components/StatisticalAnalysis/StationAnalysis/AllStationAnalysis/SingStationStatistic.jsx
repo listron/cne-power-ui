@@ -268,7 +268,7 @@ class SingleStationStatistic extends React.Component {
       })
       getSingleStationPowerEffectiveData({
         stationCode: nextProps.singleStationCode,
-        year: rangeYear,
+        year: selectYear,
         dateType: nextProps.dateType,
         sort: 'date',
         sortType: 'asc',
@@ -348,7 +348,7 @@ class SingleStationStatistic extends React.Component {
       })
       getSingleStationPowerEffectiveData({
         stationCode: nextProps.singleStationCode,
-        year: nextrRangeYear,
+        year: nextPropsSelectYear,
         dateType: nextProps.dateType,
         sort: 'date',
         sortType: 'asc',
@@ -364,7 +364,7 @@ class SingleStationStatistic extends React.Component {
     });
   }
   onTimeChange=(timeObj)=>{
-    console.log(timeObj);
+    // console.log(timeObj);
     timeObj.timeStyle === 'year' ? this.props.changeAllStationStore({ dateType: timeObj.timeStyle, year: [timeObj.startTime, timeObj.endTime] }) :this.props.changeAllStationStore({ dateType: timeObj.timeStyle, year: [timeObj.startTime] })
   }
   onClose = () => {
@@ -440,13 +440,12 @@ class SingleStationStatistic extends React.Component {
     }
     const LightHasData=hours.some(e=>e||e===0) ||light.some(e=>e||e===0)||pr.some(e=>e||e===0)
     //损失电量数据
-    const lostPowerThatYear = singleStationLostPowerData.map(e =>e.thatYearDat) || [];
+    const lostPowerThatYear = singleStationLostPowerData.map(e =>e.thatYearData) || [];
     const lostPowerLastYear = singleStationLostPowerData.map(e =>e.lastYearData) ||[];
     const lostPowerRingRatio = singleStationLostPowerData.map(e=> e.ringRatio) ||[];
     const lostPowermonth = singleStationLostPowerData.map(e => (`${e.date}${dateType === 'month' ? '月' :  ''}`));
     const lostPowerYearOnYear = singleStationLostPowerData.map(e => e.yearOnYear) ||[];
     const lostHasData=lostPowerThatYear.some(e=>e||e===0)||lostPowerLastYear.some(e=>e||e===0)||lostPowerRingRatio.some(e=>e||e===0)||lostPowerYearOnYear.some(e=>e||e===0)
-
     const { showStationSelect } = this.state;
     const stationItems = stations&&stations.toJS();
     const stationItem = stationItems.filter(e => (e.stationCode.toString() === singleStationCode))[0];
@@ -587,7 +586,7 @@ class SingleStationStatistic extends React.Component {
                 <div className={styles.dataGraph}>
                   <LightResource
                     graphId={'MonthlightResource'}
-                    yAxisName={'辐射总量 (万kWh)'}
+                    yAxisName={'辐射总量 (MJ/㎡)'}
                     xAxisName={'辐射总量'}
                     dateType={dateType}
                     title="光资源同比"

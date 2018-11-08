@@ -26,17 +26,18 @@ class AllStation extends Component {
     super(props);
   }
   componentDidMount() {
-    if(this.props.stationTypeTabs!=='2'){
-      this.props.getMonitorStation({ stationType: this.props.stationTypeTabs,getStationTypes:false })
+    if (this.props.stationTypeTabs !== '2') {
+      this.props.getMonitorStation({ stationType: this.props.stationTypeTabs, getStationTypes: false })
       this.stationInterval = setInterval(() => this.props.getMonitorStation({ stationType: this.props.stationTypeTabs }), 10000);
-    }else{
+    } else {
       this.props.getMonitorStation({ stationType: '2', getStationTypes: true });
+      this.stationInterval = setInterval(() => this.props.getMonitorStation({ stationType: '2' }), 10000);
     }
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.stationTypes !== this.props.stationTypes && nextProps.stationTypes !== '2') {
-      this.autoUpdate(nextProps.stationTypes);   
+      this.autoUpdate(nextProps.stationTypes);
     }
 
   }

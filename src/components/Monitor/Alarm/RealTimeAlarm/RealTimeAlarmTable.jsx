@@ -118,7 +118,6 @@ class RealTimeAlarmTable extends Component {
     });
   }
   tableChange = (pagination, filters, sorter) => {
-    console.log(sorter);
     this.setState({
       sortName: sorter.field,
       descend: sorter.order === 'descend'
@@ -165,7 +164,6 @@ class RealTimeAlarmTable extends Component {
     // }else if(maxPage < currentPage){ // 当前页已超出
     //   currentPage = maxPage;
     // }
-    console.log(tableSource);
     return tableSource;
   }
 
@@ -314,9 +312,6 @@ class RealTimeAlarmTable extends Component {
 
   renderTransferPopover(i) {
     const ticketInfo = this.props.ticketInfo;
-    //console.log(this.props.ticketInfo);
-    //  console.log(ticketInfo.operateTime);
-    //   console.log(moment(moment.utc(ticketInfo.operateTime).toDate()).local().format('YYYY-MM-DD HH:mm'));
 
     return (
       <div className={styles.detailInfo}>
