@@ -96,7 +96,7 @@ export const dataRuleFunc = (pointLength = 0, requiredName = '') => (rule, value
   if(isNaN(value)){
     callback('请输入数字');
   }else if(value){ // value存在，且为数字的字符串
-    let decimalPart = value.split('.')[1];
+    let decimalPart = `${value}`.split('.')[1];
     const errorData = decimalPart && decimalPart.length > pointLength;
     errorData && pointLength === 0 && callback('请输入整数');
     errorData && pointLength > 0 && callback(`不得超过${pointLength}位小数`);

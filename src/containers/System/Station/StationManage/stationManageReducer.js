@@ -19,6 +19,9 @@ var initState = Immutable.fromJS({
   stationDetail: {},// 电站详情
   allDepartmentData: [], // 所有部分列表信息
   stationBelongInfo: {}, // 电站的各种所属分类信息汇总。
+
+  cityData: [], // 市信息列表
+  countyData: [], // 市信息列表
 });
 
 const stationManageReducer = (state = initState, action) => {

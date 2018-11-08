@@ -27,7 +27,6 @@ const EditOtherInfo = ({stationDetail, form, ...restProps}) => {
       zoneValue: i,
     })
   }
-  console.log(timeZoneArr)
   return (<div style={{display: 'flex', flexWrap: 'wrap'}}>
     <FormItem label="有功控制能力" >
       {getFieldDecorator('automaticActiveControl',{

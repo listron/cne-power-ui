@@ -291,13 +291,28 @@ function *getLostGenType(action){ // 根据电站类型等指标查询电站故�
 
 function *getStationBelongTypes(action){ // 获取电站可能的所属的各种分类信息
   const { payload } = action;
-  const url = `${Path.basePaths.APIBasePath}${Path.commonPaths.getStationBelongTypes}`;
+  const url = `${APIBasePath}${commonPaths.getStationBelongTypes}`;
   try{
     const { actionName, resultName } = payload;
     const response = yield call(axios.get, url);
     yield put({
       type: actionName,
       payload: { [resultName]: response.data.data || {}}
+    })
+  }catch(error){
+    message.error('获取电站类型失败!');
+  }
+}
+
+function *getStationTargetInfo(action){ // 获取电站指定分类信息(省,市,县,分类等。)
+  const { payload } = action;
+  const url = `${APIBasePath}${commonPaths.getStationBelongTypes}`;
+  try{
+    const { actionName, resultName, params } = payload;
+    const response = yield call(axios.get, url, params);
+    yield put({
+      type: actionName,
+      payload: { [resultName]: response.data.data || []}
     })
   }catch(error){
     message.error('获取电站类型失败!');
@@ -350,5 +365,6 @@ export function* watchCommon() {
   yield takeLatest(commonAction.getPoints, getPoints);
   yield takeLatest(commonAction.getDevices, getDevices);
   yield takeLatest(commonAction.getStationBelongTypes, getStationBelongTypes);
+  yield takeLatest(commonAction.getStationTargetInfo, getStationTargetInfo);
   
 }

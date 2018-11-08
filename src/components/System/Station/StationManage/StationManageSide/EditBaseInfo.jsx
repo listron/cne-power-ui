@@ -1,19 +1,16 @@
 
-
-
-
-
 import React, { Component } from 'react';
 import { Button, Input, Form, Select } from 'antd';
+import StationMapPosition from './EditFormParts/StationMapPosition';
+import StationArea from './EditFormParts/StationArea';
 import styles from './stationSide.scss';
+import { dataRuleFunc } from './detailInformation';
 const FormItem = Form.Item;
 const { Option } = Select; 
-import { dataRuleFunc } from './detailInformation';
 
-
-
-const EditBaseInfo = ({stationDetail, form, stationBelongInfo }) => {
+const EditBaseInfo = ({stationDetail, form, stationBelongInfo, ...restProps }) => {
   const { getFieldDecorator } = form;
+  const { getStationTargetInfo, cityData, countyData } = restProps;
   const isPv =  stationDetail.stationType === 1;
   const isWind =  stationDetail.stationType === 0;
   const { coverType, oneLevelRegion, twoLevelRegion, provinces } = stationBelongInfo;
@@ -36,16 +33,20 @@ const EditBaseInfo = ({stationDetail, form, stationBelongInfo }) => {
       {getFieldDecorator('stationMapPosition',{
         initialValue: [stationDetail.longitude, stationDetail.latitude], // 经度，纬度
         rules: [{
-          required: true, 
-          message: '经纬度必填且不超过小数点后六位',
           validator:(rule,value,callback)=>{
-            console.log(rule)
-            console.log(value)
+            const [longitude, latitude] = value;
+            (!longitude && longitude!== 0) && callback('请输入经纬度');
+            (!latitude && latitude!== 0) && callback('请输入经纬度');
+            (isNaN(longitude) || isNaN(latitude)) && callback('经纬度需为数字');
+            let longitudePoints = `${longitude}`.split('.')[1];
+            let latitudePoints = `${latitude}`.split('.')[1];
+            longitudePoints && longitudePoints.length > 6 && callback('经纬度不超过6位小数');
+            latitudePoints && latitudePoints.length > 6 && callback('经纬度不超过6位小数');
             callback()
           }
         }]
       })(
-        <Input />
+        <StationMapPosition />
       )}
     </FormItem>
     {isPv && <FormItem label="覆盖类型" >
@@ -88,14 +89,27 @@ const EditBaseInfo = ({stationDetail, form, stationBelongInfo }) => {
       {getFieldDecorator('stationArea',{
         initialValue: [stationDetail.provinceCode, stationDetail.cityCode, stationDetail.countyCode],
         rules: [{
-          required: true, message: '选择所在省市',
+          validator:(rule,value,callback)=>{
+            console.log(value)
+            callback();
+            // const [longitude, latitude] = value;
+            // (!longitude && longitude!== 0) && callback('请输入经纬度');
+            // (!latitude && latitude!== 0) && callback('请输入经纬度');
+            // (isNaN(longitude) || isNaN(latitude)) && callback('经纬度需为数字');
+            // let longitudePoints = `${longitude}`.split('.')[1];
+            // let latitudePoints = `${latitude}`.split('.')[1];
+            // longitudePoints && longitudePoints.length > 6 && callback('经纬度不超过6位小数');
+            // latitudePoints && latitudePoints.length > 6 && callback('经纬度不超过6位小数');
+            // callback()
+          }
         }]
       })(
-        <Select style={{ width: '198px' }} >
-          {provinces && provinces.map(e=>(
-            <Option key={e.id} value={e.id}>{e.areaName}</Option>
-          ))}
-        </Select>
+        <StationArea 
+          getStationTargetInfo={getStationTargetInfo} 
+          provinces={provinces}
+          cityData={cityData} 
+          countyData={countyData} 
+        />
       )}
     </FormItem>
     <FormItem label="所属项目公司" >

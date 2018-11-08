@@ -124,6 +124,14 @@ const mapDispatchToProps = (dispatch) => ({
       resultName: 'stationBelongInfo'
     }
   }),
+  getStationTargetInfo: ({params, resultName}) => dispatch({ // 省市县
+    type: commonAction.getStationTargetInfo,
+    payload: {
+      params, 
+      actionName: stationManageAction.GET_STATION_MANAGE_FETCH_SUCCESS,
+      resultName,
+    }
+  }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(StationManage);

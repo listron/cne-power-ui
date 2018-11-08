@@ -10,21 +10,32 @@ import EditConnectNetInfo from './EditConnectNetInfo';
 import EditOtherInfo from './EditOtherInfo';
 const FormItem = Form.Item;
 const { Option } = Select; 
-// kankankankankanknfaknfklwenflkjewklfjewlkjflewjklfewjfewlk
 
 class EditForm extends Component {
   static propTypes = {
     loading: PropTypes.bool,
+    cityData: PropTypes.array,
+    countyData: PropTypes.array,
     form: PropTypes.object,
     stationBelongInfo: PropTypes.object,
     stationDetail: PropTypes.object,
     cancelEdit: PropTypes.func,
     saveStationDetail: PropTypes.func,
     confirmWarningTip: PropTypes.func,
+    getStationTargetInfo: PropTypes.func,
   }
 
-  constructor(props){
-    super(props);
+  componentDidMount(){
+    const { getStationTargetInfo, stationDetail } = this.props;
+    const { provinceCode, cityCode } = stationDetail;
+    provinceCode && getStationTargetInfo({
+      params: {dictionaryType: 4, areaId: provinceCode},
+      resultName: 'cityData'
+    })
+    cityCode && getStationTargetInfo({
+      params: {dictionaryType: 4, areaId: cityCode},
+      resultName: 'countyData'
+    })
   }
 
   cancelEdit = () => {
@@ -45,7 +56,7 @@ class EditForm extends Component {
   }
 
   render(){
-    const { stationDetail, loading, form, stationBelongInfo } = this.props;
+    const { stationDetail, loading, form, stationBelongInfo, getStationTargetInfo, cityData, countyData } = this.props;
     console.log(stationBelongInfo);
     return (
       <Form className={styles.editPart}>
@@ -57,7 +68,14 @@ class EditForm extends Component {
               <Button className={styles.save} onClick={this.saveStationInfo} loading={loading}>保存</Button>
             </div>
           </div>
-          <EditBaseInfo stationDetail={stationDetail} form={form} stationBelongInfo={stationBelongInfo} />
+          <EditBaseInfo 
+            stationDetail={stationDetail} 
+            form={form} 
+            stationBelongInfo={stationBelongInfo}
+            getStationTargetInfo={getStationTargetInfo}
+            cityData={cityData}
+            countyData={countyData}
+          />
           <EditStationBelong stationDetail={stationDetail} form={form} stationBelongInfo={stationBelongInfo} />
           <EditConnectNetInfo stationDetail={stationDetail} form={form} stationBelongInfo={stationBelongInfo} />
           <EditOtherInfo stationDetail={stationDetail} form={form} />
