@@ -1,0 +1,164 @@
+
+@import '../../../../../theme/theme.scss';
+.windStation{
+  background: #fff;
+  :global{
+    .ant-progress-inner{
+      background-color: #dfdfdf;
+    }
+  }
+  .pvStationTop{
+        display: flex;
+        flex-direction: column;
+        .pvStationTitle{
+          height: 60px;
+          line-height: 60px;
+          border-bottom: 1px solid #dfdfdf;
+          display: flex;
+          justify-content: space-between;
+          .pvStationName{
+            display: flex;
+            flex-direction: row;
+            position: relative;
+            .stationToggle{
+              display: flex;
+              position: relative;
+              cursor: pointer;
+            }
+            h3{
+              font-size: 18px;
+              color: $darkColor;
+              margin-right: 20px;
+            }
+            span{
+              color: $darkColor;
+              margin-right: 15px;
+            }
+            :global{
+              .anticon-swap{
+                color: $themeColor;
+                margin: 0 15px 0 20px; 
+                display: inline-block;
+                line-height: 60px;
+                font-size: 18px;
+              }
+              .ant-modal{
+                margin: 0;
+                top: 0;
+              }
+              .ant-modal-wrap{
+                position: absolute;
+                overflow: unset;
+                a{
+                  color: $themeColor;
+                }
+              }
+              .ant-modal-body{
+                padding: 10px 10px 40px 40px;
+              }
+            }
+          }
+          .backIcon{
+            border-left: 1px solid #dfdfdf;
+            width: 60px;
+            line-height: 60px;
+            text-align: center;
+            color: $darkColor;
+            cursor: pointer;
+            font-size: 18px;
+            display: block;
+          }
+        }
+        .trueTimeData{
+          height: 100px;
+          display: flex;
+          padding: 18px 25px;
+          color: $darkColor;
+          >div{
+            margin: 0 4px;
+          }
+          .pvlogo{
+            :global{
+              .iconfont {
+                display: block;
+                margin-top: 25px;
+                color: $themeColor;
+                cursor: pointer;
+                font-size: 18px;
+              }
+              .iconfont:hover{
+                color: $themeColor;
+              }
+             
+    
+    
+    
+    
+            }
+          }
+          .powerScale{
+            width: 215px;
+          }
+          .stationYearPlan{
+            display: flex;
+            align-items: center;
+    
+          }
+          .annualEnergyScale{
+            width: 230px;
+          }
+          div{
+            
+            .trueTimeValue{
+              font-size: 24px;
+              color: $themeColor;
+              display: flex;
+              justify-content: space-between;
+              line-height: 24px;
+              >div{
+                display: flex;
+                justify-content: space-between;
+              }
+              .iconStyle{
+                cursor: pointer;
+                :global{
+                  .iconfont{
+                    font-size: 16px;
+                  }
+                }
+              }
+            }
+            .trueTimeUnit{
+              margin-top: 21px;
+            }
+            .trueTimeDesc{
+              color: $darkColor;
+              display: flex;
+              justify-content: space-between;
+              
+            }
+          }
+          .yearPlanRate{
+            width: 80px;
+            height: 25px;
+            border-radius: 25px;
+            box-shadow:0 1px 2px 0 rgba(0,0,0,0.20);
+            color: $themeColor;
+            font-size: 18px;
+            text-align: center;
+            //margin-top: 20px;
+       
+          }
+        }
+      }
+
+  .outputPowerDiagram{
+        border-top: 1px solid #dfdfdf;
+        border-bottom: 1px solid #dfdfdf;
+        height: 300px;
+        padding: 0 20px;
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+  }
+}

@@ -8,7 +8,7 @@ import WindStation from './WindStation/WindStation';
 
 class SingleStationMain extends Component {
   static propTypes = {
-    stationType: PropTypes.number,
+    stationType: PropTypes.string,
   }
   constructor(props){
     super(props);
@@ -17,8 +17,8 @@ class SingleStationMain extends Component {
     const { stationType } = this.props;
     return (
       <div className={styles.singleStation}>
-        {stationType === 0 && <PvStation {...this.props} />}
-        {stationType === 1 && <WindStation {...this.props} />}
+        {stationType === '1' && <PvStation {...this.props} />}
+        {stationType === '0' && <WindStation {...this.props} />}
       </div>
     )
   }

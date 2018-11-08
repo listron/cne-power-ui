@@ -3,9 +3,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import PvStationTop from './PvStationTop';
-import OutputTenMin from './OutputTenMin';
-import PowerDiagramTenMin from './PowerDiagramTenMin';
-import CardSection from './CardSection';
+import OutputTenMin from '../SingleStationCommon/OutputTenMin';
+import PowerDiagramTenMin from '../SingleStationCommon/PowerDiagramTenMin';
+import CardSection from '../SingleStationCommon/CardSection';
 import styles from './pvStation.scss';
 import DeviceList from './DeviceList/DeviceList';
 import { Tabs, Radio } from 'antd';
@@ -32,7 +32,7 @@ class PvStation extends Component {
       hiddenStationList: false,
     }
   }
-  
+
   componentWillUnmount(){
     // this.props.changeSingleStationStore({ deviceTypeFlow: {} });
     // this.props.resetSingleStationStore();
@@ -131,7 +131,7 @@ class PvStation extends Component {
       const concentrateType = concentrateInver && concentrateConflu // 有集中光伏电站流程
       const distributeType = seriesInver && acConflu // 有分布光伏电站流程
       if(concentrateType){  // 有集中光伏电站流程-顶部为集中流程，底部为分布式居中
-        RowTwoButton = (<div> 
+        RowTwoButton = (<div>
           {this.createFlowButton(concentrateConflu.deviceTypeCode, concentrateConflu.deviceTypeName, 'innerItem', 'innerArrow',clickable.includes(concentrateConflu.deviceTypeCode))}
           {this.createFlowButton(concentrateInver.deviceTypeCode, concentrateInver.deviceTypeName, 'innerItem', 'hideArrow',clickable.includes(concentrateInver.deviceTypeCode))}
         </div>)
@@ -150,7 +150,7 @@ class PvStation extends Component {
       <div className={styles.pvStation}  >
         <PvStationTop {...this.props} stationCode={stationCode} hiddenStationList={this.state.hiddenStationList} />
         <div className={styles.outputPowerDiagram}>
-          <OutputTenMin {...this.props} />
+          <OutputTenMin {...this.props} yXaisName={'辐射(W/m²)'} />
           <PowerDiagramTenMin {...this.props} />
         </div>
         <CardSection {...this.props} stationCode={stationCode} />
@@ -185,7 +185,7 @@ class PvStation extends Component {
                     </div>
                     <div>电网</div>
                   </RadioButton>
-                </RadioGroup>             
+                </RadioGroup>
               </div>
               <div className={styles.deviceList} >
                 <DeviceList {...this.props} />

@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import styles from './pvStation.scss';
+import styles from './singleStationCommon.scss';
 import echarts from 'echarts';
 import { Radio } from 'antd';
 import moment from 'moment';
@@ -103,8 +103,8 @@ class PowerDiagramTenMin extends Component {
             thoryPower = `<div style="padding-left: 5px;"><span style="display: inline-block; background:#c7ceb2;  width:5px; height:5px; border-radius:100%;"></span> 理论发电量: ${parseFloat(thoryPowerObj.value).toFixed(4) || 0}</div>`
           }
           if (completeRate && intervalTime !== 0) {
-            const hasRate = completeRate && completeRate.map(e=>e.completeRate) 
-            
+            const hasRate = completeRate && completeRate.map(e=>e.completeRate)
+
             // const tmpRate = parseFloat(thoryPowerObj.value) === 0 ? '--' : (parseFloat(actualPowerObj.value) / parseFloat(thoryPowerObj.value) * 100).toFixed(2);
             let tmpRate = " "
             hasRate ? tmpRate = parseFloat((completeRate[param[2].dataIndex].completeRate) * 100).toFixed(2) : tmpRate = "--";

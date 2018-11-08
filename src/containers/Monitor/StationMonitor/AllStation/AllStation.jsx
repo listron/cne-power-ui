@@ -61,7 +61,7 @@ class AllStation extends Component {
     this.stationInterval = setInterval(() => this.props.getMonitorStation({ stationType: stationType }), 10000);
   }
   queryTargetData = (activeKey) => {
-    this.props.changeMonitorStationStore({ stationTypeTabs: activeKey, stationShowType: 'stationBlock' });
+    this.props.changeMonitorStationStore({ stationTypeTabs: activeKey, stationShowType: 'stationBlock',stationType:activeKey });
     this.queryStationData(activeKey);
   }
   render() {

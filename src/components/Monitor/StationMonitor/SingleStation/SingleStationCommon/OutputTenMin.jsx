@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import styles from './pvStation.scss';
+import styles from './singleStationCommon.scss';
 import echarts from 'echarts';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
@@ -14,6 +14,7 @@ class OutputTenMin extends Component {
     powerData: PropTypes.array,
     match: PropTypes.object,
     getMonitorPower: PropTypes.func,
+    yXaisName:PropTypes.string,
   }
 
   constructor(props) {
@@ -21,15 +22,16 @@ class OutputTenMin extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { capabilityData } = nextProps;
+    const { capabilityData,yXaisName } = nextProps;
     const capabilityDiagram = echarts.init(document.getElementById('capabilityDiagram'));
     const lineColor = '#666';
+    // console.log('capabilityPower',capabilityPower)
     const capabilityPower = capabilityData.map(e => e.stationPower);
     const capabilityRadiation = capabilityData.map(e => e.instantaneous);
     const filterCapabilityPower = capabilityData.filter(e => e.stationPower);
     const filterCapabilityRadiation = capabilityData.filter(e => e.instantaneous);
     const capabilityGraphic = (filterCapabilityPower.length === 0 && filterCapabilityRadiation.length === 0) ? showNoData : hiddenNoData;
-    
+
     let labelInterval = 47 // 10min数据如果不缺失，此时为6(每小时6条)*8(8小时) - 1(除去间隔本身) = 47 个展示一个
     const totalLength = capabilityData.length;
     if(totalLength < 144 && totalLength > 0){ //假如返回数据不全
@@ -48,7 +50,7 @@ class OutputTenMin extends Component {
         },
       },
       legend: {
-        data:['功率','斜面辐射'],
+        // data:['功率',yXaisName],
         textStyle: {
           color: lineColor,
           fontSize: 12,
@@ -131,7 +133,7 @@ class OutputTenMin extends Component {
           },
         },
         {
-          name: '辐射(W/m²)',
+          name: yXaisName,
           type: 'value',
           min: minRadiation < 0? minRadiation: 0,
           axisLabel: {
@@ -174,7 +176,7 @@ class OutputTenMin extends Component {
           },
         },
         {
-          name:'斜面辐射',
+          name:yXaisName,
           type: 'line',
           data: capabilityRadiation,
           yAxisIndex: 1,
