@@ -164,7 +164,7 @@ class TargetTabs extends React.Component {
               </div>
             </div>
           </TabPane>
-          <TabPane tab="损失电量" key="lostPower">
+          <TabPane tab="损失电量" key="LostEqp">
             <div className={styles.tabContainer}>
               <div className={styles.dataGraph}>
                 <BarGraph 
