@@ -28,13 +28,14 @@ class TargetTabs extends React.Component {
     super(props, context)
   }
   queryTargetData = (activeKey) => {
-    const { changeAllStationStore, getAllStationMonthBarData, getAllStationMonthPieData, year, dateType, } = this.props;
+    const { changeAllStationStore, getAllStationMonthBarData, getAllStationMonthPieData, year, dateType,stationType } = this.props;
     const userId = Cookie.get('userId')
     //console.log(activeKey);
     getAllStationMonthBarData({
       userId: userId,
       year,
       dateType,
+      stationType,
       dataType: activeKey
 
     })
