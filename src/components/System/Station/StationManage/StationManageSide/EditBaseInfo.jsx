@@ -8,19 +8,21 @@ import { Button, Input, Form, Select } from 'antd';
 import styles from './stationSide.scss';
 const FormItem = Form.Item;
 const { Option } = Select; 
+import { dataRuleFunc } from './detailInformation';
 
 
-const EditBaseInfo = ({stationDetail, form, ...restProps}) => {
+
+const EditBaseInfo = ({stationDetail, form, stationBelongInfo }) => {
   const { getFieldDecorator } = form;
   const isPv =  stationDetail.stationType === 1;
   const isWind =  stationDetail.stationType === 0;
-
-  return (<div>
+  const { coverType, oneLevelRegion, twoLevelRegion, provinces } = stationBelongInfo;
+  return (<div style={{display: 'flex', flexWrap: 'wrap'}}>
     <FormItem label="电站名称" >
       {getFieldDecorator('stationName',{
         initialValue: stationDetail.stationName,
         rules: [{
-          required: true, message: '选择电站名称',
+          required: true, message: '填写电站名称(不超过30字)', max: 30
         }]
       })(
         <Input />
@@ -28,13 +30,19 @@ const EditBaseInfo = ({stationDetail, form, ...restProps}) => {
     </FormItem>
     <span>
       <span>电站类型</span>
-      <span>{isPv? '风电': '光伏'}</span>
+      <span>{isPv? '光伏': '风电'}</span>
     </span>
     <FormItem label="经纬度" >
       {getFieldDecorator('stationMapPosition',{
         initialValue: [stationDetail.longitude, stationDetail.latitude], // 经度，纬度
         rules: [{
-          required: true, message: '填写经纬度',
+          required: true, 
+          message: '经纬度必填且不超过小数点后六位',
+          validator:(rule,value,callback)=>{
+            console.log(rule)
+            console.log(value)
+            callback()
+          }
         }]
       })(
         <Input />
@@ -48,9 +56,9 @@ const EditBaseInfo = ({stationDetail, form, ...restProps}) => {
         }]
       })(
         <Select style={{ width: '198px' }} >
-          <Option value="商用屋顶">商用屋顶</Option>
-          <Option value="家用屋顶">家用屋顶</Option>      
-          <Option value="地面">地面</Option>
+          {coverType && coverType.map(e=>(
+            <Option key={e} value={e}>{e}</Option>
+          ))}
         </Select>
       )}
     </FormItem>}
@@ -59,8 +67,9 @@ const EditBaseInfo = ({stationDetail, form, ...restProps}) => {
         initialValue: stationDetail.level1RegionName
       })(
         <Select style={{ width: '198px' }} >
-          <Option value="东区">东区</Option>
-          <Option value="西区">西区</Option> 
+          {oneLevelRegion && oneLevelRegion.map(e=>(
+            <Option key={e} value={e}>{e}</Option>
+          ))}
         </Select>
       )}
     </FormItem>}
@@ -69,8 +78,9 @@ const EditBaseInfo = ({stationDetail, form, ...restProps}) => {
         initialValue: stationDetail.regionName
       })(
         <Select style={{ width: '198px' }} >
-          <Option value="二区">二区</Option>
-          <Option value="三区">三区</Option> 
+          {twoLevelRegion && twoLevelRegion.map(e=>(
+            <Option key={e} value={e}>{e}</Option>
+          ))}
         </Select>
       )}
     </FormItem>
@@ -81,12 +91,17 @@ const EditBaseInfo = ({stationDetail, form, ...restProps}) => {
           required: true, message: '选择所在省市',
         }]
       })(
-        <Input />
+        <Select style={{ width: '198px' }} >
+          {provinces && provinces.map(e=>(
+            <Option key={e.id} value={e.id}>{e.areaName}</Option>
+          ))}
+        </Select>
       )}
     </FormItem>
     <FormItem label="所属项目公司" >
       {getFieldDecorator('affiliateProjectCompany',{
         initialValue: stationDetail.affiliateProjectCompany,
+        rules: [{ max: 30, message: '不超过30字符' }] 
       })(
         <Input />
       )}
@@ -94,6 +109,7 @@ const EditBaseInfo = ({stationDetail, form, ...restProps}) => {
     <FormItem label="所属发电集团公司" >
       {getFieldDecorator('affiliateCompany',{
         initialValue: stationDetail.affiliateCompany,
+        rules: [{ max: 30, message: '不超过30字符' }]
       })(
         <Input />
       )}
@@ -101,6 +117,13 @@ const EditBaseInfo = ({stationDetail, form, ...restProps}) => {
     <FormItem label="集团占比" >
       {getFieldDecorator('ratio',{
         initialValue: stationDetail.ratio,
+        rules: [{ 
+          message: '占比在0到1之间',
+          validator:(rule,value,callback)=>{
+            value >= 0 && value <= 1 && callback();
+            callback('请输入0到1间数字'); 
+          }
+        }]
       })(
         <Input />
       )}
@@ -108,6 +131,7 @@ const EditBaseInfo = ({stationDetail, form, ...restProps}) => {
     <FormItem label="合作单位" >
       {getFieldDecorator('cooperationCom',{
         initialValue: stationDetail.cooperationCom,
+        rules: [{ max: 80, message: '不超过80字符' }]
       })(
         <Input />
       )}
@@ -115,6 +139,7 @@ const EditBaseInfo = ({stationDetail, form, ...restProps}) => {
     <FormItem label="机组型号" >
       {getFieldDecorator('unitModel',{
         initialValue: stationDetail.unitModel,
+        rules: [{ max: 80, message: '不超过80字符' }]
       })(
         <Input />
       )}
@@ -122,6 +147,7 @@ const EditBaseInfo = ({stationDetail, form, ...restProps}) => {
     <FormItem label="联系电话" >
       {getFieldDecorator('stationContactNumber',{
         initialValue: stationDetail.stationContactNumber,
+        rules: [{ max: 80, message: '不超过80字符' }]
       })(
         <Input />
       )}
@@ -129,9 +155,7 @@ const EditBaseInfo = ({stationDetail, form, ...restProps}) => {
     <FormItem label="装机容量" >
       {getFieldDecorator('stationCapacity',{
         initialValue: stationDetail.stationCapacity,
-        rules: [{
-          required: true, message: '选择所在省市',
-        }]
+        rules: [{ validator:dataRuleFunc(2,'请填写装机容量') }]
       })(
         <Input />
       )}
@@ -139,6 +163,7 @@ const EditBaseInfo = ({stationDetail, form, ...restProps}) => {
     <FormItem label="设计容量" >
       {getFieldDecorator('designCapacity',{
         initialValue: stationDetail.designCapacity,
+        rules: [{ validator:dataRuleFunc(2) }]
       })(
         <Input />
       )}
@@ -146,6 +171,9 @@ const EditBaseInfo = ({stationDetail, form, ...restProps}) => {
     <FormItem label="占地面积" >
       {getFieldDecorator('floorArea',{
         initialValue: stationDetail.floorArea,
+        rules: [{
+          validator:dataRuleFunc(4)
+        }]
       })(
         <Input />
       )}
@@ -153,6 +181,7 @@ const EditBaseInfo = ({stationDetail, form, ...restProps}) => {
     <FormItem label="年利用小时数" >
       {getFieldDecorator('designUtilizationHours',{
         initialValue: stationDetail.designUtilizationHours,
+        rules: [{ validator:dataRuleFunc() }]
       })(
         <Input />
       )}
@@ -161,15 +190,23 @@ const EditBaseInfo = ({stationDetail, form, ...restProps}) => {
       {getFieldDecorator('stationStatus',{
         initialValue: stationDetail.stationStatus,
         rules: [{
-          required: true, message: '选择所在省市',
+          required: true, message: '请选择是否接入',
         }]
       })(
-        <Input />
+        <Select style={{ width: '198px' }} >
+          <Option value="1">是</Option>
+          <Option value="0">否</Option>
+        </Select>
       )}
     </FormItem>
     <FormItem label="组装角度" >
       {getFieldDecorator('componentAngle',{
         initialValue: stationDetail.componentAngle,
+        rules: [{
+          required: true, 
+          message: '请选择是否接入',
+          validator: dataRuleFunc(2,'请输入组装角度'),
+        }]
       })(
         <Input />
       )}
@@ -177,8 +214,12 @@ const EditBaseInfo = ({stationDetail, form, ...restProps}) => {
     <FormItem label="是否启用" >
       {getFieldDecorator('stationEnabled',{
         initialValue: stationDetail.stationEnabled,
+        rules: [{ required: true, message: '请选择是否接入' }]
       })(
-        <Input />
+        <Select style={{ width: '198px' }} >
+          <Option value={1}>是</Option>
+          <Option value={0}>否</Option>
+        </Select>
       )}
     </FormItem>
     <FormItem label="排序号" >
@@ -188,6 +229,22 @@ const EditBaseInfo = ({stationDetail, form, ...restProps}) => {
         <Input />
       )}
     </FormItem>
+    {isWind && <FormItem label="可研报告轮毂高度年平均风速" >
+      {getFieldDecorator('hubAnnualAverageSpeed',{
+        initialValue: stationDetail.hubAnnualAverageSpeed,
+        rules: [{ validator: dataRuleFunc(2) }]
+      })(
+        <Input />
+      )}
+    </FormItem>}
+    {isWind && <FormItem label="可研报告轮毂高度年平均功率密度" >
+      {getFieldDecorator('hubAnnualAveragePower',{
+        initialValue: stationDetail.hubAnnualAveragePower,
+        rules: [{ validator: dataRuleFunc(2) }]
+      })(
+        <Input />
+      )}
+    </FormItem>}
 
   </div>)
 }

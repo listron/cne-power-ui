@@ -1,21 +1,7 @@
 
 @import '../../../../../theme/theme.scss';
 
-.stationManageSide{ 
-  :global{
-    // .ant-form-item-required:before{
-    //   display: none;
-    // }
-    .ant-form-item-label label:after{
-      display: none;
-    }
-    .ant-form-item-label label{
-      color: $darkColor;
-    }
-    .ant-form-item, .ant-form-horizontal {
-      margin-bottom: 0px;
-    }
-  }
+.stationManageSide{
   display: flex;
   flex: 1 0 auto;
   flex-direction: column;
@@ -81,7 +67,6 @@
         }
       }
     }
-    
   }
   .stationManageDetail{
     .stationManageContent{ // 各详情展示区
@@ -260,6 +245,17 @@
       }
       .otherEdit{
         border-bottom: none;
+      }
+    }
+    :global{
+      .ant-form-item-label label:after{
+        display: none;
+      }
+      .ant-form-item-label label{
+        color: $darkColor;
+      }
+      .ant-form-item, .ant-form-horizontal {
+        margin-bottom: 14px;
       }
     }
   }

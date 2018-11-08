@@ -9,8 +9,8 @@ export const baseFun = (detailData) => { // 根据基础信息配置输出指定
   const latitude = (detailData.latitude || parseFloat(detailData.latitude) === 0)? `${parseFloat(detailData.latitude).toFixed(2)}°` : '--';
   let baseArray = [  // 基础信息配置 -- > 
     { name: '电站名称', value: detailData.stationName || '--'}, 
-    { name: '电站类型', value: isPv?'光伏':'风电' }, // 实际调整
-    { name: '经纬度', value: `${longitude}, ${latitude}`, }, // 特殊组合
+    { name: '电站类型', value: isPv?'光伏':'风电' },
+    { name: '经纬度', value: `${longitude}, ${latitude}`, },
     { name: '覆盖类型', value: detailData.coverType, },
     { name: '一级区域', value: detailData.level1RegionName, },
     { name: isWind?'区域':'二级区域', value: detailData.regionName },
@@ -89,4 +89,17 @@ export const otherFun = (detailData) => { // 其他信息配置输出指定规�
     { name: '电站时区', value: timeZoneText },
   ];
   return otherArray;
+}
+
+export const dataRuleFunc = (pointLength = 0, requiredName = '') => (rule, value, callback) => { //数字校验,默认整数
+  requiredName && !value && callback(`请填写${requiredName}`);
+  if(isNaN(value)){
+    callback('请输入数字');
+  }else if(value){ // value存在，且为数字的字符串
+    let decimalPart = value.split('.')[1];
+    const errorData = decimalPart && decimalPart.length > pointLength;
+    errorData && pointLength === 0 && callback('请输入整数');
+    errorData && pointLength > 0 && callback(`不得超过${pointLength}位小数`);
+  }
+  callback()
 }
