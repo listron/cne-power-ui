@@ -100,7 +100,7 @@ function* getAllStationMonthBarData(action) {//月多电站bar数据、
 function* getAllStationMonthPieData(action) {//月/年多电站pie数据、
   const { payload } = action;
     //const url = '/mock/api/v3/performance/comprehensive/piecharts/month/userId/dataType/year';
-    const url= `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getAllStationMonthPie}/${payload.userId}/${payload.dataType}/${payload.year}／${payload.stationType}`
+    const url= `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getAllStationMonthPie}/${payload.userId}/${payload.dataType}/${payload.year}/${payload.stationType}`
     try{
       yield put({ type:allStationAnalysisAction.ALLSTATIONDATA_FETCH });
       const response = yield call(axios.get,url,payload);
