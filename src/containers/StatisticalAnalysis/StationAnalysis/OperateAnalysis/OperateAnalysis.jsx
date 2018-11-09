@@ -22,17 +22,25 @@ class OperateAnalysisContainer extends Component {
     super(props);
   }
 
-  componentDidMount(){
+  componentDidMount() {
     // console.log('父组件',this.props);
   }
 
   componentWillReceiveProps(nextProps) {
-  //  console.log('父组件',nextProps)
+    //  console.log('父组件',nextProps)
 
   }
 
   componentWillUnmount() {
-
+    this.props.changeOperateStationStore({
+      dateType: 'month',
+      year: null,
+      stationCode: null,
+      month: '',
+      startTime: '',
+      endTime: '',
+      selectYear: '',
+    })
   }
 
   render() {
@@ -59,7 +67,7 @@ const mapStateToProps = (state) => {
   return {
     ...state.statisticalAnalysisReducer.operateAnalysisReducer.toJS(),
     stations: state.common.get('stations'),
-    userId : Cookie.get('userId'),
+    userId: Cookie.get('userId'),
   }
 }
 const mapDispatchToProps = (dispatch) => ({

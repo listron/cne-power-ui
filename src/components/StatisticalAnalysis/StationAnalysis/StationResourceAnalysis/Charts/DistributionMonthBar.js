@@ -67,7 +67,6 @@ class BarGraph extends React.Component {
         extraCssText: 'box-shadow: 0 0 3px rgba(0, 0, 0, 0.3)',
       },
       legend: {
-        top: 20,
         left: 'center',
         icon: 'circle',
         itemWidth: 5,
@@ -76,11 +75,6 @@ class BarGraph extends React.Component {
       xAxis: [
         {
           type: 'category',
-          axisLabel: {
-            color: '#666',
-            interval: 0,
-            rotate: -30
-          },
           data: data && data.xData,
           axisPointer: {
             type: 'shadow'
@@ -92,7 +86,9 @@ class BarGraph extends React.Component {
           },
           axisLabel: {
             color: '#666',
-          }
+            interval: 0,
+            rotate: -30
+          },
         }
       ],
       yAxis: [
