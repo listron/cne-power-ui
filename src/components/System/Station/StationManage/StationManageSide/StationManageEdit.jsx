@@ -76,7 +76,6 @@ class StationManageEdit extends Component {
     const { showWarningTip, warningTipText } = this.state;
     const departmentList = stationDetail.departmentList || [];
     const departmentInfo = this.departmentInfoFun(departmentList);
-
     return (
       <div className={styles.stationManageEdit} >
         {showWarningTip && <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}
@@ -97,7 +96,14 @@ class StationManageEdit extends Component {
             <Icon type="arrow-left" className={styles.backIcon} onClick={this.cancelEdit} />
           </span>
         </div>
-        <EditForm stationDetail={stationDetail} saveStationDetail={saveStationDetail} cancelEdit={this.cancelEdit} loading={loading} confirmWarningTip={this.confirmWarningTip} {...this.props} />
+        <EditForm 
+          stationDetail={stationDetail} 
+          saveStationDetail={saveStationDetail} 
+          cancelEdit={this.cancelEdit} 
+          loading={loading} 
+          confirmWarningTip={this.confirmWarningTip} 
+          {...this.props} 
+        />
       </div>
     )
   }
