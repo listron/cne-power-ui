@@ -13,8 +13,7 @@ import Footer from '../../../../components/Common/Footer';
 
 class OperateAnalysisContainer extends Component {
   static propTypes = {
-    // stationCode: PropTypes.array,
-
+    resetStore:PropTypes.func,
     location: PropTypes.object,
   }
 
@@ -22,25 +21,9 @@ class OperateAnalysisContainer extends Component {
     super(props);
   }
 
-  componentDidMount() {
-    // console.log('父组件',this.props);
-  }
-
-  componentWillReceiveProps(nextProps) {
-    //  console.log('父组件',nextProps)
-
-  }
 
   componentWillUnmount() {
-    this.props.changeOperateStationStore({
-      dateType: 'month',
-      year: null,
-      stationCode: null,
-      month: '',
-      startTime: '',
-      endTime: '',
-      selectYear: '',
-    })
+    this.props.resetStore()
   }
 
   render() {
@@ -82,6 +65,7 @@ const mapDispatchToProps = (dispatch) => ({
   getPowerEfficiency: payload => dispatch({ type: operateAnalysisAction.getPowerEfficiency, payload }),
   getlostPower: payload => dispatch({ type: operateAnalysisAction.getlostPower, payload }),
   getAllStationAvalibaData: payload => dispatch({ type: operateAnalysisAction.getAllStationAvalibaData, payload }),
+  resetStore: payload => dispatch({ type: operateAnalysisAction.resetStore, payload }),
 
 })
 
