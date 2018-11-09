@@ -69,7 +69,8 @@ class UsageRate extends React.Component {
       },
       color: color,
       legend: {
-        left: "center",
+        left: '20%',
+        right:'10%',
         icon: "circle",
         itemWidth: 5,
         itemHeight: 5

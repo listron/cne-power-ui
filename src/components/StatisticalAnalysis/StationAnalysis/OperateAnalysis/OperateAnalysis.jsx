@@ -395,7 +395,7 @@ class OperateAnalysis extends React.Component {
                 </div>
               </div>
 
-              <span className={styles.rightFont}>并网时间:{moment(station && station[0].onGridTime).format('YYYY年MM月DD日') || "--"}</span>
+              <span className={styles.rightFont}>并网时间:{moment(station.length>0 && station[0].onGridTime).format('YYYY年MM月DD日') || "--"}</span>
             </div>
             <div className={styles.graph}>
               <div className={styles.stationTargetData}>
