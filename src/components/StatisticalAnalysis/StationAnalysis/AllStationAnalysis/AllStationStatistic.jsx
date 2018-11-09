@@ -4,11 +4,9 @@ import { Tabs } from 'antd';
 import { withRouter } from 'react-router-dom';
 import styles from './allStationStatistic.scss';
 import StationSelectModal from './StationSelectModal.jsx';
-// import TimeSelect from '../../../Common/TimeSelect';
 import TimeSelect from '../../../Common/TimeSelect/TimeSelectIndex';
 import PlanCompletionRate from './Chart/PlanCompletionRate';
 import TargetTabs from './TargetTabs.jsx';
-// import { getCookie } from '../../../../utils/index.js';
 import Cookie from 'js-cookie';
 import moment from 'moment';
 class AllStationStatistic extends React.Component {
@@ -327,14 +325,24 @@ class AllStationStatistic extends React.Component {
             </div>
           </TabPane>
           <TabPane tab="风电" key="0">
+            <div style={{
+              display: 'flex',
+              flexDirection: 'column',
+              flex: 1,
+              background: '#fff',
+              background: "url('/img/undo.png') no-repeat center #fff"
+            }}>
+            </div>
           </TabPane>
         </Tabs>
-        {showStationSelect &&
+        {
+          showStationSelect &&
           <StationSelectModal
             stations={stations}
             onClose={() => this.setState({ showStationSelect: false })}
-            onChangeStation={this.onChangeStation} />}
-      </div>
+            onChangeStation={this.onChangeStation} />
+        }
+      </div >
     );
   }
 }
