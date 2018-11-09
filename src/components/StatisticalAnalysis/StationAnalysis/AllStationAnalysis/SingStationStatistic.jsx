@@ -329,7 +329,7 @@ class SingleStationStatistic extends React.Component {
       getAllStationAvalibaData(
         {
           userId: userId,
-          year: rangeYear,
+          year: nextrRangeYear,
           dateType: nextProps.dateType,
         })
       getSingleStationStatisticData(
