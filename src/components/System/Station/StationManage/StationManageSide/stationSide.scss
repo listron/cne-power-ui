@@ -177,7 +177,22 @@
         }
       }
       .baseInfo, .stationBelong, .connectNet, .otherInfo{
+        padding-bottom: 12px;
         border-bottom: solid 1px $promptColor;
+        .textInfo{
+          width: 33.33%;
+          display: flex;
+          margin-bottom: 14px;
+          .name{
+            width: 150px;
+            color: $darkColor;
+            text-align: right;
+            margin-right: 12px;
+          }
+          .value{
+            flex: 1;
+          }
+        }
       }
       .otherInfo{
         border-bottom: none;
@@ -198,19 +213,6 @@
         margin-left: 4px;
       }
       .baseInfo{
-        .stationType{
-          width: 33.33%;
-          display: flex;
-          .name{
-            width: 150px;
-            color: $darkColor;
-            text-align: right;
-            margin-right: 12px;
-          }
-          .value{
-            flex: 1;
-          }
-        }
         .mapPosition{
           .sign{
             margin: 0 4px;

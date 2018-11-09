@@ -45,10 +45,19 @@ class EditForm extends Component {
   saveStationInfo = () => {
     this.props.form.validateFieldsAndScroll((error,values)=>{
       if(!error){
-        const { stationDetail } = this.props;
+        let { stationDetail } = this.props;
+        let { stationMapPosition, stationArea } = values;
+        const [ longitude, latitude ] = stationMapPosition, [provinceCode, cityCode, countyCode] = stationArea;
+        delete values.stationMapPosition;
+        delete values.stationArea;
         this.props.saveStationDetail({
-          ...stationDetail,
+          stationCode: stationDetail.stationCode,
           ...values,
+          longitude, 
+          latitude,
+          provinceCode, 
+          cityCode, 
+          countyCode,
         })
         this.props.confirmWarningTip()
       }
@@ -58,7 +67,7 @@ class EditForm extends Component {
   render(){
     const { stationDetail, loading, form, stationBelongInfo, getStationTargetInfo, cityData, countyData } = this.props;
     const isPv = stationDetail.stationType === 1;
-    stationDetail.stationType = 0;
+    // stationDetail.stationType = 0;
     return (
       <Form className={styles.editPart}>
         <div className={styles.title}>

@@ -7,6 +7,7 @@ import React, { Component } from 'react';
 import { Button, Input, Form, Select } from 'antd';
 import styles from './stationSide.scss';
 import { dataRuleFunc } from './detailInformation';
+import moment from 'moment';
 const FormItem = Form.Item;
 const { Option } = Select; 
 
@@ -27,6 +28,9 @@ const EditOtherInfo = ({stationDetail, form, ...restProps}) => {
       zoneValue: i,
     })
   }
+  const { createTime, createUser } = stationDetail;
+  let createTimeText = createTime?moment(createTime).format('YYYY-MM-DD'): '--';
+  let createUserText = createUser || '--';
   return (<section className={styles.otherInfo}>
     <h3 className={styles.titleText}> 其他信息 </h3>
     <FormItem label="有功控制能力" >
@@ -34,8 +38,8 @@ const EditOtherInfo = ({stationDetail, form, ...restProps}) => {
         initialValue: stationDetail.automaticActiveControl,
       })(
         <Select style={{ width: '198px' }} >
-          <Option value={true}>是</Option>
-          <Option value={false}>否</Option>
+          <Option value={1}>是</Option>
+          <Option value={0}>否</Option>
         </Select>
       )}
     </FormItem>
@@ -47,17 +51,17 @@ const EditOtherInfo = ({stationDetail, form, ...restProps}) => {
         <Input />
       )}
     </FormItem>
-    <span>
-      <span>创建人</span>
-      <span>{stationDetail.createUser}</span>
+    <span className={styles.textInfo}>
+      <span className={styles.name}>创建人</span>
+      <span className={styles.value}>{createUserText}</span>
     </span>
     <FormItem label="无功控制能力" >
-      {getFieldDecorator('automaticReactiveContro',{
-        initialValue: stationDetail.automaticReactiveContro,
+      {getFieldDecorator('automaticAeactiveContro',{
+        initialValue: stationDetail.automaticAeactiveContro,
       })(
         <Select style={{ width: '198px' }} >
-          <Option value={true}>是</Option>
-          <Option value={false}>否</Option>
+          <Option value={1}>是</Option>
+          <Option value={0}>否</Option>
         </Select>
       )}
     </FormItem>
@@ -69,17 +73,17 @@ const EditOtherInfo = ({stationDetail, form, ...restProps}) => {
         <Input />
       )}
     </FormItem>
-    <span>
-      <span>创建时间</span>
-      <span>{stationDetail.createTime}</span>
+    <span className={styles.textInfo}>
+      <span className={styles.name}>创建时间</span>
+      <span className={styles.value}>{createTimeText}</span>
     </span>
     <FormItem label={'低压穿越(LVRT)能力'} >
       {getFieldDecorator('lowPressureCrossing',{
         initialValue: stationDetail.lowPressureCrossing
       })(
         <Select style={{ width: '198px' }} >
-          <Option value={true}>是</Option>
-          <Option value={false}>否</Option>
+          <Option value={1}>是</Option>
+          <Option value={0}>否</Option>
         </Select>
       )}
     </FormItem>

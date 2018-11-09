@@ -25,7 +25,7 @@ const EditBaseInfo = ({stationDetail, form, stationBelongInfo, ...restProps }) =
         <Input />
       )}
     </FormItem>
-    <span className={styles.stationType}>
+    <span className={styles.textInfo}>
       <span className={styles.name}>电站类型</span>
       <span className={styles.value}>{isPv? '光伏': '风电'}</span>
     </span>
@@ -207,8 +207,8 @@ const EditBaseInfo = ({stationDetail, form, stationBelongInfo, ...restProps }) =
         }]
       })(
         <Select style={{ width: '198px' }} >
-          <Option value="1">是</Option>
-          <Option value="0">否</Option>
+          <Option value={1}>是</Option>
+          <Option value={0}>否</Option>
         </Select>
       )}
     </FormItem>
