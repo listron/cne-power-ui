@@ -28,6 +28,7 @@ class SingleStation extends Component {
     deviceTypeCode: PropTypes.number,
     deviceTypeFlow: PropTypes.object,
     resetSingleStationStore: PropTypes.func,
+    getFanList: PropTypes.func,
   };
   constructor(props) {
     super(props);
@@ -173,6 +174,7 @@ const mapDispatchToProps = (dispatch) => ({
   getConfluenceBoxList: payload => dispatch({ type: singleStationAction.GET_CONFLUENCEBOX_LIST_SAGA, payload }),
   editData: payload => dispatch({ type: singleStationAction.EDIT_MONTH_YEAR_DATA_SAGA, payload }),
   resetSingleStationStore: payload => dispatch({ type: singleStationAction.RESET_SINGLE_STATION_STORE }),
+  getFanList: payload => dispatch({ type: singleStationAction.getFanList }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SingleStation);

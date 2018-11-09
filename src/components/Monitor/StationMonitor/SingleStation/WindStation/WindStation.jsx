@@ -9,14 +9,18 @@ import WindStationTop from './WindStationTop';
 import OutputTenMin from '../SingleStationCommon/OutputTenMin';
 import PowerDiagramTenMin from '../SingleStationCommon/PowerDiagramTenMin';
 import CardSection from '../SingleStationCommon/CardSection';
+import FanList from './FanList'
 const { TabPane } = Tabs;
-const RadioButton = Radio.Button;
-const RadioGroup = Radio.Group;
 class PvStation extends Component {
   static propTypes = {
     stationCode: PropTypes.string,
     match: PropTypes.object,
     changeSingleStationStore: PropTypes.func,
+    deviceTypeFlow: PropTypes.object,
+    location: PropTypes.object,
+    stationDeviceList: PropTypes.array,
+    deviceTypeCode: PropTypes.number,
+    resetSingleStationStore: PropTypes.func,
   }
 
   constructor(props) {
@@ -25,9 +29,9 @@ class PvStation extends Component {
       hiddenStationList: false,
     }
   }
-  
-  componentWillUnmount(){
-    
+
+  componentWillUnmount() {
+
   }
 
   onSelectedDeviceType = (e) => {
@@ -54,19 +58,55 @@ class PvStation extends Component {
     }
   }
 
-  
- 
+
+
 
   render() {
     const { stationCode } = this.props.match.params;
+    const { deviceTypeFlow, stationDeviceList, deviceTypeCode, } = this.props;
+    const weatherDeviceCode = stationDeviceList && stationDeviceList.deviceCode || 0;
+    const deviceFlowTypes = deviceTypeFlow && deviceTypeFlow.deviceFlowTypes || [];
+    const isCombinedType = deviceFlowTypes.some(e => e.deviceTypes.length > 1); // 判断位置
     return (
       <div className={styles.windStation} >
-         <WindStationTop {...this.props} stationCode={stationCode} hiddenStationList={this.state.hiddenStationList} />
-         <div className={styles.outputPowerDiagram}>
+        <WindStationTop {...this.props} stationCode={stationCode} hiddenStationList={this.state.hiddenStationList} />
+        <div className={styles.outputPowerDiagram}>
           <OutputTenMin {...this.props} yXaisName={'风速(m/s)'} />
-          <PowerDiagramTenMin {...this.props} />
+          <PowerDiagramTenMin {...this.props} chartType={'wind'} />
+          {/* <PowerDiagramTenMin {...this.props}  /> */}
         </div>
         <CardSection {...this.props} stationCode={stationCode} />
+        <div className={styles.threadAndDevice} id="deviceType" >
+          <Tabs type="card" defaultActiveKey="2" >
+            {/* <TabPane tab="主线" key="1">
+              <p>主线列表</p>
+            </TabPane> */}
+            <TabPane tab="示意图" key="2">
+              <div className={styles.deviceTypeFlow}>
+                <Link to={`/hidden/monitorDevice/${stationCode}/203/${weatherDeviceCode}`} className={styles.weatherStationLink} >
+                  <div className={styles.weatherStation}>
+                    <i className="iconfont icon-weather" ></i>
+                    <div className={styles.fontcolor}>气象站</div>
+                  </div>
+                </Link>
+
+                <div className={styles.title}>
+                  <div className={styles.windlogo}>
+                    <i className="iconfont icon-windlogo" ></i>
+                    <div className={styles.fontcolor}>风机</div>
+                  </div>
+                  <img src="/img/arrowgo.png" className={styles.rightArrow} />
+                  <div className={styles.deviceTypeIcon} >
+                    <i className="iconfont icon-elecnetting" ></i>
+                    <div>电网</div>
+                  </div>
+                </div>
+              </div>
+              <FanList {...this.props} />
+            </TabPane>
+          </Tabs>
+        </div>
+
       </div>
     )
   }
