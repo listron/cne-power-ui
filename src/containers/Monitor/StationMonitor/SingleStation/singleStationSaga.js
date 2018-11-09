@@ -440,7 +440,7 @@ function *editData(action){
 function *getFanList(action){
   const { payload } = action;
   console.log('payload',payload)
-  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.monitor.getFanList}${payload.stationCode}`;
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.monitor.getFanList}／${350}`;
   try{
     if(payload.firstLoad){
       yield put({type: singleStationAction.SINGLE_STATION_FETCH});
