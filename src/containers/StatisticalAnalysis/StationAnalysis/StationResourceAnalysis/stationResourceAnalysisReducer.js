@@ -11,6 +11,14 @@ var initState = Immutable.fromJS({
   startTime: '',
   endTime: '',
   selectYear: '',
+  resourceAvalibaData:[], //计划完成是否有数据
+  resourcePlanData:[],  // 计划完成情况
+  PvCompareData:[],  //月/日单电站光资源同比
+  YearPvCompareData:[], //年单电站光资源
+  resourceMonthLight:[], //月/日光资源分布
+  resourceYearLight:[], //年光资源分布
+  resourceMonthWeather:{},  //月/年天气预报
+  resourceDayWeather:{} //日天气预报
 });
 const stationResourceAnalysisReducer = (state = initState, action) => {
   switch (action.type) {

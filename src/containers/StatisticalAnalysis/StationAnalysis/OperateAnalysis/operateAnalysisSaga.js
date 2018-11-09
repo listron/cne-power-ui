@@ -11,6 +11,12 @@ function* changeOperateStationStore(action) {//存储payload指定参数，替�
   })
 }
 
+function *resetStore(){
+  yield put({
+    type:  operateAnalysisAction.RESET_STORE
+  })
+}
+
 function* getAllStationAvalibaData(action) {//判断是否有数据
   const { payload } = action;
   // const url = '/mock/api/v3/performance/comprehensive/dataavaliba';
@@ -40,24 +46,13 @@ function* getOperatePlanComplete(action) {//年/月/日计划完成情况
       yield put({
         type: operateAnalysisAction.GET_OPERATESTATIONDATA_FETCH_SUCCESS,
         payload: {
-          operatePlanCompleteData: response.data.data || [],
-        },
-      });
-    }else{
-      yield put({
-        type: operateAnalysisAction.GET_OPERATESTATIONDATA_FETCH_SUCCESS,
-        payload: {
-          operatePlanCompleteData: [],
+          operatePlanCompleteData: response.data.data || {},
         },
       });
     }
   } catch (e) {
-    yield put({
-      type: operateAnalysisAction.GET_OPERATESTATIONDATA_FETCH_SUCCESS,
-      payload: {
-        operatePlanCompleteData: [],
-      },
-    });
+    console.log(e);
+    console.log('请求计划完成情况失败')
   }
 }
 function* getComponentPowerStatistic(action) {//月/年/日组件发电量统计
@@ -70,24 +65,13 @@ function* getComponentPowerStatistic(action) {//月/年/日组件发电量统计
       yield put({
         type: operateAnalysisAction.GET_OPERATESTATIONDATA_FETCH_SUCCESS,
         payload: {
-          powerData: response.data.data || [],
-        },
-      });
-    }else{
-      yield put({
-        type: operateAnalysisAction.GET_OPERATESTATIONDATA_FETCH_SUCCESS,
-        payload: {
-          powerData: [],
+          powerData: response.data.data || {},
         },
       });
     }
   } catch (e) {
-    yield put({
-      type: operateAnalysisAction.GET_OPERATESTATIONDATA_FETCH_SUCCESS,
-      payload: {
-        powerData: [],
-      },
-    });
+    console.log(e);
+    console.log('请求组件发电量统计失败',e)   
   }
 }
 
@@ -105,25 +89,14 @@ function* getPowerEfficiency(action){ // 月/年/日发电效率
           efficiencyData: response.data.data || [],
         },
       });
-    }else{
-      yield put({
-        type: operateAnalysisAction.GET_OPERATESTATIONDATA_FETCH_SUCCESS,
-        payload: {
-          efficiencyData: [],
-        },
-      });
     }
   } catch (e) {
-    yield put({
-      type: operateAnalysisAction.GET_OPERATESTATIONDATA_FETCH_SUCCESS,
-      payload: {
-        efficiencyData: [],
-      },
-    });
+    console.log(e);
+    console.log('请求发电效率失败')
   }
 }
 
-function* getUsageRate(action) {//月/年/日组件可利用率
+function* getUsageRate(action) {//月/年/日可利用率
   const { payload } = action;
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getOperateUsageRate}`;
   try {
@@ -136,21 +109,10 @@ function* getUsageRate(action) {//月/年/日组件可利用率
           usageData: response.data.data || [],
         },
       });
-    }else{
-      yield put({
-        type: operateAnalysisAction.GET_OPERATESTATIONDATA_FETCH_SUCCESS,
-        payload: {
-          usageData: [],
-        },
-      });
     }
   } catch (e) {
-    yield put({
-      type: operateAnalysisAction.GET_OPERATESTATIONDATA_FETCH_SUCCESS,
-      payload: {
-        usageData: [],
-      },
-    });
+    console.log(e);
+    console.log('请求可利用率失败')
   }
 }
 
@@ -168,21 +130,10 @@ function* getlostPower(action){ // 年/月/日单电站 损失电量
             lostPowerData: response.data.data || [],
           },
         });
-      }else{
-        yield put({
-          type: operateAnalysisAction.GET_OPERATESTATIONDATA_FETCH_SUCCESS,
-          payload: {
-            lostPowerData: [],
-          },
-        });
       }
     } catch (e) {
-      yield put({
-        type: operateAnalysisAction.GET_OPERATESTATIONDATA_FETCH_SUCCESS,
-        payload: {
-          lostPowerData: [],
-        },
-      });
+      console.log(e);
+      console.log('请求损失电量失败')
     }
 }
 
@@ -196,24 +147,13 @@ function* getLostPowerType(action) {//月/年/日电量损失类型
       yield put({
         type: operateAnalysisAction.GET_OPERATESTATIONDATA_FETCH_SUCCESS,
         payload: {
-          lostPowerTypeDatas: response.data.data,
-        },
-      });
-    }else{
-      yield put({
-        type: operateAnalysisAction.GET_OPERATESTATIONDATA_FETCH_SUCCESS,
-        payload: {
-          lostPowerTypeDatas: [],
+          lostPowerTypeDatas: response.data.data || {},
         },
       });
     }
   } catch (e) {
-    yield put({
-      type: operateAnalysisAction.GET_OPERATESTATIONDATA_FETCH_SUCCESS,
-      payload: {
-        lostPowerTypeDatas: [],
-      },
-    });
+    console.log(e);
+   console.log('请求电量损失类型失败')
   }
 }
 function* getLimitPowerRate(action) {//月/日限电率同比
@@ -226,24 +166,13 @@ function* getLimitPowerRate(action) {//月/日限电率同比
       yield put({
         type: operateAnalysisAction.GET_OPERATESTATIONDATA_FETCH_SUCCESS,
         payload: {
-          limitPowerData: response.data.data,
-        },
-      });
-    }else{
-      yield put({
-        type: operateAnalysisAction.GET_OPERATESTATIONDATA_FETCH_SUCCESS,
-        payload: {
-          limitPowerData: [],
+          limitPowerData: response.data.data || [],
         },
       });
     }
   } catch (e) {
-    yield put({
-      type: operateAnalysisAction.GET_OPERATESTATIONDATA_FETCH_SUCCESS,
-      payload: {
-        limitPowerData: [],
-      },
-    });
+    console.log(e);
+     console.log('请求限电率失败')
   }
 }
 function* getYearLimitPowerRate(action) {//年限电率环比
@@ -256,24 +185,13 @@ function* getYearLimitPowerRate(action) {//年限电率环比
       yield put({
         type: operateAnalysisAction.GET_OPERATESTATIONDATA_FETCH_SUCCESS,
         payload: {
-          yearLimitPowerData: response.data.data,
-        },
-      });
-    }else{
-      yield put({
-        type: operateAnalysisAction.GET_OPERATESTATIONDATA_FETCH_SUCCESS,
-        payload: {
-          yearLimitPowerData: [],
+          yearLimitPowerData: response.data.data || [],
         },
       });
     }
   } catch (e) {
-    yield put({
-      type: operateAnalysisAction.GET_OPERATESTATIONDATA_FETCH_SUCCESS,
-      payload: {
-        yearLimitPowerData: [],
-      },
-    });
+    console.log(e);
+    console.log('请求年限电率失败')
   }
 }
 function* getPlantPower(action) {//月/年/日厂用电情况/厂损情况
@@ -286,24 +204,13 @@ function* getPlantPower(action) {//月/年/日厂用电情况/厂损情况
       yield put({
         type: operateAnalysisAction.GET_OPERATESTATIONDATA_FETCH_SUCCESS,
         payload: {
-          plantPowerData: response.data.data,
-        },
-      });
-    }else{
-      yield put({
-        type: operateAnalysisAction.GET_OPERATESTATIONDATA_FETCH_SUCCESS,
-        payload: {
-          yearLimitPowerData: [],
+          plantPowerData: response.data.data || {},
         },
       });
     }
   } catch (e) {
-    yield put({
-      type: operateAnalysisAction.GET_OPERATESTATIONDATA_FETCH_SUCCESS,
-      payload: {
-        yearLimitPowerData: [],
-      },
-    });
+    console.log(e);
+    console.log('请求厂用电情况/厂损情况失败')
   }
 }
 
@@ -319,4 +226,5 @@ export function* watchOperateStationSaga() {
   yield takeLatest(operateAnalysisAction.getUsageRate, getUsageRate);
   yield takeLatest(operateAnalysisAction.getPowerEfficiency, getPowerEfficiency);
   yield takeLatest(operateAnalysisAction.getlostPower, getlostPower);
+  yield takeLatest(operateAnalysisAction.resetStore, resetStore);
 }

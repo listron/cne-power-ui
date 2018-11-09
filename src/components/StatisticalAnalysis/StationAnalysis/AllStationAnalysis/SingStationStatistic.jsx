@@ -44,6 +44,7 @@ class SingleStationStatistic extends React.Component {
     getSingleStationPowerEffectiveData: PropTypes.func,
     getSingleStationDayCompleteRateData: PropTypes.func,
     getAllStationAvalibaData: PropTypes.func,
+    getAllStationStatisticData: PropTypes.func,
     history: PropTypes.object,
     match: PropTypes.object,
   }
@@ -273,6 +274,9 @@ class SingleStationStatistic extends React.Component {
         sort: 'date',
         sortType: 'asc',
       })
+      changeAllStationStore({
+        selectYear:currentTableYear
+      })
 
 
     }
@@ -328,7 +332,7 @@ class SingleStationStatistic extends React.Component {
       getAllStationAvalibaData(
         {
           userId: userId,
-          year: rangeYear,
+          year: nextrRangeYear,
           dateType: nextProps.dateType,
         })
       getSingleStationStatisticData(
@@ -361,11 +365,13 @@ class SingleStationStatistic extends React.Component {
       showPage: 'multiple',
       singleStationCode: '',
       dateType:'month',
+      selectYear:''
     });
   }
   onTimeChange=(timeObj)=>{
     // console.log(timeObj);
-    timeObj.timeStyle === 'year' ? this.props.changeAllStationStore({ dateType: timeObj.timeStyle, year: [timeObj.startTime, timeObj.endTime] }) :this.props.changeAllStationStore({ dateType: timeObj.timeStyle, year: [timeObj.startTime] })
+    timeObj.timeStyle === 'year' ? 
+    this.props.changeAllStationStore({ dateType: timeObj.timeStyle, year: [timeObj.startTime, timeObj.endTime],selectYear:timeObj.endTime}) :this.props.changeAllStationStore({ dateType: timeObj.timeStyle, year: [timeObj.startTime] })
   }
   onClose = () => {
     this.props.changeAllStationStore({
@@ -389,7 +395,7 @@ class SingleStationStatistic extends React.Component {
     if (stationCode !== singleStationCode) {
       this.props.changeAllStationStore({ singleStationCode: stationCode });
     }
-    const { stationType, stations, dateType, singleStationCode, year, singleStationStatisticData, showPage, singleStationPlanRateData, singleStationPvCompareData, singleStationPowerData, singleStationLostPowerData, singleStationMonthPieData, singleStationPlanRate, allStationAvalibaData, singleStationDayCompleteRateData, singleStationPowerEffectiveData } = this.props;
+    const { stationType, stations, dateType, singleStationCode, year, singleStationStatisticData, showPage, singleStationPlanRateData, singleStationPvCompareData, singleStationPowerData, singleStationLostPowerData, singleStationMonthPieData, singleStationPlanRate, allStationAvalibaData, singleStationDayCompleteRateData, singleStationPowerEffectiveData,getSingleStationStatisticData ,selectYear,changeAllStationStore} = this.props;
     const statisticTime = moment().subtract(1, 'days').format('YYYY年MM月DD日');
     const currentYear = parseInt(year).toString();
     const lastYear = (parseInt(year) - 1).toString();
@@ -480,7 +486,17 @@ class SingleStationStatistic extends React.Component {
             </Link>
           </div>
           <TimeSelect onChange={this.onTimeChange} />
-          <PlanCompletionRate dateType={dateType} allStationStatisticData={singleStationStatisticData} showPage={showPage} year={year} allStationAvalibaData={allStationAvalibaData} />
+          <PlanCompletionRate 
+          dateType={dateType} 
+          allStationStatisticData={singleStationStatisticData} 
+          showPage={showPage} 
+          year={year} 
+          allStationAvalibaData={allStationAvalibaData} 
+          singleStationCode={singleStationCode} 
+          getSingleStationStatisticData={getSingleStationStatisticData} 
+          selectYear={selectYear}
+          changeAllStationStore={changeAllStationStore}
+          />
           <div className={styles.targetGraphContainer}>
             {dateType === 'year' && <div>
               <div className={styles.tabContainer}>
