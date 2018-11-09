@@ -13,8 +13,8 @@ function* changeOperateStationStore(action) {//存储payload指定参数，替�
 
 function* getAllStationAvalibaData(action) {//判断是否有数据
   const { payload } = action;
-  const url = '/mock/api/v3/performance/comprehensive/dataavaliba';
-  //const url= `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getAllStationAvaliba}`
+  // const url = '/mock/api/v3/performance/comprehensive/dataavaliba';
+  const url= `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getAllStationAvaliba}`
   try {
     yield put({ type: operateAnalysisAction.OPERATESTATIONDATA_FETCH });
     const response = yield call(axios.post, url, payload);

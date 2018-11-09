@@ -166,16 +166,19 @@ class TableGraph extends React.Component {
           dataIndex: 'date',
           width: 90,
           sorter: (a, b) => (a.date).localeCompare(b.date),
+          render: text => (text || text === 0) ? text : '--'
         }, {
           title: '等效利用小时数',
           dataIndex: 'hours',
           width: 150,
           sorter: (a, b) => a.hours - b.hours,
+          render: text => (text || text === 0) ? text : '--'
         }, {
           title: '辐射总量',
           dataIndex: 'light',
           width: 150,
           sorter: (a, b) => a.light - b.light,
+          render: text => (text || text === 0) ? text : '--'
         }, {
           title: 'PR',
           dataIndex: 'pr',
