@@ -1,10 +1,6 @@
 
-
-
-
-
-import React, { Component } from 'react';
-import { Button, Input, Form, Select, DatePicker } from 'antd';
+import React from 'react';
+import { Input, Form, Select, DatePicker } from 'antd';
 import styles from './stationSide.scss';
 import moment from 'moment';
 import { dataRuleFunc } from './detailInformation';
@@ -16,7 +12,7 @@ const EditConnectNetInfo = ({ stationDetail, form, stationBelongInfo }) => {
   const { managerType, gridVoltageLevel } = stationBelongInfo;
   const { ongridTime, fullOngridTime } = stationDetail;
   let showOngridTime = ongridTime? moment(ongridTime): null;
-  let showFullOngridTime = fullOngridTime? moment(fullOngridTime).format('YYYY-MM-DD'): null;
+  let showFullOngridTime = fullOngridTime? moment(fullOngridTime): null;
 
   return (<section className={styles.connectNet}>
     <h3 className={styles.titleText}> 并网信息及电价情况 </h3>

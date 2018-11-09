@@ -67,7 +67,6 @@ class EditForm extends Component {
   render(){
     const { stationDetail, loading, form, stationBelongInfo, getStationTargetInfo, cityData, countyData } = this.props;
     const isPv = stationDetail.stationType === 1;
-    // stationDetail.stationType = 0;
     return (
       <Form className={styles.editPart}>
         <div className={styles.title}>

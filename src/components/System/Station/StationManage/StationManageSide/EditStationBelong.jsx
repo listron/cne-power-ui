@@ -3,13 +3,11 @@
 
 
 
-import React, { Component } from 'react';
-import { Button, Input, Form, Select } from 'antd';
-import { dataRuleFunc } from './detailInformation';
+import React from 'react';
+import { Form, Select } from 'antd';
 import styles from './stationSide.scss';
 const FormItem = Form.Item;
 const { Option } = Select; 
-
 
 const EditStationBelong = ({stationDetail, form, stationBelongInfo }) => {
   const { getFieldDecorator } = form;
