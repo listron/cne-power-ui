@@ -73,7 +73,10 @@ class ProductionAnalysis extends React.Component {
     const currentTableYear = Number(moment().format('YYYY'));
     const currentMonth = Number(moment().format('MM'));
     const curYearNum = nextProps.year[0].split('-')[0];
+    console.log(curYearNum);
+
     const curMonthNum = nextProps.year[0].split('-')[1];
+    console.log(curMonthNum);
     const curMonth = moment().format('YYYY-MM');
     const curMonthArray = [moment().format('YYYY-MM')];
     const curYear = Number(nextProps.year);
@@ -110,7 +113,7 @@ class ProductionAnalysis extends React.Component {
     if (dateType !== nextProps.dateType && nextProps.dateType === 'day') {
       ProductionPlanComplete({
         stationCode: nextProps.stationCode,
-        year: curYear,
+        year: currentTableYear,
         month: currentMonth,
         dateType: 'day',
       })
@@ -124,8 +127,8 @@ class ProductionAnalysis extends React.Component {
     if ((dateType === 'day' && nextProps.dateType === 'day') && (year[0] !== nextProps.year[0] || stationCode !== nextProps.stationCode)) {
       ProductionPlanComplete({
         stationCode: nextProps.stationCode,
-        year: curYear,
-        month: 10,
+        year: currentTableYear,
+        month: Number(curMonthNum),
         dateType: 'day',
       })
       getSingleStationProductionData({
@@ -146,7 +149,7 @@ class ProductionAnalysis extends React.Component {
       )
       ProductionPlanComplete({
         stationCode: nextProps.stationCode,
-        year: curYear,
+        year: currentTableYear,
         dateType: nextProps.dateType
 
 

@@ -102,9 +102,14 @@ class AllStationStatistic extends React.Component {
     for (let i = selectYear[0]; i < selectYear[1] + 1; i++) {
       rangeYear.push(i.toString())
     }
+    let changeRangYear=[];
+    for (let i = Number(nextProps.year[0]); i <Number(nextProps.year[1]) + 1; i++) {
+      changeRangYear.push(i.toString())
+    }
     //月->月
     if (dateType === 'month' && nextProps.dateType === 'month') {
       if (nextProps.year[0] !== this.props.year[0]) {
+        // console.log('月-月');
         getAllStationAvalibaData(
           {
             userId: userId,
@@ -133,7 +138,6 @@ class AllStationStatistic extends React.Component {
         })
         getAllStationStatisticTableData(
           {
-
             year: curYear,
             dateType,
             month: nextProps.month,//默认当前月
@@ -143,15 +147,13 @@ class AllStationStatistic extends React.Component {
             sortType: nextProps.sortType,
             sort: nextProps.sort,
             stationType
-
           })
       }
     }
     //月->年
     if (dateType !== nextProps.dateType && nextProps.dateType === 'year') {
-      changeAllStationStore({
-        year: rangeYear
-      })
+      // console.log('月-年');
+     
       getAllStationAvalibaData(
         {
           userId: userId,
@@ -162,7 +164,7 @@ class AllStationStatistic extends React.Component {
         {
           userId: userId,
           year: curYearPlan,
-          dateType: nextProps.dateType,
+          dateType: nextProps.dateType,     
         }
       )
       getAllStationMonthBarData({
@@ -177,18 +179,17 @@ class AllStationStatistic extends React.Component {
         {
           year: currentTableYear,
           dateType: nextProps.dateType,
-          month: currentMonth,//默认当前月
           pageNum: nextProps.pageNum, // 当前页
-          //pageNum: 1, // 当前页
           pageSize, // 每页条数
           sortType,
           sort,
+          stationType
         }
       )
-
     }
     //年->月
     if (dateType !== nextProps.dateType && nextProps.dateType === 'month') {
+      // console.log('年-月');
       changeAllStationStore({ year: currentYear, month: currentMonth })
       getAllStationAvalibaData(
         {
@@ -214,6 +215,7 @@ class AllStationStatistic extends React.Component {
           pageSize, // 每页条数
           sortType,
           sort,
+          stationType
         }
       )
       getAllStationMonthBarData({
@@ -232,10 +234,11 @@ class AllStationStatistic extends React.Component {
     //年->年
     if (dateType === 'year' && nextProps.dateType === 'year') {
       if (nextProps.year[0] !== this.props.year[0] || nextProps.year[1] !== this.props.year[1]) {
+        // console.log('年-年');
         getAllStationAvalibaData(
           {
             userId: userId,
-            year: nextProps.year,
+            year: changeRangYear,
             dateType,
           }
         )
@@ -262,6 +265,7 @@ class AllStationStatistic extends React.Component {
             pageSize: nextProps.pageSize, // 每页条数
             sortType: nextProps.sortType,
             sort: nextProps.sort,
+            stationType
           }
         )
       }

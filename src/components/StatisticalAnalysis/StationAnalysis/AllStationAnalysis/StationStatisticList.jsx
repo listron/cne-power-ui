@@ -81,7 +81,7 @@ class StationStatisticList extends React.Component {
     // this.setState({
     //   month:changeMonth
     // })
-    const { changeAllStationStore, getAllStationStatisticTableData, dateType, pageNum, pageSize, sortType, year,sort } = this.props;
+    const { changeAllStationStore, getAllStationStatisticTableData,stationType, dateType, pageNum, pageSize, sortType, year,sort } = this.props;
     const curYear = Number(year);
     
    
@@ -89,7 +89,6 @@ class StationStatisticList extends React.Component {
     changeAllStationStore({ month: changeMonth })
     getAllStationStatisticTableData(
       {
-        userId: userId,
         year: curYear,
         dateType,
         month: changeMonth,//
@@ -97,6 +96,7 @@ class StationStatisticList extends React.Component {
         pageSize, // 每页条数
         sortType,
         sort,
+        stationType
 
       }
     )
@@ -104,7 +104,7 @@ class StationStatisticList extends React.Component {
   }
   handleYearTime = (e) => {
     const changeYear = Number(e.target.value);
-    const { getAllStationStatisticTableData, dateType, pageNum, pageSize, sortType, sort } = this.props;
+    const { getAllStationStatisticTableData, dateType, pageNum, pageSize, sortType, sort,stationType } = this.props;
     const curYear = Number(moment().format('YYYY'));
 
     // this.props.changeAllStationStore()
@@ -116,35 +116,42 @@ class StationStatisticList extends React.Component {
         pageSize, // 每页条数
         sortType,
         sort,
+        stationType
 
       }
     )
 
   }
 
-  selectTime() {
-    const { allStationAvalibaData } = this.props;
-    const currentMonth = moment().format('MM');
-    return (
-      <Radio.Group defaultValue={currentMonth} buttonStyle="solid" onChange={this.handleTime}>
-        {allStationAvalibaData.map((e, index) => {
-          if (e.isTrue === true) {
-            return <Radio.Button value={e.year} key={index} style={{ margin: '0 5px' }}>{e.year}月</Radio.Button>
-          } else {
-            return <Radio.Button value={e.year} key={index} disabled style={{ margin: '0 5px' }}>{e.year}月</Radio.Button>
-          }
-        }
-        )}
-      </Radio.Group>
-    )
-  }
+  // selectTime() {
+  //   const { allStationAvalibaData } = this.props;
+  //   const currentMonth = moment().format('MM');
+  //   console.log(allStationAvalibaData,currentMonth);
+  //   if(allStationAvalibaData.length>0){
+  //     return (
+  //       <Radio.Group defaultValue={Number(currentMonth)} buttonStyle="solid" onChange={this.handleTime}>
+  //         {allStationAvalibaData.map((e, index) => {
+  //           if (e.isTrue === true) {
+  //             return <Radio.Button value={e.year} key={index} style={{ margin: '0 5px' }}>{e.year}月</Radio.Button>
+  //           } else {
+  //             return <Radio.Button value={e.year} key={index} disabled style={{ margin: '0 5px' }}>{e.year}月</Radio.Button>
+  //           }
+  //         }
+  //         )}
+  //       </Radio.Group>
+  //     )
+  //   }
+   
+  // }
   selectYear() {
-    const { allStationAvalibaData } = this.props;
-    let yearArray=allStationAvalibaData.map((e,i)=>(Number(e.year))) ;
-    let currentYear=Math.max(...yearArray).toString();
+    const { allStationAvalibaData ,dateType} = this.props;
+    let yearArray=allStationAvalibaData.length>0&&allStationAvalibaData.map((e,i)=>(Number(e.year))) ;
+    let currentYear=yearArray&&Math.max(...yearArray);
+    const currentMonth = moment().format('MM');
     //const currentYear = moment().format('YYYY');
+    if(dateType==='year'&&allStationAvalibaData.length>0){
     return (
-      <Radio.Group defaultValue={currentYear} buttonStyle="solid" onChange={this.handleYearTime}>
+      <Radio.Group value={`${currentYear}`} buttonStyle="solid" onChange={this.handleYearTime}>
         {allStationAvalibaData.map((e, index) => {
           if (e.isTrue === true) {
             return <Radio.Button value={e.year} key={index} style={{ margin: '0 5px' }}>{e.year}年</Radio.Button>
@@ -155,6 +162,22 @@ class StationStatisticList extends React.Component {
         )}
       </Radio.Group>
     )
+  }else if(allStationAvalibaData.length>0){
+    return(
+      <Radio.Group value={Number(currentMonth)} buttonStyle="solid" onChange={this.handleTime}>
+      {allStationAvalibaData.map((e, index) => {
+        if (e.isTrue === true) {
+          return <Radio.Button value={e.year} key={index} style={{ margin: '0 5px' }}>{e.year}月</Radio.Button>
+        } else {
+          return <Radio.Button value={e.year} key={index} disabled style={{ margin: '0 5px' }}>{e.year}月</Radio.Button>
+        }
+      }
+      )}
+    </Radio.Group>
+    )
+   
+
+  }
   }
 
   //月table表
@@ -339,8 +362,9 @@ class StationStatisticList extends React.Component {
         <div className={styles.stationStatisticFilter}>
           <div className={styles.leftTime}>
             <div>综合指标统计表</div>
-            {dateType === 'month' ? this.selectTime() : ''}
-            {dateType === 'year' && showPage === 'multiple' ? this.selectYear() : ''}
+            
+           {/* {dateType === 'year' && showPage === 'multiple' ? this.selectYear() : this.selectTime()}*/ }
+          { this.selectYear()}
 
           </div>
 
