@@ -44,7 +44,7 @@ class AllStationStatistic extends React.Component {
     const currentMonth = Number(moment().format('MM'));
     let time = year ? year : [`${currentYear}`];
     const userId = Cookie.get('userId')
-    changeAllStationStore({ year: [`${currentYear}`], month: currentMonth })
+    changeAllStationStore({ year: [`${currentYear}`], month: currentMonth ,powerSelectMonth:currentMonth})
     getAllStationAvalibaData(
       {
         userId: userId,
@@ -88,6 +88,7 @@ class AllStationStatistic extends React.Component {
       dataType: 'EqpGen',
       stationType
     })
+    
 
   }
   componentWillReceiveProps(nextProps) {
@@ -102,14 +103,13 @@ class AllStationStatistic extends React.Component {
     for (let i = selectYear[0]; i < selectYear[1] + 1; i++) {
       rangeYear.push(i.toString())
     }
-    let changeRangYear=[];
-    for (let i = Number(nextProps.year[0]); i <Number(nextProps.year[1]) + 1; i++) {
+    let changeRangYear = [];
+    for (let i = Number(nextProps.year[0]); i < Number(nextProps.year[1]) + 1; i++) {
       changeRangYear.push(i.toString())
     }
     //月->月
     if (dateType === 'month' && nextProps.dateType === 'month') {
       if (nextProps.year[0] !== this.props.year[0]) {
-        // console.log('月-月');
         getAllStationAvalibaData(
           {
             userId: userId,
@@ -152,8 +152,7 @@ class AllStationStatistic extends React.Component {
     }
     //月->年
     if (dateType !== nextProps.dateType && nextProps.dateType === 'year') {
-      // console.log('月-年');
-      changeAllStationStore({  allStationAvalibaData:[]})
+      changeAllStationStore({ allStationAvalibaData: [] })
       getAllStationAvalibaData(
         {
           userId: userId,
@@ -187,11 +186,13 @@ class AllStationStatistic extends React.Component {
           stationType
         }
       )
+      changeAllStationStore({
+        selectYear: currentTableYear
+      })
     }
     //年->月
     if (dateType !== nextProps.dateType && nextProps.dateType === 'month') {
-      // console.log('年-月');
-      changeAllStationStore({ year: currentYear, month: currentMonth ,allStationAvalibaData:[]})
+      changeAllStationStore({ year: currentYear, month: currentMonth, allStationAvalibaData: [] })
       getAllStationAvalibaData(
         {
           userId: userId,
@@ -236,7 +237,6 @@ class AllStationStatistic extends React.Component {
     //年->年
     if (dateType === 'year' && nextProps.dateType === 'year') {
       if (nextProps.year[0] !== this.props.year[0] || nextProps.year[1] !== this.props.year[1]) {
-        // console.log('年-年');
         getAllStationAvalibaData(
           {
             userId: userId,
@@ -284,11 +284,12 @@ class AllStationStatistic extends React.Component {
       pageNum: 1, // 当前页
       pageSize: 10, // 每页条数
       totalNum: 0,//总数
-      allStationAvalibaData:[],
+      allStationAvalibaData: [],
+      selectYear:''
     });
   }
   onTimeChange = (timeObj) => {
-    timeObj.timeStyle === 'year' ? this.props.changeAllStationStore({ dateType: timeObj.timeStyle, year: [timeObj.startTime, timeObj.endTime] }) : this.props.changeAllStationStore({ dateType: timeObj.timeStyle, year: [timeObj.startTime] })
+    timeObj.timeStyle === 'year' ? this.props.changeAllStationStore({ dateType: timeObj.timeStyle, year: [timeObj.startTime, timeObj.endTime], selectYear: timeObj.endTime,powerSelectYear: timeObj.endTime}) : this.props.changeAllStationStore({ dateType: timeObj.timeStyle, year: [timeObj.startTime] })
   }
 
   onChangeStation = (stationCode) => {
@@ -317,7 +318,7 @@ class AllStationStatistic extends React.Component {
         <i className="iconfont icon-filter"></i>
       </div>
     );
-    const { stationType, stations, dateType, year, allStationAvalibaData, allStationStatisticData, getAllStationStatisticData } = this.props;
+    const { stationType, stations, dateType, year, allStationAvalibaData, allStationStatisticData, getAllStationStatisticData, selectYear, changeAllStationStore } = this.props;
     const { showStationSelect } = this.state;
     return (
       <div className={styles.allStationTypeTabs}>
@@ -325,7 +326,8 @@ class AllStationStatistic extends React.Component {
           <TabPane tab="光伏" key="1">
             <div className={styles.componentContainer}>
               <TimeSelect showDayPick={false} onChange={this.onTimeChange} />
-              <PlanCompletionRate dateType={dateType} stationType={stationType}  allStationAvalibaData={allStationAvalibaData} allStationStatisticData={allStationStatisticData} getAllStationStatisticData={getAllStationStatisticData} year={year} />
+              <PlanCompletionRate dateType={dateType} stationType={stationType} allStationAvalibaData={allStationAvalibaData} allStationStatisticData={allStationStatisticData} getAllStationStatisticData={getAllStationStatisticData} year={year} selectYear={selectYear}
+                changeAllStationStore={changeAllStationStore} />
               <TargetTabs {...this.props} />
             </div>
           </TabPane>
