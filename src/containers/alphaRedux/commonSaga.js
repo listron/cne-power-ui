@@ -306,10 +306,10 @@ function *getStationBelongTypes(action){ // 获取电站可能的所属的各种
 
 function *getStationTargetInfo(action){ // 获取电站指定分类信息(省,市,县,分类等。)
   const { payload } = action;
-  const url = `${APIBasePath}${commonPaths.getStationBelongTypes}`;
+  const url = `${APIBasePath}${commonPaths.getStationTargetInfo}`;
   try{
     const { actionName, resultName, params } = payload;
-    const response = yield call(axios.get, url, params);
+    const response = yield call(axios.get, url, {params});
     yield put({
       type: actionName,
       payload: { [resultName]: response.data.data || []}

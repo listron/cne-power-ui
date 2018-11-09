@@ -29,11 +29,11 @@ class EditForm extends Component {
     const { getStationTargetInfo, stationDetail } = this.props;
     const { provinceCode, cityCode } = stationDetail;
     provinceCode && getStationTargetInfo({
-      params: {dictionaryType: 4, areaId: provinceCode},
+      params: {dictionaryType: 4, area: provinceCode},
       resultName: 'cityData'
     })
     cityCode && getStationTargetInfo({
-      params: {dictionaryType: 4, areaId: cityCode},
+      params: {dictionaryType: 4, area: cityCode},
       resultName: 'countyData'
     })
   }
@@ -57,29 +57,28 @@ class EditForm extends Component {
 
   render(){
     const { stationDetail, loading, form, stationBelongInfo, getStationTargetInfo, cityData, countyData } = this.props;
-    console.log(stationBelongInfo);
+    const isPv = stationDetail.stationType === 1;
+    stationDetail.stationType = 0;
     return (
       <Form className={styles.editPart}>
-        <div className={styles.baseEdit}>
-          <div className={styles.title}>
-            <span className={styles.titleText}>基本信息</span>
-            <div className={styles.titleHandle}>
-              <span className={styles.cancel} onClick={this.cancelEdit}>取消</span>
-              <Button className={styles.save} onClick={this.saveStationInfo} loading={loading}>保存</Button>
-            </div>
+        <div className={styles.title}>
+          <span className={styles.titleText}>基本信息</span>
+          <div className={styles.titleHandle}>
+            <span className={styles.cancel} onClick={this.cancelEdit}>取消</span>
+            <Button className={styles.save} onClick={this.saveStationInfo} loading={loading}>保存</Button>
           </div>
-          <EditBaseInfo 
-            stationDetail={stationDetail} 
-            form={form} 
-            stationBelongInfo={stationBelongInfo}
-            getStationTargetInfo={getStationTargetInfo}
-            cityData={cityData}
-            countyData={countyData}
-          />
-          <EditStationBelong stationDetail={stationDetail} form={form} stationBelongInfo={stationBelongInfo} />
-          <EditConnectNetInfo stationDetail={stationDetail} form={form} stationBelongInfo={stationBelongInfo} />
-          <EditOtherInfo stationDetail={stationDetail} form={form} />
         </div>
+        <EditBaseInfo 
+          stationDetail={stationDetail} 
+          form={form} 
+          stationBelongInfo={stationBelongInfo}
+          getStationTargetInfo={getStationTargetInfo}
+          cityData={cityData}
+          countyData={countyData}
+        />
+        {isPv && <EditStationBelong stationDetail={stationDetail} form={form} stationBelongInfo={stationBelongInfo} />}
+        <EditConnectNetInfo stationDetail={stationDetail} form={form} stationBelongInfo={stationBelongInfo} />
+        <EditOtherInfo stationDetail={stationDetail} form={form} />
       </Form>
     )
   }

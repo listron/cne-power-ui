@@ -20,6 +20,7 @@ export default {
     findDeviceExist: '/v3/performance/queryByDeviceName', // 验证设备是否存在
     getLostGenType: '/v3/faulttype/getlist', // 故障损失类型
     getStationBelongTypes: '/v3/management/total', // 获取电站可能的所属的各种分类信息
+    getStationTargetInfo: '/v3/management', // 获取电站指定指标分类： 省市县等。
     // getRefreshToken: '/v3/oauth/token' --todo 根据过期token中携带的refreshToken获取新token接口。
   },
   APISubPaths: {

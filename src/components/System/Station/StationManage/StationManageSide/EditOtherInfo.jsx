@@ -27,7 +27,8 @@ const EditOtherInfo = ({stationDetail, form, ...restProps}) => {
       zoneValue: i,
     })
   }
-  return (<div style={{display: 'flex', flexWrap: 'wrap'}}>
+  return (<section className={styles.otherInfo}>
+    <h3 className={styles.titleText}> 其他信息 </h3>
     <FormItem label="有功控制能力" >
       {getFieldDecorator('automaticActiveControl',{
         initialValue: stationDetail.automaticActiveControl,
@@ -93,7 +94,7 @@ const EditOtherInfo = ({stationDetail, form, ...restProps}) => {
         </Select>
       )}
     </FormItem>
-  </div>)
+  </section>)
 }
 
 export default EditOtherInfo;

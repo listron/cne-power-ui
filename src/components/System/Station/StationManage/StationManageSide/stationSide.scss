@@ -151,71 +151,98 @@
   }
   .stationManageEdit{
     .editPart{
-      .baseEdit, .connectionPriceEdit, .otherEdit{
+      .title, .baseInfo, .stationBelong, .connectNet, .otherInfo{
+        width: 100%;
         display: flex;
         flex-wrap: wrap;
-        margin: 0 16px;
-        padding-bottom: 24px;
-        border-bottom: solid 1px $promptColor;
-        .title{
+        align-items: center;
+        .titleText{
+          color: rgba(0,0,0,0.85);
+          margin-left: 24px;
           width: 100%;
-          display: flex;
-          justify-content: space-between;
           height: 58px;
-          align-items: center;
-          .titleText{
-            color: rgba(0,0,0,0.85);
-            margin-left: 24px;
-            &::after{
-              content: '';
-              width: 0px;
-              height: 0px;
-              opacity: 0.85;
-              margin-left: 4px;
-              display: inline-block;
-              border-left: 4px solid #000;
-              border-top: 4px solid transparent;
-              border-right: 4px solid transparent;
-              border-bottom: 4px solid transparent;
-            }
-          }
-          .titleHandle{
-            .cancel{
-              cursor: pointer;
-              color: $darkColor;
-            }
-            .save{
-              background-color: $themeColor;
-              color: #fff;
-            }
+          line-height: 58px;
+          &::after{
+            content: '';
+            width: 0px;
+            height: 0px;
+            opacity: 0.85;
+            margin-left: 4px;
+            display: inline-block;
+            border-left: 4px solid #000;
+            border-top: 4px solid transparent;
+            border-right: 4px solid transparent;
+            border-bottom: 4px solid transparent;
           }
         }
-        .eachInfo{
+      }
+      .baseInfo, .stationBelong, .connectNet, .otherInfo{
+        border-bottom: solid 1px $promptColor;
+      }
+      .otherInfo{
+        border-bottom: none;
+      }
+      .title{
+        justify-content: space-between;
+        height: 58px;
+        .titleText{
+          width: auto;
+        }
+        .titleHandle{
+          .save{
+            margin:0 24px;
+          }
+        }
+      }
+      .unit{
+        margin-left: 4px;
+      }
+      .baseInfo{
+        .stationType{
           width: 33.33%;
           display: flex;
-          align-items: center;
-          height: 40px;
-          margin-bottom: 0px;
-          .infoName{
+          .name{
             width: 150px;
+            color: $darkColor;
             text-align: right;
             margin-right: 12px;
-            color: $darkColor;
           }
-          .infoValue{
+          .value{
             flex: 1;
-            color: $darkColor;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-            overflow: hidden;
           }
         }
-        :global{
-          .ant-form-item{
-            width: 33.33%;
-            display: flex;
+        .mapPosition{
+          .sign{
+            margin: 0 4px;
+          }
+          input{
+            width: 95px
+          }
+        }
+        .stationAreaInfo{
+          .stationArea{
+            :global{
+              .ant-select{
+                width: 80px;
+                margin-right: 4px;
+                .ant-select-selection__rendered{
+                  margin-left: 4px;
+                  margin-right: 4px;
+                }
+              }
+            }
+          }
+          :global{
             .ant-form-item-label{
-              width: 150px;
+              width: 96px;
+            }
+          }
+        }
+        .windSpeedQuota, .windPowerQuota {
+          display: flex;
+          :global{
+            .ant-form-item-label{
+              width: 215px;
               text-align: right;
               margin-right: 12px;
               color: $darkColor;
@@ -223,29 +250,39 @@
             .ant-form-item-control-wrapper{
               flex: 1;
               color: $darkColor;
-              .ant-form-explain{
-                position: absolute;
-              }
-              :local{
-                .capacity, .designUtilizationHours, .floorArea{
-                  width: 145px;
-                  margin-right: 12px;
-                }
+              input{
+                width: 130px;
               }
             }
           }
         }
       }
-      .baseEdit{
-        .titleHandle{
-          .save{
-            margin:0 24px;
+      :global{
+        .ant-form-item{
+          width: 33.33%;
+          display: flex;
+          .ant-form-item-label{
+            width: 150px;
+            text-align: right;
+            margin-right: 12px;
+            color: $darkColor;
+          }
+          .ant-form-item-control-wrapper{
+            flex: 1;
+            color: $darkColor;
+            .ant-form-explain{
+              position: absolute;
+            }
+            :local{
+              .capacity, .designUtilizationHours, .floorArea{
+                width: 145px;
+                margin-right: 12px;
+              }
+            }
           }
         }
       }
-      .otherEdit{
-        border-bottom: none;
-      }
+      
     }
     :global{
       .ant-form-item-label label:after{
@@ -257,6 +294,13 @@
       .ant-form-item, .ant-form-horizontal {
         margin-bottom: 14px;
       }
+    }
+  }
+}
+.areaClass{
+  :global{
+    .ant-select-dropdown-menu-item{
+      padding: 4px; 
     }
   }
 }

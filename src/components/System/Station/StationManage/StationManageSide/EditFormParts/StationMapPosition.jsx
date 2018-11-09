@@ -6,6 +6,7 @@
 
 import React, { Component } from 'react';
 import { Input } from 'antd';
+import styles from '../stationSide.scss';
 import PropTypes from 'prop-types';
 
 class StationMapPosition extends Component{
@@ -26,11 +27,11 @@ class StationMapPosition extends Component{
 
   render(){
     const [longitude, latitude] = this.props.value;
-    return (<div style={{display: 'flex'}}>
+    return (<div className={styles.mapPosition}>
       <Input onChange={this.changeLongitude} value={longitude} />
-      <span>°</span>
+      <span className={styles.sign}>°</span>
       <Input onChange={this.changeLatitude} value={latitude} />
-      <span>°</span>
+      <span className={styles.sign}>°</span>
     </div>)
   }
 }

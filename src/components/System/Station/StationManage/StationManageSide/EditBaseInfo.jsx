@@ -14,7 +14,7 @@ const EditBaseInfo = ({stationDetail, form, stationBelongInfo, ...restProps }) =
   const isPv =  stationDetail.stationType === 1;
   const isWind =  stationDetail.stationType === 0;
   const { coverType, oneLevelRegion, twoLevelRegion, provinces } = stationBelongInfo;
-  return (<div style={{display: 'flex', flexWrap: 'wrap'}}>
+  return (<div className={styles.baseInfo}>
     <FormItem label="电站名称" >
       {getFieldDecorator('stationName',{
         initialValue: stationDetail.stationName,
@@ -25,9 +25,9 @@ const EditBaseInfo = ({stationDetail, form, stationBelongInfo, ...restProps }) =
         <Input />
       )}
     </FormItem>
-    <span>
-      <span>电站类型</span>
-      <span>{isPv? '光伏': '风电'}</span>
+    <span className={styles.stationType}>
+      <span className={styles.name}>电站类型</span>
+      <span className={styles.value}>{isPv? '光伏': '风电'}</span>
     </span>
     <FormItem label="经纬度" >
       {getFieldDecorator('stationMapPosition',{
@@ -85,22 +85,17 @@ const EditBaseInfo = ({stationDetail, form, stationBelongInfo, ...restProps }) =
         </Select>
       )}
     </FormItem>
-    <FormItem label="所在省市" >
+    <FormItem label="所在省市" className={styles.stationAreaInfo} >
       {getFieldDecorator('stationArea',{
         initialValue: [stationDetail.provinceCode, stationDetail.cityCode, stationDetail.countyCode],
         rules: [{
+          required: true,
           validator:(rule,value,callback)=>{
-            console.log(value)
+            const [provinceCode] = value; // 有省即可
+            if(!provinceCode && provinceCode !== 0 ){
+              callback('请选择所在省')
+            }
             callback();
-            // const [longitude, latitude] = value;
-            // (!longitude && longitude!== 0) && callback('请输入经纬度');
-            // (!latitude && latitude!== 0) && callback('请输入经纬度');
-            // (isNaN(longitude) || isNaN(latitude)) && callback('经纬度需为数字');
-            // let longitudePoints = `${longitude}`.split('.')[1];
-            // let latitudePoints = `${latitude}`.split('.')[1];
-            // longitudePoints && longitudePoints.length > 6 && callback('经纬度不超过6位小数');
-            // latitudePoints && latitudePoints.length > 6 && callback('经纬度不超过6位小数');
-            // callback()
           }
         }]
       })(
@@ -173,6 +168,7 @@ const EditBaseInfo = ({stationDetail, form, stationBelongInfo, ...restProps }) =
       })(
         <Input />
       )}
+      <span className={styles.unit}>MW</span>
     </FormItem>
     <FormItem label="设计容量" >
       {getFieldDecorator('designCapacity',{
@@ -181,6 +177,7 @@ const EditBaseInfo = ({stationDetail, form, stationBelongInfo, ...restProps }) =
       })(
         <Input />
       )}
+      <span className={styles.unit}>MW</span>
     </FormItem>
     <FormItem label="占地面积" >
       {getFieldDecorator('floorArea',{
@@ -191,6 +188,7 @@ const EditBaseInfo = ({stationDetail, form, stationBelongInfo, ...restProps }) =
       })(
         <Input />
       )}
+      <span className={styles.unit}>k㎡</span>
     </FormItem>
     <FormItem label="年利用小时数" >
       {getFieldDecorator('designUtilizationHours',{
@@ -199,6 +197,7 @@ const EditBaseInfo = ({stationDetail, form, stationBelongInfo, ...restProps }) =
       })(
         <Input />
       )}
+      <span className={styles.unit}>h</span>
     </FormItem>
     <FormItem label="是否接入" >
       {getFieldDecorator('stationStatus',{
@@ -213,7 +212,7 @@ const EditBaseInfo = ({stationDetail, form, stationBelongInfo, ...restProps }) =
         </Select>
       )}
     </FormItem>
-    <FormItem label="组装角度" >
+    {isPv && <FormItem label="组装角度" >
       {getFieldDecorator('componentAngle',{
         initialValue: stationDetail.componentAngle,
         rules: [{
@@ -224,7 +223,8 @@ const EditBaseInfo = ({stationDetail, form, stationBelongInfo, ...restProps }) =
       })(
         <Input />
       )}
-    </FormItem>
+      <span className={styles.unit}>°</span>
+    </FormItem>}
     <FormItem label="是否启用" >
       {getFieldDecorator('stationEnabled',{
         initialValue: stationDetail.stationEnabled,
@@ -243,23 +243,24 @@ const EditBaseInfo = ({stationDetail, form, stationBelongInfo, ...restProps }) =
         <Input />
       )}
     </FormItem>
-    {isWind && <FormItem label="可研报告轮毂高度年平均风速" >
-      {getFieldDecorator('hubAnnualAverageSpeed',{
-        initialValue: stationDetail.hubAnnualAverageSpeed,
-        rules: [{ validator: dataRuleFunc(2) }]
-      })(
-        <Input />
-      )}
+    {isWind && <FormItem label="可研报告轮毂高度年平均风速" className={styles.windSpeedQuota}>
+        {getFieldDecorator('hubAnnualAverageSpeed',{
+          initialValue: stationDetail.hubAnnualAverageSpeed,
+          rules: [{ validator: dataRuleFunc(2) }]
+        })(
+          <Input />
+        )}
+        <span className={styles.unit}>m/s</span>
     </FormItem>}
-    {isWind && <FormItem label="可研报告轮毂高度年平均功率密度" >
+    {isWind && <FormItem label="可研报告轮毂高度年平均功率密度" className={styles.windPowerQuota} >
       {getFieldDecorator('hubAnnualAveragePower',{
         initialValue: stationDetail.hubAnnualAveragePower,
         rules: [{ validator: dataRuleFunc(2) }]
       })(
         <Input />
       )}
+      <span className={styles.unit}>W/㎡</span>
     </FormItem>}
-
   </div>)
 }
 

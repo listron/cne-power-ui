@@ -14,7 +14,8 @@ const { Option } = Select;
 const EditStationBelong = ({stationDetail, form, stationBelongInfo }) => {
   const { getFieldDecorator } = form;
   const { belongType, progressType, installType, newClassType, absorptiveMethod } = stationBelongInfo;
-  return (<div style={{display: 'flex', flexWrap: 'wrap'}}>
+  return (<section className={styles.stationBelong}>
+    <h3 className={styles.titleText}> 电站分类 </h3>
     <FormItem label="所属类型" >
       {getFieldDecorator('belongType',{
         initialValue: stationDetail.belongType,
@@ -70,7 +71,7 @@ const EditStationBelong = ({stationDetail, form, stationBelongInfo }) => {
         </Select>
       )}
     </FormItem>
-  </div>)
+  </section>)
 }
 
 export default EditStationBelong;

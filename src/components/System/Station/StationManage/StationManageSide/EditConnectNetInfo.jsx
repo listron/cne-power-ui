@@ -14,7 +14,8 @@ const { Option } = Select;
 const EditConnectNetInfo = ({ stationDetail, form, stationBelongInfo }) => {
   const { getFieldDecorator } = form;
   const { managerType, gridVoltageLevel } = stationBelongInfo;
-  return (<div style={{display: 'flex', flexWrap: 'wrap'}}>
+  return (<section className={styles.connectNet}>
+    <h3 className={styles.titleText}> 并网信息及电价情况 </h3>
     <FormItem label="通过并网测验" >
       {getFieldDecorator('gridConnectionDetection',{
         initialValue: stationDetail.gridConnectionDetection,
@@ -88,7 +89,7 @@ const EditConnectNetInfo = ({ stationDetail, form, stationBelongInfo }) => {
         <Input />
       )}
     </FormItem>
-  </div>)
+  </section>)
 }
 
 export default EditConnectNetInfo;
