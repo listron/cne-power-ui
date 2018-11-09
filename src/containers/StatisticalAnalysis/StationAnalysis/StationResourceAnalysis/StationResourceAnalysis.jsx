@@ -27,7 +27,15 @@ class ResourceAnalysisContainer extends Component {
   }
 
   componentWillUnmount() {
-  //  this.props.resetStore()
+    this.props.changeResourceStore({
+      dateType: 'month',
+      year: null,
+      stationCode: null,
+      month: '',
+      startTime: '',
+      endTime: '',
+      selectYear: '',
+    })
   }
 
   render() {
