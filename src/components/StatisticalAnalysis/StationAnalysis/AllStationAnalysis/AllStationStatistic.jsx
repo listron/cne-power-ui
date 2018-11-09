@@ -153,7 +153,7 @@ class AllStationStatistic extends React.Component {
     //月->年
     if (dateType !== nextProps.dateType && nextProps.dateType === 'year') {
       // console.log('月-年');
-     
+      changeAllStationStore({  allStationAvalibaData:[]})
       getAllStationAvalibaData(
         {
           userId: userId,
@@ -191,7 +191,7 @@ class AllStationStatistic extends React.Component {
     //年->月
     if (dateType !== nextProps.dateType && nextProps.dateType === 'month') {
       // console.log('年-月');
-      changeAllStationStore({ year: currentYear, month: currentMonth })
+      changeAllStationStore({ year: currentYear, month: currentMonth ,allStationAvalibaData:[]})
       getAllStationAvalibaData(
         {
           userId: userId,
@@ -254,7 +254,7 @@ class AllStationStatistic extends React.Component {
         )
         getAllStationMonthBarData({
           userId: userId,
-          year: nextProps.year,
+          year: changeRangYear,
           dateType,
           dataType: 'EqpGen',
           stationType
@@ -284,6 +284,7 @@ class AllStationStatistic extends React.Component {
       pageNum: 1, // 当前页
       pageSize: 10, // 每页条数
       totalNum: 0,//总数
+      allStationAvalibaData:[],
     });
   }
   onTimeChange = (timeObj) => {
@@ -324,7 +325,7 @@ class AllStationStatistic extends React.Component {
           <TabPane tab="光伏" key="1">
             <div className={styles.componentContainer}>
               <TimeSelect showDayPick={false} onChange={this.onTimeChange} />
-              <PlanCompletionRate dateType={dateType} stationType={stationType} allStationAvalibaData={allStationAvalibaData} allStationStatisticData={allStationStatisticData} getAllStationStatisticData={getAllStationStatisticData} year={year} />
+              <PlanCompletionRate dateType={dateType} stationType={stationType}  allStationAvalibaData={allStationAvalibaData} allStationStatisticData={allStationStatisticData} getAllStationStatisticData={getAllStationStatisticData} year={year} />
               <TargetTabs {...this.props} />
             </div>
           </TabPane>

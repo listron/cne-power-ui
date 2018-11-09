@@ -73,7 +73,6 @@ class ProductionAnalysis extends React.Component {
     const currentTableYear = Number(moment().format('YYYY'));
     const currentMonth = Number(moment().format('MM'));
     const curYearNum = nextProps.year[0].split('-')[0];
-    console.log(curYearNum);
 
     const curMonthNum = nextProps.year[0].split('-')[1];
     console.log(curMonthNum);
@@ -232,22 +231,24 @@ class ProductionAnalysis extends React.Component {
     //   stationCode: stationSelect[0].stationCode
     // })
   }
-  selectYear = () => {
-    const { allStationAvalibaData } = this.props;
+  selectProductYear = () => {
+    const { allStationAvalibaData,dateType } = this.props;
     let yearArray = allStationAvalibaData.map((e, i) => (Number(e.year)));
     let currentYear = Math.max(...yearArray).toString();
-    return (
-      <Radio.Group defaultValue={currentYear} buttonStyle="solid" onChange={this.handleTime}>
-        {allStationAvalibaData.map((e, index) => {
-          if (e.isTrue === true) {
-            return <Radio.Button value={e.year} key={index} style={{ margin: '0 5px' }}>{e.year}年</Radio.Button>
-          } else {
-            return <Radio.Button value={e.year} key={index} disabled style={{ margin: '0 5px' }}>{e.year}年</Radio.Button>
+    if(dateType==='year'&&allStationAvalibaData.length>0){
+      return (
+        <Radio.Group value={`${currentYear}`} buttonStyle="solid" onChange={this.handleTime}>
+          {allStationAvalibaData.map((e, index) => {
+            if (e.isTrue === true) {
+              return <Radio.Button value={e.year} key={index} style={{ margin: '0 5px' }}>{e.year}年</Radio.Button>
+            } else {
+              return <Radio.Button value={e.year} key={index} disabled style={{ margin: '0 5px' }}>{e.year}年</Radio.Button>
+            }
           }
-        }
-        )}
-      </Radio.Group>
-    )
+          )}
+        </Radio.Group>
+      )
+    }
 
   }
   handleTime = (e) => {
@@ -346,7 +347,7 @@ class ProductionAnalysis extends React.Component {
               <div className={styles.status}>
                 <span className={styles.stationIcon}><i className="iconfont icon-pvlogo"></i></span>
                 {stationName}-{provinceName}    :
-                计划完成情况{dateType === 'year' ? this.selectYear() : dateType === 'month' ? `(  ${Number(year)}年  ) ` : `(${moment(year[0]).format('YYYY年MM月')})`}
+                计划完成情况{dateType === 'year' ? this.selectProductYear() : dateType === 'month' ? `(  ${Number(year)}年  ) ` : `(${moment(year[0]).format('YYYY年MM月')})`}
               </div>
               <span className={styles.rightFont}>并网时间{stationGridTime}</span>
             </div>
