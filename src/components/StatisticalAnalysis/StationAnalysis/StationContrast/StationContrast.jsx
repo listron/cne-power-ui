@@ -70,7 +70,9 @@ class StationContrast extends React.Component {
   
 
   render() {
-    const { stations ,stationContrastList,selectedStations } = this.props;
+    const { stations ,stationContrastList,selectedStations ,year} = this.props;
+    console.log(this.props.year);
+    
     return (
       <div className={styles.singleStationType}>
         <div className={styles.stationTimeFilter}>

@@ -20,12 +20,19 @@ class PlancompletionRate extends React.Component{
     }
     handleTime = (e) => {
         const changeYear = Number(e.target.value);
-       // console.log(changeYear);
-        const { getAllStationStatisticData, dateType } = this.props;
+        const { getAllStationStatisticData, dateType ,stationType,getSingleStationStatisticData,singleStationCode} = this.props;
        const userId = Cookie.get('userId')
-        getAllStationStatisticData(
+       getAllStationStatisticData && getAllStationStatisticData(
           {
             userId: userId,
+            year: changeYear,
+            dateType,
+            stationType
+          }
+        )
+        getSingleStationStatisticData &&  getSingleStationStatisticData(
+          {
+            stationCode:singleStationCode,
             year: changeYear,
             dateType,
           }
@@ -36,8 +43,8 @@ class PlancompletionRate extends React.Component{
         const {allStationAvalibaData}=this.props;
         let yearArray=allStationAvalibaData.map((e,i)=>(Number(e.year))) ;
         let currentYear=(Math.max(...yearArray)).toString();
-        return (
-          <Radio.Group defaultValue={currentYear}  buttonStyle="solid" onChange={this.handleTime}>
+        if(allStationAvalibaData.length>0){ return (
+          <Radio.Group value={currentYear}  buttonStyle="solid" onChange={this.handleTime}>
            {allStationAvalibaData.map((e,index)=>{
              if(e.isTrue===true){
               return   <Radio.Button value={e.year} key={index}  style={{margin:'0 5px'}}>{e.year}年</Radio.Button>
@@ -47,7 +54,8 @@ class PlancompletionRate extends React.Component{
            }
            )}
           </Radio.Group>
-        )
+        )}
+       
 
       }
     render(){
@@ -89,7 +97,7 @@ class PlancompletionRate extends React.Component{
                <div className={styles.stationTargetName}>累计光辐射总量 MJ/㎡</div>
                </div>
                <div className={styles.stationTargetData}>
-               <div className={styles.stationTargetValue}>{stationAvailability}</div>
+               <div className={styles.stationTargetValue}>{stationAvailability}%</div>
                <div className={styles.stationTargetName}>电站可利用率</div>
                </div>
                </div>
@@ -115,11 +123,11 @@ class PlancompletionRate extends React.Component{
                </div>
                <div className={styles.rightDataSummary}>
                <div className={styles.stationTargetData}>
-               <div className={styles.stationTargetValue}>{pr}</div>
+               <div className={styles.stationTargetValue}>{pr}%</div>
                <div className={styles.stationTargetName}>PR</div>
                </div>
                <div className={styles.stationTargetData}>
-               <div className={styles.stationTargetValue}>{lostPowerRate}</div>
+               <div className={styles.stationTargetValue}>{lostPowerRate}%</div>
                <div className={styles.stationTargetName}>限电率</div>
                </div>
                </div>
