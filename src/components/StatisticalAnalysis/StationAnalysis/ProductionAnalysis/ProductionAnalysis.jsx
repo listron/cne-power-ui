@@ -75,7 +75,6 @@ class ProductionAnalysis extends React.Component {
     const curYearNum = nextProps.year[0].split('-')[0];
 
     const curMonthNum = nextProps.year[0].split('-')[1];
-    console.log(curMonthNum);
     const curMonth = moment().format('YYYY-MM');
     const curMonthArray = [moment().format('YYYY-MM')];
     const curYear = Number(nextProps.year);
