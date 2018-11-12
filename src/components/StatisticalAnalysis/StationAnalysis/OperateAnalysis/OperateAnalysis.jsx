@@ -17,6 +17,14 @@ import moment from 'moment';
 class OperateAnalysis extends React.Component {
   static propTypes = {
     stationType: PropTypes.string,
+    dateType: PropTypes.string,
+    year: PropTypes.any,
+    selectYear: PropTypes.any,
+    month: PropTypes.string,
+    stations: PropTypes.object,
+    startTime: PropTypes.string, 
+    endTime: PropTypes.string, 
+    stationCode: PropTypes.number,
     changeOperateStationStore: PropTypes.func,
     getOperatePlanComplete: PropTypes.func,
     getComponentPowerStatistic: PropTypes.func,
@@ -27,17 +35,16 @@ class OperateAnalysis extends React.Component {
     getUsageRate: PropTypes.func,
     getPowerEfficiency: PropTypes.func,
     getlostPower: PropTypes.func,
-    dateType: PropTypes.string,
-    // year: PropTypes.number,
-    month: PropTypes.string,
-    stations: PropTypes.object,
-    // operatePlanCompleteData: PropTypes.object,
-    componentPowerStatisticData: PropTypes.object,
-    usageRatecData: PropTypes.object,
-    lostPowerTypeData: PropTypes.object,
-    limitpowerData: PropTypes.array,
-    yearLimitpowerData: PropTypes.object,
-    plantPowerDat: PropTypes.object,
+    operateAvalibaData: PropTypes.array, //计划完成是否有数据
+    operatePlanCompleteData: PropTypes.object,  // 计划完成情况
+    powerData: PropTypes.object, // 发电量统计
+    efficiencyData: PropTypes.array, // 发电效率
+    usageData: PropTypes.array, // 可利用率
+    lostPowerData: PropTypes.array,  //损失电量
+    lostPowerTypeDatas: PropTypes.object,  // 电量损失类型
+    limitPowerData: PropTypes.array, // 月／日限电率同比
+    yearLimitPowerData: PropTypes.array,  // 年限电率
+    plantPowerData: PropTypes.array // 月/年/日厂用电情况/厂损情况
   };
   constructor(props) {
     super(props);
@@ -53,11 +60,11 @@ class OperateAnalysis extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { dateType, year, month, startTime, endTime, stationCode } = nextProps;
-    if (!year) {
-      this.getMonthData(nextProps)
-    }
-    if (year) {
+    const { dateType, year, month, startTime, endTime, stationCode, stations } = nextProps;
+    if (stations.toJS().length > 0) {
+      if (!year) {
+        this.getMonthData(nextProps)
+      }
       if (dateType === "month" && (this.props.dateType !== 'month' ||
         (this.props.year !== year || this.props.stationCode !== stationCode))) {
         this.getMonthData(nextProps)
@@ -83,18 +90,10 @@ class OperateAnalysis extends React.Component {
       dateType,
       year: choiceYear
     }
-    let specilPrams = {
-      stationCode: stationCode ? stationCode : stations.toJS()[0].stationCode,
-      dateType: "year",
-      year: choiceYear,
-    }
     props.changeOperateStationStore({ ...prams, selectYear: choiceYear })
-    props.getOperatePlanComplete(specilPrams)
-    props.getComponentPowerStatistic(specilPrams)
-    props.getPowerEfficiency({
-      ...prams,
-      year: [choiceYear],
-    })
+    props.getOperatePlanComplete({ ...prams, dateType: 'year' })
+    props.getComponentPowerStatistic({ ...prams, dateType: 'year' })
+    props.getPowerEfficiency({ ...prams, year: [choiceYear], })
     props.getlostPower({ ...prams, year: [choiceYear], dataType: "lostPower" })
     props.getUsageRate(prams)
     props.getLostPowerType(prams)
@@ -112,18 +111,9 @@ class OperateAnalysis extends React.Component {
       year: choiceYear,
       month: choiceMonth
     }
-    let specilPrams = {
-      stationCode: stationCode ? stationCode : stations.toJS()[0].stationCode,
-      dateType: "month",
-      year: choiceYear,
-      month: choiceMonth
-    }
-    props.getOperatePlanComplete(specilPrams)
-    props.getComponentPowerStatistic(specilPrams)
-    props.getPowerEfficiency({
-      ...prams,
-      year: [choiceYear],
-    })
+    props.getOperatePlanComplete({ ...prams, dateType: "month", })
+    props.getComponentPowerStatistic({ ...prams, dateType: "month", })
+    props.getPowerEfficiency({ ...prams, year: [choiceYear], })
     props.getlostPower({ ...prams, year: [choiceYear + "-" + choiceMonth], dataType: "lostPower" })
     props.getUsageRate(prams)
     props.getLostPowerType(prams)
@@ -138,7 +128,7 @@ class OperateAnalysis extends React.Component {
     const startYear = startTime ? startTime : moment().subtract(5, 'year').year();
     const rangeYear = [];
     for (let i = Number(startYear); i < Number(endYear) + 1; i++) {
-      rangeYear.push(i.toString())
+      rangeYear.push(`${i}`)
     }
     let prams = {
       stationCode: stationCode ? stationCode : stations.toJS()[0].stationCode,
@@ -147,7 +137,7 @@ class OperateAnalysis extends React.Component {
     }
     let specilPrams = {
       stationCode: stationCode ? stationCode : stations.toJS()[0].stationCode,
-      dateType: "year",
+      dateType,
       year: endYear,
     }
 
@@ -155,7 +145,7 @@ class OperateAnalysis extends React.Component {
     props.changeOperateStationStore({ startTime: startYear, endTime: endYear })
     props.getOperatePlanComplete(specilPrams)
     props.getComponentPowerStatistic(specilPrams)
-    props.getPowerEfficiency({ ...prams, year: rangeYear, })
+    props.getPowerEfficiency({ ...prams })
     props.getUsageRate(prams)
     props.getlostPower({ ...prams, year: rangeYear, dataType: "lostPower" })
     props.getLostPowerType(prams)
@@ -223,19 +213,19 @@ class OperateAnalysis extends React.Component {
 
     let station = ''
     stationCode ? station = stations.toJS().filter(e => e.stationCode === stationCode) : '';
-    let dataAvalibale = operateAvalibaData && operateAvalibaData.filter(e => e.isTrue==='1') || [];
+
     // 发电效率
-    const hours=efficiencyData && efficiencyData.map(e=>e.hours) || [];
-    const light=efficiencyData && efficiencyData.map(e => e.light)|| [];
-    const pr=efficiencyData && efficiencyData.map(e => e.pr)|| [];
+    const hours = efficiencyData && efficiencyData.map(e => e.hours) || [];
+    const light = efficiencyData && efficiencyData.map(e => e.light) || [];
+    const pr = efficiencyData && efficiencyData.map(e => e.pr) || [];
     const PowerEffectiveData = {
       xData: efficiencyData && efficiencyData.map((e, i) => { return this.addXaixsName(e.date, dateType) }),
       yData: {
-        barData: {hours},
-        lineData: {light,pr}
+        barData: { hours },
+        lineData: { light, pr }
       }
     }
-    const PowerEffectiveHasData=hours.some(e=>e || e===0) || light.some(e=>e || e===0) || pr.some(e=>e|| e===0) 
+    const PowerEffectiveHasData = hours.some(e => e || e === 0) || light.some(e => e || e === 0) || pr.some(e => e || e === 0)
 
 
 
@@ -249,16 +239,16 @@ class OperateAnalysis extends React.Component {
         deviceUtilization,
       ]
     };
-    let utilizationData = stationUtilization && stationUtilization.some(e => e || e===0) || deviceUtilization && deviceUtilization.some(e => e|| e===0)
+    let utilizationData = stationUtilization && stationUtilization.some(e => e || e === 0) || deviceUtilization && deviceUtilization.some(e => e || e === 0)
 
     // 损失电量
-    const currentYear = parseInt(year).toString();
-    const lastYear = (parseInt(year) - 1).toString();
+    const currentYear = `${year}`;
+    const lastYear = `${year - 1}`;
     const barGraphThatYear = lostPowerData && lostPowerData.map((e, i) => (e.thatYearData)) || [];
     const barGraphLastYear = lostPowerData && lostPowerData.map((e, i) => (e.lastYearData)) || [];
     const barGraphmonth = lostPowerData && lostPowerData.map((e, i) => { return this.addXaixsName(e.date, dateType) });
     const barGraphYearOnYear = lostPowerData && lostPowerData.map((e, i) => (e.yearOnYear)) || [];
-    const lostPowerHasData = barGraphThatYear.some(e => e|| e===0) || barGraphLastYear.some(e => e|| e===0) || barGraphYearOnYear.some(e => e|| e===0)
+    const lostPowerHasData = barGraphThatYear.some(e => e || e === 0) || barGraphLastYear.some(e => e || e === 0) || barGraphYearOnYear.some(e => e || e === 0)
 
 
     //损失电站类型
@@ -273,7 +263,7 @@ class OperateAnalysis extends React.Component {
       limit, electric, plane, system, other
     };
     let summary = lostPowerTypeDatas && lostPowerTypeDatas.summary;
-    const lostPowerTypeHasData = (limit.some(e => e|| e===0) || electric.some(e => e|| e===0) || plane.some(e => e|| e===0) || system.some(e => e|| e===0) || other.some(e => e|| e===0))
+    const lostPowerTypeHasData = (limit.some(e => e || e === 0) || electric.some(e => e || e === 0) || plane.some(e => e || e === 0) || system.some(e => e || e === 0) || other.some(e => e || e === 0))
 
 
     // 限电率同比
@@ -296,8 +286,8 @@ class OperateAnalysis extends React.Component {
         }
       }
     }
-    const limitPowerHasData = limitPowerData && (thatYearLostPowerRate.some(e => e|| e===0) || lastyearLostPowerRate.some(e => e|| e===0)
-      || lostPowerRateYearOnYear.some(e => e|| e===0) || thatYearLostPower.some(e => e|| e===0) || lastyearLostPower.some(e => e|| e===0));
+    const limitPowerHasData = limitPowerData && (thatYearLostPowerRate.some(e => e || e === 0) || lastyearLostPowerRate.some(e => e || e === 0)
+      || lostPowerRateYearOnYear.some(e => e || e === 0) || thatYearLostPower.some(e => e || e === 0) || lastyearLostPower.some(e => e || e === 0));
 
 
     // 限电率环比
@@ -316,8 +306,8 @@ class OperateAnalysis extends React.Component {
         }
       }
     }
-    const limitPowerHBHasData = yearLimitPowerData && (limitPowerRate.some(e => e|| e===0) && ringRatio.some(e => e|| e===0)
-      || limitPowerBar.some(e => e|| e===0));
+    const limitPowerHBHasData = yearLimitPowerData && (limitPowerRate.some(e => e || e === 0) && ringRatio.some(e => e || e === 0)
+      || limitPowerBar.some(e => e || e === 0));
 
 
 
@@ -331,7 +321,7 @@ class OperateAnalysis extends React.Component {
         comPlant
       ]
     };
-    const plantLostHasData = plantPower.some(e => e|| e===0) || comPlant.some(e => e|| e===0);
+    const plantLostHasData = plantPower.some(e => e || e === 0) || comPlant.some(e => e || e === 0);
     const sendLine = plantPowerData && plantPowerData.map(e => e.sendLine) || [];
     const plantLoss = plantPowerData && plantPowerData.map(e => e.plantLoss) || [];
     const useLost = {
@@ -341,7 +331,7 @@ class OperateAnalysis extends React.Component {
         plantLoss
       ]
     };
-    const useLostHasData = sendLine.some(e => e|| e===0) || plantLoss.some(e => e|| e===0);
+    const useLostHasData = sendLine.some(e => e || e === 0) || plantLoss.some(e => e || e === 0);
 
 
     return (
@@ -359,7 +349,7 @@ class OperateAnalysis extends React.Component {
               />
             </div>
             <div className={styles.timeSelectBox}>
-              <TimeSelect onChange={this.changeDate} />
+              <TimeSelect onChange={this.changeDate} timerText="" />
             </div>
 
           </div>
@@ -373,23 +363,29 @@ class OperateAnalysis extends React.Component {
                 <span className={styles.stationIcon}>
                   <i className="iconfont icon-pvlogo" />
                 </span>
-                {`${station.length>0 && station[0].stationName}-${station && station[0].regionName || "--"}`}
+                {`${station.length > 0 && station[0].stationName}-${station.length > 0 && station[0].regionName || "--"}`}
                 <span className={styles.plan}>计划完成情况
                 {dateType === "day" && (year + '年' + month + '月')}
                   {dateType === "month" && (year + '年')}
                 </span>
                 <div className={styles.choiceYear}>{
-                  dateType === "year" && dataAvalibale.length > 0 && dataAvalibale.map((item, index) => {
-                    return (<span key={index}
-                      className={+item.year === +selectYear ? "active" : ''}
-                      onClick={() => { this.selctYear(item.year) }}
-                    >{item.year}</span>)
+                  dateType === "year" && operateAvalibaData && operateAvalibaData.map((item, index) => {
+                    if (item.isTrue === false) {
+                      return (<span key={index}
+                        className={styles.noSelect}
+                      >{item.year}</span>)
+                    } else {
+                      return (<span key={index}
+                        className={+item.year === +selectYear ? "active" : ''}
+                        onClick={() => { this.selctYear(item.year) }}
+                      >{item.year}</span>)
+                    }
                   })
                 }
                 </div>
               </div>
 
-              <span className={styles.rightFont}>并网时间:{moment(station && station[0].onGridTime).format('YYYY年MM月DD日') || "--"}</span>
+              <span className={styles.rightFont}>并网时间:{station.length > 0 && moment(station[0].onGridTime).format('YYYY年MM月DD日') || "--"}</span>
             </div>
             <div className={styles.graph}>
               <div className={styles.stationTargetData}>
@@ -533,7 +529,13 @@ class OperateAnalysis extends React.Component {
                     </div>
                     <div>损失电量:万kWh</div>
                   </div>
-                  <LostPowerTypeRate graphId={"lostPowerTypeRate"} data={summary} yAxisName={'光伏发电系统故障'} xAxisName={'损失电量'} />
+                  <LostPowerTypeRate
+                    graphId={"lostPowerTypeRate"}
+                    data={summary}
+                    yAxisName={'光伏发电系统故障'}
+                    xAxisName={'损失电量'}
+                    hasData={false}
+                  />
                 </div>
               </div>
             </div>

@@ -183,7 +183,7 @@ class DefectTable extends Component {
     }
   }
   tableChange = (pagination, filter, sorter) => {
-    console.log(sorter);
+    // console.log(sorter);
     if(Object.keys(sorter).length !== 0) {
       const field = getDefectSortField(sorter.field);
       const order = sorter.order ? (sorter.order === 'ascend' ? '0' : '1') : '';

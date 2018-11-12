@@ -9,7 +9,7 @@ import styles from './stationSide.scss';
   hasBottomBorder默认true代表有底部border线。
 */
 
-function DetailInfoPart({ title, infoArray,  handler, noBottomBorder=false }){
+function DetailInfoPart({ title, infoArray,  handler, noBottomBorder=false, extraInfo=null }){
   const borderStyle = noBottomBorder?{borderBottom: 'none'}:{};
   return (
     <div className={styles.infoBox} style={{...borderStyle}}>
@@ -20,7 +20,7 @@ function DetailInfoPart({ title, infoArray,  handler, noBottomBorder=false }){
       <div className={styles.infoPart}>
         {infoArray.map(e=>{
           let value;
-          if(e.value || parseFloat(e.value) === 0){
+          if(e.value || e.value === 0){
             value = e.value;
           }else{
             value = '--'
@@ -28,10 +28,11 @@ function DetailInfoPart({ title, infoArray,  handler, noBottomBorder=false }){
           return (<span key={e.name} className={styles.eachInfo}>
             <span className={styles.infoName}>{e.name}</span>
             <span className={styles.infoValue} 
-              title={e.name==='电站主线图'? e.name : `${value}${e.unit || ''}`}
-            >{e.name==='电站主线图'? (value!=='--' ? <a href={value} target="_blank" style={{color: '#199475'}} >查看</a> : '--') : `${value}${e.unit || ''}`}</span>
+              title={`${value}${e.unit || ''}`}
+            >{`${value}${e.unit || ''}`}</span>
           </span>)
         })}
+        {extraInfo}
       </div>
     </div>
   )

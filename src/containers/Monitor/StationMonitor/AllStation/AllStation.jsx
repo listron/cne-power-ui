@@ -26,12 +26,13 @@ class AllStation extends Component {
     super(props);
   }
   componentDidMount() {
-    if (this.props.stationTypeTabs !== '2') {
-      this.props.getMonitorStation({ stationType: this.props.stationTypeTabs, getStationTypes: false })
-      this.stationInterval = setInterval(() => this.props.getMonitorStation({ stationType: this.props.stationTypeTabs }), 10000);
+    const { stationTypeTabs } = this.props;
+    if (stationTypeTabs !== '2') {
+      this.props.getMonitorStation({ stationType: this.props.stationTypeTabs, getStationTypes: false });
+      this.stationInterval=setInterval(() => this.props.getMonitorStation({ stationType: this.props.stationTypeTabs, getStationTypes: false }), 10000)
     } else {
       this.props.getMonitorStation({ stationType: '2', getStationTypes: true });
-      this.stationInterval = setInterval(() => this.props.getMonitorStation({ stationType: '2' }), 10000);
+      this.stationInterval=setInterval(() =>  this.props.getMonitorStation({ stationType: '2'}), 10000)    
     }
   }
 

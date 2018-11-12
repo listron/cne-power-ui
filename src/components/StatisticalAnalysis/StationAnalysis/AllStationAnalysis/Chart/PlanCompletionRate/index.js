@@ -20,10 +20,9 @@ class PlancompletionRate extends React.Component{
     }
     handleTime = (e) => {
         const changeYear = Number(e.target.value);
-       // console.log(changeYear);
-        const { getAllStationStatisticData, dateType ,stationType} = this.props;
+        const { getAllStationStatisticData, dateType ,stationType,getSingleStationStatisticData,singleStationCode,changeAllStationStore} = this.props;
        const userId = Cookie.get('userId')
-        getAllStationStatisticData(
+       getAllStationStatisticData && getAllStationStatisticData(
           {
             userId: userId,
             year: changeYear,
@@ -31,14 +30,20 @@ class PlancompletionRate extends React.Component{
             stationType
           }
         )
-
+        getSingleStationStatisticData &&  getSingleStationStatisticData(
+          {
+            stationCode:singleStationCode,
+            year: changeYear,
+            dateType,
+          }
+        )
+        changeAllStationStore({selectYear:changeYear})        
       }
     selectYear() {
-        const {allStationAvalibaData}=this.props;
+        const {allStationAvalibaData,selectYear}=this.props;
         let yearArray=allStationAvalibaData.map((e,i)=>(Number(e.year))) ;
-        let currentYear=(Math.max(...yearArray)).toString();
-        return (
-          <Radio.Group defaultValue={currentYear}  buttonStyle="solid" onChange={this.handleTime}>
+        if(allStationAvalibaData.length>0){ return (
+          <Radio.Group value={`${selectYear}`}  buttonStyle="solid" onChange={this.handleTime}>
            {allStationAvalibaData.map((e,index)=>{
              if(e.isTrue===true){
               return   <Radio.Button value={e.year} key={index}  style={{margin:'0 5px'}}>{e.year}年</Radio.Button>
@@ -48,7 +53,8 @@ class PlancompletionRate extends React.Component{
            }
            )}
           </Radio.Group>
-        )
+        )}
+       
 
       }
     render(){
@@ -65,10 +71,12 @@ class PlancompletionRate extends React.Component{
         const pr=planSummary&&planSummary.pr?planSummary.pr:'--';
         const lostPowerRate=planSummary&&planSummary.lostPowerRate?planSummary.lostPowerRate:'--';
         const completeRate=planSummary&&planSummary.completeRate?planSummary.completeRate:'--';
-
         return(
             <div className={styles.allStationData}>
-               <div className={styles.textStyle}>计划完成情况{dateType==='year'?this.selectYear():dateType==='month'?`(  ${moment(year).year()}年  ) `:`(${ moment(year[0]).format('YYYY年MM月')})`}</div>
+               <div className={styles.textStyle}>计划完成情况
+               {dateType==='year'&& this.selectYear()}
+               {dateType==='month'&& `(  ${moment(year).year()}年  ) `}
+               {dateType==='day'&& `(${ moment(year[0]).format('YYYY年MM月')})`}</div>
                <div className={styles.allStationDataContainer}>
                <div className={styles.leftPic}>
                <WaterWave percent={completeRate} height={100} title="" />
