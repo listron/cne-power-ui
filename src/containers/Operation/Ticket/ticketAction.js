@@ -54,6 +54,7 @@ export const ticketAction = {
     SET_INSPECT_FAIL: Symbol('SET_INSPECT_FAIL'),
     getInspectDetailRecord: Symbol('getInspectDetailRecord'),//巡检记录的table列表数据
     getInspectUsers: Symbol('getInspectUsers'),//巡检人员
+    getInspectOrbit: Symbol('getInspectOrbit'),//巡检人员轨迹
     
 
 

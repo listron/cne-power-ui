@@ -384,7 +384,7 @@ function *inspectCheckBatch(action){
     console.log(e)
   }
 }
-function *getInspectDetailRecord(action){
+function *getInspectDetailRecord(action){//获取巡检记录的table列表数据
   const { payload } = action;
   let url='/mock/operation/inspectionList';
   //let url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.getInspectDetailRecord;
@@ -412,7 +412,7 @@ function *getInspectDetailRecord(action){
     console.log(e)
   }
 }
-function *getInspectUsers(action){
+function *getInspectUsers(action){//获得该电站下的巡检人
   let url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.getInspectUsers;
   yield put({type: ticketAction.TICKET_FETCH})
   try{
@@ -422,6 +422,34 @@ function *getInspectUsers(action){
         type: ticketAction.GET_INSPECT_FETCH_SUCCESS,
         payload: {
           inspectUsers: response.data.data||[],          
+        },
+      });     
+    }  else{
+      yield put({
+        type: ticketAction.SET_INSPECT_FAIL,
+        error: {
+          code: response.data.code,
+          message: response.data.message,
+        }
+      })
+    }
+  }catch(e){
+    console.log(e)
+  }
+}
+function *getInspectOrbit(action){//获得巡检人的巡检轨迹
+  const { payload } = action;
+   let url='/mock/operation/inspect/track';
+  //let url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.getInspectOrbit;
+  yield put({type: ticketAction.TICKET_FETCH})
+  try{
+    const response = yield call(axios.get, url,{ params: payload } )
+    if(response.data.code === '10000') {
+      yield put({
+        type: ticketAction.GET_INSPECT_FETCH_SUCCESS,
+        payload: {
+          inspectUserData: response.data.data.userData||[],          
+          inspectTrackData: response.data.data.trackData||[],          
         },
       });     
     }  else{
@@ -454,4 +482,5 @@ export function* watchInspect() {
   yield takeLatest(ticketAction.CHECK_BATCH_INSPECT_SAGA, inspectCheckBatch);
   yield takeLatest(ticketAction.getInspectDetailRecord, getInspectDetailRecord);
   yield takeLatest(ticketAction.getInspectUsers, getInspectUsers);
+  yield takeLatest(ticketAction.getInspectOrbit, getInspectOrbit);
 }

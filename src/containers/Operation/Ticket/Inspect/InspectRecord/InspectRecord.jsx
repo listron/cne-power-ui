@@ -50,6 +50,7 @@ class inspectRecord extends Component {
 
   render() {
     const { showWarningTip, warningTipText } = this.state;
+  
     return (
       <div className={styles.inspectCreate}>
         {showWarningTip && <WarningTip style={{ marginTop: '250px', width: '210px', height: '88px' }} onCancel={this.onCancelWarningTip} onOK={this.onConfirmWarningTip} value={warningTipText} />}

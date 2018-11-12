@@ -241,5 +241,28 @@ module.exports = [
     delay:1000,
     error:{}
 
+  },{
+    api:'/mock/operation/inspect/track',
+    method:'get',
+    response:{
+      "code": "10000",
+      "message": "操作成功",
+      "data":{
+          userData:[1,2,3,4].map((e,i)=>({
+              id:`${i+1}`,
+              name:`刘德华${i+1}`
+          })),
+          trackData:[1,2,3,4].map((e,i)=>({
+            userId:`${i+1}`,
+            username:`刘德华${i+1}`,
+            trackDate:`2018-11-1${i+1}`,
+            trackDatatrackId:`${i+1}`,
+            trackPointId:`${i+1}`,
+            longitude:`12${i+1}`,
+            latitude:`3${i+1}`,
+          }))
+        },
+    }
   }
+
 ]

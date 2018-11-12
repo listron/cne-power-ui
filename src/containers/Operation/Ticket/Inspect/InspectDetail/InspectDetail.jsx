@@ -179,6 +179,7 @@ const mapDispatchToProps = (dispatch) => ({
   getInspectStandard: payload => dispatch({ type: ticketAction.GET_INSPECT_STANDARD_SAGA, payload}),
   getInspectDetailRecord: payload => dispatch({ type: ticketAction.getInspectDetailRecord, payload}),
   getInspectUsers: payload => dispatch({ type: ticketAction.getInspectUsers, payload}),
+  getInspectOrbit: payload => dispatch({ type: ticketAction.getInspectOrbit, payload}),
   
 })
 

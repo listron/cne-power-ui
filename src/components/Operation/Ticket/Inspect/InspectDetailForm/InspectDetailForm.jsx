@@ -21,7 +21,9 @@ class InspectDetailForm extends Component {
     transformDefect: PropTypes.func,
     onDeleteAbnormal: PropTypes.func,
     changeInspectStore: PropTypes.func,
+    getInspectOrbit: PropTypes.func,
     getInspectDetailRecord: PropTypes.func,
+    getStationDeviceTypes: PropTypes.func,
     getInspectStandard: PropTypes.func,
     getInspectUsers: PropTypes.func,
     inspectStandard: PropTypes.object,
@@ -146,7 +148,7 @@ class InspectDetailForm extends Component {
   }
   
   render() {
-    const { inspectDetail, onChangeShowContainer, changeInspectStore,getInspectDetailRecord,getInspectUsers,getStationDeviceTypes } = this.props;
+    const { inspectDetail, onChangeShowContainer, changeInspectStore,getInspectDetailRecord,getInspectUsers,getInspectOrbit,getStationDeviceTypes } = this.props;
     const progressData = inspectDetail.get('processData');
     const inspectId = inspectDetail.get('inspectId');
     const stationCode=inspectDetail.get('stationCode');
@@ -208,6 +210,7 @@ class InspectDetailForm extends Component {
                   getInspectUsers={getInspectUsers}
                   stationCode={stationCode}
                   getStationDeviceTypes={getStationDeviceTypes}
+                  getInspectOrbit={getInspectOrbit}
                   
                   
 

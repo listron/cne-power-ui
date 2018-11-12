@@ -26,8 +26,8 @@ class PersonnelGps extends Component {
       data.push({
         name: item.username,
         value: [item.longitude, item.latitude],
-        // value: [item.longitude, item.latitude,item.userId,item.createDate],
-        symbol: 'ring',
+      
+        symbol: 'image:///img/position.png',
       })
     })
   
@@ -48,7 +48,7 @@ class PersonnelGps extends Component {
              
             </div>
             <div className={styles.createContent}>
-              <GpsMap testId={'personnelGps'} personnelGpsData={[]} />
+              <GpsMap testId={'personnelGps'} personnelGpsData={data} />
             </div>
           </div>
           <Footer />

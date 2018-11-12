@@ -61,6 +61,8 @@ var initState = Immutable.fromJS({
   inspectDetailRecord:[],//巡检记录详情数据
   sortType:0,
   totalCount:0,//巡检记录列表的数据个数
+  inspectUserData:[],//巡检轨迹的人员
+  inspectTrackData:[],//巡检轨迹的数据坐标
 });
 
 const inspectReducer = (state = initState, action) => {
