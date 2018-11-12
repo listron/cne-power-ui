@@ -149,6 +149,12 @@
         flex-direction: row;
         width: 100%;
     }
+    :global {
+        .ant-tabs.ant-tabs-line>.ant-tabs-bar .ant-tabs-nav-container {
+            height: 33px;
+            background: #f8f8f8;
+        }
+    }
     .threadAndDevice {
         .deviceTypeFlow {
             display: flex;
@@ -175,6 +181,7 @@
                     margin-left: 26px;
                     cursor: pointer;
                     i {
+                        font-size: 27px;
                         color: #dfdfdf;
                     }
                     &:hover {
@@ -258,298 +265,311 @@
             }
         }
     } // 列表
-   
-}
-.inverterList {
-  background: pink;
-  .inverterTab {
-      .inverterRight {
-          margin-right: 20px;
-      }
-      .inverterBlockBox {
-          padding: 20px 20px 60px;
-          color: $darkColor;
-          display: flex;
-          flex-wrap: wrap;
-          .parentDeviceName {
-              margin: 20px 0;
-          }
-          .nodata {
-              text-align: center;
-              margin: 30px auto;
-          }
-          .inverterItem {
-              display: inline-block;
-              margin-right: 18px;
-              margin-bottom: 20px;
-              width: 222px;
-              height: 76px;
-              padding: 5px;
-              box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.20);
-              border-radius: 4px;
-              font-size: 12px;
-              cursor: pointer;
-              .inverterItemIcon {
-                  display: inline-block;
-                  vertical-align: top;
-                  margin: 5px;
-                  position: relative;
-                  :global {
-                      .iconfont {
-                          font-size: 22px;
-                          color: #dfdfdf;
-                      }
-                      .icon-alarm {
-                          position: absolute;
-                          bottom: 10px;
-                          right: 2px;
-                          width: 10px;
-                          height: 10px;
-                          color: #a42b2c;
-                          font-size: 14px;
-                      }
-                      a {
-                          color: $darkColor;
-                      }
-                  }
-              }
-              .inverterItemR {
-                  display: inline-block;
-                  width: 165px;
-                  color: $darkColor;
-                  .hlBlockName {
-                      display: flex;
-                      justify-content: space-between;
-                  }
-                  .inverterItemPower {
-                      display: flex;
-                      justify-content: space-between;
-                      div:first-child {
-                          color: $themeColor;
-                      }
-                      div:last-child {
-                          color: $darkColor;
-                      }
-                  }
-                  :global {
-                      .ant-progress-success-bg,
-                      .ant-progress-bg {
-                          background-color: $themeColor;
-                      }
-                  }
-              }
-              .hlBlockFooter {
-                  line-height: 22px;
-                  margin-top: 10px;
-                  padding-left: 3px;
-                  >div {
-                      display: inline-block;
-                      width: 50%;
-                      text-align: left;
-                  }
-              }
-              .hlBlockLink:hover {
-                  color: $darkColor;
-              }
-          }
-          .cutOverItem {
-              display: inline-block;
-              margin-right: 18px;
-              margin-bottom: 20px;
-              width: 222px;
-              height: 76px;
-              padding: 5px;
-              box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.20);
-              border-radius: 4px;
-              background: #f8f8f8;
-              pointer-events: none;
-              font-size: 12px;
-              .inverterItemIcon {
-                  display: inline-block;
-                  vertical-align: top;
-                  margin: 5px;
-                  position: relative;
-                  :global {
-                      .iconfont {
-                          font-size: 22px;
-                          color: #dfdfdf;
-                      }
-                      .icon-alarm {
-                          position: absolute;
-                          bottom: 10px;
-                          right: 2px;
-                          width: 10px;
-                          height: 10px;
-                          color: #a42b2c;
-                          font-size: 14px;
-                      }
-                      a {
-                          color: $darkColor;
-                      }
-                  }
-              }
-              .inverterItemR {
-                  display: inline-block;
-                  width: 166px;
-                  color: $darkColor;
-                  .hlBlockName {
-                      display: flex;
-                      justify-content: space-between;
-                  }
-                  .inverterItemPower {
-                      display: flex;
-                      justify-content: space-between;
-                      div:first-child {
-                          color: $themeColor;
-                      }
-                      div:last-child {
-                          color: $darkColor;
-                      }
-                  }
-                  :global {
-                      .ant-progress-success-bg,
-                      .ant-progress-bg {
-                          background-color: $themeColor;
-                      }
-                  }
-              }
-              .hlBlockFooter {
-                  line-height: 22px;
-                  margin-top: 10px;
-                  padding-left: 3px;
-                  >div {
-                      display: inline-block;
-                      width: 50%;
-                      text-align: left;
-                  }
-              }
-          }
-      }
-      .inverterTableBox {
-          .nodata {
-              text-align: center;
-              margin: 30px auto;
-          }
-          .pagination {
-              margin: 10px;
-              display: flex;
-              justify-content: flex-end;
-          }
-          .inverterTable {
-              .tableDeviceName {
-                  text-decoration: underline;
-              }
-              .deviceCode {
-                  pointer-events: none;
-              }
-              .devicePower {
-                  .progressPower {
-                      .deviceValue {
-                          display: flex;
-                          justify-content: space-between;
-                      }
-                  }
-              }
-              .statusColor {
-                  background: #199475;
-                  border-radius: 2px;
-                  width: 3px;
-                  height: 16px;
-                  margin-right: 5px;
-                  display: inline-block;
-                  vertical-align: middle;
-              }
-              margin-bottom: 60px;
-              :global {
-                  .ant-table-placeholder {
-                      z-index: 0;
-                      border-bottom: 0;
-                  }
-                  .ant-progress-success-bg,
-                  .ant-progress-bg {
-                      background-color: $themeColor;
-                  }
-                  a {
-                      color: #666666;
-                  }
-                  a:hover {
-                      color: $themeColor;
-                  }
-                  .ant-table-column-sorter-up.on .anticon-caret-up,
-                  .ant-table-column-sorter-down.on .anticon-caret-up,
-                  .ant-table-column-sorter-up.on .anticon-caret-down,
-                  .ant-table-column-sorter-down.on .anticon-caret-down {
-                      color: $themeColor;
-                  }
-                  .ant-pagination-item-active {
-                      border-color: $themeColor;
-                  }
-                  .ant-pagination.mini .ant-pagination-options-quick-jumper input {
-                      border: 1px solid $themeColor;
-                  }
-                  .ant-table-pagination.ant-pagination {
-                      margin: 16px;
-                      float: right;
-                  }
-                  .ant-table .ant-table-tbody>tr>td {
-                      line-height: 20px;
-                  }
-                  .ant-table-thead {
-                      background: #f4f4f4;
-                      color: $darkColor;
-                  }
-              }
-          }
-      }
-  }
-  :global {
-      .ant-spin-dot i {
-          background-color: #199475;
-      }
-      .ant-tabs-extra-content {
-          line-height: 46px;
-      }
-      .ant-radio-group {
-          margin: 0 20px;
-      }
-      .ant-tabs {
-          margin-top: 20px;
-      }
-      .ant-tabs-bar {
-          border-top: 1px dashed #dfdfdf;
-          border-bottom: 1px dashed #dfdfdf;
-      }
-      .ant-tabs-nav .ant-tabs-tab {
-          margin: 0;
-          background: #f1f1f1;
-          color: $darkColor;
-      }
-      .ant-tabs-nav .ant-tabs-tab:hover {
-          color: $themeColor;
-      }
-      .ant-tabs-nav .ant-tabs-tab-active {
-          color: #fff;
-          background: $themeColor;
-      }
-      .ant-tabs-nav .ant-tabs-tab-active:hover {
-          color: #fff;
-      }
-      .ant-switch-checked {
-          background-color: $themeColor;
-      }
-      .ant-radio-group-solid .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled) {
-          background: $themeColor;
-          border-color: $themeColor;
-          color: #fff;
-      }
-      .ant-radio-button-wrapper {
-          height: 24px;
-          line-height: 24px;
-      }
-      .ant-radio-button-wrapper:hover,
-      .ant-radio-button-wrapper-focused {
-          color: $themeColor;
-          position: relative;
-      }
-  }
+    .fanList {
+        .inverterTab {
+            .inverterRight {
+                margin-right: 20px;
+            }
+            .inverterBlockBox {
+                padding: 20px 20px 60px;
+                color: $darkColor;
+                display: flex;
+                flex-wrap: wrap;
+                .parentDeviceName {
+                    margin: 20px 0;
+                }
+                .nodata {
+                    text-align: center;
+                    margin: 30px auto;
+                }
+                .inverterItem {
+                    display: inline-block;
+                    margin-right: 18px;
+                    margin-bottom: 20px;
+                    width: 222px;
+                    height: 76px;
+                    padding: 5px;
+                    box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.20);
+                    border-radius: 4px;
+                    font-size: 12px;
+                    cursor: pointer;
+                    .inverterItemIcon {
+                        display: inline-block;
+                        vertical-align: top;
+                        margin: 5px;
+                        position: relative;
+                        :global {
+                            .iconfont {
+                                font-size: 22px;
+                                color: #dfdfdf;
+                            }
+                            .icon-alarm {
+                                position: absolute;
+                                bottom: 10px;
+                                right: 2px;
+                                width: 10px;
+                                height: 10px;
+                                color: #a42b2c;
+                                font-size: 14px;
+                            }
+                            a {
+                                color: $darkColor;
+                            }
+                        }
+                    }
+                    .inverterItemR {
+                        display: inline-block;
+                        width: 165px;
+                        color: $darkColor;
+                        .hlBlockName {
+                            display: flex;
+                            justify-content: space-between;
+                        }
+                        .inverterItemPower {
+                            display: flex;
+                            justify-content: space-between;
+                            div:first-child {
+                                color: $themeColor;
+                            }
+                            div:last-child {
+                                color: $darkColor;
+                            }
+                        }
+                        :global {
+                            .ant-progress-success-bg,
+                            .ant-progress-bg {
+                                background-color: $themeColor;
+                            }
+                        }
+                    }
+                    .hlBlockFooter {
+                        line-height: 22px;
+                        margin-top: 10px;
+                        padding-left: 3px;
+                        >div {
+                            display: inline-block;
+                            width: 50%;
+                            text-align: left;
+                        }
+                    }
+                    .hlBlockLink:hover {
+                        color: $darkColor;
+                    }
+                }
+                .cutOverItem {
+                    display: inline-block;
+                    margin-right: 18px;
+                    margin-bottom: 20px;
+                    width: 222px; // height: 76px;
+                    padding: 5px;
+                    box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.20);
+                    border-radius: 4px;
+                    background: #f8f8f8;
+                    pointer-events: none;
+                    font-size: 12px;
+                    a {
+                        display: inline-block;
+                    }
+                    .inverterItemIcon {
+                        display: inline-block;
+                        vertical-align: top;
+                        margin: 5px;
+                        position: relative;
+                        :global {
+                            .iconfont {
+                                font-size: 22px;
+                                color: #dfdfdf;
+                            }
+                            .icon-alarm {
+                                position: absolute;
+                                bottom: 10px;
+                                right: 2px;
+                                width: 10px;
+                                height: 10px;
+                                color: #a42b2c;
+                                font-size: 14px;
+                            }
+                            a {
+                                color: $darkColor;
+                            }
+                        }
+                    }
+                    .inverterItemR {
+                        display: inline-block;
+                        width: 166px;
+                        color: $darkColor;
+                        .hlBlockName {
+                            display: flex;
+                            justify-content: space-between;
+                        }
+                        .inverterItemPower {
+                            display: flex;
+                            flex-direction: column;
+                            color: $darkColor;
+                            div {
+                                display: flex;
+                                justify-content: space-between;
+                            }
+                            .showDevicePower {
+                                color: $themeColor;
+                            }
+                            .angle>i {
+                                color: $themeColor;
+                                display: inline-block;
+                                font-size: 16px;
+                            }
+                        }
+                        :global {
+                            .ant-progress-success-bg,
+                            .ant-progress-bg {
+                                background-color: $themeColor;
+                            }
+                        }
+                    }
+                    .hlBlockFooter {
+                        line-height: 22px;
+                        margin-top: 10px;
+                        padding-left: 3px;
+                        >div {
+                            display: inline-block;
+                            width: 50%;
+                            text-align: left;
+                        }
+                    }
+                }
+            }
+            .inverterTableBox {
+                .nodata {
+                    text-align: center;
+                    margin: 30px auto;
+                }
+                .pagination {
+                    margin: 10px;
+                    display: flex;
+                    justify-content: flex-end;
+                }
+                .inverterTable {
+                    .tableDeviceName {
+                        text-decoration: underline;
+                    }
+                    .deviceCode {
+                        pointer-events: none;
+                    }
+                    .devicePower {
+                        .progressPower {
+                            .deviceValue {
+                                display: flex;
+                                justify-content: space-between;
+                            }
+                        }
+                    }
+                    .statusColor {
+                        background: #199475;
+                        border-radius: 2px;
+                        width: 3px;
+                        height: 16px;
+                        margin-right: 5px;
+                        display: inline-block;
+                        vertical-align: middle;
+                    }
+                    margin-bottom: 60px;
+                    :global {
+                        .ant-table-placeholder {
+                            z-index: 0;
+                            border-bottom: 0;
+                        }
+                        .ant-progress-success-bg,
+                        .ant-progress-bg {
+                            background-color: $themeColor;
+                        }
+                        a {
+                            color: #666666;
+                        }
+                        a:hover {
+                            color: $themeColor;
+                        }
+                        .ant-table-column-sorter-up.on .anticon-caret-up,
+                        .ant-table-column-sorter-down.on .anticon-caret-up,
+                        .ant-table-column-sorter-up.on .anticon-caret-down,
+                        .ant-table-column-sorter-down.on .anticon-caret-down {
+                            color: $themeColor;
+                        }
+                        .ant-pagination-item-active {
+                            border-color: $themeColor;
+                        }
+                        .ant-pagination.mini .ant-pagination-options-quick-jumper input {
+                            border: 1px solid $themeColor;
+                        }
+                        .ant-table-pagination.ant-pagination {
+                            margin: 16px;
+                            float: right;
+                        }
+                        .ant-table .ant-table-tbody>tr>td {
+                            line-height: 20px;
+                        }
+                        .ant-table-thead {
+                            background: #f4f4f4;
+                            color: $darkColor;
+                        }
+                    }
+                }
+            }
+            .inverterMapBox {
+                height: 526px;
+                >div {
+                    height: 526px;
+                }
+            }
+        }
+        :global {
+            .ant-spin-dot i {
+                background-color: #199475;
+            }
+            .ant-tabs-extra-content {
+                line-height: 46px;
+            }
+            .ant-radio-group {
+                margin: 0 20px;
+            }
+            .ant-tabs {
+                margin-top: 20px;
+            }
+            .ant-tabs-bar {
+                border-top: 1px dashed #dfdfdf;
+                border-bottom: 1px dashed #dfdfdf;
+            }
+            .ant-tabs-nav .ant-tabs-tab {
+                margin: 0;
+                background: #f1f1f1;
+                color: $darkColor;
+            }
+            .ant-tabs-nav .ant-tabs-tab:hover {
+                color: $themeColor;
+            }
+            .ant-tabs-nav .ant-tabs-tab-active {
+                color: #fff;
+                background: $themeColor;
+            }
+            .ant-tabs-nav .ant-tabs-tab-active:hover {
+                color: #fff;
+            }
+            .ant-switch-checked {
+                background-color: $themeColor;
+            }
+            .ant-radio-group-solid .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled) {
+                background: $themeColor;
+                border-color: $themeColor;
+                color: #fff;
+            }
+            .ant-radio-button-wrapper {
+                height: 24px;
+                line-height: 24px;
+            }
+            .ant-radio-button-wrapper:hover,
+            .ant-radio-button-wrapper-focused {
+                color: $themeColor;
+                position: relative;
+            }
+        }
+    }
 }

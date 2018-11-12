@@ -15,6 +15,7 @@ class OutputTenMin extends Component {
     match: PropTypes.object,
     getMonitorPower: PropTypes.func,
     yXaisName:PropTypes.string,
+    chartType:PropTypes.string,
   }
 
   constructor(props) {
@@ -22,7 +23,7 @@ class OutputTenMin extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { capabilityData,yXaisName } = nextProps;
+    const { capabilityData,yXaisName,chartType } = nextProps;
     const capabilityDiagram = echarts.init(document.getElementById('capabilityDiagram'));
     const lineColor = '#666';
     // console.log('capabilityPower',capabilityPower)
@@ -78,8 +79,8 @@ class OutputTenMin extends Component {
         formatter: (param) => {
           return `<div style="width: 128px; height: 75px;font-size:12px;line-height: 24px;background: #fff;box-shadow:0 1px 4px 0 rgba(0,0,0,0.20);border-radius:2px;">
             <div style="border-bottom: 1px solid #dfdfdf;padding-left: 5px;" >${param[0] && param[0].name || '--'}</div>
-            <div style="padding-left: 5px;" ><span style="display: inline-block; background:#ffffff; border:1px solid #199475; width:6px; height:6px; border-radius:100%;"></span> 斜面辐射: ${param[1] && param[1].value || '--'}</div>
-            <div style="padding-left: 5px;" ><span style="display: inline-block; background:#ffffff; border:1px solid #a42b2c; width:6px; height:6px; border-radius:100%;"></span> 功率: ${param[0] && param[0].value || '--'}</div>
+            <div style="padding-left: 5px;" ><span style="display: inline-block; background:#ffffff; border:1px solid #199475; width:6px; height:6px; border-radius:100%;"></span> ${param[1].seriesName}: ${param[1] && param[1].value || '--'}</div>
+            <div style="padding-left: 5px;" ><span style="display: inline-block; background:#ffffff; border:1px solid #a42b2c; width:6px; height:6px; border-radius:100%;"></span> ${param[0].seriesName}: ${param[0] && param[0].value || '--'}</div>
           </div>`;
         },
         extraCssText:'background: rgba(0,0,0,0);',
@@ -133,7 +134,7 @@ class OutputTenMin extends Component {
           },
         },
         {
-          name: yXaisName,
+          name: chartType==='wind'?'风速(m/s)':'斜面辐射(W/m²)',
           type: 'value',
           min: minRadiation < 0? minRadiation: 0,
           axisLabel: {
@@ -176,7 +177,7 @@ class OutputTenMin extends Component {
           },
         },
         {
-          name:yXaisName,
+          name:chartType==='wind'?'风速':'斜面辐射',
           type: 'line',
           data: capabilityRadiation,
           yAxisIndex: 1,

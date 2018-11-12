@@ -2,18 +2,19 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import styles from './windStation'
+import styles from './windStation.scss';
 import { Tabs, Switch, Radio, Table, Progress, Spin } from 'antd';
 import { Link } from 'react-router-dom';
 import CommonPagination from '../../../../Common/CommonPagination/index';
+import Map from '../../AllStation/Map';
 
 const TabPane = Tabs.TabPane;
-class FanList extends Component {
+
+class FanList extends React.Component {
   static propTypes = {
-    inverterList: PropTypes.object,
+    fanList: PropTypes.object,
     match: PropTypes.object,
-    deviceTypeCode: PropTypes.number,
-    getInverterList: PropTypes.func,
+    getFanList: PropTypes.func,
     loading: PropTypes.bool,
   }
 
@@ -62,9 +63,9 @@ class FanList extends Component {
     });
   }
   getData = (stationCode) => {// 获取数据
-    const { deviceTypeCode, getFanList } = this.props;
+    const { getFanList } = this.props;
     const { firstLoad } = this.state;
-    getFanList({ stationCode, deviceTypeCode, firstLoad });
+    getFanList({ stationCode, firstLoad });
     this.timeOutId = setTimeout(() => {
       if (firstLoad) {
         this.setState({ firstLoad: false });
@@ -118,23 +119,23 @@ class FanList extends Component {
         title: '所属设备',
         dataIndex: 'parentDeviceName',
         key: 'parentDeviceName',
-        render: (text, record, index) => (<span>{text}</span>),
+        render: (text, record, index) => (<span>{text || '--'}</span>),
         sorter: (a, b) => a.deviceName.length - b.deviceName.length,
       },
       {
         title: '风速(m/s)',
         dataIndex: 'windSpeed',
         key: 'windSpeed',
-        render: (text, record, index) => (<span>{text}</span>),
+        render: (text, record, index) => (<span>{text || '--'}</span>),
         sorter: (a, b) => a.windSpeed - b.windSpeed,
       },
       {
         title: '偏航角度(°)',
         dataIndex: 'angleOfYaw',
         key: 'angleOfYaw',
-        render: (text, record, index) => (<span>{text}</span>),
+        render: (text, record, index) => (<span>{text || '--'}</span>),
         sorter: (a, b) => a.angleOfYaw - b.angleOfYaw,
-      },     
+      },
       {
         title: '实时功率(kW)',
         dataIndex: 'devicePower',
@@ -216,35 +217,134 @@ class FanList extends Component {
         return sortType * (a[sortName].length - b[sortName].length);
       }
     })
-    // const { inverterList } = this.props;
-    // const initDeviceList = inverterList.deviceList || [];
-    // const totalNum = initDeviceList.length || 0;
-    // const maxPage = Math.ceil(totalNum / pageSize);
-    // if(totalNum === 0){ // 总数为0时，展示0页
-    //   currentPage = 1;
-    // }else if(maxPage < currentPage){ // 当前页已超出
-    //   currentPage = maxPage;
-    // }
     return tableSource.splice((currentPage - 1) * pageSize, pageSize);
   }
+
+  dealList = (deviceGroupedList, deviceTypeCode) => {
+    const baseLinkPath = "/hidden/monitorDevice";
+    const { stationCode } = this.props.match.params;
+    return deviceGroupedList.map((list, index) => {
+      return (
+        <div key={index}>
+          <div className={styles.parentDeviceName} >
+            {list && list[0] && list[0].parentDeviceName}
+          </div>
+          {list.map((item, i) => {
+            const { devicePower, deviceCapacity, windSpeed, angleOfYaw } = item;
+            const showDevicePower = this.transData(devicePower, 2);
+            const showDeviceCapacity = this.transData(deviceCapacity, 2);
+            let progressPercent;
+            if (!deviceCapacity || isNaN(deviceCapacity)) {
+              progressPercent = 0;
+            } else {
+              progressPercent = this.transData(devicePower / deviceCapacity * 100);
+            }
+            return (
+              <div key={i} className={item.deviceStatus === 900 ? styles.cutOverItem : styles.inverterItem} >
+                <div className={styles.inverterItemIcon} >
+                  <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${item.deviceCode}`}  >
+                    <i className="iconfont icon-windlogo" ></i>
+                  </Link>
+                  <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${item.deviceCode}/?showPart=alarmList`}  >
+                    {(item.alarmNum && item.alarmNum > 0) ? <i className="iconfont icon-alarm" ></i> : <div></div>}
+                  </Link>
+                </div>
+                <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${item.deviceCode}`}  >
+                  <div className={styles.inverterItemR} >
+                    <div>{item.deviceName}</div>
+                    <Progress className={styles.powerProgress} strokeWidth={3} percent={progressPercent} showInfo={false} />
+                    <div className={styles.inverterItemPower}>
+                      <div>
+                        <span className={styles.showDevicePower}>{showDevicePower}kW</span>
+                        <span>{showDeviceCapacity}kW</span>
+                      </div>
+                      <div>
+                        <span>{windSpeed}m/s</span>
+                        <span className={styles.angle}><i className="iconfont icon-acb" ></i>{angleOfYaw || '--'}°</span>
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+              </div>);
+          })}
+        </div>);
+    })
+  }
+
+  transData = (value, pointLength) => { // 数据转换。为什么要进行一个数据转化
+    let tmpValue = parseFloat(value);
+    let tmpBackData;
+    if (tmpValue || tmpValue === 0) {
+      tmpBackData = (pointLength || pointLength === 0) ? tmpValue.toFixed(pointLength) : tmpValue;
+    } else {
+      tmpBackData = '--'
+    }
+    return tmpBackData;
+  }
+
+
+  mapData = (deviceList) => { // 地图
+    let iconArray = [
+      {
+        "400": ['image:///img/wind-normal.png', 'image:///img/wind-alert.png'],
+        "500": 'image:///img/wind-cutdown.png',
+        "900": 'image:///img/wind-unconnected.png'
+      },
+      {
+        "400": ['image:///img/solar01.png', 'image:///img/pv-alert.png'],
+        "500": 'image:///img/pv-cutdown.png',
+        "900": 'image:///img/pv-unconnected.png'
+      },
+
+    ]
+    let data = [];
+    deviceList.forEach((item, index) => {
+      let deviceStatus = `${item.deviceStatus}` || "";
+      const stationType = item.stationType || '0';
+      const currentStationType = iconArray[stationType] || {};
+      const currentStationStatus = currentStationType[deviceStatus] || '';
+      data.push({
+        name: item.deviceName,
+        value: [item.longitude, item.latitude, stationType, deviceStatus],
+        symbol: deviceStatus === "400" ? currentStationStatus[item.alarmNum ? 1 : 0] : currentStationStatus,
+        alarmNum: item.alarmNum,
+        stationPower: item.devicePower,
+        stationCapacity: item.deviceCapacity,
+        instantaneous: item.windSpeed,
+        stationCode: item.deviceCode,
+        angleOfYaw: item.angleOfYaw
+      })
+    })
+    return data;
+  }
+
   render() {
-    const { inverterList, deviceTypeCode, loading } = this.props;
+    const { fanList, loading, deviceTypeCode } = this.props;
     const { currentStatus, alarmSwitch, currentPage, pageSize } = this.state;
-    const initDeviceList = inverterList.deviceList && inverterList.deviceList.map((e, i) => ({ ...e, key: i })) || []; // 初始化数据
+    // 初始化数据
+    const initDeviceList = fanList.deviceList && fanList.deviceList.map((e, i) => ({ ...e, key: i })) || [];
+
+    // 根据筛选条件处理数据源。
     const filteredDeviceList = initDeviceList.filter(e => (!alarmSwitch || (alarmSwitch && e.alarmNum > 0))).filter(e => {
       return (currentStatus === 0 || e.deviceStatus === currentStatus);
-    }) // 根据筛选条件处理数据源。
+    })
+
     const sortedParentList = filteredDeviceList.sort((a, b) => {
       return a.parentDeviceName && a.parentDeviceName.localeCompare(b.parentDeviceName);
     })
+
+    // 设置所属电站设备
     const parentDeviceCodeSet = new Set(sortedParentList.map(e => e.parentDeviceCode));
     const parentDeviceCodes = [...parentDeviceCodeSet];
     const deviceGroupedList = parentDeviceCodes.map(e => {
       const subDeviceList = filteredDeviceList.filter(item => item.parentDeviceCode === e);
       return subDeviceList.sort((a, b) => a.deviceName && a.deviceName.localeCompare(b.deviceName));
     });
+
     const currentTableList = this.createTableSource(filteredDeviceList); // 根据分页，排序筛选表格数据
-    const deviceStatus = inverterList.deviceStatusSummary || [];
+
+    // 筛选按钮
+    const deviceStatus = fanList.deviceStatusSummary || [];
     const operations = (<div className={styles.inverterRight} >
       <Switch defaultChecked={false} onChange={this.onSwitchAlarm} /> 告警
       <Radio.Group defaultValue={0} buttonStyle="solid" className={styles.inverterStatus} onChange={this.onChangeStatus}  >
@@ -255,79 +355,35 @@ class FanList extends Component {
       </Radio.Group>
     </div>);
 
-    const baseLinkPath = "/hidden/monitorDevice";
-    const { stationCode } = this.props.match.params;
-    const transData = (value, pointLength) => { // 数据转换。
-      let tmpValue = parseFloat(value);
-      let tmpBackData;
-      if (tmpValue || tmpValue === 0) {
-        tmpBackData = (pointLength || pointLength === 0) ? tmpValue.toFixed(pointLength) : tmpValue;
-      } else {
-        tmpBackData = '--'
-      }
-      return tmpBackData;
-    }
+
+
     return (
-      <div className={styles.inverterList} >
+      <div className={styles.fanList} >
         <Tabs defaultActiveKey="1" className={styles.inverterTab} tabBarExtraContent={operations}>
           <TabPane tab={<span><i className="iconfont icon-grid" ></i></span>} key="1" className={styles.inverterBlockBox} >
-            {loading ? 
-            <Spin size="large" style={{ height: '100px', margin: '200px auto', width: '100%' }} /> :
-              (deviceGroupedList.length > 0 ? deviceGroupedList.map((e, index) => {
-                return (<div key={index}>
-                  <div className={styles.parentDeviceName} >{e && e[0] && e[0].parentDeviceName}</div>
-                  {e.map((item, i) => {
-                    const { devicePower, deviceCapacity } = item;
-                    const showDevicePower = transData(devicePower, 2);
-                    const showDeviceCapacity = transData(deviceCapacity, 2);
-                    let progressPercent;
-                    if (!deviceCapacity || isNaN(deviceCapacity)) {
-                      progressPercent = 0;
-                    } else {
-                      progressPercent = transData(devicePower / deviceCapacity * 100);
-                    }
-                    return (<div key={i} className={item.deviceStatus === 900 ? styles.cutOverItem : styles.inverterItem} >
-                      <div className={styles.inverterItemIcon} >
-                        <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${item.deviceCode}`}  >
-                          <i className="iconfont icon-nb" ></i>
-                        </Link>
-                        <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${item.deviceCode}/?showPart=alarmList`}  >
-                          {(item.alarmNum && item.alarmNum > 0) ? <i className="iconfont icon-alarm" ></i> : <div></div>}
-                        </Link>
-                      </div>
-                      <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${item.deviceCode}`}  >
-                        <div className={styles.inverterItemR} >
-                          <div>{item.deviceName}</div>
-                          <Progress className={styles.powerProgress} strokeWidth={3} percent={progressPercent} showInfo={false} />
-                          <div className={styles.inverterItemPower}>
-                            <div>{showDevicePower}kW</div>
-                            <div>{showDeviceCapacity}kW</div>
-                          </div>
-                        </div>
-                      </Link>
-                    </div>);
-                  })}
-                </div>);
-              }) : <div className={styles.nodata} ><img src="/img/nodata.png" /></div>)
+            {
+              loading && <Spin size="large" style={{ height: '100px', margin: '200px auto', width: '100%' }} />
+              || (deviceGroupedList.length > 0 ? this.dealList(deviceGroupedList, deviceTypeCode) : <div className={styles.nodata} ><img src="/img/nodata.png" /></div>)
             }
           </TabPane>
-          {/* <TabPane tab={<span><i className="iconfont icon-table" ></i></span>} key="2" className={styles.inverterTableBox} >
+          <TabPane tab={<span><i className="iconfont icon-table" ></i></span>} key="2" className={styles.inverterTableBox} >
             <div>
               <div className={styles.pagination} >
                 <CommonPagination pageSize={pageSize} currentPage={currentPage} onPaginationChange={this.changePagination} total={filteredDeviceList.length} />
               </div>
-              <Table 
-                dataSource={currentTableList} 
-                columns={this.tableColumn()} 
+              <Table
+                dataSource={currentTableList}
+                columns={this.tableColumn()}
                 onChange={this.tableChange}
                 pagination={false}
                 className={styles.inverterTable}
                 locale={{ emptyText: <div className={styles.noData}><img src="/img/nodata.png" /></div> }}
               />
             </div>
-            
           </TabPane>
-         */}
+          <TabPane tab={<span> <i className="iconfont icon-map"></i></span>} key="stationMap" className={styles.inverterMapBox} >
+            <Map testId="wind_bmap_station" {...this.props} stationDataList={this.mapData(filteredDeviceList)} />
+          </TabPane>
         </Tabs>
       </div>
     )

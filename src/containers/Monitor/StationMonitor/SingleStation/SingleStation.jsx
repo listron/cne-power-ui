@@ -84,7 +84,7 @@ class SingleStation extends Component {
     clearTimeout(this.timeOutId);
     clearTimeout(this.timeOutOutputData);
     clearTimeout(this.timeOutPowerData);
-    this.props.resetSingleStationStore();
+    // this.props.resetSingleStationStore();
   }
 
   getTenSeconds = (stationCode) => {
@@ -150,9 +150,10 @@ class SingleStation extends Component {
 }
 
 const mapStateToProps = state => {
+  console.log('stationTypeTabs',state.monitor.stationMonitor.toJS().stationType,)
   return ({
     ...state.monitor.singleStation.toJS(),
-    // stationType: state.monitor.stationMonitor.toJS().stationTypeTabs,//获取当前是在哪一个类型 风电／光伏
+    stationType: state.monitor.stationMonitor.toJS().stationType,//获取当前是在哪一个类型 风电／光伏
   })
 };
 
@@ -173,8 +174,8 @@ const mapDispatchToProps = (dispatch) => ({
   getStationDeviceList: payload => dispatch({ type: singleStationAction.GET_STATION_DEVICELIST_SAGA, payload }),
   getConfluenceBoxList: payload => dispatch({ type: singleStationAction.GET_CONFLUENCEBOX_LIST_SAGA, payload }),
   editData: payload => dispatch({ type: singleStationAction.EDIT_MONTH_YEAR_DATA_SAGA, payload }),
+  getFanList: payload => dispatch({ type: singleStationAction.getFanList,payload }),
   resetSingleStationStore: payload => dispatch({ type: singleStationAction.RESET_SINGLE_STATION_STORE }),
-  getFanList: payload => dispatch({ type: singleStationAction.getFanList }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SingleStation);

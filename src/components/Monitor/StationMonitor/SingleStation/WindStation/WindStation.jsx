@@ -11,7 +11,7 @@ import PowerDiagramTenMin from '../SingleStationCommon/PowerDiagramTenMin';
 import CardSection from '../SingleStationCommon/CardSection';
 import FanList from './FanList'
 const { TabPane } = Tabs;
-class PvStation extends Component {
+class WindStation extends Component {
   static propTypes = {
     stationCode: PropTypes.string,
     match: PropTypes.object,
@@ -70,11 +70,19 @@ class PvStation extends Component {
     return (
       <div className={styles.windStation} >
         <WindStationTop {...this.props} stationCode={stationCode} hiddenStationList={this.state.hiddenStationList} />
-        <div className={styles.outputPowerDiagram}>
-          <OutputTenMin {...this.props} yXaisName={'风速(m/s)'} />
-          <PowerDiagramTenMin {...this.props} chartType={'wind'} />
-          {/* <PowerDiagramTenMin {...this.props}  /> */}
-        </div>
+        <Tabs type="line" defaultActiveKey="station">
+          <TabPane tab="电站" key="station">
+            <div className={styles.outputPowerDiagram}>
+              <OutputTenMin {...this.props} yXaisName={'风速(m/s)'} chartType={'wind'} />
+              <PowerDiagramTenMin {...this.props} chartType={'wind'} />
+            </div>
+          </TabPane>
+          <TabPane tab="风机" key="wind">
+            <div className={styles.outputPowerDiagram}>
+              测试一下
+            </div>
+          </TabPane>
+        </Tabs>
         <CardSection {...this.props} stationCode={stationCode} />
         <div className={styles.threadAndDevice} id="deviceType" >
           <Tabs type="card" defaultActiveKey="2" >
@@ -106,10 +114,9 @@ class PvStation extends Component {
             </TabPane>
           </Tabs>
         </div>
-
       </div>
     )
   }
 }
 
-export default PvStation;
+export default WindStation;

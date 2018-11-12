@@ -313,6 +313,7 @@ function *getInverterList(action){
         type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
         payload: {
           inverterList: response.data.data || {},
+          stationType:response.data.data.stationType || ''
         }
       })
     }else{
@@ -439,8 +440,7 @@ function *editData(action){
 // 获取风机实时数据列表
 function *getFanList(action){
   const { payload } = action;
-  console.log('payload',payload)
-  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.monitor.getFanList}／${350}`;
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.monitor.getFanList}/${payload.stationCode}`;
   try{
     if(payload.firstLoad){
       yield put({type: singleStationAction.SINGLE_STATION_FETCH});
@@ -450,18 +450,11 @@ function *getFanList(action){
       yield put({
         type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
         payload: {
-          fanlist: response.data.data || {},
+          fanList: response.data.data || {},
+          stationType:response.data.data.stationType || ''
         }
       })
-    }else{
-      yield put({ 
-        type: singleStationAction.CHANGE_SINGLE_STATION_STORE, 
-        payload: {
-          fanlist: {},
-        }
-      });
     }
-    
   }catch(e){
     console.log(e);
   }
