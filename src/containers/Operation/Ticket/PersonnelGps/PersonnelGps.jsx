@@ -25,7 +25,8 @@ class PersonnelGps extends Component {
     personnelGpsData.forEach((item, index) => {   
       data.push({
         name: item.username,
-        value: [item.longitude, item.latitude,item.userId,item.createDate],
+        value: [item.longitude, item.latitude],
+        // value: [item.longitude, item.latitude,item.userId,item.createDate],
         symbol: 'ring',
       })
     })

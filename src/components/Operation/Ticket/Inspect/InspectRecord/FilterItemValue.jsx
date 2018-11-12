@@ -3,9 +3,8 @@ import PropTypes from 'prop-types';
 import { Tag } from 'antd';
 import styles from './inspectRecord.scss';
 
-class FilteredItems extends Component {
+class FilteredItemValue extends Component {
   static propTypes = {
-    stations: PropTypes.object,
     startDate: PropTypes.string,
     endDate: PropTypes.string,
     userId: PropTypes.string,
@@ -64,12 +63,13 @@ class FilteredItems extends Component {
   render() {
     //inspectDeviceType是从巡检工单里传过来的设备类型，其中包括设备名以及设备code
     //inspectPersonList是用户名以及用户id
-    const { startDate, endDate, userId, inspectStatus, inspectUsers, DeviceTypeId, inspectDeviceType } = this.props;
+    const { startDate, endDate, userId, inspectStatus, inspectUsers, DeviceTypeId, deviceTypeItems } = this.props;
     const inspectUserArray = userId.split(',');
     const selectedInspectPerson = inspectUsers.filter(e => inspectUserArray.some(m => m === `${e.id}`));
     const inspectDevice = DeviceTypeId.split(',');
-    const selectedInspectDevice = inspectDeviceType.filter(e => inspectDevice.some(m => m === e.deviceTypeCodes));
-    //console.log(selectedInspectDevice);
+    console.log(inspectDevice);
+    const selectedInspectDevice = deviceTypeItems&&deviceTypeItems.filter(e => inspectDevice.some(m => m === `${e.deviceTypeCode}`));
+    console.log(selectedInspectDevice);
     const style = {
       background: '#fff',
       borderStyle: 'dashed',
@@ -94,9 +94,9 @@ class FilteredItems extends Component {
         {inspectStatus && <Tag style={style} closable onClose={this.onCancelInspectStatus}>
           {inspectStatus === '1' ? '有异常' : '无异常'}
         </Tag>}
-        {selectedInspectDevice.length > 0 && selectedInspectDevice.map((e, i) => (
-          <Tag style={style} closable onClose={() => this.onCancelDeviceType(e.deviceTypeCodes)} key={i}>
-            {e && e.deviceTypeNames}
+        {selectedInspectDevice && selectedInspectDevice.map((e, i) => (
+          <Tag style={style} closable onClose={() => this.onCancelDeviceType(e.deviceTypeCode)} key={i}>
+            {e && e.deviceTypeName}
           </Tag>
         ))}
         <Tag closable onClose={this.resetAll}>清空条件</Tag>
@@ -106,4 +106,4 @@ class FilteredItems extends Component {
 
 }
 
-export default FilteredItems;
+export default FilteredItemValue;

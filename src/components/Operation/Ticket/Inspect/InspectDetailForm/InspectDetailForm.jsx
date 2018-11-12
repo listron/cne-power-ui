@@ -144,20 +144,23 @@ class InspectDetailForm extends Component {
       return '缺陷详情';
     }
   }
-
+  
   render() {
-    const { inspectDetail, onChangeShowContainer, changeInspectStore,getInspectDetailRecord,getInspectUsers } = this.props;
+    const { inspectDetail, onChangeShowContainer, changeInspectStore,getInspectDetailRecord,getInspectUsers,getStationDeviceTypes } = this.props;
     const progressData = inspectDetail.get('processData');
     const inspectId = inspectDetail.get('inspectId');
-    //是为了把此工单里的设备名以及设备code进行组装，传到巡检记录详情里供筛选框使用
-    const deviceTypeCodes = inspectDetail.get('deviceTypeCodes') && inspectDetail.get('deviceTypeCodes').split(',');
-    const deviceTypeNames = inspectDetail.get('deviceTypeNames') && inspectDetail.get('deviceTypeNames').split(',');
-    let inspectDeviceType = [];
-    if (deviceTypeCodes) {
-      for (let i = 0; i < deviceTypeCodes.length; i++) {
-        inspectDeviceType.push({ "deviceTypeCodes": deviceTypeCodes[i], "deviceTypeNames": deviceTypeNames[i] })
-      }
-    }
+    const stationCode=inspectDetail.get('stationCode');
+    // console.log(stationCode);
+    // //是为了把此工单里的设备名以及设备code进行组装，传到巡检记录详情里供筛选框使用
+    // const deviceTypeCodes = inspectDetail.get('deviceTypeCodes') && inspectDetail.get('deviceTypeCodes').split(',');
+    // const deviceTypeNames = inspectDetail.get('deviceTypeNames') && inspectDetail.get('deviceTypeNames').split(',');
+    // let inspectDeviceType = [];
+    // if (deviceTypeCodes) {
+    //   for (let i = 0; i < deviceTypeCodes.length; i++) {
+    //     inspectDeviceType.push({ "deviceTypeCodes": deviceTypeCodes[i], "deviceTypeNames": deviceTypeNames[i] })
+    //   }
+    // }
+    
     const status = inspectDetail.get('inspectStatus');
     const { showWarningTip, warningTipText } = this.state;
     return (
@@ -200,11 +203,12 @@ class InspectDetailForm extends Component {
                   abnormalItems={inspectDetail.get('abnormalData')}
                   onChangeShowContainer={onChangeShowContainer}
                   getInspectDetailRecord={getInspectDetailRecord}
-                  getInspectDetailRecord={this.props.getInspectDetailRecord}
                   changeInspectStore={changeInspectStore}
                   inspectId={inspectId}
-                  inspectDeviceType={inspectDeviceType}
                   getInspectUsers={getInspectUsers}
+                  stationCode={stationCode}
+                  getStationDeviceTypes={getStationDeviceTypes}
+                  
                   
 
                 />

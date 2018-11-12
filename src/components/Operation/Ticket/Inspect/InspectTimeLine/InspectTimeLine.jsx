@@ -31,12 +31,15 @@ class InspectTimeLine extends Component {
     this.props.onChangeShowContainer({ container: 'inspectOrbit' });
   }
   onInspectRecord = () => {
-    const{inspectDeviceType,inspectId,getInspectDetailRecord,changeInspectStore,getInspectUsers}=this.props;
+    const{inspectDeviceType,inspectId,getInspectDetailRecord,changeInspectStore,getStationDeviceTypes,deviceTypeItems,getInspectUsers,stationCode}=this.props;
     this.props.onChangeShowContainer({ container: 'inspectRecord' });
     //在这发巡检记录的请求
     getInspectDetailRecord({inspectId})
     getInspectUsers()
-    changeInspectStore({inspectDeviceType:inspectDeviceType,pageNum:1,inspectId:inspectId})
+    getStationDeviceTypes({stationCodes:stationCode})
+    changeInspectStore({deviceTypeItems:deviceTypeItems,pageNum:1,inspectId:inspectId})
+  
+
   }
 
   renderIcon(item, isLast) {
