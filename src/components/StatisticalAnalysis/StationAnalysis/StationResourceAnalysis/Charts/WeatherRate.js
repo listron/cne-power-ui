@@ -34,11 +34,10 @@ class WeatherRate extends React.Component {
     let seriesData= data.map((item)=>{
        return {
          name:this.getName(item.weather),
-         value:item.days
+         value:item.days===0 ? '':item.days
        }
     })
-
-    const confluenceTenMinGraphic = hasData? hiddenNoData :showNoData;
+    const confluenceTenMinGraphic = (hasData || hasData === false) && (hasData === true ? hiddenNoData : showNoData) || " ";
     const targetPieOption = {
       graphic: confluenceTenMinGraphic,
       tooltip: {
@@ -62,6 +61,7 @@ class WeatherRate extends React.Component {
           type: 'pie',
           radius: '70%',
           center: ['50%', '50%'],
+          stillShowZeroSum:true,
           data: seriesData,
           label: {
             normal: {

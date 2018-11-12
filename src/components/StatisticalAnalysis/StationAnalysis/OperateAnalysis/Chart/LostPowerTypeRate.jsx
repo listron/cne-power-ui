@@ -1,6 +1,6 @@
 import React from "react";
 import echarts from 'echarts';
-
+import { showNoData, hiddenNoData } from '../../../../../constants/echartsNoData';
 class LostPowerTypeRate extends React.Component {
   constructor(props, context) {
     super(props, context)
@@ -25,17 +25,19 @@ class LostPowerTypeRate extends React.Component {
   }
 
   drawCharts = (params) => {
-    const { graphId, data, yAxisName } = params;
+    const { graphId, data, yAxisName,hasData } = params;
     const targetPieChart = echarts.init(document.getElementById(graphId));
     let color = ["#f9b600", "#a42b2c", "#fbe6e3", "#199475", "#ceebe0"];
     let seriesData = [];
     for (var type in data) {
       if (type !== 'date') {
-        var json = { name: this.getName(type), value: data[type] };
+        var json = { name: this.getName(type), value: +data[type]===0 ?'':data[type] };
         seriesData.push(json);
       }
     }
+    const confluenceTenMinGraphic = (hasData || hasData === false) && (hasData === true ? hiddenNoData : showNoData) || " ";
     const targetPieOption = {
+      graphic: confluenceTenMinGraphic,
       tooltip: {
         trigger: 'item',
         backgroundColor: '#fff',

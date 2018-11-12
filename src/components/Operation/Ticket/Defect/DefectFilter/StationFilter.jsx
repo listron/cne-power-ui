@@ -92,7 +92,12 @@ class StationFilter extends Component {
       }).toJS();
       return (
         <TabPane tab={provinceItem.getIn([0,'provinceName'])} key={index}>
-          <Checkbox onChange={(e)=>this.onCheckAll(e, provinceItem)} checked={this.getCheckAll(provinceItem)}>全部</Checkbox>
+          <Checkbox 
+            className={styles.allCheck} 
+            onChange={(e)=>this.onCheckAll(e, provinceItem)} 
+            checked={this.getCheckAll(provinceItem)}
+          >全部
+          </Checkbox>
           <CheckboxGroup 
             options={options}
             value={value} 

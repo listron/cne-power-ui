@@ -14,4 +14,7 @@ export const operateAnalysisAction = {
   getPlantPower: Symbol('getPlantPower'),//月/年/日厂用电情况/厂损情况
   getPowerEfficiency: Symbol('getPowerEfficiency'),//月/年/日发电效率
   getlostPower: Symbol('getlostPower'),//月/年/日 损失电量
+
+  RESET_STORE:Symbol('RESET_STORE'),
+  resetStore:Symbol('resetStore'), // 重置
 }

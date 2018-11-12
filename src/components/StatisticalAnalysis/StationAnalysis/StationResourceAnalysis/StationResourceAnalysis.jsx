@@ -21,8 +21,19 @@ class ProductionAnalysis extends React.Component {
     month: PropTypes.string,
     startTime: PropTypes.string,
     endTime: PropTypes.string,
+    selectYear:PropTypes.any,
+    year:PropTypes.any,
+    stationCode: PropTypes.number,
     getResourcePlan: PropTypes.func,
     resetStore: PropTypes.func,
+    resourceAvalibaData: PropTypes.array, //计划完成是否有数据
+    resourcePlanData: PropTypes.array,  // 计划完成情况
+    PvCompareData: PropTypes.array,  //月/日单电站光资源同比
+    YearPvCompareData: PropTypes.array, //年单电站光资源
+    resourceMonthLight: PropTypes.array, //月/日光资源分布
+    resourceYearLight: PropTypes.array, //年光资源分布
+    resourceMonthWeather: PropTypes.object,  //月/年天气预报
+    resourceDayWeather: PropTypes.object //日天气预报
   }
   constructor(props) {
     super(props);
@@ -37,11 +48,11 @@ class ProductionAnalysis extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { dateType, year, month, startTime, endTime, stationCode } = nextProps;
-    if (!year) {
-      this.getMonthData(nextProps)
-    }
-    if (year) {
+    const { dateType, year, month, startTime, endTime, stationCode, stations } = nextProps;
+    if (stations.toJS().length > 0) {
+      if (!year) {
+        this.getMonthData(nextProps)
+      }
       if (dateType === "month" && (this.props.dateType !== 'month' ||
         (this.props.year !== year || this.props.stationCode !== stationCode))) {
         this.getMonthData(nextProps)
@@ -159,6 +170,7 @@ class ProductionAnalysis extends React.Component {
       year: year,
     }
     this.props.getResourcePlan(specilPrams)
+    this.props.changeResourceStore({ selectYear: year })
   }
 
 
@@ -166,7 +178,6 @@ class ProductionAnalysis extends React.Component {
     const { stations, dateType, stationCode, year, month, resourceAvalibaData, resourcePlanData, PvCompareData, resourceMonthLight, selectYear, resourceMonthWeather, YearPvCompareData, resourceYearLight, resourceDayWeather, startTime, endTime } = this.props;
     let station = ''
     stationCode ? station = stations.toJS().filter(e => e.stationCode === stationCode) : '';
-    let dataAvalibale = resourceAvalibaData && resourceAvalibaData.filter(e => e.isTrue) || [];
     const currentYear = parseInt(year).toString();
     const lastYear = (parseInt(year) - 1).toString();
 
@@ -178,7 +189,7 @@ class ProductionAnalysis extends React.Component {
     const lightMonth = resourceLight.map((e, i) => { return this.addXaixsName(e.monthOrDay, dateType) });
     const lightYear = YearPvCompareData && YearPvCompareData.map(e => e.year);
     const lightRingRatio = resourceLight.map(e => e.ringRatio)
-    const resourceLightHasData=resourceLight.length>0 
+    const resourceLightHasData = resourceLight.length > 0
 
 
     // 光资源分布
@@ -186,7 +197,7 @@ class ProductionAnalysis extends React.Component {
     const radiationInterval = radiationIntervalList.map(e => e.radiationInterval)
     const radiationSum = radiationIntervalList.map(e => e.radiationSum)
     const ration = radiationIntervalList.map(e => e.ration)
-    const resourceDisData = resourceMonthLight && (radiationSum.some(e => e || e===0) || ration.some(e => e|| e===0));
+    const resourceDisData = resourceMonthLight && (radiationSum.some(e => e || e === 0) || ration.some(e => e || e === 0));
     let resourceData = {
       xData: radiationInterval,
       yData: {
@@ -220,11 +231,7 @@ class ProductionAnalysis extends React.Component {
       })
       distributionTable.push(tableList)
     })
-
-    // const radiationSum2=resourceYearLight && resourceYearLight.map((e)=>e.radiationIntervalList.map(e=>e.radiationSum)
-    // )
-    // console.log("distributionTable",radiationSum2 && radiationSum2.join(',').split(','))
-
+    const distributionYearHasData = allData && allData.map(e => e.radiationSum).some(e => e || e === 0)
 
 
 
@@ -259,7 +266,7 @@ class ProductionAnalysis extends React.Component {
     let WeatherDayData = resourceDayWeather && resourceDayWeather.chartData || [];
     let weatherDayRate = resourceDayWeather && resourceDayWeather.pitChartData || [];
     let WeatherDayXData = WeatherDayData.map(e => { return this.addXaixsName(e.day, dateType) })
-    let WeatherDayHasData = WeatherDayData.map(e => e.temp).some(e => e|| e===0)
+    let WeatherDayHasData = WeatherDayData.map(e => e.temp).some(e => e || e === 0)
 
     return (
       <div className={styles.singleStationType}>
@@ -289,23 +296,29 @@ class ProductionAnalysis extends React.Component {
                 <span className={styles.stationIcon}>
                   <i className="iconfont icon-pvlogo" />
                 </span>
-                {`${station && station[0].stationName}-${station && station[0].regionName || "--"}`}
+                {`${station.length > 0 && station[0].stationName}-${station.length > 0 && station[0].regionName || "--"}`}
                 <span className={styles.plan}>计划完成情况
                 {dateType === "day" && '(' + year + '年' + month + '月' + ')'}
                   {dateType === "month" && '(' + year + '年)'}
                 </span>
                 <div className={styles.choiceYear}>{
-                  dateType === "year" && dataAvalibale.length > 0 && dataAvalibale.map((item, index) => {
-                    return (<span key={index}
-                      className={+item.year === +selectYear ? "active" : ''}
-                      onClick={() => { this.selctYear(item.year) }}
-                    >{item.year}</span>)
+                  dateType === "year" && resourceAvalibaData && resourceAvalibaData.map((item, index) => {
+                    if (item.isTrue === false) {
+                      return (<span key={index}
+                        className={styles.noSelect}
+                      >{item.year}</span>)
+                    } else {
+                      return (<span key={index}
+                        className={+item.year === +selectYear ? "active" : ''}
+                        onClick={() => { this.selctYear(item.year) }}
+                      >{item.year}</span>)
+                    }
                   })
                 }
                 </div>
               </div>
 
-              <span className={styles.rightFont}>并网时间:{moment(station && station[0].onGridTime).format('YYYY年MM月DD日') || "--"}</span>
+              <span className={styles.rightFont}>并网时间:{station.length > 0 && moment(station[0].onGridTime).format('YYYY年MM月DD日') || "--"}</span>
             </div>
             <div className={styles.graph}>
               <div className={styles.stationTargetData}>
@@ -364,6 +377,7 @@ class ProductionAnalysis extends React.Component {
                     xAxisName={'瞬时辐射区间'}
                     graphId={'yearLightDistribution'}
                     dateType={dateType}
+                    hasData={distributionYearHasData}
                   />
                   :
                   <LightDistribution
@@ -423,7 +437,9 @@ class ProductionAnalysis extends React.Component {
                     data={dateType === 'day' ? weatherDayRate : weatherRate}
                     yAxisName={'光伏发电系统故障'}
                     hasData={dateType === 'day' ? (weatherRate || false) : (weatherDayRate || false)}
-                    xAxisName={'损失电量'} />
+                    xAxisName={'损失电量'}
+                    hasData={dateType === "day" ? WeatherDayHasData : WeatherStatusHasData}
+                  />
                 </div>
               </div>
             </div>

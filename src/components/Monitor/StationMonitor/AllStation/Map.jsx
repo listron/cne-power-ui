@@ -164,7 +164,7 @@ class Map extends Component {
             return `<div class='stationCard' style='height:70px;overflow:hidden'>
             <div class='stationCardTitle' style='display:flex;flex-direction: row;justify-content: space-between;'>
             <span>${params.data.name}</span>
-            <a target='_blank' href='#/monitor/alarm/realtime?stationCode=${params.data.stationCode}'>
+            <a  href='#/monitor/alarm/realtime?stationCode=${params.data.stationCode}'>
             <span style='color:red'>${params.data.alarmNum > 0 ? '⚠' : ''}${params.data.alarmNum > 0 ? params.data.alarmNum : ''}</span>    
             </a>
             </div>           

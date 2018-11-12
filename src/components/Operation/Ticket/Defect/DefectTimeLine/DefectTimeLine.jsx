@@ -113,7 +113,15 @@ class DefectTimeLine extends Component {
       flowName = item.get('flowName');
     }
     const photoAddress = item.get('photoAddress');
+    const handleStatus = item.get("handleStatus");
     const photoAddressArr = !photoAddress ? [] : photoAddress.split(',');
+    const defectProposal = item.get("defectProposal");
+    const splitIndex = defectProposal.indexOf('：');
+    let proccessTitle = '', proccessText = '', refuseText = ['4'],suggestText = ['1','2','3','5','6'], doneText = ['0','7'];
+    splitIndex > 0 && (proccessText = defectProposal.slice(splitIndex + 1));
+    refuseText.includes(handleStatus) && (proccessTitle = '驳回原因');
+    suggestText.includes(handleStatus) && (proccessTitle = '处理建议');
+    doneText.includes(handleStatus) && (proccessTitle = '处理过程');
     return (
       <div className={styles.processItem}>
         <div className={styles.basic}>
@@ -123,10 +131,10 @@ class DefectTimeLine extends Component {
           {photoAddressArr.length>0 && <div className={styles.imgList} onClick={()=>this.showImgs(photoAddressArr)}>{`有图${photoAddressArr.length}`}</div>}
         </div>
         <div className={styles.advise}>
-          <div className={styles.text}>处理建议</div>
-          <div className={styles.status}>{getHandleStatus(item.get("handleStatus"))}</div>
+          <div className={styles.text}>{proccessTitle}</div>
+          <div className={styles.status}>{getHandleStatus(handleStatus)}</div>
           <div className={styles.defectProposal}>
-            <span>{item.get("defectProposal") && item.get("defectProposal").length===5 ? `${item.get("defectProposal")}未填写` : item.get("defectProposal")}</span>
+            <span>{proccessText}</span>
             <span>{item.get('replaceParts') ? item.get('replaceParts') : null}</span>
           </div>
         </div>

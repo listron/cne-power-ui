@@ -27,7 +27,7 @@ class ResourceAnalysisContainer extends Component {
   }
 
   componentWillUnmount() {
-  //  this.props.resetStore()
+    this.props.resetStore()
   }
 
   render() {

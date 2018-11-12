@@ -32,13 +32,6 @@ function* getAllStationAvalibaData(action) {//判断是否有数据
           resourceAvalibaData: response.data.data || [],
         },
       });
-    }else{
-      yield put({
-        type:  stationResourceAnalysisAction.CHANGE_STATIONRESOURCESTATIONDATA_STORE,
-        payload:{
-          resourceAvalibaData: [],
-        },
-      });
     }
   } catch (e) {
     console.log(e);
@@ -59,13 +52,6 @@ function*  getResourcePlan(action){ // 计划完成情况
           resourcePlanData: response.data.data || [],
         },
       });
-    }else{
-      yield put({
-        type:  stationResourceAnalysisAction.CHANGE_STATIONRESOURCESTATIONDATA_STORE,
-        payload:{
-          resourcePlanData: [],
-        },
-      });
     }
   } catch (e) {
     console.log(e);
@@ -84,13 +70,6 @@ function* getResourcePvCompare(action) {//月/日单电站光资源同比
             PvCompareData: response.data.data||[],          
           },
         });     
-      } else{
-        yield put({
-          type:  stationResourceAnalysisAction.CHANGE_STATIONRESOURCESTATIONDATA_STORE,
-          payload:{
-            PvCompareData: [],
-          },
-        });
       } 
     }catch(e){
       console.log(e);
@@ -110,13 +89,6 @@ function* getResourceYearPvCompare(action) {//年单电站光资源环比
             YearPvCompareData: response.data.data||[],          
           },
         });     
-      } else{
-        yield put({
-          type:  stationResourceAnalysisAction.CHANGE_STATIONRESOURCESTATIONDATA_STORE,
-          payload:{
-            YearPvCompareData: [],
-          },
-        });
       } 
     }catch(e){
       console.log(e);
@@ -136,13 +108,6 @@ function* getResourceMonthLight(action){ //月/日光资源分布
           resourceMonthLight: response.data.data || [],
         },
       });
-    }else{
-      yield put({
-        type:  stationResourceAnalysisAction.CHANGE_STATIONRESOURCESTATIONDATA_STORE,
-        payload:{
-          resourceMonthLight: [],
-        },
-      });
     }
   } catch (e) {
     console.log(e);
@@ -160,13 +125,6 @@ function* getResourceYearLight(action){ //年光资源分布
         type: stationResourceAnalysisAction.GET_STATIONRESOURCESTATIONDATA_FETCH_SUCCESS,
         payload: {
           resourceYearLight: response.data.data || [],
-        },
-      });
-    }else{
-      yield put({
-        type:  stationResourceAnalysisAction.CHANGE_STATIONRESOURCESTATIONDATA_STORE,
-        payload:{
-          resourceYearLight: [],
         },
       });
     }
@@ -189,13 +147,6 @@ function* getResourceMonthWeather(action){ //月/年天气预报
           resourceMonthWeather: response.data.data || [],
         },
       });
-    }else{
-      yield put({
-        type:  stationResourceAnalysisAction.CHANGE_STATIONRESOURCESTATIONDATA_STORE,
-        payload:{
-          resourceMonthWeather: [],
-        },
-      });
     }
   } catch (e) {
     console.log(e);
@@ -214,13 +165,6 @@ function* getResourceDayWeather(action){ //日天气预报
         type: stationResourceAnalysisAction.GET_STATIONRESOURCESTATIONDATA_FETCH_SUCCESS,
         payload: {
           resourceDayWeather: response.data.data || [],
-        },
-      });
-    }else{
-      yield put({
-        type:  stationResourceAnalysisAction.CHANGE_STATIONRESOURCESTATIONDATA_STORE,
-        payload:{
-          resourceDayWeather: [],
         },
       });
     }

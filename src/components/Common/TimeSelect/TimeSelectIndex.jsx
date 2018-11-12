@@ -116,9 +116,9 @@ class TimeSelect extends React.Component {
         <div className={styles.textStyle}>{timerText}</div>
         <div className={styles.buttonStyle}>
           <Radio.Group buttonStyle="solid" onChange={this.onTimeStyleChange} value={timeStyle} >
-            {showYearPick && <Radio.Button value="year">年</Radio.Button>}
-            {showMonthPick && <Radio.Button value="month">月</Radio.Button>}
-            {showDayPick && <Radio.Button value="day" >日</Radio.Button>}
+            {showYearPick && <Radio.Button value="year">多年</Radio.Button>}
+            {showMonthPick && <Radio.Button value="month">年</Radio.Button>}
+            {showDayPick && <Radio.Button value="day" >月</Radio.Button>}
           </Radio.Group>
         </div>
         {timeStyle === 'day' && <MonthPicker 

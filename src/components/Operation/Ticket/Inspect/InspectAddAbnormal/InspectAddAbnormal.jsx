@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './inspectAddAbnormal.scss';
-import { Button, Form, Select, Modal } from 'antd';
+import { Button, Form, Select, Modal, Cascader } from 'antd';
 import ImgUploader from '../../../../Common/Uploader/ImgUploader';
 import DeviceName from '../../../../Common/DeviceName';
 import pathConfig from '../../../../../constants/path';
@@ -27,6 +27,7 @@ class inspectAddAbnormal extends Component {
     finishInspect: PropTypes.func,
     addInspectAbnormal: PropTypes.func,
     getSliceDevices: PropTypes.func,
+    getLostGenType: PropTypes.func,
     allSeries: PropTypes.object, 
     firstPartitionCode: PropTypes.string, 
   }
@@ -66,7 +67,7 @@ class inspectAddAbnormal extends Component {
           inspectId: this.props.inspectDetail.get('inspectId'),
           deviceTypeCode: values.deviceTypeCode,
           deviceCode: values.deviceCode,
-          defectTypeCode: values.defectTypeCode,
+          defectTypeCode: values.defectTypeCode[1],
           photoAddress: values.photoData.map((item) => (item.response)).join(','),
           rotatePhoto: values.photoData.map((item) => (item.response+','+item.rotate)).join(';'),
           abnormalDescribe: values.abnormalDescribe,
@@ -86,16 +87,27 @@ class inspectAddAbnormal extends Component {
     this.setState({
       deviceAreaCode: ''
     });
+    const stationType = this.props.inspectDetail.get('stationType');
     let params = {
       stationCode: this.props.inspectDetail.get('stationCode'),
       deviceTypeCode
     };
     if(deviceTypeCode === 509){ //组串时，请求调整
-       this.props.getSliceDevices(params);
-     }else{
-       this.props.loadDeviceList(params);
-       this.props.loadDeviceAreaList(params);
-     }
+        this.props.getSliceDevices(params);
+        this.props.getLostGenType({
+          objectType: 1,
+          stationType,
+          deviceTypeCode
+        })
+      }else{
+        this.props.loadDeviceList(params);
+        this.props.loadDeviceAreaList(params);
+        this.props.getLostGenType({
+          objectType: 1,
+          stationType,
+          deviceTypeCode
+        })
+      }
   }
 
   onChangeArea = (value) => {
@@ -148,6 +160,7 @@ class inspectAddAbnormal extends Component {
     let stationType = this.props.inspectDetail.get('stationType');
     this.props.getStationDeviceTypes({stationCodes: stationCode}); 
     this.props.getDefectTypes({stationType: stationType});
+    this.props.getLostGenType({objectType: 1, stationType});
   }
 
   hideAdd = () => {
@@ -160,6 +173,21 @@ class inspectAddAbnormal extends Component {
     const { deviceTypeItems, defectTypes, deviceItems, deviceAreaItems, inspectDetail, allSeries, firstPartitionCode } = this.props;
     const { getFieldDecorator, getFieldValue } = this.props.form;
     const { stationName, stationCode } = inspectDetail;
+    let tmpGenTypes = [];
+    defectTypes.toJS().forEach(e=>e && e.list && e.list.length > 0 && tmpGenTypes.push(...e.list));
+    const groupedLostGenTypes = tmpGenTypes.map(ele=>{
+      let innerArr = {children: []};
+      innerArr.label= ele.name;
+      innerArr.value= ele.id;
+      ele && ele.list && ele.list.length > 0 && ele.list.forEach(innerInfo => {
+        innerArr.children.push({
+          label: innerInfo.name,
+          value: innerInfo.id,
+        });
+      })
+      return innerArr;
+    })
+
     return(
       <div className={styles.inspectHandleForm}>
         <div className={styles.title}>
@@ -224,18 +252,13 @@ class inspectAddAbnormal extends Component {
                     required: true,
                   }]
                 })(
-                  <Select
+                  <Cascader
+                    disabled={groupedLostGenTypes.length === 0}
+                    style={{ width: 200 }}
+                    options={groupedLostGenTypes}
+                    expandTrigger="hover"
                     placeholder="请选择"
-                    style={{width: 200}}
-                  >
-                    {defectTypes.map(item => {
-                      return(
-                        <Option key={item.get('defectTypeCode') } value={item.get('defectTypeCode') } >
-                          {item.get('defectTypeName') }
-                        </Option>
-                      )
-                    })}
-                  </Select>
+                  />
                 )}
               </FormItem>
               <FormItem label="异常描述" colon={false}>

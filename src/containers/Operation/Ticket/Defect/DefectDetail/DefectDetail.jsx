@@ -26,6 +26,7 @@ class DefectDetail extends Component {
     onCheck: PropTypes.func,
     changeDefectStore: PropTypes.func,
     location: PropTypes.object,
+    defectTypes: PropTypes.object,
   };
   constructor(props,context) {
     super(props);
@@ -140,6 +141,7 @@ const mapStateToProps = (state) => ({
   defectDetail: state.operation.defect.get('defectDetail'),
   defectId: state.operation.defect.get('defectId'),
   commonList: state.operation.defect.get('commonList'),
+  defectTypes: state.operation.defect.get('defectTypes'),
 });
 
 const mapDispatchToProps = (dispatch) => ({

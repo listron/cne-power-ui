@@ -24,16 +24,16 @@ export function getLevel(value) {
   var result = '';
   switch(value) {
     case '1':
-      result = '一级';
+      result = 'A级';
       break;
     case '2':
-      result = '二级';
+      result = 'B级';
       break;
     case '3':
-      result = '三级';
+      result = 'C级';
       break;
     case '4':
-      result = '四级';
+      result = 'C级';
       break;
   }
   return result;

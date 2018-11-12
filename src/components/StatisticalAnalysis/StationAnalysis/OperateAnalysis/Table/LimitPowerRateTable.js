@@ -43,7 +43,7 @@ class TableGraph extends React.Component {
               sorter: true,
               width: 80,
               sorter: (a, b) => a.lastyearLostPowerRate - b.lastyearLostPowerRate,
-              render: text => text ? text : '--'
+              render: text => (text || text === 0) ? text + '%' : '--'
             }],
           }, {
             title: currentYear,
@@ -62,7 +62,7 @@ class TableGraph extends React.Component {
               sorter: true,
               width: 80,
               sorter: (a, b) => a.thatYearLostPowerRate - b.thatYearLostPowerRate,
-              render: text => text ? text : '--'
+              render: text => (text || text === 0) ? text + '%' : '--'
             }],
           }, {
             title: '限电率同比',
@@ -71,7 +71,7 @@ class TableGraph extends React.Component {
             sorter: true,
             width: 105,
             sorter: (a, b) => a.lostPowerRateYearOnYear - b.lostPowerRateYearOnYear,
-            render: text => text ? text : '--'
+            render: text => (text || text === 0) ? text + '%' : '--'
           }];
         break;
     }
