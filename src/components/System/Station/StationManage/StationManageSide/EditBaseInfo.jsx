@@ -33,6 +33,7 @@ const EditBaseInfo = ({stationDetail, form, stationBelongInfo, ...restProps }) =
       {getFieldDecorator('stationMapPosition',{
         initialValue: [stationDetail.longitude, stationDetail.latitude], // 经度，纬度
         rules: [{
+          required: true,
           validator:(rule,value,callback)=>{
             const [longitude, latitude] = value;
             (!longitude && longitude!== 0) && callback('请输入经纬度');
@@ -216,9 +217,7 @@ const EditBaseInfo = ({stationDetail, form, stationBelongInfo, ...restProps }) =
       {getFieldDecorator('componentAngle',{
         initialValue: stationDetail.componentAngle,
         rules: [{
-          required: true, 
-          message: '请选择是否接入',
-          validator: dataRuleFunc(2,'请输入组装角度'),
+          validator: dataRuleFunc(2),
         }]
       })(
         <Input />
