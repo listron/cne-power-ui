@@ -93,7 +93,7 @@ export const otherFun = (detailData) => { // 其他信息配置输出指定规�
 
 export const dataRuleFunc = (pointLength = 0, requiredName = '') => (rule, value, callback) => { //数字校验,默认整数
   requiredName && !value && callback(`请填写${requiredName}`);
-  if(isNaN(value)){
+  if(value && isNaN(value)){
     callback('请输入数字');
   }else if(value){ // value存在，且为数字的字符串
     let decimalPart = `${value}`.split('.')[1];
