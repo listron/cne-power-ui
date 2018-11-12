@@ -157,6 +157,7 @@ class inspectAddAbnormal extends Component {
     let stationType = this.props.inspectDetail.get('stationType');
     this.props.getStationDeviceTypes({stationCodes: stationCode}); 
     this.props.getDefectTypes({stationType: stationType});
+    this.props.getLostGenType({objectType: 1, stationType});
   }
 
   hideAdd = () => {
