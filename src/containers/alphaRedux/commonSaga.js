@@ -1,4 +1,4 @@
-import { call, put, takeLatest,all } from 'redux-saga/effects';
+import { call, put, takeLatest,all, takeEvery } from 'redux-saga/effects';
 import axios from 'axios';
 import Path from '../../constants/path';
 import { commonAction } from './commonAction';
@@ -300,7 +300,7 @@ function *getStationBelongTypes(action){ // 获取电站可能的所属的各种
       payload: { [resultName]: response.data.data || {}}
     })
   }catch(error){
-    message.error('获取电站类型失败!');
+    message.error('获取电站分类信息失败!');
   }
 }
 
@@ -315,7 +315,7 @@ function *getStationTargetInfo(action){ // 获取电站指定分类信息(省,�
       payload: { [resultName]: response.data.data || []}
     })
   }catch(error){
-    message.error('获取电站类型失败!');
+    message.error('获取数据失败!');
   }
 }
 
@@ -365,6 +365,6 @@ export function* watchCommon() {
   yield takeLatest(commonAction.getPoints, getPoints);
   yield takeLatest(commonAction.getDevices, getDevices);
   yield takeLatest(commonAction.getStationBelongTypes, getStationBelongTypes);
-  yield takeLatest(commonAction.getStationTargetInfo, getStationTargetInfo);
+  yield takeEvery(commonAction.getStationTargetInfo, getStationTargetInfo);
   
 }

@@ -46,10 +46,13 @@ class EditForm extends Component {
     this.props.form.validateFieldsAndScroll((error,values)=>{
       if(!error){
         let { stationDetail } = this.props;
+        // let { stationDetail, cityData, countyData, stationBelongInfo } = this.props;
+        // const { provinces } = stationBelongInfo;
         let { stationMapPosition, stationArea } = values;
         const [ longitude, latitude ] = stationMapPosition, [provinceCode, cityCode, countyCode] = stationArea;
         delete values.stationMapPosition;
         delete values.stationArea;
+        // let provinceName,cityName,countyName
         this.props.saveStationDetail({
           stationCode: stationDetail.stationCode,
           ...values,
