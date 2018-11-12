@@ -66,7 +66,7 @@ const EditBaseInfo = ({stationDetail, form, stationBelongInfo, ...restProps }) =
     </FormItem>}
     {isPv && <FormItem label="一级区域" >
       {getFieldDecorator('level1RegionName',{
-        initialValue: stationDetail.level1RegionName
+        initialValue: stationDetail.level1RegionName || '中国'
       })(
         <Select style={{ width: '198px' }} >
           {oneLevelRegion && oneLevelRegion.map(e=>(
