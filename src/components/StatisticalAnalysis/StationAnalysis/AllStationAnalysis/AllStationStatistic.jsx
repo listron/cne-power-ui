@@ -134,7 +134,8 @@ class AllStationStatistic extends React.Component {
         getAllStationMonthPieData({
           userId: userId,
           year: nextProps.year,
-          dataType: 'EqpGen', stationType
+          dataType: 'EqpGen', 
+          stationType
         })
         getAllStationStatisticTableData(
           {
@@ -231,7 +232,8 @@ class AllStationStatistic extends React.Component {
       getAllStationMonthPieData({
         userId: userId,
         year: currentTableYear,
-        dataType: 'EqpGen'
+        dataType: 'EqpGen',
+        stationType
       })
     }
     //年->年
