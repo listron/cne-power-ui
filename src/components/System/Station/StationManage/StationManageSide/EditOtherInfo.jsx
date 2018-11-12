@@ -89,7 +89,8 @@ const EditOtherInfo = ({stationDetail, form, ...restProps}) => {
     </FormItem>
     <FormItem label="电站时区" >
       {getFieldDecorator('timeZone',{
-        initialValue: stationDetail.timeZone
+        initialValue: stationDetail.timeZone,
+        rules: [{ required: true, message: '选择电站时区' }]
       })(
         <Select style={{ width: '198px' }} >
           {timeZoneArr.map(e=>(

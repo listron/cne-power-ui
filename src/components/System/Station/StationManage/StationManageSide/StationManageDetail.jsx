@@ -134,7 +134,7 @@ class StationManageDetail extends Component {
     const stationBelongInfo = stationBelongFun(stationDetail);
     const departmentList = stationDetail.departmentList || [];
     const departmentInfo = this.departmentInfoFun(departmentList);
-    const isPv = stationDetail.stationType === 0;
+    const isPv = stationDetail.stationType === 1;
     const isWind = stationDetail.stationType === 0;
     return (
       <div className={styles.stationManageDetail}>
