@@ -70,21 +70,6 @@ class InspectAbnormal extends Component {
     })
   }
 
-  getImagesData(data) {
-    if(data.get('photoAddress')) {
-      let images = data.get('photoAddress').split(',');
-      return images.map((item, index) => {
-        return {
-          uid: index,
-          rotate: 0,
-          thumbUrl: item
-        }
-      });
-    } else {
-      return [];
-    } 
-  }
-
   getStandardInfo(standardInfo) {
     this.setState({
       standardInfo
@@ -189,6 +174,10 @@ class InspectAbnormal extends Component {
         return item.get('abnormalId') === abnormalId
       });
       if(detail) {
+        const defectTypeName = detail.get('defectTypeName');
+        const defectParentTypeName = detail.get('defectParentTypeName') || '';
+        const defectTypeText = `${defectTypeName}/${defectParentTypeName}`;
+        const detailImages = detail.get('photoAddress')?detail.get('photoAddress').split(','): [];
         return (
           <div className={styles.abnormalDetail}>
             <div className={styles.detailItem}>
@@ -198,13 +187,17 @@ class InspectAbnormal extends Component {
               设备名称<span>{detail.get('deviceName')}</span>
             </div>
             <div className={styles.detailItem}>
-              缺陷类型<span>{detail.get('defectTypeName')}</span>
+              缺陷类型<span>{defectTypeText}</span>
             </div>
             <div className={styles.detailItem}>
               异常描述<span>{detail.get('abnormalDescribe')}</span>
             </div>
             <div className={styles.viewImg}>
-              <ImgUploader editable={false} data={this.getImagesData(detail)} />
+              <ImgUploader editable={false} data={detailImages.map(e=>({
+                uid: e,
+                rotate: 0,
+                thumbUrl: `${e}?${Math.random()}`
+              }))} />
             </div>
           </div>
         );
