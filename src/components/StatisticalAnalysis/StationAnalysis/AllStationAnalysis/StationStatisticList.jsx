@@ -112,26 +112,6 @@ class StationStatisticList extends React.Component {
     changeAllStationStore({ powerSelectYear: changeYear })
   }
 
-  // selectTime() {
-  //   const { allStationAvalibaData } = this.props;
-  //   const currentMonth = moment().format('MM');
-  //   console.log(allStationAvalibaData,currentMonth);
-  //   if(allStationAvalibaData.length>0){
-  //     return (
-  //       <Radio.Group defaultValue={Number(currentMonth)} buttonStyle="solid" onChange={this.handleTime}>
-  //         {allStationAvalibaData.map((e, index) => {
-  //           if (e.isTrue === true) {
-  //             return <Radio.Button value={e.year} key={index} style={{ margin: '0 5px' }}>{e.year}月</Radio.Button>
-  //           } else {
-  //             return <Radio.Button value={e.year} key={index} disabled style={{ margin: '0 5px' }}>{e.year}月</Radio.Button>
-  //           }
-  //         }
-  //         )}
-  //       </Radio.Group>
-  //     )
-  //   }
-
-  // }
   selectYear() {
     const { allStationAvalibaData, dateType, powerSelectMonth, powerSelectYear } = this.props;
     let yearArray = allStationAvalibaData.length > 0 && allStationAvalibaData.map((e, i) => (Number(e.year)));

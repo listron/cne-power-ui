@@ -31,6 +31,7 @@ class TargetTabs extends React.Component {
   queryTargetData = (activeKey) => {
     const { changeAllStationStore, getAllStationMonthBarData, getAllStationMonthPieData, year, dateType, stationType } = this.props;
     const userId = Cookie.get('userId');
+    changeAllStationStore({targetShowType:activeKey})
     let changeRangYear = [];
     if (dateType === 'year') { 
       for (let i = Number(this.props.year[0]); i < Number(this.props.year[1]) + 1; i++) {
@@ -77,7 +78,7 @@ class TargetTabs extends React.Component {
     return (
       <div className={styles.targetTabs}>
         <Tabs
-          defaultActiveKey="1"
+        activeKey={this.props.targetShowType}
           animated={false}
           onChange={this.queryTargetData}
         >
