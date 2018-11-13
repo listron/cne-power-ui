@@ -72,7 +72,7 @@ class PowerEfficency extends React.Component {
     switch (type) {
       case 'hours': name = '等效利用小时数'; break;
       case 'light': name = '辐射总量'; break;
-      case 'pr': name = 'pr'; break;
+      case 'pr': name = 'PR'; break;
       case 'planPower': name = '计划发电量'; break;
       case 'actualPower': name = '实际发电量'; break;
       case 'planRate': name = '计划完成率'; break;
