@@ -21,12 +21,12 @@ class StationArea extends Component{
   }
 
   selectProvince = (e)=>{
-    const { onChange, value, getStationTargetInfo } = this.props;
+    const { onChange, getStationTargetInfo } = this.props;
     getStationTargetInfo({
       params: {dictionaryType: 4, area: e},
       resultName: 'cityData'
     })
-    onChange([e, value[1], value[2]]);
+    onChange([e, '', '']);
   }
 
   selectCity = (e)=>{
@@ -35,7 +35,7 @@ class StationArea extends Component{
       params: {dictionaryType: 4, area: e},
       resultName: 'countyData'
     })
-    onChange([value[0], e, value[1] ]);
+    onChange([value[0], e, '']);
   }
 
   selectCounty = (e)=>{
@@ -54,32 +54,16 @@ class StationArea extends Component{
       </Select>
       <Select value={city} onChange={this.selectCity} placeholder="市" dropdownClassName={styles.areaClass} >
         {cityData.map(e=>(
-          <Option key={e.id} key={e.id}>{e.areaName}</Option>
+          <Option key={e.id} value={e.id}>{e.areaName}</Option>
         ))}
       </Select>
       <Select value={county} onChange={this.selectCounty} placeholder="县" dropdownClassName={styles.areaClass}>
         {countyData.map(e=>(
-          <Option key={e.id} key={e.id}>{e.areaName}</Option>
+          <Option key={e.id} value={e.id}>{e.areaName}</Option>
         ))}
       </Select>
     </div>)
   }
 }
-
-// const StationArea = ({ onChange, value, getCityData, getCountyData }) => { // 省市县3级联动。
-//   console.log(value);
-//   const changeLongitude = (e)=>{
-//     onChange([e.target.value, value[1]])
-//   }
-//   const changeLatitude = (e)=>{
-//     onChange([value[0], e.target.value])
-//   }
-//   const longitude = value[0] || '';
-//   const latitude = value[1] || '';
-//   return (<div style={{display: 'flex'}}>
-//     <Input onChange={changeLongitude} value={longitude} />
-//     <Input onChange={changeLatitude} value={latitude} />
-//   </div>)
-// }
 
 export default StationArea;
