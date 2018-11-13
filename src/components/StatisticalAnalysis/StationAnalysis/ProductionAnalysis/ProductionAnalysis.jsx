@@ -164,6 +164,9 @@ class ProductionAnalysis extends React.Component {
         dateType: nextProps.dateType,
 
       })
+      changeAllStationStore({
+        selectYear: currentTableYear
+      })
 
 
     }
@@ -221,7 +224,7 @@ class ProductionAnalysis extends React.Component {
     }
   }
   onTimeChange = (timeObj) => {
-    timeObj.timeStyle === 'year' ? this.props.changeAllStationStore({ dateType: timeObj.timeStyle, year: [timeObj.startTime, timeObj.endTime] }) : this.props.changeAllStationStore({ dateType: timeObj.timeStyle, year: [timeObj.startTime] })
+    timeObj.timeStyle === 'year' ? this.props.changeAllStationStore({ dateType: timeObj.timeStyle, year: [timeObj.startTime, timeObj.endTime], selectYear: timeObj.endTime, }) : this.props.changeAllStationStore({ dateType: timeObj.timeStyle, year: [timeObj.startTime] })
   }
   stationSelected = (stationSelect) => { // 存储选中的电站
     const stationCode = stationSelect[0].stationCode
@@ -231,12 +234,12 @@ class ProductionAnalysis extends React.Component {
     // })
   }
   selectProductYear = () => {
-    const { allStationAvalibaData,dateType } = this.props;
+    const { allStationAvalibaData,dateType,selectYear } = this.props;
     let yearArray = allStationAvalibaData.map((e, i) => (Number(e.year)));
     let currentYear = Math.max(...yearArray).toString();
     if(dateType==='year'&&allStationAvalibaData.length>0){
       return (
-        <Radio.Group value={`${currentYear}`} buttonStyle="solid" onChange={this.handleTime}>
+        <Radio.Group value={`${selectYear}`} buttonStyle="solid" onChange={this.handleTime}>
           {allStationAvalibaData.map((e, index) => {
             if (e.isTrue === true) {
               return <Radio.Button value={e.year} key={index} style={{ margin: '0 5px' }}>{e.year}年</Radio.Button>
@@ -252,14 +255,15 @@ class ProductionAnalysis extends React.Component {
   }
   handleTime = (e) => {
     const changeYear = Number(e.target.value);
-    const { ProductionPlanComplete, dateType, stationCode } = this.props;
-    ProductionPlanComplete(
+    const { changeAllStationStore,ProductionPlanComplete, dateType, stationCode } = this.props;
+    ProductionPlanComplete&&ProductionPlanComplete(
       {
         stationCode: stationCode,
         year: changeYear,
         dateType,
       }
     )
+    changeAllStationStore({selectYear:changeYear})
 
   }
 
