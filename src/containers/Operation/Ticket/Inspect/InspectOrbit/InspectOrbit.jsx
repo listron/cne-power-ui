@@ -20,12 +20,11 @@ class InspectOrbit extends Component {
     super(props);
     this.state = {
       showWarningTip: false,
+      users: 'all'
     }
   }
-
   componentDidMount() {
   }
-
   onCloseInspectCreate = () => {
     this.setState({
       showWarningTip: true,
@@ -45,21 +44,41 @@ class InspectOrbit extends Component {
     });
     this.props.onChangeShowContainer({ container: 'detail' });
   }
-  handleUser=(e)=>{
+  getOrbitList() {
+    const { users } = this.state;
     const { inspectTrackData, inspectUserData } = this.props;
-    let user=e.target.value;
-   let userOrbit= inspectTrackData.filter((e,i)=>(
-      e.username===user
-    ))
-    console.log(userOrbit);
+    let data=[]
+    let userOrbit =  inspectTrackData.filter(e => {
+      if (users === 'all') {
+        return true
+      } else {
+        return e.username === users
+      }
+    })
+   
+    userOrbit.forEach(e => {
+      data.push({
+        ...userOrbit,
+        name:e.username,
+        trackDate:e.trackDate,
+        value:[e.longitude,e.latitude]
+      })
+      
+    });
+    return data
 
-
+  }
+  handleUser = (e) => {
+    const { inspectTrackData, inspectUserData } = this.props;
+    const { users } = this.state;
+    let user = e.target.value;
+    this.setState({
+      users: user,
+    })
 
   }
   selectUser() {
-
     const { inspectTrackData, inspectUserData } = this.props;
-    console.log(inspectTrackData, inspectUserData);
     if (inspectUserData.length > 0) {
       return (
         <Radio.Group defaultValue="all" buttonStyle="solid" style={{ position: 'absolute', left: '100px', top: '100px' }} onChange={this.handleUser} >
@@ -70,15 +89,10 @@ class InspectOrbit extends Component {
         </Radio.Group>
       )
     }
-
-
-
   }
 
   render() {
-    const { showWarningTip, warningTipText } = this.state;
-
-
+    const { showWarningTip, warningTipText,users } = this.state;
     return (
       <div className={styles.inspectOrbit}>
         {showWarningTip && <WarningTip style={{ marginTop: '250px', width: '210px', height: '88px' }} onCancel={this.onCancelWarningTip} onOK={this.onConfirmWarningTip} value={warningTipText} />}
@@ -88,7 +102,7 @@ class InspectOrbit extends Component {
         </div>
         {this.selectUser()}
         <div className={styles.createContent}>
-          <InspectOrbitMap testId={'inspectOrbit'} stationDataList={[]} />
+          <InspectOrbitMap testId={'inspectOrbit'} users={users} orbitList={this.getOrbitList()} />
         </div>
       </div>
     );

@@ -7,11 +7,12 @@ import echarts from 'echarts';
 import bmap from 'echarts/extension/bmap/bmap';
 
 
-class Map extends Component {
+class OrbitMap extends Component {
   static propTypes = {
     allMonitorStation: PropTypes.object,
     testId: PropTypes.string,
-    stationDataList: PropTypes.array,
+    users: PropTypes.string,
+    orbitList: PropTypes.array,
      history: PropTypes.object,
   }
   constructor(props) {
@@ -20,20 +21,21 @@ class Map extends Component {
   }
   
   componentDidMount() {
-    const { testId, stationDataList } = this.props;
+    const { testId, orbitList } = this.props;
+    console.log(orbitList);
     const testChart = echarts.init(document.getElementById(testId));
-    this.setMapChart(testChart, stationDataList);
+    this.setMapChart(testChart, orbitList);
   }
   
   componentWillReceiveProps(nextProps) {
-    const { testId, stationDataList } = nextProps;
-    if(this.props.stationDataList.length !== nextProps.stationDataList.length) {
+    const { testId, orbitList ,users} = nextProps;
+    if(this.props.orbitList.length !== nextProps.orbitList.length||users!==this.props.users) {
       const testChart = echarts.init(document.getElementById(testId));
-      this.setMapChart(testChart, stationDataList);
+      this.setMapChart(testChart, orbitList);
     }
   }
   
-  setMapChart = (testChart, stationDataList) => {
+  setMapChart = (testChart, orbitList) => {
     const option = {
       bmap: {
         center: [116.46, 39.92],//中心点
@@ -157,9 +159,11 @@ class Map extends Component {
          
           formatter: (params) => {
             
-            return `<div class='stationCard' style='height:70px;overflow:hidden'>
-                     
-          </div>`
+            return `<div style='display:flex; flex-direction: column;'>
+            <div style='width:30px;height:30px;'><img src='/img/people.png'>${params.data.name}</div>
+            <div style='height:30px;line-height:30px'>${params.data.trackDate}</div>
+          
+            </div>`
           },
           backgroundColor: '#fff',
           textStyle: {
@@ -170,8 +174,8 @@ class Map extends Component {
         name: '电站状态',
         // symbol:'image//../../../../../theme/img/wind-normal.png',
         coordinateSystem: 'bmap',
-        data: stationDataList,
-        symbolSize:[24,17],
+        data: orbitList,
+        symbolSize:[20,20],
         label: {
           normal: {
             show: false
@@ -182,7 +186,7 @@ class Map extends Component {
         },
         itemStyle: {
           emphasis: {
-            borderColor: '#199475',
+            // borderColor: '#199475',
             borderWidth: 5
           }
         }
@@ -197,7 +201,7 @@ class Map extends Component {
     )
   }
 }
-export default withRouter(Map);
+export default withRouter(OrbitMap);
 
 
   

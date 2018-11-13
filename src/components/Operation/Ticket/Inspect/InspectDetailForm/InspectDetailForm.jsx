@@ -178,6 +178,24 @@ class InspectDetailForm extends Component {
                 <Icon type="arrow-left" className={styles.backIcon} onClick={this.onCancelEdit} />
               </div>
             </div>
+            <div className={styles.content} >
+            <div className={styles.left} >
+              <div className={styles.basic} >
+                <InspectBasicInfo basicInfo={inspectDetail} />
+              </div>
+              <div className={styles.abnormal} >
+                <InspectAbnormal
+                  abnormalItems={inspectDetail.get('abnormalData')}
+                  status={inspectDetail.get("inspectStatus")}
+                  onDeleteAbnormal={this.props.onDeleteAbnormal}
+                  getInspectStandard={this.props.getInspectStandard}
+                  inspectDetail={this.props.inspectDetail}
+                  inspectStandard={this.props.inspectStandard}
+                  selectedIds={this.state.abnormalIds}
+                  onSelectItem={this.onSelectItem}
+                />
+              </div>
+            </div>
             <div className={styles.right} >
               <div className={styles.timeLines}>
                 <InspectTimeLine
@@ -193,9 +211,6 @@ class InspectDetailForm extends Component {
                   stationCode={stationCode}
                   getStationDeviceTypes={getStationDeviceTypes}
                   getInspectOrbit={getInspectOrbit}
-                  
-                  
-
                 />
               </div>
               <div className={styles.form} >
@@ -204,7 +219,10 @@ class InspectDetailForm extends Component {
             </div>
           </div>
         </div>
-      </div>
+
+
+        </div>
+        
     );
   }
 }
