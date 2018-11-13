@@ -15,6 +15,7 @@ var initState = Immutable.fromJS({
   pageSize: 10, // 每页条数
   totalNum:  0,//总数
   selectYear:'', // 计划完成年
+  targetShowType:'EqpGen',//小tab选中项，默认是发电量
   powerSelectMonth:'',// 月综合指标统计表
   powerSelectYear:'',// 年综合指标统计表
   sortType:'desc',//排序方式（asc-升序，desc-降序）
