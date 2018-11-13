@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import HomepageTop from '../../components/Home/HomepageTop';
 import { Button } from 'antd';
 import styles from './homepage.scss';
 import { Link } from 'react-router-dom';
@@ -18,9 +19,7 @@ class Homepage extends Component {
   render() {
     return (
       <div className={styles.homepage}>
-        <div className={styles.topBox}>
-          顶部标题
-        </div>
+        <HomepageTop />
         <div className={styles.middleBox}>
           <div className={styles.leftInfo}>中-左三个</div>
           <div className={styles.mapInfo}>中心地图</div>

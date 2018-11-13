@@ -1,0 +1,9 @@
+.topBox{
+  width: 100%;
+  height: 189px;
+  background-image: url('/assets/img/tiltebg.png');
+  .infoShow{
+    display: flex;
+    justify-content: space-between;
+  }
+}
