@@ -24,6 +24,7 @@ class GeneralReport extends Component{
     render(){
         const { MonthPicker } = DatePicker;
         const { allStationBaseInfo,stationCode } = this.props;
+        const downloadHref = '';
         const breadCrumbData = {
             breadData :[
                 {
@@ -47,7 +48,7 @@ class GeneralReport extends Component{
                                 <DatePicker  placeholder={'选择时间'}/>
                             </div>
                             <div className={styles.downloadBtn}>
-                                <Button disabled className={styles.text}>下载</Button>
+                                <Button disabled className={styles.text} href={downloadHref} download={downloadHref}>下载</Button>
                             </div>
                         </div>
 
@@ -62,7 +63,7 @@ class GeneralReport extends Component{
                                 <DatePicker  placeholder={'选择时间'}/>
                             </div>
                             <div className={styles.downloadBtn}>
-                                <Button disabled className={styles.text}>下载</Button>
+                                <Button disabled className={styles.text} href={downloadHref} download={downloadHref}>下载</Button>
                             </div>
                         </div>
 
@@ -77,7 +78,7 @@ class GeneralReport extends Component{
                                 <DatePicker placeholder={'选择时间'}/>
                             </div>
                             <div className={styles.downloadBtn}>
-                                <Button disabled className={styles.text}>下载</Button>
+                                <Button disabled className={styles.text} href={downloadHref} download={downloadHref}>下载</Button>
                             </div>
                         </div>
 
@@ -96,12 +97,12 @@ class GeneralReport extends Component{
                                   data={allStationBaseInfo} 
                                   onOK={this.selectStation} 
                                   holderText="请选择电站" 
+                                  disabled
                                 //   value={allStationBaseInfo.filter(e=>e.stationCode === stationCode)}
                                 />
                             </div>
                             <div className={styles.downloadBtn}>
-                                {/* <Button className={styles.text} >下载</Button> */}
-                                <a href="./file/1.xlsx" download='1.xlsx'>下载</a>
+                                <Button disabled className={styles.text} href={downloadHref} download={downloadHref}>下载</Button>
                             </div>
                         </div>
                     </div>
