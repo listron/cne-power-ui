@@ -165,35 +165,17 @@ class InspectDetailForm extends Component {
     
     const status = inspectDetail.get('inspectStatus');
     const { showWarningTip, warningTipText } = this.state;
-    return (
 
-      <div className={styles.detailWrap}>
-        {showWarningTip && <WarningTip style={{ marginTop: '250px', width: '210px', height: '88px' }} onCancel={this.onCancelWarningTip} onOK={this.onConfirmWarningTip} value={warningTipText} />}
-        <div className={styles.inspectDetail}>
-          <div className={styles.header}>
-            <div className={styles.text}>{this.renderTitle()}</div>
-            <div className={styles.action}>
-              <i className="iconfont icon-last" onClick={this.props.onPrev} />
-              <i className="iconfont icon-next" onClick={this.props.onNext} />
-              <Icon type="arrow-left" className={styles.backIcon} onClick={this.onCancelEdit} />
-            </div>
-          </div>
-          <div className={styles.content} >
-            <div className={styles.left} >
-              <div className={styles.basic} >
-                <InspectBasicInfo basicInfo={inspectDetail} />
-              </div>
-              <div className={styles.abnormal} >
-                <InspectAbnormal
-                  abnormalItems={inspectDetail.get('abnormalData')}
-                  status={inspectDetail.get("inspectStatus")}
-                  onDeleteAbnormal={this.props.onDeleteAbnormal}
-                  getInspectStandard={this.props.getInspectStandard}
-                  inspectDetail={this.props.inspectDetail}
-                  inspectStandard={this.props.inspectStandard}
-                  selectedIds={this.state.abnormalIds}
-                  onSelectItem={this.onSelectItem}
-                />
+    return (
+        <div className={styles.detailWrap}>
+          {showWarningTip && <WarningTip style={{ marginTop: '250px', width: '210px', height: '88px' }} onCancel={this.onCancelWarningTip} onOK={this.onConfirmWarningTip} value={warningTipText} />}
+          <div className={styles.inspectDetail}>
+            <div className={styles.header}>
+              <div className={styles.text}>{this.renderTitle()}</div>
+              <div className={styles.action}>
+                <i className="iconfont icon-last" onClick={this.props.onPrev} />
+                <i className="iconfont icon-next" onClick={this.props.onNext} />
+                <Icon type="arrow-left" className={styles.backIcon} onClick={this.onCancelEdit} />
               </div>
             </div>
             <div className={styles.right} >
