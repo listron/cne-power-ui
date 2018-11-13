@@ -42,7 +42,7 @@ export const baseFun = (detailData) => { // 根据基础信息配置输出指定
 export const stationBelongFun = (detailData) => {
   const stationBelongArray = [ 
     { name: '所属类型', value: detailData.belongType },
-    { name: '项目类型', value: detailData.dispatchingAgency },
+    { name: '项目类型', value: detailData.reportType },
     { name: '安装方式', value: detailData.assemblyType },
     { name: '新的分类', value: detailData.buildType },
     { name: '消纳方式', value: detailData.consumptionType }
