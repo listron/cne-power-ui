@@ -388,7 +388,7 @@ class TableGraph extends React.Component {
           sorter: (a, b) => a.yearOnYear - b.yearOnYear,
           render: text => (text || text === 0) ? text + '%' : '--'
         }];
-        break;       
+        break;
       default:
         columns = [];
     }
@@ -403,6 +403,7 @@ class TableGraph extends React.Component {
       case "plan": // 计划完成率最低排名
         data = columnData;
         break;
+      case "lightAnotherTB": // 光资源同比降幅排名(  四列)
       case "lightTB": // 光资源同比降幅排名
         data = dataArray && dataArray.map((e, i) => ({ ...e, key: i, monthOrDay: `${e.monthOrDay}${dateType === 'month' ? '月' : (dateType === 'day' ? '日' : '')}` }));
         break;
@@ -416,7 +417,6 @@ class TableGraph extends React.Component {
       case "powerLimitRatio": // 限电率环比升幅排名
       case "lightDistributed": // 光资源分布排名
       case "lightDistributedTB": // 光资源环比降幅排名
-      case "lightAnotherTB": // 光资源同比降幅排名(  四列)
         data = columnData;
         break;
       default:
@@ -479,7 +479,7 @@ class TableGraph extends React.Component {
 
 
   render() {
-    const { tableType, title, unit, currentYear, dateType, lastYear, dataArray,bordered} = this.props;
+    const { tableType, title, unit, currentYear, dateType, lastYear, dataArray, bordered } = this.props;
     const columns = this.getColumnsArray(tableType, lastYear, currentYear);
     const dataSource = this.getDataArray(tableType, dataArray, dateType);
     const getTitle = this.getTitle(tableType);
