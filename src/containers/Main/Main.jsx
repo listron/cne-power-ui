@@ -118,7 +118,7 @@ class Main extends Component {
             </div>
           </div>}
           <div className={styles.appMain}>
-            {isHomePage && <SideMenu />}
+            {!isHomePage && <SideMenu />}
             <main className={styles.content} style={{height: isHomePage?'100vh':'calc(100vh - 59px)'}} id="main" >
               <Switch>
                 {routerConfig}

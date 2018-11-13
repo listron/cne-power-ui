@@ -1,3 +1,30 @@
 .homepage{
   background:#0c2539;
+  min-width: 100%;
+  min-height: 100%;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  color:#a6e8ff;
+  .topBox{
+    width: 100%;
+    height: 189px;
+  }
+  .middleBox{
+    height: 750px;
+    display: flex;
+    width: 1680px;
+    .leftInfo, .rightInfo{
+      width: 437px;
+      flex-shrink: 0;
+    }
+    .mapInfo{
+      width: 1046px;
+      flex-shrink: 0;
+    }
+  }
+  .bottomBox{
+    height: 257px;
+  }
 }

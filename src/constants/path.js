@@ -53,6 +53,9 @@ export default {
       phoneCodeRegister: '/v3/login/phoneregister',
       inviteUserLink: '/v3/user/link',
     },
+    homepage:{
+      
+    },
     ticket: { // 工单
       getDefectList: '/v3/defect/worklist/pc',
       getDefectIdList: '/v3/defect/worklist/getallid',
