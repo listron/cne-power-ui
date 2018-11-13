@@ -3,7 +3,8 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import styles from "./allStationAnalysis.scss";
 import { allStationAnalysisAction } from './allStationAnalysisAction.js';
-import { getCookie } from '../../../../utils/index.js';
+// import { getCookie } from '../../../../utils/index.js';
+import Cookie from 'js-cookie';
 import PropTypes from "prop-types";
 import AllStationStatistic from '../../../../components/StatisticalAnalysis/StationAnalysis/AllStationAnalysis/AllStationStatistic';
 import SingStationStatistic from '../../../../components/StatisticalAnalysis/StationAnalysis/AllStationAnalysis/SingStationStatistic';
@@ -52,7 +53,7 @@ class AllStationAnalysis extends Component {
 
   render() {
     const { showPage, dateType, year } = this.props;
-    const userId = getCookie('userId');
+    const userId = Cookie.get('userId')
     // console.log(year); 
     const breadCrumbData = {
       breadData: [
@@ -78,7 +79,7 @@ const mapStateToProps = (state) => {
   return {
     ...state.statisticalAnalysisReducer.allStationAnalysis.toJS(),
     stations: state.common.get('stations'),
-     userId : getCookie('userId'),
+     userId : Cookie.get('userId'),
 
   }
 }

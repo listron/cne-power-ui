@@ -20,7 +20,6 @@ class ResourceElecInfo extends Component {
     const { updateDayReportDetail, dayReportConfig } = this.props;
     const requireTargetObj = dayReportConfig[1] || {};
     const requireTargetArr = Object.keys(requireTargetObj); // 指标必填项
-
     const configUtil = dayReportConfig[0] || {};
     const radiationUnit = configUtil.radiation || '';
     const speedUnit = configUtil.speed || '';
@@ -54,16 +53,23 @@ class ResourceElecInfo extends Component {
           })}
           <Form.Item label={stationType>0?'日辐射总量(斜面)':'平均风速'}>
             {getFieldDecorator('resourceValue', {
-              rules: [{ required: requireTargetArr.includes('resourceValue'), message: `请填写${stationType>0?'日辐射总量':'平均风速'}`,pattern: /^(-?\d+)(\.\d+)?$/ }],
+              rules: [{ 
+                required: requireTargetArr.includes('resourceValue'), 
+                message: `请填写${stationType>0?'日辐射总量':'平均风速'}`,
+                pattern: /^(-?\d+)(\.\d+)?$/ 
+              }],
               initialValue: updateDayReportDetail.resourceValue,
             })(
               <Input />
             )}
             <span>{stationType>0?radiationUnit:speedUnit}</span>
           </Form.Item>
-          <Form.Item label="日发电量(逆变器)">
+          <Form.Item label={`日发电量(${stationType>0?'逆变器':'风机机组'})`}>
             {getFieldDecorator('genInverter', {
-              rules: [{ required: requireTargetArr.includes('genInverter'), message: '请填写逆变器日发电量' }],
+              rules: [{ 
+                required: requireTargetArr.includes('genInverter'), 
+                message: `请填写${stationType>0?'逆变器':'风机机组'}日发电量` 
+              }],
               initialValue: updateDayReportDetail.genInverter,
             })(
               <Input placeholder="日发电量" />
@@ -72,7 +78,10 @@ class ResourceElecInfo extends Component {
           </Form.Item>
           <Form.Item label="日发电量(集电线路)">
             {getFieldDecorator('genIntegrated', {
-              rules: [{ required: requireTargetArr.includes('genIntegrated'), message: '请填写集电线路日发电量' }],
+              rules: [{ 
+                required: requireTargetArr.includes('genIntegrated'), 
+                message: '请填写集电线路日发电量' 
+              }],
               initialValue: updateDayReportDetail.genIntegrated,
             })(
               <Input />
@@ -81,7 +90,10 @@ class ResourceElecInfo extends Component {
           </Form.Item>
           <Form.Item label="日发电量(上网电量)">
             {getFieldDecorator('genInternet', {
-              rules: [{ required: requireTargetArr.includes('genInternet'), message: '请填写上网电量日发电量' }],
+              rules: [{ 
+                required: requireTargetArr.includes('genInternet'), 
+                message: '请填写上网电量日发电量' 
+              }],
               initialValue: updateDayReportDetail.genInternet,
             })(
               <Input />
@@ -90,25 +102,35 @@ class ResourceElecInfo extends Component {
           </Form.Item>
           <Form.Item label="日购网电量">
             {getFieldDecorator('dailyBuyPower', {
-              rules: [{ required: requireTargetArr.includes('dailyBuyPower'), message: '请填写日购网电量' }],
+              rules: [{ 
+                required: requireTargetArr.includes('dailyBuyPower'), 
+                message: '请填写日购网电量' 
+              }],
               initialValue: updateDayReportDetail.dailyBuyPower,
             })(
               <Input />
             )}
             <span>{genUnit}</span>
           </Form.Item>
-          <Form.Item label="样本逆变器容量">
+          <Form.Item label={`样板${stationType>0?'逆变器':'风机'}容量`}>
             {getFieldDecorator('modelInverterCapacity', {
-              rules: [{ required: requireTargetArr.includes('modelInverterCapacity'), message: '请填写样本逆变器容量',pattern: /^(-?\d+)(\.\d+)?$/ }],
+              rules: [{ 
+                required: requireTargetArr.includes('modelInverterCapacity'), 
+                message: `请填写样板${stationType>0?'逆变器':'风机'}容量`,
+                pattern: /^(-?\d+)(\.\d+)?$/ 
+              }],
               initialValue: updateDayReportDetail.modelInverterCapacity,
             })(
               <Input />
             )}
             <span>MW</span>
           </Form.Item>
-          <Form.Item label="样本逆变器发电量">
+          <Form.Item label={`样板${stationType>0?'逆变器':'风机'}发电量`}>
             {getFieldDecorator('modelInverterPowerGen', {
-              rules: [{ required: requireTargetArr.includes('modelInverterPowerGen'), message: '请填写样本逆变器发电量' }],
+              rules: [{ 
+                required: requireTargetArr.includes('modelInverterPowerGen'), 
+                message: `请填写样板${stationType>0?'逆变器':'风机'}发电量` 
+              }],
               initialValue: updateDayReportDetail.modelInverterPowerGen,
             })(
               <Input />

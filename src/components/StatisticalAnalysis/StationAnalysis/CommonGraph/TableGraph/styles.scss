@@ -10,9 +10,10 @@
     }
   }
   .tableList {
-    width: 520px;
+    // width: 520px;
+    width:100%;
     overflow: hidden;
-    border-bottom:1px solid #e8e8e8;
+    border-bottom:1px solid #3b3838;
     :global{
       .ant-table-small > .ant-table-content > .ant-table-scroll > .ant-table-header > table > .ant-table-thead > tr > th{
         background-color: #199475;
@@ -21,7 +22,7 @@
         padding:0;
       }
       .ant-table-small > .ant-table-content > .ant-table-scroll > .ant-table-body > table > .ant-table-tbody > tr > td{
-        padding:0 0 0 35px;
+        padding:0 0 0 20px;
       }
       .ant-table-small > .ant-table-content > .ant-table-scroll > .ant-table-header > table > .ant-table-thead > tr > th .ant-table-column-sorter{
         color:#fff;

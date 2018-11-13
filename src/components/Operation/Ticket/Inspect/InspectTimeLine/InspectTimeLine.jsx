@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Timeline } from 'antd';
+import { Timeline, Button } from 'antd';
 import PropTypes from 'prop-types';
 import styles from './inspectTimeLine.scss';
 import moment from 'moment';
@@ -16,18 +16,25 @@ class InspectTimeLine extends Component {
     processData: PropTypes.object,
     deviceTypeName: PropTypes.string,
     abnormalItems: PropTypes.object,
+    onChangeShowContainer: PropTypes.func,
   }
 
   constructor(props) {
     super(props);
   }
+  onInspectOrbit = () => {
+    this.props.onChangeShowContainer({container: 'inspectOrbit'});
+  }
+  onInspectRecord = () => {
+    this.props.onChangeShowContainer({container: 'inspectRecord'});
+  }
 
   renderIcon(item, isLast) {
     const flowName = item.get('flowName');
-    if(isLast && flowName!=='已完成') {
+    if (isLast && flowName !== '已完成') {
       return <i className="iconfont icon-goon" />;
     }
-    switch(flowName){
+    switch (flowName) {
       case '创建巡检':
         return <i className="iconfont icon-begin" />;
       case '执行工单':
@@ -43,13 +50,19 @@ class InspectTimeLine extends Component {
 
 
   renderItem(item, isLast) {
-    if(!isLast) {
+    const flowName = item.get('flowName');
+    if (!isLast) {
       return (
         <div className={styles.processItem}>
           <div className={styles.basic}>
             <div className={styles.flowName}>{item.get('flowName')}</div>
             <div className={styles.operateTime}>{moment(item.get('operateTime')).format('YYYY-MM-DD HH:mm')}</div>
             <div className={styles.operateUser}>{item.get('operateUser')}</div>
+           { /*{flowName === '执行工单' ? 
+            <div>
+              <Button className={styles.viewStandard} onClick={this.onInspectOrbit }>查看巡检轨迹</Button>
+              <Button className={styles.viewStandard} onClick={this.onInspectRecord}>详细巡检记录</Button>
+      </div> :''}*/}
           </div>
           {this.renderDetail(item)}
         </div>
@@ -67,22 +80,22 @@ class InspectTimeLine extends Component {
     const flowName = item.get('flowName');
     const { deviceTypeName, abnormalItems } = this.props;
     const abnormalNum = abnormalItems.size;
-    const transformNum = abnormalItems.filter(item=>item.get('isTransform')==='1').size;
-    if(flowName === '创建巡检') {
+    const transformNum = abnormalItems.filter(item => item.get('isTransform') === '1').size;
+    if (flowName === '创建巡检') {
       return (
         <div className={styles.inspectDesc}>
           <div className={styles.text}>巡检描述</div>
           <div className={styles.content}>{deviceTypeName}</div>
         </div>
       );
-    } else if(flowName === '执行工单') {
+    } else if (flowName === '执行工单') {
       return (
         <div className={styles.inspectDesc}>
           <div className={styles.text}>异常设备</div>
           <div className={styles.content}>{`${abnormalNum}个`}</div>
         </div>
       );
-    } else if(flowName === '验收工单') {
+    } else if (flowName === '验收工单') {
       return (
         <div className={styles.inspectDesc}>
           <div className={styles.text}>已转工单</div>
@@ -101,16 +114,16 @@ class InspectTimeLine extends Component {
           <div className={styles.text}>流程信息</div>
           <div className={styles.border}></div>
         </div>
-        <Timeline className={styles.timeLines} pending={status!=='4'}>
-          {processData.map((item, index)=>{
+        <Timeline className={styles.timeLines} pending={status !== '4'}>
+          {processData.map((item, index) => {
             return (
-              <Timeline.Item dot={this.renderIcon(item, index===processData.size-1)} key={'timeline'+index}>
-                {this.renderItem(item, index===processData.size-1)}               
+              <Timeline.Item dot={this.renderIcon(item, index === processData.size - 1)} key={'timeline' + index}>
+                {this.renderItem(item, index === processData.size - 1)}
               </Timeline.Item>
             );
           })}
         </Timeline>
-      </div> 
+      </div>
     )
   }
 }

@@ -25,16 +25,17 @@
       border-bottom: 1px solid #ececec;
       height: 300px;
       overflow: hidden;
+      margin-right: 24px;
     }
     .dataGraph>div{
       flex: 1;
       height: 300px;
     }
     .dataGraph.selectMonth>div:nth-child(1){
-      flex: 7;
+      flex: 5;
     }
     .dataGraph.selectMonth>div:nth-child(2){
-      flex: 3;
+      flex: 4;
     }
 
   }

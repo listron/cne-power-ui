@@ -6,30 +6,28 @@ import ImgUploader from '../../../../Common/Uploader/ImgUploader';
 
 class DefectBasicInfo extends Component {
   static propTypes = {
-    basicInfo: PropTypes.object
+    basicInfo: PropTypes.object,
+    defectTypes: PropTypes.object,
   }
 
   constructor(props) {
     super(props);
   }
 
-  getImagesData() {
-    if(this.props.basicInfo.get('photoAddress')) {
-      let images = this.props.basicInfo.get('photoAddress').split(',');
-      return images.map((item, index) => {
-        return {
-          uid: index,
-          rotate: 0,
-          thumbUrl: item
-        }
-      });
-    } else {
-      return [];
-    } 
-  }
-
   renderBasic() {
     const info = this.props.basicInfo;
+    const { defectTypes } = this.props;
+    const defectTypeCode = info.get('defectTypeCode');
+    let tmpGenTypes = [];
+    let defectShowText = '';
+    defectTypes.toJS().forEach(e=>e && e.list && e.list.length > 0 && tmpGenTypes.push(...e.list));
+    tmpGenTypes.forEach(e=>{ // 解析展示的缺陷类型。
+      const innerDefect = e.list || [];
+      innerDefect.forEach(inner=>{
+        `${inner.id}` === `${defectTypeCode}` && (defectShowText = `${e.name}/${inner.name}`);
+      })
+    });
+    let images = info.get('photoAddress')?info.get('photoAddress').split(','): [];
     return (
       <div className={styles.basicContent}>
         <div className={styles.basicItem}>
@@ -40,11 +38,16 @@ class DefectBasicInfo extends Component {
         </div>
         <div className={styles.basicItem}><div>设备类型</div><span>{info.get('deviceTypeName')}</span></div>
         <div className={styles.basicItem}><div>设备名称</div><span>{info.get('deviceName')}</span></div>
-        <div className={styles.basicItem}><div>缺陷类型</div><span>{info.get('defectTypeName')}</span></div>
+        <div className={styles.basicItem}><div>缺陷类型</div><span>{defectShowText}</span></div>
         <div className={styles.basicItem}><div>缺陷级别</div><span>{getLevel(info.get('defectLevel').toString())}</span></div>
         <div className={styles.basicItem}><div>缺陷描述</div><span>{info.get('defectDescribe')}</span></div>
         <div className={styles.viewImg}>
-          <ImgUploader editable={false} data={this.getImagesData()} />
+          <ImgUploader editable={false} data={images.map(item => ({
+              uid: item,
+              rotate: 0,
+              thumbUrl: `${item}?${Math.random()}`
+            }))}
+          />
         </div>
       </div>
     );

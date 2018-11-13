@@ -23,6 +23,7 @@ class InspectDetailForm extends Component {
     getInspectStandard: PropTypes.func,
     inspectStandard: PropTypes.object,
     setInspectCheck: PropTypes.func,
+    onChangeShowContainer: PropTypes.func,
   }
 
   constructor(props) {
@@ -142,14 +143,12 @@ class InspectDetailForm extends Component {
   }
 
   render() {
-    const { inspectDetail } = this.props;
+    const { inspectDetail,onChangeShowContainer } = this.props;
     const progressData = inspectDetail.get('processData');
     const status = inspectDetail.get('inspectStatus');
     const { showWarningTip, warningTipText } = this.state;
 
-
     return (
-  
         <div className={styles.detailWrap}>
           {showWarningTip && <WarningTip style={{ marginTop: '250px', width: '210px', height: '88px' }} onCancel={this.onCancelWarningTip} onOK={this.onConfirmWarningTip} value={warningTipText} />}
           <div className={styles.inspectDetail}>
@@ -185,7 +184,8 @@ class InspectDetailForm extends Component {
                     processData={progressData}
                     status={status}
                     deviceTypeName={inspectDetail.get('deviceTypeNames')}
-                    abnormalItems={inspectDetail.get('abnormalData')}
+                    abnormalItems={inspectDetail.get('abnormalData')} 
+                    onChangeShowContainer={onChangeShowContainer}                  
                   />
                 </div>
                 <div className={styles.form} >
