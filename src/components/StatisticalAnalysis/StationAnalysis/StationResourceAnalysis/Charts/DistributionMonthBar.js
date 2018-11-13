@@ -26,7 +26,7 @@ class BarGraph extends React.Component {
     const { graphId, yAxisName, xAxisName, dateType, title, data, hasData } = param;
     const targetChart = echarts.init(document.getElementById(graphId));
     const confluenceTenMinGraphic = (hasData || hasData === false) && (hasData === true ? hiddenNoData : showNoData) || " ";
-    const color = ['#199475', '#e08031'];
+    const color = ['#199475', '#e08031','#fff'];
     const targetOption = {
       graphic: confluenceTenMinGraphic,
       color: color,
@@ -145,6 +145,7 @@ class BarGraph extends React.Component {
         {
           name: '辐射总量',
           type: 'bar',
+          stack: "总量",
           data: data && data.yData.barData,
           itemStyle: {
             barBorderRadius: 10,
@@ -156,6 +157,11 @@ class BarGraph extends React.Component {
           type: 'line',
           yAxisIndex: 1,
           data: data && data.yData.lineData
+        },
+        {
+          name:'瞬时辐射区间（w/㎡）',
+          type: 'bar',
+          stack: "总量",
         }
       ]
     };

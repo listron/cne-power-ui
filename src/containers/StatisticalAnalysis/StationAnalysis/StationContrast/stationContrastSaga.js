@@ -31,7 +31,7 @@ function *getStationContrast(action){//请求两电站对比数据
       yield put({
         type:  stationContrastAction.stationContrastFetchSuccess,
         payload:{
-          ...payload,
+          // ...payload,
           stationContrastList: response.data.data || [],
         },
       });

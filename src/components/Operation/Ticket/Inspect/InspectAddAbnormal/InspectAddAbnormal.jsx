@@ -87,6 +87,7 @@ class inspectAddAbnormal extends Component {
     this.setState({
       deviceAreaCode: ''
     });
+    const stationType = this.props.inspectDetail.get('stationType');
     let params = {
       stationCode: this.props.inspectDetail.get('stationCode'),
       deviceTypeCode
@@ -95,6 +96,7 @@ class inspectAddAbnormal extends Component {
         this.props.getSliceDevices(params);
         this.props.getLostGenType({
           objectType: 1,
+          stationType,
           deviceTypeCode
         })
       }else{
@@ -102,6 +104,7 @@ class inspectAddAbnormal extends Component {
         this.props.loadDeviceAreaList(params);
         this.props.getLostGenType({
           objectType: 1,
+          stationType,
           deviceTypeCode
         })
       }
@@ -157,6 +160,7 @@ class inspectAddAbnormal extends Component {
     let stationType = this.props.inspectDetail.get('stationType');
     this.props.getStationDeviceTypes({stationCodes: stationCode}); 
     this.props.getDefectTypes({stationType: stationType});
+    this.props.getLostGenType({objectType: 1, stationType});
   }
 
   hideAdd = () => {

@@ -117,7 +117,7 @@ class DefectTimeLine extends Component {
     const photoAddressArr = !photoAddress ? [] : photoAddress.split(',');
     const defectProposal = item.get("defectProposal");
     const splitIndex = defectProposal.indexOf('：');
-    let proccessTitle = '', proccessText = '', refuseText = ['4'],suggestText = ['1','2','3','5'], doneText = ['0','6','7'];
+    let proccessTitle = '', proccessText = '', refuseText = ['4'],suggestText = ['1','2','3','5','6'], doneText = ['0','7'];
     splitIndex > 0 && (proccessText = defectProposal.slice(splitIndex + 1));
     refuseText.includes(handleStatus) && (proccessTitle = '驳回原因');
     suggestText.includes(handleStatus) && (proccessTitle = '处理建议');
