@@ -4,6 +4,7 @@ import { Tabs } from 'antd';
 import { withRouter } from 'react-router-dom';
 import styles from './allStationStatistic.scss';
 import StationSelectModal from './StationSelectModal.jsx';
+import StationStatisticList from './StationStatisticList.jsx';
 import TimeSelect from '../../../Common/TimeSelect/TimeSelectIndex';
 import PlanCompletionRate from './Chart/PlanCompletionRate';
 import TargetTabs from './TargetTabs.jsx';
@@ -331,6 +332,7 @@ class AllStationStatistic extends React.Component {
               <PlanCompletionRate dateType={dateType} stationType={stationType} allStationAvalibaData={allStationAvalibaData} allStationStatisticData={allStationStatisticData} getAllStationStatisticData={getAllStationStatisticData} year={year} selectYear={selectYear}
                 changeAllStationStore={changeAllStationStore} />
               <TargetTabs {...this.props} />
+              <StationStatisticList {...this.props} />
             </div>
           </TabPane>
           <TabPane tab="风电" key="0">

@@ -254,16 +254,16 @@ class OperateAnalysis extends React.Component {
     //损失电站类型
     const lostPowerTypeData = lostPowerTypeDatas && lostPowerTypeDatas.lostpower;
     const limit = lostPowerTypeData && lostPowerTypeData.map((e, i) => (e.limit)) || [];
-    const electric = lostPowerTypeData && lostPowerTypeData.map((e, i) => (e.electric)) || [];
+    const eletric = lostPowerTypeData && lostPowerTypeData.map((e, i) => (e.eletric)) || [];
     const plane = lostPowerTypeData && lostPowerTypeData.map((e, i) => (e.plane)) || [];
     const system = lostPowerTypeData && lostPowerTypeData.map((e, i) => (e.system)) || [];
     const other = lostPowerTypeData && lostPowerTypeData.map((e, i) => (e.other)) || []
     let lostpower = {
       date: lostPowerTypeData && lostPowerTypeData.map((e, i) => { return this.addXaixsName(e.date, dateType) }),
-      limit, electric, plane, system, other
+      limit, eletric, plane, system, other
     };
     let summary = lostPowerTypeDatas && lostPowerTypeDatas.summary;
-    const lostPowerTypeHasData = (limit.some(e => e || e === 0) || electric.some(e => e || e === 0) || plane.some(e => e || e === 0) || system.some(e => e || e === 0) || other.some(e => e || e === 0))
+    const lostPowerTypeHasData = (limit.some(e => e || e === 0) || eletric.some(e => e || e === 0) || plane.some(e => e || e === 0) || system.some(e => e || e === 0) || other.some(e => e || e === 0))
 
 
     // 限电率同比
