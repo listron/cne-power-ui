@@ -129,7 +129,7 @@ class SingleStation extends Component {
   }
 
   render() {
-
+    const stationType=this.props.singleStationData.stationType || '';
     const breadCrumbData = {
       breadData: [
         {
@@ -141,7 +141,7 @@ class SingleStation extends Component {
       <div className={styles.singleStation}>
         <CommonBreadcrumb {...breadCrumbData} style={{ marginLeft: '38px', backgroundColor: '#fff' }} />
         <div className={styles.singleStationContainer} >
-          <SingleStationMain {...this.props} getPowerDataTenMin={this.getPowerDataTenMin} />
+          <SingleStationMain {...this.props} getPowerDataTenMin={this.getPowerDataTenMin} stationType={stationType} />
           <Footer />
         </div>
       </div>
@@ -150,10 +150,9 @@ class SingleStation extends Component {
 }
 
 const mapStateToProps = state => {
-  console.log('stationTypeTabs',state.monitor.stationMonitor.toJS().stationType,)
   return ({
     ...state.monitor.singleStation.toJS(),
-    stationType: state.monitor.stationMonitor.toJS().stationType,//获取当前是在哪一个类型 风电／光伏
+    // singleStationData: state.monitor.stationMonitor.toJS().singleStationData,//获取当前是在哪一个类型 风电／光伏
   })
 };
 

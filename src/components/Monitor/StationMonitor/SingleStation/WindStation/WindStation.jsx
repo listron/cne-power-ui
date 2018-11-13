@@ -70,19 +70,26 @@ class WindStation extends Component {
     return (
       <div className={styles.windStation} >
         <WindStationTop {...this.props} stationCode={stationCode} hiddenStationList={this.state.hiddenStationList} />
-        <Tabs type="line" defaultActiveKey="station">
-          <TabPane tab="电站" key="station">
-            <div className={styles.outputPowerDiagram}>
-              <OutputTenMin {...this.props} yXaisName={'风速(m/s)'} chartType={'wind'} />
-              <PowerDiagramTenMin {...this.props} chartType={'wind'} />
+        <div className={styles.outputPowerDiagram}>
+          <OutputTenMin {...this.props} yXaisName={'风速(m/s)'} chartType={'wind'} />
+          <PowerDiagramTenMin {...this.props} chartType={'wind'} />
+        </div>
+        {/* <div className={styles.windTabs} >
+          <Tabs type="line" defaultActiveKey="station">
+            <TabPane tab="电站" key="station">
+              <div className={styles.outputPowerDiagram}>
+                <OutputTenMin {...this.props} yXaisName={'风速(m/s)'} chartType={'wind'} />
+                <PowerDiagramTenMin {...this.props} chartType={'wind'} />
+              </div>
+            </TabPane>
+            <TabPane tab="风机" key="wind">
+              <div className={styles.outputPowerDiagram}>
+                测试一下
             </div>
-          </TabPane>
-          <TabPane tab="风机" key="wind">
-            <div className={styles.outputPowerDiagram}>
-              测试一下
-            </div>
-          </TabPane>
-        </Tabs>
+            </TabPane>
+          </Tabs>
+        </div> */}
+
         <CardSection {...this.props} stationCode={stationCode} />
         <div className={styles.threadAndDevice} id="deviceType" >
           <Tabs type="card" defaultActiveKey="2" >

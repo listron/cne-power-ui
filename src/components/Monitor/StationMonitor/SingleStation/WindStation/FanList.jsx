@@ -356,7 +356,7 @@ class FanList extends React.Component {
     </div>);
 
 
-
+   console.log('deviceTypeCode',deviceTypeCode)
     return (
       <div className={styles.fanList} >
         <Tabs defaultActiveKey="1" className={styles.inverterTab} tabBarExtraContent={operations}>

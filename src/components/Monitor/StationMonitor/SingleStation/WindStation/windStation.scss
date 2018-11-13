@@ -149,10 +149,29 @@
         flex-direction: row;
         width: 100%;
     }
-    :global {
-        .ant-tabs.ant-tabs-line>.ant-tabs-bar .ant-tabs-nav-container {
-            height: 33px;
-            background: #f8f8f8;
+    .windTabs {
+        :global {
+            .ant-tabs.ant-tabs-line>.ant-tabs-bar .ant-tabs-nav-container {
+                height: 46px;
+                background: #f8f8f8;
+                line-height: 46px;
+            }
+            .ant-tabs-bar{
+                margin: 0;
+            }
+            .ant-tabs-nav .ant-tabs-tab:hover {
+                color: $themeColor;
+            }
+            .ant-tabs-nav .ant-tabs-tab-active {
+                color: $themeColor;
+            }
+            .ant-tabs-nav .ant-tabs-tab{
+                margin: 0 30px;
+                padding: 0 16px;
+            }
+        }
+        .outputPowerDiagram{
+            border-top:none
         }
     }
     .threadAndDevice {

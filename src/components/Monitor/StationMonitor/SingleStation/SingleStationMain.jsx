@@ -15,7 +15,7 @@ class SingleStationMain extends Component {
   }
   render(){
     const { stationType } = this.props;
-    console.log('hha',stationType)
+    // console.log('hha',stationType)
     return (
       <div className={styles.singleStation}>
         {stationType === '1' && <PvStation {...this.props} />}
