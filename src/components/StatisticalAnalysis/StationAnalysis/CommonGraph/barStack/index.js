@@ -33,22 +33,26 @@ class barStack extends React.Component {
   }
 
   drawChart = param => {
-    const { graphId, yAxisName, xAxisName, data, title,hasData } = param;
+    const { graphId, yAxisName, xAxisName, data, title, hasData } = param;
     const targetChart = echarts.init(document.getElementById(graphId));
     let color=["#f9b600",'#999999','#199475','#c7ceb2','#a42b2c','#ceebe0']
-    let seriesData=[];
+    // let color = ['#ceebe0', '#c7ceb2', '#199475', '#a42b2c', '#dfdfdf', "#f9b600"]
+    let seriesData = [];
     for (var type in data) {
-      if(type!=='date'){
+      if (type !== 'date') {
         seriesData.push({
           name: this.getName(type),
           data: data[type],
           type: 'bar',
           stack: "总量",
-          barWidth:13,
+          barWidth: 13,
         });
       }
     }
-    const confluenceTenMinGraphic = hasData? hiddenNoData :showNoData;
+
+  
+    const confluenceTenMinGraphic = (hasData || hasData === false) && (hasData === true ? hiddenNoData : showNoData) || " ";
+    //console.log("90",confluenceTenMinGraphic)
     const targetMonthOption = {
       graphic: confluenceTenMinGraphic,
       tooltip: {
@@ -64,13 +68,13 @@ class barStack extends React.Component {
         },
         extraCssText: 'box-shadow: 0 0 3px rgba(0, 0, 0, 0.3)',
         formatter: function (params) {
-            let paramsItem = '';
-            params.forEach((item, index) => {
-              return paramsItem += `<div> <span style="display: inline-block;width: 5px;height: 5px;border-radius: 50%;background:${color[index]};vertical-align: 3px;margin-right: 3px;"> </span> ${params[index].seriesName} :${params[index].value==='0'  || params[index].value || '--'}</div>`
-            });
-            return `<div  style="border-bottom: 1px solid #ccc;padding-bottom: 7px;margin-bottom: 7px;width:180px;overflow:hidden;"> <span style="float: left">${params[0].name} </span>
+          let paramsItem = '';
+          params.forEach((item, index) => {
+            return paramsItem += `<div> <span style="display: inline-block;width: 5px;height: 5px;border-radius: 50%;background:${color[index]};vertical-align: 3px;margin-right: 3px;"> </span> ${params[index].seriesName} :${params[index].value === 0 || params[index].value ? params[index].value : '--'}</div>`
+          });
+          return `<div  style="border-bottom: 1px solid #ccc;padding-bottom: 7px;margin-bottom: 7px;width:180px;overflow:hidden;"> <span style="float: left">${params[0].name} </span>
             </div>${paramsItem}`
-          }
+        }
       },
       title: {
         text: title,
@@ -134,7 +138,7 @@ class barStack extends React.Component {
     targetChart.setOption(targetMonthOption);
   };
   render() {
-    const { graphId, dateType } = this.props;
+    const { graphId} = this.props;
     return <div id={graphId}> </div>;
   }
 }

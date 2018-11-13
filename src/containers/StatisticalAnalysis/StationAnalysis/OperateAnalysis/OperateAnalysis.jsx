@@ -5,15 +5,15 @@ import styles from "./operateAnalysis.scss";
 import { operateAnalysisAction } from './operateAnalysisAction';
 import PropTypes from "prop-types";
 import OperateAnalysis from '../../../../components/StatisticalAnalysis/StationAnalysis/OperateAnalysis/OperateAnalysis';
-import { getCookie } from '../../../../utils/index.js';
+// import { getCookie } from '../../../../utils/index.js';
+import Cookie from 'js-cookie';
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import Footer from '../../../../components/Common/Footer';
 
 
 class OperateAnalysisContainer extends Component {
   static propTypes = {
-    // stationCode: PropTypes.array,
-
+    resetStore:PropTypes.func,
     location: PropTypes.object,
   }
 
@@ -21,17 +21,9 @@ class OperateAnalysisContainer extends Component {
     super(props);
   }
 
-  componentDidMount(){
-    // console.log('父组件',this.props);
-  }
-
-  componentWillReceiveProps(nextProps) {
-  //  console.log('父组件',nextProps)
-
-  }
 
   componentWillUnmount() {
-
+    this.props.resetStore()
   }
 
   render() {
@@ -58,7 +50,7 @@ const mapStateToProps = (state) => {
   return {
     ...state.statisticalAnalysisReducer.operateAnalysisReducer.toJS(),
     stations: state.common.get('stations'),
-    userId : getCookie('userId'),
+    userId: Cookie.get('userId'),
   }
 }
 const mapDispatchToProps = (dispatch) => ({
@@ -73,6 +65,7 @@ const mapDispatchToProps = (dispatch) => ({
   getPowerEfficiency: payload => dispatch({ type: operateAnalysisAction.getPowerEfficiency, payload }),
   getlostPower: payload => dispatch({ type: operateAnalysisAction.getlostPower, payload }),
   getAllStationAvalibaData: payload => dispatch({ type: operateAnalysisAction.getAllStationAvalibaData, payload }),
+  resetStore: payload => dispatch({ type: operateAnalysisAction.resetStore, payload }),
 
 })
 

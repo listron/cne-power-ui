@@ -12,6 +12,13 @@ function* changeResourceStore(action) {//存储payload指定参数，替换reduc
 }
 
 
+function *resetStore(){
+  yield put({
+    type:  stationResourceAnalysisAction.RESET_STORE
+  })
+}
+
+
 function* getAllStationAvalibaData(action) {//判断是否有数据
   const { payload } = action;
   const url= `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getAllStationAvaliba}`
@@ -63,7 +70,7 @@ function* getResourcePvCompare(action) {//月/日单电站光资源同比
             PvCompareData: response.data.data||[],          
           },
         });     
-      }  
+      } 
     }catch(e){
       console.log(e);
     }
@@ -82,7 +89,7 @@ function* getResourceYearPvCompare(action) {//年单电站光资源环比
             YearPvCompareData: response.data.data||[],          
           },
         });     
-      }  
+      } 
     }catch(e){
       console.log(e);
     }
@@ -178,4 +185,5 @@ export function* watchStationResourceStationSaga() {
   yield takeLatest(stationResourceAnalysisAction.getResourceDayWeather, getResourceDayWeather);
   yield takeLatest(stationResourceAnalysisAction.getResourcePvCompare, getResourcePvCompare);
   yield takeLatest(stationResourceAnalysisAction.getResourceYearPvCompare, getResourceYearPvCompare);
+  yield takeLatest(stationResourceAnalysisAction.RESET_STORE, resetStore);
 }

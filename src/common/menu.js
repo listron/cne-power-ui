@@ -82,6 +82,11 @@ const menuData = [
             name: '工单统计',
             path: 'statistics',
             rightKey: 'operation_worklist_statistics',
+          },{
+            name: '员工定位',
+            path: 'gps',
+            // rightKey: 'operation_locate',
+            rightKey: 'operation_worklist_work',
           }
         ]
       }, {
@@ -200,6 +205,10 @@ const menuData = [
           }, {
             name: '定制报表',
             path: 'customization',
+            rightKey: 'monitor',
+          }, {
+            name: '通用报表',
+            path: 'currency',
             rightKey: 'monitor',
           }
         ]

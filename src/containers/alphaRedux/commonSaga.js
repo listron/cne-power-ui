@@ -1,4 +1,4 @@
-import { call, put, takeLatest,all } from 'redux-saga/effects';
+import { call, put, takeLatest,all, takeEvery } from 'redux-saga/effects';
 import axios from 'axios';
 import Path from '../../constants/path';
 import { commonAction } from './commonAction';
@@ -289,6 +289,36 @@ function *getLostGenType(action){ // 根据电站类型等指标查询电站故�
   }
 }
 
+function *getStationBelongTypes(action){ // 获取电站可能的所属的各种分类信息
+  const { payload } = action;
+  const url = `${APIBasePath}${commonPaths.getStationBelongTypes}`;
+  try{
+    const { actionName, resultName } = payload;
+    const response = yield call(axios.get, url);
+    yield put({
+      type: actionName,
+      payload: { [resultName]: response.data.data || {}}
+    })
+  }catch(error){
+    message.error('获取电站分类信息失败!');
+  }
+}
+
+function *getStationTargetInfo(action){ // 获取电站指定分类信息(省,市,县,分类等。)
+  const { payload } = action;
+  const url = `${APIBasePath}${commonPaths.getStationTargetInfo}`;
+  try{
+    const { actionName, resultName, params } = payload;
+    const response = yield call(axios.get, url, {params});
+    yield put({
+      type: actionName,
+      payload: { [resultName]: response.data.data || []}
+    })
+  }catch(error){
+    message.error('获取数据失败!');
+  }
+}
+
 /*  --- todo 待后台开发refreshtoken接口后，解开注释并进行refresh token的替换。
   export function* refreshToken(action){ //根据当前的refresh token获取刷新token并替换
     const { payload } = action;
@@ -334,4 +364,7 @@ export function* watchCommon() {
   yield takeLatest(commonAction.getDeviceModel, getDeviceModel);
   yield takeLatest(commonAction.getPoints, getPoints);
   yield takeLatest(commonAction.getDevices, getDevices);
+  yield takeLatest(commonAction.getStationBelongTypes, getStationBelongTypes);
+  yield takeEvery(commonAction.getStationTargetInfo, getStationTargetInfo);
+  
 }
