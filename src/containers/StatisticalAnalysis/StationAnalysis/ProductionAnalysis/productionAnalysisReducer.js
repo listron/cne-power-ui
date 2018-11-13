@@ -13,7 +13,8 @@ var initState = Immutable.fromJS({
   singleStationPowerData: [],
   singleStationBuyPowerData: [],
   singleStationSalePowerData: [],
-  singleStationPlanRateData: []
+  singleStationPlanRateData: [],
+  selectYear:'',
 
 
 
