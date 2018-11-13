@@ -201,6 +201,10 @@ const menuData = [
             name: '定制报表',
             path: 'customization',
             rightKey: 'monitor',
+          }, {
+            name: '通用报表',
+            path: 'currency',
+            rightKey: 'monitor',
           }
         ]
       }
