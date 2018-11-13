@@ -45,7 +45,7 @@ class AllStationStatistic extends React.Component {
     const currentMonth = Number(moment().format('MM'));
     let time = year ? year : [`${currentYear}`];
     const userId = Cookie.get('userId')
-    changeAllStationStore({ year: [`${currentYear}`], month: currentMonth ,powerSelectMonth:currentMonth})
+    changeAllStationStore({ year: [`${currentYear}`], month: currentMonth, powerSelectMonth: currentMonth })
     getAllStationAvalibaData(
       {
         userId: userId,
@@ -89,7 +89,7 @@ class AllStationStatistic extends React.Component {
       dataType: 'EqpGen',
       stationType
     })
-    
+
 
   }
   componentWillReceiveProps(nextProps) {
@@ -111,6 +111,7 @@ class AllStationStatistic extends React.Component {
     //月->月
     if (dateType === 'month' && nextProps.dateType === 'month') {
       if (nextProps.year[0] !== this.props.year[0]) {
+        changeAllStationStore({ targetShowType: 'EqpGen',powerSelectMonth: currentMonth, pageNum: 1, })
         getAllStationAvalibaData(
           {
             userId: userId,
@@ -135,14 +136,14 @@ class AllStationStatistic extends React.Component {
         getAllStationMonthPieData({
           userId: userId,
           year: nextProps.year,
-          dataType: 'EqpGen', 
+          dataType: 'EqpGen',
           stationType
         })
         getAllStationStatisticTableData(
           {
             year: curYear,
             dateType,
-            month: nextProps.month,//默认当前月
+            month: currentMonth,//默认当前月
             pageNum: nextProps.pageNum, // 当前页
             //pageNum: 1, // 当前页
             pageSize: nextProps.pageSize, // 每页条数
@@ -154,7 +155,8 @@ class AllStationStatistic extends React.Component {
     }
     //月->年
     if (dateType !== nextProps.dateType && nextProps.dateType === 'year') {
-      changeAllStationStore({ allStationAvalibaData: [] })
+      changeAllStationStore({ allStationAvalibaData: [], targetShowType: 'EqpGen', pageNum: 1, })
+
       getAllStationAvalibaData(
         {
           userId: userId,
@@ -194,7 +196,7 @@ class AllStationStatistic extends React.Component {
     }
     //年->月
     if (dateType !== nextProps.dateType && nextProps.dateType === 'month') {
-      changeAllStationStore({ year: currentYear, month: currentMonth, allStationAvalibaData: [] })
+      changeAllStationStore({ year: currentYear, month: currentMonth, allStationAvalibaData: [], targetShowType: 'EqpGen',powerSelectMonth: currentMonth , pageNum: 1,})
       getAllStationAvalibaData(
         {
           userId: userId,
@@ -240,6 +242,7 @@ class AllStationStatistic extends React.Component {
     //年->年
     if (dateType === 'year' && nextProps.dateType === 'year') {
       if (nextProps.year[0] !== this.props.year[0] || nextProps.year[1] !== this.props.year[1]) {
+        changeAllStationStore({ targetShowType: 'EqpGen', pageNum: 1, })
         getAllStationAvalibaData(
           {
             userId: userId,
@@ -288,11 +291,11 @@ class AllStationStatistic extends React.Component {
       pageSize: 10, // 每页条数
       totalNum: 0,//总数
       allStationAvalibaData: [],
-      selectYear:''
+      selectYear: ''
     });
   }
   onTimeChange = (timeObj) => {
-    timeObj.timeStyle === 'year' ? this.props.changeAllStationStore({ dateType: timeObj.timeStyle, year: [timeObj.startTime, timeObj.endTime], selectYear: timeObj.endTime,powerSelectYear: timeObj.endTime}) : this.props.changeAllStationStore({ dateType: timeObj.timeStyle, year: [timeObj.startTime] })
+    timeObj.timeStyle === 'year' ? this.props.changeAllStationStore({ dateType: timeObj.timeStyle, year: [timeObj.startTime, timeObj.endTime], selectYear: timeObj.endTime, powerSelectYear: timeObj.endTime }) : this.props.changeAllStationStore({ dateType: timeObj.timeStyle, year: [timeObj.startTime] })
   }
 
   onChangeStation = (stationCode) => {
@@ -310,7 +313,9 @@ class AllStationStatistic extends React.Component {
   queryTargetData = (activeKey) => {
     const { stationType } = this.props;
     this.props.changeAllStationStore({
-      stationType: activeKey
+      stationType: activeKey,
+      targetShowType: 'EqpGen',
+
     });
   }
   render() {
