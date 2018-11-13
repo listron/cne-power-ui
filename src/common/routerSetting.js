@@ -38,7 +38,7 @@ import OperateAnalysis from '../containers/StatisticalAnalysis/StationAnalysis/O
 import StationContrast from '../containers/StatisticalAnalysis/StationAnalysis/StationContrast/StationContrast';
 import PerformanceAnalysis from "../containers/StatisticalAnalysis/EquipmentAnalysis/PerformanceAnalysis/PerformanceAnalysis";
 
-import Power from '../containers/Power';
+import Homepage from '../containers/Home/Homepage';
 
 import Plan from "../containers/System/Production/Plan/Plan";
 /*
@@ -48,7 +48,7 @@ const routers = [
   {
     path: '/',
     exact: true,
-    component: Building,
+    component: Homepage,
   },
   { // 运维管理-工单-工单列表
     path: '/operation/ticket/list',

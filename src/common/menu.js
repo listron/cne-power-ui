@@ -19,7 +19,7 @@ const menuData = [
     name: '主页',
     path: '/',
     defaultPath: true,
-    rightKey: 'homepage',
+    rightKey: 'monitor',
   },
   {
     name: '实时监控',
@@ -205,6 +205,10 @@ const menuData = [
           }, {
             name: '定制报表',
             path: 'customization',
+            rightKey: 'monitor',
+          }, {
+            name: '通用报表',
+            path: 'currency',
             rightKey: 'monitor',
           }
         ]

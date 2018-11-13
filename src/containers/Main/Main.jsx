@@ -91,7 +91,7 @@ class Main extends Component {
   }
 
   render() {
-    const { changeLoginStore } = this.props;
+    const { changeLoginStore, history } = this.props;
     const authData = Cookie.get('authData') || null;
     const isNotLogin = Cookie.get('isNotLogin');
     const userRight = Cookie.get('userRight');
@@ -102,9 +102,11 @@ class Main extends Component {
     }
     if(isTokenValid && authData && (isNotLogin === '0')){
     // if(true){
+      const homePageArr = ['/'];
+      const isHomePage = homePageArr.includes(history.location.pathname); // 首页不同的解析规则
       return (
         <div className={styles.app}>
-          <div className={styles.appHeader}>
+          {!isHomePage && <div className={styles.appHeader}>
             <div className={styles.headerLeft}>
               <LogoInfo />
               <div className={styles.logo}></div>
@@ -114,15 +116,15 @@ class Main extends Component {
               <img width="294px" height="53px" src="/img/topbg02.png" className={styles.powerConfig} />
               <UserInfo changeLoginStore={changeLoginStore} />
             </div>
-          </div>
+          </div>}
           <div className={styles.appMain}>
-            <SideMenu />
-            <div className={styles.content} id="main" >
+            {isHomePage && <SideMenu />}
+            <main className={styles.content} style={{height: isHomePage?'100vh':'calc(100vh - 59px)'}} id="main" >
               <Switch>
                 {routerConfig}
                 <Redirect to="/monitor/station" />
               </Switch>
-            </div>
+            </main>
           </div>
           {/* <FixedHelper /> */}
           <Modal
