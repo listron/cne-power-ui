@@ -219,7 +219,7 @@ class StationStatisticList extends React.Component {
 
       },
       {
-        title: "辐值总量(MJ/m²)",
+        title: "辐射总量(MJ/m²)",
         dataIndex: "resourceValue",
         sorter: true,
       },
@@ -305,7 +305,7 @@ class StationStatisticList extends React.Component {
 
       },
       {
-        title: "辐值总量(MJ/m²)",
+        title: "辐射总量(MJ/m²)",
         dataIndex: "resourceValue",
         sorter: true,
       },
@@ -357,7 +357,7 @@ class StationStatisticList extends React.Component {
           <Pagination total={totalNum} currentPage={pageNum} pageSize={pageSize} onPaginationChange={this.onPaginationChange} />
         </div>
         <div>
-          <Table columns={columns} dataSource={allStationStatisticTableData && allStationStatisticTableData.map((e, i) => ({ ...e, key: i }))} onChange={this.ontableSort} pagination={false} />
+          <Table columns={columns} dataSource={allStationStatisticTableData && allStationStatisticTableData.map((e, i) => ({ ...e, key: i,pr:`${e.pr?e.pr:'--'}%`,resourceRate:`${e.resourceRate?e.resourceRate:'--'}%`,planGenRate:`${e.planGenRate?e.planGenRate:'--'}%`,powerRate:`${e.powerRate?e.powerRate:'--'}%` }))} onChange={this.ontableSort} pagination={false} />
         </div>
 
 

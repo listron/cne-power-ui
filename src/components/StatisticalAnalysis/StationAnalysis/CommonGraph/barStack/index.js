@@ -18,7 +18,7 @@ class barStack extends React.Component {
     let name = '';
     switch (type) {
       case 'limit': name = '限电'; break;
-      case 'electric': name = '变电故障'; break;
+      case 'eletric': name = '变电故障'; break;
       case 'plane': name = '计划停机'; break;
       case 'system': name = '光伏发电系统故障'; break;
       case 'other': name = '场外因素'; break;
@@ -49,10 +49,7 @@ class barStack extends React.Component {
         });
       }
     }
-
-  
     const confluenceTenMinGraphic = (hasData || hasData === false) && (hasData === true ? hiddenNoData : showNoData) || " ";
-    //console.log("90",confluenceTenMinGraphic)
     const targetMonthOption = {
       graphic: confluenceTenMinGraphic,
       tooltip: {
