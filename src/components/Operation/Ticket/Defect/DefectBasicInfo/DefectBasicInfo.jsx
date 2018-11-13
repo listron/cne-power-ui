@@ -14,21 +14,6 @@ class DefectBasicInfo extends Component {
     super(props);
   }
 
-  getImagesData() {
-    if(this.props.basicInfo.get('photoAddress')) {
-      let images = this.props.basicInfo.get('photoAddress').split(',');
-      return images.map((item, index) => {
-        return {
-          uid: index,
-          rotate: 0,
-          thumbUrl: item
-        }
-      });
-    } else {
-      return [];
-    } 
-  }
-
   renderBasic() {
     const info = this.props.basicInfo;
     const { defectTypes } = this.props;
@@ -42,6 +27,7 @@ class DefectBasicInfo extends Component {
         `${inner.id}` === `${defectTypeCode}` && (defectShowText = `${e.name}/${inner.name}`);
       })
     });
+    let images = info.get('photoAddress')?info.get('photoAddress').split(','): [];
     return (
       <div className={styles.basicContent}>
         <div className={styles.basicItem}>
@@ -56,7 +42,12 @@ class DefectBasicInfo extends Component {
         <div className={styles.basicItem}><div>缺陷级别</div><span>{getLevel(info.get('defectLevel').toString())}</span></div>
         <div className={styles.basicItem}><div>缺陷描述</div><span>{info.get('defectDescribe')}</span></div>
         <div className={styles.viewImg}>
-          <ImgUploader editable={false} data={this.getImagesData()} />
+          <ImgUploader editable={false} data={images.map(item => ({
+              uid: item,
+              rotate: 0,
+              thumbUrl: `${item}?${Math.random()}`
+            }))}
+          />
         </div>
       </div>
     );
