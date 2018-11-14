@@ -392,11 +392,21 @@ function *getInspectDetailRecord(action){//获取巡检记录的table列表数�
   try{
     const response = yield call(axios.get, url, {params: payload} )
     if(response.data.code === '10000') {
+      const totalCount = response.data.data.totalCount || 0;
+      let { pageNum, pageSize } = payload;
+      const maxPage = Math.ceil(totalCount / pageSize);
+      if(totalCount === 0){ // 总数为0时，展示0页
+        pageNum = 0;
+      }else if(maxPage < pageNum){ // 当前页已超出
+        pageNum = maxPage;
+      }
       yield put({
         type: ticketAction.GET_INSPECT_FETCH_SUCCESS,
         payload: {
+          ...payload,
+          totalCount,
+          pageNum,   
           inspectDetailRecord: response.data.data.recordData||[],
-          totalCount:response.data.data.totalCount||0    
         },
       });     
     }  else{

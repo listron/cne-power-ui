@@ -221,7 +221,9 @@ module.exports = [
       response:{
         "code": "10000",
         "message": "操作成功",
-        "data":  [ 1,2,3,4,5,6,7,8,9,10,11].map((e,i)=>(
+        "data": {
+            totalCount:11,
+            recordData :[ 1,2,3,4,5,6,7,8,9,10,11].map((e,i)=>(
             {
                 "recordId": `${i}`,
                 "username": `${i}`,
@@ -235,7 +237,7 @@ module.exports = [
                 "phoneAddress":`${i}`,
                 "defectId": `${i}`,               
             }
-        )),
+        ))},
         "serviceCode": "3.0"
     },
     delay:1000,

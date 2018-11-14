@@ -70,30 +70,17 @@ class InspectRecordFilter extends Component {
   //巡检设备类型
   onDeviceTypeChange=(value)=>{
     this.props.onChangeFilter({
-      DeviceTypeId: value.join(',')
+      deviceTypeCode: value.join(',')
     });
   }
   //巡检设备全部取消
   onDeviceTypeReset=()=>{
     this.props.onChangeFilter({
-      DeviceTypeId: ''
+      deviceTypeCode: ''
     });
   }
-  disabledStartDate = (current) => {
-    const endDate = this.props.endDate;
-    if (endDate && current) {
-      return current.valueOf() > moment(endDate);
-    }
-    return false;
-  }
-
-  disabledEndDate = (current) => {
-    const startDate = this.props.startDate;
-    if (startDate && current) {
-      return current.valueOf() < moment(startDate).valueOf();
-    }
-    return false;
-  }
+ 
+  //巡检状态
   inspectStatusChange = (value) => {
     console.log(value);
     this.props.onChangeFilter({
@@ -129,10 +116,7 @@ class InspectRecordFilter extends Component {
 
           <Button onClick={() => this.onFilterShowChange('inspectUserName')}>
             参与人名称{showFilter === 'inspectUserName' ? <Icon type="up" /> : <Icon type="down" />}
-          </Button>
-          {/*<Button onClick={() => this.onFilterShowChange('inspectStatus')}>
-            巡检状态{showFilter === 'inspectStatus' ? <Icon type="up" /> : <Icon type="down" />}
-    </Button>*/}
+          </Button>        
           <Select style={{ width: 120, marginRight: '16px' }} onChange={this.inspectStatusChange} placeholder="巡检状态">
             <Option value="1">有异常</Option>
             <Option value="0">无异常</Option>

@@ -36,11 +36,11 @@ class InspectTimeLine extends Component {
     const{inspectDeviceType,inspectId,getInspectDetailRecord,changeInspectStore,getStationDeviceTypes,deviceTypeItems,getInspectUsers,stationCode}=this.props;
     this.props.onChangeShowContainer({ container: 'inspectRecord' });
     //在这发巡检记录的请求
-    getInspectDetailRecord({inspectId})
+    getInspectDetailRecord({inspectId,pageNum:1,pageSize:10})
    
     getInspectUsers()
     getStationDeviceTypes({stationCodes:stationCode})
-    changeInspectStore({deviceTypeItems:deviceTypeItems,pageNum:1,inspectId:inspectId})
+    changeInspectStore({deviceTypeItems:deviceTypeItems,pageNum:1,pageSize:10,inspectId:inspectId})
   
 
   }
