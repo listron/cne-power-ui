@@ -17,6 +17,7 @@ class PersonnelGps extends Component {
 
   componentDidMount() {
    this.props.getPersonnelGpsData()
+   this.stationInterval=setInterval(() => this.props.getPersonnelGpsData(), 180000)
   }
 
   render() {

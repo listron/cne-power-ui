@@ -57,7 +57,7 @@ var initState = Immutable.fromJS({
   userId:'',//巡检人id
   //stationDeviceTypes:'',//某电站下的设备类型
   inspectStatus:null,//巡检状态
-  DeviceTypeId:'',//设备类型Id
+  deviceTypeCode:'',//设备类型Id
   inspectDetailRecord:[],//巡检记录详情数据
   sortType:0,//0是正序1是倒序
   totalCount:0,//巡检记录列表的数据个数

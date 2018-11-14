@@ -37,8 +37,8 @@ class GpsMap extends Component {
   setMapChart = (testChart, personnelGpsData) => {
     const option = {
       bmap: {
-         center: [123, 39.92],//中心点
-         zoom: 11,
+         center: [116, 39.92],//中心点
+         zoom: 5,
         roam: true,//可放大缩小
         mapStyle: {
           styleJson: [{

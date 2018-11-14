@@ -91,7 +91,7 @@ class InspectRecordFilter extends Component {
   render() {
     const { showFilter } = this.state;
     const CheckboxGroup = Checkbox.Group;
-    const { startDate, endDate, userId,DeviceTypeId, inspectUsers,deviceTypeItems} = this.props;
+    const { startDate, endDate, userId,deviceTypeCode, inspectUsers,deviceTypeItems} = this.props;
     console.log(inspectUsers);
     console.log(deviceTypeItems);
    
@@ -105,7 +105,7 @@ class InspectRecordFilter extends Component {
       label: item.deviceTypeName,
       value:`${item.deviceTypeCode}`
     }))
-    const inspectDeviceArray = DeviceTypeId === '' ? [] : DeviceTypeId.split(',');
+    const inspectDeviceArray = deviceTypeCode === '' ? [] : deviceTypeCode.split(',');
     return (
       <div className={styles.inspectFilter}>
         <div className={styles.topSearch}>
@@ -135,7 +135,7 @@ class InspectRecordFilter extends Component {
             </div>}
           {showFilter === 'deviceType' && 
           <div className={styles.inspectUserFilter}>
-            <span onClick={this.onDeviceTypeReset} className={DeviceTypeId === '' ? styles.selected : styles.all}>不限</span>
+            <span onClick={this.onDeviceTypeReset} className={deviceTypeCode === '' ? styles.selected : styles.all}>不限</span>
             <CheckboxGroup options={inspectOptions} value={inspectDeviceArray}  onChange={this.onDeviceTypeChange} />
           </div>}
         </div>

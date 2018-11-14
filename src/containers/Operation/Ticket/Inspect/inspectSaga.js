@@ -386,8 +386,8 @@ function *inspectCheckBatch(action){
 }
 function *getInspectDetailRecord(action){//获取巡检记录的table列表数据
   const { payload } = action;
-  let url='/mock/operation/inspectionList';
-  //let url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.getInspectDetailRecord;
+  //let url='/mock/operation/inspectionList';
+  let url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.getInspectDetailRecord;
   yield put({type: ticketAction.TICKET_FETCH})
   try{
     const response = yield call(axios.get, url, {params: payload} )

@@ -31,7 +31,7 @@ class StationStatisticList extends React.Component {
       }
   }
   ontableSort = (pagination, filter, sorter) => {
-    const { getAllStationStatisticTableData, queryListParams, year, month, dateType, pageSize, pageNum } = this.props;
+    const { getAllStationStatisticTableData, queryListParams, stationType,year, month, dateType, pageSize, pageNum } = this.props;
     const curYear = Number(year);
     const { field, order } = sorter;
     const sortInfo = {
@@ -54,6 +54,7 @@ class StationStatisticList extends React.Component {
       pageNum,
       pageSize,
       year: curYear,
+      stationType,
       month,
       dateType,
       sort,
@@ -63,7 +64,7 @@ class StationStatisticList extends React.Component {
   }
 
   onPaginationChange = ({ pageSize, currentPage }) => { // 分页器操作
-    const { getAllStationStatisticTableData, dateType, sortType, month, year, sort } = this.props;
+    const { getAllStationStatisticTableData, dateType, stationType, sortType, month, year, sort } = this.props;
     const curYear = Number(year);
     this.props.changeAllStationStore({ pageNum: currentPage })
     getAllStationStatisticTableData({
@@ -74,6 +75,7 @@ class StationStatisticList extends React.Component {
       sort,
       month: month,
       pageNum: currentPage,
+      stationType,
     })
   }
   handleTime = (e) => {

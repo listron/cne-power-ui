@@ -8,7 +8,7 @@ class FilteredItemValue extends Component {
     startDate: PropTypes.string,
     endDate: PropTypes.string,
     userId: PropTypes.string,
-    DeviceTypeId: PropTypes.string,
+    deviceTypeCode: PropTypes.string,
     inspectStatus: PropTypes.any,
     onChangeFilter: PropTypes.func,
   }
@@ -42,10 +42,10 @@ class FilteredItemValue extends Component {
     });
   }
   onCancelDeviceType = (cancelCode) => {//删除某设备
-    const { DeviceTypeId, onChangeFilter } = this.props;
-    const newInspectDevice = DeviceTypeId.split(',').filter(e => e !== cancelCode);
+    const { deviceTypeCode, onChangeFilter } = this.props;
+    const newInspectDevice = deviceTypeCode.split(',').filter(e => e !== cancelCode);
     onChangeFilter({
-      DeviceTypeId: newInspectDevice.join(',')
+      deviceTypeCode: newInspectDevice.join(',')
     });
   }
 
@@ -55,7 +55,7 @@ class FilteredItemValue extends Component {
       startDate: '',
       endDate: '',
       userId: '',
-      DeviceTypeId: '',
+      deviceTypeCode: '',
       inspectStatus: null,
     });
   }
@@ -63,10 +63,10 @@ class FilteredItemValue extends Component {
   render() {
     //inspectDeviceType是从巡检工单里传过来的设备类型，其中包括设备名以及设备code
     //inspectPersonList是用户名以及用户id
-    const { startDate, endDate, userId, inspectStatus, inspectUsers, DeviceTypeId, deviceTypeItems } = this.props;
+    const { startDate, endDate, userId, inspectStatus, inspectUsers, deviceTypeCode, deviceTypeItems } = this.props;
     const inspectUserArray = userId.split(',');
     const selectedInspectPerson = inspectUsers.filter(e => inspectUserArray.some(m => m === `${e.id}`));
-    const inspectDevice = DeviceTypeId.split(',');
+    const inspectDevice = deviceTypeCode.split(',');
     console.log(inspectDevice);
     const selectedInspectDevice = deviceTypeItems&&deviceTypeItems.filter(e => inspectDevice.some(m => m === `${e.deviceTypeCode}`));
     console.log(selectedInspectDevice);
