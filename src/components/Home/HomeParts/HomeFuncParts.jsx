@@ -1,0 +1,91 @@
+import React from 'react';
+import { Progress } from 'antd';
+import styles from './homeParts.scss';
+
+export const CompleteRate = () => { // 计划完成
+  return (
+    <section className={styles.completeRate}>
+      <h3>计划完成率</h3>
+      <div className={styles.completeInfo}>
+        <div className={styles.text}>
+          <span className={styles.wind}>风电</span>
+          <span className={styles.pv}>光伏</span>
+        </div>
+        <div className={styles.timeComplete}>
+          <span className={styles.windPercent}>96%</span>
+          <Progress percent={50} size="small" strokeColor="#06bdf4" />
+          <span className={styles.planName}>月计划</span>
+          <Progress percent={68} size="small" strokeColor="#48cf49" />
+          <span className={styles.pvPercent} strokeColor="">98%</span>
+        </div>
+        <div className={styles.timeComplete}>
+          <span className={styles.windPercent}>98%</span>
+          <Progress percent={98} size="small" strokeColor="#06bdf4" />
+          <span className={styles.planName}>年计划</span>
+          <Progress percent={21} size="small" strokeColor="#48cf49" />
+          <span className={styles.pvPercent}>91%</span>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+export const OperationInfo = () => { // 运维情况
+  return (
+    <section className={styles.operationInfo}>
+      <h3>运维情况</h3>
+      <div>
+        <h4>本月完成工单</h4>
+        <span>999</span>
+      </div>
+      <div>
+        <h4>执行中工单</h4>
+        <span>12</span>
+      </div>
+    </section>
+  )
+}
+
+export const EnergySaving = () => { // 年累计节能减排
+  return (
+    <section className={styles.energySaving}>
+      <h3>年累计节能减排</h3>
+      <div>
+        <h4>co2</h4>
+        <span>
+          <span>8746</span>
+          <span>kt</span>
+        </span>
+      </div>
+      <div>
+        <h4>火火</h4>
+        <span>
+          <span>1746</span>
+          <span>kt</span>
+        </span>
+      </div>
+    </section>
+  )
+}
+
+export const AlarmList = () => { // 告警列表
+  return (
+    <section>
+      <h3>告警列表<span>总数120个</span></h3>
+      <div>
+        <div>
+          <span>等级</span>
+          <span>电站名称</span>
+          <span>告警描述</span>
+          <span>持续时间</span>
+        </div>
+        <div>
+          <span>1</span>
+          <span>扎旗光伏</span>
+          <span>发电机组绕组</span>
+          <span>0天20小时</span>
+        </div>
+      </div>
+    </section>
+  )
+}

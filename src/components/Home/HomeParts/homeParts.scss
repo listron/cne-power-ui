@@ -1,0 +1,141 @@
+
+@import '../homepageParts.scss';
+
+@media screen and (max-width: 1919px) { // 1920以下宽度屏按1680展示
+  
+}
+
+@media screen and (min-width: 1920px){ // 1920及以上屏幕按1920展示
+  
+}
+
+// background:rgba(56,108,150,0.15);
+//   border:1px solid #3f566c;
+//   box-shadow:0 0 6px 0 rgba(255,255,255,0.30);
+//   border-radius:4px;
+
+.stationTypeTag{ // 全部,风,光切换样式。
+  display: flex;
+  .text{
+    color: #fff;
+    margin-right: 8px;
+    font-size: 18px;
+    line-height: 30px;
+    text-align: center;
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+}
+
+.stationGeneral{ // 电站概况
+  height: 320px;
+  display: flex;
+  flex-wrap: wrap;
+  position: relative;
+  border:1px solid #3f566c;
+  box-shadow:0 0 6px 0 rgba(255,255,255,0.30);
+  align-content: flex-start;
+  h3{
+    font-family:PingFangSC-Regular;
+    font-size:24px;
+    color:#a6e8ff;
+    width: 100%;
+    text-align: center;
+    margin: 12px 0 0;
+    height: 36px;
+  }
+  .checkTags{
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+  .eachGeneral{
+    width: 50%;
+    margin-top: 16px;
+    .value,.unit,.name{
+      font-family:PingFangSC-Regular;
+      color:#06bdf4;
+      margin-left: 40px;
+    }
+    .value{
+      font-size:28px;
+      color:#4dde49;
+    }
+    .unit{
+      font-size:18px;
+      line-height:16px;
+      margin-left: 0;
+    }
+    .name{
+      font-size:22px;
+      line-height:16px;
+      margin-top: 8px;
+    }
+  }
+}
+
+.completeRate{ // 计划完成率
+  margin-top: 12px;
+  @include boxStyle();
+  width:400px;
+  height: 185px;
+  h3{
+    text-align: center;
+    font-family:PingFangSC-Regular;
+    font-size:24px;
+    color:#a6e8ff;
+    margin-top: 24px;
+  }
+  .text{ // 风，光提示
+    display: flex;
+    justify-content: space-between;
+    .wind, .pv{
+      padding-left: 16px;
+      height: 21px;
+      color: #06bdf4;
+      position: relative;
+      &::before{
+        content: '';
+        position: absolute;
+        left: 4px;
+        top: 6px;
+        height: 8px;
+        width: 8px;
+        border-radius: 50%;
+        background-color: #06bdf4;
+      }
+    }
+    .pv{
+      color: #48cf49;
+      &::before{
+        background-color: #48cf49;
+      }
+    }
+  }
+  .timeComplete{
+    height: 30px;
+    line-height: 30px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    .windPercent, .pvPercent, .planName{
+      font-size: 20px;
+      color: #06bdf4;
+    }
+    .planName{
+      font-size: 14px;
+    }
+    .pvPercent{
+      color: #48cf49;
+    }
+    :global{
+      .ant-progress{
+        width: 105px;
+      }
+    }
+  }
+}

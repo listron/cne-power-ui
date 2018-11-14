@@ -1,9 +1,48 @@
-.topBox{
+
+
+@mixin boxStyle(){
+  background:rgba(56,108,150,0.15);
+  border:1px solid #3f566c;
+  box-shadow:0 0 6px 0 rgba(255,255,255,0.30);
+  border-radius:4px;
+};
+
+.topBox{ // 顶部盒子
   width: 100%;
   height: 189px;
-  background-image: url('/assets/img/tiltebg.png');
-  .infoShow{
+  
+  .infoShow{ // 顶部信息展示。
     display: flex;
-    justify-content: space-between;
+    height: 98px;
+    align-items: center;
+    .timeShow,.upperArrow,.userShow{
+      width: 33.33%;
+    }
+    .timeShow{
+      color:#88a6bf;
+      font-size:20px;
+      text-align: left;
+    }
+    .upperArrow{
+      text-align: center;
+      margin-top: -30px;
+    }
+    .userShow{
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      .logo{
+        margin-left: 48px;
+      }
+    }
+  }
+  .enterpriseTitle{ // 企业标题
+    font-family:PingFangSC-Regular;
+    font-size:40px;
+    color:#a6e8ff;
+    letter-spacing:1.74px;
+    text-align: center;
+    margin-top: 10px;
   }
 }
+
