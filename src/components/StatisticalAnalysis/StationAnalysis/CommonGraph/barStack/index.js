@@ -49,10 +49,7 @@ class barStack extends React.Component {
         });
       }
     }
-
-  
     const confluenceTenMinGraphic = (hasData || hasData === false) && (hasData === true ? hiddenNoData : showNoData) || " ";
-    //console.log("90",confluenceTenMinGraphic)
     const targetMonthOption = {
       graphic: confluenceTenMinGraphic,
       tooltip: {

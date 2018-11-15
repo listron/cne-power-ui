@@ -35,6 +35,13 @@
     display: flex;
     flex:1;
     flex-direction: column;
+    :global{
+      .ant-radio-button-wrapper{
+        height: 19px;
+        line-height: 16px;
+        padding: 0 5px;
+      }
+    }
     .title {
       display: flex;
       flex-direction: column;
