@@ -164,9 +164,9 @@ class StationContrastDetail extends Component {
       const stationNames = stationContrastDetail.map(e => e.stationName);
       const contrastYears = stationContrastDetail.map(e => e.years);
       const contrastValues = stationContrastDetail.map(e => e.value);
-      console.log(stationNames);
+      // console.log(stationNames);
       // console.log(contrastYears);
-      // console.log(contrastValues);
+      //  console.log(contrastValues);
       const contrastValuesIsNull = contrastValues.every(item=>item.every(e=>e===null));
       const capabilityGraphic = contrastValuesIsNull ? showNoData : hiddenNoData;
       const stationContrastOption = {
@@ -210,10 +210,13 @@ class StationContrastDetail extends Component {
             }
           },
           formatter: (param) => {
+         
             return `<div style="width: 170px; height: 93px;font-size:12px;line-height: 24px;background: #fff;box-shadow:0 1px 4px 0 rgba(0,0,0,0.20);border-radius:2px;">
               <div style="border-bottom: 1px solid #dfdfdf;padding:0px 15px; display:flex;justify-content: space-between;" ><span>${param[0] && param[0].name || '--'}</span><span>${columnName}</span></div>
-              <div style="padding: 6px 15px 0px;" ><span style="display: inline-block; margin-right:5px; background:#199475; width:6px; height:6px; border-radius:100%;"></span>${stationNames[0]} ${param[1] && param[1].value || '--'}</div>
-              <div style="padding: 6px 15px 0px;" ><span style="display: inline-block; margin-right:5px; background:#c7ceb2; width:6px; height:6px; border-radius:100%;"></span>${stationNames[1]} ${param[0] && param[0].value || '--'}</div>
+              <div >
+              <span style="display: inline-block; margin-right:5px; background:#199475; width:6px; height:6px; border-radius:100%;"></span>${stationNames[0]} ${param[0] && param[0].value || '--'}
+              </div>
+              <div style="padding: 6px 15px 0px;" ><span style="display: inline-block; margin-right:5px; background:#c7ceb2; width:6px; height:6px; border-radius:100%;"></span>${stationNames[1]} ${param[1] && param[1].value || '--'}</div>
             </div>`;
           },
           extraCssText:'background: rgba(0,0,0,0);',

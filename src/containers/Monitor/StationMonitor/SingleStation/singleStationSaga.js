@@ -2,6 +2,7 @@ import { call, put, takeLatest } from 'redux-saga/effects';
 import axios from 'axios';
 import Path from '../../../../constants/path';
 import { singleStationAction } from './singleStationAction';
+import { message } from 'antd';
 
 //改变单电站实时数据store
 function *changeSingleStationStore(action){
@@ -419,6 +420,12 @@ function *editData(action){
     const response = yield call(axios.post, url, payload);
     console.log(response,'编辑');
     if(response.data.code==="10000"){
+      message.config({
+        top: 120,
+        duration: 2,
+        maxCount: 3,
+      });
+      message.success('数据编辑成功，请稍等');
       yield put({
         type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
         payload: {
