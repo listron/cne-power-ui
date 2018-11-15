@@ -233,6 +233,10 @@ export default {
      getResourceYearLight:'/v3/performance/resource/distribution/year',
      getResourceMonthWeather:'/v3/performance/resource/weather/years',
      getResourceDayWeather:'/v3/performance/resource/weather/day',
+
+     //通用报表
+     dailyreport:'v3/performance/dailyreport',
+     
     }
   }
 }
