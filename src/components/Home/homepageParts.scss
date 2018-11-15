@@ -7,6 +7,20 @@
   border-radius:4px;
 };
 
+@mixin typeTags(){
+  position: absolute;
+  right: 0;
+  top: 0;
+};
+
+@mixin titles {
+  text-align: center;
+  font-family:PingFangSC-Regular;
+  font-size:24px;
+  color:#a6e8ff;
+  margin-top: 24px;
+}
+
 .topBox{ // 顶部盒子
   width: 100%;
   height: 189px;

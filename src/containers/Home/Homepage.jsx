@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import HomepageTop from '../../components/Home/HomepageTop';
 import StationGeneral from '../../components/Home/HomeParts/StationGeneral';
+import MonthGenChart from '../../components/Home/HomeParts/MonthGenChart';
 import { CompleteRate, OperationInfo } from '../../components/Home/HomeParts/HomeFuncParts';
 import styles from './homepage.scss';
 import { loginAction } from '../Login/loginAction';
@@ -59,6 +60,7 @@ class Homepage extends Component {
             <div className={styles.leftInfo}>
               <StationGeneral hasMultipleType={hasMultipleType} />
               <CompleteRate />
+              <MonthGenChart hasMultipleType={hasMultipleType} />
             </div>
             <div className={styles.mapInfo}>中心地图</div>
             <div className={styles.rightInfo}>

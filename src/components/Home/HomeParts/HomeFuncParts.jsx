@@ -13,16 +13,16 @@ export const CompleteRate = () => { // 计划完成
         </div>
         <div className={styles.timeComplete}>
           <span className={styles.windPercent}>96%</span>
-          <Progress percent={50} size="small" strokeColor="#06bdf4" />
+          <Progress percent={50} size="small" strokeColor="#48cf49" showInfo={false} />
           <span className={styles.planName}>月计划</span>
-          <Progress percent={68} size="small" strokeColor="#48cf49" />
-          <span className={styles.pvPercent} strokeColor="">98%</span>
+          <Progress percent={68} size="small" strokeColor="#06bdf4" showInfo={false} />
+          <span className={styles.pvPercent}>98%</span>
         </div>
         <div className={styles.timeComplete}>
           <span className={styles.windPercent}>98%</span>
-          <Progress percent={98} size="small" strokeColor="#06bdf4" />
+          <Progress percent={98} size="small" strokeColor="#48cf49" showInfo={false} />
           <span className={styles.planName}>年计划</span>
-          <Progress percent={21} size="small" strokeColor="#48cf49" />
+          <Progress percent={21} size="small" strokeColor="#06bdf4" showInfo={false} />
           <span className={styles.pvPercent}>91%</span>
         </div>
       </div>

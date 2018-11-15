@@ -2,17 +2,13 @@
 @import '../homepageParts.scss';
 
 @media screen and (max-width: 1919px) { // 1920以下宽度屏按1680展示
-  
+  //1. 各个盒子宽度
+  //2. 完成率内容宽度
 }
 
 @media screen and (min-width: 1920px){ // 1920及以上屏幕按1920展示
   
 }
-
-// background:rgba(56,108,150,0.15);
-//   border:1px solid #3f566c;
-//   box-shadow:0 0 6px 0 rgba(255,255,255,0.30);
-//   border-radius:4px;
 
 .stationTypeTag{ // 全部,风,光切换样式。
   display: flex;
@@ -40,18 +36,12 @@
   box-shadow:0 0 6px 0 rgba(255,255,255,0.30);
   align-content: flex-start;
   h3{
-    font-family:PingFangSC-Regular;
-    font-size:24px;
-    color:#a6e8ff;
-    width: 100%;
-    text-align: center;
+    @include titles();
     margin: 12px 0 0;
     height: 36px;
   }
   .checkTags{
-    position: absolute;
-    right: 0;
-    top: 0;
+    @include typeTags();
   }
   .eachGeneral{
     width: 50%;
@@ -84,35 +74,33 @@
   width:400px;
   height: 185px;
   h3{
-    text-align: center;
-    font-family:PingFangSC-Regular;
-    font-size:24px;
-    color:#a6e8ff;
-    margin-top: 24px;
+    @include titles();
   }
   .text{ // 风，光提示
     display: flex;
     justify-content: space-between;
+    height: 36px;
+    line-height: 36px;
     .wind, .pv{
       padding-left: 16px;
       height: 21px;
-      color: #06bdf4;
+      color: #48cf49;
       position: relative;
       &::before{
         content: '';
         position: absolute;
         left: 4px;
-        top: 6px;
+        top: 14px;
         height: 8px;
         width: 8px;
         border-radius: 50%;
-        background-color: #06bdf4;
+        background-color: #48cf49;
       }
     }
     .pv{
-      color: #48cf49;
+      color: #06bdf4;
       &::before{
-        background-color: #48cf49;
+        background-color: #06bdf4;
       }
     }
   }
@@ -120,7 +108,7 @@
     height: 30px;
     line-height: 30px;
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     align-items: center;
     .windPercent, .pvPercent, .planName{
       font-size: 20px;
@@ -129,13 +117,37 @@
     .planName{
       font-size: 14px;
     }
-    .pvPercent{
+    .windPercent{
       color: #48cf49;
     }
     :global{
       .ant-progress{
         width: 105px;
+        top: -2px;
+        .ant-progress-inner{
+          background:#28608f;
+        }
       }
     }
+  }
+}
+
+.monthGen{ // 每月发电量
+  height: 205px;
+  margin-top: 12px;
+  @include boxStyle();
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  h3{
+    @include titles();
+    margin-top: 8px;
+  }
+  .checkTags{
+    @include typeTags();
+  }
+  .monthChart{
+    height: 165px;
+    flex: 1;
   }
 }
