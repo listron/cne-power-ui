@@ -10,7 +10,7 @@ import Footer from '../../../../components/Common/Footer';
 import {performanceAnalysisAction} from "./performanceAnalysisAction";
 import { commonAction } from '../../../alphaRedux/commonAction';
 import StationSelect from "../../../../components/Common/StationSelect";
-import TimeSelect from '../../../../components/Common/TimeSelect/TimeSelectIndex';
+// import TimeSelect from '../../../../components/Common/TimeSelect/TimeSelectIndex';
 const {Option} = Select;
 
 class PerformanceAnalysis extends Component{
@@ -20,6 +20,23 @@ class PerformanceAnalysis extends Component{
     super(props);
     this.state = {
       selectStation:[]
+    }
+  }
+  //选择时间
+  onChangeDuration = (value) => {
+    let startTime,endTime;
+    if(value === 'today') {
+      startTime = moment().hour(0).minute(0).second(0).utc().format();
+      endTime = moment().utc().format();
+    } else if(value === 'yesterday') {
+      startTime = moment().subtract(1, 'days').hour(0).minute(0).second(0).utc().format();
+      endTime = moment().subtract(1, 'days').hour(23).minute(59).second(59).utc().format();
+    } else if(value === 'last7') {
+      startTime = moment().subtract(7, 'days').hour(0).minute(0).second(0).utc().format();
+      endTime = moment().utc().format();
+    } else if(value === 'last30') {
+      startTime = moment().subtract(30, 'days').hour(0).minute(0).second(0).utc().format();
+      endTime = moment().utc().format();
     }
   }
 
@@ -34,6 +51,7 @@ class PerformanceAnalysis extends Component{
       stationCodes: stationCodes
     });
   };
+  
 
   //选择设备类型
   selectDeviceType = (value) => {
@@ -53,23 +71,6 @@ class PerformanceAnalysis extends Component{
     })
   }
 
-  //选择时间
-  onChangeDuration = (value) => {
-    let startTime,endTime;
-    if(value === 'today') {
-      startTime = moment().hour(0).minute(0).second(0).utc().format();
-      endTime = moment().utc().format();
-    } else if(value === 'yesterday') {
-      startTime = moment().subtract(1, 'days').hour(0).minute(0).second(0).utc().format();
-      endTime = moment().subtract(1, 'days').hour(23).minute(59).second(59).utc().format();
-    } else if(value === 'last7') {
-      startTime = moment().subtract(7, 'days').hour(0).minute(0).second(0).utc().format();
-      endTime = moment().utc().format();
-    } else if(value === 'last30') {
-      startTime = moment().subtract(30, 'days').hour(0).minute(0).second(0).utc().format();
-      endTime = moment().utc().format();
-    }
-  }
 
   render(){
     const {stationCode,stations,deviceTypeCode,stationDeviceTypes,deviceModeCode,deviceModels} = this.props;
@@ -87,7 +88,7 @@ class PerformanceAnalysis extends Component{
     return(
       <div className={styles.PerformanceAnalysisContainerBox}> 
         <CommonBreadcrumb {...breadCrumbData} style={{marginLeft:'38px'}}></CommonBreadcrumb>
-        <TimeSelect onChange={(time)=>console.log(time)} />
+     {/*   <TimeSelect onChange={(time)=>console.log(time)} /> */}
         <div className={styles.PerformanceAnalysisContainer}>
           <div className={styles.PerformanceAnalysisMain}>
             <div className={styles.performanceSearch}>

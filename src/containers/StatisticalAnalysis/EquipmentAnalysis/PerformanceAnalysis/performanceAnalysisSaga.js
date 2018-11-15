@@ -1,5 +1,6 @@
 import { call, takeLatest } from 'redux-saga/effects';
 import axios from "axios";
+import Path from '../../../../constants/path';
 import { performanceAnalysisAction } from "./performanceAnalysisAction";
 
 function* getEquipmentSelection(action){
