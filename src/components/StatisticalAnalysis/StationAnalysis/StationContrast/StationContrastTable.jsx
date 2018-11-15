@@ -100,7 +100,7 @@ class StationContrastTable extends React.Component {
                 'equivalentHours',
                 'lostPowerHours',
                 'limitPowerHours',
-                'subStatioinHours',
+                'subStationHours',
                 'planShutdownHours',
                 'faultPowerHours',
                 // 'technicalHours',
