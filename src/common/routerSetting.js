@@ -213,14 +213,6 @@ const routers = [
     exact: true,
     component: Building
   },{
-    path: '/statistical/statement/daily',
-    exact: true,
-    component: Building
-  },{
-    path: '/statistical/statement/customization',
-    exact: true,
-    component: Building
-  },{
     path: '/statistical/statement/currency',
     exact: true,
     component: GeneralReport,
