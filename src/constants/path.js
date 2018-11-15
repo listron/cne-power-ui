@@ -193,6 +193,8 @@ export default {
       resetRelieveAlarm: '/v3/alarm/delrelievealarm',//取消屏蔽告警
 
       getFanList:'/v3/monitor/windturbine/datalist', // 风机实时数据列表
+      windturbine:'/v3/monitor/windturbine',  //风机实时数据
+      sequencechart:'/v3/monitor/windturbine/sequencechart'
     },
     other: {
       editPassword: '/v3/user/password', // 更变密码

@@ -63,10 +63,10 @@ class WindStation extends Component {
 
   render() {
     const { stationCode } = this.props.match.params;
-    const { deviceTypeFlow, stationDeviceList, deviceTypeCode, } = this.props;
+    const { deviceTypeFlow, stationDeviceList, } = this.props;
     const weatherDeviceCode = stationDeviceList && stationDeviceList.deviceCode || 0;
     const deviceFlowTypes = deviceTypeFlow && deviceTypeFlow.deviceFlowTypes || [];
-    const isCombinedType = deviceFlowTypes.some(e => e.deviceTypes.length > 1); // 判断位置
+    let deviceTypeCode=deviceFlowTypes.length>0 && deviceFlowTypes[0].deviceTypes[0].deviceTypeCode;
     return (
       <div className={styles.windStation} >
         <WindStationTop {...this.props} stationCode={stationCode} hiddenStationList={this.state.hiddenStationList} />
@@ -117,7 +117,7 @@ class WindStation extends Component {
                   </div>
                 </div>
               </div>
-              <FanList {...this.props} />
+              <FanList {...this.props} deviceTypeCode={deviceTypeCode} />
             </TabPane>
           </Tabs>
         </div>

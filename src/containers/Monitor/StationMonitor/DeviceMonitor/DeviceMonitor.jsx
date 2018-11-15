@@ -8,6 +8,7 @@ import Seriesinverter from '../../../../components/Monitor/StationMonitor/Device
 import Confluencebox from '../../../../components/Monitor/StationMonitor/DeviceMonitor/Confluencebox/Confluencebox';
 import Boxtransformer from '../../../../components/Monitor/StationMonitor/DeviceMonitor/Boxtransformer/Boxtransformer';
 import Weatherstation from '../../../../components/Monitor/StationMonitor/DeviceMonitor/Weatherstation/Weatherstation';
+import WindDevice from '../../../../components/Monitor/StationMonitor/DeviceMonitor/WindDevice/WindDevice';
 import Footer from '../../../../components/Common/Footer';
 
 class DeviceMonitor extends Component {
@@ -39,6 +40,7 @@ class DeviceMonitor extends Component {
         {(deviceTypeCode === '202' || deviceTypeCode === '207') && <Confluencebox {...this.props} /> }
         {deviceTypeCode === '304' && <Boxtransformer {...this.props} /> }
         {deviceTypeCode === '203' && <Weatherstation {...this.props} /> }
+        {deviceTypeCode === '101' && <WindDevice {...this.props} /> }
         <Footer />
       </div>
     );
@@ -54,6 +56,8 @@ const mapDispatchToProps = (dispatch) => ({
   getTenMinDeviceData: payload => dispatch({ type: deviceAction.GET_DEVICE_MONITOR_TEN_MIN_DATA_SAGA, payload }),
   getSingleStation: payload => dispatch({type: singleStationAction.GET_SINGLE_STATION_SAGA, payload}),
   resetDeviceStore: payload => dispatch({type: deviceAction.RESET_DEVICE_MONITOR_STORE, payload}),
+  getwindturbineData: payload => dispatch({type: deviceAction.getwindturbineData, payload}),
+  getSequencechartData: payload => dispatch({type: deviceAction.getSequencechartData, payload}),
 
 });
 

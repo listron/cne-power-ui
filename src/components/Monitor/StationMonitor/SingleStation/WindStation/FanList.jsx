@@ -220,7 +220,7 @@ class FanList extends React.Component {
     return tableSource.splice((currentPage - 1) * pageSize, pageSize);
   }
 
-  dealList = (deviceGroupedList, deviceTypeCode) => {
+  dealList = (deviceGroupedList, deviceTypeCode) => { // 块数据
     const baseLinkPath = "/hidden/monitorDevice";
     const { stationCode } = this.props.match.params;
     return deviceGroupedList.map((list, index) => {
@@ -356,7 +356,6 @@ class FanList extends React.Component {
     </div>);
 
 
-   console.log('deviceTypeCode',deviceTypeCode)
     return (
       <div className={styles.fanList} >
         <Tabs defaultActiveKey="1" className={styles.inverterTab} tabBarExtraContent={operations}>
