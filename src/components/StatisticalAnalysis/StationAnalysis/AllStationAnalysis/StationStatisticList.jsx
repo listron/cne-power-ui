@@ -32,7 +32,11 @@ class StationStatisticList extends React.Component {
   }
   ontableSort = (pagination, filter, sorter) => {
     const { getAllStationStatisticTableData, queryListParams,stationType, year, month, dateType, pageSize, pageNum } = this.props;
-    const curYear = Number(year);
+    let curYear = Number(year);
+    year.length>1?curYear=year[year.length-1]:curYear=Number(year);
+    console.log(curYear);
+
+    console.log(year);
     const { field, order } = sorter;
     const sortInfo = {
       stationName: 'stationName',
@@ -50,12 +54,21 @@ class StationStatisticList extends React.Component {
     };
     const sort = sortInfo[field] ? sortInfo[field] : '';
     const sortType = order ? (sorter.order === 'descend' ? 'desc' : 'asc') : '';
+    dateType==='month'?
     getAllStationStatisticTableData({
       pageNum,
       pageSize,
       year: curYear,
       stationType,
       month,
+      dateType,
+      sort,
+      sortType,
+      stationType
+    }):getAllStationStatisticTableData({
+      pageNum,
+      pageSize,
+      year: curYear,  
       dateType,
       sort,
       sortType,
