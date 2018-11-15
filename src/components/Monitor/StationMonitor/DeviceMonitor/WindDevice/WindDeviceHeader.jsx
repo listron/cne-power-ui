@@ -48,7 +48,6 @@ class InverterHeader extends Component {
     const { devices, deviceDetail, stationCode } = this.props;
     const { showDeviceChangeBox } = this.state;
     const baseLinkPath = `/hidden/monitorDevice/${stationCode}`;
-    console.log(deviceDetail)
     return (
       <div className={styles.deviceMonitorHeader} >
         {showDeviceChangeBox && <HeaderDeviceChange devices={devices} deviceDetail={deviceDetail} baseLinkPath={baseLinkPath} hideDeviceChange={this.hideDeviceChange} />}

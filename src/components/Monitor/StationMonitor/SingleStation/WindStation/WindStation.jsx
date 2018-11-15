@@ -41,6 +41,8 @@ class WindStation extends Component {
 
   getDeviceTypeIcon = (e) => {
     switch (e) {
+      case 101:
+        return 'iconfont icon-windlogo';
       case 509:
         return 'iconfont icon-pvs';
       case 206:
@@ -63,10 +65,11 @@ class WindStation extends Component {
 
   render() {
     const { stationCode } = this.props.match.params;
-    const { deviceTypeFlow, stationDeviceList, } = this.props;
+    const { deviceTypeFlow, stationDeviceList, singleStationData } = this.props;
     const weatherDeviceCode = stationDeviceList && stationDeviceList.deviceCode || 0;
     const deviceFlowTypes = deviceTypeFlow && deviceTypeFlow.deviceFlowTypes || [];
-    let deviceTypeCode=deviceFlowTypes.length>0 && deviceFlowTypes[0].deviceTypes[0].deviceTypeCode;
+    let deviceTypeCode = deviceFlowTypes.length > 0 && deviceFlowTypes[0].deviceTypes[0].deviceTypeCode;
+    const deviceTypeType = deviceFlowTypes.map(e => e.deviceTypes);
     return (
       <div className={styles.windStation} >
         <WindStationTop {...this.props} stationCode={stationCode} hiddenStationList={this.state.hiddenStationList} />
@@ -74,7 +77,9 @@ class WindStation extends Component {
           <OutputTenMin {...this.props} yXaisName={'风速(m/s)'} chartType={'wind'} />
           <PowerDiagramTenMin {...this.props} chartType={'wind'} />
         </div>
-        {/* <div className={styles.windTabs} >
+        {/* iconfont icon-jidian */}
+        {/* 后期增加的功能 */}
+        {/* <div className={styles.windTabs} >  
           <Tabs type="line" defaultActiveKey="station">
             <TabPane tab="电站" key="station">
               <div className={styles.outputPowerDiagram}>
@@ -106,11 +111,17 @@ class WindStation extends Component {
                 </Link>
 
                 <div className={styles.title}>
-                  <div className={styles.windlogo}>
-                    <i className="iconfont icon-windlogo" ></i>
-                    <div className={styles.fontcolor}>风机</div>
-                  </div>
-                  <img src="/img/arrowgo.png" className={styles.rightArrow} />
+                  {deviceTypeType.map((item, index) => {
+                    return (
+                      <div key={index}>
+                        <div className={item[0].deviceTypeCode === 101 ? styles.windlogo : styles.deviceTypeIcon} >
+                          <i className={this.getDeviceTypeIcon(item[0].deviceTypeCode)} ></i>
+                          <div className={styles.fontcolor}>{item[0].deviceTypeName}</div>
+                        </div>
+                        <img src="/img/arrowgo.png" className={styles.rightArrow} />
+                      </div>
+                    )
+                  })}
                   <div className={styles.deviceTypeIcon} >
                     <i className="iconfont icon-elecnetting" ></i>
                     <div>电网</div>

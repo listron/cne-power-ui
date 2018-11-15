@@ -195,10 +195,14 @@ function SactterChart({ theory,actual}) {
     const inverterChart = echarts.init(echartBox);
     let actualData = [], theoryData = [], xData = [],actualData1=[],theoryData1=[];
     theory.length > 0 && theory.forEach(e => {
-      theoryData.push(e.stationPower);
-      xData.push(e.windSpeed);
+      theoryData.push({
+        name:e.windSpeed,
+        value:e.stationPower
+      })
       theoryData1.push('--')
     });
+
+    actual.sort((a,b)=>{return a.windSpeed-b.windSpeed})
     actual.length > 0 && actual.forEach(e => {
       actualData.push([e.windSpeed,e.stationPower])
       actualData1.push('--')
@@ -267,7 +271,7 @@ function SactterChart({ theory,actual}) {
           color: lineColor,
         },
         axisTick: {
-          show: false,
+          // show: false,
         },
         axisLine: {
           lineStyle: {
@@ -323,7 +327,8 @@ function SactterChart({ theory,actual}) {
               show: false
             }
           },
-          data: theoryData.length>0?theoryData:actualData1,
+          // data: theoryData.length>0?theoryData:actualData1,
+          data: theoryData,
         },
         {
           name: '有功功率',
@@ -335,7 +340,8 @@ function SactterChart({ theory,actual}) {
           },
           symbolSize:5,
           yAxisIndex: 0,
-          data: actualData.length>0?actualData:theoryData1,
+          // data: actualData.length>0?actualData:theoryData1,
+          data: actualData,
         },   
       ]
     };
@@ -356,9 +362,9 @@ function SequenceChart({sequenceChartList}){
     let pitchAngle1Data = [], pitchAngle2Data = [],pitchAngle3Data = [],speedData=[], xTime = [],replaceData=[];
     sequenceChartList.length > 0 && sequenceChartList.forEach(e => {
       xTime.push(moment(moment.utc(e.utc).toDate()).local().format('YYYY-MM-DD HH:mm'));
-      pitchAngle1Data.push(e.pitchAngle1);
-      pitchAngle2Data.push(e.pitchAngle2);
-      pitchAngle3Data.push(e.pitchAngle3);
+      pitchAngle1Data.push(e.pitchAngle1 && +e.pitchAngle1.toFixed(2) || '--');
+      pitchAngle2Data.push(e.pitchAngle2 && +e.pitchAngle2.toFixed(2) || '--');
+      pitchAngle3Data.push(e.pitchAngle2 && +e.pitchAngle3.toFixed(2) || '--');
       speedData.push(e.speed);
       replaceData.push('--')
     });

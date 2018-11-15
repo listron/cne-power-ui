@@ -4,11 +4,9 @@ import styles from '../eachDeviceMonitor.scss';
 
 function InverterStatistics({ deviceDetail }) {
   let { devicePower, deviceCapacity, powerDay, powerMonth, powerYear,windSpeed,angleOfYaw } = deviceDetail;
-  powerDay = isNaN(parseFloat(powerDay)) ? ' -- ': parseFloat(powerDay); 
-  powerMonth = isNaN(parseFloat(powerMonth)) ? ' -- ': parseFloat(powerMonth); 
-  powerYear = isNaN(parseFloat(powerYear)) ? ' -- ': parseFloat(powerYear); 
-  powerYear = isNaN(parseFloat(windSpeed)) ? ' -- ': parseFloat(windSpeed); 
-  powerYear = isNaN(parseFloat(angleOfYaw)) ? ' -- ': parseFloat(angleOfYaw); 
+  powerDay = isNaN(parseFloat(powerDay)) ? ' -- ': parseFloat(powerDay).toFixed(4); 
+  powerMonth = isNaN(parseFloat(powerMonth)) ? ' -- ': parseFloat(powerMonth).toFixed(4); 
+  powerYear = isNaN(parseFloat(powerYear)) ? ' -- ': parseFloat(powerYear).toFixed(4);
   return (
     <div className={styles.statisticsBox} >
       <div className={styles.deviceIcon}>
@@ -16,12 +14,12 @@ function InverterStatistics({ deviceDetail }) {
       </div>
       <PowerProgress devicePower={devicePower} deviceCapacity={deviceCapacity} />
       <div className={styles.timerDayGen}>
-        <div className={styles.genNum}>{windSpeed}</div>
+        <div className={styles.genNum}>{(windSpeed || windSpeed===0 )? windSpeed:'--' }</div>
         <div className={styles.empty}></div>
         <div className={styles.genText}>风速</div>
       </div>
       <div className={styles.timerDayGen}>
-        <div className={styles.genNum}>{angleOfYaw}</div>
+        <div className={styles.genNum}>{(angleOfYaw || angleOfYaw===0 )? angleOfYaw:'--'}°</div>
         <div className={styles.empty}></div>
         <div className={styles.genText}>偏航角度</div>
       </div>

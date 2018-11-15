@@ -36,6 +36,8 @@ class WindDevice extends Component {
     };
     this.props.getwindturbineData(params);
     this.props.getSequencechartData(params);
+    this.getData(stationCode, deviceCode, deviceTypeCode,startTime,endTime);
+    this.getTenMinData(stationCode, deviceCode, deviceTypeCode,startTime,endTime);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -57,8 +59,8 @@ class WindDevice extends Component {
       };
       this.props.getwindturbineData(params);
       this.props.getSequencechartData(params);
-      // this.getData(nextStation, nextDevice, nextType);
-      // this.getTenMinData(nextStation, nextDevice, nextType);
+      this.getData(nextStation, nextDevice, nextType,startTime,endTime);
+      this.getTenMinData(nextStation, nextDevice, nextType,startTime,endTime);
     }
   }
 
@@ -68,30 +70,31 @@ class WindDevice extends Component {
     this.props.resetDeviceStore();
   }
 
-  // getData = (stationCode, deviceCode, deviceTypeCode) => {
-  //   const params = {
-  //     stationCode,
-  //     deviceCode,
-  //     deviceTypeCode,
-  //   };
-  //   this.timeOutId = setTimeout(() => {
-  //     this.props.getMonitorDeviceData(params);
-  //     this.getData(stationCode, deviceCode, deviceTypeCode);
-  //   },10000)
-  // }
+  getData = (stationCode, deviceCode, deviceTypeCode,startTime,endTime) => {
+    const params = {
+      stationCode,
+      deviceCode,
+      deviceTypeCode,
+      timeParam: `${startTime}/${endTime}`,
+    };
+    this.timeOutId = setTimeout(() => {
+      this.props.getwindturbineData(params);
+      this.getData(stationCode, deviceCode, deviceTypeCode,startTime,endTime);
+    },10000)
+  }
 
-  // getTenMinData = (stationCode, deviceCode, deviceTypeCode) => {
-  //   const params = {
-  //     stationCode,
-  //     deviceCode,
-  //     deviceTypeCode,
-  //     timeParam: '72',
-  //   };
-  //   this.timeOutTenMin = setTimeout(() => {
-  //     this.props.getTenMinDeviceData(params);
-  //     this.getData(stationCode, deviceCode, deviceTypeCode);
-  //   },600000)
-  // }
+  getTenMinData = (stationCode, deviceCode, deviceTypeCode,startTime,endTime) => {
+    const params = {
+      stationCode,
+      deviceCode,
+      deviceTypeCode,
+      timeParam: `${startTime}/${endTime}`,
+    };
+    this.timeOutTenMin = setTimeout(() => {
+      this.props.getSequencechartData(params);
+      this.getData(stationCode, deviceCode, deviceTypeCode,startTime,endTime);
+    },600000)
+  }
 
   render() {
     const { devices, sequencechart, deviceAlarmList, devicePointData, loading, singleStationData, deviceDetail } = this.props;
@@ -108,7 +111,7 @@ class WindDevice extends Component {
       }, {
         name: deviceDetail.deviceName,
       }],
-      iconName: 'iconfont icon-windlogo'
+      iconName: 'iconfont icon-windlogo',
     };
     return (
       <div className={styles.windDevice}>

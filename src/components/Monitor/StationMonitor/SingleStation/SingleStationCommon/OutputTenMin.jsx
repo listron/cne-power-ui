@@ -201,7 +201,7 @@ class OutputTenMin extends Component {
   }
 
   render() {
-    const resourceAnalysis = "/statistical/stationaccount/resource";
+    const resourceAnalysis = "/statistical/stationaccount/resource/392";
     return (
       <div className={styles.capabilityDiagramBox} >
         <div id="capabilityDiagram" style={{ width: "100%", height: "100%", borderRight: "2px solid #dfdfdf", color: '#666', paddingTop: "20px" }}><i className="iconfont icon-more"></i></div>

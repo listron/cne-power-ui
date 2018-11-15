@@ -228,6 +228,7 @@
                     width: 100px;
                     height: 84px;
                     margin-left: 24px;
+                    display: inline-block;
                     i {
                         color: #199475;
                         display: inline-block;
@@ -238,11 +239,12 @@
             .rightArrow {
                 width: 48px;
                 height: 5px;
-                margin-top: 28px;
+                vertical-align: 31px;
             }
             .deviceTypeIcon {
                 border-radius: 4px 4px 0 0; // width: 100px;
                 height: 84px;
+                display: inline-block;
                 i {
                     color: #dfdfdf;
                     display: inline-block;

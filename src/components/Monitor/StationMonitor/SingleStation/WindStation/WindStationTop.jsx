@@ -103,7 +103,6 @@ class PvStationTop extends Component {
     
     const baseLinkPath = `/monitor/singleStation`;
     const pathAllStation = "/monitor/station";
-  
     return (
       <div className={styles.pvStationTop} >
         <div className={styles.pvStationTitle} >
@@ -162,7 +161,8 @@ class PvStationTop extends Component {
                 </div>
                 <span>{singleStationData && singleStationData.yearPlanPower && parseFloat(singleStationData.yearPlanPower).toFixed(4) || 0}</span>
               </div>
-              <Progress percent={singleStationData && singleStationData.yearPlanRate * 100 || 0} showInfo={false} strokeWidth={3} type="line" strokeColor="#199475" />
+              {}
+              <Progress percent={singleStationData && +singleStationData.yearPlanRate.split('%')[0] } showInfo={false} strokeWidth={3} type="line" strokeColor="#199475" />
               <div className={styles.trueTimeDesc}><span>年累计发电量 万kWh</span><span>计划 万kWh</span></div>
             </div>
             <div className={styles.yearPlanRate} >{singleStationData && singleStationData.yearPlanRate}</div>
