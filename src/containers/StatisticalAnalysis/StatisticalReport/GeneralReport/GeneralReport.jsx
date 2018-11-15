@@ -48,8 +48,8 @@ class GeneralReport extends Component{
     })
   }
 
-  //日期不可选
-  disabledDate = (current) => {
+  
+  disabledDate = (current) => { //日期不可选
     return current && current > moment().startOf('day');
   }
 
