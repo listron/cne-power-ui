@@ -48,6 +48,11 @@ class GeneralReport extends Component{
     })
   }
 
+  
+  disabledDate = (current) => { //日期不可选
+    return current && current > moment().startOf('day');
+  }
+
   stationSelected = (rest) => {
     const stationCodes = rest.map((item, index) => {
       return item.stationCode
@@ -107,6 +112,7 @@ class GeneralReport extends Component{
               </div>
               <div className={styles.dateSearch}>
                 <DatePicker 
+                disabledDate={this.disabledDate}
                 placeholder={'选择时间'} 
                 onChange={this.ChangeReportDate} 
                 value={reportDate} 
@@ -125,6 +131,7 @@ class GeneralReport extends Component{
               </div>
               <div className={styles.dateSearch}>
                 <DatePicker 
+                disabledDate={this.disabledDate}
                 placeholder={'选择时间'}
                 onChange={this.ChangeFaultDate} 
                 value={faultDate} 
@@ -144,6 +151,7 @@ class GeneralReport extends Component{
               </div>
               <div className={styles.dateSearch}>
                 <DatePicker 
+                disabledDate={this.disabledDate}
                 placeholder={'选择时间'}
                 onChange={this.ChangeEleInfoDate}
                 value={eleInfoDate} 
@@ -163,6 +171,7 @@ class GeneralReport extends Component{
               </div>
               <div className={styles.dateSearch}>
                 <MonthPicker 
+                disabledDate={this.disabledDate}
                 placeholder={'选择月份'} 
                 onChange={this.ChangeProOperationDate}
                 value={proOperationDate} 
