@@ -38,13 +38,13 @@ class MapResourceData extends Component{
         {imgSrc && <img src={imgSrc}  />}
         <div className={styles.resourceDetail}>
           <div>
-            <div className={styles.value}>
+            <span className={styles.value}>
               {(currentValue || currentValue === 0) && <span>{currentValue}</span>}
               <span>{nextValue}</span>
-            </div>
-            <div>{detail.unit}</div>
+            </span>
+            <span className={styles.unit}>{detail.unit}</span>
           </div>
-          <div>{detail.name}</div>
+          <div className={styles.name}>{detail.name}</div>
         </div>
       </div>
     )

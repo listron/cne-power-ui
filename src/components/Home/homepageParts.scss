@@ -62,9 +62,31 @@
   }
 }
 
-.centerMap{
+.centerMap{ // 中心地图
   display: flex;
   flex-direction: column;
+  .topData{
+    display: flex;
+  }
+  .resource{
+    display: flex;
+    margin-right: 16px;
+    img{
+      height: 36px;
+    }
+    .resourceDetail{
+      display: flex;
+      flex-direction: column;
+      .value{
+        color:#4dde49;
+        display: flex;
+        flex-direction: column;
+      }
+      .unit, .name{
+        color:#06bdf4;
+      }
+    }
+  }
   .countryMap{
     width: 500px;
     height: 400px;
@@ -72,6 +94,10 @@
   .worldMap{
     width: 268px;
     height: 168px;
+  }
+  .static{
+    color:#a6e8ff;
+    font-size: 20px;
   }
 }
 
