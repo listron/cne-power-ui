@@ -144,6 +144,7 @@
     flex-wrap: wrap;
     .eachGroup{
       min-width: 20%;
+      max-width: 20%;
       padding-left: 20px;
       margin: 16px 0;
       border-right: dotted 1px $promptColor;
@@ -156,6 +157,8 @@
         .pointValue{
           color: #199475;
           margin-bottom: 0;
+          word-wrap: break-word;
+          padding-right: 20px;
         }
       }
     }

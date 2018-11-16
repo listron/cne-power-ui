@@ -182,11 +182,95 @@ function *getWeatherStationData(action){ // 请求气象站设备信息
     })
   }
 }
+
+
+function *getwindturbineData(action){ // 获取风机实时数据
+  const { payload } = action;
+  const {deviceCode,stationCode}=payload;
+  try{
+    const windturbineUrl = `${path.basePaths.APIBasePath}${path.APISubPaths.monitor.windturbine}/${deviceCode}`; // 实时数据
+    const detailUrl = `${path.basePaths.APIBasePath}${path.APISubPaths.monitor.getFanList}/${stationCode}`; // 设备列表
+    const pointUrl = `${path.basePaths.APIBasePath}${path.APISubPaths.monitor.monitorPointData}/${deviceCode}`; // 测点数据
+    const alarmUrl = `${path.basePaths.APIBasePath}${path.APISubPaths.monitor.deviceAlarmData}/${deviceCode}` //告警数据
+    yield put({type:deviceAction.MONITOR_DEVICE_FETCH});
+
+    const [windturbine, fanPoint,fanDetail, fanAlarm] = yield all([
+      call(axios.get, windturbineUrl),
+      call(axios.get, pointUrl),
+      call(axios.get, detailUrl),
+      call(axios.get, alarmUrl),
+    ])
+
+    if(windturbine.data.code === '10000'){
+      yield put({
+        type: deviceAction.GET_DEVICE_FETCH_SUCCESS,
+        payload: {
+          deviceDetail: windturbine.data.data || {}, // 单风机详细数据
+        }
+      })
+    }
+    if(fanPoint.data.code === '10000'){
+      yield put({
+        type: deviceAction.GET_DEVICE_FETCH_SUCCESS,
+        payload: {
+          devicePointData: fanPoint.data.data || [],
+        }
+      })
+    }
+    if(fanAlarm.data.code === '10000'){
+      yield put({
+        type: deviceAction.GET_DEVICE_FETCH_SUCCESS,
+        payload: {
+          deviceAlarmList: fanAlarm.data.data || [],
+        }
+      })
+    }
+    if(fanDetail.data.code === '10000'){
+      yield put({
+        type: deviceAction.GET_DEVICE_FETCH_SUCCESS,
+        payload: {
+          devices: fanDetail.data.data.deviceList || [], // 同一个风机组下的数据
+        }
+      })
+    }
+
+  }catch(e){
+    console.log(e)
+  }
+}
+
+
+function *getSequencechartData(action){ // 获取风机图表数据
+  const { payload } = action;
+  const { deviceCode, timeParam,}=payload;
+  const windturbineUrl = `${path.basePaths.APIBasePath}${path.APISubPaths.monitor.sequencechart}/${deviceCode}/${timeParam}`;
+  try{
+    yield put({type:deviceAction.MONITOR_DEVICE_FETCH});
+    const response = yield call(axios.get, windturbineUrl);
+    if(response.data.code === '10000'){
+      yield put({
+        type: deviceAction.GET_DEVICE_FETCH_SUCCESS,
+        payload: {
+          sequencechart: response.data.data || {},
+        }
+      })
+    }
+  }catch(e){
+    console.log(e)
+  }
+}
+
+
+
+
+
 export function* watchDeviceMonitor() {
   yield takeLatest(deviceAction.CHANGE_DEVICE_MONITOR_STORE_SAGA, changeDeviceStore);
   yield takeLatest(deviceAction.GET_DEVICE_DATA_SAGA, getDeviceMonitorData);
   yield takeLatest(deviceAction.GET_NORMAL_DEVICE_DATA_SAGA, getNormalDeviceData);
   yield takeLatest(deviceAction.GET_WEATHERSTATION_DATA_SAGA, getWeatherStationData);
+  yield takeLatest(deviceAction.getwindturbineData, getwindturbineData);
+  yield takeLatest(deviceAction.getSequencechartData, getSequencechartData);
   yield takeLatest(deviceAction.GET_DEVICE_MONITOR_TEN_MIN_DATA_SAGA, getTenMinDeviceData);
   yield takeLatest(deviceAction.RESET_DEVICE_MONITOR_STORE,resetDeviceStore);
 }

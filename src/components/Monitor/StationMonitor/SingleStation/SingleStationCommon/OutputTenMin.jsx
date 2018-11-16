@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import styles from './pvStation.scss';
+import styles from './singleStationCommon.scss';
 import echarts from 'echarts';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
@@ -14,6 +14,8 @@ class OutputTenMin extends Component {
     powerData: PropTypes.array,
     match: PropTypes.object,
     getMonitorPower: PropTypes.func,
+    yXaisName:PropTypes.string,
+    chartType:PropTypes.string,
   }
 
   constructor(props) {
@@ -21,15 +23,16 @@ class OutputTenMin extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { capabilityData } = nextProps;
+    const { capabilityData,yXaisName,chartType } = nextProps;
     const capabilityDiagram = echarts.init(document.getElementById('capabilityDiagram'));
     const lineColor = '#666';
+    // console.log('capabilityPower',capabilityPower)
     const capabilityPower = capabilityData.map(e => e.stationPower);
     const capabilityRadiation = capabilityData.map(e => e.instantaneous);
     const filterCapabilityPower = capabilityData.filter(e => e.stationPower);
     const filterCapabilityRadiation = capabilityData.filter(e => e.instantaneous);
     const capabilityGraphic = (filterCapabilityPower.length === 0 && filterCapabilityRadiation.length === 0) ? showNoData : hiddenNoData;
-    
+
     let labelInterval = 47 // 10min数据如果不缺失，此时为6(每小时6条)*8(8小时) - 1(除去间隔本身) = 47 个展示一个
     const totalLength = capabilityData.length;
     if(totalLength < 144 && totalLength > 0){ //假如返回数据不全
@@ -48,7 +51,7 @@ class OutputTenMin extends Component {
         },
       },
       legend: {
-        data:['功率','斜面辐射'],
+        // data:['功率',yXaisName],
         textStyle: {
           color: lineColor,
           fontSize: 12,
@@ -76,8 +79,8 @@ class OutputTenMin extends Component {
         formatter: (param) => {
           return `<div style="width: 128px; height: 75px;font-size:12px;line-height: 24px;background: #fff;box-shadow:0 1px 4px 0 rgba(0,0,0,0.20);border-radius:2px;">
             <div style="border-bottom: 1px solid #dfdfdf;padding-left: 5px;" >${param[0] && param[0].name || '--'}</div>
-            <div style="padding-left: 5px;" ><span style="display: inline-block; background:#ffffff; border:1px solid #199475; width:6px; height:6px; border-radius:100%;"></span> 斜面辐射: ${param[1] && param[1].value || '--'}</div>
-            <div style="padding-left: 5px;" ><span style="display: inline-block; background:#ffffff; border:1px solid #a42b2c; width:6px; height:6px; border-radius:100%;"></span> 功率: ${param[0] && param[0].value || '--'}</div>
+            <div style="padding-left: 5px;" ><span style="display: inline-block; background:#ffffff; border:1px solid #199475; width:6px; height:6px; border-radius:100%;"></span> ${param[1].seriesName}: ${param[1] && param[1].value || '--'}</div>
+            <div style="padding-left: 5px;" ><span style="display: inline-block; background:#ffffff; border:1px solid #a42b2c; width:6px; height:6px; border-radius:100%;"></span> ${param[0].seriesName}: ${param[0] && param[0].value || '--'}</div>
           </div>`;
         },
         extraCssText:'background: rgba(0,0,0,0);',
@@ -131,7 +134,7 @@ class OutputTenMin extends Component {
           },
         },
         {
-          name: '辐射(W/m²)',
+          name: chartType==='wind'?'风速(m/s)':'斜面辐射(W/m²)',
           type: 'value',
           min: minRadiation < 0? minRadiation: 0,
           axisLabel: {
@@ -174,7 +177,7 @@ class OutputTenMin extends Component {
           },
         },
         {
-          name:'斜面辐射',
+          name:chartType==='wind'?'风速':'斜面辐射',
           type: 'line',
           data: capabilityRadiation,
           yAxisIndex: 1,
@@ -198,7 +201,7 @@ class OutputTenMin extends Component {
   }
 
   render() {
-    const resourceAnalysis = "/statistical/stationaccount/resource";
+    const resourceAnalysis = "/statistical/stationaccount/resource/392";
     return (
       <div className={styles.capabilityDiagramBox} >
         <div id="capabilityDiagram" style={{ width: "100%", height: "100%", borderRight: "2px solid #dfdfdf", color: '#666', paddingTop: "20px" }}><i className="iconfont icon-more"></i></div>
