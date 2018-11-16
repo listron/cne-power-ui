@@ -12,7 +12,7 @@ class OrbitMap extends Component {
     allMonitorStation: PropTypes.object,
     testId: PropTypes.string,
     users: PropTypes.string,
-    orbitList: PropTypes.array,
+    orbitList: PropTypes.any,
     history: PropTypes.object,
   }
   constructor(props) {
@@ -21,21 +21,23 @@ class OrbitMap extends Component {
   }
 
   componentDidMount() {
-    const { testId, orbitList } = this.props;
+    const { testId, orbitList,users,itemOrbit,startAndEndCoord } = this.props;
     console.log(orbitList);
     const testChart = echarts.init(document.getElementById(testId));
-    this.setMapChart(testChart, orbitList);
+    this.setMapChart(testChart, orbitList,users,itemOrbit,startAndEndCoord);
   }
 
   componentWillReceiveProps(nextProps) {
-    const { testId, orbitList, users } = nextProps;
+    const { testId, orbitList, users,itemOrbit,startAndEndCoord } = nextProps;
     if (this.props.orbitList.length !== nextProps.orbitList.length || users !== this.props.users) {
       const testChart = echarts.init(document.getElementById(testId));
-      this.setMapChart(testChart, orbitList);
+      this.setMapChart(testChart, orbitList,users,itemOrbit,startAndEndCoord);
+    
     }
+    // console.log(orbitList);
+    // console.log(itemOrbit);
   }
-
-  setMapChart = (testChart, orbitList) => {
+  setMapChart = (testChart, orbitList,users,itemOrbit,startAndEndCoord) => {
     const option = {
       bmap: {
         center: [116.46, 39.92],//中心点
@@ -149,7 +151,8 @@ class OrbitMap extends Component {
         orient: 'vertical',
         top: 'bottom',
         left: 'right',
-        data: ['刘德华1'],
+        show:false,
+       
       },
       selected: {
         '刘德华1': true,
@@ -168,10 +171,11 @@ class OrbitMap extends Component {
           mapType: 'none',
           tooltip: {
             enterable: true,
-            formatter: (params) => {
+            formatter: (params,orbitList) => {
+              console.log(params,orbitList);
               return `<div style='display:flex; flex-direction: column;'>
-            <div style='width:30px;height:30px;'><img src='/img/people.png'>${params.data.name}</div>
-            <div style='height:30px;line-height:30px'>${params.data.trackDate}</div>
+            <div style='width:30px;height:30px;'><img src='/img/people.png'>${params.seriesName}</div>
+            <div style='height:30px;line-height:30px'>${params.data.timeArray}</div>
             </div>`
             },
             backgroundColor: '#fff',
@@ -198,33 +202,34 @@ class OrbitMap extends Component {
                 },
               },
             },
-            data: [
-              {
-                coord: [113.5107, 23.2196],
-                tooltip: {
-                  formatter: '起点'
-                },
-                symbol:'image:///img/position.png',
-              },{
-                coord: [116.4551, 40.2539],
-                tooltip: {
-                  formatter: '终点'
-                },
-             
-                symbol:'image:///img/end.png',
-              }
-            ]
+            data:startAndEndCoord,
+            // data: [
+            //   {
+            //     coord: ['132.1212', '33.2321'],
+            //     tooltip: {
+            //       formatter: '起点'
+            //     },
+            //     symbol:'image:///img/position.png',
+            //   },{
+            //     coord: [116.4551, 40.2539],
+            //     tooltip: {
+            //       formatter: '终点'
+            //     },            
+            //     symbol:'image:///img/end.png',
+            //   }
+            // ]
 
           },
 
           coordinateSystem: 'bmap',
-          //data: orbitList,
-          data: [
-            [{ coord: [113.5107, 23.2196] }, { coord: [119.4543, 25.9222] }],
-            [{ coord: [119.4543, 25.9222] }, { coord: [87.9236, 43.5883] }],
-            [{ coord: [87.9236, 43.5883] }, { coord: [116.4551, 40.2539] }],
-          ],
-          symbolSize: [20, 20],
+           data:itemOrbit,
+          
+          //  data: [
+            // [{ coord: ["132.214", "33.32534"] }, { coord: ["133.124", "34.352"] }],
+          //  { coords: [['119.4543', '25.9222'],['87.9236', '43.5883']],name:'刘德华1',dateValue:['2017-2018'] },
+            // [{ coord: ['87.9236', '43.5883'] }, { coord: ['116.4551', '40.2539'] }],
+          // ],
+          symbolSize: [15],
           label: {
             normal: {
               show: false
@@ -244,6 +249,7 @@ class OrbitMap extends Component {
     };
     testChart.setOption(option)
   }
+ 
   render() {
     const { testId } = this.props;
     return (

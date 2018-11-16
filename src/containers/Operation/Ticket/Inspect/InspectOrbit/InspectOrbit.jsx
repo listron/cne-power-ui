@@ -20,6 +20,7 @@ class InspectOrbit extends Component {
     super(props);
     this.state = {
       showWarningTip: false,
+      warningTipText: '',
       users: 'all'
     }
   }
@@ -44,30 +45,7 @@ class InspectOrbit extends Component {
     });
     this.props.onChangeShowContainer({ container: 'detail' });
   }
-  getOrbitList() {
-    const { users } = this.state;
-    const { inspectTrackData, inspectUserData } = this.props;
-    let data=[]
-    let userOrbit =  inspectTrackData.filter(e => {
-      if (users === 'all') {
-        return true
-      } else {
-        return e.username === users
-      }
-    })
-   
-    userOrbit.forEach(e => {
-      data.push({
-        ...userOrbit,
-        name:e.username,
-        trackDate:e.trackDate,
-        value:[e.longitude,e.latitude]
-      })
-      
-    });
-    return data
 
-  }
   handleUser = (e) => {
     const { inspectTrackData, inspectUserData } = this.props;
     const { users } = this.state;
@@ -92,7 +70,100 @@ class InspectOrbit extends Component {
   }
 
   render() {
-    const { showWarningTip, warningTipText,users } = this.state;
+    const { showWarningTip, warningTipText, users } = this.state;
+    const { inspectTrackData, inspectUserData } = this.props;
+
+    let data = [];
+    let timeArray = [];
+    let name=[];
+    let pointArray2=[];
+    let userOrbit = inspectTrackData.filter(e => {
+      if (users === 'all') {
+        return true
+      } else {
+        return e.username === users
+      }
+    })
+    console.log(userOrbit);
+    //开始时间和结束时间
+    userOrbit.forEach((e,i) => {
+      let startAndEndTime = e.pointData && e.pointData.map((e, i) => {
+        return e.trackDate
+      });
+      console.log(startAndEndTime);
+      for (let i = 0; i < startAndEndTime.length - 1; i++) {
+        let start = startAndEndTime[i];
+        let end = startAndEndTime[i + 1];
+        timeArray.push([start, end])
+      }
+      console.log(timeArray);
+
+      //此处是
+      let test=(e.pointData).map((e, i) => {
+        return  { coord: [e.longitude, e.latitude] }
+      })
+      pointArray2.push(test)
+      console.log(pointArray2,'1111');    
+      data.push({
+        ...e,
+        name: e.username,
+        trackDate: timeArray,
+
+      })
+    });
+    console.log(data, '对总数据进行筛选');
+    //拿到所有轨迹（每个数组是一条轨迹），以及每条轨迹的各个点
+    let pointArray = userOrbit.map((e, i) => {
+      return e.pointData
+    }).map((item, i) => {
+      return (item.map((e, i) => {
+        return { coord: [e.longitude, e.latitude] }
+      })
+      )
+    })
+    console.log(pointArray, '轨迹线');
+    //对每一条轨迹线，进行坐标的处理，起始点于结束点练成一条小线，先后线拼凑成轨迹
+    let itemOrbits = pointArray.map((e, i) => {
+      let itemLines = [];
+      for (let j = 0; j < e.length - 1; j++) {
+        let start = e[j].coord;
+        let end = e[j + 1].coord;
+        let itemLine = { coords: [start, end] ,timeArray:timeArray[i]};
+        itemLines.push(
+          itemLine
+        )
+      }
+      console.log(itemLines);
+      return itemLines
+    })
+    let itemOrbit = itemOrbits.length > 0 ? itemOrbits.reduce(function (prev, next) {
+      return prev.concat(next);
+    }) : [];
+    console.log(itemOrbit, '线坐标');
+
+    //拿取每条线的起始坐标点，以及终点坐标点；
+    let startAndEndCoord = [];
+    pointArray.forEach((e, i) => {
+      startAndEndCoord.push({
+        coord: e[0].coord,
+        tooltip: {
+          formatter: '起点'
+        },
+        symbol: 'image:///img/position.png',
+      })
+      startAndEndCoord.push({
+        coord: e[e.length - 1].coord,
+        tooltip: {
+          formatter: '终点'
+        },
+        symbol: 'image:///img/end.png',
+      })
+    })
+    console.log(startAndEndCoord);
+
+
+
+
     return (
       <div className={styles.inspectOrbit}>
         {showWarningTip && <WarningTip style={{ marginTop: '250px', width: '210px', height: '88px' }} onCancel={this.onCancelWarningTip} onOK={this.onConfirmWarningTip} value={warningTipText} />}
@@ -102,7 +173,7 @@ class InspectOrbit extends Component {
         </div>
         {this.selectUser()}
         <div className={styles.createContent}>
-          <InspectOrbitMap testId={'inspectOrbit'} users={users} orbitList={this.getOrbitList()} />
+          <InspectOrbitMap testId={'inspectOrbit'} users={users} orbitList={data} itemOrbit={itemOrbit} startAndEndCoord={startAndEndCoord} />
         </div>
       </div>
     );
@@ -117,3 +188,8 @@ const mapDispatchToProps = (dispatch) => ({
   getInspectOrbit: payload => dispatch({ type: ticketAction.getInspectOrbit, payload }),
 })
 export default connect(mapStateToProps, mapDispatchToProps)(InspectOrbit);
+  // let test = [
+    //   [{ coord: ["132.214", "33.32534"] }, { coord: ["133.124", "34.352"] }],
+    //   [{ coord: ['119.4543', '25.9222'] }, { coord: ['87.9236', '43.5883'] }],
+    //   [{ coord: ['87.9236', '43.5883'] }, { coord: ['116.4551', '40.2539'] }],
+    // ];

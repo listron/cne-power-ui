@@ -259,29 +259,60 @@ module.exports = [
                     {
                         userId: `1`,
                         username: `刘德华1`,
-                        trackId: {
-                            trackId1: [
-                                { trackPointId: `1`, coord: [`122`, `33`], coord2: [`122`, `34`], trackDate: `2018-11-11`, },
-                                { trackPointId: `2`, coord: [`122`, `34`], coord2: [`122`, `35`], trackDate: `2018-11-12`, },
-                            ],
-                            trackId2: [
-                                { trackPointId: `1`, coord: [`112`, `33`], coord2: [`112`, `34`], trackDate: `2018-11-11`, },
-                                { trackPointId: `2`, coord: [`112`, `34`], coord2: [`112`, `35`], trackDate: `2018-11-12`, },
-                            ],
-                        },                  
+                        trackId: '1',
+                        pointData: [
+                            {
+                                trackPointId: '1',
+                                trackDate: `2018-11-11`,
+                                longitude: '119.4543', 
+                                latitude: '25.9222',
+
+                            }, {
+                                trackPointId: '2',
+                                trackDate: `2018-11-12`,
+                                longitude: `133.124`, 
+                                latitude: `34.352`,
+                            }, {
+                                trackPointId: '3',
+                                trackDate: `2018-11-13`,
+                                longitude: '134.4552',
+                                latitude: '35.13445'
+                            }, {
+                                trackPointId: '4',
+                                trackDate: `2018-11-14`,
+                                longitude: '135.3423',
+                                latitude: '36.3411'
+                            }
+                        ]
+
                     }, {
                         userId: `2`,
                         username: `刘德华2`,
-                        trackId: {
-                            trackId1: [
-                                { trackPointId: `1`, coord: [`132`, `33`], coord2: [`132`, `34`], trackDate: `2018-11-11`, },
-                                { trackPointId: `2`, coord: [`132`, `34`], coord2: [`132`, `35`], trackDate: `2018-11-12`, },
-                            ],
-                            trackId2: [
-                                { trackPointId: `1`, coord: [`142`, `33`], coord2: [`142`, `34`], trackDate: `2018-11-11`, },
-                                { trackPointId: `2`, coord: [`142`, `34`], coord2: [`142`, `35`], trackDate: `2018-11-12`, },
-                            ],
-                        },
+                        trackId: '2',
+                        pointData: [
+                            {
+                                trackPointId: '1',
+                                trackDate: `2018-11-11`,
+                                longitude: '142.2143',
+                                latitude: '43.34134'
+
+                            }, {
+                                trackPointId: '2',
+                                trackDate: `2018-11-12`,
+                                longitude: '143.3134',
+                                latitude: '44.4635'
+                            }, {
+                                trackPointId: '3',
+                                trackDate: `2018-11-13`,
+                                longitude: '144.5433',
+                                latitude: '45.3256'
+                            }, {
+                                trackPointId: '4',
+                                trackDate: `2018-11-14`,
+                                longitude: '145.564',
+                                latitude: '46.235'
+                            }
+                        ]
                     }
                 ],
             },
