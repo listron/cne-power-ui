@@ -21,23 +21,25 @@ class OrbitMap extends Component {
   }
 
   componentDidMount() {
-    const { testId, orbitList,users,itemOrbit,startAndEndCoord } = this.props;
+    const { testId, orbitList,users,itemOrbit,startAndEndCoord,data } = this.props;
     console.log(orbitList);
+    console.log(data);
     const testChart = echarts.init(document.getElementById(testId));
-    this.setMapChart(testChart, orbitList,users,itemOrbit,startAndEndCoord);
+    this.setMapChart(testChart, orbitList,users,itemOrbit,startAndEndCoord,data);
   }
 
   componentWillReceiveProps(nextProps) {
-    const { testId, orbitList, users,itemOrbit,startAndEndCoord } = nextProps;
+    const { testId, orbitList, users,itemOrbit,startAndEndCoord,data } = nextProps;
+    console.log(data);
     if (this.props.orbitList.length !== nextProps.orbitList.length || users !== this.props.users) {
       const testChart = echarts.init(document.getElementById(testId));
-      this.setMapChart(testChart, orbitList,users,itemOrbit,startAndEndCoord);
+      this.setMapChart(testChart, orbitList,users,itemOrbit,startAndEndCoord,data);
     
     }
     // console.log(orbitList);
     // console.log(itemOrbit);
   }
-  setMapChart = (testChart, orbitList,users,itemOrbit,startAndEndCoord) => {
+  setMapChart = (testChart, orbitList,users,itemOrbit,startAndEndCoord,data) => {
     const option = {
       bmap: {
         center: [116.46, 39.92],//中心点
@@ -174,8 +176,8 @@ class OrbitMap extends Component {
             formatter: (params,orbitList) => {
               console.log(params,orbitList);
               return `<div style='display:flex; flex-direction: column;'>
-            <div style='width:30px;height:30px;'><img src='/img/people.png'>${params.seriesName}</div>
-            <div style='height:30px;line-height:30px'>${params.data.timeArray}</div>
+            <div style='width:30px;height:30px;'><img src='/img/people.png'>${params.name}</div>
+            <div style='height:30px;line-height:30px'>${params.data.date}</div>
             </div>`
             },
             backgroundColor: '#fff',
@@ -222,7 +224,7 @@ class OrbitMap extends Component {
           },
 
           coordinateSystem: 'bmap',
-           data:itemOrbit,
+           data:data,
           
           //  data: [
             // [{ coord: ["132.214", "33.32534"] }, { coord: ["133.124", "34.352"] }],

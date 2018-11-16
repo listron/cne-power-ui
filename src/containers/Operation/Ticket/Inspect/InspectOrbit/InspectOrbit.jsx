@@ -74,6 +74,7 @@ class InspectOrbit extends Component {
     const { inspectTrackData, inspectUserData } = this.props;
 
     let data = [];
+    let datas = [];
     let timeArray = [];
     let name=[];
     let pointArray2=[];
@@ -85,6 +86,21 @@ class InspectOrbit extends Component {
       }
     })
     console.log(userOrbit);
+    userOrbit.map((item, index) => {
+      for (var i = 0; i < item.pointData.length - 1; i++) {
+        let value = item.pointData[i]
+        let value1 = item.pointData[i + 1]
+        data.push({
+          date: [value.trackDate, value1.trackDate],
+          coords: [[value.longitude,value.latitude], [ value1.longitude,value1.latitude]],
+          name: item.username
+        })
+      }
+    })
+    console.log(data);
+
+
+
     //开始时间和结束时间
     userOrbit.forEach((e,i) => {
       let startAndEndTime = e.pointData && e.pointData.map((e, i) => {
@@ -104,14 +120,14 @@ class InspectOrbit extends Component {
       })
       pointArray2.push(test)
       console.log(pointArray2,'1111');    
-      data.push({
+      datas.push({
         ...e,
         name: e.username,
         trackDate: timeArray,
 
       })
     });
-    console.log(data, '对总数据进行筛选');
+    console.log(datas, '对总数据进行筛选');
     //拿到所有轨迹（每个数组是一条轨迹），以及每条轨迹的各个点
     let pointArray = userOrbit.map((e, i) => {
       return e.pointData
@@ -125,10 +141,10 @@ class InspectOrbit extends Component {
     //对每一条轨迹线，进行坐标的处理，起始点于结束点练成一条小线，先后线拼凑成轨迹
     let itemOrbits = pointArray.map((e, i) => {
       let itemLines = [];
-      for (let j = 0; j < e.length - 1; j++) {
+      for (let j = 0; j < e.length-1; j++) {
         let start = e[j].coord;
         let end = e[j + 1].coord;
-        let itemLine = { coords: [start, end] ,timeArray:timeArray[i]};
+        let itemLine = { coords: [start, end] ,timeArray:timeArray[(i)*(e.length)+j]};
         itemLines.push(
           itemLine
         )
@@ -173,7 +189,7 @@ class InspectOrbit extends Component {
         </div>
         {this.selectUser()}
         <div className={styles.createContent}>
-          <InspectOrbitMap testId={'inspectOrbit'} users={users} orbitList={data} itemOrbit={itemOrbit} startAndEndCoord={startAndEndCoord} />
+          <InspectOrbitMap testId={'inspectOrbit'} data={data}  orbitList={datas} itemOrbit={itemOrbit} startAndEndCoord={startAndEndCoord} />
         </div>
       </div>
     );
