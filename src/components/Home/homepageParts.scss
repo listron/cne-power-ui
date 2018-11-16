@@ -5,6 +5,8 @@
   border:1px solid #3f566c;
   box-shadow:0 0 6px 0 rgba(255,255,255,0.30);
   border-radius:4px;
+  display: flex;
+  flex-direction: column;
 };
 
 @mixin typeTags(){

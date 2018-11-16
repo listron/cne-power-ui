@@ -35,8 +35,6 @@ class EqpHours extends Component{
     let tmpArr = [];
     tmpArr.length = rectNum;
     tmpArr.fill(0);
-    console.log(tmpArr);
-    console.log(tmpArr.length);
     return (
       <section className={styles.eqpHours}>
         <h3>等效利用小时数 TOP5</h3>
@@ -47,7 +45,7 @@ class EqpHours extends Component{
           {stationDataArr.map(e=>(
             <div className={styles.eachStation} key={e.stationName}>
               <span className={styles.stationName}>{e.stationName}</span>
-              <div>{
+              <div style={{width: `${rectNum*(rectWidth + 2)}px`}} className={styles.hourRectGroup}>{
                 tmpArr.map((each, index)=>{ // 根据比例计算需要占多少个块，并计算最后一个块的宽度
                   const hourRectNum = e.hour/maxHour*rectNum;
                   let innerWidth = 0;
@@ -59,8 +57,12 @@ class EqpHours extends Component{
                     innerWidth = 0;
                   }
                   return (
-                    <div className={styles.eachRect} width={`${rectWidth}px`} height={`${rectWidth}px`} >
-                      <div width={`${innerWidth}px`} className={styles.highLightRect}></div>
+                    <div 
+                      key={index} 
+                      className={styles.eachRect} 
+                      style={{width: `${rectWidth}px`,height: `${rectWidth}px`}} 
+                    >
+                      <div style={{width: `${innerWidth}px`}} className={styles.highLightRect}></div>
                     </div>
                   )
                 })
