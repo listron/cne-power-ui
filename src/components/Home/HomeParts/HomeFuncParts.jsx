@@ -34,13 +34,15 @@ export const OperationInfo = () => { // 运维情况
   return (
     <section className={styles.operationInfo}>
       <h3>运维情况</h3>
-      <div>
-        <h4>本月完成工单</h4>
-        <span>999</span>
-      </div>
-      <div>
-        <h4>执行中工单</h4>
-        <span>12</span>
+      <div className={styles.ticketDetail}>
+        <div className={styles.ticketDone}>
+          <h4>本月完成工单</h4>
+          <span className={styles.doneData}>999</span>
+        </div>
+        <div className={styles.ticketDoing}>
+          <h4>执行中工单</h4>
+          <span className={styles.doingData}>12</span>
+        </div>
       </div>
     </section>
   )
@@ -50,20 +52,23 @@ export const EnergySaving = () => { // 年累计节能减排
   return (
     <section className={styles.energySaving}>
       <h3>年累计节能减排</h3>
-      <div>
-        <h4>co2</h4>
-        <span>
-          <span>8746</span>
-          <span>kt</span>
-        </span>
+      <div className={styles.saveContent}>
+        <div className={styles.eachSaving}>
+          <img src="/img/co2.png" width="56px" height="40px" />
+          <span className={styles.savedData}>
+            <span className={styles.value}>8746</span>
+            <span className={styles.unit}>kt</span>
+          </span>
+        </div>
+        <div className={styles.eachSaving}>
+          <img src="/img/hot.png" width="45px" height="45px" />
+          <span className={styles.savedData}>
+            <span className={styles.value}>1746</span>
+            <span className={styles.unit}>kt</span>
+          </span>
+        </div>
       </div>
-      <div>
-        <h4>火火</h4>
-        <span>
-          <span>1746</span>
-          <span>kt</span>
-        </span>
-      </div>
+      
     </section>
   )
 }

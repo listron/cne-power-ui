@@ -5,44 +5,40 @@ import PropTypes from 'prop-types';
 import echarts from 'echarts';
 import { showNoData, hiddenNoData } from '../../../constants/echartsNoData';
 
-class MonthGenChart extends Component{
+class OutputPower extends Component{
   static propTypes = {
     hasMultipleType: PropTypes.bool,
-    monthElec: PropTypes.array,
+    outputData: PropTypes.array,
   }
 
   constructor(props){
     super(props);
     this.state = {
-      monthType: 'all'
+      outputType: 'all'
     }
   }
 
   componentWillReceiveProps(){
-    const chartBox = document.getElementById('homeMonthElec');
+    const chartBox = document.getElementById('homeOutputChart');
     if(chartBox){
-      const monthChart = echarts.init(chartBox);
-      this.setMonthChart(monthChart);
+      const outputChart = echarts.init(chartBox);
+      this.setMonthChart(outputChart);
     }
   }
 
-  setMonthChart = (monthChart) => {
-    const xAxisArr = [1,2,3,4,5,6,7,8,9,10,11,12];
-    const yGenData = [100,201,341,114,95,276,317,88,19,120,311,102];
-    const yRateData = [12,21,31,14,51,16,17,18,29,10,31,27];
+  setMonthChart = (outputChart) => {
+    const xAxisArr = ['00:00','06:00','12:00','18:00','24:00'];
+    const yPowerData = [12, 24, 18, 17];
+    const yResourceData = [3.14, 6.77, 5.74, 4.11];
     const graphic = Math.random() > 0.5 ? hiddenNoData : showNoData;
     const option = {
         graphic,
         title: {
           show: false,
         },
-        legend: {
-          show: false,
-        },
-        grid: {
-          top: 30,
-          bottom: 30,
-        },
+        // legend: {
+        //   show: false,
+        // },
         tooltip: {
           trigger: 'axis',
           axisPointer: {
@@ -82,7 +78,7 @@ class MonthGenChart extends Component{
         yAxis: [
           {
             type: 'value',
-            name: '万kWh',
+            name: '功率MW',
             nameTextStyle: {
               color: '#06bdf4',
             },
@@ -105,13 +101,12 @@ class MonthGenChart extends Component{
           },
           {
             type: 'value',
-            name: '同比',
+            name: 'm/s',
             nameTextStyle: {
               color: '#06bdf4',
             },
             axisLabel: {
               color: '#06bdf4',
-              formatter: '{value} %'
             },
             axisLine: {
               show: false,
@@ -126,46 +121,43 @@ class MonthGenChart extends Component{
         ],
         series: [
           {
-            name: '发电量',
-            type: 'bar',
-            data: yGenData,
-            itemStyle: {
-              barBorderRadius: 6,
-              color: '#5b8ba2', 
-            },
-            emphasis: {
-              itemStyle: {
-                color: '#48cf49', 
-              },
-            },
-            barWidth: 6,
+            name: '风电功率',
+            type: 'line',
+            data: yPowerData
           },
           {
-            name: '同比',
+            name: '风速',
             type: 'line',
             yAxisIndex: 1,
-            data: yRateData,
+            data: yResourceData,
           }
         ]
     }
-    monthChart.setOption(option)
+    outputChart.setOption(option)
   }
 
-  changeMonthType = (monthType) => {
-    this.setState({ monthType });
+  changeOutputType = (outputType) => {
+    this.setState({ outputType });
   }
 
 
   render(){
-    const { monthType } = this.state;
-    return (<section className={styles.monthGen}>
-      <h3>每月发电量</h3>
-      <div className={styles.checkTags}>
-       <StationTypeTag showTotal={false} activeType={monthType} onChange={this.changeMonthType} />
-      </div>
-      <div id="homeMonthElec" className={styles.monthChart} ></div>
-    </section>)
+    const { outputType } = this.state;
+    return (
+      <section className={styles.outputPower}>
+        <h3>风电站出力</h3>
+        <div className={styles.checkTags}>
+          <StationTypeTag showTotal={false} activeType={outputType} onChange={this.changeOutputType} />
+        </div>
+        <div id="homeOutputChart" className={styles.outputChart} ></div>
+        <div className={styles.totalPower}>
+          <span className={styles.text}>全部电站功率:</span>
+          <span className={styles.highlight}>4000</span>
+          <span className={styles.text}>MW</span>
+        </div>
+      </section>
+    )
   }
 }
 
-export default MonthGenChart;
+export default OutputPower;

@@ -37,6 +37,7 @@
   align-content: flex-start;
   h3{
     @include titles();
+    width: 100%;
     margin: 12px 0 0;
     height: 36px;
   }
@@ -68,7 +69,7 @@
   }
 }
 
-.completeRate{ // 计划完成率
+.completeRate, .operationInfo{ // 计划完成率 + 运维情况部分样式
   margin-top: 12px;
   @include boxStyle();
   width:400px;
@@ -132,7 +133,7 @@
   }
 }
 
-.monthGen{ // 每月发电量
+.monthGen, .deviceStatus, .energySaving, .eqpHours{ // 每月发电量样式 + 节能减排，等效利用小时，本月故障台次，告警列表大体样式。
   height: 205px;
   margin-top: 12px;
   @include boxStyle();
@@ -141,7 +142,7 @@
   flex-direction: column;
   h3{
     @include titles();
-    margin-top: 8px;
+    margin: 8px 0 0;
   }
   .checkTags{
     @include typeTags();
@@ -149,5 +150,151 @@
   .monthChart{
     height: 165px;
     flex: 1;
+  }
+}
+
+.outputPower{ // 分电站出力
+  height: 320px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  border:1px solid #3f566c;
+  box-shadow:0 0 6px 0 rgba(255,255,255,0.30);
+  h3{
+    @include titles();
+  }
+  .checkTags{
+    @include typeTags();
+  }
+  .outputChart{
+    height: 200px;
+  }
+  .totalPower{
+    display: flex;
+    justify-content: center;
+    .highlight{
+      color:#4dde49;
+      font-size:28px;
+    }
+    .text{
+      color:#06bdf4;
+    }
+  }
+}
+
+.operationInfo{ // 运维情况
+  display: flex;
+  flex-direction: column;
+  .ticketDetail{
+    display: flex;
+    justify-content: space-around;
+  }
+  .ticketDone, .ticketDoing{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    h4{
+      color:#06bdf4;
+    }
+  }
+  .doneData, .doingData{
+    width: 82px;
+    height: 82px;
+    color:#4dde49;
+    font-size:28px;
+    text-align: center;
+    line-height: 82px;
+    background: url('/img/turn1.png') no-repeat center center,
+      url('/img/rotate.png') no-repeat center center;
+  }
+  .doingData{
+    background: url('/img/turn2.png') no-repeat center center,
+      url('/img/rotate.png') no-repeat center center;
+  }
+}
+
+.deviceStatus{ // 设备状态
+  .statusBox{
+    flex: 1;
+    display: flex;
+    .statusChart, .statusTotal{
+      width: 50%;
+      flex: 1;
+    }
+    .eachStatus{
+      display: flex;
+      .normalRound, .faultRound, .stopRound, .connectRound{
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        background-color: #145998;
+      }
+      .faultRound{
+        background-color: #3fa9ef;
+      }
+      .stopRound{
+        background-color:#6868b2;
+      }
+      .connectRound{
+        background-color:#6ae3c1;
+      }
+      .text{
+        color:#06bdf4;
+      }
+      .value{
+        color:#4dde49;
+      }
+    }
+  }
+}
+
+.energySaving{ // 节能减排
+  width: 400px;
+  .saveContent{
+    display: flex;
+    .eachSaving{
+      width: 50%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .savedData{
+      .value{
+        font-size:24px;
+        color:#4dde49;
+      }
+      .unit{
+        color:#06bdf4;
+      }
+    }
+  }
+}
+
+.eqpHours{
+  width: 420px;
+  .stationProgress{
+    .eachStation{
+      display: flex;
+      .stationName, .hour{
+        color:#06bdf4;
+      }
+      .eachRect{
+        background:rgba(72,207,73,0.40);
+        display: flex;
+        .highLightRect{
+          background:#48cf49;
+        }
+      }
+    }
+  }
+  .average{
+    display: flex;
+    justify-content: flex-end;
+    .averageText{
+      color:#06bdf4;
+    }
+    .averageNum{
+      color: #48cf49;
+    }
   }
 }
