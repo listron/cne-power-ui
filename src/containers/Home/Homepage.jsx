@@ -3,10 +3,12 @@ import { connect } from 'react-redux';
 import HomepageTop from '../../components/Home/HomepageTop';
 import StationGeneral from '../../components/Home/HomeParts/StationGeneral';
 import MonthGenChart from '../../components/Home/HomeParts/MonthGenChart';
-import { CompleteRate, OperationInfo, EnergySaving } from '../../components/Home/HomeParts/HomeFuncParts';
+import { CompleteRate, OperationInfo, EnergySaving, AlarmList } from '../../components/Home/HomeParts/HomeFuncParts';
 import OutputPower from '../../components/Home/HomeParts/OutputPower';
 import DeviceStatus from '../../components/Home/HomeParts/DeviceStatus';
 import EqpHours from '../../components/Home/HomeParts/EqpHours';
+import FaultList from '../../components/Home/HomeParts/FaultList';
+import CenterMap from '../../components/Home/CenterMap';
 import styles from './homepage.scss';
 import { loginAction } from '../Login/loginAction';
 import { homepageAction } from './homepageAction';
@@ -65,7 +67,9 @@ class Homepage extends Component {
               <CompleteRate />
               <MonthGenChart hasMultipleType={hasMultipleType} />
             </div>
-            <div className={styles.mapInfo}>中心地图</div>
+            <div className={styles.mapInfo}>
+              <CenterMap />
+            </div>
             <div className={styles.rightInfo}>
               <OutputPower hasMultipleType={hasMultipleType} />
               <OperationInfo />
@@ -75,6 +79,8 @@ class Homepage extends Component {
           <div className={styles.bottomBox}>
             <EnergySaving />
             <EqpHours hasMultipleType={hasMultipleType} />
+            <FaultList hasMultipleType={hasMultipleType} />
+            <AlarmList />
           </div>
         </div>
       </div>

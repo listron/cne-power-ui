@@ -69,14 +69,29 @@
   }
 }
 
-.completeRate, .operationInfo{ // 计划完成率 + 运维情况部分样式
+
+.monthGen, .deviceStatus, .energySaving, .eqpHours, .faultList, .alarmList, .completeRate, .operationInfo{ // 每月发电量样式 + 其他所有盒子总样式。
+  height: 205px;
   margin-top: 12px;
   @include boxStyle();
-  width:400px;
-  height: 185px;
+  position: relative;
   h3{
     @include titles();
+    margin: 8px 0 0;
   }
+  .checkTags{
+    @include typeTags();
+  }
+  .monthChart{
+    height: 165px;
+    flex: 1;
+  }
+}
+
+.completeRate, .operationInfo{ // 计划完成率 + 运维情况部分样式
+  margin-top: 12px;
+  width:400px;
+  height: 185px;
   .text{ // 风，光提示
     display: flex;
     justify-content: space-between;
@@ -133,25 +148,7 @@
   }
 }
 
-.monthGen, .deviceStatus, .energySaving, .eqpHours, .faultList{ // 每月发电量样式 + 节能减排，等效利用小时，本月故障台次，告警列表大体样式。
-  height: 205px;
-  margin-top: 12px;
-  @include boxStyle();
-  position: relative;
-  h3{
-    @include titles();
-    margin: 8px 0 0;
-  }
-  .checkTags{
-    @include typeTags();
-  }
-  .monthChart{
-    height: 165px;
-    flex: 1;
-  }
-}
-
-.outputPower{ // 分电站出力
+.outputPower{ // 电站出力
   height: 320px;
   display: flex;
   flex-direction: column;
@@ -268,7 +265,7 @@
   }
 }
 
-.eqpHours{
+.eqpHours{ // 今年等效利用小时数
   width: 420px;
   .stationProgress{
     .eachStation{
@@ -301,11 +298,36 @@
   }
 }
 
-.faultList{
+.faultList{ // 本月故障台次
   .faultContent{
     display: flex;
     .list, .chart{
       width: 50%;
+      display: flex;
+      flex-direction: column;
+    }
+    .eachFault{
+      .text{
+        color:#06bdf4;
+      }
+      .value{
+        color:#4dde49;
+      }
+    }
+  }
+}
+
+.alarmList{ // 告警列表
+  .alarmContent{
+
+  }
+  .alarmColumn, .eachAlarm{
+    display: flex;
+    .level, .stationName, .info, .time{
+      color: #06bdf4;
+    }
+    .level{
+      color: #fff;
     }
   }
 }

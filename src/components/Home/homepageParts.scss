@@ -62,3 +62,16 @@
   }
 }
 
+.centerMap{
+  display: flex;
+  flex-direction: column;
+  .countryMap{
+    width: 500px;
+    height: 400px;
+  }
+  .worldMap{
+    width: 268px;
+    height: 168px;
+  }
+}
+

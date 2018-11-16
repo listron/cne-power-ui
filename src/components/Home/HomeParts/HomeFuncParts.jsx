@@ -74,22 +74,29 @@ export const EnergySaving = () => { // 年累计节能减排
 }
 
 export const AlarmList = () => { // 告警列表
+  const alarmArr = [
+    {level: 1, stationName: '山东平原', info: '发电机组哈', time: '10天12小时'},
+    {level: 2, stationName: '山海经', info: '就是不想转了', time: '8天12小时'},
+    {level: 3, stationName: '极北之地', info: '同上', time: '0天7小时'},
+    {level: 1, stationName: '南极激光', info: '今天有点不舒服，请假', time: '5天2小时'},
+    {level: 4, stationName: '山东巨炮', info: '哈哈哈限电', time: '5天14小时'},
+  ]
   return (
-    <section>
-      <h3>告警列表<span>总数120个</span></h3>
-      <div>
-        <div>
-          <span>等级</span>
-          <span>电站名称</span>
-          <span>告警描述</span>
-          <span>持续时间</span>
+    <section className={styles.alarmList}>
+      <h3>告警列表<span className={styles.total}>总数: 120个</span></h3>
+      <div className={styles.alarmContent}>
+        <div className={styles.alarmColumn}>
+          <span className={styles.level}>等级</span>
+          <span className={styles.stationName}>电站名称</span>
+          <span className={styles.info}>告警描述</span>
+          <span className={styles.time}>持续时间</span>
         </div>
-        <div>
-          <span>1</span>
-          <span>扎旗光伏</span>
-          <span>发电机组绕组</span>
-          <span>0天20小时</span>
-        </div>
+        {alarmArr.map(e=>(<div key={e.stationName} className={styles.eachAlarm}>
+          <span className={styles.level}>{e.level}</span>
+          <span className={styles.stationName}>{e.stationName}</span>
+          <span className={styles.info}>{e.info}</span>
+          <span className={styles.time}>{e.time}</span>
+        </div>))}
       </div>
     </section>
   )

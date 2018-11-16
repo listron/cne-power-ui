@@ -54,7 +54,7 @@ class FaultList extends Component{
       yAxis: [
         {
           type: 'value',
-          name: '功率MW',
+          name: '次/台',
           nameTextStyle: {
             color: '#06bdf4',
           },
@@ -107,7 +107,13 @@ class FaultList extends Component{
           <StationTypeTag showTotal={false} activeType={faultType} onChange={this.changeFaultType} />
         </div>
         <div className={styles.faultContent}>
-          <div className={styles.list}></div>
+          <div className={styles.list}>
+            {faultList.map(e=>(<span key={e.stationName} className={styles.eachFault} >
+              <span className={styles.text}>{e.stationName}</span>
+              <span className={styles.value}>{e.value}</span>
+              <span className={styles.text}>次/台</span>
+            </span>))}
+          </div>
           <div className={styles.chart} id="homeFaultChart"></div>
         </div>
       </section>
