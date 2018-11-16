@@ -18,7 +18,7 @@ class UsageRate extends React.Component {
   drawChart = param => {
     const { graphId, yAxisName, xAxisName, xData, yData, title,hasData } = param;
     const targetChart = echarts.init(document.getElementById(graphId));
-    let color = ["#a42b2c", "#d48265", "#91c7af", "#749f83", "#ca8622", "#bda29a", "#546570", "#6e7074", "#9b9b9b", "#ceebe0", "#199475", "#f1f1f1"];
+    let color = ["#a42b2c", "#d48265", "#91c7af", "#749f83", "#ca8622", "#bda29a", "#546570", "#6e7074", "#9b9b9b", "#ceebe0", "#199475", '#fff'];
     let seriesData = [];
     yData.forEach(item => {
       seriesData.push({
@@ -31,6 +31,11 @@ class UsageRate extends React.Component {
         },
         barWidth: 10,
       });
+    })
+    seriesData.length>0 && seriesData.push({
+      name:'瞬时辐射区间（w/㎡）',
+      type: 'bar',
+      stack: "总量",
     })
     const confluenceTenMinGraphic = (hasData || hasData === false) && (hasData === true ? hiddenNoData : showNoData) || " ";
     const targetMonthOption = {

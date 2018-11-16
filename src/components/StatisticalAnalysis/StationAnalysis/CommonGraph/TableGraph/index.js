@@ -59,23 +59,23 @@ class TableGraph extends React.Component {
           title: '日期',
           dataIndex: 'date',
           width: 120,
-          sorter: (a, b) => (a.date).localeCompare(b.date),
+          sorter: (a, b) => {return a.date.split('月')[0].split('日')[0]-b.date.split('月')[0].split('日')[0]},
         }, {
           title: '计划发电量',
           dataIndex: 'planPower',
-          // width: 150,
+          width: 150,
           sorter: (a, b) => a.planPower - b.planPower,
           render: text => (text || text === 0) ? text : '--'
         }, {
           title: '实际发电量',
           dataIndex: 'actualPower',
-          // width: 150,
+          width: 150,
           sorter: (a, b) => a.actualPower - b.actualPower,
           render: text => (text || text === 0) ? text : '--'
         }, {
           title: '计划完成率',
           dataIndex: 'per',
-          // width: 150,
+          width: 150,
           defaultSortOrder: 'descend',
           sorter: (a, b) => a.per - b.per,
           render: text => (text || text === 0) ? text + '%' : '--'
@@ -85,18 +85,18 @@ class TableGraph extends React.Component {
         columns = [{
           title: '日期',
           dataIndex: 'monthOrDay',
-          width: 100,
-          sorter: (a, b) => (a.monthOrDay).localeCompare(b.monthOrDay),
+          width: 90,
+          sorter: (a, b) => {return a.monthOrDay.split('月')[0].split('日')[0]-b.monthOrDay.split('月')[0].split('日')[0]},
         }, {
           title: lastYear,
           dataIndex: 'lastYearData',
-          width: 150,
+          width: 130,
           sorter: (a, b) => a.lastYearData - b.lastYearData,
           render: text => (text || text === 0) ? text : '--'
         }, {
           title: currentYear,
           dataIndex: 'thatYearData',
-          width: 150,
+          width: 130,
           sorter: (a, b) => a.thatYearData - b.thatYearData,
           render: text => (text || text === 0) ? text : '--'
         }, {
@@ -118,18 +118,21 @@ class TableGraph extends React.Component {
         columns = [{
           title: '日期',
           dataIndex: 'year',
-          sorter: (a, b) => (a.year).localeCompare(b.year),
+          sorter: (a, b) => {return a.year.split('月')[0].split('日')[0]-b.year.split('月')[0].split('日')[0]},
+          width: 150,
         }, {
           title: '辐射总量',
           dataIndex: 'thatYearData',
           defaultSortOrder: 'descend',
           sorter: (a, b) => a.thatYearData - b.thatYearData,
-          render: text => (text || text === 0) ? text : '--'
+          render: text => (text || text === 0) ? text : '--',
+          width: 150,
         }, {
           title: '环比',
           dataIndex: 'ringRatio',
           defaultSortOrder: 'descend',
           sorter: (a, b) => a.ringRatio - b.ringRatio,
+          width: 150,
           render: text => (text || text === 0) ? text + '%' : '--'
         }];
         break;
@@ -138,17 +141,17 @@ class TableGraph extends React.Component {
           title: '日期',
           dataIndex: 'monthOrDay',
           width: 120,
-          sorter: (a, b) => (a.monthOrDay).localeCompare(b.monthOrDay),
+          sorter: (a, b) => {return a.monthOrDay.split('月')[0].split('日')[0]-b.monthOrDay.split('月')[0].split('日')[0]},
         }, {
           title: lastYear,
           dataIndex: 'lastYearData',
-          // width: 150,
+          width: 150,
           sorter: (a, b) => a.lastYearData - b.lastYearData,
           render: text => (text || text === 0) ? text : '--'
         }, {
           title: currentYear,
           dataIndex: 'thatYearData',
-          // width: 150,
+          width: 150,
           defaultSortOrder: 'descend',
           sorter: (a, b) => a.thatYearData - b.thatYearData,
           render: text => (text || text === 0) ? text : '--'
@@ -165,14 +168,14 @@ class TableGraph extends React.Component {
           title: '日期',
           dataIndex: 'date',
           width: 90,
-          sorter: (a, b) => (a.date).localeCompare(b.date),
+          sorter: (a, b) => {return a.date.split('月')[0].split('日')[0]-b.date.split('月')[0].split('日')[0]},
           render: text => (text || text === 0) ? text : '--'
         }, {
           title: '等效利用小时数',
           dataIndex: 'hours',
-          width: 150,
+          width: 170,
           sorter: (a, b) => a.hours - b.hours,
-          render: text => (text || text === 0) ? text : '--'
+          render: text => (text || text === 0) ? text : '-'
         }, {
           title: '辐射总量',
           dataIndex: 'light',
@@ -182,7 +185,7 @@ class TableGraph extends React.Component {
         }, {
           title: 'PR',
           dataIndex: 'pr',
-          width: 150,
+          width: 120,
           defaultSortOrder: 'descend',
           sorter: (a, b) => a.pr - b.pr,
           render: text => (text || text === 0) ? text + '%' : '--'
@@ -194,24 +197,24 @@ class TableGraph extends React.Component {
           title: '日期',
           dataIndex: 'date',
           width: 120,
-          sorter: (a, b) => (a.date).localeCompare(b.date),
+          sorter: (a, b) => {return a.date.split('月')[0].split('日')[0]-b.date.split('月')[0].split('日')[0]},
         }, {
           title: lastYear,
           dataIndex: 'lastYearData',
-          // width: 150,
+          width: 150,
           sorter: (a, b) => a.lastYearData - b.lastYearData,
           render: text => (text || text === 0) ? text : '--'
         }, {
 
           title: currentYear,
           dataIndex: 'thatYearData',
-          // width: 150,
+          width: 150,
           sorter: (a, b) => a.thatYearData - b.thatYearData,
           render: text => (text || text === 0) ? text : '--'
         }, {
           title: '同比',
           dataIndex: 'yearOnYear',
-          // width: 150,
+          width: 150,
           defaultSortOrder: 'descend',
           sorter: (a, b) => a.yearOnYear - b.yearOnYear,
           render: text => (text || text === 0) ? text + '%' : '--'
@@ -221,26 +224,26 @@ class TableGraph extends React.Component {
         columns = [{
           title: '日期',
           dataIndex: 'date',
-          // width: 150,
-          sorter: (a, b) => (a.date) - (b.date),
+          width: 120,
+          sorter: (a, b) => {return a.date.split('月')[0].split('日')[0]-b.date.split('月')[0].split('日')[0]},
           render: text => (text || text === 0) ? text : '--'
         }, {
           title: lastYear,
           dataIndex: 'lastYearData',
-          // width: 150,
+          width: 150,
           sorter: (a, b) => a.lastYearData - b.lastYearData,
           render: text => (text || text === 0) ? text : '--'
         }, {
 
           title: currentYear,
           dataIndex: 'thatYearData',
-          // width: 150,
+          width: 150,
           sorter: (a, b) => a.thatYearData - b.thatYearData,
           render: text => (text || text === 0) ? text : '--'
         }, {
           title: '同比',
           dataIndex: 'yearOnYear',
-          // width: 150,
+          width: 150,
           defaultSortOrder: 'descend',
           sorter: (a, b) => a.yearOnYear - b.yearOnYear,
           render: text => (text || text === 0) ? text + '%' : '--'
@@ -250,8 +253,8 @@ class TableGraph extends React.Component {
         columns = [{
           title: '日期',
           dataIndex: 'date',
-          width: 200,
-          sorter: (a, b) => (a.date) - (b.date),
+          width: 120,
+          sorter: (a, b) => {return a.date.split('月')[0].split('日')[0]-b.date.split('月')[0].split('日')[0]},
           render: text => (text || text === 0) ? text : '--'
         }, {
           title: '发电量',
@@ -273,7 +276,7 @@ class TableGraph extends React.Component {
           title: '日期',
           dataIndex: 'date',
           width: 120,
-          sorter: (a, b) => (a.date) - (b.date),
+          sorter: (a, b) => {return a.date.split('月')[0].split('日')[0]-b.date.split('月')[0].split('日')[0]},
         }, {
           title: '发电量',
           dataIndex: 'thatYearData',
@@ -294,18 +297,19 @@ class TableGraph extends React.Component {
           title: '日期',
           dataIndex: 'date',
           width: 120,
-          sorter: (a, b) => (a.date).localeCompare(b.date),
+          sorter: (a, b) => {return a.date.split('月')[0].split('日')[0]-b.date.split('月')[0].split('日')[0]},
           render: text => (text || text === 0) ? text : '--'
         }, {
           title: '电站可利用率',
           dataIndex: 'stationUtilization',
-          // width: 150,
+          width: 150,
           sorter: (a, b) => a.stationUtilization - b.stationUtilization,
           render: text => (text || text === 0) ? text + '%' : '--'
         }, {
           title: '发电系统可利用率',
           dataIndex: 'deviceUtilization',
           defaultSortOrder: 'descend',
+          width: 150,
           sorter: (a, b) => a.deviceUtilization - b.deviceUtilization,
           render: text => (text || text === 0) ? text + '%' : '--'
         }];
@@ -315,24 +319,24 @@ class TableGraph extends React.Component {
           title: '日期',
           dataIndex: 'date',
           width: 120,
-          sorter: (a, b) => (a.date) - (b.date),
+          sorter: (a, b) => {return a.date.split('月')[0].split('日')[0]-b.date.split('月')[0].split('日')[0]},
         }, {
           title: '限电损失',
           dataIndex: 'limitPower',
-          // width: 200,
+          width: 150,
           sorter: (a, b) => a.limitPower - b.limitPower,
           render: text => (text || text === 0) ? text : '--'
         },
         {
           title: '限电率',
           dataIndex: 'limitPowerRate',
-          // width: 200,
+          width: 150,
           sorter: (a, b) => a.limitPowerRate - b.limitPowerRate,
           render: text => (text || text === 0) ? text + '%' : '--'
         }, {
           title: '限电率环比',
           dataIndex: 'ringRatio',
-          // width: 200,
+          width: 150,
           defaultSortOrder: 'descend',
           sorter: (a, b) => a.ringRatio - b.ringRatio,
           render: text => (text || text === 0) ? text + '%' : '--'
@@ -365,30 +369,30 @@ class TableGraph extends React.Component {
           title: '日期',
           dataIndex: 'date',
           width: 150,
-          sorter: (a, b) => (a.date).localeCompare(b.date),
+          sorter: (a, b) => {return a.date.split('月')[0].split('日')[0]-b.date.split('月')[0].split('日')[0]},
           render: text => (text || text === 0) ? text : '--'
         }, {
           title: lastYear,
           dataIndex: 'lastYearData',
-          // width: 150,
+          width: 150,
           sorter: (a, b) => a.lastYearData - b.lastYearData,
           render: text => (text || text === 0) ? text : '--'
         }, {
 
           title: currentYear,
           dataIndex: 'thatYearData',
-          // width: 150,
+          width: 150,
           sorter: (a, b) => a.thatYearData - b.thatYearData,
           render: text => (text || text === 0) ? text : '--'
         }, {
           title: '同比',
           dataIndex: 'yearOnYear',
-          // width: 150,
+          width: 150,
           defaultSortOrder: 'descend',
           sorter: (a, b) => a.yearOnYear - b.yearOnYear,
           render: text => (text || text === 0) ? text + '%' : '--'
         }];
-        break;       
+        break;
       default:
         columns = [];
     }
@@ -403,6 +407,7 @@ class TableGraph extends React.Component {
       case "plan": // 计划完成率最低排名
         data = columnData;
         break;
+      case "lightAnotherTB": // 光资源同比降幅排名(  四列)
       case "lightTB": // 光资源同比降幅排名
         data = dataArray && dataArray.map((e, i) => ({ ...e, key: i, monthOrDay: `${e.monthOrDay}${dateType === 'month' ? '月' : (dateType === 'day' ? '日' : '')}` }));
         break;
@@ -416,7 +421,6 @@ class TableGraph extends React.Component {
       case "powerLimitRatio": // 限电率环比升幅排名
       case "lightDistributed": // 光资源分布排名
       case "lightDistributedTB": // 光资源环比降幅排名
-      case "lightAnotherTB": // 光资源同比降幅排名(  四列)
         data = columnData;
         break;
       default:
@@ -478,8 +482,9 @@ class TableGraph extends React.Component {
   }
 
 
+
   render() {
-    const { tableType, title, unit, currentYear, dateType, lastYear, dataArray,bordered} = this.props;
+    const { tableType, title, unit, currentYear, dateType, lastYear, dataArray, bordered } = this.props;
     const columns = this.getColumnsArray(tableType, lastYear, currentYear);
     const dataSource = this.getDataArray(tableType, dataArray, dateType);
     const getTitle = this.getTitle(tableType);

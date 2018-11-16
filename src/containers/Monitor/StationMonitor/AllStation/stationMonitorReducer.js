@@ -7,11 +7,9 @@ var initState = Immutable.fromJS({
    allMonitorStation:{},//实时数据汇总
    windMonitorStation:{},
    pvMonitorStation:{},
-   stationTypes: null,//2-有风和光，默认显示全部，0-只有风，只显示风，1-只有光，只显示光
+   stationTypes: '2',//2-有风和光，默认显示全部，0-只有风，只显示风，1-只有光，只显示光
    stationTypeTabs:'2',
    stationShowType:'stationBlock',
-
-
 });
 const stationMonitorReducer = (state = initState, action) => {
   switch (action.type) {

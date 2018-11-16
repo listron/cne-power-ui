@@ -38,6 +38,9 @@ import OperateAnalysis from '../containers/StatisticalAnalysis/StationAnalysis/O
 import StationContrast from '../containers/StatisticalAnalysis/StationAnalysis/StationContrast/StationContrast';
 import PerformanceAnalysis from "../containers/StatisticalAnalysis/EquipmentAnalysis/PerformanceAnalysis/PerformanceAnalysis";
 
+//统计报表
+import GeneralReport from '../containers/StatisticalAnalysis/StatisticalReport/GeneralReport/GeneralReport';
+
 import Power from '../containers/Power';
 
 import Plan from "../containers/System/Production/Plan/Plan";
@@ -210,13 +213,9 @@ const routers = [
     exact: true,
     component: Building
   },{
-    path: '/statistical/statement/daily',
+    path: '/statistical/statement/currency',
     exact: true,
-    component: Building
-  },{
-    path: '/statistical/statement/customization',
-    exact: true,
-    component: Building
+    component: GeneralReport,
   },{
     path: '/analysis/assess',
     exact: true,

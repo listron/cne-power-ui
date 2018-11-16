@@ -10,6 +10,7 @@ function DevicePointsData({ devicePointData, deviceDetail }) {
     pointListGroup.push(eachPointGroup);
   } while (startIndex < devicePointData.length);
 
+  console.log('devicePointData',pointListGroup)
   return (
     <div className={styles.pointData} >
       <div className={styles.pointTitle}>{deviceDetail.deviceTypeName || ''}实时测点数据</div>

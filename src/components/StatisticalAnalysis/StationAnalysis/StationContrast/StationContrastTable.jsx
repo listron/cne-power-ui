@@ -103,7 +103,7 @@ class StationContrastTable extends React.Component {
                 'subStatioinHours',
                 'planShutdownHours',
                 'faultPowerHours',
-                'technicalHours',
+                // 'technicalHours',
                 'courtHours',
               ];
               

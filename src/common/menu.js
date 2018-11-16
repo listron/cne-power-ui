@@ -199,13 +199,9 @@ const menuData = [
         rightKey: 'statistics_report',
         children: [
           {
-            name: '日报月报',
-            path: 'daily',
-            rightKey: 'monitor',
-          }, {
-            name: '定制报表',
-            path: 'customization',
-            rightKey: 'monitor',
+            name: '通用报表',
+            path: 'currency',
+            rightKey: 'statistics_report',
           }
         ]
       }
