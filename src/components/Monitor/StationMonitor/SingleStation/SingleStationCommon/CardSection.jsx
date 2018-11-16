@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import styles from './pvStation.scss';
+import styles from './singleStationCommon.scss';
 import { Carousel,Row, Col,Icon, Button, } from 'antd';
 import { Link } from 'react-router-dom';
 
@@ -10,7 +10,7 @@ class CardSection extends Component {
   static propTypes = {
     match: PropTypes.object,
     weatherList: PropTypes.array,
-    operatorList: PropTypes.array, 
+    operatorList: PropTypes.array,
     alarmList: PropTypes.object,
     workList: PropTypes.object,
     getWeatherList: PropTypes.func,
@@ -65,7 +65,7 @@ class CardSection extends Component {
     }
     document.getElementById(weatherIndex).style.display = 'inline-block';
     document.getElementById(weatherIndex + 1).style.display = 'inline-block';
-    
+
     if (weatherIndex === 0) {
       this.setState({
         disabled1: true
@@ -110,7 +110,7 @@ class CardSection extends Component {
     }
     const ticketList = `/operation/ticket/list?stationCode=${stationCode}`;
     const alarmRealtime= `/monitor/alarm/realtime?stationCode=${stationCode}`;
-    
+
     return (
       <div className={styles.cardSection}>
         <Row gutter={16}  type="flex" justify="space-around" >
@@ -141,7 +141,7 @@ class CardSection extends Component {
           </Col>
           <Col  span={6}>
             <div className={styles.weatherList}>
-              {weatherList && weatherList.length>0 && 
+              {weatherList && weatherList.length>0 &&
                 <div>
                   <Button type="primary" onClick={this.prev} disabled={disabled1} className={styles.weatherLeft} >
                     <Icon type="left" />
@@ -151,7 +151,7 @@ class CardSection extends Component {
                   </Button>
                 </div>
               }
-              {weatherList && weatherList.length>0 ? 
+              {weatherList && weatherList.length>0 ?
                 weatherList && weatherList.map((e,i)=>{
                   if(i<2){
                     return (

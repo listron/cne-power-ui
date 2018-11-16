@@ -21,6 +21,7 @@ export const singleStationAction = {
   GET_CONFLUENCEBOX_LIST_SAGA: Symbol('GET_CONFLUENCEBOX_LIST_SAGA'), // 获取汇流箱列表
   GET_STATION_DEVICELIST_SAGA: Symbol('GET_STATION_DEVICELIST_SAGA'),//获取单电站设备列表
   EDIT_MONTH_YEAR_DATA_SAGA:Symbol('EDIT_MONTH_YEAR_DATA_SAGA'),//编辑月/年累计发电量
+  getFanList:Symbol('getFanList'),//风机实时数据列表
   RESET_SINGLE_STATION_STORE:Symbol('RESET_SINGLE_STATION_STORE'),//重置store状态
   RESET_SINGLE_STATION_SUCCESS:Symbol('RESET_SINGLE_STATION_SUCCESS'),//重置store状态成功
 }
