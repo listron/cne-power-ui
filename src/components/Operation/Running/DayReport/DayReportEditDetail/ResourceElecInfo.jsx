@@ -54,9 +54,17 @@ class ResourceElecInfo extends Component {
           <Form.Item label={stationType>0?'日辐射总量(斜面)':'平均风速'}>
             {getFieldDecorator('resourceValue', {
               rules: [{ 
-                required: requireTargetArr.includes('resourceValue'), 
-                message: `请填写${stationType>0?'日辐射总量':'平均风速'}`,
-                pattern: /^(-?\d+)(\.\d+)?$/ 
+                validator: (rule, value, callback) => {
+                  if(requireTargetArr.includes('resourceValue') && !value){
+                    callback(`请填写${stationType>0?'日辐射总量':'平均风速'}`);
+                  }else if(isNaN(value)){
+                    callback('请填写数字');
+                  }else{
+                    const demical = `${value}`.split('.')[1];
+                    demical && demical.length > 2 && callback(`不超过2位小数`);
+                  }
+                  callback();
+                }
               }],
               initialValue: updateDayReportDetail.resourceValue,
             })(
@@ -66,9 +74,19 @@ class ResourceElecInfo extends Component {
           </Form.Item>
           <Form.Item label={`日发电量(${stationType>0?'逆变器':'风机机组'})`}>
             {getFieldDecorator('genInverter', {
-              rules: [{ 
-                required: requireTargetArr.includes('genInverter'), 
-                message: `请填写${stationType>0?'逆变器':'风机机组'}日发电量` 
+              rules: [{
+                validator: (rule, value, callback)=>{
+                  if(requireTargetArr.includes('genInverter') && !value){
+                    callback(`请填写${stationType>0?'逆变器':'风机机组'}日发电量`);
+                  }else if(isNaN(value)){
+                    callback('请填写数字');
+                  }else{
+                    const demicalMax = genUnit === 'kWh'? 2: 4;
+                    const demical = `${value}`.split('.')[1];
+                    demical && demical.length > demicalMax && callback(`不超过${demicalMax}位小数`);
+                  }
+                  callback();
+                } 
               }],
               initialValue: updateDayReportDetail.genInverter,
             })(
@@ -79,8 +97,18 @@ class ResourceElecInfo extends Component {
           <Form.Item label="日发电量(集电线路)">
             {getFieldDecorator('genIntegrated', {
               rules: [{ 
-                required: requireTargetArr.includes('genIntegrated'), 
-                message: '请填写集电线路日发电量' 
+                validator: (rule, value, callback)=>{
+                  if(requireTargetArr.includes('genIntegrated') && !value){
+                    callback('请填写集电线路日发电量' );
+                  }else if(isNaN(value)){
+                    callback('请填写数字');
+                  }else{
+                    const demicalMax = genUnit === 'kWh'? 2: 4;
+                    const demical = `${value}`.split('.')[1];
+                    demical && demical.length > demicalMax && callback(`不超过${demicalMax}位小数`);
+                  }
+                  callback();
+                }
               }],
               initialValue: updateDayReportDetail.genIntegrated,
             })(
@@ -91,8 +119,18 @@ class ResourceElecInfo extends Component {
           <Form.Item label="日发电量(上网电量)">
             {getFieldDecorator('genInternet', {
               rules: [{ 
-                required: requireTargetArr.includes('genInternet'), 
-                message: '请填写上网电量日发电量' 
+                validator: (rule, value, callback)=>{
+                  if(requireTargetArr.includes('genInternet') && !value){
+                    callback('请填写上网电量日发电量' );
+                  }else if(isNaN(value)){
+                    callback('请填写数字');
+                  }else{
+                    const demicalMax = genUnit === 'kWh'? 2: 4;
+                    const demical = `${value}`.split('.')[1];
+                    demical && demical.length > demicalMax && callback(`不超过${demicalMax}位小数`);
+                  }
+                  callback();
+                }
               }],
               initialValue: updateDayReportDetail.genInternet,
             })(
@@ -103,8 +141,18 @@ class ResourceElecInfo extends Component {
           <Form.Item label="日购网电量">
             {getFieldDecorator('dailyBuyPower', {
               rules: [{ 
-                required: requireTargetArr.includes('dailyBuyPower'), 
-                message: '请填写日购网电量' 
+                validator: (rule, value, callback)=>{
+                  if(requireTargetArr.includes('dailyBuyPower') && !value){
+                    callback('请填写日购网电量' );
+                  }else if(isNaN(value)){
+                    callback('请填写数字');
+                  }else{
+                    const demicalMax = genUnit === 'kWh'? 2: 4;
+                    const demical = `${value}`.split('.')[1];
+                    demical && demical.length > demicalMax && callback(`不超过${demicalMax}位小数`);
+                  }
+                  callback();
+                }
               }],
               initialValue: updateDayReportDetail.dailyBuyPower,
             })(
@@ -115,9 +163,17 @@ class ResourceElecInfo extends Component {
           <Form.Item label={`样板${stationType>0?'逆变器':'风机'}容量`}>
             {getFieldDecorator('modelInverterCapacity', {
               rules: [{ 
-                required: requireTargetArr.includes('modelInverterCapacity'), 
-                message: `请填写样板${stationType>0?'逆变器':'风机'}容量`,
-                pattern: /^(-?\d+)(\.\d+)?$/ 
+                validator: (rule, value, callback)=>{
+                  if(requireTargetArr.includes('modelInverterCapacity') && !value){
+                    callback(`请填写样板${stationType>0?'逆变器':'风机'}容量`);
+                  }else if(isNaN(value)){
+                    callback('请填写数字');
+                  }else{
+                    const demical = `${value}`.split('.')[1];
+                    demical && demical.length > 2 && callback('不超过2位小数');
+                  }
+                  callback();
+                }
               }],
               initialValue: updateDayReportDetail.modelInverterCapacity,
             })(
@@ -128,8 +184,18 @@ class ResourceElecInfo extends Component {
           <Form.Item label={`样板${stationType>0?'逆变器':'风机'}发电量`}>
             {getFieldDecorator('modelInverterPowerGen', {
               rules: [{ 
-                required: requireTargetArr.includes('modelInverterPowerGen'), 
-                message: `请填写样板${stationType>0?'逆变器':'风机'}发电量` 
+                validator: (rule, value, callback)=>{
+                  if(requireTargetArr.includes('modelInverterPowerGen') && !value){
+                    callback(`请填写样板${stationType>0?'逆变器':'风机'}发电量`);
+                  }else if(isNaN(value)){
+                    callback('请填写数字');
+                  }else{
+                    const demicalMax = genUnit === 'kWh'? 2: 4;
+                    const demical = `${value}`.split('.')[1];
+                    demical && demical.length > demicalMax && callback(`不超过${demicalMax}位小数`);
+                  }
+                  callback();
+                }
               }],
               initialValue: updateDayReportDetail.modelInverterPowerGen,
             })(
