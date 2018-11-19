@@ -85,7 +85,6 @@ class InspectOrbit extends Component {
         return e.username === users
       }
     })
-    console.log(userOrbit);
     userOrbit.map((item, index) => {
       for (var i = 0; i < item.pointData.length - 1; i++) {
         let value = item.pointData[i]
@@ -97,7 +96,7 @@ class InspectOrbit extends Component {
         })
       }
     })
-    console.log(data);
+    // console.log(data);
 
 
 
@@ -127,7 +126,7 @@ class InspectOrbit extends Component {
 
       })
     });
-    console.log(datas, '对总数据进行筛选');
+    // console.log(datas, '对总数据进行筛选');
     //拿到所有轨迹（每个数组是一条轨迹），以及每条轨迹的各个点
     let pointArray = userOrbit.map((e, i) => {
       return e.pointData
@@ -137,7 +136,7 @@ class InspectOrbit extends Component {
       })
       )
     })
-    console.log(pointArray, '轨迹线');
+    // console.log(pointArray, '轨迹线');
     //对每一条轨迹线，进行坐标的处理，起始点于结束点练成一条小线，先后线拼凑成轨迹
     let itemOrbits = pointArray.map((e, i) => {
       let itemLines = [];
@@ -155,7 +154,7 @@ class InspectOrbit extends Component {
     let itemOrbit = itemOrbits.length > 0 ? itemOrbits.reduce(function (prev, next) {
       return prev.concat(next);
     }) : [];
-    console.log(itemOrbit, '线坐标');
+    // console.log(itemOrbit, '线坐标');
 
     //拿取每条线的起始坐标点，以及终点坐标点；
     let startAndEndCoord = [];
@@ -175,7 +174,7 @@ class InspectOrbit extends Component {
         symbol: 'image:///img/end.png',
       })
     })
-    console.log(startAndEndCoord);
+    // console.log(startAndEndCoord);
 
 
 

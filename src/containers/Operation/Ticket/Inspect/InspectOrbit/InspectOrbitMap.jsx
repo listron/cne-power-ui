@@ -22,15 +22,15 @@ class OrbitMap extends Component {
 
   componentDidMount() {
     const { testId, orbitList,users,itemOrbit,startAndEndCoord,data } = this.props;
-    console.log(orbitList);
-    console.log(data);
+    // console.log(orbitList);
+    // console.log(data);
     const testChart = echarts.init(document.getElementById(testId));
     this.setMapChart(testChart, orbitList,users,itemOrbit,startAndEndCoord,data);
   }
 
   componentWillReceiveProps(nextProps) {
     const { testId, orbitList, users,itemOrbit,startAndEndCoord,data } = nextProps;
-    console.log(data);
+    // console.log(data);
     if (this.props.orbitList.length !== nextProps.orbitList.length || users !== this.props.users) {
       const testChart = echarts.init(document.getElementById(testId));
       this.setMapChart(testChart, orbitList,users,itemOrbit,startAndEndCoord,data);

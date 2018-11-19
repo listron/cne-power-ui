@@ -4,27 +4,27 @@ import { message } from 'antd';
 import Path from '../../../../constants/path';
 import { ticketAction } from '../ticketAction';
 
-function *changeInspectStore(action){//存储payload指定参数，替换reducer-store属性。
+function* changeInspectStore(action) {//存储payload指定参数，替换reducer-store属性。
   const { payload } = action;
   yield put({
-    type:  ticketAction.CHANGE_INSPECT_STORE,
+    type: ticketAction.CHANGE_INSPECT_STORE,
     payload,
   })
 }
 //获取巡检列表信息
-function* getInspectList(action){
+function* getInspectList(action) {
   const { payload } = action;
   let url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.getInspectionList;
-  yield put({ type: ticketAction.TICKET_FETCH});
-  try{
+  yield put({ type: ticketAction.TICKET_FETCH });
+  try {
     const response = yield call(axios.post, url, payload);
-    if(response.data.code === "10000"){
+    if (response.data.code === "10000") {
       const total = response.data.data.total || 0;
       let { pageNum, pageSize } = payload;
       const maxPage = Math.ceil(total / pageSize);
-      if(total === 0){ // 总数为0时，展示0页
+      if (total === 0) { // 总数为0时，展示0页
         pageNum = 0;
-      }else if(maxPage < pageNum){ // 当前页已超出
+      } else if (maxPage < pageNum) { // 当前页已超出
         pageNum = maxPage;
       }
       yield put({
@@ -37,10 +37,10 @@ function* getInspectList(action){
           inspectList: response.data.data.inspectList,
           selectedRowKeys: [],
         }
-        
+
       });
     }
-  }catch(e){
+  } catch (e) {
     console.log(e);
   }
 }
@@ -52,13 +52,13 @@ function* getInspectIdList(action) {
   yield put({ type: ticketAction.TICKET_FETCH });
   try {
     const response = yield call(axios.post, url, payload);
-    if(response.data.code === '10000'){
-      yield put({ 
-        type: ticketAction.GET_INSPECT_FETCH_SUCCESS, 
+    if (response.data.code === '10000') {
+      yield put({
+        type: ticketAction.GET_INSPECT_FETCH_SUCCESS,
         payload: {
           inspectIdList: response.data.data
         }
-      });      
+      });
     }
   } catch (e) {
     console.log(e);
@@ -66,34 +66,34 @@ function* getInspectIdList(action) {
 }
 
 // 获取巡检工单详情
-function* getInspectDetail(action){
+function* getInspectDetail(action) {
   const { payload } = action;
   let url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.getInspectDetail;
-  yield put({type: ticketAction.TICKET_FETCH });
+  yield put({ type: ticketAction.TICKET_FETCH });
   try {
-    const response = yield call(axios.get, url, { params: payload });  
-    if(response.data.code === "10000"){
-      yield put({ 
-        type: ticketAction.GET_INSPECT_FETCH_SUCCESS, 
+    const response = yield call(axios.get, url, { params: payload });
+    if (response.data.code === "10000") {
+      yield put({
+        type: ticketAction.GET_INSPECT_FETCH_SUCCESS,
         payload: {
           inspectDetail: response.data.data,
           ...payload
         }
-      });      
+      });
     }
-  } catch(e) {
+  } catch (e) {
     console.log(e);
   }
 }
 
 // 巡检添加异常
-function* addInspectAbnormal(action){
+function* addInspectAbnormal(action) {
   const { payload } = action;
   let url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.addInspectAbnormal;
   yield put({ type: ticketAction.TICKET_FETCH })
-  try{
+  try {
     const response = yield call(axios.post, url, payload);
-    if(response.data.code === "10000"){
+    if (response.data.code === "10000") {
       message.success('添加成功！');
       const inspectId = yield select(state => state.operation.inspect.get('inspectId'));
       yield put({
@@ -103,35 +103,35 @@ function* addInspectAbnormal(action){
         }
       })
     }
-    else{
+    else {
       message.error(response.data.message);
       yield put({
         type: ticketAction.SET_INSPECT_FAIL,
-        error:{
+        error: {
           code: response.data.code,
           message: response.data.message,
         }
       })
     }
-  }catch(e){
+  } catch (e) {
     console.log(e);
   }
 }
 // 清除Inspect
 function* clearInspect(action) {
-  yield put({ 
-    type: ticketAction.CLEAR_INSPECT_STATE, 
-  }); 
+  yield put({
+    type: ticketAction.CLEAR_INSPECT_STATE,
+  });
 }
 
 // 巡检异常设备转为工单
-function *transformDefect(action){
+function* transformDefect(action) {
   const { payload } = action;
   let url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.transformDefect;
   yield put({ type: ticketAction.TICKET_FETCH })
-  try{
-    const response = yield call(axios.post, url, payload );
-    if(response.data.code === "10000"){
+  try {
+    const response = yield call(axios.post, url, payload);
+    if (response.data.code === "10000") {
       message.success('转工单成功！');
       const inspectId = yield select(state => state.operation.inspect.get('inspectId'));
       yield put({
@@ -140,7 +140,7 @@ function *transformDefect(action){
           inspectId,
         }
       });
-    }else{
+    } else {
       message.success('转工单失败！');
       yield put({
         type: ticketAction.SET_INSPECT_FAIL,
@@ -150,19 +150,19 @@ function *transformDefect(action){
         }
       })
     }
-  }catch(e){
+  } catch (e) {
     console.log(e);
   }
 }
 
 // 巡检验收
-function *setInspectCheck(action){
+function* setInspectCheck(action) {
   const { payload } = action;
   let url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.setInspectCheck;
   yield put({ type: ticketAction.TICKET_FETCH })
-  try{
+  try {
     const response = yield call(axios.post, url, payload)
-    if(response.data.code === "10000"){ 
+    if (response.data.code === "10000") {
       message.success('验收成功！');
       const params = yield select(state => ({
         stationType: state.operation.defect.get('stationType'),
@@ -184,9 +184,9 @@ function *setInspectCheck(action){
       });
       yield put({
         type: ticketAction.CHANGE_SHOW_CONTAINER_SAGA,
-        payload: {container: 'list'},
+        payload: { container: 'list' },
       });
-    }else{
+    } else {
       message.error('验收失败！')
       yield put({
         type: ticketAction.SET_INSPECT_FAIL,
@@ -196,18 +196,18 @@ function *setInspectCheck(action){
         }
       })
     }
-  }catch(e){
+  } catch (e) {
     console.log(e);
   }
 }
 // 完成巡检
-function *finishInspect(action){
+function* finishInspect(action) {
   const { payload } = action;
   let url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.finishInspect;
   yield put({ type: ticketAction.TICKET_FETCH })
-  try{
+  try {
     const response = yield call(axios.post, url, payload)
-    if(response.data.code === "10000"){
+    if (response.data.code === "10000") {
       message.success('执行工单转入待验收成功！');
       const params = yield select(state => ({
         stationType: state.operation.defect.get('stationType'),
@@ -229,37 +229,37 @@ function *finishInspect(action){
       });
       yield put({
         type: ticketAction.CHANGE_SHOW_CONTAINER_SAGA,
-        payload: {container: 'list'},
+        payload: { container: 'list' },
       });
-    }else{
+    } else {
       message.error('执行工单转验收失败！')
       yield put({
         type: ticketAction.SET_INSPECT_FAIL,
-        error:{
+        error: {
           code: response.data.code,
           message: response.data.message,
         }
       })
     }
-  }catch(e){
+  } catch (e) {
     console.log(e);
   }
 }
 // 创建巡检
-function *createInspect(action){
+function* createInspect(action) {
   const { payload } = action;
   let url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.createInspect;
   yield put({ type: ticketAction.TICKET_FETCH });
   const isContinueAdd = payload.isContinueAdd;
   delete payload.isContinueAdd;
-  try{
+  try {
     const response = yield call(axios.post, url, payload)
-    if(response.data.code === "10000"){
+    if (response.data.code === "10000") {
       message.success('创建成功！')
-      if(!isContinueAdd) {
+      if (!isContinueAdd) {
         yield put({
           type: ticketAction.CHANGE_SHOW_CONTAINER_SAGA,
-          payload: {container: 'list'},
+          payload: { container: 'list' },
         });
       }
       const params = yield select(state => ({
@@ -284,7 +284,7 @@ function *createInspect(action){
         type: ticketAction.GET_INSPECT_ID_LIST_SAGA,
         payload: params
       });
-    }else{
+    } else {
       message.error('创建失败！');
       yield put({
         type: ticketAction.SET_INSPECT_FAIL,
@@ -294,25 +294,25 @@ function *createInspect(action){
         }
       })
     }
-  }catch(e){
+  } catch (e) {
     console.log(e);
   }
 }
 // 删除异常设备
-function *deleteAbnormal(action){
+function* deleteAbnormal(action) {
   const { payload } = action;
   let url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.deleteAbnormal;
   yield put({ type: ticketAction.TICKET_FETCH })
-  try{
-    const response = yield call(axios.get, url, {params: payload })
-    if(response.data.code === "10000"){
+  try {
+    const response = yield call(axios.get, url, { params: payload })
+    if (response.data.code === "10000") {
       message.success('删除成功！');
       const inspectId = yield select(state => state.operation.inspect.get('inspectId'));
       yield put({
         type: ticketAction.GET_INSPECT_DETAIL_SAGA,
         payload: { inspectId }
       })
-    }else{
+    } else {
       message.error('删除失败！');
       yield put({
         type: ticketAction.SET_INSPECT_FAIL,
@@ -322,18 +322,18 @@ function *deleteAbnormal(action){
         }
       })
     }
-  }catch(e){
+  } catch (e) {
     console.log(e);
   }
 }
 // 获取巡检标准
-function *getInspectStandard(action){
+function* getInspectStandard(action) {
   const { payload } = action;
   let url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.getInspectStandard;
-  yield put({type: ticketAction.TICKET_FETCH})
-  try{
-    const response = yield call(axios.get, url, {params: payload} )
-    if(response.data.code === "10000" && response.data.data.collection !== '0'){
+  yield put({ type: ticketAction.TICKET_FETCH })
+  try {
+    const response = yield call(axios.get, url, { params: payload })
+    if (response.data.code === "10000" && response.data.data.collection !== '0') {
       yield put({
         type: ticketAction.GET_INSPECT_FETCH_SUCCESS,
         payload: {
@@ -341,18 +341,18 @@ function *getInspectStandard(action){
         }
       })
     }
-  }catch(e){
+  } catch (e) {
     console.log(e);
   }
 }
 // 巡检批量验收
-function *inspectCheckBatch(action){
+function* inspectCheckBatch(action) {
   const { payload } = action;
   let url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.inspectCheckBatch;
-  yield put({type: ticketAction.TICKET_FETCH})
-  try{
+  yield put({ type: ticketAction.TICKET_FETCH })
+  try {
     const response = yield call(axios.post, url, payload)
-    if(response.data.code === "10000"){
+    if (response.data.code === "10000") {
       const params = yield select(state => ({
         stationType: state.operation.defect.get('stationType'),
         stationCodes: state.operation.defect.get('stationCodes'),
@@ -371,7 +371,7 @@ function *inspectCheckBatch(action){
         type: ticketAction.GET_INSPECT_LIST_SAGA,
         payload: params
       });
-    }else{
+    } else {
       yield put({
         type: ticketAction.SET_INSPECT_FAIL,
         error: {
@@ -380,24 +380,24 @@ function *inspectCheckBatch(action){
         }
       })
     }
-  }catch(e){
+  } catch (e) {
     console.log(e)
   }
 }
-function *getInspectDetailRecord(action){//获取巡检记录的table列表数据
+function* getInspectDetailRecord(action) {//获取巡检记录的table列表数据
   const { payload } = action;
   //let url='/mock/operation/inspectionList';
   let url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.getInspectDetailRecord;
-  yield put({type: ticketAction.TICKET_FETCH})
-  try{
-    const response = yield call(axios.get, url, {params: payload} )
-    if(response.data.code === '10000') {
+  yield put({ type: ticketAction.TICKET_FETCH })
+  try {
+    const response = yield call(axios.get, url, { params: payload })
+    if (response.data.code === '10000') {
       const totalCount = response.data.data.totalCount || 0;
       let { pageNum, pageSize } = payload;
       const maxPage = Math.ceil(totalCount / pageSize);
-      if(totalCount === 0){ // 总数为0时，展示0页
+      if (totalCount === 0) { // 总数为0时，展示0页
         pageNum = 0;
-      }else if(maxPage < pageNum){ // 当前页已超出
+      } else if (maxPage < pageNum) { // 当前页已超出
         pageNum = maxPage;
       }
       yield put({
@@ -405,11 +405,11 @@ function *getInspectDetailRecord(action){//获取巡检记录的table列表数�
         payload: {
           ...payload,
           totalCount,
-          pageNum,   
-          inspectDetailRecord: response.data.data.recordData||[],
+          pageNum,
+          inspectDetailRecord: response.data.data.recordData || [],
         },
-      });     
-    }  else{
+      });
+    } else {
       yield put({
         type: ticketAction.SET_INSPECT_FAIL,
         error: {
@@ -418,23 +418,23 @@ function *getInspectDetailRecord(action){//获取巡检记录的table列表数�
         }
       })
     }
-  }catch(e){
+  } catch (e) {
     console.log(e)
   }
 }
-function *getInspectUsers(action){//获得该电站下的巡检人
+function* getInspectUsers(action) {//获得该电站下的巡检人
   let url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.getInspectUsers;
-  yield put({type: ticketAction.TICKET_FETCH})
-  try{
-    const response = yield call(axios.get, url )
-    if(response.data.code === '10000') {
+  yield put({ type: ticketAction.TICKET_FETCH })
+  try {
+    const response = yield call(axios.get, url)
+    if (response.data.code === '10000') {
       yield put({
         type: ticketAction.GET_INSPECT_FETCH_SUCCESS,
         payload: {
-          inspectUsers: response.data.data||[],          
+          inspectUsers: response.data.data || [],
         },
-      });     
-    }  else{
+      });
+    } else {
       yield put({
         type: ticketAction.SET_INSPECT_FAIL,
         error: {
@@ -443,26 +443,26 @@ function *getInspectUsers(action){//获得该电站下的巡检人
         }
       })
     }
-  }catch(e){
+  } catch (e) {
     console.log(e)
   }
 }
-function *getInspectOrbit(action){//获得巡检人的巡检轨迹
+function* getInspectOrbit(action) {//获得巡检人的巡检轨迹
   const { payload } = action;
-   let url='/mock/operation/inspect/track';
-  //let url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.getInspectOrbit;
-  yield put({type: ticketAction.TICKET_FETCH})
-  try{
-    const response = yield call(axios.get, url,{ params: payload } )
-    if(response.data.code === '10000') {
+  //let url='/mock/operation/inspect/track';
+  let url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.getInspectOrbit;
+  yield put({ type: ticketAction.TICKET_FETCH })
+  try {
+    const response = yield call(axios.get, url, { params: payload })
+    if (response.data.code === '10000') {
       yield put({
         type: ticketAction.GET_INSPECT_FETCH_SUCCESS,
         payload: {
-          inspectUserData: response.data.data.userData||[],          
-          inspectTrackData: response.data.data.trackData||[],          
+          inspectUserData: response.data.data.userData || [],
+          inspectTrackData: response.data.data.trackData || [],
         },
-      });     
-    }  else{
+      });
+    } else {
       yield put({
         type: ticketAction.SET_INSPECT_FAIL,
         error: {
@@ -471,14 +471,14 @@ function *getInspectOrbit(action){//获得巡检人的巡检轨迹
         }
       })
     }
-  }catch(e){
+  } catch (e) {
     console.log(e)
   }
 }
 
 export function* watchInspect() {
   yield takeLatest(ticketAction.GET_INSPECT_DETAIL_SAGA, getInspectDetail);
-  yield takeLatest(ticketAction.CHANGE_INSPECT_STORE_SAGA ,changeInspectStore);
+  yield takeLatest(ticketAction.CHANGE_INSPECT_STORE_SAGA, changeInspectStore);
   yield takeLatest(ticketAction.ADD_INSPECT_ABNORMAL_SAGA, addInspectAbnormal);
   yield takeLatest(ticketAction.GET_INSPECT_LIST_SAGA, getInspectList);
   yield takeLatest(ticketAction.GET_INSPECT_ID_LIST_SAGA, getInspectIdList);
