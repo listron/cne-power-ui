@@ -4,7 +4,9 @@
   flex-direction: column;
   flex: 1;
   background: #fff;
-
+  .operation{
+    cursor: pointer;
+  }
   :global{
     .ant-tabs-nav-scroll{
       background-color: #f8f8f8;
@@ -108,6 +110,7 @@
             color: #199475;
           }
           .icon {
+            cursor: pointer;
             color: $themeColor;
             margin-right: 15px;
             font-size: 18px;
@@ -130,6 +133,7 @@
             }
           }
           .status {
+            cursor: pointer;
             margin-right: 4px;
           }
           .time{

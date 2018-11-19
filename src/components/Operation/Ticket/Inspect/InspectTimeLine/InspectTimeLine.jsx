@@ -66,6 +66,7 @@ class InspectTimeLine extends Component {
 
 
   renderItem(item, isLast) {
+    const{trackCount,recordCount}=this.props;
     const flowName = item.get('flowName');
     if (!isLast) {
       return (
@@ -76,8 +77,9 @@ class InspectTimeLine extends Component {
             <div className={styles.operateUser}>{item.get('operateUser')}</div>
             {flowName === '执行工单' ?
               <div>
-                <Button className={styles.viewStandard} onClick={this.onInspectOrbit}>查看巡检轨迹</Button>
-                <Button className={styles.viewStandard} onClick={this.onInspectRecord}>详细巡检记录</Button>
+               {trackCount===1? <Button className={styles.viewStandard} onClick={this.onInspectOrbit}>查看巡检轨迹</Button>:''}
+               {recordCount===1? <Button className={styles.viewStandard} onClick={this.onInspectRecord}>详细巡检记录</Button>:''}
+                
               </div> : ''}
           </div>
           {this.renderDetail(item)}
@@ -122,7 +124,7 @@ class InspectTimeLine extends Component {
   }
 
   render() {
-    const { processData, status } = this.props;
+    const { processData, status,trackCount,recordCount } = this.props;
     return (
       <div className={styles.timeLineWrap}>
         <div className={styles.title}>
@@ -131,10 +133,10 @@ class InspectTimeLine extends Component {
           <div className={styles.border}></div>
         </div>
         <Timeline className={styles.timeLines} pending={status !== '4'}>
-          {processData.map((item, index) => {
+          {processData.map((item, index,) => {
             return (
               <Timeline.Item dot={this.renderIcon(item, index === processData.size - 1)} key={'timeline' + index}>
-                {this.renderItem(item, index === processData.size - 1)}
+                {this.renderItem(item, index === processData.size - 1,)}
               </Timeline.Item>
             );
           })}

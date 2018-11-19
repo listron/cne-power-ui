@@ -152,6 +152,8 @@ class InspectDetailForm extends Component {
     const progressData = inspectDetail.get('processData');
     const inspectId = inspectDetail.get('inspectId');
     const stationCode=inspectDetail.get('stationCode');
+    const trackCount=inspectDetail.get('trackCount');
+    const recordCount=inspectDetail.get('recordCount');
     // console.log(stationCode);
     // //是为了把此工单里的设备名以及设备code进行组装，传到巡检记录详情里供筛选框使用
     // const deviceTypeCodes = inspectDetail.get('deviceTypeCodes') && inspectDetail.get('deviceTypeCodes').split(',');
@@ -211,6 +213,8 @@ class InspectDetailForm extends Component {
                   stationCode={stationCode}
                   getStationDeviceTypes={getStationDeviceTypes}
                   getInspectOrbit={getInspectOrbit}
+                  recordCount={recordCount}
+                  trackCount={trackCount}
                 />
               </div>
               <div className={styles.form} >

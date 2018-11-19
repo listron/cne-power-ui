@@ -123,7 +123,8 @@ class InspectRecordTable extends Component {
     return columns;
   }
   renderInspectPopover(text,record,index) {
-    const {phoneAddress}=text&&text.phoneAddress;
+   const {phoneAddress}=text||'';
+  //  console.log(phoneAddress);
     //phoneAddress如果是多张图，返回的数据是字符串的话，先转化为数组，然后循环遍历出图片
     return (
       <div>
