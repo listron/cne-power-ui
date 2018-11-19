@@ -67,9 +67,9 @@ class FilteredItemValue extends Component {
     const inspectUserArray = userId.split(',');
     const selectedInspectPerson = inspectUsers.filter(e => inspectUserArray.some(m => m === `${e.id}`));
     const inspectDevice = deviceTypeCode.split(',');
-    console.log(inspectDevice);
+    // console.log(inspectDevice);
     const selectedInspectDevice = deviceTypeItems&&deviceTypeItems.filter(e => inspectDevice.some(m => m === `${e.deviceTypeCode}`));
-    console.log(selectedInspectDevice);
+    // console.log(selectedInspectDevice);
     const style = {
       background: '#fff',
       borderStyle: 'dashed',

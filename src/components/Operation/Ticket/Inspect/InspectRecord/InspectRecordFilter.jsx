@@ -82,7 +82,7 @@ class InspectRecordFilter extends Component {
  
   //巡检状态
   inspectStatusChange = (value) => {
-    console.log(value);
+    // console.log(value);
     this.props.onChangeFilter({
       inspectStatus: value
     })
@@ -92,8 +92,8 @@ class InspectRecordFilter extends Component {
     const { showFilter } = this.state;
     const CheckboxGroup = Checkbox.Group;
     const { startDate, endDate, userId,deviceTypeCode, inspectUsers,deviceTypeItems} = this.props;
-    console.log(inspectUsers);
-    console.log(deviceTypeItems);
+    // console.log(inspectUsers);
+    // console.log(deviceTypeItems);
    
     const options = inspectUsers.map((item, i) => ({
       label: item&&item.name,
