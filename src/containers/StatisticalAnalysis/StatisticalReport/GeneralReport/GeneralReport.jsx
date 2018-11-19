@@ -48,6 +48,11 @@ class GeneralReport extends Component{
     })
   }
 
+  
+  disabledDate = (current) => { //日期不可选
+    return current && current > moment().startOf('day');
+  }
+
   stationSelected = (rest) => {
     const stationCodes = rest.map((item, index) => {
       return item.stationCode
@@ -69,12 +74,19 @@ class GeneralReport extends Component{
   downLoadFun = (url, fileName, date) => { // 根据路径，名称，日期，通用下载函数。
     axios.post(url,{},{responseType:'blob'}).then(response=>{
       const fileContent = response.data;
-      console.log(response);
+      const fileNameInfo = response.headers['content-disposition'];
+      let newFileName = fileName;
+      if(fileNameInfo){
+        const fileString = fileNameInfo.split(';')[1];
+        const fileNameCode = fileString? fileString.split('=')[1]: '';
+        const fileResult = fileNameCode?decodeURIComponent(fileNameCode): '';
+        fileResult && (newFileName = fileResult)
+      }
       if(fileContent) {
         const blob = new Blob([fileContent]);
         if ('download' in document.createElement('a')) { // 非IE下载
           const elink = document.createElement('a');
-          elink.download = fileName;
+          elink.download = newFileName;
           elink.style.display = 'none';
           elink.href = URL.createObjectURL(blob);
           document.body.appendChild(elink);
@@ -82,7 +94,7 @@ class GeneralReport extends Component{
           URL.revokeObjectURL(elink.href); // 释放URL 对象
           document.body.removeChild(elink);
         } else { // IE10+下载
-          navigator.msSaveBlob(blob, fileName);
+          navigator.msSaveBlob(blob, newFileName);
         }   
       }
     }).catch(error=>{
@@ -107,6 +119,7 @@ class GeneralReport extends Component{
               </div>
               <div className={styles.dateSearch}>
                 <DatePicker 
+                disabledDate={this.disabledDate}
                 placeholder={'选择时间'} 
                 onChange={this.ChangeReportDate} 
                 value={reportDate} 
@@ -125,6 +138,7 @@ class GeneralReport extends Component{
               </div>
               <div className={styles.dateSearch}>
                 <DatePicker 
+                disabledDate={this.disabledDate}
                 placeholder={'选择时间'}
                 onChange={this.ChangeFaultDate} 
                 value={faultDate} 
@@ -144,6 +158,7 @@ class GeneralReport extends Component{
               </div>
               <div className={styles.dateSearch}>
                 <DatePicker 
+                disabledDate={this.disabledDate}
                 placeholder={'选择时间'}
                 onChange={this.ChangeEleInfoDate}
                 value={eleInfoDate} 
@@ -163,6 +178,7 @@ class GeneralReport extends Component{
               </div>
               <div className={styles.dateSearch}>
                 <MonthPicker 
+                disabledDate={this.disabledDate}
                 placeholder={'选择月份'} 
                 onChange={this.ChangeProOperationDate}
                 value={proOperationDate} 
