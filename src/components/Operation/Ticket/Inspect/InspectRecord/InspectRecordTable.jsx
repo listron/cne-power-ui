@@ -47,9 +47,9 @@ class InspectRecordTable extends Component {
     })
   }
   onShowDetail = (inspectId) => {
-    this.props.onChangeFilter({
-      inspectId
-    });
+    // this.props.onChangeFilter({
+    //   inspectId
+    // });
     // this.props.onChangeShowContainer({ container: 'detail' });
   }
 
@@ -104,6 +104,8 @@ class InspectRecordTable extends Component {
       },
     }, {
       title: '查看照片',
+      dataIndex: 'phoneAddress',
+      key: 'phoneAddress',
       render: (text, record, index) => (
       
         <Popover
@@ -151,7 +153,7 @@ class InspectRecordTable extends Component {
           <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalCount} onPaginationChange={this.onPaginationChange} />
         </div>
         <Table
-          rowKey={(record) => { return record.inspectId }}
+          rowKey={(record) => { return record.username }}
           dataSource={inspectDetailRecord}
           // dataSource={inspectList.toJS()}
           columns={columns}
