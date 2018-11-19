@@ -78,6 +78,7 @@ function InverterTenMin({ sequenceChart }) {
           show: false,
         },
         axisLine: {
+          // onZero: false,
           lineStyle: {
             color: '#dfdfdf',
           },
@@ -274,6 +275,7 @@ function SactterChart({ theory,actual}) {
           // show: false,
         },
         axisLine: {
+          onZero: false,
           lineStyle: {
             color: '#dfdfdf',
           },
@@ -434,6 +436,7 @@ function SequenceChart({sequenceChartList}){
           show: false,
         },
         axisLine: {
+          onZero: false,
           lineStyle: {
             color: '#dfdfdf',
           },

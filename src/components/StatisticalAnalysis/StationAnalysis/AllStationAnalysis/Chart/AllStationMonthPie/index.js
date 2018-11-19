@@ -35,6 +35,7 @@ class AllStationMonthPie extends React.Component {
           color: 'rgba(0, 0, 0, 0.65)',
           fontSize: 12,
         },
+        extraCssText: "box-shadow: 0 0 3px rgba(0, 0, 0, 0.3)",
         formatter: function (params) {
           return '<div style="border-bottom: 1px solid #ccc; font-size: 12px;padding-bottom: 7px;margin-bottom: 7px;width:180px;overflow:hidden;">'+params.name+'</div>'
             + yAxisName.split('(')[0] + '：' + params.value +unit+ '<br>'

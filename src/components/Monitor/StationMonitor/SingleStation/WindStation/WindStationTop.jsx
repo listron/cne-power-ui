@@ -121,8 +121,7 @@ class PvStationTop extends Component {
         </div>
         <div className={styles.trueTimeData} >
           <div className={styles.pvlogo} >
-            {singleStationData && singleStationData.stationType === '0' ? <i className="iconfont icon-windlogo" /> :
-           <i className="iconfont icon-pvs" />}
+           <i className="iconfont icon-windlogo" /> 
           </div>
           <div className={styles.powerScale} >
             <div className={styles.trueTimeValue}>
@@ -137,7 +136,7 @@ class PvStationTop extends Component {
             <div className={styles.trueTimeUnit}>装机台数 台</div>
           </div>
           <div>
-            <div className={styles.trueTimeValue} style={{ color: "#e08031" }}>{singleStationData && singleStationData.dayResources || 0}</div>
+            <div className={styles.trueTimeValue} style={{ color: "#e08031" }}>{singleStationData && singleStationData.instantaneous || 0}</div>
             <div className={styles.trueTimeUnit}>平均风速 m/s</div>
           </div>
           <div>
