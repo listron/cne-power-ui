@@ -14,27 +14,27 @@ function InverterStatistics({ deviceDetail }) {
       </div>
       <PowerProgress devicePower={devicePower} deviceCapacity={deviceCapacity} />
       <div className={styles.timerDayGen}>
-        <div className={styles.genNum}>{(windSpeed || windSpeed===0 )? windSpeed:'--' }</div>
+        <div className={styles.genNum}>{(windSpeed || windSpeed===0 )? +windSpeed:'--' }</div>
         <div className={styles.empty}></div>
         <div className={styles.genText}>风速</div>
       </div>
       <div className={styles.timerDayGen}>
-        <div className={styles.genNum}>{(angleOfYaw || angleOfYaw===0 )? angleOfYaw:'--'}°</div>
+        <div className={styles.genNum}>{(angleOfYaw || angleOfYaw===0 )? +angleOfYaw:'--'}°</div>
         <div className={styles.empty}></div>
-        <div className={styles.genText}>偏航角度</div>
+        <div className={styles.genText}>风向</div>
       </div>
       <div className={styles.timerDayGen}>
-        <div className={styles.genNum}>{powerDay}</div>
+        <div className={styles.genNum}>{(powerDay || powerDay===0 )? parseFloat(powerDay).toFixed(4):'--'}</div>
         <div className={styles.empty}></div>
         <div className={styles.genText}>日发电量 万kWh</div>
       </div>
       <div className={styles.timerGen}>
-        <div className={styles.genNum}>{powerMonth}</div>
+        <div className={styles.genNum}>{(powerMonth || powerMonth===0 )? parseFloat(powerMonth).toFixed(4):'--'}</div>
         <div className={styles.empty}></div>
         <div className={styles.genText}>月累计发电量 万kWh</div>
       </div>
       <div className={styles.timerGen}>
-        <div className={styles.genNum}>{powerYear}</div>
+        <div className={styles.genNum}>{(powerYear || powerYear===0 )? parseFloat(powerYear).toFixed(4):'--'}</div>
         <div className={styles.empty}></div>
         <div className={styles.genText}>年累计发电量 万kWh</div>
       </div>

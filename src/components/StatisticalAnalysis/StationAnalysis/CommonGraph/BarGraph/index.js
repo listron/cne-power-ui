@@ -161,11 +161,14 @@ class BarGraph extends React.Component {
             show: false,
           },
           splitLine: {
-            // show:false,
             lineStyle: {
               color: '##f1f1f1',
               type: 'dashed'
             }
+          },
+          axisLabel: {
+            color: '#666',
+            formatter: xAxisName==='PR'?'{value} %':'{value}'
           },
         },
         {
@@ -213,8 +216,6 @@ class BarGraph extends React.Component {
           yAxisIndex: 1,
           data: barGraphRingRatio,
           //  data: [2.0, 2.2, 3.3, 4.5, 6.3, 10.2,],
-
-
         }
       ]
     }
@@ -316,6 +317,10 @@ class BarGraph extends React.Component {
               color: '#666',
               type: 'dashed'
             }
+          },
+          axisLabel: {
+            color: '#666',
+            formatter: xAxisName==='PR'?'{value} %':'{value}'
           },
         },
         {
