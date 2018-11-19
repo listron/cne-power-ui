@@ -149,6 +149,9 @@ class StationContrastDetail extends Component {
     }
     stationContrastDiagram.setOption(stationContrastOption);
   }
+
+ 
+
   render() {
     const { column, loading, stationContrastDetail } = this.props;
     return (

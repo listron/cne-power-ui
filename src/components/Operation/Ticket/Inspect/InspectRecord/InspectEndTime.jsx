@@ -6,8 +6,8 @@ import moment from 'moment';
 
 class InspectEndTime extends Component {
   static propTypes = {
-    inspectTimeStart: PropTypes.string,
-    inspectTimeEnd: PropTypes.string,  
+    startDate: PropTypes.string,
+    endDate: PropTypes.string,  
     onChangeFilter: PropTypes.func,
   }
 
@@ -22,33 +22,33 @@ class InspectEndTime extends Component {
   }
   onEndChange = (date,dateString) => {
     this.props.onChangeFilter({
-      inspectTimeEnd: dateString
+      endDate: dateString
     });
   }
   
 
   disabledStartDate = (current) => {
-    const inspectTimeEnd = this.props.inspectTimeEnd;
-    if(inspectTimeEnd && current) {
-      return current.valueOf() > moment(inspectTimeEnd);
+    const endDate = this.props.endDate;
+    if(endDate && current) {
+      return current.valueOf() > moment(endDate);
     }
     return false;
   }
 
   disabledEndDate = (current) => {
-    const inspectTimeStart = this.props.inspectTimeStart;
-    if(inspectTimeStart && current) {
-      return current.valueOf() < moment(inspectTimeStart).valueOf();
+    const startDate = this.props.startDate;
+    if(startDate && current) {
+      return current.valueOf() < moment(startDate).valueOf();
     }
     return false;
   }
 
   render() {
-    const { inspectTimeEnd } = this.props;
+    const { endDate } = this.props;
     return (
       <DatePicker
       disabledDate={this.disabledEndDate}
-      value={inspectTimeEnd ? moment(inspectTimeEnd) : null}
+      value={endDate ? moment(endDate) : null}
       placeholder="截止时间"
       onChange={this.onEndChange}
       />  

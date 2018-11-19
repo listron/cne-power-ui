@@ -59,6 +59,7 @@ class StationStatisticList extends React.Component {
       pageNum,
       pageSize,
       year: curYear,
+      stationType,
       month,
       dateType,
       sort,
