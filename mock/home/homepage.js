@@ -101,6 +101,26 @@ module.exports = [
     response:{
       "code": "10000",
       "message": "请求成功",
+      "data": {
+        average: '7.98',
+        hourList: [
+          { stationName: '富川', average: 4.57 },
+          { stationName: '朝东', average: 8.57 },
+          { stationName: '刚写', average: 14.57 },
+          { stationName: '接口', average: 4.57 },
+          { stationName: '大半', average: 4.57 },
+        ]
+      },
+      "serviceCode": "3.0"
+    },
+    delay:1000,
+    error:{}
+  },{
+    api:'/mock/homepage/faultNumber',
+    method:'get',
+    response:{
+      "code": "10000",
+      "message": "请求成功",
       "data": [
         {stationName: '富川', number: 4.57, monthList: [1,2,3,4,5,6,7,8,10,11,12].map(e=>({
           month: e, number: e*Math.random()*10,
@@ -123,7 +143,7 @@ module.exports = [
     delay:1000,
     error:{}
   },{
-    api:'/mock/homepage/alamr',
+    api:'/mock/homepage/alarm',
     method:'get',
     response:{
       "code": "10000",
@@ -184,6 +204,44 @@ module.exports = [
         internalNumber: 45,
         abroadNumber: 31,
 
+      },
+      "serviceCode": "3.0"
+    },
+    delay:1000,
+    error:{}
+  },{
+    api:'/mock/homepage/output',
+    method:'get',
+    response:{
+      "code": "10000",
+      "message": "请求成功",
+      "data": [1,2,3,4,5,6,7,8,9,10,11].map(e=>({
+        utc: e,
+        stationPower: e*10,
+        instantaneous: e*e,
+      })),
+      "serviceCode": "3.0"
+    },
+    delay:1000,
+    error:{}
+  },{
+    api:'/mock/homepage/singleStation',
+    method:'get',
+    response:{
+      "code": "10000",
+      "message": "请求成功",
+      "data": {
+        stationName: '电站1',
+        stationType: 0,
+        stationPower: '1234',
+        stationCapacity: '1122',
+        dayPower: '1231',
+        monthPower: '12113',
+        yearPower: '4535654',
+        stationStatus: {
+          statusCode: 200,
+          statusName: '正常啊！'
+        }
       },
       "serviceCode": "3.0"
     },
