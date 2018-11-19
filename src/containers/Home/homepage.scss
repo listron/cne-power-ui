@@ -11,8 +11,7 @@
   background:#0c2539;
   overflow: auto;
   display: flex;
-  height: 100vh;
-  flex-direction: column;
+  min-height: 100vh;
   flex-wrap: wrap;
   background-image: url('/img/tiltebg.png'),url('/img/homepage.png');
   background-position: center 40px, center 189px;

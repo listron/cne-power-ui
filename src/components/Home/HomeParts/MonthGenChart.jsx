@@ -8,13 +8,14 @@ import { showNoData, hiddenNoData } from '../../../constants/echartsNoData';
 class MonthGenChart extends Component{
   static propTypes = {
     hasMultipleType: PropTypes.bool,
-    monthElec: PropTypes.array,
+    monthPower: PropTypes.array,
+    getMonthPower: PropTypes.func,
   }
 
   constructor(props){
     super(props);
     this.state = {
-      monthType: 'all'
+      monthType: 'wind'
     }
   }
 
@@ -27,6 +28,8 @@ class MonthGenChart extends Component{
   }
 
   setMonthChart = (monthChart) => {
+    const { monthPower } = this.props;
+    console.log(monthPower);
     const xAxisArr = [1,2,3,4,5,6,7,8,9,10,11,12];
     const yGenData = [100,201,341,114,95,276,317,88,19,120,311,102];
     const yRateData = [12,21,31,14,51,16,17,18,29,10,31,27];
@@ -153,16 +156,18 @@ class MonthGenChart extends Component{
 
   changeMonthType = (monthType) => {
     this.setState({ monthType });
+    this.props.getMonthPower({ monthType });
   }
 
 
   render(){
     const { monthType } = this.state;
+    const { hasMultipleType } = this.props;
     return (<section className={styles.monthGen}>
       <h3>每月发电量</h3>
-      <div className={styles.checkTags}>
+      {hasMultipleType && <div className={styles.checkTags}>
        <StationTypeTag showTotal={false} activeType={monthType} onChange={this.changeMonthType} />
-      </div>
+      </div>}
       <div id="homeMonthElec" className={styles.monthChart} ></div>
     </section>)
   }

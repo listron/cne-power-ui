@@ -24,8 +24,8 @@ class MapResourceData extends Component{
     const { detail } = nextProps;
     const curDetail = this.props.detail;
     if(detail.value !== detail.curValue){
-      console.log(detail);
-      console.log(curDetail);
+      // console.log(detail);
+      // console.log(curDetail);
     }
   }
 

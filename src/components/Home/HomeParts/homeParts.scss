@@ -2,12 +2,17 @@
 @import '../homepageParts.scss';
 
 @media screen and (max-width: 1919px) { // 1920以下宽度屏按1680展示
+  .stationGeneral, .completeRate, .operationInfo{
+    width: 400px;
+  }
   //1. 各个盒子宽度
   //2. 完成率内容宽度
 }
 
 @media screen and (min-width: 1920px){ // 1920及以上屏幕按1920展示
-  
+  .stationGeneral{
+    width: 435px;
+  }
 }
 
 .stationTypeTag{ // 全部,风,光切换样式。
@@ -28,29 +33,27 @@
 }
 
 .stationGeneral{ // 电站概况
+  @include boxStyle();
   height: 320px;
-  display: flex;
-  flex-wrap: wrap;
   position: relative;
-  border:1px solid #3f566c;
-  box-shadow:0 0 6px 0 rgba(255,255,255,0.30);
   align-content: flex-start;
   h3{
     @include titles();
-    width: 100%;
-    margin: 12px 0 0;
-    height: 36px;
   }
   .checkTags{
     @include typeTags();
   }
+  .generalBox{
+    display: flex;
+    flex-wrap: wrap;
+  }
   .eachGeneral{
     width: 50%;
-    margin-top: 16px;
+    margin-bottom: 16px;
     .value,.unit,.name{
       font-family:PingFangSC-Regular;
       color:#06bdf4;
-      margin-left: 40px;
+      margin-left: 36px;
     }
     .value{
       font-size:28px;
@@ -58,17 +61,14 @@
     }
     .unit{
       font-size:18px;
-      line-height:16px;
       margin-left: 0;
     }
     .name{
       font-size:22px;
-      line-height:16px;
-      margin-top: 8px;
+      line-height:24px;
     }
   }
 }
-
 
 .monthGen, .deviceStatus, .energySaving, .eqpHours, .faultList, .alarmList, .completeRate, .operationInfo{ // 每月发电量样式 + 其他所有盒子总样式。
   height: 205px;
@@ -77,7 +77,6 @@
   position: relative;
   h3{
     @include titles();
-    margin: 8px 0 0;
   }
   .checkTags{
     @include typeTags();
@@ -90,13 +89,15 @@
 
 .completeRate, .operationInfo{ // 计划完成率 + 运维情况部分样式
   margin-top: 12px;
-  width:400px;
   height: 185px;
   .text{ // 风，光提示
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     height: 36px;
     line-height: 36px;
+    .empty{
+      width: 286px;
+    }
     .wind, .pv{
       padding-left: 16px;
       height: 21px;
@@ -124,21 +125,27 @@
     height: 30px;
     line-height: 30px;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     .windPercent, .pvPercent, .planName{
       font-size: 20px;
       color: #06bdf4;
+      flex: 1;
+      text-align: left;
     }
     .planName{
       font-size: 14px;
+      width: 60px;
+      text-align: center;
     }
     .windPercent{
+      text-align: right;
       color: #48cf49;
     }
     :global{
       .ant-progress{
         width: 105px;
+        margin: 0 8px;
         top: -2px;
         .ant-progress-inner{
           background:#28608f;

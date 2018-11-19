@@ -1,29 +1,37 @@
 import React from 'react';
 import { Progress } from 'antd';
 import styles from './homeParts.scss';
+import { dataFormat } from '../../../utils/utilFunc';
 
-export const CompleteRate = () => { // 计划完成
+export const CompleteRate = ({ mapStation, completeRate }) => { // 计划完成
+  const hasPv = mapStation.some(e => e.stationType === 1);
+  const hasWind = mapStation.some(e => e.stationType === 0);
+  const windYearRate = dataFormat(completeRate.windYearRate);
+  const windMonthRate = dataFormat(completeRate.windMonthRate);
+  const PVYearRate = dataFormat(completeRate.PVYearRate);
+  const PVMonthRate = dataFormat(completeRate.PVMonthRate);
   return (
     <section className={styles.completeRate}>
       <h3>计划完成率</h3>
       <div className={styles.completeInfo}>
         <div className={styles.text}>
-          <span className={styles.wind}>风电</span>
-          <span className={styles.pv}>光伏</span>
+          {hasWind && <span className={styles.wind}>风电</span>}
+          {hasPv && hasWind && <span className={styles.empty}></span>}
+          {hasPv && <span className={styles.pv}>光伏</span>}
         </div>
         <div className={styles.timeComplete}>
-          <span className={styles.windPercent}>96%</span>
-          <Progress percent={50} size="small" strokeColor="#48cf49" showInfo={false} />
+          {hasWind && <span className={styles.windPercent}>{windMonthRate}%</span>}
+          {hasWind && <Progress percent={windMonthRate} size="small" strokeColor="#48cf49" showInfo={false} />}
           <span className={styles.planName}>月计划</span>
-          <Progress percent={68} size="small" strokeColor="#06bdf4" showInfo={false} />
-          <span className={styles.pvPercent}>98%</span>
+          {hasPv && <Progress percent={PVMonthRate} size="small" strokeColor="#06bdf4" showInfo={false} />}
+          {hasPv && <span className={styles.pvPercent}>{PVMonthRate}%</span>}
         </div>
         <div className={styles.timeComplete}>
-          <span className={styles.windPercent}>98%</span>
-          <Progress percent={98} size="small" strokeColor="#48cf49" showInfo={false} />
+          {hasWind && <span className={styles.windPercent}>{windYearRate}%</span>}
+          {hasWind && <Progress percent={windYearRate} size="small" strokeColor="#48cf49" showInfo={false} />}
           <span className={styles.planName}>年计划</span>
-          <Progress percent={21} size="small" strokeColor="#06bdf4" showInfo={false} />
-          <span className={styles.pvPercent}>91%</span>
+          {hasPv && <Progress percent={PVYearRate} size="small" strokeColor="#06bdf4" showInfo={false} />}
+          {hasPv && <span className={styles.pvPercent}>{PVYearRate}%</span>}
         </div>
       </div>
     </section>

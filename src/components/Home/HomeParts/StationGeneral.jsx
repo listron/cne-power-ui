@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 
 class StationGeneral extends Component{
   static propTypes = {
+    realTimeInfo: PropTypes.object,
     hasMultipleType: PropTypes.bool,
     stations: PropTypes.array,
   }
@@ -12,7 +13,7 @@ class StationGeneral extends Component{
   constructor(props){
     super(props);
     this.state = {
-      generalType: 'all'
+      generalType: 'all',
     }
   }
 
@@ -36,33 +37,43 @@ class StationGeneral extends Component{
   }
 
   render(){
-    const generalArr = [
-      {value: 30000, name: '装机容量', unit: 'MW'},
-      {value: 2354, name: '今日发电量', unit: '万kWh'},
-      {value: 88, name: '电站数', unit: '个'},
-      {value: 2333, name: '月累计发电量', unit: '万kWh'},
-      {value: 6000, name: '装机台数', unit: '台'},
-      {value: 90000, name: '年累计发电量', unit: '万kWh'},
-    ];
-    const { hasMultipleType } = this.props;
+    const { hasMultipleType, realTimeInfo } = this.props;
     const { generalType } = this.state;
+    let dataSummary;
+    if(generalType === 'all'){
+      dataSummary = realTimeInfo.allSummary || {};
+    }else if(generalType === 'wind'){
+      dataSummary = realTimeInfo.windSummary || {};
+    }else if(generalType === 'pv'){
+      dataSummary = realTimeInfo.pvSummary || {};
+    }
+    const generalArr = [
+      {value: dataSummary.stationCapacity, name: '装机容量', unit: 'MW'},
+      {value: dataSummary.dayPower, name: '今日发电量', unit: '万kWh'},
+      {value: dataSummary.stationCount, name: '电站数', unit: '个'},
+      {value: dataSummary.monthPower, name: '月累计发电量', unit: '万kWh'},
+      {value: dataSummary.stationUnitCount, name: '装机台数', unit: '台'},
+      {value: dataSummary.yearPower, name: '年累计发电量', unit: '万kWh'},
+    ];
     return (<section className={styles.stationGeneral}>
       <h3>电站概况</h3>
       {hasMultipleType && <div className={styles.checkTags}>
         <StationTypeTag showTotal activeType={generalType} onChange={this.changeGeneralType} />
       </div>}
-      {generalArr.map(e => {
-        const dataValue = this.numFormat(e.value).join(',');
-        return (
-          <div key={e.name} className={styles.eachGeneral}>
-            <div>
-              <span className={styles.value}>{dataValue}</span>
-              <span className={styles.unit}>{e.unit}</span>
+      <div className={styles.generalBox}>
+        {generalArr.map(e => {
+          const dataValue = this.numFormat(e.value).join(',');
+          return (
+            <div key={e.name} className={styles.eachGeneral}>
+              <div>
+                <span className={styles.value}>{dataValue || '--'}</span>
+                <span className={styles.unit}>{e.unit}</span>
+              </div>
+              <div className={styles.name}>{e.name}</div>
             </div>
-            <div className={styles.name}>{e.name}</div>
-          </div>
-        )
-      })}
+          )
+        })}
+      </div>
     </section>)
   }
 }

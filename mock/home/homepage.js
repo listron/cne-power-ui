@@ -71,8 +71,10 @@ module.exports = [
       "code": "10000",
       "message": "请求成功",
       "data": {
-        yearRate: '83.27',
-        monthRate: '91.87',
+        windYearRate: '81.25',
+        windMonthRate: '71.55',
+        PVYearRate: '92.17',
+        PVMonthRate: '90.1',
       },
       "serviceCode": "3.0"
     },
@@ -84,13 +86,11 @@ module.exports = [
     response:{
       "code": "10000",
       "message": "请求成功",
-      "data": {
-        monthDataList: [1,2,3,4,5,6,7,8,10,11,12].map(e=>({
-          month: e,
-          power: `${parseInt(Math.random()*100)}`,
-          rate: `${e/2}`
-        }))
-      },
+      "data": [1,2,3,4,5,6,7,8,10,11,12].map(e=>({
+        month: e,
+        power: `${parseInt(Math.random()*100)}`,
+        rate: `${e/2}`
+      })),
       "serviceCode": "3.0"
     },
     delay:1000,
@@ -193,18 +193,13 @@ module.exports = [
     response:{
       "code": "10000",
       "message": "请求成功",
-      "data": {
-        positionList: [1,3,4,5,6,8,12,1,21,123,10].map(e=>({
-          stationCode: e,
-          stationName: `随机电站${e}`,
-          stationType: e%2,
-          longitude: Math.random()*100,
-          latitude: Math.random()*100,
-        })),
-        internalNumber: 45,
-        abroadNumber: 31,
-
-      },
+      "data": [1,3,4,5,6,8,12,1,21,123,10].map(e=>({
+        stationCode: e,
+        stationName: `随机电站${e}`,
+        stationType: e%2 + 1,
+        longitude: Math.random()*100,
+        latitude: Math.random()*100,
+      })),
       "serviceCode": "3.0"
     },
     delay:1000,

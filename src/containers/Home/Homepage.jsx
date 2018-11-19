@@ -17,32 +17,42 @@ import PropTypes from 'prop-types';
 class Homepage extends Component {
 
   static propTypes = {
-    stations: PropTypes.array,
+    mapStation: PropTypes.array,
+    realTimeInfo: PropTypes.object,
+    completeRate: PropTypes.object,
     changeLoginStore: PropTypes.func,
     homepageReset: PropTypes.func,
+    getMapStation: PropTypes.func,
+    getRealTimeData: PropTypes.func,
+    getCompleteRate: PropTypes.func,
+    getEnergySaving: PropTypes.func,
+    getMonthPower: PropTypes.func,
+    getEqpHours: PropTypes.func,
+    getFaultNumber: PropTypes.func,
+    getSingleStation: PropTypes.func,
+    getAlarmList: PropTypes.func,
+    getOutputDiagram: PropTypes.func,
+    getOperationInfo: PropTypes.func,
   }
 
   constructor(props){
     super(props);
-    const stationTypeSet = new Set(props.stations.map(e=>e.stationType));
     this.state = {
-      hasMultipleType: stationTypeSet.size > 1, // 用户有多种类型电站。
+      hasMultipleType: false, // 用户是否有多种类型电站。
     }
   }
 
   componentDidMount(){
-    const { stations } = this.props;
-    stations.length > 0 && console.log('一开始就有电站信息') && this.getOriginData();
+    this.props.getMapStation(); // 先获取电站信息
   }
 
   componentWillReceiveProps(nextProps){
-    const { stations } = nextProps;
-    const preStations = this.props.stations;
-    if(preStations.length === 0 && stations.length > 0){ // 拿到
-      const stationTypeSet = new Set(stations.map(e=>e.stationType));
+    const { mapStation } = nextProps;
+    const preStations = this.props.mapStation;
+    if(preStations.length === 0 && mapStation.length > 0){ // 拿到电站信息后，再请求页面数据
+      const stationTypeSet = new Set(mapStation.map(e=>e.stationType));
       this.setState({ hasMultipleType: stationTypeSet.size > 1 });
-      console.log('现在拿到电站信息了。')
-      this.getOriginData()
+      this.getOriginData();
     }
   }
 
@@ -51,21 +61,30 @@ class Homepage extends Component {
   }
 
   getOriginData = () => { // 获取所有页面内数据。
-    console.log('获取所有数据了哈！')
+    this.props.getRealTimeData();
+    this.props.getCompleteRate();
+    this.props.getEnergySaving();
+    this.props.getMonthPower();
+    this.props.getEqpHours();
+    this.props.getFaultNumber();
+    this.props.getSingleStation();
+    this.props.getAlarmList();
+    this.props.getOutputDiagram();
+    this.props.getOperationInfo();
   }
 
   render() {
-    const { changeLoginStore } = this.props;
+    const { changeLoginStore, realTimeInfo, mapStation, completeRate } = this.props;
     const { hasMultipleType } = this.state;
     return (
       <div className={styles.homepage}>
+        <HomepageTop changeLoginStore={changeLoginStore} realTimeInfo={realTimeInfo} />
         <div className={styles.innerContent}>
-          <HomepageTop changeLoginStore={changeLoginStore} />
           <div className={styles.middleBox}>
             <div className={styles.leftInfo}>
-              <StationGeneral hasMultipleType={hasMultipleType} />
-              <CompleteRate />
-              <MonthGenChart hasMultipleType={hasMultipleType} />
+              <StationGeneral hasMultipleType={hasMultipleType} realTimeInfo={realTimeInfo}  />
+              <CompleteRate mapStation={mapStation} completeRate={completeRate} />
+              <MonthGenChart {...this.props} />
             </div>
             <div className={styles.mapInfo}>
               <CenterMap />
@@ -90,13 +109,24 @@ class Homepage extends Component {
 
 const mapStateToProps = (state) => ({
   ...state.homepage.toJS(),
-  stations: state.common.get('stations').toJS(),
 });
 
 const mapDispatchToProps = (dispatch) => ({
   changeLoginStore: params => dispatch({ type: loginAction.CHANGE_LOGIN_STORE_SAGA, params }),
   changeHomepageStore: payload => dispatch({type: homepageAction.changeHomepageStore, payload}),
   homepageReset: payload => dispatch({type: homepageAction.homepageReset, payload}),
+
+  getRealTimeData: payload => dispatch({type: homepageAction.getRealTimeData, payload}),
+  getCompleteRate: payload => dispatch({type: homepageAction.getCompleteRate, payload}),
+  getEnergySaving: payload => dispatch({type: homepageAction.getEnergySaving, payload}),
+  getMonthPower: payload => dispatch({type: homepageAction.getMonthPower, payload}),
+  getEqpHours: payload => dispatch({type: homepageAction.getEqpHours, payload}),
+  getFaultNumber: payload => dispatch({type: homepageAction.getFaultNumber, payload}),
+  getMapStation: payload => dispatch({type: homepageAction.getMapStation, payload}),
+  getSingleStation: payload => dispatch({type: homepageAction.getSingleStation, payload}),
+  getAlarmList: payload => dispatch({type: homepageAction.getAlarmList, payload}),
+  getOutputDiagram: payload => dispatch({type: homepageAction.getOutputDiagram, payload}),
+  getOperationInfo: payload => dispatch({type: homepageAction.getOperationInfo, payload}),
 });
 
 
