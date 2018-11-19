@@ -78,6 +78,7 @@ function InverterTenMin({ sequenceChart }) {
           show: false,
         },
         axisLine: {
+          // onZero: false,
           lineStyle: {
             color: '#dfdfdf',
           },
@@ -274,6 +275,7 @@ function SactterChart({ theory,actual}) {
           // show: false,
         },
         axisLine: {
+          onZero: false,
           lineStyle: {
             color: '#dfdfdf',
           },
@@ -362,9 +364,9 @@ function SequenceChart({sequenceChartList}){
     let pitchAngle1Data = [], pitchAngle2Data = [],pitchAngle3Data = [],speedData=[], xTime = [],replaceData=[];
     sequenceChartList.length > 0 && sequenceChartList.forEach(e => {
       xTime.push(moment(moment.utc(e.utc).toDate()).local().format('YYYY-MM-DD HH:mm'));
-      pitchAngle1Data.push(e.pitchAngle1 && +e.pitchAngle1.toFixed(2) || '--');
-      pitchAngle2Data.push(e.pitchAngle2 && +e.pitchAngle2.toFixed(2) || '--');
-      pitchAngle3Data.push(e.pitchAngle2 && +e.pitchAngle3.toFixed(2) || '--');
+      pitchAngle1Data.push(e.pitchAngle1 && parseInt(e.pitchAngle1).toFixed(2) || '--');
+      pitchAngle2Data.push(e.pitchAngle2 && parseInt(e.pitchAngle2).toFixed(2) || '--');
+      pitchAngle3Data.push(e.pitchAngle2 && parseInt(e.pitchAngle3).toFixed(2) || '--');
       speedData.push(e.speed);
       replaceData.push('--')
     });
@@ -434,6 +436,7 @@ function SequenceChart({sequenceChartList}){
           show: false,
         },
         axisLine: {
+          onZero: false,
           lineStyle: {
             color: '#dfdfdf',
           },

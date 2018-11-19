@@ -1,26 +1,22 @@
-import { Modal, Select, Table } from 'antd';
+import { Modal, Select, Table, Popover, Button } from 'antd';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { getInspectSortField, getStatus } from '../../../../../constants/ticket';
 import CommonPagination from '../../../../Common/CommonPagination';
 import styles from './inspectRecord.scss';
+import { Link } from 'react-router-dom';
 
 const confirm = Modal.confirm;
 const Option = Select.Option;
 
 class InspectRecordTable extends Component {
   static propTypes = {
-    inspectStatusStatistics: PropTypes.object,
     pageNum: PropTypes.number,
     pageSize: PropTypes.number,
     total: PropTypes.number,
     loading: PropTypes.bool,
     status: PropTypes.string,
-    selectedRowKeys: PropTypes.array,
-    inspectCheckBatch: PropTypes.func,
     onChangeFilter: PropTypes.func,
-    changeInspectStore: PropTypes.func,
-    onChangeShowContainer: PropTypes.func,
+    getInspectDetailRecord: PropTypes.func,
   }
 
   constructor(props) {
@@ -30,211 +26,143 @@ class InspectRecordTable extends Component {
     }
   }
 
-  onAdd = () => {
-    this.props.onChangeShowContainer({ container: 'create' });
-  }
-
   onChangeTable = (pagination, filter, sorter) => {
-    if (Object.keys(sorter).length > 0) {
-      const field = getInspectSortField(sorter.field);
-      const order = sorter.order === 'ascend' ? '0' : '1';
-      this.props.onChangeFilter({
-        sort: field + ',' + order
-      });
-    }
-
-  }
-
-  onInspectCheck = () => {
-    confirm({
-      title: '确认全部验收吗？',
-      onOk: () => {
-        this.props.inspectCheckBatch({
-          inspectId: this.props.selectedRowKeys.join(',')
-        });
-      },
+    const { getInspectDetailRecord, pageNum, pageSize, inspectId, startDate, endDate, userId, inspectStatus, sortType } = this.props;
+    const { field, order } = sorter;
+    const sort = order ? (sorter.order === 'descend' ? 1 : 0) : '';
+    // console.log(sort);
+    this.props.onChangeFilter({
+      sortType: sort
     });
+    console.log(this.props.sortType);
+    getInspectDetailRecord({
+      inspectId,
+      pageNum,
+      pageSize,
+      endDate,
+      startDate,
+      userId,
+      sortType: sort,
+      inspectStatus
+    })
   }
-
   onShowDetail = (inspectId) => {
-    this.props.changeInspectStore({
-      inspectId
-    });
-    this.props.onChangeShowContainer({ container: 'detail' });
-  }
-
-  onSelectChange = (selectedRowKeys, selectedRows) => {
-    let status = this.getSelectedRowsStatus(selectedRows);
-    this.setState({
-      currentSelectedStatus: status
-    });
-    this.props.changeInspectStore({ selectedRowKeys });
+    // this.props.onChangeFilter({
+    //   inspectId
+    // });
+    // this.props.onChangeShowContainer({ container: 'detail' });
   }
 
   onPaginationChange = ({ currentPage, pageSize }) => {
+    const { pageNum, inspectId, startDate, endDate, userId, inspectStatus, sortType } = this.props;
     this.props.onChangeFilter({
       pageNum: currentPage,
       pageSize
     });
+    this.props.getInspectDetailRecord({ inspectId, pageNum: currentPage, pageSize, startDate, endDate, userId, inspectStatus, sortType })
   }
 
-  onHandle = (value) => {
-    if (value === 'check') {
-      this.onInspectCheck();
-    }
-  }
-
-  getSelectedRowsStatus(selectedRows) {
-    let map = {};
-    let status;
-    for (var i = 0; i < selectedRows.length; i++) {
-      if (!map[selectedRows[i].inspectStatus]) {
-        map[selectedRows[i].inspectStatus] = 1;
-      } else {
-        map[selectedRows[i].inspectStatus] += 1;
-      }
-    }
-    let values = [];
-    for (var k in map) {
-      values.push(map[k]);
-      status = k;
-    }
-    if (values.length === 1) {
-      return status;
-    } else {
-      return null;
-    }
-  }
-
-  cancelRowSelect = () => {
-    this.props.changeInspectStore({
-      selectedRowKeys: []
-    });
-  }
 
   initColumn() {
     const columns = [{
       title: '参与人名称',
-      dataIndex: 'inspectName',
-      key: 'inspectName',
-      sorter: true,
+      dataIndex: 'username',
+      key: 'username',
     }, {
-      title: '开始时间',
-      dataIndex: 'stationName',
-      key: 'stationName',
-      sorter: true,
-    }, {
-      title: '结束时间',
-      dataIndex: 'deviceTypeName',
-      key: 'deviceTypeName',
+      title: '记录时间',
+      dataIndex: 'recordDate',
+      key: 'recordDate',
       sorter: true,
     }, {
       title: '巡检状态',
-      dataIndex: 'abnormalNum',
-      key: 'abnormalNum',
-      // sorter: true,
+      dataIndex: 'recordStatus',
+      key: 'recordStatus',
     }, {
       title: '异常设备类型',
-      dataIndex: 'startTime',
-      key: 'startTime',
-      sorter: true,
+      dataIndex: 'deviceTypeName',
+      key: 'deviceTypeName',
     }, {
       title: '异常设备名称',
-      dataIndex: 'checkTime',
-      key: 'checkTime',
+      dataIndex: 'deviceName',
+      key: 'deviceName',
       render: (text, record) => {
         return text ? text : '--'
       },
-      sorter: true,
-    },{
-      title: '缺陷类型',
-      dataIndex: '1',
-      key: '1',
-      render: (text, record) => {
-        return text ? text : '--'
-      },
-      sorter: true,
-    },{
-      title: '缺陷描述',
-      dataIndex: '22',
-      key: '22',
-      render: (text, record) => {
-        return text ? text : '--'
-      },
-      sorter: true,
     }, {
-      title: '无异常描述',
-      dataIndex: '33',
-      key: '33',
-      sorter: true,
-      render: (value, record, index) => (
-        <div className={styles.inspectStatus} >
-          <span>{getStatus(value)}</span>
-          <div className={styles.warning} >
-            {record.isOvertime === '0' ? <div className={styles.overTime}>超时</div> : null}
-          </div>
-        </div>
-      ),
+      title: '缺陷类型',
+      dataIndex: 'faultTypeName',
+      key: 'faultTypeName',
+      render: (text, record) => {
+        return text ? text : '--'
+      },
+    }, {
+      title: '描述详情',
+      dataIndex: 'recordDesc',
+      key: 'recordDesc',
+      render: (text, record) => {
+        return text ? text : '--'
+      },
     }, {
       title: '查看照片',
-      render: (text, record) => (
-        <span>
-          <i className="iconfont icon-look" onClick={() => { this.onShowDetail(record.inspectId) }} />
-        </span>
+      dataIndex: 'phoneAddress',
+      key: 'phoneAddress',
+      render: (text, record, index) => (
+      
+        <Popover
+          trigger="click"
+          content={this.renderInspectPopover(text, record, index)}
+          
+        >
+          <span>
+            <i className="iconfont icon-look" onClick={() => { this.onShowDetail(record.inspectId) }} />
+          </span>
+        </Popover>
+
       ),
     }];
     return columns;
   }
-
-  renderOperation() {
-    const { selectedRowKeys } = this.props;
-    const { currentSelectedStatus } = this.state;
-    const unselected = true;
-    // const unselected = selectedRowKeys.length===0;
-    const rightHandler = localStorage.getItem('rightHandler');
-    const checkInspectRight = rightHandler && rightHandler.split(',').includes('workExamine_inspection_check');
-    if (!checkInspectRight) {
-      return null;
-    }
+  renderInspectPopover(text,record,index) {
+    const {phoneAddress}=text&&text.phoneAddress;
+    //phoneAddress如果是多张图，返回的数据是字符串的话，先转化为数组，然后循环遍历出图片
     return (
-      <Select onChange={this.onHandle} value="操作" placeholder="操作" dropdownMatchSelectWidth={false} dropdownClassName={styles.handleDropdown}>
-        <Option value="check" disabled={unselected || currentSelectedStatus !== '3'}>
-          <i className="iconfont icon-done"></i>验收</Option>
-      </Select>
-    );
+      <div>
+        <div>
+        {[1,2,3].map((e,i)=>(
+          <img src={text?text.phoneAddress:''} width="60px" height="60px" />
+        ))}
+      
+        </div>
+        <div>
+          <Button className={styles.ticketButton}>
+            <Link to={`/operation/ticket/list`}>查看工单详情</Link>
+          </Button>
+        </div>
+      </div>
+    )
+
   }
-
-
   render() {
-    const { pageSize, pageNum, inspectList, selectedRowKeys, total, loading } = this.props;
+    const { pageSize, pageNum, inspectList, selectedRowKeys, totalCount, loading, inspectDetailRecord } = this.props;
+    // console.log(inspectDetailRecord);
     const columns = this.initColumn();
-
-    const rowSelection = {
-      selectedRowKeys,
-      onChange: this.onSelectChange
-    };
-
     return (
       <div className={styles.inspectTable}>
         <div className={styles.action}>
-       <div></div>
-          <CommonPagination pageSize={pageSize} currentPage={pageNum} total={total} onPaginationChange={this.onPaginationChange} />
+          <div></div>
+          <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalCount} onPaginationChange={this.onPaginationChange} />
         </div>
         <Table
-          rowKey={(record) => { return record.inspectId }}
-          dataSource={[]}
+          rowKey={(record) => { return record.username }}
+          dataSource={inspectDetailRecord}
           // dataSource={inspectList.toJS()}
           columns={columns}
-          //rowSelection={rowSelection}
           onChange={this.onChangeTable}
           loading={loading}
           pagination={false}
           locale={{ emptyText: <div className={styles.noData}><img src="/img/nodata.png" style={{ width: 223, height: 164 }} /></div> }}
         />
-        <div className={styles.tableFooter}>
-          <span className={styles.info}>当前选中<span className={styles.totalNum}>{0}</span>项</span>
-          <span className={styles.cancel} onClick={this.cancelRowSelect}>取消选中</span>
-        </div>
+
       </div>
     );
   }

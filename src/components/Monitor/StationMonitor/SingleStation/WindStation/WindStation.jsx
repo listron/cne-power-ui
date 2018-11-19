@@ -103,12 +103,13 @@ class WindStation extends Component {
             </TabPane> */}
             <TabPane tab="示意图" key="2">
               <div className={styles.deviceTypeFlow}>
-                <Link to={`/hidden/monitorDevice/${stationCode}/203/${weatherDeviceCode}`} className={styles.weatherStationLink} >
+              
+                {/* <Link to={`/hidden/monitorDevice/${stationCode}/203/${weatherDeviceCode}`} className={styles.weatherStationLink} >
                   <div className={styles.weatherStation}>
                     <i className="iconfont icon-weather" ></i>
                     <div className={styles.fontcolor}>气象站</div>
                   </div>
-                </Link>
+                </Link> */}
 
                 <div className={styles.title}>
                   {deviceTypeType.map((item, index) => {

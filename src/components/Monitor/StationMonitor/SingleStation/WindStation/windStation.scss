@@ -308,7 +308,7 @@
                     margin-right: 18px;
                     margin-bottom: 20px;
                     width: 222px;
-                    height: 76px;
+                    // height: 76px;
                     padding: 5px;
                     box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.20);
                     border-radius: 4px;
@@ -347,14 +347,19 @@
                             justify-content: space-between;
                         }
                         .inverterItemPower {
-                            display: flex;
-                            justify-content: space-between;
-                            div:first-child {
-                                color: $themeColor;
+                             display: flex;
+                             flex-direction: column;
+                            >div{
+                                display: flex;
+                                justify-content: space-between;
+                                span:first-child {
+                                    color: $themeColor;
+                                }
+                                span:last-child {
+                                    color: $darkColor;
+                                }
                             }
-                            div:last-child {
-                                color: $darkColor;
-                            }
+                            
                         }
                         :global {
                             .ant-progress-success-bg,

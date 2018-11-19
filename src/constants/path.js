@@ -83,6 +83,11 @@ export default {
       deleteAbnormal: '/v3/inspect/deleteabnormal',
       getInspectStandard:'/v3/inspect/getstandard',
       inspectCheckBatch:'/v3/inspect/check/batch',
+      getInspectDetailRecord:'/v3/inspect/record',//获取巡检记录
+      getPersonnelGpsData:'/v3/location',//获取员工位置
+      getInspectUsers:'/v3/user/getusers',//获取巡检人员
+      getInspectOrbit:'/v3/inspect/track',//获取巡航轨迹
+
     },
     operation: { // 运维管理
       getDayReportList: '/v3/performance/dailyreportlist', //获取各电站日报统计列表

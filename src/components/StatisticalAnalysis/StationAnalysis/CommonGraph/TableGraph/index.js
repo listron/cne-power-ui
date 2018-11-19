@@ -50,6 +50,10 @@ class TableGraph extends React.Component {
   };
   //table排序
 
+  getSort(a,b,variable){
+    return a[variable] ? (b[variable] ? a[variable] - b[variable]:1) : (b[variable] ? 1 : -1)
+  }
+
   //table列
   getColumnsArray = (tableType, lastYear, currentYear, column) => {
     let columns = [];
@@ -77,7 +81,7 @@ class TableGraph extends React.Component {
           dataIndex: 'per',
           width: 150,
           defaultSortOrder: 'descend',
-          sorter: (a, b) => a.per - b.per,
+          sorter: (a, b) => this.getSort(a,b,'per'),
           render: text => (text || text === 0) ? text + '%' : '--'
         }];
         break;
@@ -91,26 +95,26 @@ class TableGraph extends React.Component {
           title: lastYear,
           dataIndex: 'lastYearData',
           width: 130,
-          sorter: (a, b) => a.lastYearData - b.lastYearData,
+          sorter: (a, b) => this.getSort(a,b,'lastYearData'),
           render: text => (text || text === 0) ? text : '--'
         }, {
           title: currentYear,
           dataIndex: 'thatYearData',
           width: 130,
-          sorter: (a, b) => a.thatYearData - b.thatYearData,
+          sorter: (a, b) => this.getSort(a,b,'thatYearData'),
           render: text => (text || text === 0) ? text : '--'
         }, {
           title: '辐射总量同比',
           dataIndex: 'lightYearOnYear',
           width: 170,
           defaultSortOrder: 'descend',
-          sorter: (a, b) => a.lightYearOnYear - b.lightYearOnYear,
+          sorter: (a, b) => this.getSort(a,b,'lightYearOnYear'),
           render: text => (text || text === 0) ? text + '%' : '--'
         }, {
           title: '发电量同比',
           dataIndex: 'powerYearOnYear',
           width: 150,
-          sorter: (a, b) => a.powerYearOnYear - b.powerYearOnYear,
+          sorter: (a, b) =>this.getSort(a,b,'powerYearOnYear'),
           render: text => (text || text === 0) ? text + '%' : '--'
         }];
         break;
@@ -124,14 +128,14 @@ class TableGraph extends React.Component {
           title: '辐射总量',
           dataIndex: 'thatYearData',
           defaultSortOrder: 'descend',
-          sorter: (a, b) => a.thatYearData - b.thatYearData,
+          sorter: (a, b) => this.getSort(a,b,'thatYearData'),
           render: text => (text || text === 0) ? text : '--',
           width: 150,
         }, {
           title: '环比',
           dataIndex: 'ringRatio',
           defaultSortOrder: 'descend',
-          sorter: (a, b) => a.ringRatio - b.ringRatio,
+          sorter: (a, b) => this.getSort(a,b,'ringRatio'),
           width: 150,
           render: text => (text || text === 0) ? text + '%' : '--'
         }];
@@ -146,20 +150,20 @@ class TableGraph extends React.Component {
           title: lastYear,
           dataIndex: 'lastYearData',
           width: 150,
-          sorter: (a, b) => a.lastYearData - b.lastYearData,
+          sorter: (a, b) =>this.getSort(a,b,'lastYearData'),
           render: text => (text || text === 0) ? text : '--'
         }, {
           title: currentYear,
           dataIndex: 'thatYearData',
           width: 150,
           defaultSortOrder: 'descend',
-          sorter: (a, b) => a.thatYearData - b.thatYearData,
+          sorter: (a, b) =>this.getSort(a,b,'thatYearData'),
           render: text => (text || text === 0) ? text : '--'
         }, {
           title: '同比',
           dataIndex: 'lightYearOnYear',
           width: 150,
-          sorter: (a, b) => a.lightYearOnYear - b.lightYearOnYear,
+          sorter: (a, b) => this.getSort(a,b,'lightYearOnYear'),
           render: text => (text || text === 0) ? text + '%' : '--'
         }];
         break;
@@ -187,7 +191,7 @@ class TableGraph extends React.Component {
           dataIndex: 'pr',
           width: 120,
           defaultSortOrder: 'descend',
-          sorter: (a, b) => a.pr - b.pr,
+          sorter: (a, b) =>this.getSort(a,b,'pr'),
           render: text => (text || text === 0) ? text + '%' : '--'
         }
         ];
@@ -202,21 +206,21 @@ class TableGraph extends React.Component {
           title: lastYear,
           dataIndex: 'lastYearData',
           width: 150,
-          sorter: (a, b) => a.lastYearData - b.lastYearData,
+          sorter: (a, b) => this.getSort(a,b,'lastYearData'),
           render: text => (text || text === 0) ? text : '--'
         }, {
 
           title: currentYear,
           dataIndex: 'thatYearData',
           width: 150,
-          sorter: (a, b) => a.thatYearData - b.thatYearData,
+          sorter: (a, b) => this.getSort(a,b,'thatYearData'),
           render: text => (text || text === 0) ? text : '--'
         }, {
           title: '同比',
           dataIndex: 'yearOnYear',
           width: 150,
           defaultSortOrder: 'descend',
-          sorter: (a, b) => a.yearOnYear - b.yearOnYear,
+          sorter: (a, b) =>this.getSort(a,b,'yearOnYear'),
           render: text => (text || text === 0) ? text + '%' : '--'
         }];
         break;
@@ -231,21 +235,21 @@ class TableGraph extends React.Component {
           title: lastYear,
           dataIndex: 'lastYearData',
           width: 150,
-          sorter: (a, b) => a.lastYearData - b.lastYearData,
+          sorter: (a, b) => this.getSort(a,b,'lastYearData'),
           render: text => (text || text === 0) ? text : '--'
         }, {
 
           title: currentYear,
           dataIndex: 'thatYearData',
           width: 150,
-          sorter: (a, b) => a.thatYearData - b.thatYearData,
+          sorter: (a, b) => this.getSort(a,b,'thatYearData'),
           render: text => (text || text === 0) ? text : '--'
         }, {
           title: '同比',
           dataIndex: 'yearOnYear',
           width: 150,
           defaultSortOrder: 'descend',
-          sorter: (a, b) => a.yearOnYear - b.yearOnYear,
+          sorter: (a, b) =>this.getSort(a,b,'yearOnYear'),
           render: text => (text || text === 0) ? text + '%' : '--'
         }];
         break;
@@ -260,14 +264,14 @@ class TableGraph extends React.Component {
           title: '发电量',
           dataIndex: 'thatYearData',
           width: 200,
-          sorter: (a, b) => a.thatYearData - b.thatYearData,
+          sorter: (a, b) => this.getSort(a,b,'thatYearData'),
           render: text => (text || text === 0) ? text : '--'
         }, {
           title: '环比',
           dataIndex: 'ringRatio',
           width: 200,
           defaultSortOrder: 'descend',
-          sorter: (a, b) => a.ringRatio - b.ringRatio,
+          sorter: (a, b) =>this.getSort(a,b,'ringRatio'),
           render: text => (text || text === 0) ? text + '%' : '--'
         }];
         break;
@@ -281,14 +285,14 @@ class TableGraph extends React.Component {
           title: '发电量',
           dataIndex: 'thatYearData',
           width: 200,
-          sorter: (a, b) => a.thatYearData - b.thatYearData,
+          sorter: (a, b) =>this.getSort(a,b,'thatYearData'),
           render: text => (text || text === 0) ? text : '--'
         }, {
           title: '环比',
           dataIndex: 'ringRatio',
           width: 200,
           defaultSortOrder: 'descend',
-          sorter: (a, b) => a.ringRatio - b.ringRatio,
+          sorter: (a, b) => this.getSort(a,b,'ringRatio'),
           render: text => (text || text === 0) ? text + '%' : '--'
         }];
         break;
@@ -303,14 +307,14 @@ class TableGraph extends React.Component {
           title: '电站可利用率',
           dataIndex: 'stationUtilization',
           width: 150,
-          sorter: (a, b) => a.stationUtilization - b.stationUtilization,
+          sorter: (a, b) => this.getSort(a,b,'stationUtilization'),
           render: text => (text || text === 0) ? text + '%' : '--'
         }, {
           title: '发电系统可利用率',
           dataIndex: 'deviceUtilization',
           defaultSortOrder: 'descend',
           width: 150,
-          sorter: (a, b) => a.deviceUtilization - b.deviceUtilization,
+          sorter: (a, b) => this.getSort(a,b,'deviceUtilization'),
           render: text => (text || text === 0) ? text + '%' : '--'
         }];
         break;
@@ -331,14 +335,14 @@ class TableGraph extends React.Component {
           title: '限电率',
           dataIndex: 'limitPowerRate',
           width: 150,
-          sorter: (a, b) => a.limitPowerRate - b.limitPowerRate,
+          sorter: (a, b) =>this.getSort(a,b,'limitPowerRate'),
           render: text => (text || text === 0) ? text + '%' : '--'
         }, {
           title: '限电率环比',
           dataIndex: 'ringRatio',
           width: 150,
           defaultSortOrder: 'descend',
-          sorter: (a, b) => a.ringRatio - b.ringRatio,
+          sorter: (a, b) =>this.getSort(a,b,'ringRatio'),
           render: text => (text || text === 0) ? text + '%' : '--'
         }];
         break;
@@ -360,7 +364,7 @@ class TableGraph extends React.Component {
           title: '占比',
           dataIndex: 'ration',
           width: 200,
-          sorter: (a, b) => a.ration - b.ration,
+          sorter: (a, b) =>this.getSort(a,b,'ration'),
           render: text => (text || text === 0) ? text + '%' : '--'
         }];
         break;
@@ -375,21 +379,21 @@ class TableGraph extends React.Component {
           title: lastYear,
           dataIndex: 'lastYearData',
           width: 150,
-          sorter: (a, b) => a.lastYearData - b.lastYearData,
+          sorter: (a, b) => this.getSort(a,b,'lastYearData'),
           render: text => (text || text === 0) ? text : '--'
         }, {
 
           title: currentYear,
           dataIndex: 'thatYearData',
           width: 150,
-          sorter: (a, b) => a.thatYearData - b.thatYearData,
+          sorter: (a, b) => this.getSort(a,b,'thatYearData'),
           render: text => (text || text === 0) ? text : '--'
         }, {
           title: '同比',
           dataIndex: 'yearOnYear',
           width: 150,
           defaultSortOrder: 'descend',
-          sorter: (a, b) => a.yearOnYear - b.yearOnYear,
+          sorter: (a, b) => this.getSort(a,b,'yearOnYear'),
           render: text => (text || text === 0) ? text + '%' : '--'
         }];
         break;

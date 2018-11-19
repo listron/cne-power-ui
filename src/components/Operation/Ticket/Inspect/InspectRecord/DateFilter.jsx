@@ -6,8 +6,8 @@ import styles from './inspectRecord.scss';
 
 class DateFliter extends Component {
   static propTypes = {
-    inspectTimeStart: PropTypes.string,
-    inspectTimeEnd: PropTypes.string,
+    startDate: PropTypes.string,
+    endDate: PropTypes.string,
     onChangeFilter: PropTypes.func,
   }
 
@@ -17,51 +17,51 @@ class DateFliter extends Component {
 
   onStartChange = (date,dateString) => {
     this.props.onChangeFilter({
-      inspectTimeStart: dateString,
+      startDate: dateString,
     });
   }
   onEndChange = (date,dateString) => {
     this.props.onChangeFilter({
-      inspectTimeEnd: dateString
+      endDate: dateString
     });
   }
   resetTime = () => { 
     this.props.onChangeFilter({
-      inspectTimeEnd: '',
-      inspectTimeStart: '',
+      endDate: '',
+      startDate: '',
     });
   }
 
   disabledStartDate = (current) => {
-    const inspectTimeEnd = this.props.inspectTimeEnd;
-    if(inspectTimeEnd && current) {
-      return current.valueOf() > moment(inspectTimeEnd);
+    const endDate = this.props.endDate;
+    if(endDate && current) {
+      return current.valueOf() > moment(endDate);
     }
     return false;
   }
 
   disabledEndDate = (current) => {
-    const inspectTimeStart = this.props.inspectTimeStart;
-    if(inspectTimeStart && current) {
-      return current.valueOf() < moment(inspectTimeStart).valueOf();
+    const startDate = this.props.startDate;
+    if(startDate && current) {
+      return current.valueOf() < moment(startDate).valueOf();
     }
     return false;
   }
 
   render() {
-    const { inspectTimeStart, inspectTimeEnd } = this.props;
+    const { startDate, endDate } = this.props;
     return (
       <div className={styles.filterItem}>
-        <span onClick={this.resetTime} className={inspectTimeStart===''&&inspectTimeEnd===''?styles.selected:styles.all}>不限</span>
+        <span onClick={this.resetTime} className={startDate===''&&endDate===''?styles.selected:styles.all}>不限</span>
         <DatePicker
           disabledDate={this.disabledStartDate}
-          value={inspectTimeStart ? moment(inspectTimeStart) : null}
+          value={startDate ? moment(startDate) : null}
           placeholder="开始时间"
           onChange={this.onStartChange}
         />
         <DatePicker
           disabledDate={this.disabledEndDate}
-          value={inspectTimeEnd ? moment(inspectTimeEnd) : null}
+          value={endDate ? moment(endDate) : null}
           placeholder="截止时间"
           onChange={this.onEndChange}
         />
