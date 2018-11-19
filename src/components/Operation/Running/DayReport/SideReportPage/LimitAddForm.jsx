@@ -149,7 +149,18 @@ class LimitAddForm extends Component {
           <Col span={8}>
             <Form.Item label="限功率" {...formItemLayout1} >
               {getFieldDecorator('limitPower', {
-                rules: [{ required: true, message: '请填写正确的限功率数字!', pattern: /^(-?\d+)(\.\d+)?$/ }],
+                rules: [{ 
+                  required: true, 
+                  validator: (rule, value, callback)=>{
+                    if(value && isNaN(value)){
+                      callback('请填写数字');
+                    }else if(value){
+                      const demical = `${value}`.split('.')[1];
+                      demical && demical.length > 2 && callback('不超过2位小数');
+                    }
+                    callback();
+                  } 
+                }],
               })(
                 <Input />
               )}
@@ -196,7 +207,17 @@ class LimitAddForm extends Component {
           <Col span={8}>
             <Form.Item label="日损失电量" {...formItemLayout1} >
               {getFieldDecorator('lostPower', {
-                rules: [{ message: '请填写正确的日损失电量!', pattern: /^(-?\d+)(\.\d+)?$/ }],
+                rules: [{ 
+                  validator: (rule, value, callback)=>{
+                    if(value && isNaN(value)){
+                      callback('损失电量请填写数字');
+                    }else if(value){
+                      const demical = `${value}`.split('.')[1];
+                      demical && demical.length > 2 && callback('不超过2位小数');
+                    }
+                    callback();
+                  }  
+                }],
                 initialValue: defaultLimitLost || '',
               })(
                 <Input />
