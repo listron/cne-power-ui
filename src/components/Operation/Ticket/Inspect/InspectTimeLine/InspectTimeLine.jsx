@@ -14,19 +14,35 @@ class InspectTimeLine extends Component {
   static propTypes = {
     status: PropTypes.string,
     processData: PropTypes.object,
+    inspectDeviceType: PropTypes.array,
     deviceTypeName: PropTypes.string,
+    inspectId: PropTypes.string,
     abnormalItems: PropTypes.object,
     onChangeShowContainer: PropTypes.func,
+    getInspectUsers: PropTypes.func,
+    getInspectDetailRecord: PropTypes.func,
+    changeInspectStore: PropTypes.func,
   }
 
   constructor(props) {
     super(props);
   }
   onInspectOrbit = () => {
-    this.props.onChangeShowContainer({container: 'inspectOrbit'});
+    const { inspectId,getInspectOrbit}=this.props;
+    this.props.onChangeShowContainer({ container: 'inspectOrbit' });
+    getInspectOrbit({inspectId})
   }
   onInspectRecord = () => {
-    this.props.onChangeShowContainer({container: 'inspectRecord'});
+    const{inspectDeviceType,inspectId,getInspectDetailRecord,changeInspectStore,getStationDeviceTypes,deviceTypeItems,getInspectUsers,stationCode}=this.props;
+    this.props.onChangeShowContainer({ container: 'inspectRecord' });
+    //在这发巡检记录的请求
+    getInspectDetailRecord({inspectId,pageNum:1,pageSize:10})
+   
+    getInspectUsers()
+    getStationDeviceTypes({stationCodes:stationCode})
+    changeInspectStore({deviceTypeItems:deviceTypeItems,pageNum:1,pageSize:10,inspectId:inspectId})
+  
+
   }
 
   renderIcon(item, isLast) {
@@ -58,11 +74,11 @@ class InspectTimeLine extends Component {
             <div className={styles.flowName}>{item.get('flowName')}</div>
             <div className={styles.operateTime}>{moment(item.get('operateTime')).format('YYYY-MM-DD HH:mm')}</div>
             <div className={styles.operateUser}>{item.get('operateUser')}</div>
-           { /*{flowName === '执行工单' ? 
-            <div>
-              <Button className={styles.viewStandard} onClick={this.onInspectOrbit }>查看巡检轨迹</Button>
-              <Button className={styles.viewStandard} onClick={this.onInspectRecord}>详细巡检记录</Button>
-      </div> :''}*/}
+            {flowName === '执行工单' ?
+              <div>
+                <Button className={styles.viewStandard} onClick={this.onInspectOrbit}>查看巡检轨迹</Button>
+                <Button className={styles.viewStandard} onClick={this.onInspectRecord}>详细巡检记录</Button>
+              </div> : ''}
           </div>
           {this.renderDetail(item)}
         </div>
