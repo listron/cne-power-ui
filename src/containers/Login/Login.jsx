@@ -31,17 +31,14 @@ class Login extends Component {
   }
 
   onLogin = () => {
-    const locationSearch = this.props.history.location.search;
-    if (locationSearch) {
-      window.location.href = "";
-    } else {
-      this.changePage('login');
-    }
+    this.props.changeLoginStore({
+      userEnterpriseStatus: 3,
+      checkLoginPhone: true,
+    })
   }
 
   changePage = (pageTab) => {
-    this.props.changeLoginStore({pageTab, registerStep: 1, joinStep: 1,enterpriseId: ''})
-    console.log(123)
+    this.props.changeLoginStore({pageTab, registerStep: 1, joinStep: 1,enterpriseId: ''});
   }
 
   toSeeAgreement = () => {
@@ -53,8 +50,7 @@ class Login extends Component {
   }
 
   render() {
-    const {pageTab,history} = this.props;
-
+    const {pageTab,history, userEnterpriseStatus} = this.props;
     return (
       <div className={styles.login}>
         <div className={styles.joinTop}  >
@@ -64,9 +60,9 @@ class Login extends Component {
             </div>
             <div className={styles.join}>加入企业</div>
           </div>
-          <div className={styles.goLogin}>
+          {userEnterpriseStatus !== 3 && <div className={styles.goLogin}>
             <span onClick={this.onLogin}> 登录 </span>
-          </div>
+          </div>}
         </div>
        
         <div className={styles.loginTab}>
