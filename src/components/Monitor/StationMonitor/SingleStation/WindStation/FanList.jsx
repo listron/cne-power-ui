@@ -130,7 +130,7 @@ class FanList extends React.Component {
         sorter: (a, b) => a.windSpeed - b.windSpeed,
       },
       {
-        title: '偏航角度(°)',
+        title: '风向(°)',
         dataIndex: 'angleOfYaw',
         key: 'angleOfYaw',
         render: (text, record, index) => (<span>{text || '--'}</span>),
@@ -334,10 +334,10 @@ class FanList extends React.Component {
     })
 
     // 设置所属电站设备
-    const parentDeviceCodeSet = new Set(sortedParentList.map(e => e.parentDeviceCode));
-    const parentDeviceCodes = [...parentDeviceCodeSet];
-    const deviceGroupedList = parentDeviceCodes.map(e => {
-      const subDeviceList = filteredDeviceList.filter(item => item.parentDeviceCode === e);
+    const parentDeviceNameSet = new Set(sortedParentList.map(e => e.parentDeviceName));
+    const parentDeviceName = [...parentDeviceNameSet];
+    const deviceGroupedList = parentDeviceName.map(e => {
+      const subDeviceList = filteredDeviceList.filter(item => item.parentDeviceName === e);
       return subDeviceList.sort((a, b) => a.deviceName && a.deviceName.localeCompare(b.deviceName));
     });
 
