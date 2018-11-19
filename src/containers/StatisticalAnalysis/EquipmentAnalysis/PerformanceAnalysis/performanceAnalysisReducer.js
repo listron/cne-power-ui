@@ -7,8 +7,22 @@ const initState = Immutable.fromJS({
   deviceTypeCode:null,
   startTime:[],
   endTime:[],
-
+  targetTabs:'1',
   efficialList:[],
+  eleLineCodeData:[],
+  conversioneffData:[],
+  hourData:[],
+  availabilityData:[],
+  lostPowerData:[],
+  faultNumData:[],
+  faultTimeData:[],
+  conversioneffData:[],
+  hourData:[],
+  availabilityData:[],
+  lostPowerData:[],
+  faultNumData:[],
+  faultTimeData:[],
+
 })
 
 const performanceAnalysisReducer = (state = initState, action) => {

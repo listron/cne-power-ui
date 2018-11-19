@@ -17,34 +17,24 @@
       display: flex;
       flex-direction: column;
       flex: 1;
-      .performanceSearch{
-        padding:30px 25px;
-        margin-bottom: 20px;
+      background: #fff;
+      .targetTabs{
         display: flex;
-        background-color: #fff;
+        flex:1;
         flex-direction: column;
-        .conditionalQuery{
-          margin-bottom: 15px;
-          display: flex;
-          .searchText{
-            margin-right: 10px;
+        :global{
+          .ant-tabs:not(.ant-tabs-vertical) > .ant-tabs-content > .ant-tabs-tabpane {
+            //width: 0ch;
+            display: flex;
+            justify-content:space-between;
           }
-          .switch{
-            margin-left: 120px;
-          }
-          .duration{
-            margin: 0 10px;
-          }
-          .switchText{
-            margin-left: 10px;
-          }
-        }
-        .equipmentSelection{
-          .equipmentText{
-            margin-right: 10px;
-          }
-        }
+         .ant-tabs-nav-scroll {
+          background-color: #f8f8f8;
       }
+        }
+      
+      }
+      
 
     }
   }
