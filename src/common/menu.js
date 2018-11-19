@@ -92,7 +92,7 @@ const menuData = [
       }, {
         name: '两票管理',
         path: 'twoTickets',
-        iconStyle: 'icon-usermanage',
+        iconStyle: 'icon-gd1',
         rightKey: 'operation_twoTicket',
         children: [
           {
@@ -108,7 +108,7 @@ const menuData = [
       }, {
         name: '台账',
         path: 'book',
-        iconStyle: 'icon-usermanage',
+        iconStyle: 'icon-gd3',
         rightKey: 'operation_book',
         children: [
           {
@@ -124,7 +124,7 @@ const menuData = [
       }, {
         name: '电站运行',
         path: 'running',
-        iconStyle: 'icon-usermanage',
+        iconStyle: 'icon-running',
         rightKey: 'operation_running',
         children: [
           {
@@ -136,7 +136,7 @@ const menuData = [
       }, {
         name: '经验库',
         path: 'experience',
-        iconStyle: 'icon-usermanage',
+        iconStyle: 'icon-gd4',
         rightKey: 'operation_experience',
       }
     ],
@@ -148,7 +148,7 @@ const menuData = [
     children: [
       {
         name: '电站分析',
-        iconStyle: 'icon-usermanage',
+        iconStyle: 'icon-station-data',
         path: 'stationaccount',
         rightKey: 'statistics_station',
         children: [
@@ -178,7 +178,7 @@ const menuData = [
       }, {
         name: '设备分析',
         path: 'equipment',
-        iconStyle: 'icon-usermanage',
+        iconStyle: 'icon-device-data',
         rightKey: 'statistics_device',
         children: [
           {
@@ -195,7 +195,7 @@ const menuData = [
       }, {
         name: '统计报表',
         path: 'statement',
-        iconStyle: 'icon-usermanage',
+        iconStyle: 'icon-count',
         rightKey: 'statistics_report',
         children: [
           {
@@ -332,7 +332,7 @@ const menuData = [
         ]
       }, {
         name: '计划配置',
-        iconStyle: 'icon-elecmanage',
+        iconStyle: 'icon-planed',
         path: 'config',
         rightKey: 'system_config',
         children: [{
