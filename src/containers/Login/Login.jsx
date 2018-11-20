@@ -30,8 +30,15 @@ class Login extends Component {
     super(props);
   }
 
+  onLogin = () => {
+    this.props.changeLoginStore({
+      userEnterpriseStatus: 3,
+      checkLoginPhone: true,
+    })
+  }
+
   changePage = (pageTab) => {
-    this.props.changeLoginStore({pageTab, registerStep: 1, joinStep: 1,enterpriseId: ''})
+    this.props.changeLoginStore({pageTab, registerStep: 1, joinStep: 1,enterpriseId: ''});
   }
 
   toSeeAgreement = () => {
@@ -43,16 +50,21 @@ class Login extends Component {
   }
 
   render() {
-    const {pageTab,history} = this.props;
-
+    const {pageTab,history, userEnterpriseStatus} = this.props;
     return (
       <div className={styles.login}>
-        <div className={styles.joinTop}  onClick={() => this.changePage('joinIn')}>
-          <div className={styles.fontIcon}>
-            <i className="iconfont icon-join" />
+        <div className={styles.joinTop}  >
+          <div className={styles.joinBox} onClick={() => this.changePage('joinIn')}>
+            <div className={styles.fontIcon}>
+              <i className="iconfont icon-join" />
+            </div>
+            <div className={styles.join}>加入企业</div>
           </div>
-          <div className={styles.join} >加入企业</div>
+          {userEnterpriseStatus !== 3 && <div className={styles.goLogin}>
+            <span onClick={this.onLogin}> 登录 </span>
+          </div>}
         </div>
+       
         <div className={styles.loginTab}>
           <Tabs onChange={this.changePage} animated={false} activeKey={pageTab} className={styles.tab}>
             <TabPane tab="登录" key="login">
