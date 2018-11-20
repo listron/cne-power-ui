@@ -2,17 +2,20 @@ import React, { Component } from 'react';
 import StationTypeTag from './StationTypeTag';
 import styles from './homeParts.scss';
 import PropTypes from 'prop-types';
+import { dataFormat } from '../../../utils/utilFunc';
 import { showNoData, hiddenNoData } from '../../../constants/echartsNoData';
 
 class EqpHours extends Component{
   static propTypes = {
-    hasMultipleType: PropTypes.bool
+    eqpHour: PropTypes.object,
+    hasMultipleType: PropTypes.bool,
+    getEqpHours: PropTypes.func,
   }
 
   constructor(props){
     super(props);
     this.state = {
-      eqpType: 'all',
+      eqpType: 'wind',
       rectNum: 20,
       rectWidth: 6,
     }
@@ -20,18 +23,15 @@ class EqpHours extends Component{
 
   changeEqpType = (eqpType) => {
     this.setState({ eqpType });
+    this.props.getEqpHours(eqpType);
   }
 
   render(){
     const { eqpType, rectWidth, rectNum } = this.state;
-    const stationDataArr = [
-      { stationName: '盐源下大沟', hour: 10},
-      { stationName: '富川朝东', hour: 9.5},
-      { stationName: '富川潮汐', hour: 8},
-      { stationName: '芜湖饮马河', hour: 7.75},
-      { stationName: '成吉思汗', hour: 6.87},
-    ];
-    const maxHour = stationDataArr[0].hour;
+    const { eqpHour } = this.props;
+    const averageHour = dataFormat(eqpHour.average);
+    const stationDataArr = eqpHour.hourList || [];
+    const maxHour = stationDataArr[0] && stationDataArr[0].average || 100;
     let tmpArr = [];
     tmpArr.length = rectNum;
     tmpArr.fill(0);
@@ -47,7 +47,7 @@ class EqpHours extends Component{
               <span className={styles.stationName}>{e.stationName}</span>
               <div style={{width: `${rectNum*(rectWidth + 2)}px`}} className={styles.hourRectGroup}>{
                 tmpArr.map((each, index)=>{ // 根据比例计算需要占多少个块，并计算最后一个块的宽度
-                  const hourRectNum = e.hour/maxHour*rectNum;
+                  const hourRectNum = e.average/maxHour*rectNum;
                   let innerWidth = 0;
                   if(hourRectNum >= index + 1){ // 超出部分
                     innerWidth = rectWidth;
@@ -67,13 +67,13 @@ class EqpHours extends Component{
                   )
                 })
               }</div>
-              <span className={styles.hour}>{e.hour}h</span>
+              <span className={styles.hour}>{dataFormat(e.average)}h</span>
             </div>
           ))}
         </div>
         <div className={styles.average} >
           <span className={styles.averageText} >平均: </span>
-          <span className={styles.averageNum}>9.95</span>
+          <span className={styles.averageNum}>{averageHour}</span>
           <span className={styles.averageText}>h</span>
         </div>
       </section>

@@ -29,13 +29,15 @@ class MonthGenChart extends Component{
 
   setMonthChart = (monthChart) => {
     const { monthPower } = this.props;
-    console.log(monthPower);
-    const xAxisArr = [1,2,3,4,5,6,7,8,9,10,11,12];
-    const yGenData = [100,201,341,114,95,276,317,88,19,120,311,102];
-    const yRateData = [12,21,31,14,51,16,17,18,29,10,31,27];
-    const graphic = Math.random() > 0.5 ? hiddenNoData : showNoData;
+    let xAxisArr = [], yGenData = [], yRateData = [], hasData = false;
+    monthPower.forEach(e=>{
+      xAxisArr.push(e.month);
+      yGenData.push(e.power);
+      yRateData.push(e.rate);
+      hasData = !!e.power || !!e.rate || e.power === 0 || e.rate === 0;
+    });
     const option = {
-        graphic,
+        graphic: hasData ? hiddenNoData : showNoData,
         title: {
           show: false,
         },
@@ -47,17 +49,14 @@ class MonthGenChart extends Component{
           bottom: 30,
         },
         tooltip: {
-          trigger: 'axis',
-          axisPointer: {
-            type: 'cross',
-            crossStyle: {
-              color: '#999'
-            }
-          },
-          backgroundColor: '#fff',
-          formatter: function (params) {
-            console.log(params);
-            return params;
+          extraCssText: 'background-color: rgba(0,0,0,0.8)',
+          formatter: params => {
+            const currentData = monthPower[params.dataIndex];
+            return `<div class=${styles.chartTool}>
+              <div>${currentData.month}月发电量</div>
+              <div>${currentData.power}</div>
+              <div>同比${currentData.rate}%</div>
+            </div>`
           },
           padding: 10,
           textStyle: {
@@ -72,6 +71,9 @@ class MonthGenChart extends Component{
             axisPointer: {
               type: 'shadow'
             },
+            axisTick: {
+              show: false,
+            },
             axisLine: {
               lineStyle: {
                 color: '#06bdf4',
@@ -79,6 +81,7 @@ class MonthGenChart extends Component{
             },
             axisLabel: {
               color: '#06bdf4',
+              fontSize: 10,
             },
           }
         ],
@@ -87,10 +90,14 @@ class MonthGenChart extends Component{
             type: 'value',
             name: '万kWh',
             nameTextStyle: {
+              fontSize: 10,
               color: '#06bdf4',
+              padding: [0, 40, 0, 0],
             },
+            nameGap: 8,
             axisLabel: {
               color: '#06bdf4',
+              fontSize: 10,
             },
             axisLine: {
               show: false,
@@ -110,11 +117,14 @@ class MonthGenChart extends Component{
             type: 'value',
             name: '同比',
             nameTextStyle: {
+              fontSize: 10,
               color: '#06bdf4',
+              padding: [0, 0, 0, 30],
             },
+            nameGap: 8,
             axisLabel: {
               color: '#06bdf4',
-              formatter: '{value} %'
+              formatter: '{value}%'
             },
             axisLine: {
               show: false,
@@ -147,6 +157,7 @@ class MonthGenChart extends Component{
             name: '同比',
             type: 'line',
             yAxisIndex: 1,
+            lineStyle: { color: '#48cf49' },
             data: yRateData,
           }
         ]

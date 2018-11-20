@@ -20,6 +20,7 @@ class Homepage extends Component {
     mapStation: PropTypes.array,
     realTimeInfo: PropTypes.object,
     completeRate: PropTypes.object,
+    energySaving: PropTypes.object,
     changeLoginStore: PropTypes.func,
     homepageReset: PropTypes.func,
     getMapStation: PropTypes.func,
@@ -74,7 +75,7 @@ class Homepage extends Component {
   }
 
   render() {
-    const { changeLoginStore, realTimeInfo, mapStation, completeRate } = this.props;
+    const { changeLoginStore, realTimeInfo, mapStation, completeRate, energySaving } = this.props;
     const { hasMultipleType } = this.state;
     return (
       <div className={styles.homepage}>
@@ -96,10 +97,10 @@ class Homepage extends Component {
             </div>
           </div>
           <div className={styles.bottomBox}>
-            <EnergySaving />
-            <EqpHours hasMultipleType={hasMultipleType} />
-            <FaultList hasMultipleType={hasMultipleType} />
-            <AlarmList />
+            <EnergySaving energySaving={energySaving} />
+            <EqpHours hasMultipleType={hasMultipleType} {...this.props} />
+            <FaultList hasMultipleType={hasMultipleType} {...this.props} />
+            <AlarmList {...this.props} />
           </div>
         </div>
       </div>

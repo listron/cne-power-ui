@@ -7,13 +7,15 @@ import echarts from 'echarts';
 
 class FaultList extends Component{
   static propTypes = {
-    hasMultipleType: PropTypes.bool
+    hasMultipleType: PropTypes.bool,
+    faultNumber: PropTypes.array,
+    getFaultNumber: PropTypes.func,
   }
 
   constructor(props){
     super(props);
     this.state = {
-      faultType: 'all',
+      faultType: 'wind',
     }
   }
 
@@ -26,6 +28,8 @@ class FaultList extends Component{
   }
 
   setFaultChart = (faultChart) => {
+    const { faultNumber } = this.props;
+    console.log(faultNumber);
     const xAxisArr = [1,2,3,4,5,6,7,8,9,10,11];
     const yFaultData = [12, 24, 18, 17, 11, 12, 20, 9, 11 ,19];
     const graphic = Math.random() > 0.5 ? hiddenNoData : showNoData;
@@ -89,6 +93,7 @@ class FaultList extends Component{
 
   changeFaultType = (faultType) => {
     this.setState({ faultType });
+    this.props.getFaultNumber(faultType);
   }
 
   render(){

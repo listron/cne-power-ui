@@ -2,16 +2,20 @@
 @import '../homepageParts.scss';
 
 @media screen and (max-width: 1919px) { // 1920以下宽度屏按1680展示
-  .stationGeneral, .completeRate, .operationInfo{
+  .stationGeneral, .completeRate, .operationInfo, .energySaving {
     width: 400px;
   }
-  //1. 各个盒子宽度
-  //2. 完成率内容宽度
+  .eqpHours, .faultList{
+    width: 420px;
+  }
 }
 
 @media screen and (min-width: 1920px){ // 1920及以上屏幕按1920展示
-  .stationGeneral{
+  .stationGeneral, .completeRate, .operationInfo, .energySaving{
     width: 435px;
+  }
+  .eqpHours, .faultList{
+    width: 502px;
   }
 }
 
@@ -30,6 +34,16 @@
     background-repeat: no-repeat;
     background-size: cover;
   }
+}
+
+.chartTool{ // chart图内文字及样式。
+  color:#a6e8ff;
+  font-family:PingFangSC-Regular;
+  font-size: 14px;
+  border-radius: 2px;
+  width: 88px;
+  height: 60px;
+  line-height: 21px;
 }
 
 .stationGeneral{ // 电站概况
@@ -70,7 +84,7 @@
   }
 }
 
-.monthGen, .deviceStatus, .energySaving, .eqpHours, .faultList, .alarmList, .completeRate, .operationInfo{ // 每月发电量样式 + 其他所有盒子总样式。
+.monthGen, .deviceStatus, .energySaving, .outputPower, .eqpHours, .faultList, .alarmList, .completeRate, .operationInfo{ // 大致所有盒子总样式。
   height: 205px;
   margin-top: 12px;
   @include boxStyle();
@@ -80,9 +94,17 @@
   }
   .checkTags{
     @include typeTags();
+  }  
+}
+.energySaving, .eqpHours, .faultList{
+  margin-right: 12px;
+}
+
+.monthGen{
+  h3{
+    height: 42px;
   }
   .monthChart{
-    height: 165px;
     flex: 1;
   }
 }
@@ -251,19 +273,21 @@
 }
 
 .energySaving{ // 节能减排
-  width: 400px;
   .saveContent{
     display: flex;
     .eachSaving{
       width: 50%;
       display: flex;
+      margin-top: 20px;
       flex-direction: column;
       align-items: center;
     }
     .savedData{
+      margin-top: 8px;
       .value{
         font-size:24px;
         color:#4dde49;
+        margin-right: 4px;
       }
       .unit{
         color:#06bdf4;
@@ -277,11 +301,19 @@
   .stationProgress{
     .eachStation{
       display: flex;
+      justify-content: center;
       .stationName, .hour{
         color:#06bdf4;
+        flex: 1;
+        text-align: right;
+      }
+      .hour{
+        text-align: left;
       }
       .hourRectGroup{
         display: flex;
+        align-items: center;
+        margin: 0 12px;
         .eachRect{
           background:rgba(72,207,73,0.40);
           margin-right: 2px;
@@ -296,6 +328,9 @@
   .average{
     display: flex;
     justify-content: flex-end;
+    flex: 1;
+    align-items: center;
+    margin-right: 12px;
     .averageText{
       color:#06bdf4;
     }
