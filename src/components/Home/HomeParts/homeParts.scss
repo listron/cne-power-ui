@@ -388,7 +388,7 @@
     .total{
       position: absolute;
       right: 18px;
-      bottom: 12px;
+      bottom: -8px;
       font-size:14px;
       color:#06bdf4;
     }
@@ -398,7 +398,7 @@
   }
   .alarmColumn, .eachAlarm{
     display: flex;
-    line-height: 24px;
+    line-height: 22px;
     .level, .stationName, .info, .time{
       color: #06bdf4;
       overflow: hidden;
@@ -410,11 +410,13 @@
       color: #fff;
       width: 60px;
       display: flex;
-      text-align: center;
+      justify-content: center;
       align-items: center;
       .round{
         width: 16px;
         height: 16px;
+        line-height: 16px;
+        text-align: center;
         background:#c23c3c;
         border-radius: 50%;
       }
@@ -428,11 +430,27 @@
     }
     .time{
       width: 95px;
+      display: flex;
+      .day, .hour{
+        color:#a6e8ff;
+        width: 17px;
+        text-align: right;
+      }
+      .day {
+        width: 24px;
+      }
     }
   }
   .alarmColumn{
+    margin-bottom: 4px;
     .level, .stationName, .info, .time{
       color:#a6e8ff;
+    }
+    .info{
+      text-align: center;
+    }
+    .time{
+      margin-right: 12px;
     }
   }
 }

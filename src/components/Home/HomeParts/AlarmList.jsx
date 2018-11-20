@@ -34,14 +34,25 @@ class AlarmList extends Component{
           <span className={styles.info}>告警描述</span>
           <span className={styles.time}>持续时间</span>
         </div>
-        {alarmArr.map(e=>(<div key={e.stationName} className={styles.eachAlarm} >
-          <span className={styles.level}>
-            <span className={styles.round}>{e.level}</span>
-          </span>
-          <span className={styles.stationName} title={e.stationName}>{e.stationName}</span>
-          <span className={styles.info} title={e.info}>{e.info}</span>
-          <span className={styles.time} title={e.time}>{e.time}</span>
-        </div>))}
+        {alarmArr.map(e=>{
+          const durationDay = dataFormat(e.durationHours/24,'--',0);
+          const restHours = dataFormat(e.durationHours % 24,'--',0);
+          return (
+            <div key={e.stationName} className={styles.eachAlarm} >
+              <span className={styles.level}>
+                <span className={styles.round}>{e.level}</span>
+              </span>
+              <span className={styles.stationName} title={e.stationName}>{e.stationName}</span>
+              <span className={styles.info} title={e.info}>{e.info}</span>
+              <span className={styles.time} title={`${durationDay}天${restHours}小时`}>
+                <span className={styles.day}>{durationDay}</span>
+                <span>天</span>
+                <span className={styles.hour}>{restHours}</span>
+                <span>小时</span>
+              </span>
+            </div>
+          )
+        })}
       </div>
     </section>
     )
