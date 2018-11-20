@@ -16,30 +16,41 @@ import Cookie from 'js-cookie';
 
 class PerformanceAnalysis extends Component {
   static propTypes = {
-    
+
     changePerformanceAnalysisStore: PropTypes.func,
-    targetTabs:PropTypes.string,
+    targetTabs: PropTypes.string,
   }
   constructor(props) {
-    super(props); 
+    super(props);
   }
-  componentDidMount(){
-    const prams={
-      stationCode:360,
-      startDate:'2017',
-      endDate:'2018',
-      deviceTypeCode:'206'
+  componentDidMount() {
+
+  }
+  componentWillUnmount(){
+    this.props.resetStore();
+  }
+  queryData = (activeKey) => {
+    const { contrastSwitch, stationCode, deviceTypeCode, endDate, startDate } = this.props;
+    this.props.changePerformanceAnalysisStore({ targetTabs: activeKey })
+    const prams = {
+      stationCode,
+      startDate,
+      endDate,
+      deviceTypeCode
     }
-    // this.props.getPerformance({...prams})
-    // this.props.getFault({...prams})
-    // this.props.getPerformanceContrast({...prams})
-    // this.props.getFaultContrast({...prams})
-
-
-  }
-  queryData=(activeKey)=>{
-   
-    this.props.changePerformanceAnalysisStore({targetTabs:activeKey})
+    if (contrastSwitch) {
+      if (activeKey === '1') {
+        this.props.getPerformanceContrast({ ...prams })
+      } else {
+        this.props.getFaultContrast({ ...prams })
+      }
+    } else {
+      if (activeKey === '1') {
+        this.props.getPerformance({ ...prams })
+      } else {
+        this.props.getFault({ ...prams })
+      }
+    }
   }
   render() {
 
@@ -58,13 +69,13 @@ class PerformanceAnalysis extends Component {
         {/*   <TimeSelect onChange={(time)=>console.log(time)} /> */}
         <div className={styles.PerformanceAnalysisContainer}>
           <div className={styles.PerformanceAnalysisMain}>
-          <PerformanceAnalysisFilter {...this.props} />
-          <div className={styles.targetTabs}>
-          <Tabs activeKey={this.props.targetTabs} onChange={this.queryData} animated={false} >
-          <TabPane tab="发电性能" key="1">发电性能</TabPane>
-          <TabPane tab="故障情况" key="2">故障情况</TabPane>       
-        </Tabs>
-        </div>
+            <PerformanceAnalysisFilter {...this.props} />
+            <div className={styles.targetTabs}>
+              <Tabs activeKey={this.props.targetTabs} onChange={this.queryData} animated={false} >
+                <TabPane tab="发电性能" key="1">发电性能</TabPane>
+                <TabPane tab="故障情况" key="2">故障情况</TabPane>
+              </Tabs>
+            </div>
           </div>
         </div>
         <Footer />
@@ -77,7 +88,7 @@ const mapStateToProps = state => ({
   ...state.statisticalAnalysisReducer.performanceAnalysisReducer.toJS(),
   stations: state.common.get('stations').toJS(),
   stationDeviceTypes: state.common.get('stationDeviceTypes').toJS(),
- 
+
 })
 
 const mapDispatchToProps = (dispatch) => ({
@@ -85,7 +96,7 @@ const mapDispatchToProps = (dispatch) => ({
   getDeviceModel: params => dispatch({
     type: commonAction.getDeviceModel,
     payload: {
-      params, 
+      params,
       actionName: performanceAnalysisAction.GET_PERFORMANCEANALYSIS_FETCH_SUCCESS,
       resultName: 'deviceModels'
     }
@@ -97,6 +108,7 @@ const mapDispatchToProps = (dispatch) => ({
   getPerformanceContrast: payload => dispatch({ type: performanceAnalysisAction.getPerformanceContrast, payload }),
   getFaultContrast: payload => dispatch({ type: performanceAnalysisAction.getFaultContrast, payload }),
   getStationDeviceType: payload => dispatch({ type: commonAction.getStationDeviceType, payload }),
+  resetStore: () => dispatch({ type: performanceAnalysisAction.resetStore }),
 
 })
 
