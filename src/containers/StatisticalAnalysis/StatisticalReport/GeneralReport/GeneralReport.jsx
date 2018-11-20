@@ -98,7 +98,7 @@ class GeneralReport extends Component{
         }   
       }
     }).catch(error=>{
-      message.error(`${fileName}下载失败!`)
+      message.warning(`下载失败！请重新尝试`)
       console.log(error)
     })
   }
