@@ -109,6 +109,10 @@ class SingleStationStatistic extends React.Component {
       sort: 'date',
       sortType: 'asc',
     })
+//控制单电站点击其他位置，消失浮框
+    const main = document.getElementById('main');
+    main && main.addEventListener('click', this.hiddenStationList, true);
+  
 
   }
   componentWillReceiveProps(nextProps) {
@@ -367,6 +371,9 @@ class SingleStationStatistic extends React.Component {
       dateType:'month',
       selectYear:''
     });
+    const main = document.getElementById('main');
+    main && main.removeEventListener('click', this.hiddenStationList, true);
+
   }
   onTimeChange=(timeObj)=>{
     // console.log(timeObj);
@@ -384,7 +391,11 @@ class SingleStationStatistic extends React.Component {
       showStationSelect: true
     });
   }
-
+  hiddenStationList=()=>{
+    this.setState({
+      showStationSelect: false
+    });
+  }
   hideStationChange = () => {
     this.setState({
       showStationSelect: false
