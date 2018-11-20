@@ -9,6 +9,7 @@ import Footer from '../../../../components/Common/Footer';
 // import PlanCompletionRate from '../../../../components/StatisticalAnalysis/StationAnalysis/CommonGraph/PlanCompletionRate'; 
 import { performanceAnalysisAction } from "./performanceAnalysisAction";
 import { Tabs } from 'antd';
+import Cookie from 'js-cookie';
 
 // import TimeSelect from '../../../../components/Common/TimeSelect/TimeSelectIndex';
 
@@ -29,10 +30,10 @@ class PerformanceAnalysis extends Component {
       endDate:'2018',
       deviceTypeCode:'206'
     }
-    this.props.getPerformance({...prams})
-    this.props.getFault({...prams})
-    this.props.getPerformanceContrast({...prams})
-    this.props.getFaultContrast({...prams})
+    // this.props.getPerformance({...prams})
+    // this.props.getFault({...prams})
+    // this.props.getPerformanceContrast({...prams})
+    // this.props.getFaultContrast({...prams})
 
 
   }
@@ -41,7 +42,7 @@ class PerformanceAnalysis extends Component {
     this.props.changePerformanceAnalysisStore({targetTabs:activeKey})
   }
   render() {
-  
+
     const TabPane = Tabs.TabPane;
     const breadCrumbData = {
       breadData: [
@@ -76,10 +77,19 @@ const mapStateToProps = state => ({
   ...state.statisticalAnalysisReducer.performanceAnalysisReducer.toJS(),
   stations: state.common.get('stations').toJS(),
   stationDeviceTypes: state.common.get('stationDeviceTypes').toJS(),
+ 
 })
 
 const mapDispatchToProps = (dispatch) => ({
   changePerformanceAnalysisStore: payload => dispatch({ type: performanceAnalysisAction.CHANGE_PERFORMANCEANALYSIS_STORE, payload }),
+  getDeviceModel: params => dispatch({
+    type: commonAction.getDeviceModel,
+    payload: {
+      params, 
+      actionName: performanceAnalysisAction.GET_PERFORMANCEANALYSIS_FETCH_SUCCESS,
+      resultName: 'deviceModels'
+    }
+  }),
   getEquipmentSelection: payload => dispatch({ type: performanceAnalysisAction.getEquipmentSelection, payload }),
   getEleLineCode: payload => dispatch({ type: performanceAnalysisAction.getEleLineCode, payload }),
   getPerformance: payload => dispatch({ type: performanceAnalysisAction.getPerformance, payload }),

@@ -16,10 +16,10 @@ function* getEquipmentSelection(action){
 function* getEleLineCode(action) {//集电线路
   const { payload } = action;
     //const url = '';
-    const url= `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getEleLineCode}`
+    const url= `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getEleLineCode}/${payload.stationCode}/${payload.deviceTypeCode}`
     try{
       yield put({ type:performanceAnalysisAction.PERFORMANCEANALYSIS_FETCH  });
-      const response = yield call(axios.post,url,payload);
+      const response = yield call(axios.get,url,payload);
       if(response.data.code === '10000') {
         yield put({
           type: performanceAnalysisAction.GET_PERFORMANCEANALYSIS_FETCH_SUCCESS,

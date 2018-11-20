@@ -3,8 +3,10 @@ import {performanceAnalysisAction} from "./performanceAnalysisAction";
 
 const initState = Immutable.fromJS({
   loading: false, 
+  contrastSwitch: false,
   stationCode: null,
   deviceTypeCode:null,
+  deviceModels:[],
   startTime:[],
   endTime:[],
   targetTabs:'1',
