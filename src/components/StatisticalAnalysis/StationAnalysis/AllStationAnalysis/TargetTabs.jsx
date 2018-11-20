@@ -141,6 +141,7 @@ class TargetTabs extends React.Component {
                       <AllStationMonthPie
                         allStationMonthpie={item.pieGraphId}
                         yAxisName={item.yAxisName}
+                        xAxisName={item.xAxisName}
                         pieTargetData={pieTargetData}
                         barGraphYearOnYear={barGraphYearOnYear}
                         hasData={pieHasData} />}

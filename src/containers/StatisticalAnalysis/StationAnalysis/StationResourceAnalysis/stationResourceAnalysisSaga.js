@@ -185,5 +185,5 @@ export function* watchStationResourceStationSaga() {
   yield takeLatest(stationResourceAnalysisAction.getResourceDayWeather, getResourceDayWeather);
   yield takeLatest(stationResourceAnalysisAction.getResourcePvCompare, getResourcePvCompare);
   yield takeLatest(stationResourceAnalysisAction.getResourceYearPvCompare, getResourceYearPvCompare);
-  yield takeLatest(stationResourceAnalysisAction.RESET_STORE, resetStore);
+  yield takeLatest(stationResourceAnalysisAction.resetStore, resetStore);
 }

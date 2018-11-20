@@ -7,7 +7,7 @@ import { Icon, Progress, Modal, Input} from 'antd';
 import moment from 'moment';
 import ChangeStation from '../SingleStationCommon/ChangeStation';
 import { Link } from 'react-router-dom';
-class PvStationTop extends Component {
+class WindStationTop extends Component {
   static propTypes = {
     match: PropTypes.object,
     singleStationData: PropTypes.object,
@@ -24,6 +24,10 @@ class PvStationTop extends Component {
     super(props);
     this.state = {
       showStationList: false,
+      modalMonth: false,
+      modalYear: false,
+      editValue: '',
+      editInfoError: false,
     }
   }
 
@@ -62,8 +66,20 @@ class PvStationTop extends Component {
     });
     this.setState({ modalMonth: false, modalYear: false, editValue: '' });
   }
- 
- 
+  onCancel = () => {
+    this.setState({ 
+      modalMonth: false, 
+      modalYear: false, 
+      editValue: '',
+      editInfoError: false,
+    });
+  }
+  setModalMonth = () => {
+    this.setState({ modalMonth: true });
+  }
+  setModalYear() {
+    this.setState({ modalYear: true });
+  }
   hiddenStationList = () => {
     this.setState({
       showStationList: false,
@@ -84,7 +100,7 @@ class PvStationTop extends Component {
 
   render() {
     const { singleStationData, stationList } = this.props;
-    const { showStationList } = this.state;
+    const { showStationList, editValue, editInfoError } = this.state;
 
     const stationPower = singleStationData && singleStationData.stationPower;
     const stationCapacity = singleStationData && singleStationData.stationCapacity;
@@ -103,6 +119,9 @@ class PvStationTop extends Component {
     
     const baseLinkPath = `/monitor/singleStation`;
     const pathAllStation = "/monitor/station";
+    //权限控制
+    const rightHandler = localStorage.getItem('rightHandler');
+    const powerUpdate= rightHandler && rightHandler.split(',').includes('monitor_powerUpdate');
     return (
       <div className={styles.pvStationTop} >
         <div className={styles.pvStationTitle} >
@@ -121,7 +140,7 @@ class PvStationTop extends Component {
         </div>
         <div className={styles.trueTimeData} >
           <div className={styles.pvlogo} >
-           <i className="iconfont icon-windlogo" /> 
+            <i className="iconfont icon-windlogo" ></i>
           </div>
           <div className={styles.powerScale} >
             <div className={styles.trueTimeValue}>
@@ -136,7 +155,7 @@ class PvStationTop extends Component {
             <div className={styles.trueTimeUnit}>装机台数 台</div>
           </div>
           <div>
-            <div className={styles.trueTimeValue} style={{ color: "#e08031" }}>{singleStationData && singleStationData.instantaneous || 0}</div>
+            <div className={styles.trueTimeValue} style={{ color: "#e08031" }}>{singleStationData && singleStationData.instantaneous && parseFloat(singleStationData.instantaneous).toFixed(2) || 0}</div>
             <div className={styles.trueTimeUnit}>平均风速 m/s</div>
           </div>
           <div>
@@ -147,29 +166,52 @@ class PvStationTop extends Component {
             <div className={styles.trueTimeValue}>
               <div>
                 {singleStationData && singleStationData.monthPower && parseFloat(singleStationData.monthPower).toFixed(4) || 0}
+                {powerUpdate ? <span className={styles.iconStyle} onClick={() => { this.setModalMonth() }} ><i className="iconfont icon-edit"></i></span> : ''}
               </div>
             </div>
-            <div className={styles.trueTimeUnit}>月累计发电量 万kWh</div>
+            <div className={styles.trueTimeUnit}>月发电量 万kWh</div>
           </div>
+          <Modal
+            title="请填写"
+            style={{ top: 300 }}
+            visible={this.state.modalMonth || this.state.modalYear}
+            onOk={this.onOk}
+            onCancel={this.onCancel}
+            mask={false}
+            closable={false}
+            maskClosable={false}           
+          >
+            {this.state.modalMonth ? <div className={styles.editElecDataModal}>
+              截止到今日，本月累计发电量  
+              <Input value={editValue} placeholder="请输入" onChange={this.onChange} />  万kWh
+                {editInfoError && <div className={styles.warningInfo}>请输入数字</div>}
+              </div> : <div className={styles.editElecDataModal}>
+                截止到今日，本年累计发电量  
+                <Input placeholder="请输入" value={editValue} onChange={this.onChange} />  万kWh
+                {editInfoError && <div className={styles.warningInfo}>请输入数字</div>}
+              </div>}
+
+          </Modal>
           <div className={styles.stationYearPlan}>
             <div className={styles.annualEnergyScale} >
               <div className={styles.trueTimeValue}>
                 <div>
                   <span>{singleStationData && singleStationData.yearPower && parseFloat(singleStationData.yearPower).toFixed(4) || 0}</span>
-
+                  {powerUpdate ? <span className={styles.iconStyle} onClick={() => { this.setModalYear() }}><i className="iconfont icon-edit"></i></span> : ''}
                 </div>
                 <span>{singleStationData && singleStationData.yearPlanPower && parseFloat(singleStationData.yearPlanPower).toFixed(4) || 0}</span>
               </div>
-              {}
-              <Progress percent={singleStationData && +singleStationData.yearPlanRate.split('%')[0] } showInfo={false} strokeWidth={3} type="line" strokeColor="#199475" />
+              <Progress percent={+(singleStationData && singleStationData.yearPlanRate.split('%')[0])|| 0} showInfo={false} strokeWidth={3} type="line" strokeColor="#199475" />
               <div className={styles.trueTimeDesc}><span>年累计发电量 万kWh</span><span>计划 万kWh</span></div>
             </div>
             <div className={styles.yearPlanRate} >{singleStationData && singleStationData.yearPlanRate}</div>
           </div>
+
+
         </div>
       </div>
     )
   }
 }
 
-export default PvStationTop;
+export default WindStationTop;
