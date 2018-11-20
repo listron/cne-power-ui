@@ -2,7 +2,7 @@
 @import '../homepageParts.scss';
 
 @media screen and (max-width: 1919px) { // 1920以下宽度屏按1680展示
-  .stationGeneral, .completeRate, .operationInfo, .energySaving {
+  .stationGeneral, .completeRate, .monthGen, .operationInfo, .energySaving, .outputPower, .operationInfo, .deviceStatus, .alarmList {
     width: 400px;
   }
   .eqpHours, .faultList{
@@ -11,7 +11,7 @@
 }
 
 @media screen and (min-width: 1920px){ // 1920及以上屏幕按1920展示
-  .stationGeneral, .completeRate, .operationInfo, .energySaving{
+  .stationGeneral, .completeRate, .monthGen, .operationInfo, .energySaving, .outputPower, .operationInfo, .deviceStatus, .alarmList{
     width: 435px;
   }
   .eqpHours, .faultList{
@@ -185,11 +185,8 @@
 
 .outputPower{ // 电站出力
   height: 320px;
-  display: flex;
-  flex-direction: column;
   position: relative;
-  border:1px solid #3f566c;
-  box-shadow:0 0 6px 0 rgba(255,255,255,0.30);
+  align-items: center;
   h3{
     @include titles();
   }
@@ -198,10 +195,13 @@
   }
   .outputChart{
     height: 200px;
+    width: 340px;
   }
   .totalPower{
     display: flex;
-    justify-content: center;
+    align-items: center;
+    height: 30px;
+    line-height: 30px;
     .highlight{
       color:#4dde49;
       font-size:28px;
@@ -247,32 +247,28 @@
   .statusBox{
     flex: 1;
     display: flex;
-    .statusChart, .statusTotal{
-      width: 50%;
-      flex: 1;
+    .statusChart{
+      width: 60%;
+    }
+    .statusTotal{
+      width: 40%;
     }
     .eachStatus{
       display: flex;
-      .normalRound, .faultRound, .stopRound, .connectRound{
+      height: 34px;
+      align-items: center;
+      .round{
         width: 14px;
         height: 14px;
         border-radius: 50%;
-        background-color: #145998;
-      }
-      .faultRound{
-        background-color: #3fa9ef;
-      }
-      .stopRound{
-        background-color:#6868b2;
-      }
-      .connectRound{
-        background-color:#6ae3c1;
       }
       .text{
         color:#06bdf4;
+        margin: 0 36px 0 8px;
       }
       .value{
         color:#4dde49;
+        font-size: 20px;
       }
     }
   }
@@ -303,7 +299,6 @@
 }
 
 .eqpHours{ // 今年等效利用小时数
-  width: 420px;
   .stationProgress{
     .eachStation{
       display: flex;
@@ -388,16 +383,56 @@
 }
 
 .alarmList{ // 告警列表
+  h3{
+    position: relative;
+    .total{
+      position: absolute;
+      right: 18px;
+      bottom: 12px;
+      font-size:14px;
+      color:#06bdf4;
+    }
+  }
   .alarmContent{
-
+    flex: 1;
   }
   .alarmColumn, .eachAlarm{
     display: flex;
+    line-height: 24px;
     .level, .stationName, .info, .time{
       color: #06bdf4;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      word-break: break-all; 
     }
     .level{
       color: #fff;
+      width: 60px;
+      display: flex;
+      text-align: center;
+      align-items: center;
+      .round{
+        width: 16px;
+        height: 16px;
+        background:#c23c3c;
+        border-radius: 50%;
+      }
+    }
+    .stationName{
+      width: 104px;
+      text-align: left;
+    }
+    .info{
+      flex: 1;
+    }
+    .time{
+      width: 95px;
+    }
+  }
+  .alarmColumn{
+    .level, .stationName, .info, .time{
+      color:#a6e8ff;
     }
   }
 }

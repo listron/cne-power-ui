@@ -3,11 +3,12 @@ import { connect } from 'react-redux';
 import HomepageTop from '../../components/Home/HomepageTop';
 import StationGeneral from '../../components/Home/HomeParts/StationGeneral';
 import MonthGenChart from '../../components/Home/HomeParts/MonthGenChart';
-import { CompleteRate, OperationInfo, EnergySaving, AlarmList } from '../../components/Home/HomeParts/HomeFuncParts';
+import { CompleteRate, OperationInfo, EnergySaving } from '../../components/Home/HomeParts/HomeFuncParts';
 import OutputPower from '../../components/Home/HomeParts/OutputPower';
 import DeviceStatus from '../../components/Home/HomeParts/DeviceStatus';
 import EqpHours from '../../components/Home/HomeParts/EqpHours';
 import FaultList from '../../components/Home/HomeParts/FaultList';
+import AlarmList from '../../components/Home/HomeParts/AlarmList';
 import CenterMap from '../../components/Home/CenterMap';
 import styles from './homepage.scss';
 import { loginAction } from '../Login/loginAction';
@@ -21,6 +22,7 @@ class Homepage extends Component {
     realTimeInfo: PropTypes.object,
     completeRate: PropTypes.object,
     energySaving: PropTypes.object,
+    operationInfo: PropTypes.object,
     changeLoginStore: PropTypes.func,
     homepageReset: PropTypes.func,
     getMapStation: PropTypes.func,
@@ -75,7 +77,7 @@ class Homepage extends Component {
   }
 
   render() {
-    const { changeLoginStore, realTimeInfo, mapStation, completeRate, energySaving } = this.props;
+    const { changeLoginStore, realTimeInfo, mapStation, completeRate, energySaving, operationInfo } = this.props;
     const { hasMultipleType } = this.state;
     return (
       <div className={styles.homepage}>
@@ -91,9 +93,9 @@ class Homepage extends Component {
               <CenterMap />
             </div>
             <div className={styles.rightInfo}>
-              <OutputPower hasMultipleType={hasMultipleType} />
-              <OperationInfo />
-              <DeviceStatus hasMultipleType={hasMultipleType} />
+              <OutputPower hasMultipleType={hasMultipleType} {...this.props} />
+              <OperationInfo operationInfo={operationInfo} />
+              <DeviceStatus hasMultipleType={hasMultipleType} realTimeInfo={realTimeInfo}  />
             </div>
           </div>
           <div className={styles.bottomBox}>

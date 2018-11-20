@@ -152,7 +152,7 @@ module.exports = [
         stationName: `随机电站${e}`,
         level: e,
         description: `随机内容${e*e}`,
-        duration: e**e,
+        durationHours: e**e,
         count: e*12
       })),
       "serviceCode": "3.0"
@@ -180,8 +180,8 @@ module.exports = [
       "code": "10000",
       "message": "请求成功",
       "data": {
-        doing: '1142',
-        done: '1212',
+        handleNum: '1142',
+        completeNum: '1212',
       },
       "serviceCode": "3.0"
     },

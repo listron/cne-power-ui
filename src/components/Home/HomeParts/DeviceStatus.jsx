@@ -7,6 +7,7 @@ import { showNoData, hiddenNoData } from '../../../constants/echartsNoData';
 
 class DeviceStatus extends Component{
   static propTypes = {
+    realTimeInfo: PropTypes.object,
     hasMultipleType: PropTypes.bool
   }
 
@@ -26,30 +27,46 @@ class DeviceStatus extends Component{
   }
 
   setStatusChart = (statusChart) => {
-    const graphic = Math.random() > 0.5 ? hiddenNoData : showNoData;
-    const statusPieData = [
-      { value: 87, name: '正常', itemStyle:{ color: '#145998'} },
-      { value: 4, name: '故障', itemStyle:{ color: '#3fa9ef'} },
-      { value: 3, name: '停机', itemStyle:{ color: '#6868b2'} },
-      { value: 1, name: '通讯中断', itemStyle:{ color: '#6ae3c1'} },
-    ];
+    const { realTimeInfo } = this.props;
+    const { statusType } = this.state;
+    const deviceStatus = realTimeInfo.deviceStatus || {};
+    let statusInfo = [];
+    if(statusType === 'all'){
+      statusInfo = deviceStatus.allDeviceStatus || [];
+    }else if(statusType === 'wind'){
+      statusInfo = deviceStatus.windDeviceStatus || [];
+    }else if(statusType === 'pv'){
+      statusInfo = deviceStatus.pvDeviceStatus || [];
+    }
+    let hasData = statusInfo.some(e=>e.deviceStatusName || e.deviceStatusName === 0);
+    const statusPieData = statusInfo.map(e=>({
+      value: e.deviceStatusNum, 
+      name: e.deviceStatusName,
+    }));
     const option = {
-        graphic,
+        graphic: hasData? hiddenNoData : showNoData,
+        color: ['#145998', '#3fa9ef', '#6868b2', '#6ae3c1'],
         title: {
           show: false,
+        },
+        tooltip: {
+          formatter: '{b}：{c}({d}%)'
         },
         legend: {
           show: false,
         },
         grid: {
-          top: 30,
+          top: 10,
           bottom: 30,
         },
         series: [
           {
             name: '设备状态',
             type: 'pie',
-            radius: ['50%', '70%'],
+            label: { 
+              show: false
+            },
+            radius: ['55%', '80%'],
             data: statusPieData
           },
         ]
@@ -63,36 +80,36 @@ class DeviceStatus extends Component{
 
 
   render(){
+    const { realTimeInfo } = this.props;
     const { statusType } = this.state;
+    const deviceStatus = realTimeInfo.deviceStatus || {};
+    let statusInfo = [];
+    if(statusType === 'all'){
+      statusInfo = deviceStatus.allDeviceStatus || [];
+    }else if(statusType === 'wind'){
+      statusInfo = deviceStatus.windDeviceStatus || [];
+    }else if(statusType === 'pv'){
+      statusInfo = deviceStatus.pvDeviceStatus || [];
+    }
     return (
       <section className={styles.deviceStatus}>
         <h3>设备状态</h3>
         <div className={styles.checkTags}>
-          <StationTypeTag showTotal={false} activeType={statusType} onChange={this.changeStatusType} />
+          <StationTypeTag showTotal activeType={statusType} onChange={this.changeStatusType} />
         </div>
         <div className={styles.statusBox}>
           <div id="homeDeviceStatus" className={styles.statusChart}></div>
           <div className={styles.statusTotal}>
-            <span className={styles.eachStatus}>
-              <span className={styles.normalRound}></span>
-              <span className={styles.text}>正常</span>
-              <span className={styles.value}>87</span>
-            </span>
-            <span className={styles.eachStatus}>
-              <span className={styles.faultRound}></span>
-              <span className={styles.text}>故障</span>
-              <span className={styles.value}>4</span>
-            </span>
-            <span className={styles.eachStatus}>
-              <span className={styles.stopRound}></span>
-              <span className={styles.text}>停机</span>
-              <span className={styles.value}>3</span>
-            </span>
-            <span className={styles.eachStatus}>
-              <span className={styles.connectRound}></span>
-              <span className={styles.text}>通讯中断</span>
-              <span className={styles.value}>1</span>
-            </span>
+            {statusInfo.map((e, i)=>{
+              const backgroundArr = ['#145998', '#3fa9ef', '#6868b2', '#6ae3c1'];
+              return (
+                <span className={styles.eachStatus} key={e.deviceStatus}>
+                  <span className={styles.round} style={{backgroundColor: backgroundArr[i]}}></span>
+                  <span className={styles.text}>{e.deviceStatusName}</span>
+                  <span className={styles.value}>{e.deviceStatusNum}</span>
+                </span>
+              )
+            })}
           </div>
         </div>
       </section>
