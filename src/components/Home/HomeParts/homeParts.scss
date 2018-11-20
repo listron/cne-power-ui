@@ -104,6 +104,12 @@
   h3{
     height: 42px;
   }
+  .monthTool{ // chart图内文字及样式。
+    @include chartTool();
+    width: 88px;
+    height: 60px;
+    line-height: 21px;
+  }
   .monthChart{
     flex: 1;
   }
@@ -342,6 +348,7 @@
 
 .faultList{ // 本月故障台次
   .faultContent{
+    flex: 1;
     display: flex;
     .list, .chart{
       width: 50%;
@@ -349,12 +356,33 @@
       flex-direction: column;
     }
     .eachFault{
-      .text{
+      display: flex;
+      background-repeat: no-repeat;
+      background-position: center right;
+      .text, .stationName, .value{
         color:#06bdf4;
+        line-height: 24px;
+        height: 24px;
+      }
+      .text{
+        width: 54px;
+      }
+      .stationName{
+        flex: 1;
+        text-align: right;
       }
       .value{
         color:#4dde49;
+        width: 40px;
       }
+    }
+    .faultTool{
+      @include chartTool();
+      width: 84px;
+      height: 54px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
     }
   }
 }

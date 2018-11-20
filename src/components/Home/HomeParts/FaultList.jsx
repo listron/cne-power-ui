@@ -16,27 +16,53 @@ class FaultList extends Component{
     super(props);
     this.state = {
       faultType: 'wind',
+      currentIndex: 0,
     }
   }
 
   componentWillReceiveProps(nextProps){
-    const chartBox = document.getElementById('homeFaultChart');
-    if(chartBox){
-      const faultChart = echarts.init(chartBox);
-      this.setFaultChart(faultChart);
+    const { faultNumber } = nextProps;
+    if(faultNumber.length > 0){ // 得到数据，启动计时器
+      clearTimeout(this.clocker);
+      this.setFaultChart(0);
+      this.clocker = setTimeout(this.showNextFault,10000);
     }
   }
 
-  setFaultChart = (faultChart) => {
+  setFaultChart = (currentIndex) => { // 展示故障chart图
+    const chartBox = document.getElementById('homeFaultChart');
+    const faultChart = echarts.init(chartBox);
     const { faultNumber } = this.props;
-    console.log(faultNumber);
-    const xAxisArr = [1,2,3,4,5,6,7,8,9,10,11];
-    const yFaultData = [12, 24, 18, 17, 11, 12, 20, 9, 11 ,19];
-    const graphic = Math.random() > 0.5 ? hiddenNoData : showNoData;
+    const currentStation = faultNumber[currentIndex] || {};
+    const chartData = currentStation.monthList || [];
+    let xAxisArr = [], yFaultData = [], hasData = false;
+    chartData.forEach(e=>{
+      xAxisArr.push(e.month);
+      yFaultData.push(e.number);
+      if(e.number || e.number === 0){
+        hasData = true;
+      }
+    })
+    const graphic = hasData ? hiddenNoData : showNoData;
     const option = {
       graphic,
       title: {
         show: false,
+      },
+      grid: {
+        top: 28,
+        bottom: 28,
+      },
+      tooltip: {
+        extraCssText: 'background-color: rgba(0,0,0,0.8)',
+        padding: 10,
+        formatter: params => {
+          const currentData = chartData[params.dataIndex];
+          return `<div class=${styles.faultTool}>
+            <div>${currentData.month}月</div>
+            <div>故障台次${currentData.number}</div>
+          </div>`
+        },
       },
       xAxis: [
         {
@@ -45,6 +71,9 @@ class FaultList extends Component{
           axisPointer: {
             type: 'shadow'
           },
+          axisTick: {
+            show: false,
+          },
           axisLine: {
             lineStyle: {
               color: '#06bdf4',
@@ -52,6 +81,7 @@ class FaultList extends Component{
           },
           axisLabel: {
             color: '#06bdf4',
+            fontSize: 10,
           },
         }
       ],
@@ -60,10 +90,12 @@ class FaultList extends Component{
           type: 'value',
           name: '次/台',
           nameTextStyle: {
+            fontSize: 10,
             color: '#06bdf4',
           },
           axisLabel: {
             color: '#06bdf4',
+            fontSize: 10,
           },
           axisLine: {
             show: false,
@@ -84,6 +116,7 @@ class FaultList extends Component{
         {
           name: '风电功率',
           type: 'line',
+          lineStyle: { color: '#48cf49' },
           data: yFaultData
         }
       ]
@@ -91,20 +124,30 @@ class FaultList extends Component{
     faultChart.setOption(option);
   }
 
-  changeFaultType = (faultType) => {
-    this.setState({ faultType });
+  showNextFault = (targetIndex = 0) => { // 定时执行展示下一个电站故障
+    const { faultNumber } = this.props;
+    const maxFaultLength = faultNumber.length || 0;
+    const nextIndex = (targetIndex + 1) >= maxFaultLength? 0: (targetIndex + 1);
+    this.setState({
+      currentIndex: nextIndex,
+    })
+    this.setFaultChart(nextIndex);
+    this.clocker = setTimeout(()=>this.showNextFault(nextIndex),10000);
+  }
+
+  changeFaultType = (faultType) => { // 切换设备类型
+    clearTimeout(this.clocker);
+    this.setState({ 
+      faultType,
+      currentIndex: 0,
+    });
     this.props.getFaultNumber(faultType);
   }
 
   render(){
-    const { faultType } = this.state;
-    const faultList = [
-      {stationName: '盐源', value: 8.2 },
-      {stationName: '富川', value: 7.2 },
-      {stationName: '富川潮汐', value: 7.12 },
-      {stationName: '天长', value: 6.98 },
-      {stationName: '花灯2起', value: 6.61 },
-    ]
+    const { faultType, currentIndex } = this.state;
+    const { faultNumber } = this.props;
+    const activeBackground = {backgroundImage: 'url(/img/hover.png)'};
     return (
       <section className={styles.faultList}>
         <h3>本月故障台次 TOP5</h3>
@@ -113,9 +156,13 @@ class FaultList extends Component{
         </div>
         <div className={styles.faultContent}>
           <div className={styles.list}>
-            {faultList.map(e=>(<span key={e.stationName} className={styles.eachFault} >
-              <span className={styles.text}>{e.stationName}</span>
-              <span className={styles.value}>{e.value}</span>
+            {faultNumber.map((e,i)=>(<span 
+              key={e.stationName} 
+              className={styles.eachFault} 
+              style={currentIndex === i?activeBackground:null}
+              >
+              <span className={styles.stationName}>{e.stationName}</span>
+              <span className={styles.value}>{e.number}</span>
               <span className={styles.text}>次/台</span>
             </span>))}
           </div>

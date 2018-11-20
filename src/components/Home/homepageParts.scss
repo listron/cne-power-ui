@@ -26,6 +26,13 @@
   margin-bottom: 0;
 }
 
+@mixin chartTool{ // chart图内文字及样式。
+  color:#a6e8ff;
+  font-family:PingFangSC-Regular;
+  font-size: 14px;
+  border-radius: 2px;
+}
+
 .topBox{ // 顶部盒子
   width: 100%;
   height: 189px;

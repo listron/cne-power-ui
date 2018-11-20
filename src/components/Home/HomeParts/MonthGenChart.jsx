@@ -19,9 +19,10 @@ class MonthGenChart extends Component{
     }
   }
 
-  componentWillReceiveProps(){
-    const chartBox = document.getElementById('homeMonthElec');
-    if(chartBox){
+  componentWillReceiveProps(nextProps){
+    const { monthPower } = nextProps;
+    if(monthPower.length > 0){
+      const chartBox = document.getElementById('homeMonthElec');
       const monthChart = echarts.init(chartBox);
       this.setMonthChart(monthChart);
     }
@@ -34,7 +35,9 @@ class MonthGenChart extends Component{
       xAxisArr.push(e.month);
       yGenData.push(e.power);
       yRateData.push(e.rate);
-      hasData = !!e.power || !!e.rate || e.power === 0 || e.rate === 0;
+      if(e.power || e.rate || e.power === 0 || e.rate === 0){
+        hasData = true;
+      }
     });
     const option = {
         graphic: hasData ? hiddenNoData : showNoData,
@@ -52,7 +55,7 @@ class MonthGenChart extends Component{
           extraCssText: 'background-color: rgba(0,0,0,0.8)',
           formatter: params => {
             const currentData = monthPower[params.dataIndex];
-            return `<div class=${styles.chartTool}>
+            return `<div class=${styles.monthTool}>
               <div>${currentData.month}月发电量</div>
               <div>${currentData.power}</div>
               <div>同比${currentData.rate}%</div>
