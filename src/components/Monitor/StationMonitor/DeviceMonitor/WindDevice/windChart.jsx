@@ -270,6 +270,9 @@ function SactterChart({ theory, actual }) {
         axisTick: {
           show: false,
         },
+       splitLine:{
+        show:false,
+       },
         axisLine: {
           onZero: false,
           lineStyle: {
