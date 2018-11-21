@@ -22,8 +22,8 @@ class OperateAnalysis extends React.Component {
     selectYear: PropTypes.any,
     month: PropTypes.string,
     stations: PropTypes.object,
-    startTime: PropTypes.string, 
-    endTime: PropTypes.string, 
+    startTime: PropTypes.string,
+    endTime: PropTypes.string,
     stationCode: PropTypes.number,
     changeOperateStationStore: PropTypes.func,
     getOperatePlanComplete: PropTypes.func,
@@ -208,7 +208,7 @@ class OperateAnalysis extends React.Component {
 
   render() {
     const { stations, dateType, stationCode, year, month, operateAvalibaData, operatePlanCompleteData, powerData, lostPowerData, efficiencyData, usageData, lostPowerTypeDatas, limitPowerData,
-      yearLimitPowerData, plantPowerData, selectYear } = this.props;
+      yearLimitPowerData, plantPowerData, selectYear,startTime,endTime } = this.props;
 
 
     let station = ''
@@ -248,7 +248,8 @@ class OperateAnalysis extends React.Component {
     const barGraphLastYear = lostPowerData && lostPowerData.map((e, i) => (e.lastYearData)) || [];
     const barGraphmonth = lostPowerData && lostPowerData.map((e, i) => { return this.addXaixsName(e.date, dateType) });
     const barGraphYearOnYear = lostPowerData && lostPowerData.map((e, i) => (e.yearOnYear)) || [];
-    const lostPowerHasData = barGraphThatYear.some(e => e || e === 0) || barGraphLastYear.some(e => e || e === 0) || barGraphYearOnYear.some(e => e || e === 0)
+    const barGraphRingRatio = lostPowerData && lostPowerData.map((e, i) => (e.ringRatio)) || [];
+    const lostPowerHasData = barGraphThatYear.some(e => e || e === 0) || barGraphLastYear.some(e => e || e === 0) || barGraphYearOnYear.some(e => e || e === 0) || barGraphRingRatio.some(e => e || e === 0)
 
 
     //损失电站类型
@@ -490,7 +491,7 @@ class OperateAnalysis extends React.Component {
                 <BarGraph
                   graphId={'lostPower'}
                   yAxisName={'损失电量 (万kWh)'}
-                  xAxisName={'损失电量同比'}
+                  xAxisName={"损失电量"}
                   dateType={dateType}
                   title={dateType === "year" ? "损失电量环比" : "损失电量同比"}
                   currentYear={currentYear}
@@ -499,11 +500,12 @@ class OperateAnalysis extends React.Component {
                   barGraphLastYear={barGraphLastYear}
                   barGraphmonth={barGraphmonth}
                   barGraphYearOnYear={barGraphYearOnYear}
+                  barGraphRingRatio={barGraphRingRatio}
                   hasData={lostPowerHasData}
                 />
                 <TableGraph
                   dateType={dateType}
-                  tableType={'lostPowerTB'}
+                  tableType={dateType === "year" ? "lostPowerRatio" : "lostPowerTB"}
                   currentYear={currentYear}
                   lastYear={lastYear}
                   dataArray={lostPowerData}
@@ -524,8 +526,11 @@ class OperateAnalysis extends React.Component {
                 <div className={styles.LostPowerTypeRate}>
                   <div className={styles.LostPowerTypeTitle}>
                     <div>
-                      电量损失类型占比(
-                      {"2018年9月"})
+                      电量损失类型占比
+                        {dateType === "year" && ' ( ' + startTime + '-' + endTime + ' )'}
+                      {dateType === "month" && ' ( ' + year + ' 年 )'}
+                      {dateType === 'day' && ' ( ' + year + '年' + month + '月 )'}
+                      
                     </div>
                     <div>损失电量:万kWh</div>
                   </div>

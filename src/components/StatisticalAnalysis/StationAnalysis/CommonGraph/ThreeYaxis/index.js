@@ -240,7 +240,7 @@ class PowerEfficency extends React.Component {
       ],
       series:seriesData || []
     };
-    targetChart.setOption(targetMonthOption)
+    targetChart.setOption(targetMonthOption,{notMerge:true})
     targetChart.resize();
   }
 

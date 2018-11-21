@@ -12,7 +12,19 @@ class TableGraph extends React.Component {
       <div>xuanfukuang</div>
     )
   }
-
+  
+//table排序
+getSort(a, b, sortBy, variable) {
+  let result;
+  sortBy=== 'descend'?result=-1:result=1;
+  if (!a[variable]) {
+    return 1*result;
+  }
+  if (!b[variable]) {
+    return -1*result;
+  }
+   return a[variable]- b[variable] 
+}
 
   getColumnsArray = (tableType, lastYear, currentYear) => {
     let columns = [];
@@ -23,26 +35,23 @@ class TableGraph extends React.Component {
             title: '日期',
             dataIndex: 'date',
             key: 'time',
-            sorter: true,
             width: 70,
-            sorter: (a, b) => (a.date).localeCompare(b.date),
+            sorter: (a, b) => { return a.date.split('月')[0].split('日')[0] - b.date.split('月')[0].split('日')[0] },
           }, {
             title: lastYear,
             children: [{
               title: '限电损失',
               dataIndex: 'lastyearLostPower',
               key: 'lastyearLostPower',
-              sorter: true,
               width: 90,
-              sorter: (a, b) => a.lastyearLostPower - b.lastyearLostPower,
+              sorter: (a, b, sortBy)=>this.getSort(a, b, sortBy,'lastyearLostPower'),
               render: text => text ? text : '--'
             }, {
               title: '限电率',
               dataIndex: 'lastyearLostPowerRate',
               key: 'lastyearLostPowerRate',
-              sorter: true,
               width: 80,
-              sorter: (a, b) => a.lastyearLostPowerRate - b.lastyearLostPowerRate,
+              sorter: (a, b, sortBy)=>this.getSort(a, b, sortBy,'lastyearLostPowerRate'),
               render: text => (text || text === 0) ? text + '%' : '--'
             }],
           }, {
@@ -51,26 +60,24 @@ class TableGraph extends React.Component {
               title: '限电损失',
               dataIndex: 'thatYearLostPower',
               key: 'thatYearLostPower',
-              sorter: true,
               width: 90,
-              sorter: (a, b) => a.thatYearLostPower - b.thatYearLostPower,
+              sorter: (a, b, sortBy)=>this.getSort(a, b, sortBy,'thatYearLostPower'),
               render: text => text ? text : '--'
             }, {
               title: '限电率',
               dataIndex: 'thatYearLostPowerRate',
               key: 'thatYearLostPowerRate',
-              sorter: true,
               width: 80,
-              sorter: (a, b) => a.thatYearLostPowerRate - b.thatYearLostPowerRate,
+              sorter: (a, b, sortBy)=>this.getSort(a, b, sortBy,'thatYearLostPowerRate'),
               render: text => (text || text === 0) ? text + '%' : '--'
             }],
           }, {
             title: '限电率同比',
             dataIndex: 'lostPowerRateYearOnYear',
             key: 'lostPowerRateYearOnYear',
-            sorter: true,
             width: 105,
-            sorter: (a, b) => a.lostPowerRateYearOnYear - b.lostPowerRateYearOnYear,
+            defaultSortOrder: 'descend',
+            sorter: (a, b, sortBy)=>this.getSort(a, b, sortBy,'lostPowerRateYearOnYear'),
             render: text => (text || text === 0) ? text + '%' : '--'
           }];
         break;
