@@ -10,7 +10,7 @@ import Cookie from 'js-cookie';
 class TargetTabs extends React.Component {
   static propTypes = {
     stations: PropTypes.object,
-    stationType: PropTypes.string,
+    stationType: PropTypes.any,
     year: PropTypes.any,
     allStationMonthComplete: PropTypes.string,
     stationCode: PropTypes.array,
