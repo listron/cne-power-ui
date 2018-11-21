@@ -8,7 +8,9 @@ const initState = Immutable.fromJS({
   deviceTypeCode: 206,
   deviceModeTypeCode: null,
   electricLineCode: '',
-  deviceModels: [],
+  deviceModels: [],//设备型号
+  deviceTypes:[],//设备类型
+  deviceModelOther:[],
   startTime: '',
   endTime: '',
   contrastStartDate: '',

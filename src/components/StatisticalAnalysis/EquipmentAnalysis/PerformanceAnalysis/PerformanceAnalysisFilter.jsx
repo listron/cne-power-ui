@@ -13,7 +13,7 @@ class PerformanceAnalysisFilter extends Component {
     }
   }
   componentDidMount() {
-    const { stations, contrastSwitch, stationCode, deviceTypeCode, endDate, startDate,  changePerformanceAnalysisStore, getDeviceModel, getEleLineCode,getPerformance } = this.props;
+    const { stations, contrastSwitch, stationCode, deviceTypeCode, endDate, startDate,  changePerformanceAnalysisStore, getDeviceModels,getDeviceModelother, getEleLineCode,getPerformance } = this.props;
     const prams = {
       stationCode,
       startDate,
@@ -28,11 +28,17 @@ class PerformanceAnalysisFilter extends Component {
       startTime,
       endTime
     });
+    //获取电站下的设备类型
+    this.props.getStationDeviceTypes({stationCodes:stations[0].stationCode})
     //获取设备型号
-    getDeviceModel({
-      stationCode: stationCode,
-      deviceTypeCode: '206',
+    getDeviceModels({
+      stationCode:stationCode,
+      // deviceTypeCode:'206'
     });
+    // getDeviceModelother({
+    //   stationCode:stationCode,
+    //   deviceTypeCode:'201'
+    // });
     //获取集电线路的设备
     getEleLineCode({
       stationCode: 1,
@@ -126,7 +132,7 @@ class PerformanceAnalysisFilter extends Component {
   stationSelected = (stationSelect) => {
     const stationCode = stationSelect[0].stationCode;
     this.props.changePerformanceAnalysisStore({ stationCode ,contrastSwitch:false})
-    //因为逆变器是固定的，所以这里可以发送请求获取逆变器下的设备型号
+  
   };
   //选择设备类型
   selectDeviceType = (value) => {
@@ -176,11 +182,13 @@ class PerformanceAnalysisFilter extends Component {
     const { Option } = Select;
     const { RangePicker } = DatePicker;
     const dateFormat = 'YYYY/MM/DD';
-    const { stationCode, stations, deviceTypeCode, contrastSwitch, contrastStartDate, contrastEndDate, deviceModeCode,deviceModeTypeCode, deviceModels, eleLineCodeData,electricLineCode } = this.props;
+    const { stationCode, stations, deviceTypeCode,deviceTypes, contrastSwitch, contrastStartDate, contrastEndDate, deviceModeCode,deviceModeTypeCode, deviceModels,deviceModelOther, eleLineCodeData,electricLineCode } = this.props;
+   
     const { showFilter } = this.state;
     let station = stationCode ? stations.filter(e => `${e.stationCode}` === `${stationCode}`) : '';
     // console.log(stationCode, deviceModels,eleLineCodeData);
-    console.log(contrastStartDate, contrastEndDate);
+    // console.log(contrastStartDate, contrastEndDate);
+    console.log(deviceModels,deviceModelOther);
     return (
       <div className={styles.performanceSearch}>
         <div className={styles.conditionalQuery}>
@@ -228,17 +236,29 @@ class PerformanceAnalysisFilter extends Component {
           <span className={styles.equipmentText}>设备选择</span>
           <Select placeholder="请选择设备类型" onChange={this.selectDeviceType} defaultValue={deviceTypeCode} >
             <Option  value={206}>逆变器</Option>
-            {/*{stationDeviceTypes.map(e => {
+            {deviceTypes.map(e => {
               if (!e) { return null; }
-              return <Option key={e.deviceTypeCode} value={e.deviceTypeCode}>{e.deviceTypeName}</Option>
-            })} */}
+              if(e.deviceTypeCode==='201'){
+                return <Option key={e.deviceTypeCode} value={e.deviceTypeCode}>{e.deviceTypeName}</Option>
+              }
+              if(e.deviceTypeCode==='206'){
+                return <Option key={e.deviceTypeCode} value={e.deviceTypeCode}>{e.deviceTypeName}</Option>
+              }
+
+             
+            })} 
           </Select>
           <Select className={styles.modelSelect} onChange={this.selectDeviceModel} value={deviceModeTypeCode} placeholder="请选择设备型号">
             <Option key={null} value={null}>{'全部设备型号'}</Option>
+            {deviceModelOther.map(e => {
+              if (!e) { return null; }
+              return <Option key={e.deviceModeName} value={e.deviceModeCode}>{e.deviceModeName}</Option>
+            })}
             {deviceModels.map(e => {
               if (!e) { return null; }
-              return <Option key={e.deviceModeCode} value={e.deviceModeCode}>{e.deviceModeName}</Option>
+              return <Option key={e.deviceModeName} value={e.deviceModeCode}>{e.deviceModeName}</Option>
             })}
+            
           </Select>
           <Select className={styles.modelSelect} onChange={this.selectEleLine} value={electricLineCode} placeholder="请选择集电线路">
             <Option key={null} value={null}>{'全部集电线路'}</Option>

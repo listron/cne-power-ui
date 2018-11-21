@@ -112,6 +112,7 @@ function *getPoints(action){ // 新-获取电站下测点数据
   const { payload } = action;
   try {
     const { params, actionName, resultName } = payload;
+  
     const response = yield call(axios.get, url, { params });
     if (response.data.code === '10000') {
       yield put({
