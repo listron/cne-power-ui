@@ -178,8 +178,9 @@ class ProductionAnalysis extends React.Component {
     const { stations, dateType, stationCode, year, month, resourceAvalibaData, resourcePlanData, PvCompareData, resourceMonthLight, selectYear, resourceMonthWeather, YearPvCompareData, resourceYearLight, resourceDayWeather, startTime, endTime } = this.props;
     let station = ''
     stationCode ? station = stations.toJS().filter(e => e.stationCode === stationCode) : '';
-    const currentYear = parseInt(year).toString();
-    const lastYear = (parseInt(year) - 1).toString();
+    const currentYear =`${parseInt(year)}`;
+    const lastYear = `${parseInt(year) - 1}`;
+    
 
     // 光资源同比/环比
     const resourceLight = dateType === 'year' ? YearPvCompareData || [] : PvCompareData || [];

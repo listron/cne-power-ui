@@ -200,12 +200,16 @@ function SactterChart({ theory,actual}) {
         name:e.windSpeed,
         value:e.stationPower
       })
+      xData.push(e.windSpeed)
       theoryData1.push('--')
     });
-
     actual.sort((a,b)=>{return a.windSpeed-b.windSpeed})
     actual.length > 0 && actual.forEach(e => {
       actualData.push([e.windSpeed,e.stationPower])
+      // actualData.push({
+      //   name:e.windSpeed,
+      //   value:e.stationPower
+      // })
       actualData1.push('--')
     });
     const inverterTenMinGraphic = (actualData.length === 0 && theoryData.length === 0) ? showNoData : hiddenNoData;
@@ -272,7 +276,7 @@ function SactterChart({ theory,actual}) {
           color: lineColor,
         },
         axisTick: {
-          // show: false,
+          show: false,
         },
         axisLine: {
           onZero: false,
@@ -312,11 +316,22 @@ function SactterChart({ theory,actual}) {
         }
       ],
       series: [
+        
+        {
+          name: '有功功率',
+          type: 'scatter',
+          label: {
+            normal: {
+              show: false
+            }
+          },
+          symbolSize:5,
+          data: actualData,
+        },  
         {
           name: '历史平均功率',
           type: 'line',
           lineStyle: {
-            // type: 'dotted',
             color: '#199475',
             width: 1,
           },
@@ -329,22 +344,8 @@ function SactterChart({ theory,actual}) {
               show: false
             }
           },
-          // data: theoryData.length>0?theoryData:actualData1,
           data: theoryData,
-        },
-        {
-          name: '有功功率',
-          type: 'scatter',
-          label: {
-            normal: {
-              show: false
-            }
-          },
-          symbolSize:5,
-          yAxisIndex: 0,
-          // data: actualData.length>0?actualData:theoryData1,
-          data: actualData,
-        },   
+        }, 
       ]
     };
     inverterChart.setOption(option);
