@@ -44,11 +44,11 @@
                             margin-right: 4px;
                             margin-left: 4px;
                         }
-                        .alarm{
+                        .alarm {
                             color: #a42b2c
                         }
                     }
-                    >p{
+                    >p {
                         display: inline-block;
                     }
                 }
@@ -147,10 +147,33 @@
     .windChart {
         display: flex;
         flex-direction: row;
-        height: 323px; 
+        height: 323px;
         >div {
             flex: 1;
-            border-right:1px solid  #dfdfdf; 
+            border-right: 1px solid #dfdfdf;
+        }
+    }
+    .deviceContent {
+        .statisticsBox {
+            .deviceIcon {
+                width: 170px;
+                text-align: center;
+                line-height: 30px;
+                span{
+                    margin-top: 20px;
+                    display: inline-block;
+                }
+                :global {
+                    .iconfont {
+                        font-size: 31px;
+                        color: $themeColor;
+                    }
+                }
+                .deviceCode {
+                    display: block;
+                    color: $themeColor
+                }
+            }
         }
     }
 }
