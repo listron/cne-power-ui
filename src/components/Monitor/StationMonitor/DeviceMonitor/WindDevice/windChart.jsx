@@ -8,7 +8,7 @@ function InverterTenMin({ sequenceChart }) {
   const lineColor = '#666';
   if (echartBox) {
     const inverterChart = echarts.init(echartBox);
-    let powerLineData = [], radiationLineData = [], radiationLineData1=[],xTime = [];
+    let powerLineData = [], radiationLineData = [], radiationLineData1 = [], xTime = [];
     sequenceChart.length > 0 && sequenceChart.forEach(e => {
       xTime.push(moment(moment.utc(e.utc).toDate()).local().format('YYYY-MM-DD HH:mm'));
       powerLineData.push(e.stationPower);
@@ -157,7 +157,7 @@ function InverterTenMin({ sequenceChart }) {
             }
           },
           yAxisIndex: 0,
-          data: filterStationPower.length>0 ?powerLineData:radiationLineData1,
+          data: filterStationPower.length > 0 ? powerLineData : radiationLineData1,
         },
         {
           name: '风速',
@@ -177,7 +177,7 @@ function InverterTenMin({ sequenceChart }) {
             }
           },
           yAxisIndex: 1,
-          data: filterWindSpeed.length>0 ?radiationLineData:radiationLineData1,
+          data: filterWindSpeed.length > 0 ? radiationLineData : radiationLineData1,
         },
       ]
     };
@@ -189,27 +189,19 @@ function InverterTenMin({ sequenceChart }) {
   );
 }
 
-function SactterChart({ theory,actual}) {
+function SactterChart({ theory, actual }) {
   const echartBox = document.getElementById('wind_monitor');
   const lineColor = '#666';
   if (echartBox) {
     const inverterChart = echarts.init(echartBox);
-    let actualData = [], theoryData = [], xData = [],actualData1=[],theoryData1=[];
+    let actualData = [], theoryData = [], xData = [], actualData1 = [], theoryData1 = [];
     theory.length > 0 && theory.forEach(e => {
-      theoryData.push({
-        name:e.windSpeed,
-        value:e.stationPower
-      })
-      xData.push(e.windSpeed)
+      theoryData.push([e.windSpeed, e.stationPower])
       theoryData1.push('--')
     });
-    actual.sort((a,b)=>{return a.windSpeed-b.windSpeed})
+    actual.sort((a, b) => { return a.windSpeed - b.windSpeed })
     actual.length > 0 && actual.forEach(e => {
       actualData.push([e.windSpeed,e.stationPower])
-      // actualData.push({
-      //   name:e.windSpeed,
-      //   value:e.stationPower
-      // })
       actualData1.push('--')
     });
     const inverterTenMinGraphic = (actualData.length === 0 && theoryData.length === 0) ? showNoData : hiddenNoData;
@@ -225,7 +217,7 @@ function SactterChart({ theory,actual}) {
         left: 30,
         top: 23,
       },
-      color:color,
+      color: color,
       legend: {
         top: 24,
         itemWidth: 24,
@@ -239,8 +231,8 @@ function SactterChart({ theory,actual}) {
         // containLabel: true,
         top: 90,
         bottom: 40,
-        right:'20%',
-        left:'10%',
+        right: '20%',
+        left: '10%',
       },
       tooltip: {
         trigger: 'axis',
@@ -262,16 +254,16 @@ function SactterChart({ theory,actual}) {
         formatter: function (params) {
           let paramsItem = '';
           params.forEach((item, index) => {
-            return paramsItem += `<div> <span style="display: inline-block;width: 5px;height: 5px;border-radius: 50%;background:${params[index].seriesName==='历史平均功率'?'#199475':'#c57576'};vertical-align: 3px;margin-right: 3px;"> </span> ${params[index].seriesName} :${params[index].value === '0' || params[index].value || '--'}</div>`
+            return paramsItem += `<div> <span style="display: inline-block;width: 5px;height: 5px;border-radius: 50%;background:${params[index].seriesName === '历史平均功率' ? '#199475' : '#c57576'};vertical-align: 3px;margin-right: 3px;"> </span> ${params[index].seriesName} :${params[index].value === '0' || params[index].value || '--'}</div>`
           });
           return `<div  style="border-bottom: 1px solid #ccc;padding-bottom: 7px;margin-bottom: 7px;width:150px;overflow:hidden;"> <span style="float: left">风速：${params[0].axisValue} </span>
             </div>${paramsItem}`
         },
       },
       xAxis: {
-        type: 'category',
+        type: 'value',
         // data: xData,
-        name:'风速(m/s)',
+        name: '风速(m/s)',
         nameTextStyle: {
           color: lineColor,
         },
@@ -295,6 +287,7 @@ function SactterChart({ theory,actual}) {
       },
       yAxis: [
         {
+          type: 'value',
           name: '功率(kW)',
           nameTextStyle: {
             color: lineColor,
@@ -316,7 +309,6 @@ function SactterChart({ theory,actual}) {
         }
       ],
       series: [
-        
         {
           name: '有功功率',
           type: 'scatter',
@@ -325,16 +317,18 @@ function SactterChart({ theory,actual}) {
               show: false
             }
           },
-          symbolSize:5,
+          symbolSize: 5,
           data: actualData,
-        },  
+        },
         {
           name: '历史平均功率',
           type: 'line',
+          
           lineStyle: {
             color: '#199475',
             width: 1,
           },
+          smooth:true,
           itemStyle: {
             color: "#199475",
             opacity: 0,
@@ -357,12 +351,12 @@ function SactterChart({ theory,actual}) {
 }
 
 
-function SequenceChart({sequenceChartList}){
+function SequenceChart({ sequenceChartList }) {
   const echartBox = document.getElementById('sequenceChart');
   const lineColor = '#666';
   if (echartBox) {
     const inverterChart = echarts.init(echartBox);
-    let pitchAngle1Data = [], pitchAngle2Data = [],pitchAngle3Data = [],speedData=[], xTime = [],replaceData=[];
+    let pitchAngle1Data = [], pitchAngle2Data = [], pitchAngle3Data = [], speedData = [], xTime = [], replaceData = [];
     sequenceChartList.length > 0 && sequenceChartList.forEach(e => {
       xTime.push(moment(moment.utc(e.utc).toDate()).local().format('YYYY-MM-DD HH:mm'));
       pitchAngle1Data.push(e.pitchAngle1 && parseInt(e.pitchAngle1).toFixed(2) || '--');
@@ -372,13 +366,13 @@ function SequenceChart({sequenceChartList}){
       replaceData.push('--')
     });
 
-    const filterpitchAngle1= sequenceChartList.filter(e => e.pitchAngle1);
-    const filterpitchAngle2= sequenceChartList.filter(e => e.pitchAngle2);
-    const filterpitchAngle3= sequenceChartList.filter(e => e.pitchAngle3);
+    const filterpitchAngle1 = sequenceChartList.filter(e => e.pitchAngle1);
+    const filterpitchAngle2 = sequenceChartList.filter(e => e.pitchAngle2);
+    const filterpitchAngle3 = sequenceChartList.filter(e => e.pitchAngle3);
     const filterWindSpeed = sequenceChartList.filter(e => e.speed);
     const inverterTenMinGraphic = (filterpitchAngle1.length === 0 && filterWindSpeed.length === 0
       && filterpitchAngle2.length === 0 && filterpitchAngle3.length === 0) ? showNoData : hiddenNoData;
-    let color = ['#a42b2c', '#e08031','#3e97d1','#199475'];
+    let color = ['#a42b2c', '#e08031', '#3e97d1', '#199475'];
     const option = {
       graphic: inverterTenMinGraphic,
       title: {
@@ -506,7 +500,7 @@ function SequenceChart({sequenceChartList}){
             }
           },
           yAxisIndex: 0,
-          data: filterpitchAngle1.length>0 ?pitchAngle1Data:replaceData,
+          data: filterpitchAngle1.length > 0 ? pitchAngle1Data : replaceData,
         },
         {
           name: '桨距角2',
@@ -520,7 +514,7 @@ function SequenceChart({sequenceChartList}){
             }
           },
           yAxisIndex: 0,
-          data: filterpitchAngle2.length>0 ?pitchAngle2Data:replaceData,
+          data: filterpitchAngle2.length > 0 ? pitchAngle2Data : replaceData,
         },
         {
           name: '桨距角3',
@@ -534,7 +528,7 @@ function SequenceChart({sequenceChartList}){
             }
           },
           yAxisIndex: 0,
-          data: filterpitchAngle3.length>0 ?pitchAngle3Data:replaceData,
+          data: filterpitchAngle3.length > 0 ? pitchAngle3Data : replaceData,
         },
         {
           name: '转速',
@@ -550,7 +544,7 @@ function SequenceChart({sequenceChartList}){
             }
           },
           yAxisIndex: 1,
-          data: filterWindSpeed.length>0 ?speedData:replaceData,
+          data: filterWindSpeed.length > 0 ? speedData : replaceData,
         },
       ]
     };
@@ -561,5 +555,5 @@ function SequenceChart({sequenceChartList}){
     <div id="sequenceChart" ></div>
   );
 }
-export { InverterTenMin,SactterChart,SequenceChart}
+export { InverterTenMin, SactterChart, SequenceChart }
 
