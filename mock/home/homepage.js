@@ -197,8 +197,9 @@ module.exports = [
         stationCode: e,
         stationName: `随机电站${e}`,
         stationType: e%2,
-        longitude: Math.random()*100,
-        latitude: Math.random()*100,
+        longitude: Math.random()*100*(e%2 + 1),
+        latitude: Math.random()*100*(e%2 + 1),
+        country: ['China', 'America'][e%2]
       })),
       "serviceCode": "3.0"
     },

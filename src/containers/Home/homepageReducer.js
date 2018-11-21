@@ -13,6 +13,7 @@ const initState = Immutable.fromJS({
   operationInfo: {}, // 运维情况
   mapStation: [], // 地图各坐标情况
   outputPower: [], // 出力图
+  singleStation: {}, // 单电站效果
 });
 
 const homepageReducer = (state = initState, action) => {

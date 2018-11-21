@@ -49,6 +49,7 @@
 .stationGeneral{ // 电站概况
   @include boxStyle();
   height: 320px;
+  margin-top: 12px;
   position: relative;
   align-content: flex-start;
   h3{

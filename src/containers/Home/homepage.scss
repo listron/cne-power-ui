@@ -1,10 +1,14 @@
 
 @media screen and (max-width: 1919px) { // 1920以下宽度屏按1680展示
-  
+  .mapInfo{
+    width: 852px;
+  }
 }
 
 @media screen and (min-width: 1920px){ // 1920及以上屏幕按1920展示
-  
+  .mapInfo{
+    width: 1016px;
+  }
 }
 
 .homepage{
@@ -21,13 +25,8 @@
     .middleBox{
       height: 750px;
       display: flex;
-      .leftInfo, .rightInfo{
-        width: 400px;
-        flex-shrink: 0;
-      }
       .mapInfo{
-        width: 876px;
-        flex-shrink: 0;
+        margin: 12px 12px 0 12px;
       }
     }
     .bottomBox{

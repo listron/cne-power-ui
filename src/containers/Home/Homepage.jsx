@@ -90,7 +90,7 @@ class Homepage extends Component {
               <MonthGenChart {...this.props} />
             </div>
             <div className={styles.mapInfo}>
-              <CenterMap />
+              <CenterMap {...this.props} />
             </div>
             <div className={styles.rightInfo}>
               <OutputPower hasMultipleType={hasMultipleType} {...this.props} />

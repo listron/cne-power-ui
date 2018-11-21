@@ -126,7 +126,7 @@ function* getSingleStation(action){ // 地图中某电站信息
     yield put({
       type: homepageAction.GET_HOMEPAGE_FETCH_SUCCESS,
       payload: {
-        singleStation: response.data.data || [],
+        singleStation: response.data.data || {},
       }
     })
   }catch(error){
