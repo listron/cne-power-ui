@@ -4,13 +4,11 @@ import styles from '../eachDeviceMonitor.scss';
 
 function InverterStatistics({ deviceDetail }) {
   let { devicePower, deviceCapacity, powerDay, powerMonth, powerYear,windSpeed,angleOfYaw } = deviceDetail;
-  powerDay = isNaN(parseFloat(powerDay)) ? ' -- ': parseFloat(powerDay).toFixed(4); 
-  powerMonth = isNaN(parseFloat(powerMonth)) ? ' -- ': parseFloat(powerMonth).toFixed(4); 
-  powerYear = isNaN(parseFloat(powerYear)) ? ' -- ': parseFloat(powerYear).toFixed(4);
   return (
     <div className={styles.statisticsBox} >
       <div className={styles.deviceIcon}>
         <span className="iconfont icon-windlogo"></span>
+        {/* <span>{deviceDetail.deviceName}</span> */}
       </div>
       <PowerProgress devicePower={devicePower} deviceCapacity={deviceCapacity} />
       <div className={styles.timerDayGen}>

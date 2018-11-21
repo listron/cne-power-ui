@@ -26,7 +26,7 @@ class WindDevice extends Component {
 
   componentDidMount() {
     const { deviceCode, deviceTypeCode, stationCode } = this.props.match.params;
-    const startTime = moment().utc().subtract(72, 'hours').format();
+    const startTime = moment().utc().subtract(24, 'hours').format();
     const endTime = moment().utc().format();
     const params = {
       stationCode,
@@ -46,7 +46,7 @@ class WindDevice extends Component {
     const nextDevice = nextParams.deviceCode;
     const nextType = nextParams.deviceTypeCode;
     const nextStation = nextParams.stationCode;
-    const startTime = moment().utc().subtract(72, 'hours').format();
+    const startTime = moment().utc().subtract(24, 'hours').format();
     const endTime = moment().utc().format();
     if (nextDevice !== deviceCode || nextType !== deviceTypeCode || nextStation !== stationCode) {
       clearTimeout(this.timeOutId);
@@ -109,7 +109,8 @@ class WindDevice extends Component {
         name: singleStationData && singleStationData.stationName || '',
         path: `/monitor/singleStation/${stationCode}`,
       }, {
-        name: deviceDetail.deviceName,
+        link: false,
+        name: deviceDetail.deviceTypeName,
       }],
       iconName: 'iconfont icon-windlogo',
     };
