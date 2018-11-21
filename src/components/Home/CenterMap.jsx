@@ -12,6 +12,7 @@ class CenterMap extends Component{
     singleStation: PropTypes.object,
     getMapStation: PropTypes.func,
     getSingleStation: PropTypes.func,
+    changeLoginStore: PropTypes.func,
   }
 
   constructor(props){
@@ -19,6 +20,7 @@ class CenterMap extends Component{
     this.state = {
       worldChart: null,
       countriesInfo: [],
+      showStationInfo: false,
     }
   }
 
@@ -40,7 +42,7 @@ class CenterMap extends Component{
   componentWillReceiveProps(nextProps){
     const { mapStation } = nextProps;
     const preStations = this.props.mapStation;
-    const countryBox = document.getElementById('homeCountryMap');
+    
     if(mapStation.length > 0 && preStations.length === 0){ // 第一次得到电站数据
       let countriesInfo = [];
       mapStation.forEach(station=>{ // 存储为[{国家，位置}...]结构，一个国家只保存一个坐标即可
@@ -56,12 +58,13 @@ class CenterMap extends Component{
       this.setState({ countriesInfo });
       const activeInfo = countriesInfo.find(e=>e.countryName === 'China') || countriesInfo[0] || {}; // 默认中国，或者第一个国家
       this.setWorldMap(countriesInfo, activeInfo);
-      this.setCountryMap(countryBox, 'China');
+      this.setCountryMap(mapStation, 'China');
     }
   }
 
   onCountryChange = (param) => { // 切换国家
     const { countriesInfo } = this.state;
+    const { mapStation } = this.props;
     if(param.seriesName === 'active'){ // 已选中国家点击无效
       return
     }else if(param.seriesName === 'inactive'){
@@ -70,7 +73,7 @@ class CenterMap extends Component{
         return e.position[0] === activePosition[0] && e.position[1] === activePosition[1];
       })
       activeInfo && this.setWorldMap(countriesInfo, activeInfo); // 切换世界激活项
-      activeInfo && this.setWorldMap(countriesInfo, activeInfo); // 切换国家
+      activeInfo && this.setCountryMap(mapStation, activeInfo.countryName); // 切换国家
     }
   }
 
@@ -107,21 +110,32 @@ class CenterMap extends Component{
         }
       }
     });
-}
+  }
 
-  setCountryMap = (countryBox, mapName) => {
+  setCountryMap = (mapStation, mapName) => { // 国家内各电站位置设定。
+    const countryBox = document.getElementById('homeCountryMap');
     const countryChart = echarts.init(countryBox);
-    const { mapStation } = this.props;
     const countryStation = mapStation.filter(e=>e.country && e.country === mapName);
+    const pvStationData = countryStation.filter(e=>e.stationType === 1).map(e=>[e.longitude, e.latitude]);
+    const windStationData = countryStation.filter(e=>e.stationType === 0).map(e=>[e.longitude, e.latitude]);
     axios.get(`/mapJson/${mapName}.json`).then(response=>{
       const { data } = response;
       echarts.registerMap(mapName, data);
       countryChart.setOption({
         series:[{
-          name: 'country',
-          type: 'effectScatter',
+          name: 'wind',
+          type: 'scatter',
           coordinateSystem: 'geo',
-          data: [[12,22],[21,168],[112,9]],
+          data: windStationData, 
+          symbol: 'image:///img/ico_wind.png',
+          symbolSize: [30,36],
+        },{
+          name: 'pv',
+          type: 'scatter',
+          coordinateSystem: 'geo',
+          data: pvStationData,
+          symbol: 'image:///img/ico_pv.png',
+          symbolSize: [50,33],
         }],
         geo: {
           silent:true,
@@ -137,15 +151,26 @@ class CenterMap extends Component{
           }
         }
       });
+      countryChart.on('mouseover',(param)=>{
+        const checkedPosition = param.value;
+        const checkedStation = mapStation.find(e=>e.longitude === checkedPosition[0] && e.latitude === checkedPosition[1]);
+        this.setState({ showStationInfo: true });
+        console.log(checkedStation)
+        this.props.getSingleStation(checkedStation);
+      });
+      countryChart.on('mouseout',()=>{
+        this.props.changeLoginStore({ singleStation: {} });
+        this.setState({ showStationInfo: false });
+      });
     }).catch(error=>{
       console.log(error); 
       message.error('加载国家地图失败，请重试');
     })
   }
 
-
   render(){
     const { mapStation } = this.props;
+    const { showStationInfo } = this.state;
     const windStations = mapStation.filter(e=>e.stationType === 0);
     const pvStations = mapStation.filter(e=>e.stationType === 1);
     const windResource = windStations.length > 0?[
@@ -171,6 +196,7 @@ class CenterMap extends Component{
           {windStations.length > 0 && <img src="/img/ico_wind.png" />}
         </div>
         <div className={styles.worldMap} id="homeWorldMap"></div>
+        {showStationInfo && <div className={styles.singleStation}>展示这个去哪里？？？</div>}
       </div>
     )
   }
