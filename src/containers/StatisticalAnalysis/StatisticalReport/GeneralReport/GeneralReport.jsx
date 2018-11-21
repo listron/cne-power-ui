@@ -126,7 +126,7 @@ class GeneralReport extends Component{
                 />
               </div>
               <div className={styles.downloadBtn}>
-                <Button className={styles.text} onClick={this.downloadReport}>下载</Button>
+                <Button className={styles.text} onClick={this.downloadReport} disabled={!reportDate}>下载</Button>
               </div>
             </div>
             <div className={styles.dailyBox}>
