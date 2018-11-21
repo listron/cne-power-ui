@@ -396,9 +396,19 @@
   .alarmContent{
     flex: 1;
   }
+  .alarmBox{
+    height: 110px;
+    overflow: hidden;
+    .scrollAlarm{
+      transition: all 0.5s,
+    }
+  }
   .alarmColumn, .eachAlarm{
     display: flex;
     line-height: 22px;
+    background-repeat: no-repeat;
+    background-position: center right;
+    background-size: cover;
     .level, .stationName, .info, .time{
       color: #06bdf4;
       overflow: hidden;
@@ -450,6 +460,7 @@
       text-align: center;
     }
     .time{
+      justify-content: flex-end;
       margin-right: 12px;
     }
   }

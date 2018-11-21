@@ -182,7 +182,7 @@ class OutputPower extends Component{
         </div>
         <div id="homeOutputChart" className={styles.outputChart} ></div>
         <div className={styles.totalPower}>
-          <span className={styles.text}>全部电站功率:</span>
+          <span className={styles.text}>全部电站功率 : </span>
           <span className={styles.highlight}>{dataFormat(realTimeInfo.allStationPower)}</span>
           <span className={styles.text}>MW</span>
         </div>

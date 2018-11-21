@@ -148,11 +148,11 @@ module.exports = [
     response:{
       "code": "10000",
       "message": "请求成功",
-      "data": [1,2,3,4,5].map(e=>({
+      "data": [1,2,3,4,5,6,8,22,12,23,11,21,33,44,31,14].map(e=>({
         stationName: `随机电站${e}`,
         level: e,
         description: `随机内容${e*e}`,
-        durationHours: e**e,
+        durationHours: e*e,
         count: e*12
       })),
       "serviceCode": "3.0"
