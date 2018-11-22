@@ -38,8 +38,8 @@ class Map extends Component {
   setMapChart = (testChart, stationDataList) => {
     const option = {
       bmap: {
-        center: [112.7781000000,33.4482000000],//中心点
-        zoom: 12,
+        center: stationDataList.length>0 && stationDataList[0].center,//中心点
+        zoom: 13,
         roam: true,//可放大缩小
         mapStyle: {
           styleJson: [{
