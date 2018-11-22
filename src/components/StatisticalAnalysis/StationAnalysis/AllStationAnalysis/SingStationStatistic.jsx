@@ -383,7 +383,7 @@ class SingleStationStatistic extends React.Component {
   onClose = () => {
     this.props.changeAllStationStore({
       showPage: 'multiple',
-      singleStationCode: ''
+      singleStationCode: '',
     });
   }
   showStationSelect = () => {
@@ -481,7 +481,7 @@ class SingleStationStatistic extends React.Component {
               <div onClick={() => this.setState({ showStationSelect: true })} className={styles.stationName}>
                 <Icon className={styles.icon} type="swap" />
               </div>
-              <div className={styles.stationStatus}>
+              <div className={styles.stationStatus} onClick={() => this.setState({ showStationSelect: true })}>
                 <div className={styles.status}>
                   <span className={styles.stationIcon}><i className="iconfont icon-pvlogo"></i></span>
                   {stationItem.stationName}--{stationItem.provinceName}
