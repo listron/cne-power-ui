@@ -85,6 +85,13 @@
     letter-spacing:1.74px;
     text-align: center;
     margin-top: 10px;
+    position: relative;
+    img{
+      position: absolute;
+      cursor: pointer;
+      right: 16px;
+      bottom: 0px;
+    }
   }
 }
 

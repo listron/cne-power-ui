@@ -16,6 +16,7 @@ class HomepageTop extends Component{
     this.state = {
       timeText: moment().format('HH:mm:ss YYYY/MM/DD'),
       weekIndex: moment().day(),
+      fullScreen: false,
     }
   }
 
@@ -34,10 +35,33 @@ class HomepageTop extends Component{
     });
     this.timeClock = setTimeout(this.getCurrentTime,1000);
   }
+
+  toggleFullScreen = () => { // 切换全屏。
+    const { fullScreen } = this.state;
+    const { documentElement } = document;
+    const allowFull = documentElement.requestFullScreen || documentElement.webkitRequestFullScreen || documentElement.mozRequestFullScreen || documentElement.msRequestFullScreen;
+    const allowBack = document.cancelFullScreen || document.webkitCancelFullScreen || document.mozCancelFullScreen || document.exitFullScreen;
+    if(!fullScreen){
+      if(allowFull){
+        allowFull.call(documentElement);
+      }else{
+        const wscript = window.ActiveXObject && new window.ActiveXObject("WScript.Shell");
+        wscript && wscript.SendKeys("{F11}");
+      }
+    }else{
+      if(allowBack){
+        allowBack.call(document);
+      }else{
+        const wscript = window.ActiveXObject && new window.ActiveXObject("WScript.Shell");
+        wscript && wscript.SendKeys("{F11}");
+      }
+    }
+    this.setState({ fullScreen: !fullScreen });
+  }
   
   render(){
     const weekDay = ['日','一','二','三','四','五','六'];
-    const { timeText, weekIndex } = this.state;
+    const { timeText, weekIndex, fullScreen } = this.state;
     const { changeLoginStore, realTimeInfo } = this.props;
     let { enterpriseName } = realTimeInfo;
     return (
@@ -54,7 +78,10 @@ class HomepageTop extends Component{
             <img className={styles.logo} width="171px" height="40px" src="/img/powerLogo.png" />
           </div>
         </div>
-        <h1 className={styles.enterpriseTitle}>{enterpriseName || '--'}</h1>
+        <h1 className={styles.enterpriseTitle}>
+          {enterpriseName || '--'}
+          <img src={`/img/${fullScreen?'small':'big'}.png`} height="28px" width="28px" onClick={this.toggleFullScreen} />
+        </h1>
       </div>
     )
   }

@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 import echarts from 'echarts';
 import { dataFormat } from '../../../utils/utilFunc';
 import { showNoData, hiddenNoData } from '../../../constants/echartsNoData';
-import moment from 'moment';
 
 class OutputPower extends Component{
   static propTypes = {

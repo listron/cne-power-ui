@@ -3,6 +3,7 @@ import axios from 'axios';
 import { message } from 'antd';
 import path from '../../constants/path';
 import { homepageAction } from './homepageAction';
+import moment from 'moment';
 const { basePaths, APISubPaths } = path;
 const { APIBasePath } = basePaths, { homepage } = APISubPaths;
 
@@ -155,12 +156,12 @@ function* getOutputDiagram(action){ // 出力图表
   // const url = `${APIBasePath}/${homepage.outputDiagram}`;
   try{
     const response = yield call(axios.get, url);
-    console.log(action);
+    const outputPowerTime = moment().format('x'); // 记录时间
     yield put({
       type: homepageAction.GET_HOMEPAGE_FETCH_SUCCESS,
       payload: {
         outputPower: response.data.data || [],
-        outputPowerTime: '' // todo
+        outputPowerTime,
       }
     })
   }catch(error){
