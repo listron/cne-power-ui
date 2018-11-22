@@ -6,7 +6,7 @@
     width: 400px;
   }
   .eqpHours, .faultList{
-    width: 420px;
+    width: 410px;
   }
 }
 
@@ -15,7 +15,7 @@
     width: 435px;
   }
   .eqpHours, .faultList{
-    width: 502px;
+    width: 492px;
   }
 }
 
@@ -161,10 +161,12 @@
       color: #06bdf4;
       flex: 1;
       text-align: left;
+      width: 75px;
+      flex-shrink: 1;
     }
     .planName{
       font-size: 14px;
-      width: 60px;
+      flex: 0 0 60px;
       text-align: center;
     }
     .windPercent{
@@ -173,7 +175,6 @@
     }
     :global{
       .ant-progress{
-        width: 105px;
         margin: 0 8px;
         top: -2px;
         .ant-progress-inner{
@@ -347,9 +348,12 @@
     flex: 1;
     display: flex;
     .list, .chart{
-      width: 50%;
+      width: 45%;
       display: flex;
       flex-direction: column;
+    }
+    .chart{
+      width: 55%;
     }
     .eachFault{
       display: flex;
