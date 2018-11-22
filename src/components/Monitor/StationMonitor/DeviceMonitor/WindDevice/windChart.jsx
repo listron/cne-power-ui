@@ -44,6 +44,8 @@ function InverterTenMin({ sequenceChart }) {
         // containLabel: true,
         top: 90,
         bottom: 40,
+        left:'13%',
+        right:'13%',
       },
       tooltip: {
         trigger: 'axis',
@@ -85,6 +87,9 @@ function InverterTenMin({ sequenceChart }) {
         },
         axisLabel: {
           color: lineColor,
+          formatter:function(params){
+            return params.slice(5,params.length)
+          }
         },
         axisPointer: {
           label: {
@@ -231,8 +236,8 @@ function SactterChart({ theory, actual }) {
         // containLabel: true,
         top: 90,
         bottom: 40,
-        right: '15%',
-        left: '15%',
+        right: '20%',
+        left: '13%',
       },
       tooltip: {
         trigger: 'axis',
@@ -254,7 +259,7 @@ function SactterChart({ theory, actual }) {
         formatter: function (params) {
           let paramsItem = '';
           params.forEach((item, index) => {
-            return paramsItem += `<div> <span style="display: inline-block;width: 5px;height: 5px;border-radius: 50%;background:${params[index].seriesName === '历史平均功率' ? '#199475' : '#c57576'};vertical-align: 3px;margin-right: 3px;"> </span> ${params[index].seriesName} :${params[index].value === '0' || params[index].value || '--'}</div>`
+            return paramsItem += `<div> <span style="display: inline-block;width: 5px;height: 5px;border-radius: 50%;background:${params[index].seriesName === '历史平均功率' ? '#199475' : '#c57576'};vertical-align: 3px;margin-right: 3px;"> </span> ${params[index].seriesName} :${params[index].value === '0' || params[index].value[1] || '--'}</div>`
           });
           return `<div  style="border-bottom: 1px solid #ccc;padding-bottom: 7px;margin-bottom: 7px;width:150px;overflow:hidden;"> <span style="float: left">风速：${params[0].axisValue} </span>
             </div>${paramsItem}`
@@ -402,6 +407,8 @@ function SequenceChart({ sequenceChartList }) {
         // containLabel: true,
         top: 90,
         bottom: 40,
+        left:'13%',
+        right:'13%',
       },
       tooltip: {
         trigger: 'axis',
@@ -443,6 +450,9 @@ function SequenceChart({ sequenceChartList }) {
         },
         axisLabel: {
           color: lineColor,
+          formatter:function(params){
+            return params.slice(5,params.length)
+          }
         },
         axisPointer: {
           label: {
