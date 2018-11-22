@@ -94,7 +94,7 @@ const mapDispatchToProps = (dispatch) => ({
     type: commonAction.getStationDeviceTypes,
     payload: {
       params,
-      actionName: performanceAnalysisAction.GET_PERFORMANCEANALYSIS_FETCH_SUCCESS,
+      deviceTypeAction: performanceAnalysisAction.GET_PERFORMANCEANALYSIS_FETCH_SUCCESS,
       resultName: 'deviceTypes'
     }
   }),

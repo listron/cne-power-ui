@@ -5,7 +5,7 @@ const initState = Immutable.fromJS({
   loading: false,
   contrastSwitch: false,
   stationCode: null,
-  deviceTypeCode: 206,
+  deviceTypeCode: null,
   deviceModeTypeCode: null,
   electricLineCode: '',
   deviceModels: [],//设备型号

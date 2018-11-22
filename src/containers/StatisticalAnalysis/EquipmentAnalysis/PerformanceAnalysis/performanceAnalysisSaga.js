@@ -14,38 +14,12 @@ function* getEquipmentSelection(action){
     console.log(error);
   }
 }
-function* getDeviceModels(action) { // 新共用接口，获取电站设备类型下设备型号
-  const url = `${Path.basePaths.APIBasePath}${Path.commonPaths.getDeviceModel}`;
-  const { payload } = action;
-  try{
-    yield put({ type:performanceAnalysisAction.PERFORMANCEANALYSIS_FETCH  });
-    const [zuchuan,jizhong] = yield all([call(axios.get,url,{params:{stationCode:payload.stationCode,deviceTypeCode: '206'}}),call(axios.get,url,{params:{stationCode:payload.stationCode,deviceTypeCode:'201'}})]);
-    if(zuchuan.data.code === '10000') {
-      yield put({
-        type: performanceAnalysisAction.GET_PERFORMANCEANALYSIS_FETCH_SUCCESS,
-        payload: {
-          deviceModels: zuchuan.data.data||[],          
-        },
-      });     
-    }  
-    if(jizhong.data.code === '10000') {
-      yield put({
-        type: performanceAnalysisAction.GET_PERFORMANCEANALYSIS_FETCH_SUCCESS,
-        payload: {
-          deviceModelOther: jizhong.data.data||[],          
-        },
-      });     
-    } 
-  } catch (e) {
-    console.log(e);
-  }
-}
 // function* getDeviceModels(action) { // 新共用接口，获取电站设备类型下设备型号
-//   const url = `${APIBasePath}${commonPaths.getDeviceModel}`;
+//   const url = `${Path.basePaths.APIBasePath}${Path.commonPaths.getDeviceModel}`;
 //   const { payload } = action;
-//   console.log(payload);
 //   try{
-//     const zuchuan = yield call(axios.get,url,{params:{stationCode:payload.stationCode,deviceTypeCode:payload.deviceTypeCode}});
+//     yield put({ type:performanceAnalysisAction.PERFORMANCEANALYSIS_FETCH  });
+//     const [zuchuan,jizhong] = yield all([call(axios.get,url,{params:{stationCode:payload.stationCode,deviceTypeCode: '206'}}),call(axios.get,url,{params:{stationCode:payload.stationCode,deviceTypeCode:'201'}})]);
 //     if(zuchuan.data.code === '10000') {
 //       yield put({
 //         type: performanceAnalysisAction.GET_PERFORMANCEANALYSIS_FETCH_SUCCESS,
@@ -54,11 +28,37 @@ function* getDeviceModels(action) { // 新共用接口，获取电站设备类�
 //         },
 //       });     
 //     }  
-    
+//     if(jizhong.data.code === '10000') {
+//       yield put({
+//         type: performanceAnalysisAction.GET_PERFORMANCEANALYSIS_FETCH_SUCCESS,
+//         payload: {
+//           deviceModelOther: jizhong.data.data||[],          
+//         },
+//       });     
+//     } 
 //   } catch (e) {
 //     console.log(e);
 //   }
 // }
+function* getDeviceModels(action) { // 新共用接口，获取电站设备类型下设备型号
+  const url = `${APIBasePath}${commonPaths.getDeviceModel}`;
+  const { payload } = action;
+  console.log(payload);
+  try{
+    const zuchuan = yield call(axios.get,url,{params:{stationCode:payload.stationCode,deviceTypeCode:payload.deviceTypeCode}});
+    if(zuchuan.data.code === '10000') {
+      yield put({
+        type: performanceAnalysisAction.GET_PERFORMANCEANALYSIS_FETCH_SUCCESS,
+        payload: {
+          deviceModels: zuchuan.data.data||[],          
+        },
+      });     
+    }  
+    
+  } catch (e) {
+    console.log(e);
+  }
+}
 function* getEleLineCode(action) {//集电线路
   const { payload } = action;
     //const url = '';
