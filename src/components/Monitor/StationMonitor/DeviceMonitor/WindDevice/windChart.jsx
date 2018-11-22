@@ -41,9 +41,9 @@ function InverterTenMin({ sequenceChart }) {
         }
       },
       grid: {
-        containLabel: true,
+        // containLabel: true,
         top: 90,
-        bottom: 20,
+        bottom: 40,
       },
       tooltip: {
         trigger: 'axis',
@@ -228,11 +228,11 @@ function SactterChart({ theory, actual }) {
         }
       },
       grid: {
-      //   // containLabel: true,
-      //   top: 90,
-      //   bottom: 40,
-      //   // right: '20%',
-      //   // left: '10%',
+        // containLabel: true,
+        top: 90,
+        bottom: 40,
+        right: '15%',
+        left: '15%',
       },
       tooltip: {
         trigger: 'axis',
@@ -252,7 +252,6 @@ function SactterChart({ theory, actual }) {
         },
         extraCssText: 'box-shadow: 0 0 3px rgba(0, 0, 0, 0.3)',
         formatter: function (params) {
-          console.log('params',params)
           let paramsItem = '';
           params.forEach((item, index) => {
             return paramsItem += `<div> <span style="display: inline-block;width: 5px;height: 5px;border-radius: 50%;background:${params[index].seriesName === '历史平均功率' ? '#199475' : '#c57576'};vertical-align: 3px;margin-right: 3px;"> </span> ${params[index].seriesName} :${params[index].value === '0' || params[index].value || '--'}</div>`
@@ -400,9 +399,9 @@ function SequenceChart({ sequenceChartList }) {
         }
       },
       grid: {
-        containLabel: true,
+        // containLabel: true,
         top: 90,
-        // bottom: 20,
+        bottom: 40,
       },
       tooltip: {
         trigger: 'axis',
