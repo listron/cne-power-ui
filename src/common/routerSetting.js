@@ -166,10 +166,14 @@ const routers = [
     path: '/system/station/pointManage',
     exact: true,
     component: PointManage  // Building  PointManage
-  },{ // 系统管理-电站管理-测点
+  },{ // 系统管理-电站管理-告警事件
     path: '/system/station/alarmManage',
     exact: true,
     component: AlarmManage // Building  AlarmManage
+  },{ // 系统管理-电站管理-功率曲线
+    path: '/system/station/alarmManage',
+    exact: true,
+    component: Building // Building  AlarmManage
   },{ // 系统管理-计划配置
     path: '/system/config/plan',
     exact: true,

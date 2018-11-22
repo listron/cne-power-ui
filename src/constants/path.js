@@ -150,6 +150,13 @@ export default {
       deleteAlarms: '/v3/management/alarmevent/delete', // 删除告警
       downloadAlarmInfo: '/v3/management/alarmevent/export', // 导出告警事件
 
+
+      getPowercurveList: '/v3/management/powercurve', // 功率曲线列表
+      getPowercurveDetail: '/v3/management/powercurve/detai', // 功率曲线详情图
+      importPowercurve: '/v3/management/powercurve/import', //导入功率曲线
+      downloadPowercurve: '/api/v3/management/powercurve/export', // 导出功率曲线
+
+     
       //  生产计划
       getPlanList:'/v3/performance/stationplanlist', //查看生产计划列表
       addPlanList:'/v3/performance/stationplan', //  添加生产计划
