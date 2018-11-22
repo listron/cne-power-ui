@@ -165,12 +165,13 @@ class UsageRate extends React.Component {
         axisPointer: {
           type: "shadow"
         },
-        // axisLine: {
-        //   show: true,
-        //   lineStyle: {
-        //     color: "#dfdfdf"
-        //   }
-        // },
+        axisLine: {
+          show: true,
+          onZero:false,
+          // lineStyle: {
+          //   color: "#dfdfdf"
+          // }
+        },
         axisLabel: {
           color: "#666"
         },

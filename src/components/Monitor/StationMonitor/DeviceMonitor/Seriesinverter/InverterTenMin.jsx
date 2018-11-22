@@ -67,7 +67,6 @@ function InverterTenMin({ deviceTenMin, loading }) {
           if(!param || param.length===0){
             return <div></div>
           }
-          console.log(param);
           let irradiation='',power='';
           const irradiationObj = param.find(e=>e.seriesName==='瞬时辐照');
           const powerObj = param.find(e=>e.seriesName==='功率');

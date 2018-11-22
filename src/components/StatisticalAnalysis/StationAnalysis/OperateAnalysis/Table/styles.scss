@@ -22,6 +22,9 @@
       .ant-table-small > .ant-table-content > .ant-table-scroll > .ant-table-header > table > .ant-table-thead > tr > th .ant-table-column-sorter{
         color:#fff;
       }
+      .ant-table-thead > tr > th .ant-table-column-sorter-up.on, .ant-table-thead > tr > th .ant-table-column-sorter-down.on{
+        color: #ddd;
+      }
     }
   }
 }

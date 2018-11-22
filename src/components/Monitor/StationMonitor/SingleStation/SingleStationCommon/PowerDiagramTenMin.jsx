@@ -63,7 +63,7 @@ class PowerDiagramTenMin extends Component {
           name: '理论发电量',
           icon: 'circle',
         }, {
-          name: chartType==='wind'?'平均风速':`${intervalTime === 0 ? '日曝辐值' : (intervalTime === 1 ? '月辐射总量' : '年辐射总量')}`,
+          name: chartType==='wind'?'平均风速':`${intervalTime === 0 ? '累计曝幅值' : (intervalTime === 1 ? '月辐射总量' : '年辐射总量')}`,
           icon: 'circle',
         }],
         textStyle: {
@@ -86,7 +86,7 @@ class PowerDiagramTenMin extends Component {
           }
           let radi = '', thoryPower = '', actualPower = '', rate = '';
           const radiObj = param.find(e => chartType==='wind'?e.seriesName ==='平均风速':
-            e.seriesName === (intervalTime === 0 ? '日曝辐值' : (intervalTime === 1 ? '月辐射总量' : '年辐射总量')));
+            e.seriesName === (intervalTime === 0 ? '累计曝幅值' : (intervalTime === 1 ? '月辐射总量' : '年辐射总量')));
           const thoryPowerObj = param.find(e => e.seriesName === '理论发电量');
           const actualPowerObj = param.find(e => e.seriesName === '实际发电量');
           const tmpRadi = radiObj && radiObj.value && !isNaN(parseFloat(radiObj.value));
@@ -95,7 +95,7 @@ class PowerDiagramTenMin extends Component {
 
 
           if (tmpRadi) {
-            radi = `<div style="padding-left: 5px;"><span style="display: inline-block; background:#f9b600; width:5px; height:5px; border-radius:100%;"></span> ${chartType==='wind'?'平均风速':intervalTime === 0 ? '日曝辐值' : (intervalTime === 1 ? '月辐射总量' : '年辐射总量')} : ${parseFloat(radiObj.value).toFixed(2) || 0}</div>`
+            radi = `<div style="padding-left: 5px;"><span style="display: inline-block; background:#f9b600; width:5px; height:5px; border-radius:100%;"></span> ${chartType==='wind'?'平均风速':intervalTime === 0 ? '累计曝幅值' : (intervalTime === 1 ? '月辐射总量' : '年辐射总量')} : ${parseFloat(radiObj.value).toFixed(2) || 0}</div>`
           }
           if (tmpActualPower) {
             actualPower = `<div style="padding-left: 5px;"><span style="display: inline-block; background:#a42b2c;  width:5px; height:5px; border-radius:100%;"></span> 实际发电量: ${parseFloat(actualPowerObj.value).toFixed(4) || 0}</div>`
@@ -177,7 +177,7 @@ class PowerDiagramTenMin extends Component {
           }
         },
         {
-          name: chartType==='wind'?'平均风速(m/s)':`${intervalTime === 0 ? '日曝辐值' : (intervalTime === 1 ? '月辐射总量' : '年辐射总量')}`,
+          name: chartType==='wind'?'平均风速(m/s)':`${intervalTime === 0 ? '累计曝幅值' : (intervalTime === 1 ? '月辐射总量' : '年辐射总量')}`,
           type: 'value',
           axisLabel: {
             formatter: '{value}',
@@ -233,7 +233,7 @@ class PowerDiagramTenMin extends Component {
           barWidth: 14,
         },
         {
-          name: chartType==='wind'?'平均风速':`${intervalTime === 0 ? '日曝辐值' : (intervalTime === 1 ? '月辐射总量' : '年辐射总量')}`,
+          name: chartType==='wind'?'平均风速':`${intervalTime === 0 ? '累计曝幅值' : (intervalTime === 1 ? '月辐射总量' : '年辐射总量')}`,
           type: 'line',
           data: instantaneous,
           yAxisIndex: 1,

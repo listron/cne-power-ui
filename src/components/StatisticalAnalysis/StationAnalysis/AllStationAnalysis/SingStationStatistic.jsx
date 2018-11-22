@@ -109,6 +109,10 @@ class SingleStationStatistic extends React.Component {
       sort: 'date',
       sortType: 'asc',
     })
+//控制单电站点击其他位置，消失浮框
+    const main = document.getElementById('main');
+    main && main.addEventListener('click', this.hiddenStationList, true);
+  
 
   }
   componentWillReceiveProps(nextProps) {
@@ -367,6 +371,9 @@ class SingleStationStatistic extends React.Component {
       dateType:'month',
       selectYear:''
     });
+    const main = document.getElementById('main');
+    main && main.removeEventListener('click', this.hiddenStationList, true);
+
   }
   onTimeChange=(timeObj)=>{
     // console.log(timeObj);
@@ -376,7 +383,7 @@ class SingleStationStatistic extends React.Component {
   onClose = () => {
     this.props.changeAllStationStore({
       showPage: 'multiple',
-      singleStationCode: ''
+      singleStationCode: '',
     });
   }
   showStationSelect = () => {
@@ -384,7 +391,11 @@ class SingleStationStatistic extends React.Component {
       showStationSelect: true
     });
   }
-
+  hiddenStationList=()=>{
+    this.setState({
+      showStationSelect: false
+    });
+  }
   hideStationChange = () => {
     this.setState({
       showStationSelect: false
@@ -470,7 +481,7 @@ class SingleStationStatistic extends React.Component {
               <div onClick={() => this.setState({ showStationSelect: true })} className={styles.stationName}>
                 <Icon className={styles.icon} type="swap" />
               </div>
-              <div className={styles.stationStatus}>
+              <div className={styles.stationStatus} onClick={() => this.setState({ showStationSelect: true })}>
                 <div className={styles.status}>
                   <span className={styles.stationIcon}><i className="iconfont icon-pvlogo"></i></span>
                   {stationItem.stationName}--{stationItem.provinceName}

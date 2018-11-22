@@ -6,6 +6,7 @@ import { watchLogin } from './Login/loginSaga';
 import { watchChangeShowContainer } from './Operation/Ticket/ticketSaga';
 import { watchDefect } from './Operation/Ticket/Defect/defectSaga';
 import { watchInspect } from './Operation/Ticket/Inspect/inspectSaga';
+import { watchPersonnelGps } from './Operation/Ticket/PersonnelGps/personnelGpsSaga';
 import { watchDayReport } from './Operation/Running/DayReport/dayReportSaga';
 
 import { watchEnterprise } from './System/Account/Enterprise/enterpriseSaga';
@@ -44,6 +45,7 @@ export default function* rootSaga() {
     watchChangeShowContainer(),
     watchDefect(),//Defect
     watchInspect(),// 巡检
+    watchPersonnelGps(),//员工定位
     watchDayReport(), // operation- 日报
 
     //system-enterprise

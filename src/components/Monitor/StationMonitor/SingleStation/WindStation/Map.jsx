@@ -7,43 +7,39 @@ import echarts from 'echarts';
 import bmap from 'echarts/extension/bmap/bmap';
 
 
-class OrbitMap extends Component {
+class Map extends Component {
   static propTypes = {
     allMonitorStation: PropTypes.object,
     testId: PropTypes.string,
-    users: PropTypes.string,
-    orbitList: PropTypes.any,
+    stationDataList: PropTypes.array,
     history: PropTypes.object,
   }
   constructor(props) {
     super(props)
-
+    // this.state = {
+    //   barData: []
+    // }
   }
 
   componentDidMount() {
-    const { testId, orbitList,users,itemOrbit,startAndEndCoord,data } = this.props;
-    // console.log(orbitList);
-    // console.log(data);
+    const { testId, stationDataList } = this.props;
     const testChart = echarts.init(document.getElementById(testId));
-    this.setMapChart(testChart, orbitList,users,itemOrbit,startAndEndCoord,data);
+    this.setMapChart(testChart, stationDataList);
   }
 
   componentWillReceiveProps(nextProps) {
-    const { testId, orbitList, users,itemOrbit,startAndEndCoord,data } = nextProps;
-    // console.log(data);
-    if (this.props.orbitList.length !== nextProps.orbitList.length || users !== this.props.users) {
+    const { testId, stationDataList } = nextProps;
+    if (this.props.stationDataList.length !== nextProps.stationDataList.length) {
       const testChart = echarts.init(document.getElementById(testId));
-      this.setMapChart(testChart, orbitList,users,itemOrbit,startAndEndCoord,data);
-    
+      this.setMapChart(testChart, stationDataList);
     }
-    // console.log(orbitList);
-    // console.log(itemOrbit);
   }
-  setMapChart = (testChart, orbitList,users,itemOrbit,startAndEndCoord,data) => {
+
+  setMapChart = (testChart, stationDataList) => {
     const option = {
       bmap: {
-        center: [116.46, 39.92],//中心点
-        zoom: 5,
+        center: [112.7781000000,33.4482000000],//中心点
+        zoom: 12,
         roam: true,//可放大缩小
         mapStyle: {
           styleJson: [{
@@ -153,113 +149,101 @@ class OrbitMap extends Component {
         orient: 'vertical',
         top: 'bottom',
         left: 'right',
-        show:false,
-       
-      },
-      selected: {
-        '刘德华1': true,
-
+        data: ['正常', '信息中断', '未接入'],
       },
       // 类型是：scatter散点
-      series: [
-        {
-          name: '刘德华1',
-          type: 'lines',
-          lineStyle: {
-            normal: {
-                width: 3,
-            }
+      series: [{
+        type: 'scatter',
+        tooltip: {
+          enterable: true,
+          //position:['50%','50%'],
+          formatter: (params) => {
+            const stationPower = params.data.stationPower || '--';
+            const stationCapacity = params.data.stationCapacity || '--';
+            const instantaneous = params.data.instantaneous || '--';
+            const angleOfYaw = params.data.angleOfYaw;
+            return `<div class='stationCard' style='height:70px;overflow:hidden'>
+            <div class='stationCardTitle' style='display:flex;flex-direction: row;justify-content: space-between;'>
+            <span>${params.data.name}</span>
+            <a  href='#/monitor/alarm/realtime?stationCode=${params.data.stationCode}'>
+            <span style='color:red'>${params.data.alarmNum > 0 ? '⚠' : ''}${params.data.alarmNum > 0 ? params.data.alarmNum : ''}</span>    
+            </a>
+            </div>           
+            <div class='stationCardProgress' style='background:#dfdfdf;height:1px;
+            width:100%;' ></div>
+            <div class='stationCardValue'}>
+              <span class='stationMark'>${stationPower}MW</span>
+              &nbsp;&nbsp;
+              <span>${stationCapacity}MW</span>
+            </div>            
+            <div class='stationCardWindSpeed'>
+            <span class='stationMark'>${instantaneous}${params.data.value[2] === '0' ? 'm/s' : 'W/m²'}</span>
+            &nbsp;&nbsp;
+            ${angleOfYaw ? `<span><i className="iconfont icon-acb" style='fontSize:14px; color:#199475'></i>${angleOfYaw}°</span>` :''} 
+            </div>             
+          </div>`
           },
-          mapType: 'none',
-          tooltip: {
-            enterable: true,
-            formatter: (params,orbitList) => {
-              console.log(params,orbitList);
-              return `<div style='display:flex; flex-direction: column;'>
-            <div style='width:30px;height:30px;'><img src='/img/people.png'>${params.name}</div>
-            <div style='height:30px;line-height:30px'>${params.data.date}</div>
-            </div>`
-            },
-            backgroundColor: '#fff',
-            textStyle: {
-              color: '#666',
-            },
-            extraCssText: 'box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);',
+          // width:'128px',
+          // height:'68px',
+          backgroundColor: '#fff',
+          textStyle: {
+            color: '#666',
           },
-          markPoint: {
-            effect: {
-              show: true,
-              type: 'bounce',
-              period: 3,
-            },
-            itemStyle: {
-              normal: {
-                label: {
-                  show: false,
-                },
-              },
-              emphasis: {
-                label: {
-                  show: false,
-                },
-              },
-            },
-            data:startAndEndCoord,
-            // data: [
-            //   {
-            //     coord: ['132.1212', '33.2321'],
-            //     tooltip: {
-            //       formatter: '起点'
-            //     },
-            //     symbol:'image:///img/position.png',
-            //   },{
-            //     coord: [116.4551, 40.2539],
-            //     tooltip: {
-            //       formatter: '终点'
-            //     },            
-            //     symbol:'image:///img/end.png',
-            //   }
-            // ]
-
-          },
-
-          coordinateSystem: 'bmap',
-           data:data,
-          
-          //  data: [
-            // [{ coord: ["132.214", "33.32534"] }, { coord: ["133.124", "34.352"] }],
-          //  { coords: [['119.4543', '25.9222'],['87.9236', '43.5883']],name:'刘德华1',dateValue:['2017-2018'] },
-            // [{ coord: ['87.9236', '43.5883'] }, { coord: ['116.4551', '40.2539'] }],
-          // ],
-          symbolSize: [15],
-          label: {
-            normal: {
-              show: false
-            },
-            emphasis: {
-              show: false
-            }
-          },
-          itemStyle: {
-            emphasis: {
-              borderWidth: 5
-            }
-          },
-
+          extraCssText: 'box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);',
         },
-      ]
+        name: '电站状态',
+        // symbol:'image//../../../../../theme/img/wind-normal.png',
+        coordinateSystem: 'bmap',
+        data: stationDataList,
+        symbolSize: [24, 17],
+        label: {
+          normal: {
+            show: false
+          },
+          emphasis: {
+            show: false
+          }
+        },
+        itemStyle: {
+          emphasis: {
+            borderColor: '#199475',
+            borderWidth: 5
+          }
+        }
+      }]
     };
     testChart.setOption(option)
+    
+    testChart.on('click', (params) => {
+      const baseLinkPath = "/hidden/monitorDevice";
+      const {stationCode,deviceTypeCode,deviceCode}=params.data
+      if (params.data.stationStatus !== '900') {
+        return this.props.history.push(`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${deviceCode}`)
+      } else {
+        this.showTip();
+      }
+
+    })
   }
- 
+  showTip = (e) => {
+    message.destroy();
+    message.config({
+      top: 225,
+      duration: 200,
+      maxCount: 1,
+    });
+    message.warning('电站未接入,无法查看详情', 2);
+  }
+
   render() {
+    // const { barData } = this.state;
     const { testId } = this.props;
     return (
       <div id={testId} style={{ width: "100%", flex: 1 }} ></div>
     )
   }
 }
-export default withRouter(OrbitMap);
+export default withRouter(Map);
 
 
 

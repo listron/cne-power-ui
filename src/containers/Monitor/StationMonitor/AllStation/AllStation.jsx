@@ -32,7 +32,7 @@ class AllStation extends Component {
       this.stationInterval=setInterval(() => this.props.getMonitorStation({ stationType: this.props.stationTypeTabs, getStationTypes: false }), 10000)
     } else {
       this.props.getMonitorStation({ stationType: '2', getStationTypes: true });
-      this.stationInterval=setInterval(() =>  this.props.getMonitorStation({ stationType: '2', getStationTypes: true }), 10000)    
+      this.stationInterval=setInterval(() =>  this.props.getMonitorStation({ stationType: '2'}), 10000)    
     }
   }
 
@@ -47,7 +47,7 @@ class AllStation extends Component {
     clearInterval(this.stationInterval);
     //this.props.getMonitorStation({stationType:0})
     this.props.changeMonitorStationStore({
-      // stationTypes: null,
+      //stationTypes: null,
       stationShowType: 'stationBlock',
       pvMonitorStation: {},
       windMonitorStation: {},

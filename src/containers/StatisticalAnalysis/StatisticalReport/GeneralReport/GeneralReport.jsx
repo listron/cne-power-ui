@@ -97,9 +97,9 @@ class GeneralReport extends Component{
           navigator.msSaveBlob(blob, newFileName);
         }   
       }
-    }).catch(error=>{
-      message.error(`${fileName}下载失败!`)
-      console.log(error)
+    }).catch(warning=>{
+      message.warning(`下载失败！请重新尝试`)
+      console.log(warning)
     })
   }
   
@@ -126,7 +126,7 @@ class GeneralReport extends Component{
                 />
               </div>
               <div className={styles.downloadBtn}>
-                <Button className={styles.text} onClick={this.downloadReport}>下载</Button>
+                <Button className={styles.text} onClick={this.downloadReport} disabled={!reportDate}>下载</Button>
               </div>
             </div>
             <div className={styles.dailyBox}>

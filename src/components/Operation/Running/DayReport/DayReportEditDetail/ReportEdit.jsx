@@ -160,14 +160,18 @@ class ReportEdit extends Component {
       }
       return false;
     })
-    faultList.find(e=>{
+    faultList.forEach(e=>{
       !e.process && (errorText = '损失电量进展未填写!');
-      // !e.lostPower && (errorText = '损失电量未填写!');
-      return !e.process || !e.lostPower;
+      e.lostPower && isNaN(e.lostPower) && (errorText = '损失电量需为数字!');
+      let decimal = e.lostPower && `${e.lostPower}`.split('.')[1];
+      let decimalLength = decimal && decimal.length;
+      if(decimalLength > 2){ errorText = '损失电量最多2位小数!' }
     })
-    limitList.find(e=>{
-      // !e.lostPower && (errorText = '限电损失电量未填写!');
-      return !e.lostPower;
+    limitList.forEach(e=>{
+      e.lostPower && isNaN(e.lostPower) && (errorText = '损失电量需为数字!');
+      let decimal = e.lostPower && `${e.lostPower}`.split('.')[1];
+      let decimalLength = decimal && decimal.length;
+      if(decimalLength > 2){ errorText = '损失电量最多2位小数!' }
     })
     if(errorText){ // 数据错误存在，提示
       this.messageWarning(errorText);
