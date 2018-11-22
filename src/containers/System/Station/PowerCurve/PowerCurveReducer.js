@@ -1,6 +1,6 @@
 import Immutable from 'immutable';
 
-import { powerCurveAction } from './PowerCurveAction';
+import { powerCurveAction } from './powerCurveAction';
 
 var initState = Immutable.fromJS({
   loading: false,
@@ -11,6 +11,8 @@ var initState = Immutable.fromJS({
   pageSize: 10,
   sortField: '', // 排序字段
   sortOrder: '',
+  powerList:[], // 功率曲线的列表
+  deviceModels:[],
 });
 
 const powerCurveReducer = (state = initState, action) => {

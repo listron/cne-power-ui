@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import styles from './alarmManage.scss';
-import { alarmManageAction } from './PowerCurveAction';
+import styles from './powerCurve.scss';
+import { powerCurveAction } from './powerCurveAction';
 import { commonAction } from '../../../alphaRedux/commonAction';
-import { stationManageAction } from '../StationManage/stationManageAction';
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
-import Footer from '../../../../components/Common/Footer'
+import PowerCurves from '../../../../components/System/Station/PowerCurve/PowerCurve';
+
+import Footer from '../../../../components/Common/Footer';
 import PropTypes from 'prop-types';
 import Cookie from 'js-cookie';
 
@@ -18,7 +19,7 @@ class PowerCurve extends Component {
    
   }
   componentDidMount(){
-    
+   
   }
 
   componentWillUnmount(){
@@ -30,37 +31,39 @@ class PowerCurve extends Component {
     return (
       <div className={styles.powerCurveContainer}>
         <CommonBreadcrumb  breadData={[{name: '功率曲线'}]} style={{ marginLeft: '38px',backgroundColor:'#fff' }} />
-       
-        功率曲线
+        <PowerCurves {...this.props} />
+        <Footer />
       </div>
     );
   }
 }
 const mapStateToProps = (state) => ({
-  // enterpriseId: Cookie.get('enterpriseId'),
-  // ...state.system.alarmManage.toJS(),
-  // stations: state.common.get('stations').toJS(),
+  ...state.system.powerCurve.toJS(),
+  stations: state.common.get('stations').toJS(),
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  // changeAlarmManageStore: payload => dispatch({type:alarmManageAction.CHANGE_ALARM_MANAGE_STORE_SAGA, payload}),
-  // resetStore: () => dispatch({ type: alarmManageAction.resetStore }),
-  // getStationDeviceTypes: params => dispatch({
-  //   type: commonAction.getStationDeviceTypes,
-  //   payload: {
-  //     params, 
-  //     deviceTypeAction: alarmManageAction.GET_ALARM_MANAGE_FETCH_SUCCESS,
-  //     resultName: 'stationDeviceTypes'
-  //   }
-  // }),
-  // getDeviceModel: params => dispatch({
-  //   type: commonAction.getDeviceModel,
-  //   payload: {
-  //     params, 
-  //     actionName: alarmManageAction.GET_ALARM_MANAGE_FETCH_SUCCESS,
-  //     resultName: 'deviceModels'
-  //   }
-  // }),
+  changePowerCurveStore: payload => dispatch({type:powerCurveAction.changePowerCurveStoreSaga, payload}),
+  getPowerList: payload => dispatch({type:powerCurveAction.getPowerList, payload}),
+  getPowercurveDetail: payload => dispatch({type:powerCurveAction.getPowercurveDetail, payload}),
+  downloadCurveExcel: payload => dispatch({type:powerCurveAction.downloadCurveExcel, payload}),
+  resetStore: () => dispatch({ type: powerCurveAction.resetStore }),
+  getStationDeviceTypes: params => dispatch({
+    type: commonAction.getStationDeviceTypes,
+    payload: {
+      params, 
+      deviceTypeAction: powerCurveAction.powerCurveFetchSuccess,
+      resultName: 'stationDeviceTypes'
+    }
+  }),
+  getDeviceModel: params => dispatch({
+    type: commonAction.getDeviceModel,
+    payload: {
+      params, 
+      actionName: powerCurveAction.powerCurveFetchSuccess,
+      resultName: 'deviceModels'
+    }
+  }),
 });
 
 

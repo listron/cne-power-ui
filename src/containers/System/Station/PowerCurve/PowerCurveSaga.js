@@ -2,7 +2,7 @@ import { call, put, takeLatest, select } from 'redux-saga/effects';
 import axios from 'axios';
 import { message } from 'antd';
 import Path from '../../../../constants/path';
-import { powerCurveAction } from './PowerCurveAction';
+import { powerCurveAction } from './powerCurveAction';
 
 function *changePowerCurveStore(action){ // 存储payload指定参数，替换reducer-store属性。
   const { payload } = action;
@@ -55,49 +55,84 @@ function *getPowerList(action){ // 请求功率曲线列表
   }catch(e){
     console.log(e);
     yield put({
-      type:  alarmManageAction.CHANGE_ALARM_MANAGE_STORE,
+      type:  powerCurveAction.changePowerCurveStore,
       payload: { ...payload, loading: false },
     })
   }
 }
 
 
-// function *downloadAlarmExcel(action){ // 导出告警时间
-//   const { payload } = action;
-//   try{
-//     const { stationCode, stationName } = payload;
-//     const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.downloadAlarmInfo}/${stationCode}`
-//     const response = yield call(axios, {
-//       method: 'get',
-//       url,
-//       responseType:'blob'
-//     });
-//     if(response.data) {
-//       const content = response.data;
-//       const blob = new Blob([content]);
-//       const fileName = `${stationName}告警事件信息表.xlsx`;
-//       if ('download' in document.createElement('a')) { // 非IE下载
-//         const elink = document.createElement('a');
-//         elink.download = fileName;
-//         elink.style.display = 'none';
-//         elink.href = URL.createObjectURL(blob);
-//         document.body.appendChild(elink);
-//         elink.click();
-//         URL.revokeObjectURL(elink.href); // 释放URL 对象
-//         document.body.removeChild(elink);
-//       } else { // IE10+下载
-//         navigator.msSaveBlob(blob, fileName);
-//       }   
-//     }
-//   }catch(e){
-//     console.log(e);
-//     message.error(`导出告警事件失败!${e}`)
-//   }
-// }
+function *downloadCurveExcel(action){ // 导出功率曲线
+  const { payload } = action;
+  try{
+    const { stationCode, stationName } = payload;
+    const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.downloadPowercurve}`
+    const response = yield call(axios, {
+      method: 'post',
+      url,
+      data:payload,
+      responseType:'blob',
+    });
+    if(response.data) {
+      const content = response.data;
+      const blob = new Blob([content]);
+      const fileName = `${stationName}功率曲线信息表.xlsx`;
+      if ('download' in document.createElement('a')) { // 非IE下载
+        const elink = document.createElement('a');
+        elink.download = fileName;
+        elink.style.display = 'none';
+        elink.href = URL.createObjectURL(blob);
+        document.body.appendChild(elink);
+        elink.click();
+        URL.revokeObjectURL(elink.href); // 释放URL 对象
+        document.body.removeChild(elink);
+      } else { // IE10+下载
+        navigator.msSaveBlob(blob, fileName);
+      }   
+    }
+  }catch(e){
+    console.log(e);
+    message.error(`导出功率曲线失败!${e}`)
+  }
+}
 
-export function* watchAlarmManage() {
+
+function *getPowercurveDetail(action){ // 请求功率曲线列表
+  const { payload } = action;
+  // const url = '/mock/system/alarmManage/alarmList';
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.getPowercurveDetail}`
+  try{
+    yield put({ type: powerCurveAction.powerCurveFetch });
+    const response = yield call(axios.post,url,{
+      ...payload,
+      sortField: payload.sortField.replace(/[A-Z]/g,e=>`_${e.toLowerCase()}`), //重组字符串
+    });
+
+    if (response.data.code === '10000') {
+      yield put({
+        type:  powerCurveAction.powerCurveFetchSuccess,
+        payload:{
+          PowercurveDetail: response.data.data || [],
+        },
+      });
+    }
+    
+  }catch(e){
+    console.log(e);
+    yield put({
+      type:  powerCurveAction.changePowerCurveStore,
+      payload: { ...payload, loading: false },
+    })
+  }
+}
+
+
+
+export function* watchPowerCurve() {
   yield takeLatest(powerCurveAction.changePowerCurveStoreSaga, changePowerCurveStore);
   yield takeLatest(powerCurveAction.resetStore, resetStore);
   yield takeLatest(powerCurveAction.getPowerList, getPowerList);
+  yield takeLatest(powerCurveAction.downloadCurveExcel, downloadCurveExcel);
+  yield takeLatest(powerCurveAction.getPowercurveDetail, getPowercurveDetail);
 }
 

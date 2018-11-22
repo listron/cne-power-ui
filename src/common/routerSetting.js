@@ -17,6 +17,7 @@ import StationManage from '../containers/System/Station/StationManage/StationMan
 import DeviceManage from '../containers/System/Station/DeviceManage/DeviceManage';
 import PointManage from '../containers/System/Station/PointManage/PointManage';
 import AlarmManage from '../containers/System/Station/AlarmManage/AlarmManage';
+import PowerCurve from '../containers/System/Station/PowerCurve/PowerCurve';
 // 实时监控-电站监控
 import AllStation from '../containers/Monitor/StationMonitor/AllStation/AllStation';
 import DeviceMonitor from '../containers/Monitor/StationMonitor/DeviceMonitor/DeviceMonitor';
@@ -171,9 +172,9 @@ const routers = [
     exact: true,
     component: AlarmManage // Building  AlarmManage
   },{ // 系统管理-电站管理-功率曲线
-    path: '/system/station/alarmManage',
+    path: '/system/station/powerCurve',
     exact: true,
-    component: Building // Building  AlarmManage
+    component: PowerCurve // Building  AlarmManage
   },{ // 系统管理-计划配置
     path: '/system/config/plan',
     exact: true,
