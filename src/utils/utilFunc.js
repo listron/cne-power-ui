@@ -7,5 +7,5 @@ export const dataFormat = (data, placeholder = '--', pointLength) => { // 数据
   if(pointLength > 0 || pointLength === 0 ){
     showData = parseFloat(data).toFixed(pointLength);
   }
-  return showData;
+  return parseFloat(showData);
 }

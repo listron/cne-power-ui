@@ -20,14 +20,18 @@ class AlarmList extends Component{
   componentWillReceiveProps(nextProps){
     const { alarmList } = nextProps;
     if(alarmList.length > 0){
-      clearTimeout(this.clocker);
+      this.clocker && clearTimeout(this.clocker);
       this.startShowAlarm(0, alarmList);
     }
+  }
+  
+  componentWillUnmount(){
+    this.clocker && clearTimeout(this.clocker);
   }
 
   startShowAlarm = (activeIndex, alarmList) => {
     if(alarmList.length === 0 || activeIndex + 1 === alarmList.length){ // 无告警 或者已到最后一行=> 10s后重新请求
-      clearTimeout(this.clocker);
+      this.clocker && clearTimeout(this.clocker);
       setTimeout(this.props.getAlarmList(), 10000);
     }else{
       let scrollHeight;

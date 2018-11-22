@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import styles from './homepageParts.scss';
 import moment from 'moment';
 import UserInfo from '../Layout/UserInfo';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 class HomepageTop extends Component{
@@ -44,7 +45,9 @@ class HomepageTop extends Component{
         <div className={styles.infoShow}>
           <div className={styles.timeShow}>{timeText} 星期{weekDay[weekIndex]}</div>
           <div className={styles.upperArrow}>
-            <img width="40px" height="34px" src="/img/back.gif" />
+            <Link to="/monitor/station">
+              <img width="40px" height="34px" src="/img/back.gif" />
+            </Link>
           </div>
           <div className={styles.userShow}>
             <UserInfo changeLoginStore={changeLoginStore} inHomepage />

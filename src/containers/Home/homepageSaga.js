@@ -155,10 +155,12 @@ function* getOutputDiagram(action){ // 出力图表
   // const url = `${APIBasePath}/${homepage.outputDiagram}`;
   try{
     const response = yield call(axios.get, url);
+    console.log(action);
     yield put({
       type: homepageAction.GET_HOMEPAGE_FETCH_SUCCESS,
       payload: {
         outputPower: response.data.data || [],
+        outputPowerTime: '' // todo
       }
     })
   }catch(error){

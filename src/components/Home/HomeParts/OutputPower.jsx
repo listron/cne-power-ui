@@ -5,9 +5,11 @@ import PropTypes from 'prop-types';
 import echarts from 'echarts';
 import { dataFormat } from '../../../utils/utilFunc';
 import { showNoData, hiddenNoData } from '../../../constants/echartsNoData';
+import moment from 'moment';
 
 class OutputPower extends Component{
   static propTypes = {
+    outputPowerTime: PropTypes.string,
     hasMultipleType: PropTypes.bool,
     mapStation: PropTypes.array,
     outputPower: PropTypes.array,
@@ -23,16 +25,23 @@ class OutputPower extends Component{
   }
 
   componentWillReceiveProps(nextProps){
-    const { outputPower } = nextProps;
-    if(outputPower.length > 0){
-      const chartBox = document.getElementById('homeOutputChart');
-      const outputChart = echarts.init(chartBox);
-      this.setMonthChart(outputChart);
+    const { outputPower, outputPowerTime } = nextProps;
+    const preTime = this.props.outputPowerTime;
+    if(outputPowerTime !== preTime ){ // 出力图数据刷新
+      this.clocker && clearTimeout(this.clocker);
+      this.setMonthChart(outputPower);
+      this.clocker = setTimeout(this.refreshChart, 10*60*1000); // 十分钟后继续请求
     }
   }
+  
+  componentWillUnmount(){
+    this.clocker && clearTimeout(this.clocker);
+  }
 
-  setMonthChart = (outputChart) => {
-    const { outputPower, mapStation, hasMultipleType } = this.props;
+  setMonthChart = (outputPower) => {
+    const chartBox = document.getElementById('homeOutputChart');
+    const outputChart = echarts.init(chartBox);
+    const { mapStation, hasMultipleType } = this.props;
     const { outputType } = this.state;
     let isWind = false;
     if(hasMultipleType){
@@ -160,10 +169,17 @@ class OutputPower extends Component{
     outputChart.setOption(option)
   }
 
-  changeOutputType = (outputType) => {
-    this.setState({ outputType });
+  refreshChart = () => { // 刷新chart图表数据
+    const { outputPower } = this.props;
+    this.setMonthChart(outputPower);
+    this.clocker = setTimeout(this.refreshChart, 10*60*1000);
   }
 
+  changeOutputType = (outputType) => { // 切换电站类型，同时重新请求10min数据。
+    this.setState({ outputType });
+    this.clocker && clearTimeout(this.clocker);
+    this.props.getOutputDiagram();
+  }
 
   render(){
     const { outputType } = this.state;

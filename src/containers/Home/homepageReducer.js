@@ -14,6 +14,7 @@ const initState = Immutable.fromJS({
   mapStation: [], // 地图各坐标情况
   outputPower: [], // 出力图
   singleStation: {}, // 单电站效果
+  outputPowerTime: '', // 记录风电站出力图数据请求时间=>用于对比是否需要刷新chart图。
 });
 
 const homepageReducer = (state = initState, action) => {

@@ -56,14 +56,22 @@ class Homepage extends Component {
       const stationTypeSet = new Set(mapStation.map(e=>e.stationType));
       this.setState({ hasMultipleType: stationTypeSet.size > 1 });
       this.getOriginData();
+      this.clocker && clearTimeout(this.clocker);
+      this.clocker = setTimeout(this.getMonitorData,10*1000); // 启动10s监听
     }
   }
 
   componentWillUnmount(){
+    this.clocker && clearTimeout(this.clocker);
     this.props.homepageReset();
   }
 
-  getOriginData = () => { // 获取所有页面内数据。
+  getMonitorData = () => {
+    this.props.getRealTimeData();
+    this.clocker = setTimeout(this.getMonitorData,10*1000); // 10s一刷新
+  }
+
+  getOriginData = () => { // 首次获取所有页面内初始数据。
     this.props.getRealTimeData();
     this.props.getCompleteRate();
     this.props.getEnergySaving();

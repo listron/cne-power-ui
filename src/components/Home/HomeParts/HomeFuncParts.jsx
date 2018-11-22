@@ -21,16 +21,16 @@ export const CompleteRate = ({ mapStation, completeRate }) => { // 计划完成
         </div>
         <div className={styles.timeComplete}>
           {hasWind && <span className={styles.windPercent}>{windMonthRate}%</span>}
-          {hasWind && <Progress percent={windMonthRate} size="small" strokeColor="#48cf49" showInfo={false} />}
+          {hasWind && <Progress percent={windMonthRate>=0?windMonthRate:0} size="small" strokeColor="#48cf49" showInfo={false} />}
           <span className={styles.planName}>月计划</span>
-          {hasPv && <Progress percent={PVMonthRate} size="small" strokeColor="#06bdf4" showInfo={false} />}
+          {hasPv && <Progress percent={PVMonthRate>=0?PVMonthRate:0} size="small" strokeColor="#06bdf4" showInfo={false} />}
           {hasPv && <span className={styles.pvPercent}>{PVMonthRate}%</span>}
         </div>
         <div className={styles.timeComplete}>
           {hasWind && <span className={styles.windPercent}>{windYearRate}%</span>}
-          {hasWind && <Progress percent={windYearRate} size="small" strokeColor="#48cf49" showInfo={false} />}
+          {hasWind && <Progress percent={windYearRate>=0?windYearRate:0} size="small" strokeColor="#48cf49" showInfo={false} />}
           <span className={styles.planName}>年计划</span>
-          {hasPv && <Progress percent={PVYearRate} size="small" strokeColor="#06bdf4" showInfo={false} />}
+          {hasPv && <Progress percent={PVYearRate>=0?PVYearRate:0} size="small" strokeColor="#06bdf4" showInfo={false} />}
           {hasPv && <span className={styles.pvPercent}>{PVYearRate}%</span>}
         </div>
       </div>

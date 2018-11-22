@@ -23,10 +23,14 @@ class FaultList extends Component{
   componentWillReceiveProps(nextProps){
     const { faultNumber } = nextProps;
     if(faultNumber.length > 0){ // 得到数据，启动计时器
-      clearTimeout(this.clocker);
+      this.clocker && clearTimeout(this.clocker);
       this.setFaultChart(0);
       this.clocker = setTimeout(this.showNextFault,10000);
     }
+  }
+
+  componentWillUnmount(){
+    this.clocker && clearTimeout(this.clocker);
   }
 
   setFaultChart = (currentIndex) => { // 展示故障chart图
@@ -136,7 +140,7 @@ class FaultList extends Component{
   }
 
   changeFaultType = (faultType) => { // 切换设备类型
-    clearTimeout(this.clocker);
+    this.clocker && clearTimeout(this.clocker);
     this.setState({ 
       faultType,
       currentIndex: 0,
