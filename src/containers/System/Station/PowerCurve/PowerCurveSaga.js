@@ -44,10 +44,10 @@ function *getPowerList(action){ // 请求功率曲线列表
       pageNum = maxPage;
     }
     yield put({
-      type:  powerCurveAction.GET_ALARM_MANAGE_FETCH_SUCCESS,
+      type:  powerCurveAction.powerCurveFetchSuccess,
       payload:{
         ...payload,
-        alarmList: response.data.data || [],
+        powerList: response.data.data || [],
         totalNum: response.data.data && response.data.data[0] && response.data.data[0].totalCount || 0,
         pageNum,
       },
