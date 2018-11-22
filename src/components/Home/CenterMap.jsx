@@ -22,6 +22,7 @@ class CenterMap extends Component{
       worldChart: null,
       countriesInfo: [],
       showStationInfo: false,
+      starArr: [],
     }
   }
 
@@ -38,6 +39,7 @@ class CenterMap extends Component{
       console.log(error); 
       message.error('加载世界地图失败，请重试');
     });
+    this.setStars(); // 开始渲染星图。
   }
 
   componentWillReceiveProps(nextProps){
@@ -61,6 +63,10 @@ class CenterMap extends Component{
       this.setWorldMap(countriesInfo, activeInfo);
       this.setCountryMap(mapStation, 'China');
     }
+  }
+
+  componentWillUnmount(){
+    this.clocker && clearTimeout(this.clocker);
   }
 
   onCountryChange = (param) => { // 切换国家
@@ -172,9 +178,20 @@ class CenterMap extends Component{
     })
   }
 
+  setStars = () => {
+    const mapBox = document.getElementById('homeCountryMap');
+    const maxWidth = mapBox.offsetWidth;
+    let tmpArr = [];
+    tmpArr.length = 10;
+    tmpArr.fill(0);
+    let starArr = tmpArr.map(e=>[Math.random()*maxWidth, Math.random()*540])
+    this.setState({ starArr });
+    this.clocker = setTimeout(this.setStars,5*60*1000);
+  }
+
   render(){
     const { mapStation, singleStation } = this.props;
-    const { showStationInfo } = this.state;
+    const { showStationInfo, starArr } = this.state;
     const windStations = mapStation.filter(e=>e.stationType === 0);
     const pvStations = mapStation.filter(e=>e.stationType === 1);
     const windResource = windStations.length > 0?[
@@ -227,6 +244,15 @@ class CenterMap extends Component{
             ))}
           </div>
         </section>}
+        <div className={styles.starBox}>
+          {starArr.map(e=>(<div key={e[0]} 
+            className={styles.star}
+            style={{
+              left: e[0],
+              top: e[1]
+            }}
+          ></div>))}
+        </div>
       </div>
     )
   }
