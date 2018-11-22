@@ -4,6 +4,7 @@ import MapResourceData from './MapResourceData';
 import echarts from 'echarts';
 import styles from './homepageParts.scss';
 import axios from 'axios';
+import { dataFormat } from '../../utils/utilFunc';
 import { message } from 'antd';
 
 class CenterMap extends Component{
@@ -83,17 +84,20 @@ class CenterMap extends Component{
     const activeData = activeInfo.position || [];
     const inactiveData = countriesInfo.filter(e=>e.countryName !== activeName).map(e=>e.position);
     worldChart.setOption({
+      color: ['#48cf49', '#a6e8ff'],
       series:[{
         name: 'active',
         type: 'effectScatter',
         coordinateSystem: 'geo',
         data: [activeData],
+        symbolSize: 8,
         animation: false,
       },{
         name: 'inactive',
         type: 'effectScatter',
         coordinateSystem: 'geo',
         data: inactiveData,
+        symbolSize: 5,
         animation: false,
       }],
       geo: {
@@ -169,7 +173,7 @@ class CenterMap extends Component{
   }
 
   render(){
-    const { mapStation } = this.props;
+    const { mapStation, singleStation } = this.props;
     const { showStationInfo } = this.state;
     const windStations = mapStation.filter(e=>e.stationType === 0);
     const pvStations = mapStation.filter(e=>e.stationType === 1);
@@ -182,6 +186,14 @@ class CenterMap extends Component{
       {src: null, value: 2000, unit: 'MW', name: '光伏功率'},
     ]:[];
     const resourceArr = [...windResource, ...pvResource];
+    const singleInfo = [
+      {name: '实时功率', value: dataFormat(singleStation.stationPower), unit: 'MW'},
+      {name: '装机容量', value: dataFormat(singleStation.stationCapacity), unit: 'MW'},
+      {name: '日累计发电量', value: dataFormat(singleStation.dayPower), unit: '万kWh'},
+      {name: '月累计发电量', value: dataFormat(singleStation.monthPower), unit: '万kWh'},
+      {name: '年累计发电量', value: dataFormat(singleStation.yearPower), unit: '万kWh'},
+    ]
+    const singleStatus = singleStation.stationStatus || {};
     return (
       <div className={styles.centerMap}>
         <div className={styles.topData}>
@@ -196,7 +208,25 @@ class CenterMap extends Component{
           {windStations.length > 0 && <img src="/img/ico_wind.png" />}
         </div>
         <div className={styles.worldMap} id="homeWorldMap"></div>
-        {showStationInfo && <div className={styles.singleStation}>展示这个去哪里？？？</div>}
+        {showStationInfo && <section className={styles.singleStation}>
+          <h3 className={styles.title}>
+            <span className={styles.titleLeft} >
+              <img src={`/img/ico_${singleStation.stationType === 1?'pv':'wind'}.png`} />
+              <span className={styles.name}>{singleStation.stationName || '--'}</span>
+              <span className={styles.arrow}></span>
+            </span>
+            <span className={styles.status}>{singleStatus.statusName || '--'}</span>
+          </h3>
+          <div className={styles.content}>
+            {singleInfo.map((e, i)=>(
+              <div className={styles.info} key={e.name}>
+                <span className={styles.value}>{e.value}</span>
+                <span className={styles.text}>{e.name}{i>1?'':` ${e.unit}`}</span>
+                {i > 1 && <span className={styles.text}>{e.unit}</span>}
+              </div>
+            ))}
+          </div>
+        </section>}
       </div>
     )
   }

@@ -70,7 +70,6 @@ class Homepage extends Component {
     this.props.getMonthPower();
     this.props.getEqpHours();
     this.props.getFaultNumber();
-    this.props.getSingleStation();
     this.props.getAlarmList();
     this.props.getOutputDiagram();
     this.props.getOperationInfo();
