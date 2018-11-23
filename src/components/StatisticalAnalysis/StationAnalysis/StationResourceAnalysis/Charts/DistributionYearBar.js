@@ -26,9 +26,9 @@ class UsageRate extends React.Component {
         data: item.data,
         type: 'bar',
         stack: "总量",
-        itemStyle: {
-          barBorderRadius: 10,
-        },
+        // itemStyle: {
+        //   barBorderRadius: 10,
+        // },
         barWidth: 10,
       });
     })

@@ -309,6 +309,7 @@ class FanList extends React.Component {
         value: [item.longitude, item.latitude, stationType, deviceStatus],
         symbol: currentStationStatus,
         alarmNum: item.alarmNum,
+        center:[item.longitude,item.latitude],
         stationPower: item.devicePower,
         stationCapacity: item.deviceCapacity,
         instantaneous: item.windSpeed,
@@ -323,6 +324,7 @@ class FanList extends React.Component {
 
   render() {
     const { fanList, loading, deviceTypeCode } = this.props;
+    
     const { currentStatus, alarmSwitch, currentPage, pageSize } = this.state;
     // 初始化数据
     const initDeviceList = fanList.deviceList && fanList.deviceList.map((e, i) => ({ ...e, key: i })) || [];
