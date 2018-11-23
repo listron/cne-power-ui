@@ -4,8 +4,8 @@ import styles from '../eachDeviceMonitor.scss'
 function DevicePointsData({ devicePointData, deviceDetail }) {
   devicePointData = devicePointData.sort((a, b) => (a.devicePointCode.localeCompare(b.devicePointCode)))
   // let devicePointIECGroup1 = [...new Set(devicePointData.map(e => e.devicePointIECGroup))]
-  let devicePointIECGroup = ['整机系统', '变桨系统', '传动系统', '发电机', '变频器', '偏航系统', '机舱系统', '塔筒系统', '箱变系统', '测风塔', '其他']
-  // console.log('devicePointIECGroup',devicePointIECGroup,devicePointIECGroup1)
+  let devicePointIECGroup = ['整机系统', '变桨系统', '传动系统', '发电机', '变频器', '偏航系统', '机舱系统', '塔筒系统', '箱变系统', '测风塔', '其它']
+  // console.log('devicePointIECGroup',devicePointData)
   let ponitGroup = devicePointIECGroup.map(e => {
     return devicePointData.filter((item, index) => {
       if (item.devicePointIECGroup === e) {
