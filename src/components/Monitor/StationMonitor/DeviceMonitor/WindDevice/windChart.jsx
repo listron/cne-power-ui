@@ -78,6 +78,7 @@ function InverterTenMin({ sequenceChart }) {
           show: false,
         },
         axisLine: {
+          // onZero: false,
           lineStyle: {
             color: '#dfdfdf',
           },
@@ -199,12 +200,16 @@ function SactterChart({ theory,actual}) {
         name:e.windSpeed,
         value:e.stationPower
       })
+      xData.push(e.windSpeed)
       theoryData1.push('--')
     });
-
     actual.sort((a,b)=>{return a.windSpeed-b.windSpeed})
     actual.length > 0 && actual.forEach(e => {
       actualData.push([e.windSpeed,e.stationPower])
+      // actualData.push({
+      //   name:e.windSpeed,
+      //   value:e.stationPower
+      // })
       actualData1.push('--')
     });
     const inverterTenMinGraphic = (actualData.length === 0 && theoryData.length === 0) ? showNoData : hiddenNoData;
@@ -271,9 +276,10 @@ function SactterChart({ theory,actual}) {
           color: lineColor,
         },
         axisTick: {
-          // show: false,
+          show: false,
         },
         axisLine: {
+          onZero: false,
           lineStyle: {
             color: '#dfdfdf',
           },
@@ -310,11 +316,22 @@ function SactterChart({ theory,actual}) {
         }
       ],
       series: [
+        
+        {
+          name: '有功功率',
+          type: 'scatter',
+          label: {
+            normal: {
+              show: false
+            }
+          },
+          symbolSize:5,
+          data: actualData,
+        },  
         {
           name: '历史平均功率',
           type: 'line',
           lineStyle: {
-            // type: 'dotted',
             color: '#199475',
             width: 1,
           },
@@ -327,22 +344,8 @@ function SactterChart({ theory,actual}) {
               show: false
             }
           },
-          // data: theoryData.length>0?theoryData:actualData1,
           data: theoryData,
-        },
-        {
-          name: '有功功率',
-          type: 'scatter',
-          label: {
-            normal: {
-              show: false
-            }
-          },
-          symbolSize:5,
-          yAxisIndex: 0,
-          // data: actualData.length>0?actualData:theoryData1,
-          data: actualData,
-        },   
+        }, 
       ]
     };
     inverterChart.setOption(option);
@@ -362,9 +365,9 @@ function SequenceChart({sequenceChartList}){
     let pitchAngle1Data = [], pitchAngle2Data = [],pitchAngle3Data = [],speedData=[], xTime = [],replaceData=[];
     sequenceChartList.length > 0 && sequenceChartList.forEach(e => {
       xTime.push(moment(moment.utc(e.utc).toDate()).local().format('YYYY-MM-DD HH:mm'));
-      pitchAngle1Data.push(e.pitchAngle1 && +e.pitchAngle1.toFixed(2) || '--');
-      pitchAngle2Data.push(e.pitchAngle2 && +e.pitchAngle2.toFixed(2) || '--');
-      pitchAngle3Data.push(e.pitchAngle2 && +e.pitchAngle3.toFixed(2) || '--');
+      pitchAngle1Data.push(e.pitchAngle1 && parseInt(e.pitchAngle1).toFixed(2) || '--');
+      pitchAngle2Data.push(e.pitchAngle2 && parseInt(e.pitchAngle2).toFixed(2) || '--');
+      pitchAngle3Data.push(e.pitchAngle2 && parseInt(e.pitchAngle3).toFixed(2) || '--');
       speedData.push(e.speed);
       replaceData.push('--')
     });
@@ -434,6 +437,7 @@ function SequenceChart({sequenceChartList}){
           show: false,
         },
         axisLine: {
+          onZero: false,
           lineStyle: {
             color: '#dfdfdf',
           },

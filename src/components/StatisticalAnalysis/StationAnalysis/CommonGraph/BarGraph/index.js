@@ -24,8 +24,8 @@ class BarGraph extends React.Component {
 
   constructor(props, context) {
     super(props, context)
-    this.state={
-      prevDateType:''
+    this.state = {
+      prevDateType: ''
     }
   }
 
@@ -56,9 +56,6 @@ class BarGraph extends React.Component {
         result = ['#dfdfdf', '#c7ceb2', '#f9b600'];
         break;
       case '损失电量等效时':
-        result = ['#dfdfdf', '#199475', '#f9b600'];
-        break;
-      case '损失电量同比':
         result = ['#dfdfdf', '#199475', '#f9b600'];
         break;
       case '购网电量':
@@ -161,11 +158,14 @@ class BarGraph extends React.Component {
             show: false,
           },
           splitLine: {
-            // show:false,
             lineStyle: {
               color: '##f1f1f1',
               type: 'dashed'
             }
+          },
+          axisLabel: {
+            color: '#666',
+            formatter: xAxisName === 'PR' ? '{value} %' : '{value}'
           },
         },
         {
@@ -199,9 +199,6 @@ class BarGraph extends React.Component {
           name: xAxisName,
           type: 'bar',
           data: barGraphThatYear,
-          // data: [2.0, 4.9, 7.0, 23.2, 25.6, 76.7,],
-          //年的数据没有mock,要看接口
-          //data:barGraphThatYear,
           itemStyle: {
             barBorderRadius: 10,
           },
@@ -213,15 +210,14 @@ class BarGraph extends React.Component {
           yAxisIndex: 1,
           data: barGraphRingRatio,
           //  data: [2.0, 2.2, 3.3, 4.5, 6.3, 10.2,],
-
-
         }
       ]
     }
   }
 
   getMonthOption = (param) => {
-    const {  yAxisName, xAxisName, barGraphThatYear, barGraphLastYear, barGraphmonth, barGraphYearOnYear, lastYear, currentYear, title,hasData } = param;
+    const { yAxisName, xAxisName, barGraphThatYear, barGraphLastYear, barGraphmonth, barGraphYearOnYear, lastYear, currentYear, title, hasData } = param;
+
     let color = this.getColor(xAxisName);
     const confluenceTenMinGraphic = (hasData || hasData === false) && (hasData === true ? hiddenNoData : showNoData) || " ";
     return {
@@ -317,6 +313,10 @@ class BarGraph extends React.Component {
               type: 'dashed'
             }
           },
+          axisLabel: {
+            color: '#666',
+            formatter: xAxisName === 'PR' ? '{value} %' : '{value}'
+          },
         },
         {
           type: 'value',
@@ -373,16 +373,16 @@ class BarGraph extends React.Component {
   }
 
   drawCharts = (param) => {
-    const { graphId, dateType} = param;
+    const { graphId, dateType } = param;
     const targetChart = echarts.init(document.getElementById(graphId));
-    if(dateType!==this.state.prevDateType){
+    if (dateType !== this.state.prevDateType) {
       targetChart.clear();
     }
     targetChart.resize();
-    let targetOption=" ";
-    dateType==='year' ? targetOption =this.getYearOption(param):targetOption =this.getMonthOption(param);
-    targetChart.setOption(targetOption)
-    this.setState({prevDateType:dateType})
+    let targetOption = " ";
+    dateType === 'year' ? targetOption = this.getYearOption(param) : targetOption = this.getMonthOption(param);
+    targetChart.setOption(targetOption, { notMerge: true })
+    this.setState({ prevDateType: dateType })
   };
 
   render() {

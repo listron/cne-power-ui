@@ -3,13 +3,13 @@ import PropTypes from 'prop-types';
 import { Tag } from 'antd';
 import styles from './inspectRecord.scss';
 
-class FilteredItems extends Component {
+class FilteredItemValue extends Component {
   static propTypes = {
-    stations: PropTypes.object,
-
-    inspectTimeStart: PropTypes.string,
-    inspectTimeEnd: PropTypes.string,
-    inspectUserId: PropTypes.string,
+    startDate: PropTypes.string,
+    endDate: PropTypes.string,
+    userId: PropTypes.string,
+    deviceTypeCode: PropTypes.string,
+    inspectStatus: PropTypes.any,
     onChangeFilter: PropTypes.func,
   }
 
@@ -19,43 +19,57 @@ class FilteredItems extends Component {
   onCancelStartTime = () => {//取消开始时间
     const { onChangeFilter } = this.props;
     onChangeFilter({
-      inspectTimeStart: '',
+      startDate: '',
     });
   }
   onCancelEndTime = () => { //取消结束时间
     const { onChangeFilter } = this.props;
     onChangeFilter({
-      inspectTimeEnd: '',
+      endDate: '',
     })
   }
-  onCancelDeviceType = (cancelCode) => {//删除某巡检人
-    const { inspectUserId, onChangeFilter } = this.props;
-    const newInspectUserId = inspectUserId.split(',').filter(e => e !== cancelCode);
+  onCancelInspectStatus = () => {//取消巡检状态
+    const { onChangeFilter } = this.props;
     onChangeFilter({
-      inspectUserId: newInspectUserId.join(',')
+      inspectStatus: null,
+    })
+  }
+  onCancelUserId = (cancelCode) => {//删除某巡检人
+    const { userId, onChangeFilter } = this.props;
+    const newInspectUserId = userId.split(',').filter(e => e !== cancelCode);
+    onChangeFilter({
+      userId: newInspectUserId.join(',')
+    });
+  }
+  onCancelDeviceType = (cancelCode) => {//删除某设备
+    const { deviceTypeCode, onChangeFilter } = this.props;
+    const newInspectDevice = deviceTypeCode.split(',').filter(e => e !== cancelCode);
+    onChangeFilter({
+      deviceTypeCode: newInspectDevice.join(',')
     });
   }
 
   resetAll = () => {//删除所有筛选条件
     const { onChangeFilter } = this.props;
     onChangeFilter({
-      inspectTimeStart: '',
-      inspectTimeEnd: '',
-      inspectUserId: '',
+      startDate: '',
+      endDate: '',
+      userId: '',
+      deviceTypeCode: '',
+      inspectStatus: null,
     });
   }
 
   render() {
-    const { inspectTimeStart, inspectTimeEnd, inspectUserId, inspectPersonList } = this.props;
-    const inspectUserArray = inspectUserId.split(',');
-    // console.log(inspectPersonList);
-    // console.log(inspectUserArray);
-
-
-    const selectedInspectPerson = inspectUserArray.map(e => {
-      return inspectPersonList.filter(item => item.inspectUserId === e)
-    });
-   // console.log(selectedInspectPerson);
+    //inspectDeviceType是从巡检工单里传过来的设备类型，其中包括设备名以及设备code
+    //inspectPersonList是用户名以及用户id
+    const { startDate, endDate, userId, inspectStatus, inspectUsers, deviceTypeCode, deviceTypeItems } = this.props;
+    const inspectUserArray = userId.split(',');
+    const selectedInspectPerson = inspectUsers.filter(e => inspectUserArray.some(m => m === `${e.id}`));
+    const inspectDevice = deviceTypeCode.split(',');
+    // console.log(inspectDevice);
+    const selectedInspectDevice = deviceTypeItems&&deviceTypeItems.filter(e => inspectDevice.some(m => m === `${e.deviceTypeCode}`));
+    // console.log(selectedInspectDevice);
     const style = {
       background: '#fff',
       borderStyle: 'dashed',
@@ -70,11 +84,19 @@ class FilteredItems extends Component {
     return (
       <div className={styles.filteredItems}>
         <span>已选条件</span>
-        {inspectTimeStart !== '' && <Tag style={style} closable onClose={this.onCancelStartTime}>开始 {inspectTimeStart}</Tag>}
-        {inspectTimeEnd !== '' && <Tag style={style} closable onClose={this.onCancelEndTime}>结束 {inspectTimeEnd}</Tag>}
-        {selectedInspectPerson.length > 0 && selectedInspectPerson.map((e,i) => (
-          <Tag style={style} closable onClose={() => this.onCancelDeviceType(e.inspectUserId)} key={i}>
-            {e[0]&&e[0].inspectUserName}
+        {startDate !== '' && <Tag style={style} closable onClose={this.onCancelStartTime}>开始 {startDate}</Tag>}
+        {endDate !== '' && <Tag style={style} closable onClose={this.onCancelEndTime}>结束 {endDate}</Tag>}
+        {selectedInspectPerson.length > 0 && selectedInspectPerson.map((e, i) => (
+          <Tag style={style} closable onClose={() => this.onCancelUserId(e.id)} key={i}>
+            {e && e.name}
+          </Tag>
+        ))}
+        {inspectStatus && <Tag style={style} closable onClose={this.onCancelInspectStatus}>
+          {inspectStatus === '1' ? '有异常' : '无异常'}
+        </Tag>}
+        {selectedInspectDevice && selectedInspectDevice.map((e, i) => (
+          <Tag style={style} closable onClose={() => this.onCancelDeviceType(e.deviceTypeCode)} key={i}>
+            {e && e.deviceTypeName}
           </Tag>
         ))}
         <Tag closable onClose={this.resetAll}>清空条件</Tag>
@@ -84,4 +106,4 @@ class FilteredItems extends Component {
 
 }
 
-export default FilteredItems;
+export default FilteredItemValue;

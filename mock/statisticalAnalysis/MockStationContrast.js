@@ -1,9 +1,9 @@
 
 module.exports = [
   {
-    api:'/mock/statisticalAnalysis/MockStationContrast',
-    method:'post',
-    response:{
+    api: '/mock/statisticalAnalysis/MockStationContrast',
+    method: 'post',
+    response: {
       "code": "10000",
       "message": "请求成功",
       "data": [
@@ -29,7 +29,7 @@ module.exports = [
           'deviceAvailability': 2018,
           'stationAvailability': 2018,
           'limitPowerHours': 2018,
-          'subStatioinHours': 2018,
+          'subStationHours': 2018,
           'planShutdownHours': 2018,
           'faultPowerHours': 2018,
           'technicalHours': 2018,
@@ -62,7 +62,7 @@ module.exports = [
           'deviceAvailability': 2018,
           'stationAvailability': 2018,
           'limitPowerHours': 2018,
-          'subStatioinHours': 2018,
+          'subStationHours': 2018,
           'planShutdownHours': 2018,
           'faultPowerHours': 2018,
           'technicalHours': 2018,
@@ -73,35 +73,54 @@ module.exports = [
           'plantLossRate': 2018,
           'sendLineRate': 2018,
         },
-          
+
       ],
       "serviceCode": "3.0"
     },
-    delay:1000,
-    error:{}
+    delay: 1000,
+    error: {}
   },
   {
-    api:'/mock/statisticalAnalysis/MockStationContrast/detail',
-    method:'post',
-    response:{
+    api: '/mock/statisticalAnalysis/MockStationContrast/detail',
+    method: 'post',
+    response: {
       "code": "10000",
       "message": "请求成功",
       "data": [
         {
-            stationName: '洱源',
-            year: [2018,2017,2016,2015,2014,2013,2012,2011,2010,2009],
-            value: [3009,2005,902,3049,2055,962,379,285,9902,3109],
+          stationName: '洱源',
+          year: [2018, 2017, 2016, 2015, 2014, 2013, 2012, 2011, 2010, 2009],
+          value: [3009, 2005, 902, 3049, 2055, 962, 379, 285, 9902, 3109],
         },
         {
-            stationName: '燕园下大沟',
-            year: [2018,2017,2016,2015,2014,2013,2012,2011,2010,2009],
-            value: [3009,2005,902,3049,2055,962,379,285,9902,3109],
+          stationName: '燕园下大沟',
+          year: [2018, 2017, 2016, 2015, 2014, 2013, 2012, 2011, 2010, 2009],
+          value: [3009, 2005, 902, 3049, 2055, 962, 379, 285, 9902, 3109],
         },
-        
+
       ],
       "serviceCode": "3.0"
     },
-    delay:1000,
-    error:{}
+    delay: 1000,
+    error: {}
+  },
+  {
+    api: '/mock/performance/deviceanalysis/conversioneff',
+    method: 'post',
+    response: {
+      "code": "10000",
+      "message": "请求成功",
+      "data": {
+        conversionAvgRate: '50',
+        conversionRateData: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((e, i) => (
+          {
+            deviceName: `NB${e}`,
+            conversionRate:`${i+30}`
+          }
+
+        ))
+      },
+      "serviceCode": "转化效率"
+    }
   }
 ]

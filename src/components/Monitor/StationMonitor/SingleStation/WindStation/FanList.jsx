@@ -6,7 +6,7 @@ import styles from './windStation.scss';
 import { Tabs, Switch, Radio, Table, Progress, Spin } from 'antd';
 import { Link } from 'react-router-dom';
 import CommonPagination from '../../../../Common/CommonPagination/index';
-import Map from '../../AllStation/Map';
+import Map from './Map';
 
 const TabPane = Tabs.TabPane;
 
@@ -130,7 +130,7 @@ class FanList extends React.Component {
         sorter: (a, b) => a.windSpeed - b.windSpeed,
       },
       {
-        title: '偏航角度(°)',
+        title: '风向(°)',
         dataIndex: 'angleOfYaw',
         key: 'angleOfYaw',
         render: (text, record, index) => (<span>{text || '--'}</span>),
@@ -283,11 +283,12 @@ class FanList extends React.Component {
   }
 
 
-  mapData = (deviceList) => { // 地图
+  mapData = (deviceList,deviceTypeCode) => { // 地图
     let iconArray = [
       {
-        "400": ['image:///img/wind-normal.png', 'image:///img/wind-alert.png'],
-        "500": 'image:///img/wind-cutdown.png',
+        "100": 'image:///img/wind-normal.png', 
+        "200": 'image:///img/wind-cutdown.png',
+        "300": 'image:///img/wind-alert.png',
         "900": 'image:///img/wind-unconnected.png'
       },
       {
@@ -295,8 +296,8 @@ class FanList extends React.Component {
         "500": 'image:///img/pv-cutdown.png',
         "900": 'image:///img/pv-unconnected.png'
       },
-
-    ]
+    ];
+    const { stationCode } = this.props.match.params;
     let data = [];
     deviceList.forEach((item, index) => {
       let deviceStatus = `${item.deviceStatus}` || "";
@@ -306,12 +307,14 @@ class FanList extends React.Component {
       data.push({
         name: item.deviceName,
         value: [item.longitude, item.latitude, stationType, deviceStatus],
-        symbol: deviceStatus === "400" ? currentStationStatus[item.alarmNum ? 1 : 0] : currentStationStatus,
+        symbol: currentStationStatus,
         alarmNum: item.alarmNum,
         stationPower: item.devicePower,
         stationCapacity: item.deviceCapacity,
         instantaneous: item.windSpeed,
-        stationCode: item.deviceCode,
+        deviceCode: item.deviceCode,
+        deviceTypeCode:deviceTypeCode,
+        stationCode:stationCode,
         angleOfYaw: item.angleOfYaw
       })
     })
@@ -334,10 +337,10 @@ class FanList extends React.Component {
     })
 
     // 设置所属电站设备
-    const parentDeviceCodeSet = new Set(sortedParentList.map(e => e.parentDeviceCode));
-    const parentDeviceCodes = [...parentDeviceCodeSet];
-    const deviceGroupedList = parentDeviceCodes.map(e => {
-      const subDeviceList = filteredDeviceList.filter(item => item.parentDeviceCode === e);
+    const parentDeviceNameSet = new Set(sortedParentList.map(e => e.parentDeviceName));
+    const parentDeviceName = [...parentDeviceNameSet];
+    const deviceGroupedList = parentDeviceName.map(e => {
+      const subDeviceList = filteredDeviceList.filter(item => item.parentDeviceName === e);
       return subDeviceList.sort((a, b) => a.deviceName && a.deviceName.localeCompare(b.deviceName));
     });
 
@@ -381,7 +384,7 @@ class FanList extends React.Component {
             </div>
           </TabPane>
           <TabPane tab={<span> <i className="iconfont icon-map"></i></span>} key="stationMap" className={styles.inverterMapBox} >
-            <Map testId="wind_bmap_station" {...this.props} stationDataList={this.mapData(filteredDeviceList)} />
+            <Map testId="wind_bmap_station" {...this.props} stationDataList={this.mapData(filteredDeviceList,deviceTypeCode)} />
           </TabPane>
         </Tabs>
       </div>

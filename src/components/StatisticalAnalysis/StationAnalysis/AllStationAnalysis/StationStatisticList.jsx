@@ -31,8 +31,10 @@ class StationStatisticList extends React.Component {
       }
   }
   ontableSort = (pagination, filter, sorter) => {
-    const { getAllStationStatisticTableData, queryListParams,stationType, year, month, dateType, pageSize, pageNum } = this.props;
-    const curYear = Number(year);
+    const { getAllStationStatisticTableData, queryListParams,stationType, year, month,powerSelectYear, dateType, pageSize, pageNum } = this.props;
+    let curYear = Number(year);
+    year.length>1?curYear=year[year.length-1]:curYear=Number(year);
+   
     const { field, order } = sorter;
     const sortInfo = {
       stationName: 'stationName',
@@ -50,11 +52,22 @@ class StationStatisticList extends React.Component {
     };
     const sort = sortInfo[field] ? sortInfo[field] : '';
     const sortType = order ? (sorter.order === 'descend' ? 'desc' : 'asc') : '';
+    dateType==='month'?
     getAllStationStatisticTableData({
       pageNum,
       pageSize,
       year: curYear,
+      stationType,
       month,
+      dateType,
+      sort,
+      sortType,
+      stationType
+    }):getAllStationStatisticTableData({
+      pageNum,
+      pageSize,
+      // year: curYear,  
+      year: powerSelectYear,  
       dateType,
       sort,
       sortType,
@@ -83,7 +96,7 @@ class StationStatisticList extends React.Component {
     const { changeAllStationStore, getAllStationStatisticTableData, stationType, dateType, pageNum, pageSize, sortType, year, sort } = this.props;
     const curYear = Number(year);
     const userId = Cookie.get('userId')
-    changeAllStationStore({ month: changeMonth, powerSelectMonth: changeMonth })
+    changeAllStationStore({ month: changeMonth, powerSelectMonth: changeMonth, sort:'planGenRate' })
     getAllStationStatisticTableData(
       {
         year: curYear,
@@ -111,7 +124,7 @@ class StationStatisticList extends React.Component {
         stationType
       }
     )
-    changeAllStationStore({ powerSelectYear: changeYear })
+    changeAllStationStore({ powerSelectYear: changeYear, })
   }
 
   selectYear() {

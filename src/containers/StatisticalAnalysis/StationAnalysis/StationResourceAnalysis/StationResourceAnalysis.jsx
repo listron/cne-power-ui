@@ -21,17 +21,10 @@ class ResourceAnalysisContainer extends Component {
   constructor(props) {
     super(props);
   }
-
-  componentWillReceiveProps(nextProps) {
-  
-  }
-
   componentWillUnmount() {
     this.props.resetStore()
   }
-
   render() {
-
     const breadCrumbData = {
       breadData: [
         {

@@ -48,6 +48,7 @@ class PlanCompleteRateAnalysisBar extends React.Component {
         name: this.getName(bar, currentYear, lastYear),
         data: barData[bar],
         type: 'bar',
+        barWidth: 13,
       };
       seriesData.push(json);
     }

@@ -3,12 +3,10 @@ import { combineReducers } from 'redux';
 import defect from './Ticket/Defect/defectReducer';
 import inspect from './Ticket/Inspect/inspectReducer';
 import ticket from './Ticket/ticketReducer';
+import personnelGps from './Ticket/PersonnelGps/personnelGpsReducer';
 
 import dayReport from './Running/DayReport/dayReportReducer';
 
-const operationReducer = combineReducers({ defect, inspect, ticket, dayReport });
+const operationReducer = combineReducers({ defect, inspect, ticket,personnelGps, dayReport });
 
 export default operationReducer;
-//ticket/defectReducer
-//ticket/inspectReducer
-//ticket/ticketReducer

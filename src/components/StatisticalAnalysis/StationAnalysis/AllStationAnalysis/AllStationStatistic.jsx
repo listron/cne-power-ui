@@ -14,7 +14,7 @@ class AllStationStatistic extends React.Component {
   static propTypes = {
     stations: PropTypes.object,
     userId: PropTypes.string,
-    stationType: PropTypes.string,
+    stationType: PropTypes.any,
     sortType: PropTypes.string,
     sort: PropTypes.string,
     stationCode: PropTypes.array,
@@ -39,13 +39,20 @@ class AllStationStatistic extends React.Component {
     };
   }
   componentDidMount() {
-    const { getAllStationAvalibaData, changeAllStationStore, getAllStationStatisticData, getAllStationStatisticTableData, getAllStationMonthBarData, getAllStationMonthPieData, year, stationType, sortType, dateType, pageNum, pageSize, sort } = this.props;
+    const { getAllStationAvalibaData, stations, changeAllStationStore, getAllStationStatisticData, getAllStationStatisticTableData, getAllStationMonthBarData, getAllStationMonthPieData, year, stationType, sortType, dateType, pageNum, pageSize, sort } = this.props;
     const currentYear = moment().format('YYYY');
     const curYear = Number(moment().format('YYYY'));
     const currentMonth = Number(moment().format('MM'));
     let time = year ? year : [`${currentYear}`];
     const userId = Cookie.get('userId')
-    changeAllStationStore({ year: [`${currentYear}`], month: currentMonth, powerSelectMonth: currentMonth })
+    const stationTypeOne = this.stationIsOneType();
+    let stationTypes;
+    if (stationTypeOne) {
+     stationTypes =stations.getIn([0, 'stationType']);
+     changeAllStationStore({stationType:stationTypes})
+    }
+    console.log(typeof(stationTypes));
+    changeAllStationStore({ year: [`${currentYear}`], month: currentMonth, powerSelectMonth: currentMonth,})
     getAllStationAvalibaData(
       {
         userId: userId,
@@ -90,10 +97,10 @@ class AllStationStatistic extends React.Component {
       stationType
     })
 
-
   }
   componentWillReceiveProps(nextProps) {
     const { getAllStationAvalibaData, getAllStationMonthBarData, changeAllStationStore, getAllStationStatisticData, getAllStationStatisticTableData, getAllStationMonthPieData, dateType, userId, pageNum, stationType, sortType, sort, pageSize } = this.props;
+
     const currentYear = [moment().format('YYYY')];
     const currentTableYear = Number(moment().format('YYYY'));
     const currentMonth = Number(moment().format('MM'));
@@ -108,10 +115,15 @@ class AllStationStatistic extends React.Component {
     for (let i = Number(nextProps.year[0]); i < Number(nextProps.year[1]) + 1; i++) {
       changeRangYear.push(i.toString())
     }
+    //tab切换
+    if (this.props.stationType !== nextProps.stationType) {
+
+      //  this.renderWeb()
+    }
     //月->月
     if (dateType === 'month' && nextProps.dateType === 'month') {
       if (nextProps.year[0] !== this.props.year[0]) {
-        changeAllStationStore({ targetShowType: 'EqpGen',powerSelectMonth: currentMonth, pageNum: 1, })
+        changeAllStationStore({ targetShowType: 'EqpGen', powerSelectMonth: currentMonth, pageNum: 1, })
         getAllStationAvalibaData(
           {
             userId: userId,
@@ -196,7 +208,7 @@ class AllStationStatistic extends React.Component {
     }
     //年->月
     if (dateType !== nextProps.dateType && nextProps.dateType === 'month') {
-      changeAllStationStore({ year: currentYear, month: currentMonth, allStationAvalibaData: [], targetShowType: 'EqpGen',powerSelectMonth: currentMonth , pageNum: 1,})
+      changeAllStationStore({ year: currentYear, month: currentMonth, allStationAvalibaData: [], targetShowType: 'EqpGen', powerSelectMonth: currentMonth, pageNum: 1, })
       getAllStationAvalibaData(
         {
           userId: userId,
@@ -281,7 +293,6 @@ class AllStationStatistic extends React.Component {
     }
   }
   componentWillUnmount() {
-
     this.props.changeAllStationStore({
       //stationTypes: null,   
       dateType: 'month',
@@ -297,7 +308,6 @@ class AllStationStatistic extends React.Component {
   onTimeChange = (timeObj) => {
     timeObj.timeStyle === 'year' ? this.props.changeAllStationStore({ dateType: timeObj.timeStyle, year: [timeObj.startTime, timeObj.endTime], selectYear: timeObj.endTime, powerSelectYear: timeObj.endTime }) : this.props.changeAllStationStore({ dateType: timeObj.timeStyle, year: [timeObj.startTime] })
   }
-
   onChangeStation = (stationCode) => {
     this.props.history.push(`/statistical/stationaccount/allstation/${stationCode}`);
     this.props.changeAllStationStore({
@@ -311,12 +321,63 @@ class AllStationStatistic extends React.Component {
     });
   }
   queryTargetData = (activeKey) => {
-    const { stationType } = this.props;
-    this.props.changeAllStationStore({
-      stationType: activeKey,
+    const { getAllStationAvalibaData, changeAllStationStore, getAllStationStatisticData, getAllStationStatisticTableData, getAllStationMonthBarData, getAllStationMonthPieData, year, stationType, sortType, dateType, pageNum, pageSize, sort } = this.props;
+    const currentYear = moment().format('YYYY');
+    const curYear = Number(moment().format('YYYY'));
+    const currentMonth = Number(moment().format('MM'));
+    let time = year ? year : [`${currentYear}`];
+    const userId = Cookie.get('userId')
+    changeAllStationStore({
+      year: [`${currentYear}`], month: currentMonth, powerSelectMonth: currentMonth, stationType: activeKey,
       targetShowType: 'EqpGen',
+    })
+    getAllStationAvalibaData(
+      {
+        userId: userId,
+        year: time,
+        dateType,
+      }
+    )
+    getAllStationStatisticData(
+      {
+        userId: userId,
+        year: curYear,
+        dateType,
+        stationType: activeKey,
+      }
+    )
+    getAllStationStatisticTableData(
+      {
+        year: curYear,
+        dateType,
+        month: currentMonth,//默认当前月
+        pageNum, // 当前页
+        pageSize, // 每页条数
+        sortType,
+        sort,
+        stationType: activeKey,
 
-    });
+      }
+    )
+    getAllStationMonthBarData({
+      userId: userId,
+      year: time,
+      dateType,
+      dataType: 'EqpGen',
+      stationType: activeKey,
+
+    })
+    getAllStationMonthPieData({
+      userId: userId,
+      year: curYear,
+      dataType: 'EqpGen',
+      stationType: activeKey,
+    })
+  }
+  stationIsOneType() {
+    const { stations } = this.props;
+    const length = stations.map(e => e.get('stationType')).toSet().size;
+    return length === 1;//需求：只有一种类型,不显示tab;两种类型(风电/光伏)才显示tab
   }
   render() {
     const TabPane = Tabs.TabPane;
@@ -326,31 +387,48 @@ class AllStationStatistic extends React.Component {
         <i className="iconfont icon-filter"></i>
       </div>
     );
+     const stationTypeOne = this.stationIsOneType();
+
     const { stationType, stations, dateType, year, allStationAvalibaData, allStationStatisticData, getAllStationStatisticData, selectYear, changeAllStationStore } = this.props;
     const { showStationSelect } = this.state;
     return (
       <div className={styles.allStationTypeTabs}>
-        <Tabs type="card" tabBarExtraContent={operations} activeKey={stationType} onChange={this.queryTargetData} >
-          <TabPane tab="光伏" key="1">
+        {stationTypeOne ?
+          <div className={styles.AlarmStatisticByTypeBox} >
+            <div className={styles.singleAlarmFilter} >{operations}</div>
             <div className={styles.componentContainer}>
-              <TimeSelect showDayPick={false} onChange={this.onTimeChange} />
-              <PlanCompletionRate dateType={dateType} stationType={stationType} allStationAvalibaData={allStationAvalibaData} allStationStatisticData={allStationStatisticData} getAllStationStatisticData={getAllStationStatisticData} year={year} selectYear={selectYear}
-                changeAllStationStore={changeAllStationStore} />
-              <TargetTabs {...this.props} />
-              <StationStatisticList {...this.props} />
-            </div>
-          </TabPane>
-          <TabPane tab="风电" key="0">
-            <div style={{
-              display: 'flex',
-              flexDirection: 'column',
-              flex: 1,
-              background: '#fff',
-              background: "url('/img/undo.png') no-repeat center #fff"
-            }}>
-            </div>
-          </TabPane>
-        </Tabs>
+            <TimeSelect showDayPick={false} onChange={this.onTimeChange} />
+            <PlanCompletionRate dateType={dateType} stationType={stationType} allStationAvalibaData={allStationAvalibaData} allStationStatisticData={allStationStatisticData} getAllStationStatisticData={getAllStationStatisticData} year={year} selectYear={selectYear}
+              changeAllStationStore={changeAllStationStore} />
+            <TargetTabs {...this.props} />
+            <StationStatisticList {...this.props} />
+          </div>
+        
+          </div>
+          :
+          <Tabs type="card" tabBarExtraContent={operations} activeKey={stationType} onChange={this.queryTargetData} >
+            <TabPane tab="风电" key={'0'}>
+              <div style={{
+                display: 'flex',
+                flexDirection: 'column',
+                flex: 1,
+                background: '#fff',
+                background: "url('/img/undo.png') no-repeat center #fff"
+              }}>
+              </div>
+            </TabPane>
+            <TabPane tab="光伏" key={'1'}>
+              <div className={styles.componentContainer}>
+                <TimeSelect showDayPick={false} onChange={this.onTimeChange} />
+                <PlanCompletionRate dateType={dateType} stationType={stationType} allStationAvalibaData={allStationAvalibaData} allStationStatisticData={allStationStatisticData} getAllStationStatisticData={getAllStationStatisticData} year={year} selectYear={selectYear}
+                  changeAllStationStore={changeAllStationStore} />
+                <TargetTabs {...this.props} />
+                <StationStatisticList {...this.props} />
+              </div>
+            </TabPane>
+
+          </Tabs>
+        }
         {
           showStationSelect &&
           <StationSelectModal

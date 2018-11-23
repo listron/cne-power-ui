@@ -9,9 +9,8 @@ import bmap from 'echarts/extension/bmap/bmap';
 
 class GpsMap extends Component {
   static propTypes = {
-    allMonitorStation: PropTypes.object,
     testId: PropTypes.string,
-    stationDataList: PropTypes.array,
+    personnelGpsData: PropTypes.array,
      history: PropTypes.object,
   }
   constructor(props) {
@@ -22,24 +21,24 @@ class GpsMap extends Component {
   }
   
   componentDidMount() {
-    const { testId, stationDataList } = this.props;
+    const { testId, personnelGpsData } = this.props;
     const testChart = echarts.init(document.getElementById(testId));
-    this.setMapChart(testChart, stationDataList);
+    this.setMapChart(testChart, personnelGpsData);
   }
   
   componentWillReceiveProps(nextProps) {
-    const { testId, stationDataList } = nextProps;
-    if(this.props.stationDataList.length !== nextProps.stationDataList.length) {
+    const { testId, personnelGpsData } = nextProps;
+    if(this.props.personnelGpsData.length !== nextProps.personnelGpsData.length) {
       const testChart = echarts.init(document.getElementById(testId));
-      this.setMapChart(testChart, stationDataList);
+      this.setMapChart(testChart, personnelGpsData);
     }
   }
   
-  setMapChart = (testChart, stationDataList) => {
+  setMapChart = (testChart, personnelGpsData) => {
     const option = {
       bmap: {
-        center: [116.46, 39.92],//中心点
-        zoom: 10,
+         center: [116, 39.92],//中心点
+         zoom: 5,
         roam: true,//可放大缩小
         mapStyle: {
           styleJson: [{
@@ -156,12 +155,12 @@ class GpsMap extends Component {
         type: 'scatter',
         tooltip: {
           enterable: true,
-          //position:['50%','50%'],
-          // formatter: (params) => {
-            
-          // },
-          // width:'128px',
-          // height:'68px',
+          formatter: (params) => {
+
+            return `<div style='display:flex; flex-direction: row;'><div style='width:30px;height:30px;'><img src='/img/people.png'></div> <div style='height:30px;line-height:30px'>${params.data.name}</div></div>`
+          },
+          width:'128px',
+          height:'68px',
           backgroundColor: '#fff',
           textStyle: {
             color: '#666',
@@ -169,14 +168,13 @@ class GpsMap extends Component {
           extraCssText: 'box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);',
         },
         name: '巡检人',
-        // symbol:'image//../../../../../theme/img/wind-normal.png',
         coordinateSystem: 'bmap',
-        data: [
-          { name: 'dali',value: [116, 39.92]},
-          { name: 'daliaa' ,value: [117, 39.92]},
-        ],
-        // data: stationDataList,
-        symbolSize:[10,10],
+        // data: [
+        //   { name: 'dali',value: [116, 39.92]},
+        //   { name: 'daliaa' ,value: [117, 39.92]},
+        // ],
+        data: personnelGpsData,
+        symbolSize:[20,20],
         label: {
           normal: {
             show: false
@@ -194,24 +192,24 @@ class GpsMap extends Component {
       }]
     };
     testChart.setOption(option)
-    testChart.on('click', (params) => {
-      if(params.data.stationStatus!=='900'){
-      return this.props.history.push(`/monitor/singleStation/${params.data.stationCode}`)  
-    }else{
-      this.showTip();
-    }  
+    // testChart.on('click', (params) => {
+    //   if(params.data.stationStatus!=='900'){
+    //   return this.props.history.push(`/monitor/singleStation/${params.data.stationCode}`)  
+    // }else{
+    //   this.showTip();
+    // }  
    
-    })
+    // })
   }
-  showTip = (e) => {
-    message.destroy();
-    message.config({
-      top: 225,
-      duration: 200,
-      maxCount: 1,
-    });
-    message.warning('电站未接入,无法查看详情',2);
-  }
+  // showTip = (e) => {
+  //   message.destroy();
+  //   message.config({
+  //     top: 225,
+  //     duration: 200,
+  //     maxCount: 1,
+  //   });
+  //   message.warning('电站未接入,无法查看详情',2);
+  // }
 
   render() {
     // const { barData } = this.state;

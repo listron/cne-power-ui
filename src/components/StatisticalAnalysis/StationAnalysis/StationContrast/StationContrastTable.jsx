@@ -1,9 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Row, Col,Popover  } from 'antd';
+import { Row, Col, Popover } from 'antd';
 import styles from './stationContrast.scss';
 import StationContrastDetail from './StationContrastDetail';
-import {stationContrastDataInfo, stationContrastBaseName}from '../../../../constants/stationContrastBaseInfo';
+import { stationContrastDataInfo, stationContrastBaseName } from '../../../../constants/stationContrastBaseInfo';
 
 class StationContrastTable extends React.Component {
   static propTypes = {
@@ -28,9 +28,9 @@ class StationContrastTable extends React.Component {
   }
 
   onVisibleChange = (item) => {
-    if(!item){
+    if (!item) {
       this.props.toChangeStationContrastStore({
-        stationContrastDetail:[],
+        stationContrastDetail: [],
       });
     }
   }
@@ -39,44 +39,51 @@ class StationContrastTable extends React.Component {
     this.props.toChangeStationContrastStore({
       column: e.currentTarget.getAttribute('data-rowName'),
     })
-    this.props.getStationContrastDetail({
-      stationCode,
-      dateType,
-      year,
-      month,
-      column: e.currentTarget.getAttribute('data-datafieldname'),
-    });
+    dateType === 'day' ?
+      this.props.getStationContrastDetail({
+        stationCode,
+        dateType,
+        year,
+        month,
+        column: e.currentTarget.getAttribute('data-datafieldname'),
+      }) : this.props.getStationContrastDetail({
+        stationCode,
+        dateType,
+        year,
+        column: e.currentTarget.getAttribute('data-datafieldname'),
+      })
+      ;
   }
 
   render() {
-    const { stationContrastList  } = this.props;
+    const { stationContrastList } = this.props;
     const content = (
       <div>
-        <StationContrastDetail 
+        <StationContrastDetail
           {...this.props}
         />
       </div>
     );
-    
+
     return (
       <Row className={styles.stationContrastTable} >
         <Col span={6} className={styles.baseNameBox} >
-          {stationContrastBaseName.map((e,i)=> {
+          {stationContrastBaseName.map((e, i) => {
             return (<Row className={styles.baseName} key={i}>
               <Col className={styles.baseClassifyName} span={4}><span>{e.baseClassifyName}</span></Col>
               <Col className={styles.rowName} span={20}>
-                {e.rowName.map((item,index)=>{
+                {e.rowName.map((item, index) => {
                   return (<div key={index}>{item}</div>)
                 })}
               </Col>
             </Row>);
           })}
         </Col>
-        {stationContrastList && stationContrastList.length===2 && 
+        {stationContrastList && stationContrastList.length === 2 &&
           (<Col className={styles.stationOne} span={18} >
             <div>
-              <div  className={styles.baseInfoBg} >{stationContrastList[0].stationName || '--'}</div>
-              <div  className={styles.baseInfoBg} >{stationContrastList[1].stationName || '--'}</div>
+              <div className={styles.baseInfoBg} >{stationContrastList[0].stationName || '--'}</div>
+              <div className={styles.baseInfoBg} >{stationContrastList[1].stationName || '--'}</div>
             </div>
             <div>
               <div className={styles.baseInfoBg} >{stationContrastList[0].ongridTime || '--'}</div>
@@ -94,22 +101,22 @@ class StationContrastTable extends React.Component {
               <div className={styles.baseInfoBg} >{stationContrastList[0].unitCount || '--'}</div>
               <div className={styles.baseInfoBg} >{stationContrastList[1].unitCount || '--'}</div>
             </div>
-            {Object.entries(stationContrastDataInfo).map((item,index)=>{
-              const differHighLight = stationContrastList[0][item[0]] && stationContrastList[1][item[0]] && ((Math.abs(stationContrastList[0][item[0]]-stationContrastList[1][item[0]])/stationContrastList[1][item[0]])>0.2);
+            {Object.entries(stationContrastDataInfo).map((item, index) => {
+              const differHighLight = stationContrastList[0][item[0]] && stationContrastList[1][item[0]] && ((Math.abs(stationContrastList[0][item[0]] - stationContrastList[1][item[0]]) / stationContrastList[1][item[0]]) > 0.2);
               const highLightColumn = [
                 'equivalentHours',
                 'lostPowerHours',
                 'limitPowerHours',
-                'subStatioinHours',
+                'subStationHours',
                 'planShutdownHours',
                 'faultPowerHours',
                 // 'technicalHours',
                 'courtHours',
               ];
-              
+
               return (
                 <div key={index} data-rowname={item[0]} data-datafieldname={item[1]} onClick={this.showContrastDetail} >
-                  <Popover content={content} trigger="click" onVisibleChange={item=>this.onVisibleChange(item)} className={highLightColumn.includes(item[0]) ? (differHighLight ? styles.differHighLight:styles.contrastDetailPopover) : styles.contrastDetailPopover} placement="bottom" overlayClassName={styles.contrastOverlayClassName} >
+                  <Popover content={content} trigger="click" onVisibleChange={item => this.onVisibleChange(item)} className={highLightColumn.includes(item[0]) ? (differHighLight ? styles.differHighLight : styles.contrastDetailPopover) : styles.contrastDetailPopover} placement="bottom" overlayClassName={styles.contrastOverlayClassName} >
                     <div className={styles.stationContrastOne} >{stationContrastList[0][item[0]] || '--'}</div>
                     <div className={styles.stationContrastTwo} >{stationContrastList[1][item[0]] || '--'}</div>
                   </Popover>
