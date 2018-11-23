@@ -52,9 +52,13 @@ class PowerCurve extends Component {
   }
 
   render() {
-    const { stations,deviceModels } = this.props;
+    const { stations,deviceModels ,powerList} = this.props;
     console.log('this.props', this.props)
     const { selectStation } = this.state;
+    const detailData=powerList.detailData ||[];
+    const columns=detailData.map((item,index)=>{
+      
+    })
     return (
       <div className={styles.PowerCurve}>
         <div className={styles.contentMain}>
@@ -80,7 +84,16 @@ class PowerCurve extends Component {
             </Select>
 
           </div>
-
+          <div>
+            <button> 下载导入模版</button>
+            <button> 导入</button>
+            <button> 导出</button>
+          </div>
+          <div className={styles.table}>
+          <Table
+           dataSource={dataSource} 
+           columns={columns} />
+          </div>
         </div>
       </div>
 
