@@ -41,7 +41,7 @@ class SingleStation extends Component {
 
     const { stationCode } = this.props.match.params;
     this.getTenSeconds(stationCode);
-    this.getOutputDataTenMin(stationCode);
+    // this.getOutputDataTenMin(stationCode);
     this.getPowerDataTenMin(stationCode);
     const { search } = this.props.location;
     const tmpSearchData = search.replace('?', '').split('&').filter(e => e); //  search拆分验证是否有指定展示列表
@@ -68,13 +68,18 @@ class SingleStation extends Component {
     const { stationCode } = this.props.match.params;
     const nextParams = nextProps.match.params;
     const nextStationCode = nextParams.stationCode;
+    const nextStationType=nextProps.singleStationData.stationType;
+    const stationType=this.props.singleStationData.stationType;
+    if(nextStationType !==stationType){
+      this.getOutputDataTenMin(nextStationCode,nextStationType);
+    }
     if (nextStationCode !== stationCode) {
       clearTimeout(this.timeOutId);
       // this.props.changeSingleStationStore({ deviceTypeFlow: {} });
       this.props.resetSingleStationStore();
       this.props.getStationList({})
       this.getTenSeconds(nextStationCode);
-      this.getOutputDataTenMin(nextStationCode);
+      this.getOutputDataTenMin(nextStationCode,nextStationType);
       this.getPowerDataTenMin(nextStationCode);
       this.props.getDeviceTypeFlow({ stationCode: nextStationCode });//获取设备类型流程图
     }
@@ -97,10 +102,11 @@ class SingleStation extends Component {
     }, 10000);
   }
 
-  getOutputDataTenMin = (stationCode) => { // 10min请求一次处理
+  getOutputDataTenMin = (stationCode,stationType) => { // 10min请求一次处理
     clearTimeout(this.timeOutOutputData);
     this.props.getCapabilityDiagram({
       stationCode,
+      stationType,
       startTime: moment().subtract(24, 'hours').utc().format(),
       endTime: moment().utc().format()
     });
@@ -152,7 +158,7 @@ class SingleStation extends Component {
 const mapStateToProps = state => {
   return ({
     ...state.monitor.singleStation.toJS(),
-    // singleStationData: state.monitor.stationMonitor.toJS().singleStationData,//获取当前是在哪一个类型 风电／光伏
+    // singleStationDatas: state.monitor.stationMonitor.toJS().singleStationData,//获取当前是在哪一个类型 风电／光伏
   })
 };
 
