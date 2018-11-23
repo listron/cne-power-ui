@@ -139,13 +139,10 @@ class PerformanceCharts extends React.Component {
       seriesData.push(json);
     }
     for (var line in lineData) {
-      console.log(line);
-     
         var json = {
           name: this.getName(line),
           data: lineData[line],
           type: 'line',
-        
         }
       
       seriesData.push(json);

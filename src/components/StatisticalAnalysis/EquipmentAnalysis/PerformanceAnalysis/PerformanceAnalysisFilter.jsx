@@ -12,7 +12,6 @@ class PerformanceAnalysisFilter extends Component {
   }
   componentDidMount() {
     const { stations, contrastSwitch, stationCode, deviceTypeCode, changePerformanceAnalysisStore, getDeviceModels, getDeviceModelother, getEleLineCode, getPerformance } = this.props;
-
     stations && stations.length > 0 ? changePerformanceAnalysisStore({ stationCode: stations[0].stationCode }) : console.log('no_stations');
     //把最近三十天的值存起来
     let startDate = moment().subtract(30, 'days').hour(0).minute(0).second(0).format('YYYY-MM-DD');
@@ -108,7 +107,6 @@ class PerformanceAnalysisFilter extends Component {
   }
   //不可选时间
   disabledDate = (current) => {
-    // console.log(current);
     if (this.start) {
       const end = moment(this.start).add(30, 'days');
       return current > moment.min(moment().endOf('day'), end);

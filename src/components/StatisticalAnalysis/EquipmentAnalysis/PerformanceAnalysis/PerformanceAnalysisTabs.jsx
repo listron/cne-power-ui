@@ -40,7 +40,6 @@ class PerformanceAnalysisTabs extends Component {
     let lineData = conversioneffData && conversioneffData.map((e, i) => { return conversionAvgRate })||[];
     let contrastConversionRate = conversioneffData && conversioneffData.map((e, i) => { return '30' })||[];
 
-    console.log(xData,barData,lineData);
     const conversionData = {
       xData: xData,
       yData: {
