@@ -89,7 +89,7 @@ class SingleStation extends Component {
     clearTimeout(this.timeOutId);
     clearTimeout(this.timeOutOutputData);
     clearTimeout(this.timeOutPowerData);
-    // this.props.resetSingleStationStore();
+    this.props.resetSingleStationStore();
   }
 
   getTenSeconds = (stationCode) => {
