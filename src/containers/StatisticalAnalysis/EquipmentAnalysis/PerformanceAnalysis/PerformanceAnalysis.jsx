@@ -90,31 +90,30 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = (dispatch) => ({
   changePerformanceAnalysisStore: payload => dispatch({ type: performanceAnalysisAction.CHANGE_PERFORMANCEANALYSIS_STORE, payload }),
-  getStationDeviceTypes: params => dispatch({
-    type: commonAction.getStationDeviceTypes,
-    payload: {
-      params,
-      deviceTypeAction: performanceAnalysisAction.GET_PERFORMANCEANALYSIS_FETCH_SUCCESS,
-      resultName: 'deviceTypes'
-    }
-  }),
-  getDeviceModel: params => dispatch({
-    type: commonAction.getDeviceModel,
-    payload: {
-      params,
-      actionName: performanceAnalysisAction.GET_PERFORMANCEANALYSIS_FETCH_SUCCESS,
-      resultName: 'deviceModels'
-    }
-  }),
-
-  getDeviceModelother: params => dispatch({
-    type: commonAction.getDeviceModel,
-    payload: {
-      params,
-      actionName: performanceAnalysisAction.GET_PERFORMANCEANALYSIS_FETCH_SUCCESS,
-      resultName: 'deviceModelOther'
-    }
-  }),
+  // getStationDeviceTypes: params => dispatch({
+  //   type: commonAction.getStationDeviceTypes,
+  //   payload: {
+  //     params,
+  //     deviceTypeAction: performanceAnalysisAction.GET_PERFORMANCEANALYSIS_FETCH_SUCCESS,
+  //     resultName: 'deviceTypes'
+  //   }
+  // }),
+  // getDeviceModel: params => dispatch({
+  //   type: commonAction.getDeviceModel,
+  //   payload: {
+  //     params,
+  //     actionName: performanceAnalysisAction.GET_PERFORMANCEANALYSIS_FETCH_SUCCESS,
+  //     resultName: 'deviceModels'
+  //   }
+  // }),
+  // getDeviceModelother: params => dispatch({
+  //   type: commonAction.getDeviceModel,
+  //   payload: {
+  //     params,
+  //     actionName: performanceAnalysisAction.GET_PERFORMANCEANALYSIS_FETCH_SUCCESS,
+  //     resultName: 'deviceModelOther'
+  //   }
+  // }),
   getDeviceModels: payload => dispatch({ type: performanceAnalysisAction.getDeviceModels, payload }),
   getEquipmentSelection: payload => dispatch({ type: performanceAnalysisAction.getEquipmentSelection, payload }),
   getEleLineCode: payload => dispatch({ type: performanceAnalysisAction.getEleLineCode, payload }),

@@ -1,7 +1,7 @@
 import React from "react";
 import echarts from 'echarts';
 import PropTypes from 'prop-types';
-import { showNoData, hiddenNoData } from '../../../../../constants/echartsNoData';
+import { showNoData, hiddenNoData } from '../../../../constants/echartsNoData';
 
 /* 
   1 必填   graphId 图表的id名
@@ -48,16 +48,16 @@ class PerformanceCharts extends React.Component {
       case "可利用率":
         result = "可利用率(%)";
         break;
-        case "损失电量":
+      case "损失电量":
         result = "损失电量(kWh)";
         break;
-        case "设备故障次数":
+      case "设备故障次数":
         result = "故障次数(次)";
         break;
-        case "设备故障时长":
+      case "设备故障时长":
         result = "故障时长(h)";
         break;
-       
+
 
       default:
         result = " ";
@@ -70,22 +70,22 @@ class PerformanceCharts extends React.Component {
     let result = '';
     switch (title) {
       case '转换效率':
-        result = ['#199475','#f9b600', '#e08031', '#3e97d1'];
+        result = ['#199475','#f9b600','#e08031', '#3e97d1'];
         break;
       case '等效小时数':
         result = ['#dfdfdf', '#f9b600', '#e08031', '#3e97d1'];
         break;
-        case "可利用率":
-        result = ['#199475','#f9b600', '#e08031', '#3e97d1'];
+      case "可利用率":
+        result = ['#199475', '#f9b600', '#e08031', '#3e97d1'];
         break;
-        case "损失电量":
-        result = ['#199475','#f9b600', '#e08031', '#3e97d1'];
+      case "损失电量":
+        result = ['#199475', '#f9b600', '#e08031', '#3e97d1'];
         break;
-        case "设备故障次数":
-        result = ['#199475','#f9b600', '#e08031', '#3e97d1'];
+      case "设备故障次数":
+        result = ['#199475', '#f9b600', '#e08031', '#3e97d1'];
         break;
-        case "设备故障时长":
-        result = ['#199475','#f9b600', '#e08031', '#3e97d1'];
+      case "设备故障时长":
+        result = ['#199475', '#f9b600', '#e08031', '#3e97d1'];
         break;
       default:
         result = '';
@@ -100,29 +100,36 @@ class PerformanceCharts extends React.Component {
       case 'conversionAvgRate': name = '平均转换效率'; break;
       case 'contrastConversionAvgRate': name = '对比周期平均转换效率'; break;
       case 'contrastConversionRate': name = '对比周期转换效率'; break;
-      case 'contrastDataResults': name = '对比周期对应查询类型返回对应的数据'; break;
+      case 'contrastHoursData': name = '对比周期等效小时数'; break;
+      case 'contrastFaultNumData': name = '对比周期故障次数'; break;
+      case 'contrastFaultTimeData': name = '对比周期故障时长'; break;
       case 'contrastAvailability': name = '对比周期可利用率'; break;
       case 'contrastLossPower': name = '对比周期损失电量'; break;
       case 'hour': name = '等效小时数'; break;
       case 'faultNum': name = '故障次数'; break;
       case 'faultTime': name = '故障时长'; break;
-      case 'planRate': name = '计划完成率'; break;
-      case 'resourceValue': name = '辐射总量'; break;
+      case 'availability': name = '可利用率'; break;
+      case 'lossPower': name = '损失电量'; break;
     }
     return name;
   }
 
   drawChart = (params) => {
-    const { graphId, title,data,hasData} = params;
+    const { graphId, title, data, hasData } = params;
     const targetChart = echarts.init(document.getElementById(graphId));
     let color = this.getColor(title);
     let seriesData = [];
-    const lineData =data && data.yData.lineData;
+    const lineData = data && data.yData.lineData;
     const barData = data && data.yData.barData;
     for (var bar in barData) {
       var json = {
         name: this.getName(bar),
         data: barData[bar],
+        // markLine: {
+        //   data: [
+        //       {type: 'average', name: '平均值'}
+        //   ]
+        // },
         type: 'bar',
         itemStyle: {
           barBorderRadius: 3,
@@ -132,21 +139,15 @@ class PerformanceCharts extends React.Component {
       seriesData.push(json);
     }
     for (var line in lineData) {
-      if (line === 'light' || line === "resourceValue") {
+      console.log(line);
+     
         var json = {
           name: this.getName(line),
           data: lineData[line],
           type: 'line',
-          yAxisIndex: 1,
-        };
-      } else {
-        var json = {
-          name: this.getName(line),
-          data: lineData[line],
-          type: 'line',
-          yAxisIndex: 2,
+        
         }
-      }
+      
       seriesData.push(json);
     }
     const confluenceTenMinGraphic = (hasData || hasData === false) && (hasData === true ? hiddenNoData : showNoData) || " ";
@@ -165,7 +166,7 @@ class PerformanceCharts extends React.Component {
         formatter: function (params) {
           let paramsItem = '';
           params.map((item, index) => {
-            return paramsItem += `<div> <span style="display: inline-block;width: 5px;height: 5px;border-radius: 50%;background:${color[index]};vertical-align: 3px;margin-right: 3px;"> </span> ${params[index].seriesName} :${params[index].value === 0 || params[index].value ? params[index].value : '--'}${(params[index].seriesName ==='计划完成率'||params[index].seriesName ==='pr') && '%'||''}
+            return paramsItem += `<div> <span style="display: inline-block;width: 5px;height: 5px;border-radius: 50%;background:${color[index]};vertical-align: 3px;margin-right: 3px;"> </span> ${params[index].seriesName} :${params[index].value === 0 || params[index].value ? params[index].value : '--'}${(params[index].seriesName === '计划完成率' || params[index].seriesName === 'pr') && '%' || ''}
             </div>`
           });
           return `<div  style="border-bottom: 1px solid #ccc;padding-bottom: 7px;margin-bottom: 7px;width:180px;overflow:hidden;"> <span style="float: left">${params[0].name} </span></div>
@@ -185,7 +186,7 @@ class PerformanceCharts extends React.Component {
       color: this.getColor(title),
       grid: {
         right: '20%',
-        left:'12%'
+        left: '12%'
       },
       legend: {
         icon: 'circle',
@@ -216,7 +217,7 @@ class PerformanceCharts extends React.Component {
       yAxis: [
         {
           type: 'value',
-          name: this.getYaxisName(title)[0],
+          name: this.getYaxisName(title),
           position: 'left',
           axisLabel: {
             formatter: '{value} '
@@ -235,41 +236,9 @@ class PerformanceCharts extends React.Component {
             }
           },
         },
-        {
-          type: 'value',
-          name: this.getYaxisName(title)[1],
-          position: 'right',
-          nameTextStyle: {
-            textAlign: 'left',
-            padding: [0, 40, 0, 0]
-          },
-          axisLine: {
-            show: false,
-          },
-          axisTick: {
-            show: false,
-          },
-          splitLine: { show: false },
-          axisLabel: {
-            formatter: '{value}'
-          },
-        }, {
-          type: 'value',
-          name: this.getYaxisName(title)[2],
-          position: 'right',
-          splitLine: { show: false },
-          axisLine: {
-            lineStyle: {
-              color: '#666',
-            }
-          },
-          offset: 50,
-          axisLabel: {
-            formatter: '{value}%'
-          }
-        }
+       
       ],
-      series:seriesData || []
+      series: seriesData || []
     };
     targetChart.setOption(targetMonthOption)
     targetChart.resize();
