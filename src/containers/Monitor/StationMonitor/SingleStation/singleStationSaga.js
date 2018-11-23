@@ -47,7 +47,9 @@ function *getSingleStation(action){
 //获取出力图数据
 function *getCapabilityDiagram(action){
   const { payload } = action;
-  const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getCapabilityDiagram + payload.stationCode+ '/' + payload.startTime+ '/' + payload.endTime;
+  const {stationCode,stationType,startTime,endTime}=payload
+  // const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getCapabilityDiagram + payload.stationCode+ '/' + payload.startTime+ '/' + payload.endTime;
+  const url=`${Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getCapabilityDiagram + stationCode}/${stationType}/${startTime}/${endTime}`
   try{
     const response = yield call(axios.get, url);
     if(response.data.code === '10000'){
