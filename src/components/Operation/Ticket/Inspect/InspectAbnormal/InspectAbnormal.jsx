@@ -81,14 +81,25 @@ class InspectAbnormal extends Component {
     return this.props.abnormalItems.map((item, index) => {
       if(status === '2') {
         return (
-          <AbnormalItem 
-            key={'abnormal'+index}
-            status="delete"
-            item={item}
-            selected={this.state.abnormalId === item.get('abnormalId')}
-            onShowDetail={this.onShowDetail}
-            onDelete={this.props.onDeleteAbnormal}
-          />
+        //   <AbnormalItem 
+        //   key={'abnormal'+index}
+        //   status="delete"
+        //   item={item}
+        //   selected={this.state.abnormalId === item.get('abnormalId')}
+        //   onShowDetail={this.onShowDetail}
+        //   onDelete={this.props.onDeleteAbnormal}
+        // /> 
+        <AbnormalItem 
+        key={'abnormal'+index}
+        status="select"
+        item={item}
+        onShowDetail={this.onShowDetail}
+        disabled={item.get('isTransform') === '1'}
+        checked={this.props.selectedIds.includes(item.get('abnormalId'))}
+        selected={this.state.abnormalId === item.get('abnormalId')}
+        onSelect={this.props.onSelectItem}
+      />
+          
         );
       } else if(status === '3') {
         return (
