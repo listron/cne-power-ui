@@ -123,18 +123,21 @@ class InspectRecordTable extends Component {
     return columns;
   }
   renderInspectPopover(text,record,index) {
-   const {phoneAddress}=text||'';
-  //  console.log(phoneAddress);
+    console.log(text,record,index);
+   const phoneAddress=text||'';
+    console.log(phoneAddress);
+  let phoneAddressArray=text&&text.split(',');
+  console.log(phoneAddressArray);
     //phoneAddress如果是多张图，返回的数据是字符串的话，先转化为数组，然后循环遍历出图片
     return (
-      <div>
+      <div className={styles.PopoverStyles}>
         <div>
-        {[1,2,3].map((e,i)=>(
-          <img src={text?text.phoneAddress:''} width="60px" height="60px" />
+        {phoneAddressArray&&phoneAddressArray.map((e,i)=>(
+          <img src={e} width="60px" height="60px" />
         ))}
       
         </div>
-        <div>
+        <div className={styles.recordButton}>
           <Button className={styles.ticketButton}>
             <Link to={`/operation/ticket/list`}>查看工单详情</Link>
           </Button>
