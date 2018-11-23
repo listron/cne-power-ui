@@ -44,11 +44,11 @@
                             margin-right: 4px;
                             margin-left: 4px;
                         }
-                        .alarm{
+                        .alarm {
                             color: #a42b2c
                         }
                     }
-                    >p{
+                    >p {
                         display: inline-block;
                     }
                 }
@@ -147,10 +147,78 @@
     .windChart {
         display: flex;
         flex-direction: row;
-        height: 323px; 
+        height: 323px;
         >div {
             flex: 1;
-            border-right:1px solid  #dfdfdf; 
+            border-right: 1px solid #dfdfdf;
+        }
+    }
+    .deviceContent {
+        .statisticsBox {
+            .deviceIcon {
+                width: 170px;
+                text-align: center;
+                line-height: 30px;
+                span {
+                    margin-top: 20px;
+                    display: inline-block;
+                }
+                :global {
+                    .iconfont {
+                        font-size: 31px;
+                        color: $themeColor;
+                    }
+                }
+                .deviceCode {
+                    display: block;
+                    color: $themeColor
+                }
+            }
+        }
+    }
+    .pointData {
+        background-color: #f8f8f8;
+        padding: 20px 60px 80px 60px;
+        .pointTitle {
+            color: $darkColor;
+        }
+        .pointDataList {
+            display: flex;
+            flex-wrap: wrap;
+            .eachGroup {
+                min-width: 20%;
+                max-width: 20%;
+                padding-left: 20px;
+                margin: 16px 0;
+                border-right: dotted 1px $promptColor;
+                position: relative;
+                padding-top: 24px;
+                .groupName {
+                    color: $darkColor;
+                    background: #f4f4f4;
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    padding-left: 20px;
+                }
+                .eachData {
+                    margin-bottom: 4px;
+                    .pointName {
+                        color: $darkColor;
+                        margin-bottom: 0;
+                    }
+                    .pointValue {
+                        color: #199475;
+                        margin-bottom: 0;
+                        word-wrap: break-word;
+                        padding-right: 20px;
+                    }
+                }
+            }
+            .eachGroup:last-child {
+                border-right: none;
+            }
         }
     }
 }
