@@ -8,7 +8,15 @@ const Option = Select.Option;
 class PowerCurve extends Component {
   static propTypes = {
     changePlanStore: PropTypes.func,
+    getPowerList: PropTypes.func,
+    getDeviceModel: PropTypes.func,
+    changePowerCurveStore: PropTypes.func,
     planData: PropTypes.array,
+    sortField:PropTypes.string,
+    sortMethod:PropTypes.string,
+    pageNum:PropTypes.number,
+    pageSize:PropTypes.number,
+    stationCode:PropTypes.string,
   }
 
   constructor(props) {
@@ -20,6 +28,7 @@ class PowerCurve extends Component {
 
   stationSelected = (rest) => {
     console.log('123', rest[0].stationCode)
+    this.props.changePowerCurveStore({stationCode:rest[0].stationCode})
     this.props.getDeviceModel({
       stationCode: rest[0].stationCode,
       deviceTypeCode: '101',
@@ -29,8 +38,17 @@ class PowerCurve extends Component {
     })
 
   }
-  deviceTypeCodeChange=(e)=>{
-    console.log(e)
+  deviceTypeCodeChange=(value)=>{
+    console.log(value);
+    const {getPowerList,sortField,sortMethod,pageNum,pageSize,stationCode}=this.props
+    getPowerList({
+      stationCode,
+      deviceModeCode:value,
+      sortField,
+      sortMethod,
+      pageNum,
+      pageSize,
+     })
   }
 
   render() {

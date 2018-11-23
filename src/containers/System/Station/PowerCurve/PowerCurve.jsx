@@ -19,7 +19,15 @@ class PowerCurve extends Component {
    
   }
   componentDidMount(){
-   
+    const {getPowerList,sortField,sortMethod,pageNum,pageSize,stationCode,deviceModeCode}=this.props
+    getPowerList({
+      stationCode,
+      deviceModeCode,
+      sortField,
+      sortMethod,
+      pageNum,
+      pageSize,
+     })
   }
 
   componentWillUnmount(){
