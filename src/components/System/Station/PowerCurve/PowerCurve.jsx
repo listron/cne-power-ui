@@ -40,18 +40,24 @@ class PowerCurve extends Component {
     return (
       <div className={styles.PowerCurve}>
         <div className={styles.contentMain}>
-          <div>
+          <div className={styles.selectSearth}>
             <span>条件查询</span>
             <StationSelect
               data={stations.length > 0 && stations.filter(e => e.stationType === 0) || []}
               holderText={"电站名称"}
-              value={selectStation}
-              oneStyleOnly={true}
+              value={[selectStation]}
               onChange={this.stationSelected}
+              className={styles.stationSelect}
             />
-            <Select  style={{ width: 120 }} onChange={this.deviceTypeCodeChange} disabled={deviceModels.length>0 ?false:true} placeholder={'风机型号'} >
+            <Select 
+             style={{ width: 198 }} 
+             onChange={this.deviceTypeCodeChange} 
+             disabled={deviceModels.length>0 ?false:true} placeholder={'风机型号'} 
+             className={styles.deviceModeName} 
+            //  value={this.state.selectModle} 
+            >
               { deviceModels.length>0 && deviceModels.map(e=>{
-                return <Option value={e.deviceModeName}>{e.deviceModeName}</Option>
+                return <Option value={e.deviceModeName} key={e.deviceModeName}>{e.deviceModeName}</Option>
               }) }
             </Select>
 
