@@ -6,12 +6,13 @@ import ImgUploader from '../../../../Common/Uploader/ImgUploader';
 import DeviceName from '../../../../Common/DeviceName';
 import pathConfig from '../../../../../constants/path';
 import InputLimit from '../../../../Common/InputLimit';
+import Immutable from 'immutable';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
 const confirm = Modal.confirm;
 class inspectAddAbnormal extends Component {
-  static propTypes={
+  static propTypes = {
     form: PropTypes.object,
     onCloseInspectDetail: PropTypes.func,
     deviceTypes: PropTypes.object,
@@ -28,17 +29,18 @@ class inspectAddAbnormal extends Component {
     addInspectAbnormal: PropTypes.func,
     getSliceDevices: PropTypes.func,
     getLostGenType: PropTypes.func,
-    allSeries: PropTypes.object, 
-    firstPartitionCode: PropTypes.string, 
+    allSeries: PropTypes.object,
+    firstPartitionCode: PropTypes.string,
   }
 
-  static defaultProps={
+  static defaultProps = {
     showAddAbnormal: false,
   }
 
-  constructor(props){
+  constructor(props) {
     super(props);
-    this.state={
+    this.state = {
+      abnormalIds: Immutable.fromJS([]),
       showAddAbnormal: false,
       deviceAreaCode: '',
     }
@@ -62,14 +64,14 @@ class inspectAddAbnormal extends Component {
   onHandleSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
-      if(!err){
+      if (!err) {
         let params = {
           inspectId: this.props.inspectDetail.get('inspectId'),
           deviceTypeCode: values.deviceTypeCode,
           deviceCode: values.deviceCode,
           defectTypeCode: values.defectTypeCode[1],
           photoAddress: values.photoData.map((item) => (item.response)).join(','),
-          rotatePhoto: values.photoData.map((item) => (item.response+','+item.rotate)).join(';'),
+          rotatePhoto: values.photoData.map((item) => (item.response + ',' + item.rotate)).join(';'),
           abnormalDescribe: values.abnormalDescribe,
         }
         this.props.addInspectAbnormal(params);
@@ -92,22 +94,22 @@ class inspectAddAbnormal extends Component {
       stationCode: this.props.inspectDetail.get('stationCode'),
       deviceTypeCode
     };
-    if(deviceTypeCode === 509){ //组串时，请求调整
-        this.props.getSliceDevices(params);
-        this.props.getLostGenType({
-          objectType: 1,
-          stationType,
-          deviceTypeCode
-        })
-      }else{
-        this.props.loadDeviceList(params);
-        this.props.loadDeviceAreaList(params);
-        this.props.getLostGenType({
-          objectType: 1,
-          stationType,
-          deviceTypeCode
-        })
-      }
+    if (deviceTypeCode === 509) { //组串时，请求调整
+      this.props.getSliceDevices(params);
+      this.props.getLostGenType({
+        objectType: 1,
+        stationType,
+        deviceTypeCode
+      })
+    } else {
+      this.props.loadDeviceList(params);
+      this.props.loadDeviceAreaList(params);
+      this.props.getLostGenType({
+        objectType: 1,
+        stationType,
+        deviceTypeCode
+      })
+    }
   }
 
   onChangeArea = (value) => {
@@ -121,7 +123,7 @@ class inspectAddAbnormal extends Component {
     let index = this.props.deviceTypeItems.findIndex((item) => {
       return item.get('deviceTypeCode') === code
     });
-    if(index !== -1) {
+    if (index !== -1) {
       deviceType = this.props.deviceTypeItems.getIn([index, 'deviceTypeName']);
     }
     return deviceType;
@@ -141,13 +143,13 @@ class inspectAddAbnormal extends Component {
     const { form, getSliceDevices } = this.props;
     const deviceTypeCode = form.getFieldValue('deviceTypeCode');
     let params = {
-      stationCode:  this.props.inspectDetail.get('stationCode'),
+      stationCode: this.props.inspectDetail.get('stationCode'),
       deviceTypeCode,
     };
     areaCode && (params.partitionCode = areaCode);
-    if(deviceTypeCode === 509 && !areaCode){ // 光伏组件卸载。
+    if (deviceTypeCode === 509 && !areaCode) { // 光伏组件卸载。
       getSliceDevices(params);
-    }else{
+    } else {
       this.props.loadDeviceList(params);
     }
   }
@@ -156,11 +158,11 @@ class inspectAddAbnormal extends Component {
     this.setState({
       showAddAbnormal: true,
     })
-    let stationCode = this.props.inspectDetail.get('stationCode'); 
+    let stationCode = this.props.inspectDetail.get('stationCode');
     let stationType = this.props.inspectDetail.get('stationType');
-    this.props.getStationDeviceTypes({stationCodes: stationCode}); 
-    this.props.getDefectTypes({stationType: stationType});
-    this.props.getLostGenType({objectType: 1, stationType});
+    this.props.getStationDeviceTypes({ stationCodes: stationCode });
+    this.props.getDefectTypes({ stationType: stationType });
+    this.props.getLostGenType({ objectType: 1, stationType });
   }
 
   hideAdd = () => {
@@ -169,16 +171,19 @@ class inspectAddAbnormal extends Component {
     })
   }
 
-  render(){
+  render() {
     const { deviceTypeItems, defectTypes, deviceItems, deviceAreaItems, inspectDetail, allSeries, firstPartitionCode } = this.props;
     const { getFieldDecorator, getFieldValue } = this.props.form;
     const { stationName, stationCode } = inspectDetail;
+    const rightHandler = localStorage.getItem('rightHandler');
+    const inspectAdmin = rightHandler && rightHandler.split(',').includes('workExamine_inspection_check');
+    const abnormalIds = this.state.abnormalIds;
     let tmpGenTypes = [];
-    defectTypes.toJS().forEach(e=>e && e.list && e.list.length > 0 && tmpGenTypes.push(...e.list));
-    const groupedLostGenTypes = tmpGenTypes.map(ele=>{
-      let innerArr = {children: []};
-      innerArr.label= ele.name;
-      innerArr.value= ele.id;
+    defectTypes.toJS().forEach(e => e && e.list && e.list.length > 0 && tmpGenTypes.push(...e.list));
+    const groupedLostGenTypes = tmpGenTypes.map(ele => {
+      let innerArr = { children: [] };
+      innerArr.label = ele.name;
+      innerArr.value = ele.id;
       ele && ele.list && ele.list.length > 0 && ele.list.forEach(innerInfo => {
         innerArr.children.push({
           label: innerInfo.name,
@@ -188,7 +193,7 @@ class inspectAddAbnormal extends Component {
       return innerArr;
     })
 
-    return(
+    return (
       <div className={styles.inspectHandleForm}>
         <div className={styles.title}>
           <div className={styles.border}></div>
@@ -199,21 +204,24 @@ class inspectAddAbnormal extends Component {
           <Button icon="plus" onClick={this.showAdd} className={styles.addAbnormal}>添加异常</Button>
           <Button onClick={this.onFinishInspect} className={styles.finishInspect}>完成巡检</Button>
         </div>
+        <div>
+          {inspectAdmin ? <Button onClick={this.onFinishInspect} className={styles.toInspect} disabled={abnormalIds.size === 0}>转工单</Button> : ''}
+        </div>
         {this.state.showAddAbnormal &&
           <div className={styles.addAbnormalForm}>
             <Form onSubmit={this.onHandleSubmit} >
               <FormItem label="设备类型" colon={false}>
-                {getFieldDecorator('deviceTypeCode',{
-                  rules:[{
+                {getFieldDecorator('deviceTypeCode', {
+                  rules: [{
                     required: true,
                   }]
                 })(
-                  <Select 
+                  <Select
                     placeholder="请选择"
                     onChange={this.onChangeDeviceType}
-                    style={{width: 200}}
+                    style={{ width: 200 }}
                   >
-                    {deviceTypeItems.map((item,index) => {
+                    {deviceTypeItems.map((item, index) => {
                       return (
                         <Option key={item.get('deviceTypeCode')} value={item.get('deviceTypeCode')} >
                           {item.get('deviceTypeName')}
@@ -224,16 +232,16 @@ class inspectAddAbnormal extends Component {
                 )}
               </FormItem>
               <FormItem label="设备名称" colon={false}>
-                {getFieldDecorator('deviceCode',{
-                  rules:[{
+                {getFieldDecorator('deviceCode', {
+                  rules: [{
                     required: true,
                   }]
                 })(
                   <DeviceName
-                    disabled={deviceItems.size===0}
+                    disabled={deviceItems.size === 0}
                     stationName={stationName}
                     stationCode={stationCode}
-                    placeholder="输入关键字快速查询" 
+                    placeholder="输入关键字快速查询"
                     deviceType={this.getDeviceType(getFieldValue('deviceTypeCode'))}
                     deviceTypeCode={getFieldValue('deviceTypeCode')}
                     deviceAreaCode={this.state.deviceAreaCode}
@@ -247,8 +255,8 @@ class inspectAddAbnormal extends Component {
                 )}
               </FormItem>
               <FormItem label="缺陷类型" colon={false}>
-                {getFieldDecorator('defectTypeCode',{
-                  rules:[{
+                {getFieldDecorator('defectTypeCode', {
+                  rules: [{
                     required: true,
                   }]
                 })(
@@ -262,8 +270,8 @@ class inspectAddAbnormal extends Component {
                 )}
               </FormItem>
               <FormItem label="异常描述" colon={false}>
-                {getFieldDecorator('abnormalDescribe',{
-                  rules: [{required: true, message: '请填写异常描述'}],
+                {getFieldDecorator('abnormalDescribe', {
+                  rules: [{ required: true, message: '请填写异常描述' }],
                 })(
                   <InputLimit placeholder="请描述，不超过80个汉字" />
                 )}
@@ -271,12 +279,12 @@ class inspectAddAbnormal extends Component {
               <FormItem label="添加照片" colon={false}>
                 <div className={styles.addImg}>
                   <div className={styles.maxTip}>最多4张</div>
-                  {getFieldDecorator('photoData',{
-                    rules: [{required: false,message: '请上传图片'}],
+                  {getFieldDecorator('photoData', {
+                    rules: [{ required: false, message: '请上传图片' }],
                     initialValue: [],
                     valuePropName: 'data',
                   })(
-                    <ImgUploader uploadPath={`${pathConfig.basePaths.APIBasePath}${pathConfig.commonPaths.imgUploads}`} editable={true}  />
+                    <ImgUploader uploadPath={`${pathConfig.basePaths.APIBasePath}${pathConfig.commonPaths.imgUploads}`} editable={true} />
                   )}
                 </div>
               </FormItem>
@@ -288,8 +296,7 @@ class inspectAddAbnormal extends Component {
           </div>
         }
         <div className={styles.addTips}>
-          <span>（添加异常：记录巡检过程中发现的异常）</span>
-          <span>（完成巡检：确定此工单已经完成，请点击按钮）</span>
+
         </div>
       </div>
     )

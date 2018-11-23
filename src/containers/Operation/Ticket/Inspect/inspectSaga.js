@@ -395,6 +395,7 @@ function* getInspectDetailRecord(action) {//获取巡检记录的table列表数�
       const totalCount = response.data.data.totalCount || 0;
       let { pageNum, pageSize } = payload;
       const maxPage = Math.ceil(totalCount / pageSize);
+      console.log(maxPage);
       if (totalCount === 0) { // 总数为0时，展示0页
         pageNum = 0;
       } else if (maxPage < pageNum) { // 当前页已超出

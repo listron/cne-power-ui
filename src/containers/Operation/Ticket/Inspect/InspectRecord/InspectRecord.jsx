@@ -28,10 +28,11 @@ class inspectRecord extends Component {
   }
 
   onCloseInspectCreate = () => {
-    this.setState({
-      showWarningTip: true,
-      warningTipText: '退出后信息无法保存!'
-    });
+    // this.setState({
+    //   showWarningTip: true,
+    //   warningTipText: '退出后信息无法保存!'
+    // });
+    this.props.onChangeShowContainer({ container: 'detail' });
   }
 
   onCancelWarningTip = () => {
@@ -52,7 +53,7 @@ class inspectRecord extends Component {
       inspectId,
       startDate,
       endDate,
-      pageNum,
+      pageNum:1,
       pageSize,
       userId,
       inspectStatus,
@@ -61,6 +62,9 @@ class inspectRecord extends Component {
     }
     let newFiter = Object.assign({}, filter, obj);
     this.props.getInspectDetailRecord(newFiter);
+    if(!obj.pageNum) {
+      this.props.getInspectDetailRecord(newFiter);
+    }
    
   }
 
@@ -73,7 +77,8 @@ class inspectRecord extends Component {
 
     return (
       <div className={styles.inspectCreate}>
-        {showWarningTip && <WarningTip style={{ marginTop: '250px', width: '210px', height: '88px' }} onCancel={this.onCancelWarningTip} onOK={this.onConfirmWarningTip} value={warningTipText} />}
+       {/* {showWarningTip && <WarningTip style={{ marginTop: '250px', width: '210px', height: '88px' }} onCancel={this.onCancelWarningTip} onOK={this.onConfirmWarningTip} value={warningTipText} />} */}
+
         <div className={styles.createTop}>
           <span className={styles.text}>巡检记录</span>
           <Icon type="arrow-left" className={styles.backIcon} onClick={this.onCloseInspectCreate} />

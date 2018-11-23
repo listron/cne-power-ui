@@ -32,7 +32,9 @@
     margin-bottom: 18px;
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    justify-content: space-between;
+    margin-left: 28px;
+   
     .addAbnormal {
       width: 187px;
       background-color: #fff;
@@ -50,6 +52,11 @@
       border-color: #f9b600; 
       color: #fff;
     }
+  }
+  .toInspect{
+    width: 187px;
+    margin-left: 28px;
+
   }
   .addAbnormalForm {
     box-shadow: 0 1px 6px 0 rgba(0,0,0,0.20);
