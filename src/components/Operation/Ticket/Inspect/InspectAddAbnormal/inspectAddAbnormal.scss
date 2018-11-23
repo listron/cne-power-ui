@@ -56,7 +56,17 @@
   .toInspect{
     width: 187px;
     margin-left: 28px;
-
+  }
+  :global {
+    .ant-btn:not([disabled]):first-of-type {
+      color: $themeColor;
+      border-color: $themeColor;
+      background-color: #fff;
+      &:hover {
+        color: #fff;
+        background-color: $themeColor;
+      }
+    }
   }
   .addAbnormalForm {
     box-shadow: 0 1px 6px 0 rgba(0,0,0,0.20);

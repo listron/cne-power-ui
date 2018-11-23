@@ -45,6 +45,38 @@ class inspectAddAbnormal extends Component {
       deviceAreaCode: '',
     }
   }
+  onTransformDefect = () => {
+    const { abnormalIds } = this.state;
+    const inspectId = this.props.inspectDetail.get('inspectId');
+    if (abnormalIds.size > 0) {
+      confirm({
+        title: '确定将选定的异常设备转为工单?',
+        onOk: () => {
+          this.props.transformDefect({
+            inspectId: inspectId,
+            abnormalIds: abnormalIds.toJS().join(','),
+          })
+          this.setState({
+            abnormalIds: Immutable.fromJS([]),
+          })
+        }
+      })
+    }
+  }
+  onSelectItem = (abnormalId, checked) => {
+    let abnormalIds = this.state.abnormalIds;
+    if (checked) {
+      abnormalIds = abnormalIds.push(abnormalId);
+    } else {
+      let index = abnormalIds.findIndex((item) => {
+        return item === abnormalId;
+      });
+      abnormalIds = abnormalIds.delete(index);
+    }
+    this.setState({
+      abnormalIds: abnormalIds
+    });
+  }
 
   onFinishInspect = () => {
     let inspectId = this.props.inspectDetail.get('inspectId');
@@ -172,12 +204,12 @@ class inspectAddAbnormal extends Component {
   }
 
   render() {
-    const { deviceTypeItems, defectTypes, deviceItems, deviceAreaItems, inspectDetail, allSeries, firstPartitionCode } = this.props;
+    const { deviceTypeItems, defectTypes, deviceItems, deviceAreaItems, inspectDetail, allSeries, firstPartitionCode ,onTransformDefect,abnormalIds} = this.props;
     const { getFieldDecorator, getFieldValue } = this.props.form;
     const { stationName, stationCode } = inspectDetail;
     const rightHandler = localStorage.getItem('rightHandler');
     const inspectAdmin = rightHandler && rightHandler.split(',').includes('workExamine_inspection_check');
-    const abnormalIds = this.state.abnormalIds;
+    // const abnormalIds = this.state.abnormalIds;
     let tmpGenTypes = [];
     defectTypes.toJS().forEach(e => e && e.list && e.list.length > 0 && tmpGenTypes.push(...e.list));
     const groupedLostGenTypes = tmpGenTypes.map(ele => {
@@ -205,7 +237,7 @@ class inspectAddAbnormal extends Component {
           <Button onClick={this.onFinishInspect} className={styles.finishInspect}>完成巡检</Button>
         </div>
         <div>
-          {inspectAdmin ? <Button onClick={this.onFinishInspect} className={styles.toInspect} disabled={abnormalIds.size === 0}>转工单</Button> : ''}
+          {inspectAdmin ? <Button onClick={onTransformDefect} className={styles.toInspect} disabled={abnormalIds.size === 0}>转工单</Button> : ''}
         </div>
         {this.state.showAddAbnormal &&
           <div className={styles.addAbnormalForm}>

@@ -113,7 +113,7 @@ class InspectDetailForm extends Component {
     const abnormalIds = this.state.abnormalIds;
     if (status === "2") {
       return (
-        <InspectAddAbnormal {...this.props} />
+        <InspectAddAbnormal {...this.props} onSelectItem={this.onSelectItem} onTransformDefect={this.onTransformDefect} abnormalIds={this.state.abnormalIds} />
       )
     } else if (status === "3" && checkInspectRight) {
       return (

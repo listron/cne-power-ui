@@ -4,10 +4,8 @@ import React, { Component } from 'react';
 import CommonPagination from '../../../../Common/CommonPagination';
 import styles from './inspectRecord.scss';
 import { Link } from 'react-router-dom';
-
 const confirm = Modal.confirm;
 const Option = Select.Option;
-
 class InspectRecordTable extends Component {
   static propTypes = {
     pageNum: PropTypes.number,
@@ -18,19 +16,17 @@ class InspectRecordTable extends Component {
     onChangeFilter: PropTypes.func,
     getInspectDetailRecord: PropTypes.func,
   }
-
   constructor(props) {
     super(props);
     this.state = {
       currentSelectedStatus: 5,
     }
   }
-
   onChangeTable = (pagination, filter, sorter) => {
     const { getInspectDetailRecord, pageNum, pageSize, inspectId, startDate, endDate, userId, inspectStatus, sortType } = this.props;
     const { field, order } = sorter;
     const sort = order ? (sorter.order === 'descend' ? 1 : 0) : '';
-    // console.log(sort);
+   
     this.props.onChangeFilter({
       sortType: sort
     });
@@ -45,12 +41,6 @@ class InspectRecordTable extends Component {
       sortType: sort,
       inspectStatus
     })
-  }
-  onShowDetail = (inspectId) => {
-    // this.props.onChangeFilter({
-    //   inspectId
-    // });
-    // this.props.onChangeShowContainer({ container: 'detail' });
   }
 
   onPaginationChange = ({ currentPage, pageSize }) => {
@@ -111,37 +101,30 @@ class InspectRecordTable extends Component {
         <Popover
           trigger="click"
           content={this.renderInspectPopover(text, record, index)}
-          
         >
           <span>
-            <i className="iconfont icon-look" onClick={() => { this.onShowDetail(record.inspectId) }} />
+            <i className="iconfont icon-look"  />
           </span>
         </Popover>
-
       ),
     }];
     return columns;
   }
   renderInspectPopover(text,record,index) {
-    console.log(text,record,index);
-   const phoneAddress=text||'';
-    console.log(phoneAddress);
+  //  const phoneAddress=text||'';
   let phoneAddressArray=text&&text.split(',');
-  console.log(phoneAddressArray);
-    //phoneAddress如果是多张图，返回的数据是字符串的话，先转化为数组，然后循环遍历出图片
     return (
       <div className={styles.PopoverStyles}>
         <div>
         {phoneAddressArray&&phoneAddressArray.map((e,i)=>(
-          <img src={e} width="60px" height="60px" />
+          <img src={e} width="120px" height="120px" />
         ))}
-      
         </div>
-        <div className={styles.recordButton}>
+        {/*<div className={styles.recordButton}>
           <Button className={styles.ticketButton}>
             <Link to={`/operation/ticket/list`}>查看工单详情</Link>
           </Button>
-        </div>
+        </div> */}
       </div>
     )
 
