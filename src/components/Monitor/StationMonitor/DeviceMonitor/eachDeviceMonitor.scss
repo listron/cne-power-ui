@@ -181,6 +181,7 @@
         padding: 20px 60px 80px 60px;
         .pointTitle {
             color: $darkColor;
+            margin-left: 20px;
         }
         .pointDataList {
             display: flex;
@@ -199,8 +200,8 @@
                     position: absolute;
                     top: 0;
                     left: 0;
-                    width: 100%;
-                    padding-left: 20px;
+                    width: calc(100% - 20px);
+                    margin-left: 20px;
                 }
                 .eachData {
                     margin-bottom: 4px;

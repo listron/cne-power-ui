@@ -68,9 +68,9 @@ class SingleStation extends Component {
     const { stationCode } = this.props.match.params;
     const nextParams = nextProps.match.params;
     const nextStationCode = nextParams.stationCode;
-    const nextStationType=nextProps.singleStationData.stationType;
-    const stationType=this.props.singleStationData.stationType;
-    if(nextStationType !==stationType){
+    const nextStationType=nextProps.stationType;
+    const stationType=this.props.stationType;
+    if(nextStationType && nextStationType !==stationType){
       this.getOutputDataTenMin(nextStationCode,nextStationType);
     }
     if (nextStationCode !== stationCode) {
@@ -111,7 +111,7 @@ class SingleStation extends Component {
       endTime: moment().utc().format()
     });
     this.timeOutOutputData = setTimeout(() => {
-      this.getOutputDataTenMin(stationCode);
+      this.getOutputDataTenMin(stationCode,stationType);
     }, 600000);
   }
 
@@ -136,6 +136,7 @@ class SingleStation extends Component {
 
   render() {
     const stationType=this.props.singleStationData.stationType || '';
+    this.props.changeSingleStationStore({stationType})
     const breadCrumbData = {
       breadData: [
         {
