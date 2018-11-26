@@ -13,6 +13,7 @@ var initState = Immutable.fromJS({
   sortMethod: 'asc', //asc /desc
   powerList:[], // 功率曲线的列表
   deviceModels:[],
+  powercurveDetail:[], // 功率曲线图表的图
 });
 
 const powerCurveReducer = (state = initState, action) => {
@@ -23,7 +24,7 @@ const powerCurveReducer = (state = initState, action) => {
       return state.merge(Immutable.fromJS(action.payload)).set('loading',false)
     case powerCurveAction.changePowerCurveStore:
       return state.merge(Immutable.fromJS(action.payload))
-    case powerCurveAction.resetStore:
+    case powerCurveAction.RESET_STORE:
       return initState
   }
   return state;

@@ -12,27 +12,16 @@ import Cookie from 'js-cookie';
 
 class PowerCurve extends Component {
   static propTypes = {
-   
+    resetStore:PropTypes.func,
   }
   constructor(props) {
     super(props);
    
-  }
-  componentDidMount(){
-    const {getPowerList,sortField,sortMethod,pageNum,pageSize,stationCode,deviceModeCode}=this.props
-    getPowerList({
-      stationCode,
-      deviceModeCode,
-      sortField,
-      sortMethod,
-      pageNum,
-      pageSize,
-     })
-  }
-
-  componentWillUnmount(){
-   
-  }
+ }
+ 
+ componentWillUnmount() {
+  this.props.resetStore()
+}
 
   
   render() {

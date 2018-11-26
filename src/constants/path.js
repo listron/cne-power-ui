@@ -152,9 +152,9 @@ export default {
 
 
       getPowercurveList: '/v3/management/powercurve', // 功率曲线列表
-      getPowercurveDetail: '/v3/management/powercurve/detai', // 功率曲线详情图
+      getPowercurveDetail: '/v3/management/powercurve/detail', // 功率曲线详情图
       importPowercurve: '/v3/management/powercurve/import', //导入功率曲线
-      downloadPowercurve: '/api/v3/management/powercurve/export', // 导出功率曲线
+      downloadPowercurve: '/v3/management/powercurve/export', // 导出功率曲线
 
      
       //  生产计划
