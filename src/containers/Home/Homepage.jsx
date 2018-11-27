@@ -32,6 +32,7 @@ class Homepage extends Component {
     getRealTimeData: PropTypes.func,
     getCompleteRate: PropTypes.func,
     getEnergySaving: PropTypes.func,
+    monthPower: PropTypes.array,
     getMonthPower: PropTypes.func,
     getEqpHours: PropTypes.func,
     getFaultNumber: PropTypes.func,
@@ -55,10 +56,10 @@ class Homepage extends Component {
   componentWillReceiveProps(nextProps) {
     const { mapStation } = nextProps;
     const preStations = this.props.mapStation;
-    if(preStations.length === 0 && mapStation.length > 0){ // 拿到电站信息后，再请求页面数据
+    if (preStations.length === 0 && mapStation.length > 0) { // 拿到电站信息后，再请求页面数据
       const stationTypeSet = new Set(mapStation.map(e=>e.stationType));
       this.setState({ hasMultipleType: stationTypeSet.size > 1 });
-      const originType = stationTypeSet.has(1) ? 1 : 0;
+      const originType = stationTypeSet.has(0) ? 0 : 1;
       this.getOriginData(originType);
       this.clocker && clearTimeout(this.clocker);
       this.clocker = setTimeout(this.getMonitorData,10*1000); // 启动10s监听
@@ -72,27 +73,32 @@ class Homepage extends Component {
 
   getMonitorData = () => {
     const { enterpriseId } = this.props;
-    const utcTime = moment().utc().format();
-    this.props.getRealTimeData({ enterpriseId, utcTime });
+    this.props.getRealTimeData({ enterpriseId });
     this.clocker = setTimeout(this.getMonitorData, 10 * 1000); // 10s一刷新
   }
 
   getOriginData = (stationType) => { // 首次获取所有页面内初始数据。
     const { enterpriseId } = this.props;
-    const utcTime = moment().utc().format();
-    this.props.getRealTimeData({ enterpriseId, utcTime });
-    this.props.getCompleteRate({ enterpriseId, utcTime, stationType });
+    
+    this.props.getRealTimeData({ enterpriseId });
+    this.props.getCompleteRate({ enterpriseId, stationType });
     this.props.getEnergySaving();
-    this.props.getMonthPower();
+    this.props.getMonthPower({ enterpriseId, stationType });
     this.props.getEqpHours();
     this.props.getFaultNumber();
     this.props.getAlarmList();
-    this.props.getOutputDiagram();
+    this.props.getOutputDiagram({ enterpriseId, stationType });
     this.props.getOperationInfo();
   }
 
   render() {
-    const { changeLoginStore, realTimeInfo, mapStation, completeRate, energySaving, operationInfo } = this.props;
+    const { 
+      changeLoginStore, enterpriseId, 
+      realTimeInfo, // 10s实时数据 
+      mapStation, // 电站地图
+      completeRate, energySaving, operationInfo,
+      getMonthPower, monthPower, // 各月发电
+    } = this.props;
     const { hasMultipleType } = this.state;
     return (
       <div className={styles.homepage}>
@@ -102,7 +108,12 @@ class Homepage extends Component {
             <div className={styles.leftInfo}>
               <StationGeneral hasMultipleType={hasMultipleType} realTimeInfo={realTimeInfo}  />
               <CompleteRate mapStation={mapStation} completeRate={completeRate} />
-              <MonthGenChart {...this.props} />
+              <MonthGenChart
+                monthPower={monthPower}
+                getMonthPower={getMonthPower}
+                enterpriseId={enterpriseId}
+                hasMultipleType={hasMultipleType}
+              />
             </div>
             <div className={styles.mapInfo}>
               <CenterMap {...this.props} />

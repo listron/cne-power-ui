@@ -3,10 +3,12 @@ import StationTypeTag from './StationTypeTag';
 import styles from './homeParts.scss';
 import PropTypes from 'prop-types';
 import echarts from 'echarts';
+import moment from 'moment';
 import { showNoData, hiddenNoData } from '../../../constants/echartsNoData';
 
 class MonthGenChart extends Component{
   static propTypes = {
+    enterpriseId: PropTypes.string,
     hasMultipleType: PropTypes.bool,
     monthPower: PropTypes.array,
     getMonthPower: PropTypes.func,
@@ -20,15 +22,12 @@ class MonthGenChart extends Component{
   }
 
   componentWillReceiveProps(nextProps){
-    const { monthPower } = nextProps;
-    if(monthPower.length > 0){
-      const chartBox = document.getElementById('homeMonthElec');
-      const monthChart = echarts.init(chartBox);
-      this.setMonthChart(monthChart);
-    }
+    this.setMonthChart();
   }
 
-  setMonthChart = (monthChart) => {
+  setMonthChart = () => {
+    const chartBox = document.getElementById('homeMonthElec');
+    const monthChart = echarts.init(chartBox);
     const { monthPower } = this.props;
     let xAxisArr = [], yGenData = [], yRateData = [], hasData = false;
     monthPower.forEach(e=>{
@@ -169,8 +168,10 @@ class MonthGenChart extends Component{
   }
 
   changeMonthType = (monthType) => {
+    const { enterpriseId, getMonthPower } = this.props
     this.setState({ monthType });
-    this.props.getMonthPower({ monthType });
+    const stationType = monthType === 'pv' ? 1 : 0;
+    getMonthPower({ enterpriseId, stationType });
   }
 
 
@@ -180,7 +181,7 @@ class MonthGenChart extends Component{
     return (<section className={styles.monthGen}>
       <h3>每月发电量</h3>
       {hasMultipleType && <div className={styles.checkTags}>
-       <StationTypeTag showTotal={false} activeType={monthType} onChange={this.changeMonthType} />
+        <StationTypeTag showTotal={false} activeType={monthType} onChange={this.changeMonthType} />
       </div>}
       <div id="homeMonthElec" className={styles.monthChart} ></div>
     </section>)

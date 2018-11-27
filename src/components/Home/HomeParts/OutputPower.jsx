@@ -8,6 +8,7 @@ import { showNoData, hiddenNoData } from '../../../constants/echartsNoData';
 
 class OutputPower extends Component{
   static propTypes = {
+    enterpriseId: PropTypes.string,
     outputPowerTime: PropTypes.string,
     hasMultipleType: PropTypes.bool,
     mapStation: PropTypes.array,
@@ -19,17 +20,17 @@ class OutputPower extends Component{
   constructor(props){
     super(props);
     this.state = {
-      outputType: 'wind'
+      outputType: 'wind',
     }
   }
 
-  componentWillReceiveProps(nextProps){
+  componentWillReceiveProps(nextProps) {
     const { outputPower, outputPowerTime } = nextProps;
     const preTime = this.props.outputPowerTime;
     if(outputPowerTime !== preTime ){ // 出力图数据刷新
       this.clocker && clearTimeout(this.clocker);
       this.setMonthChart(outputPower);
-      this.clocker = setTimeout(this.refreshChart, 10*60*1000); // 十分钟后继续请求
+      this.clocker = setTimeout(this.refreshChart, 10 * 60 * 1000); // 十分钟后继续请求
     }
   }
   
@@ -171,13 +172,15 @@ class OutputPower extends Component{
   refreshChart = () => { // 刷新chart图表数据
     const { outputPower } = this.props;
     this.setMonthChart(outputPower);
-    this.clocker = setTimeout(this.refreshChart, 10*60*1000);
+    this.clocker = setTimeout(this.refreshChart, 10 * 60 * 1000);
   }
 
   changeOutputType = (outputType) => { // 切换电站类型，同时重新请求10min数据。
+    const { enterpriseId, getOutputDiagram } = this.props;
+    const stationType = outputType === 'wind' ? 0 : 1;
     this.setState({ outputType });
     this.clocker && clearTimeout(this.clocker);
-    this.props.getOutputDiagram();
+    getOutputDiagram({ enterpriseId, stationType });
   }
 
   render(){
@@ -192,9 +195,9 @@ class OutputPower extends Component{
     return (
       <section className={styles.outputPower}>
         <h3>{isWind?'风':'光伏'}电站出力</h3>
-        <div className={styles.checkTags}>
+        {hasMultipleType && <div className={styles.checkTags}>
           <StationTypeTag showTotal={false} activeType={outputType} onChange={this.changeOutputType} />
-        </div>
+        </div>}
         <div id="homeOutputChart" className={styles.outputChart} ></div>
         <div className={styles.totalPower}>
           <span className={styles.text}>全部电站功率 : </span>

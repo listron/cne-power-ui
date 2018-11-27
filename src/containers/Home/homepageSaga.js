@@ -9,7 +9,8 @@ const { APIBasePath } = basePaths, { homepage } = APISubPaths;
 
 function *getRealTimeData(action){ // 电站概况，实时监控，设备状态等
   const { payload } = action;
-  const { enterpriseId, utcTime } = payload;
+  const { enterpriseId } = payload;
+  const utcTime = moment().utc().format();
   const url = `${APIBasePath}${homepage.realTimeData}/${enterpriseId}/${utcTime}`;
   // const url = '/mock/homepage/total';
   try{
@@ -27,7 +28,8 @@ function *getRealTimeData(action){ // 电站概况，实时监控，设备状态
 
 function* getCompleteRate(action){ // 完成率
   const { payload } = action;
-  const { enterpriseId, utcTime, stationType } = payload;
+  const { enterpriseId, stationType } = payload;
+  const utcTime = moment().utc().format();
   const url = `${APIBasePath}${homepage.completeRate}/${enterpriseId}/${stationType}/${utcTime}`;
   // const url = '/mock/homepage/complete';
   try{
@@ -60,8 +62,11 @@ function* getEnergySaving(action){ // 节能减排
 }
 
 function* getMonthPower(action){ // 每月发电量
-  // const url = `${APIBasePath}/${homepage.monthPower}`;
-  const url = '/mock/homepage/monthGen';
+  const { payload } = action;
+  const { enterpriseId, stationType } = payload;
+  const utcTime = moment().utc().format();
+  const url = `${APIBasePath}${homepage.monthPower}/${enterpriseId}/${stationType}/${utcTime}`;
+  // const url = '/mock/homepage/monthGen';
   try{
     const response = yield call(axios.get, url);
     yield put({
@@ -156,8 +161,12 @@ function* getAlarmList(action){ // 告警列表
 }
 
 function* getOutputDiagram(action){ // 出力图表
-  const url = '/mock/homepage/output';
-  // const url = `${APIBasePath}/${homepage.outputDiagram}`;
+  const { payload } = action;
+  const { enterpriseId, stationType } = payload;
+  // const url = '/mock/homepage/output';
+  const endTime = moment().utc().format();
+  const startTime = moment().startOf('day').utc().format();
+  const url = `${APIBasePath}${homepage.outputDiagram}/${enterpriseId}/${stationType}/${startTime}/${endTime}`;
   try{
     const response = yield call(axios.get, url);
     const outputPowerTime = moment().format('x'); // 记录时间
