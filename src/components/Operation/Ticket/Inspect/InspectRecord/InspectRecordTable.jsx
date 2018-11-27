@@ -67,6 +67,9 @@ class InspectRecordTable extends Component {
       title: '巡检状态',
       dataIndex: 'recordStatus',
       key: 'recordStatus',
+      render: (text, record) => {
+        return text==='1' ? '有异常' : '无异常'
+      },
     }, {
       title: '异常设备类型',
       dataIndex: 'deviceTypeName',
@@ -90,7 +93,7 @@ class InspectRecordTable extends Component {
       dataIndex: 'recordDesc',
       key: 'recordDesc',
       render: (text, record) => {
-        return text ? text : '--'
+        return <span>{text ? text : '--'}</span>
       },
     }, {
       title: '查看照片',
@@ -131,7 +134,7 @@ class InspectRecordTable extends Component {
   }
   render() {
     const { pageSize, pageNum, inspectList, selectedRowKeys, totalCount, loading, inspectDetailRecord } = this.props;
-    // console.log(inspectDetailRecord);
+    //  console.log(inspectDetailRecord);
     const columns = this.initColumn();
     return (
       <div className={styles.inspectTable}>
@@ -140,7 +143,7 @@ class InspectRecordTable extends Component {
           <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalCount} onPaginationChange={this.onPaginationChange} />
         </div>
         <Table
-          rowKey={(record) => { return record.username }}
+          rowKey={(record) => { return record.recordDate }}
           dataSource={inspectDetailRecord}
           // dataSource={inspectList.toJS()}
           columns={columns}

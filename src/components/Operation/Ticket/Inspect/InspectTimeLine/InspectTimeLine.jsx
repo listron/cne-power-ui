@@ -125,6 +125,7 @@ class InspectTimeLine extends Component {
 
   render() {
     const { processData, status,trackCount,recordCount } = this.props;
+    //console.log(processData.toJS());
     return (
       <div className={styles.timeLineWrap}>
         <div className={styles.title}>
