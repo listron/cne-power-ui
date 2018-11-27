@@ -46,8 +46,11 @@ function* getCompleteRate(action){ // 完成率
 }
 
 function* getEnergySaving(action){ // 节能减排
-  // const url = `${APIBasePath}/${homepage.energySaving}`;
-  const url = '/mock/homepage/saving';
+  const { payload } = action;
+  const { enterpriseId } = payload;
+  const utcTime = moment().utc().format();
+  const url = `${APIBasePath}${homepage.energySaving}/${enterpriseId}/${utcTime}`;
+  // const url = '/mock/homepage/saving';
   try{
     const response = yield call(axios.get, url);
     yield put({
@@ -81,8 +84,11 @@ function* getMonthPower(action){ // 每月发电量
 }
 
 function* getEqpHours(action){ // 等效利用小时数
-  // const url = `${APIBasePath}/${homepage.eqpHours}`;
-  const url = '/mock/homepage/eqpHour';
+  const { payload } = action;
+  const { enterpriseId, stationType } = payload;
+  const utcTime = moment().utc().format();
+  const url = `${APIBasePath}${homepage.eqpHours}/${enterpriseId}/${stationType}/${utcTime}`;
+  // const url = '/mock/homepage/eqpHour';
   try{
     const response = yield call(axios.get, url);
     yield put({
@@ -183,8 +189,12 @@ function* getOutputDiagram(action){ // 出力图表
 }
 
 function* getOperationInfo(action){ // 运维情况
-  // const url = `${APIBasePath}/${homepage.operationInfo}`;
-  const url = '/mock/homepage/operation';
+  const { payload } = action;
+  const { enterpriseId, stationType } = payload;
+  const endTime = moment().utc().format();
+  const startTime = moment().startOf('day').utc().format();
+  const url = `${APIBasePath}${homepage.operationInfo}/${enterpriseId}/${stationType}/${startTime}/${endTime}`;
+  // const url = '/mock/homepage/operation';
   try{
     const response = yield call(axios.get, url);
     yield put({

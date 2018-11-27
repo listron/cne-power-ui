@@ -15,7 +15,6 @@ import { loginAction } from '../Login/loginAction';
 import { homepageAction } from './homepageAction';
 import PropTypes from 'prop-types';
 import Cookie from 'js-cookie';
-import moment from 'moment';
 
 class Homepage extends Component {
 
@@ -79,16 +78,15 @@ class Homepage extends Component {
 
   getOriginData = (stationType) => { // 首次获取所有页面内初始数据。
     const { enterpriseId } = this.props;
-    
     this.props.getRealTimeData({ enterpriseId });
     this.props.getCompleteRate({ enterpriseId, stationType });
-    this.props.getEnergySaving();
+    this.props.getEnergySaving({ enterpriseId });
     this.props.getMonthPower({ enterpriseId, stationType });
-    this.props.getEqpHours();
+    this.props.getEqpHours({ enterpriseId, stationType });
     this.props.getFaultNumber();
     this.props.getAlarmList();
     this.props.getOutputDiagram({ enterpriseId, stationType });
-    this.props.getOperationInfo();
+    this.props.getOperationInfo({ enterpriseId, stationType });
   }
 
   render() {

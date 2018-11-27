@@ -7,6 +7,7 @@ import { showNoData, hiddenNoData } from '../../../constants/echartsNoData';
 
 class EqpHours extends Component{
   static propTypes = {
+    enterpriseId: PropTypes.string,
     eqpHour: PropTypes.object,
     hasMultipleType: PropTypes.bool,
     getEqpHours: PropTypes.func,
@@ -23,7 +24,9 @@ class EqpHours extends Component{
 
   changeEqpType = (eqpType) => {
     this.setState({ eqpType });
-    this.props.getEqpHours(eqpType);
+    const { enterpriseId, getEqpHours } = this.props;
+    const stationType = eqpType === 'wind' ? 0 : 1;
+    getEqpHours({ enterpriseId, stationType });
   }
 
   render(){
