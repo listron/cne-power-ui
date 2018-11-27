@@ -12,7 +12,6 @@ class PerformanceAnalysisFilter extends Component {
   }
   componentDidMount() {
     const { stations, contrastSwitch, stationCode, deviceTypeCode, changePerformanceAnalysisStore, getDeviceModels, getDeviceModelother, getEleLineCode, getPerformance } = this.props;
-
     stations && stations.length > 0 ? changePerformanceAnalysisStore({ stationCode: stations[0].stationCode }) : console.log('no_stations');
     //把最近三十天的值存起来
     let startDate = moment().subtract(30, 'days').hour(0).minute(0).second(0).format('YYYY-MM-DD');
@@ -23,8 +22,8 @@ class PerformanceAnalysisFilter extends Component {
     });
     //获取设备型号
     getDeviceModels({
-      stationCode: 350,
-      // stationCode: stations[0].stationCode,
+      //stationCode: 350,
+      stationCode: stations[0].stationCode,
     });
     //获取两种逆变器的所有数据
     getPerformance({ stationCode: 350, startDate, endDate, deviceTypeCode, })
@@ -104,11 +103,10 @@ class PerformanceAnalysisFilter extends Component {
       contrastStartDate,
       contrastEndDate,
     });
-    this.props.getPerformance({ stationCode, startDate, endDate, contrastStartDate, contrastEndDate, deviceTypeCode, deviceModeTypeCode, electricLineCode })
+    this.props.getPerformanceContrast({ stationCode, startDate, endDate, contrastStartDate, contrastEndDate, deviceTypeCode, deviceModeTypeCode, electricLineCode })
   }
   //不可选时间
   disabledDate = (current) => {
-    // console.log(current);
     if (this.start) {
       const end = moment(this.start).add(30, 'days');
       return current > moment.min(moment().endOf('day'), end);
@@ -141,8 +139,8 @@ class PerformanceAnalysisFilter extends Component {
   //选择设备型号
   selectDeviceModel = (value) => {
     const { stationCode, changePerformanceAnalysisStore, getEleLineCode, startDate, endDate, deviceModeCode, contrastStartDate, contrastEndDate, getPerformance } = this.props;
-    const deviceModeTypeCode = Number(value.split('__')[0]);
-    const deviceTypeCode = Number(value.split('__')[1]);
+    const deviceModeTypeCode = value&&Number(value.split('__')[0]);
+    const deviceTypeCode = value&&Number(value.split('__')[1]);
     //获取集电线路的设备
     getEleLineCode({
       stationCode: stationCode,
@@ -188,7 +186,7 @@ class PerformanceAnalysisFilter extends Component {
   render() {
     const { Option } = Select;
     const { RangePicker } = DatePicker;
-    const dateFormat = 'YYYY/MM/DD';
+    const dateFormat = 'YYYY-MM-DD';
     const { stationCode, stations, deviceTypeCode, deviceTypes, timeType, contrastSwitch, contrastStartDate, contrastEndDate, deviceModeCode, deviceModeTypeCode, deviceModels, deviceModelOther, eleLineCodeData, electricLineCode } = this.props;
     const { showFilter } = this.state;
     const eleLineCodeDisable = eleLineCodeData.length === 0;

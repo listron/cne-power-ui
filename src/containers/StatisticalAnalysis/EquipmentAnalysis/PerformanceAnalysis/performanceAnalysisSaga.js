@@ -80,8 +80,8 @@ function* getEleLineCode(action) {//集电线路
 }
 function* getPerformance(action) {
   const { payload } = action;
-    const conversioneffUrl = '/mock/performance/deviceanalysis/conversioneff';
-   // const conversioneffUrl= `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getconversioneff}`
+    //const conversioneffUrl = '/mock/performance/deviceanalysis/conversioneff';
+    const conversioneffUrl= `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getconversioneff}`
     const hoursUrl= `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getHours}`
     const availabilityUrl= `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getAvailability}`
     try{
@@ -163,13 +163,14 @@ function* getPerformanceContrast(action) {
       yield put({ type:performanceAnalysisAction.PERFORMANCEANALYSIS_FETCH });
       const [conversioneff,hour,availability] = yield all([call(axios.post,conversioneffUrl,{...payload}),call(axios.post,hoursUrl,{...payload,dataType:'hour'}),call(axios.post,availabilityUrl,{...payload})]);
       if(conversioneff.data.code === '10000') {
+        console.log(conversioneff.data.data,'111111111');
         yield put({
           type: performanceAnalysisAction.GET_PERFORMANCEANALYSIS_FETCH_SUCCESS,
           payload: {
             conversioneffContrastData: conversioneff.data.data.conversionRateData||[],   
             contrastConversionAvgRate:conversioneff.data.data.contrastConversionAvgRate||'',
             contrastAvgRate:conversioneff.data.data.conversionAvgRate||'',
-
+            conversDeviceNames:conversioneff.data.data.deviceNames||[]
           },
         });     
       }  
@@ -177,7 +178,8 @@ function* getPerformanceContrast(action) {
         yield put({
           type: performanceAnalysisAction.GET_PERFORMANCEANALYSIS_FETCH_SUCCESS,
           payload: {                 
-            hourContrastData: hour.data.data||[],          
+            hourContrastData: hour.data.data.results||[],
+            hourDeviceNames:hour.data.data.deviceNames||[],          
           },
         });     
       }
@@ -185,7 +187,8 @@ function* getPerformanceContrast(action) {
         yield put({
           type: performanceAnalysisAction.GET_PERFORMANCEANALYSIS_FETCH_SUCCESS,
           payload: {                 
-            availabilityContrastData: availability.data.data||[],          
+            availabilityContrastData: availability.data.data.results||[], 
+            availabilityDeviceNames:availability.data.data.deviceNames||[],        
           },
         });     
       }
@@ -196,16 +199,17 @@ function* getPerformanceContrast(action) {
 function* getFaultContrast(action) {
   const { payload } = action;
   //const url = '';
-  const availabilityUrl= `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getAvailabilityContrast}`
+  const lostPowerUrl= `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getAvailabilityContrast}`
   const hoursUrl= `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getHoursContrast}`
   try{
     yield put({ type:performanceAnalysisAction.PERFORMANCEANALYSIS_FETCH });
-    const [availability,faultNum,faultTime] = yield all([call(axios.post,availabilityUrl,{...payload}),call(axios.post,hoursUrl,{...payload,dataType:'faultNum'}),call(axios.post,hoursUrl,{...payload,dataType:'faultTime'})]);
-    if(availability.data.code==='10000'){
+    const [lostPower,faultNum,faultTime] = yield all([call(axios.post,lostPowerUrl,{...payload}),call(axios.post,hoursUrl,{...payload,dataType:'faultNum'}),call(axios.post,hoursUrl,{...payload,dataType:'faultTime'})]);
+    if(lostPower.data.code==='10000'){
       yield put({
         type: performanceAnalysisAction.GET_PERFORMANCEANALYSIS_FETCH_SUCCESS,
         payload: {                 
-          lostPowerContrastData: availability.data.data||[],          
+          lostPowerContrastData: lostPower.data.data.results||[],          
+          lostPowerDeviceNames: lostPower.data.data.deviceNames||[],          
         },
       });     
     }
@@ -213,7 +217,8 @@ function* getFaultContrast(action) {
       yield put({
         type: performanceAnalysisAction.GET_PERFORMANCEANALYSIS_FETCH_SUCCESS,
         payload: {                 
-          faultNumContrastData: faultNum.data.data||[],          
+          faultNumContrastData: faultNum.data.data.results||[],          
+          faultNumDeviceNames: faultNum.data.data.deviceNames||[],          
         },
       });     
     }
@@ -221,7 +226,8 @@ function* getFaultContrast(action) {
       yield put({
         type: performanceAnalysisAction.GET_PERFORMANCEANALYSIS_FETCH_SUCCESS,
         payload: {                 
-          faultTimeContrastData: faultTime.data.data||[],          
+          faultTimeContrastData: faultTime.data.data.results||[],          
+          faultTimeDeviceNames: faultTime.data.data.deviceNames||[],          
         },
       });     
     }
