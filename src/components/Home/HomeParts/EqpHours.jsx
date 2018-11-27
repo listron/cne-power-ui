@@ -31,7 +31,7 @@ class EqpHours extends Component{
 
   render(){
     const { eqpType, rectWidth, rectNum } = this.state;
-    const { eqpHour } = this.props;
+    const { eqpHour, hasMultipleType } = this.props;
     const averageHour = dataFormat(eqpHour.average);
     const stationDataArr = eqpHour.hourList || [];
     const maxHour = stationDataArr[0] && stationDataArr[0].average || 100;
@@ -41,9 +41,9 @@ class EqpHours extends Component{
     return (
       <section className={styles.eqpHours}>
         <h3>等效利用小时数 TOP5</h3>
-        <div className={styles.checkTags}>
+        {hasMultipleType && <div className={styles.checkTags}>
           <StationTypeTag showTotal={false} activeType={eqpType} onChange={this.changeEqpType} />
-        </div>
+        </div>}
         <div className={styles.stationProgress}>
           {stationDataArr.map(e=>(
             <div className={styles.eachStation} key={e.stationName}>

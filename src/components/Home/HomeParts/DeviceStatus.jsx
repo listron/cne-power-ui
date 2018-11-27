@@ -80,7 +80,7 @@ class DeviceStatus extends Component{
 
 
   render(){
-    const { realTimeInfo } = this.props;
+    const { realTimeInfo, hasMultipleType } = this.props;
     const { statusType } = this.state;
     const deviceStatus = realTimeInfo.deviceStatus || {};
     let statusInfo = [];
@@ -94,9 +94,9 @@ class DeviceStatus extends Component{
     return (
       <section className={styles.deviceStatus}>
         <h3>设备状态</h3>
-        <div className={styles.checkTags}>
+        {hasMultipleType && <div className={styles.checkTags}>
           <StationTypeTag showTotal activeType={statusType} onChange={this.changeStatusType} />
-        </div>
+        </div>}
         <div className={styles.statusBox}>
           <div id="homeDeviceStatus" className={styles.statusChart}></div>
           <div className={styles.statusTotal}>

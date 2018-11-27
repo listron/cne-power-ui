@@ -153,14 +153,14 @@ class FaultList extends Component{
 
   render(){
     const { faultType, currentIndex } = this.state;
-    const { faultNumber } = this.props;
+    const { faultNumber, hasMultipleType } = this.props;
     const activeBackground = {backgroundImage: 'url(/img/hover.png)'};
     return (
       <section className={styles.faultList}>
         <h3>本月故障台次 TOP5</h3>
-        <div className={styles.checkTags}>
+        {hasMultipleType && <div className={styles.checkTags}>
           <StationTypeTag showTotal={false} activeType={faultType} onChange={this.changeFaultType} />
-        </div>
+        </div>}
         <div className={styles.faultContent}>
           <div className={styles.list}>
             {faultNumber.map((e,i)=>(<span 

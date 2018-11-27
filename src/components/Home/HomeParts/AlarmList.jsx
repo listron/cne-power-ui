@@ -5,8 +5,10 @@ import { dataFormat } from '../../../utils/utilFunc';
 
 class AlarmList extends Component{
   static propTypes = {
+    enterpriseId: PropTypes.string,
     alarmList: PropTypes.array,
     getAlarmList: PropTypes.func,
+    mapStation: PropTypes.array,
   }
 
 
@@ -30,9 +32,10 @@ class AlarmList extends Component{
   }
 
   startShowAlarm = (activeIndex, alarmList) => {
+    const { enterpriseId, getAlarmList } = this.props;
     if(alarmList.length === 0 || activeIndex + 1 === alarmList.length){ // 无告警 或者已到最后一行=> 10s后重新请求
       this.clocker && clearTimeout(this.clocker);
-      setTimeout(this.props.getAlarmList(), 10000);
+      setTimeout(getAlarmList({ enterpriseId }), 10000);
     }else{
       let scrollHeight;
       const totalCount = alarmList.length;

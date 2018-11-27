@@ -84,7 +84,7 @@ class Homepage extends Component {
     this.props.getMonthPower({ enterpriseId, stationType });
     this.props.getEqpHours({ enterpriseId, stationType });
     this.props.getFaultNumber({ enterpriseId, stationType });
-    this.props.getAlarmList();
+    this.props.getAlarmList({ enterpriseId });
     this.props.getOutputDiagram({ enterpriseId, stationType });
     this.props.getOperationInfo({ enterpriseId, stationType });
   }

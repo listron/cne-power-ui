@@ -154,8 +154,11 @@ function* getSingleStation(action){ // 地图中某电站信息
 }
 
 function* getAlarmList(action){ // 告警列表
-  // const url = `${APIBasePath}/${homepage.alarmList}`;
-  const url = '/mock/homepage/alarm';
+  const { payload } = action;
+  const { enterpriseId } = payload;
+  const utcTime = moment().utc().format();
+  const url = `${APIBasePath}${homepage.alarmList}/${enterpriseId}/2/${utcTime}`;
+  // const url = '/mock/homepage/alarm';
   try{
     const response = yield call(axios.get, url);
     yield put({

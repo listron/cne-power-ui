@@ -61,9 +61,10 @@ export default {
       eqpHours: '/v3/monitor/largescreen/equivalenthours', // 等效利用小时数
       faultNumber: '/v3/monitor/largescreen/faultnumber', // 故障台次
       mapStationList: '/v3/monitor/largescreen/map', // 地图坐标及统计
-      alarmList: '/v3/monitor/largescreen/stationdetail', // 告警列表
+      alarmList: '/v3/monitor/largescreen/warninglist', // 告警列表
       outputDiagram: '/v3/monitor/largescreen/capabilitydiagram', // 出力图表
       operationInfo: '/v3/monitor/largescreen/worklistcount', // 运维情况
+      singleStation: '/v3/monitor/largescreen/stationdetail', // 单电站详情
     },
     ticket: { // 工单
       getDefectList: '/v3/defect/worklist/pc',
