@@ -159,10 +159,8 @@
     .windPercent, .pvPercent, .planName{
       font-size: 20px;
       color: #06bdf4;
-      flex: 1;
+      flex: 1 0 40px;
       text-align: left;
-      width: 75px;
-      flex-shrink: 1;
     }
     .planName{
       font-size: 14px;

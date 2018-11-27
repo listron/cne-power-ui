@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './homepageParts.scss';
-import { Transform } from 'stream';
 
 class MapResourceData extends Component{
   static propTypes = {

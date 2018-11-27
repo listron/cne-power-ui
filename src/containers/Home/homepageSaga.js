@@ -8,8 +8,10 @@ const { basePaths, APISubPaths } = path;
 const { APIBasePath } = basePaths, { homepage } = APISubPaths;
 
 function *getRealTimeData(action){ // 电站概况，实时监控，设备状态等
-  // const url = `${APIBasePath}/${homepage.realTimeData}`;
-  const url = '/mock/homepage/total';
+  const { payload } = action;
+  const { enterpriseId, utcTime } = payload;
+  const url = `${APIBasePath}${homepage.realTimeData}/${enterpriseId}/${utcTime}`;
+  // const url = '/mock/homepage/total';
   try{
     const response = yield call(axios.get, url);
     yield put({
@@ -24,8 +26,10 @@ function *getRealTimeData(action){ // 电站概况，实时监控，设备状态
 }
 
 function* getCompleteRate(action){ // 完成率
-  // const url = `${APIBasePath}/${homepage.completeRate}`;
-  const url = '/mock/homepage/complete';
+  const { payload } = action;
+  const { enterpriseId, utcTime, stationType } = payload;
+  const url = `${APIBasePath}${homepage.completeRate}/${enterpriseId}/${stationType}/${utcTime}`;
+  // const url = '/mock/homepage/complete';
   try{
     const response = yield call(axios.get, url);
     yield put({

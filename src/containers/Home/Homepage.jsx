@@ -14,10 +14,13 @@ import styles from './homepage.scss';
 import { loginAction } from '../Login/loginAction';
 import { homepageAction } from './homepageAction';
 import PropTypes from 'prop-types';
+import Cookie from 'js-cookie';
+import moment from 'moment';
 
 class Homepage extends Component {
 
   static propTypes = {
+    enterpriseId: PropTypes.string,
     mapStation: PropTypes.array,
     realTimeInfo: PropTypes.object,
     completeRate: PropTypes.object,
@@ -45,17 +48,18 @@ class Homepage extends Component {
     }
   }
 
-  componentDidMount(){
+  componentDidMount() {
     this.props.getMapStation(); // 先获取电站信息
   }
 
-  componentWillReceiveProps(nextProps){
+  componentWillReceiveProps(nextProps) {
     const { mapStation } = nextProps;
     const preStations = this.props.mapStation;
     if(preStations.length === 0 && mapStation.length > 0){ // 拿到电站信息后，再请求页面数据
       const stationTypeSet = new Set(mapStation.map(e=>e.stationType));
       this.setState({ hasMultipleType: stationTypeSet.size > 1 });
-      this.getOriginData();
+      const originType = stationTypeSet.has(1) ? 1 : 0;
+      this.getOriginData(originType);
       this.clocker && clearTimeout(this.clocker);
       this.clocker = setTimeout(this.getMonitorData,10*1000); // 启动10s监听
     }
@@ -67,13 +71,17 @@ class Homepage extends Component {
   }
 
   getMonitorData = () => {
-    this.props.getRealTimeData();
-    this.clocker = setTimeout(this.getMonitorData,10*1000); // 10s一刷新
+    const { enterpriseId } = this.props;
+    const utcTime = moment().utc().format();
+    this.props.getRealTimeData({ enterpriseId, utcTime });
+    this.clocker = setTimeout(this.getMonitorData, 10 * 1000); // 10s一刷新
   }
 
-  getOriginData = () => { // 首次获取所有页面内初始数据。
-    this.props.getRealTimeData();
-    this.props.getCompleteRate();
+  getOriginData = (stationType) => { // 首次获取所有页面内初始数据。
+    const { enterpriseId } = this.props;
+    const utcTime = moment().utc().format();
+    this.props.getRealTimeData({ enterpriseId, utcTime });
+    this.props.getCompleteRate({ enterpriseId, utcTime, stationType });
     this.props.getEnergySaving();
     this.props.getMonthPower();
     this.props.getEqpHours();
@@ -119,6 +127,7 @@ class Homepage extends Component {
 
 const mapStateToProps = (state) => ({
   ...state.homepage.toJS(),
+  enterpriseId: Cookie.get('enterpriseId'),
 });
 
 const mapDispatchToProps = (dispatch) => ({
