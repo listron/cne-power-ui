@@ -222,7 +222,7 @@ class OperateAnalysis extends React.Component {
       xData: efficiencyData && efficiencyData.map((e, i) => { return this.addXaixsName(e.date, dateType) }),
       yData: {
         barData: { hours },
-        lineData: { light, pr }
+        lineData: { pr }
       }
     }
     const PowerEffectiveHasData = hours.some(e => e || e === 0) || light.some(e => e || e === 0) || pr.some(e => e || e === 0)

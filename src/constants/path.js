@@ -150,6 +150,13 @@ export default {
       deleteAlarms: '/v3/management/alarmevent/delete', // 删除告警
       downloadAlarmInfo: '/v3/management/alarmevent/export', // 导出告警事件
 
+
+      getPowercurveList: '/v3/management/powercurve', // 功率曲线列表
+      getPowercurveDetail: '/v3/management/powercurve/detail', // 功率曲线详情图
+      importPowercurve: '/v3/management/powercurve/import', //导入功率曲线
+      downloadPowercurve: '/v3/management/powercurve/export', // 导出功率曲线
+
+     
       //  生产计划
       getPlanList:'/v3/performance/stationplanlist', //查看生产计划列表
       addPlanList:'/v3/performance/stationplan', //  添加生产计划
@@ -242,6 +249,14 @@ export default {
      getResourceYearLight:'/v3/performance/resource/distribution/year',
      getResourceMonthWeather:'/v3/performance/resource/weather/years',
      getResourceDayWeather:'/v3/performance/resource/weather/day',
+     //设备分析
+     getEleLineCode:'/v3/performance/deviceanalysis/getEleLineCode',//集成线路接口
+     getconversioneff:'/v3/performance/deviceanalysis/conversioneff',//转换效率
+     getconversioneffContrast:'/v3/performance/deviceanalysis/conversioneff/contrast',//转换效率对比
+     getHours:'/v3/performance/deviceanalysis/hours',//等效小时数、故障次数、故障时长
+     getHoursContrast:'/v3/performance/deviceanalysis/hours/contrast',//等效小时数、故障次数、故障时长对比
+     getAvailability:'/v3/performance/deviceanalysis/availability',//利用率及损失电量
+     getAvailabilityContrast:'/v3/performance/deviceanalysis/availability/contrast',//利用率及损失电量对比
 
      //通用报表
      dailyreport:'v3/performance/dailyreport',
