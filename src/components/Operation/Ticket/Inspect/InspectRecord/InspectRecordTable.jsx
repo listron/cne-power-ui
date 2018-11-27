@@ -93,7 +93,7 @@ class InspectRecordTable extends Component {
       dataIndex: 'recordDesc',
       key: 'recordDesc',
       render: (text, record) => {
-        return text ? text : '--'
+        return <span>{text ? text : '--'}</span>
       },
     }, {
       title: '查看照片',

@@ -144,7 +144,7 @@ class OrbitMap extends Component {
             }
           }]
         }//地图样式配置
-      },
+       },
       tooltip: {
         trigger: 'item',
         enterable: true,

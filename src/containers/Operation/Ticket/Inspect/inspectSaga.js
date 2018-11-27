@@ -232,7 +232,7 @@ function* finishInspect(action) {
         payload: { container: 'list' },
       });
     } else {
-      message.error('执行工单转验收失败！')
+      message.error('有正在进行的巡检进程，不能完成巡检')
       yield put({
         type: ticketAction.SET_INSPECT_FAIL,
         error: {

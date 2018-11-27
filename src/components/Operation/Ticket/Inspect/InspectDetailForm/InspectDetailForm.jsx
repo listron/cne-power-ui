@@ -149,6 +149,7 @@ class InspectDetailForm extends Component {
   
   render() {
     const { inspectDetail, onChangeShowContainer, changeInspectStore,getInspectDetailRecord,getInspectUsers,getInspectOrbit,getStationDeviceTypes } = this.props;
+    //console.log(inspectDetail.toJS());
     const progressData = inspectDetail.get('processData');
     const inspectId = inspectDetail.get('inspectId');
     const stationCode=inspectDetail.get('stationCode');
