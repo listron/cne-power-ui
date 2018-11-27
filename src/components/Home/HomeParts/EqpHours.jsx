@@ -70,7 +70,7 @@ class EqpHours extends Component{
                   )
                 })
               }</div>
-              <span className={styles.hour}>{dataFormat(e.average)}h</span>
+              <span className={styles.hour}>{dataFormat(e.hours)}h</span>
             </div>
           ))}
         </div>

@@ -58,7 +58,7 @@ export default {
       completeRate: '/v3/monitor/largescreen/completionrate', // 完成率
       energySaving: '/v3/monitor/largescreen/energysaving', // 节能减排
       monthPower: '/v3/monitor/largescreen/monthpower', // 每月发电量
-      eqpHours: '/v3/monitor/largescreen/utilizationhours', // 等效利用小时数
+      eqpHours: '/v3/monitor/largescreen/equivalenthours', // 等效利用小时数
       faultNumber: '/v3/monitor/largescreen/faultnumber', // 故障台次
       mapStationList: '/v3/monitor/largescreen/map', // 地图坐标及统计
       alarmList: '/v3/monitor/largescreen/stationdetail', // 告警列表

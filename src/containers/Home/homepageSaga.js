@@ -103,8 +103,11 @@ function* getEqpHours(action){ // 等效利用小时数
 }
 
 function* getFaultNumber(action){ // 故障台次
-  // const url = `${APIBasePath}/${homepage.faultNumber}`;
-  const url = '/mock/homepage/faultNumber';
+  const { payload } = action;
+  const { enterpriseId, stationType } = payload;
+  const utcTime = moment().utc().format();
+  const url = `${APIBasePath}${homepage.faultNumber}/${enterpriseId}/${stationType}/${utcTime}`;
+  // const url = '/mock/homepage/faultNumber';
   try{
     const response = yield call(axios.get, url);
     yield put({

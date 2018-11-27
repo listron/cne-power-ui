@@ -7,6 +7,7 @@ import echarts from 'echarts';
 
 class FaultList extends Component{
   static propTypes = {
+    enterpriseId: PropTypes.string,
     hasMultipleType: PropTypes.bool,
     faultNumber: PropTypes.array,
     getFaultNumber: PropTypes.func,
@@ -136,16 +137,18 @@ class FaultList extends Component{
       currentIndex: nextIndex,
     })
     this.setFaultChart(nextIndex);
-    this.clocker = setTimeout(()=>this.showNextFault(nextIndex),10000);
+    this.clocker = setTimeout(()=>this.showNextFault(nextIndex), 10000);
   }
 
   changeFaultType = (faultType) => { // 切换设备类型
     this.clocker && clearTimeout(this.clocker);
+    const { enterpriseId, getFaultNumber } = this.props;
+    const stationType = faultType === 'wind' ? 0 : 1;
     this.setState({ 
       faultType,
       currentIndex: 0,
     });
-    this.props.getFaultNumber(faultType);
+    getFaultNumber({ stationType, enterpriseId });
   }
 
   render(){
