@@ -115,7 +115,7 @@ class PerformanceCharts extends React.Component {
   }
 
   drawChart = (params) => {
-    const { graphId, title, data, hasData, hasSlider } = params;
+    const { graphId, title, data, hasData, hasSlider,deviceNames } = params;
     const targetChart = echarts.init(document.getElementById(graphId));
     let color = this.getColor(title);
     let seriesData = [];
@@ -240,7 +240,8 @@ class PerformanceCharts extends React.Component {
         axisLabel: {
           color: '#666',
           // color: function (value, index) {
-          //   return deviceNames.includes(value)?'red':"#666"
+          //  console.log(value,deviceNames);
+          //   return deviceNames.includes(value)===true?'red':"#666"
           // },
           rotate: -30,
         },

@@ -12,7 +12,9 @@ class PerformanceAnalysisFilter extends Component {
   }
   componentDidMount() {
     const { stations, contrastSwitch, stationCode, deviceTypeCode, changePerformanceAnalysisStore, getDeviceModels, getDeviceModelother, getEleLineCode, getPerformance } = this.props;
+    console.log( stations);
     stations && stations.length > 0 ? changePerformanceAnalysisStore({ stationCode: stations[0].stationCode }) : console.log('no_stations');
+    let firstStationCode=stations.length > 0 ?stations[0].stationCode:'';
     //把最近三十天的值存起来
     let startDate = moment().subtract(30, 'days').hour(0).minute(0).second(0).format('YYYY-MM-DD');
     let endDate = moment().format('YYYY-MM-DD');
@@ -23,10 +25,10 @@ class PerformanceAnalysisFilter extends Component {
     //获取设备型号
     getDeviceModels({
       //stationCode: 350,
-      stationCode: stations[0].stationCode,
+      stationCode: firstStationCode,
     });
     //获取两种逆变器的所有数据
-    getPerformance({ stationCode: 350, startDate, endDate, deviceTypeCode, })
+    getPerformance({ stationCode:firstStationCode, startDate, endDate, deviceTypeCode, })
   }
   componentWillReceiveProps(nextProps) {
     const { stations, changePerformanceAnalysisStore, deviceModelOther, deviceModels } = this.props;
@@ -138,9 +140,9 @@ class PerformanceAnalysisFilter extends Component {
   }
   //选择设备型号
   selectDeviceModel = (value) => {
-    const { stationCode, changePerformanceAnalysisStore, getEleLineCode, startDate, endDate, deviceModeCode, contrastStartDate, contrastEndDate, getPerformance } = this.props;
+    const { stationCode,contrastSwitch, changePerformanceAnalysisStore,getPerformanceContrast, getEleLineCode, startDate, endDate, deviceModeCode, contrastStartDate, contrastEndDate, getPerformance } = this.props;
     const deviceModeTypeCode = value&&Number(value.split('__')[0]);
-    const deviceTypeCode = value&&Number(value.split('__')[1]);
+    const deviceTypeCode = value&&[Number(value.split('__')[1])];
     //获取集电线路的设备
     getEleLineCode({
       stationCode: stationCode,
@@ -152,7 +154,8 @@ class PerformanceAnalysisFilter extends Component {
       targetTabs: '1',
       deviceTypeCode,
     })
-    getPerformance({ stationCode, startDate, endDate, deviceTypeCode, deviceModeTypeCode, contrastStartDate, contrastEndDate, })
+    contrastSwitch?getPerformanceContrast({stationCode, startDate, endDate, deviceTypeCode, deviceModeTypeCode, contrastStartDate, contrastEndDate}):
+     getPerformance({ stationCode, startDate, endDate, deviceTypeCode, deviceModeTypeCode, contrastStartDate, contrastEndDate, })
   }
   //选择集电线路
   selectEleLine = (value) => {
@@ -161,7 +164,7 @@ class PerformanceAnalysisFilter extends Component {
       electricLineCode: value,
       targetTabs: '1'
     })
-    getPerformance({ stationCode, startDate, endDate, deviceTypeCode, deviceModeTypeCode,contrastStartDate, contrastEndDate, electricLineCode: value })
+    contrastSwitch?getPerformanceContrast({stationCode, startDate, endDate, deviceTypeCode, deviceModeTypeCode, contrastStartDate, contrastEndDate}):getPerformance({ stationCode, startDate, endDate, deviceTypeCode, deviceModeTypeCode,contrastStartDate, contrastEndDate, electricLineCode: value })
   }
   //switch开关
   contrastSwitch = (checked) => {
