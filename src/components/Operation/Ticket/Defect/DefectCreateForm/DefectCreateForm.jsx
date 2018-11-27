@@ -383,8 +383,7 @@ class TmpForm extends Component {
             {!editDefect && <Button onClick={() => this.onDefectCreate(true)}>保存并继续添加</Button>}
           </div>
           {!editDefect && <div className={styles.addTips}>
-            <span>选择“保存”按钮后将跳转到对应的列表页；</span>
-            <span>选择“保存并继续添加”按钮会停留在添加页面</span>
+          
           </div>}
         </div>
       </Form>

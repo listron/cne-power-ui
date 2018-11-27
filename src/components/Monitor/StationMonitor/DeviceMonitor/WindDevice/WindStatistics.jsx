@@ -8,7 +8,7 @@ function InverterStatistics({ deviceDetail }) {
     <div className={styles.statisticsBox} >
       <div className={styles.deviceIcon}>
         <span className="iconfont icon-windlogo"></span>
-        <p className={styles.deviceCode}>{deviceDetail.deviceCode}</p>
+        <p className={styles.deviceCode}>{deviceDetail.deviceModeName || "--"}</p>
       </div>
       <PowerProgress devicePower={devicePower} deviceCapacity={deviceCapacity} />
       <div className={styles.timerDayGen}>

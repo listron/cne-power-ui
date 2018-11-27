@@ -155,7 +155,7 @@ class WindStationTop extends Component {
             <div className={styles.trueTimeUnit}>装机台数 台</div>
           </div>
           <div>
-            <div className={styles.trueTimeValue} style={{ color: "#e08031" }}>{singleStationData && singleStationData.instantaneous && parseFloat(singleStationData.instantaneous).toFixed(2) || 0}</div>
+            <div className={styles.trueTimeValue} style={{ color: "#3e97d1" }}>{singleStationData && singleStationData.instantaneous && parseFloat(singleStationData.instantaneous).toFixed(2) || 0}</div>
             <div className={styles.trueTimeUnit}>平均风速 m/s</div>
           </div>
           <div>
