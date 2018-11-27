@@ -327,6 +327,11 @@ const menuData = [
             name: '告警事件',
             path: 'alarmManage',
             rightKey: 'system_station',
+          },
+          {
+            name: '功率曲线',
+            path: 'powerCurve',
+            rightKey: 'system_station',
           }
         ]
       }, {
