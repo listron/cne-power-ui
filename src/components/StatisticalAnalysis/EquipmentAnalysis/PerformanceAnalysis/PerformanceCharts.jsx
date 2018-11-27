@@ -70,7 +70,7 @@ class PerformanceCharts extends React.Component {
     let result = '';
     switch (title) {
       case '转换效率':
-        result = ['#199475','#f9b600','#e08031', '#3e97d1'];
+        result = ['#199475', '#f9b600', '#e08031', '#3e97d1'];
         break;
       case '等效小时数':
         result = ['#dfdfdf', '#f9b600', '#e08031', '#3e97d1'];
@@ -109,13 +109,13 @@ class PerformanceCharts extends React.Component {
       case 'faultNum': name = '故障次数'; break;
       case 'faultTime': name = '故障时长'; break;
       case 'availability': name = '可利用率'; break;
-      case 'lossPower': name = '损失电量'; break;
+      case 'lostPower': name = '损失电量'; break;
     }
     return name;
   }
 
   drawChart = (params) => {
-    const { graphId, title, data, hasData } = params;
+    const { graphId, title, data, hasData, hasSlider } = params;
     const targetChart = echarts.init(document.getElementById(graphId));
     let color = this.getColor(title);
     let seriesData = [];
@@ -139,12 +139,12 @@ class PerformanceCharts extends React.Component {
       seriesData.push(json);
     }
     for (var line in lineData) {
-        var json = {
-          name: this.getName(line),
-          data: lineData[line],
-          type: 'line',
-        }
-      
+      var json = {
+        name: this.getName(line),
+        data: lineData[line],
+        type: 'line',
+      }
+
       seriesData.push(json);
     }
     const confluenceTenMinGraphic = (hasData || hasData === false) && (hasData === true ? hiddenNoData : showNoData) || " ";
@@ -191,6 +191,39 @@ class PerformanceCharts extends React.Component {
         itemWidth: 5,
         itemHeight: 5,
       },
+      dataZoom:
+        [{
+          show: hasSlider,
+          type: 'slider',
+          realtime: true,
+          start: 0,
+          end: 20,
+          bottom: '3px',
+          handleSize: '80%',
+          handleIcon: 'M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z',
+          backgroundColor: 'rgba(213,219,228,.8)',
+          height: '20px',
+          handleStyle: {
+            width: '16px',
+            height: '16px',
+            borderRadius: '100%',
+            color: '#fff',
+            shadowBlur: 3,
+            shadowColor: 'rgba(0, 0, 0, 0.6)',
+            shadowOffsetX: 2,
+            shadowOffsetY: 2
+          }
+
+        },
+        {
+          type: 'inside',
+          realtime: true,
+          start: 0,
+          end: 20,
+
+        }
+        ],
+
       xAxis: {
         type: 'category',
         data: data && data.xData,
@@ -206,6 +239,10 @@ class PerformanceCharts extends React.Component {
         },
         axisLabel: {
           color: '#666',
+          // color: function (value, index) {
+          //   return deviceNames.includes(value)?'red':"#666"
+          // },
+          rotate: -30,
         },
         axisTick: {
           show: false,
@@ -233,7 +270,7 @@ class PerformanceCharts extends React.Component {
             }
           },
         },
-       
+
       ],
       series: seriesData || []
     };
