@@ -72,9 +72,9 @@ class InspectTimeLine extends Component {
       return (
         <div className={styles.processItem}>
           <div className={styles.basic}>
-            <div className={styles.flowName}>{item.get('flowName')}</div>
-            <div className={styles.operateTime}>{moment(item.get('operateTime')).format('YYYY-MM-DD HH:mm')}</div>
-            <div className={styles.operateUser}>{item.get('operateUser')}</div>
+            <div className={styles.flowName}>{item.get('flowName')?item.get('flowName'):''}</div>
+            <div className={styles.operateTime}>{item.get('operateTime')?moment(item.get('operateTime')).format('YYYY-MM-DD HH:mm'):''}</div>
+            <div className={styles.operateUser}>{item.get('operateUser')?item.get('operateUser'):''}</div>
             {flowName === '执行工单' ?
               <div>
                {trackCount===1? <Button className={styles.viewStandard} onClick={this.onInspectOrbit}>查看巡检轨迹</Button>:''}

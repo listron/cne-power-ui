@@ -43,7 +43,7 @@ class OrbitMap extends Component {
     const option = {
       bmap: {
         center: [116.46, 39.92],//中心点
-        zoom: 5,
+        zoom: 7,
         roam: true,//可放大缩小
         mapStyle: {
           styleJson: [{
