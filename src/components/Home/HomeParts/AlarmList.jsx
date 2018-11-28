@@ -53,7 +53,7 @@ class AlarmList extends Component{
       this.setState({ activeIndex, scrollHeight });
       this.clocker = setTimeout(() => {
         this.startShowAlarm(activeIndex + 1, alarmList)
-      }, 3000);
+      }, 10000);
     }
   }
 
