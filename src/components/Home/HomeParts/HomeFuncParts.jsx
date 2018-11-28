@@ -14,25 +14,28 @@ export const CompleteRate = ({ mapStation, completeRate }) => { // 计划完成
     <section className={styles.completeRate}>
       <h3>计划完成率</h3>
       <div className={styles.completeInfo}>
-        <div className={styles.text}>
-          {hasWind && <span className={styles.wind}>风电</span>}
-          {hasPv && hasWind && <span className={styles.empty}></span>}
-          {hasPv && <span className={styles.pv}>光伏</span>}
+        {hasWind && <div className={styles.windCol}>
+          <span className={styles.typeText}>风电</span>
+          <span>{windMonthRate}%</span>
+          <span>{windYearRate}%</span>
+        </div>}
+        {hasWind && <div className={styles.windProgress}>
+          <Progress percent={windMonthRate >=0 ? windMonthRate : 0} size="small" strokeColor="#48cf49" showInfo={false} />
+          <Progress percent={windYearRate >=0 ? windYearRate : 0} size="small" strokeColor="#48cf49" showInfo={false} />
+        </div>}
+        <div className={styles.middleText}>
+          <span>月计划</span>
+          <span>年计划</span>
         </div>
-        <div className={styles.timeComplete}>
-          {hasWind && <span className={styles.windPercent}>{windMonthRate}%</span>}
-          {hasWind && <Progress percent={windMonthRate>=0?windMonthRate:0} size="small" strokeColor="#48cf49" showInfo={false} />}
-          <span className={styles.planName}>月计划</span>
-          {hasPv && <Progress percent={PVMonthRate>=0?PVMonthRate:0} size="small" strokeColor="#06bdf4" showInfo={false} />}
-          {hasPv && <span className={styles.pvPercent}>{PVMonthRate}%</span>}
-        </div>
-        <div className={styles.timeComplete}>
-          {hasWind && <span className={styles.windPercent}>{windYearRate}%</span>}
-          {hasWind && <Progress percent={windYearRate>=0?windYearRate:0} size="small" strokeColor="#48cf49" showInfo={false} />}
-          <span className={styles.planName}>年计划</span>
-          {hasPv && <Progress percent={PVYearRate>=0?PVYearRate:0} size="small" strokeColor="#06bdf4" showInfo={false} />}
-          {hasPv && <span className={styles.pvPercent}>{PVYearRate}%</span>}
-        </div>
+        {hasPv && <div className={styles.pvProgress}>
+          <Progress percent={PVMonthRate >=0 ? PVMonthRate : 0} size="small" strokeColor="#06bdf4" showInfo={false} />
+          <Progress percent={PVYearRate >=0 ? PVYearRate : 0} size="small" strokeColor="#06bdf4" showInfo={false} />
+        </div>}
+        {hasPv && <div className={styles.pvCol}>
+          <span className={styles.typeText}>光伏</span>
+          <span>{PVMonthRate}%</span>
+          <span>{PVYearRate}%</span>
+        </div>}
       </div>
     </section>
   )

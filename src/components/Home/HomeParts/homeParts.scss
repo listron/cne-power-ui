@@ -119,62 +119,58 @@
 .completeRate, .operationInfo{ // 计划完成率 + 运维情况部分样式
   margin-top: 12px;
   height: 185px;
-  .text{ // 风，光提示
+  .completeInfo{
     display: flex;
+    height: 90px;
     justify-content: center;
-    height: 36px;
-    line-height: 36px;
-    .empty{
-      width: 286px;
+  }
+  .windCol, .pvCol{ // 光伏风电比例
+    flex: 1 0 70px;
+    color: #48cf49;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    margin: 0 12px 0 0;
+    span{
+      height: 30px;
+      line-height: 30px;
+      font-size: 20px;
     }
-    .wind, .pv{
-      padding-left: 16px;
-      height: 21px;
-      color: #48cf49;
+    .typeText{
       position: relative;
+      font-size: 14px;
+      padding-left: 16px;
       &::before{
         content: '';
         position: absolute;
         left: 4px;
-        top: 14px;
+        top: 12px;
         height: 8px;
         width: 8px;
         border-radius: 50%;
         background-color: #48cf49;
       }
     }
-    .pv{
-      color: #06bdf4;
-      &::before{
-        background-color: #06bdf4;
-      }
-    }
   }
-  .timeComplete{
-    height: 30px;
-    line-height: 30px;
+  .pvCol{
+    align-items: flex-start;
+    color: #06bdf4;
+    margin: 0 0 0 12px;
+  }
+  .windProgress, .pvProgress, .middleText{ // 光伏 风电进度条
+    width: 105px;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    justify-content: flex-end;
     align-items: center;
-    .windPercent, .pvPercent, .planName{
-      font-size: 20px;
-      color: #06bdf4;
-      flex: 1 0 40px;
-      text-align: left;
-    }
-    .planName{
-      font-size: 14px;
-      flex: 0 0 60px;
-      text-align: center;
-    }
-    .windPercent{
-      text-align: right;
-      color: #48cf49;
-    }
+  }
+  .windProgress, .pvProgress{
+    flex: 1 1 115px;
     :global{
       .ant-progress{
-        margin: 0 8px;
         top: -2px;
+        height: 30px;
+        line-height: 30px;
         .ant-progress-inner{
           background:#28608f;
         }
@@ -299,7 +295,8 @@
 }
 
 .eqpHours{ // 今年等效利用小时数
-  .stationProgress{
+    .stationProgress{
+    flex: 1;
     .eachStation{
       display: flex;
       justify-content: center;
@@ -329,7 +326,6 @@
   .average{
     display: flex;
     justify-content: flex-end;
-    flex: 1;
     align-items: center;
     margin-right: 12px;
     .averageText{
