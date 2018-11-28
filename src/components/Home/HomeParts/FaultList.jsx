@@ -5,15 +5,16 @@ import PropTypes from 'prop-types';
 import { showNoData, hiddenNoData } from '../../../constants/echartsNoData';
 import echarts from 'echarts';
 
-class FaultList extends Component{
+class FaultList extends Component {
   static propTypes = {
+    faultQueryTime: PropTypes.string,
     enterpriseId: PropTypes.string,
     hasMultipleType: PropTypes.bool,
     faultNumber: PropTypes.array,
     getFaultNumber: PropTypes.func,
   }
 
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
       faultType: 'wind',
@@ -21,23 +22,27 @@ class FaultList extends Component{
     }
   }
 
-  componentWillReceiveProps(nextProps){
-    const { faultNumber } = nextProps;
-    if(faultNumber.length > 0){ // 得到数据，启动计时器
+  componentWillReceiveProps(nextProps) {
+    const { faultNumber, faultQueryTime } = nextProps;
+    const preFaultTime = this.props.faultQueryTime;
+    if(preFaultTime !== faultQueryTime){ // 得到故障数据
       this.clocker && clearTimeout(this.clocker);
-      this.setFaultChart(0);
-      this.clocker = setTimeout(this.showNextFault,10000);
+      this.setFaultChart(0, faultNumber);
+      if(faultNumber.length > 1){ // 故障数据至少2条时启动定时切换。
+        this.clocker = setTimeout(() => {
+          this.showNextFault(0, faultNumber);
+        },10000);
+      }
     }
   }
 
-  componentWillUnmount(){
+  componentWillUnmount() {
     this.clocker && clearTimeout(this.clocker);
   }
 
-  setFaultChart = (currentIndex) => { // 展示故障chart图
+  setFaultChart = (currentIndex, faultNumber) => { // 展示故障chart图
     const chartBox = document.getElementById('homeFaultChart');
     const faultChart = echarts.init(chartBox);
-    const { faultNumber } = this.props;
     const currentStation = faultNumber[currentIndex] || {};
     const chartData = currentStation.monthList || [];
     let xAxisArr = [], yFaultData = [], hasData = false;
@@ -129,15 +134,16 @@ class FaultList extends Component{
     faultChart.setOption(option);
   }
 
-  showNextFault = (targetIndex = 0) => { // 定时执行展示下一个电站故障
-    const { faultNumber } = this.props;
-    const maxFaultLength = faultNumber.length || 0;
-    const nextIndex = (targetIndex + 1) >= maxFaultLength? 0: (targetIndex + 1);
+  showNextFault = (targetIndex = 0, faultNumber) => { // 定时执行展示下一个电站故障
+    const maxFaultLength = faultNumber.length;
+    const nextIndex = (targetIndex + 1) >= maxFaultLength ? 0: (targetIndex + 1);
     this.setState({
       currentIndex: nextIndex,
     })
     this.setFaultChart(nextIndex);
-    this.clocker = setTimeout(()=>this.showNextFault(nextIndex), 10000);
+    this.clocker = setTimeout(() => {
+      this.showNextFault(nextIndex, faultNumber);
+    }, 10000);
   }
 
   changeFaultType = (faultType) => { // 切换设备类型

@@ -15,6 +15,8 @@ const initState = Immutable.fromJS({
   outputPower: [], // 出力图
   singleStation: {}, // 单电站效果
   outputPowerTime: '', // 记录风电站出力图数据请求时间=>用于对比是否需要刷新chart图。
+  faultQueryTime: '', // 记录故障台次请求时间已判断是否刷新chart图
+  alarmeQueryTime: '', // 记录告警时间以此判定是否刷新chart图
 });
 
 const homepageReducer = (state = initState, action) => {

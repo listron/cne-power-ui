@@ -8,9 +8,7 @@ class AlarmList extends Component{
     enterpriseId: PropTypes.string,
     alarmList: PropTypes.array,
     getAlarmList: PropTypes.func,
-    mapStation: PropTypes.array,
   }
-
 
   constructor(props){
     super(props);
@@ -19,37 +17,43 @@ class AlarmList extends Component{
     }
   }
 
-  componentWillReceiveProps(nextProps){
-    const { alarmList } = nextProps;
-    if(alarmList.length > 0){
-      this.clocker && clearTimeout(this.clocker);
+  componentWillReceiveProps(nextProps) {
+    console.log('nextProps')
+    const { alarmList, getAlarmList, enterpriseId } = nextProps;
+    if (alarmList.length === 0) {
+      this.getAlarmClocker && clearTimeout(this.getAlarmClocker);
+      // this.getAlarmClocker = setTimeout(getAlarmList({ enterpriseId }), 10000);
+    } else if(alarmList.length > 0) {
       this.startShowAlarm(0, alarmList);
     }
   }
   
-  componentWillUnmount(){
+  componentWillUnmount() {
     this.clocker && clearTimeout(this.clocker);
+    this.getAlarmClocker && clearTimeout(this.getAlarmClocker);
   }
 
   startShowAlarm = (activeIndex, alarmList) => {
     const { enterpriseId, getAlarmList } = this.props;
-    if(alarmList.length === 0 || activeIndex + 1 === alarmList.length){ // 无告警 或者已到最后一行=> 10s后重新请求
-      this.clocker && clearTimeout(this.clocker);
-      setTimeout(getAlarmList({ enterpriseId }), 10000);
-    }else{
+    console.log(activeIndex)
+    this.clocker && clearTimeout(this.clocker);
+    if (activeIndex + 1 === alarmList.length) { // 无告警 或者已到最后一行=> 10s后重新请求
+      // this.getAlarmClocker = setTimeout(getAlarmList({ enterpriseId }), 10000);
+    } else {
       let scrollHeight;
       const totalCount = alarmList.length;
       if(totalCount <= 5 || activeIndex === 0){ // 数量小于5条或激活第一条，不上滚
         scrollHeight = 0;
       }else if(activeIndex + 1 > totalCount - 5){// 当前条数
-        scrollHeight = 22*(5 - totalCount); // 最大滚动高度，余下五条盒子不滚动
+        scrollHeight = 22 * (5 - totalCount); // 最大滚动高度，余下五条盒子不滚动
       }else if(activeIndex + 1 <= totalCount - 5){ // 正常滚动
-        scrollHeight = activeIndex*(-22);
+        scrollHeight = activeIndex * (-22);
       }
+      console.log(activeIndex)
       this.setState({ activeIndex, scrollHeight });
-      this.clocker = setTimeout(()=>{
-        this.startShowAlarm(activeIndex+1,alarmList)
-      }, 10000);
+      this.clocker = setTimeout(() => {
+        this.startShowAlarm(activeIndex + 1, alarmList)
+      }, 3000);
     }
   }
 
@@ -73,10 +77,10 @@ class AlarmList extends Component{
               const durationDay = dataFormat(e.durationHours/24,'--',0);
               const restHours = dataFormat(e.durationHours % 24,'--',0);
               return (
-                <div 
-                  key={e.stationName} 
-                  className={styles.eachAlarm} 
-                  style={{backgroundImage: activeIndex === index?'url(/img/hover.png)':null}} 
+                <div
+                  key={index}
+                  className={styles.eachAlarm}
+                  style={{backgroundImage: activeIndex === index?'url(/img/hover.png)':null}}
                 >
                   <span className={styles.level}>
                     <span className={styles.round}>{e.level}</span>

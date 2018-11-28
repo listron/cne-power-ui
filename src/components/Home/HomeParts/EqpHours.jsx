@@ -45,14 +45,14 @@ class EqpHours extends Component{
           <StationTypeTag showTotal={false} activeType={eqpType} onChange={this.changeEqpType} />
         </div>}
         <div className={styles.stationProgress}>
-          {stationDataArr.map(e=>(
+          {stationDataArr.map(e => (
             <div className={styles.eachStation} key={e.stationName}>
               <span className={styles.stationName}>{e.stationName}</span>
               <div style={{width: `${rectNum*(rectWidth + 2)}px`}} className={styles.hourRectGroup}>{
                 tmpArr.map((each, index)=>{ // 根据比例计算需要占多少个块，并计算最后一个块的宽度
                   const hourRectNum = e.average/maxHour*rectNum;
                   let innerWidth = 0;
-                  if(hourRectNum >= index + 1){ // 超出部分
+                  if(hourRectNum >= index + 1 || stationDataArr.length === 1){ // 超出部分
                     innerWidth = rectWidth;
                   }else if(hourRectNum > index && hourRectNum < index + 1){ // 部分渲染
                     innerWidth = Math.ceil((hourRectNum - index) * rectWidth);

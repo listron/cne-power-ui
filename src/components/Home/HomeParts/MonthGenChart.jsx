@@ -22,13 +22,13 @@ class MonthGenChart extends Component{
   }
 
   componentWillReceiveProps(nextProps){
-    this.setMonthChart();
+    const { monthPower } = nextProps;
+    this.setMonthChart(monthPower);
   }
 
-  setMonthChart = () => {
+  setMonthChart = (monthPower) => {
     const chartBox = document.getElementById('homeMonthElec');
     const monthChart = echarts.init(chartBox);
-    const { monthPower } = this.props;
     let xAxisArr = [], yGenData = [], yRateData = [], hasData = false;
     monthPower.forEach(e=>{
       xAxisArr.push(e.month);

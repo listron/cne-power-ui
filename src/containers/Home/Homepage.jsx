@@ -36,6 +36,7 @@ class Homepage extends Component {
     getEqpHours: PropTypes.func,
     getFaultNumber: PropTypes.func,
     getSingleStation: PropTypes.func,
+    alarmList: PropTypes.array,
     getAlarmList: PropTypes.func,
     getOutputDiagram: PropTypes.func,
     getOperationInfo: PropTypes.func,
@@ -60,8 +61,7 @@ class Homepage extends Component {
       this.setState({ hasMultipleType: stationTypeSet.size > 1 });
       const originType = stationTypeSet.has(0) ? 0 : 1;
       this.getOriginData(originType);
-      this.clocker && clearTimeout(this.clocker);
-      this.clocker = setTimeout(this.getMonitorData,10*1000); // 启动10s监听
+      this.getMonitorData();
     }
   }
 
@@ -70,7 +70,7 @@ class Homepage extends Component {
     this.props.homepageReset();
   }
 
-  getMonitorData = () => {
+  getMonitorData = () => { // 10s实时监控
     const { enterpriseId } = this.props;
     this.props.getRealTimeData({ enterpriseId });
     this.clocker = setTimeout(this.getMonitorData, 10 * 1000); // 10s一刷新
@@ -78,8 +78,7 @@ class Homepage extends Component {
 
   getOriginData = (stationType) => { // 首次获取所有页面内初始数据。
     const { enterpriseId } = this.props;
-    this.props.getRealTimeData({ enterpriseId });
-    this.props.getCompleteRate({ enterpriseId, stationType });
+    this.props.getCompleteRate({ enterpriseId });
     this.props.getEnergySaving({ enterpriseId });
     this.props.getMonthPower({ enterpriseId, stationType });
     this.props.getEqpHours({ enterpriseId, stationType });
@@ -96,6 +95,7 @@ class Homepage extends Component {
       mapStation, // 电站地图
       completeRate, energySaving, operationInfo,
       getMonthPower, monthPower, // 各月发电
+      alarmList, getAlarmList, // 告警列表
     } = this.props;
     const { hasMultipleType } = this.state;
     return (
@@ -126,7 +126,11 @@ class Homepage extends Component {
             <EnergySaving energySaving={energySaving} />
             <EqpHours hasMultipleType={hasMultipleType} {...this.props} />
             <FaultList hasMultipleType={hasMultipleType} {...this.props} />
-            <AlarmList {...this.props} />
+            {/* <AlarmList 
+              enterpriseId={this.props.enterpriseId}
+              alarmList={this.props.alarmList}
+              getAlarmList={this.props.getAlarmList}
+            /> */}
           </div>
         </div>
       </div>

@@ -28,9 +28,9 @@ function *getRealTimeData(action){ // 电站概况，实时监控，设备状态
 
 function* getCompleteRate(action){ // 完成率
   const { payload } = action;
-  const { enterpriseId, stationType } = payload;
+  const { enterpriseId } = payload;
   const utcTime = moment().utc().format();
-  const url = `${APIBasePath}${homepage.completeRate}/${enterpriseId}/${stationType}/${utcTime}`;
+  const url = `${APIBasePath}${homepage.completeRate}/${enterpriseId}/${utcTime}`;
   // const url = '/mock/homepage/complete';
   try{
     const response = yield call(axios.get, url);
@@ -110,10 +110,12 @@ function* getFaultNumber(action){ // 故障台次
   // const url = '/mock/homepage/faultNumber';
   try{
     const response = yield call(axios.get, url);
+    const faultQueryTime = moment().format('x'); // 记录时间
     yield put({
       type: homepageAction.GET_HOMEPAGE_FETCH_SUCCESS,
       payload: {
         faultNumber: response.data.data || [],
+        faultQueryTime,
       }
     })
   }catch(error){
@@ -139,7 +141,10 @@ function* getMapStation(action){ // 地图坐标及统计
 
 function* getSingleStation(action){ // 地图中某电站信息
   const url = '/mock/homepage/singleStation';
-  // const url = `${APIBasePath}/${homepage.singleStation}`;
+  const { payload } = action;
+  const { stationCode } = payload;
+  const utcTime = moment().utc().format();
+  // const url = `${APIBasePath}${homepage.singleStation}/${stationCode}/${utcTime}`;
   try{
     const response = yield call(axios.get, url);
     yield put({
@@ -157,14 +162,16 @@ function* getAlarmList(action){ // 告警列表
   const { payload } = action;
   const { enterpriseId } = payload;
   const utcTime = moment().utc().format();
-  const url = `${APIBasePath}${homepage.alarmList}/${enterpriseId}/2/${utcTime}`;
-  // const url = '/mock/homepage/alarm';
+  // const url = `${APIBasePath}${homepage.alarmList}/${enterpriseId}/1/${utcTime}`;
+  const url = '/mock/homepage/alarm';
   try{
     const response = yield call(axios.get, url);
+    const alarmeQueryTime = moment().format('x'); // 记录时间
     yield put({
       type: homepageAction.GET_HOMEPAGE_FETCH_SUCCESS,
       payload: {
         alarmList: response.data.data || [],
+        alarmeQueryTime,
       }
     })
   }catch(error){

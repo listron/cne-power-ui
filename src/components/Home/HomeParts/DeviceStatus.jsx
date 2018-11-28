@@ -19,15 +19,13 @@ class DeviceStatus extends Component{
   }
 
   componentWillReceiveProps(nextProps){
-    const statusBox = document.getElementById('homeDeviceStatus');
-    if(statusBox){
-      const statusChart = echarts.init(statusBox);
-      this.setStatusChart(statusChart);
-    }
+    const { realTimeInfo } = nextProps;
+    this.setStatusChart(realTimeInfo);
   }
 
-  setStatusChart = (statusChart) => {
-    const { realTimeInfo } = this.props;
+  setStatusChart = (realTimeInfo) => {
+    const statusBox = document.getElementById('homeDeviceStatus');
+    const statusChart = echarts.init(statusBox);
     const { statusType } = this.state;
     const deviceStatus = realTimeInfo.deviceStatus || {};
     let statusInfo = [];
