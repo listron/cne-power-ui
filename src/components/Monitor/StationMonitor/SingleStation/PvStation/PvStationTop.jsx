@@ -55,6 +55,9 @@ class PvStationTop extends Component {
       return;
     }
     const editTime = moment().format('YYYY-MM-DD');
+    // console.log(editTime);
+    // const test=moment().subtract(1,'day').format('YYYY-MM-DD');
+    // console.log(test);
     this.state.modalMonth ? editData({ 
       monthGen: editValue, 
       date:editTime, 

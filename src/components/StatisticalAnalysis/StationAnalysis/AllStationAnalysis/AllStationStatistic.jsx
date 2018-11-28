@@ -51,13 +51,14 @@ class AllStationStatistic extends React.Component {
      stationTypes =stations.getIn([0, 'stationType']);
      changeAllStationStore({stationType:stationTypes})
     }
-    console.log(typeof(stationTypes));
+    // console.log(typeof(stationTypes));
     changeAllStationStore({ year: [`${currentYear}`], month: currentMonth, powerSelectMonth: currentMonth,})
     getAllStationAvalibaData(
       {
         userId: userId,
         year: time,
         dateType,
+        stationType
       }
     )
     getAllStationStatisticData(
@@ -129,6 +130,7 @@ class AllStationStatistic extends React.Component {
             userId: userId,
             year: nextProps.year,
             dateType,
+            stationType
           })
         getAllStationStatisticData(
           {
@@ -174,6 +176,7 @@ class AllStationStatistic extends React.Component {
           userId: userId,
           year: rangeYear,
           dateType: nextProps.dateType,
+          stationType
         })
       getAllStationStatisticData(
         {
@@ -214,6 +217,7 @@ class AllStationStatistic extends React.Component {
           userId: userId,
           year: currentYear,
           dateType: nextProps.dateType,
+          stationType
         })
 
       getAllStationStatisticData(
@@ -260,6 +264,7 @@ class AllStationStatistic extends React.Component {
             userId: userId,
             year: changeRangYear,
             dateType,
+            stationType
           }
         )
         getAllStationStatisticData(
@@ -336,6 +341,7 @@ class AllStationStatistic extends React.Component {
         userId: userId,
         year: time,
         dateType,
+        stationType: activeKey
       }
     )
     getAllStationStatisticData(

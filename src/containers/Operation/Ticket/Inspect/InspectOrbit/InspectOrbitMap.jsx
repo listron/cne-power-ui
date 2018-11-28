@@ -5,8 +5,6 @@ import { withRouter } from 'react-router-dom';
 import { message } from "antd";
 import echarts from 'echarts';
 import bmap from 'echarts/extension/bmap/bmap';
-
-
 class OrbitMap extends Component {
   static propTypes = {
     allMonitorStation: PropTypes.object,
@@ -17,33 +15,26 @@ class OrbitMap extends Component {
   }
   constructor(props) {
     super(props)
-
   }
-
   componentDidMount() {
     const { testId, orbitList,users,itemOrbit,startAndEndCoord,data } = this.props;
-    // console.log(orbitList);
-    // console.log(data);
     const testChart = echarts.init(document.getElementById(testId));
     this.setMapChart(testChart, orbitList,users,itemOrbit,startAndEndCoord,data);
   }
 
   componentWillReceiveProps(nextProps) {
     const { testId, orbitList, users,itemOrbit,startAndEndCoord,data } = nextProps;
-    // console.log(data);
     if (this.props.orbitList.length !== nextProps.orbitList.length || users !== this.props.users) {
       const testChart = echarts.init(document.getElementById(testId));
       this.setMapChart(testChart, orbitList,users,itemOrbit,startAndEndCoord,data);
-    
     }
-    // console.log(orbitList);
-    // console.log(itemOrbit);
   }
+   
   setMapChart = (testChart, orbitList,users,itemOrbit,startAndEndCoord,data) => {
     const option = {
       bmap: {
         center: [116.46, 39.92],//中心点
-        zoom: 5,
+        zoom: 11,
         roam: true,//可放大缩小
         mapStyle: {
           styleJson: [{
@@ -153,12 +144,10 @@ class OrbitMap extends Component {
         orient: 'vertical',
         top: 'bottom',
         left: 'right',
-        show:false,
-       
+        show:false, 
       },
       selected: {
         '刘德华1': true,
-
       },
       // 类型是：scatter散点
       series: [
@@ -222,16 +211,14 @@ class OrbitMap extends Component {
             // ]
 
           },
-
           coordinateSystem: 'bmap',
-           data:data,
-          
+          data:data,
           //  data: [
             // [{ coord: ["132.214", "33.32534"] }, { coord: ["133.124", "34.352"] }],
           //  { coords: [['119.4543', '25.9222'],['87.9236', '43.5883']],name:'刘德华1',dateValue:['2017-2018'] },
             // [{ coord: ['87.9236', '43.5883'] }, { coord: ['116.4551', '40.2539'] }],
           // ],
-          symbolSize: [15],
+          symbolSize: [8],
           label: {
             normal: {
               show: false
@@ -245,7 +232,6 @@ class OrbitMap extends Component {
               borderWidth: 5
             }
           },
-
         },
       ]
     };
