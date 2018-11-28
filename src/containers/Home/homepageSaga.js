@@ -124,8 +124,10 @@ function* getFaultNumber(action){ // 故障台次
 }
 
 function* getMapStation(action){ // 地图坐标及统计
-  const url = '/mock/homepage/map';
-  // const url = `${APIBasePath}/${homepage.mapStationList}`;
+  // const url = '/mock/homepage/map';
+  const { payload } = action;
+  const { enterpriseId } = payload;
+  const url = `${APIBasePath}${homepage.mapStationList}/${enterpriseId}`;
   try{
     const response = yield call(axios.get, url);
     yield put({
@@ -140,11 +142,11 @@ function* getMapStation(action){ // 地图坐标及统计
 }
 
 function* getSingleStation(action){ // 地图中某电站信息
-  const url = '/mock/homepage/singleStation';
+  // const url = '/mock/homepage/singleStation';
   const { payload } = action;
   const { stationCode } = payload;
   const utcTime = moment().utc().format();
-  // const url = `${APIBasePath}${homepage.singleStation}/${stationCode}/${utcTime}`;
+  const url = `${APIBasePath}${homepage.singleStation}/${stationCode}/${utcTime}`;
   try{
     const response = yield call(axios.get, url);
     yield put({
@@ -162,8 +164,8 @@ function* getAlarmList(action){ // 告警列表
   const { payload } = action;
   const { enterpriseId } = payload;
   const utcTime = moment().utc().format();
-  // const url = `${APIBasePath}${homepage.alarmList}/${enterpriseId}/1/${utcTime}`;
-  const url = '/mock/homepage/alarm';
+  const url = `${APIBasePath}${homepage.alarmList}/${enterpriseId}/2/${utcTime}`;
+  // const url = '/mock/homepage/alarm';
   try{
     const response = yield call(axios.get, url);
     const alarmeQueryTime = moment().format('x'); // 记录时间

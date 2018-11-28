@@ -50,7 +50,8 @@ class Homepage extends Component {
   }
 
   componentDidMount() {
-    this.props.getMapStation(); // 先获取电站信息
+    const { getMapStation, enterpriseId } = this.props;
+    getMapStation({ enterpriseId }); // 先获取电站信息
   }
 
   componentWillReceiveProps(nextProps) {

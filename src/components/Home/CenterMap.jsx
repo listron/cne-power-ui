@@ -11,43 +11,28 @@ class CenterMap extends Component{
   static propTypes = {
     mapStation: PropTypes.array,
     singleStation: PropTypes.object,
+    realTimeInfo: PropTypes.object,
     getMapStation: PropTypes.func,
     getSingleStation: PropTypes.func,
-    changeLoginStore: PropTypes.func,
+    changeHomepageStore: PropTypes.func,
   }
 
   constructor(props){
     super(props);
     this.state = {
-      worldChart: null,
       countriesInfo: [],
       showStationInfo: false,
       starArr: [],
+      mapCountInfo: {}, // 选中国家风电统计{name: '中国', wind: 21, pv: 11}
     }
-  }
-
-  componentDidMount(){ // 直接加载世界地图和中国地图
-    axios.get('/mapJson/world.json').then(response => {
-      const worldBox = document.getElementById('homeWorldMap');
-      echarts.registerMap('world', response.data);
-      const worldChart = echarts.init(worldBox);
-      worldChart.on('click',this.onCountryChange)
-      this.setState({
-        worldChart,
-      })
-    }).catch(error=>{
-      console.log(error); 
-      message.error('加载世界地图失败，请重试');
-    });
-    this.setStars(); // 开始渲染星图。
   }
 
   componentWillReceiveProps(nextProps){
     const { mapStation } = nextProps;
     const preStations = this.props.mapStation;
-    
     if(mapStation.length > 0 && preStations.length === 0){ // 第一次得到电站数据
-      let countriesInfo = [];
+      this.setStars(); // 开始渲染星图。
+      let countriesInfo = []; // 国家信息
       mapStation.forEach(station=>{ // 存储为[{国家，位置}...]结构，一个国家只保存一个坐标即可
         const tmpName = station.country?station.country:'';
         let hasCountry = countriesInfo.some(country => country && country.countryName === tmpName);
@@ -58,9 +43,15 @@ class CenterMap extends Component{
           })
         }
       });
+      axios.get('/mapJson/world.json').then(response => {
+        echarts.registerMap('world', response.data);
+        const activeInfo = countriesInfo.find(e=>e.countryName === 'China') || countriesInfo[0] || {}; // 默认中国，或者第一个国家
+        this.setWorldMap(countriesInfo, activeInfo);
+      }).catch(error=>{
+        console.log(error); 
+        message.error('加载世界地图失败，请重试');
+      });
       this.setState({ countriesInfo });
-      const activeInfo = countriesInfo.find(e=>e.countryName === 'China') || countriesInfo[0] || {}; // 默认中国，或者第一个国家
-      this.setWorldMap(countriesInfo, activeInfo);
       this.setCountryMap(mapStation, 'China');
     }
   }
@@ -85,7 +76,9 @@ class CenterMap extends Component{
   }
 
   setWorldMap = (countriesInfo, activeInfo) => { // 国家数组 + 当前激活的国家
-    const { worldChart } = this.state;
+    const worldBox = document.getElementById('homeWorldMap');
+    const worldChart = echarts.init(worldBox);
+    worldChart.on('click',this.onCountryChange);
     const activeName = activeInfo.countryName || '';
     const activeData = activeInfo.position || [];
     const inactiveData = countriesInfo.filter(e=>e.countryName !== activeName).map(e=>e.position);
@@ -123,12 +116,18 @@ class CenterMap extends Component{
   }
 
   setCountryMap = (mapStation, mapName) => { // 国家内各电站位置设定。
-    const countryBox = document.getElementById('homeCountryMap');
-    const countryChart = echarts.init(countryBox);
     const countryStation = mapStation.filter(e=>e.country && e.country === mapName);
     const pvStationData = countryStation.filter(e=>e.stationType === 1).map(e=>[e.longitude, e.latitude]);
     const windStationData = countryStation.filter(e=>e.stationType === 0).map(e=>[e.longitude, e.latitude]);
+    this.setState({
+      mapCountInfo: {
+        name: countryStation[0] && countryStation[0].countryChineseName,
+        wind: windStationData.length,
+        pv: pvStationData.length,},
+    });
     axios.get(`/mapJson/${mapName}.json`).then(response=>{
+      const countryBox = document.getElementById('homeCountryMap');
+      const countryChart = echarts.init(countryBox);
       const { data } = response;
       echarts.registerMap(mapName, data);
       countryChart.setOption({
@@ -165,11 +164,10 @@ class CenterMap extends Component{
         const checkedPosition = param.value;
         const checkedStation = mapStation.find(e=>e.longitude === checkedPosition[0] && e.latitude === checkedPosition[1]);
         this.setState({ showStationInfo: true });
-        console.log(checkedStation)
         this.props.getSingleStation(checkedStation);
       });
       countryChart.on('mouseout',()=>{
-        this.props.changeLoginStore({ singleStation: {} });
+        this.props.changeHomepageStore({ singleStation: {} });
         this.setState({ showStationInfo: false });
       });
     }).catch(error=>{
@@ -190,17 +188,23 @@ class CenterMap extends Component{
   }
 
   render(){
-    const { mapStation, singleStation } = this.props;
-    const { showStationInfo, starArr } = this.state;
+    const { mapStation, singleStation, realTimeInfo } = this.props;
+    const { showStationInfo, starArr, mapCountInfo } = this.state;
     const windStations = mapStation.filter(e=>e.stationType === 0);
     const pvStations = mapStation.filter(e=>e.stationType === 1);
-    const windResource = windStations.length > 0?[
-      { src: '/img/ico_wind.png', value: 5.84, unit: 'm/s', name: '风资源' },
-      {src: null, value: 4000, unit: 'MW', name: '风电功率'}
-    ]:[];
+    const windResource = windStations.length > 0 ? [
+      {
+        src: '/img/ico_wind.png', value: dataFormat(realTimeInfo.windReourse), unit: 'm/s', name: '风资源'
+      }, {
+        src: null, value: dataFormat(realTimeInfo.windStationPower), unit: 'MW', name: '风电功率'
+      }
+    ] : [];
     const pvResource = pvStations.length > 0?[
-      {src: '/img/ico_pv.png', value: 433, unit: 'W/㎡', name: '光资源'},
-      {src: null, value: 2000, unit: 'MW', name: '光伏功率'},
+      {
+        src: '/img/ico_pv.png', value: dataFormat(realTimeInfo.pvResource), unit: 'W/㎡', name: '光资源'
+      }, {
+        src: null, value: dataFormat(realTimeInfo.pvStationPower), unit: 'MW', name: '光伏功率'
+      }
     ]:[];
     const resourceArr = [...windResource, ...pvResource];
     const singleInfo = [
@@ -218,11 +222,11 @@ class CenterMap extends Component{
         </div>
         <div className={styles.countryMap} id="homeCountryMap"></div>
         <div className={styles.static}>
-          <span>{"国内"}</span>
-          {pvStations.length > 0 && <span className={styles.count}>{pvStations.length}个</span>}
-          {pvStations.length > 0 && <img src="/img/ico_pv.png" />}
-          {windStations.length > 0 && <span className={styles.count}>{windStations.length}个</span>}
-          {windStations.length > 0 && <img src="/img/ico_wind.png" />}
+          <span>{mapCountInfo.name || '--'}</span>
+          {mapCountInfo.pv > 0 && <span className={styles.count}>{mapCountInfo.pv}个</span>}
+          {mapCountInfo.pv > 0 && <img src="/img/ico_pv.png" />}
+          {mapCountInfo.wind > 0 && <span className={styles.count}>{mapCountInfo.wind}个</span>}
+          {mapCountInfo.wind > 0 && <img src="/img/ico_wind.png" />}
         </div>
         <div className={styles.worldMap} id="homeWorldMap"></div>
         {showStationInfo && <section className={styles.singleStation}>
