@@ -210,13 +210,13 @@ const menuData = [
     path: 'analysis',
     rightKey: 'analysis',
     children: [
-      {
-        name: '光伏发电量评估',
-        path: 'assess',
-        defaultPath: true,
-        iconStyle: 'icon-usermanage',
-        rightKey: 'analysis_powerGeneration',
-      },
+      // {
+      //   name: '光伏发电量评估',
+      //   path: 'assess',
+      //   defaultPath: true,
+      //   iconStyle: 'icon-usermanage',
+      //   rightKey: 'analysis_powerGeneration',
+      // },
       {
         name: '清洗模型',
         iconStyle: 'icon-usermanage',
@@ -224,19 +224,16 @@ const menuData = [
         rightKey: 'analysis_cleanModel',
         children: [
           {
-            name: '灰尘影响',
-            path: 'dirt',
+            name: '清洗预警',
+            path: 'warning',
             defaultPath: true,
             rightKey: 'monitor',
           }, {
-            name: '清洗记录',
+            name: '清洗计划与记录',
             path: 'record',
             rightKey: 'monitor',
-          }, {
-            name: '预警时事件配置',
-            path: 'configuration',
-            rightKey: 'monitor',
-          }
+          },
+          
         ]
       }, {
         name: '组串异常检测',
@@ -343,7 +340,12 @@ const menuData = [
           name: '生产计划',
           path: 'plan',
           rightKey: 'system_config',
-        }]
+        }, {
+          name: '预警配置',
+          path: 'warning',
+          rightKey: 'system_config',
+        },
+      ]
       }
     ],
   }

@@ -41,6 +41,9 @@ import PerformanceAnalysis from "../containers/StatisticalAnalysis/EquipmentAnal
 
 //统计报表
 import GeneralReport from '../containers/StatisticalAnalysis/StatisticalReport/GeneralReport/GeneralReport';
+//高级分析
+import CleanoutWarning from '../containers/AdvanceAnalysis/CleanoutModel/CleanoutWarning/CleanoutWarning';
+import CleanoutRecord from '../containers/AdvanceAnalysis/CleanoutModel/CleanoutRecord/CleanoutRecord';
 
 import Power from '../containers/Power';
 
@@ -179,7 +182,12 @@ const routers = [
     path: '/system/config/plan',
     exact: true,
     component:Plan
-  },{
+  },{//系统管理>预警配置
+    path: '/system/config/warning',
+    exact: true,
+    component: Building
+  },
+  {//电站分析
     path: '/statistical/stationaccount/allstation',
     exact: true,
     component: AllStationAnalysis
@@ -222,22 +230,20 @@ const routers = [
     path: '/statistical/statement/currency',
     exact: true,
     component: GeneralReport,
-  },{
-    path: '/analysis/assess',
+  },
+  // {
+  //   path: '/analysis/assess',
+  //   exact: true,
+  //   component: Building
+  // },
+  {//高级分析>清洗模型>清洗预警
+    path: '/analysis/cleanout/warning',
     exact: true,
-    component: Building
-  },{
-    path: '/analysis/cleanout/dirt',
-    exact: true,
-    component: Building
-  },{
+    component: CleanoutWarning
+  },{//高级分析>清洗模型>清洗计划与记录
     path: '/analysis/cleanout/record',
     exact: true,
-    component: Building
-  },{
-    path: '/analysis/cleanout/configuration',
-    exact: true,
-    component: Building
+    component: CleanoutRecord
   },
   {
     path: '/analysis/formation/abnormal',
