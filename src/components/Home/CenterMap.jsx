@@ -89,14 +89,14 @@ class CenterMap extends Component{
         type: 'effectScatter',
         coordinateSystem: 'geo',
         data: [activeData],
-        symbolSize: 8,
+        symbolSize: 10,
         animation: false,
       },{
         name: 'inactive',
         type: 'effectScatter',
         coordinateSystem: 'geo',
         data: inactiveData,
-        symbolSize: 5,
+        symbolSize: 8,
         animation: false,
       }],
       geo: {
@@ -137,14 +137,14 @@ class CenterMap extends Component{
           coordinateSystem: 'geo',
           data: windStationData, 
           symbol: 'image:///img/ico_wind.png',
-          symbolSize: [30,36],
+          symbolSize: [15,18],
         },{
           name: 'pv',
           type: 'scatter',
           coordinateSystem: 'geo',
           data: pvStationData,
           symbol: 'image:///img/ico_pv.png',
-          symbolSize: [50,33],
+          symbolSize: [25,16],
         }],
         geo: {
           silent:true,
