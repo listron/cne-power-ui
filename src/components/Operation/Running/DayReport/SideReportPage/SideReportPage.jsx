@@ -175,6 +175,7 @@ class SideReportPage extends Component {
         delete dailyReport.yesterdayyearGenInverter;
         const newDailyDetailList = dailyDetailList.map(eachLost=>{
           const lostInfo = {
+            defectId: eachLost.defectId,
             deviceName: eachLost.deviceName,
             startTime: eachLost.startTime.format('YYYY-MM-DD HH:mm'),
             endTime: eachLost.endTime && eachLost.endTime.format('YYYY-MM-DD HH:mm'),

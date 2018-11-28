@@ -1,5 +1,7 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
+// 主页
+import Homepage from '../containers/Home/Homepage';
 // 运维管理-工单
 import Ticket from '../containers/Operation/Ticket/Ticket';
 import DefectDetail from '../containers/Operation/Ticket/Defect/DefectDetail/DefectDetail';
@@ -17,6 +19,7 @@ import StationManage from '../containers/System/Station/StationManage/StationMan
 import DeviceManage from '../containers/System/Station/DeviceManage/DeviceManage';
 import PointManage from '../containers/System/Station/PointManage/PointManage';
 import AlarmManage from '../containers/System/Station/AlarmManage/AlarmManage';
+import PowerCurve from '../containers/System/Station/PowerCurve/PowerCurve';
 // 实时监控-电站监控
 import AllStation from '../containers/Monitor/StationMonitor/AllStation/AllStation';
 import DeviceMonitor from '../containers/Monitor/StationMonitor/DeviceMonitor/DeviceMonitor';
@@ -38,7 +41,8 @@ import OperateAnalysis from '../containers/StatisticalAnalysis/StationAnalysis/O
 import StationContrast from '../containers/StatisticalAnalysis/StationAnalysis/StationContrast/StationContrast';
 import PerformanceAnalysis from "../containers/StatisticalAnalysis/EquipmentAnalysis/PerformanceAnalysis/PerformanceAnalysis";
 
-import Homepage from '../containers/Home/Homepage';
+//统计报表
+import GeneralReport from '../containers/StatisticalAnalysis/StatisticalReport/GeneralReport/GeneralReport';
 
 import Plan from "../containers/System/Production/Plan/Plan";
 /*
@@ -61,8 +65,8 @@ const routers = [
   }, { // 运维管理-工单-员工定位
     path: '/operation/ticket/gps',
     exact: true,
-    component: Building,
-    // component: PersonnelGps,
+    //component: Building,
+    component: PersonnelGps,
   },{
     path: '/operation/twoTickets/typeone',
     exact: true,
@@ -163,10 +167,14 @@ const routers = [
     path: '/system/station/pointManage',
     exact: true,
     component: PointManage  // Building  PointManage
-  },{ // 系统管理-电站管理-测点
+  },{ // 系统管理-电站管理-告警事件
     path: '/system/station/alarmManage',
     exact: true,
     component: AlarmManage // Building  AlarmManage
+  },{ // 系统管理-电站管理-功率曲线
+    path: '/system/station/powerCurve',
+    exact: true,
+    component: PowerCurve // Building  AlarmManage
   },{ // 系统管理-计划配置
     path: '/system/config/plan',
     exact: true,
@@ -204,19 +212,16 @@ const routers = [
   },{
     path: '/statistical/equipment/performance',
     exact: true,
-    component: Building
+    component: PerformanceAnalysis
+    // component: Building
   },{
     path: '/statistical/equipment/manufacturers',
     exact: true,
     component: Building
   },{
-    path: '/statistical/statement/daily',
+    path: '/statistical/statement/currency',
     exact: true,
-    component: Building
-  },{
-    path: '/statistical/statement/customization',
-    exact: true,
-    component: Building
+    component: GeneralReport,
   },{
     path: '/analysis/assess',
     exact: true,

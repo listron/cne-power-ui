@@ -34,49 +34,68 @@ class StationContrast extends React.Component {
   }
   onTimeChange = (timeObj) => {
 
-    const { stationCode, year, toChangeStationContrastStore } = this.props;
+    const { stationCode, year,month, toChangeStationContrastStore } = this.props;
+    // toChangeStationContrastStore({ dateType: timeObj.timeStyle, year: [timeObj.startTime, timeObj.endTime] });
 
-    if (timeObj.timeStyle === 'year' && stationCode.length === 2) {
+    if (timeObj.timeStyle === 'year') {
       toChangeStationContrastStore({ dateType: timeObj.timeStyle, year: [timeObj.startTime, timeObj.endTime] })
-      this.props.getStationContrast({
-        stationCode: stationCode,
-        dateType: timeObj.timeStyle,
-        year: [timeObj.startTime, timeObj.endTime]
-      });
+      if (stationCode.length === 2) {
+        this.props.getStationContrast({
+          stationCode: stationCode,
+          dateType: timeObj.timeStyle,
+          year: [timeObj.startTime, timeObj.endTime]
+        });
+      }
+
     }
-    if (timeObj.timeStyle === 'month' && stationCode.length === 2) {
+    if (timeObj.timeStyle === 'month') {
       toChangeStationContrastStore({ dateType: timeObj.timeStyle, year: [timeObj.startTime] })
-      this.props.getStationContrast({
-        stationCode: stationCode,
-        dateType: timeObj.timeStyle,
-        year: [timeObj.startTime]
-      });
+      if (stationCode.length === 2) {
+        this.props.getStationContrast({
+          stationCode: stationCode,
+          dateType: timeObj.timeStyle,
+          year: [timeObj.startTime]
+        });
+      }
+
     }
-    if (timeObj.timeStyle === 'day' && stationCode.length === 2) {
+    if (timeObj.timeStyle === 'day') {
       const currentYear = [moment(timeObj.startTime).format('YYYY')];
       const currentMonth = +moment(timeObj.startTime).format('MM');
-      toChangeStationContrastStore({ dateType: timeObj.timeStyle, year: [timeObj.startTime] })
-      this.props.getStationContrast({
-        stationCode: stationCode,
-        dateType: timeObj.timeStyle,
-        year: currentYear,
-        month: currentMonth
-      });
+      toChangeStationContrastStore({ dateType: timeObj.timeStyle, year: currentYear,month:currentMonth })
+      if (stationCode.length === 2) {
+        this.props.getStationContrast({
+          stationCode: stationCode,
+          dateType: timeObj.timeStyle,
+          year: currentYear,
+          month: currentMonth
+        });
+      }
+
     }
 
 
   }
   stationSelected = (stations) => {
-    const { dateType, year } = this.props;
+    const { dateType, year,month } = this.props;
     this.props.toChangeStationContrastStore({
       stationCode: stations.map(e => e.stationCode),
       selectedStations: stations,
     });
-    this.props.getStationContrast({
-      stationCode: stations.map(e => e.stationCode),
-      dateType,
-      year,
-    });
+    if(dateType==='day'){
+      this.props.getStationContrast({
+        stationCode: stations.map(e => e.stationCode),
+        dateType,
+        year,
+        month
+      });
+    }else{
+      this.props.getStationContrast({
+        stationCode: stations.map(e => e.stationCode),
+        dateType,
+        year,
+      });
+    }
   }
 
 

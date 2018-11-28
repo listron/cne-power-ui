@@ -9,11 +9,12 @@
   border-bottom: solid 1px $promptColor;  
 }
 
-.inspectCreate {
+.inspectOrbit {
   display: flex;
   flex-direction: column;
   flex: 1;
   background-color: #fff;
+  position: relative;
   .createTop {
     @include top;
     justify-content: space-between;

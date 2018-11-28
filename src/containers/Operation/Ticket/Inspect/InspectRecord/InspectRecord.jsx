@@ -11,11 +11,10 @@ import InspectRecordFilter from '../../../../../components/Operation/Ticket/Insp
 import InspectRecordTable from '../../../../../components/Operation/Ticket/Inspect/InspectRecord/InspectRecordTable';
 class inspectRecord extends Component {
   static propTypes = {
-    onChangeShowContainer: PropTypes.func, 
+    onChangeShowContainer: PropTypes.func,
     stations: PropTypes.object,
-    getStations: PropTypes.func,
     showContainer: PropTypes.string,
-    onChangeFilter: PropTypes.func,
+    getStations: PropTypes.func,
   }
   constructor(props) {
     super(props);
@@ -29,10 +28,11 @@ class inspectRecord extends Component {
   }
 
   onCloseInspectCreate = () => {
-    this.setState({
-      showWarningTip: true,
-      warningTipText: '退出后信息无法保存!'
-    });
+    // this.setState({
+    //   showWarningTip: true,
+    //   warningTipText: '退出后信息无法保存!'
+    // });
+    this.props.onChangeShowContainer({ container: 'detail' });
   }
 
   onCancelWarningTip = () => {
@@ -47,19 +47,45 @@ class inspectRecord extends Component {
     });
     this.props.onChangeShowContainer({ container: 'detail' });
   }
+  onChangeFilter = (obj) => {
+    const { inspectId, startDate, endDate, pageNum, pageSize, userId, inspectStatus, deviceTypeCode, sortType } = this.props;
+    let filter = {
+      inspectId,
+      startDate,
+      endDate,
+      pageNum:1,
+      pageSize,
+      userId,
+      inspectStatus,
+      deviceTypeCode,
+      sortType
+    }
+    let newFiter = Object.assign({}, filter, obj);
+    this.props.getInspectDetailRecord(newFiter);
+    if(!obj.pageNum) {
+      this.props.getInspectDetailRecord(newFiter);
+    }
+   
+  }
 
   render() {
     const { showWarningTip, warningTipText } = this.state;
+    const { inspectId, startDate, endDate, pageNum, pageSize, userId, inspectStatus, deviceTypeCode, sortType } = this.props;
+    const queryParams = {
+      inspectId, startDate, endDate, pageNum, pageSize, userId, inspectStatus, deviceTypeCode, sortType
+    }
+
     return (
       <div className={styles.inspectCreate}>
-        {showWarningTip && <WarningTip style={{ marginTop: '250px', width: '210px', height: '88px' }} onCancel={this.onCancelWarningTip} onOK={this.onConfirmWarningTip} value={warningTipText} />}
+       {/* {showWarningTip && <WarningTip style={{ marginTop: '250px', width: '210px', height: '88px' }} onCancel={this.onCancelWarningTip} onOK={this.onConfirmWarningTip} value={warningTipText} />} */}
+
         <div className={styles.createTop}>
           <span className={styles.text}>巡检记录</span>
           <Icon type="arrow-left" className={styles.backIcon} onClick={this.onCloseInspectCreate} />
         </div>
         <div className={styles.createContent}>
-          <InspectRecordFilter {...this.props}  />
-          <InspectRecordTable {...this.props}  />
+          <InspectRecordFilter {...this.props} onChangeFilter={this.onChangeFilter} />
+          <InspectRecordTable {...this.props} onChangeFilter={this.onChangeFilter} />
         </div>
       </div>
     );
@@ -68,9 +94,18 @@ class inspectRecord extends Component {
 }
 
 const mapStateToProps = (state) => ({
-...state.operation.inspect.toJS()
+  ...state.operation.inspect.toJS()
 })
 const mapDispatchToProps = (dispatch) => ({
-  onChangeFilter: payload => dispatch({type:ticketAction.CHANGE_INSPECT_STORE_SAGA, payload}),
+  onChangeStore: payload => dispatch({ type: ticketAction.CHANGE_INSPECT_STORE_SAGA, payload }),
+  getInspectDetailRecord: payload => dispatch({ type: ticketAction.getInspectDetailRecord, payload }),
+  // getStationDeviceTypes: params => dispatch({
+  //   type: commonAction.getStationDeviceTypes,
+  //   payload: {
+  //     params, 
+  //     deviceTypeAction: ticketAction.GET_INSPECT_FETCH_SUCCESS,
+  //     resultName: 'stationDeviceTypes'
+  //   }
+  // }),
 })
 export default connect(mapStateToProps, mapDispatchToProps)(inspectRecord);

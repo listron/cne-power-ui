@@ -176,13 +176,14 @@
           .ant-input{
             width: 80px;
           }
-          .ant-form-item-control has-error{
-            .ant-form-explain{
-              position: absolute;
-            }
-          }
         }
       }
+      .ant-form-item-control.has-error{
+        .ant-form-explain{
+          position: absolute;
+        }
+      }
+
     }
     .resourceInfoCon{
       padding: 20px 100px 0;

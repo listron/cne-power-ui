@@ -26,7 +26,7 @@ class StationArea extends Component{
       params: {dictionaryType: 4, area: e},
       resultName: 'cityData'
     })
-    onChange([e, null, null]);
+    onChange([e, '', '']);
   }
 
   selectCity = (e)=>{
@@ -35,7 +35,7 @@ class StationArea extends Component{
       params: {dictionaryType: 4, area: e},
       resultName: 'countyData'
     })
-    onChange([value[0], e, null ]);
+    onChange([value[0], e, '']);
   }
 
   selectCounty = (e)=>{

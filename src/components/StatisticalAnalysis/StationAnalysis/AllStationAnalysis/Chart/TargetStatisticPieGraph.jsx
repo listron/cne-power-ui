@@ -35,8 +35,8 @@ class TargetStatisticPieGraph extends React.Component {
         backgroundColor: '#fff',
         formatter: function (params) {
             return '<div style="border-bottom: 1px solid #ccc; font-size: 12px;padding-bottom: 7px;margin-bottom: 7px;width:180px;overflow:hidden;">'+params.name+'</div>'
-              + '月发电量' + '：' + params.value + '万kwh<br>'
-              + '年计划完成率' + '：' + params.percent + '%<br>'         
+              + '月发电量' + '：' + params.value + '万kWh<br>'
+              + '占比' + '：' + params.percent + '%<br>'         
         },
         padding: 10,
         textStyle: {

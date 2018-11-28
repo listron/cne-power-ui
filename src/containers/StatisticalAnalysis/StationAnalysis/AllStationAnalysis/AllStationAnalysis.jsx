@@ -48,7 +48,8 @@ class AllStationAnalysis extends Component {
   
 
   componentWillUnmount() {
-
+ 
+  
   }
 
   render() {
@@ -100,7 +101,7 @@ const mapDispatchToProps = (dispatch) => ({
   getSingleStationPvCompareData: payload => dispatch({ type: allStationAnalysisAction.getSingleStationPvCompareData, payload }),
   getSingleStationYearPvCompareData: payload => dispatch({ type: allStationAnalysisAction.getSingleStationYearPvCompareData, payload }),
   getSingleStationPowerEffectiveData: payload => dispatch({ type: allStationAnalysisAction.getSingleStationPowerEffectiveData, payload }),
-
+  resetStore: payload => dispatch({ type: allStationAnalysisAction.resetStore, payload }),
 
 
 })

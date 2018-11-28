@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import styles from './pvStation.scss';
+import styles from './singleStationCommon.scss';
 import echarts from 'echarts';
 import { Radio } from 'antd';
 import moment from 'moment';
@@ -27,7 +27,7 @@ class PowerDiagramTenMin extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { powerData } = nextProps;
+    const { powerData,chartType } = nextProps;
     const { intervalTime } = this.state;
     const powerDiagram = echarts.init(document.getElementById('powerDiagram'));
 
@@ -63,7 +63,7 @@ class PowerDiagramTenMin extends Component {
           name: '理论发电量',
           icon: 'circle',
         }, {
-          name: `${intervalTime === 0 ? '日曝辐值' : (intervalTime === 1 ? '月辐射总量' : '年辐射总量')}`,
+          name: chartType==='wind'?'平均风速':`${intervalTime === 0 ? '累计曝幅值' : (intervalTime === 1 ? '月辐射总量' : '年辐射总量')}`,
           icon: 'circle',
         }],
         textStyle: {
@@ -85,7 +85,8 @@ class PowerDiagramTenMin extends Component {
             return <div></div>
           }
           let radi = '', thoryPower = '', actualPower = '', rate = '';
-          const radiObj = param.find(e => e.seriesName === (intervalTime === 0 ? '日曝辐值' : (intervalTime === 1 ? '月辐射总量' : '年辐射总量')));
+          const radiObj = param.find(e => chartType==='wind'?e.seriesName ==='平均风速':
+            e.seriesName === (intervalTime === 0 ? '累计曝幅值' : (intervalTime === 1 ? '月辐射总量' : '年辐射总量')));
           const thoryPowerObj = param.find(e => e.seriesName === '理论发电量');
           const actualPowerObj = param.find(e => e.seriesName === '实际发电量');
           const tmpRadi = radiObj && radiObj.value && !isNaN(parseFloat(radiObj.value));
@@ -94,7 +95,7 @@ class PowerDiagramTenMin extends Component {
 
 
           if (tmpRadi) {
-            radi = `<div style="padding-left: 5px;"><span style="display: inline-block; background:#f9b600; width:5px; height:5px; border-radius:100%;"></span> ${intervalTime === 0 ? '日曝辐值' : (intervalTime === 1 ? '月辐射总量' : '年辐射总量')} : ${parseFloat(radiObj.value).toFixed(2) || 0}</div>`
+            radi = `<div style="padding-left: 5px;"><span style="display: inline-block; background:#f9b600; width:5px; height:5px; border-radius:100%;"></span> ${chartType==='wind'?'平均风速':intervalTime === 0 ? '累计曝幅值' : (intervalTime === 1 ? '月辐射总量' : '年辐射总量')} : ${parseFloat(radiObj.value).toFixed(2) || 0}</div>`
           }
           if (tmpActualPower) {
             actualPower = `<div style="padding-left: 5px;"><span style="display: inline-block; background:#a42b2c;  width:5px; height:5px; border-radius:100%;"></span> 实际发电量: ${parseFloat(actualPowerObj.value).toFixed(4) || 0}</div>`
@@ -102,25 +103,32 @@ class PowerDiagramTenMin extends Component {
           if (tmpThoryPower) {
             thoryPower = `<div style="padding-left: 5px;"><span style="display: inline-block; background:#c7ceb2;  width:5px; height:5px; border-radius:100%;"></span> 理论发电量: ${parseFloat(thoryPowerObj.value).toFixed(4) || 0}</div>`
           }
-          if (completeRate && intervalTime !== 0) {
-            const hasRate = completeRate && completeRate.map(e=>e.completeRate) 
-            
+          if (completeRate && intervalTime !== 0) {// 没有完成率的情况
+            const hasRate = completeRate && completeRate.map(e=>e.completeRate)
+
             // const tmpRate = parseFloat(thoryPowerObj.value) === 0 ? '--' : (parseFloat(actualPowerObj.value) / parseFloat(thoryPowerObj.value) * 100).toFixed(2);
             let tmpRate = " "
             hasRate ? tmpRate = parseFloat((completeRate[param[2].dataIndex].completeRate) * 100).toFixed(2) : tmpRate = "--";
             rate = `<div style="padding-left: 15px;">完成率: ${tmpRate}%</div>`
           }
-          if (intervalTime !== 0) {
+          if(chartType==='wind'){
+            return `<div style="width: 150px; height: 100px;font-size:12px;line-height: 24px;background: #fff;box-shadow:0 1px 4px 0 rgba(0,0,0,0.20);border-radius:2px;">
+            <div  style="border-bottom: 1px solid #dfdfdf;padding-left: 5px;">${param[0] && param[0].name}</div>
+            ${actualPower}${thoryPower}${radi}
+          </div>`;
+          }
+          if (intervalTime !== 0) { //  年／月的情况
             return `<div style="width: 150px; height: 120px;font-size:12px;line-height: 24px;background: #fff;box-shadow:0 1px 4px 0 rgba(0,0,0,0.20);border-radius:2px;">
               <div  style="border-bottom: 1px solid #dfdfdf;padding-left: 5px;">${param[0] && param[0].name}</div>
               ${radi}${actualPower}${thoryPower}${rate}
             </div>`;
-          } else {
+          } else {  // 日的情况
             return `<div style="width: 150px; height: 100px;font-size:12px;line-height: 24px;background: #fff;box-shadow:0 1px 4px 0 rgba(0,0,0,0.20);border-radius:2px;">
               <div  style="border-bottom: 1px solid #dfdfdf;padding-left: 5px;">${param[0] && param[0].name}</div>
               ${radi}${actualPower}${thoryPower}${rate}
             </div>`;
           }
+          
 
         },
         extraCssText: 'background: rgba(0,0,0,0);',
@@ -169,7 +177,7 @@ class PowerDiagramTenMin extends Component {
           }
         },
         {
-          name: `${intervalTime === 0 ? '日曝辐值' : (intervalTime === 1 ? '月辐射总量' : '年辐射总量')}(MJ/m²)`,
+          name: chartType==='wind'?'平均风速(m/s)':`${intervalTime === 0 ? '累计曝幅值' : (intervalTime === 1 ? '月辐射总量' : '年辐射总量')}`,
           type: 'value',
           axisLabel: {
             formatter: '{value}',
@@ -225,7 +233,7 @@ class PowerDiagramTenMin extends Component {
           barWidth: 14,
         },
         {
-          name: `${intervalTime === 0 ? '日曝辐值' : (intervalTime === 1 ? '月辐射总量' : '年辐射总量')}`,
+          name: chartType==='wind'?'平均风速':`${intervalTime === 0 ? '累计曝幅值' : (intervalTime === 1 ? '月辐射总量' : '年辐射总量')}`,
           type: 'line',
           data: instantaneous,
           yAxisIndex: 1,
