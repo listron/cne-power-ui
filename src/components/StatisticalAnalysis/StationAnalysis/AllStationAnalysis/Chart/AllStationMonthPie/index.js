@@ -18,10 +18,10 @@ class AllStationMonthPie extends React.Component {
   }
 
   drawChart=(param)=>{
-    const { allStationMonthpie,yAxisName,pieTargetData, hasData} = param;
+    const { allStationMonthpie,yAxisName,pieTargetData, hasData,xAxisName} = param;
     const targetPieChart = echarts.init(document.getElementById(allStationMonthpie));
-    let reg=/\(([^()]+)\)/g;
-    let unit=reg.exec(yAxisName)[1];
+    let reg=/\((.+)\)/g;
+    let unit=reg.exec(yAxisName)[1] || "";
     targetPieChart.clear();
     targetPieChart.resize();
     const confluenceTenMinGraphic = (hasData || hasData === false) && (hasData === true ? hiddenNoData : showNoData) || " ";
@@ -37,14 +37,18 @@ class AllStationMonthPie extends React.Component {
         },
         extraCssText: "box-shadow: 0 0 3px rgba(0, 0, 0, 0.3)",
         formatter: function (params) {
+          if(params.seriesName==="PR"){
+            return '<div style="border-bottom: 1px solid #ccc; font-size: 12px;padding-bottom: 7px;margin-bottom: 7px;width:180px;overflow:hidden;">'+params.name+'</div>'
+            + yAxisName.split('(')[0] + '：' + params.value +unit+ '<br>';
+          }
           return '<div style="border-bottom: 1px solid #ccc; font-size: 12px;padding-bottom: 7px;margin-bottom: 7px;width:180px;overflow:hidden;">'+params.name+'</div>'
             + yAxisName.split('(')[0] + '：' + params.value +unit+ '<br>'
-            + '同比' + '：' + params.percent + '%<br>';
+            + '占比' + '：' + params.percent + '%<br>';
         },
       },
       series: [
         {
-          name: '发电量',
+          name: xAxisName,
           type: 'pie',
           color:['#a42b2c','#d48265','#91c7af','#749f83','#ca8622','#bda29a','#546570','#6e7074','#9b9b9b','#ceebe0'],
           radius: '55%',

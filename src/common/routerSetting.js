@@ -1,5 +1,7 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
+// 主页
+import Homepage from '../containers/Home/Homepage';
 // 运维管理-工单
 import Ticket from '../containers/Operation/Ticket/Ticket';
 import DefectDetail from '../containers/Operation/Ticket/Defect/DefectDetail/DefectDetail';
@@ -17,6 +19,7 @@ import StationManage from '../containers/System/Station/StationManage/StationMan
 import DeviceManage from '../containers/System/Station/DeviceManage/DeviceManage';
 import PointManage from '../containers/System/Station/PointManage/PointManage';
 import AlarmManage from '../containers/System/Station/AlarmManage/AlarmManage';
+import PowerCurve from '../containers/System/Station/PowerCurve/PowerCurve';
 // 实时监控-电站监控
 import AllStation from '../containers/Monitor/StationMonitor/AllStation/AllStation';
 import DeviceMonitor from '../containers/Monitor/StationMonitor/DeviceMonitor/DeviceMonitor';
@@ -41,8 +44,6 @@ import PerformanceAnalysis from "../containers/StatisticalAnalysis/EquipmentAnal
 //统计报表
 import GeneralReport from '../containers/StatisticalAnalysis/StatisticalReport/GeneralReport/GeneralReport';
 
-import Power from '../containers/Power';
-
 import Plan from "../containers/System/Production/Plan/Plan";
 /*
   注： path变量中，以/hidden开头的路径，将不展示在菜单中；
@@ -51,7 +52,7 @@ const routers = [
   {
     path: '/',
     exact: true,
-    component: Building,
+    component: Homepage,
   },
   { // 运维管理-工单-工单列表
     path: '/operation/ticket/list',
@@ -166,10 +167,14 @@ const routers = [
     path: '/system/station/pointManage',
     exact: true,
     component: PointManage  // Building  PointManage
-  },{ // 系统管理-电站管理-测点
+  },{ // 系统管理-电站管理-告警事件
     path: '/system/station/alarmManage',
     exact: true,
     component: AlarmManage // Building  AlarmManage
+  },{ // 系统管理-电站管理-功率曲线
+    path: '/system/station/powerCurve',
+    exact: true,
+    component: PowerCurve // Building  AlarmManage
   },{ // 系统管理-计划配置
     path: '/system/config/plan',
     exact: true,

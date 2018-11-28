@@ -99,7 +99,7 @@ class FilteredItemValue extends Component {
             {e && e.deviceTypeName}
           </Tag>
         ))}
-        <Tag closable onClose={this.resetAll}>清空条件</Tag>
+    {/*    <Tag closable onClose={this.resetAll}>清空条件</Tag> */}
       </div>
     );
   }

@@ -19,7 +19,7 @@ const menuData = [
     name: '主页',
     path: '/',
     defaultPath: true,
-    rightKey: 'homepage',
+    rightKey: 'monitor',
   },
   {
     name: '实时监控',
@@ -326,6 +326,11 @@ const menuData = [
           }, {
             name: '告警事件',
             path: 'alarmManage',
+            rightKey: 'system_station',
+          },
+          {
+            name: '功率曲线',
+            path: 'powerCurve',
             rightKey: 'system_station',
           }
         ]

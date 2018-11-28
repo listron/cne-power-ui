@@ -13,6 +13,4 @@ export const stationResourceAnalysisAction = {
   getResourceYearPvCompare:Symbol('getResourceYearPvCompare'), // 光资源环比
   RESET_STORE:Symbol('RESET_STORE'),
   resetStore:Symbol('resetStore'), // 重置
-
-
 }
