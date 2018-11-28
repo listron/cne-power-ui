@@ -159,6 +159,7 @@
   }
   .windProgress, .pvProgress, .middleText{ // 光伏 风电进度条
     width: 105px;
+    height: 90px;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
@@ -176,6 +177,11 @@
         }
       }
     }
+  }
+  .middleText{
+    flex: 0 0 65px;
+    color: #06bdf4;
+    line-height: 30px;
   }
 }
 

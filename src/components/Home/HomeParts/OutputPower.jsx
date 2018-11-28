@@ -3,6 +3,7 @@ import StationTypeTag from './StationTypeTag';
 import styles from './homeParts.scss';
 import PropTypes from 'prop-types';
 import echarts from 'echarts';
+import moment from 'moment';
 import { dataFormat } from '../../../utils/utilFunc';
 import { showNoData, hiddenNoData } from '../../../constants/echartsNoData';
 
@@ -51,7 +52,8 @@ class OutputPower extends Component{
     }
     let xAxisArr = [], yPowerData = [], yResourceData = [], hasData = false;
     outputPower.forEach(e=>{
-      xAxisArr.push(e.utc);
+      const xTime = e.utc && moment(e.utc).format('HH:mm');
+      xAxisArr.push(xTime);
       yPowerData.push(e.stationPower);
       yResourceData.push(e.instantaneous);
       if(e.stationPower || e.instantaneous || e.stationPower === 0 || e.instantaneous === 0){
@@ -85,7 +87,6 @@ class OutputPower extends Component{
               <div>${isWind?'m/s':'W/㎡'}${currentData.instantaneous}</div>
             </div>`
           },
-          padding: 10
         },
         xAxis: [
           {
