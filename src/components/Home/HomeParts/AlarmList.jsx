@@ -5,6 +5,7 @@ import { dataFormat } from '../../../utils/utilFunc';
 
 class AlarmList extends Component{
   static propTypes = {
+    alarmeQueryTime: PropTypes.string,
     enterpriseId: PropTypes.string,
     alarmList: PropTypes.array,
     getAlarmList: PropTypes.func,
@@ -18,12 +19,10 @@ class AlarmList extends Component{
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log('nextProps')
-    const { alarmList, getAlarmList, enterpriseId } = nextProps;
-    if (alarmList.length === 0) {
+    const { alarmeQueryTime, alarmList } = nextProps;
+    const preAlarmTime = this.props.alarmeQueryTime;
+    if(preAlarmTime !== alarmeQueryTime){ // 得到新数据
       this.getAlarmClocker && clearTimeout(this.getAlarmClocker);
-      // this.getAlarmClocker = setTimeout(getAlarmList({ enterpriseId }), 10000);
-    } else if(alarmList.length > 0) {
       this.startShowAlarm(0, alarmList);
     }
   }
@@ -35,21 +34,22 @@ class AlarmList extends Component{
 
   startShowAlarm = (activeIndex, alarmList) => {
     const { enterpriseId, getAlarmList } = this.props;
-    console.log(activeIndex)
     this.clocker && clearTimeout(this.clocker);
-    if (activeIndex + 1 === alarmList.length) { // 无告警 或者已到最后一行=> 10s后重新请求
-      // this.getAlarmClocker = setTimeout(getAlarmList({ enterpriseId }), 10000);
+    const totalCount = alarmList.length;
+    if (totalCount === 0 ) { // 无告警 10s后重新请求
+      this.getAlarmClocker = setTimeout(getAlarmList({ enterpriseId }), 10000);
+    } else if (activeIndex + 1 === totalCount ) { // 已到最后一行=> 10s后重新请求
+      this.setState({ activeIndex });
+      this.getAlarmClocker = setTimeout(getAlarmList({ enterpriseId }), 10000);
     } else {
       let scrollHeight;
-      const totalCount = alarmList.length;
       if(totalCount <= 5 || activeIndex === 0){ // 数量小于5条或激活第一条，不上滚
         scrollHeight = 0;
-      }else if(activeIndex + 1 > totalCount - 5){// 当前条数
+      }else if(activeIndex + 1 > totalCount - 5){ // 当前条数
         scrollHeight = 22 * (5 - totalCount); // 最大滚动高度，余下五条盒子不滚动
       }else if(activeIndex + 1 <= totalCount - 5){ // 正常滚动
         scrollHeight = activeIndex * (-22);
       }
-      console.log(activeIndex)
       this.setState({ activeIndex, scrollHeight });
       this.clocker = setTimeout(() => {
         this.startShowAlarm(activeIndex + 1, alarmList)

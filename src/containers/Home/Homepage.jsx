@@ -95,7 +95,6 @@ class Homepage extends Component {
       mapStation, // 电站地图
       completeRate, energySaving, operationInfo,
       getMonthPower, monthPower, // 各月发电
-      alarmList, getAlarmList, // 告警列表
     } = this.props;
     const { hasMultipleType } = this.state;
     return (
@@ -126,11 +125,7 @@ class Homepage extends Component {
             <EnergySaving energySaving={energySaving} />
             <EqpHours hasMultipleType={hasMultipleType} {...this.props} />
             <FaultList hasMultipleType={hasMultipleType} {...this.props} />
-            {/* <AlarmList 
-              enterpriseId={this.props.enterpriseId}
-              alarmList={this.props.alarmList}
-              getAlarmList={this.props.getAlarmList}
-            /> */}
+            <AlarmList {...this.props} />
           </div>
         </div>
       </div>
