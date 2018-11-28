@@ -36,7 +36,6 @@ class AlarmList extends Component{
     const { enterpriseId, getAlarmList } = this.props;
     this.clocker && clearTimeout(this.clocker);
     const totalCount = alarmList.length;
-    console.log(totalCount);
     if (totalCount === 0 ) { // 无告警 10s后重新请求
       this.getAlarmClocker = setTimeout(() => getAlarmList({ enterpriseId }), 10000);
     } else if (activeIndex + 1 === totalCount ) { // 已到最后一行=> 10s后重新请求

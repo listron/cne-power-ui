@@ -77,14 +77,15 @@ class OutputPower extends Component{
           itemHeight: 5,
         },
         tooltip: {
-          extraCssText: 'background-color: rgba(0,0,0,0.8)',
+          trigger: 'axis',
+          extraCssText: 'background-color: rgba(0, 0, 0, 0.8)',
           padding: 10,
           formatter: params => {
-            const currentData = outputPower[params.dataIndex];
+            const currentData = outputPower[params[0].dataIndex];
             return `<div class=${styles.outputTool}>
-              <div>${currentData.utc}</div>
-              <div>${isWind?'风电':'光伏'}功率 ${currentData.stationPower}月发电量</div>
-              <div>${isWind?'m/s':'W/㎡'}${currentData.instantaneous}</div>
+              <div class=${styles.time}>${params[0].name}</div>
+              <div class=${styles.text}>${isWind?'风电':'光伏'}功率: ${currentData.stationPower}MW</div>
+              <div class=${styles.text}>${isWind?'风速: ':'辐射: '}${currentData.instantaneous}${isWind?'m/s':'W/㎡'}</div>
             </div>`
           },
         },
@@ -121,9 +122,6 @@ class OutputPower extends Component{
               color: '#06bdf4',
               fontSize: 12,
             },
-            axisLine: {
-              show: false,
-            },
             axisTick: {
               show: false,
             },
@@ -158,12 +156,17 @@ class OutputPower extends Component{
             name: isWind?'风电功率':'光伏功率',
             type: 'line',
             data: yPowerData,
-          },
-          {
+            lineStyle: {
+              width: 1,
+            },
+          }, {
             name: isWind?'风速':'辐射',
             type: 'line',
             yAxisIndex: 1,
             data: yResourceData,
+            lineStyle: {
+              width: 1,
+            },
           }
         ]
     }
