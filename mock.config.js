@@ -1,3 +1,4 @@
+const homePage = require('./mock/home/homepage');
 const inspectionList = require('./mock/operation/MockinspectionList');
 const defectList = require('./mock/operation/MockDefectList');
 const enterprise = require('./mock/system/enterprise');
@@ -19,6 +20,8 @@ const allstationanalysis = require('./mock/statisticalAnalysis/allstationanalysi
 
 // as
 exports.mockConfig = [
+  ...homePage, // 首页mock
+
   ...inspectionList,
   ...defectList,
   ...dayReport, // 日报
