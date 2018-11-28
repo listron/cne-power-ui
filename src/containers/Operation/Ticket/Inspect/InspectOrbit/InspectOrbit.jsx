@@ -73,7 +73,7 @@ class InspectOrbit extends Component {
   render() {
     const { showWarningTip, warningTipText, users } = this.state;
     const { inspectTrackData, inspectUserData } = this.props;
-
+    let color=['#199475','#17C5DA', '#E373FA', '#75FAC7', '#E3BDBD','#CA6550', '#9DD8DF', '#EBC2F4', '#D0F7E8', '#DD8803', '#6F86F2', '#FFC500','#4DB98B', '#3B9BFF', '#F9DAA9', '#AEBBF5',' #E0BB3B', '#048B52', '#FF340A', '#96C3F3'];
     let data = [];
     let datas = [];
     let timeArray = [];
@@ -93,7 +93,8 @@ class InspectOrbit extends Component {
         data.push({
           date: [value.trackDate, value1.trackDate],
           coords: [[value.longitude,value.latitude], [ value1.longitude,value1.latitude]],
-          name: item.username
+          name: item.username,
+          lineStyle:{color:color[index]}
         })
       }
     })
@@ -156,6 +157,11 @@ class InspectOrbit extends Component {
       return prev.concat(next);
     }) : [];
     // console.log(itemOrbit, '线坐标');
+
+   
+     
+
+     
 
     //拿取每条线的起始坐标点，以及终点坐标点；
     let startAndEndCoord = [];
