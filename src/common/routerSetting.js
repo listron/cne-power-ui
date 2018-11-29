@@ -1,5 +1,7 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
+// 主页
+import Homepage from '../containers/Home/Homepage';
 // 运维管理-工单
 import Ticket from '../containers/Operation/Ticket/Ticket';
 import DefectDetail from '../containers/Operation/Ticket/Defect/DefectDetail/DefectDetail';
@@ -45,8 +47,6 @@ import GeneralReport from '../containers/StatisticalAnalysis/StatisticalReport/G
 import CleanoutWarning from '../containers/AdvanceAnalysis/CleanoutModel/CleanoutWarning/CleanoutWarning';
 import CleanoutRecord from '../containers/AdvanceAnalysis/CleanoutModel/CleanoutRecord/CleanoutRecord';
 
-import Power from '../containers/Power';
-
 import Plan from "../containers/System/Production/Plan/Plan";
 /*
   注： path变量中，以/hidden开头的路径，将不展示在菜单中；
@@ -55,7 +55,7 @@ const routers = [
   {
     path: '/',
     exact: true,
-    component: Building,
+    component: Homepage,
   },
   { // 运维管理-工单-工单列表
     path: '/operation/ticket/list',

@@ -19,7 +19,7 @@ const menuData = [
     name: '主页',
     path: '/',
     defaultPath: true,
-    rightKey: 'homepage',
+    rightKey: 'monitor',
   },
   {
     name: '实时监控',
