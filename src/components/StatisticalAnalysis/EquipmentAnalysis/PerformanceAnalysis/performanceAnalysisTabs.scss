@@ -30,10 +30,12 @@
     .textStyle{
       background:#f8f8f8;
       border-radius:4px;
-      height:60px;
+      // height:60px;
       padding-left: 32px;
-      
-
+      div{
+        height: 30px;
+        line-height: 30px;
+      }
       
     }
     .chart{
