@@ -23,7 +23,7 @@ function *resetStore(){
 
 
 
-export function* watchStationManage() {
+export function* watchCleanoutWarning() {
   yield takeLatest(cleanoutWarningAction.CHANGE_CLEANOUT_WARNING_STORE_SAGA, changeCleanoutWarningStore);
   yield takeLatest(cleanoutWarningAction.resetStore, resetStore);
  

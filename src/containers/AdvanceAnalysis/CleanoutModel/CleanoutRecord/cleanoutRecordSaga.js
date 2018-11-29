@@ -4,10 +4,10 @@ import { message } from 'antd';
 import Path from '../../../../constants/path';
 import { cleanoutRecordAction } from './cleanoutRecordAction';
 
-function *changeCleanoutWarningStore(action){ // 存储payload指定参数，替换reducer-store属性。
+function *changeCleanoutRecordStore(action){ // 存储payload指定参数，替换reducer-store属性。
   const { payload } = action;
   yield put({
-    type:  cleanoutRecordAction.CHANGE_CLEANOUT_WARNING_STORE,
+    type:  cleanoutRecordAction.CHANGE_CLEANOUT_RECORD_STORE,
     payload,
   })
 }
@@ -23,8 +23,8 @@ function *resetStore(){
 
 
 
-export function* watchStationManage() {
-  yield takeLatest(cleanoutRecordAction.CHANGE_CLEANOUT_WARNING_STORE_SAGA, changeCleanoutWarningStore);
+export function* watchCleanoutRecord() {
+  yield takeLatest(cleanoutRecordAction.CHANGE_CLEANOUT_RECORD_STORE_SAGA, changeCleanoutRecordStore);
   yield takeLatest(cleanoutRecordAction.resetStore, resetStore);
  
 }
