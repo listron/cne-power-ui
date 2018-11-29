@@ -137,7 +137,7 @@ class InspectTimeLine extends Component {
           {processData.map((item, index,) => {
             return (
               <Timeline.Item dot={this.renderIcon(item, index === processData.size - 1)} key={'timeline' + index}>
-                {this.renderItem(item, index === processData.size - 1,)}
+                {this.renderItem(item, index === processData.size ,)}
               </Timeline.Item>
             );
           })}
