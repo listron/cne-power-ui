@@ -30,17 +30,7 @@ class AllStationAnalysis extends Component {
     super(props);
   }
   componentDidMount() {
-    // const { getAllStationAvalibaData, year, dateType } = this.props;
-    // const currentYear = moment().format('YYYY');
-    // let time = year ? year : [`${currentYear}`];
-    // console.log(time);
-    // const userId = getCookie('userId');
-    // const params= {
-    //     userId: userId,
-    //     year: time,
-    //     dateType,
-    //   }
-    // getAllStationAvalibaData(params)
+    
   }
   componentWillReceiveProps(nextProps) {
     
