@@ -1,7 +1,7 @@
 import { all } from 'redux-saga/effects';
 import { watchCommon } from './alphaRedux/commonSaga';
-
 import { watchLogin } from './Login/loginSaga';
+import { watchHomepage } from './Home/homepageSaga';
 
 import { watchChangeShowContainer } from './Operation/Ticket/ticketSaga';
 import { watchDefect } from './Operation/Ticket/Defect/defectSaga';
@@ -38,10 +38,9 @@ import { watchPlan } from './System/Production/Plan/planSaga';
 // root saga
 export default function* rootSaga() {
   yield all([
-    //common
-    watchCommon(),
-    //登陆注册
-    watchLogin(),
+    watchCommon(), // common
+    watchLogin(), // 登录注册
+    watchHomepage(), // 主页
     //ticket
     watchChangeShowContainer(),
     watchDefect(),//Defect

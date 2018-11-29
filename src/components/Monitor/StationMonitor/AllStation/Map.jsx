@@ -5,7 +5,7 @@ import { withRouter } from 'react-router-dom';
 import { message } from "antd";
 import echarts from 'echarts';
 import bmap from 'echarts/extension/bmap/bmap';
-
+console.log(bmap)
 
 class Map extends Component {
   static propTypes = {
@@ -212,7 +212,12 @@ class Map extends Component {
         }
       }]
     };
-    testChart.setOption(option)
+    try{
+      testChart.setOption(option);
+    }catch(error){
+      message.error('中国地图获取失败,请稍后刷新重试');
+      console.log(error);
+    }
     testChart.on('click', (params) => {
       if (params.data.stationStatus !== '900') {
         return this.props.history.push(`/monitor/singleStation/${params.data.stationCode}`)

@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux'
 
 import common from './alphaRedux/commonReducer';
+import homepage from './Home/homepageReducer';
 import operation from './Operation/operationReducer';
 import system from './System/systemReducer';
 import login from './Login/loginReducer';
@@ -11,6 +12,7 @@ import statisticalAnalysisReducer from './StatisticalAnalysis/statisticalAnalysi
 
 const appReducer = combineReducers({
   common, 
+  homepage,
   operation, 
   login, 
   system ,
