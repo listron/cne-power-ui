@@ -163,7 +163,7 @@ class OrbitMap extends Component {
           tooltip: {
             enterable: true,
             formatter: (params,orbitList) => {
-              console.log(params,orbitList);
+              // console.log(params,orbitList);
               return `<div style='display:flex; flex-direction: column;'>
             <div style='width:30px;height:30px;'><img src='/img/people.png'>${params.name}</div>
             <div style='height:30px;line-height:30px'>${params.data.date}</div>
@@ -235,7 +235,13 @@ class OrbitMap extends Component {
         },
       ]
     };
-    testChart.setOption(option)
+    try{
+      testChart.setOption(option);
+    }catch(error){
+      message.error('中国地图获取失败,请稍后刷新重试');
+      console.log(error);
+    }
+    // testChart.setOption(option)
   }
  
   render() {

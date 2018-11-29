@@ -15,9 +15,7 @@ class GpsMap extends Component {
   }
   constructor(props) {
     super(props)
-    // this.state = {
-    //   barData: []
-    // }
+    
   }
   
   componentDidMount() {
@@ -191,7 +189,12 @@ class GpsMap extends Component {
         }
       }]
     };
-    testChart.setOption(option)
+    try{
+      testChart.setOption(option);
+    }catch(error){
+      message.error('中国地图获取失败,请稍后刷新重试');
+      console.log(error);
+    }
     // testChart.on('click', (params) => {
     //   if(params.data.stationStatus!=='900'){
     //   return this.props.history.push(`/monitor/singleStation/${params.data.stationCode}`)  
