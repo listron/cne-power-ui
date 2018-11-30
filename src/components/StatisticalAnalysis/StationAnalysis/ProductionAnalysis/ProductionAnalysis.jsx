@@ -333,7 +333,7 @@ class ProductionAnalysis extends React.Component {
             <div className={styles.stationFilter}>
               <span className={styles.text}>条件查询</span>
               <StationSelect
-                data={stations.toJS()}
+                data={stations.toJS().filter(e => e.stationType === 1)}
                 holderText={'电站名-区域'}
                 value={station.length > 0 ? station : []}
                 onChange={this.stationSelected}

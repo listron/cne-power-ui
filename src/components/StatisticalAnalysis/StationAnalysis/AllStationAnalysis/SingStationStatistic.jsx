@@ -464,7 +464,7 @@ class SingleStationStatistic extends React.Component {
     const lostPowerYearOnYear = singleStationLostPowerData.map(e => e.yearOnYear) ||[];
     const lostHasData=lostPowerThatYear.some(e=>e||e===0)||lostPowerLastYear.some(e=>e||e===0)||lostPowerRingRatio.some(e=>e||e===0)||lostPowerYearOnYear.some(e=>e||e===0)
     const { showStationSelect } = this.state;
-    const stationItems = stations&&stations.toJS();
+    const stationItems = stations && stations.toJS();
     const stationItem = stationItems.filter(e => (e.stationCode.toString() === singleStationCode))[0];
     const stationGridTime = stationItem.onGridTime ? moment(stationItem.onGridTime).format('YYYY年MM月DD日') : '--';
     //console.log(stationItem);
@@ -475,7 +475,7 @@ class SingleStationStatistic extends React.Component {
         <div className={styles.componentContainer}>
           <div className={styles.title}>
             {showStationSelect &&
-              <ChangeStation stations={stationItems} stationName={stationItem.stationName} baseLinkPath="/statistical/stationaccount/allstation" hideStationChange={this.hideStationChange} />
+              <ChangeStation stations={stationItems.filter(e => e.stationType === 1)} stationName={stationItem.stationName} baseLinkPath="/statistical/stationaccount/allstation" hideStationChange={this.hideStationChange} />
             }
             <div className={styles.titleLeft}>
               <div onClick={() => this.setState({ showStationSelect: true })} className={styles.stationName}>
