@@ -116,8 +116,11 @@ class SingleStationStatistic extends React.Component {
 
   }
   componentWillReceiveProps(nextProps) {
-    const { year, userId, dateType, singleStationCode, changeAllStationStore, getSingleStationStatisticData, getAllStationAvalibaData, getSingleStationPowerEffectiveData, getSingleStationPvCompareData, getSingleStationTargetData, getSingleStationPlanRateData, getSingleStationMonthPieData, getSingleStationDayCompleteRateData } = this.props;
+    const { year, userId, dateType, singleStationCode, changeAllStationStore, getSingleStationStatisticData, getAllStationAvalibaData, getSingleStationPowerEffectiveData, getSingleStationPvCompareData, getSingleStationTargetData, getSingleStationPlanRateData, getSingleStationMonthPieData, getSingleStationDayCompleteRateData,stations } = this.props;
     const { stationCode } = this.props.match.params;
+    let allStations=stations.toJS();
+    let singleStationType=allStations.length>0&&allStations.filter(e=>e.stationCode===Number(stationCode))[0].stationType;
+      console.log(singleStationType);
     const currentYear = [moment().format('YYYY')];
     const currentTableYear = Number(moment().format('YYYY'));
     const currentMonth = Number(moment().format('MM'));
@@ -255,6 +258,8 @@ class SingleStationStatistic extends React.Component {
           userId: userId,
           year: rangeYear,
           dateType: nextProps.dateType,
+          stationCode,
+          stationType:singleStationType
         })
       getSingleStationStatisticData(
         {
@@ -338,6 +343,8 @@ class SingleStationStatistic extends React.Component {
           userId: userId,
           year: nextrRangeYear,
           dateType: nextProps.dateType,
+          stationCode,
+          stationType:singleStationType
         })
       getSingleStationStatisticData(
         {
@@ -410,6 +417,7 @@ class SingleStationStatistic extends React.Component {
     const statisticTime = moment().subtract(1, 'days').format('YYYY年MM月DD日');
     const currentYear = parseInt(year).toString();
     const lastYear = (parseInt(year) - 1).toString();
+  
     //发电量数据
     const barGraphThatYear = singleStationPowerData.map(e=>e.thatYearData) || [];
     const barGraphLastYear = singleStationPowerData.map(e=>e.lastYearData)||[];

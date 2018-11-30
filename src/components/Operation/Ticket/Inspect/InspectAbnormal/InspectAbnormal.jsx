@@ -91,13 +91,14 @@ class InspectAbnormal extends Component {
         // /> 
         <AbnormalItem 
         key={'abnormal'+index}
-        status="select"
+        status="delete"
         item={item}
         onShowDetail={this.onShowDetail}
         disabled={item.get('isTransform') === '1'}
         checked={this.props.selectedIds.includes(item.get('abnormalId'))}
         selected={this.state.abnormalId === item.get('abnormalId')}
         onSelect={this.props.onSelectItem}
+        onDelete={this.props.onDeleteAbnormal}
       />
           
         );
@@ -187,21 +188,21 @@ class InspectAbnormal extends Component {
       if(detail) {
         const defectTypeName = detail.get('defectTypeName');
         const defectParentTypeName = detail.get('defectParentTypeName') || '';
-        const defectTypeText = `${defectTypeName}/${defectParentTypeName}`;
+        const defectTypeText = `${defectParentTypeName}/${defectTypeName}`;
         const detailImages = detail.get('photoAddress')?detail.get('photoAddress').split(','): [];
         return (
           <div className={styles.abnormalDetail}>
             <div className={styles.detailItem}>
-              设备类型<span>{detail.get('deviceTypeName')}</span>
+              设备类型<span title={detail.get('deviceTypeName')}>{detail.get('deviceTypeName')}</span>
             </div>
             <div className={styles.detailItem}>
-              设备名称<span>{detail.get('deviceName')}</span>
+              设备名称<span title={detail.get('deviceName')}>{detail.get('deviceName')}</span>
             </div>
             <div className={styles.detailItem}>
-              缺陷类型<span>{defectTypeText}</span>
+              缺陷类型<span title={defectTypeText}>{defectTypeText}</span>
             </div>
             <div className={styles.detailItem}>
-              异常描述<span>{detail.get('abnormalDescribe')}</span>
+              异常描述<span title={detail.get('abnormalDescribe')}>{detail.get('abnormalDescribe')}</span>
             </div>
             <div className={styles.viewImg}>
               <ImgUploader editable={false} data={detailImages.map(e=>({

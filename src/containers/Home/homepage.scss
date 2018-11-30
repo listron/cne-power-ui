@@ -1,0 +1,37 @@
+
+@media screen and (max-width: 1919px) { // 1920以下宽度屏按1680展示
+  .mapInfo{
+    width: 832px;
+  }
+}
+
+@media screen and (min-width: 1920px){ // 1920及以上屏幕按1920展示
+  .mapInfo{
+    width: 996px;
+  }
+}
+
+.homepage{
+  background:#0c2539;
+  overflow: auto;
+  display: flex;
+  min-height: 100vh;
+  flex-wrap: wrap;
+  background-image: url('/img/tiltebg.png'),url('/img/homepage.png');
+  background-position: center 40px, center 189px;
+  background-repeat: no-repeat, no-repeat;
+  .innerContent{
+    margin: 0 auto;
+    .middleBox{
+      height: 750px;
+      display: flex;
+      .mapInfo{
+        margin: 12px 12px 0 12px;
+      }
+    }
+    .bottomBox{
+      height: 257px;
+      display: flex;
+    }
+  }
+}

@@ -1,0 +1,96 @@
+@import '../../../../theme/theme';
+.PowerCurve {
+    display: flex;
+    flex: 1;
+    background: #ececec;
+    .contentMain {
+        border: 1px solid #e1e2e2;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        flex: 1 0 auto;
+        width: 100%;
+        margin: 24px 24px 0;
+        background: #fff;
+        .selectSearth {
+            display: flex;
+            flex-direction: row;
+            height: 69px;
+            border-bottom: 1px solid #f1f1f1;
+            >span {
+                margin-left: 28px;
+                font-size: 14px;
+                color: #666666;
+                line-height: 69px;
+            }
+            >div {
+                margin-left: 20px;
+                margin-top: 15px;
+                line-height: 40px;
+            }
+            .deviceModeName {
+                margin-top: 20px;
+            }
+        }
+        .Button {
+            line-height: 80px;
+            .export{
+                margin-left: 20px;
+            }
+            .download{
+                margin-left: 20px;
+                margin-right: 20px;
+            }
+        }
+        .pagination {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 20px;
+        }
+        .PowerCurveTable {
+            margin-top: -45px;
+        }
+        .look {
+            span {
+                cursor: pointer;
+                display: block;
+                &:hover i {
+                    color: $themeColor
+                }
+            }
+        }
+        :global {
+            .ant-table-placeholder {
+                border-bottom: none
+            }
+        }
+    }
+    .powerCurveChartBox {
+        box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.20);
+        display: flex;
+        flex: 1 0 auto;
+        width: 50%;
+        margin: 24px 24px 0;
+        background: #fff;
+        z-index: 15;
+        padding: 25px;
+        flex-direction: column;
+        .top {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            line-height: 30px;
+            height: 30px;
+            width: 87%;
+            color: #666666;
+            >span {
+                cursor: pointer;
+            }
+        }
+        .powerCurveChart {
+            display: flex;
+            width: 90%;
+            height: 350px;
+        }
+    }
+}

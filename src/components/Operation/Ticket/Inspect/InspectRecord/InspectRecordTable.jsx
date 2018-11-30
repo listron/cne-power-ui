@@ -4,6 +4,8 @@ import React, { Component } from 'react';
 import CommonPagination from '../../../../Common/CommonPagination';
 import styles from './inspectRecord.scss';
 import { Link } from 'react-router-dom';
+import ImgUploader from '../../../../Common/Uploader/ImgUploader';
+
 const confirm = Modal.confirm;
 const Option = Select.Option;
 class InspectRecordTable extends Component {
@@ -67,6 +69,9 @@ class InspectRecordTable extends Component {
       title: '巡检状态',
       dataIndex: 'recordStatus',
       key: 'recordStatus',
+      render: (text, record) => {
+        return text==='1' ? '有异常' : '无异常'
+      },
     }, {
       title: '异常设备类型',
       dataIndex: 'deviceTypeName',
@@ -90,7 +95,7 @@ class InspectRecordTable extends Component {
       dataIndex: 'recordDesc',
       key: 'recordDesc',
       render: (text, record) => {
-        return text ? text : '--'
+        return {children:(<div title={record.recordDesc} className={styles.widthStyle}>{record.recordDesc}</div>)}
       },
     }, {
       title: '查看照片',
@@ -110,15 +115,22 @@ class InspectRecordTable extends Component {
     }];
     return columns;
   }
+  // phoneAddressArray.map((e,i)=>(
+  //   <img src={e} width="120px" height="120px" />
+  // ))
+ 
+
   renderInspectPopover(text,record,index) {
   //  const phoneAddress=text||'';
   let phoneAddressArray=text&&text.split(',');
     return (
       <div className={styles.PopoverStyles}>
         <div>
-        {phoneAddressArray&&phoneAddressArray.map((e,i)=>(
-          <img src={e} width="120px" height="120px" />
-        ))}
+        {phoneAddressArray&& <ImgUploader editable={false} data={phoneAddressArray.map(e=>({
+          uid: e,
+          rotate: 0,
+          thumbUrl: `${e}?${Math.random()}`
+        }))} />}
         </div>
         {/*<div className={styles.recordButton}>
           <Button className={styles.ticketButton}>
@@ -131,7 +143,7 @@ class InspectRecordTable extends Component {
   }
   render() {
     const { pageSize, pageNum, inspectList, selectedRowKeys, totalCount, loading, inspectDetailRecord } = this.props;
-    // console.log(inspectDetailRecord);
+    //  console.log(inspectDetailRecord);
     const columns = this.initColumn();
     return (
       <div className={styles.inspectTable}>
@@ -140,7 +152,7 @@ class InspectRecordTable extends Component {
           <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalCount} onPaginationChange={this.onPaginationChange} />
         </div>
         <Table
-          rowKey={(record) => { return record.username }}
+          rowKey={(record) => { return record.recordDate }}
           dataSource={inspectDetailRecord}
           // dataSource={inspectList.toJS()}
           columns={columns}
