@@ -23,11 +23,13 @@ class OutputTenMin extends Component {
     super(props);
   }
 
+  
+
+
   componentWillReceiveProps(nextProps) {
     const { capabilityData,yXaisName,chartType } = nextProps;
     const capabilityDiagram = echarts.init(document.getElementById('capabilityDiagram'));
     const lineColor = '#666';
-    // console.log('capabilityPower',capabilityPower)
     const capabilityPower = capabilityData.map(e => e.stationPower);
     const capabilityRadiation = capabilityData.map(e => e.instantaneous);
     const filterCapabilityPower = capabilityData.filter(e => e.stationPower);
@@ -41,6 +43,7 @@ class OutputTenMin extends Component {
     }
     const minPower = Math.min(...capabilityPower);
     const minRadiation = Math.min(...capabilityRadiation);
+    const color=this.getColor(chartType);
     const capabilityOption = {//出力图
       graphic: capabilityGraphic,
       title: {
@@ -86,6 +89,7 @@ class OutputTenMin extends Component {
         },
         extraCssText:'background: rgba(0,0,0,0);',
       },
+      color:color,
       calculable: true,
       xAxis: {
           type: 'category',
@@ -158,23 +162,15 @@ class OutputTenMin extends Component {
       series: [
         {
           name: '功率',
-          type: 'line',
+          type: 'line',  
           smooth: true,
           data: capabilityPower,
           yAxisIndex: 0,
           areaStyle: {
             color: '#fff2f2',
           },
-          itemStyle: {
-            opacity: 0,
-          },
           axisTick: {
             show: false,
-          },
-          lineStyle: {
-            type: 'solid',
-            color: '#c57576',
-            width: 1,
           },
         },
         {
@@ -182,23 +178,31 @@ class OutputTenMin extends Component {
           type: 'line',
           data: capabilityRadiation,
           yAxisIndex: 1,
-          itemStyle: {
-            color: "#199475",
-            opacity: 0,
-          },
           axisTick: {
             show: false,
           },
           lineStyle: {
             type: 'dotted',
-            color: '#199475',
-            width: 1,
           },
         }
       ]
     }
     capabilityDiagram.setOption(capabilityOption);
     capabilityDiagram.resize();
+  }
+
+
+  getColor=(type)=>{
+    let result=[];
+    switch(type){
+      case 'wind':
+      result=['#c57576','#3e97d1'];
+      break;
+      default:
+      result=['#c57576','#199475'];
+      break;
+    }
+    return result;
   }
 
   render() {
