@@ -49,8 +49,20 @@ var initState = Immutable.fromJS({
   deviceTypeItems: [], // 电站下的设备类型
   devices: [], // 设备列表
   partitions: [], // 方阵列表
+  startDate:'',//巡检开始时间 inspectId, startDate, endDate, pageNum, pageSize,userId,inspectStatus,deviceTypeCode,sortType
+  endDate:'',//巡检结束时间
   allSeries: [], // 所有光伏组件
   firstPartitionCode: null,
+  inspectUsers:[],//巡检用户列表
+  userId:'',//巡检人id
+  //stationDeviceTypes:'',//某电站下的设备类型
+  inspectStatus:null,//巡检状态
+  deviceTypeCode:'',//设备类型Id
+  inspectDetailRecord:[],//巡检记录详情数据
+  sortType:0,//0是正序1是倒序
+  totalCount:0,//巡检记录列表的数据个数
+  inspectUserData:[],//巡检轨迹的人员
+  inspectTrackData:[],//巡检轨迹的数据坐标
 });
 
 const inspectReducer = (state = initState, action) => {

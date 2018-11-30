@@ -4,7 +4,23 @@
   flex-direction: column;
   flex: 1;
   background: #fff;
-
+  .AlarmStatisticByTypeBox{
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    .singleAlarmFilter{
+      background:#f8f8f8;
+      width:100%;
+      height:40px;
+      line-height: 40px;
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-end;
+    }
+  } 
+  .operation{
+    cursor: pointer;
+  }
   :global{
     .ant-tabs-nav-scroll{
       background-color: #f8f8f8;
@@ -108,6 +124,7 @@
             color: #199475;
           }
           .icon {
+            cursor: pointer;
             color: $themeColor;
             margin-right: 15px;
             font-size: 18px;
@@ -130,6 +147,7 @@
             }
           }
           .status {
+            cursor: pointer;
             margin-right: 4px;
           }
           .time{
@@ -144,7 +162,7 @@
           width: 60px;
           line-height: 60px;
           text-align: center;
-          padding: 0 30px;
+          // padding: 0 30px;
           color: $darkColor;
           cursor: pointer;
         }
@@ -172,10 +190,11 @@
           .dataGraph{
             display: flex;
             flex-direction: row;
-            width: 100%;
+            flex: 1;
             height: 300px;
+            margin-right: 24px;
             >div:nth-child(1){
-              flex: 6;
+              flex: 5;
             }
             >div:nth-child(2){
               flex: 4;

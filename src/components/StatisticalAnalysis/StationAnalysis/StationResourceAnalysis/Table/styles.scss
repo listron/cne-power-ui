@@ -7,8 +7,8 @@
     justify-content: space-between;
   }
   .tableList {
-    height: 247px;
-    overflow: hidden;
+    height: 274px;
+    overflow-y:hidden;
     :global{
       .ant-table-small > .ant-table-content > .ant-table-scroll > .ant-table-header > table > .ant-table-thead > tr > th{
         background-color: #199475;
@@ -24,6 +24,9 @@
       }
       .ant-table-small > .ant-table-content > .ant-table-fixed-left > .ant-table-body-outer > .ant-table-body-inner > table > .ant-table-tbody > tr > td{
         padding: 0 5px
+      }
+      .ant-table-thead > tr > th .ant-table-column-sorter-up.on, .ant-table-thead > tr > th .ant-table-column-sorter-down.on{
+        color: #ddd;
       }
     }
   }

@@ -19,6 +19,8 @@ export default {
     getStationPoints: '/v3/management/devicepointcode', // 电站(必填) 设备类型，设备型号，获取所有测点基本信息
     findDeviceExist: '/v3/performance/queryByDeviceName', // 验证设备是否存在
     getLostGenType: '/v3/faulttype/getlist', // 故障损失类型
+    getStationBelongTypes: '/v3/management/total', // 获取电站可能的所属的各种分类信息
+    getStationTargetInfo: '/v3/management', // 获取电站指定指标分类： 省市县等。
     // getRefreshToken: '/v3/oauth/token' --todo 根据过期token中携带的refreshToken获取新token接口。
   },
   APISubPaths: {
@@ -81,6 +83,11 @@ export default {
       deleteAbnormal: '/v3/inspect/deleteabnormal',
       getInspectStandard:'/v3/inspect/getstandard',
       inspectCheckBatch:'/v3/inspect/check/batch',
+      getInspectDetailRecord:'/v3/inspect/record',//获取巡检记录
+      getPersonnelGpsData:'/v3/location',//获取员工位置
+      getInspectUsers:'/v3/user/getusers',//获取巡检人员
+      getInspectOrbit:'/v3/inspect/track',//获取巡航轨迹
+
     },
     operation: { // 运维管理
       getDayReportList: '/v3/performance/dailyreportlist', //获取各电站日报统计列表
@@ -189,6 +196,10 @@ export default {
       transferAlarm: '/v3/alarm',//告警转工单
       relieveAlarm: '/v3/alarm/relievealarm',//屏蔽告警
       resetRelieveAlarm: '/v3/alarm/delrelievealarm',//取消屏蔽告警
+
+      getFanList:'/v3/monitor/windturbine/datalist', // 风机实时数据列表
+      windturbine:'/v3/monitor/windturbine',  //风机实时数据
+      sequencechart:'/v3/monitor/windturbine/sequencechart'
     },
     other: {
       editPassword: '/v3/user/password', // 更变密码
@@ -231,6 +242,10 @@ export default {
      getResourceYearLight:'/v3/performance/resource/distribution/year',
      getResourceMonthWeather:'/v3/performance/resource/weather/years',
      getResourceDayWeather:'/v3/performance/resource/weather/day',
+
+     //通用报表
+     dailyreport:'v3/performance/dailyreport',
+     
     }
   }
 }

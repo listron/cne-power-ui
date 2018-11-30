@@ -1,7 +1,7 @@
 import React from "react";
-
 import echarts from 'echarts';
 import PropTypes from 'prop-types';
+import { showNoData, hiddenNoData } from '../../../../../constants/echartsNoData';
 
 /* 
   1 必填   graphId 图表的id名
@@ -72,7 +72,7 @@ class PowerEfficency extends React.Component {
     switch (type) {
       case 'hours': name = '等效利用小时数'; break;
       case 'light': name = '辐射总量'; break;
-      case 'pr': name = 'pr'; break;
+      case 'pr': name = 'PR'; break;
       case 'planPower': name = '计划发电量'; break;
       case 'actualPower': name = '实际发电量'; break;
       case 'planRate': name = '计划完成率'; break;
@@ -82,7 +82,7 @@ class PowerEfficency extends React.Component {
   }
 
   drawChart = (params) => {
-    const { graphId, title,data} = params;
+    const { graphId, title,data,hasData} = params;
     const targetChart = echarts.init(document.getElementById(graphId));
     let color = this.getColor(title);
     let seriesData = [];
@@ -118,7 +118,9 @@ class PowerEfficency extends React.Component {
       }
       seriesData.push(json);
     }
+    const confluenceTenMinGraphic = (hasData || hasData === false) && (hasData === true ? hiddenNoData : showNoData) || " ";
     const targetMonthOption = {
+      graphic: confluenceTenMinGraphic,
       tooltip: {
         trigger: 'axis',
         axisPointer: { type: 'cross' },
@@ -132,7 +134,8 @@ class PowerEfficency extends React.Component {
         formatter: function (params) {
           let paramsItem = '';
           params.map((item, index) => {
-            return paramsItem += `<div> <span style="display: inline-block;width: 5px;height: 5px;border-radius: 50%;background:${color[index]};vertical-align: 3px;margin-right: 3px;"> </span> ${params[index].seriesName} :${params[index].value}</div>`
+            return paramsItem += `<div> <span style="display: inline-block;width: 5px;height: 5px;border-radius: 50%;background:${color[index]};vertical-align: 3px;margin-right: 3px;"> </span> ${params[index].seriesName} :${params[index].value === 0 || params[index].value ? params[index].value : '--'}${(params[index].seriesName ==='计划完成率'||params[index].seriesName ==='pr') && '%'||''}
+            </div>`
           });
           return `<div  style="border-bottom: 1px solid #ccc;padding-bottom: 7px;margin-bottom: 7px;width:180px;overflow:hidden;"> <span style="float: left">${params[0].name} </span></div>
            ${paramsItem}`
@@ -150,7 +153,8 @@ class PowerEfficency extends React.Component {
       },
       color: this.getColor(title),
       grid: {
-        right: '15%'
+        right: '20%',
+        left:'12%'
       },
       legend: {
         icon: 'circle',
@@ -236,14 +240,13 @@ class PowerEfficency extends React.Component {
       ],
       series:seriesData || []
     };
-    targetChart.setOption(targetMonthOption)
+    targetChart.setOption(targetMonthOption,{notMerge:true})
     targetChart.resize();
   }
 
   render() {
     const { graphId, } = this.props;
     return (
-      // <div id={graphId} style={{width: '55%', height: "300px",}}></div>
       <div id={graphId}></div>
     )
   }

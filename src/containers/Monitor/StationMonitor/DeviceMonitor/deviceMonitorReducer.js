@@ -12,6 +12,8 @@ var initState = Immutable.fromJS({
   deviceTenMin: [],  // 单设备10min数据
   devicePointData: [],  // 设备测点数据
   deviceAlarmList: [],  // 设备告警列表
+  windturbineData:{},   // 单风机详情 
+  sequencechart:{},  // 单风机图表数据
 });
 
 const deviceMonitorReducer = (state = initState, action) => {

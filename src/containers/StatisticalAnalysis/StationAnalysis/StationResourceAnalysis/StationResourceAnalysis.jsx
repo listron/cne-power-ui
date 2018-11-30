@@ -4,7 +4,8 @@ import { connect } from "react-redux";
 import styles from "./stationResourceAnalysis.scss";
 import { stationResourceAnalysisAction } from './stationResourceAnalysisAction';
 import PropTypes from "prop-types";
-import { getCookie } from '../../../../utils/index.js';
+// import { getCookie } from '../../../../utils/index.js';
+import Cookie from 'js-cookie';
 import StationResourceAnalysis from '../../../../components/StatisticalAnalysis/StationAnalysis/StationResourceAnalysis/StationResourceAnalysis';
 
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
@@ -14,22 +15,16 @@ import Footer from '../../../../components/Common/Footer';
 class ResourceAnalysisContainer extends Component {
   static propTypes = {
     location: PropTypes.object,
+    resetStore: PropTypes.func,
   }
 
   constructor(props) {
     super(props);
   }
-
-  componentWillReceiveProps(nextProps) {
-  
-  }
-
   componentWillUnmount() {
-   
+    this.props.resetStore()
   }
-
   render() {
-
     const breadCrumbData = {
       breadData: [
         {
@@ -53,7 +48,7 @@ const mapStateToProps = (state) => {
   return {
      ...state.statisticalAnalysisReducer.stationResourceAnalysisReducer.toJS(),
     stations: state.common.get('stations'),
-    userId : getCookie('userId'),
+    userId : Cookie.get('userId'),
      
      
   }
@@ -68,6 +63,7 @@ const mapDispatchToProps = (dispatch) => ({
   getResourceDayWeather: payload => dispatch({ type: stationResourceAnalysisAction.getResourceDayWeather, payload }),
   getResourcePvCompare: payload => dispatch({ type: stationResourceAnalysisAction.getResourcePvCompare, payload }),
   getResourceYearPvCompare: payload => dispatch({ type: stationResourceAnalysisAction.getResourceYearPvCompare, payload }),  
+  resetStore: payload => dispatch({ type: stationResourceAnalysisAction.resetStore, payload }),  
 })
 
 

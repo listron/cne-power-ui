@@ -3,6 +3,7 @@ import { Route } from 'react-router-dom';
 // 运维管理-工单
 import Ticket from '../containers/Operation/Ticket/Ticket';
 import DefectDetail from '../containers/Operation/Ticket/Defect/DefectDetail/DefectDetail';
+import PersonnelGps from '../containers/Operation/Ticket/PersonnelGps/PersonnelGps';
 
 import DayReport from '../containers/Operation/Running/DayReport/DayReport'; // 日报
 
@@ -37,6 +38,9 @@ import OperateAnalysis from '../containers/StatisticalAnalysis/StationAnalysis/O
 import StationContrast from '../containers/StatisticalAnalysis/StationAnalysis/StationContrast/StationContrast';
 import PerformanceAnalysis from "../containers/StatisticalAnalysis/EquipmentAnalysis/PerformanceAnalysis/PerformanceAnalysis";
 
+//统计报表
+import GeneralReport from '../containers/StatisticalAnalysis/StatisticalReport/GeneralReport/GeneralReport';
+
 import Power from '../containers/Power';
 
 import Plan from "../containers/System/Production/Plan/Plan";
@@ -57,7 +61,12 @@ const routers = [
     path: '/operation/ticket/statistics',
     exact: true,
     component: Building,
-  }, {
+  }, { // 运维管理-工单-员工定位
+    path: '/operation/ticket/gps',
+    exact: true,
+    //component: Building,
+    component: PersonnelGps,
+  },{
     path: '/operation/twoTickets/typeone',
     exact: true,
     component: Building,
@@ -178,8 +187,8 @@ const routers = [
   },{
     path: '/statistical/stationaccount/production',
     exact: true,
-    component: Building
-    // component: ProductionAnalysis
+    component: ProductionAnalysis
+    // component: Building
   },{
     path: '/statistical/stationaccount/operate',
     exact: true,
@@ -198,19 +207,16 @@ const routers = [
   },{
     path: '/statistical/equipment/performance',
     exact: true,
-    component: Building
+    component: PerformanceAnalysis
+    // component: Building
   },{
     path: '/statistical/equipment/manufacturers',
     exact: true,
     component: Building
   },{
-    path: '/statistical/statement/daily',
+    path: '/statistical/statement/currency',
     exact: true,
-    component: Building
-  },{
-    path: '/statistical/statement/customization',
-    exact: true,
-    component: Building
+    component: GeneralReport,
   },{
     path: '/analysis/assess',
     exact: true,

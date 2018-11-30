@@ -2,6 +2,7 @@ import { call, put, takeLatest } from 'redux-saga/effects';
 import axios from 'axios';
 import Path from '../../../../constants/path';
 import { singleStationAction } from './singleStationAction';
+import { message } from 'antd';
 
 //改变单电站实时数据store
 function *changeSingleStationStore(action){
@@ -313,6 +314,7 @@ function *getInverterList(action){
         type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
         payload: {
           inverterList: response.data.data || {},
+          stationType:response.data.data.stationType || ''
         }
       })
     }else{
@@ -356,7 +358,6 @@ function *getBoxTransformerList(action){
     console.log(e);
   }
 }
-
 function *getConfluenceBoxList(action){ // 获取汇流箱列表
   const { payload } = action;
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.monitor.getConfluenceBoxList}${payload.stationCode}`;
@@ -384,8 +385,6 @@ function *getConfluenceBoxList(action){ // 获取汇流箱列表
     console.log(e);
   }
 }
-
-
 // 获取单电站设备列表
 function *getStationDeviceList(action){
   const { payload } = action;
@@ -419,6 +418,12 @@ function *editData(action){
     const response = yield call(axios.post, url, payload);
     console.log(response,'编辑');
     if(response.data.code==="10000"){
+      message.config({
+        top: 120,
+        duration: 2,
+        maxCount: 3,
+      });
+      message.success('数据编辑成功，请稍等');
       yield put({
         type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
         payload: {
@@ -438,6 +443,29 @@ function *editData(action){
   }
 
 }
+
+// 获取风机实时数据列表
+function *getFanList(action){
+  const { payload } = action;
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.monitor.getFanList}/${payload.stationCode}`;
+  try{
+    if(payload.firstLoad){
+      yield put({type: singleStationAction.SINGLE_STATION_FETCH});
+    }
+    const response = yield call(axios.get, url, payload);
+    if(response.data.code === '10000'){
+      yield put({
+        type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
+        payload: {
+          fanList: response.data.data || {},
+          stationType:response.data.data.stationType || ''
+        }
+      })
+    }
+  }catch(e){
+    console.log(e);
+  }
+}
 export function* watchSingleStationMonitor() {
   yield takeLatest(singleStationAction.GET_SINGLE_STATION_SAGA, getSingleStation);
   yield takeLatest(singleStationAction.CHANGE_SINGLE_STATION_STORE_SAGA, changeSingleStationStore);
@@ -455,6 +483,7 @@ export function* watchSingleStationMonitor() {
   yield takeLatest(singleStationAction.GET_STATION_DEVICELIST_SAGA, getStationDeviceList);
   yield takeLatest(singleStationAction.GET_CONFLUENCEBOX_LIST_SAGA, getConfluenceBoxList); // 汇流箱列表获取
   yield takeLatest(singleStationAction.EDIT_MONTH_YEAR_DATA_SAGA, editData);//编辑月，年的累计发电量
+  yield takeLatest(singleStationAction.getFanList, getFanList);//风机实时数据列表
   yield takeLatest(singleStationAction.RESET_SINGLE_STATION_STORE, resetSingleStationStore);
 }
 

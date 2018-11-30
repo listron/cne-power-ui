@@ -49,10 +49,12 @@
           }
           .joinTop {
             height: 20px;
-            width: 220px;
+            width: 430px;
             margin-bottom: 12px;
             margin-left: -108px;
             cursor: pointer;
+            display: flex;
+            justify-content: space-between;
             .fontIcon {
               float: left;
               width: 21px;

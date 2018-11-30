@@ -12,4 +12,8 @@ export const deviceAction = {
   GET_WEATHERSTATION_DATA_SAGA: Symbol('GET_WEATHERSTATION_DATA_SAGA'),  //气象站数据请求
   RESET_DEVICE_MONITOR_STORE: Symbol('RESET_DEVICE_MONITOR_STORE'),
   RESET_DEVICE_MONITOR_STORE_SUCCESS: Symbol('RESET_DEVICE_MONITOR_STORE_SUCCESS'),
+  getwindturbineData: Symbol('getwindturbineData'), // 单风机详情
+  getSequencechartData: Symbol('getSequencechartData'), // 单风机图表数据
+
+
 }

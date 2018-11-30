@@ -3,15 +3,15 @@ import { Progress } from 'antd';
 import styles from './deviceMonitor.scss';
 
 function PowerProgress({ devicePower, deviceCapacity }) {
-  const tmpPercent = parseFloat(deviceCapacity) === 0 ? ' -- ': devicePower / deviceCapacity;
+  const tmpPercent = parseFloat(deviceCapacity) === 0 ? ' -- ' : devicePower / deviceCapacity;
   const percent = tmpPercent >= 0 ? tmpPercent * 100 : 0;
-  const showDevicePower = parseFloat(devicePower) >= 0 ? devicePower: ' -- ';
-  const showCapacityPower = parseFloat(deviceCapacity) >= 0 ? deviceCapacity: ' -- ';
+  const showDevicePower = (devicePower || devicePower === 0) ? devicePower : ' -- ';
+  const showCapacityPower = (deviceCapacity || deviceCapacity === 0) ? deviceCapacity : ' -- ';
   return (
     <div className={styles.powerProgress} >
       <div className={styles.progressNum}>
-        <span className={styles.leftText}>{showDevicePower||'--'}</span>
-        <span className={styles.rightText}>{showCapacityPower||'--'}</span>
+        <span className={styles.leftText}>{showDevicePower || '--'}</span>
+        <span className={styles.rightText}>{showCapacityPower || '--'}</span>
       </div>
       <Progress strokeColor="#199475" strokeWidth={3} percent={percent} showInfo={false} />
       <div className={styles.progressText}>

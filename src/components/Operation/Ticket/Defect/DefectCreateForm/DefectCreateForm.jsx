@@ -74,7 +74,7 @@ class TmpForm extends Component {
     this.props.form.setFieldsValue({ deviceTypeCode: null, defectTypeCode: null });
   }
 
-  onChangeDeviceType = (deviceTypeCode) => {
+  onChangeDeviceType = (deviceTypeCode) => { // 设备
     const { stations, form } = this.props;
     const stationCode = form.getFieldValue('stations')[0].stationCode;
     const selectedStationInfo = stations.find(e=>e.stationCode === stationCode) || {};
@@ -214,7 +214,7 @@ class TmpForm extends Component {
       innerArr.label= ele.name;
       innerArr.value= ele.id;
       ele && ele.list && ele.list.length > 0 && ele.list.forEach(innerInfo => {
-        if(editDefect && defectDetail.defectTypeCode === innerInfo.id){
+        if(editDefect && `${defectDetail.defectTypeCode}` === `${innerInfo.id}`){
           defaultDefectType = [ele.id, innerInfo.id];
         }
         innerArr.children.push({

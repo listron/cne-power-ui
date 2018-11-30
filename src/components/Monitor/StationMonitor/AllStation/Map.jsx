@@ -12,7 +12,7 @@ class Map extends Component {
     allMonitorStation: PropTypes.object,
     testId: PropTypes.string,
     stationDataList: PropTypes.array,
-     history: PropTypes.object,
+    history: PropTypes.object,
   }
   constructor(props) {
     super(props)
@@ -20,21 +20,21 @@ class Map extends Component {
     //   barData: []
     // }
   }
-  
+
   componentDidMount() {
     const { testId, stationDataList } = this.props;
     const testChart = echarts.init(document.getElementById(testId));
     this.setMapChart(testChart, stationDataList);
   }
-  
+
   componentWillReceiveProps(nextProps) {
     const { testId, stationDataList } = nextProps;
-    if(this.props.stationDataList.length !== nextProps.stationDataList.length) {
+    if (this.props.stationDataList.length !== nextProps.stationDataList.length) {
       const testChart = echarts.init(document.getElementById(testId));
       this.setMapChart(testChart, stationDataList);
     }
   }
-  
+
   setMapChart = (testChart, stationDataList) => {
     const option = {
       bmap: {
@@ -158,13 +158,14 @@ class Map extends Component {
           enterable: true,
           //position:['50%','50%'],
           formatter: (params) => {
-            const stationPower=params.data.stationPower||'--';
-            const stationCapacity=params.data.stationCapacity||'--';
-            const instantaneous=params.data.instantaneous||'--';
+            const stationPower = params.data.stationPower || '--';
+            const stationCapacity = params.data.stationCapacity || '--';
+            const instantaneous = params.data.instantaneous || '--';
+            const angleOfYaw = params.data.angleOfYaw;
             return `<div class='stationCard' style='height:70px;overflow:hidden'>
             <div class='stationCardTitle' style='display:flex;flex-direction: row;justify-content: space-between;'>
             <span>${params.data.name}</span>
-            <a target='_blank' href='#/monitor/alarm/realtime?stationCode=${params.data.stationCode}'>
+            <a  href='#/monitor/alarm/realtime?stationCode=${params.data.stationCode}'>
             <span style='color:red'>${params.data.alarmNum > 0 ? '⚠' : ''}${params.data.alarmNum > 0 ? params.data.alarmNum : ''}</span>    
             </a>
             </div>           
@@ -174,8 +175,12 @@ class Map extends Component {
               <span class='stationMark'>${stationPower}MW</span>
               &nbsp;&nbsp;
               <span>${stationCapacity}MW</span>
-            </div>
-            <div class='stationCardWindSpeed'>${instantaneous}${params.data.value[2]==='0'?'m/s':'W/m²'}</div>             
+            </div>            
+            <div class='stationCardWindSpeed'>
+            <span class='stationMark'>${instantaneous}${params.data.value[2] === '0' ? 'm/s' : 'W/m²'}</span>
+            &nbsp;&nbsp;
+            ${angleOfYaw ? `<span><i className="iconfont icon-acb" style='fontSize:14px; color:#199475'></i>${angleOfYaw}°</span>` :''} 
+            </div>             
           </div>`
           },
           // width:'128px',
@@ -190,7 +195,7 @@ class Map extends Component {
         // symbol:'image//../../../../../theme/img/wind-normal.png',
         coordinateSystem: 'bmap',
         data: stationDataList,
-        symbolSize:[24,17],
+        symbolSize: [24, 17],
         label: {
           normal: {
             show: false
@@ -209,12 +214,12 @@ class Map extends Component {
     };
     testChart.setOption(option)
     testChart.on('click', (params) => {
-      if(params.data.stationStatus!=='900'){
-      return this.props.history.push(`/monitor/singleStation/${params.data.stationCode}`)  
-    }else{
-      this.showTip();
-    }  
-   
+      if (params.data.stationStatus !== '900') {
+        return this.props.history.push(`/monitor/singleStation/${params.data.stationCode}`)
+      } else {
+        this.showTip();
+      }
+
     })
   }
   showTip = (e) => {
@@ -224,18 +229,18 @@ class Map extends Component {
       duration: 200,
       maxCount: 1,
     });
-    message.warning('电站未接入,无法查看详情',2);
+    message.warning('电站未接入,无法查看详情', 2);
   }
 
   render() {
     // const { barData } = this.state;
     const { testId } = this.props;
     return (
-      <div id={testId} style={{ width: "100%",  flex: 1 }} ></div>
+      <div id={testId} style={{ width: "100%", flex: 1 }} ></div>
     )
   }
 }
 export default withRouter(Map);
 
 
-  
+
