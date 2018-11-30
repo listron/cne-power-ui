@@ -16,6 +16,7 @@ class OutputTenMin extends Component {
     getMonitorPower: PropTypes.func,
     yXaisName:PropTypes.string,
     chartType:PropTypes.string,
+    stationCode:PropTypes.string,
   }
 
   constructor(props) {
@@ -201,7 +202,8 @@ class OutputTenMin extends Component {
   }
 
   render() {
-    const resourceAnalysis = "/statistical/stationaccount/resource/392";
+    const {stationCode}=this.props;
+    const resourceAnalysis = `/statistical/stationaccount/resource#${stationCode}`;
     return (
       <div className={styles.capabilityDiagramBox} >
         <div id="capabilityDiagram" style={{ width: "100%", height: "100%", borderRight: "2px solid #dfdfdf", color: '#666', paddingTop: "20px" }}><i className="iconfont icon-more"></i></div>

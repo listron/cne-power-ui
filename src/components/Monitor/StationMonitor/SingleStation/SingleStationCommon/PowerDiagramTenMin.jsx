@@ -17,6 +17,7 @@ class PowerDiagramTenMin extends Component {
     powerData: PropTypes.array,
     match: PropTypes.object,
     getPowerDataTenMin: PropTypes.func,
+    stationCode: PropTypes.string,
   }
 
   constructor(props) {
@@ -249,14 +250,15 @@ class PowerDiagramTenMin extends Component {
   }
 
   onChangeTimePower = (e) => {
-    const { stationCode } = this.props.match.params;
+    const { stationCode } = this.props;
     const intervalTime = e.target.value;
     this.setState({ intervalTime });
     this.props.getPowerDataTenMin(stationCode, intervalTime);// 时间格式传出，清空定时器并重新请求数据。
   }
 
   render() {
-    const productionAnalysis = "/statistical/stationaccount/production";
+    const {stationCode}=this.props;
+    const productionAnalysis = `/statistical/stationaccount/production#${stationCode}`;
     return (
       <div className={styles.powerDiagramBox} >
         <div id="powerDiagram" style={{ width: "100%", height: "100%", color: '#666', paddingTop: "20px" }}></div>
