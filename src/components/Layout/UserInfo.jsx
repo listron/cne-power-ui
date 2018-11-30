@@ -8,6 +8,7 @@ import styles from './userInfo.scss';
 class UserInfo extends Component{
   static propTypes = {
     history: PropTypes.object,
+    inHomepage: PropTypes.bool,
     changeLoginStore: PropTypes.func
   }
 
@@ -55,13 +56,14 @@ class UserInfo extends Component{
         </Menu.Item>
       </Menu>
     );
+    const nameStyle = this.props.inHomepage?{color:'#a6e8ff'}:null;
     return (
       <div className={styles.layoutUser}>
         <Dropdown overlay={DropdowMenu} placement="bottomRight">
           <span className={styles.layoutUserContent}>
             {userLogo && <img width="30px" height="30px" src={userLogo} />}
             {!userLogo && <span className={styles.userLogo}>{defaultUserLogo}</span>}
-            <span className={styles.username}>{userFullName || username}</span>
+            <span className={styles.username} style={nameStyle}>{userFullName || username}</span>
             <Icon type="down" className={styles.downIcon} />
           </span>
         </Dropdown>

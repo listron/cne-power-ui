@@ -2,6 +2,9 @@
   display: flex;
   flex:1;
   flex-direction: column;
+  .fontColor{
+    color:red
+    }
   :global{
     .ant-tabs:not(.ant-tabs-vertical) > .ant-tabs-content > .ant-tabs-tabpane {
       //width: 0ch;
@@ -15,8 +18,9 @@
     .iconfont{
       color:#2d9e81;
       font-size: 14px;
-  }
-  }
+    }
+   
+    }
   
   .chartsContainer{
     display: flex;
@@ -26,9 +30,12 @@
     .textStyle{
       background:#f8f8f8;
       border-radius:4px;
-      height:60px;
+      // height:60px;
       padding-left: 32px;
-
+      div{
+        height: 30px;
+        line-height: 30px;
+      }
       
     }
     .chart{
