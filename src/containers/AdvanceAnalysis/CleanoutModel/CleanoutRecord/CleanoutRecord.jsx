@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import PropTypes from 'prop-types';
 import styles from "./cleanoutRecord.scss";
 import { cleanoutRecordAction } from './cleanoutRecordAction';
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
@@ -10,11 +11,37 @@ import CleanoutRecordMain from '../../../../components/AdvanceAnalysis/CleanoutM
 import CleanoutRecordSide from '../../../../components/AdvanceAnalysis/CleanoutModel/CleanoutRecord/CleanoutRecordSide/CleanoutRecordSide';
 class CleanoutRecord extends Component {
   static propTypes = {
+    showPage: PropTypes.string,
+    stationType: PropTypes.string, 
+    stationName: PropTypes.string,
+    pageNum: PropTypes.number,
+    pageSize: PropTypes.number,
+    orderField: PropTypes.string,
+    orderCommand: PropTypes.string,
   }
   constructor(props, context) {
     super(props, context)
+    this.state = {
+      showSidePage: 'list'
+    }
+  }
+  onShowSideChange = ({showSidePage}) => {
+    this.setState({ showSidePage });
+  }
+  onToggleSide = () => {
+    const { showPage } = this.props;
+    this.setState({
+      showSidePage: showPage
+    });
   }
   render() {
+    const{showPage, stationType, stationName, pageNum, pageSize, orderField, orderCommand,}=this.props;
+    const{showSidePage}=this.state;
+    //请求的参数
+    const queryListParams = {
+      stationType, stationName, pageNum, pageSize, orderField, orderCommand,
+    }
+
     const breadCrumbData = {
       breadData: [
         {
@@ -26,7 +53,7 @@ class CleanoutRecord extends Component {
       <div className={styles.cleanoutRecordBox} >
         <CommonBreadcrumb  {...breadCrumbData} style={{ marginLeft: '38px' }} />
         <div className={styles.cleanoutRecordContainer}>
-          <CleanoutRecordMain />
+          <CleanoutRecordMain {...this.props} queryListParams={queryListParams} />
           <TransitionContainer
             show={showPage!=='list'}
             onEnter={this.onToggleSide}
@@ -36,9 +63,9 @@ class CleanoutRecord extends Component {
           >
             <CleanoutRecordSide
               {...this.props} 
-              // showSidePage={showSidePage}
-              // queryListParams={queryListParams}
-              // onShowSideChange={this.onShowSideChange} 
+              showSidePage={showSidePage}
+               queryListParams={queryListParams}
+              onShowSideChange={this.onShowSideChange} 
             />
           </TransitionContainer>
         </div>
@@ -49,6 +76,9 @@ class CleanoutRecord extends Component {
 }
 const mapStateToProps = (state) => {
   return {
+    ...state.advanceAanlysisReducer.cleanoutRecordReducer.toJS(),
+    stations: state.common.get('stations'),
+   
   }
 }
 const mapDispatchToProps = (dispatch) => ({

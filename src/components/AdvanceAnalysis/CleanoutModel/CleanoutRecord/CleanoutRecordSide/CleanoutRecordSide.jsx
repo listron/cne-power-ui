@@ -2,8 +2,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './cleanoutRecordSide.scss';
+import CleanoutRecordDetail from './CleanoutRecordDetail';
 
-class StationManageSide extends Component {
+class CleanoutRecordSide extends Component {
   static propTypes = {
     showSidePage: PropTypes.string,
   }
@@ -13,13 +14,15 @@ class StationManageSide extends Component {
   }
 
   render(){
-   
+    const { showSidePage } = this.props;
     return (
-      <div className={styles.stationManageSide}>
+      <div className={styles.cleanoutRecordSide}>
        抽屉详情页
+       { showSidePage === 'detail' && <CleanoutRecordDetail {...this.props} /> }
+       { showSidePage === 'record' && <CleanoutRecordDetail {...this.props} /> }
       </div>
     )
   }
 }
 
-export default StationManageSide;
+export default CleanoutRecordSide;

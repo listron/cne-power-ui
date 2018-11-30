@@ -6,7 +6,6 @@ var initState = Immutable.fromJS({
   loading: false,
   showPage: 'list', //默认展示列表页list ,   编辑edit,详情detail,
   stationType: "", // 电站类型("0"-风电、"1"-光伏、""全部)
-  regionName: '', // 电站所属区域:所属电网，模糊匹配
   stationName: '', // 电站名称(模糊匹配)
   pageNum: 1, // 当前页
   pageSize: 10, // 每页条数
