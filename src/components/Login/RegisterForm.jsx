@@ -169,7 +169,7 @@ class RegisterForm extends Component {
     const { timeValue } =this.state;
     return (
       <div>
-        <Form onSubmit={this.phoneCodeRegister} className={styles.verificationCode}>
+        <Form className={styles.verificationCode}>
           <div className={styles.phoneInput}>
             <FormItem>
               {getFieldDecorator('phoneNum', {
@@ -197,7 +197,7 @@ class RegisterForm extends Component {
             </Button>
           </div>
           <FormItem>
-            <Button type="primary" htmlType="submit" className="login-form-button">下一步</Button>
+            <Button type="primary" onClick={this.phoneCodeRegister} className="login-form-button">下一步</Button>
           </FormItem>
           {/* {(enterpriseId !== null && enterpriseId.length>0) ? <p>您已加入企业，请直接登录</p> : <div></div>} */}
         </Form>
@@ -208,7 +208,7 @@ class RegisterForm extends Component {
   renderStepTwo(getFieldDecorator, formItemLayout, tailFormItemLayout){
     return (
       <div>
-        <Form onSubmit={this.onEnterpriseInfo}  className={styles.enterpriseInfor}>
+        <Form className={styles.enterpriseInfor}>
           <FormItem label="企业域名"  {...formItemLayout}>
             {getFieldDecorator('enterpriseDomain', {
               rules: [
@@ -242,7 +242,7 @@ class RegisterForm extends Component {
             )}
           </FormItem>
           <FormItem {...tailFormItemLayout} >
-            <Button type="primary" htmlType="submit" className="login-form-button">下一步</Button>
+            <Button onClick={this.onEnterpriseInfo} type="primary" className="login-form-button">下一步</Button>
           </FormItem>
         </Form>
       </div>
@@ -252,7 +252,7 @@ class RegisterForm extends Component {
   renderStepThree(getFieldDecorator, formItemLayout,tailFormItemLayout){
     return (
       <div className={styles.userInfor}>
-        <Form onSubmit={this.onRegisterEnterprise}>
+        <Form>
           <FormItem label="用户名" {...formItemLayout}>
             {getFieldDecorator('username', {
               rules: [
@@ -284,7 +284,7 @@ class RegisterForm extends Component {
             )}
           </FormItem>
           <FormItem {...tailFormItemLayout}>
-            <Button type="primary" htmlType="submit" className="login-form-button">进入企业账号</Button>
+            <Button onClick={this.onRegisterEnterprise} type="primary" className="login-form-button">进入企业账号</Button>
           </FormItem>
       </Form>
     </div>
