@@ -11,6 +11,7 @@ import WarningTip from '../../../../Common/WarningTip';
 
 class SideReportPage extends Component {
   static propTypes = {
+    loading: PropTypes.bool,
     reportDay: PropTypes.string,
     sidePage: PropTypes.string,
     stations: PropTypes.array,
@@ -216,7 +217,7 @@ class SideReportPage extends Component {
   }
 
   render(){
-    const { reportDay, stations, reportStation, showReportInputList, reportDisableStation } = this.props;
+    const { loading, reportDay, stations, reportStation, showReportInputList, reportDisableStation } = this.props;
     const canReport = reportDay && reportStation && reportStation.length > 0;
     const { dayReportTotalInfoArr, showBackWarningTip, warningTipText } = this.state;
     return (
@@ -225,7 +226,11 @@ class SideReportPage extends Component {
           <span className={styles.sideReportTitleTip} >上报日报</span>
           <div className={styles.sideReportTitleRight} >
             {showReportInputList && <Button onClick={this.toSelectCondition} className={styles.dayReportPrev} >上一步</Button>}
-            {showReportInputList && <Button onClick={this.saveDayReport} className={styles.saveDayReport} >保存</Button>}
+            {showReportInputList && <Button
+              onClick={this.saveDayReport}
+              className={styles.saveDayReport}
+              loading={loading}
+            >保存</Button>}
             <Icon type="arrow-left" className={styles.backIcon}  onClick={this.showBackTip} />
           </div>
         </div>
