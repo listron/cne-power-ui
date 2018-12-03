@@ -6,6 +6,7 @@ import { DatePicker, Button, Icon } from 'antd';
 // import StationManageSearch from './StationManageSearch';
 // import StationManageTable from './StationManageTable';
 import styles from './cleanoutRecordMain.scss';
+import CleanoutRecordTable from './CleanoutRecordTable';
 import moment from 'moment';
 import StationFilter from './StationFilter';
 import Pagination from '../../../../../components/Common/CommonPagination/index';
@@ -58,7 +59,7 @@ class CleanoutRecordMain extends Component { // 电站管理列表页
 
   render() {
     const { startTime, stations } = this.props;
-    console.log(stations);
+  
     const { panelOpen, showFilter } = this.state;
 
 
@@ -83,10 +84,10 @@ class CleanoutRecordMain extends Component { // 电站管理列表页
         <div className={styles.filterBox}>
           {showFilter === 'stationName' && <StationFilter {...this.props} />}
         </div>
-        <div>
+        <div className={styles.paginationStyle}>
           <Pagination />
         </div>
-
+        <CleanoutRecordTable {...this.props} />
       </div>
     )
   }

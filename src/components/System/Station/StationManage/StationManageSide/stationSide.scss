@@ -3,7 +3,7 @@
 
 .stationManageSide{
   display: flex;
-  flex: 1 ;
+  flex: 1 0 auto ;
   flex-direction: column;
   justify-content: space-between;
   width: 100%;
@@ -11,7 +11,7 @@
   background:#ececec;
   z-index: 99;
   .stationManageEdit,.stationManageDetail{ // 电站管理： 编辑，详情
-    flex: 1;
+    flex: 1 0 auto;
     background-color: #fff;
     border: 1px solid #e1e2e2;
     .detailTop{ // 顶部详情及操作

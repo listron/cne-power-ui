@@ -11,7 +11,20 @@ class CleanoutRecordSide extends Component {
 
   constructor(props){
     super(props);
+    
   }
+  
+  onShowSideChange = ({showSidePage}) => {
+    this.setState({ showSidePage });
+  }
+
+  onToggleSide = () => {
+    const { showPage } = this.props;
+    this.setState({
+      showSidePage: showPage
+    });
+  }
+
 
   render(){
     const { showSidePage } = this.props;
@@ -19,7 +32,8 @@ class CleanoutRecordSide extends Component {
       <div className={styles.cleanoutRecordSide}>
        抽屉详情页
        { showSidePage === 'detail' && <CleanoutRecordDetail {...this.props} /> }
-       { showSidePage === 'record' && <CleanoutRecordDetail {...this.props} /> }
+       { showSidePage === 'planRecord' && <CleanoutRecordDetail {...this.props} /> }
+   
       </div>
     )
   }
