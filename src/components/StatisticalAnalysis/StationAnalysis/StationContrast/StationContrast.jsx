@@ -109,7 +109,7 @@ class StationContrast extends React.Component {
           <div className={styles.leftFilter}>
             <div className={styles.stationFilter}>
               <StationSelectContrast
-                data={stations}
+                data={stations.filter(e => e.stationType === 1)}
                 holderText={'请选择两个电站对比'}
                 multiple={true}
                 onChange={this.stationSelected}

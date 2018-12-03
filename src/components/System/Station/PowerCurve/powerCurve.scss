@@ -34,12 +34,19 @@
         }
         .Button {
             line-height: 80px;
+            display: flex;
+            flex-direction: row;
+            height: 80px;
+            padding-top: 20px;
             .export{
                 margin-left: 20px;
             }
             .download{
                 margin-left: 20px;
-                margin-right: 20px;
+                // margin-right: 20px;
+            }
+            .singleStationImportFileModel{
+                margin-left: 20px;
             }
         }
         .pagination {

@@ -4,6 +4,8 @@ import React, { Component } from 'react';
 import CommonPagination from '../../../../Common/CommonPagination';
 import styles from './inspectRecord.scss';
 import { Link } from 'react-router-dom';
+import ImgUploader from '../../../../Common/Uploader/ImgUploader';
+
 const confirm = Modal.confirm;
 const Option = Select.Option;
 class InspectRecordTable extends Component {
@@ -93,7 +95,7 @@ class InspectRecordTable extends Component {
       dataIndex: 'recordDesc',
       key: 'recordDesc',
       render: (text, record) => {
-        return <span>{text ? text : '--'}</span>
+        return {children:(<div title={record.recordDesc} className={styles.widthStyle}>{record.recordDesc}</div>)}
       },
     }, {
       title: '查看照片',
@@ -113,15 +115,22 @@ class InspectRecordTable extends Component {
     }];
     return columns;
   }
+  // phoneAddressArray.map((e,i)=>(
+  //   <img src={e} width="120px" height="120px" />
+  // ))
+ 
+
   renderInspectPopover(text,record,index) {
   //  const phoneAddress=text||'';
   let phoneAddressArray=text&&text.split(',');
     return (
       <div className={styles.PopoverStyles}>
         <div>
-        {phoneAddressArray&&phoneAddressArray.map((e,i)=>(
-          <img src={e} width="120px" height="120px" />
-        ))}
+        {phoneAddressArray&& <ImgUploader editable={false} data={phoneAddressArray.map(e=>({
+          uid: e,
+          rotate: 0,
+          thumbUrl: `${e}?${Math.random()}`
+        }))} />}
         </div>
         {/*<div className={styles.recordButton}>
           <Button className={styles.ticketButton}>

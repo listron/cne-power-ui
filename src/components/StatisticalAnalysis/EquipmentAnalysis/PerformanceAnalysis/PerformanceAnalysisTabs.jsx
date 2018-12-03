@@ -55,10 +55,10 @@ class PerformanceAnalysisTabs extends Component {
     let haveSliderHour = hoursDeviceNameData.length > 20;
     let hoursDataResults = hourData && hourData.map((e, i) => { return e.dataResults });
     let faultNumDeviceNameData = faultNumData && faultNumData.map((e, i) => { return e.deviceName });
-    let haveSliderNum = xData.length > 20;
+    let haveSliderNum = faultNumDeviceNameData.length > 20;
     let faultNumDataResults = faultNumData && faultNumData.map((e, i) => { return e.dataResults });
     let faultTimeDeviceNameData = faultTimeData && faultTimeData.map((e, i) => { return e.deviceName });
-    let haveSliderTime = xData.length > 20;
+    let haveSliderTime = faultTimeDeviceNameData.length > 20;
     let faultTimeDataResults = faultTimeData && faultTimeData.map((e, i) => { return e.dataResults });
     let hoursHasData = hoursDeviceNameData.some(e => e || e === 0) || hoursDataResults.some(e => e || e === 0);
     let faultNumHasData = faultNumDeviceNameData.some(e => e || e === 0) || faultNumDataResults.some(e => e || e === 0);
@@ -227,32 +227,32 @@ class PerformanceAnalysisTabs extends Component {
             <div className={styles.chartsContainer}>
               <div className={styles.chart}>
                 <PerformanceCharts graphId={'conversioneff'} title={'转换效率'} data={conversionData}
-                  hasSlider={contrastSwitch ? haveSliderContrastCon : haveSliderConver}
-                  hasData={contrastSwitch ? contrastConversionHasData : conversionHasData}
+                  hasSlider={contrastSwitch&&contrastEndDate ? haveSliderContrastCon : haveSliderConver}
+                  hasData={contrastSwitch&&contrastEndDate ? contrastConversionHasData : conversionHasData}
                   deviceNames={conversDeviceNames}
                 />
               </div>
               <div className={styles.textStyle}>
                 <div><span className="iconfont icon-ha"></span>建议排查转换效率低的设备是否故障</div>
-                {conversDeviceNames ? <div><span className="iconfont icon-ha"></span>建议关注排名变化较大的{conversDeviceNames.map((e, i) => (<span key={e} className={styles.fontColor}>{e}</span>))}</div> : ''}
+                {conversDeviceNames.length>0 ? <div><span className="iconfont icon-ha"></span>建议关注排名变化较大的{conversDeviceNames.map((e, i) => (<span key={e} className={styles.fontColor}>{e},</span>))}设备</div> : ''}
               </div>
               <div className={styles.chart}>
                 <PerformanceCharts graphId={'hours'} title={'等效小时数'} data={hoursData}
-                  hasSlider={contrastSwitch ? haveSliderConTrastHour : haveSliderHour}
-                  hasData={contrastSwitch ? contrastHoursHasData : hoursHasData} />
+                  hasSlider={contrastSwitch&&contrastEndDate? haveSliderConTrastHour : haveSliderHour}
+                  hasData={contrastSwitch&&contrastEndDate ? contrastHoursHasData : hoursHasData} />
               </div>
               <div className={styles.textStyle}>
                 <div><span className="iconfont icon-ha"></span>建议排查等效小时数较低的逆变器:1.排查逆变器器下组串是否正常；2.排查逆变器是否故障；3.排查逆变器转换效率是否正常</div>
-                {hourDeviceNames ? <div><span className="iconfont icon-ha"></span>建议关注排名变化较大的{hourDeviceNames.map((e, i) => (<span key={e} className={styles.fontColor}>{e}</span>))}</div> : ''}
+                {hourDeviceNames.length>0 ? <div><span className="iconfont icon-ha"></span>建议关注排名变化较大的{hourDeviceNames.map((e, i) => (<span key={e} className={styles.fontColor}>{e},</span>))}设备</div> : ''}
               </div>
               <div className={styles.chart}>
                 <PerformanceCharts graphId={'availability'} title={'可利用率'} data={availabilityAnalysis}
-                  hasSlider={contrastSwitch ? haveSliderConAvailability : haveSliderAvailability}
-                  hasData={contrastSwitch ? contrastAvailabilityHasData : availabilityHasData} />
+                  hasSlider={contrastSwitch&&contrastEndDate ? haveSliderConAvailability : haveSliderAvailability}
+                  hasData={contrastSwitch&&contrastEndDate ? contrastAvailabilityHasData : availabilityHasData} />
               </div>
               <div className={styles.textStyle}>
                 <div><span className="iconfont icon-ha"></span>建议排查逆变器利用率较低的设备是否故障</div>
-                {availabilityDeviceNames ? <div><span className="iconfont icon-ha"></span>建议关注排名变化较大的{availabilityDeviceNames.map((e, i) => (<span key={e} className={styles.fontColor}>{e}</span>))}</div> : ''}
+                {availabilityDeviceNames.length>0 ? <div><span className="iconfont icon-ha"></span>建议关注排名变化较大的{availabilityDeviceNames.map((e, i) => (<span key={e} className={styles.fontColor}>{e},</span>))}设备</div> : ''}
               </div>
             </div>
           </TabPane>
@@ -260,30 +260,30 @@ class PerformanceAnalysisTabs extends Component {
             <div className={styles.chartsContainer}>
               <div className={styles.chart}>
                 <PerformanceCharts graphId={'lostPower'} title={'损失电量'} data={lossPowerAnalysis}
-                  hasSlider={contrastSwitch ? haveSliderConLostPower : haveSliderLostPower}
-                  hasData={contrastSwitch ? contrastLostPowerHasData : lostPowerHasData} />
+                  hasSlider={contrastSwitch&&contrastEndDate ? haveSliderConLostPower : haveSliderLostPower}
+                  hasData={contrastSwitch&&contrastEndDate ? contrastLostPowerHasData : lostPowerHasData} />
               </div>
               <div className={styles.textStyle}>
                 <div><span className="iconfont icon-ha"></span>建议排查损失电量较多的设备是否故障</div>
-                {lostPowerDeviceNames ? <div><span className="iconfont icon-ha"></span>建议关注排名变化较大的{lostPowerDeviceNames.map((e, i) => (<span key={e} className={styles.fontColor}>{e}</span>))}</div> : ''}
+                {lostPowerDeviceNames.length>0 ? <div><span className="iconfont icon-ha"></span>建议关注排名变化较大的{lostPowerDeviceNames.map((e, i) => (<span key={e} className={styles.fontColor}>{e},</span>))}设备</div> : ''}
               </div>
               <div className={styles.chart}>
                 <PerformanceCharts graphId={'faultNum'} title={'设备故障次数'} data={faultNumAnalysis}
-                  hasSlider={contrastSwitch ? haveSliderConTrastNum : haveSliderNum}
-                  hasData={contrastSwitch ? contrastFaultNumHasData : faultNumHasData} />
+                  hasSlider={contrastSwitch&&contrastEndDate ? haveSliderConTrastNum : haveSliderNum}
+                  hasData={contrastSwitch&&contrastEndDate ? contrastFaultNumHasData : faultNumHasData} />
               </div>
               <div className={styles.textStyle}>
                 <div><span className="iconfont icon-ha"></span>建议排查故障次数较多以及故障时长较长的设备</div>
-                {faultNumDeviceNames ? <div><span className="iconfont icon-ha"></span>建议关注排名变化较大的{faultNumDeviceNames.map((e, i) => (<span key={e} className={styles.fontColor}>{e}</span>))}</div> : ''}
+                {faultNumDeviceNames.length>0 ? <div><span className="iconfont icon-ha"></span>建议关注排名变化较大的{faultNumDeviceNames.map((e, i) => (<span key={e} className={styles.fontColor}>{e},</span>))}设备</div> : ''}
               </div>
               <div className={styles.chart}>
                 <PerformanceCharts graphId={'faultTime'} title={'设备故障时长'} data={faultTimeAnalysis}
-                  hasSlider={contrastSwitch ? haveSliderConTrastTime : haveSliderTime}
-                  hasData={contrastSwitch ? contrastFaultTimeHasData : faultTimeHasData} />
+                  hasSlider={contrastSwitch&&contrastEndDate ? haveSliderConTrastTime : haveSliderTime}
+                  hasData={contrastSwitch&&contrastEndDate ? contrastFaultTimeHasData : faultTimeHasData} />
               </div>
               <div className={styles.textStyle}>
                 <div><span className="iconfont icon-ha"></span>建议排查故障次数较多以及故障时长较长的设备</div>
-                {faultTimeDeviceNames ? <div><span className="iconfont icon-ha"></span>建议关注排名变化较大的{faultTimeDeviceNames.map((e, i) => (<span key={e} className={styles.fontColor}>{e}</span>))}</div> : ''}
+                {faultTimeDeviceNames.length>0 ? <div><span className="iconfont icon-ha"></span>建议关注排名变化较大的{faultTimeDeviceNames.map((e, i) => (<span key={e} className={styles.fontColor}>{e},</span>))}设备</div> : ''}
               </div>
             </div>
           </TabPane>

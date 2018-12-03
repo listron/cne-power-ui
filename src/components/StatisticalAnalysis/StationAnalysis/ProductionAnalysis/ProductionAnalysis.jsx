@@ -33,7 +33,7 @@ class ProductionAnalysis extends React.Component {
     super(props);
   }
   componentDidMount() {
-    const { getAllStationAvalibaData, stations, userId, stationCode, changeAllStationStore, ProductionPlanComplete, getSingleStationProductionData, getSingleStationPlanRateData, year, dateType, } = this.props;
+    const {  stations, userId, stationCode, changeAllStationStore, ProductionPlanComplete, getSingleStationProductionData, getSingleStationPlanRateData, year, dateType, } = this.props;
     stations && stations.toJS().length > 0 ? changeAllStationStore({ stationCode: stations.toJS()[0].stationCode.toString() }) : console.log('no_stations');
 
     const currentYear = moment().format('YYYY');
@@ -68,7 +68,9 @@ class ProductionAnalysis extends React.Component {
     if (stations.toJS().length === 0 && nextProps.stations.toJS().length !== 0) {
       changeAllStationStore({ stationCode: nextProps.stations.toJS()[0].stationCode.toString() })
     }
-
+    let allStations=stations.toJS();
+    let singleStationType=allStations.length>0&&allStations.filter(e=>e.stationCode===Number(nextProps.stationCode))[0].stationType;
+      console.log(singleStationType);
     const currentYear = [moment().format('YYYY')];
     const currentTableYear = Number(moment().format('YYYY'));
     const currentMonth = Number(moment().format('MM'));
@@ -142,7 +144,8 @@ class ProductionAnalysis extends React.Component {
           userId: userId,
           year: rangeYear,
           dateType: nextProps.dateType,
-          stationCode: nextProps.stationCode
+          stationCode: nextProps.stationCode,
+          stationType:singleStationType
         }
       )
       ProductionPlanComplete({
@@ -199,7 +202,8 @@ class ProductionAnalysis extends React.Component {
           userId: userId,
           year: nextRangeYear,
           dateType: nextProps.dateType,
-          stationCode: nextProps.stationCode
+          stationCode: nextProps.stationCode,
+          stationType:singleStationType
         }
       )
       ProductionPlanComplete({
@@ -333,7 +337,7 @@ class ProductionAnalysis extends React.Component {
             <div className={styles.stationFilter}>
               <span className={styles.text}>条件查询</span>
               <StationSelect
-                data={stations.toJS()}
+                data={stations.toJS().filter(e => e.stationType === 1)}
                 holderText={'电站名-区域'}
                 value={station.length > 0 ? station : []}
                 onChange={this.stationSelected}

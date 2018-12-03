@@ -12,10 +12,10 @@
     align-items: center;
     margin-bottom: 20px;
     .leftFilter{
-      padding-left: 30px;
       display: flex;
-      flex-direction: row;  
+      flex-direction: row;
       .stationFilter{
+        padding-left: 30px;
         display: flex;
         align-items: center;
         line-height: 43px;
@@ -23,7 +23,7 @@
           margin-right: 10px;
         }
       }
-    }z
+    }
     .rightContent{
       margin-right: 30px;
       color: $lightColor;

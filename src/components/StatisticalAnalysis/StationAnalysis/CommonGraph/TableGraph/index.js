@@ -49,31 +49,35 @@ class TableGraph extends React.Component {
       <div>xuanfukuang</div>
     )
   };
-  
+
   //table排序
   getSort(a, b, sortBy, variable) {//  因为antd 本身有排序方式，所以需要反着来
     let result;
-    sortBy=== 'descend'?result=-1:result=1;
+    sortBy === 'descend' ? result = -1 : result = 1;
     if (!a[variable]) {
-      return 1*result;
+      return 1 * result;
     }
     if (!b[variable]) {
-      return -1*result;
+      return -1 * result;
     }
-     return a[variable]- b[variable] 
+    return a[variable] - b[variable]
   }
 
 
-  getRadiationSort(a,b,sortBy,variable){
+  getRadiationSort(a, b, sortBy, variable) {// 区间的排序 100-200 200-300 
     if (!a[variable].split('-')[1]) {
       return 1;
     }
     if (!b[variable].split('-')[1]) {
       return -1;
     }
-     return a[variable].split('-')[0]- b[variable].split('-')[0]
+    return a[variable].split('-')[0] - b[variable].split('-')[0]
   }
- 
+
+
+  getTimeSort(a, b, variable) {  // 日期的排序 年 月 日
+    return `${a[variable]}`.split('月')[0].split('日')[0] - `${b[variable]}`.split('月')[0].split('日')[0]
+  }
 
 
 
@@ -86,25 +90,25 @@ class TableGraph extends React.Component {
           title: '日期',
           dataIndex: 'date',
           width: 120,
-          sorter: (a, b) => { return a.date.split('月')[0].split('日')[0] - b.date.split('月')[0].split('日')[0] },
+          sorter: (a, b) => this.getTimeSort(a, b, 'date'),
         }, {
           title: '计划发电量',
           dataIndex: 'planPower',
           width: 150,
-          sorter: (a, b, sortBy)=>this.getSort(a, b, sortBy,'planPower'),
+          sorter: (a, b, sortBy) => this.getSort(a, b, sortBy, 'planPower'),
           render: text => (text || text === 0) ? text : '--'
         }, {
           title: '实际发电量',
           dataIndex: 'actualPower',
           width: 150,
-          sorter: (a, b, sortBy)=>this.getSort(a, b, sortBy,'actualPower'),
+          sorter: (a, b, sortBy) => this.getSort(a, b, sortBy, 'actualPower'),
           render: text => (text || text === 0) ? text : '--'
         }, {
           title: '计划完成率',
           dataIndex: 'per',
           width: 150,
           defaultSortOrder: 'ascend',
-          sorter: (a, b, sortBy)=>this.getSort(a, b, sortBy,'per'),
+          sorter: (a, b, sortBy) => this.getSort(a, b, sortBy, 'per'),
           render: text => (text || text === 0) ? text + '%' : '--'
         }];
         break;
@@ -113,31 +117,31 @@ class TableGraph extends React.Component {
           title: '日期',
           dataIndex: 'monthOrDay',
           width: 90,
-          sorter: (a, b) => { return a.monthOrDay.split('月')[0].split('日')[0] - b.monthOrDay.split('月')[0].split('日')[0] },
+          sorter: (a, b) => this.getTimeSort(a, b, 'monthOrDay'),
         }, {
           title: lastYear,
           dataIndex: 'lastYearData',
           width: 130,
-          sorter: (a, b, sortBy)=>this.getSort(a, b, sortBy,'lastYearData'),
+          sorter: (a, b, sortBy) => this.getSort(a, b, sortBy, 'lastYearData'),
           render: text => (text || text === 0) ? text : '--'
         }, {
           title: currentYear,
           dataIndex: 'thatYearData',
           width: 130,
-          sorter: (a, b, sortBy)=>this.getSort(a, b, sortBy,'thatYearData'),
+          sorter: (a, b, sortBy) => this.getSort(a, b, sortBy, 'thatYearData'),
           render: text => (text || text === 0) ? text : '--'
         }, {
           title: '辐射总量同比',
           dataIndex: 'lightYearOnYear',
           width: 170,
-          sorter: (a, b, sortBy)=>this.getSort(a, b, sortBy,'lightYearOnYear'),
+          sorter: (a, b, sortBy) => this.getSort(a, b, sortBy, 'lightYearOnYear'),
           render: text => (text || text === 0) ? text + '%' : '--'
         }, {
           title: '发电量同比',
           dataIndex: 'powerYearOnYear',
           width: 150,
           defaultSortOrder: 'ascend',
-          sorter: (a, b, sortBy)=>this.getSort(a, b, sortBy,'powerYearOnYear'),
+          sorter: (a, b, sortBy) => this.getSort(a, b, sortBy, 'powerYearOnYear'),
           render: text => (text || text === 0) ? text + '%' : '--'
         }];
         break;
@@ -145,20 +149,20 @@ class TableGraph extends React.Component {
         columns = [{
           title: '日期',
           dataIndex: 'year',
-          sorter: (a, b) => { return a.year.split('月')[0].split('日')[0] - b.year.split('月')[0].split('日')[0] },
+          sorter: (a, b) => this.getTimeSort(a, b, 'year'),
           width: 150,
         }, {
           title: '辐射总量',
           dataIndex: 'thatYearData',
-          sorter: (a, b, sortBy)=>this.getSort(a, b, sortBy,'thatYearData'),
+          defaultSortOrder: 'descend',
+          sorter: (a, b, sortBy) => this.getSort(a, b, sortBy, 'thatYearData'),
           render: text => (text || text === 0) ? text : '--',
           width: 150,
         }, {
           title: '环比',
           dataIndex: 'ringRatio',
           width: 150,
-          defaultSortOrder: 'ascend',
-          sorter: (a, b, sortBy)=>this.getSort(a, b, sortBy,'ringRatio'),
+          sorter: (a, b, sortBy) => this.getSort(a, b, sortBy, 'ringRatio'),
           render: text => (text || text === 0) ? text + '%' : '--'
         }];
         break;
@@ -167,25 +171,25 @@ class TableGraph extends React.Component {
           title: '日期',
           dataIndex: 'monthOrDay',
           width: 120,
-          sorter: (a, b) => { return a.monthOrDay.split('月')[0].split('日')[0] - b.monthOrDay.split('月')[0].split('日')[0] },
+          sorter: (a, b) => this.getTimeSort(a, b, 'monthOrDay'),
         }, {
           title: lastYear,
           dataIndex: 'lastYearData',
           width: 150,
-          sorter: (a, b, sortBy)=>this.getSort(a, b, sortBy,'lastYearData'),
+          sorter: (a, b, sortBy) => this.getSort(a, b, sortBy, 'lastYearData'),
           render: text => (text || text === 0) ? text : '--'
         }, {
           title: currentYear,
           dataIndex: 'thatYearData',
           width: 150,
-          sorter: (a, b, sortBy)=>this.getSort(a, b, sortBy,'thatYearData'),
+          sorter: (a, b, sortBy) => this.getSort(a, b, sortBy, 'thatYearData'),
           render: text => (text || text === 0) ? text : '--'
         }, {
           title: '同比',
           dataIndex: 'lightYearOnYear',
           width: 150,
           defaultSortOrder: 'ascend',
-          sorter: (a, b, sortBy)=>this.getSort(a, b, sortBy,'lightYearOnYear'),
+          sorter: (a, b, sortBy) => this.getSort(a, b, sortBy, 'lightYearOnYear'),
           render: text => (text || text === 0) ? text + '%' : '--'
         }];
         break;
@@ -194,26 +198,26 @@ class TableGraph extends React.Component {
           title: '日期',
           dataIndex: 'date',
           width: 90,
-          sorter: (a, b) => { return a.date.split('月')[0].split('日')[0] - b.date.split('月')[0].split('日')[0] },
+          sorter: (a, b) => this.getTimeSort(a, b, 'date'),
           render: text => (text || text === 0) ? text : '--'
         }, {
           title: '等效利用小时数',
           dataIndex: 'hours',
           width: 170,
-          sorter: (a, b, sortBy)=>this.getSort(a, b, sortBy,'hours'),
+          sorter: (a, b, sortBy) => this.getSort(a, b, sortBy, 'hours'),
           render: text => (text || text === 0) ? text : '-'
         }, {
           title: '辐射总量',
           dataIndex: 'light',
           width: 150,
-          sorter: (a, b, sortBy)=>this.getSort(a, b, sortBy,'light'),
+          sorter: (a, b, sortBy) => this.getSort(a, b, sortBy, 'light'),
           render: text => (text || text === 0) ? text : '--'
         }, {
           title: 'PR',
           dataIndex: 'pr',
           width: 120,
           defaultSortOrder: 'ascend',
-          sorter: (a, b, sortBy)=>this.getSort(a, b, sortBy,'pr'),
+          sorter: (a, b, sortBy) => this.getSort(a, b, sortBy, 'pr'),
           render: text => (text || text === 0) ? text + '%' : '--'
         }
         ];
@@ -223,47 +227,47 @@ class TableGraph extends React.Component {
           title: '日期',
           dataIndex: 'date',
           width: 120,
-          sorter: (a, b) => { return a.date.split('月')[0].split('日')[0] - b.date.split('月')[0].split('日')[0] },
+          sorter: (a, b) => this.getTimeSort(a, b, 'date'),
         }, {
           title: lastYear,
           dataIndex: 'lastYearData',
           width: 150,
-          sorter: (a, b, sortBy)=>this.getSort(a, b, sortBy,'lastYearData'),
+          sorter: (a, b, sortBy) => this.getSort(a, b, sortBy, 'lastYearData'),
           render: text => (text || text === 0) ? text : '--'
         }, {
 
           title: currentYear,
           dataIndex: 'thatYearData',
           width: 150,
-          sorter: (a, b, sortBy)=>this.getSort(a, b, sortBy,'thatYearData'),
+          sorter: (a, b, sortBy) => this.getSort(a, b, sortBy, 'thatYearData'),
           render: text => (text || text === 0) ? text : '--'
         }, {
           title: '同比',
           dataIndex: 'yearOnYear',
           width: 150,
           defaultSortOrder: 'descend',
-          sorter: (a, b, sortBy)=>this.getSort(a, b, sortBy,'yearOnYear'),
+          sorter: (a, b, sortBy) => this.getSort(a, b, sortBy, 'yearOnYear'),
           render: text => (text || text === 0) ? text + '%' : '--'
         }];
         break;
-        case "lostPowerRatio": // 损失电量环比升幅排名
+      case "lostPowerRatio": // 损失电量环比升幅排名
         columns = [{
           title: '日期',
           dataIndex: 'date',
           width: 120,
-          sorter: (a, b) => { return a.date.split('月')[0].split('日')[0] - b.date.split('月')[0].split('日')[0] },
+          sorter: (a, b) => this.getTimeSort(a, b, 'date'),
         }, {
           title: '损失电量',
           dataIndex: 'thatYearData',
           width: 200,
-          sorter: (a, b, sortBy)=>this.getSort(a, b, sortBy,'thatYearData'),
+          sorter: (a, b, sortBy) => this.getSort(a, b, sortBy, 'thatYearData'),
           render: text => (text || text === 0) ? text : '--'
         }, {
           title: '环比',
           dataIndex: 'ringRatio',
           width: 200,
           defaultSortOrder: 'descend',
-          sorter: (a, b, sortBy)=>this.getSort(a, b, sortBy,'ringRatio'),
+          sorter: (a, b, sortBy) => this.getSort(a, b, sortBy, 'ringRatio'),
           render: text => (text || text === 0) ? text + '%' : '--'
         }];
         break;
@@ -272,27 +276,27 @@ class TableGraph extends React.Component {
           title: '日期',
           dataIndex: 'date',
           width: 120,
-          sorter: (a, b) => { return a.date.split('月')[0].split('日')[0] - b.date.split('月')[0].split('日')[0] },
+          sorter: (a, b) => this.getTimeSort(a, b, 'date'),
           render: text => (text || text === 0) ? text : '--'
         }, {
           title: lastYear,
           dataIndex: 'lastYearData',
           width: 150,
-          sorter: (a, b, sortBy)=>this.getSort(a, b, sortBy,'lastYearData'),
+          sorter: (a, b, sortBy) => this.getSort(a, b, sortBy, 'lastYearData'),
           render: text => (text || text === 0) ? text : '--'
         }, {
 
           title: currentYear,
           dataIndex: 'thatYearData',
           width: 150,
-          sorter: (a, b, sortBy)=>this.getSort(a, b, sortBy,'thatYearData'),
+          sorter: (a, b, sortBy) => this.getSort(a, b, sortBy, 'thatYearData'),
           render: text => (text || text === 0) ? text : '--'
         }, {
           title: '同比',
           dataIndex: 'yearOnYear',
           width: 150,
           defaultSortOrder: 'ascend',
-          sorter: (a, b, sortBy)=>this.getSort(a, b, sortBy,'yearOnYear'),
+          sorter: (a, b, sortBy) => this.getSort(a, b, sortBy, 'yearOnYear'),
           render: text => (text || text === 0) ? text + '%' : '--'
         }];
         break;
@@ -301,20 +305,20 @@ class TableGraph extends React.Component {
           title: '日期',
           dataIndex: 'date',
           width: 120,
-          sorter: (a, b) => { return a.date.split('月')[0].split('日')[0] - b.date.split('月')[0].split('日')[0] },
+          sorter: (a, b) => this.getTimeSort(a, b, 'date'),
           render: text => (text || text === 0) ? text : '--'
         }, {
           title: '发电量',
           dataIndex: 'thatYearData',
           width: 200,
-          sorter: (a, b, sortBy)=>this.getSort(a, b, sortBy,'thatYearData'),
+          sorter: (a, b, sortBy) => this.getSort(a, b, sortBy, 'thatYearData'),
           render: text => (text || text === 0) ? text : '--'
         }, {
           title: '环比',
           dataIndex: 'ringRatio',
           width: 200,
           defaultSortOrder: 'ascend',
-          sorter: (a, b, sortBy)=>this.getSort(a, b, sortBy,'ringRatio'),
+          sorter: (a, b, sortBy) => this.getSort(a, b, sortBy, 'ringRatio'),
           render: text => (text || text === 0) ? text + '%' : '--'
         }];
         break;
@@ -323,20 +327,20 @@ class TableGraph extends React.Component {
           title: '日期',
           dataIndex: 'date',
           width: 120,
-          sorter: (a, b) => { return a.date.split('月')[0].split('日')[0] - b.date.split('月')[0].split('日')[0] },
+          sorter: (a, b) => this.getTimeSort(a, b, 'date'),
           render: text => (text || text === 0) ? text : '--'
         }, {
           title: '电站可利用率',
           dataIndex: 'stationUtilization',
           width: 150,
-          sorter: (a, b, sortBy)=>this.getSort(a, b, sortBy,'stationUtilization'),
+          sorter: (a, b, sortBy) => this.getSort(a, b, sortBy, 'stationUtilization'),
           render: text => (text || text === 0) ? text + '%' : '--'
         }, {
           title: '发电系统可利用率',
           dataIndex: 'deviceUtilization',
           defaultSortOrder: 'ascend',
           width: 150,
-          sorter: (a, b, sortBy)=>this.getSort(a, b, sortBy,'deviceUtilization'),
+          sorter: (a, b, sortBy) => this.getSort(a, b, sortBy, 'deviceUtilization'),
           render: text => (text || text === 0) ? text + '%' : '--'
         }];
         break;
@@ -345,26 +349,26 @@ class TableGraph extends React.Component {
           title: '日期',
           dataIndex: 'date',
           width: 120,
-          sorter: (a, b) => { return a.date.split('月')[0].split('日')[0] - b.date.split('月')[0].split('日')[0] },
+          sorter: (a, b) => this.getTimeSort(a, b, 'date'),
         }, {
           title: '限电损失',
           dataIndex: 'limitPower',
           width: 150,
-          sorter: (a, b, sortBy)=>this.getSort(a, b, sortBy,'limitPower'),
+          sorter: (a, b, sortBy) => this.getSort(a, b, sortBy, 'limitPower'),
           render: text => (text || text === 0) ? text : '--'
         },
         {
           title: '限电率',
           dataIndex: 'limitPowerRate',
           width: 150,
-          sorter: (a, b, sortBy)=>this.getSort(a, b, sortBy,'limitPowerRate'),
+          sorter: (a, b, sortBy) => this.getSort(a, b, sortBy, 'limitPowerRate'),
           render: text => (text || text === 0) ? text + '%' : '--'
         }, {
           title: '限电率环比',
           dataIndex: 'ringRatio',
           width: 150,
           defaultSortOrder: 'descend',
-          sorter: (a, b, sortBy)=>this.getSort(a, b, sortBy,'ringRatio'),
+          sorter: (a, b, sortBy) => this.getSort(a, b, sortBy, 'ringRatio'),
           render: text => (text || text === 0) ? text + '%' : '--'
         }];
         break;
@@ -374,19 +378,19 @@ class TableGraph extends React.Component {
           dataIndex: 'radiationInterval',
           width: 200,
           defaultSortOrder: 'ascend',
-          sorter: (a, b,sortBy) => this.getRadiationSort(a,b,sortBy,'radiationInterval'),
+          sorter: (a, b, sortBy) => this.getRadiationSort(a, b, sortBy, 'radiationInterval'),
           render: text => (text || text === 0) ? text : '--'
         }, {
           title: '辐射总量',
           dataIndex: 'radiationSum',
           width: 200,
-          sorter: (a, b, sortBy)=>this.getSort(a, b, sortBy,'radiationSum'),
+          sorter: (a, b, sortBy) => this.getSort(a, b, sortBy, 'radiationSum'),
           render: text => (text || text === 0) ? text : '--'
         }, {
           title: '占比',
           dataIndex: 'ration',
           width: 200,
-          sorter: (a, b, sortBy)=>this.getSort(a, b, sortBy,'ration'),
+          sorter: (a, b, sortBy) => this.getSort(a, b, sortBy, 'ration'),
           render: text => (text || text === 0) ? text + '%' : '--'
         }];
         break;
@@ -395,27 +399,27 @@ class TableGraph extends React.Component {
           title: '日期',
           dataIndex: 'date',
           width: 150,
-          sorter: (a, b) => { return a.date.split('月')[0].split('日')[0] - b.date.split('月')[0].split('日')[0] },
+          sorter: (a, b) => this.getTimeSort(a, b, 'date'),
           render: text => (text || text === 0) ? text : '--'
         }, {
           title: lastYear,
           dataIndex: 'lastYearData',
           width: 150,
-          sorter: (a, b, sortBy)=>this.getSort(a, b, sortBy,'lastYearData'),
+          sorter: (a, b, sortBy) => this.getSort(a, b, sortBy, 'lastYearData'),
           render: text => (text || text === 0) ? text : '--'
         }, {
 
           title: currentYear,
           dataIndex: 'thatYearData',
           width: 150,
-          sorter: (a, b, sortBy)=>this.getSort(a, b, sortBy,'thatYearData'),
+          sorter: (a, b, sortBy) => this.getSort(a, b, sortBy, 'thatYearData'),
           render: text => (text || text === 0) ? text : '--'
         }, {
           title: '同比',
           dataIndex: 'yearOnYear',
           width: 150,
           defaultSortOrder: 'ascend',
-          sorter: (a, b, sortBy)=>this.getSort(a, b, sortBy,'yearOnYear'),
+          sorter: (a, b, sortBy) => this.getSort(a, b, sortBy, 'yearOnYear'),
           render: text => (text || text === 0) ? text + '%' : '--'
         }];
         break;
@@ -430,13 +434,11 @@ class TableGraph extends React.Component {
     let data = [];
     const columnData = dataArray && dataArray.map((e, i) => ({ ...e, key: i, date: `${e.date}${dateType === 'month' ? '月' : (dateType === 'day' ? '日' : '')}` }));
     switch (tableType) {
-      case "plan": // 计划完成率最低排名
-        data = columnData;
-        break;
       case "lightAnotherTB": // 光资源同比降幅排名(  四列)
       case "lightTB": // 光资源同比降幅排名
         data = dataArray && dataArray.map((e, i) => ({ ...e, key: i, monthOrDay: `${e.monthOrDay}${dateType === 'month' ? '月' : (dateType === 'day' ? '日' : '')}` }));
         break;
+      case "plan": // 计划完成率最低排名
       case "lightRatio": //光资源环比
       case "pr": //PR 最低排名
       case "powerGenTB": // 发电量同比降幅排名
@@ -506,19 +508,11 @@ class TableGraph extends React.Component {
     }
     return unit;
   }
-  // handleChange = (pagination, filters, sorter) => {
-  //   console.log('Various parameters',sorter);
-  //   // this.setState({
-  //   //   filteredInfo: filters,
-  //   //   sortedInfo: sorter,
-  //   // });
-  // }
-
-
 
   render() {
     const { tableType, title, unit, currentYear, dateType, lastYear, dataArray, bordered } = this.props;
-    const columns = this.getColumnsArray(tableType, lastYear, currentYear);
+    let columns = "";
+    columns = this.getColumnsArray(tableType, lastYear, currentYear);
     const dataSource = this.getDataArray(tableType, dataArray, dateType);
     const getTitle = this.getTitle(tableType);
     return (
@@ -538,7 +532,6 @@ class TableGraph extends React.Component {
           pagination={false}
           scroll={{ y: 204 }}
           bordered={bordered}
-          // onChange={this.handleChange}
           size="small"
           onRow={(record) => { return { onMouseEnter: this.onMouseEnter } }} />
       </div>
