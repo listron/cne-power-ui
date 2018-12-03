@@ -8,6 +8,7 @@ class PerformanceAnalysisFilter extends Component {
     super(props);
     this.state = {
       showFilter: '',
+      isRun: false,
     }
   }
   componentDidMount() {
@@ -38,7 +39,7 @@ class PerformanceAnalysisFilter extends Component {
 
   }
   componentWillReceiveProps(nextProps) {
-    const { stations, changePerformanceAnalysisStore, getEleLineCode,getPerformance, getDeviceModels,startDate,deviceTypeCode, endDate,  deviceModels } = this.props;
+    const { stations, changePerformanceAnalysisStore, getEleLineCode, getPerformance, getDeviceModels, startDate, deviceTypeCode, endDate, deviceModels } = this.props;
     if (stations.length === 0 && nextProps.stations.length !== 0) {
       changePerformanceAnalysisStore({ stationCode: nextProps.stations[0].stationCode })
       //获取设备型号
@@ -153,23 +154,14 @@ class PerformanceAnalysisFilter extends Component {
   };
   //选择设备类型,此处不可选设备类型
   selectDeviceType = (value) => {
-    // const { getDeviceModels, stationCode, deviceTypeCode } = this.props;
-    // this.props.changePerformanceAnalysisStore({ deviceTypeCode: value })
-    // getDeviceModels({
-    //   stationCode,
-    //   deviceTypeCode: value
-    // })
+
   }
   //选择设备型号
   selectDeviceModel = (value) => {
     const { stationCode, contrastSwitch, changePerformanceAnalysisStore, getPerformanceContrast, getEleLineCode, startDate, endDate, deviceModeCode, contrastStartDate, contrastEndDate, getPerformance } = this.props;
     const deviceModeTypeCode = value && Number(value.split('__')[0]);
     const deviceTypeCode = value && [Number(value.split('__')[1])];
-    //获取集电线路的设备
-    // getEleLineCode({
-    //   stationCode: stationCode,
-    //   deviceTypeCode,
-    // })
+
     changePerformanceAnalysisStore({
       deviceModeCode: value,
       deviceModeTypeCode: deviceModeTypeCode,
@@ -186,11 +178,11 @@ class PerformanceAnalysisFilter extends Component {
       electricLineCode: value,
       targetTabs: '1'
     })
-    contrastSwitch ? getPerformanceContrast({ stationCode, startDate, endDate, deviceTypeCode, deviceModeTypeCode, contrastStartDate, contrastEndDate,electricLineCode: value }) : getPerformance({ stationCode, startDate, endDate, deviceTypeCode, deviceModeTypeCode, contrastStartDate, contrastEndDate, electricLineCode: value })
+    contrastSwitch ? getPerformanceContrast({ stationCode, startDate, endDate, deviceTypeCode, deviceModeTypeCode, contrastStartDate, contrastEndDate, electricLineCode: value }) : getPerformance({ stationCode, startDate, endDate, deviceTypeCode, deviceModeTypeCode, contrastStartDate, contrastEndDate, electricLineCode: value })
   }
   //switch开关
   contrastSwitch = (checked) => {
-    const { getPerformance, changePerformanceAnalysisStore, stationCode, startDate, endDate, deviceTypeCode, deviceModeTypeCode, electricLineCode  } = this.props;
+    const { getPerformance, changePerformanceAnalysisStore, stationCode, startDate, endDate, deviceTypeCode, deviceModeTypeCode, electricLineCode } = this.props;
     if (checked) {
       changePerformanceAnalysisStore({ contrastSwitch: checked })
     } else {
@@ -199,17 +191,39 @@ class PerformanceAnalysisFilter extends Component {
     }
   }
   //不可选择的时间
-  disabledTime = (current) => {
-    const { startDate, endDate } = this.props;
+  disabledTime = (current, a, b, c) => {
+     console.log(current,a,b,c,'bukexuanshijian');
+    const { startDate, endDate, contrastStartDate } = this.props;
     const start = moment(startDate);
     const end = moment(endDate);
     const endOf = moment(endDate).add(1, 'day')
-    //不可选，当时大于的时候包含等于。比如大于20号的时候，20时候也会不可选。
+    // 不可选，当时大于的时候包含等于。比如大于20号的时候，20时候也会不可选。
     if (startDate === endDate) {
       return current < start || current > endOf
     } else {
       return start > current || endOf < current;
     }
+    if (!current) {
+      return false
+    } else {
+      const end = moment().add(7, 'days').format('YYYY-MM-DD');
+      const end2 = moment().subtract(5, 'days').format('YYYY-MM-DD');
+       return  !current.isSame(end,'day')|| !current.isSame(end2,'day')
+    }
+
+    // if (!contrastStartDate) {
+    //   return false
+    // } else if (contrastStartDate) {
+    //   const testTime = contrastStartDate.add(7, 'days').format('YYYY-MM-DD');
+    //   console.log(testTime);
+    //   console.log(contrastStartDate);
+    //   // this.props.changePerformanceAnalysisStore({ contrastStartDate: null })
+    //   return !current.isSame(testTime, 'day')
+    // }
+  }
+  onCalendarChange = (a, b, c, d) => {
+    // console.log(a[0], b, c, d, 'riqibianhua');
+    // this.props.changePerformanceAnalysisStore({ contrastStartDate: a[0] })
 
   }
 
@@ -243,6 +257,7 @@ class PerformanceAnalysisFilter extends Component {
           {contrastSwitch ? <RangePicker
             // defaultValue={[moment().startOf('day').subtract(1, 'month'), moment()]}
             disabledDate={this.disabledTime}
+            onCalendarChange={this.onCalendarChange}
             onChange={this.onChangeContrastTime}
             format={dateFormat}
           /> : ''
