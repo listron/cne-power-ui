@@ -231,7 +231,7 @@ class PowerCurve extends Component {
       selectedRowKeys,
       onChange: this.onSelectChange,
     };
-    // const downloadHref = `${path.basePaths.originUri}/template/PowerCurve.xlsx`;
+    const downloadHref = `${path.basePaths.originUri}/template/PowerCurve.xlsx`;
     // const authData = Cookie.get('authData') || null;
     return (
       <div className={styles.PowerCurve}>
@@ -261,8 +261,8 @@ class PowerCurve extends Component {
 
           </div>
           <div className={styles.Button}>
-            {/* <Button href={downloadHref} download={'测试测试.xlsx'} target="_blank" className={styles.download} > 下载导入模版</Button> */}
-            <Button className={styles.download} onClick={this.linkClick}>下载导入模版</Button>
+            <Button href={downloadHref} download={'测试测试.xlsx'} target="_blank" className={styles.download} > 下载导入模版</Button>
+            {/* <Button className={styles.download} onClick={this.linkClick}>下载导入模版</Button> */}
             <SingleStationImportFileModel
               data={stations.length > 0 && stations.filter(e => e.stationType === 0) || []}
               uploadPath={`${path.basePaths.APIBasePath}${path.APISubPaths.system.importPowercurve}`}

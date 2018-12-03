@@ -23,6 +23,8 @@ class DeviceMonitor extends Component {
   }
 
   componentDidMount(){
+    const main = document.getElementById('main');
+    main && main.scroll(0,0);
     const { stationCode } =this.props.match.params;
     this.props.getSingleStation({stationCode});
   }
