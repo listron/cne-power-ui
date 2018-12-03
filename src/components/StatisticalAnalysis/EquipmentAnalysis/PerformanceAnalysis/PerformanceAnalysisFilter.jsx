@@ -8,7 +8,8 @@ class PerformanceAnalysisFilter extends Component {
     super(props);
     this.state = {
       showFilter: '',
-      isRun: false,
+      startTime: null,
+      timeType: 'last30'
     }
   }
   componentDidMount() {
@@ -87,6 +88,7 @@ class PerformanceAnalysisFilter extends Component {
       startDate = moment().subtract(30, 'days').format('YYYY-MM-DD');
       endDate = moment().format('YYYY-MM-DD');
     }
+    this.setState({ timeType: value })
     this.props.changePerformanceAnalysisStore({
       startDate,
       endDate,
@@ -120,6 +122,7 @@ class PerformanceAnalysisFilter extends Component {
     const { stationCode, deviceTypeCode, startDate, endDate, deviceModeTypeCode, electricLineCode } = this.props;
     let contrastStartDate = dateString[0];
     let contrastEndDate = dateString[1];
+    console.log(contrastStartDate, contrastEndDate);
     this.props.changePerformanceAnalysisStore({
       contrastStartDate,
       contrastEndDate,
@@ -191,40 +194,36 @@ class PerformanceAnalysisFilter extends Component {
     }
   }
   //不可选择的时间
-  disabledTime = (current, a, b, c) => {
-     console.log(current,a,b,c,'bukexuanshijian');
+  disabledTime = (startTime) => current => {
+    const { timeType } = this.state;
     const { startDate, endDate, contrastStartDate } = this.props;
-    const start = moment(startDate);
-    const end = moment(endDate);
-    const endOf = moment(endDate).add(1, 'day')
-    // 不可选，当时大于的时候包含等于。比如大于20号的时候，20时候也会不可选。
-    if (startDate === endDate) {
-      return current < start || current > endOf
-    } else {
-      return start > current || endOf < current;
-    }
-    if (!current) {
+    let begin = moment(startDate);
+    let end = moment(endDate);
+    let number =end.diff(begin, 'days');
+    if (!startTime) {
       return false
     } else {
-      const end = moment().add(7, 'days').format('YYYY-MM-DD');
-      const end2 = moment().subtract(5, 'days').format('YYYY-MM-DD');
-       return  !current.isSame(end,'day')|| !current.isSame(end2,'day')
+      const enableDate = moment(startTime).subtract(number, 'day').format('YYYY-MM-DD');
+      const testDate = moment(startTime).add(number, 'day').format('YYYY-MM-DD');
+      if (current.format('YYYY-MM-DD') === enableDate || current.format('YYYY-MM-DD') === testDate) {
+        return false;
+      } else {
+        return true;
+      }
     }
 
-    // if (!contrastStartDate) {
-    //   return false
-    // } else if (contrastStartDate) {
-    //   const testTime = contrastStartDate.add(7, 'days').format('YYYY-MM-DD');
-    //   console.log(testTime);
-    //   console.log(contrastStartDate);
-    //   // this.props.changePerformanceAnalysisStore({ contrastStartDate: null })
-    //   return !current.isSame(testTime, 'day')
-    // }
   }
-  onCalendarChange = (a, b, c, d) => {
-    // console.log(a[0], b, c, d, 'riqibianhua');
-    // this.props.changePerformanceAnalysisStore({ contrastStartDate: a[0] })
-
+  onCalendarChange = (selectTime, b, c, d) => {
+   
+    if (selectTime.length === 1) {
+      this.setState({
+        startTime: selectTime[0].format('YYYY-MM-DD'),
+      })
+    } else if (selectTime.length === 2 || this.props.contrastStartDate === false) {
+      this.setState({
+        startTime: null
+      })
+    }
   }
 
   render() {
@@ -232,7 +231,7 @@ class PerformanceAnalysisFilter extends Component {
     const { RangePicker } = DatePicker;
     const dateFormat = 'YYYY-MM-DD';
     const { stationCode, stations, deviceTypeCode, deviceTypes, timeType, contrastSwitch, contrastStartDate, contrastEndDate, deviceModeCode, deviceModeTypeCode, deviceModels, deviceModelOther, eleLineCodeData, electricLineCode } = this.props;
-    const { showFilter } = this.state;
+    const { showFilter, startTime } = this.state;
     // const eleLineCodeDisable = eleLineCodeData.length === 0;
     let station = stationCode ? stations.filter(e => `${e.stationCode}` === `${stationCode}`) : '';
     return (
@@ -256,7 +255,7 @@ class PerformanceAnalysisFilter extends Component {
           <span className={styles.switchText}>对比同期</span>
           {contrastSwitch ? <RangePicker
             // defaultValue={[moment().startOf('day').subtract(1, 'month'), moment()]}
-            disabledDate={this.disabledTime}
+            disabledDate={this.disabledTime(startTime)}
             onCalendarChange={this.onCalendarChange}
             onChange={this.onChangeContrastTime}
             format={dateFormat}
