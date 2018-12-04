@@ -342,7 +342,6 @@ function SactterChart({ theory, actual }) {
         {
           name: '历史平均功率',
           type: 'line',
-
           lineStyle: {
             color: '#199475',
             width: 1,
