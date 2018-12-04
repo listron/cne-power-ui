@@ -5,7 +5,6 @@ import { withRouter } from 'react-router-dom';
 import { message } from "antd";
 import echarts from 'echarts';
 import bmap from 'echarts/extension/bmap/bmap';
-console.log(bmap)
 
 class Map extends Component {
   static propTypes = {
