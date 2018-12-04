@@ -10,7 +10,7 @@ class StationFilter extends Component {
   static propTypes = {
     stationCodes: PropTypes.string,
     stations: PropTypes.object,
-    onChangeFilter: PropTypes.func,
+    changeCleanoutRecordStore: PropTypes.func,
   }
 
   constructor(props) {
@@ -27,14 +27,14 @@ class StationFilter extends Component {
     const newStationCode = stationCodeArr.filter(code => {
       return provinceStation.findIndex(station => station.stationCode.toString() === code) === -1
     }).concat(checkedValue);
-    this.props.onChangeFilter({
+    this.props.changeCleanoutRecordStore({
       stationCodes: newStationCode.join(',')
     });
   }
 
   onChangeProvince = (key) => {
     if(key === 'all') {
-      this.props.onChangeFilter({
+      this.props.changeCleanoutRecordStore({
         stationCodes: ''
       });
     }
@@ -55,7 +55,7 @@ class StationFilter extends Component {
       stationArray = stationCodeArr.filter(item => checkedValue.indexOf(item)===-1);
       newStationCode = stationArray;
     }
-    this.props.onChangeFilter({
+    this.props.changeCleanoutRecordStore({
       stationCodes: newStationCode.join(',')
     });
   }

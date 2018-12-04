@@ -18,7 +18,7 @@ class CleanoutRecordDetail extends Component {
     queryListParams: PropTypes.object,
     stationDetail: PropTypes.object,
     onShowSideChange: PropTypes.func,
-    changeStationManageStore: PropTypes.func,
+    changeCleanoutRecordStore: PropTypes.func,
     getStationDetail: PropTypes.func,
     getOtherPageStationDetail: PropTypes.func,
   }
@@ -85,7 +85,7 @@ class CleanoutRecordDetail extends Component {
   }
 
   backToList = () => { // 返回列表页
-    this.props.changeStationManageStore({
+    this.props.changeCleanoutRecordStore({
       showPage: 'list',
       selectedStationIndex: null,
     });
@@ -93,7 +93,7 @@ class CleanoutRecordDetail extends Component {
 
   editDetail = () => { // 编辑页
     this.props.onShowSideChange({ showSidePage: 'edit' });
-    this.props.changeStationManageStore({ showPage: 'edit' });
+    this.props.changeCleanoutRecordStore({ showPage: 'edit' });
   }
 
   departmentInfoFun = (departmentList) => { // 根据部门信息，重组子部门/ 父部门，根据层级关系输出展示。

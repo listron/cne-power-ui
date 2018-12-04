@@ -59,7 +59,7 @@ class CleanoutRecordMain extends Component { // 电站管理列表页
 
   render() {
     const { startTime, stations } = this.props;
-  
+
     const { panelOpen, showFilter } = this.state;
 
 
@@ -68,7 +68,7 @@ class CleanoutRecordMain extends Component { // 电站管理列表页
         <div className={styles.topFilter}>
           <span>  筛选条件:</span>
           <div className={styles.timeFilter}>
-            <DatePicker
+           {/*  <DatePicker
               placeholder="选择年"
               format="YYYY年"
               mode="year"
@@ -76,7 +76,8 @@ class CleanoutRecordMain extends Component { // 电站管理列表页
               open={panelOpen}
               onOpenChange={this.onOpenChange}
               onPanelChange={this.onPanelChange}
-            /></div>
+            /> */}
+          </div>
           <Button onClick={() => this.onFilterShowChange('stationName')}>
             电站名称{showFilter === 'stationName' ? <Icon type="up" /> : <Icon type="down" />}
           </Button>

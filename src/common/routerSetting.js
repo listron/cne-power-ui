@@ -70,19 +70,19 @@ const routers = [
     exact: true,
     //component: Building,
     component: PersonnelGps,
-  },{
+  },{//两票管理>第一种工作票
     path: '/operation/twoTickets/typeone',
     exact: true,
     component: Building,
-  }, {
+  }, {//第二种工作票
     path: '/operation/twoTickets/typetwo',
     exact: true,
     component: Building,
-  }, {
+  }, {//备品备件
     path: '/operation/book/sparePart',
     exact: true,
     component: Building,
-  }, {
+  }, {//工器具
     path: '/operation/book/instrument',
     exact: true,
     component: Building,
@@ -90,23 +90,23 @@ const routers = [
     path: '/operation/running/dayReport',
     exact: true,
     component: DayReport,
-  }, {
+  }, {//经验库
     path: '/operation/experience',
     exact: true,
     component: Building,
-  }, {
+  }, {//账户管理>企业
     path: '/system/account/enterprise',
     exact: true,
     component: Enterprise,
-  }, {
+  }, {//部门
     path: '/system/account/department',
     exact: true,
     component: Department,
-  }, {
+  }, {//用户
     path: '/system/account/user',
     exact: true,
     component: User,
-  }, {
+  }, {//角色
     path: '/system/account/role',
     exact: true,
     component: Role,
@@ -114,35 +114,35 @@ const routers = [
     path:'/system/account/user',
     exact:true,
     component: User,
-  }, {
+  }, {//实时告警
     path: '/monitor/alarm/realtime',
     exact: true,
     component: RealTimeAlarm,
-  }, {
+  }, {//告警转工单
     path: '/monitor/alarm/transfer',
     exact: true,
     component: RealTimeAlarm,
-  }, {
+  }, {//缺陷工单
     path: '/monitor/alarm/transfer/:defectId',
     exact: true,
     component: DefectDetail,
-  }, {
+  }, {//实时告警的解除告警
     path: '/monitor/alarm/relieve',
     exact: true,
     component: RealTimeAlarm,
-  }, {
+  }, {//历史告警
     path: '/monitor/alarm/history',
     exact: true,
     component: HistoryAlarm,
-  }, {
+  }, {//告警统计
     path: '/monitor/alarm/statistic',
     exact: true,
     component: AlarmStatistic,
-  }, {
+  }, {//告警统计单电站
     path: '/monitor/alarm/statistic/:stationCode',
     exact: true,
     component: AlarmStatistic,
-  },{
+  },{//电站监控
     path: '/monitor/station',
     exact: true,
     component: AllStation,
@@ -150,7 +150,7 @@ const routers = [
     path: '/hidden/monitorDevice/:stationCode/:deviceTypeCode/:deviceCode',
     exact: true,
     component: DeviceMonitor
-  }, {
+  }, {//电站监控单电站
     path: '/monitor/singleStation/:stationCode',
     exact: true,
     component: SingleStation,
@@ -187,46 +187,46 @@ const routers = [
     exact: true,
     component: Building
   },
-  {//电站分析
+  {//电站分析>全部电站分析
     path: '/statistical/stationaccount/allstation',
     exact: true,
     component: AllStationAnalysis,
     // component: Building
-  },{
+  },{//单电站分析
     path: '/statistical/stationaccount/allstation/:stationCode',
     exact: true,
     component: AllStationAnalysis,
     // component: Building
-  },{
+  },{//生产分析
     path: '/statistical/stationaccount/production',
     exact: true,
     component: ProductionAnalysis
     // component: Building
-  },{
+  },{//运行分析
     path: '/statistical/stationaccount/operate',
     exact: true,
     component: OperateAnalysis,
     // component: Building
-  },{
+  },{//资源分析
     path: '/statistical/stationaccount/resource',
     exact: true,
     component: StationResourceAnalysis,
     // component: Building
-  },{
+  },{//电站对比
     path: '/statistical/stationaccount/contrast',
     exact: true,
     component: StationContrast,
     // component: Building
-  },{
+  },{//设备性能分析
     path: '/statistical/equipment/performance',
     exact: true,
     component: PerformanceAnalysis
     // component: Building,
-  },{
+  },{//厂家对比
     path: '/statistical/equipment/manufacturers',
     exact: true,
     component: Building
-  },{
+  },{//统计报表
     path: '/statistical/statement/currency',
     exact: true,
     component: GeneralReport,
@@ -245,19 +245,19 @@ const routers = [
     exact: true,
     component: CleanoutRecord
   },
-  {
+  {//组串异常分析
     path: '/analysis/formation/abnormal',
     exact: true,
     component: Building
-  },{
+  },{//预警配置
     path: '/analysis/formation/warning',
     exact: true,
     component: Building
-  },{
+  },{//偏航对风分析
     path: '/analysis/yaw/wind',
     exact: true,
     component: Building
-  },{
+  },{//预警事件配置
     path: '/analysis/yaw/config',
     exact: true,
     component: Building

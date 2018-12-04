@@ -30,7 +30,6 @@ class CleanoutRecordSide extends Component {
     const { showSidePage } = this.props;
     return (
       <div className={styles.cleanoutRecordSide}>
-       抽屉详情页
        { showSidePage === 'detail' && <CleanoutRecordDetail {...this.props} /> }
        { showSidePage === 'planRecord' && <CleanoutRecordDetail {...this.props} /> }
    
