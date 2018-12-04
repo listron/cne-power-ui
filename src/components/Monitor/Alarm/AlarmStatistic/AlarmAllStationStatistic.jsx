@@ -124,7 +124,7 @@ class ALarmAllStationStatistic extends React.Component {
     const { stationType, stations }  = this.props;
     const { showStationSelect } = this.state;
     const stationTypeOne = this.stationIsOneType();
-    console.log(stationTypeOne);
+    // console.log(stationTypeOne);
     return (
       <div className={styles.alarmStatistTabs}>
         {stationTypeOne ? 

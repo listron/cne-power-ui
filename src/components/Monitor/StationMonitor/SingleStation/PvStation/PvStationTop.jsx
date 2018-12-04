@@ -128,7 +128,7 @@ class PvStationTop extends Component {
       <div className={styles.pvStationTop} >
         <div className={styles.pvStationTitle} >
           <div className={styles.pvStationName} >
-            {showStationList && <ChangeStation stations={stationList} stationName={singleStationData.stationName} baseLinkPath={baseLinkPath} hideStationChange={this.hideStationChange} />}
+            {showStationList && <ChangeStation stations={stationList.filter(e=>e.isConnected===1)} stationName={singleStationData.stationName} baseLinkPath={baseLinkPath} hideStationChange={this.hideStationChange} />}
             <div onClick={this.showStationList} className={styles.stationToggle} id="stationToggle" >
               <Icon type="swap" />
               <h3>{singleStationData && singleStationData.stationName}-{singleStationData && singleStationData.provinceName}</h3>

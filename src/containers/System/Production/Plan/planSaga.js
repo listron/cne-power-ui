@@ -53,7 +53,7 @@ function* getPlanList(action) {//请求生产计划列表数据
   }
 }
 
-function* editPlanInfo(action) {
+function* editPlanInfo(action) {// 编辑计划列表
   const {payload} = action;
   // const url = '/mock/system/editPlanInfo';
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.eddPlanList}`
@@ -110,7 +110,7 @@ function* getOwnStations(action) {//获取所有电站信息
   }
 }
 
-function* addPlanInfo(action) {
+function* addPlanInfo(action) {// 添加生产计划列表
   const {payload} = action;
   // const url = '/mock/system/editPlanInfo';
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.addPlanList}`
@@ -137,7 +137,7 @@ function* addPlanInfo(action) {
   }
 }
 
-function* getYearList(action){
+function* getYearList(action){ // 获取已经计划的年份列表
   const {payload} = action;
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.getYearList}`;
   try {

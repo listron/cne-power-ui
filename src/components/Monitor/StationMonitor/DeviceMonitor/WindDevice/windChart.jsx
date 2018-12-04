@@ -10,7 +10,7 @@ function InverterTenMin({ sequenceChart }) {
     const inverterChart = echarts.init(echartBox);
     let powerLineData = [], radiationLineData = [], radiationLineData1 = [], xTime = [];
     sequenceChart.length > 0 && sequenceChart.forEach(e => {
-      xTime.push(moment(moment.utc(e.utc).toDate()).local().format('YYYY-MM-DD HH:mm'));
+      xTime.push(moment(moment.utc(e.utc).toDate()).local().format('MM-DD HH:mm'));
       powerLineData.push(e.stationPower);
       radiationLineData.push(e.windSpeed);
       radiationLineData1.push('--');
@@ -25,6 +25,7 @@ function InverterTenMin({ sequenceChart }) {
     if (totalLength < 144 && totalLength > 0) { //假如返回数据不全
       labelInterval = parseInt(totalLength / 3) - 1;
     }
+    // console.log('labelInterval',labelInterval)
     const option = {
       graphic: inverterTenMinGraphic,
       title: {
@@ -52,6 +53,7 @@ function InverterTenMin({ sequenceChart }) {
         left: '13%',
         right: '13%',
       },
+      calculable: true,
       tooltip: {
         trigger: 'axis',
         show: true,
@@ -80,25 +82,21 @@ function InverterTenMin({ sequenceChart }) {
       },
       xAxis: {
         type: 'category',
-        data: xTime,
         splitNumber: 4,
         boundaryGap: false,
-        interval: labelInterval,
-        axisTick: {
-          // show: false,
-          show:true,
-        },
+        minInterval: labelInterval,
+        data: xTime,
         axisLine: {
-          onZero: false,
           lineStyle: {
             color: '#dfdfdf',
           },
         },
         axisLabel: {
           color: lineColor,
-          formatter: function (params) {
-            return params.slice(5, params.length)
-          },
+          interval: labelInterval,
+        },
+        axisTick: {
+          show: false,
         },
         axisPointer: {
           label: {
@@ -273,6 +271,10 @@ function SactterChart({ theory, actual }) {
           return `<div  style="border-bottom: 1px solid #ccc;padding-bottom: 7px;margin-bottom: 7px;width:150px;overflow:hidden;"> <span style="float: left">风速：${params[0].axisValue} </span>
             </div>${paramsItem}`
         },
+      },
+      axisPointer: {
+        type: 'line',
+        snap: true,
       },
       xAxis: {
         type: 'value',
