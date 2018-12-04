@@ -1,0 +1,29 @@
+.cleanoutRecordMain{
+  display: flex;
+  flex:1 0 auto;
+  width: 100%;
+  flex-direction: column;
+  background-color: #fff;
+  padding: 24px 24px 0;
+ 
+  .topFilter{
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    span{
+     line-height: 30px;
+    }
+    .timeFilter{
+      margin: 0 20px 0 12px;
+    }
+  }
+  .filterBox{
+  }
+  .paginationStyle{
+    display: flex;
+    justify-content: flex-end;
+  }
+   
+   
+  
+}

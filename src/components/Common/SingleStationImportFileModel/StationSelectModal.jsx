@@ -4,6 +4,7 @@ import ProvinceItem from './ProvinceItem';
 import styles from './style.scss';
 import PropTypes from 'prop-types';
 import Cookie from 'js-cookie';
+import WarningTip from '../WarningTip';
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
 
@@ -17,6 +18,8 @@ class StationSelectModal extends Component {
     data: PropTypes.array, // station信息集合
     hideStationModal: PropTypes.func, // 隐藏
     loadedCallback: PropTypes.func,
+    upLoadOutExtraData: PropTypes.object,  //额外需要传的数据，从station 中获取不到
+    hasExistedJudge:PropTypes.bool, //判断文件是否存在
   }
 
   constructor(props) {
@@ -26,6 +29,9 @@ class StationSelectModal extends Component {
       selectedStation: {},
       filterStationType: 2,//选中电站类型 => 默认为全部
       fileList: [],
+      showWarningTip:false,
+      warningTipText:'已存在,是否继续导入',
+      file:'',
     }
   }
 
@@ -51,7 +57,7 @@ class StationSelectModal extends Component {
   }
 
   excelInfoUpload = ({file, fileList}) => { // 
-    const { loadedCallback, hideStationModal } = this.props;
+    const { loadedCallback, hideStationModal,hasExistedJudge } = this.props;
     const { selectedStation } = this.state;
     this.setState({
       uploading: true,
@@ -61,6 +67,7 @@ class StationSelectModal extends Component {
       console.log(file, fileList);
       this.setState({
         uploading: false,
+        file,
       })
     }
     if (file.status === 'done' && file.response && file.response.code === '10000' ) {
@@ -68,7 +75,11 @@ class StationSelectModal extends Component {
       this.setState({ fileList: [] });
       loadedCallback && loadedCallback({ file, selectedStation });
       hideStationModal()
-    }else if(file.status === 'done' && (!file.response || file.response.code !== '10000') ){
+    }
+    if(hasExistedJudge && file.status === 'done'&& file.response && file.response.code === '10001'){
+      this.setState({showWarningTip:true})
+    }
+    else if(file.status === 'done' && (!file.response || file.response.code !== '10000') ){
       message.error(`${file.name} 文件上传失败: ${file.response.message},请重试!`);
     } else if (file.status === 'error') {
       message.error(`${file.name} 文件上传失败!`);
@@ -107,9 +118,27 @@ class StationSelectModal extends Component {
     ))
   }
 
+  cancelWarningTip=()=>{ // 已存在判断 取消按钮
+    const { loadedCallback, hideStationModal } = this.props;
+    const {file,selectedStation}=this.state;
+    this.setState({showWarningTip:false})
+    loadedCallback && loadedCallback({ file, selectedStation,WarningTipStatus:'cancel'});
+    hideStationModal();
+    
+  }
+
+  confirmWarningTip=()=>{ // 已存在判断  确定按钮
+    const { loadedCallback, hideStationModal } = this.props;
+    const {file,selectedStation}=this.state;
+    this.setState({showWarningTip:false})
+    loadedCallback && loadedCallback({ file, selectedStation,WarningTipStatus:'ok' });
+    hideStationModal();
+  }
+
+
   render() {
-    const { hideStationModal, data, uploaderName, uploadPath, uploadExtraData } = this.props;
-    const { filterStationType, selectedStation, fileList, uploading } = this.state;
+    const { hideStationModal, data, uploaderName, uploadPath, uploadExtraData,upLoadOutExtraData,hasExistedJudge } = this.props;
+    const { filterStationType, selectedStation, fileList, uploading,showWarningTip,warningTipText } = this.state;
     const tmpStationTypeArray = data.map(e=>e && e.stationType).filter(e=>(e || e === 0) );
     const stationTypeSet = new Set(tmpStationTypeArray);
     const stationTypeArray = Array.from(stationTypeSet);
@@ -118,7 +147,7 @@ class StationSelectModal extends Component {
     const uploadExtraObject = {};
     uploadExtraData.forEach(e=>{
       uploadExtraObject[e] = selectedStation[e];
-    })
+    })   
     const uploadAvailable = selectedStation.stationCode;
     return (
       <Modal
@@ -137,12 +166,15 @@ class StationSelectModal extends Component {
           fileList={fileList}
           data={(file)=>({
             ...uploadExtraObject,
+            ...upLoadOutExtraData,
             file,
           })}
         >
           <Button disabled={!uploadAvailable} loading={uploading}>导入{uploaderName}</Button>
         </Upload>}
       >
+       {hasExistedJudge && showWarningTip &&
+          <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}
         <div className={styles.stationModalContent}>
           <div className={styles.stationType}>
             {showTypeSelectButton && <RadioGroup onChange={this.onSelectStationType} value={filterStationType}>

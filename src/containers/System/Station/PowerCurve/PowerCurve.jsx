@@ -44,6 +44,8 @@ const mapDispatchToProps = (dispatch) => ({
   getPowerList: payload => dispatch({type:powerCurveAction.getPowerList, payload}),
   getPowercurveDetail: payload => dispatch({type:powerCurveAction.getPowercurveDetail, payload}),
   downloadCurveExcel: payload => dispatch({type:powerCurveAction.downloadCurveExcel, payload}),
+  downloadStandardCurveExcel: payload => dispatch({type:powerCurveAction.downloadStandardCurveExcel, payload}),
+  importCurveExcel: payload => dispatch({type:powerCurveAction.importCurveExcel, payload}),
   resetStore: () => dispatch({ type: powerCurveAction.resetStore }),
   getStationDeviceTypes: params => dispatch({
     type: commonAction.getStationDeviceTypes,

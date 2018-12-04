@@ -48,16 +48,17 @@ class AllStationStatistic extends React.Component {
     const stationTypeOne = this.stationIsOneType();
     let stationTypes;
     if (stationTypeOne) {
-     stationTypes =stations.getIn([0, 'stationType']);
-     changeAllStationStore({stationType:stationTypes})
+      stationTypes = stations.getIn([0, 'stationType']);
+      changeAllStationStore({ stationType: stationTypes })
     }
-    console.log(typeof(stationTypes));
-    changeAllStationStore({ year: [`${currentYear}`], month: currentMonth, powerSelectMonth: currentMonth,})
+    // console.log(typeof(stationTypes));
+    changeAllStationStore({ year: [`${currentYear}`], month: currentMonth, powerSelectMonth: currentMonth, })
     getAllStationAvalibaData(
       {
         userId: userId,
         year: time,
         dateType,
+        stationType
       }
     )
     getAllStationStatisticData(
@@ -129,6 +130,7 @@ class AllStationStatistic extends React.Component {
             userId: userId,
             year: nextProps.year,
             dateType,
+            stationType
           })
         getAllStationStatisticData(
           {
@@ -174,6 +176,7 @@ class AllStationStatistic extends React.Component {
           userId: userId,
           year: rangeYear,
           dateType: nextProps.dateType,
+          stationType
         })
       getAllStationStatisticData(
         {
@@ -214,6 +217,7 @@ class AllStationStatistic extends React.Component {
           userId: userId,
           year: currentYear,
           dateType: nextProps.dateType,
+          stationType
         })
 
       getAllStationStatisticData(
@@ -260,6 +264,7 @@ class AllStationStatistic extends React.Component {
             userId: userId,
             year: changeRangYear,
             dateType,
+            stationType
           }
         )
         getAllStationStatisticData(
@@ -336,6 +341,7 @@ class AllStationStatistic extends React.Component {
         userId: userId,
         year: time,
         dateType,
+        stationType: activeKey
       }
     )
     getAllStationStatisticData(
@@ -387,9 +393,10 @@ class AllStationStatistic extends React.Component {
         <i className="iconfont icon-filter"></i>
       </div>
     );
-     const stationTypeOne = this.stationIsOneType();
+    const stationTypeOne = this.stationIsOneType();
 
     const { stationType, stations, dateType, year, allStationAvalibaData, allStationStatisticData, getAllStationStatisticData, selectYear, changeAllStationStore } = this.props;
+    console.log(stations)
     const { showStationSelect } = this.state;
     return (
       <div className={styles.allStationTypeTabs}>
@@ -397,17 +404,17 @@ class AllStationStatistic extends React.Component {
           <div className={styles.AlarmStatisticByTypeBox} >
             <div className={styles.singleAlarmFilter} >{operations}</div>
             <div className={styles.componentContainer}>
-            <TimeSelect showDayPick={false} onChange={this.onTimeChange} />
-            <PlanCompletionRate dateType={dateType} stationType={stationType} allStationAvalibaData={allStationAvalibaData} allStationStatisticData={allStationStatisticData} getAllStationStatisticData={getAllStationStatisticData} year={year} selectYear={selectYear}
-              changeAllStationStore={changeAllStationStore} />
-            <TargetTabs {...this.props} />
-            <StationStatisticList {...this.props} />
-          </div>
-        
+              <TimeSelect showDayPick={false} onChange={this.onTimeChange} />
+              <PlanCompletionRate dateType={dateType} stationType={stationType} allStationAvalibaData={allStationAvalibaData} allStationStatisticData={allStationStatisticData} getAllStationStatisticData={getAllStationStatisticData} year={year} selectYear={selectYear}
+                changeAllStationStore={changeAllStationStore} />
+              <TargetTabs {...this.props} />
+              <StationStatisticList {...this.props} />
+            </div>
+
           </div>
           :
           <Tabs type="card" tabBarExtraContent={operations} activeKey={stationType} onChange={this.queryTargetData} >
-            <TabPane tab="风电" key={'0'}>
+            {/* <TabPane tab="风电" key={'0'}>
               <div style={{
                 display: 'flex',
                 flexDirection: 'column',
@@ -416,7 +423,7 @@ class AllStationStatistic extends React.Component {
                 background: "url('/img/undo.png') no-repeat center #fff"
               }}>
               </div>
-            </TabPane>
+            </TabPane> */}
             <TabPane tab="光伏" key={'1'}>
               <div className={styles.componentContainer}>
                 <TimeSelect showDayPick={false} onChange={this.onTimeChange} />
@@ -432,7 +439,7 @@ class AllStationStatistic extends React.Component {
         {
           showStationSelect &&
           <StationSelectModal
-            stations={stations}
+            stations={stations.filter(e=>e.get('stationType') === 1)}
             onClose={() => this.setState({ showStationSelect: false })}
             onChangeStation={this.onChangeStation} />
         }

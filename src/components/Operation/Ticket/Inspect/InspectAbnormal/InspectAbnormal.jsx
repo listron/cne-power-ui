@@ -91,13 +91,14 @@ class InspectAbnormal extends Component {
         // /> 
         <AbnormalItem 
         key={'abnormal'+index}
-        status="select"
+        status="delete"
         item={item}
         onShowDetail={this.onShowDetail}
         disabled={item.get('isTransform') === '1'}
         checked={this.props.selectedIds.includes(item.get('abnormalId'))}
         selected={this.state.abnormalId === item.get('abnormalId')}
         onSelect={this.props.onSelectItem}
+        onDelete={this.props.onDeleteAbnormal}
       />
           
         );

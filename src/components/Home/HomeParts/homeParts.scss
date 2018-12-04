@@ -159,6 +159,7 @@
   }
   .windProgress, .pvProgress, .middleText{ // 光伏 风电进度条
     width: 105px;
+    height: 90px;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
@@ -177,6 +178,11 @@
       }
     }
   }
+  .middleText{
+    flex: 0 0 65px;
+    color: #06bdf4;
+    line-height: 30px;
+  }
 }
 
 .outputPower{ // 电站出力
@@ -192,6 +198,26 @@
   .outputChart{
     height: 200px;
     width: 340px;
+  }
+  .outputTool{
+    @include chartTool();
+    width: 126px;
+    height: 90px;
+    display: flex;
+    flex-direction: column;
+    .time, .text {
+      color:#a6e8ff;
+    }
+    .time{
+      height: 32px;
+      line-height: 32px;
+    }
+    .text{
+      height: 24px;
+      line-height: 24px;
+      text-align: right;
+      margin-right: 12px;
+    }
   }
   .totalPower{
     display: flex;
