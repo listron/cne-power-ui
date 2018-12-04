@@ -238,20 +238,28 @@ const menuData = [
             rightKey: 'monitor',
           }
         ]
-      }, {
-        name: '组串异常检测',
-        path: 'formation',
-        iconStyle: 'icon-usermanage',
+      },{
+        name: '低效组串预警',
+        path: 'earlyWarning',
+        iconStyle: 'icon-pvlogo',
         rightKey: 'analysis_inefficientDetect',
         children: [
           {
-            name: '组串异常分析',
-            path: 'abnormal',
-            rightKey: 'monitor',
+            name: '待处理预警',
+            path: 'unhandle',
+            rightKey: 'analysis_inefficientDetect_unhandle',
           }, {
-            name: '预警事件配置',
+            name: '已忽略',
+            path: 'ignore',
+            rightKey: 'analysis_inefficientDetect_ignore',
+          }, {
+            name: '已转工单',
+            path: 'toOrder',
+            rightKey: 'analysis_inefficientDetect_toOrder',
+          },  {
+            name: '历史预警',
             path: 'warning',
-            rightKey: 'monitor',
+            rightKey: 'analysis_inefficientDetect_warning',
           }
         ]
       }, {

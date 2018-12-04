@@ -91,47 +91,43 @@ const routers = [
     path: '/operation/experience',
     exact: true,
     component: Building,
-  }, {
+  }, {  // 系统管理-账户管理-企业
     path: '/system/account/enterprise',
     exact: true,
     component: Enterprise,
-  }, {
+  }, { // 系统管理-账户管理-部门
     path: '/system/account/department',
     exact: true,
     component: Department,
-  }, {
+  }, { // 系统管理-账户管理-用户
     path: '/system/account/user',
     exact: true,
     component: User,
-  }, {
+  }, { // 系统管理-账户管理-角色
     path: '/system/account/role',
     exact: true,
     component: Role,
-  }, {
-    path:'/system/account/user',
-    exact:true,
-    component: User,
-  }, {
+  }, { //实时监控-告警-实施告警
     path: '/monitor/alarm/realtime',
     exact: true,
     component: RealTimeAlarm,
-  }, {
+  }, { //实时监控-告警-已转工单
     path: '/monitor/alarm/transfer',
     exact: true,
     component: RealTimeAlarm,
-  }, {
+  }, { 
     path: '/monitor/alarm/transfer/:defectId',
     exact: true,
     component: DefectDetail,
-  }, {
+  }, { //实时监控-告警-手动解除
     path: '/monitor/alarm/relieve',
     exact: true,
     component: RealTimeAlarm,
-  }, {
+  }, { //实时监控-告警-历史告警
     path: '/monitor/alarm/history',
     exact: true,
     component: HistoryAlarm,
-  }, {
+  }, { //实时监控-告警-告警统计
     path: '/monitor/alarm/statistic',
     exact: true,
     component: AlarmStatistic,
@@ -139,7 +135,7 @@ const routers = [
     path: '/monitor/alarm/statistic/:stationCode',
     exact: true,
     component: AlarmStatistic,
-  },{
+  },{  //实时监控-电站监控-全部电站
     path: '/monitor/station',
     exact: true,
     component: AllStation,
@@ -147,7 +143,7 @@ const routers = [
     path: '/hidden/monitorDevice/:stationCode/:deviceTypeCode/:deviceCode',
     exact: true,
     component: DeviceMonitor
-  }, {
+  }, { //实时监控-电站监控-单电站
     path: '/monitor/singleStation/:stationCode',
     exact: true,
     component: SingleStation,
@@ -179,37 +175,31 @@ const routers = [
     path: '/system/config/plan',
     exact: true,
     component:Plan
-  },{
+  },{ // 统计分析-电站分析-全部电站
     path: '/statistical/stationaccount/allstation',
     exact: true,
     component: AllStationAnalysis
-    // component: Building
-  },{
+  },{ // 统计分析-电站分析-全部电站-单电站
     path: '/statistical/stationaccount/allstation/:stationCode',
     exact: true,
     component: AllStationAnalysis
-    // component: Building
-  },{
+  },{ // 统计分析-电站分析-生产分析
     path: '/statistical/stationaccount/production',
     exact: true,
     component: ProductionAnalysis
-    // component: Building
-  },{
+  },{ // 统计分析-电站分析-运行分析
     path: '/statistical/stationaccount/operate',
     exact: true,
     component: OperateAnalysis
-    // component: Building
-  },{
+  },{ // 统计分析-电站分析-资源分析
     path: '/statistical/stationaccount/resource',
     exact: true,
     component: StationResourceAnalysis
-    // component: Building
-  },{
+  },{ // 统计分析-电站分析-电站对比
     path: '/statistical/stationaccount/contrast',
     exact: true,
     component: StationContrast
-    // component: Building
-  },{
+  },{ //  统计分析-设备分析-设备性能分析
     path: '/statistical/equipment/performance',
     exact: true,
     component: PerformanceAnalysis
@@ -218,7 +208,7 @@ const routers = [
     path: '/statistical/equipment/manufacturers',
     exact: true,
     component: Building
-  },{
+  },{ //  统计分析-设备分析-通用报表
     path: '/statistical/statement/currency',
     exact: true,
     component: GeneralReport,
@@ -237,14 +227,23 @@ const routers = [
   },{
     path: '/analysis/cleanout/configuration',
     exact: true,
-    component: Building
+    component: Building 
   },
-  {
-    path: '/analysis/formation/abnormal',
+  {  // 高级分析-低效组串预警-待处理预警
+    path: '/analysis/earlyWarning/unhandle',
     exact: true,
     component: Building
-  },{
-    path: '/analysis/formation/warning',
+  },{ // 高级分析-低效组串预警-已忽略
+    path: '/analysis/earlyWarning/ignore',
+    exact: true,
+    component: Building
+  },
+  { // 高级分析-低效组串预警-已转工单
+    path: '/analysis/earlyWarning/toOrder',
+    exact: true,
+    component: Building
+  },{  // 高级分析-低效组串预警-历史预警
+    path: '/analysis/earlyWarning/warning',
     exact: true,
     component: Building
   },{
