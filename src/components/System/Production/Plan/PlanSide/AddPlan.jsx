@@ -52,6 +52,7 @@ class AddPlan extends Component {
     this.props.changePlanStore({
       addPlanYear: value
     })
+    this.props.getStations() //  重新请求电站列表
   };
   selectStation = (stations) => {
     this.props.changePlanStore({

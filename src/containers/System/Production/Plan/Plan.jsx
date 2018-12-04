@@ -42,15 +42,7 @@ class Plan extends Component {
   }
 
   componentDidMount() {
-    // const params = {
-    //   year: this.props.planYear, // 年份 默认是当前年
-    //   stationCodes: this.props.stationCodes, // 电站编码
-    //   sortField: this.props.sortField, // 1:区域 2：电站名称 3:装机容量 4:年份 5: 年计划发电量
-    //   sortMethod: this.props.sortMethod, //排序 => 'field,0/1'field代表排序字段，0升序,1降序
-    //   pageNum: this.props.pageNum,
-    //   pageSize: this.props.pageSize,
-    // };
-    // this.props.getPlanList(params);
+    this.props.getStations(); // 导入电站之后，需要重新加载一次
   }
 
   componentWillReceiveProps(nextProps){
@@ -73,7 +65,6 @@ class Plan extends Component {
       planYear:'',
     });
   }
-
   onShowSideChange = ({ showSidePage }) => {
     this.setState({ showSidePage });
   };

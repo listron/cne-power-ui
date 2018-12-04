@@ -261,7 +261,7 @@ class PowerCurve extends Component {
 
           </div>
           <div className={styles.Button}>
-            <Button href={downloadHref} download={'测试测试.xlsx'} target="_blank" className={styles.download} > 下载导入模版</Button>
+            <Button href={downloadHref} download={'测试测试.xlsx'} target="_blank" className={styles.download} > 下载导入模板</Button>
             {/* <Button className={styles.download} onClick={this.linkClick}>下载导入模版</Button> */}
             <SingleStationImportFileModel
               data={stations.length > 0 && stations.filter(e => e.stationType === 0) || []}

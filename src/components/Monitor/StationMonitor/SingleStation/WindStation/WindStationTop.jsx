@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './windStation.scss';
-import { Icon, Progress, Modal, Input} from 'antd';
+import { Icon, Progress, Modal, Input } from 'antd';
 import moment from 'moment';
 import ChangeStation from '../SingleStationCommon/ChangeStation';
 import { Link } from 'react-router-dom';
@@ -17,7 +17,7 @@ class WindStationTop extends Component {
     changeSingleStationStore: PropTypes.func,
     onSelectedDeviceType: PropTypes.func,
     editData: PropTypes.func,
-    stationCode:PropTypes.string,
+    stationCode: PropTypes.string,
   }
 
   constructor(props) {
@@ -43,33 +43,33 @@ class WindStationTop extends Component {
 
   onChange = (e) => {
     const editValue = e.target.value;
-    this.setState({ 
+    this.setState({
       editValue,
-      editInfoError: (!editValue || isNaN(editValue))?true: false,
+      editInfoError: (!editValue || isNaN(editValue)) ? true : false,
     });
   }
   onOk = () => {
-    const { editData,stationCode } = this.props
+    const { editData, stationCode } = this.props
     const { editValue } = this.state;
-    if(!editValue || isNaN(editValue)){
+    if (!editValue || isNaN(editValue)) {
       return;
     }
-    const editTime=moment().subtract(1,'day').format('YYYY-MM-DD');
-    this.state.modalMonth ? editData({ 
-      monthGen: editValue, 
-      date:editTime, 
-      stationCode:stationCode 
-    }) : editData({ 
-      yearGen: editValue, 
-      date:editTime, 
-      stationCode:stationCode
+    const editTime = moment().subtract(1, 'day').format('YYYY-MM-DD');
+    this.state.modalMonth ? editData({
+      monthGen: editValue,
+      date: editTime,
+      stationCode: stationCode
+    }) : editData({
+      yearGen: editValue,
+      date: editTime,
+      stationCode: stationCode
     });
     this.setState({ modalMonth: false, modalYear: false, editValue: '' });
   }
   onCancel = () => {
-    this.setState({ 
-      modalMonth: false, 
-      modalYear: false, 
+    this.setState({
+      modalMonth: false,
+      modalYear: false,
       editValue: '',
       editInfoError: false,
     });
@@ -116,17 +116,17 @@ class WindStationTop extends Component {
     let stationStatusTime = singleStationData && singleStationData.stationStatus && singleStationData.stationStatus.stationStatusTime;
     let localTime = stationStatusTime && moment.utc(stationStatusTime).toDate();
     let tmpStationStatusTime = localTime && moment(localTime).fromNow();
-    
+
     const baseLinkPath = `/monitor/singleStation`;
     const pathAllStation = "/monitor/station";
     //权限控制
     const rightHandler = localStorage.getItem('rightHandler');
-    const powerUpdate= rightHandler && rightHandler.split(',').includes('monitor_powerUpdate');
+    const powerUpdate = rightHandler && rightHandler.split(',').includes('monitor_powerUpdate');
     return (
       <div className={styles.pvStationTop} >
         <div className={styles.pvStationTitle} >
           <div className={styles.pvStationName} >
-            {showStationList && <ChangeStation stations={stationList} stationName={singleStationData.stationName} baseLinkPath={baseLinkPath} hideStationChange={this.hideStationChange} />}
+            {showStationList && <ChangeStation stations={stationList.filter(e => e.isConnected === 1)} stationName={singleStationData.stationName} baseLinkPath={baseLinkPath} hideStationChange={this.hideStationChange} />}
             <div onClick={this.showStationList} className={styles.stationToggle} id="stationToggle" >
               <Icon type="swap" />
               <h3>{singleStationData && singleStationData.stationName}-{singleStationData && singleStationData.provinceName}</h3>
@@ -179,14 +179,14 @@ class WindStationTop extends Component {
             onCancel={this.onCancel}
             mask={false}
             closable={false}
-            maskClosable={false}           
+            maskClosable={false}
           >
             {this.state.modalMonth ? <div className={styles.editElecDataModal}>
-              截止到昨日，本月累计发电量  
+              截止到昨日，本月累计发电量
               <Input value={editValue} placeholder="请输入" onChange={this.onChange} />  万kWh
                 {editInfoError && <div className={styles.warningInfo}>请输入数字</div>}
-              </div> : <div className={styles.editElecDataModal}>
-                截止到昨日，本年累计发电量  
+            </div> : <div className={styles.editElecDataModal}>
+                截止到昨日，本年累计发电量
                 <Input placeholder="请输入" value={editValue} onChange={this.onChange} />  万kWh
                 {editInfoError && <div className={styles.warningInfo}>请输入数字</div>}
               </div>}
@@ -201,7 +201,7 @@ class WindStationTop extends Component {
                 </div>
                 <span>{singleStationData && singleStationData.yearPlanPower && parseFloat(singleStationData.yearPlanPower).toFixed(4) || 0}</span>
               </div>
-              <Progress percent={+(singleStationData && singleStationData.yearPlanRate.split('%')[0])|| 0} showInfo={false} strokeWidth={3} type="line" strokeColor="#199475" />
+              <Progress percent={+(singleStationData && singleStationData.yearPlanRate.split('%')[0]) || 0} showInfo={false} strokeWidth={3} type="line" strokeColor="#199475" />
               <div className={styles.trueTimeDesc}><span>年累计发电量 万kWh</span><span>计划 万kWh</span></div>
             </div>
             <div className={styles.yearPlanRate} >{singleStationData && singleStationData.yearPlanRate}</div>
