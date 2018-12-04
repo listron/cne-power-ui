@@ -64,7 +64,7 @@ class CleanoutRecord extends Component {
             <CleanoutRecordSide
               {...this.props} 
               showSidePage={showSidePage}
-               queryListParams={queryListParams}
+              queryListParams={queryListParams}
               onShowSideChange={this.onShowSideChange} 
             />
           </TransitionContainer>
