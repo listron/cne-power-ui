@@ -20,6 +20,7 @@ class StationManageTable extends Component {
     loading: PropTypes.bool,
     queryListParams: PropTypes.object,
     allDepartmentData: PropTypes.array,
+    getStations: PropTypes.func,
     getStationList: PropTypes.func,
     getStationDetail: PropTypes.func,
     changeStationManageStore: PropTypes.func,
@@ -56,8 +57,9 @@ class StationManageTable extends Component {
     if (file.status === 'done' && file.response && file.response.code === '10000') {
       message.success(`${file.name} 文件上传成功`);
       this.setState({fileList: []});
-      const { getStationList, queryListParams } = this.props;
+      const { getStationList, queryListParams, getStations } = this.props;
       getStationList({ ...queryListParams }); //上传成功后，重新请求列表数据
+      getStations && getStations(); // 重新请求数据流程中的电站列表。
     }else if(file.status === 'done' && (!file.response || file.response.code !== '10000')){
       message.error(`${file.name} 文件上传失败: ${file.response.message},请重试!`);
     }else if (file.status === 'error') {
