@@ -76,7 +76,7 @@ class PowerDiagramTenMin extends Component {
           params.forEach((item, index) => {
             return paramsItem += `<div> <span style="display: inline-block;width: 5px;height: 5px;border-radius: 50%;background:${color[index]};vertical-align: 3px;margin-right: 3px;"> </span> ${params[index].seriesName} :${ (params[index].value ||  params[index].value === '0'  &&  parseFloat(params[index].value).toFixed(this.getDefaultPoint(params[index].seriesName))) || '--'}</div>`
           });
-          let complate=intervalTime!==0?`<div>${'完成率'}:${(completeRate.length>0  && completeRate.length>0 && (completeRate[params[0].dataIndex].completeRate)*1000/10) || '--'}%</div>`:''
+          let complate=intervalTime!==0?`<div style="margin-left:11px;">${'完成率'}:${(completeRate.length>0  && completeRate.length>0 && (completeRate[params[0].dataIndex].completeRate)*1000/10) || '--'}%</div>`:''
           return `<div  style="border-bottom: 1px solid #ccc;padding-bottom: 7px;margin-bottom: 7px;width:150px;overflow:hidden;"> <span style="float: left">${params[0].name} </span>
             </div>${paramsItem}${complate}`
         },
