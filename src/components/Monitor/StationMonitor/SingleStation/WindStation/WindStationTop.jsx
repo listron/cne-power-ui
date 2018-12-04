@@ -169,7 +169,7 @@ class WindStationTop extends Component {
                 {powerUpdate ? <span className={styles.iconStyle} onClick={() => { this.setModalMonth() }} ><i className="iconfont icon-edit"></i></span> : ''}
               </div>
             </div>
-            <div className={styles.trueTimeUnit}>月发电量 万kWh</div>
+            <div className={styles.trueTimeUnit+' '+styles.editUnit}>月发电量 万kWh</div>
           </div>
           <Modal
             title="请填写"
@@ -195,7 +195,7 @@ class WindStationTop extends Component {
           <div className={styles.stationYearPlan}>
             <div className={styles.annualEnergyScale} >
               <div className={styles.trueTimeValue}>
-                <div>
+                <div className={styles.editYearPower}>
                   <span>{singleStationData && singleStationData.yearPower && parseFloat(singleStationData.yearPower).toFixed(4) || 0}</span>
                   {powerUpdate ? <span className={styles.iconStyle} onClick={() => { this.setModalYear() }}><i className="iconfont icon-edit"></i></span> : ''}
                 </div>
