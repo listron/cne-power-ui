@@ -103,11 +103,17 @@ class PowerCurve extends Component {
 
   getUpdatePointList=(rest)=>{
     const {file,selectedStation,WarningTipStatus}=rest;
-    const formData=new FormData();
-    formData.append('file',file.originFileObj);
-    formData.append('onImport',WarningTipStatus==='ok'?1:0);
-    formData.append('stationCode',selectedStation.stationCode);
-    this.props.importCurveExcel({formData})
+    if(WarningTipStatus){
+      const formData=new FormData();
+      formData.append('file',file.originFileObj);
+      formData.append('onImport',WarningTipStatus==='ok'?1:0);
+      formData.append('stationCode',selectedStation.stationCode);
+      this.props.importCurveExcel({formData})
+    }else{
+      const { stationCode, deviceModeCode, sortField, sortMethod,pageNum,pageSize } = this.props;
+      const param = { stationCode, deviceModeCode, sortField, sortMethod, pageNum, pageSize, }
+      this.getPowerList(param);
+    }
   }
 
 
