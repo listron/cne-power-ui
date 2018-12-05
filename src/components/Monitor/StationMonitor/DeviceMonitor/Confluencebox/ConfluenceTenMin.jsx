@@ -18,7 +18,7 @@ function ConfluenceTenMin({ deviceTenMin, loading }) {
       xTime.push(moment(e.utc).format('YYYY-MM-DD HH:mm:ss'));
       dispersionRatio.push(e.dispersionRatio);
       HLNames.forEach((hl,index) => {
-        HLData[index].push(e.hLArr?e.hLArr[index]: null);
+        HLData[index].push(e.hLArr ? e.hLArr[index] : null);
       })
     });
     const HLNamesArr = HLNames.map((e,i)=>{
