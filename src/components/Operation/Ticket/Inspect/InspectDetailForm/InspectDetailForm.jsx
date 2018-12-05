@@ -113,7 +113,7 @@ class InspectDetailForm extends Component {
     const abnormalIds = this.state.abnormalIds;
     if (status === "2") {
       return (
-        <InspectAddAbnormal {...this.props} />
+        <InspectAddAbnormal {...this.props} onSelectItem={this.onSelectItem} onTransformDefect={this.onTransformDefect} abnormalIds={this.state.abnormalIds} />
       )
     } else if (status === "3" && checkInspectRight) {
       return (
@@ -125,10 +125,10 @@ class InspectDetailForm extends Component {
           </div>
           <Button className={styles.transferBtn} onClick={this.onTransformDefect} disabled={abnormalIds.size === 0}>转工单</Button>
           <div style={{ color: '#666' }}>
-            （请先选择异常设备，复选框置灰为不可选）
+            
           </div>
           <Button className={styles.checkBtn} onClick={this.onInspectCheck}>验收</Button>
-          <div style={{ color: '#666' }}>（确认验收，请点击“验收”按钮）</div>
+          <div style={{ color: '#666' }}></div>
         </div>
       )
     } else {
@@ -149,6 +149,7 @@ class InspectDetailForm extends Component {
   
   render() {
     const { inspectDetail, onChangeShowContainer, changeInspectStore,getInspectDetailRecord,getInspectUsers,getInspectOrbit,getStationDeviceTypes } = this.props;
+    //console.log(inspectDetail.toJS());
     const progressData = inspectDetail.get('processData');
     const inspectId = inspectDetail.get('inspectId');
     const stationCode=inspectDetail.get('stationCode');

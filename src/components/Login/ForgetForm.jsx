@@ -103,7 +103,7 @@ class ForgetForm extends Component{
     return (
       <div className={styles.checkCode} >
         <span className={styles.findPass}>找回密码</span>
-        <Form onSubmit={this.checkCodeLogin} >
+        <Form>
           <div>
             <FormItem>
               {getFieldDecorator('phoneNum', {
@@ -129,7 +129,7 @@ class ForgetForm extends Component{
             </Button>
           </div>
           <FormItem>
-            <Button type="primary" htmlType="submit">下一步</Button>
+            <Button type="primary" onClick={this.checkCodeLogin} >下一步</Button>
           </FormItem>
           {enterpriseId === null ? <p>未加入企业，请加入企业</p> : null}
           {username === null ? <p>未完善个人信息，请尽快完善</p> : null}
@@ -139,11 +139,10 @@ class ForgetForm extends Component{
   }
 
   renderResetTwo(getFieldDecorator, formItemLayout, tailFormItemLayout ){
-
     return (
       <div className={styles.resetPassword} >
         <span  className={styles.newPass}>新密码</span>
-        <Form onSubmit={this.onResetPassword}  >
+        <Form>
           <FormItem label="创建密码" {...formItemLayout}>
             {getFieldDecorator('password',{
               rules: [
@@ -165,7 +164,7 @@ class ForgetForm extends Component{
             )}
           </FormItem>
           <FormItem {...tailFormItemLayout} >
-            <Button type="primary" htmlType="submit" className="login-form-button"  >完成</Button>
+            <Button className="login-form-button" onClick={this.onResetPassword}  >完成</Button>
           </FormItem>
         </Form>
       </div>

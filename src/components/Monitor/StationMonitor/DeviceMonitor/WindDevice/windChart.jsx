@@ -20,6 +20,11 @@ function InverterTenMin({ sequenceChart }) {
     const filterWindSpeed = sequenceChart.filter(e => e.windSpeed);
     const inverterTenMinGraphic = (filterStationPower.length === 0 && filterWindSpeed.length === 0) ? showNoData : hiddenNoData;
     let color = ['#c57576', '#199475'];
+    let labelInterval = 47 // 10min数据如果不缺失，此时为6(每小时6条)*8(8小时) - 1(除去间隔本身) = 47 个展示一个
+    const totalLength = sequenceChart.length;
+    if (totalLength < 144 && totalLength > 0) { //假如返回数据不全
+      labelInterval = parseInt(totalLength / 3) - 1;
+    }
     const option = {
       graphic: inverterTenMinGraphic,
       title: {
@@ -41,9 +46,11 @@ function InverterTenMin({ sequenceChart }) {
         }
       },
       grid: {
-        containLabel: true,
+        // containLabel: true,
         top: 90,
-        bottom: 20,
+        bottom: 40,
+        left: '13%',
+        right: '13%',
       },
       tooltip: {
         trigger: 'axis',
@@ -74,8 +81,12 @@ function InverterTenMin({ sequenceChart }) {
       xAxis: {
         type: 'category',
         data: xTime,
+        splitNumber: 4,
+        boundaryGap: false,
+        interval: labelInterval,
         axisTick: {
-          show: false,
+          // show: false,
+          show:true,
         },
         axisLine: {
           onZero: false,
@@ -85,6 +96,9 @@ function InverterTenMin({ sequenceChart }) {
         },
         axisLabel: {
           color: lineColor,
+          formatter: function (params) {
+            return params.slice(5, params.length)
+          },
         },
         axisPointer: {
           label: {
@@ -201,7 +215,7 @@ function SactterChart({ theory, actual }) {
     });
     actual.sort((a, b) => { return a.windSpeed - b.windSpeed })
     actual.length > 0 && actual.forEach(e => {
-      actualData.push([e.windSpeed,e.stationPower])
+      actualData.push([e.windSpeed, e.stationPower])
       actualData1.push('--')
     });
     const inverterTenMinGraphic = (actualData.length === 0 && theoryData.length === 0) ? showNoData : hiddenNoData;
@@ -228,11 +242,11 @@ function SactterChart({ theory, actual }) {
         }
       },
       grid: {
-      //   // containLabel: true,
-      //   top: 90,
-      //   bottom: 40,
-      //   // right: '20%',
-      //   // left: '10%',
+        // containLabel: true,
+        top: 90,
+        bottom: 40,
+        right: '20%',
+        left: '13%',
       },
       tooltip: {
         trigger: 'axis',
@@ -252,10 +266,9 @@ function SactterChart({ theory, actual }) {
         },
         extraCssText: 'box-shadow: 0 0 3px rgba(0, 0, 0, 0.3)',
         formatter: function (params) {
-          console.log('params',params)
           let paramsItem = '';
           params.forEach((item, index) => {
-            return paramsItem += `<div> <span style="display: inline-block;width: 5px;height: 5px;border-radius: 50%;background:${params[index].seriesName === '历史平均功率' ? '#199475' : '#c57576'};vertical-align: 3px;margin-right: 3px;"> </span> ${params[index].seriesName} :${params[index].value === '0' || params[index].value || '--'}</div>`
+            return paramsItem += `<div> <span style="display: inline-block;width: 5px;height: 5px;border-radius: 50%;background:${params[index].seriesName === '历史平均功率' ? '#199475' : '#c57576'};vertical-align: 3px;margin-right: 3px;"> </span> ${params[index].seriesName} :${params[index].value === '0' || params[index].value[1] || '--'}</div>`
           });
           return `<div  style="border-bottom: 1px solid #ccc;padding-bottom: 7px;margin-bottom: 7px;width:150px;overflow:hidden;"> <span style="float: left">风速：${params[0].axisValue} </span>
             </div>${paramsItem}`
@@ -271,9 +284,9 @@ function SactterChart({ theory, actual }) {
         axisTick: {
           show: false,
         },
-       splitLine:{
-        show:false,
-       },
+        splitLine: {
+          show: false,
+        },
         axisLine: {
           // onZero: false,
           lineStyle: {
@@ -327,12 +340,12 @@ function SactterChart({ theory, actual }) {
         {
           name: '历史平均功率',
           type: 'line',
-          
+
           lineStyle: {
             color: '#199475',
             width: 1,
           },
-          smooth:true,
+          smooth: true,
           itemStyle: {
             color: "#199475",
             opacity: 0,
@@ -343,7 +356,7 @@ function SactterChart({ theory, actual }) {
             }
           },
           data: theoryData,
-        }, 
+        },
       ]
     };
     inverterChart.setOption(option);
@@ -369,7 +382,11 @@ function SequenceChart({ sequenceChartList }) {
       speedData.push(e.speed);
       replaceData.push('--')
     });
-
+    let labelInterval = 47 // 10min数据如果不缺失，此时为6(每小时6条)*8(8小时) - 1(除去间隔本身) = 47 个展示一个
+    const totalLength = SequenceChart.length;
+    if (totalLength < 144 && totalLength > 0) { //假如返回数据不全
+      labelInterval = parseInt(totalLength / 3) - 1;
+    }
     const filterpitchAngle1 = sequenceChartList.filter(e => e.pitchAngle1);
     const filterpitchAngle2 = sequenceChartList.filter(e => e.pitchAngle2);
     const filterpitchAngle3 = sequenceChartList.filter(e => e.pitchAngle3);
@@ -388,8 +405,8 @@ function SequenceChart({ sequenceChartList }) {
         left: 30,
         top: 23,
       },
-      color:color,
-      
+      color: color,
+
       legend: {
         top: 24,
         itemWidth: 24,
@@ -400,9 +417,11 @@ function SequenceChart({ sequenceChartList }) {
         }
       },
       grid: {
-        containLabel: true,
+        // containLabel: true,
         top: 90,
-        // bottom: 20,
+        bottom: 40,
+        left: '13%',
+        right: '13%',
       },
       tooltip: {
         trigger: 'axis',
@@ -444,6 +463,10 @@ function SequenceChart({ sequenceChartList }) {
         },
         axisLabel: {
           color: lineColor,
+          formatter: function (params) {
+            return params.slice(5, params.length)
+          },
+          // interval: labelInterval,
         },
         axisPointer: {
           label: {
@@ -457,6 +480,8 @@ function SequenceChart({ sequenceChartList }) {
           nameTextStyle: {
             color: lineColor,
           },
+          splitNumber: 4,
+          boundaryGap: false,
           splitLine: {
             show: false
           },

@@ -2,6 +2,9 @@
   display: flex;
   flex:1;
   flex-direction: column;
+  .fontColor{
+    color:red
+    }
   :global{
     .ant-tabs:not(.ant-tabs-vertical) > .ant-tabs-content > .ant-tabs-tabpane {
       //width: 0ch;
@@ -11,12 +14,30 @@
     .ant-tabs-nav-scroll {
     background-color: #f8f8f8;
     }
-  }
+    
+    .iconfont{
+      color:#2d9e81;
+      font-size: 14px;
+    }
+   
+    }
+  
   .chartsContainer{
     display: flex;
     flex-direction: column;
     width: 100%;
     overflow: hidden;
+    .textStyle{
+      background:#f8f8f8;
+      border-radius:4px;
+      // height:60px;
+      padding-left: 32px;
+      div{
+        height: 30px;
+        line-height: 30px;
+      }
+      
+    }
     .chart{
       display: flex;
       flex:1;
@@ -24,14 +45,14 @@
       // background: #199475; 
       width: 100%;
       border-bottom: 1px solid #ececec;
-      height: 300px;
       overflow: hidden;
       margin-right: 24px;
     }
     .chart>div{
       flex: 1;
-      height: 300px;
+      height: 320px;
     }
+   
   }
 
 }

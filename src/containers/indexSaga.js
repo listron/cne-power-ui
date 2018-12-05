@@ -1,7 +1,7 @@
 import { all } from 'redux-saga/effects';
 import { watchCommon } from './alphaRedux/commonSaga';
-
 import { watchLogin } from './Login/loginSaga';
+import { watchHomepage } from './Home/homepageSaga';
 
 import { watchChangeShowContainer } from './Operation/Ticket/ticketSaga';
 import { watchDefect } from './Operation/Ticket/Defect/defectSaga';
@@ -34,14 +34,20 @@ import { watchStationContrastSaga } from './StatisticalAnalysis/StationAnalysis/
 import { watchPerformanceAnalysisSaga } from "./StatisticalAnalysis/EquipmentAnalysis/PerformanceAnalysis/performanceAnalysisSaga";
 
 
+
+import { watchCleanoutRecord} from "./AdvanceAnalysis/CleanoutModel/CleanoutRecord/cleanoutRecordSaga";
+import { watchCleanoutWarning } from "./AdvanceAnalysis/CleanoutModel/CleanoutWarning/cleanoutWarningSaga";
+
+
+
+
 import { watchPlan } from './System/Production/Plan/planSaga';
 // root saga
 export default function* rootSaga() {
   yield all([
-    //common
-    watchCommon(),
-    //登陆注册
-    watchLogin(),
+    watchCommon(), // common
+    watchLogin(), // 登录注册
+    watchHomepage(), // 主页
     //ticket
     watchChangeShowContainer(),
     watchDefect(),//Defect
@@ -77,5 +83,8 @@ export default function* rootSaga() {
     watchStationResourceStationSaga(),
     //设备分析
     watchPerformanceAnalysisSaga(),
+    //高级分析>清洗模型>清洗记录+清洗预警
+    watchCleanoutRecord(),
+    watchCleanoutWarning(),
   ])
 }

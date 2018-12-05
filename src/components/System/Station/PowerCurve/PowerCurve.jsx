@@ -9,6 +9,8 @@ import PowerCurveChart from './PowerCurveChart';
 import path from '../../../../constants/path';
 import Cookie from 'js-cookie';
 
+import SingleStationImportFileModel from '../../../Common/SingleStationImportFileModel';
+
 const Option = Select.Option;
 class PowerCurve extends Component {
   static propTypes = {
@@ -18,6 +20,8 @@ class PowerCurve extends Component {
     changePowerCurveStore: PropTypes.func,
     getPowercurveDetail: PropTypes.func,
     downloadCurveExcel: PropTypes.func,
+    downloadStandardCurveExcel: PropTypes.func,
+    importCurveExcel: PropTypes.func,
     planData: PropTypes.array,
     sortField: PropTypes.string,
     sortMethod: PropTypes.string,
@@ -35,18 +39,18 @@ class PowerCurve extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectStation: [],
-      selectedRowKeys: [],
-      visible: false,
-      air: '',
-      downloadData: [],
+      selectStation: [],// 选择的电站
+      selectedRowKeys: [], // 导出选择的列数
+      visible: false,// 功率曲线图表是否显示
+      air: '', // 空气密度类型
+      downloadData: [], // 导出的信息
       fileList: [],
-      uploading:false,
+      uploading: false, // 下载
     }
   }
 
-  componentWillMount(){// 初始加载列表
-    const {getPowerList,sortField,sortMethod,pageNum,pageSize,stationCode,deviceModeCode}=this.props
+  componentWillMount() {// 初始加载列表
+    const { getPowerList, sortField, sortMethod, pageNum, pageSize, stationCode, deviceModeCode } = this.props
     getPowerList({
       stationCode,
       deviceModeCode,
@@ -54,7 +58,7 @@ class PowerCurve extends Component {
       sortMethod,
       pageNum,
       pageSize,
-     })
+    })
   }
 
 
@@ -85,30 +89,6 @@ class PowerCurve extends Component {
     })
   }
 
-  onPowerUpload = ({file, fileList}) => { // 导入功率曲线
-    this.setState({
-      uploading: true,
-      fileList,
-    })
-    if (file.status !== 'uploading') {
-      // console.log(file, fileList);
-      this.setState({
-        uploading: false,
-      })
-    }
-    if (file.status === 'done' && file.response && file.response.code === '10000') {
-      message.success(`${file.name} 文件上传成功`);
-      this.setState({fileList: []});
-      const { stationCode, deviceModeCode, sortField, sortMethod, pageNum, pageSize}=this.props
-      const param = { stationCode, deviceModeCode, sortField, sortMethod, pageNum, pageSize }
-      this.getPowerList(param); //上传成功后，重新请求列表数据
-    }else if(file.status === 'done' && (!file.response || file.response.code !== '10000')){
-      message.error(`${file.name} 文件上传失败: ${file.response.message},请重试!`);
-    }else if (file.status === 'error') {
-      message.error(`${file.name} 文件上传失败,请重试!`);
-    }
-  }
-
   getPowerList = (param) => { // 请求数据
     const { sortField, sortMethod, pageNum, pageSize, stationCode, deviceModeCode } = param;
     this.props.getPowerList({
@@ -121,18 +101,28 @@ class PowerCurve extends Component {
     })
   }
 
+  getUpdatePointList=(rest)=>{
+    const {file,selectedStation,WarningTipStatus}=rest;
+    const formData=new FormData();
+    formData.append('file',file.originFileObj);
+    formData.append('onImport',WarningTipStatus==='ok'?1:0);
+    formData.append('stationCode',selectedStation.stationCode);
+    this.props.importCurveExcel({formData})
+  }
+
 
   stationSelected = (rest) => { // 电站选择之后
-    const { sortField, sortMethod, pageNum, pageSize } = this.props
-    this.props.changePowerCurveStore({ stationCode: rest[0].stationCode })
+    const { sortField, sortMethod, pageNum, pageSize } = this.props;
+    const selectStaion = rest.length > 0 ? rest[0].stationCode : ''
+    this.props.changePowerCurveStore({ stationCode: selectStaion })
     this.props.getDeviceModel({
-      stationCode: rest[0].stationCode,
+      stationCode: selectStaion,
       deviceTypeCode: '101',
     });
-    const param = { stationCode: rest[0].stationCode, deviceModeCode: "", sortField, sortMethod, pageNum, pageSize, }
+    const param = { stationCode: selectStaion, deviceModeCode: "", sortField, sortMethod, pageNum, pageSize, }
     this.getPowerList(param)
     this.setState({
-      selectStation: rest[0],
+      selectStation: rest,
       selectModle: null,
     })
   }
@@ -177,36 +167,30 @@ class PowerCurve extends Component {
 
   downloadPowerExcel = () => {
     const { downloadData } = this.state;
-    downloadData.length === 0 && message.info('请选择需要导出的数据');
     let stationCode = [], deviceModeCode = [], airDensityType = [];
-    downloadData.length > 0 && downloadData.forEach((item) => {
-      stationCode.push(item.stationCode);
-      deviceModeCode.push(item.deviceModeCode);
-      airDensityType.push(item.airDensityType === '现场空气密度' ? 1 : 2);
-    })
-    this.props.downloadCurveExcel({ stationCode, deviceModeCode, airDensityType })
-    this.setState({
-      selectedRowKeys: [],
-      downloadData: [],
-    })
-  }
-
-  beforeUploadStation = (file) => { // 上传前的校验
-    const validType = ['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet']; // 暂时不兼容xls : 'application/vnd.ms-excel'
-    const validFile = validType.includes(file.type);
-    if (!validFile) {
-      message.error('只支持上传excel文件!');
+    downloadData.length === 0 && message.info('请选择需要导出的数据');
+    if (downloadData.length > 0) {
+      downloadData.forEach((item) => {
+        stationCode.push(item.stationCode);
+        deviceModeCode.push(item.deviceModeCode);
+        airDensityType.push(item.airDensityType === '现场空气密度' ? 1 : 2);
+      })
+      this.props.downloadCurveExcel({ stationCode, deviceModeCode, airDensityType })
+      this.setState({
+        selectedRowKeys: [],
+        downloadData: [],
+      })
     }
-    return !!validFile
   }
 
-
-  
+  linkClick = () => { // 点击下载模版
+    this.props.downloadStandardCurveExcel()
+  }
 
 
   render() {
     const { stations, deviceModels, powerList, pageSize, pageNum, totalNum, powercurveDetail, loading } = this.props;
-    const { selectStation, selectedRowKeys, visible, air, selectModle,fileList,uploading } = this.state;
+    const { selectStation, selectedRowKeys, visible, air, selectModle } = this.state;
     const dataSource = powerList.map((item, index) => ({ ...item, key: index, airDensityType: item.airDensityType === 1 ? '现场空气密度' : '标准空气密度' }));
     const columns = [
       {
@@ -248,23 +232,24 @@ class PowerCurve extends Component {
       onChange: this.onSelectChange,
     };
     const downloadHref = `${path.basePaths.originUri}/template/PowerCurve.xlsx`;
-    const authData = Cookie.get('authData') || null;
+    // const authData = Cookie.get('authData') || null;
     return (
       <div className={styles.PowerCurve}>
+
         <div className={styles.contentMain} >
           <div className={styles.selectSearth}>
             <span>条件查询</span>
             <StationSelect
               data={stations.length > 0 && stations.filter(e => e.stationType === 0) || []}
               holderText={"电站名称"}
-              value={[selectStation]}
+              value={selectStation}
               onChange={this.stationSelected}
               className={styles.stationSelect}
             />
             <Select
               style={{ width: 198 }}
               onChange={this.deviceTypeCodeChange}
-              disabled={deviceModels.length > 0 ? false : true} placeholder={'风机型号'}
+              disabled={selectStation.length > 0 ? false : true} placeholder={'风机型号'}
               className={styles.deviceModeName}
               value={selectModle}
             >
@@ -276,20 +261,17 @@ class PowerCurve extends Component {
 
           </div>
           <div className={styles.Button}>
-            <Button href={downloadHref} download={downloadHref} target="_blank" className={styles.download} > 下载导入模版</Button>
-            <Upload
-              action={`${path.basePaths.APIBasePath}${path.APISubPaths.system.importPowercurve}`}
-              className={styles.uploadStation}
-              onChange={this.onPowerUpload}
-              headers={{ 'Authorization': 'bearer ' + JSON.parse(authData) }}
-              beforeUpload={this.beforeUploadStation}
-              data={(file) => ({ file })}
-              showUploadList={false}
-              fileList={fileList}
-            >
-              <Button type="default" loading={uploading}> 导入</Button>
-            </Upload>
-
+            <Button href={downloadHref} download={'测试测试.xlsx'} target="_blank" className={styles.download} > 下载导入模版</Button>
+            {/* <Button className={styles.download} onClick={this.linkClick}>下载导入模版</Button> */}
+            <SingleStationImportFileModel
+              data={stations.length > 0 && stations.filter(e => e.stationType === 0) || []}
+              uploadPath={`${path.basePaths.APIBasePath}${path.APISubPaths.system.importPowercurve}`}
+              uploaderName={'功率曲线'}
+              uploadExtraData={['stationCode']}
+              upLoadOutExtraData={{'onImport':null}}
+              loadedCallback={this.getUpdatePointList}
+              hasExistedJudge={true}
+            />
             <Button type="default" onClick={this.downloadPowerExcel} className={styles.export} > 导出</Button>
           </div>
           <div className={styles.PowerCurveTable}>

@@ -27,10 +27,11 @@ class InspectOrbit extends Component {
   componentDidMount() {
   }
   onCloseInspectCreate = () => {
-    this.setState({
-      showWarningTip: true,
-      warningTipText: '退出后信息无法保存!'
-    });
+    // this.setState({
+    //   showWarningTip: true,
+    //   warningTipText: '退出后信息无法保存!'
+    // });
+    this.props.onChangeShowContainer({ container: 'detail' });
   }
 
   onCancelWarningTip = () => {
@@ -72,7 +73,7 @@ class InspectOrbit extends Component {
   render() {
     const { showWarningTip, warningTipText, users } = this.state;
     const { inspectTrackData, inspectUserData } = this.props;
-
+    let color=['#199475','#17C5DA', '#E373FA', '#75FAC7', '#E3BDBD','#CA6550', '#9DD8DF', '#EBC2F4', '#D0F7E8', '#DD8803', '#6F86F2', '#FFC500','#4DB98B', '#3B9BFF', '#F9DAA9', '#AEBBF5',' #E0BB3B', '#048B52', '#FF340A', '#96C3F3'];
     let data = [];
     let datas = [];
     let timeArray = [];
@@ -92,7 +93,8 @@ class InspectOrbit extends Component {
         data.push({
           date: [value.trackDate, value1.trackDate],
           coords: [[value.longitude,value.latitude], [ value1.longitude,value1.latitude]],
-          name: item.username
+          name: item.username,
+          lineStyle:{color:color[index]}
         })
       }
     })
@@ -105,20 +107,20 @@ class InspectOrbit extends Component {
       let startAndEndTime = e.pointData && e.pointData.map((e, i) => {
         return e.trackDate
       });
-      console.log(startAndEndTime);
+      
       for (let i = 0; i < startAndEndTime.length - 1; i++) {
         let start = startAndEndTime[i];
         let end = startAndEndTime[i + 1];
         timeArray.push([start, end])
       }
-      console.log(timeArray);
+     
 
       //此处是
       let test=(e.pointData).map((e, i) => {
         return  { coord: [e.longitude, e.latitude] }
       })
       pointArray2.push(test)
-      console.log(pointArray2,'1111');    
+      // console.log(pointArray2,'1111');  
       datas.push({
         ...e,
         name: e.username,
@@ -148,13 +150,18 @@ class InspectOrbit extends Component {
           itemLine
         )
       }
-      console.log(itemLines);
+      // console.log(itemLines);
       return itemLines
     })
     let itemOrbit = itemOrbits.length > 0 ? itemOrbits.reduce(function (prev, next) {
       return prev.concat(next);
     }) : [];
     // console.log(itemOrbit, '线坐标');
+
+   
+     
+
+     
 
     //拿取每条线的起始坐标点，以及终点坐标点；
     let startAndEndCoord = [];
@@ -181,8 +188,9 @@ class InspectOrbit extends Component {
 
     return (
       <div className={styles.inspectOrbit}>
-        {showWarningTip && <WarningTip style={{ marginTop: '250px', width: '210px', height: '88px' }} onCancel={this.onCancelWarningTip} onOK={this.onConfirmWarningTip} value={warningTipText} />}
-        <div className={styles.createTop}>
+      {/*  {showWarningTip && <WarningTip style={{ marginTop: '250px', width: '210px', height: '88px' }} onCancel={this.onCancelWarningTip} onOK={this.onConfirmWarningTip} value={warningTipText} />}
+         */}
+         <div className={styles.createTop}>
           <span className={styles.text}>巡检轨迹</span>
           <Icon type="arrow-left" className={styles.backIcon} onClick={this.onCloseInspectCreate} />
         </div>

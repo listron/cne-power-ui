@@ -66,6 +66,11 @@
         display: inline-block;
         margin-left: 24px;
         color: $darkColor;
+        width: 400px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+
       }
     }
   }

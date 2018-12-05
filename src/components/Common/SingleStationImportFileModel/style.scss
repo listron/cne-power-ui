@@ -2,7 +2,7 @@
 @import '../../../theme/theme.scss';
 
 .singleStationImportFileModel{
-  margin-left: 48px;
+  margin-left: 20px;
   .addButton{
     padding: 0;
     display: flex;
@@ -18,7 +18,8 @@
     .name{
       border-radius: 0 2px 2px 0;
       color: $themeColor;
-      width: 40px;
+      padding: 0 5px;
+      // width: 40px;
       line-height: 30px;
     }
     &:hover{

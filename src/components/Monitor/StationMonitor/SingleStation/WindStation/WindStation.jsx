@@ -74,8 +74,8 @@ class WindStation extends Component {
       <div className={styles.windStation} >
         <WindStationTop {...this.props} stationCode={stationCode} hiddenStationList={this.state.hiddenStationList} />
         <div className={styles.outputPowerDiagram}>
-          <OutputTenMin {...this.props} yXaisName={'风速(m/s)'} chartType={'wind'} />
-          <PowerDiagramTenMin {...this.props} chartType={'wind'} />
+          <OutputTenMin {...this.props} yXaisName={'风速(m/s)'} chartType={'wind'} stationCode={stationCode} />
+          <PowerDiagramTenMin {...this.props} chartType={'wind'} stationCode={stationCode} />
         </div>
         {/* iconfont icon-jidian */}
         {/* 后期增加的功能 */}

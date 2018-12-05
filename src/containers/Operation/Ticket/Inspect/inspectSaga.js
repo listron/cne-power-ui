@@ -232,7 +232,7 @@ function* finishInspect(action) {
         payload: { container: 'list' },
       });
     } else {
-      message.error('执行工单转验收失败！')
+      message.error('有正在进行的巡检进程，不能完成巡检')
       yield put({
         type: ticketAction.SET_INSPECT_FAIL,
         error: {
@@ -395,6 +395,7 @@ function* getInspectDetailRecord(action) {//获取巡检记录的table列表数�
       const totalCount = response.data.data.totalCount || 0;
       let { pageNum, pageSize } = payload;
       const maxPage = Math.ceil(totalCount / pageSize);
+     
       if (totalCount === 0) { // 总数为0时，展示0页
         pageNum = 0;
       } else if (maxPage < pageNum) { // 当前页已超出
