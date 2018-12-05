@@ -6,6 +6,7 @@ import styles from './homepageParts.scss';
 import axios from 'axios';
 import { dataFormat } from '../../utils/utilFunc';
 import { message } from 'antd';
+import { windSvgPath, pvSvgPath } from '../../constants/svg/svgFont';
 
 class CenterMap extends Component{
   static propTypes = {
@@ -129,22 +130,53 @@ class CenterMap extends Component{
       const countryBox = document.getElementById('homeCountryMap');
       const countryChart = echarts.init(countryBox);
       const { data } = response;
-      echarts.registerMap(mapName, data);
+      echarts.registerMap(mapName, data, {
+        Alaska: {
+          left: -140,
+          top: 48,
+          width: 20,
+        }, 
+        Hawaii: {
+          left: -135,
+          top: 33,
+          width: 10
+        },
+      });
       countryChart.setOption({
         series:[{
           name: 'wind',
           type: 'scatter',
           coordinateSystem: 'geo',
           data: windStationData, 
-          symbol: 'image:///img/ico_wind.png',
+          symbol: `path://${windSvgPath}`,
+          symbolRotate: 180,
           symbolSize: [15,18],
+          itemStyle: {
+            color: '#fff',
+          },
+          emphasis: {
+            itemStyle: {
+              color: '#fff35f',
+              opacity: 1,
+            }
+          }
         },{
           name: 'pv',
           type: 'scatter',
           coordinateSystem: 'geo',
           data: pvStationData,
-          symbol: 'image:///img/ico_pv.png',
+          symbol: `path://${pvSvgPath}`,
+          symbolRotate: 180,
           symbolSize: [25,16],
+          itemStyle: {
+            color: '#fff',
+          },
+          emphasis: {
+            itemStyle: {
+              color: '#fff35f',
+              opacity: 1,
+            }
+          }
         }],
         geo: {
           silent:true,
@@ -227,7 +259,7 @@ class CenterMap extends Component{
         <div className={styles.countryMap} id="homeCountryMap"></div>
         <div className={styles.static}>
           <span>{mapCountInfo.name || '--'}</span>
-          {mapCountInfo.pv > 0 && <span className={styles.count}>{mapCountInfo.pv}个</span>}
+          {mapCountInfo.pv > 0 && <span className={styles.count} >{mapCountInfo.pv}个</span>}
           {mapCountInfo.pv > 0 && <img src="/img/ico_pv.png" />}
           {mapCountInfo.wind > 0 && <span className={styles.count}>{mapCountInfo.wind}个</span>}
           {mapCountInfo.wind > 0 && <img src="/img/ico_wind.png" />}

@@ -3,7 +3,7 @@ import { Progress } from 'antd';
 import styles from './homeParts.scss';
 import { dataFormat } from '../../../utils/utilFunc';
 
-export const CompleteRate = ({ mapStation, completeRate }) => { // 计划完成
+export const CompleteRate = ({ mapStation = [], completeRate = 0 }) => { // 计划完成
   const hasPv = mapStation.some(e => e.stationType === 1);
   const hasWind = mapStation.some(e => e.stationType === 0);
   const windYearRate = dataFormat(completeRate.windYearRate);
