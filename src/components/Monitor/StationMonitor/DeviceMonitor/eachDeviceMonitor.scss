@@ -171,7 +171,10 @@
                 }
                 .deviceCode {
                     display: block;
-                    color: $themeColor
+                    color: $themeColor;
+                    overflow: hidden;
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
                 }
             }
         }
@@ -196,7 +199,7 @@
                 padding-top: 24px;
                 .groupName {
                     color: $darkColor;
-                    background: #f4f4f4;
+                    background: #f0f0f0;
                     position: absolute;
                     top: 0;
                     left: 0;
@@ -214,6 +217,9 @@
                         margin-bottom: 0;
                         word-wrap: break-word;
                         padding-right: 20px;
+                    }
+                    &:hover{
+                       background: rgba(206, 235, 224, 0.3); 
                     }
                 }
             }

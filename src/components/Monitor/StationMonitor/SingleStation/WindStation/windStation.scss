@@ -80,10 +80,10 @@
                 :global {
                     .iconfont {
                         display: block;
-                        margin-top: 25px;
+                        margin-top: 11px;
                         color: $themeColor;
                         cursor: pointer;
-                        font-size: 18px;
+                        font-size: 32px;
                     }
                     .iconfont:hover {
                         color: $themeColor;
@@ -92,6 +92,7 @@
             }
             .powerScale {
                 width: 215px;
+                margin-right: 20px;
             }
             .stationYearPlan {
                 display: flex;
