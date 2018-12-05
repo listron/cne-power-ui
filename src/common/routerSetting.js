@@ -212,19 +212,19 @@ const routers = [
     path: '/statistical/statement/currency',
     exact: true,
     component: GeneralReport,
-  },{
+  },{ // 高级分析-光伏发电量评估
     path: '/analysis/assess',
     exact: true,
     component: Building
-  },{
+  },{ // 高级分析-清洗模型-灰尘影响
     path: '/analysis/cleanout/dirt',
     exact: true,
     component: Building
-  },{
+  },{ // 高级分析-清洗模型-清洗记录
     path: '/analysis/cleanout/record',
     exact: true,
     component: Building
-  },{
+  },{ // 高级分析-清洗模型-预警时事件配置
     path: '/analysis/cleanout/configuration',
     exact: true,
     component: Building 
@@ -239,11 +239,11 @@ const routers = [
     component: Building
   },
   { // 高级分析-低效组串预警-已转工单
-    path: '/analysis/earlyWarning/toOrder',
+    path: '/analysis/earlyWarning/transfer',
     exact: true,
     component: Building
   },{  // 高级分析-低效组串预警-历史预警
-    path: '/analysis/earlyWarning/warning',
+    path: '/analysis/earlyWarning/history',
     exact: true,
     component: Building
   },{
