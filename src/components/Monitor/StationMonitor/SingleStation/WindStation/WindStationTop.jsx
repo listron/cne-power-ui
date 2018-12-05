@@ -169,7 +169,7 @@ class WindStationTop extends Component {
                 {powerUpdate ? <span className={styles.iconStyle} onClick={() => { this.setModalMonth() }} ><i className="iconfont icon-edit"></i></span> : ''}
               </div>
             </div>
-            <div className={styles.trueTimeUnit+' '+styles.editUnit}>月发电量 万kWh</div>
+            <div className={styles.trueTimeUnit}>月发电量 万kWh</div>
           </div>
           <Modal
             title="请填写"

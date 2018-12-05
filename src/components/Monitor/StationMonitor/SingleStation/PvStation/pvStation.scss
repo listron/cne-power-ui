@@ -120,6 +120,7 @@
                     }
                     .iconStyle {
                         cursor: pointer;
+                        height: 24px;
                         :global {
                             .iconfont {
                                 font-size: 16px;
@@ -129,9 +130,6 @@
                 }
                 .trueTimeUnit {
                     margin-top: 21px;
-                }
-                .editUnit {
-                    margin-top: 18px;
                 }
                 .trueTimeDesc {
                     color: $darkColor;
