@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import styles from './defectFilter.scss';
+import styles from './filterCondition.scss';
 import { Tabs, Checkbox } from 'antd';
 const TabPane = Tabs.TabPane;
 const CheckboxGroup = Checkbox.Group;

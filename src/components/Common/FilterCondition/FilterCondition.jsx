@@ -13,6 +13,13 @@ import styles from './filterCondition.scss';
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
 
+/** 
+ * 1 stations 判断电站类型和电站名称
+ * 2 deviceType 判断设备类型
+ * 3 defectType 缺陷类型
+ * 4 
+ * 
+*/
 class FilterCondition extends Component {
   static propTypes = {
     stations: PropTypes.object,//电站列表
@@ -40,6 +47,7 @@ class FilterCondition extends Component {
   }
 
   onFilterShowChange = (filterText) => {
+    console.log('123',filterText)
     const { showFilter } = this.state;
     if(showFilter === filterText){
       this.setState({
@@ -64,13 +72,28 @@ class FilterCondition extends Component {
       status: e.target.value
     });
   }
+
+  getDefaultName=(type)=>{
+    const result="";
+    switch(type){
+      case 'time': result='发生时间';break;
+      case 'stationType': result='电站类型';break;
+      case 'stationName': result='电站名称';break;
+      case 'deviceType': result='设备类型';break;
+      case 'defectLevel': result='缺陷级别';break;
+      case 'defectType': result='缺陷类型';break;
+      case 'defectSource': result='缺陷来源';break;
+      case 'squareMatrix': result='所属方阵';break;
+    }
+  }
   
   render() {
     const { showFilter } = this.state;
     const { stations } = this.props;
-    const isOneType = stations.groupBy(item=>item.get('stationType')).size === 1;
+    // const isOneType = stations.groupBy(item=>item.get('stationType')).size === 1;
+    const isOneType=true;
     return (
-      <div className={styles.defectFilter}>
+      <div className={styles.filterCondition}>
         <div className={styles.topSearch}>
           <span className={styles.text}>筛选条件</span>
           <Button onClick={()=>this.onFilterShowChange('time')}>
@@ -90,6 +113,12 @@ class FilterCondition extends Component {
           </Button>
           <Button onClick={()=>this.onFilterShowChange('defectType')}>
             缺陷类型{showFilter==='defectType'?<Icon type="up" />:<Icon type="down" />}
+          </Button>
+          <Button onClick={()=>this.onFilterShowChange('defectSource')}>
+            缺陷来源{showFilter==='defectSource'?<Icon type="up" />:<Icon type="down" />}
+          </Button>
+          <Button onClick={()=>this.onFilterShowChange('squareMatrix')}>
+            所属方阵{showFilter==='squareMatrix'?<Icon type="up" />:<Icon type="down" />}
           </Button>
         </div>
         {/* 删选的组件  */}

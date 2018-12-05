@@ -20,6 +20,8 @@ import DeviceManage from '../containers/System/Station/DeviceManage/DeviceManage
 import PointManage from '../containers/System/Station/PointManage/PointManage';
 import AlarmManage from '../containers/System/Station/AlarmManage/AlarmManage';
 import PowerCurve from '../containers/System/Station/PowerCurve/PowerCurve';
+// 系统管理-生产计划
+import Plan from "../containers/System/Production/Plan/Plan";
 // 实时监控-电站监控
 import AllStation from '../containers/Monitor/StationMonitor/AllStation/AllStation';
 import DeviceMonitor from '../containers/Monitor/StationMonitor/DeviceMonitor/DeviceMonitor';
@@ -30,7 +32,6 @@ import HistoryAlarm from '../containers/Monitor/Alarm/HistoryAlarm';
 import AlarmStatistic from '../containers/Monitor/Alarm/AlarmStatistic';
 
 import EditPassword from '../containers/Others/EditPassword'; // 更改密码
-
 import Building from '../components/Common/Building/Building';
 
 //电站分析
@@ -46,8 +47,11 @@ import GeneralReport from '../containers/StatisticalAnalysis/StatisticalReport/G
 //高级分析 清洗预警 清洗记录
 import CleanoutWarning from '../containers/HighAnalysis/CleanoutModel/CleanoutWarning/CleanoutWarning';
 import CleanoutRecord from '../containers/HighAnalysis/CleanoutModel/CleanoutRecord/CleanoutRecord';
+// 高级分析 低效组串预警
+import Unhandle from '../containers/HighAnalysis/EarlyWarning/Unhandle/Unhandle';
 
-import Plan from "../containers/System/Production/Plan/Plan";
+
+
 /*
   注： path变量中，以/hidden开头的路径，将不展示在菜单中；
 */
@@ -237,7 +241,8 @@ const routers = [
   }, {  // 高级分析-低效组串预警-待处理预警
     path: '/analysis/earlyWarning/unhandle',
     exact: true,
-    component: Building
+    // component: Building,
+    component: Unhandle
   }, { // 高级分析-低效组串预警-已忽略
     path: '/analysis/earlyWarning/ignore',
     exact: true,
