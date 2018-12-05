@@ -19,7 +19,7 @@ class PerformanceAnalysisFilter extends Component {
     let firstStationCode = stations.length > 0 ? stations[0].stationCode : '';
     //把最近三十天的值存起来
     let startDate = moment().subtract(30, 'days').hour(0).minute(0).second(0).format('YYYY-MM-DD');
-    let endDate = moment().format('YYYY-MM-DD');
+    let endDate = moment().subtract(1, 'days').format('YYYY-MM-DD');
     this.props.changePerformanceAnalysisStore({
       startDate,
       endDate
@@ -74,19 +74,18 @@ class PerformanceAnalysisFilter extends Component {
     let startDate, endDate;
     if (value === 'other') {
       this.onFilterShowChange('timeSelect');
+    }else{
+      this.onFilterShowChange('filterText');
     }
-    if (value === 'today') {
-      startDate = moment().format('YYYY-MM-DD');
-      endDate = moment().format('YYYY-MM-DD');
-    } else if (value === 'yesterday') {
+     if (value === 'yesterday') {
       startDate = moment().subtract(1, 'days').format('YYYY-MM-DD');
       endDate = moment().subtract(1, 'days').format('YYYY-MM-DD');
     } else if (value === 'last7') {
       startDate = moment().subtract(7, 'days').format('YYYY-MM-DD');
-      endDate = moment().format('YYYY-MM-DD');
+      endDate = moment().subtract(1, 'days').format('YYYY-MM-DD');
     } else if (value === 'last30') {
       startDate = moment().subtract(30, 'days').format('YYYY-MM-DD');
-      endDate = moment().format('YYYY-MM-DD');
+      endDate = moment().subtract(1, 'days').format('YYYY-MM-DD');
     }
     this.setState({ timeType: value })
     this.props.changePerformanceAnalysisStore({
@@ -128,6 +127,18 @@ class PerformanceAnalysisFilter extends Component {
       contrastEndDate,
     });
     this.props.getPerformanceContrast({ stationCode, startDate, endDate, contrastStartDate, contrastEndDate, deviceTypeCode, deviceModeTypeCode, electricLineCode })
+  }
+  onCalendarChangeContrast = (selectTime, b, c, d) => {
+   
+    if (selectTime.length === 1) {
+      this.setState({
+        startTime: selectTime[0].format('YYYY-MM-DD'),
+      })
+    } else if (selectTime.length === 2 || this.props.contrastStartDate === false) {
+      this.setState({
+        startTime: null
+      })
+    }
   }
   //不可选时间
   disabledDate = (current) => {
@@ -213,18 +224,7 @@ class PerformanceAnalysisFilter extends Component {
     }
 
   }
-  onCalendarChange = (selectTime, b, c, d) => {
-   
-    if (selectTime.length === 1) {
-      this.setState({
-        startTime: selectTime[0].format('YYYY-MM-DD'),
-      })
-    } else if (selectTime.length === 2 || this.props.contrastStartDate === false) {
-      this.setState({
-        startTime: null
-      })
-    }
-  }
+ 
 
   render() {
     const { Option } = Select;
@@ -245,7 +245,6 @@ class PerformanceAnalysisFilter extends Component {
             onChange={this.stationSelected}
           />
           <Select className={styles.duration} style={{ width: 120 }} value={timeType} onChange={this.onChangeDuration}>
-            <Option value="today">今天</Option>
             <Option value="yesterday">昨天</Option>
             <Option value="last7">最近7天</Option>
             <Option value="last30">最近30天</Option>
@@ -256,7 +255,7 @@ class PerformanceAnalysisFilter extends Component {
           {contrastSwitch ? <RangePicker
             // defaultValue={[moment().startOf('day').subtract(1, 'month'), moment()]}
             disabledDate={this.disabledTime(startTime)}
-            onCalendarChange={this.onCalendarChange}
+            onCalendarChange={this.onCalendarChangeContrast}
             onChange={this.onChangeContrastTime}
             format={dateFormat}
           /> : ''
