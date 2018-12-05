@@ -97,9 +97,10 @@
             .stationYearPlan {
                 display: flex;
                 align-items: center;
+                flex-basis: 328px;
             }
             .annualEnergyScale {
-                width: 230px;
+                // width: 230px;
             }
             div {
                 .trueTimeValue {
@@ -112,8 +113,14 @@
                         display: flex;
                         justify-content: space-between;
                     }
+                    .editYearPower{
+                        display: flex;
+                        justify-content: space-between;
+                        margin-right: 10px;
+                    }
                     .iconStyle {
                         cursor: pointer;
+                        height: 24px;
                         :global {
                             .iconfont {
                                 font-size: 16px;
@@ -157,7 +164,7 @@
                 background: #f8f8f8;
                 line-height: 46px;
             }
-            .ant-tabs-bar{
+            .ant-tabs-bar {
                 margin: 0;
             }
             .ant-tabs-nav .ant-tabs-tab:hover {
@@ -166,13 +173,13 @@
             .ant-tabs-nav .ant-tabs-tab-active {
                 color: $themeColor;
             }
-            .ant-tabs-nav .ant-tabs-tab{
+            .ant-tabs-nav .ant-tabs-tab {
                 margin: 0 30px;
                 padding: 0 16px;
             }
         }
-        .outputPowerDiagram{
-            border-top:none
+        .outputPowerDiagram {
+            border-top: none
         }
     }
     .threadAndDevice {
@@ -308,8 +315,7 @@
                     display: inline-block;
                     margin-right: 18px;
                     margin-bottom: 20px;
-                    width: 222px;
-                    // height: 76px;
+                    width: 222px; // height: 76px;
                     padding: 5px;
                     box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.20);
                     border-radius: 4px;
@@ -348,9 +354,9 @@
                             justify-content: space-between;
                         }
                         .inverterItemPower {
-                             display: flex;
-                             flex-direction: column;
-                            >div{
+                            display: flex;
+                            flex-direction: column;
+                            >div {
                                 display: flex;
                                 justify-content: space-between;
                                 span:first-child {
@@ -360,7 +366,6 @@
                                     color: $darkColor;
                                 }
                             }
-                            
                         }
                         :global {
                             .ant-progress-success-bg,

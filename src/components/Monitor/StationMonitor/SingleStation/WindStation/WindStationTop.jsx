@@ -195,7 +195,7 @@ class WindStationTop extends Component {
           <div className={styles.stationYearPlan}>
             <div className={styles.annualEnergyScale} >
               <div className={styles.trueTimeValue}>
-                <div>
+                <div className={styles.editYearPower}>
                   <span>{singleStationData && singleStationData.yearPower && parseFloat(singleStationData.yearPower).toFixed(4) || 0}</span>
                   {powerUpdate ? <span className={styles.iconStyle} onClick={() => { this.setModalYear() }}><i className="iconfont icon-edit"></i></span> : ''}
                 </div>
