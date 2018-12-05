@@ -7,8 +7,8 @@ import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import Footer from '../../../../components/Common/Footer';
 import TransitionContainer from '../../../../components/Common/TransitionContainer';
 
-import CleanoutRecordMain from '../../../../components/AdvanceAnalysis/CleanoutModel/CleanoutRecord/CleanoutRecordMain/CleanoutRecordMain';
-import CleanoutRecordSide from '../../../../components/AdvanceAnalysis/CleanoutModel/CleanoutRecord/CleanoutRecordSide/CleanoutRecordSide';
+import CleanoutRecordMain from '../../../../components/HighAnalysis/CleanoutModel/CleanoutRecord/CleanoutRecordMain/CleanoutRecordMain';
+import CleanoutRecordSide from '../../../../components/HighAnalysis/CleanoutModel/CleanoutRecord/CleanoutRecordSide/CleanoutRecordSide';
 class CleanoutRecord extends Component {
   static propTypes = {
     showPage: PropTypes.string,
@@ -64,7 +64,7 @@ class CleanoutRecord extends Component {
             <CleanoutRecordSide
               {...this.props} 
               showSidePage={showSidePage}
-               queryListParams={queryListParams}
+              queryListParams={queryListParams}
               onShowSideChange={this.onShowSideChange} 
             />
           </TransitionContainer>
