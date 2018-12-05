@@ -215,6 +215,10 @@ class CenterMap extends Component{
       {name: '年累计发电量', value: dataFormat(singleStation.yearPower), unit: '万kWh'},
     ]
     const singleStatus = singleStation.stationStatus || {};
+    let mapCountryName = mapCountInfo.name || '--';
+    if(mapCountryName === '中国'){
+      mapCountryName = '国内';
+    }
     return (
       <div className={styles.centerMap}>
         <div className={styles.topData}>

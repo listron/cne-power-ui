@@ -63,7 +63,7 @@ export const OperationInfo = ({ operationInfo }) => { // 运维情况
 
 export const EnergySaving = ({ energySaving }) => { // 年累计节能减排
   const dioxide = dataFormat(energySaving.dioxide);
-  const coal = dataFormat(energySaving.dioxide);
+  const coal = dataFormat(energySaving.coal);
   return (
     <section className={styles.energySaving}>
       <h3>年累计节能减排</h3>
