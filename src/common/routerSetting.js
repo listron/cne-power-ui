@@ -43,9 +43,9 @@ import PerformanceAnalysis from "../containers/StatisticalAnalysis/EquipmentAnal
 
 //统计报表
 import GeneralReport from '../containers/StatisticalAnalysis/StatisticalReport/GeneralReport/GeneralReport';
-//高级分析
-import CleanoutWarning from '../containers/AdvanceAnalysis/CleanoutModel/CleanoutWarning/CleanoutWarning';
-import CleanoutRecord from '../containers/AdvanceAnalysis/CleanoutModel/CleanoutRecord/CleanoutRecord';
+//高级分析 清洗预警 清洗记录
+import CleanoutWarning from '../containers/HighAnalysis/CleanoutModel/CleanoutWarning/CleanoutWarning';
+import CleanoutRecord from '../containers/HighAnalysis/CleanoutModel/CleanoutRecord/CleanoutRecord';
 
 import Plan from "../containers/System/Production/Plan/Plan";
 /*

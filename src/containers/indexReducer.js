@@ -9,7 +9,7 @@ import monitor from './Monitor/monitorReduce';
 import alarmReducer from './Monitor/Alarm/alarmReducer';
 import otherReducer from './alphaRedux/otherReducer';
 import statisticalAnalysisReducer from './StatisticalAnalysis/statisticalAnalysisReducer';
-import advanceAanlysisReducer from './AdvanceAnalysis/advanceAanlysisReducer';
+import advanceAanlysisReducer from './HighAnalysis/advanceAanlysisReducer';
 
 const appReducer = combineReducers({
   common, 

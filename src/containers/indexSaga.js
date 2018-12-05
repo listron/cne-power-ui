@@ -35,8 +35,8 @@ import { watchPerformanceAnalysisSaga } from "./StatisticalAnalysis/EquipmentAna
 
 
 
-import { watchCleanoutRecord} from "./AdvanceAnalysis/CleanoutModel/CleanoutRecord/cleanoutRecordSaga";
-import { watchCleanoutWarning } from "./AdvanceAnalysis/CleanoutModel/CleanoutWarning/cleanoutWarningSaga";
+import { watchCleanoutRecord} from "./HighAnalysis/CleanoutModel/CleanoutRecord/cleanoutRecordSaga";
+import { watchCleanoutWarning } from "./HighAnalysis/CleanoutModel/CleanoutWarning/cleanoutWarningSaga";
 
 
 
