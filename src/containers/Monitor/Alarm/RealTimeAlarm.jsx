@@ -152,7 +152,6 @@ class RealTimeAlarm extends Component {
   }
 
   render() {
-    console.log(this.props.defectTypes)
     const status = this.getStatus();
     const alarmStatus = this.getAlarmStatus(status);
     const { currentPage, pageSize, } = this.state;

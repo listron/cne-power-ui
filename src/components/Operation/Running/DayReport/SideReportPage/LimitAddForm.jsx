@@ -242,7 +242,14 @@ class LimitAddForm extends Component {
               {getFieldDecorator('reason', {
                 rules: [{ required: true, message: '请填写原因说明' }],
               })(
-                <InputLimit size={80} className={styles.reasonArea} numberIsShow={false} width={520} height={60} />
+                <InputLimit
+                  placeholder="填写样例: 8:00至10:00调度下令负荷控制在10MW以内"
+                  size={80}
+                  className={styles.reasonArea}
+                  numberIsShow={false}
+                  width={520}
+                  height={60}
+                />
               )}
               <span className={styles.lostInputTip}>({getFieldValue('reason')?getFieldValue('reason').length:0}/80)</span>
             </Form.Item>

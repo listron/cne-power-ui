@@ -3,7 +3,7 @@ import { Progress } from 'antd';
 import styles from './homeParts.scss';
 import { dataFormat } from '../../../utils/utilFunc';
 
-export const CompleteRate = ({ mapStation, completeRate }) => { // 计划完成
+export const CompleteRate = ({ mapStation = [], completeRate = 0 }) => { // 计划完成
   const hasPv = mapStation.some(e => e.stationType === 1);
   const hasWind = mapStation.some(e => e.stationType === 0);
   const windYearRate = dataFormat(completeRate.windYearRate);
@@ -63,7 +63,7 @@ export const OperationInfo = ({ operationInfo }) => { // 运维情况
 
 export const EnergySaving = ({ energySaving }) => { // 年累计节能减排
   const dioxide = dataFormat(energySaving.dioxide);
-  const coal = dataFormat(energySaving.dioxide);
+  const coal = dataFormat(energySaving.coal);
   return (
     <section className={styles.energySaving}>
       <h3>年累计节能减排</h3>
