@@ -6,7 +6,7 @@ import WarningTip from '../../../../Common/WarningTip';
 import { Icon } from 'antd';
 import PropTypes from 'prop-types';
 import styles from './cleanoutPlanRecord.scss';
-import RecordDetailTable from './RecordDetailTable';
+import PlanRecordTable from './PlanRecordTable';
 import moment from 'moment';
 
 class CleanoutPlanRecord extends Component {
@@ -86,10 +86,11 @@ class CleanoutPlanRecord extends Component {
   }
 
   backToList = () => { // 返回列表页
-    this.props.changeCleanoutRecordStore({
-      showPage: 'list',
-      selectedStationIndex: null,
-    });
+    // this.props.changeCleanoutRecordStore({
+    //   showPage: 'list',
+    //   selectedStationIndex: null,
+    // });
+    this.props.onShowSideChange({showSidePage:'detail'}) 
   }
 
   editDetail = () => { // 编辑页
@@ -137,11 +138,7 @@ class CleanoutPlanRecord extends Component {
         <div className={styles.detailTop}>
           <span className={styles.topInfoShow}>
             <span className={styles.title}>{stationDetail.stationName || '--'}详情</span>
-            {stationDetail.stationStatus ? <span>
-              接入时间:{stationDetail.ongridTime ? moment(stationDetail.ongridTime).format('YYYY-MM-DD') : '--'}
-            </span>
-              : <span>电站未接入</span>}
-            {departmentInfo ? ` | ` : ``}
+           
             <span className={styles.departmentInfo} title={departmentInfo}>
               {departmentInfo}
             </span>
@@ -152,7 +149,7 @@ class CleanoutPlanRecord extends Component {
             <Icon type="arrow-left" className={styles.backIcon} onClick={this.backToList} />
           </span>
         </div>
-        <RecordDetailTable {...this.props} />
+        <PlanRecordTable {...this.props} />
       </div>
     )
   }

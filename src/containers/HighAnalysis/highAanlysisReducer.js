@@ -4,10 +4,10 @@ import cleanoutRecordReducer from './CleanoutModel/CleanoutRecord/cleanoutRecord
 import cleanoutWarningReducer from './CleanoutModel/CleanoutWarning/cleanoutWarningReducer';
 
 
-const advanceAnalysisReducer = combineReducers({ 
+const highAnalysisReducer = combineReducers({ 
   cleanoutRecordReducer,
   cleanoutWarningReducer,
  
 });
 
-export default advanceAnalysisReducer;
+export default highAnalysisReducer;

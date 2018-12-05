@@ -11,9 +11,12 @@ class CleanoutRecordTable extends Component {
   tableChange = () => {
 
   }
-  showDetailModal = () => {
- 
-    this.props.changeCleanoutRecordStore({showPage:'detail'})
+  showDetailModal = (record) => {
+    this.props.history.push(`/analysis/cleanout/record/360`);
+    this.props.changeCleanoutRecordStore({showPage:'single'})
+    
+    // this.props.history.push(`/analysis/cleanout/record/${record.stationCode}`);
+   
 
   }
   render() {
@@ -60,12 +63,13 @@ class CleanoutRecordTable extends Component {
         title: '查看',
         key: 'check',
         render: (text, record, index) => {
+          console.log(record);
           return (<span title="查看" className="iconfont icon-look" onClick={() => this.showDetailModal(record)}></span>)
         }
       }
 
     ];
-    const data=[{stationName:'dalidadali',check:'1',addplan:'2',cleanTime:'3',cleanProfit:'4',cleanCycle:'5',cleanPlanNum:'6'},{stationName:'wulala',check:'6',addplan:'7',cleanTime:'8',cleanProfit:'9',cleanCycle:'10',cleanPlanNum:'11'}]
+    const data=[{stationName:'dalidadali',check:'1',addplan:'2',cleanTime:'3',cleanProfit:'4',cleanCycle:'5',cleanPlanNum:'6',stationCode:360},{stationName:'wulala',check:'6',addplan:'7',cleanTime:'8',cleanProfit:'9',cleanCycle:'10',cleanPlanNum:'11',stationCode:350}]
     return (
       <div>
         <Table
