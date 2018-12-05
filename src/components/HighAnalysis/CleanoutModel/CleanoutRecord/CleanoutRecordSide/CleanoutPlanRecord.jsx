@@ -5,10 +5,11 @@ import React, { Component } from 'react';
 import WarningTip from '../../../../Common/WarningTip';
 import { Icon } from 'antd';
 import PropTypes from 'prop-types';
-import styles from './cleanoutRecordDetail.scss';
+import styles from './cleanoutPlanRecord.scss';
+import RecordDetailTable from './RecordDetailTable';
 import moment from 'moment';
 
-class CleanoutRecordDetail extends Component {
+class CleanoutPlanRecord extends Component {
   static propTypes = {
     totalNum: PropTypes.number,
     pageNum: PropTypes.number,
@@ -131,7 +132,7 @@ class CleanoutRecordDetail extends Component {
     const departmentList = stationDetail.departmentList || [];
     const departmentInfo = this.departmentInfoFun(departmentList);
     return (
-      <div className={styles.CleanoutRecordDetail}>
+      <div className={styles.CleanoutPlanRecord}>
         {showWarningTip && <WarningTip onOK={this.confirmWarningTip} value={warningTipText} />}
         <div className={styles.detailTop}>
           <span className={styles.topInfoShow}>
@@ -151,11 +152,12 @@ class CleanoutRecordDetail extends Component {
             <Icon type="arrow-left" className={styles.backIcon} onClick={this.backToList} />
           </span>
         </div>
+        <RecordDetailTable {...this.props} />
       </div>
     )
   }
 }
 
-export default CleanoutRecordDetail;
+export default CleanoutPlanRecord;
 
 

@@ -31,35 +31,33 @@ class CleanoutRecordTable extends Component {
         }
       }, {
         title: '清洗计划(个)',
-        dataIndex: 'effiRate',
-        key: 'effiRate',
+        dataIndex: 'cleanPlanNum',
+        key: 'cleanPlanNum',
         sorter: true,
       }, {
         title: '平均清洗周期(天)',
-        dataIndex: 'tenday',
-        key: 'tenday',
+        dataIndex: 'cleanCycle',
+        key: 'cleanCycle',
         render: text => (<span>{parseInt(text) >= 0 ? `${text}%` : '--'}</span>),
         sorter: true,
       }, {
         title: '累计清洗收益(万kWh)',
-        dataIndex: 'before',
-        key: 'before',
+        dataIndex: 'cleanProfit',
+        key: 'cleanProfit',
         sorter: true,
       }, {
         title: '上次清洗时间',
-        dataIndex: 'recordTiem',
-        key: 'recordTiem',
+        dataIndex: 'cleanTime',
+        key: 'cleanTime',
         sorter: true,
       }, {
         title: '添加清洗计划/降雨',
-        dataIndex: 'addplan',
         key: 'addplan',
         render: (text, record, index) => {
           return (<span title="查看" className="iconfont icon-look" onClick={() => this.showPopModal(record)}></span>)
         }
       },{
         title: '查看',
-        dataIndex: 'check',
         key: 'check',
         render: (text, record, index) => {
           return (<span title="查看" className="iconfont icon-look" onClick={() => this.showDetailModal(record)}></span>)
@@ -67,7 +65,7 @@ class CleanoutRecordTable extends Component {
       }
 
     ];
-    const data=[{stationName:'dalidadali',check:'1',addplan:'2',recordTiem:'3',before:'4',tenday:'5',effiRate:'6'},{stationName:'wulala',check:'6',addplan:'7',recordTiem:'8',before:'9',tenday:'10',effiRate:'11'}]
+    const data=[{stationName:'dalidadali',check:'1',addplan:'2',cleanTime:'3',cleanProfit:'4',cleanCycle:'5',cleanPlanNum:'6'},{stationName:'wulala',check:'6',addplan:'7',cleanTime:'8',cleanProfit:'9',cleanCycle:'10',cleanPlanNum:'11'}]
     return (
       <div>
         <Table
