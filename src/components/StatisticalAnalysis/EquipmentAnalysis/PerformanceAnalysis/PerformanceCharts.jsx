@@ -268,7 +268,7 @@ class PerformanceCharts extends React.Component {
       ],
       series: seriesData || []
     };
-    targetChart.setOption(targetMonthOption)
+    targetChart.setOption(targetMonthOption,'notMerge')
     targetChart.resize();
   }
 

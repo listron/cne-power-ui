@@ -106,7 +106,7 @@ class PerformanceAnalysisTabs extends Component {
 
     //前五名设备
     // conversDeviceNames, hourDeviceNames, availabilityDeviceNames, lostPowerDeviceNames, faultNumDeviceNames, faultTimeDeviceNames
-
+   
     const conversionData = contrastEndDate ? {
       xData: contrastDeviceName,
       yData: {
