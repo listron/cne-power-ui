@@ -144,8 +144,10 @@ class StationSelectModal extends Component {
   }
 
   render() {
-    const { stationModalShow, hideStationModal, showStationModal, multiple } = this.props;
+    const { stationModalShow, hideStationModal, showStationModal, multiple, data } = this.props;
     const { filterStationType, stationType, showWarningTip, warningTipText } = this.state;
+    const tmpStationSet = new Set(data.map(e=>e.stationType));
+    const hasMultipleType = tmpStationSet.size > 1;
     return (
       <div className={styles.stationSelectModal}>
         {showWarningTip && <WarningTip style={{marginTop:'250px',width: '210px',height:'88px'}} onCancel={this.onCancelWarningTip} onOK={this.onConfirmWarningTip} value={warningTipText} />}
@@ -161,11 +163,11 @@ class StationSelectModal extends Component {
           wrapClassName={styles.stationModal}
         >
           <div className={styles.stationStyleModal}>
-            <div className={styles.stationType}>
+            {hasMultipleType && <div className={styles.stationType}>
               <RadioGroup onChange={this.onSelectStationType} value={filterStationType}>
                 {stationType.map((e,i)=>(<RadioButton key={i} value={e} >{e===2?'全部':e===1?'光伏':'风电'}</RadioButton>))}
               </RadioGroup>
-            </div>
+            </div>}
             <div className={styles.provinceList}>
               {this._filterStation()}
             </div>

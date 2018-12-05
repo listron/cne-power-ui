@@ -11,15 +11,16 @@ function ConfluenceTenMin({ deviceTenMin, loading }) {
     const HLNames = ['HL001', 'HL002', 'HL003', 'HL004', 'HL005', 'HL006', 'HL007', 'HL008', 'HL009', 'HL010', 'HL011', 'HL012', 'HL013', 'HL014', 'HL015', 'HL016'];
     const HLColors = ['#e08031','#f9b600','#fbe6e3','#999999','#ceebe0','#f8e71c','#50e3c2','#c7ceb2','#7ed321','#d0021b','#024d22','#bd10e0','#8b572a','#9013fe','#45a0b3','#000d34',];
 
-    let dispersionRatio = [], xTime = [], HLData = [];
+    let dispersionRatio = [], xTime = [], HLData = [], conflenceData = [];
     HLData.length = 16;
     HLData.fill([]);
-    deviceTenMin.length > 0 && deviceTenMin.forEach(e=>{
+    deviceTenMin.length > 0 && deviceTenMin.forEach((e, outerIndex)=>{
       xTime.push(moment(e.utc).format('YYYY-MM-DD HH:mm:ss'));
       dispersionRatio.push(e.dispersionRatio);
-      HLNames.forEach((hl,index) => {
-        HLData[index].push(e.hLArr ? e.hLArr[index] : null);
-      })
+      conflenceData.push(e.hLArr || []);
+    });
+    HLData = HLData.map((e,i) => {
+      return conflenceData.map(inner => inner[i])
     });
     const HLNamesArr = HLNames.map((e,i)=>{
       return {
