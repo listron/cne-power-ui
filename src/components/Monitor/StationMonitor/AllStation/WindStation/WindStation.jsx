@@ -105,7 +105,7 @@ class WindStation extends React.Component {
         "900": 'image://./img/wind-unconnected.png'
       },
       {
-        "400": ['image://./img/pv-normal.png', 'image://./img/pv-alert.png'],
+        "400": ['image://./img/pv-normal.png', 'image://./img/pv02.png'],
         "500": 'image://./img/pv-cutdown.png',
         "900": 'image://./img/pv-unconnected.png'
       },
