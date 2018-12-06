@@ -181,8 +181,9 @@ class CenterMap extends Component{
         geo: {
           silent:true,
           map: mapName,
-          roam: false,
-          zoom: 1.2,
+          roam: true,
+          // layoutCenter: ['50%', '50%'],
+          // layoutSize: 2000,
           itemStyle: {
             normal: {
               areaColor: '#1866a8',
@@ -209,12 +210,10 @@ class CenterMap extends Component{
   }
 
   setStars = () => {
-    const mapBox = document.getElementById('homeCountryMap');
-    const maxWidth = mapBox.offsetWidth;
     let tmpArr = [];
     tmpArr.length = 10;
     tmpArr.fill(0);
-    let starArr = tmpArr.map(e=>[Math.random()*maxWidth, Math.random()*540])
+    let starArr = tmpArr.map(e=>[Math.random() * 980, Math.random()*360])
     this.setState({ starArr });
     this.clocker = setTimeout(this.setStars,5*60*1000);
   }
