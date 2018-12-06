@@ -5,8 +5,6 @@ import styles from "./cleanoutRecord.scss";
 import { cleanoutRecordAction } from './cleanoutRecordAction';
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import Footer from '../../../../components/Common/Footer';
-import TransitionContainer from '../../../../components/Common/TransitionContainer';
-
 import CleanoutRecordMain from '../../../../components/HighAnalysis/CleanoutModel/CleanoutRecord/CleanoutRecordMain/CleanoutRecordMain';
 import CleanoutRecordDetail from '../../../../components/HighAnalysis/CleanoutModel/CleanoutRecord/CleanoutRecordSingleStation/CleanoutRecordDetail';
 class CleanoutRecord extends Component {
@@ -21,14 +19,10 @@ class CleanoutRecord extends Component {
   }
   constructor(props, context) {
     super(props, context)
-
   }
 
   render() {
-    const { showPage, stationType, stationName, pageNum, pageSize, orderField, orderCommand, } = this.props;
-
-
-
+    const { showPage } = this.props;
     const breadCrumbData = {
       breadData: [
         {
@@ -52,7 +46,6 @@ const mapStateToProps = (state) => {
   return {
     ...state.highAanlysisReducer.cleanoutRecordReducer.toJS(),
     stations: state.common.get('stations'),
-
   }
 }
 const mapDispatchToProps = (dispatch) => ({

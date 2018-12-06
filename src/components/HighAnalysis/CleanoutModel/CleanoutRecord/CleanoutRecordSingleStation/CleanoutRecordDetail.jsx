@@ -38,52 +38,17 @@ class CleanoutRecordDetail extends Component {
 
   }
 
-  // preStation = () => { // 上一个电站详情
-  //   const { queryListParams, selectedStationIndex, pageNum, pageSize, getOtherPageStationDetail, getStationDetail, stationList } = this.props;
-  //   if (selectedStationIndex === 0 && pageNum === 1) { // 第一页第一条
-  //     this.setState({
-  //       showWarningTip: true,
-  //       warningTipText: '这是第一个!',
-  //     })
-  //   } else if (selectedStationIndex === 0 && pageNum > 1) { // 其他页向前翻页
-  //     getOtherPageStationDetail({
-  //       ...queryListParams,
-  //       pageNum: pageNum - 1,
-  //       selectedStationIndex: pageSize - 1,
-  //     })
-  //   } else {
-  //     getStationDetail({ // 正常请求上一条电站详情数据
-  //       ...queryListParams,
-  //       selectedStationIndex: selectedStationIndex - 1,
-  //       stationCode: stationList[selectedStationIndex].stationCode,
-  //     })
-  //   }
-  // }
-
-  // nextStation = () => { // 下一个电站详情
-  //   const { queryListParams, selectedStationIndex, pageNum, pageSize, getOtherPageStationDetail, totalNum, getStationDetail, stationList } = this.props;
-  //   const maxPage = Math.ceil(totalNum / pageSize); // 最后一页页码
-  //   const lastPageMaxIndex = totalNum - (maxPage - 1) * pageSize - 1;
-  //   if (selectedStationIndex === lastPageMaxIndex && pageNum === maxPage) { // 最后一页最后一条
-  //     this.setState({
-  //       showWarningTip: true,
-  //       warningTipText: '这是最后一个!',
-  //     })
-  //   } else if (selectedStationIndex === pageSize - 1 && pageNum < maxPage) { // 向后翻页
-  //     getOtherPageStationDetail({
-  //       ...queryListParams,
-  //       pageNum: pageNum + 1,
-  //       selectedStationIndex: 0,
-  //     })
-  //   } else {
-  //     getStationDetail({ // 请求下一条电站详情数据
-  //       ...queryListParams,
-  //       selectedStationIndex: selectedStationIndex + 1,
-  //       stationCode: stationList[selectedStationIndex].stationCode,
-  //     })
-  //   }
-  // }
-
+  
+  onShowSideChange = ({ showSidePage }) => {
+    this.setState({ showSidePage });
+  }
+ 
+  onToggleSide = () => {
+    // const { showPage } = this.props;
+    // this.setState({
+    //   showSidePage: showPage
+    // });
+  }
   confirmWarningTip = () => { // 提示框确认
     this.setState({
       showWarningTip: false,
@@ -140,16 +105,6 @@ class CleanoutRecordDetail extends Component {
       showStationSelect: true
     });
   }
-  onShowSideChange = ({ showSidePage }) => {
-    this.setState({ showSidePage });
-  }
-  onToggleSide = () => {
-    // const { showPage } = this.props;
-    // this.setState({
-    //   showSidePage: showPage
-    // });
-  }
-
   render() {
     const { stationDetail, stations, showPage , stationName, pageNum, pageSize,} = this.props;
     const { showSidePage } = this.state;
@@ -163,7 +118,7 @@ class CleanoutRecordDetail extends Component {
     }
     const departmentList = stationDetail.departmentList || [];
     const departmentInfo = this.departmentInfoFun(departmentList);
-    console.log(showPage);
+    
     return (
       <div className={styles.container}>
         <div className={styles.CleanoutRecordDetail}>

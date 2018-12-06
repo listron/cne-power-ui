@@ -16,7 +16,6 @@ import Pagination from '../../../../../components/Common/CommonPagination/index'
 
 class CleanoutRecordMain extends Component { // 电站管理列表页
   static propTypes = {
-
   }
   static defaultProps = {
     value: {
@@ -34,7 +33,6 @@ class CleanoutRecordMain extends Component { // 电站管理列表页
   onYearSelect = ({ selectedYear }) => { // 选择年份
     const { changeCleanoutRecordStore } = this.props;
     changeCleanoutRecordStore({ startTime: selectedYear })
-
   }
   onOpenChange = (panelOpen) => { // 面板开关控制
     this.setState({ panelOpen });
@@ -56,16 +54,14 @@ class CleanoutRecordMain extends Component { // 电站管理列表页
       })
     }
   }
-
   render() {
-    const { startTime, stations } = this.props;
-    const { panelOpen, showFilter } = this.state;
+    const { stations } = this.props;
+    const {  showFilter } = this.state;
     return (
       <div className={styles.cleanoutRecordMain}>
         <div className={styles.topFilter}>
           <span>  筛选条件:</span>
           <div className={styles.timeFilter}>
-          
           </div>
           <Button onClick={() => this.onFilterShowChange('stationName')}>
             电站名称{showFilter === 'stationName' ? <Icon type="up" /> : <Icon type="down" />}
