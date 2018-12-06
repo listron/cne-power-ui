@@ -47,7 +47,7 @@ class EqpHours extends Component{
         <div className={styles.stationProgress}>
           {stationDataArr.map(e => (
             <div className={styles.eachStation} key={e.stationName}>
-              <span className={styles.stationName}>{e.stationName}</span>
+              <span className={styles.stationName} title={e.stationName}>{e.stationName}</span>
               <div style={{width: `${rectNum*(rectWidth + 2)}px`}} className={styles.hourRectGroup}>{
                 tmpArr.map((each, index)=>{ // 根据比例计算需要占多少个块，并计算最后一个块的宽度
                   const hourRectNum = e.average/maxHour*rectNum;

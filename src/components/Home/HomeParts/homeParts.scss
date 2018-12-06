@@ -249,20 +249,58 @@
       color:#06bdf4;
     }
   }
-  .doneData, .doingData{
+  .animationOperation{
     width: 82px;
     height: 82px;
-    color:#4dde49;
-    font-size:28px;
-    text-align: center;
-    line-height: 82px;
-    background: url('/img/turn1.png') no-repeat center center,
-      url('/img/rotate.png') no-repeat center center;
+    position: relative;
+    .value, .circle{
+      display: inline-block;
+      width: 82px;
+      height: 82px;
+      line-height: 82px;
+      text-align: center;
+      font-size: 28px;
+      color: #48cf49;
+    }
+    .value{
+      background: url('/img/rotate.png') no-repeat center center;
+    }
+    .circle {
+      position: absolute;
+      border-radius: 50%;
+      left: 0;
+      right: 0;
+    }
   }
-  .doingData{
-    background: url('/img/turn2.png') no-repeat center center,
-      url('/img/rotate.png') no-repeat center center;
+  .ticketDone .circle{
+    background: url('/img/turn1.png') no-repeat center center;
+    animation: circlFrame 1s linear infinite;
+    -webkit-animation: circlFrame 1s linear infinite;
   }
+  .ticketDoing .circle{
+    background: url('/img/turn2.png') no-repeat center center;
+    animation: circlFrame 1s linear infinite;
+    -webkit-animation: circlFrame 1s linear infinite;
+  }
+  @keyframes circlFrame {
+    0% { transform: rotate(0deg); }
+    50% { transform: rotate(180deg);}
+    100% { transform: rotate(360deg);}
+  }
+  // .doneData, .doingData{
+  //   width: 82px;
+  //   height: 82px;
+  //   color:#4dde49;
+  //   font-size:28px;
+  //   text-align: center;
+  //   line-height: 82px;
+  //   background: url('/img/turn1.png') no-repeat center center,
+  //     url('/img/rotate.png') no-repeat center center;
+  // }
+  // .doingData{
+  //   background: url('/img/turn2.png') no-repeat center center,
+  //     url('/img/rotate.png') no-repeat center center;
+  // }
 }
 
 .deviceStatus{ // 设备状态
@@ -321,7 +359,7 @@
 }
 
 .eqpHours{ // 今年等效利用小时数
-    .stationProgress{
+  .stationProgress{
     flex: 1;
     .eachStation{
       display: flex;
@@ -330,6 +368,10 @@
         color:#06bdf4;
         flex: 1;
         text-align: right;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        word-break: break-all; 
       }
       .hour{
         text-align: left;
