@@ -99,7 +99,7 @@ class Homepage extends Component {
     } = this.props;
     const { hasMultipleType } = this.state;
     return (
-      <div className={styles.homepage}>
+      <div id="homepage" className={styles.homepage}>
         <HomepageTop changeLoginStore={changeLoginStore} realTimeInfo={realTimeInfo} />
         <div className={styles.innerContent}>
           <div className={styles.middleBox}>

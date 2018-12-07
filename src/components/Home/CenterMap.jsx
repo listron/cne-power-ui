@@ -182,8 +182,8 @@ class CenterMap extends Component{
           silent:true,
           map: mapName,
           roam: true,
-          // layoutCenter: ['50%', '50%'],
-          // layoutSize: 2000,
+          layoutCenter: ['50%', '50%'],
+          layoutSize: 830,
           itemStyle: {
             normal: {
               areaColor: '#1866a8',
@@ -250,14 +250,19 @@ class CenterMap extends Component{
     if(mapCountryName === '中国'){
       mapCountryName = '国内';
     }
+    const containerDom = document.querySelector('#homepage');
+    const countrySize = {
+      width: containerDom ? containerDom.offsetWidth : 0,
+      height: containerDom ? containerDom.offsetHeight: 0,
+    }
     return (
       <div className={styles.centerMap}>
         <div className={styles.topData}>
           {resourceArr.map(e=><MapResourceData key={e.name} detail={e} />)}
         </div>
-        <div className={styles.countryMap} id="homeCountryMap"></div>
+        <div className={styles.countryMap} id="homeCountryMap" style={{ ...countrySize }}></div>
         <div className={styles.static}>
-          <span>{mapCountInfo.name || '--'}</span>
+          <span>{mapCountryName}</span>
           {mapCountInfo.pv > 0 && <span className={styles.count} >{mapCountInfo.pv}个</span>}
           {mapCountInfo.pv > 0 && <img src="/img/ico_pv.png" />}
           {mapCountInfo.wind > 0 && <span className={styles.count}>{mapCountInfo.wind}个</span>}
