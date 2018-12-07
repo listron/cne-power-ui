@@ -195,7 +195,7 @@ class Map extends Component {
         // symbol:'image//../../../../../theme/img/wind-normal.png',
         coordinateSystem: 'bmap',
         data: stationDataList,
-        symbolSize: [32, 30],
+        symbolSize: [30, 32],
         label: {
           normal: {
             show: false

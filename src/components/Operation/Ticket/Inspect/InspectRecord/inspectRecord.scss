@@ -191,11 +191,17 @@
     cursor: pointer;
   }
 }
-
+.widthStyle{
+    width: 70px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 .inspectTable {
   display: flex;
   flex-direction: column;
   flex: 1;
+  
  
   :global {
     .ant-table .ant-table-thead > tr > th, .ant-table .ant-table-tbody > tr > td{

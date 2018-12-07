@@ -3,6 +3,7 @@ import { Button } from 'antd';
 import StationSelectModal from './StationSelectModal'
 import styles from './style.scss';
 import PropTypes from 'prop-types';
+
 /*
   模态框弹出单电站选择，选择电站后，针对该电站导入file
   必须参数:
@@ -37,6 +38,8 @@ import PropTypes from 'prop-types';
   1. disableStation = [21,73,22,25];不可选电站编码数组，默认为[];所有电站均可点击 
   2. uploadExtraData = ['stationCode','stationType'] 上传file中，额外需要传至url的其他电站信息, 默认为[];
   3. loadedCallback ( func: ({file, selectedStation}) => {} ) )完成上传后执行的回调。
+  4. upLoadOutExtraData={onImport:null}  上传file中，额外需要传到url的其他电站信息,默认为{}
+  5. hasExisted={true} 文件是否已存在判断  默认为flase
 */
 
 class SingleStationImportFileModel extends Component {
@@ -47,6 +50,8 @@ class SingleStationImportFileModel extends Component {
     uploadPath: PropTypes.string,
     uploaderName: PropTypes.string,
     loadedCallback: PropTypes.func,
+    upLoadOutExtraData:PropTypes.object,
+    hasExistedJudge:PropTypes.bool,
   }
   static defaultProps = {
     data: [],
@@ -74,8 +79,9 @@ class SingleStationImportFileModel extends Component {
   }
 
   render() {
-    const { data, uploaderName, uploadPath, disableStation, uploadExtraData, loadedCallback  } = this.props;
+    const { data, uploaderName, uploadPath, disableStation, uploadExtraData, loadedCallback ,upLoadOutExtraData,hasExistedJudge } = this.props;
     const { modalShow } = this.state;
+    const initHasExistedJudge=hasExistedJudge?hasExistedJudge:false
     return (
       <span className={styles.singleStationImportFileModel}>
         <Button onClick={this.showStationModal} className={styles.addButton}>
@@ -88,8 +94,10 @@ class SingleStationImportFileModel extends Component {
           uploadPath={uploadPath}
           disableStation={disableStation}
           uploadExtraData={uploadExtraData}
+          upLoadOutExtraData={upLoadOutExtraData}
           hideStationModal={this.hideStationModal} 
           loadedCallback={loadedCallback}
+          hasExistedJudge={initHasExistedJudge}
         />}
       </span>
     )

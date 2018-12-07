@@ -11,6 +11,7 @@ import WarningTip from '../../../../Common/WarningTip';
 
 class SideReportPage extends Component {
   static propTypes = {
+    loading: PropTypes.bool,
     reportDay: PropTypes.string,
     sidePage: PropTypes.string,
     stations: PropTypes.array,
@@ -31,8 +32,8 @@ class SideReportPage extends Component {
       reportDay: '',
       reportStation: [],
       dayReportTotalInfoArr: [], //用于上传日报的所有信息
-      showBackWarningTip: false,
-      warningTipText: '',
+      warningKey: null, // 返回的提示框 => null, 'lastStep', 'backList'
+      warningTipText: '', // 提示框文字
     }
   }
 
@@ -66,20 +67,25 @@ class SideReportPage extends Component {
     this.setState({ dayReportTotalInfoArr })
   }
 
-  showBackTip = () => {
-    const { dayReportTotalInfoArr } = this.state;
-    const configInfoArr = reportBasefun();
-    const uploadInfoExist = dayReportTotalInfoArr.find(eachInfo => {
-      const eachStationInfo = eachInfo.dailyReport;
-      return configInfoArr.find(config => eachStationInfo[config.configName]);
+  cancelWarningTip = () => { // 取消返回列表
+    this.setState({
+      warningKey: null,
+      warningTipText: '',
     })
-    if(uploadInfoExist){ // 已有数据添加
-      this.setState({ // 提示框-提醒用户是否确认返回列表
-        showBackWarningTip: true,
-        warningTipText: '确认放弃日报上报?',
+  }
+
+  giveupReport = () => { // 放弃上报 => 上一步或返回列表。
+    const { warningKey } = this.state;
+    this.setState({
+      warningKey: null, // 返回的提示框 => null, 'lastStep', 'backList'
+      warningTipText: '', // 提示框文字
+    });
+    if (warningKey === 'lastStep') { // 上一步
+      this.props.toChangeDayReportStore({
+        showReportInputList: false,
       })
-    }else{ // 未添加数据任何数据
-      this.props.toChangeDayReportStore({ // 未进入上报数据页或未填写数据则直接返回列表页
+    } else if (warningKey === 'backList') { // 返回列表
+      this.props.toChangeDayReportStore({
         showPage: 'list',
         reportDay: moment().subtract(1,'day').format('YYYY-MM-DD'),
         showReportInputList: false,
@@ -88,32 +94,49 @@ class SideReportPage extends Component {
     }
   }
 
-  cancelWarningTip = () => { // 取消返回列表
-    this.setState({
-      showBackWarningTip: false,
-      warningTipText: '',
-    })
-  }
-
-  toReportList = () => { // 回日报列表页
-    this.props.toChangeDayReportStore({
-      showPage: 'list',
-      reportDay: moment().subtract(1,'day').format('YYYY-MM-DD'),
-      showReportInputList: false,
-      reportStation: [],
-    })
-  }
-
   selectReportTime = (reportMoment,reportDay) => { // 存储选中日报时间并获取不可选电站列表
     reportDay && this.props.getReportUploadedStation({
       reportDay,
     })
   }
 
-  toSelectCondition = () => { // 返回选择时间/电站
-    this.props.toChangeDayReportStore({
-      showReportInputList: false,
+  backList = () => { // 点击返回列表
+    this.dataCheck('backList');
+  }
+
+  toSelectCondition = () => { // 点击返回选择时间/电站选择页
+    this.dataCheck('lastStep');
+  }
+
+  dataCheck = (warningKey) => { // 检查数据并提醒用户保存 => 放弃保存后退出本页
+    const { dayReportTotalInfoArr } = this.state;
+    const configInfoArr = reportBasefun();
+    const uploadInfoExist = dayReportTotalInfoArr.find(eachInfo => {
+      const eachStationInfo = eachInfo.dailyReport;
+      return configInfoArr.find(config => eachStationInfo[config.configName]);
     })
+    const hasAbnormal = dayReportTotalInfoArr.some(e => e.dailyDetailList &&  e.dailyDetailList.length > 0);
+    if(hasAbnormal || uploadInfoExist) { // 已有数据添加 或 异常数据记录
+      let warningTipText = ''; 
+      hasAbnormal && !uploadInfoExist && (warningTipText = '损失数据未保存,确认放弃?');
+      hasAbnormal && uploadInfoExist && (warningTipText = '损失和发电信息未保存,确认放弃?');
+      !hasAbnormal && uploadInfoExist && (warningTipText = '发电信息未保存,确认放弃?');
+      this.setState({ // 提醒用户是否确认返回列表
+        warningKey,
+        warningTipText,
+      })
+    } else if (warningKey === 'lastStep') { // 上一步触发
+      this.props.toChangeDayReportStore({
+        showReportInputList: false,
+      })
+    } else if (warningKey === 'backList') { // 放弃日报上传
+      this.props.toChangeDayReportStore({ // 返回列表页
+        showPage: 'list',
+        reportDay: moment().subtract(1,'day').format('YYYY-MM-DD'),
+        showReportInputList: false,
+        reportStation: [],
+      })
+    }
   }
 
   stationSelected = (reportStation) => { // 存储选中的电站
@@ -216,17 +239,21 @@ class SideReportPage extends Component {
   }
 
   render(){
-    const { reportDay, stations, reportStation, showReportInputList, reportDisableStation } = this.props;
+    const { loading, reportDay, stations, reportStation, showReportInputList, reportDisableStation } = this.props;
     const canReport = reportDay && reportStation && reportStation.length > 0;
-    const { dayReportTotalInfoArr, showBackWarningTip, warningTipText } = this.state;
+    const { dayReportTotalInfoArr, warningKey, warningTipText } = this.state;
     return (
       <div className={styles.sideReportPage} >
         <div className={styles.sideReportTitle} >
           <span className={styles.sideReportTitleTip} >上报日报</span>
           <div className={styles.sideReportTitleRight} >
             {showReportInputList && <Button onClick={this.toSelectCondition} className={styles.dayReportPrev} >上一步</Button>}
-            {showReportInputList && <Button onClick={this.saveDayReport} className={styles.saveDayReport} >保存</Button>}
-            <Icon type="arrow-left" className={styles.backIcon}  onClick={this.showBackTip} />
+            {showReportInputList && <Button
+              onClick={this.saveDayReport}
+              className={styles.saveDayReport}
+              loading={loading}
+            >保存</Button>}
+            <Icon type="arrow-left" className={styles.backIcon}  onClick={this.backList} />
           </div>
         </div>
         {!showReportInputList && <div className={styles.sideReportContent}>
@@ -251,7 +278,12 @@ class SideReportPage extends Component {
           totalReportInfoChange={this.totalReportInfoChange}
           dayReportTotalInfoArr={dayReportTotalInfoArr} 
         />}
-        {showBackWarningTip && <WarningTip onOK={this.toReportList} onCancel={this.cancelWarningTip} value={warningTipText} />}
+        {warningKey && <WarningTip
+          style={{width: '240px',height:'88px'}}
+          onOK={this.giveupReport}
+          onCancel={this.cancelWarningTip}
+          value={warningTipText}
+        />}
       </div>
     )
   }

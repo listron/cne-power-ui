@@ -3,6 +3,7 @@ import StationTypeTag from './StationTypeTag';
 import styles from './homeParts.scss';
 import PropTypes from 'prop-types';
 import echarts from 'echarts';
+import moment from 'moment';
 import { dataFormat } from '../../../utils/utilFunc';
 import { showNoData, hiddenNoData } from '../../../constants/echartsNoData';
 
@@ -51,7 +52,8 @@ class OutputPower extends Component{
     }
     let xAxisArr = [], yPowerData = [], yResourceData = [], hasData = false;
     outputPower.forEach(e=>{
-      xAxisArr.push(e.utc);
+      const xTime = e.utc && moment(e.utc).format('HH:mm');
+      xAxisArr.push(xTime);
       yPowerData.push(e.stationPower);
       yResourceData.push(e.instantaneous);
       if(e.stationPower || e.instantaneous || e.stationPower === 0 || e.instantaneous === 0){
@@ -64,7 +66,7 @@ class OutputPower extends Component{
         title: {
           show: false,
         },
-        color: ['#00ffff', '#d0021b'],
+        color: ['#d0021b', '#00ffff'],
         legend: {
           textStyle: {
             color: '#06bdf4',
@@ -75,17 +77,17 @@ class OutputPower extends Component{
           itemHeight: 5,
         },
         tooltip: {
-          extraCssText: 'background-color: rgba(0,0,0,0.8)',
+          trigger: 'axis',
+          extraCssText: 'background-color: rgba(0, 0, 0, 0.8)',
           padding: 10,
           formatter: params => {
-            const currentData = outputPower[params.dataIndex];
+            const currentData = outputPower[params[0].dataIndex];
             return `<div class=${styles.outputTool}>
-              <div>${currentData.utc}</div>
-              <div>${isWind?'风电':'光伏'}功率 ${currentData.stationPower}月发电量</div>
-              <div>${isWind?'m/s':'W/㎡'}${currentData.instantaneous}</div>
+              <div class=${styles.time}>${params[0].name}</div>
+              <div class=${styles.text}>${isWind?'风电':'光伏'}功率: ${currentData.stationPower}MW</div>
+              <div class=${styles.text}>${isWind?'风速: ':'辐射: '}${currentData.instantaneous}${isWind?'m/s':'W/㎡'}</div>
             </div>`
           },
-          padding: 10
         },
         xAxis: [
           {
@@ -120,9 +122,6 @@ class OutputPower extends Component{
               color: '#06bdf4',
               fontSize: 12,
             },
-            axisLine: {
-              show: false,
-            },
             axisTick: {
               show: false,
             },
@@ -132,7 +131,7 @@ class OutputPower extends Component{
           },
           {
             type: 'value',
-            name: 'm/s',
+            name: isWind ? 'm/s' : 'W/㎡',
             nameTextStyle: {
               fontSize: 12,
               color: '#06bdf4',
@@ -157,12 +156,17 @@ class OutputPower extends Component{
             name: isWind?'风电功率':'光伏功率',
             type: 'line',
             data: yPowerData,
-          },
-          {
+            lineStyle: {
+              width: 1,
+            },
+          }, {
             name: isWind?'风速':'辐射',
             type: 'line',
             yAxisIndex: 1,
             data: yResourceData,
+            lineStyle: {
+              width: 1,
+            },
           }
         ]
     }

@@ -6,7 +6,6 @@ import { message } from "antd";
 import echarts from 'echarts';
 import bmap from 'echarts/extension/bmap/bmap';
 
-
 class Map extends Component {
   static propTypes = {
     allMonitorStation: PropTypes.object,
@@ -195,7 +194,6 @@ class Map extends Component {
         // symbol:'image//../../../../../theme/img/wind-normal.png',
         coordinateSystem: 'bmap',
         data: stationDataList,
-        symbolSize: [24, 17],
         label: {
           normal: {
             show: false
@@ -212,7 +210,12 @@ class Map extends Component {
         }
       }]
     };
-    testChart.setOption(option)
+    try{
+      testChart.setOption(option);
+    }catch(error){
+      message.error('中国地图获取失败,请稍后刷新重试');
+      console.log(error);
+    }
     testChart.on('click', (params) => {
       if (params.data.stationStatus !== '900') {
         return this.props.history.push(`/monitor/singleStation/${params.data.stationCode}`)

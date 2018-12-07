@@ -51,7 +51,7 @@ class AbnormalItem extends Component {
     const { item, selected, checked, disabled, status, height, width, onShowDetail } = this.props;
     if(status === 'delete') {
       return (
-        <div className={styles.deleteItem}
+        <div className={styles.selectedItem}
           style={{
             height: height, 
             width: width, 
@@ -59,11 +59,19 @@ class AbnormalItem extends Component {
             backgroundColor: selected ? '#199475' : '#f1f1f1'
           }}
         >
-          <div className={styles.itemLabel} onClick={()=>{onShowDetail(item)}}>
-            {item.get('deviceName')}
-          </div>
-          <Icon type="close" className={styles.deleteIcon} onClick={this.onDeleteItem} />
+       {/* //   <div className={styles.itemLabel} onClick={()=>{onShowDetail(item)}}>
+        //     {item.get('deviceName')}
+        //   </div>
+        //   <Icon type="close" className={styles.deleteIcon} onClick={this.onDeleteItem} /> */}
+
+        <div style={{marginLeft: checkInspectRight?0:24}} className={styles.itemLabel} onClick={()=>{onShowDetail(item)}}>
+        {checkInspectRight&&<Checkbox checked={checked} onChange={this.onSelectItem} style={{marginRight:8}} disabled={disabled} />}
+          {item.get('deviceName')}
         </div>
+        <Icon type="close" className={styles.deleteIcon} onClick={this.onDeleteItem} />
+        </div>
+        
+
       )
     } else if(status === 'select') {
       return ( 
@@ -75,10 +83,11 @@ class AbnormalItem extends Component {
             backgroundColor: selected ? '#199475' : '#f1f1f1'
           }}
         >
-          {checkInspectRight&&<Checkbox checked={checked} onChange={this.onSelectItem} style={{marginRight:8}} disabled={disabled} />}
           <div style={{marginLeft: checkInspectRight?0:24}} className={styles.itemLabel} onClick={()=>{onShowDetail(item)}}>
+          {checkInspectRight&&<Checkbox checked={checked} onChange={this.onSelectItem} style={{marginRight:8}} disabled={disabled} />}
             {item.get('deviceName')}
           </div>
+        
         </div>
       );
     } else if(status === 'view') {

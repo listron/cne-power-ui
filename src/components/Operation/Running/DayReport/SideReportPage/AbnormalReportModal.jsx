@@ -39,8 +39,16 @@ class AbnormalReportModal extends Component {
   }
 
   confirmAbnormal = () => { // 确认提交异常信息
-    const {faultGenList, limitGenList, abnormalText} = this.state;
-    const { abnormalInfo, dayReportTotalInfoArr, totalInfoChange } = this.props;
+    const {
+      faultGenList, limitGenList, abnormalText, addLostFormShow, addLimitFormShow
+    } = this.state;
+    const {
+      abnormalInfo, dayReportTotalInfoArr, totalInfoChange
+    } = this.props;
+    if (addLostFormShow || addLimitFormShow) {
+      message.error('请先确认完成损失电量表单信息的填写!');
+      return;
+    }
     const uploadParams = dayReportTotalInfoArr.map(info=>{
       if(info.dailyReport.stationCode === abnormalInfo.stationCode){
         const { dailyReport } = info;
@@ -169,7 +177,7 @@ class AbnormalReportModal extends Component {
           onOk={this.confirmAbnormal}
           onCancel={hideAbnormalModal}
           width="calc(100vw - 229px)"
-          okText="保存"
+          okText="确认添加"
           wrapClassName={styles.addAbnormalModal}
           mask={false}
         >

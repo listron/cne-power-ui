@@ -54,7 +54,9 @@ class PvStationTop extends Component {
     if(!editValue || isNaN(editValue)){
       return;
     }
-    const editTime = moment().format('YYYY-MM-DD');
+    //const editTime = moment().format('YYYY-MM-DD');
+    const editTime=moment().subtract(1,'day').format('YYYY-MM-DD');
+    // console.log(editTime);
     this.state.modalMonth ? editData({ 
       monthGen: editValue, 
       date:editTime, 
@@ -126,7 +128,7 @@ class PvStationTop extends Component {
       <div className={styles.pvStationTop} >
         <div className={styles.pvStationTitle} >
           <div className={styles.pvStationName} >
-            {showStationList && <ChangeStation stations={stationList} stationName={singleStationData.stationName} baseLinkPath={baseLinkPath} hideStationChange={this.hideStationChange} />}
+            {showStationList && <ChangeStation stations={stationList.filter(e=>e.isConnected===1)} stationName={singleStationData.stationName} baseLinkPath={baseLinkPath} hideStationChange={this.hideStationChange} />}
             <div onClick={this.showStationList} className={styles.stationToggle} id="stationToggle" >
               <Icon type="swap" />
               <h3>{singleStationData && singleStationData.stationName}-{singleStationData && singleStationData.provinceName}</h3>
@@ -149,7 +151,7 @@ class PvStationTop extends Component {
               <span>{singleStationData && singleStationData.stationPower && parseFloat(singleStationData.stationPower).toFixed(2) || 0}</span>
               <span>{singleStationData && singleStationData.stationCapacity && parseFloat(singleStationData.stationCapacity).toFixed(2) || 0}</span>
             </div>
-            <Progress percent={`${powerPercent}` || 0} showInfo={false} strokeWidth={3} type="line" strokeColor="#199475" />
+            <Progress percent={+powerPercent || 0} showInfo={false} strokeWidth={3} type="line" strokeColor="#199475" />
             <div className={styles.trueTimeDesc}><span>实时功率 MW</span><span>装机容量 MW</span></div>
           </div>
           <div>
@@ -188,11 +190,11 @@ class PvStationTop extends Component {
             maskClosable={false}           
           >
             {this.state.modalMonth ? <div className={styles.editElecDataModal}>
-              截止到今日，本月累计发电量  
+              截止到昨日，本月累计发电量  
               <Input value={editValue} placeholder="请输入" onChange={this.onChange} />  万kWh
                 {editInfoError && <div className={styles.warningInfo}>请输入数字</div>}
               </div> : <div className={styles.editElecDataModal}>
-                截止到今日，本年累计发电量  
+                截止到昨日，本年累计发电量  
                 <Input placeholder="请输入" value={editValue} onChange={this.onChange} />  万kWh
                 {editInfoError && <div className={styles.warningInfo}>请输入数字</div>}
               </div>}
@@ -201,13 +203,13 @@ class PvStationTop extends Component {
           <div className={styles.stationYearPlan}>
             <div className={styles.annualEnergyScale} >
               <div className={styles.trueTimeValue}>
-                <div>
+                <div className={styles.editYearPower}>
                   <span>{singleStationData && singleStationData.yearPower && parseFloat(singleStationData.yearPower).toFixed(4) || 0}</span>
                   {powerUpdate ? <span className={styles.iconStyle} onClick={() => { this.setModalYear() }}><i className="iconfont icon-edit"></i></span> : ''}
                 </div>
                 <span>{singleStationData && singleStationData.yearPlanPower && parseFloat(singleStationData.yearPlanPower).toFixed(4) || 0}</span>
               </div>
-              <Progress percent={+singleStationData && singleStationData.yearPlanRate.split('%')[0]  || 0} showInfo={false} strokeWidth={3} type="line" strokeColor="#199475" />
+              <Progress percent={singleStationData && +singleStationData.yearPlanRate.split('%')[0] || 0} showInfo={false} strokeWidth={3} type="line" strokeColor="#199475" />
               <div className={styles.trueTimeDesc}><span>年累计发电量 万kWh</span><span>计划 万kWh</span></div>
             </div>
             <div className={styles.yearPlanRate} >{singleStationData && singleStationData.yearPlanRate}</div>

@@ -341,6 +341,27 @@
   margin: 0 20px;
   padding: 10px 0 15px 80px;
   margin-top: 10px;
+  .infoTip{
+    margin: 0 0 15px 30px;
+    border-radius: 4px;
+    line-height: 30px;
+    height: 30px;
+    width: 480px;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+    .round{
+      margin: 0 8px 0 16px;
+      width: 14px;
+      height: 14px;
+      line-height: 14px;
+      text-align: center;
+      border-radius: 50%;
+      background-color: $themeColor;
+      color: #fff;
+    }
+  }
   .dataErrorText{
     z-index: 10;
     background:#ffffff;
