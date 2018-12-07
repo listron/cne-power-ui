@@ -227,11 +227,13 @@ class PerformanceAnalysisFilter extends Component {
  
 
   render() {
+   
     const { Option } = Select;
     const { RangePicker } = DatePicker;
     const dateFormat = 'YYYY-MM-DD';
     const { stationCode, stations, deviceTypeCode, deviceTypes, timeType, contrastSwitch, contrastStartDate, contrastEndDate, deviceModeCode, deviceModeTypeCode, deviceModels, deviceModelOther, eleLineCodeData, electricLineCode } = this.props;
     const { showFilter, startTime } = this.state;
+    
     // const eleLineCodeDisable = eleLineCodeData.length === 0;
     let station = stationCode ? stations.filter(e => `${e.stationCode}` === `${stationCode}`) : '';
     return (
