@@ -1,6 +1,12 @@
 
 //整体页面布局重置
 @import '/fonts/iconfont.css';
+
+@font-face {
+  font-family: digital-7mono;
+  src: url('/fonts/digital-7mono.ttf');
+}
+
 *{
   margin:0;
   padding: 0;

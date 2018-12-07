@@ -11,6 +11,7 @@
 
 @mixin typeTags(){
   position: absolute;
+  z-index: 99;
   right: 0;
   top: 0;
 };
@@ -128,6 +129,7 @@
         height: 28px;
         line-height: 28px;
         font-size:28px;
+        font-family: digital-7mono;
       }
       .value{
         color:#4dde49;

@@ -48,8 +48,8 @@ class Confluencebox extends Component {
     if( nextDevice !== deviceCode || nextType !== deviceTypeCode || nextStation !== stationCode ){
       clearTimeout(this.timeOutId);
       clearTimeout(this.timeOutTenMin);
-      const startTime = moment().utc().format();
-      const endTime = moment().subtract(72,'hours').utc().format();
+      const startTime = moment().subtract(72,'hours').utc().format();
+      const endTime = moment().utc().format();
       const params = {
         stationCode: nextStation,
         deviceCode: nextDevice,
