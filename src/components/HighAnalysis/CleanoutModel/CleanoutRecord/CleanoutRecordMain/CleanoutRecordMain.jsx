@@ -11,9 +11,6 @@ import moment from 'moment';
 import StationFilter from './StationFilter';
 import Pagination from '../../../../../components/Common/CommonPagination/index';
 
-
-
-
 class CleanoutRecordMain extends Component { // 电站管理列表页
   static propTypes = {
   }
@@ -80,14 +77,3 @@ class CleanoutRecordMain extends Component { // 电站管理列表页
 }
 
 export default CleanoutRecordMain;
- {/*   <div className={styles.timeFilter}>
-          <DatePicker
-              placeholder="选择年"
-              format="YYYY年"
-              mode="year"
-              value={startTime ? moment(startTime) : null}
-              open={panelOpen}
-              onOpenChange={this.onOpenChange}
-              onPanelChange={this.onPanelChange}
-            /> 
-          </div> */}

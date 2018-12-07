@@ -283,12 +283,12 @@ export default {
       //清洗模型点击进入单电站清洗详情
       getDetailList: '/v3/pvclean/plan/details',
       //加，编辑，获取，删除，清洗计划
-      getAddCleanPlan: '/v3/pvclean/plan/artificial',
-      getEditCleanPlan: '/v3/pvclean/plan/artificial',
-      getCleanPlanDetail: '/v3/pvclean/plan/artificial/',
-      deleteCleanPlan: '/v3/pvclean/plan/artificial/',
+      getAddCleanPlan: '/v3/pvclean/plan/insertartificial',
+      getEditCleanPlan: '/v3/pvclean/plan/updateartificial',
+      getCleanPlanDetail: '/v3/pvclean/plan/getartificial/',
+      deleteCleanPlan: '/v3/pvclean/plan/deleteartificial/',
       //加，编辑，获取，下雨清洗计划
-      getAddRainPlan: '/v3/pvclean/plan/rainfall/',
+      getAddRainPlan: '/v3/pvclean/plan/rainfall',
       getEditRainPlan: '/v3/pvclean/plan/rainfall',
       getRainPlanDetail: '/v3/pvclean/plan/rainfall/',
       //清洗记录列表，增，编辑，获取，删记录

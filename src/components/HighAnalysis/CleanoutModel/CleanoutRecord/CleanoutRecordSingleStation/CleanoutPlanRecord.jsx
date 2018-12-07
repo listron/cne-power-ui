@@ -3,10 +3,12 @@
 import React, { Component } from 'react';
 
 import WarningTip from '../../../../Common/WarningTip';
-import { Icon } from 'antd';
+import { Icon, Radio, Button } from 'antd';
 import PropTypes from 'prop-types';
 import styles from './cleanoutPlanRecord.scss';
 import PlanRecordTable from './PlanRecordTable';
+import Pagination from '../../../../../components/Common/CommonPagination/index';
+
 import moment from 'moment';
 
 class CleanoutPlanRecord extends Component {
@@ -90,7 +92,7 @@ class CleanoutPlanRecord extends Component {
     //   showPage: 'list',
     //   selectedStationIndex: null,
     // });
-    this.props.onShowSideChange({showSidePage:'detail'}) 
+    this.props.onShowSideChange({ showSidePage: 'detail' })
   }
 
   editDetail = () => { // 编辑页
@@ -137,17 +139,35 @@ class CleanoutPlanRecord extends Component {
         {showWarningTip && <WarningTip onOK={this.confirmWarningTip} value={warningTipText} />}
         <div className={styles.detailTop}>
           <span className={styles.topInfoShow}>
-            <span className={styles.title}>{stationDetail.stationName || '--'}详情</span>
-           
+            2018/07/07-2018/07/09
             <span className={styles.departmentInfo} title={departmentInfo}>
-              {departmentInfo}
+              清洗计划-清洗记录
             </span>
+            (洱源-云南)
           </span>
           <span className={styles.handleArea} >
             <i className="iconfont icon-last" title="上一个" onClick={this.preStation} />
             <i className="iconfont icon-next" title="下一个" onClick={this.nextStation} />
             <Icon type="arrow-left" className={styles.backIcon} onClick={this.backToList} />
           </span>
+        </div>
+        <div className={styles.statisticData}>
+          <div className={styles.statisticTarget}>
+            <div className={styles.numberColor}>123.89(10%)</div>
+            <div>累计清洗收益(万kWh)</div>
+          </div>
+          <div className={styles.statisticTarget}>
+            <div className={styles.numberColor}>19</div>
+            <div>清洗成本(万元)</div>
+          </div>
+          <div className={styles.statisticTarget}>
+            <div className={styles.numberColor}>19.4</div>
+            <div>清洗用时(天)</div></div>
+          
+        </div>
+        <div className={styles.filterData}>
+          <Button className={styles.plusButton} icon="plus" >电站</Button>
+          <Pagination />
         </div>
         <PlanRecordTable {...this.props} />
       </div>

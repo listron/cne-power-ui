@@ -20,6 +20,9 @@ class CleanoutRecord extends Component {
   constructor(props, context) {
     super(props, context)
   }
+  componentWillUnmount(){
+    this.props.resetStore()
+  }
 
   render() {
     const { showPage } = this.props;

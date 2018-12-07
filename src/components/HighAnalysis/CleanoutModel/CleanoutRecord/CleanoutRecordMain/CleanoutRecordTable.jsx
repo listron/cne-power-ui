@@ -1,30 +1,66 @@
 import React, { Component } from "react";
-import { Table, Icon, Modal, Form, DatePicker, Input,Button } from 'antd';
+import { Table, Icon, Modal, Form, DatePicker, Input, Button, Radio } from 'antd';
 import styles from './cleanoutRecordMain.scss';
+import moment from 'moment';
 const FormItem = Form.Item;
 const { RangePicker } = DatePicker;
+const RadioGroup = Radio.Group;
 class CleanoutRecordTable extends Component {
   constructor(props, context) {
     super(props, context)
     this.state = {
-      showModal: false
+      showModal: false,
+      planType: 'clean'
     }
   }
-  tableChange = () => {
+  onChange = (e) => {
+    this.setState({
+      planType: e.target.value
+    })
 
   }
   tableChange = () => {
 
   }
+  tableChange = () => {
+
+  }
+
   showDetailModal = (record) => {
     this.props.history.push(`/analysis/cleanout/record/360`);
     this.props.changeCleanoutRecordStore({ showPage: 'single' })
     // this.props.history.push(`/analysis/cleanout/record/${record.stationCode}`);
   }
-  showModal = (record) => {
+  showAddPlanModal = (record) => {
     this.setState({
       showModal: true
     })
+  }
+  cancelModal=()=>{
+    this.setState({
+      showModal:false
+    })
+  }
+  confirmModal=()=>{
+    const{getFieldsValue}=this.props.form;
+    let planValue=getFieldsValue();
+    console.log(planValue);
+    
+
+    //console.log(  planValue.estimateStartTime,planValue.estimateEndTime);//这里是拿到所有modal里的值{}
+    //添加计划的函数发请求
+    if(this.state.planType==='clean'){
+    planValue.estimateStartTime=moment(planValue.cleanPlanDate[0]).format('YYYY-MM-DD')
+    planValue.estimateEndTime=moment(planValue.cleanPlanDate[1]).format('YYYY-MM-DD')
+      //发送添加清洗计划的函数
+      this.props.getAddCleanPlan(planValue)
+    }else{
+      //发送添加下雨记录
+      planValue.estimateStartTime=moment(planValue.rainPlanDate[0]).format('YYYY-MM-DD')
+      planValue.estimateEndTime=moment(planValue.rainPlanDate[1]).format('YYYY-MM-DD')
+      this.props.getAddRainPlan(planValue)
+    }
+ 
   }
   modalContainer(record) {
     const formItemLayout = {
@@ -38,6 +74,7 @@ class CleanoutRecordTable extends Component {
       },
     };
     const { getFieldDecorator } = this.props.form;
+    const { planType } = this.state;
     const rangeConfig = {
       rules: [{ type: 'array', required: true, message: 'Please select time!' }],
     };
@@ -45,24 +82,28 @@ class CleanoutRecordTable extends Component {
       <Modal
         title={record}
         visible={this.state.showModal}
-        onOk={this.onOk}
+        onOk={this.confirmModal}
         footer={null}
-        onCancel={this.onCancel}
+        onCancel={this.cancelModal}
         mask={false}
         centered={true}
         closable={false}
         maskClosable={false}
       >
         <div className={styles.modalStyle}>
-
-          <div>
+          <div className={styles.radioStyle}>
+            <RadioGroup onChange={this.onChange} value={this.state.planType}>
+              <Radio value={'clean'}>清洗计划</Radio>
+              <Radio value={'rain'}>降雨记录</Radio>
+            </RadioGroup>
+          </div>
+          {planType === 'clean' ?
             <Form onSubmit={this.handleSubmit}>
-            
               <FormItem
                 {...formItemLayout}
                 label="清洗公司/责任人"
               >
-                {getFieldDecorator('cleanCom', {
+                {getFieldDecorator('company', {
                   rules: [{ required: true, message: '清洗公司/责任人', whitespace: true }],
                 })(
                   <Input />
@@ -72,7 +113,7 @@ class CleanoutRecordTable extends Component {
                 {...formItemLayout}
                 label="计划清洗时间"
               >
-                {getFieldDecorator('range-picker', rangeConfig)(
+                {getFieldDecorator('cleanPlanDate', rangeConfig)(
                   <RangePicker />
                 )}
               </FormItem>
@@ -80,22 +121,33 @@ class CleanoutRecordTable extends Component {
                 {...formItemLayout}
                 label="清洗费用"
               >
-                {getFieldDecorator('cost', {
+                {getFieldDecorator('cleanCost', {
                   rules: [{ required: true, message: '只能输入数字', whitespace: true }, { pattern: /(^\d{0,}\.{0,1}\d$)/, message: '仅支持数字，小数点' }],
                 })(
                   <Input />
                 )}
               </FormItem>
-              <div className={styles.handle}> 
-            <Button onClick={this.cancelExamineTip} >取消</Button>
-            <Button onClick={this.confirmExamineTip} className={styles.confirmExamine} >保存</Button>
+            </Form> : <Form onSubmit={this.handleSubmit}>
+              <FormItem
+                {...formItemLayout}
+                label="降雨时间"
+              >
+                {getFieldDecorator('rainPlanDate', rangeConfig)(
+                  <RangePicker />
+                )}
+              </FormItem>
+            </Form>}
+          <div className={styles.handle}>
+            <Button onClick={this.cancelModal} >取消</Button>
+            <Button onClick={this.confirmModal} className={styles.confirmExamine} >保存</Button>
           </div>
-            </Form>
-          </div>
+
+
         </div>
 
       </Modal>
     )
+
 
 
   }
@@ -140,7 +192,7 @@ class CleanoutRecordTable extends Component {
         render: (text, record, index) => {
           let record2 = 'dianzhan1/qinhxi'
           return (<div>
-            <span title="查看" className="iconfont icon-look" onClick={(record) => this.showModal(record)}>
+            <span title="查看" className="iconfont icon-look" onClick={(record) => this.showAddPlanModal(record)}>
             </span>
             {this.modalContainer(record2)}
           </div>)

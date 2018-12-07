@@ -78,7 +78,7 @@ class RecordDetailTable extends Component {
           render: (text, record, index) => {
             return (
               <div>
-              <span title="添加" className="iconfont icon-look" onClick={(record) =>console.log('111111')}></span>
+              <span style={{marginRight:'8px'}} title="添加" className="iconfont icon-look" onClick={(record) =>console.log('111111')}></span>
               <span title="查看" className="iconfont icon-look" onClick={(record) => this.showRecodePlanModal(record)}></span>
               </div>
               )
@@ -89,8 +89,9 @@ class RecordDetailTable extends Component {
           render: (text, record, index) => {
             return (
               <div>
-              <span title="编辑" className="iconfont icon-look" onClick={(record) => this.showEditModal(record)}></span>
-              <span title="删除" className="iconfont icon-look" onClick={(record) => this.showDeletModal(record)}></span>
+              <span style={{marginRight:'4px'}} title="编辑" className="iconfont icon-edit" onClick={(record) => this.showEditModal(record)}></span>
+              
+              <span title="删除" className="iconfont icon-del" onClick={(record) => this.showDeletModal(record)}></span>
               </div>
             )
           }
