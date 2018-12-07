@@ -242,7 +242,7 @@ class PerformanceAnalysisTabs extends Component {
                   hasData={contrastSwitch&&contrastEndDate ? contrastHoursHasData : hoursHasData} />
               </div>
               <div className={styles.textStyle}>
-                <div><span className="iconfont icon-ha"></span>建议排查等效小时数较低的逆变器:1.排查逆变器器下组串是否正常；2.排查逆变器是否故障；3.排查逆变器转换效率是否正常</div>
+                <div><span className="iconfont icon-ha"></span>建议排查等效小时数较低的逆变器:1.排查逆变器下组串是否正常；2.排查逆变器是否故障；3.排查逆变器转换效率是否正常</div>
                 {hourDeviceNames.length>0 ? <div><span className="iconfont icon-ha"></span>建议关注排名变化较大的{hourDeviceNames.map((e, i) => (<span key={e} className={styles.fontColor}>{e},</span>))}设备</div> : ''}
               </div>
               <div className={styles.chart}>
@@ -251,7 +251,7 @@ class PerformanceAnalysisTabs extends Component {
                   hasData={contrastSwitch&&contrastEndDate ? contrastAvailabilityHasData : availabilityHasData} />
               </div>
               <div className={styles.textStyle}>
-                <div><span className="iconfont icon-ha"></span>建议排查逆变器利用率较低的设备是否故障</div>
+                <div><span className="iconfont icon-ha"></span>建议排查可利用率较低的设备是否故障</div>
                 {availabilityDeviceNames.length>0 ? <div><span className="iconfont icon-ha"></span>建议关注排名变化较大的{availabilityDeviceNames.map((e, i) => (<span key={e} className={styles.fontColor}>{e},</span>))}设备</div> : ''}
               </div>
             </div>

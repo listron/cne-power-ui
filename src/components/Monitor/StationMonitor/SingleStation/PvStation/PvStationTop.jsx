@@ -128,7 +128,7 @@ class PvStationTop extends Component {
       <div className={styles.pvStationTop} >
         <div className={styles.pvStationTitle} >
           <div className={styles.pvStationName} >
-            {showStationList && <ChangeStation stations={stationList} stationName={singleStationData.stationName} baseLinkPath={baseLinkPath} hideStationChange={this.hideStationChange} />}
+            {showStationList && <ChangeStation stations={stationList.filter(e=>e.isConnected===1)} stationName={singleStationData.stationName} baseLinkPath={baseLinkPath} hideStationChange={this.hideStationChange} />}
             <div onClick={this.showStationList} className={styles.stationToggle} id="stationToggle" >
               <Icon type="swap" />
               <h3>{singleStationData && singleStationData.stationName}-{singleStationData && singleStationData.provinceName}</h3>
@@ -203,7 +203,7 @@ class PvStationTop extends Component {
           <div className={styles.stationYearPlan}>
             <div className={styles.annualEnergyScale} >
               <div className={styles.trueTimeValue}>
-                <div>
+                <div className={styles.editYearPower}>
                   <span>{singleStationData && singleStationData.yearPower && parseFloat(singleStationData.yearPower).toFixed(4) || 0}</span>
                   {powerUpdate ? <span className={styles.iconStyle} onClick={() => { this.setModalYear() }}><i className="iconfont icon-edit"></i></span> : ''}
                 </div>

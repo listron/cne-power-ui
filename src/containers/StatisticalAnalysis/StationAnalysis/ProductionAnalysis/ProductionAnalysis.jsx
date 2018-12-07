@@ -3,8 +3,6 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import styles from "./productionAnalusis.scss";
 import { productionAnalysisAction } from './productionAnalysisAction';
-import { allStationAnalysisAction } from '../AllStationAnalysis/allStationAnalysisAction';
-// import { getCookie } from '../../../../utils/index.js';
 import Cookie from 'js-cookie';
 import PropTypes from "prop-types";
 import ProductionAnalysis from '../../../../components/StatisticalAnalysis/StationAnalysis/ProductionAnalysis/ProductionAnalysis';
@@ -61,11 +59,11 @@ const mapStateToProps = (state) => {
   }
 }
 const mapDispatchToProps = (dispatch) => ({
-  changeAllStationStore: payload => dispatch({ type: productionAnalysisAction.CHANGE_PRODUCTIONSTATIONDATA_STORE_SAGA, payload }),
-  getAllStationAvalibaData: payload => dispatch({ type: allStationAnalysisAction.getAllStationAvalibaData, payload }),
+  changeProductionStationStore: payload => dispatch({ type: productionAnalysisAction.CHANGE_PRODUCTIONSTATIONDATA_STORE_SAGA, payload }),
+  getAllStationAvalibaData: payload => dispatch({ type: productionAnalysisAction.getAllStationAvalibaData, payload }),
   ProductionPlanComplete: payload => dispatch({ type: productionAnalysisAction.ProductionPlanComplete, payload }),
   getSingleStationProductionData: payload => dispatch({ type: productionAnalysisAction.getSingleStationProductionData, payload }),
-  getSingleStationPlanRateData: payload => dispatch({ type: allStationAnalysisAction.getSingleStationPlanRateData, payload }),
+  getSingleStationPlanRateData: payload => dispatch({ type: productionAnalysisAction.getSingleStationPlanRateData, payload }),
 
 
 })

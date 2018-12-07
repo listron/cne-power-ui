@@ -7,12 +7,12 @@ import { allStationAnalysisAction } from '../AllStationAnalysis/allStationAnalys
 
 function* changeProductionStationStore(action) {//存储payload指定参数，替换reducer-store属性。
   const { payload } = action;
-
   yield put({
     type: productionAnalysisAction.CHANGE_PRODUCTIONSTATIONDATA_STORE,
     payload
   })
 }
+
 function* getAllStationAvalibaData(action) {//综合指标年月判断
   const { payload } = action;
     //const url = '/mock/api/v3/performance/comprehensive/dataavaliba';
@@ -98,8 +98,8 @@ function* getSingleStationPlanRateData(action) {//月/年单电站计划完成�
 export function* watchProductionStationSaga() {
   yield takeLatest(productionAnalysisAction.CHANGE_PRODUCTIONSTATIONDATA_STORE_SAGA, changeProductionStationStore);
   yield takeLatest(productionAnalysisAction.ProductionPlanComplete, ProductionPlanComplete);
-  yield takeLatest(allStationAnalysisAction.getAllStationAvalibaData, getAllStationAvalibaData);
-  yield takeLatest(allStationAnalysisAction.getSingleStationPlanRateData, getSingleStationPlanRateData);
+  yield takeLatest(productionAnalysisAction.getAllStationAvalibaData, getAllStationAvalibaData);
+  yield takeLatest(productionAnalysisAction.getSingleStationPlanRateData, getSingleStationPlanRateData);
   yield takeLatest(productionAnalysisAction.getSingleStationProductionData, getSingleStationProductionData);
   
 
