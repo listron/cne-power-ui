@@ -9,7 +9,7 @@
       margin: 89px auto;
     }
     .pvmoduleItem{
-      width: 224px;
+      width: 272px;
       margin: 0 12px;
       display: inline-block;
       margin-bottom: 20px;
@@ -26,13 +26,13 @@
         }
         .commonStyle{
           background: #f1f1f1;
-          width: 24px;
+          width: 32px;
           height: 18px;
           display: block;
           float: left;
           font-size: 11px;
-          color: #fff;
-          margin: 2px;
+          color: $themeColor;
+          margin: 1px;
           border-radius: 2px;
           text-align: center;
         }

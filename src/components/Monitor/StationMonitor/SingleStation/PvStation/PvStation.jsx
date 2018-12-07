@@ -163,7 +163,7 @@ class PvStation extends Component {
         <PvStationTop {...this.props} stationCode={stationCode} hiddenStationList={this.state.hiddenStationList} />
         <div className={styles.outputPowerDiagram}>
           <OutputTenMin {...this.props} yXaisName={'辐射(W/m²)'} stationCode={stationCode} />
-          <PowerDiagramTenMin {...this.props}stationCode={stationCode}  />
+          <PowerDiagramTenMin {...this.props} stationCode={stationCode}  />
         </div>
         <CardSection {...this.props} stationCode={stationCode} />
         {/* 设备类型流程图切换 */}
