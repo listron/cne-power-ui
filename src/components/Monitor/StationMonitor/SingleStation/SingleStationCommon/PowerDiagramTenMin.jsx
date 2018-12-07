@@ -241,8 +241,8 @@ class PowerDiagramTenMin extends Component {
     if (intervalTime === 0) { // 日 不显示部分坐标轴与数据。
       powerOption.grid.right = '10%';
       powerOption.yAxis[1].nameTextStyle.padding = 0;
-      powerOption.yAxis = powerOption.yAxis.filter(e=>e.name === '完成率');
-      powerOption.series = powerOption.series.filter(e=>e.name === '理论发电量' || e.name === '完成率');
+      powerOption.yAxis = powerOption.yAxis.filter(e => e.name !== '完成率');
+      powerOption.series = powerOption.series.filter(e => e.name !== '理论发电量' && e.name !== '完成率');
     }
     console.log(powerOption)
     powerDiagram.setOption(powerOption);
