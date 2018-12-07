@@ -3,6 +3,8 @@ import axios from 'axios';
 import Path from '../../../../constants/path';
 import { singleStationAction } from './singleStationAction';
 import { message } from 'antd';
+const { APIBasePath } = Path.basePaths;
+const { monitor } = Path.APISubPaths;
 
 //改变单电站实时数据store
 function *changeSingleStationStore(action){
@@ -362,7 +364,7 @@ function *getBoxTransformerList(action){
 }
 function *getConfluenceBoxList(action){ // 获取汇流箱列表
   const { payload } = action;
-  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.monitor.getConfluenceBoxList}${payload.stationCode}`;
+  const url = `${APIBasePath}${monitor.getConfluenceBoxList}${payload.stationCode}`;
   try{
     if(payload.firstLoad){
       yield put({type: singleStationAction.SINGLE_STATION_FETCH});
@@ -387,6 +389,70 @@ function *getConfluenceBoxList(action){ // 获取汇流箱列表
     console.log(e);
   }
 }
+
+// function *getCollectorLine(action) { // 获取集电线路列表
+//   const { payload } = action;
+//   const url = `${APIBasePath}${monitor.getCollectorLine}${payload.stationCode}`;
+//   try{
+//     if(payload.firstLoad){
+//       yield put({type: singleStationAction.SINGLE_STATION_FETCH});
+//     }
+//     const response = yield call(axios.get, url);
+//     if(response.data.code === '10000'){
+//       yield put({
+//         type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
+//         payload: {
+//           collectorList: response.data.data || {},
+//         }
+//       })
+//     }
+//   }catch(e){
+//     console.log(e);
+//   }
+// }
+
+// function *getBoosterstation(action) { // 获取升压站列表
+//   const { payload } = action;
+//   const url = `${APIBasePath}${monitor.getBoosterstation}${payload.stationCode}`;
+//   try{
+//     if(payload.firstLoad){
+//       yield put({type: singleStationAction.SINGLE_STATION_FETCH});
+//     }
+//     const response = yield call(axios.get, url);
+//     if(response.data.code === '10000'){
+//       yield put({
+//         type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
+//         payload: {
+//           boosterList: response.data.data || {},
+//         }
+//       })
+//     }
+//   }catch(e){
+//     console.log(e);
+//   }
+// }
+
+// function *getPowerNet(action) { // 获取电网列表
+//   const { payload } = action;
+//   const url = `${APIBasePath}${monitor.getPowerNet}${payload.stationCode}`;
+//   try{
+//     if(payload.firstLoad){
+//       yield put({type: singleStationAction.SINGLE_STATION_FETCH});
+//     }
+//     const response = yield call(axios.get, url);
+//     if(response.data.code === '10000'){
+//       yield put({
+//         type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
+//         payload: {
+//           powerNetList: response.data.data || {},
+//         }
+//       })
+//     }
+//   }catch(e){
+//     console.log(e);
+//   }
+// }
+
 // 获取单电站设备列表
 function *getStationDeviceList(action){
   const { payload } = action;
