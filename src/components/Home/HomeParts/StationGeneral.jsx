@@ -27,7 +27,7 @@ class StationGeneral extends Component{
     }
     if( data > 1000){
       const intPart = parseInt(data/1000);
-      const demicalPart = data%1000 || '000';
+      const demicalPart = `${data % 1000}`.padStart(3, 0);
       outputArr.unshift(demicalPart);
       this.numFormat(intPart, outputArr);
     }else{

@@ -33,11 +33,6 @@ class PvStation extends Component {
     }
   }
 
-  componentWillUnmount(){
-    // this.props.changeSingleStationStore({ deviceTypeFlow: {} });
-    // this.props.resetSingleStationStore();
-  }
-
   onSelectedDeviceType = (e) => {
     const deviceTypeCode = parseInt(e.target.value);
     this.props.changeSingleStationStore({ deviceTypeCode });
@@ -186,7 +181,13 @@ class PvStation extends Component {
                   </div>
                 </Link>
                 <RadioGroup value={deviceTypeCode} onChange={this.onSelectedDeviceType} >
-                  {seriesInfo.deviceTypeCode && this.createFlowButton(seriesInfo.deviceTypeCode, seriesInfo.deviceTypeName, 'deviceTypeItem', 'arrowgo',clickable.includes(seriesInfo.deviceTypeCode))}
+                  {seriesInfo.deviceTypeCode && this.createFlowButton(
+                    seriesInfo.deviceTypeCode,
+                    seriesInfo.deviceTypeName,
+                    'deviceTypeItem',
+                    'arrowgo',
+                    clickable.includes(seriesInfo.deviceTypeCode)
+                  )}
                   {!needClassBox && RowTwoButton}
                   {!needClassBox && RowThreeButton}
                   {needClassBox && <div className={styles.multipleType}>
@@ -194,8 +195,20 @@ class PvStation extends Component {
                     {RowThreeButton}
                     <img src="/img/arrowgo.png" className={styles.rightArrow} />
                   </div>}
-                  {boxConfluentInfo.deviceTypeCode && this.createFlowButton(boxConfluentInfo.deviceTypeCode, boxConfluentInfo.deviceTypeName, 'deviceTypeItem', 'arrowgo',clickable.includes(boxConfluentInfo.deviceTypeCode))}
-                  {integrateInfo.deviceTypeCode && this.createFlowButton(integrateInfo.deviceTypeCode, integrateInfo.deviceTypeName, 'deviceTypeItem', 'arrowgo',clickable.includes(integrateInfo.deviceTypeCode))}
+                  {boxConfluentInfo.deviceTypeCode && this.createFlowButton(
+                    boxConfluentInfo.deviceTypeCode,
+                    boxConfluentInfo.deviceTypeName,
+                    'deviceTypeItem',
+                    'arrowgo',
+                    clickable.includes(boxConfluentInfo.deviceTypeCode)
+                  )}
+                  {integrateInfo.deviceTypeCode && this.createFlowButton(
+                    integrateInfo.deviceTypeCode,
+                    integrateInfo.deviceTypeName,
+                    'deviceTypeItem',
+                    'arrowgo',
+                    clickable.includes(integrateInfo.deviceTypeCode)
+                  )}
                   <RadioButton className={styles.elecnettingItem}>
                     <div className={styles.deviceTypeIcon} >
                       <i className="iconfont icon-elecnetting" ></i>
