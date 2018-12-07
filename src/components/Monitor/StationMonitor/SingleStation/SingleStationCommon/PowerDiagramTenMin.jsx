@@ -244,7 +244,6 @@ class PowerDiagramTenMin extends Component {
       powerOption.yAxis = powerOption.yAxis.filter(e => e.name !== '完成率');
       powerOption.series = powerOption.series.filter(e => e.name !== '理论发电量' && e.name !== '完成率');
     }
-    console.log(powerOption)
     powerDiagram.setOption(powerOption);
     powerDiagram.resize();
   }
