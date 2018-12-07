@@ -5,23 +5,25 @@ import styles from './filterCondition.scss';
 
 class FilteredItems extends Component {
   static propTypes = {
-    stations: PropTypes.object,
-    deviceTypes: PropTypes.object,
-    defectTypes: PropTypes.object,
+    stations: PropTypes.array,
+    deviceTypes: PropTypes.array,
+    defectTypes: PropTypes.array,
     stationType: PropTypes.string,
-    stationCodes: PropTypes.string,  
-    defectLevel: PropTypes.string, 
+    stationCodes: PropTypes.array,
+    defectLevel: PropTypes.array,
     createTimeStart: PropTypes.string,
-    createTimeEnd: PropTypes.string, 
-    deviceTypeCode: PropTypes.string,
-    defectTypeCode: PropTypes.string,
+    createTimeEnd: PropTypes.string,
+    deviceTypeCode: PropTypes.array,
+    defectTypeCode: PropTypes.array,
+    defectSource: PropTypes.array,
+    defectSourceName: PropTypes.array,
     onChangeFilter: PropTypes.func,
   }
 
   constructor(props) {
     super(props);
     this.state = {
-      
+      visiable: false
     };
   }
   onCancelStartTime = () => {//取消开始时间
@@ -44,42 +46,44 @@ class FilteredItems extends Component {
   }
   onCancelProvince = (cancelStations) => {//删除某省电站
     const { stationCodes, onChangeFilter } = this.props;
-    const newStationCode = stationCodes.split(',').filter(code=>
-      !cancelStations.some(station=>station.get('stationCode').toString()===code)
-    );
     onChangeFilter({
-      stationCodes: newStationCode.join(','),
+      stationCodes: stationCodes.filter(code => !cancelStations.some(staionCode => staionCode === code)),
     });
-
   }
+
   onCancelDeviceType = (cancelCode) => {//删除某设备类型
     const { deviceTypeCode, onChangeFilter } = this.props;
-    const newDeviceTypeCode = deviceTypeCode.split(',').filter(e=>e!==cancelCode);
     onChangeFilter({
-      deviceTypeCode: newDeviceTypeCode.join(',')
-    });
-  } 
-  onCancelLevel = (level) => {//删除某级告警
-    const { defectLevel, onChangeFilter } = this.props;
-    const levelCodes = defectLevel.split(',').filter(e=>e!==level);
-    onChangeFilter({
-      defectLevel: levelCodes.join(','),
+      deviceTypeCode: deviceTypeCode.filter(e => e !== cancelCode)
     });
   }
 
-  onCancelDefectType = (cancelId) => { // 删除缺陷
+  onCancelDefectLevel = (level) => {//删除某缺陷级别
+    const { defectLevel, onChangeFilter } = this.props;
+    onChangeFilter({
+      defectLevel: defectLevel.filter(e => e !== level),
+    });
+  }
+
+  onCancelDefectSource = (source) => { // 删除某缺陷来源
+    const { defectSource, onChangeFilter } = this.props;
+    onChangeFilter({
+      defectSource: defectSource.filter(e => e !== source),
+    });
+  }
+
+  onCancelDefectType = (cancelId) => { // 删除某缺陷类型
     const { defectTypeCode, onChangeFilter } = this.props;
-    const newDefectTypeCode = defectTypeCode.split(',').filter(e=>!!e && e!==cancelId);
-    onChangeFilter({ defectTypeCode: newDefectTypeCode.join(',') });
+    onChangeFilter({ defectTypeCode: defectTypeCode.filter(e => e !== cancelId), });
   }
 
   getDefectInfoArr = (defectTypes, selectedTypes) => {
     let defectInfoArr = [];
-    defectTypes.forEach(e=>{
-      if(e.list && e.list.length > 0){
+    defectTypes.forEach(e => {
+      if (e.list && e.list.length > 0) {
         defectInfoArr.push(...this.getDefectInfoArr(e.list, selectedTypes));
       }
-      if(selectedTypes.includes(e.id)){
+      if (selectedTypes.includes(e.id)) {
         defectInfoArr.push({
           name: e.name,
           id: e.id
@@ -90,74 +94,91 @@ class FilteredItems extends Component {
   }
 
   resetAll = () => {//删除所有筛选条件
-    const { onChangeFilter } = this.props;
-    onChangeFilter({
-      createTimeStart: '',
-      createTimeEnd: '',
-      stationType: '2',
-      stationCodes: '',
-      deviceTypeCode: '',
-      defectLevel: '0',
-      defectTypeCode: '',
-    });
+    const { onChangeFilter, createTimeEnd, createTimeStart, stationType, stationCodes, defectLevel, defectSource, deviceTypeCode, defectTypeCode } = this.props;
+    const prams = {};
+    createTimeEnd !== '' ? prams.createTimeEnd = '' : null;
+    createTimeStart !== '' ? prams.createTimeStart = '' : null;
+    stationType !== '2' ? prams.stationType = '2' : null;
+    stationCodes.length>0? prams.stationCodes = [] : null;
+    defectLevel.length>0? prams.defectLevel = [] : null;
+    defectSource.length>0? prams.defectSource = [] : null;
+    deviceTypeCode.length>0? prams.deviceTypeCode = [] : null;
+    defectTypeCode.length>0? prams.defectTypeCode = [] : null;
+    onChangeFilter(prams);
   }
 
+  dealStations = () => {
+    const { stations, stationCodes } = this.props;
+    const selectedStation = stations.filter((e) => {
+      if (stationCodes.some(m => m === e.stationCode)) { return e }
+    })
+    let provinceCode = [...new Set(selectedStation.map(e => e.provinceCode))]
+    let selectedStationArr = [];
+    let provinceStation = provinceCode.map(e => {
+      return selectedStation.filter(item => item.provinceCode === e)
+    })
+    provinceStation.forEach((item, index) => {
+      let stationCode = [];
+      item.forEach((list) => {
+        stationCode.push(list.stationCode)
+      })
+      selectedStationArr.push({
+        stationCode,
+        provinceName: item[0].provinceName
+      })
+    })
+    return selectedStationArr
+  }
 
   render() {
-    const {createTimeStart, createTimeEnd, stationType, stationCodes, deviceTypeCode, defectTypeCode, defectLevel, stations, deviceTypes, defectTypes } = this.props;
-    const levels = ['一级','二级','三级','四级'];
-    const defectLevelArray = defectLevel!=='0'?defectLevel.split(',').map(e=>({
-      label: levels[parseInt(e)-1],
+    const { createTimeStart, createTimeEnd, stationType, stationCodes, deviceTypeCode, defectTypeCode, defectLevel, stations, deviceTypes, defectTypes, defectSource, defectSourceName } = this.props;
+
+    const levels = ['一级', '二级', '三级', '四级'];
+    let defectSourceNames = defectSourceName ? defectSourceName : ['上报', '巡检', '告警', '预警',];
+    const defectLevelArray = defectLevel.map(e => ({
+      label: levels[+e - 1],
       value: e,
-    })):[];
-    const tmpSelectedDeviceType = deviceTypeCode.split(',');//选中设备类型的数组
-    const tmpSelectedStation = stationCodes.split(',');//选中电站的数组
-    const tmpSelectedDefectType = defectTypeCode.split(',')//选中缺陷类型的数组
-    const selectedStation = stations.filter(e=>
-      tmpSelectedStation.some(m=>
-        m === e.get('stationCode').toString()
-      )).groupBy(item=>item.get('provinceCode')).toList();//选中电站详情,按省分组
-    const selectedDeviceType = deviceTypes.filter(e=>tmpSelectedDeviceType.some(m=>m===e.get('deviceTypeCode').toString()));//选中的设备类型详情
-    const defectInfoArr = this.getDefectInfoArr(defectTypes.toJS(), tmpSelectedDefectType); //选中的缺陷类型数组
-    if(createTimeStart===''&&createTimeEnd===''&&stationType==='2'&&stationCodes===''&&deviceTypeCode===''&&defectLevel==='0'&&defectTypeCode==='') {
+    })) || [];
+    const defectSourceArray = defectSource.map(e => ({
+      label: defectSourceNames[+e - 1],
+      value: e,
+    })) || [];
+    const selectedStationArr = this.dealStations()
+    const selectedDeviceType = deviceTypes.filter(e => deviceTypeCode.some(m => m === e.deviceTypeCode));
+    const defectInfoArr = this.getDefectInfoArr(defectTypes, defectTypeCode); //选中的缺陷类型数组
+    if (createTimeStart === '' && createTimeEnd === '' && stationType === '2' && stationCodes.length === 0 && defectLevel.length === 0 && defectSource.length === 0 && deviceTypeCode.length === 0 && defectTypeCode.length === 0) {
       return null;
     }
-    const style = {
-      background: '#fff', 
-      borderStyle: 'dashed',
-      padding: '0 10px',
-      height: '30px',
-      borderRadius: '4px',
-      display: 'flex',
-      alignItems: 'center',
-      fontSize: '14px',
-      marginRight: '16px',
-    }
+
     return (
       <div className={styles.filteredItems}>
         <span>已选条件</span>
-        {createTimeStart !== '' && <Tag style={style} closable onClose={this.onCancelStartTime}>开始 {createTimeStart}</Tag>}
-        {createTimeEnd !== '' && <Tag style={style} closable onClose={this.onCancelEndTime}>结束 {createTimeEnd}</Tag>}
-        {stationType !== '2' && <Tag style={style} closable onClose={this.onCancelStationType}>{stationType === '0'?'风电':'光伏'}</Tag>}
-        {selectedStation.size > 0 && selectedStation.map(e=>(
-          <Tag style={style} closable onClose={()=>this.onCancelProvince(e)} key={e.getIn([0, 'provinceCode']) && e.getIn([0, 'provinceCode']).toString()} >
-            {`${e.getIn([0, 'provinceName'])} ${e.size}`}
+        {createTimeStart !== '' && <Tag className={styles.tag} closable onClose={this.onCancelStartTime}>开始 {createTimeStart}</Tag>}
+        {createTimeEnd !== '' && <Tag className={styles.tag} closable onClose={this.onCancelEndTime}>结束 {createTimeEnd}</Tag>}
+        {stationType !== '2' && <Tag className={styles.tag} closable onClose={this.onCancelStationType}>{stationType === '0' ? '风电' : '光伏'}</Tag>}
+        {stationCodes.length > 0 && selectedStationArr.map(e => {// 电站名称
+          return (<Tag className={styles.tag} closable onClose={() => this.onCancelProvince(e.stationCode)} key={e.provinceName} >
+            {`${e.provinceName} ${e.stationCode.length}`}
+          </Tag>)
+        })}
+        {defectLevel.length > 0 && defectLevelArray.map(e => ( // 缺陷级别
+          <Tag className={styles.tag} key={e.value} closable onClose={() => this.onCancelDefectLevel(e.value)}>{e.label}</Tag>
+        ))}
+        {defectSource.length > 0 && defectSourceArray.map(e => ( // 缺陷来源
+          <Tag className={styles.tag} key={e.value} closable onClose={() => this.onCancelDefectSource(e.value)}>{e.label}</Tag>
+        ))}
+        {deviceTypeCode.length > 0 && selectedDeviceType.map(e => ( // 设备类型
+          <Tag className={styles.tag} closable onClose={() => this.onCancelDeviceType(e.deviceTypeCode)} key={e.getdeviceTypeCode}>
+            {e.deviceTypeName}
           </Tag>
         ))}
-        {selectedDeviceType.size > 0 && selectedDeviceType.map(e=>(
-          <Tag style={style} closable onClose={()=>this.onCancelDeviceType(e.get('deviceTypeCode').toString())} key={e.get('deviceTypeCode').toString()}>
-            {e.get('deviceTypeName')}
-          </Tag>
-        ))}
-        {defectLevelArray.length > 0 && defectLevelArray.map(e=>(
-          <Tag style={style} key={e.value} closable onClose={()=>this.onCancelLevel(e.value)}>{e.label}</Tag>
-        ))}
-        {defectInfoArr.length > 0 && defectInfoArr.map(e=>(
-          <Tag style={style} closable onClose={()=>this.onCancelDeviceType(e.id)} key={e.id}>
+
+        {defectInfoArr.length > 0 && defectInfoArr.map(e => (//  缺陷类型
+          <Tag className={styles.tag} closable onClose={() => this.onCancelDefectType(e.id)} key={e.id}>
             {e.name}
           </Tag>
         ))}
-        <Tag closable onClose={this.resetAll}>清空条件</Tag>
+        <span onClick={this.resetAll} className={styles.clearAll}>清空条件</span>
       </div>
     );
   }

@@ -93,7 +93,7 @@ class Plan extends Component {
       <div className={styles.planContainerBox}>
         <CommonBreadcrumb  {...breadCrumbData} style={{marginLeft: '38px'}} />
         <div className={styles.planContainer}>
-          <PlanMain {...this.props} onWarningTipToggle={this.onWarningTipToggle}/>
+          <PlanMain {...this.props} onWarningTipToggle={this.onWarningTipToggle} />
           <TransitionContainer
             show={showPage  !== 'list'}
             // show={true}

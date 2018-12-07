@@ -7,8 +7,8 @@ const { TabPane } = Tabs;
 
 class DefectTypeFilter extends Component {
   static propTypes = {
-    defectTypes: PropTypes.object,
-    defectTypeCode: PropTypes.string,
+    defectTypes: PropTypes.array,
+    defectTypeCode: PropTypes.array,
     onChangeFilter: PropTypes.func,
   }
 
@@ -20,36 +20,36 @@ class DefectTypeFilter extends Component {
   }
 
   onDefectTabChange = (key) => { // tab切换。
-    if(key === 'all') {
+    if (key === 'all') {
       this.props.onChangeFilter({
-        defectTypeCode: ''
+        defectTypeCode: []
       });
     }
-    this.setState({activeKey: key})
+    this.setState({ activeKey: key })
   }
 
   onCheckAll = (event, ids) => { // 选择tab中的全部
     const { defectTypeCode } = this.props;
-    let tmpTypeCodeArr = defectTypeCode.split(',').filter(e=>{// 移除所有正在操作的同级子选项
-      return  !!e && !ids.includes(e);
+    let tmpTypeCodeArr = defectTypeCode.filter(e => {// 移除所有正在操作的同级子选项
+      return !!e && !ids.includes(e);
     });
     let newTypeCodeArr = tmpTypeCodeArr;
-    if(event.target.checked){
+    if (event.target.checked) {
       newTypeCodeArr = [...tmpTypeCodeArr, ...ids];
     }
     this.props.onChangeFilter({
-      defectTypeCode: newTypeCodeArr.join(',')
+      defectTypeCode: newTypeCodeArr
     })
   }
 
   defectCheck = (values, ids) => { // 选中-取消某类型。
     const { defectTypeCode } = this.props;
-    let tmpTypeCodeArr = defectTypeCode.split(',').filter(e=>{// 移除所有正在操作的同级子选项
-      return  !!e && !ids.includes(e);
+    let tmpTypeCodeArr = defectTypeCode.filter(e => {// 移除所有正在操作的同级子选项
+      return !!e && !ids.includes(e);
     });
     const newTypeCodeArr = [...tmpTypeCodeArr, ...values];
     this.props.onChangeFilter({
-      defectTypeCode: newTypeCodeArr.join(',')
+      defectTypeCode: newTypeCodeArr
     })
   }
 
@@ -57,37 +57,37 @@ class DefectTypeFilter extends Component {
     const { defectTypes, defectTypeCode } = this.props; // defectTypeCode选中的缺陷类型字符串。
     const { activeKey } = this.state;
     const defectTypeTab = [];
-    defectTypes.toJS().forEach(e=>{e.list && e.list.length > 0 && defectTypeTab.push(...e.list)})
-    const selectDefectArr = defectTypeCode.split(',').filter(e=>!!e);
+    defectTypes.forEach(e => { e.list && e.list.length > 0 && defectTypeTab.push(...e.list) })
+    const selectDefectArr = defectTypeCode.filter(e => !!e);
     return (
       <div className={styles.stationFilter}>
-        <Tabs onChange={this.onDefectTabChange} activeKey={activeKey}  animated={false}>
+        <Tabs onChange={this.onDefectTabChange} activeKey={activeKey} animated={false}>
           <TabPane tab="不限" key={'all'}>
             {null}
           </TabPane>
-          {defectTypeTab.map(e=>{
+          {defectTypeTab.map(e => {
             const options = [];
-            e.list && e.list.length > 0 && e.list.forEach((lastItem)=>{
+            e.list && e.list.length > 0 && e.list.forEach((lastItem) => {
               options.push({
                 label: lastItem.name,
                 value: lastItem.id,
               })
             })
-            const allIds = options.map(e=>e.value);
+            const allIds = options.map(e => e.value);
             const allChecked = allIds.every(id => selectDefectArr.includes(id));
             return (
               <TabPane tab={e.name} key={e.id}>
-                <Checkbox 
-                  className={styles.allCheck} 
-                  onChange={event=>this.onCheckAll(event,allIds)} 
+                <Checkbox
+                  className={styles.allCheck}
+                  onChange={event => this.onCheckAll(event, allIds)}
                   checked={allChecked}
                 >
                   全部
                 </Checkbox>
-                <CheckboxGroup 
+                <CheckboxGroup
                   options={options}
                   value={selectDefectArr}
-                  onChange={(values)=>this.defectCheck(values, allIds)}
+                  onChange={(values) => this.defectCheck(values, allIds)}
                 >
                 </CheckboxGroup>
               </TabPane>

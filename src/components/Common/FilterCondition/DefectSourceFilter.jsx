@@ -4,41 +4,40 @@ import { Checkbox } from 'antd';
 import styles from './filterCondition.scss';
 const CheckboxGroup = Checkbox.Group;
 
-class DefectLevelFilter extends Component {
+class DefectSourceFilter extends Component {
   static propTypes = {
-    defectLevel: PropTypes.array,
+    defectSource: PropTypes.array,
     onChangeFilter: PropTypes.func,
-    defectLevelName: PropTypes.array,
+    defectSourceName: PropTypes.array,
   }
 
   constructor(props) {
     super(props);
   }
 
-  onLevelSelect = (defectLevels) => {
-    let defectLevel=defectLevels;
+  onLevelSelect = (defectSource) => {
     this.props.onChangeFilter({
-      defectLevel
+      defectSource
     });
   }
 
   resetLevel = () => {
     this.props.onChangeFilter({
-      defectLevel: []
+      defectSource: []
     });
   }
 
   render() {
-    const { defectLevel,defectLevelName } = this.props;
-    const levels =defectLevelName ? defectLevelName: ['A级','B级','C级'];
+    const { defectSource,defectSourceName } = this.props;
+    const levels =defectSourceName ? defectSourceName: ['上报','巡检','告警', '预警',];
     const levelOptions = levels.map((e,i)=>({
       label: e,
       value: `${i+1}`
     }));
-    const levelArr = defectLevel;
+    const levelArr = defectSource;
     return (
       <div className={styles.filterItem}>
-        <span onClick={this.resetLevel} className={defectLevel.length===0?styles.selected:styles.all}>不限</span>
+        <span onClick={this.resetLevel} className={defectSource.length===0?styles.selected:styles.all}>不限</span>
         <CheckboxGroup options={levelOptions} value={levelArr} onChange={this.onLevelSelect} />
       </div>
     );
@@ -46,4 +45,4 @@ class DefectLevelFilter extends Component {
 
 }
 
-export default DefectLevelFilter;
+export default DefectSourceFilter;
