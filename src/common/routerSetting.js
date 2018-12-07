@@ -244,6 +244,10 @@ const routers = [
     path: '/analysis/cleanout/record',
     exact: true,
     component: CleanoutRecord
+  },{//单电站清洗计划与记录详情
+    path: '/analysis/cleanout/record/:stationCode',
+    exact: true,
+    component: CleanoutRecord
   },
   {//组串异常分析
     path: '/analysis/formation/abnormal',

@@ -274,6 +274,29 @@ export default {
      //通用报表
      dailyreport:'v3/performance/dailyreport',
      
+    },
+    highAnalysis:{
+      getStationDust:'/v3/pvclean/station/dustinfluence/',
+      getMatrixDust: '/v3/pvclean/matrix/dustinfluence/',
+      //清洗模型的首页
+      getMainList: '/v3/pvclean/plan/list',
+      //清洗模型点击进入单电站清洗详情
+      getDetailList: '/v3/pvclean/plan/details',
+      //加，编辑，获取，删除，清洗计划
+      getAddCleanPlan: '/v3/pvclean/plan/artificial',
+      getEditCleanPlan: '/v3/pvclean/plan/artificial',
+      getCleanPlanDetail: '/v3/pvclean/plan/artificial/',
+      deleteCleanPlan: '/v3/pvclean/plan/artificial/',
+      //加，编辑，获取，下雨清洗计划
+      getAddRainPlan: '/v3/pvclean/plan/rainfall/',
+      getEditRainPlan: '/v3/pvclean/plan/rainfall',
+      getRainPlanDetail: '/v3/pvclean/plan/rainfall/',
+      //清洗记录列表，增，编辑，获取，删记录
+      getPlanRecordList: '/v3 pvclean/record/list',
+      getAddCleanRecord: '/v3/pvclean/record/',
+      editCleanRecord:'/v3/pvclean/record/',
+      getCleanRecordDetail: '/v3/pvclean/record/',
+      deleteCleanRecord: '/v3/pvclean/record/',
     }
   }
 }
