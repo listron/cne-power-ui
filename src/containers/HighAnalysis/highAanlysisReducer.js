@@ -8,7 +8,7 @@ import ignore from './EarlyWarning/Ignore/ignoreReducer'
 import transFer from './EarlyWarning/Transfer/transferReducer'
 
 
-const advanceAnalysisReducer = combineReducers({ 
+const highAnalysisReducer = combineReducers({ 
   cleanoutRecordReducer,
   cleanoutWarningReducer,
  
@@ -17,4 +17,4 @@ const advanceAnalysisReducer = combineReducers({
   transFer,
 });
 
-export default advanceAnalysisReducer;
+export default highAnalysisReducer;

@@ -22,11 +22,11 @@ class RecordDetailTable extends Component {
 
   }
   showRecodePlanModal=(record)=>{
-    console.log('2222');
-    console.log(this.props);
-    this.props.changeCleanoutRecordStore({showPage:'planRecord'})
-    this.props.onShowSideChange({showSidePage:'planRecord'}) 
-    this.props.onShowSideChange({ showSidePage:'planRecord' });
+    // console.log('2222');
+    // console.log(this.props);
+    //this.props.changeCleanoutRecordStore({showSidePage:'recordPlan'})
+     this.props.onShowSideChange({showSidePage:'recordPlan'}) 
+    // this.props.onShowSideChange({ showSidePage:'planRecord' });
   }
   render() {
     const { loading } = this.props;

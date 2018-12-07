@@ -396,7 +396,7 @@ class AllStationStatistic extends React.Component {
     const stationTypeOne = this.stationIsOneType();
 
     const { stationType, stations, dateType, year, allStationAvalibaData, allStationStatisticData, getAllStationStatisticData, selectYear, changeAllStationStore } = this.props;
-    console.log(stations)
+   
     const { showStationSelect } = this.state;
     return (
       <div className={styles.allStationTypeTabs}>
