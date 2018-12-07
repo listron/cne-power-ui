@@ -65,15 +65,15 @@ function* toorder(action) {
     });
     if (response.data.code === '10000') {
       const params = yield select(state => ({
-        stationCode: state.advanceAanlysisReducer.unhandle.get('stationCode'),
-        belongMatrixs: state.advanceAanlysisReducer.unhandle.get('belongMatrixs'),
-        inefficiencyStatus: state.advanceAanlysisReducer.unhandle.get('inefficiencyStatus'),
-        startTime: state.advanceAanlysisReducer.unhandle.get('startTime'),
-        endTime: state.advanceAanlysisReducer.unhandle.get('endTime'),
-        pageNum: state.advanceAanlysisReducer.unhandle.get('pageNum'),
-        pageSize: state.advanceAanlysisReducer.unhandle.get('pageSize'),
-        sortField: state.advanceAanlysisReducer.unhandle.get('sortField'),
-        sortMethod: state.advanceAanlysisReducer.unhandle.get('sortMethod'),
+        stationCode: state.highAanlysisReducer.unhandle.get('stationCode'),
+        belongMatrixs: state.highAanlysisReducer.unhandle.get('belongMatrixs'),
+        inefficiencyStatus: state.highAanlysisReducer.unhandle.get('inefficiencyStatus'),
+        startTime: state.highAanlysisReducer.unhandle.get('startTime'),
+        endTime: state.highAanlysisReducer.unhandle.get('endTime'),
+        pageNum: state.highAanlysisReducer.unhandle.get('pageNum'),
+        pageSize: state.highAanlysisReducer.unhandle.get('pageSize'),
+        sortField: state.highAanlysisReducer.unhandle.get('sortField'),
+        sortMethod: state.highAanlysisReducer.unhandle.get('sortMethod'),
       })
       );
       yield put({
@@ -101,15 +101,15 @@ function *ignoreList(action){
     });
     if (response.data.code === '10000') {
       const params = yield select(state => ({
-        stationCode: state.advanceAanlysisReducer.unhandle.get('stationCode'),
-        belongMatrixs: state.advanceAanlysisReducer.unhandle.get('belongMatrixs'),
-        inefficiencyStatus: state.advanceAanlysisReducer.unhandle.get('inefficiencyStatus'),
-        startTime: state.advanceAanlysisReducer.unhandle.get('startTime'),
-        endTime: state.advanceAanlysisReducer.unhandle.get('endTime'),
-        pageNum: state.advanceAanlysisReducer.unhandle.get('pageNum'),
-        pageSize: state.advanceAanlysisReducer.unhandle.get('pageSize'),
-        sortField: state.advanceAanlysisReducer.unhandle.get('sortField'),
-        sortMethod: state.advanceAanlysisReducer.unhandle.get('sortMethod'),
+        stationCode: state.highAanlysisReducer.unhandle.get('stationCode'),
+        belongMatrixs: state.highAanlysisReducer.unhandle.get('belongMatrixs'),
+        inefficiencyStatus: state.highAanlysisReducer.unhandle.get('inefficiencyStatus'),
+        startTime: state.highAanlysisReducer.unhandle.get('startTime'),
+        endTime: state.highAanlysisReducer.unhandle.get('endTime'),
+        pageNum: state.highAanlysisReducer.unhandle.get('pageNum'),
+        pageSize: state.highAanlysisReducer.unhandle.get('pageSize'),
+        sortField: state.highAanlysisReducer.unhandle.get('sortField'),
+        sortMethod: state.highAanlysisReducer.unhandle.get('sortMethod'),
       })
       );
       yield put({

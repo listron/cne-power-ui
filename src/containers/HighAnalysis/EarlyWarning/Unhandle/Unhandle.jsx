@@ -44,7 +44,7 @@ class Unhandle extends Component {
 }
 const mapStateToProps = (state) => {
   return {
-    ...state.advanceAanlysisReducer.unhandle.toJS(),
+    ...state.highAanlysisReducer.unhandle.toJS(),
     stations: state.common.get('stations').toJS(),
 
   }
