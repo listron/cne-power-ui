@@ -113,7 +113,8 @@ class StationFilter extends Component {
     const { stations } = this.props;
     const { activeKey } = this.state;
     const provinceStation = stations.groupBy(item=>item.get('provinceCode')).toList();
-
+    console.log('stations',stations.toJS())
+    console.log('provinceStation',provinceStation.toJS())
     return (
       <div className={styles.stationFilter}>
         <Tabs onChange={this.onChangeProvince} activeKey={activeKey}  animated={false}>

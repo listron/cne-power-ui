@@ -276,6 +276,14 @@ export default {
      
     },
     highAnalysis:{
+      getUnhandleList:'/v3/forewarning/unhandlelist', // 待处理预警／历史预警
+      getIgnorelist:'/v3/forewarning/ignorelist', //已忽略历史预警
+      getTransferlist:'/v3/forewarning/toorderlist',// 已转工单列表
+      toorder:'/v3/forewarning/toorder',//预警转工单
+      ignore:'/v3/forewarning/ignore', // 忽略预警
+      warnDetail:'/v3/forewarning',//预警信息
+      getSequencechart:'/v3/pv/sequencechart',//电流时序图
+      
       getStationDust:'/v3/pvclean/station/dustinfluence/',
       getMatrixDust: '/v3/pvclean/matrix/dustinfluence/',
       //清洗模型的首页

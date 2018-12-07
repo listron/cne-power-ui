@@ -1,4 +1,4 @@
-import {isUrl} from '../utils';
+import { isUrl } from '../utils';
 
 /*
   文件说明： 菜单配置项
@@ -82,7 +82,7 @@ const menuData = [
             name: '工单统计',
             path: 'statistics',
             rightKey: 'operation_worklist_statistics',
-          },{
+          }, {
             name: '员工定位',
             path: 'gps',
             rightKey: 'operation_locate',
@@ -205,7 +205,8 @@ const menuData = [
         ]
       }
     ]
-  }, {
+  },
+  {
     name: '高级分析',
     path: 'analysis',
     rightKey: 'analysis',
@@ -235,23 +236,33 @@ const menuData = [
           },
           
         ]
-      }, {
-        name: '组串异常检测',
-        path: 'formation',
-        iconStyle: 'icon-usermanage',
+      },
+      {
+        name: '低效组串预警',
+        path: 'earlyWarning',
+        iconStyle: 'icon-pvlogo',
         rightKey: 'analysis_inefficientDetect',
         children: [
           {
-            name: '组串异常分析',
-            path: 'abnormal',
+            name: '待处理预警',
+            path: 'unhandle',
             rightKey: 'monitor',
           }, {
-            name: '预警事件配置',
-            path: 'warning',
+            name: '已忽略',
+            path: 'ignore',
+            rightKey: 'monitor',
+          }, {
+            name: '已转工单',
+            path: 'transfer',
+            rightKey: 'monitor',
+          }, {
+            name: '历史预警',
+            path: 'history',
             rightKey: 'monitor',
           }
         ]
-      }, {
+      },
+      {
         name: '偏航对风分析',
         path: 'yaw',
         iconStyle: 'icon-usermanage',
@@ -269,7 +280,6 @@ const menuData = [
           }
         ]
       }
-
     ]
   }, {
     name: '系统管理',
@@ -353,7 +363,7 @@ const menuData = [
 
 function formatter(data, parentPath = '/') {
   return data.map(item => {
-    let {path} = item;
+    let { path } = item;
     if (!isUrl(path) && path !== '/') {
       path = parentPath + item.path;
     }
