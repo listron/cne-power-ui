@@ -67,7 +67,9 @@ class IntegrateList extends Component {
   }
   
   render() {
-    const { collectorList, deviceTypeCode, loading } = this.props;
+    const { collectorList, loading } = this.props;
+    const { alarmSwitch } = this.state;
+    const filteredCollection = collectorList.filter(e => !alarmSwitch || e.warningStatus);
     return (
       <div className={styles.integrateList}>
         <div className={styles.top}>
@@ -81,7 +83,7 @@ class IntegrateList extends Component {
         </div>
         {loading ? <Spin  size="large" style={{height: '100px',margin: '200px auto',width: '100%'}} /> 
         : <div className={styles.deviceList}>
-          {collectorList.length > 0 ? collectorList.map(e => {
+          {filteredCollection.length > 0 ? filteredCollection.map(e => {
             const pData = dataFormat(e.griW, '--', 2);
             const cosData = dataFormat(e.griPF, '--', 2);
             const qData = dataFormat(e.griVar, '--', 2);
