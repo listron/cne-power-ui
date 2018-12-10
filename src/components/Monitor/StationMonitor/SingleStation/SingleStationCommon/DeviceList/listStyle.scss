@@ -31,6 +31,9 @@
         background-color: $promptColor;
         margin-right: 8px;
       }
+      .ant-switch-checked{
+        background-color: $themeColor;
+      }
     }
   }
   .deviceList{ // 设备列表。
