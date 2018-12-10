@@ -209,7 +209,7 @@ class PvStation extends Component {
                     'arrowgo',
                     clickable.includes(integrateInfo.deviceTypeCode)
                   )}
-                  <RadioButton className={styles.elecnettingItem}>
+                  <RadioButton value={0} className={styles.elecnettingItem}>
                     <div className={styles.deviceTypeIcon} >
                       <i className="iconfont icon-elecnetting" ></i>
                     </div>

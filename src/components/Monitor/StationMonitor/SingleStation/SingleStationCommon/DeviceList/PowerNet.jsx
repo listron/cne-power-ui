@@ -6,10 +6,10 @@ import styles from './listStyle.scss';
 import { Switch, Spin  } from 'antd';
 import { dataFormat } from '../../../../../../utils/utilFunc';
 
-class IntegrateList extends Component {
+class PowerNet extends Component {
   static propTypes = {
-    collectorList: PropTypes.array,
-    getCollectorLine: PropTypes.func,
+    powerNetList: PropTypes.array,
+    getPowerNet: PropTypes.func,
     match: PropTypes.object,
     history: PropTypes.object,
     deviceTypeCode: PropTypes.number,
@@ -49,7 +49,7 @@ class IntegrateList extends Component {
 
   getData = stationCode => {
     const { firstLoad } = this.state;
-    this.props.getCollectorLine({ stationCode, firstLoad });
+    this.props.getPowerNet({ stationCode, firstLoad });
     this.timeOutId = setTimeout(()=>{
       if(firstLoad){
         this.setState({ firstLoad: false });
@@ -57,21 +57,13 @@ class IntegrateList extends Component {
       this.getData(stationCode);
     }, 10000);
   }
-
-  getIntegrateDetail = deviceCode => {
-    const baseLinkPath = "/hidden/monitorDevice";
-    const { deviceTypeCode, match } = this.props;
-    const { stationCode } = match.params;
-    // this.props.history.push(`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${deviceCode}`)
-    console.log(`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${deviceCode}`);
-  }
   
   render() {
-    const { collectorList, loading } = this.props;
+    const { powerNetList, loading } = this.props;
     const { alarmSwitch } = this.state;
-    const filteredCollection = collectorList.filter(e => !alarmSwitch || e.warningStatus);
+    const filteredPowerNet = powerNetList.filter(e => !alarmSwitch || e.warningStatus);
     return (
-      <div className={styles.integrateList}>
+      <div className={styles.powerNet}>
         <div className={styles.top}>
           <span className={styles.iconGrid}>
             <i className="iconfont icon-grid" ></i>
@@ -83,23 +75,24 @@ class IntegrateList extends Component {
         </div>
         {loading ? <Spin  size="large" style={{height: '100px',margin: '200px auto',width: '100%'}} /> 
         : <div className={styles.deviceList}>
-          {filteredCollection.length > 0 ? filteredCollection.map(e => {
-            const pData = dataFormat(e.griW, '--', 2);
-            const cosData = dataFormat(e.griPF, '--', 2);
-            const qData = dataFormat(e.griVar, '--', 2);
-            const uabData = dataFormat(e.griPPhVUab, '--', 2);
+          {filteredPowerNet.length > 0 ? filteredPowerNet.map(e => {
+            const netInfoArr = [
+              { name: '正向有功 ( kWh )', value: dataFormat(e.forwardActivePower, '--', 2) },
+              { name: '反向有功 ( kWh )', value: dataFormat(e.backwardActivePower, '--', 2) },
+              { name: '正向无功 ( kWh )', value: dataFormat(e.forwardReactivePower, '--', 2) },
+              { name: '反向无功 ( kWh )', value: dataFormat(e.backwardReactivePower, '--', 2) },
+            ]
             return (
-              <section className={styles.eachDevice} key={e.deviceCode} onClick={() => this.getIntegrateDetail(e.deviceCode)}>
+              <section className={styles.eachDevice} key={e.deviceCode}>
                 <h3 className={styles.deviceName}>
-                  <span className="iconfont icon-jidian" />
-                  {e.warningStatus && <span className="iconfont icon-alarm" />}
                   <span>{e.deviceName}</span>
+                  {e.warningStatus && <span className="iconfont icon-alarm" />}
                 </h3>
                 <div className={styles.deviceValue}>
-                  <span className={styles.eachValue}>P : {pData}MW</span>
-                  <span className={styles.eachValue}>Cos : {cosData}</span>
-                  <span className={styles.eachValue}>Q : {qData}MVar</span>
-                  <span className={styles.eachValue}>Uab : {uabData}kV</span>
+                  {netInfoArr.map(e => (<span key={e.name} className={styles.eachValue}>
+                    <span>{e.name}</span>
+                    <span>{e.value}</span>
+                  </span>))}
                 </div>
               </section>
             )
@@ -110,4 +103,4 @@ class IntegrateList extends Component {
   }
 }
 
-export default IntegrateList;
+export default PowerNet;
