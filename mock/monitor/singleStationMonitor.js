@@ -301,6 +301,7 @@ module.exports = [
         griVar: `${parseInt(Math.random()*100)}`,
         griPF: `${parseInt(Math.random()*100)}`,
         griPPhVUab: `${parseInt(Math.random()*100)}`,
+        warningStatus: !!e % 2
       })),
       "serviceCode": "3.0"
     },
@@ -314,6 +315,7 @@ module.exports = [
         deviceTypeName: `设备名称${e}`,
         deviceTypeCode: `设备类型编号${e * e}`,
         total: `${e}`,
+        warningStatus: !!e % 2
       })),
       "serviceCode": "3.0"
     },
@@ -333,6 +335,7 @@ module.exports = [
         backwardActivePower: `${parseInt(Math.random()*100)}`,
         forwardReactivePower: `${parseInt(Math.random()*100)}`,
         backwardReactivePower: `${parseInt(Math.random()*100)}`,
+        warningStatus: !!e % 2
       })),
       "serviceCode": "3.0"
     },

@@ -170,6 +170,7 @@ const mapDispatchToProps = (dispatch) => ({
   getStationDeviceList: payload => dispatch({ type: singleStationAction.GET_STATION_DEVICELIST_SAGA, payload }),
   getConfluenceBoxList: payload => dispatch({ type: singleStationAction.GET_CONFLUENCEBOX_LIST_SAGA, payload }),
   getCollectorLine: payload => dispatch({ type: singleStationAction.getCollectorLine, payload }),
+  getBoosterstation: payload => dispatch({ type: singleStationAction.getBoosterstation, payload }),
   editData: payload => dispatch({ type: singleStationAction.EDIT_MONTH_YEAR_DATA_SAGA, payload }),
   getFanList: payload => dispatch({ type: singleStationAction.getFanList,payload }),
   resetSingleStationStore: payload => dispatch({ type: singleStationAction.RESET_SINGLE_STATION_STORE }),
