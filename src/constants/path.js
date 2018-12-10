@@ -191,10 +191,13 @@ export default {
       getRealtimeAlarm: '/v3/alarm/station/alarmlist', //实时告警信息
       exportAlarmStatistic: '/v3/alarm/station/alarmsummary/export',//导出告警统计
 
-      getPvmoduleList: '/v3/monitor/pvmodule/datalist/',//光伏组件实时
-      getInverterList: '/v3/monitor/seriesinverter/datalist/',// 组串式逆变器实时
-      getBoxTransformerList: '/v3/monitor/boxtransformer/datalist/',//箱变实时
-      getConfluenceBoxList: '/v3/monitor/confluencebox/datalist/', // 汇流箱列表
+      getPvmoduleList: '/v3/monitor/pvmodule/datalist/',//光伏组件列表 实时
+      getInverterList: '/v3/monitor/seriesinverter/datalist/',// 组串式逆变器列表 实时
+      getBoxTransformerList: '/v3/monitor/boxtransformer/datalist/',//箱变列表 实时
+      getConfluenceBoxList: '/v3/monitor/confluencebox/datalist/', // 汇流箱列表 实时
+      getCollectorLine: '/v3/monitor/collectorline/datalist/', // 集电线路列表 实时
+      getBoosterstation: '/v3/monitor/boosterstation/datalist/', // 升压站列表 实时
+      getPowerNet: '/v3/monitor/powercollection/datalist/', // 电网列表 实时
       getSingleStation: '/v3/monitor/station/',//单电站实时数据
       getCapabilityDiagram: '/v3/monitor/capabilitydiagram/',//单电站出力图表
       getMonitorPower: '/v3/monitor/power/',//单电站理论发电量-实际发电量图表

@@ -6,6 +6,7 @@ import PvmoduleList from './PvmoduleList';
 import InverterList from './InverterList';
 import ConfluenceBoxList from './ConfluenceBoxList';
 import BoxTransformerList from './BoxTransformerList';
+import IntegrateList from './IntegrateList';
 
 
 class DeviceList extends Component {
@@ -18,8 +19,6 @@ class DeviceList extends Component {
   constructor(props){
     super(props);
   }
-  
-  
 
   render(){
     const { deviceTypeCode } = this.props;
@@ -31,9 +30,10 @@ class DeviceList extends Component {
         {deviceTypeCode===202 && <ConfluenceBoxList {...this.props} />}
         {deviceTypeCode===207 && <ConfluenceBoxList {...this.props} />}
         {deviceTypeCode===304 && <BoxTransformerList {...this.props} />}
-        {/* 以下两个是风电站设备101风电机组 302集电线路 201集中式逆变器 206组串式逆变器*/}
+        {/* 以下两个是风电站设备101风电机组 302集电线路 201集中式逆变器*/}
         {deviceTypeCode===101 && <div></div>}
-        {deviceTypeCode===302 && <div></div>}
+
+        {deviceTypeCode===302 && <IntegrateList {...this.props} />}
       </div>
     )
   }

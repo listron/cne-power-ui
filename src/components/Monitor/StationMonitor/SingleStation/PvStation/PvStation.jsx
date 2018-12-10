@@ -75,7 +75,7 @@ class PvStation extends Component {
 
 
   render() {
-    const clickable = [509, 201, 206, 304, 202];
+    const clickable = [509, 201, 206, 304, 202, 302];
     const { deviceTypeFlow, stationDeviceList, deviceTypeCode, } = this.props;
     const weatherDeviceCode = stationDeviceList && stationDeviceList.deviceCode || 0;
     const { stationCode } = this.props.match.params;

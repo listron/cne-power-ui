@@ -19,6 +19,11 @@ export const singleStationAction = {
   GET_INVERTER_LIST_SAGA: Symbol('GET_INVERTER_LIST_SAGA'),//组串式逆变器列表
   GET_BOXTRANSFORMER_LIST_SAGA: Symbol('GET_BOXTRANSFORMER_LIST_SAGA'),//箱变列表
   GET_CONFLUENCEBOX_LIST_SAGA: Symbol('GET_CONFLUENCEBOX_LIST_SAGA'), // 获取汇流箱列表
+
+  getCollectorLine: Symbol('getCollectorLine'), // 获取集电线路信息列表
+  getBoosterstation: Symbol('getBoosterstation'), // 获取升压站信息列表
+  getPowerNet: Symbol('getPowerNet'), // 获取电网信息列表
+
   GET_STATION_DEVICELIST_SAGA: Symbol('GET_STATION_DEVICELIST_SAGA'),//获取单电站设备列表
   EDIT_MONTH_YEAR_DATA_SAGA:Symbol('EDIT_MONTH_YEAR_DATA_SAGA'),//编辑月/年累计发电量
   getFanList:Symbol('getFanList'),//风机实时数据列表
