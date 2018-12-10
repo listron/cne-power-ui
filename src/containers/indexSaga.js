@@ -37,6 +37,7 @@ import { watchPerformanceAnalysisSaga } from "./StatisticalAnalysis/EquipmentAna
 
 import { watchCleanoutRecord} from "./HighAnalysis/CleanoutModel/CleanoutRecord/cleanoutRecordSaga";
 import { watchCleanoutWarning } from "./HighAnalysis/CleanoutModel/CleanoutWarning/cleanoutWarningSaga";
+import { watchUnhandle } from "./HighAnalysis/EarlyWarning/Unhandle/unhandleSaga";
 
 
 
@@ -86,5 +87,7 @@ export default function* rootSaga() {
     //高级分析>清洗模型>清洗记录+清洗预警
     watchCleanoutRecord(),
     watchCleanoutWarning(),
+    // 高级分析-低效组串
+    watchUnhandle(),
   ])
 }
