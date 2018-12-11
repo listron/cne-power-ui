@@ -56,7 +56,6 @@ class GeneralReport extends Component{
   }
 
   selectStation = selectedStation => {
-    console.log(selectedStation)
     this.setState({ selectedStation });
   };
 
