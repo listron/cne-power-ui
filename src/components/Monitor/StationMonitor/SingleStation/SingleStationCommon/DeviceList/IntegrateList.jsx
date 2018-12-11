@@ -62,8 +62,7 @@ class IntegrateList extends Component {
     const baseLinkPath = "/hidden/monitorDevice";
     const { deviceTypeCode, match } = this.props;
     const { stationCode } = match.params;
-    // this.props.history.push(`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${deviceCode}`)
-    console.log(`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${deviceCode}`);
+    this.props.history.push(`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${deviceCode}`);
   }
   
   render() {

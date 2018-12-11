@@ -186,6 +186,8 @@ export default {
       boxtransformerDetail: '/v3/monitor/boxtransformer',//箱变详情
       boxtransformerTenMin: '/v3/monitor/boxtransformer/sequencechart',//箱变10min时序图
       weatherstationDetail: '/v3/monitor/weatherstation', //气象站详情
+      integrateDetail: '/v3/monitor/collectorline', // 集电线路详情
+      boosterDetail: '/v3/monitor/boosterstation', // 升压站详情
       monitorPointData: '/v3/monitor/point', //设备测点数据
       deviceAlarmData: '/v3/alarm/device', // 单设备告警信息
       getRealtimeAlarm: '/v3/alarm/station/alarmlist', //实时告警信息

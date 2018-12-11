@@ -9,6 +9,7 @@ import Confluencebox from '../../../../components/Monitor/StationMonitor/DeviceM
 import Boxtransformer from '../../../../components/Monitor/StationMonitor/DeviceMonitor/Boxtransformer/Boxtransformer';
 import Weatherstation from '../../../../components/Monitor/StationMonitor/DeviceMonitor/Weatherstation/Weatherstation';
 import WindDevice from '../../../../components/Monitor/StationMonitor/DeviceMonitor/WindDevice/WindDevice';
+import IntegrateLine from '../../../../components/Monitor/StationMonitor/DeviceMonitor/IntegrateLine/IntegrateLine'
 import Footer from '../../../../components/Common/Footer';
 
 class DeviceMonitor extends Component {
@@ -43,6 +44,7 @@ class DeviceMonitor extends Component {
         {deviceTypeCode === '304' && <Boxtransformer {...this.props} /> }
         {deviceTypeCode === '203' && <Weatherstation {...this.props} /> }
         {deviceTypeCode === '101' && <WindDevice {...this.props} /> }
+        {deviceTypeCode === '302' && <IntegrateLine {...this.props} /> }
         <Footer />
       </div>
     );
@@ -60,7 +62,8 @@ const mapDispatchToProps = (dispatch) => ({
   resetDeviceStore: payload => dispatch({type: deviceAction.RESET_DEVICE_MONITOR_STORE, payload}),
   getwindturbineData: payload => dispatch({type: deviceAction.getwindturbineData, payload}),
   getSequencechartData: payload => dispatch({type: deviceAction.getSequencechartData, payload}),
-
+  getIntegrateData: payload => dispatch({type: deviceAction.getIntegrateData, payload}),
+  getBoosterData: payload => dispatch({type: deviceAction.getBoosterData, payload}),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DeviceMonitor);

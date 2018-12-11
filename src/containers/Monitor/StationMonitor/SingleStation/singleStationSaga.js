@@ -394,8 +394,8 @@ function *getCollectorLine(action) { // 获取集电线路列表
   const { payload } = action;
   try {
     const { stationCode, firstLoad } = payload;
-    // const url = `${APIBasePath}${monitor.getCollectorLine}${stationCode}`;
-    const url = '/mock/api/v3/monitor/collectorline/datalist';
+    const url = `${APIBasePath}${monitor.getCollectorLine}${stationCode}`;
+    // const url = '/mock/api/v3/monitor/collectorline/datalist';
     if (firstLoad) {
       yield put({type: singleStationAction.SINGLE_STATION_FETCH});
     }
