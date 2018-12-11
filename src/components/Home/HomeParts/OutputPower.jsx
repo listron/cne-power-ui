@@ -66,6 +66,11 @@ class OutputPower extends Component{
         title: {
           show: false,
         },
+        grid: {
+          left: 10,
+          right: 10,
+          containLabel: true,
+        },
         color: ['#d0021b', '#00ffff'],
         legend: {
           textStyle: {
