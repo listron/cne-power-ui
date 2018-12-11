@@ -86,7 +86,7 @@ class Homepage extends Component {
     this.props.getFaultNumber({ enterpriseId, stationType });
     this.props.getAlarmList({ enterpriseId });
     this.props.getOutputDiagram({ enterpriseId, stationType });
-    this.props.getOperationInfo({ enterpriseId, stationType });
+    this.props.getOperationInfo({ enterpriseId });
   }
 
   render() {
