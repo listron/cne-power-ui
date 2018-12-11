@@ -54,9 +54,10 @@ class MonthGenChart extends Component{
           containLabel: true,
         },
         tooltip: {
+          trigger: 'axis',
           extraCssText: 'background-color: rgba(0,0,0,0.8)',
           formatter: params => {
-            const currentData = monthPower[params.dataIndex];
+            const currentData = monthPower[params[0].dataIndex];
             return `<div class=${styles.monthTool}>
               <div>${currentData.month}月发电量</div>
               <div>${currentData.power}</div>

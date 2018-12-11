@@ -129,6 +129,7 @@ class CenterMap extends Component{
     axios.get(`/mapJson/${mapName}.json`).then(response=>{
       const countryBox = document.getElementById('homeCountryMap');
       const countryChart = echarts.init(countryBox);
+      countryChart.clear();
       const { data } = response;
       echarts.registerMap(mapName, data, {
         Alaska: {
