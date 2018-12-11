@@ -5,6 +5,7 @@ import DeviceAlarmTable from '../DeviceMonitorCommon/DeviceAlarmTable';
 // import DevicePointsData from '../DeviceMonitorCommon/DevicePointsData';
 import IntegrateHeader from './IntegrateHeader';
 import CommonBreadcrumb from '../../../../Common/CommonBreadcrumb';
+import { YcPoints, YxPoints, YmPoints } from '../DeviceMonitorCommon/PointsGroup';
 import PropTypes from 'prop-types';
 import styles from '../eachDeviceMonitor.scss';
 
@@ -13,9 +14,9 @@ class IntegrateLine extends Component {
     loading: PropTypes.bool,
     match: PropTypes.object,
   //   getMonitorDeviceData: PropTypes.func,
-  //   devices: PropTypes.array,
+    devices: PropTypes.array,
     deviceDetail: PropTypes.object,
-  //   deviceAlarmList: PropTypes.array,
+    deviceAlarmList: PropTypes.array,
     singleStationData: PropTypes.object,
     getIntegrateData: PropTypes.func,
   //   resetDeviceStore: PropTypes.func,
@@ -73,7 +74,6 @@ class IntegrateLine extends Component {
     const { loading, devices, deviceDetail, deviceAlarmList, singleStationData } = this.props;
     const { stationCode, deviceTypeCode, deviceCode } = this.props.match.params;
     const { stationName, stationType } = singleStationData;
-    console.log(deviceDetail)
     const backData={path: `/monitor/singleStation/${stationCode}`,name: '返回电站'};
     const breadCrumbData = {
       breadData:[{
@@ -85,13 +85,14 @@ class IntegrateLine extends Component {
       }],
       iconName: stationType > 0 ? 'iconfont icon-pvlogo' :'iconfont icon-windlogo',
     };
-
     return (
       <div className={styles.integrateLine}>
         <CommonBreadcrumb {...breadCrumbData} style={{ backgroundColor:'#fff' }}  backData={{...backData}} />
         <div className={styles.deviceContent}>
           <IntegrateHeader deviceDetail={deviceDetail} devices={devices} stationCode={stationCode} deviceTypeCode={deviceTypeCode} />
-          {/* <ConfluenceStatistics deviceDetail={deviceDetail} /> */}
+          <YcPoints ycData={deviceDetail.YC} />
+          <YxPoints yxData={deviceDetail.YX} />
+          <YmPoints ymData={deviceDetail.YM} />
           <DeviceAlarmTable
             deviceAlarmList={deviceAlarmList}
             loading={loading}
@@ -101,13 +102,6 @@ class IntegrateLine extends Component {
             deviceCode={deviceCode}
           />
         </div>
-        集电线路页面
-        {/* <div className={styles.deviceContent}>
-          <InverterHeader deviceDetail={deviceDetail} devices={devices} stationCode={stationCode} deviceTypeCode={deviceTypeCode} />
-          <InverterStatistics deviceDetail={deviceDetail} />
-          <DeviceAlarmTable deviceAlarmList={deviceAlarmList} loading={loading} deviceDetail={deviceDetail} stationCode={stationCode} deviceTypeCode={deviceTypeCode} deviceCode={deviceCode}  {...this.props} />
-          <DevicePointsData devicePointData={devicePointData}  deviceDetail={deviceDetail} /> 
-        </div> */}
       </div>
     ) 
   }
