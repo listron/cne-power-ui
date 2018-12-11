@@ -256,24 +256,26 @@ export default {
       getOperateYearLimitPower: '/v3/performance/operationanalysis/limitpower/year',
       getOperatePlantPower: '/v3/performance/operationanalysis/plantpower',
 
-     // 资源分析
-     getResourcePlan:'/v3/performance/resource/plan',
-     getResourceMonthLight:'/v3/performance/resource/distribution/months',
-     getResourceYearLight:'/v3/performance/resource/distribution/year',
-     getResourceMonthWeather:'/v3/performance/resource/weather/years',
-     getResourceDayWeather:'/v3/performance/resource/weather/day',
-     //设备分析
-     getEleLineCode:'/v3/performance/deviceanalysis/getEleLineCode',//集成线路接口
-     getconversioneff:'/v3/performance/deviceanalysis/conversioneff',//转换效率
-     getconversioneffContrast:'/v3/performance/deviceanalysis/conversioneff/contrast',//转换效率对比
-     getHours:'/v3/performance/deviceanalysis/hours',//等效小时数、故障次数、故障时长
-     getHoursContrast:'/v3/performance/deviceanalysis/hours/contrast',//等效小时数、故障次数、故障时长对比
-     getAvailability:'/v3/performance/deviceanalysis/availability',//利用率及损失电量
-     getAvailabilityContrast:'/v3/performance/deviceanalysis/availability/contrast',//利用率及损失电量对比
+      // 资源分析
+      getResourcePlan:'/v3/performance/resource/plan',
+      getResourceMonthLight:'/v3/performance/resource/distribution/months',
+      getResourceYearLight:'/v3/performance/resource/distribution/year',
+      getResourceMonthWeather:'/v3/performance/resource/weather/years',
+      getResourceDayWeather:'/v3/performance/resource/weather/day',
+      //设备分析
+      getEleLineCode:'/v3/performance/deviceanalysis/getEleLineCode',//集成线路接口
+      getconversioneff:'/v3/performance/deviceanalysis/conversioneff',//转换效率
+      getconversioneffContrast:'/v3/performance/deviceanalysis/conversioneff/contrast',//转换效率对比
+      getHours:'/v3/performance/deviceanalysis/hours',//等效小时数、故障次数、故障时长
+      getHoursContrast:'/v3/performance/deviceanalysis/hours/contrast',//等效小时数、故障次数、故障时长对比
+      getAvailability:'/v3/performance/deviceanalysis/availability',//利用率及损失电量
+      getAvailabilityContrast:'/v3/performance/deviceanalysis/availability/contrast',//利用率及损失电量对比
 
-     //通用报表
-     dailyreport:'v3/performance/dailyreport',
-     
+      //通用报表
+      dailyreport:'v3/performance/dailyreport', // 日报
+      faultReport: 'v3/performance/generalreport/fault', // 故障日报
+      genReport: 'v3/performance/generalreport/gen', // 发电量信息
+      indicatorReport: 'v3/performance/generalreport/indicator', // 生产运营指标
     }
   }
 }
