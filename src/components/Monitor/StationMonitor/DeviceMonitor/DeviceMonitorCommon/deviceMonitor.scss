@@ -178,3 +178,42 @@
     }
   }
 }
+
+.ycInfo, .yxInfo, .ymInfo{ // 升压站，集电线路yc,yx,ym
+  display: flex;
+  flex-direction: column;
+  h3{
+    margin-bottom: 0;
+  }
+}
+
+.ycInfo{
+  flex: 1 0 50%;
+  .ycList{
+
+  }
+  .top{
+
+  }
+  .eachYc{
+
+  }
+}
+.yxInfo{
+  flex: 1 0 50%;
+  .yxList{
+
+  }
+  .eachYx{
+
+  }
+}
+
+.ymInfo{
+  .ymList{
+
+  }
+  .eachYm{
+
+  }
+}

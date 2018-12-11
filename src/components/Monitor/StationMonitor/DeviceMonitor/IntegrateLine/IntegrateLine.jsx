@@ -72,6 +72,7 @@ class IntegrateLine extends Component {
 
   render(){
     const { loading, devices, deviceDetail, deviceAlarmList, singleStationData } = this.props;
+    const pointData = deviceDetail.pointData || {}; // 测点数据集合
     const { stationCode, deviceTypeCode, deviceCode } = this.props.match.params;
     const { stationName, stationType } = singleStationData;
     const backData={path: `/monitor/singleStation/${stationCode}`,name: '返回电站'};
@@ -90,9 +91,11 @@ class IntegrateLine extends Component {
         <CommonBreadcrumb {...breadCrumbData} style={{ backgroundColor:'#fff' }}  backData={{...backData}} />
         <div className={styles.deviceContent}>
           <IntegrateHeader deviceDetail={deviceDetail} devices={devices} stationCode={stationCode} deviceTypeCode={deviceTypeCode} />
-          <YcPoints ycData={deviceDetail.YC} />
-          <YxPoints yxData={deviceDetail.YX} />
-          <YmPoints ymData={deviceDetail.YM} />
+          <div className={styles.points}>
+            <YcPoints ycData={pointData.YC} />
+            <YxPoints yxData={pointData.YX} />
+          </div>
+          <YmPoints ymData={pointData.YM} />
           <DeviceAlarmTable
             deviceAlarmList={deviceAlarmList}
             loading={loading}
