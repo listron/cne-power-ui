@@ -5,6 +5,7 @@ import DateFilter from './DateFilter';
 import StationTypeFilter from './StationTypeFilter';
 import StationFilter from './StationFilter';
 import DeviceTypeFilter from './DeviceTypeFilter';
+import BelongMatrixs from './BelongMatrixs';
 import DefectLevelFilter from './DefectLevelFilter';
 import DefectSourceFilter from './DefectSourceFilter';
 import DefectTypeFilter from './DefectTypeFilter';
@@ -53,6 +54,7 @@ class FilterCondition extends Component {
       defectSource: [], // 缺陷来源
       deviceTypeCode: [], // 设备类型
       defectTypeCode: [],//缺陷类型
+      belongMatrixs:[],//所属方阵
     };
   }
 
@@ -111,11 +113,12 @@ class FilterCondition extends Component {
 
 
   render() {
-    const { showFilter, createTimeStart, createTimeEnd, stationType, stationCodes, defectLevel, defectSource, deviceTypeCode, defectTypeCode } = this.state;
-    const { stations, option, deviceTypes, defectTypes, defectSourceName, defectLevelName } = this.props;
+    const { showFilter, createTimeStart, createTimeEnd, stationType, stationCodes, defectLevel, defectSource, deviceTypeCode, defectTypeCode ,belongMatrixs} = this.state;
+    const { stations, option, deviceTypes, defectTypes, defectSourceName, defectLevelName, matrixList } = this.props;
     const defectTypesArr = defectTypes || [];
     const stationsArr = stations || [];
     const deviceTypesArr = deviceTypes || []
+    const matrixListArr = matrixList || []
     // const isOneType = stations.groupBy(item=>item.get('stationType')).size === 1;
     const isOneType = false;
     return (
@@ -176,17 +179,18 @@ class FilterCondition extends Component {
               onChangeFilter={this.onChangeFilter}
             />}
           {showFilter === 'defectType' &&
-            <DefectTypeFilter {...this.props}
+            <DefectTypeFilter
               defectTypes={defectTypesArr}
               defectTypeCode={defectTypeCode}
+              onChangeFilter={this.onChangeFilter}
+
+            />}
+          {showFilter === 'belongMatrixs' &&
+            <BelongMatrixs
+              matrixList={matrixListArr}
+              belongMatrixs={belongMatrixs}
               onChangeFilter={this.onChangeFilter}
             />}
-          {/* {showFilter === 'squareMatrix' &&
-            <DefectTypeFilter {...this.props}
-              defectTypes={defectTypesArr}
-              defectTypeCode={defectTypeCode}
-              onChangeFilter={this.onChangeFilter}
-            />} */}
         </div>
         {/* 删选条件 */}
         <FilteredItems

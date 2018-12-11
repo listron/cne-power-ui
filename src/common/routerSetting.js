@@ -49,6 +49,7 @@ import CleanoutWarning from '../containers/HighAnalysis/CleanoutModel/CleanoutWa
 import CleanoutRecord from '../containers/HighAnalysis/CleanoutModel/CleanoutRecord/CleanoutRecord';
 // 高级分析 低效组串预警
 import Unhandle from '../containers/HighAnalysis/EarlyWarning/Unhandle/Unhandle';
+import Ignore from '../containers/HighAnalysis/EarlyWarning/Ignore/Ignore';
 
 
 
@@ -250,7 +251,8 @@ const routers = [
   }, { // 高级分析-低效组串预警-已忽略
     path: '/analysis/earlyWarning/ignore',
     exact: true,
-    component: Building
+    // component: Building,
+    component: Ignore
   },
   { // 高级分析-低效组串预警-已转工单
     path: '/analysis/earlyWarning/transfer',

@@ -22,6 +22,8 @@ export default {
     getStationBelongTypes: '/v3/management/total', // 获取电站可能的所属的各种分类信息
     getStationTargetInfo: '/v3/management', // 获取电站指定指标分类： 省市县等。
     // getRefreshToken: '/v3/oauth/token' --todo 根据过期token中携带的refreshToken获取新token接口。
+    getDictionaryInfo:'/v3/management/dictionary'  //获取覆盖类型、并网电压等级、所属电网（区域）忽略原因列表
+
   },
   APISubPaths: {
     // 新的登陆注册接口
@@ -283,9 +285,10 @@ export default {
       ignore:'/v3/forewarning/ignore', // 忽略预警
       warnDetail:'/v3/forewarning',//预警信息
       getSequencechart:'/v3/pv/sequencechart',//电流时序图
-      
+      getMatrixList:'/v3/station/matrix', //获取电站下方阵
       getStationDust:'/v3/pvclean/station/dustinfluence/',
       getMatrixDust: '/v3/pvclean/matrix/dustinfluence/',
+      unignore:'/v3/forewarning/unignore',//取消忽略列表
       //清洗模型的首页
       getMainList: '/v3/pvclean/plan/list',
       //清洗模型点击进入单电站清洗详情

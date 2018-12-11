@@ -10,6 +10,7 @@ export const unhandleAction = {
   ignoreList: Symbol('ignoreList'), // 忽略预警
   getForewarningDetail: Symbol('getForewarningDetail'), // 预警信息
   getSequencechart: Symbol('getSequencechart'), // 时序图
+  getMatrixlist: Symbol('getMatrixlist'), // 时序图
 
   resetStore: Symbol('resetStore'), // 发起重置数据请求
   RESET_STORE: Symbol('RESET_STORE'), // 重置数据
