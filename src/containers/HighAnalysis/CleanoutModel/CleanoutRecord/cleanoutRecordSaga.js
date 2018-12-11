@@ -174,7 +174,7 @@ function* getCleanPlanDetail(action) {//1.1.9.获取人工清洗计划详情
 function* deleteCleanPlan(action) {//1.1.10.删除清洗计划详情,删除下雨记录也是此接口
   const { payload } = action;
     //const url = '/mock/api/v3/performance/comprehensive/dataavaliba';
-   const url= `${Path.basePaths.APIBasePath}${Path.APISubPaths.highAnalysis.deleteCleanPlan}/${payload.planId}`
+   const url= `${Path.basePaths.APIBasePath}${Path.APISubPaths.highAnalysis.deleteCleanPlan}${payload.planId}`
     try{
       yield put({ type:cleanoutRecordAction.CLEANOUT_RECORD_FETCH });
       const response = yield call(axios.delete,url,payload);
@@ -371,7 +371,7 @@ function* getCleanRecordDetail(action) {//1.1.17.获取清洗记录详情
 function* deleteCleanRecord(action) {//1.1.18.删除清洗记录
   const { payload } = action;
     //const url = '/mock/api/v3/performance/comprehensive/dataavaliba';
-   const url= `${Path.basePaths.APIBasePath}${Path.APISubPaths.highAnalysis.deleteCleanRecord}/${payload.planId}`
+   const url= `${Path.basePaths.APIBasePath}${Path.APISubPaths.highAnalysis.deleteCleanRecord}${payload.planId}`
     try{
       yield put({ type:cleanoutRecordAction.CLEANOUT_RECORD_FETCH });
       const response = yield call(axios.delete,url,payload);

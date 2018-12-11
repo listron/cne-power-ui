@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react';
 
-import WarningTip from '../../../../Common/WarningTip';
+
 import { Icon, Radio } from 'antd';
 import PropTypes from 'prop-types';
 import styles from './cleanoutRecordDetail.scss';
@@ -31,8 +31,6 @@ class CleanoutRecordDetail extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      showWarningTip: false,
-      warningTipText: '',
       showStationSelect: false,
       showSidePage: 'single',
       filterValue: 'all'
@@ -64,12 +62,7 @@ class CleanoutRecordDetail extends Component {
     })
   }
 
-  confirmWarningTip = () => { // 提示框确认
-    this.setState({
-      showWarningTip: false,
-      warningTipText: '',
-    })
-  }
+ 
 
   backToList = () => { // 返回列表页
     this.props.changeCleanoutRecordStore({
@@ -83,39 +76,13 @@ class CleanoutRecordDetail extends Component {
     // this.props.changeCleanoutRecordStore({ showPage: 'edit' });
   }
 
-  departmentInfoFun = (departmentList) => { // 根据部门信息，重组子部门/ 父部门，根据层级关系输出展示。
-    const parentDepartmentArray = [];
-    const subDepartmentArray = [];
-    departmentList.forEach(e => {
-      if (!e) { return; }
-      e.parentDepartmentId ? subDepartmentArray.push({
-        ...e
-      }) : parentDepartmentArray.push({
-        ...e
-      })
-    })
-    const departmentInfoTree = parentDepartmentArray.map(e => {
-      const subArray = subDepartmentArray.filter(sub => sub.parentDepartmentId === e.departmentId);
-      return {
-        ...e,
-        children: subArray,
-      }
-    })
-    const departmentInfo = departmentInfoTree.map(e => {
-      let subInfo = '';
-      if (e.children && e.children.length > 0) {
-        subInfo = `-${e.children.map(sub => sub.departmentName).join(',')}`;
-      }
-      return `${e.departmentName}${subInfo}`
-    })
-    return departmentInfo.join('；');
-  }
-  hideStationChange = () => {
+ 
+  hideStationChange = () => {//选择电站的隐藏
     this.setState({
       showStationSelect: false
     });
   }
-  showStationSelect = () => {
+  showStationSelect = () => {//选择电站的展示
     this.setState({
       showStationSelect: true
     });
@@ -123,23 +90,19 @@ class CleanoutRecordDetail extends Component {
   render() {
     const { stationDetail, stations, showPage, stationName, pageNum, pageSize, } = this.props;
     let { stationCode } = this.props.match.params;
-    const { showSidePage } = this.state;
-    const stationItems = stations && stations.toJS();
-    const { showWarningTip, warningTipText } = this.state;
+    const { selectedRowKeys,showWarningTip,warningTipText ,showSidePage} = this.state
+    const stationItems = stations && stations;
+ 
     const { showStationSelect } = this.state;
     const stationItem = stationItems.filter(e => (e.stationCode.toString() === stationCode))[0];
     //请求的参数
     const queryListParams = {
       stationName, pageNum, pageSize,
     }
-    const departmentList = stationDetail.departmentList || [];
-    const departmentInfo = this.departmentInfoFun(departmentList);
-
-    console.log(stationCode);
     return (
       <div className={styles.container}>
         <div className={styles.CleanoutRecordDetail}>
-          {showWarningTip && <WarningTip onOK={this.confirmWarningTip} value={warningTipText} />}
+         
           <div className={styles.detailTop}>
             {showStationSelect &&
               <ChangeStation stations={stationItems.filter(e => e.stationType === 1)} stationName={stationItem.stationName} baseLinkPath="/analysis/cleanout/record" hideStationChange={this.hideStationChange} />

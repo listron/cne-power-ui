@@ -4,7 +4,7 @@ import { cleanoutRecordAction } from './cleanoutRecordAction';
 var initState = Immutable.fromJS({
   loading: false,
   startTime: '2018',
-  stationCodes: '',
+  stationCodes: [],
   showPage: 'multiple', //默认展示列表页list ,   编辑edit,详情detail,
   stationType: "", // 电站类型("0"-风电、"1"-光伏、""全部)
   stationDustData: [], // 全站灰尘影响图表数据

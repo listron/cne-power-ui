@@ -10,63 +10,39 @@ import CleanoutRecordTable from './CleanoutRecordTable';
 import moment from 'moment';
 import StationFilter from './StationFilter';
 import Pagination from '../../../../../components/Common/CommonPagination/index';
+import FilterCondition from '../../../../Common/FilterCondition/FilterCondition';
 
 class CleanoutRecordMain extends Component { // 电站管理列表页
   static propTypes = {
   }
-  static defaultProps = {
-    value: {
-      startTime: moment().format('YYYY-MM-DD'), // 默认今年
-    }
-  }
+ 
   constructor(props) {
     super(props);
     this.state = {
-      startTime: props.value.startTime,
       panelOpen: false,
       showFilter: '',
     }
   }
-  onYearSelect = ({ selectedYear }) => { // 选择年份
-    const { changeCleanoutRecordStore } = this.props;
-    changeCleanoutRecordStore({ startTime: selectedYear })
-  }
-  onOpenChange = (panelOpen) => { // 面板开关控制
-    this.setState({ panelOpen });
+
+  filterCondition = (change) => {
+    console.log('change', change)
+    const{changeCleanoutRecordStore,stationCodes}=this.props;
+    changeCleanoutRecordStore({stationCodes:change.stationCodes})
   }
 
-  onPanelChange = value => {
-    this.setState({ panelOpen: false });
-    this.onYearSelect({ selectedYear: value.format('YYYY') }) // 输出年份字符串。
-  }
-  onFilterShowChange = (filterText) => {
-    const { showFilter } = this.state;
-    if (showFilter === filterText) {
-      this.setState({
-        showFilter: ''
-      })
-    } else {
-      this.setState({
-        showFilter: filterText
-      })
-    }
-  }
   render() {
     const { stations } = this.props;
-    const {  showFilter } = this.state;
+    const { showFilter } = this.state;
     return (
       <div className={styles.cleanoutRecordMain}>
         <div className={styles.topFilter}>
-          <span>  筛选条件:</span>
-          <div className={styles.timeFilter}>
-          </div>
-          <Button onClick={() => this.onFilterShowChange('stationName')}>
-            电站名称{showFilter === 'stationName' ? <Icon type="up" /> : <Icon type="down" />}
-          </Button>
+          <FilterCondition
+            option={['stationName',]}
+            stations={stations}
+            onChange={this.filterCondition}
+          />
         </div>
-        <div className={styles.filterBox}>
-          {showFilter === 'stationName' && <StationFilter {...this.props} />}
-        </div>
+      
         <div className={styles.paginationStyle}>
           <Pagination />
         </div>
@@ -77,3 +53,16 @@ class CleanoutRecordMain extends Component { // 电站管理列表页
 }
 
 export default CleanoutRecordMain;
+
+  // onFilterShowChange = (filterText) => {
+  //   const { showFilter } = this.state;
+  //   if (showFilter === filterText) {
+  //     this.setState({
+  //       showFilter: ''
+  //     })
+  //   } else {
+  //     this.setState({
+  //       showFilter: filterText
+  //     })
+  //   }
+  // }

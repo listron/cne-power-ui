@@ -26,7 +26,7 @@ class CleanoutRecordTable extends Component {
 
   }
 
-  showDetailModal = (record) => {
+  showDetailModal = (record) => {//跳转到单电站清洗模型详情
     this.props.history.push(`/analysis/cleanout/record/360`);
     this.props.changeCleanoutRecordStore({ showPage: 'single' })
     // this.props.history.push(`/analysis/cleanout/record/${record.stationCode}`);
@@ -60,6 +60,9 @@ class CleanoutRecordTable extends Component {
       planValue.estimateEndTime=moment(planValue.rainPlanDate[1]).format('YYYY-MM-DD')
       this.props.getAddRainPlan(planValue)
     }
+    this.setState({
+      showModal: false
+    })
  
   }
   modalContainer(record) {

@@ -48,7 +48,7 @@ class CleanoutRecord extends Component {
 const mapStateToProps = (state) => {
   return {
     ...state.highAanlysisReducer.cleanoutRecordReducer.toJS(),
-    stations: state.common.get('stations'),
+    stations: state.common.get('stations').toJS(),
   }
 }
 const mapDispatchToProps = (dispatch) => ({
