@@ -67,6 +67,7 @@ class FaultList extends Component {
         containLabel: true,
       },
       tooltip: {
+        trigger: 'axis',
         extraCssText: 'background-color: rgba(0,0,0,0.8)',
         padding: 10,
         formatter: params => {
