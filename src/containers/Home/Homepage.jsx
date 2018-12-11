@@ -86,7 +86,7 @@ class Homepage extends Component {
     this.props.getFaultNumber({ enterpriseId, stationType });
     this.props.getAlarmList({ enterpriseId });
     this.props.getOutputDiagram({ enterpriseId, stationType });
-    this.props.getOperationInfo({ enterpriseId, stationType });
+    this.props.getOperationInfo({ enterpriseId });
   }
 
   render() {
@@ -101,7 +101,7 @@ class Homepage extends Component {
     return (
       <div id="homepage" className={styles.homepage}>
         <HomepageTop changeLoginStore={changeLoginStore} realTimeInfo={realTimeInfo} />
-        <div className={styles.innerContent}>
+        <div className={styles.innerContent} id="homepageContent">
           <div className={styles.middleBox}>
             <div className={styles.leftInfo}>
               <StationGeneral hasMultipleType={hasMultipleType} realTimeInfo={realTimeInfo}  />
