@@ -8,6 +8,7 @@ import { showNoData, hiddenNoData } from '../../../../constants/echartsNoData';
 function SequenceChart({ sequenceChartList, currentDeviceName }) {
   const echartBox = document.getElementById('sequenceChart');
   const lineColor = '#666';
+
   if (echartBox) {
     const inverterChart = echarts.init(echartBox);
     const series = [];
@@ -15,7 +16,7 @@ function SequenceChart({ sequenceChartList, currentDeviceName }) {
     sequenceChartList.forEach((item, index) => {
       const data = [];
       item.pointData.forEach((e) => {
-        time.push(e.time);
+        time.push(moment(e.time).format('MM-DD hh:mm'));
         data.push(e.value)
       })
       series.push({
@@ -23,11 +24,12 @@ function SequenceChart({ sequenceChartList, currentDeviceName }) {
         type: 'line',
         data: data,
         lineStyle: {
-          color: item.pointName === currentDeviceName ? '#a42b2c' : '#9b9b9b'
+          width: 1,
+          // color: item.pointName === currentDeviceName ? '#a42b2c' : '#9b9b9b'
         }
       })
     })
-   const inverterTenMinGraphic= series.map(e => e.data).length === 0 || series.map(e=>e.data).some(e=>e.length>0) ?  showNoData : hiddenNoData;
+    const inverterTenMinGraphic = series.map(e => e.data).length === 0 || series.map(e => e.data).some(e => e.length > 0) ? hiddenNoData:showNoData ;
     const option = {
       graphic: inverterTenMinGraphic,
       legend: {
