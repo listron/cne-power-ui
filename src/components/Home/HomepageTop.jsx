@@ -79,7 +79,7 @@ class HomepageTop extends Component{
           </div>
         </div>
         <h1 className={styles.enterpriseTitle}>
-          {enterpriseName || '--'}
+          {enterpriseName || '--'}运营监控中心
           <img src={`/img/${fullScreen?'small':'big'}.png`} height="28px" width="28px" onClick={this.toggleFullScreen} />
         </h1>
       </div>

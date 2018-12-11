@@ -47,8 +47,11 @@ class MonthGenChart extends Component{
           show: false,
         },
         grid: {
+          left: 10,
+          right: 10,
           top: 30,
           bottom: 30,
+          containLabel: true,
         },
         tooltip: {
           extraCssText: 'background-color: rgba(0,0,0,0.8)',

@@ -3,7 +3,7 @@ import { Progress } from 'antd';
 import styles from './homeParts.scss';
 import { dataFormat } from '../../../utils/utilFunc';
 
-export const CompleteRate = ({ mapStation, completeRate }) => { // 计划完成
+export const CompleteRate = ({ mapStation = [], completeRate = 0 }) => { // 计划完成
   const hasPv = mapStation.some(e => e.stationType === 1);
   const hasWind = mapStation.some(e => e.stationType === 0);
   const windYearRate = dataFormat(completeRate.windYearRate);
@@ -50,11 +50,17 @@ export const OperationInfo = ({ operationInfo }) => { // 运维情况
       <div className={styles.ticketDetail}>
         <div className={styles.ticketDone}>
           <h4>本月完成工单</h4>
-          <span className={styles.doneData}>{completeNum}</span>
+          <div className={styles.animationOperation}>
+            <span className={styles.value}>{completeNum}</span>
+            <span className={styles.circle} />
+          </div>
         </div>
         <div className={styles.ticketDoing}>
           <h4>执行中工单</h4>
-          <span className={styles.doingData}>{handleNum}</span>
+          <div className={styles.animationOperation}>
+            <span className={styles.value}>{handleNum}</span>
+            <span className={styles.circle} />
+          </div>
         </div>
       </div>
     </section>
@@ -63,7 +69,7 @@ export const OperationInfo = ({ operationInfo }) => { // 运维情况
 
 export const EnergySaving = ({ energySaving }) => { // 年累计节能减排
   const dioxide = dataFormat(energySaving.dioxide);
-  const coal = dataFormat(energySaving.dioxide);
+  const coal = dataFormat(energySaving.coal);
   return (
     <section className={styles.energySaving}>
       <h3>年累计节能减排</h3>

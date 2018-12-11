@@ -12,13 +12,16 @@
 }
 
 .homepage{
+  position: relative;
   background:#0c2539;
+  background-attachment: local;
   overflow: auto;
+  overflow-y: hidden; // 屏蔽内部纵向滚动条
   display: flex;
   min-height: 100vh;
   flex-wrap: wrap;
   background-image: url('/img/tiltebg.png'),url('/img/homepage.png');
-  background-position: center 40px, center 189px;
+  background-position: center 40px, center top;
   background-repeat: no-repeat, no-repeat;
   .innerContent{
     margin: 0 auto;
