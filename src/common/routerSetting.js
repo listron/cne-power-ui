@@ -229,11 +229,13 @@ const routers = [
   { // 高级分析>清洗模型>清洗预警
     path: '/analysis/cleanout/warning',
     exact: true,
-    component: CleanoutWarning
+    // component: CleanoutWarning,
+    component: Building
   }, { // 高级分析>清洗模型>清洗计划与记录
     path: '/analysis/cleanout/record',
     exact: true,
-    component: CleanoutRecord
+    // component: CleanoutRecordMain,
+    component: Building
   },{//单电站清洗计划与记录详情
     path: '/analysis/cleanout/record/:stationCode',
     exact: true,
