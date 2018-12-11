@@ -101,7 +101,7 @@ class Homepage extends Component {
     return (
       <div id="homepage" className={styles.homepage}>
         <HomepageTop changeLoginStore={changeLoginStore} realTimeInfo={realTimeInfo} />
-        <div className={styles.innerContent}>
+        <div className={styles.innerContent} id="homepageContent">
           <div className={styles.middleBox}>
             <div className={styles.leftInfo}>
               <StationGeneral hasMultipleType={hasMultipleType} realTimeInfo={realTimeInfo}  />

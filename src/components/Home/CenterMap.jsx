@@ -182,7 +182,7 @@ class CenterMap extends Component{
           silent:true,
           map: mapName,
           roam: true,
-          layoutCenter: ['50%', '50%'],
+          layoutCenter: ['50%', '55%'],
           layoutSize: 830,
           itemStyle: {
             normal: {
@@ -250,25 +250,16 @@ class CenterMap extends Component{
     if(mapCountryName === '中国'){
       mapCountryName = '国内';
     }
-    const containerDom = document.querySelector('#homepage');
+    const homeContentDom = document.querySelector('#homepageContent');
     const countrySize = {
-      width: containerDom ? containerDom.offsetWidth : 0,
-      height: containerDom ? containerDom.offsetHeight: 0,
+      width: homeContentDom ? homeContentDom.offsetWidth : 0,
+      height: homeContentDom ? homeContentDom.offsetHeight: 0,
     }
     return (
       <div className={styles.centerMap}>
         <div className={styles.topData}>
           {resourceArr.map(e=><MapResourceData key={e.name} detail={e} />)}
         </div>
-        <div className={styles.countryMap} id="homeCountryMap" style={{ ...countrySize }}></div>
-        <div className={styles.static}>
-          <span>{mapCountryName}</span>
-          {mapCountInfo.pv > 0 && <span className={styles.count} >{mapCountInfo.pv}个</span>}
-          {mapCountInfo.pv > 0 && <img src="/img/ico_pv.png" />}
-          {mapCountInfo.wind > 0 && <span className={styles.count}>{mapCountInfo.wind}个</span>}
-          {mapCountInfo.wind > 0 && <img src="/img/ico_wind.png" />}
-        </div>
-        <div className={styles.worldMap} id="homeWorldMap"></div>
         {showStationInfo && <section className={styles.singleStation}>
           <h3 className={styles.title}>
             <span className={styles.titleLeft} >
@@ -288,6 +279,17 @@ class CenterMap extends Component{
             ))}
           </div>
         </section>}
+        <div className={styles.countryMap} id="homeCountryMap" style={{ ...countrySize }}></div>
+        <div className={styles.bottomData}>
+          <div className={styles.worldMap} id="homeWorldMap"></div>
+          <div className={styles.static}>
+            <span>{mapCountryName}</span>
+            {mapCountInfo.pv > 0 && <span className={styles.count} >{mapCountInfo.pv}个</span>}
+            {mapCountInfo.pv > 0 && <img src="/img/ico_pv.png" />}
+            {mapCountInfo.wind > 0 && <span className={styles.count}>{mapCountInfo.wind}个</span>}
+            {mapCountInfo.wind > 0 && <img src="/img/ico_wind.png" />}
+          </div>
+        </div>
         <div className={styles.starBox}>
           {starArr.map(e=>(<div key={e[0]} 
             className={styles.star}
