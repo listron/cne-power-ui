@@ -2,7 +2,7 @@ import {call, put, takeLatest, select} from 'redux-saga/effects';
 import axios from 'axios';
 import Path from '../../../../constants/path';
 import {planAction} from './planAction';
-
+import moment from 'moment';
 
 
 function* changePlanStore(action) {//存储payload指定参数，替换reducer-store属性。
@@ -13,9 +13,14 @@ function* changePlanStore(action) {//存储payload指定参数，替换reducer-s
   })
 }
 
+function *resetStore(){
+  yield put({
+    type:  planAction.RESET_STORE
+  })
+}
+
 function* getPlanList(action) {//请求生产计划列表数据
   const {payload} = action;
-  // const url = '/mock/system/planList';
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.getPlanList}`;
   try {
     yield put({type: planAction.PLAN_FETCH});
@@ -112,17 +117,11 @@ function* getOwnStations(action) {//获取所有电站信息
 
 function* addPlanInfo(action) {// 添加生产计划列表
   const {payload} = action;
-  // const url = '/mock/system/editPlanInfo';
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.addPlanList}`
   try {
     yield put({type: planAction.PLAN_FETCH});
     const response = yield call(axios.post, url, payload);
-    if (response.data.code === '10000') {
-      yield put({type: planAction.GET_PLAN_FETCH_SUCCESS});
-      yield put({
-        type: planAction.getYearList,
-      });
-    }else if(response.data.code === '10001'){
+    if (response.data.code === '10000' || response.data.code === '10001') {
       yield put({
         type: planAction.getYearList,
       });
@@ -144,9 +143,8 @@ function* getYearList(action){ // 获取已经计划的年份列表
     yield put({type: planAction.PLAN_FETCH});
     const response = yield call(axios.get, url);
     const planYearList=response.data.data.yearPlan;
-    let selectYear='';
-    const currentYear=new Date().getFullYear().toString();
-    planYearList.indexOf(currentYear) > -1 ? selectYear=currentYear :selectYear=planYearList[0];
+    const currentYear=moment().year();
+    let  selectYear=planYearList.findIndex(e=>+e===currentYear)>=0?currentYear:planYearList[0];
     const params = yield select(state => {
       return({//继续请求生产计划列表
         year: state.system.plan.get('planYear') || selectYear,
@@ -162,7 +160,7 @@ function* getYearList(action){ // 获取已经计划的年份列表
       yield put({
         type: planAction.CHANGE_PLAN_STORE,
         payload: {
-          planYearList:planYearList,
+          planYearList:planYearList || [],
           planYear:selectYear,
         },
       });
@@ -190,5 +188,6 @@ export function* watchPlan() {
   yield takeLatest(planAction.editPlanInfo, editPlanInfo);
   yield takeLatest(planAction.getOwnStations, getOwnStations);
   yield takeLatest(planAction.addPlanInfo, addPlanInfo);
+  yield takeLatest(planAction.resetStore, resetStore);
 }
 
