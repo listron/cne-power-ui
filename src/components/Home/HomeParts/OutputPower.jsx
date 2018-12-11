@@ -66,7 +66,12 @@ class OutputPower extends Component{
         title: {
           show: false,
         },
-        color: ['#00ffff', '#d0021b'],
+        grid: {
+          left: 10,
+          right: 10,
+          containLabel: true,
+        },
+        color: ['#d0021b', '#00ffff'],
         legend: {
           textStyle: {
             color: '#06bdf4',
@@ -131,7 +136,7 @@ class OutputPower extends Component{
           },
           {
             type: 'value',
-            name: 'm/s',
+            name: isWind ? 'm/s' : 'W/㎡',
             nameTextStyle: {
               fontSize: 12,
               color: '#06bdf4',

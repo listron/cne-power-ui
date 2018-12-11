@@ -23,7 +23,7 @@ class StationSelectModal extends Component {
     super(props);
     this.state = {
       filterStationType: 2,//选中电站类型
-      stationType:[2,0,1],//0所有,0风电，1光伏
+      stationType:[2,0,1],//2所有,0风电，1光伏
       selectedStation: props.checkedStations, //暂存选中的电站数组
       showWarningTip: false,
       warningTipText: ''
@@ -140,8 +140,10 @@ class StationSelectModal extends Component {
   }
 
   render() {
-    const { stationModalShow, hideStationModal, showStationModal, multiple } = this.props;
+    const { stationModalShow, hideStationModal, showStationModal, multiple, data } = this.props;
     const { filterStationType, stationType, showWarningTip, warningTipText } = this.state;
+    const tmpStationSet = new Set(data.map(e=>e.stationType));
+    const hasMultipleType = tmpStationSet.size > 1;
     return (
       <div className={styles.stationSelectModal}>
         {showWarningTip && <WarningTip style={{marginTop:'250px',width: '210px',height:'88px'}} onCancel={this.onCancelWarningTip} onOK={this.onConfirmWarningTip} value={warningTipText} />}
@@ -157,11 +159,11 @@ class StationSelectModal extends Component {
           wrapClassName={styles.stationModal}
         >
           <div className={styles.stationStyleModal}>
-            <div className={styles.stationType}>
+            {hasMultipleType && <div className={styles.stationType}>
               <RadioGroup onChange={this.onSelectStationType} value={filterStationType}>
                 {stationType.map(e=>(<RadioButton key={e} value={e} >{e===2?'全部':e===1?'光伏':'风电'}</RadioButton>))}
               </RadioGroup>
-            </div>
+            </div>}
             <div className={styles.provinceList}>
               {this._filterStation()}
             </div>

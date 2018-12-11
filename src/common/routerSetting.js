@@ -95,7 +95,11 @@ const routers = [
     path: '/operation/running/dayReport',
     exact: true,
     component: DayReport,
-  }, {//经验库
+  },{ // 运维管理-电站运行-月报
+    path: '/operation/running/monthReport',
+    exact: true,
+    component: Building,
+  }, {
     path: '/operation/experience',
     exact: true,
     component: Building,

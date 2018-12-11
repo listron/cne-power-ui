@@ -29,7 +29,7 @@
   .deviceList{
     display: flex;
     flex-wrap: wrap;
-    .eachDevice{
+    .deviceName{
       width: 50%;
       padding-left: 40px;
       cursor: pointer;
@@ -39,6 +39,14 @@
       &:hover{
         background-color: #eee;
       }
+    }
+    .currentDeviceName{
+      width: 50%;
+      padding-left: 40px;
+      cursor: pointer;
+      height: 28px;
+      line-height: 28px;
+      color: $themeColor;
     }
   }
 }
@@ -160,6 +168,9 @@
           word-wrap: break-word;
           padding-right: 20px;
         }
+        &:hover{
+          background: rgba(206, 235, 224, 0.3); 
+       }
       }
     }
     .eachGroup:last-child{

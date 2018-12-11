@@ -60,8 +60,11 @@ class FaultList extends Component {
         show: false,
       },
       grid: {
+        left: 10,
+        right: 10,
         top: 28,
         bottom: 28,
+        containLabel: true,
       },
       tooltip: {
         extraCssText: 'background-color: rgba(0,0,0,0.8)',

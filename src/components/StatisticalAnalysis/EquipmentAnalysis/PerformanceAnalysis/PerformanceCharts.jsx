@@ -232,10 +232,6 @@ class PerformanceCharts extends React.Component {
         },
         axisLabel: {
           color: '#666',
-          // color: function (value, index) {
-          //  console.log(value,deviceNames);
-          //   return deviceNames.includes(value)===true?'red':"#666"
-          // },
           rotate: -30,
         },
         axisTick: {
@@ -268,7 +264,7 @@ class PerformanceCharts extends React.Component {
       ],
       series: seriesData || []
     };
-    targetChart.setOption(targetMonthOption)
+    targetChart.setOption(targetMonthOption,'notMerge')
     targetChart.resize();
   }
 

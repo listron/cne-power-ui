@@ -76,7 +76,7 @@ class PowerDiagramTenMin extends Component {
           params.forEach((item, index) => {
             return paramsItem += `<div> <span style="display: inline-block;width: 5px;height: 5px;border-radius: 50%;background:${color[index]};vertical-align: 3px;margin-right: 3px;"> </span> ${params[index].seriesName} :${ (params[index].value ||  params[index].value === '0'  &&  parseFloat(params[index].value).toFixed(this.getDefaultPoint(params[index].seriesName))) || '--'}</div>`
           });
-          let complate=intervalTime!==0?`<div>${'完成率'}:${(completeRate && completeRate===0) || '--'}%</div>`:''
+          let complate=intervalTime!==0?`<div style="margin-left:11px;">${'完成率'}:${(completeRate.length>0  && completeRate.length>0 && (completeRate[params[0].dataIndex].completeRate)*1000/10) || '--'}%</div>`:''
           return `<div  style="border-bottom: 1px solid #ccc;padding-bottom: 7px;margin-bottom: 7px;width:150px;overflow:hidden;"> <span style="float: left">${params[0].name} </span>
             </div>${paramsItem}${complate}`
         },
@@ -134,7 +134,7 @@ class PowerDiagramTenMin extends Component {
           }
         },
         {
-          name: chartType === 'wind' ? '平均风速(m/s)' : `${intervalTime === 0 ? '累计曝幅值' : (intervalTime === 1 ? '月辐射总量' : '年辐射总量')}`,
+          name: chartType === 'wind' ? '平均风速(m/s)' : `${intervalTime === 0 ? '累计曝幅值(MJ/m²)' : (intervalTime === 1 ? '月辐射总量(MJ/m)' : '年辐射总量(MJ/m)')}`,
           type: 'value',
           axisLabel: {
             formatter: '{value}',
