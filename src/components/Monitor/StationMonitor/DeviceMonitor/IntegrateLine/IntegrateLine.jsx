@@ -19,56 +19,47 @@ class IntegrateLine extends Component {
     deviceAlarmList: PropTypes.array,
     singleStationData: PropTypes.object,
     getIntegrateData: PropTypes.func,
-  //   resetDeviceStore: PropTypes.func,
+    resetDeviceStore: PropTypes.func,
   }
 
-  componentDidMount(){
+  componentDidMount() {
     const { deviceCode, deviceTypeCode, stationCode } = this.props.match.params;
     const params = {
       stationCode,
       deviceCode,
       deviceTypeCode
     };
-    this.props.getIntegrateData(params);
-  //   this.getData(stationCode, deviceCode, deviceTypeCode);
+    this.getData(params);
   }
 
-  // componentWillReceiveProps(nextProps){
-  //   const { deviceCode, deviceTypeCode, stationCode } = this.props.match.params;
-  //   const nextParams = nextProps.match.params;
-  //   const nextDevice = nextParams.deviceCode;
-  //   const nextType = nextParams.deviceTypeCode;
-  //   const nextStation = nextParams.stationCode;
-  //   if( nextDevice !== deviceCode || nextType !== deviceTypeCode || nextStation !== stationCode ){
-  //     clearTimeout(this.timeOutId);
-  //     clearTimeout(this.timeOutTenMin);
-  //     const params = {
-  //       stationCode: nextStation,
-  //       deviceCode: nextDevice,
-  //       deviceTypeCode: nextType,
-  //       timeParam: '72',
-  //     };
-  //     this.props.getMonitorDeviceData(params);
-  //     this.getData(nextStation, nextDevice, nextType);
-  //   }
-  // }
+  componentWillReceiveProps(nextProps) {
+    const { deviceCode } = this.props.match.params;
+    const nextParams = nextProps.match.params;
+    const nextDevice = nextParams.deviceCode;
+    const nextType = nextParams.deviceTypeCode;
+    const nextStation = nextParams.stationCode;
+    if( nextDevice !== deviceCode && nextType === '302' ){ // 集电线路电站切换
+      clearTimeout(this.timeOutId);
+      const params = {
+        stationCode: nextStation,
+        deviceCode: nextDevice,
+        deviceTypeCode: nextType,
+      };
+      this.getData(params);
+    }
+  }
 
-  // componentWillUnmount(){
-  //   clearTimeout(this.timeOutId);
-  //   this.props.resetDeviceStore();
-  // }
+  componentWillUnmount() {
+    clearTimeout(this.timeOutId);
+    this.props.resetDeviceStore();
+  }
 
-  // getData = (stationCode, deviceCode, deviceTypeCode) => {
-  //   const params = {
-  //     stationCode,
-  //     deviceCode,
-  //     deviceTypeCode,
-  //   };
-  //   this.timeOutId = setTimeout(() => {
-  //     this.props.getMonitorDeviceData(params);
-  //     this.getData(stationCode, deviceCode, deviceTypeCode);
-  //   },10000)
-  // }
+  getData = params => {
+    this.props.getIntegrateData(params);
+    this.timeOutId = setTimeout(() => {
+      this.getData(params);
+    }, 10000)
+  }
 
   render(){
     const { loading, devices, deviceDetail, deviceAlarmList, singleStationData } = this.props;

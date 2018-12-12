@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styles from './deviceMonitor.scss';
 import { dataFormat } from '../../../../../utils/utilFunc';
 
@@ -14,7 +15,7 @@ export const YcPoints = ({ ycData = [] }) => {
         </div>
         <div className={styles.ycContent}>
           {ycData.map(e => (
-            <div className={styles.eachYc}>
+            <div key={e.pointName} className={styles.eachYc}>
               <span className={styles.name}>{e.pointName}</span>
               <span className={styles.value}>{dataFormat(e.pointValue, '--', 2)}</span>
               <span className={styles.unit}>{e.pointUnit}</span>
@@ -26,13 +27,17 @@ export const YcPoints = ({ ycData = [] }) => {
   )
 }
 
+YcPoints.propTypes = {
+  ycData: PropTypes.array,
+}
+
 export const YxPoints = ({ yxData = [] }) => {
   return (
     <section className={styles.yxInfo}>
       <h3>YX</h3>
       <div className={styles.yxList}>
         {yxData.map(e => (
-          <span className={styles.eachYx}>
+          <span key={e.pointName} className={styles.eachYx}>
             <span
               className={styles.round}
               style={{ backgroundColor: e.pointValue > 0 ? '#7ed321': '#d0021b' }}
@@ -45,13 +50,17 @@ export const YxPoints = ({ yxData = [] }) => {
   )
 }
 
+YxPoints.propTypes = {
+  yxData: PropTypes.array,
+}
+
 export const YmPoints = ({ ymData = [] }) => {
   return (
     ymData.length > 0 ? <section className={styles.ymInfo}>
       <h3>YM</h3>
       <div className={styles.ymList}>
         {ymData.map(e => (
-          <span className={styles.eachYm}>
+          <span key={e.pointName} className={styles.eachYm}>
             <span>{e.pointName}</span>
             <span>{e.pointValue}</span>
             <span>{e.pointUnit || ''}</span>
@@ -60,4 +69,8 @@ export const YmPoints = ({ ymData = [] }) => {
       </div>
     </section>: null
   )
+}
+
+YmPoints.propTypes = {
+  ymData: PropTypes.array,
 }
