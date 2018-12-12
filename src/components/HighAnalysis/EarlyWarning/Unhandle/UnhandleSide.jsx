@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import echarts from 'echarts';
-import styles from './unhandle.scss';
+import styles from './newUnhandle.scss';
 import PropTypes from 'prop-types';
 import { Select, Table, Button, DatePicker, Icon } from 'antd';
 // import { showNoData, hiddenNoData } from '../../../../constants/echartsNoData';
