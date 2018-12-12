@@ -293,7 +293,7 @@ function *getBoosterData(action) { // 升压站信息
   const { payload } = action;
   try {
     const { stationCode, deviceCode } = payload;
-    const devicesUrl = `${APIBasePath}${monitor.getBoosterstation}/${stationCode}`;
+    const devicesUrl = `${APIBasePath}${monitor.getBoosterstation}${stationCode}`;
     const detailUrl = `${APIBasePath}${monitor.boosterDetail}/${deviceCode}`;
     const alarmUrl = `${APIBasePath}${monitor.deviceAlarmData}/${deviceCode}`
     yield put({ type: deviceAction.MONITOR_DEVICE_FETCH });

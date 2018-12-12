@@ -267,10 +267,25 @@
 }
 
 .ymInfo{
+  border-top: 1px solid $promptColor;
+  height: 500px;
   .ymList{
-
+    margin-left: 56px;
+    display: flex;
+  }
+  .ymColumn{
+    border-right: 1px dashed $promptColor; 
   }
   .eachYm{
-
+    padding-left: 12px;
+    width: 260px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: $lightColor;
+    &:hover{
+      background-color: #f1f1f1;
+    }
   }
 }

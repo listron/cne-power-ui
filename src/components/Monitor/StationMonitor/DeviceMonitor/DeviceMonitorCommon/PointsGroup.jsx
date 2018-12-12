@@ -54,17 +54,30 @@ YxPoints.propTypes = {
   yxData: PropTypes.array,
 }
 
-export const YmPoints = ({ ymData = [] }) => {
+export const YmPoints = ({ data = [], name = 'ym' }) => { //  遥脉测点或ycs展示。
+  const groupMax = 10;
+  let groupedData = [];
+  data.forEach((e, i) => {
+    let groupIndex = parseInt(i / groupMax);
+    if(!groupedData[groupIndex]){
+      groupedData[groupIndex] = [e];
+    }else{
+      groupedData[groupIndex].push(e);
+    }
+  })
   return (
-    ymData.length > 0 ? <section className={styles.ymInfo}>
-      <h3>YM</h3>
+    data.length > 0 ? <section className={styles.ymInfo}>
+      <h3>{name}</h3>
       <div className={styles.ymList}>
-        {ymData.map(e => (
-          <span key={e.pointName} className={styles.eachYm}>
-            <span>{e.pointName}</span>
-            <span>{e.pointValue}</span>
-            <span>{e.pointUnit || ''}</span>
-          </span>
+        {groupedData.map((e, groupIndex) => (
+          <div key={e.groupIndex} className={styles.ymColumn}>
+            {e.map(ym => (
+              <span key={ym.pointName} className={styles.eachYm}>
+                <span>{ym.pointName}</span>
+                <span>{ym.pointValue}{ym.pointUnit || ''}</span>
+              </span>
+            ))}
+          </div>
         ))}
       </div>
     </section>: null
@@ -72,5 +85,6 @@ export const YmPoints = ({ ymData = [] }) => {
 }
 
 YmPoints.propTypes = {
-  ymData: PropTypes.array,
+  data: PropTypes.array,
+  name: PropTypes.string,
 }
