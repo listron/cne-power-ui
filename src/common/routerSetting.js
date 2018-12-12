@@ -20,6 +20,8 @@ import DeviceManage from '../containers/System/Station/DeviceManage/DeviceManage
 import PointManage from '../containers/System/Station/PointManage/PointManage';
 import AlarmManage from '../containers/System/Station/AlarmManage/AlarmManage';
 import PowerCurve from '../containers/System/Station/PowerCurve/PowerCurve';
+// 系统管理-生产计划
+import Plan from "../containers/System/Production/Plan/Plan";
 // 实时监控-电站监控
 import AllStation from '../containers/Monitor/StationMonitor/AllStation/AllStation';
 import DeviceMonitor from '../containers/Monitor/StationMonitor/DeviceMonitor/DeviceMonitor';
@@ -30,7 +32,6 @@ import HistoryAlarm from '../containers/Monitor/Alarm/HistoryAlarm';
 import AlarmStatistic from '../containers/Monitor/Alarm/AlarmStatistic';
 
 import EditPassword from '../containers/Others/EditPassword'; // 更改密码
-
 import Building from '../components/Common/Building/Building';
 
 //电站分析
@@ -43,8 +44,15 @@ import PerformanceAnalysis from "../containers/StatisticalAnalysis/EquipmentAnal
 
 //统计报表
 import GeneralReport from '../containers/StatisticalAnalysis/StatisticalReport/GeneralReport/GeneralReport';
+//高级分析 清洗预警 清洗记录
+import CleanoutWarning from '../containers/HighAnalysis/CleanoutModel/CleanoutWarning/CleanoutWarning';
+import CleanoutRecord from '../containers/HighAnalysis/CleanoutModel/CleanoutRecord/CleanoutRecord';
+// 高级分析 低效组串预警
+import Unhandle from '../containers/HighAnalysis/EarlyWarning/Unhandle/Unhandle';
+import Ignore from '../containers/HighAnalysis/EarlyWarning/Ignore/Ignore';
 
-import Plan from "../containers/System/Production/Plan/Plan";
+
+
 /*
   注： path变量中，以/hidden开头的路径，将不展示在菜单中；
 */
@@ -67,23 +75,23 @@ const routers = [
     exact: true,
     //component: Building,
     component: PersonnelGps,
-  },{
+  }, {//两票管理>第一种工作票
     path: '/operation/twoTickets/typeone',
     exact: true,
     component: Building,
-  }, {
+  }, {//第二种工作票
     path: '/operation/twoTickets/typetwo',
     exact: true,
     component: Building,
-  }, {
+  }, {//备品备件
     path: '/operation/book/sparePart',
     exact: true,
     component: Building,
-  }, {
+  }, {//工器具
     path: '/operation/book/instrument',
     exact: true,
     component: Building,
-  },{ // 运维管理-电站运行-日报
+  }, { // 运维管理-电站运行-日报
     path: '/operation/running/dayReport',
     exact: true,
     component: DayReport,
@@ -95,31 +103,27 @@ const routers = [
     path: '/operation/experience',
     exact: true,
     component: Building,
-  }, {
+  }, {  // 系统管理-账户管理-企业
     path: '/system/account/enterprise',
     exact: true,
     component: Enterprise,
-  }, {
+  }, { // 系统管理-账户管理-部门
     path: '/system/account/department',
     exact: true,
     component: Department,
-  }, {
+  }, { // 系统管理-账户管理-用户
     path: '/system/account/user',
     exact: true,
     component: User,
-  }, {
+  }, { // 系统管理-账户管理-角色
     path: '/system/account/role',
     exact: true,
     component: Role,
-  }, {
-    path:'/system/account/user',
-    exact:true,
-    component: User,
-  }, {
+  }, { //实时监控-告警-实施告警
     path: '/monitor/alarm/realtime',
     exact: true,
     component: RealTimeAlarm,
-  }, {
+  }, { //实时监控-告警-已转工单
     path: '/monitor/alarm/transfer',
     exact: true,
     component: RealTimeAlarm,
@@ -127,23 +131,23 @@ const routers = [
     path: '/monitor/alarm/transfer/:defectId',
     exact: true,
     component: DefectDetail,
-  }, {
+  }, { //实时监控-告警-手动解除
     path: '/monitor/alarm/relieve',
     exact: true,
     component: RealTimeAlarm,
-  }, {
+  }, { //实时监控-告警-历史告警
     path: '/monitor/alarm/history',
     exact: true,
     component: HistoryAlarm,
-  }, {
+  }, { //实时监控-告警-告警统计
     path: '/monitor/alarm/statistic',
     exact: true,
     component: AlarmStatistic,
-  }, {
+  }, {//告警统计单电站
     path: '/monitor/alarm/statistic/:stationCode',
     exact: true,
     component: AlarmStatistic,
-  },{
+  }, {  //实时监控-电站监控-全部电站
     path: '/monitor/station',
     exact: true,
     component: AllStation,
@@ -151,7 +155,7 @@ const routers = [
     path: '/hidden/monitorDevice/:stationCode/:deviceTypeCode/:deviceCode',
     exact: true,
     component: DeviceMonitor
-  }, {
+  }, { //实时监控-电站监控-单电站
     path: '/monitor/singleStation/:stationCode',
     exact: true,
     component: SingleStation,
@@ -159,103 +163,117 @@ const routers = [
     path: '/hidden/user/editPassword',
     exact: true,
     component: EditPassword
-  },{ // 系统管理-电站管理-电站
+  }, { // 系统管理-电站管理-电站
     path: '/system/station/stationManage',
     exact: true,
     component: StationManage, // Building  StationManage
-  },{ // 系统管理-电站管理-设备
+  }, { // 系统管理-电站管理-设备
     path: '/system/station/deviceManage',
     exact: true,
     component: DeviceManage // Building  DeviceManage
-  },{ // 系统管理-电站管理-测点
+  }, { // 系统管理-电站管理-测点
     path: '/system/station/pointManage',
     exact: true,
     component: PointManage  // Building  PointManage
-  },{ // 系统管理-电站管理-告警事件
+  }, { // 系统管理-电站管理-告警事件
     path: '/system/station/alarmManage',
     exact: true,
     component: AlarmManage // Building  AlarmManage
-  },{ // 系统管理-电站管理-功率曲线
+  }, { // 系统管理-电站管理-功率曲线
     path: '/system/station/powerCurve',
     exact: true,
     component: PowerCurve // Building  AlarmManage
-  },{ // 系统管理-计划配置
+  }, { // 系统管理-计划配置
     path: '/system/config/plan',
     exact: true,
-    component:Plan
-  },{
+    component: Plan
+  }, { // 统计分析-电站分析-全部电站
     path: '/statistical/stationaccount/allstation',
     exact: true,
-    component: AllStationAnalysis,
-    // component: Building
-  },{
+    component: AllStationAnalysis
+  }, { // 统计分析-电站分析-全部电站-单电站
     path: '/statistical/stationaccount/allstation/:stationCode',
     exact: true,
-    component: AllStationAnalysis,
-    // component: Building
-  },{
+    component: AllStationAnalysis
+  }, { // 统计分析-电站分析-生产分析
     path: '/statistical/stationaccount/production',
     exact: true,
     component: ProductionAnalysis
-    // component: Building
-  },{
+  }, { // 统计分析-电站分析-运行分析
     path: '/statistical/stationaccount/operate',
     exact: true,
-    component: OperateAnalysis,
-    // component: Building
-  },{
+    component: OperateAnalysis
+  }, { // 统计分析-电站分析-资源分析
     path: '/statistical/stationaccount/resource',
     exact: true,
-    component: StationResourceAnalysis,
-    // component: Building
-  },{
+    component: StationResourceAnalysis
+  }, { // 统计分析-电站分析-电站对比
     path: '/statistical/stationaccount/contrast',
     exact: true,
-    component: StationContrast,
-    // component: Building
-  },{
+    component: StationContrast
+  }, { //  统计分析-设备分析-设备性能分析
     path: '/statistical/equipment/performance',
     exact: true,
     component: PerformanceAnalysis
     // component: Building,
-  },{
+  }, {//厂家对比
     path: '/statistical/equipment/manufacturers',
     exact: true,
     component: Building
-  },{
+  }, {//统计报表
     path: '/statistical/statement/currency',
     exact: true,
     component: GeneralReport,
-  },{
-    path: '/analysis/assess',
+  },
+  // {
+  //   path: '/analysis/assess',
+  //   exact: true,
+  //   component: Building
+  // },
+  { // 高级分析>清洗模型>清洗预警
+    path: '/analysis/cleanout/warning',
     exact: true,
+    // component: CleanoutWarning,
     component: Building
-  },{
-    path: '/analysis/cleanout/dirt',
-    exact: true,
-    component: Building
-  },{
+  }, { // 高级分析>清洗模型>清洗计划与记录
     path: '/analysis/cleanout/record',
     exact: true,
+    // component: CleanoutRecordMain,
     component: Building
-  },{
-    path: '/analysis/cleanout/configuration',
+  },{//单电站清洗计划与记录详情
+    path: '/analysis/cleanout/record/:stationCode',
     exact: true,
-    component: Building
+    component: CleanoutRecord
   },
-  {
+  { // 组串异常分析
     path: '/analysis/formation/abnormal',
     exact: true,
     component: Building
-  },{
-    path: '/analysis/formation/warning',
+  }, {  // 高级分析-低效组串预警-待处理预警
+    path: '/analysis/earlyWarning/unhandle',
+    exact: true,
+    // component: Building,
+    component: Unhandle
+  }, { // 高级分析-低效组串预警-已忽略
+    path: '/analysis/earlyWarning/ignore',
+    exact: true,
+    // component: Building,
+    component: Ignore
+  },
+  { // 高级分析-低效组串预警-已转工单
+    path: '/analysis/earlyWarning/transfer',
     exact: true,
     component: Building
-  },{
+  }, {  // 高级分析-低效组串预警-历史预警
+    path: '/analysis/earlyWarning/history',
+    exact: true,
+    component: Building
+  },
+  {//偏航对风分析
     path: '/analysis/yaw/wind',
     exact: true,
     component: Building
-  },{
+  }, {//预警事件配置
     path: '/analysis/yaw/config',
     exact: true,
     component: Building
