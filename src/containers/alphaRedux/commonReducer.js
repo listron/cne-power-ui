@@ -18,6 +18,7 @@ var initState = Immutable.fromJS({
   firstPartitionCode:'',//光伏组件截取的第一项code
   deviceExistInfo: {}, // 验证设备是否存在
   lostGenTypes: [], // 所有故障类型
+  dictionary:[], // 获取覆盖类型、并网电压等级、所属电网（区域）忽略原因列表
 });
 
 const defectReducer = (state = initState, action) => {

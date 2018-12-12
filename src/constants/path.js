@@ -22,6 +22,8 @@ export default {
     getStationBelongTypes: '/v3/management/total', // 获取电站可能的所属的各种分类信息
     getStationTargetInfo: '/v3/management', // 获取电站指定指标分类： 省市县等。
     // getRefreshToken: '/v3/oauth/token' --todo 根据过期token中携带的refreshToken获取新token接口。
+    getDictionaryInfo:'/v3/management/dictionary'  //获取覆盖类型、并网电压等级、所属电网（区域）忽略原因列表
+
   },
   APISubPaths: {
     // 新的登陆注册接口
@@ -271,6 +273,41 @@ export default {
       getAvailability:'/v3/performance/deviceanalysis/availability',//利用率及损失电量
       getAvailabilityContrast:'/v3/performance/deviceanalysis/availability/contrast',//利用率及损失电量对比
 
+     //通用报表
+     dailyreport:'v3/performance/dailyreport',
+     
+    },
+    highAnalysis:{
+      getUnhandleList:'/v3/forewarning/unhandlelist', // 待处理预警／历史预警
+      getIgnorelist:'/v3/forewarning/ignorelist', //已忽略历史预警
+      getTransferlist:'/v3/forewarning/toorderlist',// 已转工单列表
+      toorder:'/v3/forewarning/toorder',//预警转工单
+      ignore:'/v3/forewarning/ignore', // 忽略预警
+      warnDetail:'/v3/forewarning',//预警信息
+      getSequencechart:'/v3/pv/sequencechart',//电流时序图
+      getMatrixList:'/v3/station/matrix', //获取电站下方阵
+      getStationDust:'/v3/pvclean/station/dustinfluence/',
+      getMatrixDust: '/v3/pvclean/matrix/dustinfluence/',
+      unignore:'/v3/forewarning/unignore',//取消忽略列表
+      //清洗模型的首页
+      getMainList: '/v3/pvclean/plan/list',
+      //清洗模型点击进入单电站清洗详情
+      getDetailList: '/v3/pvclean/plan/details',
+      //加，编辑，获取，删除，清洗计划
+      getAddCleanPlan: '/v3/pvclean/plan/artificial',
+      getEditCleanPlan: '/v3/pvclean/plan/artificial',
+      getCleanPlanDetail: '/v3/pvclean/plan/artificial/',
+      deleteCleanPlan: '/v3/pvclean/plan/artificial/',
+      //加，编辑，获取，下雨清洗计划
+      getAddRainPlan: '/v3/pvclean/plan/rainfall/',
+      getEditRainPlan: '/v3/pvclean/plan/rainfall',
+      getRainPlanDetail: '/v3/pvclean/plan/rainfall/',
+      //清洗记录列表，增，编辑，获取，删记录
+      getPlanRecordList: '/v3 pvclean/record/list',
+      getAddCleanRecord: '/v3/pvclean/record/',
+      editCleanRecord:'/v3/pvclean/record/',
+      getCleanRecordDetail: '/v3/pvclean/record/',
+      deleteCleanRecord: '/v3/pvclean/record/',
       //通用报表
       dailyreport:'v3/performance/dailyreport', // 日报
       faultReport: 'v3/performance/generalreport/fault', // 故障日报
