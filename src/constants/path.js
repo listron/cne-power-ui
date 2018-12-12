@@ -300,8 +300,8 @@ export default {
       getEditRainPlan: '/v3/pvclean/plan/rainfall',
       getRainPlanDetail: '/v3/pvclean/plan/rainfall/',
       //清洗记录列表，增，编辑，获取，删记录
-      getPlanRecordList: '/v3 pvclean/record/list',
-      getAddCleanRecord: '/v3/pvclean/record/',
+      getPlanRecordList: '/v3/pvclean/record/list',
+      getAddCleanRecord: '/v3/pvclean/record',
       editCleanRecord:'/v3/pvclean/record/',
       getCleanRecordDetail: '/v3/pvclean/record/',
       deleteCleanRecord: '/v3/pvclean/record/',

@@ -5,7 +5,8 @@ var initState = Immutable.fromJS({
   loading: false,
   startTime: '2018',
   stationCodes: [],
-  showPage: 'multiple', //默认展示列表页list ,   编辑edit,详情detail,
+  singleStationCode:null,
+  showPage: 'multiple', //默认展示列表页list ,详情detail,
   stationType: "", // 电站类型("0"-风电、"1"-光伏、""全部)
   stationDustData: [], // 全站灰尘影响图表数据
   matrixDustData: [],//方阵灰尘影响图表数据
@@ -16,7 +17,7 @@ var initState = Immutable.fromJS({
   sortField: '', // 排序字段：stationName-电站名称，cleanPlanNum-清洗计划(个) cleanCycle–平均清洗周期(天) –cleanProfit累计清洗收益(万Kwh) cleanTime–最近清洗时间
   sortType: 0, // 排序方式 ;"0"升序; "1"降序
   mainListData: [], // 各电站清洗计划汇总列表数据
-
+  cleanType:0,
   detailPageNum: 1,//单电站当前页
   detailPageSize: 10,//单电站每页条数
   detailtotal: 0,//单电站详细电站总数
@@ -27,8 +28,8 @@ var initState = Immutable.fromJS({
   detailListData: [],//清洗计划记录列表  
   cleanPlandetail: {},//获取人工清洗计划详情
   
-  cleanRecordPageNum: 0,//清洗记录当前页
-  cleanRecordPageSize: 0,//清洗记录每页条数
+  cleanRecordPageNum: 1,//清洗记录当前页
+  cleanRecordPageSize: 10,//清洗记录每页条数
   cleanRecordTotal: 0,//清洗记录总条数
   cleanRecordCost: '',//清洗成本
   cleanRecordProfit: '',//累计清洗收益

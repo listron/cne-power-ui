@@ -1,11 +1,27 @@
 import React, { Component } from "react";
-import { Table, Icon, Modal, Form, DatePicker, Input, Button, Radio } from 'antd';
+import PropTypes from 'prop-types';
+import { Table,  Modal, Form, DatePicker, Input, Button, Radio } from 'antd';
 import styles from './cleanoutRecordMain.scss';
 import moment from 'moment';
 const FormItem = Form.Item;
 const { RangePicker } = DatePicker;
 const RadioGroup = Radio.Group;
 class CleanoutRecordTable extends Component {
+  static propTypes = {
+    totalNum: PropTypes.number,
+    pageNum: PropTypes.number,
+    pageSize: PropTypes.number,
+    match: PropTypes.object,
+    stationCodes: PropTypes.array,
+    onShowSideChange: PropTypes.func,
+    changeCleanoutRecordStore: PropTypes.func,
+    getAddCleanPlan: PropTypes.func,
+    getAddRainPlan: PropTypes.func,
+    loading: PropTypes.bool,
+    mainListData: PropTypes.array,
+    getMainList: PropTypes.func,
+    history: PropTypes.object,
+  }
   constructor(props, context) {
     super(props, context)
     this.state = {
@@ -17,18 +33,20 @@ class CleanoutRecordTable extends Component {
     this.setState({
       planType: e.target.value
     })
-
   }
-  tableChange = () => {
-
+  tableChange = (pagination, filter, sorter) => { // 电站list排序=>重新请求数据
+    const { changeCleanoutRecordStore,getMainList, stationCodes, pageNum, pageSize,  } = this.props;
+    const { field, order } = sorter;
+    const sortField=field?field:'';
+    const sortType=order?(sorter.order === 'ascend' ? 0 : 1) : '';
+    changeCleanoutRecordStore({sortField:field,sortType})
+    getMainList({
+      stationCodes, pageNum, pageSize, sortField, sortType
+    })
   }
-  tableChange = () => {
-
-  }
-
   showDetailModal = (record) => {//跳转到单电站清洗模型详情
-    this.props.history.push(`/analysis/cleanout/record/360`);
-    this.props.changeCleanoutRecordStore({ showPage: 'single' })
+    this.props.changeCleanoutRecordStore({ showPage: 'single',singleStationCode:record.stationCode })
+    this.props.history.push(`/analysis/cleanout/record/${record.stationCode}`);
     // this.props.history.push(`/analysis/cleanout/record/${record.stationCode}`);
   }
   showAddPlanModal = (record) => {
@@ -44,9 +62,6 @@ class CleanoutRecordTable extends Component {
   confirmModal=()=>{
     const{getFieldsValue}=this.props.form;
     let planValue=getFieldsValue();
-    console.log(planValue);
-    
-
     //console.log(  planValue.estimateStartTime,planValue.estimateEndTime);//这里是拿到所有modal里的值{}
     //添加计划的函数发请求
     if(this.state.planType==='clean'){
@@ -63,7 +78,6 @@ class CleanoutRecordTable extends Component {
     this.setState({
       showModal: false
     })
- 
   }
   modalContainer(record) {
     const formItemLayout = {
@@ -144,19 +158,12 @@ class CleanoutRecordTable extends Component {
             <Button onClick={this.cancelModal} >取消</Button>
             <Button onClick={this.confirmModal} className={styles.confirmExamine} >保存</Button>
           </div>
-
-
         </div>
-
       </Modal>
     )
-
-
-
   }
   render() {
-    const { loading } = this.props;
-
+    const { loading ,mainListData} = this.props;
     const column = [
       {
         title: '电站名称',
@@ -177,7 +184,7 @@ class CleanoutRecordTable extends Component {
         title: '平均清洗周期(天)',
         dataIndex: 'cleanCycle',
         key: 'cleanCycle',
-        render: text => (<span>{parseInt(text) >= 0 ? `${text}%` : '--'}</span>),
+        render: text => (<span>{parseInt(text) >= 0 ? `${text}` : '--'}</span>),
         sorter: true,
       }, {
         title: '累计清洗收益(万kWh)',
@@ -195,7 +202,7 @@ class CleanoutRecordTable extends Component {
         render: (text, record, index) => {
           let record2 = 'dianzhan1/qinhxi'
           return (<div>
-            <span title="查看" className="iconfont icon-look" onClick={(record) => this.showAddPlanModal(record)}>
+            <span title="添加清洗计划/降雨" className="iconfont icon-addto" onClick={() => this.showAddPlanModal(record)}>
             </span>
             {this.modalContainer(record2)}
           </div>)
@@ -204,25 +211,22 @@ class CleanoutRecordTable extends Component {
         title: '查看',
         key: 'check',
         render: (text, record, index) => {
-          // console.log(record);
-          return (<span title="查看" className="iconfont icon-look" onClick={(record) => this.showDetailModal(record)}></span>)
+          return (<span title="查看" className="iconfont icon-plan" onClick={()=>this.showDetailModal(record)}></span>)
         }
       }
-
     ];
-    const data = [{ stationName: 'dalidadali', check: '1', addplan: '2', cleanTime: '3', cleanProfit: '4', cleanCycle: '5', cleanPlanNum: '6', stationCode: 360 }, { stationName: 'wulala', check: '6', addplan: '7', cleanTime: '8', cleanProfit: '9', cleanCycle: '10', cleanPlanNum: '11', stationCode: 350 }]
+    // const data = [{ stationName: 'dalidadali', check: '1', addplan: '2', cleanTime: '3', cleanProfit: '4', cleanCycle: '5', cleanPlanNum: '6', stationCode: 360 }, { stationName: 'wulala', check: '6', addplan: '7', cleanTime: '8', cleanProfit: '9', cleanCycle: '10', cleanPlanNum: '11', stationCode: 350 }]
     return (
       <div>
         <Table
           loading={loading}
-          dataSource={data.map((e, i) => ({ ...e, key: i }))}
+          dataSource={mainListData.map((e, i) => ({ ...e, key: i }))}
           columns={column}
           className={styles.stationTable}
           onChange={this.tableChange}
           pagination={false}
           locale={{ emptyText: <img src="/img/nodata.png" /> }}
         />
-
       </div>
     )
   }

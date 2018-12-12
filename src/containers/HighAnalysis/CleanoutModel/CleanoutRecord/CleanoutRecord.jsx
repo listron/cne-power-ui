@@ -14,14 +14,13 @@ class CleanoutRecord extends Component {
     stationName: PropTypes.string,
     pageNum: PropTypes.number,
     pageSize: PropTypes.number,
-    orderField: PropTypes.string,
-    orderCommand: PropTypes.string,
+    resetStore: PropTypes.func,
   }
   constructor(props, context) {
     super(props, context)
   }
   componentWillUnmount(){
-    this.props.resetStore()
+   
   }
 
   render() {

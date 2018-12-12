@@ -6,6 +6,7 @@
   background-color: #fff;
   padding: 24px 24px 0;
  
+ 
   .topFilter{
     display: flex;
     flex-direction: column;
@@ -17,20 +18,33 @@
       margin: 0 20px 0 12px;
     }
   }
-  .filterBox{
-  }
+  
   .paginationStyle{
     display: flex;
     justify-content: flex-end;
   }
  
 }
-.handle{
+.handle{//modal的取消确认按钮样式
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
+  margin-left:44px ;
+  button{
+    margin-right: 16px;
+  }
 }
 .radioStyle{
   justify-content: center;
   display: flex;
   margin-bottom: 8px;
+}
+.stationTable{//table字体图表样式
+  :global{
+    .iconfont{
+      font-size: 20px;
+      &:hover{
+        color:#199475
+      }
+    }
+  }
 }

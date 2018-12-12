@@ -50,11 +50,10 @@ class PlanRecordTable extends Component {
 
     })
   }
-  showEditModal = (record) => {
+  showEditRecoord = (record) => {
     this.setState({ showEditModal: true, })
   }
-  editRecord(record){
-    console.log(record);
+  editRecord(record){//编辑清洗记录的modal
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -69,7 +68,7 @@ class PlanRecordTable extends Component {
     const{stations}=this.props;//此处应该是方阵的数据，下面的不可选是由方阵的数据决定的
 
     const rangeConfig = {
-      // initialValue: [moment('2018-12-10'), moment('2018-12-25')],
+       initialValue: [moment('2019-12-10'), moment('2019-12-25')],
       rules: [{ type: 'array', required: true, message: 'Please select time!' }],
     };
     const tmpDeviceTypes = [1,2,3,4,5,6].map((e,i)=>{
@@ -93,7 +92,7 @@ class PlanRecordTable extends Component {
     return (
       <Modal
         title={'电站3-清洗记录'}
-        visible={this.state.showAddRecordModal}
+        visible={this.state.showEditModal}
         onOk={this.confirmAddRecord}
         footer={null}
         onCancel={this.cancelAddRecord}
@@ -117,6 +116,7 @@ class PlanRecordTable extends Component {
               label="清洗方阵"
             >
               {getFieldDecorator('matrix', {
+                initialValue: ['1','2'],
                 rules: [{ required: true, message: '请选择方阵'}],
               })(
                 <TreeSelect {...treeProps} dropdownClassName={styles.treeDeviceTypes} />
@@ -127,7 +127,7 @@ class PlanRecordTable extends Component {
               {...formItemLayout}
               label="清洗备注"
             >
-              {getFieldDecorator('cleanTip', { rules: [{ required: true, message: '只能输入数字', whitespace: true }, ],
+              {getFieldDecorator('cleanTip', { initialValue: 'woshidali', rules: [{ required: true, message: '只能输入数字', whitespace: true }, ],
               })(
                 <InputLimit width={316} placeholder="请描述，不超过80个汉字" />
               )}
@@ -151,7 +151,6 @@ class PlanRecordTable extends Component {
     this.setState({ showEditModal: false })
     const { getFieldsValue } = this.props.form;
     let recordValue = getFieldsValue(['cleanDate','matrix','cleanTip']);
-    console.log(recordValue);
     recordValue.estimateStartTime = moment(recordValue.cleanDate[0]).format('YYYY-MM-DD')
     recordValue.estimateEndTime = moment(recordValue.cleanDate[1]).format('YYYY-MM-DD')
     //发送添加清洗计划的函数
@@ -194,7 +193,7 @@ class PlanRecordTable extends Component {
         render: (text, record, index) => {
           return (
             <div>
-              <span style={{ marginRight: '4px' }} title="编辑" className="iconfont icon-edit" onClick={(record) => this.showEditModal(record)}></span>
+              <span style={{ marginRight: '4px' }} title="编辑" className="iconfont icon-edit" onClick={(record) => this.showEditRecoord(record)}></span>
               {this.editRecord(record)}
               <span title="删除" className="iconfont icon-del" onClick={(record) => this.showDeletModal(record)}></span>
             </div>

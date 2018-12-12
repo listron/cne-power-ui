@@ -3,7 +3,7 @@ import styles from './recordDetailTable.scss';
 import WarningTip from '../../../../Common/WarningTip';
 import InputLimit from '../../../../Common/InputLimit';
 import moment from 'moment';
-import { Table, Icon, Modal, Form, DatePicker, Input, Button ,TreeSelect} from 'antd';
+import { Table, Icon, Modal, Form, DatePicker, Input, Button, TreeSelect } from 'antd';
 const FormItem = Form.Item;
 
 const SHOW_PARENT = TreeSelect.SHOW_PARENT;
@@ -35,8 +35,12 @@ class RecordDetailTable extends Component {
     })
   }
 
-  showRecodePlanModal = (record) => {
-    this.props.onShowSideChange({ showSidePage: 'recordPlan' })
+  showRecodePlanModal = (record, selectedStationIndex) => {
+    const { onShowSideChange, changeCleanoutRecordStore, getPlanRecordList, cleanRecordTotal, cleanRecordPageSize, cleanRecordPageNum } = this.props;
+    onShowSideChange({ showSidePage: 'recordPlan' })
+    changeCleanoutRecordStore({ selectedStationIndex })
+    getPlanRecordList({ planId: record.planId, pageNum: cleanRecordPageNum, pageSize: cleanRecordPageSize })
+
   }
   confirmWarningTip = (recordPlanData) => { // 提示框确认
     this.setState({
@@ -59,9 +63,7 @@ class RecordDetailTable extends Component {
   }
   confirmModal = (record) => {//编辑计划确认按钮
     const { getFieldsValue } = this.props.form;
-    let planValue = getFieldsValue(['cleanCost','cleanPlanDate','company']);
-    console.log(planValue);
-    //console.log(  planValue.estimateStartTime,planValue.estimateEndTime);//这里是拿到所有modal里的值{}
+    let planValue = getFieldsValue(['cleanCost', 'cleanPlanDate', 'company']);
     //添加计划的函数发请求
     //const planId=record.planId;
     planValue.estimateStartTime = moment(planValue.cleanPlanDate[0]).format('YYYY-MM-DD')
@@ -74,7 +76,6 @@ class RecordDetailTable extends Component {
     })
   }
   editCleanoutPlan(record) {//编辑modal
-    console.log(record);
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -151,7 +152,6 @@ class RecordDetailTable extends Component {
     this.setState({ showAddRecordModal: true })
   }
   addCleanoutRecord(record) {
-    console.log(record);
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -163,17 +163,17 @@ class RecordDetailTable extends Component {
       },
     };
     const { getFieldDecorator } = this.props.form;
-    const{stations}=this.props;//此处应该是方阵的数据，下面的不可选是由方阵的数据决定的
+    const { stations } = this.props;//此处应该是方阵的数据，下面的不可选是由方阵的数据决定的
 
     const rangeConfig = {
       // initialValue: [moment('2018-12-10'), moment('2018-12-25')],
       rules: [{ type: 'array', required: true, message: 'Please select time!' }],
     };
-    const tmpDeviceTypes = [1,2,3,4,5,6].map((e,i)=>{
+    const tmpDeviceTypes = [1, 2, 3, 4, 5, 6].map((e, i) => {
       return {
-        title : e,
-        key : i.toString(),
-        value : e.toString(),
+        title: e,
+        key: i.toString(),
+        value: e.toString(),
       }
     });
     const treeProps = {
@@ -214,7 +214,7 @@ class RecordDetailTable extends Component {
               label="清洗方阵"
             >
               {getFieldDecorator('matrix', {
-                rules: [{ required: true, message: '请选择方阵'}],
+                rules: [{ required: true, message: '请选择方阵' }],
               })(
                 <TreeSelect {...treeProps} dropdownClassName={styles.treeDeviceTypes} />
               )}
@@ -224,7 +224,8 @@ class RecordDetailTable extends Component {
               {...formItemLayout}
               label="清洗备注"
             >
-              {getFieldDecorator('cleanTip', { rules: [{ required: true, message: '只能输入数字', whitespace: true }, ],
+              {getFieldDecorator('cleanTip', {
+                rules: [{ required: true, message: '只能输入数字', whitespace: true },],
               })(
                 <InputLimit width={316} placeholder="请描述，不超过80个汉字" />
               )}
@@ -242,14 +243,13 @@ class RecordDetailTable extends Component {
     )
 
   }
-  cancelAddRecord=()=>{
+  cancelAddRecord = () => {
     this.setState({ showAddRecordModal: false })
   }
-  confirmAddRecord=()=>{
+  confirmAddRecord = () => {
     this.setState({ showAddRecordModal: false })
     const { getFieldsValue } = this.props.form;
-    let recordValue = getFieldsValue(['cleanDate','matrix','cleanTip']);
-    console.log(recordValue);
+    let recordValue = getFieldsValue(['cleanDate', 'matrix', 'cleanTip']);
     recordValue.estimateStartTime = moment(recordValue.cleanDate[0]).format('YYYY-MM-DD')
     recordValue.estimateEndTime = moment(recordValue.cleanDate[1]).format('YYYY-MM-DD')
     //发送添加清洗计划的函数
@@ -258,7 +258,7 @@ class RecordDetailTable extends Component {
   }
 
   render() {
-    const { loading } = this.props;
+    const { loading, detailListData } = this.props;
     const { selectedRowKeys, showWarningTip, warningTipText, showSidePage } = this.state
     const column = [
       {
@@ -286,6 +286,14 @@ class RecordDetailTable extends Component {
         title: '清洗方式',
         dataIndex: 'cleanType',
         key: 'cleanType',
+        render: (text, record, index) => {
+          return (
+            <div>
+              {text === 1 ? <img src="/img/manpower.png" /> :
+                <img src="/img/rainfall.png" />}
+            </div>
+          )
+        }
 
       }, {
         title: '清洗公司',
@@ -304,25 +312,27 @@ class RecordDetailTable extends Component {
       }, {
         title: '添加/查看清洗记录(元)',
         key: 'addRecord',
+        dataIndex: 'cleanType',
         render: (text, record, index) => {
           return (
-            <div>
-              <span style={{ marginRight: '8px' }} title="添加" className="iconfont icon-look" onClick={(record) => this.addCleanRecord(record)}></span>
+            text === 1 ? <div>
+              <span style={{ marginRight: '8px' }} title="添加" className="iconfont icon-addto" onClick={(record) => this.addCleanRecord(record)}></span>
               {this.addCleanoutRecord(record)}
-              <span title="查看" className="iconfont icon-look" onClick={(record) => this.showRecodePlanModal(record)}></span>
-            </div>
+              <span title="查看" className="iconfont icon-viewplan" onClick={() => this.showRecodePlanModal(record, index)}></span>
+            </div> : ''
           )
         }
       }, {
         title: '操作',
         key: 'editAndDelet',
+        dataIndex: 'isDelete',
         render: (text, record, index) => {
           return (
             <div>
               <span style={{ marginRight: '4px' }} title="编辑" className="iconfont icon-edit" onClick={(record) => this.showEditModal(record)}>
               </span>
               {this.editCleanoutPlan(record)}
-              <span title="删除" className="iconfont icon-del" onClick={(record) => this.deleteCleanPlan(record)}></span>
+              {text === 0 ? <span title="删除" className="iconfont icon-del" onClick={(record) => this.deleteCleanPlan(record)}></span> : ''}
             </div>
           )
         }
@@ -330,8 +340,8 @@ class RecordDetailTable extends Component {
 
     ];
     const data = [
-      { estimateStartTime: 'dalidadali', estimateEndTime: '1', actualCleanTime: '2', recordTiem: '3', cleanType: '23', company: '4', cleanCost: '5', cleanProfit: '6' },
-      { estimateStartTime: 'wulala', estimateEndTime: '6', actualCleanTime: '7', recordTiem: '8', cleanType: '32', company: '9', cleanCost: '10', cleanProfit: '11' }]
+      {planId:'1', estimateStartTime: 'dalidadali', estimateEndTime: '1', actualCleanTime: '2', recordTiem: '3', cleanType: 1, company: '4', cleanCost: '5', cleanProfit: '6', isDelete: 1 },
+      {planId:'2', estimateStartTime: 'wulala', estimateEndTime: '6', actualCleanTime: '7', recordTiem: '8', cleanType: 2, company: '9', cleanCost: '10', cleanProfit: '11', isDelete: 0 }]
     return (
       <div>
         {showWarningTip && <WarningTip style={{ width: '240px', height: '88px', marginTop: '312px' }} onOK={this.confirmWarningTip} onCancel={this.cancelWarningTip} value={warningTipText} />}
