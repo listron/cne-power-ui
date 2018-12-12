@@ -296,7 +296,7 @@ function *getBoosterData(action) { // 升压站信息
     const devicesUrl = `${APIBasePath}${monitor.getBoosterstation}/${stationCode}`;
     const detailUrl = `${APIBasePath}${monitor.boosterDetail}/${deviceCode}`;
     const alarmUrl = `${APIBasePath}${monitor.deviceAlarmData}/${deviceCode}`
-    yield put({ type:deviceAction.MONITOR_DEVICE_FETCH });
+    yield put({ type: deviceAction.MONITOR_DEVICE_FETCH });
     const [ tmpDevices, tmpDetail, tmpAlarm ] = yield all([
       call(axios.get, devicesUrl),
       call(axios.get, detailUrl),

@@ -9,7 +9,8 @@ import Confluencebox from '../../../../components/Monitor/StationMonitor/DeviceM
 import Boxtransformer from '../../../../components/Monitor/StationMonitor/DeviceMonitor/Boxtransformer/Boxtransformer';
 import Weatherstation from '../../../../components/Monitor/StationMonitor/DeviceMonitor/Weatherstation/Weatherstation';
 import WindDevice from '../../../../components/Monitor/StationMonitor/DeviceMonitor/WindDevice/WindDevice';
-import IntegrateLine from '../../../../components/Monitor/StationMonitor/DeviceMonitor/IntegrateLine/IntegrateLine'
+import IntegrateLine from '../../../../components/Monitor/StationMonitor/DeviceMonitor/IntegrateLine/IntegrateLine';
+import BoosterStation from '../../../../components/Monitor/StationMonitor/DeviceMonitor/BoosterStation/BoosterStation';
 import Footer from '../../../../components/Common/Footer';
 
 class DeviceMonitor extends Component {
@@ -45,6 +46,7 @@ class DeviceMonitor extends Component {
         {deviceTypeCode === '203' && <Weatherstation {...this.props} /> }
         {deviceTypeCode === '101' && <WindDevice {...this.props} /> }
         {deviceTypeCode === '302' && <IntegrateLine {...this.props} /> }
+        {deviceTypeCode === '301' && <BoosterStation {...this.props} /> }
         <Footer />
       </div>
     );

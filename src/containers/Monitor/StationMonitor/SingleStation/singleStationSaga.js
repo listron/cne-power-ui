@@ -417,8 +417,8 @@ function *getBoosterstation(action) { // 获取升压站列表
   const { payload } = action;
   try{
     const { stationCode, firstLoad } = payload;
-    // const url = `${APIBasePath}${monitor.getBoosterstation}${stationCode}`;
-    const url = '/mock/api/v3/monitor/boosterstation/datalist';
+    const url = `${APIBasePath}${monitor.getBoosterstation}${stationCode}`;
+    // const url = '/mock/api/v3/monitor/boosterstation/datalist';
     if(firstLoad) {
       yield put({type: singleStationAction.SINGLE_STATION_FETCH});
     }
@@ -440,8 +440,8 @@ function *getPowerNet(action) { // 获取电网列表
   const { payload } = action;
   try{
     const { stationCode, firstLoad } = payload;
-    // const url = `${APIBasePath}${monitor.getPowerNet}${stationCode}`;
-    const url = '/mock/api/v3/monitor/powercollection/datalist';
+    const url = `${APIBasePath}${monitor.getPowerNet}${stationCode}`;
+    // const url = '/mock/api/v3/monitor/powercollection/datalist';
     if (firstLoad) {
       yield put({ type: singleStationAction.SINGLE_STATION_FETCH });
     }

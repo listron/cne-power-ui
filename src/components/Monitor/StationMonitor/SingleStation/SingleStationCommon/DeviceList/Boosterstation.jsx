@@ -60,7 +60,8 @@ class Boosterstation extends Component {
   
   render() {
     const baseLinkPath = "/hidden/monitorDevice";
-    const { boosterList, deviceTypeCode, loading } = this.props;
+    const { boosterList, deviceTypeCode, loading, match } = this.props;
+    const { stationCode } = match.params;
     const { alarmSwitch } = this.state;
     const filteredBooster = boosterList.filter(e => !alarmSwitch || e.warningStatus)
     return (
@@ -78,7 +79,7 @@ class Boosterstation extends Component {
         : <div className={styles.deviceList}>
           {filteredBooster.length > 0 ? filteredBooster.map(e => {
             const totalDevice = dataFormat(e.total, '--', 2);
-            const boosterDetailPath = `${baseLinkPath}/${deviceTypeCode}/${e.deviceTypeCode}`
+            const boosterDetailPath = `${baseLinkPath}/${stationCode}/${deviceTypeCode}/${e.deviceTypeCode}`;
             return (
               <Link className={styles.eachDevice} to={boosterDetailPath} key={e.deviceTypeCode}>
                 <span className={styles.deviceName}>

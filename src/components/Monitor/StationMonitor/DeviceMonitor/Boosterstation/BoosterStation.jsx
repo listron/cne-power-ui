@@ -1,21 +1,20 @@
 import React, { Component } from 'react';
-import DeviceAlarmTable from '../DeviceMonitorCommon/DeviceAlarmTable';
-import IntegrateHeader from './IntegrateHeader';
+// import DeviceAlarmTable from '../DeviceMonitorCommon/DeviceAlarmTable';
+// import IntegrateHeader from './IntegrateHeader';
 import CommonBreadcrumb from '../../../../Common/CommonBreadcrumb';
-import { YcPoints, YxPoints, YmPoints } from '../DeviceMonitorCommon/PointsGroup';
+// import { YcPoints, YxPoints, YmPoints } from '../DeviceMonitorCommon/PointsGroup';
 import PropTypes from 'prop-types';
 import styles from '../eachDeviceMonitor.scss';
 
-class IntegrateLine extends Component {
+class BoosterStation extends Component {
   static propTypes = {
     loading: PropTypes.bool,
     match: PropTypes.object,
-  //   getMonitorDeviceData: PropTypes.func,
     devices: PropTypes.array,
     deviceDetail: PropTypes.object,
     deviceAlarmList: PropTypes.array,
     singleStationData: PropTypes.object,
-    getIntegrateData: PropTypes.func,
+    getBoosterData: PropTypes.func,
     resetDeviceStore: PropTypes.func,
   }
 
@@ -30,20 +29,20 @@ class IntegrateLine extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { deviceCode } = this.props.match.params;
-    const nextParams = nextProps.match.params;
-    const nextDevice = nextParams.deviceCode;
-    const nextType = nextParams.deviceTypeCode;
-    const nextStation = nextParams.stationCode;
-    if( nextDevice !== deviceCode && nextType === '302' ){ // 集电线路电站切换
-      clearTimeout(this.timeOutId);
-      const params = {
-        stationCode: nextStation,
-        deviceCode: nextDevice,
-        deviceTypeCode: nextType,
-      };
-      this.getData(params);
-    }
+    // const { deviceCode } = this.props.match.params;
+    // const nextParams = nextProps.match.params;
+    // const nextDevice = nextParams.deviceCode;
+    // const nextType = nextParams.deviceTypeCode;
+    // const nextStation = nextParams.stationCode;
+    // if( nextDevice !== deviceCode && nextType === '302' ){ // 集电线路电站切换
+    //   clearTimeout(this.timeOutId);
+    //   const params = {
+    //     stationCode: nextStation,
+    //     deviceCode: nextDevice,
+    //     deviceTypeCode: nextType,
+    //   };
+    //   this.getData(params);
+    // }
   }
 
   componentWillUnmount() {
@@ -52,10 +51,11 @@ class IntegrateLine extends Component {
   }
 
   getData = params => {
-    this.props.getIntegrateData(params);
-    this.timeOutId = setTimeout(() => {
-      this.getData(params);
-    }, 10000)
+    console.log(params);
+    // this.props.getBoosterData(params);
+    // this.timeOutId = setTimeout(() => {
+    //   this.getData(params);
+    // }, 10000)
   }
 
   render(){
@@ -63,21 +63,21 @@ class IntegrateLine extends Component {
     const pointData = deviceDetail.pointData || {}; // 测点数据集合
     const { stationCode, deviceTypeCode, deviceCode } = this.props.match.params;
     const { stationName, stationType } = singleStationData;
-    const backData={path: `/monitor/singleStation/${stationCode}`,name: '返回电站'};
+    const backData = {path: `/monitor/singleStation/${stationCode}`,name: '返回电站'};
     const breadCrumbData = {
       breadData:[{
         link: true,
         name: stationName || '--',
         path: `/monitor/singleStation/${stationCode}`,
       },{
-        name: '集电线路',
+        name: '升压站',
       }],
       iconName: stationType > 0 ? 'iconfont icon-pvlogo' :'iconfont icon-windlogo',
     };
     return (
       <div className={styles.integrateLine}>
         <CommonBreadcrumb {...breadCrumbData} style={{ backgroundColor:'#fff' }}  backData={{...backData}} />
-        <div className={styles.deviceContent}>
+        {/* <div className={styles.deviceContent}>
           <IntegrateHeader deviceDetail={deviceDetail} devices={devices} stationCode={stationCode} deviceTypeCode={deviceTypeCode} />
           <div className={styles.points}>
             <YcPoints ycData={pointData.YC} />
@@ -92,11 +92,11 @@ class IntegrateLine extends Component {
             deviceTypeCode={deviceTypeCode}
             deviceCode={deviceCode}
           />
-        </div>
+        </div> */}
       </div>
     ) 
   }
 }
 
-export default IntegrateLine;
+export default BoosterStation;
 
