@@ -55,13 +55,12 @@ class WindStation extends Component {
         return 'iconfont icon-xb';
       case 302:
         return 'iconfont icon-jidian';
+      case 301:
+        return 'iconfont icon-syz';
       default:
         return;
     }
   }
-
-
-
 
   render() {
     const { stationCode } = this.props.match.params;
@@ -103,29 +102,21 @@ class WindStation extends Component {
             </TabPane> */}
             <TabPane tab="示意图" key="2">
               <div className={styles.deviceTypeFlow}>
-              
-                {/* <Link to={`/hidden/monitorDevice/${stationCode}/203/${weatherDeviceCode}`} className={styles.weatherStationLink} >
-                  <div className={styles.weatherStation}>
-                    <i className="iconfont icon-weather" ></i>
-                    <div className={styles.fontcolor}>气象站</div>
-                  </div>
-                </Link> */}
-
-                <div className={styles.title}>
-                  {deviceTypeType.map((item, index) => {
-                    return (
-                      <div key={index}>
-                        <div className={item[0].deviceTypeCode === 101 ? styles.windlogo : styles.deviceTypeIcon} >
-                          <i className={this.getDeviceTypeIcon(item[0].deviceTypeCode)} ></i>
-                          <div className={styles.fontcolor}>{item[0].deviceTypeName}</div>
-                        </div>
-                        <img src="/img/arrowgo.png" className={styles.rightArrow} />
+                {deviceTypeType.map((item, index) => {
+                  return (
+                    <div key={index} className={styles.eachDeviceType}>
+                      <div className={styles.deviceTypeIcon} >
+                        <i className={this.getDeviceTypeIcon(item[0].deviceTypeCode)} ></i>
+                        <span className={styles.text}>{item[0].deviceTypeName}</span>
                       </div>
-                    )
-                  })}
+                      <img src="/img/arrowgo.png" className={styles.rightArrow} />
+                    </div>
+                  )
+                })}
+                <div className={styles.eachDeviceType} >
                   <div className={styles.deviceTypeIcon} >
                     <i className="iconfont icon-elecnetting" ></i>
-                    <div>电网</div>
+                    <span className={styles.text}>电网</span>
                   </div>
                 </div>
               </div>
