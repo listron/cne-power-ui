@@ -273,9 +273,11 @@ export default {
       getAvailability:'/v3/performance/deviceanalysis/availability',//利用率及损失电量
       getAvailabilityContrast:'/v3/performance/deviceanalysis/availability/contrast',//利用率及损失电量对比
 
-     //通用报表
-     dailyreport:'v3/performance/dailyreport',
-     
+      //通用报表
+      dailyreport:'v3/performance/dailyreport',
+      faultReport: 'v3/performance/generalreport/fault',
+      genReport: 'v3/performance/generalreport/gen',
+      indicatorReport: 'v3/performance/generalreport/indicator',
     },
     highAnalysis:{
       getUnhandleList:'/v3/forewarning/unhandlelist', // 待处理预警／历史预警
