@@ -85,8 +85,9 @@ class OperateAnalysis extends React.Component {
   getMonthData = (props) => { // 月的时间选择 初始加载
     const { dateType, year, stations, stationCode } = props;
     const choiceYear = year ? year : moment().year();
+    const initStations=stations.toJS().filter(e=>e.stationType===1);
     let prams = {
-      stationCode: stationCode ? stationCode : stations.toJS()[0].stationCode,
+      stationCode: stationCode ? stationCode : initStations[0].stationCode,
       dateType,
       year: choiceYear
     }
@@ -106,7 +107,7 @@ class OperateAnalysis extends React.Component {
     const choiceYear = year ? year : moment().year()
     const choiceMonth = month ? month : moment().month();
     let prams = {
-      stationCode: stationCode ? stationCode : stations.toJS()[0].stationCode,
+      stationCode: stationCode,
       dateType,
       year: choiceYear,
       month: choiceMonth
@@ -132,7 +133,7 @@ class OperateAnalysis extends React.Component {
     }
     const stationType=stations.toJS().filter(e => { if (e.stationCode === +stationCode) { return e.stationType} })
     let prams = {
-      stationCode: stationCode ? stationCode : stations.toJS()[0].stationCode,
+      stationCode: stationCode,
       dateType,
       year: [startYear, endYear],
     }
