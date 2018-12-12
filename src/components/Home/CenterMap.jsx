@@ -118,7 +118,13 @@ class CenterMap extends Component{
 
   setCountryMap = (mapStation, mapName) => { // 国家内各电站位置设定。
     const countryStation = mapStation.filter(e=>e.country && e.country === mapName);
-    const pvStationData = countryStation.filter(e=>e.stationType === 1).map(e=>[e.longitude, e.latitude]);
+    const pvStationData = countryStation.filter(e=>e.stationType === 1).map(e => {
+      if (e.longitude > -178 && e.longitude < -154 && e.latitude > 18 && e.latitude < 28) { // 更变夏威夷光伏电站坐标
+        e.longitude += 20;
+        e.latitude += 20;
+      }
+      return [e.longitude, e.latitude];
+    });
     const windStationData = countryStation.filter(e=>e.stationType === 0).map(e=>[e.longitude, e.latitude]);
     this.setState({
       mapCountInfo: {
