@@ -86,11 +86,12 @@ class OutputPower extends Component{
           extraCssText: 'background-color: rgba(0, 0, 0, 0.8)',
           padding: 10,
           formatter: params => {
-            const currentData = outputPower[params[0].dataIndex];
+            const currentInfo = params[0] || {};
+            const currentData = outputPower[currentInfo.dataIndex] || {};
             return `<div class=${styles.outputTool}>
-              <div class=${styles.time}>${params[0].name}</div>
-              <div class=${styles.text}>${isWind?'风电':'光伏'}功率: ${currentData.stationPower}MW</div>
-              <div class=${styles.text}>${isWind?'风速: ':'辐射: '}${currentData.instantaneous}${isWind?'m/s':'W/㎡'}</div>
+              <div class=${styles.time}>${currentInfo.name}</div>
+              <div class=${styles.text}>${isWind?'风电':'光伏'}功率: ${dataFormat(currentData.stationPower)}MW</div>
+              <div class=${styles.text}>${isWind?'风速: ':'辐射: '}${dataFormat(currentData.instantaneous)}${isWind?'m/s':'W/㎡'}</div>
             </div>`
           },
         },
