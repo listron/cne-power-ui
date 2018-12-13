@@ -92,7 +92,6 @@ class BoosterStation extends Component {
       }],
       iconName: stationType > 0 ? 'iconfont icon-pvlogo' :'iconfont icon-windlogo',
     };
-    console.log(activeIndex)
     return (
       <div className={styles.boosterStation}>
         <CommonBreadcrumb {...breadCrumbData} style={{ backgroundColor:'#fff' }}  backData={{...backData}} />
