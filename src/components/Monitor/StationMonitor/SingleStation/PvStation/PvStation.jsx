@@ -87,9 +87,9 @@ class PvStation extends Component {
     deviceFlowTypes.forEach(device => { // 抽取各设备类型信息
       const deviceTypes = device.deviceTypes || [];
       let tmpSeriesInfo = deviceTypes.find(e=>e.deviceTypeCode === 509); // 组串
-      let tmpBoxConfluentInfo = deviceTypes.find(e=>e.deviceTypeCode === 304); // 汇流箱
+      let tmpBoxConfluentInfo = deviceTypes.find(e=>e.deviceTypeCode === 304); // 箱变
       let tmpIntegrateInfo = deviceTypes.find(e=>e.deviceTypeCode === 302); // 集电线路
-      let tmpBoosterInfo = deviceTypes.find(e=>e.deviceTypeCode === 301); // 集电线路
+      let tmpBoosterInfo = deviceTypes.find(e=>e.deviceTypeCode === 301); // 升压站
       tmpSeriesInfo && (seriesInfo = tmpSeriesInfo);
       tmpBoxConfluentInfo && (boxConfluentInfo = tmpBoxConfluentInfo);
       tmpIntegrateInfo && (integrateInfo = tmpIntegrateInfo);

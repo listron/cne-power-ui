@@ -241,16 +241,19 @@ function *getDeviceTypeFlow(action){
     if(payload.deviceTypeCode){
       deviceTypeCode = payload.deviceTypeCode;
     }else{
-      const inverterType = [201, 206];
-      const inverterResult = inverterType.filter(e => response.data.data.deviceFlowTypes.find(
+      const defaulDeviceType = [201, 206, 101]; // 默认组串式逆变器 / 集中逆变器/ 风电机组
+      const inverterResult = defaulDeviceType.filter(e => response.data.data.deviceFlowTypes.find(
         item => {
-          if(item.deviceTypes.length>1){
-            return item.deviceTypes.map((itemI,indexI)=>{
-              return itemI.deviceTypeCode === e;
-            })
-          }else{
-            return item.deviceTypes[0].deviceTypeCode === e
-          }
+          const tmpDeviceType = item.deviceTypes || [];
+          const tmpTypeInfo = tmpDeviceType[0] || {};
+          return tmpTypeInfo.deviceTypeCode === e;
+          // if (item.deviceTypes.length > 1) { // 拜托把没用逻辑省省····
+          //   return item.deviceTypes.map(itemI => {
+          //     return itemI.deviceTypeCode === e;
+          //   })
+          // } else {
+          //   return item.deviceTypes[0].deviceTypeCode === e
+          // }
         })
       );
       deviceTypeCode = inverterResult[0];

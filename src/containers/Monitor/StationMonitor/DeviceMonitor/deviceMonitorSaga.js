@@ -83,8 +83,9 @@ function *getNormalDeviceData(action){ // 请求单设备汇流箱，逆变器�
     const [tmpDevices, tmpDetail, tmpPoint, tmpAlarm] = yield all([
       call(axios.get, devicesUrl),
       call(axios.get, detailUrl),
+      call(axios.get, pointUrl),
       call(axios.get, alarmUrl),
-    ])
+    ]);
     if(tmpDevices.data.code === '10000' && tmpDetail.data.code === "10000" && tmpPoint.data.code === "10000" && tmpAlarm.data.code === "10000" ){
       yield put({
         type: deviceAction.GET_DEVICE_FETCH_SUCCESS,

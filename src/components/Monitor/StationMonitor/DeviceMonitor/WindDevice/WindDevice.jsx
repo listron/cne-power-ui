@@ -41,14 +41,14 @@ class WindDevice extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { deviceCode, deviceTypeCode, stationCode } = this.props.match.params;
+    const { deviceCode } = this.props.match.params;
     const nextParams = nextProps.match.params;
     const nextDevice = nextParams.deviceCode;
     const nextType = nextParams.deviceTypeCode;
     const nextStation = nextParams.stationCode;
     const startTime = moment().utc().subtract(24, 'hours').format();
     const endTime = moment().utc().format();
-    if (nextDevice !== deviceCode || nextType !== deviceTypeCode || nextStation !== stationCode) {
+    if (nextDevice !== deviceCode && nextType === '101') {
       clearTimeout(this.timeOutId);
       clearTimeout(this.timeOutTenMin);
       const params = {
