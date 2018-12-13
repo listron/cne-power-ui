@@ -12,8 +12,11 @@
 }
 
 .homepage{
+  position: relative;
   background:#0c2539;
+  background-attachment: local;
   overflow: auto;
+  overflow-y: hidden; // 屏蔽内部纵向滚动条
   display: flex;
   min-height: 100vh;
   flex-wrap: wrap;

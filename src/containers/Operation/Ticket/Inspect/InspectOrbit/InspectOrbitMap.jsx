@@ -236,7 +236,8 @@ class OrbitMap extends Component {
       ]
     };
     try{
-      testChart.setOption(option);
+      // testChart.clear();
+      testChart.setOption(option,'notMerge');
     }catch(error){
       message.error('中国地图获取失败,请稍后刷新重试');
       console.log(error);

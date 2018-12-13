@@ -10,6 +10,7 @@ import styles from './style.scss';
     1.要求组件必须传输属性：value
     2.选填属性：输入框容纳最大字数(size默认为:80),输入框宽度(width默认为:440),输入框高度(height默认为:90)
     3.输出：this.props.onChange(textValue)输入框里的值
+    4 是否可以选择 disabled 
  */
 
 class InputLimit extends Component {
@@ -22,6 +23,7 @@ class InputLimit extends Component {
     height: PropTypes.number,
     style: PropTypes.object,
     numberIsShow: PropTypes.bool,
+    disabled: PropTypes.bool,
   }
 
   static defaultProps = {
@@ -55,7 +57,7 @@ class InputLimit extends Component {
   }
 
   render() {
-    const { numberIsShow } = this.props;
+    const { numberIsShow,disabled } = this.props;
     return ( 
       <div className={styles.inputLimit} style={this.props.style}>
         <div className={styles.inputCount}>{numberIsShow && <span>{this.state.current}/{this.props.size}字</span>}</div>
@@ -64,6 +66,7 @@ class InputLimit extends Component {
           placeholder={this.props.placeholder}
           onChange={this.checkWord} 
           maxLength={this.props.size} 
+          disabled={disabled}
           style={{height: this.props.height, width: this.props.width,}} />
       </div>
     );

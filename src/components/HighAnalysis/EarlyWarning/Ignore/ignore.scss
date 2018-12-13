@@ -1,0 +1,30 @@
+@import '../../../../theme/theme';
+.ignoreBox {
+    display: flex;
+    flex: 1;
+    background: #ececec;
+    flex-direction: column;
+    .ignoreMain {
+        border: 1px solid #e1e2e2;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        flex: 1 0 auto;
+        // width: 100%;
+        margin: 24px 24px 0;
+        background: #fff;
+        .selectCondition {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            padding: 26px 0 20px 28px;
+            border-top: 1px solid $promptColor;
+        }
+        :global {
+            .ant-table-placeholder {
+                border-bottom: none
+            }
+        }
+       
+    }
+}

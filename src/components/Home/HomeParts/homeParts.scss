@@ -113,6 +113,7 @@
   }
   .monthChart{
     flex: 1;
+    z-index: 99;
   }
 }
 
@@ -432,6 +433,10 @@
       .stationName{
         flex: 1;
         text-align: right;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        word-break: break-all; 
       }
       .value{
         color:#4dde49;

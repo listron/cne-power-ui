@@ -205,10 +205,10 @@ function* getOutputDiagram(action){ // 出力图表
 
 function* getOperationInfo(action){ // 运维情况
   const { payload } = action;
-  const { enterpriseId, stationType } = payload;
-  const endTime = moment().utc().format();
-  const startTime = moment().startOf('day').utc().format();
-  const url = `${APIBasePath}${homepage.operationInfo}/${enterpriseId}/${stationType}/${startTime}/${endTime}`;
+  const { enterpriseId } = payload;
+  const startTime = `${moment().startOf('month').format('YYYY-MM-DD')}T${moment().startOf('month').format('HH:mm:ss')}Z`;
+  const endTime = `${moment().format('YYYY-MM-DD')}T${moment().format('HH:mm:ss')}Z`;
+  const url = `${APIBasePath}${homepage.operationInfo}/${enterpriseId}/2/${startTime}/${endTime}`;
   // const url = '/mock/homepage/operation';
   try{
     const response = yield call(axios.get, url);
