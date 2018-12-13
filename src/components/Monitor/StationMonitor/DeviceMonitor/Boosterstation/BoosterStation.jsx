@@ -48,6 +48,9 @@ class BoosterStation extends Component {
         deviceCode: nextDevice,
         deviceTypeCode: nextType,
       };
+      this.setState({
+        activeIndex: 0,
+      });
       this.getData(params);
     }
   }
@@ -56,7 +59,6 @@ class BoosterStation extends Component {
     clearTimeout(this.timeOutId);
     this.props.resetDeviceStore();
   }
-
 
   getData = params => {
     this.props.getBoosterData(params);
@@ -68,7 +70,7 @@ class BoosterStation extends Component {
   checkDevice = (index) => {
     const { activeIndex } = this.state;
     if (index !== activeIndex) {
-      this.setState({ activeIndex });
+      this.setState({ activeIndex: index });
     }
   }
 
@@ -90,6 +92,7 @@ class BoosterStation extends Component {
       }],
       iconName: stationType > 0 ? 'iconfont icon-pvlogo' :'iconfont icon-windlogo',
     };
+    console.log(activeIndex)
     return (
       <div className={styles.boosterStation}>
         <CommonBreadcrumb {...breadCrumbData} style={{ backgroundColor:'#fff' }}  backData={{...backData}} />
