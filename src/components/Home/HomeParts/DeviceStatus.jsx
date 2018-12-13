@@ -61,7 +61,7 @@ class DeviceStatus extends Component {
               </div>
               <div class=${styles.percent}>
                 <span class=${styles.name}>占比</span>
-                <span class=${styles.value}>${dataFormat(params.percent, '--', 2)}</span>
+                <span class=${styles.value}>${dataFormat(params.percent, '--', 2)}%</span>
               </div>
             </div>`
           },
@@ -89,7 +89,10 @@ class DeviceStatus extends Component {
   } 
 
   changeStatusType = statusType => {
-    this.setState({ statusType });
+    const { realTimeInfo } = this.props;
+    this.setState({ statusType }, () => { // 立刻重新渲染chart图
+      this.setStatusChart(realTimeInfo);
+    });
   }
 
   render(){
