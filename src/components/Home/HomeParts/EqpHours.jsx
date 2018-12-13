@@ -34,7 +34,7 @@ class EqpHours extends Component{
     const { eqpHour, hasMultipleType } = this.props;
     const averageHour = dataFormat(eqpHour.average);
     const stationDataArr = eqpHour.hourList || [];
-    const maxHour = stationDataArr[0] && stationDataArr[0].average || 100;
+    const maxHour = stationDataArr[0] && stationDataArr[0].hours || 100;
     let tmpArr = [];
     tmpArr.length = rectNum;
     tmpArr.fill(0);
@@ -47,10 +47,10 @@ class EqpHours extends Component{
         <div className={styles.stationProgress}>
           {stationDataArr.map(e => (
             <div className={styles.eachStation} key={e.stationName}>
-              <span className={styles.stationName}>{e.stationName}</span>
+              <span className={styles.stationName} title={e.stationName}>{e.stationName}</span>
               <div style={{width: `${rectNum*(rectWidth + 2)}px`}} className={styles.hourRectGroup}>{
                 tmpArr.map((each, index)=>{ // 根据比例计算需要占多少个块，并计算最后一个块的宽度
-                  const hourRectNum = e.average/maxHour*rectNum;
+                  const hourRectNum = e.hours/maxHour*rectNum;
                   let innerWidth = 0;
                   if(hourRectNum >= index + 1 || stationDataArr.length === 1){ // 超出部分
                     innerWidth = rectWidth;

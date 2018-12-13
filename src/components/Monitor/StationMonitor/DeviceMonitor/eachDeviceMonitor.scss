@@ -3,7 +3,7 @@
 .confluencebox,
 .boxtransformer,
 .weatherstation,
-.windDevice {
+.windDevice, .integrateLine, .boosterStation {
     background-color: $promptColor;
     .deviceContent {
         background-color: #fff;
@@ -126,6 +126,10 @@
                 margin-left: 24px;
             }
         }
+        .points{
+            display: flex;
+            border-top: 1px solid $promptColor;
+        }
     }
 }
 
@@ -140,6 +144,23 @@
         display: flex;
         flex: 1;
         flex-direction: column;
+    }
+}
+
+.boosterStation{ // 升压站单独样式
+    .deviceList{
+        background-color: #f8f8f8;
+        display: flex;
+        height: 40px;
+        align-items: center;
+        .eachDevice{
+            cursor: pointer;
+            line-height: 40px;
+            color: $darkColor;
+            flex-basis: 60px;
+            text-align: center;
+            margin: 0 28px;
+        }
     }
 }
 
@@ -171,7 +192,10 @@
                 }
                 .deviceCode {
                     display: block;
-                    color: $themeColor
+                    color: $themeColor;
+                    overflow: hidden;
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
                 }
             }
         }
@@ -196,7 +220,7 @@
                 padding-top: 24px;
                 .groupName {
                     color: $darkColor;
-                    background: #f4f4f4;
+                    background: #f0f0f0;
                     position: absolute;
                     top: 0;
                     left: 0;
@@ -214,6 +238,9 @@
                         margin-bottom: 0;
                         word-wrap: break-word;
                         padding-right: 20px;
+                    }
+                    &:hover{
+                       background: rgba(206, 235, 224, 0.3); 
                     }
                 }
             }

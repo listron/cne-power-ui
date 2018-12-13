@@ -129,7 +129,11 @@ const menuData = [
           {
             name: '日报',
             path: 'dayReport',
-            rightKey: 'operation_running',
+            rightKey: 'operation_running_daily',
+          }, {
+            name: '月报',
+            path: 'monthReport',
+            rightKey: 'operation_running_monthly',
           }
         ]
       }, {
@@ -155,23 +159,23 @@ const menuData = [
             name: '全部电站',
             path: 'allstation',
             defaultPath: true,
-            rightKey: 'monitor',
+            rightKey: 'statistics_station_all',
           }, {
             name: '生产分析',
             path: 'production',
-            rightKey: 'monitor',
+            rightKey: 'statistics_station_production',
           }, {
             name: '运行分析',
             path: 'operate',
-            rightKey: 'monitor',
+            rightKey: 'statistics_station_operation',
           }, {
             name: '资源分析',
             path: 'resource',
-            rightKey: 'monitor',
+            rightKey: 'statistics_station_resource',
           }, {
             name: '电站对比',
             path: 'contrast',
-            rightKey: 'monitor',
+            rightKey: 'statistics_station_comparation',
           }
         ]
       }, {
@@ -183,7 +187,7 @@ const menuData = [
           {
             name: '设备性能分析',
             path: 'performance',
-            rightKey: 'monitor',
+            rightKey: 'statistics_device_performance',
           }, {
             name: '设备厂家对比',
             path: 'manufacturers',
@@ -200,7 +204,7 @@ const menuData = [
           {
             name: '通用报表',
             path: 'currency',
-            rightKey: 'statistics_report',
+            rightKey: 'statistics_report_general',
           }
         ]
       }

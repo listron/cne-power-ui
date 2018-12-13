@@ -70,7 +70,7 @@ function* importCurveExcel(action) { // 导入功率曲线
     });
     if (response.data.code === '10000') {
       message.success(`文件上传成功`);
-      yield put({ type: powerCurveAction.powerCurveFetchSuccess });
+      // yield put({ type: powerCurveAction.powerCurveFetchSuccess });
       const params = yield select(state =>({//继续功率曲线列表
             stationCode: state.system.powerCurve.get('stationCode'),
             deviceModeCode: state.system.powerCurve.get('deviceModeCode'),

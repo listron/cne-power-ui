@@ -320,6 +320,25 @@ function *getStationTargetInfo(action){ // 获取电站指定分类信息(省,�
   }
 }
 
+
+function *getDictionaryInfo(action){ // 获取覆盖类型、并网电压等级、所属电网（区域）忽略原因列表
+  const { payload } = action;
+  const url = `${APIBasePath}${commonPaths.getDictionaryInfo}`;
+  try{
+    const { actionName, resultName, params } = payload;
+    const response = yield call(axios.post, url, params);
+    if(response.data.code === "10000"){
+      yield put({
+        type: actionName,
+        payload: { [resultName]: response.data.data || []}
+      })
+    }
+   
+  }catch(error){
+    message.error('获取数据失败!');
+  }
+}
+
 /*  --- todo 待后台开发refreshtoken接口后，解开注释并进行refresh token的替换。
   export function* refreshToken(action){ //根据当前的refresh token获取刷新token并替换
     const { payload } = action;
@@ -366,6 +385,7 @@ export function* watchCommon() {
   yield takeLatest(commonAction.getPoints, getPoints);
   yield takeLatest(commonAction.getDevices, getDevices);
   yield takeLatest(commonAction.getStationBelongTypes, getStationBelongTypes);
+  yield takeLatest(commonAction.getDictionaryInfo, getDictionaryInfo);
   yield takeEvery(commonAction.getStationTargetInfo, getStationTargetInfo);
   
 }

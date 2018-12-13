@@ -49,6 +49,7 @@ import CleanoutWarning from '../containers/HighAnalysis/CleanoutModel/CleanoutWa
 import CleanoutRecord from '../containers/HighAnalysis/CleanoutModel/CleanoutRecord/CleanoutRecord';
 // 高级分析 低效组串预警
 import Unhandle from '../containers/HighAnalysis/EarlyWarning/Unhandle/Unhandle';
+import Ignore from '../containers/HighAnalysis/EarlyWarning/Ignore/Ignore';
 
 
 
@@ -94,7 +95,11 @@ const routers = [
     path: '/operation/running/dayReport',
     exact: true,
     component: DayReport,
-  }, {//经验库
+  },{ // 运维管理-电站运行-月报
+    path: '/operation/running/monthReport',
+    exact: true,
+    component: Building,
+  }, {
     path: '/operation/experience',
     exact: true,
     component: Building,
@@ -228,11 +233,13 @@ const routers = [
   { // 高级分析>清洗模型>清洗预警
     path: '/analysis/cleanout/warning',
     exact: true,
-    component: CleanoutWarning
+    // component: CleanoutWarning,
+    component: Building
   }, { // 高级分析>清洗模型>清洗计划与记录
     path: '/analysis/cleanout/record',
     exact: true,
-    component: CleanoutRecord
+    // component: CleanoutRecordMain,
+    component: Building
   },{//单电站清洗计划与记录详情
     path: '/analysis/cleanout/record/:stationCode',
     exact: true,
@@ -250,7 +257,8 @@ const routers = [
   }, { // 高级分析-低效组串预警-已忽略
     path: '/analysis/earlyWarning/ignore',
     exact: true,
-    component: Building
+    // component: Building,
+    component: Ignore
   },
   { // 高级分析-低效组串预警-已转工单
     path: '/analysis/earlyWarning/transfer',

@@ -82,6 +82,12 @@ class LimitAddForm extends Component {
   }
 
   selectDeviceType = (value) => {
+    const { stationDeviceTypes, form } = this.props;
+    const tmpDeviceType = stationDeviceTypes.find(e=>e.deviceTypeCode === value);
+    const tmpName = tmpDeviceType && tmpDeviceType.deviceTypeName;
+    if (tmpName === '全场信息汇总') {
+      form.setFieldsValue({ deviceName: tmpName });
+    }
     this.setState({
       deviceTypeCode: value,
     })
@@ -96,7 +102,7 @@ class LimitAddForm extends Component {
   render(){
     const { form, defaultLimitLost, stationDeviceTypes } = this.props;
     const { getFieldDecorator, getFieldValue } = form;
-    const { deviceNameErroShow, deviceNameErroInfo } = this.state;
+    const { deviceNameErroShow, deviceNameErroInfo, deviceTypeCode } = this.state;
     const formItemLayout1 = {
       labelCol: {
         xs: { span: 24 },
@@ -129,9 +135,14 @@ class LimitAddForm extends Component {
         },
       },
     };
-    // const defaultLostPower = 0 ;
+    const tmpDeviceType = stationDeviceTypes.find(e=>e.deviceTypeCode === deviceTypeCode);
+    const disableDevice = tmpDeviceType && tmpDeviceType.deviceTypeName === '全场信息汇总';
     return (
       <Form className={styles.lostAddForm} >
+        <div className={styles.infoTip}>
+          <span className={styles.round}>!</span>
+          <span>全场损失时,设备类型选择"全场信息汇总",设备总称填写"全场信息汇总"</span>
+        </div>
         <Row className={styles.horizontal} >
           <Col span={8}>
             <Form.Item label="设备类型" {...formItemLayout1} >
@@ -167,7 +178,6 @@ class LimitAddForm extends Component {
               <span className={styles.lostInputTip}>%</span>
             </Form.Item> 
           </Col>
-          
         </Row>
         <Row className={styles.horizontal} >
           <Col span={8}>
@@ -175,7 +185,7 @@ class LimitAddForm extends Component {
               {getFieldDecorator('deviceName', {
                 rules: [{ required: true, message: '设备名称' }],
               })(
-                <Input />
+                <Input disabled={disableDevice} />
               )}
               <span className={styles.lostInputTip}>多个设备请以空格隔开，设备较多时，可填写上级设备</span>
               {deviceNameErroShow && <div className={styles.dataErrorText}><i className="iconfont icon-alert_01" ></i><span>{deviceNameErroInfo}</span></div>}
@@ -232,7 +242,14 @@ class LimitAddForm extends Component {
               {getFieldDecorator('reason', {
                 rules: [{ required: true, message: '请填写原因说明' }],
               })(
-                <InputLimit size={80} className={styles.reasonArea} numberIsShow={false} width={520} height={60} />
+                <InputLimit
+                  placeholder="填写样例: 8:00至10:00调度下令负荷控制在10MW以内"
+                  size={80}
+                  className={styles.reasonArea}
+                  numberIsShow={false}
+                  width={520}
+                  height={60}
+                />
               )}
               <span className={styles.lostInputTip}>({getFieldValue('reason')?getFieldValue('reason').length:0}/80)</span>
             </Form.Item>

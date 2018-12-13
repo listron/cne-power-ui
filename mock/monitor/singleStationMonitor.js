@@ -285,5 +285,59 @@ module.exports = [
       })),
       "serviceCode": "3.0"
     },
+  }, {
+    api: '/mock/api/v3/monitor/collectorline/datalist',//获取电站集电线路列表
+    method: 'get',
+    response: {
+      "code": "10000",
+      "message": "请求成功",
+      "data": [0,1,2,3,4,5,6,7,8,9,10].map(e=>({
+        deviceId: `1000${e}`,
+        deviceCode: `000000${e}`,
+        deviceName: `集电线路${e}`,
+        deviceTypeCode: 302,
+        deviceTypeName: '集电线路',
+        griW: `${parseInt(Math.random()*100)}`,
+        griVar: `${parseInt(Math.random()*100)}`,
+        griPF: `${parseInt(Math.random()*100)}`,
+        griPPhVUab: `${parseInt(Math.random()*100)}`,
+        warningStatus: !!e % 2
+      })),
+      "serviceCode": "3.0"
+    },
+  }, {
+    api: '/mock/api/v3/monitor/boosterstation/datalist',//获取电站升压站列表
+    method: 'get',
+    response: {
+      "code": "10000",
+      "message": "请求成功",
+      "data": [1, 2, 3, 4, 5, 6].map(e => ({
+        deviceTypeName: `设备名称${e}`,
+        deviceTypeCode: `设备类型编号${e * e}`,
+        total: `${e}`,
+        warningStatus: !!e % 2
+      })),
+      "serviceCode": "3.0"
+    },
+  }, {
+    api: '/mock/api/v3/monitor/powercollection/datalist',//获取电网列表数据
+    method: 'get',
+    response: {
+      "code": "10000",
+      "message": "请求成功",
+      "data": [1, 2, 3, 4, 5, 6].map(e => ({
+        deviceId: `2000${e}`,
+        deviceCode: `100000${e}`,
+        deviceName: `电能采集${e}/关口表`,
+        deviceTypeCode: 0,
+        deviceTypeName: '电网',
+        forwardActivePower: `${parseInt(Math.random()*100)}`,
+        backwardActivePower: `${parseInt(Math.random()*100)}`,
+        forwardReactivePower: `${parseInt(Math.random()*100)}`,
+        backwardReactivePower: `${parseInt(Math.random()*100)}`,
+        warningStatus: !!e % 2
+      })),
+      "serviceCode": "3.0"
+    },
   },
 ]

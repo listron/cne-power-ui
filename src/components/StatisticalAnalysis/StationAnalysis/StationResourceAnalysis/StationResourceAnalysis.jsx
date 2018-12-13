@@ -76,8 +76,9 @@ class ProductionAnalysis extends React.Component {
   getMonthData = (props) => { // 月的时间选择 初始加载
     const { dateType, year, stations, stationCode } = props;
     const choiceYear = year ? year : moment().year();
-    const outStationCode = this.props.location.hash ? this.props.location.hash.split('#')[1] : null;
-    const initStationCode = stationCode ? stationCode : (outStationCode ? outStationCode : stations.toJS()[0].stationCode)
+    const outStationCode = props.location.hash ? props.location.hash.split('#')[1] : null;
+    const initStations=stations.toJS().filter(e=>e.stationType===1);
+    const initStationCode = stationCode ? stationCode : (outStationCode ? outStationCode :initStations[0].stationCode )
     let prams = {
       stationCode: initStationCode,
       dateType,

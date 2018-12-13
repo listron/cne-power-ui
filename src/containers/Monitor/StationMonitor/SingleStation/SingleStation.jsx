@@ -9,6 +9,7 @@ import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import Footer from '../../../../components/Common/Footer/index';
 class SingleStation extends Component {
   static propTypes = {
+    stationType: PropTypes.string,
     match: PropTypes.object,
     location: PropTypes.object,
     getSingleStation: PropTypes.func,
@@ -29,16 +30,13 @@ class SingleStation extends Component {
     deviceTypeFlow: PropTypes.object,
     resetSingleStationStore: PropTypes.func,
     getFanList: PropTypes.func,
+    singleStationData: PropTypes.object,
   };
   constructor(props) {
     super(props);
-    this.state = {
-
-    }
   }
 
   componentDidMount() {
-
     const { stationCode } = this.props.match.params;
     this.getTenSeconds(stationCode);
     // this.getOutputDataTenMin(stationCode);
@@ -119,9 +117,9 @@ class SingleStation extends Component {
     clearTimeout(this.timeOutPowerData);
     let startTime = moment().subtract(7, 'day').format('YYYY-MM-DD')// 默认是7天前;
     if (intervalTime === 1) {
-      startTime = moment().subtract(6, 'month').format('YYYY-MM-DD')
+      startTime = moment().subtract(6, 'month').startOf('month').format('YYYY-MM-DD')
     } else if (intervalTime === 2) {
-      startTime = moment().subtract(6, 'year').format('YYYY-MM-DD')
+      startTime = moment().subtract(6, 'year').startOf('year').format('YYYY-MM-DD')
     }
     this.props.getMonitorPower({
       stationCode,
@@ -135,18 +133,10 @@ class SingleStation extends Component {
   }
 
   render() {
-    const stationType=this.props.singleStationData.stationType || '';
-    this.props.changeSingleStationStore({stationType})
-    const breadCrumbData = {
-      breadData: [
-        {
-          name: '电站监控',
-        }
-      ],
-    };
+    const { stationType }=this.props;
     return (
       <div className={styles.singleStation}>
-        <CommonBreadcrumb {...breadCrumbData} style={{ marginLeft: '38px', backgroundColor: '#fff' }} />
+        <CommonBreadcrumb breadData={[{ name: '电站监控' }]} style={{ marginLeft: '38px', backgroundColor: '#fff' }} />
         <div className={styles.singleStationContainer} >
           <SingleStationMain {...this.props} getPowerDataTenMin={this.getPowerDataTenMin} stationType={stationType} />
           <Footer />
@@ -179,6 +169,9 @@ const mapDispatchToProps = (dispatch) => ({
   getStationList: payload => dispatch({ type: singleStationAction.GET_STATION_LIST_SAGA, payload }),
   getStationDeviceList: payload => dispatch({ type: singleStationAction.GET_STATION_DEVICELIST_SAGA, payload }),
   getConfluenceBoxList: payload => dispatch({ type: singleStationAction.GET_CONFLUENCEBOX_LIST_SAGA, payload }),
+  getCollectorLine: payload => dispatch({ type: singleStationAction.getCollectorLine, payload }),
+  getBoosterstation: payload => dispatch({ type: singleStationAction.getBoosterstation, payload }),
+  getPowerNet: payload => dispatch({ type: singleStationAction.getPowerNet, payload }),
   editData: payload => dispatch({ type: singleStationAction.EDIT_MONTH_YEAR_DATA_SAGA, payload }),
   getFanList: payload => dispatch({ type: singleStationAction.getFanList,payload }),
   resetSingleStationStore: payload => dispatch({ type: singleStationAction.RESET_SINGLE_STATION_STORE }),

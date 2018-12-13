@@ -65,7 +65,7 @@ function* toorder(action) {
     });
     if (response.data.code === '10000') {
       const params = yield select(state => ({
-        stationCode: state.highAanlysisReducer.unhandle.get('stationCode'),
+        stationCodes: state.highAanlysisReducer.unhandle.get('stationCodes'),
         belongMatrixs: state.highAanlysisReducer.unhandle.get('belongMatrixs'),
         inefficiencyStatus: state.highAanlysisReducer.unhandle.get('inefficiencyStatus'),
         startTime: state.highAanlysisReducer.unhandle.get('startTime'),
@@ -101,7 +101,7 @@ function *ignoreList(action){
     });
     if (response.data.code === '10000') {
       const params = yield select(state => ({
-        stationCode: state.highAanlysisReducer.unhandle.get('stationCode'),
+        stationCodes: state.highAanlysisReducer.unhandle.get('stationCodes'),
         belongMatrixs: state.highAanlysisReducer.unhandle.get('belongMatrixs'),
         inefficiencyStatus: state.highAanlysisReducer.unhandle.get('inefficiencyStatus'),
         startTime: state.highAanlysisReducer.unhandle.get('startTime'),
@@ -127,9 +127,40 @@ function *ignoreList(action){
 }
 
 
+function *getMatrixlist(action){
+  const { payload } = action;
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.highAnalysis.getMatrixList}`
+  try {
+    yield put({ type: unhandleAction.unhadleFetch });
+    const response = yield call(axios.post, url, {
+      ...payload,
+    });
+    if (response.data.code === '10000') {
+      yield put({
+        type: unhandleAction.getUnhandleFetchSuccess,
+        payload: {
+          ...payload,
+          matrixList: response.data.data || [],
+        },
+      });
+    }else{
+      yield put({
+        type: unhandleAction.changeUnhandleStore,
+        payload: { ...payload, loading: false ,matrixList:[]},
+      })
+    }
+  } catch (e) {
+    console.log(e);
+    yield put({
+      type: unhandleAction.changeUnhandleStore,
+      payload: { ...payload, loading: false ,matrixList:[]},
+    })
+  }
+}
+
 function *getForewarningDetail(action){
   const { payload } = action;
-  const {inefficiencyId}=payload.inefficiencyId
+  const inefficiencyId=payload.inefficiencyId;
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.highAnalysis.warnDetail}/${inefficiencyId}`;
   try {
     yield put({ type: unhandleAction.unhadleFetch });
@@ -155,18 +186,16 @@ function *getForewarningDetail(action){
 
 function *getSequencechart(action){
   const { payload } = action;
-  const {stationCode,stationType,startTime,endTime}=payload
-  // const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getCapabilityDiagram + payload.stationCode+ '/' + payload.startTime+ '/' + payload.endTime;
-  const url=`${Path.basePaths.APIBasePath + Path.APISubPaths.highAnalysis.getSequencechart + stationCode}/${stationType}/${startTime}/${endTime}`
+  const url=`${Path.basePaths.APIBasePath + Path.APISubPaths.highAnalysis.getSequencechart}`
   try {
     yield put({ type: unhandleAction.unhadleFetch });
-    const response = yield call(axios.get, url);
+    const response = yield call(axios.get, url,{params: payload});
     if (response.data.code === '10000') {
       yield put({
         type: unhandleAction.getUnhandleFetchSuccess,
         payload: {
           ...payload,
-          Sequencechart: response.data.data || {},
+          sequenceChartList: response.data.data || {},
         },
       });
     }
@@ -191,6 +220,7 @@ export function* watchUnhandle() {
   yield takeLatest(unhandleAction.ignoreList, ignoreList);
   yield takeLatest(unhandleAction.getForewarningDetail, getForewarningDetail);
   yield takeLatest(unhandleAction.getSequencechart, getSequencechart);
+  yield takeLatest(unhandleAction.getMatrixlist, getMatrixlist);
 
 }
 

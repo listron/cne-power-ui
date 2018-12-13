@@ -40,16 +40,16 @@ class Confluencebox extends Component {
   }
 
   componentWillReceiveProps(nextProps){
-    const { deviceCode, deviceTypeCode, stationCode } = this.props.match.params;
+    const { deviceCode } = this.props.match.params;
     const nextParams = nextProps.match.params;
     const nextDevice = nextParams.deviceCode;
     const nextType = nextParams.deviceTypeCode;
     const nextStation = nextParams.stationCode;
-    if( nextDevice !== deviceCode || nextType !== deviceTypeCode || nextStation !== stationCode ){
+    if( nextDevice !== deviceCode && (nextType === '202' || nextType === '207') ){
       clearTimeout(this.timeOutId);
       clearTimeout(this.timeOutTenMin);
-      const startTime = moment().utc().format();
-      const endTime = moment().subtract(72,'hours').utc().format();
+      const startTime = moment().subtract(72,'hours').utc().format();
+      const endTime = moment().utc().format();
       const params = {
         stationCode: nextStation,
         deviceCode: nextDevice,

@@ -5,7 +5,6 @@ import { withRouter } from 'react-router-dom';
 import { message } from "antd";
 import echarts from 'echarts';
 import bmap from 'echarts/extension/bmap/bmap';
-console.log(bmap)
 
 class Map extends Component {
   static propTypes = {
@@ -195,7 +194,6 @@ class Map extends Component {
         // symbol:'image//../../../../../theme/img/wind-normal.png',
         coordinateSystem: 'bmap',
         data: stationDataList,
-        symbolSize: [24, 17],
         label: {
           normal: {
             show: false
