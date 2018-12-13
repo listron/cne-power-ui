@@ -8,6 +8,8 @@ export const deviceAction = {
 
   GET_DEVICE_DATA_SAGA: Symbol('GET_DEVICE_DATA_SAGA'),  //单设备数据请求
   GET_NORMAL_DEVICE_DATA_SAGA: Symbol('GET_NORMAL_DEVICE_DATA_SAGA'),  //普遍设备(逆变器，汇流箱，箱变)数据请求
+  getIntegrateData: Symbol('getIntegrateData'), // 集电线路10min请求
+  getBoosterData: Symbol('getBoosterData'), // 集电线路10min请求
   GET_DEVICE_MONITOR_TEN_MIN_DATA_SAGA: Symbol('GET_DEVICE_MONITOR_TEN_MIN_DATA_SAGA'), // 单个设备10min时序图数据请求
   GET_WEATHERSTATION_DATA_SAGA: Symbol('GET_WEATHERSTATION_DATA_SAGA'),  //气象站数据请求
   RESET_DEVICE_MONITOR_STORE: Symbol('RESET_DEVICE_MONITOR_STORE'),

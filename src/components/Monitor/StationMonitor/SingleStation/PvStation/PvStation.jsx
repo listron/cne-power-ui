@@ -33,11 +33,6 @@ class PvStation extends Component {
     }
   }
 
-  componentWillUnmount(){
-    // this.props.changeSingleStationStore({ deviceTypeFlow: {} });
-    // this.props.resetSingleStationStore();
-  }
-
   onSelectedDeviceType = (e) => {
     const deviceTypeCode = parseInt(e.target.value);
     this.props.changeSingleStationStore({ deviceTypeCode });
@@ -57,6 +52,8 @@ class PvStation extends Component {
         return 'iconfont icon-xb';
       case 302:
         return 'iconfont icon-jidian';
+      case 301:
+        return 'iconfont icon-syz';
       default:
         return;
     }
@@ -80,21 +77,23 @@ class PvStation extends Component {
 
 
   render() {
-    const clickable = [509, 201, 206, 304, 202];
+    const clickable = [509, 201, 206, 304, 202, 302, 301];
     const { deviceTypeFlow, stationDeviceList, deviceTypeCode, } = this.props;
     const weatherDeviceCode = stationDeviceList && stationDeviceList.deviceCode || 0;
     const { stationCode } = this.props.match.params;
     const deviceFlowTypes = deviceTypeFlow && deviceTypeFlow.deviceFlowTypes || [];
     const isCombinedType = deviceFlowTypes.some(e=>e.deviceTypes.length > 1);
-    let seriesInfo = {}, boxConfluentInfo = {}, integrateInfo = {}, deviceFlowRowTwo = [], deviceFlowRowThree = [];
+    let seriesInfo = {}, boxConfluentInfo = {}, integrateInfo = {}, boosterInfo = {}, deviceFlowRowTwo = [], deviceFlowRowThree = [];
     deviceFlowTypes.forEach(device => { // 抽取各设备类型信息
       const deviceTypes = device.deviceTypes || [];
       let tmpSeriesInfo = deviceTypes.find(e=>e.deviceTypeCode === 509); // 组串
-      let tmpBoxConfluentInfo = deviceTypes.find(e=>e.deviceTypeCode === 304); // 汇流箱
+      let tmpBoxConfluentInfo = deviceTypes.find(e=>e.deviceTypeCode === 304); // 箱变
       let tmpIntegrateInfo = deviceTypes.find(e=>e.deviceTypeCode === 302); // 集电线路
+      let tmpBoosterInfo = deviceTypes.find(e=>e.deviceTypeCode === 301); // 升压站
       tmpSeriesInfo && (seriesInfo = tmpSeriesInfo);
       tmpBoxConfluentInfo && (boxConfluentInfo = tmpBoxConfluentInfo);
       tmpIntegrateInfo && (integrateInfo = tmpIntegrateInfo);
+      tmpBoosterInfo && (boosterInfo = tmpBoosterInfo);
       let tmpRowTwo = deviceTypes.filter(e=> (e.deviceTypeCode === 202 || e.deviceTypeCode === 206))// 汇流箱或者组串式逆变器
       let tmpRowThree = deviceTypes.filter(e=> (e.deviceTypeCode === 201 || e.deviceTypeCode === 207))// 集中式逆变器或者交流汇流箱
       tmpRowTwo.length > 0 && (deviceFlowRowTwo = tmpRowTwo);
@@ -168,7 +167,7 @@ class PvStation extends Component {
         <PvStationTop {...this.props} stationCode={stationCode} hiddenStationList={this.state.hiddenStationList} />
         <div className={styles.outputPowerDiagram}>
           <OutputTenMin {...this.props} yXaisName={'辐射(W/m²)'} stationCode={stationCode} />
-          <PowerDiagramTenMin {...this.props}stationCode={stationCode}  />
+          <PowerDiagramTenMin {...this.props} stationCode={stationCode}  />
         </div>
         <CardSection {...this.props} stationCode={stationCode} />
         {/* 设备类型流程图切换 */}
@@ -186,7 +185,13 @@ class PvStation extends Component {
                   </div>
                 </Link>
                 <RadioGroup value={deviceTypeCode} onChange={this.onSelectedDeviceType} >
-                  {seriesInfo.deviceTypeCode && this.createFlowButton(seriesInfo.deviceTypeCode, seriesInfo.deviceTypeName, 'deviceTypeItem', 'arrowgo',clickable.includes(seriesInfo.deviceTypeCode))}
+                  {seriesInfo.deviceTypeCode && this.createFlowButton(
+                    seriesInfo.deviceTypeCode,
+                    seriesInfo.deviceTypeName,
+                    'deviceTypeItem',
+                    'arrowgo',
+                    clickable.includes(seriesInfo.deviceTypeCode)
+                  )}
                   {!needClassBox && RowTwoButton}
                   {!needClassBox && RowThreeButton}
                   {needClassBox && <div className={styles.multipleType}>
@@ -194,9 +199,28 @@ class PvStation extends Component {
                     {RowThreeButton}
                     <img src="/img/arrowgo.png" className={styles.rightArrow} />
                   </div>}
-                  {boxConfluentInfo.deviceTypeCode && this.createFlowButton(boxConfluentInfo.deviceTypeCode, boxConfluentInfo.deviceTypeName, 'deviceTypeItem', 'arrowgo',clickable.includes(boxConfluentInfo.deviceTypeCode))}
-                  {integrateInfo.deviceTypeCode && this.createFlowButton(integrateInfo.deviceTypeCode, integrateInfo.deviceTypeName, 'deviceTypeItem', 'arrowgo',clickable.includes(integrateInfo.deviceTypeCode))}
-                  <RadioButton className={styles.elecnettingItem}>
+                  {boxConfluentInfo.deviceTypeCode && this.createFlowButton(
+                    boxConfluentInfo.deviceTypeCode,
+                    boxConfluentInfo.deviceTypeName,
+                    'deviceTypeItem',
+                    'arrowgo',
+                    clickable.includes(boxConfluentInfo.deviceTypeCode)
+                  )}
+                  {integrateInfo.deviceTypeCode && this.createFlowButton(
+                    integrateInfo.deviceTypeCode,
+                    integrateInfo.deviceTypeName,
+                    'deviceTypeItem',
+                    'arrowgo',
+                    clickable.includes(integrateInfo.deviceTypeCode)
+                  )}
+                  {boosterInfo.deviceTypeCode && this.createFlowButton(
+                    boosterInfo.deviceTypeCode,
+                    boosterInfo.deviceTypeName,
+                    'deviceTypeItem',
+                    'arrowgo',
+                    clickable.includes(boosterInfo.deviceTypeCode)
+                  )}
+                  <RadioButton value={0} className={styles.elecnettingItem}>
                     <div className={styles.deviceTypeIcon} >
                       <i className="iconfont icon-elecnetting" ></i>
                     </div>

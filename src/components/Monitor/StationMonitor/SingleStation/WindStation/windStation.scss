@@ -24,12 +24,19 @@
                     position: relative;
                     cursor: pointer;
                 }
+                :global {
+                    .icon-windlogo {
+                        color: $themeColor;
+                        margin-right: 40px;
+                        font-size: 18px;
+                    }
+                }
                 h3 {
                     font-size: 18px;
                     color: $darkColor;
                     margin-right: 20px;
                 }
-                span {
+                span { 
                     color: $darkColor;
                     margin-right: 15px;
                 }
@@ -73,22 +80,16 @@
             display: flex;
             padding: 18px 25px;
             color: $darkColor;
-            >div {
-                margin: 0 4px;
-            }
-            .pvlogo {
-                :global {
-                    .iconfont {
-                        display: block;
-                        margin-top: 11px;
-                        color: $themeColor;
-                        cursor: pointer;
-                        font-size: 32px;
-                    }
-                    .iconfont:hover {
-                        color: $themeColor;
-                    }
+            .valueFormat{
+                .int{
+                    font-size: 24px;
                 }
+                .decimal{
+                    font-size: 18px;
+                }
+            }
+            >div { // div不准写样式，垃圾代码。to remove
+                margin: 0 4px;
             }
             .powerScale {
                 width: 215px;
@@ -102,13 +103,14 @@
             .annualEnergyScale {
                 // width: 230px;
             }
-            div {
+            div { // div不准写样式，谁写的这个代码，我打死他。
                 .trueTimeValue {
                     font-size: 24px;
                     color: $themeColor;
                     display: flex;
                     justify-content: space-between;
                     line-height: 24px;
+                    height: 24px;
                     >div {
                         display: flex;
                         justify-content: space-between;
@@ -184,80 +186,37 @@
     }
     .threadAndDevice {
         .deviceTypeFlow {
-            display: flex;
-            flex-direction: row-reverse;
-            text-align: center;
-            justify-content: space-between;
-            color: #dfdfdf;
             background: #f8f8f8;
-            position: relative;
-            width: 100%;
-            a.weatherStationLink {
-                color: #dfdfdf;
+            padding: 16px 25px 0;
+            display: flex;
+            .eachDeviceType{
+                position: relative;
             }
-            .weatherStationLink {
-                position: absolute;
-                right: 60px;
-                bottom: 18px;
-                color: '#dfdfdf';
-                .weatherStation {
-                    border: 1px solid #dfdfdf;
-                    border-radius: 4px;
-                    width: 72px;
-                    height: 72px;
-                    margin-left: 26px;
-                    cursor: pointer;
-                    i {
-                        font-size: 27px;
-                        color: #dfdfdf;
-                    }
-                    &:hover {
-                        border: 1px solid $themeColor;
-                        background: $themeColor;
-                        color: #fff;
-                        i {
-                            color: #fff;
-                        }
-                    }
-                }
-            }
-            .weatherStationLink:hover {
-                color: '#dfdfdf';
-            }
-            .title {
-                width: 100%;
-                height: 100px;
+            .deviceTypeIcon{
                 display: flex;
-                flex-direction: row;
-                padding-top: 17px;
-                .windlogo {
-                    background: #ffffff;
-                    border-radius: 4px 4px 0 0;
-                    width: 100px;
-                    height: 84px;
-                    margin-left: 24px;
-                    display: inline-block;
-                    i {
-                        color: #199475;
-                        display: inline-block;
+                cursor: pointer;
+                height: 84px;
+                width: 110px;
+                flex-direction: column;
+                border-radius: 4px 4px 0 0;
+                color: $promptColor;
+                align-items: center;
+                :global{
+                    .iconfont{
                         font-size: 36px;
                     }
+                }
+                &:hover{
+                    background-color: #fff;
+                    color: $themeColor;
                 }
             }
             .rightArrow {
                 width: 48px;
                 height: 5px;
-                vertical-align: 31px;
-            }
-            .deviceTypeIcon {
-                border-radius: 4px 4px 0 0; // width: 100px;
-                height: 84px;
-                display: inline-block;
-                i {
-                    color: #dfdfdf;
-                    display: inline-block;
-                    font-size: 36px;
-                }
+                position: absolute;
+                right: -30px;
+                top: 24px;
             }
         }
         :global {
