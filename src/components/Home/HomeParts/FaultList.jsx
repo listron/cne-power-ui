@@ -108,6 +108,7 @@ class FaultList extends Component {
           nameTextStyle: {
             fontSize: 10,
             color: '#06bdf4',
+            padding: [0, 0, 0, 10],
           },
           axisLabel: {
             color: '#06bdf4',
