@@ -24,17 +24,17 @@ class DeviceStatus extends Component{
   }
 
   setStatusChart = (realTimeInfo) => {
+    console.log(realTimeInfo)
     const statusBox = document.getElementById('homeDeviceStatus');
     const statusChart = echarts.init(statusBox);
     const { statusType } = this.state;
-    const deviceStatus = realTimeInfo.deviceStatus || {};
     let statusInfo = [];
     if(statusType === 'all'){
-      statusInfo = deviceStatus.allDeviceStatus || [];
+      statusInfo = realTimeInfo.allDeviceStatus || [];
     }else if(statusType === 'wind'){
-      statusInfo = deviceStatus.windDeviceStatus || [];
+      statusInfo = realTimeInfo.windDeviceStatus || [];
     }else if(statusType === 'pv'){
-      statusInfo = deviceStatus.pvDeviceStatus || [];
+      statusInfo = realTimeInfo.pvDeviceStatus || [];
     }
     let hasData = statusInfo.some(e=>e.deviceStatusName || e.deviceStatusName === 0);
     const statusPieData = statusInfo.map(e=>({
