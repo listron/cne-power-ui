@@ -46,6 +46,14 @@
   line-height: 21px;
 }
 
+.noData{
+  height: 100px;
+  line-height: 100px;
+  text-align: center;
+  color: #666;
+  font-size: 10px;
+}
+
 .stationGeneral{ // 电站概况
   @include boxStyle();
   height: 320px;
