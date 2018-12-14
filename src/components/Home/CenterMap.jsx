@@ -6,6 +6,7 @@ import styles from './homepageParts.scss';
 import axios from 'axios';
 import { dataFormat } from '../../utils/utilFunc';
 import { message } from 'antd';
+import { windSvgPath, pvSvgPath } from '../../constants/svg/svgFont';
 
 class CenterMap extends Component{
   static propTypes = {
@@ -117,7 +118,13 @@ class CenterMap extends Component{
 
   setCountryMap = (mapStation, mapName) => { // 国家内各电站位置设定。
     const countryStation = mapStation.filter(e=>e.country && e.country === mapName);
-    const pvStationData = countryStation.filter(e=>e.stationType === 1).map(e=>[e.longitude, e.latitude]);
+    const pvStationData = countryStation.filter(e=>e.stationType === 1).map(e => {
+      if (e.longitude > -178 && e.longitude < -154 && e.latitude > 18 && e.latitude < 28) { // 更变夏威夷光伏电站坐标
+        e.longitude += 20;
+        e.latitude += 20;
+      }
+      return [e.longitude, e.latitude];
+    });
     const windStationData = countryStation.filter(e=>e.stationType === 0).map(e=>[e.longitude, e.latitude]);
     this.setState({
       mapCountInfo: {
@@ -128,29 +135,62 @@ class CenterMap extends Component{
     axios.get(`/mapJson/${mapName}.json`).then(response=>{
       const countryBox = document.getElementById('homeCountryMap');
       const countryChart = echarts.init(countryBox);
+      countryChart.clear();
       const { data } = response;
-      echarts.registerMap(mapName, data);
+      echarts.registerMap(mapName, data, {
+        Alaska: {
+          left: -140,
+          top: 48,
+          width: 20,
+        }, 
+        Hawaii: {
+          left: -135,
+          top: 33,
+          width: 10
+        },
+      });
       countryChart.setOption({
         series:[{
           name: 'wind',
           type: 'scatter',
           coordinateSystem: 'geo',
           data: windStationData, 
-          symbol: 'image:///img/ico_wind.png',
+          symbol: `path://${windSvgPath}`,
+          symbolRotate: 180,
           symbolSize: [15,18],
+          itemStyle: {
+            color: '#fff',
+          },
+          emphasis: {
+            itemStyle: {
+              color: '#fff35f',
+              opacity: 1,
+            }
+          }
         },{
           name: 'pv',
           type: 'scatter',
           coordinateSystem: 'geo',
           data: pvStationData,
-          symbol: 'image:///img/ico_pv.png',
+          symbol: `path://${pvSvgPath}`,
+          symbolRotate: 180,
           symbolSize: [25,16],
+          itemStyle: {
+            color: '#fff',
+          },
+          emphasis: {
+            itemStyle: {
+              color: '#fff35f',
+              opacity: 1,
+            }
+          }
         }],
         geo: {
           silent:true,
           map: mapName,
-          roam: false,
-          zoom: 1.2,
+          roam: true,
+          layoutCenter: ['50%', '55%'],
+          layoutSize: 830,
           itemStyle: {
             normal: {
               areaColor: '#1866a8',
@@ -177,12 +217,10 @@ class CenterMap extends Component{
   }
 
   setStars = () => {
-    const mapBox = document.getElementById('homeCountryMap');
-    const maxWidth = mapBox.offsetWidth;
     let tmpArr = [];
     tmpArr.length = 10;
     tmpArr.fill(0);
-    let starArr = tmpArr.map(e=>[Math.random()*maxWidth, Math.random()*540])
+    let starArr = tmpArr.map(e=>[Math.random() * 980, Math.random()*360])
     this.setState({ starArr });
     this.clocker = setTimeout(this.setStars,5*60*1000);
   }
@@ -215,20 +253,20 @@ class CenterMap extends Component{
       {name: '年累计发电量', value: dataFormat(singleStation.yearPower), unit: '万kWh'},
     ]
     const singleStatus = singleStation.stationStatus || {};
+    let mapCountryName = mapCountInfo.name || '--';
+    if(mapCountryName === '中国'){
+      mapCountryName = '国内';
+    }
+    const homeContentDom = document.querySelector('#homepageContent');
+    const countrySize = {
+      width: homeContentDom ? homeContentDom.offsetWidth : 0,
+      height: homeContentDom ? homeContentDom.offsetHeight: 0,
+    }
     return (
       <div className={styles.centerMap}>
         <div className={styles.topData}>
           {resourceArr.map(e=><MapResourceData key={e.name} detail={e} />)}
         </div>
-        <div className={styles.countryMap} id="homeCountryMap"></div>
-        <div className={styles.static}>
-          <span>{mapCountInfo.name || '--'}</span>
-          {mapCountInfo.pv > 0 && <span className={styles.count}>{mapCountInfo.pv}个</span>}
-          {mapCountInfo.pv > 0 && <img src="/img/ico_pv.png" />}
-          {mapCountInfo.wind > 0 && <span className={styles.count}>{mapCountInfo.wind}个</span>}
-          {mapCountInfo.wind > 0 && <img src="/img/ico_wind.png" />}
-        </div>
-        <div className={styles.worldMap} id="homeWorldMap"></div>
         {showStationInfo && <section className={styles.singleStation}>
           <h3 className={styles.title}>
             <span className={styles.titleLeft} >
@@ -248,6 +286,17 @@ class CenterMap extends Component{
             ))}
           </div>
         </section>}
+        <div className={styles.countryMap} id="homeCountryMap" style={{ ...countrySize }}></div>
+        <div className={styles.bottomData}>
+          <div className={styles.worldMap} id="homeWorldMap"></div>
+          <div className={styles.static}>
+            <span>{mapCountryName}</span>
+            {mapCountInfo.pv > 0 && <span className={styles.count} >{mapCountInfo.pv}个</span>}
+            {mapCountInfo.pv > 0 && <img src="/img/ico_pv.png" />}
+            {mapCountInfo.wind > 0 && <span className={styles.count}>{mapCountInfo.wind}个</span>}
+            {mapCountInfo.wind > 0 && <img src="/img/ico_wind.png" />}
+          </div>
+        </div>
         <div className={styles.starBox}>
           {starArr.map(e=>(<div key={e[0]} 
             className={styles.star}

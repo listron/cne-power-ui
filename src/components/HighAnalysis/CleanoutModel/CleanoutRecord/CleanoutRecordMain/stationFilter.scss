@@ -1,0 +1,16 @@
+.stationFilter {
+  margin-top: 10px;
+  display: flex;
+  flex: 1;
+  flex-shrink: 0;
+  max-height: 190px;
+  min-height: 40px;
+  overflow-y: auto;
+  border-radius: 4px;
+  background-color: #f0f2f5;
+  padding-left: 26px;
+  padding-bottom: 24px;
+  .allCheck{
+    flex: 0 0 70px;
+  }
+}

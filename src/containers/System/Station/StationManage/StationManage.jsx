@@ -132,6 +132,7 @@ const mapDispatchToProps = (dispatch) => ({
       resultName,
     }
   }),
+  getStations: payload => dispatch({ type: commonAction.getStations, payload }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(StationManage);

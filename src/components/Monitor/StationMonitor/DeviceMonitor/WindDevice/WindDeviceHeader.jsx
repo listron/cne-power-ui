@@ -50,7 +50,7 @@ class InverterHeader extends Component {
     const baseLinkPath = `/hidden/monitorDevice/${stationCode}/${deviceDetail.deviceTypeCode}`;
     return (
       <div className={styles.deviceMonitorHeader} >
-        {showDeviceChangeBox && <HeaderDeviceChange devices={devices} deviceDetail={deviceDetail} baseLinkPath={baseLinkPath} hideDeviceChange={this.hideDeviceChange} />}
+        {showDeviceChangeBox && <HeaderDeviceChange devices={devices.filter(e=>e!==900)} deviceDetail={deviceDetail} baseLinkPath={baseLinkPath} hideDeviceChange={this.hideDeviceChange} />}
         <div className={styles.deviceName}>
           <Icon type="swap" className={styles.swap} onClick={this.showDeviceChange} />
           <span className={styles.name} onClick={this.showDeviceChange}>{deviceDetail.deviceName}</span>

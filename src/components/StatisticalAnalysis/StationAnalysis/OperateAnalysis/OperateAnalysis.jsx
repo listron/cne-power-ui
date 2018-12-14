@@ -85,8 +85,9 @@ class OperateAnalysis extends React.Component {
   getMonthData = (props) => { // 月的时间选择 初始加载
     const { dateType, year, stations, stationCode } = props;
     const choiceYear = year ? year : moment().year();
+    const initStations=stations.toJS().filter(e=>e.stationType===1);
     let prams = {
-      stationCode: stationCode ? stationCode : stations.toJS()[0].stationCode,
+      stationCode: stationCode ? stationCode : initStations[0].stationCode,
       dateType,
       year: choiceYear
     }
@@ -106,7 +107,7 @@ class OperateAnalysis extends React.Component {
     const choiceYear = year ? year : moment().year()
     const choiceMonth = month ? month : moment().month();
     let prams = {
-      stationCode: stationCode ? stationCode : stations.toJS()[0].stationCode,
+      stationCode: stationCode,
       dateType,
       year: choiceYear,
       month: choiceMonth
@@ -130,8 +131,9 @@ class OperateAnalysis extends React.Component {
     for (let i = Number(startYear); i < Number(endYear) + 1; i++) {
       rangeYear.push(`${i}`)
     }
+    const stationType=stations.toJS().filter(e => { if (e.stationCode === +stationCode) { return e.stationType} })
     let prams = {
-      stationCode: stationCode ? stationCode : stations.toJS()[0].stationCode,
+      stationCode: stationCode,
       dateType,
       year: [startYear, endYear],
     }
@@ -141,7 +143,7 @@ class OperateAnalysis extends React.Component {
       year: endYear,
     }
 
-    props.getAllStationAvalibaData({ ...prams, "userId": userId, "year": rangeYear })
+    props.getAllStationAvalibaData({ ...prams, "userId": userId, "year": rangeYear ,stationType})
     props.changeOperateStationStore({ startTime: startYear, endTime: endYear })
     props.getOperatePlanComplete(specilPrams)
     props.getComponentPowerStatistic(specilPrams)
@@ -342,7 +344,7 @@ class OperateAnalysis extends React.Component {
             <div className={styles.stationFilter}>
               <span className={styles.text}>条件查询</span>
               <StationSelect
-                data={stations.toJS()}
+                data={stations.toJS().filter(e => e.stationType === 1)}
                 holderText={"电站名-区域"}
                 value={station.length > 0 ? station : []}
                 // multiple={true}
@@ -386,7 +388,7 @@ class OperateAnalysis extends React.Component {
                 </div>
               </div>
 
-              <span className={styles.rightFont}>并网时间:{station.length > 0 && moment(station[0].onGridTime).format('YYYY年MM月DD日') || "--"}</span>
+              <span className={styles.rightFont}>并网时间:{station.length > 0 && (station[0].onGridTime && moment(station[0].onGridTime).format('YYYY年MM月DD日')) || "--"}</span>
             </div>
             <div className={styles.graph}>
               <div className={styles.stationTargetData}>

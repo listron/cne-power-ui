@@ -72,7 +72,7 @@ class AlarmList extends Component{
           <span className={styles.time}>持续时间</span>
         </div>
         <div className={styles.alarmBox}>
-          <div className={styles.scrollAlarm} style={{ transform: `translateY(${scrollHeight}px)`}}>
+          {alarmList.length > 0 ? <div className={styles.scrollAlarm} style={{ transform: `translateY(${scrollHeight}px)`}}>
             {alarmList.map((e,index)=>{
               const durationDay = dataFormat(e.durationHours/24,'--',0);
               const restHours = dataFormat(e.durationHours % 24,'--',0);
@@ -96,7 +96,7 @@ class AlarmList extends Component{
                 </div>
               )
             })}
-          </div>
+          </div> : <div className={styles.noData}><span>暂无数据</span></div>}
         </div>
       </div>
     </section>

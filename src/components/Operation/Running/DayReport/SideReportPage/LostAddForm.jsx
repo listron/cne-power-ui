@@ -88,15 +88,20 @@ class LostAddForm extends Component {
   }
 
   selectDeviceType = (value) => {
-    const { stationType, getLostGenType, form } = this.props;
+    const { stationType, getLostGenType, form, stationDeviceTypes } = this.props;
     getLostGenType({ // 选中电站的所有故障类型
       stationType,
       deviceTypeCode: value
     })
+    const tmpDeviceType = stationDeviceTypes.find(e=>e.deviceTypeCode === value);
+    const tmpName = tmpDeviceType && tmpDeviceType.deviceTypeName;
+    if (tmpName === '全场信息汇总') {
+      form.setFieldsValue({ deviceName: tmpName });
+    }
+    form.setFieldsValue({ faultId: null });
     this.setState({
       deviceTypeCode: value,
     })
-    form.setFieldsValue({ faultId: null });
     return value
   }
 
@@ -117,7 +122,7 @@ class LostAddForm extends Component {
   render(){
     const { form, lostGenTypes, stationDeviceTypes } = this.props;
     const { getFieldDecorator, getFieldValue } = form;
-    const { deviceNameErroShow, deviceNameErroInfo } = this.state;
+    const { deviceNameErroShow, deviceNameErroInfo, deviceTypeCode } = this.state;
     let tmpGenTypes = [];
     lostGenTypes.forEach(e=>e && e.list && e.list.length > 0 && tmpGenTypes.push(...e.list));
     const groupedLostGenTypes = tmpGenTypes.map(ele=>{
@@ -164,8 +169,14 @@ class LostAddForm extends Component {
         },
       },
     };
+    const tmpDeviceType = stationDeviceTypes.find(e=>e.deviceTypeCode === deviceTypeCode);
+    const disableDevice = tmpDeviceType && tmpDeviceType.deviceTypeName === '全场信息汇总';
     return (
       <Form className={styles.lostAddForm} >
+        <div className={styles.infoTip}>
+          <span className={styles.round}>!</span>
+          <span>全场损失时,设备类型选择"全场信息汇总",设备总称填写"全场信息汇总"</span>
+        </div>
         <Row className={styles.horizontal} >
           <Col span={8}>
             <Form.Item label="设备类型" {...formItemLayout1} >
@@ -202,7 +213,7 @@ class LostAddForm extends Component {
               {getFieldDecorator('deviceName', {
                 rules: [{ required: true, message: '请填写设备名称' }],
               })(
-                <Input />
+                <Input disabled={disableDevice} />
               )}
               <span className={styles.lostInputTip} >多个设备请以空格隔开，设备较多时，可填写上级设备</span>
               {deviceNameErroShow && <div className={styles.dataErrorText}><i className="iconfont icon-alert_01" ></i><span>{deviceNameErroInfo}</span></div>}

@@ -396,6 +396,7 @@ class AllStationStatistic extends React.Component {
     const stationTypeOne = this.stationIsOneType();
 
     const { stationType, stations, dateType, year, allStationAvalibaData, allStationStatisticData, getAllStationStatisticData, selectYear, changeAllStationStore } = this.props;
+    // console.log(stations)
     const { showStationSelect } = this.state;
     return (
       <div className={styles.allStationTypeTabs}>
@@ -413,7 +414,7 @@ class AllStationStatistic extends React.Component {
           </div>
           :
           <Tabs type="card" tabBarExtraContent={operations} activeKey={stationType} onChange={this.queryTargetData} >
-            <TabPane tab="风电" key={'0'}>
+            {/* <TabPane tab="风电" key={'0'}>
               <div style={{
                 display: 'flex',
                 flexDirection: 'column',
@@ -422,7 +423,7 @@ class AllStationStatistic extends React.Component {
                 background: "url('/img/undo.png') no-repeat center #fff"
               }}>
               </div>
-            </TabPane>
+            </TabPane> */}
             <TabPane tab="光伏" key={'1'}>
               <div className={styles.componentContainer}>
                 <TimeSelect showDayPick={false} onChange={this.onTimeChange} />
@@ -438,7 +439,7 @@ class AllStationStatistic extends React.Component {
         {
           showStationSelect &&
           <StationSelectModal
-            stations={stations}
+            stations={stations.filter(e=>e.get('stationType') === 1)}
             onClose={() => this.setState({ showStationSelect: false })}
             onChangeStation={this.onChangeStation} />
         }

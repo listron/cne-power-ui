@@ -73,7 +73,7 @@ class InspectOrbit extends Component {
   render() {
     const { showWarningTip, warningTipText, users } = this.state;
     const { inspectTrackData, inspectUserData } = this.props;
-    let color=['#199475','#17C5DA', '#E373FA', '#75FAC7', '#E3BDBD','#CA6550', '#9DD8DF', '#EBC2F4', '#D0F7E8', '#DD8803', '#6F86F2', '#FFC500','#4DB98B', '#3B9BFF', '#F9DAA9', '#AEBBF5',' #E0BB3B', '#048B52', '#FF340A', '#96C3F3'];
+    let color=['#CB0909','#17C5DA', '#E373FA', '#75FAC7', '#4500B2','#CA6550', '#FFF285', '#FF0026', '#80F50A', '#DD8803', '#6F86F2', '#FFC500','#4DB98B', '#3B9BFF', '#FD00DC', '#F57F0A',' #E0BB3B', '#048B52', '#FF340A', '#8303B4'];
     let data = [];
     let datas = [];
     let timeArray = [];
@@ -86,19 +86,25 @@ class InspectOrbit extends Component {
         return e.username === users
       }
     })
+   
     userOrbit.map((item, index) => {
+      let startDate=item.pointData[0].trackDate
+      let endDate=item.pointData[item.pointData.length-1].trackDate
+    
       for (var i = 0; i < item.pointData.length - 1; i++) {
         let value = item.pointData[i]
         let value1 = item.pointData[i + 1]
+      
         data.push({
-          date: [value.trackDate, value1.trackDate],
+          // date: [value.trackDate, value1.trackDate],
+           date: [`${startDate}-${endDate}`],
           coords: [[value.longitude,value.latitude], [ value1.longitude,value1.latitude]],
           name: item.username,
           lineStyle:{color:color[index]}
         })
       }
     })
-    // console.log(data);
+  
 
 
 
@@ -171,7 +177,7 @@ class InspectOrbit extends Component {
         tooltip: {
           formatter: '起点'
         },
-        symbol: 'image:///img/position.png',
+        symbol: 'image:///img/begin.png',
       })
       startAndEndCoord.push({
         coord: e[e.length - 1].coord,
@@ -196,7 +202,7 @@ class InspectOrbit extends Component {
         </div>
         {this.selectUser()}
         <div className={styles.createContent}>
-          <InspectOrbitMap testId={'inspectOrbit'} data={data}  orbitList={datas} itemOrbit={itemOrbit} startAndEndCoord={startAndEndCoord} />
+          <InspectOrbitMap testId={'inspectOrbit'} data={data}  orbitList={datas} users={users} itemOrbit={itemOrbit} startAndEndCoord={startAndEndCoord} />
         </div>
       </div>
     );

@@ -34,6 +34,15 @@ import { watchStationContrastSaga } from './StatisticalAnalysis/StationAnalysis/
 import { watchPerformanceAnalysisSaga } from "./StatisticalAnalysis/EquipmentAnalysis/PerformanceAnalysis/performanceAnalysisSaga";
 
 
+
+import { watchCleanoutRecord} from "./HighAnalysis/CleanoutModel/CleanoutRecord/cleanoutRecordSaga";
+import { watchCleanoutWarning } from "./HighAnalysis/CleanoutModel/CleanoutWarning/cleanoutWarningSaga";
+import { watchUnhandle } from "./HighAnalysis/EarlyWarning/Unhandle/unhandleSaga";
+import { watchIgnore } from "./HighAnalysis/EarlyWarning/Ignore/ignoreSaga";
+
+
+
+
 import { watchPlan } from './System/Production/Plan/planSaga';
 // root saga
 export default function* rootSaga() {
@@ -76,5 +85,11 @@ export default function* rootSaga() {
     watchStationResourceStationSaga(),
     //设备分析
     watchPerformanceAnalysisSaga(),
+    //高级分析>清洗模型>清洗记录+清洗预警
+    watchCleanoutRecord(),
+    watchCleanoutWarning(),
+    // 高级分析-低效组串
+    watchUnhandle(),
+    watchIgnore(),
   ])
 }

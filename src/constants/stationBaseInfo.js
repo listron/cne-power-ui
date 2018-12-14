@@ -31,6 +31,16 @@ export const PVStationTypes = [
     deviceTypeName: '气象站',
     deviceConfig: 'weatherstation',
     icon: 'iconfont icon-weather'
+  },{
+    deviceTypeCode: '302',
+    deviceTypeName: '集电线路',
+    deviceConfig: 'integrateLine',
+    icon: 'iconfont icon-jidian'
+  },{
+    deviceTypeCode: '301',
+    deviceTypeName: '升压站',
+    deviceConfig: 'boosterStation',
+    icon: 'iconfont icon-syz'
   }
 ];
 

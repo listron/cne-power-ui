@@ -52,6 +52,7 @@ class AddPlan extends Component {
     this.props.changePlanStore({
       addPlanYear: value
     })
+    this.props.getStations() //  重新请求电站列表
   };
   selectStation = (stations) => {
     this.props.changePlanStore({
@@ -63,22 +64,22 @@ class AddPlan extends Component {
   };
 
   render() {
-    const {planStations, stations, continueAdd, addPlanYear, addStationCodes} = this.props;
+    const { stations, continueAdd, addPlanYear, addStationCodes} = this.props;
     const canAdd = addPlanYear && addStationCodes && addStationCodes.length > 0;
-    const currentYear = new Date().getFullYear();
+    const currentYear = moment().year();
     let year = [currentYear + 1, currentYear];
     return (
       <div className={styles.addPlan}>
         <div className={styles.editTop}>
           <span className={styles.text}>添加</span>
-          <Icon type="arrow-left" className={styles.backIcon} onClick={this.onWarningTipShow}/>
+          <Icon type="arrow-left" className={styles.backIcon} onClick={this.onWarningTipShow} />
         </div>
         <div className={styles.mainPart}>
           <div className={styles.selectTime}>
             <span><i>*</i>年份填写</span>
             <Select style={{width: 105}} onChange={this.selectTime} value={addPlanYear || '--'}>
               {year.map((year) => {
-                return <Option value={String(year)} key={year}>{year}</Option>
+                return <Option value={`${year}`} key={year}>{`${year}`}</Option>
               })}
             </Select>
           </div>
@@ -86,11 +87,10 @@ class AddPlan extends Component {
             <span><i>*</i>电站选择</span>
             <StationSelect
               value={addStationCodes}
-              data={stations.toJS().filter(e=>!planStations.includes(e.stationCode))}
+              data={stations.toJS().filter(e=>e.isPlan===0)}
               multiple={true}
               onChange={this.selectStation}
               disabled={continueAdd ? false : true}
-              // disabledStation={planStations}
             />
             <Button onClick={this.toPlanStations} disabled={!canAdd}
                     className={canAdd ? styles.addPlanNext : styles.addPlanNextDisabled}>下一步</Button>

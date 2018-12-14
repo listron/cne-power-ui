@@ -8,17 +8,22 @@
   .conditionalQuery{
     margin-bottom: 15px;
     display: flex;
+    align-items: center;
+    line-height: 43px;
     .searchText{
       margin-right: 10px;
+      line-height: 30px;
     }
     .switch{
       margin-left: 120px;
+      margin-top: 4px;
     }
     .duration{
       margin: 0 10px;
     }
     .switchText{
       margin-left: 10px;
+      line-height: 30px;
     }
   }
   .equipmentSelection{
