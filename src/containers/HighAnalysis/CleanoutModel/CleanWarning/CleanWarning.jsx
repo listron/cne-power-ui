@@ -5,7 +5,7 @@ import styles from "./cleanWarning.scss";
 import { cleanWarningAction } from './cleanWarningAction';
 import TransitionContainer from '../../../../components/Common/TransitionContainer';
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
-// import CleanWarningMain from '../../../../components/HighAnalysis/CleanoutModel/CleanWarning/CleanWarningMain';
+import CleanWarningMain from '../../../../components/HighAnalysis/CleanoutModel/CleanWarning/CleanWarningMain';
 import CleanWarningSide from '../../../../components/HighAnalysis/CleanoutModel/CleanWarning/CleanWarningSide';
 
 class CleanWarning extends Component {
@@ -39,7 +39,7 @@ class CleanWarning extends Component {
       <div className={styles.cleanWarningBox} id="cleanWarningBox">
         <CommonBreadcrumb  breadData={[{ name: '清洗预警' }]} style={{ marginLeft: '38px' }} />
         <div className={styles.cleanWarningContainer}>
-          {/* <CleanWarningMain {...this.props} /> */}
+          <CleanWarningMain {...this.props} />
           <TransitionContainer
             show={showPage!=='list'}
             onEnter={this.onToggleSide}
