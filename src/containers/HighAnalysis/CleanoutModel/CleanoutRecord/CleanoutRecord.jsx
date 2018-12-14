@@ -75,7 +75,8 @@ const mapDispatchToProps = (dispatch) => ({
   editCleanRecord: payload => dispatch({ type: cleanoutRecordAction.editCleanRecord, payload }),
   getCleanRecordDetail: payload => dispatch({ type: cleanoutRecordAction.getCleanRecordDetail, payload }),
   deleteCleanRecord: payload => dispatch({ type: cleanoutRecordAction.deleteCleanRecord, payload }),
-
+//获取电站下得方针
+  getMatrix: payload => dispatch({ type: cleanoutRecordAction.getMatrix, payload }),
 
 
 })

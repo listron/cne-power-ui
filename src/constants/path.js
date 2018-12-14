@@ -284,8 +284,8 @@ export default {
       warnDetail:'/v3/forewarning',//预警信息
       getSequencechart:'/v3/pv/sequencechart',//电流时序图
       
-      getStationDust:'/v3/pvclean/station/dustinfluence/',
-      getMatrixDust: '/v3/pvclean/matrix/dustinfluence/',
+      getStationDust:'/v3/pvclean/station/dustinfluence',
+      getMatrixDust: '/v3/pvclean/matrix/dustinfluence',
       //清洗模型的首页
       getMainList: '/v3/pvclean/plan/list',
       //清洗模型点击进入单电站清洗详情
@@ -293,18 +293,19 @@ export default {
       //加，编辑，获取，删除，清洗计划
       getAddCleanPlan: '/v3/pvclean/plan/insertartificial',
       getEditCleanPlan: '/v3/pvclean/plan/updateartificial',
-      getCleanPlanDetail: '/v3/pvclean/plan/getartificial/',
-      deleteCleanPlan: '/v3/pvclean/plan/deleteartificial/',
+      getCleanPlanDetail: '/v3/pvclean/plan/getartificial',
+      deleteCleanPlan: '/v3/pvclean/plan/deleteartificial',
       //加，编辑，获取，下雨清洗计划
       getAddRainPlan: '/v3/pvclean/plan/rainfall',
       getEditRainPlan: '/v3/pvclean/plan/rainfall',
-      getRainPlanDetail: '/v3/pvclean/plan/rainfall/',
+      getRainPlanDetail: '/v3/pvclean/plan/rainfall',
       //清洗记录列表，增，编辑，获取，删记录
       getPlanRecordList: '/v3/pvclean/record/list',
       getAddCleanRecord: '/v3/pvclean/record',
-      editCleanRecord:'/v3/pvclean/record/',
-      getCleanRecordDetail: '/v3/pvclean/record/',
-      deleteCleanRecord: '/v3/pvclean/record/',
+      editCleanRecord:'/v3/pvclean/record',
+      getCleanRecordDetail: '/v3/pvclean/record',
+      deleteCleanRecord: '/v3/pvclean/record',
+      getMatrix: '/v3/station/matrix',
     }
   }
 }

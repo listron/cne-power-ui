@@ -22,6 +22,7 @@ class CleanoutRecordDetail extends Component {
     onShowSideChange: PropTypes.func,
     changeCleanoutRecordStore: PropTypes.func,
     getDetailList: PropTypes.func,
+    history: PropTypes.object,
   }
 
   constructor(props) {
@@ -79,6 +80,7 @@ class CleanoutRecordDetail extends Component {
       showPage: 'multiple',
       selectedStationIndex: null,
     });
+    this.props.history.push(`/analysis/cleanout/record`);
   }
   editDetail = () => { // 编辑页
     // this.props.onShowSideChange({ showSidePage: 'edit' });

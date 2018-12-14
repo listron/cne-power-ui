@@ -26,7 +26,8 @@ class CleanoutRecordTable extends Component {
     super(props, context)
     this.state = {
       showModal: false,
-      planType: 'clean'
+      planType: 'clean',
+      record:{},
     }
   }
   onChange = (e) => {
@@ -51,8 +52,12 @@ class CleanoutRecordTable extends Component {
   }
   showAddPlanModal = (record) => {
     this.setState({
-      showModal: true
+      showModal: true,
+      record:record
     })
+    
+  
+
   }
   cancelModal=()=>{
     this.setState({
@@ -61,6 +66,7 @@ class CleanoutRecordTable extends Component {
   }
   confirmModal=()=>{
     const{getFieldsValue}=this.props.form;
+    const{record}=this.state;
     let planValue=getFieldsValue();
     //console.log(  planValue.estimateStartTime,planValue.estimateEndTime);//这里是拿到所有modal里的值{}
     //添加计划的函数发请求
@@ -68,18 +74,23 @@ class CleanoutRecordTable extends Component {
     planValue.estimateStartTime=moment(planValue.cleanPlanDate[0]).format('YYYY-MM-DD')
     planValue.estimateEndTime=moment(planValue.cleanPlanDate[1]).format('YYYY-MM-DD')
       //发送添加清洗计划的函数
-      this.props.getAddCleanPlan(planValue)
+      this.props.getAddCleanPlan({...planValue,stationCode:record.stationCode})
     }else{
       //发送添加下雨记录
       planValue.estimateStartTime=moment(planValue.rainPlanDate[0]).format('YYYY-MM-DD')
       planValue.estimateEndTime=moment(planValue.rainPlanDate[1]).format('YYYY-MM-DD')
-      this.props.getAddRainPlan(planValue)
+      this.props.getAddRainPlan({...planValue,stationCode:record.stationCode})
     }
     this.setState({
-      showModal: false
+      showModal: false,
+      planType:'clean'
+
     })
   }
-  modalContainer(record) {
+  modalContainer() {
+    // console.log(record,this.state.showModal);
+    const {record}=this.state;
+    console.log('record',record)
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -97,7 +108,7 @@ class CleanoutRecordTable extends Component {
     };
     return (
       <Modal
-        title={record}
+        title={`${record.stationName}-清洗计划/降雨`}
         visible={this.state.showModal}
         onOk={this.confirmModal}
         footer={null}
@@ -156,7 +167,7 @@ class CleanoutRecordTable extends Component {
             </Form>}
           <div className={styles.handle}>
             <Button onClick={this.cancelModal} >取消</Button>
-            <Button onClick={this.confirmModal} className={styles.confirmExamine} >保存</Button>
+            <Button onClick={()=>this.confirmModal()} className={styles.confirmExamine} >保存</Button>
           </div>
         </div>
       </Modal>
@@ -164,6 +175,7 @@ class CleanoutRecordTable extends Component {
   }
   render() {
     const { loading ,mainListData} = this.props;
+    const{record}=this.state;
     const column = [
       {
         title: '电站名称',
@@ -200,11 +212,12 @@ class CleanoutRecordTable extends Component {
         title: '添加清洗计划/降雨',
         key: 'addplan',
         render: (text, record, index) => {
-          let record2 = 'dianzhan1/qinhxi'
+          // let record2 = 'dianzhan1/qinhxi'
           return (<div>
-            <span title="添加清洗计划/降雨" className="iconfont icon-addto" onClick={() => this.showAddPlanModal(record)}>
-            </span>
-            {this.modalContainer(record2)}
+            <div title="添加清洗计划/降雨" className="iconfont icon-addto" onClick={() => this.showAddPlanModal(record)}>
+           
+            </div>
+            
           </div>)
         }
       }, {
@@ -227,6 +240,7 @@ class CleanoutRecordTable extends Component {
           pagination={false}
           locale={{ emptyText: <img src="/img/nodata.png" /> }}
         />
+        {this.state.showModal && this.modalContainer()}
       </div>
     )
   }

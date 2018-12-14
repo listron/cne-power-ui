@@ -20,7 +20,7 @@ function* resetStore() {
 function* getStationDust(action) {//1.1.3.获取清洗预警—全站灰尘影响图表数据
   const { payload } = action;
   //const url = '/mock/api/v3/performance/comprehensive/dataavaliba';
-  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.highAnalysis.getStationDust}${payload.stationCode}/${payload.startTime}/${payload.endTime}`
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.highAnalysis.getStationDust}/${payload.stationCode}/${payload.startTime}/${payload.endTime}`
   try {
     yield put({ type: cleanoutRecordAction.CLEANOUT_RECORD_FETCH });
     const response = yield call(axios.get, url, payload);
@@ -39,7 +39,7 @@ function* getStationDust(action) {//1.1.3.获取清洗预警—全站灰尘影�
 function* getMatrixDust(action) {//1.1.4.方阵灰尘影响图表数据
   const { payload } = action;
   //const url = '/mock/api/v3/performance/comprehensive/dataavaliba';
-  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.highAnalysis.getMatrixDust}${payload.stationCode}/${payload.startTime}/${payload.endTime}`
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.highAnalysis.getMatrixDust}/${payload.stationCode}/${payload.startTime}/${payload.endTime}`
   try {
     yield put({ type: cleanoutRecordAction.CLEANOUT_RECORD_FETCH });
     const response = yield call(axios.get, url, payload);
@@ -87,7 +87,7 @@ function* getMainList(action) {//1.1.5.获取各电站清洗计划汇总列表
 }
 function* getDetailList(action) {//1.1.6.获取清洗计划记录列表
   const { payload } = action;
-  const{selectedStationIndex}=payload;
+  const{selectedStationIndex,planId}=payload;
   //const url = '/mock/api/v3/performance/comprehensive/dataavaliba';
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.highAnalysis.getDetailList}`
   try {
@@ -107,7 +107,8 @@ function* getDetailList(action) {//1.1.6.获取清洗计划记录列表
           cleanTime: (response.data.data.cleanTime || response.data.data.cleanTime===0)?
           response.data.data.cleanTime:'--',
           detailListData: response.data.data.detailData || [],
-          selectedStationIndex
+          selectedStationIndex,
+          planId,
         },
       });
     }
@@ -148,10 +149,10 @@ function* getEditCleanPlan(action) {//1.1.8.修改人工清洗计划
     const response = yield call(axios.put, url, payload);
     if (response.data.code === '10000') {// 编辑成功，重新请求列表，返回详情页，并重新请求列表
       const params = yield select(state => ({
-        stationCode: state.highAanlysisReducer.cleanoutRecordReducer.get('stationCode'),
+        stationCode: state.highAanlysisReducer.cleanoutRecordReducer.get('singleStationCode'),
         cleanType: state.highAanlysisReducer.cleanoutRecordReducer.get('cleanType'),
-        pageNum: state.highAanlysisReducer.cleanoutRecordReducer.get('pageNum'),
-        pageSize: state.highAanlysisReducer.cleanoutRecordReducer.get('pageSize'),
+        pageNum: state.highAanlysisReducer.cleanoutRecordReducer.get('detailPageNum'),
+        pageSize: state.highAanlysisReducer.cleanoutRecordReducer.get('detailPageSize'),
       }));
       yield put({ // 请求请求详情页数据
         type: cleanoutRecordAction.getDetailList,
@@ -160,7 +161,7 @@ function* getEditCleanPlan(action) {//1.1.8.修改人工清洗计划
     } else {
       message.error(`清洗计划详情编辑失败!${response.data.message}`);
       yield put({
-        type: cleanoutRecordAction.changeCleanoutRecordStore,
+        type: cleanoutRecordAction.CHANGE_CLEANOUT_RECORD_STORE_SAGA,
         payload: { loading: false },
       });
     }
@@ -190,16 +191,16 @@ function* getCleanPlanDetail(action) {//1.1.9.获取人工清洗计划详情
 function* deleteCleanPlan(action) {//1.1.10.删除清洗计划详情,删除下雨记录也是此接口
   const { payload } = action;
   //const url = '/mock/api/v3/performance/comprehensive/dataavaliba';
-  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.highAnalysis.deleteCleanPlan}${payload.planId}`
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.highAnalysis.deleteCleanPlan}/${payload.planId}`
   try {
     yield put({ type: cleanoutRecordAction.CLEANOUT_RECORD_FETCH });
     const response = yield call(axios.delete, url, payload);
     if (response.data.code === '10000') {// 编辑成功，重新请求列表，返回详情页，并重新请求列表
       const payload = yield select(state => ({
-        stationCode: state.highAanlysisReducer.cleanoutRecordReducer.get('stationCode'),
+        stationCode: state.highAanlysisReducer.cleanoutRecordReducer.get('singleStationCode'),
         cleanType: state.highAanlysisReducer.cleanoutRecordReducer.get('cleanType'),
-        pageNum: state.highAanlysisReducer.cleanoutRecordReducer.get('pageNum'),
-        pageSize: state.highAanlysisReducer.cleanoutRecordReducer.get('pageSize'),
+        pageNum: state.highAanlysisReducer.cleanoutRecordReducer.get('detailPageNum'),
+        pageSize: state.highAanlysisReducer.cleanoutRecordReducer.get('detailPageSize'),
       }));
       yield put({
         type: cleanoutRecordAction.getDetailList,
@@ -208,7 +209,7 @@ function* deleteCleanPlan(action) {//1.1.10.删除清洗计划详情,删除下�
     } else {
       message.error(`清洗计划详情删除失败!${response.data.message}`);
       yield put({
-        type: cleanoutRecordAction.changeCleanoutRecordStore,
+        type: cleanoutRecordAction.CHANGE_CLEANOUT_RECORD_STORE_SAGA,
         payload: { loading: false },
       });
     }
@@ -224,11 +225,18 @@ function* getAddRainPlan(action) {//1.1.11.添加下雨清洗计划
     yield put({ type: cleanoutRecordAction.CLEANOUT_RECORD_FETCH });
     const response = yield call(axios.post, url, payload);
     if (response.data.code === '10000') {
-      yield put({
-        type: cleanoutRecordAction.GET_CLEANOUT_RECORD_FETCH_SUCCESS,
-        payload,
-      });
-    }
+    const params = yield select(state => ({
+      stationCode: state.highAanlysisReducer.cleanoutRecordReducer.get('stationCode'),
+      pageNum: state.highAanlysisReducer.cleanoutRecordReducer.get('pageNum'),
+      pageSize: state.highAanlysisReducer.cleanoutRecordReducer.get('pageSize'),
+      sortField: state.highAanlysisReducer.cleanoutRecordReducer.get('sortField'),
+      sortType: state.highAanlysisReducer.cleanoutRecordReducer.get('sortType'),
+    }));
+    yield put({ // 请求请求详情页数据
+      type: cleanoutRecordAction.getMainList,
+      payload: { ...params }
+    })
+  }
   } catch (e) {
     console.log(e);
   }
@@ -242,10 +250,10 @@ function* getEditRainPlan(action) {//1.1.12.修改下雨清洗计划
     const response = yield call(axios.put, url, payload);
     if (response.data.code === '10000') {// 编辑成功，重新请求列表，返回详情页，并重新请求列表
       const params = yield select(state => ({
-        stationCode: state.highAanlysisReducer.cleanoutRecordReducer.get('stationCode'),
+        stationCode: state.highAanlysisReducer.cleanoutRecordReducer.get('singleStationCode'),
         cleanType: state.highAanlysisReducer.cleanoutRecordReducer.get('cleanType'),
-        pageNum: state.highAanlysisReducer.cleanoutRecordReducer.get('pageNum'),
-        pageSize: state.highAanlysisReducer.cleanoutRecordReducer.get('pageSize'),
+        pageNum: state.highAanlysisReducer.cleanoutRecordReducer.get('detailPageNum'),
+        pageSize: state.highAanlysisReducer.cleanoutRecordReducer.get('detailPageSize'),
       }));
       yield put({ // 请求请求详情页数据
         type: cleanoutRecordAction.getDetailList,
@@ -254,7 +262,7 @@ function* getEditRainPlan(action) {//1.1.12.修改下雨清洗计划
     } else {
       message.error(`清洗计划详情编辑失败!${response.data.message}`);
       yield put({
-        type: cleanoutRecordAction.changeCleanoutRecordStore,
+        type: cleanoutRecordAction.CHANGE_CLEANOUT_RECORD_STORE_SAGA,
         payload: { loading: false },
       });
     }
@@ -283,6 +291,7 @@ function* getRainPlanDetail(action) {//1.1.13.获取下雨清洗计划详情
 }
 function* getPlanRecordList(action) {//1.1.14.获取清洗记录列表
   const { payload } = action;
+  const{planId}=payload
   //const url = '/mock/api/v3/performance/comprehensive/dataavaliba';
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.highAnalysis.getPlanRecordList}`
   try {
@@ -292,6 +301,7 @@ function* getPlanRecordList(action) {//1.1.14.获取清洗记录列表
       yield put({
         type: cleanoutRecordAction.GET_CLEANOUT_RECORD_FETCH_SUCCESS,
         payload: {
+          planId,
           cleanRecordTotal: response.data.data.total || 0,
           cleanRecordCost: response.data.data.cleanCost || '',
           cleanRecordProfit: response.data.data.cleanProfit || '',
@@ -313,7 +323,7 @@ function* getAddCleanRecord(action) {//1.1.15.添加清洗记录
     const response = yield call(axios.post, url, payload);
     if (response.data.code === '10000') {
       const params = yield select(state => ({
-        stationCode: state.highAanlysisReducer.cleanoutRecordReducer.get('stationCode'),
+        stationCode: state.highAanlysisReducer.cleanoutRecordReducer.get('singleStationCode'),
         cleanType: state.highAanlysisReducer.cleanoutRecordReducer.get('cleanType'),
         pageNum: state.highAanlysisReducer.cleanoutRecordReducer.get('detailPageNum'),
         pageSize: state.highAanlysisReducer.cleanoutRecordReducer.get('detailPageSize'),
@@ -357,7 +367,7 @@ function* editCleanRecord(action) {//1.1.16.修改清洗记录
     } else {
       message.error(`清洗记录详情编辑失败!${response.data.message}`);
       yield put({
-        type: cleanoutRecordAction.changeCleanoutRecordStore,
+        type: cleanoutRecordAction.CHANGE_CLEANOUT_RECORD_STORE_SAGA,
         payload: { loading: false },
       });
     }
@@ -387,15 +397,15 @@ function* getCleanRecordDetail(action) {//1.1.17.获取清洗记录详情
 function* deleteCleanRecord(action) {//1.1.18.删除清洗记录
   const { payload } = action;
   //const url = '/mock/api/v3/performance/comprehensive/dataavaliba';
-  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.highAnalysis.deleteCleanRecord}${payload.planId}`
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.highAnalysis.deleteCleanRecord}/${payload.planId}`
   try {
     yield put({ type: cleanoutRecordAction.CLEANOUT_RECORD_FETCH });
     const response = yield call(axios.delete, url, payload);
     if (response.data.code === '10000') {// 编辑成功，重新请求列表，返回详情页，并重新请求列表
       const payload = yield select(state => ({
         planId: state.highAanlysisReducer.cleanoutRecordReducer.get('planId'),
-        pageNum: state.highAanlysisReducer.cleanoutRecordReducer.get('pageNum'),
-        pageSize: state.highAanlysisReducer.cleanoutRecordReducer.get('pageSize'),
+        pageNum: state.highAanlysisReducer.cleanoutRecordReducer.get('cleanRecordPageNum'),
+        pageSize: state.highAanlysisReducer.cleanoutRecordReducer.get('cleanRecordPageSize'),
       }));
       yield put({
         type: cleanoutRecordAction.getPlanRecordList,
@@ -404,7 +414,7 @@ function* deleteCleanRecord(action) {//1.1.18.删除清洗记录
     } else {
       message.error(`清洗计划详情删除失败!${response.data.message}`);
       yield put({
-        type: cleanoutRecordAction.changeCleanoutRecordStore,
+        type: cleanoutRecordAction.CHANGE_CLEANOUT_RECORD_STORE_SAGA,
         payload: { loading: false },
       });
     }
@@ -412,15 +422,29 @@ function* deleteCleanRecord(action) {//1.1.18.删除清洗记录
     console.log(e);
   }
 }
-
-
-
-
+function* getMatrix(action) {//1.1.14.获取单电站方阵
+  const { payload } = action;
+  //const url = '/mock/api/v3/performance/comprehensive/dataavaliba';
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.highAnalysis.getMatrix}`
+  try {
+    yield put({ type: cleanoutRecordAction.CLEANOUT_RECORD_FETCH });
+    const response = yield call(axios.post, url, payload);
+    if (response.data.code === '10000') {
+      yield put({
+        type: cleanoutRecordAction.GET_CLEANOUT_RECORD_FETCH_SUCCESS,
+        payload: {
+          getMatrixData: response.data.data || [],
+        },
+      });
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
 
 export function* watchCleanoutRecord() {
   yield takeLatest(cleanoutRecordAction.CHANGE_CLEANOUT_RECORD_STORE_SAGA, changeCleanoutRecordStore);
   yield takeLatest(cleanoutRecordAction.resetStore, resetStore);
-
   yield takeLatest(cleanoutRecordAction.getStationDust, getStationDust);
   yield takeLatest(cleanoutRecordAction.getMatrixDust, getMatrixDust);
   yield takeLatest(cleanoutRecordAction.getMainList, getMainList);
@@ -437,6 +461,7 @@ export function* watchCleanoutRecord() {
   yield takeLatest(cleanoutRecordAction.editCleanRecord, editCleanRecord);
   yield takeLatest(cleanoutRecordAction.getCleanRecordDetail, getCleanRecordDetail);
   yield takeLatest(cleanoutRecordAction.deleteCleanRecord, deleteCleanRecord);
+  yield takeLatest(cleanoutRecordAction.getMatrix, getMatrix);
 
 
 }

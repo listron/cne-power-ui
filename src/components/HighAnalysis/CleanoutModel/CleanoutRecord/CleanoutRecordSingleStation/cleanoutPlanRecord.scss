@@ -106,4 +106,24 @@
         margin-right: 16px;
       }
     }
-   
+    .treeDeviceTypes{
+      overflow-y: auto;
+      height: 130px;
+      :global{
+        .ant-select-tree{
+          padding: 0;
+        }
+        .ant-select-tree li {
+          margin: 4px 0;
+        }
+        .ant-select-tree li:hover{
+          background:#ceebe0;
+        }
+        .ant-select-tree li .ant-select-tree-node-content-wrapper:hover {
+          background-color: rgba(0, 0, 0, 0);
+        }
+        .ant-select-tree li span.ant-select-tree-switcher{
+          width: 6px;
+        }
+      }
+    }

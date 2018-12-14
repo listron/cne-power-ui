@@ -5,7 +5,7 @@ var initState = Immutable.fromJS({
   loading: false,
   startTime: '2018',
   stationCodes: [],
-  singleStationCode:null,
+  singleStationCode:null,//单电站
   showPage: 'multiple', //默认展示列表页list ,详情detail,
   stationType: "", // 电站类型("0"-风电、"1"-光伏、""全部)
   stationDustData: [], // 全站灰尘影响图表数据
@@ -41,6 +41,7 @@ var initState = Immutable.fromJS({
   stationBelongInfo: {}, // 电站的各种所属分类信息汇总。
   planId: '',//计划id
   cleanRecorddetail: [],//获取清洗记录详情
+  getMatrixData:[],//获取电站下的方阵
 
 });
 
