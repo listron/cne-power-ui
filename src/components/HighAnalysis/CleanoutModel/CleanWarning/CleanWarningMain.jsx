@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 // import StationManageSearch from './StationManageSearch';
 // import StationManageTable from './StationManageTable';
 import Footer from '../../../Common/Footer';
-import styles from './stationMain.scss'
+import styles from './cleanStyle.scss';
 
 class CleanWarningMain extends Component { // 电站管理列表页
   static propTypes = {

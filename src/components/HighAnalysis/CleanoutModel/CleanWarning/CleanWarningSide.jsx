@@ -1,30 +1,25 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import styles from './stationSide.scss';
-import StationManageDetail from './StationManageDetail';
-import StationManageEdit from './StationManageEdit';
-import Footer from '../../../../Common/Footer';
+import styles from './cleanStyle.scss';
+// import StationManageDetail from './StationManageDetail';
+// import StationManageEdit from './StationManageEdit';
+import Footer from '../../../Common/Footer';
 
-class StationManageSide extends Component {
+class CleanWarningSide extends Component {
   static propTypes = {
     showSidePage: PropTypes.string,
-  }
-
-  constructor(props){
-    super(props);
   }
 
   render(){
     const { showSidePage } = this.props;
     return (
       <div className={styles.stationManageSide}>
-        { showSidePage === 'detail' && <StationManageDetail {...this.props} /> }
-        { showSidePage === 'edit' && <StationManageEdit {...this.props} /> }
+        相关内容侧边。
         <Footer />
       </div>
     )
   }
 }
 
-export default StationManageSide;
+export default CleanWarningSide;

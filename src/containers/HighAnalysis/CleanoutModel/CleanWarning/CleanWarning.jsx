@@ -6,7 +6,7 @@ import { cleanWarningAction } from './cleanWarningAction';
 import TransitionContainer from '../../../../components/Common/TransitionContainer';
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 // import CleanWarningMain from '../../../../components/HighAnalysis/CleanoutModel/CleanWarning/CleanWarningMain';
-// import CleanWarningSide from '../../../../components/HighAnalysis/CleanoutModel/CleanWarning/CleanWarningSide';
+import CleanWarningSide from '../../../../components/HighAnalysis/CleanoutModel/CleanWarning/CleanWarningSide';
 
 class CleanWarning extends Component {
   static propTypes = {
@@ -47,11 +47,11 @@ class CleanWarning extends Component {
             timeout={500}
             effect="side"
           >
-            {/* <CleanWarningSide
+            <CleanWarningSide
               {...this.props} 
               showSidePage={showSidePage}
               onShowSideChange={this.onShowSideChange} 
-            /> */}
+            />
           </TransitionContainer>
         </div>
       </div>
