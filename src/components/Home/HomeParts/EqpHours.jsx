@@ -45,7 +45,7 @@ class EqpHours extends Component{
           <StationTypeTag showTotal={false} activeType={eqpType} onChange={this.changeEqpType} />
         </div>}
         <div className={styles.stationProgress}>
-          {stationDataArr.map(e => (
+          {stationDataArr.length > 0 ? stationDataArr.map(e => (
             <div className={styles.eachStation} key={e.stationName}>
               <span className={styles.stationName} title={e.stationName}>{e.stationName}</span>
               <div style={{width: `${rectNum*(rectWidth + 2)}px`}} className={styles.hourRectGroup}>{
@@ -72,7 +72,7 @@ class EqpHours extends Component{
               }</div>
               <span className={styles.hour}>{dataFormat(e.hours)}h</span>
             </div>
-          ))}
+          )) : <div className={styles.noData}><span>暂无数据</span></div>}
         </div>
         <div className={styles.average} >
           <span className={styles.averageText} >平均: </span>
