@@ -59,7 +59,7 @@ class DefectDetail extends Component {
     }
   }
 
-  onPrev = () => {
+  onPrev = () => { // 向前
     const { defectIdList, defectId } = this.props;
     let index = defectIdList.findIndex(item => {
       return item === defectId
@@ -81,7 +81,7 @@ class DefectDetail extends Component {
     }
   }
 
-  onNext = () => {
+  onNext = () => { // 向后
     const { defectIdList, defectId } = this.props;
     let index = defectIdList.findIndex(item => {
       return item === defectId
@@ -103,7 +103,7 @@ class DefectDetail extends Component {
     }
   }
 
-  onCloseDefectDetail = () => {
+  onCloseDefectDetail = () => { // 点击回退按钮
     this.props.onChangeShowContainer({container: 'list'});
   }
 

@@ -3,8 +3,8 @@ import { Timeline } from 'antd';
 import PropTypes from 'prop-types';
 import styles from './defectTimeLine.scss';
 import moment from 'moment';
-import ImgListModal from '../../../../Common/Uploader/ImgListModal';
-import { getHandleStatus } from '../../../../../constants/ticket';
+import ImgListModal from '../../../../../Common/Uploader/ImgListModal';
+import { getHandleStatus } from '../../../../../../constants/ticket';
 
 /*
   时间线组件：
@@ -55,7 +55,7 @@ class DefectTimeLine extends Component {
         thumbUrl: item
       }
     });
-    
+
     this.setState({
       showImgModal: true,
       images
@@ -147,10 +147,10 @@ class DefectTimeLine extends Component {
     const { currentImgIndex, showImgModal, images } = this.state;
     return (
       <div className={styles.timeLineWrap}>
-      <ImgListModal 
+      <ImgListModal
         data={images}
         imageListShow={showImgModal}
-        hideImg={this.closeImgs} 
+        hideImg={this.closeImgs}
         currentImgIndex={currentImgIndex}
         changeCurrentImgIndex={this.changeCurrentImgIndex} />
         <div className={styles.title}>
@@ -162,7 +162,7 @@ class DefectTimeLine extends Component {
           {processData.map((item, index)=>{
             return (
               <Timeline.Item dot={this.renderIcon(item.get('handleStatus'))} key={'timeline'+index}>
-                {this.renderItem(item, index)}               
+                {this.renderItem(item, index)}
               </Timeline.Item>
             );
           })}
@@ -170,7 +170,7 @@ class DefectTimeLine extends Component {
             {this.getStatus()}
           </Timeline.Item>
         </Timeline>
-      </div> 
+      </div>
     )
   }
 }

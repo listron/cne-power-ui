@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Switch, Icon, Radio } from 'antd';
+import { Button, Switch, Icon } from 'antd';
 import DateFilter from './DateFilter';
 import StationTypeFilter from './StationTypeFilter';
 import StationFilter from './StationFilter';
@@ -12,15 +12,23 @@ import DefectTypeFilter from './DefectTypeFilter';
 import FilteredItems from './FilteredItems';
 import styles from './filterCondition.scss';
 
-const RadioButton = Radio.Button;
-const RadioGroup = Radio.Group;
-
 /** 
- * 1 stations 判断电站类型和电站名称
- * 2 deviceType 判断设备类型
- * 3 defectType 缺陷类型
- * 4 defectLevelName 选填 缺陷级别分类
- * 5 defectSourceName 选填 缺陷来源分类
+ * 1 type
+ *    time   发生时间
+      stationType  电站类型
+      stationName  电站名称
+      deviceType   设备类型
+      defectLevel  缺陷级别
+      defectType   缺陷类型
+      defectSource  缺陷来源
+      belongMatrixs  所属方阵
+      myJoin  我参与的
+ * 2 stations type=stationType || type=stationName 必填 其他为选填
+ * 3 deviceTypes type=deviceType  必填 其他为选填
+ * 4 defectTypes type=defectType   必填 其他为选填 
+ * 5 defectLevelName  type=defectType  选填 缺陷级别分类 如果没有填 默认为 A／B／C
+ * 6 defectSourceName  type=defectSource  选填 缺陷来源分类 如果没有填 默认为 '上报','巡检','告警', '预警',
+ * 7 onChange 回调函数 
 */
 class FilterCondition extends Component {
   static propTypes = {
@@ -40,6 +48,7 @@ class FilterCondition extends Component {
     username: PropTypes.string,
     onChange: PropTypes.func,
     option: PropTypes.array,// 需要的方式
+    matrixList: PropTypes.array, // 方阵列表
   }
 
   constructor(props) {
@@ -54,11 +63,12 @@ class FilterCondition extends Component {
       defectSource: [], // 缺陷来源
       deviceTypeCode: [], // 设备类型
       defectTypeCode: [],//缺陷类型
-      belongMatrixs:[],//所属方阵
+      belongMatrixs: [],//所属方阵
+      handleUser: [], // 操作人
     };
   }
 
-  onFilterShowChange = (filterText) => {
+  onFilterShowChange = (filterText) => { //筛选出应该展示哪一个
     const { showFilter } = this.state;
     if (showFilter === filterText) {
       this.setState({
@@ -71,20 +81,13 @@ class FilterCondition extends Component {
     }
   }
 
-  onUserSelect = (value) => {
-    const { username } = this.props;
-    this.props.onChangeFilter({
-      handleUser: value ? username : ''
-    });
+  onUserSelect = (value) => { //  用户的切换
+    const { username, onChange } = this.props;
+    onChange && onChange({ handleUser: value ? username : '' })
   }
 
-  onChangeTab = (e) => {
-    this.props.onChangeFilter({
-      status: e.target.value
-    });
-  }
 
-  onChangeFilter = (change) => {
+  onChangeFilter = (change) => { // 条件筛选的之后结果
     this.setState((state) => {
       return {
         state,
@@ -95,7 +98,7 @@ class FilterCondition extends Component {
     onChange && onChange({ ...change })
   }
 
-  getDefaultName = (type) => {
+  getDefaultName = (type) => {  //匹配
     let result = "";
     switch (type) {
       case 'time': result = '发生时间'; break;
@@ -106,6 +109,7 @@ class FilterCondition extends Component {
       case 'defectType': result = '缺陷类型'; break;
       case 'defectSource': result = '缺陷来源'; break;
       case 'belongMatrixs': result = '所属方阵'; break;
+      case 'myJoin': result = '参与的'; break;
     }
     return result
   }
@@ -113,29 +117,35 @@ class FilterCondition extends Component {
 
 
   render() {
-    const { showFilter, createTimeStart, createTimeEnd, stationType, stationCodes, defectLevel, defectSource, deviceTypeCode, defectTypeCode ,belongMatrixs} = this.state;
-    const { stations, option, deviceTypes, defectTypes, defectSourceName, defectLevelName, matrixList } = this.props;
+    const { showFilter, createTimeStart, createTimeEnd, stationType, stationCodes, defectLevel, defectSource, deviceTypeCode, defectTypeCode, belongMatrixs } = this.state;
+    const { stations, option, deviceTypes, defectTypes, defectSourceName, defectLevelName, matrixList, username } = this.props;
+
     const defectTypesArr = defectTypes || [];
     const stationsArr = stations || [];
     const deviceTypesArr = deviceTypes || []
     const matrixListArr = matrixList || []
-    // const isOneType = stations.groupBy(item=>item.get('stationType')).size === 1;
-    const isOneType = false;
+    const windStations = stations.map(e => e.stationType === 0);
+    const pvStations = stations.map(e => e.stationType === 1)
+    const hasSelectStation = windStations.length > 0 && pvStations.length > 0
     return (
       <div className={styles.filterCondition}>
         <div className={styles.topSearch}>
           <span className={styles.text}>筛选条件</span>
           {
-            option.map((item, index) => {
+            option && option.map((item, index) => {
               if (item === 'stationType') { // 该设备下之后一种电站 不显示电站类型
-                return (!isOneType && <Button onClick={() => this.onFilterShowChange(item)} key={index}>
+                return (hasSelectStation && <Button onClick={() => this.onFilterShowChange(item)} key={index}>
                   {this.getDefaultName(item)}{showFilter === 'stationType' ? <Icon type="up" /> : <Icon type="down" />}
                 </Button>)
-              } else {
-                return (<Button onClick={() => this.onFilterShowChange(item)} key={index} >
-                  {this.getDefaultName(item)}{showFilter === item ? <Icon type="up" /> : <Icon type="down" />}
-                </Button>)
               }
+              if (item === 'myJoin') {
+                return (<div key={index}>
+                  <Switch onChange={this.onUserSelect} /><span>我参与的</span>
+                </div>)
+              }
+              return (<Button onClick={() => this.onFilterShowChange(item)} key={index} >
+                {this.getDefaultName(item)}{showFilter === item ? <Icon type="up" /> : <Icon type="down" />}
+              </Button>)
             })
           }
         </div>

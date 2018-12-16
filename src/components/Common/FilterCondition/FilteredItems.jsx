@@ -141,7 +141,7 @@ class FilteredItems extends Component {
     const { createTimeStart, createTimeEnd, stationType, stationCodes, deviceTypeCode, defectTypeCode, defectLevel, stations, deviceTypes, defectTypes, defectSource, defectSourceName ,belongMatrixs} = this.props;
 
     const levels = ['一级', '二级', '三级', '四级'];
-    let defectSourceNames = defectSourceName ? defectSourceName : ['上报', '巡检', '告警', '预警',];
+    let defectSourceNames = defectSourceName ? defectSourceName : ['告警','手动','巡检', '预警',];
     const defectLevelArray = defectLevel.map(e => ({
       label: levels[+e - 1],
       value: e,

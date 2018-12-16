@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import DefectBasicInfo from '../DefectBasicInfo/DefectBasicInfo';
+import DefectBasicInfo from './DefectBasicInfo/DefectBasicInfo';
 import DefectHandleForm from '../DefectHandleForm/DefectHandleForm';
-import DefectTimeLine from '../DefectTimeLine/DefectTimeLine';
+import DefectTimeLine from './DefectTimeLine/DefectTimeLine';
 import WarningTip from '../../../../Common/WarningTip';
 import styles from './defectDetailForm.scss';
 import { Icon } from 'antd';
@@ -51,7 +51,7 @@ class DefectDetailForm extends Component {
     this.setState({
       showWarningTip: false,
     });
-    this.props.onCloseDefectDetail({ container: 'list' });  
+    this.props.onCloseDefectDetail({ container: 'list' });
   }
 
   onSubmit = (data) => {
@@ -59,13 +59,13 @@ class DefectDetailForm extends Component {
     const { defectDetail, onSend, onReject, onClose, onHandle, onCheck } = this.props;
     const defectId = defectDetail.get('defectId');
     const status = defectDetail.get('defectStatus');
-    if(status === '1') {
-      switch(data.dealResult) {
+    if (status === '1') {
+      switch (data.dealResult) {
         case 'send':
           params = {
             defectId,
             defectProposal: !data.defectProposal ? null : data.defectProposal,
-            deadLine: !data.deadLine ? null : data.deadLine.format('YYYY-MM-DD')+' 23:59:59'
+            deadLine: !data.deadLine ? null : data.deadLine.format('YYYY-MM-DD') + ' 23:59:59'
           };
           onSend(params);
           break;
@@ -84,7 +84,7 @@ class DefectDetailForm extends Component {
           onClose(params);
           break;
       }
-    } else if(status === '2') {
+    } else if (status === '2') {
       let submitImages = this.getSubmitIamges(data.photoData);
       params = {
         defectId,
@@ -94,7 +94,7 @@ class DefectDetailForm extends Component {
         ...submitImages
       };
       onHandle(params);
-    } else if(status === '3') {
+    } else if (status === '3') {
       params = {
         defectId,
         checkResult: data.checkResult,
@@ -105,7 +105,7 @@ class DefectDetailForm extends Component {
   }
 
   getSubmitIamges(images) {
-    if(!images) {
+    if (!images) {
       return {
         photoSolveAddress: null,
         rotatePhoto: null
@@ -113,7 +113,7 @@ class DefectDetailForm extends Component {
     }
     let solveAddress = [];
     let rotate = [];
-    for(var i = 0; i < images.length; i++) {
+    for (var i = 0; i < images.length; i++) {
       solveAddress.push(images[i].thumbUrl);
       rotate.push(images[i].rotate);
     }
@@ -123,28 +123,28 @@ class DefectDetailForm extends Component {
     };
   }
 
-  renderForm() {
-    const { defectDetail, commonList } = this.props;
-    const status = defectDetail.get('defectStatus');
-    if(status !== '0' && status !== '4') {
-      return (
-        <DefectHandleForm 
-          commonList={commonList}
-          onSubmit={this.onSubmit}
-          status={status} />
-      )
-    } else {
-      return null;
-    }
-  }
+  // renderForm() {
+  //   const { defectDetail, commonList } = this.props;
+  //   const status = defectDetail.get('defectStatus');
+  //   if (status !== '0' && status !== '4') {
+  //     return (
+  //       <DefectHandleForm
+  //         commonList={commonList}
+  //         onSubmit={this.onSubmit}
+  //         status={status} />
+  //     )
+  //   } else {
+  //     return null;
+  //   }
+  // }
 
   renderTitle() {
     const status = this.props.defectDetail.get('defectStatus');
-    if(status === '1') {
+    if (status === '1') {
       return '审核缺陷';
-    } else if(status === '2') {
+    } else if (status === '2') {
       return '处理缺陷';
-    } else if(status === '3') {
+    } else if (status === '3') {
       return '验收缺陷';
     } else {
       return '缺陷详情';
@@ -152,7 +152,7 @@ class DefectDetailForm extends Component {
   }
 
   render() {
-    const { defectTypes, defectDetail, isFromAlarm } = this.props;
+    const { defectTypes, defectDetail, isFromAlarm, commonList } = this.props;
     const processData = defectDetail.get('processData');
     const status = defectDetail.get('defectStatus')
     const { showWarningTip, warningTipText } = this.state;
@@ -161,17 +161,17 @@ class DefectDetailForm extends Component {
       backgroundColor: '#ececec',
     }
     return (
-      <div className={styles.detailWrap} style={isFromAlarm?alarmPageStyle:{}}>
-        {showWarningTip && <WarningTip style={{marginTop:'250px',width: '210px',height:'88px'}} onCancel={this.onCancelWarningTip} onOK={this.onConfirmWarningTip} value={warningTipText} />}
+      <div className={styles.detailWrap} style={isFromAlarm ? alarmPageStyle : {}}>
+        {showWarningTip && <WarningTip style={{ marginTop: '250px', width: '210px', height: '88px' }} onCancel={this.onCancelWarningTip} onOK={this.onConfirmWarningTip} value={warningTipText} />}
         <div className={styles.defectDetail}>
           <div className={styles.header}>
             <div className={styles.text}>{this.renderTitle()}</div>
-            {!isFromAlarm&&<div className={styles.action}>
+            {!isFromAlarm && <div className={styles.action}>
               <i className="iconfont icon-last" onClick={this.props.onPrev} />
               <i className="iconfont icon-next" onClick={this.props.onNext} />
               <Icon type="arrow-left" className={styles.backIcon} onClick={this.onCancelEdit} />
             </div>}
-            {isFromAlarm&&<div className={styles.backBtn}><Link to="/monitor/alarm/transfer">返回</Link></div>}   
+            {isFromAlarm && <div className={styles.backBtn}><Link to="/monitor/alarm/transfer">返回</Link></div>}
           </div>
           <div className={styles.content}>
             <div className={styles.basic}>
@@ -182,14 +182,17 @@ class DefectDetailForm extends Component {
                 <DefectTimeLine processData={processData} status={status} />
               </div>
               <div className={styles.form}>
-                {this.renderForm()}
+                {  status !== '0' && status !== '4' &&
+                <DefectHandleForm commonList={commonList} onSubmit={this.onSubmit}  status={status} />
+                }
               </div>
             </div>
           </div>
         </div>
+     
       </div>
-);
-  }  
+    );
+  }
 }
 
 export default DefectDetailForm;

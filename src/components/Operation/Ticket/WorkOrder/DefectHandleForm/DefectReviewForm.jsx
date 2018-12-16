@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styles from './defectHandleForm.scss';
 import moment from 'moment';
 import {Form, DatePicker, Button} from 'antd';
-import InputLimit from '../../../../../Common/InputLimit/index';
+import InputLimit from '../../../../Common/InputLimit/index';
 const FormItem = Form.Item;
 
 class DefectReviewForm extends Component {
@@ -47,17 +47,6 @@ class DefectReviewForm extends Component {
     return result;
   }
 
-  // disabledDate(current,item) {
-  //   console.log(current,item);
-  //   // Can not select days before today
-  //   return current < moment().endOf('day');
-  // }
-  // disabledTime = (date) => {
-  //   return {
-  //     disabledMinutes: () => this.range(0, moment().minute(Number)),
-  //     // disabledSeconds: () => [55, 56],
-  //   };
-  // }
   disabledDate = (start) => {
     return start && start < moment().subtract(1, 'day').endOf('day');
     }

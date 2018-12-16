@@ -15,6 +15,7 @@ function *changeDefectStore(action){//存储payload指定参数，替换reducer-
 //获取缺陷工单列表
 function* getDefectList(action) {
   const { payload } = action;
+  console.log('payload',payload)
   let url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.getDefectList;
   yield put({ type: ticketAction.TICKET_FETCH });
   try {
@@ -44,6 +45,7 @@ function* getDefectList(action) {
     console.log(e);
   }
 }
+
 //获取缺陷工单Id列表(用于上一个，下一个)
 function* getDefectIdList(action) {
   const { payload } = action;

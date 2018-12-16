@@ -1,8 +1,8 @@
 import React,{ Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './defectBasicInfo.scss';
-import { getLevel } from '../../../../../constants/ticket';
-import ImgUploader from '../../../../Common/Uploader/ImgUploader';
+import { getLevel } from '../../../../../../constants/ticket';
+import ImgUploader from '../../../../../Common/Uploader/ImgUploader';
 
 class DefectBasicInfo extends Component {
   static propTypes = {
@@ -54,7 +54,7 @@ class DefectBasicInfo extends Component {
   }
 
   render() {
-    const info = this.props.basicInfo;  
+    const info = this.props.basicInfo;
     return (
       <div className={styles.basicInfo}>
         <div className={styles.title}>
@@ -70,7 +70,7 @@ class DefectBasicInfo extends Component {
         {this.renderBasic()}
       </div>
     );
-  }  
+  }
 }
 
 export default DefectBasicInfo;

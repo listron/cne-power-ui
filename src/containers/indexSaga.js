@@ -13,6 +13,7 @@ import { watchEnterprise } from './System/Account/Enterprise/enterpriseSaga';
 import { watchDepartment } from './System/Account/Department/departmentSaga';
 import { watchRole } from './System/Account/Role/roleSaga';
 import { watchUser } from './System/Account/User/userSaga';
+import { watchPlan } from './System/Production/Plan/planSaga';
 
 import { watchStationManage } from './System/Station/StationManage/stationManageSaga';
 import { watchDeviceManage } from './System/Station/DeviceManage/deviceManageSaga';
@@ -40,10 +41,10 @@ import { watchCleanoutWarning } from "./HighAnalysis/CleanoutModel/CleanoutWarni
 import { watchUnhandle } from "./HighAnalysis/EarlyWarning/Unhandle/unhandleSaga";
 import { watchIgnore } from "./HighAnalysis/EarlyWarning/Ignore/ignoreSaga";
 
+import { watchWorkOrder } from "./Operation/Ticket/WorkOrder/workOrderSaga";
 
 
 
-import { watchPlan } from './System/Production/Plan/planSaga';
 // root saga
 export default function* rootSaga() {
   yield all([
@@ -91,5 +92,7 @@ export default function* rootSaga() {
     // 高级分析-低效组串
     watchUnhandle(),
     watchIgnore(),
+    // 工单
+    watchWorkOrder(),
   ])
 }

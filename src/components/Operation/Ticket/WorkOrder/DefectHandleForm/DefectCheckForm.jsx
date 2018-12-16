@@ -2,7 +2,7 @@ import React,{ Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './defectHandleForm.scss';
 import { Form, Button, Radio } from 'antd';
-import InputLimit from '../../../../../Common/InputLimit/index';
+import InputLimit from '../../../../Common/InputLimit/index';
 const FormItem = Form.Item;
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;

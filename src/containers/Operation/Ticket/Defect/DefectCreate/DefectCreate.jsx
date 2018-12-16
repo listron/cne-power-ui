@@ -35,9 +35,6 @@ class DefectCreate extends Component {
   } 
   componentDidMount(){
     const { showContainer } = this.props;
-    // this.props.getStations({
-    //   enterpriseId: '1010694160817111040'//to do
-    // });
     if(showContainer === 'edit'){
       const { defectDetail } = this.props;
       const stationCode = defectDetail.stationCode;
@@ -58,13 +55,13 @@ class DefectCreate extends Component {
     });
   }
 
-  onCancelWarningTip = () => {
+  onCancelWarningTip = () => {  //取消的事件
     this.setState({
       showWarningTip: false,
     });
   }
 
-  onConfirmWarningTip = () => {
+  onConfirmWarningTip = () => { // 确定的事件
     this.setState({
       showWarningTip: false,
     });
@@ -78,6 +75,7 @@ class DefectCreate extends Component {
   render() {
     const { showWarningTip, warningTipText } = this.state;
     const { showContainer, defectDetail } = this.props;
+    console.log('this.props',this.props)
     let rejectReason;
     if(showContainer==='edit') {
       const processData = defectDetail.processData;
@@ -86,9 +84,10 @@ class DefectCreate extends Component {
         rejectReason = processData[processLength - 1].defectProposal;
       }
     }
+    console.log('rejectReason',rejectReason)
     return (
       <div className={styles.defectCreate}>
-        {showWarningTip && <WarningTip style={{marginTop:'250px',width: '210px',height:'88px'}} onCancel={this.onCancelWarningTip} onOK={this.onConfirmWarningTip} value={warningTipText} />}
+        {showWarningTip && <WarningTip onCancel={this.onCancelWarningTip} onOK={this.onConfirmWarningTip} value={warningTipText} />}
         <div className={styles.createTop}>
           <span className={styles.text}>{showContainer==='create'?'新建缺陷':rejectReason}</span>
           <Icon type="arrow-left" className={styles.backIcon} onClick={this.onCancelEdit} />
@@ -102,21 +101,28 @@ class DefectCreate extends Component {
 }
 
 const mapStateToProps = (state) => ({
-    showContainer: state.operation.ticket.get('showContainer'),
-    loading: state.operation.defect.get('loading'),
-    commonFetching: state.common.get('commonFetching'),
-    stations: state.common.get('stations').toJS(),
-    deviceTypes: state.operation.defect.get('deviceTypes').toJS(),
-    devices: state.operation.defect.get('devices').toJS(),
-    error: state.operation.defect.get('error'),
-    defectTypes: state.operation.defect.get('defectTypes').toJS(),
-    defectDetail: state.operation.defect.get('defectDetail').toJS(),
-    deviceTypeItems: state.common.get('deviceTypes'),
-    deviceAreaItems: state.operation.defect.get('partitions'),
+    // showContainer: state.operation.ticket.get('showContainer'),
+    // loading: state.operation.defect.get('loading'),
+    // deviceTypes: state.operation.defect.get('deviceTypes').toJS(),
+    // devices: state.operation.defect.get('devices').toJS(),
+    // error: state.operation.defect.get('error'),
+    // defectTypes: state.operation.defect.get('defectTypes').toJS(),
+    // defectDetail: state.operation.defect.get('defectDetail').toJS(),
+    // deviceAreaItems: state.operation.defect.get('partitions'),
     deviceItems: state.operation.defect.get('devices'),
-    commonList: state.operation.defect.get('commonList'),
-    allSeries: state.operation.defect.get('allSeries'), // 所有光伏组件
-    firstPartitionCode: state.operation.defect.get('firstPartitionCode'), // 第一方阵code
+    // commonList: state.operation.defect.get('commonList'),
+    // allSeries: state.operation.defect.get('allSeries'), // 所有光伏组件
+    // firstPartitionCode: state.operation.defect.get('firstPartitionCode'), // 第一方阵code
+
+    // commonFetching: state.common.get('commonFetching'),
+    // stations: state.common.get('stations').toJS(),
+    // deviceTypeItems: state.common.get('deviceTypes'),
+
+
+    ...state.operation.defect.toJS(),
+    stations: state.common.get('stations').toJS(),
+    deviceTypes: state.common.get('deviceTypes').toJS(),
+    commonFetching: state.common.get('commonFetching'),
 });
 
 const mapDispatchToProps = (dispatch) => ({
