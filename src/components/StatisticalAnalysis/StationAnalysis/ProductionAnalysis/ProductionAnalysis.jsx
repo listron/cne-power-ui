@@ -139,7 +139,7 @@ class ProductionAnalysis extends React.Component {
     props.getAllStationAvalibaData({ ...prams, "userId": userId, "year": rangeYear, stationType })
     props.changeProductionStationStore({ startTime: startYear, endTime: endYear })
     props.ProductionPlanComplete({...prams,year: endYear,})
-    props.getSingleStationProductionData(prams)
+    props.getSingleStationProductionData({...prams,"year": rangeYear})
     props.getSingleStationPlanRateData(prams)
   }
 
