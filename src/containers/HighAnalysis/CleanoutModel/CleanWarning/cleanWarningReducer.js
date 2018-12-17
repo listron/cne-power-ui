@@ -12,10 +12,13 @@ var initState = Immutable.fromJS({
   // orderField: '', // 排序字段 '1'：电站名称; '2':区域 ;'3':覆盖类型;'4':并网类型;'5'：装机容量;'6':发点单元数;'7'：电站接入
   // orderCommand: '', // 排序方式 ;"1"升序; "2"降序
   // stationList: [], // 电站列表数据
-  // totalNum:  0, // 电站总数
-  fiterStation: [], // 列表筛选展示的电站。
+  total: 0, // 清洗预警总数
+  selectedStations: [], // 列表筛选展示的电站。
   cleanWarningList: [], // 清洗预警列表
+  weatherList: [], // 选中电站天气数据
   dustEffectInfo: {}, // 灰尘影响详情
+  totalEffects: [], // 全局灰尘影响
+  matrixEffects: [], // 方阵灰尘影响
 });
 
 const cleanWarning = (state = initState, action) => {

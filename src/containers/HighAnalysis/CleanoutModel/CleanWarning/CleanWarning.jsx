@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import PropTypes from 'prop-types';
 import styles from "./cleanWarning.scss";
 import { cleanWarningAction } from './cleanWarningAction';
+import { commonAction } from '../../../alphaRedux/commonAction';
 import TransitionContainer from '../../../../components/Common/TransitionContainer';
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import CleanWarningMain from '../../../../components/HighAnalysis/CleanoutModel/CleanWarning/CleanWarningMain';
@@ -48,6 +49,15 @@ const mapStateToProps = (state) => ({
 })
 const mapDispatchToProps = (dispatch) => ({
   changeCleanWarningStore: payload => dispatch({type:cleanWarningAction.CHANGE_CLEAN_WARNING_STORE, payload}),
-  resetCleanWarningStore: payload => dispatch({type: cleanWarningAction.RESET_STORE})
+  resetCleanWarningStore: payload => dispatch({type: cleanWarningAction.RESET_STORE}),
+  getCleanWarningList: payload => dispatch({type: cleanWarningAction.getCleanWarningList, payload}),
+  getCleanWarningDetail: payload => dispatch({type: cleanWarningAction.getCleanWarningDetail, payload}),
+  getTotalDustEffect: payload => dispatch({type: cleanWarningAction.getTotalDustEffect, payload}),
+  getMatrixDustEffect: payload => dispatch({type: cleanWarningAction.getMatrixDustEffect, payload}),
+  getWeather: params => dispatch({ type: commonAction.getWeather, payload: {
+    params,
+    actionName: cleanWarningAction.GET_CLEAN_WARNING_FETCH_SUCCESS,
+    resultName: 'weatherList'
+  }})
 })
 export default connect(mapStateToProps, mapDispatchToProps)(CleanWarning)

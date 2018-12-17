@@ -24,5 +24,7 @@ export const commonAction = {
   getDeviceModel: Symbol('getDeviceModel'), // 电站设备类型下设备型号获取
   getPoints: Symbol('getPoints'), // 电站下测点
   getDictionaryInfo: Symbol('getDictionaryInfo'),  //获取覆盖类型、并网电压等级、所属电网（区域）忽略原因列表
+
+  getWeather: Symbol('getWeather'), // 获取天气列表数据
 }
 
