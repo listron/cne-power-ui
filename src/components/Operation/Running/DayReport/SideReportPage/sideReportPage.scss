@@ -124,7 +124,6 @@
   .withBorder{
     border-left: 1px solid $promptColor;
     border-right: 1px solid $promptColor;
-    
   }
   .withBorder:last-child{
     border-right: 0px;
@@ -297,9 +296,6 @@
       background-color: #555;
       opacity: .5;
     }
-    
-    
-    
   }
 }
 
@@ -310,7 +306,7 @@
     cursor: pointer;
   }
   :global{
-    .ant-table .ant-table-thead > tr > th, .ant-table .ant-table-tbody > tr > td{
+    .deviceName, .reason, .process{
       padding: 0 0;
       text-align: center;
       max-width: 150px;
@@ -324,9 +320,6 @@
     }
     .ant-input{
       width: 161px;
-    }
-    .ant-calendar-picker-clear, .ant-calendar-picker-icon{
-      right: 22px;
     }
   }
   .lostPower{
