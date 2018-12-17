@@ -12,11 +12,11 @@ import styles from './cleanStyle.scss';
 
 class CleanWarningMain extends Component { // 电站管理列表页
   static propTypes = {
-    pageNum: PropTypes.number,
-    pageSize: PropTypes.number,
+    listQueryParams: PropTypes.object,
     total: PropTypes.number,
     stations: PropTypes.array,
     cleanWarningList: PropTypes.array,
+    getCleanWarningList: PropTypes.func,
     changeCleanWarningStore: PropTypes.func,
   }
 
@@ -24,13 +24,30 @@ class CleanWarningMain extends Component { // 电站管理列表页
     super(props);
   }
 
-  selectStation = ({stationCodes}) => {
-    console.log(stationCodes);
-    // selectedStations
+  componentDidMount() {
+    const { listQueryParams, getCleanWarningList } = this.props;
+    getCleanWarningList(listQueryParams); // 默认请求
   }
 
-  paginationChange = ({pageSize, currentPage}) => {
-    console.log(pageSize, currentPage)
+  selectStation = ({stationCodes}) => { // 选择电站
+    const { listQueryParams, getCleanWarningList } = this.props;
+    getCleanWarningList({
+      ...listQueryParams,
+      stationCodes,
+    })
+  }
+
+  paginationChange = ({pageSize, currentPage}) => { // 分页器触发
+    const { listQueryParams, getCleanWarningList } = this.props;
+    getCleanWarningList({
+      ...listQueryParams,
+      pageNum: currentPage,
+      pageSize,
+    })
+  }
+
+  tableSort = (a,b,c,d) => { // 表格排序
+    console.log(a,b,c,d)
   }
 
   showDetail = () => {
@@ -40,28 +57,30 @@ class CleanWarningMain extends Component { // 电站管理列表页
   }
 
   render() {
-    const { stations, total, pageNum, pageSize, cleanWarningList } = this.props;
+    const { stations, total, listQueryParams, cleanWarningList } = this.props;
+    const { pageSize, pageNum } = listQueryParams;
     return (
       <div className={styles.cleanWarningMain}>
-        <div className={styles.stationContent}>
-          <FilterCondition
-            stations={stations}
-            onChange={this.selectStation}
-            option={['stationName']}
-          />
+        <FilterCondition
+          stations={stations}
+          onChange={this.selectStation}
+          option={['stationName']}
+        />
+        <div className={styles.pagination}>
           <CommonPagination
             total={total}
             pageSize={pageSize}
             currentPage={pageNum}
             onPaginationChange={this.paginationChange}
           />
-          <Table
-            columns={[]}
-            pagination={null}
-            dataSource={cleanWarningList}
-          />
-          <Button onClick={this.showDetail}>按钮</Button>
         </div>
+        <Table
+          columns={[]}
+          pagination={null}
+          dataSource={cleanWarningList}
+          onChange={this.tableSort}
+        />
+        <Button onClick={this.showDetail}>按钮</Button>
         <Footer />
       </div>
     )

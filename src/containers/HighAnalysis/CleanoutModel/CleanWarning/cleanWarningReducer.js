@@ -3,22 +3,22 @@ import { cleanWarningAction } from './cleanWarningAction';
 
 var initState = Immutable.fromJS({
   loading: false,
-  showPage: 'list', //默认展示列表页list,详情detail,
-  // stationType: "", // 电站类型("0"-风电、"1"-光伏、""全部)
-  // regionName: '', // 电站所属区域:所属电网，模糊匹配
-  // stationName: '', // 电站名称(模糊匹配)
-  // pageNum: 1, // 当前页
-  // pageSize: 10, // 每页条数
-  // orderField: '', // 排序字段 '1'：电站名称; '2':区域 ;'3':覆盖类型;'4':并网类型;'5'：装机容量;'6':发点单元数;'7'：电站接入
-  // orderCommand: '', // 排序方式 ;"1"升序; "2"降序
-  // stationList: [], // 电站列表数据
-  total: 0, // 清洗预警总数
-  selectedStations: [], // 列表筛选展示的电站。
-  cleanWarningList: [], // 清洗预警列表
-  weatherList: [], // 选中电站天气数据
-  dustEffectInfo: {}, // 灰尘影响详情
-  totalEffects: [], // 全局灰尘影响
-  matrixEffects: [], // 方阵灰尘影响
+  showPage: 'list', //默认 预警列表list, 灰尘影响详情detail,
+  
+  listQueryParams: { // 请求列表所用参数
+    stationCodes: [], // 选中的电站。默认所有
+    pageNum: 1, // 当前页
+    pageSize: 10, // 每页条数
+    sortField: 'influencePercent', // 排序字段 stationName电站influencePercent占比futurePower未来收益cleanDays距上次清洗天数
+    sortType: 0, // 排序方式 ;默认0-升序, 1-降序
+  },
+  
+  cleanWarningList: [], // api => 清洗预警列表
+  total: 0, // api =>  清洗预警总数
+  weatherList: [], // api => 选中电站天气数据
+  dustEffectInfo: {}, // api => 灰尘影响详情
+  totalEffects: [], // api => 全局灰尘影响
+  matrixEffects: [], // api => 方阵灰尘影响
 });
 
 const cleanWarning = (state = initState, action) => {
