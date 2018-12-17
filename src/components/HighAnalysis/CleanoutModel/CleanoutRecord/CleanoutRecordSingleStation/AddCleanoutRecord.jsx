@@ -31,17 +31,23 @@ class AddCleanoutRecord extends Component {
     // this.setState({ showAddRecordModal: false })
     this.props.cancelAddRecord()
     const { getFieldsValue } = this.props.form;
-    console.log(getFieldsValue);
-    let recordValue = getFieldsValue(['cleanDate', 'matrix', 'cleanTip']);
-    recordValue.estimateStartTime = moment(recordValue.cleanDate[0]).format('YYYY-MM-DD')
-    recordValue.estimateEndTime = moment(recordValue.cleanDate[1]).format('YYYY-MM-DD')
-    //发送添加清洗计划的函数
-    //此处还要传planid
-    this.props.getAddOrEditCleanRecord({...recordValue,planId:this.props.planId})
+    let recordValue = getFieldsValue(['cleanDate', 'matrix', 'remark']);
+    console.log(recordValue);
+    recordValue.startTime = moment(recordValue.cleanDate[0]).format('YYYY-MM-DD')
+    recordValue.endTime = moment(recordValue.cleanDate[1]).format('YYYY-MM-DD')
+    const matrix= recordValue.matrix.toString();
+    this.props.getAddOrEditCleanRecord({//添加某清洗计划的记录
+      ...recordValue,
+      planId:this.props.planId,
+      recordId:this.props.recordId,
+      stationCode:this.props.singleStationCode,
+      matrix
+    })
   
   }
   render() {
-    const{getMatrixData}=this.props;
+    const{getMatrixData,cleanRecorddetail}=this.props;
+    
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -55,7 +61,7 @@ class AddCleanoutRecord extends Component {
     const { getFieldDecorator } = this.props.form;
     const { stations,showAddRecordModal } = this.props;//此处应该是方阵的数据，下面的不可选是由方阵的数据决定的
     const rangeConfig = {
-     
+      initialValue:cleanRecorddetail.startTime?[moment(cleanRecorddetail.startTime),moment(cleanRecorddetail.endTime)]:[],
       rules: [{ type: 'array', required: true, message: 'Please select time!' }],
     };
     const tmpDeviceTypes = getMatrixData.map((e, i) => {
@@ -103,6 +109,7 @@ class AddCleanoutRecord extends Component {
                 label="清洗方阵"
               >
                 {getFieldDecorator('matrix', {
+                  initialValue:cleanRecorddetail.matrix?['2','3']:'',
                   rules: [{ required: true, message: '请选择方阵' }],
                 })(
                   <TreeSelect {...treeProps} dropdownClassName={styles.treeDeviceTypes} />
@@ -113,7 +120,8 @@ class AddCleanoutRecord extends Component {
                 {...formItemLayout}
                 label="清洗备注"
               >
-                {getFieldDecorator('cleanTip', {
+                {getFieldDecorator('remark', {
+                  initialValue:cleanRecorddetail.remark?'12345asd':'',
                   rules: [{ required: true, message: '只能输入数字', whitespace: true },],
                 })(
                   <InputLimit width={316} placeholder="请描述，不超过80个汉字" />

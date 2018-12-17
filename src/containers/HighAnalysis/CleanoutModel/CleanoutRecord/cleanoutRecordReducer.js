@@ -31,6 +31,7 @@ var initState = Immutable.fromJS({
   cleanRecordPageNum: 1,//清洗记录当前页
   cleanRecordPageSize: 10,//清洗记录每页条数
   cleanRecordTotal: 0,//清洗记录总条数
+  cleanRecordPlanTime: '',//清洗计划时间段
   cleanRecordCost: '',//清洗成本
   cleanRecordProfit: '',//累计清洗收益
   cleanRecordTime: 0,//清洗用时

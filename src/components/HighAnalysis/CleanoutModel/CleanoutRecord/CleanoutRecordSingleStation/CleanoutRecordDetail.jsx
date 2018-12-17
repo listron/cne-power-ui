@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 
 
-import { Icon, Radio } from 'antd';
+import { Icon, Radio,Modal } from 'antd';
 import PropTypes from 'prop-types';
 import styles from './cleanoutRecordDetail.scss';
 import CleanoutPlanRecord from './CleanoutPlanRecord';
@@ -29,6 +29,7 @@ class CleanoutRecordDetail extends Component {
     super(props);
     this.state = {
       showStationSelect: false,
+      showDirtModal: false,
       showSidePage: 'single',
     }
   }
@@ -96,6 +97,16 @@ class CleanoutRecordDetail extends Component {
       showStationSelect: true
     });
   }
+  showDirtModal=()=>{//展示灰尘影响图
+    this.setState({
+      showDirtModal: true
+    });
+  }
+  closeDirtModal=()=>{//关闭
+    this.setState({
+      showDirtModal: false
+    });
+  }
  
   render() {
     const { stationDetail, stations, showPage,singleStationCode, stationName, pageNum, pageSize,changeCleanoutRecordStore,detailPageNum,detailPageSize,detailtotal,handCleanNum,rainCleanNum,cleanPlanNum ,cleanProfit,cleanCycle,cleanTime,detailListData} = this.props;
@@ -103,11 +114,13 @@ class CleanoutRecordDetail extends Component {
     if (stationCode !== singleStationCode) {
       changeCleanoutRecordStore({ singleStationCode: stationCode });
     }
-    const { selectedRowKeys,showWarningTip,warningTipText ,showSidePage} = this.state
+    const { selectedRowKeys,showWarningTip,warningTipText ,showSidePage,showDirtModal} = this.state
     const stationItems = stations && stations;
  
     const { showStationSelect } = this.state;
     const stationItem = stationItems&&stationItems.filter(e => (e.stationCode.toString() === stationCode))[0];
+    const cleanStationName=stationItem&&stationItem.stationName;
+    const provinceName=stationItem&&stationItem.provinceName
     //请求的参数
     const queryListParams = {
       stationName, pageNum, pageSize,
@@ -124,13 +137,24 @@ class CleanoutRecordDetail extends Component {
                 <Icon className={styles.icon} type="swap" />
               </div>
               <div className={styles.status}>
-                <h3>{stationItem&&stationItem.stationName}--{stationItem&&stationItem.provinceName}</h3>
+                <h3>{cleanStationName}--{provinceName}</h3>
               </div>
             </div>
             <span className={styles.handleArea} >
-              <span className={styles.dirtEff}>灰尘影响</span>
+              <span className={styles.dirtEff} onClick={this.showDirtModal}>灰尘影响</span>
               <Icon type="arrow-left" className={styles.backIcon} onClick={this.backToList} />
             </span>
+            {showDirtModal? <Modal
+              title="Basic Modal"
+              visible={this.state.showDirtModal}
+              footer={null}
+              maskClosable={true}
+              onCancel={this.closeDirtModal}
+            >
+              <p>Some contents...</p>
+              <p>Some contents...</p>
+              <p>Some contents...</p>
+            </Modal>:''}
           </div>
           <div className={styles.statisticData}>
             <div className={styles.statisticTarget}>
@@ -167,6 +191,8 @@ class CleanoutRecordDetail extends Component {
         >
           <CleanoutPlanRecord
             {...this.props}
+            stationName={cleanStationName}
+            provinceName={provinceName}
             showSidePage={showSidePage}
             queryListParams={queryListParams}
             onShowSideChange={this.onShowSideChange}

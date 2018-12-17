@@ -43,7 +43,6 @@ class CleanoutRecordMain extends Component { // 电站管理列表页
     })
   }
   filterCondition = (change) => {//选择电站
-    console.log('change', change.stationCodes)
     const { changeCleanoutRecordStore,getMainList, pageNum, pageSize, sortField, sortType } = this.props;
     changeCleanoutRecordStore({ stationCodes: change.stationCodes })
     getMainList({ stationCodes:change.stationCodes, pageNum, pageSize, sortField, sortType })

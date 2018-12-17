@@ -124,8 +124,7 @@ class CleanoutPlanRecord extends Component {
   }
  
   render() {
-    const{ cleanRecordTotal,cleanRecordCost, cleanRecordProfit,cleanRecordTime,cleanRecordPageSize,cleanRecordPageNum}=this.props;
-   
+    const{ cleanRecordTotal,cleanRecordCost, cleanRecordProfit,cleanRecordTime,cleanRecordPageSize,cleanRecordPageNum,cleanRecordPlanTime,stationName,provinceName}=this.props;
     const { showWarningTip, warningTipText,showAddRecordModal } = this.state;
     const record = { name: 'dali' }
     return (
@@ -133,11 +132,11 @@ class CleanoutPlanRecord extends Component {
         {showWarningTip && <WarningTip onOK={this.confirmWarningTip} value={warningTipText} />}
         <div className={styles.detailTop}>
           <span className={styles.topInfoShow}>
-            2018/07/07-2018/07/09
+          {cleanRecordPlanTime}
             <span className={styles.departmentInfo} >
               清洗计划-清洗记录
             </span>
-            (洱源-云南)
+            ({stationName}-{provinceName})
           </span>
           <span className={styles.handleArea} >
             <i className="iconfont icon-last" title="上一个" onClick={this.preStation} />

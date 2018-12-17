@@ -94,6 +94,14 @@ function* getDetailList(action) {//1.1.6.获取清洗计划记录列表
     yield put({ type: cleanoutRecordAction.CLEANOUT_RECORD_FETCH });
     const response = yield call(axios.post, url, payload);
     if (response.data.code === '10000') {
+      const detailtotal = response.data.data.total || 0;
+      let { pageNum, pageSize } = payload;
+      const maxPage = Math.ceil(detailtotal / pageSize);
+      if (detailtotal === 0) { // 总数为0时，展示0页
+        pageNum = 1;
+      } else if (maxPage < pageNum) { // 当前页已超出
+        pageNum = maxPage;
+      }
       yield put({
         type: cleanoutRecordAction.GET_CLEANOUT_RECORD_FETCH_SUCCESS,
         payload: {
@@ -297,12 +305,21 @@ function* getPlanRecordList(action) {//1.1.14.获取清洗记录列表
   try {
     yield put({ type: cleanoutRecordAction.CLEANOUT_RECORD_FETCH });
     const response = yield call(axios.post, url, payload);
-    if (response.data.code === '10000') {
+   if (response.data.code === '10000') {
+      const cleanRecordTotal = response.data.data.total || 0;
+      let { pageNum, pageSize } = payload;
+      const maxPage = Math.ceil(cleanRecordTotal / pageSize);
+      if (cleanRecordTotal === 0) { // 总数为0时，展示0页
+        pageNum = 1;
+      } else if (maxPage < pageNum) { // 当前页已超出
+        pageNum = maxPage;
+     }
       yield put({
         type: cleanoutRecordAction.GET_CLEANOUT_RECORD_FETCH_SUCCESS,
         payload: {
           planId,
           cleanRecordTotal: response.data.data.total || 0,
+          cleanRecordPlanTime: response.data.data.planTime || '',
           cleanRecordCost: response.data.data.cleanCost || '',
           cleanRecordProfit: response.data.data.cleanProfit || '',
           cleanRecordTime: response.data.data.cleanTime || 0,
@@ -422,7 +439,7 @@ function* deleteCleanRecord(action) {//1.1.18.删除清洗记录
     console.log(e);
   }
 }
-function* getMatrix(action) {//1.1.14.获取单电站方阵
+function* getMatrix(action) {//获取单电站方阵
   const { payload } = action;
   //const url = '/mock/api/v3/performance/comprehensive/dataavaliba';
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.highAnalysis.getMatrix}`
