@@ -25,7 +25,7 @@ function* getDefectList(action) {
       let { pageNum, pageSize } = payload;
       const maxPage = Math.ceil(total / pageSize);
       if(total === 0){ // 总数为0时，展示0页
-        pageNum = 0;
+        pageNum = 1;
       }else if(maxPage < pageNum){ // 当前页已超出
         pageNum = maxPage;
       }
@@ -40,9 +40,19 @@ function* getDefectList(action) {
           defectStatusStatistics: response.data.data.defectStatusStatistics,
         }
       });      
+    }else{
+      throw response.data
     }
   } catch (e) {
     console.log(e);
+    yield put({ 
+      type: ticketAction.SET_DEFECT_FAIL, 
+      payload: {
+        defectList: [],
+        selectedRowKeys: [],
+        defectStatusStatistics:{},
+      }
+    }); 
   }
 }
 

@@ -109,7 +109,7 @@ const mapStateToProps = (state) => ({
     // defectTypes: state.operation.defect.get('defectTypes').toJS(),
     // defectDetail: state.operation.defect.get('defectDetail').toJS(),
     // deviceAreaItems: state.operation.defect.get('partitions'),
-    deviceItems: state.operation.defect.get('devices'),
+    
     // commonList: state.operation.defect.get('commonList'),
     // allSeries: state.operation.defect.get('allSeries'), // 所有光伏组件
     // firstPartitionCode: state.operation.defect.get('firstPartitionCode'), // 第一方阵code

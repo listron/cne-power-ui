@@ -36,12 +36,8 @@ function* getDefectDetail(action) {
           defectSource:response.data.data.defectSource,
         }
       });
-      if (payload.isEdit === true) { // 如果是驳回需要编辑的时候，组件不一样
-        yield put({
-          type: workOrderAction.changeWorkOrderStore,
-          payload: { container: 'edit' },
-        });
-      }
+    }else{
+      message.error('获取详情失败!!')
     }
   } catch (e) {
     console.log(e);
@@ -118,7 +114,7 @@ function* sendDefect(action) {
     if (response.data.code === '10000') {
       message.success('下发成功！');
       yield put({
-        type: workOrderAction.getworkOrderFetchSuccess,
+        type: workOrderAction.changeWorkOrderStore,
         payload: {
           callBack: true,
         }
@@ -147,7 +143,7 @@ function* rejectDefect(action) {
     if (response.data.code === '10000') {
       message.success('驳回成功！');
       yield put({
-        type: workOrderAction.getworkOrderFetchSuccess,
+        type: workOrderAction.changeWorkOrderStore,
         payload: {
           callBack: true,
         }
@@ -177,7 +173,7 @@ function* closeDefect(action) {
     if (response.data.code === '10000') {
       message.success('关闭成功！');
       yield put({
-        type: workOrderAction.getworkOrderFetchSuccess,
+        type: workOrderAction.changeWorkOrderStore,
         payload: {
           callBack: true,
         }
@@ -206,7 +202,7 @@ function* handleDefect(action) {
     if (response.data.code === '10000') {
       message.success('处理缺陷成功！');
       yield put({
-        type: workOrderAction.getworkOrderFetchSuccess,
+        type: workOrderAction.changeWorkOrderStore,
         payload: {
           callBack: true,
         }
@@ -235,6 +231,12 @@ function* checkDefect(action) {
     console.log(response)
     if (response.data.code === '10000') {
       message.success('验收成功！');
+      yield put({
+        type: workOrderAction.changeWorkOrderStore,
+        payload: {
+          callBack: true,
+        }
+      })
     } else {
       yield put({
         type: workOrderAction.SET_DEFECT_FAIL,

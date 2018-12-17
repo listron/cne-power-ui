@@ -175,18 +175,20 @@ class DefectTable extends Component {
       return null;
     }
   }
-
+  
   tableChange = (pagination, filter, sorter) => { // 进行排序的时候
     // console.log(sorter);
     if (Object.keys(sorter).length !== 0) {
       const field = getDefectSortField(sorter.field);
-      const order = sorter.order ? (sorter.order === 'ascend' ? '0' : '1') : '';
+      const order = sorter.order ? (sorter.order === 'ascend' ? 'asc' : 'desc ') : '';
       this.props.onChangeFilter({
-        sort: field + ',' + order
+        sortField:field, 
+        sortMethod:order,
       });
     } else {
       this.props.onChangeFilter({
-        sort: ''
+        sortField:'', 
+        sortMethod:'',
       });
     }
   }

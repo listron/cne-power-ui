@@ -21,16 +21,9 @@ class Ignore extends Component {
   }
 
   render() {
-    const breadCrumbData = {
-      breadData: [
-        {
-          name: '待处理预警',
-        }
-      ],
-    };
     return (
       <div className={styles.ignoreBox} >
-        <CommonBreadcrumb  {...breadCrumbData} style={{ marginLeft: '38px' }} />
+        <CommonBreadcrumb breadData={[{ name: '待处理预警',}]} style={{ marginLeft: '38px' }} />
         <div className={styles.ignoreContainer}>
           <Ingore {...this.props} />
         </div>

@@ -1,0 +1,68 @@
+@import '../../../theme/theme.scss';
+.deviceName {
+  width: 198px;
+  :global {
+    .ant-select:not(.ant-select-disabled):hover {
+      border-color: $themeColor
+    }
+    .ant-select-disabled,.ant-select-disabled:hover {
+      border-color: $promptColor;
+    }
+    .icon-filter {
+      font-size: 14px;
+      color: $darkColor;
+    }
+  }
+}
+
+.deviceNameSelect{
+  display: flex;
+  flex-direction: column;
+  max-height: 470px;
+  height: 470px;
+  overflow-y: auto;
+  .header {
+    display: flex;
+    flex-direction: row;
+    height: 46px;
+    align-items: center;
+    background-color: #f1f1f1;
+    border-radius: 4px;
+    margin-bottom: 24px;
+    padding-left: 24px;
+    flex-shrink: 0;
+    .deviceType {
+      display: inline-block;
+      background-color: #f7f7f7;
+      border: 1px solid #dfdfdf;
+      border-radius: 4px;
+      width: 112px;
+      margin: 0 24px 0 8px;
+      line-height: 30px;
+      height: 30px;
+      padding-left: 8px;
+    }
+  }
+  .content {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    .deviceItem {
+      background-color: #f1f1f1;
+      border-radius: 4px;
+      width: 135px;
+      height: 24px;
+      line-height: 24px;
+      align-items: center;
+      margin-right: 8px;
+      margin-bottom: 8px;
+      color: $darkColor;
+      font-size: 14px;
+      padding-left: 8px;
+      word-break: break-all;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }  
+}

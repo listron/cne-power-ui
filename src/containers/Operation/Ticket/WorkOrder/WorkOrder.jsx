@@ -12,6 +12,7 @@ import WorkOrderContainer from '../../../../components/Operation/Ticket/WorkOrde
  *  4 onChange 回掉函数 返回的是需要的返回的一个页面
  *  5 pageNum  页数  现在为止，只有缺陷列表页有 选填
     6 pageSize  选填
+    7 showPage  必填  判断是否显示  其他页面转工单需要的判断是否是正确的
  */
 class WorkOrder extends Component {
   static propTypes = {
@@ -27,6 +28,7 @@ class WorkOrder extends Component {
     defectSource: PropTypes.string,
     callback: PropTypes.bool,
     resetStore: PropTypes.func,
+    showPage: PropTypes.bool,
   }
   constructor(props, context) {
     super(props, context)
@@ -34,33 +36,28 @@ class WorkOrder extends Component {
   }
 
   componentDidMount() {
-    const { defectId, getDefectDetail, getDefectCommonList } = this.props;
+    const { defectId, getDefectDetail, getDefectCommonList, showPage } = this.props;
     // 如果是路由传过来的
     // const searchInfo = this.props.history.location.search;
     // const stationCode = searchInfo.substring(searchInfo.indexOf('=') + 1);
-    getDefectDetail({ defectId })
-    getDefectCommonList({ languageType: '1' })
+    console.log('页面刚进来的')
+    showPage && getDefectDetail({ defectId })
+    showPage && getDefectCommonList({ languageType: '1' })
   }
 
   componentWillReceiveProps(nextProps) {
-    const { callback, pageName, onChange, getDefectIdList, stationType, defectSource, pageNum, pageSize } = nextProps;
+    const { callback, pageName, onChange, getDefectIdList, stationType, defectSource, pageNum, pageSize, defectId, getDefectDetail } = nextProps;
+    defectId && defectId !== this.props.defectId && getDefectDetail({ defectId })
     callback && onChange({ pageName })
     stationType && this.props.stationType !== stationType && getDefectIdList({ stationType, defectSource, pageNum, pageSize })
   }
 
-  componentWillUnmount() {
-    console.log('卸载页面')
-    this.props.resetStore()
-  }
-
-
-
-
 
   render() {
+    const { showPage } = this.props;
     return (
-      <div className={styles.workOrderBox} >
-        <WorkOrderContainer {...this.props} />
+      <div className={styles.detailWrap}>
+        {showPage ? <WorkOrderContainer {...this.props} /> : null}
       </div>
     )
   }

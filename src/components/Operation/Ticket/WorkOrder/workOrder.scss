@@ -8,83 +8,76 @@
     border-bottom: solid 1px $promptColor;
 }
 
-.detailWrap {
+.defectDetail {
     display: flex;
-    flex: 1; //background-color: #fff;
     flex-direction: column;
-    justify-content: space-between; //padding: 24px 24px 0;
-    background-color: #ececec;
-    .defectDetail {
-        display: flex;
-        flex-direction: column;
-        flex: 1;
-        background: #fff;
-        .header {
-            @include top;
-            justify-content: space-between;
-            .text {
-                font-size: 18px;
-                color: $darkColor;
-                letter-spacing: 4px;
-            }
-            .backIcon {
-                color: $darkColor;
-                font-size: 20px;
-                border-left: 1px solid $promptColor;
-                margin-left: 10px;
-                height: 100%;
-                line-height: 64px;
-                width: 64px;
-                cursor: pointer;
-            }
-            .backBtn {
-                margin-right: 40px;
-                :global {
-                    a {
-                        color: $themeColor;
-                    }
-                }
-            }
+    flex: 1;
+    background: #fff;
+    .header {
+        @include top;
+        justify-content: space-between;
+        .text {
+            font-size: 18px;
+            color: $darkColor;
+            letter-spacing: 4px;
+        }
+        .backIcon {
+            color: $darkColor;
+            font-size: 20px;
+            border-left: 1px solid $promptColor;
+            margin-left: 10px;
+            height: 100%;
+            line-height: 64px;
+            width: 64px;
+            cursor: pointer;
+        }
+        .backBtn {
+            margin-right: 40px;
             :global {
-                .icon-last,
-                .icon-next {
-                    font-size: 20px;
-                    margin-right: 20px; // color: $darkColor;
+                a {
+                    color: $themeColor;
                 }
             }
         }
-        .content {
-            display: flex;
-            flex-direction: row;
-            flex: 1;
-            padding: 24px 36px;
-            .basic {
-                box-shadow: 0 1px 6px 0 rgba(0, 0, 0, 0.20);
-                border-radius: 4px;
-                flex: 1;
-                display: flex;
-                flex-direction: column;
-                padding: 18px 28px;
-                background-color: #f8f8f8;
+        :global {
+            .icon-last,
+            .icon-next {
+                font-size: 20px;
+                margin-right: 20px; // color: $darkColor;
             }
-            .right {
-                flex: 1;
+        }
+    }
+    .content {
+        display: flex;
+        flex-direction: row;
+        flex: 1;
+        padding: 24px 36px;
+        .basic {
+            box-shadow: 0 1px 6px 0 rgba(0, 0, 0, 0.20);
+            border-radius: 4px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 18px 28px;
+            background-color: #f8f8f8;
+        }
+        .right {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            margin-left: 40px;
+            margin-right: 24px;
+            padding: 18px 0;
+            .timeLines {
                 display: flex;
+                flex-grow: 1;
+                flex-shrink: 1;
+                overflow-y: auto;
                 flex-direction: column;
-                margin-left: 40px;
-                margin-right: 24px;
-                padding: 18px 0;
-                .timeLines {
-                    display: flex;
-                    flex-grow: 1;
-                    flex-shrink: 1;
-                    overflow-y: auto;
-                    flex-direction: column;
-                }
-                .form {
-                    display: flex;
-                    flex-shrink: 0;
-                }
+            }
+            .form {
+                display: flex;
+                flex-shrink: 0;
             }
         }
     }

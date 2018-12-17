@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import DefectBasicInfo from './DefectBasicInfo/DefectBasicInfo';
-import DefectHandleForm from '../DefectHandleForm/DefectHandleForm';
+// import DefectHandleForm from '../DefectHandleForm/DefectHandleForm';
 import DefectTimeLine from './DefectTimeLine/DefectTimeLine';
 import WarningTip from '../../../../Common/WarningTip';
 import styles from './defectDetailForm.scss';
@@ -182,9 +182,9 @@ class DefectDetailForm extends Component {
                 <DefectTimeLine processData={processData} status={status} />
               </div>
               <div className={styles.form}>
-                {  status !== '0' && status !== '4' &&
+                {/* {  status !== '0' && status !== '4' &&
                 <DefectHandleForm commonList={commonList} onSubmit={this.onSubmit}  status={status} />
-                }
+                } */}
               </div>
             </div>
           </div>

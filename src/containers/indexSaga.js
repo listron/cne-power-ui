@@ -40,6 +40,7 @@ import { watchCleanoutRecord} from "./HighAnalysis/CleanoutModel/CleanoutRecord/
 import { watchCleanoutWarning } from "./HighAnalysis/CleanoutModel/CleanoutWarning/cleanoutWarningSaga";
 import { watchUnhandle } from "./HighAnalysis/EarlyWarning/Unhandle/unhandleSaga";
 import { watchIgnore } from "./HighAnalysis/EarlyWarning/Ignore/ignoreSaga";
+import { watchTransfer } from "./HighAnalysis/EarlyWarning/Transfer/transferSaga";
 
 import { watchWorkOrder } from "./Operation/Ticket/WorkOrder/workOrderSaga";
 
@@ -92,7 +93,9 @@ export default function* rootSaga() {
     // 高级分析-低效组串
     watchUnhandle(),
     watchIgnore(),
+    watchTransfer(),
     // 工单
     watchWorkOrder(),
+    
   ])
 }

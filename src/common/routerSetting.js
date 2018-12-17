@@ -50,6 +50,7 @@ import CleanoutRecord from '../containers/HighAnalysis/CleanoutModel/CleanoutRec
 // 高级分析 低效组串预警
 import Unhandle from '../containers/HighAnalysis/EarlyWarning/Unhandle/Unhandle';
 import Ignore from '../containers/HighAnalysis/EarlyWarning/Ignore/Ignore';
+import Transfer from '../containers/HighAnalysis/EarlyWarning/Transfer/Transfer';
 
 
 
@@ -130,7 +131,8 @@ const routers = [
   }, {
     path: '/monitor/alarm/transfer/:defectId',
     exact: true,
-    component: DefectDetail,
+    // component: DefectDetail,
+    component:Building,
   }, { //实时监控-告警-手动解除
     path: '/monitor/alarm/relieve',
     exact: true,
@@ -263,7 +265,8 @@ const routers = [
   { // 高级分析-低效组串预警-已转工单
     path: '/analysis/earlyWarning/transfer',
     exact: true,
-    component: Building
+    // component: Building,
+    component: Transfer
   }, {  // 高级分析-低效组串预警-历史预警
     path: '/analysis/earlyWarning/history',
     exact: true,

@@ -71,25 +71,25 @@ export function getDefectSortField(feild) { // 缺陷排序方式
   var result = '';
   switch (feild) {
     case 'defectLevel':
-      result = '0';
+      result = 'defect_level';
       break;
     case 'stationName':
-      result = '1';
+      result = 'station_code';
       break;
     case 'deviceName':
-      result = '2';
+      result = 'device_code';
       break;
     case 'defectTypeName':
-      result = '3';
+      result = 'defect_type_code';
       break;
     case 'startTime':
-      result = '4';
+      result = 'create_time';
       break;
     case 'finishTime':
-      result = '6';
+      result = 'over_time';
       break;
     case 'defectStatus':
-      result = '7';
+      result = 'defect_status';
       break;
   }
   return result;

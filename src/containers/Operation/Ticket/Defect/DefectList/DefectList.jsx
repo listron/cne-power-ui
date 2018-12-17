@@ -13,19 +13,19 @@ import FilterCondition from '../../../../../components/Common/FilterCondition/Fi
 class DefectList extends Component {
   static propTypes = {
     stationType: PropTypes.string,
-    stationCodes: PropTypes.string,
-    defectSource: PropTypes.string,
-    defectLevel: PropTypes.string,
-    timeInterval: PropTypes.string,
+    stationCodes: PropTypes.array,
+    defectSource: PropTypes.array,
+    defectLevel: PropTypes.array,
     createTimeStart: PropTypes.string,
     createTimeEnd: PropTypes.string,
-    deviceTypeCode: PropTypes.string,
-    defectTypeCode: PropTypes.string,
+    deviceTypeCode: PropTypes.array,
+    defectTypeCode: PropTypes.array,
     handleUser: PropTypes.string,
     status: PropTypes.string,
     pageNum: PropTypes.number,
     pageSize: PropTypes.number,
-    sort: PropTypes.string,
+    sortField: PropTypes.string,
+    sortMethod: PropTypes.string,
 
     selectedRowKeys: PropTypes.array,
     showTab: PropTypes.string,
@@ -53,50 +53,39 @@ class DefectList extends Component {
   }
 
   componentDidMount() {
-    const { stationType, stationCodes, defectSource, defectLevel, timeInterval, status, pageSize, createTimeStart, createTimeEnd, deviceTypeCode, defectTypeCode, sort, handleUser,pageNum } = this.props;
-    // let filter = {
-    //   stationType,
-    //   stationCodes,
-    //   defectSource,
-    //   defectLevel,
-    //   timeInterval,
-    //   status,
-    //   pageNum,
-    //   pageSize,
-    //   createTimeStart,
-    //   createTimeEnd,
-    //   deviceTypeCode,
-    //   defectTypeCode,
-    //   sort,
-    //   handleUser
-    // }
-    let filter={
-      stationType: '2',
-      stationCodes: '',
-      defectSource: '3',
-      defectLevel: '0',
-      timeInterval: '0',
-      status: '5',
-      pageNum: 1,
-      pageSize: 10,
-      createTimeStart: '',
-      createTimeEnd: '',
-      deviceTypeCode: '',
-      defectTypeCode: '',
-      sort: '',
-      handleUser: '',
+    const { stationType, stationCodes, defectSource, defectLevel, status, pageSize, createTimeStart, createTimeEnd, deviceTypeCode, defectTypeCode, sortField, sortMethod, handleUser, pageNum } = this.props;
+    let filter = {
+      stationType,
+      stationCodes,
+      defectSource,
+      defectLevel,
+      status,
+      pageNum,
+      pageSize,
+      createTimeStart,
+      createTimeEnd,
+      deviceTypeCode,
+      defectTypeCode,
+      sortField,
+      sortMethod,
+      handleUser
     }
-    this.props.getDefectList({ ...filter});
+    console.log('我进来了', { ...filter })
+    this.props.getDefectList({ ...filter });
     this.props.getLostGenType({ //获取所有损失缺陷类型
       objectType: 1
     })
+  }
 
+  componentWillReceiveProps(nextProps){
+    // const { stationType, stationCodes, defectSource, defectLevel, status, pageSize, createTimeStart, createTimeEnd, deviceTypeCode, defectTypeCode, sortField, sortMethod, handleUser, pageNum,showTab } = this.props;
+    // showTab!==this.props.showTab && this.props.getDefectList({ ...filter });
   }
 
 
   filterCondition = (changeValue) => {
-    const { stationType, stationCodes, defectSource, defectLevel, timeInterval, status, pageSize, createTimeStart, createTimeEnd, deviceTypeCode, defectTypeCode, sort, handleUser,pageNum } = this.props;
-    console.log('看一下',changeValue)
+    const { stationType, stationCodes, defectSource, defectLevel, timeInterval, status, pageSize, createTimeStart, createTimeEnd, deviceTypeCode, defectTypeCode, sortField, sortMethod, handleUser, pageNum } = this.props;
+    console.log('看一下', changeValue)
     let filter = {
       stationType,
       stationCodes,
@@ -110,7 +99,8 @@ class DefectList extends Component {
       createTimeEnd,
       deviceTypeCode,
       defectTypeCode,
-      sort,
+      sortField,
+      sortMethod,
       handleUser
     }
     this.props.getDefectList({ ...filter, ...changeValue });
@@ -119,7 +109,7 @@ class DefectList extends Component {
 
   render() {
     const { stations, defectTypes, defectList, username, deviceTypes, defectStatusStatistics } = this.props;
-    console.log('haha',this.props);
+    console.log('haha', this.props);
     return (
       <div className={styles.defectList}>
         <FilterCondition
@@ -132,7 +122,7 @@ class DefectList extends Component {
           onChange={this.filterCondition}
         />
         <DefectStatus defectStatusStatistics={defectStatusStatistics} onChange={this.filterCondition} />
-        <DefectTable {...this.props} onChangeFilter={this.onChangeFilter} />
+        <DefectTable {...this.props} onChangeFilter={this.filterCondition} />
       </div>
     );
   }

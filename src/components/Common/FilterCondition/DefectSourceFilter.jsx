@@ -29,7 +29,7 @@ class DefectSourceFilter extends Component {
 
   render() {
     const { defectSource,defectSourceName } = this.props;
-    const levels =defectSourceName ? defectSourceName: ['告警','手动','巡检', '预警',];
+    const levels =defectSourceName ? defectSourceName: ['告警','上报','巡检', '预警',];
     const levelOptions = levels.map((e,i)=>({
       label: e,
       value: `${i+1}`

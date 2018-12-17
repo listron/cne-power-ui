@@ -26,6 +26,7 @@ class DefectDetailForm extends Component {
     onChange: PropTypes.func,
     defectIdList: PropTypes.array,
     defectId: PropTypes.string,
+    resetStore: PropTypes.func,
   }
 
   constructor(props) {
@@ -36,6 +37,12 @@ class DefectDetailForm extends Component {
       warningTipText: '退出后信息无法保存!'
     }
   }
+
+  componentWillUnmount() {
+    console.log('卸载页面')
+    this.props.resetStore()
+  }
+
 
   onCancelEdit = () => {
     this.setState({ showWarningTip: true, });
@@ -128,10 +135,10 @@ class DefectDetailForm extends Component {
 
   onNext = () => { // 向后
     const { defectIdList, defectId } = this.props;
-    console.log('defectId',this.props)
+    console.log('defectId', this.props)
     let index = defectIdList.findIndex(e => e === defectId);
     if (index > -1) {
-      if (index === defectIdList.length-1) {
+      if (index === defectIdList.length - 1) {
         message.destroy();
         message.config({
           top: 130,
@@ -140,7 +147,7 @@ class DefectDetailForm extends Component {
         });
         message.info('已经是最后一条');
       } else {
-        this.props.getDefectDetail({ defectId: defectIdList[index +1] });
+        this.props.getDefectDetail({ defectId: defectIdList[index + 1] });
       }
     }
   }
@@ -189,7 +196,7 @@ class DefectDetailForm extends Component {
     const status = defectDetail.defectStatus;
     const handleData = defectDetail.handleData
     return (
-      <div className={styles.detailWrap}>
+      <React.Fragment>
         {showWarningTip && <WarningTip onCancel={this.onCancelWarningTip} onOK={this.onConfirmWarningTip} value={warningTipText} />}
         <div className={styles.defectDetail}>
           <div className={styles.header}>
@@ -216,8 +223,7 @@ class DefectDetailForm extends Component {
             </div>
           </div>
         </div>
-
-      </div>
+      </React.Fragment>
     );
   }
 }

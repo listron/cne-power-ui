@@ -6,7 +6,7 @@ import Footer from '../../../components/Common/Footer';
 import { ticketAction } from './ticketAction';
 import styles from './ticket.scss';
 import DefectList from './Defect/DefectList/DefectList';
-import DefectDetail from './Defect/DefectDetail/DefectDetail';
+// import DefectDetail from './Defect/DefectDetail/DefectDetail';
 import DefectCreate from './Defect/DefectCreate/DefectCreate';
 import InspectList from './Inspect/InspectList/InspectList';
 import InspectDetail from './Inspect/InspectDetail/InspectDetail';
@@ -59,7 +59,7 @@ class Ticket extends Component {
     // }
     // this.props.getDefectList(params);
     // this.props.getDefectIdList(params);
-    
+
   }
 
   componentWillUnmount() {
@@ -91,37 +91,17 @@ class Ticket extends Component {
       }
       this.props.getInspectList(params);//获取巡检列表
       this.props.getInspectIdList(params);
-    } else {
-      // this.props.clearInspectState();//清除巡检状态
-      // var params = {
-      //   stationType: '2',
-      //   stationCodes: '',
-      //   defectSource: '3',
-      //   defectLevel: '0',
-      //   timeInterval: '0',
-      //   status: '5',
-      //   pageNum: 1,
-      //   pageSize: 10,
-      //   createTimeStart: '',
-      //   createTimeEnd: '',
-      //   deviceTypeCode: '',
-      //   defectTypeCode: '',
-      //   sort: '',
-      //   handleUser: '',
-      // }
-      // this.props.getDefectList(params);//获取缺陷列表
-      // this.props.getDefectIdList(params);
-    }
+    } 
   }
 
   prevChange = (e) => {
     console.log('需要返回的一个页面', e)
-    this.props.onChangeShowContainer({ container: e.pageName});
+    this.props.onChangeShowContainer({ container: e.pageName });
   }
 
   render() {
-    const { showContainer, onChangeShowContainer, defectId ,pageSize,pageNum} = this.props;
-    console.log('hahah',this.props)
+    const { showContainer, onChangeShowContainer, defectId, pageSize, pageNum } = this.props;
+    console.log('hahah', this.props)
     const { tab } = this.state;
     return (
       <div className={styles.ticketBox}>
@@ -137,10 +117,9 @@ class Ticket extends Component {
               </TabPane>
             </Tabs>
           }
-        
-          {tab === 'defect' && showContainer === 'detail' && defectId &&  
-            <WorkOrder defectId={defectId} otherFrom={false} pageName={'list'} onChange={this.prevChange} pageNum={pageNum}
-            pageSize={pageSize} />}
+
+          {tab === 'defect' && showContainer === 'detail' && defectId &&
+            <WorkOrder defectId={defectId} otherFrom={false} pageName={'list'} onChange={this.prevChange} pageNum={pageNum} pageSize={pageSize} showPage={true} />}
           {tab === 'defect' && (showContainer === 'create' || showContainer === 'edit') && <DefectCreate {...this.props} />}
 
           {tab === 'inspect' && showContainer === 'detail' && <InspectDetail {...this.props} />}
@@ -158,8 +137,8 @@ const mapStateToProps = (state) => {
   return {
     ...state.operation.ticket.toJS(),
     defectId: state.operation.defect.get('defectId'),
-    pageNum:state.operation.defect.get('pageNum'),
-    pageSize:state.operation.defect.get('pageSize'),
+    pageNum: state.operation.defect.get('pageNum'),
+    pageSize: state.operation.defect.get('pageSize'),
   }
 }
 

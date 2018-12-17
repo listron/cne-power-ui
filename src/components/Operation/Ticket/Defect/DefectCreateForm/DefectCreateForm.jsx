@@ -5,7 +5,7 @@ import ImgUploader from '../../../../Common/Uploader/ImgUploader';
 import { Form, Input, Button, Select, Switch, Radio, Cascader } from 'antd';
 import pathConfig from '../../../../../constants/path';
 import styles from './defectCreateForm.scss';
-import DeviceName from '../../../../Common/DeviceName';
+import DeviceName from '../../../../Common/NewDeviceName';
 import InputLimit from '../../../../Common/InputLimit';
 // import CommonInput from '../../../../Common/CommonInput';
 import CommonInput from '../../../../Common/CommonInput/index1';
@@ -34,8 +34,8 @@ class TmpForm extends Component {
     changeCommonStore: PropTypes.func,
     defectDetail: PropTypes.object,
     deviceTypes: PropTypes.array,
-    deviceAreaItems: PropTypes.object,
-    deviceItems: PropTypes.object,
+    partitions: PropTypes.array,
+    devices: PropTypes.array,
     commonList: PropTypes.array,
     error: PropTypes.object,
     getSliceDevices: PropTypes.func,
@@ -169,10 +169,10 @@ class TmpForm extends Component {
     let deviceType = ''
     const { deviceTypes } = this.props;
     let index = deviceTypes.findIndex((item) => {
-      return item.get('deviceTypeCode') === code
+      return item.deviceTypeCode === code
     });
     if (index !== -1) {
-      deviceType = deviceTypes.getIn([index, 'deviceTypeName']);
+      deviceType = deviceTypes[index].deviceTypeName;
     }
     return deviceType;
   }
@@ -194,7 +194,7 @@ class TmpForm extends Component {
 
 
   render() {
-    let { stations, stationName, deviceTypes, devices, defectTypes, deviceItems, defectDetail, showContainer, allSeries, firstPartitionCode,commonList } = this.props;
+    let { stations, stationName, deviceTypes, devices, defectTypes, defectDetail, showContainer, allSeries, firstPartitionCode,commonList } = this.props;
     console.log('deviceItems')
     const { getFieldDecorator, getFieldValue } = this.props.form;
     const defectFinished = getFieldValue('defectSolveResult') === '0';
@@ -236,7 +236,7 @@ class TmpForm extends Component {
             基本信息
             <i className="iconfont icon-content" />
           </div>
-          {/* <FormItem label="电站名称" colon={false}>
+          <FormItem label="电站名称" colon={false}>
             {getFieldDecorator('stations', {
               rules: [{ required: true, message: '请选择电站' }],
               initialValue: defaultStations,
@@ -244,7 +244,7 @@ class TmpForm extends Component {
               <StationSelect data={stations} multiple={false} onOK={this.onStationSelected} />
             )}
             <div className={styles.tipText}>(点击<i className="iconfont icon-filter" />图标可选择)</div>
-          </FormItem> */}
+          </FormItem>
           <FormItem label="设备类型" colon={false}>
             {getFieldDecorator('deviceTypeCode', {
               rules: [{ required: true, message: '请选择设备类型' }],
@@ -255,7 +255,7 @@ class TmpForm extends Component {
               </Select>
             )}
           </FormItem>
-          {/* <FormItem label="设备名称" colon={false}>
+          <FormItem label="设备名称" colon={false}>
             {getFieldDecorator('deviceCode', {
               rules: [{ required: true, message: '请选择设备名称' }],
               initialValue: defaultDevice && defaultDevice.deviceCode || undefined
@@ -263,10 +263,10 @@ class TmpForm extends Component {
               <DeviceName
                 stationName={stationName}
                 allSeries={Immutable.fromJS(allSeries)}
-                disabled={deviceItems.length === 0}
+                disabled={devices.length === 0}
                 placeholder="输入关键字快速查询"
-                deviceAreaItems={this.props.deviceAreaItems}
-                deviceItems={deviceItems}
+                deviceAreaItems={this.props.partitions}
+                deviceItems={devices}
                 stationCode={stationCode}
                 deviceAreaCode={this.state.deviceAreaCode}
                 deviceTypeCode={getFieldValue('deviceTypeCode')}
@@ -277,7 +277,7 @@ class TmpForm extends Component {
               />
             )}
             <div className={styles.tipText}>(点击<i className="iconfont icon-filter" />图标可选择)</div>
-          </FormItem> */}
+          </FormItem>
           <FormItem label="缺陷类型" colon={false}>
             {getFieldDecorator('defectTypeCode', {
               rules: [{ required: true, message: '请选择缺陷类型' }],
