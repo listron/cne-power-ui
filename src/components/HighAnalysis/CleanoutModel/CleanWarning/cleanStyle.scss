@@ -1,0 +1,9 @@
+@import '../../../../theme/theme.scss';
+
+.cleanWarningMain{
+  @include contentBoxStyle();
+}
+
+.clearWarningSide{
+  @include contentBoxStyle();
+}

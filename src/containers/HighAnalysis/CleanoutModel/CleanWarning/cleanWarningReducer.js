@@ -20,11 +20,11 @@ var initState = Immutable.fromJS({
 
 const cleanWarning = (state = initState, action) => {
   switch (action.type) {
-    case cleanWarningAction.CLEANOUT_WARNING_FETCH:
+    case cleanWarningAction.CLEAN_WARNING_FETCH:
       return state.set('loading',true)
-    case cleanWarningAction.GET_CLEANOUT_WARNING_FETCH_SUCCESS :
+    case cleanWarningAction.GET_CLEAN_WARNING_FETCH_SUCCESS :
       return state.merge(Immutable.fromJS(action.payload)).set('loading',false)
-    case cleanWarningAction.CHANGE_CLEANOUT_WARNING_STORE:
+    case cleanWarningAction.CHANGE_CLEAN_WARNING_STORE:
       return state.merge(Immutable.fromJS(action.payload))
     case cleanWarningAction.RESET_STORE:
       return initState

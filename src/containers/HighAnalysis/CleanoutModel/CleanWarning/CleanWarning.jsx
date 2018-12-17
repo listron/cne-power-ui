@@ -11,47 +11,31 @@ import CleanWarningSide from '../../../../components/HighAnalysis/CleanoutModel/
 class CleanWarning extends Component {
   static propTypes = {
     showPage: PropTypes.string,
+    resetCleanWarningStore: PropTypes.func,
   }
 
   constructor(props) {
     super(props);
-    this.state = {
-      showSidePage: 'list'
-    }
   }
 
-  onShowSideChange = ({showSidePage}) => {
-    this.setState({ showSidePage });
-  }
-
-  onToggleSide = () => {
-    const { showPage } = this.props;
-    this.setState({
-      showSidePage: showPage
-    });
+  componentWillUnmount(){
+    this.props.resetCleanWarningStore();
   }
 
   render() {
     console.log(this.props);
-    const { showSidePage } = this.state;
     const { showPage } = this.props;
     return (
-      <div className={styles.cleanWarningBox} id="cleanWarningBox">
+      <div className={styles.cleanWarningBox}>
         <CommonBreadcrumb  breadData={[{ name: '清洗预警' }]} style={{ marginLeft: '38px' }} />
         <div className={styles.cleanWarningContainer}>
           <CleanWarningMain {...this.props} />
           <TransitionContainer
-            show={showPage!=='list'}
-            onEnter={this.onToggleSide}
-            onExited={this.onToggleSide}
+            show={showPage !== 'list'}
             timeout={500}
             effect="side"
           >
-            <CleanWarningSide
-              {...this.props} 
-              showSidePage={showSidePage}
-              onShowSideChange={this.onShowSideChange} 
-            />
+            <CleanWarningSide {...this.props} />
           </TransitionContainer>
         </div>
       </div>
@@ -63,6 +47,7 @@ const mapStateToProps = (state) => ({
   stations: state.common.get('stations').toJS()
 })
 const mapDispatchToProps = (dispatch) => ({
-  // changeCleanoutWarningStore: payload => dispatch({type:cleanWarningAction.CHANGE_CLEANOUT_WARNING_STORE_SAGA, payload}),
+  changeCleanWarningStore: payload => dispatch({type:cleanWarningAction.CHANGE_CLEAN_WARNING_STORE, payload}),
+  resetCleanWarningStore: payload => dispatch({type: cleanWarningAction.RESET_STORE})
 })
 export default connect(mapStateToProps, mapDispatchToProps)(CleanWarning)

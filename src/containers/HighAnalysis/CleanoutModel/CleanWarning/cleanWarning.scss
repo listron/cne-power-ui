@@ -1,27 +1,12 @@
+@import '../../../../theme/theme.scss';
+
 .cleanWarningBox{
   min-height: 100%;
   display: flex;
   flex:1;
-  height: 18782px;
   flex-direction: column;
   .cleanWarningContainer{
     display: flex;
-    flex: 1;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 24px 24px 0;
-    background-color: #ececec;                       
-  }
-  .drawer{
-    height: calc(100vh - 59px);
-    top: 59px;
-    right: calc(180px - 100vw);
-    :global{
-      .ant-drawer-content-wrapper{
-        transition-duration: 0.5s;
-        transition-timing-function: linear;
-        box-shadow: none;
-      }
-    }
+    flex: 1;                
   }
 }

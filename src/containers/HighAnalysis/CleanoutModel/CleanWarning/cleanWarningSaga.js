@@ -8,7 +8,6 @@ import { cleanWarningAction } from './cleanWarningAction';
 
 
 export function* watchCleanWarning() {
-  // yield takeLatest(cleanWarningAction.CHANGE_CLEANOUT_WARNING_STORE_SAGA, changeCleanoutWarningStore);
   // yield takeLatest(cleanWarningAction.resetStore, resetStore);
 }
 
