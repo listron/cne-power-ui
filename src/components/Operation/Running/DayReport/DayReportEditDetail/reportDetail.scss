@@ -6,7 +6,6 @@
   .reportSubTitle{
     width: 100px;
     text-align: right;
-
     svg{
       font-size: 10px;
       width: 8px;
@@ -66,12 +65,7 @@
           text-align: right;
           display: inline-block;
         }
-        span{
-
-        }
       }
-      
-
     }
   }
   .lostInfo, .limitInfo, .powerGenInfo{
@@ -85,7 +79,7 @@
     .lostInfoTable, .limitInfoTable, .powerGenInfoCon{
       padding: 0 56px;
       :global{
-        .reason, .process{
+        .reason, .deviceName, .process{
           max-width: 180px;
           overflow: hidden;
           white-space: nowrap;
@@ -113,14 +107,12 @@
       }
     }
   }
-  
 }
 
 .reportEdit{
   background: #fff;
   border:1px solid #e1e2e2;
   flex: 1;
-
   .reportDetailTitle{
     height: 64px;
     border-bottom: 1px solid #dfdfdf;
