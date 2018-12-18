@@ -73,6 +73,7 @@ class CleanWarningSide extends Component {
             stationChange={this.changeStation}
             showStationList={this.showStationList}
             stationCheckActive={stationCheckActive}
+            backToList={this.backToList}
           />
           <Button onClick={this.backToList}>返回主页面</Button>
         </div>

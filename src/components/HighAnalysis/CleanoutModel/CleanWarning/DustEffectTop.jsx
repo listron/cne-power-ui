@@ -5,7 +5,7 @@ import styles from './cleanStyle.scss';
 
 export const DustEffectStation = ({...props}) => {
   const {
-    stations, stationChange, showStationList, dustEffectInfo, stationCheckActive
+    stations, stationChange, showStationList, dustEffectInfo, stationCheckActive, backToList
   } = props;
   console.log(props)
   const { stationCode } = dustEffectInfo;
@@ -57,7 +57,7 @@ export const DustEffectStation = ({...props}) => {
           {currentStation.stationName || '--'} - {currentStation.provinceName || '--'}
         </span>
       </div>
-      <div className={styles.rightPart}>
+      <div className={styles.rightPart} onClick={backToList}>
         <Icon type="arrow-left" className={styles.backIcon} />
       </div>
     </div>
@@ -70,6 +70,7 @@ DustEffectStation.propTypes = {
   dustEffectInfo: PropTypes.object,
   stationChange: PropTypes.func,
   showStationList: PropTypes.func,
+  backToList: PropTypes.func,
 }
 
 export const DustBaseInfo = ({}) => {
