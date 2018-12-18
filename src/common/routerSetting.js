@@ -240,7 +240,8 @@ const routers = [
     path: '/analysis/cleanout/record',
     exact: true,
     // component: CleanoutRecordMain,
-    component: Building
+     component: CleanoutRecord,
+    //component: Building
   },{//单电站清洗计划与记录详情
     path: '/analysis/cleanout/record/:stationCode',
     exact: true,
