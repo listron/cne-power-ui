@@ -27,23 +27,37 @@ export const DustEffectStation = ({...props}) => {
   // 将电站按所属省份分组
   return (
     <div className={styles.topStations}>
-      <div>
-        {groupedStation.map(provinceInfo => (
-          <div>
-            <h3>{provinceInfo.provinceName}</h3>
-            <div>
-              {provinceInfo.innerStation.map(station => (
-                <span>{station.stationName}</span>
-              ))}
+      {stationCheckActive && <div className={styles.stationList}>
+        <h3 className={styles.title}>
+          <Icon type="swap" />
+          <span>{currentStation.stationName || '--'} - {currentStation.provinceName || '--'}</span>
+        </h3>
+        <div className={styles.eachProvince}>
+          {groupedStation.map(provinceInfo => (
+            <div key={provinceInfo.provinceName}>
+              <h3 className={styles.provinceName}>{provinceInfo.provinceName}</h3>
+              <div className={styles.stationContent}>
+                {provinceInfo.innerStation.map(station => (
+                  <span
+                    key={station.stationName}
+                    className={styles.stationName}
+                    onClick={() => stationChange({stationCode: station.stationCode})}
+                  >
+                    {station.stationName}
+                  </span>
+                ))}
+              </div>
             </div>
-          </div>
-        ))}
-      </div>
-      <div>
+          ))}
+        </div>
+      </div>}
+      <div className={styles.leftPart}>
         <Icon type="swap" onClick={showStationList} />
-        <span>{currentStation.stationName || '--'} - {currentStation.provinceName || '--'}</span>
+        <span className={styles.stationName}>
+          {currentStation.stationName || '--'} - {currentStation.provinceName || '--'}
+        </span>
       </div>
-      <div>
+      <div className={styles.rightPart}>
         <Icon type="arrow-left" className={styles.backIcon} />
       </div>
     </div>
