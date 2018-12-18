@@ -327,10 +327,13 @@ function *getDictionaryInfo(action){ // 获取覆盖类型、并网电压等级�
   try{
     const { actionName, resultName, params } = payload;
     const response = yield call(axios.post, url, params);
-    yield put({
-      type: actionName,
-      payload: { [resultName]: response.data.data || []}
-    })
+    if(response.data.code === "10000"){
+      yield put({
+        type: actionName,
+        payload: { [resultName]: response.data.data || []}
+      })
+    }
+   
   }catch(error){
     message.error('获取数据失败!');
   }

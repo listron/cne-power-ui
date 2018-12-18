@@ -4,18 +4,17 @@ import { message } from 'antd';
 import Path from '../../../../constants/path';
 import { ignoreAction } from './ignoreAction';
 
-function *changeIgnoreStore(action){ // 存储payload指定参数，替换reducer-store属性。
+function* changeIgnoreStore(action) { // 存储payload指定参数，替换reducer-store属性。
   const { payload } = action;
   yield put({
-    type:  ignoreAction.changeIgnoreStore,
+    type: ignoreAction.changeIgnoreStore,
     payload,
   })
 }
 
-
-function *resetStore(){
+function* resetStore() {
   yield put({
-    type:  ignoreAction.RESET_STORE
+    type: ignoreAction.RESET_STORE
   })
 }
 
@@ -28,7 +27,7 @@ function* getIgnoreList(action) { // 忽略列表
       ...payload,
     });
     if (response.data.code === '10000') {
-      const totalNum = response.data.data && response.data.data[0] && response.data.data[0].totalCount || 0;
+      const totalNum = response.data.data && response.data.data.total || 0;
       let { pageNum, pageSize } = payload;
       const maxPage = Math.ceil(totalNum / pageSize);
       if (totalNum === 0) { // 总数为0时，展示0页
@@ -45,23 +44,18 @@ function* getIgnoreList(action) { // 忽略列表
           pageNum,
         },
       });
-    }else{
-      yield put({
-        type: ignoreAction.changeIgnoreStore,
-        payload: { ...payload, loading: false },
-      })
-    }
+    } else { throw response.data }
   } catch (e) {
     console.log(e);
+    // message.error('获取列表失败')
     yield put({
       type: ignoreAction.changeIgnoreStore,
-      payload: { ...payload, loading: false },
+      payload: { ...payload, loading: false ,ignoreList:[]},
     })
   }
 }
 
-
-function *getMatrixlist(action){  // 获取方阵下的列表
+function* getMatrixlist(action) {  // 获取方阵下的列表
   const { payload } = action;
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.highAnalysis.getMatrixList}`
   try {
@@ -77,10 +71,10 @@ function *getMatrixlist(action){  // 获取方阵下的列表
           matrixList: response.data.data || [],
         },
       });
-    }else{
+    } else {
       yield put({
         type: ignoreAction.changeIgnoreStore,
-        payload: { ...payload, loading: false ,matrixList:[]},
+        payload: { ...payload, loading: false, matrixList: [] },
       })
     }
   } catch (e) {
@@ -92,18 +86,16 @@ function *getMatrixlist(action){  // 获取方阵下的列表
   }
 }
 
-
-
-
-function *getUnignore(action){  // 取消忽略
+function* getUnignore(action) {  // 取消忽略
   const { payload } = action;
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.highAnalysis.unignore}`
   try {
-    yield put({ type: ignoreAction.unhadleFetch });
+    yield put({ type: ignoreAction.ignoreFetch });
     const response = yield call(axios.post, url, {
       ...payload,
     });
     if (response.data.code === '10000') {
+      message.success("取消忽略成功")
       const params = yield select(state => ({
         stationCodes: state.highAanlysisReducer.unhandle.get('stationCodes'),
         belongMatrixs: state.highAanlysisReducer.unhandle.get('belongMatrixs'),
@@ -116,21 +108,19 @@ function *getUnignore(action){  // 取消忽略
       })
       );
       yield put({
-        type: ignoreAction.getUnhandleList,
+        type: ignoreAction.getIgnoreList,
         payload: params,
       });
-    }
+    } else { throw response.data }
   } catch (e) {
     console.log(e);
+    message.error("取消忽略失败")
     yield put({
-      type: ignoreAction.changeUnhandleStore,
+      type: ignoreAction.changeIgnoreStore,
       payload: { loading: false },
     })
   }
 }
-
-
-
 
 
 export function* watchIgnore() {
@@ -139,6 +129,6 @@ export function* watchIgnore() {
   yield takeLatest(ignoreAction.getIgnoreList, getIgnoreList);
   yield takeLatest(ignoreAction.getMatrixlist, getMatrixlist);
   yield takeLatest(ignoreAction.getUnignore, getUnignore);
- 
+
 }
 

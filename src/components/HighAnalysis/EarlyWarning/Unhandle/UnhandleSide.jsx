@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import echarts from 'echarts';
-import styles from './unhandle.scss';
+import styles from './newUnhandle.scss';
 import PropTypes from 'prop-types';
 import { Select, Table, Button, DatePicker, Icon } from 'antd';
 // import { showNoData, hiddenNoData } from '../../../../constants/echartsNoData';
@@ -25,6 +25,7 @@ class UnhandleSide extends Component {
     sequenceChartList: PropTypes.array,
     getSequencechart: PropTypes.func,
     deviceCode: PropTypes.string,
+    dealSuccess:PropTypes.bool,
 
   }
   constructor(props) {
@@ -37,8 +38,9 @@ class UnhandleSide extends Component {
   }
 
 
+
   handleClose = () => { // 点击返回按钮
-    this.props.changeUnhandleStore({ pageName: '' })
+    this.props.changeUnhandleStore({ pageName: '',dealSuccess:false })
   }
 
 
@@ -61,14 +63,13 @@ class UnhandleSide extends Component {
   }
 
   cancelWarningTip = () => { // 点击取消
-    this.setState({ showWarningTip: false, selectedRowKeys: [] })
+    this.setState({ showWarningTip: false })
   }
 
   confirmWarningTip = () => { // 点击确定
-    const { toorder } = this.props;
-    const { selectedRowKeys } = this.state;
-    this.setState({ showWarningTip: false, selectedRowKeys: [] })
-    toorder(selectedRowKeys)
+    const { toorder,inefficiencyId } = this.props;
+    this.setState({ showWarningTip: false})
+    toorder({inefficiencyIds:Array.of(inefficiencyId)})
   }
 
   disabledDate = (current) => {// 不可以选择的时间
@@ -87,7 +88,7 @@ class UnhandleSide extends Component {
   }
 
   render() {
-    const { warnDetail, ignoreReason, sequenceChartList } = this.props;
+    const { warnDetail, ignoreReason, sequenceChartList ,dealSuccess} = this.props;
     const { showWarningTip, warningTipText, ingoreVisible } = this.state;
     const happenTime = warnDetail.happenTime;
     const deviceName = warnDetail.deviceName;
@@ -98,8 +99,13 @@ class UnhandleSide extends Component {
         <div className={styles.top}>
           <div>
             <span>预警处理</span>
-            <Button className={styles.warnButton} onClick={() => { this.selectChange('ignore') }}> 忽略 </Button>
-            <Button className={styles.warnButton} onClick={() => { this.selectChange('transfer') }}> 转工单</Button>
+            {
+              !dealSuccess &&
+              <React.Fragment>
+                <Button className={styles.warnButton} onClick={() => { this.selectChange('ignore') }}> 忽略 </Button>
+                <Button className={styles.warnButton} onClick={() => { this.selectChange('transfer') }}> 转工单</Button>
+              </React.Fragment>
+            }
           </div>
           <Icon type="arrow-left" className={styles.backIcon} onClick={this.handleClose} />
         </div>

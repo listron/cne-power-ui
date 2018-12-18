@@ -188,15 +188,20 @@ export default {
       boxtransformerDetail: '/v3/monitor/boxtransformer',//箱变详情
       boxtransformerTenMin: '/v3/monitor/boxtransformer/sequencechart',//箱变10min时序图
       weatherstationDetail: '/v3/monitor/weatherstation', //气象站详情
+      integrateDetail: '/v3/monitor/collectorline', // 集电线路详情
+      boosterDetail: '/v3/monitor/boosterstation', // 升压站详情
       monitorPointData: '/v3/monitor/point', //设备测点数据
       deviceAlarmData: '/v3/alarm/device', // 单设备告警信息
       getRealtimeAlarm: '/v3/alarm/station/alarmlist', //实时告警信息
       exportAlarmStatistic: '/v3/alarm/station/alarmsummary/export',//导出告警统计
 
-      getPvmoduleList: '/v3/monitor/pvmodule/datalist/',//光伏组件实时
-      getInverterList: '/v3/monitor/seriesinverter/datalist/',// 组串式逆变器实时
-      getBoxTransformerList: '/v3/monitor/boxtransformer/datalist/',//箱变实时
-      getConfluenceBoxList: '/v3/monitor/confluencebox/datalist/', // 汇流箱列表
+      getPvmoduleList: '/v3/monitor/pvmodule/datalist/',//光伏组件列表 实时
+      getInverterList: '/v3/monitor/seriesinverter/datalist/',// 组串式逆变器列表 实时
+      getBoxTransformerList: '/v3/monitor/boxtransformer/datalist/',//箱变列表 实时
+      getConfluenceBoxList: '/v3/monitor/confluencebox/datalist/', // 汇流箱列表 实时
+      getCollectorLine: '/v3/monitor/collectorline/datalist/', // 集电线路列表 实时
+      getBoosterstation: '/v3/monitor/boosterstation/datalist/', // 升压站列表 实时
+      getPowerNet: '/v3/monitor/powercollection/datalist/', // 电网列表 实时
       getSingleStation: '/v3/monitor/station/',//单电站实时数据
       getCapabilityDiagram: '/v3/monitor/capabilitydiagram/',//单电站出力图表
       getMonitorPower: '/v3/monitor/power/',//单电站理论发电量-实际发电量图表
@@ -258,24 +263,26 @@ export default {
       getOperateYearLimitPower: '/v3/performance/operationanalysis/limitpower/year',
       getOperatePlantPower: '/v3/performance/operationanalysis/plantpower',
 
-     // 资源分析
-     getResourcePlan:'/v3/performance/resource/plan',
-     getResourceMonthLight:'/v3/performance/resource/distribution/months',
-     getResourceYearLight:'/v3/performance/resource/distribution/year',
-     getResourceMonthWeather:'/v3/performance/resource/weather/years',
-     getResourceDayWeather:'/v3/performance/resource/weather/day',
-     //设备分析
-     getEleLineCode:'/v3/performance/deviceanalysis/getEleLineCode',//集成线路接口
-     getconversioneff:'/v3/performance/deviceanalysis/conversioneff',//转换效率
-     getconversioneffContrast:'/v3/performance/deviceanalysis/conversioneff/contrast',//转换效率对比
-     getHours:'/v3/performance/deviceanalysis/hours',//等效小时数、故障次数、故障时长
-     getHoursContrast:'/v3/performance/deviceanalysis/hours/contrast',//等效小时数、故障次数、故障时长对比
-     getAvailability:'/v3/performance/deviceanalysis/availability',//利用率及损失电量
-     getAvailabilityContrast:'/v3/performance/deviceanalysis/availability/contrast',//利用率及损失电量对比
+      // 资源分析
+      getResourcePlan:'/v3/performance/resource/plan',
+      getResourceMonthLight:'/v3/performance/resource/distribution/months',
+      getResourceYearLight:'/v3/performance/resource/distribution/year',
+      getResourceMonthWeather:'/v3/performance/resource/weather/years',
+      getResourceDayWeather:'/v3/performance/resource/weather/day',
+      //设备分析
+      getEleLineCode:'/v3/performance/deviceanalysis/getEleLineCode',//集成线路接口
+      getconversioneff:'/v3/performance/deviceanalysis/conversioneff',//转换效率
+      getconversioneffContrast:'/v3/performance/deviceanalysis/conversioneff/contrast',//转换效率对比
+      getHours:'/v3/performance/deviceanalysis/hours',//等效小时数、故障次数、故障时长
+      getHoursContrast:'/v3/performance/deviceanalysis/hours/contrast',//等效小时数、故障次数、故障时长对比
+      getAvailability:'/v3/performance/deviceanalysis/availability',//利用率及损失电量
+      getAvailabilityContrast:'/v3/performance/deviceanalysis/availability/contrast',//利用率及损失电量对比
 
-     //通用报表
-     dailyreport:'v3/performance/dailyreport',
-     
+      //通用报表
+      dailyreport:'v3/performance/dailyreport',
+      faultReport: 'v3/performance/generalreport/fault',
+      genReport: 'v3/performance/generalreport/gen',
+      indicatorReport: 'v3/performance/generalreport/indicator',
     },
     highAnalysis:{
       getUnhandleList:'/v3/forewarning/unhandlelist', // 待处理预警／历史预警
@@ -308,6 +315,11 @@ export default {
       editCleanRecord:'/v3/pvclean/record/',
       getCleanRecordDetail: '/v3/pvclean/record/',
       deleteCleanRecord: '/v3/pvclean/record/',
+      //通用报表
+      dailyreport:'v3/performance/dailyreport', // 日报
+      faultReport: 'v3/performance/generalreport/fault', // 故障日报
+      genReport: 'v3/performance/generalreport/gen', // 发电量信息
+      indicatorReport: 'v3/performance/generalreport/indicator', // 生产运营指标
     }
   }
 }

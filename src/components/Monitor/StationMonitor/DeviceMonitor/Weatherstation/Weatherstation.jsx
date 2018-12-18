@@ -23,12 +23,12 @@ class Weatherstation extends Component {
   }
 
   componentWillReceiveProps(nextProps){
-    const { deviceCode, deviceTypeCode, stationCode } = this.props.match.params;
+    const { deviceCode } = this.props.match.params;
     const nextParams = nextProps.match.params;
     const nextDevice = nextParams.deviceCode;
     const nextType = nextParams.deviceTypeCode;
     const nextStation = nextParams.stationCode;
-    if( nextDevice !== deviceCode || nextType !== deviceTypeCode || nextStation !== stationCode ){
+    if( nextDevice !== deviceCode && nextType === '203' ){
       clearTimeout(this.timeOutId);
       this.getData(nextStation, nextDevice, nextType);
     }

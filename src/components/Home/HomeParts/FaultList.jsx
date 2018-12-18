@@ -4,6 +4,7 @@ import styles from './homeParts.scss';
 import PropTypes from 'prop-types';
 import { showNoData, hiddenNoData } from '../../../constants/echartsNoData';
 import echarts from 'echarts';
+import { dataFormat } from '../../../utils/utilFunc';
 
 class FaultList extends Component {
   static propTypes = {
@@ -67,13 +68,15 @@ class FaultList extends Component {
         containLabel: true,
       },
       tooltip: {
+        trigger: 'axis',
         extraCssText: 'background-color: rgba(0,0,0,0.8)',
         padding: 10,
         formatter: params => {
-          const currentData = chartData[params.dataIndex];
+          const currentInfo = params[0] || {};
+          const currentData = chartData[currentInfo.dataIndex] || {};
           return `<div class=${styles.faultTool}>
             <div>${currentData.month}月</div>
-            <div>故障台次${currentData.number}</div>
+            <div>故障台次${dataFormat(currentData.number)}</div>
           </div>`
         },
       },
@@ -105,6 +108,7 @@ class FaultList extends Component {
           nameTextStyle: {
             fontSize: 10,
             color: '#06bdf4',
+            padding: [0, 0, 0, 10],
           },
           axisLabel: {
             color: '#06bdf4',
