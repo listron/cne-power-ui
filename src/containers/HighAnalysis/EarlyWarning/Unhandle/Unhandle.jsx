@@ -11,7 +11,8 @@ import UnhandleContainer from '../../../../components/HighAnalysis/EarlyWarning/
 
 class Unhandle extends Component {
   static propTypes = {
-
+    getDictionaryInfo:PropTypes.func,
+    resetStore:PropTypes.func,
   }
   constructor(props, context) {
     super(props, context)
@@ -19,21 +20,17 @@ class Unhandle extends Component {
   }
 
   componentDidMount(){
-    // this.props.getLostGenType({objectType:1,stationCodes:350})
-    // this.props.getLostGenType({objectType:1})
+    this.props.getDictionaryInfo({dictionaryTypes:["ignore_reason"],area:0})
+  }
+
+  componentWillUnmount(){
+    this.props.resetStore()
   }
 
   render() {
-    const breadCrumbData = {
-      breadData: [
-        {
-          name: '待处理预警',
-        }
-      ],
-    };
     return (
       <div className={styles.UnhandleBox} >
-        <CommonBreadcrumb  {...breadCrumbData} style={{ marginLeft: '38px' }} />
+        <CommonBreadcrumb  breadData= {[ { name: '待处理预警',} ]} style={{ marginLeft: '38px' }} />
         <div className={styles.unhandleContainer}>
           <UnhandleContainer {...this.props} />
         </div>
@@ -46,7 +43,6 @@ const mapStateToProps = (state) => {
   return {
     ...state.highAanlysisReducer.unhandle.toJS(),
     stations: state.common.get('stations').toJS(),
-
   }
 }
 
@@ -56,14 +52,16 @@ const mapDispatchToProps = (dispatch) => ({
   toorder: payload => dispatch({type:unhandleAction.toorder, payload}),
   ignoreList: payload => dispatch({type:unhandleAction.ignoreList, payload}),
   getForewarningDetail: payload => dispatch({type:unhandleAction.getForewarningDetail, payload}),
+  getForewarningDetail: payload => dispatch({type:unhandleAction.getForewarningDetail, payload}),
   getSequencechart: payload => dispatch({type:unhandleAction.getSequencechart, payload}),
+  getMatrixlist: payload => dispatch({type:unhandleAction.getMatrixlist, payload}),
   resetStore: () => dispatch({ type: unhandleAction.resetStore }),
-  getLostGenType: params => dispatch({
-    type: commonAction.getLostGenType,
+  getDictionaryInfo:  params=> dispatch({
+    type: commonAction.getDictionaryInfo,
     payload: {
       params, 
       actionName: unhandleAction.getUnhandleFetchSuccess, 
-      resultName: 'defectTypes'
+      resultName: 'ignoreReason'
     }
   }),
 })

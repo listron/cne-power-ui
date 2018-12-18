@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import echarts from 'echarts';
 import moment from 'moment';
 import { showNoData, hiddenNoData } from '../../../constants/echartsNoData';
+import { dataFormat } from '../../../utils/utilFunc';
 
 class MonthGenChart extends Component{
   static propTypes = {
@@ -47,17 +48,22 @@ class MonthGenChart extends Component{
           show: false,
         },
         grid: {
+          left: 10,
+          right: 10,
           top: 30,
           bottom: 30,
+          containLabel: true,
         },
         tooltip: {
+          trigger: 'axis',
           extraCssText: 'background-color: rgba(0,0,0,0.8)',
           formatter: params => {
-            const currentData = monthPower[params.dataIndex];
+            const currentInfo = params[0] || {};
+            const currentData = monthPower[currentInfo.dataIndex] || {};
             return `<div class=${styles.monthTool}>
               <div>${currentData.month}月发电量</div>
-              <div>${currentData.power}</div>
-              <div>同比${currentData.rate}%</div>
+              <div>${dataFormat(currentData.power)}</div>
+              <div>同比${dataFormat(currentData.rate)}%</div>
             </div>`
           },
           padding: 10,

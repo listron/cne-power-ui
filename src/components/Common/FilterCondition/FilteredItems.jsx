@@ -17,6 +17,7 @@ class FilteredItems extends Component {
     defectTypeCode: PropTypes.array,
     defectSource: PropTypes.array,
     defectSourceName: PropTypes.array,
+    belongMatrixs: PropTypes.array,
     onChangeFilter: PropTypes.func,
   }
 
@@ -77,6 +78,11 @@ class FilteredItems extends Component {
     onChangeFilter({ defectTypeCode: defectTypeCode.filter(e => e !== cancelId), });
   }
 
+  onCancelBelongMatrixs = (matrixs) => { // 删除所属方阵
+    const { defectTypeCode, onChangeFilter } = this.props;
+    onChangeFilter({ defectTypeCode: defectTypeCode.filter(e => e !== matrixs), });
+  }
+
   getDefectInfoArr = (defectTypes, selectedTypes) => {
     let defectInfoArr = [];
     defectTypes.forEach(e => {
@@ -94,7 +100,7 @@ class FilteredItems extends Component {
   }
 
   resetAll = () => {//删除所有筛选条件
-    const { onChangeFilter, createTimeEnd, createTimeStart, stationType, stationCodes, defectLevel, defectSource, deviceTypeCode, defectTypeCode } = this.props;
+    const { onChangeFilter, createTimeEnd, createTimeStart, stationType, stationCodes, defectLevel, defectSource, deviceTypeCode, defectTypeCode,belongMatrixs } = this.props;
     const prams = {};
     createTimeEnd !== '' ? prams.createTimeEnd = '' : null;
     createTimeStart !== '' ? prams.createTimeStart = '' : null;
@@ -104,6 +110,7 @@ class FilteredItems extends Component {
     defectSource.length>0? prams.defectSource = [] : null;
     deviceTypeCode.length>0? prams.deviceTypeCode = [] : null;
     defectTypeCode.length>0? prams.defectTypeCode = [] : null;
+    belongMatrixs.length>0? prams.belongMatrixs = [] : null;
     onChangeFilter(prams);
   }
 
@@ -131,7 +138,7 @@ class FilteredItems extends Component {
   }
 
   render() {
-    const { createTimeStart, createTimeEnd, stationType, stationCodes, deviceTypeCode, defectTypeCode, defectLevel, stations, deviceTypes, defectTypes, defectSource, defectSourceName } = this.props;
+    const { createTimeStart, createTimeEnd, stationType, stationCodes, deviceTypeCode, defectTypeCode, defectLevel, stations, deviceTypes, defectTypes, defectSource, defectSourceName ,belongMatrixs} = this.props;
 
     const levels = ['一级', '二级', '三级', '四级'];
     let defectSourceNames = defectSourceName ? defectSourceName : ['上报', '巡检', '告警', '预警',];
@@ -146,7 +153,7 @@ class FilteredItems extends Component {
     const selectedStationArr = this.dealStations()
     const selectedDeviceType = deviceTypes.filter(e => deviceTypeCode.some(m => m === e.deviceTypeCode));
     const defectInfoArr = this.getDefectInfoArr(defectTypes, defectTypeCode); //选中的缺陷类型数组
-    if (createTimeStart === '' && createTimeEnd === '' && stationType === '2' && stationCodes.length === 0 && defectLevel.length === 0 && defectSource.length === 0 && deviceTypeCode.length === 0 && defectTypeCode.length === 0) {
+    if (createTimeStart === '' && createTimeEnd === '' && stationType === '2' && stationCodes.length === 0 && defectLevel.length === 0 && defectSource.length === 0 && deviceTypeCode.length === 0 && defectTypeCode.length === 0 && belongMatrixs.length===0) {
       return null;
     }
 
@@ -176,6 +183,12 @@ class FilteredItems extends Component {
         {defectInfoArr.length > 0 && defectInfoArr.map(e => (//  缺陷类型
           <Tag className={styles.tag} closable onClose={() => this.onCancelDefectType(e.id)} key={e.id}>
             {e.name}
+          </Tag>
+        ))}
+
+        {belongMatrixs.length > 0 && belongMatrixs.map(e => (//  所属方阵
+          <Tag className={styles.tag} closable onClose={() => this.onCancelBelongMatrixs(e)} key={e}>
+            {e}
           </Tag>
         ))}
         <span onClick={this.resetAll} className={styles.clearAll}>清空条件</span>

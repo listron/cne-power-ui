@@ -1,7 +1,11 @@
-.UnhandleBox{
-  min-height: 100%;
+.ignoreBox{
   display: flex;
-  flex:1;
+  flex: 1;
+  min-height: 100%;
   flex-direction: column;
-
+  .ignoreContainer{
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
 }

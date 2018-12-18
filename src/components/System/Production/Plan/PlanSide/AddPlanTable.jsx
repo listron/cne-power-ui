@@ -118,6 +118,7 @@ class PlanAddTable extends React.Component {
           return <span className={text ? styles.save : ''}>{textValue}</span>
         }
       },
+      ...MonthColumn,
       {
         title: 'PR年计划',
         dataIndex: 'yearPR',
@@ -137,8 +138,6 @@ class PlanAddTable extends React.Component {
           );
         },
       }];
-    MonthColumn.unshift(5, 0);
-    Array.prototype.splice.apply(columns, MonthColumn);
     const columnList = columns.map((col) => {
       if (!col.editable) {
         return col;
@@ -148,7 +147,6 @@ class PlanAddTable extends React.Component {
         onCell: record => ({
           record,
           dataIndex: col.dataIndex,
-          // title: col.title,
           editing: col.editable
         }),
       };

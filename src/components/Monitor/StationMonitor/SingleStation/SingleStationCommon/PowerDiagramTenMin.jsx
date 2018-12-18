@@ -39,9 +39,13 @@ class PowerDiagramTenMin extends Component {
     const filterTheoryPower = powerData.filter(e => e.theoryPower);
     const instantaneous = powerData.map(e => e.instantaneous); // 风速／累计曝幅值
     const filterInstantaneous = powerData.filter(e => e.instantaneous);
-    const completeRate = powerData.filter(e => e.completeRate);  // 完成率
+    const completeRate = powerData.map(e => e.completeRate);  // 完成率
+    const filterCompleteRate = powerData.filter(e => e.completeRate);
     const powerGraphic = (
-      filterActualPower.length === 0 && filterTheoryPower.length === 0 && filterInstantaneous.length === 0
+      filterActualPower.length === 0 
+      && filterTheoryPower.length === 0 
+      && filterInstantaneous.length === 0 
+      && filterCompleteRate.length ===0
     ) ? showNoData : hiddenNoData;
     let color=this.getColor(chartType);
     const powerOption = {//实际发电量 理论发电量
@@ -54,6 +58,9 @@ class PowerDiagramTenMin extends Component {
           fontSize: 14,
           fontWeight: 'normal',
         },
+      },
+      grid: {
+        right: 85,
       },
       legend: {
         icon: 'circle',
@@ -76,7 +83,7 @@ class PowerDiagramTenMin extends Component {
           params.forEach((item, index) => {
             return paramsItem += `<div> <span style="display: inline-block;width: 5px;height: 5px;border-radius: 50%;background:${color[index]};vertical-align: 3px;margin-right: 3px;"> </span> ${params[index].seriesName} :${ (params[index].value ||  params[index].value === '0'  &&  parseFloat(params[index].value).toFixed(this.getDefaultPoint(params[index].seriesName))) || '--'}</div>`
           });
-          let complate=intervalTime!==0?`<div>${'完成率'}:${(completeRate && completeRate===0) || '--'}%</div>`:''
+          let complate=intervalTime!==0?`<div style="margin-left:11px;">${'完成率'}:${(completeRate.length>0 && (completeRate[params[0].dataIndex].completeRate)*1000/10) || '--'}%</div>`:''
           return `<div  style="border-bottom: 1px solid #ccc;padding-bottom: 7px;margin-bottom: 7px;width:150px;overflow:hidden;"> <span style="float: left">${params[0].name} </span>
             </div>${paramsItem}${complate}`
         },
@@ -132,9 +139,8 @@ class PowerDiagramTenMin extends Component {
               type: 'dotted',
             }
           }
-        },
-        {
-          name: chartType === 'wind' ? '平均风速(m/s)' : `${intervalTime === 0 ? '累计曝幅值' : (intervalTime === 1 ? '月辐射总量' : '年辐射总量')}`,
+        }, {
+          name: chartType === 'wind' ? '平均风速(m/s)' : `${intervalTime === 0 ? '累计曝幅值(MJ/m²)' : (intervalTime === 1 ? '月辐射总量(MJ/m)' : '年辐射总量(MJ/m)')}`,
           type: 'value',
           axisLabel: {
             formatter: '{value}',
@@ -142,6 +148,7 @@ class PowerDiagramTenMin extends Component {
           },
           nameTextStyle: {
             color: lineColor,
+            padding: [0, 30, 0, 0],
           },
           axisLine: {
             show: false,
@@ -154,6 +161,29 @@ class PowerDiagramTenMin extends Component {
               color: '#f1f1f1',
               type: 'dotted',
             }
+          }
+        }, {
+          name: '完成率',
+          type: 'value',
+          offset: 40,
+          axisLabel: {
+            formatter: '{value}%',
+            color: lineColor,
+          },
+          nameTextStyle: {
+            color: lineColor,
+            padding: [0, 0, 0, 30],
+          },
+          axisLine: {
+            lineStyle: {
+              color: '#dfdfdf',
+            },
+          },
+          axisTick: {
+            show: false,
+          },
+          splitLine: {
+            show: false,
           }
         }
       ],
@@ -197,8 +227,22 @@ class PowerDiagramTenMin extends Component {
           lineStyle: {
             type: 'solid',
           },
+        },{
+          name: '完成率',
+          type: 'line',
+          data: completeRate,
+          yAxisIndex: 2,
+          lineStyle: {
+            type: 'solid',
+          },
         }
       ]
+    }
+    if (intervalTime === 0) { // 日 不显示部分坐标轴与数据。
+      powerOption.grid.right = '10%';
+      powerOption.yAxis[1].nameTextStyle.padding = 0;
+      powerOption.yAxis = powerOption.yAxis.filter(e => e.name !== '完成率');
+      powerOption.series = powerOption.series.filter(e => e.name !== '理论发电量' && e.name !== '完成率');
     }
     powerDiagram.setOption(powerOption);
     powerDiagram.resize();
