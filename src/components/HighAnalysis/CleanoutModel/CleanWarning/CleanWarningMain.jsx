@@ -3,8 +3,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Table } from 'antd';
-// import StationManageSearch from './StationManageSearch';
-// import StationManageTable from './StationManageTable';
 import Footer from '../../../Common/Footer';
 import FilterCondition from '../../../Common/FilterCondition/FilterCondition';
 import CommonPagination from '../../../Common/CommonPagination';
@@ -12,11 +10,13 @@ import styles from './cleanStyle.scss';
 
 class CleanWarningMain extends Component { // 电站管理列表页
   static propTypes = {
+    loading: PropTypes.bool,
     listQueryParams: PropTypes.object,
     total: PropTypes.number,
     stations: PropTypes.array,
     cleanWarningList: PropTypes.array,
     getCleanWarningList: PropTypes.func,
+    getCleanWarningDetail: PropTypes.func,
     changeCleanWarningStore: PropTypes.func,
   }
 
@@ -46,41 +46,84 @@ class CleanWarningMain extends Component { // 电站管理列表页
     })
   }
 
-  tableSort = (a,b,c,d) => { // 表格排序
-    console.log(a,b,c,d)
+  tableSort = (pagination, filters, sorter) => { // 表格排序
+    const { listQueryParams, getCleanWarningList } = this.props;
+    const { field, order } = sorter;
+    if (!field) { // 无排序 => 恢复默认灰尘占比降序排列
+      getCleanWarningList({
+        ...listQueryParams,
+        sortField: 'influencePercent', 
+        sortType: 1,
+      })
+    } else { // 按照指定排序规则请求列表数据
+      getCleanWarningList({
+        ...listQueryParams,
+        sortField: field, 
+        sortType: order === 'descend' ? 1 : 0,
+      })
+    }
   }
 
-  showDetail = () => {
-    this.props.changeCleanWarningStore({
-      showPage: 'detail',
+  toWarningDetail = record => {
+    this.props.getCleanWarningDetail({
+      stationCode: record.stationCode,
     })
   }
 
   render() {
-    const { stations, total, listQueryParams, cleanWarningList } = this.props;
+    const { loading, stations, total, listQueryParams, cleanWarningList } = this.props;
     const { pageSize, pageNum } = listQueryParams;
     return (
       <div className={styles.cleanWarningMain}>
-        <FilterCondition
-          stations={stations}
-          onChange={this.selectStation}
-          option={['stationName']}
-        />
-        <div className={styles.pagination}>
-          <CommonPagination
-            total={total}
-            pageSize={pageSize}
-            currentPage={pageNum}
-            onPaginationChange={this.paginationChange}
+        <div>
+          <FilterCondition
+            stations={stations}
+            onChange={this.selectStation}
+            option={['stationName']}
+          />
+          <div className={styles.pagination}>
+            <CommonPagination
+              total={total}
+              pageSize={pageSize}
+              currentPage={pageNum}
+              onPaginationChange={this.paginationChange}
+            />
+          </div>
+          <Table
+            columns={[
+              {
+                title: '电站名称',
+                dataIndex: 'stationName',
+                sorter: true,
+              }, {
+                title: '灰尘影响占比',
+                dataIndex: 'influencePercent',
+                sorter: true,
+              }, {
+                title: '未来十天电量收益(万kWh)',
+                dataIndex: 'futurePower',
+                sorter: true,
+              }, {
+                title: '距离上次清洗(天)',
+                dataIndex: 'cleanDays',
+                sorter: true,
+              }, {
+                title: '本次预警时间',
+                dataIndex: 'warningTime',
+                sorter: true,
+              }, {
+                title: '查看',
+                dataIndex: 'handle',
+                render: (text, record) => <span onClick={()=>this.toWarningDetail(record)} className="iconfont icon-look" />
+              }
+            ]}
+            loading={loading}
+            pagination={false}
+            dataSource={cleanWarningList.map(e => ({ ...e, key: e.stationCode }))}
+            onChange={this.tableSort}
+            locale={{emptyText:<img width="223" height="164" src="/img/nodata.png" />}}
           />
         </div>
-        <Table
-          columns={[]}
-          pagination={null}
-          dataSource={cleanWarningList}
-          onChange={this.tableSort}
-        />
-        <Button onClick={this.showDetail}>按钮</Button>
         <Footer />
       </div>
     )

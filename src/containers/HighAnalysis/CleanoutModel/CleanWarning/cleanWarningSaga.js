@@ -12,6 +12,7 @@ function *getCleanWarningList(action) { // 获取清洗预警列表
   try {
     // const url = `${APIBasePath}${highAnalysis.getCleanWarningList}`;
     const url = '/mock/cleanWarning/list';
+    yield put({ type: cleanWarningAction.CLEAN_WARNING_FETCH });
     const response = yield call(axios.post,url,payload);
     if (response.data.code === '10000') {
       const total = response.data.data.total || 0;
@@ -27,9 +28,9 @@ function *getCleanWarningList(action) { // 获取清洗预警列表
         payload: {
           listQueryParams: {
             ...payload,
-            total,
             pageNum,
           },
+          total,
           cleanWarningList: response.data.data.detailData || [],          
         },
       }); 
