@@ -5,9 +5,8 @@ import styles from './cleanStyle.scss';
 
 export const DustEffectStation = ({...props}) => {
   const {
-    stations, stationChange, showStationList, dustEffectInfo, stationCheckActive, backToList
+    stations, changeStation, showStationList, dustEffectInfo, stationCheckActive, backToList
   } = props;
-  console.log(props)
   const { stationCode } = dustEffectInfo;
   const currentStation = stations.find(e => e.stationCode === stationCode) || {};
   const provinceSet = new Set(stations.map(e => e.provinceName));
@@ -41,7 +40,8 @@ export const DustEffectStation = ({...props}) => {
                   <span
                     key={station.stationName}
                     className={styles.stationName}
-                    onClick={() => stationChange({stationCode: station.stationCode})}
+                    // onClick={() => changeStation({stationCode: station.stationCode})}
+                    onClick={() => console.log('??????')}
                   >
                     {station.stationName}
                   </span>
@@ -68,7 +68,7 @@ DustEffectStation.propTypes = {
   stations: PropTypes.array,
   stationCheckActive: PropTypes.bool,
   dustEffectInfo: PropTypes.object,
-  stationChange: PropTypes.func,
+  changeStation: PropTypes.func,
   showStationList: PropTypes.func,
   backToList: PropTypes.func,
 }

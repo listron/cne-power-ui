@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './cleanStyle.scss';
 import { Button } from 'antd';
+import moment from 'moment';
 // import StationManageDetail from './StationManageDetail';
 // import StationManageEdit from './StationManageEdit';
 import { DustEffectStation, DustBaseInfo } from './DustEffectTop';
@@ -47,10 +48,20 @@ class CleanWarningSide extends Component {
     });
   }
 
-  changeStation = () => { // 切换电站并隐藏切换框
+  changeStation = ({stationCode}) => { // 切换电站并隐藏切换框
+    const { getCleanWarningDetail, getTotalDustEffect, getMatrixDustEffect } = this.props;
+    const endDay = moment();
+    const startDay = moment().subtract(30, 'day'); 
     this.setState({
       stationCheckActive: false,
     });
+    const effectParam = {
+      stationCode, endDay, startDay
+    }
+    console.log('？？？')
+    getCleanWarningDetail({ stationCode });
+    getTotalDustEffect(effectParam);
+    getMatrixDustEffect(effectParam);
   }
 
   backToList = () => { // 返回列表页
@@ -70,7 +81,7 @@ class CleanWarningSide extends Component {
           <DustEffectStation
             dustEffectInfo={dustEffectInfo}
             stations={stations.filter(e => e.stationType === 1)}
-            stationChange={this.changeStation}
+            changeStation={this.changeStation}
             showStationList={this.showStationList}
             stationCheckActive={stationCheckActive}
             backToList={this.backToList}
