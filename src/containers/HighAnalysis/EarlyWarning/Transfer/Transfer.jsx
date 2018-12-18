@@ -41,7 +41,6 @@ class Transfer extends Component {
   render() {
     const { defectId, pageNum, pageSize, pageName } = this.props;
     const { showPage } = this.state;
-    console.log('defectId', defectId)
     return (
       <div className={styles.transferBox} >
         <CommonBreadcrumb breadData={[{ name: '已转工单', }]} style={{ marginLeft: '38px' }} />

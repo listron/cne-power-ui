@@ -86,8 +86,6 @@ class Ticket extends Component {
         createTimeStart: '',
         createTimeEnd: '',
         deviceTypeCode: '',
-        // handleUser: '',
-        // hasAbnormal: false
       }
       this.props.getInspectList(params);//获取巡检列表
       this.props.getInspectIdList(params);
@@ -95,13 +93,11 @@ class Ticket extends Component {
   }
 
   prevChange = (e) => {
-    console.log('需要返回的一个页面', e)
     this.props.onChangeShowContainer({ container: e.pageName });
   }
 
   render() {
     const { showContainer, onChangeShowContainer, defectId, pageSize, pageNum } = this.props;
-    console.log('hahah', this.props)
     const { tab } = this.state;
     return (
       <div className={styles.ticketBox}>

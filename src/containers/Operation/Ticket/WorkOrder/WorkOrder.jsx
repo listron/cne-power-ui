@@ -26,7 +26,7 @@ class WorkOrder extends Component {
     pageSize: PropTypes.number,
     stationType: PropTypes.string,
     defectSource: PropTypes.string,
-    callback: PropTypes.bool,
+    callBack: PropTypes.bool,
     resetStore: PropTypes.func,
     showPage: PropTypes.bool,
   }
@@ -40,15 +40,14 @@ class WorkOrder extends Component {
     // 如果是路由传过来的
     // const searchInfo = this.props.history.location.search;
     // const stationCode = searchInfo.substring(searchInfo.indexOf('=') + 1);
-    console.log('页面刚进来的')
     showPage && getDefectDetail({ defectId })
     showPage && getDefectCommonList({ languageType: '1' })
   }
 
   componentWillReceiveProps(nextProps) {
-    const { callback, pageName, onChange, getDefectIdList, stationType, defectSource, pageNum, pageSize, defectId, getDefectDetail } = nextProps;
+    const { callBack, pageName, onChange, getDefectIdList, stationType, defectSource, pageNum, pageSize, defectId, getDefectDetail } = nextProps;
     defectId && defectId !== this.props.defectId && getDefectDetail({ defectId })
-    callback && onChange({ pageName })
+    callBack && onChange({ pageName })
     stationType && this.props.stationType !== stationType && getDefectIdList({ stationType, defectSource, pageNum, pageSize })
   }
 

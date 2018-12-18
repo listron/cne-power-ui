@@ -10,6 +10,8 @@ import DefectLevelFilter from './DefectLevelFilter';
 import DefectSourceFilter from './DefectSourceFilter';
 import DefectTypeFilter from './DefectTypeFilter';
 import FilteredItems from './FilteredItems';
+import AlarmLevelFilter from './AlarmLevelFilter';
+import AlarmTypeFilter from './AlarmTypeFilter';
 import styles from './filterCondition.scss';
 
 /** 
@@ -22,13 +24,16 @@ import styles from './filterCondition.scss';
       defectType   缺陷类型
       defectSource  缺陷来源
       belongMatrixs  所属方阵
+      warnLevel  告警级别
+      warnType 告警类型
       myJoin  我参与的
  * 2 stations type=stationType || type=stationName 必填 其他为选填
  * 3 deviceTypes type=deviceType  必填 其他为选填
  * 4 defectTypes type=defectType   必填 其他为选填 
  * 5 defectLevelName  type=defectType  选填 缺陷级别分类 如果没有填 默认为 A／B／C
  * 6 defectSourceName  type=defectSource  选填 缺陷来源分类 如果没有填 默认为 '上报','巡检','告警', '预警',
- * 7 onChange 回调函数 
+ * 7 warnLevelName type=warnLevel 选填  高级级别  默认为 ['一级','二级','三级','四级']
+ * 8 onChange 回调函数 
 */
 class FilterCondition extends Component {
   static propTypes = {
@@ -49,6 +54,8 @@ class FilterCondition extends Component {
     onChange: PropTypes.func,
     option: PropTypes.array,// 需要的方式
     matrixList: PropTypes.array, // 方阵列表
+    warningLevelName: PropTypes.array, // 告警级别
+    warningLevel: PropTypes.array, // 告警级别
   }
 
   constructor(props) {
@@ -65,6 +72,8 @@ class FilterCondition extends Component {
       defectTypeCode: [],//缺陷类型
       belongMatrixs: [],//所属方阵
       handleUser: [], // 操作人
+      warningLevel: [],//告警级别
+      warningConfigName:[],//告警类型
     };
   }
 
@@ -109,6 +118,8 @@ class FilterCondition extends Component {
       case 'defectType': result = '缺陷类型'; break;
       case 'defectSource': result = '缺陷来源'; break;
       case 'belongMatrixs': result = '所属方阵'; break;
+      case 'alarmLevel': result = '告警级别'; break;
+      case 'alarmType': result = '告警类型'; break;
       case 'myJoin': result = '参与的'; break;
     }
     return result
@@ -117,8 +128,8 @@ class FilterCondition extends Component {
 
 
   render() {
-    const { showFilter, createTimeStart, createTimeEnd, stationType, stationCodes, defectLevel, defectSource, deviceTypeCode, defectTypeCode, belongMatrixs } = this.state;
-    const { stations, option, deviceTypes, defectTypes, defectSourceName, defectLevelName, matrixList, username } = this.props;
+    const { showFilter, createTimeStart, createTimeEnd, stationType, stationCodes, defectLevel, defectSource, deviceTypeCode, defectTypeCode, belongMatrixs, warningLevel,warningConfigName } = this.state;
+    const { stations, option, deviceTypes, defectTypes, defectSourceName, defectLevelName, matrixList, username, warningLevelName } = this.props;
 
     const defectTypesArr = defectTypes || [];
     const stationsArr = stations || [];
@@ -201,6 +212,19 @@ class FilterCondition extends Component {
               belongMatrixs={belongMatrixs}
               onChangeFilter={this.onChangeFilter}
             />}
+          {showFilter === 'alarmLevel' &&
+            <AlarmLevelFilter
+              warningLevel={warningLevel}
+              onChangeFilter={this.onChangeFilter}
+              warningLevelName={warningLevelName}
+            />}
+          {showFilter === 'alarmType' &&
+            <AlarmTypeFilter
+              warningConfigName={warningConfigName}
+              onChangeFilter={this.onChangeFilter}
+            />}
+
+
         </div>
         {/* 删选条件 */}
         <FilteredItems

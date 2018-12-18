@@ -70,7 +70,6 @@ class DefectList extends Component {
       sortMethod,
       handleUser
     }
-    console.log('我进来了', { ...filter })
     this.props.getDefectList({ ...filter });
     this.props.getLostGenType({ //获取所有损失缺陷类型
       objectType: 1
@@ -85,7 +84,7 @@ class DefectList extends Component {
 
   filterCondition = (changeValue) => {
     const { stationType, stationCodes, defectSource, defectLevel, timeInterval, status, pageSize, createTimeStart, createTimeEnd, deviceTypeCode, defectTypeCode, sortField, sortMethod, handleUser, pageNum } = this.props;
-    console.log('看一下', changeValue)
+    // console.log('看一下', changeValue)　
     let filter = {
       stationType,
       stationCodes,
@@ -104,12 +103,10 @@ class DefectList extends Component {
       handleUser
     }
     this.props.getDefectList({ ...filter, ...changeValue });
-    console.log('test', { ...filter, ...changeValue })
   }
 
   render() {
     const { stations, defectTypes, defectList, username, deviceTypes, defectStatusStatistics } = this.props;
-    console.log('haha', this.props);
     return (
       <div className={styles.defectList}>
         <FilterCondition

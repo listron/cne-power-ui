@@ -18,20 +18,18 @@ function* resetStore() {
   })
 }
 
-
 function* getTransferList(action) { // 忽略列表
   const { payload } = action;
-  console.log('payload',payload)
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.highAnalysis.getTransferlist}`
   try {
     yield put({ type: transferAction.transferFetch });
     const response = yield call(axios.post, url, {
       ...payload,
-      startTime:payload.createTimeStart,
-      endTime:payload.createTimeEnd
+      startTime: payload.createTimeStart,
+      endTime: payload.createTimeEnd
     });
     if (response.data.code === '10000') {
-      const totalNum = response.data.data && response.data.data[0] && response.data.data[0].totalCount || 0;
+      const totalNum = response.data.data && response.data.data.total || 0;
       let { pageNum, pageSize } = payload;
       const maxPage = Math.ceil(totalNum / pageSize);
       if (totalNum === 0) { // 总数为0时，展示0页
@@ -48,21 +46,15 @@ function* getTransferList(action) { // 忽略列表
           pageNum,
         },
       });
-    } else {
-      yield put({
-        type: transferAction.changeTransferStore,
-        payload: { ...payload, loading: false },
-      })
-    }
+    } else {throw response.data}
   } catch (e) {
     console.log(e);
     yield put({
       type: transferAction.changeTransferStore,
-      payload: { ...payload, loading: false },
+      payload: { ...payload, loading: false ,transferList:[]},
     })
   }
 }
-
 
 function* getMatrixlist(action) {  // 获取方阵下的列表
   const { payload } = action;
@@ -80,28 +72,20 @@ function* getMatrixlist(action) {  // 获取方阵下的列表
           matrixList: response.data.data || [],
         },
       });
-    } else {
-      yield put({
-        type: transferAction.changeTransferStore,
-        payload: { ...payload, loading: false, matrixList: [] },
-      })
-    }
+    } else {throw response.data }
   } catch (e) {
     console.log(e);
     yield put({
       type: transferAction.changeTransferStore,
-      payload: { ...payload, loading: false },
+      payload: { ...payload, loading: false , matrixList: []},
     })
   }
 }
-
-
 
 export function* watchTransfer() {
   yield takeLatest(transferAction.changeTransferStoreSaga, changeTransferStore);
   yield takeLatest(transferAction.resetStore, resetStore);
   yield takeLatest(transferAction.getTransferList, getTransferList);
   yield takeLatest(transferAction.getMatrixlist, getMatrixlist);
-
 }
 

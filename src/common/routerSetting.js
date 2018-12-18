@@ -30,6 +30,7 @@ import SingleStation from '../containers/Monitor/StationMonitor/SingleStation/Si
 import RealTimeAlarm from '../containers/Monitor/Alarm/RealTimeAlarm';
 import HistoryAlarm from '../containers/Monitor/Alarm/HistoryAlarm';
 import AlarmStatistic from '../containers/Monitor/Alarm/AlarmStatistic';
+import TransferAlarm from '../containers/Monitor/Alarm/TransferAlarm';
 
 import EditPassword from '../containers/Others/EditPassword'; // 更改密码
 import Building from '../components/Common/Building/Building';
@@ -127,7 +128,7 @@ const routers = [
   }, { //实时监控-告警-已转工单
     path: '/monitor/alarm/transfer',
     exact: true,
-    component: RealTimeAlarm,
+    component: TransferAlarm,
   }, {
     path: '/monitor/alarm/transfer/:defectId',
     exact: true,

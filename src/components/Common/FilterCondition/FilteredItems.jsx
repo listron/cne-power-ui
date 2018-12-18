@@ -18,6 +18,9 @@ class FilteredItems extends Component {
     defectSource: PropTypes.array,
     defectSourceName: PropTypes.array,
     belongMatrixs: PropTypes.array,
+    warningLeveName: PropTypes.array,
+    warningLevel: PropTypes.array,
+    warningConfigName: PropTypes.array,
     onChangeFilter: PropTypes.func,
   }
 
@@ -83,6 +86,18 @@ class FilteredItems extends Component {
     onChangeFilter({ defectTypeCode: defectTypeCode.filter(e => e !== matrixs), });
   }
 
+  onCancelWarnLevel = (level) => {//删除某告警级别
+    const { warningLevel, onChangeFilter } = this.props;
+    onChangeFilter({
+      warningLevel: warningLevel.filter(e => e !== level),
+    });
+  }
+
+  onCancelWarnType = (name) => { // 删除告警类型
+    const { warningConfigName, onChangeFilter } = this.props;
+    onChangeFilter({ warningConfigName: warningConfigName.filter(e => e !== name), });
+  }
+
   getDefectInfoArr = (defectTypes, selectedTypes) => {
     let defectInfoArr = [];
     defectTypes.forEach(e => {
@@ -100,17 +115,19 @@ class FilteredItems extends Component {
   }
 
   resetAll = () => {//删除所有筛选条件
-    const { onChangeFilter, createTimeEnd, createTimeStart, stationType, stationCodes, defectLevel, defectSource, deviceTypeCode, defectTypeCode,belongMatrixs } = this.props;
+    const { onChangeFilter, createTimeEnd, createTimeStart, stationType, stationCodes, defectLevel, defectSource, deviceTypeCode, defectTypeCode, belongMatrixs, warningLevel ,warningConfigName} = this.props;
     const prams = {};
     createTimeEnd !== '' ? prams.createTimeEnd = '' : null;
     createTimeStart !== '' ? prams.createTimeStart = '' : null;
-    stationType !== '2' ? prams.stationType = '2' : null;
-    stationCodes.length>0? prams.stationCodes = [] : null;
-    defectLevel.length>0? prams.defectLevel = [] : null;
-    defectSource.length>0? prams.defectSource = [] : null;
-    deviceTypeCode.length>0? prams.deviceTypeCode = [] : null;
-    defectTypeCode.length>0? prams.defectTypeCode = [] : null;
-    belongMatrixs.length>0? prams.belongMatrixs = [] : null;
+    stationType !== '' ? prams.stationType = '' : null;
+    stationCodes.length > 0 ? prams.stationCodes = [] : null;
+    defectLevel.length > 0 ? prams.defectLevel = [] : null;
+    defectSource.length > 0 ? prams.defectSource = [] : null;
+    deviceTypeCode.length > 0 ? prams.deviceTypeCode = [] : null;
+    defectTypeCode.length > 0 ? prams.defectTypeCode = [] : null;
+    belongMatrixs.length > 0 ? prams.belongMatrixs = [] : null;
+    warningLevel.length > 0 ? prams.warningLevel = [] : null;
+    warningConfigName.length > 0 ? prams.warningConfigName = [] : null;
     onChangeFilter(prams);
   }
 
@@ -138,10 +155,12 @@ class FilteredItems extends Component {
   }
 
   render() {
-    const { createTimeStart, createTimeEnd, stationType, stationCodes, deviceTypeCode, defectTypeCode, defectLevel, stations, deviceTypes, defectTypes, defectSource, defectSourceName ,belongMatrixs} = this.props;
+    const { createTimeStart, createTimeEnd, stationType, stationCodes, deviceTypeCode, defectTypeCode, defectLevel, stations, deviceTypes, defectTypes, defectSource, defectSourceName, belongMatrixs, warningLeveName,warningLevel,warningConfigName } = this.props;
 
     const levels = ['一级', '二级', '三级', '四级'];
-    let defectSourceNames = defectSourceName ? defectSourceName : ['告警','上报','巡检', '预警',];
+    let defectSourceNames = defectSourceName ? defectSourceName : ['告警', '上报', '巡检', '预警',];
+    let warningLeveNames = warningLeveName ? warningLeveName : ['一级', '二级', '三级', '四级'];
+
     const defectLevelArray = defectLevel.map(e => ({
       label: levels[+e - 1],
       value: e,
@@ -150,10 +169,16 @@ class FilteredItems extends Component {
       label: defectSourceNames[+e - 1],
       value: e,
     })) || [];
+
+    const warningLevelArray=warningLevel.map(e=>({
+      label: warningLeveNames[+e - 1],
+      value: e,
+    }))
+
     const selectedStationArr = this.dealStations()
     const selectedDeviceType = deviceTypes.filter(e => deviceTypeCode.some(m => m === e.deviceTypeCode));
     const defectInfoArr = this.getDefectInfoArr(defectTypes, defectTypeCode); //选中的缺陷类型数组
-    if (createTimeStart === '' && createTimeEnd === '' && stationType === '2' && stationCodes.length === 0 && defectLevel.length === 0 && defectSource.length === 0 && deviceTypeCode.length === 0 && defectTypeCode.length === 0 && belongMatrixs.length===0) {
+    if (createTimeStart === '' && createTimeEnd === '' && stationType === '' && stationCodes.length === 0 && defectLevel.length === 0 && defectSource.length === 0 && deviceTypeCode.length === 0 && defectTypeCode.length === 0 && belongMatrixs.length === 0 && warningLevel.length===0) {
       return null;
     }
 
@@ -191,6 +216,17 @@ class FilteredItems extends Component {
             {e}
           </Tag>
         ))}
+
+        {warningLevel.length > 0 && warningLevelArray.map(e => ( // 告警级别
+          <Tag className={styles.tag} key={e.value} closable onClose={() => this.onCancelWarnLevel(e.value)}>{e.label}</Tag>
+        ))}
+
+        {warningConfigName.length > 0 && warningConfigName.map(e => ( // 告警类型
+          <Tag className={styles.tag} key={e} closable onClose={() => this.onCancelWarnType(e)}>{e}</Tag>
+        ))}
+
+ 
+
         <span onClick={this.resetAll} className={styles.clearAll}>清空条件</span>
       </div>
     );
