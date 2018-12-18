@@ -2,7 +2,8 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Table } from 'antd';
+import { Table } from 'antd';
+import moment from 'moment';
 import Footer from '../../../Common/Footer';
 import FilterCondition from '../../../Common/FilterCondition/FilterCondition';
 import CommonPagination from '../../../Common/CommonPagination';
@@ -17,6 +18,8 @@ class CleanWarningMain extends Component { // 电站管理列表页
     cleanWarningList: PropTypes.array,
     getCleanWarningList: PropTypes.func,
     getCleanWarningDetail: PropTypes.func,
+    getTotalDustEffect: PropTypes.func,
+    getMatrixDustEffect: PropTypes.func,
     changeCleanWarningStore: PropTypes.func,
   }
 
@@ -64,10 +67,16 @@ class CleanWarningMain extends Component { // 电站管理列表页
     }
   }
 
-  toWarningDetail = record => {
-    this.props.getCleanWarningDetail({
-      stationCode: record.stationCode,
-    })
+  toWarningDetail = record => { // 请求灰尘影响详情，默认30天的全局影响，方阵影响。
+    const endDay = moment();
+    const startDay = moment().subtract(30, 'day'); 
+    const { stationCode } = record;
+    const effectParam = {
+      stationCode, endDay, startDay
+    }
+    this.props.getCleanWarningDetail({ stationCode });
+    this.props.getTotalDustEffect(effectParam);
+    this.props.getMatrixDustEffect(effectParam);
   }
 
   render() {
@@ -77,7 +86,7 @@ class CleanWarningMain extends Component { // 电站管理列表页
       <div className={styles.cleanWarningMain}>
         <div>
           <FilterCondition
-            stations={stations}
+            stations={stations.filter(e => e.stationType === 1)}
             onChange={this.selectStation}
             option={['stationName']}
           />

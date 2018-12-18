@@ -8,6 +8,13 @@
     justify-content: flex-end;
     align-items: center;
   }
+  :global{
+    .ant-table{
+      .icon-look{
+        cursor: pointer;
+      }
+    }
+  }
 }
 
 .clearWarningSide{

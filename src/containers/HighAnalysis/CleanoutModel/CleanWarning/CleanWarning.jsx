@@ -24,7 +24,6 @@ class CleanWarning extends Component {
   }
 
   render() {
-    console.log(this.props);
     const { showPage } = this.props;
     return (
       <div className={styles.cleanWarningBox}>
