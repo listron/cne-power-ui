@@ -21,6 +21,7 @@ var initState = Immutable.fromJS({
   sequenceChartList: [], // 时序图 
   matrixList: [], // 电站下方阵列表
   ignoreReason:[],  // 忽略原因
+  dealSuccess:false, // 处理是否成功 忽略／转工单
 });
 
 const UnhandleReducer = (state = initState, action) => {

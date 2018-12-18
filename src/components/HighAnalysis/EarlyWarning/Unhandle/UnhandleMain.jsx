@@ -52,7 +52,7 @@ class Unhandle extends Component {
   }
 
   onPaginationChange = ({ currentPage, pageSize }) => { // 分页改变
-    this.getUnhandleList({currentPage,pageSize});
+    this.getUnhandleList({pageNum:currentPage,pageSize});
   }
 
   onShowDetail = (record) => {  // 查看详情
@@ -103,7 +103,6 @@ class Unhandle extends Component {
   }
 
   filterCondition = (change) => { // 筛选条件
-    console.log('change', change, change.stationCodes)
     this.getUnhandleList({...change});
     change.stationCodes  && this.props.getMatrixlist({ stationCodes: change.stationCodes })
   }
@@ -127,7 +126,7 @@ class Unhandle extends Component {
     const { toorder } = this.props;
     const { selectedRowKeys } = this.state;
     this.setState({ showWarningTip: false, selectedRowKeys: [] })
-    toorder(selectedRowKeys)
+    toorder({inefficiencyIds:selectedRowKeys})
   }
 
   addReason = (rest) => {  // 忽略原因
@@ -148,7 +147,7 @@ class Unhandle extends Component {
         dataIndex: 'stationName',
         key: 'stationName',
         sorter: true,
-        render: text => (text || text === 0) ? text : '--'
+        // render: text => (text || text === 0) ? text : '--'
       },
       {
         title: '所属方阵',
@@ -173,7 +172,7 @@ class Unhandle extends Component {
         dataIndex: 'happenTime',
         key: 'happenTime',
         sorter: true,
-        render: text => (text || text === 0) ? text : '--'
+        // render: text => (text || text === 0) ? text : '--'
       },
       {
         title: '电量损失比',
@@ -181,7 +180,7 @@ class Unhandle extends Component {
         key: 'lostGenPercent',
         defaultSortOrder: 'descend',
         sorter: true,
-        render: text => (text || text === 0) ? text : '--'
+        // render: text => (text || text === 0) ? text : '--'
       },
       {
         title: '详情及处理',
