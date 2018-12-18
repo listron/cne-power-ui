@@ -47,6 +47,7 @@ import GeneralReport from '../containers/StatisticalAnalysis/StatisticalReport/G
 //高级分析 清洗预警 清洗记录
 import CleanoutWarning from '../containers/HighAnalysis/CleanoutModel/CleanoutWarning/CleanoutWarning';
 import CleanoutRecord from '../containers/HighAnalysis/CleanoutModel/CleanoutRecord/CleanoutRecord';
+import CleanoutRecordDetail from '../components/HighAnalysis/CleanoutModel/CleanoutRecord/CleanoutRecordSingleStation/CleanoutRecordDetail';
 // 高级分析 低效组串预警
 import Unhandle from '../containers/HighAnalysis/EarlyWarning/Unhandle/Unhandle';
 import Ignore from '../containers/HighAnalysis/EarlyWarning/Ignore/Ignore';
@@ -239,7 +240,8 @@ const routers = [
     path: '/analysis/cleanout/record',
     exact: true,
     // component: CleanoutRecordMain,
-    component: Building
+     component: CleanoutRecord,
+    //component: Building
   },{//单电站清洗计划与记录详情
     path: '/analysis/cleanout/record/:stationCode',
     exact: true,

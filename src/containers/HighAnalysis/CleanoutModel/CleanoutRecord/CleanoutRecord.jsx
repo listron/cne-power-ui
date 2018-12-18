@@ -14,11 +14,13 @@ class CleanoutRecord extends Component {
     stationName: PropTypes.string,
     pageNum: PropTypes.number,
     pageSize: PropTypes.number,
-    orderField: PropTypes.string,
-    orderCommand: PropTypes.string,
+    resetStore: PropTypes.func,
   }
   constructor(props, context) {
     super(props, context)
+  }
+  componentWillUnmount(){
+   
   }
 
   render() {
@@ -43,9 +45,10 @@ class CleanoutRecord extends Component {
   }
 }
 const mapStateToProps = (state) => {
+
   return {
     ...state.highAanlysisReducer.cleanoutRecordReducer.toJS(),
-    stations: state.common.get('stations'),
+    stations: state.common.get('stations').toJS(),
   }
 }
 const mapDispatchToProps = (dispatch) => ({
@@ -73,7 +76,8 @@ const mapDispatchToProps = (dispatch) => ({
   editCleanRecord: payload => dispatch({ type: cleanoutRecordAction.editCleanRecord, payload }),
   getCleanRecordDetail: payload => dispatch({ type: cleanoutRecordAction.getCleanRecordDetail, payload }),
   deleteCleanRecord: payload => dispatch({ type: cleanoutRecordAction.deleteCleanRecord, payload }),
-
+//获取电站下得方针
+  getMatrix: payload => dispatch({ type: cleanoutRecordAction.getMatrix, payload }),
 
 
 })
